@@ -2,42 +2,42 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9BFBE1D94F0
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 May 2020 13:10:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9895E1D94F2
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 May 2020 13:10:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726949AbgESLK0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 19 May 2020 07:10:26 -0400
-Received: from mail-bn8nam12on2135.outbound.protection.outlook.com ([40.107.237.135]:17729
+        id S1728632AbgESLKa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 19 May 2020 07:10:30 -0400
+Received: from mail-bn8nam12on2096.outbound.protection.outlook.com ([40.107.237.96]:16865
         "EHLO NAM12-BN8-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726157AbgESLKZ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 19 May 2020 07:10:25 -0400
+        id S1728625AbgESLK3 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 19 May 2020 07:10:29 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=cQxRVwsDv6ReGOS9c9ChuoITqxZjVC+13bDvurJtIKOa41C42yFs7nU6c44O3XOKVLMYts8Ks6zKL2UxYky668AjflqK6OxlNjPvW6jCpzICcsJTwpYpungWfXfgXqfmgLVi+iL4Lod1Shdevr9spFPD6m0HsAcV6hSIvUWDY0zPphfgYRn7BaXWTaRF/WMpUmAH3KZnW21Rn1axWSm0salWQZwTUbqwQbfiRuaArBA4KPgW9JP/M5BjGuR43zYUvKnXTY87xshrXpi/47NrMwgIauWj2RMwuMOyhFAcH8995dQ10VxJFx6mYpgBNtxCtE/yam9m2ZTqGCgsML02XQ==
+ b=bQTA+nORvbu6yH8IO3KwgTB5Xh0cSylbomNJDTYxfZeRSP+O5Is90M80NgwtLrVA5fujvAXYadj5cONgVUmJPAGKu4J+hQd7pE20zhcxnU0nPTZeiuz57nvVZSd5O6DTCBzLSwLfeyf/6tF800wV2KMiaZBT1HQjKgG8kgY503TOnidK+rSek+lx1eA3/vQGmEyW4nvNEptH9lqLvQ2ydBMpis4gMKeE2e5G1pNeS5RP8gvedP+iFVOxiuIKDWX8vIU1OS3RAJHVtP6bDtRnmNpJ06UvhgP3dmHsSFcZEfAXWl82is36lSFKO57AQTOe1sXqsypnL/izwAurOvtQNw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=vFl4eDshnBc9/N4YSvMdg/4KOiru8DQ+T8l5ylSAme0=;
- b=bWo77YM3Tk6KZsw1x7wFe/XHR999S4a0jIHAh9A2xHFvYXAwD8n98gwxQe0ruf44TNqnuKNKwuWBSB5to4OrhwEv1qd2fsrE1ZFHBj3xFjCDmA1JbjGcfUJh6wIvhl2nyNAefQfAjVNAWOCG2iU4XxpcpANlCgamYYMha1SjsgKx3xadFZ0ygNkGDntnjDAJ3pbvQQlkU+Lt44ZmwU2Rv4bn7t3KbWwMPZ6Ke3gZl2dLcJIDpZ5T5IwUpOmP5NzBmUtmg0hQ2pwPA1OSH/Vr8t6AypcpBr8/2ju5fVimIH8ouaJXKp606PpJO/R8ibpsj9UYCv9hZqmOp8IMChKfwQ==
+ bh=20D4lPd8XG8+TFxRLQPWnsT1/jy9mV551VGUjg2RvMw=;
+ b=oKNJItBWLXhvte5jfWC38sKRlHPjpFCbrCLlWkvjN4cmCwrGwlOe8SiGCON8vpYISIPrhU3Lk364t8ZkxjDVACBgDeKWinSqDRhkXuxQJZUZ7VBwadW3yyDMS1AgHA12LF1CXHv74q4ewnFT12coFAYW3w/0sQ17O0y8eVeehad5lof7A5lehn1SgjRl7VQqINLDNPlSDjxwdic8+I4H516V0tgFI1m8g+92t/E1yKgHt4nSQWBdtsap6bKrdMvoMH+2E0Jcy8qheUkySZU5+Y5bgBDL7UOPw78iWVsBChwZ2DcOcHtrX8M0ro+G7uSQK7Om16I5M6XoZImiqttrVA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=cypress.com; dmarc=pass action=none header.from=cypress.com;
  dkim=pass header.d=cypress.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cypress.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=vFl4eDshnBc9/N4YSvMdg/4KOiru8DQ+T8l5ylSAme0=;
- b=GV+OiX0sNeZyXoMLbtugCJpV9cCslLpL8SwnzdUiGOpKaJxSkIoq+KUOsXQRiZE/zt4Ewp3Irj4AYGEI69TVPe97hvX+9mIPCCpzg/smK7xY0obBsTl0GuZOgAF6qp1FoMjtluhgYP2iB7FWyqk6DYhNmqw9Vg8ZpO19q27TTTI=
+ bh=20D4lPd8XG8+TFxRLQPWnsT1/jy9mV551VGUjg2RvMw=;
+ b=Ddiu6Uac4BL5Le+syD2KGbfbuV5jYlYNCzPzttw5Q3jfD56svOYCt2GoI8SNRjuYAwSfxT8j7qr+iX9+wBjZaEGWVw9E2C+CIHW8rHCQDf4LMt7WGElCneXP5YG76qYM+BEdD5Ti/wTThSy/aEkyNCGW1Bog6E5oVQm6UHbYHEY=
 Authentication-Results: vger.kernel.org; dkim=none (message not signed)
  header.d=none;vger.kernel.org; dmarc=none action=none
  header.from=cypress.com;
 Received: from DM6PR06MB4906.namprd06.prod.outlook.com (2603:10b6:5:56::11) by
  DM6PR06MB6043.namprd06.prod.outlook.com (2603:10b6:5:10b::17) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.3000.26; Tue, 19 May 2020 11:10:18 +0000
+ 15.20.3000.26; Tue, 19 May 2020 11:10:21 +0000
 Received: from DM6PR06MB4906.namprd06.prod.outlook.com
  ([fe80::c0ed:fb1f:a976:5c3f]) by DM6PR06MB4906.namprd06.prod.outlook.com
  ([fe80::c0ed:fb1f:a976:5c3f%7]) with mapi id 15.20.3000.034; Tue, 19 May 2020
- 11:10:17 +0000
+ 11:10:21 +0000
 From:   Chi-Hsien Lin <chi-hsien.lin@cypress.com>
 To:     linux-wireless@vger.kernel.org
 Cc:     brcm80211-dev-list@broadcom.com, brcm80211-dev-list@cypress.com,
@@ -46,11 +46,11 @@ Cc:     brcm80211-dev-list@broadcom.com, brcm80211-dev-list@cypress.com,
         Hante Meuleman <hante.meuleman@broadcom.com>,
         Wright Feng <wright.feng@cypress.com>,
         Kalle Valo <kvalo@codeaurora.org>,
-        Double Lo <double.lo@cypress.com>,
+        Kurt Lee <kurt.lee@cypress.com>,
         Chi-Hsien Lin <chi-hsien.lin@cypress.com>
-Subject: [PATCH 2/4] brcmfmac: support virtual interface creation from firmware
-Date:   Tue, 19 May 2020 06:09:49 -0500
-Message-Id: <20200519110951.88998-3-chi-hsien.lin@cypress.com>
+Subject: [PATCH 3/4] brcmfmac: set net carrier on via test tool for AP mode
+Date:   Tue, 19 May 2020 06:09:50 -0500
+Message-Id: <20200519110951.88998-4-chi-hsien.lin@cypress.com>
 X-Mailer: git-send-email 2.25.0
 In-Reply-To: <20200519110951.88998-1-chi-hsien.lin@cypress.com>
 References: <20200519110951.88998-1-chi-hsien.lin@cypress.com>
@@ -61,142 +61,71 @@ X-ClientProxiedBy: BYAPR06CA0029.namprd06.prod.outlook.com
  (2603:10b6:5:56::11)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from aremote02.aus.cypress.com (12.110.209.245) by BYAPR06CA0029.namprd06.prod.outlook.com (2603:10b6:a03:d4::42) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3000.24 via Frontend Transport; Tue, 19 May 2020 11:10:02 +0000
+Received: from aremote02.aus.cypress.com (12.110.209.245) by BYAPR06CA0029.namprd06.prod.outlook.com (2603:10b6:a03:d4::42) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3000.24 via Frontend Transport; Tue, 19 May 2020 11:10:04 +0000
 X-Mailer: git-send-email 2.25.0
 X-Originating-IP: [12.110.209.245]
 X-MS-PublicTrafficType: Email
 X-MS-Office365-Filtering-HT: Tenant
-X-MS-Office365-Filtering-Correlation-Id: 0e3b10d4-5e37-4ecf-e669-08d7fbe52e2a
+X-MS-Office365-Filtering-Correlation-Id: d99a9e13-0ba9-4c51-6ba3-08d7fbe52f20
 X-MS-TrafficTypeDiagnostic: DM6PR06MB6043:
 X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <DM6PR06MB604399319C07EE46E3E674F4BBB90@DM6PR06MB6043.namprd06.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:165;
+X-Microsoft-Antispam-PRVS: <DM6PR06MB60434564C11F3EF705D9C496BBB90@DM6PR06MB6043.namprd06.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:660;
 X-Forefront-PRVS: 040866B734
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: XlKQTM7NbWIsSbHWhUh8Fz4oaLt/Fu10vRRYvLy5N9vJNpnIYBh9Cq36B/tsmpFyjfnrBsxXXUPfUilNspAa9BPCen5C5eGDxYfoalK9ZBTRgNCfAl+UbzduEJALJKo9aCjujiLOyrovxXqGcaNZB9mtpf79xv6rj3UfWybySaj6GkvHLsESufD93pAYzWHbAvoOGUqSBY+SRDWFwdiFBYB6fshwV8KQHRqn3lBNbXziUnwZOQlEL5HxnL2Jx+okmAZ10+BKTwiovRsf/kb+2F2QQRru/e1P7m31FgT5yid9Amag0wwxfZYjT0Ey6sGqfhUgK8tqtjMYgLUQWrAi0POTG+ZCU1ucE3zlAQF73txMvyKiNfG0YVNt4G07J5/HxK0izyg6bnsgnK0g8kiuss8qoN6COSj/+GDG2N3mQ1V14wTby2oTyXMftRzdptPS
+X-Microsoft-Antispam-Message-Info: uGpyZRhzOGnoCmx5Ih9LAcDYqtyFroJTePr8D3uVsUUAvv3w+NGEl6TIqV257XQWyIhNlvUb4Rwc7Mt01CIX9wFmXA03cTGrTpSN5VSQRILXsRPIdKSaCOuLorsM3WLjXFdNBgnUDWUXlZWk7jepvrdTEbu1t1jzRp7+3M+nBOnroLZSch6cedt2RwD0x6P6YkHj7ANZw+fNoo5Hxv9H+Z+H185xUogTJLVpFOXiWiVBuO3dcwS9fNtQUOuIN3eSDhz6F6sDyCvVQrfZRMJJqJI1jAIaWy9hM2hBnZbH9jRRG3jScf7k6XtAGPEnjlxEyYj4nja09FnPTct48FU+g5tkwnw7TgFBpys0jiz2KzL0EpA+8xzJnf8+IBzI829TtxUUab0ac7tTMZMCO+4UIObyh6ef1hOotUzvO+hQuv4w+NpclZYZifbI+v2UFCZz
 X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR06MB4906.namprd06.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(376002)(39860400002)(366004)(396003)(136003)(346002)(52116002)(66946007)(66556008)(86362001)(36756003)(7696005)(54906003)(66476007)(8936002)(8676002)(6916009)(478600001)(956004)(316002)(2616005)(6486002)(1076003)(5660300002)(6666004)(2906002)(4326008)(186003)(16526019)(107886003)(26005);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData: XNuOkqvPQDUjEoxCtXlCNJh/lTqEj+l78QquKZGQgCOhY+k2kUmdWWvyRcmEI1BV5PAo759s+W55by4yp+d+cw0W5ONtlIsoZ5puRMkPfhAisCepSYB+COBF4yrz92MTq2aOC2Hzxu827siH32ik80g3jOXUWr1IqDwP823JN4Ps6elZ51+x/FFG/V0Ir711hKmNSuRWf0pxgJi3xKqwNALSmI70X3nIwPf4scA3p5uCbAfoCh8zZ4IUgpIjA86fpB6ZDUB/dCDw91cWYuMmhYdn1CzqgBZJbgdjJwzYfRNS7cYekvaxpTXT8tFodumYLl2QMIvIrmUbOyQ/w9J0obN7yw+nsxn+Tv3UTLMxElCKpHTV4QRnDQhJrZq35AabxmjoXdC2tZtfK4vMittNHxsdOp6XJg66IJ8hxfaQIJGOzyUXEb9wS0+VaW3zJQf+hfIMiNABxj5W9drPnjStydEYjamS1NdSEblVgv/nsHVhyLyUR3aIb9QrmA3jQF/i
+X-MS-Exchange-AntiSpam-MessageData: BhkXbMDDnrLAUE+GSCMkrrHGe2NGdRsYppIKK/s7rOkfHQr2ZnIxL4azfGbUajzpkpy5KZ3OsiynkSF8Ek7ltnhweNH3h/3z5b4v8Zgx33iNp8UZnUX5c8h32735v/S8k5EdnW00mF4XHEf2VBKn5Sep93+NygG7MpM0wcHpGZb/vrhTnOL4Y5MWtXRYhPKANnwma6B42YUpvOSIR1QL9eSdN5/6WPqgzleY8w9cj/789Lnn5CYAEPrwv8FYBfM6O/rWH9wrsW/nIHknSwsB0Ci92gKthjjrUxUrpdPTh/wMp/8p79FOAN7AVz2Wbhckd8Hs87fzwyx7oP6tDA4Z1QaUMG2QbVhsbUUYQfHmW/rhbiTqiauTiiRjfSMZAFP9KUzfmxRAlELfNa98C8+I0tzU6ils/S12wqSevGjjbFbzNRzCyCZUNBobcHl0muF9NCTm6F4Nixt8MpxbVJ9LRun0AQNpFc4QHYLY2gbR9Slq1v3Fj6ZfOERI7McAEHTu
 X-OriginatorOrg: cypress.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0e3b10d4-5e37-4ecf-e669-08d7fbe52e2a
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 May 2020 11:10:04.0898
+X-MS-Exchange-CrossTenant-Network-Message-Id: d99a9e13-0ba9-4c51-6ba3-08d7fbe52f20
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 May 2020 11:10:05.6938
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 011addfc-2c09-450d-8938-e0bbc2dd2376
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Gh799I7tkkY7kNEdICkKBLp5V4WhP5Bp4tOY5KVFT3jru/ygTXXwJHyoJJOo4tchetyBDfmPdS1q4XplC8hh3g==
+X-MS-Exchange-CrossTenant-UserPrincipalName: 7gbSJWlZjWCv+blqweknUP52RA/KU0KLad1rMxcs2NjH9l+1AxYQLQf16wFu4Ip6gQbory5tLYwaxWG6x2kw5Q==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR06MB6043
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Double Lo <double.lo@cypress.com>
+From: Kurt Lee <kurt.lee@cypress.com>
 
-Allow interface creation via IF_ADD event from firmware.
+In manufacturing line, test tool may be used to enable SoftAP. Such
+SoftAP can't pass traffic because netif carrier is off by default. To
+allow such use case, let brcmfmac parse ioctl cmd, and then set iftype
+to ap mode and report netif_carrier_on to upper layer.
 
-Signed-off-by: Double Lo <double.lo@cypress.com>
+Signed-off-by: Kurt Lee <kurt.lee@cypress.com>
 Signed-off-by: Chi-Hsien Lin <chi-hsien.lin@cypress.com>
 ---
- .../broadcom/brcm80211/brcmfmac/cfg80211.c    | 46 +++++++++++++++++--
- 1 file changed, 43 insertions(+), 3 deletions(-)
+ .../net/wireless/broadcom/brcm80211/brcmfmac/vendor.c    | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/=
-drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-index a757abd7a599..900376dc0b67 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-@@ -230,6 +230,9 @@ struct parsed_vndr_ies {
-        struct parsed_vndr_ie_info ie_info[VNDR_IE_PARSE_LIMIT];
- };
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/vendor.c b/dr=
+ivers/net/wireless/broadcom/brcm80211/brcmfmac/vendor.c
+index d07e7c7355d9..5edf5ac1167a 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/vendor.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/vendor.c
+@@ -64,6 +64,15 @@ static int brcmf_cfg80211_vndr_cmds_dcmd_handler(struct =
+wiphy *wiphy,
+                *(char *)(dcmd_buf + len)  =3D '\0';
+        }
 
-+#define WLC_E_IF_ROLE_STA              0       /* Infra STA */
-+#define WLC_E_IF_ROLE_AP               1       /* Access Point */
-+
- static u8 nl80211_band_to_fwil(enum nl80211_band band)
- {
-        switch (band) {
-@@ -5532,8 +5535,10 @@ void brcmf_cfg80211_free_netdev(struct net_device *n=
-dev)
-        ifp =3D netdev_priv(ndev);
-        vif =3D ifp->vif;
-
--       if (vif)
-+       if (vif) {
-                brcmf_free_vif(vif);
-+               ifp->vif =3D NULL;
-+       }
- }
-
- static bool brcmf_is_linkup(struct brcmf_cfg80211_vif *vif,
-@@ -6090,6 +6095,9 @@ static s32 brcmf_notify_vif_event(struct brcmf_if *if=
-p,
-        struct brcmf_if_event *ifevent =3D (struct brcmf_if_event *)data;
-        struct brcmf_cfg80211_vif_event *event =3D &cfg->vif_event;
-        struct brcmf_cfg80211_vif *vif;
-+       enum nl80211_iftype iftype =3D NL80211_IFTYPE_UNSPECIFIED;
-+       bool vif_pend =3D false;
-+       int err;
-
-        brcmf_dbg(TRACE, "Enter: action %u flags %u ifidx %u bsscfgidx %u\n=
-",
-                  ifevent->action, ifevent->flags, ifevent->ifidx,
-@@ -6102,9 +6110,28 @@ static s32 brcmf_notify_vif_event(struct brcmf_if *i=
-fp,
-        switch (ifevent->action) {
-        case BRCMF_E_IF_ADD:
-                /* waiting process may have timed out */
--               if (!cfg->vif_event.vif) {
-+               if (!vif) {
-+                       /* handle IF_ADD event from firmware */
-                        spin_unlock(&event->vif_event_lock);
--                       return -EBADF;
-+                       vif_pend =3D true;
-+                       if (ifevent->role =3D=3D WLC_E_IF_ROLE_STA)
-+                               iftype =3D NL80211_IFTYPE_STATION;
-+                       else if (ifevent->role =3D=3D WLC_E_IF_ROLE_AP)
-+                               iftype =3D NL80211_IFTYPE_AP;
-+                       else
-+                               vif_pend =3D false;
-+
-+                       if (vif_pend) {
-+                               vif =3D brcmf_alloc_vif(cfg, iftype);
-+                               if (IS_ERR(vif)) {
-+                                       brcmf_err("Role:%d failed to alloc =
-vif\n",
-+                                                 ifevent->role);
-+                                       return PTR_ERR(vif);
-+                               }
-+                       } else {
-+                               brcmf_err("Invalid Role:%d\n", ifevent->rol=
-e);
-+                               return -EBADF;
-+                       }
-                }
-
-                ifp->vif =3D vif;
-@@ -6114,6 +6141,19 @@ static s32 brcmf_notify_vif_event(struct brcmf_if *i=
-fp,
-                        ifp->ndev->ieee80211_ptr =3D &vif->wdev;
-                        SET_NETDEV_DEV(ifp->ndev, wiphy_dev(cfg->wiphy));
-                }
-+
-+               if (vif_pend) {
-+                       err =3D brcmf_net_attach(ifp, false);
-+                       if (err) {
-+                               brcmf_err("netdevice register failed with e=
-rr:%d\n",
-+                                         err);
-+                               brcmf_free_vif(vif);
-+                               free_netdev(ifp->ndev);
-+                       }
-+                       spin_unlock(&event->vif_event_lock);
-+                       return err;
++       if (cmdhdr->cmd =3D=3D BRCMF_C_SET_AP) {
++               if (*(int *)(dcmd_buf) =3D=3D 1) {
++                       ifp->vif->wdev.iftype =3D NL80211_IFTYPE_AP;
++                       brcmf_net_setcarrier(ifp, true);
++               } else {
++                       ifp->vif->wdev.iftype =3D NL80211_IFTYPE_STATION;
 +               }
++       }
 +
-                spin_unlock(&event->vif_event_lock);
-                wake_up(&event->vif_wq);
-                return 0;
+        if (cmdhdr->set)
+                ret =3D brcmf_fil_cmd_data_set(ifp, cmdhdr->cmd, dcmd_buf,
+                                             ret_len);
 --
 2.25.0
 
