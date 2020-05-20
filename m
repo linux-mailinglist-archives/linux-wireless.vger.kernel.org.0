@@ -2,111 +2,85 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 36F5D1DB2CB
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 May 2020 14:12:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1833B1DB32A
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 May 2020 14:28:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726691AbgETML6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 20 May 2020 08:11:58 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:40176 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726436AbgETMLq (ORCPT
+        id S1726510AbgETM2I (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 20 May 2020 08:28:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37170 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726452AbgETM2A (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 20 May 2020 08:11:46 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04KC7VE0191979;
-        Wed, 20 May 2020 12:11:41 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=Sxm3BevQoxnZLIyVzRYA3qn4bXDWkSjkHWdHjyCXzB8=;
- b=TT0I6I7KyYPKgLGKvtqwfnaI5gA8BTO9BkOD9W9F/HJeDdosr+pAPneWm4Arh6im0gry
- 2QSu6rNlP9VPhxXQk9sHmRG3FzjmPIEjyKKXtqrLRlUWY5tTV43OLmotpxvfahOk2MMB
- 9qmZkm+BdmUQj4T7B2i2OU3JLeDvBXor+/EsJ9wlIjhj6IWhTq0xiH9rQ9G0HjAI6Awo
- ivXRaY9/TKGlNTK1AUdt71f4nJz4wju35xccul+ncmPnlHrQ5BE9QqXTdVXFe53cuvk7
- GiaJDoA+a1+Fxn4QxBaFZp+1NS1nfVeTSqw7WPdbTLZY9T0/Aq/dTNn5k61S0dnE9418 +Q== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by userp2120.oracle.com with ESMTP id 31501r98gr-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 20 May 2020 12:11:41 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04KC9BNF125260;
-        Wed, 20 May 2020 12:09:41 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by userp3020.oracle.com with ESMTP id 315020669j-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 20 May 2020 12:09:41 +0000
-Received: from abhmp0010.oracle.com (abhmp0010.oracle.com [141.146.116.16])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 04KC9elu007528;
-        Wed, 20 May 2020 12:09:40 GMT
-Received: from mwanda (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 20 May 2020 05:09:39 -0700
-Date:   Wed, 20 May 2020 15:09:33 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     ryder.lee@mediatek.com
-Cc:     Ryder Lee <ryder.lee@mediatek.com>, linux-wireless@vger.kernel.org,
-        linux-mediatek@lists.infradead.org
-Subject: [bug report] mt76: mt7915: fix possible deadlock in mt7915_stop
-Message-ID: <20200520120845.GK172354@mwanda>
+        Wed, 20 May 2020 08:28:00 -0400
+Received: from mail-vk1-xa42.google.com (mail-vk1-xa42.google.com [IPv6:2607:f8b0:4864:20::a42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41CF7C061A0E
+        for <linux-wireless@vger.kernel.org>; Wed, 20 May 2020 05:28:00 -0700 (PDT)
+Received: by mail-vk1-xa42.google.com with SMTP id w188so711997vkf.0
+        for <linux-wireless@vger.kernel.org>; Wed, 20 May 2020 05:28:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=iTSpuOn+eOiS5F2tW+aa6K9KavJrkW2XpL8GASe/3EQ=;
+        b=ZJZF0s47BiUZI+F85ZQ/KV58LF7ji2q+KFLvBJ2XZ302vzJCNJ039/dPO3bHj1ZPtB
+         pJKW5aCXa6blw8zRD8SIaIxTyryOtTan8+Pl+wAHkJ0Xo6b2oDG5O7v5ekwC24jn2y9d
+         nd/b1j13PoD/2ellIblaAg0pBrXGjTZhmT6T6EeuA2yoRwAxcetwnm4SPnngAcdPgf/i
+         MZ3uKXhnpc5ImfzZ3Bp25del2ZqvsrFYMn6WvtwHa6fPvJEP/UPFKK8bQ4DdO/ZKeftt
+         cCqpvHOL5WEMx54c5VCPYSDcjGaOJzqiMJ1tcYhOrtu/XiNs6ti+vowlOzWD2c+cTFrQ
+         D2KA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=iTSpuOn+eOiS5F2tW+aa6K9KavJrkW2XpL8GASe/3EQ=;
+        b=QT2h9rKYJxcHKqjNnhvxndWquy6/dEgmXyY/p5/FNdHGHKBt8J30u9rUosp+5Y+F7B
+         u9Ys3GwhyeVKVENYmfRzgajQDmvffNfcryjPVG6h49IAXgoWal9RT6BbZKUMpa/QXzEw
+         O6SygzqXb2KiTQksfSY129WM73p9Mf1U4WuA1h2QPKe6siqVTuEX7R0wjncOf5VsOSAe
+         RFGwijOKwthGiy16Dt+2wGSdcxMdcyRNFnXIJzB4hJVK0I8x4V42yJrv4kYkqrLhD8ig
+         XXw9wfiteG+fVWE24PMqjP+auY1t9mLfeOW7rpEHdPh1eJcxu4Rk0MXjiyPnAAJyXFSK
+         Z9BQ==
+X-Gm-Message-State: AOAM5318E2B3S2sTBZA5mWPkFSmjO8OUP0BFz5ZiYCahGlDQy7Loc5S0
+        DGk4Y1oMK3bEuWeG5dXGEdnVUNrEj36hqf+A18Q=
+X-Google-Smtp-Source: ABdhPJwi6gO3x2zPlKACBRNtmyz9MZkVP44O+i7txJYBnIyawpLq8rhQvBeFmSWczOcWADb1Cg+F6WhAQyq9T6RAsVg=
+X-Received: by 2002:ac5:c92c:: with SMTP id u12mr3515908vkl.93.1589977679364;
+ Wed, 20 May 2020 05:27:59 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9626 signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxscore=0 mlxlogscore=738
- adultscore=0 bulkscore=0 suspectscore=3 phishscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2005200106
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9626 signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 lowpriorityscore=0 spamscore=0
- mlxlogscore=759 clxscore=1015 priorityscore=1501 cotscore=-2147483648
- impostorscore=0 bulkscore=0 adultscore=0 malwarescore=0 phishscore=0
- mlxscore=0 suspectscore=3 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2004280000 definitions=main-2005200106
+References: <9122588d-683a-936e-1305-c34124e6702c@nextfour.com>
+In-Reply-To: <9122588d-683a-936e-1305-c34124e6702c@nextfour.com>
+From:   Emmanuel Grumbach <egrumbach@gmail.com>
+Date:   Wed, 20 May 2020 15:27:50 +0300
+Message-ID: <CANUX_P1q22J6ONRqTCDwwEMtmbGbCmS=C1WK6Zz0OqG_v2qcSA@mail.gmail.com>
+Subject: Re: iwlwifi firmware loading problems, rk3399
+To:     =?UTF-8?Q?Mika_Penttil=C3=A4?= <mika.penttila@nextfour.com>
+Cc:     Johannes Berg <johannes.berg@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        linux-rockchip@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello Ryder Lee,
+>
+> Hi,
+>
+> We have custom made, Rockchip rk3399 based board with a standard M.2
+> socket for wifi/bt card.
+>
+> We have tried man different cards, like Intel 9260 and Intel AX200, but
+> are experiencing problems while loading the firmware.
+>
+>    Failed to load firmware chunk!
+>
+> etc. I have a little debugged and the problem seems that the interrupts
+> that acknowledges the load to proceed, is not coming, randomly.
+> I have tried many firmwares. Do you have any pointers where to look next?
 
-The patch 57b9df6fa5f5: "mt76: mt7915: fix possible deadlock in
-mt7915_stop" from May 12, 2020, leads to the following static checker
-warning:
+I guess you need to debug your board :)
+The interrupt is not coming, then.. there isn't much the driver can do.
 
-    drivers/net/wireless/mediatek/mt76/mt7915/init.c:595 mt7915_register_ext_phy()
-    error: we previously assumed 'phy' could be null (see line 592)
-
-    drivers/net/wireless/mediatek/mt76/mt7615/init.c:371 mt7615_register_ext_phy()
-    error: we previously assumed 'phy' could be null (see line 368)
-
-drivers/net/wireless/mediatek/mt76/mt7915/init.c
-   589          if (test_bit(MT76_STATE_RUNNING, &dev->mphy.state))
-   590                  return -EINVAL;
-   591  
-   592          if (phy)
-                    ^^^
-   593                  return 0;
-   594  
-   595          INIT_DELAYED_WORK(&phy->mac_work, mt7915_mac_work);
-                                  ^^^^^^^^^^^^^^
-This will Oops.
-
-   596          mt7915_cap_dbdc_enable(dev);
-   597          mphy = mt76_alloc_phy(&dev->mt76, sizeof(*phy), &mt7915_ops);
-   598          if (!mphy)
-   599                  return -ENOMEM;
-   600  
-   601          phy = mphy->priv;
-                ^^^^^^^^^^^^^^^^
-phy is set here again.
-
-   602          phy->dev = dev;
-   603          phy->mt76 = mphy;
-   604          phy->chainmask = dev->chainmask & ~dev->phy.chainmask;
-   605          mphy->antenna_mask = BIT(hweight8(phy->chainmask)) - 1;
-   606          mt7915_init_wiphy(mphy->hw);
-
-See also:
-drivers/net/wireless/mediatek/mt76/mt7615/init.c:371 mt7615_register_ext_phy() error: we previously assumed 'phy' could be null (see line 368)
-
-regards,
-dan carpenter
+>
+> Thanks,
+> Mika
+>
