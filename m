@@ -2,91 +2,75 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C51751DB49A
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 May 2020 15:08:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BC8FC1DB5C4
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 May 2020 15:56:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726691AbgETNIm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 20 May 2020 09:08:42 -0400
-Received: from spam.zju.edu.cn ([61.164.42.155]:12684 "EHLO zju.edu.cn"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726525AbgETNIm (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 20 May 2020 09:08:42 -0400
-Received: from localhost.localdomain (unknown [222.205.77.158])
-        by mail-app2 (Coremail) with SMTP id by_KCgCnHr63K8VezDqOAQ--.14485S4;
-        Wed, 20 May 2020 21:08:12 +0800 (CST)
-From:   Dinghao Liu <dinghao.liu@zju.edu.cn>
-To:     dinghao.liu@zju.edu.cn, kjlu@umn.edu
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Fuqian Huang <huangfq.daxian@gmail.com>,
-        Tony Lindgren <tony@atomide.com>,
-        "Jason A. Donenfeld" <Jason@zx2c4.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Maital Hahn <maitalm@ti.com>, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] wlcore: fix runtime pm imbalance in __wl1271_op_remove_interface
-Date:   Wed, 20 May 2020 21:08:04 +0800
-Message-Id: <20200520130806.14789-1-dinghao.liu@zju.edu.cn>
-X-Mailer: git-send-email 2.17.1
-X-CM-TRANSID: by_KCgCnHr63K8VezDqOAQ--.14485S4
-X-Coremail-Antispam: 1UD129KBjvdXoW7JrWfWFyDZrW5ury3AF48Xrb_yoWDCFb_Gr
-        s7ZF1kur4kC34Ikr4UCan8XrW09ryDu3Z5urWIvF9xJayj9rZ5tr1rZ3sxZr4fC3yUuF13
-        Jwn8AF15Aa4DujkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-        9fnUUIcSsGvfJTRUUUb6AFc2x0x2IEx4CE42xK8VAvwI8IcIk0rVWrJVCq3wAFIxvE14AK
-        wVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK021l84ACjcxK6xIIjxv20x
-        vE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4UJVWxJr1l84ACjcxK6I8E
-        87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_GcCE3s1le2I262IYc4CY6c
-        8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JrI_
-        JrylYx0Ex4A2jsIE14v26F4j6r4UJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64
-        vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkIecxE
-        wVAFwVW5GwCF04k20xvY0x0EwIxGrwCF04k20xvE74AGY7Cv6cx26r4fKr1UJr1l4I8I3I
-        0E4IkC6x0Yz7v_Jr0_Gr1l4IxYO2xFxVAFwI0_Jrv_JF1lx2IqxVAqx4xG67AKxVWUJVWU
-        GwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI4
-        8JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4U
-        MIIF0xvE42xK8VAvwI8IcIk0rVWrJr0_WFyUJwCI42IY6I8E87Iv67AKxVW8JVWxJwCI42
-        IY6I8E87Iv6xkF7I0E14v26r4UJVWxJrUvcSsGvfC2KfnxnUUI43ZEXa7VUb_gA7UUUUU=
-        =
-X-CM-SenderInfo: qrrzjiaqtzq6lmxovvfxof0/
+        id S1726940AbgETN4l (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 20 May 2020 09:56:41 -0400
+Received: from mail27.static.mailgun.info ([104.130.122.27]:46892 "EHLO
+        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726452AbgETN4k (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 20 May 2020 09:56:40 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1589983000; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=1f2c/IoPMuBpYr8x0BXg13qmCOpDEFtIr7XsM2sZm6k=; b=QUO+Pub7ayxBdcO0ep6w3GZsPuBfZc7bJfCkmMaf1Buvm9DnS1dBgAs8I77E9rxXireyaLIW
+ tm05mYE5QB7HOd5K1oIZvEJdIoMRm9lXLcSAx12NBpmAkO0gpePMJoXTsjZbNMU5SYugwhLp
+ 0qvu+jdeYF/u6IgaV3sFAKSIp5I=
+X-Mailgun-Sending-Ip: 104.130.122.27
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5ec53706.7f1287a02b20-smtp-out-n05;
+ Wed, 20 May 2020 13:56:22 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 61ECFC433CB; Wed, 20 May 2020 13:56:22 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 6D485C433C8;
+        Wed, 20 May 2020 13:56:19 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 6D485C433C8
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Markus Theil <markus.theil@tu-ilmenau.de>
+Cc:     John Deere <24601deerej@gmail.com>,
+        Venkateswara Naralasetty <vnaralas@codeaurora.org>,
+        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org
+Subject: Re: [PATCHv4] ath10k : Fix channel survey dump
+References: <1588820612-15884-1-git-send-email-vnaralas@codeaurora.org>
+        <bee1439c-de98-dbf0-ee82-88620ecc560a@gmail.com>
+        <f3da0683-1e1e-6c67-08bb-2147e745a317@tu-ilmenau.de>
+Date:   Wed, 20 May 2020 16:56:15 +0300
+In-Reply-To: <f3da0683-1e1e-6c67-08bb-2147e745a317@tu-ilmenau.de> (Markus
+        Theil's message of "Wed, 20 May 2020 08:48:48 +0200")
+Message-ID: <87eerebthc.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-When wl12xx_cmd_role_disable() returns an error code,
-a pairing runtime PM usage counter decrement is needed to
-keep the counter balanced.
+Markus Theil <markus.theil@tu-ilmenau.de> writes:
 
-Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>
----
- drivers/net/wireless/ti/wlcore/main.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+> I've seen this patch got dropped again from the ath.git pending branch.
+> On which hw/firmware combination did it fail to operate?
 
-diff --git a/drivers/net/wireless/ti/wlcore/main.c b/drivers/net/wireless/ti/wlcore/main.c
-index f140f7d7f553..e6c299efbc2e 100644
---- a/drivers/net/wireless/ti/wlcore/main.c
-+++ b/drivers/net/wireless/ti/wlcore/main.c
-@@ -2698,12 +2698,16 @@ static void __wl1271_op_remove_interface(struct wl1271 *wl,
- 
- 		if (!wlcore_is_p2p_mgmt(wlvif)) {
- 			ret = wl12xx_cmd_role_disable(wl, &wlvif->role_id);
--			if (ret < 0)
-+			if (ret < 0) {
-+				pm_runtime_put_noidle(wl->dev);
- 				goto deinit;
-+			}
- 		} else {
- 			ret = wl12xx_cmd_role_disable(wl, &wlvif->dev_role_id);
--			if (ret < 0)
-+			if (ret < 0) {
-+				pm_runtime_put_noidle(wl->dev);
- 				goto deinit;
-+			}
- 		}
- 
- 		pm_runtime_mark_last_busy(wl->dev);
+It's deferred at the moment:
+
+https://patchwork.kernel.org/patch/11532357/
+
+The conclusion from the other thread was not clear for me, so I put it
+into deferred and will take a closer look once I have time.
+
 -- 
-2.17.1
-
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
