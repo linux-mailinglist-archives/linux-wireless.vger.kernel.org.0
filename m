@@ -2,85 +2,159 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 253A31DB451
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 May 2020 14:58:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BD0FD1DB477
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 May 2020 15:01:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726570AbgETM6C (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 20 May 2020 08:58:02 -0400
-Received: from spam.zju.edu.cn ([61.164.42.155]:11690 "EHLO zju.edu.cn"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726439AbgETM6B (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 20 May 2020 08:58:01 -0400
-X-Greylist: delayed 872 seconds by postgrey-1.27 at vger.kernel.org; Wed, 20 May 2020 08:57:59 EDT
-Received: from localhost.localdomain (unknown [222.205.77.158])
-        by mail-app3 (Coremail) with SMTP id cC_KCgAXT7Q1KcVe2a3gAA--.58314S4;
-        Wed, 20 May 2020 20:57:30 +0800 (CST)
-From:   Dinghao Liu <dinghao.liu@zju.edu.cn>
-To:     dinghao.liu@zju.edu.cn, kjlu@umn.edu
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Maital Hahn <maitalm@ti.com>,
-        Fuqian Huang <huangfq.daxian@gmail.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        "Jason A. Donenfeld" <Jason@zx2c4.com>,
-        Tony Lindgren <tony@atomide.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] wlcore: fix runtime pm imbalance in wl1271_op_suspend
-Date:   Wed, 20 May 2020 20:57:22 +0800
-Message-Id: <20200520125724.12832-1-dinghao.liu@zju.edu.cn>
-X-Mailer: git-send-email 2.17.1
-X-CM-TRANSID: cC_KCgAXT7Q1KcVe2a3gAA--.58314S4
-X-Coremail-Antispam: 1UD129KBjvdXoWrKw4UCw4UCF45try5tFW8JFb_yoWfGrb_Kr
-        srWrn7tr1kA342gr15CanxZryjvr9ru3Z3u3yIvryfJa1UZrZ7Jr1rZ3s8Xr97WrW7Zr1f
-        Gr98GF18Z34UZjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-        9fnUUIcSsGvfJTRUUUbT8Fc2x0x2IEx4CE42xK8VAvwI8IcIk0rVWrJVCq3wAFIxvE14AK
-        wVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK021l84ACjcxK6xIIjxv20x
-        vE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4UJVW0owA2z4x0Y4vEx4A2
-        jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oVCq3wAS0I0E0xvYzxvE52
-        x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUGVWU
-        XwAv7VC2z280aVAFwI0_Cr0_Gr1UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwI
-        xGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc2xSY4AK
-        67AK6ryUMxAIw28IcxkI7VAKI48JMxAIw28IcVCjz48v1sIEY20_GFWkJr1UJwCFx2IqxV
-        CFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r10
-        6r1rMI8E67AF67kF1VAFwI0_GFv_WrylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxV
-        WUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG
-        6rWUJVWrZr1UMIIF0xvEx4A2jsIE14v26r4j6F4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr
-        1j6F4UJbIYCTnIWIevJa73UjIFyTuYvjfUFzuWDUUUU
-X-CM-SenderInfo: qrrzjiaqtzq6lmxovvfxof0/
+        id S1726691AbgETNBM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 20 May 2020 09:01:12 -0400
+Received: from mail.as201155.net ([185.84.6.188]:29774 "EHLO mail.as201155.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726486AbgETNBE (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 20 May 2020 09:01:04 -0400
+X-Greylist: delayed 19271 seconds by postgrey-1.27 at vger.kernel.org; Wed, 20 May 2020 09:01:02 EDT
+Received: from smtps.newmedia-net.de ([2a05:a1c0:0:de::167]:38178 helo=webmail.newmedia-net.de)
+        by mail.as201155.net with esmtps (TLSv1:DHE-RSA-AES256-SHA:256)
+        (Exim 4.82_1-5b7a7c0-XX)
+        (envelope-from <s.gottschall@dd-wrt.com>)
+        id 1jbOLB-0002Fx-2u; Wed, 20 May 2020 15:00:58 +0200
+X-CTCH-RefID: str=0001.0A782F21.5EC529AC.0013,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=dd-wrt.com; s=mikd;
+        h=Content-Transfer-Encoding:Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject; bh=WHN059KMMKqt55KiF38hof7CfVor09VP7Rsqx7uRGGc=;
+        b=A7CWcs0iqdeo+EHGaG2mTEZTqIPpTID4+3QXPyItk7Ni6tsJGYqDc7QmTkhUgkOq3gMhr/OtrTu+WLEn2A3R02z9XkKk2ACKy+8PUy1Y4DS4bhg49eGOKelR0urZ2XBKdtWOPruQYjL/8D/S7Mw3EbAloGNWgcT46bByYz8sXTQ=;
+Subject: Re: [OpenWrt-Devel] [PATCH v13] ath10k: add LED and GPIO controlling
+ support for various chipsets
+To:     Vincent Wiemann <vincent.wiemann@ironai.com>,
+        Sven Eckelmann <sven@narfation.org>,
+        ath10k@lists.infradead.org, John Crispin <john@phrozen.org>,
+        Ansuel Smith <ansuelsmth@gmail.com>,
+        openwrt-devel@lists.openwrt.org
+Cc:     Sebastian Gottschall <s.gottschall@newmedia-net.de>,
+        linux-wireless@vger.kernel.org, Kalle Valo <kvalo@codeaurora.org>
+References: <1523027875-5143-1-git-send-email-kvalo@codeaurora.org>
+ <2468724.JaAZLprVu6@bentobox>
+ <b23e65cf-4be7-72db-7955-32eae196953e@dd-wrt.com>
+ <90f5adcb-488e-96e2-001e-7bf8d175dec6@ironai.com>
+From:   Sebastian Gottschall <s.gottschall@dd-wrt.com>
+Message-ID: <4df82bd4-cab4-55e2-7885-df86d22aed63@dd-wrt.com>
+Date:   Wed, 20 May 2020 15:00:41 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:77.0) Gecko/20100101
+ Thunderbird/77.0
+MIME-Version: 1.0
+In-Reply-To: <90f5adcb-488e-96e2-001e-7bf8d175dec6@ironai.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Received:  from [2a01:7700:8040:4000:f846:4861:fc39:f688]
+        by webmail.newmedia-net.de with esmtpa (Exim 4.72)
+        (envelope-from <s.gottschall@dd-wrt.com>)
+        id 1jbOGw-0002Im-Q8; Wed, 20 May 2020 14:56:37 +0200
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-When wlcore_hw_interrupt_notify() returns an error code,
-a pairing runtime PM usage counter decrement is needed to
-keep the counter balanced.
 
-Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>
----
- drivers/net/wireless/ti/wlcore/main.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+Am 20.05.2020 um 12:40 schrieb Vincent Wiemann:
+> Hi Sebastian,
+>
+> I don't know why it was dropped, but I can say that the LED control code was kind of
+> annoying me. Even when the LED was turned of, it "flickered" when it was set disabled.
+> Unfortunately I didn't have time to look into it, yet.
+the led code will just be used if you set a trigger. otherwise it doesnt 
+touch the gpios.
+the code itself was written to make use of the led's builtin to several 
+routers. if you dont set a led trigger, nothing will happen
 
-diff --git a/drivers/net/wireless/ti/wlcore/main.c b/drivers/net/wireless/ti/wlcore/main.c
-index f140f7d7f553..8faee8cec1bc 100644
---- a/drivers/net/wireless/ti/wlcore/main.c
-+++ b/drivers/net/wireless/ti/wlcore/main.c
-@@ -1746,9 +1746,7 @@ static int __maybe_unused wl1271_op_suspend(struct ieee80211_hw *hw,
- 
- 		ret = wl1271_configure_suspend(wl, wlvif, wow);
- 		if (ret < 0) {
--			mutex_unlock(&wl->mutex);
--			wl1271_warning("couldn't prepare device to suspend");
--			return ret;
-+			goto out_sleep;
- 		}
- 	}
- 
--- 
-2.17.1
-
+> Best,
+>
+> Vincent
+>
+> On 20.05.20 09:39, Sebastian Gottschall wrote:
+>> this code is not in use in its original form for ipq4019.
+>> i have seen that his patch is also dropped from ath.git but is still in use by openwrt.
+>> could somone clarify the state here and why it was dropped?
+>> the original patch i wrote does exclude the soc chipsets, but the patch was later reorganized and some part have been rewritten
+>> so i'm not sure if it covers the scenario mentioned here, which i did take care of
+>>
+>> Sebastian
+>>
+>> Am 26.02.2019 um 10:16 schrieb Sven Eckelmann:
+>>> On Friday, 6 April 2018 17:17:55 CET Kalle Valo wrote:
+>>>> From: Sebastian Gottschall <s.gottschall@newmedia-net.de>
+>>>>
+>>>> Adds LED and GPIO Control support for 988x, 9887, 9888, 99x0, 9984 based
+>>>> chipsets with on chipset connected led's using WMI Firmware API.  The LED
+>>>> device will get available named as "ath10k-phyX" at sysfs and can be controlled
+>>>> with various triggers.  adds also debugfs interface for gpio control.
+>>>>
+>>>> Signed-off-by: Sebastian Gottschall <s.gottschall@dd-wrt.com>
+>>>> Reviewed-by: Steve deRosier <derosier@cal-sierra.com>
+>>>> [kvalo: major reorg and cleanup]
+>>>> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+>>> This patch was imported to OpenWrt in commit 61d57a2f88b9 ("mac80211: ath10k
+>>> add leds support") and broke the 11s support for IPQ4019 and QCA4019 (5GHz)
+>>> firmware versions 10.4-3.5.3-00053, 10.4-3.5.3-00057, 10.4-3.6-00140:
+>>>
+>>>       [  221.620803] ath10k_pci 0000:01:00.0: wmi command 36967 timeout, restarting hardware
+>>>       [  221.744056] ieee80211 phy0: Hardware restart was requested
+>>>       [  225.130829] ath10k_pci 0000:01:00.0: failed to receive control response completion, polling..
+>>>       [  226.170824] ath10k_pci 0000:01:00.0: Service connect timeout
+>>>       [  226.170871] ath10k_pci 0000:01:00.0: failed to connect htt (-110)
+>>>       [  226.252248] ath10k_pci 0000:01:00.0: Could not init core: -110
+>>>
+>>> This was tested on an A62 with following wireless config:
+>>>
+>>>       config wifi-device 'radio0'
+>>>               option type 'mac80211'
+>>>               option channel '36'
+>>>               option hwmode '11a'
+>>>               option path 'soc/40000000.pci/pci0000:00/0000:00:00.0/0000:01:00.0'
+>>>               option htmode 'VHT80'
+>>>               option disabled '0'
+>>>               option country US
+>>>            config wifi-device 'radio1'
+>>>               option type 'mac80211'
+>>>               option channel '11'
+>>>               option hwmode '11g'
+>>>               option path 'platform/soc/a000000.wifi'
+>>>               option htmode 'HT20'
+>>>               option disabled '0'
+>>>               option country US
+>>>            config wifi-device 'radio2'
+>>>               option type 'mac80211'
+>>>               option channel '149'
+>>>               option hwmode '11a'
+>>>               option path 'platform/soc/a800000.wifi'
+>>>               option htmode 'VHT80'
+>>>               option disabled '0'
+>>>               option country US
+>>>            config wifi-iface 'mesh0'
+>>>           option device 'radio0'
+>>>           option ifname 'mesh0'
+>>>           option network 'nwi_mesh0'
+>>>           option mode 'mesh'
+>>>           option mesh_id 'TestMesh'
+>>>           option mesh_fwding '1'
+>>>           option encryption 'none'
+>>>            config wifi-iface 'mesh1'
+>>>           option device 'radio1'
+>>>           option ifname 'mesh1'
+>>>           option network 'nwi_mesh1'
+>>>           option mode 'mesh'
+>>>           option mesh_id 'TestMesh'
+>>>           option encryption 'none'
+>>>                 config wifi-iface 'mesh2'
+>>>           option device 'radio2'
+>>>           option ifname 'mesh2'
+>>>           option network 'nwi_mesh2'
+>>>           option mode 'mesh'
+>>>           option mesh_id 'TestMesh'
+>>>           option mesh_fwding '1'
+>>>           option encryption 'none
+>>>
+>>> Kind regards,
+>>>      Sven
+>> _______________________________________________
+>> openwrt-devel mailing list
+>> openwrt-devel@lists.openwrt.org
+>> https://lists.openwrt.org/mailman/listinfo/openwrt-devel
+>>
