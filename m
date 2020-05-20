@@ -2,337 +2,122 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 496DE1DAA20
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 May 2020 07:54:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 05B4E1DAA58
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 May 2020 08:06:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726468AbgETFyC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 20 May 2020 01:54:02 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:40904 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726403AbgETFyB (ORCPT
+        id S1726309AbgETGGA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 20 May 2020 02:06:00 -0400
+Received: from mail26.static.mailgun.info ([104.130.122.26]:37781 "EHLO
+        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725998AbgETGF7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 20 May 2020 01:54:01 -0400
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.69 with qID 04K5rqteF026645, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexmb06.realtek.com.tw[172.21.6.99])
-        by rtits2.realtek.com.tw (8.15.2/2.66/5.86) with ESMTPS id 04K5rqteF026645
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Wed, 20 May 2020 13:53:52 +0800
-Received: from RTEXMB04.realtek.com.tw (172.21.6.97) by
- RTEXMB06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Wed, 20 May 2020 13:53:52 +0800
-Received: from localhost.localdomain (172.21.68.128) by
- RTEXMB04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Wed, 20 May 2020 13:53:52 +0800
-From:   <yhchuang@realtek.com>
-To:     <kvalo@codeaurora.org>
-CC:     <linux-wireless@vger.kernel.org>, <kevlo@kevlo.org>
-Subject: [PATCH] Revert "rtw88: no need to set registers for SDIO"
-Date:   Wed, 20 May 2020 13:53:50 +0800
-Message-ID: <20200520055350.23328-1-yhchuang@realtek.com>
-X-Mailer: git-send-email 2.17.1
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [172.21.68.128]
-X-ClientProxiedBy: RTEXMB02.realtek.com.tw (172.21.6.95) To
- RTEXMB04.realtek.com.tw (172.21.6.97)
+        Wed, 20 May 2020 02:05:59 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1589954759; h=Message-Id: Date: Subject: Cc: To: From:
+ Sender; bh=+bNZiCgn+kIot6UbRmEJ28emF9HD/eUzgj8mWyuR3CQ=; b=RT/gzKasGwSwKl6DjSayo5UVf1jyiDT+soSL8JKzFu/skSnMX8uZchxqOI51A6oj70r/03wj
+ BOXuy1VuAhdUGFZ1xUAkqe2jfzsFj1beuPmVyqr1OkaHRdCQ9eV/hO+3fzk321tYZ8nB8ocu
+ I7pNOfUr9DRiq0wMxrYwObGFO78=
+X-Mailgun-Sending-Ip: 104.130.122.26
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n04.prod.us-east-1.postgun.com with SMTP id
+ 5ec4c8c6fab7128bf3b153f2 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 20 May 2020 06:05:58
+ GMT
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id AFA75C433CA; Wed, 20 May 2020 06:05:57 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from vnaralas-linux.qualcomm.com (blr-c-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.19.19])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: vnaralas)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id C480FC433C6;
+        Wed, 20 May 2020 06:05:55 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org C480FC433C6
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=vnaralas@codeaurora.org
+From:   Venkateswara Naralasetty <vnaralas@codeaurora.org>
+To:     ath11k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org,
+        Venkateswara Naralasetty <vnaralas@codeaurora.org>
+Subject: [PATCH 1/2] nl80211: vendor-cmd: qca: add command for ap power save
+Date:   Wed, 20 May 2020 11:35:44 +0530
+Message-Id: <1589954745-12870-1-git-send-email-vnaralas@codeaurora.org>
+X-Mailer: git-send-email 2.7.4
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Yan-Hsuan Chuang <yhchuang@realtek.com>
+This patch is to add vendor command support to enable/disable
+ap power save.
 
-This reverts commit 07d0f5534935e2daf63a4e1012af13d68e089fed.
+An example of usage: iw dev wlanx vendor send 0x1374 0x4a ap-ps <val>
 
-For rtw88 driver, the SDIO is going to be supported, so there is
-no need to remove the SDIO related power sequence settings. And
-while the power sequence parser will pass in the mask of the HCI,
-the SDIO part will not be used to set registers accordingly.
+0x1374: vendor id
+0x4a: vendor subcmd id
+val: 0 - disable power save
+     1 - enable power save
 
-Moreover, the power sequence table is released as a whole package,
-so the next time if we are going to update, the SDIO settings will
-be overwritten. So, revert this now.
-
-Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
+Signed-off-by: Venkateswara Naralasetty <vnaralas@codeaurora.org>
 ---
- drivers/net/wireless/realtek/rtw88/rtw8723d.c | 40 ++++++++
- drivers/net/wireless/realtek/rtw88/rtw8822b.c | 95 +++++++++++++++++++
- drivers/net/wireless/realtek/rtw88/rtw8822c.c | 20 ++++
- 3 files changed, 155 insertions(+)
+ include/uapi/nl80211-vnd-qca.h | 42 ++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 42 insertions(+)
+ create mode 100644 include/uapi/nl80211-vnd-qca.h
 
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8723d.c b/drivers/net/wireless/realtek/rtw88/rtw8723d.c
-index 8641ea645c4b..7422baf2d41b 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8723d.c
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8723d.c
-@@ -2093,6 +2093,16 @@ static const struct rtw_pwr_seq_cmd trans_carddis_to_cardemu_8723d[] = {
- 	 RTW_PWR_INTF_ALL_MSK,
- 	 RTW_PWR_ADDR_MAC,
- 	 RTW_PWR_CMD_WRITE, BIT(3) | BIT(7), 0},
-+	{0x0086,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_SDIO_MSK,
-+	 RTW_PWR_ADDR_SDIO,
-+	 RTW_PWR_CMD_WRITE, BIT(0), 0},
-+	{0x0086,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_SDIO_MSK,
-+	 RTW_PWR_ADDR_SDIO,
-+	 RTW_PWR_CMD_POLLING, BIT(1), BIT(1)},
- 	{0x004A,
- 	 RTW_PWR_CUT_ALL_MSK,
- 	 RTW_PWR_INTF_USB_MSK,
-@@ -2103,6 +2113,11 @@ static const struct rtw_pwr_seq_cmd trans_carddis_to_cardemu_8723d[] = {
- 	 RTW_PWR_INTF_ALL_MSK,
- 	 RTW_PWR_ADDR_MAC,
- 	 RTW_PWR_CMD_WRITE, BIT(3) | BIT(4), 0},
-+	{0x0023,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_SDIO_MSK,
-+	 RTW_PWR_ADDR_MAC,
-+	 RTW_PWR_CMD_WRITE, BIT(4), 0},
- 	{0x0301,
- 	 RTW_PWR_CUT_ALL_MSK,
- 	 RTW_PWR_INTF_PCI_MSK,
-@@ -2310,6 +2325,11 @@ static const struct rtw_pwr_seq_cmd trans_act_to_lps_8723d[] = {
- 	 RTW_PWR_INTF_ALL_MSK,
- 	 RTW_PWR_ADDR_MAC,
- 	 RTW_PWR_CMD_WRITE, BIT(1), 0},
-+	{0x0093,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_SDIO_MSK,
-+	 RTW_PWR_ADDR_MAC,
-+	 RTW_PWR_CMD_WRITE, 0xFF, 0x00},
- 	{0x0553,
- 	 RTW_PWR_CUT_ALL_MSK,
- 	 RTW_PWR_INTF_ALL_MSK,
-@@ -2389,6 +2409,11 @@ static const struct rtw_pwr_seq_cmd trans_act_to_cardemu_8723d[] = {
- };
- 
- static const struct rtw_pwr_seq_cmd trans_cardemu_to_carddis_8723d[] = {
-+	{0x0007,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_SDIO_MSK,
-+	 RTW_PWR_ADDR_MAC,
-+	 RTW_PWR_CMD_WRITE, 0xFF, 0x20},
- 	{0x0005,
- 	 RTW_PWR_CUT_ALL_MSK,
- 	 RTW_PWR_INTF_USB_MSK | RTW_PWR_INTF_SDIO_MSK,
-@@ -2409,6 +2434,21 @@ static const struct rtw_pwr_seq_cmd trans_cardemu_to_carddis_8723d[] = {
- 	 RTW_PWR_INTF_USB_MSK,
- 	 RTW_PWR_ADDR_MAC,
- 	 RTW_PWR_CMD_WRITE, BIT(0), 1},
-+	{0x0023,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_SDIO_MSK,
-+	 RTW_PWR_ADDR_MAC,
-+	 RTW_PWR_CMD_WRITE, BIT(4), BIT(4)},
-+	{0x0086,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_SDIO_MSK,
-+	 RTW_PWR_ADDR_SDIO,
-+	 RTW_PWR_CMD_WRITE, BIT(0), BIT(0)},
-+	{0x0086,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_SDIO_MSK,
-+	 RTW_PWR_ADDR_SDIO,
-+	 RTW_PWR_CMD_POLLING, BIT(1), 0},
- 	{0xFFFF,
- 	 RTW_PWR_CUT_ALL_MSK,
- 	 RTW_PWR_INTF_ALL_MSK,
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822b.c b/drivers/net/wireless/realtek/rtw88/rtw8822b.c
-index 6abcdf4070a2..e49bdd76ab9a 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8822b.c
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8822b.c
-@@ -1551,6 +1551,16 @@ static void rtw8822b_bf_config_bfee(struct rtw_dev *rtwdev, struct rtw_vif *vif,
- }
- 
- static const struct rtw_pwr_seq_cmd trans_carddis_to_cardemu_8822b[] = {
-+	{0x0086,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_SDIO_MSK,
-+	 RTW_PWR_ADDR_SDIO,
-+	 RTW_PWR_CMD_WRITE, BIT(0), 0},
-+	{0x0086,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_SDIO_MSK,
-+	 RTW_PWR_ADDR_SDIO,
-+	 RTW_PWR_CMD_POLLING, BIT(1), BIT(1)},
- 	{0x004A,
- 	 RTW_PWR_CUT_ALL_MSK,
- 	 RTW_PWR_INTF_USB_MSK,
-@@ -1679,6 +1689,11 @@ static const struct rtw_pwr_seq_cmd trans_cardemu_to_act_8822b[] = {
- 	 RTW_PWR_INTF_ALL_MSK,
- 	 RTW_PWR_ADDR_MAC,
- 	 RTW_PWR_CMD_WRITE, 0xFF, 0x0c},
-+	{0x0068,
-+	 RTW_PWR_CUT_C_MSK,
-+	 RTW_PWR_INTF_SDIO_MSK,
-+	 RTW_PWR_ADDR_MAC,
-+	 RTW_PWR_CMD_WRITE, BIT(4), BIT(4)},
- 	{0x0029,
- 	 RTW_PWR_CUT_ALL_MSK,
- 	 RTW_PWR_INTF_ALL_MSK,
-@@ -1707,6 +1722,11 @@ static const struct rtw_pwr_seq_cmd trans_cardemu_to_act_8822b[] = {
- };
- 
- static const struct rtw_pwr_seq_cmd trans_act_to_cardemu_8822b[] = {
-+	{0x0003,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_SDIO_MSK,
-+	 RTW_PWR_ADDR_MAC,
-+	 RTW_PWR_CMD_WRITE, BIT(2), 0},
- 	{0x0093,
- 	 RTW_PWR_CUT_ALL_MSK,
- 	 RTW_PWR_INTF_ALL_MSK,
-@@ -1775,6 +1795,11 @@ static const struct rtw_pwr_seq_cmd trans_act_to_cardemu_8822b[] = {
- };
- 
- static const struct rtw_pwr_seq_cmd trans_cardemu_to_carddis_8822b[] = {
-+	{0x0005,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_SDIO_MSK,
-+	 RTW_PWR_ADDR_MAC,
-+	 RTW_PWR_CMD_WRITE, BIT(7), BIT(7)},
- 	{0x0007,
- 	 RTW_PWR_CUT_ALL_MSK,
- 	 RTW_PWR_INTF_USB_MSK | RTW_PWR_INTF_SDIO_MSK,
-@@ -1795,6 +1820,46 @@ static const struct rtw_pwr_seq_cmd trans_cardemu_to_carddis_8822b[] = {
- 	 RTW_PWR_INTF_USB_MSK,
- 	 RTW_PWR_ADDR_MAC,
- 	 RTW_PWR_CMD_WRITE, BIT(0), 0},
-+	{0x0067,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_SDIO_MSK,
-+	 RTW_PWR_ADDR_MAC,
-+	 RTW_PWR_CMD_WRITE, BIT(5), 0},
-+	{0x0067,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_SDIO_MSK,
-+	 RTW_PWR_ADDR_MAC,
-+	 RTW_PWR_CMD_WRITE, BIT(4), 0},
-+	{0x004F,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_SDIO_MSK,
-+	 RTW_PWR_ADDR_MAC,
-+	 RTW_PWR_CMD_WRITE, BIT(0), 0},
-+	{0x0067,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_SDIO_MSK,
-+	 RTW_PWR_ADDR_MAC,
-+	 RTW_PWR_CMD_WRITE, BIT(1), 0},
-+	{0x0046,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_SDIO_MSK,
-+	 RTW_PWR_ADDR_MAC,
-+	 RTW_PWR_CMD_WRITE, BIT(6), BIT(6)},
-+	{0x0067,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_SDIO_MSK,
-+	 RTW_PWR_ADDR_MAC,
-+	 RTW_PWR_CMD_WRITE, BIT(2), 0},
-+	{0x0046,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_SDIO_MSK,
-+	 RTW_PWR_ADDR_MAC,
-+	 RTW_PWR_CMD_WRITE, BIT(7), BIT(7)},
-+	{0x0062,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_SDIO_MSK,
-+	 RTW_PWR_ADDR_MAC,
-+	 RTW_PWR_CMD_WRITE, BIT(4), BIT(4)},
- 	{0x0081,
- 	 RTW_PWR_CUT_ALL_MSK,
- 	 RTW_PWR_INTF_ALL_MSK,
-@@ -1805,11 +1870,41 @@ static const struct rtw_pwr_seq_cmd trans_cardemu_to_carddis_8822b[] = {
- 	 RTW_PWR_INTF_USB_MSK | RTW_PWR_INTF_SDIO_MSK,
- 	 RTW_PWR_ADDR_MAC,
- 	 RTW_PWR_CMD_WRITE, BIT(3) | BIT(4), BIT(3)},
-+	{0x0086,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_SDIO_MSK,
-+	 RTW_PWR_ADDR_SDIO,
-+	 RTW_PWR_CMD_WRITE, BIT(0), BIT(0)},
-+	{0x0086,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_SDIO_MSK,
-+	 RTW_PWR_ADDR_SDIO,
-+	 RTW_PWR_CMD_POLLING, BIT(1), 0},
- 	{0x0090,
- 	 RTW_PWR_CUT_ALL_MSK,
- 	 RTW_PWR_INTF_USB_MSK | RTW_PWR_INTF_PCI_MSK,
- 	 RTW_PWR_ADDR_MAC,
- 	 RTW_PWR_CMD_WRITE, BIT(1), 0},
-+	{0x0044,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_SDIO_MSK,
-+	 RTW_PWR_ADDR_SDIO,
-+	 RTW_PWR_CMD_WRITE, 0xFF, 0},
-+	{0x0040,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_SDIO_MSK,
-+	 RTW_PWR_ADDR_SDIO,
-+	 RTW_PWR_CMD_WRITE, 0xFF, 0x90},
-+	{0x0041,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_SDIO_MSK,
-+	 RTW_PWR_ADDR_SDIO,
-+	 RTW_PWR_CMD_WRITE, 0xFF, 0x00},
-+	{0x0042,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_SDIO_MSK,
-+	 RTW_PWR_ADDR_SDIO,
-+	 RTW_PWR_CMD_WRITE, 0xFF, 0x04},
- 	{0xFFFF,
- 	 RTW_PWR_CUT_ALL_MSK,
- 	 RTW_PWR_INTF_ALL_MSK,
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822c.c b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-index fe995bb4e43e..5e4cc57dbd7c 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-@@ -3563,6 +3563,16 @@ static void rtw8822c_pwr_track(struct rtw_dev *rtwdev)
- }
- 
- static const struct rtw_pwr_seq_cmd trans_carddis_to_cardemu_8822c[] = {
-+	{0x0086,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_SDIO_MSK,
-+	 RTW_PWR_ADDR_SDIO,
-+	 RTW_PWR_CMD_WRITE, BIT(0), 0},
-+	{0x0086,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_SDIO_MSK,
-+	 RTW_PWR_ADDR_SDIO,
-+	 RTW_PWR_CMD_POLLING, BIT(1), BIT(1)},
- 	{0x002E,
- 	 RTW_PWR_CUT_ALL_MSK,
- 	 RTW_PWR_INTF_ALL_MSK,
-@@ -3773,6 +3783,11 @@ static const struct rtw_pwr_seq_cmd trans_act_to_cardemu_8822c[] = {
- };
- 
- static const struct rtw_pwr_seq_cmd trans_cardemu_to_carddis_8822c[] = {
-+	{0x0005,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_SDIO_MSK,
-+	 RTW_PWR_ADDR_MAC,
-+	 RTW_PWR_CMD_WRITE, BIT(7), BIT(7)},
- 	{0x0007,
- 	 RTW_PWR_CUT_ALL_MSK,
- 	 RTW_PWR_INTF_USB_MSK | RTW_PWR_INTF_SDIO_MSK,
-@@ -3818,6 +3833,11 @@ static const struct rtw_pwr_seq_cmd trans_cardemu_to_carddis_8822c[] = {
- 	 RTW_PWR_INTF_PCI_MSK,
- 	 RTW_PWR_ADDR_MAC,
- 	 RTW_PWR_CMD_WRITE, BIT(2), BIT(2)},
-+	{0x0086,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_SDIO_MSK,
-+	 RTW_PWR_ADDR_SDIO,
-+	 RTW_PWR_CMD_WRITE, BIT(0), BIT(0)},
- 	{0xFFFF,
- 	 RTW_PWR_CUT_ALL_MSK,
- 	 RTW_PWR_INTF_ALL_MSK,
+diff --git a/include/uapi/nl80211-vnd-qca.h b/include/uapi/nl80211-vnd-qca.h
+new file mode 100644
+index 0000000..357040a
+--- /dev/null
++++ b/include/uapi/nl80211-vnd-qca.h
+@@ -0,0 +1,42 @@
++/* SPDX-License-Identifier: ISC */
++/*
++ * Copyright (c) 2019-2020 The Linux Foundation. All rights reserved.
++ */
++
++#ifndef _UAPI_NL80211_VND_QCA_H
++#define _UAPI_NL80211_VND_QCA_H
++
++/* Vendor id to be used in vendor specific command and events to user space
++ * NOTE: The authoritative place for definition of QCA_NL80211_VENDOR_ID,
++ * vendor subcmd definitions prefixed with QCA_NL80211_VENDOR_SUBCMD, and
++ * qca_wlan_vendor_attr is open source file src/common/qca-vendor.h in
++ * git://w1.fi/srv/git/hostap.git; the values here are just a copy of that
++ */
++#define QCA_NL80211_VENDOR_ID 0x001374
++
++/**
++ * enum qca_nl80211_vendor_subcmds - QCA nl80211 vendor command identifiers
++ *
++ * @QCA_NL80211_VENDOR_SUBCMD_SET_WIFI_CONFIGURATION: This vendor subcommand is
++ * used to set wifi configurations by the attributes defined in
++ * enum qca_wlan_vendor_attr_config.
++ */
++enum qca_nl80211_vendor_subcmds {
++	QCA_NL80211_VENDOR_SUBCMD_SET_WIFI_CONFIGURATION = 74,
++};
++
++/**
++ * enum qca_wlan_vendor_attr_config: Attributes for data used by
++ * QCA_NL80211_VENDOR_SUBCMD_SET_WIFI_CONFIGURATION.
++ *
++ * @QCA_WLAN_VENDOR_ATTR_CONFIG_GTX: 8-bit unsigned value to trigger
++ * green Tx power saving 1-Enable, 0-Disable.
++ */
++enum qca_wlan_vendor_attr_config {
++	QCA_WLAN_VENDOR_ATTR_CONFIG_GTX = 57,
++
++	QCA_WLAN_VENDOR_ATTR_CONFIG_AFTER_LAST,
++	QCA_WLAN_VENDOR_ATTR_CONFIG_MAX =
++		QCA_WLAN_VENDOR_ATTR_CONFIG_AFTER_LAST - 1,
++};
++#endif /* _UAPI_NL80211_VND_QCA_H_ */
 -- 
-2.17.1
+2.7.4
 
