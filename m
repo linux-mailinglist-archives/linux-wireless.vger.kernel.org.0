@@ -2,21 +2,22 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 519E71DA8A3
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 May 2020 05:34:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E3C0C1DA7F2
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 May 2020 04:27:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728537AbgETDeT convert rfc822-to-8bit (ORCPT
+        id S1726938AbgETC1f convert rfc822-to-8bit (ORCPT
         <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 19 May 2020 23:34:19 -0400
-Received: from spam.sprm.gov.my ([203.217.178.5]:58482 "EHLO spam.sprm.gov.my"
+        Tue, 19 May 2020 22:27:35 -0400
+Received: from spam.sprm.gov.my ([203.217.178.5]:53330 "EHLO spam.sprm.gov.my"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726432AbgETDeS (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 19 May 2020 23:34:18 -0400
+        id S1726352AbgETC1f (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 19 May 2020 22:27:35 -0400
+X-Greylist: delayed 599 seconds by postgrey-1.27 at vger.kernel.org; Tue, 19 May 2020 22:27:34 EDT
 From:   Zainal Bin Ayob <zainalayob@sprm.gov.my>
 Subject: 
-Thread-Index: AQHWLkwJxmwkw/fib0OLs8xga+ZtrQ==
+Thread-Index: AQHWLkn8hDsOPgHrP0+nFpOwfTNwOg==
 Date:   Wed, 20 May 2020 02:11:56 +0000
-Message-ID: <a842bade42d04072a0dc5ac026ec4e57@sprm.gov.my>
+Message-ID: <b8e4694354134e5698a6302a4123bae3@sprm.gov.my>
 Accept-Language: en-BE, ms-MY, en-MY, en-US
 Content-Language: aa
 X-MS-Has-Attach: 
