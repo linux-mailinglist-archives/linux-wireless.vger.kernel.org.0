@@ -2,76 +2,40 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C0F101DA774
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 May 2020 03:47:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 519E71DA8A3
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 May 2020 05:34:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728287AbgETBrz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 19 May 2020 21:47:55 -0400
-Received: from walmailout01.yourhostingaccount.com ([65.254.253.174]:36773
-        "EHLO walmailout01.yourhostingaccount.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726348AbgETBry (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 19 May 2020 21:47:54 -0400
-X-Greylist: delayed 1841 seconds by postgrey-1.27 at vger.kernel.org; Tue, 19 May 2020 21:47:53 EDT
-Received: from mailscan08.yourhostingaccount.com ([10.1.15.8] helo=walmailscan08.yourhostingaccount.com)
-        by walmailout01.yourhostingaccount.com with esmtp (Exim)
-        id 1jbDM4-0002Uj-CB
-        for linux-wireless@vger.kernel.org; Tue, 19 May 2020 21:17:08 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=kogosowski.com; s=dkim; h=Sender:Content-Transfer-Encoding:Content-Type:
-        MIME-Version:Message-ID:From:Date:Subject:To:Reply-To:Cc:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=iImRgTfgMOEC8UVY5wINbAD9YA466kOZoSaTCHDeH4o=; b=1iPNgiSojXof1ksvq5HUf50u3O
-        46Ty/tu1WzvTcAOJP6bV9BuXEW2fHM+iyP7sea0u5iTkXbeGxKjhrNquYqScu4rNEN582B1aO/9CW
-        XkYGbQDPtZJMV3ClMGenT6ZKUz7pJg7NPJxo+SwXFzPEPkpyw3ANA7y5lesMv3nBRcOUh5k0JWy6g
-        3dlzaVGaW649uE38y83SWB+QDWOeUJAXcXJdEzMuH48t0Oiq75DhTZ0QQcxijWtH1FgsS9K4JPJfr
-        49sFk+xWzPkQHJnKaFPpXVsYxtCAXEp+xVlncdh53pSwG/IqBfzP61l2i70V9JA1ECD1klQxQvjpz
-        ZKVSWUNA==;
-Received: from [10.114.3.21] (helo=walimpout01)
-        by walmailscan08.yourhostingaccount.com with esmtp (Exim)
-        id 1jbDM4-0002D9-3x
-        for linux-wireless@vger.kernel.org; Tue, 19 May 2020 21:17:08 -0400
-Received: from walcustpro0301.yourhostingaccount.com ([10.1.112.210])
-        by walimpout01 with 
-        id gpH5220024YR9uJ01pH8h2; Tue, 19 May 2020 21:17:08 -0400
-X-Authority-Analysis: v=2.1 cv=DIcB4k9b c=1 sm=1 tr=0
- a=O6D56ppunhuKm092tifGpQ==:117 a=L9H7d07YOLsA:10 a=9cW_t1CCXrUA:10
- a=s5jvgZ67dGcA:10 a=IkcTkHD0fZMA:10 a=65Lj2kn8Lx8A:10 a=sTwFKg_x9MkA:10
- a=W9qk7-TRJAAA:10 a=KJD1t2hDAAAA:8 a=0-4UG33Gw5w-Aoq3-xwA:9
- a=EyUnUwxx1FtgXT4K:21 a=cHjmVhRnTIJ5BR1q:21 a=QEXdDO2ut3YA:10
- a=glLRvYU0Z1AA:10 a=SxyBhY3mRiIA:10 a=pTznbiGrbv8A:10
- a=4cSDUiFOmQsdoIEnurUK:22
-Received: from rh.kogosowskicom by walcustpro0301.yourhostingaccount.com with local (Exim)
-        id 1jbDLR-0000gz-IB
-        for linux-wireless@vger.kernel.org; Tue, 19 May 2020 21:16:29 -0400
-X-EN-Info: U=rh.kogosowskicom P=/index.php
-X-EN-CGIUser: rh.kogosowskicom
-X-EN-CGIPath: /index.php
-X-EN-OrigIP: 185.216.34.237
-To:     =?UTF-8?Q?=D0=90dult_number_1_dating_a=D1=80p_f=D0=BEr_iphone=3A_https=3A?=
-         =?UTF-8?Q?//v=2Eht/MiUEQ?= <linux-wireless@vger.kernel.org>
-Subject: Thank you for your contact
-X-PHP-Originating-Script: 5480433:class-phpmailer.php
-Date:   Wed, 20 May 2020 01:16:29 +0000
-From:   Alan Kogosowski <contact@kogosowski.com>
-Message-ID: <0fffa6a916f8daa0ead0291f896811e5@www.kogosowski.com>
-X-Mailer: PHPMailer 5.2.22 (https://github.com/PHPMailer/PHPMailer)
-X-WPCF7-Content-Type: text/plain
+        id S1728537AbgETDeT convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 19 May 2020 23:34:19 -0400
+Received: from spam.sprm.gov.my ([203.217.178.5]:58482 "EHLO spam.sprm.gov.my"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726432AbgETDeS (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 19 May 2020 23:34:18 -0400
+From:   Zainal Bin Ayob <zainalayob@sprm.gov.my>
+Subject: 
+Thread-Index: AQHWLkwJxmwkw/fib0OLs8xga+ZtrQ==
+Date:   Wed, 20 May 2020 02:11:56 +0000
+Message-ID: <a842bade42d04072a0dc5ac026ec4e57@sprm.gov.my>
+Accept-Language: en-BE, ms-MY, en-MY, en-US
+Content-Language: aa
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.25.161.210]
+Content-Type: text/plain; charset="iso-8859-2"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-EN-Timestamp: Tue, 19 May 2020 21:16:29 -0400
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Dear –êdult number 1 dating a—Äp f–ær iphone: https://v.ht/MiUEQ,
+Gratulacje, zosta≥e∂ wybrany z losowego e-maila przeprowadzonego wczoraj w celu uzyskania funduszy pomocowych w wysoko∂ci 1 miliona euro. W ramach odpowiedzialno∂ci spo≥ecznej SwissLoto i inni partnerzy europejscy postanowili pomÛc w tej pandemii, aby daÊ 1 milion euro 100 zwyciÍzcom na ca≥ym ∂wiecie, aby pomÛc w odzyskaniu si≥. Aby uzyskaÊ wiÍcej informacji na temat roszczeÒ, skontaktuj siÍ ze swisslfun2020@gmail.com
 
-Thank you for your booking inquiry. We will be in touch within a week.
+PROSIMY O PRZES£ANIE WSZYSTKIEJ ODPOWIEDZI NA: swisslfun2020@gmail.com
 
-Kind regards,
-on behalf of Alan Kogosowski
+Congratulations, you have been choosen from a random email selection conducted yesterday for the relief funds of 1 Million Euro. SwissLoto and other European Partners have decided as part of their social responsbility to assist in this pandemic to give 1 Million Euro to 100 winners across the world to help recovering. For more information on claims, contact swisslfun2020@gmail.com
+
+PLEASE FORWARD ALL RESPONSE TO : swisslfun2020@gmail.com
 
