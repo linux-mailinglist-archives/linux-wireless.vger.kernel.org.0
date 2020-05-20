@@ -2,65 +2,190 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A5E381DAF28
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 May 2020 11:47:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 883721DB07E
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 May 2020 12:47:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726436AbgETJrb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 20 May 2020 05:47:31 -0400
-Received: from mail.kernel.org ([198.145.29.99]:45408 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726224AbgETJrb (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 20 May 2020 05:47:31 -0400
-Received: from pali.im (pali.im [31.31.79.79])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 973F9207FB;
-        Wed, 20 May 2020 09:47:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1589968050;
-        bh=DmOukLQtSNcLqnEhwI/0eK3pCZTEz+3wudy8LG/iqt8=;
-        h=From:To:Cc:Subject:Date:From;
-        b=Po68wnvt2gcS7Q1IlIloajYasVWF5CfBMukTz0d9J3fKCWi4iu7d2cSQVaxtjqQvG
-         iLow79GqOBwtSlEx8FoDUL3WjUVdPArEUS3TGc1k+4R4z7tmvi1bqs0LZTLIhhddMi
-         GrdxSnPCtsVclD1ofd5R53ydzPBgkngeNsF/a4XY=
-Received: by pali.im (Postfix)
-        id 4FB0165A; Wed, 20 May 2020 11:47:28 +0200 (CEST)
-From:   =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org,
-        =?UTF-8?q?Marek=20Beh=C3=BAn?= <marek.behun@nic.cz>
-Subject: [PATCH] iw: Print limit for maximum associated stations in AP mode
-Date:   Wed, 20 May 2020 11:47:01 +0200
-Message-Id: <20200520094701.10791-1-pali@kernel.org>
-X-Mailer: git-send-email 2.20.1
+        id S1726452AbgETKrG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 20 May 2020 06:47:06 -0400
+Received: from achernar.uberspace.de ([95.143.172.237]:54350 "EHLO
+        achernar.uberspace.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726224AbgETKrF (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 20 May 2020 06:47:05 -0400
+X-Greylist: delayed 399 seconds by postgrey-1.27 at vger.kernel.org; Wed, 20 May 2020 06:47:04 EDT
+Received: (qmail 28377 invoked from network); 20 May 2020 10:40:22 -0000
+Received: from localhost (HELO ?192.168.1.133?) (127.0.0.1)
+  by achernar.uberspace.de with SMTP; 20 May 2020 10:40:22 -0000
+Subject: Re: [OpenWrt-Devel] [PATCH v13] ath10k: add LED and GPIO controlling
+ support for various chipsets
+To:     Sebastian Gottschall <s.gottschall@dd-wrt.com>,
+        Sven Eckelmann <sven@narfation.org>,
+        ath10k@lists.infradead.org, John Crispin <john@phrozen.org>,
+        Ansuel Smith <ansuelsmth@gmail.com>,
+        openwrt-devel@lists.openwrt.org
+Cc:     Sebastian Gottschall <s.gottschall@newmedia-net.de>,
+        linux-wireless@vger.kernel.org, Kalle Valo <kvalo@codeaurora.org>
+References: <1523027875-5143-1-git-send-email-kvalo@codeaurora.org>
+ <2468724.JaAZLprVu6@bentobox>
+ <b23e65cf-4be7-72db-7955-32eae196953e@dd-wrt.com>
+From:   Vincent Wiemann <vincent.wiemann@ironai.com>
+Openpgp: preference=signencrypt
+Autocrypt: addr=vincent.wiemann@ironai.com; prefer-encrypt=mutual; keydata=
+ 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
+ sFWRrW2QGIhjT+Y4XMq8yZQ=
+Message-ID: <90f5adcb-488e-96e2-001e-7bf8d175dec6@ironai.com>
+Date:   Wed, 20 May 2020 12:40:14 +0200
+User-Agent: Mozilla/5.0 (X11; Linux i686; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+In-Reply-To: <b23e65cf-4be7-72db-7955-32eae196953e@dd-wrt.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Signed-off-by: Pali Rohár <pali@kernel.org>
----
- info.c | 4 ++++
- 1 file changed, 4 insertions(+)
+Hi Sebastian,
 
-diff --git a/info.c b/info.c
-index 9147b92..8062629 100644
---- a/info.c
-+++ b/info.c
-@@ -723,6 +723,10 @@ broken_combination:
- 			pat->max_pattern_len, pat->max_pkt_offset, rule->max_delay);
- 	}
- 
-+	if (tb_msg[NL80211_ATTR_MAX_AP_ASSOC_STA])
-+		printf("\tMaximum associated stations in AP mode: %u\n",
-+		       nla_get_u16(tb_msg[NL80211_ATTR_MAX_AP_ASSOC_STA]));
-+
- 	return NL_SKIP;
- }
- 
--- 
-2.20.1
+I don't know why it was dropped, but I can say that the LED control code was kind of
+annoying me. Even when the LED was turned of, it "flickered" when it was set disabled.
+Unfortunately I didn't have time to look into it, yet.
 
+Best,
+
+Vincent
+
+On 20.05.20 09:39, Sebastian Gottschall wrote:
+> this code is not in use in its original form for ipq4019.
+> i have seen that his patch is also dropped from ath.git but is still in use by openwrt.
+> could somone clarify the state here and why it was dropped?
+> the original patch i wrote does exclude the soc chipsets, but the patch was later reorganized and some part have been rewritten
+> so i'm not sure if it covers the scenario mentioned here, which i did take care of
+> 
+> Sebastian
+> 
+> Am 26.02.2019 um 10:16 schrieb Sven Eckelmann:
+>> On Friday, 6 April 2018 17:17:55 CET Kalle Valo wrote:
+>>> From: Sebastian Gottschall <s.gottschall@newmedia-net.de>
+>>>
+>>> Adds LED and GPIO Control support for 988x, 9887, 9888, 99x0, 9984 based
+>>> chipsets with on chipset connected led's using WMI Firmware API.  The LED
+>>> device will get available named as "ath10k-phyX" at sysfs and can be controlled
+>>> with various triggers.  adds also debugfs interface for gpio control.
+>>>
+>>> Signed-off-by: Sebastian Gottschall <s.gottschall@dd-wrt.com>
+>>> Reviewed-by: Steve deRosier <derosier@cal-sierra.com>
+>>> [kvalo: major reorg and cleanup]
+>>> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+>>
+>> This patch was imported to OpenWrt in commit 61d57a2f88b9 ("mac80211: ath10k
+>> add leds support") and broke the 11s support for IPQ4019 and QCA4019 (5GHz)
+>> firmware versions 10.4-3.5.3-00053, 10.4-3.5.3-00057, 10.4-3.6-00140:
+>>
+>>      [  221.620803] ath10k_pci 0000:01:00.0: wmi command 36967 timeout, restarting hardware
+>>      [  221.744056] ieee80211 phy0: Hardware restart was requested
+>>      [  225.130829] ath10k_pci 0000:01:00.0: failed to receive control response completion, polling..
+>>      [  226.170824] ath10k_pci 0000:01:00.0: Service connect timeout
+>>      [  226.170871] ath10k_pci 0000:01:00.0: failed to connect htt (-110)
+>>      [  226.252248] ath10k_pci 0000:01:00.0: Could not init core: -110
+>>
+>> This was tested on an A62 with following wireless config:
+>>
+>>      config wifi-device 'radio0'
+>>              option type 'mac80211'
+>>              option channel '36'
+>>              option hwmode '11a'
+>>              option path 'soc/40000000.pci/pci0000:00/0000:00:00.0/0000:01:00.0'
+>>              option htmode 'VHT80'
+>>              option disabled '0'
+>>              option country US
+>>           config wifi-device 'radio1'
+>>              option type 'mac80211'
+>>              option channel '11'
+>>              option hwmode '11g'
+>>              option path 'platform/soc/a000000.wifi'
+>>              option htmode 'HT20'
+>>              option disabled '0'
+>>              option country US
+>>           config wifi-device 'radio2'
+>>              option type 'mac80211'
+>>              option channel '149'
+>>              option hwmode '11a'
+>>              option path 'platform/soc/a800000.wifi'
+>>              option htmode 'VHT80'
+>>              option disabled '0'
+>>              option country US
+>>           config wifi-iface 'mesh0'
+>>          option device 'radio0'
+>>          option ifname 'mesh0'
+>>          option network 'nwi_mesh0'
+>>          option mode 'mesh'
+>>          option mesh_id 'TestMesh'
+>>          option mesh_fwding '1'
+>>          option encryption 'none'
+>>           config wifi-iface 'mesh1'
+>>          option device 'radio1'
+>>          option ifname 'mesh1'
+>>          option network 'nwi_mesh1'
+>>          option mode 'mesh'
+>>          option mesh_id 'TestMesh'
+>>          option encryption 'none'
+>>                config wifi-iface 'mesh2'
+>>          option device 'radio2'
+>>          option ifname 'mesh2'
+>>          option network 'nwi_mesh2'
+>>          option mode 'mesh'
+>>          option mesh_id 'TestMesh'
+>>          option mesh_fwding '1'
+>>          option encryption 'none
+>>
+>> Kind regards,
+>>     Sven
+> 
+> _______________________________________________
+> openwrt-devel mailing list
+> openwrt-devel@lists.openwrt.org
+> https://lists.openwrt.org/mailman/listinfo/openwrt-devel
+> 
