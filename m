@@ -2,84 +2,81 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 48C151DB48C
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 May 2020 15:06:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E5D01DB433
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 May 2020 14:54:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726805AbgETNGM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 20 May 2020 09:06:12 -0400
-Received: from aliyun-cloud.icoremail.net ([47.90.73.12]:18716 "HELO
-        aliyun-sdnproxy-4.icoremail.net" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with SMTP id S1726435AbgETNGM (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 20 May 2020 09:06:12 -0400
-Received: from localhost.localdomain (unknown [222.205.77.158])
-        by mail-app2 (Coremail) with SMTP id by_KCgA3H5K5JsVeuAGOAQ--.52762S4;
-        Wed, 20 May 2020 20:46:54 +0800 (CST)
-From:   Dinghao Liu <dinghao.liu@zju.edu.cn>
-To:     dinghao.liu@zju.edu.cn, kjlu@umn.edu
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Fuqian Huang <huangfq.daxian@gmail.com>,
-        "Jason A. Donenfeld" <Jason@zx2c4.com>,
-        Tony Lindgren <tony@atomide.com>, Maital Hahn <maitalm@ti.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        id S1726859AbgETMyd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 20 May 2020 08:54:33 -0400
+Received: from mail.kernel.org ([198.145.29.99]:45536 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726443AbgETMyd (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 20 May 2020 08:54:33 -0400
+Received: from pali.im (pali.im [31.31.79.79])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id C9F3B2070A;
+        Wed, 20 May 2020 12:54:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1589979272;
+        bh=W4N5wm88P16gmtjOPXeI9WQcMR68v97KzmHVFkAQ3CA=;
+        h=From:To:Cc:Subject:Date:From;
+        b=oEEGWQqoN5HomQUw17QHu6yLkj5O4iWeYmF0Tyl8Z0R2mCMT9oEXo1BLuriLhBVQ7
+         v9Lf5kppmcd+gK6owBIMfLubl89NE+UAC2kKup+7xj2HBwioZDoCNuueg3ynD6Vhnn
+         UefC7wXpYD/YjptErErIVaJ2o+dxKvdugRVMR2LM=
+Received: by pali.im (Postfix)
+        id 9D24365A; Wed, 20 May 2020 14:54:30 +0200 (CEST)
+From:   =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>
+To:     Solomon Peachy <pizza@shaftnet.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH] wlcore: fix runtime pm imbalance in wlcore_regdomain_config
-Date:   Wed, 20 May 2020 20:46:47 +0800
-Message-Id: <20200520124649.10848-1-dinghao.liu@zju.edu.cn>
-X-Mailer: git-send-email 2.17.1
-X-CM-TRANSID: by_KCgA3H5K5JsVeuAGOAQ--.52762S4
-X-Coremail-Antispam: 1UD129KBjvdXoWrKrWrZF15CFyUGr4xXF1UKFg_yoWfWFg_Kw
-        n5XFnrWr48Cayjgr4UCa15ZrWS9ryDu3Z3u3y0vFy3Ga1UZrZ7Jry5ZasxZrnrWrW7Zr1x
-        ArZ8GFyxZ3sFvjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-        9fnUUIcSsGvfJTRUUUb-AFc2x0x2IEx4CE42xK8VAvwI8IcIk0rVWrJVCq3wAFIxvE14AK
-        wVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK021l84ACjcxK6xIIjxv20x
-        vE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4UJVWxJr1l84ACjcxK6I8E
-        87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_GcCE3s1le2I262IYc4CY6c
-        8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JrI_
-        JrylYx0Ex4A2jsIE14v26F4j6r4UJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64
-        vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkIecxE
-        wVAFwVW5JwCF04k20xvY0x0EwIxGrwCF04k20xvE74AGY7Cv6cx26r4fKr1UJr1l4I8I3I
-        0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWU
-        GVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI
-        0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0
-        rVW3JVWrJr1lIxAIcVC2z280aVAFwI0_Gr0_Cr1lIxAIcVC2z280aVCY1x0267AKxVW8Jr
-        0_Cr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUAR6wUUUUU=
-X-CM-SenderInfo: qrrzjiaqtzq6lmxovvfxof0/
+Subject: [PATCH] cw1200: Remove local sdio VENDOR and DEVICE id definitions
+Date:   Wed, 20 May 2020 14:54:10 +0200
+Message-Id: <20200520125410.31757-1-pali@kernel.org>
+X-Mailer: git-send-email 2.20.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-pm_runtime_get_sync() increments the runtime PM usage counter even
-the call returns an error code. Thus a pairing decrement is needed
-on the error handling path to keep the counter balanced.
+They are already present in linux/mmc/sdio_ids.h.
 
-Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>
+Signed-off-by: Pali Rohár <pali@kernel.org>
 ---
- drivers/net/wireless/ti/wlcore/main.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/wireless/st/cw1200/cw1200_sdio.c | 9 +--------
+ 1 file changed, 1 insertion(+), 8 deletions(-)
 
-diff --git a/drivers/net/wireless/ti/wlcore/main.c b/drivers/net/wireless/ti/wlcore/main.c
-index f140f7d7f553..c7e4f5a80b9e 100644
---- a/drivers/net/wireless/ti/wlcore/main.c
-+++ b/drivers/net/wireless/ti/wlcore/main.c
-@@ -3662,8 +3662,10 @@ void wlcore_regdomain_config(struct wl1271 *wl)
- 		goto out;
+diff --git a/drivers/net/wireless/st/cw1200/cw1200_sdio.c b/drivers/net/wireless/st/cw1200/cw1200_sdio.c
+index 43e012073dbf..b65ec14136c7 100644
+--- a/drivers/net/wireless/st/cw1200/cw1200_sdio.c
++++ b/drivers/net/wireless/st/cw1200/cw1200_sdio.c
+@@ -14,6 +14,7 @@
+ #include <linux/mmc/sdio_func.h>
+ #include <linux/mmc/card.h>
+ #include <linux/mmc/sdio.h>
++#include <linux/mmc/sdio_ids.h>
+ #include <net/mac80211.h>
  
- 	ret = pm_runtime_get_sync(wl->dev);
--	if (ret < 0)
-+	if (ret < 0) {
-+		pm_runtime_put_autosuspend(wl->dev);
- 		goto out;
-+	}
+ #include "cw1200.h"
+@@ -48,14 +49,6 @@ struct hwbus_priv {
+ 	const struct cw1200_platform_data_sdio *pdata;
+ };
  
- 	ret = wlcore_cmd_regdomain_config_locked(wl);
- 	if (ret < 0) {
+-#ifndef SDIO_VENDOR_ID_STE
+-#define SDIO_VENDOR_ID_STE		0x0020
+-#endif
+-
+-#ifndef SDIO_DEVICE_ID_STE_CW1200
+-#define SDIO_DEVICE_ID_STE_CW1200	0x2280
+-#endif
+-
+ static const struct sdio_device_id cw1200_sdio_ids[] = {
+ 	{ SDIO_DEVICE(SDIO_VENDOR_ID_STE, SDIO_DEVICE_ID_STE_CW1200) },
+ 	{ /* end: all zeroes */			},
 -- 
-2.17.1
+2.20.1
 
