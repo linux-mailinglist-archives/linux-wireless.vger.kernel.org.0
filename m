@@ -2,84 +2,217 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C46B51DD2EF
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 May 2020 18:17:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B98BB1DD5FE
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 May 2020 20:30:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728295AbgEUQRz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 21 May 2020 12:17:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43720 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726938AbgEUQRz (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 21 May 2020 12:17:55 -0400
-Received: from mail-vs1-xe34.google.com (mail-vs1-xe34.google.com [IPv6:2607:f8b0:4864:20::e34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23F64C061A0E
-        for <linux-wireless@vger.kernel.org>; Thu, 21 May 2020 09:17:55 -0700 (PDT)
-Received: by mail-vs1-xe34.google.com with SMTP id o26so4325667vsr.10
-        for <linux-wireless@vger.kernel.org>; Thu, 21 May 2020 09:17:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Ji0OpoGJ8VjDjArAd8rvFq/AM62rv6No+vAMV/IpQ54=;
-        b=f8iYwCZQgameHd5sQp4y+KJSlzey2PMBeKBY9oFN19K4KO91g9jnfyqbWfAdSM6YMx
-         uPQYYwhJCUnXyHg9kffoRSJdOGP1YPJfZmmA91jWbw8nBm5bgUb6N7Es7bjRfw8c44vi
-         KtIe0W9TZnBfOtRQ+2B/PX7dn+AlVCRYhtjMVW4A/i+Wmc6BP7nD4G9IZozOY+B6asQ2
-         fUsIudDBnwif4fsTCKUjo+SO6revAeQDMgv+n4ku3+4ALqbkQDbCL5qy4/cQSMpYB5yx
-         QKxrH9rmmcYRfgyU792BP3mkqopkZ2+tD0mj/gyY1yRyiKJNuKUe0x0XMowdP5c75RAG
-         BBmg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Ji0OpoGJ8VjDjArAd8rvFq/AM62rv6No+vAMV/IpQ54=;
-        b=iobKkucWTIhrzFWjEhHBW4kZfR/B0MaKGXOxs9s6h5cQzTdKbLVQHQ61exFRLE0u+9
-         MaiswndSq4N5dAzPQs5Mlrr020XZINVDkedJSaGWllXPcq5hbaC3twgVefH0F+GGgNTJ
-         gPlUIY+SMPi/8ZDv8+1AyN9ImEhAG+Zbb0X7PQ5kKQXqMvVVFaA1VywAnEhcy3pOgSz2
-         zqT/BEmTeC7XN4DvKod7YUHUsnkknD3Gl5HH96BCB9ONEA5mbzrYijjBSFy7ROVlUq1a
-         xhf3zSipy8MIUoKsozkgANMwdbPdFN+uRzg57wc5v85TLD2gIyXYqBw4hrSYGA0Zk38X
-         Serg==
-X-Gm-Message-State: AOAM532q9iHCG9xSW8uxgkUzZazb3M9zQ4BBRpciaDoSuDBzD84k6mfC
-        tY2eRlKKx2mqavmNAv7emnotveL+Mxm121tATA==
-X-Google-Smtp-Source: ABdhPJxgLaIPBr9Nn2R3gn18Ddkt5IhjKdKYh+uuBM2LzjTDta2rVDGpWTJj9RoObI3S0SRqyx32dURzsuS2nFTnQZQ=
-X-Received: by 2002:a67:f64a:: with SMTP id u10mr7885413vso.202.1590077874373;
- Thu, 21 May 2020 09:17:54 -0700 (PDT)
+        id S1729426AbgEUSaX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 21 May 2020 14:30:23 -0400
+Received: from mail.kernel.org ([198.145.29.99]:39674 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728240AbgEUSaX (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 21 May 2020 14:30:23 -0400
+Received: from embeddedor (unknown [189.207.59.248])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 1718C207D3;
+        Thu, 21 May 2020 18:30:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1590085822;
+        bh=cEtHLgmqiR/ZzB3dv+ig2X/60et5/g/vGFhgnoGd0xI=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=BMkPbNM5O0EfxnzMohPO1kjZeVhu6o2AJ7ibPWDWi+rr8GL6fI3ea0f22QVTbOj3T
+         0GYVyZxOTxBHPi6JeUD9EOJYMMuISdZsp5flWY8mYML6m5ON1waZYSfr4FbEcTIb7G
+         niE02H0Wfvq0KKhEbVXUQnkMXRoKqL+4L7xDdF0U=
+Date:   Thu, 21 May 2020 13:35:11 -0500
+From:   "Gustavo A. R. Silva" <gustavoars@kernel.org>
+To:     Johannes Berg <johannes.berg@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        Intel Linux Wireless <linuxwifi@intel.com>
+Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iwlwifi: Replace zero-length array with flexible-array
+Message-ID: <20200521183511.GB29907@embeddedor>
+References: <20200507185538.GA14674@embeddedor>
 MIME-Version: 1.0
-References: <CALjTZvbLOr5zAYyp75Cs6Zo8mWNUVq3ZRJu56G1iHdiihFejWQ@mail.gmail.com>
- <3483242e-c2ad-ec83-0c2c-ce952bc9b638@lwfinger.net> <CALjTZvatxQ2BvUeZGcTFijBf1PiLizJuDdENxg2b=tPQL_NAzQ@mail.gmail.com>
- <CALjTZvYSJOx0xeMVkN6dHcGTdgW9O9NVbgXPKK4d6-31VX+0JQ@mail.gmail.com>
- <29f5e3de-a32c-6292-9197-19dcc57fa6a3@lwfinger.net> <CALjTZvaroTrgK9=W8uTwq9YcYayfuEU31BUc0qNYJr+08hevfg@mail.gmail.com>
- <CALjTZvaPi2FL-epk-Vd2wOLye2O0J8G5aZPsqzHXt2b7u=HyuQ@mail.gmail.com>
- <263e247c-3bf9-6d42-996b-bc513efe4b71@lwfinger.net> <CALjTZvauK0Hh+aoabcDX9kkQZ4zN2ZjPnB+aq7YrJ9+-4ihiAg@mail.gmail.com>
- <87fffd5d-242a-7195-c4cc-80260dbd53c5@lwfinger.net> <CALjTZvYCFNSQ6HMN4owkiGTVrYaiU8R-P1KXgvkwGqcOo8uMuw@mail.gmail.com>
- <CALjTZvYMF_ERBfzkhaHvsTu6kt7MW+L_979sOVs8hcH7zF_Nyg@mail.gmail.com>
- <20200521124608.4b5c78f2@wiggum> <CALjTZvan46UTwcUxOSN=RiE6XHm-29Ln8B6wiv40V_RVxWewtA@mail.gmail.com>
- <20200521134011.656381ad@wiggum> <CALjTZvZcfT-aURMa=j-1ksWyVdu42bLEsGOaq+Hw39ioiPFKAA@mail.gmail.com>
-In-Reply-To: <CALjTZvZcfT-aURMa=j-1ksWyVdu42bLEsGOaq+Hw39ioiPFKAA@mail.gmail.com>
-From:   Rui Salvaterra <rsalvaterra@gmail.com>
-Date:   Thu, 21 May 2020 17:17:43 +0100
-Message-ID: <CALjTZvY3_wjAx9DOEgYxpc4_fG-HWh_=O7veFxeEoygPzTJptw@mail.gmail.com>
-Subject: Re: [BUG?] b43: can't connect to WPA3 network (nohwcrypt=1)
-To:     =?UTF-8?Q?Michael_B=C3=BCsch?= <m@bues.ch>,
-        Larry Finger <Larry.Finger@lwfinger.net>
-Cc:     linux-wireless@vger.kernel.org, b43-dev@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200507185538.GA14674@embeddedor>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi, guys,
+Hi all,
 
-On Thu, 21 May 2020 at 15:52, Rui Salvaterra <rsalvaterra@gmail.com> wrote:
->
-> It's not exactly a modern Wi-Fi card either, and being 802.11g might
-> actually help limiting the CPU overhead.
+Friendly ping: who can take this?
 
-Yeah, as I expected, it's neither great nor terrible. I fired up iperf
-to do some quick and dirty testing: with WPA2 (hardware crypto) I get
-around 13 % CPU, with WPA3 (software crypto), around 34 %. The
-throughput is pretty much the same.
+Thanks
+--
+Gustavo
 
-Cheers,
-Rui
+On Thu, May 07, 2020 at 01:55:38PM -0500, Gustavo A. R. Silva wrote:
+> The current codebase makes use of the zero-length array language
+> extension to the C90 standard, but the preferred mechanism to declare
+> variable-length types such as these ones is a flexible array member[1][2],
+> introduced in C99:
+> 
+> struct foo {
+>         int stuff;
+>         struct boo array[];
+> };
+> 
+> By making use of the mechanism above, we will get a compiler warning
+> in case the flexible array does not occur last in the structure, which
+> will help us prevent some kind of undefined behavior bugs from being
+> inadvertently introduced[3] to the codebase from now on.
+> 
+> Also, notice that, dynamic memory allocations won't be affected by
+> this change:
+> 
+> "Flexible array members have incomplete type, and so the sizeof operator
+> may not be applied. As a quirk of the original implementation of
+> zero-length arrays, sizeof evaluates to zero."[1]
+> 
+> sizeof(flexible-array-member) triggers a warning because flexible array
+> members have incomplete type[1]. There are some instances of code in
+> which the sizeof operator is being incorrectly/erroneously applied to
+> zero-length arrays and the result is zero. Such instances may be hiding
+> some bugs. So, this work (flexible-array member conversions) will also
+> help to get completely rid of those sorts of issues.
+> 
+> This issue was found with the help of Coccinelle.
+> 
+> [1] https://gcc.gnu.org/onlinedocs/gcc/Zero-Length.html
+> [2] https://github.com/KSPP/linux/issues/21
+> [3] commit 76497732932f ("cxgb3/l2t: Fix undefined behaviour")
+> 
+> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+> ---
+>  drivers/net/wireless/intel/iwlwifi/dvm/commands.h   |   12 ++++++------
+>  drivers/net/wireless/intel/iwlwifi/fw/api/nvm-reg.h |    4 ++--
+>  drivers/net/wireless/intel/iwlwifi/fw/debugfs.c     |    2 +-
+>  drivers/net/wireless/intel/iwlwifi/iwl-op-mode.h    |    2 +-
+>  drivers/net/wireless/intel/iwlwifi/iwl-trans.h      |    2 +-
+>  5 files changed, 11 insertions(+), 11 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/intel/iwlwifi/dvm/commands.h b/drivers/net/wireless/intel/iwlwifi/dvm/commands.h
+> index 0f4be4be181c..fdcc1292a92b 100644
+> --- a/drivers/net/wireless/intel/iwlwifi/dvm/commands.h
+> +++ b/drivers/net/wireless/intel/iwlwifi/dvm/commands.h
+> @@ -1023,7 +1023,7 @@ struct iwl_wep_cmd {
+>  	u8 global_key_type;
+>  	u8 flags;
+>  	u8 reserved;
+> -	struct iwl_wep_key key[0];
+> +	struct iwl_wep_key key[];
+>  } __packed;
+>  
+>  #define WEP_KEY_WEP_TYPE 1
+> @@ -1305,7 +1305,7 @@ struct iwl_tx_cmd {
+>  	 * length is 26 or 30 bytes, followed by payload data
+>  	 */
+>  	u8 payload[0];
+> -	struct ieee80211_hdr hdr[0];
+> +	struct ieee80211_hdr hdr[];
+>  } __packed;
+>  
+>  /*
+> @@ -2380,7 +2380,7 @@ struct iwl_scan_cmd {
+>  	 * for one scan to complete (i.e. receive SCAN_COMPLETE_NOTIFICATION)
+>  	 * before requesting another scan.
+>  	 */
+> -	u8 data[0];
+> +	u8 data[];
+>  } __packed;
+>  
+>  /* Can abort will notify by complete notification with abort status. */
+> @@ -2475,7 +2475,7 @@ struct iwl_tx_beacon_cmd {
+>  	__le16 tim_idx;
+>  	u8 tim_size;
+>  	u8 reserved1;
+> -	struct ieee80211_hdr frame[0];	/* beacon frame */
+> +	struct ieee80211_hdr frame[];	/* beacon frame */
+>  } __packed;
+>  
+>  /******************************************************************************
+> @@ -3188,7 +3188,7 @@ struct iwl_calib_hdr {
+>  
+>  struct iwl_calib_cmd {
+>  	struct iwl_calib_hdr hdr;
+> -	u8 data[0];
+> +	u8 data[];
+>  } __packed;
+>  
+>  struct iwl_calib_xtal_freq_cmd {
+> @@ -3216,7 +3216,7 @@ struct iwl_calib_temperature_offset_v2_cmd {
+>  /* IWL_PHY_CALIBRATE_CHAIN_NOISE_RESET_CMD */
+>  struct iwl_calib_chain_noise_reset_cmd {
+>  	struct iwl_calib_hdr hdr;
+> -	u8 data[0];
+> +	u8 data[];
+>  };
+>  
+>  /* IWL_PHY_CALIBRATE_CHAIN_NOISE_GAIN_CMD */
+> diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/nvm-reg.h b/drivers/net/wireless/intel/iwlwifi/fw/api/nvm-reg.h
+> index 97b49843e318..397ac89a04c2 100644
+> --- a/drivers/net/wireless/intel/iwlwifi/fw/api/nvm-reg.h
+> +++ b/drivers/net/wireless/intel/iwlwifi/fw/api/nvm-reg.h
+> @@ -351,7 +351,7 @@ struct iwl_mcc_update_resp_v3 {
+>  	__le16 time;
+>  	__le16 geo_info;
+>  	__le32 n_channels;
+> -	__le32 channels[0];
+> +	__le32 channels[];
+>  } __packed; /* LAR_UPDATE_MCC_CMD_RESP_S_VER_3 */
+>  
+>  /**
+> @@ -380,7 +380,7 @@ struct iwl_mcc_update_resp {
+>  	u8 source_id;
+>  	u8 reserved[3];
+>  	__le32 n_channels;
+> -	__le32 channels[0];
+> +	__le32 channels[];
+>  } __packed; /* LAR_UPDATE_MCC_CMD_RESP_S_VER_4 */
+>  
+>  /**
+> diff --git a/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c b/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c
+> index 89f74116569d..cc1d93606d9b 100644
+> --- a/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c
+> +++ b/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c
+> @@ -261,7 +261,7 @@ struct hcmd_write_data {
+>  	__be32 cmd_id;
+>  	__be32 flags;
+>  	__be16 length;
+> -	u8 data[0];
+> +	u8 data[];
+>  } __packed;
+>  
+>  static ssize_t iwl_dbgfs_send_hcmd_write(struct iwl_fw_runtime *fwrt, char *buf,
+> diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-op-mode.h b/drivers/net/wireless/intel/iwlwifi/iwl-op-mode.h
+> index 3008a5246be8..b35b8920941b 100644
+> --- a/drivers/net/wireless/intel/iwlwifi/iwl-op-mode.h
+> +++ b/drivers/net/wireless/intel/iwlwifi/iwl-op-mode.h
+> @@ -175,7 +175,7 @@ void iwl_opmode_deregister(const char *name);
+>  struct iwl_op_mode {
+>  	const struct iwl_op_mode_ops *ops;
+>  
+> -	char op_mode_specific[0] __aligned(sizeof(void *));
+> +	char op_mode_specific[] __aligned(sizeof(void *));
+>  };
+>  
+>  static inline void iwl_op_mode_stop(struct iwl_op_mode *op_mode)
+> diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-trans.h b/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
+> index bba527b339b5..3fbbbac0953d 100644
+> --- a/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
+> +++ b/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
+> @@ -878,7 +878,7 @@ struct iwl_trans {
+>  
+>  	/* pointer to trans specific struct */
+>  	/*Ensure that this pointer will always be aligned to sizeof pointer */
+> -	char trans_specific[0] __aligned(sizeof(void *));
+> +	char trans_specific[] __aligned(sizeof(void *));
+>  };
+>  
+>  const char *iwl_get_cmd_string(struct iwl_trans *trans, u32 id);
+> 
