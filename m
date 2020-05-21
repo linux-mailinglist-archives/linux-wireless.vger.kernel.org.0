@@ -2,60 +2,59 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E93C31DCA55
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 May 2020 11:42:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 26AAA1DCA5C
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 May 2020 11:44:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728797AbgEUJmS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 21 May 2020 05:42:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38404 "EHLO
+        id S1728893AbgEUJoA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 21 May 2020 05:44:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38672 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728719AbgEUJmR (ORCPT
+        with ESMTP id S1728804AbgEUJoA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 21 May 2020 05:42:17 -0400
-Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73B78C061A0E
-        for <linux-wireless@vger.kernel.org>; Thu, 21 May 2020 02:42:17 -0700 (PDT)
-Received: by mail-wr1-x442.google.com with SMTP id w7so5957698wre.13
-        for <linux-wireless@vger.kernel.org>; Thu, 21 May 2020 02:42:17 -0700 (PDT)
+        Thu, 21 May 2020 05:44:00 -0400
+Received: from mail-wm1-x344.google.com (mail-wm1-x344.google.com [IPv6:2a00:1450:4864:20::344])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1751BC061A0E
+        for <linux-wireless@vger.kernel.org>; Thu, 21 May 2020 02:44:00 -0700 (PDT)
+Received: by mail-wm1-x344.google.com with SMTP id g14so1864927wme.1
+        for <linux-wireless@vger.kernel.org>; Thu, 21 May 2020 02:44:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:subject:to:cc:message-id:date:user-agent:mime-version
          :content-language:content-transfer-encoding;
-        bh=usJtu7R5Hhl5Z8TUzvQCBPkQWGFxbJL90BBgLqwpdIk=;
-        b=ooEt1Hk7utn7Qm4uNttmPvtDsV3s7zI0OmcwuzGJBvDeYSRB9dT2mm/kg7q1C8sbCn
-         XdPMeE7Ks+Qvca3wIB7N+Cr4amqY5EK9TxhtsbIy2jJQcx7InuD/zM9HDt4MGfmW87MA
-         MXJg61qH4iLC5nP9vZ6x02/GNWY6CVCghjNgzN/bXsBO7sUtnJtUtMHeXp+95WDuLfCJ
-         9UryTqHZnJmpeISL1ZTbPv5UyiKVVl2F7a0uIy4rrEmVqKVhpMRSE7V+fLvfWZk/5mXx
-         zh8jmBE8u4ReQsDE3K81oMj3Exmp9AbaeyCHdTSeuj+TQZ9w2xCjv5PPEFcyW+bpoXTT
-         5SZQ==
+        bh=NTVAkejfWjyTo7BhK8Y0RFgpAEQ+hg4BcBIQrLv9Jg0=;
+        b=or3At3+vnVNGd1BP8JClD0lCgdiTn8J9T6bzZu3g7Uak8IqNsRAn+HDLNRZ6cbMT3N
+         qaJhVQJnKR8l8ErAp13b8HITNA66m+wYRe38MXwlDPdt8RAULvKh8Ltw1jAuI18BvEzs
+         wcJKmh31giOv1DVodw/H8Mi99cgdV+h3YqoAcmInN9V+EbNhjrq/vumNcCCPWSAKlJFh
+         nOIXoIfC0XK8n9WrxAApKoluRyZw7klHk3IV9xw2NUoOMVrVa7Of02O6LIZ5OWTqS4Ff
+         d49SujfDVD4Zmvm4bunGfYquVQBQXyTye4PPLRLitVGeofZWdem9a0I42MW0OHPyZ9S1
+         w4Cw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:subject:to:cc:message-id:date:user-agent
          :mime-version:content-language:content-transfer-encoding;
-        bh=usJtu7R5Hhl5Z8TUzvQCBPkQWGFxbJL90BBgLqwpdIk=;
-        b=KIU7+zM4gWvpsaP/BJmPlaLdKXd3f8scHeFqIa7ff4pvuQEQkaSniHIU5YCDxjdUCy
-         uy3UlhJo4lDPkUvX0gVOL2l+NEoHpEmNIEJ0PH2/yORDpj56PPsnvoh5ELkNTTuQDeiW
-         sC14XO7F1CLmeKJ3SnOw3QtVAa7KlxJXuu1/T30a/+Uy6kJ+m3Hrl28wXojflDVFJcvn
-         pT72HV79GNfdMbiY/U9rRomWxWSia79+y19DXwwuNMfy141KQjK9sOC1CdGdhNNZEVZU
-         3E7OOK9DNymYGAWAwUibT62I5cFYdQ2cxhwyDMk7AdAOHRx40P2VFqOfFQKT6nQXfHq5
-         pErg==
-X-Gm-Message-State: AOAM53180L2XVKG4Yti8NKTDejEvaxb5yYX7d8k2U5lyB0uMFY4ObL+P
-        bDeawvW2g6oJI7JwRod42X51yqNa95NMFw==
-X-Google-Smtp-Source: ABdhPJxiLG5qiRNjsAXF07VxPFnfbRskoYUxrb0zVqUB/bv0v8atJjlSVybhquwsWliQKebfQHFrYA==
-X-Received: by 2002:adf:fdc5:: with SMTP id i5mr7517714wrs.176.1590054135855;
-        Thu, 21 May 2020 02:42:15 -0700 (PDT)
+        bh=NTVAkejfWjyTo7BhK8Y0RFgpAEQ+hg4BcBIQrLv9Jg0=;
+        b=ml0cyMhs+iYa7tHLUQauKDxp6Vx43QD4gWVlOEYHo+HRnn2ZTiFlDs8tmPjU2Z6wRj
+         NZv6tMbcEvQIBnAC8CrRoKRPfSb4sg/1b0gWjb83DRgAn2hYcODDSep2vvnvVqG5TbeW
+         n5i/8+e7uGxKidzjtO7IupM5nqinBTepPOWEfA8IZv+csOP6G/+MHKvbm7AxHYuxibgx
+         2YM6R1z6QrNnegSD2yZGZ40lT4MTl5anzF/rC+FFVo4M7GCDjIQYer+LWNT7r2/Nfbxt
+         z7Fqb/dbTsQAVUPSe77QGnFY4km2GYDjp6RBvSg4/IquQlYP01iC+K2n967WE2luqiL8
+         RYrA==
+X-Gm-Message-State: AOAM5300IaJD+C2hXnSWbzRka7SbbFks1hdzl+JvQmuR5IgNx6qx7czX
+        B+zudL2IzJL8aZEe4ZJqcbNJy+8tvPRbbg==
+X-Google-Smtp-Source: ABdhPJypf8AGniJpVL9QoUsOpQ7x1p30DAxkPKMXrG0jtkJfXkQHrbdEdYNaD/YZSkkihf//UBeQ6g==
+X-Received: by 2002:a1c:7205:: with SMTP id n5mr8741185wmc.189.1590054238661;
+        Thu, 21 May 2020 02:43:58 -0700 (PDT)
 Received: from [192.168.43.18] ([85.255.237.70])
-        by smtp.gmail.com with ESMTPSA id u65sm5937594wmg.8.2020.05.21.02.42.15
+        by smtp.gmail.com with ESMTPSA id a10sm6041034wmf.46.2020.05.21.02.43.57
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 21 May 2020 02:42:15 -0700 (PDT)
+        Thu, 21 May 2020 02:43:58 -0700 (PDT)
 From:   Malcolm Priestley <tvboxspy@gmail.com>
-Subject: [PATCH 05/10] staging: vt6656: rxtx use ieee80211_tx_info for rts/cts
- control
+Subject: [PATCH 06/10] staging: vt6656: Move key_buffer inside vnt_fill_txkey.
 To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc:     "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>,
         linux-wireless@vger.kernel.org
-Message-ID: <1b21b3db-b9ef-c167-8f88-b32646ba5a19@gmail.com>
-Date:   Thu, 21 May 2020 10:42:14 +0100
+Message-ID: <3631f327-1386-90a2-ba9a-bb62617f3c66@gmail.com>
+Date:   Thu, 21 May 2020 10:43:57 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.8.0
 MIME-Version: 1.0
@@ -67,93 +66,72 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Use the control for rts/cts exhanges replacing need_rts and use_cts_prot for
-packet type PK_TYPE_11GB / PK_TYPE_11GA
+Use vnt_tx_fifo_head to point directly at tx_key removing key_buffer.
 
 Signed-off-by: Malcolm Priestley <tvboxspy@gmail.com>
 ---
- drivers/staging/vt6656/rxtx.c | 24 ++++++++++--------------
- 1 file changed, 10 insertions(+), 14 deletions(-)
+ drivers/staging/vt6656/rxtx.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
 diff --git a/drivers/staging/vt6656/rxtx.c b/drivers/staging/vt6656/rxtx.c
-index ea5bcc772668..310d0eccebd1 100644
+index 310d0eccebd1..2d7a8fc70d92 100644
 --- a/drivers/staging/vt6656/rxtx.c
 +++ b/drivers/staging/vt6656/rxtx.c
-@@ -338,8 +338,7 @@ static void vnt_rxtx_cts(struct vnt_usb_send_context *tx_context,
- }
- 
- static void vnt_rxtx_ab(struct vnt_usb_send_context *tx_context,
--			union vnt_tx_head *tx_head,
--			bool need_rts)
-+			union vnt_tx_head *tx_head)
- {
- 	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(tx_context->skb);
- 	struct vnt_rrv_time_ab *buf = &tx_head->tx_ab.ab;
-@@ -352,7 +351,7 @@ static void vnt_rxtx_ab(struct vnt_usb_send_context *tx_context,
- 			head = &tx_head->tx_ab.tx.mic.head;
- 	}
- 
--	if (need_rts) {
-+	if (info->control.use_rts) {
- 		buf->rts_rrv_time = vnt_get_rts_duration(tx_context);
- 
- 		vnt_rxtx_rts_ab_head(tx_context, &head->rts_ab);
-@@ -364,12 +363,12 @@ static void vnt_rxtx_ab(struct vnt_usb_send_context *tx_context,
- }
- 
- static void vnt_generate_tx_parameter(struct vnt_usb_send_context *tx_context,
--				      struct vnt_tx_buffer *tx_buffer,
--				      bool need_rts)
-+				      struct vnt_tx_buffer *tx_buffer)
- {
--	if (tx_context->pkt_type == PK_TYPE_11GB ||
--	    tx_context->pkt_type == PK_TYPE_11GA) {
--		if (need_rts) {
-+	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(tx_context->skb);
-+
-+	if (info->control.use_cts_prot) {
-+		if (info->control.use_rts) {
- 			vnt_rxtx_rts(tx_context, &tx_buffer->tx_head);
- 
- 			return;
-@@ -380,7 +379,7 @@ static void vnt_generate_tx_parameter(struct vnt_usb_send_context *tx_context,
- 		return;
- 	}
- 
--	vnt_rxtx_ab(tx_context, &tx_buffer->tx_head, need_rts);
-+	vnt_rxtx_ab(tx_context, &tx_buffer->tx_head);
+@@ -383,9 +383,10 @@ static void vnt_generate_tx_parameter(struct vnt_usb_send_context *tx_context,
  }
  
  static void vnt_fill_txkey(struct vnt_tx_buffer *tx_buffer,
-@@ -507,7 +506,6 @@ int vnt_tx_packet(struct vnt_private *priv, struct sk_buff *skb)
- 	unsigned long flags;
- 	u16 tx_bytes, tx_header_size, tx_body_size;
- 	u8 pkt_type;
--	bool need_rts = false;
+-			   u8 *key_buffer, struct ieee80211_key_conf *tx_key,
++			   struct ieee80211_key_conf *tx_key,
+ 			   struct sk_buff *skb, u16 payload_len)
+ {
++	struct vnt_tx_fifo_head *fifo = &tx_buffer->fifo_head;
+ 	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
+ 	struct vnt_mic_hdr *mic_hdr;
+ 	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
+@@ -399,18 +400,18 @@ static void vnt_fill_txkey(struct vnt_tx_buffer *tx_buffer,
+ 	switch (tx_key->cipher) {
+ 	case WLAN_CIPHER_SUITE_WEP40:
+ 	case WLAN_CIPHER_SUITE_WEP104:
+-		memcpy(key_buffer, iv, 3);
+-		memcpy(key_buffer + 3, tx_key->key, tx_key->keylen);
++		memcpy(fifo->tx_key, iv, 3);
++		memcpy(fifo->tx_key + 3, tx_key->key, tx_key->keylen);
  
- 	hdr = (struct ieee80211_hdr *)(skb->data);
+ 		if (tx_key->keylen == WLAN_KEY_LEN_WEP40) {
+-			memcpy(key_buffer + 8, iv, 3);
+-			memcpy(key_buffer + 11,
++			memcpy(fifo->tx_key + 8, iv, 3);
++			memcpy(fifo->tx_key + 11,
+ 			       tx_key->key, WLAN_KEY_LEN_WEP40);
+ 		}
  
-@@ -594,10 +592,8 @@ int vnt_tx_packet(struct vnt_private *priv, struct sk_buff *skb)
- 	if (ieee80211_has_retry(hdr->frame_control))
- 		tx_buffer_head->fifo_ctl |= cpu_to_le16(FIFOCTL_LRETRY);
+ 		break;
+ 	case WLAN_CIPHER_SUITE_TKIP:
+-		ieee80211_get_tkip_p2k(tx_key, skb, key_buffer);
++		ieee80211_get_tkip_p2k(tx_key, skb, fifo->tx_key);
  
--	if (tx_rate->flags & IEEE80211_TX_RC_USE_RTS_CTS) {
--		need_rts = true;
-+	if (info->control.use_rts)
- 		tx_buffer_head->fifo_ctl |= cpu_to_le16(FIFOCTL_RTS);
--	}
+ 		break;
+ 	case WLAN_CIPHER_SUITE_CCMP:
+@@ -452,7 +453,7 @@ static void vnt_fill_txkey(struct vnt_tx_buffer *tx_buffer,
+ 		if (ieee80211_has_a4(hdr->frame_control))
+ 			ether_addr_copy(mic_hdr->addr4, hdr->addr4);
  
- 	if (ieee80211_has_a4(hdr->frame_control))
- 		tx_buffer_head->fifo_ctl |= cpu_to_le16(FIFOCTL_LHEAD);
-@@ -625,7 +621,7 @@ int vnt_tx_packet(struct vnt_private *priv, struct sk_buff *skb)
+-		memcpy(key_buffer, tx_key->key, WLAN_KEY_LEN_CCMP);
++		memcpy(fifo->tx_key, tx_key->key, WLAN_KEY_LEN_CCMP);
  
- 	tx_buffer_head->current_rate = cpu_to_le16(rate->hw_value);
+ 		break;
+ 	default:
+@@ -628,8 +629,7 @@ int vnt_tx_packet(struct vnt_private *priv, struct sk_buff *skb)
+ 	if (info->control.hw_key) {
+ 		tx_key = info->control.hw_key;
+ 		if (tx_key->keylen > 0)
+-			vnt_fill_txkey(tx_buffer, tx_buffer_head->tx_key,
+-				       tx_key, skb, tx_body_size);
++			vnt_fill_txkey(tx_buffer, tx_key, skb, tx_body_size);
+ 	}
  
--	vnt_generate_tx_parameter(tx_context, tx_buffer, need_rts);
-+	vnt_generate_tx_parameter(tx_context, tx_buffer);
- 
- 	tx_buffer_head->frag_ctl |= cpu_to_le16(FRAGCTL_NONFRAG);
- 
+ 	priv->seq_counter = (le16_to_cpu(hdr->seq_ctrl) &
 -- 
 2.25.1
 
