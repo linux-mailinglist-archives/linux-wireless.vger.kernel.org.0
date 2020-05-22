@@ -2,152 +2,122 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F39B1DDF01
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 May 2020 06:50:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE2D21DDF22
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 May 2020 07:13:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726449AbgEVEuK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 22 May 2020 00:50:10 -0400
-Received: from mail.zju.edu.cn ([61.164.42.155]:20408 "EHLO zju.edu.cn"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726286AbgEVEuJ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 22 May 2020 00:50:09 -0400
-Received: from localhost.localdomain (unknown [222.205.77.158])
-        by mail-app3 (Coremail) with SMTP id cC_KCgDHz4vEWcdejwXvAA--.20232S4;
-        Fri, 22 May 2020 12:49:11 +0800 (CST)
-From:   Dinghao Liu <dinghao.liu@zju.edu.cn>
-To:     dinghao.liu@zju.edu.cn, kjlu@umn.edu
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Arnd Bergmann <arnd@arndb.de>, Guy Mishol <guym@ti.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Maital Hahn <maitalm@ti.com>,
-        "Jason A. Donenfeld" <Jason@zx2c4.com>,
-        Tony Lindgren <tony@atomide.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] wlcore: fix runtime pm imbalance in wlcore_irq_locked
-Date:   Fri, 22 May 2020 12:49:04 +0800
-Message-Id: <20200522044906.29564-1-dinghao.liu@zju.edu.cn>
-X-Mailer: git-send-email 2.17.1
-X-CM-TRANSID: cC_KCgDHz4vEWcdejwXvAA--.20232S4
-X-Coremail-Antispam: 1UD129KBjvJXoWxZFW7tr1fur17Kry5CrWkCrg_yoW5Xr1rpa
-        yIvan2yr4kGF1UWFWUAa1kXa4Sg3WxKFZI9F48G34Syrs0y3s8Zr10qasxtFWrK3ykAFW3
-        uF43tFyI9Fyjy37anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDU0xBIdaVrnRJUUU9l1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AE
-        w4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2
-        IY67AKxVWDJVCq3wA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVW8Jr0_Cr1UM28EF7xvwVC2
-        z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s0DM2AIxVAIcxkEcV
-        Aq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1Y
-        6r17McIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64
-        vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkIecxE
-        wVAFwVW8XwCF04k20xvY0x0EwIxGrwCF04k20xvE74AGY7Cv6cx26r4fKr1UJr1l4I8I3I
-        0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWU
-        GVWUWwC2zVAF1VAY17CE14v26r4a6rW5MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI
-        0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0
-        rVWrJr0_WFyUJwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r
-        4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfU8_MaUUUUU
-X-CM-SenderInfo: qrrzjiaqtzq6lmxovvfxof0/1tbiAg0IBlZdtOQJOAAAsr
+        id S1728161AbgEVFNP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 22 May 2020 01:13:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51860 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728056AbgEVFNO (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 22 May 2020 01:13:14 -0400
+Received: from mail-vs1-xe44.google.com (mail-vs1-xe44.google.com [IPv6:2607:f8b0:4864:20::e44])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6534AC061A0E;
+        Thu, 21 May 2020 22:13:14 -0700 (PDT)
+Received: by mail-vs1-xe44.google.com with SMTP id t4so3489080vsq.0;
+        Thu, 21 May 2020 22:13:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=5yruC8ieiL7TwqkjRWBVMs7ndKJLZVQiNT3lPw/qOQU=;
+        b=c7FN9I59JUxb822cpZyKQ+6QJIVWr664KHk0nWlcyZuW78SmKtEQN4zjlm51LdGU5g
+         sPunvgH6DLTo6nxtmbrGaUgTML2n+aCw4nUAlfpYvGdCYB7ywLdfLhcrExyn+u9r1mXN
+         z8vr3MLiiL76ZoBiFT4BBjkgquS482zfHeHqMY2IILiPQ1bkaX87zV7D9mMdv+sOcruL
+         iQPCFTchyw9KNXeVLw3StTdhJ9JxBxlBcvhDi/FzuQj+4MY6VE2rRA7nLl9y0WrEY+O2
+         vbcvKIrsZsgQEzUrlcaHhrPr2+k6mOTFQ/+QJ/gt326m8qBXUGXY/4JDjlP9Fi1ih8F8
+         gOew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=5yruC8ieiL7TwqkjRWBVMs7ndKJLZVQiNT3lPw/qOQU=;
+        b=Re7U5ytEUbfRuhMbuQT9TlYse3mARKHQv1tNstGk/Tfne/EPZZcIUvHYyn/x872l6E
+         MI//01Iuf9z966kI400H7soFeQmz2C3LIcQS/ds2bk+l3VwAljJXMS07uYGDSN1XaSxU
+         3c+fiNTf95Kl7lCd+s+bT7SNxDpf/3T6Ea8XsDKWaARBqJlY1+jXy819vxpMYnejeGhY
+         Se8G6o+z23yO+1ccEvb42ndHkd+v0T5clmRDmMIlq9UEXGIeyIaId8LJ/ZmShW70TVpv
+         c1QIO9NHdNVOrvRN/mCPRPmFFo5pBphwkDWNxhqHSCgeTJWPnJJVBPIY/pES+03yzH7b
+         gHIw==
+X-Gm-Message-State: AOAM532dzmcB2oiAqWWUYaIRjKO+hckMkN6Rqzs3VoIFqt7oRWk7ImYe
+        HhILCezRbdR/sEsZltsCtLel7LJ9haiZyiiq64w=
+X-Google-Smtp-Source: ABdhPJx4y6XBRLuJWpzhO9R+CVeML+3mw72czhbPk8Iy3pZZs2RyIznn03Q1GFw5Ow9OKiHxuoaccU4/GzNA2iatku8=
+X-Received: by 2002:a67:684a:: with SMTP id d71mr9346812vsc.176.1590124392684;
+ Thu, 21 May 2020 22:13:12 -0700 (PDT)
+MIME-Version: 1.0
+References: <20200515212846.1347-1-mcgrof@kernel.org> <20200515212846.1347-13-mcgrof@kernel.org>
+ <2b74a35c726e451b2fab2b5d0d301e80d1f4cdc7.camel@sipsolutions.net>
+ <7306323c35e6f44d7c569e689b48f380f80da5e5.camel@sipsolutions.net>
+ <CA+ASDXOg9oKeMJP1Mf42oCMMM3sVe0jniaWowbXVuaYZ=ZpDjQ@mail.gmail.com>
+ <20200519140212.GT11244@42.do-not-panic.com> <CA+ASDXMUHOcvJ_7UWgyANMxSz15Ji7TcLDXVCtSPa+fOr=+FGA@mail.gmail.com>
+ <CANUX_P1pnV46gOo0aL6QV0b+49ubB7C5nuUOuOfoT7aOM+ye9w@mail.gmail.com> <CA+ASDXPAVJwyThAXRQT0_ao4s1nDYOEQifxMc+JsEMa=cTEGJA@mail.gmail.com>
+In-Reply-To: <CA+ASDXPAVJwyThAXRQT0_ao4s1nDYOEQifxMc+JsEMa=cTEGJA@mail.gmail.com>
+From:   Emmanuel Grumbach <egrumbach@gmail.com>
+Date:   Fri, 22 May 2020 08:12:59 +0300
+Message-ID: <CANUX_P2thzh9oB4KkrAoyT6H-E6MDFUNQ_p0e9QZtScgMuKm7Q@mail.gmail.com>
+Subject: Re: [PATCH v2 12/15] ath10k: use new module_firmware_crashed()
+To:     Brian Norris <briannorris@chromium.org>
+Cc:     Luis Chamberlain <mcgrof@kernel.org>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        aquini@redhat.com, peterz@infradead.org,
+        Daniel Vetter <daniel.vetter@ffwll.ch>,
+        mchehab+samsung@kernel.org, will@kernel.org, bhe@redhat.com,
+        ath10k@lists.infradead.org, Takashi Iwai <tiwai@suse.de>,
+        mingo@redhat.com, dyoung@redhat.com, pmladek@suse.com,
+        Kees Cook <keescook@chromium.org>,
+        Arnd Bergmann <arnd@arndb.de>, gpiccoli@canonical.com,
+        Steven Rostedt <rostedt@goodmis.org>, cai@lca.pw,
+        tglx@linutronix.de,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "<netdev@vger.kernel.org>" <netdev@vger.kernel.org>,
+        schlad@suse.de, Linux Kernel <linux-kernel@vger.kernel.org>,
+        jeyu@kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+        "David S. Miller" <davem@davemloft.net>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-When wlcore_fw_status() returns an error code, a pairing
-runtime PM usage counter decrement is needed to keep the
-counter balanced. It's the same for all error paths after
-wlcore_fw_status().
+>
+> On Tue, May 19, 2020 at 10:37 PM Emmanuel Grumbach <egrumbach@gmail.com> wrote:
+> > So I believe we already have this uevent, it is the devcoredump. All
+> > we need is to add the unique id.
+>
+> I think there are a few reasons that devcoredump doesn't satisfy what
+> either Luis or I want.
+>
+> 1) it can be disabled entirely [1], for good reasons (e.g., think of
+> non-${CHIP_VENDOR} folks, who can't (and don't want to) do anything
+> with the opaque dumps provided by closed-source firmware)
 
-Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>
----
- drivers/net/wireless/ti/wlcore/main.c | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+Ok, if all you're interested into is the information that this event
+happen (as opposed to report a bug and providing the data), then I
+agree. True, not everybody want or can enable devcoredump. I am just a
+bit concerned that we may end up with two interface that notify the
+same event basically. The ideal maybe would be to be able to
+optionally reduce the content of the devoredump to nothing more that
+is already in the dmesg output. But then, it is not what it is meant
+to be: namely, a core dump..
 
-diff --git a/drivers/net/wireless/ti/wlcore/main.c b/drivers/net/wireless/ti/wlcore/main.c
-index f140f7d7f553..fd3608223f64 100644
---- a/drivers/net/wireless/ti/wlcore/main.c
-+++ b/drivers/net/wireless/ti/wlcore/main.c
-@@ -548,7 +548,7 @@ static int wlcore_irq_locked(struct wl1271 *wl)
- 
- 		ret = wlcore_fw_status(wl, wl->fw_status);
- 		if (ret < 0)
--			goto out;
-+			goto err_ret;
- 
- 		wlcore_hw_tx_immediate_compl(wl);
- 
-@@ -565,7 +565,7 @@ static int wlcore_irq_locked(struct wl1271 *wl)
- 			ret = -EIO;
- 
- 			/* restarting the chip. ignore any other interrupt. */
--			goto out;
-+			goto err_ret;
- 		}
- 
- 		if (unlikely(intr & WL1271_ACX_SW_INTR_WATCHDOG)) {
-@@ -575,7 +575,7 @@ static int wlcore_irq_locked(struct wl1271 *wl)
- 			ret = -EIO;
- 
- 			/* restarting the chip. ignore any other interrupt. */
--			goto out;
-+			goto err_ret;
- 		}
- 
- 		if (likely(intr & WL1271_ACX_INTR_DATA)) {
-@@ -583,7 +583,7 @@ static int wlcore_irq_locked(struct wl1271 *wl)
- 
- 			ret = wlcore_rx(wl, wl->fw_status);
- 			if (ret < 0)
--				goto out;
-+				goto err_ret;
- 
- 			/* Check if any tx blocks were freed */
- 			spin_lock_irqsave(&wl->wl_lock, flags);
-@@ -596,7 +596,7 @@ static int wlcore_irq_locked(struct wl1271 *wl)
- 				 */
- 				ret = wlcore_tx_work_locked(wl);
- 				if (ret < 0)
--					goto out;
-+					goto err_ret;
- 			} else {
- 				spin_unlock_irqrestore(&wl->wl_lock, flags);
- 			}
-@@ -604,7 +604,7 @@ static int wlcore_irq_locked(struct wl1271 *wl)
- 			/* check for tx results */
- 			ret = wlcore_hw_tx_delayed_compl(wl);
- 			if (ret < 0)
--				goto out;
-+				goto err_ret;
- 
- 			/* Make sure the deferred queues don't get too long */
- 			defer_count = skb_queue_len(&wl->deferred_tx_queue) +
-@@ -617,14 +617,14 @@ static int wlcore_irq_locked(struct wl1271 *wl)
- 			wl1271_debug(DEBUG_IRQ, "WL1271_ACX_INTR_EVENT_A");
- 			ret = wl1271_event_handle(wl, 0);
- 			if (ret < 0)
--				goto out;
-+				goto err_ret;
- 		}
- 
- 		if (intr & WL1271_ACX_INTR_EVENT_B) {
- 			wl1271_debug(DEBUG_IRQ, "WL1271_ACX_INTR_EVENT_B");
- 			ret = wl1271_event_handle(wl, 1);
- 			if (ret < 0)
--				goto out;
-+				goto err_ret;
- 		}
- 
- 		if (intr & WL1271_ACX_INTR_INIT_COMPLETE)
-@@ -635,6 +635,7 @@ static int wlcore_irq_locked(struct wl1271 *wl)
- 			wl1271_debug(DEBUG_IRQ, "WL1271_ACX_INTR_HW_AVAILABLE");
- 	}
- 
-+err_ret:
- 	pm_runtime_mark_last_busy(wl->dev);
- 	pm_runtime_put_autosuspend(wl->dev);
- 
--- 
-2.17.1
+> 2) not all drivers necessarily have a useful dump to provide when
+> there's a crash; look at the rest of Luis's series to see the kinds of
+> drivers-with-firmware that are crashing, some of which aren't dumping
+> anything
 
+Fair enouh.
+
+> 3) for those that do support devcoredump, it may be used for purposes
+> that are not "crashes" -- e.g., some provide debugfs or other knobs to
+> initiate dumps, for diagnostic or debugging purposes
+
+Not sure I really think we need to care about those cases, but you
+already have 2 good arguments :)
+
+>
+> Brian
+>
+> [1] devcd_disabled
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/base/devcoredump.c?h=v5.6#n22
