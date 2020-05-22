@@ -2,130 +2,108 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 984A61DE5E2
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 May 2020 13:49:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DB9101DE715
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 May 2020 14:41:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728544AbgEVLtf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 22 May 2020 07:49:35 -0400
-Received: from mail26.static.mailgun.info ([104.130.122.26]:46728 "EHLO
-        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728409AbgEVLtf (ORCPT
+        id S1729781AbgEVMk7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 22 May 2020 08:40:59 -0400
+Received: from mail27.static.mailgun.info ([104.130.122.27]:46268 "EHLO
+        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728898AbgEVMk6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 22 May 2020 07:49:35 -0400
+        Fri, 22 May 2020 08:40:58 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1590148174; h=Content-Transfer-Encoding: Content-Type:
- MIME-Version: Message-ID: In-Reply-To: Date: References: Subject: Cc:
- To: From: Sender; bh=CaBNehdl9YUvZtml2EZG/wfTsnotSusNOcw0nP51B/c=; b=nYKlzClW26Rw9UzzSGqCyTYRPgdkUKybpQFqt/6lTrUK3feqL6Xp9df0XB67kO3Qmir6Jbay
- dcCY/2hmc8IHzPSzR5QwWAtoCeMHrmagFnS2hiP0zXxF6hBnyGAGQK8rtkh1L229YWaerhtK
- /Uk416l1xgizmV2Zb4F1exJDz2k=
-X-Mailgun-Sending-Ip: 104.130.122.26
+ s=smtp; t=1590151257; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=oh+42u1jD0lF3Mak7Y5plxChvFaOqSnyizeGieH43rM=;
+ b=HzI9EJO+37V/wbUDfqZcah2t5CYADs3y5cQyvh8iQn52uhTZQuG3fN7MN+4rbErFwWZjfBGZ
+ /6umChvgFXKKTqirptUA/nAHpOqrW0uu0UEB+Ixn6oX84vzm5bHMP0C6aH0ZdybR8wQZ6XOE
+ sJEKMUIYEhMnXwk5kHmxALajupA=
+X-Mailgun-Sending-Ip: 104.130.122.27
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n03.prod.us-east-1.postgun.com with SMTP id
- 5ec7bc4e8075f6e58c6e25e4 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 22 May 2020 11:49:34
+ smtp-out-n05.prod.us-east-1.postgun.com with SMTP id
+ 5ec7c8564110e147184f67a8 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 22 May 2020 12:40:54
  GMT
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 7AA85C43387; Fri, 22 May 2020 11:49:33 +0000 (UTC)
+        id D1B5FC4339C; Fri, 22 May 2020 12:40:52 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE,
-        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from tynnyri.adurom.net (tynnyri.adurom.net [51.15.11.48])
+X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
+        MISSING_MID,SPF_NONE,URIBL_BLOCKED autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 7C958C433C6;
-        Fri, 22 May 2020 11:49:31 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 7C958C433C6
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id C56E6C433C6;
+        Fri, 22 May 2020 12:40:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org C56E6C433C6
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Michael =?utf-8?Q?B=C3=BCsch?= <m@bues.ch>
-Cc:     Larry Finger <Larry.Finger@lwfinger.net>,
-        Rui Salvaterra <rsalvaterra@gmail.com>,
-        linux-wireless@vger.kernel.org, b43-dev@lists.infradead.org
-Subject: Re: [BUG?] b43: can't connect to WPA3 network (nohwcrypt=1)
-References: <CALjTZvbLOr5zAYyp75Cs6Zo8mWNUVq3ZRJu56G1iHdiihFejWQ@mail.gmail.com>
-        <CALjTZvaPi2FL-epk-Vd2wOLye2O0J8G5aZPsqzHXt2b7u=HyuQ@mail.gmail.com>
-        <263e247c-3bf9-6d42-996b-bc513efe4b71@lwfinger.net>
-        <CALjTZvauK0Hh+aoabcDX9kkQZ4zN2ZjPnB+aq7YrJ9+-4ihiAg@mail.gmail.com>
-        <87fffd5d-242a-7195-c4cc-80260dbd53c5@lwfinger.net>
-        <CALjTZvYCFNSQ6HMN4owkiGTVrYaiU8R-P1KXgvkwGqcOo8uMuw@mail.gmail.com>
-        <CALjTZvYMF_ERBfzkhaHvsTu6kt7MW+L_979sOVs8hcH7zF_Nyg@mail.gmail.com>
-        <20200521124608.4b5c78f2@wiggum>
-        <CALjTZvan46UTwcUxOSN=RiE6XHm-29Ln8B6wiv40V_RVxWewtA@mail.gmail.com>
-        <20200521134011.656381ad@wiggum>
-        <CALjTZvZcfT-aURMa=j-1ksWyVdu42bLEsGOaq+Hw39ioiPFKAA@mail.gmail.com>
-        <CALjTZvY3_wjAx9DOEgYxpc4_fG-HWh_=O7veFxeEoygPzTJptw@mail.gmail.com>
-        <2b22b778-2f89-9c42-93a0-5c165de26f35@lwfinger.net>
-        <CALjTZva70Ni-s5VjRZL5BPswEtz5VZsX+dvE6rq2ztLJQ9v3kA@mail.gmail.com>
-        <CALjTZvbvE_cDg9mfszscSBowznp1UpxqiN1LQfbgeCOYatKMNg@mail.gmail.com>
-        <f6152cd7-1043-dde2-7fc1-634d8b07a231@lwfinger.net>
-        <20200522121910.254aefc1@wiggum>
-Date:   Fri, 22 May 2020 14:49:28 +0300
-In-Reply-To: <20200522121910.254aefc1@wiggum> ("Michael \=\?utf-8\?Q\?B\=C3\=BCs\?\=
- \=\?utf-8\?Q\?ch\=22's\?\= message of
-        "Fri, 22 May 2020 12:19:10 +0200")
-Message-ID: <87a720gpfb.fsf@tynnyri.adurom.net>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH -next] mt76: mt7915: Fix build error
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20200522034533.61716-1-yuehaibing@huawei.com>
+References: <20200522034533.61716-1-yuehaibing@huawei.com>
+To:     YueHaibing <yuehaibing@huawei.com>
+Cc:     <nbd@nbd.name>, <lorenzo.bianconi83@gmail.com>,
+        <ryder.lee@mediatek.com>, <davem@davemloft.net>, <kuba@kernel.org>,
+        <matthias.bgg@gmail.com>, <shayne.chen@mediatek.com>,
+        <chih-min.chen@mediatek.com>, <yf.luo@mediatek.com>,
+        <yiwei.chung@mediatek.com>, <linux-wireless@vger.kernel.org>,
+        <netdev@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+        <linux-mediatek@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, YueHaibing <yuehaibing@huawei.com>
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
+Message-Id: <20200522124052.D1B5FC4339C@smtp.codeaurora.org>
+Date:   Fri, 22 May 2020 12:40:52 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Michael B=C3=BCsch <m@bues.ch> writes:
+YueHaibing <yuehaibing@huawei.com> wrote:
 
-> On Thu, 21 May 2020 16:47:41 -0500
-> Larry Finger <Larry.Finger@lwfinger.net> wrote:
->
->> On 5/21/20 3:23 PM, Rui Salvaterra wrote:
->> > On Thu, 21 May 2020 at 20:19, Rui Salvaterra <rsalvaterra@gmail.com> w=
-rote:=20=20
->> >>
->> >> Sure, I'll give it a spin. I'm now compiling the kernel for the laptop
->> >> with the other b43 card (BCM4311).=20=20
->> >=20
->> > Nope, kmsg is clean. I'm pretty sure the condition is evaluating to
->> > false because we do have the firmware, it's just that the crypto
->> > engine doesn't support the required algo.
->> > Is hardware encryption an all-or-nothing thing in mac80211? Wouldn't
->> > it be possible use the hardware as much as possible and fall back to
->> > software only for the unsupported features? (I guess the answer is
->> > "no, because the firmware gets in the way", but I had to ask.)
->> >=20=20=20
->>=20
->> My first failure indicates the mac80211 needs to know from the start tha=
-t=20
->> software encryption is to be used. The only places that the driver makes=
- note of=20
->> the nohwcrypt is in b43_op_set_key() where it returns -ENOSPC, and our n=
-ew one=20
->> where MFP_CAPABLE is set. Otherwise, the packet flags indicate that encr=
-yption=20
->> is not needed.
->
->
-> Thank you all very much for benchmarking this.
->
-> As we see, hwcrypto has a major effect on CPU load.
-> But I'm still in favor of changing the default to nohwcrypt=3D1.
+> In file included from ./include/linux/firmware.h:6:0,
+>                  from drivers/net/wireless/mediatek/mt76/mt7915/mcu.c:4:
+> In function ‘__mt7915_mcu_msg_send’,
+>     inlined from ‘mt7915_mcu_send_message’ at drivers/net/wireless/mediatek/mt76/mt7915/mcu.c:370:6:
+> ./include/linux/compiler.h:396:38: error: call to ‘__compiletime_assert_545’ declared with attribute error: BUILD_BUG_ON failed: cmd == MCU_EXT_CMD_EFUSE_ACCESS && mcu_txd->set_query != MCU_Q_QUERY
+>   _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+>                                       ^
+> ./include/linux/compiler.h:377:4: note: in definition of macro ‘__compiletime_assert’
+>     prefix ## suffix();    \
+>     ^~~~~~
+> ./include/linux/compiler.h:396:2: note: in expansion of macro ‘_compiletime_assert’
+>   _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+>   ^~~~~~~~~~~~~~~~~~~
+> ./include/linux/build_bug.h:39:37: note: in expansion of macro ‘compiletime_assert’
+>  #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), msg)
+>                                      ^~~~~~~~~~~~~~~~~~
+> ./include/linux/build_bug.h:50:2: note: in expansion of macro ‘BUILD_BUG_ON_MSG’
+>   BUILD_BUG_ON_MSG(condition, "BUILD_BUG_ON failed: " #condition)
+>   ^~~~~~~~~~~~~~~~
+> drivers/net/wireless/mediatek/mt76/mt7915/mcu.c:280:2: note: in expansion of macro ‘BUILD_BUG_ON’
+>   BUILD_BUG_ON(cmd == MCU_EXT_CMD_EFUSE_ACCESS &&
+>   ^~~~~~~~~~~~
+> 
+> BUILD_BUG_ON is meaningless here, chang it to WARN_ON.
+> 
+> Fixes: e57b7901469f ("mt76: add mac80211 driver for MT7915 PCIe-based chipsets")
+> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 
-I'm thinking the same.
+Patch applied to wireless-drivers-next.git, thanks.
 
-> That would be a trade off between a wifi that does work with "bad"
-> performance vs. a wifi that does not work at all by default.
+472f0a240250 mt76: mt7915: Fix build error
 
-And did the "bad" performance even have any real visible changes to the
-user? IMHO this "bad" performance is small price to pay from getting
-WPA3 supported out-of-box, especially when the data throughput is
-unaffected.
+-- 
+https://patchwork.kernel.org/patch/11564595/
 
---=20
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
-hes
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
