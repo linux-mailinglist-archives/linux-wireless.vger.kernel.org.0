@@ -2,44 +2,44 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EBFA71DF172
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 May 2020 23:49:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 26C5D1DF17B
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 May 2020 23:51:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731109AbgEVVtd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 22 May 2020 17:49:33 -0400
-Received: from mail-pg1-f193.google.com ([209.85.215.193]:44893 "EHLO
-        mail-pg1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731029AbgEVVtd (ORCPT
+        id S1731132AbgEVVvt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 22 May 2020 17:51:49 -0400
+Received: from mail-pf1-f193.google.com ([209.85.210.193]:36248 "EHLO
+        mail-pf1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731098AbgEVVvt (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 22 May 2020 17:49:33 -0400
-Received: by mail-pg1-f193.google.com with SMTP id p30so5601415pgl.11;
-        Fri, 22 May 2020 14:49:32 -0700 (PDT)
+        Fri, 22 May 2020 17:51:49 -0400
+Received: by mail-pf1-f193.google.com with SMTP id e11so4846370pfn.3;
+        Fri, 22 May 2020 14:51:48 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=witZhMJ16Agl4OwIfL5pB8EM3wxhLaftmrS7Z3KmwGo=;
-        b=aPn+uE5LHAcTPt68wbrFmA8vQhr/NQc96OjF4bX0IABr4tpP9PX3ll7N9IvPxGjoWp
-         Ys4bt/wA6mquWUdE/alebaQmJR2Xeyuq7pemGwR32MTjUt/94eXeJlcozITZ3Wh44yx8
-         1SofT/Jp/8+C9mWm1Xawtx3ndew6lCSnnjMLRsk379nRMHWltATmVyyX+W7Dap2TYsEK
-         a+AfnhQcrDV0idjEWn6gebFwwFDzWck3sOLf5RdOSiHDTTOzs+M9wFk6eLxWwsFp5iXm
-         qTuv8IPvDsTqChz8YN0GwBixNOeTermTEYnZmbnciLUs7i/MJpJz3DcwCpPaMDvptIY8
-         UjaA==
-X-Gm-Message-State: AOAM5327knA0ctdImbysQwQxBTrKrLvCPuEWEBKKMczzn6U1/BHfDXEB
-        61dWLEQzbYbe2tXnuKZtRSg=
-X-Google-Smtp-Source: ABdhPJyBq9LZCZJmpi4fQfFbSbNhR4Ql67aNRQjxVYgQP0yBZhIDm5eUIjVEbj0mW3rKV0Gj+0RIIQ==
-X-Received: by 2002:a65:52c3:: with SMTP id z3mr15634431pgp.146.1590184172241;
-        Fri, 22 May 2020 14:49:32 -0700 (PDT)
+        bh=Z9B4bZk+E5XNnSc8/L/uVYEy0FFzcjh8GSMiMFaQ5cU=;
+        b=EC1Xbc9L/RMNKGdiQumAl346JCUKdf/G8NM7A0UWdBgT51zmwa5qg4ZjzgbP04ijZ4
+         g6R2MF0jTGQ6mb1JjVWJhlazLapT+wzMFuViprghR3+h42RcvxK9+0tkrOwOsZGE3K26
+         NmYwLRpmIVskWYpRq3LxOy8Ca5dfrLHKcYl0xM/+REhkX+CGf6MtZdxls7DG0HdV3AIW
+         Ltqcax26CLL6F1Su/mfouhoz1nSCnOrLTbtUXxzOcpF7C9PhDa4OZZxoImcpBIwgMcWb
+         cZxKWC2XglyXK+XGo4jtGACJDVL/lQ2uuYGgZqT5eSx9FHWKOFZ9G1B1hMDPcDVeHo3M
+         At5g==
+X-Gm-Message-State: AOAM5321n3R+TZT2sM8IJnUyG82tp0FUiKk0cdd7NL0ZZrnhS47/ffAv
+        h54wDh31Okb/bKS9iCL4nlo=
+X-Google-Smtp-Source: ABdhPJzcUJoVZSYg2I5qX4WrfgIvy28/Y0K9mfCZGDbP1o1kz3N2Ybs2nMxPYUjAV7xiLzsbiPVsyA==
+X-Received: by 2002:a05:6a00:843:: with SMTP id q3mr5601514pfk.107.1590184307967;
+        Fri, 22 May 2020 14:51:47 -0700 (PDT)
 Received: from 42.do-not-panic.com (42.do-not-panic.com. [157.230.128.187])
-        by smtp.gmail.com with ESMTPSA id y7sm7633645pjn.13.2020.05.22.14.49.30
+        by smtp.gmail.com with ESMTPSA id a142sm7175101pfa.6.2020.05.22.14.51.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 22 May 2020 14:49:30 -0700 (PDT)
+        Fri, 22 May 2020 14:51:46 -0700 (PDT)
 Received: by 42.do-not-panic.com (Postfix, from userid 1000)
-        id D524C40321; Fri, 22 May 2020 21:49:29 +0000 (UTC)
-Date:   Fri, 22 May 2020 21:49:29 +0000
+        id CEDDD40321; Fri, 22 May 2020 21:51:45 +0000 (UTC)
+Date:   Fri, 22 May 2020 21:51:45 +0000
 From:   Luis Chamberlain <mcgrof@kernel.org>
-To:     Jakub Kicinski <kuba@kernel.org>
-Cc:     johannes@sipsolutions.net, derosier@gmail.com,
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     Jakub Kicinski <kuba@kernel.org>, derosier@gmail.com,
         greearb@candelatech.com, jeyu@kernel.org,
         akpm@linux-foundation.org, arnd@arndb.de, rostedt@goodmis.org,
         mingo@redhat.com, aquini@redhat.com, cai@lca.pw, dyoung@redhat.com,
@@ -53,89 +53,47 @@ Cc:     johannes@sipsolutions.net, derosier@gmail.com,
         ath10k@lists.infradead.org, jiri@resnulli.us,
         briannorris@chromium.org
 Subject: Re: [RFC 1/2] devlink: add simple fw crash helpers
-Message-ID: <20200522214929.GB11244@42.do-not-panic.com>
+Message-ID: <20200522215145.GC11244@42.do-not-panic.com>
 References: <20200519010530.GS11244@42.do-not-panic.com>
  <20200519211531.3702593-1-kuba@kernel.org>
  <20200522052046.GY11244@42.do-not-panic.com>
  <20200522101738.1495f4cc@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+ <2e5199edb433c217c7974ef7408ff8c7253145b6.camel@sipsolutions.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200522101738.1495f4cc@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+In-Reply-To: <2e5199edb433c217c7974ef7408ff8c7253145b6.camel@sipsolutions.net>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, May 22, 2020 at 10:17:38AM -0700, Jakub Kicinski wrote:
-> On Fri, 22 May 2020 05:20:46 +0000 Luis Chamberlain wrote:
-> > > diff --git a/net/core/Makefile b/net/core/Makefile
-> > > index 3e2c378e5f31..6f1513781c17 100644
-> > > --- a/net/core/Makefile
-> > > +++ b/net/core/Makefile
-> > > @@ -31,7 +31,7 @@ obj-$(CONFIG_LWTUNNEL_BPF) += lwt_bpf.o
-> > >  obj-$(CONFIG_BPF_STREAM_PARSER) += sock_map.o
-> > >  obj-$(CONFIG_DST_CACHE) += dst_cache.o
-> > >  obj-$(CONFIG_HWBM) += hwbm.o
-> > > -obj-$(CONFIG_NET_DEVLINK) += devlink.o
-> > > +obj-$(CONFIG_NET_DEVLINK) += devlink.o devlink_simple_fw_reporter.o  
-> > 
-> > This was looking super sexy up to here. This is networking specific.
-> > We want something generic for *anything* that requests firmware.
-> 
-> You can't be serious. It's network specific because of how the Kconfig
-> is named?
+On Fri, May 22, 2020 at 10:46:07PM +0200, Johannes Berg wrote:
+> FWIW, I still completely disagree on that taint. You (Luis) obviously
+> have been running into a bug in that driver, I doubt the firmware
+> actually managed to wedge the hardware.
 
-Kconfig? What has that to do with anything? The issue I have is that the
-solution I am looking for is for it to be agnostic to the subsystem. I
-have found similar firmware crashes on gpu, media, scsci.
+This hasn't happened just once, its happed many times sporadically now,
+once a week or two weeks I'd say. And the system isn't being moved
+around.
 
-> Working for a company operating large data centers I would strongly
-> prefer if we didn't have ten different ways of reporting firmware
-> problems in the fleet.
+> But even if it did, that's still not really a kernel taint. The kernel
+> itself isn't in any way affected by this.
 
-Indeed.
+Of course it is, a full reboot is required.
 
-> > I'm afraid this won't work for something generic. I don't think its
-> > throw-away work though, the idea to provide a generic interface to
-> > dump firmware through netlink might be nice for networking, or other
-> > things.
-> > 
-> > But I have a feeling we'll want something still more generic than this.
-> 
-> Please be specific. Saying generic a lot is not helpful. The code (as
-> you can see in this patch) is in no way network specific. Or are you
-> saying there are machines out there running without netlink sockets?
+> Yes, the system is in a weird state now. But that's *not* equivalent to
+> "kernel tainted".
 
-No, I am saying I want something to work with any struct device.
+Requiring a full reboot is a dire situation to be in, and loosing
+connectivity to the point this is not recoverable likewise.
 
-> > So networking may want to be aware that a firmware crash happened as
-> > part of this network device health thing, but firmware crashing is a
-> > generic thing.
-> > 
-> > I have now extended my patch set to include uvents and I am more set on
-> > that we need the taint now more than ever.
-> 
-> Please expect my nack if you're trying to add this to networking
-> drivers.
+You guys are making out a taint to be the end of the world. We have a
+taint even for a kernel warning, and as others have mentioned mac80211
+already produces these.
 
-The uevent mechanism is not for networking.
-
-The taint however is, and I'd like to undertand how it is you do not see
-that an undesirable requirement for a reboot is a clear case for a taint.
-
-> The irony is you have a problem with a networking device and all the
-> devices your initial set touched are networking. Two of the drivers 
-> you touched either have or will soon have devlink health reporters
-> implemented.
-
-That is all great, and I don't think its a bad idea to add
-infrastructure / extend it to get more information about a firmware
-crash dump. However, suggesting that devlink is the only solution we
-need in the kernel without considering other subsystems is what I am
-suggesting doesn't suit my needs. Networking was just the first
-subsystem I am taclking now but I have patches where similar situations
-happen across the kernel.
+What exactly is the opposition to a taint to clarify that a device
+firmware has crashed and your system requires a full reboot?
 
   Luis
