@@ -2,29 +2,29 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C9BD41DE958
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 May 2020 16:46:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F5D11DE955
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 May 2020 16:46:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730418AbgEVOqH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 22 May 2020 10:46:07 -0400
-Received: from mail.kernel.org ([198.145.29.99]:48604 "EHLO mail.kernel.org"
+        id S1730455AbgEVOqL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 22 May 2020 10:46:11 -0400
+Received: from mail.kernel.org ([198.145.29.99]:48700 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730357AbgEVOqF (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 22 May 2020 10:46:05 -0400
+        id S1730427AbgEVOqI (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 22 May 2020 10:46:08 -0400
 Received: from pali.im (pali.im [31.31.79.79])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id E68F12053B;
-        Fri, 22 May 2020 14:46:04 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 600162054F;
+        Fri, 22 May 2020 14:46:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1590158765;
-        bh=9vrfLJZTL8WRQ1zupaCKPmQrLZnRZD1ZGr/IqCu0zrg=;
+        s=default; t=1590158767;
+        bh=TJohxP7W9jg/tdaIFO6IgAHGCrICOTbIc/uilKm/8Sk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jK2flk8kqtjnzRkud16YaMP5KNZWB2D/e0eVyzKP27T567icbolifPhI0j0G+ve+Y
-         H6h8Xme+lxQmSFqw8laWH/FDENfb0FnxwRdGJDoqspL0SBjr8THw6h8twJq4I/UXhy
-         XiLnCTKBOSl/T1MRltWqSS2+25W73HEc0UC85IPc=
+        b=0tmb1v0XU35+tUH6DDmz3g8ydeL47t0zXZM93MTVX34VGrqnEHSD3SE4WgZUUui0R
+         kwXHdMPvtB16hmvqI0wplZanV9HIRyrBokqMVm1qcACmcMEB5o6NPmIFpP6ucuef3u
+         gcSDdyYJtjWyI+jvGmpKI5HpNSfQZ4W9GmgxnEkA=
 Received: by pali.im (Postfix)
-        id 2D0B651E; Fri, 22 May 2020 16:46:03 +0200 (CEST)
+        id 99D2751E; Fri, 22 May 2020 16:46:05 +0200 (CEST)
 From:   =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>
 To:     Ulf Hansson <ulf.hansson@linaro.org>, linux-mmc@vger.kernel.org
 Cc:     Matthias Brugger <matthias.bgg@gmail.com>,
@@ -38,9 +38,9 @@ Cc:     Matthias Brugger <matthias.bgg@gmail.com>,
         brcm80211-dev-list@cypress.com, libertas-dev@lists.infradead.org,
         linux-wireless@vger.kernel.org,
         =?UTF-8?q?Marek=20Beh=C3=BAn?= <marek.behun@nic.cz>
-Subject: [PATCH 09/11] mmc: sdio: Move SDIO IDs from b43-sdio driver to common include file
-Date:   Fri, 22 May 2020 16:44:10 +0200
-Message-Id: <20200522144412.19712-10-pali@kernel.org>
+Subject: [PATCH 10/11] mmc: sdio: Fix Cypress SDIO IDs macros in common include file
+Date:   Fri, 22 May 2020 16:44:11 +0200
+Message-Id: <20200522144412.19712-11-pali@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20200522144412.19712-1-pali@kernel.org>
 References: <20200522144412.19712-1-pali@kernel.org>
@@ -52,51 +52,76 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Define appropriate macro names for consistency with other macros.
+All macro names for SDIO device IDs are prefixed by vendor name to which
+device ID belongs. So for consistency add Broadcom string vendor prefix to
+all Cypress macro names as they belong to SDIO Broadcom vendor ID.
+
+Change also Cypress 43012 value from decimal do hexadecimal notation to be
+consistent with all other values.
 
 Signed-off-by: Pali Rohár <pali@kernel.org>
 ---
- drivers/net/wireless/broadcom/b43/sdio.c | 4 ++--
- include/linux/mmc/sdio_ids.h             | 4 ++++
- 2 files changed, 6 insertions(+), 2 deletions(-)
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c | 6 +++---
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c   | 4 ++--
+ include/linux/mmc/sdio_ids.h                              | 6 +++---
+ 3 files changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/wireless/broadcom/b43/sdio.c b/drivers/net/wireless/broadcom/b43/sdio.c
-index 881a7938c494..02b0cfd535ab 100644
---- a/drivers/net/wireless/broadcom/b43/sdio.c
-+++ b/drivers/net/wireless/broadcom/b43/sdio.c
-@@ -180,8 +180,8 @@ static void b43_sdio_remove(struct sdio_func *func)
- }
- 
- static const struct sdio_device_id b43_sdio_ids[] = {
--	{ SDIO_DEVICE(0x02d0, 0x044b) }, /* Nintendo Wii WLAN daughter card */
--	{ SDIO_DEVICE(0x0092, 0x0004) }, /* C-guys, Inc. EW-CG1102GC */
-+	{ SDIO_DEVICE(SDIO_VENDOR_ID_BROADCOM, SDIO_DEVICE_ID_BROADCOM_NINTENDO_WII) },
-+	{ SDIO_DEVICE(SDIO_VENDOR_ID_CGUYS, SDIO_DEVICE_ID_CGUYS_EW_CG1102GC) },
- 	{ },
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
+index b684a5b6d904..a1fdb618cf14 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
+@@ -970,9 +970,9 @@ static const struct sdio_device_id brcmf_sdmmc_ids[] = {
+ 	BRCMF_SDIO_DEVICE(SDIO_DEVICE_ID_BROADCOM_4354),
+ 	BRCMF_SDIO_DEVICE(SDIO_DEVICE_ID_BROADCOM_4356),
+ 	BRCMF_SDIO_DEVICE(SDIO_DEVICE_ID_BROADCOM_4359),
+-	BRCMF_SDIO_DEVICE(SDIO_DEVICE_ID_CYPRESS_4373),
+-	BRCMF_SDIO_DEVICE(SDIO_DEVICE_ID_CYPRESS_43012),
+-	BRCMF_SDIO_DEVICE(SDIO_DEVICE_ID_CYPRESS_89359),
++	BRCMF_SDIO_DEVICE(SDIO_DEVICE_ID_BROADCOM_CYPRESS_4373),
++	BRCMF_SDIO_DEVICE(SDIO_DEVICE_ID_BROADCOM_CYPRESS_43012),
++	BRCMF_SDIO_DEVICE(SDIO_DEVICE_ID_BROADCOM_CYPRESS_89359),
+ 	{ /* end: all zeroes */ }
  };
+ MODULE_DEVICE_TABLE(sdio, brcmf_sdmmc_ids);
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+index 3a08252f1a53..1c9561665a67 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+@@ -4187,7 +4187,7 @@ static void brcmf_sdio_firmware_callback(struct device *dev, int err,
+ 				   bus->hostintmask, NULL);
  
+ 		switch (sdiod->func1->device) {
+-		case SDIO_DEVICE_ID_CYPRESS_4373:
++		case SDIO_DEVICE_ID_BROADCOM_CYPRESS_4373:
+ 			brcmf_dbg(INFO, "set F2 watermark to 0x%x*4 bytes\n",
+ 				  CY_4373_F2_WATERMARK);
+ 			brcmf_sdiod_writeb(sdiod, SBSDIO_WATERMARK,
+@@ -4201,7 +4201,7 @@ static void brcmf_sdio_firmware_callback(struct device *dev, int err,
+ 					   CY_4373_F2_WATERMARK |
+ 					   SBSDIO_MESBUSYCTRL_ENAB, &err);
+ 			break;
+-		case SDIO_DEVICE_ID_CYPRESS_43012:
++		case SDIO_DEVICE_ID_BROADCOM_CYPRESS_43012:
+ 			brcmf_dbg(INFO, "set F2 watermark to 0x%x*4 bytes\n",
+ 				  CY_43012_F2_WATERMARK);
+ 			brcmf_sdiod_writeb(sdiod, SBSDIO_WATERMARK,
 diff --git a/include/linux/mmc/sdio_ids.h b/include/linux/mmc/sdio_ids.h
-index 2894f7739acc..8e7a0683b927 100644
+index 8e7a0683b927..b19200aea56a 100644
 --- a/include/linux/mmc/sdio_ids.h
 +++ b/include/linux/mmc/sdio_ids.h
-@@ -25,6 +25,9 @@
-  * Vendors and devices.  Sort key: vendor first, device next.
-  */
+@@ -58,9 +58,9 @@
+ #define SDIO_DEVICE_ID_BROADCOM_4354		0x4354
+ #define SDIO_DEVICE_ID_BROADCOM_4356		0x4356
+ #define SDIO_DEVICE_ID_BROADCOM_4359		0x4359
+-#define SDIO_DEVICE_ID_CYPRESS_4373		0x4373
+-#define SDIO_DEVICE_ID_CYPRESS_43012		43012
+-#define SDIO_DEVICE_ID_CYPRESS_89359		0x4355
++#define SDIO_DEVICE_ID_BROADCOM_CYPRESS_4373	0x4373
++#define SDIO_DEVICE_ID_BROADCOM_CYPRESS_43012	0xa804
++#define SDIO_DEVICE_ID_BROADCOM_CYPRESS_89359	0x4355
  
-+#define SDIO_VENDOR_ID_CGUYS			0x0092
-+#define SDIO_DEVICE_ID_CGUYS_EW_CG1102GC	0x0004
-+
- #define SDIO_VENDOR_ID_ATHEROS			0x0271
- #define SDIO_DEVICE_ID_ATHEROS_AR6003_00	0x0300
- #define SDIO_DEVICE_ID_ATHEROS_AR6003_01	0x0301
-@@ -37,6 +40,7 @@
- #define SDIO_DEVICE_ID_ATHEROS_QCA9377		0x0701
- 
- #define SDIO_VENDOR_ID_BROADCOM			0x02d0
-+#define SDIO_DEVICE_ID_BROADCOM_NINTENDO_WII	0x044b
- #define SDIO_DEVICE_ID_BROADCOM_43143		0xa887
- #define SDIO_DEVICE_ID_BROADCOM_43241		0x4324
- #define SDIO_DEVICE_ID_BROADCOM_4329		0x4329
+ #define SDIO_VENDOR_ID_INTEL			0x0089
+ #define SDIO_DEVICE_ID_INTEL_IWMC3200WIMAX	0x1402
 -- 
 2.20.1
 
