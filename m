@@ -2,29 +2,32 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E8641DE48A
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 May 2020 12:34:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D0381DE496
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 May 2020 12:37:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729166AbgEVKea (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 22 May 2020 06:34:30 -0400
-Received: from mail26.static.mailgun.info ([104.130.122.26]:50272 "EHLO
-        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1729065AbgEVKe3 (ORCPT
+        id S1728703AbgEVKhz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 22 May 2020 06:37:55 -0400
+Received: from mail27.static.mailgun.info ([104.130.122.27]:44236 "EHLO
+        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728592AbgEVKhy (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 22 May 2020 06:34:29 -0400
+        Fri, 22 May 2020 06:37:54 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1590143669; h=Content-Type: MIME-Version: Message-ID:
+ s=smtp; t=1590143874; h=Content-Type: MIME-Version: Message-ID:
  In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=re0ym4TtgaTt3T7R6eYWSsdnKHzfzFMDeaeUuE8IlSA=; b=m6pBle2oS6E5LGzMIXMLNOPhBY/2O+I8M9ZuDrU7wq9cr9F4EaufQnLOKShMuSRMLfl5Zcmw
- d0TI5iTZNCvkweDZUqP1Ywh3VZDebx1WcyoxpjNj7Iojwj/t8pX33KGsHN8HyNcP0mzzLTAt
- zRAGhkFHYSyOYuRz+HSUwBpeZnI=
-X-Mailgun-Sending-Ip: 104.130.122.26
+ bh=olQX6mZGmZMen4ae9mTlLURnX92/Cdedk/TOlnQoFGE=; b=qN9t9nvITQf4TmTSAD2/d9kXwCOVU0E+GA3NlLAdds5u3e/GYaC6Oewg5VZP+nHITaGeJW+/
+ JbDh++JxX248EkfQFmc+WO8LAfXB0TK7ZR+UlbL74/WTERxvugCHVXhTDXtUPdITvVZl2Bib
+ ubu3+9HuJAnAxHFrTS0B5cLS0Ik=
+X-Mailgun-Sending-Ip: 104.130.122.27
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5ec7aab1.7faa326c2e30-smtp-out-n02;
- Fri, 22 May 2020 10:34:25 -0000 (UTC)
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n02.prod.us-east-1.postgun.com with SMTP id
+ 5ec7ab817171b6d7e4add891 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 22 May 2020 10:37:53
+ GMT
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 56121C43387; Fri, 22 May 2020 10:34:25 +0000 (UTC)
+        id E903FC43395; Fri, 22 May 2020 10:37:52 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -34,31 +37,25 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 8D6CDC433C8;
-        Fri, 22 May 2020 10:34:21 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 8D6CDC433C8
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 2BB7DC433C6;
+        Fri, 22 May 2020 10:37:48 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 2BB7DC433C6
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Brian Norris <briannorris@chromium.org>
-Cc:     Navid Emamdoost <navid.emamdoost@gmail.com>,
-        Navid Emamdoost <emamd001@umn.edu>,
-        Stephen McCamant <smccaman@umn.edu>, Kangjie Lu <kjlu@umn.edu>,
-        QCA ath9k Development <ath9k-devel@qca.qualcomm.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        "\<netdev\@vger.kernel.org\>" <netdev@vger.kernel.org>,
-        Linux Kernel <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] ath9k: release allocated buffer if timed out
-References: <20190906185931.19288-1-navid.emamdoost@gmail.com>
-        <CA+ASDXMnp-GTkrT7B5O+dtopJUmGBay=Tn=-nf1LW1MtaVOr+w@mail.gmail.com>
-        <878shwtiw3.fsf@kamboji.qca.qualcomm.com>
-        <CA+ASDXOgechejxzN4-xPcuTW-Ra7z9Z6EeiQ4wMrEowZc-p+uA@mail.gmail.com>
-        <CA+ASDXM6w-t85hZWcbTqTBA8aye0oka3Nw5YYZH2LqixO-PJzg@mail.gmail.com>
-Date:   Fri, 22 May 2020 13:34:18 +0300
-In-Reply-To: <CA+ASDXM6w-t85hZWcbTqTBA8aye0oka3Nw5YYZH2LqixO-PJzg@mail.gmail.com>
-        (Brian Norris's message of "Wed, 20 May 2020 13:59:20 -0700")
-Message-ID: <87sgfs9s2d.fsf@codeaurora.org>
+To:     Chi-Hsien Lin <chi-hsien.lin@cypress.com>
+Cc:     linux-wireless@vger.kernel.org, brcm80211-dev-list@broadcom.com,
+        brcm80211-dev-list@cypress.com,
+        Arend van Spriel <arend.vanspriel@broadcom.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Wright Feng <wright.feng@cypress.com>
+Subject: Re: [PATCH 0/5] brcmfmac: SDIO parameter change series
+References: <20200521034838.57371-1-chi-hsien.lin@cypress.com>
+Date:   Fri, 22 May 2020 13:37:45 +0300
+In-Reply-To: <20200521034838.57371-1-chi-hsien.lin@cypress.com> (Chi-Hsien
+        Lin's message of "Wed, 20 May 2020 22:48:33 -0500")
+Message-ID: <87o8qg9rwm.fsf@codeaurora.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -67,33 +64,37 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Brian Norris <briannorris@chromium.org> writes:
+Chi-Hsien Lin <chi-hsien.lin@cypress.com> writes:
 
-> On Wed, May 13, 2020 at 12:02 PM Brian Norris <briannorris@chromium.org> wrote:
->>
->> On Wed, May 13, 2020 at 12:05 AM Kalle Valo <kvalo@codeaurora.org> wrote:
->> > Actually it's already reverted in -next, nobody just realised that it's
->> > a regression from commit 728c1e2a05e4:
->> >
->> > ced21a4c726b ath9k: Fix use-after-free Read in htc_connect_service
->>
->> Nice.
->>
->> > v5.8-rc1 should be the first release having the fix.
->>
->> So I guess we have to wait until 5.8-rc1 (when this lands in mainline)
->> to send this manually to stable@vger.kernel.org?
-
-Yeah, following Option 2:
-
-https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-
-> For the record, there are more reports of this, if I'm reading them right:
+> Set F2 blocksize and watermark for several chips to fix bus error during
+> stress tests.
 >
-> https://bugzilla.kernel.org/show_bug.cgi?id=207797
+>
+> Double Lo (2):
+>   brcmfmac: fix 4339 CRC error under SDIO 3.0 SDR104 mode
+>   brcmfmac: 43012 Update MES Watermark
+>
+> Frank Kao (1):
+>   brcmfmac: set F2 blocksize and watermark for 4354/4356 SDIO
+>
+> Wright Feng (2):
+>   brcmfmac: set F2 blocksize for 4373
+>   brcmfmac: fix 43455 CRC error under SDIO 3.0 SDR104 mode
+>
+>  .../broadcom/brcm80211/brcmfmac/bcmsdh.c      | 22 ++++++-
+>  .../broadcom/brcm80211/brcmfmac/sdio.c        | 58 ++++++++++++++++---
+>  2 files changed, 70 insertions(+), 10 deletions(-)
+>
+> --
+> 2.25.0
+>
+>
+> This message and any attachments may contain confidential information
+> from Cypress or its subsidiaries. If it has been received in error,
+> please advise the sender and immediately delete this message.
 
-Thanks for the followup, this case is a good example why small cleanup
-patches are not always that simple and easy as some people claim :)
+If you want me to apply something don't include disclaimers like this.
+These kind of emails go immeadiately to /dev/null.
 
 -- 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
