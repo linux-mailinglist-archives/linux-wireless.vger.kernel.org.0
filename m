@@ -2,110 +2,101 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C39181DEDF7
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 May 2020 19:15:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 444091DEE04
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 May 2020 19:17:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730720AbgEVRPD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 22 May 2020 13:15:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51540 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730306AbgEVRPC (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 22 May 2020 13:15:02 -0400
-Received: from mail-oi1-x229.google.com (mail-oi1-x229.google.com [IPv6:2607:f8b0:4864:20::229])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98060C061A0E
-        for <linux-wireless@vger.kernel.org>; Fri, 22 May 2020 10:15:02 -0700 (PDT)
-Received: by mail-oi1-x229.google.com with SMTP id b3so9866768oib.13
-        for <linux-wireless@vger.kernel.org>; Fri, 22 May 2020 10:15:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=ckgg64SC7fdaahBmYEinAAOpnv23m7eSUns6AU0ttpM=;
-        b=WV++N2+NBkx939H4jCUnBjEIa5vqsfMYuYB9/gNv32VZ01Vt1N4KUaqF8YeMW+S1B6
-         ML8n9WN17S5sY970pKC9/Smncy1NGrEAV+GdSRlaybfdHyHAnSLOigLVTKbMmz7JRYYc
-         psgyf9xT4D2PdYq0m0wXX2N0HwGA5xNBSrmu4Yp3Gsi19NXEysm2FG0iGaOsrEDMkJ+9
-         96NbUqdPqbykiEKhJmc396bcP5SCgwly7PBrNOQh9zANC2V0teZVaDEFrpxRXz0+4Ye0
-         LzgcuR5UIPDEjQPgf48bl85nX0fDh6wypvtbi3jkeKT87uc+01LHqZwYPv+xPL9OdWP5
-         5Uqw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
-         :date:user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=ckgg64SC7fdaahBmYEinAAOpnv23m7eSUns6AU0ttpM=;
-        b=FDXvNKxvkgnJwqWUdT98/yDU8GyQscoYEOrAsMu72yhACbP3TL61YU55Ii0zjXsP4f
-         ElaPSfOpq54DKLxRUJ6ip2ErJmcYaTW499bEU2Ijj0zfJHw9e5lNToZKJukzZX86F96O
-         qRZ2JdslsI0TJX1g5sT/4BXZjrH2PR1YkUgsHtU6IJ3EH7JWdpTCQOqF+VO/hQ82k1wQ
-         kUmpM62eq5A3CnovtHyY8QEAuXt6V2Iq9yRvWB+jBFrf2/RoGEHCqDbyJDxRFAJKP6Bd
-         TJWPoTW0Mv7w8r+gQeYRSxWyCpgtnvgToOlIh9Ivr5HUtL3s+d8LJqeB0S5WINnxtuus
-         fn8w==
-X-Gm-Message-State: AOAM531a1n6F7FhA4Xa5GlgmBXd9ydJ52QofZy6+1aeSP06OFoXe0J3W
-        QVNxjWFmdJvEXez4I2XidUZXYjtl
-X-Google-Smtp-Source: ABdhPJxcM6bXLt737eva3Gj24e82sS+5h+WaUPfDEvgAJ/BEkVNj9TGuK+NG3G0OJOBNl2tJgxqJ9g==
-X-Received: by 2002:aca:d609:: with SMTP id n9mr3372266oig.77.1590167702013;
-        Fri, 22 May 2020 10:15:02 -0700 (PDT)
-Received: from localhost.localdomain (cpe-24-31-245-230.kc.res.rr.com. [24.31.245.230])
-        by smtp.gmail.com with ESMTPSA id z12sm2707473oor.0.2020.05.22.10.15.00
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 22 May 2020 10:15:01 -0700 (PDT)
-Subject: Re: [BUG?] b43: can't connect to WPA3 network (nohwcrypt=1)
-To:     Kalle Valo <kvalo@codeaurora.org>,
-        =?UTF-8?Q?Michael_B=c3=bcsch?= <m@bues.ch>
-Cc:     Rui Salvaterra <rsalvaterra@gmail.com>,
-        linux-wireless@vger.kernel.org, b43-dev@lists.infradead.org
-References: <CALjTZvbLOr5zAYyp75Cs6Zo8mWNUVq3ZRJu56G1iHdiihFejWQ@mail.gmail.com>
- <263e247c-3bf9-6d42-996b-bc513efe4b71@lwfinger.net>
- <CALjTZvauK0Hh+aoabcDX9kkQZ4zN2ZjPnB+aq7YrJ9+-4ihiAg@mail.gmail.com>
- <87fffd5d-242a-7195-c4cc-80260dbd53c5@lwfinger.net>
- <CALjTZvYCFNSQ6HMN4owkiGTVrYaiU8R-P1KXgvkwGqcOo8uMuw@mail.gmail.com>
- <CALjTZvYMF_ERBfzkhaHvsTu6kt7MW+L_979sOVs8hcH7zF_Nyg@mail.gmail.com>
- <20200521124608.4b5c78f2@wiggum>
- <CALjTZvan46UTwcUxOSN=RiE6XHm-29Ln8B6wiv40V_RVxWewtA@mail.gmail.com>
- <20200521134011.656381ad@wiggum>
- <CALjTZvZcfT-aURMa=j-1ksWyVdu42bLEsGOaq+Hw39ioiPFKAA@mail.gmail.com>
- <CALjTZvY3_wjAx9DOEgYxpc4_fG-HWh_=O7veFxeEoygPzTJptw@mail.gmail.com>
- <2b22b778-2f89-9c42-93a0-5c165de26f35@lwfinger.net>
- <CALjTZva70Ni-s5VjRZL5BPswEtz5VZsX+dvE6rq2ztLJQ9v3kA@mail.gmail.com>
- <CALjTZvbvE_cDg9mfszscSBowznp1UpxqiN1LQfbgeCOYatKMNg@mail.gmail.com>
- <f6152cd7-1043-dde2-7fc1-634d8b07a231@lwfinger.net>
- <20200522121910.254aefc1@wiggum> <87a720gpfb.fsf@tynnyri.adurom.net>
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-Message-ID: <842ae4a0-5aa5-a464-3218-8955a3ee445a@lwfinger.net>
-Date:   Fri, 22 May 2020 12:15:00 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
+        id S1730733AbgEVRRm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 22 May 2020 13:17:42 -0400
+Received: from mail.kernel.org ([198.145.29.99]:41812 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730471AbgEVRRm (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 22 May 2020 13:17:42 -0400
+Received: from kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com (unknown [163.114.132.4])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 8464720738;
+        Fri, 22 May 2020 17:17:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1590167861;
+        bh=JHvmQjCIw6/VvDscVfT+qCoWQLdg5aBrXbxB+sIlVv0=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=GWXiRViM+TXrBlInvfPJxiOUc0PtnWfYnR+Kujxt16bktx0kcR2oZWEzGOIuQm1fL
+         r82t5OiPZMiJUTvwWrR1pwArgfPhI6rQ9oGnsHR601aIjzsQ5I+LDFuvPR1kdmqmiO
+         cZkTQP4IInjzhZbjCiGd3ZDDM+Y8IkZ2KIm3oeRE=
+Date:   Fri, 22 May 2020 10:17:38 -0700
+From:   Jakub Kicinski <kuba@kernel.org>
+To:     Luis Chamberlain <mcgrof@kernel.org>
+Cc:     johannes@sipsolutions.net, derosier@gmail.com,
+        greearb@candelatech.com, jeyu@kernel.org,
+        akpm@linux-foundation.org, arnd@arndb.de, rostedt@goodmis.org,
+        mingo@redhat.com, aquini@redhat.com, cai@lca.pw, dyoung@redhat.com,
+        bhe@redhat.com, peterz@infradead.org, tglx@linutronix.de,
+        gpiccoli@canonical.com, pmladek@suse.com, tiwai@suse.de,
+        schlad@suse.de, andriy.shevchenko@linux.intel.com,
+        keescook@chromium.org, daniel.vetter@ffwll.ch, will@kernel.org,
+        mchehab+samsung@kernel.org, kvalo@codeaurora.org,
+        davem@davemloft.net, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        ath10k@lists.infradead.org, jiri@resnulli.us,
+        briannorris@chromium.org
+Subject: Re: [RFC 1/2] devlink: add simple fw crash helpers
+Message-ID: <20200522101738.1495f4cc@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+In-Reply-To: <20200522052046.GY11244@42.do-not-panic.com>
+References: <20200519010530.GS11244@42.do-not-panic.com>
+        <20200519211531.3702593-1-kuba@kernel.org>
+        <20200522052046.GY11244@42.do-not-panic.com>
 MIME-Version: 1.0
-In-Reply-To: <87a720gpfb.fsf@tynnyri.adurom.net>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 5/22/20 6:49 AM, Kalle Valo wrote:
+On Fri, 22 May 2020 05:20:46 +0000 Luis Chamberlain wrote:
+> > diff --git a/net/core/Makefile b/net/core/Makefile
+> > index 3e2c378e5f31..6f1513781c17 100644
+> > --- a/net/core/Makefile
+> > +++ b/net/core/Makefile
+> > @@ -31,7 +31,7 @@ obj-$(CONFIG_LWTUNNEL_BPF) += lwt_bpf.o
+> >  obj-$(CONFIG_BPF_STREAM_PARSER) += sock_map.o
+> >  obj-$(CONFIG_DST_CACHE) += dst_cache.o
+> >  obj-$(CONFIG_HWBM) += hwbm.o
+> > -obj-$(CONFIG_NET_DEVLINK) += devlink.o
+> > +obj-$(CONFIG_NET_DEVLINK) += devlink.o devlink_simple_fw_reporter.o  
 > 
-> And did the "bad" performance even have any real visible changes to the
-> user? IMHO this "bad" performance is small price to pay from getting
-> WPA3 supported out-of-box, especially when the data throughput is
-> unaffected.
+> This was looking super sexy up to here. This is networking specific.
+> We want something generic for *anything* that requests firmware.
 
-Kalle,
+You can't be serious. It's network specific because of how the Kconfig
+is named?
 
-The only bad effect is to consume 2-3 times more CPU than used if the firmware 
-handles encryption. On a modern system, the effect is negligible; however, these 
-cards are found only on older systems that have uni-processors.
+Working for a company operating large data centers I would strongly
+prefer if we didn't have ten different ways of reporting firmware
+problems in the fleet.
 
-I have reread the mac80211 documentation (comments in code at least), and it 
-appears that it should be possible to set MFP_CAPABLE unconditionally, and use 
-the set_key() callback to let mac80211 know if the driver/firmware will handle 
-encryption. The module parameter could be removed; however, I favor leaving it 
-in case of broken hardware.
+> I'm afraid this won't work for something generic. I don't think its
+> throw-away work though, the idea to provide a generic interface to
+> dump firmware through netlink might be nice for networking, or other
+> things.
+> 
+> But I have a feeling we'll want something still more generic than this.
 
-@Rui: I will send you a new patch for testing.
+Please be specific. Saying generic a lot is not helpful. The code (as
+you can see in this patch) is in no way network specific. Or are you
+saying there are machines out there running without netlink sockets?
 
-Larry
+> So networking may want to be aware that a firmware crash happened as
+> part of this network device health thing, but firmware crashing is a
+> generic thing.
+> 
+> I have now extended my patch set to include uvents and I am more set on
+> that we need the taint now more than ever.
 
+Please expect my nack if you're trying to add this to networking
+drivers.
 
+The irony is you have a problem with a networking device and all the
+devices your initial set touched are networking. Two of the drivers 
+you touched either have or will soon have devlink health reporters
+implemented.
