@@ -2,94 +2,90 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A62C1DE0A8
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 May 2020 09:10:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D455D1DE0CE
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 May 2020 09:25:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728312AbgEVHKr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 22 May 2020 03:10:47 -0400
-Received: from mail.kernel.org ([198.145.29.99]:36184 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728253AbgEVHKr (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 22 May 2020 03:10:47 -0400
-Received: from localhost.localdomain.com (unknown [151.48.155.206])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        id S1728618AbgEVHZH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 22 May 2020 03:25:07 -0400
+Received: from mail26.static.mailgun.info ([104.130.122.26]:30664 "EHLO
+        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728409AbgEVHZH (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 22 May 2020 03:25:07 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1590132307; h=Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Message-Id: Date: Subject: Cc: To: From: Sender;
+ bh=JoVWmk1sw6P+vhvUJ+NHiWx0WaqOo0S2Fyqaik7wrHw=; b=W744NAsZGiNpTPV5rLYATf74h3A1/gJcamhH/UCx37umRCmKMrPsIuqe20Wvis4uRzFemIbO
+ O59lZsZjKXr4otxxlHl34OiFwXpe2+BvsHd3f1UOrPnGsyLqtjMfi9C4WzUDiew69GL+lrXb
+ 1Sdz2ZTBJzT0BMfbIWxvF0p9UFg=
+X-Mailgun-Sending-Ip: 104.130.122.26
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5ec77e3b.7fd36d4248b8-smtp-out-n02;
+ Fri, 22 May 2020 07:24:43 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id E835BC433CB; Fri, 22 May 2020 07:24:42 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from pradeepc2-linux.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 1C34A2072C;
-        Fri, 22 May 2020 07:10:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1590131447;
-        bh=SQlYDPydfwFdBMjoV74mHzaFhH/L+2o8RdjW4/NfzTw=;
-        h=From:To:Cc:Subject:Date:From;
-        b=IUymKygoDxgyeoFJWWly7OnQRam6ARyQtBU1zMYJFO3ZdTJPh2Y6Xcn2zjx+U3ENS
-         xiR5/abAymGXZHHxq6edZ0mwDBAGmX6lLzQUkqelMh/jqpK/X1QDdk6DwUOsolGlIc
-         naJV/znAbfJkm96VUHr308/Cqda2K8j90htFKySQ=
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
-        sean.wang@mediatek.com
-Subject: [PATCH] mt76: mt7615: fix hw_scan with ssid_type for specified SSID only
-Date:   Fri, 22 May 2020 09:10:24 +0200
-Message-Id: <d1a88c950e1c69183e98792bc8f02beb8d467ebc.1590130928.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.26.2
+        (Authenticated sender: pradeepc)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 42DB1C433C6;
+        Fri, 22 May 2020 07:24:42 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 42DB1C433C6
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=pradeepc@codeaurora.org
+From:   Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        ath11k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org,
+        Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>
+Subject: [PATCH v2 0/9] add 6GHz radio support in ath11k driver
+Date:   Fri, 22 May 2020 00:24:22 -0700
+Message-Id: <20200522072431.27601-1-pradeepc@codeaurora.org>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Sean Wang <sean.wang@mediatek.com>
+his patch series adds 6GHz frequency listing in ath11k driver and mac80211
+registration for the 6GHz band. Also, extends some of wmi command tlvs for
+supporting 6GHz.
 
-Fix hw_scan with ssid_type for specified SSID only
+In cfg80211, a new channel flag is added for identifying Preferred Scanning
+Channels (PSC) in 6GHz band.
 
-The definition for ssid_type in current firmware is that
-ssid_type BIT(2) set actually for specified SSID + wildcard SSID.
-ssid_type BIT(2) and ssid_type_ext BIT(0) both set actually for
-specified SSID only;
+changes in v2:
+ - Fixed ath11k_phymode to be set in 6GHZ band
 
-Signed-off-by: Sean Wang <sean.wang@mediatek.com>
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- drivers/net/wireless/mediatek/mt76/mt7615/mcu.c | 1 +
- drivers/net/wireless/mediatek/mt76/mt7615/mcu.h | 6 ++++--
- 2 files changed, 5 insertions(+), 2 deletions(-)
+Pradeep Kumar Chitrapu (9):
+  cfg80211: Add new channel flag to identify 6GHz PSC channel
+  ath11k: add 6G frequency list supported by driver
+  ath11k: add support for 6GHz radio in driver
+  ath11k: Use freq instead of channel number in rx path
+  ath11k: extend peer_assoc_cmd for 6GHz band
+  ath11k: set psc channel flag when sending channel list to firmware.
+  ath11k: Add 6G scan dwell time parameter in scan request command
+  ath11k: Send multiple scan_chan_list messages if required
+  ath11k: Add support for 6g scan hint
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-index 14c2b5d7dbbd..6e869b8c5e26 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-@@ -2898,6 +2898,7 @@ int mt7615_mcu_hw_scan(struct mt7615_phy *phy, struct ieee80211_vif *vif,
- 		n_ssids++;
- 	}
- 	req->ssid_type = n_ssids ? BIT(2) : BIT(0);
-+	req->ssid_type_ext = n_ssids ? BIT(0) : 0;
- 	req->ssids_num = n_ssids;
- 
- 	/* increase channel time for passive scan */
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.h
-index fd40d99f5a23..2314d0b23af1 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.h
-@@ -327,7 +327,8 @@ struct mt7615_hw_scan_req {
- 		       */
- 	u8 ssid_type; /* BIT(0) wildcard SSID
- 		       * BIT(1) P2P wildcard SSID
--		       * BIT(2) specified SSID
-+		       * BIT(2) specified SSID + wildcard SSID
-+		       * BIT(2) + ssid_type_ext BIT(0) specified SSID only
- 		       */
- 	u8 ssids_num;
- 	u8 probe_req_num; /* Number of probe request for each SSID */
-@@ -362,7 +363,8 @@ struct mt7615_hw_scan_req {
- 	struct mt7615_mcu_scan_ssid ext_ssids[6];
- 	u8 bssid[ETH_ALEN];
- 	u8 random_mac[ETH_ALEN]; /* valid when BIT(1) in scan_func is set. */
--	u8 pad[64];
-+	u8 pad[63];
-+	u8 ssid_type_ext;
- } __packed;
- 
- #define SCAN_DONE_EVENT_MAX_CHANNEL_NUM	64
+ drivers/net/wireless/ath/ath11k/core.h  |   6 +-
+ drivers/net/wireless/ath/ath11k/dp_rx.c |   6 +-
+ drivers/net/wireless/ath/ath11k/mac.c   | 174 +++++++++++++--
+ drivers/net/wireless/ath/ath11k/reg.c   |   4 +
+ drivers/net/wireless/ath/ath11k/wmi.c   | 269 +++++++++++++++++-------
+ drivers/net/wireless/ath/ath11k/wmi.h   |  40 +++-
+ include/net/cfg80211.h                  |   2 +
+ net/wireless/reg.c                      |  19 ++
+ 8 files changed, 422 insertions(+), 98 deletions(-)
+
 -- 
-2.26.2
-
+2.17.1
