@@ -2,29 +2,29 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 08E861DE932
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 May 2020 16:45:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1AB561DE93E
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 May 2020 16:45:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730019AbgEVOpS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 22 May 2020 10:45:18 -0400
-Received: from mail.kernel.org ([198.145.29.99]:47562 "EHLO mail.kernel.org"
+        id S1730065AbgEVOpn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 22 May 2020 10:45:43 -0400
+Received: from mail.kernel.org ([198.145.29.99]:48042 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729868AbgEVOpR (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 22 May 2020 10:45:17 -0400
+        id S1730036AbgEVOpn (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 22 May 2020 10:45:43 -0400
 Received: from pali.im (pali.im [31.31.79.79])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A9213204EF;
-        Fri, 22 May 2020 14:45:16 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 7FCF9204EF;
+        Fri, 22 May 2020 14:45:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1590158716;
-        bh=jgtLSxW/rFemUDRGqeFehVEu0MdxG9OUPhnEvnFbKXo=;
-        h=From:To:Cc:Subject:Date:From;
-        b=gfg74FKs4mhp0Qzzg9jCxDSD/GyytTIjGv6siWmpqnDJFXa2okumtbOmzNmz+zRIp
-         an1ToAw01OIlj3XAV2Q1zZ5lP4RCLYtL7fsG/NRIfagePkLDfPXqlqbeyObxr6V5Bs
-         n0bYQOZXUll0jLzVx7TZ012GMiKrng2FUTFfzjPs=
+        s=default; t=1590158742;
+        bh=hRb2VDYaeeagfmMwuXWOO5MTiJ36qdN4nrC0CGCu3qE=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=LrqjOWo/J/e9nqoi7yNeP3vN8U5uj740diXbXu7bs4TXKUlq/Wfi+mfz8xQW2v7va
+         UE5FWy17VeukuVoiZIHjzYXyVZvElDUFhPCwCXBb0Lnaf1D+85JNr0lkHuTgn2olws
+         Zz2NEZtpFTLaUVIZ0OyqdWrQPDa5G9Esdeu3kbD0=
 Received: by pali.im (Postfix)
-        id DA32B51E; Fri, 22 May 2020 16:45:13 +0200 (CEST)
+        id CB79251E; Fri, 22 May 2020 16:45:40 +0200 (CEST)
 From:   =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>
 To:     Ulf Hansson <ulf.hansson@linaro.org>, linux-mmc@vger.kernel.org
 Cc:     Matthias Brugger <matthias.bgg@gmail.com>,
@@ -38,10 +38,12 @@ Cc:     Matthias Brugger <matthias.bgg@gmail.com>,
         brcm80211-dev-list@cypress.com, libertas-dev@lists.infradead.org,
         linux-wireless@vger.kernel.org,
         =?UTF-8?q?Marek=20Beh=C3=BAn?= <marek.behun@nic.cz>
-Subject: [PATCH 00/11] mmc: sdio: Move SDIO IDs from drivers to common include file
-Date:   Fri, 22 May 2020 16:44:01 +0200
-Message-Id: <20200522144412.19712-1-pali@kernel.org>
+Subject: [PATCH 01/11] mmc: sdio: Fix macro name for Marvell device with ID 0x9134
+Date:   Fri, 22 May 2020 16:44:02 +0200
+Message-Id: <20200522144412.19712-2-pali@kernel.org>
 X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20200522144412.19712-1-pali@kernel.org>
+References: <20200522144412.19712-1-pali@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -50,43 +52,50 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Most SDIO IDs are defined in the common include file linux/mmc/sdio_ids.h.
-But some drivers define IDs locally or do not use existing macros from the
-common include file.
+Marvell SDIO device ID 0x9134 is used in SDIO Common CIS (Card Information
+Structure) and not in SDIO wlan function (with ID 1). SDIO Common CIS is
+accessed by function ID 0.
 
-This patch series fixes above inconsistency. It defines missing macro names
-and moves all remaining SDIO IDs from drivers to the common include file.
-Also some macro names are changed to follow existing naming conventions.
+So change this misleading macro name to SDIO_DEVICE_ID_MARVELL_8887_F0 as
+it does not refer to wlan function. It refers to function 0.
 
-Pali Rohár (11):
-  mmc: sdio: Fix macro name for Marvell device with ID 0x9134
-  mmc: sdio: Change macro names for Marvell 8688 modules
-  mmc: sdio: Move SDIO IDs from mwifiex driver to common include file
-  mmc: sdio: Move SDIO IDs from btmrvl driver to common include file
-  mmc: sdio: Move SDIO IDs from btmtksdio driver to common include file
-  mmc: sdio: Move SDIO IDs from smssdio driver to common include file
-  mmc: sdio: Move SDIO IDs from ath6kl driver to common include file
-  mmc: sdio: Move SDIO IDs from ath10k driver to common include file
-  mmc: sdio: Move SDIO IDs from b43-sdio driver to common include file
-  mmc: sdio: Fix Cypress SDIO IDs macros in common include file
-  mmc: sdio: Sort all SDIO IDs in common include file
+Wlan module on this SDIO card is available at function ID 1 and is
+identified by different SDIO device ID 0x9135. Kernel quirks for SDIO
+devices are matched against device ID from SDIO Common CIS. Therefore
+device ID used in quirk is correct, just has misleading name.
 
- drivers/bluetooth/btmrvl_sdio.c               | 18 ++--
- drivers/bluetooth/btmtksdio.c                 |  4 +-
- drivers/media/mmc/siano/smssdio.c             | 10 +-
- drivers/mmc/core/quirks.h                     |  2 +-
- drivers/net/wireless/ath/ath10k/sdio.c        | 25 ++---
- drivers/net/wireless/ath/ath10k/sdio.h        |  8 --
- drivers/net/wireless/ath/ath6kl/hif.h         |  6 --
- drivers/net/wireless/ath/ath6kl/sdio.c        | 17 ++--
- drivers/net/wireless/broadcom/b43/sdio.c      |  4 +-
- .../broadcom/brcm80211/brcmfmac/bcmsdh.c      |  6 +-
- .../broadcom/brcm80211/brcmfmac/sdio.c        |  4 +-
- .../net/wireless/marvell/libertas/if_sdio.c   |  2 +-
- drivers/net/wireless/marvell/mwifiex/sdio.c   | 38 ++------
- include/linux/mmc/sdio_ids.h                  | 94 ++++++++++++++-----
- 14 files changed, 120 insertions(+), 118 deletions(-)
+Signed-off-by: Pali Rohár <pali@kernel.org>
+---
+ drivers/mmc/core/quirks.h    | 2 +-
+ include/linux/mmc/sdio_ids.h | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
+diff --git a/drivers/mmc/core/quirks.h b/drivers/mmc/core/quirks.h
+index 3dba15bccce2..472fa2fdcf13 100644
+--- a/drivers/mmc/core/quirks.h
++++ b/drivers/mmc/core/quirks.h
+@@ -139,7 +139,7 @@ static const struct mmc_fixup sdio_fixup_methods[] = {
+ 	SDIO_FIXUP(SDIO_VENDOR_ID_MARVELL, SDIO_DEVICE_ID_MARVELL_8797_F0,
+ 		   add_quirk, MMC_QUIRK_BROKEN_IRQ_POLLING),
+ 
+-	SDIO_FIXUP(SDIO_VENDOR_ID_MARVELL, SDIO_DEVICE_ID_MARVELL_8887WLAN,
++	SDIO_FIXUP(SDIO_VENDOR_ID_MARVELL, SDIO_DEVICE_ID_MARVELL_8887_F0,
+ 		   add_limit_rate_quirk, 150000000),
+ 
+ 	END_FIXUP
+diff --git a/include/linux/mmc/sdio_ids.h b/include/linux/mmc/sdio_ids.h
+index 2e9a6e4634eb..96f43e0dc78f 100644
+--- a/include/linux/mmc/sdio_ids.h
++++ b/include/linux/mmc/sdio_ids.h
+@@ -59,7 +59,7 @@
+ #define SDIO_DEVICE_ID_MARVELL_8688WLAN		0x9104
+ #define SDIO_DEVICE_ID_MARVELL_8688BT		0x9105
+ #define SDIO_DEVICE_ID_MARVELL_8797_F0		0x9128
+-#define SDIO_DEVICE_ID_MARVELL_8887WLAN	0x9134
++#define SDIO_DEVICE_ID_MARVELL_8887_F0		0x9134
+ 
+ #define SDIO_VENDOR_ID_MEDIATEK			0x037a
+ 
 -- 
 2.20.1
 
