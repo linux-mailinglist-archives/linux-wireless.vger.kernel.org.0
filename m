@@ -2,96 +2,89 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C0F3B1DE252
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 May 2020 10:40:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F20AB1DE2B7
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 May 2020 11:13:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729151AbgEVIk2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 22 May 2020 04:40:28 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:48012 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729115AbgEVIk2 (ORCPT
+        id S1729719AbgEVJNF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 22 May 2020 05:13:05 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:35624 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729480AbgEVJNF (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 22 May 2020 04:40:28 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04M8XV4F017562;
-        Fri, 22 May 2020 08:40:19 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2020-01-29;
- bh=6gzheESaMSB8Q5+Lji9xAUUxK5HXoYYW/K4BBIqJrmg=;
- b=RQxT308nEbHQsvOL6ut+KOgOgNQteDwkq9uQNsXhvYiZecited2IZ3Bx9o+06f7/Mj/n
- T4l32xEPxZw7+ESaNEx0RSk39PEurPx/34mzLK1dGYjWoS8YWAF8Rn42vrKjHv0DkpYu
- b05hKnqyz4F5rllhxYod5hWoWT2QIMQgSEWB6HdCRCU6YmyN5k1C3KnfZXq0uHeqRoxB
- 253vyk7SiH3ZMdM0cPYybRvQ/8SUayjM33f7QMJCVvT4r21Pfi6AIctDQuHzprBTshOv
- TL0o9qb5Ch4r2voh5NCYsTZnXD4Tr6191e5YpEZxpASWbkYVDrcBXnyVh3xvgQh/pArH Ug== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by userp2120.oracle.com with ESMTP id 31501rk3kt-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 22 May 2020 08:40:18 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04M8WixY009163;
-        Fri, 22 May 2020 08:38:18 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by aserp3030.oracle.com with ESMTP id 313gj73tp3-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 22 May 2020 08:38:18 +0000
-Received: from abhmp0003.oracle.com (abhmp0003.oracle.com [141.146.116.9])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 04M8cGUA003683;
-        Fri, 22 May 2020 08:38:16 GMT
-Received: from kadam (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 22 May 2020 01:38:15 -0700
-Date:   Fri, 22 May 2020 11:38:09 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Lorenzo Bianconi <lorenzo@kernel.org>
-Cc:     nbd@nbd.name, linux-wireless@vger.kernel.org,
-        lorenzo.bianconi@redhat.com, sean.wang@mediatek.com,
-        ryder.lee@mediatek.com
-Subject: Re: [PATCH] mt76: mt7915: fix possible NULL pointer dereference in
- mt7915_register_ext_phy
-Message-ID: <20200522083809.GD22511@kadam>
-References: <a03171996da0aaaa0963a4704b6d59be818bd42f.1590132235.git.lorenzo@kernel.org>
- <20200522074522.GB22511@kadam>
- <20200522075124.GB4245@localhost.localdomain>
+        Fri, 22 May 2020 05:13:05 -0400
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.69 with qID 04M9CukjE026284, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexmb06.realtek.com.tw[172.21.6.99])
+        by rtits2.realtek.com.tw (8.15.2/2.66/5.86) with ESMTPS id 04M9CukjE026284
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Fri, 22 May 2020 17:12:56 +0800
+Received: from RTEXMB04.realtek.com.tw (172.21.6.97) by
+ RTEXMB06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Fri, 22 May 2020 17:12:55 +0800
+Received: from localhost.localdomain (172.21.68.128) by
+ RTEXMB04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Fri, 22 May 2020 17:12:55 +0800
+From:   <yhchuang@realtek.com>
+To:     <kvalo@codeaurora.org>
+CC:     <linux-wireless@vger.kernel.org>, <briannorris@chromium.org>
+Subject: [PATCH] rtw88: 8822c: remove CCK TX setting when switch channel
+Date:   Fri, 22 May 2020 17:12:34 +0800
+Message-ID: <20200522091234.24495-1-yhchuang@realtek.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200522075124.GB4245@localhost.localdomain>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9628 signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 spamscore=0 malwarescore=0
- mlxscore=0 adultscore=0 bulkscore=0 suspectscore=0 mlxlogscore=816
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2005220070
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9628 signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 lowpriorityscore=0 spamscore=0
- mlxlogscore=850 clxscore=1015 priorityscore=1501 cotscore=-2147483648
- impostorscore=0 bulkscore=0 adultscore=0 malwarescore=0 phishscore=0
- mlxscore=0 suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2004280000 definitions=main-2005220070
+Content-Type: text/plain
+X-Originating-IP: [172.21.68.128]
+X-ClientProxiedBy: RTEXMB02.realtek.com.tw (172.21.6.95) To
+ RTEXMB04.realtek.com.tw (172.21.6.97)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, May 22, 2020 at 09:51:24AM +0200, Lorenzo Bianconi wrote:
-> > 
-> > On Fri, May 22, 2020 at 09:26:06AM +0200, Lorenzo Bianconi wrote:
-> > > Fix a NULL pointer dereference in mt7915_register_ext_phy since phy
-> > > data structure is allocated by mt76_alloc_phy routine
-> > > 
-> > > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-> > 
-> > Thanks!  Could you fix the same the bug in mt7615_register_ext_phy() as
-> > well?
-> 
-> Hi Dan,
-> 
-> I have already posted the fix here: https://patchwork.kernel.org/patch/11553519/
-> The patch is already in Felix's tree.
+From: Chien-Hsun Liao <ben.liao@realtek.com>
 
-Fantastic.
+The CCK TX setting when switch channel will fix the CCK to
+path A only, so if the antenna is configured to path B
+(e.g. iw phy set antenna 0x2 0x3 "TX B/RX AB"), then the CCK
+packets can never be delivered to the air if only path B is
+connected with an antenna (it can possibly be transmitted
+through path A, but as path B is configured, the expected
+behavior is incorrect).
 
-regards,
-dan carpenter
+This can also solve the racing issue of CCK TX setting between
+driver and firmware. The CCK TX setting in driver should be
+removed. Otherwise, the CCK TX setting would be wrong when the
+racing occurs.
+
+Fixes: 297bcf8222f2 ("rtw88: add support for set/get antennas")
+Signed-off-by: Chien-Hsun Liao <ben.liao@realtek.com>
+Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
+---
+ drivers/net/wireless/realtek/rtw88/rtw8822c.c | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822c.c b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
+index 8d65a9684af3..c3d72ef611c6 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8822c.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
+@@ -1496,7 +1496,6 @@ static void rtw8822c_set_channel_bb(struct rtw_dev *rtwdev, u8 channel, u8 bw,
+ {
+ 	if (IS_CH_2G_BAND(channel)) {
+ 		rtw_write32_clr(rtwdev, REG_BGCTRL, BITS_RX_IQ_WEIGHT);
+-		rtw_write32_mask(rtwdev, REG_RXCCKSEL, 0xf0000000, 0x8);
+ 		rtw_write32_set(rtwdev, REG_TXF4, BIT(20));
+ 		rtw_write32_clr(rtwdev, REG_CCK_CHECK, BIT_CHECK_CCK_EN);
+ 		rtw_write32_clr(rtwdev, REG_CCKTXONLY, BIT_BB_CCK_CHECK_EN);
+@@ -1564,7 +1563,6 @@ static void rtw8822c_set_channel_bb(struct rtw_dev *rtwdev, u8 channel, u8 bw,
+ 		rtw_write32_set(rtwdev, REG_CCK_CHECK, BIT_CHECK_CCK_EN);
+ 		rtw_write32_set(rtwdev, REG_BGCTRL, BITS_RX_IQ_WEIGHT);
+ 		rtw_write32_clr(rtwdev, REG_TXF4, BIT(20));
+-		rtw_write32_mask(rtwdev, REG_RXCCKSEL, 0xf0000000, 0x0);
+ 		rtw_write32_mask(rtwdev, REG_CCAMSK, 0x3F000000, 0x22);
+ 		rtw_write32_mask(rtwdev, REG_TXDFIR0, 0x70, 0x3);
+ 		if (IS_CH_5G_BAND_1(channel) || IS_CH_5G_BAND_2(channel)) {
+-- 
+2.17.1
 
