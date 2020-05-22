@@ -2,89 +2,113 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F20AB1DE2B7
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 May 2020 11:13:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 08DF01DE3BE
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 May 2020 12:11:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729719AbgEVJNF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 22 May 2020 05:13:05 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:35624 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729480AbgEVJNF (ORCPT
+        id S1728362AbgEVKL3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 22 May 2020 06:11:29 -0400
+Received: from mail27.static.mailgun.info ([104.130.122.27]:39889 "EHLO
+        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728249AbgEVKL3 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 22 May 2020 05:13:05 -0400
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.69 with qID 04M9CukjE026284, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexmb06.realtek.com.tw[172.21.6.99])
-        by rtits2.realtek.com.tw (8.15.2/2.66/5.86) with ESMTPS id 04M9CukjE026284
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Fri, 22 May 2020 17:12:56 +0800
-Received: from RTEXMB04.realtek.com.tw (172.21.6.97) by
- RTEXMB06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Fri, 22 May 2020 17:12:55 +0800
-Received: from localhost.localdomain (172.21.68.128) by
- RTEXMB04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Fri, 22 May 2020 17:12:55 +0800
-From:   <yhchuang@realtek.com>
-To:     <kvalo@codeaurora.org>
-CC:     <linux-wireless@vger.kernel.org>, <briannorris@chromium.org>
-Subject: [PATCH] rtw88: 8822c: remove CCK TX setting when switch channel
-Date:   Fri, 22 May 2020 17:12:34 +0800
-Message-ID: <20200522091234.24495-1-yhchuang@realtek.com>
-X-Mailer: git-send-email 2.17.1
+        Fri, 22 May 2020 06:11:29 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1590142288; h=Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Message-ID: In-Reply-To: Date: References: Subject: Cc:
+ To: From: Sender; bh=NW8Jsqkb6pnbBs1zr+nqGOErhbAaUKt/K4f9G+vJyjQ=; b=JGoJNkrX7jZ/a1y46Q8C/C65gVdfyGUiwr6VC/7S+c3tDRFVP3gHOYzv1HN8kjUq+6lK7v2N
+ PFr/LWcwU0pI5CYJWamm2InpsW68U+bEYD+KWOYjL6zAUmoxiJV9mv2Q3sGbj1bDnTON8pBW
+ xWBwykePnv36AAgNtQid7EDAzRg=
+X-Mailgun-Sending-Ip: 104.130.122.27
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n04.prod.us-west-2.postgun.com with SMTP id
+ 5ec7a55082c96b5d3b84f35a (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 22 May 2020 10:11:28
+ GMT
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id F3B0CC433C6; Fri, 22 May 2020 10:11:27 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE,
+        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id DB89FC433C8;
+        Fri, 22 May 2020 10:11:20 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org DB89FC433C8
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     YueHaibing <yuehaibing@huawei.com>
+Cc:     <nbd@nbd.name>, <lorenzo.bianconi83@gmail.com>,
+        <ryder.lee@mediatek.com>, <davem@davemloft.net>, <kuba@kernel.org>,
+        <matthias.bgg@gmail.com>, <shayne.chen@mediatek.com>,
+        <chih-min.chen@mediatek.com>, <yf.luo@mediatek.com>,
+        <yiwei.chung@mediatek.com>, <linux-wireless@vger.kernel.org>,
+        <netdev@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+        <linux-mediatek@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH -next] mt76: mt7915: Fix build error
+References: <20200522034533.61716-1-yuehaibing@huawei.com>
+Date:   Fri, 22 May 2020 13:11:16 +0300
+In-Reply-To: <20200522034533.61716-1-yuehaibing@huawei.com>
+        (yuehaibing@huawei.com's message of "Fri, 22 May 2020 11:45:33 +0800")
+Message-ID: <87a720b7p7.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [172.21.68.128]
-X-ClientProxiedBy: RTEXMB02.realtek.com.tw (172.21.6.95) To
- RTEXMB04.realtek.com.tw (172.21.6.97)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Chien-Hsun Liao <ben.liao@realtek.com>
+YueHaibing <yuehaibing@huawei.com> writes:
 
-The CCK TX setting when switch channel will fix the CCK to
-path A only, so if the antenna is configured to path B
-(e.g. iw phy set antenna 0x2 0x3 "TX B/RX AB"), then the CCK
-packets can never be delivered to the air if only path B is
-connected with an antenna (it can possibly be transmitted
-through path A, but as path B is configured, the expected
-behavior is incorrect).
+> In file included from ./include/linux/firmware.h:6:0,
+>                  from drivers/net/wireless/mediatek/mt76/mt7915/mcu.c:4:
+> In function =E2=80=98__mt7915_mcu_msg_send=E2=80=99,
+>     inlined from =E2=80=98mt7915_mcu_send_message=E2=80=99 at drivers/net=
+/wireless/mediatek/mt76/mt7915/mcu.c:370:6:
+> ./include/linux/compiler.h:396:38: error: call to =E2=80=98__compiletime_=
+assert_545=E2=80=99 declared with attribute error: BUILD_BUG_ON failed: cmd=
+ =3D=3D MCU_EXT_CMD_EFUSE_ACCESS && mcu_txd->set_query !=3D MCU_Q_QUERY
+>   _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+>                                       ^
+> ./include/linux/compiler.h:377:4: note: in definition of macro =E2=80=98_=
+_compiletime_assert=E2=80=99
+>     prefix ## suffix();    \
+>     ^~~~~~
+> ./include/linux/compiler.h:396:2: note: in expansion of macro =E2=80=98_c=
+ompiletime_assert=E2=80=99
+>   _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+>   ^~~~~~~~~~~~~~~~~~~
+> ./include/linux/build_bug.h:39:37: note: in expansion of macro =E2=80=98c=
+ompiletime_assert=E2=80=99
+>  #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), msg)
+>                                      ^~~~~~~~~~~~~~~~~~
+> ./include/linux/build_bug.h:50:2: note: in expansion of macro =E2=80=98BU=
+ILD_BUG_ON_MSG=E2=80=99
+>   BUILD_BUG_ON_MSG(condition, "BUILD_BUG_ON failed: " #condition)
+>   ^~~~~~~~~~~~~~~~
+> drivers/net/wireless/mediatek/mt76/mt7915/mcu.c:280:2: note: in expansion=
+ of macro =E2=80=98BUILD_BUG_ON=E2=80=99
+>   BUILD_BUG_ON(cmd =3D=3D MCU_EXT_CMD_EFUSE_ACCESS &&
+>   ^~~~~~~~~~~~
+>
+> BUILD_BUG_ON is meaningless here, chang it to WARN_ON.
+>
+> Fixes: e57b7901469f ("mt76: add mac80211 driver for MT7915 PCIe-based chi=
+psets")
+> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 
-This can also solve the racing issue of CCK TX setting between
-driver and firmware. The CCK TX setting in driver should be
-removed. Otherwise, the CCK TX setting would be wrong when the
-racing occurs.
+I'm curious why I don't see this build error? I was about to send a pull
+request to Dave, should I hold off the pull request due to this problem?
 
-Fixes: 297bcf8222f2 ("rtw88: add support for set/get antennas")
-Signed-off-by: Chien-Hsun Liao <ben.liao@realtek.com>
-Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
----
- drivers/net/wireless/realtek/rtw88/rtw8822c.c | 2 --
- 1 file changed, 2 deletions(-)
-
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822c.c b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-index 8d65a9684af3..c3d72ef611c6 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-@@ -1496,7 +1496,6 @@ static void rtw8822c_set_channel_bb(struct rtw_dev *rtwdev, u8 channel, u8 bw,
- {
- 	if (IS_CH_2G_BAND(channel)) {
- 		rtw_write32_clr(rtwdev, REG_BGCTRL, BITS_RX_IQ_WEIGHT);
--		rtw_write32_mask(rtwdev, REG_RXCCKSEL, 0xf0000000, 0x8);
- 		rtw_write32_set(rtwdev, REG_TXF4, BIT(20));
- 		rtw_write32_clr(rtwdev, REG_CCK_CHECK, BIT_CHECK_CCK_EN);
- 		rtw_write32_clr(rtwdev, REG_CCKTXONLY, BIT_BB_CCK_CHECK_EN);
-@@ -1564,7 +1563,6 @@ static void rtw8822c_set_channel_bb(struct rtw_dev *rtwdev, u8 channel, u8 bw,
- 		rtw_write32_set(rtwdev, REG_CCK_CHECK, BIT_CHECK_CCK_EN);
- 		rtw_write32_set(rtwdev, REG_BGCTRL, BITS_RX_IQ_WEIGHT);
- 		rtw_write32_clr(rtwdev, REG_TXF4, BIT(20));
--		rtw_write32_mask(rtwdev, REG_RXCCKSEL, 0xf0000000, 0x0);
- 		rtw_write32_mask(rtwdev, REG_CCAMSK, 0x3F000000, 0x22);
- 		rtw_write32_mask(rtwdev, REG_TXDFIR0, 0x70, 0x3);
- 		if (IS_CH_5G_BAND_1(channel) || IS_CH_5G_BAND_2(channel)) {
--- 
-2.17.1
-
+--=20
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
+hes
