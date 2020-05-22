@@ -2,107 +2,94 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D07C31DDF49
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 May 2020 07:24:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A62C1DE0A8
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 May 2020 09:10:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728175AbgEVFX6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 22 May 2020 01:23:58 -0400
-Received: from mail-pj1-f68.google.com ([209.85.216.68]:32996 "EHLO
-        mail-pj1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726910AbgEVFX6 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 22 May 2020 01:23:58 -0400
-Received: by mail-pj1-f68.google.com with SMTP id z15so1894920pjb.0;
-        Thu, 21 May 2020 22:23:57 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=tIS20nIVD3N2tOP8HqpGQTGvTajJC3k9skSycjshVvo=;
-        b=OelwsbVASVPz58GDVNV3N1pIB8GrBLnDJHUL4Si4vNutNwlrFbz+RI8ICE+COFq2pv
-         pfRSNrgtB5HdKh7G8zInrPyTAsCwy4olC9ZqqAAiXOscUwSB5jXU1VxkZhy7xn5He/eW
-         Py3ArJHCpGfKE4qnWZ0Rx78hZNSTxaPWLHUGdXPYuqgO+Ndy2y3m18dtAQ89UtKUOCU/
-         hqmsSRQL7wiYjT73W8TSB1ndHiviZ1Yy/ojsu2WSCv9XKaZN1c4AhmUe3jAFm1By0v34
-         HAJ+XOKPhQGdcLEcml5M1zofNNwLDtNxGj9NxpGreAj3+O1pkqH6YVajz+8SODR5EsoH
-         Z/fQ==
-X-Gm-Message-State: AOAM5305Od7L5F6Zk75Rmut+VrFm1ZS6uBD5wmMF4dc8UgQV6+67DHXp
-        D7zYFo8fCvA1ork8VrAlVXA=
-X-Google-Smtp-Source: ABdhPJwrA8Ug/bhBlMQocPIWph3Tg+gvIO2vU/EDcU5VOBbAHGT6IBZ5MccngBHWe4I5el1EFY91Dw==
-X-Received: by 2002:a17:90a:150:: with SMTP id z16mr2536283pje.37.1590125037470;
-        Thu, 21 May 2020 22:23:57 -0700 (PDT)
-Received: from 42.do-not-panic.com (42.do-not-panic.com. [157.230.128.187])
-        by smtp.gmail.com with ESMTPSA id l3sm5931550pjb.39.2020.05.21.22.23.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 May 2020 22:23:56 -0700 (PDT)
-Received: by 42.do-not-panic.com (Postfix, from userid 1000)
-        id 531AD4088B; Fri, 22 May 2020 05:23:55 +0000 (UTC)
-Date:   Fri, 22 May 2020 05:23:55 +0000
-From:   Luis Chamberlain <mcgrof@kernel.org>
-To:     Emmanuel Grumbach <egrumbach@gmail.com>
-Cc:     Brian Norris <briannorris@chromium.org>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        aquini@redhat.com, peterz@infradead.org,
-        Daniel Vetter <daniel.vetter@ffwll.ch>,
-        mchehab+samsung@kernel.org, will@kernel.org, bhe@redhat.com,
-        ath10k@lists.infradead.org, Takashi Iwai <tiwai@suse.de>,
-        mingo@redhat.com, dyoung@redhat.com, pmladek@suse.com,
-        Kees Cook <keescook@chromium.org>,
-        Arnd Bergmann <arnd@arndb.de>, gpiccoli@canonical.com,
-        Steven Rostedt <rostedt@goodmis.org>, cai@lca.pw,
-        tglx@linutronix.de,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "<netdev@vger.kernel.org>" <netdev@vger.kernel.org>,
-        schlad@suse.de, Linux Kernel <linux-kernel@vger.kernel.org>,
-        jeyu@kernel.org, Andrew Morton <akpm@linux-foundation.org>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: Re: [PATCH v2 12/15] ath10k: use new module_firmware_crashed()
-Message-ID: <20200522052355.GZ11244@42.do-not-panic.com>
-References: <20200515212846.1347-1-mcgrof@kernel.org>
- <20200515212846.1347-13-mcgrof@kernel.org>
- <2b74a35c726e451b2fab2b5d0d301e80d1f4cdc7.camel@sipsolutions.net>
- <7306323c35e6f44d7c569e689b48f380f80da5e5.camel@sipsolutions.net>
- <CA+ASDXOg9oKeMJP1Mf42oCMMM3sVe0jniaWowbXVuaYZ=ZpDjQ@mail.gmail.com>
- <20200519140212.GT11244@42.do-not-panic.com>
- <CA+ASDXMUHOcvJ_7UWgyANMxSz15Ji7TcLDXVCtSPa+fOr=+FGA@mail.gmail.com>
- <CANUX_P1pnV46gOo0aL6QV0b+49ubB7C5nuUOuOfoT7aOM+ye9w@mail.gmail.com>
- <CA+ASDXPAVJwyThAXRQT0_ao4s1nDYOEQifxMc+JsEMa=cTEGJA@mail.gmail.com>
- <CANUX_P2thzh9oB4KkrAoyT6H-E6MDFUNQ_p0e9QZtScgMuKm7Q@mail.gmail.com>
+        id S1728312AbgEVHKr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 22 May 2020 03:10:47 -0400
+Received: from mail.kernel.org ([198.145.29.99]:36184 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728253AbgEVHKr (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 22 May 2020 03:10:47 -0400
+Received: from localhost.localdomain.com (unknown [151.48.155.206])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 1C34A2072C;
+        Fri, 22 May 2020 07:10:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1590131447;
+        bh=SQlYDPydfwFdBMjoV74mHzaFhH/L+2o8RdjW4/NfzTw=;
+        h=From:To:Cc:Subject:Date:From;
+        b=IUymKygoDxgyeoFJWWly7OnQRam6ARyQtBU1zMYJFO3ZdTJPh2Y6Xcn2zjx+U3ENS
+         xiR5/abAymGXZHHxq6edZ0mwDBAGmX6lLzQUkqelMh/jqpK/X1QDdk6DwUOsolGlIc
+         naJV/znAbfJkm96VUHr308/Cqda2K8j90htFKySQ=
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
+        sean.wang@mediatek.com
+Subject: [PATCH] mt76: mt7615: fix hw_scan with ssid_type for specified SSID only
+Date:   Fri, 22 May 2020 09:10:24 +0200
+Message-Id: <d1a88c950e1c69183e98792bc8f02beb8d467ebc.1590130928.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CANUX_P2thzh9oB4KkrAoyT6H-E6MDFUNQ_p0e9QZtScgMuKm7Q@mail.gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, May 22, 2020 at 08:12:59AM +0300, Emmanuel Grumbach wrote:
-> >
-> > On Tue, May 19, 2020 at 10:37 PM Emmanuel Grumbach <egrumbach@gmail.com> wrote:
-> > > So I believe we already have this uevent, it is the devcoredump. All
-> > > we need is to add the unique id.
-> >
-> > I think there are a few reasons that devcoredump doesn't satisfy what
-> > either Luis or I want.
-> >
-> > 1) it can be disabled entirely [1], for good reasons (e.g., think of
-> > non-${CHIP_VENDOR} folks, who can't (and don't want to) do anything
-> > with the opaque dumps provided by closed-source firmware)
-> 
-> Ok, if all you're interested into is the information that this event
-> happen (as opposed to report a bug and providing the data), then I
-> agree. 
+From: Sean Wang <sean.wang@mediatek.com>
 
-I've now hit again a firmware crash with ath10k with the latest firwmare
-and kernel and the *only* thing that helped recovery was a full reboot,
-so that is a crystal clear case that this needs to taint the kernel, and
-yes we do want to inform users too, so I've just added uevent support
-for a few panic / taint events in the kernel now and rolled into my
-series. I'll run some final tests and then post this as a follow up.
+Fix hw_scan with ssid_type for specified SSID only
 
-devlink didn't cut it, its networking specific.
+The definition for ssid_type in current firmware is that
+ssid_type BIT(2) set actually for specified SSID + wildcard SSID.
+ssid_type BIT(2) and ssid_type_ext BIT(0) both set actually for
+specified SSID only;
 
-  Luis
+Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+ drivers/net/wireless/mediatek/mt76/mt7615/mcu.c | 1 +
+ drivers/net/wireless/mediatek/mt76/mt7615/mcu.h | 6 ++++--
+ 2 files changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+index 14c2b5d7dbbd..6e869b8c5e26 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+@@ -2898,6 +2898,7 @@ int mt7615_mcu_hw_scan(struct mt7615_phy *phy, struct ieee80211_vif *vif,
+ 		n_ssids++;
+ 	}
+ 	req->ssid_type = n_ssids ? BIT(2) : BIT(0);
++	req->ssid_type_ext = n_ssids ? BIT(0) : 0;
+ 	req->ssids_num = n_ssids;
+ 
+ 	/* increase channel time for passive scan */
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.h
+index fd40d99f5a23..2314d0b23af1 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.h
+@@ -327,7 +327,8 @@ struct mt7615_hw_scan_req {
+ 		       */
+ 	u8 ssid_type; /* BIT(0) wildcard SSID
+ 		       * BIT(1) P2P wildcard SSID
+-		       * BIT(2) specified SSID
++		       * BIT(2) specified SSID + wildcard SSID
++		       * BIT(2) + ssid_type_ext BIT(0) specified SSID only
+ 		       */
+ 	u8 ssids_num;
+ 	u8 probe_req_num; /* Number of probe request for each SSID */
+@@ -362,7 +363,8 @@ struct mt7615_hw_scan_req {
+ 	struct mt7615_mcu_scan_ssid ext_ssids[6];
+ 	u8 bssid[ETH_ALEN];
+ 	u8 random_mac[ETH_ALEN]; /* valid when BIT(1) in scan_func is set. */
+-	u8 pad[64];
++	u8 pad[63];
++	u8 ssid_type_ext;
+ } __packed;
+ 
+ #define SCAN_DONE_EVENT_MAX_CHANNEL_NUM	64
+-- 
+2.26.2
+
