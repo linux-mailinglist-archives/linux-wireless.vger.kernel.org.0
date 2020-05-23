@@ -2,57 +2,58 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6984D1DFB2B
-	for <lists+linux-wireless@lfdr.de>; Sat, 23 May 2020 23:26:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F269A1DFB2E
+	for <lists+linux-wireless@lfdr.de>; Sat, 23 May 2020 23:27:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388083AbgEWV0i (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 23 May 2020 17:26:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59706 "EHLO
+        id S2388110AbgEWV1t (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 23 May 2020 17:27:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59898 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388036AbgEWV0h (ORCPT
+        with ESMTP id S2387905AbgEWV1t (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 23 May 2020 17:26:37 -0400
-Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86360C061A0E
-        for <linux-wireless@vger.kernel.org>; Sat, 23 May 2020 14:26:36 -0700 (PDT)
-Received: by mail-yb1-xb49.google.com with SMTP id y189so13330337ybc.14
-        for <linux-wireless@vger.kernel.org>; Sat, 23 May 2020 14:26:36 -0700 (PDT)
+        Sat, 23 May 2020 17:27:49 -0400
+Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7597C05BD43
+        for <linux-wireless@vger.kernel.org>; Sat, 23 May 2020 14:27:47 -0700 (PDT)
+Received: by mail-yb1-xb4a.google.com with SMTP id s8so13174089ybj.9
+        for <linux-wireless@vger.kernel.org>; Sat, 23 May 2020 14:27:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20161025;
         h=date:message-id:mime-version:subject:from:to:cc;
-        bh=TrTjVo1OcoXHUCoJ8HjrgU12KCu7XFLQYbdnxvd251Y=;
-        b=HLAhLxlvXnsfpG/KopUm9p5Je1BoyxhAuZlSqyLMcwVqB04pQDZm1PICjxrts0ozAV
-         pEaYPWD7lan8aisHjsHqetSginIqCu17tn204RPBK/wcI3c4S9GzQMD73FujWAg7Uhfx
-         e9ZjpVkmbIzmD/nM39awkYguZRJTkiLCxVgLmZDYRNmuCnVO7FfSwLJTs2VAWVzrDFZ3
-         C9zvAlKr7rtl2kMHsnFqzrKcc00W1kPCf6TSB6iEeqic5i8br02wB+MW50rirfLpOkgW
-         97BkPoG5Zz3Fsa9Mq2NYpwZNby+BqRvmp9QqPzMfteo6uw+9TMechD1BY6K7d7oFAOVx
-         0fQg==
+        bh=L7hPQvY2NIf4meJrg9SAHQ2svkS/4rdW/+N34fTKjso=;
+        b=Hb4EWUiLNML4nAz2rpesxRQ3Xui71Qj89OfwfSHj9V4QiHPwZcMHwuf0RSOkNFix8D
+         Cwb//Nc0K3oXE78uSX2KvrGQuwktkdmGND/sy466Tui/B056QjaGvSP1dtqoB0WvXthA
+         0807ZieAJnvaQYOiZ7LWnTKoes3+17uK+7MCau8uULig1fq/FB8DH0GadbFtpxI4IsGR
+         amCM8Hzpm8gp8ncdPu8egBC7VPFWX52gtuY+HOk+nkHYfA+44zO80L4OVWZi/HwdayDs
+         xof3VJdd3Cq3INRQnW2tGnhDD0H+1jvrfr/xx2ZjJnz1KMwSCPjS/681DLnFQq6EL9Nf
+         AhTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:message-id:mime-version:subject:from:to:cc;
-        bh=TrTjVo1OcoXHUCoJ8HjrgU12KCu7XFLQYbdnxvd251Y=;
-        b=s5m+YRe+DEhdCmIfw/mzKLhfeIvqUmp2+VYM0DUniWIM99xQc/KtEjqSur1agEB1Ip
-         RiYm4lY5vB+JqzG8Shsx08O5j5Z8R46IXvxi4UEF+m2KmJpV6giHMwyMqxC/oQlg13zI
-         gGsjF/IUE7fGUK9l8BeaB11zcTj08I02v5xo2F9pfDW7en6mA+a/QqZ9FEqO/DWfiWyi
-         s1Lv3bgy8TRiYin9yvpdfhHY9XtToJX18YZbJSADJab83DozkHAMVrWxoKSEsuhw7Yhg
-         q/ukK63PBb34m31AMEu67i6WQ+WRaQjY1UCqO8kVKgF161vvUPaeIxgvGpbzt/ZEqmJr
-         3tNQ==
-X-Gm-Message-State: AOAM531RObtbBtUEs/259gHbENlxTNCyhnedKooZCoqHGaN//YC+hX+9
-        9mb7QF4g4l/6GKlE+221V0KZbAFzMHK4
-X-Google-Smtp-Source: ABdhPJxwW3ZnH52iCl4gZeP+CKsgfEGyKLlyuNnzeWwOEkG/Bs9soUUIFZHHEM2v0y3jaM4HUlricKQ4+sC8
-X-Received: by 2002:a25:a508:: with SMTP id h8mr14282492ybi.219.1590269195703;
- Sat, 23 May 2020 14:26:35 -0700 (PDT)
-Date:   Sat, 23 May 2020 22:26:28 +0100
-Message-Id: <20200523212628.31526-1-pterjan@google.com>
+        bh=L7hPQvY2NIf4meJrg9SAHQ2svkS/4rdW/+N34fTKjso=;
+        b=bey+MD7Hg0DGq8aMRAqpP8hsq3uYjiKSGE1SB7WuRYqRunY05yAQnxnmvWbNZbZs/2
+         voq/twVtGJbR6Z5HEZF5z0mEEqUPTQ6vK4pa0WBL3QiCvPcbHCpldH7LKYOPRbU4RL1G
+         U3Jal8O65W1DVkCUN+cgZT7UUChWhgdZQM7B9u1fg0OgRCUjyVBd1NPsA6C6S3zMQuaW
+         IC1e7/FkoSupDKibsfiwdQ8uLKQWrwCaMmbdaCebnwUDAI6C5k/iic9fx3NfDpNz1pmS
+         a9C33CeOxAQzq3sjVm+7rXD7n0xWChajxGvXzJ4mzlIj6OHhmurDroZ49z8cfu9uDGoX
+         5K9Q==
+X-Gm-Message-State: AOAM530rF3o97XD4pk0iaqYrp/YGF6n5giL7u9Q6qjwOp1vULiUlcTwl
+        ldpKTSGBxX3iQenippkMM7bsmIyB2B3G
+X-Google-Smtp-Source: ABdhPJzlNWcVHOMWGwLCGzq9m9H3VHSJkfIikGT3epD7agMuS7DCu02ze0nAP7jyATxoOh5dWnFoWcT6Ewoe
+X-Received: by 2002:a25:253:: with SMTP id 80mr18381858ybc.405.1590269266946;
+ Sat, 23 May 2020 14:27:46 -0700 (PDT)
+Date:   Sat, 23 May 2020 22:27:35 +0100
+Message-Id: <20200523212735.32364-1-pterjan@google.com>
 Mime-Version: 1.0
 X-Mailer: git-send-email 2.27.0.rc0.183.gde8f92d652-goog
-Subject: [PATCH] libertas: Use shared constant for rfc1042 header
+Subject: [PATCH] atmel: Use shared constant for rfc1042 header
 From:   Pascal Terjan <pterjan@google.com>
-To:     Kalle Valo <kvalo@codeaurora.org>,
+To:     Simon Kelley <simon@thekelleys.org.uk>,
+        Kalle Valo <kvalo@codeaurora.org>,
         "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>,
-        libertas-dev@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
 Cc:     Pascal Terjan <pterjan@google.com>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
@@ -64,32 +65,30 @@ This is one of the 9 drivers redefining rfc1042_header.
 
 Signed-off-by: Pascal Terjan <pterjan@google.com>
 ---
- drivers/net/wireless/marvell/libertas/rx.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/net/wireless/atmel/atmel.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/marvell/libertas/rx.c b/drivers/net/wireless/marvell/libertas/rx.c
-index 58a1fc433b73..f28aa09d1f9e 100644
---- a/drivers/net/wireless/marvell/libertas/rx.c
-+++ b/drivers/net/wireless/marvell/libertas/rx.c
-@@ -62,9 +62,6 @@ int lbs_process_rxed_packet(struct lbs_private *priv, struct sk_buff *skb)
- 	struct rxpd *p_rx_pd;
- 	int hdrchop;
- 	struct ethhdr *p_ethhdr;
--	static const u8 rfc1042_eth_hdr[] = {
--		0xaa, 0xaa, 0x03, 0x00, 0x00, 0x00
--	};
+diff --git a/drivers/net/wireless/atmel/atmel.c b/drivers/net/wireless/atmel/atmel.c
+index 74538085cfb7..d5875836068c 100644
+--- a/drivers/net/wireless/atmel/atmel.c
++++ b/drivers/net/wireless/atmel/atmel.c
+@@ -798,7 +798,6 @@ static void tx_update_descriptor(struct atmel_private *priv, int is_bcast,
  
- 	BUG_ON(!skb);
+ static netdev_tx_t start_tx(struct sk_buff *skb, struct net_device *dev)
+ {
+-	static const u8 SNAP_RFC1024[6] = { 0xaa, 0xaa, 0x03, 0x00, 0x00, 0x00 };
+ 	struct atmel_private *priv = netdev_priv(dev);
+ 	struct ieee80211_hdr header;
+ 	unsigned long flags;
+@@ -853,7 +852,7 @@ static netdev_tx_t start_tx(struct sk_buff *skb, struct net_device *dev)
+ 	}
  
-@@ -102,7 +99,7 @@ int lbs_process_rxed_packet(struct lbs_private *priv, struct sk_buff *skb)
- 		sizeof(p_rx_pkt->eth803_hdr.src_addr));
+ 	if (priv->use_wpa)
+-		memcpy(&header.addr4, SNAP_RFC1024, ETH_ALEN);
++		memcpy(&header.addr4, rfc1042_header, ETH_ALEN);
  
- 	if (memcmp(&p_rx_pkt->rfc1042_hdr,
--		   rfc1042_eth_hdr, sizeof(rfc1042_eth_hdr)) == 0) {
-+		   rfc1042_header, sizeof(rfc1042_header)) == 0) {
- 		/*
- 		 *  Replace the 803 header and rfc1042 header (llc/snap) with an
- 		 *    EthernetII header, keep the src/dst and snap_type (ethertype)
+ 	header.frame_control = cpu_to_le16(frame_ctl);
+ 	/* Copy the wireless header into the card */
 -- 
 2.27.0.rc0.183.gde8f92d652-goog
 
