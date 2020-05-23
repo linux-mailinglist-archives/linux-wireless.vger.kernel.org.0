@@ -2,120 +2,97 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E55E1DF494
-	for <lists+linux-wireless@lfdr.de>; Sat, 23 May 2020 06:19:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9BFB71DF5B9
+	for <lists+linux-wireless@lfdr.de>; Sat, 23 May 2020 09:46:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728401AbgEWETe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 23 May 2020 00:19:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41514 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725294AbgEWETd (ORCPT
+        id S2387471AbgEWHq1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 23 May 2020 03:46:27 -0400
+Received: from mailgw01.mediatek.com ([210.61.82.183]:44571 "EHLO
+        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1725294AbgEWHq1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 23 May 2020 00:19:33 -0400
-Received: from mail-pj1-x1041.google.com (mail-pj1-x1041.google.com [IPv6:2607:f8b0:4864:20::1041])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1CAFC061A0E;
-        Fri, 22 May 2020 21:19:33 -0700 (PDT)
-Received: by mail-pj1-x1041.google.com with SMTP id k7so5847596pjs.5;
-        Fri, 22 May 2020 21:19:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=lnKO8mEgKG0cuqfZGwVZY3dnnPkJgdITjBuWRWcUqiQ=;
-        b=brjn7n8mURXe0FKXGVqBamb/EFgvxQBFyCyv8KRwVVLButg24bt1mO+ShPhCfc8b7b
-         qyF0yYPI78ty562/3Y8jNL82dtOcK6AafaszzzWi/T4Q9iy6J1c6Qy8gaFoqzSoKzKNY
-         f+mRVVq3hOSP3hmyktnJxhQiFm1YR2Ja2S7zfpuiqFXG1AfMQVJK8IIurdw8PzAXvztH
-         OgNBa+L+q9gj/7prZDr7VvFi/Z9UjQnwklLZVdrktiW/83F+jpJ1/3Vv6gqLS9uEpkjg
-         3yqgo99VvvnpNWibMzYlO0TrgNKAObuJsEzyJJa4H9Fwf9N9x10aKc1z8WfDnp3SMogA
-         WR9Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=lnKO8mEgKG0cuqfZGwVZY3dnnPkJgdITjBuWRWcUqiQ=;
-        b=qkQfHzS9bQR/ErasgBSq1EcUOP8aw1DMlX9tJQ1eZAQVmttkWUU+VyYbglfd2oc+MR
-         GL08HBn9PxcKU3hVFMRvt/MmZcnI83oIL9alp+UGXt0Ya4ECa6JlKPwCD4U1/Na+tyLa
-         ytw+ez76MY5MCPd8evDfHqyLRHuej5L/hsLZ2UuGsZdVtALKfJY4fVLP/xPuoH9CLBrP
-         fK1nlRzik2b6cnB17o/z+vYklvtnu/pKdfnlFQWAvy7TOe5YpCe2cyHpGALZGCYB6GXr
-         qNM6Sb7HKxc6Cc0Ux7N4pv7r5YDvhbY8FkgqMpYqcuMflr92DVuUkV4HyzXQMDAwncnp
-         pIXg==
-X-Gm-Message-State: AOAM5307uk1jvDq+HPqNhubRgm3OLsyYxSNsESjRaYchHBrNHS6PQvJv
-        EPJvSM4N7hLb+W2TP89kBD0=
-X-Google-Smtp-Source: ABdhPJysX9LqXvkIYAcO2nda8F8H3jXr/8IwdGUWf9qFEo01Q6E3ECDmQaGCBwTTxTKz38LznCi7FA==
-X-Received: by 2002:a17:902:bd07:: with SMTP id p7mr17186991pls.293.1590207573197;
-        Fri, 22 May 2020 21:19:33 -0700 (PDT)
-Received: from localhost.localdomain ([2604:1380:4111:8b00::1])
-        by smtp.gmail.com with ESMTPSA id g18sm8202317pfq.146.2020.05.22.21.19.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 22 May 2020 21:19:32 -0700 (PDT)
-From:   Nathan Chancellor <natechancellor@gmail.com>
-To:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>
-Cc:     Ryder Lee <ryder.lee@mediatek.com>, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-mediatek@lists.infradead.org,
-        linux-kernel@vger.kernel.org, clang-built-linux@googlegroups.com,
-        Nathan Chancellor <natechancellor@gmail.com>
-Subject: [PATCH] mt76: mt7915: Use proper enum type in __mt7915_mcu_msg_send
-Date:   Fri, 22 May 2020 21:19:23 -0700
-Message-Id: <20200523041923.3332257-1-natechancellor@gmail.com>
-X-Mailer: git-send-email 2.27.0.rc0
+        Sat, 23 May 2020 03:46:27 -0400
+X-UUID: 03777e6e78bf4d788124720909527d9b-20200523
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+        h=Content-Transfer-Encoding:MIME-Version:Content-Type:References:In-Reply-To:Date:CC:To:From:Subject:Message-ID; bh=K1YlH6sKupJLxMJK8vacs2+pPTOSyNUkbRTASPYPs78=;
+        b=RT9OPW5J7GOUkmUxh8d8R8DlL7KcSaC82yN9fWOcLe2ZzJmmp6tpKUvjSpYM45kMHs1TWbyJ6zp3x7YSv7LpcijMZifvfT6OPnlCgVWDnW0M0cKwVZ1cm8HrNYXoep2cjI4NSI+fFZj8lQCpyghTsW0AatR/d0T3y+jpJUQu314=;
+X-UUID: 03777e6e78bf4d788124720909527d9b-20200523
+Received: from mtkcas11.mediatek.inc [(172.21.101.40)] by mailgw01.mediatek.com
+        (envelope-from <ryder.lee@mediatek.com>)
+        (Cellopoint E-mail Firewall v4.1.10 Build 0809 with TLS)
+        with ESMTP id 1500851635; Sat, 23 May 2020 15:46:20 +0800
+Received: from mtkcas08.mediatek.inc (172.21.101.126) by
+ mtkexhb02.mediatek.inc (172.21.101.103) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Sat, 23 May 2020 15:46:19 +0800
+Received: from [172.21.77.33] (172.21.77.33) by mtkcas08.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Sat, 23 May 2020 15:46:18 +0800
+Message-ID: <1590219979.19657.2.camel@mtkswgap22>
+Subject: Re: [PATCH] mt76: mt7915: Use proper enum type in
+ __mt7915_mcu_msg_send
+From:   Ryder Lee <ryder.lee@mediatek.com>
+To:     Nathan Chancellor <natechancellor@gmail.com>
+CC:     Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
+        <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>,
+        <clang-built-linux@googlegroups.com>
+Date:   Sat, 23 May 2020 15:46:19 +0800
+In-Reply-To: <20200523041923.3332257-1-natechancellor@gmail.com>
+References: <20200523041923.3332257-1-natechancellor@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.2.3-0ubuntu6 
 MIME-Version: 1.0
-X-Patchwork-Bot: notify
-Content-Transfer-Encoding: 8bit
+X-MTK:  N
+Content-Transfer-Encoding: base64
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Clang warns:
-
-drivers/net/wireless/mediatek/mt76/mt7915/mcu.c:232:9: warning: implicit
-conversion from enumeration type 'enum mt76_txq_id' to different
-enumeration type 'enum mt7915_txq_id' [-Wenum-conversion]
-                txq = MT_TXQ_FWDL;
-                    ~ ^~~~~~~~~~~
-drivers/net/wireless/mediatek/mt76/mt7915/mcu.c:239:9: warning: implicit
-conversion from enumeration type 'enum mt76_txq_id' to different
-enumeration type 'enum mt7915_txq_id' [-Wenum-conversion]
-                txq = MT_TXQ_MCU_WA;
-                    ~ ^~~~~~~~~~~~~
-drivers/net/wireless/mediatek/mt76/mt7915/mcu.c:243:9: warning: implicit
-conversion from enumeration type 'enum mt76_txq_id' to different
-enumeration type 'enum mt7915_txq_id' [-Wenum-conversion]
-                txq = MT_TXQ_MCU;
-                    ~ ^~~~~~~~~~
-drivers/net/wireless/mediatek/mt76/mt7915/mcu.c:287:36: warning:
-implicit conversion from enumeration type 'enum mt7915_txq_id' to
-different enumeration type 'enum mt76_txq_id' [-Wenum-conversion]
-        return mt76_tx_queue_skb_raw(dev, txq, skb, 0);
-               ~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~
-
-txq should be a "enum mt76_txq_id" as values of that type are the only
-ones assigned to it and that is the type that mt76_tx_queue_skb_raw
-expects.
-
-Fixes: e57b7901469f ("mt76: add mac80211 driver for MT7915 PCIe-based chipsets")
-Link: https://github.com/ClangBuiltLinux/linux/issues/1035
-Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
----
- drivers/net/wireless/mediatek/mt76/mt7915/mcu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-index f00ad2b66761..916f664e964e 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-@@ -220,7 +220,7 @@ static int __mt7915_mcu_msg_send(struct mt7915_dev *dev, struct sk_buff *skb,
- {
- 	struct mt7915_mcu_txd *mcu_txd;
- 	u8 seq, pkt_fmt, qidx;
--	enum mt7915_txq_id txq;
-+	enum mt76_txq_id txq;
- 	__le32 *txd;
- 	u32 val;
- 
-
-base-commit: c11d28ab4a691736e30b49813fb801847bd44e83
--- 
-2.27.0.rc0
+T24gRnJpLCAyMDIwLTA1LTIyIGF0IDIxOjE5IC0wNzAwLCBOYXRoYW4gQ2hhbmNlbGxvciB3cm90
+ZToNCj4gQ2xhbmcgd2FybnM6DQo+IA0KPiBkcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9t
+dDc2L210NzkxNS9tY3UuYzoyMzI6OTogd2FybmluZzogaW1wbGljaXQNCj4gY29udmVyc2lvbiBm
+cm9tIGVudW1lcmF0aW9uIHR5cGUgJ2VudW0gbXQ3Nl90eHFfaWQnIHRvIGRpZmZlcmVudA0KPiBl
+bnVtZXJhdGlvbiB0eXBlICdlbnVtIG10NzkxNV90eHFfaWQnIFstV2VudW0tY29udmVyc2lvbl0N
+Cj4gICAgICAgICAgICAgICAgIHR4cSA9IE1UX1RYUV9GV0RMOw0KPiAgICAgICAgICAgICAgICAg
+ICAgIH4gXn5+fn5+fn5+fn4NCj4gZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9t
+dDc5MTUvbWN1LmM6MjM5Ojk6IHdhcm5pbmc6IGltcGxpY2l0DQo+IGNvbnZlcnNpb24gZnJvbSBl
+bnVtZXJhdGlvbiB0eXBlICdlbnVtIG10NzZfdHhxX2lkJyB0byBkaWZmZXJlbnQNCj4gZW51bWVy
+YXRpb24gdHlwZSAnZW51bSBtdDc5MTVfdHhxX2lkJyBbLVdlbnVtLWNvbnZlcnNpb25dDQo+ICAg
+ICAgICAgICAgICAgICB0eHEgPSBNVF9UWFFfTUNVX1dBOw0KPiAgICAgICAgICAgICAgICAgICAg
+IH4gXn5+fn5+fn5+fn5+fg0KPiBkcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210
+NzkxNS9tY3UuYzoyNDM6OTogd2FybmluZzogaW1wbGljaXQNCj4gY29udmVyc2lvbiBmcm9tIGVu
+dW1lcmF0aW9uIHR5cGUgJ2VudW0gbXQ3Nl90eHFfaWQnIHRvIGRpZmZlcmVudA0KPiBlbnVtZXJh
+dGlvbiB0eXBlICdlbnVtIG10NzkxNV90eHFfaWQnIFstV2VudW0tY29udmVyc2lvbl0NCj4gICAg
+ICAgICAgICAgICAgIHR4cSA9IE1UX1RYUV9NQ1U7DQo+ICAgICAgICAgICAgICAgICAgICAgfiBe
+fn5+fn5+fn5+DQo+IGRyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1L21j
+dS5jOjI4NzozNjogd2FybmluZzoNCj4gaW1wbGljaXQgY29udmVyc2lvbiBmcm9tIGVudW1lcmF0
+aW9uIHR5cGUgJ2VudW0gbXQ3OTE1X3R4cV9pZCcgdG8NCj4gZGlmZmVyZW50IGVudW1lcmF0aW9u
+IHR5cGUgJ2VudW0gbXQ3Nl90eHFfaWQnIFstV2VudW0tY29udmVyc2lvbl0NCj4gICAgICAgICBy
+ZXR1cm4gbXQ3Nl90eF9xdWV1ZV9za2JfcmF3KGRldiwgdHhxLCBza2IsIDApOw0KPiAgICAgICAg
+ICAgICAgICB+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5efn5+fn5+fn5+fn4NCj4gDQo+IHR4
+cSBzaG91bGQgYmUgYSAiZW51bSBtdDc2X3R4cV9pZCIgYXMgdmFsdWVzIG9mIHRoYXQgdHlwZSBh
+cmUgdGhlIG9ubHkNCj4gb25lcyBhc3NpZ25lZCB0byBpdCBhbmQgdGhhdCBpcyB0aGUgdHlwZSB0
+aGF0IG10NzZfdHhfcXVldWVfc2tiX3Jhdw0KPiBleHBlY3RzLg0KPiANCj4gRml4ZXM6IGU1N2I3
+OTAxNDY5ZiAoIm10NzY6IGFkZCBtYWM4MDIxMSBkcml2ZXIgZm9yIE1UNzkxNSBQQ0llLWJhc2Vk
+IGNoaXBzZXRzIikNCj4gTGluazogaHR0cHM6Ly9naXRodWIuY29tL0NsYW5nQnVpbHRMaW51eC9s
+aW51eC9pc3N1ZXMvMTAzNQ0KPiBTaWduZWQtb2ZmLWJ5OiBOYXRoYW4gQ2hhbmNlbGxvciA8bmF0
+ZWNoYW5jZWxsb3JAZ21haWwuY29tPg0KPiAtLS0NCj4gIGRyaXZlcnMvbmV0L3dpcmVsZXNzL21l
+ZGlhdGVrL210NzYvbXQ3OTE1L21jdS5jIHwgMiArLQ0KPiAgMSBmaWxlIGNoYW5nZWQsIDEgaW5z
+ZXJ0aW9uKCspLCAxIGRlbGV0aW9uKC0pDQo+IA0KPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQv
+d2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvbWN1LmMgYi9kcml2ZXJzL25ldC93aXJlbGVz
+cy9tZWRpYXRlay9tdDc2L210NzkxNS9tY3UuYw0KPiBpbmRleCBmMDBhZDJiNjY3NjEuLjkxNmY2
+NjRlOTY0ZSAxMDA2NDQNCj4gLS0tIGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3
+Ni9tdDc5MTUvbWN1LmMNCj4gKysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3
+Ni9tdDc5MTUvbWN1LmMNCj4gQEAgLTIyMCw3ICsyMjAsNyBAQCBzdGF0aWMgaW50IF9fbXQ3OTE1
+X21jdV9tc2dfc2VuZChzdHJ1Y3QgbXQ3OTE1X2RldiAqZGV2LCBzdHJ1Y3Qgc2tfYnVmZiAqc2ti
+LA0KPiAgew0KPiAgCXN0cnVjdCBtdDc5MTVfbWN1X3R4ZCAqbWN1X3R4ZDsNCj4gIAl1OCBzZXEs
+IHBrdF9mbXQsIHFpZHg7DQo+IC0JZW51bSBtdDc5MTVfdHhxX2lkIHR4cTsNCj4gKwllbnVtIG10
+NzZfdHhxX2lkIHR4cTsNCj4gIAlfX2xlMzIgKnR4ZDsNCj4gIAl1MzIgdmFsOw0KPiAgDQo+IA0K
+PiBiYXNlLWNvbW1pdDogYzExZDI4YWI0YTY5MTczNmUzMGI0OTgxM2ZiODAxODQ3YmQ0NGU4Mw0K
+DQpUaGFua3MuIEkgaGF2ZSBwb3N0ZWQgdGhlIGZpeCBoZXJlOg0KaHR0cHM6Ly9wYXRjaHdvcmsu
+a2VybmVsLm9yZy9wYXRjaC8xMTU1MzQxNS8NClRoaXMgaXMgYWxyZWFkeSBpbiBGZWxpeCdzIHRy
+ZWUuDQo=
 
