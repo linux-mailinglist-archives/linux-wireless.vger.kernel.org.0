@@ -2,93 +2,131 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F269A1DFB2E
-	for <lists+linux-wireless@lfdr.de>; Sat, 23 May 2020 23:27:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A8C0F1DFB9C
+	for <lists+linux-wireless@lfdr.de>; Sun, 24 May 2020 01:12:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388110AbgEWV1t (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 23 May 2020 17:27:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59898 "EHLO
+        id S2388034AbgEWXMq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 23 May 2020 19:12:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47888 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387905AbgEWV1t (ORCPT
+        with ESMTP id S2388010AbgEWXMq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 23 May 2020 17:27:49 -0400
-Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7597C05BD43
-        for <linux-wireless@vger.kernel.org>; Sat, 23 May 2020 14:27:47 -0700 (PDT)
-Received: by mail-yb1-xb4a.google.com with SMTP id s8so13174089ybj.9
-        for <linux-wireless@vger.kernel.org>; Sat, 23 May 2020 14:27:47 -0700 (PDT)
+        Sat, 23 May 2020 19:12:46 -0400
+Received: from mail-wm1-x342.google.com (mail-wm1-x342.google.com [IPv6:2a00:1450:4864:20::342])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B66BCC061A0E
+        for <linux-wireless@vger.kernel.org>; Sat, 23 May 2020 16:12:44 -0700 (PDT)
+Received: by mail-wm1-x342.google.com with SMTP id u1so12071823wmn.3
+        for <linux-wireless@vger.kernel.org>; Sat, 23 May 2020 16:12:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=date:message-id:mime-version:subject:from:to:cc;
-        bh=L7hPQvY2NIf4meJrg9SAHQ2svkS/4rdW/+N34fTKjso=;
-        b=Hb4EWUiLNML4nAz2rpesxRQ3Xui71Qj89OfwfSHj9V4QiHPwZcMHwuf0RSOkNFix8D
-         Cwb//Nc0K3oXE78uSX2KvrGQuwktkdmGND/sy466Tui/B056QjaGvSP1dtqoB0WvXthA
-         0807ZieAJnvaQYOiZ7LWnTKoes3+17uK+7MCau8uULig1fq/FB8DH0GadbFtpxI4IsGR
-         amCM8Hzpm8gp8ncdPu8egBC7VPFWX52gtuY+HOk+nkHYfA+44zO80L4OVWZi/HwdayDs
-         xof3VJdd3Cq3INRQnW2tGnhDD0H+1jvrfr/xx2ZjJnz1KMwSCPjS/681DLnFQq6EL9Nf
-         AhTA==
+        d=gmail.com; s=20161025;
+        h=from:subject:to:cc:message-id:date:user-agent:mime-version
+         :content-language:content-transfer-encoding;
+        bh=JmYrO0plrEP12CDs2l0y0uFQRQ9e6H6nwDIO9eVDLRQ=;
+        b=B8RI7XDAkvSAtcSE/6JvRb0SJRj9aFJU06wIoHIQPi0ojIArr00WI5QASxzA+PmUPj
+         FhcpjnitOH5chrQ31t2qYPgr2hQy0dyC8tWZIgglqSXAeXCLnq2duPEmvKYo+W7LgfLo
+         Vhkj0GN7/R7vqvn8tAO5ScBP2m78EeJ0A7SQGUhus/Zij3DCCSeOBCXUrnsK693Yxyr+
+         xNNvEbxoOwvwKHo3w4XyARBfeskQbgcoE8AVwHsCLDOT3a1Klkbf3AKY72g1vDhtFhIP
+         b1ge/f66+JZd0BD//q00OC8nfD1MS0xX1urhKFUabng7ZykduiO2uwlNDeRhMSIPtTEe
+         F6UA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:message-id:mime-version:subject:from:to:cc;
-        bh=L7hPQvY2NIf4meJrg9SAHQ2svkS/4rdW/+N34fTKjso=;
-        b=bey+MD7Hg0DGq8aMRAqpP8hsq3uYjiKSGE1SB7WuRYqRunY05yAQnxnmvWbNZbZs/2
-         voq/twVtGJbR6Z5HEZF5z0mEEqUPTQ6vK4pa0WBL3QiCvPcbHCpldH7LKYOPRbU4RL1G
-         U3Jal8O65W1DVkCUN+cgZT7UUChWhgdZQM7B9u1fg0OgRCUjyVBd1NPsA6C6S3zMQuaW
-         IC1e7/FkoSupDKibsfiwdQ8uLKQWrwCaMmbdaCebnwUDAI6C5k/iic9fx3NfDpNz1pmS
-         a9C33CeOxAQzq3sjVm+7rXD7n0xWChajxGvXzJ4mzlIj6OHhmurDroZ49z8cfu9uDGoX
-         5K9Q==
-X-Gm-Message-State: AOAM530rF3o97XD4pk0iaqYrp/YGF6n5giL7u9Q6qjwOp1vULiUlcTwl
-        ldpKTSGBxX3iQenippkMM7bsmIyB2B3G
-X-Google-Smtp-Source: ABdhPJzlNWcVHOMWGwLCGzq9m9H3VHSJkfIikGT3epD7agMuS7DCu02ze0nAP7jyATxoOh5dWnFoWcT6Ewoe
-X-Received: by 2002:a25:253:: with SMTP id 80mr18381858ybc.405.1590269266946;
- Sat, 23 May 2020 14:27:46 -0700 (PDT)
-Date:   Sat, 23 May 2020 22:27:35 +0100
-Message-Id: <20200523212735.32364-1-pterjan@google.com>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.27.0.rc0.183.gde8f92d652-goog
-Subject: [PATCH] atmel: Use shared constant for rfc1042 header
-From:   Pascal Terjan <pterjan@google.com>
-To:     Simon Kelley <simon@thekelleys.org.uk>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     Pascal Terjan <pterjan@google.com>
-Content-Type: text/plain; charset="UTF-8"
+        h=x-gm-message-state:from:subject:to:cc:message-id:date:user-agent
+         :mime-version:content-language:content-transfer-encoding;
+        bh=JmYrO0plrEP12CDs2l0y0uFQRQ9e6H6nwDIO9eVDLRQ=;
+        b=cohlzRWpIGKZCduMqDUuRdecDMWW5NoY7/n1scrqxSJXMNcZAnDJNT2ZmK5lztE76/
+         ymxoqWCJH83/tRnt3QkE1C9X5BnEl4W09PRr1I0SMqwYJQwIONfaamWZOKEGppAC8UvE
+         BmJBfzzWJ9XT2Go0W/wopzaG68dpeuGkaGLOwjMKzV14rllsZDhdh1Vjv6vQJOYFSOky
+         +tiUmY0dH04gdMakLnE4qFR2GFl1kuyVri5kBV0THqcAqanchidG4TO1hliU2liQHCIr
+         9L/VZVo0FCx0OjQbmBTPkyL8OqWH/PQkV9IMuf+zyPF5Lavclgbsp4GQ5881mhg0Y4kL
+         VJ+w==
+X-Gm-Message-State: AOAM531yMWFhQBTiFDNjWgJZ431Ofm3vMEQWwwd0R5SKsPSzsqcvFeKx
+        pDG9SI5cobjl6LX+sOdWo9o=
+X-Google-Smtp-Source: ABdhPJxjZXpEmBTyaPUtdzFGRipSkstDLhKjYz48SqJEQ9vwIEeWid4o0OtLK0peCMiA/R3s4cRfEg==
+X-Received: by 2002:a1c:49:: with SMTP id 70mr17852711wma.184.1590275563369;
+        Sat, 23 May 2020 16:12:43 -0700 (PDT)
+Received: from [192.168.43.18] ([85.255.236.81])
+        by smtp.gmail.com with ESMTPSA id s8sm12951131wrt.69.2020.05.23.16.12.42
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 23 May 2020 16:12:42 -0700 (PDT)
+From:   Malcolm Priestley <tvboxspy@gmail.com>
+Subject: [PATCH] staging: vt6656: Fix vnt_tx_usb_header static checker warning
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>,
+        linux-wireless@vger.kernel.org, dan.carpenter@oracle.com
+Message-ID: <9818e564-81f6-a683-caa0-69423fded401@gmail.com>
+Date:   Sun, 24 May 2020 00:12:41 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This is one of the 9 drivers redefining rfc1042_header.
+drivers/staging/vt6656/rxtx.c:729 vnt_beacon_xmit()
+warn: struct type mismatch 'vnt_beacon_buffer vs vnt_tx_usb_header'
 
-Signed-off-by: Pascal Terjan <pterjan@google.com>
+Since the only part of vnt_beacon_buffer is used remove and
+replace it with vnt_tx_usb_header.
+
+Fixes: 9deca1e3e2b6 ("staging: vt6656: vnt_beacon_xmit use extra_tx_headroom.")
+Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
+Signed-off-by: Malcolm Priestley <tvboxspy@gmail.com>
 ---
- drivers/net/wireless/atmel/atmel.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/staging/vt6656/rxtx.c | 12 ++++++------
+ drivers/staging/vt6656/rxtx.h |  5 -----
+ 2 files changed, 6 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/net/wireless/atmel/atmel.c b/drivers/net/wireless/atmel/atmel.c
-index 74538085cfb7..d5875836068c 100644
---- a/drivers/net/wireless/atmel/atmel.c
-+++ b/drivers/net/wireless/atmel/atmel.c
-@@ -798,7 +798,6 @@ static void tx_update_descriptor(struct atmel_private *priv, int is_bcast,
+diff --git a/drivers/staging/vt6656/rxtx.c b/drivers/staging/vt6656/rxtx.c
+index 9ee57f7c0c88..a1b16ef9b27f 100644
+--- a/drivers/staging/vt6656/rxtx.c
++++ b/drivers/staging/vt6656/rxtx.c
+@@ -634,7 +634,7 @@ int vnt_tx_packet(struct vnt_private *priv, struct sk_buff *skb)
  
- static netdev_tx_t start_tx(struct sk_buff *skb, struct net_device *dev)
+ static int vnt_beacon_xmit(struct vnt_private *priv, struct sk_buff *skb)
  {
--	static const u8 SNAP_RFC1024[6] = { 0xaa, 0xaa, 0x03, 0x00, 0x00, 0x00 };
- 	struct atmel_private *priv = netdev_priv(dev);
- 	struct ieee80211_hdr header;
- 	unsigned long flags;
-@@ -853,7 +852,7 @@ static netdev_tx_t start_tx(struct sk_buff *skb, struct net_device *dev)
- 	}
+-	struct vnt_beacon_buffer *beacon_buffer;
++	struct vnt_tx_usb_header *usb;
+ 	struct vnt_tx_short_buf_head *short_head;
+ 	struct ieee80211_tx_info *info;
+ 	struct vnt_usb_send_context *context;
+@@ -701,13 +701,13 @@ static int vnt_beacon_xmit(struct vnt_private *priv, struct sk_buff *skb)
+ 	if (priv->seq_counter > 0x0fff)
+ 		priv->seq_counter = 0;
  
- 	if (priv->use_wpa)
--		memcpy(&header.addr4, SNAP_RFC1024, ETH_ALEN);
-+		memcpy(&header.addr4, rfc1042_header, ETH_ALEN);
+-	beacon_buffer = skb_push(skb, sizeof(struct vnt_tx_usb_header));
+-	beacon_buffer->usb.tx_byte_count = cpu_to_le16(count);
+-	beacon_buffer->usb.pkt_no = context->pkt_no;
+-	beacon_buffer->usb.type = 0x01;
++	usb = skb_push(skb, sizeof(*usb));
++	usb->tx_byte_count = cpu_to_le16(count);
++	usb->pkt_no = context->pkt_no;
++	usb->type = 0x01;
  
- 	header.frame_control = cpu_to_le16(frame_ctl);
- 	/* Copy the wireless header into the card */
+ 	context->type = CONTEXT_BEACON_PACKET;
+-	context->tx_buffer = beacon_buffer;
++	context->tx_buffer = usb;
+ 	context->buf_len = skb->len;
+ 
+ 	spin_lock_irqsave(&priv->lock, flags);
+diff --git a/drivers/staging/vt6656/rxtx.h b/drivers/staging/vt6656/rxtx.h
+index fd64d0838e34..f3c7b99cda73 100644
+--- a/drivers/staging/vt6656/rxtx.h
++++ b/drivers/staging/vt6656/rxtx.h
+@@ -179,11 +179,6 @@ struct vnt_tx_short_buf_head {
+ 	__le16 time_stamp_off;
+ } __packed;
+ 
+-struct vnt_beacon_buffer {
+-	struct vnt_tx_usb_header usb;
+-	struct vnt_tx_short_buf_head short_head;
+-} __packed;
+-
+ int vnt_tx_packet(struct vnt_private *priv, struct sk_buff *skb);
+ int vnt_beacon_make(struct vnt_private *priv, struct ieee80211_vif *vif);
+ int vnt_beacon_enable(struct vnt_private *priv, struct ieee80211_vif *vif,
 -- 
-2.27.0.rc0.183.gde8f92d652-goog
-
+2.27.0.rc0
