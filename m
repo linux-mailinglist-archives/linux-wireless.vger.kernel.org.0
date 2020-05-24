@@ -2,100 +2,249 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BB81B1DFEF3
-	for <lists+linux-wireless@lfdr.de>; Sun, 24 May 2020 14:39:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6EE561DFF08
+	for <lists+linux-wireless@lfdr.de>; Sun, 24 May 2020 15:08:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728405AbgEXMjf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 24 May 2020 08:39:35 -0400
-Received: from mx3.wp.pl ([212.77.101.9]:53084 "EHLO mx3.wp.pl"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726734AbgEXMjf (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 24 May 2020 08:39:35 -0400
-Received: (wp-smtpd smtp.wp.pl 18117 invoked from network); 24 May 2020 14:39:32 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=1024a;
-          t=1590323972; bh=fhnoPEVd6GdDQIGObtlO6gHHRE5AYPqzJxXINQdfNmU=;
-          h=From:To:Cc:Subject;
-          b=BvlE8go3KcNlqDfEmTkf+daoWTtloiYwoDhkPEw7YK3vbTXHsmq1d5iNEw28UWrFn
-           Rg+5qXcM62ZgSB6lHhXsI+QLyJx1dOCbydnb5ovt8bGu3m/9Nj5Fl7pYwd8KuL77qp
-           QO0WmSjs2QV/F89fpfoV82w1mK3KZlLh3OS/1l7M=
-Received: from ip4-46-39-164-203.cust.nbox.cz (HELO localhost) (stf_xl@wp.pl@[46.39.164.203])
-          (envelope-sender <stf_xl@wp.pl>)
-          by smtp.wp.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
-          for <julian.calaby@gmail.com>; 24 May 2020 14:39:32 +0200
-Date:   Sun, 24 May 2020 14:39:31 +0200
-From:   Stanislaw Gruszka <stf_xl@wp.pl>
-To:     Julian Calaby <julian.calaby@gmail.com>
-Cc:     Rui Salvaterra <rsalvaterra@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Larry Finger <Larry.Finger@lwfinger.net>,
-        linux-wireless@vger.kernel.org
-Subject: Re: [RFC PATCH] rt2800lib: unconditionally enable MFP
-Message-ID: <20200524123931.GA915983@wp.pl>
-References: <20200524094730.2684-1-rsalvaterra@gmail.com>
- <20200524111751.GA914918@wp.pl>
- <CAGRGNgWuQjQzDS9-cPAx7TnDfEiGnSccw4vqPAE_gWV=QS5JVw@mail.gmail.com>
+        id S1726695AbgEXNIQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 24 May 2020 09:08:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35436 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726064AbgEXNIP (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 24 May 2020 09:08:15 -0400
+Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8166DC061A0E
+        for <linux-wireless@vger.kernel.org>; Sun, 24 May 2020 06:08:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject
+        :Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=C4FQZhmhJmMDkZaBrjmwVZBwFdu32kEeTiUSUbUF6Sk=; b=enJfGKqm8y4ktDBfHD91s2sdVv
+        FUCcrjXjlbW6tvclbia/8SXESmVSyRJ6x2MF169Fo0EG06ZhLh0BWcGDVdv519tR0Z4MxhKiutxXl
+        5CyaAkIXm/eJg+dLDRvK6Cwa40b+K1AzKdGHlTg4HTOahEdAYguGuXKmBBigwQBUgyYU=;
+Received: from [91.32.108.59] (helo=maeck.lan)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1jcqMM-00052Y-Eb; Sun, 24 May 2020 15:08:10 +0200
+Received: by maeck.lan (Postfix, from userid 501)
+        id 9A8D3879BE0D; Sun, 24 May 2020 15:07:46 +0200 (CEST)
+From:   Felix Fietkau <nbd@nbd.name>
+To:     linux-wireless@vger.kernel.org
+Cc:     Sean Wang <sean.wang@mediatek.com>
+Subject: [PATCH] mt76: only iterate over initialized rx queues
+Date:   Sun, 24 May 2020 15:07:46 +0200
+Message-Id: <20200524130746.98760-1-nbd@nbd.name>
+X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAGRGNgWuQjQzDS9-cPAx7TnDfEiGnSccw4vqPAE_gWV=QS5JVw@mail.gmail.com>
-X-WP-MailID: d0e6d6040c6bd726f4ee070ee5e2c0cf
-X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
-X-WP-SPAM: NO 0000000 [cbM0]                               
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi
+Fixes the following reported crash:
 
-On Sun, May 24, 2020 at 09:42:51PM +1000, Julian Calaby wrote:
-> Hi Stanislaw,
-> 
-> On Sun, May 24, 2020 at 9:27 PM Stanislaw Gruszka <stf_xl@wp.pl> wrote:
-> >
-> > On Sun, May 24, 2020 at 10:47:31AM +0100, Rui Salvaterra wrote:
-> > > According to Larry [1] (and successfully verified on b43) mac80211
-> > > transparently falls back to software for unsupported hardware cyphers. Thus,
-> > > there's no reason for not unconditionally enabling MFP. This gives us WPA3
-> > > support out of the box, without having to manually disable hardware crypto.
-> > >
-> > > Tested on an RT2790-based Wi-Fi card.
-> > >
-> > > [1] https://lore.kernel.org/linux-wireless/8252e6a1-b83c-64eb-2503-2686374216ae@lwfinger.net/
-> >
-> > AFICT more work need to be done to support MFP by HW encryption properly
-> > on rt2x00. See this message and whole thread:
-> > https://lore.kernel.org/linux-wireless/977a3cf4-3ec5-4aaa-b3d4-eea2e8593652@nbd.name/
-> 
-> Am I reading this right: rt2x00 offloads some of the processing to the
-> card which interferes with MFP when using software encryption, so
-> therefore we need to disable that offload when using software
-> encryption with MFP.
+[    2.361127] BUG: spinlock bad magic on CPU#0, modprobe/456
+[    2.361583]  lock: 0xffffa1287525b3b8, .magic: 00000000, .owner: <none>/-1, .owner_cpu: 0
+[    2.362250] CPU: 0 PID: 456 Comm: modprobe Not tainted 4.14.177 #5
+[    2.362751] Hardware name: HP Meep/Meep, BIOS Google_Meep.11297.75.0 06/17/2019
+[    2.363343] Call Trace:
+[    2.363552]  dump_stack+0x97/0xdb
+[    2.363826]  ? spin_bug+0xa6/0xb3
+[    2.364096]  do_raw_spin_lock+0x6a/0x9a
+[    2.364417]  mt76_dma_rx_fill+0x44/0x1de [mt76]
+[    2.364787]  ? mt76_dma_kick_queue+0x18/0x18 [mt76]
+[    2.365184]  mt76_dma_init+0x53/0x85 [mt76]
+[    2.365532]  mt7615_dma_init+0x3d7/0x546 [mt7615e]
+[    2.365928]  mt7615_register_device+0xe6/0x1a0 [mt7615e]
+[    2.366364]  mt7615_mmio_probe+0x14b/0x171 [mt7615e]
+[    2.366771]  mt7615_pci_probe+0x118/0x13b [mt7615e]
+[    2.367169]  pci_device_probe+0xaf/0x13d
+[    2.367491]  driver_probe_device+0x284/0x2ca
+[    2.367840]  __driver_attach+0x7a/0x9e
+[    2.368146]  ? driver_attach+0x1f/0x1f
+[    2.368451]  bus_for_each_dev+0xa0/0xdb
+[    2.368765]  bus_add_driver+0x132/0x204
+[    2.369078]  driver_register+0x8e/0xcd
+[    2.369384]  do_one_initcall+0x160/0x257
+[    2.369706]  ? 0xffffffffc0240000
+[    2.369980]  do_init_module+0x60/0x1bb
+[    2.370286]  load_module+0x18c2/0x1a2b
+[    2.370596]  ? kernel_read_file+0x141/0x1b9
+[    2.370937]  ? kernel_read_file_from_fd+0x46/0x71
+[    2.371320]  SyS_finit_module+0xcc/0xf0
+[    2.371636]  do_syscall_64+0x6b/0xf7
+[    2.371930]  entry_SYSCALL_64_after_hwframe+0x3d/0xa2
+[    2.372344] RIP: 0033:0x7da218ae4199
+[    2.372637] RSP: 002b:00007fffd0608398 EFLAGS: 00000246 ORIG_RAX: 0000000000000139
+[    2.373252] RAX: ffffffffffffffda RBX: 00005a705449df90 RCX: 00007da218ae4199
+[    2.373833] RDX: 0000000000000000 RSI: 00005a7052e73bd8 RDI: 0000000000000006
+[    2.374411] RBP: 00007fffd06083e0 R08: 0000000000000000 R09: 00005a705449d540
+[    2.374989] R10: 0000000000000006 R11: 0000000000000246 R12: 0000000000000000
+[    2.375569] R13: 00005a705449def0 R14: 00005a7052e73bd8 R15: 0000000000000000
 
-Yes.
+Reported-by: Sean Wang <sean.wang@mediatek.com>
+Fixes: d3377b78cec6 ("mt76: add HE phy modes and hardware queue")
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+---
+ drivers/net/wireless/mediatek/mt76/debugfs.c      | 2 +-
+ drivers/net/wireless/mediatek/mt76/dma.c          | 4 ++--
+ drivers/net/wireless/mediatek/mt76/mt76.h         | 4 ++++
+ drivers/net/wireless/mediatek/mt76/mt7603/mac.c   | 3 ++-
+ drivers/net/wireless/mediatek/mt76/mt7615/mac.c   | 3 ++-
+ drivers/net/wireless/mediatek/mt76/mt7615/pci.c   | 8 +++++---
+ drivers/net/wireless/mediatek/mt76/mt76x02_mmio.c | 3 ++-
+ drivers/net/wireless/mediatek/mt76/mt7915/mac.c   | 3 ++-
+ 8 files changed, 20 insertions(+), 10 deletions(-)
 
-We offload encryption to HW based on cipher. Modern ciphers like 
-GCMP, BIP_GMAC, etc, are not supported by rt2x00 HW. In such case
-rt2x00mac_set_key() will return -EOPNOTSUPP and all encryption will
-be done by mac80211 - MFP will work just fine.
+diff --git a/drivers/net/wireless/mediatek/mt76/debugfs.c b/drivers/net/wireless/mediatek/mt76/debugfs.c
+index 0278e1b44576..3a5de1d1b121 100644
+--- a/drivers/net/wireless/mediatek/mt76/debugfs.c
++++ b/drivers/net/wireless/mediatek/mt76/debugfs.c
+@@ -51,7 +51,7 @@ static int mt76_rx_queues_read(struct seq_file *s, void *data)
+ 	struct mt76_dev *dev = dev_get_drvdata(s->private);
+ 	int i, queued;
+ 
+-	for (i = 0; i < ARRAY_SIZE(dev->q_rx); i++) {
++	mt76_for_each_q_rx(dev, i) {
+ 		struct mt76_queue *q = &dev->q_rx[i];
+ 
+ 		if (!q->ndesc)
+diff --git a/drivers/net/wireless/mediatek/mt76/dma.c b/drivers/net/wireless/mediatek/mt76/dma.c
+index 75e659774e07..f4d6074fe32a 100644
+--- a/drivers/net/wireless/mediatek/mt76/dma.c
++++ b/drivers/net/wireless/mediatek/mt76/dma.c
+@@ -576,7 +576,7 @@ mt76_dma_init(struct mt76_dev *dev)
+ 
+ 	init_dummy_netdev(&dev->napi_dev);
+ 
+-	for (i = 0; i < ARRAY_SIZE(dev->q_rx); i++) {
++	mt76_for_each_q_rx(dev, i) {
+ 		netif_napi_add(&dev->napi_dev, &dev->napi[i], mt76_dma_rx_poll,
+ 			       64);
+ 		mt76_dma_rx_fill(dev, &dev->q_rx[i]);
+@@ -610,7 +610,7 @@ void mt76_dma_cleanup(struct mt76_dev *dev)
+ 	for (i = 0; i < ARRAY_SIZE(dev->q_tx); i++)
+ 		mt76_dma_tx_cleanup(dev, i, true);
+ 
+-	for (i = 0; i < ARRAY_SIZE(dev->q_rx); i++) {
++	mt76_for_each_q_rx(dev, i) {
+ 		netif_napi_del(&dev->napi[i]);
+ 		mt76_dma_rx_cleanup(dev, &dev->q_rx[i]);
+ 	}
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
+index afb1ccf61b74..78378dcf430a 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76.h
+@@ -671,6 +671,10 @@ static inline u16 mt76_rev(struct mt76_dev *dev)
+ #define mt76_queue_tx_cleanup(dev, ...)	(dev)->mt76.queue_ops->tx_cleanup(&((dev)->mt76), __VA_ARGS__)
+ #define mt76_queue_kick(dev, ...)	(dev)->mt76.queue_ops->kick(&((dev)->mt76), __VA_ARGS__)
+ 
++#define mt76_for_each_q_rx(dev, i)	\
++	for (i = 0; i < ARRAY_SIZE((dev)->q_rx) && \
++		    (dev)->q_rx[i].desc; i++)
++
+ struct mt76_dev *mt76_alloc_device(struct device *pdev, unsigned int size,
+ 				   const struct ieee80211_ops *ops,
+ 				   const struct mt76_driver_ops *drv_ops);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/mac.c b/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
+index 0f205ffe4905..8060c1514396 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
+@@ -1438,8 +1438,9 @@ static void mt7603_mac_watchdog_reset(struct mt7603_dev *dev)
+ 	for (i = 0; i < __MT_TXQ_MAX; i++)
+ 		mt76_queue_tx_cleanup(dev, i, true);
+ 
+-	for (i = 0; i < ARRAY_SIZE(dev->mt76.q_rx); i++)
++	mt76_for_each_q_rx(&dev->mt76, i) {
+ 		mt76_queue_rx_reset(dev, i);
++	}
+ 
+ 	mt7603_dma_sched_reset(dev);
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
+index f1009c92ec1b..9f1c6ca7a665 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
+@@ -1820,8 +1820,9 @@ void mt7615_dma_reset(struct mt7615_dev *dev)
+ 	for (i = 0; i < __MT_TXQ_MAX; i++)
+ 		mt76_queue_tx_cleanup(dev, i, true);
+ 
+-	for (i = 0; i < ARRAY_SIZE(dev->mt76.q_rx); i++)
++	mt76_for_each_q_rx(&dev->mt76, i) {
+ 		mt76_queue_rx_reset(dev, i);
++	}
+ 
+ 	mt76_set(dev, MT_WPDMA_GLO_CFG,
+ 		 MT_WPDMA_GLO_CFG_RX_DMA_EN | MT_WPDMA_GLO_CFG_TX_DMA_EN |
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/pci.c b/drivers/net/wireless/mediatek/mt76/mt7615/pci.c
+index b09d08d0dac9..ba12f199bce0 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/pci.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/pci.c
+@@ -86,8 +86,9 @@ static int mt7615_pci_suspend(struct pci_dev *pdev, pm_message_t state)
+ 	napi_disable(&mdev->tx_napi);
+ 	tasklet_kill(&mdev->tx_tasklet);
+ 
+-	for (i = 0; i < ARRAY_SIZE(mdev->q_rx); i++)
++	mt76_for_each_q_rx(mdev, i) {
+ 		napi_disable(&mdev->napi[i]);
++	}
+ 	tasklet_kill(&dev->irq_tasklet);
+ 
+ 	mt7615_dma_reset(dev);
+@@ -120,8 +121,9 @@ static int mt7615_pci_suspend(struct pci_dev *pdev, pm_message_t state)
+ 	return 0;
+ 
+ restore:
+-	for (i = 0; i < ARRAY_SIZE(mdev->q_rx); i++)
++	mt76_for_each_q_rx(mdev, i) {
+ 		napi_enable(&mdev->napi[i]);
++	}
+ 	napi_enable(&mdev->tx_napi);
+ 	if (hif_suspend)
+ 		mt7615_mcu_set_hif_suspend(dev, false);
+@@ -156,7 +158,7 @@ static int mt7615_pci_resume(struct pci_dev *pdev)
+ 	if (pdma_reset)
+ 		dev_err(mdev->dev, "PDMA engine must be reinitialized\n");
+ 
+-	for (i = 0; i < ARRAY_SIZE(mdev->q_rx); i++) {
++	mt76_for_each_q_rx(mdev, i) {
+ 		napi_enable(&mdev->napi[i]);
+ 		napi_schedule(&mdev->napi[i]);
+ 	}
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_mmio.c b/drivers/net/wireless/mediatek/mt76/mt76x02_mmio.c
+index 18adedfbbb8e..cbbe986655fe 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x02_mmio.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x02_mmio.c
+@@ -489,8 +489,9 @@ static void mt76x02_watchdog_reset(struct mt76x02_dev *dev)
+ 	for (i = 0; i < __MT_TXQ_MAX; i++)
+ 		mt76_queue_tx_cleanup(dev, i, true);
+ 
+-	for (i = 0; i < ARRAY_SIZE(dev->mt76.q_rx); i++)
++	mt76_for_each_q_rx(&dev->mt76, i) {
+ 		mt76_queue_rx_reset(dev, i);
++	}
+ 
+ 	mt76x02_mac_start(dev);
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+index ab20dfde94af..a264e304a3df 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+@@ -1146,8 +1146,9 @@ mt7915_dma_reset(struct mt7915_dev *dev)
+ 	for (i = 0; i < __MT_TXQ_MAX; i++)
+ 		mt76_queue_tx_cleanup(dev, i, true);
+ 
+-	for (i = 0; i < ARRAY_SIZE(dev->mt76.q_rx); i++)
++	mt76_for_each_q_rx(&dev->mt76, i) {
+ 		mt76_queue_rx_reset(dev, i);
++	}
+ 
+ 	/* re-init prefetch settings after reset */
+ 	mt7915_dma_prefetch(dev);
+-- 
+2.24.0
 
-But MFP can still be used with CCMP cipher, which we offload to HW,
-and that would create problems described by Felix.
-
-> So if mac80211 knows that this offload is happening and that we can't
-> use hardware crypto for MFP, could it be smart enough to disable the
-> offload itself?
-> 
-> And once mac80211 is smart enough to make those decisions, couldn't we
-> just enable MFP by default?
-
-If we will have indicator from mac80211 that MFP is configured, we can
-just return -EOPNOTSUPP from rt2x00mac_set_key() for CCMP and that will
-make MFP work without specifying nohwcrypt module parameter - software
-encryption will be used anyway.
-
-Optimal solution though would be implement similar code like in mt76, so
-we will have HW encryption for MFP+CCMP, but this is not trivial, and
-I think handling encryption fully in software is ok.
-
-Stanislaw
