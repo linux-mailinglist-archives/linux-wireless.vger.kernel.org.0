@@ -2,76 +2,170 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 17D5E1DFFA6
-	for <lists+linux-wireless@lfdr.de>; Sun, 24 May 2020 17:07:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 69D5C1E005D
+	for <lists+linux-wireless@lfdr.de>; Sun, 24 May 2020 18:06:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729343AbgEXPHg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 24 May 2020 11:07:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53852 "EHLO
+        id S1727899AbgEXQGQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 24 May 2020 12:06:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34692 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728420AbgEXPHg (ORCPT
+        with ESMTP id S1727027AbgEXQGO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 24 May 2020 11:07:36 -0400
-Received: from mail-vs1-xe41.google.com (mail-vs1-xe41.google.com [IPv6:2607:f8b0:4864:20::e41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DC71C061A0E
-        for <linux-wireless@vger.kernel.org>; Sun, 24 May 2020 08:07:36 -0700 (PDT)
-Received: by mail-vs1-xe41.google.com with SMTP id v26so8768100vsa.1
-        for <linux-wireless@vger.kernel.org>; Sun, 24 May 2020 08:07:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=XLfigoBgfX3pLZL6y4dD42gbF99ATRwuAxvLuNBjSFU=;
-        b=U5+JNR0GRkFGA6NVy/gem6i56WYRVFTLzoNPTRwxZiyiEytFAOWuTM6vLvzfrHzgSp
-         KFMNeJ4QBCQE3TODbw+GcwWAxHFOphpn+ofq2u0bLaFMWGhZi1QcR1P9xzTtXMz2wejU
-         gmvhtA23rL8XFyd5vFZeY5Fzf4C5jdn3jDlLRQwoBZrF9d694vr/KI/bY9I/DHC/7vMh
-         iq49BXQdPGx70Ojyj0lsnVQwE8oF/dJihHPHQdMQaTqtMP6W7iJLEVWak6zYL8JLID2M
-         q+EA0wdfDuxiRBtSgeAY7OewBJtL3BqG/Gm1F7twpdJW1NlPnGJDUaGZRh7sz027Xd9l
-         9lKg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=XLfigoBgfX3pLZL6y4dD42gbF99ATRwuAxvLuNBjSFU=;
-        b=eo3Uov8fuEWZ0pKNZkdOCKyhBhYxLKlsevmRbJB0w39L0RKZFND5GFlvrqZ8jF8m4f
-         2ZwPFYO/yVR/uDDKTdSyNmtrBC7iGBlXRAd7Aynhrk4jLJAZYmflCf9Yig+6x1i4E4/H
-         FJA1m0o9G25XWkeYNDTacR+80mcq87HYjA+H+2zk2ZV7hIIDmdmh7h5o8Mw8VG0TWDzH
-         z6vsrTMo42M+heCc2pGmbd1TYZVPm/znQ4N58Gcf39PnYq9RZ9p1E7CEqN5CM4x2LAFb
-         aYowAAUZpdcF7AmXiS3tkhXPVOyAgtyOKUopgmXdgMOHiHPYzEhoCc6FTjCXpsjDWQmf
-         UO9Q==
-X-Gm-Message-State: AOAM5305363k2TbXQ3qHsUFSH28Yie2h3odHryfAPg352cjIeZ68fVjG
-        Ug4MSmMNV7q0l4+epX9uOxN4MKSPQKxGLA4NYzbY3W1OKDfv
-X-Google-Smtp-Source: ABdhPJyOjJx6FIUMBQbl8c1jRMySZsB1ALPeh8/z75vicEvPv6zbF4lw0PagksJ6yjkq9/zEzc9I1HNyof6j8fsPQ5Q=
-X-Received: by 2002:a67:6dc7:: with SMTP id i190mr15337788vsc.75.1590332855606;
- Sun, 24 May 2020 08:07:35 -0700 (PDT)
+        Sun, 24 May 2020 12:06:14 -0400
+Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2339EC061A0E
+        for <linux-wireless@vger.kernel.org>; Sun, 24 May 2020 09:06:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
+        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=UYQ0SFYgaF74nNPMyQhIjxs2f3iaDgh0yX57kp2iiKI=; b=iLIFI4ngBibzlVjc6ObmDZE8zj
+        GzbBMjjaDacTm7qW8aCUN/nZTRdxpCJeCq7kAkYQDkYKdiVKV+FNKpXzX13TO1taOj+XMZFkcxRR0
+        lS4dhY3KE8sfufdKRSnaWi2ixes5/eDruAAW+IviQWgLaq+JG0kDg0/gtxx4CUUwFI9U=;
+Received: from p5b206c3b.dip0.t-ipconnect.de ([91.32.108.59] helo=nf.local)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1jct8c-0005r2-Fv; Sun, 24 May 2020 18:06:10 +0200
+Subject: Re: [PATCH] mt76: only iterate over initialized rx queues
+To:     Lorenzo Bianconi <lorenzo@kernel.org>
+Cc:     linux-wireless@vger.kernel.org, Sean Wang <sean.wang@mediatek.com>
+References: <20200524130746.98760-1-nbd@nbd.name>
+ <20200524134500.GA33803@localhost.localdomain>
+From:   Felix Fietkau <nbd@nbd.name>
+Autocrypt: addr=nbd@nbd.name; prefer-encrypt=mutual; keydata=
+ xsDiBEah5CcRBADIY7pu4LIv3jBlyQ/2u87iIZGe6f0f8pyB4UjzfJNXhJb8JylYYRzIOSxh
+ ExKsdLCnJqsG1PY1mqTtoG8sONpwsHr2oJ4itjcGHfn5NJSUGTbtbbxLro13tHkGFCoCr4Z5
+ Pv+XRgiANSpYlIigiMbOkide6wbggQK32tC20QxUIwCg4k6dtV/4kwEeiOUfErq00TVqIiEE
+ AKcUi4taOuh/PQWx/Ujjl/P1LfJXqLKRPa8PwD4j2yjoc9l+7LptSxJThL9KSu6gtXQjcoR2
+ vCK0OeYJhgO4kYMI78h1TSaxmtImEAnjFPYJYVsxrhay92jisYc7z5R/76AaELfF6RCjjGeP
+ wdalulG+erWju710Bif7E1yjYVWeA/9Wd1lsOmx6uwwYgNqoFtcAunDaMKi9xVQW18FsUusM
+ TdRvTZLBpoUAy+MajAL+R73TwLq3LnKpIcCwftyQXK5pEDKq57OhxJVv1Q8XkA9Dn1SBOjNB
+ l25vJDFAT9ntp9THeDD2fv15yk4EKpWhu4H00/YX8KkhFsrtUs69+vZQwc0cRmVsaXggRmll
+ dGthdSA8bmJkQG5iZC5uYW1lPsJgBBMRAgAgBQJGoeQnAhsjBgsJCAcDAgQVAggDBBYCAwEC
+ HgECF4AACgkQ130UHQKnbvXsvgCgjsAIIOsY7xZ8VcSm7NABpi91yTMAniMMmH7FRenEAYMa
+ VrwYTIThkTlQzsFNBEah5FQQCACMIep/hTzgPZ9HbCTKm9xN4bZX0JjrqjFem1Nxf3MBM5vN
+ CYGBn8F4sGIzPmLhl4xFeq3k5irVg/YvxSDbQN6NJv8o+tP6zsMeWX2JjtV0P4aDIN1pK2/w
+ VxcicArw0VYdv2ZCarccFBgH2a6GjswqlCqVM3gNIMI8ikzenKcso8YErGGiKYeMEZLwHaxE
+ Y7mTPuOTrWL8uWWRL5mVjhZEVvDez6em/OYvzBwbkhImrryF29e3Po2cfY2n7EKjjr3/141K
+ DHBBdgXlPNfDwROnA5ugjjEBjwkwBQqPpDA7AYPvpHh5vLbZnVGu5CwG7NAsrb2isRmjYoqk
+ wu++3117AAMFB/9S0Sj7qFFQcD4laADVsabTpNNpaV4wAgVTRHKV/kC9luItzwDnUcsZUPdQ
+ f3MueRJ3jIHU0UmRBG3uQftqbZJj3ikhnfvyLmkCNe+/hXhPu9sGvXyi2D4vszICvc1KL4RD
+ aLSrOsROx22eZ26KqcW4ny7+va2FnvjsZgI8h4sDmaLzKczVRIiLITiMpLFEU/VoSv0m1F4B
+ FtRgoiyjFzigWG0MsTdAN6FJzGh4mWWGIlE7o5JraNhnTd+yTUIPtw3ym6l8P+gbvfoZida0
+ TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabwkkE
+ GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCfTKx80VvCR/PvsUlrvdOLsIgeRGAAn1ee
+ RjMaxwtSdaCKMw3j33ZbsWS4
+Message-ID: <a8e42710-0d04-845f-db4b-ab0bf6509a7c@nbd.name>
+Date:   Sun, 24 May 2020 18:05:42 +0200
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:68.0)
+ Gecko/20100101 Thunderbird/68.8.0
 MIME-Version: 1.0
-References: <20200524094730.2684-1-rsalvaterra@gmail.com> <20200524111751.GA914918@wp.pl>
-In-Reply-To: <20200524111751.GA914918@wp.pl>
-From:   Rui Salvaterra <rsalvaterra@gmail.com>
-Date:   Sun, 24 May 2020 16:07:23 +0100
-Message-ID: <CALjTZvbHbMEWTmZk4Li5ZNAETdVd3Q_kHUS6KQw+WDS6ayE9vA@mail.gmail.com>
-Subject: Re: [RFC PATCH] rt2800lib: unconditionally enable MFP
-To:     Stanislaw Gruszka <stf_xl@wp.pl>
-Cc:     kvalo@codeaurora.org, Larry.Finger@lwfinger.net,
-        linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20200524134500.GA33803@localhost.localdomain>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi, Stanislaw,
+On 2020-05-24 15:45, Lorenzo Bianconi wrote:
+>> Fixes the following reported crash:
+>> 
+>> [    2.361127] BUG: spinlock bad magic on CPU#0, modprobe/456
+>> [    2.361583]  lock: 0xffffa1287525b3b8, .magic: 00000000, .owner: <none>/-1, .owner_cpu: 0
+>> [    2.362250] CPU: 0 PID: 456 Comm: modprobe Not tainted 4.14.177 #5
+>> [    2.362751] Hardware name: HP Meep/Meep, BIOS Google_Meep.11297.75.0 06/17/2019
+>> [    2.363343] Call Trace:
+>> [    2.363552]  dump_stack+0x97/0xdb
+>> [    2.363826]  ? spin_bug+0xa6/0xb3
+>> [    2.364096]  do_raw_spin_lock+0x6a/0x9a
+>> [    2.364417]  mt76_dma_rx_fill+0x44/0x1de [mt76]
+>> [    2.364787]  ? mt76_dma_kick_queue+0x18/0x18 [mt76]
+>> [    2.365184]  mt76_dma_init+0x53/0x85 [mt76]
+>> [    2.365532]  mt7615_dma_init+0x3d7/0x546 [mt7615e]
+>> [    2.365928]  mt7615_register_device+0xe6/0x1a0 [mt7615e]
+>> [    2.366364]  mt7615_mmio_probe+0x14b/0x171 [mt7615e]
+>> [    2.366771]  mt7615_pci_probe+0x118/0x13b [mt7615e]
+>> [    2.367169]  pci_device_probe+0xaf/0x13d
+>> [    2.367491]  driver_probe_device+0x284/0x2ca
+>> [    2.367840]  __driver_attach+0x7a/0x9e
+>> [    2.368146]  ? driver_attach+0x1f/0x1f
+>> [    2.368451]  bus_for_each_dev+0xa0/0xdb
+>> [    2.368765]  bus_add_driver+0x132/0x204
+>> [    2.369078]  driver_register+0x8e/0xcd
+>> [    2.369384]  do_one_initcall+0x160/0x257
+>> [    2.369706]  ? 0xffffffffc0240000
+>> [    2.369980]  do_init_module+0x60/0x1bb
+>> [    2.370286]  load_module+0x18c2/0x1a2b
+>> [    2.370596]  ? kernel_read_file+0x141/0x1b9
+>> [    2.370937]  ? kernel_read_file_from_fd+0x46/0x71
+>> [    2.371320]  SyS_finit_module+0xcc/0xf0
+>> [    2.371636]  do_syscall_64+0x6b/0xf7
+>> [    2.371930]  entry_SYSCALL_64_after_hwframe+0x3d/0xa2
+>> [    2.372344] RIP: 0033:0x7da218ae4199
+>> [    2.372637] RSP: 002b:00007fffd0608398 EFLAGS: 00000246 ORIG_RAX: 0000000000000139
+>> [    2.373252] RAX: ffffffffffffffda RBX: 00005a705449df90 RCX: 00007da218ae4199
+>> [    2.373833] RDX: 0000000000000000 RSI: 00005a7052e73bd8 RDI: 0000000000000006
+>> [    2.374411] RBP: 00007fffd06083e0 R08: 0000000000000000 R09: 00005a705449d540
+>> [    2.374989] R10: 0000000000000006 R11: 0000000000000246 R12: 0000000000000000
+>> [    2.375569] R13: 00005a705449def0 R14: 00005a7052e73bd8 R15: 0000000000000000
+>> 
+>> Reported-by: Sean Wang <sean.wang@mediatek.com>
+>> Fixes: d3377b78cec6 ("mt76: add HE phy modes and hardware queue")
+>> Signed-off-by: Felix Fietkau <nbd@nbd.name>
+> 
+> Just a couple of nitpicks inline, for the rest:
+> 
+> Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
+> 
+>> ---
+>>  drivers/net/wireless/mediatek/mt76/debugfs.c      | 2 +-
+>>  drivers/net/wireless/mediatek/mt76/dma.c          | 4 ++--
+>>  drivers/net/wireless/mediatek/mt76/mt76.h         | 4 ++++
+>>  drivers/net/wireless/mediatek/mt76/mt7603/mac.c   | 3 ++-
+>>  drivers/net/wireless/mediatek/mt76/mt7615/mac.c   | 3 ++-
+>>  drivers/net/wireless/mediatek/mt76/mt7615/pci.c   | 8 +++++---
+>>  drivers/net/wireless/mediatek/mt76/mt76x02_mmio.c | 3 ++-
+>>  drivers/net/wireless/mediatek/mt76/mt7915/mac.c   | 3 ++-
+>>  8 files changed, 20 insertions(+), 10 deletions(-)
+>> 
+>> diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
+>> index afb1ccf61b74..78378dcf430a 100644
+>> --- a/drivers/net/wireless/mediatek/mt76/mt76.h
+>> +++ b/drivers/net/wireless/mediatek/mt76/mt76.h
+>> @@ -671,6 +671,10 @@ static inline u16 mt76_rev(struct mt76_dev *dev)
+>>  #define mt76_queue_tx_cleanup(dev, ...)	(dev)->mt76.queue_ops->tx_cleanup(&((dev)->mt76), __VA_ARGS__)
+>>  #define mt76_queue_kick(dev, ...)	(dev)->mt76.queue_ops->kick(&((dev)->mt76), __VA_ARGS__)
+>>  
+>> +#define mt76_for_each_q_rx(dev, i)	\
+>> +	for (i = 0; i < ARRAY_SIZE((dev)->q_rx) && \
+>> +		    (dev)->q_rx[i].desc; i++)
+>> +
+>>  struct mt76_dev *mt76_alloc_device(struct device *pdev, unsigned int size,
+>>  				   const struct ieee80211_ops *ops,
+>>  				   const struct mt76_driver_ops *drv_ops);
+>> diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/mac.c b/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
+>> index 0f205ffe4905..8060c1514396 100644
+>> --- a/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
+>> +++ b/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
+>> @@ -1438,8 +1438,9 @@ static void mt7603_mac_watchdog_reset(struct mt7603_dev *dev)
+>>  	for (i = 0; i < __MT_TXQ_MAX; i++)
+>>  		mt76_queue_tx_cleanup(dev, i, true);
+>>  
+>> -	for (i = 0; i < ARRAY_SIZE(dev->mt76.q_rx); i++)
+>> +	mt76_for_each_q_rx(&dev->mt76, i) {
+>>  		mt76_queue_rx_reset(dev, i);
+>> +	}
+> 
+> you can drop braces here
+I thought about it as well, but decided to keep them, because it's a
+custom iterator function and without the braces it might look to the
+untrained eye like a function call with missing ; and wrong indentation
+in the next line.
+I thought this might help a bit with code clarity.
 
-On Sun, 24 May 2020 at 12:18, Stanislaw Gruszka <stf_xl@wp.pl> wrote:
->
-> AFICT more work need to be done to support MFP by HW encryption properly
-> on rt2x00. See this message and whole thread:
-> https://lore.kernel.org/linux-wireless/977a3cf4-3ec5-4aaa-b3d4-eea2e8593652@nbd.name/
->
-> Stanislaw
-
-This RT2790 has been working just fine with my patch for hours. No
-hangs at all. What additional bad behaviour should I expect?
-
-Thanks,
-Rui
+- Felix
