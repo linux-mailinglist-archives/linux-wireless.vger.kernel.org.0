@@ -2,31 +2,35 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C940D1E0918
-	for <lists+linux-wireless@lfdr.de>; Mon, 25 May 2020 10:40:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 23A0F1E093D
+	for <lists+linux-wireless@lfdr.de>; Mon, 25 May 2020 10:48:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388817AbgEYIkr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 25 May 2020 04:40:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48012 "EHLO
+        id S2389243AbgEYIr6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 25 May 2020 04:47:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49136 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388093AbgEYIkr (ORCPT
+        with ESMTP id S2388800AbgEYIr6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 25 May 2020 04:40:47 -0400
+        Mon, 25 May 2020 04:47:58 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46991C061A0E
-        for <linux-wireless@vger.kernel.org>; Mon, 25 May 2020 01:40:47 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0468C061A0E;
+        Mon, 25 May 2020 01:47:57 -0700 (PDT)
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.93)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1jd8f7-002aOs-Ig; Mon, 25 May 2020 10:40:45 +0200
-Message-ID: <161e46b950828b275aafb09576bf70e977cf0526.camel@sipsolutions.net>
-Subject: Re: [PATCH] nl80211: fix p2p go mgmt send failure on DFS channel
+        id 1jd8ls-002abo-Ls; Mon, 25 May 2020 10:47:44 +0200
+Message-ID: <ab7cac9c73dc8ef956a1719dc090167bcfc24b63.camel@sipsolutions.net>
+Subject: Re: [PATCH] mac80211_hwsim: report the WIPHY_FLAG_SUPPORTS_5_10_MHZ
+ capability
 From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Liangwei Dong <liangwei@codeaurora.org>
-Cc:     linux-wireless@vger.kernel.org
-Date:   Mon, 25 May 2020 10:40:44 +0200
-In-Reply-To: <1589446471-208-1-git-send-email-liangwei@codeaurora.org>
-References: <1589446471-208-1-git-send-email-liangwei@codeaurora.org>
+To:     Ramon Fontes <ramonreisfontes@gmail.com>,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        linux-wireless@vger.kernel.org
+Cc:     kvalo@codeaurora.org, davem@davemloft.net
+Date:   Mon, 25 May 2020 10:47:43 +0200
+In-Reply-To: <20200515164640.97276-1-ramonreisfontes@gmail.com> (sfid-20200515_184649_139967_003E7ED8)
+References: <20200515164640.97276-1-ramonreisfontes@gmail.com>
+         (sfid-20200515_184649_139967_003E7ED8)
 Content-Type: text/plain; charset="UTF-8"
 User-Agent: Evolution 3.36.2 (3.36.2-1.fc32) 
 MIME-Version: 1.0
@@ -36,40 +40,26 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, 2020-05-14 at 16:54 +0800, Liangwei Dong wrote:
-> Start Autonomous p2p GO on DFS channel and then trigger remote
-> p2p peer to connect to p2p GO. P2P remote device will send
-> P2P provision discovery request action frame to P2P GO on GO's
-> home channel - DFS. But when P2P GO sends Provision discovery
-> response action frame to P2P remote, Kernel rejects the mgmt
-> frame sending since Kernel doesn't allow "offchan" tx mgmt when
-> AP interface is active on DFS channel.
+On Fri, 2020-05-15 at 13:46 -0300, Ramon Fontes wrote:
+> Signed-off-by: Ramon Fontes <ramonreisfontes@gmail.com>
+> ---
+>  drivers/net/wireless/mac80211_hwsim.c | 1 +
+>  1 file changed, 1 insertion(+)
 > 
-> Fix by allow "offchan" tx mgmt if the requested channel is same
-> or compatible with AP's home channel.
+> diff --git a/drivers/net/wireless/mac80211_hwsim.c b/drivers/net/wireless/mac80211_hwsim.c
+> index 0528d4cb4..67f97ac36 100644
+> --- a/drivers/net/wireless/mac80211_hwsim.c
+> +++ b/drivers/net/wireless/mac80211_hwsim.c
+> @@ -2995,6 +2995,7 @@ static int mac80211_hwsim_new_radio(struct genl_info *info,
+>  	hw->wiphy->flags |= WIPHY_FLAG_SUPPORTS_TDLS |
+>  			    WIPHY_FLAG_HAS_REMAIN_ON_CHANNEL |
+>  			    WIPHY_FLAG_AP_UAPSD |
+> +                            WIPHY_FLAG_SUPPORTS_5_10_MHZ |
 
-Maybe we should just fix that in userland?
+Not sure this is enough? How about wmediumd, for example?
 
->  	wdev_lock(wdev);
-> -	if (params.offchan && !cfg80211_off_channel_oper_allowed(wdev)) {
-> -		wdev_unlock(wdev);
-> -		return -EBUSY;
-> +	if (params.offchan &&
-> +	    !cfg80211_off_channel_oper_allowed(wdev) &&
-> +	    !cfg80211_chandef_identical(&wdev->chandef, &chandef)) {
-> +		compat_chandef = cfg80211_chandef_compatible(&wdev->chandef,
-> +							     &chandef);
-> +		if (compat_chandef != &chandef) {
-> +			wdev_unlock(wdev);
-> +			return -EBUSY;
-> +		}
-
-We'll surely have a 20 MHz channel as "chandef", so there's not much
-point in checking the compat_chandef for == &chandef, but rather if
-compat_chandef is non-NULL we're fine?
-
-Also, chandef_compatible() already checks for identical, so no need to
-do that here before.
+And also, 5/10 MHz has many more channels inbetween the normal ones, no?
+Shouldn't those also be added?
 
 johannes
 
