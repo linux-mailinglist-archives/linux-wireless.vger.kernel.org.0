@@ -2,32 +2,31 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DF65C1E08E6
-	for <lists+linux-wireless@lfdr.de>; Mon, 25 May 2020 10:35:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C940D1E0918
+	for <lists+linux-wireless@lfdr.de>; Mon, 25 May 2020 10:40:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388283AbgEYIff (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 25 May 2020 04:35:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47156 "EHLO
+        id S2388817AbgEYIkr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 25 May 2020 04:40:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48012 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388093AbgEYIff (ORCPT
+        with ESMTP id S2388093AbgEYIkr (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 25 May 2020 04:35:35 -0400
+        Mon, 25 May 2020 04:40:47 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5053AC061A0E
-        for <linux-wireless@vger.kernel.org>; Mon, 25 May 2020 01:35:35 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46991C061A0E
+        for <linux-wireless@vger.kernel.org>; Mon, 25 May 2020 01:40:47 -0700 (PDT)
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.93)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1jd8a3-002aFR-Tm; Mon, 25 May 2020 10:35:32 +0200
-Message-ID: <a26a1d1a4d164d17cdf38ec358119ff8c682f991.camel@sipsolutions.net>
-Subject: Re: [PATCH] mac80211: Fix station dump inactive time after sta
- connection
+        id 1jd8f7-002aOs-Ig; Mon, 25 May 2020 10:40:45 +0200
+Message-ID: <161e46b950828b275aafb09576bf70e977cf0526.camel@sipsolutions.net>
+Subject: Re: [PATCH] nl80211: fix p2p go mgmt send failure on DFS channel
 From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Seevalamuthu Mariappan <seevalam@codeaurora.org>
+To:     Liangwei Dong <liangwei@codeaurora.org>
 Cc:     linux-wireless@vger.kernel.org
-Date:   Mon, 25 May 2020 10:35:30 +0200
-In-Reply-To: <1588702126-11364-1-git-send-email-seevalam@codeaurora.org>
-References: <1588702126-11364-1-git-send-email-seevalam@codeaurora.org>
+Date:   Mon, 25 May 2020 10:40:44 +0200
+In-Reply-To: <1589446471-208-1-git-send-email-liangwei@codeaurora.org>
+References: <1589446471-208-1-git-send-email-liangwei@codeaurora.org>
 Content-Type: text/plain; charset="UTF-8"
 User-Agent: Evolution 3.36.2 (3.36.2-1.fc32) 
 MIME-Version: 1.0
@@ -37,27 +36,40 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 2020-05-05 at 23:38 +0530, Seevalamuthu Mariappan wrote:
-> When USES_RSS is enabled, last_rx becomes zero in first few
-> minutes after sta connection
-
-This is wrong - it's something like "in the first few minutes after
-system boot" or something?
-
->  in sta_get_last_rx_stats. This
-> leads to inactive time showing current jiffies in msecs.
+On Thu, 2020-05-14 at 16:54 +0800, Liangwei Dong wrote:
+> Start Autonomous p2p GO on DFS channel and then trigger remote
+> p2p peer to connect to p2p GO. P2P remote device will send
+> P2P provision discovery request action frame to P2P GO on GO's
+> home channel - DFS. But when P2P GO sends Provision discovery
+> response action frame to P2P remote, Kernel rejects the mgmt
+> frame sending since Kernel doesn't allow "offchan" tx mgmt when
+> AP interface is active on DFS channel.
 > 
-> Station 8c:fd:f0:02:10:dd (on wlan0)
->         inactive time:  4294701656 ms
->           .
->           .
->         connected time: 2 seconds
-> 
-> Fix this by avoid overwriting last_rx with percpu_stat's last_rx
-> if it is zero.
+> Fix by allow "offchan" tx mgmt if the requested channel is same
+> or compatible with AP's home channel.
 
-This doesn't seem like the right fix - shouldn't we just initialize
-last_rx better so the wrap won't cause any trouble?
+Maybe we should just fix that in userland?
+
+>  	wdev_lock(wdev);
+> -	if (params.offchan && !cfg80211_off_channel_oper_allowed(wdev)) {
+> -		wdev_unlock(wdev);
+> -		return -EBUSY;
+> +	if (params.offchan &&
+> +	    !cfg80211_off_channel_oper_allowed(wdev) &&
+> +	    !cfg80211_chandef_identical(&wdev->chandef, &chandef)) {
+> +		compat_chandef = cfg80211_chandef_compatible(&wdev->chandef,
+> +							     &chandef);
+> +		if (compat_chandef != &chandef) {
+> +			wdev_unlock(wdev);
+> +			return -EBUSY;
+> +		}
+
+We'll surely have a 20 MHz channel as "chandef", so there's not much
+point in checking the compat_chandef for == &chandef, but rather if
+compat_chandef is non-NULL we're fine?
+
+Also, chandef_compatible() already checks for identical, so no need to
+do that here before.
 
 johannes
 
