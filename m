@@ -2,87 +2,91 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 37F921E0BF9
-	for <lists+linux-wireless@lfdr.de>; Mon, 25 May 2020 12:39:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A9011E0C54
+	for <lists+linux-wireless@lfdr.de>; Mon, 25 May 2020 12:58:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389856AbgEYKiz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 25 May 2020 06:38:55 -0400
-Received: from mail27.static.mailgun.info ([104.130.122.27]:13927 "EHLO
-        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S2389777AbgEYKiz (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 25 May 2020 06:38:55 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1590403134; h=Content-Transfer-Encoding: Content-Type:
- MIME-Version: Message-ID: In-Reply-To: Date: References: Subject: Cc:
- To: From: Sender; bh=lFsr8nIACUM6UgmDa1xekMARHxnlRL7EhwzL3mtLwqY=; b=fJy+PwUIu+ofwdpqbbUZsYHJjlSiQ1dqLOq6OIZ6gtt9Vi0FYC4K9px8y5Z3g3CicsKK8LGF
- IcahHYpAEQ2Ogoeal9XrHe052LOmEFv0lLTORXT/vHa4gyI+4b+eAfCy4S3kKbzhj/hEt+zt
- TcEZqncp/oiuRjde1tkH74V2kp8=
-X-Mailgun-Sending-Ip: 104.130.122.27
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n03.prod.us-west-2.postgun.com with SMTP id
- 5ecba03e9d4cf4d3ef43d85f (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 25 May 2020 10:38:54
- GMT
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id ECDC6C43391; Mon, 25 May 2020 10:38:53 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 27801C433C9;
-        Mon, 25 May 2020 10:38:47 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 27801C433C9
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Pali =?utf-8?Q?Roh=C3=A1r?= <pali@kernel.org>
-Cc:     Ulf Hansson <ulf.hansson@linaro.org>, linux-mmc@vger.kernel.org,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Amitkumar Karwar <amitkarwar@gmail.com>,
-        Ganapathi Bhat <ganapathi.bhat@nxp.com>,
-        Xinming Hu <huxinming820@gmail.com>,
-        linux-kernel@vger.kernel.org, ath10k@lists.infradead.org,
-        b43-dev@lists.infradead.org, brcm80211-dev-list.pdl@broadcom.com,
-        brcm80211-dev-list@cypress.com, libertas-dev@lists.infradead.org,
-        linux-wireless@vger.kernel.org,
-        Marek =?utf-8?Q?Beh=C3=BAn?= <marek.behun@nic.cz>
-Subject: Re: [PATCH 07/11] mmc: sdio: Move SDIO IDs from ath6kl driver to common include file
-References: <20200522144412.19712-1-pali@kernel.org>
-        <20200522144412.19712-8-pali@kernel.org>
-Date:   Mon, 25 May 2020 13:38:46 +0300
-In-Reply-To: <20200522144412.19712-8-pali@kernel.org> ("Pali \=\?utf-8\?Q\?Roh\?\=
- \=\?utf-8\?Q\?\=C3\=A1r\=22's\?\= message
-        of "Fri, 22 May 2020 16:44:08 +0200")
-Message-ID: <87blmc9u4p.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        id S2389897AbgEYK6S (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 25 May 2020 06:58:18 -0400
+Received: from mx4.wp.pl ([212.77.101.11]:50013 "EHLO mx4.wp.pl"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2389856AbgEYK6S (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 25 May 2020 06:58:18 -0400
+Received: (wp-smtpd smtp.wp.pl 27426 invoked from network); 25 May 2020 12:58:15 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=1024a;
+          t=1590404295; bh=7MF1/Pl/EH+Ubq6o+1e1DNviLR2qay5k+wY58eSF9aM=;
+          h=From:To:Cc:Subject;
+          b=u5j0FP3pGaEM1NAMsYpPKK+vXx4crQAEBhXIs4PAH9KDqjiiIZzohR6oiiDkZYHkT
+           bmElDvMfS5tK6DaAluU+AKIcrJGFFOwoj1imVQ/Z+ezs1ydtX5hAKSYDDgO4IX9F3u
+           KF1rqQnd7AKAE9DED4c5An0qHF0DE4D1CpGAKV34=
+Received: from ip4-46-39-164-203.cust.nbox.cz (HELO localhost) (stf_xl@wp.pl@[46.39.164.203])
+          (envelope-sender <stf_xl@wp.pl>)
+          by smtp.wp.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
+          for <johannes@sipsolutions.net>; 25 May 2020 12:58:15 +0200
+Date:   Mon, 25 May 2020 12:58:14 +0200
+From:   Stanislaw Gruszka <stf_xl@wp.pl>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     Julian Calaby <julian.calaby@gmail.com>,
+        Rui Salvaterra <rsalvaterra@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Larry Finger <Larry.Finger@lwfinger.net>,
+        linux-wireless@vger.kernel.org
+Subject: Re: [RFC PATCH] rt2800lib: unconditionally enable MFP
+Message-ID: <20200525105814.GA926693@wp.pl>
+References: <20200524094730.2684-1-rsalvaterra@gmail.com>
+ <20200524111751.GA914918@wp.pl>
+ <CAGRGNgWuQjQzDS9-cPAx7TnDfEiGnSccw4vqPAE_gWV=QS5JVw@mail.gmail.com>
+ <20200524123931.GA915983@wp.pl>
+ <640c254edb9fdaec2fd8987d1f2d345bd1d9276c.camel@sipsolutions.net>
+ <20200525093142.GA926004@wp.pl>
+ <9a8da74898b68fb63f65567068de0fcb2b5a57b0.camel@sipsolutions.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9a8da74898b68fb63f65567068de0fcb2b5a57b0.camel@sipsolutions.net>
+X-WP-MailID: 6610d83fe14df7a8e2fdefd7a6c7dd72
+X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
+X-WP-SPAM: NO 0000000 [wXNU]                               
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Pali Roh=C3=A1r <pali@kernel.org> writes:
+On Mon, May 25, 2020 at 11:49:56AM +0200, Johannes Berg wrote:
+> On Mon, 2020-05-25 at 11:31 +0200, Stanislaw Gruszka wrote:
+> > On Mon, May 25, 2020 at 11:15:29AM +0200, Johannes Berg wrote:
+> > > On Sun, 2020-05-24 at 14:39 +0200, Stanislaw Gruszka wrote:
+> > > > > And once mac80211 is smart enough to make those decisions, couldn't we
+> > > > > just enable MFP by default?
+> > > 
+> > > For the record, I don't think we'd really want to add such a thing to
+> > > mac80211 ... easier done in the driver.
+> > > 
+> > > > If we will have indicator from mac80211 that MFP is configured, we can
+> > > > just return -EOPNOTSUPP from rt2x00mac_set_key() for CCMP and that will
+> > > > make MFP work without specifying nohwcrypt module parameter - software
+> > > > encryption will be used anyway.
+> > > 
+> > > Not sure mac80211 really knows? Hmm.
+> > 
+> > After looking at this a bit more, seems we have indicator of MFP being
+> > used in ieee80211_sta structure.
+> 
+> Yeah, where's my head ... sorry.
+> 
+> > So maybe adding check like below
+> > will allow to remove nohwcrypt rt2x00 requirement for MFP ?
+> 
+> Seems reasonable, but will still do _everything_ in software for such
+> connections. Still better than not connecting, I guess.
 
-> Also replace generic MANUFACTURER macros by proper SDIO IDs macros.
->
-> Check for "AR6003 or later" is slightly modified to use SDIO device IDs.
-> This allows removal of all custom MANUFACTURER macros from ath6kl.
->
-> Signed-off-by: Pali Roh=C3=A1r <pali@kernel.org>
+Yeah, and at least without nohwcrypt=y we can still use HW encryption
+for non-MFP stations.
 
-Acked-by: Kalle Valo <kvalo@codeaurora.org>
+Rui, feel free to repost your patch with additional sta->mfp check.
 
---=20
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
-hes
+If someone is willing to implement mt76 approach to have HW encryption offload
+for MFP+CCMP, I'll be happy to review patch. From other hand, most people will
+use MFP with modern ciphers anyway, so I'm not sure how much need is for such
+patch.
+
+Stanislaw
