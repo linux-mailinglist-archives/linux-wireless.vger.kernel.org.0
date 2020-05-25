@@ -2,80 +2,116 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C09441E0A11
-	for <lists+linux-wireless@lfdr.de>; Mon, 25 May 2020 11:17:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DC32E1E0A3D
+	for <lists+linux-wireless@lfdr.de>; Mon, 25 May 2020 11:22:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389564AbgEYJRz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 25 May 2020 05:17:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53836 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389546AbgEYJRz (ORCPT
+        id S2389373AbgEYJWU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 25 May 2020 05:22:20 -0400
+Received: from dvalin.narfation.org ([213.160.73.56]:44618 "EHLO
+        dvalin.narfation.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2389227AbgEYJWT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 25 May 2020 05:17:55 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D60A1C061A0E
-        for <linux-wireless@vger.kernel.org>; Mon, 25 May 2020 02:17:54 -0700 (PDT)
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.93)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1jd9Et-002bRu-HB; Mon, 25 May 2020 11:17:43 +0200
-Message-ID: <f925bbe557bd1414d0aee506a3c0c92173f522f9.camel@sipsolutions.net>
-Subject: Re: [RFC PATCH] rt2800lib: unconditionally enable MFP
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Larry Finger <Larry.Finger@lwfinger.net>,
-        Rui Salvaterra <rsalvaterra@gmail.com>,
-        Stanislaw Gruszka <stf_xl@wp.pl>
-Cc:     kvalo@codeaurora.org, linux-wireless@vger.kernel.org
-Date:   Mon, 25 May 2020 11:17:42 +0200
-In-Reply-To: <12222a10-e5d9-514e-7667-0602919a4866@lwfinger.net> (sfid-20200525_020302_358017_7777E473)
-References: <20200524094730.2684-1-rsalvaterra@gmail.com>
-         <20200524111751.GA914918@wp.pl>
-         <CALjTZvbHbMEWTmZk4Li5ZNAETdVd3Q_kHUS6KQw+WDS6ayE9vA@mail.gmail.com>
-         <12222a10-e5d9-514e-7667-0602919a4866@lwfinger.net>
-         (sfid-20200525_020302_358017_7777E473)
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.2 (3.36.2-1.fc32) 
+        Mon, 25 May 2020 05:22:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
+        s=20121; t=1590398536;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=rc63LKazKJ42gCxrKydqcK9JdD5SREUWcGPPhltHNEE=;
+        b=sbFk6falZc9RXyaWKLibbda8wt0DBRNXzdFTz1ZysCgsLI4WQup6umnmKY4bgelNI7PiwV
+        jWCUZqR2lVoeYl3FKZTdXEPdlBhEG938wPtCCd9t6csN+DKBfK7SQTCOLA1ZyQ/VHS5bgt
+        4MUfx6oXr+9XSDHz/MIWS3ZzEaCDzGM=
+From:   Sven Eckelmann <sven@narfation.org>
+To:     Sebastian Gottschall <s.gottschall@dd-wrt.com>
+Cc:     ath10k@lists.infradead.org, John Crispin <john@phrozen.org>,
+        Ansuel Smith <ansuelsmth@gmail.com>,
+        openwrt-devel@lists.openwrt.org, Kalle Valo <kvalo@codeaurora.org>,
+        Sebastian Gottschall <s.gottschall@newmedia-net.de>,
+        linux-wireless@vger.kernel.org
+Subject: Re: [PATCH v13] ath10k: add LED and GPIO controlling support for various chipsets
+Date:   Mon, 25 May 2020 11:22:13 +0200
+Message-ID: <3608947.bSrYYtX6KI@bentobox>
+In-Reply-To: <b23e65cf-4be7-72db-7955-32eae196953e@dd-wrt.com>
+References: <1523027875-5143-1-git-send-email-kvalo@codeaurora.org> <2468724.JaAZLprVu6@bentobox> <b23e65cf-4be7-72db-7955-32eae196953e@dd-wrt.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; boundary="nextPart2460714.mtjQ6OgbZm"; micalg="pgp-sha512"; protocol="application/pgp-signature"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sun, 2020-05-24 at 19:02 -0500, Larry Finger wrote:
-> On 5/24/20 10:07 AM, Rui Salvaterra wrote:
-> > Hi, Stanislaw,
-> > 
-> > On Sun, 24 May 2020 at 12:18, Stanislaw Gruszka <stf_xl@wp.pl> wrote:
-> > > AFICT more work need to be done to support MFP by HW encryption properly
-> > > on rt2x00. See this message and whole thread:
-> > > https://lore.kernel.org/linux-wireless/977a3cf4-3ec5-4aaa-b3d4-eea2e8593652@nbd.name/
-> > > 
-> > > Stanislaw
-> > 
-> > This RT2790 has been working just fine with my patch for hours. No
-> > hangs at all. What additional bad behaviour should I expect?
-> 
-> I read the above thread. It seems that the best thing to do with b43 is to send 
-> the MFP_CAPABLE only when nohwcrypt is set as a module option. I wish it could 
-> have worked the other way, but I think the potential for keys getting out of 
-> sync should be avoided.I still need to find a place the log something when 
-> ciphers are present and the option is not set.
+--nextPart2460714.mtjQ6OgbZm
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 
-With b43 you have much less to worry about though.
+On Wednesday, 20 May 2020 09:39:45 CEST Sebastian Gottschall wrote:
+[...]
+> could somone clarify the state here and why it was dropped?
+> the original patch i wrote does exclude the soc chipsets, but the patch 
+> was later reorganized and some part have been rewritten
+> so i'm not sure if it covers the scenario mentioned here, which i did 
+[...]
+> > This patch was imported to OpenWrt in commit 61d57a2f88b9 ("mac80211: ath10k
+> > add leds support") and broke the 11s support for IPQ4019 and QCA4019 (5GHz)
+> > firmware versions 10.4-3.5.3-00053, 10.4-3.5.3-00057, 10.4-3.6-00140:
 
-Contrary to what I just said in my other email (oops, sorry) there are
-two problems here:
+Just noticed that there was a copy and paste error in my message. The 5GHz was 
+an QCA9888 [1,2] and not an QCA4019. Otherwise the _pci error wouldn't have made 
+any sense.
 
- 1) RX of management frames - if hw/fw erroneously attempts to decrypt
- 2) PN assignment during TX
+And I can only say at the moment (remember that this was observer 14 months 
+ago), that it could be reproduced easily on IPQ40xx with an QCA9888 and the 
+given config running OpenWrt reboot-9440-g0f89c17b57. The diffconfig (seed) of 
+the installation was:
 
-1) you can test easily with b43, say send a deauth from the AP to the
-client and check the frame goes through properly. If it does, then the
-device isn't attempting to decrypt.
+    CONFIG_TARGET_ipq40xx=y
+    CONFIG_TARGET_ipq40xx_generic=y
+    CONFIG_TARGET_ipq40xx_generic_DEVICE_openmesh_a62=y
+    CONFIG_ATH10K_LEDS=y
+    CONFIG_PACKAGE_ath10k-firmware-qca4019=y
+    # CONFIG_PACKAGE_ath10k-firmware-qca4019-ct is not set
+    CONFIG_PACKAGE_ath10k-firmware-qca9888=y
+    # CONFIG_PACKAGE_ath10k-firmware-qca9888-ct is not set
+    CONFIG_PACKAGE_kmod-ath10k=y
+    # CONFIG_PACKAGE_kmod-ath10k-ct is not set
+    # CONFIG_PACKAGE_kmod-hwmon-core is not set
 
-2) isn't an issue with b43 since it does it in software (I believe in
-mac80211) anyway.
+And it still can with this OpenWrt version. But it doesn't seem to happen with 
+the most recent OpenWrt reboot-13353-gb1604b744b. But there are nearly 4000 
+commits inbetween. So no idea what changed (just a timing thing or an actual 
+fix - no idea).
 
-johannes
+Btw. the wireless config was given in the original mail [2,3]
+
+Kind regards,
+	Sven
+
+[1] https://openwrt.org/toh/hwdata/open-mesh/open-mesh_a62
+[2] https://patchwork.kernel.org/patch/10723033/#22502191
+[3] https://patchwork.kernel.org/patch/10327075/#22502179
+--nextPart2460714.mtjQ6OgbZm
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEF10rh2Elc9zjMuACXYcKB8Eme0YFAl7LjkUACgkQXYcKB8Em
+e0YH8xAAg6aeHEscaqQ7cvLRA1v9ipqIz4bNIUte+dpOzinFIIAVW5bHwYVF0GZT
+L2Ft9lIMLrSLuFZ/PKNlqnS2Ke+ReB2796DYGAY4rw2glSr3A4YH9/IsOwJgXHp3
+tvS6sxdWDyBHXiYS+WkviGdwyyZX+GR3qgJLOagO8dbN/vEZARMTPmyKaP3YDOcC
+RghlJq+1wJGaKdaOG9BE3s4bh5puSg/czAKtYKPgHXYJBJFWIziLuhUYYSAOhLy6
+VbHr6d45nymssAQqtoUK0pnccLUI6V3JXGhmmH/yVs1aayE4txjvMPEj5aP3ZP6d
+2WRa+812FKwLnXOpRIfFgpx6WSElAk+QShbAzqwJ9HFn/dYfm2HOjui6oqU8xD04
+fHbMF4CA9p4zue4t4ClDYTKURqzutg7wLva/vKVN/ovyu0ZQKM+9o/nJu6wkth9g
+hUQllRdH9nWJiJvGlzWzYVxrMmDDa4Gvi3socbZ6zuCbIWLFWNsNsU77WKf7Od+Q
+dEPoRFEyyz7yeEQCWl+AMY20PjdGdWWG+JYHx89+/aIDyLhp3K1BHDpSToe86aCG
+8PiGV48W6NI79IqEoVeyQtenTAmpj0bizdQw5frylK2XDA7ofnEhU4+W8V8Cv9QF
+ARACuJMgtl1FbLS8jWOJP2KAFYOG8upZWbIu3bASQnJ5s9LWvYg=
+=B32t
+-----END PGP SIGNATURE-----
+
+--nextPart2460714.mtjQ6OgbZm--
+
+
 
