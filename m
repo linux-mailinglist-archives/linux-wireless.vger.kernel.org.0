@@ -2,91 +2,80 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A9011E0C54
-	for <lists+linux-wireless@lfdr.de>; Mon, 25 May 2020 12:58:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 439811E0C87
+	for <lists+linux-wireless@lfdr.de>; Mon, 25 May 2020 13:10:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389897AbgEYK6S (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 25 May 2020 06:58:18 -0400
-Received: from mx4.wp.pl ([212.77.101.11]:50013 "EHLO mx4.wp.pl"
+        id S2390005AbgEYLKa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 25 May 2020 07:10:30 -0400
+Received: from mail.kernel.org ([198.145.29.99]:58422 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2389856AbgEYK6S (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 25 May 2020 06:58:18 -0400
-Received: (wp-smtpd smtp.wp.pl 27426 invoked from network); 25 May 2020 12:58:15 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=1024a;
-          t=1590404295; bh=7MF1/Pl/EH+Ubq6o+1e1DNviLR2qay5k+wY58eSF9aM=;
-          h=From:To:Cc:Subject;
-          b=u5j0FP3pGaEM1NAMsYpPKK+vXx4crQAEBhXIs4PAH9KDqjiiIZzohR6oiiDkZYHkT
-           bmElDvMfS5tK6DaAluU+AKIcrJGFFOwoj1imVQ/Z+ezs1ydtX5hAKSYDDgO4IX9F3u
-           KF1rqQnd7AKAE9DED4c5An0qHF0DE4D1CpGAKV34=
-Received: from ip4-46-39-164-203.cust.nbox.cz (HELO localhost) (stf_xl@wp.pl@[46.39.164.203])
-          (envelope-sender <stf_xl@wp.pl>)
-          by smtp.wp.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
-          for <johannes@sipsolutions.net>; 25 May 2020 12:58:15 +0200
-Date:   Mon, 25 May 2020 12:58:14 +0200
-From:   Stanislaw Gruszka <stf_xl@wp.pl>
+        id S2389926AbgEYLK3 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 25 May 2020 07:10:29 -0400
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id B083520723;
+        Mon, 25 May 2020 11:10:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1590405029;
+        bh=dNwka+OZrQ/9SbGW+ISAJA+FmBHPDzDTpm4boGMGhqM=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=N2ce1n0ARjGK23iQAxS/2CNKWJtUq/OLPYDDl3uxf+kwyxsoqH33xcncLoe/0O/3Z
+         P/zdWq7FLB44PURPWUwldMyLS7st81+O61/lwZN9vPZ0b+wByO1EiOw5TAaO251Vw/
+         YYNJdRECa7nnj4O9CAvUpGf0J1gswFambZz+U2BA=
+Date:   Mon, 25 May 2020 13:10:26 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
 To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     Julian Calaby <julian.calaby@gmail.com>,
-        Rui Salvaterra <rsalvaterra@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Larry Finger <Larry.Finger@lwfinger.net>,
-        linux-wireless@vger.kernel.org
-Subject: Re: [RFC PATCH] rt2800lib: unconditionally enable MFP
-Message-ID: <20200525105814.GA926693@wp.pl>
-References: <20200524094730.2684-1-rsalvaterra@gmail.com>
- <20200524111751.GA914918@wp.pl>
- <CAGRGNgWuQjQzDS9-cPAx7TnDfEiGnSccw4vqPAE_gWV=QS5JVw@mail.gmail.com>
- <20200524123931.GA915983@wp.pl>
- <640c254edb9fdaec2fd8987d1f2d345bd1d9276c.camel@sipsolutions.net>
- <20200525093142.GA926004@wp.pl>
- <9a8da74898b68fb63f65567068de0fcb2b5a57b0.camel@sipsolutions.net>
+Cc:     linux-wireless@vger.kernel.org,
+        Johannes Berg <johannes.berg@intel.com>,
+        stable@vger.kernel.org,
+        syzbot+fd5332e429401bf42d18@syzkaller.appspotmail.com
+Subject: Re: [PATCH] cfg80211: fix debugfs rename crash
+Message-ID: <20200525111026.GA279021@kroah.com>
+References: <20200525113816.fc4da3ec3d4b.Ica63a110679819eaa9fb3bc1b7437d96b1fd187d@changeid>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <9a8da74898b68fb63f65567068de0fcb2b5a57b0.camel@sipsolutions.net>
-X-WP-MailID: 6610d83fe14df7a8e2fdefd7a6c7dd72
-X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
-X-WP-SPAM: NO 0000000 [wXNU]                               
+In-Reply-To: <20200525113816.fc4da3ec3d4b.Ica63a110679819eaa9fb3bc1b7437d96b1fd187d@changeid>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, May 25, 2020 at 11:49:56AM +0200, Johannes Berg wrote:
-> On Mon, 2020-05-25 at 11:31 +0200, Stanislaw Gruszka wrote:
-> > On Mon, May 25, 2020 at 11:15:29AM +0200, Johannes Berg wrote:
-> > > On Sun, 2020-05-24 at 14:39 +0200, Stanislaw Gruszka wrote:
-> > > > > And once mac80211 is smart enough to make those decisions, couldn't we
-> > > > > just enable MFP by default?
-> > > 
-> > > For the record, I don't think we'd really want to add such a thing to
-> > > mac80211 ... easier done in the driver.
-> > > 
-> > > > If we will have indicator from mac80211 that MFP is configured, we can
-> > > > just return -EOPNOTSUPP from rt2x00mac_set_key() for CCMP and that will
-> > > > make MFP work without specifying nohwcrypt module parameter - software
-> > > > encryption will be used anyway.
-> > > 
-> > > Not sure mac80211 really knows? Hmm.
-> > 
-> > After looking at this a bit more, seems we have indicator of MFP being
-> > used in ieee80211_sta structure.
+On Mon, May 25, 2020 at 11:38:17AM +0200, Johannes Berg wrote:
+> From: Johannes Berg <johannes.berg@intel.com>
 > 
-> Yeah, where's my head ... sorry.
+> Removing the "if (IS_ERR(dir)) dir = NULL;" check only works
+> if we adjust the remaining code to not rely on it being NULL.
+> Check IS_ERR_OR_NULL() before attempting to dereference it.
 > 
-> > So maybe adding check like below
-> > will allow to remove nohwcrypt rt2x00 requirement for MFP ?
+> I'm not actually entirely sure this fixes the syzbot crash as
+> the kernel config indicates that they do have DEBUG_FS in the
+> kernel, but this is what I found when looking there.
 > 
-> Seems reasonable, but will still do _everything_ in software for such
-> connections. Still better than not connecting, I guess.
+> Cc: stable@vger.kernel.org
+> Fixes: d82574a8e5a4 ("cfg80211: no need to check return value of debugfs_create functions")
+> Reported-by: syzbot+fd5332e429401bf42d18@syzkaller.appspotmail.com
+> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+> ---
+>  net/wireless/core.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/net/wireless/core.c b/net/wireless/core.c
+> index 341402b4f178..ce024440fa51 100644
+> --- a/net/wireless/core.c
+> +++ b/net/wireless/core.c
+> @@ -142,7 +142,7 @@ int cfg80211_dev_rename(struct cfg80211_registered_device *rdev,
+>  	if (result)
+>  		return result;
+>  
+> -	if (rdev->wiphy.debugfsdir)
+> +	if (!IS_ERR_OR_NULL(rdev->wiphy.debugfsdir))
+>  		debugfs_rename(rdev->wiphy.debugfsdir->d_parent,
+>  			       rdev->wiphy.debugfsdir,
+>  			       rdev->wiphy.debugfsdir->d_parent, newname);
 
-Yeah, and at least without nohwcrypt=y we can still use HW encryption
-for non-MFP stations.
+I missed that d_parent was being accessed, sorry about that.  This looks
+good to me:
 
-Rui, feel free to repost your patch with additional sta->mfp check.
-
-If someone is willing to implement mt76 approach to have HW encryption offload
-for MFP+CCMP, I'll be happy to review patch. From other hand, most people will
-use MFP with modern ciphers anyway, so I'm not sure how much need is for such
-patch.
-
-Stanislaw
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
