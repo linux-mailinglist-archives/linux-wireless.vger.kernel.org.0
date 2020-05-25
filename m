@@ -2,77 +2,98 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 68CF81E0F7C
-	for <lists+linux-wireless@lfdr.de>; Mon, 25 May 2020 15:28:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C587C1E0F8D
+	for <lists+linux-wireless@lfdr.de>; Mon, 25 May 2020 15:33:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390789AbgEYN2N (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 25 May 2020 09:28:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36766 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388737AbgEYN2M (ORCPT
+        id S2390794AbgEYNdf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 25 May 2020 09:33:35 -0400
+Received: from mail-ot1-f66.google.com ([209.85.210.66]:39138 "EHLO
+        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388794AbgEYNdf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 25 May 2020 09:28:12 -0400
-Received: from mail-vs1-xe41.google.com (mail-vs1-xe41.google.com [IPv6:2607:f8b0:4864:20::e41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BEC46C061A0E
-        for <linux-wireless@vger.kernel.org>; Mon, 25 May 2020 06:28:12 -0700 (PDT)
-Received: by mail-vs1-xe41.google.com with SMTP id 1so9896901vsl.9
-        for <linux-wireless@vger.kernel.org>; Mon, 25 May 2020 06:28:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=g+LsiOwvjl2SpU2qvLXaL5iXkasm+LPHHmTOpB6DmUs=;
-        b=U2agXUH+jxBeOk+TChHf9u9B313Dp1m/h3uVwOQQFxcx+2n1gbfdu9Rmw8TxTYF73s
-         BS0oXypZZdhR7FhY2l3sbUAH13qeoRu1hXEoBOB3i8CYAxKuLV302JACkX/Hknbvw/+E
-         frFfDxLmyoOulcydkVeRlLprk9BfgYTRiKOw/g/yeEFwBu6tSQfUPSavn7FT9eX9izwG
-         LZUxsXi95H16I7mP6gqwurs1w2VHGeq59zHNwIxYIsetR+Qgmd293FwD0aw7yfcBQyv+
-         CDwF0TC0WeLv4fQRYoQt+t8PmHqA71P8dAnUpNt65l1CQkL7UIhptXf4SHzUwaBRJNgH
-         fC9Q==
+        Mon, 25 May 2020 09:33:35 -0400
+Received: by mail-ot1-f66.google.com with SMTP id d7so13803821ote.6;
+        Mon, 25 May 2020 06:33:34 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=g+LsiOwvjl2SpU2qvLXaL5iXkasm+LPHHmTOpB6DmUs=;
-        b=pEcRSLqO/9eIiN4g9FUtmaD1R70Pa8fqrsxGiWYA06enXgQZ3e/reaTrDK11kf7SWG
-         1TLWKAyaPYozxfmftIEew/J2Sh3rRWTT4hEIXDIwNO05Sy8jz+1kYIjGV8M8jPbwJHjf
-         UmLLBSPzv0pb3TYU9w0jZ/C+9rvm3xxv3Ohw8jMV2cm0EOwgsBOG9U7a7+t+2ai/7Hyd
-         RSzNuAioG/fAE1LExfs8FV+UzGZqpWu7WTH54NdhKq2MQO6heV2Mz/fvbVHRbKm38L7h
-         3I19g1hWJrhxe+R4zYnwRUeMOxN8Cx+LK67a0fUMD2gBanD/1hshWSqQ91+IVPx6DoiY
-         TqPw==
-X-Gm-Message-State: AOAM532h8sIH7i10099WH3AcIAlI7h+v+siHfFIq5C7tcqr5IZMvrK1s
-        vGi7ZJzYPd2g7RS63ypiIFuO5avG2b3xjqhfCg==
-X-Google-Smtp-Source: ABdhPJyTE9oTcfKHghGzLSWfubUvewiKfMohma4YUG0g3FGiW7cXbqzp8SB3D4vVh/zH6DqB4uoSxGGjTDvGmmJvy2A=
-X-Received: by 2002:a67:f64a:: with SMTP id u10mr18441388vso.202.1590413292010;
- Mon, 25 May 2020 06:28:12 -0700 (PDT)
+        bh=q3iZXQVOrAzTRalMEWpzyXuGfM2DVDNSP7yRTGMprno=;
+        b=csR0DAp0JE0lKdsnc9OCrIPH84KeaYSn5TBcvYM9k/ZF+ge8S8cm+QKj2ohQm4WTRw
+         ewBeCpomccCrEBjdEfz+EeABYxjG/l0/PFkkxcGzfID6P18f5mSNef3eK5mTVf5hsS5o
+         ew6lOAwZwqls0LRUPKc5w39L45k6vgDm6KLgkj5oKi4HvjfMWLsNvn4fDtATXKMmjwkQ
+         eB6TMyMCTYPgP1nG3tlvHGYun2VJjt/eA9H05RosD+tfMindc/wNN4eL5E+7t59/hMnZ
+         ncVUBDoS4uCv+sWJQ4t+OBbvFNHvYhP3Iicnf9ZwJwc1hTyKYn9wV+gCcWromYn9DNO+
+         cu5A==
+X-Gm-Message-State: AOAM531BS6rAFeHKAKLWNldE63/1MknodaxhXZAGh2Fg6JIIibq+u+pK
+        187XEGb+1r0IeIC0ZMBV0p3WRjZW5YRYlINO4hA=
+X-Google-Smtp-Source: ABdhPJxH53sSQQ6MgkCscPJLy6R+m/Ffo7n4UaokQzcM2BtXNS/a2/B/Xn5yLGNX8exhkr0lIHwWS3e7Q7DJIU8Q1a0=
+X-Received: by 2002:a9d:3d05:: with SMTP id a5mr21110123otc.262.1590413614201;
+ Mon, 25 May 2020 06:33:34 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200524094730.2684-1-rsalvaterra@gmail.com> <20200524111751.GA914918@wp.pl>
- <CAGRGNgWuQjQzDS9-cPAx7TnDfEiGnSccw4vqPAE_gWV=QS5JVw@mail.gmail.com>
- <20200524123931.GA915983@wp.pl> <640c254edb9fdaec2fd8987d1f2d345bd1d9276c.camel@sipsolutions.net>
- <20200525093142.GA926004@wp.pl> <9a8da74898b68fb63f65567068de0fcb2b5a57b0.camel@sipsolutions.net>
- <20200525105814.GA926693@wp.pl> <CALjTZvY0qPXxS=VPG3Ma6CCdtWo2g2XC3Cnks6jnNSFzqz-HAQ@mail.gmail.com>
- <CALjTZvbNdQw4uj+n231d9R39F_MNn=nrj9_aL71am4Wy7jnh1A@mail.gmail.com> <9188b9f91d162146a61729b5b4fcc06530674810.camel@sipsolutions.net>
-In-Reply-To: <9188b9f91d162146a61729b5b4fcc06530674810.camel@sipsolutions.net>
-From:   Rui Salvaterra <rsalvaterra@gmail.com>
-Date:   Mon, 25 May 2020 14:28:01 +0100
-Message-ID: <CALjTZvbGQSZ9Jv=6W744FBTKn3AdPDuhdrgvPOsf15rJ+KXyoA@mail.gmail.com>
-Subject: Re: [RFC PATCH] rt2800lib: unconditionally enable MFP
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     Stanislaw Gruszka <stf_xl@wp.pl>,
-        Julian Calaby <julian.calaby@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Larry Finger <Larry.Finger@lwfinger.net>,
-        linux-wireless@vger.kernel.org
+References: <20200430063229.6182-1-rui.zhang@intel.com> <20200430063229.6182-2-rui.zhang@intel.com>
+In-Reply-To: <20200430063229.6182-2-rui.zhang@intel.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Mon, 25 May 2020 15:33:23 +0200
+Message-ID: <CAJZ5v0j1Nehwq5eCVBo7StJ=vxBKpO454ywkVJmVRD=MQOVu=w@mail.gmail.com>
+Subject: Re: [PATCH 1/6] iwlwifi: use thermal_zone_device_update() for
+ temperature change
+To:     Zhang Rui <rui.zhang@intel.com>
+Cc:     Linux PM <linux-pm@vger.kernel.org>,
+        "open list:NETWORKING DRIVERS (WIRELESS)" 
+        <linux-wireless@vger.kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        andrzej.p@collabora.com,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        luca@coelho.fi
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 25 May 2020 at 14:14, Johannes Berg <johannes@sipsolutions.net> wrote:
+On Thu, Apr 30, 2020 at 8:29 AM Zhang Rui <rui.zhang@intel.com> wrote:
 >
-> Not at this point - but the GTK comes with null STA, so you want
->         (sta && sta->mfp)
->
-> instead.
+> thermal_notify_framework() is an obsolete API, and iwlwifi is the only
+> user of it.
+> Convert iwlwifi driver to use thermal_zone_device_update() instead.
 
-Indeed, that did the trick, thanks. Will send the patch soon.
+IMO it is rather hard to figure out what is going to change
+functionally, from the driver's perspective, after this change.
+
+In particular, is user space going to notice any change?  If so, then
+what kind of change can it see?
+
+> Note that, thermal_zone_device_update() is able to handle the crossed
+> threshold by comparing the current temperature with every trip point, so
+> ths_crossed variant in iwl_mvm_temp_notif() is probably not needed.
+>
+> It is still left there in this patch, in case the debug information is
+> still needed.
+
+Well, it should be possible to figure this out just from the code ...
+
+> Signed-off-by: Zhang Rui <rui.zhang@intel.com>
+> ---
+>  drivers/net/wireless/intel/iwlwifi/mvm/tt.c | 5 ++---
+>  1 file changed, 2 insertions(+), 3 deletions(-)
+>
+> diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/tt.c b/drivers/net/wireless/intel/iwlwifi/mvm/tt.c
+> index 418e59b..6344b6b 100644
+> --- a/drivers/net/wireless/intel/iwlwifi/mvm/tt.c
+> +++ b/drivers/net/wireless/intel/iwlwifi/mvm/tt.c
+> @@ -203,9 +203,8 @@ void iwl_mvm_temp_notif(struct iwl_mvm *mvm, struct iwl_rx_cmd_buffer *rxb)
+>
+>         if (mvm->tz_device.tzone) {
+>                 struct iwl_mvm_thermal_device *tz_dev = &mvm->tz_device;
+> -
+> -               thermal_notify_framework(tz_dev->tzone,
+> -                                        tz_dev->fw_trips_index[ths_crossed]);
+> +               thermal_zone_device_update(tz_dev->tzone,
+> +                                          THERMAL_EVENT_UNSPECIFIED);
+>         }
+>  #endif /* CONFIG_THERMAL */
+>  }
+> --
+> 2.7.4
+>
