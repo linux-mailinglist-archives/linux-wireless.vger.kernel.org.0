@@ -2,92 +2,79 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 85C651E156C
-	for <lists+linux-wireless@lfdr.de>; Mon, 25 May 2020 22:57:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 03E181E185F
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 May 2020 02:10:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390901AbgEYU5t (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 25 May 2020 16:57:49 -0400
-Received: from mail.kernel.org ([198.145.29.99]:42682 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2390750AbgEYU5t (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 25 May 2020 16:57:49 -0400
-Received: from kicinski-fedora-PC1C0HJN.hsd1.ca.comcast.net (c-67-180-217-166.hsd1.ca.comcast.net [67.180.217.166])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        id S1726350AbgEZAJ1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 25 May 2020 20:09:27 -0400
+Received: from mail26.static.mailgun.info ([104.130.122.26]:32424 "EHLO
+        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725783AbgEZAJ1 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 25 May 2020 20:09:27 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1590451766; h=Content-Transfer-Encoding: MIME-Version:
+ Message-Id: Date: Subject: Cc: To: From: Sender;
+ bh=aW2hE4aVrvRgcG9YGA6TU3FieMn4Eg8RaPU3b8hL80g=; b=ibAhqHDiB9OV8435KjwqBlcyNLvjJf2LKpanQcD404VbdwnzubJ3oNPVi8GK30jLMv1p8iYE
+ 6EFB04pAw35W7V5jMA2UHdX1fT6UxSw6Dj2XZwCAqWbn3h7PIpcsG1koi00jdm8BYZaD00GC
+ IXnNxharY7cHg3ObDCUHs2oYgBU=
+X-Mailgun-Sending-Ip: 104.130.122.26
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n04.prod.us-west-2.postgun.com with SMTP id
+ 5ecc5e324776d1da6dea8187 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 26 May 2020 00:09:22
+ GMT
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id B54FCC433CA; Tue, 26 May 2020 00:09:21 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from alokad-linux.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 9B8262065F;
-        Mon, 25 May 2020 20:57:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1590440268;
-        bh=lR7NOEwZSW7Lg+I18yIGiKJF3iGfsiCFNOxqNlZ1mDc=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=swt24vm+6Bdjwmpc/k3E1NGlCiAfDgyqBkQ3G8Ce/iyqkrFCZLuItGHYd7e+lhuit
-         2p/8FdJfvjSP6yy44RRgmPkzZ0fXJ6Hm3oE4qCNX4na//sgiBAFsr9XmKyyD1l5QJB
-         5v9UiseaC98juTrEUehmaFTAJxgDK718S2RLobhk=
-Date:   Mon, 25 May 2020 13:57:46 -0700
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     Luis Chamberlain <mcgrof@kernel.org>, derosier@gmail.com,
-        greearb@candelatech.com, jeyu@kernel.org,
-        akpm@linux-foundation.org, arnd@arndb.de, rostedt@goodmis.org,
-        mingo@redhat.com, aquini@redhat.com, cai@lca.pw, dyoung@redhat.com,
-        bhe@redhat.com, peterz@infradead.org, tglx@linutronix.de,
-        gpiccoli@canonical.com, pmladek@suse.com, tiwai@suse.de,
-        schlad@suse.de, andriy.shevchenko@linux.intel.com,
-        keescook@chromium.org, daniel.vetter@ffwll.ch, will@kernel.org,
-        mchehab+samsung@kernel.org, kvalo@codeaurora.org,
-        davem@davemloft.net, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        ath10k@lists.infradead.org, jiri@resnulli.us,
-        briannorris@chromium.org
-Subject: Re: [RFC 1/2] devlink: add simple fw crash helpers
-Message-ID: <20200525135746.45e764de@kicinski-fedora-PC1C0HJN.hsd1.ca.comcast.net>
-In-Reply-To: <2e5199edb433c217c7974ef7408ff8c7253145b6.camel@sipsolutions.net>
-References: <20200519010530.GS11244@42.do-not-panic.com>
-        <20200519211531.3702593-1-kuba@kernel.org>
-        <20200522052046.GY11244@42.do-not-panic.com>
-        <20200522101738.1495f4cc@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-        <2e5199edb433c217c7974ef7408ff8c7253145b6.camel@sipsolutions.net>
+        (Authenticated sender: alokad)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 2EB1EC433C9;
+        Tue, 26 May 2020 00:09:21 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 2EB1EC433C9
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=alokad@codeaurora.org
+From:   Aloka Dixit <alokad@codeaurora.org>
+To:     johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org, Aloka Dixit <alokad@codeaurora.org>
+Subject: [PATCH v2 0/2] FILS discovery and bcast probe resp support
+Date:   Mon, 25 May 2020 17:09:11 -0700
+Message-Id: <20200526000913.30434-1-alokad@codeaurora.org>
+X-Mailer: git-send-email 2.25.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 22 May 2020 22:46:07 +0200 Johannes Berg wrote:
-> > The irony is you have a problem with a networking device and all the
-> > devices your initial set touched are networking. Two of the drivers 
-> > you touched either have or will soon have devlink health reporters
-> > implemented.  
-> 
-> Like I said above, do you think it'd be feasible to make a devcoredump
-> out of devlink health reports? And can the report be in a way that we
-> control the file format, or are there limits? I guess I should read the
-> code to find out, but I figure you probably just know. But feel free to
-> tell me to read it :)
-> 
-> The reason I'm asking is that it's starting to sound like we really
-> ought to be implementing devlink, but we've got a bunch of
-> infrastructure that uses the devcoredump, and it'll take time
-> (significantly so) to change all that...
+This patchset adds support for FILS discovery and broadcast
+unsolicited probe response transmission in 6GHz for in-band
+discovery.
 
-In devlink world pure FW core dumps are exposed by devlink regions.
-An API allowing reading device memory, registers, etc., but also 
-creating dumps of memory regions when things go wrong. It should be
-a fairly straightforward migration.
+Aloka Dixit (2):
+  nl80211: FILS discovery/bcast probe resp support
+  mac80211: FILS disc/bcast probe resp config
 
-Devlink health is more targeted, the dump is supposed to contain only
-relevant information, selected and formatted by the driver. When device
-misbehaves driver reads the relevant registers and FW state and creates
-a formatted state dump. I believe each element of the dump must fit
-into a netlink message (but there may be multiple elements, see
-devlink_fmsg_prepare_skb()).
+ include/net/cfg80211.h       | 26 ++++++++++++++++
+ include/net/mac80211.h       | 17 +++++++++++
+ include/uapi/linux/nl80211.h | 27 +++++++++++++++++
+ net/mac80211/cfg.c           | 57 +++++++++++++++++++++++++++++++++++
+ net/mac80211/ieee80211_i.h   |  8 +++++
+ net/mac80211/tx.c            | 30 +++++++++++++++++++
+ net/wireless/nl80211.c       | 58 ++++++++++++++++++++++++++++++++++++
+ 7 files changed, 223 insertions(+)
 
-We should be able to convert dl-regions dumps and dl-health dumps into
-devcoredumps, but since health reporters are supposed to be more
-targeted there's usually multiple of them per device.
 
-Conversely devcoredumps can be trivially exposed as dl-region dumps,
-but I believe dl-health would require driver changes to format the
-information appropriately.
+base-commit: 60689de46c7f6a0028c8b37b6f03db68cbfad8ed
+-- 
+2.25.0
+
