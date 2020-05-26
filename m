@@ -2,48 +2,48 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D7D51E42B1
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 May 2020 14:52:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CBC031E42B2
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 May 2020 14:52:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730130AbgE0Mww (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 27 May 2020 08:52:52 -0400
-Received: from mail-pf1-f194.google.com ([209.85.210.194]:38131 "EHLO
-        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729996AbgE0Mwv (ORCPT
+        id S1730143AbgE0Mw4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 27 May 2020 08:52:56 -0400
+Received: from mail-pg1-f194.google.com ([209.85.215.194]:45961 "EHLO
+        mail-pg1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730134AbgE0Mwz (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 27 May 2020 08:52:51 -0400
-Received: by mail-pf1-f194.google.com with SMTP id q8so11791010pfu.5
-        for <linux-wireless@vger.kernel.org>; Wed, 27 May 2020 05:52:51 -0700 (PDT)
+        Wed, 27 May 2020 08:52:55 -0400
+Received: by mail-pg1-f194.google.com with SMTP id f21so8720826pgg.12
+        for <linux-wireless@vger.kernel.org>; Wed, 27 May 2020 05:52:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:resent-from:resent-date:resent-message-id
-         :resent-to:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=+44buva8vuZuGNV129HqBHwOpK3H/7jOMxiBF8Hwg4A=;
-        b=KYcbP0ixsy1Xd3SruOBagj61XoNnUbWB1+jcc+1fgeryT335Ib1zzJKGXPIDK5JKMd
-         nPtueePlOlwrCqRXskVWnVkSoiLkNcyRA5w+F0MRf8esOmS24bolxWaKzXj6nWucAnOU
-         UFjT5Esz6kkkVNYhUHM0Nio757Yz+zLI+f88VgYtyLJSUlM/Aqnojv7CtNkuDuOz3lhR
-         XJXRdbNzEksXys0xawb5U0ZBRlL2RZrHqZABrjCHYATSBvwf91hcPV0f0kHQ0JeeMlIg
-         OA+x7B289Gc5mxl2PuH55y6pPrmrjFBJ1fT76E972s5hfINfUuNtxe1t4hAdHgxr9JCN
-         lFbw==
-X-Gm-Message-State: AOAM531gYM0nAxmwTiuoPOZVHhDrpMp83HnbMTSULJwFa4JlRIueMAfj
-        ldE6znsYsmaGs+qOKrhTmobbLcwSCzQrRA==
-X-Google-Smtp-Source: ABdhPJw0lbDBrCllfarJMTvUOldJcnl9hFSKZgkdvo+OTwgpWz82/Ax+6Fr2pWZi6aT4/USaIdlHTw==
-X-Received: by 2002:a63:1165:: with SMTP id 37mr3980675pgr.424.1590583970447;
-        Wed, 27 May 2020 05:52:50 -0700 (PDT)
+         :resent-to:from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=3I2sdug0etgqRHUdoxPJvhoiBePAC70+vSrOonIbSmY=;
+        b=l2OGABBpZhwoAk5HHpZvMnX/kabWz4iTi1F8qqEs0Sl5NoW7IdAMEWmHj/lhHSpa/X
+         MeAzOm67lS9xurgRVYOx39Ggo5NVTetz3Hv6k9RV41gYp44wi+UpafQS9oijRgo/KQih
+         5Y/BnqZ6MkVqh5XRv1PfWW1UvnCkQ2FSMW3gQuL76zbVGq1C4QLB8Ljb6naVMieK29JG
+         2E8F26zyvqdjdcNaUN6Hge59zWBHhYJBAa65dNxfFPxHEW5HXPGPUiu9MAGdoKp4DLyG
+         jffVziS18xEg26ChzPV8ggwaoV7iUu/ZV7Zu/v/D4oUjD+E/ktFh+d67Jw0ROjaEsEzg
+         bWWA==
+X-Gm-Message-State: AOAM5338vdGkQ7x7zyJgfKqHvM99wDy5c4jgnFskKe6zTiAze51tt/Wd
+        sCtd4jCNPco0zt+wRkfwTurfA6mrIuEoKQ==
+X-Google-Smtp-Source: ABdhPJxZ/eOTTa76Koqoz5fyLSajHtZC/oKHIcEiH/TbaZ4duI+ACwoQNyysG3NwcEuCRLRPO7WNbA==
+X-Received: by 2002:a63:a363:: with SMTP id v35mr3550639pgn.95.1590583974260;
+        Wed, 27 May 2020 05:52:54 -0700 (PDT)
 Received: from 42.do-not-panic.com (42.do-not-panic.com. [157.230.128.187])
-        by smtp.gmail.com with ESMTPSA id g18sm2127267pfq.146.2020.05.27.05.52.50
+        by smtp.gmail.com with ESMTPSA id 141sm2112781pfz.171.2020.05.27.05.52.53
         for <linux-wireless@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 May 2020 05:52:50 -0700 (PDT)
+        Wed, 27 May 2020 05:52:53 -0700 (PDT)
 Received: by 42.do-not-panic.com (Postfix, from userid 1000)
-        id 298F240605; Wed, 27 May 2020 12:52:49 +0000 (UTC)
+        id 6874F40605; Wed, 27 May 2020 12:52:52 +0000 (UTC)
 Received: from 42.do-not-panic.com (42.do-not-panic.com. [157.230.128.187])
-        by smtp.gmail.com with ESMTPSA id x62sm15610280pfc.46.2020.05.26.07.58.18
+        by smtp.gmail.com with ESMTPSA id 1sm68426pje.26.2020.05.26.07.58.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 May 2020 07:58:18 -0700 (PDT)
+        Tue, 26 May 2020 07:58:19 -0700 (PDT)
 Received: by 42.do-not-panic.com (Postfix, from userid 1000)
-        id 70A69404EF; Tue, 26 May 2020 14:58:17 +0000 (UTC)
+        id 9DD6C40E7B; Tue, 26 May 2020 14:58:17 +0000 (UTC)
 From:   Luis Chamberlain <mcgrof@kernel.org>
 To:     jeyu@kernel.org, davem@davemloft.net, kuba@kernel.org
 Cc:     michael.chan@broadcom.com, dchickles@marvell.com,
@@ -65,98 +65,120 @@ Cc:     michael.chan@broadcom.com, dchickles@marvell.com,
         rdunlap@infradead.org, corbet@lwn.net, dianders@chromium.org,
         netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-doc@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>
-Subject: [PATCH v3 0/8] kernel: taint when the driver firmware crashes
-Date:   Tue, 26 May 2020 14:58:07 +0000
-Message-Id: <20200526145815.6415-1-mcgrof@kernel.org>
+Subject: [PATCH v3 1/8] kernel.h: move taint and system state flags to uapi
+Date:   Tue, 26 May 2020 14:58:08 +0000
+Message-Id: <20200526145815.6415-2-mcgrof@kernel.org>
 X-Mailer: git-send-email 2.23.0.rc1
+In-Reply-To: <20200526145815.6415-1-mcgrof@kernel.org>
+References: <20200526145815.6415-1-mcgrof@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TUID: D14LJ59tRcF2
+X-TUID: o7xEiSwAFgaO
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-To those new on CC -- this is intended to be a simple generic interface
-to the kernel to annotate when the firwmare has crashed leaving the
-driver or system in a questionable state, in the worst case requiring
-full system reboot. This series is first addressing only a few
-networking patches, however, I already have an idea of where such
-firmware crashes happen across the tree. The goal with this series then
-is to first introduce the simple framework, and only if that moves
-forward will I continue to chug on with the rest of the drivers /
-subsystems.
+The taint and system state flags will be used in a subsequent patch
+exposing these to userspace, so move them to uapi. We keep the
+TAINT_FLAGS_COUNT outside of uapi, as this value can change per release.
 
-This is *not* a networking specific problem only.
+Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
+---
+ include/linux/kernel.h      | 34 +---------------------------------
+ include/uapi/linux/kernel.h | 35 +++++++++++++++++++++++++++++++++++
+ 2 files changed, 36 insertions(+), 33 deletions(-)
 
-This v3 augments the last series by introducing the uevent for panic
-events, one of them is during tainting. The uvent mechanism is
-independent from any of this firmware taint mechanism. I've also
-addressed Jessica Yu's feedback. Given I've extended the patches a bit
-with other minor cleanup which checkpatch.pl complains over, and since
-this infrastructure is still being discussed, I've trimmed the patch
-series size to only cover drivers for which I've received an Acked-by
-from the respective driver maintainer, or where we have bug reports to
-support such dire situations on the driver such as ath10k.
-
-During the last v2 it was discussed that we should instead use devlink
-for this work, however the initial RFC patches produced by Jakub
-Kicinski [0] shows how devlink is networking specific, and the intent
-behind this series is to produce simple helpers which can be used by *any*
-device driver, for any subsystem, not just networking. Subsystem
-specific infrastructure to help address firwmare crashes may still make
-sense, however that does not mean we *don't* need something even more
-generic regardless of the subsystem the issue happens on. Since uevents
-for taints are exposed, we now expose these through uapi as well, and
-that was something which eventually had to happen given that the current
-scheme of relying on sensible character representations for each taint
-will not scale beyond the alphabet.
-
-This series is avaialble my 20200526-taint-firmware-net-intro branch, based on
-linux-next tag next-20200526 [1].
-
-[0] https://lkml.kernel.org/r/20200519211531.3702593-1-kuba@kernel.org
-[1] https://git.kernel.org/pub/scm/linux/kernel/git/mcgrof/linux-next.git/log/?h=20200526-taint-firmware-net-intro
-
-Luis Chamberlain (7):
-  kernel.h: move taint and system state flags to uapi
-  panic: add uevent support
-  taint: add firmware crash taint support
-  panic: make taint data type clearer
-  ath10k: use new taint_firmware_crashed()
-  liquidio: use new taint_firmware_crashed()
-  qed: use new taint_firmware_crashed()
-
-Vasundhara Volam (1):
-  bnxt_en: use new taint_firmware_crashed()
-
- Documentation/admin-guide/tainted-kernels.rst |   6 +
- MAINTAINERS                                   |   8 +
- .../net/ethernet/broadcom/bnxt/bnxt_devlink.c |   1 +
- .../net/ethernet/cavium/liquidio/lio_main.c   |   1 +
- drivers/net/ethernet/qlogic/qed/qed_mcp.c     |   1 +
- drivers/net/wireless/ath/ath10k/pci.c         |   2 +
- drivers/net/wireless/ath/ath10k/sdio.c        |   2 +
- drivers/net/wireless/ath/ath10k/snoc.c        |   1 +
- include/asm-generic/bug.h                     |   4 +-
- include/linux/kernel.h                        |  40 +--
- include/linux/module.h                        |  13 +
- include/linux/panic_events.h                  |  26 ++
- include/trace/events/module.h                 |   3 +-
- include/uapi/linux/kernel.h                   |  36 +++
- include/uapi/linux/panic_events.h             |  17 ++
- init/main.c                                   |   1 +
- kernel/Makefile                               |   1 +
- kernel/module.c                               |  13 +-
- kernel/panic.c                                |  16 +-
- kernel/panic_events.c                         | 289 ++++++++++++++++++
- lib/Kconfig.debug                             |  13 +
- tools/debugging/kernel-chktaint               |   7 +
- 22 files changed, 454 insertions(+), 47 deletions(-)
- create mode 100644 include/linux/panic_events.h
- create mode 100644 include/uapi/linux/panic_events.h
- create mode 100644 kernel/panic_events.c
-
+diff --git a/include/linux/kernel.h b/include/linux/kernel.h
+index 82d91547d122..337634363d00 100644
+--- a/include/linux/kernel.h
++++ b/include/linux/kernel.h
+@@ -569,40 +569,8 @@ extern unsigned long get_taint(void);
+ extern int root_mountflags;
+ 
+ extern bool early_boot_irqs_disabled;
++extern enum system_states  system_state;
+ 
+-/*
+- * Values used for system_state. Ordering of the states must not be changed
+- * as code checks for <, <=, >, >= STATE.
+- */
+-extern enum system_states {
+-	SYSTEM_BOOTING,
+-	SYSTEM_SCHEDULING,
+-	SYSTEM_RUNNING,
+-	SYSTEM_HALT,
+-	SYSTEM_POWER_OFF,
+-	SYSTEM_RESTART,
+-	SYSTEM_SUSPEND,
+-} system_state;
+-
+-/* This cannot be an enum because some may be used in assembly source. */
+-#define TAINT_PROPRIETARY_MODULE	0
+-#define TAINT_FORCED_MODULE		1
+-#define TAINT_CPU_OUT_OF_SPEC		2
+-#define TAINT_FORCED_RMMOD		3
+-#define TAINT_MACHINE_CHECK		4
+-#define TAINT_BAD_PAGE			5
+-#define TAINT_USER			6
+-#define TAINT_DIE			7
+-#define TAINT_OVERRIDDEN_ACPI_TABLE	8
+-#define TAINT_WARN			9
+-#define TAINT_CRAP			10
+-#define TAINT_FIRMWARE_WORKAROUND	11
+-#define TAINT_OOT_MODULE		12
+-#define TAINT_UNSIGNED_MODULE		13
+-#define TAINT_SOFTLOCKUP		14
+-#define TAINT_LIVEPATCH			15
+-#define TAINT_AUX			16
+-#define TAINT_RANDSTRUCT		17
+ #define TAINT_FLAGS_COUNT		18
+ #define TAINT_FLAGS_MAX			((1UL << TAINT_FLAGS_COUNT) - 1)
+ 
+diff --git a/include/uapi/linux/kernel.h b/include/uapi/linux/kernel.h
+index 0ff8f7477847..4bbd4093eb64 100644
+--- a/include/uapi/linux/kernel.h
++++ b/include/uapi/linux/kernel.h
+@@ -12,4 +12,39 @@
+ 
+ #define __KERNEL_DIV_ROUND_UP(n, d) (((n) + (d) - 1) / (d))
+ 
++/*
++ * Values used for system_state. Ordering of the states must not be changed
++ * as code checks for <, <=, >, >= STATE.
++ */
++enum system_states {
++	SYSTEM_BOOTING,
++	SYSTEM_SCHEDULING,
++	SYSTEM_RUNNING,
++	SYSTEM_HALT,
++	SYSTEM_POWER_OFF,
++	SYSTEM_RESTART,
++	SYSTEM_SUSPEND,
++};
++
++/* This cannot be an enum because some may be used in assembly source. */
++#define TAINT_PROPRIETARY_MODULE	0
++#define TAINT_FORCED_MODULE		1
++#define TAINT_CPU_OUT_OF_SPEC		2
++#define TAINT_FORCED_RMMOD		3
++#define TAINT_MACHINE_CHECK		4
++#define TAINT_BAD_PAGE			5
++#define TAINT_USER			6
++#define TAINT_DIE			7
++#define TAINT_OVERRIDDEN_ACPI_TABLE	8
++#define TAINT_WARN			9
++#define TAINT_CRAP			10
++#define TAINT_FIRMWARE_WORKAROUND	11
++#define TAINT_OOT_MODULE		12
++#define TAINT_UNSIGNED_MODULE		13
++#define TAINT_SOFTLOCKUP		14
++#define TAINT_LIVEPATCH			15
++#define TAINT_AUX			16
++#define TAINT_RANDSTRUCT		17
++/* be sure to update TAINT_FLAGS_COUNT when extending this */
++
+ #endif /* _UAPI_LINUX_KERNEL_H */
 -- 
 2.26.2
 
