@@ -2,48 +2,48 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 19E451E42B8
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 May 2020 14:53:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DC2301E42BA
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 May 2020 14:53:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730175AbgE0MxL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 27 May 2020 08:53:11 -0400
-Received: from mail-pf1-f196.google.com ([209.85.210.196]:36011 "EHLO
-        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729996AbgE0MxK (ORCPT
+        id S1730146AbgE0MxS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 27 May 2020 08:53:18 -0400
+Received: from mail-pj1-f67.google.com ([209.85.216.67]:35210 "EHLO
+        mail-pj1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729996AbgE0MxR (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 27 May 2020 08:53:10 -0400
-Received: by mail-pf1-f196.google.com with SMTP id e11so10826157pfn.3
-        for <linux-wireless@vger.kernel.org>; Wed, 27 May 2020 05:53:10 -0700 (PDT)
+        Wed, 27 May 2020 08:53:17 -0400
+Received: by mail-pj1-f67.google.com with SMTP id 5so1492394pjd.0
+        for <linux-wireless@vger.kernel.org>; Wed, 27 May 2020 05:53:17 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:resent-from:resent-date:resent-message-id
          :resent-to:from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=zOBEOlJCwRVyUrO7obeZe7+iAPzekeZt6xLUEcXHiBo=;
-        b=t7UHbFMU2DutgLcHwrnQ3/nF24FDJxRuCQ4NA6KunaP5Z6fl1WPbarZzm3dbgtXRpu
-         N9eDE1rx7vJgOMymC7vf5nJ5Cy6MsfhUgVZGExL7mTaLFa8lFW5tDB+1aKPtKgP/K2wK
-         H15zUU72tewomZLD4zckx+kCCwA3ShyAT8JT74aAnrvqtwtD+//1zmSdOuknJqp73Fnt
-         fGrZFjt4RGBMceR4qYKRoDQGSciH/2048DTndpWSn68Rb+NCLn6FOPL1tRWdDPbpzuko
-         XEKoCtihbqpclQlCJxKy9X4SiXP8sTmLKRM51s/ChrvLs0Ba7+CgEgkUADdzBx9PJWRN
-         VrdQ==
-X-Gm-Message-State: AOAM531bj72EbxobJt7IN5oAO3mb6jdf4FyN3YL1gl5hA4oPLAEMKb/W
-        tGObbsb5xtbO10ctn+s4ktok20ymiRpZvg==
-X-Google-Smtp-Source: ABdhPJw74r4jz1NFbP9PfWTp0TcW0IDRd+JjEhsryiAFRLW+nIVjUkb/9DSfOTscCG0tL92lKb4fww==
-X-Received: by 2002:a63:cc4f:: with SMTP id q15mr3771086pgi.439.1590583989750;
-        Wed, 27 May 2020 05:53:09 -0700 (PDT)
+        bh=lLNCK+WRq9ug4fTBP9sca/wv2hUwl+4zOX5ypfLbsKY=;
+        b=ipuT9cBXcwk15LlCsWc6uFhqV3X6F8SYJ00yqhr2/8xQZT9EPw4y7MNd8hFgOGjeVM
+         eLJaq1C+CyJejpogb2hSB3aTQKmxA5eVYQYarhENIMUQTPdlG79PvPqSq7HteUh2EXjR
+         liwI2FTiezEnputrexTUNdZGc2OukgHay8X7FX+7uS5P7ys+ZXW2rog6G+PRe2VMg4TU
+         Sr4Ppot0Bf9OkXXpqstNeITpmOOZyN5G2M0rPdvaTT9vjt2DKXzR/dSqFsfaGOVc59FT
+         931+8/3zqPLdxE5fBaHPNXWu3q/GiCRgOCzD6Xx132YdSovhFuGrLSPUbRwvQCsvPbWW
+         7Qpw==
+X-Gm-Message-State: AOAM530uvanuBBPk00ICNf2XdFaJpRym9qvreAamboA+GBfwVgWtjzLU
+        N+fpXpE9Mfus4eRbWcOLzjLkQEWzzkWaBw==
+X-Google-Smtp-Source: ABdhPJw02sl0t/dA62cYxQC4t2rcjEd1E7uQMG1gOeGf1c8/8uma+SnNHzaBo4Nm2MNbvV0BBNa2VQ==
+X-Received: by 2002:a17:90a:bb8b:: with SMTP id v11mr5006195pjr.50.1590583996288;
+        Wed, 27 May 2020 05:53:16 -0700 (PDT)
 Received: from 42.do-not-panic.com (42.do-not-panic.com. [157.230.128.187])
-        by smtp.gmail.com with ESMTPSA id g1sm2069069pfo.142.2020.05.27.05.53.08
+        by smtp.gmail.com with ESMTPSA id dw13sm2531331pjb.40.2020.05.27.05.53.15
         for <linux-wireless@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 May 2020 05:53:09 -0700 (PDT)
+        Wed, 27 May 2020 05:53:16 -0700 (PDT)
 Received: by 42.do-not-panic.com (Postfix, from userid 1000)
-        id 62E6C40605; Wed, 27 May 2020 12:53:08 +0000 (UTC)
+        id 2FEAC40605; Wed, 27 May 2020 12:53:15 +0000 (UTC)
 Received: from 42.do-not-panic.com (42.do-not-panic.com. [157.230.128.187])
-        by smtp.gmail.com with ESMTPSA id r69sm15995450pfc.209.2020.05.26.07.58.22
+        by smtp.gmail.com with ESMTPSA id y14sm15686666pfr.11.2020.05.26.07.58.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Tue, 26 May 2020 07:58:25 -0700 (PDT)
 Received: by 42.do-not-panic.com (Postfix, from userid 1000)
-        id B4A6F422E5; Tue, 26 May 2020 14:58:18 +0000 (UTC)
+        id D804142309; Tue, 26 May 2020 14:58:18 +0000 (UTC)
 From:   Luis Chamberlain <mcgrof@kernel.org>
 To:     jeyu@kernel.org, davem@davemloft.net, kuba@kernel.org
 Cc:     michael.chan@broadcom.com, dchickles@marvell.com,
@@ -64,26 +64,22 @@ Cc:     michael.chan@broadcom.com, dchickles@marvell.com,
         samitolvanen@google.com, yzaikin@google.com, dvyukov@google.com,
         rdunlap@infradead.org, corbet@lwn.net, dianders@chromium.org,
         netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-doc@vger.kernel.org,
-        Vasundhara Volam <vasundhara-v.volam@broadcom.com>,
-        Luis Chamberlain <mcgrof@kernel.org>
-Subject: [PATCH v3 6/8] bnxt_en: use new taint_firmware_crashed()
-Date:   Tue, 26 May 2020 14:58:13 +0000
-Message-Id: <20200526145815.6415-7-mcgrof@kernel.org>
+        linux-doc@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>
+Subject: [PATCH v3 7/8] liquidio: use new taint_firmware_crashed()
+Date:   Tue, 26 May 2020 14:58:14 +0000
+Message-Id: <20200526145815.6415-8-mcgrof@kernel.org>
 X-Mailer: git-send-email 2.23.0.rc1
 In-Reply-To: <20200526145815.6415-1-mcgrof@kernel.org>
 References: <20200526145815.6415-1-mcgrof@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TUID: 6RHjWPRLSqR3
+X-TUID: qc+Is70wjb5b
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Vasundhara Volam <vasundhara-v.volam@broadcom.com>
-
-This makes use of the new module_firmware_crashed() to help
+This makes use of the new taint_firmware_crashed() to help
 annotate when firmware for device drivers crash. When firmware
 crashes devices can sometimes become unresponsive, and recovery
 sometimes requires a driver unload / reload and in the worst cases
@@ -91,27 +87,28 @@ a reboot.
 
 Using a taint flag allows us to annotate when this happens clearly.
 
-Cc: Michael Chan <michael.chan@broadcom.com>
-Cc: Luis Chamberlain <mcgrof@kernel.org>
+Cc: Derek Chickles <dchickles@marvell.com>
+Cc: Satanand Burla <sburla@marvell.com>
+Cc: Felix Manlunas <fmanlunas@marvell.com>
 Acked-by: Rafael Aquini <aquini@redhat.com>
-Signed-off-by: Vasundhara Volam <vasundhara-v.volam@broadcom.com>
+Reviewed-by: Derek Chickles <dchickles@marvell.com>
 Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt_devlink.c | 1 +
+ drivers/net/ethernet/cavium/liquidio/lio_main.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_devlink.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_devlink.c
-index a812beb46325..776a7ae0ef7f 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt_devlink.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_devlink.c
-@@ -121,6 +121,7 @@ static int bnxt_fw_fatal_recover(struct devlink_health_reporter *reporter,
- 	if (!priv_ctx)
- 		return -EOPNOTSUPP;
+diff --git a/drivers/net/ethernet/cavium/liquidio/lio_main.c b/drivers/net/ethernet/cavium/liquidio/lio_main.c
+index 66d31c018c7e..ee1796ea4818 100644
+--- a/drivers/net/ethernet/cavium/liquidio/lio_main.c
++++ b/drivers/net/ethernet/cavium/liquidio/lio_main.c
+@@ -801,6 +801,7 @@ static int liquidio_watchdog(void *param)
+ 			continue;
  
-+	taint_firmware_crashed();
- 	bp->fw_health->fatal = true;
- 	event = fw_reporter_ctx->sp_event;
- 	if (event == BNXT_FW_RESET_NOTIFY_SP_EVENT)
+ 		WRITE_ONCE(oct->cores_crashed, true);
++		taint_firmware_crashed();
+ 		other_oct = get_other_octeon_device(oct);
+ 		if (other_oct)
+ 			WRITE_ONCE(other_oct->cores_crashed, true);
 -- 
 2.26.2
 
