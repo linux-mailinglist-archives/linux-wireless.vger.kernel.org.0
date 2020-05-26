@@ -2,48 +2,48 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 398DE1E42B6
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 May 2020 14:53:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9EBA51E42B7
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 May 2020 14:53:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730169AbgE0MxG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 27 May 2020 08:53:06 -0400
-Received: from mail-pl1-f194.google.com ([209.85.214.194]:41376 "EHLO
-        mail-pl1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729996AbgE0MxG (ORCPT
+        id S1730173AbgE0MxK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 27 May 2020 08:53:10 -0400
+Received: from mail-pf1-f195.google.com ([209.85.210.195]:37140 "EHLO
+        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729996AbgE0MxH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 27 May 2020 08:53:06 -0400
-Received: by mail-pl1-f194.google.com with SMTP id a13so10110813pls.8
-        for <linux-wireless@vger.kernel.org>; Wed, 27 May 2020 05:53:04 -0700 (PDT)
+        Wed, 27 May 2020 08:53:07 -0400
+Received: by mail-pf1-f195.google.com with SMTP id y198so11788458pfb.4
+        for <linux-wireless@vger.kernel.org>; Wed, 27 May 2020 05:53:06 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:resent-from:resent-date:resent-message-id
          :resent-to:from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=UXRYeaDc02XdMrQZXPWL4bjUJlIpwN0dvTWzE8/MMVk=;
-        b=qFsP3D8KYLpRVjfhq/SwtGBvOBeTTWpoGbue3gA72kokywiUQybPBleMd0U1ziTpuG
-         89g94/CEQPorKTrl18FNXCZ3azwPVBRXGkg3iWyo9XHcmkuKj2I4OizGrc1RErU4jepp
-         6NA1z9QCz5k1q6GfLm7+K12swsfWVOLu4TwaRLhVKpJbZBkFK8OIrZnBYYd06AXFjpk9
-         RF8jJUwhEgXYWKqEVqT2ZCqMHUTExjVywkb0zak+Htjdys+17QJrdFrf9/KA3f/GG86U
-         EKWPefWRNv2RUu6hncIWT/p+HEfEgSLcoptoJ6WBu2SkBtjLBXEW/FmSLH29T1qlVerq
-         68Ig==
-X-Gm-Message-State: AOAM532SJhm8aE0MuYzU+DfyHRez8U/Z/YQ4uKX1x6h6EH9k3cV3hA/l
-        Sta9f72FPVdSnFEY8GFl9AxWXgmzM3H0hA==
-X-Google-Smtp-Source: ABdhPJwMCW7fFpZ/UvjWvAVI3jCGhdM8d8BhJ0CII0fE+lGgZP5tnoP6hQRj5nH/EWvNB+Mv4yLugQ==
-X-Received: by 2002:a17:90a:3326:: with SMTP id m35mr5101494pjb.10.1590583983544;
-        Wed, 27 May 2020 05:53:03 -0700 (PDT)
+        bh=llTH2n++tTVLBhGsV5Icw97tnABVgUx2YdNChWoYrTA=;
+        b=oAdsf3LLhmBs8GGuSSBUHvt7heO49m9lCyZCOotAzmT4YnB6Lt0mDNtgdsXfdb/Csx
+         gh+HrzIie1GxzioH6bytRSqbjfm5mok2XU+XiKViiqgwzwIeOt/Eu2PhweCXW+OWW5z8
+         JlWF4Mg1bRwpxxP+PqsiOkiUYgij1Io8hxZ62hNnenqIfMmUUGFP1QvgrpVnRRaELvuS
+         cea1TcWHkxHSvzBknL7Ybl5YvX+ReLbOTzSFehTAsbn/rVHYwUhrdl/oT+6z1qOSseFZ
+         njg2Ak1kDmHl7MkIasQ8J6bTN7BEomqHAcmde66bm/18NF+01isOfOjpZgoADrUEzF16
+         jI8g==
+X-Gm-Message-State: AOAM532sfJFBakcdHx+4TvJhoOAtGvep0v91x2r2y2xDGQEUGYWJfaBn
+        BfpaCvRaIruENWHT3cobuI5Yn2W82gxTiA==
+X-Google-Smtp-Source: ABdhPJy0TH997SfMFNXCr3v3tA1+3QTRfSxSG5OIRqlN75TW4aUaaK4K1tPejSsSPz1D0XiSSimy/w==
+X-Received: by 2002:a62:80ca:: with SMTP id j193mr3659612pfd.41.1590583986192;
+        Wed, 27 May 2020 05:53:06 -0700 (PDT)
 Received: from 42.do-not-panic.com (42.do-not-panic.com. [157.230.128.187])
-        by smtp.gmail.com with ESMTPSA id b23sm2041528pgs.33.2020.05.27.05.53.03
+        by smtp.gmail.com with ESMTPSA id h4sm2439636pje.29.2020.05.27.05.53.05
         for <linux-wireless@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 May 2020 05:53:03 -0700 (PDT)
+        Wed, 27 May 2020 05:53:05 -0700 (PDT)
 Received: by 42.do-not-panic.com (Postfix, from userid 1000)
-        id 3A50140605; Wed, 27 May 2020 12:53:02 +0000 (UTC)
+        id 3CC2240605; Wed, 27 May 2020 12:53:05 +0000 (UTC)
 Received: from 42.do-not-panic.com (42.do-not-panic.com. [157.230.128.187])
-        by smtp.gmail.com with ESMTPSA id x13sm15122851pfn.200.2020.05.26.07.58.20
+        by smtp.gmail.com with ESMTPSA id gq19sm79574pjb.5.2020.05.26.07.58.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Tue, 26 May 2020 07:58:22 -0700 (PDT)
 Received: by 42.do-not-panic.com (Postfix, from userid 1000)
-        id 6982C41D12; Tue, 26 May 2020 14:58:18 +0000 (UTC)
+        id 9028741DCA; Tue, 26 May 2020 14:58:18 +0000 (UTC)
 From:   Luis Chamberlain <mcgrof@kernel.org>
 To:     jeyu@kernel.org, davem@davemloft.net, kuba@kernel.org
 Cc:     michael.chan@broadcom.com, dchickles@marvell.com,
@@ -64,107 +64,112 @@ Cc:     michael.chan@broadcom.com, dchickles@marvell.com,
         samitolvanen@google.com, yzaikin@google.com, dvyukov@google.com,
         rdunlap@infradead.org, corbet@lwn.net, dianders@chromium.org,
         netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-doc@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>
-Subject: [PATCH v3 4/8] panic: make taint data type clearer
-Date:   Tue, 26 May 2020 14:58:11 +0000
-Message-Id: <20200526145815.6415-5-mcgrof@kernel.org>
+        linux-doc@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>,
+        linux-wireless@vger.kernel.org, ath10k@lists.infradead.org
+Subject: [PATCH v3 5/8] ath10k: use new taint_firmware_crashed()
+Date:   Tue, 26 May 2020 14:58:12 +0000
+Message-Id: <20200526145815.6415-6-mcgrof@kernel.org>
 X-Mailer: git-send-email 2.23.0.rc1
 In-Reply-To: <20200526145815.6415-1-mcgrof@kernel.org>
 References: <20200526145815.6415-1-mcgrof@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TUID: ofW0vIudzYdt
+X-TUID: YO7eskr2sX9X
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Let us be clearer about the the data type for the taint flag.
+This makes use of the new taint_firmware_crashed() to help
+annotate when firmware for device drivers crash. When firmware
+crashes devices can sometimes become unresponsive, and recovery
+sometimes requires a driver unload / reload and in the worst cases
+a reboot.
 
+Using a taint flag allows us to annotate when this happens clearly.
+
+I have run into this situation with this driver with the latest
+firmware as of today, May 21, 2020 using v5.6.0, leaving me at
+a state at which my only option is to reboot. Driver removal and
+addition does not fix the situation. This is reported on kernel.org
+bugzilla korg#207851 [0]. But this isn't the first firmware crash reported,
+others have been filed before and none of these bugs have yet been
+addressed [1] [2] [3].  Including my own I see these firmware crash
+reports:
+
+  * korg#207851 [0]
+  * korg#197013 [1]
+  * korg#201237 [2]
+  * korg#195987 [3]
+
+[0] https://bugzilla.kernel.org/show_bug.cgi?id=207851
+[1] https://bugzilla.kernel.org/show_bug.cgi?id=197013
+[2] https://bugzilla.kernel.org/show_bug.cgi?id=201237
+[3] https://bugzilla.kernel.org/show_bug.cgi?id=195987
+
+Cc: linux-wireless@vger.kernel.org
+Cc: ath10k@lists.infradead.org
+Cc: Kalle Valo <kvalo@codeaurora.org>
+Acked-by: Rafael Aquini <aquini@redhat.com>
 Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
 ---
- include/asm-generic/bug.h | 4 ++--
- include/linux/kernel.h    | 4 ++--
- kernel/panic.c            | 8 ++++----
- 3 files changed, 8 insertions(+), 8 deletions(-)
+ drivers/net/wireless/ath/ath10k/pci.c  | 2 ++
+ drivers/net/wireless/ath/ath10k/sdio.c | 2 ++
+ drivers/net/wireless/ath/ath10k/snoc.c | 1 +
+ 3 files changed, 5 insertions(+)
 
-diff --git a/include/asm-generic/bug.h b/include/asm-generic/bug.h
-index c94e33ae3e7b..87dbe57301f4 100644
---- a/include/asm-generic/bug.h
-+++ b/include/asm-generic/bug.h
-@@ -80,7 +80,7 @@ struct bug_entry {
-  */
- #ifndef __WARN_FLAGS
- extern __printf(4, 5)
--void warn_slowpath_fmt(const char *file, const int line, unsigned taint,
-+void warn_slowpath_fmt(const char *file, const int line, unsigned int taint,
- 		       const char *fmt, ...);
- #define __WARN()		__WARN_printf(TAINT_WARN, NULL)
- #define __WARN_printf(taint, arg...) do {				\
-@@ -110,7 +110,7 @@ extern __printf(1, 2) void __warn_printk(const char *fmt, ...);
- struct warn_args;
- struct pt_regs;
+diff --git a/drivers/net/wireless/ath/ath10k/pci.c b/drivers/net/wireless/ath/ath10k/pci.c
+index 1d941d53fdc9..818c3acc2468 100644
+--- a/drivers/net/wireless/ath/ath10k/pci.c
++++ b/drivers/net/wireless/ath/ath10k/pci.c
+@@ -1767,6 +1767,7 @@ static void ath10k_pci_fw_dump_work(struct work_struct *work)
+ 		scnprintf(guid, sizeof(guid), "n/a");
  
--void __warn(const char *file, int line, void *caller, unsigned taint,
-+void __warn(const char *file, int line, void *caller, unsigned int taint,
- 	    struct pt_regs *regs, struct warn_args *args);
+ 	ath10k_err(ar, "firmware crashed! (guid %s)\n", guid);
++	taint_firmware_crashed();
+ 	ath10k_print_driver_info(ar);
+ 	ath10k_pci_dump_registers(ar, crash_data);
+ 	ath10k_ce_dump_registers(ar, crash_data);
+@@ -2837,6 +2838,7 @@ static int ath10k_pci_hif_power_up(struct ath10k *ar,
+ 	if (ret) {
+ 		if (ath10k_pci_has_fw_crashed(ar)) {
+ 			ath10k_warn(ar, "firmware crashed during chip reset\n");
++			taint_firmware_crashed();
+ 			ath10k_pci_fw_crashed_clear(ar);
+ 			ath10k_pci_fw_crashed_dump(ar);
+ 		}
+diff --git a/drivers/net/wireless/ath/ath10k/sdio.c b/drivers/net/wireless/ath/ath10k/sdio.c
+index e2aff2254a40..8b2fc0b89be4 100644
+--- a/drivers/net/wireless/ath/ath10k/sdio.c
++++ b/drivers/net/wireless/ath/ath10k/sdio.c
+@@ -794,6 +794,7 @@ static int ath10k_sdio_mbox_proc_dbg_intr(struct ath10k *ar)
  
- #ifndef WARN_ON
-diff --git a/include/linux/kernel.h b/include/linux/kernel.h
-index a1974907c320..d154844eb9cd 100644
---- a/include/linux/kernel.h
-+++ b/include/linux/kernel.h
-@@ -563,8 +563,8 @@ enum lockdep_ok {
- 	LOCKDEP_STILL_OK,
- 	LOCKDEP_NOW_UNRELIABLE
- };
--extern void add_taint(unsigned flag, enum lockdep_ok);
--extern int test_taint(unsigned flag);
-+extern void add_taint(unsigned int flag, enum lockdep_ok);
-+extern int test_taint(unsigned int flag);
- extern unsigned long get_taint(void);
- extern int root_mountflags;
+ 	/* TODO: Add firmware crash handling */
+ 	ath10k_warn(ar, "firmware crashed\n");
++	taint_firmware_crashed();
  
-diff --git a/kernel/panic.c b/kernel/panic.c
-index cb1c5619e983..3cfe84318ecf 100644
---- a/kernel/panic.c
-+++ b/kernel/panic.c
-@@ -421,7 +421,7 @@ const char *print_tainted(void)
- 	return buf;
+ 	/* read counter to clear the interrupt, the debug error interrupt is
+ 	 * counter 0.
+@@ -915,6 +916,7 @@ static int ath10k_sdio_mbox_proc_cpu_intr(struct ath10k *ar)
+ 	if (cpu_int_status & MBOX_CPU_STATUS_ENABLE_ASSERT_MASK) {
+ 		ath10k_err(ar, "firmware crashed!\n");
+ 		queue_work(ar->workqueue, &ar->restart_work);
++		taint_firmware_crashed();
+ 	}
+ 	return ret;
  }
+diff --git a/drivers/net/wireless/ath/ath10k/snoc.c b/drivers/net/wireless/ath/ath10k/snoc.c
+index 354d49b1cd45..071ee7607a4c 100644
+--- a/drivers/net/wireless/ath/ath10k/snoc.c
++++ b/drivers/net/wireless/ath/ath10k/snoc.c
+@@ -1451,6 +1451,7 @@ void ath10k_snoc_fw_crashed_dump(struct ath10k *ar)
+ 		scnprintf(guid, sizeof(guid), "n/a");
  
--int test_taint(unsigned flag)
-+int test_taint(unsigned int flag)
- {
- 	return test_bit(flag, &tainted_mask);
- }
-@@ -440,7 +440,7 @@ unsigned long get_taint(void)
-  * If something bad has gone wrong, you'll want @lockdebug_ok = false, but for
-  * some notewortht-but-not-corrupting cases, it can be set to true.
-  */
--void add_taint(unsigned flag, enum lockdep_ok lockdep_ok)
-+void add_taint(unsigned int flag, enum lockdep_ok lockdep_ok)
- {
- 	if (lockdep_ok == LOCKDEP_NOW_UNRELIABLE && __debug_locks_off()) {
- 		pr_warn("Disabling lock debugging due to kernel taint\n");
-@@ -579,7 +579,7 @@ struct warn_args {
- 	va_list args;
- };
- 
--void __warn(const char *file, int line, void *caller, unsigned taint,
-+void __warn(const char *file, int line, void *caller, unsigned int taint,
- 	    struct pt_regs *regs, struct warn_args *args)
- {
- 	disable_trace_on_warning();
-@@ -622,7 +622,7 @@ void __warn(const char *file, int line, void *caller, unsigned taint,
- }
- 
- #ifndef __WARN_FLAGS
--void warn_slowpath_fmt(const char *file, int line, unsigned taint,
-+void warn_slowpath_fmt(const char *file, int line, unsigned int taint,
- 		       const char *fmt, ...)
- {
- 	struct warn_args args;
+ 	ath10k_err(ar, "firmware crashed! (guid %s)\n", guid);
++	taint_firmware_crashed();
+ 	ath10k_print_driver_info(ar);
+ 	ath10k_msa_dump_memory(ar, crash_data);
+ 	mutex_unlock(&ar->dump_mutex);
 -- 
 2.26.2
 
