@@ -2,102 +2,94 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AFFED1E2304
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 May 2020 15:37:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 06A641E2357
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 May 2020 15:51:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729385AbgEZNhz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 26 May 2020 09:37:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38524 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728126AbgEZNhz (ORCPT
+        id S1731262AbgEZNvA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 26 May 2020 09:51:00 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:50384 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729400AbgEZNvA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 26 May 2020 09:37:55 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2754FC03E96D
-        for <linux-wireless@vger.kernel.org>; Tue, 26 May 2020 06:37:55 -0700 (PDT)
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.93)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1jdZmC-003Ru1-Pm; Tue, 26 May 2020 15:37:52 +0200
-Message-ID: <f3cf96426f9532904c9f256d963e7915aa399a90.camel@sipsolutions.net>
-Subject: Re: [PATCH 2/3] nl80211: add control port tx status method
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Markus Theil <markus.theil@tu-ilmenau.de>
-Cc:     linux-wireless@vger.kernel.org
-Date:   Tue, 26 May 2020 15:37:51 +0200
-In-Reply-To: <20200508144202.7678-3-markus.theil@tu-ilmenau.de> (sfid-20200508_164230_875169_22AD02AA)
-References: <20200508144202.7678-1-markus.theil@tu-ilmenau.de>
-         <20200508144202.7678-3-markus.theil@tu-ilmenau.de>
-         (sfid-20200508_164230_875169_22AD02AA)
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.2 (3.36.2-1.fc32) 
+        Tue, 26 May 2020 09:51:00 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04QDmn4A125702;
+        Tue, 26 May 2020 13:50:56 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2020-01-29;
+ bh=rLDlQKBEIHrnN7J+s/D6Z8tjQiOaDK1huwzT3h6OJlg=;
+ b=WsYabgce9/2oFmPNh4TH25fTbTiZi7pfda0t2AjCmHw8SWketeaN9vjNSZelR54w4iOI
+ SJzj37sGnPo2ZiC5p1u2UMOmu9iWCQPN+cEGEtjTtUXNHmGFAt0bhL1iNGE1WXcTaqcW
+ hPKwnoDwmwP8myVonXG9RMGU/rrfdPdRmpjpeZIKpGStmvk/MKT88RRd64fkpT4oCWFR
+ jWaExWNRrPedqZuGFrPDzKhqPrErR2wEBGfYqQX4KaQGram0WHOHCnUuAqRz/QDVLZ/9
+ fBkl5ZpWAgwqbv0xc4VW6puouyTD124s6A9JpIfHBmofLWujJCH/5b6pvb5DXaaSC9wO BQ== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by aserp2120.oracle.com with ESMTP id 318xe19yjn-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 26 May 2020 13:50:56 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04QDgqlV123191;
+        Tue, 26 May 2020 13:50:55 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by userp3030.oracle.com with ESMTP id 317drxg5f7-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 26 May 2020 13:50:55 +0000
+Received: from abhmp0001.oracle.com (abhmp0001.oracle.com [141.146.116.7])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 04QDos7M014143;
+        Tue, 26 May 2020 13:50:54 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 26 May 2020 06:50:53 -0700
+Date:   Tue, 26 May 2020 16:50:48 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Malcolm Priestley <tvboxspy@gmail.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>,
+        linux-wireless@vger.kernel.org
+Subject: Re: [PATCH] staging: vt6656: Fix vnt_tx_usb_header static checker
+ warning
+Message-ID: <20200526135048.GU30374@kadam>
+References: <9818e564-81f6-a683-caa0-69423fded401@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9818e564-81f6-a683-caa0-69423fded401@gmail.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9632 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 phishscore=0 malwarescore=0
+ mlxlogscore=999 adultscore=0 suspectscore=0 bulkscore=0 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2005260105
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9632 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxlogscore=999
+ adultscore=0 cotscore=-2147483648 mlxscore=0 bulkscore=0
+ priorityscore=1501 phishscore=0 lowpriorityscore=0 malwarescore=0
+ clxscore=1015 impostorscore=0 suspectscore=0 classifier=spam adjust=0
+ reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2005260105
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On Sun, May 24, 2020 at 12:12:41AM +0100, Malcolm Priestley wrote:
+> drivers/staging/vt6656/rxtx.c:729 vnt_beacon_xmit()
+> warn: struct type mismatch 'vnt_beacon_buffer vs vnt_tx_usb_header'
+> 
+> Since the only part of vnt_beacon_buffer is used remove and
+> replace it with vnt_tx_usb_header.
+> 
+> Fixes: 9deca1e3e2b6 ("staging: vt6656: vnt_beacon_xmit use extra_tx_headroom.")
 
->  	struct idr ack_status_frames;
->  	spinlock_t ack_status_lock;
->  
-> +	u64 ctrl_port_cookie_counter;
+It's not really a bug fix.  It's just a cleanup.  But whatever...
 
-We have a u64 for other things (remain-on-channel), perhaps should just
-share? It's not going to overflow even if shared ...
+> Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
+> Signed-off-by: Malcolm Priestley <tvboxspy@gmail.com>
 
->  	/* disable bottom halves when entering the Tx path */
->  	local_bh_disable();
-> -	__ieee80211_subif_start_xmit(skb, dev, flags, 0);
-> +	__ieee80211_subif_start_xmit(skb, dev, flags, 0, NULL);
+Reviewed-by: Dan Carpenter <dan.carpenter@oracle.com>
 
-This is a little awkward, any way to avoid that? Probably not ...
+Thanks!
 
-> +static u16 ieee80211_store_ack_skb(struct ieee80211_local *local,
->  				   struct sk_buff *skb,
-> -				   u32 *info_flags)
-> +				   u32 *info_flags,
-> +				   bool use_socket,
-> +				   u64 *cookie)
->  {
-> -	struct sk_buff *ack_skb = skb_clone_sk(skb);
-> +	struct sk_buff *ack_skb;
->  	u16 info_id = 0;
->  
-> +	if (use_socket)
-
-You can check skb->sk and not need the additional parameter.
-
->  	if (unlikely(!multicast && skb->sk &&
->  		     skb_shinfo(skb)->tx_flags & SKBTX_WIFI_STATUS))
-> -		info_id = ieee80211_store_ack_skb(local, skb, &info_flags);
-> +		info_id = ieee80211_store_ack_skb(local, skb, &info_flags,
-> +						  true, NULL);
-> +
-> +	if (unlikely(!multicast && ctrl_flags & IEEE80211_TX_CTL_REQ_TX_STATUS))
-> +		info_id = ieee80211_store_ack_skb(local, skb, &info_flags,
-> +						  false, cookie);
-
-I think this should be rolled into one condition, since you no longer
-need the true/false if you check skb->sk. And 'cookie' is already NULL
-in those other cases so you can pass it unconditionally.
-
-> @@ -2765,8 +2795,9 @@ static struct sk_buff *ieee80211_build_hdr(struct ieee80211_sub_if_data *sdata,
->  	if (skb_shared(skb)) {
->  		struct sk_buff *tmp_skb = skb;
->  
-> -		/* can't happen -- skb is a clone if info_id != 0 */
-> -		WARN_ON(info_id);
-> +		if (!(ctrl_flags & IEEE80211_TX_CTL_REQ_TX_STATUS))
-> +			/* can't happen -- skb is a clone if info_id != 0 */
-> +			WARN_ON(info_id);
-
-This I don't understand, but if it really is needed then you should
-adjust the comment and roll it into a single WARN_ON().
-
-Also, please put all the remaining mac80211 changes into one patch - I
-already put all the other changes in.
-
-johannes
-
+regards,
+dan carpenter
