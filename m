@@ -2,64 +2,62 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 20E0F1E1CF5
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 May 2020 10:10:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A9A381E1D16
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 May 2020 10:18:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728124AbgEZIKm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 26 May 2020 04:10:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44284 "EHLO
+        id S1728510AbgEZISi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 26 May 2020 04:18:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45486 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727772AbgEZIKm (ORCPT
+        with ESMTP id S1726926AbgEZISi (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 26 May 2020 04:10:42 -0400
-Received: from mail-wr1-x42e.google.com (mail-wr1-x42e.google.com [IPv6:2a00:1450:4864:20::42e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE73EC03E97E
-        for <linux-wireless@vger.kernel.org>; Tue, 26 May 2020 01:10:41 -0700 (PDT)
-Received: by mail-wr1-x42e.google.com with SMTP id r7so2770347wro.1
-        for <linux-wireless@vger.kernel.org>; Tue, 26 May 2020 01:10:41 -0700 (PDT)
+        Tue, 26 May 2020 04:18:38 -0400
+Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF650C03E97E
+        for <linux-wireless@vger.kernel.org>; Tue, 26 May 2020 01:18:37 -0700 (PDT)
+Received: by mail-wr1-x444.google.com with SMTP id c3so15217844wru.12
+        for <linux-wireless@vger.kernel.org>; Tue, 26 May 2020 01:18:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=broadcom.com; s=google;
         h=subject:to:cc:references:from:message-id:date:user-agent
          :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=8CiUfAKcx41BKeIFSJPTHVkR7fQx5ft6sh2tU1Ep9vI=;
-        b=Ns+IkjqdGJ7Hoa2QF1dWzZyV0wDf/c6AvGZ7/o+B41UXo/8ZTZ8SJtwiMv8cIhp8HR
-         tRD70z3gQvNM924ZiKYNSNglp1HS6bk4Dw+Je9jH1E/tsAO/9zXd5Ti6qgM0ArqGxwQV
-         8gtEj3AKScYthWbtUyIPVJQvUKvYvvEG7xFQE=
+        bh=EAeL65F6dXX/59K0bRjet31Hc9csWuvXV8XECR84d5w=;
+        b=WSjPjCCtYUPJ0ED4yQdT5IW8zPY7LIuHP//Q4igD9at0tA50dm5SLhGjnCrS2dWX0r
+         eRv59PblE5nkntABs3AxIePpRVA2ZO2qXXZRlhGHn1I2Cn5qc77iCFDcDxpr9BJDHzXU
+         8JPeGeVYm9GGWw61OmTL7mgXoqDvZrYwPt0b0=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:subject:to:cc:references:from:message-id:date
          :user-agent:mime-version:in-reply-to:content-language
          :content-transfer-encoding;
-        bh=8CiUfAKcx41BKeIFSJPTHVkR7fQx5ft6sh2tU1Ep9vI=;
-        b=UORvNIkt9sG71snZAQ9Y2BGG/14UdNcWbOmy7vfYUsUb2aeV4ezEUEgV7fsHfaEGBe
-         MbzmQWOLwFTWMKxhOWyYt++eD1XBHZ6eRCPQpDJ2WQLwj35LPD2NR+S2i4bdCzSZAtZF
-         7gj2ftQ7E3t/iufmVOTaD83eUsV/gMFBIZVEbItbOmwTpxC8sF/dVQ92YKSMZ3Rb9mph
-         vPg2EraBMte8W2/0XHB67qfT4KlmYLWCaah1hwpG0a1BGYfBpjHk+qB+/p5CqQ5sqLo8
-         UEDj3MZW7uJKlJoG9H+hnxOWAqvMGykyk0ncfQlDGT/m8r2PEQ9+qz3GMvx5qgIf/XwM
-         WYnA==
-X-Gm-Message-State: AOAM531JIx3oPeg5RSa9FVipYwe3Z0G6ix8ajDWDRHh3yFgzfBnlAq4e
-        d1CRF0QJFpUCoT6nbewYHPz90eLgWjRHRKTr5nUpPwPrfDxkbKnDjK4KybfaZzFYxdktcBBgyST
-        S6YmM8J6eVrFou7VEYRfcScavzU4ttBDzPj82fYcZ1ASam1RdqZWMMXCcJtIOUg5YDHcO4uZf7h
-        Mz7lxa1gpeqzcpWUdA
-X-Google-Smtp-Source: ABdhPJxmtTUBftj//DB7nNtCi64JKApEPK0/e3lLiHwqmhIeligH/YrN0LDWr2XzPdPUH5UGD+hjxQ==
-X-Received: by 2002:a5d:628c:: with SMTP id k12mr11254061wru.211.1590480638478;
-        Tue, 26 May 2020 01:10:38 -0700 (PDT)
+        bh=EAeL65F6dXX/59K0bRjet31Hc9csWuvXV8XECR84d5w=;
+        b=SAe4eJR2ifilDdfLwP0n5e2ZSo/fhREdEU8bIFpIZdgyl6obnmZW+K5/+8bOONuK/d
+         Gf6BXuhuZjYSKS8umWkvU5oHOt/b8Q5JL9k2OCLJ046U2xZEUEiqLABtr1fIBSvRa5F5
+         YQ205RY2Wtp7luiQDubHSrKGV3kUvprMKJHyWaR0+JUwh7vktr2vMQcXUGybc2+at7A1
+         cnnvfaXtoFxXm6PWivL/454LcCk6HcK1jlTv8o7E2ftIQ28T73WC/aqN35jNPiwVqCJi
+         DlN+P7HTdJAIBtI49kURmWD7BR4jegr1k2AdNT6n4aPsN7N1rtF3TdsG8+SkRd/mMEK8
+         NEMg==
+X-Gm-Message-State: AOAM5331v4+FmyaT58dMAY3QNz65T+0VsMXoigwDcBT5lQh+Vw6H3Ovr
+        Jv9dWfbrOYk6FIi/hx7Lc7p4uQ==
+X-Google-Smtp-Source: ABdhPJzxye9gjPgTiqk9JjKDaSN2yFc8NBOP30DEkkCiyLv7TzhnZSFLTgQ+a33vs7VhDlKOedbrXA==
+X-Received: by 2002:adf:a55c:: with SMTP id j28mr15192382wrb.369.1590481116542;
+        Tue, 26 May 2020 01:18:36 -0700 (PDT)
 Received: from [192.168.178.129] (f140230.upc-f.chello.nl. [80.56.140.230])
-        by smtp.gmail.com with ESMTPSA id p10sm21504395wra.78.2020.05.26.01.10.37
+        by smtp.gmail.com with ESMTPSA id a15sm9283683wra.86.2020.05.26.01.18.35
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 26 May 2020 01:10:37 -0700 (PDT)
-Subject: Re: [PATCH] cfg80211: propagate iftype HE 6 GHz capability
-To:     Rajkumar Manoharan <rmanohar@codeaurora.org>,
-        johannes@sipsolutions.net
-Cc:     linux-wireless@vger.kernel.org
-References: <1590467491-21187-1-git-send-email-rmanohar@codeaurora.org>
+        Tue, 26 May 2020 01:18:35 -0700 (PDT)
+Subject: Re: [PATCH v2 1/2] nl80211: FILS discovery/bcast probe resp support
+To:     Aloka Dixit <alokad@codeaurora.org>, johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org, kbuild test robot <lkp@intel.com>
+References: <20200526000913.30434-1-alokad@codeaurora.org>
+ <20200526000913.30434-2-alokad@codeaurora.org>
 From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
-Message-ID: <8cf15557-2400-0893-9846-f091df7bc457@broadcom.com>
-Date:   Tue, 26 May 2020 10:10:36 +0200
+Message-ID: <0c89ad68-67bf-7ade-7702-1695bb7274cb@broadcom.com>
+Date:   Tue, 26 May 2020 10:18:34 +0200
 User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
  Thunderbird/68.8.0
 MIME-Version: 1.0
-In-Reply-To: <1590467491-21187-1-git-send-email-rmanohar@codeaurora.org>
+In-Reply-To: <20200526000913.30434-2-alokad@codeaurora.org>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -68,13 +66,63 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 5/26/2020 6:31 AM, Rajkumar Manoharan wrote:
-> Advertise per interface HE 6 GHz band capability to user space
-> which will be used to build IEs.
+On 5/26/2020 2:09 AM, Aloka Dixit wrote:
+> This patch adds new attribute, NL80211_ATTR_FD_BCASTPRESP_CFG
+> to configure FILS discovery and broadcast probe response in 6GHz
+> for in-band discovery.
+> 
+> Only one of the two is active at a time to reduce broadcast
+> packets over the air.
+> 
+> Maximum packet interval can be 20 TUs.
+> Packet interval set to 0 disables FILS discovery and broadcast
+> probe response transmission.
+> 
+> Signed-off-by: Aloka Dixit <alokad@codeaurora.org>
+> Reported-by: kbuild test robot <lkp@intel.com>
 
-I am missing the bigger picture here. It should really be determined by 
-the band in which the interface type is operating, right? Can you refer 
-to patches on the hostap mailing list relying on this one?
+huh? what is reported. Oh, guess it is the reason for having v2. Don't 
+think this tag is useful for that. Only useful if v1 would have been 
+applied and this patch would fix that.
+
+> ---
+> v2: Fixed warning.
+> 
+>   include/net/cfg80211.h       | 26 ++++++++++++++++
+>   include/uapi/linux/nl80211.h | 27 +++++++++++++++++
+>   net/wireless/nl80211.c       | 58 ++++++++++++++++++++++++++++++++++++
+>   3 files changed, 111 insertions(+)
+> 
+> diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+> index a82fc59a1d82..e4bc03947005 100644
+> --- a/include/net/cfg80211.h
+> +++ b/include/net/cfg80211.h
+> @@ -957,6 +957,8 @@ struct cfg80211_crypto_settings {
+>    * @assocresp_ies_len: length of assocresp_ies in octets
+>    * @probe_resp_len: length of probe response template (@probe_resp)
+>    * @probe_resp: probe response template (AP mode only)
+> + * @bcast_presp: Broadcast probe response template (AP mode only)
+> + * @fils_disc: FILS discovery template (AP mode only)
+>    * @ftm_responder: enable FTM responder functionality; -1 for no change
+>    *	(which also implies no change in LCI/civic location data)
+>    * @lci: Measurement Report element content, starting with Measurement Token
+> @@ -965,6 +967,8 @@ struct cfg80211_crypto_settings {
+>    *	Token (measurement type 11)
+>    * @lci_len: LCI data length
+>    * @civicloc_len: Civic location data length
+> + * @bcast_presp_len: Broadcast probe response template length
+> + * @fils_disc_len: FILS discovery template length
+>    */
+>   struct cfg80211_beacon_data {
+>   	const u8 *head, *tail;
+> @@ -974,6 +978,8 @@ struct cfg80211_beacon_data {
+>   	const u8 *probe_resp;
+>   	const u8 *lci;
+>   	const u8 *civicloc;
+> +	const u8 *bcast_presp;
+> +	const u8 *fils_disc;
+
+This is not really beacon data, now is it?
 
 Regards,
 Arend
