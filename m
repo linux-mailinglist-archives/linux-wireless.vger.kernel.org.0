@@ -2,165 +2,72 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 518BB1E24C5
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 May 2020 16:59:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3018D1E2572
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 May 2020 17:29:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731443AbgEZO6m (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 26 May 2020 10:58:42 -0400
-Received: from mail-pj1-f68.google.com ([209.85.216.68]:36647 "EHLO
-        mail-pj1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731353AbgEZO63 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 26 May 2020 10:58:29 -0400
-Received: by mail-pj1-f68.google.com with SMTP id q24so1447500pjd.1;
-        Tue, 26 May 2020 07:58:28 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=llTH2n++tTVLBhGsV5Icw97tnABVgUx2YdNChWoYrTA=;
-        b=A2xhpnQUC2hi8e/mORVqh5I+pLYzNsbb5VK0d/u6QKGDxV4p668ZwF9PQ267n69q/b
-         loX1NPHcqQSLki7AvTypHz52LfeP8aeYPb4M7KqfSlQ4uLF5CvD9cbeLWXuljTBbStnB
-         CMZrCi6O76w1zos9qnMB5E8e26OIIEEBQkw1hh34qVdM8ul4O1o9yH5ScX7VWPQSzkv8
-         q6jIMJAFd7+84hX+Q3rhDQT5VpmyWYIAMo1NaP1X52kBnAx5jBL3GDLGz9vXyHCowk0w
-         Q5m/wZYodoFwQHdOboJc9d7PPTsUCwtptxvkkKQ86vLbonMIySEoiOR/Saew1y8BKFqx
-         OOPA==
-X-Gm-Message-State: AOAM532zKE1gClFWYH/JIS1XzmNWE+nSXhbvl18K9qAiOnKH+vd9ruJI
-        xAi5XMDmjmllN9tQzmBaTPkt/+TojwuyRA==
-X-Google-Smtp-Source: ABdhPJyLz50Sjirnf6zkmVAF4v4gho1TNrewe05nIrzVVuTcQr6Kt75n4njhYwpQzdS375ICVt/pXA==
-X-Received: by 2002:a17:902:9043:: with SMTP id w3mr1387143plz.250.1590505107012;
-        Tue, 26 May 2020 07:58:27 -0700 (PDT)
-Received: from 42.do-not-panic.com (42.do-not-panic.com. [157.230.128.187])
-        by smtp.gmail.com with ESMTPSA id s15sm40988pgv.5.2020.05.26.07.58.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 May 2020 07:58:25 -0700 (PDT)
-Received: by 42.do-not-panic.com (Postfix, from userid 1000)
-        id 9028741DCA; Tue, 26 May 2020 14:58:18 +0000 (UTC)
-From:   Luis Chamberlain <mcgrof@kernel.org>
-To:     jeyu@kernel.org, davem@davemloft.net, kuba@kernel.org
-Cc:     michael.chan@broadcom.com, dchickles@marvell.com,
-        sburla@marvell.com, fmanlunas@marvell.com, aelior@marvell.com,
-        GR-everest-linux-l2@marvell.com, kvalo@codeaurora.org,
-        johannes@sipsolutions.net, akpm@linux-foundation.org,
-        arnd@arndb.de, rostedt@goodmis.org, mingo@redhat.com,
-        aquini@redhat.com, cai@lca.pw, dyoung@redhat.com, bhe@redhat.com,
-        peterz@infradead.org, tglx@linutronix.de, gpiccoli@canonical.com,
-        pmladek@suse.com, tiwai@suse.de, schlad@suse.de,
-        andriy.shevchenko@linux.intel.com, derosier@gmail.com,
-        keescook@chromium.org, daniel.vetter@ffwll.ch, will@kernel.org,
-        mchehab+samsung@kernel.org, vkoul@kernel.org,
-        mchehab+huawei@kernel.org, robh@kernel.org, mhiramat@kernel.org,
-        sfr@canb.auug.org.au, linux@dominikbrodowski.net,
-        glider@google.com, paulmck@kernel.org, elver@google.com,
-        bauerman@linux.ibm.com, yamada.masahiro@socionext.com,
-        samitolvanen@google.com, yzaikin@google.com, dvyukov@google.com,
-        rdunlap@infradead.org, corbet@lwn.net, dianders@chromium.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-doc@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>,
-        linux-wireless@vger.kernel.org, ath10k@lists.infradead.org
-Subject: [PATCH v3 5/8] ath10k: use new taint_firmware_crashed()
-Date:   Tue, 26 May 2020 14:58:12 +0000
-Message-Id: <20200526145815.6415-6-mcgrof@kernel.org>
-X-Mailer: git-send-email 2.23.0.rc1
-In-Reply-To: <20200526145815.6415-1-mcgrof@kernel.org>
-References: <20200526145815.6415-1-mcgrof@kernel.org>
+        id S1729088AbgEZP3m (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 26 May 2020 11:29:42 -0400
+Received: from mail.as201155.net ([185.84.6.188]:31896 "EHLO mail.as201155.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728803AbgEZP3m (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 26 May 2020 11:29:42 -0400
+Received: from smtps.newmedia-net.de ([2a05:a1c0:0:de::167]:56601 helo=webmail.newmedia-net.de)
+        by mail.as201155.net with esmtps (TLSv1:DHE-RSA-AES256-SHA:256)
+        (Exim 4.82_1-5b7a7c0-XX)
+        (envelope-from <s.gottschall@dd-wrt.com>)
+        id 1jdbWM-0002NG-29; Tue, 26 May 2020 17:29:38 +0200
+X-CTCH-RefID: str=0001.0A782F22.5ECD3577.0088,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=dd-wrt.com; s=mikd;
+        h=Content-Transfer-Encoding:Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject; bh=cInslgAG713xdV9rybY08rJ1f7kTEVLI4lae2PtRNvo=;
+        b=j19kiLOhbFSRnckgFrHtF8Tp2IAMG7RzzEjFB7U5DL2BVijAy4xvhS/L8x9dlbvhRJ1rxVAnh2hNGAUlJNxjGqaQEmNfesAil888ZoWMH4V1AHYxKjWZhgl4YajYHwvcuS5PwYchCtdkjB3T+Z7CV7WyonfiUi85YmRY7uldIms=;
+Subject: Re: [PATCH] ath10k: Avoid override CE5 configuration for QCA99X0
+ chipsets
+To:     Kalle Valo <kvalo@codeaurora.org>,
+        Maharaja Kennadyrajan <mkenna@codeaurora.org>
+Cc:     linux-wireless@vger.kernel.org, ath10k@lists.infradead.org
+References: <1587649759-14381-1-git-send-email-mkenna@codeaurora.org>
+ <20200505073422.BFA51C433BA@smtp.codeaurora.org>
+From:   Sebastian Gottschall <s.gottschall@dd-wrt.com>
+Message-ID: <63ec6f30-ee3b-c412-7c56-46d447b17c8e@dd-wrt.com>
+Date:   Tue, 26 May 2020 17:29:24 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:77.0) Gecko/20100101
+ Thunderbird/77.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20200505073422.BFA51C433BA@smtp.codeaurora.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Received:  from [2a01:7700:8040:4000:8d02:4687:f16b:dbd1]
+        by webmail.newmedia-net.de with esmtpa (Exim 4.72)
+        (envelope-from <s.gottschall@dd-wrt.com>)
+        id 1jdbSC-0002Fd-90; Tue, 26 May 2020 17:25:20 +0200
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This makes use of the new taint_firmware_crashed() to help
-annotate when firmware for device drivers crash. When firmware
-crashes devices can sometimes become unresponsive, and recovery
-sometimes requires a driver unload / reload and in the worst cases
-a reboot.
+Am 05.05.2020 um 09:34 schrieb Kalle Valo:
 
-Using a taint flag allows us to annotate when this happens clearly.
-
-I have run into this situation with this driver with the latest
-firmware as of today, May 21, 2020 using v5.6.0, leaving me at
-a state at which my only option is to reboot. Driver removal and
-addition does not fix the situation. This is reported on kernel.org
-bugzilla korg#207851 [0]. But this isn't the first firmware crash reported,
-others have been filed before and none of these bugs have yet been
-addressed [1] [2] [3].  Including my own I see these firmware crash
-reports:
-
-  * korg#207851 [0]
-  * korg#197013 [1]
-  * korg#201237 [2]
-  * korg#195987 [3]
-
-[0] https://bugzilla.kernel.org/show_bug.cgi?id=207851
-[1] https://bugzilla.kernel.org/show_bug.cgi?id=197013
-[2] https://bugzilla.kernel.org/show_bug.cgi?id=201237
-[3] https://bugzilla.kernel.org/show_bug.cgi?id=195987
-
-Cc: linux-wireless@vger.kernel.org
-Cc: ath10k@lists.infradead.org
-Cc: Kalle Valo <kvalo@codeaurora.org>
-Acked-by: Rafael Aquini <aquini@redhat.com>
-Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
----
- drivers/net/wireless/ath/ath10k/pci.c  | 2 ++
- drivers/net/wireless/ath/ath10k/sdio.c | 2 ++
- drivers/net/wireless/ath/ath10k/snoc.c | 1 +
- 3 files changed, 5 insertions(+)
-
-diff --git a/drivers/net/wireless/ath/ath10k/pci.c b/drivers/net/wireless/ath/ath10k/pci.c
-index 1d941d53fdc9..818c3acc2468 100644
---- a/drivers/net/wireless/ath/ath10k/pci.c
-+++ b/drivers/net/wireless/ath/ath10k/pci.c
-@@ -1767,6 +1767,7 @@ static void ath10k_pci_fw_dump_work(struct work_struct *work)
- 		scnprintf(guid, sizeof(guid), "n/a");
- 
- 	ath10k_err(ar, "firmware crashed! (guid %s)\n", guid);
-+	taint_firmware_crashed();
- 	ath10k_print_driver_info(ar);
- 	ath10k_pci_dump_registers(ar, crash_data);
- 	ath10k_ce_dump_registers(ar, crash_data);
-@@ -2837,6 +2838,7 @@ static int ath10k_pci_hif_power_up(struct ath10k *ar,
- 	if (ret) {
- 		if (ath10k_pci_has_fw_crashed(ar)) {
- 			ath10k_warn(ar, "firmware crashed during chip reset\n");
-+			taint_firmware_crashed();
- 			ath10k_pci_fw_crashed_clear(ar);
- 			ath10k_pci_fw_crashed_dump(ar);
- 		}
-diff --git a/drivers/net/wireless/ath/ath10k/sdio.c b/drivers/net/wireless/ath/ath10k/sdio.c
-index e2aff2254a40..8b2fc0b89be4 100644
---- a/drivers/net/wireless/ath/ath10k/sdio.c
-+++ b/drivers/net/wireless/ath/ath10k/sdio.c
-@@ -794,6 +794,7 @@ static int ath10k_sdio_mbox_proc_dbg_intr(struct ath10k *ar)
- 
- 	/* TODO: Add firmware crash handling */
- 	ath10k_warn(ar, "firmware crashed\n");
-+	taint_firmware_crashed();
- 
- 	/* read counter to clear the interrupt, the debug error interrupt is
- 	 * counter 0.
-@@ -915,6 +916,7 @@ static int ath10k_sdio_mbox_proc_cpu_intr(struct ath10k *ar)
- 	if (cpu_int_status & MBOX_CPU_STATUS_ENABLE_ASSERT_MASK) {
- 		ath10k_err(ar, "firmware crashed!\n");
- 		queue_work(ar->workqueue, &ar->restart_work);
-+		taint_firmware_crashed();
- 	}
- 	return ret;
- }
-diff --git a/drivers/net/wireless/ath/ath10k/snoc.c b/drivers/net/wireless/ath/ath10k/snoc.c
-index 354d49b1cd45..071ee7607a4c 100644
---- a/drivers/net/wireless/ath/ath10k/snoc.c
-+++ b/drivers/net/wireless/ath/ath10k/snoc.c
-@@ -1451,6 +1451,7 @@ void ath10k_snoc_fw_crashed_dump(struct ath10k *ar)
- 		scnprintf(guid, sizeof(guid), "n/a");
- 
- 	ath10k_err(ar, "firmware crashed! (guid %s)\n", guid);
-+	taint_firmware_crashed();
- 	ath10k_print_driver_info(ar);
- 	ath10k_msa_dump_memory(ar, crash_data);
- 	mutex_unlock(&ar->dump_mutex);
--- 
-2.26.2
-
+> Maharaja Kennadyrajan <mkenna@codeaurora.org> wrote:
+>
+>> As the exisiting CE configurations are defined in global, there
+>> are the chances of QCA99X0 family chipsets CE configurations
+>> are getting changed by the ath10k_pci_override_ce_config()
+>> function.
+>>
+>> The override will be hit and CE5 configurations will be changed,
+>> when the user bring up the QCA99X0 chipsets along with QCA6174
+>> or QCA9377 chipset. (Bring up QCA99X0 family chipsets after
+>> QCA6174 or QCA9377).
+>>
+>> Hence, fixing this issue by moving the global CE configuration
+>> to radio specific CE configuration.
+>>
+>> Tested hardware: QCA9888 & QCA6174
+>> Tested firmware: 10.4-3.10-00047 & WLAN.RM.4.4.1.c3-00058
+>>
+>> Signed-off-by: Maharaja Kennadyrajan <mkenna@codeaurora.org>
+>> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+> Patch applied to ath-next branch of ath.git, thanks.
+>
+> 521fc37be3d8 ath10k: Avoid override CE5 configuration for QCA99X0 chipsets
+this patch will crash on ipq4019 devices. i reverted it and it worked again
