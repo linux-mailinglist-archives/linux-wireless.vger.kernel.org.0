@@ -2,107 +2,82 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2038A1E2630
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 May 2020 17:59:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0AA401E27CD
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 May 2020 18:58:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730276AbgEZP71 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 26 May 2020 11:59:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60626 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729102AbgEZP70 (ORCPT
+        id S1728561AbgEZQ64 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 26 May 2020 12:58:56 -0400
+Received: from mail26.static.mailgun.info ([104.130.122.26]:54358 "EHLO
+        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726930AbgEZQ64 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 26 May 2020 11:59:26 -0400
-Received: from mail-ot1-x341.google.com (mail-ot1-x341.google.com [IPv6:2607:f8b0:4864:20::341])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DA12C03E96D;
-        Tue, 26 May 2020 08:59:26 -0700 (PDT)
-Received: by mail-ot1-x341.google.com with SMTP id v17so16755015ote.0;
-        Tue, 26 May 2020 08:59:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=DQ8gVpgHVGfTCy/8d6M/EI7esdWmDQI9qAQ3EdUpOBg=;
-        b=on6ABHVzrIuk3ZU5P4ysqilGLLBUWmQHrtQ7fwQAwlb9Dqq5DyCl1LXOijRLennx/F
-         zpv1a0zKH96wNqfqWGUf5bRczKbdGPWJD/pTocGKrUfHAXGI7vvkpRP+s/IXgsu9Hx4e
-         ohN4KtNn+QjuyXu00JeZHRKNdQpfbuuFBVZIz+46Ysg5AgjOLB7qBZY4MZNl4EADwrcu
-         IZcRMamG2qZKKBweXZzKkAXBRtOjkhX56ZNDEbfy0DLwCi1YZo8pKUG0LZPQQVg9w4FX
-         QUjlSNbbk4jAXcsxyUDCtcrdGbR4+Z+VmwxbeqFRfZyQZn4GFkZzC11BkQ0PQQihIdu8
-         06aQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
-         :in-reply-to:references:mime-version:content-transfer-encoding;
-        bh=DQ8gVpgHVGfTCy/8d6M/EI7esdWmDQI9qAQ3EdUpOBg=;
-        b=gyJDd6HDHyGDNAes8QJSs8DwSCERBGS/WqIFlP0C6ZsS+NmRgXncR4oPQkqc0Hd8kt
-         KjcRS+YeemzRbAvju5nLQl4UjYS4u3w0S0lhBz5H83pYrays97hNooukl5F/9AI4XIwU
-         BNPSneO5Hdqguss3T+jIwa7qzhMjdolPR+W0K+4/QeCqfITPR3M2tz22/U5GeU44I9/B
-         QP1zbM6N5pEYUW54QyM7aqaqBKylJhv3v7Z51F4Dud/kYclRIN71p/mORT6aya/ecutJ
-         gJl5rs8h/p/8qPEe2uJfXoj8LfFTKI65qtVUm2XzNKNnFlwsG+fU/BP+d5SQth+kHrGX
-         joxQ==
-X-Gm-Message-State: AOAM531mCNK2P675NfI0gsK8jFfmja3Zxh3MQNKUWnaBas9wiZklZA+w
-        wp5aTQhppzm5CqzY6/sjXbU=
-X-Google-Smtp-Source: ABdhPJxD7OK1LeyHTXuiUgzqjpxZkYT4GVXsNxTVB/K1Pe/p3MScTeKm75knHvAc4kthp6ZxhRYmSw==
-X-Received: by 2002:a9d:621:: with SMTP id 30mr238739otn.47.1590508765792;
-        Tue, 26 May 2020 08:59:25 -0700 (PDT)
-Received: from localhost.localdomain (cpe-24-31-245-230.kc.res.rr.com. [24.31.245.230])
-        by smtp.gmail.com with ESMTPSA id k18sm36185otn.51.2020.05.26.08.59.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 May 2020 08:59:24 -0700 (PDT)
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-To:     kvalo@codeaurora.org
-Cc:     linux-wireless@vger.kernel.org,
-        Larry Finger <Larry.Finger@lwfinger.net>,
-        Rui Salvaterra <rsalvaterra@gmail.com>,
-        Stable <stable@vger.kernel.org>
-Subject: [PATCH 2/2] b43_legacy: Fix connection problem with WPA3
-Date:   Tue, 26 May 2020 10:59:09 -0500
-Message-Id: <20200526155909.5807-3-Larry.Finger@lwfinger.net>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20200526155909.5807-1-Larry.Finger@lwfinger.net>
-References: <20200526155909.5807-1-Larry.Finger@lwfinger.net>
+        Tue, 26 May 2020 12:58:56 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1590512335; h=Message-ID: References: In-Reply-To: Subject:
+ Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Sender; bh=0DXDuu5iyz3eCJtwVBnAaQBUjL3vC7O2k9XkvmUHAjA=;
+ b=iGbZGP3AUCmrrdD0MzK9ranLGRwGqpxIe3reCLMSRatSx8IWAZvMLtVTMrJJBsriYECCT58z
+ BZH8+zB6eagYar3XNLkKthrpoIYzyeVT6vVGUW4sGEdbNFIW2A/6L3iNJEnFFBYq+FQswoPP
+ Ry1HOKoWeSDNiR7tuXCUa/59RRI=
+X-Mailgun-Sending-Ip: 104.130.122.26
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n02.prod.us-east-1.postgun.com with SMTP id
+ 5ecd4ac72c54998475254d27 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 26 May 2020 16:58:47
+ GMT
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 2B290C433C9; Tue, 26 May 2020 16:58:46 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED autolearn=ham
+        autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: rmanohar)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id EA16FC433C6;
+        Tue, 26 May 2020 16:58:45 +0000 (UTC)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Tue, 26 May 2020 09:58:45 -0700
+From:   Rajkumar Manoharan <rmanohar@codeaurora.org>
+To:     Arend Van Spriel <arend.vanspriel@broadcom.com>
+Cc:     johannes@sipsolutions.net, linux-wireless@vger.kernel.org,
+        linux-wireless-owner@vger.kernel.org
+Subject: Re: [PATCH] cfg80211: propagate iftype HE 6 GHz capability
+In-Reply-To: <8cf15557-2400-0893-9846-f091df7bc457@broadcom.com>
+References: <1590467491-21187-1-git-send-email-rmanohar@codeaurora.org>
+ <8cf15557-2400-0893-9846-f091df7bc457@broadcom.com>
+Message-ID: <333b640fcb70004c70918356efdd035b@codeaurora.org>
+X-Sender: rmanohar@codeaurora.org
+User-Agent: Roundcube Webmail/1.3.9
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Since the driver was first introduced into the kernel, it has only
-handled the ciphers associated with WEP, WPA, and WPA2. It fails with
-WPA3 even though mac80211 can handle those additional ciphers in software,
-b43legacy did not report that it could handle them. By setting MFP_CAPABLE using
-ieee80211_set_hw(), the problem is fixed.
+On 2020-05-26 01:10, Arend Van Spriel wrote:
+> On 5/26/2020 6:31 AM, Rajkumar Manoharan wrote:
+>> Advertise per interface HE 6 GHz band capability to user space
+>> which will be used to build IEs.
+> 
+> I am missing the bigger picture here. It should really be determined
+> by the band in which the interface type is operating, right? Can you
+> refer to patches on the hostap mailing list relying on this one?
+> 
+HE capabilities are exposed to user space via NL80211_BAND_IFTYPE_ATTR_*
+as each iftype has different set of capabilities. My last series of 
+hostapd
+6 GHz changes are depending on HT/VHT capability for IE and config 
+validation.
+Planning to get rid of such dependency by announcing 6 GHz capability by 
+driver
+and use it in hostapd. Will post hostapd changes sooner.
 
-With this change, b43legacy will handle the ciohers it knows in hardare,
-and let mac80211 handle the others in software. It is not necessary to
-use the module parameter NOHWCRYPT to turn hardware encryption off.
-Although this change essentially eliminates that module parameter,
-I am choosing to keep it for cases where the hardware is broken,
-and software encryption is required for all ciphers.
-
-This patch fixes a problem that has been in b43legacy since commit
-75388acd0cd8 ("[B43LEGACY]: add mac80211-based driver for legacy BCM43xx
-devices").
-
-Fixes: 75388acd0cd8 ("[B43LEGACY]: add mac80211-based driver for legacy BCM43xx devices")
-Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
-Cc: Stable <stable@vger.kernel.org>
----
- drivers/net/wireless/broadcom/b43legacy/main.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/net/wireless/broadcom/b43legacy/main.c b/drivers/net/wireless/broadcom/b43legacy/main.c
-index 8b6b657c4b85..5208a39fd6f7 100644
---- a/drivers/net/wireless/broadcom/b43legacy/main.c
-+++ b/drivers/net/wireless/broadcom/b43legacy/main.c
-@@ -3801,6 +3801,7 @@ static int b43legacy_wireless_init(struct ssb_device *dev)
- 	/* fill hw info */
- 	ieee80211_hw_set(hw, RX_INCLUDES_FCS);
- 	ieee80211_hw_set(hw, SIGNAL_DBM);
-+	ieee80211_hw_set(hw, MFP_CAPABLE); /* Allow WPA3 in software */
- 
- 	hw->wiphy->interface_modes =
- 		BIT(NL80211_IFTYPE_AP) |
--- 
-2.26.2
+-Rajkumar
 
