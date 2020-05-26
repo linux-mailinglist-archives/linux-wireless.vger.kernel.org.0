@@ -2,74 +2,125 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E5C51E20F5
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 May 2020 13:36:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F3211E21F0
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 May 2020 14:33:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731340AbgEZLg3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 26 May 2020 07:36:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47854 "EHLO
+        id S2389092AbgEZMd6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 26 May 2020 08:33:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56884 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728148AbgEZLg3 (ORCPT
+        with ESMTP id S2389089AbgEZMd6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 26 May 2020 07:36:29 -0400
-Received: from mail-lj1-x241.google.com (mail-lj1-x241.google.com [IPv6:2a00:1450:4864:20::241])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 152C3C03E97E;
-        Tue, 26 May 2020 04:36:29 -0700 (PDT)
-Received: by mail-lj1-x241.google.com with SMTP id e4so1574105ljn.4;
-        Tue, 26 May 2020 04:36:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=n7qRuj222fMjN5gfezJPoEb++aOpZrJlyhV+OkWHA3I=;
-        b=qATTWkgvl/pddWfQhXgYgI9FkZzKT9wSVFB8HffUHm2/5AHcVYCH+mfyTuzXbu5N7B
-         5+Z/o0EYIthDfCgYxnzqY1SfPEisKP14HllN7n8SK3o6lLZsHO9WjIHeHVdSzCLJQKil
-         b09cfyVfJ5KM4sJlrrUgwNDqAZG2aLSAAj2i3sXP8eOiqDYW+AlYNKX/izXE8liuFgWs
-         4WXW96jBJq8Bp/6exwxc4l8tgqQvg9r8gQBuTUeIeNyeEYsU0Mzj9EzlOX4Irik6JaWA
-         5dFmpUn59/5cgWgYvcXz43G1NSSwFHL7L8anGsJx82Pi5i+UPs4LYXfPBf3M1iPnHqan
-         qObQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=n7qRuj222fMjN5gfezJPoEb++aOpZrJlyhV+OkWHA3I=;
-        b=reZZwuDSwVn3rZt7u+8XfmASOBovhhz8pQpQ97Cic0FC7mSEQDmdgzVvZskEYWiTTw
-         LEgZ8AmJPcdndrgwKYdJ7MaUOW5SsC+w2Q+VcGfx9Ica1SD71jxMdqp1lwYiECqv2+1M
-         tF+0EdYY9Z8mfBb/fMlu+NA6CkJRS14BcVg8pUQuFLe8hcu5cPvmYd9ic3MgTL+9hytt
-         Rvz+ul0HCt/okXz6jOSgsTDAOUA/rhUXxWKH4dx07B717jne9QbTFvUpgUROtsDwSVDJ
-         O3waNNS/pYeUc4J55QEOPLMqKZ3B8GwxJl7UHUkA0YkiwCat/NCH++gtQqssyB5EYu6C
-         HCfQ==
-X-Gm-Message-State: AOAM531ipmk18rPw7Wqynn0mvKwpZpmDaP4mc3WQ84dQqxZFBJEubAyl
-        hbylBe/w0Ds7N+DOZdoGrHyj5xt+6JYGHyRTf1Yh78Bm
-X-Google-Smtp-Source: ABdhPJwLCu6lTROK8R5cM7T9azsG/diLvdXP/54j/Fnitz5AIoi2VD+MM3/hBhWrZFj7F1HZdaQACj/LPRNT5YbXl2I=
-X-Received: by 2002:a2e:9b4d:: with SMTP id o13mr426940ljj.363.1590492987508;
- Tue, 26 May 2020 04:36:27 -0700 (PDT)
+        Tue, 26 May 2020 08:33:58 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA032C03E96D
+        for <linux-wireless@vger.kernel.org>; Tue, 26 May 2020 05:33:57 -0700 (PDT)
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.93)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1jdYmJ-003Q8c-2H; Tue, 26 May 2020 14:33:55 +0200
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     linux-wireless@vger.kernel.org
+Cc:     Johannes Berg <johannes.berg@intel.com>,
+        Haggai Abramovsky <haggai.abramovsky@intel.com>
+Subject: [PATCH] mac80211: fix HT-Control field reception for management frames
+Date:   Tue, 26 May 2020 14:33:48 +0200
+Message-Id: <20200526143346.cf5ce70521c5.I333251a084ec4cfe67b7ef7efe2d2f1a33883931@changeid>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-References: <20200515164640.97276-1-ramonreisfontes@gmail.com> <ab7cac9c73dc8ef956a1719dc090167bcfc24b63.camel@sipsolutions.net>
-In-Reply-To: <ab7cac9c73dc8ef956a1719dc090167bcfc24b63.camel@sipsolutions.net>
-From:   Ramon Fontes <ramonreisfontes@gmail.com>
-Date:   Tue, 26 May 2020 08:36:15 -0300
-Message-ID: <CAK8U23ZaUhoPVdWo-fkFpg4pGOcQQrk7oSbs9z1XPVE3cR_Jow@mail.gmail.com>
-Subject: Re: [PATCH] mac80211_hwsim: report the WIPHY_FLAG_SUPPORTS_5_10_MHZ capability
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        kvalo@codeaurora.org, davem@davemloft.net
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-> Not sure this is enough? How about wmediumd, for example?
+From: Johannes Berg <johannes.berg@intel.com>
 
-It works with wmediumd too. At least I was able to enable 5 / 10MHz
-via iw with 5.9GHz
+If we receive management frames with an HT-Control field, we cannot
+parse them properly, as we assume a fixed length management header.
 
-> And also, 5/10 MHz has many more channels inbetween the normal ones, no?
-> Shouldn't those also be added?
+Since we don't even need the HTC field (for these frames, or really
+at all), just remove it at the beginning of RX.
 
-Tested with 5855MHz - 5925MHz
+Reported-by: Haggai Abramovsky <haggai.abramovsky@intel.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+---
+ net/mac80211/rx.c | 44 +++++++++++++++++++++++++++++++++++++-------
+ 1 file changed, 37 insertions(+), 7 deletions(-)
 
---
-Ramon
+diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
+index eaf8931e4627..a979cc57b6ef 100644
+--- a/net/mac80211/rx.c
++++ b/net/mac80211/rx.c
+@@ -93,13 +93,44 @@ static u8 *ieee80211_get_bssid(struct ieee80211_hdr *hdr, size_t len,
+  * This function cleans up the SKB, i.e. it removes all the stuff
+  * only useful for monitoring.
+  */
+-static void remove_monitor_info(struct sk_buff *skb,
+-				unsigned int present_fcs_len,
+-				unsigned int rtap_space)
++static struct sk_buff *ieee80211_clean_skb(struct sk_buff *skb,
++					   unsigned int present_fcs_len,
++					   unsigned int rtap_space)
+ {
++	struct ieee80211_hdr *hdr;
++	unsigned int hdrlen;
++	__le16 fc;
++
+ 	if (present_fcs_len)
+ 		__pskb_trim(skb, skb->len - present_fcs_len);
+ 	__pskb_pull(skb, rtap_space);
++
++	hdr = (void *)skb->data;
++	fc = hdr->frame_control;
++
++	/*
++	 * Remove the HT-Control field (if present) on management
++	 * frames after we've sent the frame to monitoring. We
++	 * (currently) don't need it, and don't properly parse
++	 * frames with it present, due to the assumption of a
++	 * fixed management header length.
++	 */
++	if (likely(!ieee80211_is_mgmt(fc) || !ieee80211_has_order(fc)))
++		return skb;
++
++	hdrlen = ieee80211_hdrlen(fc);
++	hdr->frame_control &= ~cpu_to_le16(IEEE80211_FCTL_ORDER);
++
++	if (!pskb_may_pull(skb, hdrlen)) {
++		dev_kfree_skb(skb);
++		return NULL;
++	}
++
++	memmove(skb->data + IEEE80211_HT_CTL_LEN, skb->data,
++		hdrlen - IEEE80211_HT_CTL_LEN);
++	__pskb_pull(skb, IEEE80211_HT_CTL_LEN);
++
++	return skb;
+ }
+ 
+ static inline bool should_drop_frame(struct sk_buff *skb, int present_fcs_len,
+@@ -827,8 +858,8 @@ ieee80211_rx_monitor(struct ieee80211_local *local, struct sk_buff *origskb,
+ 			return NULL;
+ 		}
+ 
+-		remove_monitor_info(origskb, present_fcs_len, rtap_space);
+-		return origskb;
++		return ieee80211_clean_skb(origskb, present_fcs_len,
++					   rtap_space);
+ 	}
+ 
+ 	ieee80211_handle_mu_mimo_mon(monitor_sdata, origskb, rtap_space);
+@@ -871,8 +902,7 @@ ieee80211_rx_monitor(struct ieee80211_local *local, struct sk_buff *origskb,
+ 	if (!origskb)
+ 		return NULL;
+ 
+-	remove_monitor_info(origskb, present_fcs_len, rtap_space);
+-	return origskb;
++	return ieee80211_clean_skb(origskb, present_fcs_len, rtap_space);
+ }
+ 
+ static void ieee80211_parse_qos(struct ieee80211_rx_data *rx)
+-- 
+2.26.2
+
