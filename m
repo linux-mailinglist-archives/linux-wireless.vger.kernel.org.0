@@ -2,32 +2,32 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 105E51E1861
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 May 2020 02:10:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 726E31E1860
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 May 2020 02:10:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387734AbgEZAJe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 25 May 2020 20:09:34 -0400
-Received: from mail27.static.mailgun.info ([104.130.122.27]:13797 "EHLO
-        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726437AbgEZAJe (ORCPT
+        id S1726580AbgEZAJb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 25 May 2020 20:09:31 -0400
+Received: from mail26.static.mailgun.info ([104.130.122.26]:63071 "EHLO
+        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725879AbgEZAJa (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 25 May 2020 20:09:34 -0400
+        Mon, 25 May 2020 20:09:30 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1590451772; h=Content-Transfer-Encoding: MIME-Version:
+ s=smtp; t=1590451768; h=Content-Transfer-Encoding: MIME-Version:
  References: In-Reply-To: Message-Id: Date: Subject: Cc: To: From:
- Sender; bh=br25GU2WJO4MTj52vq4a6WT0Sw95fVmOTDjUPBarAls=; b=FfwfqtO7cJQ/MCU0HXCXxQsZbhE0/+xd8twMU48FoqlsxLLsjNi4teLEFV0GKY+Jkvz3Z1Wm
- /ZfwoUs+sC5Xr59Dga4aYGdzbebTdFle9C8D7edD5lLIdHQLoG6IjLQGIIlFcY3iqUBl1FwF
- sjeI0rGAFUZoSsXishNNN5G9N90=
-X-Mailgun-Sending-Ip: 104.130.122.27
+ Sender; bh=FzjOS1vxDOnox3INQqTptHv7z1joj0WIK7xYbGR6j1o=; b=dTOG6CR2FJlU/hDkOe5wceLzzbMsZJaBUwUG0SnkXLR4fY/mF4aZz7kzKFKgUgJRIHBnWXEu
+ 5GLTQLc2/ep+0wSekaboiQPGc/FYcpOTrmXdWCVB+aH+rE2YQozB9Rt/RNj7gY6/lEsu044q
+ EydGWyNyoaOUn4l8AlXlq86tqlI=
+X-Mailgun-Sending-Ip: 104.130.122.26
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n01.prod.us-west-2.postgun.com with SMTP id
- 5ecc5e34809d904967b4ce04 (version=TLS1.2,
+ smtp-out-n03.prod.us-west-2.postgun.com with SMTP id
+ 5ecc5e34c6d4683243f02a16 (version=TLS1.2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 26 May 2020 00:09:24
  GMT
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 057FEC43387; Tue, 26 May 2020 00:09:24 +0000 (UTC)
+        id D27A4C433C6; Tue, 26 May 2020 00:09:24 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -37,19 +37,17 @@ Received: from alokad-linux.qualcomm.com (i-global254.qualcomm.com [199.106.103.
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: alokad)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id B4797C433C9;
-        Tue, 26 May 2020 00:09:22 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org B4797C433C9
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id B70E8C433CA;
+        Tue, 26 May 2020 00:09:23 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org B70E8C433CA
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=alokad@codeaurora.org
 From:   Aloka Dixit <alokad@codeaurora.org>
 To:     johannes@sipsolutions.net
-Cc:     linux-wireless@vger.kernel.org,
-        Aloka Dixit <alokad@codeaurora.org>,
-        kbuild test robot <lkp@intel.com>
-Subject: [PATCH v2 1/2] nl80211: FILS discovery/bcast probe resp support
-Date:   Mon, 25 May 2020 17:09:12 -0700
-Message-Id: <20200526000913.30434-2-alokad@codeaurora.org>
+Cc:     linux-wireless@vger.kernel.org, Aloka Dixit <alokad@codeaurora.org>
+Subject: [PATCH v2 2/2] mac80211: FILS disc/bcast probe resp config
+Date:   Mon, 25 May 2020 17:09:13 -0700
+Message-Id: <20200526000913.30434-3-alokad@codeaurora.org>
 X-Mailer: git-send-email 2.25.0
 In-Reply-To: <20200526000913.30434-1-alokad@codeaurora.org>
 References: <20200526000913.30434-1-alokad@codeaurora.org>
@@ -60,246 +58,240 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This patch adds new attribute, NL80211_ATTR_FD_BCASTPRESP_CFG
-to configure FILS discovery and broadcast probe response in 6GHz
-for in-band discovery.
+This patch adds mac80211 support to configure FILS discovery and
+broadcast probe response in 6GHz for in-band discovery.
 
-Only one of the two is active at a time to reduce broadcast
-packets over the air.
-
-Maximum packet interval can be 20 TUs.
-Packet interval set to 0 disables FILS discovery and broadcast
-probe response transmission.
+Changes include functions to store and retrieve FILS discovery,
+broadcast probe response templates, and packet interval.
 
 Signed-off-by: Aloka Dixit <alokad@codeaurora.org>
-Reported-by: kbuild test robot <lkp@intel.com>
 ---
-v2: Fixed warning.
+ include/net/mac80211.h     | 17 ++++++++++++
+ net/mac80211/cfg.c         | 57 ++++++++++++++++++++++++++++++++++++++
+ net/mac80211/ieee80211_i.h |  8 ++++++
+ net/mac80211/tx.c          | 30 ++++++++++++++++++++
+ 4 files changed, 112 insertions(+)
 
- include/net/cfg80211.h       | 26 ++++++++++++++++
- include/uapi/linux/nl80211.h | 27 +++++++++++++++++
- net/wireless/nl80211.c       | 58 ++++++++++++++++++++++++++++++++++++
- 3 files changed, 111 insertions(+)
-
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index a82fc59a1d82..e4bc03947005 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -957,6 +957,8 @@ struct cfg80211_crypto_settings {
-  * @assocresp_ies_len: length of assocresp_ies in octets
-  * @probe_resp_len: length of probe response template (@probe_resp)
-  * @probe_resp: probe response template (AP mode only)
-+ * @bcast_presp: Broadcast probe response template (AP mode only)
-+ * @fils_disc: FILS discovery template (AP mode only)
-  * @ftm_responder: enable FTM responder functionality; -1 for no change
-  *	(which also implies no change in LCI/civic location data)
-  * @lci: Measurement Report element content, starting with Measurement Token
-@@ -965,6 +967,8 @@ struct cfg80211_crypto_settings {
-  *	Token (measurement type 11)
-  * @lci_len: LCI data length
-  * @civicloc_len: Civic location data length
-+ * @bcast_presp_len: Broadcast probe response template length
-+ * @fils_disc_len: FILS discovery template length
-  */
- struct cfg80211_beacon_data {
- 	const u8 *head, *tail;
-@@ -974,6 +978,8 @@ struct cfg80211_beacon_data {
- 	const u8 *probe_resp;
- 	const u8 *lci;
- 	const u8 *civicloc;
-+	const u8 *bcast_presp;
-+	const u8 *fils_disc;
- 	s8 ftm_responder;
- 
- 	size_t head_len, tail_len;
-@@ -983,6 +989,8 @@ struct cfg80211_beacon_data {
- 	size_t probe_resp_len;
- 	size_t lci_len;
- 	size_t civicloc_len;
-+	size_t bcast_presp_len;
-+	size_t fils_disc_len;
- };
- 
- struct mac_address {
-@@ -1017,6 +1025,22 @@ struct cfg80211_bitrate_mask {
- 	} control[NUM_NL80211_BANDS];
- };
- 
-+enum cfg80211_fd_bcastpresp_types {
-+	CFG80211_TYPE_FILS_DISCOVERY = 1,
-+	CFG80211_TYPE_BCAST_PROBE_RESP
-+};
-+
-+/**
-+ * struct cfg80211_fd_bcastpresp - FILS discovery/bcast probe response config
-+ *
-+ * @type: CFG80211_TYPE_FILS_DISCOVERY/CFG80211_TYPE_BCAST_PROBE_RESP
-+ * @interval: FILS discovery/broadcast probe response interval in TUs
-+ */
-+struct cfg80211_fd_bcastpresp {
-+	enum cfg80211_fd_bcastpresp_types type;
-+	u32 interval;
-+};
-+
- /**
-  * enum cfg80211_ap_settings_flags - AP settings flags
+diff --git a/include/net/mac80211.h b/include/net/mac80211.h
+index 78f7ce586287..768d6d9c47b6 100644
+--- a/include/net/mac80211.h
++++ b/include/net/mac80211.h
+@@ -317,6 +317,7 @@ struct ieee80211_vif_chanctx_switch {
+  * @BSS_CHANGED_TWT: TWT status changed
+  * @BSS_CHANGED_HE_OBSS_PD: OBSS Packet Detection status changed.
+  * @BSS_CHANGED_HE_BSS_COLOR: BSS Color has changed
++ * @BSS_CHANGED_FD_BCASTPRESP: FILS Discovery/Bcast probe resp status changed.
   *
-@@ -1064,6 +1088,7 @@ enum cfg80211_ap_settings_flags {
-  * @he_obss_pd: OBSS Packet Detection settings
-  * @he_bss_color: BSS Color settings
-  * @he_oper: HE operation IE (or %NULL if HE isn't enabled)
+  */
+ enum ieee80211_bss_change {
+@@ -350,6 +351,7 @@ enum ieee80211_bss_change {
+ 	BSS_CHANGED_TWT			= 1<<27,
+ 	BSS_CHANGED_HE_OBSS_PD		= 1<<28,
+ 	BSS_CHANGED_HE_BSS_COLOR	= 1<<29,
++	BSS_CHANGED_FD_BCASTPRESP	= 1<<30,
+ 
+ 	/* when adding here, make sure to change ieee80211_reconfig */
+ };
+@@ -607,6 +609,7 @@ struct ieee80211_ftm_responder_params {
+  * @he_oper: HE operation information of the AP we are connected to
+  * @he_obss_pd: OBSS Packet Detection parameters.
+  * @he_bss_color: BSS coloring settings, if BSS supports HE
 + * @fd_bcastpresp: FILS discovery and broadcast probe response configuration
   */
- struct cfg80211_ap_settings {
- 	struct cfg80211_chan_def chandef;
-@@ -1094,6 +1119,7 @@ struct cfg80211_ap_settings {
- 	u32 flags;
+ struct ieee80211_bss_conf {
+ 	const u8 *bssid;
+@@ -674,6 +677,7 @@ struct ieee80211_bss_conf {
+ 	} he_oper;
  	struct ieee80211_he_obss_pd he_obss_pd;
  	struct cfg80211_he_bss_color he_bss_color;
 +	struct cfg80211_fd_bcastpresp fd_bcastpresp;
  };
  
  /**
-diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-index 9679d561f7d0..3d7bb5c61002 100644
---- a/include/uapi/linux/nl80211.h
-+++ b/include/uapi/linux/nl80211.h
-@@ -2484,6 +2484,8 @@ enum nl80211_commands {
-  * @NL80211_ATTR_RECEIVE_MULTICAST: multicast flag for the
-  *	%NL80211_CMD_REGISTER_FRAME command, see the description there.
-  *
-+ * @NL80211_ATTR_FD_BCASTPRESP_CFG: FILS discovery/broadcast probe resp.
-+ *
-  * @NUM_NL80211_ATTR: total number of nl80211_attrs available
-  * @NL80211_ATTR_MAX: highest attribute number currently defined
-  * @__NL80211_ATTR_AFTER_LAST: internal use
-@@ -2961,6 +2963,8 @@ enum nl80211_attrs {
- 
- 	NL80211_ATTR_RECEIVE_MULTICAST,
- 
-+	NL80211_ATTR_FD_BCASTPRESP_CFG,
-+
- 	/* add attributes here, update the policy in nl80211.c */
- 
- 	__NL80211_ATTR_AFTER_LAST,
-@@ -6848,4 +6852,27 @@ enum nl80211_iftype_akm_attributes {
- 	NL80211_IFTYPE_AKM_ATTR_MAX = __NL80211_IFTYPE_AKM_ATTR_LAST - 1,
- };
+@@ -6554,4 +6558,17 @@ u32 ieee80211_calc_tx_airtime(struct ieee80211_hw *hw,
+  */
+ bool ieee80211_set_hw_80211_encap(struct ieee80211_vif *vif, bool enable);
  
 +/**
-+ * enum nl80211_fd_bcastpresp_attributes - FILS disc/bcast probe resp settings
-+ * @__NL80211_FD_BCASTPRESP_ATTR_INVALID: Invalid
++ * ieee80211_get_fd_bcastpresp_tmpl - Get FILS disc/Bcast probe resp template.
++ * @hw: pointer obtained from ieee80211_alloc_hw().
++ * @vif: &struct ieee80211_vif pointer from the add_interface callback.
++ * @config: 1-FILS discovery, 2-Broadcast probe response.
 + *
-+ * @NL80211_FD_BCASTPRESP_ATTR_TYPE: 1-FILS discovery, 2-broadcast probe resp
-+ * @NL80211_FD_BCASTPRESP_ATTR_INT: FILS disc/bcast probe resp interval in TUs
-+ * @NL80211_FD_BCASTPRESP_ATTR_TMPL: FILS discovery/bcast probe resp template
++ * The driver is responsible for freeing the returned skb.
 + *
-+ * @__NL80211_FD_BCASTPRESP_ATTR_LAST: Internal
-+ * @NL80211_FD_BCASTPRESP_ATTR_MAX: highest FD/bcast probe resp attribute
++ * Return: FILS discovery/broadcast probe response template. %NULL on error.
 + */
-+enum nl80211_fd_bcastpresp_attributes {
-+	__NL80211_FD_BCASTPRESP_ATTR_INVALID,
-+
-+	NL80211_FD_BCASTPRESP_ATTR_TYPE,
-+	NL80211_FD_BCASTPRESP_ATTR_INT,
-+	NL80211_FD_BCASTPRESP_ATTR_TMPL,
-+
-+	/* keep last */
-+	__NL80211_FD_BCASTPRESP_ATTR_LAST,
-+	NL80211_FD_BCASTPRESP_ATTR_MAX = __NL80211_FD_BCASTPRESP_ATTR_LAST - 1
-+};
-+
- #endif /* __LINUX_NL80211_H */
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 3d27b24c68b2..87bb78cc95e1 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -331,6 +331,14 @@ he_bss_color_policy[NL80211_HE_BSS_COLOR_ATTR_MAX + 1] = {
- 	[NL80211_HE_BSS_COLOR_ATTR_PARTIAL] = { .type = NLA_FLAG },
- };
- 
-+static const struct nla_policy
-+fd_bcastpresp_policy[NL80211_FD_BCASTPRESP_ATTR_MAX + 1] = {
-+	[NL80211_FD_BCASTPRESP_ATTR_TYPE] = NLA_POLICY_RANGE(NLA_U8, 1, 2),
-+	[NL80211_FD_BCASTPRESP_ATTR_INT] = NLA_POLICY_MAX(NLA_U32, 20),
-+	[NL80211_FD_BCASTPRESP_ATTR_TMPL] = { .type = NLA_BINARY,
-+					      .len = IEEE80211_MAX_DATA_LEN },
-+};
-+
- static const struct nla_policy
- nl80211_tid_config_attr_policy[NL80211_TID_CONFIG_ATTR_MAX + 1] = {
- 	[NL80211_TID_CONFIG_ATTR_VIF_SUPP] = { .type = NLA_U64 },
-@@ -662,6 +670,8 @@ const struct nla_policy nl80211_policy[NUM_NL80211_ATTR] = {
- 	[NL80211_ATTR_PMK_LIFETIME] = NLA_POLICY_MIN(NLA_U32, 1),
- 	[NL80211_ATTR_PMK_REAUTH_THRESHOLD] = NLA_POLICY_RANGE(NLA_U8, 1, 100),
- 	[NL80211_ATTR_RECEIVE_MULTICAST] = { .type = NLA_FLAG },
-+	[NL80211_ATTR_FD_BCASTPRESP_CFG] =
-+				NLA_POLICY_NESTED(fd_bcastpresp_policy),
- };
- 
- /* policy for the key attributes */
-@@ -4725,6 +4735,48 @@ static int nl80211_parse_he_bss_color(struct nlattr *attrs,
++struct sk_buff *ieee80211_get_fd_bcastpresp_tmpl(struct ieee80211_hw *hw,
++						 struct ieee80211_vif *vif,
++						 u8 config);
+ #endif /* MAC80211_H */
+diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+index 548a384b0509..234f2610256c 100644
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -837,6 +837,43 @@ static int ieee80211_set_probe_resp(struct ieee80211_sub_if_data *sdata,
  	return 0;
  }
  
-+static int nl80211_parse_fd_bcastpresp(struct genl_info *info,
++static int ieee80211_set_fd_bcastpresp(struct ieee80211_sub_if_data *sdata,
 +				       struct cfg80211_ap_settings *params)
 +{
-+	struct nlattr *tmpl;
-+	struct nlattr *tb[NL80211_FD_BCASTPRESP_ATTR_MAX + 1];
-+	int ret;
-+	struct cfg80211_beacon_data *beacon = &params->beacon;
++	struct fd_bcastpresp *new, *old = NULL;
 +	struct cfg80211_fd_bcastpresp *cfg;
++	struct cfg80211_beacon_data *bcn = &params->beacon;
 +
-+	if (params->chandef.center_freq1 <= 5940 ||
-+	    params->chandef.center_freq1 >= 7105)
-+		return -EOPNOTSUPP;
++	cfg = &sdata->vif.bss_conf.fd_bcastpresp;
++	cfg->type = params->fd_bcastpresp.type;
++	cfg->interval = params->fd_bcastpresp.interval;
 +
-+	ret = nla_parse_nested(tb, NL80211_FD_BCASTPRESP_ATTR_MAX,
-+			       info->attrs[NL80211_ATTR_FD_BCASTPRESP_CFG],
-+			       fd_bcastpresp_policy, NULL);
-+	if (ret)
-+		return ret;
-+
-+	if (!tb[NL80211_FD_BCASTPRESP_ATTR_TYPE] ||
-+	    !tb[NL80211_FD_BCASTPRESP_ATTR_INT])
-+		return -EINVAL;
-+
-+	cfg = &params->fd_bcastpresp;
-+	cfg->type = nla_get_u8(tb[NL80211_FD_BCASTPRESP_ATTR_TYPE]);
-+	cfg->interval = nla_get_u32(tb[NL80211_FD_BCASTPRESP_ATTR_INT]);
-+
-+	tmpl = tb[NL80211_FD_BCASTPRESP_ATTR_TMPL];
-+	if (!tmpl && !beacon->fils_disc_len && !beacon->bcast_presp_len)
-+		return -EINVAL;
-+
-+	if (cfg->type == CFG80211_TYPE_FILS_DISCOVERY) {
-+		beacon->fils_disc = nla_data(tmpl);
-+		beacon->fils_disc_len = nla_len(tmpl);
-+	} else if (cfg->type == CFG80211_TYPE_BCAST_PROBE_RESP) {
-+		beacon->bcast_presp = nla_data(tmpl);
-+		beacon->bcast_presp_len = nla_len(tmpl);
++	if (cfg->type == CFG80211_TYPE_FILS_DISCOVERY && bcn->fils_disc_len) {
++		new = kzalloc(sizeof(*new) + bcn->fils_disc_len, GFP_KERNEL);
++		if (!new)
++			return -ENOMEM;
++		new->len = bcn->fils_disc_len;
++		memcpy(new->data, bcn->fils_disc, bcn->fils_disc_len);
++		old = sdata_dereference(sdata->u.ap.fils_disc, sdata);
++		rcu_assign_pointer(sdata->u.ap.fils_disc, new);
++	} else if (cfg->type == CFG80211_TYPE_BCAST_PROBE_RESP &&
++		   bcn->bcast_presp_len) {
++		new = kzalloc(sizeof(*new) + bcn->bcast_presp_len, GFP_KERNEL);
++		if (!new)
++			return -ENOMEM;
++		new->len = bcn->bcast_presp_len;
++		memcpy(new->data, bcn->bcast_presp,
++		       bcn->bcast_presp_len);
++		old = sdata_dereference(sdata->u.ap.bcast_presp, sdata);
++		rcu_assign_pointer(sdata->u.ap.bcast_presp, new);
 +	}
++
++	if (old)
++		kfree_rcu(old, rcu_head);
 +
 +	return 0;
 +}
 +
- static void nl80211_check_ap_rate_selectors(struct cfg80211_ap_settings *params,
- 					    const u8 *rates)
- {
-@@ -5029,6 +5081,12 @@ static int nl80211_start_ap(struct sk_buff *skb, struct genl_info *info)
- 			return err;
+ static int ieee80211_set_ftm_responder_params(
+ 				struct ieee80211_sub_if_data *sdata,
+ 				const u8 *lci, size_t lci_len,
+@@ -1103,6 +1140,16 @@ static int ieee80211_start_ap(struct wiphy *wiphy, struct net_device *dev,
  	}
+ 	changed |= err;
  
-+	if (info->attrs[NL80211_ATTR_FD_BCASTPRESP_CFG]) {
-+		err = nl80211_parse_fd_bcastpresp(info, &params);
-+		if (err)
++	if (params->fd_bcastpresp.type) {
++		err = ieee80211_set_fd_bcastpresp(sdata, params);
++		if (err < 0) {
++			ieee80211_vif_release_channel(sdata);
 +			return err;
++		} else if (err == 0) {
++			changed |= BSS_CHANGED_FD_BCASTPRESP;
++		}
 +	}
 +
- 	nl80211_calculate_ap_params(&params);
+ 	err = drv_start_ap(sdata->local, sdata);
+ 	if (err) {
+ 		old = sdata_dereference(sdata->u.ap.beacon, sdata);
+@@ -1158,6 +1205,7 @@ static int ieee80211_stop_ap(struct wiphy *wiphy, struct net_device *dev)
+ 	struct ieee80211_local *local = sdata->local;
+ 	struct beacon_data *old_beacon;
+ 	struct probe_resp *old_probe_resp;
++	struct fd_bcastpresp *old_bcast_probe_resp, *old_fils_disc;
+ 	struct cfg80211_chan_def chandef;
  
- 	if (info->attrs[NL80211_ATTR_EXTERNAL_AUTH_SUPPORT])
+ 	sdata_assert_lock(sdata);
+@@ -1166,6 +1214,9 @@ static int ieee80211_stop_ap(struct wiphy *wiphy, struct net_device *dev)
+ 	if (!old_beacon)
+ 		return -ENOENT;
+ 	old_probe_resp = sdata_dereference(sdata->u.ap.probe_resp, sdata);
++	old_bcast_probe_resp = sdata_dereference(sdata->u.ap.bcast_presp,
++						 sdata);
++	old_fils_disc = sdata_dereference(sdata->u.ap.fils_disc, sdata);
+ 
+ 	/* abort any running channel switch */
+ 	mutex_lock(&local->mtx);
+@@ -1189,9 +1240,15 @@ static int ieee80211_stop_ap(struct wiphy *wiphy, struct net_device *dev)
+ 	/* remove beacon and probe response */
+ 	RCU_INIT_POINTER(sdata->u.ap.beacon, NULL);
+ 	RCU_INIT_POINTER(sdata->u.ap.probe_resp, NULL);
++	RCU_INIT_POINTER(sdata->u.ap.bcast_presp, NULL);
++	RCU_INIT_POINTER(sdata->u.ap.fils_disc, NULL);
+ 	kfree_rcu(old_beacon, rcu_head);
+ 	if (old_probe_resp)
+ 		kfree_rcu(old_probe_resp, rcu_head);
++	if (old_bcast_probe_resp)
++		kfree_rcu(old_bcast_probe_resp, rcu_head);
++	if (old_fils_disc)
++		kfree_rcu(old_fils_disc, rcu_head);
+ 
+ 	kfree(sdata->vif.bss_conf.ftmr_params);
+ 	sdata->vif.bss_conf.ftmr_params = NULL;
+diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
+index 8cbae66b5cdb..f9c77dbeb29a 100644
+--- a/net/mac80211/ieee80211_i.h
++++ b/net/mac80211/ieee80211_i.h
+@@ -270,6 +270,12 @@ struct probe_resp {
+ 	u8 data[0];
+ };
+ 
++struct fd_bcastpresp {
++	struct rcu_head rcu_head;
++	int len;
++	u8 data[0];
++};
++
+ struct ps_data {
+ 	/* yes, this looks ugly, but guarantees that we can later use
+ 	 * bitmap_empty :)
+@@ -285,6 +291,8 @@ struct ps_data {
+ struct ieee80211_if_ap {
+ 	struct beacon_data __rcu *beacon;
+ 	struct probe_resp __rcu *probe_resp;
++	struct fd_bcastpresp __rcu *bcast_presp;
++	struct fd_bcastpresp __rcu *fils_disc;
+ 
+ 	/* to be used after channel switch. */
+ 	struct cfg80211_beacon_data *next_beacon;
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index 6dad67eb60b2..6dacd58d956d 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -4984,6 +4984,36 @@ struct sk_buff *ieee80211_proberesp_get(struct ieee80211_hw *hw,
+ }
+ EXPORT_SYMBOL(ieee80211_proberesp_get);
+ 
++struct sk_buff *ieee80211_get_fd_bcastpresp_tmpl(struct ieee80211_hw *hw,
++						 struct ieee80211_vif *vif,
++						 u8 config)
++{
++	struct sk_buff *skb = NULL;
++	struct fd_bcastpresp *tmpl = NULL;
++	struct ieee80211_sub_if_data *sdata = vif_to_sdata(vif);
++
++	if (sdata->vif.type != NL80211_IFTYPE_AP)
++		return NULL;
++
++	rcu_read_lock();
++
++	if (config == CFG80211_TYPE_FILS_DISCOVERY)
++		tmpl = rcu_dereference(sdata->u.ap.fils_disc);
++	else if (config == CFG80211_TYPE_BCAST_PROBE_RESP)
++		tmpl = rcu_dereference(sdata->u.ap.bcast_presp);
++
++	if (!tmpl || !tmpl->len)
++		goto out;
++
++	skb = dev_alloc_skb(tmpl->len);
++	if (skb)
++		skb_put_data(skb, tmpl->data, tmpl->len);
++out:
++	rcu_read_unlock();
++	return skb;
++}
++EXPORT_SYMBOL(ieee80211_get_fd_bcastpresp_tmpl);
++
+ struct sk_buff *ieee80211_pspoll_get(struct ieee80211_hw *hw,
+ 				     struct ieee80211_vif *vif)
+ {
 -- 
 2.25.0
 
