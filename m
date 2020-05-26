@@ -2,48 +2,48 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DC2301E42BA
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 May 2020 14:53:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C58C1E42BB
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 May 2020 14:53:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730146AbgE0MxS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 27 May 2020 08:53:18 -0400
-Received: from mail-pj1-f67.google.com ([209.85.216.67]:35210 "EHLO
-        mail-pj1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729996AbgE0MxR (ORCPT
+        id S1730166AbgE0MxX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 27 May 2020 08:53:23 -0400
+Received: from mail-pf1-f195.google.com ([209.85.210.195]:41138 "EHLO
+        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729731AbgE0MxX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 27 May 2020 08:53:17 -0400
-Received: by mail-pj1-f67.google.com with SMTP id 5so1492394pjd.0
-        for <linux-wireless@vger.kernel.org>; Wed, 27 May 2020 05:53:17 -0700 (PDT)
+        Wed, 27 May 2020 08:53:23 -0400
+Received: by mail-pf1-f195.google.com with SMTP id 23so11778279pfy.8
+        for <linux-wireless@vger.kernel.org>; Wed, 27 May 2020 05:53:22 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:resent-from:resent-date:resent-message-id
          :resent-to:from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=lLNCK+WRq9ug4fTBP9sca/wv2hUwl+4zOX5ypfLbsKY=;
-        b=ipuT9cBXcwk15LlCsWc6uFhqV3X6F8SYJ00yqhr2/8xQZT9EPw4y7MNd8hFgOGjeVM
-         eLJaq1C+CyJejpogb2hSB3aTQKmxA5eVYQYarhENIMUQTPdlG79PvPqSq7HteUh2EXjR
-         liwI2FTiezEnputrexTUNdZGc2OukgHay8X7FX+7uS5P7ys+ZXW2rog6G+PRe2VMg4TU
-         Sr4Ppot0Bf9OkXXpqstNeITpmOOZyN5G2M0rPdvaTT9vjt2DKXzR/dSqFsfaGOVc59FT
-         931+8/3zqPLdxE5fBaHPNXWu3q/GiCRgOCzD6Xx132YdSovhFuGrLSPUbRwvQCsvPbWW
-         7Qpw==
-X-Gm-Message-State: AOAM530uvanuBBPk00ICNf2XdFaJpRym9qvreAamboA+GBfwVgWtjzLU
-        N+fpXpE9Mfus4eRbWcOLzjLkQEWzzkWaBw==
-X-Google-Smtp-Source: ABdhPJw02sl0t/dA62cYxQC4t2rcjEd1E7uQMG1gOeGf1c8/8uma+SnNHzaBo4Nm2MNbvV0BBNa2VQ==
-X-Received: by 2002:a17:90a:bb8b:: with SMTP id v11mr5006195pjr.50.1590583996288;
-        Wed, 27 May 2020 05:53:16 -0700 (PDT)
+        bh=L6RbYv5B1MYyKpilgE+iTClDmvIVUX2RuuOQOJ/aMVQ=;
+        b=mnYO83srxb539PZ/8409bBJqD5VWKtAWlFJEC/Y/F5j6vATpB8kQzutiJEZCEn+p9F
+         VOwpd48zfhuw6xLL76esu/cZyyKd2MmQSBpTu5hAQAlNVnuXD3KLmAC+hziblfsmqt+6
+         29G/LNnmd3LoDgLEvx6tIfS1k2xaMttqsbwTRoe/L9ZpjJMUPbBaBY7VhttE4N/woZ80
+         ITHNoaAzCZHKjD53ijrB0fbPoGuS3jUZaLKOfdw3cl36J8JP1Wv15u7ZUbyBmVlLdlO4
+         36G9JMcFTcuAcfVCFZGA1c1woUKw4nIh8S9cg15sZkw7wA3vUnZWsHnMP+iu+VTGdr4d
+         Dadw==
+X-Gm-Message-State: AOAM531KDia0JVQqHOFRUHli3UVjkW1I/RXdLGmPoi60uhgyxBwqG3WE
+        2bfgBrt9ZvGhJ70798lG1ipGe01wmpYNmw==
+X-Google-Smtp-Source: ABdhPJzG/32mtruxm/l4NDI4+3wD/Nhstlo9iBFx63ZoqYd6Q0glKeMs85z9Xeel7PnPlJdGFnvI5g==
+X-Received: by 2002:aa7:9508:: with SMTP id b8mr3977687pfp.48.1590584002086;
+        Wed, 27 May 2020 05:53:22 -0700 (PDT)
 Received: from 42.do-not-panic.com (42.do-not-panic.com. [157.230.128.187])
-        by smtp.gmail.com with ESMTPSA id dw13sm2531331pjb.40.2020.05.27.05.53.15
+        by smtp.gmail.com with ESMTPSA id k31sm2260089pje.19.2020.05.27.05.53.21
         for <linux-wireless@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 May 2020 05:53:16 -0700 (PDT)
+        Wed, 27 May 2020 05:53:21 -0700 (PDT)
 Received: by 42.do-not-panic.com (Postfix, from userid 1000)
-        id 2FEAC40605; Wed, 27 May 2020 12:53:15 +0000 (UTC)
+        id 0852640605; Wed, 27 May 2020 12:53:21 +0000 (UTC)
 Received: from 42.do-not-panic.com (42.do-not-panic.com. [157.230.128.187])
-        by smtp.gmail.com with ESMTPSA id y14sm15686666pfr.11.2020.05.26.07.58.22
+        by smtp.gmail.com with ESMTPSA id a6sm15582861pfa.111.2020.05.26.07.58.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Tue, 26 May 2020 07:58:25 -0700 (PDT)
 Received: by 42.do-not-panic.com (Postfix, from userid 1000)
-        id D804142309; Tue, 26 May 2020 14:58:18 +0000 (UTC)
+        id 0547C4230A; Tue, 26 May 2020 14:58:19 +0000 (UTC)
 From:   Luis Chamberlain <mcgrof@kernel.org>
 To:     jeyu@kernel.org, davem@davemloft.net, kuba@kernel.org
 Cc:     michael.chan@broadcom.com, dchickles@marvell.com,
@@ -64,16 +64,17 @@ Cc:     michael.chan@broadcom.com, dchickles@marvell.com,
         samitolvanen@google.com, yzaikin@google.com, dvyukov@google.com,
         rdunlap@infradead.org, corbet@lwn.net, dianders@chromium.org,
         netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-doc@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>
-Subject: [PATCH v3 7/8] liquidio: use new taint_firmware_crashed()
-Date:   Tue, 26 May 2020 14:58:14 +0000
-Message-Id: <20200526145815.6415-8-mcgrof@kernel.org>
+        linux-doc@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>,
+        Igor Russkikh <irusskikh@marvell.com>
+Subject: [PATCH v3 8/8] qed: use new taint_firmware_crashed()
+Date:   Tue, 26 May 2020 14:58:15 +0000
+Message-Id: <20200526145815.6415-9-mcgrof@kernel.org>
 X-Mailer: git-send-email 2.23.0.rc1
 In-Reply-To: <20200526145815.6415-1-mcgrof@kernel.org>
 References: <20200526145815.6415-1-mcgrof@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TUID: qc+Is70wjb5b
+X-TUID: ft9zMR0oDEMI
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
@@ -87,28 +88,27 @@ a reboot.
 
 Using a taint flag allows us to annotate when this happens clearly.
 
-Cc: Derek Chickles <dchickles@marvell.com>
-Cc: Satanand Burla <sburla@marvell.com>
-Cc: Felix Manlunas <fmanlunas@marvell.com>
+Cc: Ariel Elior <aelior@marvell.com>
+Cc: GR-everest-linux-l2@marvell.com
+Reviewed-by: Igor Russkikh <irusskikh@marvell.com>
 Acked-by: Rafael Aquini <aquini@redhat.com>
-Reviewed-by: Derek Chickles <dchickles@marvell.com>
 Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
 ---
- drivers/net/ethernet/cavium/liquidio/lio_main.c | 1 +
+ drivers/net/ethernet/qlogic/qed/qed_mcp.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/cavium/liquidio/lio_main.c b/drivers/net/ethernet/cavium/liquidio/lio_main.c
-index 66d31c018c7e..ee1796ea4818 100644
---- a/drivers/net/ethernet/cavium/liquidio/lio_main.c
-+++ b/drivers/net/ethernet/cavium/liquidio/lio_main.c
-@@ -801,6 +801,7 @@ static int liquidio_watchdog(void *param)
- 			continue;
- 
- 		WRITE_ONCE(oct->cores_crashed, true);
+diff --git a/drivers/net/ethernet/qlogic/qed/qed_mcp.c b/drivers/net/ethernet/qlogic/qed/qed_mcp.c
+index 9624616806e7..dd4357b0b5d1 100644
+--- a/drivers/net/ethernet/qlogic/qed/qed_mcp.c
++++ b/drivers/net/ethernet/qlogic/qed/qed_mcp.c
+@@ -566,6 +566,7 @@ _qed_mcp_cmd_and_union(struct qed_hwfn *p_hwfn,
+ 		DP_NOTICE(p_hwfn,
+ 			  "The MFW failed to respond to command 0x%08x [param 0x%08x].\n",
+ 			  p_mb_params->cmd, p_mb_params->param);
 +		taint_firmware_crashed();
- 		other_oct = get_other_octeon_device(oct);
- 		if (other_oct)
- 			WRITE_ONCE(other_oct->cores_crashed, true);
+ 		qed_mcp_print_cpu_info(p_hwfn, p_ptt);
+ 
+ 		spin_lock_bh(&p_hwfn->mcp_info->cmd_lock);
 -- 
 2.26.2
 
