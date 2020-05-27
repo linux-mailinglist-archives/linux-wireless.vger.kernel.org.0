@@ -2,107 +2,282 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D1041E4604
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 May 2020 16:35:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CE2EF1E4610
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 May 2020 16:37:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389300AbgE0Ofg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 27 May 2020 10:35:36 -0400
-Received: from smail.rz.tu-ilmenau.de ([141.24.186.67]:58248 "EHLO
+        id S2389335AbgE0OhF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 27 May 2020 10:37:05 -0400
+Received: from smail.rz.tu-ilmenau.de ([141.24.186.67]:58253 "EHLO
         smail.rz.tu-ilmenau.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389205AbgE0Ofg (ORCPT
+        with ESMTP id S2389298AbgE0Og7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 27 May 2020 10:35:36 -0400
-Received: from [192.168.178.45] (unknown [87.147.49.100])
+        Wed, 27 May 2020 10:36:59 -0400
+Received: from legolas.fritz.box (unknown [87.147.49.100])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by smail.rz.tu-ilmenau.de (Postfix) with ESMTPSA id 33CE3580063;
-        Wed, 27 May 2020 16:35:34 +0200 (CEST)
-Subject: Re: [PATCH 2/3] nl80211: add control port tx status method
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org
-References: <20200508144202.7678-1-markus.theil@tu-ilmenau.de>
- <20200508144202.7678-3-markus.theil@tu-ilmenau.de>
- <f3cf96426f9532904c9f256d963e7915aa399a90.camel@sipsolutions.net>
+        by smail.rz.tu-ilmenau.de (Postfix) with ESMTPSA id D622C580063;
+        Wed, 27 May 2020 16:36:54 +0200 (CEST)
 From:   Markus Theil <markus.theil@tu-ilmenau.de>
-Message-ID: <5a3f01a8-45d2-47c6-3e1b-32ef33be4e95@tu-ilmenau.de>
-Date:   Wed, 27 May 2020 16:35:33 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.1
+To:     johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org,
+        Markus Theil <markus.theil@tu-ilmenau.de>
+Subject: [PATCH v2] nl80211: add control port tx status method
+Date:   Wed, 27 May 2020 16:36:53 +0200
+Message-Id: <20200527143653.3197-1-markus.theil@tu-ilmenau.de>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-In-Reply-To: <f3cf96426f9532904c9f256d963e7915aa399a90.camel@sipsolutions.net>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 5/26/20 3:37 PM, Johannes Berg wrote:
->>  	struct idr ack_status_frames;
->>  	spinlock_t ack_status_lock;
->>  
->> +	u64 ctrl_port_cookie_counter;
-> We have a u64 for other things (remain-on-channel), perhaps should just
-> share? It's not going to overflow even if shared ...
-Sounds fair, I'll consolidate to use the roc cookie variable.
->>  	/* disable bottom halves when entering the Tx path */
->>  	local_bh_disable();
->> -	__ieee80211_subif_start_xmit(skb, dev, flags, 0);
->> +	__ieee80211_subif_start_xmit(skb, dev, flags, 0, NULL);
-> This is a little awkward, any way to avoid that? Probably not ...
-I first tried to read out the cookie from the skb, in order to avoid
-adding this new argument.
-Problematic with this approach was, that the skb can be deleted in some
-failure cases.
-Therefore I went with this additional argument.
->> +static u16 ieee80211_store_ack_skb(struct ieee80211_local *local,
->>  				   struct sk_buff *skb,
->> -				   u32 *info_flags)
->> +				   u32 *info_flags,
->> +				   bool use_socket,
->> +				   u64 *cookie)
->>  {
->> -	struct sk_buff *ack_skb = skb_clone_sk(skb);
->> +	struct sk_buff *ack_skb;
->>  	u16 info_id = 0;
->>  
->> +	if (use_socket)
-> You can check skb->sk and not need the additional parameter.
-Thanks for the hint!
->
->>  	if (unlikely(!multicast && skb->sk &&
->>  		     skb_shinfo(skb)->tx_flags & SKBTX_WIFI_STATUS))
->> -		info_id = ieee80211_store_ack_skb(local, skb, &info_flags);
->> +		info_id = ieee80211_store_ack_skb(local, skb, &info_flags,
->> +						  true, NULL);
->> +
->> +	if (unlikely(!multicast && ctrl_flags & IEEE80211_TX_CTL_REQ_TX_STATUS))
->> +		info_id = ieee80211_store_ack_skb(local, skb, &info_flags,
->> +						  false, cookie);
-> I think this should be rolled into one condition, since you no longer
-> need the true/false if you check skb->sk. And 'cookie' is already NULL
-> in those other cases so you can pass it unconditionally.
-Ok
->> @@ -2765,8 +2795,9 @@ static struct sk_buff *ieee80211_build_hdr(struct ieee80211_sub_if_data *sdata,
->>  	if (skb_shared(skb)) {
->>  		struct sk_buff *tmp_skb = skb;
->>  
->> -		/* can't happen -- skb is a clone if info_id != 0 */
->> -		WARN_ON(info_id);
->> +		if (!(ctrl_flags & IEEE80211_TX_CTL_REQ_TX_STATUS))
->> +			/* can't happen -- skb is a clone if info_id != 0 */
->> +			WARN_ON(info_id);
-> This I don't understand, but if it really is needed then you should
-> adjust the comment and roll it into a single WARN_ON().
-After adapting my patch with the changes lined out above, I have tested
-again and the warning
-did not occur. Therefore I've ommited changing the warning behavior from
-the updated patch.
-> Also, please put all the remaining mac80211 changes into one patch - I
-> already put all the other changes in.
->
-> johannes
->
-Thanks for your feedback! I'll send an updated v2 with a single patch.
+This patch adds the actual code for returning the tx status of control
+port frames sent over nl80211.
+
+NL80211_CMD_CONTROL_PORT_FRAME_TX_STATUS is a new command which is used
+when returning the tx status. Its availability can be queried by checking
+against NL80211_EXT_FEATURE_CONTROL_PORT_OVER_NL80211_TX_STATUS.
+
+The ctrl port tx status over nl80211 path re-uses some code from the path
+for advertising the tx status over socket control messages, when
+SKBTX_WIFI_STATUS is set.
+
+The tx status can be used in a similar fashion as the mgmt tx status
+already allows for. A cookie is included extended ack data of
+NL80211_CMD_CONTROL_PORT_FRAME, which can be matched against the cookie
+in NL80211_CMD_CONTROL_PORT_FRAME_TX_STATUS. The frame content is also
+included, as for example hostapd currently uses it to match request and
+reply.
+
+Signed-off-by: Markus Theil <markus.theil@tu-ilmenau.de>
+---
+v2:
+* re-use roc cookie
+* better check for socket skb
+* double checked WARN_ON in ieee80211_build_hdr
+
+ net/mac80211/ieee80211_i.h |  3 +-
+ net/mac80211/status.c      |  9 +++++-
+ net/mac80211/tdls.c        |  2 +-
+ net/mac80211/tx.c          | 62 ++++++++++++++++++++++++++------------
+ 4 files changed, 54 insertions(+), 22 deletions(-)
+
+diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
+index b87dc873825b..b7935f3d000d 100644
+--- a/net/mac80211/ieee80211_i.h
++++ b/net/mac80211/ieee80211_i.h
+@@ -1783,7 +1783,8 @@ netdev_tx_t ieee80211_subif_start_xmit_8023(struct sk_buff *skb,
+ void __ieee80211_subif_start_xmit(struct sk_buff *skb,
+ 				  struct net_device *dev,
+ 				  u32 info_flags,
+-				  u32 ctrl_flags);
++				  u32 ctrl_flags,
++				  u64 *cookie);
+ void ieee80211_purge_tx_queue(struct ieee80211_hw *hw,
+ 			      struct sk_buff_head *skbs);
+ struct sk_buff *
+diff --git a/net/mac80211/status.c b/net/mac80211/status.c
+index 22512805eafb..7b1bacac39c6 100644
+--- a/net/mac80211/status.c
++++ b/net/mac80211/status.c
+@@ -649,10 +649,17 @@ static void ieee80211_report_ack_skb(struct ieee80211_local *local,
+ 						      info->status.ack_signal,
+ 						      info->status.is_valid_ack_signal,
+ 						      GFP_ATOMIC);
+-			else
++			else if (ieee80211_is_mgmt(hdr->frame_control))
+ 				cfg80211_mgmt_tx_status(&sdata->wdev, cookie,
+ 							skb->data, skb->len,
+ 							acked, GFP_ATOMIC);
++			else
++				cfg80211_control_port_tx_status(&sdata->wdev,
++								cookie,
++								skb->data,
++								skb->len,
++								acked,
++								GFP_ATOMIC);
+ 		}
+ 		rcu_read_unlock();
+
+diff --git a/net/mac80211/tdls.c b/net/mac80211/tdls.c
+index 8ad420db3766..4b0cff4a07bd 100644
+--- a/net/mac80211/tdls.c
++++ b/net/mac80211/tdls.c
+@@ -1054,7 +1054,7 @@ ieee80211_tdls_prep_mgmt_packet(struct wiphy *wiphy, struct net_device *dev,
+
+ 	/* disable bottom halves when entering the Tx path */
+ 	local_bh_disable();
+-	__ieee80211_subif_start_xmit(skb, dev, flags, 0);
++	__ieee80211_subif_start_xmit(skb, dev, flags, 0, NULL);
+ 	local_bh_enable();
+
+ 	return ret;
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index ba34cc392ea8..00addf36c480 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -2436,13 +2436,19 @@ int ieee80211_lookup_ra_sta(struct ieee80211_sub_if_data *sdata,
+ 	return 0;
+ }
+
+-static int ieee80211_store_ack_skb(struct ieee80211_local *local,
++static u16 ieee80211_store_ack_skb(struct ieee80211_local *local,
+ 				   struct sk_buff *skb,
+-				   u32 *info_flags)
++				   u32 *info_flags,
++				   u64 *cookie)
+ {
+-	struct sk_buff *ack_skb = skb_clone_sk(skb);
++	struct sk_buff *ack_skb;
+ 	u16 info_id = 0;
+
++	if (skb->sk)
++		ack_skb = skb_clone_sk(skb);
++	else
++		ack_skb = skb_clone(skb, GFP_ATOMIC);
++
+ 	if (ack_skb) {
+ 		unsigned long flags;
+ 		int id;
+@@ -2455,6 +2461,10 @@ static int ieee80211_store_ack_skb(struct ieee80211_local *local,
+ 		if (id >= 0) {
+ 			info_id = id;
+ 			*info_flags |= IEEE80211_TX_CTL_REQ_TX_STATUS;
++			if (cookie) {
++				*cookie = ieee80211_mgmt_tx_cookie(local);
++				IEEE80211_SKB_CB(ack_skb)->ack.cookie = *cookie;
++			}
+ 		} else {
+ 			kfree_skb(ack_skb);
+ 		}
+@@ -2484,7 +2494,8 @@ static int ieee80211_store_ack_skb(struct ieee80211_local *local,
+  */
+ static struct sk_buff *ieee80211_build_hdr(struct ieee80211_sub_if_data *sdata,
+ 					   struct sk_buff *skb, u32 info_flags,
+-					   struct sta_info *sta, u32 ctrl_flags)
++					   struct sta_info *sta, u32 ctrl_flags,
++					   u64 *cookie)
+ {
+ 	struct ieee80211_local *local = sdata->local;
+ 	struct ieee80211_tx_info *info;
+@@ -2755,9 +2766,11 @@ static struct sk_buff *ieee80211_build_hdr(struct ieee80211_sub_if_data *sdata,
+ 		goto free;
+ 	}
+
+-	if (unlikely(!multicast && skb->sk &&
+-		     skb_shinfo(skb)->tx_flags & SKBTX_WIFI_STATUS))
+-		info_id = ieee80211_store_ack_skb(local, skb, &info_flags);
++	if (unlikely(!multicast && ((skb->sk &&
++		     skb_shinfo(skb)->tx_flags & SKBTX_WIFI_STATUS) ||
++		     ctrl_flags & IEEE80211_TX_CTL_REQ_TX_STATUS)))
++		info_id = ieee80211_store_ack_skb(local, skb, &info_flags,
++						  cookie);
+
+ 	/*
+ 	 * If the skb is shared we need to obtain our own copy.
+@@ -3913,7 +3926,8 @@ EXPORT_SYMBOL(ieee80211_txq_schedule_start);
+ void __ieee80211_subif_start_xmit(struct sk_buff *skb,
+ 				  struct net_device *dev,
+ 				  u32 info_flags,
+-				  u32 ctrl_flags)
++				  u32 ctrl_flags,
++				  u64 *cookie)
+ {
+ 	struct ieee80211_sub_if_data *sdata = IEEE80211_DEV_TO_SUB_IF(dev);
+ 	struct ieee80211_local *local = sdata->local;
+@@ -3983,7 +3997,7 @@ void __ieee80211_subif_start_xmit(struct sk_buff *skb,
+ 		skb_mark_not_on_list(skb);
+
+ 		skb = ieee80211_build_hdr(sdata, skb, info_flags,
+-					  sta, ctrl_flags);
++					  sta, ctrl_flags, cookie);
+ 		if (IS_ERR(skb)) {
+ 			kfree_skb_list(next);
+ 			goto out;
+@@ -4125,9 +4139,9 @@ netdev_tx_t ieee80211_subif_start_xmit(struct sk_buff *skb,
+ 		__skb_queue_head_init(&queue);
+ 		ieee80211_convert_to_unicast(skb, dev, &queue);
+ 		while ((skb = __skb_dequeue(&queue)))
+-			__ieee80211_subif_start_xmit(skb, dev, 0, 0);
++			__ieee80211_subif_start_xmit(skb, dev, 0, 0, NULL);
+ 	} else {
+-		__ieee80211_subif_start_xmit(skb, dev, 0, 0);
++		__ieee80211_subif_start_xmit(skb, dev, 0, 0, NULL);
+ 	}
+
+ 	return NETDEV_TX_OK;
+@@ -4215,7 +4229,7 @@ static void ieee80211_8023_xmit(struct ieee80211_sub_if_data *sdata,
+
+ 	if (unlikely(!multicast && skb->sk &&
+ 		     skb_shinfo(skb)->tx_flags & SKBTX_WIFI_STATUS))
+-		ieee80211_store_ack_skb(local, skb, &info->flags);
++		ieee80211_store_ack_skb(local, skb, &info->flags, NULL);
+
+ 	memset(info, 0, sizeof(*info));
+
+@@ -4299,7 +4313,7 @@ ieee80211_build_data_template(struct ieee80211_sub_if_data *sdata,
+ 		goto out;
+ 	}
+
+-	skb = ieee80211_build_hdr(sdata, skb, info_flags, sta, 0);
++	skb = ieee80211_build_hdr(sdata, skb, info_flags, sta, 0, NULL);
+ 	if (IS_ERR(skb))
+ 		goto out;
+
+@@ -5347,7 +5361,7 @@ int ieee80211_tx_control_port(struct wiphy *wiphy, struct net_device *dev,
+ 	struct sk_buff *skb;
+ 	struct ethhdr *ehdr;
+ 	u32 ctrl_flags = 0;
+-	u32 flags;
++	u32 flags = 0;
+
+ 	/* Only accept CONTROL_PORT_PROTOCOL configured in CONNECT/ASSOCIATE
+ 	 * or Pre-Authentication
+@@ -5360,9 +5374,13 @@ int ieee80211_tx_control_port(struct wiphy *wiphy, struct net_device *dev,
+ 		ctrl_flags |= IEEE80211_TX_CTRL_PORT_CTRL_PROTO;
+
+ 	if (unencrypted)
+-		flags = IEEE80211_TX_INTFL_DONT_ENCRYPT;
+-	else
+-		flags = 0;
++		flags |= IEEE80211_TX_INTFL_DONT_ENCRYPT;
++
++	if (cookie)
++		ctrl_flags |= IEEE80211_TX_CTL_REQ_TX_STATUS;
++
++	flags |= IEEE80211_TX_INTFL_NL80211_FRAME_TX |
++		 IEEE80211_TX_CTL_INJECTED;
+
+ 	skb = dev_alloc_skb(local->hw.extra_tx_headroom +
+ 			    sizeof(struct ethhdr) + len);
+@@ -5383,10 +5401,15 @@ int ieee80211_tx_control_port(struct wiphy *wiphy, struct net_device *dev,
+ 	skb_reset_network_header(skb);
+ 	skb_reset_mac_header(skb);
+
++	/* mutex lock is only needed for incrementing the cookie counter */
++	mutex_lock(&local->mtx);
++
+ 	local_bh_disable();
+-	__ieee80211_subif_start_xmit(skb, skb->dev, flags, ctrl_flags);
++	__ieee80211_subif_start_xmit(skb, skb->dev, flags, ctrl_flags, cookie);
+ 	local_bh_enable();
+
++	mutex_unlock(&local->mtx);
++
+ 	return 0;
+ }
+
+@@ -5413,7 +5436,8 @@ int ieee80211_probe_mesh_link(struct wiphy *wiphy, struct net_device *dev,
+
+ 	local_bh_disable();
+ 	__ieee80211_subif_start_xmit(skb, skb->dev, 0,
+-				     IEEE80211_TX_CTRL_SKIP_MPATH_LOOKUP);
++				     IEEE80211_TX_CTRL_SKIP_MPATH_LOOKUP,
++				     NULL);
+ 	local_bh_enable();
+
+ 	return 0;
+--
+2.26.2
 
