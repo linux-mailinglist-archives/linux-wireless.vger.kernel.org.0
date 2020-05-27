@@ -2,232 +2,182 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CF0A91E4C26
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 May 2020 19:40:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D1AA91E4C7D
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 May 2020 19:58:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388327AbgE0RkK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 27 May 2020 13:40:10 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:37548 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2387564AbgE0RkK (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 27 May 2020 13:40:10 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1590601208; h=Message-ID: References: In-Reply-To: Subject:
- Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
- MIME-Version: Sender; bh=Oh7ANtUIWThyAUINewPNEEgb4BBMXxQ/28NmDP3QMpk=;
- b=qNwoyBruYGpX2uNq9UyKy7ltg5etoJzRdhMqwc+Ejq1wTG+lN8eJwNLdeMBuUbeNUqSu35hQ
- RWYU1kXxjWYJJxY1FR06ulECqC7nUxQtWYWTKjg25ak3S+zFHUI89A7rGZOxuWmfibi6xeYJ
- Ulzlopl2LF0utEyJsp1XvbQXPxU=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n03.prod.us-east-1.postgun.com with SMTP id
- 5ecea5ed2dd9e15ae383e4df (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 27 May 2020 17:39:57
- GMT
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 77304C433CB; Wed, 27 May 2020 17:39:56 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: rmanohar)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id C2339C433C9;
-        Wed, 27 May 2020 17:39:55 +0000 (UTC)
+        id S2391758AbgE0R60 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 27 May 2020 13:58:26 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:46040 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387653AbgE0R60 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 27 May 2020 13:58:26 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04RHwK55116779;
+        Wed, 27 May 2020 17:58:20 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type : in-reply-to;
+ s=corp-2020-01-29; bh=xV9m8ie4u5KMWmuoQ5MDNyWb/AfYQCSoWRmXFP95Y8w=;
+ b=YoQZjwTGcxL+DaOr6BRj1QJbLPmh1W5Oh78YwJeDI7UTjmRDer340H7rvjtcTdXOc1GC
+ jMPOtpZtuZR991FbU/T8bWQMh40pUMopXUrnS+LcTtPTKonzO4c7aEqsk5raT/+YXlYj
+ aQfgha6pMxqeyeeChw9q/6CXn2/Qc3bInceb/ik/xhqonXJy62gzt187TZ55p/8kMtn9
+ jCICkcg9RpV5lyJwYecL5Bx3fNBuW54sfsCdjTPhk6tzoJHIAwv92E7x18g045qnbrc4
+ yiUzGd/dkN91blj6nZje1r3OLoX97mfXVJWBrSSr+WJS9+ipxbNzu2s2x+/DEd10EanT XA== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by aserp2120.oracle.com with ESMTP id 318xe1gxd2-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 27 May 2020 17:58:20 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04RHvZNp042320;
+        Wed, 27 May 2020 17:58:20 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by aserp3020.oracle.com with ESMTP id 317j5shgt0-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 27 May 2020 17:58:20 +0000
+Received: from abhmp0014.oracle.com (abhmp0014.oracle.com [141.146.116.20])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 04RHwJD6020183;
+        Wed, 27 May 2020 17:58:19 GMT
+Received: from kili.mountain (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Wed, 27 May 2020 10:58:19 -0700
+Date:   Wed, 27 May 2020 20:58:08 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Kalle Valo <kvalo@codeaurora.org>, Hu Jiahui <kirin.say@gmail.com>,
+        Eric Dumazet <edumazet@google.com>
+Cc:     security@kernel.org, linux-wireless@vger.kernel.org,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH v2] airo: Fix read overflows sending packets
+Message-ID: <20200527175808.peynuk7a6webysv3@kili.mountain>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-Date:   Wed, 27 May 2020 10:39:55 -0700
-From:   Rajkumar Manoharan <rmanohar@codeaurora.org>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     kvalo@codeaurora.org, linux-wireless@vger.kernel.org,
-        ath11k@lists.infradead.org
-Subject: Re: [PATCH v3 03/11] nl80211: add HE 6 GHz Band Capability support
-In-Reply-To: <4e3a5ab6eed1dc91f45a459bb616fa05a110483d.camel@sipsolutions.net>
-References: <1589399105-25472-1-git-send-email-rmanohar@codeaurora.org>
- <1589399105-25472-3-git-send-email-rmanohar@codeaurora.org>
- <4e3a5ab6eed1dc91f45a459bb616fa05a110483d.camel@sipsolutions.net>
-Message-ID: <e9ab93034612fd476ac17fd25052cd06@codeaurora.org>
-X-Sender: rmanohar@codeaurora.org
-User-Agent: Roundcube Webmail/1.3.9
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CANn89i+Pv6ANBWx-wy-aRXsPgDs=ERzumBvB2g3xiC7OfXXGwA@mail.gmail.com>
+X-Mailer: git-send-email haha only kidding
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9633 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 spamscore=0 suspectscore=0
+ mlxlogscore=999 mlxscore=0 adultscore=0 phishscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2005270140
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9633 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxlogscore=999
+ adultscore=0 cotscore=-2147483648 mlxscore=0 bulkscore=0
+ priorityscore=1501 phishscore=0 lowpriorityscore=0 malwarescore=0
+ clxscore=1015 impostorscore=0 suspectscore=0 classifier=spam adjust=0
+ reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2005270140
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2020-05-27 07:27, Johannes Berg wrote:
-> On Wed, 2020-05-13 at 12:44 -0700, Rajkumar Manoharan wrote:
->> 
->>  /**
->> + * enum ieee80211_he_6ghz_chanwidth - HE 6 GHz channel width
->> + * @IEEE80211_HE_6GHZ_CHANWIDTH_20MHZ: 20 MHz bandwidth
->> + * @IEEE80211_HE_6GHZ_CHANWIDTH_40MHZ: 40 MHz bandwidth
->> + * @IEEE80211_HE_6GHZ_CHANWIDTH_80MHZ: 80 MHz bandwidth
->> + * @IEEE80211_HE_6GHZ_CHANWIDTH_80P80MHZ: 160 or 80+80 MHz bandwidth
->> + */
->> +enum ieee80211_he_6ghz_chanwidth {
->> +	IEEE80211_HE_6GHZ_CHANWIDTH_20MHZ		= 0,
->> +	IEEE80211_HE_6GHZ_CHANWIDTH_40MHZ		= 1,
->> +	IEEE80211_HE_6GHZ_CHANWIDTH_80MHZ		= 2,
->> +	IEEE80211_HE_6GHZ_CHANWIDTH_160MHZ_80P80MHZ	= 3,
->> +};
->> +
->> +/**
->> + * struct ieee80211_he_oper_6ghz_op_info - 6 GHz Operation 
->> Information
->> + *
->> + * This structure is defined as described in IEEE P802.11ax/D6.0,
->> + * Figure 9-787k—6 GHz Operation Information field.
->> + *
->> + * @primary_chan: The channel number of the primary channel in the 6 
->> GHz band.
->> + * @control: First two bits defines channel width field indicates the 
->> BSS
->> + *	channel width and is set to 0 for 20 MHz, 1 for 40 MHz, 2 for 80 
->> MHz,
->> + *	and 3 for 80+80 or 160 MHz.
->> + * @center_freq_seg0_idx: Channel center frequency index for the 20 
->> MHz,
->> + *	40 MHz, or 80 MHz, or 80+80 MHz.
->> + * @center_freq_seg1_idx: Channel center frequency index of the 160 
->> MHz.
->> + * @min_rate: Minimum rate, in units of 1 Mb/s, that the non-AP STA 
->> is allowed
->> + *	to use for sending PPDUs.
->> + */
->> +struct ieee80211_he_oper_6ghz_op_info {
->> +	u8 primary_chan;
->> +	u8 control;
->> +	u8 center_freq_seg0_idx;
->> +	u8 center_freq_seg1_idx;
->> +	u8 min_rate;
->> +} __packed;
->> 
-> 
-> Looks like I had
-> 
-> +/**
-> + * ieee80211_he_6ghz_oper - HE 6 GHz operation Information field
-> + * @primary: primary channel
-> + * @control: control flags
-> + * @ccfs0: channel center frequency segment 0
-> + * @ccfs1: channel center frequency segment 1
-> + * @minrate: minimum rate (in 1 Mbps units)
-> + */
-> +struct ieee80211_he_6ghz_oper {
-> +       u8 primary;
-> +#define IEEE80211_HE_6GHZ_OPER_CTRL_CHANWIDTH  0x3
-> +#define                IEEE80211_HE_6GHZ_OPER_CTRL_CHANWIDTH_20MHZ     
-> 0
-> +#define                IEEE80211_HE_6GHZ_OPER_CTRL_CHANWIDTH_40MHZ     
-> 1
-> +#define                IEEE80211_HE_6GHZ_OPER_CTRL_CHANWIDTH_80MHZ     
-> 2
-> +#define                IEEE80211_HE_6GHZ_OPER_CTRL_CHANWIDTH_160MHZ    
-> 3
-> +#define IEEE80211_HE_6GHZ_OPER_CTRL_DUP_BEACON 0x4
-> +       u8 control;
-> +       u8 ccfs0;
-> +       u8 ccfs1;
-> +       u8 minrate;
-> +} __packed;
-> 
-> 
-> Any objection to that? The names are getting _really_ long the way you
-> had them ...
-> 
-Neat.. LGTM.. :)
+The problem is that we always copy a minimum of ETH_ZLEN (60) bytes from
+skb->data even when skb->len is less than ETH_ZLEN so it leads to a read
+overflow.
 
-> FWIW, I also had a fix in ieee80211_he_oper_size() where the size of 
-> the
-> oper is now sizeof(struct ieee80211_he_6ghz_oper).
-> 
-> And this, to find it:
-> 
-> +/**
-> + * ieee80211_he_6ghz_oper - obtain 6 GHz operation field
-> + * @he_oper: HE operation element (must be pre-validated for size)
-> + *     but may be %NULL
-> + *
-> + * Return: a pointer to the 6 GHz operation field, or %NULL
-> + */
-> +static inline const struct ieee80211_he_6ghz_oper *
-> +ieee80211_he_6ghz_oper(const struct ieee80211_he_operation *he_oper)
-> +{
-> +       const u8 *ret = (void *)&he_oper->optional;
-> +       u32 he_oper_params;
-> +
-> +       if (!he_oper)
-> +               return NULL;
-> +
-> +       he_oper_params = le32_to_cpu(he_oper->he_oper_params);
-> +
-> +       if (!(he_oper_params & IEEE80211_HE_OPERATION_6GHZ_OP_INFO))
-> +               return NULL;
-> +       if (he_oper_params & IEEE80211_HE_OPERATION_VHT_OPER_INFO)
-> +               ret += 3;
-> +       if (he_oper_params & IEEE80211_HE_OPERATION_CO_HOSTED_BSS)
-> +               ret++;
-> +
-> +       return (void *)ret;
-> +}
-> +
-> 
-Great.
+The fix is to pad skb->data with zeroes so that it's never less than
+ETH_ZLEN bytes.
 
-> 
->>  #define IEEE80211_VHT_CAP_MAX_MPDU_LENGTH_3895			0x00000000
->>  #define IEEE80211_VHT_CAP_MAX_MPDU_LENGTH_7991			0x00000001
->> @@ -1982,6 +2029,15 @@ int ieee80211_get_vht_max_nss(struct 
->> ieee80211_vht_cap *cap,
->>  #define IEEE80211_TX_RX_MCS_NSS_SUPP_TX_BITMAP_MASK			0x07c0
->>  #define IEEE80211_TX_RX_MCS_NSS_SUPP_RX_BITMAP_MASK			0xf800
->> 
->> +/* 802.11ax HE 6 GHz Band Capability */
->> +#define IEEE80211_HE_6GHZ_CAP_MIN_MPDU_START_SPACE_MASK		GENMASK(2, 
->> 0)
->> +#define 
->> IEEE80211_HE_6GHZ_CAP_MAX_A_MPDU_LENGTH_EXPONENT_MASK	GENMASK(5, 3)
->> +#define IEEE80211_HE_6GHZ_CAP_MAX_MPDU_LENGTH_MASK		GENMASK(7, 6)
->> +#define IEEE80211_HE_6GHZ_CAP_SMPS_MASK				GENMASK(10, 9)
->> +#define IEEE80211_HE_6GHZ_CAP_RD_RESP				BIT(11)
->> +#define IEEE80211_HE_6GHZ_CAP_RX_ANTENNA_PATTERN		BIT(12)
->> +#define IEEE80211_HE_6GHZ_CAP_TX_ANTENNA_PATTERN		BIT(13)
-> 
-> I don't like GENMASK() much ... but ok. FWIW, I had
-> 
-Hope GENMASK defined in backports for older kernel. I started using this 
-since ath11k.
-I feel GENMASK is more user readable and avoid masking errors.
+Cc: <stable@vger.kernel.org>
+Reported-by: Hu Jiahui <kirin.say@gmail.com>
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+v2: remove an unnecessary if statement
+    increment the ->tx_dropped count on failure
+    fix found two more instances of the same bug.
+    fix typo in the "Cc: <stable@vger.kernel.org>" tag
 
-> +struct ieee80211_he_6ghz_capa {
-> +       /* uses IEEE80211_HE_6GHZ_CAP_* below */
-> +       __le16 capa;
-> +} __packed;
-> +
-> +/* HE 6 GHz band capabilities */
-> +/* uses enum ieee80211_min_mpdu_spacing values */
-> +#define IEEE80211_HE_6GHZ_CAP_MIN_MPDU_START   0x0007
-> +/* uses enum ieee80211_vht_max_ampdu_length_exp values */
-> +#define IEEE80211_HE_6GHZ_CAP_MAX_AMPDU_LEN_EXP        0x0038
-> +/* uses IEEE80211_VHT_CAP_MAX_MPDU_LENGTH_* values */
-> +#define IEEE80211_HE_6GHZ_CAP_MAX_MPDU_LEN     0x00c0
-> +/* WLAN_HT_CAP_SM_PS_* values */
-> +#define IEEE80211_HE_6GHZ_CAP_SM_PS_SHIFT       9
-> +#define IEEE80211_HE_6GHZ_CAP_SM_PS            0x0600
-> +#define IEEE80211_HE_6GHZ_CAP_RD_RESPONDER     0x0800
-> +#define IEEE80211_HE_6GHZ_CAP_RX_ANTPAT_CONS   0x1000
-> +#define IEEE80211_HE_6GHZ_CAP_TX_ANTPAT_CONS   0x2000
-> 
-> 
-> again, just shorter names ...
-> 
-I am fine with this.. Leave it to you. Cheers.
+ drivers/net/wireless/cisco/airo.c | 26 ++++++++++++++++----------
+ 1 file changed, 16 insertions(+), 10 deletions(-)
 
--Rajkumar
+diff --git a/drivers/net/wireless/cisco/airo.c b/drivers/net/wireless/cisco/airo.c
+index 8363f91df7ea..c80712e61ccf 100644
+--- a/drivers/net/wireless/cisco/airo.c
++++ b/drivers/net/wireless/cisco/airo.c
+@@ -1925,6 +1925,11 @@ static netdev_tx_t mpi_start_xmit(struct sk_buff *skb,
+ 		airo_print_err(dev->name, "%s: skb == NULL!",__func__);
+ 		return NETDEV_TX_OK;
+ 	}
++	if (skb_padto(skb, ETH_ZLEN)) {
++		dev->stats.tx_dropped++;
++		return NETDEV_TX_OK;
++	}
++
+ 	npacks = skb_queue_len (&ai->txq);
+ 
+ 	if (npacks >= MAXTXQ - 1) {
+@@ -1975,8 +1980,7 @@ static int mpi_send_packet (struct net_device *dev)
+ 		return 0;
+ 	}
+ 
+-	/* check min length*/
+-	len = ETH_ZLEN < skb->len ? skb->len : ETH_ZLEN;
++	len = skb->len;
+ 	buffer = skb->data;
+ 
+ 	ai->txfids[0].tx_desc.offset = 0;
+@@ -2118,7 +2122,6 @@ static void airo_end_xmit(struct net_device *dev) {
+ static netdev_tx_t airo_start_xmit(struct sk_buff *skb,
+ 					 struct net_device *dev)
+ {
+-	s16 len;
+ 	int i, j;
+ 	struct airo_info *priv = dev->ml_priv;
+ 	u32 *fids = priv->fids;
+@@ -2127,6 +2130,10 @@ static netdev_tx_t airo_start_xmit(struct sk_buff *skb,
+ 		airo_print_err(dev->name, "%s: skb == NULL!", __func__);
+ 		return NETDEV_TX_OK;
+ 	}
++	if (skb_padto(skb, ETH_ZLEN)) {
++		dev->stats.tx_dropped++;
++		return NETDEV_TX_OK;
++	}
+ 
+ 	/* Find a vacant FID */
+ 	for( i = 0; i < MAX_FIDS / 2 && (fids[i] & 0xffff0000); i++ );
+@@ -2140,10 +2147,8 @@ static netdev_tx_t airo_start_xmit(struct sk_buff *skb,
+ 			return NETDEV_TX_BUSY;
+ 		}
+ 	}
+-	/* check min length*/
+-	len = ETH_ZLEN < skb->len ? skb->len : ETH_ZLEN;
+         /* Mark fid as used & save length for later */
+-	fids[i] |= (len << 16);
++	fids[i] |= (skb->len << 16);
+ 	priv->xmit.skb = skb;
+ 	priv->xmit.fid = i;
+ 	if (down_trylock(&priv->sem) != 0) {
+@@ -2185,7 +2190,6 @@ static void airo_end_xmit11(struct net_device *dev) {
+ static netdev_tx_t airo_start_xmit11(struct sk_buff *skb,
+ 					   struct net_device *dev)
+ {
+-	s16 len;
+ 	int i, j;
+ 	struct airo_info *priv = dev->ml_priv;
+ 	u32 *fids = priv->fids;
+@@ -2201,6 +2205,10 @@ static netdev_tx_t airo_start_xmit11(struct sk_buff *skb,
+ 		airo_print_err(dev->name, "%s: skb == NULL!", __func__);
+ 		return NETDEV_TX_OK;
+ 	}
++	if (skb_padto(skb, ETH_ZLEN)) {
++		dev->stats.tx_dropped++;
++		return NETDEV_TX_OK;
++	}
+ 
+ 	/* Find a vacant FID */
+ 	for( i = MAX_FIDS / 2; i < MAX_FIDS && (fids[i] & 0xffff0000); i++ );
+@@ -2214,10 +2222,8 @@ static netdev_tx_t airo_start_xmit11(struct sk_buff *skb,
+ 			return NETDEV_TX_BUSY;
+ 		}
+ 	}
+-	/* check min length*/
+-	len = ETH_ZLEN < skb->len ? skb->len : ETH_ZLEN;
+         /* Mark fid as used & save length for later */
+-	fids[i] |= (len << 16);
++	fids[i] |= (skb->len << 16);
+ 	priv->xmit11.skb = skb;
+ 	priv->xmit11.fid = i;
+ 	if (down_trylock(&priv->sem) != 0) {
+-- 
+2.11.0
+
