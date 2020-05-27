@@ -2,98 +2,120 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 74B661E43E4
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 May 2020 15:37:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EBF4F1E43DC
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 May 2020 15:37:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388246AbgE0Nhc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 27 May 2020 09:37:32 -0400
-Received: from mout.kundenserver.de ([212.227.126.131]:60557 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387682AbgE0Nhb (ORCPT
+        id S2388179AbgE0NhE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 27 May 2020 09:37:04 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:32846 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387581AbgE0NhE (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 27 May 2020 09:37:31 -0400
-Received: from localhost.localdomain ([149.172.98.151]) by
- mrelayeu.kundenserver.de (mreue012 [212.227.15.129]) with ESMTPA (Nemesis) id
- 1MelWf-1j437k3y2n-00aqFI; Wed, 27 May 2020 15:36:58 +0200
-From:   Arnd Bergmann <arnd@arndb.de>
-To:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>
-Cc:     Arnd Bergmann <arnd@arndb.de>, Ryder Lee <ryder.lee@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Chih-Min Chen <chih-min.chen@mediatek.com>,
-        Shihwei Lin <shihwei.lin@mediatek.com>,
-        Yiwei Chung <yiwei.chung@mediatek.com>,
-        YF Luo <yf.luo@mediatek.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        YueHaibing <yuehaibing@huawei.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] [wireless-next] mt75: fix enum type mismatch
-Date:   Wed, 27 May 2020 15:36:30 +0200
-Message-Id: <20200527133655.617357-1-arnd@arndb.de>
-X-Mailer: git-send-email 2.26.2
+        Wed, 27 May 2020 09:37:04 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04RDVjAd135718;
+        Wed, 27 May 2020 13:37:00 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type : in-reply-to;
+ s=corp-2020-01-29; bh=2XBtzrcZVqGSKujAewp+bpOQ9FuQ+54UrpEQT6Efka8=;
+ b=lM7zB2+VILUc8t+GoD7IVLjMOaFuCEGCPeHfLih7Mkl2cF1BZd8yY5bU/p5A+NqglcnB
+ 1/G+6xKc3YvAOmWRgEtmCa3tMaXVmm52drfbf4uUrkCvKtewZenUrqtsVG2dCtEA5sg7
+ WkEFOeERvuP/0eXcCl7E9NMR8xa914bQot46o6/2pPDgyBU5xWxgAGAFDt+VjsR1fcOd
+ 3BQCRyCSB4po7nOJ/spe9bYIDsxqBHCR9JT1lI+iGtM2KKdq+pZnab+AjVEemg7xOi2v
+ 5FvYLlWbP2dXEFTkKgw7x/LWJj3XUmt0EUG6IP9DhaJXumizCkX8k0a2lgRTk8Lc5cWI aA== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2120.oracle.com with ESMTP id 318xbjygny-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 27 May 2020 13:37:00 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04RDXc4F000954;
+        Wed, 27 May 2020 13:36:59 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by userp3020.oracle.com with ESMTP id 317dkuex1t-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 27 May 2020 13:36:59 +0000
+Received: from abhmp0010.oracle.com (abhmp0010.oracle.com [141.146.116.16])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 04RDawT0028515;
+        Wed, 27 May 2020 13:36:58 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Wed, 27 May 2020 06:36:58 -0700
+Date:   Wed, 27 May 2020 16:36:52 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Kalle Valo <kvalo@codeaurora.org>, Hu Jiahui <kirin.say@gmail.com>
+Cc:     security@kernel.org, linux-wireless@vger.kernel.org,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH resend] airo: Fix read overflow in mpi_send_packet()
+Message-ID: <20200527133301.GL22511@kadam>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:2xsdauHeCgoTJqtAjoy1w439KhbI5AyVOuAxW1IHW47YA4Gorsi
- Uh4YCVjbYsbddzHdqSL/9Nyka228g3hOyRaepN6TWoIe5HUzp67ihrRMluLbPYi2hFTnxyw
- 1JRB8qLO9BliOGYOZdkWVaHW2CucwMbhaxuLQUo9QhEp3DP9AIG3a/U+jSsmX/6lg/tAn8j
- 7jHNArva+RLoRfuAuh3Cw==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:FtVcgZauz7o=:scUFGVl1oIETlCqq2XG30+
- BY+OSB/p/C2PHbQV8moxHzruH1uP9Hs2Cmkfuzt1pzAyXtW82VPL+i6XhfkL4Kzn7fV4xIawJ
- A2HAq5Il64nn45Q6XqxowsRnC3JKSDVcU6+/hxjOI0t5GljWTrL92TJl527WU8NnDHJS4Tsmr
- KsgZU4nD98sSiKPVkTHHG6nMcDBR3BIOtqB5sWIH6/bz3j+ogz/P1rSXjrKE0QGmIvpjlYWua
- 3SS7ZaIIfPGwxYYgrFIJ+K+IdIdOXXvEY8bX+OteZNxdWkg2RjR6bBm/P/yo4S8qC8nEl6Bow
- YJpUhM/w7lN9lF3hGTidifdzL9moxS+mjIcV6NaE77kl9pTr1m1pdb19VurLWicwiNgTE2fgG
- 6wGAv4DAXmgkb6c6AwimTkBPyjXRsaK2gl5t/gWIv5dz++WZzoYVa+r+a2J4ZpwrK6K6pH5EU
- Z5Dy7USzvBQWE/JgGDaFqcG+Zk8lbixikSTtHW+LPnfyiDbiKHjlimzlMGpd4+NVXmrgc8uJd
- YgMB9mM3nsWcahk0NbkhXZsVMe14iaKWstbUlaF/zFJ1TnQC3bPfKIooWLd7eSJkNYMY6dJ41
- zAneqRyKhsqVGB16LHOiS9GXVxbBwaemmq2+f9F08NizeJDLOrW4MAY0hLNAQ5WzoMC9RUliB
- vSvJiyC5p01107GyNrmS7vC+Nfi31gg21wIlE8ej7ZltRD0sM09YzWVBnr5fkky8ZBGd4pQfE
- YxO/L8TcnJlj9bmltBSZuOTgEL8rM/nVk034s2QC/YfSrq20qSaPTCrGtTgxQncP9Ds0LSwdn
- lOjGQJNACJeHLPwBGXaDbUg2u7n3XaDiXVfLbhmQB6Wp7qadf4=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <EED43E20-9B88-42EC-80B0-0245F0FAF980@gmail.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9633 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 malwarescore=0 bulkscore=0
+ spamscore=0 suspectscore=0 mlxscore=0 adultscore=0 mlxlogscore=999
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2005270102
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9633 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 spamscore=0 mlxscore=0
+ lowpriorityscore=0 priorityscore=1501 phishscore=0 cotscore=-2147483648
+ suspectscore=0 bulkscore=0 clxscore=1015 impostorscore=0 malwarescore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2004280000 definitions=main-2005270102
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The __mt7915_mcu_msg_send() calls a generic function that expects a mt76_txq_id
-rather than mt7915_txq_id, and it also uses the values according to that
-type, which are different from the similarly named MT7915_TXQ_ constants:
+The problem is that we always copy a minimum of ETH_ZLEN (60) bytes from
+skb->data even when skb->len is less than ETH_ZLEN so it leads to a read
+overflow.
 
-drivers/net/wireless/mediatek/mt76/mt7915/mcu.c:232:9: error: implicit conversion from enumeration type 'enum mt76_txq_id' to different enumeration type 'enum mt7915_txq_id' [-Werror,-Wenum-conversion]
-                txq = MT_TXQ_FWDL;
-                    ~ ^~~~~~~~~~~
-drivers/net/wireless/mediatek/mt76/mt7915/mcu.c:287:36: error: implicit conversion from enumeration type 'enum mt7915_txq_id' to different enumeration type 'enum mt76_txq_id' [-Werror,-Wenum-conversion]
-        return mt76_tx_queue_skb_raw(dev, txq, skb, 0);
-               ~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~
-drivers/net/wireless/mediatek/mt76/mt7915/../mt76.h:668:97: note: expanded from macro 'mt76_tx_queue_skb_raw'
+The fix for is to pad skb->data with zeroes so that it's never less than
+ETH_ZLEN bytes.
 
-Use the mt76 types consistently.
-
-Fixes: e57b7901469f ("mt76: add mac80211 driver for MT7915 PCIe-based chipsets")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+c: <stable@vger.kernel.org>
+Reported-by: Hu Jiahui <kirin.say@gmail.com>
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- drivers/net/wireless/mediatek/mt76/mt7915/mcu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Resending to the public lists so that it can go through the normal
+review process.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-index 99eeea42478f..001b3078c48e 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-@@ -220,7 +220,7 @@ static int __mt7915_mcu_msg_send(struct mt7915_dev *dev, struct sk_buff *skb,
- {
- 	struct mt7915_mcu_txd *mcu_txd;
- 	u8 seq, pkt_fmt, qidx;
--	enum mt7915_txq_id txq;
-+	enum mt76_txq_id txq;
- 	__le32 *txd;
- 	u32 val;
+My other concern with this driver is why is the ->max_mtu 2400 when it
+looks like we are allocating PKTSIZE (1840) byte buffers to hold it in
+mpi_map_card()?  I don't fully understand the code but that seems like
+it could be a buffer overflow as well.  I'm not sure what the
+appropriate fix is for that.
+
+ drivers/net/wireless/cisco/airo.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/wireless/cisco/airo.c b/drivers/net/wireless/cisco/airo.c
+index 8363f91df7ea7..7c5634f72cc72 100644
+--- a/drivers/net/wireless/cisco/airo.c
++++ b/drivers/net/wireless/cisco/airo.c
+@@ -1925,6 +1925,11 @@ static netdev_tx_t mpi_start_xmit(struct sk_buff *skb,
+ 		airo_print_err(dev->name, "%s: skb == NULL!",__func__);
+ 		return NETDEV_TX_OK;
+ 	}
++	if (skb->len < ETH_ZLEN) {
++		if (skb_padto(skb, ETH_ZLEN))
++			return NETDEV_TX_OK;
++	}
++
+ 	npacks = skb_queue_len (&ai->txq);
  
+ 	if (npacks >= MAXTXQ - 1) {
+@@ -1975,8 +1980,7 @@ static int mpi_send_packet (struct net_device *dev)
+ 		return 0;
+ 	}
+ 
+-	/* check min length*/
+-	len = ETH_ZLEN < skb->len ? skb->len : ETH_ZLEN;
++	len = skb->len;
+ 	buffer = skb->data;
+ 
+ 	ai->txfids[0].tx_desc.offset = 0;
 -- 
 2.26.2
-
