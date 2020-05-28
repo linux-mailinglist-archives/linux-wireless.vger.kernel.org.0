@@ -2,31 +2,31 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D16181E6B17
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 May 2020 21:35:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E24841E6B15
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 May 2020 21:35:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2406637AbgE1TfA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 28 May 2020 15:35:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33292 "EHLO
+        id S2406633AbgE1Te6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 28 May 2020 15:34:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33294 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2406545AbgE1Tez (ORCPT
+        with ESMTP id S2406546AbgE1Tez (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Thu, 28 May 2020 15:34:55 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9584C08C5C7
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA576C08C5C8
         for <linux-wireless@vger.kernel.org>; Thu, 28 May 2020 12:34:54 -0700 (PDT)
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.93)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1jeOIm-0054OL-Rc; Thu, 28 May 2020 21:34:52 +0200
+        id 1jeOIn-0054OL-68; Thu, 28 May 2020 21:34:53 +0200
 From:   Johannes Berg <johannes@sipsolutions.net>
 To:     linux-wireless@vger.kernel.org
 Cc:     Rajkumar Manoharan <rmanohar@codeaurora.org>,
         Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>,
-        Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH v2 02/24] cfg80211: add a helper to identify 6 GHz PSCs
-Date:   Thu, 28 May 2020 21:34:25 +0200
-Message-Id: <20200528213443.414363ecf62c.Ic15e681a0e249eab7350a06ceb582cca8bb9a080@changeid>
+        Tova Mussai <tova.mussai@intel.com>
+Subject: [PATCH v2 03/24] ieee80211: definitions for reduced neighbor reports
+Date:   Thu, 28 May 2020 21:34:26 +0200
+Message-Id: <20200528213443.4f9154461c06.I518d9898ad982f838112ea9ca14a20d6bbb16394@changeid>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200528213443.993f108e96ca.I0086ae42d672379380d04ac5effb2f3d5135731b@changeid>
 References: <20200528213443.993f108e96ca.I0086ae42d672379380d04ac5effb2f3d5135731b@changeid>
@@ -37,42 +37,62 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Tova Mussai <tova.mussai@intel.com>
 
-This allows identifying whether or not a channel is a PSC
-(preferred scanning channel).
+Add the necessary definitions to parse reduced neighbor
+report elements.
 
+Signed-off-by: Tova Mussai <tova.mussai@intel.com>
+[change struct name, remove IEEE80211_MIN_AP_NEIGHBOR_INFO_SIZE]
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- include/net/cfg80211.h | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ include/linux/ieee80211.h | 28 ++++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
 
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index e2dbc9c02ef3..a38653358885 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -5277,6 +5277,21 @@ ieee80211_get_channel(struct wiphy *wiphy, int freq)
- 	return ieee80211_get_channel_khz(wiphy, MHZ_TO_KHZ(freq));
- }
+diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
+index 0320ca4c7d28..c29184bf9416 100644
+--- a/include/linux/ieee80211.h
++++ b/include/linux/ieee80211.h
+@@ -2754,6 +2754,8 @@ enum ieee80211_eid {
+ 	WLAN_EID_QUIET_CHANNEL = 198,
+ 	WLAN_EID_OPMODE_NOTIF = 199,
  
-+/**
-+ * cfg80211_channel_is_psc - Check if the channel is a 6 GHz PSC
-+ * @chan: control channel to check
-+ *
-+ * The Preferred Scanning Channels (PSC) are defined in
-+ * Draft IEEE P802.11ax/D5.0, 26.17.2.3.3
++	WLAN_EID_REDUCED_NEIGHBOR_REPORT = 201,
++
+ 	WLAN_EID_S1G_BCN_COMPAT = 213,
+ 	WLAN_EID_S1G_SHORT_BCN_INTERVAL = 214,
+ 	WLAN_EID_S1G_CAPABILITIES = 217,
+@@ -3675,4 +3677,30 @@ static inline bool for_each_element_completed(const struct element *element,
+ #define WLAN_RSNX_CAPA_PROTECTED_TWT BIT(4)
+ #define WLAN_RSNX_CAPA_SAE_H2E BIT(5)
+ 
++/*
++ * reduced neighbor report, based on Draft P802.11ax_D5.0,
++ * section 9.4.2.170
 + */
-+static inline bool cfg80211_channel_is_psc(struct ieee80211_channel *chan)
-+{
-+	if (chan->band != NL80211_BAND_6GHZ)
-+		return false;
++#define IEEE80211_AP_INFO_TBTT_HDR_TYPE				0x03
++#define IEEE80211_AP_INFO_TBTT_HDR_FILTERED			0x04
++#define IEEE80211_AP_INFO_TBTT_HDR_COLOC			0x08
++#define IEEE80211_AP_INFO_TBTT_HDR_COUNT			0xF0
++#define IEEE80211_TBTT_INFO_OFFSET_BSSID_BSS_PARAM		8
++#define IEEE80211_TBTT_INFO_OFFSET_BSSID_SSSID_BSS_PARAM	12
 +
-+	return ieee80211_frequency_to_channel(chan->center_freq) % 16 == 5;
-+}
++#define IEEE80211_RNR_TBTT_PARAMS_OCT_RECOMMENDED		0x01
++#define IEEE80211_RNR_TBTT_PARAMS_SAME_SSID			0x02
++#define IEEE80211_RNR_TBTT_PARAMS_MULTI_BSSID			0x04
++#define IEEE80211_RNR_TBTT_PARAMS_TRANSMITTED_BSSID		0x08
++#define IEEE80211_RNR_TBTT_PARAMS_COLOC_ESS			0x10
++#define IEEE80211_RNR_TBTT_PARAMS_PROBE_ACTIVE			0x20
++#define IEEE80211_RNR_TBTT_PARAMS_COLOC_AP			0x40
 +
- /**
-  * ieee80211_get_response_rate - get basic rate for a given rate
-  *
++struct ieee80211_neighbor_ap_info {
++       u8 tbtt_info_hdr;
++       u8 tbtt_info_len;
++       u8 op_class;
++       u8 channel;
++} __packed;
++
+ #endif /* LINUX_IEEE80211_H */
 -- 
 2.26.2
 
