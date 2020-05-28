@@ -2,216 +2,145 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A212D1E5C65
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 May 2020 11:50:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B768A1E5CCE
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 May 2020 12:15:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387507AbgE1Juh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 28 May 2020 05:50:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55130 "EHLO
+        id S2387751AbgE1KOp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 28 May 2020 06:14:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58836 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387493AbgE1Juh (ORCPT
+        with ESMTP id S2387745AbgE1KOj (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 28 May 2020 05:50:37 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6752FC05BD1E
-        for <linux-wireless@vger.kernel.org>; Thu, 28 May 2020 02:50:37 -0700 (PDT)
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.93)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1jeFBL-004mPB-Ls; Thu, 28 May 2020 11:50:35 +0200
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     linux-wireless@vger.kernel.org
-Cc:     Rajkumar Manoharan <rmanohar@codeaurora.org>
-Subject: [RFC PATCH v2] mac80211: build HE operation with 6 GHz oper information
-Date:   Thu, 28 May 2020 11:50:32 +0200
-Message-Id: <20200528095032.25050-1-johannes@sipsolutions.net>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20200528094428.23474-1-johannes@sipsolutions.net>
-References: <20200528094428.23474-1-johannes@sipsolutions.net>
+        Thu, 28 May 2020 06:14:39 -0400
+Received: from mail-vk1-xa42.google.com (mail-vk1-xa42.google.com [IPv6:2607:f8b0:4864:20::a42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99EBAC08C5C6
+        for <linux-wireless@vger.kernel.org>; Thu, 28 May 2020 03:14:38 -0700 (PDT)
+Received: by mail-vk1-xa42.google.com with SMTP id t23so1904243vkt.5
+        for <linux-wireless@vger.kernel.org>; Thu, 28 May 2020 03:14:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=CX+u123nVjVuRZW6zRvLQzHDlGFq6dyKso1AdFfB1VU=;
+        b=ylyyWluJV1udCPHKbUpBa9gzteEE9rpam5yb+9Qo5ZwIaIvYSKHGX3rwW8Qu1yRVbs
+         s71Mhpbn4QTKCa9jPCBH3htvR2tWok5/1SRIeN1hxVVWT5gP564EBK2f09DGMHTsm88k
+         E/1/Mm9s9RRLFrSj/olPzuvMcy35QUUaEA3viA62YTJSswW4ihcjUcj0j3CqjQk1t0Tw
+         fOD6/+BDIpMYgME2I6zR07nY/c/eQBKM+cPSdHE+aeP51ba14fhxbL0ogMP3G7O7Ngvi
+         MEJknki2sFvjerUF1dfNz5OXK1ad6hNSCiQ1ajt5pWLA71kvbSH7LxLetwkAl3aAifv+
+         ZtRg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=CX+u123nVjVuRZW6zRvLQzHDlGFq6dyKso1AdFfB1VU=;
+        b=lAAOP+9kn6XCMSvnSJKOzDTyWI1PD8i+wftsY5KeP88nR3e86ypoPgfJWnPcCcTPiY
+         Zwj8iet2cdhZobBbTwLKoTlkFXpiUZkk+bjebOwl1ienfERJAauup545F1g5I1pnbwJA
+         LFslwXoQoUXA7UX5m7MJKyYRO52L/nhHOCEhK0g9cQkBSXum+lJFBwX48zxmMZUHJPi/
+         XCHtvD9wQ3Kgbpp9PXRsa5H6LEgAd7tn6u1/0TmF62hfxpvogyfjbRzire1fnUnLoi7s
+         z0hYXcCiQxpqZaxN3bygPWtSED03wE/kmDS9k74ejhxJNu2YZOx13kC+hKFhoORnlp5J
+         hUhw==
+X-Gm-Message-State: AOAM530cdolbau6oXyNuiwUkMHTD9qF7JvnmNl2dLELZPLfHtlwQpDTF
+        lq+p2+DL90BzINe5iYyChud3xRtJu3Cpj30cuMaDpw==
+X-Google-Smtp-Source: ABdhPJzK0sB7xaJ5Xvcd9jk++euAwMqH3Mxp+8vmK46elIBGi117Z0Erqx3b1G/MIRgbK/NHLsfYjW544ZgBjhty6p4=
+X-Received: by 2002:a1f:fc06:: with SMTP id a6mr1441822vki.101.1590660877077;
+ Thu, 28 May 2020 03:14:37 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20200522144412.19712-1-pali@kernel.org> <CAPDyKFqwrtJy2Ss0_KcBtpGP78d_BePTGJp01KtfuOaQqiwiHg@mail.gmail.com>
+In-Reply-To: <CAPDyKFqwrtJy2Ss0_KcBtpGP78d_BePTGJp01KtfuOaQqiwiHg@mail.gmail.com>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Thu, 28 May 2020 12:13:59 +0200
+Message-ID: <CAPDyKFrT0bp+HHPZemFEVjhNXbWB_P2NWQxVU43rexzdYB3reg@mail.gmail.com>
+Subject: Re: [PATCH 00/11] mmc: sdio: Move SDIO IDs from drivers to common
+ include file
+To:     =?UTF-8?Q?Pali_Roh=C3=A1r?= <pali@kernel.org>
+Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Amitkumar Karwar <amitkarwar@gmail.com>,
+        Ganapathi Bhat <ganapathi.bhat@nxp.com>,
+        Xinming Hu <huxinming820@gmail.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        ath10k@lists.infradead.org, b43-dev@lists.infradead.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        brcm80211-dev-list <brcm80211-dev-list@cypress.com>,
+        libertas-dev@lists.infradead.org,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        =?UTF-8?B?TWFyZWsgQmVow7pu?= <marek.behun@nic.cz>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Rajkumar Manoharan <rmanohar@codeaurora.org>
+On Mon, 25 May 2020 at 09:15, Ulf Hansson <ulf.hansson@linaro.org> wrote:
+>
+> On Fri, 22 May 2020 at 16:45, Pali Roh=C3=A1r <pali@kernel.org> wrote:
+> >
+> > Most SDIO IDs are defined in the common include file linux/mmc/sdio_ids=
+.h.
+> > But some drivers define IDs locally or do not use existing macros from =
+the
+> > common include file.
+> >
+> > This patch series fixes above inconsistency. It defines missing macro n=
+ames
+> > and moves all remaining SDIO IDs from drivers to the common include fil=
+e.
+> > Also some macro names are changed to follow existing naming conventions=
+.
+>
+> Thanks - a nice cleanup!
+>
+> I guess this is best queued via my mmc tree, unless bluetooth/wireless
+> maintainers think there are some problems with that. I will wait for
+> an ack from them before applying.
 
-Add 6 GHz operation information (IEEE 802.11ax/D6.0, Figure 9-787k)
-while building HE operation element for non-HE AP. This field is used to
-determine channel information in the absence of HT/VHT IEs.
+It's getting late for v5.8, so I decided to queue this up as it's
+rather trivial changes. If anyone has an objection, please let me
+know.
 
-Signed-off-by: Rajkumar Manoharan <rmanohar@codeaurora.org>
-Link: https://lore.kernel.org/r/1589399105-25472-8-git-send-email-rmanohar@codeaurora.org
-[fix skb allocation size]
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
----
- net/mac80211/ieee80211_i.h |  2 +-
- net/mac80211/mesh.c        | 12 +++++--
- net/mac80211/mesh_plink.c  |  1 +
- net/mac80211/util.c        | 65 +++++++++++++++++++++++++++++++++++---
- 4 files changed, 72 insertions(+), 8 deletions(-)
+Thanks!
 
-diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
-index 344ea828e806..9f874ce500f6 100644
---- a/net/mac80211/ieee80211_i.h
-+++ b/net/mac80211/ieee80211_i.h
-@@ -2179,7 +2179,7 @@ u8 *ieee80211_ie_build_he_cap(u8 *pos,
- 			      u8 *end);
- void ieee80211_ie_build_he_6ghz_cap(struct ieee80211_sub_if_data *sdata,
- 				    struct sk_buff *skb);
--u8 *ieee80211_ie_build_he_oper(u8 *pos);
-+u8 *ieee80211_ie_build_he_oper(u8 *pos, struct cfg80211_chan_def *chandef);
- int ieee80211_parse_bitrates(struct cfg80211_chan_def *chandef,
- 			     const struct ieee80211_supported_band *sband,
- 			     const u8 *srates, int srates_len, u32 *rates);
-diff --git a/net/mac80211/mesh.c b/net/mac80211/mesh.c
-index 5e8d72bdbb98..5f3d45474db6 100644
---- a/net/mac80211/mesh.c
-+++ b/net/mac80211/mesh.c
-@@ -565,6 +565,7 @@ int mesh_add_he_oper_ie(struct ieee80211_sub_if_data *sdata,
- {
- 	const struct ieee80211_sta_he_cap *he_cap;
- 	struct ieee80211_supported_band *sband;
-+	u32 len;
- 	u8 *pos;
- 
- 	sband = ieee80211_get_sband(sdata);
-@@ -578,11 +579,15 @@ int mesh_add_he_oper_ie(struct ieee80211_sub_if_data *sdata,
- 	    sdata->vif.bss_conf.chandef.width == NL80211_CHAN_WIDTH_10)
- 		return 0;
- 
--	if (skb_tailroom(skb) < 2 + 1 + sizeof(struct ieee80211_he_operation))
-+	len = 2 + 1 + sizeof(struct ieee80211_he_operation);
-+	if (sdata->vif.bss_conf.chandef.chan->band == NL80211_BAND_6GHZ)
-+		len += sizeof(struct ieee80211_he_6ghz_oper);
-+
-+	if (skb_tailroom(skb) < len)
- 		return -ENOMEM;
- 
--	pos = skb_put(skb, 2 + 1 + sizeof(struct ieee80211_he_operation));
--	ieee80211_ie_build_he_oper(pos);
-+	pos = skb_put(skb, len);
-+	ieee80211_ie_build_he_oper(pos, &sdata->vif.bss_conf.chandef);
- 
- 	return 0;
- }
-@@ -773,6 +778,7 @@ ieee80211_mesh_build_beacon(struct ieee80211_if_mesh *ifmsh)
- 		   2 + sizeof(struct ieee80211_vht_operation) +
- 		   ie_len_he_cap +
- 		   2 + 1 + sizeof(struct ieee80211_he_operation) +
-+			   sizeof(struct ieee80211_he_6ghz_oper) +
- 		   2 + 1 + sizeof(struct ieee80211_he_6ghz_capa) +
- 		   ifmsh->ie_len;
- 
-diff --git a/net/mac80211/mesh_plink.c b/net/mac80211/mesh_plink.c
-index 3aca89c97f36..fbbfc5d4a51c 100644
---- a/net/mac80211/mesh_plink.c
-+++ b/net/mac80211/mesh_plink.c
-@@ -238,6 +238,7 @@ static int mesh_plink_frame_tx(struct ieee80211_sub_if_data *sdata,
- 			    2 + sizeof(struct ieee80211_vht_operation) +
- 			    ie_len_he_cap +
- 			    2 + 1 + sizeof(struct ieee80211_he_operation) +
-+				    sizeof(struct ieee80211_he_6ghz_oper) +
- 			    2 + 1 + sizeof(struct ieee80211_he_6ghz_capa) +
- 			    2 + 8 + /* peering IE */
- 			    sdata->u.mesh.ie_len);
-diff --git a/net/mac80211/util.c b/net/mac80211/util.c
-index 40c82951d801..9d240c3cce5d 100644
---- a/net/mac80211/util.c
-+++ b/net/mac80211/util.c
-@@ -3010,13 +3010,18 @@ u8 *ieee80211_ie_build_vht_oper(u8 *pos, struct ieee80211_sta_vht_cap *vht_cap,
- 	return pos + sizeof(struct ieee80211_vht_operation);
- }
- 
--u8 *ieee80211_ie_build_he_oper(u8 *pos)
-+u8 *ieee80211_ie_build_he_oper(u8 *pos, struct cfg80211_chan_def *chandef)
- {
- 	struct ieee80211_he_operation *he_oper;
-+	struct ieee80211_he_6ghz_oper *he_6ghz_op;
- 	u32 he_oper_params;
-+	u8 ie_len = 1 + sizeof(struct ieee80211_he_operation);
-+
-+	if (chandef->chan->band == NL80211_BAND_6GHZ)
-+		ie_len += sizeof(struct ieee80211_he_6ghz_oper);
- 
- 	*pos++ = WLAN_EID_EXTENSION;
--	*pos++ = 1 + sizeof(struct ieee80211_he_operation);
-+	*pos++ = ie_len;
- 	*pos++ = WLAN_EID_EXT_HE_OPERATION;
- 
- 	he_oper_params = 0;
-@@ -3026,16 +3031,68 @@ u8 *ieee80211_ie_build_he_oper(u8 *pos)
- 				IEEE80211_HE_OPERATION_ER_SU_DISABLE);
- 	he_oper_params |= u32_encode_bits(1,
- 				IEEE80211_HE_OPERATION_BSS_COLOR_DISABLED);
-+	if (chandef->chan->band == NL80211_BAND_6GHZ)
-+		he_oper_params |= u32_encode_bits(1,
-+				IEEE80211_HE_OPERATION_6GHZ_OP_INFO);
- 
- 	he_oper = (struct ieee80211_he_operation *)pos;
- 	he_oper->he_oper_params = cpu_to_le32(he_oper_params);
- 
- 	/* don't require special HE peer rates */
- 	he_oper->he_mcs_nss_set = cpu_to_le16(0xffff);
-+	pos += sizeof(struct ieee80211_he_operation);
- 
--	/* TODO add VHT operational and 6GHz operational subelement? */
-+	if (chandef->chan->band != NL80211_BAND_6GHZ)
-+		goto out;
- 
--	return pos + sizeof(struct ieee80211_vht_operation);
-+	/* TODO add VHT operational */
-+	he_6ghz_op = (struct ieee80211_he_6ghz_oper *)pos;
-+	he_6ghz_op->minrate = 6; /* 6 Mbps */
-+	he_6ghz_op->primary =
-+		ieee80211_frequency_to_channel(chandef->chan->center_freq);
-+	he_6ghz_op->ccfs0 =
-+		ieee80211_frequency_to_channel(chandef->center_freq1);
-+	if (chandef->center_freq2)
-+		he_6ghz_op->ccfs1 =
-+			ieee80211_frequency_to_channel(chandef->center_freq2);
-+	else
-+		he_6ghz_op->ccfs1 = 0;
-+
-+	switch (chandef->width) {
-+	case NL80211_CHAN_WIDTH_160:
-+		/* Convert 160 MHz channel width to new style as interop
-+		 * workaround.
-+		 */
-+		he_6ghz_op->control =
-+			IEEE80211_HE_6GHZ_OPER_CTRL_CHANWIDTH_160MHZ;
-+		he_6ghz_op->ccfs1 = he_6ghz_op->ccfs0;
-+		if (chandef->chan->center_freq < chandef->center_freq1)
-+			he_6ghz_op->ccfs0 -= 8;
-+		else
-+			he_6ghz_op->ccfs0 += 8;
-+		fallthrough;
-+	case NL80211_CHAN_WIDTH_80P80:
-+		he_6ghz_op->control =
-+			IEEE80211_HE_6GHZ_OPER_CTRL_CHANWIDTH_160MHZ;
-+		break;
-+	case NL80211_CHAN_WIDTH_80:
-+		he_6ghz_op->control =
-+			IEEE80211_HE_6GHZ_OPER_CTRL_CHANWIDTH_80MHZ;
-+		break;
-+	case NL80211_CHAN_WIDTH_40:
-+		he_6ghz_op->control =
-+			IEEE80211_HE_6GHZ_OPER_CTRL_CHANWIDTH_40MHZ;
-+		break;
-+	default:
-+		he_6ghz_op->control =
-+			IEEE80211_HE_6GHZ_OPER_CTRL_CHANWIDTH_20MHZ;
-+		break;
-+	}
-+
-+	pos += sizeof(struct ieee80211_he_6ghz_oper);
-+
-+out:
-+	return pos;
- }
- 
- bool ieee80211_chandef_ht_oper(const struct ieee80211_ht_operation *ht_oper,
--- 
-2.26.2
+Kind regards
+Uffe
 
+
+>
+> Kind regards
+> Uffe
+>
+> >
+> > Pali Roh=C3=A1r (11):
+> >   mmc: sdio: Fix macro name for Marvell device with ID 0x9134
+> >   mmc: sdio: Change macro names for Marvell 8688 modules
+> >   mmc: sdio: Move SDIO IDs from mwifiex driver to common include file
+> >   mmc: sdio: Move SDIO IDs from btmrvl driver to common include file
+> >   mmc: sdio: Move SDIO IDs from btmtksdio driver to common include file
+> >   mmc: sdio: Move SDIO IDs from smssdio driver to common include file
+> >   mmc: sdio: Move SDIO IDs from ath6kl driver to common include file
+> >   mmc: sdio: Move SDIO IDs from ath10k driver to common include file
+> >   mmc: sdio: Move SDIO IDs from b43-sdio driver to common include file
+> >   mmc: sdio: Fix Cypress SDIO IDs macros in common include file
+> >   mmc: sdio: Sort all SDIO IDs in common include file
+> >
+> >  drivers/bluetooth/btmrvl_sdio.c               | 18 ++--
+> >  drivers/bluetooth/btmtksdio.c                 |  4 +-
+> >  drivers/media/mmc/siano/smssdio.c             | 10 +-
+> >  drivers/mmc/core/quirks.h                     |  2 +-
+> >  drivers/net/wireless/ath/ath10k/sdio.c        | 25 ++---
+> >  drivers/net/wireless/ath/ath10k/sdio.h        |  8 --
+> >  drivers/net/wireless/ath/ath6kl/hif.h         |  6 --
+> >  drivers/net/wireless/ath/ath6kl/sdio.c        | 17 ++--
+> >  drivers/net/wireless/broadcom/b43/sdio.c      |  4 +-
+> >  .../broadcom/brcm80211/brcmfmac/bcmsdh.c      |  6 +-
+> >  .../broadcom/brcm80211/brcmfmac/sdio.c        |  4 +-
+> >  .../net/wireless/marvell/libertas/if_sdio.c   |  2 +-
+> >  drivers/net/wireless/marvell/mwifiex/sdio.c   | 38 ++------
+> >  include/linux/mmc/sdio_ids.h                  | 94 ++++++++++++++-----
+> >  14 files changed, 120 insertions(+), 118 deletions(-)
+> >
+> > --
+> > 2.20.1
+> >
