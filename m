@@ -2,63 +2,66 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 702BF1E647A
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 May 2020 16:49:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 865D21E642E
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 May 2020 16:41:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728598AbgE1Otr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 28 May 2020 10:49:47 -0400
-Received: from p-impout010aa.msg.pkvw.co.charter.net ([47.43.26.141]:47484
-        "EHLO p-impout001.msg.pkvw.co.charter.net" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1728539AbgE1Otr (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 28 May 2020 10:49:47 -0400
-Received: from localhost ([97.96.18.55])
-        by cmsmtp with ESMTPA
-        id eJqqjJE4EOQ8heJqrjWzmS; Thu, 28 May 2020 14:49:45 +0000
-X-Authority-Analysis: v=2.3 cv=SrXuF8G0 c=1 sm=1 tr=0
- a=gnb2rATmHlbHhomeAxXZdQ==:117 a=gnb2rATmHlbHhomeAxXZdQ==:17
- a=IkcTkHD0fZMA:10 a=o-53GSTNTxPpq0pbfBgA:9 a=QEXdDO2ut3YA:10
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Subject: Re: iwlwifi: 8265: unexpected LLC packets TX'ed in monitor mode
-From:   "Marco" <marco@tampabay.rr.com>
-To:     "Johannes Berg" <johannes@sipsolutions.net>,
-        <linux-wireless@vger.kernel.org>
-Date:   Thu, 28 May 2020 10:26:04 -0400
-Message-Id: <C32FKI01HMGA.U0TCA9AIO8BX@b1>
-In-Reply-To: <ca2b26a87d49284a07b24c71046993814c4fe821.camel@sipsolutions.net>
-X-CMAE-Envelope: MS4wfAOq67BEj59AZO74DpW9m/MifcsIuyVHgMfbLrRjLBJC34PnTKOkITiACRxMGt4nko6fHHE9FCp3xXAyV1uJUPvjy/DycxTCFoFC3mh4ii2i9BOkfpQJ
- //XQYg4ONCvX+FG6SvQKUvs9GviBrYgUiW4tmVdemzOyV0sPVKQqC0OGGMiAD2Jo5n5nWTCSdy9yCdKD60L3Vd7TC3nM2v6iJDQ=
+        id S1728507AbgE1OlE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 28 May 2020 10:41:04 -0400
+Received: from mail.kernel.org ([198.145.29.99]:44370 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725795AbgE1OlC (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 28 May 2020 10:41:02 -0400
+Received: from localhost (unknown [137.135.114.1])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 6FE60207D3;
+        Thu, 28 May 2020 14:41:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1590676861;
+        bh=8Sy4SGFy9WOB7rPR7XK0WJf25jfeyvcDfaCkmDkOQcY=;
+        h=Date:From:To:To:To:Cc:Cc:Cc:Subject:In-Reply-To:References:From;
+        b=tpWXd42MqAcAJZ74lqRKUprDaM82Gh2z20V5eGpHLsTStpw2CzVTYDt9Rtnqj42az
+         t7VRejA1E9w5Bq5c5gAoXipsLxQrKWqanchqU9tUdTMfeiLEKwImYSEFvY1tZjOHmQ
+         l7ItfRuLdasxXTQ5DsD94LsIPs28GJJF84CX9pIw=
+Date:   Thu, 28 May 2020 14:41:00 +0000
+From:   Sasha Levin <sashal@kernel.org>
+To:     Sasha Levin <sashal@kernel.org>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+To:     Kalle Valo <kvalo@codeaurora.org>, Hu Jiahui <kirin.say@gmail.com>
+Cc:     security@kernel.org, linux-wireless@vger.kernel.org
+Cc:     <stable@vger.kernel.org>
+Cc:     stable@vger.kernel.org
+Subject: Re: [PATCH v3] airo: Fix read overflows sending packets
+In-Reply-To: <20200527184830.GA1164846@mwanda>
+References: <20200527184830.GA1164846@mwanda>
+Message-Id: <20200528144101.6FE60207D3@mail.kernel.org>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon May 25, 2020 at 7:23 AM EDT, Johannes Berg wrote:
-> On Wed, 2020-05-13 at 13:48 -0400, Marco Fonseca wrote:
-> > Hello,
-> >=20
-> > While in monitor mode, the 8265 will periodically transmit gratuitous
-> > LLC packets.  In this mode, I would expect the wifi chipset to not
-> > transmit any packets at all (unless packet injection is being used).
-> >=20
-> > This behavior can be observed by a second wifi device in monitor mode.
-> > A display filter on wireshark/tshark of 'llc' makes these easy to spot.
-> >=20
-> > It seems these packets only get produced in presence of a few APs
-> > and/or STAs but I'm not sure of the exact cause.  I don't see the LLC
-> > packets on very quiet channels.
->
-> I think these are somehow related to calibrations in the device.
->
-> johannes
+Hi
 
-Are you perhaps implying that I can alter calibration settings to fix
-this problem?  If you have any pointers to this it would be
-appreciative.
+[This is an automated email]
 
-Regardless though, I would still expect the default behavior to not
-emit packets when in monitor mode, unless the user directs it to;
-similar to what I've seen from other wifi chipsets.
+This commit has been processed because it contains a -stable tag.
+The stable tag indicates that it's relevant for the following trees: all
 
-Marco
+The bot has tested the following trees: v5.6.14, v5.4.42, v4.19.124, v4.14.181, v4.9.224, v4.4.224.
+
+v5.6.14: Build OK!
+v5.4.42: Build OK!
+v4.19.124: Build OK!
+v4.14.181: Build OK!
+v4.9.224: Build OK!
+v4.4.224: Failed to apply! Possible dependencies:
+    Unable to calculate
+
+
+NOTE: The patch will not be queued to stable trees until it is upstream.
+
+How should we proceed with this patch?
+
+-- 
+Thanks
+Sasha
