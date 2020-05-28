@@ -2,66 +2,91 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 865D21E642E
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 May 2020 16:41:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C8DB1E6488
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 May 2020 16:50:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728507AbgE1OlE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 28 May 2020 10:41:04 -0400
-Received: from mail.kernel.org ([198.145.29.99]:44370 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725795AbgE1OlC (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 28 May 2020 10:41:02 -0400
-Received: from localhost (unknown [137.135.114.1])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 6FE60207D3;
-        Thu, 28 May 2020 14:41:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1590676861;
-        bh=8Sy4SGFy9WOB7rPR7XK0WJf25jfeyvcDfaCkmDkOQcY=;
-        h=Date:From:To:To:To:Cc:Cc:Cc:Subject:In-Reply-To:References:From;
-        b=tpWXd42MqAcAJZ74lqRKUprDaM82Gh2z20V5eGpHLsTStpw2CzVTYDt9Rtnqj42az
-         t7VRejA1E9w5Bq5c5gAoXipsLxQrKWqanchqU9tUdTMfeiLEKwImYSEFvY1tZjOHmQ
-         l7ItfRuLdasxXTQ5DsD94LsIPs28GJJF84CX9pIw=
-Date:   Thu, 28 May 2020 14:41:00 +0000
-From:   Sasha Levin <sashal@kernel.org>
-To:     Sasha Levin <sashal@kernel.org>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-To:     Kalle Valo <kvalo@codeaurora.org>, Hu Jiahui <kirin.say@gmail.com>
-Cc:     security@kernel.org, linux-wireless@vger.kernel.org
-Cc:     <stable@vger.kernel.org>
-Cc:     stable@vger.kernel.org
-Subject: Re: [PATCH v3] airo: Fix read overflows sending packets
-In-Reply-To: <20200527184830.GA1164846@mwanda>
-References: <20200527184830.GA1164846@mwanda>
-Message-Id: <20200528144101.6FE60207D3@mail.kernel.org>
+        id S2391233AbgE1Oun (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 28 May 2020 10:50:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45310 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728605AbgE1Oua (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 28 May 2020 10:50:30 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADCB6C08C5CB
+        for <linux-wireless@vger.kernel.org>; Thu, 28 May 2020 07:50:29 -0700 (PDT)
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.93)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1jeJrV-004vYI-Gg; Thu, 28 May 2020 16:50:25 +0200
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     linux-wireless@vger.kernel.org
+Cc:     Rajkumar Manoharan <rmanohar@codeaurora.org>,
+        Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>,
+        Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 01/24] nl80211: really allow client-only BIGTK support
+Date:   Thu, 28 May 2020 16:49:57 +0200
+Message-Id: <20200528165011.993f108e96ca.I0086ae42d672379380d04ac5effb2f3d5135731b@changeid>
+X-Mailer: git-send-email 2.26.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi
+From: Johannes Berg <johannes.berg@intel.com>
 
-[This is an automated email]
+My previous commit here was wrong, it didn't check the new
+flag in two necessary places, so things didn't work. Fix that.
 
-This commit has been processed because it contains a -stable tag.
-The stable tag indicates that it's relevant for the following trees: all
+Fixes: 155d7c733807 ("nl80211: allow client-only BIGTK support")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+---
+ net/wireless/sme.c  | 7 +++++--
+ net/wireless/util.c | 4 +++-
+ 2 files changed, 8 insertions(+), 3 deletions(-)
 
-The bot has tested the following trees: v5.6.14, v5.4.42, v4.19.124, v4.14.181, v4.9.224, v4.4.224.
-
-v5.6.14: Build OK!
-v5.4.42: Build OK!
-v4.19.124: Build OK!
-v4.14.181: Build OK!
-v4.9.224: Build OK!
-v4.4.224: Failed to apply! Possible dependencies:
-    Unable to calculate
-
-
-NOTE: The patch will not be queued to stable trees until it is upstream.
-
-How should we proceed with this patch?
-
+diff --git a/net/wireless/sme.c b/net/wireless/sme.c
+index 3554c0d951f4..15595cf401de 100644
+--- a/net/wireless/sme.c
++++ b/net/wireless/sme.c
+@@ -5,7 +5,7 @@
+  * (for nl80211's connect() and wext)
+  *
+  * Copyright 2009	Johannes Berg <johannes@sipsolutions.net>
+- * Copyright (C) 2009   Intel Corporation. All rights reserved.
++ * Copyright (C) 2009, 2020 Intel Corporation. All rights reserved.
+  * Copyright 2017	Intel Deutschland GmbH
+  */
+ 
+@@ -1118,7 +1118,10 @@ void __cfg80211_disconnected(struct net_device *dev, const u8 *ie,
+ 
+ 		if (wiphy_ext_feature_isset(
+ 			    wdev->wiphy,
+-			    NL80211_EXT_FEATURE_BEACON_PROTECTION))
++			    NL80211_EXT_FEATURE_BEACON_PROTECTION) ||
++		    wiphy_ext_feature_isset(
++			    wdev->wiphy,
++			    NL80211_EXT_FEATURE_BEACON_PROTECTION_CLIENT))
+ 			max_key_idx = 7;
+ 		for (i = 0; i <= max_key_idx; i++)
+ 			rdev_del_key(rdev, dev, i, false, NULL);
+diff --git a/net/wireless/util.c b/net/wireless/util.c
+index df75e58eca5d..92585334b723 100644
+--- a/net/wireless/util.c
++++ b/net/wireless/util.c
+@@ -240,7 +240,9 @@ int cfg80211_validate_key_settings(struct cfg80211_registered_device *rdev,
+ 	int max_key_idx = 5;
+ 
+ 	if (wiphy_ext_feature_isset(&rdev->wiphy,
+-				    NL80211_EXT_FEATURE_BEACON_PROTECTION))
++				    NL80211_EXT_FEATURE_BEACON_PROTECTION) ||
++	    wiphy_ext_feature_isset(&rdev->wiphy,
++				    NL80211_EXT_FEATURE_BEACON_PROTECTION_CLIENT))
+ 		max_key_idx = 7;
+ 	if (key_idx < 0 || key_idx > max_key_idx)
+ 		return -EINVAL;
 -- 
-Thanks
-Sasha
+2.26.2
+
