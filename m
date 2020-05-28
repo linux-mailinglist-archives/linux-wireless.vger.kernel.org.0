@@ -2,108 +2,111 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CFF371E5AA4
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 May 2020 10:22:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A3FD1E5B3E
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 May 2020 10:55:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726933AbgE1IWP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 28 May 2020 04:22:15 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:55030 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726921AbgE1IWP (ORCPT
+        id S1727983AbgE1IzN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 28 May 2020 04:55:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46488 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727981AbgE1IzN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 28 May 2020 04:22:15 -0400
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.69 with qID 04S8MA1j8004578, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexmb06.realtek.com.tw[172.21.6.99])
-        by rtits2.realtek.com.tw (8.15.2/2.66/5.86) with ESMTPS id 04S8MA1j8004578
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Thu, 28 May 2020 16:22:10 +0800
-Received: from RTEXMB04.realtek.com.tw (172.21.6.97) by
- RTEXMB06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Thu, 28 May 2020 16:22:10 +0800
-Received: from localhost.localdomain (172.21.68.128) by
- RTEXMB04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Thu, 28 May 2020 16:22:09 +0800
-From:   <yhchuang@realtek.com>
-To:     <kvalo@codeaurora.org>
-CC:     <linux-wireless@vger.kernel.org>, <tehuang@realtek.com>
-Subject: [PATCH 5/5] rtw88: 8821c: Add 8821CE to Kconfig and Makefile
-Date:   Thu, 28 May 2020 16:22:07 +0800
-Message-ID: <20200528082207.26521-6-yhchuang@realtek.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200528082207.26521-1-yhchuang@realtek.com>
-References: <20200528082207.26521-1-yhchuang@realtek.com>
+        Thu, 28 May 2020 04:55:13 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C978EC05BD1E
+        for <linux-wireless@vger.kernel.org>; Thu, 28 May 2020 01:55:12 -0700 (PDT)
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.93)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1jeEJi-004krY-BI; Thu, 28 May 2020 10:55:10 +0200
+Message-ID: <f9a764eaf9f0898c257b6c98346536c2c0f5d6f8.camel@sipsolutions.net>
+Subject: Re: [PATCH v3 06/11] mac80211: handle HE 6 GHz Capability in HE STA
+ processing
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Rajkumar Manoharan <rmanohar@codeaurora.org>, kvalo@codeaurora.org
+Cc:     linux-wireless@vger.kernel.org, ath11k@lists.infradead.org
+Date:   Thu, 28 May 2020 10:55:09 +0200
+In-Reply-To: <1589399105-25472-6-git-send-email-rmanohar@codeaurora.org>
+References: <1589399105-25472-1-git-send-email-rmanohar@codeaurora.org>
+         <1589399105-25472-6-git-send-email-rmanohar@codeaurora.org>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.2 (3.36.2-1.fc32) 
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [172.21.68.128]
-X-ClientProxiedBy: RTEXMB02.realtek.com.tw (172.21.6.95) To
- RTEXMB04.realtek.com.tw (172.21.6.97)
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Tzu-En Huang <tehuang@realtek.com>
 
-Since 8821C code is ready, we can build it.
+> +++ b/include/net/cfg80211.h
+> @@ -332,15 +332,25 @@ struct ieee80211_sta_vht_cap {
+>   * to describe 802.11ax HE capabilities for a STA.
+>   *
+>   * @has_he: true iff HE data is valid.
+> + * @has_he_6ghz: true iff HE 6 GHz data is valid.
+>   * @he_cap_elem: Fixed portion of the HE capabilities element.
+>   * @he_mcs_nss_supp: The supported NSS/MCS combinations.
+>   * @ppe_thres: Holds the PPE Thresholds data.
+> + * @ampdu_factor: Maximum A-MPDU length factor used in 6 GHz.
+> + * @ampdu_density: Minimum A-MPDU spacing used in 6 GHz.
+> + * @cap: HE 6 GHz Band capability.
+>   */
+>  struct ieee80211_sta_he_cap {
+>  	bool has_he;
+> +	bool has_he_6ghz;
+>  	struct ieee80211_he_cap_elem he_cap_elem;
+>  	struct ieee80211_he_mcs_nss_supp he_mcs_nss_supp;
+>  	u8 ppe_thres[IEEE80211_HE_PPE_THRES_MAX_LEN];
+> +	struct {
+> +		u8 ampdu_factor;
+> +		u8 ampdu_density;
+> +		u16 cap;
+> +	} he_6ghz;
+>  };
 
-Signed-off-by: Tzu-En Huang <tehuang@realtek.com>
-Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
----
- drivers/net/wireless/realtek/rtw88/Kconfig  | 14 ++++++++++++++
- drivers/net/wireless/realtek/rtw88/Makefile |  6 ++++++
- 2 files changed, 20 insertions(+)
+So ... I'm a bit unsure about this now. What I had done was this (well,
+I adjusted it slightly now):
 
-diff --git a/drivers/net/wireless/realtek/rtw88/Kconfig b/drivers/net/wireless/realtek/rtw88/Kconfig
-index ca894c4f96ac..e3d7cb6c1290 100644
---- a/drivers/net/wireless/realtek/rtw88/Kconfig
-+++ b/drivers/net/wireless/realtek/rtw88/Kconfig
-@@ -25,6 +25,9 @@ config RTW88_8822C
- config RTW88_8723D
- 	tristate
- 
-+config RTW88_8821C
-+	tristate
-+
- config RTW88_8822BE
- 	tristate "Realtek 8822BE PCI wireless network adapter"
- 	depends on PCI
-@@ -58,6 +61,17 @@ config RTW88_8723DE
- 
- 	  802.11n PCIe wireless network adapter
- 
-+config RTW88_8821CE
-+	tristate "Realtek 8821CE PCI wireless network adapter"
-+	depends on PCI
-+	select RTW88_CORE
-+	select RTW88_PCI
-+	select RTW88_8821C
-+	help
-+	  Select this option will enable support for 8821CE chipset
-+
-+	  802.11ac PCIe wireless network adapter
-+
- config RTW88_DEBUG
- 	bool "Realtek rtw88 debug support"
- 	depends on RTW88_CORE
-diff --git a/drivers/net/wireless/realtek/rtw88/Makefile b/drivers/net/wireless/realtek/rtw88/Makefile
-index f31e78a6f146..c0e4b111c8b4 100644
---- a/drivers/net/wireless/realtek/rtw88/Makefile
-+++ b/drivers/net/wireless/realtek/rtw88/Makefile
-@@ -37,5 +37,11 @@ rtw88_8723d-objs		:= rtw8723d.o rtw8723d_table.o
- obj-$(CONFIG_RTW88_8723DE)	+= rtw88_8723de.o
- rtw88_8723de-objs		:= rtw8723de.o
- 
-+obj-$(CONFIG_RTW88_8821C)	+= rtw88_8821c.o
-+rtw88_8821c-objs		:= rtw8821c.o rtw8821c_table.o
-+
-+obj-$(CONFIG_RTW88_8821CE)	+= rtw88_8821ce.o
-+rtw88_8821ce-objs		:= rtw8821ce.o
-+
- obj-$(CONFIG_RTW88_PCI)		+= rtw88_pci.o
- rtw88_pci-objs			:= pci.o
--- 
-2.17.1
+https://p.sipsolutions.net/2d0eb7c7e23a1b92.txt
+
+
+But it's only half related? Maybe you're also using that for the
+associated stations, not just for "self"? But then again, you *already*
+added 
+
+@@ -1270,6 +1271,7 @@ struct station_parameters {
+        u8 he_capa_len;
+        u16 airtime_weight;
+        struct sta_txpwr txpwr;
++       const struct ieee80211_he_6ghz_capa *he_6ghz_capa;
+ };
+
+right?
+
+
+But no ... that's different. We still have a need to store the station's
+capabilities.
+
+But even then,
+
+> +	struct {
+> +		u8 ampdu_factor;
+> +		u8 ampdu_density;
+> +		u16 cap;
+> +	} he_6ghz;
+
+doesn't really make sense, does it? "cap' already includes the
+ampdu_factor and ampdu_density flags, so that's doubled...
+
+
+I think I would prefer to have this separate. We need it as I put into
+my patch that I linked to above, and we also need it in the station in
+mac80211 for AP, but we don't really need it for cfg80211 as you put it
+here.
+
+I'll continue with my other patches, and then maybe see how this fits in
+later.
+
+johannes
 
