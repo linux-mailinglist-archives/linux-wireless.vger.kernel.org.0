@@ -2,82 +2,89 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E80321E66BA
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 May 2020 17:49:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 814611E66E4
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 May 2020 17:55:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404581AbgE1PtE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 28 May 2020 11:49:04 -0400
-Received: from wout3-smtp.messagingengine.com ([64.147.123.19]:47889 "EHLO
-        wout3-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S2404542AbgE1PtC (ORCPT
+        id S2404825AbgE1PzW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 28 May 2020 11:55:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55560 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2404819AbgE1PzU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 28 May 2020 11:49:02 -0400
-Received: from compute7.internal (compute7.nyi.internal [10.202.2.47])
-        by mailout.west.internal (Postfix) with ESMTP id 9C447A0F
-        for <linux-wireless@vger.kernel.org>; Thu, 28 May 2020 11:49:01 -0400 (EDT)
-Received: from imap2 ([10.202.2.52])
-  by compute7.internal (MEProxy); Thu, 28 May 2020 11:49:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=airpost.net; h=
-        mime-version:message-id:date:from:to:subject:content-type; s=
-        fm3; bh=ZjIyY2t+T7o6kEo1qjWU0rAD640q46uU23qh6ON+RtM=; b=XslSpmMU
-        5APkJ09XlKmkoerRUEKVD7Tbcee7PyfpVyu0UyG/66R+PQBmqbGZhHkfp0gib+FP
-        rZfVtJMrgJRYgNn2EqA+PYCnj3gj9xpNrHP5FRrWDBxZ32STBDLopTm4XFmOPvCO
-        jNeV296MHqFiszeA3YjgmsKvGdbaAsqfFoE4cUTN5mhAVwpTz7iiFzFk+ny6YJEJ
-        saG+S7OzBkP85Kr4j6r0aYHAXmPEXkJI4SwaPO52TlWoJmjeo/01zXubn50AaSzN
-        ZkyOa92+hF6lZhD3jli1vdSSTYY9T+lU/BER1gt3rOnl/W9uh1dGHV2qlYbLPnXx
-        rQUEm670Ez3TEg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=content-type:date:from:message-id
-        :mime-version:subject:to:x-me-proxy:x-me-proxy:x-me-sender
-        :x-me-sender:x-sasl-enc; s=fm2; bh=ZjIyY2t+T7o6kEo1qjWU0rAD640q4
-        6uU23qh6ON+RtM=; b=ohMSvmvYQu7QQWUh472p/eZhWqBFkgmqigMuBtlFHtUaW
-        p/VESkYknGj+MMw1LZcmLaDHlXYb2LFVPnYVNcQVMzALWydHLCgvpmQQgx41GdMg
-        2F6/VIkiiC32k/z4xzUBKmshKG+QF8grL/dtdqE5RkmXsxrc1QojYct8WBdP7P40
-        eaS1gw9Vn6uPWx2zMHSIt2kV1mpNR9gaMTFyWmWgYJd0JsqztmS6Nt51+tjA/aQx
-        R76l2uqtdD3+at2xAJ2ZzPp36t7rEa91Lhkr5FUyfpkjAiVLWj7Vt3kMoXTUbIm+
-        TUJKvAGOWkDmgmsZ1OtviFEmrT/L1DSVbQ660CvOg==
-X-ME-Sender: <xms:bd3PXiyk2PajLanu77nOAk_LUqIMUl2dQ_6o18gBbHB6X57tqETugg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduhedruddviedggeekucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucenucfjughrpefofgggkfffhffvufgtsehttdertd
-    erredtnecuhfhrohhmpedfuehruhhnohcuffgrnhhtrghsfdcuoegurghnthgrshesrghi
-    rhhpohhsthdrnhgvtheqnecuggftrfgrthhtvghrnhepueehgfejhfefheeuveejtdeive
-    fhteduuddvtedutdeuveejtdefjeefveevfeffnecuvehluhhsthgvrhfuihiivgeptden
-    ucfrrghrrghmpehmrghilhhfrhhomhepuggrnhhtrghssegrihhrphhoshhtrdhnvght
-X-ME-Proxy: <xmx:bd3PXuSKQ4YVNGqGXPn9XdgWcD-1kjTtSEAWvmSn9gSHf8Mvgx5EWQ>
-    <xmx:bd3PXkVTG5NIMZZgjtaxXXc03hrnVRz3wF7YFwvFuH2Qf5SslmTKWw>
-    <xmx:bd3PXoje8Q2JHuiO5z_pIFqxpuIIPwHNymS0h_oww7Q53mhNuCo7Yg>
-    <xmx:bd3PXszpMDFyyobx4RelsFiEI09v_1kyh5kvmwL_7GlGr5TmLM7X5g>
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-        id 01492E00A9; Thu, 28 May 2020 11:49:00 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.3.0-dev0-504-g204cd6f-fm-20200527.002-g204cd6f2
-Mime-Version: 1.0
-Message-Id: <afef8a7d-053e-4aaa-ace7-d320c32e8b7c@www.fastmail.com>
-Date:   Thu, 28 May 2020 11:48:13 -0400
-From:   "Bruno Dantas" <dantas@airpost.net>
-To:     linux-wireless@vger.kernel.org
-Subject: iwlist scanning: how to exclude old scan results from output?
-Content-Type: text/plain
+        Thu, 28 May 2020 11:55:20 -0400
+Received: from mail-yb1-xb43.google.com (mail-yb1-xb43.google.com [IPv6:2607:f8b0:4864:20::b43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BA88C08C5C6
+        for <linux-wireless@vger.kernel.org>; Thu, 28 May 2020 08:55:20 -0700 (PDT)
+Received: by mail-yb1-xb43.google.com with SMTP id b62so268115ybh.8
+        for <linux-wireless@vger.kernel.org>; Thu, 28 May 2020 08:55:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=VEmAX536cEKY0/3WcgFeUZpRguWTw2eheRjri6Y8rOM=;
+        b=heafo/ydFo5dc8vjHOTX8YSQ7sK2rjhJY4tXG8ZH2P2NP/sJIWKzQ5Ptpis835p8LR
+         gRZ0/38aFQd7EU2+aTcJG2obAITuLyrttJSQUMNDw/CkIii1j6nyCe4PwSYdU1dA//Su
+         lDvPBmd3nKQbPGadZT2nkIExgpWwliIvVwIYk2VfmddAJ0tAfE0mAFNFcMYZRJVY/jiM
+         fjZlJgJAF0uounWB7JXzhPll8UB36R2QE/M4AL2vnXCZqzl0l7In9vz4r9HXGEeF1vgn
+         gvivH3bxVgf0RruN/4edh2qW4qDZ36uq5zZOtrFytBp7wDK46hQWYefJhKMJ0LgtVPKI
+         ikfQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=VEmAX536cEKY0/3WcgFeUZpRguWTw2eheRjri6Y8rOM=;
+        b=hW/imiL309ntVih1RPrmAr0DQvVHPCubCURj+EJ1oxrpvr7kD78JAMo5+ZFC7mxW8m
+         Tyq1lfMR5LVnZJpOh7dqdDtO1f5J77OtwdWxO7PtHRfCPeB0AqrD6sSYVUWPpYMoUXXP
+         0eApNWfO1FFjoSVIDJ1Xqyhl6/JdUM4RCq4zk9VMCfYk9WH6EiXXzu4cocP5bnPC/YUJ
+         4HBye4QZK87P5NBFq3WPtnZ8fyqoKv1WwS9L5fGKt8CFpD7Fw1dy/cwrNcZNv6d2CCdr
+         Em2HCPzg4T2GcQWACPuLWG4hetk2V0KAwC46HSG6EkFLj+ejCfYnkOO2kDwkcu18fBeo
+         ToBA==
+X-Gm-Message-State: AOAM533bAn6tdYH8RdbpEXoqkiSGwWNpqkEXix1wFT8utMMdbLK3efsk
+        RwjerUvitdtA2HokIl0BHdHGfSC6FfdMPoaGpcdS20SU
+X-Google-Smtp-Source: ABdhPJykyD8QYJbGjvkzNRs6tqExsKyGzHcA9VJVZjssyq6iOwDE7sD0hpqZt6gRssWPewjx3pC2PVPNkTA3cEdwwVk=
+X-Received: by 2002:a25:4cc4:: with SMTP id z187mr6577880yba.274.1590681319118;
+ Thu, 28 May 2020 08:55:19 -0700 (PDT)
+MIME-Version: 1.0
+References: <CANn89iKWzfAeK96iL_snfJ1jGnaWq0B5odZtC5o1_ccB8ECV9w@mail.gmail.com>
+ <20200527184830.GA1164846@mwanda>
+In-Reply-To: <20200527184830.GA1164846@mwanda>
+From:   Eric Dumazet <edumazet@google.com>
+Date:   Thu, 28 May 2020 08:55:07 -0700
+Message-ID: <CANn89iJBBvMgGo930cxvhmk_dAt1Jh-AzyiiZQ_reKwzcaO38g@mail.gmail.com>
+Subject: Re: [PATCH v3] airo: Fix read overflows sending packets
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Kalle Valo <kvalo@codeaurora.org>, Hu Jiahui <kirin.say@gmail.com>,
+        Security Officers <security@kernel.org>,
+        linux-wireless@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-I hope it's not too inappropriate to ask a support question here. I've tried at my distro's forum to no avail.
+On Wed, May 27, 2020 at 11:48 AM Dan Carpenter <dan.carpenter@oracle.com> wrote:
+>
+> The problem is that we always copy a minimum of ETH_ZLEN (60) bytes from
+> skb->data even when skb->len is less than ETH_ZLEN so it leads to a read
+> overflow.
+>
+> The fix is to pad skb->data to at least ETH_ZLEN bytes.
+>
+> Cc: <stable@vger.kernel.org>
+> Reported-by: Hu Jiahui <kirin.say@gmail.com>
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+> v2: remove an unnecessary if statement
+>     increment the ->tx_dropped count on failure
+>     fix found two more instances of the same bug.
+>     fix typo in the "Cc: <stable@vger.kernel.org>" tag
+> v3: I had thought that skb_padto() updated skb->len so that it would
+>     always be more than ETH_ZLEN meaning that we could delete the checks
+>     for smaller values:  "len = skb->len < ETH_ZLEN ? ETH_ZLEN : skb->len;"
+>     But I was wrong and those are still required.
+>
+>  drivers/net/wireless/cisco/airo.c | 12 ++++++++++++
+>  1 file changed, 12 insertions(+)
+>
 
-Please, how do I make "sudo iwlist <iface> scanning" display only results from current scan? Cached prior scan results (including no-longer-available hotspots) often show up in the output, which breaks one of my shell scripts.
-
-If iwlist does not include an option to ignore old scan results, a workaround would be to first flush the results of old scan, then scan. The problem is that I can't figure out where prior scan results stored. Surely one of you guys would know? The only way I've found to flush old scan results is to unload then reload the wireless interface's kernel module, but this approach seems heavy-handed when a simple "cat /dev/null > somefile" might be sufficient if I knew where old scan results are kept.
-
-Thanks a million for any insights.
-
--Bruno
-
-P.S. Here are some possibly relevant details about my system:
-  - OS: Tiny Core Linux 11 64-bit
-  - linux kernel version: 5.4.3
-  - wireless card: Atheros AR928X
-  - wireless driver: ath9k
-  - iwlist version: 29
-
+Reviewed-by: Eric Dumazet <edumazet@google.com>
