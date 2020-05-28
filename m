@@ -2,31 +2,33 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A39721E6796
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 May 2020 18:38:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5421A1E6797
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 May 2020 18:39:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2405098AbgE1Qi4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 28 May 2020 12:38:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34086 "EHLO
+        id S2405106AbgE1Qje (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 28 May 2020 12:39:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34180 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2405042AbgE1Qiz (ORCPT
+        with ESMTP id S2405054AbgE1Qjd (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 28 May 2020 12:38:55 -0400
+        Thu, 28 May 2020 12:39:33 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4385C08C5C6
-        for <linux-wireless@vger.kernel.org>; Thu, 28 May 2020 09:38:55 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8217DC08C5C6
+        for <linux-wireless@vger.kernel.org>; Thu, 28 May 2020 09:39:33 -0700 (PDT)
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.93)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1jeLYT-004z32-5I; Thu, 28 May 2020 18:38:53 +0200
-Message-ID: <a185a4283c1230965b520de52737427c91af9c22.camel@sipsolutions.net>
-Subject: Re: iwlist scanning: how to exclude old scan results from output?
+        id 1jeLZ5-004z5V-Qs; Thu, 28 May 2020 18:39:31 +0200
+Message-ID: <4f85665c17b258d64b132a279782eafeb5017cf7.camel@sipsolutions.net>
+Subject: Re: [PATCH 01/24] nl80211: really allow client-only BIGTK support
 From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Bruno Dantas <dantas@airpost.net>, linux-wireless@vger.kernel.org
-Date:   Thu, 28 May 2020 18:38:50 +0200
-In-Reply-To: <afef8a7d-053e-4aaa-ace7-d320c32e8b7c@www.fastmail.com> (sfid-20200528_174911_413757_32DBA783)
-References: <afef8a7d-053e-4aaa-ace7-d320c32e8b7c@www.fastmail.com>
-         (sfid-20200528_174911_413757_32DBA783)
+To:     linux-wireless@vger.kernel.org
+Cc:     Rajkumar Manoharan <rmanohar@codeaurora.org>,
+        Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>
+Date:   Thu, 28 May 2020 18:39:30 +0200
+In-Reply-To: <20200528165011.993f108e96ca.I0086ae42d672379380d04ac5effb2f3d5135731b@changeid> (sfid-20200528_165058_656030_0F18B073)
+References: <20200528165011.993f108e96ca.I0086ae42d672379380d04ac5effb2f3d5135731b@changeid>
+         (sfid-20200528_165058_656030_0F18B073)
 Content-Type: text/plain; charset="UTF-8"
 User-Agent: Evolution 3.36.2 (3.36.2-1.fc32) 
 MIME-Version: 1.0
@@ -36,19 +38,8 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, 2020-05-28 at 11:48 -0400, Bruno Dantas wrote:
-> I hope it's not too inappropriate to ask a support question here. I've
-> tried at my distro's forum to no avail.
-> 
-> Please, how do I make "sudo iwlist <iface> scanning" display only
-> results from current scan? Cached prior scan results (including no-
-> longer-available hotspots) often show up in the output, which breaks
-> one of my shell scripts.
-
-You cannot.
-
-You should use 'iw' instead of 'iwlist', which does have options for
-flushing the cache.
+Looks like something here broke all the 80+80/160 MHz test cases in
+wpa_supplicant, I'll bisect & fix later.
 
 johannes
 
