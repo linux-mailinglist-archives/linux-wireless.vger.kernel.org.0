@@ -2,87 +2,53 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F8691E677A
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 May 2020 18:33:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A39721E6796
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 May 2020 18:38:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2405053AbgE1Qde (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 28 May 2020 12:33:34 -0400
-Received: from mail-pg1-f196.google.com ([209.85.215.196]:42500 "EHLO
-        mail-pg1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2404897AbgE1Qdd (ORCPT
+        id S2405098AbgE1Qi4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 28 May 2020 12:38:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34086 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2405042AbgE1Qiz (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 28 May 2020 12:33:33 -0400
-Received: by mail-pg1-f196.google.com with SMTP id 124so7506759pgi.9;
-        Thu, 28 May 2020 09:33:33 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=XxXOHuyOlTLP5clwe4Wfz+4oQPRkCpYLYjIK2vvc1Vc=;
-        b=V5M+o2gHEw668QnUY5F6f44G5KUR6NgQbGhYD/8t5UebEoI1A7tCaNCr2C8ftiVkLN
-         34J+wDay4hiC3L3UhEAPS8xtk6AeZNI5Xzw8T/ZrqSMVepQvgAc5PBnjVEjRpKunXgV2
-         nPcxBiTpQZAt4E6B/iO7xQu4akNlqGhV1oCb1P6meSSST90w5LgHrxIWAMr5fIFzGNAY
-         rkrd9udr4gbTF+n/olKDvjpmXJSZUYeTv9JMHvwojqSLm1XBD9T0sqsA9sROl++7SumZ
-         ldNgNVX3DzRXssODuYwN52kE+3cLd5AFrOMYXqv5tPK8OCU5UeaZLsGXElyO7YHXU0jo
-         j0uQ==
-X-Gm-Message-State: AOAM532NovqiXzIxhh+BtIsZD0CJpqmUlyH86/qqjO0OnpDx5Gv7vJx5
-        9bMLR+Zvq3wv2TEAqUxFNF7cynRVHpLoog==
-X-Google-Smtp-Source: ABdhPJx1jBQzRGhW2319wh/Cdnj+1/Ow9Nn2swZRY4W4Fm3QkC33znEjHcM8N6hO+Dn0qaSsElNinw==
-X-Received: by 2002:a63:c34a:: with SMTP id e10mr3799891pgd.412.1590683611946;
-        Thu, 28 May 2020 09:33:31 -0700 (PDT)
-Received: from 42.do-not-panic.com (42.do-not-panic.com. [157.230.128.187])
-        by smtp.gmail.com with ESMTPSA id i11sm5189778pfq.2.2020.05.28.09.33.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 May 2020 09:33:30 -0700 (PDT)
-Received: by 42.do-not-panic.com (Postfix, from userid 1000)
-        id 09B3640605; Thu, 28 May 2020 16:33:30 +0000 (UTC)
-Date:   Thu, 28 May 2020 16:33:29 +0000
-From:   Luis Chamberlain <mcgrof@kernel.org>
-To:     Ben Greear <greearb@candelatech.com>
-Cc:     Jakub Kicinski <kuba@kernel.org>, jeyu@kernel.org,
-        davem@davemloft.net, michael.chan@broadcom.com,
-        dchickles@marvell.com, sburla@marvell.com, fmanlunas@marvell.com,
-        aelior@marvell.com, GR-everest-linux-l2@marvell.com,
-        kvalo@codeaurora.org, johannes@sipsolutions.net,
-        akpm@linux-foundation.org, arnd@arndb.de, rostedt@goodmis.org,
-        mingo@redhat.com, aquini@redhat.com, cai@lca.pw, dyoung@redhat.com,
-        bhe@redhat.com, peterz@infradead.org, tglx@linutronix.de,
-        gpiccoli@canonical.com, pmladek@suse.com, tiwai@suse.de,
-        schlad@suse.de, andriy.shevchenko@linux.intel.com,
-        derosier@gmail.com, keescook@chromium.org, daniel.vetter@ffwll.ch,
-        will@kernel.org, mchehab+samsung@kernel.org, vkoul@kernel.org,
-        mchehab+huawei@kernel.org, robh@kernel.org, mhiramat@kernel.org,
-        sfr@canb.auug.org.au, linux@dominikbrodowski.net,
-        glider@google.com, paulmck@kernel.org, elver@google.com,
-        bauerman@linux.ibm.com, yamada.masahiro@socionext.com,
-        samitolvanen@google.com, yzaikin@google.com, dvyukov@google.com,
-        rdunlap@infradead.org, corbet@lwn.net, dianders@chromium.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-doc@vger.kernel.org, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH v3 0/8] kernel: taint when the driver firmware crashes
-Message-ID: <20200528163329.GT11244@42.do-not-panic.com>
-References: <20200526145815.6415-1-mcgrof@kernel.org>
- <20200526154606.6a2be01f@kicinski-fedora-PC1C0HJN.hsd1.ca.comcast.net>
- <20200526230748.GS11244@42.do-not-panic.com>
- <20200526163031.5c43fc1d@kicinski-fedora-PC1C0HJN.hsd1.ca.comcast.net>
- <20200527031918.GU11244@42.do-not-panic.com>
- <20200527143642.5e4ffba0@kicinski-fedora-PC1C0HJN.hsd1.ca.comcast.net>
- <20200528142705.GQ11244@42.do-not-panic.com>
- <58639bf9-b67c-0cbb-d4c0-69c4e400daff@candelatech.com>
+        Thu, 28 May 2020 12:38:55 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4385C08C5C6
+        for <linux-wireless@vger.kernel.org>; Thu, 28 May 2020 09:38:55 -0700 (PDT)
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.93)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1jeLYT-004z32-5I; Thu, 28 May 2020 18:38:53 +0200
+Message-ID: <a185a4283c1230965b520de52737427c91af9c22.camel@sipsolutions.net>
+Subject: Re: iwlist scanning: how to exclude old scan results from output?
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Bruno Dantas <dantas@airpost.net>, linux-wireless@vger.kernel.org
+Date:   Thu, 28 May 2020 18:38:50 +0200
+In-Reply-To: <afef8a7d-053e-4aaa-ace7-d320c32e8b7c@www.fastmail.com> (sfid-20200528_174911_413757_32DBA783)
+References: <afef8a7d-053e-4aaa-ace7-d320c32e8b7c@www.fastmail.com>
+         (sfid-20200528_174911_413757_32DBA783)
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.2 (3.36.2-1.fc32) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <58639bf9-b67c-0cbb-d4c0-69c4e400daff@candelatech.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, May 28, 2020 at 08:04:50AM -0700, Ben Greear wrote:
+On Thu, 2020-05-28 at 11:48 -0400, Bruno Dantas wrote:
+> I hope it's not too inappropriate to ask a support question here. I've
+> tried at my distro's forum to no avail.
 > 
-> Could you post your devlink RFC patches somewhere public?
+> Please, how do I make "sudo iwlist <iface> scanning" display only
+> results from current scan? Cached prior scan results (including no-
+> longer-available hotspots) often show up in the output, which breaks
+> one of my shell scripts.
 
-This cover letter provided a URL to these.
+You cannot.
 
-  Luis
+You should use 'iw' instead of 'iwlist', which does have options for
+flushing the cache.
+
+johannes
+
