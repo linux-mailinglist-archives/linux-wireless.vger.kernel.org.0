@@ -2,85 +2,180 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 67B891E6A11
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 May 2020 21:08:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 300D31E6A50
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 May 2020 21:21:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2406190AbgE1THO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 28 May 2020 15:07:14 -0400
-Received: from wout4-smtp.messagingengine.com ([64.147.123.20]:43183 "EHLO
-        wout4-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S2406108AbgE1THM (ORCPT
+        id S2406326AbgE1TVP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 28 May 2020 15:21:15 -0400
+Received: from bhuna.collabora.co.uk ([46.235.227.227]:57514 "EHLO
+        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2406317AbgE1TVJ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 28 May 2020 15:07:12 -0400
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
-        by mailout.west.internal (Postfix) with ESMTP id 195CBBA1;
-        Thu, 28 May 2020 15:07:12 -0400 (EDT)
-Received: from imap2 ([10.202.2.52])
-  by compute3.internal (MEProxy); Thu, 28 May 2020 15:07:12 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=airpost.net; h=
-        mime-version:message-id:in-reply-to:references:date:from:to
-        :subject:content-type; s=fm3; bh=PSzxvc8bdtYDwvVcRMmQgP4ScLf43hO
-        MQ6KobG2h/Hw=; b=bsVs2+Fi2sQu17tUcI+gSf1+foc8A9kZpTVZQ7s3dHkGO7w
-        usOrvi7BBzIYuC4ekWdF86OCXuVyurmQPAIXpbUmhLJK+cy011F4DxEq72JzKToS
-        Sao45vlwsuG/VaTe7/1szf4chBWq6jD/2PoFvrU880W5QeBypQMc/sF5SyPedE9M
-        X1/FWR39Gsz3vVroqVkX1BVFMRIMlzJZU/pc0GkfMlBEGpQeNpxYnoF2uPKI6VZC
-        tqdMOGdAsAty7Q7jv91GBBa1k/0ox9+9zT+v1guIPFwBm2OOChMke6VIZ7yA5qIK
-        m8qPfnkAtS0kY6AqpW2Gc8b3/OopRO5tB7JAEeg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=content-type:date:from:in-reply-to
-        :message-id:mime-version:references:subject:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; bh=PSzxvc
-        8bdtYDwvVcRMmQgP4ScLf43hOMQ6KobG2h/Hw=; b=B3q8nhGg/eOAKw36i0tlDA
-        skxyU+nuiNZnar6hZhzvIviXxTqoglSIr8saCcM4OMPRmA6RFnbwB4wwePv5uyMT
-        23hSud4upxi2GQDj1Lr0UijOBzAHF5sBz6okVoO0rIgbWBzLHOmEW2EDHMoVWlkg
-        l7lkcO0RIt1Hd6ZcezoV7FMptfepLKYVrknBuecDTnaWknsKDH2quOncDaA4n67q
-        cVba01YF9HJzD9GQkS6aAUuSe+YXSAMeRDcOXZqXzGwUWhgRvN1/+KOuyHdd6rHe
-        Xnzlo83PdFnjtQ5HBz9GsC0/oM8PP3l2AdXpmjxvgkoBSEC4Zdb/4iK1c4lK4kVw
-        ==
-X-ME-Sender: <xms:3wvQXnsai0REy-UtDy8zAcQ8tufU_wyIHIBmSlj3A2BtGMxw0iH12Q>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduhedruddviedgjeelucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvffutgesthdtredtreertdenucfhrhhomhepfdeurhhu
-    nhhoucffrghnthgrshdfuceofihirhgvlhgvshhssegurghnthgrshdrrghirhhpohhsth
-    drnhgvtheqnecuggftrfgrthhtvghrnhepteeukeejvefhgefgvdegfeevfffhleetfeff
-    tdduueehudeufeefjedvveegjeegnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
-    hmpehmrghilhhfrhhomhepfihirhgvlhgvshhssegurghnthgrshdrrghirhhpohhsthdr
-    nhgvth
-X-ME-Proxy: <xmx:3wvQXofkXoThqdpjCclnT3_RVeZiZCvInBZtSKKfw9m6IlZUe9nSFA>
-    <xmx:3wvQXqzvjFNl-R217IKQxKxId4w1m6uTvZQXPK8R7qSUHRwrpo_R6A>
-    <xmx:3wvQXmMAypGE-IlJr9NPG7LNUROFCbaYYnF59QkmHlLqc8NDnJqdbg>
-    <xmx:3wvQXqI5eAD8-gT_UhDGgkJ4BdnrUuGvg-b4XbaTV5wzO6-elOPQZQ>
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-        id 684EBE00BF; Thu, 28 May 2020 15:07:11 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.3.0-dev0-504-g204cd6f-fm-20200527.002-g204cd6f2
-Mime-Version: 1.0
-Message-Id: <c921f6e0-8b27-475d-9441-28025d5afe83@www.fastmail.com>
-In-Reply-To: <6d5994325bbb28ff855b527a26e4e7e87760705f.camel@sipsolutions.net>
-References: <afef8a7d-053e-4aaa-ace7-d320c32e8b7c@www.fastmail.com>
- <(sfid-20200528_174911_413757_32DBA783)>
- <a185a4283c1230965b520de52737427c91af9c22.camel@sipsolutions.net>
- <99c4ece3-15ca-42cb-aa09-c86d466d6429@www.fastmail.com>
- <7406af4a9e852d99735e1b1af63deed2f0c5d703.camel@sipsolutions.net>
- <f78191c6-3093-4d97-a959-068dce1da552@www.fastmail.com>
- <6d5994325bbb28ff855b527a26e4e7e87760705f.camel@sipsolutions.net>
-Date:   Thu, 28 May 2020 15:06:51 -0400
-From:   "Bruno Dantas" <wireless@dantas.airpost.net>
-To:     "Johannes Berg" <johannes@sipsolutions.net>,
-        linux-wireless@vger.kernel.org
-Subject: Re: iwlist scanning: how to exclude old scan results from output?
-Content-Type: text/plain
+        Thu, 28 May 2020 15:21:09 -0400
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: andrzej.p)
+        with ESMTPSA id E76512A41B5
+From:   Andrzej Pietrasiewicz <andrzej.p@collabora.com>
+To:     linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
+        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-renesas-soc@vger.kernel.org,
+        linux-rockchip@lists.infradead.org
+Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Vishal Kulkarni <vishal@chelsio.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jiri Pirko <jiri@mellanox.com>,
+        Ido Schimmel <idosch@mellanox.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        Intel Linux Wireless <linuxwifi@intel.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Peter Kaestle <peter@piie.net>,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Sebastian Reichel <sre@kernel.org>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Amit Kucheria <amit.kucheria@verdurent.com>,
+        Support Opensource <support.opensource@diasemi.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        =?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Orson Zhai <orsonzhai@gmail.com>,
+        Baolin Wang <baolin.wang7@gmail.com>,
+        Chunyan Zhang <zhang.lyra@gmail.com>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Allison Randal <allison@lohutok.net>,
+        Enrico Weigelt <info@metux.net>,
+        Gayatri Kammela <gayatri.kammela@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Andrzej Pietrasiewicz <andrzej.p@collabora.com>,
+        kernel@collabora.com
+Subject: [PATCH v4 00/11] Stop monitoring disabled devices
+Date:   Thu, 28 May 2020 21:20:40 +0200
+Message-Id: <20200528192051.28034-1-andrzej.p@collabora.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <Message-ID: <4493c0e4-51aa-3907-810c-74949ff27ca4@samsung.com>
+References: <Message-ID: <4493c0e4-51aa-3907-810c-74949ff27ca4@samsung.com>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-> That's why 'flush' exists :)
-Alas, mine seems to be clogged :)
+There is already a reviewed v3 (not to be confused with RFC v3), which can
+be considered for merging:
 
-> Obviously. But still, now I'm wondering if there's a bug?
-> What driver are you using?
-My adapter is  Atheros AR928X  which uses the  ath9k  driver.
+https://lore.kernel.org/linux-pm/20200423165705.13585-2-andrzej.p@collabora.com/
 
--Bruno
+Let me cite Bartlomiej Zolnierkiewicz:
+
+"I couldn't find the problems with the patch itself (no new issues
+being introduced, all changes seem to be improvements over the current
+situation).
+
+Also the patch is not small but it also not that big and it mostly
+removes the code:
+
+17 files changed, 105 insertions(+), 244 deletions(-)"
+
+There have been raised some concerns about bisectability and about
+introducing "initial_mode" member in struct thermal_zone_params.
+
+This v4 series addresses those concerns: it takes a more gradual
+approach and uses explicit tzd state initialization, hence there are more
+insertions than in v3, and the net effect is -63 lines versus -139 lines
+in v3.
+
+Patch 2/11 converts the 3 drivers which don't store their mode in
+enum thermal_device_mode to do so. Once that is cleared,
+struct thermal_zone_device gains its "mode" member (patch 3/11) and then
+all interested drivers change the location where they store their
+state: instead of storing it in some variable in a driver, they store it
+in struct thermal_zone_device (patch 4/11). Patch 4/11 does not introduce
+other changes. Then get_mode() driver method becomes redundant, and so
+it is removed (patch 5/11). This is the first part of the groundwork.
+
+The second part of the groundwork is to add (patch 6/11) and use (patch
+7/11) helpers for accessing tzd's state from drivers. From this moment
+on the drivers don't access tzd->mode directly. Please note that after
+patch 4/11 all thermal zone devices have their mode implicitly initialized
+to DISABLED, as a result of kzalloc and THERMAL_DEVICE_DISABLED == 0.
+This is not a problem from the point of view of polling them, because
+their state is not considered when deciding to poll or to cease polling.
+In preparation for considering tzd's state when deciding to poll or to
+cease polling it ensured (patch 8/11 and some in patch 7/11) that all the
+drivers are explicitly initialized with regard to their state.
+
+With all that groundwork in place now it makes sense to modify thermal_core
+so that it stops polling DISABLED devices (patch 9/11), which is the
+ultimate purpose of this work.
+
+While at it, some set_mode() implementations only change the polling
+variables to make the core stop polling their drivers, but that is now
+unnecessary and those set_mode() implementations are removed. In other
+implementations polling variables modifications are removed. Some other
+set_mode() implementations are simplified or removed (patch 10/11).
+
+set_mode() is now only called when tzd's mode is about to change. Actual
+setting is performed in thermal_core, in thermal_zone_device_set_mode().
+The meaning of set_mode() callback is actually to notify the driver about
+the mode being changed and giving the driver a chance to oppose such
+a change. To better reflect the purpose of the method it is renamed to
+change_mode() (patch 11/11).
+
+Andrzej Pietrasiewicz (11):
+  acpi: thermal: Fix error handling in the register function
+  thermal: Store thermal mode in a dedicated enum
+  thermal: Add current mode to thermal zone device
+  thermal: Store device mode in struct thermal_zone_device
+  thermal: remove get_mode() operation of drivers
+  thermal: Add mode helpers
+  thermal: Use mode helpers in drivers
+  thermal: Explicitly enable non-changing thermal zone devices
+  thermal: core: Stop polling DISABLED thermal devices
+  thermal: Simplify or eliminate unnecessary set_mode() methods
+  thermal: Rename set_mode() to change_mode()
+
+ drivers/acpi/thermal.c                        | 75 +++++----------
+ .../ethernet/chelsio/cxgb4/cxgb4_thermal.c    |  8 ++
+ .../ethernet/mellanox/mlxsw/core_thermal.c    | 91 ++++---------------
+ drivers/net/wireless/intel/iwlwifi/mvm/tt.c   |  9 +-
+ drivers/platform/x86/acerhdf.c                | 33 +++----
+ drivers/platform/x86/intel_mid_thermal.c      |  6 ++
+ drivers/power/supply/power_supply_core.c      |  9 +-
+ drivers/thermal/armada_thermal.c              |  6 ++
+ drivers/thermal/da9062-thermal.c              | 16 +---
+ drivers/thermal/dove_thermal.c                |  6 ++
+ drivers/thermal/hisi_thermal.c                |  6 +-
+ drivers/thermal/imx_thermal.c                 | 57 ++++--------
+ .../intel/int340x_thermal/int3400_thermal.c   | 43 +++------
+ .../int340x_thermal/int340x_thermal_zone.c    |  5 +
+ drivers/thermal/intel/intel_pch_thermal.c     |  5 +
+ .../thermal/intel/intel_quark_dts_thermal.c   | 34 ++-----
+ drivers/thermal/intel/intel_soc_dts_iosf.c    |  3 +
+ drivers/thermal/intel/x86_pkg_temp_thermal.c  |  6 ++
+ drivers/thermal/kirkwood_thermal.c            |  7 ++
+ drivers/thermal/rcar_thermal.c                |  9 +-
+ drivers/thermal/rockchip_thermal.c            |  6 +-
+ drivers/thermal/spear_thermal.c               |  7 ++
+ drivers/thermal/sprd_thermal.c                |  6 +-
+ drivers/thermal/st/st_thermal.c               |  5 +
+ drivers/thermal/thermal_core.c                | 76 ++++++++++++++--
+ drivers/thermal/thermal_of.c                  | 51 ++---------
+ drivers/thermal/thermal_sysfs.c               | 37 +-------
+ include/linux/thermal.h                       | 19 +++-
+ 28 files changed, 289 insertions(+), 352 deletions(-)
+
+
+base-commit: 351f4911a477ae01239c42f771f621d85b06ea10
+-- 
+2.17.1
+
