@@ -2,59 +2,84 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5CF341E5925
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 May 2020 09:42:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 49B5F1E592F
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 May 2020 09:43:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726451AbgE1Hm5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 28 May 2020 03:42:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35342 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725834AbgE1Hm5 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 28 May 2020 03:42:57 -0400
-X-Greylist: delayed 65 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 28 May 2020 00:42:56 PDT
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8558C05BD1E;
-        Thu, 28 May 2020 00:42:56 -0700 (PDT)
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.93)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1jeDBk-004iTR-Oi; Thu, 28 May 2020 09:42:52 +0200
-Message-ID: <af656620aee6768414fbef63beddf5f04851e5e8.camel@sipsolutions.net>
-Subject: Re: [PATCH v3 01/11] cfg80211: use only HE capability to set
- prohibited flags in 6 GHz
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Rajkumar Manoharan <rmanohar@codeaurora.org>
-Cc:     kvalo@codeaurora.org, linux-wireless@vger.kernel.org,
-        ath11k@lists.infradead.org, Vamsi Krishna <vamsin@codeaurora.org>,
-        linux-wireless-owner@vger.kernel.org
-Date:   Thu, 28 May 2020 09:42:51 +0200
-In-Reply-To: <6a606d4e32d6eb00b33f5ce8ad44a71994640c7d.camel@sipsolutions.net> (sfid-20200528_094155_221294_8CFB7C6D)
-References: <1589399105-25472-1-git-send-email-rmanohar@codeaurora.org>
-         <7f2a2a382c42b7285b9ad1eeac4e8060bc8d897a.camel@sipsolutions.net>
-         <0fa1c07811796add4a6a23c81cbafe41@codeaurora.org>
-         <6a606d4e32d6eb00b33f5ce8ad44a71994640c7d.camel@sipsolutions.net>
-         (sfid-20200528_094155_221294_8CFB7C6D)
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.2 (3.36.2-1.fc32) 
+        id S1726207AbgE1Hn5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 28 May 2020 03:43:57 -0400
+Received: from szxga06-in.huawei.com ([45.249.212.32]:34222 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725834AbgE1Hn4 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 28 May 2020 03:43:56 -0400
+Received: from DGGEMS402-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id 73442EA7C2AF01ED7ACC;
+        Thu, 28 May 2020 15:43:55 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS402-HUB.china.huawei.com (10.3.19.202) with Microsoft SMTP Server id
+ 14.3.487.0; Thu, 28 May 2020 15:43:48 +0800
+From:   YueHaibing <yuehaibing@huawei.com>
+To:     Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        "Kalle Valo" <kvalo@codeaurora.org>,
+        Jakub Kicinski <kuba@kernel.org>,
+        "Matthias Brugger" <matthias.bgg@gmail.com>
+CC:     YueHaibing <yuehaibing@huawei.com>,
+        <linux-wireless@vger.kernel.org>, "Hulk Robot" <hulkci@huawei.com>
+Subject: [PATCH] mt76: mt7915: remove set but not used variable 'msta'
+Date:   Thu, 28 May 2020 07:48:29 +0000
+Message-ID: <20200528074829.118156-1-yuehaibing@huawei.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello brain, meet fingers, they're a bit slower ...
+Cc: linux-wireless@vger.kernel.org,
+    linux-arm-kernel@lists.infradead.org,
+    linux-mediatek@lists.infradead.org,
+    netdev@vger.kernel.org,
+    kernel-janitors@vger.kernel.org
 
-> > > 
-> > IIUC the same bits are applicable for both 5 GHz & 6 GHz. I understand 
-> > the macro doesn't capture both.
-> 
-> Yeah, I think you're right. I looked at D6.0 (though there seems to be
-> D6.1?) but I couldn't quite 
+Fixes gcc '-Wunused-but-set-variable' warning:
 
-... couldn't fully understand it in the limited time I had left
-yesterday :)
+drivers/net/wireless/mediatek/mt76/mt7915/mcu.c: In function 'mt7915_mcu_sta_txbf_type':
+drivers/net/wireless/mediatek/mt76/mt7915/mcu.c:1805:21: warning:
+ variable 'msta' set but not used [-Wunused-but-set-variable]
 
-johannes
+It is never used, so can be removed.
+
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+---
+ drivers/net/wireless/mediatek/mt76/mt7915/mcu.c | 3 ---
+ 1 file changed, 3 deletions(-)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+index 99eeea42478f..7e803a5c94ef 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+@@ -1802,15 +1802,12 @@ static u8
+ mt7915_mcu_sta_txbf_type(struct mt7915_phy *phy, struct ieee80211_vif *vif,
+ 			 struct ieee80211_sta *sta)
+ {
+-	struct mt7915_sta *msta;
+ 	u8 type = 0;
+ 
+ 	if (vif->type != NL80211_IFTYPE_STATION &&
+ 	    vif->type != NL80211_IFTYPE_AP)
+ 		return 0;
+ 
+-	msta = (struct mt7915_sta *)sta->drv_priv;
+-
+ 	if (sta->he_cap.has_he) {
+ 		struct ieee80211_he_cap_elem *pe;
+ 		const struct ieee80211_he_cap_elem *ve;
+
+
 
