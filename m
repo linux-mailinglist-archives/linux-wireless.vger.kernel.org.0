@@ -2,57 +2,84 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 043A71E5EA4
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 May 2020 13:46:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A6931E5F94
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 May 2020 14:04:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388468AbgE1Lqk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 28 May 2020 07:46:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44866 "EHLO
+        id S2389526AbgE1MCs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 28 May 2020 08:02:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47398 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388451AbgE1Lqj (ORCPT
+        with ESMTP id S2389044AbgE1MCr (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 28 May 2020 07:46:39 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E67CC05BD1E
-        for <linux-wireless@vger.kernel.org>; Thu, 28 May 2020 04:46:39 -0700 (PDT)
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.93)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1jeGzc-004pfC-7b; Thu, 28 May 2020 13:46:36 +0200
-Message-ID: <8dc7ace01aba3243ff99da5554c6e7f5fbc59c52.camel@sipsolutions.net>
-Subject: Re: [PATCH v3 10/11] mac80211: determine chantype from HE operation
- in 6 GHz
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Rajkumar Manoharan <rmanohar@codeaurora.org>, kvalo@codeaurora.org
-Cc:     linux-wireless@vger.kernel.org, ath11k@lists.infradead.org
-Date:   Thu, 28 May 2020 13:46:35 +0200
-In-Reply-To: <650d683aeabd94a69bad64ae2a0af45c2fe25cd1.camel@sipsolutions.net> (sfid-20200528_114159_324068_E483B6CC)
-References: <1589399105-25472-1-git-send-email-rmanohar@codeaurora.org>
-         <1589399105-25472-10-git-send-email-rmanohar@codeaurora.org>
-         <74232fe9a140a15306c04f0509e6c615b8e329de.camel@sipsolutions.net>
-         (sfid-20200527_164156_614875_57253EF5) <650d683aeabd94a69bad64ae2a0af45c2fe25cd1.camel@sipsolutions.net>
-         (sfid-20200528_114159_324068_E483B6CC)
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.2 (3.36.2-1.fc32) 
+        Thu, 28 May 2020 08:02:47 -0400
+Received: from mail-lj1-x22a.google.com (mail-lj1-x22a.google.com [IPv6:2a00:1450:4864:20::22a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C52E7C05BD1E;
+        Thu, 28 May 2020 05:02:46 -0700 (PDT)
+Received: by mail-lj1-x22a.google.com with SMTP id c11so30885044ljn.2;
+        Thu, 28 May 2020 05:02:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=tZAAtlUG9AhJ/Atr4cE+FEtEOyGU5vjMq1zxXLMbm/M=;
+        b=ZorZ4K4yDcy4gsjhpUw7Oun7inOYaU2WCjP9bqsic1m6WYUd5QevLW3/AXbdkm9PSu
+         AtB17UQLllBYLMI2by7yQ/c81HwSUzqR3UaR4eLOGejdMjdkEGu2DOZqq/PjvMNhV/WO
+         IgLAw0dNHgMGV1Gl1G2XsYG/ZqXTLaNLsalsaENaqueEf5htqY3JpIvAvzu21614JVsG
+         nxQ1j1MNmF3fl4n/1s5aXXsUOXwwfoq44wwDJMHhTqc6NlDEE3cY6dsyisuxJIpAWFp3
+         51r6WCC3chucPPhGUpM1BKRABx4bbGSCVPdYfplXOSQul4vdHxTnFqChe0DT59uJiTC7
+         8HVg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=tZAAtlUG9AhJ/Atr4cE+FEtEOyGU5vjMq1zxXLMbm/M=;
+        b=DfTLA3K1ote8Qt0/DEiiCGHmnhDUqdc7waqJsN4q1lZDs7UJYl0H71nxEgSSouohv9
+         fgROrl596WMRH7+YD2f072HSs+GRhJVeEC9iZZf4SEKK9n6TFsuBqk9HjqE7v8rTw6nc
+         4Uc3jM8N0gOYxuFQks2RtO5wxJPpF9wILFra+NdX/T1hC54YD38JJnF0kgzm8hzcqz5y
+         fZImjkvFniuPs2sBuhzpSKzHD7YzbPxhVlJGiKoi5yxbX9s1nO2o5RwWQGMRtpotiHVk
+         BUu4pDqVpYOCJJ4jNWIDZltQd2rgv02zWeBDnU5jgHL4xPVne3CbJyZ9OHBZO4nOWM/Y
+         OryA==
+X-Gm-Message-State: AOAM530LP4kbJ+cIE5te5hwKyRGi1RPnZKceoiaA4Vf5v/S1jZhpKHb/
+        bwKgYpAnf6FLyHi24Avfg13uwggbCnw4DCNNnX63LA==
+X-Google-Smtp-Source: ABdhPJwmCZRWpoHjgLbsA2QTPKomwsN+ITixXa7o67e3iIg1zmy/OAFe7ddh+2EQj5ThIgflVLMLH3fIhHSR6K+mtUg=
+X-Received: by 2002:a2e:9891:: with SMTP id b17mr1395244ljj.319.1590667363018;
+ Thu, 28 May 2020 05:02:43 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+References: <20200527165718.129307-1-briannorris@chromium.org>
+In-Reply-To: <20200527165718.129307-1-briannorris@chromium.org>
+From:   Julian Calaby <julian.calaby@gmail.com>
+Date:   Thu, 28 May 2020 22:02:31 +1000
+Message-ID: <CAGRGNgX5n=0OEi7hMrmgVZGD=orGpgvkyLrhmXVKSFYdBJ+eUw@mail.gmail.com>
+Subject: Re: [PATCH] Revert "ath: add support for special 0x0 regulatory domain"
+To:     Brian Norris <briannorris@chromium.org>
+Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>, stable@vger.kernel.org,
+        Wen Gong <wgong@codeaurora.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, 2020-05-28 at 11:41 +0200, Johannes Berg wrote:
-> 
-> I actually kinda like this better than what I did, because what I did
-> required all kinds of contortions with DISABLE_HT/VHT/HE ...
+Hi Brian,
 
-Actually, that's orthogonal. You had some of that, but not fully ...
+On Thu, May 28, 2020 at 5:18 AM Brian Norris <briannorris@chromium.org> wrote:
+>
+> This reverts commit 2dc016599cfa9672a147528ca26d70c3654a5423.
+>
+> Users are reporting regressions in regulatory domain detection and
+> channel availability.
+>
+> The problem this was trying to resolve was fixed in firmware anyway:
 
-This patch is doing almost the same thing we did, except you're taking
-the capabilities into account immediately.
+Should we tell the user their firmware needs to be upgraded if it
+reports this regulatory domain instead of completely dropping support
+for it?
 
-I'll go combine them and factor in the STA_DISABLE_BITS you had too, if
-needed.
+Thanks,
 
-johannes
+-- 
+Julian Calaby
 
+Email: julian.calaby@gmail.com
+Profile: http://www.google.com/profiles/julian.calaby/
