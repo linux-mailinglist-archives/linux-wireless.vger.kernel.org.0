@@ -2,20 +2,20 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F2DEA1E5AA8
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 May 2020 10:22:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CFF371E5AA4
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 May 2020 10:22:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726923AbgE1IWT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 28 May 2020 04:22:19 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:55035 "EHLO
+        id S1726933AbgE1IWP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 28 May 2020 04:22:15 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:55030 "EHLO
         rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726635AbgE1IWP (ORCPT
+        with ESMTP id S1726921AbgE1IWP (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Thu, 28 May 2020 04:22:15 -0400
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.69 with qID 04S8MA1i8004578, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.69 with qID 04S8MA1j8004578, This message is accepted by code: ctloc85258
 Received: from mail.realtek.com (rtexmb06.realtek.com.tw[172.21.6.99])
-        by rtits2.realtek.com.tw (8.15.2/2.66/5.86) with ESMTPS id 04S8MA1i8004578
+        by rtits2.realtek.com.tw (8.15.2/2.66/5.86) with ESMTPS id 04S8MA1j8004578
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
         Thu, 28 May 2020 16:22:10 +0800
 Received: from RTEXMB04.realtek.com.tw (172.21.6.97) by
@@ -29,9 +29,9 @@ Received: from localhost.localdomain (172.21.68.128) by
 From:   <yhchuang@realtek.com>
 To:     <kvalo@codeaurora.org>
 CC:     <linux-wireless@vger.kernel.org>, <tehuang@realtek.com>
-Subject: [PATCH 4/5] rtw88: single rf path chips don't support TX STBC
-Date:   Thu, 28 May 2020 16:22:06 +0800
-Message-ID: <20200528082207.26521-5-yhchuang@realtek.com>
+Subject: [PATCH 5/5] rtw88: 8821c: Add 8821CE to Kconfig and Makefile
+Date:   Thu, 28 May 2020 16:22:07 +0800
+Message-ID: <20200528082207.26521-6-yhchuang@realtek.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200528082207.26521-1-yhchuang@realtek.com>
 References: <20200528082207.26521-1-yhchuang@realtek.com>
@@ -47,34 +47,63 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Tzu-En Huang <tehuang@realtek.com>
 
-Since single rf path chips don't support TX SPBC, tell mac80211
-to not advertise it.
+Since 8821C code is ready, we can build it.
 
 Signed-off-by: Tzu-En Huang <tehuang@realtek.com>
 Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw88/main.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/realtek/rtw88/Kconfig  | 14 ++++++++++++++
+ drivers/net/wireless/realtek/rtw88/Makefile |  6 ++++++
+ 2 files changed, 20 insertions(+)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
-index f8345c45ed8e..ddf9d8a43889 100644
---- a/drivers/net/wireless/realtek/rtw88/main.c
-+++ b/drivers/net/wireless/realtek/rtw88/main.c
-@@ -972,12 +972,12 @@ static void rtw_init_vht_cap(struct rtw_dev *rtwdev,
- 	vht_cap->vht_supported = true;
- 	vht_cap->cap = IEEE80211_VHT_CAP_MAX_MPDU_LENGTH_11454 |
- 		       IEEE80211_VHT_CAP_SHORT_GI_80 |
--		       IEEE80211_VHT_CAP_TXSTBC |
- 		       IEEE80211_VHT_CAP_RXSTBC_1 |
- 		       IEEE80211_VHT_CAP_HTC_VHT |
- 		       IEEE80211_VHT_CAP_MAX_A_MPDU_LENGTH_EXPONENT_MASK |
- 		       0;
--
-+	if (rtwdev->hal.rf_path_num > 1)
-+		vht_cap->cap |= IEEE80211_VHT_CAP_TXSTBC;
- 	vht_cap->cap |= IEEE80211_VHT_CAP_MU_BEAMFORMEE_CAPABLE |
- 			IEEE80211_VHT_CAP_SU_BEAMFORMEE_CAPABLE;
- 	vht_cap->cap |= (rtwdev->hal.bfee_sts_cap <<
+diff --git a/drivers/net/wireless/realtek/rtw88/Kconfig b/drivers/net/wireless/realtek/rtw88/Kconfig
+index ca894c4f96ac..e3d7cb6c1290 100644
+--- a/drivers/net/wireless/realtek/rtw88/Kconfig
++++ b/drivers/net/wireless/realtek/rtw88/Kconfig
+@@ -25,6 +25,9 @@ config RTW88_8822C
+ config RTW88_8723D
+ 	tristate
+ 
++config RTW88_8821C
++	tristate
++
+ config RTW88_8822BE
+ 	tristate "Realtek 8822BE PCI wireless network adapter"
+ 	depends on PCI
+@@ -58,6 +61,17 @@ config RTW88_8723DE
+ 
+ 	  802.11n PCIe wireless network adapter
+ 
++config RTW88_8821CE
++	tristate "Realtek 8821CE PCI wireless network adapter"
++	depends on PCI
++	select RTW88_CORE
++	select RTW88_PCI
++	select RTW88_8821C
++	help
++	  Select this option will enable support for 8821CE chipset
++
++	  802.11ac PCIe wireless network adapter
++
+ config RTW88_DEBUG
+ 	bool "Realtek rtw88 debug support"
+ 	depends on RTW88_CORE
+diff --git a/drivers/net/wireless/realtek/rtw88/Makefile b/drivers/net/wireless/realtek/rtw88/Makefile
+index f31e78a6f146..c0e4b111c8b4 100644
+--- a/drivers/net/wireless/realtek/rtw88/Makefile
++++ b/drivers/net/wireless/realtek/rtw88/Makefile
+@@ -37,5 +37,11 @@ rtw88_8723d-objs		:= rtw8723d.o rtw8723d_table.o
+ obj-$(CONFIG_RTW88_8723DE)	+= rtw88_8723de.o
+ rtw88_8723de-objs		:= rtw8723de.o
+ 
++obj-$(CONFIG_RTW88_8821C)	+= rtw88_8821c.o
++rtw88_8821c-objs		:= rtw8821c.o rtw8821c_table.o
++
++obj-$(CONFIG_RTW88_8821CE)	+= rtw88_8821ce.o
++rtw88_8821ce-objs		:= rtw8821ce.o
++
+ obj-$(CONFIG_RTW88_PCI)		+= rtw88_pci.o
+ rtw88_pci-objs			:= pci.o
 -- 
 2.17.1
 
