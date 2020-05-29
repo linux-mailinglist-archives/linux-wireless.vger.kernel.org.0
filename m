@@ -2,84 +2,90 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C3A8B1E854C
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 May 2020 19:40:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 82F9C1E8556
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 May 2020 19:41:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727953AbgE2Rks (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 29 May 2020 13:40:48 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:50310 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726487AbgE2Rks (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 29 May 2020 13:40:48 -0400
+        id S1727035AbgE2Rli (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 29 May 2020 13:41:38 -0400
+Received: from mail27.static.mailgun.info ([104.130.122.27]:24164 "EHLO
+        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726549AbgE2Rli (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 29 May 2020 13:41:38 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1590774047; h=Date: Message-Id: Cc: To: References:
+ s=smtp; t=1590774097; h=Date: Message-Id: Cc: To: References:
  In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=UXXBbJcWAQNE1ZNglKbbAUXpi4LDBG4fZpZm8mlyhPk=;
- b=v05PjHC6gwI5cZDtY9w98OAbawwPs6de1UH8brXt90bIcOc6eiOY+m47GcO4/9qaNX6hpLlj
- XEaLE992+vndwOYKYfN2i8lMPBfBRDKmA6zawq6avzbgH1Y0EAbaQEaSVh0nRSTp0vKpM8y+
- kt2qHppRKIQqbyMuqM4w6k1QkdY=
-X-Mailgun-Sending-Ip: 69.72.43.7
+ Content-Type: Sender; bh=z3/+BzcNWuNyJ/PPhv1oZOQCAe8HxM1NQYnZ727fjl4=;
+ b=VQxAXh1VQ8/V3xZvSFrWh4z/ur/UFkCqrh8hEszC9pAquiQoQ/0hZJdc9xh7Js8CaP32O2/i
+ 6/uqfkZi7QQXroBMAMst6IITttE4Ytc/vUBFy8XHeO71jO7+cvRvLzXQpOPhMUxZXR+vzF2Q
+ ka8NA3JdpxvPHDzFQxeYxNSsFm4=
+X-Mailgun-Sending-Ip: 104.130.122.27
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
  smtp-out-n01.prod.us-east-1.postgun.com with SMTP id
- 5ed14917b65440fdba15c1f4 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 29 May 2020 17:40:39
+ 5ed1494744a25e00522de95c (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 29 May 2020 17:41:27
  GMT
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 6EC21C433C6; Fri, 29 May 2020 17:40:38 +0000 (UTC)
+        id 384F8C433C6; Fri, 29 May 2020 17:41:26 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
 X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
-        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
+        MISSING_MID,SPF_NONE,URIBL_BLOCKED autolearn=no autolearn_force=no
+        version=3.4.0
 Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id C6F27C433C9;
-        Fri, 29 May 2020 17:40:36 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org C6F27C433C9
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id D082AC433CA;
+        Fri, 29 May 2020 17:41:23 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org D082AC433CA
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v3] airo: Fix read overflows sending packets
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH] mwifiex: Parse all API_VER_ID properties
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20200527184830.GA1164846@mwanda>
-References: <20200527184830.GA1164846@mwanda>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Hu Jiahui <kirin.say@gmail.com>,
-        Eric Dumazet <edumazet@google.com>, security@kernel.org,
-        linux-wireless@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>
+In-Reply-To: <20200521123444.28957-1-pali@kernel.org>
+References: <20200521123444.28957-1-pali@kernel.org>
+To:     =?utf-8?q?Pali_Roh=C3=A1r?= <pali@kernel.org>
+Cc:     Amitkumar Karwar <amitkarwar@gmail.com>,
+        Ganapathi Bhat <ganapathi.bhat@nxp.com>,
+        Xinming Hu <huxinming820@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        =?utf-8?q?Marek_Beh=C3=BAn?= <marek.behun@nic.cz>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20200529174038.6EC21C433C6@smtp.codeaurora.org>
-Date:   Fri, 29 May 2020 17:40:38 +0000 (UTC)
+Message-Id: <20200529174126.384F8C433C6@smtp.codeaurora.org>
+Date:   Fri, 29 May 2020 17:41:26 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Dan Carpenter <dan.carpenter@oracle.com> wrote:
+Pali Rohár <pali@kernel.org> wrote:
 
-> The problem is that we always copy a minimum of ETH_ZLEN (60) bytes from
-> skb->data even when skb->len is less than ETH_ZLEN so it leads to a read
-> overflow.
+> During initialization of SD8997 wifi chip kernel prints warnings:
 > 
-> The fix is to pad skb->data to at least ETH_ZLEN bytes.
+>   mwifiex_sdio mmc0:0001:1: Unknown api_id: 3
+>   mwifiex_sdio mmc0:0001:1: Unknown api_id: 4
 > 
-> Cc: <stable@vger.kernel.org>
-> Reported-by: Hu Jiahui <kirin.say@gmail.com>
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> Reviewed-by: Eric Dumazet <edumazet@google.com>
+> This patch adds support for parsing all api ids provided by SD8997
+> firmware.
+> 
+> Signed-off-by: Pali Rohár <pali@kernel.org>
+> Acked-by: Ganapathi Bhat <ganapathi.bhat@nxp.com>
 
 Patch applied to wireless-drivers-next.git, thanks.
 
-11e7a91994c2 airo: Fix read overflows sending packets
+86cffb2c0a59 mwifiex: Parse all API_VER_ID properties
 
 -- 
-https://patchwork.kernel.org/patch/11573765/
+https://patchwork.kernel.org/patch/11562833/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
