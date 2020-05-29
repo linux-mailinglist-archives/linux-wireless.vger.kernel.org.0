@@ -2,160 +2,141 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EE8EF1E8499
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 May 2020 19:19:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B205A1E84B5
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 May 2020 19:22:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727121AbgE2RTJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 29 May 2020 13:19:09 -0400
-Received: from mail.kernel.org ([198.145.29.99]:38322 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725821AbgE2RTF (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 29 May 2020 13:19:05 -0400
-Received: from pali.im (pali.im [31.31.79.79])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id AFE1D2145D;
-        Fri, 29 May 2020 17:19:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1590772744;
-        bh=JyK8zUQyhk5A6m+R7pxMSSOuhOQcJkBXJi/vF3eLeqw=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=LIGCslZ6DHQYECGxzdXBJDNNT6BCI65ftzjHieuKGrKwVGIXvm4pTRoNz/sbyM9E3
-         GGahvYPHgn7aJi2b3Tv0Pypx6N/NJ1LLTe3szHT1QYLU49xuCqe/8AKP5TQ42CLqYq
-         wq5SdzwLLok19m6l0ok26NE+yZVv5ERj7ToUkrKU=
-Received: by pali.im (Postfix)
-        id 7B9BBEB1; Fri, 29 May 2020 19:19:02 +0200 (CEST)
-Date:   Fri, 29 May 2020 19:19:02 +0200
-From:   Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
-To:     Kalle Valo <kvalo@codeaurora.org>,
-        Ganapathi Bhat <ganapathi.bhat@nxp.com>
-Cc:     Amitkumar Karwar <amitkarwar@gmail.com>,
-        Xinming Hu <huxinming820@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Marek =?utf-8?B?QmVow7pu?= <marek.behun@nic.cz>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mwifiex: Add support for NL80211_ATTR_MAX_AP_ASSOC_STA
-Message-ID: <20200529171902.wwikyr4mmqin7ce2@pali>
-References: <20200521123559.29028-1-pali@kernel.org>
+        id S1726943AbgE2RV7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 29 May 2020 13:21:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39244 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725839AbgE2RV6 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 29 May 2020 13:21:58 -0400
+Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CDF4C03E969;
+        Fri, 29 May 2020 10:21:58 -0700 (PDT)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: andrzej.p)
+        with ESMTPSA id F17622A194B
+Subject: Re: [PATCH v4 04/11] thermal: Store device mode in struct
+ thermal_zone_device
+From:   Andrzej Pietrasiewicz <andrzej.p@collabora.com>
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
+        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-renesas-soc@vger.kernel.org,
+        linux-rockchip@lists.infradead.org,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Heiko Stuebner <heiko@sntech.de>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Vishal Kulkarni <vishal@chelsio.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        kernel@collabora.com, Fabio Estevam <festevam@gmail.com>,
+        Amit Kucheria <amit.kucheria@verdurent.com>,
+        Chunyan Zhang <zhang.lyra@gmail.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Allison Randal <allison@lohutok.net>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Darren Hart <dvhart@infradead.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Gayatri Kammela <gayatri.kammela@intel.com>,
+        Len Brown <lenb@kernel.org>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Intel Linux Wireless <linuxwifi@intel.com>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Ido Schimmel <idosch@mellanox.com>,
+        Baolin Wang <baolin.wang7@gmail.com>,
+        Jiri Pirko <jiri@mellanox.com>,
+        Orson Zhai <orsonzhai@gmail.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Support Opensource <support.opensource@diasemi.com>,
+        Enrico Weigelt <info@metux.net>,
+        Peter Kaestle <peter@piie.net>,
+        Sebastian Reichel <sre@kernel.org>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        =?UTF-8?Q?Niklas_S=c3=b6derlund?= <niklas.soderlund@ragnatech.se>,
+        Shawn Guo <shawnguo@kernel.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Andy Shevchenko <andy@infradead.org>
+References: <20200529154205.GA157653@roeck-us.net>
+ <5010f7df-59d6-92ef-c99a-0dbd715f0ad2@collabora.com>
+Message-ID: <a0c0310f-9870-47be-4ca3-c07e41c380fc@collabora.com>
+Date:   Fri, 29 May 2020 19:21:50 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+In-Reply-To: <5010f7df-59d6-92ef-c99a-0dbd715f0ad2@collabora.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20200521123559.29028-1-pali@kernel.org>
-User-Agent: NeoMutt/20180716
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thursday 21 May 2020 14:35:59 Pali Rohár wrote:
-> SD8997 firmware sends TLV_TYPE_MAX_CONN with struct hw_spec_max_conn to
-> inform kernel about maximum number of p2p connections and stations in AP
-> mode.
-> 
-> During initialization of SD8997 wifi chip kernel prints warning:
-> 
->   mwifiex_sdio mmc0:0001:1: Unknown GET_HW_SPEC TLV type: 0x217
-> 
-> This patch adds support for parsing TLV_TYPE_MAX_CONN (0x217) and sets
-> appropriate cfg80211 member 'max_ap_assoc_sta' from retrieved structure.
-> 
-> It allows userspace to retrieve NL80211_ATTR_MAX_AP_ASSOC_STA attribute.
-> 
-> Signed-off-by: Pali Rohár <pali@kernel.org>
+Hi again,
 
-Hello Kalle and Ganapathi, could you please review this patch?
+W dniu 29.05.2020 o 18:08, Andrzej Pietrasiewicz pisze:
+> Hi Guenter,
+> 
+> W dniu 29.05.2020 o 17:42, Guenter Roeck pisze:
+>> On Thu, May 28, 2020 at 09:20:44PM +0200, Andrzej Pietrasiewicz wrote:
+>>> Prepare for eliminating get_mode().
+>>>
+>> Might be worthwhile to explain (not only in the subject) what you are
+>> doing here.
+>>
+>>> Signed-off-by: Andrzej Pietrasiewicz <andrzej.p@collabora.com>
+>>> ---
+>>>   drivers/acpi/thermal.c                        | 18 ++++++----------
+>>>   .../ethernet/mellanox/mlxsw/core_thermal.c    | 21 +++++++------------
+>>>   drivers/platform/x86/acerhdf.c                | 15 ++++++-------
+>>>   drivers/thermal/da9062-thermal.c              |  6 ++----
+>>>   drivers/thermal/imx_thermal.c                 | 17 +++++++--------
+>>>   .../intel/int340x_thermal/int3400_thermal.c   | 12 +++--------
+>>>   .../thermal/intel/intel_quark_dts_thermal.c   | 16 +++++++-------
+>>>   drivers/thermal/thermal_of.c                  | 10 +++------
+>>
+>> After this patch is applied on top of the thermal 'testing' branch,
+>> there are still local instances of thermal_device_mode in
+>>     drivers/thermal/st/stm_thermal.c
+>>     drivers/thermal/ti-soc-thermal/ti-thermal-common.c
+>>
+>> If there is a reason not to replace those, it might make sense to explain
+>> it here.
+>>
+> 
+> My understanding is that these two are sensor devices which are "plugged"
+> into their "parent" thermal zone device. The latter is the "proper" tzd.
+> They both use thermal_zone_of_device_ops instead of thermal_zone_device_ops.
+> The former doesn't even have get_mode(). The thermal core, when it calls
+> get_mode(), operates on the "parent" thermal zone devices.
+> 
+> Consequently, the drivers you mention use their "mode" members for
+> their private purpose, not for the purpose of storing the "parent"
+> thermal zone device mode.
+> 
 
-> ---
->  drivers/net/wireless/marvell/mwifiex/cfg80211.c |  5 +++++
->  drivers/net/wireless/marvell/mwifiex/cmdevt.c   | 12 ++++++++++++
->  drivers/net/wireless/marvell/mwifiex/fw.h       |  8 ++++++++
->  drivers/net/wireless/marvell/mwifiex/main.h     |  1 +
->  4 files changed, 26 insertions(+)
-> 
-> diff --git a/drivers/net/wireless/marvell/mwifiex/cfg80211.c b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-> index 12bfd653a..7998e91c9 100644
-> --- a/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-> +++ b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-> @@ -4339,6 +4339,11 @@ int mwifiex_register_cfg80211(struct mwifiex_adapter *adapter)
->  		wiphy->iface_combinations = &mwifiex_iface_comb_ap_sta;
->  	wiphy->n_iface_combinations = 1;
->  
-> +	if (adapter->max_sta_conn > adapter->max_p2p_conn)
-> +		wiphy->max_ap_assoc_sta = adapter->max_sta_conn;
-> +	else
-> +		wiphy->max_ap_assoc_sta = adapter->max_p2p_conn;
-> +
->  	/* Initialize cipher suits */
->  	wiphy->cipher_suites = mwifiex_cipher_suites;
->  	wiphy->n_cipher_suites = ARRAY_SIZE(mwifiex_cipher_suites);
-> diff --git a/drivers/net/wireless/marvell/mwifiex/cmdevt.c b/drivers/net/wireless/marvell/mwifiex/cmdevt.c
-> index 589cc5eb1..d068b9075 100644
-> --- a/drivers/net/wireless/marvell/mwifiex/cmdevt.c
-> +++ b/drivers/net/wireless/marvell/mwifiex/cmdevt.c
-> @@ -1495,6 +1495,7 @@ int mwifiex_ret_get_hw_spec(struct mwifiex_private *priv,
->  	struct mwifiex_adapter *adapter = priv->adapter;
->  	struct mwifiex_ie_types_header *tlv;
->  	struct hw_spec_api_rev *api_rev;
-> +	struct hw_spec_max_conn *max_conn;
->  	u16 resp_size, api_id;
->  	int i, left_len, parsed_len = 0;
->  
-> @@ -1604,6 +1605,17 @@ int mwifiex_ret_get_hw_spec(struct mwifiex_private *priv,
->  					break;
->  				}
->  				break;
-> +			case TLV_TYPE_MAX_CONN:
-> +				max_conn = (struct hw_spec_max_conn *)tlv;
-> +				adapter->max_p2p_conn = max_conn->max_p2p_conn;
-> +				adapter->max_sta_conn = max_conn->max_sta_conn;
-> +				mwifiex_dbg(adapter, INFO,
-> +					    "max p2p connections: %u\n",
-> +					    adapter->max_p2p_conn);
-> +				mwifiex_dbg(adapter, INFO,
-> +					    "max sta connections: %u\n",
-> +					    adapter->max_sta_conn);
-> +				break;
->  			default:
->  				mwifiex_dbg(adapter, FATAL,
->  					    "Unknown GET_HW_SPEC TLV type: %#x\n",
-> diff --git a/drivers/net/wireless/marvell/mwifiex/fw.h b/drivers/net/wireless/marvell/mwifiex/fw.h
-> index 6f86f5b96..8047e3078 100644
-> --- a/drivers/net/wireless/marvell/mwifiex/fw.h
-> +++ b/drivers/net/wireless/marvell/mwifiex/fw.h
-> @@ -220,6 +220,7 @@ enum MWIFIEX_802_11_PRIVACY_FILTER {
->  #define TLV_TYPE_BSS_MODE           (PROPRIETARY_TLV_BASE_ID + 206)
->  #define TLV_TYPE_RANDOM_MAC         (PROPRIETARY_TLV_BASE_ID + 236)
->  #define TLV_TYPE_CHAN_ATTR_CFG      (PROPRIETARY_TLV_BASE_ID + 237)
-> +#define TLV_TYPE_MAX_CONN           (PROPRIETARY_TLV_BASE_ID + 279)
->  
->  #define MWIFIEX_TX_DATA_BUF_SIZE_2K        2048
->  
-> @@ -2388,4 +2389,11 @@ struct mwifiex_opt_sleep_confirm {
->  	__le16 action;
->  	__le16 resp_ctrl;
->  } __packed;
-> +
-> +struct hw_spec_max_conn {
-> +	struct mwifiex_ie_types_header header;
-> +	u8 max_p2p_conn;
-> +	u8 max_sta_conn;
-> +} __packed;
-> +
->  #endif /* !_MWIFIEX_FW_H_ */
-> diff --git a/drivers/net/wireless/marvell/mwifiex/main.h b/drivers/net/wireless/marvell/mwifiex/main.h
-> index afaffc325..5923c5c14 100644
-> --- a/drivers/net/wireless/marvell/mwifiex/main.h
-> +++ b/drivers/net/wireless/marvell/mwifiex/main.h
-> @@ -1022,6 +1022,7 @@ struct mwifiex_adapter {
->  	bool ext_scan;
->  	u8 fw_api_ver;
->  	u8 key_api_major_ver, key_api_minor_ver;
-> +	u8 max_p2p_conn, max_sta_conn;
->  	struct memory_type_mapping *mem_type_mapping_tbl;
->  	u8 num_mem_types;
->  	bool scan_chan_gap_enabled;
-> -- 
-> 2.20.1
-> 
+Let me also say it differently.
+
+Both drivers which you mention use devm_thermal_zone_of_sensor_register().
+It calls thermal_zone_of_sensor_register(), which "will search the list of
+thermal zones described in device tree and look for the zone that refer to
+the sensor device pointed by @dev->of_node as temperature providers. For
+the zone pointing to the sensor node, the sensor will be added to the DT
+thermal zone device." When a match is found thermal_zone_of_add_sensor()
+is invoked, which (using thermal_zone_get_zone_by_name()) iterates over
+all registered thermal_zone_devices. The one eventually found will be
+returned and propagated to the original caller of
+devm_thermal_zone_of_sensor_register(). The state of this returned
+device is managed elsewhere (in that device's struct tzd). The "mode"
+member you are referring to is thus unrelated.
+
+Regards,
+
+Andrzej
