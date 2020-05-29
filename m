@@ -2,119 +2,109 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 049AA1E788A
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 May 2020 10:40:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 107451E7891
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 May 2020 10:44:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725836AbgE2Ikr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 29 May 2020 04:40:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42686 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725306AbgE2Ikr (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 29 May 2020 04:40:47 -0400
-Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com [IPv6:2a00:1450:4864:20::343])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3DA3C03E969
-        for <linux-wireless@vger.kernel.org>; Fri, 29 May 2020 01:40:46 -0700 (PDT)
-Received: by mail-wm1-x343.google.com with SMTP id r15so2380874wmh.5
-        for <linux-wireless@vger.kernel.org>; Fri, 29 May 2020 01:40:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=mrnSlBqjdrlRFZbyGF+1XBS7NqKFeuIz3NiADPPTJF4=;
-        b=Egq92YjYPpXulXwim+fncQ15GMAiadAdE4yXiXxjDxNKAI/hzHRYQh8AKvgeVhtCoi
-         XKRLhTBRhlZo9A5lsLFRG/iqPrZe8w+fCqmacdlA1YGRc8wCF5LeAoo5nbFqudgLrHNV
-         g50Pdtk42geELKmY6cu9clvrZnORKIGiEbBME=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=mrnSlBqjdrlRFZbyGF+1XBS7NqKFeuIz3NiADPPTJF4=;
-        b=fd+Mh76fTr1CyvuIujtAjjV/zwg8COau0dNTspc39aBQytRgHa3j7Mlev8bB/sl31N
-         EKhMcQedeE4OooHE/oiQVqLTaOLhdYef+lUmmnysxotmmQpRf3FIR08g328sDsqbizy4
-         Ur8R5/NzVIvuZtvZYcW8uRroDXeWkBwOR287GHJ8TVAZ/kYY7KwFBR1MawBfqQc5rubT
-         eF1wtHSpphKC89aNimCLr1SSwB10SjPQ81a5EjMOAqf5/KXMXogiiMN32hUiJVWJ5g35
-         AeE9n+vueksTruTHwrhXrj8FgKB8HeaQR4ZfnxWNzySDjIhaliH0VXCUXAgF24jsZFRm
-         sb2A==
-X-Gm-Message-State: AOAM530ZtGMVLN5jyOwm53/uBGQetx8TZ77xwlrsLqtWfUUzndGv1x+2
-        lv46dp8KlnZK54MpR9pNTKiONg==
-X-Google-Smtp-Source: ABdhPJywQHk+BIn58XxzAePuecsaGKrDZbjMAfiKYojXujAZwlWU9ktRTH9N8rq4B3NUgKKIlfEj/g==
-X-Received: by 2002:a1c:55c4:: with SMTP id j187mr7077740wmb.75.1590741645612;
-        Fri, 29 May 2020 01:40:45 -0700 (PDT)
-Received: from [192.168.178.129] (f140230.upc-f.chello.nl. [80.56.140.230])
-        by smtp.gmail.com with ESMTPSA id i74sm9104154wri.49.2020.05.29.01.40.44
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 29 May 2020 01:40:45 -0700 (PDT)
-Subject: Re: [PATCH] cfg80211: adapt to new channelization of the 6GHz band
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
-        Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>,
-        Jouni Malinen <j@w1.fi>
-References: <1590053692-237138-1-git-send-email-arend.vanspriel@broadcom.com>
- <cbc3a214-db0d-18d4-b878-80277c210956@broadcom.com>
- <8dc9a15d50a28aea21cf452b5abe8487a542ae8e.camel@sipsolutions.net>
-From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
-Message-ID: <5732ba1c-ee47-dcfd-292a-fe2ae7ab0b6d@broadcom.com>
-Date:   Fri, 29 May 2020 10:40:44 +0200
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.1
-MIME-Version: 1.0
-In-Reply-To: <8dc9a15d50a28aea21cf452b5abe8487a542ae8e.camel@sipsolutions.net>
-Content-Type: text/plain; charset=utf-8; format=flowed
+        id S1726235AbgE2IoA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 29 May 2020 04:44:00 -0400
+Received: from mail-db8eur05on2072.outbound.protection.outlook.com ([40.107.20.72]:6091
+        "EHLO EUR05-DB8-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725306AbgE2In7 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 29 May 2020 04:43:59 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=e2tYrUYnHPwl25J5oEx3O3IpH0Fz7Zfm8xlT99n5AGRWznmJzNLs6EdfvNOO+x5xNgdbRmY9k6FcikZqD3O9lpwe73KA0jO2ktx5iov9y7R9i5WNSghBna764heEqGawCBU+ojknfBogxpfyJz8HcXCOBflpWNTc9qLaupCcO8z1MuV+at17pd0DeMQEIcUfgEZs7Fhyvb0ddfWQnQGmdutYpMr4bs2CSt1QGf4rKsBj6+iPk+zhdd0/07CvI2Y4EEAJ7ni9p+zI1Hy+4Eimdz+fvHx7eibNC246rQcE1lxUZN72diihibAPsi+9toPfU1ERq0VTSscspV3CdeD3aw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=78GDs1gfvZQWswkAYwsFeuk4nP3hvK73o8X1JV7dIuI=;
+ b=T0BIDKRXwMlODiP3DF5BGAnGr6RHIERAvhL3nauTIuIksHNJ4pHLL0Kcs4i+6E8Nty5dcxMeV2hHdyophW+ILTL4pHbVdAfyp0XD7TIXeklKDwzS7Ow1jHG5I3bL6FIlNfn09tlWC8kLMfukAZEbUk/AYQmPPvy7RPG0SFypGqBt3rmeCZPIUNJX9xxN5h6G/nriOdiFF0iiaFIjK1Kc+ubbWL3D2GK3cXr/NhjySLQLq5gWjxuWPWq2/1ZuP5VUgTXUQ49i/ixt9QpjLM424yF4OVTc0ZxAnMKbKTKbTj5jMhyEfj7ewwZjuAOfbMdc8NOVKHcsz0NC8kPkIPNj8Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=78GDs1gfvZQWswkAYwsFeuk4nP3hvK73o8X1JV7dIuI=;
+ b=dR4tUQykTCxX0biQAufLtB1Rt4MvcQIOo2EZ21IMwYDld4PBp93aFigT9r7hdJTqAQ8WfBDJkdNB9kZ5leOU2XsHHyknK/oEBX84xuDGC1J/qN67QIQbtgR5kDRRfmdK+v1IKr+YnGiszL1egcZLgpK7Qe36Q6v0NgSpr+bxxxk=
+Received: from VI1PR04MB4366.eurprd04.prod.outlook.com (2603:10a6:803:3d::27)
+ by VI1PR04MB5295.eurprd04.prod.outlook.com (2603:10a6:803:59::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3045.19; Fri, 29 May
+ 2020 08:43:56 +0000
+Received: from VI1PR04MB4366.eurprd04.prod.outlook.com
+ ([fe80::8102:b59d:36b:4d09]) by VI1PR04MB4366.eurprd04.prod.outlook.com
+ ([fe80::8102:b59d:36b:4d09%7]) with mapi id 15.20.3045.018; Fri, 29 May 2020
+ 08:43:56 +0000
+From:   Ganapathi Bhat <ganapathi.bhat@nxp.com>
+To:     =?iso-8859-1?Q?Pali_Roh=E1r?= <pali@kernel.org>
+CC:     Amitkumar Karwar <amitkarwar@gmail.com>,
+        Xinming Hu <huxinming820@gmail.com>,
+        =?iso-8859-1?Q?Marek_Beh=FAn?= <marek.behun@nic.cz>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [EXT] mwifiex: Firmware name for W8997 sdio wifi chip
+Thread-Topic: [EXT] mwifiex: Firmware name for W8997 sdio wifi chip
+Thread-Index: AQHWKrwXtO/N2oQua0+uJ10PPhSg4aiqXxHQgBMCnACAAXIN0A==
+Date:   Fri, 29 May 2020 08:43:56 +0000
+Message-ID: <VI1PR04MB4366409B8E293A265851DA948F8F0@VI1PR04MB4366.eurprd04.prod.outlook.com>
+References: <20200515132353.vfor7v4buzoddfmb@pali>
+ <VI1PR04MB4366625917BB57695BE454448FBA0@VI1PR04MB4366.eurprd04.prod.outlook.com>
+ <20200528103432.irmsaaz72x3xophg@pali>
+In-Reply-To: <20200528103432.irmsaaz72x3xophg@pali>
+Accept-Language: en-US
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: kernel.org; dkim=none (message not signed)
+ header.d=none;kernel.org; dmarc=none action=none header.from=nxp.com;
+x-originating-ip: [103.54.18.180]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-ht: Tenant
+x-ms-office365-filtering-correlation-id: 92e6a581-0b34-4d0b-1f3b-08d803ac6c89
+x-ms-traffictypediagnostic: VI1PR04MB5295:
+x-microsoft-antispam-prvs: <VI1PR04MB52952FEDF358E119E661F0C98F8F0@VI1PR04MB5295.eurprd04.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:3631;
+x-forefront-prvs: 04180B6720
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: ENbWaQTbktIL5J8Rfvc5feJQlAg1dH3J7kTotT/LRmMoVN22Mxq5vA1UboSeZWm9lATFOyEw6w2ihod2ZGIFw3DaGumwkhAaq2bft653TWc6UHMXfadcOYHLr0VTewQMbpu4jQJXGHHIMtnmuhh0ZJJb+S5KYPhf9VILuE2ENfD+h6Qqg2zh0oDV2WfiB4NAmuMNYdapB6G+rOziDE1LTomVeO0qJBrKh5RYyEdB1eTE0Ek5DvUEBc5pHxOUMO3OMmDiL/m2lLsxj9ucqpWljtMsVfYnROkj0Rn1V9mEx4QXqGJjIGjC2p/1Hw3uHo79YAwp9SAjtgs43nMrIXXs4g==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR04MB4366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(4636009)(136003)(346002)(39860400002)(376002)(396003)(366004)(52536014)(4744005)(54906003)(33656002)(5660300002)(71200400001)(2906002)(6916009)(8936002)(64756008)(316002)(66556008)(66446008)(8676002)(66946007)(76116006)(66476007)(44832011)(83380400001)(55016002)(7696005)(86362001)(6506007)(9686003)(478600001)(186003)(26005)(4326008);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata: svWWM8QpfiDKlON5mb0JWqsXsddCuzJhX0QOJD9Ew0lSXjN0gRzeEdQabNuWkqiTgQDo5WZg400gwh3FIMZ4FBCKYbt5to+svB3Q35sWU1RFDhTMKiu1aLfYjvS9tXkIs527rpf36WsNJO7ezY55AF8gm+uv3QnGEXPG5EJPsrZku1+570RLTd8yMnfu9hZJ8hw8+3dpmS5rS8G/NNyrMcGwYHUumU/PdBii1riDalVu7nqUH7dOpfs7KLCgamBIhIhNzcDgtzuufsKqjzubzGZYxxMYeYxuyGZ1TDFp4r7wIFocObDToP83F/+RnmdUKZajV64HM4UDAZC139ld0zqST5TdS/o1ux2T0dr7wIN3XHyTEv5eXOORGfxVY34sXPc403kKTAafuwgZLU7AgQult0Kx4wm8LoceJP4OPxvtZv+2uKiSCc6xjmCpolC2AHLOqB88MZ+gXVYJ2lGKaozeVz6yWLUXP7Q3ESr8BasPXvblJtV/UgTb2ymGbGCJ
+x-ms-exchange-transport-forked: True
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 92e6a581-0b34-4d0b-1f3b-08d803ac6c89
+X-MS-Exchange-CrossTenant-originalarrivaltime: 29 May 2020 08:43:56.2029
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: fAzOjf9zYnbMxQinVHbuByHvlwWo2NY4fztxb9I5uzPGozno1nwfDcjpXqbzHnqvCWHuAK7iTcdT5JnGLGj7xw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB5295
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 5/29/2020 10:19 AM, Johannes Berg wrote:
-> On Fri, 2020-05-29 at 10:16 +0200, Arend Van Spriel wrote:
->> The 6GHz band does not have regulatory approval yet, but things are
->> moving forward. However, that has led to a change in the channelization
->> of the 6GHz band which has been accepted in the 11ax specification.
->>
->>    	case NL80211_BAND_6GHZ:
->> -		/* see 802.11ax D4.1 27.3.22.2 */
->> +		/* see 802.11ax D6.1 27.3.23.2 */
->> +		if (chan == 2)
->> +			return MHZ_TO_KHZ(5935);
-> 
-> I think Jouni said this was operating class 136?
-> 
->> +	/* 6GHz, channels 1..233 */
->> +	if (freq >= 5935 && freq <= 7115) {
->> +		switch (chandef->width) {
->> +		case NL80211_CHAN_WIDTH_20:
->> +			*op_class = 131;
->> +			break;
->> +		case NL80211_CHAN_WIDTH_40:
->> +			*op_class = 132;
->> +			break;
->> +		case NL80211_CHAN_WIDTH_80:
->> +			*op_class = 133;
->> +			break;
->> +		case NL80211_CHAN_WIDTH_160:
->> +			*op_class = 134;
->> +			break;
->> +		case NL80211_CHAN_WIDTH_80P80:
->> +			*op_class = 135;
->> +			break;
->> +		case NL80211_CHAN_WIDTH_5:
->> +		case NL80211_CHAN_WIDTH_10:
->> +		case NL80211_CHAN_WIDTH_20_NOHT:
->> +		default:
->> +			return false;
->> +		}
-> 
-> If so, isn't that missing here?
+Hi Pali,
 
-At least should indeed take it into account here. However I can not get 
-my hands on the 6.1 spec (yet). I have the document with editor 
-instructions and operating class for channel 2 is marked as <ANA> in 
-table Annex E-4. 136 would be the logical value, but without the 6.1 
-spec I am not sure. I will resend the patch.
+> According to publicly available information, firmware for these W8xxx
+> Marvell wifi chips is vulnerable to security issue CVE-2019-6496 [1].
+>=20
+> Are you able to update firmwares to the last versions and give us some
+> information which (old) firmware versions are affected by that security i=
+ssue?
+>=20
+> So Linux distribution would know if they are distributing older vulnerabl=
+e
+> firmwares and should push security fixes with new firmware versions.
+>=20
+
+88W8787, 88W8797, 88W8801, 88W8897, and 88W8997 models are all already upda=
+ted, with one exception:
+usb8897_uapsta.bin, which we will upstream soon;
 
 Regards,
-Arend
+Ganapathi
