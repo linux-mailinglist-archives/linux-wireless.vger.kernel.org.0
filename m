@@ -2,125 +2,63 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3ED3F1E7C33
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 May 2020 13:46:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1BD591E7C8E
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 May 2020 14:04:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726757AbgE2Lqk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 29 May 2020 07:46:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43348 "EHLO
+        id S1726579AbgE2MEi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 29 May 2020 08:04:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46154 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725790AbgE2Lqk (ORCPT
+        with ESMTP id S1725775AbgE2MEi (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 29 May 2020 07:46:40 -0400
-Received: from mail-ej1-x641.google.com (mail-ej1-x641.google.com [IPv6:2a00:1450:4864:20::641])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27975C03E969
-        for <linux-wireless@vger.kernel.org>; Fri, 29 May 2020 04:46:40 -0700 (PDT)
-Received: by mail-ej1-x641.google.com with SMTP id f7so1768076ejq.6
-        for <linux-wireless@vger.kernel.org>; Fri, 29 May 2020 04:46:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google;
-        h=from:to:cc:date:message-id:in-reply-to:references:user-agent
-         :subject:mime-version:content-transfer-encoding;
-        bh=0iVivS8i9Q+ttgxYMhIlTUf7VGPcp6pJZcCKZpFDfxE=;
-        b=FJYboE6bQZ6CDu95MkZMm13fuxIYeQJM5aU/ayWAZDAvGunD87uwwL50pCeIfHTYQf
-         pT6ez0T8sTb5ackNrRUrWL3SBfSPCQJjyZOWu1ccCQxulNhYy9f9JzAUOYpn4U7JMSNd
-         v7TspqjOAff2MbnemxjuSZRwxjKIoPIkI3EkE=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:date:message-id:in-reply-to
-         :references:user-agent:subject:mime-version
-         :content-transfer-encoding;
-        bh=0iVivS8i9Q+ttgxYMhIlTUf7VGPcp6pJZcCKZpFDfxE=;
-        b=dD61dk76sB1pgaOb9TWvP6D7bCM08AiFnDBYF0MzAzzQajB35u7eLwjG1eLso3c8F5
-         eME62AEcmeMrmVmP6DKd3nlLIoZcG5g3NxbYo5yEpujMYfjvx6wgVvC414uGMwEOod9P
-         FvpF2V61zZMGnZ7uRbhGiTWEhixmfKQIfqd33arym9cszp17/jRJBGULb5at/muua63B
-         PEnf8T152FW/VC31GAEzMrxoH6C2ANNMeI2kdNXfctYo+YCczb+ApTDxIW9b5ja9R5Zt
-         n7Xn+VM83BSvoQR2XwGH4v9l/wTPkooRCnnSPS3kK2WAuHmA2V6uDv81yoDuT+eqJ+R5
-         3XUw==
-X-Gm-Message-State: AOAM532dVSiKIdplUK/VyP667Gy1m3f+DuVTVVIIX6d+fovs+Ka7bcip
-        XWmhkP2EiE41K+hRjl9TqdYyGEwpqUmBXzNS
-X-Google-Smtp-Source: ABdhPJwj/z9MNyx/oVv5Ri7eQlAujQMOWFZ/YP/ptbHJXM0Mg2QN4EZ7CRahyHUax/yXPxBVDLMVEw==
-X-Received: by 2002:a17:906:2e50:: with SMTP id r16mr7083854eji.305.1590752798783;
-        Fri, 29 May 2020 04:46:38 -0700 (PDT)
-Received: from [192.168.178.38] (f140230.upc-f.chello.nl. [80.56.140.230])
-        by smtp.gmail.com with ESMTPSA id cf7sm6604653edb.17.2020.05.29.04.46.36
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 29 May 2020 04:46:37 -0700 (PDT)
-From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
-To:     Johannes Berg <johannes@sipsolutions.net>
-CC:     "linux-wireless" <linux-wireless@vger.kernel.org>,
-        Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>,
-        Jouni Malinen <j@w1.fi>
-Date:   Fri, 29 May 2020 13:46:36 +0200
-Message-ID: <17260415d60.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
-In-Reply-To: <19c8ea7e8b0f78036cda9ecf55484755582cf6bb.camel@sipsolutions.net>
-References: <1590744414-55473-1-git-send-email-arend.vanspriel@broadcom.com>
- <edf07cdd-ad15-4012-3afd-d8b961a80b69@broadcom.com>
- (sfid-20200529_114146_502376_6F982EE1)
- <19c8ea7e8b0f78036cda9ecf55484755582cf6bb.camel@sipsolutions.net>
-User-Agent: AquaMail/1.24.0-1585 (build: 102400006)
-Subject: Re: [PATCH V2] cfg80211: adapt to new channelization of the 6GHz band
+        Fri, 29 May 2020 08:04:38 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70A3FC03E969
+        for <linux-wireless@vger.kernel.org>; Fri, 29 May 2020 05:04:38 -0700 (PDT)
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.93)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1jedkZ-005UbF-PY; Fri, 29 May 2020 14:04:35 +0200
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     linux-wireless@vger.kernel.org
+Cc:     Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH] cfg80211: fix 6 GHz frequencies to kHz
+Date:   Fri, 29 May 2020 14:04:27 +0200
+Message-Id: <20200529140425.1bf824f6911b.I4a1174916b8f5965af4366999eb9ffc7a0347470@changeid>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-Content-Type: text/plain; format=flowed; charset="us-ascii"
 Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On May 29, 2020 11:53:30 AM Johannes Berg <johannes@sipsolutions.net> wrote:
+From: Johannes Berg <johannes.berg@intel.com>
 
-> On Fri, 2020-05-29 at 11:41 +0200, Arend Van Spriel wrote:
->> It also fixes a missing MHZ_TO_KHZ() macro for 6GHz channels while at it.
->
-> Yeah, I actually saw and fixed that earlier, but whatever. I can fix up
-> any issues.
->
->> case NL80211_BAND_6GHZ:
->> - /* see 802.11ax D4.1 27.3.22.2 */
->> + /* see 802.11ax D6.1 27.3.23.2 */
->> + if (chan == 2)
->> + return MHZ_TO_KHZ(5935);
->> if (chan <= 253)
->> - return 5940 + chan * 5;
->> + return MHZ_TO_KHZ(5950 + chan * 5);
->
-> So this can return 5950+5*253 == 7215
->
->> @@ -119,11 +121,14 @@ int ieee80211_freq_khz_to_channel(u32 freq)
->
->> else if (freq <= 45000) /* DMG band lower limit */
->> - /* see 802.11ax D4.1 27.3.22.2 */
->> - return (freq - 5940) / 5;
->> + /* see 802.11ax D6.1 27.3.23.2 */
->> + return (freq - 5950) / 5;
->
-> and here you have no real upper bound, which is fine
->
->> @@ -1662,6 +1667,40 @@ bool ieee80211_chandef_to_operating_class(struct
->
->> + /* 6GHz, channels 1..233 */
->> + if (freq == 5935) {
->> + if (chandef->width != NL80211_CHAN_WIDTH_20)
->> + return false;
->> +
->> + *op_class = 136;
->> + return true;
->> + } else if (freq > 5935 && freq <= 7115) {
->
-> but here both the comment and the code say 7115? Should that be 1..253
-> and 7215, respectively?
->
-> I can fix, no need to resend.
+The updates to change to kHz frequencies and the 6 GHz
+additions evidently overlapped (or rather, I didn't see
+it when applying the latter), so the 6 GHz is broken.
+Fix this.
 
-The 802.11 spec specifies the 1..253 range. The FCC has proposed the U-NII 
-bands 5 to 8 for the 6G band. U-NII-8 ends at 7125 so the highest 20MHz 
-center freq is 7115, ie. channel 233. Have to admit that mixing the two in 
-this patch can be confusing. I leave it at your discretion how to fix it. I 
-can also resend if necessary.
+Fixes: 934f4c7dd3a5 ("cfg80211: express channels with a KHz component")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+---
+ net/wireless/util.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Regards,
-Arend
-
-
+diff --git a/net/wireless/util.c b/net/wireless/util.c
+index df75e58eca5d..5b3b0d1222a2 100644
+--- a/net/wireless/util.c
++++ b/net/wireless/util.c
+@@ -94,7 +94,7 @@ u32 ieee80211_channel_to_freq_khz(int chan, enum nl80211_band band)
+ 	case NL80211_BAND_6GHZ:
+ 		/* see 802.11ax D4.1 27.3.22.2 */
+ 		if (chan <= 253)
+-			return 5940 + chan * 5;
++			return MHZ_TO_KHZ(5940 + chan * 5);
+ 		break;
+ 	case NL80211_BAND_60GHZ:
+ 		if (chan < 7)
+-- 
+2.26.2
 
