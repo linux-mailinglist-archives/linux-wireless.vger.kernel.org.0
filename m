@@ -2,115 +2,114 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2DBE51E80F6
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 May 2020 16:52:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 207D41E812C
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 May 2020 17:05:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726907AbgE2OwG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 29 May 2020 10:52:06 -0400
-Received: from mail27.static.mailgun.info ([104.130.122.27]:25812 "EHLO
-        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726476AbgE2OwF (ORCPT
+        id S1727027AbgE2PFx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 29 May 2020 11:05:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46130 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726900AbgE2PFx (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 29 May 2020 10:52:05 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1590763925; h=Message-ID: References: In-Reply-To: Subject:
- Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
- MIME-Version: Sender; bh=v/Rs67JNO7w/HTKxrh2duaFxLsZGJt9CRKendA0K2IM=;
- b=Nbotl77T41YtTQ4/GRwi+EOwroPDjY0m0M95z/Fhs+vcJuWjv0xrDjZ5P8GyqksMmpdqea4x
- 9+NwfHFyqAX7YEqNG9+IzAcP7vLRXA7RwulR4tAv3Hk5gi+2LGZqOQhAzuDRzTc7OpQc8lIT
- +aTto0Z0+HqMRDxrF15DpXEKYxY=
-X-Mailgun-Sending-Ip: 104.130.122.27
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n02.prod.us-west-2.postgun.com with SMTP id
- 5ed1217fc6d4683243abc350 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 29 May 2020 14:51:43
- GMT
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 410E9C433CA; Fri, 29 May 2020 14:51:43 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: murugana)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id DABC4C433C9;
-        Fri, 29 May 2020 14:51:42 +0000 (UTC)
+        Fri, 29 May 2020 11:05:53 -0400
+Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com [IPv6:2607:f8b0:4864:20::643])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBA35C03E969;
+        Fri, 29 May 2020 08:05:52 -0700 (PDT)
+Received: by mail-pl1-x643.google.com with SMTP id m7so1262786plt.5;
+        Fri, 29 May 2020 08:05:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition:user-agent;
+        bh=/9QtcEbKXfSNd6feJXtVNBLkm/HB/zDagS27p6rwHqQ=;
+        b=qSTu3FS1pH6rTOhpEl7mQBPlB0nfj8DPoBnNJBjGJle0vPvr7h+0pzEf46FzYRp27K
+         oupOOhVj00G0SWyvIa6wOWeRbcm+9+COI14yoWHxJWpJIoSDx+AP36Ox4QWShXTGNZxN
+         TxNkEiXdQQ9kY1huboUiQ+2kC/e6Aih6vjiUX3CQoEa6CwMQKX7IQKpJU0v4jYKtZPm2
+         HNIdojbfSui/yD8HKZq1d++WtYy8Q4W5cZ4e7l9/vgFWt0U4KHS2ubxYSBOAYDZ89Unj
+         LhG/A5ZUkMuhAVUk0XM9tRPDxwR/WS+7DJuWESvgkRbh3eMDTFArLl4L0Zmo4oKgR8u3
+         0EEg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :mime-version:content-disposition:user-agent;
+        bh=/9QtcEbKXfSNd6feJXtVNBLkm/HB/zDagS27p6rwHqQ=;
+        b=QO8f2KsprAJmBA40jLRKUdhf+j0h51jk8ib57jGQnQwLwdE9p7wV8uJJH9IYorj1+S
+         kdTs8pkVdMR1m4bvz5lieW7VF8MC0Gnx3OEtw+HKDcVAw/deHjhkglB6njkBpsworE6c
+         v6nplP1hIFuG+elWHNickegkexNSGGlfxb7mTniPm/mjwdXLs/QH7owvbPXahUzgL2h4
+         U42DOkE+Et0SRiBjl0IcC+NndJpvka+iSNo8okkvZG03sEU3YxmVqpv/sOLPXuIMXxB7
+         7Od955gQItLtCHZiAPx3WxTK1/LywE+BRdEklgCgyXdr38v3d1kowDl2lEjfxaDEGMYk
+         +RTA==
+X-Gm-Message-State: AOAM531rYDczjoIE1wsvBbN0A8DQgNINiuA17J0mJ0itpPLf/azUSbGU
+        FL6gBWqtYhzfshKid8ArSqY=
+X-Google-Smtp-Source: ABdhPJx1brJDIFAXFe0nbUSyhXFeAV3BsFWLNPpVKbWXwwZAgQOrMCreap/a2uy/VNLw/df7eQUMbg==
+X-Received: by 2002:a17:90a:f40a:: with SMTP id ch10mr9777692pjb.161.1590764751884;
+        Fri, 29 May 2020 08:05:51 -0700 (PDT)
+Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id w19sm7592452pfq.43.2020.05.29.08.05.50
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Fri, 29 May 2020 08:05:50 -0700 (PDT)
+Date:   Fri, 29 May 2020 08:05:49 -0700
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Andrzej Pietrasiewicz <andrzej.p@collabora.com>
+Cc:     linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
+        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-renesas-soc@vger.kernel.org,
+        linux-rockchip@lists.infradead.org,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Heiko Stuebner <heiko@sntech.de>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Vishal Kulkarni <vishal@chelsio.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        kernel@collabora.com, Fabio Estevam <festevam@gmail.com>,
+        Amit Kucheria <amit.kucheria@verdurent.com>,
+        Chunyan Zhang <zhang.lyra@gmail.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Allison Randal <allison@lohutok.net>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Darren Hart <dvhart@infradead.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Gayatri Kammela <gayatri.kammela@intel.com>,
+        Len Brown <lenb@kernel.org>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Intel Linux Wireless <linuxwifi@intel.com>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Ido Schimmel <idosch@mellanox.com>,
+        Baolin Wang <baolin.wang7@gmail.com>,
+        Jiri Pirko <jiri@mellanox.com>,
+        Orson Zhai <orsonzhai@gmail.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Support Opensource <support.opensource@diasemi.com>,
+        Enrico Weigelt <info@metux.net>,
+        Peter Kaestle <peter@piie.net>,
+        Sebastian Reichel <sre@kernel.org>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Niklas =?iso-8859-1?Q?S=F6derlund?= 
+        <niklas.soderlund@ragnatech.se>, Shawn Guo <shawnguo@kernel.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Andy Shevchenko <andy@infradead.org>
+Subject: Re: [PATCH v4 02/11] thermal: Store thermal mode in a dedicated enum
+Message-ID: <20200529150549.GA154196@roeck-us.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Fri, 29 May 2020 20:21:42 +0530
-From:   Sathishkumar Muruganandam <murugana@codeaurora.org>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH 1/2] mac80211: enable TKIP when using encapsulation
- offloading
-In-Reply-To: <86c1e5d23093f350bdabdde4c305c33ecde06b3b.camel@sipsolutions.net>
-References: <1587720951-9222-1-git-send-email-murugana@codeaurora.org>
- <1587720951-9222-2-git-send-email-murugana@codeaurora.org>
- (sfid-20200424_113624_468114_4CC488DE)
- <d4e39180f0a8a8b07dc558c9439b66cd2c3aec07.camel@sipsolutions.net>
- <7fb606edf1e5c7ab5b1446d637768ee7@codeaurora.org>
- <aaa53c3a9cf6788cb653eb574073a1a0bcc5e6bf.camel@sipsolutions.net>
- <4bab3197997bb2dd6555ff920c5dd1cb@codeaurora.org>
- <f2b8fb0783b270a177ee900168fdc1fbc9253e3d.camel@sipsolutions.net>
- <92eddf5d153781b2698ad258aac2fbe4@codeaurora.org>
- <86c1e5d23093f350bdabdde4c305c33ecde06b3b.camel@sipsolutions.net>
-Message-ID: <21fcffb4db13e9f0b70669d2e7f97d8a@codeaurora.org>
-X-Sender: murugana@codeaurora.org
-User-Agent: Roundcube Webmail/1.3.9
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2020-05-29 20:14, Johannes Berg wrote:
-> On Fri, 2020-05-29 at 20:10 +0530, Sathishkumar Muruganandam wrote:
->> On 2020-05-29 18:16, Johannes Berg wrote:
->> > On Fri, 2020-05-29 at 17:59 +0530, Sathishkumar Muruganandam wrote:
->> > > Yes, currently only tx encap support is added and rx decap support is
->> > > in
->> > > progress to do TKIP MIC error reporting to userspace via
->> > > cfg80211_michael_mic_failure().
->> >
->> > Yes, but can you actually call that? It requires a netdev. I don't
->> > think
->> > you can easily get it from the vif?
->> >
->> 
->> Yes, that's right. Currently the plan is to add new mac80211 api for 
->> rx
->> decap where
->> we can call cfg80211_michael_mic_failure() and not called directly 
->> from
->> driver.
+On Thu, May 28, 2020 at 09:20:42PM +0200, Andrzej Pietrasiewicz wrote:
+> Prepare for storing mode in struct thermal_zone_device.
 > 
-> Sure, that sounds fine.
-> 
-> Really what I was saying is that we should have that together, not just
-> this patch that allows TKIP offload, but then nothing that actually
-> makes that working properly/safely.
+> Signed-off-by: Andrzej Pietrasiewicz <andrzej.p@collabora.com>
 
-Sure, thanks Johannes !
-
-Will include this along with rx decap patch.
-
-> 
->> Whether we can expose netdev to driver for doing such cfg80211 call ?
-> 
-> I've always worried that if we expose the netdev we'll just get all
-> kinds of messy things happening in the driver :)
-> 
-> But maybe not. I guess it doesn't make a big difference.
-> 
-
-Sure, will fallback to mac80211 approach for rx decap. Thanks for your 
-review !
+What is the baseline for this series ? I can't get this patch to apply
+on top of current mainline, nor on v5.6, nor on top of linux-next.
 
 Thanks,
-Sathishkumar
+Guenter
