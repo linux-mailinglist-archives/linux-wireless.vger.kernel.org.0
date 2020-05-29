@@ -2,38 +2,37 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AE0061E775B
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 May 2020 09:45:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B5801E7794
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 May 2020 09:59:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726871AbgE2Hom (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 29 May 2020 03:44:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33974 "EHLO
+        id S1725601AbgE2H7x (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 29 May 2020 03:59:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36312 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726862AbgE2Hol (ORCPT
+        with ESMTP id S1725355AbgE2H7w (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 29 May 2020 03:44:41 -0400
+        Fri, 29 May 2020 03:59:52 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7AACC03E969
-        for <linux-wireless@vger.kernel.org>; Fri, 29 May 2020 00:44:40 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83C3FC03E969
+        for <linux-wireless@vger.kernel.org>; Fri, 29 May 2020 00:59:52 -0700 (PDT)
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.93)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1jeZgy-005O0Y-0O; Fri, 29 May 2020 09:44:36 +0200
-Message-ID: <fe9251f1e68e1065e37d60c57c22c9f1ad70bc80.camel@sipsolutions.net>
-Subject: Re: iwlist scanning: how to exclude old scan results from output?
+        id 1jeZvg-005OMm-PV; Fri, 29 May 2020 09:59:48 +0200
+Message-ID: <43eca9213489de7ad1323505a48f9dbbcfb04b37.camel@sipsolutions.net>
+Subject: Re: [PATCH v2 20/24] cfg80211: Update 6 GHz starting frequency
 From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Bruno Dantas <wireless@dantas.airpost.net>,
-        linux-wireless@vger.kernel.org
-Date:   Fri, 29 May 2020 09:44:35 +0200
-In-Reply-To: <c921f6e0-8b27-475d-9441-28025d5afe83@www.fastmail.com>
-References: <afef8a7d-053e-4aaa-ace7-d320c32e8b7c@www.fastmail.com>
-         <(sfid-20200528_174911_413757_32DBA783)>
-         <a185a4283c1230965b520de52737427c91af9c22.camel@sipsolutions.net>
-         <99c4ece3-15ca-42cb-aa09-c86d466d6429@www.fastmail.com>
-         <7406af4a9e852d99735e1b1af63deed2f0c5d703.camel@sipsolutions.net>
-         <f78191c6-3093-4d97-a959-068dce1da552@www.fastmail.com>
-         <6d5994325bbb28ff855b527a26e4e7e87760705f.camel@sipsolutions.net>
-         <c921f6e0-8b27-475d-9441-28025d5afe83@www.fastmail.com>
+To:     Jouni Malinen <j@w1.fi>
+Cc:     linux-wireless@vger.kernel.org,
+        Rajkumar Manoharan <rmanohar@codeaurora.org>,
+        Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>,
+        Ilan Peer <ilan.peer@intel.com>,
+        Arend van Spriel <arend@broadcom.com>
+Date:   Fri, 29 May 2020 09:59:47 +0200
+In-Reply-To: <20200528211913.GA1135@w1.fi>
+References: <20200528213443.993f108e96ca.I0086ae42d672379380d04ac5effb2f3d5135731b@changeid>
+         <20200528213443.a08c02e0f9bb.If474d2bc528aa07610fef429ff83e8312079e242@changeid>
+         <20200528211913.GA1135@w1.fi>
 Content-Type: text/plain; charset="UTF-8"
 User-Agent: Evolution 3.36.2 (3.36.2-1.fc32) 
 MIME-Version: 1.0
@@ -43,41 +42,51 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, 2020-05-28 at 15:06 -0400, Bruno Dantas wrote:
-> > That's why 'flush' exists :)
-> Alas, mine seems to be clogged :)
+On Fri, 2020-05-29 at 00:19 +0300, Jouni Malinen wrote:
+> On Thu, May 28, 2020 at 09:34:43PM +0200, Johannes Berg wrote:
+> > The starting frequency of the 6GHz band changed from
+> > 5940 MHz to 5950 MHz. Update the code accordingly.
+> > diff --git a/net/wireless/util.c b/net/wireless/util.c
+> > @@ -94,7 +94,7 @@ u32 ieee80211_channel_to_freq_khz(int chan, enum nl80211_band band)
+> >  	case NL80211_BAND_6GHZ:
+> >  		/* see 802.11ax D4.1 27.3.22.2 */
+> >  		if (chan <= 253)
+> > -			return 5940 + chan * 5;
+> > +			return 5950 + chan * 5;
+> 
+> It would be good to update that P802.11ax reference to point to a newer
+> version that actually matches the changed implementation, i.e., IEEE
+> P802.11ax/D6.1, 27.3.23.2.
 
-Evidently :)
+Good point, thanks.
 
-> > Obviously. But still, now I'm wondering if there's a bug?
-> > What driver are you using?
-> My adapter is  Atheros AR928X  which uses the  ath9k  driver.
+> > @@ -119,11 +119,11 @@ int ieee80211_freq_khz_to_channel(u32 freq)
+> >  		return (freq - 2407) / 5;
+> >  	else if (freq >= 4910 && freq <= 4980)
+> >  		return (freq - 4000) / 5;
+> > -	else if (freq < 5945)
+> > +	else if (freq < 5955)
+> >  		return (freq - 5000) / 5;
+> 
+> What about operating class 136 channel 2 with channel starting frequency
+> of 5925 MHz? This would map 5935 MHz incorrectly.
 
-Hm. That should be fine.
+Yeah. Actually, Arend had this handled:
 
-Well, I don't know. It's weird because the timeout and flush are
-basically exactly the same thing!
+      case NL80211_BAND_6GHZ:
+-             /* see 802.11ax D4.1 27.3.22.2 */
++             /* see 802.11ax D7.0 27.3.23.2 */
++             if (chan == 2)
++                     return MHZ_TO_KHZ(5935);
+              if (chan <= 253)
+-                     return 5940 + chan * 5;
++                     return MHZ_TO_KHZ(5950 + chan * 5);
 
-If you want to debug it, I guess you could start with something like
-this:
 
-diff --git a/net/wireless/scan.c b/net/wireless/scan.c
-index 74ea4cfb39fb..6fe609f6cd0e 100644
---- a/net/wireless/scan.c
-+++ b/net/wireless/scan.c
-@@ -483,6 +483,7 @@ void ___cfg80211_scan_done(struct cfg80211_registered_device *rdev,
- 	if (!request->info.aborted &&
- 	    request->flags & NL80211_SCAN_FLAG_FLUSH) {
- 		/* flush entries from previous scans */
-+		printk(KERN_DEBUG "flushing at %ld, start was %ld\n", jiffies, request->scan_start);
- 		spin_lock_bh(&rdev->bss_lock);
- 		__cfg80211_bss_expire(rdev, request->scan_start);
- 		spin_unlock_bh(&rdev->bss_lock);
+I've asked him to resend (somehow his patch never made it out, only his
+own reply did), it was more complete anyway.
 
-Unless maybe it got into the aborted case?
-
-Maybe before you even do this, run "iw event -t" while doing the scan
-with flush.
+I didn't even see operating class 136 (in D6.0) though.
 
 johannes
 
