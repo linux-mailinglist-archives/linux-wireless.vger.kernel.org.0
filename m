@@ -2,63 +2,56 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 86E811E7612
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 May 2020 08:40:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AC6581E7654
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 May 2020 09:05:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726393AbgE2GkB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 29 May 2020 02:40:01 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:35056 "EHLO
-        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1725775AbgE2GkB (ORCPT
+        id S1725777AbgE2HF6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 29 May 2020 03:05:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56176 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725308AbgE2HF6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 29 May 2020 02:40:01 -0400
-Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa.ger.corp.intel.com)
-        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.93)
-        (envelope-from <luca@coelho.fi>)
-        id 1jeYgH-000jvb-1Q; Fri, 29 May 2020 09:39:49 +0300
-From:   Luca Coelho <luca@coelho.fi>
-To:     kvalo@codeaurora.org
-Cc:     linux-wireless@vger.kernel.org
-Date:   Fri, 29 May 2020 09:39:31 +0300
-Message-Id: <iwlwifi.20200529092401.aabbc5b472ee.I88cb2c3d2d07e62eac3671335ff1fb80b73c5839@changeid>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20200529063931.80551-1-luca@coelho.fi>
-References: <20200529063931.80551-1-luca@coelho.fi>
+        Fri, 29 May 2020 03:05:58 -0400
+Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7387AC03E969
+        for <linux-wireless@vger.kernel.org>; Fri, 29 May 2020 00:05:58 -0700 (PDT)
+Received: from bigeasy by Galois.linutronix.de with local (Exim 4.80)
+        (envelope-from <bigeasy@linutronix.de>)
+        id 1jeZ5X-0006AG-Gl; Fri, 29 May 2020 09:05:55 +0200
+Date:   Fri, 29 May 2020 09:05:54 +0200
+From:   Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To:     Tony Chuang <yhchuang@realtek.com>
+Cc:     "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        Andy Huang <tehuang@realtek.com>
+Subject: Re: [PATCH 7/7] rtw88: 8821c: add phy calibration
+Message-ID: <20200529070554.h3vrap3lxlata6zn@linutronix.de>
+References: <20200520052335.22466-1-yhchuang@realtek.com>
+ <20200520052335.22466-8-yhchuang@realtek.com>
+ <20200528162727.57bxyoi76bqpacge@linutronix.de>
+ <c0f716a120b74c7a8f3ce3fd79d8471c@realtek.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on farmhouse.coelho.fi
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
-        TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.4
-Subject: [PATCH 11/11] iwlwifi: bump FW API to 56 for AX devices
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <c0f716a120b74c7a8f3ce3fd79d8471c@realtek.com>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Luca Coelho <luciano.coelho@intel.com>
+On 2020-05-29 06:31:23 [+0000], Tony Chuang wrote:
+> > > +static void rtw8821c_phy_calibration(struct rtw_dev *rtwdev)
+> > > +{
+> > > +	rtw8821c_do_iqk(rtwdev);
+> > 
+> > Why this extra step? You could name it rtw8821c_phy_calibration_iqk().
+> > 
+> 
+> This is hooked at rtw_chip_ops::phy_calibration(). For 8821C, only IQK is
+> required. So just keep the name consistent.
 
-Start supporting API version 56 for AX devices.
+Ah okay.
 
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
----
- drivers/net/wireless/intel/iwlwifi/cfg/22000.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> Yan-Hsuan
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/22000.c b/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
-index 1daa653bcb99..efe427049a6e 100644
---- a/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
-+++ b/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
-@@ -57,7 +57,7 @@
- #include "iwl-prph.h"
- 
- /* Highest firmware API version supported */
--#define IWL_22000_UCODE_API_MAX	55
-+#define IWL_22000_UCODE_API_MAX	56
- 
- /* Lowest firmware API version supported */
- #define IWL_22000_UCODE_API_MIN	39
--- 
-2.26.2
-
+Sebastian
