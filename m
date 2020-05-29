@@ -2,98 +2,96 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5AFFE1E84D7
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 May 2020 19:32:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2EBAA1E8542
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 May 2020 19:40:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726944AbgE2Rb1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 29 May 2020 13:31:27 -0400
-Received: from bhuna.collabora.co.uk ([46.235.227.227]:41856 "EHLO
-        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726857AbgE2RXB (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 29 May 2020 13:23:01 -0400
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (Authenticated sender: andrzej.p)
-        with ESMTPSA id EAFDB2A194B
-Subject: Re: [PATCH v4 05/11] thermal: remove get_mode() operation of drivers
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
-        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-renesas-soc@vger.kernel.org,
-        linux-rockchip@lists.infradead.org,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Heiko Stuebner <heiko@sntech.de>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Vishal Kulkarni <vishal@chelsio.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        kernel@collabora.com, Fabio Estevam <festevam@gmail.com>,
-        Amit Kucheria <amit.kucheria@verdurent.com>,
-        Chunyan Zhang <zhang.lyra@gmail.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Allison Randal <allison@lohutok.net>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Darren Hart <dvhart@infradead.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Gayatri Kammela <gayatri.kammela@intel.com>,
-        Len Brown <lenb@kernel.org>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Intel Linux Wireless <linuxwifi@intel.com>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Ido Schimmel <idosch@mellanox.com>,
-        Baolin Wang <baolin.wang7@gmail.com>,
-        Jiri Pirko <jiri@mellanox.com>,
-        Orson Zhai <orsonzhai@gmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Support Opensource <support.opensource@diasemi.com>,
-        Enrico Weigelt <info@metux.net>,
-        Peter Kaestle <peter@piie.net>,
-        Sebastian Reichel <sre@kernel.org>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        =?UTF-8?Q?Niklas_S=c3=b6derlund?= <niklas.soderlund@ragnatech.se>,
-        Shawn Guo <shawnguo@kernel.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Andy Shevchenko <andy@infradead.org>
-References: <20200529154910.GA158174@roeck-us.net>
-From:   Andrzej Pietrasiewicz <andrzej.p@collabora.com>
-Message-ID: <1c4a029e-bb5b-fcfd-1b4b-beea1d6fd577@collabora.com>
-Date:   Fri, 29 May 2020 19:22:50 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
+        id S1727922AbgE2RkV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 29 May 2020 13:40:21 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:10102 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725821AbgE2RkU (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 29 May 2020 13:40:20 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1590774020; h=Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Message-ID: In-Reply-To: Date: References: Subject: Cc:
+ To: From: Sender; bh=kTdSjBnmUHE6a+/LCLe8XhWTibwfO24CX+6sF3cHX9U=; b=I9LRByHpAMojSxjqb6JR4ku5jJSjKT3XWXUe/D+yKPuYijYoOU8Mifh2l+zr9f24XmMhTdHF
+ wuH/WxRChdm6/1PUxHzTlHboclKcAe7BlLO58D7XqoGHVwkKqQyl9UXDDz6teV0fOXyk/ngc
+ fQZfo/H94HuPFYtz+6VB9OCfgcA=
+X-Mailgun-Sending-Ip: 69.72.43.7
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n01.prod.us-west-2.postgun.com with SMTP id
+ 5ed146594776d1da6d03d723 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 29 May 2020 17:28:57
+ GMT
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 8389DC43395; Fri, 29 May 2020 17:28:57 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id C47CAC433C9;
+        Fri, 29 May 2020 17:28:54 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org C47CAC433C9
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Pali =?utf-8?Q?Roh=C3=A1r?= <pali@kernel.org>
+Cc:     Ganapathi Bhat <ganapathi.bhat@nxp.com>,
+        Amitkumar Karwar <amitkarwar@gmail.com>,
+        Xinming Hu <huxinming820@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Marek =?utf-8?Q?Beh=C3=BAn?= <marek.behun@nic.cz>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mwifiex: Add support for NL80211_ATTR_MAX_AP_ASSOC_STA
+References: <20200521123559.29028-1-pali@kernel.org>
+        <20200529171902.wwikyr4mmqin7ce2@pali>
+Date:   Fri, 29 May 2020 20:28:52 +0300
+In-Reply-To: <20200529171902.wwikyr4mmqin7ce2@pali> ("Pali \=\?utf-8\?Q\?Roh\?\=
+ \=\?utf-8\?Q\?\=C3\=A1r\=22's\?\= message of
+        "Fri, 29 May 2020 19:19:02 +0200")
+Message-ID: <87blm6sl9n.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-In-Reply-To: <20200529154910.GA158174@roeck-us.net>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Guenter,
+Pali Roh=C3=A1r <pali@kernel.org> writes:
 
-W dniu 29.05.2020 o 17:49, Guenter Roeck pisze:
-> On Thu, May 28, 2020 at 09:20:45PM +0200, Andrzej Pietrasiewicz wrote:
->> get_mode() is now redundant, as the state is stored in struct
->> thermal_zone_device.
->>
->> Consequently the "mode" attribute in sysfs can always be visible, because
->> it is always possible to get the mode from struct tzd.
->>
->> Signed-off-by: Andrzej Pietrasiewicz <andrzej.p@collabora.com>
-> 
-> There is a slight semantic change for the two drivers which still have
-> a local copy of enum thermal_device_mode: Previously trying to read the
-> mode for those would return -EPERM since they don't have a get_mode
-> function. Now the global value for mode is returned, but I am not sure
-> if it matches the local value.
+> On Thursday 21 May 2020 14:35:59 Pali Roh=C3=A1r wrote:
+>> SD8997 firmware sends TLV_TYPE_MAX_CONN with struct hw_spec_max_conn to
+>> inform kernel about maximum number of p2p connections and stations in AP
+>> mode.
+>>=20
+>> During initialization of SD8997 wifi chip kernel prints warning:
+>>=20
+>>   mwifiex_sdio mmc0:0001:1: Unknown GET_HW_SPEC TLV type: 0x217
+>>=20
+>> This patch adds support for parsing TLV_TYPE_MAX_CONN (0x217) and sets
+>> appropriate cfg80211 member 'max_ap_assoc_sta' from retrieved structure.
+>>=20
+>> It allows userspace to retrieve NL80211_ATTR_MAX_AP_ASSOC_STA attribute.
+>>=20
+>> Signed-off-by: Pali Roh=C3=A1r <pali@kernel.org>
+>
+> Hello Kalle and Ganapathi, could you please review this patch?
 
-Please see my replies to your comment about patch 4/11.
+To reduce email please first check the status from patchwork:
 
-Regards,
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
+hes#checking_state_of_patches_from_patchwork
 
-Andrzej
+--=20
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
+hes
