@@ -2,79 +2,89 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2BF7C1E8481
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 May 2020 19:16:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 100BE1E84A6
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 May 2020 19:20:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727786AbgE2RQp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 29 May 2020 13:16:45 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:23919 "EHLO m43-7.mailgun.net"
+        id S1726857AbgE2RUR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 29 May 2020 13:20:17 -0400
+Received: from mail.as201155.net ([185.84.6.188]:43530 "EHLO mail.as201155.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727776AbgE2RQp (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 29 May 2020 13:16:45 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1590772604; h=Date: Message-Id: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=mJKUz4CIZUqI98CIevAKDZtR27eFLL8hGZq/6XQOjX0=;
- b=CqZmL1/4lef8ZQ/Zv+1h0JD3xsiEfVlkF/wrHwiesGzCE7eI3q9oN8GrkS1+uTZjP7qdQLxz
- QGy4NvUoTMTbKxyNKwSF5AMnWChRzFokWKO/XjCVxxGvLXdegZzvILSwd/RPqhs2pPtadlwF
- HMEtXQSFekembQ2cUhuRkzedjIQ=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n05.prod.us-east-1.postgun.com with SMTP id
- 5ed1437844a25e00521de031 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 29 May 2020 17:16:40
- GMT
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 82EF1C4339C; Fri, 29 May 2020 17:16:39 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
-        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 64A4CC433C6;
-        Fri, 29 May 2020 17:16:37 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 64A4CC433C6
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        id S1725821AbgE2RUR (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 29 May 2020 13:20:17 -0400
+Received: from smtps.newmedia-net.de ([2a05:a1c0:0:de::167]:52504 helo=webmail.newmedia-net.de)
+        by mail.as201155.net with esmtps (TLSv1:DHE-RSA-AES256-SHA:256)
+        (Exim 4.82_1-5b7a7c0-XX)
+        (envelope-from <s.gottschall@dd-wrt.com>)
+        id 1jeify-0006qE-2Y; Fri, 29 May 2020 19:20:13 +0200
+X-CTCH-RefID: str=0001.0A782F25.5ED143C9.00A9,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=dd-wrt.com; s=mikd;
+        h=Content-Transfer-Encoding:Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject; bh=+sfk/qw/yE7gEzFHqbV4TA0D0rPny+zSVyE+eBhnsaQ=;
+        b=Nc6soMT435j/2GUQH2Typ7FTjQs233CSRoFtFPU1Ohnl3B8UenDRJ6S+BkwoGsQuTxylvUn1Bx99uQ+uQXiRI6VLkFxZ+7SMk2Ra1Xulc009RQDbfXfkymhc9VjcAnuc9//4I/6E9ej179v9qNUWoO1o+3YQ/qj9JD6pzuJ//OA=;
+Subject: Re: [PATCH] ath10k: Avoid override CE5 configuration for QCA99X0
+ chipsets
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Maharaja Kennadyrajan <mkenna@codeaurora.org>,
+        linux-wireless@vger.kernel.org, ath10k@lists.infradead.org
+References: <1587649759-14381-1-git-send-email-mkenna@codeaurora.org>
+ <20200505073422.BFA51C433BA@smtp.codeaurora.org>
+ <63ec6f30-ee3b-c412-7c56-46d447b17c8e@dd-wrt.com>
+ <87ftbisqgf.fsf@codeaurora.org>
+From:   Sebastian Gottschall <s.gottschall@dd-wrt.com>
+Message-ID: <e105f898-85c0-b4e6-43e3-0d20d7a9590d@dd-wrt.com>
+Date:   Fri, 29 May 2020 19:18:51 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:77.0) Gecko/20100101
+ Thunderbird/77.0
 MIME-Version: 1.0
+In-Reply-To: <87ftbisqgf.fsf@codeaurora.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] atmel: Use shared constant for rfc1042 header
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20200523212735.32364-1-pterjan@google.com>
-References: <20200523212735.32364-1-pterjan@google.com>
-To:     Pascal Terjan <pterjan@google.com>
-Cc:     Simon Kelley <simon@thekelleys.org.uk>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Pascal Terjan <pterjan@google.com>
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20200529171639.82EF1C4339C@smtp.codeaurora.org>
-Date:   Fri, 29 May 2020 17:16:39 +0000 (UTC)
+X-Received:  from [212.111.244.53] (helo=[172.29.0.186])
+        by webmail.newmedia-net.de with esmtpa (Exim 4.72)
+        (envelope-from <s.gottschall@dd-wrt.com>)
+        id 1jeiaa-0004Kz-5E; Fri, 29 May 2020 19:14:36 +0200
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Pascal Terjan <pterjan@google.com> wrote:
+will check it
 
-> This is one of the 9 drivers redefining rfc1042_header.
-> 
-> Signed-off-by: Pascal Terjan <pterjan@google.com>
-
-Patch applied to wireless-drivers-next.git, thanks.
-
-e78e5d18c653 atmel: Use shared constant for rfc1042 header
-
--- 
-https://patchwork.kernel.org/patch/11567013/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
+Am 29.05.2020 um 17:36 schrieb Kalle Valo:
+> Sebastian Gottschall <s.gottschall@dd-wrt.com> writes:
+>
+>> Am 05.05.2020 um 09:34 schrieb Kalle Valo:
+>>
+>>> Maharaja Kennadyrajan <mkenna@codeaurora.org> wrote:
+>>>
+>>>> As the exisiting CE configurations are defined in global, there
+>>>> are the chances of QCA99X0 family chipsets CE configurations
+>>>> are getting changed by the ath10k_pci_override_ce_config()
+>>>> function.
+>>>>
+>>>> The override will be hit and CE5 configurations will be changed,
+>>>> when the user bring up the QCA99X0 chipsets along with QCA6174
+>>>> or QCA9377 chipset. (Bring up QCA99X0 family chipsets after
+>>>> QCA6174 or QCA9377).
+>>>>
+>>>> Hence, fixing this issue by moving the global CE configuration
+>>>> to radio specific CE configuration.
+>>>>
+>>>> Tested hardware: QCA9888 & QCA6174
+>>>> Tested firmware: 10.4-3.10-00047 & WLAN.RM.4.4.1.c3-00058
+>>>>
+>>>> Signed-off-by: Maharaja Kennadyrajan <mkenna@codeaurora.org>
+>>>> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+>>> Patch applied to ath-next branch of ath.git, thanks.
+>>>
+>>> 521fc37be3d8 ath10k: Avoid override CE5 configuration for QCA99X0 chipsets
+>> this patch will crash on ipq4019 devices. i reverted it and it worked again
+> Yeah, that patch is buggy but this should fix it:
+>
+> commit 32221df6765b3773ff1af37c77f8531ebc48f246
+> Author:     Arnd Bergmann <arnd@arndb.de>
+> AuthorDate: Sat May 9 14:06:33 2020 +0200
+> Commit:     Kalle Valo <kvalo@codeaurora.org>
+> CommitDate: Tue May 12 10:33:13 2020 +0300
+>
+>      ath10k: fix ath10k_pci struct layout
+>
