@@ -2,31 +2,31 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DAFE61E73DC
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 May 2020 05:49:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 763E11E73DD
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 May 2020 05:49:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388169AbgE2Dtv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 28 May 2020 23:49:51 -0400
+        id S2388242AbgE2Dtx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 28 May 2020 23:49:53 -0400
 Received: from mail-dm6nam10on2119.outbound.protection.outlook.com ([40.107.93.119]:15968
         "EHLO NAM10-DM6-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S2388037AbgE2Dtt (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 28 May 2020 23:49:49 -0400
+        id S2388127AbgE2Dtw (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 28 May 2020 23:49:52 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=La2/0neByM03dMFTWtxmhYQyhC2M9KMdnyzYzt6+xieP2ZbOlHJGVOZXhLkwKhqjZ9Cedn+sRga/ygvJ6d8RHk2XVaI1LdvXP4lxBobb1ynCDLkyZI4KqR/7d3eIA98oTnrLU4iTZD43r60V7SbXr1m4bmzfHMXVebwJhXHl9RZ89VsG/soCzAHymxsSj2du+SBYYeJbqnRg6SAjCMgQjbE7gT9b3Xdcq1aIXyvHIuZW4JnywnwUA1u/qaTcqGBRLstwUxjAGygTC7sGPawXo6Ew7iYRV8GkTExOxQ9Uu4QMDO5GaE9vZLMYY964PC+rS+KwfBgl40s1l/2CfwW1cw==
+ b=lHXE9JjcwnLO3dwPhFXmgu4v8WGiSjtcx06GNQp7pWEIicS/JC9sMdpzpRcc4EA8ypOQPZ9W6BMUR/D9tNmTiJRxUuQAjoG6LRsm9bmnlMOPcwE8zebJ9EHzZsMbwzoyPR7//QI5yKTHB8H0KI6hc/YCnMdZNTWlo565I5VlDKhArcsFoQWIkNKTuBjSERkr8GEm8uRwnyBiyP383ta6GulKnzoS+NOMmrvoDKG6dor3lWXW/DanySt0oCQ/DDA+uYWc+I2TDoTSm+7V8CJCkFzgVSw2tKCTjzXatfEKLJpyqjO5R/3hPKjhO0lWXCo/rS+zsIyTo34B6JF/knlLWw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=cC3JZ7YSFhPrmL5DuM1c8D0/GvwHO1aZ3LKDY6DDHu8=;
- b=KqP1+9Z0lDjfTnCATm1bqD2yiSK0yxCuxPGYIY235ew84dDYKPxpbpEk/B0Kvja7qTw+gDYAh/DUcb5ovTfIKyE30vxL0YOiyB2eJ5hjmfMuz1jsfapoREFY+NjrDbu6fUq4s5+qsL1KIfoGjyoNenclYN4wrAoC7L2/7ybb5hKf9c43eeaQ/o7kyg+3ROrTHUxtfBw9AU1/c6/K5mv8LyHA5sDNu706uCniQnGGJ4zwOZpyx/3A5kVvORHeDXqxeWN4EimGA14igof9JsbyfS3r0ALq8pIMQyiKR6sydi2057ESqxIjQu2v+uau6R9Xee5Iml31VTdrVDj2F3zmDA==
+ bh=oT34NRo2N50gmbYudBerLBgw9vPCOSzmhxtvhmqQwPw=;
+ b=AgOor8VDr2Sk8VZZZjEhEunwf1YxF3jK0iIG496GfKZ1PXKJvXEcOkB4UKopg43VZKT4WJF9+9Xh0FeZDPdCTaxTsOG6U1qLW1DokEnuRiI89fLcI9NgICQdmbP0+2iDvt9h2qK4h+G9Mx1w7VA/wRwjfmICUG4M0R4LFdTRU1aIkuJ9wX7r/5LarTJ1oWlITcQspClhXFflJ2SC0SLZrBCcq3BF4XNIOK98wfy2o5N8XJKiVVmMMxO9z5xQ50pkPhliciZDsSD1cd+y94DjbgalFdjl/cF/t+w/IuhTDUjZt1skDQMis5wTXzhDZ2QCxtlh+pizgLKpHj3xSsEgtQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=cypress.com; dmarc=pass action=none header.from=cypress.com;
  dkim=pass header.d=cypress.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cypress.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=cC3JZ7YSFhPrmL5DuM1c8D0/GvwHO1aZ3LKDY6DDHu8=;
- b=fwq82kH+ewuzfMMkMyOe63GcAVGIgWPBQ4yXSNQNzI1RX8xcEQ9zhxY++gqW54JqXuk9i9Y+9p2VDnA1Ds6rwVkNLUzZmv0N4hgLl5k152s8xTa7Ss6nqNrucIMt1BDxAOYaTB2rT5D7hEdMDOI/eO9Z3KFgNXKOrbJa9P7LuDI=
+ bh=oT34NRo2N50gmbYudBerLBgw9vPCOSzmhxtvhmqQwPw=;
+ b=Xba3LBhOO2x1sKm27JLlQdh8QNxtMvhfoWh0MEqCcWKVzdpoGp2QF0gxgFBSgxl7iOfTViS5eM0S8lxQlpDijgcNFm/RKKm98NmQ/nuccwugVSusiRHUwloPQoBAg3lKJWTcOOHB5DC90SKDNJKpDkgkuFmNdzz5FQxwK3dzSos=
 Authentication-Results: vger.kernel.org; dkim=none (message not signed)
  header.d=none;vger.kernel.org; dmarc=none action=none
  header.from=cypress.com;
@@ -34,11 +34,11 @@ Received: from BYAPR06MB4901.namprd06.prod.outlook.com (2603:10b6:a03:7a::30)
  by BYAPR06MB4839.namprd06.prod.outlook.com (2603:10b6:a03:77::20) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3021.25; Fri, 29 May
- 2020 03:49:46 +0000
+ 2020 03:49:47 +0000
 Received: from BYAPR06MB4901.namprd06.prod.outlook.com
  ([fe80::b972:c25d:c8fc:fc0e]) by BYAPR06MB4901.namprd06.prod.outlook.com
  ([fe80::b972:c25d:c8fc:fc0e%7]) with mapi id 15.20.3045.018; Fri, 29 May 2020
- 03:49:46 +0000
+ 03:49:47 +0000
 From:   Chi-Hsien Lin <chi-hsien.lin@cypress.com>
 To:     linux-wireless@vger.kernel.org
 Cc:     brcm80211-dev-list@broadcom.com, brcm80211-dev-list@cypress.com,
@@ -47,11 +47,13 @@ Cc:     brcm80211-dev-list@broadcom.com, brcm80211-dev-list@cypress.com,
         Hante Meuleman <hante.meuleman@broadcom.com>,
         Wright Feng <wright.feng@cypress.com>,
         Kalle Valo <kvalo@codeaurora.org>,
-        Chi-Hsien Lin <chi-hsien.lin@cypress.com>
-Subject: [PATCH V2 0/5] brcmfmac: SDIO parameter change series
-Date:   Thu, 28 May 2020 22:49:33 -0500
-Message-Id: <20200529034938.124533-1-chi-hsien.lin@cypress.com>
+        Chi-hsien Lin <chi-hsien.lin@cypress.com>
+Subject: [PATCH V2 1/5] brcmfmac: set F2 blocksize for 4373
+Date:   Thu, 28 May 2020 22:49:34 -0500
+Message-Id: <20200529034938.124533-2-chi-hsien.lin@cypress.com>
 X-Mailer: git-send-email 2.25.0
+In-Reply-To: <20200529034938.124533-1-chi-hsien.lin@cypress.com>
+References: <20200529034938.124533-1-chi-hsien.lin@cypress.com>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-ClientProxiedBy: BYAPR06CA0072.namprd06.prod.outlook.com
@@ -59,59 +61,108 @@ X-ClientProxiedBy: BYAPR06CA0072.namprd06.prod.outlook.com
  (2603:10b6:a03:7a::30)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from aremote02.aus.cypress.com (12.110.209.245) by BYAPR06CA0072.namprd06.prod.outlook.com (2603:10b6:a03:14b::49) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3045.18 via Frontend Transport; Fri, 29 May 2020 03:49:45 +0000
+Received: from aremote02.aus.cypress.com (12.110.209.245) by BYAPR06CA0072.namprd06.prod.outlook.com (2603:10b6:a03:14b::49) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3045.18 via Frontend Transport; Fri, 29 May 2020 03:49:46 +0000
 X-Mailer: git-send-email 2.25.0
 X-Originating-IP: [12.110.209.245]
 X-MS-PublicTrafficType: Email
 X-MS-Office365-Filtering-HT: Tenant
-X-MS-Office365-Filtering-Correlation-Id: 043fd9b8-63c8-4e76-d287-08d803835409
+X-MS-Office365-Filtering-Correlation-Id: 3fe1ba95-3388-40fc-ff94-08d8038354ac
 X-MS-TrafficTypeDiagnostic: BYAPR06MB4839:
 X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <BYAPR06MB48396363C305CED27BD0919DBB8F0@BYAPR06MB4839.namprd06.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:3383;
+X-Microsoft-Antispam-PRVS: <BYAPR06MB48394FB4D4374A2E11DB57F9BB8F0@BYAPR06MB4839.namprd06.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:5236;
 X-Forefront-PRVS: 04180B6720
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: gVKdIR5t065bc2tNSE4PsfnEO9HJuDTp0U38pLKWIMuj3kLGIUZeeRCY7BMTXOBVBYpPlHCuFUbzs+mxcGoPjHuNeF03Is1xFS6F4X26ysV2vrfiX/0vtgx9FuVZ6f8mvYAoq20lfXRZTBf4mE/6vuFF6/Cuvt0EbEI5nwW/qpzNp/OTpVJG//03G+WaEa3fzoK2vVpJFEM2zPtIkuQ6O/7an+lYWK9gRQoUJgN/Cz7hAoZIlfu22UC32QismAaFumslRE3C9AukFPtaD15s/SPHhJt1wEUQpNDyDLGrfyWxcUSx/Cv0x99wfX23xwdxj7eTy8Qg2KqHyY0eccpKRg==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR06MB4901.namprd06.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(346002)(136003)(366004)(376002)(396003)(39860400002)(66476007)(2906002)(66946007)(52116002)(16526019)(7696005)(26005)(186003)(36756003)(83380400001)(5660300002)(478600001)(6916009)(2616005)(956004)(66556008)(8676002)(6486002)(4744005)(4326008)(107886003)(86362001)(54906003)(316002)(1076003)(8936002)(6666004);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData: ce9Ja9OrpCMzNo9OcwgeyKcU/W5lmdZ7YCeVdc3q3gGkVyIGLlAToLyX3frLGv0LwfRrWB6XaODctsbW3UgAe8tjjKpmNGXQVU6AyVb5NQcemeRjJ5oG5UGJyubpfezTGHCboD+cTacNchfjRU5qJ2lZ5c1jMuiWhcUNRJQqikgJmHQWWmgUoqPTOArYHBgo5BIdiHmp6OKO8Q6bl0Okw0rdWnDsQFcsfO60kiqHDRXNnse4ZwNRcn9/dgMPkB3LjfI1Rm9RmGufomRwXBMoqjDO1/xYhumWSaocuNR3zsKKq/mhkGDvPK5mCvcaeJOfLT+0UJp/xN7k0CvnRNtrAQ7rE9UELjQL1Brv2NpcCOwTaIEXstIMrQQZJEgNyKgHfD9DBuxCUEwPi8RxBRLkGUCjhE/oBuTOEydyK3dj0Xh6YByDvWVc6HJpJgcoTAnIn/snglWDS4fHuDC86vFJG4ifQZBgXVsjBXqM930O+9bBXPmKmccORWPA7mfbJ6eG
+X-Microsoft-Antispam-Message-Info: SYs5Z+VXBlJU6xgdqB1NDdb+ypwNGMDHPbPerzKDSbfy8F/0zBsONvHcCXm/00/hk9VLvzRznO/0V+dFuExsxO3nutB9eUeEBHNvcmSSSLB+O0zeARX3P3fsyaw3s2FbMoJU6cwuyMOawnj6m9d0yvnjES/bDaCrJELIMgXTMW4Wa+8oWG9Kv2QmnoHY4yn8e+PdWaQ6Luyzl5zRZJDzblEzlB23o/7X4jLF2oi4VKsIXFrsPsMiGI3eBniWtu12uN8DKSyN7Bp+aO/oW/1SsjDEj9LfLDJ35GjStw33w2q1ak+wOs0UvgAziNXPOlDn
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR06MB4901.namprd06.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(346002)(136003)(366004)(376002)(396003)(39860400002)(66476007)(2906002)(66946007)(52116002)(16526019)(7696005)(26005)(186003)(36756003)(83380400001)(5660300002)(478600001)(6916009)(2616005)(956004)(66556008)(8676002)(6486002)(4326008)(107886003)(86362001)(54906003)(316002)(1076003)(8936002)(6666004);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData: OxBWMcxZTdGkp8Dhec6VecMGK7wkkocBK+GpE3EGA0o+Beo7ikjKezUmccDofvmUIQnpyLTtsKiiGWpJRCY8HHfP3hdzTG7cf8Kcq95Fsn2SFLObceuOa6sDkAj2b4/eH46dJFGYn4zA7UlnumcTGCXI6u2fUZUMCPP1yjhn384JVrewDeYd4wZmL6Fd38Ds1ZIgFhwpt9DVex2ISraUQturD/zcgVHVR8c5ENRVi7c42vAUsJc6zA43//8cwALPab8Z/bnttG3csljTilF48sGEa0YvgJRoH2SdnaEHzw34rxoHIvVCI51IGM1GuJVhk9CtiRaGw2bWTkrLw5UHvTrtszIbrmvR59JNrp0GMN3hKCjSLU2mg0OWVLw1c0WOz8NdCNJZ2mOYl/4QjcoO44oEjNvlT9LwwKzqZzA05Z5loRZHstXNNJ4WqROjfhA+FMvxbpVd+nvrny5G5v7oKQpsDkFwHCvIXaBoKMWIGThV0Ewuy7fQ/0i8AsXTL22g
 X-OriginatorOrg: cypress.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 043fd9b8-63c8-4e76-d287-08d803835409
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 May 2020 03:49:46.3121
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3fe1ba95-3388-40fc-ff94-08d8038354ac
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 May 2020 03:49:47.3425
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 011addfc-2c09-450d-8938-e0bbc2dd2376
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 1nSB6fRT5Zo+Dx+OzBjGQWHwBWPf4fEovjOUPgMfFelGPOtcjHVDufGZLDbuufHY53t7Cru8ksXDPvweuRhOlw==
+X-MS-Exchange-CrossTenant-UserPrincipalName: nUiHEGC8KdwNhrXIto9WdhMWnKBy99CbMrGr8RDnH66+Jq2mdT7xWSXh2p7hu5iEltlRSHBGZaEaBWMTIsCA6g==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR06MB4839
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Set F2 blocksize and watermark for several chips to fix bus error during 
-stress tests.
+From: Wright Feng <wright.feng@cypress.com>
 
-Changes since V1:
- - Remove unnecessary mail footnotes
- - Rebase to wt-2020-05-25
+Set F2 blocksize to 256 bytes for 4373. It fixes DMA error while having
+UDP bi-directional traffic. Also use a defined F1 MesBusyCtrl value.
 
+Signed-off-by: Wright Feng <wright.feng@cypress.com>
+Signed-off-by: Chi-hsien Lin <chi-hsien.lin@cypress.com>
+---
+ .../wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c  | 14 +++++++++++++-
+ .../wireless/broadcom/brcm80211/brcmfmac/sdio.c    |  4 ++--
+ 2 files changed, 15 insertions(+), 3 deletions(-)
 
-Double Lo (2):
-  brcmfmac: fix 4339 CRC error under SDIO 3.0 SDR104 mode
-  brcmfmac: 43012 Update MES Watermark
-
-Frank Kao (1):
-  brcmfmac: set F2 blocksize and watermark for 4354/4356 SDIO
-
-Wright Feng (2):
-  brcmfmac: set F2 blocksize for 4373
-  brcmfmac: fix 43455 CRC error under SDIO 3.0 SDR104 mode
-
- .../broadcom/brcm80211/brcmfmac/bcmsdh.c      | 22 ++++++-
- .../broadcom/brcm80211/brcmfmac/sdio.c        | 58 ++++++++++++++++---
- 2 files changed, 70 insertions(+), 10 deletions(-)
-
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
+index 22a17ae09e94..bb3196cba683 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
+@@ -43,6 +43,7 @@
+ 
+ #define SDIO_FUNC1_BLOCKSIZE		64
+ #define SDIO_FUNC2_BLOCKSIZE		512
++#define SDIO_4373_FUNC2_BLOCKSIZE	256
+ #define SDIO_4359_FUNC2_BLOCKSIZE	256
+ /* Maximum milliseconds to wait for F2 to come up */
+ #define SDIO_WAIT_F2RDY	3000
+@@ -910,13 +911,24 @@ static int brcmf_sdiod_probe(struct brcmf_sdio_dev *sdiodev)
+ 		sdio_release_host(sdiodev->func1);
+ 		goto out;
+ 	}
+-	if (sdiodev->func2->device == SDIO_DEVICE_ID_BROADCOM_4359)
++	switch (sdiodev->func2->device) {
++	case SDIO_DEVICE_ID_CYPRESS_4373:
++		f2_blksz = SDIO_4373_FUNC2_BLOCKSIZE;
++		break;
++	case SDIO_DEVICE_ID_BROADCOM_4359:
+ 		f2_blksz = SDIO_4359_FUNC2_BLOCKSIZE;
++		break;
++	default:
++		break;
++	}
++
+ 	ret = sdio_set_block_size(sdiodev->func2, f2_blksz);
+ 	if (ret) {
+ 		brcmf_err("Failed to set F2 blocksize\n");
+ 		sdio_release_host(sdiodev->func1);
+ 		goto out;
++	} else {
++		brcmf_dbg(SDIO, "set F2 blocksize to %d\n", f2_blksz);
+ 	}
+ 
+ 	/* increase F2 timeout */
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+index ce6f15284277..dce22cd2279d 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+@@ -41,6 +41,7 @@
+ /* watermark expressed in number of words */
+ #define DEFAULT_F2_WATERMARK    0x8
+ #define CY_4373_F2_WATERMARK    0x40
++#define CY_4373_F1_MESBUSYCTRL  (CY_4373_F2_WATERMARK | SBSDIO_MESBUSYCTRL_ENAB)
+ #define CY_43012_F2_WATERMARK    0x60
+ #define CY_4359_F2_WATERMARK	0x40
+ #define CY_4359_F1_MESBUSYCTRL	(CY_4359_F2_WATERMARK | SBSDIO_MESBUSYCTRL_ENAB)
+@@ -4195,8 +4196,7 @@ static void brcmf_sdio_firmware_callback(struct device *dev, int err,
+ 			brcmf_sdiod_writeb(sdiod, SBSDIO_DEVICE_CTL, devctl,
+ 					   &err);
+ 			brcmf_sdiod_writeb(sdiod, SBSDIO_FUNC1_MESBUSYCTRL,
+-					   CY_4373_F2_WATERMARK |
+-					   SBSDIO_MESBUSYCTRL_ENAB, &err);
++					   CY_4373_F1_MESBUSYCTRL, &err);
+ 			break;
+ 		case SDIO_DEVICE_ID_CYPRESS_43012:
+ 			brcmf_dbg(INFO, "set F2 watermark to 0x%x*4 bytes\n",
 -- 
 2.25.0
 
