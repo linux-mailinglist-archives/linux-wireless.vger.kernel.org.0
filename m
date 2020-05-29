@@ -2,99 +2,118 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C42EE1E75EF
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 May 2020 08:31:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 34DA71E7608
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 May 2020 08:39:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725808AbgE2Gbj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 29 May 2020 02:31:39 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:48899 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725308AbgE2Gbj (ORCPT
+        id S1725808AbgE2Gjl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 29 May 2020 02:39:41 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:34974 "EHLO
+        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1725562AbgE2Gjl (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 29 May 2020 02:31:39 -0400
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.69 with qID 04T6VOFB0006925, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexmb06.realtek.com.tw[172.21.6.99])
-        by rtits2.realtek.com.tw (8.15.2/2.66/5.86) with ESMTPS id 04T6VOFB0006925
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Fri, 29 May 2020 14:31:24 +0800
-Received: from RTEXMB02.realtek.com.tw (172.21.6.95) by
- RTEXMB06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Fri, 29 May 2020 14:31:24 +0800
-Received: from RTEXMB04.realtek.com.tw (172.21.6.97) by
- RTEXMB02.realtek.com.tw (172.21.6.95) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Fri, 29 May 2020 14:31:24 +0800
-Received: from RTEXMB04.realtek.com.tw ([fe80::8001:f5f5:a41e:f8d4]) by
- RTEXMB04.realtek.com.tw ([fe80::8001:f5f5:a41e:f8d4%3]) with mapi id
- 15.01.1779.005; Fri, 29 May 2020 14:31:24 +0800
-From:   Tony Chuang <yhchuang@realtek.com>
-To:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-CC:     "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        Andy Huang <tehuang@realtek.com>
-Subject: RE: [PATCH 7/7] rtw88: 8821c: add phy calibration
-Thread-Topic: [PATCH 7/7] rtw88: 8821c: add phy calibration
-Thread-Index: AQHWLmbadmjgN7WKfUOnkjTSuDi34ai9NtaAgAFxddA=
-Date:   Fri, 29 May 2020 06:31:23 +0000
-Message-ID: <c0f716a120b74c7a8f3ce3fd79d8471c@realtek.com>
-References: <20200520052335.22466-1-yhchuang@realtek.com>
- <20200520052335.22466-8-yhchuang@realtek.com>
- <20200528162727.57bxyoi76bqpacge@linutronix.de>
-In-Reply-To: <20200528162727.57bxyoi76bqpacge@linutronix.de>
-Accept-Language: zh-TW, en-US
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.68.175]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        Fri, 29 May 2020 02:39:41 -0400
+Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa.ger.corp.intel.com)
+        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.93)
+        (envelope-from <luca@coelho.fi>)
+        id 1jeYg7-000jvb-9t; Fri, 29 May 2020 09:39:39 +0300
+From:   Luca Coelho <luca@coelho.fi>
+To:     kvalo@codeaurora.org
+Cc:     linux-wireless@vger.kernel.org
+Date:   Fri, 29 May 2020 09:39:20 +0300
+Message-Id: <20200529063931.80551-1-luca@coelho.fi>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on farmhouse.coelho.fi
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+        TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.4
+Subject: [PATCH 00/11] iwlwifi: updates intended for v5.8 2020-05-08-2
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-PiBPbiAyMDIwLTA1LTIwIDEzOjIzOjM1IFsrMDgwMF0sIHloY2h1YW5nQHJlYWx0ZWsuY29tIHdy
-b3RlOg0KPiA+IEZyb206IFR6dS1FbiBIdWFuZyA8dGVodWFuZ0ByZWFsdGVrLmNvbT4NCj4gPg0K
-PiA+IEluIG9yZGVyIHRvIGdldCBhIGJldHRlciB0cmFtaXQgRVZNLCB3ZSBuZWVkIHRvIHBlcmZv
-cm0gY2FsaWJyYXRpb24NCj4gDQo+IHMvdHJhbWl0L3RyYW5zbWl0LyA/DQo+IA0KPiA+IGFmdGVy
-IGFzc29jaWF0aW9uLg0KPiA+IFRoZSBjYWxpYnJhdGlvbiBuZWVkZWQgZm9yIDg4MjFjIGlzIGNh
-bGxlZCBpcSBjYWxpYnJhdGlvbiwgd2hpY2ggaXMNCj4gPiBkb25lIGluIGZpcm13YXJlLiBJbXBs
-ZW1lbnQgdGhlIGNhbGxiYWNrIGZ1bmN0aW9uIGZvciB0cmlnZ2VyaW5nDQo+ID4gZmlybXdhcmUg
-dG8gZG8gaXQuDQo+ID4NCj4gPiBTaWduZWQtb2ZmLWJ5OiBUenUtRW4gSHVhbmcgPHRlaHVhbmdA
-cmVhbHRlay5jb20+DQo+ID4gU2lnbmVkLW9mZi1ieTogWWFuLUhzdWFuIENodWFuZyA8eWhjaHVh
-bmdAcmVhbHRlay5jb20+DQo+ID4gLS0tDQo+ID4gIGRyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0
-ZWsvcnR3ODgvcnR3ODgyMWMuYyB8IDM0DQo+ICsrKysrKysrKysrKysrKysrKysNCj4gPiAgMSBm
-aWxlIGNoYW5nZWQsIDM0IGluc2VydGlvbnMoKykNCj4gPg0KPiA+IGRpZmYgLS1naXQgYS9kcml2
-ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L3J0dzg4MjFjLmMNCj4gYi9kcml2ZXJzL25l
-dC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L3J0dzg4MjFjLmMNCj4gPiBpbmRleCA3MTY5ZTZmYjlj
-YTkuLjc0OTU2OWVhYjkxMiAxMDA2NDQNCj4gPiAtLS0gYS9kcml2ZXJzL25ldC93aXJlbGVzcy9y
-ZWFsdGVrL3J0dzg4L3J0dzg4MjFjLmMNCj4gPiArKysgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9y
-ZWFsdGVrL3J0dzg4L3J0dzg4MjFjLmMNCj4gPiBAQCAtNTU1LDYgKzU1NSwzOSBAQCBzdGF0aWMg
-dm9pZCBydHc4ODIxY19mYWxzZV9hbGFybV9zdGF0aXN0aWNzKHN0cnVjdA0KPiBydHdfZGV2ICpy
-dHdkZXYpDQo+ID4gIAlydHdfd3JpdGUzMl9jbHIocnR3ZGV2LCAweGI1OCwgQklUKDApKTsNCj4g
-PiAgfQ0KPiA+DQo+ID4gK3N0YXRpYyB2b2lkIHJ0dzg4MjFjX2RvX2lxayhzdHJ1Y3QgcnR3X2Rl
-diAqcnR3ZGV2KQ0KPiA+ICt7DQo+ID4gKwlzdGF0aWMgaW50IGRvX2lxa19jbnQ7DQo+ID4gKwlz
-dHJ1Y3QgcnR3X2lxa19wYXJhIHBhcmEgPSB7LmNsZWFyID0gMCwgLnNlZ21lbnRfaXFrID0gMH07
-DQo+ID4gKwl1MzIgcmZfcmVnLCBpcWtfZmFpbF9tYXNrOw0KPiA+ICsJaW50IGNvdW50ZXI7DQo+
-ID4gKwlib29sIHJlbG9hZDsNCj4gPiArDQo+ID4gKwlpZiAocnR3X2lzX2Fzc29jKHJ0d2Rldikp
-DQo+ID4gKwkJcGFyYS5zZWdtZW50X2lxayA9IDE7DQo+ID4gKw0KPiA+ICsJcnR3X2Z3X2RvX2lx
-ayhydHdkZXYsICZwYXJhKTsNCj4gPiArDQo+ID4gKwlmb3IgKGNvdW50ZXIgPSAwOyBjb3VudGVy
-IDwgMzAwOyBjb3VudGVyKyspIHsNCj4gPiArCQlyZl9yZWcgPSBydHdfcmVhZF9yZihydHdkZXYs
-IFJGX1BBVEhfQSwgUkZfRFRYTE9LLA0KPiBSRlJFR19NQVNLKTsNCj4gPiArCQlpZiAocmZfcmVn
-ID09IDB4YWJjZGUpDQo+ID4gKwkJCWJyZWFrOw0KPiA+ICsJCW1zbGVlcCgyMCk7DQo+ID4gKwl9
-DQo+ID4gKwlydHdfd3JpdGVfcmYocnR3ZGV2LCBSRl9QQVRIX0EsIFJGX0RUWExPSywgUkZSRUdf
-TUFTSywgMHgwKTsNCj4gPiArDQo+ID4gKwlyZWxvYWQgPSAhIXJ0d19yZWFkMzJfbWFzayhydHdk
-ZXYsIFJFR19JUUtGQUlMTVNLLCBCSVQoMTYpKTsNCj4gPiArCWlxa19mYWlsX21hc2sgPSBydHdf
-cmVhZDMyX21hc2socnR3ZGV2LCBSRUdfSVFLRkFJTE1TSywgR0VOTUFTSyg3LA0KPiAwKSk7DQo+
-ID4gKwlydHdfZGJnKHJ0d2RldiwgUlRXX0RCR19QSFksDQo+ID4gKwkJImlxayBjb3VudGVyPSVk
-IHJlbG9hZD0lZCBkb19pcWtfY250PSVkDQo+IG5faXFrX2ZhaWwobWFzayk9MHglMDJ4XG4iLA0K
-PiA+ICsJCWNvdW50ZXIsIHJlbG9hZCwgKytkb19pcWtfY250LCBpcWtfZmFpbF9tYXNrKTsNCj4g
-PiArfQ0KPiA+ICsNCj4gPiArc3RhdGljIHZvaWQgcnR3ODgyMWNfcGh5X2NhbGlicmF0aW9uKHN0
-cnVjdCBydHdfZGV2ICpydHdkZXYpDQo+ID4gK3sNCj4gPiArCXJ0dzg4MjFjX2RvX2lxayhydHdk
-ZXYpOw0KPiANCj4gV2h5IHRoaXMgZXh0cmEgc3RlcD8gWW91IGNvdWxkIG5hbWUgaXQgcnR3ODgy
-MWNfcGh5X2NhbGlicmF0aW9uX2lxaygpLg0KPiANCg0KVGhpcyBpcyBob29rZWQgYXQgcnR3X2No
-aXBfb3BzOjpwaHlfY2FsaWJyYXRpb24oKS4gRm9yIDg4MjFDLCBvbmx5IElRSyBpcw0KcmVxdWly
-ZWQuIFNvIGp1c3Qga2VlcCB0aGUgbmFtZSBjb25zaXN0ZW50Lg0KDQpZYW4tSHN1YW4NCg==
+From: Luca Coelho <luciano.coelho@intel.com>
+
+Hi,
+
+Here's the an update to the sixth set of patches intended for v5.8.
+It's the usual development, new features, cleanups and bugfixes.
+
+The changes are:
+
+* Update range request API;
+* Add ACPI DSM support;
+* Support enabling 5.2GHz bands in Indonesia via ACPI;
+* Bump FW API version to 56;
+* TX queues refactoring started;
+* Fix one memory leak;
+* Some other small fixes and clean-ups;
+
+In v2:
+  * Replaced one "static const" to "const static" [04/11];
+  * Return int instead of ERR_PTR() in iwl_acpi_get_dsm_u8() [04/11];
+  * Return bool instead of funky logic [05/11].
+
+As usual, I'm pushing this to a pending branch, for kbuild bot, and
+will send a pull-request later.
+
+Please review.
+
+Cheers,
+Luca.
+
+
+Avraham Stern (1):
+  iwlwifi: mvm: add support for range request version 10
+
+Gil Adam (2):
+  iwlwifi: acpi: support device specific method (DSM)
+  iwlwifi: acpi: evaluate dsm to enable 5.2 bands in Indonesia
+
+Haim Dreyfuss (2):
+  iwlwifi: set NO_HE if the regulatory domain forbids it
+  iwlwifi: pcie: don't count on the FW to set persistence mode
+
+Johannes Berg (1):
+  iwlwifi: pcie: gen3: indicate 8k/12k RB size to device
+
+Luca Coelho (1):
+  iwlwifi: bump FW API to 56 for AX devices
+
+Mordechay Goodstein (3):
+  iwlwifi: pcie: keep trans instead of trans_pcie in iwl_txq
+  iwlwifi: move iwl_txq and substructures to a common trans header
+  iwlwifi: move txq-specific from trans_pcie to common trans
+
+Sharon (1):
+  iwlwifi: mvm: fix aux station leak
+
+ .../net/wireless/intel/iwlwifi/cfg/22000.c    |   2 +-
+ drivers/net/wireless/intel/iwlwifi/fw/acpi.c  |  99 ++++++++++++--
+ drivers/net/wireless/intel/iwlwifi/fw/acpi.h  |  22 +++
+ .../wireless/intel/iwlwifi/fw/api/location.h  |  14 +-
+ .../wireless/intel/iwlwifi/fw/api/nvm-reg.h   |  34 ++++-
+ .../intel/iwlwifi/iwl-context-info-gen3.h     |  12 +-
+ .../wireless/intel/iwlwifi/iwl-nvm-parse.c    |   5 +
+ .../net/wireless/intel/iwlwifi/iwl-trans.h    | 128 ++++++++++++++++++
+ .../intel/iwlwifi/mvm/ftm-initiator.c         |  42 +++++-
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c   |  43 ++++++
+ .../net/wireless/intel/iwlwifi/mvm/mac80211.c |   5 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/sta.c  |  18 ++-
+ drivers/net/wireless/intel/iwlwifi/mvm/sta.h  |   6 +-
+ .../intel/iwlwifi/pcie/ctxt-info-gen3.c       |  10 +-
+ .../wireless/intel/iwlwifi/pcie/ctxt-info.c   |   6 +-
+ .../wireless/intel/iwlwifi/pcie/internal.h    | 121 +----------------
+ drivers/net/wireless/intel/iwlwifi/pcie/rx.c  |   6 +-
+ .../wireless/intel/iwlwifi/pcie/trans-gen2.c  |  11 +-
+ .../net/wireless/intel/iwlwifi/pcie/trans.c   |  47 +++----
+ .../net/wireless/intel/iwlwifi/pcie/tx-gen2.c |  70 +++++-----
+ drivers/net/wireless/intel/iwlwifi/pcie/tx.c  | 120 ++++++++--------
+ 21 files changed, 524 insertions(+), 297 deletions(-)
+
+-- 
+2.26.2
+
