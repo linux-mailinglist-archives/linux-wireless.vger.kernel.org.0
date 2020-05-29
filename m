@@ -2,142 +2,115 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B1EBF1E80EB
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 May 2020 16:51:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2DBE51E80F6
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 May 2020 16:52:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727080AbgE2OvG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 29 May 2020 10:51:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43810 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726838AbgE2OvF (ORCPT
+        id S1726907AbgE2OwG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 29 May 2020 10:52:06 -0400
+Received: from mail27.static.mailgun.info ([104.130.122.27]:25812 "EHLO
+        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726476AbgE2OwF (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 29 May 2020 10:51:05 -0400
-Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com [IPv6:2607:f8b0:4864:20::542])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4129DC03E969;
-        Fri, 29 May 2020 07:51:04 -0700 (PDT)
-Received: by mail-pg1-x542.google.com with SMTP id j21so1583188pgb.7;
-        Fri, 29 May 2020 07:51:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=jOr9kSCuiRiGZqn8Tb20ICSny+xva6gwuSuQrspoPj0=;
-        b=KgwcPZgZePP7ksJE/N3Elst8TGaRjtTyng3aVjAQVMiuK5WRj3KBrPfHTaEo6hH/5e
-         NneEeN/a3Q4eVBsbszr8/xziSKQK53Cx1/6TLkiXvS8U4iZAh68lgseLhACqZS43k1Y0
-         N1X3LVpLdfopR37McJJB4ZVw8N9NVCcsz8RHKEzSnz335rwWLh3vfQiQSGRherRJ0hYP
-         lBLgwY5IO3LGlXYEe4+o53bxWcxv57+99+ayF1+XEQ5xRQ9pV127/3/7OjdsJYysJjO7
-         Zgqh36dbycrH4G3rU1cCji+DELoV0L/qNEk0OVOlqbv/RwkIlvpncwtNXGy0eWhtF9Wp
-         Iwjw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to:user-agent;
-        bh=jOr9kSCuiRiGZqn8Tb20ICSny+xva6gwuSuQrspoPj0=;
-        b=aJ8Lav+fUMBAFKpKknvfCCxBkaPSXlHFlWnsMbhl+9cgIxubYUiTLiRU4dXuveSbVw
-         XZ2artoEyI4Bl85B3XEYXkL4XiNBLGZqVAZCiSxbvPqsvaO/2NZMMsunvM/sEmF4DBuY
-         OXKnh39fzMb220svjmfuwTdrbQFf4urV/w2WVpuIdxCM3myzZsENp4SC+v+Ksp/piVbQ
-         +7Idmp6TMHEKrwdfNgNJxf/gYzUml+88HK41Xjqne71PE4mGb6iY1PlkKqerxtP9SA6s
-         TFKcaNHmgJazoIkO8Zuf3EGoqQtLpxAzlPc/yg4EtY0QPa0OzM0YCUvvDj3twpkSC45B
-         nmDQ==
-X-Gm-Message-State: AOAM531kmArv7HqLBwCJi/0AUzcx4CWz4jSDBf/j4rUMcSlg43X39hjK
-        TicfyEVNLiwbB94dBQjoqd0=
-X-Google-Smtp-Source: ABdhPJyuEWKA2q+MgeYdj6dmRKu/uvmTHR2Eywfghl8T0eMS68ZZfCLq9KCdRvKzdhJYo7ebVpb7jg==
-X-Received: by 2002:a62:1d48:: with SMTP id d69mr9214260pfd.27.1590763863863;
-        Fri, 29 May 2020 07:51:03 -0700 (PDT)
-Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id b23sm6933857pgs.33.2020.05.29.07.51.03
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Fri, 29 May 2020 07:51:03 -0700 (PDT)
-Date:   Fri, 29 May 2020 07:51:02 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Andrzej Pietrasiewicz <andrzej.p@collabora.com>
-Cc:     linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
-        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-renesas-soc@vger.kernel.org,
-        linux-rockchip@lists.infradead.org,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Heiko Stuebner <heiko@sntech.de>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Vishal Kulkarni <vishal@chelsio.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        kernel@collabora.com, Fabio Estevam <festevam@gmail.com>,
-        Amit Kucheria <amit.kucheria@verdurent.com>,
-        Chunyan Zhang <zhang.lyra@gmail.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Allison Randal <allison@lohutok.net>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Darren Hart <dvhart@infradead.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Gayatri Kammela <gayatri.kammela@intel.com>,
-        Len Brown <lenb@kernel.org>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Intel Linux Wireless <linuxwifi@intel.com>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Ido Schimmel <idosch@mellanox.com>,
-        Baolin Wang <baolin.wang7@gmail.com>,
-        Jiri Pirko <jiri@mellanox.com>,
-        Orson Zhai <orsonzhai@gmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Support Opensource <support.opensource@diasemi.com>,
-        Enrico Weigelt <info@metux.net>,
-        Peter Kaestle <peter@piie.net>,
-        Sebastian Reichel <sre@kernel.org>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Niklas =?iso-8859-1?Q?S=F6derlund?= 
-        <niklas.soderlund@ragnatech.se>, Shawn Guo <shawnguo@kernel.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Andy Shevchenko <andy@infradead.org>
-Subject: Re: [PATCH v4 03/11] thermal: Add current mode to thermal zone device
-Message-ID: <20200529145102.GA125312@roeck-us.net>
-References: <4493c0e4-51aa-3907-810c-74949ff27ca4@samsung.com>
- <20200528192051.28034-1-andrzej.p@collabora.com>
- <20200528192051.28034-4-andrzej.p@collabora.com>
+        Fri, 29 May 2020 10:52:05 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1590763925; h=Message-ID: References: In-Reply-To: Subject:
+ Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Sender; bh=v/Rs67JNO7w/HTKxrh2duaFxLsZGJt9CRKendA0K2IM=;
+ b=Nbotl77T41YtTQ4/GRwi+EOwroPDjY0m0M95z/Fhs+vcJuWjv0xrDjZ5P8GyqksMmpdqea4x
+ 9+NwfHFyqAX7YEqNG9+IzAcP7vLRXA7RwulR4tAv3Hk5gi+2LGZqOQhAzuDRzTc7OpQc8lIT
+ +aTto0Z0+HqMRDxrF15DpXEKYxY=
+X-Mailgun-Sending-Ip: 104.130.122.27
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n02.prod.us-west-2.postgun.com with SMTP id
+ 5ed1217fc6d4683243abc350 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 29 May 2020 14:51:43
+ GMT
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 410E9C433CA; Fri, 29 May 2020 14:51:43 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: murugana)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id DABC4C433C9;
+        Fri, 29 May 2020 14:51:42 +0000 (UTC)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200528192051.28034-4-andrzej.p@collabora.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Fri, 29 May 2020 20:21:42 +0530
+From:   Sathishkumar Muruganandam <murugana@codeaurora.org>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH 1/2] mac80211: enable TKIP when using encapsulation
+ offloading
+In-Reply-To: <86c1e5d23093f350bdabdde4c305c33ecde06b3b.camel@sipsolutions.net>
+References: <1587720951-9222-1-git-send-email-murugana@codeaurora.org>
+ <1587720951-9222-2-git-send-email-murugana@codeaurora.org>
+ (sfid-20200424_113624_468114_4CC488DE)
+ <d4e39180f0a8a8b07dc558c9439b66cd2c3aec07.camel@sipsolutions.net>
+ <7fb606edf1e5c7ab5b1446d637768ee7@codeaurora.org>
+ <aaa53c3a9cf6788cb653eb574073a1a0bcc5e6bf.camel@sipsolutions.net>
+ <4bab3197997bb2dd6555ff920c5dd1cb@codeaurora.org>
+ <f2b8fb0783b270a177ee900168fdc1fbc9253e3d.camel@sipsolutions.net>
+ <92eddf5d153781b2698ad258aac2fbe4@codeaurora.org>
+ <86c1e5d23093f350bdabdde4c305c33ecde06b3b.camel@sipsolutions.net>
+Message-ID: <21fcffb4db13e9f0b70669d2e7f97d8a@codeaurora.org>
+X-Sender: murugana@codeaurora.org
+User-Agent: Roundcube Webmail/1.3.9
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, May 28, 2020 at 09:20:43PM +0200, Andrzej Pietrasiewicz wrote:
-> Prepare for changing the place where the mode is stored: now it is in
-> drivers, which might or might not implement get_mode()/set_mode() methods.
-> A lot of cleanup can be done thanks to storing it in struct tzd. The
-> get_mode() methods will become redundant.
+On 2020-05-29 20:14, Johannes Berg wrote:
+> On Fri, 2020-05-29 at 20:10 +0530, Sathishkumar Muruganandam wrote:
+>> On 2020-05-29 18:16, Johannes Berg wrote:
+>> > On Fri, 2020-05-29 at 17:59 +0530, Sathishkumar Muruganandam wrote:
+>> > > Yes, currently only tx encap support is added and rx decap support is
+>> > > in
+>> > > progress to do TKIP MIC error reporting to userspace via
+>> > > cfg80211_michael_mic_failure().
+>> >
+>> > Yes, but can you actually call that? It requires a netdev. I don't
+>> > think
+>> > you can easily get it from the vif?
+>> >
+>> 
+>> Yes, that's right. Currently the plan is to add new mac80211 api for 
+>> rx
+>> decap where
+>> we can call cfg80211_michael_mic_failure() and not called directly 
+>> from
+>> driver.
 > 
-> Signed-off-by: Andrzej Pietrasiewicz <andrzej.p@collabora.com>
-
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-
-> ---
->  include/linux/thermal.h | 2 ++
->  1 file changed, 2 insertions(+)
+> Sure, that sounds fine.
 > 
-> diff --git a/include/linux/thermal.h b/include/linux/thermal.h
-> index 216185bb3014..5f91d7f04512 100644
-> --- a/include/linux/thermal.h
-> +++ b/include/linux/thermal.h
-> @@ -128,6 +128,7 @@ struct thermal_cooling_device {
->   * @trip_temp_attrs:	attributes for trip points for sysfs: trip temperature
->   * @trip_type_attrs:	attributes for trip points for sysfs: trip type
->   * @trip_hyst_attrs:	attributes for trip points for sysfs: trip hysteresis
-> + * @mode:		current mode of this thermal zone
->   * @devdata:	private pointer for device private data
->   * @trips:	number of trip points the thermal zone supports
->   * @trips_disabled;	bitmap for disabled trips
-> @@ -170,6 +171,7 @@ struct thermal_zone_device {
->  	struct thermal_attr *trip_temp_attrs;
->  	struct thermal_attr *trip_type_attrs;
->  	struct thermal_attr *trip_hyst_attrs;
-> +	enum thermal_device_mode mode;
->  	void *devdata;
->  	int trips;
->  	unsigned long trips_disabled;	/* bitmap for disabled trips */
+> Really what I was saying is that we should have that together, not just
+> this patch that allows TKIP offload, but then nothing that actually
+> makes that working properly/safely.
+
+Sure, thanks Johannes !
+
+Will include this along with rx decap patch.
+
+> 
+>> Whether we can expose netdev to driver for doing such cfg80211 call ?
+> 
+> I've always worried that if we expose the netdev we'll just get all
+> kinds of messy things happening in the driver :)
+> 
+> But maybe not. I guess it doesn't make a big difference.
+> 
+
+Sure, will fallback to mac80211 approach for rx decap. Thanks for your 
+review !
+
+Thanks,
+Sathishkumar
