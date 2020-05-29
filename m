@@ -2,20 +2,20 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3DB591E72CD
+	by mail.lfdr.de (Postfix) with ESMTP id AAE731E72CE
 	for <lists+linux-wireless@lfdr.de>; Fri, 29 May 2020 04:53:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2407037AbgE2Cuf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        id S2407052AbgE2Cuf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
         Thu, 28 May 2020 22:50:35 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:35076 "EHLO
+Received: from rtits2.realtek.com ([211.75.126.72]:35077 "EHLO
         rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2407010AbgE2Cud (ORCPT
+        with ESMTP id S2405447AbgE2Cud (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Thu, 28 May 2020 22:50:33 -0400
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.69 with qID 04T2oGhuD031991, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.69 with qID 04T2oGhvD031991, This message is accepted by code: ctloc85258
 Received: from mail.realtek.com (rtexmb06.realtek.com.tw[172.21.6.99])
-        by rtits2.realtek.com.tw (8.15.2/2.66/5.86) with ESMTPS id 04T2oGhuD031991
+        by rtits2.realtek.com.tw (8.15.2/2.66/5.86) with ESMTPS id 04T2oGhvD031991
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
         Fri, 29 May 2020 10:50:16 +0800
 Received: from RTEXMB04.realtek.com.tw (172.21.6.97) by
@@ -25,15 +25,15 @@ Received: from RTEXMB04.realtek.com.tw (172.21.6.97) by
 Received: from localhost.localdomain (172.21.68.128) by
  RTEXMB04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Fri, 29 May 2020 10:50:15 +0800
+ 15.1.1779.2; Fri, 29 May 2020 10:50:16 +0800
 From:   <yhchuang@realtek.com>
 To:     <kvalo@codeaurora.org>
 CC:     <linux-wireless@vger.kernel.org>, <pkshih@realtek.com>,
         <kai.heng.feng@canonical.com>, <bigeasy@linutronix.de>,
         <vicamo.yang@canonical.com>
-Subject: [PATCH v2 2/3] rtw88: coex: 8723d: handle BT inquiry cases
-Date:   Fri, 29 May 2020 10:50:08 +0800
-Message-ID: <20200529025009.2468-3-yhchuang@realtek.com>
+Subject: [PATCH v2 3/3] rtw88: fix EAPOL 4-way failure by finish IQK earlier
+Date:   Fri, 29 May 2020 10:50:09 +0800
+Message-ID: <20200529025009.2468-4-yhchuang@realtek.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200529025009.2468-1-yhchuang@realtek.com>
 References: <20200529025009.2468-1-yhchuang@realtek.com>
@@ -49,68 +49,114 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Ping-Ke Shih <pkshih@realtek.com>
 
-Coex mechanism used to make BT have higher priority and more time to
-transfer data when BT inquiry-page, which leads to poor WiFi performance.
-Should take WiFi traffic into consideration. If the WiFi is having heavy
-traffic, use another parameter to make sure WiFi has more chance to TX/RX,
-while guarantee the priority of BT for inquiry. If the WiFi isn't busy
-(connected or not), set proper parameter to fix originals.
+Connecting to an AP with WPA2 security may fail. The IQK
+and the EAPOL 4-way handshake may overlap because the
+driver does IQK right after assoc success.
+
+For 802.11n devices, the IQK is done in the driver and it
+could require more than 100ms to complete. During IQK, any
+TX/RX events are paused. So if the EAPOL 4-way handshake
+started before IQK finished, then the 1/4 and 2/4 part of
+the handshake could be dropped. The AP will then issue
+deauth with reason IEEE8021X_FAILED (23).
+
+To resolve this, move IQK routine into managed TX prepare
+(ieee80211_ops::mgd_prepare_tx()). The callback is called
+before the managed frames (auth/assoc) are sent. This will
+make sure that the IQK is completed before the handshake
+starts. But don't do IQK during scanning because doing it
+on each channel will take too long.
+
+For 802.11ac devices, the IQK is done in firmware and it
+takes less time to complete. Therefore we don't see a
+failure during the EAPOL 4-way handshake. But it is still
+worth moving the IQK into ieee80211_ops::mgd_prepare_tx().
 
 Fixes: f5df1a8b4376 ("rtw88: 8723d: Add 8723DE to Kconfig and Makefile")
 Tested-by: You-Sheng Yang <vicamo.yang@canonical.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw88/coex.c     | 9 ++++++---
- drivers/net/wireless/realtek/rtw88/rtw8723d.c | 5 +++--
- 2 files changed, 9 insertions(+), 5 deletions(-)
+ drivers/net/wireless/realtek/rtw88/mac80211.c |  3 +--
+ drivers/net/wireless/realtek/rtw88/main.c     | 17 +++++++++++++++++
+ drivers/net/wireless/realtek/rtw88/main.h     |  3 +++
+ 3 files changed, 21 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/coex.c b/drivers/net/wireless/realtek/rtw88/coex.c
-index aa1f726d0966..cbf3d503df1c 100644
---- a/drivers/net/wireless/realtek/rtw88/coex.c
-+++ b/drivers/net/wireless/realtek/rtw88/coex.c
-@@ -1354,12 +1354,15 @@ static void rtw_coex_action_bt_inquiry(struct rtw_dev *rtwdev)
- 				tdma_case = 108;
- 			else
- 				tdma_case = 109;
-+		} else if (coex_stat->wl_gl_busy) {
-+			table_case = 114;
-+			tdma_case = 121;
- 		} else if (coex_stat->wl_connected) {
--			table_case = 101;
--			tdma_case = 110;
--		} else {
- 			table_case = 100;
- 			tdma_case = 100;
-+		} else {
-+			table_case = 101;
-+			tdma_case = 100;
- 		}
+diff --git a/drivers/net/wireless/realtek/rtw88/mac80211.c b/drivers/net/wireless/realtek/rtw88/mac80211.c
+index 98d2ac22f6f6..c412bc54efde 100644
+--- a/drivers/net/wireless/realtek/rtw88/mac80211.c
++++ b/drivers/net/wireless/realtek/rtw88/mac80211.c
+@@ -341,13 +341,11 @@ static void rtw_ops_bss_info_changed(struct ieee80211_hw *hw,
+ 	rtw_leave_lps_deep(rtwdev);
+ 
+ 	if (changed & BSS_CHANGED_ASSOC) {
+-		struct rtw_chip_info *chip = rtwdev->chip;
+ 		enum rtw_net_type net_type;
+ 
+ 		if (conf->assoc) {
+ 			rtw_coex_connect_notify(rtwdev, COEX_ASSOCIATE_FINISH);
+ 			net_type = RTW_NET_MGD_LINKED;
+-			chip->ops->phy_calibration(rtwdev);
+ 
+ 			rtwvif->aid = conf->aid;
+ 			rtw_fw_download_rsvd_page(rtwdev);
+@@ -663,6 +661,7 @@ static void rtw_ops_mgd_prepare_tx(struct ieee80211_hw *hw,
+ 	mutex_lock(&rtwdev->mutex);
+ 	rtw_leave_lps_deep(rtwdev);
+ 	rtw_coex_connect_notify(rtwdev, COEX_ASSOCIATE_START);
++	rtw_chip_prepare_tx(rtwdev);
+ 	mutex_unlock(&rtwdev->mutex);
+ }
+ 
+diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
+index f88a7d2370aa..0eefafc51c62 100644
+--- a/drivers/net/wireless/realtek/rtw88/main.c
++++ b/drivers/net/wireless/realtek/rtw88/main.c
+@@ -408,6 +408,23 @@ void rtw_set_channel(struct rtw_dev *rtwdev)
  	}
  
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8723d.c b/drivers/net/wireless/realtek/rtw88/rtw8723d.c
-index 37aada792d61..0885be1e7334 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8723d.c
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8723d.c
-@@ -2040,7 +2040,7 @@ static const struct coex_tdma_para tdma_sant_8723d[] = {
+ 	rtw_phy_set_tx_power_level(rtwdev, center_chan);
++
++	/* if the channel isn't set for scanning, we will do RF calibration
++	 * in ieee80211_ops::mgd_prepare_tx(). Performing the calibration
++	 * during scanning on each channel takes too long.
++	 */
++	if (!test_bit(RTW_FLAG_SCANNING, rtwdev->flags))
++		rtwdev->need_rfk = true;
++}
++
++void rtw_chip_prepare_tx(struct rtw_dev *rtwdev)
++{
++	struct rtw_chip_info *chip = rtwdev->chip;
++
++	if (rtwdev->need_rfk) {
++		rtwdev->need_rfk = false;
++		chip->ops->phy_calibration(rtwdev);
++	}
+ }
  
- /* Non-Shared-Antenna TDMA */
- static const struct coex_tdma_para tdma_nsant_8723d[] = {
--	{ {0x00, 0x00, 0x00, 0x40, 0x00} }, /* case-100 */
-+	{ {0x00, 0x00, 0x00, 0x40, 0x01} }, /* case-100 */
- 	{ {0x61, 0x45, 0x03, 0x11, 0x11} }, /* case-101 */
- 	{ {0x61, 0x3a, 0x03, 0x11, 0x11} },
- 	{ {0x61, 0x30, 0x03, 0x11, 0x11} },
-@@ -2060,7 +2060,8 @@ static const struct coex_tdma_para tdma_nsant_8723d[] = {
- 	{ {0x51, 0x3a, 0x03, 0x10, 0x50} },
- 	{ {0x51, 0x30, 0x03, 0x10, 0x50} },
- 	{ {0x51, 0x20, 0x03, 0x10, 0x50} },
--	{ {0x51, 0x10, 0x03, 0x10, 0x50} }
-+	{ {0x51, 0x10, 0x03, 0x10, 0x50} }, /* case-120 */
-+	{ {0x51, 0x08, 0x03, 0x10, 0x50} },
+ static void rtw_vif_write_addr(struct rtw_dev *rtwdev, u32 start, u8 *addr)
+diff --git a/drivers/net/wireless/realtek/rtw88/main.h b/drivers/net/wireless/realtek/rtw88/main.h
+index 2ae424869f8b..0841f5fa4bf2 100644
+--- a/drivers/net/wireless/realtek/rtw88/main.h
++++ b/drivers/net/wireless/realtek/rtw88/main.h
+@@ -1720,6 +1720,8 @@ struct rtw_dev {
+ 	struct rtw_fw_state wow_fw;
+ 	struct rtw_wow_param wow;
+ 
++	bool need_rfk;
++
+ 	/* hci related data, must be last */
+ 	u8 priv[] __aligned(sizeof(void *));
  };
- 
- /* rssi in percentage % (dbm = % - 100) */
+@@ -1793,6 +1795,7 @@ void rtw_restore_reg(struct rtw_dev *rtwdev,
+ 		     struct rtw_backup_info *bckp, u32 num);
+ void rtw_desc_to_mcsrate(u16 rate, u8 *mcs, u8 *nss);
+ void rtw_set_channel(struct rtw_dev *rtwdev);
++void rtw_chip_prepare_tx(struct rtw_dev *rtwdev);
+ void rtw_vif_port_config(struct rtw_dev *rtwdev, struct rtw_vif *rtwvif,
+ 			 u32 config);
+ void rtw_tx_report_purge_timer(struct timer_list *t);
 -- 
 2.17.1
 
