@@ -2,133 +2,97 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 21C5E1E8A02
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 May 2020 23:26:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D0821E8ECD
+	for <lists+linux-wireless@lfdr.de>; Sat, 30 May 2020 09:05:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728293AbgE2V0k (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 29 May 2020 17:26:40 -0400
-Received: from mail-il1-f196.google.com ([209.85.166.196]:35846 "EHLO
-        mail-il1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727964AbgE2V0k (ORCPT
+        id S1728657AbgE3HFW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 30 May 2020 03:05:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54432 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726843AbgE3HFV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 29 May 2020 17:26:40 -0400
-Received: by mail-il1-f196.google.com with SMTP id 17so3942588ilj.3;
-        Fri, 29 May 2020 14:26:39 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=+2I2uh+lCRQ53KIyx03FmW/+jeIMFqOBrGTcbc9lM4s=;
-        b=Pikg9MLLTqzQ2jwqEe6IFmOXh4LISsKfaPmROxgGYDuQJutrBVTO1HxCvEdzFITZwj
-         Ltn14m37MHv6e5VpR6KBH58k4f2UqWaW57jpw7Tn6c2VxucQoRKkGYkMbRGSh+GvcOe6
-         +iSHFUloRI9U8NOmyw81mQSJiVTBnvsJQfqoCpEyeMjC9yHhVlMWB5MLr9SxFULCB8JZ
-         VgxSiRY/eY+eWUt0qgp/+z36Zdk+nt5yJAw65TEXozYwafSeT+qbFpRF0VJC0/Vz7kfL
-         HUv8ebxvm0nglmxeLL94l8/722pdSt2oCymRNEIs07FarCPIePNFO8eR0zOAWau7e0fq
-         x1cA==
-X-Gm-Message-State: AOAM531Ud/gU7ndHtfVtDsFI0GoGiCvsdVgTPEVNjKrB7ATe0D2FNBBc
-        dkcwRLpE2nsDnevokxYFoVxgKubrhg==
-X-Google-Smtp-Source: ABdhPJzR/qUOw/XdsiMltbuXXMqaCmOfvW7wTfv0VjXShbJx2eIblPx7c2mxeaGCHZ4eWqhGUoRnAQ==
-X-Received: by 2002:a92:8488:: with SMTP id y8mr2707079ilk.262.1590787599226;
-        Fri, 29 May 2020 14:26:39 -0700 (PDT)
-Received: from xps15 ([64.188.179.252])
-        by smtp.gmail.com with ESMTPSA id t65sm1498148ilk.38.2020.05.29.14.26.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 29 May 2020 14:26:38 -0700 (PDT)
-Received: (nullmailer pid 2998245 invoked by uid 1000);
-        Fri, 29 May 2020 21:26:37 -0000
-Date:   Fri, 29 May 2020 15:26:37 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Felix Fietkau <nbd@nbd.name>
-Cc:     linux-wireless@vger.kernel.org, devicetree@vger.kernel.org
+        Sat, 30 May 2020 03:05:21 -0400
+X-Greylist: delayed 53148 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sat, 30 May 2020 00:05:21 PDT
+Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A542EC03E969;
+        Sat, 30 May 2020 00:05:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
+        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=2OBufPQoFXMLUJ8IsnqyQTwHGOG7uH3gtIDWCufmzmY=; b=qGi68XKZ8oRRIHbIuSWXW7OaIu
+        EkrRYKgcP74Yb6/MPxXnnG0c2wjrGd1lLb5Zmf3ru8CPv84MOJIZWTGGNeH9h0m5O4Zp5bbsDjow1
+        2lkffpcrTiv4b/NvKp7UqHLYVXFTnBZKg9wTvX7j1a/Nbd0wEFKlHDJnoK9GI9tRX6f8=;
+Received: from p4ff13c20.dip0.t-ipconnect.de ([79.241.60.32] helo=nf.local)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1jevYV-0001kb-UA; Sat, 30 May 2020 09:05:20 +0200
 Subject: Re: [PATCH 1/3] dt-bindings: net: wireless: mt76: add power-limits
  node
-Message-ID: <20200529212637.GA2994957@bogus>
+To:     Rob Herring <robh@kernel.org>
+Cc:     linux-wireless@vger.kernel.org, devicetree@vger.kernel.org
 References: <20200529161929.24751-1-nbd@nbd.name>
+ <20200529212637.GA2994957@bogus>
+From:   Felix Fietkau <nbd@nbd.name>
+Autocrypt: addr=nbd@nbd.name; prefer-encrypt=mutual; keydata=
+ xsDiBEah5CcRBADIY7pu4LIv3jBlyQ/2u87iIZGe6f0f8pyB4UjzfJNXhJb8JylYYRzIOSxh
+ ExKsdLCnJqsG1PY1mqTtoG8sONpwsHr2oJ4itjcGHfn5NJSUGTbtbbxLro13tHkGFCoCr4Z5
+ Pv+XRgiANSpYlIigiMbOkide6wbggQK32tC20QxUIwCg4k6dtV/4kwEeiOUfErq00TVqIiEE
+ AKcUi4taOuh/PQWx/Ujjl/P1LfJXqLKRPa8PwD4j2yjoc9l+7LptSxJThL9KSu6gtXQjcoR2
+ vCK0OeYJhgO4kYMI78h1TSaxmtImEAnjFPYJYVsxrhay92jisYc7z5R/76AaELfF6RCjjGeP
+ wdalulG+erWju710Bif7E1yjYVWeA/9Wd1lsOmx6uwwYgNqoFtcAunDaMKi9xVQW18FsUusM
+ TdRvTZLBpoUAy+MajAL+R73TwLq3LnKpIcCwftyQXK5pEDKq57OhxJVv1Q8XkA9Dn1SBOjNB
+ l25vJDFAT9ntp9THeDD2fv15yk4EKpWhu4H00/YX8KkhFsrtUs69+vZQwc0cRmVsaXggRmll
+ dGthdSA8bmJkQG5iZC5uYW1lPsJgBBMRAgAgBQJGoeQnAhsjBgsJCAcDAgQVAggDBBYCAwEC
+ HgECF4AACgkQ130UHQKnbvXsvgCgjsAIIOsY7xZ8VcSm7NABpi91yTMAniMMmH7FRenEAYMa
+ VrwYTIThkTlQzsFNBEah5FQQCACMIep/hTzgPZ9HbCTKm9xN4bZX0JjrqjFem1Nxf3MBM5vN
+ CYGBn8F4sGIzPmLhl4xFeq3k5irVg/YvxSDbQN6NJv8o+tP6zsMeWX2JjtV0P4aDIN1pK2/w
+ VxcicArw0VYdv2ZCarccFBgH2a6GjswqlCqVM3gNIMI8ikzenKcso8YErGGiKYeMEZLwHaxE
+ Y7mTPuOTrWL8uWWRL5mVjhZEVvDez6em/OYvzBwbkhImrryF29e3Po2cfY2n7EKjjr3/141K
+ DHBBdgXlPNfDwROnA5ugjjEBjwkwBQqPpDA7AYPvpHh5vLbZnVGu5CwG7NAsrb2isRmjYoqk
+ wu++3117AAMFB/9S0Sj7qFFQcD4laADVsabTpNNpaV4wAgVTRHKV/kC9luItzwDnUcsZUPdQ
+ f3MueRJ3jIHU0UmRBG3uQftqbZJj3ikhnfvyLmkCNe+/hXhPu9sGvXyi2D4vszICvc1KL4RD
+ aLSrOsROx22eZ26KqcW4ny7+va2FnvjsZgI8h4sDmaLzKczVRIiLITiMpLFEU/VoSv0m1F4B
+ FtRgoiyjFzigWG0MsTdAN6FJzGh4mWWGIlE7o5JraNhnTd+yTUIPtw3ym6l8P+gbvfoZida0
+ TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabwkkE
+ GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCfTKx80VvCR/PvsUlrvdOLsIgeRGAAn1ee
+ RjMaxwtSdaCKMw3j33ZbsWS4
+Message-ID: <76ea310a-bca3-dd50-0569-be69b975fefa@nbd.name>
+Date:   Sat, 30 May 2020 09:05:07 +0200
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:68.0)
+ Gecko/20100101 Thunderbird/68.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200529161929.24751-1-nbd@nbd.name>
+In-Reply-To: <20200529212637.GA2994957@bogus>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, May 29, 2020 at 06:19:27PM +0200, Felix Fietkau wrote:
-> This subnode can be used to set per-rate tx power limits either per
-> country code / regdomain or globally.
-> These limits are typically provided by the device manufacturers and are
-> used to limit sideband emissions and stay within regulatory limits
+On 2020-05-29 23:26, Rob Herring wrote:
+> On Fri, May 29, 2020 at 06:19:27PM +0200, Felix Fietkau wrote:
+>> This subnode can be used to set per-rate tx power limits either per
+>> country code / regdomain or globally.
+>> These limits are typically provided by the device manufacturers and are
+>> used to limit sideband emissions and stay within regulatory limits
+> 
+> How do other WiFi chips handle this? If this is added to DT, then it 
+> should be common for all WiFi h/w.
+Most devices store this data in EEPROM, and the way it's handled also
+varies across different chips. QCA has EEPROM data that only provides
+limits for edge channels (called "conformance test limits")
+The only other example I could find of a driver that stores it in DT is
+mwifiex, which uses an opaque short array of bytes that is passed to the
+firmware directly.
+So I don't think it makes sense to put this in the common bindings.
+On the other hand, I did try to keep the format as generic and
+extensible as possible, so we could always move it over from mt76 to the
+common binding once we encounter another driver that needs something
+like this.
 
-How do other WiFi chips handle this? If this is added to DT, then it 
-should be common for all WiFi h/w.
- 
-> Signed-off-by: Felix Fietkau <nbd@nbd.name>
-> ---
->  .../bindings/net/wireless/mediatek,mt76.txt   | 47 +++++++++++++++++++
->  1 file changed, 47 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/net/wireless/mediatek,mt76.txt b/Documentation/devicetree/bindings/net/wireless/mediatek,mt76.txt
-> index ab7e7a00e534..9d9ace0cfbf9 100644
-> --- a/Documentation/devicetree/bindings/net/wireless/mediatek,mt76.txt
-> +++ b/Documentation/devicetree/bindings/net/wireless/mediatek,mt76.txt
-> @@ -36,6 +36,7 @@ Optional nodes:
->  - led: Properties for a connected LED
->    Optional properties:
->      - led-sources: See Documentation/devicetree/bindings/leds/common.txt
-> +- power-limits: contains per-regdomain/channel rate power limit subnodes
->  
->  &pcie {
->  	pcie0 {
-> @@ -76,3 +77,49 @@ wmac: wmac@18000000 {
->  
->  	power-domains = <&scpsys MT7622_POWER_DOMAIN_WB>;
->  };
-> +
-> +
-> +Subnodes of power-limits:
-> +
-> +Properties:
-> +- country: One or more country codes, as used by the cfg80211 regdomain code
-> +- regdomain: "FCC", "ETSI" or "JP"
-> +
-> +If neither country, nor regdomain is specified, the power limits node is used
-> +as a fallback when no other subnode matches.
-> +
-> +Subnodes txpower-2g, txpower-5g:
-> +
-> +Properties:
-> +- channels: pairs of first and last channel number
-> +- cck: 4 half-dBm per-rate power limit values
-> +- ofdm: 8 half-dBm per-rate power limit values
-> +- mcs:
-> +	sets of per-rate power limit values for 802.11n/802.11ac rates for
-> +	multiple channel bandwidth settings.
-> +	Each set starts with the number of channel bandwidth settings for
-> +	which the rate set applies, followed by either 8 (MT7603/MT7628) or
-> +	10 (all other chips) power limit values.
-> +	The order of the channel bandwidth settings is: 20, 40, 80, 160 MHz.
-> +
-> +
-> +power-limit example:
-> +
-> +power-limits {
-> +	r0 {
-> +		regdomain = "FCC";
-> +		txpower-5g {
-> +			r1 {
-> +				channels = <36 48>;
-> +				ofdm = <23 23 23 23 23 23 23 23>;
-> +				mcs = <1 23 23 23 23 23 23 23 23 23 23>,
-> +					  <3 22 22 22 22 22 22 22 22 22 22>;
-> +			};
-> +			r2 {
-> +				channels = <100 181>;
-> +				ofdm = <14 14 14 14 14 14 14 14>;
-> +				mcs = <4 14 14 14 14 14 14 14 14 14 14>;
-> +			};
-> +		};
-> +	};
-> +};
-> -- 
-> 2.24.0
-> 
+- Felix
