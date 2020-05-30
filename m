@@ -2,56 +2,56 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 24F811E8FE9
+	by mail.lfdr.de (Postfix) with ESMTP id 924A21E8FEA
 	for <lists+linux-wireless@lfdr.de>; Sat, 30 May 2020 11:06:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726975AbgE3JEf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 30 May 2020 05:04:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44716 "EHLO
+        id S1728304AbgE3JG1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 30 May 2020 05:06:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45002 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725889AbgE3JEe (ORCPT
+        with ESMTP id S1727964AbgE3JG1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 30 May 2020 05:04:34 -0400
-Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com [IPv6:2a00:1450:4864:20::343])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA3DCC03E969
-        for <linux-wireless@vger.kernel.org>; Sat, 30 May 2020 02:04:34 -0700 (PDT)
-Received: by mail-wm1-x343.google.com with SMTP id d128so6501093wmc.1
-        for <linux-wireless@vger.kernel.org>; Sat, 30 May 2020 02:04:34 -0700 (PDT)
+        Sat, 30 May 2020 05:06:27 -0400
+Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FD98C03E969
+        for <linux-wireless@vger.kernel.org>; Sat, 30 May 2020 02:06:26 -0700 (PDT)
+Received: by mail-wr1-x442.google.com with SMTP id j10so6467986wrw.8
+        for <linux-wireless@vger.kernel.org>; Sat, 30 May 2020 02:06:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:reply-to:sender:from:date:message-id:subject:to
          :content-transfer-encoding;
         bh=0Ohj3/JbIJ7r1TCcyV8LFr1WeYnuP9GQmMnD3ku38ps=;
-        b=gp1/rMcmoZDs8ZGNkradRk9+G/CoVIlBIUR+ARkGzzciTzoVn/hjJCGAUDMRnWEIXD
-         BJFLZD2/+icgC5D60929TRivViFhvj/LDewoMxaufzviNxj7nw0+MoK1X+M01JmjNQtQ
-         a2x47WNmc3b2666gDnlYzaU1xImZMtSNgPsGp0uaOAFykzaNdcYZ6cPfTXWj5UiOPWm8
-         GVT71Q9lhg1bdBlOudfVBimtbkMkmUxBgpbcsTMIXZ1nVuwh0Y4gy2aTT9BynHh77rN1
-         ipELOA6Gc+HSLDZiqidIEVcAPTqs8aEfizbbPozuC2lXX+Lxja2/W7P5S421mP/7KQ2D
-         6mJw==
+        b=DbI1VOh9zqXRcNLZ/XZhUhUAaKO2DWI07kxdMqK0AcjBIJz5Fz9E2SClxYp7cgD+jy
+         v9ETrs/7wOtR+KwnyOMbe3oz6onnZ3k8WIREMrh55veVN+X3OrVIQga4dXQ7LvxzOIjy
+         1LJygVMo1KGjM/k4BG0nkLWrBs24eul0qIHIKNYjFCk12SYUNiyEOkC2LsiikloUtQlp
+         Ia3Yp+/CdVYKV9yR3XtVV6x88N1lsgje9DLnuNbklWgwRKNwP3xRI2dEXzBEkNlyGVPM
+         7Ya9pektr0zvtWP7j/SsUb51dAcqNKAwpnXjaKXZ7FeSn6OrCP5DoZBrh6WQPH4ZRtix
+         +fwA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:reply-to:sender:from:date
          :message-id:subject:to:content-transfer-encoding;
         bh=0Ohj3/JbIJ7r1TCcyV8LFr1WeYnuP9GQmMnD3ku38ps=;
-        b=KG9vM67ZxisWz4nlbByjMNm6JOieu/5LoUlpZKZGxj1OXWn6y1q88jzWHd4+Vg0lxC
-         wG7s8jt9LLsyAEuygZhjyi55dBg+koVHqIKpkslscVQBfRjkouTNJo5G8eF+VmjPYI+G
-         YeSCE39sckQIuTW4oUrTHVCv1jic4TVkgdM6gkAhFyiqgXjL5pIFOB+QdeZi5FMwx+V7
-         KQ5IJH9vbNEv0KYALodDWhQatH381+oSsY3EupxYSTTZTZKzJjbiNOSaUZfNLhb5K6Mk
-         lKMfyY8aU2ONEDNp92CxBeXDMahcUWN0WLBhLAlMCTe13JZZFra1BUMv2J6AZRkS3UYl
-         0AOA==
-X-Gm-Message-State: AOAM532Q10I7ttkdVBNzEbdQOYNJUv55H93wn/XHWDAiiAiSlP0AUzss
-        DbeemvHSR0FIqL73hp0jMBiJji35Yr15bAmi86g=
-X-Google-Smtp-Source: ABdhPJxly8A+v3HmJDZzO76SkbqfjawhWqBgffu1VOuXjZwGHcuEqHo0coFl6tDyO2FHk/UlOp6thKgJPRQVKJ1miUM=
-X-Received: by 2002:a1c:5fd4:: with SMTP id t203mr11685468wmb.184.1590829473218;
- Sat, 30 May 2020 02:04:33 -0700 (PDT)
+        b=su4nvDjgI32bK+TaizdccwMHoan74vribrl9X+tLp0c2F1SLZDI7FQW2fQ/nSpwsBI
+         xBH9992tvbSPMowwjOFL4H4IM5Ob/T6FlkWT0+IqgShBPNovyHwQyY6DKngqsM9DRaCQ
+         Qa0IJGDPrWbI0hHicw1QJgfMO50xGGpEWhHP5Sq3WkjFPeenrb9TLaDwfwzhWGEL78Xr
+         sJbMlb/WGKvBNgQZnyYCmTeLtbEohvS3QixKBd981MnQnHlaAY/UXRZiA8VdZ4fZNHt0
+         uyg/4bacpOxs17qKiGPqKCHw0gZ69ZFZXgv8KdqZTrf3qK4TSlH+CVYH0RoGkXw3bAzh
+         jvoA==
+X-Gm-Message-State: AOAM530/D08583q+1j0ISapAatw4T5jgmYvOVkGavnCjt1rlwYv3RFkp
+        Y+fEpNeDoL5W/44d7RddZMMJccMyBqZvVfvWKUc=
+X-Google-Smtp-Source: ABdhPJzfwNBUzbHFD65xvlJOYXMXu4STHVDtC14gakeqLSfIhfr9dh/pzCG/2Rqrk2oTDObAjvGTC33Goz8WoSot28U=
+X-Received: by 2002:a05:6000:10cf:: with SMTP id b15mr12356445wrx.214.1590829583818;
+ Sat, 30 May 2020 02:06:23 -0700 (PDT)
 MIME-Version: 1.0
 Reply-To: mr.ahmedhannan@gmail.com
-Received: by 2002:adf:ec83:0:0:0:0:0 with HTTP; Sat, 30 May 2020 02:04:32
+Received: by 2002:adf:ec83:0:0:0:0:0 with HTTP; Sat, 30 May 2020 02:06:23
  -0700 (PDT)
 From:   "Mr.Ahmed Hannan" <mrahmedhannan03@gmail.com>
-Date:   Sat, 30 May 2020 11:04:32 +0200
-X-Google-Sender-Auth: -aBofxfQpKGpo-4FWDcZp_5cM-M
-Message-ID: <CABE6SvJB1v=+xXCJQn3yq_DfbKSW-DMs+0-tHFp1d4qoN-d4Og@mail.gmail.com>
+Date:   Sat, 30 May 2020 11:06:23 +0200
+X-Google-Sender-Auth: fMpFkM2fav8JAyaJ1Er9S92dhV0
+Message-ID: <CABE6Sv+mowEsdaZKvDHiSDHtT_fAh=Sit2hBPbqxkiD-x3rkYg@mail.gmail.com>
 Subject: GREETINGS
 To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
