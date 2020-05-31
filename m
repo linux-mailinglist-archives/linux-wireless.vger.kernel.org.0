@@ -2,188 +2,164 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 12DD11E96B3
-	for <lists+linux-wireless@lfdr.de>; Sun, 31 May 2020 11:53:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5CFBE1E9935
+	for <lists+linux-wireless@lfdr.de>; Sun, 31 May 2020 19:15:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727887AbgEaJxp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 31 May 2020 05:53:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49464 "EHLO
+        id S1728206AbgEaRPJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 31 May 2020 13:15:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60772 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725898AbgEaJxo (ORCPT
+        with ESMTP id S1726008AbgEaRPI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 31 May 2020 05:53:44 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83C54C061A0E;
-        Sun, 31 May 2020 02:53:44 -0700 (PDT)
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.93)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1jfKey-006fbI-Rf; Sun, 31 May 2020 11:53:41 +0200
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     netdev@vger.kernel.org
-Cc:     linux-wireless@vger.kernel.org
-Subject: pull-request: mac80211-next 2020-05-31
-Date:   Sun, 31 May 2020 11:53:20 +0200
-Message-Id: <20200531095321.18991-1-johannes@sipsolutions.net>
-X-Mailer: git-send-email 2.26.2
+        Sun, 31 May 2020 13:15:08 -0400
+X-Greylist: delayed 322 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 31 May 2020 10:15:08 PDT
+Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [IPv6:2001:67c:2050::465:201])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48717C061A0E
+        for <linux-wireless@vger.kernel.org>; Sun, 31 May 2020 10:15:08 -0700 (PDT)
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [80.241.60.240])
+        (using TLSv1.2 with cipher ECDHE-RSA-CHACHA20-POLY1305 (256/256 bits))
+        (No client certificate requested)
+        by mout-p-201.mailbox.org (Postfix) with ESMTPS id 49ZlCn21B8zQlCW
+        for <linux-wireless@vger.kernel.org>; Sun, 31 May 2020 19:09:41 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mailbox.org; h=
+        content-transfer-encoding:content-type:content-type:mime-version
+        :subject:subject:message-id:reply-to:from:from:date:date
+        :received; s=mail20150812; t=1590944977; bh=KYQ55C6Ixd0rsFWKGrYC
+        7tetgzz0/8WBBbmHk4SXq/M=; b=UlT2lx/jL8dlGLx+ga0oTMJL3Cz7siVehdo6
+        KqVGK2Ymwa7EQv1GJDK8xHUmI0RU0XK5WJju0WrzOwEx3MZaYlbWhnTD987pg1hB
+        v4xQ3AvWY3DgY/rmw+Dt0/+ya+V6W/sJupgvNlWzTpOKP+jVy2b+qDh4Q+Py+9L0
+        xcCnUJQVond6n2frTQfaf1dR0GhJAFXfLLIc4d+0k9EAEjPMpCpavxHyo1O3hZh/
+        apPoTZVEmv+ejSTr59kZTN6bGPfMDTIEVYJ+zkd9Lx0AOV16FGaWLxCPoNbLf1pJ
+        eTGbY3PaM8SckwuhCUOUI4q1fBu120QuuV9YYG2aU9bLCJ+o2g==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+        t=1590944979; h=from:from:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:mime-version:mime-version:
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=a0DgE4aKW7u4YR4e56Pb48xkalxziKIZCWI6cAf3FXE=;
+        b=YaFP39y6QGiiug7kB1NIpx0Owo8ZGOBl9Tygdb6FfBsKx6tU/Ahack+EdeNPksF9b2Ytq6
+        6paZ6vNvL6xmBWtOBIE7/MGVAaqCgC25AvknA8FwoHyU5xNdpewOtbtA+6mv6bMOfYZpuj
+        /ZbSDD0GqF2c4jZ6ZxZTROO9qS399y6Y+AIH6Jy40VUEGVdu5jQoTPTU/Fwjwsiu46hFy3
+        CWfGpLx4y5KOoJzB0HmUxuO5jhGHx+Tw2tHKE0ejwLh1pSeDkZ1D+c7EXxj7MYNjmuxyCn
+        Uo5f9MycjDB/sw9wnVwu+S2yjc/hLbAMo87qJXyV2AseMXE4dHmc2/zYR1FSAQ==
+X-Virus-Scanned: amavisd-new at heinlein-support.de
+Received: from smtp1.mailbox.org ([80.241.60.240])
+        by spamfilter03.heinlein-hosting.de (spamfilter03.heinlein-hosting.de [80.241.56.117]) (amavisd-new, port 10030)
+        with ESMTP id jMUsnD_NbScD for <linux-wireless@vger.kernel.org>;
+        Sun, 31 May 2020 19:09:37 +0200 (CEST)
+Date:   Sun, 31 May 2020 19:09:34 +0200 (CEST)
+From:   rt5572@mailbox.org
+Reply-To: rt5572@mailbox.org
+To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Message-ID: <616157256.22858.1590944974598@office.mailbox.org>
+Subject: rt2800usb: Low Tx throughput
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+Importance: Normal
+X-Rspamd-Queue-Id: 32F3C17F0
+X-Rspamd-Score: -4.41 / 15.00 / 15.00
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Dave,
+Hello,
 
-My apologies that this comes so late, it took me much longer than
-I had anticipated to pull together the 6 GHz changes between the
-overlaps that Qualcomm and we at Intel had, since we both had much
-of this implemented, though with a bit different focus (AP/mesh
-vs. client). But I think it's now fine, although I left out the
-scanning for now since we're still discussing the userspace API.
+First of all, apologies if this mailing list is not the right place to report this kind of issue.
 
-Other than that, nothing really big, you can see the tag message
-below.
+I am encountering a very low Tx throughput (~12 Mbits/s) when sending data with iperf from an rt2800usb station to an OpenWRT mwlwifi AP. There are no other stations connected to the AP, or other applications running apart from iperf.
+Rx throughput, however, is well within the expected range (~112 Mbits/s).
+For reference, the same USB network adapter achieves 10 times the Tx throughput (~130 Mbits/s) when using the Windows driver in an otherwise identical test (iperf binary compiled for Windows, same AP, same location).
 
-Please pull and let me know if there's any problem.
+Additional information follows:
 
-Thanks,
-johannes
+Linux kernel: 4.14.178
 
+rt2800usb module and its dependencies: backported from Linux (v5.7-rc3-0-g6a8b55ed4056) using backports v5.7-rc3-1-0-gc0c7d2bb
+The same issue can be reproduced using the modules that came originally with the 4.14.178 kernel.
 
+lsusb:
+ID 148f:5572 Ralink Technology, Corp. RT5572 Wireless Adapter
 
-The following changes since commit dc0f3ed1973f101508957b59e529e03da1349e09:
+'iw dev wireless station dump' output in the client after a 60-second iperf run:
 
-  net: phy: at803x: add cable diagnostics support for ATH9331 and ATH8032 (2020-05-26 23:26:04 -0700)
+Station XX:XX:XX:XX:XX:XX (on wireless)
+inactive time:  7540 ms
+rx bytes:       2729211
+rx packets:     31477
+tx bytes:       92127099
+tx packets:     60088
+tx retries:     1100
+tx failed:      3
+beacon loss:    0
+beacon rx:      721
+rx drop misc:   18
+signal:         -46 dBm
+signal avg:     -47 dBm
+beacon signal avg:      209 dBm
+tx bitrate: 300.0 MBit/s MCS 15 40MHz short GI
+rx bitrate: 162.0 MBit/s MCS 12 40MHz
+expected throughput: 58.43Mbps
+authorized: yes
+authenticated: yes
+associated: yes
+preamble: long
+WMM/WME: yes
+MFP: no
+TDLS peer: no
+DTIM period: 2
+beacon interval:100
+short preamble: yes
+short slot time:yes
+connected time: 74 seconds
 
-are available in the Git repository at:
+iperf output:
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211-next.git tags/mac80211-next-for-davem-2020-05-31
+station# iperf -c ap -t 60 -i 5
+------------------------------------------------------------
+Client connecting to router, TCP port 5001
+TCP window size: 85.0 KByte (default)
+------------------------------------------------------------
+[  3] local A.B.C.D port 45136 connected with W.X.Y.Z port 5001
+[ ID] Interval       Transfer     Bandwidth
+[  3]  0.0- 5.0 sec  3.60 MBytes  6.03 Mbits/sec
+[  3]  5.0-10.0 sec  7.50 MBytes  12.6 Mbits/sec
+[  3] 10.0-15.0 sec  7.50 MBytes  12.6 Mbits/sec
+[  3] 15.0-20.0 sec  7.50 MBytes  12.6 Mbits/sec
+[  3] 20.0-25.0 sec  7.25 MBytes  12.2 Mbits/sec
+[  3] 25.0-30.0 sec  7.12 MBytes  12.0 Mbits/sec
+[  3] 30.0-35.0 sec  7.12 MBytes  12.0 Mbits/sec
+[  3] 35.0-40.0 sec  7.12 MBytes  12.0 Mbits/sec
+[  3] 40.0-45.0 sec  7.00 MBytes  11.7 Mbits/sec
+[  3] 45.0-50.0 sec  7.12 MBytes  12.0 Mbits/sec
+[  3] 50.0-55.0 sec  7.00 MBytes  11.7 Mbits/sec
 
-for you to fetch changes up to 093a48d2aa4b74db3134b61d7b7a061dbe79177b:
+ap# iperf -s
+------------------------------------------------------------
+Server listening on TCP port 5001
+TCP window size: 85.3 KByte (default)
+------------------------------------------------------------
+[  4] local W.X.Y.Z port 5001 connected with A.B.C.D port 45136
+[ ID] Interval       Transfer     Bandwidth
+[  4]  0.0-59.5 sec  82.9 MBytes  11.7 Mbits/sec
 
-  cfg80211: support bigger kek/kck key length (2020-05-31 11:27:24 +0200)
+I enabled all the MAC80211 and Ralink debug options I could find in the backports menuconfig, but nothing interesting showed up in dmesg during the tests:
+[18591.310959] ieee80211 phy1: rt2x00_set_rt: Info - RT chipset 5592, rev 0222 detected
+[18591.323993] ieee80211 phy1: rt2x00_set_rf: Info - RF chipset 000f detected
+[18591.324351] ieee80211 phy1: Selected rate control algorithm 'minstrel_ht'
+[18592.057905] rt2800usb 1-1.4.2:1.0 wireless: renamed from wlan0
+[18606.170423] ieee80211 phy1: rt2x00lib_request_firmware: Info - Loading firmware file 'rt2870.bin'
+[18606.210871] ieee80211 phy1: rt2x00lib_request_firmware: Info - Firmware detected - version: 0.36
+[18614.393426] wireless: authenticate with XX:XX:XX:XX:XX:XX
+[18614.448933] wireless: send auth to XX:XX:XX:XX:XX:XX (try 1/3)
+[18614.449587] wireless: authenticated
+[18614.451765] wireless: associate with XX:XX:XX:XX:XX:XX (try 1/3)
+[18614.470701] wireless: RX AssocResp from XX:XX:XX:XX:XX:XX (capab=0x11 status=0 aid=1)
+[18614.476924] wireless: associated
 
-----------------------------------------------------------------
-Another set of changes, including
- * many 6 GHz changes, though it's not _quite_ complete
-   (I left out scanning for now, we're still discussing)
- * allow userspace SA-query processing for operating channel
-   validation
- * TX status for control port TX, for AP-side operation
- * more per-STA/TID control options
- * move to kHz for channels, for future S1G operation
- * various other small changes
+iw event -t output is empty.
 
-----------------------------------------------------------------
-Arend Van Spriel (1):
-      cfg80211: adapt to new channelization of the 6GHz band
+Any pointers as to where I could start debugging this problem?
 
-Gustavo A. R. Silva (2):
-      cfg80211: Replace zero-length array with flexible-array
-      mac80211: Replace zero-length array with flexible-array
-
-Hauke Mehrtens (1):
-      wireless: Use linux/stddef.h instead of stddef.h
-
-Ilan Peer (2):
-      mac80211: Add HE 6GHz capabilities element to probe request
-      mac80211: Consider 6 GHz band when handling power constraint
-
-Johannes Berg (15):
-      mac80211: allow SA-QUERY processing in userspace
-      mac80211: fix HT-Control field reception for management frames
-      cfg80211: fix 6 GHz frequencies to kHz
-      nl80211: really allow client-only BIGTK support
-      cfg80211: add a helper to identify 6 GHz PSCs
-      ieee80211: add code to obtain and parse 6 GHz operation field
-      ieee80211: add HE ext EIDs and 6 GHz capability defines
-      cfg80211: add and expose HE 6 GHz band capabilities
-      mac80211: avoid using ext NSS high BW if not supported
-      mac80211: determine chandef from HE 6 GHz operation
-      mac80211: use HE 6 GHz band capability and pass it to the driver
-      cfg80211: treat 6 GHz channels as valid regardless of capability
-      cfg80211: reject HT/VHT capabilities on 6 GHz band
-      cfg80211: require HE capabilities for 6 GHz band
-      mac80211: accept aggregation sessions on 6 GHz
-
-Markus Theil (2):
-      nl80211: add ability to report TX status for control port TX
-      mac80211: support control port TX status reporting
-
-Nathan Errera (1):
-      cfg80211: support bigger kek/kck key length
-
-Patrick Steinhardt (1):
-      cfg80211: fix CFG82011_CRDA_SUPPORT still mentioning internal regdb
-
-Rajkumar Manoharan (5):
-      cfg80211: handle 6 GHz capability of new station
-      mac80211: add HE 6 GHz Band Capabilities into parse extension
-      mac80211: add HE 6 GHz Band Capability element
-      mac80211: build HE operation with 6 GHz oper information
-      mac80211: do not allow HT/VHT IEs in 6 GHz mesh mode
-
-Ramon Fontes (1):
-      mac80211_hwsim: report the WIPHY_FLAG_SUPPORTS_5_10_MHZ capability
-
-Sergey Matyukevich (4):
-      cfg80211: fix mask type in cfg80211_tid_cfg structure
-      mac80211: fix variable names in TID config methods
-      cfg80211: add support for TID specific AMSDU configuration
-      nl80211: simplify peer specific TID configuration
-
-Shaul Triebitz (1):
-      mac80211: check the correct bit for EMA AP
-
-Tamizh Chelvam (2):
-      mac80211: Add new AMPDU factor macro for HE peer caps
-      nl80211: Add support to configure TID specific Tx rate configuration
-
-Thomas Pedersen (4):
-      cfg80211: add KHz variants of frame RX API
-      nl80211: add KHz frequency offset for most wifi commands
-      nl80211: support scan frequencies in KHz
-      ieee80211: S1G defines
-
-Tova Mussai (2):
-      ieee80211: definitions for reduced neighbor reports
-      mac80211: set short_slot for 6 GHz band
-
- drivers/net/wireless/mac80211_hwsim.c |   1 +
- include/linux/ieee80211.h             | 344 +++++++++++++++++++++++++++++++++-
- include/net/cfg80211.h                | 169 ++++++++++++++---
- include/net/mac80211.h                |  14 +-
- include/uapi/linux/nl80211.h          | 126 ++++++++++---
- include/uapi/linux/wireless.h         |   6 +-
- net/mac80211/agg-rx.c                 |   5 +-
- net/mac80211/agg-tx.c                 |   3 +-
- net/mac80211/cfg.c                    |  13 +-
- net/mac80211/driver-ops.h             |   4 +-
- net/mac80211/he.c                     |  48 +++++
- net/mac80211/ibss.c                   |  11 +-
- net/mac80211/ieee80211_i.h            |  25 ++-
- net/mac80211/main.c                   |   4 +
- net/mac80211/mesh.c                   |  54 +++++-
- net/mac80211/mesh.h                   |   2 +
- net/mac80211/mesh_plink.c             |   9 +-
- net/mac80211/mlme.c                   | 120 ++++++++----
- net/mac80211/rx.c                     | 105 ++++++++---
- net/mac80211/scan.c                   |  23 ++-
- net/mac80211/spectmgmt.c              |   4 +-
- net/mac80211/status.c                 |   9 +-
- net/mac80211/tdls.c                   |   2 +-
- net/mac80211/tx.c                     |  65 +++++--
- net/mac80211/util.c                   | 298 +++++++++++++++++++++++++++--
- net/wireless/Kconfig                  |   4 +-
- net/wireless/chan.c                   |  22 ++-
- net/wireless/core.c                   |  17 +-
- net/wireless/core.h                   |   2 +-
- net/wireless/mlme.c                   |   6 +-
- net/wireless/nl80211.c                | 297 ++++++++++++++++++++++-------
- net/wireless/rdev-ops.h               |   9 +-
- net/wireless/sme.c                    |   7 +-
- net/wireless/trace.h                  |  25 ++-
- net/wireless/util.c                   |  10 +-
- 35 files changed, 1575 insertions(+), 288 deletions(-)
-
+Many thanks.
