@@ -2,73 +2,81 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 747251EA84F
-	for <lists+linux-wireless@lfdr.de>; Mon,  1 Jun 2020 19:16:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 719441EB1D6
+	for <lists+linux-wireless@lfdr.de>; Tue,  2 Jun 2020 00:42:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728080AbgFARQG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 1 Jun 2020 13:16:06 -0400
-Received: from mail.adapt-ip.com ([173.164.178.19]:36440 "EHLO
-        web.adapt-ip.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726125AbgFARQF (ORCPT
+        id S1728887AbgFAWmh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 1 Jun 2020 18:42:37 -0400
+Received: from mail27.static.mailgun.info ([104.130.122.27]:29329 "EHLO
+        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725800AbgFAWmh (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 1 Jun 2020 13:16:05 -0400
-Received: from localhost (localhost [127.0.0.1])
-        by web.adapt-ip.com (Postfix) with ESMTP id 5F50A4F8A9C;
-        Mon,  1 Jun 2020 17:16:05 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at web.adapt-ip.com
-Received: from web.adapt-ip.com ([127.0.0.1])
-        by localhost (web.adapt-ip.com [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id ahDYlkLV6PAY; Mon,  1 Jun 2020 17:16:03 +0000 (UTC)
-Received: from [10.1.15.7] (gateway.adapt-ip.com [173.164.178.20])
-        (Authenticated sender: thomas@adapt-ip.com)
-        by web.adapt-ip.com (Postfix) with ESMTPSA id E87744F8A8D;
-        Mon,  1 Jun 2020 17:16:02 +0000 (UTC)
-Subject: Re: [PATCH v4 5/5] nl80211: S1G band and channel definitions
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>
-References: <20200430172554.18383-1-thomas@adapt-ip.com>
- <20200430172554.18383-6-thomas@adapt-ip.com>
- <256d488507006cff8b0a9bc80ab51ef0cee9ff7e.camel@sipsolutions.net>
-From:   Thomas Pedersen <thomas@adapt-ip.com>
-Message-ID: <3ef2eb73-22e3-3324-74be-514d2d9032e9@adapt-ip.com>
-Date:   Mon, 1 Jun 2020 10:16:04 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.2
+        Mon, 1 Jun 2020 18:42:37 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1591051356; h=Message-ID: References: In-Reply-To: Subject:
+ Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Sender; bh=AiD0/AsHqrbhLADE7omoVnTFthsdt1/Gwn1XMzVDk4Q=;
+ b=ineI64MqJw7qgr26KZDOqTJ7j4VYuT0QdzDkWXzTflcBbaetizchumI9KXcycF6aMZEnBlWZ
+ cJgZ41p9ypSPKW1cG+vHrZagjqWFFfjB6NtXEePAVORarSBBQuwQCkU99ABWzOS/qkzHzmdA
+ Woo+bljhFKFwc3PF0NNrJekKH+g=
+X-Mailgun-Sending-Ip: 104.130.122.27
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n13.prod.us-west-2.postgun.com with SMTP id
+ 5ed584568e09c0ae0925a6f4 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 01 Jun 2020 22:42:30
+ GMT
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id E48ACC43391; Mon,  1 Jun 2020 22:42:29 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: rmanohar)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 69740C433CB;
+        Mon,  1 Jun 2020 22:42:29 +0000 (UTC)
 MIME-Version: 1.0
-In-Reply-To: <256d488507006cff8b0a9bc80ab51ef0cee9ff7e.camel@sipsolutions.net>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
 Content-Transfer-Encoding: 7bit
+Date:   Mon, 01 Jun 2020 15:42:29 -0700
+From:   Rajkumar Manoharan <rmanohar@codeaurora.org>
+To:     johannes@sipsolutions.net, kvalo@codeaurora.org
+Cc:     linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
+        linux-wireless-owner@vger.kernel.org
+Subject: Re: [PATCH v3 11/11] ath11k: build HE 6 GHz capability
+In-Reply-To: <1589399105-25472-11-git-send-email-rmanohar@codeaurora.org>
+References: <1589399105-25472-1-git-send-email-rmanohar@codeaurora.org>
+ <1589399105-25472-11-git-send-email-rmanohar@codeaurora.org>
+Message-ID: <21cc960760e4b3c3c4723fa6d03260c7@codeaurora.org>
+X-Sender: rmanohar@codeaurora.org
+User-Agent: Roundcube Webmail/1.3.9
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 5/26/20 6:01 AM, Johannes Berg wrote:
-> Hi Thomas,
+On 2020-05-13 12:45, Rajkumar Manoharan wrote:
+> Build 6 GHz band capability from HT and VHT capabilities reported
+> by firmware.
 > 
-> This looks mostly good (and I've applied the other 4 patches with some
-> fixups), but ...
+> Signed-off-by: Rajkumar Manoharan <rmanohar@codeaurora.org>
+> ---
+>  drivers/net/wireless/ath/ath11k/core.h |  1 +
+>  drivers/net/wireless/ath/ath11k/mac.c  | 34 
+> ++++++++++++++++++++++++++++++++++
+>  2 files changed, 35 insertions(+)
 > 
->> @@ -911,6 +931,15 @@ bool cfg80211_chandef_usable(struct wiphy *wiphy,
->>  	control_freq = chandef->chan->center_freq;
->>  
->>  	switch (chandef->width) {
->> +	case NL80211_CHAN_WIDTH_1:
->> +		width = 1;
->> +		break;
->> +	case NL80211_CHAN_WIDTH_2:
->> +		width = 2;
->> +		break;
->> +	case NL80211_CHAN_WIDTH_4:
->> +		width = 4;
->> +		break;
->>  	case NL80211_CHAN_WIDTH_5:
-> 
-> aren't you missing some bandwidths here? You'd fall through to a
-> WARN_ON(), which doesn't seem good?
+Kalle,
 
-Yep. Looks like hwsim tests needs a test for larger bandwidths.
+Please drop this patch as it needs to be reworked on top of latest 
+mac80211 series.
+Will submit ath11k patch again as the rest of the series were handled by 
+Johannes.
 
--- 
-thomas
+-Rajkumar
