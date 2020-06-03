@@ -2,213 +2,143 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8318A1EC628
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jun 2020 02:17:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D94F1EC9A5
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jun 2020 08:40:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728441AbgFCARh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 2 Jun 2020 20:17:37 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:27295 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726112AbgFCARg (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 2 Jun 2020 20:17:36 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1591143454; h=References: In-Reply-To: Message-Id: Date:
- Subject: Cc: To: From: Sender;
- bh=CJcZabUe+RZRkUgdEd0lB4wY0h4EeYTXmof575DZ0v0=; b=dqtecPUvaElcJF3vyBBYVSjvG4CsesmkySC60/eIbxoyreoDqCm5+JF6OIOqZCTwZpkZNd6I
- g9GWeMMqg2ptXBNLWOa5kYBlwjosi4LYJQ4s7bVOzBVXI9mwLNuke0d9FMJvg9f37G36eLYT
- SPkl7Pw0n8A39P7ruTcYrJ9jPRw=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n09.prod.us-west-2.postgun.com with SMTP id
- 5ed6ec1d98f4fc41d0c82b62 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 03 Jun 2020 00:17:33
- GMT
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 9663AC43391; Wed,  3 Jun 2020 00:17:33 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.0
-Received: from pradeepc2-linux.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: pradeepc)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 06778C43387;
-        Wed,  3 Jun 2020 00:17:32 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 06778C43387
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=pradeepc@codeaurora.org
-From:   Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>
-To:     ath11k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org,
-        Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>
-Subject: [PATCH v5 8/8] ath11k: Add support for 6g scan hint
-Date:   Tue,  2 Jun 2020 17:17:24 -0700
-Message-Id: <20200603001724.12161-9-pradeepc@codeaurora.org>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200603001724.12161-1-pradeepc@codeaurora.org>
-References: <20200603001724.12161-1-pradeepc@codeaurora.org>
+        id S1725927AbgFCGkz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 3 Jun 2020 02:40:55 -0400
+Received: from mail-dm6nam12on2134.outbound.protection.outlook.com ([40.107.243.134]:32161
+        "EHLO NAM12-DM6-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725275AbgFCGkz (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 3 Jun 2020 02:40:55 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=RTMzD0k+PsBEeFEc0/wroDNkLBI8e3iMxH1bvDskUGrZ3Fgp+DYUOHsAHs9pBocipnAUBkkOmWGqixHsyhou/U1EoSs612Hm3+KuzWrwtzdziVxCzNZQuJXXgRmizP720NB2ZSUFrr7+bfwAWkUZjRxDW/MQo6rIwwlYhoEKKhykO8mxnz8rd0uyHgHsid2z8SOYNmiSi/631NrzrFif4x8cVpe/iVtxJrHw9MGP5zB/MDapfrt5Ql/NThV2fhuJ5DtomLb2bGeUWAOEEqpPxNTIAITIIe/AaebGQOogl8mrxxVS5RvSeC9FWk+ZX1N6GrdQkaRnC2DFWw1SqJTbNA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=gwaCu+fkRQlMxNU81rXoF4YaX8bSZmcahvHQbDAdSUw=;
+ b=Mm7puI4qe4K06aIz4C7CDT/McnYl9qCGPheRll506qIiPFcoRcE713UXYJnsujWqzBHKUN4Rc3adcr3zEUX/BCw1C3P4S6jAI1dZJpgcIG+o5iDETPHZOfg/169faci0FwKeeK5t58BGX9sarBu6No6qFKB+07evna9kw4siMsoyfCC49/HFo/ionVYrzp5X2Y8Wi6yDiJwDQtM0cufMEyF3vS12YLbGvH/YGNeU8D02wRPh99ROz67oIGQmCv8P3nYSDT4/B9LsxinPJ07oR0JdhnEiss1EdbEdC4Bp5rpgIGszPTJ+EeUzOjpd4aFR58dd1MFKimJbjyE/wZ7lWQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=cypress.com; dmarc=pass action=none header.from=cypress.com;
+ dkim=pass header.d=cypress.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cypress.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=gwaCu+fkRQlMxNU81rXoF4YaX8bSZmcahvHQbDAdSUw=;
+ b=b1JaxLmyAWzf5a3CzA0hvJLoBTFGEbUbsgq1Zn6RFlD8qiX9N/cBsmS0CK4doqGbN7WpWCnWwLZafR7kpZAMrxYeIGJu4X1ysioA1f9jbb2GC/fkNSU6dAoXOfAKEDTTYlVEkJ+ZaA65OmdRREc6U0DbY06GUSZm0b4pqq8MfzI=
+Authentication-Results: cypress.com; dkim=none (message not signed)
+ header.d=none;cypress.com; dmarc=none action=none header.from=cypress.com;
+Received: from DM6PR06MB4748.namprd06.prod.outlook.com (2603:10b6:5:fd::18) by
+ DM6PR06MB4393.namprd06.prod.outlook.com (2603:10b6:5:1d::26) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.3045.19; Wed, 3 Jun 2020 06:40:51 +0000
+Received: from DM6PR06MB4748.namprd06.prod.outlook.com
+ ([fe80::9f0:c02f:7b54:51eb]) by DM6PR06MB4748.namprd06.prod.outlook.com
+ ([fe80::9f0:c02f:7b54:51eb%5]) with mapi id 15.20.3066.018; Wed, 3 Jun 2020
+ 06:40:51 +0000
+Subject: Re: [PATCH 1/5] brcmfmac: To fix kernel crash on out of boundary
+ access
+To:     Florian Fainelli <f.fainelli@gmail.com>,
+        linux-wireless@vger.kernel.org
+Cc:     brcm80211-dev-list@broadcom.com, brcm80211-dev-list@cypress.com,
+        Arend van Spriel <arend.vanspriel@broadcom.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Kalle Valo <kvalo@codeaurora.org>, chi-hsien.lin@cypress.com,
+        Raveendran Somu <raveendran.somu@cypress.com>
+References: <20200601071953.23252-1-wright.feng@cypress.com>
+ <20200601071953.23252-2-wright.feng@cypress.com>
+ <8fe5fdf5-1b26-a127-3567-321017455a49@gmail.com>
+From:   Wright Feng <wright.feng@cypress.com>
+Message-ID: <69c1658c-fb6c-e410-49df-2c98cb8501b0@cypress.com>
+Date:   Wed, 3 Jun 2020 14:40:42 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.0
+In-Reply-To: <8fe5fdf5-1b26-a127-3567-321017455a49@gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: TYXPR01CA0049.jpnprd01.prod.outlook.com
+ (2603:1096:403:a::19) To DM6PR06MB4748.namprd06.prod.outlook.com
+ (2603:10b6:5:fd::18)
+MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from [192.168.50.236] (123.194.189.67) by TYXPR01CA0049.jpnprd01.prod.outlook.com (2603:1096:403:a::19) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3066.18 via Frontend Transport; Wed, 3 Jun 2020 06:40:48 +0000
+X-Originating-IP: [123.194.189.67]
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-HT: Tenant
+X-MS-Office365-Filtering-Correlation-Id: 3bb1a818-3273-427e-d8f6-08d807890ecc
+X-MS-TrafficTypeDiagnostic: DM6PR06MB4393:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <DM6PR06MB43930D48DACCEE8DB678D4E0FB880@DM6PR06MB4393.namprd06.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:260;
+X-Forefront-PRVS: 04238CD941
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: bsl1AsL4RjkPEYtnwc9aGlHKlx8lQdsPfL7/GT11XIO3rTZnRP80HBDvXjn9RHYk8zulizUpjixo+4p0D7XvnLJ5+5BiJ9C2B/nNWUfU0IYLyglmwmKldhNXeyb7OMn1QHsEqKfcj9RodepqvlDoTkpN3GsP4VhZxbrxNBPB5GDVeSz+2zaMnKrzsXRNZPP6gn/ASkbrXYGviWXmg8MOxD1XzELgPC725RiJVYJadXVe82k+TPJnnQdvVgTLhdkfZrywJwWrgoDN5C2zbyeBOgLH3R3n7EyDz8h6TCP1bxzpZJEYVXqfXvGrSC+EQ/ftWwteH8eSOxGhrFvoAUSalibetFI+Lj9vG00bj+pHkdbUf2y5ep+VahgYozIKCBxT
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR06MB4748.namprd06.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(39860400002)(396003)(376002)(366004)(136003)(346002)(2616005)(956004)(36756003)(2906002)(4326008)(52116002)(26005)(6666004)(5660300002)(53546011)(186003)(16526019)(8676002)(31686004)(6486002)(66946007)(66476007)(478600001)(107886003)(8936002)(86362001)(54906003)(31696002)(16576012)(44832011)(316002)(83380400001)(66556008)(43740500002);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData: nLm1sSchUlrEWIAAPWpfb5j1rOc2Ob3EQ9J6sIbc4O3/kleUEQDjxeAvGg5eaMngkUjvCReyjLCBbhBn/nkuR7RW5txAWJdy6DnLmjKANB/i7MGShN57vnfDuqybakxnd9uMkpxlfN0QgsFyJKGTJ0HwkJKt1MuJ57mHf0TUfzpeabEesK+QZ125wCeaB3PzO5Ourec1wOsMBHv4vqG0biRDVo6t6Z7v6k90MggPapkfzlhGH1/Q4IV6UMOO2y5mYfFO4/Jje8bOkP5u5bApj/aI8+DA0sDIbiuwex59mTEzCyna5xPCnANExG3kt1zpst4zUevyme5uPyVDfdk+kGIO1BWU+6I1lKFp8L3EcZjL4mV3HseElPblFRGwrbSsO7JAJ7bw5WvOUNA7Ar9Gdbz5apCAs8CEJyEBUPqWBPFmXtaoSRN/pBHYUOnkdF5TIO24L0+3E5WT9StricH/O1seTBZ4tupjJwewPzhHiaM19xVKK2WwMzabJK6HmVaw
+X-OriginatorOrg: cypress.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3bb1a818-3273-427e-d8f6-08d807890ecc
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jun 2020 06:40:51.6239
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 011addfc-2c09-450d-8938-e0bbc2dd2376
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: OiFl3K1LUHDQGyeO2h/IgpIBFvcQE2S64AeTH9O2Fm2Z9wtUaR3FhYbFEPcFXdt/ZdTc3/leZuJytuiyvUQiCg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR06MB4393
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Add support for 6Ghz short ssid and bssid hint mechanism
-as part of scan command.
 
-Signed-off-by: Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>
----
- drivers/net/wireless/ath/ath11k/wmi.c | 72 +++++++++++++++++++++++++++
- drivers/net/wireless/ath/ath11k/wmi.h | 22 ++++++++
- 2 files changed, 94 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
-index ad3a7b68d308..317376a4eb6e 100644
---- a/drivers/net/wireless/ath/ath11k/wmi.c
-+++ b/drivers/net/wireless/ath/ath11k/wmi.c
-@@ -2005,6 +2005,8 @@ int ath11k_wmi_send_scan_start_cmd(struct ath11k *ar,
- 	int i, ret, len;
- 	u32 *tmp_ptr;
- 	u8 extraie_len_with_pad = 0;
-+	struct hint_short_ssid *s_ssid = NULL;
-+	struct hint_bssid *hint_bssid = NULL;
- 
- 	len = sizeof(*cmd);
- 
-@@ -2026,6 +2028,14 @@ int ath11k_wmi_send_scan_start_cmd(struct ath11k *ar,
- 			roundup(params->extraie.len, sizeof(u32));
- 	len += extraie_len_with_pad;
- 
-+	if (params->num_hint_bssid)
-+		len += TLV_HDR_SIZE +
-+		       params->num_hint_bssid * sizeof(struct hint_bssid);
-+
-+	if (params->num_hint_s_ssid)
-+		len += TLV_HDR_SIZE +
-+		       params->num_hint_s_ssid * sizeof(struct hint_short_ssid);
-+
- 	skb = ath11k_wmi_alloc_skb(wmi->wmi_ab, len);
- 	if (!skb)
- 		return -ENOMEM;
-@@ -2126,6 +2136,68 @@ int ath11k_wmi_send_scan_start_cmd(struct ath11k *ar,
- 
- 	ptr += extraie_len_with_pad;
- 
-+	if (params->num_hint_s_ssid) {
-+		len = params->num_hint_s_ssid * sizeof(struct hint_short_ssid);
-+		tlv = ptr;
-+		tlv->header = FIELD_PREP(WMI_TLV_TAG, WMI_TAG_ARRAY_FIXED_STRUCT) |
-+			      FIELD_PREP(WMI_TLV_LEN, len);
-+		ptr += TLV_HDR_SIZE;
-+		s_ssid = ptr;
-+		for (i = 0; i < params->num_hint_s_ssid; ++i) {
-+			s_ssid->freq_flags = params->hint_s_ssid[i].freq_flags;
-+			s_ssid->short_ssid = params->hint_s_ssid[i].short_ssid;
-+			s_ssid++;
-+		}
-+		ptr += len;
-+	}
-+
-+	if (params->num_hint_bssid) {
-+		len = params->num_hint_bssid * sizeof(struct hint_bssid);
-+		tlv = ptr;
-+		tlv->header = FIELD_PREP(WMI_TLV_TAG, WMI_TAG_ARRAY_FIXED_STRUCT) |
-+			      FIELD_PREP(WMI_TLV_LEN, len);
-+		ptr += TLV_HDR_SIZE;
-+		hint_bssid = ptr;
-+		for (i = 0; i < params->num_hint_bssid; ++i) {
-+			hint_bssid->freq_flags =
-+				params->hint_bssid[i].freq_flags;
-+			ether_addr_copy(&params->hint_bssid[i].bssid.addr[0],
-+					&hint_bssid->bssid.addr[0]);
-+			hint_bssid++;
-+		}
-+	}
-+
-+	len = params->num_hint_s_ssid * sizeof(struct hint_short_ssid);
-+	tlv = ptr;
-+	tlv->header = FIELD_PREP(WMI_TLV_TAG, WMI_TAG_ARRAY_FIXED_STRUCT) |
-+		      FIELD_PREP(WMI_TLV_LEN, len);
-+	ptr += TLV_HDR_SIZE;
-+	if (params->num_hint_s_ssid) {
-+		s_ssid = ptr;
-+		for (i = 0; i < params->num_hint_s_ssid; ++i) {
-+			s_ssid->freq_flags = params->hint_s_ssid[i].freq_flags;
-+			s_ssid->short_ssid = params->hint_s_ssid[i].short_ssid;
-+			s_ssid++;
-+		}
-+	}
-+	ptr += len;
-+
-+	len = params->num_hint_bssid * sizeof(struct hint_bssid);
-+	tlv = ptr;
-+	tlv->header = FIELD_PREP(WMI_TLV_TAG, WMI_TAG_ARRAY_FIXED_STRUCT) |
-+		      FIELD_PREP(WMI_TLV_LEN, len);
-+	ptr += TLV_HDR_SIZE;
-+	if (params->num_hint_bssid) {
-+		hint_bssid = ptr;
-+		for (i = 0; i < params->num_hint_bssid; ++i) {
-+			hint_bssid->freq_flags =
-+				params->hint_bssid[i].freq_flags;
-+			ether_addr_copy(&params->hint_bssid[i].bssid.addr[0],
-+					&hint_bssid->bssid.addr[0]);
-+			hint_bssid++;
-+		}
-+	}
-+
- 	ret = ath11k_wmi_cmd_send(wmi, skb,
- 				  WMI_START_SCAN_CMDID);
- 	if (ret) {
-diff --git a/drivers/net/wireless/ath/ath11k/wmi.h b/drivers/net/wireless/ath/ath11k/wmi.h
-index 319ad7241e01..1162bd7a5f87 100644
---- a/drivers/net/wireless/ath/ath11k/wmi.h
-+++ b/drivers/net/wireless/ath/ath11k/wmi.h
-@@ -50,6 +50,14 @@ struct wmi_tlv {
- #define WMI_MAX_MEM_REQS        32
- #define ATH11K_MAX_HW_LISTEN_INTERVAL 5
- 
-+#define WLAN_SCAN_MAX_HINT_S_SSID        10
-+#define WLAN_SCAN_MAX_HINT_BSSID         10
-+#define MAX_RNR_BSS                    5
-+
-+#define WLAN_SCAN_MAX_HINT_S_SSID        10
-+#define WLAN_SCAN_MAX_HINT_BSSID         10
-+#define MAX_RNR_BSS                    5
-+
- #define WLAN_SCAN_PARAMS_MAX_SSID    16
- #define WLAN_SCAN_PARAMS_MAX_BSSID   4
- #define WLAN_SCAN_PARAMS_MAX_IE_LEN  256
-@@ -3105,6 +3113,16 @@ enum {
- 	((flag) |= (((mode) << WMI_SCAN_DWELL_MODE_SHIFT) & \
- 		    WMI_SCAN_DWELL_MODE_MASK))
- 
-+struct hint_short_ssid {
-+	u32 freq_flags;
-+	u32 short_ssid;
-+};
-+
-+struct hint_bssid {
-+	u32 freq_flags;
-+	struct wmi_mac_addr bssid;
-+};
-+
- struct scan_req_params {
- 	u32 scan_id;
- 	u32 scan_req_id;
-@@ -3184,6 +3202,10 @@ struct scan_req_params {
- 	struct element_info extraie;
- 	struct element_info htcap;
- 	struct element_info vhtcap;
-+	u32 num_hint_s_ssid;
-+	u32 num_hint_bssid;
-+	struct hint_short_ssid hint_s_ssid[WLAN_SCAN_MAX_HINT_S_SSID];
-+	struct hint_bssid hint_bssid[WLAN_SCAN_MAX_HINT_BSSID];
- };
- 
- struct wmi_ssid_arg {
--- 
-2.17.1
+Florian Fainelli 於 6/2/2020 12:34 PM 寫道:
+> 
+> 
+> On 6/1/2020 12:19 AM, Wright Feng wrote:
+>> From: Raveendran Somu <raveendran.somu@cypress.com>
+>>
+>> To trunkcate the addtional bytes, if extra bytes been received.
+> 
+> typo: truncate. Missing "have been received".
+Thanks for catching this, Raveendran will correct it in V2.
+> 
+>> Current code only have a warning and proceed without handling it.
+>> But in one of the crash reported by DVT, these causes the
+>> crash intermittently. So the processing is limit to the skb->len.
+>>
+>> Signed-off-by: Raveendran Somu <raveendran.somu@cypress.com>
+>> Signed-off-by: Chi-hsien Lin <chi-hsien.lin@cypress.com>
+>> Signed-off-by: Wright Feng <wright.feng@cypress.com>
+>> ---
+>>   drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwsignal.c | 3 +++
+>>   1 file changed, 3 insertions(+)
+>>
+>> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwsignal.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwsignal.c
+>> index 09701262330d..531fe9be4025 100644
+>> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwsignal.c
+>> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwsignal.c
+>> @@ -1843,6 +1843,9 @@ void brcmf_fws_hdrpull(struct brcmf_if *ifp, s16 siglen, struct sk_buff *skb)
+>>   
+>>   	WARN_ON(siglen > skb->len);
+>>   
+>> +	if (siglen > skb->len)
+>> +		siglen = skb->len;
+> 
+> Does it make sense to keep the WARN_ON() one live above then?
+Regarding the change, I believe it is better to have the WARN_ON as 
+getting something more than expected is indicating the violation of 
+protocol.So it may be better to leave the warning, instead of quietly 
+correctly it, which can help in identifying the malicious operations.
 
+If the warning is not complying with the rules, we can remove it, if not 
+we suggest to have it.
+>> +
+>>   	if (!siglen)
+>>   		return;
+>>   	/* if flow control disabled, skip to packet data and leave */
+>>
+> 
