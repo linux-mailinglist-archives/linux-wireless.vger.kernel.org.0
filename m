@@ -2,40 +2,40 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 086031ED369
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jun 2020 17:32:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F33CB1ED36D
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jun 2020 17:32:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726218AbgFCPcR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        id S1726204AbgFCPcR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
         Wed, 3 Jun 2020 11:32:17 -0400
-Received: from mail-il1-f200.google.com ([209.85.166.200]:49578 "EHLO
+Received: from mail-il1-f200.google.com ([209.85.166.200]:45698 "EHLO
         mail-il1-f200.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726086AbgFCPcP (ORCPT
+        with ESMTP id S1726021AbgFCPcP (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Wed, 3 Jun 2020 11:32:15 -0400
-Received: by mail-il1-f200.google.com with SMTP id p20so1755959ili.16
-        for <linux-wireless@vger.kernel.org>; Wed, 03 Jun 2020 08:32:15 -0700 (PDT)
+Received: by mail-il1-f200.google.com with SMTP id q24so1758284ili.12
+        for <linux-wireless@vger.kernel.org>; Wed, 03 Jun 2020 08:32:14 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
-        bh=Gl8DCI8PdMFP57T9AipLOavLrIwW1cuatNeoRe4hWbg=;
-        b=sWyELCH/7Myug+/rpH7fDntiv9c80R6PvqdH91ZTNxXVIw9WIPWGQoIKaikKZ/cOOH
-         7iVWTIIPHcuBPnzOVDF6GxakOItHrPvwRvb/oD6M9pSK4+01i5jhLmM62OR1nKJF4tDn
-         m3agxt4w5KnD6fKTKUuPKwQZ3sRMYgaPQGVhHhTc5eyJaqf6v3OVAWLdY3HXlxj4xY2L
-         d0oe1oPPzV03ZUTd+1qJ+sA6Fzs1SAOsA7uE8xrqQZp3+oBW85CNJ7yrx2+zyWBqrgIj
-         bfxwLncA2QAwR/duu7UqrjIL6s8rn4tAVRNdhKM9fwzaJ+oU18th8vBUG8urCOsfaiy/
-         sAvg==
-X-Gm-Message-State: AOAM532O1g77q7tlpgy/W5OfF5ljvOeru8YwF10jZs3m3n5spC3EIlco
-        JFKDXyjEMir/A02nt7+1XWheVY1DUuj6W/E4mdFQztczuwEH
-X-Google-Smtp-Source: ABdhPJy5Ka0KHHhvWlr51OHU3WnJemWLkBsFR4ZWyPRPCO6VwyWIBTXiNMdirWDuNq1OUicZ8NEv0kerl7DZV6+xqhHPTg15ivM5
+        bh=hCfKtti0OOVEwdCy57euieZ5015RvD0tBSXcPV4JeNE=;
+        b=j7cgiNb1Q2sVaO/f11rGTTRvl+e2q3+2NTN8R8mmjxTNTKS6U8WQ7HTBPBnbIg3hBD
+         Zcb4D+G8mPoSO1UcgNVMQQ5ew2mWYA11Z+kZACnMDNPw+lm+6RdQ9YO9hSgPUF6Bzbre
+         4PfokThTKlxZdab/3BPO/J14ZBTFTBSf8sHNbbqNkFQh/zJAhqFf9bYwUGdtJMCJQaDS
+         mR8PVT6HFnUmgpuX+R0DsS40GtAW0DnJRcG/id4U1Q19pnjWhMl9DpLnAi/3YwIW0dWz
+         onDwyhdC5H08/4Mr9Xmrt3/WNEi9PzCF4vR/IvWabQmQOj91M52XtsGkOyKeIg7ux7tV
+         iYoQ==
+X-Gm-Message-State: AOAM5329tXAMFUpIAs6EzhKrfr/JrpyrcOa59Ar+U2l/yv6pPsSHIUgQ
+        fEHtgQN3Vyohvg7JG4eMVtSq3VHfWbvccwIy1bYrd5vDJVC/
+X-Google-Smtp-Source: ABdhPJx4U0590dX2/3irztPqwY6mlmIxvcKI04nXLzNoErep5Repsw38p7vnSr+V9eNu+fWjmsmu1UaYe9DvHSmLOtLJCVAOP6C6
 MIME-Version: 1.0
-X-Received: by 2002:a92:9c52:: with SMTP id h79mr100851ili.252.1591198334773;
+X-Received: by 2002:a02:3f58:: with SMTP id c24mr458448jaf.16.1591198334553;
  Wed, 03 Jun 2020 08:32:14 -0700 (PDT)
 Date:   Wed, 03 Jun 2020 08:32:14 -0700
 X-Google-Appengine-App-Id: s~syzkaller
 X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <00000000000082f13605a72fbbcb@google.com>
-Subject: KASAN: out-of-bounds Read in ath9k_hif_usb_rx_cb
-From:   syzbot <syzbot+d7289ef49bcdfd654265@syzkaller.appspotmail.com>
+Message-ID: <0000000000007f94e205a72fbb2f@google.com>
+Subject: WARNING: locking bug in ath9k_htc_wait_for_target
+From:   syzbot <syzbot+644c73760fbf6c60a6c4@syzkaller.appspotmail.com>
 To:     andreyknvl@google.com, ath9k-devel@qca.qualcomm.com,
         davem@davemloft.net, kuba@kernel.org, kvalo@codeaurora.org,
         linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
@@ -53,76 +53,68 @@ syzbot found the following crash on:
 
 HEAD commit:    2089c6ed usb: core: kcov: collect coverage from usb comple..
 git tree:       https://github.com/google/kasan.git usb-fuzzer
-console output: https://syzkaller.appspot.com/x/log.txt?x=17cf6bd6100000
+console output: https://syzkaller.appspot.com/x/log.txt?x=12576bd6100000
 kernel config:  https://syzkaller.appspot.com/x/.config?x=b7479d3935864b1b
-dashboard link: https://syzkaller.appspot.com/bug?extid=d7289ef49bcdfd654265
+dashboard link: https://syzkaller.appspot.com/bug?extid=644c73760fbf6c60a6c4
 compiler:       gcc (GCC) 9.0.0 20181231 (experimental)
-
-Unfortunately, I don't have any reproducer for this crash yet.
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=179a24fe100000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=16576bd6100000
 
 IMPORTANT: if you fix the bug, please add the following tag to the commit:
-Reported-by: syzbot+d7289ef49bcdfd654265@syzkaller.appspotmail.com
+Reported-by: syzbot+644c73760fbf6c60a6c4@syzkaller.appspotmail.com
 
-==================================================================
-BUG: KASAN: out-of-bounds in ath9k_hif_usb_rx_stream drivers/net/wireless/ath/ath9k/hif_usb.c:622 [inline]
-BUG: KASAN: out-of-bounds in ath9k_hif_usb_rx_cb+0xe64/0xf90 drivers/net/wireless/ath/ath9k/hif_usb.c:666
-Read of size 4 at addr ffff8881acb6c0d0 by task swapper/1/0
-
-CPU: 1 PID: 0 Comm: swapper/1 Not tainted 5.7.0-rc6-syzkaller #0
+usb 1-1: ath9k_htc: Firmware ath9k_htc/htc_9271-1.4.0.fw requested
+usb 1-1: ath9k_htc: Transferred FW: ath9k_htc/htc_9271-1.4.0.fw, size: 51008
+------------[ cut here ]------------
+DEBUG_LOCKS_WARN_ON(1)
+WARNING: CPU: 0 PID: 5 at kernel/locking/lockdep.c:183 hlock_class kernel/locking/lockdep.c:183 [inline]
+WARNING: CPU: 0 PID: 5 at kernel/locking/lockdep.c:183 hlock_class kernel/locking/lockdep.c:172 [inline]
+WARNING: CPU: 0 PID: 5 at kernel/locking/lockdep.c:183 check_wait_context kernel/locking/lockdep.c:4029 [inline]
+WARNING: CPU: 0 PID: 5 at kernel/locking/lockdep.c:183 __lock_acquire+0x2194/0x6650 kernel/locking/lockdep.c:4305
+Kernel panic - not syncing: panic_on_warn set ...
+CPU: 0 PID: 5 Comm: kworker/0:0 Not tainted 5.7.0-rc6-syzkaller #0
 Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
+Workqueue: events request_firmware_work_func
 Call Trace:
- <IRQ>
  __dump_stack lib/dump_stack.c:77 [inline]
  dump_stack+0xef/0x16e lib/dump_stack.c:118
- print_address_description.constprop.0.cold+0xd3/0x415 mm/kasan/report.c:382
- __kasan_report.cold+0x37/0x7d mm/kasan/report.c:511
- kasan_report+0x33/0x50 mm/kasan/common.c:625
- ath9k_hif_usb_rx_stream drivers/net/wireless/ath/ath9k/hif_usb.c:622 [inline]
- ath9k_hif_usb_rx_cb+0xe64/0xf90 drivers/net/wireless/ath/ath9k/hif_usb.c:666
- __usb_hcd_giveback_urb+0x29a/0x550 drivers/usb/core/hcd.c:1650
- usb_hcd_giveback_urb+0x368/0x420 drivers/usb/core/hcd.c:1716
- dummy_timer+0x125e/0x32b4 drivers/usb/gadget/udc/dummy_hcd.c:1967
- call_timer_fn+0x1ac/0x700 kernel/time/timer.c:1405
- expire_timers kernel/time/timer.c:1450 [inline]
- __run_timers kernel/time/timer.c:1774 [inline]
- __run_timers kernel/time/timer.c:1741 [inline]
- run_timer_softirq+0x5f9/0x1500 kernel/time/timer.c:1787
- __do_softirq+0x21e/0x9aa kernel/softirq.c:292
- invoke_softirq kernel/softirq.c:373 [inline]
- irq_exit+0x178/0x1a0 kernel/softirq.c:413
- exiting_irq arch/x86/include/asm/apic.h:546 [inline]
- smp_apic_timer_interrupt+0x141/0x540 arch/x86/kernel/apic/apic.c:1140
- apic_timer_interrupt+0xf/0x20 arch/x86/entry/entry_64.S:829
- </IRQ>
-RIP: 0010:default_idle+0x28/0x300 arch/x86/kernel/process.c:698
-Code: cc cc 41 56 41 55 65 44 8b 2d 94 3f 6b 7a 41 54 55 53 0f 1f 44 00 00 e8 16 28 af fb e9 07 00 00 00 0f 00 2d 7a e1 4b 00 fb f4 <65> 44 8b 2d 70 3f 6b 7a 0f 1f 44 00 00 5b 5d 41 5c 41 5d 41 5e c3
-RSP: 0018:ffff8881da227da8 EFLAGS: 00000246 ORIG_RAX: ffffffffffffff13
-RAX: 0000000000000007 RBX: ffff8881da20b180 RCX: 0000000000000000
-RDX: 0000000000000000 RSI: 0000000000000006 RDI: ffff8881da20b9fc
-RBP: ffffed103b441630 R08: ffff8881da20b180 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000001
-R13: 0000000000000001 R14: ffffffff87e88c40 R15: 0000000000000000
- cpuidle_idle_call kernel/sched/idle.c:154 [inline]
- do_idle+0x3e0/0x500 kernel/sched/idle.c:269
- cpu_startup_entry+0x14/0x20 kernel/sched/idle.c:361
- start_secondary+0x2ae/0x390 arch/x86/kernel/smpboot.c:268
- secondary_startup_64+0xb6/0xc0 arch/x86/kernel/head_64.S:242
-
-The buggy address belongs to the page:
-page:ffffea0006b2db00 refcount:0 mapcount:0 mapping:0000000080660f93 index:0x0
-flags: 0x200000000000000()
-raw: 0200000000000000 0000000000000000 ffffea0006b2db08 0000000000000000
-raw: 0000000000000000 0000000000000000 00000000ffffffff 0000000000000000
-page dumped because: kasan: bad access detected
-
-Memory state around the buggy address:
- ffff8881acb6bf80: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
- ffff8881acb6c000: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
->ffff8881acb6c080: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-                                                 ^
- ffff8881acb6c100: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
- ffff8881acb6c180: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-==================================================================
+ panic+0x2aa/0x6e1 kernel/panic.c:221
+ __warn.cold+0x2f/0x30 kernel/panic.c:582
+ report_bug+0x27b/0x2f0 lib/bug.c:195
+ fixup_bug arch/x86/kernel/traps.c:175 [inline]
+ fixup_bug arch/x86/kernel/traps.c:170 [inline]
+ do_error_trap+0x12b/0x1e0 arch/x86/kernel/traps.c:267
+ do_invalid_op+0x32/0x40 arch/x86/kernel/traps.c:286
+ invalid_op+0x23/0x30 arch/x86/entry/entry_64.S:1027
+RIP: 0010:hlock_class kernel/locking/lockdep.c:183 [inline]
+RIP: 0010:hlock_class kernel/locking/lockdep.c:172 [inline]
+RIP: 0010:check_wait_context kernel/locking/lockdep.c:4029 [inline]
+RIP: 0010:__lock_acquire+0x2194/0x6650 kernel/locking/lockdep.c:4305
+Code: d2 0f 85 91 33 00 00 44 8b 35 38 f2 c1 06 45 85 f6 0f 85 b8 fb ff ff 48 c7 c6 c0 fa e6 85 48 c7 c7 00 fb e6 85 e8 84 6b ed ff <0f> 0b e9 9e fb ff ff e8 f0 89 c0 00 85 c0 0f 84 db fb ff ff 48 c7
+RSP: 0018:ffff8881da1d7748 EFLAGS: 00010086
+RAX: 0000000000000000 RBX: bd37a6f4de9bd740 RCX: 0000000000000000
+RDX: 0000000000000000 RSI: ffffffff812a339d RDI: ffffed103b43aedb
+RBP: ffff8881da19ebd0 R08: ffff8881da19e300 R09: fffffbfff0e20bd1
+R10: ffffffff87105e83 R11: fffffbfff0e20bd0 R12: ffff8881da19e300
+R13: ffff8881c679e460 R14: 0000000000000000 R15: 0000000000000000
+ lock_acquire+0x18b/0x7c0 kernel/locking/lockdep.c:4934
+ __raw_spin_lock_irq include/linux/spinlock_api_smp.h:128 [inline]
+ _raw_spin_lock_irq+0x2d/0x40 kernel/locking/spinlock.c:167
+ do_wait_for_common kernel/sched/completion.c:86 [inline]
+ __wait_for_common kernel/sched/completion.c:106 [inline]
+ wait_for_common kernel/sched/completion.c:117 [inline]
+ wait_for_completion_timeout+0x172/0x280 kernel/sched/completion.c:157
+ ath9k_htc_wait_for_target.isra.0+0xb9/0x1b0 drivers/net/wireless/ath/ath9k/htc_drv_init.c:89
+ ath9k_htc_probe_device+0x1a4/0x1da0 drivers/net/wireless/ath/ath9k/htc_drv_init.c:949
+ ath9k_htc_hw_init+0x31/0x60 drivers/net/wireless/ath/ath9k/htc_hst.c:501
+ ath9k_hif_usb_firmware_cb+0x274/0x510 drivers/net/wireless/ath/ath9k/hif_usb.c:1187
+ request_firmware_work_func+0x126/0x242 drivers/base/firmware_loader/main.c:1005
+ process_one_work+0x965/0x1630 kernel/workqueue.c:2268
+ worker_thread+0x96/0xe20 kernel/workqueue.c:2414
+ kthread+0x326/0x430 kernel/kthread.c:268
+ ret_from_fork+0x24/0x30 arch/x86/entry/entry_64.S:351
+Kernel Offset: disabled
+Rebooting in 86400 seconds..
 
 
 ---
@@ -132,3 +124,5 @@ syzbot engineers can be reached at syzkaller@googlegroups.com.
 
 syzbot will keep track of this bug report. See:
 https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+syzbot can test patches for this bug, for details see:
+https://goo.gl/tpsmEJ#testing-patches
