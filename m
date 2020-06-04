@@ -2,78 +2,74 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 76F691EDC69
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 Jun 2020 06:39:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 207021EDDAB
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 Jun 2020 09:10:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728480AbgFDEii (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 4 Jun 2020 00:38:38 -0400
-Received: from mail.kernel.org ([198.145.29.99]:45784 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726956AbgFDEih (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 4 Jun 2020 00:38:37 -0400
-Received: from kernel.org (unknown [104.132.0.74])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 04A91206C3;
-        Thu,  4 Jun 2020 04:38:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1591245517;
-        bh=2lMQ7ysGCU8GBBi628ZDf5NUJ8tIyihWdEeZRWeBBRs=;
-        h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
-        b=rjNKa+NoPrDtpvFIskphpRAzqIuZC2EDaeiH8NLviKFG4z0voPiz2uE07z0nrysfQ
-         2eLhdaruaSQ74UQKr1AOe02dy7ouM14/8cQEr/sK93Ykg+9oEquqLX/ary5lgIdgf1
-         J8RYhQkIfWZ8Ohep5Uxh6ufpuFKZW5VLYrPucY5o=
-Content-Type: text/plain; charset="utf-8"
+        id S1727868AbgFDHKC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 4 Jun 2020 03:10:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41674 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726246AbgFDHKC (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 4 Jun 2020 03:10:02 -0400
+Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B58DC05BD1E
+        for <linux-wireless@vger.kernel.org>; Thu,  4 Jun 2020 00:10:02 -0700 (PDT)
+Received: from [46.59.202.224] (helo=localhost.localdomain)
+        by ds12 with esmtpa (Exim 4.89)
+        (envelope-from <john@phrozen.org>)
+        id 1jgk0k-0001P3-88; Thu, 04 Jun 2020 09:09:58 +0200
+From:   John Crispin <john@phrozen.org>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
+        John Crispin <john@phrozen.org>
+Subject: [PATCH 00/12] mac80211: add multiple bssid support
+Date:   Thu,  4 Jun 2020 09:09:40 +0200
+Message-Id: <20200604070952.15481-1-john@phrozen.org>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20200603233203.1695403-7-keescook@chromium.org>
-References: <20200603233203.1695403-1-keescook@chromium.org> <20200603233203.1695403-7-keescook@chromium.org>
-Subject: Re: [PATCH 06/10] clk: st: Remove uninitialized_var() usage
-From:   Stephen Boyd <sboyd@kernel.org>
-Cc:     Kees Cook <keescook@chromium.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-        Alexander Potapenko <glider@google.com>,
-        Joe Perches <joe@perches.com>,
-        Andy Whitcroft <apw@canonical.com>, x86@kernel.org,
-        drbd-dev@lists.linbit.com, linux-block@vger.kernel.org,
-        b43-dev@lists.infradead.org, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org, linux-ide@vger.kernel.org,
-        linux-clk@vger.kernel.org, linux-spi@vger.kernel.org,
-        linux-mm@kvack.org, clang-built-linux@googlegroups.com
-To:     Kees Cook <keescook@chromium.org>, linux-kernel@vger.kernel.org
-Date:   Wed, 03 Jun 2020 21:38:36 -0700
-Message-ID: <159124551620.69627.18245138803269803785@swboyd.mtv.corp.google.com>
-User-Agent: alot/0.9
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Quoting Kees Cook (2020-06-03 16:31:59)
-> Using uninitialized_var() is dangerous as it papers over real bugs[1]
-> (or can in the future), and suppresses unrelated compiler warnings (e.g.
-> "unused variable"). If the compiler thinks it is uninitialized, either
-> simply initialize the variable or make compiler changes. As a precursor
-> to removing[2] this[3] macro[4], just remove this variable since it was
-> actually unused:
->=20
-> drivers/clk/st/clkgen-fsyn.c: In function \u2018quadfs_set_rate\u2019:
-> drivers/clk/st/clkgen-fsyn.c:793:6: warning: unused variable \u2018i\u201=
-9 [-Wunused-variable]
->   793 |  int i;
->       |      ^
->=20
-> [1] https://lore.kernel.org/lkml/20200603174714.192027-1-glider@google.co=
-m/
-> [2] https://lore.kernel.org/lkml/CA+55aFw+Vbj0i=3D1TGqCR5vQkCzWJ0QxK6Cern=
-OU6eedsudAixw@mail.gmail.com/
-> [3] https://lore.kernel.org/lkml/CA+55aFwgbgqhbp1fkxvRKEpzyR5J8n1vKT1VZdz=
-9knmPuXhOeg@mail.gmail.com/
-> [4] https://lore.kernel.org/lkml/CA+55aFz2500WfbKXAx8s67wrm9=3DyVJu65TpLg=
-N_ybYNv0VEOKA@mail.gmail.com/
->=20
-> Signed-off-by: Kees Cook <keescook@chromium.org>
-> ---
+Multiple bssid allows us to share a single beacon amongst several VAPs.
+This essentially safes airtime. This feature is achieved by adding an
+additional IE to the transmitting VAPs beacon. This new IE contains
+the additional SSIDs and their non-inheritance information.
 
-Acked-by: Stephen Boyd <sboyd@kernel.org>
+This series is still missing handling for TIM, which will be sent in a
+follow-up series.
+
+John Crispin (12):
+  nl80211: add basic multiple bssid support
+  nl80211: add attributes for multiple bssid related settings
+  nl80211: add attributes to set beacon transmit mode
+  mac80211: add multiple bssid support
+  mac80211: add multiple bssid IE parsing
+  mac80211: propagate multi bssid settings when starting an AP
+  mac80211: propagate beacon tx mode to the driver
+  ath11k: pass multiple bssid info to FW when a new vdev is created
+  ath11k: add a struct to pass parameters into ath11k_wmi_vdev_up
+  ath11k: add the multiple bssid IE offset to the beacon template
+  ath11k: set beacon tx mode
+  ath11k: set the multiple bssid hw cap
+
+ drivers/net/wireless/ath/ath11k/mac.c | 72 ++++++++++++++++++++++++---
+ drivers/net/wireless/ath/ath11k/wmi.c | 20 +++++---
+ drivers/net/wireless/ath/ath11k/wmi.h | 22 +++++++-
+ include/net/cfg80211.h                | 23 +++++++++
+ include/net/mac80211.h                | 29 +++++++++++
+ include/uapi/linux/nl80211.h          | 49 ++++++++++++++++++
+ net/mac80211/cfg.c                    | 64 ++++++++++++++++++++++++
+ net/mac80211/ieee80211_i.h            |  2 +
+ net/mac80211/iface.c                  | 16 ++++++
+ net/mac80211/tx.c                     | 10 ++++
+ net/mac80211/util.c                   | 31 ++++++++++++
+ net/wireless/nl80211.c                | 36 ++++++++++++++
+ 12 files changed, 358 insertions(+), 16 deletions(-)
+
+-- 
+2.20.1
+
