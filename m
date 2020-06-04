@@ -2,55 +2,55 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2618D1EEB65
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 Jun 2020 21:56:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C9B3F1EEB8F
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 Jun 2020 22:09:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728961AbgFDT4Z (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 4 Jun 2020 15:56:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47650 "EHLO
+        id S1729640AbgFDUJD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 4 Jun 2020 16:09:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49600 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728657AbgFDT4Y (ORCPT
+        with ESMTP id S1728590AbgFDUI7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 4 Jun 2020 15:56:24 -0400
-Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com [IPv6:2607:f8b0:4864:20::542])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A14DC08C5C4
-        for <linux-wireless@vger.kernel.org>; Thu,  4 Jun 2020 12:56:24 -0700 (PDT)
-Received: by mail-pg1-x542.google.com with SMTP id 185so3972753pgb.10
-        for <linux-wireless@vger.kernel.org>; Thu, 04 Jun 2020 12:56:24 -0700 (PDT)
+        Thu, 4 Jun 2020 16:08:59 -0400
+Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com [IPv6:2607:f8b0:4864:20::442])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 625C7C08C5C5
+        for <linux-wireless@vger.kernel.org>; Thu,  4 Jun 2020 13:08:57 -0700 (PDT)
+Received: by mail-pf1-x442.google.com with SMTP id f3so3758143pfd.11
+        for <linux-wireless@vger.kernel.org>; Thu, 04 Jun 2020 13:08:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=JchjGYZl0wqUOrU5YQvGeZV5DROtdtYOgYQQhEiIskY=;
-        b=qPGYj+Fa3kUn8rqUio1Dqo/wmmdxLTwJv3dkdlE3ClgOnCxbEa6OJED06WKQ9xZ/S5
-         drxLk5d97vcv5eQ6d4d6pUs5J9MwW0FbQj4r4wLXcZG5wYgEinukAsqpd6SbNEpGTiIL
-         ybbjkH30SzUTY9QY0bM3t5oBYgf/gdFtcqSjGZ4Vd93wXluzmD0tkk2N1s4+IczoK5T8
-         73LFTDcT2N2adp5wR2Mlu3UFct0QurWe1qbINXwuT+3G9C5se3K/oYDgtwvOmb8nMB81
-         9/qgL3YapcLXLfnBA8fVq9DtyGqYOQK0MGNYMtExoxZdmGcyOrFvw2budA/p7MR7MkMh
-         dTFw==
+        bh=AFF1riO+rvi+JtGxWF5qzVLPXHH0Nzh8aZcDxBuji4s=;
+        b=M0mkpsLd7B3310QKl3SLGg22ik2mXjNx5FY1vzJopMffJnCw8jRcmo9fV9LTIHikFp
+         RUv7WnBJ6K5VaUslDx62awUaItJ+YKUKSU3/LS3bQT0QPBOUmH8h7pgLYyxlBLfTzZPU
+         CwkTICvo+M0GUh+egz/pFlCv8tR424B81CNZ9aQO8/k4dMiV20ohQx7N7YX7tjfxxqqp
+         JKfbJIsE+MYGNYLFN8gpzmr0Avp6j5x4qED0RF7A5OiE4WLh5w8/DvLwZz8GAkmSlO6c
+         QbXytbk3xKeeMX1S4Xa0zICtEJbZ60RM6KlvqWwsKz3NAMy2eeUR9b8nqFf/OpAnG9F0
+         SQHw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=JchjGYZl0wqUOrU5YQvGeZV5DROtdtYOgYQQhEiIskY=;
-        b=L5cxUmo3sIWAnuPAB5yvytSDng1W6JJn589Ym1nBsrV9UTYwsVYH/CnQHQdrjUYf2b
-         9bdx9SztSsTcjJgowrZW2/fCTGqOVnrH7SiB+Wt1KXVZSQGmKRa47wrN8SszBvjZevXo
-         tHUylPEkJAt9Vp8ka5cPG6fpCPXD865OGb25l7XNusyLhFFrD20Qda89x1270TQZ+AOr
-         ssipIdnM/fjlDMfLo09HeE55knTTnKb5RlJBD++t/CMnM5iuMLZImhLAb+zSA7shr560
-         eRYLU6/Vn/omzlBeIq7LPJbf86E2QK6dJZLpacJP8UspU8dx50wWY20TWqUnOUWruu68
-         wUWw==
-X-Gm-Message-State: AOAM530uDSo15Q0W/zb0C0HBBkzZY/yku3JbR4lHGnXlQzTcpKUb4pu4
-        +DBgJgNhRIhOJRPktRQgR68dGoeP+u4EdIVku/rcGw==
-X-Google-Smtp-Source: ABdhPJy7InXrusPAFFTJ9/oFSaSF0Eic2jn49VfP7aR0w5k1vGP4KYsGIQVm0HirYrhRu0SFvISfn3kdwUp620gXyHY=
-X-Received: by 2002:a63:f00d:: with SMTP id k13mr6167247pgh.263.1591300583418;
- Thu, 04 Jun 2020 12:56:23 -0700 (PDT)
+        bh=AFF1riO+rvi+JtGxWF5qzVLPXHH0Nzh8aZcDxBuji4s=;
+        b=jv/dtrsQMDT87xpCFii1/4B3bosPZCTGFPug5wVRcYUDXHbN5kr8m9THt6FEWZ9gdg
+         aUIVZApK3xHxfUfke70o05BGhr25qLRqzcSRL7KwVLiYp/gb6OV+6U0Zk//PHbL2C+vw
+         A7VwRsf/lbandkKc+4sXvhtE6YHDB0s6A1m2uIbOYLVXek6w+BeFN9DeOHOujAty7uCd
+         0Yf02yy0MGhMFq2k1RNZGrOpRHXThwnvDG/mQEwgnqd+tv5cIB8+g86OPDlOxmjX94zp
+         gxVt7yGWfF9DFBDgLIq/tMR6kClDJ2187ro9NLEaOhXswEbLYGvNPMdO6PY3TSlZBVIL
+         rhjA==
+X-Gm-Message-State: AOAM533OU8Sk4BVdSTIP1AQIjCLjDuUKMVjc5pjaHj2AACL8SzpxLr1M
+        SeSVB/QI4MW51I/qvp0tAY57MTQhpWV0AhzGVAqwFQ==
+X-Google-Smtp-Source: ABdhPJxLMcvCCgSkDUjAgCX71OWizViN7uenmXgd4TZP4zed6Dsn/5qWQdcJBcIITrWPyVLL/7sbTfhjLEhVY3eJVkA=
+X-Received: by 2002:a63:5644:: with SMTP id g4mr5811569pgm.381.1591301336363;
+ Thu, 04 Jun 2020 13:08:56 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200603233203.1695403-1-keescook@chromium.org> <20200603233203.1695403-3-keescook@chromium.org>
-In-Reply-To: <20200603233203.1695403-3-keescook@chromium.org>
+References: <20200603233203.1695403-1-keescook@chromium.org> <20200603233203.1695403-4-keescook@chromium.org>
+In-Reply-To: <20200603233203.1695403-4-keescook@chromium.org>
 From:   Nick Desaulniers <ndesaulniers@google.com>
-Date:   Thu, 4 Jun 2020 12:56:11 -0700
-Message-ID: <CAKwvOdmfOSGAZiuapXOaiU74AQVMDgimrnCiRDjzw4p4oh1vaw@mail.gmail.com>
-Subject: Re: [PATCH 02/10] drbd: Remove uninitialized_var() usage
+Date:   Thu, 4 Jun 2020 13:08:44 -0700
+Message-ID: <CAKwvOdnNuFySqAMk7s_cXqFM=dPX4JfvqNVLCuj90Gn4tzciAw@mail.gmail.com>
+Subject: Re: [PATCH 03/10] b43: Remove uninitialized_var() usage
 To:     Kees Cook <keescook@chromium.org>
 Cc:     LKML <linux-kernel@vger.kernel.org>,
         Linus Torvalds <torvalds@linux-foundation.org>,
@@ -79,7 +79,8 @@ On Wed, Jun 3, 2020 at 4:32 PM Kees Cook <keescook@chromium.org> wrote:
 > (or can in the future), and suppresses unrelated compiler warnings (e.g.
 > "unused variable"). If the compiler thinks it is uninitialized, either
 > simply initialize the variable or make compiler changes. As a precursor
-> to removing[2] this[3] macro[4], just initialize this variable to NULL.
+> to removing[2] this[3] macro[4], just initialize this variable to NULL,
+> and make the (unreachable!) code do a conditional test.
 >
 > [1] https://lore.kernel.org/lkml/20200603174714.192027-1-glider@google.com/
 > [2] https://lore.kernel.org/lkml/CA+55aFw+Vbj0i=1TGqCR5vQkCzWJ0QxK6CernOU6eedsudAixw@mail.gmail.com/
@@ -87,34 +88,61 @@ On Wed, Jun 3, 2020 at 4:32 PM Kees Cook <keescook@chromium.org> wrote:
 > [4] https://lore.kernel.org/lkml/CA+55aFz2500WfbKXAx8s67wrm9=yVJu65TpLgN_ybYNv0VEOKA@mail.gmail.com/
 >
 > Signed-off-by: Kees Cook <keescook@chromium.org>
-
-Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
-Fixes: a29728463b25 ("drbd: Backport the "events2" command")
-
 > ---
->  drivers/block/drbd/drbd_state.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  drivers/net/wireless/broadcom/b43/phy_n.c | 10 +++++++---
+>  1 file changed, 7 insertions(+), 3 deletions(-)
 >
-> diff --git a/drivers/block/drbd/drbd_state.c b/drivers/block/drbd/drbd_state.c
-> index eeaa3b49b264..0067d328f0b5 100644
-> --- a/drivers/block/drbd/drbd_state.c
-> +++ b/drivers/block/drbd/drbd_state.c
-> @@ -1604,7 +1604,7 @@ static void broadcast_state_change(struct drbd_state_change *state_change)
->         unsigned int n_device, n_connection, n_peer_device, n_peer_devices;
->         void (*last_func)(struct sk_buff *, unsigned int, void *,
->                           enum drbd_notification_type) = NULL;
-> -       void *uninitialized_var(last_arg);
-> +       void *last_arg = NULL;
+> diff --git a/drivers/net/wireless/broadcom/b43/phy_n.c b/drivers/net/wireless/broadcom/b43/phy_n.c
+> index d3c001fa8eb4..88cdcea10d61 100644
+> --- a/drivers/net/wireless/broadcom/b43/phy_n.c
+> +++ b/drivers/net/wireless/broadcom/b43/phy_n.c
+> @@ -4222,7 +4222,7 @@ static void b43_nphy_tx_gain_table_upload(struct b43_wldev *dev)
+
+The TODOs and `#if 0` in this function are concerning.  It looks like
+`rf_pwr_offset_table` is only used when `phy->rev` is >=7 && < 19.
+
+Further, the loop has a case for `phy->rev >= 19` but we would have
+returned earlier if that was the case.
+
+>         u32 rfpwr_offset;
+>         u8 pga_gain, pad_gain;
+>         int i;
+> -       const s16 *uninitialized_var(rf_pwr_offset_table);
+> +       const s16 *rf_pwr_offset_table = NULL;
 >
->  #define HAS_CHANGED(state) ((state)[OLD] != (state)[NEW])
->  #define FINAL_STATE_CHANGE(type) \
+>         table = b43_nphy_get_tx_gain_table(dev);
+>         if (!table)
+> @@ -4256,9 +4256,13 @@ static void b43_nphy_tx_gain_table_upload(struct b43_wldev *dev)
+>                         pga_gain = (table[i] >> 24) & 0xf;
+>                         pad_gain = (table[i] >> 19) & 0x1f;
+>                         if (b43_current_band(dev->wl) == NL80211_BAND_2GHZ)
+> -                               rfpwr_offset = rf_pwr_offset_table[pad_gain];
+> +                               rfpwr_offset = rf_pwr_offset_table
+> +                                               ? rf_pwr_offset_table[pad_gain]
+> +                                               : 0;
+>                         else
+> -                               rfpwr_offset = rf_pwr_offset_table[pga_gain];
+> +                               rfpwr_offset = rf_pwr_offset_table
+> +                                               ? rf_pwr_offset_table[pga_gain]
+> +                                               : 0;
+
+
+The code is trying to check `phy->rev >= 7 && phy->rev < 19` once
+before the loop, then set `rf_pwr_offset_table`, so having another
+conditional on `rf_pwr_offset_table` in the loop is unnecessary. I'm
+ok with initializing it to `NULL`, but I'm not sure the conditional
+check is necessary.  Do you get a compiler warning otherwise?
+
+>                 } else {
+>                         pga_gain = (table[i] >> 24) & 0xF;
+>                         if (b43_current_band(dev->wl) == NL80211_BAND_2GHZ)
 > --
 > 2.25.1
 >
 > --
 > You received this message because you are subscribed to the Google Groups "Clang Built Linux" group.
 > To unsubscribe from this group and stop receiving emails from it, send an email to clang-built-linux+unsubscribe@googlegroups.com.
-> To view this discussion on the web visit https://groups.google.com/d/msgid/clang-built-linux/20200603233203.1695403-3-keescook%40chromium.org.
+> To view this discussion on the web visit https://groups.google.com/d/msgid/clang-built-linux/20200603233203.1695403-4-keescook%40chromium.org.
 
 
 
