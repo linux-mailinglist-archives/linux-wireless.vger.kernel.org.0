@@ -2,52 +2,58 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C5711EEBCB
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 Jun 2020 22:20:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D44D1EEBEA
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 Jun 2020 22:25:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729786AbgFDUUH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 4 Jun 2020 16:20:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51382 "EHLO
+        id S1729854AbgFDUZk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 4 Jun 2020 16:25:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52218 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726814AbgFDUUD (ORCPT
+        with ESMTP id S1729672AbgFDUZ3 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 4 Jun 2020 16:20:03 -0400
-Received: from mail-pj1-x1041.google.com (mail-pj1-x1041.google.com [IPv6:2607:f8b0:4864:20::1041])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3D73C08C5C7
-        for <linux-wireless@vger.kernel.org>; Thu,  4 Jun 2020 13:20:02 -0700 (PDT)
-Received: by mail-pj1-x1041.google.com with SMTP id d6so1716858pjs.3
-        for <linux-wireless@vger.kernel.org>; Thu, 04 Jun 2020 13:20:02 -0700 (PDT)
+        Thu, 4 Jun 2020 16:25:29 -0400
+Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com [IPv6:2607:f8b0:4864:20::641])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0598FC08C5C0
+        for <linux-wireless@vger.kernel.org>; Thu,  4 Jun 2020 13:25:29 -0700 (PDT)
+Received: by mail-pl1-x641.google.com with SMTP id t7so2676455plr.0
+        for <linux-wireless@vger.kernel.org>; Thu, 04 Jun 2020 13:25:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=gz66RqxXF5KGuRHQ0GYBuygtpEJiPzNI0sTLh4Vu69Y=;
-        b=jAmWlkIQJZzKdLIy24SnHWINuzTVOS3/wjvm2cU2AFi5wGPpwqQkjWfOwBraDHgs8k
-         bMHElbdbRxBbtC27xZm6mEe99uDc96pKouYmbV/dc0+e2MIiE2jcwrdVq98w16mgeguV
-         2DhLtfyu1wmL1bs6o/3S7BQ/OXA9/tFItMGTU=
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=TblIMkzhKEVNZyPa1dQf8kFQ+MgYlpgsesY6pOK1xME=;
+        b=eTUIYqIrq5sxbgWQO/3JauOnTYpVr1lxYINDt5nKOAMkJOKF9ufyGFqb5XSmsRi3m+
+         Uksx9+kJJ0xBVvvMTZtWdGvFYckH9URWghdJ/VSzZBwwBmizmaE949JntUM6qTfFIrip
+         3zzyVfVtH7B2Lzj4WQ8kAWj65+Txwm/2hs5XFlhCKdRU1uedTRsD04P49ZgSRY5QBLTc
+         CQBCbVHZuVCB29pP2Co0mZAOf0TgkJUljtb0VB8CHI8VhuigYp30PE+r/D7MHanlVYxK
+         BKS8ooZdHaU0PWi8nTHb08bOMRG7dMr/qLVaTlH87DKKqIpufZxi7ZRUHWNmW4PpK4km
+         2vlA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=gz66RqxXF5KGuRHQ0GYBuygtpEJiPzNI0sTLh4Vu69Y=;
-        b=iJ2b/MzlvdIdpQyUPMHo/iyLdtD1MNhhb5HmzVtHuIIHYQNr56Og5Wm4X/6qwVVGdQ
-         lqurNiDQMfb/3adGzJGx9kmuc+/7nS2ti97YhcSRqS5rLbACL6ZfnORyM+JblKRZW6ai
-         xRy7FczEqznW9y6mJ5+hGeQlQAcO86TcSNoPMjym7K/SMJlRlvHlWww+sPxkQ37lsSIO
-         7QyfMUpAv7FbeFE2t7UuHispMySo+TiIFQgmSmeACzErZJ+4V+YTJcOohVm8O6EmVmhr
-         UZ2sgVpn5O464WC0TK+YX5lC2v4Vsgmv07W+mK5cRmdRLfakAFL04tqCETz7J8MoPL1M
-         dqNg==
-X-Gm-Message-State: AOAM5323LnngMJrSxIwQEHB3QV8IlltBYEagsKwQAbEEz/pqicpeXnyW
-        b77PEgas+F1YkwvVJ+GnTIdyfw==
-X-Google-Smtp-Source: ABdhPJxkV30NNQPml+L5dx48JHt30SosyvH9CeJOsvPeKMxl1Di1uyDaJOg4t+7npffgj0Ki2XTH3Q==
-X-Received: by 2002:a17:90a:7043:: with SMTP id f61mr7838452pjk.140.1591302001916;
-        Thu, 04 Jun 2020 13:20:01 -0700 (PDT)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id g17sm1432553pju.11.2020.06.04.13.20.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Jun 2020 13:20:01 -0700 (PDT)
-Date:   Thu, 4 Jun 2020 13:20:00 -0700
-From:   Kees Cook <keescook@chromium.org>
-To:     Nick Desaulniers <ndesaulniers@google.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=TblIMkzhKEVNZyPa1dQf8kFQ+MgYlpgsesY6pOK1xME=;
+        b=PU1BhNznWJ9DtI3nA/cr4iq89jlz0p4wCaeJoluhtMtDzGMVDtq+lhanfi7tncmc/a
+         zXOmnVBLLsOd3/dTWTdIqUUYRDME7P939jQYEviP0lnDCdLwiG8t49EoNNQ6ZQoHwBmZ
+         qlj1XASvmnKrpYK7TDbpeUI5BOQ1ddCYLZB4Ka3mbqe/N6TT2HVq8ZReWFbMQ5AHwXdS
+         nVV7TPClFueVeQ8vwXXsrdAG1wCdM1UrQ+Aj4MqwpoFWkTK7VziMLJ1GW3ExfivfMDk2
+         oYN8Fihx7NL0FCJAfrTxn1Aacs2GPOl4L8VDdNvOhfRVY8ElSYA9rTJ8PpZ2+BzTSQWj
+         y2cA==
+X-Gm-Message-State: AOAM532nahktvIE6Q4cmVslCZCrTsFNtvj7TNE5Zn/GhCp2TTKRJFWC7
+        uPY3vz8MsYnfkepgxD0wHwc/GDjUlQL27Awmapq2Tw==
+X-Google-Smtp-Source: ABdhPJzjhN/4pCp12TIV+9JXZmAnmqzfEHd9/r8jgURCikDTNzP/FuiRKg13zAi0ZiROLKM3I1SNYAlTdBzPgSsKmW0=
+X-Received: by 2002:a17:902:341:: with SMTP id 59mr6129425pld.119.1591302328252;
+ Thu, 04 Jun 2020 13:25:28 -0700 (PDT)
+MIME-Version: 1.0
+References: <20200603233203.1695403-1-keescook@chromium.org>
+ <20200603233203.1695403-4-keescook@chromium.org> <CAKwvOdnNuFySqAMk7s_cXqFM=dPX4JfvqNVLCuj90Gn4tzciAw@mail.gmail.com>
+ <202006041316.A15D952@keescook>
+In-Reply-To: <202006041316.A15D952@keescook>
+From:   Nick Desaulniers <ndesaulniers@google.com>
+Date:   Thu, 4 Jun 2020 13:25:16 -0700
+Message-ID: <CAKwvOdk9e19MqJNhGYV5mJisLOcjK+ba2sYzLgf7cvNerqNuwA@mail.gmail.com>
+Subject: Re: [PATCH 03/10] b43: Remove uninitialized_var() usage
+To:     Kees Cook <keescook@chromium.org>
 Cc:     LKML <linux-kernel@vger.kernel.org>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
@@ -62,55 +68,98 @@ Cc:     LKML <linux-kernel@vger.kernel.org>,
         linux-ide@vger.kernel.org, linux-clk@vger.kernel.org,
         linux-spi@vger.kernel.org,
         Linux Memory Management List <linux-mm@kvack.org>,
-        clang-built-linux <clang-built-linux@googlegroups.com>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Subject: Re: [PATCH 05/10] ide: Remove uninitialized_var() usage
-Message-ID: <202006041318.B0EA9059C7@keescook>
-References: <20200603233203.1695403-1-keescook@chromium.org>
- <20200603233203.1695403-6-keescook@chromium.org>
- <CAKwvOdm5zDide5RuppY_jG=r46=UMdVJBrkBqD5x=dOMTG9cZg@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAKwvOdm5zDide5RuppY_jG=r46=UMdVJBrkBqD5x=dOMTG9cZg@mail.gmail.com>
+        clang-built-linux <clang-built-linux@googlegroups.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Jun 04, 2020 at 12:29:17PM -0700, Nick Desaulniers wrote:
-> On Wed, Jun 3, 2020 at 4:32 PM Kees Cook <keescook@chromium.org> wrote:
+On Thu, Jun 4, 2020 at 1:18 PM Kees Cook <keescook@chromium.org> wrote:
+>
+> On Thu, Jun 04, 2020 at 01:08:44PM -0700, Nick Desaulniers wrote:
+> > On Wed, Jun 3, 2020 at 4:32 PM Kees Cook <keescook@chromium.org> wrote:
+> > >
+> > > Using uninitialized_var() is dangerous as it papers over real bugs[1]
+> > > (or can in the future), and suppresses unrelated compiler warnings (e.g.
+> > > "unused variable"). If the compiler thinks it is uninitialized, either
+> > > simply initialize the variable or make compiler changes. As a precursor
+> > > to removing[2] this[3] macro[4], just initialize this variable to NULL,
+> > > and make the (unreachable!) code do a conditional test.
+> > >
+> > > [1] https://lore.kernel.org/lkml/20200603174714.192027-1-glider@google.com/
+> > > [2] https://lore.kernel.org/lkml/CA+55aFw+Vbj0i=1TGqCR5vQkCzWJ0QxK6CernOU6eedsudAixw@mail.gmail.com/
+> > > [3] https://lore.kernel.org/lkml/CA+55aFwgbgqhbp1fkxvRKEpzyR5J8n1vKT1VZdz9knmPuXhOeg@mail.gmail.com/
+> > > [4] https://lore.kernel.org/lkml/CA+55aFz2500WfbKXAx8s67wrm9=yVJu65TpLgN_ybYNv0VEOKA@mail.gmail.com/
+> > >
+> > > Signed-off-by: Kees Cook <keescook@chromium.org>
+> > > ---
+> > >  drivers/net/wireless/broadcom/b43/phy_n.c | 10 +++++++---
+> > >  1 file changed, 7 insertions(+), 3 deletions(-)
+> > >
+> > > diff --git a/drivers/net/wireless/broadcom/b43/phy_n.c b/drivers/net/wireless/broadcom/b43/phy_n.c
+> > > index d3c001fa8eb4..88cdcea10d61 100644
+> > > --- a/drivers/net/wireless/broadcom/b43/phy_n.c
+> > > +++ b/drivers/net/wireless/broadcom/b43/phy_n.c
+> > > @@ -4222,7 +4222,7 @@ static void b43_nphy_tx_gain_table_upload(struct b43_wldev *dev)
 > >
-> > Using uninitialized_var() is dangerous as it papers over real bugs[1]
-> > (or can in the future), and suppresses unrelated compiler warnings (e.g.
-> > "unused variable"). If the compiler thinks it is uninitialized, either
-> > simply initialize the variable or make compiler changes. As a precursor
-> > to removing[2] this[3] macro[4], just remove this variable since it was
-> > actually unused:
+> > The TODOs and `#if 0` in this function are concerning.  It looks like
+> > `rf_pwr_offset_table` is only used when `phy->rev` is >=7 && < 19.
 > >
-> > drivers/ide/ide-taskfile.c:232:34: warning: unused variable 'flags' [-Wunused-variable]
-> >         unsigned long uninitialized_var(flags);
-> >                                         ^
+> > Further, the loop has a case for `phy->rev >= 19` but we would have
+> > returned earlier if that was the case.
+
+oh, and there's an early return for `phy->rev < 3` I just noticed.
+
+>
+> Yeah, that's why I put the "(unreachable!)" note in the commit log. ;)
+
+I don't think that note is correct.
+
+>
 > >
-> > [1] https://lore.kernel.org/lkml/20200603174714.192027-1-glider@google.com/
-> > [2] https://lore.kernel.org/lkml/CA+55aFw+Vbj0i=1TGqCR5vQkCzWJ0QxK6CernOU6eedsudAixw@mail.gmail.com/
-> > [3] https://lore.kernel.org/lkml/CA+55aFwgbgqhbp1fkxvRKEpzyR5J8n1vKT1VZdz9knmPuXhOeg@mail.gmail.com/
-> > [4] https://lore.kernel.org/lkml/CA+55aFz2500WfbKXAx8s67wrm9=yVJu65TpLgN_ybYNv0VEOKA@mail.gmail.com/
+> > >         u32 rfpwr_offset;
+> > >         u8 pga_gain, pad_gain;
+> > >         int i;
+> > > -       const s16 *uninitialized_var(rf_pwr_offset_table);
+> > > +       const s16 *rf_pwr_offset_table = NULL;
+> > >
+> > >         table = b43_nphy_get_tx_gain_table(dev);
+> > >         if (!table)
+> > > @@ -4256,9 +4256,13 @@ static void b43_nphy_tx_gain_table_upload(struct b43_wldev *dev)
+> > >                         pga_gain = (table[i] >> 24) & 0xf;
+> > >                         pad_gain = (table[i] >> 19) & 0x1f;
+> > >                         if (b43_current_band(dev->wl) == NL80211_BAND_2GHZ)
+> > > -                               rfpwr_offset = rf_pwr_offset_table[pad_gain];
+> > > +                               rfpwr_offset = rf_pwr_offset_table
+> > > +                                               ? rf_pwr_offset_table[pad_gain]
+> > > +                                               : 0;
+> > >                         else
+> > > -                               rfpwr_offset = rf_pwr_offset_table[pga_gain];
+> > > +                               rfpwr_offset = rf_pwr_offset_table
+> > > +                                               ? rf_pwr_offset_table[pga_gain]
+> > > +                                               : 0;
 > >
-> > Signed-off-by: Kees Cook <keescook@chromium.org>
-> 
-> Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
+> >
+> > The code is trying to check `phy->rev >= 7 && phy->rev < 19` once
+> > before the loop, then set `rf_pwr_offset_table`, so having another
+> > conditional on `rf_pwr_offset_table` in the loop is unnecessary. I'm
+> > ok with initializing it to `NULL`, but I'm not sure the conditional
+> > check is necessary.  Do you get a compiler warning otherwise?
+>
+> I mean, sort of the best thing to do is just remove nearly everything
+> here since it's actually unreachable. But it is commented as "when
 
-Thanks for the reviews!
+This code is reachable. Consider `phy->rev >= 7 && phy->rev < 19`.  If
+`rf_pwr_offset_table` was NULL, it would have returned early on L4246,
+so the checks added in this patch are unnecessary.  Forgive me if
+there's some other control flow I'm not considering.
 
-> Fixes ce1e518190ea ("ide: don't disable interrupts during kmap_atomic()")
-
-I originally avoided adding Fixes tags because I didn't want these
-changes backported into a -stable without -Wmaybe-uninitialized
-disabled, but in these cases (variable removal), that actually does make
-sense. Thanks!
-
--Kees
-
+> supported ..." etc, so I figured I'd leave it. As part of that I didn't
+> want to leave any chance of a NULL deref, so I added the explicit tests
+> just for robustness.
+>
+> *shrug*
 -- 
-Kees Cook
+Thanks,
+~Nick Desaulniers
