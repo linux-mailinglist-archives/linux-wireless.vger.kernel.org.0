@@ -2,50 +2,50 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CFCDE1EEBBD
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 Jun 2020 22:18:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C5711EEBCB
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 Jun 2020 22:20:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729559AbgFDUSg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 4 Jun 2020 16:18:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51130 "EHLO
+        id S1729786AbgFDUUH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 4 Jun 2020 16:20:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51382 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728272AbgFDUSe (ORCPT
+        with ESMTP id S1726814AbgFDUUD (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 4 Jun 2020 16:18:34 -0400
-Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com [IPv6:2607:f8b0:4864:20::441])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62DD1C08C5C3
-        for <linux-wireless@vger.kernel.org>; Thu,  4 Jun 2020 13:18:34 -0700 (PDT)
-Received: by mail-pf1-x441.google.com with SMTP id f3so3768392pfd.11
-        for <linux-wireless@vger.kernel.org>; Thu, 04 Jun 2020 13:18:34 -0700 (PDT)
+        Thu, 4 Jun 2020 16:20:03 -0400
+Received: from mail-pj1-x1041.google.com (mail-pj1-x1041.google.com [IPv6:2607:f8b0:4864:20::1041])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3D73C08C5C7
+        for <linux-wireless@vger.kernel.org>; Thu,  4 Jun 2020 13:20:02 -0700 (PDT)
+Received: by mail-pj1-x1041.google.com with SMTP id d6so1716858pjs.3
+        for <linux-wireless@vger.kernel.org>; Thu, 04 Jun 2020 13:20:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to;
-        bh=KSgduwKhAGu1Me5hdrsNlT/LSTVts5IMrrdQbnnmgtM=;
-        b=iwsRqxQEY+LpPM+s+DR5Kt1prnKy4GHGxqj/QUqqkkqSMBCDJe1CHdT/yKZJkiBDXL
-         Y6szw+en5NZ6khTYpwS0FGviJsYX/r26zXRpTi2oURHUxJskaDdTNYF20YKqgU+50wUG
-         aJZ2WjX85SJKBXLpicthf/oXnlRh2W1BmzGAE=
+        bh=gz66RqxXF5KGuRHQ0GYBuygtpEJiPzNI0sTLh4Vu69Y=;
+        b=jAmWlkIQJZzKdLIy24SnHWINuzTVOS3/wjvm2cU2AFi5wGPpwqQkjWfOwBraDHgs8k
+         bMHElbdbRxBbtC27xZm6mEe99uDc96pKouYmbV/dc0+e2MIiE2jcwrdVq98w16mgeguV
+         2DhLtfyu1wmL1bs6o/3S7BQ/OXA9/tFItMGTU=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=KSgduwKhAGu1Me5hdrsNlT/LSTVts5IMrrdQbnnmgtM=;
-        b=t6icM81gWdDnkkV2ViyeDli9TxOGvxdrumtPn2IxNOegG7n6DAohik1hhC6n7+O2uv
-         +snIi2nwab0dPSfzlpdmnxW0QBP2muzPoBsOKBC5oe9yOrEQxMYMaklIrU+gzP2JbzY4
-         I5MP0/CO7+jOA7+iN8h0UYvs4RKUWRGh87NNEJeC5hi8iTTRS2V2tr+n+VPW1wlZh8vB
-         Ja0p9eJB8HQURysX8kNaXZN2R4RnSjDz4gCteoIpTXi8K/IoHlJ6a9PjRIdufHXXFO/7
-         i03gdVQJu1MCoKTxt6hZkmngEI8goxddX90yY4HDCwMlvsB5r+ya0a7WMFQFP8QUAM5x
-         mEPA==
-X-Gm-Message-State: AOAM533CqRdJlPOlrx+vWlDOumc5HoDnfGO0FSR3Ac0R7fCgriVVUeYR
-        luGa/ouGqOT0+fQvjasbBngtQA==
-X-Google-Smtp-Source: ABdhPJy6jmo6NLjATFT9PEAZE69aJp2ake2/5E+UKA7LNV6vmFPBoWj+KBik/aUM7ISRTcCYuBBaWw==
-X-Received: by 2002:a63:c58:: with SMTP id 24mr6232804pgm.246.1591301913875;
-        Thu, 04 Jun 2020 13:18:33 -0700 (PDT)
+        bh=gz66RqxXF5KGuRHQ0GYBuygtpEJiPzNI0sTLh4Vu69Y=;
+        b=iJ2b/MzlvdIdpQyUPMHo/iyLdtD1MNhhb5HmzVtHuIIHYQNr56Og5Wm4X/6qwVVGdQ
+         lqurNiDQMfb/3adGzJGx9kmuc+/7nS2ti97YhcSRqS5rLbACL6ZfnORyM+JblKRZW6ai
+         xRy7FczEqznW9y6mJ5+hGeQlQAcO86TcSNoPMjym7K/SMJlRlvHlWww+sPxkQ37lsSIO
+         7QyfMUpAv7FbeFE2t7UuHispMySo+TiIFQgmSmeACzErZJ+4V+YTJcOohVm8O6EmVmhr
+         UZ2sgVpn5O464WC0TK+YX5lC2v4Vsgmv07W+mK5cRmdRLfakAFL04tqCETz7J8MoPL1M
+         dqNg==
+X-Gm-Message-State: AOAM5323LnngMJrSxIwQEHB3QV8IlltBYEagsKwQAbEEz/pqicpeXnyW
+        b77PEgas+F1YkwvVJ+GnTIdyfw==
+X-Google-Smtp-Source: ABdhPJxkV30NNQPml+L5dx48JHt30SosyvH9CeJOsvPeKMxl1Di1uyDaJOg4t+7npffgj0Ki2XTH3Q==
+X-Received: by 2002:a17:90a:7043:: with SMTP id f61mr7838452pjk.140.1591302001916;
+        Thu, 04 Jun 2020 13:20:01 -0700 (PDT)
 Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id r5sm5581320pji.20.2020.06.04.13.18.32
+        by smtp.gmail.com with ESMTPSA id g17sm1432553pju.11.2020.06.04.13.20.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Jun 2020 13:18:33 -0700 (PDT)
-Date:   Thu, 4 Jun 2020 13:18:31 -0700
+        Thu, 04 Jun 2020 13:20:01 -0700 (PDT)
+Date:   Thu, 4 Jun 2020 13:20:00 -0700
 From:   Kees Cook <keescook@chromium.org>
 To:     Nick Desaulniers <ndesaulniers@google.com>
 Cc:     LKML <linux-kernel@vger.kernel.org>,
@@ -62,30 +62,35 @@ Cc:     LKML <linux-kernel@vger.kernel.org>,
         linux-ide@vger.kernel.org, linux-clk@vger.kernel.org,
         linux-spi@vger.kernel.org,
         Linux Memory Management List <linux-mm@kvack.org>,
-        clang-built-linux <clang-built-linux@googlegroups.com>
-Subject: Re: [PATCH 03/10] b43: Remove uninitialized_var() usage
-Message-ID: <202006041316.A15D952@keescook>
+        clang-built-linux <clang-built-linux@googlegroups.com>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Subject: Re: [PATCH 05/10] ide: Remove uninitialized_var() usage
+Message-ID: <202006041318.B0EA9059C7@keescook>
 References: <20200603233203.1695403-1-keescook@chromium.org>
- <20200603233203.1695403-4-keescook@chromium.org>
- <CAKwvOdnNuFySqAMk7s_cXqFM=dPX4JfvqNVLCuj90Gn4tzciAw@mail.gmail.com>
+ <20200603233203.1695403-6-keescook@chromium.org>
+ <CAKwvOdm5zDide5RuppY_jG=r46=UMdVJBrkBqD5x=dOMTG9cZg@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAKwvOdnNuFySqAMk7s_cXqFM=dPX4JfvqNVLCuj90Gn4tzciAw@mail.gmail.com>
+In-Reply-To: <CAKwvOdm5zDide5RuppY_jG=r46=UMdVJBrkBqD5x=dOMTG9cZg@mail.gmail.com>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Jun 04, 2020 at 01:08:44PM -0700, Nick Desaulniers wrote:
+On Thu, Jun 04, 2020 at 12:29:17PM -0700, Nick Desaulniers wrote:
 > On Wed, Jun 3, 2020 at 4:32 PM Kees Cook <keescook@chromium.org> wrote:
 > >
 > > Using uninitialized_var() is dangerous as it papers over real bugs[1]
 > > (or can in the future), and suppresses unrelated compiler warnings (e.g.
 > > "unused variable"). If the compiler thinks it is uninitialized, either
 > > simply initialize the variable or make compiler changes. As a precursor
-> > to removing[2] this[3] macro[4], just initialize this variable to NULL,
-> > and make the (unreachable!) code do a conditional test.
+> > to removing[2] this[3] macro[4], just remove this variable since it was
+> > actually unused:
+> >
+> > drivers/ide/ide-taskfile.c:232:34: warning: unused variable 'flags' [-Wunused-variable]
+> >         unsigned long uninitialized_var(flags);
+> >                                         ^
 > >
 > > [1] https://lore.kernel.org/lkml/20200603174714.192027-1-glider@google.com/
 > > [2] https://lore.kernel.org/lkml/CA+55aFw+Vbj0i=1TGqCR5vQkCzWJ0QxK6CernOU6eedsudAixw@mail.gmail.com/
@@ -93,61 +98,17 @@ On Thu, Jun 04, 2020 at 01:08:44PM -0700, Nick Desaulniers wrote:
 > > [4] https://lore.kernel.org/lkml/CA+55aFz2500WfbKXAx8s67wrm9=yVJu65TpLgN_ybYNv0VEOKA@mail.gmail.com/
 > >
 > > Signed-off-by: Kees Cook <keescook@chromium.org>
-> > ---
-> >  drivers/net/wireless/broadcom/b43/phy_n.c | 10 +++++++---
-> >  1 file changed, 7 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/drivers/net/wireless/broadcom/b43/phy_n.c b/drivers/net/wireless/broadcom/b43/phy_n.c
-> > index d3c001fa8eb4..88cdcea10d61 100644
-> > --- a/drivers/net/wireless/broadcom/b43/phy_n.c
-> > +++ b/drivers/net/wireless/broadcom/b43/phy_n.c
-> > @@ -4222,7 +4222,7 @@ static void b43_nphy_tx_gain_table_upload(struct b43_wldev *dev)
 > 
-> The TODOs and `#if 0` in this function are concerning.  It looks like
-> `rf_pwr_offset_table` is only used when `phy->rev` is >=7 && < 19.
-> 
-> Further, the loop has a case for `phy->rev >= 19` but we would have
-> returned earlier if that was the case.
+> Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
 
-Yeah, that's why I put the "(unreachable!)" note in the commit log. ;)
+Thanks for the reviews!
 
-> 
-> >         u32 rfpwr_offset;
-> >         u8 pga_gain, pad_gain;
-> >         int i;
-> > -       const s16 *uninitialized_var(rf_pwr_offset_table);
-> > +       const s16 *rf_pwr_offset_table = NULL;
-> >
-> >         table = b43_nphy_get_tx_gain_table(dev);
-> >         if (!table)
-> > @@ -4256,9 +4256,13 @@ static void b43_nphy_tx_gain_table_upload(struct b43_wldev *dev)
-> >                         pga_gain = (table[i] >> 24) & 0xf;
-> >                         pad_gain = (table[i] >> 19) & 0x1f;
-> >                         if (b43_current_band(dev->wl) == NL80211_BAND_2GHZ)
-> > -                               rfpwr_offset = rf_pwr_offset_table[pad_gain];
-> > +                               rfpwr_offset = rf_pwr_offset_table
-> > +                                               ? rf_pwr_offset_table[pad_gain]
-> > +                                               : 0;
-> >                         else
-> > -                               rfpwr_offset = rf_pwr_offset_table[pga_gain];
-> > +                               rfpwr_offset = rf_pwr_offset_table
-> > +                                               ? rf_pwr_offset_table[pga_gain]
-> > +                                               : 0;
-> 
-> 
-> The code is trying to check `phy->rev >= 7 && phy->rev < 19` once
-> before the loop, then set `rf_pwr_offset_table`, so having another
-> conditional on `rf_pwr_offset_table` in the loop is unnecessary. I'm
-> ok with initializing it to `NULL`, but I'm not sure the conditional
-> check is necessary.  Do you get a compiler warning otherwise?
+> Fixes ce1e518190ea ("ide: don't disable interrupts during kmap_atomic()")
 
-I mean, sort of the best thing to do is just remove nearly everything
-here since it's actually unreachable. But it is commented as "when
-supported ..." etc, so I figured I'd leave it. As part of that I didn't
-want to leave any chance of a NULL deref, so I added the explicit tests
-just for robustness.
-
-*shrug*
+I originally avoided adding Fixes tags because I didn't want these
+changes backported into a -stable without -Wmaybe-uninitialized
+disabled, but in these cases (variable removal), that actually does make
+sense. Thanks!
 
 -Kees
 
