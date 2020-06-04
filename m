@@ -2,42 +2,42 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 119341EDDE6
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 Jun 2020 09:19:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 39A801EDDE7
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 Jun 2020 09:19:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727879AbgFDHTA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 4 Jun 2020 03:19:00 -0400
-Received: from mail-bn7nam10on2107.outbound.protection.outlook.com ([40.107.92.107]:50472
-        "EHLO NAM10-BN7-obe.outbound.protection.outlook.com"
+        id S1727860AbgFDHTC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 4 Jun 2020 03:19:02 -0400
+Received: from mail-mw2nam12on2131.outbound.protection.outlook.com ([40.107.244.131]:62176
+        "EHLO NAM12-MW2-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726411AbgFDHTA (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 4 Jun 2020 03:19:00 -0400
+        id S1727881AbgFDHTB (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 4 Jun 2020 03:19:01 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=RA+Zx2kmzGTlehEM8LU25ho7CP/tSXnPI1WKXH08WRwMPhXZAFsNI547M3F9LGv5X3tZYbvH4KtpSUl1VziJUohTn1QUnxkOX3hFQY6fFA5CcNzr5CQ9PUK+KXX4MrF+6LnTMUdRwYLD1X5K85FGfuQA14GLOsrqXpwWhxQvka1A66GFoLcKkqSfBQ4Ym4xXBzbbWLeCL+Xqnxk8PImqjy3jGsW5kXqwiqSvcWMkngD3GYeZOoeaOzTk+PqWX+y9Li2z7dq4tIsXX3jhJPYAV5IsiQBlWfQrwD6RUQqiEcxkSmte4hSCaLfqM4Ufqlu/YnS1V+IwlIXBPpiFUcTOQQ==
+ b=Qugv5kg7iqNoE6PB4neAaidv4BzcpDDqnYPYJ3GST6e7ZYJ52ps8/1CluSQrx7Jj9/g/gfiQ8GhWYP8TkYjDwCWlQHSqL2tFVGhZ/ScbNWyDFA1zbd4nApdj5uFMzSxblvZ4yHiXXqAd7Fvn/BUSrPZmmRowaR6QtLkHggZXjUDewKFpvOkYC8mfy4Sn3bjMWA26wZC3Ioz8vP801itadieXi49YqzqfbNhjONdqAHPp4UDFKnfGKnXH1c50sS7wIggozxdWFf6ok14ffz1M2g37s/jkuJnLYWBQ+CHg0q1fy2DmipTID6Bba8QNnfCw0EeZaLVPGnkW2wFiNpS30A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5EEWxLAn4JisYgPe95IvJblyHv1izWVJ9nxhtQRuTKs=;
- b=hs9xgRCGH0Hy/IieQVcWI68Epxcin5FPphZJ0bSDMc748bwuMzsPkqoWMS2MrbyJTfTRQbBPWWaeXd9LgFDFJT7v8hWWM7pLrzP4FF+odBpV7cvJlgwRW5Hi+Wls2Hfc9ZENiouGqk+2OrpA+ygYZ1r/dY/0KsdCakmpK6nqrF/yoWSaT5XnwC0ntZhq3EFip81B/2gduGLzDUXscu3HLQoIibclI+HqjIOjDj3CTpEOyBfmq8TQj4w1geUytI99jPJ4pPcUh27gUcZDkKaNQ27NVJkahMLWQ7Ulk/g1BSPuPZdAN+gKe6EozCbsFNLTp/BJzEqvGnI1yi0wzZRE7Q==
+ bh=KXW1dYlIpU3N+IiooStW+231FDUJf74Mcqp8d+lNAiw=;
+ b=GnmnJd+MMgU7YEiZT/e7sp0MnsG2yLLpuww264lxiRi+VKcRBKfsLQ267Sriq+UGUmJpqr/VSsjQrQJtmlqyyFZSzD9hE7worgvz3PtgFR454CLDEAedC8GHxXctKtOS1mL7xglHHU1cHHQJG2Z8lLFA5DB3Oi6lbXDI86rp9jEff3H7tYe3UucxfkMhfJ4U8pmvFPeWs42vft0h/62bgCUXfYW9SdSkvDV3Dq/DYW/yNPuf5dlt4qUwAxISvrusZcc97hlAU5TOlXtOgwCfklVdUnBZDVVI6aQJNP2OfHwNhRqZB3sG8U4x0vHKp+GVnaz+nTln8Cg86w0/KvA1jQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=cypress.com; dmarc=pass action=none header.from=cypress.com;
  dkim=pass header.d=cypress.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cypress.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5EEWxLAn4JisYgPe95IvJblyHv1izWVJ9nxhtQRuTKs=;
- b=dYACxgBbvY0SHCWtCECXwg/7aACliBVM0IplkX0/xXuOZ0Iig9CpTbSJ74RTATSNFqjev3bQmJLtj54+RcJkzFSbSI0Bk03/x2PLDEOsIVmn0JAIS3zyPFLGHE/ybRkMZWZguvv3BpPp7eYR9l3HJ/CNZGrz+frhUiblSYlleiU=
+ bh=KXW1dYlIpU3N+IiooStW+231FDUJf74Mcqp8d+lNAiw=;
+ b=IBBTh5l0HRiAPDiiJbQavXud1c7c8/BTtwSOOcs+xTpJwEOhxnYlWDSyhohSuhmQoRdg1s0HIFOJRDQgXGd2xUpM1Dy6FDCsAY/uOZaRkvPpYw1zFohZadIlo/voq8QM2UGjFCXAm4rgmWn2T/Hpg2gmSbGT8w39C/oGFO4GIkk=
 Authentication-Results: vger.kernel.org; dkim=none (message not signed)
  header.d=none;vger.kernel.org; dmarc=none action=none
  header.from=cypress.com;
 Received: from DM6PR06MB4748.namprd06.prod.outlook.com (2603:10b6:5:fd::18) by
  DM6PR06MB5146.namprd06.prod.outlook.com (2603:10b6:5:112::28) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.3045.19; Thu, 4 Jun 2020 07:18:57 +0000
+ 15.20.3045.19; Thu, 4 Jun 2020 07:18:59 +0000
 Received: from DM6PR06MB4748.namprd06.prod.outlook.com
  ([fe80::9f0:c02f:7b54:51eb]) by DM6PR06MB4748.namprd06.prod.outlook.com
  ([fe80::9f0:c02f:7b54:51eb%5]) with mapi id 15.20.3066.018; Thu, 4 Jun 2020
- 07:18:56 +0000
+ 07:18:59 +0000
 From:   Wright Feng <wright.feng@cypress.com>
 To:     linux-wireless@vger.kernel.org
 Cc:     wright.feng@cypress.com, brcm80211-dev-list@broadcom.com,
@@ -45,10 +45,11 @@ Cc:     wright.feng@cypress.com, brcm80211-dev-list@broadcom.com,
         Arend van Spriel <arend.vanspriel@broadcom.com>,
         Franky Lin <franky.lin@broadcom.com>,
         Hante Meuleman <hante.meuleman@broadcom.com>,
-        Kalle Valo <kvalo@codeaurora.org>, chi-hsien.lin@cypress.com
-Subject: [PATCH v2 4/5] brcmfmac: reduce maximum station interface from 2 to 1 in RSDB mode
-Date:   Thu,  4 Jun 2020 02:18:34 -0500
-Message-Id: <20200604071835.3842-5-wright.feng@cypress.com>
+        Kalle Valo <kvalo@codeaurora.org>, chi-hsien.lin@cypress.com,
+        Prasanna Kerekoppa <prasanna.kerekoppa@cypress.com>
+Subject: [PATCH v2 5/5] brcmfmac: To fix Bss Info flag definition Bug
+Date:   Thu,  4 Jun 2020 02:18:35 -0500
+Message-Id: <20200604071835.3842-6-wright.feng@cypress.com>
 X-Mailer: git-send-email 2.25.0
 In-Reply-To: <20200604071835.3842-1-wright.feng@cypress.com>
 References: <20200604071835.3842-1-wright.feng@cypress.com>
@@ -58,88 +59,62 @@ X-ClientProxiedBy: MN2PR01CA0049.prod.exchangelabs.com (2603:10b6:208:23f::18)
  To DM6PR06MB4748.namprd06.prod.outlook.com (2603:10b6:5:fd::18)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from iot-wlan-dev-u02.aus.cypress.com (12.110.209.245) by MN2PR01CA0049.prod.exchangelabs.com (2603:10b6:208:23f::18) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.20.3066.18 via Frontend Transport; Thu, 4 Jun 2020 07:18:55 +0000
+Received: from iot-wlan-dev-u02.aus.cypress.com (12.110.209.245) by MN2PR01CA0049.prod.exchangelabs.com (2603:10b6:208:23f::18) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.20.3066.18 via Frontend Transport; Thu, 4 Jun 2020 07:18:58 +0000
 X-Mailer: git-send-email 2.25.0
 X-Originating-IP: [12.110.209.245]
 X-MS-PublicTrafficType: Email
 X-MS-Office365-Filtering-HT: Tenant
-X-MS-Office365-Filtering-Correlation-Id: a6b5ad76-b1a6-4cf8-e714-08d808578b48
+X-MS-Office365-Filtering-Correlation-Id: 739377bd-5981-4c9d-3e6f-08d808578cb2
 X-MS-TrafficTypeDiagnostic: DM6PR06MB5146:
 X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <DM6PR06MB514638A14625E30C24042EFBFB890@DM6PR06MB5146.namprd06.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:5516;
+X-Microsoft-Antispam-PRVS: <DM6PR06MB51462E3F8AE9ABB7C91A34CCFB890@DM6PR06MB5146.namprd06.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:8273;
 X-Forefront-PRVS: 04244E0DC5
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: o122OfIu6GC2SdJiPXC0uwwGyDTMeDDJFDXWcx0Rfeqzb+RQzEckqY1JqDqm+34nouj/Z61g72ePQ27Du9b8DO8x27io0WPa2xCJL3qAypD7UHTgMvNBcv4k3D+rIIZIQAzzJ5e49nofFpLE4aD36x68lHV87HTEduiNmrv9wnP7vJsTtf50eZhOiZ0bUB3yfJkR/iAY9UhNPXvOnfKi7oPEJ/4VHPjtKe92eJ70A8SNPKWKHLQ5u6aCCNtApa5vhf6/Qiw09MBUkNkdOkQkfsx1VhV0xaY1pk984RXWWKQC70MSWHIJfWzvOQh4GZbB
+X-Microsoft-Antispam-Message-Info: u82YQwIIh9y3VKosaGpbH082mbP2UzXoMio8TLZsiNfO40u8MlDoiWamDQH4im5h8VZCjjGog8kBHl6FENE2ZK6w5Lax7MMG62SSO3f7p3Z5qj4KXV87gxYH/BXvPNDs+2syKi7GOh3n6u0oerVqBGlc3ti7Nt4iORlVEZZoURg5ta0rBtLCeBBva0KQ2faIiOuWXMWBSLM81j5KQWrA/tQ5l4TVZPMR9cGBrcmXPqDTtrOWp94HKbNEp4bToHgB0EJ/1wfbghQwPQXc/F3ozihaN9cohhkWDTVXQ+xPEZ11N8kax1DHqqjkJrMh4QPG
 X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR06MB4748.namprd06.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(376002)(39860400002)(346002)(396003)(366004)(136003)(316002)(54906003)(6666004)(26005)(16526019)(186003)(2616005)(52116002)(36756003)(956004)(7696005)(44832011)(1076003)(8936002)(8676002)(83380400001)(107886003)(6916009)(5660300002)(2906002)(4326008)(86362001)(6486002)(478600001)(66476007)(66946007)(66556008);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData: NDqOk47HBKW/AbXpM8Uz1f9Jd9ffzy+8wO+yjHtwqh4zeTcs6YA8/Jr82mJ6fdwIofy2LnVl2y6HdJ16A//w+p0QSg3UefiOLzLPzTsYERX8tEunJgSmBAivR745FILcASetYZvbuZnmpjo7kCFlIA7DgGdb+cHACqg2Ptlp7KU8h9FhlCwd/rB1kfqQ0gV/KtFkeUrViH3mdgAyxaJuhC6UFSTFfoAq151lDgvma1c8agAcaD2heuJZegdLnQDSqEq7/3E2fpYMc8Bh17/pXp8nyV+fSPB2jlwyZ5wvkuQ4lJ0hQxrqB5PU3YWqo8LUcmVl58iZ5O7pXKuApTaufXp6eqlaQIMNyK2nSZNT6X/JfvQkftC53DSZmjeyyPuYIltJQgNMCxjVXNd7g5CpZlU6i1FmElz5QbkBS0EZTTQ+t4GqIHQL4Vr29tKmGxGVoT9PrI3YnyjbkIAZnKUBk2Rm68qfnsCoNrzEZD1WcF4ACoA4v+hA6rL8Umxq85bk
+X-MS-Exchange-AntiSpam-MessageData: 3XDnTAKQSmEyXITCIFvI+3Vpg6FB2kJ2rxKCQq5QZqS1UZ0SA4bZjpklrCC2lWpbUlN5EkkiyPTdw+OOX5AqLnZ4C03+AuLT7yKBRfTkob7ovFBm2GgbiECO1CjLXs0aEskzMuV7n49DF6yFXu4dPLwnVBem9nRmGlkhasEFw3P9KAWCsPeRlZlSn08M0tMkmuskuxNgz9SfYKTpwAC8B7tZJNYqHnHuIh9yK8O9H61lPSU/nMFzBGBFNgL4kU8b4GpP8CzeufVcgSDtLzNBHz6cRD8lYJ9SmMaU/gIy+F5DKEuyJ9lXvVKqUmtGb36rCjMUnDafLgFKUWAWq4CIExVVj7I62A0wJZpKnctmbGHIlAQQx5RU53DHYRNpELNYiE1+qCdezypN6VFVP+1wWtyU98L7E52DOXq9Iuz9VKXcsg+55xJx056VyvKQIBhpeivZgc4zIuFMyY2Ykaj0KvcRmCFiotmLvVtpq9ocNGo9XGWLvo7nG+UfjDjtT8GB
 X-OriginatorOrg: cypress.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a6b5ad76-b1a6-4cf8-e714-08d808578b48
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Jun 2020 07:18:56.8511
+X-MS-Exchange-CrossTenant-Network-Message-Id: 739377bd-5981-4c9d-3e6f-08d808578cb2
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Jun 2020 07:18:59.2461
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 011addfc-2c09-450d-8938-e0bbc2dd2376
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 55SDyfhzlztOhmkh7oWOHyRSqW2rWN1NXgUj0QAGv3xotNM5A7BDRJMz4d56dDRfiNmtRb2OVyAfnm9P4q6jDw==
+X-MS-Exchange-CrossTenant-UserPrincipalName: wmpKzmga9OWE7tbL08x1RNMLzD4bbSnqHwKAC0WqPbL/xowaL6dWGgV4jM3mgL+aeEi8r9fz/glSU0Iqp8m8pQ==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR06MB5146
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The firmware state machines are not fully suitable for concurrent
-station interface support, it may hit unexpected error if we have 2
-different SSIDs and the roaming scenarios concurrently.
-To avoid the bad user-experience if this is not fully validated, we
-dis-allow user to create two concurrent station interfaces.
+From: Prasanna Kerekoppa <prasanna.kerekoppa@cypress.com>
 
-Signed-off-by: Wright Feng <wright.feng@cypress.com>
+Bss info flag definition need to be fixed from 0x2 to 0x4
+This flag is for rssi info received on channel.
+All Firmware branches defined as 0x4 and this is bug in brcmfmac.
+
+Signed-off-by: Prasanna Kerekoppa <prasanna.kerekoppa@cypress.com>
 Signed-off-by: Chi-hsien Lin <chi-hsien.lin@cypress.com>
+Signed-off-by: Wright Feng <wright.feng@cypress.com>
 ---
- .../net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c   | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-index a757abd7a599..8c1801fb59e7 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-@@ -6801,7 +6801,7 @@ brcmf_txrx_stypes[NUM_NL80211_IFTYPES] = {
-  *	#AP <= 4, matching BI, channels = 1, 4 total
-  *
-  * no p2p and rsdb:
-- *	#STA <= 2, #AP <= 2, channels = 2, 4 total
-+ *	#STA <= 1, #AP <= 2, channels = 2, 4 total
-  *
-  * p2p, no mchan, and mbss:
-  *
-@@ -6816,7 +6816,7 @@ brcmf_txrx_stypes[NUM_NL80211_IFTYPES] = {
-  *	#AP <= 4, matching BI, channels = 1, 4 total
-  *
-  * p2p, rsdb, and no mbss:
-- *	#STA <= 2, #P2P-DEV <= 1, #{P2P-CL, P2P-GO} <= 2, AP <= 2,
-+ *	#STA <= 1, #P2P-DEV <= 1, #{P2P-CL, P2P-GO} <= 2, AP <= 2,
-  *	 channels = 2, 4 total
-  */
- static int brcmf_setup_ifmodes(struct wiphy *wiphy, struct brcmf_if *ifp)
-@@ -6857,7 +6857,7 @@ static int brcmf_setup_ifmodes(struct wiphy *wiphy, struct brcmf_if *ifp)
- 		goto err;
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h
+index de0ef1b545c4..2e31cc10c195 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h
+@@ -19,7 +19,7 @@
+ #define BRCMF_ARP_OL_PEER_AUTO_REPLY	0x00000008
  
- 	combo[c].num_different_channels = 1 + (rsdb || (p2p && mchan));
--	c0_limits[i].max = 1 + rsdb;
-+	c0_limits[i].max = 1;
- 	c0_limits[i++].types = BIT(NL80211_IFTYPE_STATION);
- 	if (mon_flag) {
- 		c0_limits[i].max = 1;
-@@ -6873,7 +6873,7 @@ static int brcmf_setup_ifmodes(struct wiphy *wiphy, struct brcmf_if *ifp)
- 	if (p2p && rsdb) {
- 		c0_limits[i].max = 2;
- 		c0_limits[i++].types = BIT(NL80211_IFTYPE_AP);
--		combo[c].max_interfaces = 5;
-+		combo[c].max_interfaces = 4;
- 	} else if (p2p) {
- 		combo[c].max_interfaces = i;
- 	} else if (rsdb) {
+ #define	BRCMF_BSS_INFO_VERSION	109 /* curr ver of brcmf_bss_info_le struct */
+-#define BRCMF_BSS_RSSI_ON_CHANNEL	0x0002
++#define BRCMF_BSS_RSSI_ON_CHANNEL	0x0004
+ 
+ #define BRCMF_STA_BRCM			0x00000001	/* Running a Broadcom driver */
+ #define BRCMF_STA_WME			0x00000002	/* WMM association */
 -- 
 2.25.0
 
