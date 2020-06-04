@@ -2,84 +2,82 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D794E1EE38C
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 Jun 2020 13:41:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A29FA1EE43E
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 Jun 2020 14:11:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727995AbgFDLlW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 4 Jun 2020 07:41:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55542 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725601AbgFDLlU (ORCPT
+        id S1728044AbgFDMLe convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 4 Jun 2020 08:11:34 -0400
+Received: from roobidoo.pudai.com ([216.14.118.130]:52288 "EHLO
+        roobidoo.pudai.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1728016AbgFDMLe (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 4 Jun 2020 07:41:20 -0400
-Received: from mail-lj1-x244.google.com (mail-lj1-x244.google.com [IPv6:2a00:1450:4864:20::244])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63308C03E96D;
-        Thu,  4 Jun 2020 04:41:20 -0700 (PDT)
-Received: by mail-lj1-x244.google.com with SMTP id n23so6848933ljh.7;
-        Thu, 04 Jun 2020 04:41:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=R0o4OOvzJQjARhQ6/49UmmkOyadJDn2uKBj3nrOAqQo=;
-        b=uOadSoLGhaseNrsSLG0CEfcx1B7ZyXtznA1jW/71TjOkJaQ3v7NhDn32mtbkkPd0Q+
-         1UDuNRM26ag+jysBJHImSQ2kyqAxp6Pbe8OVsuK3/X6E6BLOFRucdGoxisc/QkPMQfn9
-         DSP221R/DYOdjftqL2dmeYiibVPWWApyDr996ybowslc4DnYfcHTAWJ50hppvye4onSW
-         Wki6t+mbrF7ejKkqVkq6hFcUNg4F2aeKBWSYX0y86zDfF0gdQIlIFvOHHUjNdXP4a7ct
-         pto6mvk/UvVFDpzwyBErLblgdgk4M9JUrlkGy+vs2gLKfjfB2m/WaWMIrcXH9QqP6urW
-         FvAw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=R0o4OOvzJQjARhQ6/49UmmkOyadJDn2uKBj3nrOAqQo=;
-        b=P3AAWUXHRD5t3PsW07iHif5KVUnQhGTqfNZ1nMZ/+oBm6ftVVEBgYqOFJpjVXwCYDl
-         3Bber2Wxs4QJ9bMSg8uM1zAAwd5KMDTHKjJ5tToQVPy+To6oKOA859oNgUJK8Zw7v3ZJ
-         tLvBUVSYzsgMhZSxuFkwM/IDS9xvPeJ0ubRdLYyX/GuoYANchBOmPmPto2+J1FAicESX
-         IwFEZaA8Kuwvd0VQHp2lvzVM2bUaOXxv1Oz1ErDI2qJiW6VI3Z+56JVMCDh3Lqn4miru
-         Uq97hm7jgoQvJJEnmX74CEEcvfU2vTL8t9SDtrY1H3DPv2AYmK27OKcXM8tKGUc8vC1i
-         2Q8A==
-X-Gm-Message-State: AOAM533DlaKn9YP6kYlOx2K2g/zk9vvzB2ox9L9un0eEFKvWvmklROQx
-        jdVIiXEOO3oaHch7bgZuSYiBPdo/rz/D4O0M2pc=
-X-Google-Smtp-Source: ABdhPJxccA+5mnrfVxyneHXrV0mVelE29mG9oDomdWWW1fU5ho8qKcvQdw+EQpyMOql3tRqQBW/MgmXYvs677/gUgQE=
-X-Received: by 2002:a05:651c:11c7:: with SMTP id z7mr2085283ljo.29.1591270878905;
- Thu, 04 Jun 2020 04:41:18 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200603233203.1695403-2-keescook@chromium.org> <874krr8dps.fsf@nanos.tec.linutronix.de>
-In-Reply-To: <874krr8dps.fsf@nanos.tec.linutronix.de>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Thu, 4 Jun 2020 13:41:07 +0200
-Message-ID: <CANiq72kLqvriYmMkdD3yU+xJwbn-68Eiu-fTNtC+Lb+1ZRM75g@mail.gmail.com>
-Subject: Re: [PATCH 01/10] x86/mm/numa: Remove uninitialized_var() usage
-To:     Thomas Gleixner <tglx@linutronix.de>
-Cc:     Kees Cook <keescook@chromium.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Alexander Potapenko <glider@google.com>,
-        Joe Perches <joe@perches.com>,
-        Andy Whitcroft <apw@canonical.com>,
-        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
-        drbd-dev@lists.linbit.com, linux-block@vger.kernel.org,
-        b43-dev@lists.infradead.org,
-        Network Development <netdev@vger.kernel.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        linux-ide@vger.kernel.org, linux-clk@vger.kernel.org,
-        linux-spi@vger.kernel.org, Linux-MM <linux-mm@kvack.org>,
-        clang-built-linux <clang-built-linux@googlegroups.com>
-Content-Type: text/plain; charset="UTF-8"
+        Thu, 4 Jun 2020 08:11:34 -0400
+X-Greylist: delayed 2146 seconds by postgrey-1.27 at vger.kernel.org; Thu, 04 Jun 2020 08:11:34 EDT
+Received: from [71.219.88.243] (port=50695 helo=[10.168.3.124])
+        by roobidoo.pudai.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.93)
+        (envelope-from <tim@timhiggins.com>)
+        id 1jgo9z-0006tS-KX; Thu, 04 Jun 2020 06:35:47 -0500
+Content-Type: text/plain;
+        charset=us-ascii
+Mime-Version: 1.0 (1.0)
+Subject: Re: ax200 very poor performance in stock 5.7.0 and 53.c3 firmware.
+From:   Tim Higgins <tim@timhiggins.com>
+X-Mailer: iPad Mail (16G183)
+In-Reply-To: <c2898228-836e-549b-85ee-8c2d24051912@candelatech.com>
+Date:   Thu, 4 Jun 2020 07:35:46 -0400
+Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Content-Transfer-Encoding: 8BIT
+Message-Id: <3B9D5022-D95A-4CC3-B8A0-1104358F241E@timhiggins.com>
+References: <c2898228-836e-549b-85ee-8c2d24051912@candelatech.com>
+To:     Ben Greear <greearb@candelatech.com>
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - roobidoo.pudai.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - timhiggins.com
+X-Get-Message-Sender-Via: roobidoo.pudai.com: authenticated_id: tim@timhiggins.com
+X-Authenticated-Sender: roobidoo.pudai.com: tim@timhiggins.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Jun 4, 2020 at 9:58 AM Thomas Gleixner <tglx@linutronix.de> wrote:
->
-> but if we ever lose the 1 then the above will silently compile the code
-> within the IS_ENABLED() section out.
 
-Yeah, I believe `IS_ENABLED()` is only meant for Kconfig symbols, not
-macro defs in general. A better option would be `__is_defined()` which
-works for defined-to-nothing too.
 
-Cheers,
-Miguel
+> On Jun 3, 2020, at 11:54 PM, Ben Greear <greearb@candelatech.com> wrote:
+> 
+> I'm testing an un-modified kernel for a change, and latest firmware that I could find,
+> but ax200 is still sucking.
+> 
+> UDP upload of single ax200 station gets about 1Mbps, and station disconnects
+> very often.  TCP download gets about 400Mbps on each of two radios.  UDP download stalls
+> often and averages around 1Mbps throughput.  TCP upload also stalls out.
+> 
+> Previous testing on other kernels has shown problems with other firmware as well.
+> 
+> I'm requesting 500Mbps UDP speeds.    Requesting only 100Mbps does not help (tested with DL direction only).
+> 
+> [root@ct523c-0b29 ~]# ethtool -i wlan2
+> driver: iwlwifi
+> version: 5.7.0
+> firmware-version: 53.c31ac674.0 cc-a0-53.ucode
+> expansion-rom-version:
+> bus-info: 0000:12:00.0
+> supports-statistics: yes
+> supports-test: no
+> supports-eeprom-access: no
+> supports-register-dump: no
+> supports-priv-flags: no
+> 
+> 
+> Is there any way to disable OFDMA or /ax on the ax200 in case that helps somehow?
+> 
+> Thanks,
+> Ben
+Hi Ben,
+Try running with no encryption. I know that is not a solution. But it could point to a cause. I've seen disabling encryption make a big difference.
