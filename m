@@ -2,98 +2,84 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F33571EDA28
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 Jun 2020 02:50:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D61B61EDA33
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 Jun 2020 02:57:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729334AbgFDAum (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 3 Jun 2020 20:50:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39474 "EHLO
+        id S1730193AbgFDA5l (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 3 Jun 2020 20:57:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40534 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729323AbgFDAul (ORCPT
+        with ESMTP id S1727102AbgFDA5l (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 3 Jun 2020 20:50:41 -0400
-Received: from mail-lj1-x244.google.com (mail-lj1-x244.google.com [IPv6:2a00:1450:4864:20::244])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43B64C03E96D;
-        Wed,  3 Jun 2020 17:50:40 -0700 (PDT)
-Received: by mail-lj1-x244.google.com with SMTP id c11so5136287ljn.2;
-        Wed, 03 Jun 2020 17:50:40 -0700 (PDT)
+        Wed, 3 Jun 2020 20:57:41 -0400
+Received: from mail-ot1-x343.google.com (mail-ot1-x343.google.com [IPv6:2607:f8b0:4864:20::343])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC952C03E96D
+        for <linux-wireless@vger.kernel.org>; Wed,  3 Jun 2020 17:57:40 -0700 (PDT)
+Received: by mail-ot1-x343.google.com with SMTP id g7so2369079oti.13
+        for <linux-wireless@vger.kernel.org>; Wed, 03 Jun 2020 17:57:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=MPLZOT/4bCsndxaWJtW6FhRuUjguIqCFp5N2dwDtYQ8=;
-        b=jjo5yXOjBc6ExBZ0xU0p0U1vrAbDQBGzKMjBMieodOVuBzHGTF9DfthYYNAfEr4O8H
-         rweetJbTqqdkWZQ2Mh+tJNCGkpf/fkl1rkUJQ8mQL3qjchZnqA0v3AMF1MBb2R/OeUUh
-         DuErOylpGthQHIdGEr+3RVWllhk+DcvmzUIeBDjSdh5bWQzbscb+Y3ruNHUM8Dkq3sMo
-         nn/nsSopZsp2D2DmmTBE1rVlfsSS3jD71ToiAPKVqzTq2U2pcrz+IKipSkRRITVVt4/Q
-         y9VjEOyTc4mzSfqGsdsgNMIeHMEoqdZSRH5tVyANTF0vpIJUjGxVhNnyKfbEjw81HuWV
-         wblw==
+        h=sender:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=L1G7Igc4gifoUST0s04WvC0IkeRmMJVuYlbJNUF4ASk=;
+        b=hV3emYyRx5U6nbcFY3EojfztcdAn376bDUAUeCagjhogI/KH0XLzALQ2VPaGue6jC9
+         Jj8avmCdhM4fc2cgCYGiGaXh2DDWM10U5NuVuq4AeqmYgYKgEY3CiliOmx8m6bI6XpVK
+         LhMHo6m/6xrm0Vv+jfDcpLn2ZS9srenpWcWgTlmqr0/BF+GPqIDZKenRTdBIOY2hvtqQ
+         dUnvegZyefpsY/bb4hGshQ4uB+J3gcV8j0DNeVVqHB3CjUNRS6bgnfXUXbq4flpFTDMT
+         kinO4nmH5BLx2GfftP/jiqPc+CHrAA1ZAKn5enfpiLRsjbzFgGfRjjNq5dNxv6ReOtwE
+         qX2w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=MPLZOT/4bCsndxaWJtW6FhRuUjguIqCFp5N2dwDtYQ8=;
-        b=DjrXUPzYidLMPzRrNYY3MRYwE6HysA13H+i/iQYGe++QAbl3O0F3TeWlaBdPoNrSV2
-         UOTXG2uSvLAwJS1KonX2g7e2EJt88go15TGiVzxnQVjrA0VT7dtqPhsLcsy7EXq6/hNj
-         QidZcrDEhcsBItYcTakBJvsogqfsz4RtyT+BAYH4dpY0gdOTEW4ytXPA+VPVsVrqG/uU
-         zN0wnVp/XIydwGK9Qt8Uo4C3MXK/Qz+CigzHR32NxF073z07SpXrAxM6I5mhkPEX79Cz
-         ih2/mNMxuDbz+wRYjm8KKcI/m5dxHj4oKdsux94wTkmj9AJBAx2BSFX14kjp7n6xoXrW
-         vF1w==
-X-Gm-Message-State: AOAM532LQHV2W6GDrVYuQ/ovBK7xqJ+lxmhCHTSdq4wBA3D1EqjCJCU7
-        EVrWiNdgVB5CbYnb99MhzmxiysXyfYsOZ9uEbbrl0Poyl4o=
-X-Google-Smtp-Source: ABdhPJziTNSuHWTzq2vssLq+q8Fk3g0gJzv6ZAQGOSjz3d+G2JKB1FM3MjsolLLYpNir2cIK2vJaKIQ5Hqvq0FlOkQ0=
-X-Received: by 2002:a05:651c:11c7:: with SMTP id z7mr899332ljo.29.1591231838573;
- Wed, 03 Jun 2020 17:50:38 -0700 (PDT)
+        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
+         :mime-version:content-transfer-encoding;
+        bh=L1G7Igc4gifoUST0s04WvC0IkeRmMJVuYlbJNUF4ASk=;
+        b=LotbKGXyDCjWoeH+OYO6n0/1S6hx6fReReXTaeC/GzfO5WeUMKH4NsGUzHzQkmgQXo
+         vddZHFp7hmbAaMTlWJjzqy462HglQPNaatgmOMZPG6MCq6k9iKq0Cxamp3qWY210Zl+x
+         8Kqy8fuV207oaPrLyyYSfI/YADpzNLQqDOKrfRxKJBYIYYp6Q98oWKtuFjtXMqIXkFPc
+         C+lTPsRzrSXGO0xC/pbUFdtjDxo+uRxtPk6GBcbzREVyb4WMuDZtQD66O0rz4F6iILyw
+         V3Gk106PjVxo3Uf9b7ijfU6EKmouit72lP7gqJQK4RwMycOxxEYjpTO996e6mTO/36AJ
+         pjJQ==
+X-Gm-Message-State: AOAM5314tvfOWAdhrVMyoIiJHObnldrxeUTrSurF1m5IDi7oVzm+rumh
+        4dByHQkFNNoa1DOgW8K4ELni7BN8
+X-Google-Smtp-Source: ABdhPJxH1+zYnjOm67kGA/pp+q0XZj8xgON3k8jF47KixaoKXjU54yS9Py3Yu4xxv3GrG8zbIAH1hA==
+X-Received: by 2002:a05:6830:22ee:: with SMTP id t14mr2026949otc.92.1591232260346;
+        Wed, 03 Jun 2020 17:57:40 -0700 (PDT)
+Received: from localhost.localdomain (cpe-24-31-245-230.kc.res.rr.com. [24.31.245.230])
+        by smtp.gmail.com with ESMTPSA id u80sm1011300oia.5.2020.06.03.17.57.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 03 Jun 2020 17:57:39 -0700 (PDT)
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+To:     kvalo@codeaurora.org
+Cc:     linux-wireless@vger.kernel.org,
+        Larry Finger <Larry.Finger@lwfinger.net>
+Subject: [PATCH 0/2] rtlwifi: Fix some Sparse warnings concerning endianess
+Date:   Wed,  3 Jun 2020 19:57:31 -0500
+Message-Id: <20200604005733.7905-1-Larry.Finger@lwfinger.net>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-References: <20200603233203.1695403-1-keescook@chromium.org> <20200603233203.1695403-11-keescook@chromium.org>
-In-Reply-To: <20200603233203.1695403-11-keescook@chromium.org>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Thu, 4 Jun 2020 02:50:27 +0200
-Message-ID: <CANiq72nJhZZ7Bc+VQpPrDjey0iD9TspbtodtGpKaZNz8NCaHww@mail.gmail.com>
-Subject: Re: [PATCH 10/10] compiler: Remove uninitialized_var() macro
-To:     Kees Cook <keescook@chromium.org>
-Cc:     linux-kernel <linux-kernel@vger.kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Alexander Potapenko <glider@google.com>,
-        Joe Perches <joe@perches.com>,
-        Andy Whitcroft <apw@canonical.com>,
-        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
-        drbd-dev@lists.linbit.com, linux-block@vger.kernel.org,
-        b43-dev@lists.infradead.org,
-        Network Development <netdev@vger.kernel.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        linux-ide@vger.kernel.org, linux-clk@vger.kernel.org,
-        linux-spi@vger.kernel.org, Linux-MM <linux-mm@kvack.org>,
-        clang-built-linux <clang-built-linux@googlegroups.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Kees,
+While investating an unrelated Sparse issue, some endian-related issues
+were found in rtlwifi. Although it is unlikely that this hardware will
+ever be mated to a big-endian host, the issues need to be corrected.
 
-On Thu, Jun 4, 2020 at 1:32 AM Kees Cook <keescook@chromium.org> wrote:
->
-> Using uninitialized_var() is dangerous as it papers over real bugs[1]
-> (or can in the future), and suppresses unrelated compiler warnings
-> (e.g. "unused variable"). If the compiler thinks it is uninitialized,
-> either simply initialize the variable or make compiler changes.
->
-> As recommended[2] by[3] Linus[4], remove the macro.
->
-> [1] https://lore.kernel.org/lkml/20200603174714.192027-1-glider@google.com/
-> [2] https://lore.kernel.org/lkml/CA+55aFw+Vbj0i=1TGqCR5vQkCzWJ0QxK6CernOU6eedsudAixw@mail.gmail.com/
-> [3] https://lore.kernel.org/lkml/CA+55aFwgbgqhbp1fkxvRKEpzyR5J8n1vKT1VZdz9knmPuXhOeg@mail.gmail.com/
-> [4] https://lore.kernel.org/lkml/CA+55aFz2500WfbKXAx8s67wrm9=yVJu65TpLgN_ybYNv0VEOKA@mail.gmail.com/
->
-> Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
-> Signed-off-by: Kees Cook <keescook@chromium.org>
-> ---
+These issues do not cause incorrect code to be generated on little-endian
+hosts, thus there is no urgency in their implementation.
 
-+1, one less trick split between `compiler*` files.
+Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
 
-Reviewed-by: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Larry Finger (2):
+  rtlwifi: Fix endian issue in ps.c
+  rtlwifi: rtl8188ee: Fix endian issue
 
-Cheers,
-Miguel
+ drivers/net/wireless/realtek/rtlwifi/ps.c            | 12 ++++++------
+ drivers/net/wireless/realtek/rtlwifi/rtl8188ee/trx.c |  2 +-
+ 2 files changed, 7 insertions(+), 7 deletions(-)
+
+-- 
+2.26.2
+
