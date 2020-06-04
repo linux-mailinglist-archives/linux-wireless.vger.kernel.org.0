@@ -2,107 +2,113 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EED291EE9FB
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 Jun 2020 19:59:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5AEC21EEAE6
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 Jun 2020 21:09:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730453AbgFDR70 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 4 Jun 2020 13:59:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57796 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730187AbgFDR7Z (ORCPT
+        id S1729705AbgFDTJq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 4 Jun 2020 15:09:46 -0400
+Received: from mail-ot1-f66.google.com ([209.85.210.66]:34327 "EHLO
+        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725939AbgFDTJp (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 4 Jun 2020 13:59:25 -0400
-Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com [IPv6:2607:f8b0:4864:20::543])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5CEF4C08C5C1
-        for <linux-wireless@vger.kernel.org>; Thu,  4 Jun 2020 10:59:24 -0700 (PDT)
-Received: by mail-pg1-x543.google.com with SMTP id s10so3862713pgm.0
-        for <linux-wireless@vger.kernel.org>; Thu, 04 Jun 2020 10:59:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=2qJ1KmR7n31K99rmmaGKTiex9LAFKCkmBxAmhTYhJxo=;
-        b=O25wYAeOqYLKutlDyi60xIlbTuDdCOT5e2XYNOsNGhC4B+NaMg3VxpH/LIFlYcKegJ
-         T2d7Nsibm7xBSN7jaERDrF77NKlRLBhUJZhYCNyaOF8giEp3RryXOHyVxA+KlQtlUkqU
-         MR3J/581kbOBBRQlO36Kq+wpxgAQjeV+sg00s=
+        Thu, 4 Jun 2020 15:09:45 -0400
+Received: by mail-ot1-f66.google.com with SMTP id b18so5664798oti.1;
+        Thu, 04 Jun 2020 12:09:44 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=2qJ1KmR7n31K99rmmaGKTiex9LAFKCkmBxAmhTYhJxo=;
-        b=Cg3hvNm6NXUyA3MV062svFa6GzU8nz7fLWdciJqPxe5v5Kqi2ogtNpb6yA04VVR73l
-         3Y9U+iIqJLmg+0W4OPZJWapxlGrF8Rq3ctFsfpC0ETlsL5Rl5aACYsEgwLR9GTa7mQE6
-         Q2xaaPBGAXpe6HjWFQqG6ZMZY/Iwzcn5rYE+wtF1endZmqblo+t3WO0IFWyDXm8F7Rkj
-         QKYFTWHch33e4M3+8RQiES/UQ9wN2a7joy/EHPDRt8TsOLhTO6txyVyIj3y/a2K+e4Mf
-         C9dJnnfAe3VV1FmQHSt4IONjYSu5KxfupGWfGxy/Lfdpkd8CJMYeR/QYsgEvGEiIg+5b
-         nIRg==
-X-Gm-Message-State: AOAM5319FmFmaM2nEKUAPaJBKJ3XFR5HGbBdu4lPybwVhGZDSJ2ekL8e
-        BOsmWXDvzFoi1hKl/X6jQImxNQ==
-X-Google-Smtp-Source: ABdhPJy8aqjpj6isz3vL3kGOUE53Wgd2Jl+2f1JtJGfWBzh0MNQ1ovSw5R16ThJEKXvXpFgxlTMkiA==
-X-Received: by 2002:a63:454c:: with SMTP id u12mr5625732pgk.153.1591293563926;
-        Thu, 04 Jun 2020 10:59:23 -0700 (PDT)
-Received: from evgreen-glaptop.cheshire.ch ([2601:646:c780:1404:1c5a:73fa:6d5a:5a3c])
-        by smtp.gmail.com with ESMTPSA id q13sm2568927pfk.8.2020.06.04.10.59.22
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Thu, 04 Jun 2020 10:59:23 -0700 (PDT)
-From:   Evan Green <evgreen@chromium.org>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     kuabhs@google.com.org, sujitka@chromium.org,
-        Evan Green <evgreen@chromium.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Govind Singh <govinds@qti.qualcomm.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Michal Kazior <michal.kazior@tieto.com>,
-        ath10k@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH] ath10k: Acquire tx_lock in tx error paths
-Date:   Thu,  4 Jun 2020 10:59:11 -0700
-Message-Id: <20200604105901.1.I5b8b0c7ee0d3e51a73248975a9da61401b8f3900@changeid>
-X-Mailer: git-send-email 2.24.1
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=X+qiK8YjhEONxTpdjX70xl6++OY/MUPwZ+Do1G1LJJ8=;
+        b=GW2eTPu20UwqNX0KYzVZ77nyK4NotTSEGULdpG7s3Iiub4PuOXbACySBtKn3WbvYBh
+         s4b4x4/PUmzOXvAzhlgyyHfBAb0fKY0Pn8Vt/G7D2vPmGXlWvQjPYQg02xRxMblvJKLx
+         uc91xVfPnlqT9KiicR81FI4/0gUdaplWxi3701kx3noorRHkPm+2RP9VCcC5y+Y7f5ZY
+         ikJ9YinXbYMx4cl1TGEqa5GmQBZQlzbHbh6Bfh3zgStaZW+APOiAUiH3iHQ2INqVWP/p
+         9lucmaqitdqEP3qkf01mvungAwlz41SHVUIsHr8669r0XAAJr1Hof5D/gPpTyuSLOGdA
+         2BJw==
+X-Gm-Message-State: AOAM530ihph2ICe7cs5surPRGolnMx5OxNi++eVnn9Lm6h6t6yOl08eq
+        gmTcYMbxDOp7gBeLshNltS1LLbmKEpDozFY7alw=
+X-Google-Smtp-Source: ABdhPJzhyOhHvYlAI9At8dx2VdKyrIdrlXCUe7od4PVsnRA3/MLtv6c1HELqb/95gRjonFKD9uvMPOkwcy/FsbOWC+M=
+X-Received: by 2002:a05:6830:141a:: with SMTP id v26mr4936016otp.250.1591297783928;
+ Thu, 04 Jun 2020 12:09:43 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20200603233203.1695403-1-keescook@chromium.org>
+ <20200603233203.1695403-10-keescook@chromium.org> <20200604132306.GO6578@ziepe.ca>
+ <202006040757.0DFC3F28E@keescook>
+In-Reply-To: <202006040757.0DFC3F28E@keescook>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Thu, 4 Jun 2020 21:09:32 +0200
+Message-ID: <CAMuHMdVuzvvHt3j+L+_BSPFs5RgaP3rkknEUmRvTAs5nZ9SGPA@mail.gmail.com>
+Subject: Re: [PATCH 09/10] treewide: Remove uninitialized_var() usage
+To:     Kees Cook <keescook@chromium.org>
+Cc:     Jason Gunthorpe <jgg@ziepe.ca>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+        Alexander Potapenko <glider@google.com>,
+        Joe Perches <joe@perches.com>,
+        Andy Whitcroft <apw@canonical.com>,
+        "the arch/x86 maintainers" <x86@kernel.org>,
+        Lars Ellenberg <drbd-dev@lists.linbit.com>,
+        linux-block@vger.kernel.org, b43-dev@lists.infradead.org,
+        netdev <netdev@vger.kernel.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        linux-ide@vger.kernel.org, linux-clk <linux-clk@vger.kernel.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        Linux MM <linux-mm@kvack.org>,
+        clang-built-linux <clang-built-linux@googlegroups.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-ath10k_htt_tx_free_msdu_id() has a lockdep assertion that htt->tx_lock
-is held. Acquire the lock in a couple of error paths when calling that
-function to ensure this condition is met.
+Hi Kees,
 
-Fixes: 6421969f248fd ("ath10k: refactor tx pending management")
-Fixes: e62ee5c381c59 ("ath10k: Add support for htt_data_tx_desc_64
-descriptor")
-Signed-off-by: Evan Green <evgreen@chromium.org>
----
+On Thu, Jun 4, 2020 at 5:01 PM Kees Cook <keescook@chromium.org> wrote:
+> On Thu, Jun 04, 2020 at 10:23:06AM -0300, Jason Gunthorpe wrote:
+> > On Wed, Jun 03, 2020 at 04:32:02PM -0700, Kees Cook wrote:
+> > > Using uninitialized_var() is dangerous as it papers over real bugs[1]
+> > > (or can in the future), and suppresses unrelated compiler warnings
+> > > (e.g. "unused variable"). If the compiler thinks it is uninitialized,
+> > > either simply initialize the variable or make compiler changes.
+> > >
+> > > I preparation for removing[2] the[3] macro[4], remove all remaining
+> > > needless uses with the following script:
+> > >
+> > > git grep '\buninitialized_var\b' | cut -d: -f1 | sort -u | \
+> > >     xargs perl -pi -e \
+> > >             's/\buninitialized_var\(([^\)]+)\)/\1/g;
+> > >              s:\s*/\* (GCC be quiet|to make compiler happy) \*/$::g;'
+> > >
+> > > drivers/video/fbdev/riva/riva_hw.c was manually tweaked to avoid
+> > > pathological white-space.
+> > >
+> > > No outstanding warnings were found building allmodconfig with GCC 9.3.0
+> > > for x86_64, i386, arm64, arm, powerpc, powerpc64le, s390x, mips, sparc64,
+> > > alpha, and m68k.
+> >
+> > At least in the infiniband part I'm confident that old gcc versions
+> > will print warnings after this patch.
+> >
+> > As the warnings are wrong, do we care? Should old gcc maybe just -Wno-
+> > the warning?
+>
+> I *think* a lot of those are from -Wmaybe-uninitialized, but Linus just
+> turned that off unconditionally in v5.7:
+> 78a5255ffb6a ("Stop the ad-hoc games with -Wno-maybe-initialized")
+>
+> I'll try to double-check with some older gcc versions. My compiler
+> collection is mostly single-axis: lots of arches, not lots of versions. ;)
 
- drivers/net/wireless/ath/ath10k/htt_tx.c | 4 ++++
- 1 file changed, 4 insertions(+)
+Nope, support for the good old gcc 4.1 was removed a while ago.
 
-diff --git a/drivers/net/wireless/ath/ath10k/htt_tx.c b/drivers/net/wireless/ath/ath10k/htt_tx.c
-index e9d12ea708b62..e8c00af2cce1d 100644
---- a/drivers/net/wireless/ath/ath10k/htt_tx.c
-+++ b/drivers/net/wireless/ath/ath10k/htt_tx.c
-@@ -1545,7 +1545,9 @@ static int ath10k_htt_tx_32(struct ath10k_htt *htt,
- err_unmap_msdu:
- 	dma_unmap_single(dev, skb_cb->paddr, msdu->len, DMA_TO_DEVICE);
- err_free_msdu_id:
-+	spin_lock_bh(&htt->tx_lock);
- 	ath10k_htt_tx_free_msdu_id(htt, msdu_id);
-+	spin_unlock_bh(&htt->tx_lock);
- err:
- 	return res;
- }
-@@ -1752,7 +1754,9 @@ static int ath10k_htt_tx_64(struct ath10k_htt *htt,
- err_unmap_msdu:
- 	dma_unmap_single(dev, skb_cb->paddr, msdu->len, DMA_TO_DEVICE);
- err_free_msdu_id:
-+	spin_lock_bh(&htt->tx_lock);
- 	ath10k_htt_tx_free_msdu_id(htt, msdu_id);
-+	spin_unlock_bh(&htt->tx_lock);
- err:
- 	return res;
- }
+Gr{oetje,eeting}s,
+
+                        Geert
+
 -- 
-2.24.1
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
