@@ -2,104 +2,95 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 82D6E1EF267
-	for <lists+linux-wireless@lfdr.de>; Fri,  5 Jun 2020 09:47:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3FAA91EF3E8
+	for <lists+linux-wireless@lfdr.de>; Fri,  5 Jun 2020 11:19:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726183AbgFEHrZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 5 Jun 2020 03:47:25 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:56931 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726024AbgFEHrY (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 5 Jun 2020 03:47:24 -0400
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.69 with qID 0557l5MR1005822, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexmb06.realtek.com.tw[172.21.6.99])
-        by rtits2.realtek.com.tw (8.15.2/2.66/5.86) with ESMTPS id 0557l5MR1005822
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Fri, 5 Jun 2020 15:47:05 +0800
-Received: from RTEXMB04.realtek.com.tw (172.21.6.97) by
- RTEXMB06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Fri, 5 Jun 2020 15:47:05 +0800
-Received: from localhost.localdomain (172.21.68.128) by
- RTEXMB04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Fri, 5 Jun 2020 15:47:04 +0800
-From:   <yhchuang@realtek.com>
-To:     <kvalo@codeaurora.org>
-CC:     <kernel@iuliancostan.com>, <linux-wireless@vger.kernel.org>,
-        <i@outv.im>, <trevor@shartrec.com>
-Subject: [PATCH v1] rtw88: pci: disable aspm for platform inter-op with module parameter
-Date:   Fri, 5 Jun 2020 15:47:03 +0800
-Message-ID: <20200605074703.32726-1-yhchuang@realtek.com>
-X-Mailer: git-send-email 2.17.1
+        id S1726270AbgFEJTA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 5 Jun 2020 05:19:00 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:50777 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726262AbgFEJTA (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 5 Jun 2020 05:19:00 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1591348739; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=rOuMTfuZSakOmsFGGhwcSiyz0vHtYC8PrlCFy1ZsKyw=; b=LrCc0pF9xRFoIwtHrKiZQFGPZKRBas+l8BfdnZkELj+iysMGVaw/bfzIjGrQO2PioMdO1w3Z
+ TPWDgiD3TiOAPgkbHFQgeb5tGEONQTrx3UT68uqqFrhiGMzDflVik1IDrutpxkJp13i5uXlw
+ k+LxdCtwK5BWfRJcOeN9RA26gAM=
+X-Mailgun-Sending-Ip: 69.72.43.7
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n08.prod.us-east-1.postgun.com with SMTP id
+ 5eda0df6c0031c71c2438cce (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 05 Jun 2020 09:18:46
+ GMT
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 1EAEEC433B2; Fri,  5 Jun 2020 09:18:45 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from tynnyri.adurom.net (tynnyri.adurom.net [51.15.11.48])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id B846EC43387;
+        Fri,  5 Jun 2020 09:18:40 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org B846EC43387
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Kees Cook <keescook@chromium.org>
+Cc:     linux-kernel@vger.kernel.org,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+        Alexander Potapenko <glider@google.com>,
+        Joe Perches <joe@perches.com>,
+        Andy Whitcroft <apw@canonical.com>, x86@kernel.org,
+        drbd-dev@lists.linbit.com, linux-block@vger.kernel.org,
+        b43-dev@lists.infradead.org, netdev@vger.kernel.org,
+        linux-wireless@vger.kernel.org, linux-ide@vger.kernel.org,
+        linux-clk@vger.kernel.org, linux-spi@vger.kernel.org,
+        linux-mm@kvack.org, clang-built-linux@googlegroups.com
+Subject: Re: [PATCH 04/10] rtlwifi: rtl8192cu: Remove uninitialized_var() usage
+References: <20200603233203.1695403-1-keescook@chromium.org>
+        <20200603233203.1695403-5-keescook@chromium.org>
+Date:   Fri, 05 Jun 2020 12:18:22 +0300
+In-Reply-To: <20200603233203.1695403-5-keescook@chromium.org> (Kees Cook's
+        message of "Wed, 3 Jun 2020 16:31:57 -0700")
+Message-ID: <87h7vpg9b5.fsf@tynnyri.adurom.net>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Originating-IP: [172.21.68.128]
-X-ClientProxiedBy: RTEXMB03.realtek.com.tw (172.21.6.96) To
- RTEXMB04.realtek.com.tw (172.21.6.97)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Yan-Hsuan Chuang <yhchuang@realtek.com>
+Kees Cook <keescook@chromium.org> writes:
 
-Some platforms cannot read the DBI register successfully for the
-ASPM settings. After the read failed, the bus could be unstable,
-and the device just became unavailable [1]. For those platforms,
-the ASPM should be disabled. But as the ASPM can help the driver
-to save the power consumption in power save mode, the ASPM is still
-needed. So, add a module parameter for them to disable it, then
-the device can still work, while others can benefit from the less
-power consumption that brings by ASPM enabled.
+> Using uninitialized_var() is dangerous as it papers over real bugs[1]
+> (or can in the future), and suppresses unrelated compiler warnings (e.g.
+> "unused variable"). If the compiler thinks it is uninitialized, either
+> simply initialize the variable or make compiler changes. As a precursor
+> to removing[2] this[3] macro[4], just initialize this variable to NULL,
+> and avoid sending garbage by returning.
+>
+> [1] https://lore.kernel.org/lkml/20200603174714.192027-1-glider@google.com/
+> [2] https://lore.kernel.org/lkml/CA+55aFw+Vbj0i=1TGqCR5vQkCzWJ0QxK6CernOU6eedsudAixw@mail.gmail.com/
+> [3] https://lore.kernel.org/lkml/CA+55aFwgbgqhbp1fkxvRKEpzyR5J8n1vKT1VZdz9knmPuXhOeg@mail.gmail.com/
+> [4] https://lore.kernel.org/lkml/CA+55aFz2500WfbKXAx8s67wrm9=yVJu65TpLgN_ybYNv0VEOKA@mail.gmail.com/
+>
+> Signed-off-by: Kees Cook <keescook@chromium.org>
 
-[1] https://bugzilla.kernel.org/show_bug.cgi?id=206411
-[2] Note that my lenovo T430 is the same.
+To which tree should this go? If something else than wireless-drivers
+tree:
 
-Fixes: 3dff7c6e3749 ("rtw88: allows to enable/disable HCI link PS mechanism")
-Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
----
- drivers/net/wireless/realtek/rtw88/pci.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+Acked-by: Kalle Valo <kvalo@codeaurora.org>
 
-diff --git a/drivers/net/wireless/realtek/rtw88/pci.c b/drivers/net/wireless/realtek/rtw88/pci.c
-index 8228db9a5fc8..3413973bc475 100644
---- a/drivers/net/wireless/realtek/rtw88/pci.c
-+++ b/drivers/net/wireless/realtek/rtw88/pci.c
-@@ -14,8 +14,11 @@
- #include "debug.h"
- 
- static bool rtw_disable_msi;
-+static bool rtw_pci_disable_aspm;
- module_param_named(disable_msi, rtw_disable_msi, bool, 0644);
-+module_param_named(disable_aspm, rtw_pci_disable_aspm, bool, 0644);
- MODULE_PARM_DESC(disable_msi, "Set Y to disable MSI interrupt support");
-+MODULE_PARM_DESC(disable_aspm, "Set Y to disable PCI ASPM support");
- 
- static u32 rtw_pci_tx_queue_idx_addr[] = {
- 	[RTW_TX_QUEUE_BK]	= RTK_PCI_TXBD_IDX_BKQ,
-@@ -1200,6 +1203,9 @@ static void rtw_pci_clkreq_set(struct rtw_dev *rtwdev, bool enable)
- 	u8 value;
- 	int ret;
- 
-+	if (rtw_pci_disable_aspm)
-+		return;
-+
- 	ret = rtw_dbi_read8(rtwdev, RTK_PCIE_LINK_CFG, &value);
- 	if (ret) {
- 		rtw_err(rtwdev, "failed to read CLKREQ_L1, ret=%d", ret);
-@@ -1219,6 +1225,9 @@ static void rtw_pci_aspm_set(struct rtw_dev *rtwdev, bool enable)
- 	u8 value;
- 	int ret;
- 
-+	if (rtw_pci_disable_aspm)
-+		return;
-+
- 	ret = rtw_dbi_read8(rtwdev, RTK_PCIE_LINK_CFG, &value);
- 	if (ret) {
- 		rtw_err(rtwdev, "failed to read ASPM, ret=%d", ret);
+But let me know if you want me to take this.
+
 -- 
-2.17.1
-
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
