@@ -2,121 +2,69 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 75AEA1EF404
-	for <lists+linux-wireless@lfdr.de>; Fri,  5 Jun 2020 11:25:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 444A41EF58F
+	for <lists+linux-wireless@lfdr.de>; Fri,  5 Jun 2020 12:44:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726197AbgFEJZh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 5 Jun 2020 05:25:37 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:10027 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726205AbgFEJZg (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 5 Jun 2020 05:25:36 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1591349136; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=4DMYxLsLHIEhVdnqccTaMZxujDa7ILXa6vhA3dmslLM=; b=SvjBYyWJ9LA/5JwxYqsiFGlS2pSwhnfSAK6QmLGk1Ni3pmlqDB7HDzDhpZtjy1zFwQYTbtYZ
- /TXRGWqiWNo1+jJnyS5uUB+iRl9qJGHYwwuG3HNQ2YJHqMku/t1gNQR7epLH1ppZgrIyZDKP
- XniV6AQiye28RFrPD/IFpSduQfU=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n06.prod.us-east-1.postgun.com with SMTP id
- 5eda0f792738686126653d55 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 05 Jun 2020 09:25:13
- GMT
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 3E72CC433A0; Fri,  5 Jun 2020 09:25:12 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from tynnyri.adurom.net (tynnyri.adurom.net [51.15.11.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id EA82AC433C6;
-        Fri,  5 Jun 2020 09:25:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org EA82AC433C6
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Kees Cook <keescook@chromium.org>
-Cc:     linux-kernel@vger.kernel.org,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-        Alexander Potapenko <glider@google.com>,
-        Joe Perches <joe@perches.com>,
-        Andy Whitcroft <apw@canonical.com>, x86@kernel.org,
-        drbd-dev@lists.linbit.com, linux-block@vger.kernel.org,
-        b43-dev@lists.infradead.org, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org, linux-ide@vger.kernel.org,
-        linux-clk@vger.kernel.org, linux-spi@vger.kernel.org,
-        linux-mm@kvack.org, clang-built-linux@googlegroups.com
-Subject: Re: [PATCH 09/10] treewide: Remove uninitialized_var() usage
-References: <20200603233203.1695403-1-keescook@chromium.org>
-        <20200603233203.1695403-10-keescook@chromium.org>
-Date:   Fri, 05 Jun 2020 12:25:05 +0300
-In-Reply-To: <20200603233203.1695403-10-keescook@chromium.org> (Kees Cook's
-        message of "Wed, 3 Jun 2020 16:32:02 -0700")
-Message-ID: <878sh1g8zy.fsf@tynnyri.adurom.net>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        id S1726594AbgFEKoG convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 5 Jun 2020 06:44:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43176 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726465AbgFEKoG (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 5 Jun 2020 06:44:06 -0400
+Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A828C08C5C2
+        for <linux-wireless@vger.kernel.org>; Fri,  5 Jun 2020 03:44:06 -0700 (PDT)
+Received: from bigeasy by Galois.linutronix.de with local (Exim 4.80)
+        (envelope-from <bigeasy@linutronix.de>)
+        id 1jh9pU-0002LH-4F; Fri, 05 Jun 2020 12:44:04 +0200
+Date:   Fri, 5 Jun 2020 12:44:04 +0200
+From:   Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To:     yhchuang@realtek.com
+Cc:     kvalo@codeaurora.org, linux-wireless@vger.kernel.org,
+        tehuang@realtek.com
+Subject: Re: [PATCH v3 5/7] rtw88: 8821c: add query rx desc support
+Message-ID: <20200605104404.msgfrpjqerd2eozx@linutronix.de>
+References: <20200603093804.19779-1-yhchuang@realtek.com>
+ <20200603093804.19779-6-yhchuang@realtek.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8BIT
+In-Reply-To: <20200603093804.19779-6-yhchuang@realtek.com>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Kees Cook <keescook@chromium.org> writes:
+On 2020-06-03 17:38:02 [+0800], yhchuang@realtek.com wrote:
+> diff --git a/drivers/net/wireless/realtek/rtw88/rtw8821c.c b/drivers/net/wireless/realtek/rtw88/rtw8821c.c
+> --- a/drivers/net/wireless/realtek/rtw88/rtw8821c.c
+> +++ b/drivers/net/wireless/realtek/rtw88/rtw8821c.c
+…
+> +static void rtw8821c_query_rx_desc(struct rtw_dev *rtwdev, u8 *rx_desc,
+> +				   struct rtw_rx_pkt_stat *pkt_stat,
+> +				   struct ieee80211_rx_status *rx_status)
+> +{
+…
+> +
+> +	hdr = (struct ieee80211_hdr *)(rx_desc + desc_sz + pkt_stat->shift +
+> +				       pkt_stat->drv_info_sz);
 
-> Using uninitialized_var() is dangerous as it papers over real bugs[1]
-> (or can in the future), and suppresses unrelated compiler warnings
-> (e.g. "unused variable"). If the compiler thinks it is uninitialized,
-> either simply initialize the variable or make compiler changes.
->
-> I preparation for removing[2] the[3] macro[4], remove all remaining
-> needless uses with the following script:
->
-> git grep '\buninitialized_var\b' | cut -d: -f1 | sort -u | \
-> 	xargs perl -pi -e \
-> 		's/\buninitialized_var\(([^\)]+)\)/\1/g;
-> 		 s:\s*/\* (GCC be quiet|to make compiler happy) \*/$::g;'
->
-> drivers/video/fbdev/riva/riva_hw.c was manually tweaked to avoid
-> pathological white-space.
->
-> No outstanding warnings were found building allmodconfig with GCC 9.3.0
-> for x86_64, i386, arm64, arm, powerpc, powerpc64le, s390x, mips, sparc64,
-> alpha, and m68k.
->
-> [1] https://lore.kernel.org/lkml/20200603174714.192027-1-glider@google.com/
-> [2] https://lore.kernel.org/lkml/CA+55aFw+Vbj0i=1TGqCR5vQkCzWJ0QxK6CernOU6eedsudAixw@mail.gmail.com/
-> [3] https://lore.kernel.org/lkml/CA+55aFwgbgqhbp1fkxvRKEpzyR5J8n1vKT1VZdz9knmPuXhOeg@mail.gmail.com/
-> [4] https://lore.kernel.org/lkml/CA+55aFz2500WfbKXAx8s67wrm9=yVJu65TpLgN_ybYNv0VEOKA@mail.gmail.com/
->
-> Signed-off-by: Kees Cook <keescook@chromium.org>
+I did some counting and hdr can be max. rx_desc+147 so it is fine in
+terms of a bounds check.
+In ff2f20f60cb84d1684379eb5be4c2285@realtek.com you suggested to merge
+the function with 8821C/8822B/8822C. Did you change your mind or will
+this happen later?
 
-[...]
+> +	if (pkt_stat->phy_status) {
+> +		phy_status = rx_desc + desc_sz + pkt_stat->shift;
+> +		query_phy_status(rtwdev, phy_status, pkt_stat);
+> +	}
+> +
+> +	rtw_rx_fill_rx_status(rtwdev, pkt_stat, hdr, rx_status, phy_status);
+> +}
+> +
 
->  drivers/net/wireless/ath/ath10k/core.c           |  2 +-
->  drivers/net/wireless/ath/ath6kl/init.c           |  2 +-
->  drivers/net/wireless/ath/ath9k/init.c            |  2 +-
->  drivers/net/wireless/broadcom/b43/debugfs.c      |  2 +-
->  drivers/net/wireless/broadcom/b43/dma.c          |  2 +-
->  drivers/net/wireless/broadcom/b43/lo.c           |  2 +-
->  drivers/net/wireless/broadcom/b43/phy_n.c        |  2 +-
->  drivers/net/wireless/broadcom/b43/xmit.c         | 12 ++++++------
->  .../net/wireless/broadcom/b43legacy/debugfs.c    |  2 +-
->  drivers/net/wireless/broadcom/b43legacy/main.c   |  2 +-
->  drivers/net/wireless/intel/iwlegacy/3945.c       |  2 +-
->  drivers/net/wireless/intel/iwlegacy/4965-mac.c   |  2 +-
->  .../net/wireless/realtek/rtlwifi/rtl8192cu/hw.c  |  4 ++--
-
-For wireless drivers:
-
-Acked-by: Kalle Valo <kvalo@codeaurora.org>
-
--- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Sebastian
