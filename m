@@ -2,220 +2,58 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E05D71EF1C6
-	for <lists+linux-wireless@lfdr.de>; Fri,  5 Jun 2020 09:07:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 16EB31EF1F0
+	for <lists+linux-wireless@lfdr.de>; Fri,  5 Jun 2020 09:21:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726127AbgFEHHP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 5 Jun 2020 03:07:15 -0400
-Received: from mail.kernel.org ([198.145.29.99]:58890 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725280AbgFEHHP (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 5 Jun 2020 03:07:15 -0400
-Received: from localhost.localdomain.com (unknown [151.48.128.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 7D03D206A2;
-        Fri,  5 Jun 2020 07:07:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1591340834;
-        bh=zejQr7shiN3GCZs4dCE88fVWh0RsGCnoMHHmXcazioI=;
-        h=From:To:Cc:Subject:Date:From;
-        b=Y72MFhDRJqlBVzp9gYD6la+AIzlrtSN1Mkw0AMF3P3/delbj1Ok8wR3KaU7/cY4Bo
-         GnTGV6Slw6GUQIDQfmMg2zr5g0THbUmTAGZe6ezcvrYFYnzKegImYqIPdguGM7Li7O
-         wdZFkO/dx8SydmWtRnVn03cyY6tqSRCPC76dgXlw=
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
+        id S1726096AbgFEHVX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 5 Jun 2020 03:21:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40050 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725280AbgFEHVX (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 5 Jun 2020 03:21:23 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 493E4C08C5C2
+        for <linux-wireless@vger.kernel.org>; Fri,  5 Jun 2020 00:21:23 -0700 (PDT)
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.93)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1jh6f9-009wbC-Bz; Fri, 05 Jun 2020 09:21:11 +0200
+Message-ID: <ec6ea6eea17d7e8a6abaf35e78ffac7568e54831.camel@sipsolutions.net>
+Subject: Re: [PATCH] mt76: mt7663: introduce ARP filter offload
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Lorenzo Bianconi <lorenzo@kernel.org>, nbd@nbd.name
 Cc:     ryder.lee@mediatek.com, sean.wang@mediatek.com,
         lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
         linux-mediatek@lists.infradead.org
-Subject: [PATCH] mt76: mt7663: introduce ARP filter offload
-Date:   Fri,  5 Jun 2020 09:07:03 +0200
-Message-Id: <e91990d20a1a5f8d134fc9d9df152d9356fd15f9.1591340650.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.26.2
+Date:   Fri, 05 Jun 2020 09:21:09 +0200
+In-Reply-To: <e91990d20a1a5f8d134fc9d9df152d9356fd15f9.1591340650.git.lorenzo@kernel.org> (sfid-20200605_090717_383122_E28D553B)
+References: <e91990d20a1a5f8d134fc9d9df152d9356fd15f9.1591340650.git.lorenzo@kernel.org>
+         (sfid-20200605_090717_383122_E28D553B)
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.2 (3.36.2-1.fc32) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Sean Wang <sean.wang@mediatek.com>
+On Fri, 2020-06-05 at 09:07 +0200, Lorenzo Bianconi wrote:
+> 
+> +		.arp = {
+> +			.tag = cpu_to_le16(UNI_OFFLOAD_OFFLOAD_ARP),
+> +			.len = cpu_to_le16(sizeof(struct mt7615_arpns_tlv)),
+> +			.ips_num = info->arp_addr_cnt,
 
-Introduce ARP filter offload
 
-Co-developed-by: Wan-Feng Jiang <Wan-Feng.Jiang@mediatek.com>
-Signed-off-by: Wan-Feng Jiang <Wan-Feng.Jiang@mediatek.com>
-Co-developed-by: Soul Huang <Soul.Huang@mediatek.com>
-Signed-off-by: Soul Huang <Soul.Huang@mediatek.com>
-Co-developed-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Signed-off-by: Sean Wang <sean.wang@mediatek.com>
----
- .../net/wireless/mediatek/mt76/mt7615/main.c  |  3 +
- .../net/wireless/mediatek/mt76/mt7615/mcu.c   | 74 +++++++++++++++++++
- .../net/wireless/mediatek/mt76/mt7615/mcu.h   | 13 +++-
- .../wireless/mediatek/mt76/mt7615/mt7615.h    |  4 +-
- 4 files changed, 91 insertions(+), 3 deletions(-)
+Surely there's *some* hardware limit, after which you need to disable
+the filter? Or does the firmware take the data and discard it, it it's
+got too many IPs?
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/main.c b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-index beaca8127680..81fc4982a01f 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-@@ -491,6 +491,9 @@ static void mt7615_bss_info_changed(struct ieee80211_hw *hw,
- 	if (changed & BSS_CHANGED_PS)
- 		mt7615_mcu_set_vif_ps(dev, vif);
- 
-+	if (changed & BSS_CHANGED_ARP_FILTER)
-+		mt7615_mcu_update_arp_filter(hw, vif, info);
-+
- 	mutex_unlock(&dev->mt76.mutex);
- }
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-index 6e869b8c5e26..0850b13b7007 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-@@ -3542,6 +3542,32 @@ mt7615_mcu_set_gtk_rekey(struct mt7615_dev *dev,
- 				   &req, sizeof(req), true);
- }
- 
-+static int
-+mt7615_mcu_set_arp_filter(struct mt7615_dev *dev, struct ieee80211_vif *vif,
-+			  bool suspend)
-+{
-+	struct mt7615_vif *mvif = (struct mt7615_vif *)vif->drv_priv;
-+	struct {
-+		struct {
-+			u8 bss_idx;
-+			u8 pad[3];
-+		} __packed hdr;
-+		struct mt7615_arpns_tlv arpns;
-+	} req = {
-+		.hdr = {
-+			.bss_idx = mvif->idx,
-+		},
-+		.arpns = {
-+			.tag = cpu_to_le16(UNI_OFFLOAD_OFFLOAD_ARP),
-+			.len = cpu_to_le16(sizeof(struct mt7615_arpns_tlv)),
-+			.mode = suspend,
-+		},
-+	};
-+
-+	return __mt76_mcu_send_msg(&dev->mt76, MCU_UNI_CMD_OFFLOAD,
-+				   &req, sizeof(req), true);
-+}
-+
- void mt7615_mcu_set_suspend_iter(void *priv, u8 *mac,
- 				 struct ieee80211_vif *vif)
- {
-@@ -3554,6 +3580,7 @@ void mt7615_mcu_set_suspend_iter(void *priv, u8 *mac,
- 	mt7615_mcu_set_bss_pm(phy->dev, vif, suspend);
- 
- 	mt7615_mcu_set_gtk_rekey(phy->dev, vif, suspend);
-+	mt7615_mcu_set_arp_filter(phy->dev, vif, suspend);
- 
- 	mt7615_mcu_set_suspend_mode(phy->dev, vif, suspend, 1, true);
- 
-@@ -3653,6 +3680,53 @@ int mt7615_mcu_set_roc(struct mt7615_phy *phy, struct ieee80211_vif *vif,
- 				   sizeof(req), false);
- }
- 
-+int mt7615_mcu_update_arp_filter(struct ieee80211_hw *hw,
-+				 struct ieee80211_vif *vif,
-+				 struct ieee80211_bss_conf *info)
-+{
-+	struct mt7615_vif *mvif = (struct mt7615_vif *)vif->drv_priv;
-+	struct mt7615_dev *dev = mt7615_hw_dev(hw);
-+	struct sk_buff *skb;
-+	struct {
-+		struct {
-+			u8 bss_idx;
-+			u8 pad[3];
-+		} __packed hdr;
-+		struct mt7615_arpns_tlv arp;
-+	} req_hdr = {
-+		.hdr = {
-+			.bss_idx = mvif->idx,
-+		},
-+		.arp = {
-+			.tag = cpu_to_le16(UNI_OFFLOAD_OFFLOAD_ARP),
-+			.len = cpu_to_le16(sizeof(struct mt7615_arpns_tlv)),
-+			.ips_num = info->arp_addr_cnt,
-+			.mode = 2,  /* update purpose */
-+			.option = 1,
-+		},
-+	};
-+	int i;
-+
-+	if (!mt7615_firmware_offload(dev))
-+		return 0;
-+
-+	skb = mt76_mcu_msg_alloc(&dev->mt76, NULL,
-+				 sizeof(req_hdr) +
-+				 info->arp_addr_cnt * sizeof(__be32));
-+	if (!skb)
-+		return -ENOMEM;
-+
-+	skb_put_data(skb, &req_hdr, sizeof(req_hdr));
-+	for (i = 0; i < info->arp_addr_cnt; i++) {
-+		u8 *addr = (u8 *)skb_put(skb, sizeof(__be32));
-+
-+		memcpy(addr, &info->arp_addr_list[i], sizeof(__be32));
-+	}
-+
-+	return __mt76_mcu_skb_send_msg(&dev->mt76, skb,
-+				       MCU_UNI_CMD_OFFLOAD, true);
-+}
-+
- int mt7615_mcu_set_p2p_oppps(struct ieee80211_hw *hw,
- 			     struct ieee80211_vif *vif)
- {
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.h
-index 2314d0b23af1..64f7471a57bb 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.h
-@@ -545,6 +545,15 @@ struct mt7615_roc_tlv {
- 	u8 rsv1[8];
- } __packed;
- 
-+struct mt7615_arpns_tlv {
-+	__le16 tag;
-+	__le16 len;
-+	u8 mode;
-+	u8 ips_num;
-+	u8 option;
-+	u8 pad[1];
-+} __packed;
-+
- /* offload mcu commands */
- enum {
- 	MCU_CMD_START_HW_SCAN = MCU_CE_PREFIX | 0x03,
-@@ -580,8 +589,8 @@ enum {
- };
- 
- enum {
--	UNI_OFFLOAD_OFFLOAD_ARPNS_IPV4,
--	UNI_OFFLOAD_OFFLOAD_ARPNS_IPV6,
-+	UNI_OFFLOAD_OFFLOAD_ARP,
-+	UNI_OFFLOAD_OFFLOAD_ND,
- 	UNI_OFFLOAD_OFFLOAD_GTK_REKEY,
- 	UNI_OFFLOAD_OFFLOAD_BMC_RPY_DETECT,
- };
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
-index 3e7d51bf42a4..a9513a456521 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
-@@ -585,7 +585,9 @@ void mt7615_mcu_set_suspend_iter(void *priv, u8 *mac,
- int mt7615_mcu_update_gtk_rekey(struct ieee80211_hw *hw,
- 				struct ieee80211_vif *vif,
- 				struct cfg80211_gtk_rekey_data *key);
--
-+int mt7615_mcu_update_arp_filter(struct ieee80211_hw *hw,
-+				 struct ieee80211_vif *vif,
-+				 struct ieee80211_bss_conf *info);
- int __mt7663_load_firmware(struct mt7615_dev *dev);
- 
- /* usb */
--- 
-2.26.2
+At the very least, only 255 fit in there, and at least theoretically you
+can assign more to the netdev :)
+
+johannes
+
 
