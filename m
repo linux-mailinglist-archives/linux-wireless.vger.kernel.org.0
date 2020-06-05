@@ -2,100 +2,220 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BC6C41EEFE6
-	for <lists+linux-wireless@lfdr.de>; Fri,  5 Jun 2020 05:27:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E05D71EF1C6
+	for <lists+linux-wireless@lfdr.de>; Fri,  5 Jun 2020 09:07:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726364AbgFED1l (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 4 Jun 2020 23:27:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60738 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726072AbgFED1k (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 4 Jun 2020 23:27:40 -0400
-Received: from mail-il1-x143.google.com (mail-il1-x143.google.com [IPv6:2607:f8b0:4864:20::143])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADADEC08C5C0;
-        Thu,  4 Jun 2020 20:27:40 -0700 (PDT)
-Received: by mail-il1-x143.google.com with SMTP id p5so8202218ile.6;
-        Thu, 04 Jun 2020 20:27:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=Wso3Uq4ZK5HIlYrGw+m1OLsKrcnMVzQIdIiN1bfsOnU=;
-        b=jpm0Bkg5ZInuslfAoRflVOENbBUZ5F2G1M+QXSVgKRgP7zXhR2ZLd3rjA+I+ZF8Bfa
-         XFS6r9BwWoY1xOACIwhP47GjjjZ5M+06YSxHTh7gZ8MX38MwhZKyHpZxius1xBPEUKGa
-         OueeNzSZTmrtmQ3s6+kvZ5+pQvjKMjgciWNb5KpFW73lYc+ATx+cvIywu2tJpcG5DN8i
-         5oxFTFQHXnDYNUpvbVQo5r5o1YVOiP7VjTu4zL7fhorJI15WCULvw1abhktLc4u/eFM9
-         6Fmk3wEwsN5V97/PHFgnrC3Ieut5TmJxIPLCi2ggyM785/pvnYTBNYgpPeM7G2G/nUHZ
-         I9Ng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=Wso3Uq4ZK5HIlYrGw+m1OLsKrcnMVzQIdIiN1bfsOnU=;
-        b=R0+Hd1l0i4JL2PrD4SHr3Gd457czURZUuBLL5wFy+E83bPU2mdSMLidJMx6FusU5wc
-         9UxyBzYBBa9jw90U8y5QcnC+asK5LQmK573wRJtrOktEpZ1TvT8agF2q62yCdWgo6BLl
-         pB/o8hENl4XgShIIE6dy+mfp8Jdp6enqXuu0PQ2bYJUw6jP7fCn9qDfM5DlB2nWcPlLZ
-         V3iaKv44Xj55ojvQNAqQOS3b4U/MyzkHCcBp18+fap9QkVf2GUHFrAA4v14DpKp7Svr/
-         oS3GuOh0k8grgngYsv8sYqdaTHArndR2lMG7TgqrBjnjF/bFHWPiUpXFyhidf144/jKZ
-         eSSA==
-X-Gm-Message-State: AOAM531lmN0iQ61eAa/DZph1nUXeXNHB6FvTW03MKGmUtC+oITXlZQaQ
-        CINhUB7LwIowvKSR8PLpSSU=
-X-Google-Smtp-Source: ABdhPJxPEuoMTJOGdljOCBOOB+kz2nQkQ48+9ttzR6Xu/dk6kci6f3Gcj1qVZsnYWKcGGir28gz9wg==
-X-Received: by 2002:a92:a112:: with SMTP id v18mr6320491ili.278.1591327659958;
-        Thu, 04 Jun 2020 20:27:39 -0700 (PDT)
-Received: from cs-u-kase.dtc.umn.edu (cs-u-kase.cs.umn.edu. [160.94.64.2])
-        by smtp.googlemail.com with ESMTPSA id v3sm2287930ilh.53.2020.06.04.20.27.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Jun 2020 20:27:39 -0700 (PDT)
-From:   Navid Emamdoost <navid.emamdoost@gmail.com>
-To:     Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Hari Nagalla <hnagalla@gmail.com>,
-        "Jason A. Donenfeld" <Jason@zx2c4.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Maital Hahn <maitalm@ti.com>,
-        Fuqian Huang <huangfq.daxian@gmail.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Navid Emamdoost <navid.emamdoost@gmail.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     emamd001@umn.edu, wu000273@umn.edu, kjlu@umn.edu, smccaman@umn.edu
-Subject: [PATCH] wlcore: mesh: handle failure case of pm_runtime_get_sync
-Date:   Thu,  4 Jun 2020 22:27:31 -0500
-Message-Id: <20200605032733.49846-1-navid.emamdoost@gmail.com>
-X-Mailer: git-send-email 2.17.1
+        id S1726127AbgFEHHP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 5 Jun 2020 03:07:15 -0400
+Received: from mail.kernel.org ([198.145.29.99]:58890 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725280AbgFEHHP (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 5 Jun 2020 03:07:15 -0400
+Received: from localhost.localdomain.com (unknown [151.48.128.87])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 7D03D206A2;
+        Fri,  5 Jun 2020 07:07:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1591340834;
+        bh=zejQr7shiN3GCZs4dCE88fVWh0RsGCnoMHHmXcazioI=;
+        h=From:To:Cc:Subject:Date:From;
+        b=Y72MFhDRJqlBVzp9gYD6la+AIzlrtSN1Mkw0AMF3P3/delbj1Ok8wR3KaU7/cY4Bo
+         GnTGV6Slw6GUQIDQfmMg2zr5g0THbUmTAGZe6ezcvrYFYnzKegImYqIPdguGM7Li7O
+         wdZFkO/dx8SydmWtRnVn03cyY6tqSRCPC76dgXlw=
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     ryder.lee@mediatek.com, sean.wang@mediatek.com,
+        lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
+        linux-mediatek@lists.infradead.org
+Subject: [PATCH] mt76: mt7663: introduce ARP filter offload
+Date:   Fri,  5 Jun 2020 09:07:03 +0200
+Message-Id: <e91990d20a1a5f8d134fc9d9df152d9356fd15f9.1591340650.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.26.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Calling pm_runtime_get_sync increments the counter even in case of
-failure, causing incorrect ref count. Call pm_runtime_put if
-pm_runtime_get_sync fails.
+From: Sean Wang <sean.wang@mediatek.com>
 
-Signed-off-by: Navid Emamdoost <navid.emamdoost@gmail.com>
+Introduce ARP filter offload
+
+Co-developed-by: Wan-Feng Jiang <Wan-Feng.Jiang@mediatek.com>
+Signed-off-by: Wan-Feng Jiang <Wan-Feng.Jiang@mediatek.com>
+Co-developed-by: Soul Huang <Soul.Huang@mediatek.com>
+Signed-off-by: Soul Huang <Soul.Huang@mediatek.com>
+Co-developed-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Signed-off-by: Sean Wang <sean.wang@mediatek.com>
 ---
- drivers/net/wireless/ti/wlcore/main.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ .../net/wireless/mediatek/mt76/mt7615/main.c  |  3 +
+ .../net/wireless/mediatek/mt76/mt7615/mcu.c   | 74 +++++++++++++++++++
+ .../net/wireless/mediatek/mt76/mt7615/mcu.h   | 13 +++-
+ .../wireless/mediatek/mt76/mt7615/mt7615.h    |  4 +-
+ 4 files changed, 91 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/ti/wlcore/main.c b/drivers/net/wireless/ti/wlcore/main.c
-index f140f7d7f553..c7e4f5a80b9e 100644
---- a/drivers/net/wireless/ti/wlcore/main.c
-+++ b/drivers/net/wireless/ti/wlcore/main.c
-@@ -3662,8 +3662,10 @@ void wlcore_regdomain_config(struct wl1271 *wl)
- 		goto out;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/main.c b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
+index beaca8127680..81fc4982a01f 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
+@@ -491,6 +491,9 @@ static void mt7615_bss_info_changed(struct ieee80211_hw *hw,
+ 	if (changed & BSS_CHANGED_PS)
+ 		mt7615_mcu_set_vif_ps(dev, vif);
  
- 	ret = pm_runtime_get_sync(wl->dev);
--	if (ret < 0)
-+	if (ret < 0) {
-+		pm_runtime_put_autosuspend(wl->dev);
- 		goto out;
++	if (changed & BSS_CHANGED_ARP_FILTER)
++		mt7615_mcu_update_arp_filter(hw, vif, info);
++
+ 	mutex_unlock(&dev->mt76.mutex);
+ }
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+index 6e869b8c5e26..0850b13b7007 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+@@ -3542,6 +3542,32 @@ mt7615_mcu_set_gtk_rekey(struct mt7615_dev *dev,
+ 				   &req, sizeof(req), true);
+ }
+ 
++static int
++mt7615_mcu_set_arp_filter(struct mt7615_dev *dev, struct ieee80211_vif *vif,
++			  bool suspend)
++{
++	struct mt7615_vif *mvif = (struct mt7615_vif *)vif->drv_priv;
++	struct {
++		struct {
++			u8 bss_idx;
++			u8 pad[3];
++		} __packed hdr;
++		struct mt7615_arpns_tlv arpns;
++	} req = {
++		.hdr = {
++			.bss_idx = mvif->idx,
++		},
++		.arpns = {
++			.tag = cpu_to_le16(UNI_OFFLOAD_OFFLOAD_ARP),
++			.len = cpu_to_le16(sizeof(struct mt7615_arpns_tlv)),
++			.mode = suspend,
++		},
++	};
++
++	return __mt76_mcu_send_msg(&dev->mt76, MCU_UNI_CMD_OFFLOAD,
++				   &req, sizeof(req), true);
++}
++
+ void mt7615_mcu_set_suspend_iter(void *priv, u8 *mac,
+ 				 struct ieee80211_vif *vif)
+ {
+@@ -3554,6 +3580,7 @@ void mt7615_mcu_set_suspend_iter(void *priv, u8 *mac,
+ 	mt7615_mcu_set_bss_pm(phy->dev, vif, suspend);
+ 
+ 	mt7615_mcu_set_gtk_rekey(phy->dev, vif, suspend);
++	mt7615_mcu_set_arp_filter(phy->dev, vif, suspend);
+ 
+ 	mt7615_mcu_set_suspend_mode(phy->dev, vif, suspend, 1, true);
+ 
+@@ -3653,6 +3680,53 @@ int mt7615_mcu_set_roc(struct mt7615_phy *phy, struct ieee80211_vif *vif,
+ 				   sizeof(req), false);
+ }
+ 
++int mt7615_mcu_update_arp_filter(struct ieee80211_hw *hw,
++				 struct ieee80211_vif *vif,
++				 struct ieee80211_bss_conf *info)
++{
++	struct mt7615_vif *mvif = (struct mt7615_vif *)vif->drv_priv;
++	struct mt7615_dev *dev = mt7615_hw_dev(hw);
++	struct sk_buff *skb;
++	struct {
++		struct {
++			u8 bss_idx;
++			u8 pad[3];
++		} __packed hdr;
++		struct mt7615_arpns_tlv arp;
++	} req_hdr = {
++		.hdr = {
++			.bss_idx = mvif->idx,
++		},
++		.arp = {
++			.tag = cpu_to_le16(UNI_OFFLOAD_OFFLOAD_ARP),
++			.len = cpu_to_le16(sizeof(struct mt7615_arpns_tlv)),
++			.ips_num = info->arp_addr_cnt,
++			.mode = 2,  /* update purpose */
++			.option = 1,
++		},
++	};
++	int i;
++
++	if (!mt7615_firmware_offload(dev))
++		return 0;
++
++	skb = mt76_mcu_msg_alloc(&dev->mt76, NULL,
++				 sizeof(req_hdr) +
++				 info->arp_addr_cnt * sizeof(__be32));
++	if (!skb)
++		return -ENOMEM;
++
++	skb_put_data(skb, &req_hdr, sizeof(req_hdr));
++	for (i = 0; i < info->arp_addr_cnt; i++) {
++		u8 *addr = (u8 *)skb_put(skb, sizeof(__be32));
++
++		memcpy(addr, &info->arp_addr_list[i], sizeof(__be32));
 +	}
++
++	return __mt76_mcu_skb_send_msg(&dev->mt76, skb,
++				       MCU_UNI_CMD_OFFLOAD, true);
++}
++
+ int mt7615_mcu_set_p2p_oppps(struct ieee80211_hw *hw,
+ 			     struct ieee80211_vif *vif)
+ {
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.h
+index 2314d0b23af1..64f7471a57bb 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.h
+@@ -545,6 +545,15 @@ struct mt7615_roc_tlv {
+ 	u8 rsv1[8];
+ } __packed;
  
- 	ret = wlcore_cmd_regdomain_config_locked(wl);
- 	if (ret < 0) {
++struct mt7615_arpns_tlv {
++	__le16 tag;
++	__le16 len;
++	u8 mode;
++	u8 ips_num;
++	u8 option;
++	u8 pad[1];
++} __packed;
++
+ /* offload mcu commands */
+ enum {
+ 	MCU_CMD_START_HW_SCAN = MCU_CE_PREFIX | 0x03,
+@@ -580,8 +589,8 @@ enum {
+ };
+ 
+ enum {
+-	UNI_OFFLOAD_OFFLOAD_ARPNS_IPV4,
+-	UNI_OFFLOAD_OFFLOAD_ARPNS_IPV6,
++	UNI_OFFLOAD_OFFLOAD_ARP,
++	UNI_OFFLOAD_OFFLOAD_ND,
+ 	UNI_OFFLOAD_OFFLOAD_GTK_REKEY,
+ 	UNI_OFFLOAD_OFFLOAD_BMC_RPY_DETECT,
+ };
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
+index 3e7d51bf42a4..a9513a456521 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
+@@ -585,7 +585,9 @@ void mt7615_mcu_set_suspend_iter(void *priv, u8 *mac,
+ int mt7615_mcu_update_gtk_rekey(struct ieee80211_hw *hw,
+ 				struct ieee80211_vif *vif,
+ 				struct cfg80211_gtk_rekey_data *key);
+-
++int mt7615_mcu_update_arp_filter(struct ieee80211_hw *hw,
++				 struct ieee80211_vif *vif,
++				 struct ieee80211_bss_conf *info);
+ int __mt7663_load_firmware(struct mt7615_dev *dev);
+ 
+ /* usb */
 -- 
-2.17.1
+2.26.2
 
