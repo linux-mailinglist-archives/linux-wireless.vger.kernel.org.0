@@ -2,197 +2,146 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E40051F05A3
-	for <lists+linux-wireless@lfdr.de>; Sat,  6 Jun 2020 09:56:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C59BD1F07DB
+	for <lists+linux-wireless@lfdr.de>; Sat,  6 Jun 2020 18:12:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728534AbgFFH41 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 6 Jun 2020 03:56:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44452 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725283AbgFFH41 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 6 Jun 2020 03:56:27 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 160A3C08C5C2;
-        Sat,  6 Jun 2020 00:56:27 -0700 (PDT)
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128)
-        (Exim 4.93)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1jhTgZ-00BZ4i-T7; Sat, 06 Jun 2020 09:56:11 +0200
-Date:   Sat, 06 Jun 2020 09:56:09 +0200
-In-Reply-To: <CAHk-=wj0QUaYcLHKG=_fw65NqhGbqvnU958SkHak9mg9qNwR+A@mail.gmail.com> (sfid-20200606_004147_502343_4CEEBC12)
-References: <CAHk-=wj0QUaYcLHKG=_fw65NqhGbqvnU958SkHak9mg9qNwR+A@mail.gmail.com> (sfid-20200606_004147_502343_4CEEBC12)
+        id S1728852AbgFFQMY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 6 Jun 2020 12:12:24 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:21009 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726968AbgFFQMX (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 6 Jun 2020 12:12:23 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1591459943; h=Message-ID: References: In-Reply-To: Subject:
+ Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Sender; bh=W2+f/Jlwr9sdU/LqjCOSQU2eKt+VOfS8dbeManW9W14=;
+ b=oExGP6AgkLJBTHBEZnd2fc3zrzApQ0NqoBvGtiDM/bkXz/zgAolKO8k4HdzUltPVuCfW6Rmq
+ 6hTNm9QQPxXgbKKmyNptJFlMBJ73iE21cLthocci3v2TaO4Sz9pE11LrSplKoBPZynGS/BNA
+ SHpTYf4+pSOCTJACciJlDUU0NFg=
+X-Mailgun-Sending-Ip: 69.72.43.7
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n03.prod.us-west-2.postgun.com with SMTP id
+ 5edbc05360667f2e2f754084 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sat, 06 Jun 2020 16:12:03
+ GMT
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id EADDCC43395; Sat,  6 Jun 2020 16:12:02 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: govinds)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 3AD6AC433C6;
+        Sat,  6 Jun 2020 16:12:02 +0000 (UTC)
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 8BIT
-Subject: Re: Hang on wireless removal..
-To:     Linus Torvalds <torvalds@linux-foundation.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>
-CC:     linux-wireless <linux-wireless@vger.kernel.org>,
-        Netdev <netdev@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-From:   Johannes Berg <johannes@sipsolutions.net>
-Message-ID: <5DD82C75-5868-4F2D-B90F-F6205CA85C66@sipsolutions.net>
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Sat, 06 Jun 2020 21:42:02 +0530
+From:   Govind Singh <govinds@codeaurora.org>
+To:     ath10k@lists.infradead.org, manivannan.sadhasivam@linaro.org,
+        sibis@codeaurora.org
+Cc:     linux-wireless@vger.kernel.org
+Subject: Re: [PATCH] ath10k: Move msa region map/unmap to init/deinit path
+In-Reply-To: <1591191231-31917-1-git-send-email-govinds@codeaurora.org>
+References: <1591191231-31917-1-git-send-email-govinds@codeaurora.org>
+Message-ID: <3e092e58b3c2055933141ae3b698a5c0@codeaurora.org>
+X-Sender: govinds@codeaurora.org
+User-Agent: Roundcube Webmail/1.3.9
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi, sorry for the top post, on my phone. 
+Pls ignore this WAR as it does not fix all cases.
 
-Yes, your analysis is spot on I think. I've got a fix for this in my jberg/mac80211 tree, there's a deadlock with a work struct and the rtnl.
+On 2020-06-03 19:03, Govind Singh wrote:
+> With kernel qrtr switch from user space qrtr, fw crash is seen
+> during reboot. During reboot modem rproc shutdown causes wlan qmi
+> service exit and msa region gets unmapped. Since pdev is not suspended
+> hw still accessing the msa region and this results in  fw crash as
+> msa region is unmapped.
+> 
+> Decouple msa mapping from wlan qmi server arrive/exit to init/deinit
+> path.
+> 
+> Testing is pending with "0c2204a4ad71 net: qrtr: Migrate nameservice
+> to kernel from userspace", only regression sanity performed with user 
+> space
+> qrtr on QCS404/SC7180.
+> 
+> Fixes: 0c2204a4ad71 net: qrtr: Migrate nameservice to kernel from 
+> userspace
+> Signed-off-by: Govind Singh <govinds@codeaurora.org>
+> ---
+>  drivers/net/wireless/ath/ath10k/qmi.c | 16 +++++++---------
+>  1 file changed, 7 insertions(+), 9 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/ath/ath10k/qmi.c
+> b/drivers/net/wireless/ath/ath10k/qmi.c
+> index 5ae829b46c3d..8b1291e28ba2 100644
+> --- a/drivers/net/wireless/ath/ath10k/qmi.c
+> +++ b/drivers/net/wireless/ath/ath10k/qmi.c
+> @@ -796,22 +796,16 @@ static void
+> ath10k_qmi_event_server_arrive(struct ath10k_qmi *qmi)
+>  	 */
+>  	msleep(20);
+> 
+> -	ret = ath10k_qmi_setup_msa_permissions(qmi);
+> -	if (ret)
+> -		return;
+> -
+>  	ret = ath10k_qmi_msa_ready_send_sync_msg(qmi);
 
-Sorry about that. My testing should've caught it, but that exact scenario didn't happen, and lockdep for disabled due to some unrelated issues at early boot,so this didn't show up... (I also sent fixes for the other issue in user mode Linux) 
 
-Johannes
-
-On 6 June 2020 00:41:27 CEST, Linus Torvalds <torvalds@linux-foundation.org> wrote:
->So I think there's something wrong with wireless networking, and
->(likely) in particular turning off wireless. And I think the problem
->came in this merge window, because now my machine hangs on shutdown.
->
->My new desktop is otherwise working fine, but it has some unnecessary
->wireless capability on the motherboard, in the form of a Intel Wi-Fi 6
->AX200 module that I don't use (since I end up using wired gig ethernet
->instead).
->
->And while debugging the shutdown hang (symptom: systemd waits forever
->for NetworkManager and WPA supplicant), I turned off the WiFi.
->
->And what do you know, things went all sideways.
->
->They went sideways because everything that wants the rtnl lock seems
->to just hang.
->
->Example:
->
->  kworker/57:2    D    0  1592      2 0x80004080
->  Workqueue: events_power_efficient reg_check_chans_work [cfg80211]
->  Call Trace:
->   __schedule+0x30b/0x4b0
->   ? schedule+0x77/0xa0
->   ? schedule_preempt_disabled+0xa/0x10
->   ? __mutex_lock+0x264/0x410
->   ? psi_group_change+0x44/0x260
->   ? reg_check_chans_work+0x1d/0x300 [cfg80211]
->   ? __switch_to_asm+0x42/0x70
->   ? process_one_work+0x1fa/0x3f0
->   ? worker_thread+0x25d/0x480
->   ? kthread+0x121/0x130
->   ? process_one_work+0x3f0/0x3f0
->   ? kthread_blkcg+0x30/0x30
->   ? ret_from_fork+0x22/0x30
->  kworker/60:2    D    0  1926      2 0x80004000
->  Workqueue: ipv6_addrconf addrconf_verify_work
->  Call Trace:
->   __schedule+0x30b/0x4b0
->   ? schedule+0x77/0xa0
->   ? schedule_preempt_disabled+0xa/0x10
->   ? __mutex_lock+0x264/0x410
->   ? addrconf_verify_work+0xa/0x20
->   ? process_one_work+0x1fa/0x3f0
->   ? worker_thread+0x25d/0x480
->   ? kthread+0x121/0x130
->   ? process_one_work+0x3f0/0x3f0
->   ? kthread_blkcg+0x30/0x30
->   ? ret_from_fork+0x22/0x30
->  NetworkManager  D    0  4329      1 0x00004000
->  Call Trace:
->   __schedule+0x30b/0x4b0
->   ? schedule+0x77/0xa0
->   ? schedule_preempt_disabled+0xa/0x10
->   ? __mutex_lock+0x264/0x410
->   ? __netlink_dump_start+0xa7/0x300
->   ? rtnl_dellink+0x3c0/0x3c0
->   ? rtnetlink_rcv_msg+0x375/0x3d0
->   ? poll_freewait+0x35/0xa0
->   ? do_sys_poll+0x58f/0x5f0
->   ? rtnl_dellink+0x3c0/0x3c0
->   ? __ia32_compat_sys_ppoll_time64+0x120/0x120
->   ? ip_output+0x6a/0xd0
->   ? ip_mc_finish_output+0x120/0x120
->   ? avc_has_perm+0x34/0xa0
->   ? rtnetlink_bind+0x30/0x30
->   ? netlink_rcv_skb+0xfb/0x130
->   ? netlink_unicast+0x1bf/0x2e0
->   ? netlink_sendmsg+0x385/0x410
->   ? __sys_sendto+0x21f/0x230
->   ? move_addr_to_user+0x97/0xc0
->   ? alloc_file_pseudo+0x9b/0xd0
->   ? sock_alloc_file+0xc4/0x100
->   ? __x64_sys_sendto+0x22/0x30
->   ? do_syscall_64+0x5e/0xd0
->   ? entry_SYSCALL_64_after_hwframe+0x44/0xa9
->
->and perhaps most interestingly, wpa_supplicant is waiting for some of
->those workqueues that are waiting for the lock:
->
->  wpa_supplicant  D    0  2162      1 0x00004000
->  Call Trace:
->   __schedule+0x30b/0x4b0
->   ? schedule+0x77/0xa0
->   ? schedule_timeout+0x22/0x150
->   ? ttwu_queue+0xf4/0x120
->   ? wait_for_common+0xac/0x110
->   ? __flush_work+0x200/0x230
->   ? put_pwq+0x70/0x70
->   ? __cfg80211_unregister_wdev+0x95/0x130 [cfg80211]
->   ? ieee80211_if_remove+0xa3/0xe0 [mac80211]
->   ? ieee80211_del_iface+0xe/0x20 [mac80211]
->   ? rdev_del_virtual_intf+0x2b/0xc0 [cfg80211]
->   ? genl_rcv_msg+0x451/0x570
->   ? genl_unbind+0xb0/0xb0
->   ? netlink_rcv_skb+0xfb/0x130
->   ? genl_rcv+0x24/0x40
->   ? netlink_unicast+0x1bf/0x2e0
->   ? netlink_sendmsg+0x385/0x410
->   ? ____sys_sendmsg+0x26b/0x290
->   ? __sys_sendmsg+0x128/0x180
->   ? selinux_socket_setsockopt+0xc3/0xd0
->   ? __cgroup_bpf_run_filter_setsockopt+0x99/0x290
->   ? netlink_setsockopt+0x38/0x4d0
->   ? __sys_setsockopt+0x11b/0x1b0
->   ? do_syscall_64+0x5e/0xd0
->   ? entry_SYSCALL_64_after_hwframe+0x44/0xa9
->
->which explains why systemd waits for that one too.
->
->So something seems to have never released the rtnl lock.
->
->In fact, I suspect it's exactly that wpa_supplicant itself that
->deadlocks on it and holds the rntl lock while it does that
->"flush_work()". Which in turn waits for things to go away, but they'll
->never go away because they need the rtnl lock. That wpa_supplicant is
->holding.
->
->If I were a betting man, I'd suspect it's due to commit 6cd536fe62ef
->("cfg80211: change internal management frame registration API"), which
->seems to move that
->
->        flush_work(&wdev->mgmt_registrations_update_wk);
->
->into __cfg80211_unregister_wdev(). But honestly, that's just a guess.
->
->I'd bisect this and verify things, but I'm really hoping I don't have
->to.
->
->I still have a number of pull requests for the merge window, so
->instead I'm sending this email out with my current guesses, and I hope
->someody will say "Yeah, you're right, the fix is already pending", or
->"No Linus, you're barking up completely the wrong tree, but I think I
->know what the problem is".
->
->Btw, I'm not a networking person, but I have to say, I've seen rtnl
->lock problems enough over time even as an outsider to have grown to
->really hate that thing. Am I wrong? It really seems to get involved
->much too much, and held in really awkward places.
->
->Am I wrong?
->
->             Linus
-
--- 
-Sent from my phone. 
+>  	if (ret)
+> -		goto err_setup_msa;
+> +		return;
+> 
+>  	ret = ath10k_qmi_cap_send_sync_msg(qmi);
+>  	if (ret)
+> -		goto err_setup_msa;
+> +		return;
+> 
+>  	return;
+> 
+> -err_setup_msa:
+> -	ath10k_qmi_remove_msa_permission(qmi);
+>  }
+> 
+>  static int ath10k_qmi_fetch_board_file(struct ath10k_qmi *qmi)
+> @@ -854,7 +848,6 @@ static void ath10k_qmi_event_server_exit(struct
+> ath10k_qmi *qmi)
+>  	struct ath10k *ar = qmi->ar;
+>  	struct ath10k_snoc *ar_snoc = ath10k_snoc_priv(ar);
+> 
+> -	ath10k_qmi_remove_msa_permission(qmi);
+>  	ath10k_core_free_board_files(ar);
+>  	if (!test_bit(ATH10K_SNOC_FLAG_UNREGISTERING, &ar_snoc->flags))
+>  		ath10k_snoc_fw_crashed_dump(ar);
+> @@ -1046,6 +1039,10 @@ int ath10k_qmi_init(struct ath10k *ar, u32 
+> msa_size)
+>  	if (ret)
+>  		goto err_qmi_lookup;
+> 
+> +	ret = ath10k_qmi_setup_msa_permissions(qmi);
+> +	if (ret)
+> +		goto err_qmi_lookup;
+> +
+>  	return 0;
+> 
+>  err_qmi_lookup:
+> @@ -1064,6 +1061,7 @@ int ath10k_qmi_deinit(struct ath10k *ar)
+>  	struct ath10k_snoc *ar_snoc = ath10k_snoc_priv(ar);
+>  	struct ath10k_qmi *qmi = ar_snoc->qmi;
+> 
+> +	ath10k_qmi_remove_msa_permission(qmi);
+>  	qmi_handle_release(&qmi->qmi_hdl);
+>  	cancel_work_sync(&qmi->event_work);
+>  	destroy_workqueue(qmi->event_wq);
