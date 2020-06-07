@@ -2,223 +2,115 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4550E1F0AA6
-	for <lists+linux-wireless@lfdr.de>; Sun,  7 Jun 2020 11:35:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 884F31F0C60
+	for <lists+linux-wireless@lfdr.de>; Sun,  7 Jun 2020 17:28:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726474AbgFGJfL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 7 Jun 2020 05:35:11 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35892 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726418AbgFGJfK (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 7 Jun 2020 05:35:10 -0400
-Received: from lore-desk.lan (unknown [151.48.128.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 6115A20663;
-        Sun,  7 Jun 2020 09:35:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1591522509;
-        bh=F2CQL90ezhMY2f5lwDV3rd7o6/X90+NNxMg2U0+B3q8=;
-        h=From:To:Cc:Subject:Date:From;
-        b=TZXEBt+yVLsllj4GxOBrR6nnW9FXtNmWTkrhG1jMK4AjjHAzOIjUZ+SOGqa4SwYvs
-         7bXuYlc+2MQqEBgH6UFHEYtciyPL7T1G+TRXm68RZdPBsswYM7eZIqWqdj1XCS8dh3
-         oXIoGo/io67sy2z376p+zryWBbyrRKWpOmHZmsuo=
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     ryder.lee@mediatek.com, sean.wang@mediatek.com,
-        lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
-        linux-mediatek@lists.infradead.org
-Subject: [PATCH v2] mt76: mt7663: introduce ARP filter offload
-Date:   Sun,  7 Jun 2020 11:34:40 +0200
-Message-Id: <e1ea70a7b771eba1e68e0cd40f0dbf9898e92a87.1591522374.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.26.2
+        id S1726595AbgFGP2f (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 7 Jun 2020 11:28:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53012 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726528AbgFGP2f (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 7 Jun 2020 11:28:35 -0400
+Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 659FBC08C5C3
+        for <linux-wireless@vger.kernel.org>; Sun,  7 Jun 2020 08:28:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
+        Message-ID:Cc:To:Subject:From:Sender:Reply-To:Content-ID:Content-Description:
+        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=z1raFWjk5fg/mgkBo8SFuwEMYQxEFAJKND9K03R79PY=; b=ZANeKR2sBY/EEMNu86wshPR08t
+        S6SMMVV/9u2qsuWcgOuxnJ+MsmmyQWcUqPDeoafvXVf4cHjypfsRDHkiz1omtKxo80gFba9mN4tXC
+        JUdvIp+u3Uk0yUc+0oUMfpIgbakTkq1MZMmTd9nwoguaqc5KXYi1FQap+P50scsfeEHA=;
+Received: from p4ff13772.dip0.t-ipconnect.de ([79.241.55.114] helo=nf.local)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1jhxDq-0002Rb-EM; Sun, 07 Jun 2020 17:28:30 +0200
+From:   Felix Fietkau <nbd@nbd.name>
+Subject: pull request: mt76 2019-06-07
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>
+Autocrypt: addr=nbd@nbd.name; prefer-encrypt=mutual; keydata=
+ xsDiBEah5CcRBADIY7pu4LIv3jBlyQ/2u87iIZGe6f0f8pyB4UjzfJNXhJb8JylYYRzIOSxh
+ ExKsdLCnJqsG1PY1mqTtoG8sONpwsHr2oJ4itjcGHfn5NJSUGTbtbbxLro13tHkGFCoCr4Z5
+ Pv+XRgiANSpYlIigiMbOkide6wbggQK32tC20QxUIwCg4k6dtV/4kwEeiOUfErq00TVqIiEE
+ AKcUi4taOuh/PQWx/Ujjl/P1LfJXqLKRPa8PwD4j2yjoc9l+7LptSxJThL9KSu6gtXQjcoR2
+ vCK0OeYJhgO4kYMI78h1TSaxmtImEAnjFPYJYVsxrhay92jisYc7z5R/76AaELfF6RCjjGeP
+ wdalulG+erWju710Bif7E1yjYVWeA/9Wd1lsOmx6uwwYgNqoFtcAunDaMKi9xVQW18FsUusM
+ TdRvTZLBpoUAy+MajAL+R73TwLq3LnKpIcCwftyQXK5pEDKq57OhxJVv1Q8XkA9Dn1SBOjNB
+ l25vJDFAT9ntp9THeDD2fv15yk4EKpWhu4H00/YX8KkhFsrtUs69+vZQwc0cRmVsaXggRmll
+ dGthdSA8bmJkQG5iZC5uYW1lPsJgBBMRAgAgBQJGoeQnAhsjBgsJCAcDAgQVAggDBBYCAwEC
+ HgECF4AACgkQ130UHQKnbvXsvgCgjsAIIOsY7xZ8VcSm7NABpi91yTMAniMMmH7FRenEAYMa
+ VrwYTIThkTlQzsFNBEah5FQQCACMIep/hTzgPZ9HbCTKm9xN4bZX0JjrqjFem1Nxf3MBM5vN
+ CYGBn8F4sGIzPmLhl4xFeq3k5irVg/YvxSDbQN6NJv8o+tP6zsMeWX2JjtV0P4aDIN1pK2/w
+ VxcicArw0VYdv2ZCarccFBgH2a6GjswqlCqVM3gNIMI8ikzenKcso8YErGGiKYeMEZLwHaxE
+ Y7mTPuOTrWL8uWWRL5mVjhZEVvDez6em/OYvzBwbkhImrryF29e3Po2cfY2n7EKjjr3/141K
+ DHBBdgXlPNfDwROnA5ugjjEBjwkwBQqPpDA7AYPvpHh5vLbZnVGu5CwG7NAsrb2isRmjYoqk
+ wu++3117AAMFB/9S0Sj7qFFQcD4laADVsabTpNNpaV4wAgVTRHKV/kC9luItzwDnUcsZUPdQ
+ f3MueRJ3jIHU0UmRBG3uQftqbZJj3ikhnfvyLmkCNe+/hXhPu9sGvXyi2D4vszICvc1KL4RD
+ aLSrOsROx22eZ26KqcW4ny7+va2FnvjsZgI8h4sDmaLzKczVRIiLITiMpLFEU/VoSv0m1F4B
+ FtRgoiyjFzigWG0MsTdAN6FJzGh4mWWGIlE7o5JraNhnTd+yTUIPtw3ym6l8P+gbvfoZida0
+ TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabwkkE
+ GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCfTKx80VvCR/PvsUlrvdOLsIgeRGAAn1ee
+ RjMaxwtSdaCKMw3j33ZbsWS4
+Message-ID: <8af947fd-8d23-ce5c-eee5-1107d6af9d22@nbd.name>
+Date:   Sun, 7 Jun 2020 17:28:29 +0200
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:68.0)
+ Gecko/20100101 Thunderbird/68.9.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Sean Wang <sean.wang@mediatek.com>
+Hi Kalle,
 
-Introduce ARP filter offload
+here's another pull request for 5.8 with a few fixes
 
-Co-developed-by: Wan-Feng Jiang <Wan-Feng.Jiang@mediatek.com>
-Signed-off-by: Wan-Feng Jiang <Wan-Feng.Jiang@mediatek.com>
-Co-developed-by: Soul Huang <Soul.Huang@mediatek.com>
-Signed-off-by: Soul Huang <Soul.Huang@mediatek.com>
-Co-developed-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Signed-off-by: Sean Wang <sean.wang@mediatek.com>
----
-Changes since v1:
-- set limit for offload addresses to 4
----
- .../net/wireless/mediatek/mt76/mt7615/main.c  |  3 +
- .../net/wireless/mediatek/mt76/mt7615/mcu.c   | 74 +++++++++++++++++++
- .../net/wireless/mediatek/mt76/mt7615/mcu.h   | 13 +++-
- .../wireless/mediatek/mt76/mt7615/mt7615.h    |  4 +-
- 4 files changed, 91 insertions(+), 3 deletions(-)
+- Felix
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/main.c b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-index beaca8127680..81fc4982a01f 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-@@ -491,6 +491,9 @@ static void mt7615_bss_info_changed(struct ieee80211_hw *hw,
- 	if (changed & BSS_CHANGED_PS)
- 		mt7615_mcu_set_vif_ps(dev, vif);
- 
-+	if (changed & BSS_CHANGED_ARP_FILTER)
-+		mt7615_mcu_update_arp_filter(hw, vif, info);
-+
- 	mutex_unlock(&dev->mt76.mutex);
- }
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-index 6e869b8c5e26..b76ecc24f333 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-@@ -3542,6 +3542,32 @@ mt7615_mcu_set_gtk_rekey(struct mt7615_dev *dev,
- 				   &req, sizeof(req), true);
- }
- 
-+static int
-+mt7615_mcu_set_arp_filter(struct mt7615_dev *dev, struct ieee80211_vif *vif,
-+			  bool suspend)
-+{
-+	struct mt7615_vif *mvif = (struct mt7615_vif *)vif->drv_priv;
-+	struct {
-+		struct {
-+			u8 bss_idx;
-+			u8 pad[3];
-+		} __packed hdr;
-+		struct mt7615_arpns_tlv arpns;
-+	} req = {
-+		.hdr = {
-+			.bss_idx = mvif->idx,
-+		},
-+		.arpns = {
-+			.tag = cpu_to_le16(UNI_OFFLOAD_OFFLOAD_ARP),
-+			.len = cpu_to_le16(sizeof(struct mt7615_arpns_tlv)),
-+			.mode = suspend,
-+		},
-+	};
-+
-+	return __mt76_mcu_send_msg(&dev->mt76, MCU_UNI_CMD_OFFLOAD,
-+				   &req, sizeof(req), true);
-+}
-+
- void mt7615_mcu_set_suspend_iter(void *priv, u8 *mac,
- 				 struct ieee80211_vif *vif)
- {
-@@ -3554,6 +3580,7 @@ void mt7615_mcu_set_suspend_iter(void *priv, u8 *mac,
- 	mt7615_mcu_set_bss_pm(phy->dev, vif, suspend);
- 
- 	mt7615_mcu_set_gtk_rekey(phy->dev, vif, suspend);
-+	mt7615_mcu_set_arp_filter(phy->dev, vif, suspend);
- 
- 	mt7615_mcu_set_suspend_mode(phy->dev, vif, suspend, 1, true);
- 
-@@ -3653,6 +3680,53 @@ int mt7615_mcu_set_roc(struct mt7615_phy *phy, struct ieee80211_vif *vif,
- 				   sizeof(req), false);
- }
- 
-+int mt7615_mcu_update_arp_filter(struct ieee80211_hw *hw,
-+				 struct ieee80211_vif *vif,
-+				 struct ieee80211_bss_conf *info)
-+{
-+	struct mt7615_vif *mvif = (struct mt7615_vif *)vif->drv_priv;
-+	struct mt7615_dev *dev = mt7615_hw_dev(hw);
-+	struct sk_buff *skb;
-+	int i, len = min_t(int, info->arp_addr_cnt,
-+			   IEEE80211_BSS_ARP_ADDR_LIST_LEN);
-+	struct {
-+		struct {
-+			u8 bss_idx;
-+			u8 pad[3];
-+		} __packed hdr;
-+		struct mt7615_arpns_tlv arp;
-+	} req_hdr = {
-+		.hdr = {
-+			.bss_idx = mvif->idx,
-+		},
-+		.arp = {
-+			.tag = cpu_to_le16(UNI_OFFLOAD_OFFLOAD_ARP),
-+			.len = cpu_to_le16(sizeof(struct mt7615_arpns_tlv)),
-+			.ips_num = len,
-+			.mode = 2,  /* update */
-+			.option = 1,
-+		},
-+	};
-+
-+	if (!mt7615_firmware_offload(dev))
-+		return 0;
-+
-+	skb = mt76_mcu_msg_alloc(&dev->mt76, NULL,
-+				 sizeof(req_hdr) + len * sizeof(__be32));
-+	if (!skb)
-+		return -ENOMEM;
-+
-+	skb_put_data(skb, &req_hdr, sizeof(req_hdr));
-+	for (i = 0; i < len; i++) {
-+		u8 *addr = (u8 *)skb_put(skb, sizeof(__be32));
-+
-+		memcpy(addr, &info->arp_addr_list[i], sizeof(__be32));
-+	}
-+
-+	return __mt76_mcu_skb_send_msg(&dev->mt76, skb,
-+				       MCU_UNI_CMD_OFFLOAD, true);
-+}
-+
- int mt7615_mcu_set_p2p_oppps(struct ieee80211_hw *hw,
- 			     struct ieee80211_vif *vif)
- {
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.h
-index 2314d0b23af1..64f7471a57bb 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.h
-@@ -545,6 +545,15 @@ struct mt7615_roc_tlv {
- 	u8 rsv1[8];
- } __packed;
- 
-+struct mt7615_arpns_tlv {
-+	__le16 tag;
-+	__le16 len;
-+	u8 mode;
-+	u8 ips_num;
-+	u8 option;
-+	u8 pad[1];
-+} __packed;
-+
- /* offload mcu commands */
- enum {
- 	MCU_CMD_START_HW_SCAN = MCU_CE_PREFIX | 0x03,
-@@ -580,8 +589,8 @@ enum {
- };
- 
- enum {
--	UNI_OFFLOAD_OFFLOAD_ARPNS_IPV4,
--	UNI_OFFLOAD_OFFLOAD_ARPNS_IPV6,
-+	UNI_OFFLOAD_OFFLOAD_ARP,
-+	UNI_OFFLOAD_OFFLOAD_ND,
- 	UNI_OFFLOAD_OFFLOAD_GTK_REKEY,
- 	UNI_OFFLOAD_OFFLOAD_BMC_RPY_DETECT,
- };
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
-index 3e7d51bf42a4..a9513a456521 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
-@@ -585,7 +585,9 @@ void mt7615_mcu_set_suspend_iter(void *priv, u8 *mac,
- int mt7615_mcu_update_gtk_rekey(struct ieee80211_hw *hw,
- 				struct ieee80211_vif *vif,
- 				struct cfg80211_gtk_rekey_data *key);
--
-+int mt7615_mcu_update_arp_filter(struct ieee80211_hw *hw,
-+				 struct ieee80211_vif *vif,
-+				 struct ieee80211_bss_conf *info);
- int __mt7663_load_firmware(struct mt7615_dev *dev);
- 
- /* usb */
--- 
-2.26.2
+The following changes since commit 1806c13dc2532090d742ce03847b22367fb20ad6:
 
+  Merge git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net (2020-05-31 17:48:46 -0700)
+
+are available in the Git repository at:
+
+  https://github.com/nbd168/wireless tags/mt76-for-kvalo-2020-06-07
+
+for you to fetch changes up to 7f88314321e20744114bc596b6528bb9d57ff46f:
+
+  mt76: overwrite qid for non-bufferable mgmt frames (2020-06-07 16:59:40 +0200)
+
+----------------------------------------------------------------
+mt76 patches for 5.8
+
+* tx queueing fixes for mt7615/22/63
+* locking fix
+
+----------------------------------------------------------------
+Lorenzo Bianconi (4):
+      mt76: add missing lock configuring coverage class
+      mt76: mt7615: fix lmac queue debugsfs entry
+      mt76: mt7615: fix hw queue mapping
+      mt76: overwrite qid for non-bufferable mgmt frames
+
+ drivers/net/wireless/mediatek/mt76/mt76.h           |  1 +
+ drivers/net/wireless/mediatek/mt76/mt7603/main.c    |  2 ++
+ drivers/net/wireless/mediatek/mt76/mt7615/debugfs.c |  9 +++++----
+ drivers/net/wireless/mediatek/mt76/mt7615/dma.c     |  9 +++++----
+ drivers/net/wireless/mediatek/mt76/mt7615/mac.c     | 20 +++++++-------------
+ drivers/net/wireless/mediatek/mt76/mt7615/mac.h     | 15 ---------------
+ drivers/net/wireless/mediatek/mt76/mt7615/main.c    |  4 ++++
+ drivers/net/wireless/mediatek/mt76/mt7615/mmio.c    |  2 +-
+ drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h  | 30 ++++++++++++++++++++++++++++++
+ drivers/net/wireless/mediatek/mt76/mt7615/usb.c     |  2 +-
+ drivers/net/wireless/mediatek/mt76/mt7915/main.c    |  3 +++
+ drivers/net/wireless/mediatek/mt76/tx.c             |  7 +++++++
+ drivers/net/wireless/mediatek/mt76/usb.c            | 17 +++++++++--------
+ 13 files changed, 75 insertions(+), 46 deletions(-)
