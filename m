@@ -2,37 +2,36 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 302FF1F24A9
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 Jun 2020 01:24:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A1C4D1F24AC
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 Jun 2020 01:24:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729852AbgFHXV2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 8 Jun 2020 19:21:28 -0400
-Received: from mail.kernel.org ([198.145.29.99]:45532 "EHLO mail.kernel.org"
+        id S1731191AbgFHXVh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 8 Jun 2020 19:21:37 -0400
+Received: from mail.kernel.org ([198.145.29.99]:45832 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730049AbgFHXVW (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 8 Jun 2020 19:21:22 -0400
+        id S1729138AbgFHXVf (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 8 Jun 2020 19:21:35 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id DE014208C9;
-        Mon,  8 Jun 2020 23:21:20 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id ADA6E2072F;
+        Mon,  8 Jun 2020 23:21:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1591658481;
-        bh=CarzX7jrFj2dLReUZB4e6YJK8BhpEudbGb6UOINdud4=;
+        s=default; t=1591658495;
+        bh=8DZyfMBj+GQYqoHgKvdO7+JnquptPSQNnrzE88QIKoc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ulmOF4UpHUzAUjgoU1B0h1CkNqmzHZFvLxYVi+2f54LlxC5FOcRB/1mAK5aU0J0qp
-         hNESV/gyvUQLPmgkzIRYB8Zvzch3QDv6/1/Y+C11nmp+UHFu256FjpCG8xoZM9wm92
-         vaCNizWZJx1MHzwVolxUp2tInYZn3RUctvXiEQuY=
+        b=sHi0VWw0b29M89q+JO2xJ1cdMH8u2lKskUhOM1parvK0cg/bcoY9GAh7k7FipsrwI
+         0rH3L5fNSnSSQZ/epsUA60bhFE/6QFnfMGsQUHEwbWr9+ClbZtNnJzoapG5ZG6bems
+         bQevWyWm5i1jlA/4ngqas6zYsADyZanDLqhWw5CI=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
+Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
         Kalle Valo <kvalo@codeaurora.org>,
-        Sasha Levin <sashal@kernel.org>, wcn36xx@lists.infradead.org,
+        Sasha Levin <sashal@kernel.org>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 117/175] wcn36xx: Fix error handling path in 'wcn36xx_probe()'
-Date:   Mon,  8 Jun 2020 19:17:50 -0400
-Message-Id: <20200608231848.3366970-117-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 128/175] rtlwifi: Fix a double free in _rtl_usb_tx_urb_setup()
+Date:   Mon,  8 Jun 2020 19:18:01 -0400
+Message-Id: <20200608231848.3366970-128-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200608231848.3366970-1-sashal@kernel.org>
 References: <20200608231848.3366970-1-sashal@kernel.org>
@@ -45,54 +44,60 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Dan Carpenter <dan.carpenter@oracle.com>
 
-[ Upstream commit a86308fc534edeceaf64670c691e17485436a4f4 ]
+[ Upstream commit beb12813bc75d4a23de43b85ad1c7cb28d27631e ]
 
-In case of error, 'qcom_wcnss_open_channel()' must be undone by a call to
-'rpmsg_destroy_ept()', as already done in the remove function.
+Seven years ago we tried to fix a leak but actually introduced a double
+free instead.  It was an understandable mistake because the code was a
+bit confusing and the free was done in the wrong place.  The "skb"
+pointer is freed in both _rtl_usb_tx_urb_setup() and _rtl_usb_transmit().
+The free belongs _rtl_usb_transmit() instead of _rtl_usb_tx_urb_setup()
+and I've cleaned the code up a bit to hopefully make it more clear.
 
-Fixes: 5052de8deff5 ("soc: qcom: smd: Transition client drivers from smd to rpmsg")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Reviewed-by: Bjorn Andersson <bjorn.andersson@linaro.org>
+Fixes: 36ef0b473fbf ("rtlwifi: usb: add missing freeing of skbuff")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
-Link: https://lore.kernel.org/r/20200507043619.200051-1-christophe.jaillet@wanadoo.fr
+Link: https://lore.kernel.org/r/20200513093951.GD347693@mwanda
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/wcn36xx/main.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/net/wireless/realtek/rtlwifi/usb.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/wcn36xx/main.c b/drivers/net/wireless/ath/wcn36xx/main.c
-index 79998a3ddb7a..ad051f34e65b 100644
---- a/drivers/net/wireless/ath/wcn36xx/main.c
-+++ b/drivers/net/wireless/ath/wcn36xx/main.c
-@@ -1341,7 +1341,7 @@ static int wcn36xx_probe(struct platform_device *pdev)
- 	if (addr && ret != ETH_ALEN) {
- 		wcn36xx_err("invalid local-mac-address\n");
- 		ret = -EINVAL;
--		goto out_wq;
-+		goto out_destroy_ept;
- 	} else if (addr) {
- 		wcn36xx_info("mac address: %pM\n", addr);
- 		SET_IEEE80211_PERM_ADDR(wcn->hw, addr);
-@@ -1349,7 +1349,7 @@ static int wcn36xx_probe(struct platform_device *pdev)
+diff --git a/drivers/net/wireless/realtek/rtlwifi/usb.c b/drivers/net/wireless/realtek/rtlwifi/usb.c
+index 348b0072cdd6..c66c6dc00378 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/usb.c
++++ b/drivers/net/wireless/realtek/rtlwifi/usb.c
+@@ -881,10 +881,8 @@ static struct urb *_rtl_usb_tx_urb_setup(struct ieee80211_hw *hw,
  
- 	ret = wcn36xx_platform_get_resources(wcn, pdev);
- 	if (ret)
--		goto out_wq;
-+		goto out_destroy_ept;
+ 	WARN_ON(NULL == skb);
+ 	_urb = usb_alloc_urb(0, GFP_ATOMIC);
+-	if (!_urb) {
+-		kfree_skb(skb);
++	if (!_urb)
+ 		return NULL;
+-	}
+ 	_rtl_install_trx_info(rtlusb, skb, ep_num);
+ 	usb_fill_bulk_urb(_urb, rtlusb->udev, usb_sndbulkpipe(rtlusb->udev,
+ 			  ep_num), skb->data, skb->len, _rtl_tx_complete, skb);
+@@ -898,7 +896,6 @@ static void _rtl_usb_transmit(struct ieee80211_hw *hw, struct sk_buff *skb,
+ 	struct rtl_usb *rtlusb = rtl_usbdev(rtl_usbpriv(hw));
+ 	u32 ep_num;
+ 	struct urb *_urb = NULL;
+-	struct sk_buff *_skb = NULL;
  
- 	wcn36xx_init_ieee80211(wcn);
- 	ret = ieee80211_register_hw(wcn->hw);
-@@ -1361,6 +1361,8 @@ static int wcn36xx_probe(struct platform_device *pdev)
- out_unmap:
- 	iounmap(wcn->ccu_base);
- 	iounmap(wcn->dxe_base);
-+out_destroy_ept:
-+	rpmsg_destroy_ept(wcn->smd_channel);
- out_wq:
- 	ieee80211_free_hw(hw);
- out_err:
+ 	WARN_ON(NULL == rtlusb->usb_tx_aggregate_hdl);
+ 	if (unlikely(IS_USB_STOP(rtlusb))) {
+@@ -907,8 +904,7 @@ static void _rtl_usb_transmit(struct ieee80211_hw *hw, struct sk_buff *skb,
+ 		return;
+ 	}
+ 	ep_num = rtlusb->ep_map.ep_mapping[qnum];
+-	_skb = skb;
+-	_urb = _rtl_usb_tx_urb_setup(hw, _skb, ep_num);
++	_urb = _rtl_usb_tx_urb_setup(hw, skb, ep_num);
+ 	if (unlikely(!_urb)) {
+ 		pr_err("Can't allocate urb. Drop skb!\n");
+ 		kfree_skb(skb);
 -- 
 2.25.1
 
