@@ -2,36 +2,38 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 873F21F29FC
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 Jun 2020 02:06:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F8251F29F1
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 Jun 2020 02:06:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731128AbgFHXVQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 8 Jun 2020 19:21:16 -0400
-Received: from mail.kernel.org ([198.145.29.99]:45422 "EHLO mail.kernel.org"
+        id S1732838AbgFIAFX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 8 Jun 2020 20:05:23 -0400
+Received: from mail.kernel.org ([198.145.29.99]:45634 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730394AbgFHXVP (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 8 Jun 2020 19:21:15 -0400
+        id S1730603AbgFHXVZ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 8 Jun 2020 19:21:25 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 96CD320823;
-        Mon,  8 Jun 2020 23:21:14 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id C4D7A208A7;
+        Mon,  8 Jun 2020 23:21:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1591658475;
-        bh=caU9kQfvMODb0OJ2Hu0o+ztCJtskyU9GmhAPkivUg70=;
+        s=default; t=1591658485;
+        bh=sYkeYCy4yELk+Rhqp6c/33bq9azVDEcLFEBAXNfGfAk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=oTei9LQKW1gU1ekE14ScOuYJADuOQdK++79/m5/BWEutTTbC03BqVAJhHnpjp6hfP
-         Vurinn8MKRWkTtrWlTNhQjHyQEt2oOlyNioEYsxlj8BkdwbFCU/YqDv+as8HS9BxSd
-         YWdfV8878uDo3DGw4TtA7an0mOmCBavwsDasp6IA=
+        b=aKslZTUEEb6ZVx1jxbgzWNtBqbbplw5p2H8ddXtPPRqLoRPAmjcJ7gdVpALDXvOec
+         j9gC0vTu2UfNXTeK0Nu19MDMeSb79bpfManJtEjmMZKBQrroTABVD0PoDjU4wqZLYL
+         EEL0Bd/5K2GEcxHy8+QDvEj+WGeZElTSjPWFdNBM=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Mordechay Goodstein <mordechay.goodstein@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Sasha Levin <sashal@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 112/175] iwlwifi: avoid debug max amsdu config overwriting itself
-Date:   Mon,  8 Jun 2020 19:17:45 -0400
-Message-Id: <20200608231848.3366970-112-sashal@kernel.org>
+Cc:     Ryder Lee <ryder.lee@mediatek.com>,
+        Chih-Min Chen <chih-min.chen@mediatek.com>,
+        Felix Fietkau <nbd@nbd.name>, Sasha Levin <sashal@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org
+Subject: [PATCH AUTOSEL 5.4 120/175] mt76: avoid rx reorder buffer overflow
+Date:   Mon,  8 Jun 2020 19:17:53 -0400
+Message-Id: <20200608231848.3366970-120-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200608231848.3366970-1-sashal@kernel.org>
 References: <20200608231848.3366970-1-sashal@kernel.org>
@@ -44,94 +46,78 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Mordechay Goodstein <mordechay.goodstein@intel.com>
+From: Ryder Lee <ryder.lee@mediatek.com>
 
-[ Upstream commit a65a5824298b06049dbaceb8a9bd19709dc9507c ]
+[ Upstream commit 7c4f744d6703757be959f521a7a441bf34745d99 ]
 
-If we set amsdu_len one after another the second one overwrites
-the orig_amsdu_len so allow only moving from debug to non debug state.
+Enlarge slot to support 11ax 256 BA (256 MPDUs in an AMPDU)
 
-Also the TLC update check was wrong: it was checking that also the orig
-is smaller then the new updated size, which is not the case in debug
-amsdu mode.
-
-Signed-off-by: Mordechay Goodstein <mordechay.goodstein@intel.com>
-Fixes: af2984e9e625 ("iwlwifi: mvm: add a debugfs entry to set a fixed size AMSDU for all TX packets")
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
-Link: https://lore.kernel.org/r/iwlwifi.20200424182644.e565446a4fce.I9729d8c520d8b8bb4de9a5cdc62e01eb85168aac@changeid
+Signed-off-by: Chih-Min Chen <chih-min.chen@mediatek.com>
+Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c | 11 +++++++----
- drivers/net/wireless/intel/iwlwifi/mvm/rs-fw.c   | 15 ++++++++-------
- 2 files changed, 15 insertions(+), 11 deletions(-)
+ drivers/net/wireless/mediatek/mt76/agg-rx.c | 8 ++++----
+ drivers/net/wireless/mediatek/mt76/mt76.h   | 6 +++---
+ 2 files changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c b/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c
-index ad18c2f1a806..524f9dd2323d 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c
-@@ -5,10 +5,9 @@
-  *
-  * GPL LICENSE SUMMARY
-  *
-- * Copyright(c) 2012 - 2014 Intel Corporation. All rights reserved.
-  * Copyright(c) 2013 - 2015 Intel Mobile Communications GmbH
-  * Copyright(c) 2016 - 2017 Intel Deutschland GmbH
-- * Copyright(c) 2018 - 2019 Intel Corporation
-+ * Copyright(c) 2012 - 2014, 2018 - 2020 Intel Corporation
-  *
-  * This program is free software; you can redistribute it and/or modify
-  * it under the terms of version 2 of the GNU General Public License as
-@@ -28,10 +27,9 @@
-  *
-  * BSD LICENSE
-  *
-- * Copyright(c) 2012 - 2014 Intel Corporation. All rights reserved.
-  * Copyright(c) 2013 - 2015 Intel Mobile Communications GmbH
-  * Copyright(c) 2016 - 2017 Intel Deutschland GmbH
-- * Copyright(c) 2018 - 2019 Intel Corporation
-+ * Copyright(c) 2012 - 2014, 2018 - 2020 Intel Corporation
-  * All rights reserved.
-  *
-  * Redistribution and use in source and binary forms, with or without
-@@ -478,6 +476,11 @@ static ssize_t iwl_dbgfs_amsdu_len_write(struct ieee80211_sta *sta,
- 	if (kstrtou16(buf, 0, &amsdu_len))
- 		return -EINVAL;
+diff --git a/drivers/net/wireless/mediatek/mt76/agg-rx.c b/drivers/net/wireless/mediatek/mt76/agg-rx.c
+index 8f3d36a15e17..cbff0dfc9631 100644
+--- a/drivers/net/wireless/mediatek/mt76/agg-rx.c
++++ b/drivers/net/wireless/mediatek/mt76/agg-rx.c
+@@ -143,8 +143,8 @@ void mt76_rx_aggr_reorder(struct sk_buff *skb, struct sk_buff_head *frames)
+ 	struct ieee80211_sta *sta;
+ 	struct mt76_rx_tid *tid;
+ 	bool sn_less;
+-	u16 seqno, head, size;
+-	u8 ackp, idx;
++	u16 seqno, head, size, idx;
++	u8 ackp;
  
-+	/* only change from debug set <-> debug unset */
-+	if ((amsdu_len && mvmsta->orig_amsdu_len) ||
-+	    (!!amsdu_len && mvmsta->orig_amsdu_len))
-+		return -EBUSY;
-+
- 	if (amsdu_len) {
- 		mvmsta->orig_amsdu_len = sta->max_amsdu_len;
- 		sta->max_amsdu_len = amsdu_len;
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rs-fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/rs-fw.c
-index 5b2bd603febf..be8bc0601d7b 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/rs-fw.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/rs-fw.c
-@@ -367,14 +367,15 @@ void iwl_mvm_tlc_update_notif(struct iwl_mvm *mvm,
- 		u16 size = le32_to_cpu(notif->amsdu_size);
- 		int i;
+ 	__skb_queue_tail(frames, skb);
  
--		/*
--		 * In debug sta->max_amsdu_len < size
--		 * so also check with orig_amsdu_len which holds the original
--		 * data before debugfs changed the value
--		 */
--		if (WARN_ON(sta->max_amsdu_len < size &&
--			    mvmsta->orig_amsdu_len < size))
-+		if (sta->max_amsdu_len < size) {
-+			/*
-+			 * In debug sta->max_amsdu_len < size
-+			 * so also check with orig_amsdu_len which holds the
-+			 * original data before debugfs changed the value
-+			 */
-+			WARN_ON(mvmsta->orig_amsdu_len < size);
- 			goto out;
-+		}
+@@ -230,7 +230,7 @@ void mt76_rx_aggr_reorder(struct sk_buff *skb, struct sk_buff_head *frames)
+ }
  
- 		mvmsta->amsdu_enabled = le32_to_cpu(notif->amsdu_enabled);
- 		mvmsta->max_amsdu_len = size;
+ int mt76_rx_aggr_start(struct mt76_dev *dev, struct mt76_wcid *wcid, u8 tidno,
+-		       u16 ssn, u8 size)
++		       u16 ssn, u16 size)
+ {
+ 	struct mt76_rx_tid *tid;
+ 
+@@ -254,7 +254,7 @@ EXPORT_SYMBOL_GPL(mt76_rx_aggr_start);
+ 
+ static void mt76_rx_aggr_shutdown(struct mt76_dev *dev, struct mt76_rx_tid *tid)
+ {
+-	u8 size = tid->size;
++	u16 size = tid->size;
+ 	int i;
+ 
+ 	cancel_delayed_work(&tid->reorder_work);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
+index 502814c26b33..52a16b42dfd7 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76.h
+@@ -240,8 +240,8 @@ struct mt76_rx_tid {
+ 	struct delayed_work reorder_work;
+ 
+ 	u16 head;
+-	u8 size;
+-	u8 nframes;
++	u16 size;
++	u16 nframes;
+ 
+ 	u8 started:1, stopped:1, timer_pending:1;
+ 
+@@ -723,7 +723,7 @@ int mt76_get_survey(struct ieee80211_hw *hw, int idx,
+ void mt76_set_stream_caps(struct mt76_dev *dev, bool vht);
+ 
+ int mt76_rx_aggr_start(struct mt76_dev *dev, struct mt76_wcid *wcid, u8 tid,
+-		       u16 ssn, u8 size);
++		       u16 ssn, u16 size);
+ void mt76_rx_aggr_stop(struct mt76_dev *dev, struct mt76_wcid *wcid, u8 tid);
+ 
+ void mt76_wcid_key_setup(struct mt76_dev *dev, struct mt76_wcid *wcid,
 -- 
 2.25.1
 
