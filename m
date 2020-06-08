@@ -2,37 +2,36 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AD8351F269C
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 Jun 2020 01:45:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 491081F271A
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 Jun 2020 01:46:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731759AbgFHX11 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 8 Jun 2020 19:27:27 -0400
-Received: from mail.kernel.org ([198.145.29.99]:55742 "EHLO mail.kernel.org"
+        id S1732234AbgFHXmO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 8 Jun 2020 19:42:14 -0400
+Received: from mail.kernel.org ([198.145.29.99]:55782 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1732119AbgFHX1V (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 8 Jun 2020 19:27:21 -0400
+        id S1732128AbgFHX12 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 8 Jun 2020 19:27:28 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 3EE8020812;
-        Mon,  8 Jun 2020 23:27:20 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 0D84620801;
+        Mon,  8 Jun 2020 23:27:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1591658841;
-        bh=J/+l/UZTLwjwA2JlavVjEHcDdD1pl6zF5wuk5/A+ZGY=;
+        s=default; t=1591658847;
+        bh=MNQ8mx7/YoL+DE/atTfoj3dmjqjoE2lBS0qY/fSvAME=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XC9SuIKCd50Op3/AenxGzztUMGUdc5UormBIkVi2Qy6xEMPNVrWx3VkTLoepHdhUD
-         9bR+eDo9RlfVj1dBQ5AVuxGkv7LHeQ4AHkHEhLKrpONxvzxEYwmp46dTWph8i2xNxB
-         HD0/u5pgem4t3Wn/NOSdZ5zmG7C/tcG2VbI4HgDg=
+        b=PWl0N3ObRZmp6MvqB0ecHsJ2cm8poHQ+zJfu/NL/YtqKL0mJsJdccwfhwuNIWBfjg
+         TGKwWMtqbU+tb1G/QFM1fd4rxhy+/1Bw/KE76VT//DpzZScAndBprRkBFpF9cIqK/N
+         uxbhgn2qcWt0O/1im1yNa66sdKZ3vp0wCI923ywI=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Masashi Honma <masashi.honma@gmail.com>,
-        Denis <pro.denis@protonmail.com>,
+Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
         Kalle Valo <kvalo@codeaurora.org>,
         Sasha Levin <sashal@kernel.org>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.9 30/50] ath9k_htc: Silence undersized packet warnings
-Date:   Mon,  8 Jun 2020 19:26:20 -0400
-Message-Id: <20200608232640.3370262-30-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.9 35/50] rtlwifi: Fix a double free in _rtl_usb_tx_urb_setup()
+Date:   Mon,  8 Jun 2020 19:26:25 -0400
+Message-Id: <20200608232640.3370262-35-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200608232640.3370262-1-sashal@kernel.org>
 References: <20200608232640.3370262-1-sashal@kernel.org>
@@ -45,47 +44,60 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Masashi Honma <masashi.honma@gmail.com>
+From: Dan Carpenter <dan.carpenter@oracle.com>
 
-[ Upstream commit 450edd2805982d14ed79733a82927d2857b27cac ]
+[ Upstream commit beb12813bc75d4a23de43b85ad1c7cb28d27631e ]
 
-Some devices like TP-Link TL-WN722N produces this kind of messages
-frequently.
+Seven years ago we tried to fix a leak but actually introduced a double
+free instead.  It was an understandable mistake because the code was a
+bit confusing and the free was done in the wrong place.  The "skb"
+pointer is freed in both _rtl_usb_tx_urb_setup() and _rtl_usb_transmit().
+The free belongs _rtl_usb_transmit() instead of _rtl_usb_tx_urb_setup()
+and I've cleaned the code up a bit to hopefully make it more clear.
 
-kernel: ath: phy0: Short RX data len, dropping (dlen: 4)
-
-This warning is useful for developers to recognize that the device
-(Wi-Fi dongle or USB hub etc) is noisy but not for general users. So
-this patch make this warning to debug message.
-
-Reported-By: Denis <pro.denis@protonmail.com>
-Ref: https://bugzilla.kernel.org/show_bug.cgi?id=207539
-Fixes: cd486e627e67 ("ath9k_htc: Discard undersized packets")
-Signed-off-by: Masashi Honma <masashi.honma@gmail.com>
+Fixes: 36ef0b473fbf ("rtlwifi: usb: add missing freeing of skbuff")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
-Link: https://lore.kernel.org/r/20200504214443.4485-1-masashi.honma@gmail.com
+Link: https://lore.kernel.org/r/20200513093951.GD347693@mwanda
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath9k/htc_drv_txrx.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/wireless/realtek/rtlwifi/usb.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/htc_drv_txrx.c b/drivers/net/wireless/ath/ath9k/htc_drv_txrx.c
-index 52b42ecee621..2eb169b204f8 100644
---- a/drivers/net/wireless/ath/ath9k/htc_drv_txrx.c
-+++ b/drivers/net/wireless/ath/ath9k/htc_drv_txrx.c
-@@ -998,9 +998,9 @@ static bool ath9k_rx_prepare(struct ath9k_htc_priv *priv,
- 	 * which are not PHY_ERROR (short radar pulses have a length of 3)
- 	 */
- 	if (unlikely(!rs_datalen || (rs_datalen < 10 && !is_phyerr))) {
--		ath_warn(common,
--			 "Short RX data len, dropping (dlen: %d)\n",
--			 rs_datalen);
-+		ath_dbg(common, ANY,
-+			"Short RX data len, dropping (dlen: %d)\n",
-+			rs_datalen);
- 		goto rx_next;
- 	}
+diff --git a/drivers/net/wireless/realtek/rtlwifi/usb.c b/drivers/net/wireless/realtek/rtlwifi/usb.c
+index 1f02461de261..93b22a5b6878 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/usb.c
++++ b/drivers/net/wireless/realtek/rtlwifi/usb.c
+@@ -927,10 +927,8 @@ static struct urb *_rtl_usb_tx_urb_setup(struct ieee80211_hw *hw,
  
+ 	WARN_ON(NULL == skb);
+ 	_urb = usb_alloc_urb(0, GFP_ATOMIC);
+-	if (!_urb) {
+-		kfree_skb(skb);
++	if (!_urb)
+ 		return NULL;
+-	}
+ 	_rtl_install_trx_info(rtlusb, skb, ep_num);
+ 	usb_fill_bulk_urb(_urb, rtlusb->udev, usb_sndbulkpipe(rtlusb->udev,
+ 			  ep_num), skb->data, skb->len, _rtl_tx_complete, skb);
+@@ -945,7 +943,6 @@ static void _rtl_usb_transmit(struct ieee80211_hw *hw, struct sk_buff *skb,
+ 	struct rtl_usb *rtlusb = rtl_usbdev(rtl_usbpriv(hw));
+ 	u32 ep_num;
+ 	struct urb *_urb = NULL;
+-	struct sk_buff *_skb = NULL;
+ 
+ 	WARN_ON(NULL == rtlusb->usb_tx_aggregate_hdl);
+ 	if (unlikely(IS_USB_STOP(rtlusb))) {
+@@ -955,8 +952,7 @@ static void _rtl_usb_transmit(struct ieee80211_hw *hw, struct sk_buff *skb,
+ 		return;
+ 	}
+ 	ep_num = rtlusb->ep_map.ep_mapping[qnum];
+-	_skb = skb;
+-	_urb = _rtl_usb_tx_urb_setup(hw, _skb, ep_num);
++	_urb = _rtl_usb_tx_urb_setup(hw, skb, ep_num);
+ 	if (unlikely(!_urb)) {
+ 		RT_TRACE(rtlpriv, COMP_ERR, DBG_EMERG,
+ 			 "Can't allocate urb. Drop skb!\n");
 -- 
 2.25.1
 
