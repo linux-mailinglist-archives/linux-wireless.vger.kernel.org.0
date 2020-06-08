@@ -2,89 +2,221 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5622E1F1CF1
-	for <lists+linux-wireless@lfdr.de>; Mon,  8 Jun 2020 18:09:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 613721F1CF7
+	for <lists+linux-wireless@lfdr.de>; Mon,  8 Jun 2020 18:10:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730493AbgFHQIG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 8 Jun 2020 12:08:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57574 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730383AbgFHQIG (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 8 Jun 2020 12:08:06 -0400
-Received: from mail-lj1-x244.google.com (mail-lj1-x244.google.com [IPv6:2a00:1450:4864:20::244])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F095C08C5C4
-        for <linux-wireless@vger.kernel.org>; Mon,  8 Jun 2020 09:08:05 -0700 (PDT)
-Received: by mail-lj1-x244.google.com with SMTP id y11so19552858ljm.9
-        for <linux-wireless@vger.kernel.org>; Mon, 08 Jun 2020 09:08:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=ClSQBWTNKy6QM/u0O+83mkKXa/fUb2mZhnsBDib3FXU=;
-        b=Wj7uIHi3iVob7U2MnpWEYNidthbOPgWUvDSYkULGV6+X5T7T2QDw4sHvTkrkAIv0Ab
-         6Fg0K6exQtytZPQKO34LagmdPRaq460ZHKWIsEukUVc/6/emrmYy/9IVYBXfE7+n142s
-         THP8lUfiXgV4DF0FjAkuCp2x97R1OfEHEVP/Y=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=ClSQBWTNKy6QM/u0O+83mkKXa/fUb2mZhnsBDib3FXU=;
-        b=iRDbu6R5ClsrIc+UsIHl/ew/d7ys1X+emjnaP+f5xGWoobBk1KlIrnmV1eZ+vHqTVS
-         SEWBA6dobKMJ/bhie5ZojnkxJVwXxLpTvChA0HkdruKo61MxTOxZ/yABWQvdrzvj+5f9
-         KwM+jLA+L/TGvDiTO3P/lmB4b/yCE7LuSQIa2jkizHSCY8Pb2hABJIXxhJVVr472Qb73
-         oATdQqUtObCfLEf2WMu9HPXY6eI1ALuKza17iq2GPMkNF23pJDxhpXelDLUrgAJf27+b
-         wbulp4Mn/nyqPT53AooPbD0N9lBT1jweP/ySiZEQVi7hkqJLRS5caSke76oV0KwtT0J0
-         sbwA==
-X-Gm-Message-State: AOAM531icEw6XFIIRkeeDbvCBTaJM04mwKnyB5ifivL/GyWeUny1Fbz9
-        V4b0AKyM1Vvm75UqpksD8cDJKLqFeCk=
-X-Google-Smtp-Source: ABdhPJxtWGV7ScgJG/MxvxZK3TAZt30Vt4fUJ+ckTRlnaF2rDWYyMKmlOlOmesRA83W+cwcFPq9gSg==
-X-Received: by 2002:a2e:1558:: with SMTP id 24mr1397608ljv.202.1591632483637;
-        Mon, 08 Jun 2020 09:08:03 -0700 (PDT)
-Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com. [209.85.208.170])
-        by smtp.gmail.com with ESMTPSA id a27sm1373357ljn.58.2020.06.08.09.08.01
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 08 Jun 2020 09:08:02 -0700 (PDT)
-Received: by mail-lj1-f170.google.com with SMTP id a25so21203088ljp.3
-        for <linux-wireless@vger.kernel.org>; Mon, 08 Jun 2020 09:08:01 -0700 (PDT)
-X-Received: by 2002:a2e:b4c1:: with SMTP id r1mr6601345ljm.370.1591632480876;
- Mon, 08 Jun 2020 09:08:00 -0700 (PDT)
+        id S1730382AbgFHQKA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 8 Jun 2020 12:10:00 -0400
+Received: from mga17.intel.com ([192.55.52.151]:62033 "EHLO mga17.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730336AbgFHQKA (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 8 Jun 2020 12:10:00 -0400
+IronPort-SDR: DvIfd1Vb6lUNWxehoHcMK+toXz3iZf5JHp2qNDogcE+fxDh0VbVCW+GvEItfqfeHESVU7WshIV
+ DdWtfFm8bYHA==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jun 2020 09:09:59 -0700
+IronPort-SDR: uA/7QapvpQoodocC+cF2NsbYkyFMmvOvHulMyoaoWS5Vkom4uWHjGYEMmmbcBtTBT9713Rv+X+
+ Jsyv8uQBF3MA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.73,487,1583222400"; 
+   d="scan'208";a="305985348"
+Received: from lkp-server01.sh.intel.com (HELO 7b2aeca65b2f) ([10.239.97.150])
+  by orsmga008.jf.intel.com with ESMTP; 08 Jun 2020 09:09:57 -0700
+Received: from kbuild by 7b2aeca65b2f with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1jiKLV-00001E-8X; Mon, 08 Jun 2020 16:09:57 +0000
+Date:   Tue, 09 Jun 2020 00:09:41 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Johannes Berg <johannes.berg@intel.com>
+Cc:     linux-wireless@vger.kernel.org
+Subject: [mac80211:master] BUILD SUCCESS
+ 59d4bfc1e2c09435d91c980b03f7b72ce6e9f24e
+Message-ID: <5ede62c5.JmyJ2vqzRkjNMI/S%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-References: <20200604105901.1.I5b8b0c7ee0d3e51a73248975a9da61401b8f3900@changeid>
- <87v9k1iy7w.fsf@codeaurora.org>
-In-Reply-To: <87v9k1iy7w.fsf@codeaurora.org>
-From:   Evan Green <evgreen@chromium.org>
-Date:   Mon, 8 Jun 2020 09:07:24 -0700
-X-Gmail-Original-Message-ID: <CAE=gft76Nqo93QvvXU9xU-6sY-Q88H4RezMx8G6MWSBE7vJDKA@mail.gmail.com>
-Message-ID: <CAE=gft76Nqo93QvvXU9xU-6sY-Q88H4RezMx8G6MWSBE7vJDKA@mail.gmail.com>
-Subject: Re: [PATCH] ath10k: Acquire tx_lock in tx error paths
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     Govind Singh <govinds@qti.qualcomm.com>, sujitka@chromium.org,
-        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>, ath10k@lists.infradead.org,
-        Michal Kazior <michal.kazior@tieto.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>, kuabhs@chromium.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Jun 8, 2020 at 4:39 AM Kalle Valo <kvalo@codeaurora.org> wrote:
->
-> Evan Green <evgreen@chromium.org> writes:
->
-> > ath10k_htt_tx_free_msdu_id() has a lockdep assertion that htt->tx_lock
-> > is held. Acquire the lock in a couple of error paths when calling that
-> > function to ensure this condition is met.
-> >
-> > Fixes: 6421969f248fd ("ath10k: refactor tx pending management")
-> > Fixes: e62ee5c381c59 ("ath10k: Add support for htt_data_tx_desc_64
-> > descriptor")
->
-> Fixes tag should be in one line, I fixed that in the pending branch.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211.git  master
+branch HEAD: 59d4bfc1e2c09435d91c980b03f7b72ce6e9f24e  net: fix wiki website url mac80211 and wireless files
 
-Ah, got it. Thanks Kalle!
--Evan
+elapsed time: 481m
+
+configs tested: 162
+configs skipped: 13
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+arm                                 defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+arm                               allnoconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm64                            allmodconfig
+arm64                             allnoconfig
+m68k                         amcore_defconfig
+mips                       rbtx49xx_defconfig
+um                                  defconfig
+sh                     magicpanelr2_defconfig
+powerpc                      ep88xc_defconfig
+sh                ecovec24-romimage_defconfig
+sparc64                          allmodconfig
+arm                           h3600_defconfig
+sparc                            allyesconfig
+powerpc                    mvme5100_defconfig
+openrisc                 simple_smp_defconfig
+sh                           se7705_defconfig
+mips                     decstation_defconfig
+c6x                        evmc6678_defconfig
+arc                 nsimosci_hs_smp_defconfig
+arm                        mvebu_v5_defconfig
+arm                          iop32x_defconfig
+arm                            mps2_defconfig
+openrisc                         allyesconfig
+mips                  cavium_octeon_defconfig
+nds32                               defconfig
+sparc64                             defconfig
+sh                           se7343_defconfig
+mips                         tb0226_defconfig
+h8300                    h8300h-sim_defconfig
+arc                          axs101_defconfig
+sh                           se7724_defconfig
+arm                       aspeed_g5_defconfig
+mips                           xway_defconfig
+arm                            dove_defconfig
+xtensa                           alldefconfig
+arm                         shannon_defconfig
+arm                         socfpga_defconfig
+sh                   sh7724_generic_defconfig
+um                                allnoconfig
+arc                                 defconfig
+powerpc                    amigaone_defconfig
+arc                        nsim_700_defconfig
+arm                          exynos_defconfig
+arc                            hsdk_defconfig
+m68k                          sun3x_defconfig
+m68k                        m5272c3_defconfig
+m68k                        stmark2_defconfig
+arm                            qcom_defconfig
+sh                             espt_defconfig
+powerpc                          allmodconfig
+powerpc                     mpc512x_defconfig
+i386                              allnoconfig
+arm                     davinci_all_defconfig
+mips                  maltasmvp_eva_defconfig
+arm                            xcep_defconfig
+arm                         mv78xx0_defconfig
+c6x                        evmc6457_defconfig
+m68k                        mvme16x_defconfig
+s390                             allmodconfig
+ia64                      gensparse_defconfig
+arm                            zeus_defconfig
+sh                           se7206_defconfig
+sh                          rsk7203_defconfig
+sh                          polaris_defconfig
+arm                       omap2plus_defconfig
+i386                             alldefconfig
+parisc                generic-32bit_defconfig
+arm                          ep93xx_defconfig
+i386                             allyesconfig
+i386                                defconfig
+i386                              debian-10.3
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                              allnoconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                              allnoconfig
+m68k                           sun3_defconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+nios2                            allyesconfig
+openrisc                            defconfig
+c6x                              allyesconfig
+c6x                               allnoconfig
+nds32                             allnoconfig
+csky                             allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+h8300                            allmodconfig
+xtensa                              defconfig
+arc                              allyesconfig
+sh                               allmodconfig
+sh                                allnoconfig
+microblaze                        allnoconfig
+mips                             allyesconfig
+mips                              allnoconfig
+mips                             allmodconfig
+parisc                            allnoconfig
+parisc                              defconfig
+parisc                           allyesconfig
+parisc                           allmodconfig
+powerpc                             defconfig
+powerpc                          allyesconfig
+powerpc                          rhel-kconfig
+powerpc                           allnoconfig
+i386                 randconfig-a001-20200607
+i386                 randconfig-a006-20200607
+i386                 randconfig-a002-20200607
+i386                 randconfig-a005-20200607
+i386                 randconfig-a004-20200607
+i386                 randconfig-a003-20200607
+x86_64               randconfig-a011-20200608
+x86_64               randconfig-a016-20200608
+x86_64               randconfig-a012-20200608
+x86_64               randconfig-a014-20200608
+x86_64               randconfig-a013-20200608
+x86_64               randconfig-a015-20200608
+i386                 randconfig-a014-20200608
+i386                 randconfig-a011-20200608
+i386                 randconfig-a015-20200608
+i386                 randconfig-a016-20200608
+i386                 randconfig-a012-20200608
+i386                 randconfig-a013-20200608
+i386                 randconfig-a014-20200607
+i386                 randconfig-a015-20200607
+i386                 randconfig-a011-20200607
+i386                 randconfig-a016-20200607
+i386                 randconfig-a012-20200607
+i386                 randconfig-a013-20200607
+x86_64               randconfig-a002-20200607
+x86_64               randconfig-a001-20200607
+x86_64               randconfig-a006-20200607
+x86_64               randconfig-a003-20200607
+x86_64               randconfig-a004-20200607
+x86_64               randconfig-a005-20200607
+riscv                            allyesconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                            allmodconfig
+s390                             allyesconfig
+s390                              allnoconfig
+s390                                defconfig
+sparc                               defconfig
+sparc64                           allnoconfig
+sparc64                          allyesconfig
+um                               allmodconfig
+um                               allyesconfig
+x86_64                                   rhel
+x86_64                               rhel-7.6
+x86_64                    rhel-7.6-kselftests
+x86_64                         rhel-7.2-clear
+x86_64                                    lkp
+x86_64                              fedora-25
+x86_64                                  kexec
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
