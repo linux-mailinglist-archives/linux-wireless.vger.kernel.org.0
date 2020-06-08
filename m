@@ -2,36 +2,36 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 79BC91F22C1
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 Jun 2020 01:10:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EBD8A1F22FF
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 Jun 2020 01:12:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728755AbgFHXKp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 8 Jun 2020 19:10:45 -0400
-Received: from mail.kernel.org ([198.145.29.99]:56988 "EHLO mail.kernel.org"
+        id S1728954AbgFHXLm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 8 Jun 2020 19:11:42 -0400
+Received: from mail.kernel.org ([198.145.29.99]:58654 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728743AbgFHXKo (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 8 Jun 2020 19:10:44 -0400
+        id S1728941AbgFHXLk (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 8 Jun 2020 19:11:40 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8979D20C09;
-        Mon,  8 Jun 2020 23:10:42 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id E343B20897;
+        Mon,  8 Jun 2020 23:11:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1591657843;
-        bh=8DZyfMBj+GQYqoHgKvdO7+JnquptPSQNnrzE88QIKoc=;
+        s=default; t=1591657899;
+        bh=6qFB+xmqfN7wt3Btr+n50UrRMA+WUXiQ88tCbhKAgm0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=a5e8CZz3nQXEkg2NRMvuHDUDO4+wlFJ1ai6KVLJGiO+MqsnFZx58/oDzGlouaE2Hz
-         Wz7CZmZitmGjdqrBsef1lZFg9LwoQvT0jD8W02kX69/GIGvKxbhw4eHoXPjy3Q0Lwc
-         FJUWbFYj7nyfGWh4yqwF6855Qdf0X7ltaIwYKGz0=
+        b=NcVAQO8WgMuZiME8wwVHlXlkkj1n5Gpzr7k1er9V6yIM7OXEc9biqPsoCGnt8/a6P
+         FuIcQqQZUirAzElBu/wqlAZmpHkfI+3OTaZUX5QqtRNePflZEqmZHuGY9PeLSri9UQ
+         okmemf525p1r/DT8h8/+x0GAHmxzviOmuaVyK5U4=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
+Cc:     Sharon <sara.sharon@intel.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
         Sasha Levin <sashal@kernel.org>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.7 210/274] rtlwifi: Fix a double free in _rtl_usb_tx_urb_setup()
-Date:   Mon,  8 Jun 2020 19:05:03 -0400
-Message-Id: <20200608230607.3361041-210-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.7 253/274] iwlwifi: mvm: fix aux station leak
+Date:   Mon,  8 Jun 2020 19:05:46 -0400
+Message-Id: <20200608230607.3361041-253-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200608230607.3361041-1-sashal@kernel.org>
 References: <20200608230607.3361041-1-sashal@kernel.org>
@@ -44,60 +44,112 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Dan Carpenter <dan.carpenter@oracle.com>
+From: Sharon <sara.sharon@intel.com>
 
-[ Upstream commit beb12813bc75d4a23de43b85ad1c7cb28d27631e ]
+[ Upstream commit f327236df2afc8c3c711e7e070f122c26974f4da ]
 
-Seven years ago we tried to fix a leak but actually introduced a double
-free instead.  It was an understandable mistake because the code was a
-bit confusing and the free was done in the wrong place.  The "skb"
-pointer is freed in both _rtl_usb_tx_urb_setup() and _rtl_usb_transmit().
-The free belongs _rtl_usb_transmit() instead of _rtl_usb_tx_urb_setup()
-and I've cleaned the code up a bit to hopefully make it more clear.
+When mvm is initialized we alloc aux station with aux queue.
+We later free the station memory when driver is stopped, but we
+never free the queue's memory, which casues a leak.
 
-Fixes: 36ef0b473fbf ("rtlwifi: usb: add missing freeing of skbuff")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
-Link: https://lore.kernel.org/r/20200513093951.GD347693@mwanda
+Add a proper de-initialization of the station.
+
+Signed-off-by: Sharon <sara.sharon@intel.com>
+Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+Link: https://lore.kernel.org/r/iwlwifi.20200529092401.0121c5be55e9.Id7516fbb3482131d0c9dfb51ff20b226617ddb49@changeid
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtlwifi/usb.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ .../net/wireless/intel/iwlwifi/mvm/mac80211.c  |  5 ++---
+ drivers/net/wireless/intel/iwlwifi/mvm/sta.c   | 18 +++++++++++++-----
+ drivers/net/wireless/intel/iwlwifi/mvm/sta.h   |  6 +++---
+ 3 files changed, 18 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/usb.c b/drivers/net/wireless/realtek/rtlwifi/usb.c
-index 348b0072cdd6..c66c6dc00378 100644
---- a/drivers/net/wireless/realtek/rtlwifi/usb.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/usb.c
-@@ -881,10 +881,8 @@ static struct urb *_rtl_usb_tx_urb_setup(struct ieee80211_hw *hw,
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+index 7aa1350b093e..cf3c46c9b1ee 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+@@ -1209,14 +1209,13 @@ void __iwl_mvm_mac_stop(struct iwl_mvm *mvm)
+ 	 */
+ 	flush_work(&mvm->roc_done_wk);
  
- 	WARN_ON(NULL == skb);
- 	_urb = usb_alloc_urb(0, GFP_ATOMIC);
--	if (!_urb) {
--		kfree_skb(skb);
-+	if (!_urb)
- 		return NULL;
--	}
- 	_rtl_install_trx_info(rtlusb, skb, ep_num);
- 	usb_fill_bulk_urb(_urb, rtlusb->udev, usb_sndbulkpipe(rtlusb->udev,
- 			  ep_num), skb->data, skb->len, _rtl_tx_complete, skb);
-@@ -898,7 +896,6 @@ static void _rtl_usb_transmit(struct ieee80211_hw *hw, struct sk_buff *skb,
- 	struct rtl_usb *rtlusb = rtl_usbdev(rtl_usbpriv(hw));
- 	u32 ep_num;
- 	struct urb *_urb = NULL;
--	struct sk_buff *_skb = NULL;
++	iwl_mvm_rm_aux_sta(mvm);
++
+ 	iwl_mvm_stop_device(mvm);
  
- 	WARN_ON(NULL == rtlusb->usb_tx_aggregate_hdl);
- 	if (unlikely(IS_USB_STOP(rtlusb))) {
-@@ -907,8 +904,7 @@ static void _rtl_usb_transmit(struct ieee80211_hw *hw, struct sk_buff *skb,
- 		return;
- 	}
- 	ep_num = rtlusb->ep_map.ep_mapping[qnum];
--	_skb = skb;
--	_urb = _rtl_usb_tx_urb_setup(hw, _skb, ep_num);
-+	_urb = _rtl_usb_tx_urb_setup(hw, skb, ep_num);
- 	if (unlikely(!_urb)) {
- 		pr_err("Can't allocate urb. Drop skb!\n");
- 		kfree_skb(skb);
+ 	iwl_mvm_async_handlers_purge(mvm);
+ 	/* async_handlers_list is empty and will stay empty: HW is stopped */
+ 
+-	/* the fw is stopped, the aux sta is dead: clean up driver state */
+-	iwl_mvm_del_aux_sta(mvm);
+-
+ 	/*
+ 	 * Clear IN_HW_RESTART and HW_RESTART_REQUESTED flag when stopping the
+ 	 * hw (as restart_complete() won't be called in this case) and mac80211
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/sta.c b/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
+index 56ae72debb96..07ca8c91499d 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
+@@ -2080,16 +2080,24 @@ int iwl_mvm_rm_snif_sta(struct iwl_mvm *mvm, struct ieee80211_vif *vif)
+ 	return ret;
+ }
+ 
+-void iwl_mvm_dealloc_snif_sta(struct iwl_mvm *mvm)
++int iwl_mvm_rm_aux_sta(struct iwl_mvm *mvm)
+ {
+-	iwl_mvm_dealloc_int_sta(mvm, &mvm->snif_sta);
+-}
++	int ret;
+ 
+-void iwl_mvm_del_aux_sta(struct iwl_mvm *mvm)
+-{
+ 	lockdep_assert_held(&mvm->mutex);
+ 
++	iwl_mvm_disable_txq(mvm, NULL, mvm->aux_queue, IWL_MAX_TID_COUNT, 0);
++	ret = iwl_mvm_rm_sta_common(mvm, mvm->aux_sta.sta_id);
++	if (ret)
++		IWL_WARN(mvm, "Failed sending remove station\n");
+ 	iwl_mvm_dealloc_int_sta(mvm, &mvm->aux_sta);
++
++	return ret;
++}
++
++void iwl_mvm_dealloc_snif_sta(struct iwl_mvm *mvm)
++{
++	iwl_mvm_dealloc_int_sta(mvm, &mvm->snif_sta);
+ }
+ 
+ /*
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/sta.h b/drivers/net/wireless/intel/iwlwifi/mvm/sta.h
+index 8d70093847cb..da2d1ac01229 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/sta.h
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/sta.h
+@@ -8,7 +8,7 @@
+  * Copyright(c) 2012 - 2014 Intel Corporation. All rights reserved.
+  * Copyright(c) 2013 - 2014 Intel Mobile Communications GmbH
+  * Copyright(c) 2015 - 2016 Intel Deutschland GmbH
+- * Copyright(c) 2018 - 2019 Intel Corporation
++ * Copyright(c) 2018 - 2020 Intel Corporation
+  *
+  * This program is free software; you can redistribute it and/or modify
+  * it under the terms of version 2 of the GNU General Public License as
+@@ -31,7 +31,7 @@
+  * Copyright(c) 2012 - 2014 Intel Corporation. All rights reserved.
+  * Copyright(c) 2013 - 2014 Intel Mobile Communications GmbH
+  * Copyright(c) 2015 - 2016 Intel Deutschland GmbH
+- * Copyright(c) 2018 - 2019 Intel Corporation
++ * Copyright(c) 2018 - 2020 Intel Corporation
+  * All rights reserved.
+  *
+  * Redistribution and use in source and binary forms, with or without
+@@ -541,7 +541,7 @@ int iwl_mvm_sta_tx_agg(struct iwl_mvm *mvm, struct ieee80211_sta *sta,
+ 		       int tid, u8 queue, bool start);
+ 
+ int iwl_mvm_add_aux_sta(struct iwl_mvm *mvm);
+-void iwl_mvm_del_aux_sta(struct iwl_mvm *mvm);
++int iwl_mvm_rm_aux_sta(struct iwl_mvm *mvm);
+ 
+ int iwl_mvm_alloc_bcast_sta(struct iwl_mvm *mvm, struct ieee80211_vif *vif);
+ int iwl_mvm_send_add_bcast_sta(struct iwl_mvm *mvm, struct ieee80211_vif *vif);
 -- 
 2.25.1
 
