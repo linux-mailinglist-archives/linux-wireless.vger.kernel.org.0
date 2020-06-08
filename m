@@ -2,37 +2,38 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7898C1F289D
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 Jun 2020 01:56:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0CEF61F27D0
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 Jun 2020 01:55:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387521AbgFHXyn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 8 Jun 2020 19:54:43 -0400
-Received: from mail.kernel.org ([198.145.29.99]:50212 "EHLO mail.kernel.org"
+        id S1731596AbgFHXYP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 8 Jun 2020 19:24:15 -0400
+Received: from mail.kernel.org ([198.145.29.99]:50254 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728395AbgFHXYK (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 8 Jun 2020 19:24:10 -0400
+        id S2387494AbgFHXYN (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 8 Jun 2020 19:24:13 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C805C208B8;
-        Mon,  8 Jun 2020 23:24:08 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id CA99820C09;
+        Mon,  8 Jun 2020 23:24:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1591658649;
-        bh=CarzX7jrFj2dLReUZB4e6YJK8BhpEudbGb6UOINdud4=;
+        s=default; t=1591658652;
+        bh=IqCUM9sZg594VtkheaSNPK3OdjQSTv3twTQ/DtdW8k8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Q+5u8ZQwS9KVrYiPOHdPlUdipcFzyvdxwqN4wTFXqbTinoqUBnK2dwfD5vZ0lDoUP
-         VpHf2CENNqz9dRXSQED1WNfcUjtv3zi1yREnhO2GuLsLE9oJWT4eyDKQXSXgaSAoix
-         3uO6mP9rQygM3E05RAF3nyYST3NerT/UrnuZJO9M=
+        b=Eqs4ko/ZwLhdCeE2CTzK/RymRNakwWD5+OkYkSD20NLAq5c9UeXn12gXOh4nMA4Kq
+         gO9jzBNFVYuY422qcCpqlGmm58iF4TRBCn3eRqQOcoyxtNiiww0uUrtP9GOIFXeay8
+         1fBfOAfLtr068UN0xeKCVNyUzMRhszv5Gms93kRo=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Sasha Levin <sashal@kernel.org>, wcn36xx@lists.infradead.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 069/106] wcn36xx: Fix error handling path in 'wcn36xx_probe()'
-Date:   Mon,  8 Jun 2020 19:22:01 -0400
-Message-Id: <20200608232238.3368589-69-sashal@kernel.org>
+Cc:     Ryder Lee <ryder.lee@mediatek.com>,
+        Chih-Min Chen <chih-min.chen@mediatek.com>,
+        Felix Fietkau <nbd@nbd.name>, Sasha Levin <sashal@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org
+Subject: [PATCH AUTOSEL 4.19 071/106] mt76: avoid rx reorder buffer overflow
+Date:   Mon,  8 Jun 2020 19:22:03 -0400
+Message-Id: <20200608232238.3368589-71-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200608232238.3368589-1-sashal@kernel.org>
 References: <20200608232238.3368589-1-sashal@kernel.org>
@@ -45,54 +46,78 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Ryder Lee <ryder.lee@mediatek.com>
 
-[ Upstream commit a86308fc534edeceaf64670c691e17485436a4f4 ]
+[ Upstream commit 7c4f744d6703757be959f521a7a441bf34745d99 ]
 
-In case of error, 'qcom_wcnss_open_channel()' must be undone by a call to
-'rpmsg_destroy_ept()', as already done in the remove function.
+Enlarge slot to support 11ax 256 BA (256 MPDUs in an AMPDU)
 
-Fixes: 5052de8deff5 ("soc: qcom: smd: Transition client drivers from smd to rpmsg")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Reviewed-by: Bjorn Andersson <bjorn.andersson@linaro.org>
-Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
-Link: https://lore.kernel.org/r/20200507043619.200051-1-christophe.jaillet@wanadoo.fr
+Signed-off-by: Chih-Min Chen <chih-min.chen@mediatek.com>
+Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/wcn36xx/main.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/net/wireless/mediatek/mt76/agg-rx.c | 8 ++++----
+ drivers/net/wireless/mediatek/mt76/mt76.h   | 6 +++---
+ 2 files changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/wcn36xx/main.c b/drivers/net/wireless/ath/wcn36xx/main.c
-index 79998a3ddb7a..ad051f34e65b 100644
---- a/drivers/net/wireless/ath/wcn36xx/main.c
-+++ b/drivers/net/wireless/ath/wcn36xx/main.c
-@@ -1341,7 +1341,7 @@ static int wcn36xx_probe(struct platform_device *pdev)
- 	if (addr && ret != ETH_ALEN) {
- 		wcn36xx_err("invalid local-mac-address\n");
- 		ret = -EINVAL;
--		goto out_wq;
-+		goto out_destroy_ept;
- 	} else if (addr) {
- 		wcn36xx_info("mac address: %pM\n", addr);
- 		SET_IEEE80211_PERM_ADDR(wcn->hw, addr);
-@@ -1349,7 +1349,7 @@ static int wcn36xx_probe(struct platform_device *pdev)
+diff --git a/drivers/net/wireless/mediatek/mt76/agg-rx.c b/drivers/net/wireless/mediatek/mt76/agg-rx.c
+index 73c8b2805c97..d44d57e6eb27 100644
+--- a/drivers/net/wireless/mediatek/mt76/agg-rx.c
++++ b/drivers/net/wireless/mediatek/mt76/agg-rx.c
+@@ -154,8 +154,8 @@ void mt76_rx_aggr_reorder(struct sk_buff *skb, struct sk_buff_head *frames)
+ 	struct ieee80211_sta *sta;
+ 	struct mt76_rx_tid *tid;
+ 	bool sn_less;
+-	u16 seqno, head, size;
+-	u8 ackp, idx;
++	u16 seqno, head, size, idx;
++	u8 ackp;
  
- 	ret = wcn36xx_platform_get_resources(wcn, pdev);
- 	if (ret)
--		goto out_wq;
-+		goto out_destroy_ept;
+ 	__skb_queue_tail(frames, skb);
  
- 	wcn36xx_init_ieee80211(wcn);
- 	ret = ieee80211_register_hw(wcn->hw);
-@@ -1361,6 +1361,8 @@ static int wcn36xx_probe(struct platform_device *pdev)
- out_unmap:
- 	iounmap(wcn->ccu_base);
- 	iounmap(wcn->dxe_base);
-+out_destroy_ept:
-+	rpmsg_destroy_ept(wcn->smd_channel);
- out_wq:
- 	ieee80211_free_hw(hw);
- out_err:
+@@ -240,7 +240,7 @@ void mt76_rx_aggr_reorder(struct sk_buff *skb, struct sk_buff_head *frames)
+ }
+ 
+ int mt76_rx_aggr_start(struct mt76_dev *dev, struct mt76_wcid *wcid, u8 tidno,
+-		       u16 ssn, u8 size)
++		       u16 ssn, u16 size)
+ {
+ 	struct mt76_rx_tid *tid;
+ 
+@@ -264,7 +264,7 @@ EXPORT_SYMBOL_GPL(mt76_rx_aggr_start);
+ 
+ static void mt76_rx_aggr_shutdown(struct mt76_dev *dev, struct mt76_rx_tid *tid)
+ {
+-	u8 size = tid->size;
++	u16 size = tid->size;
+ 	int i;
+ 
+ 	cancel_delayed_work(&tid->reorder_work);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
+index 2eab35879163..7b1667ec619e 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76.h
+@@ -193,8 +193,8 @@ struct mt76_rx_tid {
+ 	struct delayed_work reorder_work;
+ 
+ 	u16 head;
+-	u8 size;
+-	u8 nframes;
++	u16 size;
++	u16 nframes;
+ 
+ 	u8 started:1, stopped:1, timer_pending:1;
+ 
+@@ -537,7 +537,7 @@ int mt76_get_survey(struct ieee80211_hw *hw, int idx,
+ void mt76_set_stream_caps(struct mt76_dev *dev, bool vht);
+ 
+ int mt76_rx_aggr_start(struct mt76_dev *dev, struct mt76_wcid *wcid, u8 tid,
+-		       u16 ssn, u8 size);
++		       u16 ssn, u16 size);
+ void mt76_rx_aggr_stop(struct mt76_dev *dev, struct mt76_wcid *wcid, u8 tid);
+ 
+ void mt76_wcid_key_setup(struct mt76_dev *dev, struct mt76_wcid *wcid,
 -- 
 2.25.1
 
