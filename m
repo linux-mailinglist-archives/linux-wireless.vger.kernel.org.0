@@ -2,37 +2,36 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DDB421F22B5
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 Jun 2020 01:10:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 79BC91F22C1
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 Jun 2020 01:10:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728611AbgFHXKR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 8 Jun 2020 19:10:17 -0400
-Received: from mail.kernel.org ([198.145.29.99]:56412 "EHLO mail.kernel.org"
+        id S1728755AbgFHXKp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 8 Jun 2020 19:10:45 -0400
+Received: from mail.kernel.org ([198.145.29.99]:56988 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728599AbgFHXKQ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 8 Jun 2020 19:10:16 -0400
+        id S1728743AbgFHXKo (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 8 Jun 2020 19:10:44 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 243D4208A9;
-        Mon,  8 Jun 2020 23:10:15 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 8979D20C09;
+        Mon,  8 Jun 2020 23:10:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1591657816;
-        bh=5itkUDluYpaS3Zxz7oL2dZm1OCRzVTnguZY9d4Ovqcg=;
+        s=default; t=1591657843;
+        bh=8DZyfMBj+GQYqoHgKvdO7+JnquptPSQNnrzE88QIKoc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CZ7plkCrPkDrRgea6NdYDVaUTu/XP1wglSFD+VvXneIOnMABxu4hKk3uJOcFLRP8i
-         ea9XDisjhl/Tgdf8wAFtlKnTZ5ep3K+wv4z+zr3oAMeF+qd6NEA826f1wJnHqCviEA
-         gVRyCgNyI3DjEOsbAZs0IfPFSjkZ6I8hWqGOIpT8=
+        b=a5e8CZz3nQXEkg2NRMvuHDUDO4+wlFJ1ai6KVLJGiO+MqsnFZx58/oDzGlouaE2Hz
+         Wz7CZmZitmGjdqrBsef1lZFg9LwoQvT0jD8W02kX69/GIGvKxbhw4eHoXPjy3Q0Lwc
+         FJUWbFYj7nyfGWh4yqwF6855Qdf0X7ltaIwYKGz0=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Lorenzo Bianconi <lorenzo@kernel.org>,
-        Felix Fietkau <nbd@nbd.name>, Sasha Levin <sashal@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org
-Subject: [PATCH AUTOSEL 5.7 190/274] mt76: mt7663: fix mt7615_mac_cca_stats_reset routine
-Date:   Mon,  8 Jun 2020 19:04:43 -0400
-Message-Id: <20200608230607.3361041-190-sashal@kernel.org>
+Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Sasha Levin <sashal@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.7 210/274] rtlwifi: Fix a double free in _rtl_usb_tx_urb_setup()
+Date:   Mon,  8 Jun 2020 19:05:03 -0400
+Message-Id: <20200608230607.3361041-210-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200608230607.3361041-1-sashal@kernel.org>
 References: <20200608230607.3361041-1-sashal@kernel.org>
@@ -45,54 +44,60 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Lorenzo Bianconi <lorenzo@kernel.org>
+From: Dan Carpenter <dan.carpenter@oracle.com>
 
-[ Upstream commit 886a862d3677ac0d3b57d19ffcf5b2d48b9c5267 ]
+[ Upstream commit beb12813bc75d4a23de43b85ad1c7cb28d27631e ]
 
-Fix PHYMUX_5 register definition for mt7663 in
-mt7615_mac_cca_stats_reset routine
+Seven years ago we tried to fix a leak but actually introduced a double
+free instead.  It was an understandable mistake because the code was a
+bit confusing and the free was done in the wrong place.  The "skb"
+pointer is freed in both _rtl_usb_tx_urb_setup() and _rtl_usb_transmit().
+The free belongs _rtl_usb_transmit() instead of _rtl_usb_tx_urb_setup()
+and I've cleaned the code up a bit to hopefully make it more clear.
 
-Fixes: f40ac0f3d3c0 ("mt76: mt7615: introduce mt7663e support")
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Fixes: 36ef0b473fbf ("rtlwifi: usb: add missing freeing of skbuff")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+Link: https://lore.kernel.org/r/20200513093951.GD347693@mwanda
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7615/mac.c  | 8 +++++++-
- drivers/net/wireless/mediatek/mt76/mt7615/regs.h | 1 +
- 2 files changed, 8 insertions(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtlwifi/usb.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-index a27a6d164009..656231786d55 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-@@ -1574,8 +1574,14 @@ void mt7615_mac_cca_stats_reset(struct mt7615_phy *phy)
- {
- 	struct mt7615_dev *dev = phy->dev;
- 	bool ext_phy = phy != &dev->phy;
--	u32 reg = MT_WF_PHY_R0_PHYMUX_5(ext_phy);
-+	u32 reg;
+diff --git a/drivers/net/wireless/realtek/rtlwifi/usb.c b/drivers/net/wireless/realtek/rtlwifi/usb.c
+index 348b0072cdd6..c66c6dc00378 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/usb.c
++++ b/drivers/net/wireless/realtek/rtlwifi/usb.c
+@@ -881,10 +881,8 @@ static struct urb *_rtl_usb_tx_urb_setup(struct ieee80211_hw *hw,
  
-+	if (is_mt7663(&dev->mt76))
-+		reg = MT7663_WF_PHY_R0_PHYMUX_5;
-+	else
-+		reg = MT_WF_PHY_R0_PHYMUX_5(ext_phy);
-+
-+	/* reset PD and MDRDY counters */
- 	mt76_clear(dev, reg, GENMASK(22, 20));
- 	mt76_set(dev, reg, BIT(22) | BIT(20));
- }
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/regs.h b/drivers/net/wireless/mediatek/mt76/mt7615/regs.h
-index 1e0d95b917e1..f7c2a633841c 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/regs.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/regs.h
-@@ -151,6 +151,7 @@ enum mt7615_reg_base {
- #define MT_WF_PHY_WF2_RFCTRL0_LPBCN_EN	BIT(9)
+ 	WARN_ON(NULL == skb);
+ 	_urb = usb_alloc_urb(0, GFP_ATOMIC);
+-	if (!_urb) {
+-		kfree_skb(skb);
++	if (!_urb)
+ 		return NULL;
+-	}
+ 	_rtl_install_trx_info(rtlusb, skb, ep_num);
+ 	usb_fill_bulk_urb(_urb, rtlusb->udev, usb_sndbulkpipe(rtlusb->udev,
+ 			  ep_num), skb->data, skb->len, _rtl_tx_complete, skb);
+@@ -898,7 +896,6 @@ static void _rtl_usb_transmit(struct ieee80211_hw *hw, struct sk_buff *skb,
+ 	struct rtl_usb *rtlusb = rtl_usbdev(rtl_usbpriv(hw));
+ 	u32 ep_num;
+ 	struct urb *_urb = NULL;
+-	struct sk_buff *_skb = NULL;
  
- #define MT_WF_PHY_R0_PHYMUX_5(_phy)	MT_WF_PHY(0x0614 + ((_phy) << 9))
-+#define MT7663_WF_PHY_R0_PHYMUX_5	MT_WF_PHY(0x0414)
- 
- #define MT_WF_PHY_R0_PHYCTRL_STS0(_phy)	MT_WF_PHY(0x020c + ((_phy) << 9))
- #define MT_WF_PHYCTRL_STAT_PD_OFDM	GENMASK(31, 16)
+ 	WARN_ON(NULL == rtlusb->usb_tx_aggregate_hdl);
+ 	if (unlikely(IS_USB_STOP(rtlusb))) {
+@@ -907,8 +904,7 @@ static void _rtl_usb_transmit(struct ieee80211_hw *hw, struct sk_buff *skb,
+ 		return;
+ 	}
+ 	ep_num = rtlusb->ep_map.ep_mapping[qnum];
+-	_skb = skb;
+-	_urb = _rtl_usb_tx_urb_setup(hw, _skb, ep_num);
++	_urb = _rtl_usb_tx_urb_setup(hw, skb, ep_num);
+ 	if (unlikely(!_urb)) {
+ 		pr_err("Can't allocate urb. Drop skb!\n");
+ 		kfree_skb(skb);
 -- 
 2.25.1
 
