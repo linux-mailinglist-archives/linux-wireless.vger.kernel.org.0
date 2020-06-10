@@ -2,191 +2,186 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D6DB71F5AD1
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Jun 2020 19:56:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 060631F5D4B
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Jun 2020 22:40:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727089AbgFJR4C (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 10 Jun 2020 13:56:02 -0400
-Received: from mailgw02.mediatek.com ([210.61.82.184]:29250 "EHLO
-        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726982AbgFJR4C (ORCPT
+        id S1726253AbgFJUkW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 10 Jun 2020 16:40:22 -0400
+Received: from mail2.candelatech.com ([208.74.158.173]:52342 "EHLO
+        mail3.candelatech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726207AbgFJUkW (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 10 Jun 2020 13:56:02 -0400
-X-UUID: 0dafa3fa5c054640b8815b576e533611-20200611
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Transfer-Encoding:Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=47yyi6m4fUgnEDPphiLhl4rOwR2Ga/hhnAODjXGkp+A=;
-        b=Lf7N0VH++ZZOYH7iWue97OxKbZppsUqsUrfDVoYFFRx3TlpdU9fINztxYpA/iBGXBk4CxX3cFnnlqc4EjfUtTTQsIaTu8RWTrMmiTHq90O83E0x+KWb8oZQGl9lE7jlrGa3/30qKJtJEGMfeq2IAY8bJG+IsUF3jQ/uQ9HkZv1s=;
-X-UUID: 0dafa3fa5c054640b8815b576e533611-20200611
-Received: from mtkexhb02.mediatek.inc [(172.21.101.103)] by mailgw02.mediatek.com
-        (envelope-from <ryder.lee@mediatek.com>)
-        (Cellopoint E-mail Firewall v4.1.10 Build 0809 with TLS)
-        with ESMTP id 1603497390; Thu, 11 Jun 2020 01:55:56 +0800
-Received: from mtkcas08.mediatek.inc (172.21.101.126) by
- mtkmbs08n1.mediatek.inc (172.21.101.55) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Thu, 11 Jun 2020 01:55:51 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas08.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Thu, 11 Jun 2020 01:55:51 +0800
-From:   Ryder Lee <ryder.lee@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-CC:     Shayne Chen <shayne.chen@mediatek.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>,
-        Ryder Lee <ryder.lee@mediatek.com>
-Subject: [PATCH 2/2] mt76: mt7915: add MU-MIMO support
-Date:   Thu, 11 Jun 2020 01:55:51 +0800
-Message-ID: <e3b0d3afe8e6f327631cbf483998979ee000e5e0.1591809100.git.ryder.lee@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <8464fdd2191d8d77e51441474e5c99e18b64185b.1591809100.git.ryder.lee@mediatek.com>
-References: <8464fdd2191d8d77e51441474e5c99e18b64185b.1591809100.git.ryder.lee@mediatek.com>
+        Wed, 10 Jun 2020 16:40:22 -0400
+Received: from ben-dt4.candelatech.com (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
+        by mail3.candelatech.com (Postfix) with ESMTP id 2C31E13C2B0;
+        Wed, 10 Jun 2020 13:40:21 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 2C31E13C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+        s=default; t=1591821621;
+        bh=HeRyNOUrMPxOqf31N3oMwlwBTMT4dbeMFsXMO7KbOyc=;
+        h=From:To:Cc:Subject:Date:From;
+        b=dK/smlyKXBwsZG8wFh+yqDNyebAD+AALMlmrFzyZrOgaAgYRA4b9D1NzmAXZQb1yp
+         GzyBCJ+qLr42XzpkYgMdVJSiD35FmaNjAfEOJIBN8ckVNXmBDUDoZg3TBQ0SQBnN2T
+         ao3NnSGG3plo7Rjz2MO9lRHGkY94m5+t2PjC6B+k=
+From:   greearb@candelatech.com
+To:     linux-wireless@vger.kernel.org
+Cc:     Ben Greear <greearb@candelatech.com>
+Subject: [PATCH] mac80211:  Fix kernel hang on ax200 firmware crash.
+Date:   Wed, 10 Jun 2020 13:40:17 -0700
+Message-Id: <20200610204017.4531-1-greearb@candelatech.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-RW5hYmxlIE1VLU1JTU8gYW5kIGFkZCByZWxhdGl2ZSBjb3VudGVycyBpbiBkZWJ1Z2ZzLg0KDQpD
-dXJyZW50bHkgTVUgbW9kdWxlcyByZWFkIFdUQkwgZmlyc3QgdG8gbm90aWZ5IEJBIGNoYW5nZXMg
-dG8NCm90aGVyIGNyb3NzIG1vZHVsZXMsIHNvIGFkanVzdCBtdDc5MTVfbWN1X3N0YV9iYSgpIGFj
-Y29yZGluZ2x5Lg0KDQpUZXN0ZWQtYnk6IEV2ZWx5biBUc2FpIDxldmVseW4udHNhaUBtZWRpYXRl
-ay5jb20+DQpTaWduZWQtb2ZmLWJ5OiBSeWRlciBMZWUgPHJ5ZGVyLmxlZUBtZWRpYXRlay5jb20+
-DQotLS0NCiAuLi4vd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvZGVidWdmcy5jICAgfCAx
-MSArKy0NCiAuLi4vbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1L21jdS5jICAgfCA3
-MiArKysrKysrKysrKysrKysrKystDQogLi4uL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210
-NzkxNS9tY3UuaCAgIHwgIDUgKy0NCiAuLi4vbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3
-OTE1L3JlZ3MuaCAgfCAgNSArKw0KIDQgZmlsZXMgY2hhbmdlZCwgODggaW5zZXJ0aW9ucygrKSwg
-NSBkZWxldGlvbnMoLSkNCg0KZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlh
-dGVrL210NzYvbXQ3OTE1L2RlYnVnZnMuYyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVr
-L210NzYvbXQ3OTE1L2RlYnVnZnMuYw0KaW5kZXggNTI3OGJlZTgxMmYxLi4zOGY0NzNkNTg3Yzkg
-MTAwNjQ0DQotLS0gYS9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzkxNS9k
-ZWJ1Z2ZzLmMNCisrKyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1
-L2RlYnVnZnMuYw0KQEAgLTE3OCw3ICsxNzgsMTQgQEAgbXQ3OTE1X3R4YmZfc3RhdF9yZWFkX3Bo
-eShzdHJ1Y3QgbXQ3OTE1X3BoeSAqcGh5LCBzdHJ1Y3Qgc2VxX2ZpbGUgKnMpDQogCXNlcV9wcmlu
-dGYocywgIlR4IEJlYW1mb3JtZWUgZmVlZGJhY2sgdHJpZ2dlcmVkIGNvdW50czogJWxkXG4iLA0K
-IAkJICAgRklFTERfR0VUKE1UX0VUQkZfVFhfRkJfVFJJLCBjbnQpKTsNCiANCi0JLyogVHggU1Ug
-Y291bnRlcnMgKi8NCisJLyogVHggU1UgJiBNVSBjb3VudGVycyAqLw0KKwljbnQgPSBtdDc2X3Jy
-KGRldiwgTVRfTUlCX1NEUjM0KGV4dF9waHkpKTsNCisJc2VxX3ByaW50ZihzLCAiVHggbXVsdGkt
-dXNlciBCZWFtZm9ybWluZyBjb3VudHM6ICVsZFxuIiwNCisJCSAgIEZJRUxEX0dFVChNVF9NSUJf
-TVVfQkZfVFhfQ05ULCBjbnQpKTsNCisJY250ID0gbXQ3Nl9ycihkZXYsIE1UX01JQl9EUjgoZXh0
-X3BoeSkpOw0KKwlzZXFfcHJpbnRmKHMsICJUeCBtdWx0aS11c2VyIE1QRFUgY291bnRzOiAlZFxu
-IiwgY250KTsNCisJY250ID0gbXQ3Nl9ycihkZXYsIE1UX01JQl9EUjkoZXh0X3BoeSkpOw0KKwlz
-ZXFfcHJpbnRmKHMsICJUeCBtdWx0aS11c2VyIHN1Y2Nlc3NmdWwgTVBEVSBjb3VudHM6ICVkXG4i
-LCBjbnQpOw0KIAljbnQgPSBtdDc2X3JyKGRldiwgTVRfTUlCX0RSMTEoZXh0X3BoeSkpOw0KIAlz
-ZXFfcHJpbnRmKHMsICJUeCBzaW5nbGUtdXNlciBzdWNjZXNzZnVsIE1QRFUgY291bnRzOiAlZFxu
-IiwgY250KTsNCiANCkBAIC0zODQsNiArMzkxLDcgQEAgaW50IG10NzkxNV9pbml0X2RlYnVnZnMo
-c3RydWN0IG10NzkxNV9kZXYgKmRldikNCiAJcmV0dXJuIDA7DQogfQ0KIA0KKyNpZmRlZiBDT05G
-SUdfTUFDODAyMTFfREVCVUdGUw0KIC8qKiBwZXItc3RhdGlvbiBkZWJ1Z2ZzICoqLw0KIA0KIC8q
-IHVzYWdlOiA8dHggbW9kZT4gPGxkcGM+IDxzdGJjPiA8Ync+IDxnaT4gPG5zcz4gPG1jcz4gKi8N
-CkBAIC00NjEsMyArNDY5LDQgQEAgdm9pZCBtdDc5MTVfc3RhX2FkZF9kZWJ1Z2ZzKHN0cnVjdCBp
-ZWVlODAyMTFfaHcgKmh3LCBzdHJ1Y3QgaWVlZTgwMjExX3ZpZiAqdmlmLA0KIAlkZWJ1Z2ZzX2Ny
-ZWF0ZV9maWxlKCJmaXhlZF9yYXRlIiwgMDYwMCwgZGlyLCBzdGEsICZmb3BzX2ZpeGVkX3JhdGUp
-Ow0KIAlkZWJ1Z2ZzX2NyZWF0ZV9maWxlKCJzdGF0cyIsIDA0MDAsIGRpciwgc3RhLCAmZm9wc19z
-dGFfc3RhdHMpOw0KIH0NCisjZW5kaWYNCmRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC93aXJlbGVz
-cy9tZWRpYXRlay9tdDc2L210NzkxNS9tY3UuYyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlh
-dGVrL210NzYvbXQ3OTE1L21jdS5jDQppbmRleCA4NDYwY2Q0NTMyMTMuLjllMzQ5MGRmZGY4NiAx
-MDA2NDQNCi0tLSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1L21j
-dS5jDQorKysgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzkxNS9tY3Uu
-Yw0KQEAgLTExNjYsMTkgKzExNjYsMzEgQEAgbXQ3OTE1X21jdV9zdGFfYmEoc3RydWN0IG10Nzkx
-NV9kZXYgKmRldiwNCiAJc3RydWN0IHd0YmxfcmVxX2hkciAqd3RibF9oZHI7DQogCXN0cnVjdCB0
-bHYgKnN0YV93dGJsOw0KIAlzdHJ1Y3Qgc2tfYnVmZiAqc2tiOw0KKwlpbnQgcmV0Ow0KIA0KIAlz
-a2IgPSBtdDc5MTVfbWN1X2FsbG9jX3N0YV9yZXEoZGV2LCBtdmlmLCBtc3RhLA0KIAkJCQkgICAg
-ICAgTVQ3OTE1X1NUQV9VUERBVEVfTUFYX1NJWkUpOw0KIAlpZiAoSVNfRVJSKHNrYikpDQogCQly
-ZXR1cm4gUFRSX0VSUihza2IpOw0KIA0KLQltdDc5MTVfbWN1X3N0YV9iYV90bHYoc2tiLCBwYXJh
-bXMsIGVuYWJsZSwgdHgpOw0KIAlzdGFfd3RibCA9IG10NzkxNV9tY3VfYWRkX3Rsdihza2IsIFNU
-QV9SRUNfV1RCTCwgc2l6ZW9mKHN0cnVjdCB0bHYpKTsNCiANCiAJd3RibF9oZHIgPSBtdDc5MTVf
-bWN1X2FsbG9jX3d0YmxfcmVxKGRldiwgbXN0YSwgV1RCTF9TRVQsIHN0YV93dGJsLA0KIAkJCQkJ
-ICAgICAmc2tiKTsNCiAJbXQ3OTE1X21jdV93dGJsX2JhX3Rsdihza2IsIHBhcmFtcywgZW5hYmxl
-LCB0eCwgc3RhX3d0YmwsIHd0YmxfaGRyKTsNCiANCisJcmV0ID0gX19tdDc2X21jdV9za2Jfc2Vu
-ZF9tc2coJmRldi0+bXQ3Niwgc2tiLA0KKwkJCQkgICAgICBNQ1VfRVhUX0NNRF9TVEFfUkVDX1VQ
-REFURSwgdHJ1ZSk7DQorCWlmIChyZXQpDQorCQlyZXR1cm4gcmV0Ow0KKw0KKwlza2IgPSBtdDc5
-MTVfbWN1X2FsbG9jX3N0YV9yZXEoZGV2LCBtdmlmLCBtc3RhLA0KKwkJCQkgICAgICAgTVQ3OTE1
-X1NUQV9VUERBVEVfTUFYX1NJWkUpOw0KKwlpZiAoSVNfRVJSKHNrYikpDQorCQlyZXR1cm4gUFRS
-X0VSUihza2IpOw0KKw0KKwltdDc5MTVfbWN1X3N0YV9iYV90bHYoc2tiLCBwYXJhbXMsIGVuYWJs
-ZSwgdHgpOw0KKw0KIAlyZXR1cm4gX19tdDc2X21jdV9za2Jfc2VuZF9tc2coJmRldi0+bXQ3Niwg
-c2tiLA0KIAkJCQkgICAgICAgTUNVX0VYVF9DTURfU1RBX1JFQ19VUERBVEUsIHRydWUpOw0KIH0N
-CkBAIC0xNDY2LDE2ICsxNDc4LDM4IEBAIG10NzkxNV9tY3Vfc3RhX211cnVfdGx2KHN0cnVjdCBz
-a19idWZmICpza2IsIHN0cnVjdCBpZWVlODAyMTFfc3RhICpzdGEpDQogCQlIRV9QSFkoQ0FQMl9V
-TF9NVV9QQVJUSUFMX01VX01JTU8sIGVsZW0tPnBoeV9jYXBfaW5mb1syXSk7DQogfQ0KIA0KK3N0
-YXRpYyBpbnQNCittdDc5MTVfbWN1X2FkZF9tdShzdHJ1Y3QgbXQ3OTE1X2RldiAqZGV2LCBzdHJ1
-Y3QgaWVlZTgwMjExX3ZpZiAqdmlmLA0KKwkJICBzdHJ1Y3QgaWVlZTgwMjExX3N0YSAqc3RhKQ0K
-K3sNCisJc3RydWN0IG10NzkxNV92aWYgKm12aWYgPSAoc3RydWN0IG10NzkxNV92aWYgKil2aWYt
-PmRydl9wcml2Ow0KKwlzdHJ1Y3QgbXQ3OTE1X3N0YSAqbXN0YSA9IChzdHJ1Y3QgbXQ3OTE1X3N0
-YSAqKXN0YS0+ZHJ2X3ByaXY7DQorCXN0cnVjdCBza19idWZmICpza2I7DQorCWludCBsZW4gPSBz
-aXplb2Yoc3RydWN0IHN0YV9yZXFfaGRyKSArIHNpemVvZihzdHJ1Y3Qgc3RhX3JlY19tdXJ1KTsN
-CisNCisJaWYgKCFzdGEtPnZodF9jYXAudmh0X3N1cHBvcnRlZCAmJiAhc3RhLT5oZV9jYXAuaGFz
-X2hlKQ0KKwkJcmV0dXJuIDA7DQorDQorCXNrYiA9IG10NzkxNV9tY3VfYWxsb2Nfc3RhX3JlcShk
-ZXYsIG12aWYsIG1zdGEsIGxlbik7DQorCWlmIChJU19FUlIoc2tiKSkNCisJCXJldHVybiBQVFJf
-RVJSKHNrYik7DQorDQorCW10NzkxNV9tY3Vfc3RhX211cnVfdGx2KHNrYiwgc3RhKTsNCisNCisJ
-cmV0dXJuIF9fbXQ3Nl9tY3Vfc2tiX3NlbmRfbXNnKCZkZXYtPm10NzYsIHNrYiwNCisJCQkJICAg
-ICAgIE1DVV9FWFRfQ01EX1NUQV9SRUNfVVBEQVRFLCB0cnVlKTsNCit9DQorDQogc3RhdGljIHZv
-aWQNCiBtdDc5MTVfbWN1X3N0YV90bHYoc3RydWN0IG10NzkxNV9kZXYgKmRldiwgc3RydWN0IHNr
-X2J1ZmYgKnNrYiwNCiAJCSAgIHN0cnVjdCBpZWVlODAyMTFfc3RhICpzdGEpDQogew0KIAlzdHJ1
-Y3QgdGx2ICp0bHY7DQogDQorCS8qIHN0YXJlYyBodCAqLw0KIAlpZiAoc3RhLT5odF9jYXAuaHRf
-c3VwcG9ydGVkKSB7DQogCQlzdHJ1Y3Qgc3RhX3JlY19odCAqaHQ7DQogDQotCQkvKiBzdGFyZWMg
-aHQgKi8NCiAJCXRsdiA9IG10NzkxNV9tY3VfYWRkX3Rsdihza2IsIFNUQV9SRUNfSFQsIHNpemVv
-ZigqaHQpKTsNCiAJCWh0ID0gKHN0cnVjdCBzdGFfcmVjX2h0ICopdGx2Ow0KIAkJaHQtPmh0X2Nh
-cCA9IGNwdV90b19sZTE2KHN0YS0+aHRfY2FwLmNhcCk7DQpAQCAtMjA2Nyw2ICsyMTAxLDMyIEBA
-IGludCBtdDc5MTVfbWN1X2FkZF9yYXRlX2N0cmwoc3RydWN0IG10NzkxNV9kZXYgKmRldiwgc3Ry
-dWN0IGllZWU4MDIxMV92aWYgKnZpZiwNCiAJCQkJICAgICAgIE1DVV9FWFRfQ01EX1NUQV9SRUNf
-VVBEQVRFLCB0cnVlKTsNCiB9DQogDQorc3RhdGljIGludA0KK210NzkxNV9tY3VfYWRkX2dyb3Vw
-KHN0cnVjdCBtdDc5MTVfZGV2ICpkZXYsIHN0cnVjdCBpZWVlODAyMTFfdmlmICp2aWYsDQorCQkg
-ICAgIHN0cnVjdCBpZWVlODAyMTFfc3RhICpzdGEpDQorew0KKyNkZWZpbmUgTVRfU1RBX0JTU19H
-Uk9VUAkJMQ0KKwlzdHJ1Y3QgbXQ3OTE1X3ZpZiAqbXZpZiA9IChzdHJ1Y3QgbXQ3OTE1X3ZpZiAq
-KXZpZi0+ZHJ2X3ByaXY7DQorCXN0cnVjdCBtdDc5MTVfc3RhICptc3RhID0gKHN0cnVjdCBtdDc5
-MTVfc3RhICopc3RhLT5kcnZfcHJpdjsNCisJc3RydWN0IHsNCisJCV9fbGUzMiBhY3Rpb247DQor
-CQl1OCB3bGFuX2lkeF9sbzsNCisJCXU4IHN0YXR1czsNCisJCXU4IHdsYW5faWR4X2hpOw0KKwkJ
-dTggcnN2MFs1XTsNCisJCV9fbGUzMiB2YWw7DQorCQl1OCByc3YxWzhdOw0KKwl9IF9fcGFja2Vk
-IHJlcSA9IHsNCisJCS5hY3Rpb24gPSBjcHVfdG9fbGUzMihNVF9TVEFfQlNTX0dST1VQKSwNCisJ
-CS53bGFuX2lkeF9sbyA9IHRvX3djaWRfbG8obXN0YS0+d2NpZC5pZHgpLA0KKwkJLndsYW5faWR4
-X2hpID0gdG9fd2NpZF9oaShtc3RhLT53Y2lkLmlkeCksDQorCQkudmFsID0gY3B1X3RvX2xlMzIo
-bXZpZi0+aWR4KSwNCisJfTsNCisNCisJcmV0dXJuIF9fbXQ3Nl9tY3Vfc2VuZF9tc2coJmRldi0+
-bXQ3NiwgTUNVX0VYVF9DTURfU0VUX0RSUl9DVFJMLA0KKwkJCQkgICAmcmVxLCBzaXplb2YocmVx
-KSwgdHJ1ZSk7DQorfQ0KKw0KIGludCBtdDc5MTVfbWN1X2FkZF9zdGFfYWR2KHN0cnVjdCBtdDc5
-MTVfZGV2ICpkZXYsIHN0cnVjdCBpZWVlODAyMTFfdmlmICp2aWYsDQogCQkJICAgc3RydWN0IGll
-ZWU4MDIxMV9zdGEgKnN0YSwgYm9vbCBlbmFibGUpDQogew0KQEAgLTIwNzYsMTAgKzIxMzYsMTgg
-QEAgaW50IG10NzkxNV9tY3VfYWRkX3N0YV9hZHYoc3RydWN0IG10NzkxNV9kZXYgKmRldiwgc3Ry
-dWN0IGllZWU4MDIxMV92aWYgKnZpZiwNCiAJCXJldHVybiAwOw0KIA0KIAkvKiBtdXN0IGtlZXAg
-dGhlIG9yZGVyICovDQorCXJldCA9IG10NzkxNV9tY3VfYWRkX2dyb3VwKGRldiwgdmlmLCBzdGEp
-Ow0KKwlpZiAocmV0KQ0KKwkJcmV0dXJuIHJldDsNCisNCiAJcmV0ID0gbXQ3OTE1X21jdV9hZGRf
-dHhiZihkZXYsIHZpZiwgc3RhLCBlbmFibGUpOw0KIAlpZiAocmV0KQ0KIAkJcmV0dXJuIHJldDsN
-CiANCisJcmV0ID0gbXQ3OTE1X21jdV9hZGRfbXUoZGV2LCB2aWYsIHN0YSk7DQorCWlmIChyZXQp
-DQorCQlyZXR1cm4gcmV0Ow0KKw0KIAlpZiAoZW5hYmxlKQ0KIAkJcmV0dXJuIG10NzkxNV9tY3Vf
-YWRkX3JhdGVfY3RybChkZXYsIHZpZiwgc3RhKTsNCiANCmRpZmYgLS1naXQgYS9kcml2ZXJzL25l
-dC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzkxNS9tY3UuaCBiL2RyaXZlcnMvbmV0L3dpcmVs
-ZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1L21jdS5oDQppbmRleCBjMjQxZGQ3YzRjMzYuLjk4MWRk
-M2ZjZGI0MSAxMDA2NDQNCi0tLSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYv
-bXQ3OTE1L21jdS5oDQorKysgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210
-NzkxNS9tY3UuaA0KQEAgLTIwMSw2ICsyMDEsNyBAQCBlbnVtIHsNCiAJTUNVX0VYVF9DTURfRURD
-QV9VUERBVEUgPSAweDI3LA0KIAlNQ1VfRVhUX0NNRF9ERVZfSU5GT19VUERBVEUgPSAweDJBLA0K
-IAlNQ1VfRVhUX0NNRF9USEVSTUFMX0NUUkwgPSAweDJjLA0KKwlNQ1VfRVhUX0NNRF9TRVRfRFJS
-X0NUUkwgPSAweDM2LA0KIAlNQ1VfRVhUX0NNRF9TRVRfUkREX0NUUkwgPSAweDNhLA0KIAlNQ1Vf
-RVhUX0NNRF9QUk9URUNUX0NUUkwgPSAweDNlLA0KIAlNQ1VfRVhUX0NNRF9NQUNfSU5JVF9DVFJM
-ID0gMHg0NiwNCkBAIC02NTMsNyArNjU0LDcgQEAgc3RydWN0IHN0YV9yZWNfbXVydSB7DQogCQli
-b29sIG9mZG1hX3VsX2VuOw0KIAkJYm9vbCBtaW1vX2RsX2VuOw0KIAkJYm9vbCBtaW1vX3VsX2Vu
-Ow0KLQkJYm9vbCByc3ZbNF07DQorCQl1OCByc3ZbNF07DQogCX0gY2ZnOw0KIA0KIAlzdHJ1Y3Qg
-ew0KQEAgLTY2NCw3ICs2NjUsNyBAQCBzdHJ1Y3Qgc3RhX3JlY19tdXJ1IHsNCiAJCWJvb2wgbHQx
-Nl9zaWdiOw0KIAkJYm9vbCByeF9zdV9jb21wX3NpZ2I7DQogCQlib29sIHJ4X3N1X25vbl9jb21w
-X3NpZ2I7DQotCQlib29sIHJzdjsNCisJCXU4IHJzdjsNCiAJfSBvZmRtYV9kbDsNCiANCiAJc3Ry
-dWN0IHsNCmRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210
-NzkxNS9yZWdzLmggYi9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzkxNS9y
-ZWdzLmgNCmluZGV4IGMxMjE3MTVmOGJmZi4uZTA5ODkxNDFkOWRhIDEwMDY0NA0KLS0tIGEvZHJp
-dmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvcmVncy5oDQorKysgYi9kcml2
-ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzkxNS9yZWdzLmgNCkBAIC0xMTcsMTEg
-KzExNywxNiBAQA0KICNkZWZpbmUgTVRfTUlCX1NEUjE2KF9iYW5kKQkJTVRfV0ZfTUlCKF9iYW5k
-LCAweDA0OCkNCiAjZGVmaW5lIE1UX01JQl9TRFIxNl9CVVNZX01BU0sJCUdFTk1BU0soMjMsIDAp
-DQogDQorI2RlZmluZSBNVF9NSUJfU0RSMzQoX2JhbmQpCQlNVF9XRl9NSUIoX2JhbmQsIDB4MDkw
-KQ0KKyNkZWZpbmUgTVRfTUlCX01VX0JGX1RYX0NOVAkJR0VOTUFTSygxNSwgMCkNCisNCiAjZGVm
-aW5lIE1UX01JQl9TRFIzNihfYmFuZCkJCU1UX1dGX01JQihfYmFuZCwgMHgwOTgpDQogI2RlZmlu
-ZSBNVF9NSUJfU0RSMzZfVFhUSU1FX01BU0sJR0VOTUFTSygyMywgMCkNCiAjZGVmaW5lIE1UX01J
-Ql9TRFIzNyhfYmFuZCkJCU1UX1dGX01JQihfYmFuZCwgMHgwOWMpDQogI2RlZmluZSBNVF9NSUJf
-U0RSMzdfUlhUSU1FX01BU0sJR0VOTUFTSygyMywgMCkNCiANCisjZGVmaW5lIE1UX01JQl9EUjgo
-X2JhbmQpCQlNVF9XRl9NSUIoX2JhbmQsIDB4MGMwKQ0KKyNkZWZpbmUgTVRfTUlCX0RSOShfYmFu
-ZCkJCU1UX1dGX01JQihfYmFuZCwgMHgwYzQpDQogI2RlZmluZSBNVF9NSUJfRFIxMShfYmFuZCkJ
-CU1UX1dGX01JQihfYmFuZCwgMHgwY2MpDQogDQogI2RlZmluZSBNVF9NSUJfTUJfU0RSMChfYmFu
-ZCwgbikJTVRfV0ZfTUlCKF9iYW5kLCAweDEwMCArICgobikgPDwgNCkpDQotLSANCjIuMTguMA0K
+From: Ben Greear <greearb@candelatech.com>
+
+I backported out-of-tree ax200 driver from backport-iwlwifi to my
+5.4 kernel so that I could run ax200 beside other radios (backports
+mac80211 otherwise is incompatible and other drivers will crash).
+
+Always possible that upstream kernel doesn't suffer from exactly this
+case, but upstream ax200 is too unstable to even get this far, so...
+
+The ax200 firmware crash often causes the kernel to deadlock due to the
+while (sta->sta_state == IEEE80211_STA_AUTHORIZED)
+loop in __sta_info_Destroy_part.  If sta_info_move_state does not
+make progress, then it will loop forever.  In my case, sta_info_move_state
+fails due to the sdata-in-driver check.
+
+Hung process looks like this:
+
+CPU: 7 PID: 23301 Comm: kworker/7:0 Tainted: G        W         5.4.43+ #5
+Hardware name: Default string Default string/SKYBAY, BIOS 5.12 02/19/2019
+Workqueue: events_freezable ieee80211_restart_work [mac80211]
+RIP: 0010:memcpy_erms+0x6/0x10
+Code: 90 90 90 90 eb 1e 0f 1f 00 48 89 f8 48 89 d1 48 c1 e9 03 83 e2 07 f3 48 a5 89 d1 f3 a4 c3 66 0f 1f 44 00 00 48 89 f8 48 89 d1 <f3> a4 ce
+RSP: 0018:ffffc90006117728 EFLAGS: 00010002
+RAX: ffffffff837ca040 RBX: 0000000000000000 RCX: 0000000000000006
+RDX: 0000000000000046 RSI: ffffffff8380aa84 RDI: ffffffff837ca080
+RBP: 0000000000000046 R08: 0000000000000000 R09: 0000000000001697
+R10: 0000000000000007 R11: 0000000000000000 R12: ffffffff837ca040
+R13: 0000000000000046 R14: 0000000000000000 R15: ffffffff8380aa44
+FS:  0000000000000000(0000) GS:ffff88826ddc0000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000562e61e28f18 CR3: 00000002554f6006 CR4: 00000000003606e0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ msg_print_text+0x12a/0x1e0
+ console_unlock+0x160/0x600
+ vprintk_emit+0x146/0x2c0
+ printk+0x4d/0x69
+ ? lockdep_hardirqs_on+0xf1/0x190
+ __sdata_err+0x61/0x150 [mac80211]
+ drv_sta_state+0x433/0x8f0 [mac80211]
+ sta_info_move_state+0x28e/0x370 [mac80211]
+ __sta_info_destroy_part2+0x48/0x1d0 [mac80211]
+ __sta_info_flush+0xf6/0x180 [mac80211]
+ ieee80211_set_disassoc+0xc1/0x490 [mac80211]
+ ieee80211_mgd_deauth+0x291/0x420 [mac80211]
+ cfg80211_mlme_deauth+0xd2/0x330 [cfg80211]
+ cfg80211_mlme_down+0x7c/0xc0 [cfg80211]
+ cfg80211_disconnect+0x2b1/0x320 [cfg80211]
+ cfg80211_leave+0x23/0x30 [cfg80211]
+ cfg80211_netdev_notifier_call+0x3a5/0x680 [cfg80211]
+ ? lockdep_rtnl_is_held+0x11/0x20
+ ? addrconf_notify+0xb4/0xbb0 [ipv6]
+ ? packet_notifier+0xb8/0x2c0
+ notifier_call_chain+0x40/0x60
+ __dev_close_many+0x68/0x120
+ dev_close_many+0x83/0x130
+ dev_close.part.96+0x3f/0x70
+ cfg80211_shutdown_all_interfaces+0x3e/0xc0 [cfg80211]
+ ieee80211_reconfig+0x96/0x2180 [mac80211]
+ ? cond_synchronize_rcu+0x20/0x20
+ ieee80211_restart_work+0xb6/0xe0 [mac80211]
+ process_one_work+0x27c/0x640
+ worker_thread+0x47/0x3f0
+ ? process_one_work+0x640/0x640
+ kthread+0xfc/0x130
+ ? kthread_create_worker_on_cpu+0x70/0x70
+ ret_from_fork+0x24/0x30
+
+With this patch, there is safety code to bail out after 1000 tries of
+moving the sta state, and also I check for EIO which is returned by
+the sdata-in-driver failure case and treat that as success as far as
+changing sta state goes.
+
+Console logs look like this in the failure case, and aside from the ax200
+radio that went phantom, the rest of the system is usable:
+
+iwlwifi 0000:12:00.0: 0x0000025B | CNVR_SCU_SD_REGS_SD_REG_ACTIVE_VDIG_MIRROR
+iwlwifi 0000:12:00.0: Firmware error during reconfiguration - reprobe!
+iwlwifi 0000:12:00.0: Failed to start RT ucode: -5
+wlan2: Failed check-sdata-in-driver check, flags: 0x0 count: 1
+wlan2: Failed check-sdata-in-driver check, flags: 0x0 count: 1
+wlan2: Failed check-sdata-in-driver check, flags: 0x0 count: 1
+iwlwifi 0000:12:00.0: Failed to trigger RX queues sync (-5)
+wlan2: Failed check-sdata-in-driver check, flags: 0x0 count: 1
+wlan2: drv_sta_state failed with EIO (sdata not in driver?), state: 4  new-state: 3
+wlan2: drv_sta_state failed with EIO (sdata not in driver?), state: 3  new-state: 2
+wlan2: drv_sta_state failed with EIO (sdata not in driver?), state: 2  new-state: 1
+wlan2: Failed check-sdata-in-driver check, flags: 0x0 count: 1
+iwlwifi 0000:12:00.0: iwl_trans_wait_txq_empty bad state = 0
+iwlwifi 0000:12:00.0: dma_pool_destroy iwlwifi:bc, 00000000d859bd4c busy
+
+Signed-off-by: Ben Greear <greearb@candelatech.com>
+---
+ net/mac80211/sta_info.c | 23 +++++++++++++++++++++--
+ 1 file changed, 21 insertions(+), 2 deletions(-)
+
+diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
+index e2a04fc..31a3856 100644
+--- a/net/mac80211/sta_info.c
++++ b/net/mac80211/sta_info.c
+@@ -1092,6 +1092,7 @@ static void __sta_info_destroy_part2(struct sta_info *sta)
+ 	struct ieee80211_sub_if_data *sdata = sta->sdata;
+ 	struct station_info *sinfo;
+ 	int ret;
++	int count = 0;
+ 
+ 	/*
+ 	 * NOTE: This assumes at least synchronize_net() was done
+@@ -1104,6 +1105,13 @@ static void __sta_info_destroy_part2(struct sta_info *sta)
+ 	while (sta->sta_state == IEEE80211_STA_AUTHORIZED) {
+ 		ret = sta_info_move_state(sta, IEEE80211_STA_ASSOC);
+ 		WARN_ON_ONCE(ret);
++		if (++count > 1000) {
++			/* WTF, bail out so that at least we don't hang the system. */
++			sdata_err(sdata, "Could not move state after 1000 tries, ret: %d  state: %d\n",
++				  ret, sta->sta_state);
++			WARN_ON_ONCE(1);
++			break;
++		}
+ 	}
+ 
+ 	/* now keys can no longer be reached */
+@@ -2017,8 +2025,19 @@ int sta_info_move_state(struct sta_info *sta,
+ 	if (test_sta_flag(sta, WLAN_STA_INSERTED)) {
+ 		int err = drv_sta_state(sta->local, sta->sdata, sta,
+ 					sta->sta_state, new_state);
+-		if (err)
+-			return err;
++		if (err == -EIO) {
++			/* Sdata-not-in-driver, we are out of sync, but probably
++			 * best to carry on instead of bailing here, at least maybe
++			 * we can clean this up.
++			 */
++			sdata_err(sta->sdata, "drv_sta_state failed with EIO (sdata not in driver?), state: %d  new-state: %d\n",
++				  sta->sta_state, new_state);
++			WARN_ON_ONCE(1);
++		}
++		else {
++			if (err)
++				return err;
++		}
+ 	}
+ 
+ 	/* reflect the change in all state variables */
+-- 
+2.9.5
 
