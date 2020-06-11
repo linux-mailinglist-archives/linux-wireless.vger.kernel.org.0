@@ -2,69 +2,76 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C31EA1F66A3
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jun 2020 13:30:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D5031F67F7
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jun 2020 14:40:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727889AbgFKLaM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 11 Jun 2020 07:30:12 -0400
-Received: from mail.kernel.org ([198.145.29.99]:50850 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727084AbgFKLaM (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 11 Jun 2020 07:30:12 -0400
-Received: from pali.im (pali.im [31.31.79.79])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        id S1726261AbgFKMk0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 11 Jun 2020 08:40:26 -0400
+Received: from smail.rz.tu-ilmenau.de ([141.24.186.67]:45668 "EHLO
+        smail.rz.tu-ilmenau.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726095AbgFKMkZ (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 11 Jun 2020 08:40:25 -0400
+Received: from legolas.fritz.box (unknown [87.147.49.100])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 180D82078D;
-        Thu, 11 Jun 2020 11:30:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1591875012;
-        bh=fkkqzxBFgHGAb88n0qp01YgTeaU1w9laNmqo4DGnoiY=;
-        h=Date:From:To:Subject:From;
-        b=FCZ24leKXFbhlMpb6YLeI0ORR0vcsIspHztUhT8pCHi7EzYlvtqqrboYvOwxl+rZ7
-         tXXqwmRkGa8hNGxtk+1Bnjj7X/xIsD/Uor3sPE/CKRbbmM/F/mrjsbRE1xIcCnwIa6
-         tnA/D6lLQTDFXrSemC/FtHbaui5IImWpoD+wkrk4=
-Received: by pali.im (Postfix)
-        id 171F6851; Thu, 11 Jun 2020 13:30:10 +0200 (CEST)
-Date:   Thu, 11 Jun 2020 13:30:09 +0200
-From:   Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
-To:     Ganapathi Bhat <ganapathi.bhat@nxp.com>,
-        Amitkumar Karwar <amitkarwar@gmail.com>,
-        Xinming Hu <huxinming820@gmail.com>,
-        linux-wireless@vger.kernel.org,
-        Marek =?utf-8?B?QmVow7pu?= <marek.behun@nic.cz>
-Subject: mwifiex: Maximal number of AP interfaces
-Message-ID: <20200611113009.v7cpybecc55vtni2@pali>
+        by smail.rz.tu-ilmenau.de (Postfix) with ESMTPSA id 28AF558005E;
+        Thu, 11 Jun 2020 14:40:24 +0200 (CEST)
+From:   Markus Theil <markus.theil@tu-ilmenau.de>
+To:     nbd@nbd.name, lorenzo.bianconi@redhat.com
+Cc:     linux-wireless@vger.kernel.org,
+        Markus Theil <markus.theil@tu-ilmenau.de>
+Subject: [PATCH] mt76: allow more channels, allowed in ETSI domain
+Date:   Thu, 11 Jun 2020 14:40:22 +0200
+Message-Id: <20200611124022.405658-1-markus.theil@tu-ilmenau.de>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: NeoMutt/20180716
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello!
+While looking at the ETSI regulatory domain definitions
+and a patch, which allows more channels for ath10k, I also
+checked the channels allowed for mt76.
 
-mwifiex kernel driver has currently hardcoded maximal number of AP
-interfaces to 3. It is defined by MWIFIEX_MAX_UAP_NUM constant and
-'.max' member in 'mwifiex_ap_sta_limits' structure.
+ETSI regulations would possibly allow to add channels 32, 68,
+96, 144, 169 and 173. IEEE 802.11-2016 defines no operating class
+for channels 32, 68 and 96. This leaves us channels 144, 169 and 173,
+which are included in this patch.
 
-I tried to increase this limit and figured out that SD8997 card can
-create four independent BSSIDs in AP mode. Not only 3. Scanning for wifi
-networks on another device proved that SD8997 was really broadcasting 4
-SSIDs.
+I tested 169 and 173 with a mt76 based USB dongle (AVM AC 860) and they
+worked fine. If I saw that right, these channels are also covered by
+register definitions inside the driver.
 
-When I tried to create fifth AP interface/SSID then mwifiex received
-error "mwifiex_cmd_timeout_func: Timeout cmd id = 0x4d, act = 0x1" and
-then card firmware crashed. SDIO card was then unregistered from bus.
+Channel 144 should also work, but gets disabled by the kernel as of now.
 
-I would like to increase maximal number of AP interface to 4 as it is
-supported by SD8997 card. But it cannot be done easily as for other
-cards managed by mwifiex driver which do not support more then 3 ap
-interfaces, it can cause problems...
+Signed-off-by: Markus Theil <markus.theil@tu-ilmenau.de>
+---
+ drivers/net/wireless/mediatek/mt76/mac80211.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-Looks like that maximal number of AP interfaces is firmware dependent
-number. Do you know if it is possible to retrieve this maximal count
-from card firmware via some special command?
+diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/wireless/mediatek/mt76/mac80211.c
+index 907098101898..4c10c8164aee 100644
+--- a/drivers/net/wireless/mediatek/mt76/mac80211.c
++++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
+@@ -58,12 +58,15 @@ static const struct ieee80211_channel mt76_channels_5ghz[] = {
+ 	CHAN5G(132, 5660),
+ 	CHAN5G(136, 5680),
+ 	CHAN5G(140, 5700),
++	CHAN5G(144, 5720),
+ 
+ 	CHAN5G(149, 5745),
+ 	CHAN5G(153, 5765),
+ 	CHAN5G(157, 5785),
+ 	CHAN5G(161, 5805),
+ 	CHAN5G(165, 5825),
++	CHAN5G(169, 5845),
++	CHAN5G(173, 5865),
+ };
+ 
+ static const struct ieee80211_tpt_blink mt76_tpt_blink[] = {
+-- 
+2.27.0
 
-Or do you know how to determinate maximal number of AP interfaces?
