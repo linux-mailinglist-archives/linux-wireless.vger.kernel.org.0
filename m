@@ -2,94 +2,104 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 624E41F767C
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jun 2020 12:09:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 593811F76CB
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jun 2020 12:35:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726253AbgFLKJO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 12 Jun 2020 06:09:14 -0400
-Received: from mail.kernel.org ([198.145.29.99]:38242 "EHLO mail.kernel.org"
+        id S1726296AbgFLKfJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 12 Jun 2020 06:35:09 -0400
+Received: from mail.kernel.org ([198.145.29.99]:45506 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725872AbgFLKJN (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 12 Jun 2020 06:09:13 -0400
-Received: from localhost.localdomain.com (unknown [151.48.140.182])
+        id S1726259AbgFLKfJ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 12 Jun 2020 06:35:09 -0400
+Received: from pali.im (pali.im [31.31.79.79])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D2B5C206A4;
-        Fri, 12 Jun 2020 10:09:11 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 654EF207D8;
+        Fri, 12 Jun 2020 10:35:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1591956552;
-        bh=7Mx23gktiiommLLEWopms1Sxg4Sfe4qhEzZx09cUVRc=;
-        h=From:To:Cc:Subject:Date:From;
-        b=wDgaMjQSrohDrdnuXbcKAGjYN40lMSlgXYZiUsz/FYpRi+l1UQIY1CQArSVw2yLAB
-         e7A1B7jEKDUc8t7ur0V/3pq56qLsfZ70fPoqqlIDzsyreq1uD+fDWXUZ1V23uAqyvS
-         tf6OG8Jo1doU2RpnO3W5Vs3wAEc+9E6RpyzTVzI4=
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com
-Subject: [PATCH] mt76: rely on register macros
-Date:   Fri, 12 Jun 2020 12:08:59 +0200
-Message-Id: <edc1ef4e264c8e9ed9864bdaf726b9b25c4ffc02.1591956144.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.26.2
+        s=default; t=1591958108;
+        bh=r3r/LlifhXssd71MGB+AGz0k2Z7U7mZc45nMA5vvgKY=;
+        h=Date:From:To:Subject:From;
+        b=iMBnMmoux0UsnSN+qp+LjkKMGblrRfo3Fd9UgSk1GRJlPtWSKGisWYNPpgTMNIZmb
+         e2rUSRJOi383nF+M+ndL9wbGbjEVtXcY2Yc26DxQUU/gO2EHEbi377icqvqCH+HLqt
+         vvk9rALw0evOY4e62PUCzYUZaPtE6UJez9l1QH0o=
+Received: by pali.im (Postfix)
+        id 28ED7582; Fri, 12 Jun 2020 12:35:06 +0200 (CEST)
+Date:   Fri, 12 Jun 2020 12:35:01 +0200
+From:   Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
+To:     Ganapathi Bhat <ganapathi.bhat@nxp.com>,
+        Amitkumar Karwar <amitkarwar@gmail.com>,
+        Xinming Hu <huxinming820@gmail.com>,
+        linux-wireless@vger.kernel.org,
+        Marek =?utf-8?B?QmVow7pu?= <marek.behun@nic.cz>
+Subject: mwifiex: Initialization of FW and net interface
+Message-ID: <20200612103501.vhwo3skvzt2243gz@pali>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: NeoMutt/20180716
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-For consistency with the rest of the code always rely on defined
-macros for register access
+Hello!
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- drivers/net/wireless/mediatek/mt76/debugfs.c | 4 ++--
- drivers/net/wireless/mediatek/mt76/util.c    | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+I was looking at mwifiex code which initialize card firmware and linux
+network interface and I think that there are some issues with this code
+path.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/debugfs.c b/drivers/net/wireless/mediatek/mt76/debugfs.c
-index 9fda65db8cac..5d58b16bfe9f 100644
---- a/drivers/net/wireless/mediatek/mt76/debugfs.c
-+++ b/drivers/net/wireless/mediatek/mt76/debugfs.c
-@@ -9,7 +9,7 @@ mt76_reg_set(void *data, u64 val)
- {
- 	struct mt76_dev *dev = data;
- 
--	dev->bus->wr(dev, dev->debugfs_reg, val);
-+	__mt76_wr(dev, dev->debugfs_reg, val);
- 	return 0;
- }
- 
-@@ -18,7 +18,7 @@ mt76_reg_get(void *data, u64 *val)
- {
- 	struct mt76_dev *dev = data;
- 
--	*val = dev->bus->rr(dev, dev->debugfs_reg);
-+	*val = __mt76_rr(dev, dev->debugfs_reg);
- 	return 0;
- }
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/util.c b/drivers/net/wireless/mediatek/mt76/util.c
-index ecde87465bf6..f53bb4ae5001 100644
---- a/drivers/net/wireless/mediatek/mt76/util.c
-+++ b/drivers/net/wireless/mediatek/mt76/util.c
-@@ -13,7 +13,7 @@ bool __mt76_poll(struct mt76_dev *dev, u32 offset, u32 mask, u32 val,
- 
- 	timeout /= 10;
- 	do {
--		cur = dev->bus->rr(dev, offset) & mask;
-+		cur = __mt76_rr(dev, offset) & mask;
- 		if (cur == val)
- 			return true;
- 
-@@ -31,7 +31,7 @@ bool __mt76_poll_msec(struct mt76_dev *dev, u32 offset, u32 mask, u32 val,
- 
- 	timeout /= 10;
- 	do {
--		cur = dev->bus->rr(dev, offset) & mask;
-+		cur = __mt76_rr(dev, offset) & mask;
- 		if (cur == val)
- 			return true;
- 
--- 
-2.26.2
+There is a function mwifiex_sta_init_cmd() which basically doing two
+different things:
 
+ * initial card firmware initialization
+ * configuration of interface parameters via card firmware
+
+That function has following definition:
+
+int mwifiex_sta_init_cmd(struct mwifiex_private *priv, u8 first_sta, bool init);
+
+'first_sta' and 'init' is FALSE when doing just configuration of
+interface parameters (by cfg80211 callbacks).
+
+'init' is TRUE when doing initial card firmware initialization and it is
+called when mwifiex driver is doing setup of card. But this function is
+called with 'init' set to TRUE multiple times when card driver was
+configured to create multiple linux network interfaces. In this case
+'first_sta' is TRUE only for the first call of this function.
+
+And now the first suspicious thing is: Why mwifiex driver calls that
+initial card firmware initialization multiple times when network
+interfaces are created during driver setup, and not when they are
+created later by "iw phy phyX interface add ..."?
+
+Next, looking at code of that function mwifiex_sta_init_cmd() it looks
+like that all commands send to firmware are "global" and affects all
+existing mwifiex network interfaces. Why then it is needed to call this
+function when creating a new interface? (E.g. second bssid for AP mode).
+
+Also if it really affects all existing interfaces, it means that
+creating a new interface changes configured cfg80211 parameters of all
+existing interfaces to some default values.
+
+This also affects power save settings which I described in previous email:
+https://lore.kernel.org/linux-wireless/20200609111544.v7u5ort3yk4s7coy@pali/
+
+And the last and the most suspicious thing in that mwifiex_sta_init_cmd
+function is that some AP related code is executed only during initial
+card firmware initialization and only if initial interface is AP mode
+('init' = TRUE, 'first_sta' = TRUE, mode = 'AP').
+
+Seems that driver behaves differently if interfaces are created by
+standard 'iw phy phyX interface add ..." command (via cfg80211 layer)
+and differently if interfaces are created automatically during driver
+setup function.
+
+Are there any reasons for these differences? And what to do with the
+fact that most firmware commands which affects all interfaces and not
+just one which is initializing?
+
+These issues which I described makes it hard for me to understand what
+is driver really doing and what should be correct behavior.
+
+By the way, do you have documentation for firmware commands?
