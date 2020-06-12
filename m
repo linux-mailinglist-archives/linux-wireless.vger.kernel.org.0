@@ -2,214 +2,169 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E0C11F787E
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jun 2020 15:08:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E37031F79BC
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jun 2020 16:25:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726482AbgFLNIa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 12 Jun 2020 09:08:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43394 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726474AbgFLNI0 (ORCPT
+        id S1726474AbgFLOZk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 12 Jun 2020 10:25:40 -0400
+Received: from mail27.static.mailgun.info ([104.130.122.27]:11893 "EHLO
+        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726310AbgFLOZk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 12 Jun 2020 09:08:26 -0400
-Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com [IPv6:2607:f8b0:4864:20::543])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7598C03E96F
-        for <linux-wireless@vger.kernel.org>; Fri, 12 Jun 2020 06:08:25 -0700 (PDT)
-Received: by mail-pg1-x543.google.com with SMTP id j6so184312pgh.4
-        for <linux-wireless@vger.kernel.org>; Fri, 12 Jun 2020 06:08:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=aUOnK/V6E2c0QjA3JcLB73isOrqlUh0EKxeqmn334Io=;
-        b=IQKavdnrV0XGnU+daxIx0alEG08pnm20vtMKXsBOcwc+Bh78Hm5odWCrFmWkSS5AJm
-         hSRpWUZ1VPaZk6feyGW9ZdCvI6mFFL8gYBvMw2nSzatX3a7/22Dz5VSHDGcABG74pgj4
-         v8XcX8PgtULnVoJhNaF+g7aCFn3nBi1mIrBOq4sfudLjQ78Uey6OZdK4rXEt0lXwNaEX
-         MeIelcVUwxq21fodJHNDwloZAUbPsWcawzI1c/Z+lAAEYH0SB/CTiZdZW+//PffNuvOl
-         5DI5NgsXMexooZeViItG8H/36mxRSleJW5jjlh9T3BMU4+3LDC+0D7TE17nuyl5qsI6a
-         MVPw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=aUOnK/V6E2c0QjA3JcLB73isOrqlUh0EKxeqmn334Io=;
-        b=kTzGjRVth8omvIejuB6jtp1VaH0udN4w0YohTDiITi3vv3DbqxkrjG2ZsWD+WUWW0o
-         a+hn1RevSsnyM16BPzqpR2gZBlQuF9RbXdHOAphgAhYBfFIjVG8z0+KeLv3R58BX75L+
-         HD9JXucXf+XGXu0zIpjmBfD+pcBpSZvzviS6ikApcIAG2920Daro6fW88/y2HoqdfwUG
-         /NjIDJlmHWmkLDgRCzQT5o8DUqQIF/Nj9W7itMh2a5pIJOfDNLPwdsVVnvoOQe8YJrZJ
-         KUW5RzmSlFifNRsGho6kQRvRBz3HUj5DDr32alnrzWYDuTRvxUq4jfzr6mQoF1l0zwzG
-         34cQ==
-X-Gm-Message-State: AOAM530p5unVggQLUnR7AApsGGsem2X86vW7NfsoNa3x4MZszug8pvlc
-        s7r3PP41L2pO1TEMRL1k5wXZ8KPvC+eUgRsw8JseFg==
-X-Google-Smtp-Source: ABdhPJy6jtd2g64TNuQdLYvVvSWrDRdqdV9mmn4qEM7tRFhfxFTVQ1fW1hReIFhw5fkbil3HcpvOFG7oYMHRwqj33No=
-X-Received: by 2002:a63:724a:: with SMTP id c10mr10824235pgn.130.1591967305188;
- Fri, 12 Jun 2020 06:08:25 -0700 (PDT)
+        Fri, 12 Jun 2020 10:25:40 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1591971939; h=Message-ID: References: In-Reply-To: Subject:
+ Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Sender; bh=6TkXm7WIXe6JmUlAyDwjFnbArqNv0j3TvAXTAuTgCHs=;
+ b=gF7xb6WIQJEYfjshXzN17+T85HcLmzdvCgZH1n7LqWJenZ+AkspejnbxedSUGdLAx/J4YKA3
+ Cu/a0MSOn9PdfAI+ow5BnyWN360XPsrcfqKwoN5DNiiBUlrQFa+eGcQeof8GO997JRXLUn6d
+ a3XDfdgpTYTzF8DrAY3qYPffPXU=
+X-Mailgun-Sending-Ip: 104.130.122.27
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n11.prod.us-east-1.postgun.com with SMTP id
+ 5ee39060356bcc26abfe7866 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 12 Jun 2020 14:25:36
+ GMT
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 2E5F2C433CB; Fri, 12 Jun 2020 14:25:36 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: pillair)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 62898C433CA;
+        Fri, 12 Jun 2020 14:25:35 +0000 (UTC)
 MIME-Version: 1.0
-References: <00000000000036317b05a301e1e4@google.com>
-In-Reply-To: <00000000000036317b05a301e1e4@google.com>
-From:   Andrey Konovalov <andreyknvl@google.com>
-Date:   Fri, 12 Jun 2020 15:08:14 +0200
-Message-ID: <CAAeHK+z-kPmNc_rVaMht+p=1qRu110ue=LZ09=+DGZNt7f-TTg@mail.gmail.com>
-Subject: Re: KASAN: use-after-free Read in ath9k_htc_txcompletion_cb
-To:     syzbot <syzbot+809d3bdcdb4650cdbc83@syzkaller.appspotmail.com>
-Cc:     ath9k-devel@qca.qualcomm.com,
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Fri, 12 Jun 2020 19:55:35 +0530
+From:   pillair@codeaurora.org
+To:     Douglas Anderson <dianders@chromium.org>
+Cc:     kvalo@codeaurora.org, kuabhs@google.com,
+        saiprakash.ranjan@codeaurora.org, linux-arm-msm@vger.kernel.org,
         "David S. Miller" <davem@davemloft.net>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        USB list <linux-usb@vger.kernel.org>,
-        linux-wireless@vger.kernel.org, netdev <netdev@vger.kernel.org>,
-        syzkaller-bugs <syzkaller-bugs@googlegroups.com>
-Content-Type: text/plain; charset="UTF-8"
+        Jakub Kicinski <kuba@kernel.org>, ath10k@lists.infradead.org,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org
+Subject: Re: [PATCH] ath10k: Wait until copy complete is actually done before
+ completing
+In-Reply-To: <20200609082015.1.Ife398994e5a0a6830e4d4a16306ef36e0144e7ba@changeid>
+References: <20200609082015.1.Ife398994e5a0a6830e4d4a16306ef36e0144e7ba@changeid>
+Message-ID: <775536279e60ccc833c481ad6ab6dab2@codeaurora.org>
+X-Sender: pillair@codeaurora.org
+User-Agent: Roundcube Webmail/1.3.9
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sat, Apr 11, 2020 at 1:09 PM syzbot
-<syzbot+809d3bdcdb4650cdbc83@syzkaller.appspotmail.com> wrote:
->
-> Hello,
->
-> syzbot found the following crash on:
->
-> HEAD commit:    0fa84af8 Merge tag 'usb-serial-5.7-rc1' of https://git.ker..
-> git tree:       https://github.com/google/kasan.git usb-fuzzer
-> console output: https://syzkaller.appspot.com/x/log.txt?x=10af83b3e00000
-> kernel config:  https://syzkaller.appspot.com/x/.config?x=6b9c154b0c23aecf
-> dashboard link: https://syzkaller.appspot.com/bug?extid=809d3bdcdb4650cdbc83
-> compiler:       gcc (GCC) 9.0.0 20181231 (experimental)
->
-> Unfortunately, I don't have any reproducer for this crash yet.
->
-> IMPORTANT: if you fix the bug, please add the following tag to the commit:
-> Reported-by: syzbot+809d3bdcdb4650cdbc83@syzkaller.appspotmail.com
->
-> ==================================================================
-> BUG: KASAN: use-after-free in ath9k_htc_txcompletion_cb+0x285/0x2b0 drivers/net/wireless/ath/ath9k/htc_hst.c:341
-> Read of size 8 at addr ffff8881d1caf488 by task kworker/0:0/24267
->
-> CPU: 0 PID: 24267 Comm: kworker/0:0 Not tainted 5.6.0-rc7-syzkaller #0
-> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
-> Workqueue: events request_firmware_work_func
-> Call Trace:
->  <IRQ>
->  __dump_stack lib/dump_stack.c:77 [inline]
->  dump_stack+0xef/0x16e lib/dump_stack.c:118
->  print_address_description.constprop.0.cold+0xd3/0x314 mm/kasan/report.c:374
->  __kasan_report.cold+0x37/0x77 mm/kasan/report.c:506
->  kasan_report+0xe/0x20 mm/kasan/common.c:641
->  ath9k_htc_txcompletion_cb+0x285/0x2b0 drivers/net/wireless/ath/ath9k/htc_hst.c:341
->  hif_usb_regout_cb+0x10b/0x1b0 drivers/net/wireless/ath/ath9k/hif_usb.c:90
->  __usb_hcd_giveback_urb+0x1f2/0x470 drivers/usb/core/hcd.c:1648
->  usb_hcd_giveback_urb+0x368/0x420 drivers/usb/core/hcd.c:1713
->  dummy_timer+0x1258/0x32ae drivers/usb/gadget/udc/dummy_hcd.c:1966
->  call_timer_fn+0x195/0x6f0 kernel/time/timer.c:1404
->  expire_timers kernel/time/timer.c:1449 [inline]
->  __run_timers kernel/time/timer.c:1773 [inline]
->  __run_timers kernel/time/timer.c:1740 [inline]
->  run_timer_softirq+0x5f9/0x1500 kernel/time/timer.c:1786
->  __do_softirq+0x21e/0x950 kernel/softirq.c:292
->  invoke_softirq kernel/softirq.c:373 [inline]
->  irq_exit+0x178/0x1a0 kernel/softirq.c:413
->  exiting_irq arch/x86/include/asm/apic.h:546 [inline]
->  smp_apic_timer_interrupt+0x141/0x540 arch/x86/kernel/apic/apic.c:1146
->  apic_timer_interrupt+0xf/0x20 arch/x86/entry/entry_64.S:829
->  </IRQ>
-> RIP: 0010:arch_local_irq_restore arch/x86/include/asm/irqflags.h:85 [inline]
-> RIP: 0010:console_unlock+0xa6b/0xca0 kernel/printk/printk.c:2481
-> Code: 00 89 ee 48 c7 c7 60 3e 14 87 e8 10 c3 03 00 65 ff 0d c1 ed d8 7e e9 b5 f9 ff ff e8 0f 37 16 00 e8 0a 7f 1b 00 ff 74 24 30 9d <e9> fd fd ff ff e8 fb 36 16 00 48 8d 7d 08 48 89 f8 48 c1 e8 03 42
-> RSP: 0018:ffff8881d9227a50 EFLAGS: 00000293 ORIG_RAX: ffffffffffffff13
-> RAX: 0000000000000007 RBX: 0000000000000200 RCX: 0000000000000006
-> RDX: 0000000000000000 RSI: 0000000000000008 RDI: ffff8881aba6d1cc
-> RBP: 0000000000000000 R08: ffff8881aba6c980 R09: fffffbfff1266485
-> R10: fffffbfff1266484 R11: ffffffff89332427 R12: ffffffff82a092b0
-> R13: ffffffff874d3950 R14: 0000000000000057 R15: dffffc0000000000
->  vprintk_emit+0x171/0x3d0 kernel/printk/printk.c:1996
->  vprintk_func+0x75/0x113 kernel/printk/printk_safe.c:386
->  printk+0xba/0xed kernel/printk/printk.c:2056
->  ath9k_htc_hw_init.cold+0x17/0x2a drivers/net/wireless/ath/ath9k/htc_hst.c:502
->  ath9k_hif_usb_firmware_cb+0x26b/0x500 drivers/net/wireless/ath/ath9k/hif_usb.c:1187
->  request_firmware_work_func+0x126/0x242 drivers/base/firmware_loader/main.c:976
->  process_one_work+0x94b/0x1620 kernel/workqueue.c:2266
->  worker_thread+0x96/0xe20 kernel/workqueue.c:2412
->  kthread+0x318/0x420 kernel/kthread.c:255
->  ret_from_fork+0x24/0x30 arch/x86/entry/entry_64.S:352
->
-> Allocated by task 24267:
->  save_stack+0x1b/0x80 mm/kasan/common.c:72
->  set_track mm/kasan/common.c:80 [inline]
->  __kasan_kmalloc mm/kasan/common.c:515 [inline]
->  __kasan_kmalloc.constprop.0+0xbf/0xd0 mm/kasan/common.c:488
->  slab_post_alloc_hook mm/slab.h:584 [inline]
->  slab_alloc_node mm/slub.c:2786 [inline]
->  kmem_cache_alloc_node+0xdc/0x330 mm/slub.c:2822
->  __alloc_skb+0xba/0x5a0 net/core/skbuff.c:198
->  alloc_skb include/linux/skbuff.h:1081 [inline]
->  htc_connect_service+0x2cc/0x840 drivers/net/wireless/ath/ath9k/htc_hst.c:257
->  ath9k_wmi_connect+0xd2/0x1a0 drivers/net/wireless/ath/ath9k/wmi.c:265
->  ath9k_init_htc_services.constprop.0+0xb4/0x650 drivers/net/wireless/ath/ath9k/htc_drv_init.c:146
->  ath9k_htc_probe_device+0x25a/0x1d80 drivers/net/wireless/ath/ath9k/htc_drv_init.c:959
->  ath9k_htc_hw_init+0x31/0x60 drivers/net/wireless/ath/ath9k/htc_hst.c:501
->  ath9k_hif_usb_firmware_cb+0x26b/0x500 drivers/net/wireless/ath/ath9k/hif_usb.c:1187
->  request_firmware_work_func+0x126/0x242 drivers/base/firmware_loader/main.c:976
->  process_one_work+0x94b/0x1620 kernel/workqueue.c:2266
->  worker_thread+0x96/0xe20 kernel/workqueue.c:2412
->  kthread+0x318/0x420 kernel/kthread.c:255
->  ret_from_fork+0x24/0x30 arch/x86/entry/entry_64.S:352
->
-> Freed by task 24267:
->  save_stack+0x1b/0x80 mm/kasan/common.c:72
->  set_track mm/kasan/common.c:80 [inline]
->  kasan_set_free_info mm/kasan/common.c:337 [inline]
->  __kasan_slab_free+0x117/0x160 mm/kasan/common.c:476
->  slab_free_hook mm/slub.c:1444 [inline]
->  slab_free_freelist_hook mm/slub.c:1477 [inline]
->  slab_free mm/slub.c:3034 [inline]
->  kmem_cache_free+0x9b/0x360 mm/slub.c:3050
->  kfree_skbmem net/core/skbuff.c:622 [inline]
->  kfree_skbmem+0xef/0x1b0 net/core/skbuff.c:616
->  __kfree_skb net/core/skbuff.c:679 [inline]
->  kfree_skb net/core/skbuff.c:696 [inline]
->  kfree_skb+0x102/0x3d0 net/core/skbuff.c:690
->  htc_connect_service.cold+0xa9/0x109 drivers/net/wireless/ath/ath9k/htc_hst.c:282
->  ath9k_wmi_connect+0xd2/0x1a0 drivers/net/wireless/ath/ath9k/wmi.c:265
->  ath9k_init_htc_services.constprop.0+0xb4/0x650 drivers/net/wireless/ath/ath9k/htc_drv_init.c:146
->  ath9k_htc_probe_device+0x25a/0x1d80 drivers/net/wireless/ath/ath9k/htc_drv_init.c:959
->  ath9k_htc_hw_init+0x31/0x60 drivers/net/wireless/ath/ath9k/htc_hst.c:501
->  ath9k_hif_usb_firmware_cb+0x26b/0x500 drivers/net/wireless/ath/ath9k/hif_usb.c:1187
->  request_firmware_work_func+0x126/0x242 drivers/base/firmware_loader/main.c:976
->  process_one_work+0x94b/0x1620 kernel/workqueue.c:2266
->  worker_thread+0x96/0xe20 kernel/workqueue.c:2412
->  kthread+0x318/0x420 kernel/kthread.c:255
->  ret_from_fork+0x24/0x30 arch/x86/entry/entry_64.S:352
->
-> The buggy address belongs to the object at ffff8881d1caf3c0
->  which belongs to the cache skbuff_head_cache of size 224
-> The buggy address is located 200 bytes inside of
->  224-byte region [ffff8881d1caf3c0, ffff8881d1caf4a0)
-> The buggy address belongs to the page:
-> page:ffffea0007472bc0 refcount:1 mapcount:0 mapping:ffff8881da16b400 index:0xffff8881d1caf280
-> flags: 0x200000000000200(slab)
-> raw: 0200000000000200 ffffea00074473c0 0000000900000009 ffff8881da16b400
-> raw: ffff8881d1caf280 00000000800c000b 00000001ffffffff 0000000000000000
-> page dumped because: kasan: bad access detected
->
-> Memory state around the buggy address:
->  ffff8881d1caf380: fc fc fc fc fc fc fc fc fb fb fb fb fb fb fb fb
->  ffff8881d1caf400: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-> >ffff8881d1caf480: fb fb fb fb fc fc fc fc fc fc fc fc fc fc fc fc
->                       ^
->  ffff8881d1caf500: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
->  ffff8881d1caf580: fb fb fb fb fb fb fb fb fb fb fb fb fc fc fc fc
-> ==================================================================
->
->
-> ---
-> This bug is generated by a bot. It may contain errors.
-> See https://goo.gl/tpsmEJ for more information about syzbot.
-> syzbot engineers can be reached at syzkaller@googlegroups.com.
->
-> syzbot will keep track of this bug report. See:
-> https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+Hi Doug,
 
-#syz dup: KASAN: use-after-free Read in hif_usb_regout_cb
+The send callback for the CEs do check for hw_index/SRRI before trying 
+to free the buffer.
+But adding a check for copy-complete (before calling the individual CE 
+callbacks) seems to be the better approach. Hence I agree that this 
+patch should be added.
+
+Thanks,
+Rakesh Pillai.
+
+On 2020-06-09 20:50, Douglas Anderson wrote:
+> On wcn3990 we have "per_ce_irq = true".  That makes the
+> ath10k_ce_interrupt_summary() function always return 0xfff. The
+> ath10k_ce_per_engine_service_any() function will see this and think
+> that _all_ copy engines have an interrupt.  Without checking, the
+> ath10k_ce_per_engine_service() assumes that if it's called that the
+> "copy complete" (cc) interrupt fired.  This combination seems bad.
+> 
+> Let's add a check to make sure that the "copy complete" interrupt
+> actually fired in ath10k_ce_per_engine_service().
+> 
+> This might fix a hard-to-reproduce failure where it appears that the
+> copy complete handlers run before the copy is really complete.
+> Specifically a symptom was that we were seeing this on a Qualcomm
+> sc7180 board:
+>   arm-smmu 15000000.iommu: Unhandled context fault:
+>   fsr=0x402, iova=0x7fdd45780, fsynr=0x30003, cbfrsynra=0xc1, cb=10
+> 
+> Even on platforms that don't have wcn3990 this still seems like it
+> would be a sane thing to do.  Specifically the current IRQ handler
+> comments indicate that there might be other misc interrupt sources
+> firing that need to be cleared.  If one of those sources was the one
+> that caused the IRQ handler to be called it would also be important to
+> double-check that the interrupt we cared about actually fired.
+> 
+> Signed-off-by: Douglas Anderson <dianders@chromium.org>
+
+
+Reviewed-by: Rakesh Pillai <pillair@codeaurora.org>
+
+
+> ---
+> 
+>  drivers/net/wireless/ath/ath10k/ce.c | 30 +++++++++++++++++++---------
+>  1 file changed, 21 insertions(+), 9 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/ath/ath10k/ce.c
+> b/drivers/net/wireless/ath/ath10k/ce.c
+> index 294fbc1e89ab..ffdd4b995f33 100644
+> --- a/drivers/net/wireless/ath/ath10k/ce.c
+> +++ b/drivers/net/wireless/ath/ath10k/ce.c
+> @@ -481,6 +481,15 @@ static inline void
+> ath10k_ce_engine_int_status_clear(struct ath10k *ar,
+>  	ath10k_ce_write32(ar, ce_ctrl_addr + wm_regs->addr, mask);
+>  }
+> 
+> +static inline bool ath10k_ce_engine_int_status_check(struct ath10k 
+> *ar,
+> +						     u32 ce_ctrl_addr,
+> +						     unsigned int mask)
+> +{
+> +	struct ath10k_hw_ce_host_wm_regs *wm_regs = ar->hw_ce_regs->wm_regs;
+> +
+> +	return ath10k_ce_read32(ar, ce_ctrl_addr + wm_regs->addr) & mask;
+> +}
+> +
+>  /*
+>   * Guts of ath10k_ce_send.
+>   * The caller takes responsibility for any needed locking.
+> @@ -1301,19 +1310,22 @@ void ath10k_ce_per_engine_service(struct
+> ath10k *ar, unsigned int ce_id)
+> 
+>  	spin_lock_bh(&ce->ce_lock);
+> 
+> -	/* Clear the copy-complete interrupts that will be handled here. */
+> -	ath10k_ce_engine_int_status_clear(ar, ctrl_addr,
+> -					  wm_regs->cc_mask);
+> +	if (ath10k_ce_engine_int_status_check(ar, ctrl_addr,
+> +					      wm_regs->cc_mask)) {
+> +		/* Clear before handling */
+> +		ath10k_ce_engine_int_status_clear(ar, ctrl_addr,
+> +						  wm_regs->cc_mask);
+> 
+> -	spin_unlock_bh(&ce->ce_lock);
+> +		spin_unlock_bh(&ce->ce_lock);
+> 
+> -	if (ce_state->recv_cb)
+> -		ce_state->recv_cb(ce_state);
+> +		if (ce_state->recv_cb)
+> +			ce_state->recv_cb(ce_state);
+> 
+> -	if (ce_state->send_cb)
+> -		ce_state->send_cb(ce_state);
+> +		if (ce_state->send_cb)
+> +			ce_state->send_cb(ce_state);
+> 
+> -	spin_lock_bh(&ce->ce_lock);
+> +		spin_lock_bh(&ce->ce_lock);
+> +	}
+> 
+>  	/*
+>  	 * Misc CE interrupts are not being handled, but still need
