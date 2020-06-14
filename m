@@ -2,72 +2,71 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8CB761F87C4
-	for <lists+linux-wireless@lfdr.de>; Sun, 14 Jun 2020 10:54:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 696911F8A09
+	for <lists+linux-wireless@lfdr.de>; Sun, 14 Jun 2020 20:23:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726918AbgFNIyU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 14 Jun 2020 04:54:20 -0400
-Received: from qrelay101.mxroute.com ([172.82.139.101]:39037 "EHLO
-        qrelay101.mxroute.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725815AbgFNIyT (ORCPT
+        id S1727001AbgFNSXr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 14 Jun 2020 14:23:47 -0400
+Received: from mailgw01.mediatek.com ([210.61.82.183]:21439 "EHLO
+        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726857AbgFNSXq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 14 Jun 2020 04:54:19 -0400
-Received: from filter004.mxroute.com ([149.28.56.236] 149.28.56.236.vultr.com)
- (Authenticated sender: mN4UYu2MZsgR)
- by qrelay101.mxroute.com (ZoneMTA) with ESMTPA id 172b20956a30008e63.001
- for <linux-wireless@vger.kernel.org>;
- Sun, 14 Jun 2020 08:54:15 +0000
-X-Zone-Loop: 8334986f1075e301f45aff659816e7774b2cc4216381
-X-Originating-IP: [149.28.56.236]
-Received: from eagle.mxlogin.com (unknown [23.92.74.70])
-        by filter004.mxroute.com (Postfix) with ESMTPS id 570BD3EDA0
-        for <linux-wireless@vger.kernel.org>; Sun, 14 Jun 2020 08:54:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=libreelec.tv; s=default; h=Message-Id:In-Reply-To:To:References:Date:
-        Subject:Mime-Version:Content-Transfer-Encoding:Content-Type:From:Sender:
-        Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=wlkIRpukyhcBu8xqzORiAjT6tXz3NOvcDSKQNsYB9zc=; b=jKyOPsgNhZtCYuEJVKommo7BZ+
-        t7LxE1tT1Arx/eQJCxKkorMnYZ18WNp6ZTjYQyxNUm6rzLfFinciVko+0J3sZnqKnGkEvf9wC+f0z
-        dx4B2WOBxfbQ1ZsiFtHVQ9J6spR9GdjtM2Dljg0EkqhX8tOeVfP/rA+G5q1nMnTu3e1UT5GT2/Osj
-        wNtpQjbu6LmSOOAo4KyGRYh0cdxnKUmO42U2lYJfekTfCFR4NJxySVMxVBXqNY/n+9jCc5SZsw1Ed
-        9S19/gG4WQSyiBPyivGJbivGl6oi43q2QrXn29FDfzKkke+WRNOKOLrSqzdUYg3KX+3HP1ShUv+x/
-        sAlShLuA==;
-From:   Christian Hewitt <chewitt@libreelec.tv>
-Content-Type: text/plain;
-        charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Mime-Version: 1.0 (Mac OS X Mail 12.4 \(3445.104.14\))
-Subject: Re: mt76 support for MT7668 SDIO?
-Date:   Sun, 14 Jun 2020 12:54:13 +0400
-References: <3BFCA289-ADD8-4755-80C5-1889A9AFB41D@libreelec.tv>
-To:     Linux Wireless <linux-wireless@vger.kernel.org>
-In-Reply-To: <3BFCA289-ADD8-4755-80C5-1889A9AFB41D@libreelec.tv>
-Message-Id: <B5F852AD-4717-4237-90C8-81D313FD43D3@libreelec.tv>
-X-Mailer: Apple Mail (2.3445.104.14)
-X-AuthUser: chewitt@libreelec.tv
+        Sun, 14 Jun 2020 14:23:46 -0400
+X-UUID: 6aca73ed846a4490b7138fd192ce79bf-20200615
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+        h=Content-Transfer-Encoding:Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=DR/QwOiy7DR8h4Z/9L2Jab/8wPEsmQ3UrzfyTt+17nU=;
+        b=L3f1Ua0KaEkjpD0GCoPfD63Gvs3LFMr8HryVSTR3qfGXJt/VIsaaWw+Ie1nTBg/8l6BQ5evwjfyKecKo/1FTiEQBqvMlstFIm8n9/XRUEp1wsu+t0ILVlOVVdnq2d2m5Z92GUfbf67hET1vRXdPrWyOKs2i0vcvvRUSDCpqhrxg=;
+X-UUID: 6aca73ed846a4490b7138fd192ce79bf-20200615
+Received: from mtkexhb01.mediatek.inc [(172.21.101.102)] by mailgw01.mediatek.com
+        (envelope-from <ryder.lee@mediatek.com>)
+        (Cellopoint E-mail Firewall v4.1.10 Build 0809 with TLS)
+        with ESMTP id 372453518; Mon, 15 Jun 2020 02:23:39 +0800
+Received: from mtkcas07.mediatek.inc (172.21.101.84) by
+ mtkmbs06n1.mediatek.inc (172.21.101.129) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Mon, 15 Jun 2020 02:23:37 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas07.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Mon, 15 Jun 2020 02:23:34 +0800
+From:   Ryder Lee <ryder.lee@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+CC:     Shayne Chen <shayne.chen@mediatek.com>,
+        Sean Wang <sean.wang@mediatek.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>,
+        Ryder Lee <ryder.lee@mediatek.com>
+Subject: [PATCH v3 1/4] mt76: mt7915: add missing CONFIG_MAC80211_DEBUGFS
+Date:   Mon, 15 Jun 2020 02:23:33 +0800
+Message-ID: <2863c9a7e14c791202738597184f4a6b75d5bc07.1592158312.git.ryder.lee@mediatek.com>
+X-Mailer: git-send-email 2.18.0
+In-Reply-To: <cover.1592158312.git.ryder.lee@mediatek.com>
+References: <cover.1592158312.git.ryder.lee@mediatek.com>
+MIME-Version: 1.0
+Content-Type: text/plain
+X-MTK:  N
+Content-Transfer-Encoding: base64
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Resending due to no responses :(
-
-> On 8 Jun 2020, at 8:45 am, Christian Hewitt <chewitt@libreelec.tv> =
-wrote:
->=20
-> I=E2=80=99m a maintainer for a distro that runs Kodi mediacentre on =
-many popular ARM SBCs and Android STBs (replacing Android).=20
->=20
-> Similar to my request on RTL8822CS, I have a number of requests for =
-WiFi support on Amlogic SoC devices using MT7668 chips. The BT side of =
-the module is supported in mainline for sometime, but there is no =
-mention of WiFi.
->=20
-> Is there any plan or timeline for MT7668 SDIO support in mt76? .. =
-I=E2=80=99m struggling to even find vendor drivers for this chip.
->=20
-> Christian
->=20
+QWRkIENPTkZJR19NQUM4MDIxMV9ERUJVR0ZTIHRvIGZpeCBhIHJlcG9ydGVkIHdhcm5pbmcuDQoN
+CkZpeGVzOiBlYzk3NDJhICgibXQ3NjogbXQ3OTE1OiBhZGQgLnN0YV9hZGRfZGVidWdmcyBzdXBw
+b3J0IikNClJlcG9ydGVkLWJ5OiBrZXJuZWwgdGVzdCByb2JvdCA8bGtwQGludGVsLmNvbT4NClNp
+Z25lZC1vZmYtYnk6IFJ5ZGVyIExlZSA8cnlkZXIubGVlQG1lZGlhdGVrLmNvbT4NCi0tLQ0KIGRy
+aXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1L2RlYnVnZnMuYyB8IDIgKysN
+CiAxIGZpbGUgY2hhbmdlZCwgMiBpbnNlcnRpb25zKCspDQoNCmRpZmYgLS1naXQgYS9kcml2ZXJz
+L25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzkxNS9kZWJ1Z2ZzLmMgYi9kcml2ZXJzL25l
+dC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzkxNS9kZWJ1Z2ZzLmMNCmluZGV4IDUyNzhiZWU4
+MTJmMS4uN2U0OGY1NmI1YjA4IDEwMDY0NA0KLS0tIGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVk
+aWF0ZWsvbXQ3Ni9tdDc5MTUvZGVidWdmcy5jDQorKysgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9t
+ZWRpYXRlay9tdDc2L210NzkxNS9kZWJ1Z2ZzLmMNCkBAIC0zODQsNiArMzg0LDcgQEAgaW50IG10
+NzkxNV9pbml0X2RlYnVnZnMoc3RydWN0IG10NzkxNV9kZXYgKmRldikNCiAJcmV0dXJuIDA7DQog
+fQ0KIA0KKyNpZmRlZiBDT05GSUdfTUFDODAyMTFfREVCVUdGUw0KIC8qKiBwZXItc3RhdGlvbiBk
+ZWJ1Z2ZzICoqLw0KIA0KIC8qIHVzYWdlOiA8dHggbW9kZT4gPGxkcGM+IDxzdGJjPiA8Ync+IDxn
+aT4gPG5zcz4gPG1jcz4gKi8NCkBAIC00NjEsMyArNDYyLDQgQEAgdm9pZCBtdDc5MTVfc3RhX2Fk
+ZF9kZWJ1Z2ZzKHN0cnVjdCBpZWVlODAyMTFfaHcgKmh3LCBzdHJ1Y3QgaWVlZTgwMjExX3ZpZiAq
+dmlmLA0KIAlkZWJ1Z2ZzX2NyZWF0ZV9maWxlKCJmaXhlZF9yYXRlIiwgMDYwMCwgZGlyLCBzdGEs
+ICZmb3BzX2ZpeGVkX3JhdGUpOw0KIAlkZWJ1Z2ZzX2NyZWF0ZV9maWxlKCJzdGF0cyIsIDA0MDAs
+IGRpciwgc3RhLCAmZm9wc19zdGFfc3RhdHMpOw0KIH0NCisjZW5kaWYNCi0tIA0KMi4xOC4wDQo=
 
