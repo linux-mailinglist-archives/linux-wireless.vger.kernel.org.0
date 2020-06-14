@@ -2,49 +2,49 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 502951F87C3
-	for <lists+linux-wireless@lfdr.de>; Sun, 14 Jun 2020 10:54:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8CB761F87C4
+	for <lists+linux-wireless@lfdr.de>; Sun, 14 Jun 2020 10:54:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726908AbgFNIyL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 14 Jun 2020 04:54:11 -0400
-Received: from qrelay201.mxroute.com ([172.82.139.201]:33527 "EHLO
-        qrelay201.mxroute.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725815AbgFNIyJ (ORCPT
+        id S1726918AbgFNIyU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 14 Jun 2020 04:54:20 -0400
+Received: from qrelay101.mxroute.com ([172.82.139.101]:39037 "EHLO
+        qrelay101.mxroute.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725815AbgFNIyT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 14 Jun 2020 04:54:09 -0400
-Received: from filter003.mxroute.com ([168.235.111.26] 168-235-111-26.cloud.ramnode.com)
+        Sun, 14 Jun 2020 04:54:19 -0400
+Received: from filter004.mxroute.com ([149.28.56.236] 149.28.56.236.vultr.com)
  (Authenticated sender: mN4UYu2MZsgR)
- by qrelay201.mxroute.com (ZoneMTA) with ESMTPA id 172b20937af0008e63.001
+ by qrelay101.mxroute.com (ZoneMTA) with ESMTPA id 172b20956a30008e63.001
  for <linux-wireless@vger.kernel.org>;
- Sun, 14 Jun 2020 08:54:08 +0000
-X-Zone-Loop: 657f1d6bc3b8eec0fe419c2fa2144863eda338bb1bfc
-X-Originating-IP: [168.235.111.26]
+ Sun, 14 Jun 2020 08:54:15 +0000
+X-Zone-Loop: 8334986f1075e301f45aff659816e7774b2cc4216381
+X-Originating-IP: [149.28.56.236]
 Received: from eagle.mxlogin.com (unknown [23.92.74.70])
-        by filter003.mxroute.com (Postfix) with ESMTPS id 54A0160029
-        for <linux-wireless@vger.kernel.org>; Sun, 14 Jun 2020 08:54:07 +0000 (UTC)
+        by filter004.mxroute.com (Postfix) with ESMTPS id 570BD3EDA0
+        for <linux-wireless@vger.kernel.org>; Sun, 14 Jun 2020 08:54:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=libreelec.tv; s=default; h=Message-Id:In-Reply-To:To:References:Date:
         Subject:Mime-Version:Content-Transfer-Encoding:Content-Type:From:Sender:
         Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
         Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
         List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=4CjjZ4pwzmJg9EvkmdxKgbcPT03x8iUQuUf3+x+6Mrk=; b=bV29JBo+ti3YlSuqcyDS9rFz7c
-        /moX5Jo/vowb+NhRqYHhcbYcp5sVO6AN+6Q/5xUkaZgceegq5eU3PGMXmxCk4ChuOADCH3vx82Emf
-        xmRbquSfJjqRnyxTS+XvGNnbe/429z0ykhMLKuSn5F5NHiace7u9+v2fpZ9YjOK5pW9oBWUB/Bz69
-        J++mUwNDwLws5vAd9gjQU+0innATnPfwJRsUB7u0ksrtbHp9hmd3IOmThbp2JhAqkWvshTHB4KbDf
-        MAhGPv7gaCB39cVWxtYSWGxWpUZ8njxm5dma8yHVCMR5Fy3yoqMxhzdxCEFR1+wVFhBhnEoqfmNCc
-        lAXXRMEA==;
+        bh=wlkIRpukyhcBu8xqzORiAjT6tXz3NOvcDSKQNsYB9zc=; b=jKyOPsgNhZtCYuEJVKommo7BZ+
+        t7LxE1tT1Arx/eQJCxKkorMnYZ18WNp6ZTjYQyxNUm6rzLfFinciVko+0J3sZnqKnGkEvf9wC+f0z
+        dx4B2WOBxfbQ1ZsiFtHVQ9J6spR9GdjtM2Dljg0EkqhX8tOeVfP/rA+G5q1nMnTu3e1UT5GT2/Osj
+        wNtpQjbu6LmSOOAo4KyGRYh0cdxnKUmO42U2lYJfekTfCFR4NJxySVMxVBXqNY/n+9jCc5SZsw1Ed
+        9S19/gG4WQSyiBPyivGJbivGl6oi43q2QrXn29FDfzKkke+WRNOKOLrSqzdUYg3KX+3HP1ShUv+x/
+        sAlShLuA==;
 From:   Christian Hewitt <chewitt@libreelec.tv>
 Content-Type: text/plain;
         charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 Mime-Version: 1.0 (Mac OS X Mail 12.4 \(3445.104.14\))
-Subject: Re: rtw88 SDIO support?
-Date:   Sun, 14 Jun 2020 12:54:04 +0400
-References: <50223157-F9F8-4039-87E7-A8575DF10945@libreelec.tv>
+Subject: Re: mt76 support for MT7668 SDIO?
+Date:   Sun, 14 Jun 2020 12:54:13 +0400
+References: <3BFCA289-ADD8-4755-80C5-1889A9AFB41D@libreelec.tv>
 To:     Linux Wireless <linux-wireless@vger.kernel.org>
-In-Reply-To: <50223157-F9F8-4039-87E7-A8575DF10945@libreelec.tv>
-Message-Id: <45E86424-06BE-4B6E-B047-245D43D885BA@libreelec.tv>
+In-Reply-To: <3BFCA289-ADD8-4755-80C5-1889A9AFB41D@libreelec.tv>
+Message-Id: <B5F852AD-4717-4237-90C8-81D313FD43D3@libreelec.tv>
 X-Mailer: Apple Mail (2.3445.104.14)
 X-AuthUser: chewitt@libreelec.tv
 Sender: linux-wireless-owner@vger.kernel.org
@@ -54,17 +54,19 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 Resending due to no responses :(
 
-> On 8 Jun 2020, at 8:42 am, Christian Hewitt <chewitt@libreelec.tv> =
+> On 8 Jun 2020, at 8:45 am, Christian Hewitt <chewitt@libreelec.tv> =
 wrote:
 >=20
 > I=E2=80=99m a maintainer for a distro that runs Kodi mediacentre on =
 many popular ARM SBCs and Android STBs (replacing Android).=20
 >=20
-> I have a number of requests for WiFi support on Amlogic SoC devices =
-using RTL8822CS chips which rtw88 supports on PCI, but not SDIO.
+> Similar to my request on RTL8822CS, I have a number of requests for =
+WiFi support on Amlogic SoC devices using MT7668 chips. The BT side of =
+the module is supported in mainline for sometime, but there is no =
+mention of WiFi.
 >=20
-> Can I ask if there is any timeline/plan for SDIO support? .. the =
-out-of-tree vendor drivers are hassle for distro=E2=80=99s to maintain.
+> Is there any plan or timeline for MT7668 SDIO support in mt76? .. =
+I=E2=80=99m struggling to even find vendor drivers for this chip.
 >=20
 > Christian
 >=20
