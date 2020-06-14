@@ -2,101 +2,111 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 296BB1F84E8
-	for <lists+linux-wireless@lfdr.de>; Sat, 13 Jun 2020 21:26:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 413A61F860D
+	for <lists+linux-wireless@lfdr.de>; Sun, 14 Jun 2020 02:47:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726648AbgFMT0Y (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 13 Jun 2020 15:26:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38612 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726304AbgFMT0X (ORCPT
+        id S1726803AbgFNArD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 13 Jun 2020 20:47:03 -0400
+Received: from mail27.static.mailgun.info ([104.130.122.27]:19962 "EHLO
+        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726775AbgFNArC (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 13 Jun 2020 15:26:23 -0400
-Received: from mail-ot1-x329.google.com (mail-ot1-x329.google.com [IPv6:2607:f8b0:4864:20::329])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3BBE4C03E96F
-        for <linux-wireless@vger.kernel.org>; Sat, 13 Jun 2020 12:26:23 -0700 (PDT)
-Received: by mail-ot1-x329.google.com with SMTP id v13so10025995otp.4
-        for <linux-wireless@vger.kernel.org>; Sat, 13 Jun 2020 12:26:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=aJ1kTeHe29tkewf0gw/5ptnJgon/X9T3RuE5AhokiHI=;
-        b=nUYyy8kpvioc0uzwrDWbcTCoVu7aiDrgclQUGZMnEn5PL/qG+7OrY8nMBDEj042zl5
-         cLjgMG1BFuNrfrqzJjzVoa24KwPKgCSTVdnNiyqh8ZDgPNkPLC9i5GzI0gbZY8jVxnj0
-         Y0mPQBVtMwngIcoTAEg02K5mTbwIHyzD6M3OHQnyEBKxyZLmh2To07dvM+Rprhoytafd
-         n9WZbUxOLc6PdLGtfzsLLK2lh6RUPdXmua04qnxGdOC6abW+ufOJdpyzJvePjGBTOn4w
-         6/5yvonP/7ZFoBXHgPT/TniK3BJUl/BcSywrUzmIzAauQbWAkZjZ4Xy/Ile9jtXuLgXj
-         C4UA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:content-transfer-encoding;
-        bh=aJ1kTeHe29tkewf0gw/5ptnJgon/X9T3RuE5AhokiHI=;
-        b=jTISH1QOHfiVscxeS4d43mdKTBDMd4Us2ampzNg6IhUVSn5JfL1mp4UvmaPFlr0WW0
-         R72KobCQr2OdtcjXbFEZXG+P+hGJe6vfMlk/IwrZqm+E1tNUkUCHCF4uDFYVVfXaGNbY
-         +NdEumYkCU7HhU696N5/ECTIbaeZGGUWdGKeL4JGCIGGL0+yYEo5aqKBnc5VHAYaBKy/
-         bcCjpqvBhXIHpPoGROFKKd8gZoaEuBtzWfYT6SmR85P6goA+aXVL9M8TeawDU/yXPCy/
-         M5OC36rz/CZ9y8GQqR2hqU+bacSdG2eUZCwA8XQ95zUlaJfy0IN1YrYQLfUj5fAJtV2A
-         mazQ==
-X-Gm-Message-State: AOAM5326jb1Qd6i2FBas5GQvRVao1n+u21xnJbU5l3ledh+fVftxHQra
-        Eetgp5ugL/qeZjH9F7gOR0BJDPOVNL8YQNC498Quq6N2
-X-Google-Smtp-Source: ABdhPJyvCBGtzUPqLgx744Xkt7NwKGFxfH3XpXuFlloDZwAMp3344/V6JbaiYg8FggKbSSqQjbr1W732C1LShGzj7Kg=
-X-Received: by 2002:a9d:730c:: with SMTP id e12mr15564852otk.8.1592076380734;
- Sat, 13 Jun 2020 12:26:20 -0700 (PDT)
+        Sat, 13 Jun 2020 20:47:02 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1592095622; h=Message-ID: References: In-Reply-To: Subject:
+ Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Sender; bh=kj9s0wLA/DanduP+WffVaLdEBPVb9b5c9qe5lJRXs9I=;
+ b=DiM5gBQq0Fgvjo7aXSe+LJlzzbkGaUy+s2Jfb+ZzU6OcJlLFobjG0AI1mxkP1yW88v57yL3p
+ F+AgbPQWqdGZOmytfRlpms8UbdKYpAEoHYtMwv5n6cq9e7OVFAsRXlL2LokpwdyR6g4NH+u8
+ L7P5M0iJyI+rkFSerqvgpUppwtk=
+X-Mailgun-Sending-Ip: 104.130.122.27
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n08.prod.us-west-2.postgun.com with SMTP id
+ 5ee57385e144dd5115e87c56 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sun, 14 Jun 2020 00:47:01
+ GMT
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 83EEFC43387; Sun, 14 Jun 2020 00:47:01 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: alokad)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 1A34EC433C8;
+        Sun, 14 Jun 2020 00:47:01 +0000 (UTC)
 MIME-Version: 1.0
-Received: by 2002:a05:6838:940e:0:0:0:0 with HTTP; Sat, 13 Jun 2020 12:26:20
- -0700 (PDT)
-In-Reply-To: <CALqii0=iXM_5pQFZU4sinB5soDkNzVLG45W=HJ6=NxaytHiybQ@mail.gmail.com>
-References: <CALqii0=iXM_5pQFZU4sinB5soDkNzVLG45W=HJ6=NxaytHiybQ@mail.gmail.com>
-From:   My Nigga <anomalousanonymousarmadillo@gmail.com>
-Date:   Sun, 14 Jun 2020 00:56:20 +0530
-Message-ID: <CALqii0k9ARHW0530VgMybxT_6+xPdp_Owzvuk42cZw9CgWjt9w@mail.gmail.com>
-Subject: Re: [BUG] rtw88: WiFi speed drops randomly, timed out to flush queue 1
-To:     linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Sat, 13 Jun 2020 17:47:01 -0700
+From:   Aloka Dixit <alokad@codeaurora.org>
+To:     Arend Van Spriel <arend.vanspriel@broadcom.com>
+Cc:     johannes@sipsolutions.net, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH v3 0/2] Add FILS discovery support
+In-Reply-To: <21731442-f74f-339d-15a4-8dd18b68638a@broadcom.com>
+References: <20200602013844.26275-1-alokad@codeaurora.org>
+ <21731442-f74f-339d-15a4-8dd18b68638a@broadcom.com>
+Message-ID: <43f3871e11a02055a6662fc6aa5cf682@codeaurora.org>
+X-Sender: alokad@codeaurora.org
+User-Agent: Roundcube Webmail/1.3.9
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-also I have Windows installed on this same laptop, it has no issues
-with this WiFI adapter, so I do not think it is a hardware issue.
+On 2020-06-04 00:38, Arend Van Spriel wrote:
+> On 6/2/2020 3:38 AM, Aloka Dixit wrote:
+>> This patchset adds support for FILS discovery transmission as per
+>> IEEE Std 802.11ai-2016.
+>> 
+>> This is the next version in the series given below:
+>> FILS discovery and bcast probe resp support.
+>> Unsolicited broadcast probe response support is now split into
+>> a separate patchset.
+> 
+> Hi Aloka,
+> 
+> What is your motivation for the split? As you stated earlier FILS
+> discovery and unsollicited probe responses are mutual exclusive as it
+> only eats up airtime to do both. I tend to agree to that earlier
+> statement so I would like to see some arguments for doing the split.
+> 
 
-On 6/14/20, My Nigga <anomalousanonymousarmadillo@gmail.com> wrote:
-> Info about my system:
-> I have an=C2=A0ASUS TUF Gaming FX505DD=C2=A0laptop with the RTL8822BE WiF=
-i
-> adapter. I use Arch Linux (Linux 5.7.2-arch1-1 #1 SMP PREEMPT Wed, 10
-> Jun 2020 20:36:24 +0000) with the rtw88 driver. I have NetworkManager
-> installed.
->
-> When it happens:
-> When I do not have a really strong WiFi signal, my WiFi speed just
-> drops by a lot, sometimes to zero, randomly. It doesn't happen (at
-> all, as far as I know) when I am right next to my WiFi modem.This
-> issue has been there since day 1 of me installing arch, I've seen
-> "failed to send h2c command" pop up in the live boot environment too.
->
-> Logs:
-> Whenever this happens, this=C2=A0message is spammed when I run dmesg (it
-> prints like 2-3 times per second):
-> [Sun Jun 14 00:10:47 2020] rtw_pci 0000:03:00.0: timed out to flush queue=
- 1
->
-> sometimes it shows
-> [Sun Jun 14 00:01:05 2020] rtw_pci 0000:03:00.0: firmware failed to
-> restore hardware setting
->
-> and rarely it shows
-> [Sat Jun 13 23:38:08 2020] rtw_pci 0000:03:00.0: failed to send h2c comma=
-nd
->
-> There's also a stack trace sometimes, like
-> this=C2=A0https://pastebin.com/SDhKpBdd=C2=A0.
-> NetworkManager logs don't show anything when this happens.
->
-> I'm sorry if this does not have enough info or if I mailed this to the
-> wrong place, this is the first bug report I've made.
->
+Hi Arend,
+Two reasons to split the patches:
+(1) Unsolicited broadcast probe response is specific to 6GHz whereas 
+FILS discovery is applicable in all bands. I haven't added a check for 
+6GHz for the former in nl80211 and mac80211 code because I expect the 
+application and driver implementations to add it.
+(2) IEEE P802.11ax/D6.0 mentions that a device "may" skip FILS discovery 
+transmission and instead schedule unsolicited broadcast probe response 
+(if enabled) in 6GHz, but it is not mandatory.
+So it made sense to have two separate attributes and let the driver 
+and/or FW implementation decide if both can be active at the same time. 
+nl80211 and mac80211 shouldn't make that decision.
+With separate attributes, having separate patches are easier to review.
+
+
+> Regards,
+> Arend
+> 
+>> Aloka Dixit (2):
+>>    nl80211: Add FILS discovery support
+>>    mac80211: Add FILS discovery transmission support
+>> 
+>>   include/net/cfg80211.h       | 25 ++++++++++++++++
+>>   include/net/mac80211.h       | 31 ++++++++++++++++++++
+>>   include/uapi/linux/nl80211.h | 46 +++++++++++++++++++++++++++++
+>>   net/mac80211/cfg.c           | 46 +++++++++++++++++++++++++++++
+>>   net/mac80211/ieee80211_i.h   |  7 +++++
+>>   net/mac80211/tx.c            | 25 ++++++++++++++++
+>>   net/wireless/nl80211.c       | 57 
+>> ++++++++++++++++++++++++++++++++++++
+>>   7 files changed, 237 insertions(+)
+>> 
