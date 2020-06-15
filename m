@@ -2,33 +2,33 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D6EE91F9A28
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jun 2020 16:29:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8130A1F9A46
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jun 2020 16:32:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730110AbgFOO3z (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 15 Jun 2020 10:29:55 -0400
-Received: from mail27.static.mailgun.info ([104.130.122.27]:18980 "EHLO
+        id S1730610AbgFOOct (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 15 Jun 2020 10:32:49 -0400
+Received: from mail27.static.mailgun.info ([104.130.122.27]:49323 "EHLO
         mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728326AbgFOO3z (ORCPT
+        by vger.kernel.org with ESMTP id S1730593AbgFOOcr (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 15 Jun 2020 10:29:55 -0400
+        Mon, 15 Jun 2020 10:32:47 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1592231394; h=Date: Message-Id: Cc: To: References:
+ s=smtp; t=1592231566; h=Date: Message-Id: Cc: To: References:
  In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=9yAp8vgbju6DrTWAcvgdVMrXLySakU9S5Ar2i2OAM8w=;
- b=UItGG6LZkCxTbpuwuVJNvbkJZtLID3IFQlfNjsRbm8GhGI+5z+sQpkxhV6sWPG8Ghvk2yh4v
- pzdINdRMW5gL+H2YyMLA4t93k5HEM+gjFEBbQnHMoGtpJGHNPqQFPPVPL/nyTHZfegkLpXK0
- rMwPIyNmON5whm0e0DwhnKPUpZc=
+ Content-Type: Sender; bh=NiCtl85ChNfUXhzwxk3UF9iEXH37Z4GqUz58aNsMDy0=;
+ b=uS5C4AW8sUQP+ZddgPCKlmGLL8zkni6E2ECmXnQVZJXnJJc7SmNes08jthJsd1FFSN/kV7gG
+ pLe774WU/GGn5Ck8f/AdQChX0CrAyFM13gI+0MZAU10lee+tp1D1cLn6rPqiY5bYZMgCGSl8
+ qnQmtwzUTT8DZgoop4lryc5iTkc=
 X-Mailgun-Sending-Ip: 104.130.122.27
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n02.prod.us-east-1.postgun.com with SMTP id
- 5ee785d58fe116ddd98c246d (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 15 Jun 2020 14:29:41
+ smtp-out-n06.prod.us-west-2.postgun.com with SMTP id
+ 5ee78685e144dd5115a48e6c (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 15 Jun 2020 14:32:37
  GMT
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 94AA9C433CA; Mon, 15 Jun 2020 14:29:40 +0000 (UTC)
+        id 519F3C433C8; Mon, 15 Jun 2020 14:32:37 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -38,45 +38,69 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id D7528C433C8;
-        Mon, 15 Jun 2020 14:29:38 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org D7528C433C8
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 8F8D2C4339C;
+        Mon, 15 Jun 2020 14:32:33 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 8F8D2C4339C
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] ath11k: removing redundant reo unlock followed by
- immediate
- lock
+Subject: Re: [PATCH] ath10k: Wait until copy complete is actually done before
+ completing
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <1591713432-26426-1-git-send-email-ssreeela@codeaurora.org>
-References: <1591713432-26426-1-git-send-email-ssreeela@codeaurora.org>
-To:     Sowmiya Sree Elavalagan <ssreeela@codeaurora.org>
-Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        Sowmiya Sree Elavalagan <ssreeela@codeaurora.org>
+In-Reply-To: <20200609082015.1.Ife398994e5a0a6830e4d4a16306ef36e0144e7ba@changeid>
+References: <20200609082015.1.Ife398994e5a0a6830e4d4a16306ef36e0144e7ba@changeid>
+To:     Douglas Anderson <dianders@chromium.org>
+Cc:     kuabhs@google.com, pillair@codeaurora.org,
+        saiprakash.ranjan@codeaurora.org, linux-arm-msm@vger.kernel.org,
+        Douglas Anderson <dianders@chromium.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, ath10k@lists.infradead.org,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20200615142940.94AA9C433CA@smtp.codeaurora.org>
-Date:   Mon, 15 Jun 2020 14:29:40 +0000 (UTC)
+Message-Id: <20200615143237.519F3C433C8@smtp.codeaurora.org>
+Date:   Mon, 15 Jun 2020 14:32:37 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Sowmiya Sree Elavalagan <ssreeela@codeaurora.org> wrote:
+Douglas Anderson <dianders@chromium.org> wrote:
 
-> Removed reo cmd lock and unlock which was acquiring the lock immediately
-> after unlock. Done for code clean up.
+> On wcn3990 we have "per_ce_irq = true".  That makes the
+> ath10k_ce_interrupt_summary() function always return 0xfff. The
+> ath10k_ce_per_engine_service_any() function will see this and think
+> that _all_ copy engines have an interrupt.  Without checking, the
+> ath10k_ce_per_engine_service() assumes that if it's called that the
+> "copy complete" (cc) interrupt fired.  This combination seems bad.
 > 
-> Signed-off-by: Sowmiya Sree Elavalagan <ssreeela@codeaurora.org>
+> Let's add a check to make sure that the "copy complete" interrupt
+> actually fired in ath10k_ce_per_engine_service().
+> 
+> This might fix a hard-to-reproduce failure where it appears that the
+> copy complete handlers run before the copy is really complete.
+> Specifically a symptom was that we were seeing this on a Qualcomm
+> sc7180 board:
+>   arm-smmu 15000000.iommu: Unhandled context fault:
+>   fsr=0x402, iova=0x7fdd45780, fsynr=0x30003, cbfrsynra=0xc1, cb=10
+> 
+> Even on platforms that don't have wcn3990 this still seems like it
+> would be a sane thing to do.  Specifically the current IRQ handler
+> comments indicate that there might be other misc interrupt sources
+> firing that need to be cleared.  If one of those sources was the one
+> that caused the IRQ handler to be called it would also be important to
+> double-check that the interrupt we cared about actually fired.
+> 
+> Signed-off-by: Douglas Anderson <dianders@chromium.org>
 > Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 
-Patch applied to ath-next branch of ath.git, thanks.
-
-8cacd0389c4f ath11k: removing redundant reo unlock followed by immediate lock
+ath10k firmwares work very differently, on what hardware and firmware did you
+test this? I'll add that information to the commit log.
 
 -- 
-https://patchwork.kernel.org/patch/11595859/
+https://patchwork.kernel.org/patch/11595887/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
