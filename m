@@ -2,136 +2,111 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 524B11F9F8B
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jun 2020 20:40:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 729201F9FCE
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jun 2020 20:59:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731353AbgFOSkd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 15 Jun 2020 14:40:33 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:44374 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1729862AbgFOSkc (ORCPT
+        id S1731410AbgFOS6b (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 15 Jun 2020 14:58:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51382 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731387AbgFOS60 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 15 Jun 2020 14:40:32 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1592246431;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=3LdVapGy9WTsAkwpfNEzCTfQe3Pij8/lM5ySXZsHExs=;
-        b=iOSi6SGLarrDdScRiW6WivQV/JT2U717fvdPWQPXU86jormg+4QrlYH+6CoQ1bKBcmsQ/B
-        yOW7kRTd4z9oxidxHf9YTdSea+WYeCe3RRWhWGXTJyTXsYPXL8xck6iQxf6+FPb5lAnKhS
-        S1VVssQnte2GEikXLA9qk0Y7J4KU8jk=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-513-n3G_ZfGUONug8wkjJytxqA-1; Mon, 15 Jun 2020 14:40:12 -0400
-X-MC-Unique: n3G_ZfGUONug8wkjJytxqA-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id E5F43184D144;
-        Mon, 15 Jun 2020 18:40:06 +0000 (UTC)
-Received: from llong.remote.csb (ovpn-117-41.rdu2.redhat.com [10.10.117.41])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 3972B5D9CC;
-        Mon, 15 Jun 2020 18:40:00 +0000 (UTC)
-Subject: Re: [PATCH 1/2] mm, treewide: Rename kzfree() to kfree_sensitive()
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        David Howells <dhowells@redhat.com>,
-        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Joe Perches <joe@perches.com>,
-        Matthew Wilcox <willy@infradead.org>,
-        David Rientjes <rientjes@google.com>,
-        samba-technical@lists.samba.org,
-        virtualization@lists.linux-foundation.org, linux-mm@kvack.org,
-        linux-sctp@vger.kernel.org, target-devel@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        devel@driverdev.osuosl.org, linux-s390@vger.kernel.org,
-        linux-scsi@vger.kernel.org, x86@kernel.org,
-        kasan-dev@googlegroups.com, cocci@systeme.lip6.fr,
-        linux-wpan@vger.kernel.org, intel-wired-lan@lists.osuosl.org,
-        linux-crypto@vger.kernel.org, linux-pm@vger.kernel.org,
-        ecryptfs@vger.kernel.org, linux-nfs@vger.kernel.org,
-        linux-fscrypt@vger.kernel.org, linux-mediatek@lists.infradead.org,
-        linux-amlogic@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-cifs@vger.kernel.org,
-        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-bluetooth@vger.kernel.org,
-        linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
-        tipc-discussion@lists.sourceforge.net, wireguard@lists.zx2c4.com,
-        linux-ppp@vger.kernel.org, linux-integrity@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-btrfs@vger.kernel.org
-References: <20200413211550.8307-1-longman@redhat.com>
- <20200413211550.8307-2-longman@redhat.com> <20200615180753.GJ4151@kadam>
-From:   Waiman Long <longman@redhat.com>
-Organization: Red Hat
-Message-ID: <9d084be2-29a3-7757-9386-20dbaeb5fc24@redhat.com>
-Date:   Mon, 15 Jun 2020 14:39:59 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
+        Mon, 15 Jun 2020 14:58:26 -0400
+Received: from mail-qk1-x744.google.com (mail-qk1-x744.google.com [IPv6:2607:f8b0:4864:20::744])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4EA3C08C5C5
+        for <linux-wireless@vger.kernel.org>; Mon, 15 Jun 2020 11:58:24 -0700 (PDT)
+Received: by mail-qk1-x744.google.com with SMTP id n141so16819092qke.2
+        for <linux-wireless@vger.kernel.org>; Mon, 15 Jun 2020 11:58:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=ogzWVexVKpi+yf06GApbiQKLooA3A6vya/Qu53dz5sI=;
+        b=B79KaIJ0c/ww8HMtAlyFH2XjxV7yynKBJIWwJHZ+zW3YLHuCCz9Bbiwsd2WzFuQLPj
+         AFf5Hg0Lqd/XvxHRpc9Uh/4vnlvXaITDgihFpq8wunarv4UVftdSwWHlY7Zs6O9gurGh
+         IE5GaopbWKe7DlaPUx/EPeh0He+mTIL/wqUz367myp2ljsairUj+5vVlWMjYvyLYdFxp
+         yylSrzx5rdvX7s5Lrdyjcy+vzWB+YunSNoTcuzE3AgfFM4I5Skeao2I26rxVl1af8CRx
+         y19r67M7mx7zcJG+Kyz2nHe2SegGgVU7ADSwtl1Rh91OJTnONTAEuipSUQQypIEpgb9A
+         T36g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=ogzWVexVKpi+yf06GApbiQKLooA3A6vya/Qu53dz5sI=;
+        b=DIwllZwEFv064CVxWpTVjhWYVkkSb9tkCa8DmWxv3V9RWmnj331+wNApHRTPWU9TL9
+         XRAMk1KAU1VdyT72uh9ur4zUMO6QDg8Vt1O0ByzxBM9abRKMvHrricSFhr1iZUWq+jFA
+         Qhlt5AeBM2pTix6EB8PMl6X4Ifov7BEdWzxtBHH2McDEzzb2BQFCrti9nHBPc7rToQDy
+         fFMKeiXg1UkAJDN3fKECE81y0j9UfaIC8yNHQ1cyCNiu1+SLrumUJrwiFsI0koAcQWyD
+         Q63LSh4NOupALnclkIxKyz+GHM6QeNk59xPPiDM2wHqhbXKaDoHrkrYxYkwaKOPC5fo2
+         6EUg==
+X-Gm-Message-State: AOAM5335QexsyJ7PeVU7Fx6pWx4an2t6bisk1K1UJFDJhyyvdaxhS1j1
+        7logfswG+I896aeyqUYSzLggyw==
+X-Google-Smtp-Source: ABdhPJygSobk4Dm93WtmDBaO2t3cPn7PZD+tDnBnapk86ninzx0O9WOhG6qnekVgX9A+5fj3vrdD7Q==
+X-Received: by 2002:a37:812:: with SMTP id 18mr17402635qki.296.1592247503264;
+        Mon, 15 Jun 2020 11:58:23 -0700 (PDT)
+Received: from ziepe.ca (hlfxns017vw-156-34-48-30.dhcp-dynamic.fibreop.ns.bellaliant.net. [156.34.48.30])
+        by smtp.gmail.com with ESMTPSA id m13sm13228785qta.90.2020.06.15.11.58.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 15 Jun 2020 11:58:22 -0700 (PDT)
+Received: from jgg by mlx with local (Exim 4.93)
+        (envelope-from <jgg@ziepe.ca>)
+        id 1jkuJK-008kGo-AN; Mon, 15 Jun 2020 15:58:22 -0300
+Date:   Mon, 15 Jun 2020 15:58:22 -0300
+From:   Jason Gunthorpe <jgg@ziepe.ca>
+To:     Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>
+Cc:     Kieran Bingham <kieran.bingham@ideasonboard.com>,
+        linux-renesas-soc@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-gpio@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-rdma@vger.kernel.org,
+        linux-input@vger.kernel.org, linux-mtd@lists.infradead.org,
+        netdev@vger.kernel.org, ath10k@lists.infradead.org,
+        linux-wireless@vger.kernel.org, linux-scsi@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-usb@vger.kernel.org,
+        virtualization@lists.linux-foundation.org, linux-mm@kvack.org
+Subject: Re: [PATCH 00/17] spelling.txt: /decriptors/descriptors/
+Message-ID: <20200615185822.GA2084429@ziepe.ca>
+References: <20200609124610.3445662-1-kieran.bingham+renesas@ideasonboard.com>
 MIME-Version: 1.0
-In-Reply-To: <20200615180753.GJ4151@kadam>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200609124610.3445662-1-kieran.bingham+renesas@ideasonboard.com>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 6/15/20 2:07 PM, Dan Carpenter wrote:
-> On Mon, Apr 13, 2020 at 05:15:49PM -0400, Waiman Long wrote:
->> diff --git a/mm/slab_common.c b/mm/slab_common.c
->> index 23c7500eea7d..c08bc7eb20bd 100644
->> --- a/mm/slab_common.c
->> +++ b/mm/slab_common.c
->> @@ -1707,17 +1707,17 @@ void *krealloc(const void *p, size_t new_size, gfp_t flags)
->>   EXPORT_SYMBOL(krealloc);
->>   
->>   /**
->> - * kzfree - like kfree but zero memory
->> + * kfree_sensitive - Clear sensitive information in memory before freeing
->>    * @p: object to free memory of
->>    *
->>    * The memory of the object @p points to is zeroed before freed.
->> - * If @p is %NULL, kzfree() does nothing.
->> + * If @p is %NULL, kfree_sensitive() does nothing.
->>    *
->>    * Note: this function zeroes the whole allocated buffer which can be a good
->>    * deal bigger than the requested buffer size passed to kmalloc(). So be
->>    * careful when using this function in performance sensitive code.
->>    */
->> -void kzfree(const void *p)
->> +void kfree_sensitive(const void *p)
->>   {
->>   	size_t ks;
->>   	void *mem = (void *)p;
->> @@ -1725,10 +1725,10 @@ void kzfree(const void *p)
->>   	if (unlikely(ZERO_OR_NULL_PTR(mem)))
->>   		return;
->>   	ks = ksize(mem);
->> -	memset(mem, 0, ks);
->> +	memzero_explicit(mem, ks);
->          ^^^^^^^^^^^^^^^^^^^^^^^^^
-> This is an unrelated bug fix.  It really needs to be pulled into a
-> separate patch by itself and back ported to stable kernels.
->
->>   	kfree(mem);
->>   }
->> -EXPORT_SYMBOL(kzfree);
->> +EXPORT_SYMBOL(kfree_sensitive);
->>   
->>   /**
->>    * ksize - get the actual amount of memory allocated for a given object
-> regards,
-> dan carpenter
->
-Thanks for the suggestion. I will break it out and post a version soon.
+On Tue, Jun 09, 2020 at 01:45:53PM +0100, Kieran Bingham wrote:
+> I wouldn't normally go through spelling fixes, but I caught sight of
+> this typo twice, and then foolishly grepped the tree for it, and saw how
+> pervasive it was.
+> 
+> so here I am ... fixing a typo globally... but with an addition in
+> scripts/spelling.txt so it shouldn't re-appear ;-)
+> 
+> Cc: linux-arm-kernel@lists.infradead.org (moderated list:TI DAVINCI MACHINE SUPPORT)
+> Cc: linux-kernel@vger.kernel.org (open list)
+> Cc: linux-pm@vger.kernel.org (open list:DEVICE FREQUENCY EVENT (DEVFREQ-EVENT))
+> Cc: linux-gpio@vger.kernel.org (open list:GPIO SUBSYSTEM)
+> Cc: dri-devel@lists.freedesktop.org (open list:DRM DRIVERS)
+> Cc: linux-rdma@vger.kernel.org (open list:HFI1 DRIVER)
+> Cc: linux-input@vger.kernel.org (open list:INPUT (KEYBOARD, MOUSE, JOYSTICK, TOUCHSCREEN)...)
+> Cc: linux-mtd@lists.infradead.org (open list:NAND FLASH SUBSYSTEM)
+> Cc: netdev@vger.kernel.org (open list:NETWORKING DRIVERS)
+> Cc: ath10k@lists.infradead.org (open list:QUALCOMM ATHEROS ATH10K WIRELESS DRIVER)
+> Cc: linux-wireless@vger.kernel.org (open list:NETWORKING DRIVERS (WIRELESS))
+> Cc: linux-scsi@vger.kernel.org (open list:IBM Power Virtual FC Device Drivers)
+> Cc: linuxppc-dev@lists.ozlabs.org (open list:LINUX FOR POWERPC (32-BIT AND 64-BIT))
+> Cc: linux-usb@vger.kernel.org (open list:USB SUBSYSTEM)
+> Cc: virtualization@lists.linux-foundation.org (open list:VIRTIO CORE AND NET DRIVERS)
+> Cc: linux-mm@kvack.org (open list:MEMORY MANAGEMENT)
+> 
+> 
+> Kieran Bingham (17):
+>   arch: arm: mach-davinci: Fix trivial spelling
+>   drivers: infiniband: Fix trivial spelling
+>   drivers: infiniband: Fix trivial spelling
 
-Cheers,
-Longman
+I took these two RDMA patches and merged them, thanks
 
+Jason
