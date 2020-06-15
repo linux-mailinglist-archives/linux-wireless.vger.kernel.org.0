@@ -2,204 +2,80 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C70601F990A
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jun 2020 15:36:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 822111F99AA
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jun 2020 16:10:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730417AbgFONg4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 15 Jun 2020 09:36:56 -0400
-Received: from mail2.candelatech.com ([208.74.158.173]:39094 "EHLO
-        mail3.candelatech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730109AbgFONgz (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 15 Jun 2020 09:36:55 -0400
-Received: from [192.168.254.4] (unknown [50.34.202.127])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        id S1729733AbgFOOKP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 15 Jun 2020 10:10:15 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:56297 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728510AbgFOOKO (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 15 Jun 2020 10:10:14 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1592230213; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=1Pf8qgDlo60ZypqXv8y3V9WbP4WNZCQp59/VV7KR3EI=;
+ b=bw1TSdEeWjtN/fRBNnmf/Oul+JfpjpcfGotU01BBc//EA3pMrvRRD1oXsSGjXTdiV+8d+P76
+ peeDg3oS/ojkEvca/pPNM1A9/uFaxdcevHr6EfgPj1mYnEkTVqKM37Pg3QP2U+iebPzzJb3o
+ BEkzMuWEP40EiyqKyOPc6Az+SJU=
+X-Mailgun-Sending-Ip: 69.72.43.7
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n05.prod.us-west-2.postgun.com with SMTP id
+ 5ee7813bad153efa349428a9 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 15 Jun 2020 14:10:03
+ GMT
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 32F7FC433CB; Mon, 15 Jun 2020 14:10:03 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
+        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail3.candelatech.com (Postfix) with ESMTPSA id B25BE13C2B4
-        for <linux-wireless@vger.kernel.org>; Mon, 15 Jun 2020 06:36:54 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com B25BE13C2B4
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1592228214;
-        bh=zOG+gnlVS4Eq4BzlwHs4k2U1+vrnWaG3yVy6hjVWVuA=;
-        h=Subject:To:References:From:Date:In-Reply-To:From;
-        b=XZdZToWrxZkVrN6Ax+8hDbtpl6xQL9Vp1lK55TuhK0TBsBKh7lwk5h90xJFXXpRxq
-         5YLGkuLUQ2TLwzt4zlCYimURlZGfursfc9PxKy51zBZAogMM2YqJYLNY0HF8+UdaYl
-         U9X4K3YEyLob1lNnrhX5ECzukwLYBBLQweGr1nyw=
-Subject: Re: [PATCH] mac80211: Fix kernel hang on ax200 firmware crash.
-To:     linux-wireless@vger.kernel.org
-References: <20200610204017.4531-1-greearb@candelatech.com>
-From:   Ben Greear <greearb@candelatech.com>
-Message-ID: <dd4f2b1b-1a02-1625-dbab-10c04b9ae690@candelatech.com>
-Date:   Mon, 15 Jun 2020 06:36:53 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
- Thunderbird/45.8.0
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 26519C433CA;
+        Mon, 15 Jun 2020 14:10:01 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 26519C433CA
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-In-Reply-To: <20200610204017.4531-1-greearb@candelatech.com>
-Content-Type: text/plain; charset=windows-1252; format=flowed
 Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v5.7 8/8] iwlwifi: mvm: don't call
+ iwl_mvm_free_inactive_queue() under RCU
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <iwlwifi.20200403112332.0f49448c133d.I17fd308bc4a9491859c9b112f4eb5d2c3fc18d7d@changeid>
+References: <iwlwifi.20200403112332.0f49448c133d.I17fd308bc4a9491859c9b112f4eb5d2c3fc18d7d@changeid>
+To:     Luca Coelho <luca@coelho.fi>
+Cc:     linux-wireless@vger.kernel.org
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
+Message-Id: <20200615141003.32F7FC433CB@smtp.codeaurora.org>
+Date:   Mon, 15 Jun 2020 14:10:03 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Luca Coelho <luca@coelho.fi> wrote:
 
+> From: Johannes Berg <johannes.berg@intel.com>
+> 
+> iwl_mvm_free_inactive_queue() will sleep in synchronize_net() under
+> some circumstances, so don't call it under RCU. There doesn't appear
+> to be a need for RCU protection around this particular call.
+> 
+> Cc: stable@vger.kernel.org # v5.4+
+> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+> Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 
-On 06/10/2020 01:40 PM, greearb@candelatech.com wrote:
-> From: Ben Greear <greearb@candelatech.com>
->
-> I backported out-of-tree ax200 driver from backport-iwlwifi to my
-> 5.4 kernel so that I could run ax200 beside other radios (backports
-> mac80211 otherwise is incompatible and other drivers will crash).
->
-> Always possible that upstream kernel doesn't suffer from exactly this
-> case, but upstream ax200 is too unstable to even get this far, so...
->
-> The ax200 firmware crash often causes the kernel to deadlock due to the
-> while (sta->sta_state == IEEE80211_STA_AUTHORIZED)
-> loop in __sta_info_Destroy_part.  If sta_info_move_state does not
-> make progress, then it will loop forever.  In my case, sta_info_move_state
-> fails due to the sdata-in-driver check.
-
-Hello Johannes,
-
-Have any comment on this?
-
-Thanks,
-Ben
-
->
-> Hung process looks like this:
->
-> CPU: 7 PID: 23301 Comm: kworker/7:0 Tainted: G        W         5.4.43+ #5
-> Hardware name: Default string Default string/SKYBAY, BIOS 5.12 02/19/2019
-> Workqueue: events_freezable ieee80211_restart_work [mac80211]
-> RIP: 0010:memcpy_erms+0x6/0x10
-> Code: 90 90 90 90 eb 1e 0f 1f 00 48 89 f8 48 89 d1 48 c1 e9 03 83 e2 07 f3 48 a5 89 d1 f3 a4 c3 66 0f 1f 44 00 00 48 89 f8 48 89 d1 <f3> a4 ce
-> RSP: 0018:ffffc90006117728 EFLAGS: 00010002
-> RAX: ffffffff837ca040 RBX: 0000000000000000 RCX: 0000000000000006
-> RDX: 0000000000000046 RSI: ffffffff8380aa84 RDI: ffffffff837ca080
-> RBP: 0000000000000046 R08: 0000000000000000 R09: 0000000000001697
-> R10: 0000000000000007 R11: 0000000000000000 R12: ffffffff837ca040
-> R13: 0000000000000046 R14: 0000000000000000 R15: ffffffff8380aa44
-> FS:  0000000000000000(0000) GS:ffff88826ddc0000(0000) knlGS:0000000000000000
-> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> CR2: 0000562e61e28f18 CR3: 00000002554f6006 CR4: 00000000003606e0
-> DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-> DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-> Call Trace:
->  msg_print_text+0x12a/0x1e0
->  console_unlock+0x160/0x600
->  vprintk_emit+0x146/0x2c0
->  printk+0x4d/0x69
->  ? lockdep_hardirqs_on+0xf1/0x190
->  __sdata_err+0x61/0x150 [mac80211]
->  drv_sta_state+0x433/0x8f0 [mac80211]
->  sta_info_move_state+0x28e/0x370 [mac80211]
->  __sta_info_destroy_part2+0x48/0x1d0 [mac80211]
->  __sta_info_flush+0xf6/0x180 [mac80211]
->  ieee80211_set_disassoc+0xc1/0x490 [mac80211]
->  ieee80211_mgd_deauth+0x291/0x420 [mac80211]
->  cfg80211_mlme_deauth+0xd2/0x330 [cfg80211]
->  cfg80211_mlme_down+0x7c/0xc0 [cfg80211]
->  cfg80211_disconnect+0x2b1/0x320 [cfg80211]
->  cfg80211_leave+0x23/0x30 [cfg80211]
->  cfg80211_netdev_notifier_call+0x3a5/0x680 [cfg80211]
->  ? lockdep_rtnl_is_held+0x11/0x20
->  ? addrconf_notify+0xb4/0xbb0 [ipv6]
->  ? packet_notifier+0xb8/0x2c0
->  notifier_call_chain+0x40/0x60
->  __dev_close_many+0x68/0x120
->  dev_close_many+0x83/0x130
->  dev_close.part.96+0x3f/0x70
->  cfg80211_shutdown_all_interfaces+0x3e/0xc0 [cfg80211]
->  ieee80211_reconfig+0x96/0x2180 [mac80211]
->  ? cond_synchronize_rcu+0x20/0x20
->  ieee80211_restart_work+0xb6/0xe0 [mac80211]
->  process_one_work+0x27c/0x640
->  worker_thread+0x47/0x3f0
->  ? process_one_work+0x640/0x640
->  kthread+0xfc/0x130
->  ? kthread_create_worker_on_cpu+0x70/0x70
->  ret_from_fork+0x24/0x30
->
-> With this patch, there is safety code to bail out after 1000 tries of
-> moving the sta state, and also I check for EIO which is returned by
-> the sdata-in-driver failure case and treat that as success as far as
-> changing sta state goes.
->
-> Console logs look like this in the failure case, and aside from the ax200
-> radio that went phantom, the rest of the system is usable:
->
-> iwlwifi 0000:12:00.0: 0x0000025B | CNVR_SCU_SD_REGS_SD_REG_ACTIVE_VDIG_MIRROR
-> iwlwifi 0000:12:00.0: Firmware error during reconfiguration - reprobe!
-> iwlwifi 0000:12:00.0: Failed to start RT ucode: -5
-> wlan2: Failed check-sdata-in-driver check, flags: 0x0 count: 1
-> wlan2: Failed check-sdata-in-driver check, flags: 0x0 count: 1
-> wlan2: Failed check-sdata-in-driver check, flags: 0x0 count: 1
-> iwlwifi 0000:12:00.0: Failed to trigger RX queues sync (-5)
-> wlan2: Failed check-sdata-in-driver check, flags: 0x0 count: 1
-> wlan2: drv_sta_state failed with EIO (sdata not in driver?), state: 4  new-state: 3
-> wlan2: drv_sta_state failed with EIO (sdata not in driver?), state: 3  new-state: 2
-> wlan2: drv_sta_state failed with EIO (sdata not in driver?), state: 2  new-state: 1
-> wlan2: Failed check-sdata-in-driver check, flags: 0x0 count: 1
-> iwlwifi 0000:12:00.0: iwl_trans_wait_txq_empty bad state = 0
-> iwlwifi 0000:12:00.0: dma_pool_destroy iwlwifi:bc, 00000000d859bd4c busy
->
-> Signed-off-by: Ben Greear <greearb@candelatech.com>
-> ---
->  net/mac80211/sta_info.c | 23 +++++++++++++++++++++--
->  1 file changed, 21 insertions(+), 2 deletions(-)
->
-> diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
-> index e2a04fc..31a3856 100644
-> --- a/net/mac80211/sta_info.c
-> +++ b/net/mac80211/sta_info.c
-> @@ -1092,6 +1092,7 @@ static void __sta_info_destroy_part2(struct sta_info *sta)
->  	struct ieee80211_sub_if_data *sdata = sta->sdata;
->  	struct station_info *sinfo;
->  	int ret;
-> +	int count = 0;
->
->  	/*
->  	 * NOTE: This assumes at least synchronize_net() was done
-> @@ -1104,6 +1105,13 @@ static void __sta_info_destroy_part2(struct sta_info *sta)
->  	while (sta->sta_state == IEEE80211_STA_AUTHORIZED) {
->  		ret = sta_info_move_state(sta, IEEE80211_STA_ASSOC);
->  		WARN_ON_ONCE(ret);
-> +		if (++count > 1000) {
-> +			/* WTF, bail out so that at least we don't hang the system. */
-> +			sdata_err(sdata, "Could not move state after 1000 tries, ret: %d  state: %d\n",
-> +				  ret, sta->sta_state);
-> +			WARN_ON_ONCE(1);
-> +			break;
-> +		}
->  	}
->
->  	/* now keys can no longer be reached */
-> @@ -2017,8 +2025,19 @@ int sta_info_move_state(struct sta_info *sta,
->  	if (test_sta_flag(sta, WLAN_STA_INSERTED)) {
->  		int err = drv_sta_state(sta->local, sta->sdata, sta,
->  					sta->sta_state, new_state);
-> -		if (err)
-> -			return err;
-> +		if (err == -EIO) {
-> +			/* Sdata-not-in-driver, we are out of sync, but probably
-> +			 * best to carry on instead of bailing here, at least maybe
-> +			 * we can clean this up.
-> +			 */
-> +			sdata_err(sta->sdata, "drv_sta_state failed with EIO (sdata not in driver?), state: %d  new-state: %d\n",
-> +				  sta->sta_state, new_state);
-> +			WARN_ON_ONCE(1);
-> +		}
-> +		else {
-> +			if (err)
-> +				return err;
-> +		}
->  	}
->
->  	/* reflect the change in all state variables */
->
+I'll queue this for v5.8.
 
 -- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
+https://patchwork.kernel.org/patch/11472099/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
