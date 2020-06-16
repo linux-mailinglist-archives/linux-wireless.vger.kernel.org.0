@@ -2,122 +2,78 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CF8CA1FAD2A
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jun 2020 11:54:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C4D41FADDF
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jun 2020 12:26:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728044AbgFPJyW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 16 Jun 2020 05:54:22 -0400
-Received: from mail.aperture-lab.de ([138.201.29.205]:42454 "EHLO
-        mail.aperture-lab.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725911AbgFPJyV (ORCPT
+        id S1726856AbgFPK0O (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 16 Jun 2020 06:26:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52864 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725843AbgFPKZe (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 16 Jun 2020 05:54:21 -0400
-From:   =?UTF-8?q?Linus=20L=C3=BCssing?= <linus.luessing@c0d3.blue>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c0d3.blue; s=2018;
-        t=1592301259;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=W1bxfH5UQtTaVLAGIdUaDW/4kYkCmlLDeCxRAozivkk=;
-        b=XuH90fbEe7EGShZRxZU9XJgqMJa48jhv66deQK9F8C744EVdmRgMTsGSST1EPVYfhrIiXI
-        jSOhIQeIAVEiFvQrOT/B7Ib16CQG+aHOGxWAqwkqj22vJRBb/7UHPDT1eRFu2IouHlKPjm
-        fl2lYbBIatYjPprdRK8rGf1ih5Ifi+nai8KAsyKWtJJ686nyEJRvddY+mLJ+Ja1dsii2Zl
-        zpLQ3T39pwzwWWARnSOjWncn/Kiq30ZXT75EIFgRPnLtfmgLTfiOyXnNKjLM8UVO6aj/qf
-        /EgipImIGe/Iklz9leDA6Jjhn39IbOPfvwonzbycmOhUpRMoDbe4y/Zd25K+sw==
-To:     Johannes Berg <johannes@sipsolutions.net>
+        Tue, 16 Jun 2020 06:25:34 -0400
+X-Greylist: delayed 513 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 16 Jun 2020 03:25:34 PDT
+Received: from simonwunderlich.de (packetmixer.de [IPv6:2001:4d88:2000:24::c0de])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1817CC08C5C2
+        for <linux-wireless@vger.kernel.org>; Tue, 16 Jun 2020 03:25:33 -0700 (PDT)
+Received: from [IPv6:2003:c5:9716:5300:7e76:35ff:fe14:e6d7] (p200300c5971653007e7635fffe14e6d7.dip0.t-ipconnect.de [IPv6:2003:c5:9716:5300:7e76:35ff:fe14:e6d7])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by simonwunderlich.de (Postfix) with ESMTPSA id 95F6762055;
+        Tue, 16 Jun 2020 12:16:51 +0200 (CEST)
+Subject: Re: [PATCH] mac80211: mesh: add mesh_param "mesh_nolearn" to skip
+ path discovery
+To:     =?UTF-8?Q?Linus_L=c3=bcssing?= <linus.luessing@c0d3.blue>,
+        Johannes Berg <johannes@sipsolutions.net>
 Cc:     linux-wireless@vger.kernel.org, b.a.t.m.a.n@lists.open-mesh.org,
-        =?UTF-8?q?Linus=20L=C3=BCssing?= <ll@simonwunderlich.de>,
         Sven Eckelmann <sven@narfation.org>,
         Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH] iw: mesh: add mesh_param "mesh_nolearn" to skip path discovery
-Date:   Tue, 16 Jun 2020 11:53:58 +0200
-Message-Id: <20200616095358.20143-2-linus.luessing@c0d3.blue>
-In-Reply-To: <20200616095358.20143-1-linus.luessing@c0d3.blue>
 References: <20200616095358.20143-1-linus.luessing@c0d3.blue>
+From:   =?UTF-8?Q?Linus_L=c3=bcssing?= <ll@simonwunderlich.de>
+Message-ID: <cbe4863e-44f3-c0e4-a4f3-1b0a69f7a386@simonwunderlich.de>
+Date:   Tue, 16 Jun 2020 12:16:51 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.9.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Authentication-Results: ORIGINATING;
-        auth=pass smtp.auth=linus.luessing@c0d3.blue smtp.mailfrom=linus.luessing@c0d3.blue
+In-Reply-To: <20200616095358.20143-1-linus.luessing@c0d3.blue>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Linus Lüssing <ll@simonwunderlich.de>
+> The new mesh_nolearn parameter allows to skip the PREQ/PREP exchange in
+> this scenario, leading to a reduced delay, reduced packet buffering and
+> simplifies HWMP in general.
 
-Currently, before being able to forward a packet between two 802.11s
-nodes, both a PLINK handshake is performed upon receiving a beacon and
-then later a PREQ/PREP exchange for path discovery is performed on
-demand upon receiving a data frame to forward.
+Also another small remark regarding the simplification:
 
-When running a mesh protocol on top of an 802.11s interface, like
-batman-adv, we do not need the multi-hop mesh routing capabilities of
-802.11s and usually set mesh_fwding=0. However, even with mesh_fwding=0
-the PREQ/PREP path discovery is still performed on demand. Even though
-in this scenario the next hop PREQ/PREP will determine is always the
-direct 11s neighbor node.
+Next to the timer re-arming bug / crash [0] we also stumbled over 
+another bug when using encryption on the 802.11s interfaces which we 
+could quite solve yet:
 
-The new mesh_nolearn parameter allows to skip the PREQ/PREP exchange in
-this scenario, leading to a reduced delay, reduced packet buffering and
-simplifies HWMP in general.
+We are seeing packet loss every four seconds due to a "DECRYPT CRC ERR". 
+We could narrow this down to the PREQ. This somehow makes the receiver 
+unable to decrypt the packet in hardware and also the fallback to 
+software decryption fails as the hardware has messed up the encrypted 
+data (looks completely different than what we saw in the air with a 
+third device in monitor mode, unencrypted headers looked ok though). 
+Furthermore, the hardware still sends ACKs for this frame... so no 
+retries on the 802.11 layer, leading to ugly packet loss for one UDP 
+packet every four seconds.
 
-mesh_nolearn is still rather conservative in that if the packet destination
-is not a direct 11s neighbor, it will fall back to PREQ/PREP path
-discovery.
+The hardware we were having this issue with is a Lima board with a QCA4531.
 
-For normal, multi-hop 802.11s mesh routing it is usually not advisable
-to enable mesh_nolearn as a transmission to a direct but distant neighbor
-might be worse than reaching that same node via a more robust /
-higher throughput etc. multi-hop path.
+Setting ath9k nohwcrypt=1 on the sender side helps. And avoiding PREQs 
+with this patch also helped in our batman-adv setup which had 
+mesh_fwding disabled already anyway.
 
-Cc: Sven Eckelmann <sven@narfation.org>
-Cc: Simon Wunderlich <sw@simonwunderlich.de>
-Signed-off-by: Linus Lüssing <ll@simonwunderlich.de>
----
- mesh.c    | 2 ++
- nl80211.h | 7 +++++++
- 2 files changed, 9 insertions(+)
+Regards, Linus
 
-diff --git a/mesh.c b/mesh.c
-index 0650d0c..48bbc3f 100644
---- a/mesh.c
-+++ b/mesh.c
-@@ -264,6 +264,8 @@ static const struct mesh_param_descr _mesh_param_descrs[] =
- 	_my_nla_put_u16, _parse_u16, _print_u16_in_TUs},
- 	{"mesh_plink_timeout", NL80211_MESHCONF_PLINK_TIMEOUT,
- 	_my_nla_put_u32, _parse_u32, _print_u32_in_seconds},
-+	{"mesh_nolearn", NL80211_MESHCONF_NOLEARN,
-+	_my_nla_put_u8, _parse_u8_as_bool, _print_u8},
- };
- 
- static void print_all_mesh_param_descr(void)
-diff --git a/nl80211.h b/nl80211.h
-index c14666b..4c55e89 100644
---- a/nl80211.h
-+++ b/nl80211.h
-@@ -4228,6 +4228,12 @@ enum nl80211_mesh_power_mode {
-  *	field.  If left unset then the mesh formation field will only
-  *	advertise such if there is an active root mesh path.
-  *
-+ * @NL80211_MESHCONF_NOLEARN: Try to avoid multi-hop path discovery (e.g.
-+ *	PREQ/PREP for HWMP) if the destination is a direct neighbor. Note that
-+ *	this might not be the optimal decision as a multi-hop route might be
-+ *	better. So if using this setting you will likely also want to disable
-+ *	dot11MeshForwarding and use another mesh routing protocol on top.
-+ *
-  * @__NL80211_MESHCONF_ATTR_AFTER_LAST: internal use
-  */
- enum nl80211_meshconf_params {
-@@ -4261,6 +4267,7 @@ enum nl80211_meshconf_params {
- 	NL80211_MESHCONF_AWAKE_WINDOW,
- 	NL80211_MESHCONF_PLINK_TIMEOUT,
- 	NL80211_MESHCONF_CONNECTED_TO_GATE,
-+	NL80211_MESHCONF_NOLEARN,
- 
- 	/* keep last */
- 	__NL80211_MESHCONF_ATTR_AFTER_LAST,
--- 
-2.27.0
 
+PS/Disclaimer: This bug was observed on an old LEDE version.
+
+
+[0]: https://patchwork.kernel.org/patch/11566011/
