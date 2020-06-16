@@ -2,163 +2,86 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8029B1FBEF6
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jun 2020 21:26:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D5D061FBF0B
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jun 2020 21:31:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730912AbgFPTZr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 16 Jun 2020 15:25:47 -0400
-Received: from p54ae948c.dip0.t-ipconnect.de ([84.174.148.140]:51983 "EHLO
-        maeck.local" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1730800AbgFPTZq (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 16 Jun 2020 15:25:46 -0400
-Received: by maeck.local (Postfix, from userid 501)
-        id BC48C8E50DD6; Tue, 16 Jun 2020 21:25:44 +0200 (CEST)
+        id S1730423AbgFPTbi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 16 Jun 2020 15:31:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53190 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729989AbgFPTbi (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 16 Jun 2020 15:31:38 -0400
+Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE728C061573
+        for <linux-wireless@vger.kernel.org>; Tue, 16 Jun 2020 12:31:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
+        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=OtwnyUKEbnTsL9gM00aYVvrAZsTLTze/LEKaPDTgWl0=; b=hA64HMFYq/6pie/F63/+EOZ+59
+        O9AfCiypJcp1Cgnypw6qZCAxxCW16FK6aX8NEE1Ium9q7zNl6UZNLes+xSS2J1+PQTlYsd71qn+V9
+        97H9tb0GAhEwiytuAII2/wyemhMqzhksLPxTzYWYRhLFBPHDVgIoPwG3lFtPZBPolc2c=;
+Received: from p54ae948c.dip0.t-ipconnect.de ([84.174.148.140] helo=nf.local)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1jlHJ1-0002d7-JP; Tue, 16 Jun 2020 21:31:35 +0200
+Subject: Re: [PATCH] mt76: mt7615: cleanup codes
+To:     Ryder Lee <ryder.lee@mediatek.com>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+Cc:     Shayne Chen <shayne.chen@mediatek.com>,
+        Sean Wang <sean.wang@mediatek.com>,
+        linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org
+References: <0cb7ad2a49010a540baca21cd19c43540534b141.1592204310.git.ryder.lee@mediatek.com>
 From:   Felix Fietkau <nbd@nbd.name>
-To:     linux-wireless@vger.kernel.org
-Cc:     shayne.chen@mediatek.com, evelyn.tsai@mediatek.com
-Subject: [PATCH v2 4/4] mt76: mt7615: implement support for using DT rate power limits
-Date:   Tue, 16 Jun 2020 21:25:44 +0200
-Message-Id: <20200616192544.97938-4-nbd@nbd.name>
-X-Mailer: git-send-email 2.24.0
-In-Reply-To: <20200616192544.97938-1-nbd@nbd.name>
-References: <20200616192544.97938-1-nbd@nbd.name>
+Autocrypt: addr=nbd@nbd.name; prefer-encrypt=mutual; keydata=
+ xsDiBEah5CcRBADIY7pu4LIv3jBlyQ/2u87iIZGe6f0f8pyB4UjzfJNXhJb8JylYYRzIOSxh
+ ExKsdLCnJqsG1PY1mqTtoG8sONpwsHr2oJ4itjcGHfn5NJSUGTbtbbxLro13tHkGFCoCr4Z5
+ Pv+XRgiANSpYlIigiMbOkide6wbggQK32tC20QxUIwCg4k6dtV/4kwEeiOUfErq00TVqIiEE
+ AKcUi4taOuh/PQWx/Ujjl/P1LfJXqLKRPa8PwD4j2yjoc9l+7LptSxJThL9KSu6gtXQjcoR2
+ vCK0OeYJhgO4kYMI78h1TSaxmtImEAnjFPYJYVsxrhay92jisYc7z5R/76AaELfF6RCjjGeP
+ wdalulG+erWju710Bif7E1yjYVWeA/9Wd1lsOmx6uwwYgNqoFtcAunDaMKi9xVQW18FsUusM
+ TdRvTZLBpoUAy+MajAL+R73TwLq3LnKpIcCwftyQXK5pEDKq57OhxJVv1Q8XkA9Dn1SBOjNB
+ l25vJDFAT9ntp9THeDD2fv15yk4EKpWhu4H00/YX8KkhFsrtUs69+vZQwc0cRmVsaXggRmll
+ dGthdSA8bmJkQG5iZC5uYW1lPsJgBBMRAgAgBQJGoeQnAhsjBgsJCAcDAgQVAggDBBYCAwEC
+ HgECF4AACgkQ130UHQKnbvXsvgCgjsAIIOsY7xZ8VcSm7NABpi91yTMAniMMmH7FRenEAYMa
+ VrwYTIThkTlQzsFNBEah5FQQCACMIep/hTzgPZ9HbCTKm9xN4bZX0JjrqjFem1Nxf3MBM5vN
+ CYGBn8F4sGIzPmLhl4xFeq3k5irVg/YvxSDbQN6NJv8o+tP6zsMeWX2JjtV0P4aDIN1pK2/w
+ VxcicArw0VYdv2ZCarccFBgH2a6GjswqlCqVM3gNIMI8ikzenKcso8YErGGiKYeMEZLwHaxE
+ Y7mTPuOTrWL8uWWRL5mVjhZEVvDez6em/OYvzBwbkhImrryF29e3Po2cfY2n7EKjjr3/141K
+ DHBBdgXlPNfDwROnA5ugjjEBjwkwBQqPpDA7AYPvpHh5vLbZnVGu5CwG7NAsrb2isRmjYoqk
+ wu++3117AAMFB/9S0Sj7qFFQcD4laADVsabTpNNpaV4wAgVTRHKV/kC9luItzwDnUcsZUPdQ
+ f3MueRJ3jIHU0UmRBG3uQftqbZJj3ikhnfvyLmkCNe+/hXhPu9sGvXyi2D4vszICvc1KL4RD
+ aLSrOsROx22eZ26KqcW4ny7+va2FnvjsZgI8h4sDmaLzKczVRIiLITiMpLFEU/VoSv0m1F4B
+ FtRgoiyjFzigWG0MsTdAN6FJzGh4mWWGIlE7o5JraNhnTd+yTUIPtw3ym6l8P+gbvfoZida0
+ TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabwkkE
+ GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCfTKx80VvCR/PvsUlrvdOLsIgeRGAAn1ee
+ RjMaxwtSdaCKMw3j33ZbsWS4
+Message-ID: <d38bed5a-a035-4e87-aaf3-12031d55de50@nbd.name>
+Date:   Tue, 16 Jun 2020 21:31:34 +0200
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:68.0)
+ Gecko/20100101 Thunderbird/68.9.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <0cb7ad2a49010a540baca21cd19c43540534b141.1592204310.git.ryder.lee@mediatek.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Limits are used to update the channel max_power settings and also passed
-to the firmware on channel changes
+On 2020-06-15 09:01, Ryder Lee wrote:
+> Cleanup indentation, mixed licenses and change some functions' type as void.
+> 
+> Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+Please separate code cleanup from license changes, and make sure you get
+an ACK from all people involved with the code that you change the
+license for.
+I'm fine with the license change, but I'm not sure if any code was
+copied from mt7601u. At least Lorenzo also needs to ack this.
 
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
----
-v2: fix nss delta calculation for channel max_power
-
- .../net/wireless/mediatek/mt76/mt7615/init.c  | 11 +++-
- .../net/wireless/mediatek/mt76/mt7615/mcu.c   | 61 ++++++++++++++++++-
- 2 files changed, 70 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/init.c b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
-index e2d80518e5af..b04fe7301d4a 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
-@@ -234,6 +234,7 @@ void mt7615_init_txpower(struct mt7615_dev *dev,
- 	int delta_idx, delta = mt76_tx_power_nss_delta(n_chains);
- 	u8 *eep = (u8 *)dev->mt76.eeprom.data;
- 	enum nl80211_band band = sband->band;
-+	struct mt76_power_limits limits;
- 	u8 rate_val;
- 
- 	delta_idx = mt7615_eeprom_get_power_delta_index(dev, band);
-@@ -262,7 +263,11 @@ void mt7615_init_txpower(struct mt7615_dev *dev,
- 			target_power = max(target_power, eep[index]);
- 		}
- 
--		target_power = DIV_ROUND_UP(target_power + delta, 2);
-+		target_power = mt76_get_rate_power_limits(&dev->mphy, chan,
-+							  &limits,
-+							  target_power);
-+		target_power += delta;
-+		target_power = DIV_ROUND_UP(target_power, 2);
- 		chan->max_power = min_t(int, chan->max_reg_power,
- 					target_power);
- 		chan->orig_mpwr = target_power;
-@@ -280,8 +285,12 @@ mt7615_regd_notifier(struct wiphy *wiphy,
- 	struct mt7615_phy *phy = mphy->priv;
- 	struct cfg80211_chan_def *chandef = &mphy->chandef;
- 
-+	memcpy(dev->mt76.alpha2, request->alpha2, sizeof(dev->mt76.alpha2));
- 	dev->mt76.region = request->dfs_region;
- 
-+	mt7615_init_txpower(dev, &mphy->sband_2g.sband);
-+	mt7615_init_txpower(dev, &mphy->sband_5g.sband);
-+
- 	if (!(chandef->chan->flags & IEEE80211_CHAN_RADAR))
- 		return;
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-index d3a8ada3b779..ed79ca911927 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-@@ -2696,16 +2696,75 @@ static void mt7615_mcu_set_txpower_sku(struct mt7615_phy *phy, u8 *sku)
- {
- 	struct mt76_phy *mphy = phy->mt76;
- 	struct ieee80211_hw *hw = mphy->hw;
-+	struct mt76_power_limits limits;
-+	s8 *limits_array = (s8 *)&limits;
- 	int n_chains = hweight8(mphy->antenna_mask);
- 	int tx_power;
- 	int i;
-+	static const u8 sku_mapping[] = {
-+#define SKU_FIELD(_type, _field) \
-+		[MT_SKU_##_type] = offsetof(struct mt76_power_limits, _field)
-+		SKU_FIELD(CCK_1_2, cck[0]),
-+		SKU_FIELD(CCK_55_11, cck[2]),
-+		SKU_FIELD(OFDM_6_9, ofdm[0]),
-+		SKU_FIELD(OFDM_12_18, ofdm[2]),
-+		SKU_FIELD(OFDM_24_36, ofdm[4]),
-+		SKU_FIELD(OFDM_48, ofdm[6]),
-+		SKU_FIELD(OFDM_54, ofdm[7]),
-+		SKU_FIELD(HT20_0_8, mcs[0][0]),
-+		SKU_FIELD(HT20_32, ofdm[0]),
-+		SKU_FIELD(HT20_1_2_9_10, mcs[0][1]),
-+		SKU_FIELD(HT20_3_4_11_12, mcs[0][3]),
-+		SKU_FIELD(HT20_5_13, mcs[0][5]),
-+		SKU_FIELD(HT20_6_14, mcs[0][6]),
-+		SKU_FIELD(HT20_7_15, mcs[0][7]),
-+		SKU_FIELD(HT40_0_8, mcs[1][0]),
-+		SKU_FIELD(HT40_32, ofdm[0]),
-+		SKU_FIELD(HT40_1_2_9_10, mcs[1][1]),
-+		SKU_FIELD(HT40_3_4_11_12, mcs[1][3]),
-+		SKU_FIELD(HT40_5_13, mcs[1][5]),
-+		SKU_FIELD(HT40_6_14, mcs[1][6]),
-+		SKU_FIELD(HT40_7_15, mcs[1][7]),
-+		SKU_FIELD(VHT20_0, mcs[0][0]),
-+		SKU_FIELD(VHT20_1_2, mcs[0][1]),
-+		SKU_FIELD(VHT20_3_4, mcs[0][3]),
-+		SKU_FIELD(VHT20_5_6, mcs[0][5]),
-+		SKU_FIELD(VHT20_7, mcs[0][7]),
-+		SKU_FIELD(VHT20_8, mcs[0][8]),
-+		SKU_FIELD(VHT20_9, mcs[0][9]),
-+		SKU_FIELD(VHT40_0, mcs[1][0]),
-+		SKU_FIELD(VHT40_1_2, mcs[1][1]),
-+		SKU_FIELD(VHT40_3_4, mcs[1][3]),
-+		SKU_FIELD(VHT40_5_6, mcs[1][5]),
-+		SKU_FIELD(VHT40_7, mcs[1][7]),
-+		SKU_FIELD(VHT40_8, mcs[1][8]),
-+		SKU_FIELD(VHT40_9, mcs[1][9]),
-+		SKU_FIELD(VHT80_0, mcs[2][0]),
-+		SKU_FIELD(VHT80_1_2, mcs[2][1]),
-+		SKU_FIELD(VHT80_3_4, mcs[2][3]),
-+		SKU_FIELD(VHT80_5_6, mcs[2][5]),
-+		SKU_FIELD(VHT80_7, mcs[2][7]),
-+		SKU_FIELD(VHT80_8, mcs[2][8]),
-+		SKU_FIELD(VHT80_9, mcs[2][9]),
-+		SKU_FIELD(VHT160_0, mcs[3][0]),
-+		SKU_FIELD(VHT160_1_2, mcs[3][1]),
-+		SKU_FIELD(VHT160_3_4, mcs[3][3]),
-+		SKU_FIELD(VHT160_5_6, mcs[3][5]),
-+		SKU_FIELD(VHT160_7, mcs[3][7]),
-+		SKU_FIELD(VHT160_8, mcs[3][8]),
-+		SKU_FIELD(VHT160_9, mcs[3][9]),
-+#undef SKU_FIELD
-+	};
- 
- 	tx_power = hw->conf.power_level * 2 -
- 		   mt76_tx_power_nss_delta(n_chains);
-+
-+	tx_power = mt76_get_rate_power_limits(mphy, mphy->chandef.chan,
-+					      &limits, tx_power);
- 	mphy->txpower_cur = tx_power;
- 
- 	for (i = 0; i < MT_SKU_1SS_DELTA; i++)
--		sku[i] = tx_power;
-+		sku[i] = limits_array[sku_mapping[i]];
- 
- 	for (i = 0; i < 4; i++) {
- 		int delta = 0;
--- 
-2.24.0
-
+- Felix
