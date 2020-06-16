@@ -2,32 +2,31 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B73641FB341
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jun 2020 16:01:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5FCBE1FB33A
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jun 2020 16:01:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729256AbgFPOBn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 16 Jun 2020 10:01:43 -0400
-Received: from mail27.static.mailgun.info ([104.130.122.27]:44251 "EHLO
-        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1729239AbgFPOBj (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 16 Jun 2020 10:01:39 -0400
+        id S1728772AbgFPOBZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 16 Jun 2020 10:01:25 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:25510 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728919AbgFPOBZ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 16 Jun 2020 10:01:25 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1592316099; h=References: In-Reply-To: Message-Id: Date:
+ s=smtp; t=1592316083; h=References: In-Reply-To: Message-Id: Date:
  Subject: Cc: To: From: Sender;
- bh=PUqS84rDgrBE85Qc1ahBL7sfRN3l9bmbBg537ZjDNOc=; b=HywVPMtKBliKBq+hHdpLaDQb6FxCIGvEYpYX/qL+2W60ZaZkxbu68cL2j1e0WAHgTGj7RaDy
- PQlJRqQa34qESUVSjfO2fsk86PXcaAyQvcqLQxeURUXnHIhOMfQ7DFDik3IzXCsipQRNGrEu
- 5eaZWC3ZByq0SH3fUiELcjzzcIw=
-X-Mailgun-Sending-Ip: 104.130.122.27
+ bh=AY4XGsdHzs+GRhKR3zzGdtnW2aQdPyTG2VLnDPVl4dA=; b=QYyk6UulP6CRraYB92t09wc4Y2YpILWwWdtKGg7uLDDpYmxvREgm/5i9gPwq9tQmcpnl0vsh
+ 2atuZP7dKjQNyAWDgt80IqU1cHFgvuy6gniKw1XoRGtGdkI5nnnI3V+fRoihIZS9bpwcjYTD
+ uySTBBtEKs60OCKRMFwtv8k0BXg=
+X-Mailgun-Sending-Ip: 69.72.43.7
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n12.prod.us-west-2.postgun.com with SMTP id
- 5ee8d0a44c9690533aa3ac3b (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 16 Jun 2020 14:01:08
+ smtp-out-n07.prod.us-west-2.postgun.com with SMTP id
+ 5ee8d0a65866879c76974368 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 16 Jun 2020 14:01:10
  GMT
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 762C6C433CA; Tue, 16 Jun 2020 14:01:08 +0000 (UTC)
+        id DD13DC433C8; Tue, 16 Jun 2020 14:01:10 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -37,17 +36,17 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 7B59BC433C8;
-        Tue, 16 Jun 2020 14:01:06 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 7B59BC433C8
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id B29F4C433C9;
+        Tue, 16 Jun 2020 14:01:08 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org B29F4C433C9
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 From:   Kalle Valo <kvalo@codeaurora.org>
 To:     ath11k@lists.infradead.org
 Cc:     linux-wireless@vger.kernel.org
-Subject: [PATCH 03/12] ath11k: define max_radios in hw_params
-Date:   Tue, 16 Jun 2020 17:00:46 +0300
-Message-Id: <1592316055-24958-4-git-send-email-kvalo@codeaurora.org>
+Subject: [PATCH 04/12] ath11k: add hw_ops for pdev id to hw_mac mapping
+Date:   Tue, 16 Jun 2020 17:00:47 +0300
+Message-Id: <1592316055-24958-5-git-send-email-kvalo@codeaurora.org>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1592316055-24958-1-git-send-email-kvalo@codeaurora.org>
 References: <1592316055-24958-1-git-send-email-kvalo@codeaurora.org>
@@ -58,106 +57,226 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Anilkumar Kolli <akolli@codeaurora.org>
 
-IPQ6018 needs different value for max_radios so make it configurable via hw_params.
+pdev_id to hw_mac is different for ipq8074 and ipq6018
+Below table has the mapping
+
+pdev_id	ipq8074	ipq6018
+-------	------- -------
+  0		0	0
+  1		2	1
+  2		1	Not applicable
 
 No functional changes. Compile tested only.
 
 Signed-off-by: Anilkumar Kolli <akolli@codeaurora.org>
 Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 ---
- drivers/net/wireless/ath/ath11k/core.c  | 1 +
- drivers/net/wireless/ath/ath11k/dp_rx.c | 2 +-
- drivers/net/wireless/ath/ath11k/htc.c   | 2 +-
- drivers/net/wireless/ath/ath11k/hw.h    | 1 +
- drivers/net/wireless/ath/ath11k/reg.c   | 2 +-
- drivers/net/wireless/ath/ath11k/wmi.c   | 4 ++--
- 6 files changed, 7 insertions(+), 5 deletions(-)
+ drivers/net/wireless/ath/ath11k/Makefile |  3 ++-
+ drivers/net/wireless/ath/ath11k/ahb.c    | 15 +++++++-------
+ drivers/net/wireless/ath/ath11k/core.c   | 18 +----------------
+ drivers/net/wireless/ath/ath11k/core.h   |  1 -
+ drivers/net/wireless/ath/ath11k/hw.c     | 34 ++++++++++++++++++++++++++++++++
+ drivers/net/wireless/ath/ath11k/hw.h     | 19 ++++++++++++++++++
+ drivers/net/wireless/ath/ath11k/mac.c    |  2 +-
+ 7 files changed, 65 insertions(+), 27 deletions(-)
+ create mode 100644 drivers/net/wireless/ath/ath11k/hw.c
 
+diff --git a/drivers/net/wireless/ath/ath11k/Makefile b/drivers/net/wireless/ath/ath11k/Makefile
+index 104186373c9e..ee13a3becbcf 100644
+--- a/drivers/net/wireless/ath/ath11k/Makefile
++++ b/drivers/net/wireless/ath/ath11k/Makefile
+@@ -16,7 +16,8 @@ ath11k-y += core.o \
+ 	    debug.o \
+ 	    ce.o \
+ 	    peer.o \
+-	    dbring.o
++	    dbring.o \
++	    hw.o
+ 
+ ath11k-$(CONFIG_ATH11K_DEBUGFS) += debug_htt_stats.o debugfs_sta.o
+ ath11k-$(CONFIG_NL80211_TESTMODE) += testmode.o
+diff --git a/drivers/net/wireless/ath/ath11k/ahb.c b/drivers/net/wireless/ath/ath11k/ahb.c
+index 2ea6da7682ce..7e9bfeaaf4d2 100644
+--- a/drivers/net/wireless/ath/ath11k/ahb.c
++++ b/drivers/net/wireless/ath/ath11k/ahb.c
+@@ -734,6 +734,7 @@ static irqreturn_t ath11k_ahb_ext_interrupt_handler(int irq, void *arg)
+ 
+ static int ath11k_ahb_ext_irq_config(struct ath11k_base *ab)
+ {
++	struct ath11k_hw_params *hw = &ab->hw_params;
+ 	int i, j;
+ 	int irq;
+ 	int ret;
+@@ -768,26 +769,26 @@ static int ath11k_ahb_ext_irq_config(struct ath11k_base *ab)
+ 			if (ath11k_reo_status_ring_mask[i] & BIT(j))
+ 				irq_grp->irqs[num_irq++] = reo2host_status;
+ 
+-			if (j < MAX_RADIOS) {
++			if (j < ab->hw_params.max_radios) {
+ 				if (ath11k_rxdma2host_ring_mask[i] & BIT(j)) {
+ 					irq_grp->irqs[num_irq++] =
+-						rxdma2host_destination_ring_mac1
+-						- ath11k_core_get_hw_mac_id(ab, j);
++						rxdma2host_destination_ring_mac1 -
++						ath11k_hw_get_mac_from_pdev_id(hw, j);
+ 				}
+ 
+ 				if (ath11k_host2rxdma_ring_mask[i] & BIT(j)) {
+ 					irq_grp->irqs[num_irq++] =
+-						host2rxdma_host_buf_ring_mac1
+-						- ath11k_core_get_hw_mac_id(ab, j);
++						host2rxdma_host_buf_ring_mac1 -
++						ath11k_hw_get_mac_from_pdev_id(hw, j);
+ 				}
+ 
+ 				if (rx_mon_status_ring_mask[i] & BIT(j)) {
+ 					irq_grp->irqs[num_irq++] =
+ 						ppdu_end_interrupts_mac1 -
+-						ath11k_core_get_hw_mac_id(ab, j);
++						ath11k_hw_get_mac_from_pdev_id(hw, j);
+ 					irq_grp->irqs[num_irq++] =
+ 						rxdma2host_monitor_status_ring_mac1 -
+-						ath11k_core_get_hw_mac_id(ab, j);
++						ath11k_hw_get_mac_from_pdev_id(hw, j);
+ 				}
+ 			}
+ 		}
 diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
-index 92d7925ad0f4..67822508327c 100644
+index 67822508327c..089b46ba86c5 100644
 --- a/drivers/net/wireless/ath/ath11k/core.c
 +++ b/drivers/net/wireless/ath/ath11k/core.c
-@@ -26,6 +26,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
- 			.board_size = IPQ8074_MAX_BOARD_DATA_SZ,
+@@ -27,26 +27,10 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
  			.cal_size =  IPQ8074_MAX_CAL_DATA_SZ,
  		},
-+		.max_radios = 3,
+ 		.max_radios = 3,
++		.hw_ops = &ipq8074_ops,
  	},
  };
  
-diff --git a/drivers/net/wireless/ath/ath11k/dp_rx.c b/drivers/net/wireless/ath/ath11k/dp_rx.c
-index 791d971784ce..5680b99a4f5c 100644
---- a/drivers/net/wireless/ath/ath11k/dp_rx.c
-+++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
-@@ -3820,7 +3820,7 @@ int ath11k_dp_rx_process_wbm_err(struct ath11k_base *ab,
- 	int total_num_buffs_reaped = 0;
- 	int ret, i;
+-/* Map from pdev index to hw mac index */
+-u8 ath11k_core_get_hw_mac_id(struct ath11k_base *ab, int pdev_idx)
+-{
+-	switch (pdev_idx) {
+-	case 0:
+-		return 0;
+-	case 1:
+-		return 2;
+-	case 2:
+-		return 1;
+-	default:
+-		ath11k_warn(ab, "Invalid pdev idx %d\n", pdev_idx);
+-		return ATH11K_INVALID_HW_MAC_ID;
+-	}
+-}
+-EXPORT_SYMBOL(ath11k_core_get_hw_mac_id);
+-
+ static int ath11k_core_create_board_name(struct ath11k_base *ab, char *name,
+ 					 size_t name_len)
+ {
+diff --git a/drivers/net/wireless/ath/ath11k/core.h b/drivers/net/wireless/ath/ath11k/core.h
+index e5c4e19020ee..98de9c35e178 100644
+--- a/drivers/net/wireless/ath/ath11k/core.h
++++ b/drivers/net/wireless/ath/ath11k/core.h
+@@ -860,7 +860,6 @@ int ath11k_core_fetch_bdf(struct ath11k_base *ath11k,
+ void ath11k_core_free_bdf(struct ath11k_base *ab, struct ath11k_board_data *bd);
  
--	for (i = 0; i < MAX_RADIOS; i++)
-+	for (i = 0; i < ab->num_radios; i++)
- 		__skb_queue_head_init(&msdu_list[i]);
+ void ath11k_core_halt(struct ath11k *ar);
+-u8 ath11k_core_get_hw_mac_id(struct ath11k_base *ab, int pdev_idx);
  
- 	srng = &ab->hal.srng_list[dp->rx_rel_ring.ring_id];
-diff --git a/drivers/net/wireless/ath/ath11k/htc.c b/drivers/net/wireless/ath/ath11k/htc.c
-index ad13c648b679..bc0026c1e4a6 100644
---- a/drivers/net/wireless/ath/ath11k/htc.c
-+++ b/drivers/net/wireless/ath/ath11k/htc.c
-@@ -748,7 +748,7 @@ int ath11k_htc_init(struct ath11k_base *ab)
- 		htc->wmi_ep_count = 3;
- 		break;
- 	default:
--		htc->wmi_ep_count = 3;
-+		htc->wmi_ep_count = ab->hw_params.max_radios;
- 		break;
- 	}
- 
+ static inline const char *ath11k_scan_state_str(enum ath11k_scan_state state)
+ {
+diff --git a/drivers/net/wireless/ath/ath11k/hw.c b/drivers/net/wireless/ath/ath11k/hw.c
+new file mode 100644
+index 000000000000..7cc5f36509c0
+--- /dev/null
++++ b/drivers/net/wireless/ath/ath11k/hw.c
+@@ -0,0 +1,34 @@
++// SPDX-License-Identifier: BSD-3-Clause-Clear
++/*
++ * Copyright (c) 2018-2020 The Linux Foundation. All rights reserved.
++ */
++
++#include "core.h"
++
++/* Map from pdev index to hw mac index */
++static u8 ath11k_hw_ipq8074_mac_from_pdev_id(int pdev_idx)
++{
++	switch (pdev_idx) {
++	case 0:
++		return 0;
++	case 1:
++		return 2;
++	case 2:
++		return 1;
++	default:
++		return ATH11K_INVALID_HW_MAC_ID;
++	}
++}
++
++static u8 ath11k_hw_ipq6018_mac_from_pdev_id(int pdev_idx)
++{
++	return pdev_idx;
++}
++
++const struct ath11k_hw_ops ipq8074_ops = {
++	.get_hw_mac_from_pdev_id = ath11k_hw_ipq8074_mac_from_pdev_id,
++};
++
++const struct ath11k_hw_ops ipq6018_ops = {
++	.get_hw_mac_from_pdev_id = ath11k_hw_ipq6018_mac_from_pdev_id,
++};
 diff --git a/drivers/net/wireless/ath/ath11k/hw.h b/drivers/net/wireless/ath/ath11k/hw.h
-index f95ad31d3d6c..ba897d186cf5 100644
+index ba897d186cf5..2fb986b9a6cb 100644
 --- a/drivers/net/wireless/ath/ath11k/hw.h
 +++ b/drivers/net/wireless/ath/ath11k/hw.h
-@@ -107,6 +107,7 @@ enum ath11k_bus {
+@@ -104,6 +104,10 @@ enum ath11k_bus {
+ 	ATH11K_BUS_PCI,
+ };
+ 
++struct ath11k_hw_ops {
++	u8 (*get_hw_mac_from_pdev_id)(int pdev_id);
++};
++
  struct ath11k_hw_params {
  	const char *name;
  	u16 hw_rev;
-+	u8 max_radios;
- 	struct {
- 		const char *dir;
+@@ -113,8 +117,23 @@ struct ath11k_hw_params {
  		size_t board_size;
-diff --git a/drivers/net/wireless/ath/ath11k/reg.c b/drivers/net/wireless/ath/ath11k/reg.c
-index 7c9dc91cc48a..0ba80e6f3979 100644
---- a/drivers/net/wireless/ath/ath11k/reg.c
-+++ b/drivers/net/wireless/ath/ath11k/reg.c
-@@ -699,7 +699,7 @@ void ath11k_reg_free(struct ath11k_base *ab)
- {
- 	int i;
+ 		size_t cal_size;
+ 	} fw;
++
++	const struct ath11k_hw_ops *hw_ops;
+ };
  
--	for (i = 0; i < MAX_RADIOS; i++) {
-+	for (i = 0; i < ab->hw_params.max_radios; i++) {
- 		kfree(ab->default_regd[i]);
- 		kfree(ab->new_regd[i]);
- 	}
-diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
-index 8e3437a65673..cd1bdb2a75c9 100644
---- a/drivers/net/wireless/ath/ath11k/wmi.c
-+++ b/drivers/net/wireless/ath/ath11k/wmi.c
-@@ -6682,7 +6682,7 @@ int ath11k_wmi_connect(struct ath11k_base *ab)
- 	u8 wmi_ep_count;
++extern const struct ath11k_hw_ops ipq8074_ops;
++extern const struct ath11k_hw_ops ipq6018_ops;
++
++static inline
++int ath11k_hw_get_mac_from_pdev_id(struct ath11k_hw_params *hw,
++				   int pdev_idx)
++{
++	if (hw->hw_ops->get_hw_mac_from_pdev_id)
++		return hw->hw_ops->get_hw_mac_from_pdev_id(pdev_idx);
++
++	return 0;
++}
++
+ struct ath11k_fw_ie {
+ 	__le32 id;
+ 	__le32 len;
+diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
+index 07d3e031c75a..cdedb2ea7d87 100644
+--- a/drivers/net/wireless/ath/ath11k/mac.c
++++ b/drivers/net/wireless/ath/ath11k/mac.c
+@@ -6194,7 +6194,7 @@ int ath11k_mac_allocate(struct ath11k_base *ab)
+ 		ar->ab = ab;
+ 		ar->pdev = pdev;
+ 		ar->pdev_idx = i;
+-		ar->lmac_id = ath11k_core_get_hw_mac_id(ab, i);
++		ar->lmac_id = ath11k_hw_get_mac_from_pdev_id(&ab->hw_params, i);
  
- 	wmi_ep_count = ab->htc.wmi_ep_count;
--	if (wmi_ep_count > MAX_RADIOS)
-+	if (wmi_ep_count > ab->hw_params.max_radios)
- 		return -1;
- 
- 	for (i = 0; i < wmi_ep_count; i++)
-@@ -6704,7 +6704,7 @@ int ath11k_wmi_pdev_attach(struct ath11k_base *ab,
- {
- 	struct ath11k_pdev_wmi *wmi_handle;
- 
--	if (pdev_id >= MAX_RADIOS)
-+	if (pdev_id >= ab->hw_params.max_radios)
- 		return -EINVAL;
- 
- 	wmi_handle = &ab->wmi_ab.wmi[pdev_id];
+ 		ar->wmi = &ab->wmi_ab.wmi[i];
+ 		/* FIXME wmi[0] is already initialized during attach,
 -- 
 2.7.4
 
