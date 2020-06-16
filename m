@@ -2,130 +2,143 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 50EC41FB117
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jun 2020 14:47:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E1CA11FB19A
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jun 2020 15:05:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728785AbgFPMrL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 16 Jun 2020 08:47:11 -0400
-Received: from mailgw01.mediatek.com ([210.61.82.183]:17214 "EHLO
-        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1728782AbgFPMrL (ORCPT
+        id S1728822AbgFPNF1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 16 Jun 2020 09:05:27 -0400
+Received: from us-smtp-1.mimecast.com ([207.211.31.81]:39663 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1728798AbgFPNFV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 16 Jun 2020 08:47:11 -0400
-X-UUID: 8e5d8c1d343340709e227d0a63e6cc76-20200616
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Transfer-Encoding:Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=cFT7b6H2LRT9dSPfnxzcUSZBaTbz+EV+Si2bOMAYrIw=;
-        b=CVLdvla8BrzOiM9OfMgIjTPXh4mzM2WqEjiOy2mRWxf8ypIYwlqIx8kL8kgdfE4XHVcYVWZPKFInxuYz8A7L7npcT9Qb6Rag7t3JYvVkO066bLMDG6SIkkW8DGcMBTXL/NjEUONSzfypvKeoJQCTqLZImcQB2pwyAER2Myidt1Y=;
-X-UUID: 8e5d8c1d343340709e227d0a63e6cc76-20200616
-Received: from mtkcas06.mediatek.inc [(172.21.101.30)] by mailgw01.mediatek.com
-        (envelope-from <shayne.chen@mediatek.com>)
-        (Cellopoint E-mail Firewall v4.1.10 Build 0809 with TLS)
-        with ESMTP id 1902203524; Tue, 16 Jun 2020 20:47:07 +0800
-Received: from mtkcas07.mediatek.inc (172.21.101.84) by
- mtkmbs02n2.mediatek.inc (172.21.101.101) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Tue, 16 Jun 2020 20:47:03 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas07.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Tue, 16 Jun 2020 20:47:02 +0800
-From:   Shayne Chen <shayne.chen@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>
-CC:     linux-wireless <linux-wireless@vger.kernel.org>,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        linux-mediatek <linux-mediatek@lists.infradead.org>,
-        Shayne Chen <shayne.chen@mediatek.com>
-Subject: [PATCH 4/4] mt76: mt7915: add support to read per-rate tx power from HW in debugfs
-Date:   Tue, 16 Jun 2020 20:46:13 +0800
-Message-ID: <05dcb80b4bac2e274f2b49479d030588f9dba326.1592276165.git.ryder.lee@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <9ae2b6233284b60206e3513f7bf2eb03d2fbd724.1592276165.git.ryder.lee@mediatek.com>
-References: <9ae2b6233284b60206e3513f7bf2eb03d2fbd724.1592276165.git.ryder.lee@mediatek.com>
+        Tue, 16 Jun 2020 09:05:21 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1592312719;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=7nZX/JZoMn+I5qsocsgLqRgQUtpNpbf+EHIybmwJtOc=;
+        b=DrTWSdc51IgcrjaAMEbVTNIUuwKk9tbvc65esaiRUfyf6HC89eIAFP1HkgIwMQcloe71Zx
+        ZrZ3XJ+4bVa1pDQj6zbc3JfNAKPe4H+gjkeZq/QkWFjQYfqmOgahNwU+1FLrUPHDaDY0YO
+        F6zs7fjkWicjD+JvfM+fl05yhD3NjX8=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-395-9xOyBG-QPzmPq6osX1JXvA-1; Tue, 16 Jun 2020 09:05:14 -0400
+X-MC-Unique: 9xOyBG-QPzmPq6osX1JXvA-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 108C8107B7CB;
+        Tue, 16 Jun 2020 13:05:07 +0000 (UTC)
+Received: from llong.remote.csb (ovpn-114-156.rdu2.redhat.com [10.10.114.156])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 3337D5D9E4;
+        Tue, 16 Jun 2020 13:05:01 +0000 (UTC)
+Subject: Re: [PATCH v4 1/3] mm/slab: Use memzero_explicit() in kzfree()
+To:     Eric Biggers <ebiggers@kernel.org>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        David Howells <dhowells@redhat.com>,
+        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Joe Perches <joe@perches.com>,
+        Matthew Wilcox <willy@infradead.org>,
+        David Rientjes <rientjes@google.com>,
+        Michal Hocko <mhocko@suse.com>,
+        Johannes Weiner <hannes@cmpxchg.org>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        David Sterba <dsterba@suse.cz>,
+        "Jason A . Donenfeld" <Jason@zx2c4.com>, linux-mm@kvack.org,
+        keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-crypto@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-amlogic@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+        virtualization@lists.linux-foundation.org, netdev@vger.kernel.org,
+        linux-ppp@vger.kernel.org, wireguard@lists.zx2c4.com,
+        linux-wireless@vger.kernel.org, devel@driverdev.osuosl.org,
+        linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
+        linux-btrfs@vger.kernel.org, linux-cifs@vger.kernel.org,
+        linux-fscrypt@vger.kernel.org, ecryptfs@vger.kernel.org,
+        kasan-dev@googlegroups.com, linux-bluetooth@vger.kernel.org,
+        linux-wpan@vger.kernel.org, linux-sctp@vger.kernel.org,
+        linux-nfs@vger.kernel.org, tipc-discussion@lists.sourceforge.net,
+        linux-security-module@vger.kernel.org,
+        linux-integrity@vger.kernel.org, stable@vger.kernel.org
+References: <20200616015718.7812-1-longman@redhat.com>
+ <20200616015718.7812-2-longman@redhat.com>
+ <20200616033035.GB902@sol.localdomain>
+From:   Waiman Long <longman@redhat.com>
+Organization: Red Hat
+Message-ID: <56c2304c-73cc-8f48-d8d0-5dd6c39f33f3@redhat.com>
+Date:   Tue, 16 Jun 2020 09:05:00 -0400
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-SNTS-SMTP: 81AD79F399CF7952C93F3F0FD4020AFF4A34E91C3EFF498E24B5505F11A4EFE82000:8
-X-MTK:  N
-Content-Transfer-Encoding: base64
+In-Reply-To: <20200616033035.GB902@sol.localdomain>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-SW4gdGhlIHByZXZpb3VzIHZlcnNpb24sIHRoZSB2YWx1ZXMgb2YgcGVyLXJhdGUgdHggcG93ZXIg
-YXJlIGNhbGN1bGF0ZWQNCmZyb20gU1cgc2lkZSwgYnV0IGl0IG1heSBiZSBpbmFjY3VyYXRlIGlm
-IGFkZGl0aW9uYWwgbGltaXRzIGFyZSBhcHBsaWVkLg0KVGhpcyBwYXRjaCBhZGRzIHN1cHBvcnQg
-Zm9yIGdldHRpbmcgcGVyLXJhdGUgdHggcG93ZXIgZGlyZWN0bHkgZnJvbQ0KcmVnaXN0ZXJzLg0K
-DQpUZXN0ZWQtYnk6IEV2ZWx5biBUc2FpIDxldmVseW4udHNhaUBtZWRpYXRlay5jb20+DQpTaWdu
-ZWQtb2ZmLWJ5OiBTaGF5bmUgQ2hlbiA8c2hheW5lLmNoZW5AbWVkaWF0ZWsuY29tPg0KLS0tDQog
-Li4uL3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1L2RlYnVnZnMuYyAgIHwgNjAgKysrKysr
-KysrKysrKy0tLS0tLQ0KIC4uLi9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvcmVn
-cy5oICB8ICA1ICsrDQogMiBmaWxlcyBjaGFuZ2VkLCA0NiBpbnNlcnRpb25zKCspLCAxOSBkZWxl
-dGlvbnMoLSkNCg0KZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210
-NzYvbXQ3OTE1L2RlYnVnZnMuYyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYv
-bXQ3OTE1L2RlYnVnZnMuYw0KaW5kZXggMzhmNDczZDU4N2M5Li42N2JjMDU2MDAxOTAgMTAwNjQ0
-DQotLS0gYS9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzkxNS9kZWJ1Z2Zz
-LmMNCisrKyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1L2RlYnVn
-ZnMuYw0KQEAgLTMwNyw4ICszMDcsOCBAQCBtdDc5MTVfcXVldWVzX3JlYWQoc3RydWN0IHNlcV9m
-aWxlICpzLCB2b2lkICpkYXRhKQ0KIH0NCiANCiBzdGF0aWMgdm9pZA0KLW10NzkxNV9wdXRzX3Jh
-dGVfdHhwb3dlcihzdHJ1Y3Qgc2VxX2ZpbGUgKnMsIHM4ICpkZWx0YSwNCi0JCQkgczggdHhwb3dl
-cl9jdXIsIGludCBiYW5kKQ0KK210NzkxNV9wdXRzX3JhdGVfdHhwb3dlcihzdHJ1Y3Qgc2VxX2Zp
-bGUgKnMsIHN0cnVjdCBtdDc5MTVfZGV2ICpkZXYsDQorCQkJIGludCBiYW5kLCBib29sIGV4dF9w
-aHkpDQogew0KIAlzdGF0aWMgY29uc3QgY2hhciAqIGNvbnN0IHNrdV9ncm91cF9uYW1lW10gPSB7
-DQogCQkiQ0NLIiwgIk9GRE0iLCAiSFQyMCIsICJIVDQwIiwNCkBAIC0zMTYsMjQgKzMxNiw1MSBA
-QCBtdDc5MTVfcHV0c19yYXRlX3R4cG93ZXIoc3RydWN0IHNlcV9maWxlICpzLCBzOCAqZGVsdGEs
-DQogCQkiUlUyNiIsICJSVTUyIiwgIlJVMTA2IiwgIlJVMjQyL1NVMjAiLA0KIAkJIlJVNDg0L1NV
-NDAiLCAiUlU5OTYvU1U4MCIsICJSVTJ4OTk2L1NVMTYwIg0KIAl9Ow0KLQlzOCB0eHBvd2VyW01U
-NzkxNV9TS1VfUkFURV9OVU1dOw0KKwl1MzIgcmVnX2Jhc2UgPSBNVF9UTUFDX0ZQMFIwKGV4dF9w
-aHkpOw0KIAlpbnQgaSwgaWR4ID0gMDsNCiANCi0JZm9yIChpID0gMDsgaSA8IE1UNzkxNV9TS1Vf
-UkFURV9OVU07IGkrKykNCi0JCXR4cG93ZXJbaV0gPSBESVZfUk9VTkRfVVAodHhwb3dlcl9jdXIg
-KyBkZWx0YVtpXSwgMik7DQotDQogCWZvciAoaSA9IDA7IGkgPCBNQVhfU0tVX1JBVEVfR1JPVVBf
-TlVNOyBpKyspIHsNCiAJCWNvbnN0IHN0cnVjdCBza3VfZ3JvdXAgKnNrdSA9ICZtdDc5MTVfc2t1
-X2dyb3Vwc1tpXTsNCiAJCXUzMiBvZmZzZXQgPSBza3UtPm9mZnNldFtiYW5kXTsNCisJCXU4IGNu
-dCwgbWNzX251bSA9IHNrdS0+bGVuOw0KKwkJczggdHhwb3dlclsxMl07DQorCQlpbnQgajsNCisN
-CisJCWlmIChpID09IFNLVV9IVF9CVzIwIHx8IGkgPT0gU0tVX0hUX0JXNDApIHsNCisJCQltY3Nf
-bnVtID0gODsNCisJCX0gZWxzZSBpZiAoaSA+PSBTS1VfVkhUX0JXMjAgJiYgaSA8PSBTS1VfVkhU
-X0JXMTYwKSB7DQorCQkJbWNzX251bSA9IDEwOw0KKw0KKwkJCWlmIChpZHggPT0gNjApIHsNCisJ
-CQkJcmVnX2Jhc2UgPSBNVF9UTUFDX0ZQMFIxNShleHRfcGh5KTsNCisJCQkJaWR4ID0gMDsNCisJ
-CQl9DQorCQl9IGVsc2UgaWYgKGkgPT0gU0tVX0hFX1JVMjYpIHsNCisJCQlyZWdfYmFzZSA9IE1U
-X1RNQUNfRlAwUjE4KGV4dF9waHkpOw0KKwkJCWlkeCA9IDA7DQorCQl9DQogDQogCQlpZiAoIW9m
-ZnNldCkgew0KLQkJCWlkeCArPSBza3UtPmxlbjsNCisJCQlpZHggKz0gbWNzX251bTsNCiAJCQlj
-b250aW51ZTsNCiAJCX0NCiANCi0JCW10NzZfc2VxX3B1dHNfYXJyYXkocywgc2t1X2dyb3VwX25h
-bWVbaV0sDQotCQkJCSAgICB0eHBvd2VyICsgaWR4LCBza3UtPmxlbik7DQotCQlpZHggKz0gc2t1
-LT5sZW47DQorCQlmb3IgKGogPSAwLCBjbnQgPSAwOyBqIDwgRElWX1JPVU5EX1VQKG1jc19udW0s
-IDQpOyBqKyspIHsNCisJCQl1MzIgdmFsID0gbXQ3Nl9ycihkZXYsIHJlZ19iYXNlICsgKGlkeCAv
-IDQpICogNCk7DQorDQorCQkJaWYgKGlkeCAmJiBpZHggJSA0KQ0KKwkJCQl2YWwgPj49IChpZHgg
-JSA0KSAqIDg7DQorDQorCQkJd2hpbGUgKHZhbCA+IDAgJiYgY250IDwgbWNzX251bSkgew0KKwkJ
-CQlzOCBwd3IgPSBGSUVMRF9HRVQoTVRfVE1BQ19GUF9NQVNLLCB2YWwpOw0KKw0KKwkJCQl0eHBv
-d2VyW2NudCsrXSA9IHB3cjsNCisJCQkJdmFsID4+PSA4Ow0KKwkJCQlpZHgrKzsNCisJCQl9DQor
-CQl9DQorDQorCQltdDc2X3NlcV9wdXRzX2FycmF5KHMsIHNrdV9ncm91cF9uYW1lW2ldLCB0eHBv
-d2VyLCBtY3NfbnVtKTsNCiAJfQ0KIH0NCiANCkBAIC0zNDMsMjEgKzM3MCwxNiBAQCBtdDc5MTVf
-cmVhZF9yYXRlX3R4cG93ZXIoc3RydWN0IHNlcV9maWxlICpzLCB2b2lkICpkYXRhKQ0KIAlzdHJ1
-Y3QgbXQ3OTE1X2RldiAqZGV2ID0gZGV2X2dldF9kcnZkYXRhKHMtPnByaXZhdGUpOw0KIAlzdHJ1
-Y3QgbXQ3Nl9waHkgKm1waHkgPSAmZGV2LT5tcGh5Ow0KIAllbnVtIG5sODAyMTFfYmFuZCBiYW5k
-ID0gbXBoeS0+Y2hhbmRlZi5jaGFuLT5iYW5kOw0KLQlzOCAqZGVsdGEgPSBkZXYtPnJhdGVfcG93
-ZXJbYmFuZF07DQotCXM4IHR4cG93ZXJfYmFzZSA9IG1waHktPnR4cG93ZXJfY3VyIC0gZGVsdGFb
-TVQ3OTE1X1NLVV9NQVhfREVMVEFfSURYXTsNCiANCi0Jc2VxX3B1dHMocywgIkJhbmQgMDpcbiIp
-Ow0KLQltdDc5MTVfcHV0c19yYXRlX3R4cG93ZXIocywgZGVsdGEsIHR4cG93ZXJfYmFzZSwgYmFu
-ZCk7DQorCXNlcV9wdXRzKHMsICJCYW5kIDA6ICh1bml0OiAwLjUgZEJtKVxuIik7DQorCW10Nzkx
-NV9wdXRzX3JhdGVfdHhwb3dlcihzLCBkZXYsIGJhbmQsIGZhbHNlKTsNCiANCiAJaWYgKGRldi0+
-bXQ3Ni5waHkyKSB7DQogCQltcGh5ID0gZGV2LT5tdDc2LnBoeTI7DQogCQliYW5kID0gbXBoeS0+
-Y2hhbmRlZi5jaGFuLT5iYW5kOw0KLQkJZGVsdGEgPSBkZXYtPnJhdGVfcG93ZXJbYmFuZF07DQot
-CQl0eHBvd2VyX2Jhc2UgPSBtcGh5LT50eHBvd2VyX2N1ciAtDQotCQkJICAgICAgIGRlbHRhW01U
-NzkxNV9TS1VfTUFYX0RFTFRBX0lEWF07DQogDQotCQlzZXFfcHV0cyhzLCAiQmFuZCAxOlxuIik7
-DQotCQltdDc5MTVfcHV0c19yYXRlX3R4cG93ZXIocywgZGVsdGEsIHR4cG93ZXJfYmFzZSwgYmFu
-ZCk7DQorCQlzZXFfcHV0cyhzLCAiQmFuZCAxOiAodW5pdDogMC41IGRCbSlcbiIpOw0KKwkJbXQ3
-OTE1X3B1dHNfcmF0ZV90eHBvd2VyKHMsIGRldiwgYmFuZCwgdHJ1ZSk7DQogCX0NCiANCiAJcmV0
-dXJuIDA7DQpkaWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9t
-dDc5MTUvcmVncy5oIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUv
-cmVncy5oDQppbmRleCBlMDk4OTE0MWQ5ZGEuLmFmZDU4MmZkMjBhMSAxMDA2NDQNCi0tLSBhL2Ry
-aXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1L3JlZ3MuaA0KKysrIGIvZHJp
-dmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvcmVncy5oDQpAQCAtNjcsNiAr
-NjcsMTEgQEANCiAjZGVmaW5lIE1UX1RNQUNfQ1RDUjBfSU5TX0RETE1UX0VOCQlCSVQoMTcpDQog
-I2RlZmluZSBNVF9UTUFDX0NUQ1IwX0lOU19ERExNVF9WSFRfU01QRFVfRU4JQklUKDE4KQ0KIA0K
-KyNkZWZpbmUgTVRfVE1BQ19GUDBSMChfYmFuZCkJCU1UX1dGX1RNQUMoX2JhbmQsIDB4MDIwKQ0K
-KyNkZWZpbmUgTVRfVE1BQ19GUDBSMTUoX2JhbmQpCQlNVF9XRl9UTUFDKF9iYW5kLCAweDA4MCkN
-CisjZGVmaW5lIE1UX1RNQUNfRlAwUjE4KF9iYW5kKQkJTVRfV0ZfVE1BQyhfYmFuZCwgMHgyNzAp
-DQorI2RlZmluZSBNVF9UTUFDX0ZQX01BU0sJCQlHRU5NQVNLKDcsIDApDQorDQogLyogRE1BIEJh
-bmQgMCAqLw0KICNkZWZpbmUgTVRfV0ZfRE1BX0JBU0UJCQkweDIxZTAwDQogI2RlZmluZSBNVF9X
-Rl9ETUEob2ZzKQkJCShNVF9XRl9ETUFfQkFTRSArIChvZnMpKQ0KLS0gDQoyLjE4LjANCg==
+On 6/15/20 11:30 PM, Eric Biggers wrote:
+> On Mon, Jun 15, 2020 at 09:57:16PM -0400, Waiman Long wrote:
+>> The kzfree() function is normally used to clear some sensitive
+>> information, like encryption keys, in the buffer before freeing it back
+>> to the pool. Memset() is currently used for the buffer clearing. However,
+>> it is entirely possible that the compiler may choose to optimize away the
+>> memory clearing especially if LTO is being used. To make sure that this
+>> optimization will not happen, memzero_explicit(), which is introduced
+>> in v3.18, is now used in kzfree() to do the clearing.
+>>
+>> Fixes: 3ef0e5ba4673 ("slab: introduce kzfree()")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Waiman Long <longman@redhat.com>
+>> ---
+>>   mm/slab_common.c | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/mm/slab_common.c b/mm/slab_common.c
+>> index 9e72ba224175..37d48a56431d 100644
+>> --- a/mm/slab_common.c
+>> +++ b/mm/slab_common.c
+>> @@ -1726,7 +1726,7 @@ void kzfree(const void *p)
+>>   	if (unlikely(ZERO_OR_NULL_PTR(mem)))
+>>   		return;
+>>   	ks = ksize(mem);
+>> -	memset(mem, 0, ks);
+>> +	memzero_explicit(mem, ks);
+>>   	kfree(mem);
+>>   }
+>>   EXPORT_SYMBOL(kzfree);
+> This is a good change, but the commit message isn't really accurate.  AFAIK, no
+> one has found any case where this memset() gets optimized out.  And even with
+> LTO, it would be virtually impossible due to all the synchronization and global
+> data structures that kfree() uses.  (Remember that this isn't the C standard
+> function "free()", so the compiler can't assign it any special meaning.)
+> Not to mention that LTO support isn't actually upstream yet.
+>
+> I still agree with the change, but it might be helpful if the commit message
+> were honest that this is really a hardening measure and about properly conveying
+> the intent.  As-is this sounds like a critical fix, which might confuse people.
+
+Yes, I agree that the commit log may look a bit scary. How about the 
+following:
+
+The kzfree() function is normally used to clear some sensitive
+information, like encryption keys, in the buffer before freeing it back
+to the pool. Memset() is currently used for buffer clearing. However
+unlikely, there is still a non-zero probability that the compiler may
+choose to optimize away the memory clearing especially if LTO is being
+used in the future. To make sure that this optimization will never
+happen, memzero_explicit(), which is introduced in v3.18, is now used
+in kzfree() to future-proof it.
+
+Cheers,
+Longman
 
