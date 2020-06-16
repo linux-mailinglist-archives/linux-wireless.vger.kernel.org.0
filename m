@@ -2,97 +2,101 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0AD2E1FAC15
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jun 2020 11:13:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C83041FAC1E
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jun 2020 11:16:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725896AbgFPJNL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 16 Jun 2020 05:13:11 -0400
-Received: from mail27.static.mailgun.info ([104.130.122.27]:50073 "EHLO
-        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728044AbgFPJNI (ORCPT
+        id S1727989AbgFPJQz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 16 Jun 2020 05:16:55 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:46538 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726606AbgFPJQt (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 16 Jun 2020 05:13:08 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1592298786; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=OgDBzqqrEPPmIa2KUj3HnyS1zXMXu3Jcgi9sskDBZ9k=; b=BxpTwzVypvWKsh1EZxfEsCm25hYn+MJ4jtuF4FKb91pFMsJ/J4jVAcGx3q5uBNEKhqBaDXCs
- AsbL7tM8+3lmvZQvWN0h4n32Yj78XerXpzSU5l3kZ/W3/pbh7Qt4A0FbtEt0plcKvnRlXuBb
- Ldc1aY0cJILS4Ua+Kgs9qMiP6rs=
-X-Mailgun-Sending-Ip: 104.130.122.27
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n05.prod.us-west-2.postgun.com with SMTP id
- 5ee88d214c9690533a25dbc4 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 16 Jun 2020 09:13:05
- GMT
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id D7678C433CB; Tue, 16 Jun 2020 09:13:04 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 5B920C433CA;
-        Tue, 16 Jun 2020 09:13:03 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 5B920C433CA
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Anilkumar Kolli <akolli@codeaurora.org>
-Cc:     ath11k@lists.infradead.org, devicetree@vger.kernel.org,
-        linux-wireless@vger.kernel.org
-Subject: Re: [PATCH v2 0/8] ath11k: Add IPQ6018 support
-References: <1591709581-18039-1-git-send-email-akolli@codeaurora.org>
-Date:   Tue, 16 Jun 2020 12:13:01 +0300
-In-Reply-To: <1591709581-18039-1-git-send-email-akolli@codeaurora.org>
-        (Anilkumar Kolli's message of "Tue, 9 Jun 2020 19:02:53 +0530")
-Message-ID: <87pn9zidb6.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        Tue, 16 Jun 2020 05:16:49 -0400
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.69 with qID 05G9GWV30021723, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexmb06.realtek.com.tw[172.21.6.99])
+        by rtits2.realtek.com.tw (8.15.2/2.66/5.86) with ESMTPS id 05G9GWV30021723
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Tue, 16 Jun 2020 17:16:32 +0800
+Received: from RTEXMB04.realtek.com.tw (172.21.6.97) by
+ RTEXMB06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Tue, 16 Jun 2020 17:16:32 +0800
+Received: from localhost.localdomain (172.21.68.128) by
+ RTEXMB04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Tue, 16 Jun 2020 17:16:31 +0800
+From:   <yhchuang@realtek.com>
+To:     <kvalo@codeaurora.org>
+CC:     <linux-wireless@vger.kernel.org>, <tehuang@realtek.com>,
+        <bigeasy@linutronix.de>
+Subject: [PATCH v4 0/7] rtw88: 8821c: add basic function routines
+Date:   Tue, 16 Jun 2020 17:16:18 +0800
+Message-ID: <20200616091625.26489-1-yhchuang@realtek.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
 Content-Type: text/plain
+X-Originating-IP: [172.21.68.128]
+X-ClientProxiedBy: RTEXMB02.realtek.com.tw (172.21.6.95) To
+ RTEXMB04.realtek.com.tw (172.21.6.97)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Anilkumar Kolli <akolli@codeaurora.org> writes:
+From: Yan-Hsuan Chuang <yhchuang@realtek.com>
 
-> IPQ6018 has a 5G radio and 2G radio with 2x2
-> and shares IPQ8074 configuration.
->
-> Tested on: IPQ6018 WLAN.HK.2.2-02134-QCAHKSWPL_SILICONZ-1
-> Tested on: IPQ8074 WLAN.HK.2.4.0.1-00009-QCAHKSWPL_SILICONZ-1 
+RTL8821CE chipsets are 802.11ac 1x1 WiFi+BT combo devices.
+This series is going to add support for them in rtw88 driver.
+The basic functions include power on/off routines and the chip
+specific informations.
 
-To get the multiple hw support faster in (I need them also for QCA6390
-patches) I split this into multiple sets:
+Also add routines for setting TX power, channel, RX parsing and
+PHY components calibration.
 
->   ath11k: update firmware files read path
->   ath11k: rename default board file
+The firmware of RTL8821C series can be found at linux-firmware[1].
+It's put at linux-firmware/rtw88/rtw8821c_fw.bin
 
-These are now applied.
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git
 
->   ath11k: define max_radios in hw_params
->   ath11k: add hw_ops for pdev id to hw_mac mapping
->   ath11k: Add bdf-addr in hw_params
 
-I'll modify these a bit, remove all IPQ6018 references from them and
-then submit them myself.
+v1 -> v2
+  * rebase on top of tree
 
->   dt: bindings: net: update compatible for ath11k
->   ath11k: add ce services for IPQ6018
+v2 -> v3
+  * fix some wordings
+  * give register definition possible
 
-Anil, please resubmit these as v3 based on the comments.
+v3 -> v4
+  * rebase on top of tree
 
->   ath11k: add IPQ6018 support
 
-Anil, add this as the last patch in your v3 series. And do note that I
-will split the part adding ath11k_init_hw_params() function to a
-separate patch, so no need to include it in this patch anymore.
+Tzu-En Huang (7):
+  rtw88: 8821c: add basic functions
+  rtw88: 8821c: add set tx power index
+  rtw88: 8821c: add dig related settings
+  rtw88: 8821c: add set channel support
+  rtw88: 8821c: add query rx desc support
+  rtw88: 8821c: add false alarm statistics
+  rtw88: 8821c: add phy calibration
+
+ drivers/net/wireless/realtek/rtw88/main.c     |    4 +
+ drivers/net/wireless/realtek/rtw88/main.h     |    6 +
+ drivers/net/wireless/realtek/rtw88/reg.h      |    4 +
+ drivers/net/wireless/realtek/rtw88/rtw8821c.c | 1089 +++
+ drivers/net/wireless/realtek/rtw88/rtw8821c.h |  229 +
+ .../wireless/realtek/rtw88/rtw8821c_table.c   | 6611 +++++++++++++++++
+ .../wireless/realtek/rtw88/rtw8821c_table.h   |   15 +
+ .../net/wireless/realtek/rtw88/rtw8821ce.c    |   30 +
+ .../net/wireless/realtek/rtw88/rtw8821ce.h    |   14 +
+ 9 files changed, 8002 insertions(+)
+ create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8821c.c
+ create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8821c.h
+ create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8821c_table.c
+ create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8821c_table.h
+ create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8821ce.c
+ create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8821ce.h
 
 -- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+2.17.1
+
