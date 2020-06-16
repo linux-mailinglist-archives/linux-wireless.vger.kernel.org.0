@@ -2,113 +2,93 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BDB341FC0B6
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jun 2020 23:14:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B20D1FC0CD
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jun 2020 23:15:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726099AbgFPVN0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 16 Jun 2020 17:13:26 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:39137 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1725773AbgFPVN0 (ORCPT
+        id S1726361AbgFPVPV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 16 Jun 2020 17:15:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41032 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725773AbgFPVPU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 16 Jun 2020 17:13:26 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1592342004;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=eSzFkwURLVeW2opiRMpP25mHAWNktDQUA6Jwol8j1DE=;
-        b=dtKmHCQPYNQYGmfN3mQ3KgHQKbTiRvXGBcOaSkU385229DSKK6bDKhXd5jEiZASpIl0R/L
-        Qr0djgpyrN+TdJnoqwaLU88clfOvulXmyit3KXwkCSvvx8Z1vccX15xLa1iga6Fy4kgkL5
-        uHboB4XziaRj8/lr8TrN1dX4ckkmun4=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-486-_z09KlLJPEeg4xHiMFnktg-1; Tue, 16 Jun 2020 17:13:22 -0400
-X-MC-Unique: _z09KlLJPEeg4xHiMFnktg-1
-Received: by mail-wm1-f72.google.com with SMTP id x6so82377wmj.9
-        for <linux-wireless@vger.kernel.org>; Tue, 16 Jun 2020 14:13:22 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=eSzFkwURLVeW2opiRMpP25mHAWNktDQUA6Jwol8j1DE=;
-        b=tJ1Y9NwIU6m85s5ROJbwsWHlYxFRPNPFu9rVrkBLCflft4IJP6tCHADAHTvxDeYdrP
-         lhjTkcBRzm/qxFsmG3a/VCibspEt3FN4PJutQJFJl3/rBS4vsEKU7Lo578bv8kVmeq9d
-         khc4n1gmTmXDrDm685wMybmXAM6FHXEX8kSbhsKpZgGYLxKlktbxSUrE6FqQhhlcnR6P
-         afUIK/XSzcwO9arfbRxY149v0j+S8EAHSMTYjyvL5aq4qnHv+h/Puy9a5s56zBDSYJPw
-         dd1340+zh0FuHRn4stKLzpxZphRl+aW4T+CrpaL+RMUlslsMCZ8mbCkGH0pc8ZpdBSYD
-         325g==
-X-Gm-Message-State: AOAM533RcOp9dypUTRo1NSmN8R73EJigIWEtcNa00deDtXiPhSykLLk/
-        s809+QqmHKtVpT5XjGXOxoM/uqg2yIkMksrhKIMC0qhWa7h7jmMXXjLrA3hCPtM5IyCWvZOTGvo
-        cMtefTbJfbUWu3q3s+ideq+/DlyM=
-X-Received: by 2002:adf:82ab:: with SMTP id 40mr4728962wrc.85.1592342001441;
-        Tue, 16 Jun 2020 14:13:21 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJy/qi++d55UA+IwKBiZUUaY0o68WCq/wUWthnInfPt1DBbyhEHxviYjhjajoKfGjP0RSvNaNg==
-X-Received: by 2002:adf:82ab:: with SMTP id 40mr4728937wrc.85.1592342001092;
-        Tue, 16 Jun 2020 14:13:21 -0700 (PDT)
-Received: from localhost ([151.48.140.182])
-        by smtp.gmail.com with ESMTPSA id j5sm31290775wrq.39.2020.06.16.14.13.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Jun 2020 14:13:20 -0700 (PDT)
-Date:   Tue, 16 Jun 2020 23:13:16 +0200
-From:   Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-To:     Felix Fietkau <nbd@nbd.name>
-Cc:     Ryder Lee <ryder.lee@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: Re: [PATCH] mt76: mt7615: cleanup codes
-Message-ID: <20200616211316.GA440740@lore-desk.lan>
-References: <0cb7ad2a49010a540baca21cd19c43540534b141.1592204310.git.ryder.lee@mediatek.com>
- <d38bed5a-a035-4e87-aaf3-12031d55de50@nbd.name>
+        Tue, 16 Jun 2020 17:15:20 -0400
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E158AC061573;
+        Tue, 16 Jun 2020 14:15:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=leEz1fiyyYNCvStCVFZ11qKUfHMh+AfUoU9zFTvCrqA=; b=oHgSA/KCDX899omYMHX4U2OLjJ
+        EwMhiIoHigLxQ+MmRFcXyHzBFlTQmZXr04WRoMkHZe+LheH9bL5uSbscQsM64m29mzWCbQbg2tT8+
+        7YVv6xeVy1vViCaTYlOd/6wXfcX6a1cFVTgtaelhNr5Sx0Bq8ty7srr8SsI2tSkKUXRYqisvkGrfi
+        sJiaQyRIt9mSxfwey610s9TuikWX8HXsiUmyGfH8ZS9oPdOb24GGhFyI8BfzM4UPPYgOLJ+VdR52j
+        Y86D/VTQJXkQsTbKRbFAYueGk1mSp6BZ3PR31zhRZoTaAupph04Ady7RM7jEh9GkVMlChc2sCJczP
+        HkwXD4Iw==;
+Received: from willy by bombadil.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1jlIv1-00069R-Gz; Tue, 16 Jun 2020 21:14:55 +0000
+Date:   Tue, 16 Jun 2020 14:14:55 -0700
+From:   Matthew Wilcox <willy@infradead.org>
+To:     Joe Perches <joe@perches.com>
+Cc:     Waiman Long <longman@redhat.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        David Howells <dhowells@redhat.com>,
+        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        David Rientjes <rientjes@google.com>,
+        Michal Hocko <mhocko@suse.com>,
+        Johannes Weiner <hannes@cmpxchg.org>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        David Sterba <dsterba@suse.cz>,
+        "Jason A . Donenfeld" <Jason@zx2c4.com>, linux-mm@kvack.org,
+        keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-crypto@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-amlogic@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+        virtualization@lists.linux-foundation.org, netdev@vger.kernel.org,
+        linux-ppp@vger.kernel.org, wireguard@lists.zx2c4.com,
+        linux-wireless@vger.kernel.org, devel@driverdev.osuosl.org,
+        linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
+        linux-btrfs@vger.kernel.org, linux-cifs@vger.kernel.org,
+        linux-fscrypt@vger.kernel.org, ecryptfs@vger.kernel.org,
+        kasan-dev@googlegroups.com, linux-bluetooth@vger.kernel.org,
+        linux-wpan@vger.kernel.org, linux-sctp@vger.kernel.org,
+        linux-nfs@vger.kernel.org, tipc-discussion@lists.sourceforge.net,
+        linux-security-module@vger.kernel.org,
+        linux-integrity@vger.kernel.org
+Subject: Re: [PATCH v4 0/3] mm, treewide: Rename kzfree() to kfree_sensitive()
+Message-ID: <20200616211455.GB8681@bombadil.infradead.org>
+References: <20200616015718.7812-1-longman@redhat.com>
+ <fe3b9a437be4aeab3bac68f04193cb6daaa5bee4.camel@perches.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="0F1p//8PRICkK4MW"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <d38bed5a-a035-4e87-aaf3-12031d55de50@nbd.name>
+In-Reply-To: <fe3b9a437be4aeab3bac68f04193cb6daaa5bee4.camel@perches.com>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On Tue, Jun 16, 2020 at 11:53:50AM -0700, Joe Perches wrote:
+> To this larger audience and last week without reply:
+> https://lore.kernel.org/lkml/573b3fbd5927c643920e1364230c296b23e7584d.camel@perches.com/
+> 
+> Are there _any_ fastpath uses of kfree or vfree?
 
---0F1p//8PRICkK4MW
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I worked on adding a 'free' a couple of years ago.  That was capable
+of freeing percpu, vmalloc, kmalloc and alloc_pages memory.  I ran into
+trouble when I tried to free kmem_cache_alloc memory -- it works for slab
+and slub, but not slob (because slob needs the size from the kmem_cache).
 
-> On 2020-06-15 09:01, Ryder Lee wrote:
-> > Cleanup indentation, mixed licenses and change some functions' type as =
-void.
-> >=20
-> > Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
-> Please separate code cleanup from license changes, and make sure you get
-> an ACK from all people involved with the code that you change the
-> license for.
-> I'm fine with the license change, but I'm not sure if any code was
-> copied from mt7601u. At least Lorenzo also needs to ack this.
+My motivation for this was to change kfree_rcu() to just free_rcu().
 
-I am fine with license change. IIRC I used mt7601u as reference but I did n=
-ot
-copied the code. Adding Jakub in cc.
+> To eliminate these mispairings at a runtime cost of four
+> comparisons, should the kfree/vfree/kvfree/kfree_const
+> functions be consolidated into a single kfree?
 
-Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
-
->=20
-> - Felix
->=20
-
---0F1p//8PRICkK4MW
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCXuk16QAKCRA6cBh0uS2t
-rCCZAPsFZ4V26kvFngFmmf11RZdpgKh+ntCuT34dhbHrXUA3XwD/Rz8q2Zc1ZvjU
-F+WBrfJVMhFPw+CGfPXwRfHBlu7tTwc=
-=D7Zw
------END PGP SIGNATURE-----
-
---0F1p//8PRICkK4MW--
-
+I would say to leave kfree() alone and just introduce free() as a new
+default.  There's some weird places in the kernel that have a 'free'
+symbol of their own, but those should be renamed anyway.
