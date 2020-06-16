@@ -2,126 +2,80 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 026181FAE1F
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jun 2020 12:39:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D3FAD1FAEE5
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jun 2020 13:07:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728014AbgFPKjX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 16 Jun 2020 06:39:23 -0400
-Received: from mail.aperture-lab.de ([138.201.29.205]:43808 "EHLO
-        mail.aperture-lab.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726452AbgFPKjV (ORCPT
+        id S1728175AbgFPLHE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 16 Jun 2020 07:07:04 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:53319 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727870AbgFPLHD (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 16 Jun 2020 06:39:21 -0400
-From:   =?UTF-8?q?Linus=20L=C3=BCssing?= <linus.luessing@c0d3.blue>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c0d3.blue; s=2018;
-        t=1592303959;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=gel7BjFKnhibDSBwAtXS9lDNy0OHZ7c5Iy85ixq8zBc=;
-        b=ewyJOnq84savi/Z5acfUpM79egKM69KqvWdyMLHGM6Nx+fTPZnCvOQ3uDGyY8bcxnHYbxW
-        ATYAR7eKlf7cD9jvBTlDe3dIziPPxFruWE2nO9Z5OW1ec+gxQpDDFCOkeVA0P+21l1uJmY
-        pJJIOe//hjTSuMpm2Mg1lI5Mll1SQmpwzDJn9vUlbuoxcEsX//OBwj8dqw6KQdcZtoIiUg
-        Qpd0qP+ORUiP0V4gVwzluhlEVFfRVTEx4VSZDabK0HO9B+/dgmkl+R6PTuAxs26gncE0pQ
-        quDBCRwgfLC2O0/nZCL0VUZB+/3mgnlLsxGJ2c+c7aD6o4N9TVJsESW4qTQZCw==
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org, b.a.t.m.a.n@lists.open-mesh.org,
-        =?UTF-8?q?Linus=20L=C3=BCssing?= <ll@simonwunderlich.de>,
-        Sven Eckelmann <sven@narfation.org>,
-        Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH v2] iw: mesh: add mesh_param "mesh_nolearn" to skip path discovery
-Date:   Tue, 16 Jun 2020 12:39:11 +0200
-Message-Id: <20200616103911.20501-2-linus.luessing@c0d3.blue>
-In-Reply-To: <20200616103911.20501-1-linus.luessing@c0d3.blue>
-References: <20200616103911.20501-1-linus.luessing@c0d3.blue>
+        Tue, 16 Jun 2020 07:07:03 -0400
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.69 with qID 05GB6SRR0025779, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexmb06.realtek.com.tw[172.21.6.99])
+        by rtits2.realtek.com.tw (8.15.2/2.66/5.86) with ESMTPS id 05GB6SRR0025779
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Tue, 16 Jun 2020 19:06:28 +0800
+Received: from RTEXMB04.realtek.com.tw (172.21.6.97) by
+ RTEXMB06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Tue, 16 Jun 2020 19:06:28 +0800
+Received: from RTEXMB04.realtek.com.tw ([fe80::8001:f5f5:a41e:f8d4]) by
+ RTEXMB04.realtek.com.tw ([fe80::8001:f5f5:a41e:f8d4%3]) with mapi id
+ 15.01.1779.005; Tue, 16 Jun 2020 19:06:28 +0800
+From:   Tony Chuang <yhchuang@realtek.com>
+To:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+CC:     "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
+        "kernel@iuliancostan.com" <kernel@iuliancostan.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "i@outv.im" <i@outv.im>,
+        "trevor@shartrec.com" <trevor@shartrec.com>
+Subject: RE: [PATCH v1] rtw88: pci: disable aspm for platform inter-op with module parameter
+Thread-Topic: [PATCH v1] rtw88: pci: disable aspm for platform inter-op with
+ module parameter
+Thread-Index: AQHWOw2RujNwSXbT4UO+bT296oFUSqjR4mwAgAk8kAA=
+Date:   Tue, 16 Jun 2020 11:06:28 +0000
+Message-ID: <a2aac609b5e2416b899c5842817da4bb@realtek.com>
+References: <20200605074703.32726-1-yhchuang@realtek.com>
+ <20200610213720.3sopcuimas375xl2@linutronix.de>
+In-Reply-To: <20200610213720.3sopcuimas375xl2@linutronix.de>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.68.175]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Authentication-Results: ORIGINATING;
-        auth=pass smtp.auth=linus.luessing@c0d3.blue smtp.mailfrom=linus.luessing@c0d3.blue
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Linus Lüssing <ll@simonwunderlich.de>
-
-Currently, before being able to forward a packet between two 802.11s
-nodes, both a PLINK handshake is performed upon receiving a beacon and
-then later a PREQ/PREP exchange for path discovery is performed on
-demand upon receiving a data frame to forward.
-
-When running a mesh protocol on top of an 802.11s interface, like
-batman-adv, we do not need the multi-hop mesh routing capabilities of
-802.11s and usually set mesh_fwding=0. However, even with mesh_fwding=0
-the PREQ/PREP path discovery is still performed on demand. Even though
-in this scenario the next hop PREQ/PREP will determine is always the
-direct 11s neighbor node.
-
-The new mesh_nolearn parameter allows to skip the PREQ/PREP exchange in
-this scenario, leading to a reduced delay, reduced packet buffering and
-simplifies HWMP in general.
-
-mesh_nolearn is still rather conservative in that if the packet destination
-is not a direct 11s neighbor, it will fall back to PREQ/PREP path
-discovery.
-
-For normal, multi-hop 802.11s mesh routing it is usually not advisable
-to enable mesh_nolearn as a transmission to a direct but distant neighbor
-might be worse than reaching that same node via a more robust /
-higher throughput etc. multi-hop path.
-
-Cc: Sven Eckelmann <sven@narfation.org>
-Cc: Simon Wunderlich <sw@simonwunderlich.de>
-Signed-off-by: Linus Lüssing <ll@simonwunderlich.de>
----
-
-Changelog v2:
-* unchanged
-
- mesh.c    | 2 ++
- nl80211.h | 7 +++++++
- 2 files changed, 9 insertions(+)
-
-diff --git a/mesh.c b/mesh.c
-index 0650d0c..48bbc3f 100644
---- a/mesh.c
-+++ b/mesh.c
-@@ -264,6 +264,8 @@ static const struct mesh_param_descr _mesh_param_descrs[] =
- 	_my_nla_put_u16, _parse_u16, _print_u16_in_TUs},
- 	{"mesh_plink_timeout", NL80211_MESHCONF_PLINK_TIMEOUT,
- 	_my_nla_put_u32, _parse_u32, _print_u32_in_seconds},
-+	{"mesh_nolearn", NL80211_MESHCONF_NOLEARN,
-+	_my_nla_put_u8, _parse_u8_as_bool, _print_u8},
- };
- 
- static void print_all_mesh_param_descr(void)
-diff --git a/nl80211.h b/nl80211.h
-index c14666b..4c55e89 100644
---- a/nl80211.h
-+++ b/nl80211.h
-@@ -4228,6 +4228,12 @@ enum nl80211_mesh_power_mode {
-  *	field.  If left unset then the mesh formation field will only
-  *	advertise such if there is an active root mesh path.
-  *
-+ * @NL80211_MESHCONF_NOLEARN: Try to avoid multi-hop path discovery (e.g.
-+ *	PREQ/PREP for HWMP) if the destination is a direct neighbor. Note that
-+ *	this might not be the optimal decision as a multi-hop route might be
-+ *	better. So if using this setting you will likely also want to disable
-+ *	dot11MeshForwarding and use another mesh routing protocol on top.
-+ *
-  * @__NL80211_MESHCONF_ATTR_AFTER_LAST: internal use
-  */
- enum nl80211_meshconf_params {
-@@ -4261,6 +4267,7 @@ enum nl80211_meshconf_params {
- 	NL80211_MESHCONF_AWAKE_WINDOW,
- 	NL80211_MESHCONF_PLINK_TIMEOUT,
- 	NL80211_MESHCONF_CONNECTED_TO_GATE,
-+	NL80211_MESHCONF_NOLEARN,
- 
- 	/* keep last */
- 	__NL80211_MESHCONF_ATTR_AFTER_LAST,
--- 
-2.27.0
-
+PiBPbiAyMDIwLTA2LTA1IDE1OjQ3OjAzIFsrMDgwMF0sIHloY2h1YW5nQHJlYWx0ZWsuY29tIHdy
+b3RlOg0KPiA+IEZyb206IFlhbi1Ic3VhbiBDaHVhbmcgPHloY2h1YW5nQHJlYWx0ZWsuY29tPg0K
+PiA+DQo+ID4gU29tZSBwbGF0Zm9ybXMgY2Fubm90IHJlYWQgdGhlIERCSSByZWdpc3RlciBzdWNj
+ZXNzZnVsbHkgZm9yIHRoZQ0KPiA+IEFTUE0gc2V0dGluZ3MuIEFmdGVyIHRoZSByZWFkIGZhaWxl
+ZCwgdGhlIGJ1cyBjb3VsZCBiZSB1bnN0YWJsZSwNCj4gPiBhbmQgdGhlIGRldmljZSBqdXN0IGJl
+Y2FtZSB1bmF2YWlsYWJsZSBbMV0uIEZvciB0aG9zZSBwbGF0Zm9ybXMsDQo+ID4gdGhlIEFTUE0g
+c2hvdWxkIGJlIGRpc2FibGVkLiBCdXQgYXMgdGhlIEFTUE0gY2FuIGhlbHAgdGhlIGRyaXZlcg0K
+PiA+IHRvIHNhdmUgdGhlIHBvd2VyIGNvbnN1bXB0aW9uIGluIHBvd2VyIHNhdmUgbW9kZSwgdGhl
+IEFTUE0gaXMgc3RpbGwNCj4gPiBuZWVkZWQuIFNvLCBhZGQgYSBtb2R1bGUgcGFyYW1ldGVyIGZv
+ciB0aGVtIHRvIGRpc2FibGUgaXQsIHRoZW4NCj4gPiB0aGUgZGV2aWNlIGNhbiBzdGlsbCB3b3Jr
+LCB3aGlsZSBvdGhlcnMgY2FuIGJlbmVmaXQgZnJvbSB0aGUgbGVzcw0KPiA+IHBvd2VyIGNvbnN1
+bXB0aW9uIHRoYXQgYnJpbmdzIGJ5IEFTUE0gZW5hYmxlZC4NCj4gDQo+IENhbiB5b3Ugc2V0IGRp
+c2FibGVfYXNwbSBpZiBydHdfZGJpX3JlYWQ4KCkgZmFpbHM/IE9yIG1ha2UgYSB0ZXN0IGlmIGl0
+DQo+IGlzIHNhdmUgdG8gdXNlPw0KPiANCj4gSWYgc29tZW9uZSBub3RpY2VzIHRoZSB3YXJuaW5n
+IHRoZXkgc3RpbGwgaGF2ZSB0byBzZWFyY2ggZm9yIHRoZSB3YXJuaW5nDQo+IGluIG9yZGVyIHRv
+IG1ha2UgdGhlIGxpbmsgdG93YXJkcyBsb2FkaW5nIHRoZSBtb2R1bGUgd2l0aCB0aGUNCj4gZGlz
+YWJsZV9hc3BtPTEgcGFyYW10ZXIuDQo+IElzIGl0IGtub3duIHdoYXQgY2F1c2VzIHRoZSBmYWls
+dXJlPw0KPiANCg0KSSB0aGluayBhcyBsb25nIGFzIHRoZSBydHdfZGJpX3JlYWQoKSBmYWlscywg
+dGhlIGNvbnNlcXVlbnQgcmVnaXN0ZXINCm9wZXJhdGlvbiB3aWxsIGFsc28gZmFpbCwgYW5kIHN0
+aWxsIGdldCBhbiBlcnJvciByZWFkL3dyaXRlIHRoZSByZWdpc3Rlci4NCkFuZCB0aGlzIGlzIHNv
+bWUgc29ydCBvZiBQQ0kgaXNzdWUsIGFuZCBJIGFtIG5vdCByZWFsbHkgZmFtaWxpYXIgd2l0aCBp
+dC4NClN1Y2ggYXMgdGhlIHJvb3QgY2F1c2Ugb3IgaG93IGl0IGZhaWxzLg0KDQpJZiB3ZSBjYW4g
+ZGVmYXVsdCBkaXNhYmxlIGl0LCB0aGVuIHdlIGNhbiBoZWxwIHRob3NlIHBsYXRmb3JtcywgYnV0
+DQp0aGVuIG90aGVyIHBsYXRmb3JtIHdpbGwgc3VmZmVyIGZyb20gaGlnaGVyIHBvd2VyIGNvbnN1
+bXB0aW9uLg0KDQpZZW4tSHN1YW4NCg==
