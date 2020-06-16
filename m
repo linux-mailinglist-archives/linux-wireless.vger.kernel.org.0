@@ -2,139 +2,98 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ADF641FB3C8
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jun 2020 16:11:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6897F1FB33C
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jun 2020 16:01:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729648AbgFPOK6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 16 Jun 2020 10:10:58 -0400
-Received: from p54ae948c.dip0.t-ipconnect.de ([84.174.148.140]:49551 "EHLO
-        maeck.local" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1729003AbgFPOK5 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 16 Jun 2020 10:10:57 -0400
-X-Greylist: delayed 1021 seconds by postgrey-1.27 at vger.kernel.org; Tue, 16 Jun 2020 10:10:57 EDT
-Received: by maeck.local (Postfix, from userid 501)
-        id 433CD8E33D0B; Tue, 16 Jun 2020 11:40:55 +0200 (CEST)
-From:   Felix Fietkau <nbd@nbd.name>
-To:     linux-wireless@vger.kernel.org
-Subject: [PATCH v2] mt76: mt7615: re-enable offloading of sequence number assignment
-Date:   Tue, 16 Jun 2020 11:40:55 +0200
-Message-Id: <20200616094055.4070-1-nbd@nbd.name>
-X-Mailer: git-send-email 2.24.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        id S1729236AbgFPOBa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 16 Jun 2020 10:01:30 -0400
+Received: from mail27.static.mailgun.info ([104.130.122.27]:44251 "EHLO
+        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1729215AbgFPOB2 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 16 Jun 2020 10:01:28 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1592316088; h=Message-Id: Date: Subject: Cc: To: From:
+ Sender; bh=IurHvV+xIe2+LXqyWE1Bs5v4f3iu8pS8kQ6yGxstKdo=; b=uP8h87TSO2As+5YphnJVEJEjoFHjgXAD0DwoOgFuTYtf/rlXsWnd2wYFkUYt7Mw9F7Z6cJod
+ ZCBcMohUwpMLHzn3dHv8Vd0rrFHrEbDHN4uQnGGaserXNLvCx0fvXDN9CrqyuDI2oCF9VGMB
+ VM7oMfPu2qo4u0RiAcBealfuWNM=
+X-Mailgun-Sending-Ip: 104.130.122.27
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n07.prod.us-west-2.postgun.com with SMTP id
+ 5ee8d09ffe1db4db8915545d (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 16 Jun 2020 14:01:03
+ GMT
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 009EDC433B2; Tue, 16 Jun 2020 14:01:01 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 13904C43395;
+        Tue, 16 Jun 2020 14:00:59 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 13904C43395
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     ath11k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org
+Subject: [PATCH 00/12] preparation for IPQ6018 support
+Date:   Tue, 16 Jun 2020 17:00:43 +0300
+Message-Id: <1592316055-24958-1-git-send-email-kvalo@codeaurora.org>
+X-Mailer: git-send-email 2.7.4
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Preparation for supporting more offload features
+Here are some preparation patches for IPQ6018. Some of the patches are from
+Anil's patchset "ath11k: Add IPQ6018 support" which I modifies and I did some
+refactoring and cleanup on top.
 
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
----
-v2: fix WTBL address offset
- .../net/wireless/mediatek/mt76/mt7615/mac.c   | 44 +++++++++++++++----
- .../net/wireless/mediatek/mt76/mt7615/main.c  |  5 +++
- .../wireless/mediatek/mt76/mt7615/mt7615.h    |  1 +
- 3 files changed, 41 insertions(+), 9 deletions(-)
+All patches are compile tested only.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-index d97315ec7265..d150fac50c00 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-@@ -617,16 +617,19 @@ int mt7615_mac_write_txwi(struct mt7615_dev *dev, __le32 *txwi,
- 	}
- 
- 	val = FIELD_PREP(MT_TXD3_REM_TX_COUNT, tx_count);
--	if (ieee80211_is_data_qos(hdr->frame_control)) {
--		seqno = IEEE80211_SEQ_TO_SN(le16_to_cpu(hdr->seq_ctrl));
--		val |= MT_TXD3_SN_VALID;
--	} else if (ieee80211_is_back_req(hdr->frame_control)) {
--		struct ieee80211_bar *bar = (struct ieee80211_bar *)skb->data;
--
--		seqno = IEEE80211_SEQ_TO_SN(le16_to_cpu(bar->start_seq_num));
--		val |= MT_TXD3_SN_VALID;
-+	if (info->flags & IEEE80211_TX_CTL_INJECTED) {
-+		seqno = le16_to_cpu(hdr->seq_ctrl);
-+
-+		if (ieee80211_is_back_req(hdr->frame_control)) {
-+			struct ieee80211_bar *bar;
-+
-+			bar = (struct ieee80211_bar *)skb->data;
-+			seqno = le16_to_cpu(bar->start_seq_num);
-+		}
-+
-+		val |= MT_TXD3_SN_VALID |
-+		       FIELD_PREP(MT_TXD3_SEQ, IEEE80211_SEQ_TO_SN(seqno));
- 	}
--	val |= FIELD_PREP(MT_TXD3_SEQ, seqno);
- 
- 	txwi[3] |= cpu_to_le32(val);
- 
-@@ -893,6 +896,29 @@ mt7615_mac_queue_rate_update(struct mt7615_phy *phy, struct mt7615_sta *sta,
- 	return 0;
- }
- 
-+u32 mt7615_mac_get_sta_tid_sn(struct mt7615_dev *dev, int wcid, u8 tid)
-+{
-+	u32 addr, val, val2;
-+	u8 offset;
-+
-+	addr = mt7615_mac_wtbl_addr(dev, wcid) + 11 * 4;
-+
-+	offset = tid * 12;
-+	addr += 4 * (offset / 32);
-+	offset %= 32;
-+
-+	val = mt76_rr(dev, addr);
-+	val >>= (tid % 32);
-+
-+	if (offset > 20) {
-+		addr += 4;
-+		val2 = mt76_rr(dev, addr);
-+		val |= val2 << (32 - offset);
-+	}
-+
-+	return val & GENMASK(11, 0);
-+}
-+
- void mt7615_mac_set_rates(struct mt7615_phy *phy, struct mt7615_sta *sta,
- 			  struct ieee80211_tx_rate *probe_rate,
- 			  struct ieee80211_tx_rate *rates)
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/main.c b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-index beaca8127680..dfebf86b86d6 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-@@ -660,6 +660,9 @@ mt7615_ampdu_action(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 		mtxq->aggr = true;
- 		mtxq->send_bar = false;
- 		mt7615_mcu_add_tx_ba(dev, params, true);
-+		ssn = mt7615_mac_get_sta_tid_sn(dev, msta->wcid.idx, tid);
-+		ieee80211_send_bar(vif, sta->addr, tid,
-+				   IEEE80211_SN_TO_SEQ(ssn));
- 		break;
- 	case IEEE80211_AMPDU_TX_STOP_FLUSH:
- 	case IEEE80211_AMPDU_TX_STOP_FLUSH_CONT:
-@@ -667,6 +670,8 @@ mt7615_ampdu_action(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 		mt7615_mcu_add_tx_ba(dev, params, false);
- 		break;
- 	case IEEE80211_AMPDU_TX_START:
-+		ssn = mt7615_mac_get_sta_tid_sn(dev, msta->wcid.idx, tid);
-+		params->ssn = ssn;
- 		mtxq->agg_ssn = IEEE80211_SN_TO_SEQ(ssn);
- 		ret = IEEE80211_AMPDU_TX_START_IMMEDIATE;
- 		break;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
-index 3e7d51bf42a4..640ff8b9b266 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
-@@ -516,6 +516,7 @@ int mt7615_mac_wtbl_update_key(struct mt7615_dev *dev,
- 			       enum mt7615_cipher_type cipher,
- 			       enum set_key_cmd cmd);
- void mt7615_mac_reset_work(struct work_struct *work);
-+u32 mt7615_mac_get_sta_tid_sn(struct mt7615_dev *dev, int wcid, u8 tid);
- 
- int mt7615_mcu_wait_response(struct mt7615_dev *dev, int cmd, int seq);
- int mt7615_mcu_msg_send(struct mt76_dev *mdev, int cmd, const void *data,
+Anilkumar Kolli (5):
+  ath11k: ahb: call ath11k_core_init() before irq configuration
+  ath11k: convert ath11k_hw_params to an array
+  ath11k: define max_radios in hw_params
+  ath11k: add hw_ops for pdev id to hw_mac mapping
+  ath11k: Add bdf-addr in hw_params
+
+Kalle Valo (7):
+  ath11k: create a common function to request all firmware files
+  ath11k: don't use defines for hw specific firmware directories
+  ath11k: change ath11k_core_fetch_board_data_api_n() to use
+    ath11k_core_create_firmware_path()
+  ath11k: remove useless info messages
+  ath11k: qmi: cleanup info messages
+  ath11k: don't use defines in hw_params
+  ath11k: remove define ATH11K_QMI_DEFAULT_CAL_FILE_NAME
+
+ drivers/net/wireless/ath/ath11k/Makefile   |   3 +-
+ drivers/net/wireless/ath/ath11k/ahb.c      |  23 +++---
+ drivers/net/wireless/ath/ath11k/core.c     | 115 ++++++++++++++++-------------
+ drivers/net/wireless/ath/ath11k/core.h     |  12 ++-
+ drivers/net/wireless/ath/ath11k/dp_rx.c    |   2 +-
+ drivers/net/wireless/ath/ath11k/htc.c      |   2 +-
+ drivers/net/wireless/ath/ath11k/hw.c       |  34 +++++++++
+ drivers/net/wireless/ath/ath11k/hw.h       |  28 +++++--
+ drivers/net/wireless/ath/ath11k/mac.c      |  10 +--
+ drivers/net/wireless/ath/ath11k/peer.c     |   3 -
+ drivers/net/wireless/ath/ath11k/qmi.c      |  22 ++----
+ drivers/net/wireless/ath/ath11k/qmi.h      |   2 -
+ drivers/net/wireless/ath/ath11k/reg.c      |   2 +-
+ drivers/net/wireless/ath/ath11k/spectral.c |   8 +-
+ drivers/net/wireless/ath/ath11k/wmi.c      |   4 +-
+ 15 files changed, 163 insertions(+), 107 deletions(-)
+ create mode 100644 drivers/net/wireless/ath/ath11k/hw.c
+
 -- 
-2.24.0
+2.7.4
 
