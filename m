@@ -2,115 +2,111 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4606F1FC6E0
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Jun 2020 09:12:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 85FE41FC768
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Jun 2020 09:29:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726565AbgFQHMV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 17 Jun 2020 03:12:21 -0400
-Received: from mail-ej1-f65.google.com ([209.85.218.65]:34229 "EHLO
-        mail-ej1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725860AbgFQHMT (ORCPT
+        id S1726341AbgFQH3q (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 17 Jun 2020 03:29:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50548 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725901AbgFQH3p (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 17 Jun 2020 03:12:19 -0400
-Received: by mail-ej1-f65.google.com with SMTP id l27so1176601ejc.1;
-        Wed, 17 Jun 2020 00:12:15 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=E5EcWVbc+7tsS+GAmjqiwsU8zuC9ZQ4KDsXaJSfWulo=;
-        b=hpp62K4a8CwZm2UreL6e+o7U64jJN0cGZO64x4/KaxFcj3JVTRwtGgvvphlWOGIwmB
-         mKDjFk36BUKL84X0A9sBPYLln2swyjTrxBpOKfntaidgraTsEqWSInVYjR+f229KLn86
-         JQgPgDrHQKjlcGt4G5FRUs/LnXp6LNLqNd3mRfMJQtEv721UDpyA2floMIWMSRRU63gC
-         qmC2URd5guep9hGNbmRJS4tl3WdSME9dwc9fVWomUGjNxDBIdLQAdimTtHyDG+qL4Z/x
-         N3yZtL4KoRdctI+kyJccwtPMuNdYqp+mPDxIX3roHMzcx6zoabwiEq+N3FeX8asH5wbJ
-         BPbw==
-X-Gm-Message-State: AOAM532QhxsCV6VV0nmw55nyn7fUqk+2MaOyho+lUa6ubnTkcAd2T2f0
-        jAq+dwgSw/eEUQy0iHHJ2nc=
-X-Google-Smtp-Source: ABdhPJzxXEZ/32Vk1uutSgWgDm/2Kml+FRFv6q/oUOzaHXvM3d9a7wcEm5DrSyb0iZ8v3ZPtZ+pKKg==
-X-Received: by 2002:a17:906:2581:: with SMTP id m1mr6681797ejb.89.1592377934427;
-        Wed, 17 Jun 2020 00:12:14 -0700 (PDT)
-Received: from localhost (ip-37-188-158-19.eurotel.cz. [37.188.158.19])
-        by smtp.gmail.com with ESMTPSA id g22sm12516138ejo.1.2020.06.17.00.12.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Jun 2020 00:12:13 -0700 (PDT)
-Date:   Wed, 17 Jun 2020 09:12:12 +0200
-From:   Michal Hocko <mhocko@kernel.org>
-To:     Matthew Wilcox <willy@infradead.org>
-Cc:     dsterba@suse.cz, Joe Perches <joe@perches.com>,
-        Waiman Long <longman@redhat.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        David Howells <dhowells@redhat.com>,
-        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        David Rientjes <rientjes@google.com>,
-        Johannes Weiner <hannes@cmpxchg.org>,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        "Jason A . Donenfeld" <Jason@zx2c4.com>, linux-mm@kvack.org,
-        keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-crypto@vger.kernel.org, linux-pm@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-amlogic@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
-        virtualization@lists.linux-foundation.org, netdev@vger.kernel.org,
-        linux-ppp@vger.kernel.org, wireguard@lists.zx2c4.com,
-        linux-wireless@vger.kernel.org, devel@driverdev.osuosl.org,
-        linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
-        linux-btrfs@vger.kernel.org, linux-cifs@vger.kernel.org,
-        linux-fscrypt@vger.kernel.org, ecryptfs@vger.kernel.org,
-        kasan-dev@googlegroups.com, linux-bluetooth@vger.kernel.org,
-        linux-wpan@vger.kernel.org, linux-sctp@vger.kernel.org,
-        linux-nfs@vger.kernel.org, tipc-discussion@lists.sourceforge.net,
-        linux-security-module@vger.kernel.org,
-        linux-integrity@vger.kernel.org
-Subject: Re: [PATCH v4 0/3] mm, treewide: Rename kzfree() to kfree_sensitive()
-Message-ID: <20200617071212.GJ9499@dhcp22.suse.cz>
-References: <20200616015718.7812-1-longman@redhat.com>
- <fe3b9a437be4aeab3bac68f04193cb6daaa5bee4.camel@perches.com>
- <20200616230130.GJ27795@twin.jikos.cz>
- <20200617003711.GD8681@bombadil.infradead.org>
+        Wed, 17 Jun 2020 03:29:45 -0400
+Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42879C061573
+        for <linux-wireless@vger.kernel.org>; Wed, 17 Jun 2020 00:29:45 -0700 (PDT)
+Received: from bigeasy by Galois.linutronix.de with local (Exim 4.80)
+        (envelope-from <bigeasy@linutronix.de>)
+        id 1jlSVu-0003WR-Hl; Wed, 17 Jun 2020 09:29:38 +0200
+Date:   Wed, 17 Jun 2020 09:29:38 +0200
+From:   Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To:     Tony Chuang <yhchuang@realtek.com>
+Cc:     "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
+        "kernel@iuliancostan.com" <kernel@iuliancostan.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "i@outv.im" <i@outv.im>,
+        "trevor@shartrec.com" <trevor@shartrec.com>
+Subject: Re: [PATCH v1] rtw88: pci: disable aspm for platform inter-op with
+ module parameter
+Message-ID: <20200617072938.dx56qsvcrpmtrrgu@linutronix.de>
+References: <20200605074703.32726-1-yhchuang@realtek.com>
+ <20200610213720.3sopcuimas375xl2@linutronix.de>
+ <a2aac609b5e2416b899c5842817da4bb@realtek.com>
+ <20200616133531.7eyfu6jniywhak7h@linutronix.de>
+ <fbf8d9cb6b864004b11372f6d70b734b@realtek.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20200617003711.GD8681@bombadil.infradead.org>
+In-Reply-To: <fbf8d9cb6b864004b11372f6d70b734b@realtek.com>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue 16-06-20 17:37:11, Matthew Wilcox wrote:
-> On Wed, Jun 17, 2020 at 01:01:30AM +0200, David Sterba wrote:
-> > On Tue, Jun 16, 2020 at 11:53:50AM -0700, Joe Perches wrote:
-> > > On Mon, 2020-06-15 at 21:57 -0400, Waiman Long wrote:
-> > > >  v4:
-> > > >   - Break out the memzero_explicit() change as suggested by Dan Carpenter
-> > > >     so that it can be backported to stable.
-> > > >   - Drop the "crypto: Remove unnecessary memzero_explicit()" patch for
-> > > >     now as there can be a bit more discussion on what is best. It will be
-> > > >     introduced as a separate patch later on after this one is merged.
-> > > 
-> > > To this larger audience and last week without reply:
-> > > https://lore.kernel.org/lkml/573b3fbd5927c643920e1364230c296b23e7584d.camel@perches.com/
-> > > 
-> > > Are there _any_ fastpath uses of kfree or vfree?
+On 2020-06-17 05:30:22 [+0000], Tony Chuang wrote:
+> 0000], Tony Chuang wrote:
+> > > > On 2020-06-05 15:47:03 [+0800], yhchuang@realtek.com wrote:
+> > > > > From: Yan-Hsuan Chuang <yhchuang@realtek.com>
+> > > > >
+> > > > > Some platforms cannot read the DBI register successfully for the
+> > > > > ASPM settings. After the read failed, the bus could be unstable,
+> > > > > and the device just became unavailable [1]. For those platforms,
+> > > > > the ASPM should be disabled. But as the ASPM can help the driver
+> > > > > to save the power consumption in power save mode, the ASPM is still
+> > > > > needed. So, add a module parameter for them to disable it, then
+> > > > > the device can still work, while others can benefit from the less
+> > > > > power consumption that brings by ASPM enabled.
+> > > >
+> > > > Can you set disable_aspm if rtw_dbi_read8() fails? Or make a test if it
+> > > > is save to use?
+> > > >
+> > > > If someone notices the warning they still have to search for the warning
+> > > > in order to make the link towards loading the module with the
+> > > > disable_aspm=1 paramter.
+> > > > Is it known what causes the failure?
+> > > >
+> > >
+> > > I think as long as the rtw_dbi_read() fails, the consequent register
+> > > operation will also fail, and still get an error read/write the register.
+> > > And this is some sort of PCI issue, and I am not really familiar with it.
+> > > Such as the root cause or how it fails.
 > > 
-> > I'd consider kfree performance critical for cases where it is called
-> > under locks. If possible the kfree is moved outside of the critical
-> > section, but we have rbtrees or lists that get deleted under locks and
-> > restructuring the code to do eg. splice and free it outside of the lock
-> > is not always possible.
+> > Then it does not sound safe to enable it by default.
 > 
-> Not just performance critical, but correctness critical.  Since kvfree()
-> may allocate from the vmalloc allocator, I really think that kvfree()
-> should assert that it's !in_atomic().  Otherwise we can get into trouble
-> if we end up calling vfree() and have to take the mutex.
+> We have had a discussion about this, but I cannot find the thread now.
+> People suggested that the module parameter should not be used.
+> And they think that if the ASPM can help for power consumption, then
+> it should be default enabled. But I think it should be based on that the
+> other platforms will not just fail to bring up the device. However, the
+> platforms are less than the others, not sure if default enable or disable
+> is better.
 
-FWIW __vfree already checks for atomic context and put the work into a
-deferred context. So this should be safe. It should be used as a last
-resort, though.
+What I fail to understand is if this error affects other PCI devices as
+well or just this one. And if it is possible to reset the wifi device
+and everything gets back no normal. Or is it just the register reading,
+that spams the log and would affect the system otherwise if you would
+just avoided after the first fail.
 
--- 
-Michal Hocko
-SUSE Labs
+> > > If we can default disable it, then we can help those platforms, but
+> > > then other platform will suffer from higher power consumption.
+> > 
+> > So for those platform, where the error occurs, you expect that the user
+> > manages to read the error message (a backtrace from rtw_dbi_read8()) and
+> > connects this the need to set a certain module option.
+> 
+> Yes, we can discuss if it should be default enabled or not. Otherwise the
+> people with those platforms can only do that to prevent this. Really bad.
+
+It would be good to know the root cause of this. So then default enable
+would depend on it.
+You could have a allow/forbid list based on DMI once you identified
+good/bad systems but this includes additional maintenance.
+
+I think that at the very least, if the read fails you should give the
+user additional information how to stop this from happening again. And
+either stop issuing the commands again or skip driver loading (depending
+what it means for device stability).
+
+> Yen-Hsuan
+
+Sebastian
