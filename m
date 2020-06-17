@@ -2,91 +2,90 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E48061FCBCD
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Jun 2020 13:08:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A6C8A1FCC6C
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Jun 2020 13:33:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726883AbgFQLIl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 17 Jun 2020 07:08:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56104 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725554AbgFQLIj (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 17 Jun 2020 07:08:39 -0400
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E515C061573;
-        Wed, 17 Jun 2020 04:08:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
-        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=6UMFO2TmbdpnJT0c5EXP2Aydp2MaQ5RYJc+GA8ZrxVg=; b=uEnXH1vpZaG2U8FFM/pYkfHc5Y
-        SeAjiiS0wb4uxVIyAse/Mlkd6U3qaJ4r4kEh9T7lE+/o5L5t1dNjJ28G/NIqVe0DWG/fV4/lQHo1o
-        QDwGZP0qomelniIocS0ybLZQjvlRxX/INLpmjUp5+LL4fh2HQo9F6qYCqhyg1imU2AHxFgkQk0jvm
-        8nOqGDFYb7CZcfryOG0jsO4VWYAKfvslQU5aBRvXZEAb7odmsPQzoqooHS6qL3UZV2AdZFQmkWhak
-        uKTLzMfmXR1ZbqokaLQoFEtbowD5zP+hhe/qVdQ+y0/QB4rOvsOqTW0JOhm+R3UUkEQZTtPszFNR9
-        vDBLz4ZQ==;
-Received: from willy by bombadil.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1jlVvY-0007BQ-88; Wed, 17 Jun 2020 11:08:20 +0000
-Date:   Wed, 17 Jun 2020 04:08:20 -0700
-From:   Matthew Wilcox <willy@infradead.org>
-To:     Michal Hocko <mhocko@kernel.org>
-Cc:     dsterba@suse.cz, Joe Perches <joe@perches.com>,
-        Waiman Long <longman@redhat.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        David Howells <dhowells@redhat.com>,
-        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        David Rientjes <rientjes@google.com>,
-        Johannes Weiner <hannes@cmpxchg.org>,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        "Jason A . Donenfeld" <Jason@zx2c4.com>, linux-mm@kvack.org,
-        keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-crypto@vger.kernel.org, linux-pm@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-amlogic@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
-        virtualization@lists.linux-foundation.org, netdev@vger.kernel.org,
-        linux-ppp@vger.kernel.org, wireguard@lists.zx2c4.com,
-        linux-wireless@vger.kernel.org, devel@driverdev.osuosl.org,
-        linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
-        linux-btrfs@vger.kernel.org, linux-cifs@vger.kernel.org,
-        linux-fscrypt@vger.kernel.org, ecryptfs@vger.kernel.org,
-        kasan-dev@googlegroups.com, linux-bluetooth@vger.kernel.org,
-        linux-wpan@vger.kernel.org, linux-sctp@vger.kernel.org,
-        linux-nfs@vger.kernel.org, tipc-discussion@lists.sourceforge.net,
-        linux-security-module@vger.kernel.org,
-        linux-integrity@vger.kernel.org
-Subject: Re: [PATCH v4 0/3] mm, treewide: Rename kzfree() to kfree_sensitive()
-Message-ID: <20200617110820.GG8681@bombadil.infradead.org>
-References: <20200616015718.7812-1-longman@redhat.com>
- <fe3b9a437be4aeab3bac68f04193cb6daaa5bee4.camel@perches.com>
- <20200616230130.GJ27795@twin.jikos.cz>
- <20200617003711.GD8681@bombadil.infradead.org>
- <20200617071212.GJ9499@dhcp22.suse.cz>
+        id S1726634AbgFQLc5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 17 Jun 2020 07:32:57 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:25676 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725964AbgFQLc4 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 17 Jun 2020 07:32:56 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1592393575; h=Content-Transfer-Encoding: MIME-Version:
+ Message-Id: Date: Subject: Cc: To: From: Sender;
+ bh=1meUstU7f4R51xkuXQj+/cO2/RzxThox/KP1Ekl9dCI=; b=sowZDtIkjOHGD9b4coUFQkva2JGxEqE6WFcrBetoR3owCsWk2cFzjwG3yfN91Mzz2ltAARnT
+ 4GVmfjyeO6vYPchCCd1IVrrTycnveMG57vE6KV2mlMD08pyJGmkzox+2T9UBN7OCnLQjhi34
+ I6Fq15CHlzOJFhGMEoOra4jkZpo=
+X-Mailgun-Sending-Ip: 69.72.43.7
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n05.prod.us-west-2.postgun.com with SMTP id
+ 5ee9ff4ef3deea03f3fb842b (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 17 Jun 2020 11:32:30
+ GMT
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 44812C433C9; Wed, 17 Jun 2020 11:32:30 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from vjakkam-linux.qualcomm.com (blr-c-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.19.19])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: vjakkam)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 35250C433CA;
+        Wed, 17 Jun 2020 11:32:27 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 35250C433CA
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=vjakkam@codeaurora.org
+From:   Veerendranath Jakkam <vjakkam@codeaurora.org>
+To:     johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org
+Subject: [PATCH] ieee80211: Add missing and new AKM suite selector definitions
+Date:   Wed, 17 Jun 2020 17:01:32 +0530
+Message-Id: <20200617113132.13477-1-vjakkam@codeaurora.org>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200617071212.GJ9499@dhcp22.suse.cz>
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Jun 17, 2020 at 09:12:12AM +0200, Michal Hocko wrote:
-> On Tue 16-06-20 17:37:11, Matthew Wilcox wrote:
-> > Not just performance critical, but correctness critical.  Since kvfree()
-> > may allocate from the vmalloc allocator, I really think that kvfree()
-> > should assert that it's !in_atomic().  Otherwise we can get into trouble
-> > if we end up calling vfree() and have to take the mutex.
-> 
-> FWIW __vfree already checks for atomic context and put the work into a
-> deferred context. So this should be safe. It should be used as a last
-> resort, though.
+Add the definitions for missing AKM selectors defined in
+IEEE P802.11-REVmd/D3.0, table 9-151. These definitions will
+be used by various drivers that support these new AKM suites.
 
-Actually, it only checks for in_interrupt().  If you call vfree() under
-a spinlock, you're in trouble.  in_atomic() only knows if we hold a
-spinlock for CONFIG_PREEMPT, so it's not safe to check for in_atomic()
-in __vfree().  So we need the warning in order that preempt people can
-tell those without that there is a bug here.
+Signed-off-by: Veerendranath Jakkam <vjakkam@codeaurora.org>
+---
+ include/linux/ieee80211.h | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
+index fe15f831841b..9f732499ea88 100644
+--- a/include/linux/ieee80211.h
++++ b/include/linux/ieee80211.h
+@@ -3333,13 +3333,17 @@ struct ieee80211_multiple_bssid_configuration {
+ #define WLAN_AKM_SUITE_TDLS			SUITE(0x000FAC, 7)
+ #define WLAN_AKM_SUITE_SAE			SUITE(0x000FAC, 8)
+ #define WLAN_AKM_SUITE_FT_OVER_SAE		SUITE(0x000FAC, 9)
++#define WLAN_AKM_SUITE_AP_PEER_KEY		SUITE(0x000FAC, 10)
+ #define WLAN_AKM_SUITE_8021X_SUITE_B		SUITE(0x000FAC, 11)
+ #define WLAN_AKM_SUITE_8021X_SUITE_B_192	SUITE(0x000FAC, 12)
++#define WLAN_AKM_SUITE_FT_8021X_SHA384		SUITE(0x000FAC, 13)
+ #define WLAN_AKM_SUITE_FILS_SHA256		SUITE(0x000FAC, 14)
+ #define WLAN_AKM_SUITE_FILS_SHA384		SUITE(0x000FAC, 15)
+ #define WLAN_AKM_SUITE_FT_FILS_SHA256		SUITE(0x000FAC, 16)
+ #define WLAN_AKM_SUITE_FT_FILS_SHA384		SUITE(0x000FAC, 17)
+ #define WLAN_AKM_SUITE_OWE			SUITE(0x000FAC, 18)
++#define WLAN_AKM_SUITE_FT_PSK_SHA384		SUITE(0x000FAC, 19)
++#define WLAN_AKM_SUITE_PSK_SHA384		SUITE(0x000FAC, 20)
+ 
+ #define WLAN_MAX_KEY_LEN		32
+ 
+-- 
+2.20.1
+
