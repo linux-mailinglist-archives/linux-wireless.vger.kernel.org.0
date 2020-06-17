@@ -2,113 +2,91 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 688AA1FC88E
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Jun 2020 10:27:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 85CBB1FC91C
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Jun 2020 10:43:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726625AbgFQI1G (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 17 Jun 2020 04:27:06 -0400
-Received: from smail.rz.tu-ilmenau.de ([141.24.186.67]:49908 "EHLO
-        smail.rz.tu-ilmenau.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725967AbgFQI1F (ORCPT
+        id S1726964AbgFQInM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 17 Jun 2020 04:43:12 -0400
+Received: from mail29.static.mailgun.info ([104.130.122.29]:14812 "EHLO
+        mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726634AbgFQInM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 17 Jun 2020 04:27:05 -0400
-Received: from legolas.fritz.box (unknown [87.147.49.100])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        Wed, 17 Jun 2020 04:43:12 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1592383391; h=Message-Id: Date: Subject: Cc: To: From:
+ Sender; bh=nB2sUVjfGPEdYQepVHohnfo2rl/Qh32Jwyl/hlaijGc=; b=D6r91UgFvoGC2bntuLtakr+K12LqrSpxelJRw8dhQrKLuBA1OqQu31EKkNlZHht1cZXa3IcU
+ XJ8xkuW4NsVreaBuRmgobeJ7NZ+cHoNXxDjCDtq0pR8/13mWVVVckfGo9yEeCVkPYysFEM6l
+ U87yBqir/7yPSqcoCeIuzXr6KKU=
+X-Mailgun-Sending-Ip: 104.130.122.29
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n08.prod.us-east-1.postgun.com with SMTP id
+ 5ee9d7868fe116ddd9c6c091 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 17 Jun 2020 08:42:46
+ GMT
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 62A79C43391; Wed, 17 Jun 2020 08:42:45 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from ssreeela-linux.qualcomm.com (blr-c-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.19.19])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
         (No client certificate requested)
-        by smail.rz.tu-ilmenau.de (Postfix) with ESMTPSA id 449E5580075;
-        Wed, 17 Jun 2020 10:27:03 +0200 (CEST)
-From:   Markus Theil <markus.theil@tu-ilmenau.de>
+        (Authenticated sender: ppranees)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 3F55CC433CB;
+        Wed, 17 Jun 2020 08:42:42 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 3F55CC433CB
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=ppranees@codeaurora.org
+From:   P Praneesh <ppranees@codeaurora.org>
 To:     johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org,
-        Markus Theil <markus.theil@tu-ilmenau.de>,
-        kernel test robot <rong.a.chen@intel.com>
-Subject: [PATCH v3 2/2] mac80211: allow rx of mesh eapol frames with default rx key
-Date:   Wed, 17 Jun 2020 10:26:37 +0200
-Message-Id: <20200617082637.22670-3-markus.theil@tu-ilmenau.de>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20200617082637.22670-1-markus.theil@tu-ilmenau.de>
-References: <20200617082637.22670-1-markus.theil@tu-ilmenau.de>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        P Praneesh <ppranees@codeaurora.org>
+Subject: [PATCH] mac80211: avoid bss color setting in non-he mode
+Date:   Wed, 17 Jun 2020 14:12:28 +0530
+Message-Id: <1592383348-19266-1-git-send-email-ppranees@codeaurora.org>
+X-Mailer: git-send-email 2.7.4
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Without this patch, eapol frames cannot be received in mesh
-mode, when 802.1X should be used. Initially only a MGTK is
-defined, which is found and set as rx->key, when there are
-no other keys set. ieee80211_drop_unencrypted would then
-drop these eapol frames, as they are data frames without
-encryption and there exists some rx->key.
+Adding bss-color configuration for HE mode alone.
+Earlier we have enabled it by default, irrespective
+of capabilities. But bss-color feature is only for
+HE mode. Hence avoiding this by adding bss-color flag
+only for HE mode.
 
-Fix this by differentiating between mesh eapol frames and
-other data frames with existing rx->key. Allow mesh mesh
-eapol frames only if they are for our vif address. If a
-check for eapol frames fails, the previous drop check is
-executed (thanks to a kernel test bot, which found an issue
-in a previous patch version here).
-
-With this patch in-place, ieee80211_rx_h_mesh_fwding continues
-after the ieee80211_drop_unencrypted check and notices, that
-these eapol frames have to be delivered locally, as they should.
-
-Reported-by: kernel test robot <rong.a.chen@intel.com>
-Signed-off-by: Markus Theil <markus.theil@tu-ilmenau.de>
+Signed-off-by: P Praneesh <ppranees@codeaurora.org>
 ---
- net/mac80211/rx.c | 26 ++++++++++++++++++++++++++
- 1 file changed, 26 insertions(+)
+ net/mac80211/cfg.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-index 21854a61a2b7..60293a9fa3dc 100644
---- a/net/mac80211/rx.c
-+++ b/net/mac80211/rx.c
-@@ -2396,6 +2396,7 @@ static int ieee80211_802_1x_port_control(struct ieee80211_rx_data *rx)
+diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+index 548a384..2c5847d 100644
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -992,8 +992,7 @@ static int ieee80211_start_ap(struct wiphy *wiphy, struct net_device *dev,
+ 		      BSS_CHANGED_P2P_PS |
+ 		      BSS_CHANGED_TXPOWER |
+ 		      BSS_CHANGED_TWT |
+-		      BSS_CHANGED_HE_OBSS_PD |
+-		      BSS_CHANGED_HE_BSS_COLOR;
++		      BSS_CHANGED_HE_OBSS_PD;
+ 	int i, err;
+ 	int prev_beacon_int;
  
- static int ieee80211_drop_unencrypted(struct ieee80211_rx_data *rx, __le16 fc)
- {
-+	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)rx->skb->data;
- 	struct sk_buff *skb = rx->skb;
- 	struct ieee80211_rx_status *status = IEEE80211_SKB_RXCB(skb);
+@@ -1019,6 +1018,7 @@ static int ieee80211_start_ap(struct wiphy *wiphy, struct net_device *dev,
+ 		sdata->vif.bss_conf.frame_time_rts_th =
+ 			le32_get_bits(params->he_oper->he_oper_params,
+ 			      IEEE80211_HE_OPERATION_RTS_THRESHOLD_MASK);
++		changed |= BSS_CHANGED_HE_BSS_COLOR;
+ 	}
  
-@@ -2406,12 +2407,37 @@ static int ieee80211_drop_unencrypted(struct ieee80211_rx_data *rx, __le16 fc)
- 	if (status->flag & RX_FLAG_DECRYPTED)
- 		return 0;
- 
-+	/* check mesh EAPOL frames first */
-+	if (unlikely(rx->sta && ieee80211_vif_is_mesh(&rx->sdata->vif) && ieee80211_is_data(fc))) {
-+		struct ieee80211s_hdr *mesh_hdr;
-+		u16 hdr_len = ieee80211_hdrlen(fc);
-+		u16 ethertype_offset;
-+		__be16 ethertype;
-+
-+		/* make sure fixed part of mesh header is there, also checks skb len */
-+		if (!pskb_may_pull(rx->skb, hdr_len + 6))
-+			goto drop_check;
-+
-+		mesh_hdr = (struct ieee80211s_hdr *)(skb->data + hdr_len);
-+		ethertype_offset = hdr_len + ieee80211_get_mesh_hdrlen(mesh_hdr)
-+				 + sizeof(rfc1042_header);
-+		if (!pskb_may_pull(rx->skb, ethertype_offset + sizeof(ethertype)) ||
-+		    !ether_addr_equal(hdr->addr1, rx->sdata->vif.addr))
-+			goto drop_check;
-+
-+		skb_copy_bits(rx->skb, ethertype_offset, &ethertype, 2);
-+		if (ethertype == rx->sdata->control_port_protocol)
-+			goto pass_frame;
-+	}
-+
-+drop_check:
- 	/* Drop unencrypted frames if key is set. */
- 	if (unlikely(!ieee80211_has_protected(fc) &&
- 		     !ieee80211_is_any_nullfunc(fc) &&
- 		     ieee80211_is_data(fc) && rx->key))
- 		return -EACCES;
- 
-+pass_frame:
- 	return 0;
- }
- 
+ 	mutex_lock(&local->mtx);
 -- 
-2.27.0
+2.7.4
 
