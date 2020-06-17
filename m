@@ -2,91 +2,91 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 85CBB1FC91C
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Jun 2020 10:43:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E48061FCBCD
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Jun 2020 13:08:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726964AbgFQInM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 17 Jun 2020 04:43:12 -0400
-Received: from mail29.static.mailgun.info ([104.130.122.29]:14812 "EHLO
-        mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726634AbgFQInM (ORCPT
+        id S1726883AbgFQLIl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 17 Jun 2020 07:08:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56104 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725554AbgFQLIj (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 17 Jun 2020 04:43:12 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1592383391; h=Message-Id: Date: Subject: Cc: To: From:
- Sender; bh=nB2sUVjfGPEdYQepVHohnfo2rl/Qh32Jwyl/hlaijGc=; b=D6r91UgFvoGC2bntuLtakr+K12LqrSpxelJRw8dhQrKLuBA1OqQu31EKkNlZHht1cZXa3IcU
- XJ8xkuW4NsVreaBuRmgobeJ7NZ+cHoNXxDjCDtq0pR8/13mWVVVckfGo9yEeCVkPYysFEM6l
- U87yBqir/7yPSqcoCeIuzXr6KKU=
-X-Mailgun-Sending-Ip: 104.130.122.29
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n08.prod.us-east-1.postgun.com with SMTP id
- 5ee9d7868fe116ddd9c6c091 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 17 Jun 2020 08:42:46
- GMT
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 62A79C43391; Wed, 17 Jun 2020 08:42:45 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from ssreeela-linux.qualcomm.com (blr-c-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.19.19])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: ppranees)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 3F55CC433CB;
-        Wed, 17 Jun 2020 08:42:42 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 3F55CC433CB
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=ppranees@codeaurora.org
-From:   P Praneesh <ppranees@codeaurora.org>
-To:     johannes@sipsolutions.net
-Cc:     linux-wireless@vger.kernel.org,
-        P Praneesh <ppranees@codeaurora.org>
-Subject: [PATCH] mac80211: avoid bss color setting in non-he mode
-Date:   Wed, 17 Jun 2020 14:12:28 +0530
-Message-Id: <1592383348-19266-1-git-send-email-ppranees@codeaurora.org>
-X-Mailer: git-send-email 2.7.4
+        Wed, 17 Jun 2020 07:08:39 -0400
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E515C061573;
+        Wed, 17 Jun 2020 04:08:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=6UMFO2TmbdpnJT0c5EXP2Aydp2MaQ5RYJc+GA8ZrxVg=; b=uEnXH1vpZaG2U8FFM/pYkfHc5Y
+        SeAjiiS0wb4uxVIyAse/Mlkd6U3qaJ4r4kEh9T7lE+/o5L5t1dNjJ28G/NIqVe0DWG/fV4/lQHo1o
+        QDwGZP0qomelniIocS0ybLZQjvlRxX/INLpmjUp5+LL4fh2HQo9F6qYCqhyg1imU2AHxFgkQk0jvm
+        8nOqGDFYb7CZcfryOG0jsO4VWYAKfvslQU5aBRvXZEAb7odmsPQzoqooHS6qL3UZV2AdZFQmkWhak
+        uKTLzMfmXR1ZbqokaLQoFEtbowD5zP+hhe/qVdQ+y0/QB4rOvsOqTW0JOhm+R3UUkEQZTtPszFNR9
+        vDBLz4ZQ==;
+Received: from willy by bombadil.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1jlVvY-0007BQ-88; Wed, 17 Jun 2020 11:08:20 +0000
+Date:   Wed, 17 Jun 2020 04:08:20 -0700
+From:   Matthew Wilcox <willy@infradead.org>
+To:     Michal Hocko <mhocko@kernel.org>
+Cc:     dsterba@suse.cz, Joe Perches <joe@perches.com>,
+        Waiman Long <longman@redhat.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        David Howells <dhowells@redhat.com>,
+        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        David Rientjes <rientjes@google.com>,
+        Johannes Weiner <hannes@cmpxchg.org>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        "Jason A . Donenfeld" <Jason@zx2c4.com>, linux-mm@kvack.org,
+        keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-crypto@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-amlogic@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+        virtualization@lists.linux-foundation.org, netdev@vger.kernel.org,
+        linux-ppp@vger.kernel.org, wireguard@lists.zx2c4.com,
+        linux-wireless@vger.kernel.org, devel@driverdev.osuosl.org,
+        linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
+        linux-btrfs@vger.kernel.org, linux-cifs@vger.kernel.org,
+        linux-fscrypt@vger.kernel.org, ecryptfs@vger.kernel.org,
+        kasan-dev@googlegroups.com, linux-bluetooth@vger.kernel.org,
+        linux-wpan@vger.kernel.org, linux-sctp@vger.kernel.org,
+        linux-nfs@vger.kernel.org, tipc-discussion@lists.sourceforge.net,
+        linux-security-module@vger.kernel.org,
+        linux-integrity@vger.kernel.org
+Subject: Re: [PATCH v4 0/3] mm, treewide: Rename kzfree() to kfree_sensitive()
+Message-ID: <20200617110820.GG8681@bombadil.infradead.org>
+References: <20200616015718.7812-1-longman@redhat.com>
+ <fe3b9a437be4aeab3bac68f04193cb6daaa5bee4.camel@perches.com>
+ <20200616230130.GJ27795@twin.jikos.cz>
+ <20200617003711.GD8681@bombadil.infradead.org>
+ <20200617071212.GJ9499@dhcp22.suse.cz>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200617071212.GJ9499@dhcp22.suse.cz>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Adding bss-color configuration for HE mode alone.
-Earlier we have enabled it by default, irrespective
-of capabilities. But bss-color feature is only for
-HE mode. Hence avoiding this by adding bss-color flag
-only for HE mode.
+On Wed, Jun 17, 2020 at 09:12:12AM +0200, Michal Hocko wrote:
+> On Tue 16-06-20 17:37:11, Matthew Wilcox wrote:
+> > Not just performance critical, but correctness critical.  Since kvfree()
+> > may allocate from the vmalloc allocator, I really think that kvfree()
+> > should assert that it's !in_atomic().  Otherwise we can get into trouble
+> > if we end up calling vfree() and have to take the mutex.
+> 
+> FWIW __vfree already checks for atomic context and put the work into a
+> deferred context. So this should be safe. It should be used as a last
+> resort, though.
 
-Signed-off-by: P Praneesh <ppranees@codeaurora.org>
----
- net/mac80211/cfg.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index 548a384..2c5847d 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -992,8 +992,7 @@ static int ieee80211_start_ap(struct wiphy *wiphy, struct net_device *dev,
- 		      BSS_CHANGED_P2P_PS |
- 		      BSS_CHANGED_TXPOWER |
- 		      BSS_CHANGED_TWT |
--		      BSS_CHANGED_HE_OBSS_PD |
--		      BSS_CHANGED_HE_BSS_COLOR;
-+		      BSS_CHANGED_HE_OBSS_PD;
- 	int i, err;
- 	int prev_beacon_int;
- 
-@@ -1019,6 +1018,7 @@ static int ieee80211_start_ap(struct wiphy *wiphy, struct net_device *dev,
- 		sdata->vif.bss_conf.frame_time_rts_th =
- 			le32_get_bits(params->he_oper->he_oper_params,
- 			      IEEE80211_HE_OPERATION_RTS_THRESHOLD_MASK);
-+		changed |= BSS_CHANGED_HE_BSS_COLOR;
- 	}
- 
- 	mutex_lock(&local->mtx);
--- 
-2.7.4
-
+Actually, it only checks for in_interrupt().  If you call vfree() under
+a spinlock, you're in trouble.  in_atomic() only knows if we hold a
+spinlock for CONFIG_PREEMPT, so it's not safe to check for in_atomic()
+in __vfree().  So we need the warning in order that preempt people can
+tell those without that there is a bug here.
