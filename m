@@ -2,98 +2,100 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D54571FEE5C
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jun 2020 11:12:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D0CFA1FEE5E
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jun 2020 11:13:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728973AbgFRJMv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 18 Jun 2020 05:12:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34558 "EHLO
+        id S1729013AbgFRJNE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 18 Jun 2020 05:13:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34590 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728937AbgFRJMu (ORCPT
+        with ESMTP id S1728995AbgFRJNC (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 18 Jun 2020 05:12:50 -0400
-Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com [IPv6:2a00:1450:4864:20::441])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB969C06174E
-        for <linux-wireless@vger.kernel.org>; Thu, 18 Jun 2020 02:12:49 -0700 (PDT)
-Received: by mail-wr1-x441.google.com with SMTP id c3so5195598wru.12
-        for <linux-wireless@vger.kernel.org>; Thu, 18 Jun 2020 02:12:49 -0700 (PDT)
+        Thu, 18 Jun 2020 05:13:02 -0400
+Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B85FC06174E
+        for <linux-wireless@vger.kernel.org>; Thu, 18 Jun 2020 02:13:02 -0700 (PDT)
+Received: by mail-wr1-x444.google.com with SMTP id x6so5207552wrm.13
+        for <linux-wireless@vger.kernel.org>; Thu, 18 Jun 2020 02:13:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id;
-        bh=htZbEn2KdpU7eJSh8yuTo6kkxCsr60rcFS9ASpUroDc=;
-        b=oAPKBxcEr26oMMyckNnQUIwAZx87dkFiPrebVQtN2jI08/jwvOran7V7Q6WG+GqJ2S
-         V3I+Rzemd9LQtEkm9ajEpGumfW+RRnhaNCyO2KgDirPg8eq/SUcYoVpNWwvXFZvfLt9C
-         e/YAe4+NJL7oDiJVWwMmgBYEOhyISHd3GAzgsYml1nSSKkiY1JE5pC5JVEiWkKkPhJHn
-         Pgeiqo1vA1g4pV1o1jdwXBegy+RmqGZbpSwTcPahoOCZzXwm38/y0Yk+pj9sDpfL1pzW
-         +miIxAaIcwWJRlJGuMuYHNAxxdT4pNus6O6KENrKqnra1Ap6YM8P31Nt1kucwPCQP3IH
-         4Jig==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references;
+        bh=IH8CfyxttC28VAndSUFTqHOfJWsh3TDg2r/982MjPtE=;
+        b=M/SSWMvzhacEPnlAUL0J/MgFgf4bs58IQIirCpnww4e83eHkhaxmplPf1Onu6wRErV
+         nbCSVasensBXBY7ZU1Som9WIIppLlVhWbNYn6pIqToUnN/+qhIngmseNnPCc8t8nhrB8
+         NCtQZDdTcAbCyvBGs5cSJFVmME17KrwOBdRh3zK2z3SQK1eeFjOC8LfsAa9l85sa0bGx
+         RNzZfczORrInjKQ6lvn/D5q3ZWOhxCKwEYA/fAwHMb/pdS4hJpQjRJL9sgMhFLOXwjXV
+         H2DT94HTXYMllizQsx0dMApf7O6U0iY+6FnH+YetD6GLcn+fG2koQyLbLX2saRS23GDk
+         K8dQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=htZbEn2KdpU7eJSh8yuTo6kkxCsr60rcFS9ASpUroDc=;
-        b=ctDMtEXZbkcUeMglB61qIAQAjzsHU2ZLYyuCkgbO8zXpP9ux6wf0Re9+fuUVvfU3YE
-         88lyjDaCLEHjP15SUTO8kJ/udcw/GDeFZ0zaVwJdYzhrPLui7/IA1okmg2iene89s2Ke
-         0+et0bBhnAOyrEu3+G+r3rwm79pwK4LILAA5XNqwTbVn/g9+G0wkz3lZhkXU9pe39OCm
-         Yu4w5Z+8FkXPrIlbA0nobl0aIHnq3bhAeQamuo41IeFBTzMbEGnY1i9sFCqgIn/gRn6x
-         5m++CJGthug8Ku3IWM0wRSujjJ5534Wm84293oTLMhbw2jWcld+L509YgAGCtcRmEjYf
-         NUyw==
-X-Gm-Message-State: AOAM531bw0/8cTiYme+SZlxGOADgpUDdJCDpcdNhH/avNyg68tQ8nO+c
-        5b9n3UMJQS/nzpaOrlMktPPXGQ==
-X-Google-Smtp-Source: ABdhPJx/lNknKhNijdO2ZmhuKAzPw/kLw9qAnqH+i+nziTBKUN2q9yAFd263yAYdYUqGAUd6WLeOJw==
-X-Received: by 2002:adf:80e6:: with SMTP id 93mr3407450wrl.17.1592471568684;
-        Thu, 18 Jun 2020 02:12:48 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references;
+        bh=IH8CfyxttC28VAndSUFTqHOfJWsh3TDg2r/982MjPtE=;
+        b=PM+OeWS9FlQgEWRB7GxtV6BbMfoTgD8eomg0jyxSL1/bQO5vXONR2DJ0YOg2LKXs39
+         tYAA05syVFuFXcWkUZR7zVmZOBCPDGOoHvhWqdhZPQMu+NBfBnnOTQ9yyfDndlwqk7iR
+         N5NZQiO8TBU6ug3BXoQwO8wZjMn+Ca1wPYldMp7dYVsIIbvBGesBGD/Hk40U106RxSuq
+         LGySO+7ocLZiaQQZcCWApHXinwAA7DnAyEXc/uKn+Oub2GIsFK8s2a4X26CS2v6LA+5B
+         A6XGMzBJSioYwlKG5K7wGMloULewVZaPcHdFb9gx9MYgGqVc6I1E+LA/UmUXcX1mspcb
+         9LiQ==
+X-Gm-Message-State: AOAM53327MEff6pHn1/5B+J+tw+8mEvGBvrWxjkLPOq0lkdKDmJd63oy
+        VBD6W7VVy3nscuosiLgIs+wXCw==
+X-Google-Smtp-Source: ABdhPJwomO8MDg7hHwcCQKAm7kPGeS4a3Twjgk/wSgSft0ZcZlsX58m2aaPRossL53ulWqLl59uBpg==
+X-Received: by 2002:a5d:6b86:: with SMTP id n6mr3431039wrx.167.1592471581186;
+        Thu, 18 Jun 2020 02:13:01 -0700 (PDT)
 Received: from localhost.localdomain ([88.122.66.28])
-        by smtp.gmail.com with ESMTPSA id x13sm2733702wre.83.2020.06.18.02.12.48
+        by smtp.gmail.com with ESMTPSA id x13sm2733702wre.83.2020.06.18.02.13.00
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 18 Jun 2020 02:12:48 -0700 (PDT)
+        Thu, 18 Jun 2020 02:13:00 -0700 (PDT)
 From:   Loic Poulain <loic.poulain@linaro.org>
 To:     kvalo@codeaurora.org, johannes@sipsolutions.net
 Cc:     wcn36xx@lists.infradead.org, linux-wireless@vger.kernel.org,
         Loic Poulain <loic.poulain@linaro.org>
-Subject: [PATCH 1/2] mac80211: Do not report beacon loss if beacon filtering enabled
-Date:   Thu, 18 Jun 2020 11:17:42 +0200
-Message-Id: <1592471863-31402-1-git-send-email-loic.poulain@linaro.org>
+Subject: [PATCH 2/2] wcn36xx: Advertise beacon filtering support in bmps
+Date:   Thu, 18 Jun 2020 11:17:43 +0200
+Message-Id: <1592471863-31402-2-git-send-email-loic.poulain@linaro.org>
 X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1592471863-31402-1-git-send-email-loic.poulain@linaro.org>
+References: <1592471863-31402-1-git-send-email-loic.poulain@linaro.org>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-mac80211.h says: Beacon filter support is advertised with the
-IEEE80211_VIF_BEACON_FILTER interface capability. The driver needs to
-enable beacon filter support whenever power save is enabled, that is
-IEEE80211_CONF_PS is set. When power save is enabled, the stack will
-not check for beacon loss and the driver needs to notify about loss
-of beacons with ieee80211_beacon_loss().
+In bmps mode, beacons are filtered, and firmware is in charge
+of monitoring the beacons and report changes or loss.
 
-Some controllers may want to dynamically enable the beacon filter
-capabilities on power save entry (CONF_PS) and disable it on exit.
-This is the case for the wcn36xx driver which only supports beacon
-filtering in PS mode (no CONNECTION_MONITOR support).
+mac80211 must be advertised about such change to prevent it's
+internal timer based beacon monitor to report beacon loss.
 
-When the mac80211 beacon monitor timer expires, the beacon filter
-flag must be checked again in case it as been changed in between
-(e.g. vif moved to PS mode).
+Fix that by setting/clearing the IEEE80211_VIF_BEACON_FILTER
+vif flag on bmps entry/exit.
 
 Signed-off-by: Loic Poulain <loic.poulain@linaro.org>
 ---
- net/mac80211/mlme.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/wireless/ath/wcn36xx/pmc.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index 16d75da..1f7dfaa 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -4494,6 +4494,9 @@ static void ieee80211_sta_bcn_mon_timer(struct timer_list *t)
- 	if (sdata->vif.csa_active && !ifmgd->csa_waiting_bcn)
- 		return;
+diff --git a/drivers/net/wireless/ath/wcn36xx/pmc.c b/drivers/net/wireless/ath/wcn36xx/pmc.c
+index 1976b80..2936aaf 100644
+--- a/drivers/net/wireless/ath/wcn36xx/pmc.c
++++ b/drivers/net/wireless/ath/wcn36xx/pmc.c
+@@ -28,6 +28,7 @@ int wcn36xx_pmc_enter_bmps_state(struct wcn36xx *wcn,
+ 	if (!ret) {
+ 		wcn36xx_dbg(WCN36XX_DBG_PMC, "Entered BMPS\n");
+ 		vif_priv->pw_state = WCN36XX_BMPS;
++		vif->driver_flags |= IEEE80211_VIF_BEACON_FILTER;
+ 	} else {
+ 		/*
+ 		 * One of the reasons why HW will not enter BMPS is because
+@@ -52,6 +53,7 @@ int wcn36xx_pmc_exit_bmps_state(struct wcn36xx *wcn,
+ 	}
+ 	wcn36xx_smd_exit_bmps(wcn, vif);
+ 	vif_priv->pw_state = WCN36XX_FULL_POWER;
++	vif->driver_flags &= ~IEEE80211_VIF_BEACON_FILTER;
+ 	return 0;
+ }
  
-+	if (sdata->vif.driver_flags & IEEE80211_VIF_BEACON_FILTER)
-+		return;
-+
- 	sdata->u.mgd.connection_loss = false;
- 	ieee80211_queue_work(&sdata->local->hw,
- 			     &sdata->u.mgd.beacon_connection_loss_work);
 -- 
 2.7.4
 
