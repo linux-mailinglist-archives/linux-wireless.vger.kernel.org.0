@@ -2,126 +2,101 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1FF631FF8BE
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jun 2020 18:08:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E22E1FF9D1
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jun 2020 19:00:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731887AbgFRQII (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 18 Jun 2020 12:08:08 -0400
-Received: from mail-eopbgr760112.outbound.protection.outlook.com ([40.107.76.112]:7750
-        "EHLO NAM02-CY1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1731908AbgFRQID (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 18 Jun 2020 12:08:03 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=joGDlrviDJFnofGW7DEod/QV7fJmB6ng7zv9424c90uJ1rb/o/frhiFy9mka6mzq4LzCvXycSHyqpMmULjDT9RyYOuur4z/BiR6JqcdL1emhP4Q35nUTz+H8O6gRZxPoGWWe5jWdcHCPKH83Lm8REdIyICbzFeIhraYDLydxyD/wo4cDx2VgGx7Y3p+iWKJ7LPZH299XPNlQ8nWPoChJ/P9NCC4RAlmreMA+ykzrgDnp/1brvFv37aVZK/DXJPCf5jMtQLkHh7DLZhjAJIx0A8e/0CH5VbVZF66CkghX128UVIlD1qWg/icFLFMg9tZvQUTFvRxFKCZSfWSkw+i5wg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=X+SVmunytF6+GF3Pj/HA4/SoInC8aZpfSxK/8Ql8K5A=;
- b=Tqe/IzBanziyETfogE+0Lv26KWBmAkREBk6cqAW2Sf2H6W3e93DFDI1OYao8KfdC0Cs1SC/T6Vw2V9LoX09OKw7NLgQz76DwRUv/Wqy5ga2mGSjjrAVXE9oZ4e0IqUD8ofxY6EieDOy1euqzjq38EQ8Tw1KP/2Fqzx2+L1TjWQxWf/oAa290t9GScBlVI3wDNNlzTO3HF9KGRM9XcW04ez57HGtZYO45sXp1fIsARuMHx/WAWUx/0GjXaqY0lq2bFABg5MC6SRDL9Xx9UeSl0c+IsbkccCAP7v1GLzFoCoiop+MNeLwNjaaM+IhURzw+A3SHMgNR+e/skKwdXbFymg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=cypress.com; dmarc=pass action=none header.from=cypress.com;
- dkim=pass header.d=cypress.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cypress.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=X+SVmunytF6+GF3Pj/HA4/SoInC8aZpfSxK/8Ql8K5A=;
- b=Ztnvvo1wBRg9J+5C++0RP6KBxVtXde4drMW/OuNuVLj6JddxVWyiA/7ku1UJ0rwTzm0W94i/iPz3jkkN8FlgfTUcYU4FdybyqO7s0l3lTTZaLM3R5EwCc49Yc930x1j/3wBEJRDU/pUcWTaxn7OkgubfPT8eC394vRoYVF+jH1c=
-Authentication-Results: vger.kernel.org; dkim=none (message not signed)
- header.d=none;vger.kernel.org; dmarc=none action=none
- header.from=cypress.com;
-Received: from BYAPR06MB4901.namprd06.prod.outlook.com (2603:10b6:a03:7a::30)
- by BYAPR06MB4549.namprd06.prod.outlook.com (2603:10b6:a03:4d::31) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3109.22; Thu, 18 Jun
- 2020 16:07:57 +0000
-Received: from BYAPR06MB4901.namprd06.prod.outlook.com
- ([fe80::b972:c25d:c8fc:fc0e]) by BYAPR06MB4901.namprd06.prod.outlook.com
- ([fe80::b972:c25d:c8fc:fc0e%7]) with mapi id 15.20.3088.029; Thu, 18 Jun 2020
- 16:07:57 +0000
-From:   Chi-Hsien Lin <chi-hsien.lin@cypress.com>
-To:     linux-wireless@vger.kernel.org
-Cc:     brcm80211-dev-list@broadcom.com, brcm80211-dev-list@cypress.com,
-        Arend van Spriel <arend.vanspriel@broadcom.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Wright Feng <wright.feng@cypress.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Able Liao <Able.Liao@cypress.com>,
-        Chi-hsien Lin <chi-hsien.lin@cypress.com>
-Subject: [PATCH 3/3] brcmfmac: do not disconnect for disassoc frame from unconnected AP
-Date:   Thu, 18 Jun 2020 11:07:39 -0500
-Message-Id: <20200618160739.21457-4-chi-hsien.lin@cypress.com>
-X-Mailer: git-send-email 2.25.0
-In-Reply-To: <20200618160739.21457-1-chi-hsien.lin@cypress.com>
-References: <20200618160739.21457-1-chi-hsien.lin@cypress.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: BYAPR08CA0051.namprd08.prod.outlook.com
- (2603:10b6:a03:117::28) To BYAPR06MB4901.namprd06.prod.outlook.com
- (2603:10b6:a03:7a::30)
+        id S1728704AbgFRRAa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 18 Jun 2020 13:00:30 -0400
+Received: from mail.kernel.org ([198.145.29.99]:33486 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728080AbgFRRA3 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 18 Jun 2020 13:00:29 -0400
+Received: from localhost.localdomain.com (unknown [151.48.140.182])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 07BB7206D7;
+        Thu, 18 Jun 2020 17:00:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1592499628;
+        bh=tMRO/RFU6HHXBePe/w4U5Y1kSJGQ6ZqEuU+sCC6EYAQ=;
+        h=From:To:Cc:Subject:Date:From;
+        b=Xbxa7l/C83v+C/OMw1s0JN4+HbksOKz2ydRzK0tJj+x8wqt9huRyZuRa4ZzwbCNwQ
+         oz+eKWjdWlh/jixbq5exyVQhBReeO2wV9O474D9xzG4cC6U79DeHoH4ss/+6GKWQbn
+         tnUGeP6MNhVmhAaPXo1VyjLgjko+C9Mh8Qh7jvBo=
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com
+Subject: [PATCH] mt76: mt76x2e: rename routines in pci.c
+Date:   Thu, 18 Jun 2020 19:00:23 +0200
+Message-Id: <bd34279723e2e22f8d06a54a9e8e09c29a56c494.1592499508.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from aremote02.aus.cypress.com (12.110.209.245) by BYAPR08CA0051.namprd08.prod.outlook.com (2603:10b6:a03:117::28) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3109.22 via Frontend Transport; Thu, 18 Jun 2020 16:07:55 +0000
-X-Mailer: git-send-email 2.25.0
-X-Originating-IP: [12.110.209.245]
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-HT: Tenant
-X-MS-Office365-Filtering-Correlation-Id: 2b0bb82a-bf46-423b-1486-08d813a1c3c2
-X-MS-TrafficTypeDiagnostic: BYAPR06MB4549:
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <BYAPR06MB4549260FCCD8B957227B91B8BB9B0@BYAPR06MB4549.namprd06.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:2000;
-X-Forefront-PRVS: 0438F90F17
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: plV7UwlsRsvpftohrOD5hdlucMO2h1AHQygEuf0ZIkbv83bUsYOtPiejb0eWLdt+k63LJoZ/Aj4xMkToSyyoVrszlEikSRXYj4SQFZ8BB/T3wkQOeSGGg7HNqVIzw7oIvPYgeyTZMGlrqCYxDnPyCdW8hz+U0U48qEM0vNWrbgOsl8EzqFjs+DBRIQ3bsfdSVFuHZ2BURnKaG03VW3daVVgswXWv0KVq12ugb3S2d0HqTtyCzjBAZa+E6yaSckYGwXQWeOEQlQ5OwMYozobZBk6h+gTkZ57161jxNmy7Pwu+UpCJaDa/XCz8NHMdLYbjm0cCabzoJkZfeo0qfM8zzQ==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR06MB4901.namprd06.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(366004)(346002)(376002)(136003)(396003)(39860400002)(107886003)(5660300002)(316002)(86362001)(6666004)(16526019)(186003)(4326008)(1076003)(54906003)(26005)(66946007)(2616005)(6916009)(8676002)(6486002)(7696005)(66476007)(478600001)(66556008)(36756003)(83380400001)(956004)(2906002)(8936002)(52116002);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData: HHXVPzBYiR5eAeLBqe106C8VX/qg9XYpBEP0qijLxHvjHQAvo1sKzNIg90HqVak+wCMyoftDzEJ++3u5rw6ZxnGPHpYCZSQSf3rxQYJdsT5AIaDKzlTd4zC3qdQrrgkbh7uLzb/IXnkdIJgtHICF8heo0K8zY7exnwSbh24AcMIL3tPvQlHHK6lda2BTBvY5pGXmBeXgRxbjOkLDu03RWCRJJ914u7VdBtVK4GNVxUNGwLdm+/dnldUWjVc9SpthmWeu9p1bQdFgmWAnZ+DEx6huwAX7OWrsvaVF4hJCEXtunTRbOSE8GSnJQfOkr/mv6VicdH8MlWbjaSo3GWHMhm7Dt6vAy8rcOQQKkVtqJep1c7wq2Tx60Q6eENcJTA6RfnardO+sfKPHXM3wqRDH0aHIfegH8KHiqPsS2LbmRvvBefA98akLOdknkDouLKQ1V2XWsRjkLd9g7eGN2Vryt2xWuU3IirbP30bRaPrB7ZMqEyd91ALBZKzWOyIn+Xmm
-X-OriginatorOrg: cypress.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2b0bb82a-bf46-423b-1486-08d813a1c3c2
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Jun 2020 16:07:57.5859
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 011addfc-2c09-450d-8938-e0bbc2dd2376
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: axhf3Q/b8tJM5AeWq3PbabHoYt5KGRNsayl2tstbzJns8ztmLQsUawW6CS9RifA2opDaZw1NSsruXVKkX9ZQrg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR06MB4549
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Able Liao <Able.Liao@cypress.com>
+Rely on mt76x2e prefix in mt76x2/pci.c and align to the rest of
+mt76 code
 
-Ignore FW event if the event's BSSID is different form the BSSID of the
-currently connected AP. Check interface state is connected or not, if
-state is not connected that can ignore link down event.
-
-Signed-off-by: Able Liao <Able.Liao@cypress.com>
-Signed-off-by: Chi-hsien Lin <chi-hsien.lin@cypress.com>
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- .../net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c    | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt76x2/pci.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-index 4717867949bb..ac28fb943471 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-@@ -6027,7 +6027,12 @@ brcmf_notify_connect_status(struct brcmf_if *ifp,
- 		brcmf_net_setcarrier(ifp, true);
- 	} else if (brcmf_is_linkdown(e)) {
- 		brcmf_dbg(CONN, "Linkdown\n");
--		if (!brcmf_is_ibssmode(ifp->vif)) {
-+		if (!brcmf_is_ibssmode(ifp->vif) &&
-+		    test_bit(BRCMF_VIF_STATUS_CONNECTED,
-+			     &ifp->vif->sme_state)) {
-+			if (memcmp(profile->bssid, e->addr, ETH_ALEN))
-+				return err;
-+
- 			brcmf_bss_connect_done(cfg, ndev, e, false);
- 			brcmf_link_down(ifp->vif,
- 					brcmf_map_fw_linkdown_reason(e),
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/pci.c b/drivers/net/wireless/mediatek/mt76/mt76x2/pci.c
+index 53ca0cedf026..f36c71c1bc58 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x2/pci.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x2/pci.c
+@@ -9,7 +9,7 @@
+ 
+ #include "mt76x2.h"
+ 
+-static const struct pci_device_id mt76pci_device_table[] = {
++static const struct pci_device_id mt76x2e_device_table[] = {
+ 	{ PCI_DEVICE(0x14c3, 0x7662) },
+ 	{ PCI_DEVICE(0x14c3, 0x7612) },
+ 	{ PCI_DEVICE(0x14c3, 0x7602) },
+@@ -17,7 +17,7 @@ static const struct pci_device_id mt76pci_device_table[] = {
+ };
+ 
+ static int
+-mt76pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
++mt76x2e_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ {
+ 	static const struct mt76_driver_ops drv_ops = {
+ 		.txwi_size = sizeof(struct mt76x02_txwi),
+@@ -93,7 +93,7 @@ mt76pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ }
+ 
+ static void
+-mt76pci_remove(struct pci_dev *pdev)
++mt76x2e_remove(struct pci_dev *pdev)
+ {
+ 	struct mt76_dev *mdev = pci_get_drvdata(pdev);
+ 	struct mt76x02_dev *dev = container_of(mdev, struct mt76x02_dev, mt76);
+@@ -103,16 +103,16 @@ mt76pci_remove(struct pci_dev *pdev)
+ 	mt76_free_device(mdev);
+ }
+ 
+-MODULE_DEVICE_TABLE(pci, mt76pci_device_table);
++MODULE_DEVICE_TABLE(pci, mt76x2e_device_table);
+ MODULE_FIRMWARE(MT7662_FIRMWARE);
+ MODULE_FIRMWARE(MT7662_ROM_PATCH);
+ MODULE_LICENSE("Dual BSD/GPL");
+ 
+ static struct pci_driver mt76pci_driver = {
+ 	.name		= KBUILD_MODNAME,
+-	.id_table	= mt76pci_device_table,
+-	.probe		= mt76pci_probe,
+-	.remove		= mt76pci_remove,
++	.id_table	= mt76x2e_device_table,
++	.probe		= mt76x2e_probe,
++	.remove		= mt76x2e_remove,
+ };
+ 
+ module_pci_driver(mt76pci_driver);
 -- 
-2.25.0
+2.26.2
 
