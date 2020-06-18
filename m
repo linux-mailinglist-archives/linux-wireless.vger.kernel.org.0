@@ -2,221 +2,158 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 978881FFCF9
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jun 2020 22:57:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 51E501FFE7B
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jun 2020 01:10:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727042AbgFRU5S (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 18 Jun 2020 16:57:18 -0400
-Received: from mail-io1-f72.google.com ([209.85.166.72]:38832 "EHLO
-        mail-io1-f72.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725912AbgFRU5Q (ORCPT
+        id S1728871AbgFRXKf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 18 Jun 2020 19:10:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50886 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726835AbgFRXKd (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 18 Jun 2020 16:57:16 -0400
-Received: by mail-io1-f72.google.com with SMTP id l19so5115142iol.5
-        for <linux-wireless@vger.kernel.org>; Thu, 18 Jun 2020 13:57:15 -0700 (PDT)
+        Thu, 18 Jun 2020 19:10:33 -0400
+Received: from mail-lf1-x142.google.com (mail-lf1-x142.google.com [IPv6:2a00:1450:4864:20::142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87675C06174E;
+        Thu, 18 Jun 2020 16:10:30 -0700 (PDT)
+Received: by mail-lf1-x142.google.com with SMTP id t74so4481030lff.2;
+        Thu, 18 Jun 2020 16:10:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=jhny5BIdzMCArxR5VVXdJjK2vn4kS8RKmRFpsfCevPo=;
+        b=bm5i5THmxV5QUrZXYzYo6o5ytzJhgUz2H49bve/mjYyKH76R9UA1HnIjSTMyoyIsEy
+         rQxwk78x/zmFthZ8e3EDTouF05bgbSpKjEAXhHS4+T3QhLP8rl3Gp8ijZA9pQXzNsLRi
+         7zG8WJkOHmKWKbIhdGuTfdTUCk5p1tzvF9DqkqCq3cMJEsnhlHejESGAKix4klGgMLPl
+         20v6oxpUPVkem9Nmj7zoQZM7b/SHEKYRx1N2xfBhHB7H0iQR24Xrc3FTEC91DFGj0rWs
+         Q3X/ZFhnEq2LOmhgsUhTq+NeJTmX8ziIQoG4sdodcp4Nh5SjdCB11I+DjHJxwiV83mNW
+         eHMw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
-        bh=d4+iWLaVlBy8wzsOcjuAnUFW5E1j1kRl6+gfWh8J8Hk=;
-        b=N3hkGEChhwioyh/6DdIsd+nseGpigERjl0uEJ/BaX1kKSjxIaHG3B3zBEKheQpGwT6
-         +4VbXeVgiZAXOjE+JG4bydfk0wNY0f4TlJasPTQzXLffFKxFiqniDNxwrWG1JCZY2Oh8
-         Kh2q/bVCpvPekeHUb7kI0znQRxh0ECLlCokagnqoIhJdDIO/6Dna7kA3ZUJsxwjSAFIV
-         EJDpfq0RxCVLkk23hGJk9SrkJoGfaps1+AZbYkTZCSfNfm8UzMUwX9gcKPvfboTFzKVO
-         i5/rFleVCCgFaMQKHCM7+ufqug+ieoNKtYsHua6TvAurLc0FeYBIHS0ti1TyCjKMdSlG
-         CgXQ==
-X-Gm-Message-State: AOAM532Vevv9nCL5JBYG4Yrl6stZDis7t+AyP8iBebrKFkhgwqxa/09h
-        0uHZ7EM6NhfRP6sQetwK+diXLiNotsOuJ6bZnjLDxVVHyTsL
-X-Google-Smtp-Source: ABdhPJw4eac/XW53i+LMcaWE0Cd57xbpVKEng30kzh0FAwfMuCudWPv9v27oel9I+xEKgTlPlw44nRgE126xXcQ2DL0zIGQmWBcK
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=jhny5BIdzMCArxR5VVXdJjK2vn4kS8RKmRFpsfCevPo=;
+        b=RUyvarIXE4sjufpmrVZsoS+jyUtZ8vK1/UGuE/QD6dQM08Qwqov1rHX4yG0Fpajg8M
+         Q9bZHGvFMoD5iOn02z0lnTkHnNPYzPEaeDnGGppkErHdp7tw2jHXscOgFbmCsewEFk77
+         uabdmV0ClRAEApvzCEyo27GSKfwJiKSu+aCSNOB6QmXnAfMgzuoSu9V6HRoeeAdest/I
+         qcwbWqru4cYvMfXbmhJfJ1KwAdWnhFZBdkF//zLIYzL0p+6jT0xHomzU6zTBqfqvxyw8
+         WJwRwwqaAELligxEPagJJp+D3Rfc9KLUNCQfiZyQarAk7t0dQY8DRELALO+x7KY4G8kO
+         crRQ==
+X-Gm-Message-State: AOAM5332bd+i5O0uUHO8e8L22PXKfuwih1UL3j/FAx9PuICN2j86eZDb
+        lbCI3XknuBF5rM+C0Lt+zF3RBDJZ1jxGNO0LT+3oblW7
+X-Google-Smtp-Source: ABdhPJxDnjpMRhq/eJg4kRFm09A/NnAr44oJEByVLHxxQunIkaqHoi5JHmFlbFSMGdMrejPcfBgRzLLwUkRCozq0dHA=
+X-Received: by 2002:a05:6512:3049:: with SMTP id b9mr320804lfb.44.1592521828993;
+ Thu, 18 Jun 2020 16:10:28 -0700 (PDT)
 MIME-Version: 1.0
-X-Received: by 2002:a05:6602:15ca:: with SMTP id f10mr682018iow.52.1592513834771;
- Thu, 18 Jun 2020 13:57:14 -0700 (PDT)
-Date:   Thu, 18 Jun 2020 13:57:14 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <0000000000006bf03c05a86205bb@google.com>
-Subject: INFO: trying to register non-static key in ath9k_htc_rxep
-From:   syzbot <syzbot+4d2d56175b934b9a7bf9@syzkaller.appspotmail.com>
-To:     andreyknvl@google.com, ath9k-devel@qca.qualcomm.com,
-        davem@davemloft.net, kuba@kernel.org, kvalo@codeaurora.org,
-        linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        syzkaller-bugs@googlegroups.com
+References: <1592458104-2961-1-git-send-email-akolli@codeaurora.org> <1592458104-2961-3-git-send-email-akolli@codeaurora.org>
+In-Reply-To: <1592458104-2961-3-git-send-email-akolli@codeaurora.org>
+From:   Julian Calaby <julian.calaby@gmail.com>
+Date:   Fri, 19 Jun 2020 09:10:17 +1000
+Message-ID: <CAGRGNgV74fCD1gb=rXEe1BMN5+5stYeX3W6eKc4-do76TBmFqA@mail.gmail.com>
+Subject: Re: [PATCH v3 2/3] ath11k: copy ce service configs to hw_params
+To:     Anilkumar Kolli <akolli@codeaurora.org>
+Cc:     ath11k@lists.infradead.org,
+        devicetree <devicetree@vger.kernel.org>,
+        linux-wireless@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
+Hi Anilkumar,
 
-syzbot found the following crash on:
+On Thu, Jun 18, 2020 at 3:31 PM Anilkumar Kolli <akolli@codeaurora.org> wrote:
+>
+> No functional changes, added target ce service configurations
+> to hw_params.
+>
+> Signed-off-by: Anilkumar Kolli <akolli@codeaurora.org>
+> ---
+> V3:
+>  - added ce svc configs in hw_params
+>
+>  drivers/net/wireless/ath/ath11k/ahb.c  | 20 +++++++++++++++-----
+>  drivers/net/wireless/ath/ath11k/core.c |  8 +-------
+>  drivers/net/wireless/ath/ath11k/core.h |  1 +
+>  drivers/net/wireless/ath/ath11k/hw.h   |  2 ++
+>  4 files changed, 19 insertions(+), 12 deletions(-)
+>
+> diff --git a/drivers/net/wireless/ath/ath11k/ahb.c b/drivers/net/wireless/ath/ath11k/ahb.c
+> index 7e9bfeaaf4d2..aa74d27e5871 100644
+> --- a/drivers/net/wireless/ath/ath11k/ahb.c
+> +++ b/drivers/net/wireless/ath/ath11k/ahb.c
+> @@ -152,7 +152,7 @@ static const struct ce_pipe_config target_ce_config_wlan[] = {
+>   * This table is derived from the CE_PCI TABLE, above.
+>   * It is passed to the Target at startup for use by firmware.
+>   */
+> -static const struct service_to_pipe target_service_to_ce_map_wlan[] = {
+> +static const struct service_to_pipe target_service_to_ce_map_wlan_ipq8074[] = {
+>         {
+>                 .service_id = __cpu_to_le32(ATH11K_HTC_SVC_ID_WMI_DATA_VO),
+>                 .pipedir = __cpu_to_le32(PIPEDIR_OUT),  /* out = UL = host -> target */
+> @@ -644,8 +644,8 @@ static void ath11k_ahb_init_qmi_ce_config(struct ath11k_base *ab)
+>
+>         cfg->tgt_ce_len = ARRAY_SIZE(target_ce_config_wlan) - 1;
+>         cfg->tgt_ce = target_ce_config_wlan;
+> -       cfg->svc_to_ce_map_len = ARRAY_SIZE(target_service_to_ce_map_wlan);
+> -       cfg->svc_to_ce_map = target_service_to_ce_map_wlan;
+> +       cfg->svc_to_ce_map_len = ab->hw_params.svc_to_ce_map_len;
+> +       cfg->svc_to_ce_map = ab->hw_params.svc_to_ce_map;
+>  }
+>
+>  static void ath11k_ahb_free_ext_irq(struct ath11k_base *ab)
+> @@ -853,8 +853,8 @@ static int ath11k_ahb_map_service_to_pipe(struct ath11k_base *ab, u16 service_id
+>         bool ul_set = false, dl_set = false;
+>         int i;
+>
+> -       for (i = 0; i < ARRAY_SIZE(target_service_to_ce_map_wlan); i++) {
+> -               entry = &target_service_to_ce_map_wlan[i];
+> +       for (i = 0; i < ab->hw_params.svc_to_ce_map_len; i++) {
+> +               entry = &ab->hw_params.svc_to_ce_map[i];
+>
+>                 if (__le32_to_cpu(entry->service_id) != service_id)
+>                         continue;
+> @@ -950,6 +950,16 @@ static int ath11k_ahb_probe(struct platform_device *pdev)
+>                 goto err_hal_srng_deinit;
+>         }
+>
+> +       ret = ath11k_init_hw_params(ab);
+> +       if (ret) {
+> +               ath11k_err(ab, "failed to get hw params %d\n", ret);
+> +               return ret;
+> +       }
+> +
+> +       ab->hw_params.svc_to_ce_map_len =
+> +                       ARRAY_SIZE(target_service_to_ce_map_wlan_ipq8074);
+> +       ab->hw_params.svc_to_ce_map = target_service_to_ce_map_wlan_ipq8074;
 
-HEAD commit:    b791d1bd Merge tag 'locking-kcsan-2020-06-11' of git://git..
-git tree:       https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb.git usb-testing
-console output: https://syzkaller.appspot.com/x/log.txt?x=1522cc25100000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=16c2467d4b6dbee2
-dashboard link: https://syzkaller.appspot.com/bug?extid=4d2d56175b934b9a7bf9
-compiler:       gcc (GCC) 9.0.0 20181231 (experimental)
+I think you misunderstood my point about this, the point wasn't to
+copy the svc map to hw_params, but define it in hw_params:
 
-Unfortunately, I don't have any reproducer for this crash yet.
++       {
++               .hw_rev = ATH11K_HW_IPQ6018,
++               .name = "ipq6018 hw1.0",
++               .fw = {
++                       .dir = "IPQ6018/hw1.0",
++                       .board_size = 256 * 1024,
++                       .cal_size = 256 * 1024,
++               },
++               .max_radios = 2,
++               .bdf_addr = 0x4ABC0000,
++               .hw_ops = &ipq6018_ops,
++               .svc_to_ce_map_len =
+ARRAY_SIZE(target_service_to_ce_map_wlan_ipq6018,
++               .svc_to_ce_map = target_service_to_ce_map_wlan_ipq6018,
++       },
 
-IMPORTANT: if you fix the bug, please add the following tag to the commit:
-Reported-by: syzbot+4d2d56175b934b9a7bf9@syzkaller.appspotmail.com
+That completely eliminates special case code based on the hardware ID
+in the driver.
 
-INFO: trying to register non-static key.
-the code is fine but needs lockdep annotation.
-turning off the locking correctness validator.
-CPU: 0 PID: 355 Comm: syz-executor.2 Not tainted 5.7.0-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
-Call Trace:
- <IRQ>
- __dump_stack lib/dump_stack.c:77 [inline]
- dump_stack+0xf6/0x16e lib/dump_stack.c:118
- assign_lock_key kernel/locking/lockdep.c:894 [inline]
- register_lock_class+0x1442/0x17e0 kernel/locking/lockdep.c:1206
- __lock_acquire+0x101/0x6270 kernel/locking/lockdep.c:4259
- lock_acquire+0x18b/0x7c0 kernel/locking/lockdep.c:4959
- __raw_spin_lock_irqsave include/linux/spinlock_api_smp.h:110 [inline]
- _raw_spin_lock_irqsave+0x32/0x50 kernel/locking/spinlock.c:159
- ath9k_htc_rxep+0x31/0x210 drivers/net/wireless/ath/ath9k/htc_drv_txrx.c:1128
- ath9k_htc_rx_msg+0x2d9/0xb00 drivers/net/wireless/ath/ath9k/htc_hst.c:459
- ath9k_hif_usb_rx_stream drivers/net/wireless/ath/ath9k/hif_usb.c:638 [inline]
- ath9k_hif_usb_rx_cb+0xc76/0x1050 drivers/net/wireless/ath/ath9k/hif_usb.c:671
- __usb_hcd_giveback_urb+0x29a/0x550 drivers/usb/core/hcd.c:1650
- usb_hcd_giveback_urb+0x368/0x420 drivers/usb/core/hcd.c:1716
- dummy_timer+0x125e/0x32b4 drivers/usb/gadget/udc/dummy_hcd.c:1967
- call_timer_fn+0x1ac/0x6e0 kernel/time/timer.c:1404
- expire_timers kernel/time/timer.c:1449 [inline]
- __run_timers kernel/time/timer.c:1773 [inline]
- __run_timers kernel/time/timer.c:1740 [inline]
- run_timer_softirq+0x5e5/0x14c0 kernel/time/timer.c:1786
- __do_softirq+0x21e/0x996 kernel/softirq.c:292
- invoke_softirq kernel/softirq.c:373 [inline]
- irq_exit+0x178/0x1a0 kernel/softirq.c:413
- exiting_irq arch/x86/include/asm/apic.h:546 [inline]
- smp_apic_timer_interrupt+0x141/0x540 arch/x86/kernel/apic/apic.c:1107
- apic_timer_interrupt+0xf/0x20 arch/x86/entry/entry_64.S:829
- </IRQ>
-RIP: 0010:arch_local_irq_restore arch/x86/include/asm/irqflags.h:85 [inline]
-RIP: 0010:__raw_spin_unlock_irqrestore include/linux/spinlock_api_smp.h:160 [inline]
-RIP: 0010:_raw_spin_unlock_irqrestore+0x3b/0x40 kernel/locking/spinlock.c:191
-Code: e8 1a 69 8d fb 48 89 ef e8 42 5d 8e fb f6 c7 02 75 11 53 9d e8 26 e6 ab fb 65 ff 0d 57 e4 68 7a 5b 5d c3 e8 e7 de ab fb 53 9d <eb> ed 0f 1f 00 55 48 89 fd 65 ff 05 3d e4 68 7a 45 31 c9 41 b8 01
-RSP: 0018:ffff8881ae06fba0 EFLAGS: 00000246 ORIG_RAX: ffffffffffffff13
-RAX: 0000000000000000 RBX: 0000000000000246 RCX: 1ffffffff0fd4d4a
-RDX: 1ffff11039bbe747 RSI: 0000000000000000 RDI: ffff8881cddf3a38
-RBP: ffff8881db228400 R08: 0000000000000000 R09: 0000000000000001
-R10: 0000000000000000 R11: 0000000000000000 R12: dffffc0000000000
-R13: ffff8881db228480 R14: ffff8881ae06fdf8 R15: ffff8881db228400
- unlock_hrtimer_base kernel/time/hrtimer.c:898 [inline]
- hrtimer_start_range_ns+0x5cd/0xb50 kernel/time/hrtimer.c:1136
- hrtimer_start_expires include/linux/hrtimer.h:435 [inline]
- hrtimer_sleeper_start_expires kernel/time/hrtimer.c:1800 [inline]
- do_nanosleep+0x1b9/0x650 kernel/time/hrtimer.c:1876
- hrtimer_nanosleep+0x1df/0x3a0 kernel/time/hrtimer.c:1932
- __do_sys_nanosleep kernel/time/hrtimer.c:1966 [inline]
- __se_sys_nanosleep kernel/time/hrtimer.c:1953 [inline]
- __x64_sys_nanosleep+0x1dc/0x260 kernel/time/hrtimer.c:1953
- do_syscall_64+0xb6/0x5a0 arch/x86/entry/common.c:295
- entry_SYSCALL_64_after_hwframe+0x49/0xb3
-RIP: 0033:0x45af70
-Code: Bad RIP value.
-RSP: 002b:00007fff27bba8e8 EFLAGS: 00000246 ORIG_RAX: 0000000000000023
-RAX: ffffffffffffffda RBX: 000000000009722e RCX: 000000000045af70
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 00007fff27bba8f0
-RBP: 00000000000001de R08: 0000000000000001 R09: 0000000001410940
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007fff27bba940 R14: 000000000009722e R15: 00007fff27bba950
-BUG: unable to handle page fault for address: ffffffffffffffc8
-#PF: supervisor read access in kernel mode
-#PF: error_code(0x0000) - not-present page
-PGD 7026067 P4D 7026067 PUD 7028067 PMD 0 
-Oops: 0000 [#1] SMP KASAN
-CPU: 0 PID: 355 Comm: syz-executor.2 Not tainted 5.7.0-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
-RIP: 0010:ath9k_htc_rxep+0xb5/0x210 drivers/net/wireless/ath/ath9k/htc_drv_txrx.c:1130
-Code: 8b 43 38 48 8d 58 c8 49 39 c4 0f 84 ee 00 00 00 e8 90 fd 61 fe 48 89 d8 48 c1 e8 03 0f b6 04 28 84 c0 74 06 0f 8e 0a 01 00 00 <44> 0f b6 3b 31 ff 44 89 fe e8 cd fe 61 fe 45 84 ff 75 a8 e8 63 fd
-RSP: 0018:ffff8881db209870 EFLAGS: 00010046
-RAX: 0000000000000000 RBX: ffffffffffffffc8 RCX: ffffc900004a7000
-RDX: 0000000000040000 RSI: ffffffff82ddb320 RDI: ffff8881db2097e0
-RBP: dffffc0000000000 R08: 0000000000000004 R09: ffffed103b6412fd
-R10: 0000000000000003 R11: ffffed103b6412fc R12: ffff8881ac34b4d8
-R13: ffff8881ac34b0a0 R14: ffff8881ac34b4e8 R15: ffffed10392efc10
-FS:  0000000001410940(0000) GS:ffff8881db200000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: ffffffffffffffc8 CR3: 00000001ae02b000 CR4: 00000000001406f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <IRQ>
- ath9k_htc_rx_msg+0x2d9/0xb00 drivers/net/wireless/ath/ath9k/htc_hst.c:459
- ath9k_hif_usb_rx_stream drivers/net/wireless/ath/ath9k/hif_usb.c:638 [inline]
- ath9k_hif_usb_rx_cb+0xc76/0x1050 drivers/net/wireless/ath/ath9k/hif_usb.c:671
- __usb_hcd_giveback_urb+0x29a/0x550 drivers/usb/core/hcd.c:1650
- usb_hcd_giveback_urb+0x368/0x420 drivers/usb/core/hcd.c:1716
- dummy_timer+0x125e/0x32b4 drivers/usb/gadget/udc/dummy_hcd.c:1967
- call_timer_fn+0x1ac/0x6e0 kernel/time/timer.c:1404
- expire_timers kernel/time/timer.c:1449 [inline]
- __run_timers kernel/time/timer.c:1773 [inline]
- __run_timers kernel/time/timer.c:1740 [inline]
- run_timer_softirq+0x5e5/0x14c0 kernel/time/timer.c:1786
- __do_softirq+0x21e/0x996 kernel/softirq.c:292
- invoke_softirq kernel/softirq.c:373 [inline]
- irq_exit+0x178/0x1a0 kernel/softirq.c:413
- exiting_irq arch/x86/include/asm/apic.h:546 [inline]
- smp_apic_timer_interrupt+0x141/0x540 arch/x86/kernel/apic/apic.c:1107
- apic_timer_interrupt+0xf/0x20 arch/x86/entry/entry_64.S:829
- </IRQ>
-RIP: 0010:arch_local_irq_restore arch/x86/include/asm/irqflags.h:85 [inline]
-RIP: 0010:__raw_spin_unlock_irqrestore include/linux/spinlock_api_smp.h:160 [inline]
-RIP: 0010:_raw_spin_unlock_irqrestore+0x3b/0x40 kernel/locking/spinlock.c:191
-Code: e8 1a 69 8d fb 48 89 ef e8 42 5d 8e fb f6 c7 02 75 11 53 9d e8 26 e6 ab fb 65 ff 0d 57 e4 68 7a 5b 5d c3 e8 e7 de ab fb 53 9d <eb> ed 0f 1f 00 55 48 89 fd 65 ff 05 3d e4 68 7a 45 31 c9 41 b8 01
-RSP: 0018:ffff8881ae06fba0 EFLAGS: 00000246 ORIG_RAX: ffffffffffffff13
-RAX: 0000000000000000 RBX: 0000000000000246 RCX: 1ffffffff0fd4d4a
-RDX: 1ffff11039bbe747 RSI: 0000000000000000 RDI: ffff8881cddf3a38
-RBP: ffff8881db228400 R08: 0000000000000000 R09: 0000000000000001
-R10: 0000000000000000 R11: 0000000000000000 R12: dffffc0000000000
-R13: ffff8881db228480 R14: ffff8881ae06fdf8 R15: ffff8881db228400
- unlock_hrtimer_base kernel/time/hrtimer.c:898 [inline]
- hrtimer_start_range_ns+0x5cd/0xb50 kernel/time/hrtimer.c:1136
- hrtimer_start_expires include/linux/hrtimer.h:435 [inline]
- hrtimer_sleeper_start_expires kernel/time/hrtimer.c:1800 [inline]
- do_nanosleep+0x1b9/0x650 kernel/time/hrtimer.c:1876
- hrtimer_nanosleep+0x1df/0x3a0 kernel/time/hrtimer.c:1932
- __do_sys_nanosleep kernel/time/hrtimer.c:1966 [inline]
- __se_sys_nanosleep kernel/time/hrtimer.c:1953 [inline]
- __x64_sys_nanosleep+0x1dc/0x260 kernel/time/hrtimer.c:1953
- do_syscall_64+0xb6/0x5a0 arch/x86/entry/common.c:295
- entry_SYSCALL_64_after_hwframe+0x49/0xb3
-RIP: 0033:0x45af70
-Code: Bad RIP value.
-RSP: 002b:00007fff27bba8e8 EFLAGS: 00000246 ORIG_RAX: 0000000000000023
-RAX: ffffffffffffffda RBX: 000000000009722e RCX: 000000000045af70
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 00007fff27bba8f0
-RBP: 00000000000001de R08: 0000000000000001 R09: 0000000001410940
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007fff27bba940 R14: 000000000009722e R15: 00007fff27bba950
-Modules linked in:
-CR2: ffffffffffffffc8
----[ end trace 4488f3a2c836a427 ]---
-RIP: 0010:ath9k_htc_rxep+0xb5/0x210 drivers/net/wireless/ath/ath9k/htc_drv_txrx.c:1130
-Code: 8b 43 38 48 8d 58 c8 49 39 c4 0f 84 ee 00 00 00 e8 90 fd 61 fe 48 89 d8 48 c1 e8 03 0f b6 04 28 84 c0 74 06 0f 8e 0a 01 00 00 <44> 0f b6 3b 31 ff 44 89 fe e8 cd fe 61 fe 45 84 ff 75 a8 e8 63 fd
-RSP: 0018:ffff8881db209870 EFLAGS: 00010046
-RAX: 0000000000000000 RBX: ffffffffffffffc8 RCX: ffffc900004a7000
-RDX: 0000000000040000 RSI: ffffffff82ddb320 RDI: ffff8881db2097e0
-RBP: dffffc0000000000 R08: 0000000000000004 R09: ffffed103b6412fd
-R10: 0000000000000003 R11: ffffed103b6412fc R12: ffff8881ac34b4d8
-R13: ffff8881ac34b0a0 R14: ffff8881ac34b4e8 R15: ffffed10392efc10
-FS:  0000000001410940(0000) GS:ffff8881db200000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: ffffffffffffffc8 CR3: 00000001ae02b000 CR4: 00000000001406f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Thanks,
 
+--
+Julian Calaby
 
----
-This bug is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this bug report. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+Email: julian.calaby@gmail.com
+Profile: http://www.google.com/profiles/julian.calaby/
