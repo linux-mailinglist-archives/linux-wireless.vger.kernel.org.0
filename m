@@ -2,123 +2,95 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 859B52005F9
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jun 2020 12:05:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B49D92009D3
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jun 2020 15:20:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732343AbgFSKEt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 19 Jun 2020 06:04:49 -0400
-Received: from mailgw01.mediatek.com ([210.61.82.183]:47767 "EHLO
-        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1732331AbgFSKEq (ORCPT
+        id S1731553AbgFSNUS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 19 Jun 2020 09:20:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40174 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725974AbgFSNUR (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 19 Jun 2020 06:04:46 -0400
-X-UUID: 7cc5efdd2ab94716a9973988aa7f1614-20200619
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Transfer-Encoding:Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=7R3+vIyIcJGIoNqgxDKbx7s8gBbCjRAh+DCyFKieXfA=;
-        b=UU96WzUn/HibU7uQGzUIUYR6RAe0yXjHVb+FoOkIZ/nhonnH48hnA65H+8rbRKFO98ETTugGpJv5HB86p+Vdw1PsSK+gNd8KtV7YsQicoSUuSMjojThAIk6k2so6LgNPfu97Sznk2nO+q8ftMdc/w2AmsNSjAmGN7bitghYuK5U=;
-X-UUID: 7cc5efdd2ab94716a9973988aa7f1614-20200619
-Received: from mtkcas07.mediatek.inc [(172.21.101.84)] by mailgw01.mediatek.com
-        (envelope-from <shayne.chen@mediatek.com>)
-        (Cellopoint E-mail Firewall v4.1.10 Build 0809 with TLS)
-        with ESMTP id 1076093704; Fri, 19 Jun 2020 18:04:43 +0800
-Received: from mtkcas07.mediatek.inc (172.21.101.84) by
- mtkmbs02n1.mediatek.inc (172.21.101.77) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Fri, 19 Jun 2020 18:04:35 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas07.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Fri, 19 Jun 2020 18:04:35 +0800
-From:   Shayne Chen <shayne.chen@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>
-CC:     linux-wireless <linux-wireless@vger.kernel.org>,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        "Evelyn Tsai" <evelyn.tsai@mediatek.com>,
-        linux-mediatek <linux-mediatek@lists.infradead.org>,
-        Shayne Chen <shayne.chen@mediatek.com>
-Subject: [PATCH v3 3/3] mt76: mt7915: directly read per-rate tx power from registers
-Date:   Fri, 19 Jun 2020 18:04:25 +0800
-Message-ID: <20200619100425.26351-3-shayne.chen@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <20200619100425.26351-1-shayne.chen@mediatek.com>
-References: <20200619100425.26351-1-shayne.chen@mediatek.com>
+        Fri, 19 Jun 2020 09:20:17 -0400
+Received: from mail-wm1-x342.google.com (mail-wm1-x342.google.com [IPv6:2a00:1450:4864:20::342])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42138C06174E
+        for <linux-wireless@vger.kernel.org>; Fri, 19 Jun 2020 06:20:17 -0700 (PDT)
+Received: by mail-wm1-x342.google.com with SMTP id j198so8828320wmj.0
+        for <linux-wireless@vger.kernel.org>; Fri, 19 Jun 2020 06:20:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:sender:from:date:message-id:subject:to;
+        bh=GGdUuLCAiwswGC8VwacUo3EobWtrXtsk7zxMEz4Czs0=;
+        b=Liw0Ww++ViMUd3Q14N/EGPBJ4enT1t6EfOeldWC5IsEKzpdxuxrBofc6b8AlpjGD8f
+         NBZ8xtfk+gzFNdijTQQSocgj7582uU+0uze/lT7Dp02EJqcRS6xPMkvLP9MRI9l03Ag8
+         U/RpXU0mhb666nMtGgneFNnYqNuDW0XXl0IT72LbNU4SwJAiG8Gr6LEYIhDUCLTtzhSI
+         etTr0iLgkgdGlZWIIwDsjFLtegAnSmvzG979/mHZHXs0W7VYU4uMU2C+JB6w1p7PS09x
+         hI1vAJwI1+9mFH6ISeFF2Czqlb3QB2DDWU5O4IadeBb5GRPDOq6uBdsXY+Ouiy6YeSZX
+         5iKw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:sender:from:date
+         :message-id:subject:to;
+        bh=GGdUuLCAiwswGC8VwacUo3EobWtrXtsk7zxMEz4Czs0=;
+        b=bDEqEzPhZy9We8vhs1Ugg2dZtpmi3w4uhKOplELeq9s+6IWTsob6hj7eYSno449uY4
+         H7Ih2ABnWpI73MGoorgAMZ+yjL5xWigzcHGPZfOBF5KN6Rbi22r9mC5xL+UFE93BiSMY
+         A0dpnmKVaxgyCwMzNgvF6AEyYr+Kjjf3Hdf7aQsLEfA0EaygQ6fb2CJRiDur69NNk4pe
+         RD5dud6hDr6fbzgMB6PLx7CNcRaqP7RVCbWfkEhPz7gnwqSx4g0LVas5g6+WV5ca6X+3
+         pTvmz43MDYD0gZeo9LGbSDjPSaJjZQOOF6rkw1yI/xOdAjO49WFbbpwP9PyVwXz0WTT6
+         bGMQ==
+X-Gm-Message-State: AOAM5317qR2rWQiYOfLXltI0n2rgMH6K6YZs16kYqH4wjwuZyD4PjD1j
+        EjX8xcENEy7hUtHyxjybuEYQcHzrrfobS1x8NRQ=
+X-Google-Smtp-Source: ABdhPJzp4yySL0T0VnRGZUhrEVfY4n88yWT1MeyooZH6tqQdqMQ7BLDUyNltmxjRrDRfkH9JquHC80NHu5QtXJkRzdA=
+X-Received: by 2002:a7b:c090:: with SMTP id r16mr3915022wmh.105.1592572815870;
+ Fri, 19 Jun 2020 06:20:15 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
-Content-Transfer-Encoding: base64
+Reply-To: oliviaeorge@hotmail.com
+Received: by 2002:adf:f3cd:0:0:0:0:0 with HTTP; Fri, 19 Jun 2020 06:20:14
+ -0700 (PDT)
+From:   George Olivia <oliviaeorge@gmail.com>
+Date:   Fri, 19 Jun 2020 07:20:14 -0600
+X-Google-Sender-Auth: 7londtwSHXN_J2sK-xhQskdLiig
+Message-ID: <CAABkmywF3JS3kY=0QidkTfu-iZDa1j5_8G1xCuwT4bU6Mc+X1w@mail.gmail.com>
+Subject: I wish you read my mail in a good heart.
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-U2luY2UgZHJpdmVyIG5vIGxvbmdlciBoYW5kbGVyIHBlci1yYXRlIHR4IHBvd2VyIHNldHRpbmcs
-IHdlIG5lZWQgdG8NCnJlYWQgdGhlIHBvd2VyIHZhbHVlcyBkaXJlY3RseSBmcm9tIHJlZ2lzdGVy
-cy4NCg0KVGVzdGVkLWJ5OiBFdmVseW4gVHNhaSA8ZXZlbHluLnRzYWlAbWVkaWF0ZWsuY29tPg0K
-U2lnbmVkLW9mZi1ieTogU2hheW5lIENoZW4gPHNoYXluZS5jaGVuQG1lZGlhdGVrLmNvbT4NCi0t
-LQ0KdjI6DQogLSBmaXggcmVnX2Jhc2UgYW5kIGlkeCBjYWxjdWxhdGlvbg0KLS0tDQogLi4uL3dp
-cmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1L2RlYnVnZnMuYyAgIHwgNTcgKysrKysrKysrKysr
-KystLS0tLQ0KIC4uLi9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvcmVncy5oICB8
-ICA1ICsrDQogMiBmaWxlcyBjaGFuZ2VkLCA0NyBpbnNlcnRpb25zKCspLCAxNSBkZWxldGlvbnMo
-LSkNCg0KZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3
-OTE1L2RlYnVnZnMuYyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1
-L2RlYnVnZnMuYw0KaW5kZXggNzNhNDhjOS4uOTJhZmZkNCAxMDA2NDQNCi0tLSBhL2RyaXZlcnMv
-bmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1L2RlYnVnZnMuYw0KKysrIGIvZHJpdmVy
-cy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvZGVidWdmcy5jDQpAQCAtMzAwLDcg
-KzMwMCw4IEBAIG10NzkxNV9xdWV1ZXNfcmVhZChzdHJ1Y3Qgc2VxX2ZpbGUgKnMsIHZvaWQgKmRh
-dGEpDQogfQ0KIA0KIHN0YXRpYyB2b2lkDQotbXQ3OTE1X3B1dHNfcmF0ZV90eHBvd2VyKHN0cnVj
-dCBzZXFfZmlsZSAqcywgczggdHhwb3dlcl9jdXIsIGludCBiYW5kKQ0KK210NzkxNV9wdXRzX3Jh
-dGVfdHhwb3dlcihzdHJ1Y3Qgc2VxX2ZpbGUgKnMsIHN0cnVjdCBtdDc5MTVfZGV2ICpkZXYsDQor
-CQkJIGludCBiYW5kLCBib29sIGV4dF9waHkpDQogew0KIAlzdGF0aWMgY29uc3QgY2hhciAqIGNv
-bnN0IHNrdV9ncm91cF9uYW1lW10gPSB7DQogCQkiQ0NLIiwgIk9GRE0iLCAiSFQyMCIsICJIVDQw
-IiwNCkBAIC0zMDgsMTggKzMwOSw0NiBAQCBtdDc5MTVfcHV0c19yYXRlX3R4cG93ZXIoc3RydWN0
-IHNlcV9maWxlICpzLCBzOCB0eHBvd2VyX2N1ciwgaW50IGJhbmQpDQogCQkiUlUyNiIsICJSVTUy
-IiwgIlJVMTA2IiwgIlJVMjQyL1NVMjAiLA0KIAkJIlJVNDg0L1NVNDAiLCAiUlU5OTYvU1U4MCIs
-ICJSVTJ4OTk2L1NVMTYwIg0KIAl9Ow0KLQlzOCB0eHBvd2VyWzE2MV07DQorCXUzMiByZWdfYmFz
-ZSA9IE1UX1RNQUNfRlAwUjAoZXh0X3BoeSk7DQogCWludCBpLCBpZHggPSAwOw0KIA0KLQlmb3Ig
-KGkgPSAwOyBpIDwgQVJSQVlfU0laRSh0eHBvd2VyKTsgaSsrKQ0KLQkJdHhwb3dlcltpXSA9IERJ
-Vl9ST1VORF9VUCh0eHBvd2VyX2N1ciwgMik7DQotDQogCWZvciAoaSA9IDA7IGkgPCBBUlJBWV9T
-SVpFKG10NzkxNV9za3VfZ3JvdXBfbGVuKTsgaSsrKSB7DQotCQl1OCBsZW4gPSBtdDc5MTVfc2t1
-X2dyb3VwX2xlbltpXTsNCisJCXU4IGNudCwgbWNzX251bSA9IG10NzkxNV9za3VfZ3JvdXBfbGVu
-W2ldOw0KKwkJczggdHhwb3dlclsxMl07DQorCQlpbnQgajsNCisNCisJCWlmIChpID09IFNLVV9I
-VF9CVzIwIHx8IGkgPT0gU0tVX0hUX0JXNDApIHsNCisJCQltY3NfbnVtID0gODsNCisJCX0gZWxz
-ZSBpZiAoaSA+PSBTS1VfVkhUX0JXMjAgJiYgaSA8PSBTS1VfVkhUX0JXMTYwKSB7DQorCQkJbWNz
-X251bSA9IDEwOw0KKwkJfSBlbHNlIGlmIChpID09IFNLVV9IRV9SVTI2KSB7DQorCQkJcmVnX2Jh
-c2UgPSBNVF9UTUFDX0ZQMFIxOChleHRfcGh5KTsNCisJCQlpZHggPSAwOw0KKwkJfQ0KKw0KKwkJ
-Zm9yIChqID0gMCwgY250ID0gMDsgaiA8IERJVl9ST1VORF9VUChtY3NfbnVtLCA0KTsgaisrKSB7
-DQorCQkJdTMyIHZhbDsNCisNCisJCQlpZiAoaSA9PSBTS1VfVkhUX0JXMTYwICYmIGlkeCA9PSA2
-MCkgew0KKwkJCQlyZWdfYmFzZSA9IE1UX1RNQUNfRlAwUjE1KGV4dF9waHkpOw0KKwkJCQlpZHgg
-PSAwOw0KKwkJCX0NCisNCisJCQl2YWwgPSBtdDc2X3JyKGRldiwgcmVnX2Jhc2UgKyAoaWR4IC8g
-NCkgKiA0KTsNCisNCisJCQlpZiAoaWR4ICYmIGlkeCAlIDQpDQorCQkJCXZhbCA+Pj0gKGlkeCAl
-IDQpICogODsNCisNCisJCQl3aGlsZSAodmFsID4gMCAmJiBjbnQgPCBtY3NfbnVtKSB7DQorCQkJ
-CXM4IHB3ciA9IEZJRUxEX0dFVChNVF9UTUFDX0ZQX01BU0ssIHZhbCk7DQorDQorCQkJCXR4cG93
-ZXJbY250KytdID0gcHdyOw0KKwkJCQl2YWwgPj49IDg7DQorCQkJCWlkeCsrOw0KKwkJCX0NCisJ
-CX0NCiANCi0JCW10NzZfc2VxX3B1dHNfYXJyYXkocywgc2t1X2dyb3VwX25hbWVbaV0sDQotCQkJ
-CSAgICB0eHBvd2VyICsgaWR4LCBsZW4pOw0KLQkJaWR4ICs9IGxlbjsNCisJCW10NzZfc2VxX3B1
-dHNfYXJyYXkocywgc2t1X2dyb3VwX25hbWVbaV0sIHR4cG93ZXIsIG1jc19udW0pOw0KIAl9DQog
-fQ0KIA0KQEAgLTMyOSwxOCArMzU4LDE2IEBAIG10NzkxNV9yZWFkX3JhdGVfdHhwb3dlcihzdHJ1
-Y3Qgc2VxX2ZpbGUgKnMsIHZvaWQgKmRhdGEpDQogCXN0cnVjdCBtdDc5MTVfZGV2ICpkZXYgPSBk
-ZXZfZ2V0X2RydmRhdGEocy0+cHJpdmF0ZSk7DQogCXN0cnVjdCBtdDc2X3BoeSAqbXBoeSA9ICZk
-ZXYtPm1waHk7DQogCWVudW0gbmw4MDIxMV9iYW5kIGJhbmQgPSBtcGh5LT5jaGFuZGVmLmNoYW4t
-PmJhbmQ7DQotCXM4IHR4cG93ZXIgPSBtcGh5LT50eHBvd2VyX2N1cjsNCiANCi0Jc2VxX3B1dHMo
-cywgIkJhbmQgMDpcbiIpOw0KLQltdDc5MTVfcHV0c19yYXRlX3R4cG93ZXIocywgdHhwb3dlciwg
-YmFuZCk7DQorCXNlcV9wdXRzKHMsICJCYW5kIDA6ICh1bml0OiAwLjUgZEJtKVxuIik7DQorCW10
-NzkxNV9wdXRzX3JhdGVfdHhwb3dlcihzLCBkZXYsIGJhbmQsIGZhbHNlKTsNCiANCiAJaWYgKGRl
-di0+bXQ3Ni5waHkyKSB7DQogCQltcGh5ID0gZGV2LT5tdDc2LnBoeTI7DQogCQliYW5kID0gbXBo
-eS0+Y2hhbmRlZi5jaGFuLT5iYW5kOw0KLQkJdHhwb3dlciA9IG1waHktPnR4cG93ZXJfY3VyOw0K
-IA0KLQkJc2VxX3B1dHMocywgIkJhbmQgMTpcbiIpOw0KLQkJbXQ3OTE1X3B1dHNfcmF0ZV90eHBv
-d2VyKHMsIHR4cG93ZXIsIGJhbmQpOw0KKwkJc2VxX3B1dHMocywgIkJhbmQgMTogKHVuaXQ6IDAu
-NSBkQm0pXG4iKTsNCisJCW10NzkxNV9wdXRzX3JhdGVfdHhwb3dlcihzLCBkZXYsIGJhbmQsIHRy
-dWUpOw0KIAl9DQogDQogCXJldHVybiAwOw0KZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3dpcmVs
-ZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1L3JlZ3MuaCBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21l
-ZGlhdGVrL210NzYvbXQ3OTE1L3JlZ3MuaA0KaW5kZXggYzEyMTcxNS4uZDgwYWUxZSAxMDA2NDQN
-Ci0tLSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1L3JlZ3MuaA0K
-KysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvcmVncy5oDQpA
-QCAtNjcsNiArNjcsMTEgQEANCiAjZGVmaW5lIE1UX1RNQUNfQ1RDUjBfSU5TX0RETE1UX0VOCQlC
-SVQoMTcpDQogI2RlZmluZSBNVF9UTUFDX0NUQ1IwX0lOU19ERExNVF9WSFRfU01QRFVfRU4JQklU
-KDE4KQ0KIA0KKyNkZWZpbmUgTVRfVE1BQ19GUDBSMChfYmFuZCkJCU1UX1dGX1RNQUMoX2JhbmQs
-IDB4MDIwKQ0KKyNkZWZpbmUgTVRfVE1BQ19GUDBSMTUoX2JhbmQpCQlNVF9XRl9UTUFDKF9iYW5k
-LCAweDA4MCkNCisjZGVmaW5lIE1UX1RNQUNfRlAwUjE4KF9iYW5kKQkJTVRfV0ZfVE1BQyhfYmFu
-ZCwgMHgyNzApDQorI2RlZmluZSBNVF9UTUFDX0ZQX01BU0sJCQlHRU5NQVNLKDcsIDApDQorDQog
-LyogRE1BIEJhbmQgMCAqLw0KICNkZWZpbmUgTVRfV0ZfRE1BX0JBU0UJCQkweDIxZTAwDQogI2Rl
-ZmluZSBNVF9XRl9ETUEob2ZzKQkJCShNVF9XRl9ETUFfQkFTRSArIChvZnMpKQ0KLS0gDQoyLjE3
-LjENCg==
+With all due respect I got your details from an online directory and
+having been motivated by your personal status, I decided to approach
+you  I am Mrs. George Olivia; I have decided to donate what I have to
+you / Motherless babies/Less privileged/Widows' because I am dying and
+diagnosed for cancer for about 2 years ago. I have been touched by God
+Almighty to donate from what I have inherited from my late husband to
+you for good work of God Almighty. I have asked Almighty God to
+forgive me and believe he has, because he is a Merciful God I will be
+going in for an operation surgery soon.
 
+I decided to will/donate the sum of ($ 8.1 million DOLLARS) to you for
+the good work of God Almighty, and also to help the motherless and
+less privilege and also forth assistance of the widows. At the moment
+I cannot take any telephone calls right now due to the fact that my
+relatives (that have squandered the funds gave them for this purpose
+before) are around me and my health status also. I have adjusted my
+will and my lawyer is aware.
+
+I wish you all the best and May the good Lord bless you abundantly,
+and please use the funds judiciously and always extend the good work
+to others. As soon as you get back to me, I shall give you info on
+what I need from you, then you will contact the bank and tell them I
+have willed those properties to you by quoting my personal file
+routing and account information. And I have also notified the bank
+that I am willing that properties to you for a good, effective and
+prudent work. I know I don't know you but I have been directed to do
+this by God Almighty.
+
+I Have all my Hospital document which i can send to you as prove to
+what am tell you and my seriousness to this. If you are interested in
+carrying out this task, get back to me for more details on this noble
+project of mine.
+
+Yours Faithfully,
+Mrs. George Olivia
