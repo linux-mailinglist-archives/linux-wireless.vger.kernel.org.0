@@ -2,95 +2,95 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B49D92009D3
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jun 2020 15:20:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 238E0200B72
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jun 2020 16:30:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731553AbgFSNUS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 19 Jun 2020 09:20:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40174 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725974AbgFSNUR (ORCPT
+        id S1727871AbgFSOaJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 19 Jun 2020 10:30:09 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:53094 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726993AbgFSOaI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 19 Jun 2020 09:20:17 -0400
-Received: from mail-wm1-x342.google.com (mail-wm1-x342.google.com [IPv6:2a00:1450:4864:20::342])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42138C06174E
-        for <linux-wireless@vger.kernel.org>; Fri, 19 Jun 2020 06:20:17 -0700 (PDT)
-Received: by mail-wm1-x342.google.com with SMTP id j198so8828320wmj.0
-        for <linux-wireless@vger.kernel.org>; Fri, 19 Jun 2020 06:20:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:sender:from:date:message-id:subject:to;
-        bh=GGdUuLCAiwswGC8VwacUo3EobWtrXtsk7zxMEz4Czs0=;
-        b=Liw0Ww++ViMUd3Q14N/EGPBJ4enT1t6EfOeldWC5IsEKzpdxuxrBofc6b8AlpjGD8f
-         NBZ8xtfk+gzFNdijTQQSocgj7582uU+0uze/lT7Dp02EJqcRS6xPMkvLP9MRI9l03Ag8
-         U/RpXU0mhb666nMtGgneFNnYqNuDW0XXl0IT72LbNU4SwJAiG8Gr6LEYIhDUCLTtzhSI
-         etTr0iLgkgdGlZWIIwDsjFLtegAnSmvzG979/mHZHXs0W7VYU4uMU2C+JB6w1p7PS09x
-         hI1vAJwI1+9mFH6ISeFF2Czqlb3QB2DDWU5O4IadeBb5GRPDOq6uBdsXY+Ouiy6YeSZX
-         5iKw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:sender:from:date
-         :message-id:subject:to;
-        bh=GGdUuLCAiwswGC8VwacUo3EobWtrXtsk7zxMEz4Czs0=;
-        b=bDEqEzPhZy9We8vhs1Ugg2dZtpmi3w4uhKOplELeq9s+6IWTsob6hj7eYSno449uY4
-         H7Ih2ABnWpI73MGoorgAMZ+yjL5xWigzcHGPZfOBF5KN6Rbi22r9mC5xL+UFE93BiSMY
-         A0dpnmKVaxgyCwMzNgvF6AEyYr+Kjjf3Hdf7aQsLEfA0EaygQ6fb2CJRiDur69NNk4pe
-         RD5dud6hDr6fbzgMB6PLx7CNcRaqP7RVCbWfkEhPz7gnwqSx4g0LVas5g6+WV5ca6X+3
-         pTvmz43MDYD0gZeo9LGbSDjPSaJjZQOOF6rkw1yI/xOdAjO49WFbbpwP9PyVwXz0WTT6
-         bGMQ==
-X-Gm-Message-State: AOAM5317qR2rWQiYOfLXltI0n2rgMH6K6YZs16kYqH4wjwuZyD4PjD1j
-        EjX8xcENEy7hUtHyxjybuEYQcHzrrfobS1x8NRQ=
-X-Google-Smtp-Source: ABdhPJzp4yySL0T0VnRGZUhrEVfY4n88yWT1MeyooZH6tqQdqMQ7BLDUyNltmxjRrDRfkH9JquHC80NHu5QtXJkRzdA=
-X-Received: by 2002:a7b:c090:: with SMTP id r16mr3915022wmh.105.1592572815870;
- Fri, 19 Jun 2020 06:20:15 -0700 (PDT)
+        Fri, 19 Jun 2020 10:30:08 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05JEDIFx158879;
+        Fri, 19 Jun 2020 14:30:00 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=mime-version :
+ message-id : date : from : to : cc : subject : content-type :
+ content-transfer-encoding; s=corp-2020-01-29;
+ bh=B/h4/Smp0b+GZtYXT6WoZKLL0Di7be3tZw+sca6yhxU=;
+ b=dXxPQTrfkwbSmVjHZu3Y0c+Jap5JtawE0xiYy7epxZj/QQqeTULL7gf0U8U24Cgk7yOk
+ Is04EMvpx9/lhlDucePvHb5TE+DZtvWKjaFdXEHUS68hp4JZdhx8oAIHsizZqUn14RfM
+ zD3LsKO961e41aN52dc53PPjaGaSU0OaiPgpxrkGxPVQsrDrsqwcHbabT4ccykm4jlwq
+ u3krZgjb2wvkIsohYtKtLHWxVLTFLncy5Yw/NR8+/XU10bfUzH+UvFtufNiyeHxlylN+
+ MUmJSC1XpQsZD8E1vlHtq0/BxtYK20jXV42wBHR+Q4QwQm/VY3OryxYv2+g5K7SStS5z 5g== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by aserp2120.oracle.com with ESMTP id 31qecm5ju6-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Fri, 19 Jun 2020 14:30:00 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05JE9Og7111375;
+        Fri, 19 Jun 2020 14:30:00 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by aserp3020.oracle.com with ESMTP id 31q66vm0j8-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 19 Jun 2020 14:29:59 +0000
+Received: from abhmp0022.oracle.com (abhmp0022.oracle.com [141.146.116.28])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 05JETw3q008177;
+        Fri, 19 Jun 2020 14:29:58 GMT
+Received: from mwanda (/41.57.98.10) by default (Oracle Beehive Gateway v4.0)
+ with ESMTP ; Fri, 19 Jun 2020 07:29:28 -0700
 MIME-Version: 1.0
-Reply-To: oliviaeorge@hotmail.com
-Received: by 2002:adf:f3cd:0:0:0:0:0 with HTTP; Fri, 19 Jun 2020 06:20:14
- -0700 (PDT)
-From:   George Olivia <oliviaeorge@gmail.com>
-Date:   Fri, 19 Jun 2020 07:20:14 -0600
-X-Google-Sender-Auth: 7londtwSHXN_J2sK-xhQskdLiig
-Message-ID: <CAABkmywF3JS3kY=0QidkTfu-iZDa1j5_8G1xCuwT4bU6Mc+X1w@mail.gmail.com>
-Subject: I wish you read my mail in a good heart.
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Message-ID: <20200619142922.GA267142@mwanda>
+Date:   Fri, 19 Jun 2020 14:29:22 +0000 (UTC)
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Kalle Valo <kvalo@codeaurora.org>,
+        Karthikeyan Periyasamy <periyasa@codeaurora.org>
+Cc:     Jakub Kicinski <kuba@kernel.org>, ath11k@lists.infradead.org,
+        linux-wireless@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH net-next] ath11k: fix uninitialized return in
+ ath11k_spectral_process_data()
+X-Mailer: git-send-email haha only kidding
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9656 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 mlxlogscore=999
+ bulkscore=0 adultscore=0 phishscore=0 suspectscore=0 mlxscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2004280000 definitions=main-2006190106
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9656 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 cotscore=-2147483648 malwarescore=0
+ clxscore=1011 adultscore=0 suspectscore=0 spamscore=0 lowpriorityscore=0
+ mlxlogscore=999 priorityscore=1501 bulkscore=0 phishscore=0 mlxscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2004280000 definitions=main-2006190106
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-With all due respect I got your details from an online directory and
-having been motivated by your personal status, I decided to approach
-you  I am Mrs. George Olivia; I have decided to donate what I have to
-you / Motherless babies/Less privileged/Widows' because I am dying and
-diagnosed for cancer for about 2 years ago. I have been touched by God
-Almighty to donate from what I have inherited from my late husband to
-you for good work of God Almighty. I have asked Almighty God to
-forgive me and believe he has, because he is a Merciful God I will be
-going in for an operation surgery soon.
+There is a success path where "ret" isn't initialized where we never
+have a ATH11K_SPECTRAL_TAG_SCAN_SEARCH and then ret isn't initialized.
 
-I decided to will/donate the sum of ($ 8.1 million DOLLARS) to you for
-the good work of God Almighty, and also to help the motherless and
-less privilege and also forth assistance of the widows. At the moment
-I cannot take any telephone calls right now due to the fact that my
-relatives (that have squandered the funds gave them for this purpose
-before) are around me and my health status also. I have adjusted my
-will and my lawyer is aware.
+Fixes: 9d11b7bff950 ("ath11k: add support for spectral scan")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+ drivers/net/wireless/ath/ath11k/spectral.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-I wish you all the best and May the good Lord bless you abundantly,
-and please use the funds judiciously and always extend the good work
-to others. As soon as you get back to me, I shall give you info on
-what I need from you, then you will contact the bank and tell them I
-have willed those properties to you by quoting my personal file
-routing and account information. And I have also notified the bank
-that I am willing that properties to you for a good, effective and
-prudent work. I know I don't know you but I have been directed to do
-this by God Almighty.
+diff --git a/drivers/net/wireless/ath/ath11k/spectral.c b/drivers/net/wireless/ath/ath11k/spectral.c
+index 1c5d65bb411f..bfbf905f7507 100644
+--- a/drivers/net/wireless/ath/ath11k/spectral.c
++++ b/drivers/net/wireless/ath/ath11k/spectral.c
+@@ -677,7 +677,7 @@ static int ath11k_spectral_process_data(struct ath11k *ar,
+ 	u32 data_len, i;
+ 	u8 sign, tag;
+ 	int tlv_len, sample_sz;
+-	int ret;
++	int ret = 0;
+ 	bool quit = false;
+ 
+ 	spin_lock_bh(&ar->spectral.lock);
+-- 
+2.27.0
 
-I Have all my Hospital document which i can send to you as prove to
-what am tell you and my seriousness to this. If you are interested in
-carrying out this task, get back to me for more details on this noble
-project of mine.
-
-Yours Faithfully,
-Mrs. George Olivia
