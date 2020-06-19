@@ -2,131 +2,86 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E5609200307
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jun 2020 09:54:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9FD8C200531
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jun 2020 11:33:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730921AbgFSHy4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 19 Jun 2020 03:54:56 -0400
-Received: from mailgw02.mediatek.com ([210.61.82.184]:24029 "EHLO
-        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1730912AbgFSHy4 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 19 Jun 2020 03:54:56 -0400
-X-UUID: 370b5ad9e8f34137a091234fe470e0f1-20200619
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Transfer-Encoding:Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=yCScZm5hGSqIDtxe5yip9trAR0uBsbBaiWT93V5VXyU=;
-        b=DUlcUq6dkWgzgOu0d1NcPLTxQgzl9cVaV/nJ0ew+COQZEQuyHAff/zNXfaUJabmDaLbmDcXFd1J/vrb1/2kV9GqQBSO/X5ZKlgoLdG39ZFVyJTZjJFmanwZmwaypMmmyFSMlF8HkQfitT0XuSax6242rG5ur38AyOKmMj7kKYb8=;
-X-UUID: 370b5ad9e8f34137a091234fe470e0f1-20200619
-Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw02.mediatek.com
-        (envelope-from <shayne.chen@mediatek.com>)
-        (Cellopoint E-mail Firewall v4.1.10 Build 0809 with TLS)
-        with ESMTP id 555669094; Fri, 19 Jun 2020 15:54:51 +0800
-Received: from mtkcas07.mediatek.inc (172.21.101.84) by
- mtkmbs06n2.mediatek.inc (172.21.101.130) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Fri, 19 Jun 2020 15:54:49 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas07.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Fri, 19 Jun 2020 15:54:50 +0800
-From:   Shayne Chen <shayne.chen@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>
-CC:     linux-wireless <linux-wireless@vger.kernel.org>,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        linux-mediatek <linux-mediatek@lists.infradead.org>,
-        Shayne Chen <shayne.chen@mediatek.com>
-Subject: [PATCH v2 3/3] mt76: mt7915: directly read per-rate tx power from registers
-Date:   Fri, 19 Jun 2020 15:53:56 +0800
-Message-ID: <20200619075356.21998-3-shayne.chen@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <20200619075356.21998-1-shayne.chen@mediatek.com>
-References: <20200619075356.21998-1-shayne.chen@mediatek.com>
+        id S1731949AbgFSJcl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 19 Jun 2020 05:32:41 -0400
+Received: from smtp.asem.it ([151.1.184.197]:52619 "EHLO smtp.asem.it"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1731940AbgFSJbt (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 19 Jun 2020 05:31:49 -0400
+Received: from webmail.asem.it
+        by asem.it (smtp.asem.it)
+        (SecurityGateway 6.5.2)
+        with ESMTP id SG000329281.MSG 
+        for <linux-wireless@vger.kernel.org>; Fri, 19 Jun 2020 11:31:06 +0200S
+Received: from ASAS044.asem.intra (172.16.16.44) by ASAS044.asem.intra
+ (172.16.16.44) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Fri, 19
+ Jun 2020 11:31:03 +0200
+Received: from flavio-x.asem.intra (172.16.17.208) by ASAS044.asem.intra
+ (172.16.16.44) with Microsoft SMTP Server id 15.1.1979.3 via Frontend
+ Transport; Fri, 19 Jun 2020 11:31:03 +0200
+From:   Flavio Suligoi <f.suligoi@asem.it>
+To:     Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Johan Hovold <johan@kernel.org>,
+        Aditya Pakki <pakki001@umn.edu>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "Gustavo A . R . Silva" <gustavo@embeddedor.com>
+CC:     <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, Flavio Suligoi <f.suligoi@asem.it>
+Subject: [PATCH 1/1] net: wireless: intersil: orinoco: fix spelling mistake
+Date:   Fri, 19 Jun 2020 11:31:02 +0200
+Message-ID: <20200619093102.29487-1-f.suligoi@asem.it>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
 Content-Type: text/plain
-X-TM-SNTS-SMTP: BB28C464EF00E83DA12DC58DAD21739E824790DA141DC73D3EDFABE8294393302000:8
-X-MTK:  N
-Content-Transfer-Encoding: base64
+X-SGHeloLookup-Result: pass smtp.helo=webmail.asem.it (ip=172.16.16.44)
+X-SGSPF-Result: none (smtp.asem.it)
+X-SGOP-RefID: str=0001.0A090208.5EEC85D9.0007,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0 (_st=1 _vt=0 _iwf=0)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-SW4gdGhlIHByZXZpb3VzIHZlcnNpb24sIHRoZSB2YWx1ZXMgb2YgcGVyLXJhdGUgdHggcG93ZXIg
-YXJlIGNhbGN1bGF0ZWQNCmZyb20gU1cgc2lkZSwgYnV0IGl0IG1heSBiZSBpbmFjY3VyYXRlIGlm
-IGFkZGl0aW9uYWwgbGltaXRzIGFyZSBhcHBsaWVkLg0KVGhpcyBwYXRjaCBhZGRzIHN1cHBvcnQg
-Zm9yIGdldHRpbmcgcGVyLXJhdGUgdHggcG93ZXIgZGlyZWN0bHkgZnJvbQ0KcmVnaXN0ZXJzLg0K
-DQpUZXN0ZWQtYnk6IEV2ZWx5biBUc2FpIDxldmVseW4udHNhaUBtZWRpYXRlay5jb20+DQpTaWdu
-ZWQtb2ZmLWJ5OiBTaGF5bmUgQ2hlbiA8c2hheW5lLmNoZW5AbWVkaWF0ZWsuY29tPg0KLS0tDQp2
-MjoNCiAtIGZpeCByZWdfYmFzZSBhbmQgaWR4IGNhbGN1bGF0aW9uDQotLS0NCiAuLi4vd2lyZWxl
-c3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvZGVidWdmcy5jICAgfCA2MyArKysrKysrKysrKystLS0t
-LS0tDQogLi4uL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzkxNS9yZWdzLmggIHwgIDUg
-KysNCiAyIGZpbGVzIGNoYW5nZWQsIDQ1IGluc2VydGlvbnMoKyksIDIzIGRlbGV0aW9ucygtKQ0K
-DQpkaWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUv
-ZGVidWdmcy5jIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvZGVi
-dWdmcy5jDQppbmRleCA2ZDRmZDE0Li45MmFmZmQ0IDEwMDY0NA0KLS0tIGEvZHJpdmVycy9uZXQv
-d2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvZGVidWdmcy5jDQorKysgYi9kcml2ZXJzL25l
-dC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzkxNS9kZWJ1Z2ZzLmMNCkBAIC0zMDAsOCArMzAw
-LDggQEAgbXQ3OTE1X3F1ZXVlc19yZWFkKHN0cnVjdCBzZXFfZmlsZSAqcywgdm9pZCAqZGF0YSkN
-CiB9DQogDQogc3RhdGljIHZvaWQNCi1tdDc5MTVfcHV0c19yYXRlX3R4cG93ZXIoc3RydWN0IHNl
-cV9maWxlICpzLCBzOCAqZGVsdGEsDQotCQkJIHM4IHR4cG93ZXJfY3VyLCBpbnQgYmFuZCkNCitt
-dDc5MTVfcHV0c19yYXRlX3R4cG93ZXIoc3RydWN0IHNlcV9maWxlICpzLCBzdHJ1Y3QgbXQ3OTE1
-X2RldiAqZGV2LA0KKwkJCSBpbnQgYmFuZCwgYm9vbCBleHRfcGh5KQ0KIHsNCiAJc3RhdGljIGNv
-bnN0IGNoYXIgKiBjb25zdCBza3VfZ3JvdXBfbmFtZVtdID0gew0KIAkJIkNDSyIsICJPRkRNIiwg
-IkhUMjAiLCAiSFQ0MCIsDQpAQCAtMzA5LDI0ICszMDksNDYgQEAgbXQ3OTE1X3B1dHNfcmF0ZV90
-eHBvd2VyKHN0cnVjdCBzZXFfZmlsZSAqcywgczggKmRlbHRhLA0KIAkJIlJVMjYiLCAiUlU1MiIs
-ICJSVTEwNiIsICJSVTI0Mi9TVTIwIiwNCiAJCSJSVTQ4NC9TVTQwIiwgIlJVOTk2L1NVODAiLCAi
-UlUyeDk5Ni9TVTE2MCINCiAJfTsNCi0JczggdHhwb3dlcltNVDc5MTVfU0tVX1JBVEVfTlVNXTsN
-CisJdTMyIHJlZ19iYXNlID0gTVRfVE1BQ19GUDBSMChleHRfcGh5KTsNCiAJaW50IGksIGlkeCA9
-IDA7DQogDQotCWZvciAoaSA9IDA7IGkgPCBNVDc5MTVfU0tVX1JBVEVfTlVNOyBpKyspDQotCQl0
-eHBvd2VyW2ldID0gRElWX1JPVU5EX1VQKHR4cG93ZXJfY3VyICsgZGVsdGFbaV0sIDIpOw0KKwlm
-b3IgKGkgPSAwOyBpIDwgQVJSQVlfU0laRShtdDc5MTVfc2t1X2dyb3VwX2xlbik7IGkrKykgew0K
-KwkJdTggY250LCBtY3NfbnVtID0gbXQ3OTE1X3NrdV9ncm91cF9sZW5baV07DQorCQlzOCB0eHBv
-d2VyWzEyXTsNCisJCWludCBqOw0KKw0KKwkJaWYgKGkgPT0gU0tVX0hUX0JXMjAgfHwgaSA9PSBT
-S1VfSFRfQlc0MCkgew0KKwkJCW1jc19udW0gPSA4Ow0KKwkJfSBlbHNlIGlmIChpID49IFNLVV9W
-SFRfQlcyMCAmJiBpIDw9IFNLVV9WSFRfQlcxNjApIHsNCisJCQltY3NfbnVtID0gMTA7DQorCQl9
-IGVsc2UgaWYgKGkgPT0gU0tVX0hFX1JVMjYpIHsNCisJCQlyZWdfYmFzZSA9IE1UX1RNQUNfRlAw
-UjE4KGV4dF9waHkpOw0KKwkJCWlkeCA9IDA7DQorCQl9DQogDQotCWZvciAoaSA9IDA7IGkgPCBN
-QVhfU0tVX1JBVEVfR1JPVVBfTlVNOyBpKyspIHsNCi0JCWNvbnN0IHN0cnVjdCBza3VfZ3JvdXAg
-KnNrdSA9ICZtdDc5MTVfc2t1X2dyb3Vwc1tpXTsNCi0JCXUzMiBvZmZzZXQgPSBza3UtPm9mZnNl
-dFtiYW5kXTsNCisJCWZvciAoaiA9IDAsIGNudCA9IDA7IGogPCBESVZfUk9VTkRfVVAobWNzX251
-bSwgNCk7IGorKykgew0KKwkJCXUzMiB2YWw7DQogDQotCQlpZiAoIW9mZnNldCkgew0KLQkJCWlk
-eCArPSBza3UtPmxlbjsNCi0JCQljb250aW51ZTsNCisJCQlpZiAoaSA9PSBTS1VfVkhUX0JXMTYw
-ICYmIGlkeCA9PSA2MCkgew0KKwkJCQlyZWdfYmFzZSA9IE1UX1RNQUNfRlAwUjE1KGV4dF9waHkp
-Ow0KKwkJCQlpZHggPSAwOw0KKwkJCX0NCisNCisJCQl2YWwgPSBtdDc2X3JyKGRldiwgcmVnX2Jh
-c2UgKyAoaWR4IC8gNCkgKiA0KTsNCisNCisJCQlpZiAoaWR4ICYmIGlkeCAlIDQpDQorCQkJCXZh
-bCA+Pj0gKGlkeCAlIDQpICogODsNCisNCisJCQl3aGlsZSAodmFsID4gMCAmJiBjbnQgPCBtY3Nf
-bnVtKSB7DQorCQkJCXM4IHB3ciA9IEZJRUxEX0dFVChNVF9UTUFDX0ZQX01BU0ssIHZhbCk7DQor
-DQorCQkJCXR4cG93ZXJbY250KytdID0gcHdyOw0KKwkJCQl2YWwgPj49IDg7DQorCQkJCWlkeCsr
-Ow0KKwkJCX0NCiAJCX0NCiANCi0JCW10NzZfc2VxX3B1dHNfYXJyYXkocywgc2t1X2dyb3VwX25h
-bWVbaV0sDQotCQkJCSAgICB0eHBvd2VyICsgaWR4LCBza3UtPmxlbik7DQotCQlpZHggKz0gc2t1
-LT5sZW47DQorCQltdDc2X3NlcV9wdXRzX2FycmF5KHMsIHNrdV9ncm91cF9uYW1lW2ldLCB0eHBv
-d2VyLCBtY3NfbnVtKTsNCiAJfQ0KIH0NCiANCkBAIC0zMzYsMjEgKzM1OCwxNiBAQCBtdDc5MTVf
-cmVhZF9yYXRlX3R4cG93ZXIoc3RydWN0IHNlcV9maWxlICpzLCB2b2lkICpkYXRhKQ0KIAlzdHJ1
-Y3QgbXQ3OTE1X2RldiAqZGV2ID0gZGV2X2dldF9kcnZkYXRhKHMtPnByaXZhdGUpOw0KIAlzdHJ1
-Y3QgbXQ3Nl9waHkgKm1waHkgPSAmZGV2LT5tcGh5Ow0KIAllbnVtIG5sODAyMTFfYmFuZCBiYW5k
-ID0gbXBoeS0+Y2hhbmRlZi5jaGFuLT5iYW5kOw0KLQlzOCAqZGVsdGEgPSBkZXYtPnJhdGVfcG93
-ZXJbYmFuZF07DQotCXM4IHR4cG93ZXJfYmFzZSA9IG1waHktPnR4cG93ZXJfY3VyIC0gZGVsdGFb
-MTYxXTsNCiANCi0Jc2VxX3B1dHMocywgIkJhbmQgMDpcbiIpOw0KLQltdDc5MTVfcHV0c19yYXRl
-X3R4cG93ZXIocywgZGVsdGEsIHR4cG93ZXJfYmFzZSwgYmFuZCk7DQorCXNlcV9wdXRzKHMsICJC
-YW5kIDA6ICh1bml0OiAwLjUgZEJtKVxuIik7DQorCW10NzkxNV9wdXRzX3JhdGVfdHhwb3dlcihz
-LCBkZXYsIGJhbmQsIGZhbHNlKTsNCiANCiAJaWYgKGRldi0+bXQ3Ni5waHkyKSB7DQogCQltcGh5
-ID0gZGV2LT5tdDc2LnBoeTI7DQogCQliYW5kID0gbXBoeS0+Y2hhbmRlZi5jaGFuLT5iYW5kOw0K
-LQkJZGVsdGEgPSBkZXYtPnJhdGVfcG93ZXJbYmFuZF07DQotCQl0eHBvd2VyX2Jhc2UgPSBtcGh5
-LT50eHBvd2VyX2N1ciAtDQotCQkJICAgICAgIGRlbHRhWzE2MV07DQogDQotCQlzZXFfcHV0cyhz
-LCAiQmFuZCAxOlxuIik7DQotCQltdDc5MTVfcHV0c19yYXRlX3R4cG93ZXIocywgZGVsdGEsIHR4
-cG93ZXJfYmFzZSwgYmFuZCk7DQorCQlzZXFfcHV0cyhzLCAiQmFuZCAxOiAodW5pdDogMC41IGRC
-bSlcbiIpOw0KKwkJbXQ3OTE1X3B1dHNfcmF0ZV90eHBvd2VyKHMsIGRldiwgYmFuZCwgdHJ1ZSk7
-DQogCX0NCiANCiAJcmV0dXJuIDA7DQpkaWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQvd2lyZWxlc3Mv
-bWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvcmVncy5oIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0
-ZWsvbXQ3Ni9tdDc5MTUvcmVncy5oDQppbmRleCBjMTIxNzE1Li5kODBhZTFlIDEwMDY0NA0KLS0t
-IGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvcmVncy5oDQorKysg
-Yi9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzkxNS9yZWdzLmgNCkBAIC02
-Nyw2ICs2NywxMSBAQA0KICNkZWZpbmUgTVRfVE1BQ19DVENSMF9JTlNfRERMTVRfRU4JCUJJVCgx
-NykNCiAjZGVmaW5lIE1UX1RNQUNfQ1RDUjBfSU5TX0RETE1UX1ZIVF9TTVBEVV9FTglCSVQoMTgp
-DQogDQorI2RlZmluZSBNVF9UTUFDX0ZQMFIwKF9iYW5kKQkJTVRfV0ZfVE1BQyhfYmFuZCwgMHgw
-MjApDQorI2RlZmluZSBNVF9UTUFDX0ZQMFIxNShfYmFuZCkJCU1UX1dGX1RNQUMoX2JhbmQsIDB4
-MDgwKQ0KKyNkZWZpbmUgTVRfVE1BQ19GUDBSMTgoX2JhbmQpCQlNVF9XRl9UTUFDKF9iYW5kLCAw
-eDI3MCkNCisjZGVmaW5lIE1UX1RNQUNfRlBfTUFTSwkJCUdFTk1BU0soNywgMCkNCisNCiAvKiBE
-TUEgQmFuZCAwICovDQogI2RlZmluZSBNVF9XRl9ETUFfQkFTRQkJCTB4MjFlMDANCiAjZGVmaW5l
-IE1UX1dGX0RNQShvZnMpCQkJKE1UX1dGX0RNQV9CQVNFICsgKG9mcykpDQotLSANCjIuMTcuMQ0K
+Fix typo: "EZUSB_REQUEST_TRIGER" --> "EZUSB_REQUEST_TRIGGER"
+
+Signed-off-by: Flavio Suligoi <f.suligoi@asem.it>
+---
+ drivers/net/wireless/intersil/orinoco/orinoco_usb.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/wireless/intersil/orinoco/orinoco_usb.c b/drivers/net/wireless/intersil/orinoco/orinoco_usb.c
+index 651c676b5506..11fa38fedd87 100644
+--- a/drivers/net/wireless/intersil/orinoco/orinoco_usb.c
++++ b/drivers/net/wireless/intersil/orinoco/orinoco_usb.c
+@@ -158,7 +158,7 @@ MODULE_FIRMWARE("orinoco_ezusb_fw");
+ 
+ 
+ #define EZUSB_REQUEST_FW_TRANS		0xA0
+-#define EZUSB_REQUEST_TRIGER		0xAA
++#define EZUSB_REQUEST_TRIGGER		0xAA
+ #define EZUSB_REQUEST_TRIG_AC		0xAC
+ #define EZUSB_CPUCS_REG			0x7F92
+ 
+@@ -1318,12 +1318,12 @@ static int ezusb_hard_reset(struct orinoco_private *priv)
+ 	netdev_dbg(upriv->dev, "sending control message\n");
+ 	retval = usb_control_msg(upriv->udev,
+ 				 usb_sndctrlpipe(upriv->udev, 0),
+-				 EZUSB_REQUEST_TRIGER,
++				 EZUSB_REQUEST_TRIGGER,
+ 				 USB_TYPE_VENDOR | USB_RECIP_DEVICE |
+ 				 USB_DIR_OUT, 0x0, 0x0, NULL, 0,
+ 				 DEF_TIMEOUT);
+ 	if (retval < 0) {
+-		err("EZUSB_REQUEST_TRIGER failed retval %d", retval);
++		err("EZUSB_REQUEST_TRIGGER failed retval %d", retval);
+ 		return retval;
+ 	}
+ #if 0
+-- 
+2.17.1
 
