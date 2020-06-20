@@ -2,205 +2,121 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 21D86202346
-	for <lists+linux-wireless@lfdr.de>; Sat, 20 Jun 2020 12:57:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EF4802024EE
+	for <lists+linux-wireless@lfdr.de>; Sat, 20 Jun 2020 17:57:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728042AbgFTK5b (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 20 Jun 2020 06:57:31 -0400
-Received: from mail-io1-f71.google.com ([209.85.166.71]:32787 "EHLO
-        mail-io1-f71.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727998AbgFTK5P (ORCPT
+        id S1727121AbgFTP5L (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 20 Jun 2020 11:57:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59082 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727069AbgFTP5K (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 20 Jun 2020 06:57:15 -0400
-Received: by mail-io1-f71.google.com with SMTP id x2so8720389iof.0
-        for <linux-wireless@vger.kernel.org>; Sat, 20 Jun 2020 03:57:12 -0700 (PDT)
+        Sat, 20 Jun 2020 11:57:10 -0400
+Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com [IPv6:2607:f8b0:4864:20::644])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21479C061796
+        for <linux-wireless@vger.kernel.org>; Sat, 20 Jun 2020 08:57:09 -0700 (PDT)
+Received: by mail-pl1-x644.google.com with SMTP id x11so5384787plo.7
+        for <linux-wireless@vger.kernel.org>; Sat, 20 Jun 2020 08:57:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=9tYajToBSjCKrMeO3oPfRpy8eb8n4thx7RWSAT9gnU0=;
+        b=QDUi4+cS/+VkJarQJer8i54NB6wrYUApoWkctsr63KwWXWXArOZDidsHLokQDZp1dW
+         eZ4mUUVqPLdtc98QdwYojIxlVjsSvdT6uJdK2Pr6SfHfX+CS5ufDjNUbv4fBIhf1Kcxv
+         MQ/YY9T6qSNqLt4/98fJo5BCZXSyE37vzBS0w=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:date:in-reply-to:message-id:subject
-         :from:to;
-        bh=8GDLcHKAWL6B36TT6Nf4rJzMiJsHjfM/kCOmAs5JEyA=;
-        b=n+CGlxhQUrLWDvCnHmF+zLw7NZLXXbpIhN9zhwyrTMyeb/ZZYnB20pTTOIrMLE+x3W
-         onMfv34vNYQmPp2dgeDT8z2k5EIVrlfZd/6P+CC7BvdvjfBa7H7IXaOf3uPA+TIqzov/
-         8QML7DF1/3hgp36V0Az28EM1LrHI+TZ/33vcnlDswy9f/Gi9f4Nj7LAzQAYM3qnDjy/Z
-         oXeGd+vn8n9Xvjzw9k2FEn+FmQMQY7x5weYqoZUQYVsdsNh1kxN3Jym6ivm/JWDHE0Q4
-         V/b4+Zo0RsncRz/LyMhrYMeed8nl6S/XpMIGJAzFqodB4eLZMAeAwCn57VxzOpi4CuS8
-         uG0w==
-X-Gm-Message-State: AOAM532rbWX4esA0y23I7/o/+sgiNQYcmZaJb/7qit9Yg2H4/Iuihntq
-        HnD71gKlUbwIld0t6SovL6OKCr6OdpFBAkXPvDbUzvRStv/Y
-X-Google-Smtp-Source: ABdhPJzw9wh1dy1bqFQBiniZPWvy/ZxKf3U9KDNXoj4Sw1dPBRj2fhfGeQ31pI0G7ZHvkGYXVWMCVTFlfBqqtRBQ79v+km0Ub4N2
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=9tYajToBSjCKrMeO3oPfRpy8eb8n4thx7RWSAT9gnU0=;
+        b=cjAQky/jbnzNgT/QcTkL/saA/3nZFsjblV7tw44wV77/sgf5+9qK1aawZFUP4HpKeS
+         ljof46g8eTOf1Lwxkuf0UENADZE+NJQVQIJgefvIigFEHLCu+DAzEnpPrHxcUqLY2+ex
+         ehono+q7blSz2u1nHlUXe+OIGU1KNUmTxlCuYBtULqy2u0EosuFxDyFJxsII/vuNFi4m
+         hMmPNgRCDf0OjOwnS8SZgBb6XbMcBhzJ8Ep47hO/v0IZG21h7rOXSJu8LmJd0rILl/mz
+         DYo/MlTpTZhJRAce4a+hUNaxS2dio0orP3DHxZcm4SCReHOTDoVtMtd25x3Pfy/SK1EP
+         nmiQ==
+X-Gm-Message-State: AOAM532rgypkVWw6CKITdlYlbBNELoptgS+zsEnLVr5b75440zKtUY0f
+        i7ybsuKpz96s+dJVUz8SoeAzxQ==
+X-Google-Smtp-Source: ABdhPJxL62JhXi8o+nSID6QHqBiLZ4YAHSAeaQKUwiACFjUcLS2k4S/MAlD8WL4T8tKBotrZuujIYg==
+X-Received: by 2002:a17:902:b78a:: with SMTP id e10mr12682612pls.201.1592668627259;
+        Sat, 20 Jun 2020 08:57:07 -0700 (PDT)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id y4sm8954278pfr.182.2020.06.20.08.57.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 20 Jun 2020 08:57:06 -0700 (PDT)
+Date:   Sat, 20 Jun 2020 08:57:04 -0700
+From:   Kees Cook <keescook@chromium.org>
+To:     Sedat Dilek <sedat.dilek@gmail.com>
+Cc:     linux-kernel@vger.kernel.org,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+        Alexander Potapenko <glider@google.com>,
+        Joe Perches <joe@perches.com>,
+        Andy Whitcroft <apw@canonical.com>, x86@kernel.org,
+        drbd-dev@lists.linbit.com, linux-block@vger.kernel.org,
+        b43-dev@lists.infradead.org, netdev@vger.kernel.org,
+        linux-doc@vger.kernel.org, linux-wireless@vger.kernel.org,
+        linux-ide@vger.kernel.org, linux-clk@vger.kernel.org,
+        linux-spi@vger.kernel.org, linux-mm@kvack.org,
+        Clang-Built-Linux ML <clang-built-linux@googlegroups.com>
+Subject: Re: [PATCH v2 00/16] Remove uninitialized_var() macro
+Message-ID: <202006200854.B2D8F21@keescook>
+References: <20200620033007.1444705-1-keescook@chromium.org>
+ <CA+icZUWpHRR7ukyepiUH1dR3r4GMi-s2crfwR5vTszdt1SUTQw@mail.gmail.com>
 MIME-Version: 1.0
-X-Received: by 2002:a6b:9143:: with SMTP id t64mr3764177iod.55.1592650632570;
- Sat, 20 Jun 2020 03:57:12 -0700 (PDT)
-Date:   Sat, 20 Jun 2020 03:57:12 -0700
-In-Reply-To: <0000000000006bf03c05a86205bb@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <00000000000034ad2805a881df44@google.com>
-Subject: Re: INFO: trying to register non-static key in ath9k_htc_rxep
-From:   syzbot <syzbot+4d2d56175b934b9a7bf9@syzkaller.appspotmail.com>
-To:     andreyknvl@google.com, ath9k-devel@qca.qualcomm.com,
-        davem@davemloft.net, kuba@kernel.org, kvalo@codeaurora.org,
-        linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CA+icZUWpHRR7ukyepiUH1dR3r4GMi-s2crfwR5vTszdt1SUTQw@mail.gmail.com>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-syzbot has found a reproducer for the following crash on:
+On Sat, Jun 20, 2020 at 09:03:34AM +0200, Sedat Dilek wrote:
+> On Sat, Jun 20, 2020 at 5:30 AM Kees Cook <keescook@chromium.org> wrote:
+> >
+> > v2:
+> > - more special-cased fixes
+> > - add reviews
+> > v1: https://lore.kernel.org/lkml/20200603233203.1695403-1-keescook@chromium.org
+> >
+> > Using uninitialized_var() is dangerous as it papers over real bugs[1]
+> > (or can in the future), and suppresses unrelated compiler warnings
+> > (e.g. "unused variable"). If the compiler thinks it is uninitialized,
+> > either simply initialize the variable or make compiler changes.
+> >
+> > As recommended[2] by[3] Linus[4], remove the macro.
+> >
+> > Most of the 300 uses don't cause any warnings on gcc 9.3.0, so they're in
+> > a single treewide commit in this series. A few others needed to actually
+> > get cleaned up, and I broke those out into individual patches.
+> >
+> > The tree is:
+> > https://git.kernel.org/pub/scm/linux/kernel/git/kees/linux.git/log/?h=kspp/uninit/macro
+> >
+> > -Kees
+> >
+> 
+> Hi Kees,
+> 
+> thanks for doing a v2 of your patchset.
+> 
+> As I saw Jason Yan providing some "uninitialized_var() macro" patches
+> to the MLs I pointen him to your tree "v1".
 
-HEAD commit:    f8f02d5c USB: OTG: rename product list of devices
-git tree:       https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb.git usb-testing
-console output: https://syzkaller.appspot.com/x/log.txt?x=15fd18a5100000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=f1981539b6376b73
-dashboard link: https://syzkaller.appspot.com/bug?extid=4d2d56175b934b9a7bf9
-compiler:       gcc (GCC) 9.0.0 20181231 (experimental)
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=14519481100000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=110318e9100000
+Thanks!
 
-IMPORTANT: if you fix the bug, please add the following tag to the commit:
-Reported-by: syzbot+4d2d56175b934b9a7bf9@syzkaller.appspotmail.com
+> BTW, I have tested your "v1" against Linux v5.7 (see [1]) - just
+> yesterday with Linux v5.7.5-rc1.
+> 
+> Is it possible to have a v2 of this patchset on top od Linux v5.7 - if
+> you do not mind.
 
-INFO: trying to register non-static key.
-the code is fine but needs lockdep annotation.
-turning off the locking correctness validator.
-CPU: 1 PID: 0 Comm: swapper/1 Not tainted 5.8.0-rc1-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
-Call Trace:
- <IRQ>
- __dump_stack lib/dump_stack.c:77 [inline]
- dump_stack+0xf6/0x16e lib/dump_stack.c:118
- assign_lock_key kernel/locking/lockdep.c:894 [inline]
- register_lock_class+0x1228/0x16d0 kernel/locking/lockdep.c:1206
- __lock_acquire+0x101/0x6270 kernel/locking/lockdep.c:4259
- lock_acquire+0x18b/0x7c0 kernel/locking/lockdep.c:4959
- __raw_spin_lock_irqsave include/linux/spinlock_api_smp.h:110 [inline]
- _raw_spin_lock_irqsave+0x32/0x50 kernel/locking/spinlock.c:159
- ath9k_htc_rxep+0x31/0x210 drivers/net/wireless/ath/ath9k/htc_drv_txrx.c:1128
- ath9k_htc_rx_msg+0x2d9/0xb00 drivers/net/wireless/ath/ath9k/htc_hst.c:459
- ath9k_hif_usb_rx_stream drivers/net/wireless/ath/ath9k/hif_usb.c:638 [inline]
- ath9k_hif_usb_rx_cb+0xc76/0x1050 drivers/net/wireless/ath/ath9k/hif_usb.c:671
- __usb_hcd_giveback_urb+0x29a/0x550 drivers/usb/core/hcd.c:1650
- usb_hcd_giveback_urb+0x368/0x420 drivers/usb/core/hcd.c:1716
- dummy_timer+0x125e/0x32b4 drivers/usb/gadget/udc/dummy_hcd.c:1967
- call_timer_fn+0x1ac/0x6e0 kernel/time/timer.c:1404
- expire_timers kernel/time/timer.c:1449 [inline]
- __run_timers kernel/time/timer.c:1773 [inline]
- __run_timers kernel/time/timer.c:1740 [inline]
- run_timer_softirq+0x5e5/0x14c0 kernel/time/timer.c:1786
- __do_softirq+0x21e/0x996 kernel/softirq.c:292
- asm_call_on_stack+0xf/0x20 arch/x86/entry/entry_64.S:711
- </IRQ>
- __run_on_irqstack arch/x86/include/asm/irq_stack.h:22 [inline]
- run_on_irqstack_cond arch/x86/include/asm/irq_stack.h:48 [inline]
- do_softirq_own_stack+0x109/0x140 arch/x86/kernel/irq_64.c:77
- invoke_softirq kernel/softirq.c:387 [inline]
- __irq_exit_rcu kernel/softirq.c:417 [inline]
- irq_exit_rcu+0x16f/0x1a0 kernel/softirq.c:429
- sysvec_apic_timer_interrupt+0xd3/0x1b0 arch/x86/kernel/apic/apic.c:1091
- asm_sysvec_apic_timer_interrupt+0x12/0x20 arch/x86/include/asm/idtentry.h:596
-RIP: 0010:native_irq_disable arch/x86/include/asm/irqflags.h:49 [inline]
-RIP: 0010:arch_local_irq_disable arch/x86/include/asm/irqflags.h:89 [inline]
-RIP: 0010:acpi_safe_halt drivers/acpi/processor_idle.c:112 [inline]
-RIP: 0010:acpi_safe_halt+0x72/0x90 drivers/acpi/processor_idle.c:108
-Code: 74 06 5b e9 c0 32 9f fb e8 bb 32 9f fb e8 c6 96 a4 fb e9 0c 00 00 00 e8 ac 32 9f fb 0f 00 2d 45 6e 84 00 e8 a0 32 9f fb fb f4 <fa> e8 b8 94 a4 fb 5b e9 92 32 9f fb 48 89 df e8 7a e1 c8 fb eb ab
-RSP: 0018:ffff8881da22fc60 EFLAGS: 00000293
-RAX: ffff8881da213200 RBX: 0000000000000000 RCX: 1ffffffff1014efa
-RDX: 0000000000000000 RSI: ffffffff85a03aa0 RDI: ffff8881da213a38
-RBP: ffff8881d8d2a864 R08: 0000000000000000 R09: 0000000000000001
-R10: 0000000000000000 R11: 0000000000000000 R12: ffff8881d8d2a864
-R13: 1ffff1103b445f96 R14: ffff8881d8d2a865 R15: 0000000000000001
- acpi_idle_do_entry+0xa9/0xe0 drivers/acpi/processor_idle.c:525
- acpi_idle_enter+0x42b/0xac0 drivers/acpi/processor_idle.c:651
- cpuidle_enter_state+0xdb/0xc20 drivers/cpuidle/cpuidle.c:234
- cpuidle_enter+0x4a/0xa0 drivers/cpuidle/cpuidle.c:345
- call_cpuidle kernel/sched/idle.c:117 [inline]
- cpuidle_idle_call kernel/sched/idle.c:207 [inline]
- do_idle+0x3c2/0x500 kernel/sched/idle.c:269
- cpu_startup_entry+0x14/0x20 kernel/sched/idle.c:365
- start_secondary+0x294/0x370 arch/x86/kernel/smpboot.c:268
- secondary_startup_64+0xb6/0xc0 arch/x86/kernel/head_64.S:243
-BUG: unable to handle page fault for address: ffffffffffffffc8
-#PF: supervisor read access in kernel mode
-#PF: error_code(0x0000) - not-present page
-PGD 7226067 P4D 7226067 PUD 7228067 PMD 0 
-Oops: 0000 [#1] SMP KASAN
-CPU: 1 PID: 0 Comm: swapper/1 Not tainted 5.8.0-rc1-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
-RIP: 0010:ath9k_htc_rxep+0xb5/0x210 drivers/net/wireless/ath/ath9k/htc_drv_txrx.c:1130
-Code: 8b 43 38 48 8d 58 c8 49 39 c4 0f 84 ee 00 00 00 e8 70 56 62 fe 48 89 d8 48 c1 e8 03 0f b6 04 28 84 c0 74 06 0f 8e 0a 01 00 00 <44> 0f b6 3b 31 ff 44 89 fe e8 ad 57 62 fe 45 84 ff 75 a8 e8 43 56
-RSP: 0018:ffff8881db3098b0 EFLAGS: 00010046
-RAX: 0000000000000000 RBX: ffffffffffffffc8 RCX: ffffffff81274370
-RDX: 0000000000000000 RSI: ffffffff82dd16d0 RDI: ffff8881db309820
-RBP: dffffc0000000000 R08: 0000000000000004 R09: ffffed103b661305
-R10: 0000000000000003 R11: ffffed103b661304 R12: ffff8881cd69b538
-R13: ffff8881cd69b100 R14: ffff8881cd69b548 R15: ffffed10392ce210
-FS:  0000000000000000(0000) GS:ffff8881db300000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: ffffffffffffffc8 CR3: 00000001cf9f6000 CR4: 00000000001406e0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <IRQ>
- ath9k_htc_rx_msg+0x2d9/0xb00 drivers/net/wireless/ath/ath9k/htc_hst.c:459
- ath9k_hif_usb_rx_stream drivers/net/wireless/ath/ath9k/hif_usb.c:638 [inline]
- ath9k_hif_usb_rx_cb+0xc76/0x1050 drivers/net/wireless/ath/ath9k/hif_usb.c:671
- __usb_hcd_giveback_urb+0x29a/0x550 drivers/usb/core/hcd.c:1650
- usb_hcd_giveback_urb+0x368/0x420 drivers/usb/core/hcd.c:1716
- dummy_timer+0x125e/0x32b4 drivers/usb/gadget/udc/dummy_hcd.c:1967
- call_timer_fn+0x1ac/0x6e0 kernel/time/timer.c:1404
- expire_timers kernel/time/timer.c:1449 [inline]
- __run_timers kernel/time/timer.c:1773 [inline]
- __run_timers kernel/time/timer.c:1740 [inline]
- run_timer_softirq+0x5e5/0x14c0 kernel/time/timer.c:1786
- __do_softirq+0x21e/0x996 kernel/softirq.c:292
- asm_call_on_stack+0xf/0x20 arch/x86/entry/entry_64.S:711
- </IRQ>
- __run_on_irqstack arch/x86/include/asm/irq_stack.h:22 [inline]
- run_on_irqstack_cond arch/x86/include/asm/irq_stack.h:48 [inline]
- do_softirq_own_stack+0x109/0x140 arch/x86/kernel/irq_64.c:77
- invoke_softirq kernel/softirq.c:387 [inline]
- __irq_exit_rcu kernel/softirq.c:417 [inline]
- irq_exit_rcu+0x16f/0x1a0 kernel/softirq.c:429
- sysvec_apic_timer_interrupt+0xd3/0x1b0 arch/x86/kernel/apic/apic.c:1091
- asm_sysvec_apic_timer_interrupt+0x12/0x20 arch/x86/include/asm/idtentry.h:596
-RIP: 0010:native_irq_disable arch/x86/include/asm/irqflags.h:49 [inline]
-RIP: 0010:arch_local_irq_disable arch/x86/include/asm/irqflags.h:89 [inline]
-RIP: 0010:acpi_safe_halt drivers/acpi/processor_idle.c:112 [inline]
-RIP: 0010:acpi_safe_halt+0x72/0x90 drivers/acpi/processor_idle.c:108
-Code: 74 06 5b e9 c0 32 9f fb e8 bb 32 9f fb e8 c6 96 a4 fb e9 0c 00 00 00 e8 ac 32 9f fb 0f 00 2d 45 6e 84 00 e8 a0 32 9f fb fb f4 <fa> e8 b8 94 a4 fb 5b e9 92 32 9f fb 48 89 df e8 7a e1 c8 fb eb ab
-RSP: 0018:ffff8881da22fc60 EFLAGS: 00000293
-RAX: ffff8881da213200 RBX: 0000000000000000 RCX: 1ffffffff1014efa
-RDX: 0000000000000000 RSI: ffffffff85a03aa0 RDI: ffff8881da213a38
-RBP: ffff8881d8d2a864 R08: 0000000000000000 R09: 0000000000000001
-R10: 0000000000000000 R11: 0000000000000000 R12: ffff8881d8d2a864
-R13: 1ffff1103b445f96 R14: ffff8881d8d2a865 R15: 0000000000000001
- acpi_idle_do_entry+0xa9/0xe0 drivers/acpi/processor_idle.c:525
- acpi_idle_enter+0x42b/0xac0 drivers/acpi/processor_idle.c:651
- cpuidle_enter_state+0xdb/0xc20 drivers/cpuidle/cpuidle.c:234
- cpuidle_enter+0x4a/0xa0 drivers/cpuidle/cpuidle.c:345
- call_cpuidle kernel/sched/idle.c:117 [inline]
- cpuidle_idle_call kernel/sched/idle.c:207 [inline]
- do_idle+0x3c2/0x500 kernel/sched/idle.c:269
- cpu_startup_entry+0x14/0x20 kernel/sched/idle.c:365
- start_secondary+0x294/0x370 arch/x86/kernel/smpboot.c:268
- secondary_startup_64+0xb6/0xc0 arch/x86/kernel/head_64.S:243
-Modules linked in:
-CR2: ffffffffffffffc8
----[ end trace 5a637b710bbf1999 ]---
-RIP: 0010:ath9k_htc_rxep+0xb5/0x210 drivers/net/wireless/ath/ath9k/htc_drv_txrx.c:1130
-Code: 8b 43 38 48 8d 58 c8 49 39 c4 0f 84 ee 00 00 00 e8 70 56 62 fe 48 89 d8 48 c1 e8 03 0f b6 04 28 84 c0 74 06 0f 8e 0a 01 00 00 <44> 0f b6 3b 31 ff 44 89 fe e8 ad 57 62 fe 45 84 ff 75 a8 e8 43 56
-RSP: 0018:ffff8881db3098b0 EFLAGS: 00010046
-RAX: 0000000000000000 RBX: ffffffffffffffc8 RCX: ffffffff81274370
-RDX: 0000000000000000 RSI: ffffffff82dd16d0 RDI: ffff8881db309820
-RBP: dffffc0000000000 R08: 0000000000000004 R09: ffffed103b661305
-R10: 0000000000000003 R11: ffffed103b661304 R12: ffff8881cd69b538
-R13: ffff8881cd69b100 R14: ffff8881cd69b548 R15: ffffed10392ce210
-FS:  0000000000000000(0000) GS:ffff8881db300000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: ffffffffffffffc8 CR3: 00000001cf9f6000 CR4: 00000000001406e0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Since it's only going to be for post-v5.8, I'm fine skipping the v5.7
+testing. Mainly I'm looking at v5.8 and linux-next.
 
+Thanks for looking at it!
+
+-- 
+Kees Cook
