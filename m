@@ -2,121 +2,99 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EF4802024EE
-	for <lists+linux-wireless@lfdr.de>; Sat, 20 Jun 2020 17:57:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 35619202640
+	for <lists+linux-wireless@lfdr.de>; Sat, 20 Jun 2020 21:54:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727121AbgFTP5L (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 20 Jun 2020 11:57:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59082 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727069AbgFTP5K (ORCPT
+        id S1728722AbgFTTyT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 20 Jun 2020 15:54:19 -0400
+Received: from mail-oi1-f194.google.com ([209.85.167.194]:41109 "EHLO
+        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728735AbgFTTyT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 20 Jun 2020 11:57:10 -0400
-Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com [IPv6:2607:f8b0:4864:20::644])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21479C061796
-        for <linux-wireless@vger.kernel.org>; Sat, 20 Jun 2020 08:57:09 -0700 (PDT)
-Received: by mail-pl1-x644.google.com with SMTP id x11so5384787plo.7
-        for <linux-wireless@vger.kernel.org>; Sat, 20 Jun 2020 08:57:09 -0700 (PDT)
+        Sat, 20 Jun 2020 15:54:19 -0400
+Received: by mail-oi1-f194.google.com with SMTP id a21so11789468oic.8
+        for <linux-wireless@vger.kernel.org>; Sat, 20 Jun 2020 12:54:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=9tYajToBSjCKrMeO3oPfRpy8eb8n4thx7RWSAT9gnU0=;
-        b=QDUi4+cS/+VkJarQJer8i54NB6wrYUApoWkctsr63KwWXWXArOZDidsHLokQDZp1dW
-         eZ4mUUVqPLdtc98QdwYojIxlVjsSvdT6uJdK2Pr6SfHfX+CS5ufDjNUbv4fBIhf1Kcxv
-         MQ/YY9T6qSNqLt4/98fJo5BCZXSyE37vzBS0w=
+        d=gmail.com; s=20161025;
+        h=sender:subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=mSZSOgNJqAeiUhDsCdi5iNeYTkN8QF0BhmzV8CqCvhY=;
+        b=ky7CwRVgniouiu69jJyfTcsIgF8deWPxj0+yCCg0fOv2O8LNrY7N4hY766i/KJo/WA
+         2fJ2jQjl+iuIPgWjGwM/9cb0hZZCSucD+w+eF0df6IKR8dxoe6oKEOMfn9SipCdelAv0
+         HvKA18yGuC6LzXmnPoriu43jR2HOXUX700evlDFtDgEm86yyv/hmLTHdRxFChXfgMf+p
+         o1g1AHkRG9xyzXyLmMUBCtPdttI5NLtwhYcXxnAZkc7+LBr3g04Z+L1xBqxt16IlyNRY
+         H5elbaKXv1V2rZyNr6qw2xNdkQARt2bbJzG2GA6xAT4Q9XoVHBtvyje27FXCWxDrmk/A
+         210A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=9tYajToBSjCKrMeO3oPfRpy8eb8n4thx7RWSAT9gnU0=;
-        b=cjAQky/jbnzNgT/QcTkL/saA/3nZFsjblV7tw44wV77/sgf5+9qK1aawZFUP4HpKeS
-         ljof46g8eTOf1Lwxkuf0UENADZE+NJQVQIJgefvIigFEHLCu+DAzEnpPrHxcUqLY2+ex
-         ehono+q7blSz2u1nHlUXe+OIGU1KNUmTxlCuYBtULqy2u0EosuFxDyFJxsII/vuNFi4m
-         hMmPNgRCDf0OjOwnS8SZgBb6XbMcBhzJ8Ep47hO/v0IZG21h7rOXSJu8LmJd0rILl/mz
-         DYo/MlTpTZhJRAce4a+hUNaxS2dio0orP3DHxZcm4SCReHOTDoVtMtd25x3Pfy/SK1EP
-         nmiQ==
-X-Gm-Message-State: AOAM532rgypkVWw6CKITdlYlbBNELoptgS+zsEnLVr5b75440zKtUY0f
-        i7ybsuKpz96s+dJVUz8SoeAzxQ==
-X-Google-Smtp-Source: ABdhPJxL62JhXi8o+nSID6QHqBiLZ4YAHSAeaQKUwiACFjUcLS2k4S/MAlD8WL4T8tKBotrZuujIYg==
-X-Received: by 2002:a17:902:b78a:: with SMTP id e10mr12682612pls.201.1592668627259;
-        Sat, 20 Jun 2020 08:57:07 -0700 (PDT)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id y4sm8954278pfr.182.2020.06.20.08.57.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 20 Jun 2020 08:57:06 -0700 (PDT)
-Date:   Sat, 20 Jun 2020 08:57:04 -0700
-From:   Kees Cook <keescook@chromium.org>
-To:     Sedat Dilek <sedat.dilek@gmail.com>
-Cc:     linux-kernel@vger.kernel.org,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-        Alexander Potapenko <glider@google.com>,
-        Joe Perches <joe@perches.com>,
-        Andy Whitcroft <apw@canonical.com>, x86@kernel.org,
-        drbd-dev@lists.linbit.com, linux-block@vger.kernel.org,
-        b43-dev@lists.infradead.org, netdev@vger.kernel.org,
-        linux-doc@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux-ide@vger.kernel.org, linux-clk@vger.kernel.org,
-        linux-spi@vger.kernel.org, linux-mm@kvack.org,
-        Clang-Built-Linux ML <clang-built-linux@googlegroups.com>
-Subject: Re: [PATCH v2 00/16] Remove uninitialized_var() macro
-Message-ID: <202006200854.B2D8F21@keescook>
-References: <20200620033007.1444705-1-keescook@chromium.org>
- <CA+icZUWpHRR7ukyepiUH1dR3r4GMi-s2crfwR5vTszdt1SUTQw@mail.gmail.com>
+        h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
+         :date:user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=mSZSOgNJqAeiUhDsCdi5iNeYTkN8QF0BhmzV8CqCvhY=;
+        b=Xku5+F1bMineSQLmjlSinbINRZhR5zmM4pKWp0UFLkj+BHjGh6oryPzP7ZAtECvdR0
+         hKdEd0wAtVfiiS/hKQxX1f8upuApa2rD6T4fwg/V+4vMXPiGHjeCKsgCpZVuT7ebKxYe
+         1R27XpNVHJZCZR1QU8zDG9YNp4HeTogeYvX6CCI7GHThdjeeVI2rzZ42dCu0egBWDko+
+         UZR0KnMZKJ7bdVtfItSaWB8kh0t0/gYWeXoV476bKBZJ8fCGaJrjMWohqPdVWRtWO0Ri
+         0rx4KAZN3oiTHpg5F7iU4CS+uvtXJrAVyTEpdSFpTWJfVH4VeW5nkaR05PdNqA4buENc
+         Pu+w==
+X-Gm-Message-State: AOAM532CutCG0GC7YzIYGFUEb9lyTLxkt/nzNGNF/68pQ6/h2iNzOQlk
+        ZGe+BcnnFGns1i1/SStr6dxXnawI
+X-Google-Smtp-Source: ABdhPJxCznaaxaGL+14q8JiBUOjF86gnDyghXa0FK8KZ9IMnO9Rzob+6KBGvtceCTPVm7caAHePN/Q==
+X-Received: by 2002:a54:4006:: with SMTP id x6mr7303824oie.148.1592682797007;
+        Sat, 20 Jun 2020 12:53:17 -0700 (PDT)
+Received: from localhost.localdomain (cpe-24-31-245-230.kc.res.rr.com. [24.31.245.230])
+        by smtp.gmail.com with ESMTPSA id e6sm2132539otk.51.2020.06.20.12.53.15
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 20 Jun 2020 12:53:16 -0700 (PDT)
+Subject: Re: [PATCH v1] rtw88: pci: disable aspm for platform inter-op with
+ module parameter
+To:     yhchuang@realtek.com, kvalo@codeaurora.org
+Cc:     kernel@iuliancostan.com, linux-wireless@vger.kernel.org, i@outv.im,
+        trevor@shartrec.com
+References: <20200605074703.32726-1-yhchuang@realtek.com>
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+Message-ID: <5def4c90-5143-68f1-201f-b0590f85dde6@lwfinger.net>
+Date:   Sat, 20 Jun 2020 14:53:15 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.9.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CA+icZUWpHRR7ukyepiUH1dR3r4GMi-s2crfwR5vTszdt1SUTQw@mail.gmail.com>
+In-Reply-To: <20200605074703.32726-1-yhchuang@realtek.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sat, Jun 20, 2020 at 09:03:34AM +0200, Sedat Dilek wrote:
-> On Sat, Jun 20, 2020 at 5:30 AM Kees Cook <keescook@chromium.org> wrote:
-> >
-> > v2:
-> > - more special-cased fixes
-> > - add reviews
-> > v1: https://lore.kernel.org/lkml/20200603233203.1695403-1-keescook@chromium.org
-> >
-> > Using uninitialized_var() is dangerous as it papers over real bugs[1]
-> > (or can in the future), and suppresses unrelated compiler warnings
-> > (e.g. "unused variable"). If the compiler thinks it is uninitialized,
-> > either simply initialize the variable or make compiler changes.
-> >
-> > As recommended[2] by[3] Linus[4], remove the macro.
-> >
-> > Most of the 300 uses don't cause any warnings on gcc 9.3.0, so they're in
-> > a single treewide commit in this series. A few others needed to actually
-> > get cleaned up, and I broke those out into individual patches.
-> >
-> > The tree is:
-> > https://git.kernel.org/pub/scm/linux/kernel/git/kees/linux.git/log/?h=kspp/uninit/macro
-> >
-> > -Kees
-> >
+On 6/5/20 2:47 AM, yhchuang@realtek.com wrote:
+> From: Yan-Hsuan Chuang <yhchuang@realtek.com>
 > 
-> Hi Kees,
+> Some platforms cannot read the DBI register successfully for the
+> ASPM settings. After the read failed, the bus could be unstable,
+> and the device just became unavailable [1]. For those platforms,
+> the ASPM should be disabled. But as the ASPM can help the driver
+> to save the power consumption in power save mode, the ASPM is still
+> needed. So, add a module parameter for them to disable it, then
+> the device can still work, while others can benefit from the less
+> power consumption that brings by ASPM enabled.
 > 
-> thanks for doing a v2 of your patchset.
-> 
-> As I saw Jason Yan providing some "uninitialized_var() macro" patches
-> to the MLs I pointen him to your tree "v1".
+> [1] https://bugzilla.kernel.org/show_bug.cgi?id=206411
+> [2] Note that my lenovo T430 is the same.
 
-Thanks!
+As someone who maintains these drivers in a GitHub repo so that users of older 
+kernels can have access to them, I am in favor of this module option. Only a 
+very few cases would need to disable ASPM, and I see no reason for everyone else 
+to use additional power as would be needed with automatic disabling. Adding a 
+new machine to some quirk list would be more difficult than merely telling a 
+novice user how to turn ASPM off for their system.
 
-> BTW, I have tested your "v1" against Linux v5.7 (see [1]) - just
-> yesterday with Linux v5.7.5-rc1.
-> 
-> Is it possible to have a v2 of this patchset on top od Linux v5.7 - if
-> you do not mind.
+In case someone is collecting machines that would need a quirk, I found another 
+one as shown in https://github.com/lwfinger/rtlwifi_new/issues/622. That one is 
+a Lenovo Thinkpad E490.
 
-Since it's only going to be for post-v5.8, I'm fine skipping the v5.7
-testing. Mainly I'm looking at v5.8 and linux-next.
+Larry
 
-Thanks for looking at it!
 
--- 
-Kees Cook
+
+
