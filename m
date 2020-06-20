@@ -2,346 +2,205 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C447720220C
-	for <lists+linux-wireless@lfdr.de>; Sat, 20 Jun 2020 09:03:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 21D86202346
+	for <lists+linux-wireless@lfdr.de>; Sat, 20 Jun 2020 12:57:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726927AbgFTHDs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 20 Jun 2020 03:03:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34322 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725826AbgFTHDq (ORCPT
+        id S1728042AbgFTK5b (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 20 Jun 2020 06:57:31 -0400
+Received: from mail-io1-f71.google.com ([209.85.166.71]:32787 "EHLO
+        mail-io1-f71.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727998AbgFTK5P (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 20 Jun 2020 03:03:46 -0400
-Received: from mail-il1-x141.google.com (mail-il1-x141.google.com [IPv6:2607:f8b0:4864:20::141])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BDDD4C06174E;
-        Sat, 20 Jun 2020 00:03:46 -0700 (PDT)
-Received: by mail-il1-x141.google.com with SMTP id e11so11357852ilr.4;
-        Sat, 20 Jun 2020 00:03:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:reply-to:from:date:message-id
-         :subject:to:cc;
-        bh=a9ahofqDzxBvbMDVeFWZXAdljkUzW+GWnKPGvNmGbew=;
-        b=kAYtSFJmm26fyJ/AT6EfzCS+jtkQQTPDN6EJc0JYESOS7vBpvpcYnms/zQ2JNRfcNN
-         fKoNNCk6LWcoFfukhBIQk2SWf1doL8l9eqzBTSJ04Zot4NKNcjQ+DuhjTcpIPVdcn4XN
-         npdQ4pzK3Va8zBRrCMF82NOhHT/+HGvBVfFJ1OFB7L+q3miZFc8HTvfwINe24MvKThel
-         EHb4ZCSGZE4iyB4VMYHpqIeymu5MigaAWtLN+bZdLG67Vn3cNwZduBEjPvcGkCndbZrg
-         XmFG/UxYZ25AVnDTWXap3wf1XByUxE02qwnBIR2GFWtTdM6jxiMmdQ9Lc72xdIboiM2j
-         h/qg==
+        Sat, 20 Jun 2020 06:57:15 -0400
+Received: by mail-io1-f71.google.com with SMTP id x2so8720389iof.0
+        for <linux-wireless@vger.kernel.org>; Sat, 20 Jun 2020 03:57:12 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:reply-to
-         :from:date:message-id:subject:to:cc;
-        bh=a9ahofqDzxBvbMDVeFWZXAdljkUzW+GWnKPGvNmGbew=;
-        b=nOHqr0MpwmciQ3C1A+6UYB1SzTU5oXJblfZWP6TL5CDWFRiHGjxT3/PGcHildo391e
-         tFaNnp5CGrpB8ro2KmvCAODStGsVHakOcQuF/XyprPDuIm2dP4Np1lxoWUVw+1uLbEoD
-         tKstwGeIn/dHT24l9zdEgN+H7DMxTAtTbjVlL8Vk12oD73bHbsn7R4/FBaBRfS99WdeQ
-         0mUiDEo8kq3vbMSSb76cJRSwNFYZDc6lo+j7XDrxDEr5aFrudKZmPazZtY19iXzsHJ9v
-         UqZvLuCq0bufweZSfI2r2JQOztmzCILLOZDCnEK7dcrW5lwRcfjxhz10B2v+zVQmp3qk
-         YQBA==
-X-Gm-Message-State: AOAM530um0Ep1yUI9Ml/C/FE3IbTw5/IgzHzvkZRVw7uCby97WR86RzV
-        faZqRFZWyTBUxh41BpxKIOtXxAKvxpLFbAQV1K0=
-X-Google-Smtp-Source: ABdhPJxWS0ivRloaMr5HXbaZwbFGPtEXbsrLhTYVvQoZaAzc/bidow2QSWV7Kc20ONgmu24hi0Xs1wPyFpI7swHyPDY=
-X-Received: by 2002:a92:3646:: with SMTP id d6mr7283730ilf.255.1592636625845;
- Sat, 20 Jun 2020 00:03:45 -0700 (PDT)
+        h=x-gm-message-state:mime-version:date:in-reply-to:message-id:subject
+         :from:to;
+        bh=8GDLcHKAWL6B36TT6Nf4rJzMiJsHjfM/kCOmAs5JEyA=;
+        b=n+CGlxhQUrLWDvCnHmF+zLw7NZLXXbpIhN9zhwyrTMyeb/ZZYnB20pTTOIrMLE+x3W
+         onMfv34vNYQmPp2dgeDT8z2k5EIVrlfZd/6P+CC7BvdvjfBa7H7IXaOf3uPA+TIqzov/
+         8QML7DF1/3hgp36V0Az28EM1LrHI+TZ/33vcnlDswy9f/Gi9f4Nj7LAzQAYM3qnDjy/Z
+         oXeGd+vn8n9Xvjzw9k2FEn+FmQMQY7x5weYqoZUQYVsdsNh1kxN3Jym6ivm/JWDHE0Q4
+         V/b4+Zo0RsncRz/LyMhrYMeed8nl6S/XpMIGJAzFqodB4eLZMAeAwCn57VxzOpi4CuS8
+         uG0w==
+X-Gm-Message-State: AOAM532rbWX4esA0y23I7/o/+sgiNQYcmZaJb/7qit9Yg2H4/Iuihntq
+        HnD71gKlUbwIld0t6SovL6OKCr6OdpFBAkXPvDbUzvRStv/Y
+X-Google-Smtp-Source: ABdhPJzw9wh1dy1bqFQBiniZPWvy/ZxKf3U9KDNXoj4Sw1dPBRj2fhfGeQ31pI0G7ZHvkGYXVWMCVTFlfBqqtRBQ79v+km0Ub4N2
 MIME-Version: 1.0
-References: <20200620033007.1444705-1-keescook@chromium.org>
-In-Reply-To: <20200620033007.1444705-1-keescook@chromium.org>
-Reply-To: sedat.dilek@gmail.com
-From:   Sedat Dilek <sedat.dilek@gmail.com>
-Date:   Sat, 20 Jun 2020 09:03:34 +0200
-Message-ID: <CA+icZUWpHRR7ukyepiUH1dR3r4GMi-s2crfwR5vTszdt1SUTQw@mail.gmail.com>
-Subject: Re: [PATCH v2 00/16] Remove uninitialized_var() macro
-To:     Kees Cook <keescook@chromium.org>
-Cc:     linux-kernel@vger.kernel.org,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-        Alexander Potapenko <glider@google.com>,
-        Joe Perches <joe@perches.com>,
-        Andy Whitcroft <apw@canonical.com>, x86@kernel.org,
-        drbd-dev@lists.linbit.com, linux-block@vger.kernel.org,
-        b43-dev@lists.infradead.org, netdev@vger.kernel.org,
-        linux-doc@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux-ide@vger.kernel.org, linux-clk@vger.kernel.org,
-        linux-spi@vger.kernel.org, linux-mm@kvack.org,
-        Clang-Built-Linux ML <clang-built-linux@googlegroups.com>
+X-Received: by 2002:a6b:9143:: with SMTP id t64mr3764177iod.55.1592650632570;
+ Sat, 20 Jun 2020 03:57:12 -0700 (PDT)
+Date:   Sat, 20 Jun 2020 03:57:12 -0700
+In-Reply-To: <0000000000006bf03c05a86205bb@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <00000000000034ad2805a881df44@google.com>
+Subject: Re: INFO: trying to register non-static key in ath9k_htc_rxep
+From:   syzbot <syzbot+4d2d56175b934b9a7bf9@syzkaller.appspotmail.com>
+To:     andreyknvl@google.com, ath9k-devel@qca.qualcomm.com,
+        davem@davemloft.net, kuba@kernel.org, kvalo@codeaurora.org,
+        linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        syzkaller-bugs@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sat, Jun 20, 2020 at 5:30 AM Kees Cook <keescook@chromium.org> wrote:
->
-> v2:
-> - more special-cased fixes
-> - add reviews
-> v1: https://lore.kernel.org/lkml/20200603233203.1695403-1-keescook@chromium.org
->
-> Using uninitialized_var() is dangerous as it papers over real bugs[1]
-> (or can in the future), and suppresses unrelated compiler warnings
-> (e.g. "unused variable"). If the compiler thinks it is uninitialized,
-> either simply initialize the variable or make compiler changes.
->
-> As recommended[2] by[3] Linus[4], remove the macro.
->
-> Most of the 300 uses don't cause any warnings on gcc 9.3.0, so they're in
-> a single treewide commit in this series. A few others needed to actually
-> get cleaned up, and I broke those out into individual patches.
->
-> The tree is:
-> https://git.kernel.org/pub/scm/linux/kernel/git/kees/linux.git/log/?h=kspp/uninit/macro
->
-> -Kees
->
+syzbot has found a reproducer for the following crash on:
 
-Hi Kees,
+HEAD commit:    f8f02d5c USB: OTG: rename product list of devices
+git tree:       https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb.git usb-testing
+console output: https://syzkaller.appspot.com/x/log.txt?x=15fd18a5100000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=f1981539b6376b73
+dashboard link: https://syzkaller.appspot.com/bug?extid=4d2d56175b934b9a7bf9
+compiler:       gcc (GCC) 9.0.0 20181231 (experimental)
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=14519481100000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=110318e9100000
 
-thanks for doing a v2 of your patchset.
+IMPORTANT: if you fix the bug, please add the following tag to the commit:
+Reported-by: syzbot+4d2d56175b934b9a7bf9@syzkaller.appspotmail.com
 
-As I saw Jason Yan providing some "uninitialized_var() macro" patches
-to the MLs I pointen him to your tree "v1".
+INFO: trying to register non-static key.
+the code is fine but needs lockdep annotation.
+turning off the locking correctness validator.
+CPU: 1 PID: 0 Comm: swapper/1 Not tainted 5.8.0-rc1-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
+Call Trace:
+ <IRQ>
+ __dump_stack lib/dump_stack.c:77 [inline]
+ dump_stack+0xf6/0x16e lib/dump_stack.c:118
+ assign_lock_key kernel/locking/lockdep.c:894 [inline]
+ register_lock_class+0x1228/0x16d0 kernel/locking/lockdep.c:1206
+ __lock_acquire+0x101/0x6270 kernel/locking/lockdep.c:4259
+ lock_acquire+0x18b/0x7c0 kernel/locking/lockdep.c:4959
+ __raw_spin_lock_irqsave include/linux/spinlock_api_smp.h:110 [inline]
+ _raw_spin_lock_irqsave+0x32/0x50 kernel/locking/spinlock.c:159
+ ath9k_htc_rxep+0x31/0x210 drivers/net/wireless/ath/ath9k/htc_drv_txrx.c:1128
+ ath9k_htc_rx_msg+0x2d9/0xb00 drivers/net/wireless/ath/ath9k/htc_hst.c:459
+ ath9k_hif_usb_rx_stream drivers/net/wireless/ath/ath9k/hif_usb.c:638 [inline]
+ ath9k_hif_usb_rx_cb+0xc76/0x1050 drivers/net/wireless/ath/ath9k/hif_usb.c:671
+ __usb_hcd_giveback_urb+0x29a/0x550 drivers/usb/core/hcd.c:1650
+ usb_hcd_giveback_urb+0x368/0x420 drivers/usb/core/hcd.c:1716
+ dummy_timer+0x125e/0x32b4 drivers/usb/gadget/udc/dummy_hcd.c:1967
+ call_timer_fn+0x1ac/0x6e0 kernel/time/timer.c:1404
+ expire_timers kernel/time/timer.c:1449 [inline]
+ __run_timers kernel/time/timer.c:1773 [inline]
+ __run_timers kernel/time/timer.c:1740 [inline]
+ run_timer_softirq+0x5e5/0x14c0 kernel/time/timer.c:1786
+ __do_softirq+0x21e/0x996 kernel/softirq.c:292
+ asm_call_on_stack+0xf/0x20 arch/x86/entry/entry_64.S:711
+ </IRQ>
+ __run_on_irqstack arch/x86/include/asm/irq_stack.h:22 [inline]
+ run_on_irqstack_cond arch/x86/include/asm/irq_stack.h:48 [inline]
+ do_softirq_own_stack+0x109/0x140 arch/x86/kernel/irq_64.c:77
+ invoke_softirq kernel/softirq.c:387 [inline]
+ __irq_exit_rcu kernel/softirq.c:417 [inline]
+ irq_exit_rcu+0x16f/0x1a0 kernel/softirq.c:429
+ sysvec_apic_timer_interrupt+0xd3/0x1b0 arch/x86/kernel/apic/apic.c:1091
+ asm_sysvec_apic_timer_interrupt+0x12/0x20 arch/x86/include/asm/idtentry.h:596
+RIP: 0010:native_irq_disable arch/x86/include/asm/irqflags.h:49 [inline]
+RIP: 0010:arch_local_irq_disable arch/x86/include/asm/irqflags.h:89 [inline]
+RIP: 0010:acpi_safe_halt drivers/acpi/processor_idle.c:112 [inline]
+RIP: 0010:acpi_safe_halt+0x72/0x90 drivers/acpi/processor_idle.c:108
+Code: 74 06 5b e9 c0 32 9f fb e8 bb 32 9f fb e8 c6 96 a4 fb e9 0c 00 00 00 e8 ac 32 9f fb 0f 00 2d 45 6e 84 00 e8 a0 32 9f fb fb f4 <fa> e8 b8 94 a4 fb 5b e9 92 32 9f fb 48 89 df e8 7a e1 c8 fb eb ab
+RSP: 0018:ffff8881da22fc60 EFLAGS: 00000293
+RAX: ffff8881da213200 RBX: 0000000000000000 RCX: 1ffffffff1014efa
+RDX: 0000000000000000 RSI: ffffffff85a03aa0 RDI: ffff8881da213a38
+RBP: ffff8881d8d2a864 R08: 0000000000000000 R09: 0000000000000001
+R10: 0000000000000000 R11: 0000000000000000 R12: ffff8881d8d2a864
+R13: 1ffff1103b445f96 R14: ffff8881d8d2a865 R15: 0000000000000001
+ acpi_idle_do_entry+0xa9/0xe0 drivers/acpi/processor_idle.c:525
+ acpi_idle_enter+0x42b/0xac0 drivers/acpi/processor_idle.c:651
+ cpuidle_enter_state+0xdb/0xc20 drivers/cpuidle/cpuidle.c:234
+ cpuidle_enter+0x4a/0xa0 drivers/cpuidle/cpuidle.c:345
+ call_cpuidle kernel/sched/idle.c:117 [inline]
+ cpuidle_idle_call kernel/sched/idle.c:207 [inline]
+ do_idle+0x3c2/0x500 kernel/sched/idle.c:269
+ cpu_startup_entry+0x14/0x20 kernel/sched/idle.c:365
+ start_secondary+0x294/0x370 arch/x86/kernel/smpboot.c:268
+ secondary_startup_64+0xb6/0xc0 arch/x86/kernel/head_64.S:243
+BUG: unable to handle page fault for address: ffffffffffffffc8
+#PF: supervisor read access in kernel mode
+#PF: error_code(0x0000) - not-present page
+PGD 7226067 P4D 7226067 PUD 7228067 PMD 0 
+Oops: 0000 [#1] SMP KASAN
+CPU: 1 PID: 0 Comm: swapper/1 Not tainted 5.8.0-rc1-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
+RIP: 0010:ath9k_htc_rxep+0xb5/0x210 drivers/net/wireless/ath/ath9k/htc_drv_txrx.c:1130
+Code: 8b 43 38 48 8d 58 c8 49 39 c4 0f 84 ee 00 00 00 e8 70 56 62 fe 48 89 d8 48 c1 e8 03 0f b6 04 28 84 c0 74 06 0f 8e 0a 01 00 00 <44> 0f b6 3b 31 ff 44 89 fe e8 ad 57 62 fe 45 84 ff 75 a8 e8 43 56
+RSP: 0018:ffff8881db3098b0 EFLAGS: 00010046
+RAX: 0000000000000000 RBX: ffffffffffffffc8 RCX: ffffffff81274370
+RDX: 0000000000000000 RSI: ffffffff82dd16d0 RDI: ffff8881db309820
+RBP: dffffc0000000000 R08: 0000000000000004 R09: ffffed103b661305
+R10: 0000000000000003 R11: ffffed103b661304 R12: ffff8881cd69b538
+R13: ffff8881cd69b100 R14: ffff8881cd69b548 R15: ffffed10392ce210
+FS:  0000000000000000(0000) GS:ffff8881db300000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: ffffffffffffffc8 CR3: 00000001cf9f6000 CR4: 00000000001406e0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <IRQ>
+ ath9k_htc_rx_msg+0x2d9/0xb00 drivers/net/wireless/ath/ath9k/htc_hst.c:459
+ ath9k_hif_usb_rx_stream drivers/net/wireless/ath/ath9k/hif_usb.c:638 [inline]
+ ath9k_hif_usb_rx_cb+0xc76/0x1050 drivers/net/wireless/ath/ath9k/hif_usb.c:671
+ __usb_hcd_giveback_urb+0x29a/0x550 drivers/usb/core/hcd.c:1650
+ usb_hcd_giveback_urb+0x368/0x420 drivers/usb/core/hcd.c:1716
+ dummy_timer+0x125e/0x32b4 drivers/usb/gadget/udc/dummy_hcd.c:1967
+ call_timer_fn+0x1ac/0x6e0 kernel/time/timer.c:1404
+ expire_timers kernel/time/timer.c:1449 [inline]
+ __run_timers kernel/time/timer.c:1773 [inline]
+ __run_timers kernel/time/timer.c:1740 [inline]
+ run_timer_softirq+0x5e5/0x14c0 kernel/time/timer.c:1786
+ __do_softirq+0x21e/0x996 kernel/softirq.c:292
+ asm_call_on_stack+0xf/0x20 arch/x86/entry/entry_64.S:711
+ </IRQ>
+ __run_on_irqstack arch/x86/include/asm/irq_stack.h:22 [inline]
+ run_on_irqstack_cond arch/x86/include/asm/irq_stack.h:48 [inline]
+ do_softirq_own_stack+0x109/0x140 arch/x86/kernel/irq_64.c:77
+ invoke_softirq kernel/softirq.c:387 [inline]
+ __irq_exit_rcu kernel/softirq.c:417 [inline]
+ irq_exit_rcu+0x16f/0x1a0 kernel/softirq.c:429
+ sysvec_apic_timer_interrupt+0xd3/0x1b0 arch/x86/kernel/apic/apic.c:1091
+ asm_sysvec_apic_timer_interrupt+0x12/0x20 arch/x86/include/asm/idtentry.h:596
+RIP: 0010:native_irq_disable arch/x86/include/asm/irqflags.h:49 [inline]
+RIP: 0010:arch_local_irq_disable arch/x86/include/asm/irqflags.h:89 [inline]
+RIP: 0010:acpi_safe_halt drivers/acpi/processor_idle.c:112 [inline]
+RIP: 0010:acpi_safe_halt+0x72/0x90 drivers/acpi/processor_idle.c:108
+Code: 74 06 5b e9 c0 32 9f fb e8 bb 32 9f fb e8 c6 96 a4 fb e9 0c 00 00 00 e8 ac 32 9f fb 0f 00 2d 45 6e 84 00 e8 a0 32 9f fb fb f4 <fa> e8 b8 94 a4 fb 5b e9 92 32 9f fb 48 89 df e8 7a e1 c8 fb eb ab
+RSP: 0018:ffff8881da22fc60 EFLAGS: 00000293
+RAX: ffff8881da213200 RBX: 0000000000000000 RCX: 1ffffffff1014efa
+RDX: 0000000000000000 RSI: ffffffff85a03aa0 RDI: ffff8881da213a38
+RBP: ffff8881d8d2a864 R08: 0000000000000000 R09: 0000000000000001
+R10: 0000000000000000 R11: 0000000000000000 R12: ffff8881d8d2a864
+R13: 1ffff1103b445f96 R14: ffff8881d8d2a865 R15: 0000000000000001
+ acpi_idle_do_entry+0xa9/0xe0 drivers/acpi/processor_idle.c:525
+ acpi_idle_enter+0x42b/0xac0 drivers/acpi/processor_idle.c:651
+ cpuidle_enter_state+0xdb/0xc20 drivers/cpuidle/cpuidle.c:234
+ cpuidle_enter+0x4a/0xa0 drivers/cpuidle/cpuidle.c:345
+ call_cpuidle kernel/sched/idle.c:117 [inline]
+ cpuidle_idle_call kernel/sched/idle.c:207 [inline]
+ do_idle+0x3c2/0x500 kernel/sched/idle.c:269
+ cpu_startup_entry+0x14/0x20 kernel/sched/idle.c:365
+ start_secondary+0x294/0x370 arch/x86/kernel/smpboot.c:268
+ secondary_startup_64+0xb6/0xc0 arch/x86/kernel/head_64.S:243
+Modules linked in:
+CR2: ffffffffffffffc8
+---[ end trace 5a637b710bbf1999 ]---
+RIP: 0010:ath9k_htc_rxep+0xb5/0x210 drivers/net/wireless/ath/ath9k/htc_drv_txrx.c:1130
+Code: 8b 43 38 48 8d 58 c8 49 39 c4 0f 84 ee 00 00 00 e8 70 56 62 fe 48 89 d8 48 c1 e8 03 0f b6 04 28 84 c0 74 06 0f 8e 0a 01 00 00 <44> 0f b6 3b 31 ff 44 89 fe e8 ad 57 62 fe 45 84 ff 75 a8 e8 43 56
+RSP: 0018:ffff8881db3098b0 EFLAGS: 00010046
+RAX: 0000000000000000 RBX: ffffffffffffffc8 RCX: ffffffff81274370
+RDX: 0000000000000000 RSI: ffffffff82dd16d0 RDI: ffff8881db309820
+RBP: dffffc0000000000 R08: 0000000000000004 R09: ffffed103b661305
+R10: 0000000000000003 R11: ffffed103b661304 R12: ffff8881cd69b538
+R13: ffff8881cd69b100 R14: ffff8881cd69b548 R15: ffffed10392ce210
+FS:  0000000000000000(0000) GS:ffff8881db300000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: ffffffffffffffc8 CR3: 00000001cf9f6000 CR4: 00000000001406e0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
 
-BTW, I have tested your "v1" against Linux v5.7 (see [1]) - just
-yesterday with Linux v5.7.5-rc1.
-
-Is it possible to have a v2 of this patchset on top od Linux v5.7 - if
-you do not mind.
-
-Thanks.
-
-Best regards,
-- Sedat -
-
-[1] https://git.kernel.org/pub/scm/linux/kernel/git/kees/linux.git/log/?h=kspp/uninit/v5.7/macro
-
-> [1] https://lore.kernel.org/lkml/20200603174714.192027-1-glider@google.com/
-> [2] https://lore.kernel.org/lkml/CA+55aFw+Vbj0i=1TGqCR5vQkCzWJ0QxK6CernOU6eedsudAixw@mail.gmail.com/
-> [3] https://lore.kernel.org/lkml/CA+55aFwgbgqhbp1fkxvRKEpzyR5J8n1vKT1VZdz9knmPuXhOeg@mail.gmail.com/
-> [4] https://lore.kernel.org/lkml/CA+55aFz2500WfbKXAx8s67wrm9=yVJu65TpLgN_ybYNv0VEOKA@mail.gmail.com/
->
-> Jason Yan (1):
->   f2fs: Eliminate usage of uninitialized_var() macro
->
-> Kees Cook (15):
->   docs: deprecated.rst: Add uninitialized_var()
->   x86/mm/numa: Remove uninitialized_var() usage
->   drbd: Remove uninitialized_var() usage
->   b43: Remove uninitialized_var() usage
->   rtlwifi: rtl8192cu: Remove uninitialized_var() usage
->   ide: Remove uninitialized_var() usage
->   clk: st: Remove uninitialized_var() usage
->   spi: davinci: Remove uninitialized_var() usage
->   clk: spear: Remove uninitialized_var() usage
->   KVM: PPC: Book3S PR: Remove uninitialized_var() usage
->   media: sur40: Remove uninitialized_var() usage
->   checkpatch: Remove awareness of uninitialized_var() macro
->   treewide: Remove uninitialized_var() usage
->   compiler: Remove uninitialized_var() macro
->   mm/debug_vm_pgtable: Remove uninitialized_var() usage
->
->  Documentation/process/deprecated.rst           | 18 ++++++++++++++++++
->  arch/arm/mach-sa1100/assabet.c                 |  2 +-
->  arch/arm/mm/alignment.c                        |  2 +-
->  arch/ia64/kernel/process.c                     |  2 +-
->  arch/ia64/mm/discontig.c                       |  2 +-
->  arch/ia64/mm/tlb.c                             |  2 +-
->  arch/mips/lib/dump_tlb.c                       |  2 +-
->  arch/mips/mm/init.c                            |  2 +-
->  arch/mips/mm/tlb-r4k.c                         |  6 +++---
->  arch/powerpc/kvm/book3s_64_mmu_radix.c         |  2 +-
->  arch/powerpc/kvm/book3s_pr.c                   |  3 ---
->  arch/powerpc/kvm/powerpc.c                     |  2 +-
->  arch/powerpc/platforms/52xx/mpc52xx_pic.c      |  2 +-
->  arch/s390/kernel/smp.c                         |  2 +-
->  arch/x86/kernel/quirks.c                       | 10 +++++-----
->  arch/x86/kvm/mmu/mmu.c                         |  2 +-
->  arch/x86/kvm/mmu/paging_tmpl.h                 |  2 +-
->  arch/x86/kvm/x86.c                             |  2 +-
->  arch/x86/mm/numa.c                             | 18 +++++++++---------
->  block/blk-merge.c                              |  2 +-
->  drivers/acpi/acpi_pad.c                        |  2 +-
->  drivers/ata/libata-scsi.c                      |  2 +-
->  drivers/atm/zatm.c                             |  2 +-
->  drivers/block/drbd/drbd_nl.c                   |  6 +++---
->  drivers/block/drbd/drbd_state.c                |  2 +-
->  drivers/block/rbd.c                            |  2 +-
->  drivers/clk/clk-gate.c                         |  2 +-
->  drivers/clk/spear/clk-vco-pll.c                |  2 +-
->  drivers/clk/st/clkgen-fsyn.c                   |  1 -
->  drivers/firewire/ohci.c                        | 14 +++++++-------
->  drivers/gpu/drm/bridge/sil-sii8620.c           |  2 +-
->  drivers/gpu/drm/drm_edid.c                     |  2 +-
->  drivers/gpu/drm/exynos/exynos_drm_dsi.c        |  6 +++---
->  drivers/gpu/drm/i915/display/intel_fbc.c       |  2 +-
->  drivers/gpu/drm/i915/gt/intel_lrc.c            |  2 +-
->  drivers/gpu/drm/i915/intel_uncore.c            |  2 +-
->  .../gpu/drm/rockchip/dw-mipi-dsi-rockchip.c    |  4 ++--
->  drivers/i2c/busses/i2c-rk3x.c                  |  2 +-
->  drivers/ide/ide-acpi.c                         |  2 +-
->  drivers/ide/ide-atapi.c                        |  2 +-
->  drivers/ide/ide-io-std.c                       |  4 ++--
->  drivers/ide/ide-io.c                           |  8 ++++----
->  drivers/ide/ide-sysfs.c                        |  2 +-
->  drivers/ide/ide-taskfile.c                     |  1 -
->  drivers/ide/umc8672.c                          |  2 +-
->  drivers/idle/intel_idle.c                      |  2 +-
->  drivers/infiniband/core/uverbs_cmd.c           |  4 ++--
->  drivers/infiniband/hw/cxgb4/cm.c               |  2 +-
->  drivers/infiniband/hw/cxgb4/cq.c               |  2 +-
->  drivers/infiniband/hw/mlx4/qp.c                |  6 +++---
->  drivers/infiniband/hw/mlx5/cq.c                |  6 +++---
->  drivers/infiniband/hw/mlx5/devx.c              |  2 +-
->  drivers/infiniband/hw/mlx5/wr.c                |  2 +-
->  drivers/infiniband/hw/mthca/mthca_qp.c         | 10 +++++-----
->  drivers/infiniband/sw/siw/siw_qp_rx.c          |  2 +-
->  drivers/input/serio/serio_raw.c                |  2 +-
->  drivers/input/touchscreen/sur40.c              |  4 +---
->  drivers/iommu/intel/iommu.c                    |  2 +-
->  drivers/md/dm-io.c                             |  2 +-
->  drivers/md/dm-ioctl.c                          |  2 +-
->  drivers/md/dm-snap-persistent.c                |  2 +-
->  drivers/md/dm-table.c                          |  2 +-
->  drivers/md/dm-writecache.c                     |  2 +-
->  drivers/md/raid5.c                             |  2 +-
->  drivers/media/dvb-frontends/rtl2832.c          |  2 +-
->  drivers/media/tuners/qt1010.c                  |  4 ++--
->  drivers/media/usb/gspca/vicam.c                |  2 +-
->  drivers/media/usb/uvc/uvc_video.c              |  8 ++++----
->  drivers/memstick/host/jmb38x_ms.c              |  2 +-
->  drivers/memstick/host/tifm_ms.c                |  2 +-
->  drivers/mmc/host/sdhci.c                       |  2 +-
->  drivers/mtd/nand/raw/nand_ecc.c                |  2 +-
->  drivers/mtd/nand/raw/s3c2410.c                 |  2 +-
->  drivers/mtd/parsers/afs.c                      |  4 ++--
->  drivers/mtd/ubi/eba.c                          |  2 +-
->  drivers/net/can/janz-ican3.c                   |  2 +-
->  drivers/net/ethernet/broadcom/bnx2.c           |  4 ++--
->  .../ethernet/mellanox/mlx5/core/pagealloc.c    |  4 ++--
->  drivers/net/ethernet/neterion/s2io.c           |  2 +-
->  drivers/net/ethernet/qlogic/qla3xxx.c          |  2 +-
->  drivers/net/ethernet/sun/cassini.c             |  2 +-
->  drivers/net/ethernet/sun/niu.c                 |  6 +++---
->  drivers/net/wan/z85230.c                       |  2 +-
->  drivers/net/wireless/ath/ath10k/core.c         |  2 +-
->  drivers/net/wireless/ath/ath6kl/init.c         |  2 +-
->  drivers/net/wireless/ath/ath9k/init.c          |  2 +-
->  drivers/net/wireless/broadcom/b43/debugfs.c    |  2 +-
->  drivers/net/wireless/broadcom/b43/dma.c        |  2 +-
->  drivers/net/wireless/broadcom/b43/lo.c         |  2 +-
->  drivers/net/wireless/broadcom/b43/phy_n.c      |  4 ++--
->  drivers/net/wireless/broadcom/b43/xmit.c       | 12 ++++++------
->  .../net/wireless/broadcom/b43legacy/debugfs.c  |  2 +-
->  drivers/net/wireless/broadcom/b43legacy/main.c |  2 +-
->  drivers/net/wireless/intel/iwlegacy/3945.c     |  2 +-
->  drivers/net/wireless/intel/iwlegacy/4965-mac.c |  2 +-
->  .../wireless/realtek/rtlwifi/rtl8192cu/hw.c    |  8 ++++----
->  drivers/pci/pcie/aer.c                         |  2 +-
->  drivers/platform/x86/hdaps.c                   |  4 ++--
->  drivers/scsi/dc395x.c                          |  2 +-
->  drivers/scsi/pm8001/pm8001_hwi.c               |  2 +-
->  drivers/scsi/pm8001/pm80xx_hwi.c               |  2 +-
->  drivers/spi/spi-davinci.c                      |  1 -
->  drivers/ssb/driver_chipcommon.c                |  4 ++--
->  drivers/tty/cyclades.c                         |  2 +-
->  drivers/tty/isicom.c                           |  2 +-
->  drivers/usb/musb/cppi_dma.c                    |  2 +-
->  drivers/usb/storage/sddr55.c                   |  4 ++--
->  drivers/vhost/net.c                            |  6 +++---
->  drivers/video/fbdev/matrox/matroxfb_maven.c    |  6 +++---
->  drivers/video/fbdev/pm3fb.c                    |  6 +++---
->  drivers/video/fbdev/riva/riva_hw.c             |  3 +--
->  drivers/virtio/virtio_ring.c                   |  6 +++---
->  fs/afs/dir.c                                   |  2 +-
->  fs/afs/security.c                              |  2 +-
->  fs/dlm/netlink.c                               |  2 +-
->  fs/erofs/data.c                                |  4 ++--
->  fs/erofs/zdata.c                               |  2 +-
->  fs/f2fs/data.c                                 |  4 +---
->  fs/fat/dir.c                                   |  2 +-
->  fs/fuse/control.c                              |  4 ++--
->  fs/fuse/cuse.c                                 |  2 +-
->  fs/fuse/file.c                                 |  2 +-
->  fs/gfs2/aops.c                                 |  2 +-
->  fs/gfs2/bmap.c                                 |  2 +-
->  fs/gfs2/lops.c                                 |  2 +-
->  fs/hfsplus/unicode.c                           |  2 +-
->  fs/isofs/namei.c                               |  4 ++--
->  fs/jffs2/erase.c                               |  2 +-
->  fs/nfsd/nfsctl.c                               |  2 +-
->  fs/ocfs2/alloc.c                               |  4 ++--
->  fs/ocfs2/dir.c                                 | 14 +++++++-------
->  fs/ocfs2/extent_map.c                          |  4 ++--
->  fs/ocfs2/namei.c                               |  2 +-
->  fs/ocfs2/refcounttree.c                        |  2 +-
->  fs/ocfs2/xattr.c                               |  2 +-
->  fs/omfs/file.c                                 |  2 +-
->  fs/overlayfs/copy_up.c                         |  2 +-
->  fs/ubifs/commit.c                              |  6 +++---
->  fs/ubifs/dir.c                                 |  2 +-
->  fs/ubifs/file.c                                |  4 ++--
->  fs/ubifs/journal.c                             |  4 ++--
->  fs/ubifs/lpt.c                                 |  2 +-
->  fs/ubifs/tnc.c                                 |  6 +++---
->  fs/ubifs/tnc_misc.c                            |  4 ++--
->  fs/udf/balloc.c                                |  2 +-
->  fs/xfs/xfs_bmap_util.c                         |  2 +-
->  include/linux/compiler-clang.h                 |  2 --
->  include/linux/compiler-gcc.h                   |  6 ------
->  include/linux/page-flags-layout.h              |  4 +++-
->  include/net/flow_offload.h                     |  2 +-
->  kernel/async.c                                 |  4 ++--
->  kernel/audit.c                                 |  2 +-
->  kernel/debug/kdb/kdb_io.c                      |  2 +-
->  kernel/dma/debug.c                             |  2 +-
->  kernel/events/core.c                           |  2 +-
->  kernel/events/uprobes.c                        |  2 +-
->  kernel/exit.c                                  |  2 +-
->  kernel/futex.c                                 | 14 +++++++-------
->  kernel/locking/lockdep.c                       | 16 ++++++++--------
->  kernel/trace/ring_buffer.c                     |  2 +-
->  lib/radix-tree.c                               |  2 +-
->  lib/test_lockup.c                              |  2 +-
->  mm/debug_vm_pgtable.c                          |  2 +-
->  mm/frontswap.c                                 |  2 +-
->  mm/ksm.c                                       |  2 +-
->  mm/memcontrol.c                                |  2 +-
->  mm/memory.c                                    |  2 +-
->  mm/mempolicy.c                                 |  4 ++--
->  mm/page_alloc.c                                |  2 +-
->  mm/percpu.c                                    |  2 +-
->  mm/slub.c                                      |  4 ++--
->  mm/swap.c                                      |  4 ++--
->  net/dccp/options.c                             |  2 +-
->  net/ipv4/netfilter/nf_socket_ipv4.c            |  6 +++---
->  net/ipv6/ip6_flowlabel.c                       |  2 +-
->  net/ipv6/netfilter/nf_socket_ipv6.c            |  2 +-
->  net/netfilter/nf_conntrack_ftp.c               |  2 +-
->  net/netfilter/nfnetlink_log.c                  |  2 +-
->  net/netfilter/nfnetlink_queue.c                |  4 ++--
->  net/sched/cls_flow.c                           |  2 +-
->  net/sched/sch_cake.c                           |  2 +-
->  net/sched/sch_cbq.c                            |  2 +-
->  net/sched/sch_fq_codel.c                       |  2 +-
->  net/sched/sch_fq_pie.c                         |  2 +-
->  net/sched/sch_hfsc.c                           |  2 +-
->  net/sched/sch_htb.c                            |  2 +-
->  net/sched/sch_sfq.c                            |  2 +-
->  net/sunrpc/svcsock.c                           |  4 ++--
->  net/sunrpc/xprtsock.c                          | 10 +++++-----
->  net/tls/tls_sw.c                               |  2 +-
->  scripts/checkpatch.pl                          | 16 +++++-----------
->  sound/core/control_compat.c                    |  2 +-
->  sound/isa/sb/sb16_csp.c                        |  2 +-
->  sound/usb/endpoint.c                           |  2 +-
->  tools/include/linux/compiler.h                 |  2 --
->  tools/virtio/linux/kernel.h                    |  2 --
->  196 files changed, 321 insertions(+), 330 deletions(-)
->
-> --
-> 2.25.1
->
-> --
-> You received this message because you are subscribed to the Google Groups "Clang Built Linux" group.
-> To unsubscribe from this group and stop receiving emails from it, send an email to clang-built-linux+unsubscribe@googlegroups.com.
-> To view this discussion on the web visit https://groups.google.com/d/msgid/clang-built-linux/20200620033007.1444705-1-keescook%40chromium.org.
