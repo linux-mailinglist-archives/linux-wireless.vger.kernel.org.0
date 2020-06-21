@@ -2,260 +2,125 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 444312026B3
-	for <lists+linux-wireless@lfdr.de>; Sat, 20 Jun 2020 23:12:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 31F3520292C
+	for <lists+linux-wireless@lfdr.de>; Sun, 21 Jun 2020 08:53:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728961AbgFTVMC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 20 Jun 2020 17:12:02 -0400
-Received: from len.romanrm.net ([91.121.86.59]:50668 "EHLO len.romanrm.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728874AbgFTVMB (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 20 Jun 2020 17:12:01 -0400
-X-Greylist: delayed 446 seconds by postgrey-1.27 at vger.kernel.org; Sat, 20 Jun 2020 17:11:59 EDT
-Received: from natsu (unknown [IPv6:fd39::e99e:8f1b:cfc9:ccb8])
-        by len.romanrm.net (Postfix) with SMTP id 6BBE6403FC;
-        Sat, 20 Jun 2020 21:04:28 +0000 (UTC)
-Date:   Sun, 21 Jun 2020 02:04:28 +0500
-From:   Roman Mamedov <rm@romanrm.net>
-To:     Qiujun Huang <hqjagain@gmail.com>
-Cc:     kvalo@codeaurora.org, ath9k-devel@qca.qualcomm.com,
-        davem@davemloft.net, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        anenbupt@gmail.com, syzkaller-bugs@googlegroups.com
-Subject: [BISECTED REGRESSION] ath9k: Fix general protection fault in
- ath9k_hif_usb_rx_cb
-Message-ID: <20200621020428.6417d6fb@natsu>
-In-Reply-To: <20200404041838.10426-6-hqjagain@gmail.com>
-References: <20200404041838.10426-1-hqjagain@gmail.com>
-        <20200404041838.10426-6-hqjagain@gmail.com>
+        id S1729347AbgFUGwt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 21 Jun 2020 02:52:49 -0400
+Received: from mailgw02.mediatek.com ([210.61.82.184]:16925 "EHLO
+        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1729343AbgFUGws (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 21 Jun 2020 02:52:48 -0400
+X-UUID: 1678444fb2ce4a00a1cebe0a9c206d13-20200621
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+        h=Content-Transfer-Encoding:Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=zTJvn/j/lwPeBJM7lskwLTnp6Bsi8Nsabh1V17UGZiI=;
+        b=dzgcSYD5JftL3jGNsqlKcpkWesE7hxnSO1W7GWlrJzX9lBYN9t3OTDgnzw/SdUwIdXQdiD4XJJ3idv/W/4dXr3i0YUr68UGUKCyJDj2MnlBv4PIWAtto9nOhcKceb0mBKRDVDMbwW8RaGTpoqoW+W7U1rGIMyTq3AQS0Ke6EQxI=;
+X-UUID: 1678444fb2ce4a00a1cebe0a9c206d13-20200621
+Received: from mtkcas07.mediatek.inc [(172.21.101.84)] by mailgw02.mediatek.com
+        (envelope-from <ryder.lee@mediatek.com>)
+        (Cellopoint E-mail Firewall v4.1.10 Build 0809 with TLS)
+        with ESMTP id 1083166191; Sun, 21 Jun 2020 14:52:42 +0800
+Received: from mtkcas08.mediatek.inc (172.21.101.126) by
+ mtkmbs06n1.mediatek.inc (172.21.101.129) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Sun, 21 Jun 2020 14:52:41 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas08.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Sun, 21 Jun 2020 14:52:33 +0800
+From:   Ryder Lee <ryder.lee@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Sean Wang <sean.wang@mediatek.com>
+CC:     Shayne Chen <shayne.chen@mediatek.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>,
+        Ryder Lee <ryder.lee@mediatek.com>
+Subject: [PATCH] mt76: mt7915: overwrite qid for non-bufferable mgmt frames
+Date:   Sun, 21 Jun 2020 14:52:36 +0800
+Message-ID: <89e56177f4df93dc617db8a5afc2b428129f93f2.1592721766.git.ryder.lee@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
+X-MTK:  N
+Content-Transfer-Encoding: base64
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sat,  4 Apr 2020 12:18:38 +0800
-Qiujun Huang <hqjagain@gmail.com> wrote:
+T3ZlcndyaXRlIGh3IHF1ZXVlIGlkIGZvciBub24tYnVmZmVyYWJsZSBtYW5hZ2VtZW50IGZyYW1l
+cyBpZiB0aGUgaHcvZncNCnN1cHBvcnQgYWx3YXlzIHR4cSAoYWx0eHEpIGluIG9yZGVyIHRvIGJl
+IGluIHN5bmMgd2l0aCBtYWMgdHh3aSBjb2RlDQoNClNpZ25lZC1vZmYtYnk6IFJ5ZGVyIExlZSA8
+cnlkZXIubGVlQG1lZGlhdGVrLmNvbT4NCi0tLQ0KVGhpcyBwYXRjaCBpcyBiYXNlZCBvbiBodHRw
+czovL3BhdGNod29yay5rZXJuZWwub3JnL3BhdGNoLzExNjAzMzczLw0KLS0tDQogLi4uL25ldC93
+aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzkxNS9kbWEuYyAgIHwgMjEgKysrKysrKysrKy0tLS0t
+LS0tLQ0KIC4uLi9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvbWFjLmMgICB8IDE0
+ICsrKysrKy0tLS0tLS0NCiAuLi4vd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvbXQ3OTE1
+LmggICAgfCAgNSArKysrKw0KIC4uLi9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUv
+cGNpLmMgICB8ICAyICstDQogNCBmaWxlcyBjaGFuZ2VkLCAyNCBpbnNlcnRpb25zKCspLCAxOCBk
+ZWxldGlvbnMoLSkNCg0KZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVr
+L210NzYvbXQ3OTE1L2RtYS5jIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9t
+dDc5MTUvZG1hLmMNCmluZGV4IDc2NjE4NWQxYWEyMS4uYTg4MzJjNWU2MDA0IDEwMDY0NA0KLS0t
+IGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvZG1hLmMNCisrKyBi
+L2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1L2RtYS5jDQpAQCAtNzks
+MjYgKzc5LDI3IEBAIHZvaWQgbXQ3OTE1X3F1ZXVlX3J4X3NrYihzdHJ1Y3QgbXQ3Nl9kZXYgKm1k
+ZXYsIGVudW0gbXQ3Nl9yeHFfaWQgcSwNCiAJfQ0KIH0NCiANCitzdGF0aWMgdm9pZA0KK210Nzkx
+NV90eF9jbGVhbnVwKHN0cnVjdCBtdDc5MTVfZGV2ICpkZXYpDQorew0KKwltdDc2X3F1ZXVlX3R4
+X2NsZWFudXAoZGV2LCBNVF9UWFFfTUNVLCBmYWxzZSk7DQorCW10NzZfcXVldWVfdHhfY2xlYW51
+cChkZXYsIE1UX1RYUV9NQ1VfV0EsIGZhbHNlKTsNCisJbXQ3Nl9xdWV1ZV90eF9jbGVhbnVwKGRl
+diwgTVRfVFhRX1BTRCwgZmFsc2UpOw0KKwltdDc2X3F1ZXVlX3R4X2NsZWFudXAoZGV2LCBNVF9U
+WFFfQkUsIGZhbHNlKTsNCit9DQorDQogc3RhdGljIGludCBtdDc5MTVfcG9sbF90eChzdHJ1Y3Qg
+bmFwaV9zdHJ1Y3QgKm5hcGksIGludCBidWRnZXQpDQogew0KLQlzdGF0aWMgY29uc3QgdTggcXVl
+dWVfbWFwW10gPSB7DQotCQlNVF9UWFFfTUNVLA0KLQkJTVRfVFhRX01DVV9XQSwNCi0JCU1UX1RY
+UV9CRQ0KLQl9Ow0KIAlzdHJ1Y3QgbXQ3OTE1X2RldiAqZGV2Ow0KLQlpbnQgaTsNCiANCiAJZGV2
+ID0gY29udGFpbmVyX29mKG5hcGksIHN0cnVjdCBtdDc5MTVfZGV2LCBtdDc2LnR4X25hcGkpOw0K
+IA0KLQlmb3IgKGkgPSAwOyBpIDwgQVJSQVlfU0laRShxdWV1ZV9tYXApOyBpKyspDQotCQltdDc2
+X3F1ZXVlX3R4X2NsZWFudXAoZGV2LCBxdWV1ZV9tYXBbaV0sIGZhbHNlKTsNCisJbXQ3OTE1X3R4
+X2NsZWFudXAoZGV2KTsNCiANCiAJaWYgKG5hcGlfY29tcGxldGVfZG9uZShuYXBpLCAwKSkNCiAJ
+CW10NzkxNV9pcnFfZW5hYmxlKGRldiwgTVRfSU5UX1RYX0RPTkVfQUxMKTsNCiANCi0JZm9yIChp
+ID0gMDsgaSA8IEFSUkFZX1NJWkUocXVldWVfbWFwKTsgaSsrKQ0KLQkJbXQ3Nl9xdWV1ZV90eF9j
+bGVhbnVwKGRldiwgcXVldWVfbWFwW2ldLCBmYWxzZSk7DQorCW10NzkxNV90eF9jbGVhbnVwKGRl
+dik7DQogDQogCW10NzkxNV9tYWNfc3RhX3BvbGwoZGV2KTsNCiANCmRpZmYgLS1naXQgYS9kcml2
+ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzkxNS9tYWMuYyBiL2RyaXZlcnMvbmV0
+L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1L21hYy5jDQppbmRleCA2NjBlMTgyMGNjY2Yu
+LjkzMDdhOWU5YWIzMiAxMDA2NDQNCi0tLSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVr
+L210NzYvbXQ3OTE1L21hYy5jDQorKysgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9t
+dDc2L210NzkxNS9tYWMuYw0KQEAgLTU5MSwxNiArNTkxLDE2IEBAIHZvaWQgbXQ3OTE1X21hY193
+cml0ZV90eHdpKHN0cnVjdCBtdDc5MTVfZGV2ICpkZXYsIF9fbGUzMiAqdHh3aSwNCiAJZmNfdHlw
+ZSA9IChsZTE2X3RvX2NwdShmYykgJiBJRUVFODAyMTFfRkNUTF9GVFlQRSkgPj4gMjsNCiAJZmNf
+c3R5cGUgPSAobGUxNl90b19jcHUoZmMpICYgSUVFRTgwMjExX0ZDVExfU1RZUEUpID4+IDQ7DQog
+DQotCWlmIChpZWVlODAyMTFfaXNfZGF0YShmYykgfHwgaWVlZTgwMjExX2lzX2J1ZmZlcmFibGVf
+bW1wZHUoZmMpKSB7DQotCQlxX2lkeCA9IHdtbV9pZHggKiBNVDc5MTVfTUFYX1dNTV9TRVRTICsN
+Ci0JCQltdDc5MTVfbG1hY19tYXBwaW5nKGRldiwgc2tiX2dldF9xdWV1ZV9tYXBwaW5nKHNrYikp
+Ow0KLQkJcF9mbXQgPSBNVF9UWF9UWVBFX0NUOw0KLQl9IGVsc2UgaWYgKGJlYWNvbikgew0KLQkJ
+cV9pZHggPSBNVF9MTUFDX0JDTjA7DQorCWlmIChiZWFjb24pIHsNCiAJCXBfZm10ID0gTVRfVFhf
+VFlQRV9GVzsNCisJCXFfaWR4ID0gZXh0X3BoeSA/IE1UX0xNQUNfQkNOMSA6IE1UX0xNQUNfQkNO
+MDsNCisJfSBlbHNlIGlmIChza2JfZ2V0X3F1ZXVlX21hcHBpbmcoc2tiKSA+PSBNVF9UWFFfUFNE
+KSB7DQorCQlwX2ZtdCA9IE1UX1RYX1RZUEVfQ1Q7DQorCQlxX2lkeCA9IGV4dF9waHkgPyBNVF9M
+TUFDX0FMVFgxIDogTVRfTE1BQ19BTFRYMDsNCiAJfSBlbHNlIHsNCi0JCXFfaWR4ID0gTVRfTE1B
+Q19BTFRYMDsNCiAJCXBfZm10ID0gTVRfVFhfVFlQRV9DVDsNCisJCXFfaWR4ID0gd21tX2lkeCAq
+IE1UNzkxNV9NQVhfV01NX1NFVFMgKw0KKwkJCW10NzkxNV9sbWFjX21hcHBpbmcoZGV2LCBza2Jf
+Z2V0X3F1ZXVlX21hcHBpbmcoc2tiKSk7DQogCX0NCiANCiAJdmFsID0gRklFTERfUFJFUChNVF9U
+WEQwX1RYX0JZVEVTLCBza2ItPmxlbiArIE1UX1RYRF9TSVpFKSB8DQpkaWZmIC0tZ2l0IGEvZHJp
+dmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvbXQ3OTE1LmggYi9kcml2ZXJz
+L25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzkxNS9tdDc5MTUuaA0KaW5kZXggNGEwNjNj
+MWU1ZWEyLi5lMWYzMjI3OGE3ZmEgMTAwNjQ0DQotLS0gYS9kcml2ZXJzL25ldC93aXJlbGVzcy9t
+ZWRpYXRlay9tdDc2L210NzkxNS9tdDc5MTUuaA0KKysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3Mv
+bWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvbXQ3OTE1LmgNCkBAIC0yMDIsNiArMjAyLDExIEBAIGVudW0g
+ew0KIAlNVF9MTUFDX0FMVFgwID0gMHgxMCwNCiAJTVRfTE1BQ19CTUMwLA0KIAlNVF9MTUFDX0JD
+TjAsDQorCU1UX0xNQUNfUFNNUDAsDQorCU1UX0xNQUNfQUxUWDEsDQorCU1UX0xNQUNfQk1DMSwN
+CisJTVRfTE1BQ19CQ04xLA0KKwlNVF9MTUFDX1BTTVAxLA0KIH07DQogDQogZW51bSB7DQpkaWZm
+IC0tZ2l0IGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvcGNpLmMg
+Yi9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzkxNS9wY2kuYw0KaW5kZXgg
+NzkzN2M2OTY1ZjU5Li4wZWM0ZTE4NGI4ODkgMTAwNjQ0DQotLS0gYS9kcml2ZXJzL25ldC93aXJl
+bGVzcy9tZWRpYXRlay9tdDc2L210NzkxNS9wY2kuYw0KKysrIGIvZHJpdmVycy9uZXQvd2lyZWxl
+c3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvcGNpLmMNCkBAIC0xMDMsNyArMTAzLDcgQEAgc3RhdGlj
+IGludCBtdDc5MTVfcGNpX3Byb2JlKHN0cnVjdCBwY2lfZGV2ICpwZGV2LA0KIAlzdGF0aWMgY29u
+c3Qgc3RydWN0IG10NzZfZHJpdmVyX29wcyBkcnZfb3BzID0gew0KIAkJLyogdHh3aV9zaXplID0g
+dHhkIHNpemUgKyB0eHAgc2l6ZSAqLw0KIAkJLnR4d2lfc2l6ZSA9IE1UX1RYRF9TSVpFICsgc2l6
+ZW9mKHN0cnVjdCBtdDc5MTVfdHhwKSwNCi0JCS5kcnZfZmxhZ3MgPSBNVF9EUlZfVFhXSV9OT19G
+UkVFLA0KKwkJLmRydl9mbGFncyA9IE1UX0RSVl9UWFdJX05PX0ZSRUUgfCBNVF9EUlZfSFdfTUdN
+VF9UWFEsDQogCQkuc3VydmV5X2ZsYWdzID0gU1VSVkVZX0lORk9fVElNRV9UWCB8DQogCQkJCVNV
+UlZFWV9JTkZPX1RJTUVfUlggfA0KIAkJCQlTVVJWRVlfSU5GT19USU1FX0JTU19SWCwNCi0tIA0K
+Mi4xOC4wDQo=
 
-> In ath9k_hif_usb_rx_cb interface number is assumed to be 0.
-> usb_ifnum_to_if(urb->dev, 0)
-> But it isn't always true.
-> 
-> The case reported by syzbot:
-> https://lore.kernel.org/linux-usb/000000000000666c9c05a1c05d12@google.com
-> usb 2-1: new high-speed USB device number 2 using dummy_hcd
-> usb 2-1: config 1 has an invalid interface number: 2 but max is 0
-> usb 2-1: config 1 has no interface number 0
-> usb 2-1: New USB device found, idVendor=0cf3, idProduct=9271, bcdDevice=
-> 1.08
-> usb 2-1: New USB device strings: Mfr=1, Product=2, SerialNumber=3
-> general protection fault, probably for non-canonical address
-> 0xdffffc0000000015: 0000 [#1] SMP KASAN
-> KASAN: null-ptr-deref in range [0x00000000000000a8-0x00000000000000af]
-> CPU: 0 PID: 0 Comm: swapper/0 Not tainted 5.6.0-rc5-syzkaller #0
-> 
-> Call Trace
-> __usb_hcd_giveback_urb+0x29a/0x550 drivers/usb/core/hcd.c:1650
-> usb_hcd_giveback_urb+0x368/0x420 drivers/usb/core/hcd.c:1716
-> dummy_timer+0x1258/0x32ae drivers/usb/gadget/udc/dummy_hcd.c:1966
-> call_timer_fn+0x195/0x6f0 kernel/time/timer.c:1404
-> expire_timers kernel/time/timer.c:1449 [inline]
-> __run_timers kernel/time/timer.c:1773 [inline]
-> __run_timers kernel/time/timer.c:1740 [inline]
-> run_timer_softirq+0x5f9/0x1500 kernel/time/timer.c:1786
-> __do_softirq+0x21e/0x950 kernel/softirq.c:292
-> invoke_softirq kernel/softirq.c:373 [inline]
-> irq_exit+0x178/0x1a0 kernel/softirq.c:413
-> exiting_irq arch/x86/include/asm/apic.h:546 [inline]
-> smp_apic_timer_interrupt+0x141/0x540 arch/x86/kernel/apic/apic.c:1146
-> apic_timer_interrupt+0xf/0x20 arch/x86/entry/entry_64.S:829
-> 
-> Reported-and-tested-by: syzbot+40d5d2e8a4680952f042@syzkaller.appspotmail.com
-> Signed-off-by: Qiujun Huang <hqjagain@gmail.com>
-
-This causes complete breakage of ath9k operation across all the stable kernel
-series it got backported to, and I guess the mainline as well. Please see:
-https://bugzilla.kernel.org/show_bug.cgi?id=208251
-https://bugzilla.redhat.com/show_bug.cgi?id=1848631
-
-Thanks
-
-
-> ---
->  drivers/net/wireless/ath/ath9k/hif_usb.c | 48 ++++++++++++++++++------
->  drivers/net/wireless/ath/ath9k/hif_usb.h |  5 +++
->  2 files changed, 42 insertions(+), 11 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/ath/ath9k/hif_usb.c b/drivers/net/wireless/ath/ath9k/hif_usb.c
-> index 6049d3766c64..4ed21dad6a8e 100644
-> --- a/drivers/net/wireless/ath/ath9k/hif_usb.c
-> +++ b/drivers/net/wireless/ath/ath9k/hif_usb.c
-> @@ -643,9 +643,9 @@ static void ath9k_hif_usb_rx_stream(struct hif_device_usb *hif_dev,
->  
->  static void ath9k_hif_usb_rx_cb(struct urb *urb)
->  {
-> -	struct sk_buff *skb = (struct sk_buff *) urb->context;
-> -	struct hif_device_usb *hif_dev =
-> -		usb_get_intfdata(usb_ifnum_to_if(urb->dev, 0));
-> +	struct rx_buf *rx_buf = (struct rx_buf *)urb->context;
-> +	struct hif_device_usb *hif_dev = rx_buf->hif_dev;
-> +	struct sk_buff *skb = rx_buf->skb;
->  	int ret;
->  
->  	if (!skb)
-> @@ -685,14 +685,15 @@ static void ath9k_hif_usb_rx_cb(struct urb *urb)
->  	return;
->  free:
->  	kfree_skb(skb);
-> +	kfree(rx_buf);
->  }
->  
->  static void ath9k_hif_usb_reg_in_cb(struct urb *urb)
->  {
-> -	struct sk_buff *skb = (struct sk_buff *) urb->context;
-> +	struct rx_buf *rx_buf = (struct rx_buf *)urb->context;
-> +	struct hif_device_usb *hif_dev = rx_buf->hif_dev;
-> +	struct sk_buff *skb = rx_buf->skb;
->  	struct sk_buff *nskb;
-> -	struct hif_device_usb *hif_dev =
-> -		usb_get_intfdata(usb_ifnum_to_if(urb->dev, 0));
->  	int ret;
->  
->  	if (!skb)
-> @@ -750,6 +751,7 @@ static void ath9k_hif_usb_reg_in_cb(struct urb *urb)
->  	return;
->  free:
->  	kfree_skb(skb);
-> +	kfree(rx_buf);
->  	urb->context = NULL;
->  }
->  
-> @@ -795,7 +797,7 @@ static int ath9k_hif_usb_alloc_tx_urbs(struct hif_device_usb *hif_dev)
->  	init_usb_anchor(&hif_dev->mgmt_submitted);
->  
->  	for (i = 0; i < MAX_TX_URB_NUM; i++) {
-> -		tx_buf = kzalloc(sizeof(struct tx_buf), GFP_KERNEL);
-> +		tx_buf = kzalloc(sizeof(*tx_buf), GFP_KERNEL);
->  		if (!tx_buf)
->  			goto err;
->  
-> @@ -832,8 +834,9 @@ static void ath9k_hif_usb_dealloc_rx_urbs(struct hif_device_usb *hif_dev)
->  
->  static int ath9k_hif_usb_alloc_rx_urbs(struct hif_device_usb *hif_dev)
->  {
-> -	struct urb *urb = NULL;
-> +	struct rx_buf *rx_buf = NULL;
->  	struct sk_buff *skb = NULL;
-> +	struct urb *urb = NULL;
->  	int i, ret;
->  
->  	init_usb_anchor(&hif_dev->rx_submitted);
-> @@ -841,6 +844,12 @@ static int ath9k_hif_usb_alloc_rx_urbs(struct hif_device_usb *hif_dev)
->  
->  	for (i = 0; i < MAX_RX_URB_NUM; i++) {
->  
-> +		rx_buf = kzalloc(sizeof(*rx_buf), GFP_KERNEL);
-> +		if (!rx_buf) {
-> +			ret = -ENOMEM;
-> +			goto err_rxb;
-> +		}
-> +
->  		/* Allocate URB */
->  		urb = usb_alloc_urb(0, GFP_KERNEL);
->  		if (urb == NULL) {
-> @@ -855,11 +864,14 @@ static int ath9k_hif_usb_alloc_rx_urbs(struct hif_device_usb *hif_dev)
->  			goto err_skb;
->  		}
->  
-> +		rx_buf->hif_dev = hif_dev;
-> +		rx_buf->skb = skb;
-> +
->  		usb_fill_bulk_urb(urb, hif_dev->udev,
->  				  usb_rcvbulkpipe(hif_dev->udev,
->  						  USB_WLAN_RX_PIPE),
->  				  skb->data, MAX_RX_BUF_SIZE,
-> -				  ath9k_hif_usb_rx_cb, skb);
-> +				  ath9k_hif_usb_rx_cb, rx_buf);
->  
->  		/* Anchor URB */
->  		usb_anchor_urb(urb, &hif_dev->rx_submitted);
-> @@ -885,6 +897,8 @@ static int ath9k_hif_usb_alloc_rx_urbs(struct hif_device_usb *hif_dev)
->  err_skb:
->  	usb_free_urb(urb);
->  err_urb:
-> +	kfree(rx_buf);
-> +err_rxb:
->  	ath9k_hif_usb_dealloc_rx_urbs(hif_dev);
->  	return ret;
->  }
-> @@ -896,14 +910,21 @@ static void ath9k_hif_usb_dealloc_reg_in_urbs(struct hif_device_usb *hif_dev)
->  
->  static int ath9k_hif_usb_alloc_reg_in_urbs(struct hif_device_usb *hif_dev)
->  {
-> -	struct urb *urb = NULL;
-> +	struct rx_buf *rx_buf = NULL;
->  	struct sk_buff *skb = NULL;
-> +	struct urb *urb = NULL;
->  	int i, ret;
->  
->  	init_usb_anchor(&hif_dev->reg_in_submitted);
->  
->  	for (i = 0; i < MAX_REG_IN_URB_NUM; i++) {
->  
-> +		rx_buf = kzalloc(sizeof(*rx_buf), GFP_KERNEL);
-> +		if (!rx_buf) {
-> +			ret = -ENOMEM;
-> +			goto err_rxb;
-> +		}
-> +
->  		/* Allocate URB */
->  		urb = usb_alloc_urb(0, GFP_KERNEL);
->  		if (urb == NULL) {
-> @@ -918,11 +939,14 @@ static int ath9k_hif_usb_alloc_reg_in_urbs(struct hif_device_usb *hif_dev)
->  			goto err_skb;
->  		}
->  
-> +		rx_buf->hif_dev = hif_dev;
-> +		rx_buf->skb = skb;
-> +
->  		usb_fill_int_urb(urb, hif_dev->udev,
->  				  usb_rcvintpipe(hif_dev->udev,
->  						  USB_REG_IN_PIPE),
->  				  skb->data, MAX_REG_IN_BUF_SIZE,
-> -				  ath9k_hif_usb_reg_in_cb, skb, 1);
-> +				  ath9k_hif_usb_reg_in_cb, rx_buf, 1);
->  
->  		/* Anchor URB */
->  		usb_anchor_urb(urb, &hif_dev->reg_in_submitted);
-> @@ -948,6 +972,8 @@ static int ath9k_hif_usb_alloc_reg_in_urbs(struct hif_device_usb *hif_dev)
->  err_skb:
->  	usb_free_urb(urb);
->  err_urb:
-> +	kfree(rx_buf);
-> +err_rxb:
->  	ath9k_hif_usb_dealloc_reg_in_urbs(hif_dev);
->  	return ret;
->  }
-> diff --git a/drivers/net/wireless/ath/ath9k/hif_usb.h b/drivers/net/wireless/ath/ath9k/hif_usb.h
-> index a94e7e1c86e9..5985aa15ca93 100644
-> --- a/drivers/net/wireless/ath/ath9k/hif_usb.h
-> +++ b/drivers/net/wireless/ath/ath9k/hif_usb.h
-> @@ -86,6 +86,11 @@ struct tx_buf {
->  	struct list_head list;
->  };
->  
-> +struct rx_buf {
-> +	struct sk_buff *skb;
-> +	struct hif_device_usb *hif_dev;
-> +};
-> +
->  #define HIF_USB_TX_STOP  BIT(0)
->  #define HIF_USB_TX_FLUSH BIT(1)
->  
-
-
--- 
-With respect,
-Roman
