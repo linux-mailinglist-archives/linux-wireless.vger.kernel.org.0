@@ -2,125 +2,111 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 31F3520292C
-	for <lists+linux-wireless@lfdr.de>; Sun, 21 Jun 2020 08:53:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4796D2029DE
+	for <lists+linux-wireless@lfdr.de>; Sun, 21 Jun 2020 11:51:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729347AbgFUGwt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 21 Jun 2020 02:52:49 -0400
-Received: from mailgw02.mediatek.com ([210.61.82.184]:16925 "EHLO
-        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1729343AbgFUGws (ORCPT
+        id S1729647AbgFUJvr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 21 Jun 2020 05:51:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47356 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729628AbgFUJvq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 21 Jun 2020 02:52:48 -0400
-X-UUID: 1678444fb2ce4a00a1cebe0a9c206d13-20200621
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Transfer-Encoding:Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=zTJvn/j/lwPeBJM7lskwLTnp6Bsi8Nsabh1V17UGZiI=;
-        b=dzgcSYD5JftL3jGNsqlKcpkWesE7hxnSO1W7GWlrJzX9lBYN9t3OTDgnzw/SdUwIdXQdiD4XJJ3idv/W/4dXr3i0YUr68UGUKCyJDj2MnlBv4PIWAtto9nOhcKceb0mBKRDVDMbwW8RaGTpoqoW+W7U1rGIMyTq3AQS0Ke6EQxI=;
-X-UUID: 1678444fb2ce4a00a1cebe0a9c206d13-20200621
-Received: from mtkcas07.mediatek.inc [(172.21.101.84)] by mailgw02.mediatek.com
-        (envelope-from <ryder.lee@mediatek.com>)
-        (Cellopoint E-mail Firewall v4.1.10 Build 0809 with TLS)
-        with ESMTP id 1083166191; Sun, 21 Jun 2020 14:52:42 +0800
-Received: from mtkcas08.mediatek.inc (172.21.101.126) by
- mtkmbs06n1.mediatek.inc (172.21.101.129) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Sun, 21 Jun 2020 14:52:41 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas08.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Sun, 21 Jun 2020 14:52:33 +0800
-From:   Ryder Lee <ryder.lee@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Sean Wang <sean.wang@mediatek.com>
-CC:     Shayne Chen <shayne.chen@mediatek.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>,
-        Ryder Lee <ryder.lee@mediatek.com>
-Subject: [PATCH] mt76: mt7915: overwrite qid for non-bufferable mgmt frames
-Date:   Sun, 21 Jun 2020 14:52:36 +0800
-Message-ID: <89e56177f4df93dc617db8a5afc2b428129f93f2.1592721766.git.ryder.lee@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+        Sun, 21 Jun 2020 05:51:46 -0400
+Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com [IPv6:2607:f8b0:4864:20::443])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5EA4DC061794
+        for <linux-wireless@vger.kernel.org>; Sun, 21 Jun 2020 02:51:46 -0700 (PDT)
+Received: by mail-pf1-x443.google.com with SMTP id j1so6914390pfe.4
+        for <linux-wireless@vger.kernel.org>; Sun, 21 Jun 2020 02:51:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
+         :user-agent;
+        bh=rfIJqIz5BUhfbWOvz3mdDm6yuavon20/nKnHyeguApE=;
+        b=NnFqswP9axfSqK+VZsKI6J9HIHcFlFTB+ScbOQTyGUjKL47VEB+m9zDtIkm+jqsSrs
+         lVBK3uj4cFlKcKdtq/EdB8EcqH2YSjLa1hoZ2dABJwiPbz66MkJX/ZX6KFF9ty7K0eg4
+         ASjt/kohyN/wLIhDxVmDuC0FydaNnU8+lsu404PJIjucwkG98beKMP5KpDunuwaxjJxN
+         QuDMA+Op5csQq01bAXmd1MYbEVgroWY1AKm3FVelnsOVpFtd6CE12CD/wa7WWwXN0Grg
+         33dYaEgL2WgjErx1CBCBysORLoXFg5CVZYwzYlOYRRyDDWkRL5gAW3fEZ37GQTkbUVmE
+         P30A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition:user-agent;
+        bh=rfIJqIz5BUhfbWOvz3mdDm6yuavon20/nKnHyeguApE=;
+        b=BR1ru8OcDc0YSwItrKQtf31JazgsjoKWHdWH2xDMRN0AdkfYBMKg5zkUwLUW5JvGmG
+         7glY4mQxP7IQk8NyUuAKdUqQgMyVBAGd6L3bv9esnb020XfwlaEYk84vCe/s9r+W7WCC
+         A0qAz3mtDFJ54EAJ9VAi0RLEQcf/AS5xJ1lTfxh5sjSp0tsVUNDuR76nKSVjyZEq8d4I
+         cJ2HkKUXhH7+znvoovmeKZJtiTlwiUTsiR9bYVIhlqI21N1QdnVpbuJQzR2jwNdEtSRH
+         sVn1+Tk930TGGxAh8c+FCf178Rd99ry8Bt+TQobeWNXBhNb/XWbkXhBi0e5mVEWHbA1J
+         f0/A==
+X-Gm-Message-State: AOAM533WvONzok8TyrVXv1VjYPl+wUX8Yz5VU9mQeCxBxc3eycsfaWX2
+        tWdmZRLX/yZTTJjSnb40hLvGs7IpPmQ=
+X-Google-Smtp-Source: ABdhPJyx7O7qsGDQbd+9/Y0CU4viaRafqvCbTUf0nvQhLjZpjzdhe/oD4BR7KvmRbZ/Rm/9K+m1QQQ==
+X-Received: by 2002:aa7:9d8e:: with SMTP id f14mr15202356pfq.76.1592733105734;
+        Sun, 21 Jun 2020 02:51:45 -0700 (PDT)
+Received: from debian.debian-2 ([154.223.71.34])
+        by smtp.gmail.com with ESMTPSA id a7sm10302269pjd.2.2020.06.21.02.51.42
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Sun, 21 Jun 2020 02:51:44 -0700 (PDT)
+Date:   Sun, 21 Jun 2020 17:51:40 +0800
+From:   Bo YU <tsu.yubo@gmail.com>
+To:     kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org
+Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        tsu.yubo@gmail.com
+Subject: [PATCH -next] ath11k: Add checked value for ath11k_ahb_remove
+Message-ID: <20200621095136.7xdbzkthoxuw2qow@debian.debian-2>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Disposition: inline
+User-Agent: NeoMutt/20170113 (1.7.2)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-T3ZlcndyaXRlIGh3IHF1ZXVlIGlkIGZvciBub24tYnVmZmVyYWJsZSBtYW5hZ2VtZW50IGZyYW1l
-cyBpZiB0aGUgaHcvZncNCnN1cHBvcnQgYWx3YXlzIHR4cSAoYWx0eHEpIGluIG9yZGVyIHRvIGJl
-IGluIHN5bmMgd2l0aCBtYWMgdHh3aSBjb2RlDQoNClNpZ25lZC1vZmYtYnk6IFJ5ZGVyIExlZSA8
-cnlkZXIubGVlQG1lZGlhdGVrLmNvbT4NCi0tLQ0KVGhpcyBwYXRjaCBpcyBiYXNlZCBvbiBodHRw
-czovL3BhdGNod29yay5rZXJuZWwub3JnL3BhdGNoLzExNjAzMzczLw0KLS0tDQogLi4uL25ldC93
-aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzkxNS9kbWEuYyAgIHwgMjEgKysrKysrKysrKy0tLS0t
-LS0tLQ0KIC4uLi9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvbWFjLmMgICB8IDE0
-ICsrKysrKy0tLS0tLS0NCiAuLi4vd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvbXQ3OTE1
-LmggICAgfCAgNSArKysrKw0KIC4uLi9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUv
-cGNpLmMgICB8ICAyICstDQogNCBmaWxlcyBjaGFuZ2VkLCAyNCBpbnNlcnRpb25zKCspLCAxOCBk
-ZWxldGlvbnMoLSkNCg0KZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVr
-L210NzYvbXQ3OTE1L2RtYS5jIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9t
-dDc5MTUvZG1hLmMNCmluZGV4IDc2NjE4NWQxYWEyMS4uYTg4MzJjNWU2MDA0IDEwMDY0NA0KLS0t
-IGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvZG1hLmMNCisrKyBi
-L2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1L2RtYS5jDQpAQCAtNzks
-MjYgKzc5LDI3IEBAIHZvaWQgbXQ3OTE1X3F1ZXVlX3J4X3NrYihzdHJ1Y3QgbXQ3Nl9kZXYgKm1k
-ZXYsIGVudW0gbXQ3Nl9yeHFfaWQgcSwNCiAJfQ0KIH0NCiANCitzdGF0aWMgdm9pZA0KK210Nzkx
-NV90eF9jbGVhbnVwKHN0cnVjdCBtdDc5MTVfZGV2ICpkZXYpDQorew0KKwltdDc2X3F1ZXVlX3R4
-X2NsZWFudXAoZGV2LCBNVF9UWFFfTUNVLCBmYWxzZSk7DQorCW10NzZfcXVldWVfdHhfY2xlYW51
-cChkZXYsIE1UX1RYUV9NQ1VfV0EsIGZhbHNlKTsNCisJbXQ3Nl9xdWV1ZV90eF9jbGVhbnVwKGRl
-diwgTVRfVFhRX1BTRCwgZmFsc2UpOw0KKwltdDc2X3F1ZXVlX3R4X2NsZWFudXAoZGV2LCBNVF9U
-WFFfQkUsIGZhbHNlKTsNCit9DQorDQogc3RhdGljIGludCBtdDc5MTVfcG9sbF90eChzdHJ1Y3Qg
-bmFwaV9zdHJ1Y3QgKm5hcGksIGludCBidWRnZXQpDQogew0KLQlzdGF0aWMgY29uc3QgdTggcXVl
-dWVfbWFwW10gPSB7DQotCQlNVF9UWFFfTUNVLA0KLQkJTVRfVFhRX01DVV9XQSwNCi0JCU1UX1RY
-UV9CRQ0KLQl9Ow0KIAlzdHJ1Y3QgbXQ3OTE1X2RldiAqZGV2Ow0KLQlpbnQgaTsNCiANCiAJZGV2
-ID0gY29udGFpbmVyX29mKG5hcGksIHN0cnVjdCBtdDc5MTVfZGV2LCBtdDc2LnR4X25hcGkpOw0K
-IA0KLQlmb3IgKGkgPSAwOyBpIDwgQVJSQVlfU0laRShxdWV1ZV9tYXApOyBpKyspDQotCQltdDc2
-X3F1ZXVlX3R4X2NsZWFudXAoZGV2LCBxdWV1ZV9tYXBbaV0sIGZhbHNlKTsNCisJbXQ3OTE1X3R4
-X2NsZWFudXAoZGV2KTsNCiANCiAJaWYgKG5hcGlfY29tcGxldGVfZG9uZShuYXBpLCAwKSkNCiAJ
-CW10NzkxNV9pcnFfZW5hYmxlKGRldiwgTVRfSU5UX1RYX0RPTkVfQUxMKTsNCiANCi0JZm9yIChp
-ID0gMDsgaSA8IEFSUkFZX1NJWkUocXVldWVfbWFwKTsgaSsrKQ0KLQkJbXQ3Nl9xdWV1ZV90eF9j
-bGVhbnVwKGRldiwgcXVldWVfbWFwW2ldLCBmYWxzZSk7DQorCW10NzkxNV90eF9jbGVhbnVwKGRl
-dik7DQogDQogCW10NzkxNV9tYWNfc3RhX3BvbGwoZGV2KTsNCiANCmRpZmYgLS1naXQgYS9kcml2
-ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzkxNS9tYWMuYyBiL2RyaXZlcnMvbmV0
-L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1L21hYy5jDQppbmRleCA2NjBlMTgyMGNjY2Yu
-LjkzMDdhOWU5YWIzMiAxMDA2NDQNCi0tLSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVr
-L210NzYvbXQ3OTE1L21hYy5jDQorKysgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9t
-dDc2L210NzkxNS9tYWMuYw0KQEAgLTU5MSwxNiArNTkxLDE2IEBAIHZvaWQgbXQ3OTE1X21hY193
-cml0ZV90eHdpKHN0cnVjdCBtdDc5MTVfZGV2ICpkZXYsIF9fbGUzMiAqdHh3aSwNCiAJZmNfdHlw
-ZSA9IChsZTE2X3RvX2NwdShmYykgJiBJRUVFODAyMTFfRkNUTF9GVFlQRSkgPj4gMjsNCiAJZmNf
-c3R5cGUgPSAobGUxNl90b19jcHUoZmMpICYgSUVFRTgwMjExX0ZDVExfU1RZUEUpID4+IDQ7DQog
-DQotCWlmIChpZWVlODAyMTFfaXNfZGF0YShmYykgfHwgaWVlZTgwMjExX2lzX2J1ZmZlcmFibGVf
-bW1wZHUoZmMpKSB7DQotCQlxX2lkeCA9IHdtbV9pZHggKiBNVDc5MTVfTUFYX1dNTV9TRVRTICsN
-Ci0JCQltdDc5MTVfbG1hY19tYXBwaW5nKGRldiwgc2tiX2dldF9xdWV1ZV9tYXBwaW5nKHNrYikp
-Ow0KLQkJcF9mbXQgPSBNVF9UWF9UWVBFX0NUOw0KLQl9IGVsc2UgaWYgKGJlYWNvbikgew0KLQkJ
-cV9pZHggPSBNVF9MTUFDX0JDTjA7DQorCWlmIChiZWFjb24pIHsNCiAJCXBfZm10ID0gTVRfVFhf
-VFlQRV9GVzsNCisJCXFfaWR4ID0gZXh0X3BoeSA/IE1UX0xNQUNfQkNOMSA6IE1UX0xNQUNfQkNO
-MDsNCisJfSBlbHNlIGlmIChza2JfZ2V0X3F1ZXVlX21hcHBpbmcoc2tiKSA+PSBNVF9UWFFfUFNE
-KSB7DQorCQlwX2ZtdCA9IE1UX1RYX1RZUEVfQ1Q7DQorCQlxX2lkeCA9IGV4dF9waHkgPyBNVF9M
-TUFDX0FMVFgxIDogTVRfTE1BQ19BTFRYMDsNCiAJfSBlbHNlIHsNCi0JCXFfaWR4ID0gTVRfTE1B
-Q19BTFRYMDsNCiAJCXBfZm10ID0gTVRfVFhfVFlQRV9DVDsNCisJCXFfaWR4ID0gd21tX2lkeCAq
-IE1UNzkxNV9NQVhfV01NX1NFVFMgKw0KKwkJCW10NzkxNV9sbWFjX21hcHBpbmcoZGV2LCBza2Jf
-Z2V0X3F1ZXVlX21hcHBpbmcoc2tiKSk7DQogCX0NCiANCiAJdmFsID0gRklFTERfUFJFUChNVF9U
-WEQwX1RYX0JZVEVTLCBza2ItPmxlbiArIE1UX1RYRF9TSVpFKSB8DQpkaWZmIC0tZ2l0IGEvZHJp
-dmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvbXQ3OTE1LmggYi9kcml2ZXJz
-L25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzkxNS9tdDc5MTUuaA0KaW5kZXggNGEwNjNj
-MWU1ZWEyLi5lMWYzMjI3OGE3ZmEgMTAwNjQ0DQotLS0gYS9kcml2ZXJzL25ldC93aXJlbGVzcy9t
-ZWRpYXRlay9tdDc2L210NzkxNS9tdDc5MTUuaA0KKysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3Mv
-bWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvbXQ3OTE1LmgNCkBAIC0yMDIsNiArMjAyLDExIEBAIGVudW0g
-ew0KIAlNVF9MTUFDX0FMVFgwID0gMHgxMCwNCiAJTVRfTE1BQ19CTUMwLA0KIAlNVF9MTUFDX0JD
-TjAsDQorCU1UX0xNQUNfUFNNUDAsDQorCU1UX0xNQUNfQUxUWDEsDQorCU1UX0xNQUNfQk1DMSwN
-CisJTVRfTE1BQ19CQ04xLA0KKwlNVF9MTUFDX1BTTVAxLA0KIH07DQogDQogZW51bSB7DQpkaWZm
-IC0tZ2l0IGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvcGNpLmMg
-Yi9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzkxNS9wY2kuYw0KaW5kZXgg
-NzkzN2M2OTY1ZjU5Li4wZWM0ZTE4NGI4ODkgMTAwNjQ0DQotLS0gYS9kcml2ZXJzL25ldC93aXJl
-bGVzcy9tZWRpYXRlay9tdDc2L210NzkxNS9wY2kuYw0KKysrIGIvZHJpdmVycy9uZXQvd2lyZWxl
-c3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvcGNpLmMNCkBAIC0xMDMsNyArMTAzLDcgQEAgc3RhdGlj
-IGludCBtdDc5MTVfcGNpX3Byb2JlKHN0cnVjdCBwY2lfZGV2ICpwZGV2LA0KIAlzdGF0aWMgY29u
-c3Qgc3RydWN0IG10NzZfZHJpdmVyX29wcyBkcnZfb3BzID0gew0KIAkJLyogdHh3aV9zaXplID0g
-dHhkIHNpemUgKyB0eHAgc2l6ZSAqLw0KIAkJLnR4d2lfc2l6ZSA9IE1UX1RYRF9TSVpFICsgc2l6
-ZW9mKHN0cnVjdCBtdDc5MTVfdHhwKSwNCi0JCS5kcnZfZmxhZ3MgPSBNVF9EUlZfVFhXSV9OT19G
-UkVFLA0KKwkJLmRydl9mbGFncyA9IE1UX0RSVl9UWFdJX05PX0ZSRUUgfCBNVF9EUlZfSFdfTUdN
-VF9UWFEsDQogCQkuc3VydmV5X2ZsYWdzID0gU1VSVkVZX0lORk9fVElNRV9UWCB8DQogCQkJCVNV
-UlZFWV9JTkZPX1RJTUVfUlggfA0KIAkJCQlTVVJWRVlfSU5GT19USU1FX0JTU19SWCwNCi0tIA0K
-Mi4xOC4wDQo=
+Return value form wait_for_completion_timeout should to be checked.
+
+This is detected by Coverity,#CID:1464479 (CHECKED_RETURN)
+
+FIXES: d5c65159f2895(ath11k: driver for Qualcomm IEEE 802.11ax devices)
+Signed-off-by: Bo YU <tsu.yubo@gmail.com>
+---
+ drivers/net/wireless/ath/ath11k/ahb.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath11k/ahb.c b/drivers/net/wireless/ath/ath11k/ahb.c
+index 30092841ac46..1bbe30dceaf9 100644
+--- a/drivers/net/wireless/ath/ath11k/ahb.c
++++ b/drivers/net/wireless/ath/ath11k/ahb.c
+@@ -981,12 +981,16 @@ static int ath11k_ahb_probe(struct platform_device *pdev)
+ static int ath11k_ahb_remove(struct platform_device *pdev)
+ {
+ 	struct ath11k_base *ab = platform_get_drvdata(pdev);
+-
++	int ret = 0;
+ 	reinit_completion(&ab->driver_recovery);
+
+ 	if (test_bit(ATH11K_FLAG_RECOVERY, &ab->dev_flags))
+-		wait_for_completion_timeout(&ab->driver_recovery,
+-					    ATH11K_AHB_RECOVERY_TIMEOUT);
++		if (!wait_for_completion_timeout(&ab->driver_recovery,
++						 ATH11K_AHB_RECOVERY_TIMEOUT)) {
++			ath11k_warn(ab, "fail to receive recovery response completion.\n");
++			ret = -ETIMEDOUT;
++		}
++
+
+ 	set_bit(ATH11K_FLAG_UNREGISTERING, &ab->dev_flags);
+ 	cancel_work_sync(&ab->restart_work);
+@@ -999,7 +1003,7 @@ static int ath11k_ahb_remove(struct platform_device *pdev)
+ 	ath11k_core_free(ab);
+ 	platform_set_drvdata(pdev, NULL);
+
+-	return 0;
++	return ret;
+ }
+
+ static struct platform_driver ath11k_ahb_driver = {
+--
+2.11.0
 
