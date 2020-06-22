@@ -2,59 +2,76 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 807A8203BE2
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Jun 2020 18:02:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E183203C26
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Jun 2020 18:06:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729842AbgFVQCm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 22 Jun 2020 12:02:42 -0400
-Received: from sonic302-21.consmr.mail.ne1.yahoo.com ([66.163.186.147]:36968
-        "EHLO sonic302-21.consmr.mail.ne1.yahoo.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1729771AbgFVQCW (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 22 Jun 2020 12:02:22 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1592841741; bh=cK2qy9Lv5SAgMg9nAvfVmkJPj46H3ss3vOVyjpHm6Nk=; h=Date:From:Reply-To:Subject:References:From:Subject; b=imnMzKvnrwdEkzevY9v55JCHWrS7mFcRp2xLflBpdsWBX5v32iTt1Jwj292Sqyxc6zTWfVf6UW3RltjDxv8H8ZAxxFg96tpPBoXA2f/GRkfTuiNcUr3yDzOGiHeT9IqR//B+9C8c9YoGDJPnAeuuKcQvLl1HS8J+STK4/r0WZ3jbtWFF0MKDjydg+AbeXShoRDHqwsqAaAi7D9jDq8wNDWBIR81puaAh7APGDPK32RqjpFS85hxXrbmotW59Gm/gC9SoLB52q4udtwMI++FS4HYmIHt+kUh9tNcMAsNUvFYo0HWMN59EiLf7lYGm/4AR40adfmghUfkmt4dYpTZmZQ==
-X-YMail-OSG: AhKkJLAVM1lDQ3XPPTTJWpEw.A_YPk4v7tBrtMEv9XTYrBN0vKxPyUyPokZyCLH
- 0NPJEnbM.Ixt5u0eXkMwZesEBqS.rCtCLJgnod2Yg.I9TXOm0suNzcmJ92mBaA3mHgRFUusjI.6E
- 3Gu4LEq019.le8uhDgpgUZ.YgtmiKAQJK6Bd4WPLqozbdEc8urSPipLpvwJTvKec65xmptWyRiVv
- 5wejfhjut7ltVV2EWvbGnxpPsKrHXW63gZY0z7W.qC8yTTTM6xXIAPM6OYdYDYNn.6t5yJFWlC1P
- OIdbZEYbWLsjaYGAZ3nhw68imywZs7JgVqTzxfR4ZQQxpuo3K8t9CM9O0hpOCt10FP__XXwyrmrD
- TCoCE7B_Edu3G.zjOUn_rksR4jYB.m1Rp.1vZ_bLxnQwCiAul5Wqfj8PNdUGzT.zvxnBCUVqWq9J
- 8hXM6oMyn8gklCF.R8KCTVo6NRJRq4thjGWIexrpJEGu0QolvkJTIALFEd6_slAReLmAOEup3xKy
- .77XY9y0L2WZlQcf1QY4ryEv90HkLK9R59Zd1MxuC8qefRgY6y6xUFmVBWO8SDJCCjnQpB48PRDP
- pRTSfD8hEjxrcMoyLQRR8ik6SRBEuL1N.zoJ2juJT7TtdJItukcqyaFlw7VOC6cm49vWb13NtnZ0
- gQ2bWEWTG5v0uAlc54_ulltpKs.Fgm6hkagBtyzunEJ52PGAuturV.LPWyLoBYPiB1KC1HlV8gI8
- yJqtTplsyPL2eALndgi_xv5WXRslUdVun50zfx9iDK5v_kT1lyZrnl7BpPa5N7roHYs5FCR3fGlt
- 00HJ7sf.lnan3Im8PEbT96k38NwI6o6wqQk3XTx1x0TOib38VwKLgaWNY916uiRI1upzFCMVqmW6
- hKW.i_z2qDWeeQaZVyBhDmfLTpSCKpEZXqJt.HWEa0uB7F6lyRoT1rQEzhMY_zbISz6YbRmtNDlq
- VLlEzjYA6uILpMVD7EkmwXGP0XOJgDIix93HShigByDXDbmOlbnVPelpKvxPRFg3gnhpf.0Rc47i
- 08Ic.liUMCD9zHGFCga9cXgoGaM8kFbRyDB3CB8uLHuuV8rIwOstkm24RLt0t3H1wtfuP85AC7r8
- v042NbRsPX1Mj80LTxFt.KStV8ND4Dc1.IiPBslhVUpEA9f2YrGnkjCHG4.U4j0M0U489djAouYX
- y9F8lECiGIH30pwUi5p9NUzViYBtaTM7ID67rbGjIKdkEdFs14rCm3KSzct0U2izLUB1NerwsRiF
- IQWasnNhp61WOxqpf4zyo6bEJMCV1B8QkTG.8HvHCcJtAwYQhWHkE5SwAzxSGopkwGBC4.Xf9
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic302.consmr.mail.ne1.yahoo.com with HTTP; Mon, 22 Jun 2020 16:02:21 +0000
-Date:   Mon, 22 Jun 2020 16:02:19 +0000 (UTC)
-From:   Karim Zakari <kariim1960z@gmail.com>
-Reply-To: kzakari04@gmail.com
-Message-ID: <1507214802.1850985.1592841739314@mail.yahoo.com>
-Subject: URGENT REPLY.
+        id S1729330AbgFVQGc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 22 Jun 2020 12:06:32 -0400
+Received: from muru.com ([72.249.23.125]:58622 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729260AbgFVQGb (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 22 Jun 2020 12:06:31 -0400
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id B52CA8140;
+        Mon, 22 Jun 2020 16:07:23 +0000 (UTC)
+Date:   Mon, 22 Jun 2020 09:06:28 -0700
+From:   Tony Lindgren <tony@atomide.com>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Eyal Reizer <eyalr@ti.com>, Guy Mishol <guym@ti.com>,
+        linux-wireless@vger.kernel.org, linux-omap@vger.kernel.org
+Subject: Re: [PATCH 1/4] wlcore: Use spin_trylock in wlcore_irq_locked() for
+ running the queue
+Message-ID: <20200622160628.GL37466@atomide.com>
+References: <20200617212505.62519-1-tony@atomide.com>
+ <20200617212505.62519-2-tony@atomide.com>
+ <875zbjgpbj.fsf@codeaurora.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-References: <1507214802.1850985.1592841739314.ref@mail.yahoo.com>
-X-Mailer: WebService/1.1.16138 YMailNodin Mozilla/5.0 (Windows NT 6.1; ) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.106 Safari/537.36
-To:     unlisted-recipients:; (no To-header on input)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <875zbjgpbj.fsf@codeaurora.org>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+* Kalle Valo <kvalo@codeaurora.org> [200622 14:15]:
+> Tony Lindgren <tony@atomide.com> writes:
+> 
+> > We need the spinlock to check if we need to run the queue. Let's use
+> > spin_trylock instead and always run the queue unless we know there's
+> > nothing to do.
+> 
+> Why? What's the problem you are solving here?
 
+To simplify the flags and locking use between the threaded irq
+and tx work.
 
-Good-Day Friend,
+While chasing an occasional hang with an idle wlan doing just a
+periodic network scans, I noticed we can start simplifying the
+locking between the threaded irq and tx work for the driver.
 
- Hope you are doing great Today. I have a proposed business deal worthy (US$16.5 Million Dollars) that will benefit both parties. This is legitimate' legal and your personality will not be compromised.
+No luck so far figuring out what the occasional idle wlan hang is,
+but I suspect we end up somewhere in a deadlock between tx work
+and the threaded irq.
 
-Waiting for your response for more details, As you are willing to execute this business opportunity with me.
+We currently have a collection of flags and locking between the
+threaded irq and tx work:
 
-Sincerely Yours,
-Mr. Karim Zakari.
+- wl->flags bitops
+- wl->mutex
+- wl->wl_lock spinlock
+
+The bitops flags do not need a spinlock around them, and
+wlcore_irq() already holds the mutex calling wlcore_irq_locked().
+And we only need the spinlock to see if we need to run the queue
+or not.
+
+So I think eventually we can remove most of the spinlock use in
+favor of the mutex. I guess I could leave out the trylock changes
+here if this is too many changes at once.
+
+Or do you see some problem in general with this approach?
+
+Regards,
+
+Tony
