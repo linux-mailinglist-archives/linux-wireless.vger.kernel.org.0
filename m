@@ -2,126 +2,123 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 38C4E203DAD
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Jun 2020 19:19:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5CEA8203DCD
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Jun 2020 19:23:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729836AbgFVRTF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 22 Jun 2020 13:19:05 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:49386 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729309AbgFVRTF (ORCPT
+        id S1729992AbgFVRXH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 22 Jun 2020 13:23:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55798 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729995AbgFVRXG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 22 Jun 2020 13:19:05 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05MHBa1f189447;
-        Mon, 22 Jun 2020 17:18:57 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2020-01-29;
- bh=C7ugc59ux1Tzk1qNRQTFHlVKwXEauG38RKV8mSsCQ5A=;
- b=RL7mFnPZA5Ye1rE+7GF9b2sgqSsaAmA1kxsDqwB0v2pG+ve7AH2nhmtEoviv+w3Rg7Oz
- uodvImc8D4FDmq26QFVXbOTrVdB8/rhhzO62WzzFJAeDDAy1GLlnKUHi1NFi9YNnfvkk
- 1z8BWJQV+HeXh6thnM13d3soRzM01vGdunLLrmvZufl8WzZpa/OgDQoGwwvFkjta5AMq
- zqu2sVWtprqJgeHzPCPIorUWmaaIBa9DjEC6FdHa5xt70ExQMExuWz6jgAy6YTB1ei5m
- 26U1htg/36OepPCLe34xP6fRkSWBsaC6x97QhptIie4PGfdJgF5T4TMHSQpHGyGZ12eK IQ== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by aserp2120.oracle.com with ESMTP id 31sebb8pj9-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 22 Jun 2020 17:18:56 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05MHE6j9018528;
-        Mon, 22 Jun 2020 17:18:56 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by userp3020.oracle.com with ESMTP id 31sv7qeygr-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 22 Jun 2020 17:18:56 +0000
-Received: from abhmp0011.oracle.com (abhmp0011.oracle.com [141.146.116.17])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 05MHIsKo008088;
-        Mon, 22 Jun 2020 17:18:55 GMT
-Received: from kadam (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 22 Jun 2020 17:18:53 +0000
-Date:   Mon, 22 Jun 2020 20:18:47 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     Karthikeyan Periyasamy <periyasa@codeaurora.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        kernel-janitors@vger.kernel.org, linux-wireless@vger.kernel.org,
-        ath11k@lists.infradead.org
-Subject: Re: [PATCH net-next] ath11k: fix uninitialized return in
- ath11k_spectral_process_data()
-Message-ID: <20200622171846.GE4151@kadam>
-References: <20200619142922.GA267142@mwanda>
- <87a70vf923.fsf@codeaurora.org>
+        Mon, 22 Jun 2020 13:23:06 -0400
+Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com [IPv6:2607:f8b0:4864:20::642])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6C30C061799
+        for <linux-wireless@vger.kernel.org>; Mon, 22 Jun 2020 10:23:05 -0700 (PDT)
+Received: by mail-pl1-x642.google.com with SMTP id y17so7832995plb.8
+        for <linux-wireless@vger.kernel.org>; Mon, 22 Jun 2020 10:23:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=BqM48ZdR4QdYBTv2c7+F0igShsRmPGqVwAJTalrh3Vo=;
+        b=T/gZ4H2J+UpNQ96H4IQLTAW9jVMnZlvLzxm2OhJBDlYjOIQCD2FlzsoigqacLWJAhC
+         FAIymS/2Mdmvf5jp+PMPTZPszQlLdMUtLLlxEwYzzRg8451YxoBJQ2B6yep7Gr3zpQtx
+         oME5SyrfsBCu+p9qDBNWb5W0Ik4fADMMt3L3iqomKhLtenk4gH6tWYsAJe0N4bqlw6TY
+         e4kzYPrOVngrkzYP4ZO7qK52KTWkEaDOe/Hc26SYciu91gstYIuQ457fS2tO+3Fhc++S
+         J3tpbd0xhmS8RbKKoltaGvNLCIjSjHM0jjaUbZ0vQp8KhiEYCwyRbniMeg/jqRQHieMg
+         4n/g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=BqM48ZdR4QdYBTv2c7+F0igShsRmPGqVwAJTalrh3Vo=;
+        b=p2VE34oL4LFmxnXLkiH7d/NbE7x2Ssid+TZSvOYmupM3Edh/JefXiIvwO54uWWOAkw
+         hu5UydWOnY3r2CEfG0WHRQ3mCeGRRXCudgc9YcOdp4nkJKyJhffQrJTLAHhqrZZDQlPK
+         EP27nmaT3tj4/OEcYIcxhcyDcOHomPqsd9xHQBxB1XWsZ3FHJt0DfDLu/+L32mhGQUoN
+         blDAbeF+OAEH+DMIsXWUdbEkHwOpF/WUTJY0ZYfQuT451Y35XSxaSUZD7FzAvegtjPEv
+         xZd7YbiV7hmpCqL02xv5Mh+MqW+ZHcsYBe20P7c32TqKU1cgQtUhue8gNCQOC8Tm3alN
+         JThA==
+X-Gm-Message-State: AOAM532ieOT7B9AUiXrCs5cD8kWWk3d64pYt0py3iTrjX0H91ExKmrkr
+        ls2r7fzoI9r+IA5yaV+n27/JQ3g7HRzveUkNxrBSAw==
+X-Google-Smtp-Source: ABdhPJzO+nq25CgrrJ901vreSYdCENCWSbB928SD41OoQSYC+oteTUNy5xrcCBXr3eXVXoqswpT2QCJu88gHklh2Xeo=
+X-Received: by 2002:a17:90a:1e:: with SMTP id 30mr18013542pja.25.1592846584932;
+ Mon, 22 Jun 2020 10:23:04 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87a70vf923.fsf@codeaurora.org>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9660 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 suspectscore=0 mlxlogscore=999
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2004280000 definitions=main-2006220120
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9660 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 cotscore=-2147483648
- lowpriorityscore=0 phishscore=0 bulkscore=0 clxscore=1015 impostorscore=0
- malwarescore=0 priorityscore=1501 spamscore=0 mlxscore=0 adultscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2004280000 definitions=main-2006220120
+References: <20200620033007.1444705-1-keescook@chromium.org> <20200620033007.1444705-11-keescook@chromium.org>
+In-Reply-To: <20200620033007.1444705-11-keescook@chromium.org>
+From:   Nick Desaulniers <ndesaulniers@google.com>
+Date:   Mon, 22 Jun 2020 10:22:53 -0700
+Message-ID: <CAKwvOd=N3HQNZfKMQ7eZWdawwNn13=YNNgMO0WAng2ERYX4Juw@mail.gmail.com>
+Subject: Re: [PATCH v2 10/16] KVM: PPC: Book3S PR: Remove uninitialized_var() usage
+To:     Kees Cook <keescook@chromium.org>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        Nathan Chancellor <natechancellor@gmail.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+        Alexander Potapenko <glider@google.com>,
+        Joe Perches <joe@perches.com>,
+        Andy Whitcroft <apw@canonical.com>,
+        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
+        drbd-dev@lists.linbit.com, linux-block@vger.kernel.org,
+        b43-dev@lists.infradead.org,
+        Network Development <netdev@vger.kernel.org>,
+        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        linux-ide@vger.kernel.org, linux-clk@vger.kernel.org,
+        linux-spi@vger.kernel.org,
+        Linux Memory Management List <linux-mm@kvack.org>,
+        clang-built-linux <clang-built-linux@googlegroups.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Jun 22, 2020 at 05:51:16PM +0300, Kalle Valo wrote:
-> Dan Carpenter <dan.carpenter@oracle.com> writes:
-> 
-> > There is a success path where "ret" isn't initialized where we never
-> > have a ATH11K_SPECTRAL_TAG_SCAN_SEARCH and then ret isn't initialized.
-> >
-> > Fixes: 9d11b7bff950 ("ath11k: add support for spectral scan")
-> > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> > ---
-> >  drivers/net/wireless/ath/ath11k/spectral.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/net/wireless/ath/ath11k/spectral.c b/drivers/net/wireless/ath/ath11k/spectral.c
-> > index 1c5d65bb411f..bfbf905f7507 100644
-> > --- a/drivers/net/wireless/ath/ath11k/spectral.c
-> > +++ b/drivers/net/wireless/ath/ath11k/spectral.c
-> > @@ -677,7 +677,7 @@ static int ath11k_spectral_process_data(struct ath11k *ar,
-> >  	u32 data_len, i;
-> >  	u8 sign, tag;
-> >  	int tlv_len, sample_sz;
-> > -	int ret;
-> > +	int ret = 0;
-> >  	bool quit = false;
-> 
-> I try to avoid initialising ret variables so I would like find another
-> way. What about doing this (completely untested!) in the end of the
-> function:
-> 
->         return 0;
-> 
-> err:
-> 	kfree(fft_sample);
-> unlock:
-> 	spin_unlock_bh(&ar->spectral.lock);
-> 	return ret;
+On Fri, Jun 19, 2020 at 8:30 PM Kees Cook <keescook@chromium.org> wrote:
+>
+> Using uninitialized_var() is dangerous as it papers over real bugs[1]
+> (or can in the future), and suppresses unrelated compiler warnings (e.g.
+> "unused variable"). If the compiler thinks it is uninitialized, either
+> simply initialize the variable or make compiler changes. As a precursor
+> to removing[2] this[3] macro[4], just remove this variable since it was
+> actually unused:
+>
+> arch/powerpc/kvm/book3s_pr.c:1832:16: warning: unused variable 'vrsave' [-Wunused-variable]
+>         unsigned long vrsave;
+>                       ^
+>
+> [1] https://lore.kernel.org/lkml/20200603174714.192027-1-glider@google.com/
+> [2] https://lore.kernel.org/lkml/CA+55aFw+Vbj0i=1TGqCR5vQkCzWJ0QxK6CernOU6eedsudAixw@mail.gmail.com/
+> [3] https://lore.kernel.org/lkml/CA+55aFwgbgqhbp1fkxvRKEpzyR5J8n1vKT1VZdz9knmPuXhOeg@mail.gmail.com/
+> [4] https://lore.kernel.org/lkml/CA+55aFz2500WfbKXAx8s67wrm9=yVJu65TpLgN_ybYNv0VEOKA@mail.gmail.com/
+>
+> Suggested-by: Nathan Chancellor <natechancellor@gmail.com>
+> Fixes: f05ed4d56e9c ("KVM: PPC: Split out code from book3s.c into book3s_pr.c")
+> Signed-off-by: Kees Cook <keescook@chromium.org>
 
-I normally avoid it as well...  If I were to redo this patch, I would
-probably do:
+Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
 
-	ret = 0;
-err:
-	kfree(fft_sample);
-unlock:
-	spin_unlock_bh(&ar->spectral.lock);
-	return ret;
+> ---
+>  arch/powerpc/kvm/book3s_pr.c | 3 ---
+>  1 file changed, 3 deletions(-)
+>
+> diff --git a/arch/powerpc/kvm/book3s_pr.c b/arch/powerpc/kvm/book3s_pr.c
+> index ef54f917bdaf..ed12dfbf9bb5 100644
+> --- a/arch/powerpc/kvm/book3s_pr.c
+> +++ b/arch/powerpc/kvm/book3s_pr.c
+> @@ -1828,9 +1828,6 @@ static int kvmppc_vcpu_run_pr(struct kvm_vcpu *vcpu)
+>  {
+>         struct kvm_run *run = vcpu->run;
+>         int ret;
+> -#ifdef CONFIG_ALTIVEC
+> -       unsigned long uninitialized_var(vrsave);
+> -#endif
+>
+>         /* Check if we can run the vcpu at all */
+>         if (!vcpu->arch.sane) {
+> --
 
-Would that be better?
-
-regards,
-dan carpenter
-
+-- 
+Thanks,
+~Nick Desaulniers
