@@ -2,100 +2,135 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5422F2039FE
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Jun 2020 16:51:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3FB64203A0C
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Jun 2020 16:53:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729232AbgFVOvX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 22 Jun 2020 10:51:23 -0400
-Received: from mail29.static.mailgun.info ([104.130.122.29]:17396 "EHLO
-        mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728937AbgFVOvX (ORCPT
+        id S1729319AbgFVOxs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 22 Jun 2020 10:53:48 -0400
+Received: from us-smtp-1.mimecast.com ([205.139.110.61]:21864 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1729280AbgFVOxr (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 22 Jun 2020 10:51:23 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1592837483; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=IOa0t2oIcusYGci2TdyPAuYcm9Jhr9e0dw/UoRzbleY=; b=bWW7txvx9sJ1me7hG6uxpJr0TAkIMWqIJVHv8X4onZx1GrobBYidI7IrmAJByQlbwRGAxrKF
- w8H1GCex81OVX70OjRdPvMF9A46Kj90edikQJrQSWW8dyKifVfl9zkMU+2XsxgL1Y61ciugb
- lDCEn2T3t3UUTl4mVsoKnGboCBc=
-X-Mailgun-Sending-Ip: 104.130.122.29
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n02.prod.us-west-2.postgun.com with SMTP id
- 5ef0c56ae144dd511553026f (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 22 Jun 2020 14:51:22
- GMT
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 6F921C433CA; Mon, 22 Jun 2020 14:51:22 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 1F1CEC433C6;
-        Mon, 22 Jun 2020 14:51:18 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 1F1CEC433C6
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Karthikeyan Periyasamy <periyasa@codeaurora.org>,
+        Mon, 22 Jun 2020 10:53:47 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1592837625;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=P7taa7KigpgUZeLwSBQmyXWitMWaWACRV2B/k/C5al0=;
+        b=gRStwUcLtw61tpAoCwUgIqKOCrQA4OKSb9xWCrKE8qnzqjz5H7e4XFay7W9ZwO79e4TNSf
+        nTV64SA6n7zpvQ7+5shsboCatJyJgpI+0HvxqxvsGXIzeNsO4mI8rOa01P8Ep3voHo0zQx
+        6Dva+E5yASxXfEz5gb7GYs42vltpcQA=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-340-EazmJF60OC-3O3DTayO21w-1; Mon, 22 Jun 2020 10:53:43 -0400
+X-MC-Unique: EazmJF60OC-3O3DTayO21w-1
+Received: by mail-wr1-f70.google.com with SMTP id w4so10952123wrl.13
+        for <linux-wireless@vger.kernel.org>; Mon, 22 Jun 2020 07:53:43 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=P7taa7KigpgUZeLwSBQmyXWitMWaWACRV2B/k/C5al0=;
+        b=pobp+Mc3oS44gs27WzSL4TYVyNj4eVc4YPPr0umZMOR+qwTM1rXTH+Naf+M50DsIDy
+         jbp4KGfxrXjkh8aWX2fLhUdbHWZ+NNs5Jes52ObFUM5xw8ty7XnSDqZKEjN1JXdnxs+D
+         hoeuxDncLDh02JV4S50awk0chpdzMmRJDLeAvtr/4LJR5koU2cof14cpzJsoFDl8m2Xa
+         +/EZ8EFKI5vn/qFQ4L2A974xLYeU0UOBmG9T5ZuWsap5OG/JI0mB5beEFSqw4CJq/a8p
+         uwINauBU++rQY1CFn/0UtIg0AYHzsP+JwOcklhmuckiBa6/lUvYABJZEzCjqhbMVxEoq
+         mcIw==
+X-Gm-Message-State: AOAM531EEykFWZp0tOG0LFv7HikqtDemObW6wfFnCfDsnyJ/oI5uvZ6D
+        oVlKHZFtdoMIYrE6gETRZUQwH0CKRy/FYfbu5cuWm8pOwmcJwf5PUbK4++xnBen/jusZtBPGsTn
+        IVHUHgcrFL7ioA66E01yjz2guQ4Q=
+X-Received: by 2002:a5d:4e81:: with SMTP id e1mr5512127wru.22.1592837622435;
+        Mon, 22 Jun 2020 07:53:42 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJyUuKsQy1lYYQH5S5wcZD53SekQyD8JGsIHp4PC0g4E/zNEVCx/JYFP61TwuMuJ4vKGweBlJw==
+X-Received: by 2002:a5d:4e81:: with SMTP id e1mr5512094wru.22.1592837622169;
+        Mon, 22 Jun 2020 07:53:42 -0700 (PDT)
+Received: from localhost ([151.48.138.186])
+        by smtp.gmail.com with ESMTPSA id e25sm19318997wrc.69.2020.06.22.07.53.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 22 Jun 2020 07:53:41 -0700 (PDT)
+Date:   Mon, 22 Jun 2020 16:53:38 +0200
+From:   Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+To:     Oleksandr Natalenko <oleksandr@redhat.com>
+Cc:     Lorenzo Bianconi <lorenzo@kernel.org>,
+        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
+        Felix Fietkau <nbd@nbd.name>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>,
-        kernel-janitors@vger.kernel.org, linux-wireless@vger.kernel.org,
-        ath11k@lists.infradead.org
-Subject: Re: [PATCH net-next] ath11k: fix uninitialized return in ath11k_spectral_process_data()
-References: <20200619142922.GA267142@mwanda>
-Date:   Mon, 22 Jun 2020 17:51:16 +0300
-In-Reply-To: <20200619142922.GA267142@mwanda> (Dan Carpenter's message of
-        "Fri, 19 Jun 2020 14:29:22 +0000 (UTC)")
-Message-ID: <87a70vf923.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-mediatek@lists.infradead.org,
+        LKML <linux-kernel@vger.kernel.org>
+Subject: Re: mt7612 suspend/resume issue
+Message-ID: <20200622145338.GB27892@localhost.localdomain>
+References: <20200618090556.pepjdbnba2gqzcbe@butterfly.localdomain>
+ <20200618111859.GC698688@lore-desk.lan>
+ <20200619150132.2zrc3ojqhtbn432u@butterfly.localdomain>
+ <20200621205412.GB271428@localhost.localdomain>
+ <CAHcwAbR4govGK3RPyfKWRgFRhFanWtpJLrB_PEjcoiBDJ3_Adg@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="DBIVS5p969aUjpLe"
+Content-Disposition: inline
+In-Reply-To: <CAHcwAbR4govGK3RPyfKWRgFRhFanWtpJLrB_PEjcoiBDJ3_Adg@mail.gmail.com>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Dan Carpenter <dan.carpenter@oracle.com> writes:
 
-> There is a success path where "ret" isn't initialized where we never
-> have a ATH11K_SPECTRAL_TAG_SCAN_SEARCH and then ret isn't initialized.
->
-> Fixes: 9d11b7bff950 ("ath11k: add support for spectral scan")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
->  drivers/net/wireless/ath/ath11k/spectral.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/net/wireless/ath/ath11k/spectral.c b/drivers/net/wireless/ath/ath11k/spectral.c
-> index 1c5d65bb411f..bfbf905f7507 100644
-> --- a/drivers/net/wireless/ath/ath11k/spectral.c
-> +++ b/drivers/net/wireless/ath/ath11k/spectral.c
-> @@ -677,7 +677,7 @@ static int ath11k_spectral_process_data(struct ath11k *ar,
->  	u32 data_len, i;
->  	u8 sign, tag;
->  	int tlv_len, sample_sz;
-> -	int ret;
-> +	int ret = 0;
->  	bool quit = false;
+--DBIVS5p969aUjpLe
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-I try to avoid initialising ret variables so I would like find another
-way. What about doing this (completely untested!) in the end of the
-function:
+> Hello, Lorenzo.
+>=20
+> On Sun, Jun 21, 2020 at 10:54 PM Lorenzo Bianconi <lorenzo@kernel.org> wr=
+ote:
+> > > > +static int __maybe_unused
+> > > > +mt76x2e_suspend(struct pci_dev *pdev, pm_message_t state)
+> > > > +{
+> > > > +   struct mt76_dev *mdev =3D pci_get_drvdata(pdev);
+> > > > +   struct mt76x02_dev *dev =3D container_of(mdev, struct mt76x02_d=
+ev, mt76);
+> > > > +   int i, err;
+> >
+> > can you please double-check what is the PCI state requested during susp=
+end?
+>=20
+> Do you mean ACPI S3 (this is the state the system enters)?  If not,
+> what should I check and where?
 
-        return 0;
+yes, right. Just for debugging, can you please force the card in PCI_D0 dur=
+ing the
+suspend?
 
-err:
-	kfree(fft_sample);
-unlock:
-	spin_unlock_bh(&ar->spectral.lock);
-	return ret;
+Regards,
+Lorenzo
 
--- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+>=20
+> Thanks.
+>=20
+> --=20
+>   Best regards,
+>     Oleksandr Natalenko (post-factum)
+>     Principal Software Maintenance Engineer
+>=20
+
+--DBIVS5p969aUjpLe
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCXvDF7wAKCRA6cBh0uS2t
+rJ4uAP9lKuUy0QTisY2SFP33vemkDckUeiQV2JsSGBnBdJ4FIQD/Yo4wkX1kg1Dr
+YM/2gw/OmT+M00BF1XWr3MJF0Tx7sQo=
+=rEPw
+-----END PGP SIGNATURE-----
+
+--DBIVS5p969aUjpLe--
+
