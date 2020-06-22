@@ -2,31 +2,32 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B2002038E4
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Jun 2020 16:16:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B29E42038EE
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Jun 2020 16:18:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728953AbgFVOQV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 22 Jun 2020 10:16:21 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:51205 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728937AbgFVOQU (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 22 Jun 2020 10:16:20 -0400
+        id S1729225AbgFVOSW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 22 Jun 2020 10:18:22 -0400
+Received: from mail29.static.mailgun.info ([104.130.122.29]:11019 "EHLO
+        mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728328AbgFVOSW (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 22 Jun 2020 10:18:22 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1592835380; h=Content-Type: MIME-Version: Message-ID:
+ s=smtp; t=1592835501; h=Content-Type: MIME-Version: Message-ID:
  In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=f6kTGE+qZlvFQEy4s+N9cwPFbTCG0vmbcHOxUcyLzHE=; b=BE27j+Al90GOwMC06LRzAz81d2l9qJAi7lBlF26NnFjx/eyvhgBo1QnA+V54hvQkrX5rv6WR
- +lYa1Y+zyTmOU1ysd475GcqV1C5O8QuL5yAAT3bqnsaFkrbIuw5F5JH45rzJlm1V87odoy2z
- AL4gmkr8PBVd/0URywr7XoqRJj0=
-X-Mailgun-Sending-Ip: 69.72.43.7
+ bh=owZAZzzevo2vEHh+id5TiUQlxWbVBRunCY0q/fkSbg8=; b=swvn7pnyDSUFaAsFlJg8SiwoAG7uFFm7PJJ6fmU6SjSCzYgMGZftATX10u8EolKq0hxAB2Yo
+ aiRuD9ckI3T8zzGDnHz1oKrUd18ZUwSbvaI20zl/1u3DXIWJG13oBhwqYLB4mR96k4m1xuFC
+ q9qmoZFh8mV0eGMB2MQWCE01fO0=
+X-Mailgun-Sending-Ip: 104.130.122.29
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n05.prod.us-east-1.postgun.com with SMTP id
- 5ef0bd2a567385e8e70b36bc (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 22 Jun 2020 14:16:10
+ smtp-out-n05.prod.us-west-2.postgun.com with SMTP id
+ 5ef0bda3fe1db4db89d85247 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 22 Jun 2020 14:18:11
  GMT
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id F2E91C433CA; Mon, 22 Jun 2020 14:16:09 +0000 (UTC)
+        id 1E4D2C433CB; Mon, 22 Jun 2020 14:18:11 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -36,22 +37,27 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 34852C433C6;
-        Mon, 22 Jun 2020 14:16:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 34852C433C6
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id A2DC6C433C8;
+        Mon, 22 Jun 2020 14:18:07 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org A2DC6C433C8
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     Eyal Reizer <eyalr@ti.com>, Guy Mishol <guym@ti.com>,
-        linux-wireless@vger.kernel.org, linux-omap@vger.kernel.org
-Subject: Re: [PATCH 2/4] wlcore: Use spin_trylock in wlcore_irq() to see if we need to queue tx
-References: <20200617212505.62519-1-tony@atomide.com>
-        <20200617212505.62519-3-tony@atomide.com>
-Date:   Mon, 22 Jun 2020 17:16:05 +0300
-In-Reply-To: <20200617212505.62519-3-tony@atomide.com> (Tony Lindgren's
-        message of "Wed, 17 Jun 2020 14:25:03 -0700")
-Message-ID: <871rm7gp96.fsf@codeaurora.org>
+To:     Flavio Suligoi <f.suligoi@asem.it>
+Cc:     "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Johan Hovold <johan@kernel.org>,
+        Aditya Pakki <pakki001@umn.edu>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "Gustavo A . R . Silva" <gustavo@embeddedor.com>,
+        <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 1/1] net: wireless: intersil: orinoco: fix spelling mistake
+References: <20200619093102.29487-1-f.suligoi@asem.it>
+Date:   Mon, 22 Jun 2020 17:18:05 +0300
+In-Reply-To: <20200619093102.29487-1-f.suligoi@asem.it> (Flavio Suligoi's
+        message of "Fri, 19 Jun 2020 11:31:02 +0200")
+Message-ID: <87wo3zfale.fsf@codeaurora.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -60,17 +66,16 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Tony Lindgren <tony@atomide.com> writes:
+Flavio Suligoi <f.suligoi@asem.it> writes:
 
-> We need the spinlock to check if we need to queue tx in wlcore_irq().
-> Let's use spin_trylock instead and always queue tx unless we know there's
-> nothing to do.
+> Fix typo: "EZUSB_REQUEST_TRIGER" --> "EZUSB_REQUEST_TRIGGER"
 >
-> Let's also update the comment a bit while at it.
->
-> Signed-off-by: Tony Lindgren <tony@atomide.com>
+> Signed-off-by: Flavio Suligoi <f.suligoi@asem.it>
+> ---
+>  drivers/net/wireless/intersil/orinoco/orinoco_usb.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
 
-Same question as in patch 1, the background for this is not clear.
+The prefix should be "orinoco_usb: ", but I can fix that.
 
 -- 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
