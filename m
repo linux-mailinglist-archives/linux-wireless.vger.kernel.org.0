@@ -2,135 +2,116 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3FB64203A0C
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Jun 2020 16:53:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E28A2203A12
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Jun 2020 16:55:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729319AbgFVOxs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 22 Jun 2020 10:53:48 -0400
-Received: from us-smtp-1.mimecast.com ([205.139.110.61]:21864 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1729280AbgFVOxr (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 22 Jun 2020 10:53:47 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1592837625;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=P7taa7KigpgUZeLwSBQmyXWitMWaWACRV2B/k/C5al0=;
-        b=gRStwUcLtw61tpAoCwUgIqKOCrQA4OKSb9xWCrKE8qnzqjz5H7e4XFay7W9ZwO79e4TNSf
-        nTV64SA6n7zpvQ7+5shsboCatJyJgpI+0HvxqxvsGXIzeNsO4mI8rOa01P8Ep3voHo0zQx
-        6Dva+E5yASxXfEz5gb7GYs42vltpcQA=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-340-EazmJF60OC-3O3DTayO21w-1; Mon, 22 Jun 2020 10:53:43 -0400
-X-MC-Unique: EazmJF60OC-3O3DTayO21w-1
-Received: by mail-wr1-f70.google.com with SMTP id w4so10952123wrl.13
-        for <linux-wireless@vger.kernel.org>; Mon, 22 Jun 2020 07:53:43 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=P7taa7KigpgUZeLwSBQmyXWitMWaWACRV2B/k/C5al0=;
-        b=pobp+Mc3oS44gs27WzSL4TYVyNj4eVc4YPPr0umZMOR+qwTM1rXTH+Naf+M50DsIDy
-         jbp4KGfxrXjkh8aWX2fLhUdbHWZ+NNs5Jes52ObFUM5xw8ty7XnSDqZKEjN1JXdnxs+D
-         hoeuxDncLDh02JV4S50awk0chpdzMmRJDLeAvtr/4LJR5koU2cof14cpzJsoFDl8m2Xa
-         +/EZ8EFKI5vn/qFQ4L2A974xLYeU0UOBmG9T5ZuWsap5OG/JI0mB5beEFSqw4CJq/a8p
-         uwINauBU++rQY1CFn/0UtIg0AYHzsP+JwOcklhmuckiBa6/lUvYABJZEzCjqhbMVxEoq
-         mcIw==
-X-Gm-Message-State: AOAM531EEykFWZp0tOG0LFv7HikqtDemObW6wfFnCfDsnyJ/oI5uvZ6D
-        oVlKHZFtdoMIYrE6gETRZUQwH0CKRy/FYfbu5cuWm8pOwmcJwf5PUbK4++xnBen/jusZtBPGsTn
-        IVHUHgcrFL7ioA66E01yjz2guQ4Q=
-X-Received: by 2002:a5d:4e81:: with SMTP id e1mr5512127wru.22.1592837622435;
-        Mon, 22 Jun 2020 07:53:42 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJyUuKsQy1lYYQH5S5wcZD53SekQyD8JGsIHp4PC0g4E/zNEVCx/JYFP61TwuMuJ4vKGweBlJw==
-X-Received: by 2002:a5d:4e81:: with SMTP id e1mr5512094wru.22.1592837622169;
-        Mon, 22 Jun 2020 07:53:42 -0700 (PDT)
-Received: from localhost ([151.48.138.186])
-        by smtp.gmail.com with ESMTPSA id e25sm19318997wrc.69.2020.06.22.07.53.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 22 Jun 2020 07:53:41 -0700 (PDT)
-Date:   Mon, 22 Jun 2020 16:53:38 +0200
-From:   Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-To:     Oleksandr Natalenko <oleksandr@redhat.com>
-Cc:     Lorenzo Bianconi <lorenzo@kernel.org>,
-        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
-        Felix Fietkau <nbd@nbd.name>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-mediatek@lists.infradead.org,
-        LKML <linux-kernel@vger.kernel.org>
-Subject: Re: mt7612 suspend/resume issue
-Message-ID: <20200622145338.GB27892@localhost.localdomain>
-References: <20200618090556.pepjdbnba2gqzcbe@butterfly.localdomain>
- <20200618111859.GC698688@lore-desk.lan>
- <20200619150132.2zrc3ojqhtbn432u@butterfly.localdomain>
- <20200621205412.GB271428@localhost.localdomain>
- <CAHcwAbR4govGK3RPyfKWRgFRhFanWtpJLrB_PEjcoiBDJ3_Adg@mail.gmail.com>
+        id S1729053AbgFVOzn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 22 Jun 2020 10:55:43 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:26762 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728918AbgFVOzn (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 22 Jun 2020 10:55:43 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1592837742; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=OLSS+KRgX5n50AoMk56HGdDuDHRpwuXMsAFnQNuxhMo=; b=Vq8hFMlgKABRQT5Ysd2A5xNIkOHI/7BnpBRL15lj4P4jNK2eM03DTfN3IEBuayKqwZrxWRFe
+ D/0Meo7CQE96lH4M959tIn2ZIVctBHW/Ay1byv18ghYY273EMeh+gY+R24UYeFam+IBAYGvB
+ icDTCC6kfvLBeEMuatgwnrS6xSw=
+X-Mailgun-Sending-Ip: 69.72.43.7
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n11.prod.us-west-2.postgun.com with SMTP id
+ 5ef0c65cf3deea03f34047c0 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 22 Jun 2020 14:55:24
+ GMT
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id CA5CAC433CA; Mon, 22 Jun 2020 14:55:24 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id C2EBDC433C6;
+        Mon, 22 Jun 2020 14:55:22 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org C2EBDC433C6
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Chi-Hsien Lin <chi-hsien.lin@cypress.com>
+Cc:     kernel test robot <lkp@intel.com>,
+        Joseph Chuang <joseph.chuang@cypress.com>,
+        kbuild-all@lists.01.org, linux-kernel@vger.kernel.org,
+        linux-wireless@vger.kernel.org
+Subject: Re: drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c:1710:40: sparse: sparse: incorrect type in initializer (different base types)
+References: <202006190422.VymyEbuu%lkp@intel.com>
+        <87a70vgpkb.fsf@codeaurora.org>
+        <76e75ef2-850b-2860-f28b-ba773ee50117@cypress.com>
+Date:   Mon, 22 Jun 2020 17:55:20 +0300
+In-Reply-To: <76e75ef2-850b-2860-f28b-ba773ee50117@cypress.com> (Chi-Hsien
+        Lin's message of "Mon, 22 Jun 2020 22:48:18 +0800")
+Message-ID: <875zbjf8vb.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="DBIVS5p969aUjpLe"
-Content-Disposition: inline
-In-Reply-To: <CAHcwAbR4govGK3RPyfKWRgFRhFanWtpJLrB_PEjcoiBDJ3_Adg@mail.gmail.com>
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Chi-Hsien Lin <chi-hsien.lin@cypress.com> writes:
 
---DBIVS5p969aUjpLe
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> On 06/22/2020 10:09, Kalle Valo wrote:
+>> + linux-wireless
+>>
+>> kernel test robot <lkp@intel.com> writes:
+>>
+>>> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
+>>> head:   5e857ce6eae7ca21b2055cca4885545e29228fe2
+>>> commit: 9c29da3f4e7ef9810bdfaf3d8aa5e6d2e33136f8 brcmfmac: Fix P2P
+>>> Group Formation failure via Go-neg method
+>>> date:   6 weeks ago
+>>> config: riscv-randconfig-s032-20200618 (attached as .config)
+>>> compiler: riscv64-linux-gcc (GCC) 9.3.0
+>>> reproduce:
+>>>          # apt-get install sparse
+>>>          # sparse version: v0.6.2-rc1-10-gc17b1b06-dirty
+>>>          git checkout 9c29da3f4e7ef9810bdfaf3d8aa5e6d2e33136f8
+>>>          # save the attached .config to linux build tree
+>>>          make W=1 C=1 ARCH=riscv CF='-fdiagnostic-prefix -D__CHECK_ENDIAN__'
+>>>
+>>> If you fix the issue, kindly add following tag as appropriate
+>>> Reported-by: kernel test robot <lkp@intel.com>
+>>>
+>>>
+>>> sparse warnings: (new ones prefixed by >>)
+>>>
+>>>>> drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c:1710:40:
+>>>>> sparse: sparse: incorrect type in initializer (different base
+>>>>> types) @@ expected signed int [usertype] requested_dwell @@ got
+>>>>> restricted __le32 [usertype] dwell_time @@
+>>>>> drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c:1710:40:
+>>>>> sparse: expected signed int [usertype] requested_dwell
+>>>>> drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c:1710:40:
+>>>>> sparse: got restricted __le32 [usertype] dwell_time
+>>
+>> Joseph, please send a followup patch to fix these.
+> Kalle,
+>
+> The fix is this one
+> https://patchwork.kernel.org/patch/11598109/
 
-> Hello, Lorenzo.
->=20
-> On Sun, Jun 21, 2020 at 10:54 PM Lorenzo Bianconi <lorenzo@kernel.org> wr=
-ote:
-> > > > +static int __maybe_unused
-> > > > +mt76x2e_suspend(struct pci_dev *pdev, pm_message_t state)
-> > > > +{
-> > > > +   struct mt76_dev *mdev =3D pci_get_drvdata(pdev);
-> > > > +   struct mt76x02_dev *dev =3D container_of(mdev, struct mt76x02_d=
-ev, mt76);
-> > > > +   int i, err;
-> >
-> > can you please double-check what is the PCI state requested during susp=
-end?
->=20
-> Do you mean ACPI S3 (this is the state the system enters)?  If not,
-> what should I check and where?
+Great, thanks.
 
-yes, right. Just for debugging, can you please force the card in PCI_D0 dur=
-ing the
-suspend?
+> Do I need to submit a V2 with "Reported-by: kernel test robot
+> <lkp@intel.com>" tag?
 
-Regards,
-Lorenzo
+No need to send v2. But you can reply to that patch (so that patchwork
+sees it) and ask me to add the tag during commit.
 
->=20
-> Thanks.
->=20
-> --=20
->   Best regards,
->     Oleksandr Natalenko (post-factum)
->     Principal Software Maintenance Engineer
->=20
-
---DBIVS5p969aUjpLe
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCXvDF7wAKCRA6cBh0uS2t
-rJ4uAP9lKuUy0QTisY2SFP33vemkDckUeiQV2JsSGBnBdJ4FIQD/Yo4wkX1kg1Dr
-YM/2gw/OmT+M00BF1XWr3MJF0Tx7sQo=
-=rEPw
------END PGP SIGNATURE-----
-
---DBIVS5p969aUjpLe--
-
+-- 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
