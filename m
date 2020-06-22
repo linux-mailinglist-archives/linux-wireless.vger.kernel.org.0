@@ -2,95 +2,100 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 09C8A2039E8
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Jun 2020 16:49:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5422F2039FE
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Jun 2020 16:51:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729322AbgFVOtL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 22 Jun 2020 10:49:11 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:44052 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1728504AbgFVOtK (ORCPT
+        id S1729232AbgFVOvX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 22 Jun 2020 10:51:23 -0400
+Received: from mail29.static.mailgun.info ([104.130.122.29]:17396 "EHLO
+        mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728937AbgFVOvX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 22 Jun 2020 10:49:10 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1592837349;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=naZjlXqAUuz9QFqq0p2KUyyeqf2h2ajScjOSS4MNLek=;
-        b=iZAt9jWIDdGmUycXcEExUMtQwPB4mAEGmrh+FKOLhyf00tQ8fp+aHiKUONC2CgcxB/o1gC
-        4byHJy2zFc5J0HbajANz673LFxUAGuPKG57FBoDYRnDHj17Yg33DxcMznocvl7DLG6Tgm8
-        DiWA9q7dYPxj2919VZwtJodp42DVtzE=
-Received: from mail-oi1-f200.google.com (mail-oi1-f200.google.com
- [209.85.167.200]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-416-6gWTBsdxPpudXkp1QfgPCg-1; Mon, 22 Jun 2020 10:49:05 -0400
-X-MC-Unique: 6gWTBsdxPpudXkp1QfgPCg-1
-Received: by mail-oi1-f200.google.com with SMTP id e6so8159416oib.0
-        for <linux-wireless@vger.kernel.org>; Mon, 22 Jun 2020 07:49:05 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=naZjlXqAUuz9QFqq0p2KUyyeqf2h2ajScjOSS4MNLek=;
-        b=ZrwXUZBHbnT9ETgtuae0nJbr6Fitp3dNNtRNorjhV6tBVcOWOWVCzkkb4krs3GUhtI
-         BT12yegpXdtDaSnKdQ4yhYQn23oUb8KdpiZANbwixhGgDs5opkmGL05CKUMVIMnaQqE8
-         wl8wPRPJOvJ8X0aJTCn81gCxMyGB89Kk+J7IZc877oI2dnLiqiun8dm+et/G5uZ0qNy7
-         fkW0r/p4kVV9/s66crJVX9l/fkRMwXaz+w7Fr/WzBh2QqxySotDHvPq44hqhTcqD9nlQ
-         aoJJ+9RDvtlyrB/Ha11V/i/TlILdfTQDkEQAZg33zHi9iNZjqfNfWYSM/qYJmRBzpOTf
-         IxBw==
-X-Gm-Message-State: AOAM532i7i35S2c285YPJZRIBzOXv8c/+m7YCKhTlaEZF1KCsdqJdL/k
-        qtnuUlGXT8rW3+birWugUxPndq9uCfmtEUf5+hvTB5I3IZDEVSz8ArAwB/mgTowGaaftiVK5Ygn
-        T8lsggEWVD9Y5t5paruWhcNGEUp80kHHsmRi/5IgGIJ0=
-X-Received: by 2002:a9d:39b6:: with SMTP id y51mr12985163otb.175.1592837344596;
-        Mon, 22 Jun 2020 07:49:04 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJw6oTCLYY5ewTtAXQxagLn65iRqRaS/ifJ30YW9dcHRfGmRzdPnCFDN3sUXNC+/uj6SNSIpnbpPZl7QUh97fIk=
-X-Received: by 2002:a9d:39b6:: with SMTP id y51mr12985144otb.175.1592837344375;
- Mon, 22 Jun 2020 07:49:04 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200618090556.pepjdbnba2gqzcbe@butterfly.localdomain>
- <20200618111859.GC698688@lore-desk.lan> <20200619150132.2zrc3ojqhtbn432u@butterfly.localdomain>
- <20200621205412.GB271428@localhost.localdomain>
-In-Reply-To: <20200621205412.GB271428@localhost.localdomain>
-From:   Oleksandr Natalenko <oleksandr@redhat.com>
-Date:   Mon, 22 Jun 2020 16:48:53 +0200
-Message-ID: <CAHcwAbR4govGK3RPyfKWRgFRhFanWtpJLrB_PEjcoiBDJ3_Adg@mail.gmail.com>
-Subject: Re: mt7612 suspend/resume issue
-To:     Lorenzo Bianconi <lorenzo@kernel.org>
-Cc:     Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
-        Felix Fietkau <nbd@nbd.name>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
+        Mon, 22 Jun 2020 10:51:23 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1592837483; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=IOa0t2oIcusYGci2TdyPAuYcm9Jhr9e0dw/UoRzbleY=; b=bWW7txvx9sJ1me7hG6uxpJr0TAkIMWqIJVHv8X4onZx1GrobBYidI7IrmAJByQlbwRGAxrKF
+ w8H1GCex81OVX70OjRdPvMF9A46Kj90edikQJrQSWW8dyKifVfl9zkMU+2XsxgL1Y61ciugb
+ lDCEn2T3t3UUTl4mVsoKnGboCBc=
+X-Mailgun-Sending-Ip: 104.130.122.29
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n02.prod.us-west-2.postgun.com with SMTP id
+ 5ef0c56ae144dd511553026f (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 22 Jun 2020 14:51:22
+ GMT
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 6F921C433CA; Mon, 22 Jun 2020 14:51:22 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 1F1CEC433C6;
+        Mon, 22 Jun 2020 14:51:18 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 1F1CEC433C6
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Karthikeyan Periyasamy <periyasa@codeaurora.org>,
         Jakub Kicinski <kuba@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-mediatek@lists.infradead.org,
-        LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        kernel-janitors@vger.kernel.org, linux-wireless@vger.kernel.org,
+        ath11k@lists.infradead.org
+Subject: Re: [PATCH net-next] ath11k: fix uninitialized return in ath11k_spectral_process_data()
+References: <20200619142922.GA267142@mwanda>
+Date:   Mon, 22 Jun 2020 17:51:16 +0300
+In-Reply-To: <20200619142922.GA267142@mwanda> (Dan Carpenter's message of
+        "Fri, 19 Jun 2020 14:29:22 +0000 (UTC)")
+Message-ID: <87a70vf923.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello, Lorenzo.
+Dan Carpenter <dan.carpenter@oracle.com> writes:
 
-On Sun, Jun 21, 2020 at 10:54 PM Lorenzo Bianconi <lorenzo@kernel.org> wrote:
-> > > +static int __maybe_unused
-> > > +mt76x2e_suspend(struct pci_dev *pdev, pm_message_t state)
-> > > +{
-> > > +   struct mt76_dev *mdev = pci_get_drvdata(pdev);
-> > > +   struct mt76x02_dev *dev = container_of(mdev, struct mt76x02_dev, mt76);
-> > > +   int i, err;
+> There is a success path where "ret" isn't initialized where we never
+> have a ATH11K_SPECTRAL_TAG_SCAN_SEARCH and then ret isn't initialized.
 >
-> can you please double-check what is the PCI state requested during suspend?
+> Fixes: 9d11b7bff950 ("ath11k: add support for spectral scan")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+>  drivers/net/wireless/ath/ath11k/spectral.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/net/wireless/ath/ath11k/spectral.c b/drivers/net/wireless/ath/ath11k/spectral.c
+> index 1c5d65bb411f..bfbf905f7507 100644
+> --- a/drivers/net/wireless/ath/ath11k/spectral.c
+> +++ b/drivers/net/wireless/ath/ath11k/spectral.c
+> @@ -677,7 +677,7 @@ static int ath11k_spectral_process_data(struct ath11k *ar,
+>  	u32 data_len, i;
+>  	u8 sign, tag;
+>  	int tlv_len, sample_sz;
+> -	int ret;
+> +	int ret = 0;
+>  	bool quit = false;
 
-Do you mean ACPI S3 (this is the state the system enters)?  If not,
-what should I check and where?
+I try to avoid initialising ret variables so I would like find another
+way. What about doing this (completely untested!) in the end of the
+function:
 
-Thanks.
+        return 0;
+
+err:
+	kfree(fft_sample);
+unlock:
+	spin_unlock_bh(&ar->spectral.lock);
+	return ret;
 
 -- 
-  Best regards,
-    Oleksandr Natalenko (post-factum)
-    Principal Software Maintenance Engineer
-
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
