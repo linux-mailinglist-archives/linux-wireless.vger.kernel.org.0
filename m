@@ -2,121 +2,97 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5994B2033D6
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Jun 2020 11:43:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5EFE12036E6
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Jun 2020 14:35:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726736AbgFVJnp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 22 Jun 2020 05:43:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41106 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726070AbgFVJno (ORCPT
+        id S1728189AbgFVMfq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 22 Jun 2020 08:35:46 -0400
+Received: from smail.rz.tu-ilmenau.de ([141.24.186.67]:57732 "EHLO
+        smail.rz.tu-ilmenau.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728139AbgFVMfp (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 22 Jun 2020 05:43:44 -0400
-Received: from mail-il1-x144.google.com (mail-il1-x144.google.com [IPv6:2607:f8b0:4864:20::144])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B978C061794
-        for <linux-wireless@vger.kernel.org>; Mon, 22 Jun 2020 02:43:44 -0700 (PDT)
-Received: by mail-il1-x144.google.com with SMTP id j16so3153964ili.9
-        for <linux-wireless@vger.kernel.org>; Mon, 22 Jun 2020 02:43:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=LyjN1zqcpLxgEWm7oS8qSQzlU6yUrQU0pLiaBlb2F0k=;
-        b=Ktkiu9Mb22o4Y2xV77Vc/3Jacjuc/AbWdl+NXKJ3eX1YJyiXD4V4h9tY4p82p13Wbw
-         C2Xf7xj4SJZ2foL2ubBpsyro0mbGDNdeNZEADE/JULM0ZncPHo0gypK7xKNzGqpiPXWe
-         NZlzFNa4Fk5q80YqSPlPJRoWW5p4QGLC1sYxMpaE/CLFs45uWD1h/S71z9/zNU/T9eWx
-         ULJCOTuWmzjbBND3B7Yo5h8HnZxmjjFxn/ydSLHJJihuGfdFEiCj7WlqfN4foOjXkoOv
-         hABCMBvXwXBIsPwpLNohY32B601lSXigPfRW2sZvMWEHV8qlPvFvZCaNfjOGYx1VkIRu
-         E73A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=LyjN1zqcpLxgEWm7oS8qSQzlU6yUrQU0pLiaBlb2F0k=;
-        b=LBP4O0sgeTcDD/4UmQ5hYrNnAkWa8bRC+XbRRT1xk2hTDk30zMVLvU6hb1+eET+t+a
-         x2N8zg2qC0vRE36NToKnJgfR2F07/U212/Nu6uF1tQOfyfFf77l0DHlQfbEy8BseU/79
-         OcbhQTvUttG2dgSq81FgxzbuvwIc3TEpU8/hsRIn/8TsBcDPFa5xGGnNzeFhvYEoJ/Wc
-         P77dg4ct0OIqLy1uk7/iILCoPcbnu+MMt19MwpnGnlliep8x23gxMjQ6KFklZ1CpMpZw
-         /m1mdLMqOZbU5g4qEs7rUF8AYJ6tNz6MXjoI5oXFMqBdn7ukiH3kJhG93I09PsDXDf/c
-         5hZg==
-X-Gm-Message-State: AOAM5325hPCEE6isW1YBESNPZe7De0xDKzNzR24IZW1Hq2cjHX1X7k/2
-        uVkt2imkjWRPMh0IOCH3WO2jnFXG6qvzsrOCiT4=
-X-Google-Smtp-Source: ABdhPJzrHaPYzMIyUHteM0zLcQqKxDSUVPxZl95+4W9cgCdBJHb8qIrpYQ8tEBvV9JnmE20x9IBfmAvZjZCsTkUQCtU=
-X-Received: by 2002:a92:cc4e:: with SMTP id t14mr17047173ilq.138.1592819023840;
- Mon, 22 Jun 2020 02:43:43 -0700 (PDT)
+        Mon, 22 Jun 2020 08:35:45 -0400
+Received: from legolas.fritz.box (unknown [79.211.69.71])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by smail.rz.tu-ilmenau.de (Postfix) with ESMTPSA id E7A04580060;
+        Mon, 22 Jun 2020 14:35:43 +0200 (CEST)
+From:   Markus Theil <markus.theil@tu-ilmenau.de>
+To:     johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org, j@w1.fi,
+        Markus Theil <markus.theil@tu-ilmenau.de>
+Subject: [PATCH v3] mac80211: fix control port tx status check
+Date:   Mon, 22 Jun 2020 14:35:42 +0200
+Message-Id: <20200622123542.173695-1-markus.theil@tu-ilmenau.de>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Received: by 2002:a05:6638:d45:0:0:0:0 with HTTP; Mon, 22 Jun 2020 02:43:43
- -0700 (PDT)
-Reply-To: msdanielakyleangelo@gmail.com
-From:   "MRS.DANIELLA ANGELO KYLE" <mrs.aisha.muammar.gaddafi6800@gmail.com>
-Date:   Mon, 22 Jun 2020 02:43:43 -0700
-Message-ID: <CAE_kTnjGkiM-e1uYdDpamqfSF64oaF9bKajGze4oDbXYjVQOrw@mail.gmail.com>
-Subject: CAN YOU CONTROL THIS PROJECT GIVING TO YOU!
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Greetings From Mrs.Daniella Angelo Kyle, The wife of late Mr.Angelo
-Kyle, who worked with Central Bank of Philippines for ten years before
-he died on an auto POISON, in the year 2012. But, when my late husband
-was alive, late Mr. Angelo Kyle, he deposited sum amount of Money
-$10.3 Million US Dollars, in my name as the next of kin/beneficiary to
-the funds.
+The initial control port tx status patch assumed, that
+we have IEEE 802.11 frames, but actually ethernet frames
+are stored in the ack skb. Fix this by checking for the
+correct ethertype and skb protocol 802.3.
 
-This money is still with the leading Bank in Burkina Faso. Now I am
-suffering for protracted cancer which has also affected part of my
-brain cells. am in the hospital receiving treatments now, though, my
-doctor has confirmed to me that, I have just few months to live on
-earth due to my cancer condition in a hospital. waiting for the lord's
-call.
+Also allow tx status reports for ETH_P_PREAUTH, as preauth
+frames can also be send over the nl80211 control port.
 
-Please with due respect, can you fulfill my wish to receive this funds
-into your bank account and use it to help the less privilege and
-building of an orphanage homes? I don't want my husband's efforts to
-be used by the Government. I grew up as an Orphan and I don't have
-anybody as my family member,
+Fixes: a7528198add8 ("mac80211: support control port TX status reporting")
+Reported-by: Jouni Malinen <j@w1.fi>
+Signed-off-by: Markus Theil <markus.theil@tu-ilmenau.de>
+---
+v3: also check for ETH_P_PREAUTH
+v2: use __be16, as suggested by Johannes Berg
+ net/mac80211/status.c | 22 +++++++++++++++-------
+ 1 file changed, 15 insertions(+), 7 deletions(-)
 
-Because, I cannot visit the bank, since I am critically sick on the
-bed, receiving treatments; i am powerless to do anything by myself/and
-had no child to Inherits, but my bank account officer advised me to
-assign any of my trustworthy relative, person or partner with
-authorization letter to stand on my behalf as the recipient of my
-money but sorrowfully I don=E2=80=99t have any reliable relative person.
+diff --git a/net/mac80211/status.c b/net/mac80211/status.c
+index 7b1bacac39c6..7d1bc3ca389a 100644
+--- a/net/mac80211/status.c
++++ b/net/mac80211/status.c
+@@ -639,11 +639,23 @@ static void ieee80211_report_ack_skb(struct ieee80211_local *local,
+ 		u64 cookie = IEEE80211_SKB_CB(skb)->ack.cookie;
+ 		struct ieee80211_sub_if_data *sdata;
+ 		struct ieee80211_hdr *hdr = (void *)skb->data;
++		__be16 ethertype = 0xffff;
++
++		if (skb->len >= ETH_HLEN && skb->protocol == cpu_to_be16(ETH_P_802_3))
++			skb_copy_bits(skb, 2 * ETH_ALEN, &ethertype, ETH_TLEN);
 
-And before my husband died on auto POISON, in the year 2012, we had no
-child. My dear, someone lucky, trustworthy, sincere & capable to
-handle this project has to be chosen; and, I am choosing you as my
-representative next of kin/beneficiary to receive this money into your
-bank account. So that you can fulfill my wish to help the less
-privilege and building of an orphanage homes! For, I do not want this
-fund to be transferred into bank=E2=80=99s treasury as an abandoned or
-unclaimed bill funds, I don't want my husband's efforts to be used by
-the Government.
+ 		rcu_read_lock();
+ 		sdata = ieee80211_sdata_from_skb(local, skb);
+ 		if (sdata) {
+-			if (ieee80211_is_any_nullfunc(hdr->frame_control))
++			if (ethertype == sdata->control_port_protocol ||
++			    ethertype == cpu_to_be16(ETH_P_PREAUTH))
++				cfg80211_control_port_tx_status(&sdata->wdev,
++								cookie,
++								skb->data,
++								skb->len,
++								acked,
++								GFP_ATOMIC);
++			else if (ieee80211_is_any_nullfunc(hdr->frame_control))
+ 				cfg80211_probe_status(sdata->dev, hdr->addr1,
+ 						      cookie, acked,
+ 						      info->status.ack_signal,
+@@ -654,12 +666,8 @@ static void ieee80211_report_ack_skb(struct ieee80211_local *local,
+ 							skb->data, skb->len,
+ 							acked, GFP_ATOMIC);
+ 			else
+-				cfg80211_control_port_tx_status(&sdata->wdev,
+-								cookie,
+-								skb->data,
+-								skb->len,
+-								acked,
+-								GFP_ATOMIC);
++				pr_warn("Unknown status report in ack skb\n");
++
+ 		}
+ 		rcu_read_unlock();
 
-forward your informations as indicated below;
+--
+2.27.0
 
-Your full names.......................................
-
-Your private telephone..........................
-
-Your private email address................
-
-your Age .................
-
-Your country...........................
-
-Your Professional ...................
-
-So that i will draft you application letter which you shall send to
-the bank for the release of the fund into your bank account there in
-your country as a beneficiary. If you are interested, I await for your
-soonest response thanks.
-
-With good wishes,
-
-Mrs. Daniela Angelo Kyle,
-Write From Hospital waiting for the lord's call.
