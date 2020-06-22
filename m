@@ -2,92 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E9E09203282
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Jun 2020 10:50:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1DE0F20329B
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Jun 2020 10:57:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726110AbgFVIuP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 22 Jun 2020 04:50:15 -0400
-Received: from smail.rz.tu-ilmenau.de ([141.24.186.67]:55745 "EHLO
-        smail.rz.tu-ilmenau.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725912AbgFVIuO (ORCPT
+        id S1725847AbgFVI5a (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 22 Jun 2020 04:57:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33864 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725802AbgFVI53 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 22 Jun 2020 04:50:14 -0400
-Received: from legolas.fritz.box (unknown [79.211.69.71])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by smail.rz.tu-ilmenau.de (Postfix) with ESMTPSA id CC96058007E;
-        Mon, 22 Jun 2020 10:50:12 +0200 (CEST)
-From:   Markus Theil <markus.theil@tu-ilmenau.de>
-To:     johannes@sipsolutions.net
-Cc:     linux-wireless@vger.kernel.org, j@w1.fi,
-        Markus Theil <markus.theil@tu-ilmenau.de>
-Subject: [PATCH v2] mac80211: fix control port tx status check
-Date:   Mon, 22 Jun 2020 10:49:33 +0200
-Message-Id: <20200622084933.118413-1-markus.theil@tu-ilmenau.de>
-X-Mailer: git-send-email 2.27.0
+        Mon, 22 Jun 2020 04:57:29 -0400
+Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com [IPv6:2a00:1450:4864:20::441])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C877C061794
+        for <linux-wireless@vger.kernel.org>; Mon, 22 Jun 2020 01:57:29 -0700 (PDT)
+Received: by mail-wr1-x441.google.com with SMTP id a6so13838862wrm.4
+        for <linux-wireless@vger.kernel.org>; Mon, 22 Jun 2020 01:57:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=J4lfWpFtkSTGVdNtchR7+MHywh1qNorm1P4Y/FaQAwE=;
+        b=YioTbgmW5TF6bSQVm3QSLQjD/VUoBKGQ2dN7FwEoogVjoqCftwaqYWQEYFmqf82aDX
+         jbzBzNVu2Bqa2SEnqiYpoCQKvQ3vEEjX0BVETR0CcmZBkLbQsF9rT/+O7PgUep7IxfxY
+         FzDgGKfcwv/C4GxTFWlLL1sgMBlQ0aGp6Tu8I=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=J4lfWpFtkSTGVdNtchR7+MHywh1qNorm1P4Y/FaQAwE=;
+        b=KxL12zB497zcJTU4KrBXUJtNQkgTPVFpqjnDj9EkggI1/4eIM7QfmRx0Gl6Itte0S4
+         8Eer3iTm6t88RYnimv6Cp5qzgkuh2iYft3EvS0Fh3sa3ML+zfnzIAQA6svOjfCKUQbUT
+         Rs+XZP5Cm+US/aR7FodEDgIYgkcSCPMYrDzXDBa9Om0Ds2USPd/7xn+qFe9tXrti7UfN
+         jEAnpE0Y4TTq7zEc6nrGJmO+sKV1Sx7lHB8weOq5uE4gE3DLWjzqrYW5SeTx+mbE8Z1W
+         9qdjFRv3vv1cJSFsB1S32ExHGpOKg/eN3yXKwD+WRBn+zLjfpph/5TzCh9MdNemURtDc
+         zEGA==
+X-Gm-Message-State: AOAM5328QyRvH2ivWMgIdOiwhCRpn7pvFLsQDiIE2FSxdaU4RVmyk8Pu
+        FR2yhxNnez0z95U2UrXuiNzIpA==
+X-Google-Smtp-Source: ABdhPJyPdpIn8waja1u5KQI/XAU3p5sdzEz/0/hehExiIhuOZNb5u+X8uDWloJuUWoHekTYCHGmc4w==
+X-Received: by 2002:adf:8168:: with SMTP id 95mr17246724wrm.104.1592816247742;
+        Mon, 22 Jun 2020 01:57:27 -0700 (PDT)
+Received: from [192.168.178.129] (f140230.upc-f.chello.nl. [80.56.140.230])
+        by smtp.gmail.com with ESMTPSA id b81sm17286589wmc.5.2020.06.22.01.57.26
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 22 Jun 2020 01:57:27 -0700 (PDT)
+Subject: Re: [PATCH 2/2] brcmfmac: Set pacing shift before transmitting skb to
+ bus
+To:     Wright Feng <wright.feng@cypress.com>,
+        linux-wireless@vger.kernel.org
+Cc:     brcm80211-dev-list@broadcom.com, brcm80211-dev-list@cypress.com,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Kalle Valo <kvalo@codeaurora.org>, chi-hsien.lin@cypress.com
+References: <20200622020721.498-1-wright.feng@cypress.com>
+ <20200622020721.498-3-wright.feng@cypress.com>
+From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
+Message-ID: <83f89386-f5ae-91ef-d135-a1a0c9a55acb@broadcom.com>
+Date:   Mon, 22 Jun 2020 10:57:25 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.9.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20200622020721.498-3-wright.feng@cypress.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The initial control port tx status patch assumed, that
-we have IEEE 802.11 frames, but actually ethernet frames
-are stored in the ack skb. Fix this by checking for the
-correct ethertype and skb protocol 802.3.
+On 6/22/2020 4:07 AM, Wright Feng wrote:
+> Linux 3.6 introduces TSQ which has a per socket threshold for TCP Tx
+> packet to reduce latency. In flow control mode, host driver enqueues skb
+> in hanger and TCP doesn't push new skb frees until host frees the skb when
+> receiving fwstatus event. So set pacing shift 8 to send them as a single
+> large aggregate frame to the bus layer.
+> 
+> 43455 TX TCP throughput in FC mode 2 on Linux 5.4.18
+> sk_pacing_shift : Throughput
+> 10: 190 Mbps
+>   9: 216 Mbps
+>   8: 233 Mbps (Max throughput)
+>   7: 233 Mpbs
 
-Fixes: a7528198add8 ("mac80211: support control port TX status reporting")
-Reported-by: Jouni Malinen <j@w1.fi>
-Signed-off-by: Markus Theil <markus.theil@tu-ilmenau.de>
----
-v2: use __be16, as suggested by Johannes Berg
- net/mac80211/status.c | 21 ++++++++++++++-------
- 1 file changed, 14 insertions(+), 7 deletions(-)
+In this patch the pacing shift update is done irrespective of the FC 
+mode so I would like to see similar measurements for the other FC mode 
+configurations.
 
-diff --git a/net/mac80211/status.c b/net/mac80211/status.c
-index 7b1bacac39c6..ff4362d0a0ee 100644
---- a/net/mac80211/status.c
-+++ b/net/mac80211/status.c
-@@ -639,11 +639,22 @@ static void ieee80211_report_ack_skb(struct ieee80211_local *local,
- 		u64 cookie = IEEE80211_SKB_CB(skb)->ack.cookie;
- 		struct ieee80211_sub_if_data *sdata;
- 		struct ieee80211_hdr *hdr = (void *)skb->data;
-+		__be16 ethertype = 0xffff;
-+
-+		if (skb->len >= ETH_HLEN && skb->protocol == cpu_to_be16(ETH_P_802_3))
-+			skb_copy_bits(skb, 2 * ETH_ALEN, &ethertype, ETH_TLEN);
-
- 		rcu_read_lock();
- 		sdata = ieee80211_sdata_from_skb(local, skb);
- 		if (sdata) {
--			if (ieee80211_is_any_nullfunc(hdr->frame_control))
-+			if (ethertype == sdata->control_port_protocol)
-+				cfg80211_control_port_tx_status(&sdata->wdev,
-+								cookie,
-+								skb->data,
-+								skb->len,
-+								acked,
-+								GFP_ATOMIC);
-+			else if (ieee80211_is_any_nullfunc(hdr->frame_control))
- 				cfg80211_probe_status(sdata->dev, hdr->addr1,
- 						      cookie, acked,
- 						      info->status.ack_signal,
-@@ -654,12 +665,8 @@ static void ieee80211_report_ack_skb(struct ieee80211_local *local,
- 							skb->data, skb->len,
- 							acked, GFP_ATOMIC);
- 			else
--				cfg80211_control_port_tx_status(&sdata->wdev,
--								cookie,
--								skb->data,
--								skb->len,
--								acked,
--								GFP_ATOMIC);
-+				pr_warn("Unknown status report in ack skb\n");
-+
- 		}
- 		rcu_read_unlock();
-
---
-2.27.0
-
+Regards,
+Arend
