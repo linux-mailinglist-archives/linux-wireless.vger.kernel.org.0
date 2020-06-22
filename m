@@ -2,121 +2,95 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0AE0D202E41
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Jun 2020 04:17:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 88EEF202E46
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Jun 2020 04:21:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726947AbgFVCRE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 21 Jun 2020 22:17:04 -0400
-Received: from mailgw02.mediatek.com ([210.61.82.184]:39351 "EHLO
-        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726685AbgFVCRD (ORCPT
+        id S1726680AbgFVCVZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 21 Jun 2020 22:21:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57894 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726456AbgFVCVZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 21 Jun 2020 22:17:03 -0400
-X-UUID: 6b2cc00edff6457988d0ea05ffba454b-20200622
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Transfer-Encoding:Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=A9h6IK0GYWOu+9gVRl0MwxTZ+MuiULEY2ZXzBbQtca8=;
-        b=VmkquC6KrX0lby/07YLhxcYgfCpctvqO3dUFcuXltNpKEUtJwu1c3MoXOebchRl8BNuNXLZgwLKE2FCJiKxKvXaKOMX8iZ7cUIHi1qLFWJjGmIhOqsDFi4OAq3o+PlU/ezhypUMZmyRiv714lFyssFW2QRCbv2n2ZaqH+/1KNBk=;
-X-UUID: 6b2cc00edff6457988d0ea05ffba454b-20200622
-Received: from mtkcas07.mediatek.inc [(172.21.101.84)] by mailgw02.mediatek.com
-        (envelope-from <ryder.lee@mediatek.com>)
-        (Cellopoint E-mail Firewall v4.1.10 Build 0809 with TLS)
-        with ESMTP id 700341391; Mon, 22 Jun 2020 10:16:58 +0800
-Received: from MTKCAS06.mediatek.inc (172.21.101.30) by
- mtkmbs06n2.mediatek.inc (172.21.101.130) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Mon, 22 Jun 2020 10:16:56 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by MTKCAS06.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Mon, 22 Jun 2020 10:16:46 +0800
-From:   Ryder Lee <ryder.lee@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Sean Wang <sean.wang@mediatek.com>
-CC:     Shayne Chen <shayne.chen@mediatek.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>,
-        Ryder Lee <ryder.lee@mediatek.com>
-Subject: [PATCH v2] mt76: mt7915: overwrite qid for non-bufferable mgmt frames
-Date:   Mon, 22 Jun 2020 10:16:55 +0800
-Message-ID: <54555754349ac8912150e896e2206f1e4a0ba28d.1592791898.git.ryder.lee@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-SNTS-SMTP: 37F22BE14546FB5628292D5E79427914DB70060E5D426B0A3662BF82EE4A6BCD2000:8
-X-MTK:  N
-Content-Transfer-Encoding: base64
+        Sun, 21 Jun 2020 22:21:25 -0400
+Received: from mail-qk1-x744.google.com (mail-qk1-x744.google.com [IPv6:2607:f8b0:4864:20::744])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA0DEC061794;
+        Sun, 21 Jun 2020 19:21:24 -0700 (PDT)
+Received: by mail-qk1-x744.google.com with SMTP id b4so14213549qkn.11;
+        Sun, 21 Jun 2020 19:21:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=2YE9gPP5bCoYsurMhSnWjNJyyw00QRCWcTkQq56FnVc=;
+        b=MQSC7+8JsP0pBgEDfwg/fziotB/jhsLxre1enkWA/0pRx1zhCDstPx14yHBQaoXS8a
+         oX0K1DudDD9np+Is9tU4KA26xyO7Y5jFqafTkc/cRIOHyVENPPqZlZMoDhAD+OVktIDJ
+         umRMU8Y+mQW9Rs2j4HnYLXOWqvOX0tf5Que/4fqMXcrdL/rwzD3bgCkdXjxTUKHvomAo
+         qsozYHUFh+xN96kL732IPPZ8cRUnWPWEMhGa8UWvgmBEPrrxFjdxz/mRoKDcT1U4BrON
+         GduWUle3hJF9qP6h19pfXOVrol8Oxjz+J/hQ4WFMs+SEk/7NVnI85CKOnIL/ZuF4il5c
+         fjsA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=2YE9gPP5bCoYsurMhSnWjNJyyw00QRCWcTkQq56FnVc=;
+        b=VBYTY9gvzBx2Wa72aOyo+NyjWn8km9Ym8ce0s+VbOJFiBLLg4K4ET28MJ8hHGK78LZ
+         vWiG/+XbOQA2iKkCq2SbMUYCwK4tYXFjqqoc0zDQFsBTM2bSyzl1sDvd+WbGqsgG2NdO
+         rUYxScxSJ8jClue0hNACRQ7EreHpKiO68M38mTLfPUxp6QcIXwBCKVZEsqtQeKfxBN2p
+         IKK304p9r1WkRn1sN9mvE86FFFOhsRgNVIHXg/PLh8GFH4+nACDZIstzw7vCmROX8vZE
+         MxZkAxhtC/jK1QnC2Qpsd2dYvmhHy/hnF2amiCNo0BBakVcX3rUdHOHu9jFfw+AAurdN
+         vD5g==
+X-Gm-Message-State: AOAM530RAKeOqsN1BxjJMOIPJcHXzJPpe/1M9X7CVpyV9tfz9tfBlwKd
+        cuSxin+F+FoDZBf6WU35PX44SmzBEBI=
+X-Google-Smtp-Source: ABdhPJwNHNw6nIS3omBcZml67Q873TZx3jnZ7lv3uMLIkAAIla8hsj7jyCAk0Fkt8jZtevE5u8fBlg==
+X-Received: by 2002:a05:620a:a1b:: with SMTP id i27mr7017238qka.429.1592792483901;
+        Sun, 21 Jun 2020 19:21:23 -0700 (PDT)
+Received: from buszk-y710.fios-router.home (pool-108-54-206-188.nycmny.fios.verizon.net. [108.54.206.188])
+        by smtp.googlemail.com with ESMTPSA id f54sm1435295qte.76.2020.06.21.19.21.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 21 Jun 2020 19:21:23 -0700 (PDT)
+From:   Zekun Shen <bruceshenzk@gmail.com>
+Cc:     Zekun Shen <bruceshenzk@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, ath10k@lists.infradead.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] net: ath10k: santity check for ep connectivity
+Date:   Sun, 21 Jun 2020 22:20:54 -0400
+Message-Id: <20200622022055.16028-1-bruceshenzk@gmail.com>
+X-Mailer: git-send-email 2.17.1
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-T3ZlcndyaXRlIGh3IHF1ZXVlIGlkIGZvciBub24tYnVmZmVyYWJsZSBtYW5hZ2VtZW50IGZyYW1l
-cyBpZiB0aGUgaHcvZncNCnN1cHBvcnQgYWx3YXlzIHR4cSAoYWx0eHEpIGluIG9yZGVyIHRvIGJl
-IGluIHN5bmMgd2l0aCBtYWMgdHh3aSBjb2RlDQoNClNpZ25lZC1vZmYtYnk6IFJ5ZGVyIExlZSA8
-cnlkZXIubGVlQG1lZGlhdGVrLmNvbT4NCi0tLQ0KY2hhbmdlcyBzaW5jZSB2MiAtIDExYXggZGVp
-dmVjZSB1c2VzIE1UX1RYRDFfVEdJRCB0byBjb25maWd1cmUgYmFuZDEgaHdxDQotLS0NCiAuLi4v
-bmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1L2RtYS5jICAgfCAyMSArKysrKysrKysr
-LS0tLS0tLS0tDQogLi4uL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzkxNS9tYWMuYyAg
-IHwgMTUgKysrKysrLS0tLS0tLQ0KIC4uLi9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5
-MTUvcGNpLmMgICB8ICAyICstDQogMyBmaWxlcyBjaGFuZ2VkLCAyMCBpbnNlcnRpb25zKCspLCAx
-OCBkZWxldGlvbnMoLSkNCg0KZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlh
-dGVrL210NzYvbXQ3OTE1L2RtYS5jIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3
-Ni9tdDc5MTUvZG1hLmMNCmluZGV4IDc2NjE4NWQxYWEyMS4uYTg4MzJjNWU2MDA0IDEwMDY0NA0K
-LS0tIGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvZG1hLmMNCisr
-KyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1L2RtYS5jDQpAQCAt
-NzksMjYgKzc5LDI3IEBAIHZvaWQgbXQ3OTE1X3F1ZXVlX3J4X3NrYihzdHJ1Y3QgbXQ3Nl9kZXYg
-Km1kZXYsIGVudW0gbXQ3Nl9yeHFfaWQgcSwNCiAJfQ0KIH0NCiANCitzdGF0aWMgdm9pZA0KK210
-NzkxNV90eF9jbGVhbnVwKHN0cnVjdCBtdDc5MTVfZGV2ICpkZXYpDQorew0KKwltdDc2X3F1ZXVl
-X3R4X2NsZWFudXAoZGV2LCBNVF9UWFFfTUNVLCBmYWxzZSk7DQorCW10NzZfcXVldWVfdHhfY2xl
-YW51cChkZXYsIE1UX1RYUV9NQ1VfV0EsIGZhbHNlKTsNCisJbXQ3Nl9xdWV1ZV90eF9jbGVhbnVw
-KGRldiwgTVRfVFhRX1BTRCwgZmFsc2UpOw0KKwltdDc2X3F1ZXVlX3R4X2NsZWFudXAoZGV2LCBN
-VF9UWFFfQkUsIGZhbHNlKTsNCit9DQorDQogc3RhdGljIGludCBtdDc5MTVfcG9sbF90eChzdHJ1
-Y3QgbmFwaV9zdHJ1Y3QgKm5hcGksIGludCBidWRnZXQpDQogew0KLQlzdGF0aWMgY29uc3QgdTgg
-cXVldWVfbWFwW10gPSB7DQotCQlNVF9UWFFfTUNVLA0KLQkJTVRfVFhRX01DVV9XQSwNCi0JCU1U
-X1RYUV9CRQ0KLQl9Ow0KIAlzdHJ1Y3QgbXQ3OTE1X2RldiAqZGV2Ow0KLQlpbnQgaTsNCiANCiAJ
-ZGV2ID0gY29udGFpbmVyX29mKG5hcGksIHN0cnVjdCBtdDc5MTVfZGV2LCBtdDc2LnR4X25hcGkp
-Ow0KIA0KLQlmb3IgKGkgPSAwOyBpIDwgQVJSQVlfU0laRShxdWV1ZV9tYXApOyBpKyspDQotCQlt
-dDc2X3F1ZXVlX3R4X2NsZWFudXAoZGV2LCBxdWV1ZV9tYXBbaV0sIGZhbHNlKTsNCisJbXQ3OTE1
-X3R4X2NsZWFudXAoZGV2KTsNCiANCiAJaWYgKG5hcGlfY29tcGxldGVfZG9uZShuYXBpLCAwKSkN
-CiAJCW10NzkxNV9pcnFfZW5hYmxlKGRldiwgTVRfSU5UX1RYX0RPTkVfQUxMKTsNCiANCi0JZm9y
-IChpID0gMDsgaSA8IEFSUkFZX1NJWkUocXVldWVfbWFwKTsgaSsrKQ0KLQkJbXQ3Nl9xdWV1ZV90
-eF9jbGVhbnVwKGRldiwgcXVldWVfbWFwW2ldLCBmYWxzZSk7DQorCW10NzkxNV90eF9jbGVhbnVw
-KGRldik7DQogDQogCW10NzkxNV9tYWNfc3RhX3BvbGwoZGV2KTsNCiANCmRpZmYgLS1naXQgYS9k
-cml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzkxNS9tYWMuYyBiL2RyaXZlcnMv
-bmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1L21hYy5jDQppbmRleCA2NjBlMTgyMGNj
-Y2YuLjgyMjU0MGU1ZGY2YiAxMDA2NDQNCi0tLSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlh
-dGVrL210NzYvbXQ3OTE1L21hYy5jDQorKysgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRl
-ay9tdDc2L210NzkxNS9tYWMuYw0KQEAgLTU5MSwxNiArNTkxLDE2IEBAIHZvaWQgbXQ3OTE1X21h
-Y193cml0ZV90eHdpKHN0cnVjdCBtdDc5MTVfZGV2ICpkZXYsIF9fbGUzMiAqdHh3aSwNCiAJZmNf
-dHlwZSA9IChsZTE2X3RvX2NwdShmYykgJiBJRUVFODAyMTFfRkNUTF9GVFlQRSkgPj4gMjsNCiAJ
-ZmNfc3R5cGUgPSAobGUxNl90b19jcHUoZmMpICYgSUVFRTgwMjExX0ZDVExfU1RZUEUpID4+IDQ7
-DQogDQotCWlmIChpZWVlODAyMTFfaXNfZGF0YShmYykgfHwgaWVlZTgwMjExX2lzX2J1ZmZlcmFi
-bGVfbW1wZHUoZmMpKSB7DQotCQlxX2lkeCA9IHdtbV9pZHggKiBNVDc5MTVfTUFYX1dNTV9TRVRT
-ICsNCi0JCQltdDc5MTVfbG1hY19tYXBwaW5nKGRldiwgc2tiX2dldF9xdWV1ZV9tYXBwaW5nKHNr
-YikpOw0KLQkJcF9mbXQgPSBNVF9UWF9UWVBFX0NUOw0KLQl9IGVsc2UgaWYgKGJlYWNvbikgew0K
-LQkJcV9pZHggPSBNVF9MTUFDX0JDTjA7DQorCWlmIChiZWFjb24pIHsNCiAJCXBfZm10ID0gTVRf
-VFhfVFlQRV9GVzsNCi0JfSBlbHNlIHsNCisJCXFfaWR4ID0gTVRfTE1BQ19CQ04wOw0KKwl9IGVs
-c2UgaWYgKHNrYl9nZXRfcXVldWVfbWFwcGluZyhza2IpID49IE1UX1RYUV9QU0QpIHsNCisJCXBf
-Zm10ID0gTVRfVFhfVFlQRV9DVDsNCiAJCXFfaWR4ID0gTVRfTE1BQ19BTFRYMDsNCisJfSBlbHNl
-IHsNCiAJCXBfZm10ID0gTVRfVFhfVFlQRV9DVDsNCisJCXFfaWR4ID0gd21tX2lkeCAqIE1UNzkx
-NV9NQVhfV01NX1NFVFMgKw0KKwkJCW10NzkxNV9sbWFjX21hcHBpbmcoZGV2LCBza2JfZ2V0X3F1
-ZXVlX21hcHBpbmcoc2tiKSk7DQogCX0NCiANCiAJdmFsID0gRklFTERfUFJFUChNVF9UWEQwX1RY
-X0JZVEVTLCBza2ItPmxlbiArIE1UX1RYRF9TSVpFKSB8DQpAQCAtNjE2LDYgKzYxNiw3IEBAIHZv
-aWQgbXQ3OTE1X21hY193cml0ZV90eHdpKHN0cnVjdCBtdDc5MTVfZGV2ICpkZXYsIF9fbGUzMiAq
-dHh3aSwNCiAJICAgICAgRklFTERfUFJFUChNVF9UWEQxX1RJRCwNCiAJCQkgc2tiLT5wcmlvcml0
-eSAmIElFRUU4MDIxMV9RT1NfQ1RMX1RJRF9NQVNLKSB8DQogCSAgICAgIEZJRUxEX1BSRVAoTVRf
-VFhEMV9PV05fTUFDLCBvbWFjX2lkeCk7DQorDQogCWlmIChleHRfcGh5ICYmIHFfaWR4ID49IE1U
-X0xNQUNfQUxUWDAgJiYgcV9pZHggPD0gTVRfTE1BQ19CQ04wKQ0KIAkJdmFsIHw9IE1UX1RYRDFf
-VEdJRDsNCiANCmRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2
-L210NzkxNS9wY2kuYyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1
-L3BjaS5jDQppbmRleCA3OTM3YzY5NjVmNTkuLjBlYzRlMTg0Yjg4OSAxMDA2NDQNCi0tLSBhL2Ry
-aXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1L3BjaS5jDQorKysgYi9kcml2
-ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzkxNS9wY2kuYw0KQEAgLTEwMyw3ICsx
-MDMsNyBAQCBzdGF0aWMgaW50IG10NzkxNV9wY2lfcHJvYmUoc3RydWN0IHBjaV9kZXYgKnBkZXYs
-DQogCXN0YXRpYyBjb25zdCBzdHJ1Y3QgbXQ3Nl9kcml2ZXJfb3BzIGRydl9vcHMgPSB7DQogCQkv
-KiB0eHdpX3NpemUgPSB0eGQgc2l6ZSArIHR4cCBzaXplICovDQogCQkudHh3aV9zaXplID0gTVRf
-VFhEX1NJWkUgKyBzaXplb2Yoc3RydWN0IG10NzkxNV90eHApLA0KLQkJLmRydl9mbGFncyA9IE1U
-X0RSVl9UWFdJX05PX0ZSRUUsDQorCQkuZHJ2X2ZsYWdzID0gTVRfRFJWX1RYV0lfTk9fRlJFRSB8
-IE1UX0RSVl9IV19NR01UX1RYUSwNCiAJCS5zdXJ2ZXlfZmxhZ3MgPSBTVVJWRVlfSU5GT19USU1F
-X1RYIHwNCiAJCQkJU1VSVkVZX0lORk9fVElNRV9SWCB8DQogCQkJCVNVUlZFWV9JTkZPX1RJTUVf
-QlNTX1JYLA0KLS0gDQoyLjE4LjANCg==
+Function ep_rx_complete is being called without NULL checking
+in ath10k_htc_rx_completion_handler. Without such check, mal-
+formed packet is able to cause jump to NULL.
+
+ep->service_id seems a good candidate for sanity check as it is
+used in usb.c.
+
+Signed-off-by: Zekun Shen <bruceshenzk@gmail.com>
+---
+ drivers/net/wireless/ath/ath10k/htc.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/drivers/net/wireless/ath/ath10k/htc.c b/drivers/net/wireless/ath/ath10k/htc.c
+index 31df6dd04..e00794d97 100644
+--- a/drivers/net/wireless/ath/ath10k/htc.c
++++ b/drivers/net/wireless/ath/ath10k/htc.c
+@@ -450,6 +450,11 @@ void ath10k_htc_rx_completion_handler(struct ath10k *ar, struct sk_buff *skb)
+ 
+ 	ep = &htc->endpoint[eid];
+ 
++	if (ep->service_id == 0) {
++		ath10k_warn(ar, "HTC Rx: ep %d is not connect\n", eid);
++		goto out;
++	}
++
+ 	payload_len = __le16_to_cpu(hdr->len);
+ 
+ 	if (payload_len + sizeof(*hdr) > ATH10K_HTC_MAX_LEN) {
+-- 
+2.17.1
 
