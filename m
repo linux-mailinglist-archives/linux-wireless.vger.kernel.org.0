@@ -2,118 +2,126 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D8335203D6A
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Jun 2020 19:04:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 38C4E203DAD
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Jun 2020 19:19:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729952AbgFVREb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 22 Jun 2020 13:04:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52900 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729789AbgFVREa (ORCPT
+        id S1729836AbgFVRTF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 22 Jun 2020 13:19:05 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:49386 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729309AbgFVRTF (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 22 Jun 2020 13:04:30 -0400
-Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com [IPv6:2607:f8b0:4864:20::643])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88AB6C061795
-        for <linux-wireless@vger.kernel.org>; Mon, 22 Jun 2020 10:04:30 -0700 (PDT)
-Received: by mail-pl1-x643.google.com with SMTP id 35so7835656ple.0
-        for <linux-wireless@vger.kernel.org>; Mon, 22 Jun 2020 10:04:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=+m5221Ut6o3WuT6BjiL72c05hVwdkXllFG7aX4yJx4M=;
-        b=qKm/WhlsQKDgGm0JFnkCdb0IzzhquY358SdW3YjXotmWgdudNMJZnXNXgvLG0UCoo9
-         7Cw6pnkmDWaW0NfZwL15NqU9yndpUvZfap4/r4/N0EchCfKEkHwdBZzA06x2GNQH+3Mt
-         J/3WYO6M5B8qpkeQr8fpVlBadLhCAZf2C9poaWq+QLaHYcQ0rGyiUjvhR65Bxkj+hA2b
-         s9+jLdjx7crDjAvCyWnbR0bBghdrf6Nltn1qYGOn5boJGAxwdb3AWa19DW56iVy38cNF
-         K25EWlpr0J4GIzjxfrzpPzlHwPqk4eyUHRflEds57fzvbDL6gzcelUVq6RZ2ZRqHOBVq
-         4aaw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=+m5221Ut6o3WuT6BjiL72c05hVwdkXllFG7aX4yJx4M=;
-        b=lHnlVwUyuwzVEL2+kcaWzepNZL1EZoa5Gh3ZCJSjjT83llll/jdyfWv1gE35q9ZM+p
-         dfR5uZbzhi58e+ZrLKD0CeqEeCABAi+yAXAwvrx8OaDU7NKOY77aYZlj9+zQ3/tmIh6f
-         QT4+x3zIHa1EHmrDHHOC9emRYnCs7qQ1kvAHWsS7Q9Xwxbxw1oSzLu5C+eMLyDaConwh
-         yugnShZ43f/yrdS4xTs0pythL+hCtdNNt8dtKmS3gLPXAKN+crl6KfLG1jshXzpZO5mx
-         AMgdgr/bAUA9vnZzAL+AID7UBbEPxKm9vVac+NzLZrTgvhzo07nraYPmST2kOmA4WmKi
-         hhAw==
-X-Gm-Message-State: AOAM532hTtfIWK6fybq+oPn+ZqhHo46Jn4DLZBG+MyI1HF59gkkY7fci
-        KlOyVL2+N9CEw9TrWKdSLjkWADAJlE8vjRLS/8GLdQ==
-X-Google-Smtp-Source: ABdhPJwq3U6/P+kOQWrtaPsfC7pEtXaKjHv6HeLE+nRTnxPEDc+MHw061OC9xpPpZ7i7YIPBLzcZEdJFmiD+WA1tEsk=
-X-Received: by 2002:a17:90a:e2c4:: with SMTP id fr4mr19317188pjb.32.1592845469798;
- Mon, 22 Jun 2020 10:04:29 -0700 (PDT)
+        Mon, 22 Jun 2020 13:19:05 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05MHBa1f189447;
+        Mon, 22 Jun 2020 17:18:57 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2020-01-29;
+ bh=C7ugc59ux1Tzk1qNRQTFHlVKwXEauG38RKV8mSsCQ5A=;
+ b=RL7mFnPZA5Ye1rE+7GF9b2sgqSsaAmA1kxsDqwB0v2pG+ve7AH2nhmtEoviv+w3Rg7Oz
+ uodvImc8D4FDmq26QFVXbOTrVdB8/rhhzO62WzzFJAeDDAy1GLlnKUHi1NFi9YNnfvkk
+ 1z8BWJQV+HeXh6thnM13d3soRzM01vGdunLLrmvZufl8WzZpa/OgDQoGwwvFkjta5AMq
+ zqu2sVWtprqJgeHzPCPIorUWmaaIBa9DjEC6FdHa5xt70ExQMExuWz6jgAy6YTB1ei5m
+ 26U1htg/36OepPCLe34xP6fRkSWBsaC6x97QhptIie4PGfdJgF5T4TMHSQpHGyGZ12eK IQ== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by aserp2120.oracle.com with ESMTP id 31sebb8pj9-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 22 Jun 2020 17:18:56 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05MHE6j9018528;
+        Mon, 22 Jun 2020 17:18:56 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by userp3020.oracle.com with ESMTP id 31sv7qeygr-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 22 Jun 2020 17:18:56 +0000
+Received: from abhmp0011.oracle.com (abhmp0011.oracle.com [141.146.116.17])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 05MHIsKo008088;
+        Mon, 22 Jun 2020 17:18:55 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 22 Jun 2020 17:18:53 +0000
+Date:   Mon, 22 Jun 2020 20:18:47 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Karthikeyan Periyasamy <periyasa@codeaurora.org>,
+        Jakub Kicinski <kuba@kernel.org>,
+        kernel-janitors@vger.kernel.org, linux-wireless@vger.kernel.org,
+        ath11k@lists.infradead.org
+Subject: Re: [PATCH net-next] ath11k: fix uninitialized return in
+ ath11k_spectral_process_data()
+Message-ID: <20200622171846.GE4151@kadam>
+References: <20200619142922.GA267142@mwanda>
+ <87a70vf923.fsf@codeaurora.org>
 MIME-Version: 1.0
-References: <20200620033007.1444705-1-keescook@chromium.org> <20200620033007.1444705-5-keescook@chromium.org>
-In-Reply-To: <20200620033007.1444705-5-keescook@chromium.org>
-From:   Nick Desaulniers <ndesaulniers@google.com>
-Date:   Mon, 22 Jun 2020 10:04:18 -0700
-Message-ID: <CAKwvOdmsXuqx-3Rt_KNFq4psAeFjG2-7qQaqkJ7dDqqmscUFNw@mail.gmail.com>
-Subject: Re: [PATCH v2 04/16] b43: Remove uninitialized_var() usage
-To:     Kees Cook <keescook@chromium.org>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-        Alexander Potapenko <glider@google.com>,
-        Joe Perches <joe@perches.com>,
-        Andy Whitcroft <apw@canonical.com>,
-        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
-        drbd-dev@lists.linbit.com, linux-block@vger.kernel.org,
-        b43-dev@lists.infradead.org,
-        Network Development <netdev@vger.kernel.org>,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        linux-ide@vger.kernel.org, linux-clk@vger.kernel.org,
-        linux-spi@vger.kernel.org,
-        Linux Memory Management List <linux-mm@kvack.org>,
-        clang-built-linux <clang-built-linux@googlegroups.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87a70vf923.fsf@codeaurora.org>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9660 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 suspectscore=0 mlxlogscore=999
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2004280000 definitions=main-2006220120
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9660 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 cotscore=-2147483648
+ lowpriorityscore=0 phishscore=0 bulkscore=0 clxscore=1015 impostorscore=0
+ malwarescore=0 priorityscore=1501 spamscore=0 mlxscore=0 adultscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2004280000 definitions=main-2006220120
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Jun 19, 2020 at 8:30 PM Kees Cook <keescook@chromium.org> wrote:
->
-> Using uninitialized_var() is dangerous as it papers over real bugs[1]
-> (or can in the future), and suppresses unrelated compiler warnings (e.g.
-> "unused variable"). If the compiler thinks it is uninitialized, either
-> simply initialize the variable or make compiler changes. As a precursor
-> to removing[2] this[3] macro[4], just initialize this variable to NULL.
-> No later NULL deref is possible due to the early returns outside of the
-> (phy->rev >= 7 && phy->rev < 19) case, which explicitly tests for NULL.
->
-> [1] https://lore.kernel.org/lkml/20200603174714.192027-1-glider@google.com/
-> [2] https://lore.kernel.org/lkml/CA+55aFw+Vbj0i=1TGqCR5vQkCzWJ0QxK6CernOU6eedsudAixw@mail.gmail.com/
-> [3] https://lore.kernel.org/lkml/CA+55aFwgbgqhbp1fkxvRKEpzyR5J8n1vKT1VZdz9knmPuXhOeg@mail.gmail.com/
-> [4] https://lore.kernel.org/lkml/CA+55aFz2500WfbKXAx8s67wrm9=yVJu65TpLgN_ybYNv0VEOKA@mail.gmail.com/
->
-> Fixes: 58619b14d106 ("b43: move under broadcom vendor directory")
-> Signed-off-by: Kees Cook <keescook@chromium.org>
+On Mon, Jun 22, 2020 at 05:51:16PM +0300, Kalle Valo wrote:
+> Dan Carpenter <dan.carpenter@oracle.com> writes:
+> 
+> > There is a success path where "ret" isn't initialized where we never
+> > have a ATH11K_SPECTRAL_TAG_SCAN_SEARCH and then ret isn't initialized.
+> >
+> > Fixes: 9d11b7bff950 ("ath11k: add support for spectral scan")
+> > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> > ---
+> >  drivers/net/wireless/ath/ath11k/spectral.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/net/wireless/ath/ath11k/spectral.c b/drivers/net/wireless/ath/ath11k/spectral.c
+> > index 1c5d65bb411f..bfbf905f7507 100644
+> > --- a/drivers/net/wireless/ath/ath11k/spectral.c
+> > +++ b/drivers/net/wireless/ath/ath11k/spectral.c
+> > @@ -677,7 +677,7 @@ static int ath11k_spectral_process_data(struct ath11k *ar,
+> >  	u32 data_len, i;
+> >  	u8 sign, tag;
+> >  	int tlv_len, sample_sz;
+> > -	int ret;
+> > +	int ret = 0;
+> >  	bool quit = false;
+> 
+> I try to avoid initialising ret variables so I would like find another
+> way. What about doing this (completely untested!) in the end of the
+> function:
+> 
+>         return 0;
+> 
+> err:
+> 	kfree(fft_sample);
+> unlock:
+> 	spin_unlock_bh(&ar->spectral.lock);
+> 	return ret;
 
-I see three total uses of uninitialized_var() in this file, do we want
-to eliminate all of them?
+I normally avoid it as well...  If I were to redo this patch, I would
+probably do:
 
-> ---
->  drivers/net/wireless/broadcom/b43/phy_n.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/net/wireless/broadcom/b43/phy_n.c b/drivers/net/wireless/broadcom/b43/phy_n.c
-> index c33b4235839d..46db91846007 100644
-> --- a/drivers/net/wireless/broadcom/b43/phy_n.c
-> +++ b/drivers/net/wireless/broadcom/b43/phy_n.c
-> @@ -4222,7 +4222,7 @@ static void b43_nphy_tx_gain_table_upload(struct b43_wldev *dev)
->         u32 rfpwr_offset;
->         u8 pga_gain, pad_gain;
->         int i;
-> -       const s16 *uninitialized_var(rf_pwr_offset_table);
-> +       const s16 *rf_pwr_offset_table = NULL;
->
->         table = b43_nphy_get_tx_gain_table(dev);
->         if (!table)
-> --
+	ret = 0;
+err:
+	kfree(fft_sample);
+unlock:
+	spin_unlock_bh(&ar->spectral.lock);
+	return ret;
 
--- 
-Thanks,
-~Nick Desaulniers
+Would that be better?
+
+regards,
+dan carpenter
+
