@@ -2,53 +2,53 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D6D90204FD2
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jun 2020 13:00:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0823D204FDA
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jun 2020 13:00:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732329AbgFWLAe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 23 Jun 2020 07:00:34 -0400
-Received: from esa1.microchip.iphmx.com ([68.232.147.91]:33243 "EHLO
-        esa1.microchip.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732389AbgFWLAR (ORCPT
+        id S1732440AbgFWLAq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 23 Jun 2020 07:00:46 -0400
+Received: from esa5.microchip.iphmx.com ([216.71.150.166]:41136 "EHLO
+        esa5.microchip.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732393AbgFWLAT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 23 Jun 2020 07:00:17 -0400
+        Tue, 23 Jun 2020 07:00:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
   d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1592910017; x=1624446017;
+  t=1592910018; x=1624446018;
   h=from:to:cc:subject:date:message-id:references:
    in-reply-to:content-transfer-encoding:mime-version;
-  bh=VjH23gc3eRUT676f0kgNM8agxiSf56E44Tv6HpqlB78=;
-  b=zgGW5lHXG5GfxmO5woVJWWp+JKBfOWKqR6PyvdIF/DZpNXNU/1k5j0rZ
-   fGBfgPYaNk0fq5EbV5HVwkeNkOCfJy6pEmup6vJyhq3UyvGrOe4KuBCs4
-   WWjrc1b3hp60R3F/j2PlG1TB1ZSxNzspVOHiGDPX7YN/INgTm2L/8rDA8
-   cB4umnuHfCbIQpTmbKQF6T6BlwYsLQwcFlLczmz4hDcyccgU3A8LO4eOo
-   wxb4yam9oSVB4anRNUjRajr85bXXX/25oEjQuM2Tujj2sJgo9fkywIk6Q
-   7oa2ny43bfHSt+ZdCSQmPskztWHs3v2D/08UH1mvv6Lve0ijZM+lOeVNy
-   w==;
-IronPort-SDR: Ay5XfaU5YD0zov+IgOf9+YGHfZyZm8+nfX3xM1i12B4jQnzNAqf+8EF5vagqlnv8H7vs1tiZvf
- QWuDm715SLQn4hyS88CJrv2ejyk9Bm0k6AAbnbbcTKorSrt/KWvIAOH7oMXo0KmmWh6/eiTDl4
- GJcax5atFTlVYOWGaD/nuYGQMo5MPMvcWnqr2gqZPSDh3TrJvtYzSYF92FRApdKjdo1pjsbKZY
- /Edhz3LEhX4KMxSLdtAnrgwmK7zh0VB16HGc+kYbWb4zST+XebicIvKI6aa9JGG0UurJojz2V5
- F6U=
+  bh=IOdoR3Fjixrp0rJvAi3hoewULl05FAcv6GHCILzPB4M=;
+  b=d9X8xAJKbEipdeh+EtG4IIjQ4ncAx4ySdDl8e0zSFSBMARzJy4jyTZpz
+   6ivtOBf50bYuMhVM8IV6iCc4Vz/qKQ4YqJJl7SvwqPV++hL2EPQ5eVIy0
+   khLc7SmSoV9EOipghvJhyKr0cB3cjHsULcJpiM+Z+qYVHQgLMo6Xbc8sE
+   0nlR0JJZ83uMyVuj2i/nN/wqXV94BZ+ty66twgbnPtDuKXJC8VN4alNPc
+   C2tLg65RuTdGqrgb2IUYTGe+wHrvlCEQ4bMiYOTSsMC2Heu/zdnUvw1Tx
+   jD9AcxIc/7WdDRZVbZtn/b6skiY1yxIhWqD6xXUV0/27sc0yDGmGysgUV
+   A==;
+IronPort-SDR: d+B65JwKE66pXN7ojYbvtPCbiU55zNszdrX/8sxNhdwHkUFsWG3eJJ/AMtpdWc3pQQ+wD+xGOV
+ JEqj4qe+mqecbZcAT47cW7qYqA+GODzYdU+oDaLQ25Pif52fCGZAPpO/PipiL3r5sHxD5zLzJn
+ CFlR1Hap7DtfykpWfdPl66VAJ+ksJJUGk9quVsFHNtfsTTwByHmxPTpzp3TJPQHwCxL2LcONYP
+ 2/p5hYfnnJyFtVF2LDSpwkUUaatm3CmUgl7L73NEDC/ABiY5ZlO7hE72XyVqY/g2Iv+09QasNN
+ xDY=
 X-IronPort-AV: E=Sophos;i="5.75,271,1589266800"; 
-   d="scan'208";a="84732781"
+   d="scan'208";a="80543431"
 Received: from smtpout.microchip.com (HELO email.microchip.com) ([198.175.253.82])
-  by esa1.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 23 Jun 2020 04:00:17 -0700
-Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
- chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
+  by esa5.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 23 Jun 2020 04:00:09 -0700
+Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
+ chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1979.3; Tue, 23 Jun 2020 04:00:17 -0700
+ 15.1.1979.3; Tue, 23 Jun 2020 03:59:58 -0700
 Received: from NAM02-CY1-obe.outbound.protection.outlook.com (10.10.215.89) by
- email.microchip.com (10.10.87.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1979.3 via Frontend
- Transport; Tue, 23 Jun 2020 04:00:06 -0700
+ email.microchip.com (10.10.87.152) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1979.3
+ via Frontend Transport; Tue, 23 Jun 2020 04:00:09 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=BJDxEcxs2gRNWq9L3KmjbgELt2SL7cHZwI6eH9Mt0Evf++ahixa+sDOQFRmE+QM8A+N3Rx1CeIFEhI7tHba+JGm10yis/9AdjuHiqJml5ve5FRA77GeYzUX1deGLP7CzoIw1z/nzB4DcdUGO+7QSTPJgvyPnf52bX+V0muqbiIB3YcdDeestXb1C6Od7ZKVmnjTqjA6tonDAzGF2/JuHXFrrTHMs07ZiKxzwCcxv5f50LmTU8xrYecNLXLr0YOCbhxu1aOmwRTascqSmlUQxZy1JcKT1sp0Eiw9G/392breI9lHcGoY093PJD2AVXa/pgTaEaj2gnBfCUJCSbEea8Q==
+ b=ODKRwtTcKGQggbk6WL5ezugjbPpi8gwxc9bhSsZOw+uG3vefVAAwoloGH1sfZfP8fd7TnNNrctdfhr5uh7gGnpGFdFqU7w3sJNAUBC2wRDqBSvS5tBksF4vjkcGx3VwnoXDIjAfVEEaWs9rz/PdBoU2N7tfnSwKZNYkTHy4wOwNbbJZKCq26p0UbSxRQzC5f1rQfQ+CDspXeJBsM9U+wzNh4BCSV0bgMCoTFRhAGijnT8+AWyUeAmNA/D4e/ivhF8yzqTSm6+ZVYstFgdugxUqEZA+C+BOlvqPhe/xoZLiy5CmHbdERX11WOyRdzDkrpX2xHRP6G+E0wLnZo0XwlxA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=r7yHVCr/Ep9FhqaViwfpyYJod0wMVy9Q1dLiNe4y6cY=;
- b=kAYVOsVb0kB8LtdwepV+fwZMP0c9zfoTbWmuf95HRLY+yU0pwreqOjTlK0uNdP/vaTbOchgoXUmQL2pPbA88JZyuoggIvDu6eLAWm4LdmzmlKwEzsk1hcLaPOdFcGrGLWFJx/2xDgqiDEZwf9VxfwigjcyVe2m7rfP8uYKuhH93smpBYDjfOkodKNzmzkNVSP/QbHX8o6etE1ozO+L8wcMiK7bz+mN0cau459AOucpHpRoAj+6wplgENsFmCFSuQG56/WuHErh+F8Ll0vhB95bKy2NNCP0vngTT1Rsji3c1DXAGYDEdDmHyZzWxr4k9B7savouAQhx6Qs1Rw6fYrLw==
+ bh=R2hyFijpSxD8B1vp9pfBnZgARrhmzsNY8CIUqsPqbr4=;
+ b=b2YaLF3J0LF0nhS94pt84BypwcGCxmkAHTM6te9Yy1Zx3e7cZmkZDXxfDbX8Igj4dBmoFyxjdhqZOSOzn83Y9KvEdlf2ht1NAQ6kULnPyrXupOsNeKm96+ieuNxJwmwHnnf4XW03H4FP2HtlxYeTqI3+cS8at7H/N2EwaogtNCqylubZcgipGQqI2pcTiC/OTH6KlRvOEKzxzFCL76wIclZBf0U96pqQM9HNT/QhEVtwmA9Vq6+6CzyLvEHOEAe0EKBnPoN4zIZxN4122WTnk9me1oedWj5Sye9e7/4d21udfiUA87NZ8/qW8mlBJXgkmmmy2xoakt+wkT3WTM1GeA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=microchip.com; dmarc=pass action=none
  header.from=microchip.com; dkim=pass header.d=microchip.com; arc=none
@@ -56,28 +56,28 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=microchiptechnology.onmicrosoft.com;
  s=selector2-microchiptechnology-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=r7yHVCr/Ep9FhqaViwfpyYJod0wMVy9Q1dLiNe4y6cY=;
- b=cWZ/arrU6qsTlfAP3uFOVL4t+npKMZEQxYOIEMwMrqXUVrkVoat/8Hb3I7Yt9bVHKhlBKpeSTDY2mHAaSEYYljt5+YAyeObT0kmgChIC2Gc1oAMuP9k6+2fYRy3cCRIQW+jsa8BUUPZCeKuTg43gTwQP3KEz8uGoggvyJaU5sf0=
+ bh=R2hyFijpSxD8B1vp9pfBnZgARrhmzsNY8CIUqsPqbr4=;
+ b=LvXQeqDG46zxudIqhavU4wi5xSnm3IOYF9PPK7yThf4k49nwbKeJ1i06DqM4mAOgArbo9LtroWA+/hg+qxpmzvW76YDyOBWVyEpyUZwEARTISJQRFhy7d6AIjme81GYeCYfWz1dduRcTa8iuMsMPdcJVR644R1kdOlxG3ZIwpgw=
 Received: from MN2PR11MB4030.namprd11.prod.outlook.com (2603:10b6:208:156::32)
  by MN2PR11MB3551.namprd11.prod.outlook.com (2603:10b6:208:ea::12) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3109.22; Tue, 23 Jun
- 2020 11:00:12 +0000
+ 2020 11:00:06 +0000
 Received: from MN2PR11MB4030.namprd11.prod.outlook.com
  ([fe80::3874:6ace:6aec:deed]) by MN2PR11MB4030.namprd11.prod.outlook.com
  ([fe80::3874:6ace:6aec:deed%7]) with mapi id 15.20.3109.027; Tue, 23 Jun 2020
- 11:00:12 +0000
+ 11:00:06 +0000
 From:   <Ajay.Kathat@microchip.com>
 To:     <linux-wireless@vger.kernel.org>
 CC:     <devel@driverdev.osuosl.org>, <gregkh@linuxfoundation.org>,
         <johannes@sipsolutions.net>, <Nicolas.Ferre@microchip.com>,
         <Claudiu.Beznea@microchip.com>, <Sripad.Balwadgi@microchip.com>,
         <Venkateswara.Kaja@microchip.com>, <Ajay.Kathat@microchip.com>
-Subject: [PATCH v7 12/17] wilc1000: add wlan.h
-Thread-Topic: [PATCH v7 12/17] wilc1000: add wlan.h
-Thread-Index: AQHWSU13WpwRHvFrAEmYdpDjIjTHqg==
-Date:   Tue, 23 Jun 2020 11:00:11 +0000
-Message-ID: <20200623110000.31559-13-ajay.kathat@microchip.com>
+Subject: [PATCH v7 03/17] wilc1000: add wlan_if.h
+Thread-Topic: [PATCH v7 03/17] wilc1000: add wlan_if.h
+Thread-Index: AQHWSU10uRc43FvfO0qSa0afiiYVhA==
+Date:   Tue, 23 Jun 2020 11:00:06 +0000
+Message-ID: <20200623110000.31559-4-ajay.kathat@microchip.com>
 References: <20200623110000.31559-1-ajay.kathat@microchip.com>
 In-Reply-To: <20200623110000.31559-1-ajay.kathat@microchip.com>
 Accept-Language: en-US
@@ -90,28 +90,28 @@ authentication-results: vger.kernel.org; dkim=none (message not signed)
  header.from=microchip.com;
 x-originating-ip: [49.207.200.183]
 x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: e477c45e-aa96-4b07-9af6-08d8176499fa
+x-ms-office365-filtering-correlation-id: c28e8799-585f-4b6c-bc17-08d8176496c8
 x-ms-traffictypediagnostic: MN2PR11MB3551:
 x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <MN2PR11MB355185A8D4027429884D7249E3940@MN2PR11MB3551.namprd11.prod.outlook.com>
+x-microsoft-antispam-prvs: <MN2PR11MB355156C4337EC3D6840377FCE3940@MN2PR11MB3551.namprd11.prod.outlook.com>
 x-bypassexternaltag: True
-x-ms-oob-tlc-oobclassifiers: OLM:338;
+x-ms-oob-tlc-oobclassifiers: OLM:5797;
 x-forefront-prvs: 04433051BF
 x-ms-exchange-senderadcheck: 1
 x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: y19ycDDUYrqgBBKLZX6bI2TvRlGljJlfxuAmHLJCXNvLXGD+oKenGkKntFEB3PhhC3DE84ZCMfYTHqpUOFfu9VQZ54xNyraAG/HdTlf8zwNEdZHW/eZigNQsmQxX98RvegBGdgj4ZA49x3LwQ6SSHSetEXxmuxgMR8NV4hjfe95m8NB5frqm/U2Rom9S7t8cFJ0N9fhT06T8yKPXSTuhRMcfDT26gm86EnM3mrVupP6a5QJNVVztHolCZn53n0MoMdf4N7peaiB7vJc715xZ5+Wmnlam8I2//3XgypEjvVAzFo6QF+6xsK0BWNacRS1yRMwqHJpD+ErFhxDGiEnq7w==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN2PR11MB4030.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(366004)(136003)(346002)(396003)(376002)(39860400002)(8676002)(83380400001)(36756003)(2906002)(186003)(6506007)(86362001)(2616005)(4326008)(107886003)(26005)(6486002)(6916009)(5660300002)(55236004)(1076003)(30864003)(478600001)(66446008)(66476007)(66556008)(64756008)(91956017)(76116006)(66946007)(6512007)(54906003)(316002)(71200400001)(8936002);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata: 05+S58lX/7+W+CVEG7FAKjrkYQwUc/XJ2TlS4sFDbhOHe6nA50rna8jMGXqn1KczQrfxDbPoKe9+c6rn3QVI+IqfKkY05hr+s13D8znNul3tLJMuF5YcV91Cy3SlbyTu5I3UBpV5EOuuE9Gd3gq/vmD6zfHlsbN8q8aM0s/8mlu+YhMsDoUQQW2maeE9VdyakTyvhoNW7xyC05aKewoHpbd+YLPReCaoBMBNx7jNxf4S6ikhcaGzE31dJCtoDx/C+lS5vK/T1SkUQBGFrKT1aV/xlaT/nmT0lPu4XZcosPrredlyAdpPgX9aGmwYF5gS+wdf6d1TN0p28TOR08BrwwHMSzcauS7UmJA9bG9Mv0qLfhbUXUYf2GlykzPDuOyT2V+KrET7zenq/fSkADrlYd/VY9U+4sqz//TyIdl2958b+0/twSfdC0L87n9y89onYhpxTFNQjvM7vqipU52R8leQRaXaTYKINJhZOQN/jQjVrCkASq/TJu+puMz8c/24
+x-microsoft-antispam-message-info: NKFgsvFevm+8aQQ+Chpkl3D8rhRYYQL2y5JFPJWWs2N/bsEa4tcQOAtO44Eo50EqCXQCz+7JTrvs+CDiPPp2jctmUqHx/mXl/nBUF1Xgfzb0G4esmnQoi+WBcv4Et72KM6LjKDFfuKHAN9CX6qG5z002oN0ugN/z+MgotdZ8FDTsO3oHOrdR4seTwhDaOK5SbbFDVGzr+mL1ZL3P/q/nzyzKfuu0Y2joNz267qHkc/wobWiIQT1FSPKmr5JYO6EqlLgb+M8Kb88CVkVbk+EVRItrzjus5+XT7buHTUcjartiDbeFlnnLmDWvuHSLlgFexvdOfh/O3e38mMMUukJnfg==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN2PR11MB4030.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(366004)(136003)(346002)(396003)(376002)(39860400002)(8676002)(83380400001)(36756003)(2906002)(186003)(6506007)(86362001)(2616005)(4326008)(107886003)(26005)(6486002)(6916009)(5660300002)(55236004)(1076003)(30864003)(478600001)(66446008)(66476007)(66556008)(64756008)(91956017)(76116006)(66946007)(6512007)(54906003)(316002)(71200400001)(8936002)(559001)(579004);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata: CA0yoAawPKwDQTI4OW/hBpb7IpuruG06jf3JvMC4aH4gEYuostPebwFIuSPyb1+iVu+MCLqPlnlLzSpsLBbviTRAK/zZYchDIlmG1JxZVAqbUkeL5z5U6gDv8k1UsWcd5kovEgxE7HB5Xhi2SLi5k59VqrDczh7sMOh7H1NpQuuwRvghPiT8ZkRNRZxi83JkgLq3zOHg3tCtLQCgtAjqQTHkrbELM6TUN1zMNwydMIYMZcWJgc6e9wu5IQCRxR62xA5PIUtQhcukr1KKDxkDVSsvL14JLX/37vTCo3cgIpHieOEMjLmYQ3mhX1iBhC575f5cUWPKNklvDfMjzr0m1pIy7Xeo+Bx788dwK84VDQHPU0O8yZUTJKHza+q+1jPZZKxhu1PUr6Ac0m5gjMbFyKFbQ90HJLaHvmf19sXm2Ut9dieTbpsHUYRWHskDouqjyZjsqVfNP6DI5g92qN20e45edZNfsvA7r+PnF1HLSKG6T4KYW+dcoD4ZncF7+8eM
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-Network-Message-Id: e477c45e-aa96-4b07-9af6-08d8176499fa
-X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Jun 2020 11:00:11.8952
+X-MS-Exchange-CrossTenant-Network-Message-Id: c28e8799-585f-4b6c-bc17-08d8176496c8
+X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Jun 2020 11:00:06.5402
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 3f4057f3-b418-4d4e-ba84-d55b4e897d88
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: ZmzU7wVB2GZ/ReCkik6Vvupq210woTDizstxGLh3ro9cjfOlrGYY6YMWsj2L40nW3dOhfhTa4ZwcAeAujQ8LWSDmCa0IOWc7Gs856kbY92s=
+X-MS-Exchange-CrossTenant-userprincipalname: 9yOPzykUB4C21VaoSD83on0dRAXB8gUtPffcGwByhxq/5zQfQhF7961s9cW/chSWCssN2UNpaTrfeu42Z02HxEYmjEzzRgr0W4UIRT8PBSI=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR11MB3551
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
@@ -120,22 +120,22 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Ajay Singh <ajay.kathat@microchip.com>
 
-Moved 'drivers/staging/wilc1000/wlan.h' to
-'drivers/net/wireless/microchip/wilc1000/wlan.h'.
+Moved 'drivers/staging/wilc1000/wlan_if.h' to
+'drivers/net/wireless/microchip/wilc1000/wlan_if.h'.
 
 Signed-off-by: Ajay Singh <ajay.kathat@microchip.com>
 ---
- .../net/wireless/microchip/wilc1000/wlan.h    | 397 ++++++++++++++++++
- 1 file changed, 397 insertions(+)
- create mode 100644 drivers/net/wireless/microchip/wilc1000/wlan.h
+ .../net/wireless/microchip/wilc1000/wlan_if.h | 803 ++++++++++++++++++
+ 1 file changed, 803 insertions(+)
+ create mode 100644 drivers/net/wireless/microchip/wilc1000/wlan_if.h
 
-diff --git a/drivers/net/wireless/microchip/wilc1000/wlan.h b/drivers/net/w=
-ireless/microchip/wilc1000/wlan.h
+diff --git a/drivers/net/wireless/microchip/wilc1000/wlan_if.h b/drivers/ne=
+t/wireless/microchip/wilc1000/wlan_if.h
 new file mode 100644
-index 000000000000..7689569cd82f
+index 000000000000..f85fd575136d
 --- /dev/null
-+++ b/drivers/net/wireless/microchip/wilc1000/wlan.h
-@@ -0,0 +1,397 @@
++++ b/drivers/net/wireless/microchip/wilc1000/wlan_if.h
+@@ -0,0 +1,803 @@
 +/* SPDX-License-Identifier: GPL-2.0 */
 +/*
 + * Copyright (c) 2012 - 2018 Microchip Technology Inc., and its subsidiari=
@@ -143,400 +143,802 @@ es.
 + * All rights reserved.
 + */
 +
-+#ifndef WILC_WLAN_H
-+#define WILC_WLAN_H
++#ifndef WILC_WLAN_IF_H
++#define WILC_WLAN_IF_H
 +
-+#include <linux/types.h>
-+#include <linux/bitfield.h>
-+
-+/********************************************
-+ *
-+ *      Mac eth header length
-+ *
-+ ********************************************/
-+#define MAX_MAC_HDR_LEN			26 /* QOS_MAC_HDR_LEN */
-+#define SUB_MSDU_HEADER_LENGTH		14
-+#define SNAP_HDR_LEN			8
-+#define ETHERNET_HDR_LEN		14
-+#define WORD_ALIGNMENT_PAD		0
-+
-+#define ETH_ETHERNET_HDR_OFFSET		(MAX_MAC_HDR_LEN + \
-+					 SUB_MSDU_HEADER_LENGTH + \
-+					 SNAP_HDR_LEN - \
-+					 ETHERNET_HDR_LEN + \
-+					 WORD_ALIGNMENT_PAD)
-+
-+#define HOST_HDR_OFFSET			4
-+#define ETHERNET_HDR_LEN		14
-+#define IP_HDR_LEN			20
-+#define IP_HDR_OFFSET			ETHERNET_HDR_LEN
-+#define UDP_HDR_OFFSET			(IP_HDR_LEN + IP_HDR_OFFSET)
-+#define UDP_HDR_LEN			8
-+#define UDP_DATA_OFFSET			(UDP_HDR_OFFSET + UDP_HDR_LEN)
-+#define ETH_CONFIG_PKT_HDR_LEN		UDP_DATA_OFFSET
-+
-+#define ETH_CONFIG_PKT_HDR_OFFSET	(ETH_ETHERNET_HDR_OFFSET + \
-+					 ETH_CONFIG_PKT_HDR_LEN)
++#include <linux/netdevice.h>
++#include "fw.h"
 +
 +/********************************************
 + *
-+ *      Register Defines
-+ *
-+ ********************************************/
-+#define WILC_PERIPH_REG_BASE		0x1000
-+#define WILC_CHANGING_VIR_IF		0x108c
-+#define WILC_CHIPID			WILC_PERIPH_REG_BASE
-+#define WILC_GLB_RESET_0		(WILC_PERIPH_REG_BASE + 0x400)
-+#define WILC_PIN_MUX_0			(WILC_PERIPH_REG_BASE + 0x408)
-+#define WILC_HOST_TX_CTRL		(WILC_PERIPH_REG_BASE + 0x6c)
-+#define WILC_HOST_RX_CTRL_0		(WILC_PERIPH_REG_BASE + 0x70)
-+#define WILC_HOST_RX_CTRL_1		(WILC_PERIPH_REG_BASE + 0x74)
-+#define WILC_HOST_VMM_CTL		(WILC_PERIPH_REG_BASE + 0x78)
-+#define WILC_HOST_RX_CTRL		(WILC_PERIPH_REG_BASE + 0x80)
-+#define WILC_HOST_RX_EXTRA_SIZE		(WILC_PERIPH_REG_BASE + 0x84)
-+#define WILC_HOST_TX_CTRL_1		(WILC_PERIPH_REG_BASE + 0x88)
-+#define WILC_MISC			(WILC_PERIPH_REG_BASE + 0x428)
-+#define WILC_INTR_REG_BASE		(WILC_PERIPH_REG_BASE + 0xa00)
-+#define WILC_INTR_ENABLE		WILC_INTR_REG_BASE
-+#define WILC_INTR2_ENABLE		(WILC_INTR_REG_BASE + 4)
-+
-+#define WILC_INTR_POLARITY		(WILC_INTR_REG_BASE + 0x10)
-+#define WILC_INTR_TYPE			(WILC_INTR_REG_BASE + 0x20)
-+#define WILC_INTR_CLEAR			(WILC_INTR_REG_BASE + 0x30)
-+#define WILC_INTR_STATUS		(WILC_INTR_REG_BASE + 0x40)
-+
-+#define WILC_RF_REVISION_ID		0x13f4
-+
-+#define WILC_VMM_TBL_SIZE		64
-+#define WILC_VMM_TX_TBL_BASE		0x150400
-+#define WILC_VMM_RX_TBL_BASE		0x150500
-+
-+#define WILC_VMM_BASE			0x150000
-+#define WILC_VMM_CORE_CTL		WILC_VMM_BASE
-+#define WILC_VMM_TBL_CTL		(WILC_VMM_BASE + 0x4)
-+#define WILC_VMM_TBL_ENTRY		(WILC_VMM_BASE + 0x8)
-+#define WILC_VMM_TBL0_SIZE		(WILC_VMM_BASE + 0xc)
-+#define WILC_VMM_TO_HOST_SIZE		(WILC_VMM_BASE + 0x10)
-+#define WILC_VMM_CORE_CFG		(WILC_VMM_BASE + 0x14)
-+#define WILC_VMM_TBL_ACTIVE		(WILC_VMM_BASE + 040)
-+#define WILC_VMM_TBL_STATUS		(WILC_VMM_BASE + 0x44)
-+
-+#define WILC_SPI_REG_BASE		0xe800
-+#define WILC_SPI_CTL			WILC_SPI_REG_BASE
-+#define WILC_SPI_MASTER_DMA_ADDR	(WILC_SPI_REG_BASE + 0x4)
-+#define WILC_SPI_MASTER_DMA_COUNT	(WILC_SPI_REG_BASE + 0x8)
-+#define WILC_SPI_SLAVE_DMA_ADDR		(WILC_SPI_REG_BASE + 0xc)
-+#define WILC_SPI_SLAVE_DMA_COUNT	(WILC_SPI_REG_BASE + 0x10)
-+#define WILC_SPI_TX_MODE		(WILC_SPI_REG_BASE + 0x20)
-+#define WILC_SPI_PROTOCOL_CONFIG	(WILC_SPI_REG_BASE + 0x24)
-+#define WILC_SPI_INTR_CTL		(WILC_SPI_REG_BASE + 0x2c)
-+#define WILC_SPI_INT_STATUS		(WILC_SPI_REG_BASE + 0x40)
-+#define WILC_SPI_INT_CLEAR		(WILC_SPI_REG_BASE + 0x44)
-+
-+#define WILC_SPI_WAKEUP_REG		0x1
-+#define WILC_SPI_WAKEUP_BIT		BIT(1)
-+
-+#define WILC_SPI_PROTOCOL_OFFSET	(WILC_SPI_PROTOCOL_CONFIG - \
-+					 WILC_SPI_REG_BASE)
-+
-+#define WILC_SPI_CLOCKLESS_ADDR_LIMIT	0x30
-+
-+/* Functions IO enables bits */
-+#define WILC_SDIO_CCCR_IO_EN_FUNC1	BIT(1)
-+
-+/* Function/Interrupt enables bits */
-+#define WILC_SDIO_CCCR_IEN_MASTER	BIT(0)
-+#define WILC_SDIO_CCCR_IEN_FUNC1	BIT(1)
-+
-+/* Abort CCCR register bits */
-+#define WILC_SDIO_CCCR_ABORT_RESET	BIT(3)
-+
-+/* Vendor specific CCCR registers */
-+#define WILC_SDIO_WAKEUP_REG		0xf0
-+#define WILC_SDIO_WAKEUP_BIT		BIT(0)
-+
-+#define WILC_SDIO_CLK_STATUS_REG	0xf1
-+#define WILC_SDIO_CLK_STATUS_BIT	BIT(0)
-+
-+#define WILC_SDIO_INTERRUPT_DATA_SZ_REG	0xf2 /* Read size (2 bytes) */
-+
-+#define WILC_SDIO_VMM_TBL_CTRL_REG	0xf6
-+#define WILC_SDIO_IRQ_FLAG_REG		0xf7
-+#define WILC_SDIO_IRQ_CLEAR_FLAG_REG	0xf8
-+
-+#define WILC_SDIO_HOST_TO_FW_REG	0xfa
-+#define WILC_SDIO_HOST_TO_FW_BIT	BIT(0)
-+
-+#define WILC_SDIO_FW_TO_HOST_REG	0xfc
-+#define WILC_SDIO_FW_TO_HOST_BIT	BIT(0)
-+
-+/* Function 1 specific FBR register */
-+#define WILC_SDIO_FBR_CSA_REG		0x10C /* CSA pointer (3 bytes) */
-+#define WILC_SDIO_FBR_DATA_REG		0x10F
-+
-+#define WILC_SDIO_F1_DATA_REG		0x0
-+#define WILC_SDIO_EXT_IRQ_FLAG_REG	0x4
-+
-+#define WILC_AHB_DATA_MEM_BASE		0x30000
-+#define WILC_AHB_SHARE_MEM_BASE		0xd0000
-+
-+#define WILC_VMM_TBL_RX_SHADOW_BASE	WILC_AHB_SHARE_MEM_BASE
-+#define WILC_VMM_TBL_RX_SHADOW_SIZE	256
-+
-+#define WILC_FW_HOST_COMM		0x13c0
-+#define WILC_GP_REG_0			0x149c
-+#define WILC_GP_REG_1			0x14a0
-+
-+#define WILC_HAVE_SDIO_IRQ_GPIO		BIT(0)
-+#define WILC_HAVE_USE_PMU		BIT(1)
-+#define WILC_HAVE_SLEEP_CLK_SRC_RTC	BIT(2)
-+#define WILC_HAVE_SLEEP_CLK_SRC_XO	BIT(3)
-+#define WILC_HAVE_EXT_PA_INV_TX_RX	BIT(4)
-+#define WILC_HAVE_LEGACY_RF_SETTINGS	BIT(5)
-+#define WILC_HAVE_XTAL_24		BIT(6)
-+#define WILC_HAVE_DISABLE_WILC_UART	BIT(7)
-+#define WILC_HAVE_USE_IRQ_AS_HOST_WAKE	BIT(8)
-+
-+#define WILC_CORTUS_INTERRUPT_BASE	0x10A8
-+#define WILC_CORTUS_INTERRUPT_1		(WILC_CORTUS_INTERRUPT_BASE + 0x4)
-+#define WILC_CORTUS_INTERRUPT_2		(WILC_CORTUS_INTERRUPT_BASE + 0x8)
-+
-+/* tx control register 1 to 4 for RX */
-+#define WILC_REG_4_TO_1_RX		0x1e1c
-+
-+/* tx control register 1 to 4 for TX Bank_0 */
-+#define WILC_REG_4_TO_1_TX_BANK0	0x1e9c
-+
-+#define WILC_CORTUS_RESET_MUX_SEL	0x1118
-+#define WILC_CORTUS_BOOT_REGISTER	0xc0000
-+
-+#define WILC_CORTUS_BOOT_FROM_IRAM	0x71
-+
-+#define WILC_1000_BASE_ID		0x100000
-+
-+#define WILC_1000_BASE_ID_2A		0x1002A0
-+#define WILC_1000_BASE_ID_2A_REV1	(WILC_1000_BASE_ID_2A + 1)
-+
-+#define WILC_1000_BASE_ID_2B		0x1002B0
-+#define WILC_1000_BASE_ID_2B_REV1	(WILC_1000_BASE_ID_2B + 1)
-+#define WILC_1000_BASE_ID_2B_REV2	(WILC_1000_BASE_ID_2B + 2)
-+
-+#define WILC_CHIP_REV_FIELD		GENMASK(11, 0)
-+
-+/********************************************
-+ *
-+ *      Wlan Defines
-+ *
-+ ********************************************/
-+#define WILC_CFG_PKT		1
-+#define WILC_NET_PKT		0
-+#define WILC_MGMT_PKT		2
-+
-+#define WILC_CFG_SET		1
-+#define WILC_CFG_QUERY		0
-+
-+#define WILC_CFG_RSP		1
-+#define WILC_CFG_RSP_STATUS	2
-+#define WILC_CFG_RSP_SCAN	3
-+
-+#define WILC_ABORT_REQ_BIT		BIT(31)
-+
-+#define WILC_RX_BUFF_SIZE	(96 * 1024)
-+#define WILC_TX_BUFF_SIZE	(64 * 1024)
-+
-+#define MODALIAS		"WILC_SPI"
-+
-+#define WILC_PKT_HDR_CONFIG_FIELD	BIT(31)
-+#define WILC_PKT_HDR_OFFSET_FIELD	GENMASK(30, 22)
-+#define WILC_PKT_HDR_TOTAL_LEN_FIELD	GENMASK(21, 11)
-+#define WILC_PKT_HDR_LEN_FIELD		GENMASK(10, 0)
-+
-+#define WILC_INTERRUPT_DATA_SIZE	GENMASK(14, 0)
-+
-+#define WILC_VMM_BUFFER_SIZE		GENMASK(9, 0)
-+
-+#define WILC_VMM_HDR_TYPE		BIT(31)
-+#define WILC_VMM_HDR_MGMT_FIELD		BIT(30)
-+#define WILC_VMM_HDR_PKT_SIZE		GENMASK(29, 15)
-+#define WILC_VMM_HDR_BUFF_SIZE		GENMASK(14, 0)
-+
-+#define WILC_VMM_ENTRY_COUNT		GENMASK(8, 3)
-+#define WILC_VMM_ENTRY_AVAILABLE	BIT(2)
-+/*******************************************/
-+/*        E0 and later Interrupt flags.    */
-+/*******************************************/
-+/*******************************************/
-+/*        E0 and later Interrupt flags.    */
-+/*           IRQ Status word               */
-+/* 15:0 =3D DMA count in words.              */
-+/* 16: INT0 flag                           */
-+/* 17: INT1 flag                           */
-+/* 18: INT2 flag                           */
-+/* 19: INT3 flag                           */
-+/* 20: INT4 flag                           */
-+/* 21: INT5 flag                           */
-+/*******************************************/
-+#define IRG_FLAGS_OFFSET	16
-+#define IRQ_DMA_WD_CNT_MASK	GENMASK(IRG_FLAGS_OFFSET - 1, 0)
-+#define INT_0			BIT(IRG_FLAGS_OFFSET)
-+#define INT_1			BIT(IRG_FLAGS_OFFSET + 1)
-+#define INT_2			BIT(IRG_FLAGS_OFFSET + 2)
-+#define INT_3			BIT(IRG_FLAGS_OFFSET + 3)
-+#define INT_4			BIT(IRG_FLAGS_OFFSET + 4)
-+#define INT_5			BIT(IRG_FLAGS_OFFSET + 5)
-+#define MAX_NUM_INT		5
-+#define IRG_FLAGS_MASK		GENMASK(IRG_FLAGS_OFFSET + MAX_NUM_INT, \
-+					IRG_FLAGS_OFFSET)
-+
-+/*******************************************/
-+/*        E0 and later Interrupt flags.    */
-+/*           IRQ Clear word                */
-+/* 0: Clear INT0                           */
-+/* 1: Clear INT1                           */
-+/* 2: Clear INT2                           */
-+/* 3: Clear INT3                           */
-+/* 4: Clear INT4                           */
-+/* 5: Clear INT5                           */
-+/* 6: Select VMM table 1                   */
-+/* 7: Select VMM table 2                   */
-+/* 8: Enable VMM                           */
-+/*******************************************/
-+#define CLR_INT0		BIT(0)
-+#define CLR_INT1		BIT(1)
-+#define CLR_INT2		BIT(2)
-+#define CLR_INT3		BIT(3)
-+#define CLR_INT4		BIT(4)
-+#define CLR_INT5		BIT(5)
-+#define SEL_VMM_TBL0		BIT(6)
-+#define SEL_VMM_TBL1		BIT(7)
-+#define EN_VMM			BIT(8)
-+
-+#define DATA_INT_EXT		INT_0
-+#define ALL_INT_EXT		DATA_INT_EXT
-+#define NUM_INT_EXT		1
-+#define UNHANDLED_IRQ_MASK	GENMASK(MAX_NUM_INT - 1, NUM_INT_EXT)
-+
-+#define DATA_INT_CLR		CLR_INT0
-+
-+#define ENABLE_RX_VMM		(SEL_VMM_TBL1 | EN_VMM)
-+#define ENABLE_TX_VMM		(SEL_VMM_TBL0 | EN_VMM)
-+/* time for expiring the completion of cfg packets */
-+#define WILC_CFG_PKTS_TIMEOUT	msecs_to_jiffies(2000)
-+
-+#define IS_MANAGMEMENT		0x100
-+#define IS_MANAGMEMENT_CALLBACK	0x080
-+#define IS_MGMT_STATUS_SUCCES	0x040
-+
-+#define WILC_WID_TYPE		GENMASK(15, 12)
-+#define WILC_VMM_ENTRY_FULL_RETRY	1
-+/********************************************
-+ *
-+ *      Tx/Rx Queue Structure
++ *      Wlan Configuration ID
 + *
 + ********************************************/
 +
-+struct txq_entry_t {
-+	struct list_head list;
-+	int type;
-+	int ack_idx;
-+	u8 *buffer;
-+	int buffer_size;
-+	void *priv;
-+	int status;
-+	struct wilc_vif *vif;
-+	void (*tx_complete_func)(void *priv, int status);
++enum bss_types {
++	WILC_FW_BSS_TYPE_INFRA =3D 0,
++	WILC_FW_BSS_TYPE_INDEPENDENT,
++	WILC_FW_BSS_TYPE_AP,
 +};
 +
-+struct rxq_entry_t {
-+	struct list_head list;
-+	u8 *buffer;
-+	int buffer_size;
++enum {
++	WILC_FW_OPER_MODE_B_ONLY =3D 0,	 /* 1, 2 M, otherwise 5, 11 M */
++	WILC_FW_OPER_MODE_G_ONLY,	 /* 6,12,24 otherwise 9,18,36,48,54 */
++	WILC_FW_OPER_MODE_G_MIXED_11B_1, /* 1,2,5.5,11 otherwise all on */
++	WILC_FW_OPER_MODE_G_MIXED_11B_2, /* 1,2,5,11,6,12,24 otherwise all on */
 +};
 +
-+/********************************************
-+ *
-+ *      Host IF Structure
-+ *
-+ ********************************************/
-+struct wilc;
-+struct wilc_hif_func {
-+	int (*hif_init)(struct wilc *wilc, bool resume);
-+	int (*hif_deinit)(struct wilc *wilc);
-+	int (*hif_read_reg)(struct wilc *wilc, u32 addr, u32 *data);
-+	int (*hif_write_reg)(struct wilc *wilc, u32 addr, u32 data);
-+	int (*hif_block_rx)(struct wilc *wilc, u32 addr, u8 *buf, u32 size);
-+	int (*hif_block_tx)(struct wilc *wilc, u32 addr, u8 *buf, u32 size);
-+	int (*hif_read_int)(struct wilc *wilc, u32 *int_status);
-+	int (*hif_clear_int_ext)(struct wilc *wilc, u32 val);
-+	int (*hif_read_size)(struct wilc *wilc, u32 *size);
-+	int (*hif_block_tx_ext)(struct wilc *wilc, u32 addr, u8 *buf, u32 size);
-+	int (*hif_block_rx_ext)(struct wilc *wilc, u32 addr, u8 *buf, u32 size);
-+	int (*hif_sync_ext)(struct wilc *wilc, int nint);
-+	int (*enable_interrupt)(struct wilc *nic);
-+	void (*disable_interrupt)(struct wilc *nic);
++enum {
++	WILC_FW_PREAMBLE_SHORT =3D 0,	/* Short Preamble */
++	WILC_FW_PREAMBLE_LONG =3D 1,	/* Long Preamble */
++	WILC_FW_PREAMBLE_AUTO =3D 2,	/* Auto Preamble Selection */
 +};
 +
-+#define WILC_MAX_CFG_FRAME_SIZE		1468
-+
-+struct tx_complete_data {
-+	int size;
-+	void *buff;
-+	struct sk_buff *skb;
++enum {
++	WILC_FW_PASSIVE_SCAN =3D 0,
++	WILC_FW_ACTIVE_SCAN =3D 1,
 +};
 +
-+struct wilc_cfg_cmd_hdr {
-+	u8 cmd_type;
-+	u8 seq_no;
-+	__le16 total_len;
-+	__le32 driver_handler;
++enum {
++	WILC_FW_NO_POWERSAVE =3D 0,
++	WILC_FW_MIN_FAST_PS =3D 1,
++	WILC_FW_MAX_FAST_PS =3D 2,
++	WILC_FW_MIN_PSPOLL_PS =3D 3,
++	WILC_FW_MAX_PSPOLL_PS =3D 4
 +};
 +
-+struct wilc_cfg_frame {
-+	struct wilc_cfg_cmd_hdr hdr;
-+	u8 frame[WILC_MAX_CFG_FRAME_SIZE];
++enum chip_ps_states {
++	WILC_CHIP_WAKEDUP =3D 0,
++	WILC_CHIP_SLEEPING_AUTO =3D 1,
++	WILC_CHIP_SLEEPING_MANUAL =3D 2
 +};
 +
-+struct wilc_cfg_rsp {
-+	u8 type;
-+	u8 seq_no;
++enum bus_acquire {
++	WILC_BUS_ACQUIRE_ONLY =3D 0,
++	WILC_BUS_ACQUIRE_AND_WAKEUP =3D 1,
 +};
 +
-+struct wilc;
-+struct wilc_vif;
++enum bus_release {
++	WILC_BUS_RELEASE_ONLY =3D 0,
++	WILC_BUS_RELEASE_ALLOW_SLEEP =3D 1,
++};
 +
-+int wilc_wlan_firmware_download(struct wilc *wilc, const u8 *buffer,
-+				u32 buffer_size);
-+int wilc_wlan_start(struct wilc *wilc);
-+int wilc_wlan_stop(struct wilc *wilc, struct wilc_vif *vif);
-+int wilc_wlan_txq_add_net_pkt(struct net_device *dev, void *priv, u8 *buff=
-er,
-+			      u32 buffer_size,
-+			      void (*tx_complete_fn)(void *, int));
-+int wilc_wlan_handle_txq(struct wilc *wl, u32 *txq_count);
-+void wilc_handle_isr(struct wilc *wilc);
-+void wilc_wlan_cleanup(struct net_device *dev);
-+int wilc_wlan_cfg_set(struct wilc_vif *vif, int start, u16 wid, u8 *buffer=
-,
-+		      u32 buffer_size, int commit, u32 drv_handler);
-+int wilc_wlan_cfg_get(struct wilc_vif *vif, int start, u16 wid, int commit=
-,
-+		      u32 drv_handler);
-+int wilc_wlan_txq_add_mgmt_pkt(struct net_device *dev, void *priv, u8 *buf=
-fer,
-+			       u32 buffer_size, void (*func)(void *, int));
-+void wilc_enable_tcp_ack_filter(struct wilc_vif *vif, bool value);
-+int wilc_wlan_get_num_conn_ifcs(struct wilc *wilc);
-+netdev_tx_t wilc_mac_xmit(struct sk_buff *skb, struct net_device *dev);
++enum {
++	WILC_FW_NO_ENCRYPT =3D 0,
++	WILC_FW_ENCRYPT_ENABLED =3D BIT(0),
++	WILC_FW_WEP =3D BIT(1),
++	WILC_FW_WEP_EXTENDED =3D BIT(2),
++	WILC_FW_WPA =3D BIT(3),
++	WILC_FW_WPA2 =3D BIT(4),
++	WILC_FW_AES =3D BIT(5),
++	WILC_FW_TKIP =3D BIT(6)
++};
 +
-+void wilc_wfi_p2p_rx(struct wilc_vif *vif, u8 *buff, u32 size);
-+void host_wakeup_notify(struct wilc *wilc);
-+void host_sleep_notify(struct wilc *wilc);
-+void chip_allow_sleep(struct wilc *wilc);
-+void chip_wakeup(struct wilc *wilc);
-+int wilc_send_config_pkt(struct wilc_vif *vif, u8 mode, struct wid *wids,
-+			 u32 count);
-+int wilc_wlan_init(struct net_device *dev);
-+u32 wilc_get_chipid(struct wilc *wilc, bool update);
++enum {
++	WILC_FW_SEC_NO =3D WILC_FW_NO_ENCRYPT,
++	WILC_FW_SEC_WEP =3D WILC_FW_WEP | WILC_FW_ENCRYPT_ENABLED,
++	WILC_FW_SEC_WEP_EXTENDED =3D WILC_FW_WEP_EXTENDED | WILC_FW_SEC_WEP,
++	WILC_FW_SEC_WPA =3D WILC_FW_WPA | WILC_FW_ENCRYPT_ENABLED,
++	WILC_FW_SEC_WPA_AES =3D WILC_FW_AES | WILC_FW_SEC_WPA,
++	WILC_FW_SEC_WPA_TKIP =3D WILC_FW_TKIP | WILC_FW_SEC_WPA,
++	WILC_FW_SEC_WPA2 =3D WILC_FW_WPA2 | WILC_FW_ENCRYPT_ENABLED,
++	WILC_FW_SEC_WPA2_AES =3D WILC_FW_AES | WILC_FW_SEC_WPA2,
++	WILC_FW_SEC_WPA2_TKIP =3D WILC_FW_TKIP | WILC_FW_SEC_WPA2
++};
++
++enum authtype {
++	WILC_FW_AUTH_OPEN_SYSTEM =3D 1,
++	WILC_FW_AUTH_SHARED_KEY =3D 2,
++	WILC_FW_AUTH_ANY =3D 3,
++	WILC_FW_AUTH_IEEE8021 =3D 5
++};
++
++enum site_survey {
++	WILC_FW_SITE_SURVEY_1CH =3D 0,
++	WILC_FW_SITE_SURVEY_ALL_CH =3D 1,
++	WILC_FW_SITE_SURVEY_OFF =3D 2
++};
++
++enum {
++	WILC_FW_ACK_POLICY_NORMAL =3D 0,
++	WILC_FW_ACK_NO_POLICY,
++};
++
++enum {
++	WILC_FW_REKEY_POLICY_DISABLE =3D 1,
++	WILC_FW_REKEY_POLICY_TIME_BASE,
++	WILC_FW_REKEY_POLICY_PKT_BASE,
++	WILC_FW_REKEY_POLICY_TIME_PKT_BASE
++};
++
++enum {
++	WILC_FW_FILTER_NO =3D 0x00,
++	WILC_FW_FILTER_AP_ONLY =3D 0x01,
++	WILC_FW_FILTER_STA_ONLY =3D 0x02
++};
++
++enum {
++	WILC_FW_11N_PROT_AUTO =3D 0,	/* Auto */
++	WILC_FW_11N_NO_PROT,		/* Do not use any protection */
++	WILC_FW_11N_PROT_ERP,		/* Protect all ERP frame exchanges */
++	WILC_FW_11N_PROT_HT,		/* Protect all HT frame exchanges  */
++	WILC_FW_11N_PROT_GF		/* Protect all GF frame exchanges  */
++};
++
++enum {
++	WILC_FW_ERP_PROT_SELF_CTS,
++	WILC_FW_ERP_PROT_RTS_CTS,
++};
++
++enum {
++	WILC_FW_11N_OP_MODE_HT_MIXED =3D 1,
++	WILC_FW_11N_OP_MODE_HT_ONLY_20MHZ,
++	WILC_FW_11N_OP_MODE_HT_ONLY_20_40MHZ,
++};
++
++enum {
++	WILC_FW_OBBS_NONHT_NO_DETECT =3D 0,
++	WILC_FW_OBBS_NONHT_DETECT_ONLY =3D 1,
++	WILC_FW_OBBS_NONHT_DETECT_PROTECT =3D 2,
++	WILC_FW_OBBS_NONHT_DETECT_PROTECT_REPORT =3D 3,
++};
++
++enum {
++	WILC_FW_HT_PROT_RTS_CTS_NONHT =3D 0,  /* RTS-CTS at non-HT rate */
++	WILC_FW_HT_PROT_FIRST_FRAME_NONHT,  /* First frame at non-HT rate */
++	WILC_FW_HT_PROT_LSIG_TXOP,	    /* LSIG TXOP Protection */
++	WILC_FW_HT_PROT_FIRST_FRAME_MIXED,  /* First frame at Mixed format */
++};
++
++enum {
++	WILC_FW_SMPS_MODE_STATIC =3D 1,
++	WILC_FW_SMPS_MODE_DYNAMIC =3D 2,
++	WILC_FW_SMPS_MODE_MIMO =3D 3,	/* power save disable */
++};
++
++enum {
++	WILC_FW_TX_RATE_AUTO =3D 0,
++	WILC_FW_TX_RATE_MBPS_1 =3D 1,
++	WILC_FW_TX_RATE_MBPS_2 =3D 2,
++	WILC_FW_TX_RATE_MBPS_5_5 =3D 5,
++	WILC_FW_TX_RATE_MBPS_11 =3D 11,
++	WILC_FW_TX_RATE_MBPS_6 =3D 6,
++	WILC_FW_TX_RATE_MBPS_9 =3D 9,
++	WILC_FW_TX_RATE_MBPS_12 =3D 12,
++	WILC_FW_TX_RATE_MBPS_18 =3D 18,
++	WILC_FW_TX_RATE_MBPS_24 =3D 24,
++	WILC_FW_TX_RATE_MBPS_36 =3D 36,
++	WILC_FW_TX_RATE_MBPS_48 =3D 48,
++	WILC_FW_TX_RATE_MBPS_54 =3D 54
++};
++
++enum {
++	WILC_FW_DEFAULT_SCAN =3D 0,
++	WILC_FW_USER_SCAN =3D BIT(0),
++	WILC_FW_OBSS_PERIODIC_SCAN =3D BIT(1),
++	WILC_FW_OBSS_ONETIME_SCAN =3D BIT(2)
++};
++
++enum {
++	WILC_FW_ACTION_FRM_IDX =3D 0,
++	WILC_FW_PROBE_REQ_IDX =3D 1
++};
++
++enum wid_type {
++	WID_CHAR		=3D 0,
++	WID_SHORT		=3D 1,
++	WID_INT			=3D 2,
++	WID_STR			=3D 3,
++	WID_BIN_DATA		=3D 4,
++	WID_BIN			=3D 5,
++};
++
++struct wid {
++	u16 id;
++	enum wid_type type;
++	s32 size;
++	s8 *val;
++};
++
++enum {
++	WID_NIL				=3D 0xffff,
++
++	/*
++	 *  BSS Type
++	 *  -----------------------------------------------------------
++	 *  Configuration : Infrastructure   Independent   Access Point
++	 *  Values to set :         0               1            2
++	 *  -----------------------------------------------------------
++	 */
++	WID_BSS_TYPE			=3D 0x0000,
++
++	/*
++	 *  Transmit Rate
++	 *  -----------------------------------------------------------
++	 *  Configuration : 1  2  5.5  11  6  9  12  18  24  36  48  54
++	 *  Values to set : 1  2    5  11  6  9  12  18  24  36  48  54
++	 *  -----------------------------------------------------------
++	 */
++	WID_CURRENT_TX_RATE		=3D 0x0001,
++
++	/*
++	 *  Channel
++	 *  -----------------------------------------------------------
++	 *  Configuration(g) : 1  2  3  4  5  6  7  8  9 10 11 12 13 14
++	 *  Values to set    : 1  2  3  4  5  6  7  8  9 10 11 12 13 14
++	 *  -----------------------------------------------------------
++	 */
++	WID_CURRENT_CHANNEL		=3D 0x0002,
++
++	/*
++	 *  Preamble
++	 *  -----------------------------------------------------------
++	 *  Configuration :    short    long      Auto
++	 *  Values to set :       0       1         2
++	 *  -----------------------------------------------------------
++	 */
++	WID_PREAMBLE			=3D 0x0003,
++
++	/*
++	 * 11g operating mode (ignored if 11g not present)
++	 *  -----------------------------------------------------------
++	 *  Configuration :   HighPerf  Compat(RSet #1) Compat(RSet #2)
++	 *  Values to set :          1               2               3
++	 *  -----------------------------------------------------------
++	 */
++	WID_11G_OPERATING_MODE		=3D 0x0004,
++
++	/*
++	 *  Mac status (response only)
++	 *  -----------------------------------------------------------
++	 *  Configuration :   disconnect  connect
++	 *  Values to get :          0       1
++	 *  -----------------------------------------------------------
++	 */
++	WID_STATUS			=3D 0x0005,
++
++	/*
++	 *  Scan type
++	 *  -----------------------------------------------------------
++	 *  Configuration :   Passive Scanning   Active Scanning
++	 *  Values to set :                  0                 1
++	 *  -----------------------------------------------------------
++	 */
++	WID_SCAN_TYPE			=3D 0x0007,
++
++	/*
++	 *  Key Id (WEP default key Id)
++	 *  -----------------------------------------------------------
++	 *  Configuration :   Any value between 0 to 3
++	 *  Values to set :   Same value. Default is 0
++	 *  -----------------------------------------------------------
++	 */
++	WID_KEY_ID			=3D 0x0009,
++
++	/*
++	 *  QoS Enable
++	 *  -----------------------------------------------------------
++	 *  Configuration :   QoS Disable   WMM Enable
++	 *  Values to set :   0             1
++	 *  -----------------------------------------------------------
++	 */
++	WID_QOS_ENABLE			=3D 0x000A,
++
++	/*
++	 *  Power Management
++	 *  -----------------------------------------------------------
++	 *  Configuration : NO_POWERSAVE MIN_POWERSAVE MAX_POWERSAVE
++	 *  Values to set : 0            1             2
++	 *  -----------------------------------------------------------
++	 */
++	WID_POWER_MANAGEMENT		=3D 0x000B,
++
++	/*
++	 *  WEP/802 11I Configuration
++	 *  -----------------------------------------------------------
++	 *  Configuration:Disable WP40 WP104 WPA-AES WPA-TKIP RSN-AES RSN-TKIP
++	 *  Values (0x)  :   00     03   07     29       49       31      51
++	 *  Configuration:WPA-AES+TKIP RSN-AES+TKIP
++	 *  Values (0x)  :      69        71
++	 *  -----------------------------------------------------------
++	 */
++	WID_11I_MODE			=3D 0x000C,
++
++	/*
++	 *  WEP Configuration: Used in BSS STA mode only when WEP is enabled
++	 *  -----------------------------------------------------------
++	 *  Configuration : Open System Shared Key Any Type | 802.1x Auth
++	 *  Values (0x)   :    01             02         03 |    BIT2
++	 *  -----------------------------------------------------------
++	 */
++	WID_AUTH_TYPE			=3D 0x000D,
++
++	/*
++	 *  Site Survey Type
++	 *  -----------------------------------------------------------
++	 *  Configuration       :  Values to set
++	 *  Survey 1 Channel    :  0
++	 *  survey all Channels :  1
++	 *  Disable Site Survey :  2
++	 *  -----------------------------------------------------------
++	 */
++	WID_SITE_SURVEY			=3D 0x000E,
++
++	/*
++	 *  Listen Interval
++	 *  -----------------------------------------------------------
++	 *  Configuration :   Any value between 1 to 255
++	 *  Values to set :   Same value. Default is 3
++	 *  -----------------------------------------------------------
++	 */
++	WID_LISTEN_INTERVAL		=3D 0x000F,
++
++	/*
++	 *  DTIM Period
++	 *  -----------------------------------------------------------
++	 *  Configuration :   Any value between 1 to 255
++	 *  Values to set :   Same value. Default is 3
++	 *  -----------------------------------------------------------
++	 */
++	WID_DTIM_PERIOD			=3D 0x0010,
++
++	/*
++	 *  ACK Policy
++	 *  -----------------------------------------------------------
++	 *  Configuration :   Normal Ack            No Ack
++	 *  Values to set :       0                   1
++	 *  -----------------------------------------------------------
++	 */
++	WID_ACK_POLICY			=3D 0x0011,
++
++	/*
++	 *  Reset MAC (Set only)
++	 *  -----------------------------------------------------------
++	 *  Configuration :   Don't Reset	Reset	No Request
++	 *  Values to set :       0               1	    2
++	 *  -----------------------------------------------------------
++	 */
++	WID_RESET			=3D 0x0012,
++
++	/*
++	 *  Broadcast SSID Option: Setting this will adhere to "" SSID element
++	 *  -----------------------------------------------------------
++	 *  Configuration :   Enable             Disable
++	 *  Values to set :   1                  0
++	 *  -----------------------------------------------------------
++	 */
++	WID_BCAST_SSID			=3D 0x0015,
++
++	/*
++	 *  Disconnect (Station)
++	 *  -----------------------------------------------------------
++	 *  Configuration :   Association ID
++	 *  Values to set :   Association ID
++	 *  -----------------------------------------------------------
++	 */
++	WID_DISCONNECT			=3D 0x0016,
++
++	/*
++	 *  11a Tx Power Level
++	 *  -----------------------------------------------------------
++	 *  Configuration : Sets TX Power (Higher the value greater the power)
++	 *  Values to set : Any value between 0 and 63 (inclusive Default 48)
++	 *  -----------------------------------------------------------
++	 */
++	WID_TX_POWER_LEVEL_11A		=3D 0x0018,
++
++	/*
++	 *  Group Key Update Policy Selection
++	 *  -----------------------------------------------------------
++	 *  Configuration : Disabled timeBased packetBased timePacketBased
++	 *  Values to set :   1            2          3              4
++	 *  -----------------------------------------------------------
++	 */
++	WID_REKEY_POLICY		=3D 0x0019,
++
++	/*
++	 *  Allow Short Slot
++	 *  -----------------------------------------------------------
++	 *  Configuration : Disallow Short Slot      Allow Short Slot
++	 *          (Enable Only Long Slot) (Enable Short Slot if applicable)
++	 *  Values to set :    0         1
++	 *  -----------------------------------------------------------
++	 */
++	WID_SHORT_SLOT_ALLOWED		=3D 0x001A,
++
++	WID_PHY_ACTIVE_REG		=3D 0x001B,
++
++	/*
++	 *  11b Tx Power Level
++	 *  -----------------------------------------------------------
++	 *  Configuration : Sets TX Power (Higher the value greater the power)
++	 *  Values to set : Any value between 0 and 63 (inclusive Default 48)
++	 *  -----------------------------------------------------------
++	 */
++	WID_TX_POWER_LEVEL_11B		=3D 0x001D,
++
++	/*
++	 *  Scan Request
++	 *  -----------------------------------------------------------
++	 *  Configuration : Request default scan
++	 *  Values to set : 0
++	 *  -----------------------------------------------------------
++	 */
++	WID_START_SCAN_REQ		=3D 0x001E,
++
++	/*
++	 *  Rssi (get only)
++	 *  -----------------------------------------------------------
++	 *  Configuration :
++	 *  Values to get : Rssi value
++	 *  -----------------------------------------------------------
++	 */
++	WID_RSSI			=3D 0x001F,
++
++	/*
++	 * Join Request
++	 *  -----------------------------------------------------------
++	 *  Configuration : Request to join
++	 *  Values to set : index of scan result
++	 *  -----------------------------------------------------------
++	 */
++	WID_JOIN_REQ			=3D 0x0020,
++
++	WID_LINKSPEED			=3D 0x0026,
++
++	/*
++	 *  Enable User Control of TX Power
++	 *  -----------------------------------------------------------
++	 *  Configuration : Disable                  Enable
++	 *  Values to set :    0                       1
++	 *  -----------------------------------------------------------
++	 */
++	WID_USER_CONTROL_ON_TX_POWER	=3D 0x0027,
++
++	WID_MEMORY_ACCESS_8BIT		=3D 0x0029,
++
++	/*
++	 *  Enable Auto RX Sensitivity feature
++	 *  -----------------------------------------------------------
++	 *  Configuration : Disable                  Enable
++	 *  Values to set :    0                       1
++	 *  -----------------------------------------------------------
++	 */
++	WID_AUTO_RX_SENSITIVITY		=3D 0x0032,
++
++	/*
++	 *  Receive Buffer Based Ack
++	 *  -----------------------------------------------------------
++	 *  Configuration : Disable                  Enable
++	 *  Values to set :    0                       1
++	 *  -----------------------------------------------------------
++	 */
++	WID_DATAFLOW_CONTROL		=3D 0x0033,
++
++	/*
++	 *  Scan Filter
++	 *  -----------------------------------------------------------
++	 *  Configuration : Class       No filter   AP only   Station Only
++	 *  Values to set :                0           1           2
++	 *  Configuration : Priority    High Rssi   Low Rssi     Detect
++	 *  Values to set :                0          0x4         0x0
++	 *  Configuration : Channel     filter off  filter on
++	 *  Values to set :                0          0x10
++	 *  -----------------------------------------------------------
++	 */
++	WID_SCAN_FILTER			=3D 0x0036,
++
++	/*
++	 *  Link Loss Threshold (measure in the beacon period)
++	 *  -----------------------------------------------------------
++	 *  Configuration : Any value between 10 and 254(Set to 255 disable)
++	 *  Values to set : Same value. Default is 10
++	 *  -----------------------------------------------------------
++	 */
++	WID_LINK_LOSS_THRESHOLD		=3D 0x0037,
++
++	WID_ABORT_RUNNING_SCAN		=3D 0x003E,
++
++	/* NMAC Character WID list */
++	WID_WPS_START			=3D 0x0043,
++
++	/*
++	 *  Protection mode for MAC
++	 *  -----------------------------------------------------------
++	 *  Configuration :  Auto  No protection  ERP    HT    GF
++	 *  Values to set :  0     1              2      3     4
++	 *  -----------------------------------------------------------
++	 */
++	WID_11N_PROT_MECH		=3D 0x0080,
++
++	/*
++	 *  ERP Protection type for MAC
++	 *  -----------------------------------------------------------
++	 *  Configuration :  Self-CTS   RTS-CTS
++	 *  Values to set :  0          1
++	 *  -----------------------------------------------------------
++	 */
++	WID_11N_ERP_PROT_TYPE		=3D 0x0081,
++
++	/*
++	 *  HT Option Enable
++	 *  -----------------------------------------------------------
++	 *  Configuration :   HT Enable          HT Disable
++	 *  Values to set :   1                  0
++	 *  -----------------------------------------------------------
++	 */
++	WID_11N_ENABLE			=3D 0x0082,
++
++	/*
++	 *  11n Operating mode (Note that 11g operating mode will also be
++	 *  used in addition to this, if this is set to HT Mixed mode)
++	 *  -----------------------------------------------------------
++	 *   Configuration :  HT Mixed  HT Only-20MHz   HT Only-20/40MHz
++	 *  Values to set :     1         2               3
++	 *  -----------------------------------------------------------
++	 */
++	WID_11N_OPERATING_MODE		=3D 0x0083,
++
++	/*
++	 *  11n OBSS non-HT STA Detection flag
++	 *  -----------------------------------------------------------
++	 *  Configuration :  Do not detect
++	 *  Values to set :  0
++	 *  Configuration :  Detect, do not protect or report
++	 *  Values to set :  1
++	 *  Configuration :  Detect, protect and do not report
++	 *  Values to set :  2
++	 *  Configuration :  Detect, protect and report to other BSS
++	 *  Values to set :  3
++	 *  -----------------------------------------------------------
++	 */
++	WID_11N_OBSS_NONHT_DETECTION	=3D 0x0084,
++
++	/*
++	 *  11n HT Protection Type
++	 *  -----------------------------------------------------------
++	 *  Configuration :  RTS-CTS   First Frame Exchange at non-HT-rate
++	 *  Values to set :  0         1
++	 *  Configuration :  LSIG TXOP First Frame Exchange in Mixed Fmt
++	 *  Values to set :  2         3
++	 *  -----------------------------------------------------------
++	 */
++	WID_11N_HT_PROT_TYPE		=3D 0x0085,
++
++	/*
++	 *  11n RIFS Protection Enable Flag
++	 *  -----------------------------------------------------------
++	 *  Configuration :  Disable    Enable
++	 *  Values to set :  0          1
++	 *  -----------------------------------------------------------
++	 */
++	WID_11N_RIFS_PROT_ENABLE	=3D 0x0086,
++
++	/*
++	 *  SMPS Mode
++	 *  -----------------------------------------------------------
++	 *  Configuration :  Static   Dynamic   MIMO (Power Save Disabled)
++	 *  Values to set :  1        2         3
++	 *  -----------------------------------------------------------
++	 */
++	WID_11N_SMPS_MODE		=3D 0x0087,
++
++	/*
++	 *  Current transmit MCS
++	 *  -----------------------------------------------------------
++	 *  Configuration :  MCS Index for data rate
++	 *  Values to set :  0 to 7
++	 *  -----------------------------------------------------------
++	 */
++	WID_11N_CURRENT_TX_MCS		=3D 0x0088,
++
++	WID_11N_PRINT_STATS		=3D 0x0089,
++
++	/*
++	 *  11n Short GI Enable Flag
++	 *  -----------------------------------------------------------
++	 *  Configuration :  Disable    Enable
++	 *  Values to set :  0          1
++	 *  -----------------------------------------------------------
++	 */
++	WID_11N_SHORT_GI_ENABLE		=3D 0x008D,
++
++	/*
++	 *  11n RIFS Enable Flag
++	 *  -----------------------------------------------------------
++	 *  Configuration :  Disable    Enable
++	 *  Values to set :  0          1
++	 *  -----------------------------------------------------------
++	 */
++	WID_RIFS_MODE			=3D 0x0094,
++
++	/*
++	 *  TX Abort Feature
++	 *  -----------------------------------------------------------
++	 *  Configuration :  Disable Self CTS    Enable Self CTS
++	 *  Values to set :             0                      1
++	 *  Configuration :  Disable TX Abort    Enable TX Abort
++	 *  Values to set :             2                      3
++	 *  Configuration :  Enable HW TX Abort Enable SW TX Abort
++	 *  Values to set :             4                      5
++	 *  -----------------------------------------------------------
++	 */
++	WID_TX_ABORT_CONFIG		=3D 0x00A1,
++
++	WID_REG_TSSI_11B_VALUE		=3D 0x00A6,
++	WID_REG_TSSI_11G_VALUE		=3D 0x00A7,
++	WID_REG_TSSI_11N_VALUE		=3D 0x00A8,
++	WID_TX_CALIBRATION		=3D 0x00A9,
++	WID_DSCR_TSSI_11B_VALUE		=3D 0x00AA,
++	WID_DSCR_TSSI_11G_VALUE		=3D 0x00AB,
++	WID_DSCR_TSSI_11N_VALUE		=3D 0x00AC,
++
++	/*
++	 *  Immediate Block-Ack Support
++	 *  -----------------------------------------------------------
++	 *  Configuration : Disable                  Enable
++	 *  Values to set :    0                       1
++	 *  -----------------------------------------------------------
++	 */
++	WID_11N_IMMEDIATE_BA_ENABLED	=3D 0x00AF,
++
++	/*
++	 *  TXOP Disable Flag
++	 *  -----------------------------------------------------------
++	 *  Configuration : Disable                  Enable
++	 *  Values to set :    1                        0
++	 *  -----------------------------------------------------------
++	 */
++	WID_11N_TXOP_PROT_DISABLE	=3D 0x00B0,
++
++	WID_TX_POWER_LEVEL_11N		=3D 0x00B1,
++
++	/* Custom Character WID list */
++	/* SCAN Complete notification WID*/
++	WID_SCAN_COMPLETE		=3D 0x00C9,
++
++	WID_DEL_BEACON			=3D 0x00CA,
++
++	WID_LOG_TERMINAL_SWITCH		=3D 0x00CD,
++	WID_TX_POWER			=3D 0x00CE,
++	/*  EMAC Short WID list */
++	/*  RTS Threshold */
++	/*
++	 *  -----------------------------------------------------------
++	 *  Configuration :   Any value between 256 to 2347
++	 *  Values to set :   Same value. Default is 2347
++	 *  -----------------------------------------------------------
++	 */
++	WID_RTS_THRESHOLD		=3D 0x1000,
++
++	/*
++	 *  Fragmentation Threshold
++	 *  -----------------------------------------------------------
++	 *  Configuration :   Any value between 256 to 2346
++	 *  Values to set :   Same value. Default is 2346
++	 *  -----------------------------------------------------------
++	 */
++	WID_FRAG_THRESHOLD		=3D 0x1001,
++
++	WID_SHORT_RETRY_LIMIT		=3D 0x1002,
++	WID_LONG_RETRY_LIMIT		=3D 0x1003,
++	WID_BEACON_INTERVAL		=3D 0x1006,
++	WID_MEMORY_ACCESS_16BIT		=3D 0x1008,
++	WID_PASSIVE_SCAN_TIME           =3D 0x100D,
++	WID_JOIN_START_TIMEOUT		=3D 0x100F,
++	WID_ASOC_TIMEOUT		=3D 0x1011,
++	WID_11I_PROTOCOL_TIMEOUT	=3D 0x1012,
++	WID_EAPOL_RESPONSE_TIMEOUT	=3D 0x1013,
++
++	/* NMAC Short WID list */
++	WID_11N_SIG_QUAL_VAL		=3D 0x1085,
++	WID_CCA_THRESHOLD		=3D 0x1087,
++
++	/* Custom Short WID list */
++
++	/* EMAC Integer WID list */
++	WID_FAILED_COUNT		=3D 0x2000,
++	WID_RETRY_COUNT			=3D 0x2001,
++	WID_MULTIPLE_RETRY_COUNT	=3D 0x2002,
++	WID_FRAME_DUPLICATE_COUNT	=3D 0x2003,
++	WID_ACK_FAILURE_COUNT		=3D 0x2004,
++	WID_RECEIVED_FRAGMENT_COUNT	=3D 0x2005,
++	WID_MCAST_RECEIVED_FRAME_COUNT	=3D 0x2006,
++	WID_FCS_ERROR_COUNT		=3D 0x2007,
++	WID_SUCCESS_FRAME_COUNT		=3D 0x2008,
++	WID_HUT_TX_COUNT		=3D 0x200A,
++	WID_TX_FRAGMENT_COUNT		=3D 0x200B,
++	WID_TX_MULTICAST_FRAME_COUNT	=3D 0x200C,
++	WID_RTS_SUCCESS_COUNT		=3D 0x200D,
++	WID_RTS_FAILURE_COUNT		=3D 0x200E,
++	WID_WEP_UNDECRYPTABLE_COUNT	=3D 0x200F,
++	WID_REKEY_PERIOD		=3D 0x2010,
++	WID_REKEY_PACKET_COUNT		=3D 0x2011,
++	WID_1X_SERV_ADDR		=3D 0x2012,
++	WID_STACK_IP_ADDR		=3D 0x2013,
++	WID_STACK_NETMASK_ADDR		=3D 0x2014,
++	WID_HW_RX_COUNT			=3D 0x2015,
++	WID_MEMORY_ADDRESS		=3D 0x201E,
++	WID_MEMORY_ACCESS_32BIT		=3D 0x201F,
++
++	/* NMAC Integer WID list */
++	/* Custom Integer WID list */
++	WID_GET_INACTIVE_TIME		=3D 0x2084,
++	/* EMAC String WID list */
++	WID_SSID			=3D 0x3000,
++	WID_FIRMWARE_VERSION		=3D 0x3001,
++	WID_OPERATIONAL_RATE_SET	=3D 0x3002,
++	WID_BSSID			=3D 0x3003,
++	WID_WEP_KEY_VALUE		=3D 0x3004,
++	WID_11I_PSK			=3D 0x3008,
++	WID_11E_P_ACTION_REQ		=3D 0x3009,
++	WID_1X_KEY			=3D 0x300A,
++	WID_HARDWARE_VERSION		=3D 0x300B,
++	WID_MAC_ADDR			=3D 0x300C,
++	WID_HUT_DEST_ADDR		=3D 0x300D,
++	WID_PHY_VERSION			=3D 0x300F,
++	WID_SUPP_USERNAME		=3D 0x3010,
++	WID_SUPP_PASSWORD		=3D 0x3011,
++	WID_SITE_SURVEY_RESULTS		=3D 0x3012,
++	WID_RX_POWER_LEVEL		=3D 0x3013,
++	WID_SET_STA_MAC_INACTIVE_TIME	=3D 0x3017,
++	WID_ADD_WEP_KEY			=3D 0x3019,
++	WID_REMOVE_WEP_KEY		=3D 0x301A,
++	WID_ADD_PTK			=3D 0x301B,
++	WID_ADD_RX_GTK			=3D 0x301C,
++	WID_ADD_TX_GTK			=3D 0x301D,
++	WID_REMOVE_KEY			=3D 0x301E,
++	WID_ASSOC_REQ_INFO		=3D 0x301F,
++	WID_ASSOC_RES_INFO		=3D 0x3020,
++	WID_MANUFACTURER		=3D 0x3026, /* Added for CAPI tool */
++	WID_MODEL_NAME			=3D 0x3027, /* Added for CAPI tool */
++	WID_MODEL_NUM			=3D 0x3028, /* Added for CAPI tool */
++	WID_DEVICE_NAME			=3D 0x3029, /* Added for CAPI tool */
++
++	/* NMAC String WID list */
++	WID_SET_OPERATION_MODE		=3D 0x3079,
++	WID_11N_P_ACTION_REQ		=3D 0x3080,
++	WID_HUT_TEST_ID			=3D 0x3081,
++	WID_PMKID_INFO			=3D 0x3082,
++	WID_FIRMWARE_INFO		=3D 0x3083,
++	WID_REGISTER_FRAME		=3D 0x3084,
++	WID_DEL_ALL_STA			=3D 0x3085,
++	WID_REMAIN_ON_CHAN		=3D 0x3996,
++	WID_SSID_PROBE_REQ		=3D 0x3997,
++	WID_JOIN_REQ_EXTENDED		=3D 0x3998,
++
++	WID_IP_ADDRESS			=3D 0x3999,
++
++	/* Custom String WID list */
++
++	/* EMAC Binary WID list */
++	WID_UAPSD_CONFIG		=3D 0x4001,
++	WID_UAPSD_STATUS		=3D 0x4002,
++	WID_WMM_AP_AC_PARAMS		=3D 0x4003,
++	WID_WMM_STA_AC_PARAMS		=3D 0x4004,
++	WID_NETWORK_INFO		=3D 0x4005,
++	WID_STA_JOIN_INFO		=3D 0x4006,
++	WID_CONNECTED_STA_LIST		=3D 0x4007,
++
++	/* NMAC Binary WID list */
++	WID_11N_AUTORATE_TABLE		=3D 0x4080,
++
++	WID_SCAN_CHANNEL_LIST		=3D 0x4084,
++
++	WID_INFO_ELEMENT_PROBE		=3D 0x4085,
++	WID_INFO_ELEMENT_ASSOCIATE	=3D 0x4086,
++	WID_ADD_STA			=3D 0X4087,
++	WID_REMOVE_STA			=3D 0X4088,
++	WID_EDIT_STA			=3D 0X4089,
++	WID_ADD_BEACON			=3D 0x408a,
++
++	WID_SETUP_MULTICAST_FILTER	=3D 0x408b,
++
++	/* Miscellaneous WIDs */
++	WID_ALL				=3D 0x7FFE,
++	WID_MAX				=3D 0xFFFF
++};
++
 +#endif
 --=20
 2.24.0
