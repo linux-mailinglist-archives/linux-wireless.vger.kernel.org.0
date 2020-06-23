@@ -2,53 +2,53 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3965C204FCC
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jun 2020 13:00:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 482A0204FCE
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jun 2020 13:00:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732424AbgFWLAY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 23 Jun 2020 07:00:24 -0400
-Received: from esa6.microchip.iphmx.com ([216.71.154.253]:50074 "EHLO
-        esa6.microchip.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732243AbgFWLAQ (ORCPT
+        id S1732429AbgFWLA2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 23 Jun 2020 07:00:28 -0400
+Received: from esa1.microchip.iphmx.com ([68.232.147.91]:33237 "EHLO
+        esa1.microchip.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732371AbgFWLAS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 23 Jun 2020 07:00:16 -0400
+        Tue, 23 Jun 2020 07:00:18 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
   d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1592910015; x=1624446015;
+  t=1592910017; x=1624446017;
   h=from:to:cc:subject:date:message-id:references:
    in-reply-to:content-transfer-encoding:mime-version;
-  bh=sysb7i/VNUGYi7ejGr3t8kPwAjRrQWe2MgEUPunRKHM=;
-  b=raH3Y0OikdsaxWvbgGxAHYr4OIfIcf7Bh9cKPLqUOhErAf9CMqVxZDTR
-   L1MBSDxIuXnpAEbiTKWw8bD1TLQjgJnSHbfk/bA4XF62M0Q7MZjR5OnAY
-   LJw40gJwqEk9QGYEVdxeT4GfLJdFL0efayc546bLHrPO76imnRX13HAkz
-   cx/sv9OrlwLpiJ23Q25rGe82Q3Bns75D9Sa2dJX/I00l4eYc3P0CMTzC9
-   HzQLmvS8gmW8bnjDqgRC6F+h3yLwALtuoq3IV5qFvPaifCGc6xA1UfTY1
-   DcyS4c7A2VZd1X5bam02JGd3f2XmvaGZabZJ3DMqiCi4p70zf4KVZFlBP
-   g==;
-IronPort-SDR: lsgOSrd3YyxPUWv/lTB3GE11ps4YAAqqaeBeijZEjrKT6UwUhDbTx2XeqBgpJWGUI5gvHNHQFV
- uHU5gSwLYUgWjg6O6w0O00BH9Ua7mD48hoJ0pY4TQ1UHzHw0lM3ryw7PyNC3W5efi6tCTViug9
- 9XjvuDM6gZN4o9CfdSEomEcJMO5jvJqEfRkqNlfiTXqJhrh6ipyvPYwrRgOh/9AgLSAR3xPn4W
- APHmHlaEWjmVBoS1NoG+/dl1kjBdYi+6VUllxKjcOuOlNMYJHfDlWN1jA++c7Klm91xjyDyT0W
- qOs=
+  bh=sLr6ccjkyOyWHx/FXXEjry7bMXTgbgdBcXipaFW2rVo=;
+  b=GMYqNVMJ3NzhwcyNgPIpm78Mif9ugtg2rfLzJe08ZhGSDe2KLi+35l4q
+   vmyWmgzhPmeYJK9xFzd0RdADXQupSF2Nx4ChjQzS2ghJhXF5Xc2FeIXLy
+   6kNLW73+3lqQuFvILeo57KEZNt4Xif15EWacG+pXi41q2P4tFIvB+4u6C
+   0mazI1a2Px8WRQdQcSRkdFJnsB61/mPvLp/fzcWkcTo53M65euelp0t7S
+   RoWyt6Ontub4uYNhRoOpuweH5bNB7Po79Pzp8BXVsKK19BN2vB0MXaOFg
+   yJBM3sWIqd5OGiR+CKOsjsnreUxqhUkT43xBwUlwm+bseIteP8qChz/Dx
+   Q==;
+IronPort-SDR: oZZ7dOZvxvugphOKVYi2pwI+5oEyfeyR1SHI3aknaBs+tPnB/CJPwM3fUffpATGL4CyE8fFN7s
+ NOt0W1Ns1PZ8678sF81HQEDBFUKOHMuZ9V+58i7QhMKHGkleA6ZRPJizkpnurfEELoMflVa46g
+ 3mS4lJdc8Ppabl4gZT6VX2vWj1irrV2NrOeLuUG4kXMDjeodniyQQllaQKUOCw86MiwJ55Evuv
+ 4yW7ikHUTXNgTo2J/vzaj2VwWmCijwHy/ghxRaoAF2PXQ0lFpkCJt/bNLrMVhXyk43ms/rs96P
+ UxU=
 X-IronPort-AV: E=Sophos;i="5.75,271,1589266800"; 
-   d="scan'208";a="16737459"
+   d="scan'208";a="84732772"
 Received: from smtpout.microchip.com (HELO email.microchip.com) ([198.175.253.82])
-  by esa6.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 23 Jun 2020 04:00:14 -0700
+  by esa1.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 23 Jun 2020 04:00:16 -0700
 Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
- chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
+ chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1979.3; Tue, 23 Jun 2020 04:00:03 -0700
-Received: from NAM02-CY1-obe.outbound.protection.outlook.com (10.10.215.89) by
+ 15.1.1979.3; Tue, 23 Jun 2020 04:00:16 -0700
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (10.10.215.89) by
  email.microchip.com (10.10.87.71) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1979.3 via Frontend
- Transport; Tue, 23 Jun 2020 04:00:03 -0700
+ Transport; Tue, 23 Jun 2020 04:00:05 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=bm+kPhSK4BgQwQhTD1FO98zmFNWwKY3H+wAyheJ9vrXv39Ls6RBAkjniNGLDZZO+oiTXv8Qa4mn0pVxshnL+CNYd7mxvdIYhLYidprYd26jSHr7rtilObq3Aknzsrpq8R/Xz1+UcfnBIaA8VyykxtQx4OReYs/PsdQK6ACx28WWFzPOr10aKG2ghPs+M6Za6ciilchelVDId493JiDSR2UbrzbYHONenAXGCPuMlHQXP8OFW6YlVmLRldVwEkfGeiQvT74keLohKFT2NbOBQKMFlQwHaMOq5oYRCsl+D1f5tYm8BDJ1ElcBVWWkFEEtN8x/E4wpqdauIvGu8oIuiFA==
+ b=cc/XDTCHPZWz2oRyJrIOQVo/O4fsXgE03AXkIOLtpHL32jHlLLtM1FCu3+Lr8NQDFqT7Rg49tA4P3t6406NqLmE1vHFLp07pCxB6RUNOBpjt1S9TudhbiLAZr/2wPVhlgSqyX+NtEoy6PjdqFTytbEkapbMOSLx/jppHzPzzunVqYCLu8mVVI1jQgbiIya57jAu1AdNaTgIGZreEyh+BowDy03TR9/WqJx+Px5/zSskM1rjD81r6c+bZN6X4SifTyuLoZdS/Ivs8OdsYlkCuwH0sEbuUAT7/Ko7hzZcyp/pCl04wZGMQXq9OnaL2gI77t+tYL/t4mXEO8M8rpwJ9gw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6KpURaovH//Kc4c1yFfuqcrgnP+HPTtsW2NK8E2Iz8g=;
- b=bqida/kgfucdwibJ2W02MLBO+j/uB9l9MYcTGHNRukImnZCKaI0ZP6mbXXz1xGHm9nt+t9upUQnSc5NE4Dn2vpD7fUWihf5I8b0L0I1wnotc0s2I9uXZAibfUmuoTRNkqSIIgzv88OnQ88VDyACzrQjWCqhe0zlzYY7NhjD6nyOGWvu93NgUnhDn561Gfu3fuyhE1/gTKDdTIcChBCN2QmW4gV4WhHtKNEvGv7ROHrQ47rEd4Ns6YyR/VBtGU6SSnreqApY1AcUZ5OGH9lyBFuq5touziB17fZbGI+1t2Mb6azmtMpiAcyXsQ/T8brOxPDegg+VvEQ9KM5kFbhgifw==
+ bh=B1CWqNU1H9hc2J0CBVPk5OE7X4CykPUWsjTvFVtm6i4=;
+ b=PD9k9xRlYOluHmTh92p1q0h2xRQaGQU2vPnwxmd1wp0LySzPHAOQZ1XhSqdHUGZz8QbLMh3/sTd5kCVqgP7ILiIkoKlhzKu1kpNcpEOKJ9BvCK3CFLcM9+HWcMvfTeIa9k5QwcIAqnWBhJ8CPOIe4j5djQ3gcKg74KDObumIJWJd8qoSrLPBU/CGfZMizVb4OnY+fjhiV1JM8NqtoPx0ZV2LmgnMsE0Ox+ul2qVqe/0vkUBokDWbUjoiIx0ZSfukpGhcWr1/CqOmPm3YQ314fOZmjFSvmY5mT3/ZyYvImyDMRc2k4mJ5HqS1xoSLfFl62cw0KEE9lPvyWUOA55GdkQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=microchip.com; dmarc=pass action=none
  header.from=microchip.com; dkim=pass header.d=microchip.com; arc=none
@@ -56,28 +56,28 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=microchiptechnology.onmicrosoft.com;
  s=selector2-microchiptechnology-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6KpURaovH//Kc4c1yFfuqcrgnP+HPTtsW2NK8E2Iz8g=;
- b=JFFo3JEjjrPto2qStNjsN5ZQxvvVY7CHyvR9a+XJTPvmdNT8zct7RuUZPMnVC+rjAgjTSlChhdtZ7pbr36JACtl9dqcK6UfHj5VhkFZRQWihdlqLNPt/UDAufcO1u2lN6I01FZ6YgqNRJa0FnHDVL0j+ah7KDlTNXQ+NHqHo0Kc=
+ bh=B1CWqNU1H9hc2J0CBVPk5OE7X4CykPUWsjTvFVtm6i4=;
+ b=FChB2dsGE3M86g0a5HOIGkGg5Kj+iNSxbD+VqKC+xxs4SoAFjS/me58iAOLLlYCuS5YZHthNrJhKJahN5XsbgQ1FCZC/wQcZhVVtB7LrGYwrDAul2mpjrsFfIMdzTb6lHGMHj4UFrdIK7cY8Gb+2Me42MwCYDddHQACouQljbV4=
 Received: from MN2PR11MB4030.namprd11.prod.outlook.com (2603:10b6:208:156::32)
  by MN2PR11MB3551.namprd11.prod.outlook.com (2603:10b6:208:ea::12) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3109.22; Tue, 23 Jun
- 2020 11:00:09 +0000
+ 2020 11:00:10 +0000
 Received: from MN2PR11MB4030.namprd11.prod.outlook.com
  ([fe80::3874:6ace:6aec:deed]) by MN2PR11MB4030.namprd11.prod.outlook.com
  ([fe80::3874:6ace:6aec:deed%7]) with mapi id 15.20.3109.027; Tue, 23 Jun 2020
- 11:00:09 +0000
+ 11:00:10 +0000
 From:   <Ajay.Kathat@microchip.com>
 To:     <linux-wireless@vger.kernel.org>
 CC:     <devel@driverdev.osuosl.org>, <gregkh@linuxfoundation.org>,
         <johannes@sipsolutions.net>, <Nicolas.Ferre@microchip.com>,
         <Claudiu.Beznea@microchip.com>, <Sripad.Balwadgi@microchip.com>,
         <Venkateswara.Kaja@microchip.com>, <Ajay.Kathat@microchip.com>
-Subject: [PATCH v7 07/17] wilc1000: add cfg80211.h
-Thread-Topic: [PATCH v7 07/17] wilc1000: add cfg80211.h
-Thread-Index: AQHWSU11ek8LcXLjAUieIX4CPdvyZA==
-Date:   Tue, 23 Jun 2020 11:00:09 +0000
-Message-ID: <20200623110000.31559-8-ajay.kathat@microchip.com>
+Subject: [PATCH v7 10/17] wilc1000: add mon.c
+Thread-Topic: [PATCH v7 10/17] wilc1000: add mon.c
+Thread-Index: AQHWSU12OmMqvS2czk2I+YTu+oooRg==
+Date:   Tue, 23 Jun 2020 11:00:10 +0000
+Message-ID: <20200623110000.31559-11-ajay.kathat@microchip.com>
 References: <20200623110000.31559-1-ajay.kathat@microchip.com>
 In-Reply-To: <20200623110000.31559-1-ajay.kathat@microchip.com>
 Accept-Language: en-US
@@ -90,28 +90,28 @@ authentication-results: vger.kernel.org; dkim=none (message not signed)
  header.from=microchip.com;
 x-originating-ip: [49.207.200.183]
 x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: e7df75e6-8f5d-4b30-87ed-08d81764984e
+x-ms-office365-filtering-correlation-id: 9d37eeeb-540f-4251-ca32-08d81764993f
 x-ms-traffictypediagnostic: MN2PR11MB3551:
 x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <MN2PR11MB3551AB696C03E1665AEC57CAE3940@MN2PR11MB3551.namprd11.prod.outlook.com>
+x-microsoft-antispam-prvs: <MN2PR11MB35513AB1DDF0B7C86AC6984FE3940@MN2PR11MB3551.namprd11.prod.outlook.com>
 x-bypassexternaltag: True
-x-ms-oob-tlc-oobclassifiers: OLM:418;
+x-ms-oob-tlc-oobclassifiers: OLM:1284;
 x-forefront-prvs: 04433051BF
 x-ms-exchange-senderadcheck: 1
 x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: 1gptsU+NftrBHUa70lg60T9nG/2XIGzZ9u4mcr+bniM3FxqA4mzKP6OS3zwnXbhHYAGx2CCF+STZl41nlVh9mqN6dGkPIHbv9pbFBdz3db9Ww+NIPTA/swF63ou9e4HKZJc6UdSddHSkg0gfhbAxLgvC+q13DWNFHCNNNpACp1HvUTOZpowkCP2WDXdsF9iX50eb5Ab72IRQwelXXgcqfcKgljMMUhhxlicEj+v4paEt/VUl/MH1ZRJ376f4pfKzkughQZaArtk8ZqALjv2qujE3tB3JVDYe14cO/lLVM0sOhmHkSPlnnxIn2NeSjvyGSafbP4wpYH/OE1joZadyWA==
+x-microsoft-antispam-message-info: MXpcf5BVCVGP/o0GJJzT4ehC+kM/h/Do+hhNH8eNS1XXdS2Ac14kiIi1uA/NY2qIzRnOAxYyYnwiiYbHcz4Jf7rndokPv7NFV8A5k1qAey1QVr5YTwFP05sEx/vDS334oIZuMgYLfQfD7dDf0vEjr1YIAgZeQptL1KQtBbZzuqa0CoZaDnkwFAqBGdpL9L3b/1/LlyZUwF1QcXhaJmflqi9BUgWHf0Y8DjIJH5CtxZvJQr6QC4rQuQEtlbqL2U1mhX45aG9ape1MK7lh4dDobbnGKW97Y0idnfFXGIo1mR2/W5QWHX0ae7m/A83H0+AMzg4/aH1tN3VTm7h9iIsOMg==
 x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN2PR11MB4030.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(366004)(136003)(346002)(396003)(376002)(39860400002)(8676002)(83380400001)(36756003)(2906002)(186003)(6506007)(86362001)(2616005)(4326008)(107886003)(26005)(6486002)(6916009)(5660300002)(55236004)(1076003)(478600001)(66446008)(66476007)(66556008)(64756008)(91956017)(76116006)(66946007)(6512007)(54906003)(316002)(71200400001)(8936002);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata: w1KPweH3UEGwIXUBD+H2+z6tofSnRGtbuIDq3FyT6uMMIXAvRsRNv55yyb5DIbJLFxwsMay9uE5MA3Tdv4SrbzOr9LuNgL84FDaPYvm7lFgCiRC29VXySBsTrHjBSPQc4/Ur1BZUKzeZpODI+P1EZAciDGpA3z4rLlX3JT+GhA+eBunajnXfWAczlgc/C8DXJuuO66+jvQ0XdMvpXPeeoqGedExOZXeEEMc55RWDc6POJseWti/XHYADdMYAGEz843AkmaKXy949pEzUQdCoSeB6XV8deu3u6XV6kofWM5fdySvkc3PouVkgScWVBVyn047FAnco8DDMoAx+kzH7t1yNrA6yLMF5HpR7fV4SyevEuMlP5ZPrTXiKjfdtGL6p13XI4ixTcDVb3VwfxLcfVmVHPhIGrcoBfjke9ZUKye7aUSu0qselwgV7bFQcC4D0kWqZRKwpEPfrhk+zlHhSWOfNChjZYwXr+omYE9sKxsdJvsSC8DJhnHVWC1OLb+I7
+x-ms-exchange-antispam-messagedata: 8dtjkLNSwZU3Dj96TAIP09QG00b/st4lw8dIBQqTMXPl52ZG2hKkH6yWcAGaL+khrZFtR2mJqNPcZd4FdO0ovVEG2wkWRJkWYjB7N3Z2ZR5AZFyIE/Fhc2UyszIu8ZFLR4fPra3Y9ab8ckpzBTOoEgjMTO0I1vSqz0ZqXZeIpbC5DTSfpFTmrZc01orkf9+8tQw6/yvVGAKeHA/DfwAIqyjVW5sZyNU1qpXA8srzQUgYuwLb8/FocAKPM896ReFScEjkmru2bYFtgKlcZMzHbriUSOj6eQ/YJqC9pjfv2xTIG+nl9mIc6XoMLl6Px4afyHSpPKxy+TO1JxlSRWYcM17xUiMQ8u1Q0efcRyAOrk8AUNPc9RrqucnZkVjC2/nAaGaHYvaO8pUIKCkcjqQMRLcn7OsfFNx2KGy82hPYwy/osNOlUhb5SCqsHB2vtUSHjcSeQP+RDsDBUsuwZvxuwLy7DRjAiniB0yryOfP/mO7DgtgSxfxe88+xkxj3cG47
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-Network-Message-Id: e7df75e6-8f5d-4b30-87ed-08d81764984e
-X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Jun 2020 11:00:09.0318
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9d37eeeb-540f-4251-ca32-08d81764993f
+X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Jun 2020 11:00:10.7018
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 3f4057f3-b418-4d4e-ba84-d55b4e897d88
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: w8pWCISvgOz33YMXFBF6PUjEXpFcztioAEDXuRqLpwCokQNTge/qC+hfe1+l1MQ8iSB3qPgrW1ndzIGmWXJva+SogzLQLIbPX3AtwRH9htc=
+X-MS-Exchange-CrossTenant-userprincipalname: 01www6y1nB/b94br+mKk6THuR9g+q8COmJXq3ZA83+BzcxUaBCJ4tpOFJLTumKt74xeuu6sWsgAebTRfh/WAJ6dUSvRYEKxTr55b7NkDGzw=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR11MB3551
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
@@ -120,53 +120,282 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Ajay Singh <ajay.kathat@microchip.com>
 
-Moved 'drivers/staging/wilc1000/cfg80211.h' to
-'drivers/net/wireless/microchip/wilc1000/cfg80211.h'.
+Moved 'drivers/staging/wilc1000/mon.c' to
+'drivers/net/wireless/microchip/wilc1000/mon.c'.
 
 Signed-off-by: Ajay Singh <ajay.kathat@microchip.com>
 ---
- .../wireless/microchip/wilc1000/cfg80211.h    | 30 +++++++++++++++++++
- 1 file changed, 30 insertions(+)
- create mode 100644 drivers/net/wireless/microchip/wilc1000/cfg80211.h
+ drivers/net/wireless/microchip/wilc1000/mon.c | 260 ++++++++++++++++++
+ 1 file changed, 260 insertions(+)
+ create mode 100644 drivers/net/wireless/microchip/wilc1000/mon.c
 
-diff --git a/drivers/net/wireless/microchip/wilc1000/cfg80211.h b/drivers/n=
-et/wireless/microchip/wilc1000/cfg80211.h
+diff --git a/drivers/net/wireless/microchip/wilc1000/mon.c b/drivers/net/wi=
+reless/microchip/wilc1000/mon.c
 new file mode 100644
-index 000000000000..37b294cb3b37
+index 000000000000..60331417bd98
 --- /dev/null
-+++ b/drivers/net/wireless/microchip/wilc1000/cfg80211.h
-@@ -0,0 +1,30 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
++++ b/drivers/net/wireless/microchip/wilc1000/mon.c
+@@ -0,0 +1,260 @@
++// SPDX-License-Identifier: GPL-2.0
 +/*
 + * Copyright (c) 2012 - 2018 Microchip Technology Inc., and its subsidiari=
 es.
 + * All rights reserved.
 + */
 +
-+#ifndef WILC_CFG80211_H
-+#define WILC_CFG80211_H
-+#include "netdev.h"
++#include "cfg80211.h"
 +
-+struct wiphy *wilc_cfg_alloc(void);
-+int wilc_cfg80211_init(struct wilc **wilc, struct device *dev, int io_type=
-,
-+		       const struct wilc_hif_func *ops);
-+struct wilc *wilc_create_wiphy(struct device *dev);
-+void wilc_deinit_host_int(struct net_device *net);
-+int wilc_init_host_int(struct net_device *net);
-+void wilc_wfi_monitor_rx(struct net_device *mon_dev, u8 *buff, u32 size);
-+struct wilc_vif *wilc_netdev_interface(struct wilc *wl, const char *name,
-+				       enum nl80211_iftype type);
-+void wilc_wfi_deinit_mon_interface(struct wilc *wl, bool rtnl_locked);
++struct wilc_wfi_radiotap_hdr {
++	struct ieee80211_radiotap_header hdr;
++	u8 rate;
++} __packed;
++
++struct wilc_wfi_radiotap_cb_hdr {
++	struct ieee80211_radiotap_header hdr;
++	u8 rate;
++	u8 dump;
++	u16 tx_flags;
++} __packed;
++
++#define TX_RADIOTAP_PRESENT ((1 << IEEE80211_RADIOTAP_RATE) |	\
++			     (1 << IEEE80211_RADIOTAP_TX_FLAGS))
++
++void wilc_wfi_monitor_rx(struct net_device *mon_dev, u8 *buff, u32 size)
++{
++	u32 header, pkt_offset;
++	struct sk_buff *skb =3D NULL;
++	struct wilc_wfi_radiotap_hdr *hdr;
++	struct wilc_wfi_radiotap_cb_hdr *cb_hdr;
++
++	if (!mon_dev)
++		return;
++
++	if (!netif_running(mon_dev))
++		return;
++
++	/* Get WILC header */
++	header =3D get_unaligned_le32(buff - HOST_HDR_OFFSET);
++	/*
++	 * The packet offset field contain info about what type of management
++	 * the frame we are dealing with and ack status
++	 */
++	pkt_offset =3D FIELD_GET(WILC_PKT_HDR_OFFSET_FIELD, header);
++
++	if (pkt_offset & IS_MANAGMEMENT_CALLBACK) {
++		/* hostapd callback mgmt frame */
++
++		skb =3D dev_alloc_skb(size + sizeof(*cb_hdr));
++		if (!skb)
++			return;
++
++		skb_put_data(skb, buff, size);
++
++		cb_hdr =3D skb_push(skb, sizeof(*cb_hdr));
++		memset(cb_hdr, 0, sizeof(*cb_hdr));
++
++		cb_hdr->hdr.it_version =3D 0; /* PKTHDR_RADIOTAP_VERSION; */
++
++		cb_hdr->hdr.it_len =3D cpu_to_le16(sizeof(*cb_hdr));
++
++		cb_hdr->hdr.it_present =3D cpu_to_le32(TX_RADIOTAP_PRESENT);
++
++		cb_hdr->rate =3D 5;
++
++		if (pkt_offset & IS_MGMT_STATUS_SUCCES)	{
++			/* success */
++			cb_hdr->tx_flags =3D IEEE80211_RADIOTAP_F_TX_RTS;
++		} else {
++			cb_hdr->tx_flags =3D IEEE80211_RADIOTAP_F_TX_FAIL;
++		}
++
++	} else {
++		skb =3D dev_alloc_skb(size + sizeof(*hdr));
++
++		if (!skb)
++			return;
++
++		skb_put_data(skb, buff, size);
++		hdr =3D skb_push(skb, sizeof(*hdr));
++		memset(hdr, 0, sizeof(struct wilc_wfi_radiotap_hdr));
++		hdr->hdr.it_version =3D 0; /* PKTHDR_RADIOTAP_VERSION; */
++		hdr->hdr.it_len =3D cpu_to_le16(sizeof(*hdr));
++		hdr->hdr.it_present =3D cpu_to_le32
++				(1 << IEEE80211_RADIOTAP_RATE);
++		hdr->rate =3D 5;
++	}
++
++	skb->dev =3D mon_dev;
++	skb_reset_mac_header(skb);
++	skb->ip_summed =3D CHECKSUM_UNNECESSARY;
++	skb->pkt_type =3D PACKET_OTHERHOST;
++	skb->protocol =3D htons(ETH_P_802_2);
++	memset(skb->cb, 0, sizeof(skb->cb));
++
++	netif_rx(skb);
++}
++
++struct tx_complete_mon_data {
++	int size;
++	void *buff;
++};
++
++static void mgmt_tx_complete(void *priv, int status)
++{
++	struct tx_complete_mon_data *pv_data =3D priv;
++	/*
++	 * in case of fully hosting mode, the freeing will be done
++	 * in response to the cfg packet
++	 */
++	kfree(pv_data->buff);
++
++	kfree(pv_data);
++}
++
++static int mon_mgmt_tx(struct net_device *dev, const u8 *buf, size_t len)
++{
++	struct tx_complete_mon_data *mgmt_tx =3D NULL;
++
++	if (!dev)
++		return -EFAULT;
++
++	netif_stop_queue(dev);
++	mgmt_tx =3D kmalloc(sizeof(*mgmt_tx), GFP_ATOMIC);
++	if (!mgmt_tx)
++		return -ENOMEM;
++
++	mgmt_tx->buff =3D kmemdup(buf, len, GFP_ATOMIC);
++	if (!mgmt_tx->buff) {
++		kfree(mgmt_tx);
++		return -ENOMEM;
++	}
++
++	mgmt_tx->size =3D len;
++
++	wilc_wlan_txq_add_mgmt_pkt(dev, mgmt_tx, mgmt_tx->buff, mgmt_tx->size,
++				   mgmt_tx_complete);
++
++	netif_wake_queue(dev);
++	return 0;
++}
++
++static netdev_tx_t wilc_wfi_mon_xmit(struct sk_buff *skb,
++				     struct net_device *dev)
++{
++	u32 rtap_len, ret =3D 0;
++	struct wilc_wfi_mon_priv  *mon_priv;
++	struct sk_buff *skb2;
++	struct wilc_wfi_radiotap_cb_hdr *cb_hdr;
++	u8 srcadd[ETH_ALEN];
++	u8 bssid[ETH_ALEN];
++
++	mon_priv =3D netdev_priv(dev);
++	if (!mon_priv)
++		return -EFAULT;
++
++	rtap_len =3D ieee80211_get_radiotap_len(skb->data);
++	if (skb->len < rtap_len)
++		return -1;
++
++	skb_pull(skb, rtap_len);
++
++	if (skb->data[0] =3D=3D 0xc0 && is_broadcast_ether_addr(&skb->data[4])) {
++		skb2 =3D dev_alloc_skb(skb->len + sizeof(*cb_hdr));
++		if (!skb2)
++			return -ENOMEM;
++
++		skb_put_data(skb2, skb->data, skb->len);
++
++		cb_hdr =3D skb_push(skb2, sizeof(*cb_hdr));
++		memset(cb_hdr, 0, sizeof(struct wilc_wfi_radiotap_cb_hdr));
++
++		cb_hdr->hdr.it_version =3D 0; /* PKTHDR_RADIOTAP_VERSION; */
++
++		cb_hdr->hdr.it_len =3D cpu_to_le16(sizeof(*cb_hdr));
++
++		cb_hdr->hdr.it_present =3D cpu_to_le32(TX_RADIOTAP_PRESENT);
++
++		cb_hdr->rate =3D 5;
++		cb_hdr->tx_flags =3D 0x0004;
++
++		skb2->dev =3D dev;
++		skb_reset_mac_header(skb2);
++		skb2->ip_summed =3D CHECKSUM_UNNECESSARY;
++		skb2->pkt_type =3D PACKET_OTHERHOST;
++		skb2->protocol =3D htons(ETH_P_802_2);
++		memset(skb2->cb, 0, sizeof(skb2->cb));
++
++		netif_rx(skb2);
++
++		return 0;
++	}
++	skb->dev =3D mon_priv->real_ndev;
++
++	ether_addr_copy(srcadd, &skb->data[10]);
++	ether_addr_copy(bssid, &skb->data[16]);
++	/*
++	 * Identify if data or mgmt packet, if source address and bssid
++	 * fields are equal send it to mgmt frames handler
++	 */
++	if (!(memcmp(srcadd, bssid, 6))) {
++		ret =3D mon_mgmt_tx(mon_priv->real_ndev, skb->data, skb->len);
++		if (ret)
++			netdev_err(dev, "fail to mgmt tx\n");
++		dev_kfree_skb(skb);
++	} else {
++		ret =3D wilc_mac_xmit(skb, mon_priv->real_ndev);
++	}
++
++	return ret;
++}
++
++static const struct net_device_ops wilc_wfi_netdev_ops =3D {
++	.ndo_start_xmit         =3D wilc_wfi_mon_xmit,
++
++};
++
 +struct net_device *wilc_wfi_init_mon_interface(struct wilc *wl,
 +					       const char *name,
-+					       struct net_device *real_dev);
-+void wilc_update_mgmt_frame_registrations(struct wiphy *wiphy,
-+					  struct wireless_dev *wdev,
-+					  struct mgmt_frame_regs *upd);
-+struct wilc_vif *wilc_get_interface(struct wilc *wl);
-+struct wilc_vif *wilc_get_wl_to_vif(struct wilc *wl);
-+void wlan_deinit_locks(struct wilc *wilc);
-+#endif
++					       struct net_device *real_dev)
++{
++	struct wilc_wfi_mon_priv *priv;
++
++	/* If monitor interface is already initialized, return it */
++	if (wl->monitor_dev)
++		return wl->monitor_dev;
++
++	wl->monitor_dev =3D alloc_etherdev(sizeof(struct wilc_wfi_mon_priv));
++	if (!wl->monitor_dev)
++		return NULL;
++
++	wl->monitor_dev->type =3D ARPHRD_IEEE80211_RADIOTAP;
++	strncpy(wl->monitor_dev->name, name, IFNAMSIZ);
++	wl->monitor_dev->name[IFNAMSIZ - 1] =3D 0;
++	wl->monitor_dev->netdev_ops =3D &wilc_wfi_netdev_ops;
++	wl->monitor_dev->needs_free_netdev =3D true;
++
++	if (register_netdevice(wl->monitor_dev)) {
++		netdev_err(real_dev, "register_netdevice failed\n");
++		return NULL;
++	}
++	priv =3D netdev_priv(wl->monitor_dev);
++	if (!priv)
++		return NULL;
++
++	priv->real_ndev =3D real_dev;
++
++	return wl->monitor_dev;
++}
++
++void wilc_wfi_deinit_mon_interface(struct wilc *wl, bool rtnl_locked)
++{
++	if (!wl->monitor_dev)
++		return;
++
++	if (rtnl_locked)
++		unregister_netdevice(wl->monitor_dev);
++	else
++		unregister_netdev(wl->monitor_dev);
++	wl->monitor_dev =3D NULL;
++}
 --=20
 2.24.0
