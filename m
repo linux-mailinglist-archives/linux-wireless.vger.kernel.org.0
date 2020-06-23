@@ -2,33 +2,33 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 59E24204C47
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jun 2020 10:25:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D491204C51
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jun 2020 10:27:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731744AbgFWIZf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 23 Jun 2020 04:25:35 -0400
-Received: from mail29.static.mailgun.info ([104.130.122.29]:33784 "EHLO
+        id S1731839AbgFWI05 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 23 Jun 2020 04:26:57 -0400
+Received: from mail29.static.mailgun.info ([104.130.122.29]:39099 "EHLO
         mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1731567AbgFWIZe (ORCPT
+        by vger.kernel.org with ESMTP id S1731659AbgFWI05 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 23 Jun 2020 04:25:34 -0400
+        Tue, 23 Jun 2020 04:26:57 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1592900734; h=Date: Message-Id: Cc: To: References:
+ s=smtp; t=1592900815; h=Date: Message-Id: Cc: To: References:
  In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=kvKztOVhw3WKwnQObTGy6hSQ7A2Ou8m97lYsp9h8S9M=;
- b=YtzOeEXU3Bf66x5luIUy9T+w12XQ3x9o7n1njU7rXNxqIzdCBR9BMVFvlWowH1qbJecDFkWs
- MMMJavzKlFzI3Fzk2CbjVpQRMDFJMxOSifUgdGdHauHzmlvQmgGB989Mm4LE2DdfZBoMskv+
- 1rJ0nvIwPhLGNZLX6r1YfyaNLyA=
+ Content-Type: Sender; bh=KibLpiIJZ8OoU7QBd/y8BObyo7ExEw9uGFHlSuJvhVM=;
+ b=frNT6PxLThQE5whZW2kn+Vf6t6612kh8NoZRhPLT+qHoOR1duWHhTnMyYflcmOeTuhy5btFY
+ H2VB2tq+5Jj5sooG2tM77eTBpBF/H1UYhk0/UumfTI3O2rPXPPMC99m0RavZnHqU0BUddDkZ
+ Brcv10IFsBjWX+ICrbeOuR5xmnw=
 X-Mailgun-Sending-Ip: 104.130.122.29
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n01.prod.us-west-2.postgun.com with SMTP id
- 5ef1bc73fe1db4db89cbb4fb (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 23 Jun 2020 08:25:23
+ smtp-out-n09.prod.us-east-1.postgun.com with SMTP id
+ 5ef1bccd86de6ccd446543fd (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 23 Jun 2020 08:26:53
  GMT
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id A522CC433C6; Tue, 23 Jun 2020 08:25:23 +0000 (UTC)
+        id 01CF5C433C6; Tue, 23 Jun 2020 08:26:52 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -39,47 +39,99 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id BAB76C433C8;
-        Tue, 23 Jun 2020 08:25:22 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org BAB76C433C8
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 03841C433C6;
+        Tue, 23 Jun 2020 08:26:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 03841C433C6
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v5.7 8/8] iwlwifi: mvm: don't call
- iwl_mvm_free_inactive_queue() under RCU
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH] iwlwifi: fix crash in iwl_dbg_tlv_alloc_trigger
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <iwlwifi.20200403112332.0f49448c133d.I17fd308bc4a9491859c9b112f4eb5d2c3fc18d7d@changeid>
-References: <iwlwifi.20200403112332.0f49448c133d.I17fd308bc4a9491859c9b112f4eb5d2c3fc18d7d@changeid>
-To:     Luca Coelho <luca@coelho.fi>
-Cc:     linux-wireless@vger.kernel.org
+In-Reply-To: <20200612073800.27742-1-jslaby@suse.cz>
+References: <20200612073800.27742-1-jslaby@suse.cz>
+To:     Jiri Slaby <jslaby@suse.cz>
+Cc:     johannes.berg@intel.com, linux-kernel@vger.kernel.org,
+        Jiri Slaby <jslaby@suse.cz>,
+        =?utf-8?q?Die?= =?utf-8?q?ter_N=C3=BCtzel?= 
+        <Dieter@nuetzel-hh.de>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        Intel Linux Wireless <linuxwifi@intel.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20200623082523.A522CC433C6@smtp.codeaurora.org>
-Date:   Tue, 23 Jun 2020 08:25:23 +0000 (UTC)
+Message-Id: <20200623082653.01CF5C433C6@smtp.codeaurora.org>
+Date:   Tue, 23 Jun 2020 08:26:52 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Luca Coelho <luca@coelho.fi> wrote:
+Jiri Slaby <jslaby@suse.cz> wrote:
 
-> From: Johannes Berg <johannes.berg@intel.com>
+> The tlv passed to iwl_dbg_tlv_alloc_trigger comes from a loaded firmware
+> file. The memory can be marked as read-only as firmware could be
+> shared. In anyway, writing to this memory is not expected. So,
+> iwl_dbg_tlv_alloc_trigger can crash now:
 > 
-> iwl_mvm_free_inactive_queue() will sleep in synchronize_net() under
-> some circumstances, so don't call it under RCU. There doesn't appear
-> to be a need for RCU protection around this particular call.
+>   BUG: unable to handle page fault for address: ffffae2c01bfa794
+>   PF: supervisor write access in kernel mode
+>   PF: error_code(0x0003) - permissions violation
+>   PGD 107d51067 P4D 107d51067 PUD 107d52067 PMD 659ad2067 PTE 8000000662298161
+>   CPU: 2 PID: 161 Comm: kworker/2:1 Not tainted 5.7.0-3.gad96a07-default #1 openSUSE Tumbleweed (unreleased)
+>   RIP: 0010:iwl_dbg_tlv_alloc_trigger+0x25/0x60 [iwlwifi]
+>   Code: eb f2 0f 1f 00 66 66 66 66 90 83 7e 04 33 48 89 f8 44 8b 46 10 48 89 f7 76 40 41 8d 50 ff 83 fa 19 77 23 8b 56 20 85 d2 75 07 <c7> 46 20 ff ff ff ff 4b 8d 14 40 48 c1 e2 04 48 8d b4 10 00 05 00
+>   RSP: 0018:ffffae2c00417ce8 EFLAGS: 00010246
+>   RAX: ffff8f0522334018 RBX: ffff8f0522334018 RCX: ffffffffc0fc26c0
+>   RDX: 0000000000000000 RSI: ffffae2c01bfa774 RDI: ffffae2c01bfa774
+>   RBP: 0000000000000000 R08: 0000000000000004 R09: 0000000000000001
+>   R10: 0000000000000034 R11: ffffae2c01bfa77c R12: ffff8f0522334230
+>   R13: 0000000001000009 R14: ffff8f0523fdbc00 R15: ffff8f051f395800
+>   FS:  0000000000000000(0000) GS:ffff8f0527c80000(0000) knlGS:0000000000000000
+>   CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+>   CR2: ffffae2c01bfa794 CR3: 0000000389eba000 CR4: 00000000000006e0
+>   Call Trace:
+>    iwl_dbg_tlv_alloc+0x79/0x120 [iwlwifi]
+>    iwl_parse_tlv_firmware.isra.0+0x57d/0x1550 [iwlwifi]
+>    iwl_req_fw_callback+0x3f8/0x6a0 [iwlwifi]
+>    request_firmware_work_func+0x47/0x90
+>    process_one_work+0x1e3/0x3b0
+>    worker_thread+0x46/0x340
+>    kthread+0x115/0x140
+>    ret_from_fork+0x1f/0x40
 > 
-> Cc: stable@vger.kernel.org # v5.4+
-> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-> Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+> As can be seen, write bit is not set in the PTE. Read of
+> trig->occurrences succeeds in iwl_dbg_tlv_alloc_trigger, but
+> trig->occurrences = cpu_to_le32(-1); fails there, obviously.
+> 
+> This is likely because we (at SUSE) use compressed firmware and that is
+> marked as RO after decompression (see fw_map_paged_buf).
+> 
+> Fix it by creating a temporary buffer in case we need to change the
+> memory.
+> 
+> Signed-off-by: Jiri Slaby <jslaby@suse.cz>
+> Reported-by: Dieter Nützel <Dieter@nuetzel-hh.de>
+> Tested-by: Dieter Nützel <Dieter@nuetzel-hh.de>
+> Cc: Johannes Berg <johannes.berg@intel.com>
+> Cc: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+> Cc: Luca Coelho <luciano.coelho@intel.com>
+> Cc: Intel Linux Wireless <linuxwifi@intel.com>
+> Cc: Kalle Valo <kvalo@codeaurora.org>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: Jakub Kicinski <kuba@kernel.org>
+> Cc: linux-wireless@vger.kernel.org
+> Cc: netdev@vger.kernel.org
 
 Patch applied to wireless-drivers.git, thanks.
 
-fbb1461ad1d6 iwlwifi: mvm: don't call iwl_mvm_free_inactive_queue() under RCU
+ea0cca61d628 iwlwifi: fix crash in iwl_dbg_tlv_alloc_trigger
 
 -- 
-https://patchwork.kernel.org/patch/11472099/
+https://patchwork.kernel.org/patch/11601365/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
