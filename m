@@ -2,43 +2,43 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9389C2053DA
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jun 2020 15:50:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 39F682053DB
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jun 2020 15:50:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732711AbgFWNty (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 23 Jun 2020 09:49:54 -0400
-Received: from mail-dm6nam12on2120.outbound.protection.outlook.com ([40.107.243.120]:64448
-        "EHLO NAM12-DM6-obe.outbound.protection.outlook.com"
+        id S1732823AbgFWNt5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 23 Jun 2020 09:49:57 -0400
+Received: from mail-co1nam11on2132.outbound.protection.outlook.com ([40.107.220.132]:43488
+        "EHLO NAM11-CO1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1732633AbgFWNty (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 23 Jun 2020 09:49:54 -0400
+        id S1732633AbgFWNt4 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 23 Jun 2020 09:49:56 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=FXjoLQFhWkBGd/3qEUM5zuaUgtiCzQHArj64BaMoOPEVpWM/l3dbrY5KIvHe43z9IKmfdiEjju6x6szXofPAACHgVYJHezJpsbt4juUbCiQ9Q7HlC1crzc8R+v10kLQec05HzMcp7fQNkyCX5CoPSO5ccffiGJXaAI78klCUx8gBIe6xF4GgDm9AzYfb88evfDhFumZo7sot1x9VlCWULU5LpIl5uD1GI9B3+Bf7wOndbMY08JLUOK1ONypEd4z0pducaSvEIIN9Qne38XiVVBPkWY9CuKVR6NohPYNAMkOJ8BXipbTFH7P6gXs4f8chlNLoXhMSdBMDZ1FKfYsJGg==
+ b=nJz0fc92mok2xpI9yWD0409p5kQDjkWTZHzbuI3ISParK3hsR2LHa0x12Vh9gBAFhV9UnEz0Q/0qCZhV0YxZNsFOJmMoVEd4RoVzY3ysJFRVTO63e8w7Z/r61C5Ou/HW6vvfQA+eQl9bp8u0lROe1t7WVaM4C/C2mpBwSF8Gm5W0HktpjvHnfDDSm4b46u7Yx4s0mDPcmjgcD/yCdIWLVVyfQmM1FT5Rz3wf+QzQFTBVmrdoi4FMTbKosAf+LNRXwkEshYLLLTRZJcR3tHZw41J5BHxu3xxjoWrWR34LVg/muN0L2cnkP30CxKWhX//0fQJkYaWSwVGVsrUSajdZjg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=rdPopjI9R0M0Z3bUrewNAGHyONga6tbm7Am/xQIpzio=;
- b=LHc4Lfj3BE/Isgrkt/Mwc3fKf9ZkSnLGkMDPmgGN/j8THbhTUfO119UYU4yxTIM+3hVG6qGkGSDOwqqVwAbvMolMxHxWFx0/MgjY60RBhFuAJfeqm8YgYnVbQRAzWdKL9/tu+301ax3DSrBuCnFcxqzHdOFQN3Jppa2r31RaNRKyA2IXcw/Pv/Vp7H0/JxRu0dA+8b1QDUc2sMP91O3or0gIfGJCHi8HuBaprEknwuFcmgEzx2Ucb8l2nSmbMukokPpWLJFavvWbWfkVosnX7XgLUbLKmljGznkVgHyHSzMg5OtGzzXFMSPTh1m6QKXewAzVGVx1VeNO9d56ext7FQ==
+ bh=TZ9bIB7AhNISQI2aa5xjMbmm440GNSyP4ENoQo9zrbY=;
+ b=W1rpZiT/BSX//xTmYD3V077KKF2zKimSG0xW1NqMVNjcD/wCAGLuxQueRHWE1JuIXXvO8fuJeg0F5h90Izhasb5qWfIyGr0eyPSfHU5IOCliJQAAMJf5JEbWzsuFcIMgYByEHumkH5kDByU0COrDNzX7v6tBn9DzNCGKte4mISR2GyLdB9Ln5vRDYuhj2pe5U4gVvLLtGxwdXKj3zWJC7YAPi81Z0ijVa9CY3IGMe3t+JHknlN8D5hG+LfMyPv0kZ/e2T7aKav+xWhSdrbgq0NtISH0ypbzfrJ3wZVBQ4mzjQIodah0AcEvGDZRE3N1/0t9ZXiJqWbHJkSxiA+izRw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=cypress.com; dmarc=pass action=none header.from=cypress.com;
  dkim=pass header.d=cypress.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cypress.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=rdPopjI9R0M0Z3bUrewNAGHyONga6tbm7Am/xQIpzio=;
- b=ABXk1V5xn/78WrRixTE6RHyYj1vE57KmKuc3KX6vKiuXkyWU85ZIyAoddvF1mkxmJIb72gT7sVtRzwb2pe1kBYMpImyMKo6CA8FWwE+MviROS2DuKRw22WnkXBKV+mf5lasnqyimJ+G2cWPHWAj572iAVzxw9QiBRrRptE6IlPg=
+ bh=TZ9bIB7AhNISQI2aa5xjMbmm440GNSyP4ENoQo9zrbY=;
+ b=IDCZgYsTIYKh/GNnnslKaonHIgSd7xryNgp0sfhrWqtvkiQiRA4AKVStxiDADj5SYYBbm/3YonOET3O8Tu7S9a9lFVoHBGBSML66LLSbXNqajQv6Tv94qmN8xDt7N9zwuJatN/sHvD8F6Pr+1kd8S/+PnOgIL4gyjNj+qtJZlEA=
 Authentication-Results: vger.kernel.org; dkim=none (message not signed)
  header.d=none;vger.kernel.org; dmarc=none action=none
  header.from=cypress.com;
 Received: from BYAPR06MB4901.namprd06.prod.outlook.com (2603:10b6:a03:7a::30)
- by BYAPR06MB5192.namprd06.prod.outlook.com (2603:10b6:a03:c5::17) with
+ by BY5PR06MB6449.namprd06.prod.outlook.com (2603:10b6:a03:23d::18) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3109.24; Tue, 23 Jun
- 2020 13:49:49 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3109.22; Tue, 23 Jun
+ 2020 13:49:51 +0000
 Received: from BYAPR06MB4901.namprd06.prod.outlook.com
  ([fe80::b972:c25d:c8fc:fc0e]) by BYAPR06MB4901.namprd06.prod.outlook.com
  ([fe80::b972:c25d:c8fc:fc0e%7]) with mapi id 15.20.3109.027; Tue, 23 Jun 2020
- 13:49:49 +0000
+ 13:49:51 +0000
 From:   Chi-Hsien Lin <chi-hsien.lin@cypress.com>
 To:     linux-wireless@vger.kernel.org,
         Johannes Berg <johannes.berg@intel.com>
@@ -50,9 +50,9 @@ Cc:     brcm80211-dev-list@broadcom.com, brcm80211-dev-list@cypress.com,
         Kalle Valo <kvalo@codeaurora.org>,
         Chung-Hsien Hsu <stanley.hsu@cypress.com>,
         Chi-Hsien Lin <chi-hsien.lin@cypress.com>
-Subject: [PATCH 1/4] nl80211: support 4-way handshake offloading for WPA/WPA2-PSK in AP mode
-Date:   Tue, 23 Jun 2020 08:49:35 -0500
-Message-Id: <20200623134938.39997-2-chi-hsien.lin@cypress.com>
+Subject: [PATCH 2/4] brcmfmac: support 4-way handshake offloading for WPA/WPA2-PSK in AP mode
+Date:   Tue, 23 Jun 2020 08:49:36 -0500
+Message-Id: <20200623134938.39997-3-chi-hsien.lin@cypress.com>
 X-Mailer: git-send-email 2.25.0
 In-Reply-To: <20200623134938.39997-1-chi-hsien.lin@cypress.com>
 References: <20200623134938.39997-1-chi-hsien.lin@cypress.com>
@@ -63,31 +63,31 @@ X-ClientProxiedBy: MN2PR03CA0016.namprd03.prod.outlook.com
  (2603:10b6:a03:7a::30)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from aremote02.aus.cypress.com (12.110.209.245) by MN2PR03CA0016.namprd03.prod.outlook.com (2603:10b6:208:23a::21) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3109.22 via Frontend Transport; Tue, 23 Jun 2020 13:49:47 +0000
+Received: from aremote02.aus.cypress.com (12.110.209.245) by MN2PR03CA0016.namprd03.prod.outlook.com (2603:10b6:208:23a::21) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3109.22 via Frontend Transport; Tue, 23 Jun 2020 13:49:49 +0000
 X-Mailer: git-send-email 2.25.0
 X-Originating-IP: [12.110.209.245]
 X-MS-PublicTrafficType: Email
 X-MS-Office365-Filtering-HT: Tenant
-X-MS-Office365-Filtering-Correlation-Id: 40747615-d8a4-4781-b95e-08d8177c4be1
-X-MS-TrafficTypeDiagnostic: BYAPR06MB5192:
+X-MS-Office365-Filtering-Correlation-Id: dd09977d-28b4-4d1d-88db-08d8177c4d1f
+X-MS-TrafficTypeDiagnostic: BY5PR06MB6449:
 X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <BYAPR06MB51926F580F4F87E196A7A072BB940@BYAPR06MB5192.namprd06.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:8882;
+X-Microsoft-Antispam-PRVS: <BY5PR06MB644905CA6775C515496B009FBB940@BY5PR06MB6449.namprd06.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:3826;
 X-Forefront-PRVS: 04433051BF
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: Rg4VH33IqrmRiwrDeAA84Fouvhgw6TOUQwxv8MYgdvfeL6G0TjM00BUVPFAlKPQk0Q5ti0EG9EUjBWc8dt2mK8o/QVpfqDg6uz9b0teYyVuse/MNzVS3wWP8i3a5HYmUm4XS+dziOJ9RZklvLZ13MXyI3nzk9Nrs/3A0Vr9S+YZIeIVMuUPbeUYf4BkcIfqNpM+ZYAf2xZs2P/1SkwFzYwGlHDmsUPJ1MqL5iBPB7MmYGmOzE8pTcWErMxa2WBBJhX4vrcOofyVQo/BJ6YGqwbvbjhoEg3A2J3I+PJ/aIO0uxUCeJpsi1p7I3rb+fzZr6iRovCPERUnBfNm0Py1WmQ==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR06MB4901.namprd06.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(366004)(8676002)(26005)(186003)(16526019)(66946007)(6486002)(5660300002)(66556008)(956004)(66476007)(36756003)(2616005)(107886003)(4326008)(6666004)(2906002)(54906003)(1076003)(7696005)(8936002)(6916009)(498600001)(86362001)(52116002)(83380400001);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData: M10GYR5cqScqjexOpWk4iV0T942ymn8ixkdnUD7q62VeUY0InkU+iwQObh86/9aWs6aCEKhBXUZDuJrOHc/Fjn9MrHZt2VL43L2KuqbNZ6x8d89P2klOvEqXthLjYXzzuJY4oulrn/pqAwVflWZ/CYOZHJZqEDXu8Yv3x90e6B9TELj6E/juNJzqNIbuepPzX/+F0vE7NqdWjFb+/DTZyG3kMSq9fTdD/p9ctZP2Woi7Q1SGFdGP6mtXo87xCtAjnv/Kh/bMVeDMTsXd9zJvQwEswkrKfluZ/h57zvR3Oz6O2TOicMESxS5ILsp5mclmlC3jmK2nG9z7ztnOjT+PW3Djr1KhXnoWBq110vX1y7FF8dMPLg3PT1A5N+IDtQCURbyaz8ACcUfEOdLCwuqGg4rWcCSWrlhkt4cd3iLwoVcx5agENQU+5lqE4DitboPOq7XSdu+6IETr1AoL2KoEcpcvWQbaegIflMe/mFtD1Lgu7/pCJkp7lLBWVIbUSwvV
+X-Microsoft-Antispam-Message-Info: TjZjikoun2Bn//JaSUOg/vsJoOfmPJPPL4H10fRXLKSYHkW694wGd/aiZ8rgABswqN4X8pHkLoJzqXb7yq2JGOeiRluO6eBENaTDXxFVoWlRVIWq7M6Lxh3QvDh5wHs3RUEPOAdkwa9XFD00dqpacATgIFdr1kFTtT5DJr93Nu/D0lnNfLytPzhIqgWD8tMR5551SDfQOLwMMwe6GyGQGpIBeTmuxdBBLShnBQb9F315GQDxAlIksw5d089KNYYJ1XleebnAeIHgxE+Tb3mWhrT0gP2y0QTaQToNgtslAopvxJP0tyRWUllD+K0DFabb
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR06MB4901.namprd06.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(366004)(16526019)(186003)(26005)(6666004)(83380400001)(498600001)(66556008)(52116002)(66476007)(7696005)(66946007)(54906003)(2616005)(956004)(8936002)(6916009)(8676002)(4326008)(107886003)(2906002)(1076003)(86362001)(36756003)(6486002)(5660300002);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData: Z28F/VMTzKZyWG6TTcY0TbEIAguH10lYGZBltRc6T2WXvcXC9FEHp1gLXmjls2KNRCnXAZEXw9fmjCDfUJ8YxBkHAtRhM9OF+2Ty7Y7JV/xsjYcV5BaCiN9xjBQDPp7LKrRJwdq618pMHMWkRpSITi7nE+ASfZahjFg0e5RCaAHO8CzLlfK49ypLTrhtA3nVlciJRPYkr94ar0vgmY94H9asJWFSiKuIs8/cvKq9KfDmD/5NV41b0UKdZ8+xF3GCmKoy0hyCenoz7Qyq4XJZZmzn+1fwLLXN2+olNW0ylcbUBwxZVpazaXWtpa+xm+GDU3CWfPKftrcSaic85eRDnywYBVkYbrYpvbXePSptA4cn/biOCcNLMyCgVanqi73Ins4JGUSxQSWe1t4m4meB5bLC4xp6YN8DiKaDKwcO/YDX2kJb3pHwLRWgTtqpgeMIDEnV7xpS8a7THdophZ3hsO9HXheS7OYEVeRuMgayhsmigTu8IkTGd22Gxtbinjnd
 X-OriginatorOrg: cypress.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 40747615-d8a4-4781-b95e-08d8177c4be1
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jun 2020 13:49:49.3790
+X-MS-Exchange-CrossTenant-Network-Message-Id: dd09977d-28b4-4d1d-88db-08d8177c4d1f
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jun 2020 13:49:51.4498
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 011addfc-2c09-450d-8938-e0bbc2dd2376
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: z4MHqWNcDmYVBvQ/UjAve0Wlm4wuI494uP33kgcYd8mNeg1t7on9FGSyaFp3L87f6lJPi8vR0/3lehIUz/rPmw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR06MB5192
+X-MS-Exchange-CrossTenant-UserPrincipalName: Ju/YTWgxUw+Lc+WksMhK5Ibp33abQw9tec5aTrkifMZCICcFGRhUiGxoafW0CU0Ch0RDWX8plb8J1TdsoZcCDw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR06MB6449
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
@@ -95,114 +95,147 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Chung-Hsien Hsu <stanley.hsu@cypress.com>
 
-Let drivers advertise support for AP-mode WPA/WPA2-PSK 4-way handshake
-offloading with a new NL80211_EXT_FEATURE_4WAY_HANDSHAKE_AP_PSK flag.
-
-Extend use of NL80211_ATTR_PMK attribute indicating it might be passed
-as part of NL80211_CMD_START_AP command, and contain the PSK (which is
-the PMK, hence the name).
-
-The driver is assumed to handle the 4-way handshake by itself in this
-case, instead of relying on userspace.
+Firmware may have authenticator code built-in. This is detected by the
+driver and indicated in the wiphy features flags. User space can use
+this flag to determine whether or not to provide the pre-shared key
+material in the nl80211 start AP command to offload the 4-way handshake
+in AP mode.
 
 Signed-off-by: Chung-Hsien Hsu <stanley.hsu@cypress.com>
 Signed-off-by: Chi-Hsien Lin <chi-hsien.lin@cypress.com>
 ---
- include/uapi/linux/nl80211.h | 41 ++++++++++++++++++++++++------------
- net/wireless/nl80211.c       |  4 +++-
- 2 files changed, 31 insertions(+), 14 deletions(-)
+ .../broadcom/brcm80211/brcmfmac/cfg80211.c    | 23 +++++++++++++++++++
+ .../broadcom/brcm80211/brcmfmac/cfg80211.h    | 12 ++++++++++
+ .../broadcom/brcm80211/brcmfmac/feature.c     |  1 +
+ .../broadcom/brcm80211/brcmfmac/feature.h     |  4 +++-
+ 4 files changed, 39 insertions(+), 1 deletion(-)
 
-diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-index c14666b75e57..f5bb69664b32 100644
---- a/include/uapi/linux/nl80211.h
-+++ b/include/uapi/linux/nl80211.h
-@@ -183,18 +183,27 @@
-  *
-  * By setting @NL80211_EXT_FEATURE_4WAY_HANDSHAKE_STA_PSK flag drivers
-  * can indicate they support offloading EAPOL handshakes for WPA/WPA2
-- * preshared key authentication. In %NL80211_CMD_CONNECT the preshared
-- * key should be specified using %NL80211_ATTR_PMK. Drivers supporting
-- * this offload may reject the %NL80211_CMD_CONNECT when no preshared
-- * key material is provided, for example when that driver does not
-- * support setting the temporal keys through %CMD_NEW_KEY.
-+ * preshared key authentication in station mode. In %NL80211_CMD_CONNECT
-+ * the preshared key should be specified using %NL80211_ATTR_PMK. Drivers
-+ * supporting this offload may reject the %NL80211_CMD_CONNECT when no
-+ * preshared key material is provided, for example when that driver does
-+ * not support setting the temporal keys through %NL80211_CMD_NEW_KEY.
-  *
-  * Similarly @NL80211_EXT_FEATURE_4WAY_HANDSHAKE_STA_1X flag can be
-  * set by drivers indicating offload support of the PTK/GTK EAPOL
-- * handshakes during 802.1X authentication. In order to use the offload
-- * the %NL80211_CMD_CONNECT should have %NL80211_ATTR_WANT_1X_4WAY_HS
-- * attribute flag. Drivers supporting this offload may reject the
-- * %NL80211_CMD_CONNECT when the attribute flag is not present.
-+ * handshakes during 802.1X authentication in station mode. In order to
-+ * use the offload the %NL80211_CMD_CONNECT should have
-+ * %NL80211_ATTR_WANT_1X_4WAY_HS attribute flag. Drivers supporting this
-+ * offload may reject the %NL80211_CMD_CONNECT when the attribute flag is
-+ * not present.
-+ *
-+ * By setting @NL80211_EXT_FEATURE_4WAY_HANDSHAKE_AP_PSK flag drivers
-+ * can indicate they support offloading EAPOL handshakes for WPA/WPA2
-+ * preshared key authentication in AP mode. In %NL80211_CMD_START_AP
-+ * the preshared key should be specified using %NL80211_ATTR_PMK. Drivers
-+ * supporting this offload may reject the %NL80211_CMD_START_AP when no
-+ * preshared key material is provided, for example when that driver does
-+ * not support setting the temporal keys through %NL80211_CMD_NEW_KEY.
-  *
-  * For 802.1X the PMK or PMK-R0 are set by providing %NL80211_ATTR_PMK
-  * using %NL80211_CMD_SET_PMK. For offloaded FT support also
-@@ -2362,10 +2371,11 @@ enum nl80211_commands {
-  *
-  * @NL80211_ATTR_PMK: attribute for passing PMK key material. Used with
-  *	%NL80211_CMD_SET_PMKSA for the PMKSA identified by %NL80211_ATTR_PMKID.
-- *	For %NL80211_CMD_CONNECT it is used to provide PSK for offloading 4-way
-- *	handshake for WPA/WPA2-PSK networks. For 802.1X authentication it is
-- *	used with %NL80211_CMD_SET_PMK. For offloaded FT support this attribute
-- *	specifies the PMK-R0 if NL80211_ATTR_PMKR0_NAME is included as well.
-+ *	For %NL80211_CMD_CONNECT and %NL80211_CMD_START_AP it is used to provide
-+ *	PSK for offloading 4-way handshake for WPA/WPA2-PSK networks. For 802.1X
-+ *	authentication it is used with %NL80211_CMD_SET_PMK. For offloaded FT
-+ *	support this attribute specifies the PMK-R0 if NL80211_ATTR_PMKR0_NAME
-+ *	is included as well.
-  *
-  * @NL80211_ATTR_SCHED_SCAN_MULTI: flag attribute which user-space shall use to
-  *	indicate that it supports multiple active scheduled scan requests.
-@@ -5761,6 +5771,10 @@ enum nl80211_feature_flags {
-  * @NL80211_EXT_FEATURE_CONTROL_PORT_OVER_NL80211_TX_STATUS: The driver
-  *	can report tx status for control port over nl80211 tx operations.
-  *
-+ * @NL80211_EXT_FEATURE_4WAY_HANDSHAKE_AP_PSK: Device wants to do 4-way
-+ *	handshake with PSK in AP mode (PSK is passed as part of the start AP
-+ *	command).
-+ *
-  * @NUM_NL80211_EXT_FEATURES: number of extended features.
-  * @MAX_NL80211_EXT_FEATURES: highest extended feature index.
-  */
-@@ -5816,6 +5830,7 @@ enum nl80211_ext_feature_index {
- 	NL80211_EXT_FEATURE_BEACON_PROTECTION_CLIENT,
- 	NL80211_EXT_FEATURE_SCAN_FREQ_KHZ,
- 	NL80211_EXT_FEATURE_CONTROL_PORT_OVER_NL80211_TX_STATUS,
-+	NL80211_EXT_FEATURE_4WAY_HANDSHAKE_AP_PSK,
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+index a757abd7a599..002c355d2e38 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+@@ -4673,6 +4673,8 @@ brcmf_cfg80211_start_ap(struct wiphy *wiphy, struct net_device *ndev,
+ 	struct brcmf_cfg80211_info *cfg = wiphy_to_cfg(wiphy);
+ 	struct brcmf_if *ifp = netdev_priv(ndev);
+ 	struct brcmf_pub *drvr = cfg->pub;
++	struct brcmf_cfg80211_profile *profile = &ifp->vif->profile;
++	struct cfg80211_crypto_settings *crypto = &settings->crypto;
+ 	const struct brcmf_tlv *ssid_ie;
+ 	const struct brcmf_tlv *country_ie;
+ 	struct brcmf_ssid_le ssid_le;
+@@ -4812,6 +4814,17 @@ brcmf_cfg80211_start_ap(struct wiphy *wiphy, struct net_device *ndev,
+ 			goto exit;
+ 		}
  
- 	/* add new features before the definition below */
- 	NUM_NL80211_EXT_FEATURES,
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 22c4d13e28cb..004c79338f31 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -9407,7 +9407,9 @@ static int nl80211_crypto_settings(struct cfg80211_registered_device *rdev,
- 		if (nla_len(info->attrs[NL80211_ATTR_PMK]) != WLAN_PMK_LEN)
- 			return -EINVAL;
- 		if (!wiphy_ext_feature_isset(&rdev->wiphy,
--					     NL80211_EXT_FEATURE_4WAY_HANDSHAKE_STA_PSK))
-+					     NL80211_EXT_FEATURE_4WAY_HANDSHAKE_STA_PSK) &&
-+		    !wiphy_ext_feature_isset(&rdev->wiphy,
-+					     NL80211_EXT_FEATURE_4WAY_HANDSHAKE_AP_PSK))
- 			return -EINVAL;
- 		settings->psk = nla_data(info->attrs[NL80211_ATTR_PMK]);
++		if (crypto->psk) {
++			brcmf_dbg(INFO, "using PSK offload\n");
++			profile->use_fwauth |= BIT(BRCMF_PROFILE_FWAUTH_PSK);
++			err = brcmf_set_pmk(ifp, crypto->psk,
++					    BRCMF_WSEC_MAX_PSK_LEN);
++			if (err < 0)
++				goto exit;
++		}
++		if (profile->use_fwauth == 0)
++			profile->use_fwauth = BIT(BRCMF_PROFILE_FWAUTH_NONE);
++
+ 		err = brcmf_parse_configure_security(ifp, settings,
+ 						     NL80211_IFTYPE_AP);
+ 		if (err < 0) {
+@@ -4896,6 +4909,7 @@ static int brcmf_cfg80211_stop_ap(struct wiphy *wiphy, struct net_device *ndev)
+ 	struct brcmf_cfg80211_info *cfg = wiphy_to_cfg(wiphy);
+ 	struct brcmf_if *ifp = netdev_priv(ndev);
+ 	struct brcmf_pub *drvr = cfg->pub;
++	struct brcmf_cfg80211_profile *profile = &ifp->vif->profile;
+ 	s32 err;
+ 	struct brcmf_fil_bss_enable_le bss_enable;
+ 	struct brcmf_join_params join_params;
+@@ -4907,6 +4921,12 @@ static int brcmf_cfg80211_stop_ap(struct wiphy *wiphy, struct net_device *ndev)
+ 		/* first to make sure they get processed by fw. */
+ 		msleep(400);
+ 
++		if (profile->use_fwauth != BIT(BRCMF_PROFILE_FWAUTH_NONE)) {
++			if (profile->use_fwauth & BIT(BRCMF_PROFILE_FWAUTH_PSK))
++				brcmf_set_pmk(ifp, NULL, 0);
++			profile->use_fwauth = BIT(BRCMF_PROFILE_FWAUTH_NONE);
++		}
++
+ 		if (ifp->vif->mbss) {
+ 			err = brcmf_fil_cmd_int_set(ifp, BRCMF_C_DOWN, 1);
+ 			return err;
+@@ -7046,6 +7066,9 @@ static int brcmf_setup_wiphy(struct wiphy *wiphy, struct brcmf_if *ifp)
+ 			wiphy_ext_feature_set(wiphy,
+ 					      NL80211_EXT_FEATURE_SAE_OFFLOAD);
  	}
++	if (brcmf_feat_is_enabled(ifp, BRCMF_FEAT_FWAUTH))
++		wiphy_ext_feature_set(wiphy,
++				      NL80211_EXT_FEATURE_4WAY_HANDSHAKE_AP_PSK);
+ 	wiphy->mgmt_stypes = brcmf_txrx_stypes;
+ 	wiphy->max_remain_on_channel_duration = 5000;
+ 	if (brcmf_feat_is_enabled(ifp, BRCMF_FEAT_PNO)) {
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.h b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.h
+index 333fdf394f95..bf86e0ca941e 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.h
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.h
+@@ -128,6 +128,17 @@ enum brcmf_profile_fwsup {
+ 	BRCMF_PROFILE_FWSUP_SAE
+ };
+ 
++/**
++ * enum brcmf_profile_fwauth - firmware authenticator profile
++ *
++ * @BRCMF_PROFILE_FWAUTH_NONE: no firmware authenticator
++ * @BRCMF_PROFILE_FWAUTH_PSK: authenticator for WPA/WPA2-PSK
++ */
++enum brcmf_profile_fwauth {
++	BRCMF_PROFILE_FWAUTH_NONE,
++	BRCMF_PROFILE_FWAUTH_PSK
++};
++
+ /**
+  * struct brcmf_cfg80211_profile - profile information.
+  *
+@@ -140,6 +151,7 @@ struct brcmf_cfg80211_profile {
+ 	struct brcmf_cfg80211_security sec;
+ 	struct brcmf_wsec_key key[BRCMF_MAX_DEFAULT_KEYS];
+ 	enum brcmf_profile_fwsup use_fwsup;
++	u16 use_fwauth;
+ 	bool is_ft;
+ };
+ 
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/feature.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/feature.c
+index 0dcefbd0c000..7c68d9849324 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/feature.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/feature.c
+@@ -42,6 +42,7 @@ static const struct brcmf_feat_fwcap brcmf_fwcap_map[] = {
+ 	{ BRCMF_FEAT_MONITOR_FMT_RADIOTAP, "rtap" },
+ 	{ BRCMF_FEAT_DOT11H, "802.11h" },
+ 	{ BRCMF_FEAT_SAE, "sae" },
++	{ BRCMF_FEAT_FWAUTH, "idauth" },
+ };
+ 
+ #ifdef DEBUG
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/feature.h b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/feature.h
+index cda3fc1bab7f..d1f4257af696 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/feature.h
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/feature.h
+@@ -28,6 +28,7 @@
+  * MONITOR_FMT_HW_RX_HDR: firmware provides monitor packets with hw/ucode header
+  * DOT11H: firmware supports 802.11h
+  * SAE: simultaneous authentication of equals
++ * FWAUTH: Firmware authenticator
+  */
+ #define BRCMF_FEAT_LIST \
+ 	BRCMF_FEAT_DEF(MBSS) \
+@@ -49,7 +50,8 @@
+ 	BRCMF_FEAT_DEF(MONITOR_FMT_RADIOTAP) \
+ 	BRCMF_FEAT_DEF(MONITOR_FMT_HW_RX_HDR) \
+ 	BRCMF_FEAT_DEF(DOT11H) \
+-	BRCMF_FEAT_DEF(SAE)
++	BRCMF_FEAT_DEF(SAE) \
++	BRCMF_FEAT_DEF(FWAUTH)
+ 
+ /*
+  * Quirks:
 -- 
 2.25.0
 
