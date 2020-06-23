@@ -2,111 +2,144 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 81823205A4F
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jun 2020 20:10:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C27ED205AAD
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jun 2020 20:30:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733059AbgFWSKe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 23 Jun 2020 14:10:34 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:38060 "EHLO
-        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1728916AbgFWSKe (ORCPT
+        id S2387568AbgFWS3w (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 23 Jun 2020 14:29:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35244 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387553AbgFWS3t (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 23 Jun 2020 14:10:34 -0400
-Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa.ger.corp.intel.com)
-        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.93)
-        (envelope-from <luca@coelho.fi>)
-        id 1jnnNP-001DUk-8a; Tue, 23 Jun 2020 21:10:31 +0300
-From:   Luca Coelho <luca@coelho.fi>
-To:     johannes@sipsolutions.net
-Cc:     linux-wireless@vger.kernel.org
-Date:   Tue, 23 Jun 2020 21:10:29 +0300
-Message-Id: <iwlwifi.20200623211013.df306f28bb0f.Ib56a98fa55090cc2d9952463f2c292a0a101f3cb@changeid>
-X-Mailer: git-send-email 2.27.0
+        Tue, 23 Jun 2020 14:29:49 -0400
+Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com [IPv6:2607:f8b0:4864:20::1043])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 315D9C061796
+        for <linux-wireless@vger.kernel.org>; Tue, 23 Jun 2020 11:29:49 -0700 (PDT)
+Received: by mail-pj1-x1043.google.com with SMTP id jz3so1844150pjb.0
+        for <linux-wireless@vger.kernel.org>; Tue, 23 Jun 2020 11:29:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=JXkDSAr5/uPdypFT+vPhb9QM0XECCw1QogkIjza9trI=;
+        b=VRPOqKgXBbe1omCau4oEOar/p3bhX1hnmkDK5oo6kzWoboZd6SthW3HQ/fnF48E5Ad
+         TFy6wVC1Zt0tVzcHOtTOw47hdeOauaMgmaZ6zltDMfNdLob+S/bzF8RmsABX4aqnrS72
+         FqSw42FCWi78K/1FW37NBnAtRs40JSIujuQZ/C35kNhgObkKHAK+mu644bPs+DnywUvm
+         fYYXdKXmrR/Epl78LsQPaZhh4kpgqCqvEbEKQBq3LNEoOjFO3Gb/VXUTw5HcjdoODVkn
+         jAQBGKwdodjJ4m51Dq2h17KJmJpx4MvyUs2jS+Pi8XwYstLDwRvgem5B+kNI/TaA60cZ
+         bdTA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=JXkDSAr5/uPdypFT+vPhb9QM0XECCw1QogkIjza9trI=;
+        b=hAOS/2SaYtOtWtGfmlYUtvD1/nRFnJeNVRMGYdfUWjv0Gf7cg+0tJ5wBcf/dZIYTg7
+         0ZeioHbA3fuwvL6EE1PqDL9GkOyCca0Tbo9bC2jIpYnr/gEd4BJkQrytO4bBBcsLqFDm
+         Sa4gsu16n8EvZPOWflY8YmDGVc6B/xVhuto7XqEOuWNtIq7h8b6EltjMkwxzAFiUbZ+x
+         ISBa4nLyOLyvxHJn+a9d9/P3MVKkNi3z8xRI1CK5UsgjZcWBf8pa5CKKaP+ZX3l1Sfmw
+         taHU9HZq/FMirL7EyslUFFH0EsVByIfXAgE1DtZVy+aOSEqkNdwgZXeeGeNovZqcVU8Q
+         edeA==
+X-Gm-Message-State: AOAM530vd3KPlK7JHjBOEC0VWOIkJk6VggAElC0h6sSZuhUctuQjfkg2
+        lM92jZNrt6/HYlmwMB7cgRreHcxPUBxpT8Ar7+Iw6g==
+X-Google-Smtp-Source: ABdhPJwFYRuJg9EUbjSytVc+yfQjuDOMjwE4SVCIBy3rni20OvAXlm0XdI+2Z8txK6JARtyDXhDgAzhgcWbhIpdXKAY=
+X-Received: by 2002:a17:902:fe8b:: with SMTP id x11mr24842368plm.179.1592936988375;
+ Tue, 23 Jun 2020 11:29:48 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on farmhouse.coelho.fi
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
-        TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.4
-Subject: [PATCH] cfg80211: flush scan entries upon suspend
+References: <20200620033007.1444705-1-keescook@chromium.org>
+ <20200620033007.1444705-5-keescook@chromium.org> <CAKwvOdmsXuqx-3Rt_KNFq4psAeFjG2-7qQaqkJ7dDqqmscUFNw@mail.gmail.com>
+ <202006221403.EEAD37E94B@keescook>
+In-Reply-To: <202006221403.EEAD37E94B@keescook>
+From:   Nick Desaulniers <ndesaulniers@google.com>
+Date:   Tue, 23 Jun 2020 11:29:38 -0700
+Message-ID: <CAKwvOdmr0dmC7UtL9Qcgm9Ue_Q2mhKzYiHcXpaB=LpMKpYeYqA@mail.gmail.com>
+Subject: Re: [PATCH v2 04/16] b43: Remove uninitialized_var() usage
+To:     Kees Cook <keescook@chromium.org>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+        Alexander Potapenko <glider@google.com>,
+        Joe Perches <joe@perches.com>,
+        Andy Whitcroft <apw@canonical.com>,
+        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
+        drbd-dev@lists.linbit.com, linux-block@vger.kernel.org,
+        b43-dev@lists.infradead.org,
+        Network Development <netdev@vger.kernel.org>,
+        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        linux-ide@vger.kernel.org, linux-clk@vger.kernel.org,
+        linux-spi@vger.kernel.org,
+        Linux Memory Management List <linux-mm@kvack.org>,
+        clang-built-linux <clang-built-linux@googlegroups.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+On Mon, Jun 22, 2020 at 2:04 PM Kees Cook <keescook@chromium.org> wrote:
+>
+> On Mon, Jun 22, 2020 at 10:04:18AM -0700, Nick Desaulniers wrote:
+> > On Fri, Jun 19, 2020 at 8:30 PM Kees Cook <keescook@chromium.org> wrote:
+> > >
+> > > Using uninitialized_var() is dangerous as it papers over real bugs[1]
+> > > (or can in the future), and suppresses unrelated compiler warnings (e.g.
+> > > "unused variable"). If the compiler thinks it is uninitialized, either
+> > > simply initialize the variable or make compiler changes. As a precursor
+> > > to removing[2] this[3] macro[4], just initialize this variable to NULL.
+> > > No later NULL deref is possible due to the early returns outside of the
+> > > (phy->rev >= 7 && phy->rev < 19) case, which explicitly tests for NULL.
+> > >
+> > > [1] https://lore.kernel.org/lkml/20200603174714.192027-1-glider@google.com/
+> > > [2] https://lore.kernel.org/lkml/CA+55aFw+Vbj0i=1TGqCR5vQkCzWJ0QxK6CernOU6eedsudAixw@mail.gmail.com/
+> > > [3] https://lore.kernel.org/lkml/CA+55aFwgbgqhbp1fkxvRKEpzyR5J8n1vKT1VZdz9knmPuXhOeg@mail.gmail.com/
+> > > [4] https://lore.kernel.org/lkml/CA+55aFz2500WfbKXAx8s67wrm9=yVJu65TpLgN_ybYNv0VEOKA@mail.gmail.com/
+> > >
+> > > Fixes: 58619b14d106 ("b43: move under broadcom vendor directory")
+> > > Signed-off-by: Kees Cook <keescook@chromium.org>
+> >
+> > I see three total uses of uninitialized_var() in this file, do we want
+> > to eliminate all of them?
+>
+> This is the only one that needed an explicit initialization -- all the
+> others are handled in the treewide patch. I *could* split it out here,
+> but I found it easier to keep the "no op" changes together in the
+> treewide patch.
 
-When we suspend, we can't really remember our BSS table.
-Purge all the data.
-Export this function to allow driver to purge the BSS table
-in case they feel the need to.
-iwlwifi will need to do that.
+Ah, got it.
+Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
 
-Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
----
- include/net/cfg80211.h |  6 ++++++
- net/wireless/scan.c    | 10 ++++++++++
- net/wireless/sysfs.c   |  2 ++
- 3 files changed, 18 insertions(+)
+>
+> -Kees
+>
+> >
+> > > ---
+> > >  drivers/net/wireless/broadcom/b43/phy_n.c | 2 +-
+> > >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > >
+> > > diff --git a/drivers/net/wireless/broadcom/b43/phy_n.c b/drivers/net/wireless/broadcom/b43/phy_n.c
+> > > index c33b4235839d..46db91846007 100644
+> > > --- a/drivers/net/wireless/broadcom/b43/phy_n.c
+> > > +++ b/drivers/net/wireless/broadcom/b43/phy_n.c
+> > > @@ -4222,7 +4222,7 @@ static void b43_nphy_tx_gain_table_upload(struct b43_wldev *dev)
+> > >         u32 rfpwr_offset;
+> > >         u8 pga_gain, pad_gain;
+> > >         int i;
+> > > -       const s16 *uninitialized_var(rf_pwr_offset_table);
+> > > +       const s16 *rf_pwr_offset_table = NULL;
+> > >
+> > >         table = b43_nphy_get_tx_gain_table(dev);
+> > >         if (!table)
+> > > --
+> >
+> > --
+> > Thanks,
+> > ~Nick Desaulniers
+>
+> --
+> Kees Cook
 
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index fc7e8807838d..03a72b5b1986 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -7882,4 +7882,10 @@ void cfg80211_update_owe_info_event(struct net_device *netdev,
- 				    struct cfg80211_update_owe_info *owe_info,
- 				    gfp_t gfp);
- 
-+/**
-+ * cfg80211_bss_flush - resets all the scan entries
-+ * @wiphy: the wiphy
-+ */
-+void cfg80211_bss_flush(struct wiphy *wiphy);
-+
- #endif /* __NET_CFG80211_H */
-diff --git a/net/wireless/scan.c b/net/wireless/scan.c
-index 74ea4cfb39fb..e67a74488bbe 100644
---- a/net/wireless/scan.c
-+++ b/net/wireless/scan.c
-@@ -712,6 +712,16 @@ void cfg80211_bss_expire(struct cfg80211_registered_device *rdev)
- 	__cfg80211_bss_expire(rdev, jiffies - IEEE80211_SCAN_RESULT_EXPIRE);
- }
- 
-+void cfg80211_bss_flush(struct wiphy *wiphy)
-+{
-+	struct cfg80211_registered_device *rdev = wiphy_to_rdev(wiphy);
-+
-+	spin_lock_bh(&rdev->bss_lock);
-+	__cfg80211_bss_expire(rdev, jiffies);
-+	spin_unlock_bh(&rdev->bss_lock);
-+}
-+EXPORT_SYMBOL(cfg80211_bss_flush);
-+
- const struct element *
- cfg80211_find_elem_match(u8 eid, const u8 *ies, unsigned int len,
- 			 const u8 *match, unsigned int match_len,
-diff --git a/net/wireless/sysfs.c b/net/wireless/sysfs.c
-index 3ac1f48195d2..b670f0d78621 100644
---- a/net/wireless/sysfs.c
-+++ b/net/wireless/sysfs.c
-@@ -5,6 +5,7 @@
-  *
-  * Copyright 2005-2006	Jiri Benc <jbenc@suse.cz>
-  * Copyright 2006	Johannes Berg <johannes@sipsolutions.net>
-+ * Copyright (C) 2020 Intel Corporation
-  */
- 
- #include <linux/device.h>
-@@ -107,6 +108,7 @@ static int wiphy_suspend(struct device *dev)
- 	if (rdev->wiphy.registered) {
- 		if (!rdev->wiphy.wowlan_config) {
- 			cfg80211_leave_all(rdev);
-+			cfg80211_bss_flush(&rdev->wiphy);
- 			cfg80211_process_rdev_events(rdev);
- 		}
- 		if (rdev->ops->suspend)
+
+
 -- 
-2.27.0
-
+Thanks,
+~Nick Desaulniers
