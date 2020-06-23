@@ -2,33 +2,33 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BC99F2061E8
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jun 2020 23:08:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0FF332066AD
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jun 2020 23:57:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390574AbgFWUwN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 23 Jun 2020 16:52:13 -0400
-Received: from mail29.static.mailgun.info ([104.130.122.29]:45670 "EHLO
+        id S2387732AbgFWVyX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 23 Jun 2020 17:54:23 -0400
+Received: from mail29.static.mailgun.info ([104.130.122.29]:64783 "EHLO
         mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S2393070AbgFWUv7 (ORCPT
+        by vger.kernel.org with ESMTP id S2387455AbgFWVyW (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 23 Jun 2020 16:51:59 -0400
+        Tue, 23 Jun 2020 17:54:22 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1592945518; h=Message-ID: References: In-Reply-To: Subject:
+ s=smtp; t=1592949261; h=Message-ID: References: In-Reply-To: Subject:
  Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
- MIME-Version: Sender; bh=ZmkXUlY8cyLxTT+878JrMSAsx3hdPOgukBaH7B1+iGk=;
- b=GMEmsSyg04YFyYK7LBJJlLebiHvIfIvJq4uci4eX/A9TSwXHJwNURuuuqs0Ges2yp4ilu17j
- dtLxsDp8PsYGNpvVGfYU/JsC9MIJ7KL1dHuCA2ixWJO2hqrUVzRzqV/G5R/jIWZSHNfwZYFZ
- xdAd3hnoyJxETjv1nQP20txB5MM=
+ MIME-Version: Sender; bh=47OjbNY3nzvkQNlJtmdRn4i+/sZyWINPrykpi02PoMw=;
+ b=dEekktLYPHM/eN7mt2+xyXEGlOzmUcg5yBpnRkWkt7S6OWu+Zt7qSBvgc3bHsJQO7eTJ6zkO
+ Hh6rBeQA9gF14cnX8Bxw6YsCCC4hhth/5e1WHizQ0QFyLbbfyxtTF7b/ITwCbxTqgUK5FC7M
+ zb+P5KEQCjLLoK7XsDgGXehAFf8=
 X-Mailgun-Sending-Ip: 104.130.122.29
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n05.prod.us-east-1.postgun.com with SMTP id
- 5ef26b6dbfb34e631c7ede23 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 23 Jun 2020 20:51:57
+ smtp-out-n08.prod.us-west-2.postgun.com with SMTP id
+ 5ef279f25866879c76f89bf4 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 23 Jun 2020 21:53:54
  GMT
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id CF086C43395; Tue, 23 Jun 2020 20:51:56 +0000 (UTC)
+        id 54F8AC43391; Tue, 23 Jun 2020 21:53:54 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -38,21 +38,22 @@ Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
         (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: rmanohar)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 37D3CC433C6;
-        Tue, 23 Jun 2020 20:51:55 +0000 (UTC)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id E38DDC433C6;
+        Tue, 23 Jun 2020 21:53:53 +0000 (UTC)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII;
  format=flowed
 Content-Transfer-Encoding: 7bit
-Date:   Tue, 23 Jun 2020 13:51:55 -0700
+Date:   Tue, 23 Jun 2020 14:53:53 -0700
 From:   Rajkumar Manoharan <rmanohar@codeaurora.org>
-To:     P Praneesh <ppranees@codeaurora.org>
-Cc:     johannes@sipsolutions.net, linux-wireless@vger.kernel.org,
-        linux-wireless-owner@vger.kernel.org
-Subject: Re: [PATCH] mac80211: avoid bss color setting in non-he mode
-In-Reply-To: <1592383348-19266-1-git-send-email-ppranees@codeaurora.org>
-References: <1592383348-19266-1-git-send-email-ppranees@codeaurora.org>
-Message-ID: <11461228fd45ffeb89cbd5e532d6386d@codeaurora.org>
+To:     John Crispin <john@phrozen.org>
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless@vger.kernel.org, ath11k@lists.infradead.org
+Subject: Re: [PATCH 3/3] ath11k: add support for BSS coloring
+In-Reply-To: <20200617150021.4183253-3-john@phrozen.org>
+References: <20200617150021.4183253-1-john@phrozen.org>
+ <20200617150021.4183253-3-john@phrozen.org>
+Message-ID: <9597d58917d651655e51ba313b69d0c4@codeaurora.org>
 X-Sender: rmanohar@codeaurora.org
 User-Agent: Roundcube Webmail/1.3.9
 Sender: linux-wireless-owner@vger.kernel.org
@@ -60,47 +61,51 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2020-06-17 01:42, P Praneesh wrote:
-> Adding bss-color configuration for HE mode alone.
-> Earlier we have enabled it by default, irrespective
-> of capabilities. But bss-color feature is only for
-> HE mode. Hence avoiding this by adding bss-color flag
-> only for HE mode.
+On 2020-06-17 08:00, John Crispin wrote:
+> Whenever the MAC detects a color collision or any of its associated 
+> station
+> detects one the FW will send out an event. Add the code to parse and 
+> handle
+> this event. and pass the data up to mac80211.
 > 
-> Signed-off-by: P Praneesh <ppranees@codeaurora.org>
-> ---
->  net/mac80211/cfg.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+> The FW does not provide an offload future such as the one used for CSA. 
+> The
+> CCA process is hence triggered via the beacon offload tx completion 
+> events
+> sent out by the FW.
 > 
-> diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-> index 548a384..2c5847d 100644
-> --- a/net/mac80211/cfg.c
-> +++ b/net/mac80211/cfg.c
-> @@ -992,8 +992,7 @@ static int ieee80211_start_ap(struct wiphy *wiphy,
-> struct net_device *dev,
->  		      BSS_CHANGED_P2P_PS |
->  		      BSS_CHANGED_TXPOWER |
->  		      BSS_CHANGED_TWT |
-> -		      BSS_CHANGED_HE_OBSS_PD |
-> -		      BSS_CHANGED_HE_BSS_COLOR;
-> +		      BSS_CHANGED_HE_OBSS_PD;
+[...]
+> +static void
+> +ath11k_wmi_obss_color_collision_event(struct ath11k_base *ab, struct
+> sk_buff *skb)
+> +{
+> +	const void **tb;
+> +	const struct wmi_obss_color_collision_event *ev;
+> +	struct ath11k_vif *arvif;
+> +	int ret;
+> +
+> +	tb = ath11k_wmi_tlv_parse_alloc(ab, skb->data, skb->len, GFP_ATOMIC);
+> +	if (IS_ERR(tb)) {
+> +		ret = PTR_ERR(tb);
+> +		ath11k_warn(ab, "failed to parse tlv: %d\n", ret);
+> +		return;
+> +	}
+> +
+> +	ev = tb[WMI_TAG_OBSS_COLOR_COLLISION_EVT];
+> +	if (!ev) {
+> +		ath11k_warn(ab, "failed to fetch obss color collision ev");
+> +		goto exit;
+> +	}
+> +
+> +	arvif = ath11k_mac_get_arvif_by_vdev_id(ab, ev->vdev_id);
+> +	switch (ev->evt_type) {
+> +	case WMI_BSS_COLOR_COLLISION_DETECTION:
+> +		break;
+> +	case WMI_BSS_COLOR_COLLISION_DISABLE:
+> +	case WMI_BSS_COLOR_FREE_SLOT_TIMER_EXPIRY:
+> +	case WMI_BSS_COLOR_FREE_SLOT_AVAILABLE:
+> +		return;
 > 
-Why not other HE flags?
-
->  	int i, err;
->  	int prev_beacon_int;
-> 
-> @@ -1019,6 +1018,7 @@ static int ieee80211_start_ap(struct wiphy
-> *wiphy, struct net_device *dev,
->  		sdata->vif.bss_conf.frame_time_rts_th =
->  			le32_get_bits(params->he_oper->he_oper_params,
->  			      IEEE80211_HE_OPERATION_RTS_THRESHOLD_MASK);
-> +		changed |= BSS_CHANGED_HE_BSS_COLOR;
-> 
-Praneesh,
-
-I see that BSS color is not disabled when NL80211_ATTR_HE_BSS_COLOR is 
-not set.
-I think this must be fixed in cfg80211.
+tb should be freed here.
 
 -Rajkumar
