@@ -2,55 +2,58 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 91DC2204D95
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jun 2020 11:11:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F0EE4204DC3
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jun 2020 11:20:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731965AbgFWJLe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 23 Jun 2020 05:11:34 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:43526 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731941AbgFWJLe (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 23 Jun 2020 05:11:34 -0400
+        id S1732089AbgFWJU6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 23 Jun 2020 05:20:58 -0400
+Received: from mail29.static.mailgun.info ([104.130.122.29]:19340 "EHLO
+        mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1731938AbgFWJU6 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 23 Jun 2020 05:20:58 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1592903493; h=Content-Type: MIME-Version: Message-ID:
+ s=smtp; t=1592904057; h=Content-Type: MIME-Version: Message-ID:
  In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=URJMAy2kMHYmo7L30NLkdmxA75Vd5batIlRwsEao3Ks=; b=AB1fLba1mSzYFWOvlzHn7iHgVob/yv4WoXgz4qUgYR6ZulkKQBLteMVC24VJQ3+jg19oxoD2
- wODMjR2SS4q8KogKdiBZv7fpIw0QNthLxtHob42vOdjlHz4VLqzjeoxD3RebZ4MSM5GY9pBu
- r0T/vGWYjQD2DHzZzCYmPfcPmDY=
-X-Mailgun-Sending-Ip: 69.72.43.7
+ bh=4pK2GVfsk9GrjgEBOBXaz11LGQLDCrNuIsbj/wlPZBk=; b=nUFWLILLCdZ0ks7tuANuF8znutme1GWBwSaw09feolQj5pf+6wuYGf+Ds9Lm00RMFtXc+IdI
+ 5LlXzQAYlvsr5pz+Plly1ONZOUp/DGJW5UE/yTkG2Fr9zpJpbPr0DSljyiZj4XWcCTAkzZd2
+ zV1uEogXE/e/CUEvB///c+Vx/DM=
+X-Mailgun-Sending-Ip: 104.130.122.29
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n02.prod.us-west-2.postgun.com with SMTP id
- 5ef1c7426f2ee827dae3aab3 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 23 Jun 2020 09:11:30
+ smtp-out-n06.prod.us-west-2.postgun.com with SMTP id
+ 5ef1c9745866879c7685158b (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 23 Jun 2020 09:20:52
  GMT
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id EC6C9C433CB; Tue, 23 Jun 2020 09:11:29 +0000 (UTC)
+        id 3CC77C43395; Tue, 23 Jun 2020 09:20:52 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE,
+        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from tynnyri.adurom.net (tynnyri.adurom.net [51.15.11.48])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id E8C42C433C8;
-        Tue, 23 Jun 2020 09:11:27 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org E8C42C433C8
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 907CCC433CA;
+        Tue, 23 Jun 2020 09:20:50 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 907CCC433CA
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Felix Fietkau <nbd@nbd.name>
-Cc:     linux-wireless@vger.kernel.org, shayne.chen@mediatek.com,
-        evelyn.tsai@mediatek.com, devicetree@vger.kernel.org
-Subject: Re: [PATCH v2 1/4] dt-bindings: net: wireless: mt76: add power-limits node
-References: <20200616192544.97938-1-nbd@nbd.name>
-Date:   Tue, 23 Jun 2020 12:11:25 +0300
-In-Reply-To: <20200616192544.97938-1-nbd@nbd.name> (Felix Fietkau's message of
-        "Tue, 16 Jun 2020 21:25:41 +0200")
-Message-ID: <87o8padu4i.fsf@tynnyri.adurom.net>
+To:     Larry Finger <Larry.Finger@lwfinger.net>
+Cc:     Reto Schneider <code@reto-schneider.ch>,
+        linux-wireless@vger.kernel.org
+Subject: Re: [PATCH 1/3] rtl8192cu: Fix deadlock
+References: <20200622132113.14508-1-code@reto-schneider.ch>
+        <20200622132113.14508-2-code@reto-schneider.ch>
+        <6f1000a0-7a0a-36c9-21a3-1ea39175d051@lwfinger.net>
+Date:   Tue, 23 Jun 2020 12:20:46 +0300
+In-Reply-To: <6f1000a0-7a0a-36c9-21a3-1ea39175d051@lwfinger.net> (Larry
+        Finger's message of "Mon, 22 Jun 2020 13:01:26 -0500")
+Message-ID: <87k0zydtox.fsf@tynnyri.adurom.net>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -59,18 +62,29 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Felix Fietkau <nbd@nbd.name> writes:
+Larry Finger <Larry.Finger@lwfinger.net> writes:
 
-> This subnode can be used to set per-rate tx power limits either per
-> country code / regdomain or globally.
-> These limits are typically provided by the device manufacturers and are
-> used to limit sideband emissions and stay within regulatory limits
+> On 6/22/20 8:21 AM, Reto Schneider wrote:
+>> Prevent code from calling itself indirectly, causing the driver to hang
+>> and consume 100% CPU.
+>>
+>> Without this fix, the following script can bring down a single CPU
+>> system:
+>> ```
+>> while true; do
+>>    rmmod rtl8192cu
+>>    modprobe rtl8192cu
+>> done
+>> ```
+>>
+>> Signed-off-by: Reto Schneider <code@reto-schneider.ch>
 >
-> Co-developed-by: Shayne Chen <shayne.chen@mediatek.com>
-> Signed-off-by: Felix Fietkau <nbd@nbd.name>
-> Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+> I have one small comment. Patches for the rtlwifi family of drivers
+> have patch subjects of the form [PATCH] rtlwifi: rtl8192cu: blah blah.
+> I'll let Kalle decide if he wants ignore my comment, manually change
+> the subjects, or request a V2. Otherwise all 3 patches are OK.
 
-I think Shayne's s-o-b should follow the Co-developed-by line.
+I can fix the titles during commit.
 
 -- 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
