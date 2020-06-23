@@ -2,63 +2,111 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 39AC720589C
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jun 2020 19:28:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 81823205A4F
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jun 2020 20:10:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733007AbgFWR2h (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 23 Jun 2020 13:28:37 -0400
-Received: from mon2.sibername.com ([162.144.51.228]:49438 "EHLO
-        mon1.sibername.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1732961AbgFWR2h (ORCPT
+        id S1733059AbgFWSKe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 23 Jun 2020 14:10:34 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:38060 "EHLO
+        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1728916AbgFWSKe (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 23 Jun 2020 13:28:37 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lockie.ca;
-         s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:MIME-Version
-        :Date:Message-ID:References:To:From:Subject:Sender:Reply-To:Cc:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=SU7jT4/NnGpltqBIuEtiAKft2rvbESTTBk3Y4BhIHvc=; b=gAeS09tV6TR12bTh8bqzpnpx8/
-        RWe8oet7a/JOZ7T6dFBNpM3wW1jQmOtcyLJNuGi9ST6O+BDhIiNQVej5G1kS1rjl4xAGmHgxakej1
-        8gkFYASnUeysfiPsIoYd+qmU8340zRjSiv+a243FcjNP4je922cpHUDtXYDdWVzp+CNWLFTedeSO4
-        neFbRKtInQUf7F3AZxPmXcWB/uVjsYLndUAIkdZ4MyDAIxLoN6QV4SMrSqf8tRRfOk2iLiNDmy41h
-        gbvNXXCamqIgSiLqAWyVhaPjoYMyJEZf6r5tWjyJNZfAXWndXo2NOwDzRIAMzLPzLHq4A1b+PzYmX
-        H4V52Org==;
-Received: from 216-58-17-101.cpe.distributel.net ([216.58.17.101]:59230 helo=[192.168.1.4])
-        by montreal.sibername.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        Tue, 23 Jun 2020 14:10:34 -0400
+Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa.ger.corp.intel.com)
+        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
         (Exim 4.93)
-        (envelope-from <bjlockie@lockie.ca>)
-        id 1jnmij-009p3M-3x
-        for linux-wireless@vger.kernel.org; Tue, 23 Jun 2020 13:28:30 -0400
-Subject: oops
-From:   James <bjlockie@lockie.ca>
-To:     linux-wireless@vger.kernel.org
-References: <1aee86c7-27f2-ee81-9669-8a49aa521dfd@lockie.ca>
-Message-ID: <cb1a711c-e584-74e9-0009-dcf019f8a2b3@lockie.ca>
-Date:   Tue, 23 Jun 2020 13:28:27 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
+        (envelope-from <luca@coelho.fi>)
+        id 1jnnNP-001DUk-8a; Tue, 23 Jun 2020 21:10:31 +0300
+From:   Luca Coelho <luca@coelho.fi>
+To:     johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org
+Date:   Tue, 23 Jun 2020 21:10:29 +0300
+Message-Id: <iwlwifi.20200623211013.df306f28bb0f.Ib56a98fa55090cc2d9952463f2c292a0a101f3cb@changeid>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-In-Reply-To: <1aee86c7-27f2-ee81-9669-8a49aa521dfd@lockie.ca>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-OutGoing-Spam-Status: No, score=-1.0
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - montreal.sibername.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - lockie.ca
-X-Get-Message-Sender-Via: montreal.sibername.com: authenticated_id: rjl@lockie.ca
-X-Authenticated-Sender: montreal.sibername.com: rjl@lockie.ca
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Content-Transfer-Encoding: 8bit
+X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on farmhouse.coelho.fi
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+        TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.4
+Subject: [PATCH] cfg80211: flush scan entries upon suspend
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2020-06-23 1:20 p.m., James wrote:
-> help
-My apologies, that was meant for majordomo.
+From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+
+When we suspend, we can't really remember our BSS table.
+Purge all the data.
+Export this function to allow driver to purge the BSS table
+in case they feel the need to.
+iwlwifi will need to do that.
+
+Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+---
+ include/net/cfg80211.h |  6 ++++++
+ net/wireless/scan.c    | 10 ++++++++++
+ net/wireless/sysfs.c   |  2 ++
+ 3 files changed, 18 insertions(+)
+
+diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+index fc7e8807838d..03a72b5b1986 100644
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -7882,4 +7882,10 @@ void cfg80211_update_owe_info_event(struct net_device *netdev,
+ 				    struct cfg80211_update_owe_info *owe_info,
+ 				    gfp_t gfp);
+ 
++/**
++ * cfg80211_bss_flush - resets all the scan entries
++ * @wiphy: the wiphy
++ */
++void cfg80211_bss_flush(struct wiphy *wiphy);
++
+ #endif /* __NET_CFG80211_H */
+diff --git a/net/wireless/scan.c b/net/wireless/scan.c
+index 74ea4cfb39fb..e67a74488bbe 100644
+--- a/net/wireless/scan.c
++++ b/net/wireless/scan.c
+@@ -712,6 +712,16 @@ void cfg80211_bss_expire(struct cfg80211_registered_device *rdev)
+ 	__cfg80211_bss_expire(rdev, jiffies - IEEE80211_SCAN_RESULT_EXPIRE);
+ }
+ 
++void cfg80211_bss_flush(struct wiphy *wiphy)
++{
++	struct cfg80211_registered_device *rdev = wiphy_to_rdev(wiphy);
++
++	spin_lock_bh(&rdev->bss_lock);
++	__cfg80211_bss_expire(rdev, jiffies);
++	spin_unlock_bh(&rdev->bss_lock);
++}
++EXPORT_SYMBOL(cfg80211_bss_flush);
++
+ const struct element *
+ cfg80211_find_elem_match(u8 eid, const u8 *ies, unsigned int len,
+ 			 const u8 *match, unsigned int match_len,
+diff --git a/net/wireless/sysfs.c b/net/wireless/sysfs.c
+index 3ac1f48195d2..b670f0d78621 100644
+--- a/net/wireless/sysfs.c
++++ b/net/wireless/sysfs.c
+@@ -5,6 +5,7 @@
+  *
+  * Copyright 2005-2006	Jiri Benc <jbenc@suse.cz>
+  * Copyright 2006	Johannes Berg <johannes@sipsolutions.net>
++ * Copyright (C) 2020 Intel Corporation
+  */
+ 
+ #include <linux/device.h>
+@@ -107,6 +108,7 @@ static int wiphy_suspend(struct device *dev)
+ 	if (rdev->wiphy.registered) {
+ 		if (!rdev->wiphy.wowlan_config) {
+ 			cfg80211_leave_all(rdev);
++			cfg80211_bss_flush(&rdev->wiphy);
+ 			cfg80211_process_rdev_events(rdev);
+ 		}
+ 		if (rdev->ops->suspend)
+-- 
+2.27.0
+
