@@ -2,53 +2,53 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 482A0204FCE
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jun 2020 13:00:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D6D90204FD2
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jun 2020 13:00:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732429AbgFWLA2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 23 Jun 2020 07:00:28 -0400
-Received: from esa1.microchip.iphmx.com ([68.232.147.91]:33237 "EHLO
+        id S1732329AbgFWLAe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 23 Jun 2020 07:00:34 -0400
+Received: from esa1.microchip.iphmx.com ([68.232.147.91]:33243 "EHLO
         esa1.microchip.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732371AbgFWLAS (ORCPT
+        with ESMTP id S1732389AbgFWLAR (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 23 Jun 2020 07:00:18 -0400
+        Tue, 23 Jun 2020 07:00:17 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
   d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
   t=1592910017; x=1624446017;
   h=from:to:cc:subject:date:message-id:references:
    in-reply-to:content-transfer-encoding:mime-version;
-  bh=sLr6ccjkyOyWHx/FXXEjry7bMXTgbgdBcXipaFW2rVo=;
-  b=GMYqNVMJ3NzhwcyNgPIpm78Mif9ugtg2rfLzJe08ZhGSDe2KLi+35l4q
-   vmyWmgzhPmeYJK9xFzd0RdADXQupSF2Nx4ChjQzS2ghJhXF5Xc2FeIXLy
-   6kNLW73+3lqQuFvILeo57KEZNt4Xif15EWacG+pXi41q2P4tFIvB+4u6C
-   0mazI1a2Px8WRQdQcSRkdFJnsB61/mPvLp/fzcWkcTo53M65euelp0t7S
-   RoWyt6Ontub4uYNhRoOpuweH5bNB7Po79Pzp8BXVsKK19BN2vB0MXaOFg
-   yJBM3sWIqd5OGiR+CKOsjsnreUxqhUkT43xBwUlwm+bseIteP8qChz/Dx
-   Q==;
-IronPort-SDR: oZZ7dOZvxvugphOKVYi2pwI+5oEyfeyR1SHI3aknaBs+tPnB/CJPwM3fUffpATGL4CyE8fFN7s
- NOt0W1Ns1PZ8678sF81HQEDBFUKOHMuZ9V+58i7QhMKHGkleA6ZRPJizkpnurfEELoMflVa46g
- 3mS4lJdc8Ppabl4gZT6VX2vWj1irrV2NrOeLuUG4kXMDjeodniyQQllaQKUOCw86MiwJ55Evuv
- 4yW7ikHUTXNgTo2J/vzaj2VwWmCijwHy/ghxRaoAF2PXQ0lFpkCJt/bNLrMVhXyk43ms/rs96P
- UxU=
+  bh=VjH23gc3eRUT676f0kgNM8agxiSf56E44Tv6HpqlB78=;
+  b=zgGW5lHXG5GfxmO5woVJWWp+JKBfOWKqR6PyvdIF/DZpNXNU/1k5j0rZ
+   fGBfgPYaNk0fq5EbV5HVwkeNkOCfJy6pEmup6vJyhq3UyvGrOe4KuBCs4
+   WWjrc1b3hp60R3F/j2PlG1TB1ZSxNzspVOHiGDPX7YN/INgTm2L/8rDA8
+   cB4umnuHfCbIQpTmbKQF6T6BlwYsLQwcFlLczmz4hDcyccgU3A8LO4eOo
+   wxb4yam9oSVB4anRNUjRajr85bXXX/25oEjQuM2Tujj2sJgo9fkywIk6Q
+   7oa2ny43bfHSt+ZdCSQmPskztWHs3v2D/08UH1mvv6Lve0ijZM+lOeVNy
+   w==;
+IronPort-SDR: Ay5XfaU5YD0zov+IgOf9+YGHfZyZm8+nfX3xM1i12B4jQnzNAqf+8EF5vagqlnv8H7vs1tiZvf
+ QWuDm715SLQn4hyS88CJrv2ejyk9Bm0k6AAbnbbcTKorSrt/KWvIAOH7oMXo0KmmWh6/eiTDl4
+ GJcax5atFTlVYOWGaD/nuYGQMo5MPMvcWnqr2gqZPSDh3TrJvtYzSYF92FRApdKjdo1pjsbKZY
+ /Edhz3LEhX4KMxSLdtAnrgwmK7zh0VB16HGc+kYbWb4zST+XebicIvKI6aa9JGG0UurJojz2V5
+ F6U=
 X-IronPort-AV: E=Sophos;i="5.75,271,1589266800"; 
-   d="scan'208";a="84732772"
+   d="scan'208";a="84732781"
 Received: from smtpout.microchip.com (HELO email.microchip.com) ([198.175.253.82])
-  by esa1.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 23 Jun 2020 04:00:16 -0700
+  by esa1.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 23 Jun 2020 04:00:17 -0700
 Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
  chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1979.3; Tue, 23 Jun 2020 04:00:16 -0700
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (10.10.215.89) by
+ 15.1.1979.3; Tue, 23 Jun 2020 04:00:17 -0700
+Received: from NAM02-CY1-obe.outbound.protection.outlook.com (10.10.215.89) by
  email.microchip.com (10.10.87.71) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1979.3 via Frontend
- Transport; Tue, 23 Jun 2020 04:00:05 -0700
+ Transport; Tue, 23 Jun 2020 04:00:06 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=cc/XDTCHPZWz2oRyJrIOQVo/O4fsXgE03AXkIOLtpHL32jHlLLtM1FCu3+Lr8NQDFqT7Rg49tA4P3t6406NqLmE1vHFLp07pCxB6RUNOBpjt1S9TudhbiLAZr/2wPVhlgSqyX+NtEoy6PjdqFTytbEkapbMOSLx/jppHzPzzunVqYCLu8mVVI1jQgbiIya57jAu1AdNaTgIGZreEyh+BowDy03TR9/WqJx+Px5/zSskM1rjD81r6c+bZN6X4SifTyuLoZdS/Ivs8OdsYlkCuwH0sEbuUAT7/Ko7hzZcyp/pCl04wZGMQXq9OnaL2gI77t+tYL/t4mXEO8M8rpwJ9gw==
+ b=BJDxEcxs2gRNWq9L3KmjbgELt2SL7cHZwI6eH9Mt0Evf++ahixa+sDOQFRmE+QM8A+N3Rx1CeIFEhI7tHba+JGm10yis/9AdjuHiqJml5ve5FRA77GeYzUX1deGLP7CzoIw1z/nzB4DcdUGO+7QSTPJgvyPnf52bX+V0muqbiIB3YcdDeestXb1C6Od7ZKVmnjTqjA6tonDAzGF2/JuHXFrrTHMs07ZiKxzwCcxv5f50LmTU8xrYecNLXLr0YOCbhxu1aOmwRTascqSmlUQxZy1JcKT1sp0Eiw9G/392breI9lHcGoY093PJD2AVXa/pgTaEaj2gnBfCUJCSbEea8Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=B1CWqNU1H9hc2J0CBVPk5OE7X4CykPUWsjTvFVtm6i4=;
- b=PD9k9xRlYOluHmTh92p1q0h2xRQaGQU2vPnwxmd1wp0LySzPHAOQZ1XhSqdHUGZz8QbLMh3/sTd5kCVqgP7ILiIkoKlhzKu1kpNcpEOKJ9BvCK3CFLcM9+HWcMvfTeIa9k5QwcIAqnWBhJ8CPOIe4j5djQ3gcKg74KDObumIJWJd8qoSrLPBU/CGfZMizVb4OnY+fjhiV1JM8NqtoPx0ZV2LmgnMsE0Ox+ul2qVqe/0vkUBokDWbUjoiIx0ZSfukpGhcWr1/CqOmPm3YQ314fOZmjFSvmY5mT3/ZyYvImyDMRc2k4mJ5HqS1xoSLfFl62cw0KEE9lPvyWUOA55GdkQ==
+ bh=r7yHVCr/Ep9FhqaViwfpyYJod0wMVy9Q1dLiNe4y6cY=;
+ b=kAYVOsVb0kB8LtdwepV+fwZMP0c9zfoTbWmuf95HRLY+yU0pwreqOjTlK0uNdP/vaTbOchgoXUmQL2pPbA88JZyuoggIvDu6eLAWm4LdmzmlKwEzsk1hcLaPOdFcGrGLWFJx/2xDgqiDEZwf9VxfwigjcyVe2m7rfP8uYKuhH93smpBYDjfOkodKNzmzkNVSP/QbHX8o6etE1ozO+L8wcMiK7bz+mN0cau459AOucpHpRoAj+6wplgENsFmCFSuQG56/WuHErh+F8Ll0vhB95bKy2NNCP0vngTT1Rsji3c1DXAGYDEdDmHyZzWxr4k9B7savouAQhx6Qs1Rw6fYrLw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=microchip.com; dmarc=pass action=none
  header.from=microchip.com; dkim=pass header.d=microchip.com; arc=none
@@ -56,28 +56,28 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=microchiptechnology.onmicrosoft.com;
  s=selector2-microchiptechnology-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=B1CWqNU1H9hc2J0CBVPk5OE7X4CykPUWsjTvFVtm6i4=;
- b=FChB2dsGE3M86g0a5HOIGkGg5Kj+iNSxbD+VqKC+xxs4SoAFjS/me58iAOLLlYCuS5YZHthNrJhKJahN5XsbgQ1FCZC/wQcZhVVtB7LrGYwrDAul2mpjrsFfIMdzTb6lHGMHj4UFrdIK7cY8Gb+2Me42MwCYDddHQACouQljbV4=
+ bh=r7yHVCr/Ep9FhqaViwfpyYJod0wMVy9Q1dLiNe4y6cY=;
+ b=cWZ/arrU6qsTlfAP3uFOVL4t+npKMZEQxYOIEMwMrqXUVrkVoat/8Hb3I7Yt9bVHKhlBKpeSTDY2mHAaSEYYljt5+YAyeObT0kmgChIC2Gc1oAMuP9k6+2fYRy3cCRIQW+jsa8BUUPZCeKuTg43gTwQP3KEz8uGoggvyJaU5sf0=
 Received: from MN2PR11MB4030.namprd11.prod.outlook.com (2603:10b6:208:156::32)
  by MN2PR11MB3551.namprd11.prod.outlook.com (2603:10b6:208:ea::12) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3109.22; Tue, 23 Jun
- 2020 11:00:10 +0000
+ 2020 11:00:12 +0000
 Received: from MN2PR11MB4030.namprd11.prod.outlook.com
  ([fe80::3874:6ace:6aec:deed]) by MN2PR11MB4030.namprd11.prod.outlook.com
  ([fe80::3874:6ace:6aec:deed%7]) with mapi id 15.20.3109.027; Tue, 23 Jun 2020
- 11:00:10 +0000
+ 11:00:12 +0000
 From:   <Ajay.Kathat@microchip.com>
 To:     <linux-wireless@vger.kernel.org>
 CC:     <devel@driverdev.osuosl.org>, <gregkh@linuxfoundation.org>,
         <johannes@sipsolutions.net>, <Nicolas.Ferre@microchip.com>,
         <Claudiu.Beznea@microchip.com>, <Sripad.Balwadgi@microchip.com>,
         <Venkateswara.Kaja@microchip.com>, <Ajay.Kathat@microchip.com>
-Subject: [PATCH v7 10/17] wilc1000: add mon.c
-Thread-Topic: [PATCH v7 10/17] wilc1000: add mon.c
-Thread-Index: AQHWSU12OmMqvS2czk2I+YTu+oooRg==
-Date:   Tue, 23 Jun 2020 11:00:10 +0000
-Message-ID: <20200623110000.31559-11-ajay.kathat@microchip.com>
+Subject: [PATCH v7 12/17] wilc1000: add wlan.h
+Thread-Topic: [PATCH v7 12/17] wilc1000: add wlan.h
+Thread-Index: AQHWSU13WpwRHvFrAEmYdpDjIjTHqg==
+Date:   Tue, 23 Jun 2020 11:00:11 +0000
+Message-ID: <20200623110000.31559-13-ajay.kathat@microchip.com>
 References: <20200623110000.31559-1-ajay.kathat@microchip.com>
 In-Reply-To: <20200623110000.31559-1-ajay.kathat@microchip.com>
 Accept-Language: en-US
@@ -90,28 +90,28 @@ authentication-results: vger.kernel.org; dkim=none (message not signed)
  header.from=microchip.com;
 x-originating-ip: [49.207.200.183]
 x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 9d37eeeb-540f-4251-ca32-08d81764993f
+x-ms-office365-filtering-correlation-id: e477c45e-aa96-4b07-9af6-08d8176499fa
 x-ms-traffictypediagnostic: MN2PR11MB3551:
 x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <MN2PR11MB35513AB1DDF0B7C86AC6984FE3940@MN2PR11MB3551.namprd11.prod.outlook.com>
+x-microsoft-antispam-prvs: <MN2PR11MB355185A8D4027429884D7249E3940@MN2PR11MB3551.namprd11.prod.outlook.com>
 x-bypassexternaltag: True
-x-ms-oob-tlc-oobclassifiers: OLM:1284;
+x-ms-oob-tlc-oobclassifiers: OLM:338;
 x-forefront-prvs: 04433051BF
 x-ms-exchange-senderadcheck: 1
 x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: MXpcf5BVCVGP/o0GJJzT4ehC+kM/h/Do+hhNH8eNS1XXdS2Ac14kiIi1uA/NY2qIzRnOAxYyYnwiiYbHcz4Jf7rndokPv7NFV8A5k1qAey1QVr5YTwFP05sEx/vDS334oIZuMgYLfQfD7dDf0vEjr1YIAgZeQptL1KQtBbZzuqa0CoZaDnkwFAqBGdpL9L3b/1/LlyZUwF1QcXhaJmflqi9BUgWHf0Y8DjIJH5CtxZvJQr6QC4rQuQEtlbqL2U1mhX45aG9ape1MK7lh4dDobbnGKW97Y0idnfFXGIo1mR2/W5QWHX0ae7m/A83H0+AMzg4/aH1tN3VTm7h9iIsOMg==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN2PR11MB4030.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(366004)(136003)(346002)(396003)(376002)(39860400002)(8676002)(83380400001)(36756003)(2906002)(186003)(6506007)(86362001)(2616005)(4326008)(107886003)(26005)(6486002)(6916009)(5660300002)(55236004)(1076003)(478600001)(66446008)(66476007)(66556008)(64756008)(91956017)(76116006)(66946007)(6512007)(54906003)(316002)(71200400001)(8936002);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata: 8dtjkLNSwZU3Dj96TAIP09QG00b/st4lw8dIBQqTMXPl52ZG2hKkH6yWcAGaL+khrZFtR2mJqNPcZd4FdO0ovVEG2wkWRJkWYjB7N3Z2ZR5AZFyIE/Fhc2UyszIu8ZFLR4fPra3Y9ab8ckpzBTOoEgjMTO0I1vSqz0ZqXZeIpbC5DTSfpFTmrZc01orkf9+8tQw6/yvVGAKeHA/DfwAIqyjVW5sZyNU1qpXA8srzQUgYuwLb8/FocAKPM896ReFScEjkmru2bYFtgKlcZMzHbriUSOj6eQ/YJqC9pjfv2xTIG+nl9mIc6XoMLl6Px4afyHSpPKxy+TO1JxlSRWYcM17xUiMQ8u1Q0efcRyAOrk8AUNPc9RrqucnZkVjC2/nAaGaHYvaO8pUIKCkcjqQMRLcn7OsfFNx2KGy82hPYwy/osNOlUhb5SCqsHB2vtUSHjcSeQP+RDsDBUsuwZvxuwLy7DRjAiniB0yryOfP/mO7DgtgSxfxe88+xkxj3cG47
+x-microsoft-antispam-message-info: y19ycDDUYrqgBBKLZX6bI2TvRlGljJlfxuAmHLJCXNvLXGD+oKenGkKntFEB3PhhC3DE84ZCMfYTHqpUOFfu9VQZ54xNyraAG/HdTlf8zwNEdZHW/eZigNQsmQxX98RvegBGdgj4ZA49x3LwQ6SSHSetEXxmuxgMR8NV4hjfe95m8NB5frqm/U2Rom9S7t8cFJ0N9fhT06T8yKPXSTuhRMcfDT26gm86EnM3mrVupP6a5QJNVVztHolCZn53n0MoMdf4N7peaiB7vJc715xZ5+Wmnlam8I2//3XgypEjvVAzFo6QF+6xsK0BWNacRS1yRMwqHJpD+ErFhxDGiEnq7w==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN2PR11MB4030.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(366004)(136003)(346002)(396003)(376002)(39860400002)(8676002)(83380400001)(36756003)(2906002)(186003)(6506007)(86362001)(2616005)(4326008)(107886003)(26005)(6486002)(6916009)(5660300002)(55236004)(1076003)(30864003)(478600001)(66446008)(66476007)(66556008)(64756008)(91956017)(76116006)(66946007)(6512007)(54906003)(316002)(71200400001)(8936002);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata: 05+S58lX/7+W+CVEG7FAKjrkYQwUc/XJ2TlS4sFDbhOHe6nA50rna8jMGXqn1KczQrfxDbPoKe9+c6rn3QVI+IqfKkY05hr+s13D8znNul3tLJMuF5YcV91Cy3SlbyTu5I3UBpV5EOuuE9Gd3gq/vmD6zfHlsbN8q8aM0s/8mlu+YhMsDoUQQW2maeE9VdyakTyvhoNW7xyC05aKewoHpbd+YLPReCaoBMBNx7jNxf4S6ikhcaGzE31dJCtoDx/C+lS5vK/T1SkUQBGFrKT1aV/xlaT/nmT0lPu4XZcosPrredlyAdpPgX9aGmwYF5gS+wdf6d1TN0p28TOR08BrwwHMSzcauS7UmJA9bG9Mv0qLfhbUXUYf2GlykzPDuOyT2V+KrET7zenq/fSkADrlYd/VY9U+4sqz//TyIdl2958b+0/twSfdC0L87n9y89onYhpxTFNQjvM7vqipU52R8leQRaXaTYKINJhZOQN/jQjVrCkASq/TJu+puMz8c/24
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9d37eeeb-540f-4251-ca32-08d81764993f
-X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Jun 2020 11:00:10.7018
+X-MS-Exchange-CrossTenant-Network-Message-Id: e477c45e-aa96-4b07-9af6-08d8176499fa
+X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Jun 2020 11:00:11.8952
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 3f4057f3-b418-4d4e-ba84-d55b4e897d88
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 01www6y1nB/b94br+mKk6THuR9g+q8COmJXq3ZA83+BzcxUaBCJ4tpOFJLTumKt74xeuu6sWsgAebTRfh/WAJ6dUSvRYEKxTr55b7NkDGzw=
+X-MS-Exchange-CrossTenant-userprincipalname: ZmzU7wVB2GZ/ReCkik6Vvupq210woTDizstxGLh3ro9cjfOlrGYY6YMWsj2L40nW3dOhfhTa4ZwcAeAujQ8LWSDmCa0IOWc7Gs856kbY92s=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR11MB3551
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
@@ -120,282 +120,423 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Ajay Singh <ajay.kathat@microchip.com>
 
-Moved 'drivers/staging/wilc1000/mon.c' to
-'drivers/net/wireless/microchip/wilc1000/mon.c'.
+Moved 'drivers/staging/wilc1000/wlan.h' to
+'drivers/net/wireless/microchip/wilc1000/wlan.h'.
 
 Signed-off-by: Ajay Singh <ajay.kathat@microchip.com>
 ---
- drivers/net/wireless/microchip/wilc1000/mon.c | 260 ++++++++++++++++++
- 1 file changed, 260 insertions(+)
- create mode 100644 drivers/net/wireless/microchip/wilc1000/mon.c
+ .../net/wireless/microchip/wilc1000/wlan.h    | 397 ++++++++++++++++++
+ 1 file changed, 397 insertions(+)
+ create mode 100644 drivers/net/wireless/microchip/wilc1000/wlan.h
 
-diff --git a/drivers/net/wireless/microchip/wilc1000/mon.c b/drivers/net/wi=
-reless/microchip/wilc1000/mon.c
+diff --git a/drivers/net/wireless/microchip/wilc1000/wlan.h b/drivers/net/w=
+ireless/microchip/wilc1000/wlan.h
 new file mode 100644
-index 000000000000..60331417bd98
+index 000000000000..7689569cd82f
 --- /dev/null
-+++ b/drivers/net/wireless/microchip/wilc1000/mon.c
-@@ -0,0 +1,260 @@
-+// SPDX-License-Identifier: GPL-2.0
++++ b/drivers/net/wireless/microchip/wilc1000/wlan.h
+@@ -0,0 +1,397 @@
++/* SPDX-License-Identifier: GPL-2.0 */
 +/*
 + * Copyright (c) 2012 - 2018 Microchip Technology Inc., and its subsidiari=
 es.
 + * All rights reserved.
 + */
 +
-+#include "cfg80211.h"
++#ifndef WILC_WLAN_H
++#define WILC_WLAN_H
 +
-+struct wilc_wfi_radiotap_hdr {
-+	struct ieee80211_radiotap_header hdr;
-+	u8 rate;
-+} __packed;
++#include <linux/types.h>
++#include <linux/bitfield.h>
 +
-+struct wilc_wfi_radiotap_cb_hdr {
-+	struct ieee80211_radiotap_header hdr;
-+	u8 rate;
-+	u8 dump;
-+	u16 tx_flags;
-+} __packed;
++/********************************************
++ *
++ *      Mac eth header length
++ *
++ ********************************************/
++#define MAX_MAC_HDR_LEN			26 /* QOS_MAC_HDR_LEN */
++#define SUB_MSDU_HEADER_LENGTH		14
++#define SNAP_HDR_LEN			8
++#define ETHERNET_HDR_LEN		14
++#define WORD_ALIGNMENT_PAD		0
 +
-+#define TX_RADIOTAP_PRESENT ((1 << IEEE80211_RADIOTAP_RATE) |	\
-+			     (1 << IEEE80211_RADIOTAP_TX_FLAGS))
++#define ETH_ETHERNET_HDR_OFFSET		(MAX_MAC_HDR_LEN + \
++					 SUB_MSDU_HEADER_LENGTH + \
++					 SNAP_HDR_LEN - \
++					 ETHERNET_HDR_LEN + \
++					 WORD_ALIGNMENT_PAD)
 +
-+void wilc_wfi_monitor_rx(struct net_device *mon_dev, u8 *buff, u32 size)
-+{
-+	u32 header, pkt_offset;
-+	struct sk_buff *skb =3D NULL;
-+	struct wilc_wfi_radiotap_hdr *hdr;
-+	struct wilc_wfi_radiotap_cb_hdr *cb_hdr;
++#define HOST_HDR_OFFSET			4
++#define ETHERNET_HDR_LEN		14
++#define IP_HDR_LEN			20
++#define IP_HDR_OFFSET			ETHERNET_HDR_LEN
++#define UDP_HDR_OFFSET			(IP_HDR_LEN + IP_HDR_OFFSET)
++#define UDP_HDR_LEN			8
++#define UDP_DATA_OFFSET			(UDP_HDR_OFFSET + UDP_HDR_LEN)
++#define ETH_CONFIG_PKT_HDR_LEN		UDP_DATA_OFFSET
 +
-+	if (!mon_dev)
-+		return;
++#define ETH_CONFIG_PKT_HDR_OFFSET	(ETH_ETHERNET_HDR_OFFSET + \
++					 ETH_CONFIG_PKT_HDR_LEN)
 +
-+	if (!netif_running(mon_dev))
-+		return;
++/********************************************
++ *
++ *      Register Defines
++ *
++ ********************************************/
++#define WILC_PERIPH_REG_BASE		0x1000
++#define WILC_CHANGING_VIR_IF		0x108c
++#define WILC_CHIPID			WILC_PERIPH_REG_BASE
++#define WILC_GLB_RESET_0		(WILC_PERIPH_REG_BASE + 0x400)
++#define WILC_PIN_MUX_0			(WILC_PERIPH_REG_BASE + 0x408)
++#define WILC_HOST_TX_CTRL		(WILC_PERIPH_REG_BASE + 0x6c)
++#define WILC_HOST_RX_CTRL_0		(WILC_PERIPH_REG_BASE + 0x70)
++#define WILC_HOST_RX_CTRL_1		(WILC_PERIPH_REG_BASE + 0x74)
++#define WILC_HOST_VMM_CTL		(WILC_PERIPH_REG_BASE + 0x78)
++#define WILC_HOST_RX_CTRL		(WILC_PERIPH_REG_BASE + 0x80)
++#define WILC_HOST_RX_EXTRA_SIZE		(WILC_PERIPH_REG_BASE + 0x84)
++#define WILC_HOST_TX_CTRL_1		(WILC_PERIPH_REG_BASE + 0x88)
++#define WILC_MISC			(WILC_PERIPH_REG_BASE + 0x428)
++#define WILC_INTR_REG_BASE		(WILC_PERIPH_REG_BASE + 0xa00)
++#define WILC_INTR_ENABLE		WILC_INTR_REG_BASE
++#define WILC_INTR2_ENABLE		(WILC_INTR_REG_BASE + 4)
 +
-+	/* Get WILC header */
-+	header =3D get_unaligned_le32(buff - HOST_HDR_OFFSET);
-+	/*
-+	 * The packet offset field contain info about what type of management
-+	 * the frame we are dealing with and ack status
-+	 */
-+	pkt_offset =3D FIELD_GET(WILC_PKT_HDR_OFFSET_FIELD, header);
++#define WILC_INTR_POLARITY		(WILC_INTR_REG_BASE + 0x10)
++#define WILC_INTR_TYPE			(WILC_INTR_REG_BASE + 0x20)
++#define WILC_INTR_CLEAR			(WILC_INTR_REG_BASE + 0x30)
++#define WILC_INTR_STATUS		(WILC_INTR_REG_BASE + 0x40)
 +
-+	if (pkt_offset & IS_MANAGMEMENT_CALLBACK) {
-+		/* hostapd callback mgmt frame */
++#define WILC_RF_REVISION_ID		0x13f4
 +
-+		skb =3D dev_alloc_skb(size + sizeof(*cb_hdr));
-+		if (!skb)
-+			return;
++#define WILC_VMM_TBL_SIZE		64
++#define WILC_VMM_TX_TBL_BASE		0x150400
++#define WILC_VMM_RX_TBL_BASE		0x150500
 +
-+		skb_put_data(skb, buff, size);
++#define WILC_VMM_BASE			0x150000
++#define WILC_VMM_CORE_CTL		WILC_VMM_BASE
++#define WILC_VMM_TBL_CTL		(WILC_VMM_BASE + 0x4)
++#define WILC_VMM_TBL_ENTRY		(WILC_VMM_BASE + 0x8)
++#define WILC_VMM_TBL0_SIZE		(WILC_VMM_BASE + 0xc)
++#define WILC_VMM_TO_HOST_SIZE		(WILC_VMM_BASE + 0x10)
++#define WILC_VMM_CORE_CFG		(WILC_VMM_BASE + 0x14)
++#define WILC_VMM_TBL_ACTIVE		(WILC_VMM_BASE + 040)
++#define WILC_VMM_TBL_STATUS		(WILC_VMM_BASE + 0x44)
 +
-+		cb_hdr =3D skb_push(skb, sizeof(*cb_hdr));
-+		memset(cb_hdr, 0, sizeof(*cb_hdr));
++#define WILC_SPI_REG_BASE		0xe800
++#define WILC_SPI_CTL			WILC_SPI_REG_BASE
++#define WILC_SPI_MASTER_DMA_ADDR	(WILC_SPI_REG_BASE + 0x4)
++#define WILC_SPI_MASTER_DMA_COUNT	(WILC_SPI_REG_BASE + 0x8)
++#define WILC_SPI_SLAVE_DMA_ADDR		(WILC_SPI_REG_BASE + 0xc)
++#define WILC_SPI_SLAVE_DMA_COUNT	(WILC_SPI_REG_BASE + 0x10)
++#define WILC_SPI_TX_MODE		(WILC_SPI_REG_BASE + 0x20)
++#define WILC_SPI_PROTOCOL_CONFIG	(WILC_SPI_REG_BASE + 0x24)
++#define WILC_SPI_INTR_CTL		(WILC_SPI_REG_BASE + 0x2c)
++#define WILC_SPI_INT_STATUS		(WILC_SPI_REG_BASE + 0x40)
++#define WILC_SPI_INT_CLEAR		(WILC_SPI_REG_BASE + 0x44)
 +
-+		cb_hdr->hdr.it_version =3D 0; /* PKTHDR_RADIOTAP_VERSION; */
++#define WILC_SPI_WAKEUP_REG		0x1
++#define WILC_SPI_WAKEUP_BIT		BIT(1)
 +
-+		cb_hdr->hdr.it_len =3D cpu_to_le16(sizeof(*cb_hdr));
++#define WILC_SPI_PROTOCOL_OFFSET	(WILC_SPI_PROTOCOL_CONFIG - \
++					 WILC_SPI_REG_BASE)
 +
-+		cb_hdr->hdr.it_present =3D cpu_to_le32(TX_RADIOTAP_PRESENT);
++#define WILC_SPI_CLOCKLESS_ADDR_LIMIT	0x30
 +
-+		cb_hdr->rate =3D 5;
++/* Functions IO enables bits */
++#define WILC_SDIO_CCCR_IO_EN_FUNC1	BIT(1)
 +
-+		if (pkt_offset & IS_MGMT_STATUS_SUCCES)	{
-+			/* success */
-+			cb_hdr->tx_flags =3D IEEE80211_RADIOTAP_F_TX_RTS;
-+		} else {
-+			cb_hdr->tx_flags =3D IEEE80211_RADIOTAP_F_TX_FAIL;
-+		}
++/* Function/Interrupt enables bits */
++#define WILC_SDIO_CCCR_IEN_MASTER	BIT(0)
++#define WILC_SDIO_CCCR_IEN_FUNC1	BIT(1)
 +
-+	} else {
-+		skb =3D dev_alloc_skb(size + sizeof(*hdr));
++/* Abort CCCR register bits */
++#define WILC_SDIO_CCCR_ABORT_RESET	BIT(3)
 +
-+		if (!skb)
-+			return;
++/* Vendor specific CCCR registers */
++#define WILC_SDIO_WAKEUP_REG		0xf0
++#define WILC_SDIO_WAKEUP_BIT		BIT(0)
 +
-+		skb_put_data(skb, buff, size);
-+		hdr =3D skb_push(skb, sizeof(*hdr));
-+		memset(hdr, 0, sizeof(struct wilc_wfi_radiotap_hdr));
-+		hdr->hdr.it_version =3D 0; /* PKTHDR_RADIOTAP_VERSION; */
-+		hdr->hdr.it_len =3D cpu_to_le16(sizeof(*hdr));
-+		hdr->hdr.it_present =3D cpu_to_le32
-+				(1 << IEEE80211_RADIOTAP_RATE);
-+		hdr->rate =3D 5;
-+	}
++#define WILC_SDIO_CLK_STATUS_REG	0xf1
++#define WILC_SDIO_CLK_STATUS_BIT	BIT(0)
 +
-+	skb->dev =3D mon_dev;
-+	skb_reset_mac_header(skb);
-+	skb->ip_summed =3D CHECKSUM_UNNECESSARY;
-+	skb->pkt_type =3D PACKET_OTHERHOST;
-+	skb->protocol =3D htons(ETH_P_802_2);
-+	memset(skb->cb, 0, sizeof(skb->cb));
++#define WILC_SDIO_INTERRUPT_DATA_SZ_REG	0xf2 /* Read size (2 bytes) */
 +
-+	netif_rx(skb);
-+}
++#define WILC_SDIO_VMM_TBL_CTRL_REG	0xf6
++#define WILC_SDIO_IRQ_FLAG_REG		0xf7
++#define WILC_SDIO_IRQ_CLEAR_FLAG_REG	0xf8
 +
-+struct tx_complete_mon_data {
++#define WILC_SDIO_HOST_TO_FW_REG	0xfa
++#define WILC_SDIO_HOST_TO_FW_BIT	BIT(0)
++
++#define WILC_SDIO_FW_TO_HOST_REG	0xfc
++#define WILC_SDIO_FW_TO_HOST_BIT	BIT(0)
++
++/* Function 1 specific FBR register */
++#define WILC_SDIO_FBR_CSA_REG		0x10C /* CSA pointer (3 bytes) */
++#define WILC_SDIO_FBR_DATA_REG		0x10F
++
++#define WILC_SDIO_F1_DATA_REG		0x0
++#define WILC_SDIO_EXT_IRQ_FLAG_REG	0x4
++
++#define WILC_AHB_DATA_MEM_BASE		0x30000
++#define WILC_AHB_SHARE_MEM_BASE		0xd0000
++
++#define WILC_VMM_TBL_RX_SHADOW_BASE	WILC_AHB_SHARE_MEM_BASE
++#define WILC_VMM_TBL_RX_SHADOW_SIZE	256
++
++#define WILC_FW_HOST_COMM		0x13c0
++#define WILC_GP_REG_0			0x149c
++#define WILC_GP_REG_1			0x14a0
++
++#define WILC_HAVE_SDIO_IRQ_GPIO		BIT(0)
++#define WILC_HAVE_USE_PMU		BIT(1)
++#define WILC_HAVE_SLEEP_CLK_SRC_RTC	BIT(2)
++#define WILC_HAVE_SLEEP_CLK_SRC_XO	BIT(3)
++#define WILC_HAVE_EXT_PA_INV_TX_RX	BIT(4)
++#define WILC_HAVE_LEGACY_RF_SETTINGS	BIT(5)
++#define WILC_HAVE_XTAL_24		BIT(6)
++#define WILC_HAVE_DISABLE_WILC_UART	BIT(7)
++#define WILC_HAVE_USE_IRQ_AS_HOST_WAKE	BIT(8)
++
++#define WILC_CORTUS_INTERRUPT_BASE	0x10A8
++#define WILC_CORTUS_INTERRUPT_1		(WILC_CORTUS_INTERRUPT_BASE + 0x4)
++#define WILC_CORTUS_INTERRUPT_2		(WILC_CORTUS_INTERRUPT_BASE + 0x8)
++
++/* tx control register 1 to 4 for RX */
++#define WILC_REG_4_TO_1_RX		0x1e1c
++
++/* tx control register 1 to 4 for TX Bank_0 */
++#define WILC_REG_4_TO_1_TX_BANK0	0x1e9c
++
++#define WILC_CORTUS_RESET_MUX_SEL	0x1118
++#define WILC_CORTUS_BOOT_REGISTER	0xc0000
++
++#define WILC_CORTUS_BOOT_FROM_IRAM	0x71
++
++#define WILC_1000_BASE_ID		0x100000
++
++#define WILC_1000_BASE_ID_2A		0x1002A0
++#define WILC_1000_BASE_ID_2A_REV1	(WILC_1000_BASE_ID_2A + 1)
++
++#define WILC_1000_BASE_ID_2B		0x1002B0
++#define WILC_1000_BASE_ID_2B_REV1	(WILC_1000_BASE_ID_2B + 1)
++#define WILC_1000_BASE_ID_2B_REV2	(WILC_1000_BASE_ID_2B + 2)
++
++#define WILC_CHIP_REV_FIELD		GENMASK(11, 0)
++
++/********************************************
++ *
++ *      Wlan Defines
++ *
++ ********************************************/
++#define WILC_CFG_PKT		1
++#define WILC_NET_PKT		0
++#define WILC_MGMT_PKT		2
++
++#define WILC_CFG_SET		1
++#define WILC_CFG_QUERY		0
++
++#define WILC_CFG_RSP		1
++#define WILC_CFG_RSP_STATUS	2
++#define WILC_CFG_RSP_SCAN	3
++
++#define WILC_ABORT_REQ_BIT		BIT(31)
++
++#define WILC_RX_BUFF_SIZE	(96 * 1024)
++#define WILC_TX_BUFF_SIZE	(64 * 1024)
++
++#define MODALIAS		"WILC_SPI"
++
++#define WILC_PKT_HDR_CONFIG_FIELD	BIT(31)
++#define WILC_PKT_HDR_OFFSET_FIELD	GENMASK(30, 22)
++#define WILC_PKT_HDR_TOTAL_LEN_FIELD	GENMASK(21, 11)
++#define WILC_PKT_HDR_LEN_FIELD		GENMASK(10, 0)
++
++#define WILC_INTERRUPT_DATA_SIZE	GENMASK(14, 0)
++
++#define WILC_VMM_BUFFER_SIZE		GENMASK(9, 0)
++
++#define WILC_VMM_HDR_TYPE		BIT(31)
++#define WILC_VMM_HDR_MGMT_FIELD		BIT(30)
++#define WILC_VMM_HDR_PKT_SIZE		GENMASK(29, 15)
++#define WILC_VMM_HDR_BUFF_SIZE		GENMASK(14, 0)
++
++#define WILC_VMM_ENTRY_COUNT		GENMASK(8, 3)
++#define WILC_VMM_ENTRY_AVAILABLE	BIT(2)
++/*******************************************/
++/*        E0 and later Interrupt flags.    */
++/*******************************************/
++/*******************************************/
++/*        E0 and later Interrupt flags.    */
++/*           IRQ Status word               */
++/* 15:0 =3D DMA count in words.              */
++/* 16: INT0 flag                           */
++/* 17: INT1 flag                           */
++/* 18: INT2 flag                           */
++/* 19: INT3 flag                           */
++/* 20: INT4 flag                           */
++/* 21: INT5 flag                           */
++/*******************************************/
++#define IRG_FLAGS_OFFSET	16
++#define IRQ_DMA_WD_CNT_MASK	GENMASK(IRG_FLAGS_OFFSET - 1, 0)
++#define INT_0			BIT(IRG_FLAGS_OFFSET)
++#define INT_1			BIT(IRG_FLAGS_OFFSET + 1)
++#define INT_2			BIT(IRG_FLAGS_OFFSET + 2)
++#define INT_3			BIT(IRG_FLAGS_OFFSET + 3)
++#define INT_4			BIT(IRG_FLAGS_OFFSET + 4)
++#define INT_5			BIT(IRG_FLAGS_OFFSET + 5)
++#define MAX_NUM_INT		5
++#define IRG_FLAGS_MASK		GENMASK(IRG_FLAGS_OFFSET + MAX_NUM_INT, \
++					IRG_FLAGS_OFFSET)
++
++/*******************************************/
++/*        E0 and later Interrupt flags.    */
++/*           IRQ Clear word                */
++/* 0: Clear INT0                           */
++/* 1: Clear INT1                           */
++/* 2: Clear INT2                           */
++/* 3: Clear INT3                           */
++/* 4: Clear INT4                           */
++/* 5: Clear INT5                           */
++/* 6: Select VMM table 1                   */
++/* 7: Select VMM table 2                   */
++/* 8: Enable VMM                           */
++/*******************************************/
++#define CLR_INT0		BIT(0)
++#define CLR_INT1		BIT(1)
++#define CLR_INT2		BIT(2)
++#define CLR_INT3		BIT(3)
++#define CLR_INT4		BIT(4)
++#define CLR_INT5		BIT(5)
++#define SEL_VMM_TBL0		BIT(6)
++#define SEL_VMM_TBL1		BIT(7)
++#define EN_VMM			BIT(8)
++
++#define DATA_INT_EXT		INT_0
++#define ALL_INT_EXT		DATA_INT_EXT
++#define NUM_INT_EXT		1
++#define UNHANDLED_IRQ_MASK	GENMASK(MAX_NUM_INT - 1, NUM_INT_EXT)
++
++#define DATA_INT_CLR		CLR_INT0
++
++#define ENABLE_RX_VMM		(SEL_VMM_TBL1 | EN_VMM)
++#define ENABLE_TX_VMM		(SEL_VMM_TBL0 | EN_VMM)
++/* time for expiring the completion of cfg packets */
++#define WILC_CFG_PKTS_TIMEOUT	msecs_to_jiffies(2000)
++
++#define IS_MANAGMEMENT		0x100
++#define IS_MANAGMEMENT_CALLBACK	0x080
++#define IS_MGMT_STATUS_SUCCES	0x040
++
++#define WILC_WID_TYPE		GENMASK(15, 12)
++#define WILC_VMM_ENTRY_FULL_RETRY	1
++/********************************************
++ *
++ *      Tx/Rx Queue Structure
++ *
++ ********************************************/
++
++struct txq_entry_t {
++	struct list_head list;
++	int type;
++	int ack_idx;
++	u8 *buffer;
++	int buffer_size;
++	void *priv;
++	int status;
++	struct wilc_vif *vif;
++	void (*tx_complete_func)(void *priv, int status);
++};
++
++struct rxq_entry_t {
++	struct list_head list;
++	u8 *buffer;
++	int buffer_size;
++};
++
++/********************************************
++ *
++ *      Host IF Structure
++ *
++ ********************************************/
++struct wilc;
++struct wilc_hif_func {
++	int (*hif_init)(struct wilc *wilc, bool resume);
++	int (*hif_deinit)(struct wilc *wilc);
++	int (*hif_read_reg)(struct wilc *wilc, u32 addr, u32 *data);
++	int (*hif_write_reg)(struct wilc *wilc, u32 addr, u32 data);
++	int (*hif_block_rx)(struct wilc *wilc, u32 addr, u8 *buf, u32 size);
++	int (*hif_block_tx)(struct wilc *wilc, u32 addr, u8 *buf, u32 size);
++	int (*hif_read_int)(struct wilc *wilc, u32 *int_status);
++	int (*hif_clear_int_ext)(struct wilc *wilc, u32 val);
++	int (*hif_read_size)(struct wilc *wilc, u32 *size);
++	int (*hif_block_tx_ext)(struct wilc *wilc, u32 addr, u8 *buf, u32 size);
++	int (*hif_block_rx_ext)(struct wilc *wilc, u32 addr, u8 *buf, u32 size);
++	int (*hif_sync_ext)(struct wilc *wilc, int nint);
++	int (*enable_interrupt)(struct wilc *nic);
++	void (*disable_interrupt)(struct wilc *nic);
++};
++
++#define WILC_MAX_CFG_FRAME_SIZE		1468
++
++struct tx_complete_data {
 +	int size;
 +	void *buff;
++	struct sk_buff *skb;
 +};
 +
-+static void mgmt_tx_complete(void *priv, int status)
-+{
-+	struct tx_complete_mon_data *pv_data =3D priv;
-+	/*
-+	 * in case of fully hosting mode, the freeing will be done
-+	 * in response to the cfg packet
-+	 */
-+	kfree(pv_data->buff);
-+
-+	kfree(pv_data);
-+}
-+
-+static int mon_mgmt_tx(struct net_device *dev, const u8 *buf, size_t len)
-+{
-+	struct tx_complete_mon_data *mgmt_tx =3D NULL;
-+
-+	if (!dev)
-+		return -EFAULT;
-+
-+	netif_stop_queue(dev);
-+	mgmt_tx =3D kmalloc(sizeof(*mgmt_tx), GFP_ATOMIC);
-+	if (!mgmt_tx)
-+		return -ENOMEM;
-+
-+	mgmt_tx->buff =3D kmemdup(buf, len, GFP_ATOMIC);
-+	if (!mgmt_tx->buff) {
-+		kfree(mgmt_tx);
-+		return -ENOMEM;
-+	}
-+
-+	mgmt_tx->size =3D len;
-+
-+	wilc_wlan_txq_add_mgmt_pkt(dev, mgmt_tx, mgmt_tx->buff, mgmt_tx->size,
-+				   mgmt_tx_complete);
-+
-+	netif_wake_queue(dev);
-+	return 0;
-+}
-+
-+static netdev_tx_t wilc_wfi_mon_xmit(struct sk_buff *skb,
-+				     struct net_device *dev)
-+{
-+	u32 rtap_len, ret =3D 0;
-+	struct wilc_wfi_mon_priv  *mon_priv;
-+	struct sk_buff *skb2;
-+	struct wilc_wfi_radiotap_cb_hdr *cb_hdr;
-+	u8 srcadd[ETH_ALEN];
-+	u8 bssid[ETH_ALEN];
-+
-+	mon_priv =3D netdev_priv(dev);
-+	if (!mon_priv)
-+		return -EFAULT;
-+
-+	rtap_len =3D ieee80211_get_radiotap_len(skb->data);
-+	if (skb->len < rtap_len)
-+		return -1;
-+
-+	skb_pull(skb, rtap_len);
-+
-+	if (skb->data[0] =3D=3D 0xc0 && is_broadcast_ether_addr(&skb->data[4])) {
-+		skb2 =3D dev_alloc_skb(skb->len + sizeof(*cb_hdr));
-+		if (!skb2)
-+			return -ENOMEM;
-+
-+		skb_put_data(skb2, skb->data, skb->len);
-+
-+		cb_hdr =3D skb_push(skb2, sizeof(*cb_hdr));
-+		memset(cb_hdr, 0, sizeof(struct wilc_wfi_radiotap_cb_hdr));
-+
-+		cb_hdr->hdr.it_version =3D 0; /* PKTHDR_RADIOTAP_VERSION; */
-+
-+		cb_hdr->hdr.it_len =3D cpu_to_le16(sizeof(*cb_hdr));
-+
-+		cb_hdr->hdr.it_present =3D cpu_to_le32(TX_RADIOTAP_PRESENT);
-+
-+		cb_hdr->rate =3D 5;
-+		cb_hdr->tx_flags =3D 0x0004;
-+
-+		skb2->dev =3D dev;
-+		skb_reset_mac_header(skb2);
-+		skb2->ip_summed =3D CHECKSUM_UNNECESSARY;
-+		skb2->pkt_type =3D PACKET_OTHERHOST;
-+		skb2->protocol =3D htons(ETH_P_802_2);
-+		memset(skb2->cb, 0, sizeof(skb2->cb));
-+
-+		netif_rx(skb2);
-+
-+		return 0;
-+	}
-+	skb->dev =3D mon_priv->real_ndev;
-+
-+	ether_addr_copy(srcadd, &skb->data[10]);
-+	ether_addr_copy(bssid, &skb->data[16]);
-+	/*
-+	 * Identify if data or mgmt packet, if source address and bssid
-+	 * fields are equal send it to mgmt frames handler
-+	 */
-+	if (!(memcmp(srcadd, bssid, 6))) {
-+		ret =3D mon_mgmt_tx(mon_priv->real_ndev, skb->data, skb->len);
-+		if (ret)
-+			netdev_err(dev, "fail to mgmt tx\n");
-+		dev_kfree_skb(skb);
-+	} else {
-+		ret =3D wilc_mac_xmit(skb, mon_priv->real_ndev);
-+	}
-+
-+	return ret;
-+}
-+
-+static const struct net_device_ops wilc_wfi_netdev_ops =3D {
-+	.ndo_start_xmit         =3D wilc_wfi_mon_xmit,
-+
++struct wilc_cfg_cmd_hdr {
++	u8 cmd_type;
++	u8 seq_no;
++	__le16 total_len;
++	__le32 driver_handler;
 +};
 +
-+struct net_device *wilc_wfi_init_mon_interface(struct wilc *wl,
-+					       const char *name,
-+					       struct net_device *real_dev)
-+{
-+	struct wilc_wfi_mon_priv *priv;
++struct wilc_cfg_frame {
++	struct wilc_cfg_cmd_hdr hdr;
++	u8 frame[WILC_MAX_CFG_FRAME_SIZE];
++};
 +
-+	/* If monitor interface is already initialized, return it */
-+	if (wl->monitor_dev)
-+		return wl->monitor_dev;
++struct wilc_cfg_rsp {
++	u8 type;
++	u8 seq_no;
++};
 +
-+	wl->monitor_dev =3D alloc_etherdev(sizeof(struct wilc_wfi_mon_priv));
-+	if (!wl->monitor_dev)
-+		return NULL;
++struct wilc;
++struct wilc_vif;
 +
-+	wl->monitor_dev->type =3D ARPHRD_IEEE80211_RADIOTAP;
-+	strncpy(wl->monitor_dev->name, name, IFNAMSIZ);
-+	wl->monitor_dev->name[IFNAMSIZ - 1] =3D 0;
-+	wl->monitor_dev->netdev_ops =3D &wilc_wfi_netdev_ops;
-+	wl->monitor_dev->needs_free_netdev =3D true;
++int wilc_wlan_firmware_download(struct wilc *wilc, const u8 *buffer,
++				u32 buffer_size);
++int wilc_wlan_start(struct wilc *wilc);
++int wilc_wlan_stop(struct wilc *wilc, struct wilc_vif *vif);
++int wilc_wlan_txq_add_net_pkt(struct net_device *dev, void *priv, u8 *buff=
+er,
++			      u32 buffer_size,
++			      void (*tx_complete_fn)(void *, int));
++int wilc_wlan_handle_txq(struct wilc *wl, u32 *txq_count);
++void wilc_handle_isr(struct wilc *wilc);
++void wilc_wlan_cleanup(struct net_device *dev);
++int wilc_wlan_cfg_set(struct wilc_vif *vif, int start, u16 wid, u8 *buffer=
+,
++		      u32 buffer_size, int commit, u32 drv_handler);
++int wilc_wlan_cfg_get(struct wilc_vif *vif, int start, u16 wid, int commit=
+,
++		      u32 drv_handler);
++int wilc_wlan_txq_add_mgmt_pkt(struct net_device *dev, void *priv, u8 *buf=
+fer,
++			       u32 buffer_size, void (*func)(void *, int));
++void wilc_enable_tcp_ack_filter(struct wilc_vif *vif, bool value);
++int wilc_wlan_get_num_conn_ifcs(struct wilc *wilc);
++netdev_tx_t wilc_mac_xmit(struct sk_buff *skb, struct net_device *dev);
 +
-+	if (register_netdevice(wl->monitor_dev)) {
-+		netdev_err(real_dev, "register_netdevice failed\n");
-+		return NULL;
-+	}
-+	priv =3D netdev_priv(wl->monitor_dev);
-+	if (!priv)
-+		return NULL;
-+
-+	priv->real_ndev =3D real_dev;
-+
-+	return wl->monitor_dev;
-+}
-+
-+void wilc_wfi_deinit_mon_interface(struct wilc *wl, bool rtnl_locked)
-+{
-+	if (!wl->monitor_dev)
-+		return;
-+
-+	if (rtnl_locked)
-+		unregister_netdevice(wl->monitor_dev);
-+	else
-+		unregister_netdev(wl->monitor_dev);
-+	wl->monitor_dev =3D NULL;
-+}
++void wilc_wfi_p2p_rx(struct wilc_vif *vif, u8 *buff, u32 size);
++void host_wakeup_notify(struct wilc *wilc);
++void host_sleep_notify(struct wilc *wilc);
++void chip_allow_sleep(struct wilc *wilc);
++void chip_wakeup(struct wilc *wilc);
++int wilc_send_config_pkt(struct wilc_vif *vif, u8 mode, struct wid *wids,
++			 u32 count);
++int wilc_wlan_init(struct net_device *dev);
++u32 wilc_get_chipid(struct wilc *wilc, bool update);
++#endif
 --=20
 2.24.0
