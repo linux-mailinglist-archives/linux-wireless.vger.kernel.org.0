@@ -2,94 +2,95 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DD580204B72
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jun 2020 09:43:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C4B1204B77
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jun 2020 09:44:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731662AbgFWHnH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 23 Jun 2020 03:43:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47814 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731202AbgFWHnG (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 23 Jun 2020 03:43:06 -0400
-Received: from mail-il1-x132.google.com (mail-il1-x132.google.com [IPv6:2607:f8b0:4864:20::132])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67892C061573
-        for <linux-wireless@vger.kernel.org>; Tue, 23 Jun 2020 00:43:06 -0700 (PDT)
-Received: by mail-il1-x132.google.com with SMTP id z2so18390621ilq.0
-        for <linux-wireless@vger.kernel.org>; Tue, 23 Jun 2020 00:43:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=i2cat.net; s=google;
-        h=mime-version:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=m7LP9srDo9fVktQteVw+1bM33L1FfjrJRx75sppYlvY=;
-        b=MowEVtjox791c02slT7M+ERj3orGgesyIH2aY1oddAMkjrWO4w6ZBS1cbLy/28pboF
-         fEbBH9CWWy4lrzUBMQ9/sAv7KvyEwxdmVIE+yS1ZvIREywJ9+j+rltQiqZqWg+4mpMhs
-         NaLRI5wcXVHGnSZSwNuSxco5DQtiPG+DHsxEAz3duqKf7EaV6XKnldJrKT6UOkyBoZAf
-         sUmp4NJKtFvjBFx9a6uYDoDvQt9nwcUN3KCZs+uKqnIbN0o5YMU796zKwgHuRQjEdSAC
-         C0pTmK940dCqYcalmxxomztnsnRA9cbRvDG0MSBvhiiZzzBqYem1PcLHHm+3T3g1g0wc
-         z8Yg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=m7LP9srDo9fVktQteVw+1bM33L1FfjrJRx75sppYlvY=;
-        b=E1HALb0v2LLVOArX2Jf31w5P/CUL5YuMyEd/2P0vwUkK3RUHyRoRRxMOIgOw015FNd
-         NDY2kwfaGsQ396CdFf6tN+lFJG8wgBr7kspAso8NKsVog0GlISeyDw78UVUMPNciTQeI
-         q4mh8OaTmeXU1prXZNXKEYIQ2QOKdtMBG6BsT8UrFs4V+IrGl0EWAeqMcU4QYyEcbxnU
-         ptWqaeUxxUVv09u/4ktvq1hkEnSgIKyEQZSgckOZIYXHFrUoF19SPkuhI2T5A1YNinPu
-         zxLgsoWA8DSai3Mv2prh9PzLAHmME3YhV9xbbm5OemCC4mDVUXjiU4m2mtSo1L4asaNW
-         Z/Kg==
-X-Gm-Message-State: AOAM5324LBGknO+01zbeJdplUMMW0K/mn7Qfu5/H49LV5eb3c8w2amDm
-        UZT20aePFHhbaA3NeenXIqyLXg62EIato74cqivFfahWl0xqaQ==
-X-Google-Smtp-Source: ABdhPJx3J/Ux0sVUl5aSrvuyq3QyHYrNys5HQg1cfiDdNXmtjmD1SEleapN71SF5EIuTmTwIdfp3Xmd1bkgkiOra7mg=
-X-Received: by 2002:a92:ce11:: with SMTP id b17mr20665914ilo.89.1592898185089;
- Tue, 23 Jun 2020 00:43:05 -0700 (PDT)
+        id S1731663AbgFWHoO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 23 Jun 2020 03:44:14 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:55182 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1731630AbgFWHoL (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 23 Jun 2020 03:44:11 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1592898250; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=CjpaCCnx1y01srgBqMleGMp4v872X4zSWhjF8eJ6Aa0=;
+ b=qhlJW0e2GSFUQAu0G9vmjTe0NC/qLxq8L9lUhosT8xwR6XhPGlsv0x112/MBzV3NCHycFnHo
+ DcQnwIvqfRMGDxSHz44mQMwT3qo0Y8kDbpmv2k2umYJL1WR26n+j3jI78ebs+JHPQN0Ch0Wc
+ HaQgZU6rBQ1SBXDh1BtGW9nGoog=
+X-Mailgun-Sending-Ip: 69.72.43.7
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n09.prod.us-east-1.postgun.com with SMTP id
+ 5ef1b2c98fe116ddd9c3fab4 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 23 Jun 2020 07:44:09
+ GMT
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 65E75C433CA; Tue, 23 Jun 2020 07:44:08 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
+        MISSING_MID,SPF_NONE,URIBL_BLOCKED autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 21B84C433C8;
+        Tue, 23 Jun 2020 07:44:05 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 21B84C433C8
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-From:   Miguel Catalan Cid <miguel.catalan@i2cat.net>
-Date:   Tue, 23 Jun 2020 09:42:54 +0200
-Message-ID: <CAMHmoosdiQQ5qS_wP3=kcwf+DkXi4Z1h+osLWNyPq5__ey71bg@mail.gmail.com>
-Subject: Support for airtime scheduling using ath10k
-To:     linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] net: ath10k: fix memcpy size from untrusted input
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20200616132544.17478-1-bruceshenzk@gmail.com>
+References: <20200616132544.17478-1-bruceshenzk@gmail.com>
+To:     Zekun Shen <bruceshenzk@gmail.com>
+Cc:     unlisted-recipients:; (no To-header on input)
+        Zekun Shen <bruceshenzk@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, ath10k@lists.infradead.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Illegal-Object: Syntax error in Cc: address found on vger.kernel.org:
+        Cc:     unlisted-recipients:; (no To-header on input)Zekun Shen <bruceshenzk@gmail.com>
+                                                                     ^-missing end of address
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
+Message-Id: <20200623074408.65E75C433CA@smtp.codeaurora.org>
+Date:   Tue, 23 Jun 2020 07:44:08 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+Zekun Shen <bruceshenzk@gmail.com> wrote:
 
-we are trying to apply different airtime weights to different stations
-in order to have some prioritization among connected stations. While
-this is working pretty well with ath9k, with ath10k we always obtain a
-fair distribution of the airtime (i.e. 50%-50% in the case of two
-stations), regardless of the airtime weight specified.
+> A compromized ath10k peripheral is able to control the size argument
+> of memcpy in ath10k_pci_hif_exchange_bmi_msg.
+> 
+> The min result from previous line is not used as the size argument
+> for memcpy. Instead, xfer.resp_len comes from untrusted stream dma
+> input. The value comes from "nbytes" in ath10k_pci_bmi_recv_data,
+> which is set inside _ath10k_ce_completed_recv_next_nolock with the line
+> 
+> nbytes = __le16_to_cpu(sdesc.nbytes);
+> 
+> sdesc is a stream dma region which device can write to.
+> 
+> Signed-off-by: Zekun Shen <bruceshenzk@gmail.com>
+> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 
-E.g. STA1:
-RX: 0 us
-TX: 2295610622 us
-Weight: 200
-Deficit: VO: 256 us VI: 256 us BE: 34 us BK: 256 us
+Patch applied to ath-next branch of ath.git, thanks.
 
-E.g. STA2:
-RX: 0 us
-TX: 162597077 us
-Weight: 10
-Deficit: VO: 256 us VI: 256 us BE: 9 us BK: 256 us
+aed95297250f ath10k: pci: fix memcpy size of bmi response
 
-We are using Compex WLE650V5-18A cards.
+-- 
+https://patchwork.kernel.org/patch/11607461/
 
-So, does ath10k support airtime scheduling? In such a case, do we need
-specific Wi-Fi cards?
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
-Thanks a lot!
-
-Regards,
-Miguel.
-
---=20
-Miguel Catal=C3=A1n Cid, PhD
-
-Mobile Wireless Internet Group (MWI)
-i2CAT Foundation, Barcelona, Spain
-http://www.i2cat.net/
