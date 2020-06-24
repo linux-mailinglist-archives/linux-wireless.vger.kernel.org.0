@@ -2,105 +2,121 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5161B20761D
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jun 2020 16:52:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 602AE207A2D
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jun 2020 19:23:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2403998AbgFXOw5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 24 Jun 2020 10:52:57 -0400
-Received: from mail.kernel.org ([198.145.29.99]:40680 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2389818AbgFXOw4 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 24 Jun 2020 10:52:56 -0400
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 70DC320768;
-        Wed, 24 Jun 2020 14:52:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1593010375;
-        bh=hKmGmSC9xKTCf7lKHaapRGzqdChdaLEB6DXAWD8Qde8=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=18rDFvSPwlbcr568/S5o0ulxaiBng2umL68WZE7Gn3lPelYVsylFSO6HBMbl8OJ5y
-         kOAPshUeLYFDRilCyMNQ+cyFgyDaSTqyRpqAtnry/ccNY1YA6SnQQ60+TXOAq7sETn
-         Q7riK6XjUUvKv7diy3O+vZ/RRe2MIztTSWv4jNio=
-Date:   Wed, 24 Jun 2020 16:52:54 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     Ajay.Kathat@microchip.com, devel@driverdev.osuosl.org,
-        Venkateswara.Kaja@microchip.com, Sripad.Balwadgi@microchip.com,
-        linux-wireless@vger.kernel.org, Nicolas.Ferre@microchip.com,
-        johannes@sipsolutions.net
-Subject: Re: [PATCH v7 00/17] wilc1000: move out of staging
-Message-ID: <20200624145254.GA1876138@kroah.com>
-References: <20200623110000.31559-1-ajay.kathat@microchip.com>
- <87ftaketkw.fsf@tynnyri.adurom.net>
- <20200624091000.GD1731290@kroah.com>
- <87366kztcr.fsf@codeaurora.org>
+        id S2405441AbgFXRXh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 24 Jun 2020 13:23:37 -0400
+Received: from mailgw02.mediatek.com ([210.61.82.184]:56182 "EHLO
+        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S2405318AbgFXRXg (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 24 Jun 2020 13:23:36 -0400
+X-UUID: f5469993025049fa884505acbb81037a-20200625
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+        h=Content-Transfer-Encoding:Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=qMIjkuBy2HwPU4i8OcdE4zsIe65Zt8A7oOYCBZ5H/Zs=;
+        b=L3CvgxgUMZ/e5WdU66YA4ADgDagGEMMTGCX8XecWaG33TxyFk+2uycI8uPc7dYkx9/TUUjOTwEwelIH7jWDidueB1vHI0CilM3wcTxo2jy2mHMdgvai8bpSkkdJTFTmbyIqeV8ahfd/mSDyUvrVKVARWROELQPaZv9wwHZ0Okm0=;
+X-UUID: f5469993025049fa884505acbb81037a-20200625
+Received: from mtkcas06.mediatek.inc [(172.21.101.30)] by mailgw02.mediatek.com
+        (envelope-from <ryder.lee@mediatek.com>)
+        (Cellopoint E-mail Firewall v4.1.10 Build 0809 with TLS)
+        with ESMTP id 1307973526; Thu, 25 Jun 2020 01:23:32 +0800
+Received: from MTKCAS06.mediatek.inc (172.21.101.30) by
+ mtkmbs08n1.mediatek.inc (172.21.101.55) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Thu, 25 Jun 2020 01:23:20 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by MTKCAS06.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Thu, 25 Jun 2020 01:23:15 +0800
+From:   Ryder Lee <ryder.lee@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Sean Wang <sean.wang@mediatek.com>
+CC:     Shayne Chen <shayne.chen@mediatek.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>,
+        Ryder Lee <ryder.lee@mediatek.com>
+Subject: [PATCH] mt76: mt7915: update HE capabilities
+Date:   Thu, 25 Jun 2020 01:23:17 +0800
+Message-ID: <23d21ba5b73b4f56cc22e8ae8988c0682d6a32b0.1592984153.git.ryder.lee@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87366kztcr.fsf@codeaurora.org>
+Content-Type: text/plain
+X-MTK:  N
+Content-Transfer-Encoding: base64
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Jun 24, 2020 at 12:49:24PM +0300, Kalle Valo wrote:
-> Greg KH <gregkh@linuxfoundation.org> writes:
-> 
-> > On Wed, Jun 24, 2020 at 11:50:07AM +0300, Kalle Valo wrote:
-> >> <Ajay.Kathat@microchip.com> writes:
-> >> 
-> >> > From: Ajay Singh <ajay.kathat@microchip.com>
-> >> >
-> >> > This patch series is to review and move wilc1000 driver out of staging.
-> >> > Most of the review comments received in [1] & [2] are addressed in the
-> >> > latest code.
-> >> > Please review and provide your inputs.
-> >> >
-> >> > [1]. https://lore.kernel.org/linux-wireless/1537957525-11467-1-git-send-email-ajay.kathat@microchip.com/
-> >> > [2]. https://lore.kernel.org/linux-wireless/1562896697-8002-1-git-send-email-ajay.kathat@microchip.com/
-> >> >
-> >> > Changes since v6:
-> >> >  - added Reviewed-by tag received for DT binding document patch earlier.
-> >> >    * https://lore.kernel.org/linux-wireless/20200405013235.GA24105@bogus
-> >> >  - merged latest driver and included --base commit as suggested.
-> >> 
-> >> Greg, in preparation for moving the driver to drivers/net/wireless can I
-> >> ask you to not to take wilc1000 patches for the time being? I think that
-> >> way it would be easier to move the driver between trees if there are no
-> >> changes after v5.8-rc1. Or is there a better way handle the move?
-> >
-> > The best way is for there to be a series of patches that just adds the
-> > driver to the "real" part of the tree, and when that is merged, let me
-> > know and I will just delete the driver version in the staging tree.
-> >
-> > Does that work for you?
-> 
-> It would be fine for me but won't that approach break the build (eg.
-> allyesconfig) due to two duplicate versions of the same driver in
-> wireless-drivers-next?
+U3luYyBmcm9tIFNESyB0byB1cGRhdGUgSEUgY2FwYWJpbGl0aWVzLg0KDQpTaWduZWQtb2ZmLWJ5
+OiBSeWRlciBMZWUgPHJ5ZGVyLmxlZUBtZWRpYXRlay5jb20+DQotLS0NCiAuLi4vbmV0L3dpcmVs
+ZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1L2luaXQuYyAgfCA0NCArKysrKysrKysrKy0tLS0tLS0t
+DQogMSBmaWxlIGNoYW5nZWQsIDI2IGluc2VydGlvbnMoKyksIDE4IGRlbGV0aW9ucygtKQ0KDQpk
+aWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvaW5p
+dC5jIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvaW5pdC5jDQpp
+bmRleCAzYTEwYmJlMGUyZGUuLmQxMDJkMTc2NTc1MSAxMDA2NDQNCi0tLSBhL2RyaXZlcnMvbmV0
+L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1L2luaXQuYw0KKysrIGIvZHJpdmVycy9uZXQv
+d2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvaW5pdC5jDQpAQCAtNDI0LDExICs0MjQsNiBA
+QCBtdDc5MTVfaW5pdF9oZV9jYXBzKHN0cnVjdCBtdDc5MTVfcGh5ICpwaHksIGVudW0gbmw4MDIx
+MV9iYW5kIGJhbmQsDQogDQogCQloZV9jYXBfZWxlbS0+bWFjX2NhcF9pbmZvWzBdID0NCiAJCQlJ
+RUVFODAyMTFfSEVfTUFDX0NBUDBfSFRDX0hFOw0KLQkJaGVfY2FwX2VsZW0tPm1hY19jYXBfaW5m
+b1sxXSA9DQotCQkJSUVFRTgwMjExX0hFX01BQ19DQVAxX1RGX01BQ19QQURfRFVSXzBVUyB8DQot
+CQkJSUVFRTgwMjExX0hFX01BQ19DQVAxX01VTFRJX1RJRF9BR0dfUlhfUU9TXzE7DQotCQloZV9j
+YXBfZWxlbS0+bWFjX2NhcF9pbmZvWzJdID0NCi0JCQlJRUVFODAyMTFfSEVfTUFDX0NBUDJfQlNS
+Ow0KIAkJaGVfY2FwX2VsZW0tPm1hY19jYXBfaW5mb1szXSA9DQogCQkJSUVFRTgwMjExX0hFX01B
+Q19DQVAzX09NSV9DT05UUk9MIHwNCiAJCQlJRUVFODAyMTFfSEVfTUFDX0NBUDNfTUFYX0FNUERV
+X0xFTl9FWFBfUkVTRVJWRUQ7DQpAQCAtNDUwLDI3ICs0NDUsMjcgQEAgbXQ3OTE1X2luaXRfaGVf
+Y2FwcyhzdHJ1Y3QgbXQ3OTE1X3BoeSAqcGh5LCBlbnVtIG5sODAyMTFfYmFuZCBiYW5kLA0KIAkJ
+CUlFRUU4MDIxMV9IRV9QSFlfQ0FQMl9TVEJDX1RYX1VOREVSXzgwTUhaIHwNCiAJCQlJRUVFODAy
+MTFfSEVfUEhZX0NBUDJfU1RCQ19SWF9VTkRFUl84ME1IWjsNCiANCi0JCS8qIFRPRE86IE9GRE1B
+ICovDQotDQogCQlzd2l0Y2ggKGkpIHsNCiAJCWNhc2UgTkw4MDIxMV9JRlRZUEVfQVA6DQogCQkJ
+aGVfY2FwX2VsZW0tPm1hY19jYXBfaW5mb1swXSB8PQ0KIAkJCQlJRUVFODAyMTFfSEVfTUFDX0NB
+UDBfVFdUX1JFUzsNCisJCQloZV9jYXBfZWxlbS0+bWFjX2NhcF9pbmZvWzJdIHw9DQorCQkJCUlF
+RUU4MDIxMV9IRV9NQUNfQ0FQMl9CU1I7DQogCQkJaGVfY2FwX2VsZW0tPm1hY19jYXBfaW5mb1s0
+XSB8PQ0KIAkJCQlJRUVFODAyMTFfSEVfTUFDX0NBUDRfQlFSOw0KKwkJCWhlX2NhcF9lbGVtLT5t
+YWNfY2FwX2luZm9bNV0gfD0NCisJCQkJSUVFRTgwMjExX0hFX01BQ19DQVA1X09NX0NUUkxfVUxf
+TVVfREFUQV9ESVNfUlg7DQogCQkJaGVfY2FwX2VsZW0tPnBoeV9jYXBfaW5mb1szXSB8PQ0KIAkJ
+CQlJRUVFODAyMTFfSEVfUEhZX0NBUDNfRENNX01BWF9DT05TVF9UWF9RUFNLIHwNCiAJCQkJSUVF
+RTgwMjExX0hFX1BIWV9DQVAzX0RDTV9NQVhfQ09OU1RfUlhfUVBTSzsNCiAJCQloZV9jYXBfZWxl
+bS0+cGh5X2NhcF9pbmZvWzZdIHw9DQogCQkJCUlFRUU4MDIxMV9IRV9QSFlfQ0FQNl9QUEVfVEhS
+RVNIT0xEX1BSRVNFTlQ7DQotCQkJaGVfY2FwX2VsZW0tPnBoeV9jYXBfaW5mb1s5XSB8PQ0KLQkJ
+CQlJRUVFODAyMTFfSEVfUEhZX0NBUDlfUlhfMTAyNF9RQU1fTEVTU19USEFOXzI0Ml9UT05FX1JV
+Ow0KIAkJCWJyZWFrOw0KIAkJY2FzZSBOTDgwMjExX0lGVFlQRV9TVEFUSU9OOg0KIAkJCWhlX2Nh
+cF9lbGVtLT5tYWNfY2FwX2luZm9bMF0gfD0NCiAJCQkJSUVFRTgwMjExX0hFX01BQ19DQVAwX1RX
+VF9SRVE7DQotCQkJaGVfY2FwX2VsZW0tPm1hY19jYXBfaW5mb1szXSB8PQ0KLQkJCQlJRUVFODAy
+MTFfSEVfTUFDX0NBUDNfRkxFWF9UV1RfU0NIRUQ7DQorCQkJaGVfY2FwX2VsZW0tPm1hY19jYXBf
+aW5mb1sxXSB8PQ0KKwkJCQlJRUVFODAyMTFfSEVfTUFDX0NBUDFfVEZfTUFDX1BBRF9EVVJfMTZV
+UzsNCiANCiAJCQlpZiAoYmFuZCA9PSBOTDgwMjExX0JBTkRfMkdIWikNCiAJCQkJaGVfY2FwX2Vs
+ZW0tPnBoeV9jYXBfaW5mb1swXSB8PQ0KQEAgLTQ4MCwxOCArNDc1LDMxIEBAIG10NzkxNV9pbml0
+X2hlX2NhcHMoc3RydWN0IG10NzkxNV9waHkgKnBoeSwgZW51bSBubDgwMjExX2JhbmQgYmFuZCwN
+CiAJCQkJCUlFRUU4MDIxMV9IRV9QSFlfQ0FQMF9DSEFOTkVMX1dJRFRIX1NFVF9SVV9NQVBQSU5H
+X0lOXzVHOw0KIA0KIAkJCWhlX2NhcF9lbGVtLT5waHlfY2FwX2luZm9bMV0gfD0NCi0JCQkJSUVF
+RTgwMjExX0hFX1BIWV9DQVAxX0RFVklDRV9DTEFTU19BOw0KKwkJCQlJRUVFODAyMTFfSEVfUEhZ
+X0NBUDFfREVWSUNFX0NMQVNTX0EgfA0KKwkJCQlJRUVFODAyMTFfSEVfUEhZX0NBUDFfSEVfTFRG
+X0FORF9HSV9GT1JfSEVfUFBEVVNfMF84VVM7DQorCQkJaGVfY2FwX2VsZW0tPnBoeV9jYXBfaW5m
+b1szXSB8PQ0KKwkJCQlJRUVFODAyMTFfSEVfUEhZX0NBUDNfRENNX01BWF9DT05TVF9UWF9RUFNL
+IHwNCisJCQkJSUVFRTgwMjExX0hFX1BIWV9DQVAzX0RDTV9NQVhfQ09OU1RfUlhfUVBTSzsNCisJ
+CQloZV9jYXBfZWxlbS0+cGh5X2NhcF9pbmZvWzZdIHw9DQorCQkJCUlFRUU4MDIxMV9IRV9QSFlf
+Q0FQNl9UUklHX0NRSV9GQiB8DQorCQkJCUlFRUU4MDIxMV9IRV9QSFlfQ0FQNl9QQVJUSUFMX0JX
+X0VYVF9SQU5HRSB8DQorCQkJCUlFRUU4MDIxMV9IRV9QSFlfQ0FQNl9QUEVfVEhSRVNIT0xEX1BS
+RVNFTlQ7DQorCQkJaGVfY2FwX2VsZW0tPnBoeV9jYXBfaW5mb1s3XSB8PQ0KKwkJCQlJRUVFODAy
+MTFfSEVfUEhZX0NBUDdfUE9XRVJfQk9PU1RfRkFDVE9SX0FSIHwNCisJCQkJSUVFRTgwMjExX0hF
+X1BIWV9DQVA3X0hFX1NVX01VX1BQRFVfNFhMVEZfQU5EXzA4X1VTX0dJOw0KIAkJCWhlX2NhcF9l
+bGVtLT5waHlfY2FwX2luZm9bOF0gfD0NCiAJCQkJSUVFRTgwMjExX0hFX1BIWV9DQVA4XzIwTUha
+X0lOXzQwTUhaX0hFX1BQRFVfSU5fMkcgfA0KIAkJCQlJRUVFODAyMTFfSEVfUEhZX0NBUDhfMjBN
+SFpfSU5fMTYwTUhaX0hFX1BQRFUgfA0KLQkJCQlJRUVFODAyMTFfSEVfUEhZX0NBUDhfODBNSFpf
+SU5fMTYwTUhaX0hFX1BQRFU7DQorCQkJCUlFRUU4MDIxMV9IRV9QSFlfQ0FQOF84ME1IWl9JTl8x
+NjBNSFpfSEVfUFBEVSB8DQorCQkJCUlFRUU4MDIxMV9IRV9QSFlfQ0FQOF9EQ01fTUFYX1JVXzQ4
+NDsNCiAJCQloZV9jYXBfZWxlbS0+cGh5X2NhcF9pbmZvWzldIHw9DQotCQkJCUlFRUU4MDIxMV9I
+RV9QSFlfQ0FQOV9UWF8xMDI0X1FBTV9MRVNTX1RIQU5fMjQyX1RPTkVfUlU7DQorCQkJCUlFRUU4
+MDIxMV9IRV9QSFlfQ0FQOV9MT05HRVJfVEhBTl8xNl9TSUdCX09GRE1fU1lNIHwNCisJCQkJSUVF
+RTgwMjExX0hFX1BIWV9DQVA5X05PTl9UUklHR0VSRURfQ1FJX0ZFRURCQUNLIHwNCisJCQkJSUVF
+RTgwMjExX0hFX1BIWV9DQVA5X1RYXzEwMjRfUUFNX0xFU1NfVEhBTl8yNDJfVE9ORV9SVSB8DQor
+CQkJCUlFRUU4MDIxMV9IRV9QSFlfQ0FQOV9SWF8xMDI0X1FBTV9MRVNTX1RIQU5fMjQyX1RPTkVf
+UlUgfA0KKwkJCQlJRUVFODAyMTFfSEVfUEhZX0NBUDlfUlhfRlVMTF9CV19TVV9VU0lOR19NVV9X
+SVRIX0NPTVBfU0lHQiB8DQorCQkJCUlFRUU4MDIxMV9IRV9QSFlfQ0FQOV9SWF9GVUxMX0JXX1NV
+X1VTSU5HX01VX1dJVEhfTk9OX0NPTVBfU0lHQjsNCiAJCQlicmVhazsNCi0jaWZkZWYgQ09ORklH
+X01BQzgwMjExX01FU0gNCi0JCWNhc2UgTkw4MDIxMV9JRlRZUEVfTUVTSF9QT0lOVDoNCi0JCQli
+cmVhazsNCi0jZW5kaWYNCiAJCX0NCiANCiAJCWhlX21jcy0+cnhfbWNzXzgwID0gY3B1X3RvX2xl
+MTYobWNzX21hcCk7DQotLSANCjIuMTguMA0K
 
-For maybe one day, yes, but that's all.
-
-> What I was thinking that Ajay would create a patch moving the driver
-> from drivers/staging/wilc1000 to
-> drivers/net/wireless/microchip/wilc1000. Using 'git mv' and 'git
-> format-patch --find-renames' the patch should be really small, mostly
-> just renames and small changes to Kconfig, Makefile and MAINTAINERS
-> files. But this of course would require that there are no wilc1000
-> patches in your tree until you get the driver move commit during the
-> next merge window, otherwise we would see conflicts between staging-next
-> and wireless-drivers-next.
-> 
-> But I don't have any strong opinions, whatever is easiest for everyone :)
-
-It's kind of hard to review patches that do moves, but if you all want
-to do that, that's fine with me.
-
-Note, I can't guarantee that I'll not take any wilc1000 patches, I'll
-probably forget, but git mv will handle all of that just fine.
-
-thanks,
-
-greg k-h
