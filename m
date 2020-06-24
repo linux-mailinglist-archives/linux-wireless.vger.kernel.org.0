@@ -2,121 +2,216 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 602AE207A2D
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jun 2020 19:23:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 28410207A7E
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jun 2020 19:44:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2405441AbgFXRXh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 24 Jun 2020 13:23:37 -0400
-Received: from mailgw02.mediatek.com ([210.61.82.184]:56182 "EHLO
-        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S2405318AbgFXRXg (ORCPT
+        id S2405625AbgFXRoG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 24 Jun 2020 13:44:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52680 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2405567AbgFXRoF (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 24 Jun 2020 13:23:36 -0400
-X-UUID: f5469993025049fa884505acbb81037a-20200625
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Transfer-Encoding:Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=qMIjkuBy2HwPU4i8OcdE4zsIe65Zt8A7oOYCBZ5H/Zs=;
-        b=L3CvgxgUMZ/e5WdU66YA4ADgDagGEMMTGCX8XecWaG33TxyFk+2uycI8uPc7dYkx9/TUUjOTwEwelIH7jWDidueB1vHI0CilM3wcTxo2jy2mHMdgvai8bpSkkdJTFTmbyIqeV8ahfd/mSDyUvrVKVARWROELQPaZv9wwHZ0Okm0=;
-X-UUID: f5469993025049fa884505acbb81037a-20200625
-Received: from mtkcas06.mediatek.inc [(172.21.101.30)] by mailgw02.mediatek.com
-        (envelope-from <ryder.lee@mediatek.com>)
-        (Cellopoint E-mail Firewall v4.1.10 Build 0809 with TLS)
-        with ESMTP id 1307973526; Thu, 25 Jun 2020 01:23:32 +0800
-Received: from MTKCAS06.mediatek.inc (172.21.101.30) by
- mtkmbs08n1.mediatek.inc (172.21.101.55) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Thu, 25 Jun 2020 01:23:20 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by MTKCAS06.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Thu, 25 Jun 2020 01:23:15 +0800
-From:   Ryder Lee <ryder.lee@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Sean Wang <sean.wang@mediatek.com>
-CC:     Shayne Chen <shayne.chen@mediatek.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>,
-        Ryder Lee <ryder.lee@mediatek.com>
-Subject: [PATCH] mt76: mt7915: update HE capabilities
-Date:   Thu, 25 Jun 2020 01:23:17 +0800
-Message-ID: <23d21ba5b73b4f56cc22e8ae8988c0682d6a32b0.1592984153.git.ryder.lee@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+        Wed, 24 Jun 2020 13:44:05 -0400
+Received: from mail-pj1-x1041.google.com (mail-pj1-x1041.google.com [IPv6:2607:f8b0:4864:20::1041])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08553C061573;
+        Wed, 24 Jun 2020 10:44:05 -0700 (PDT)
+Received: by mail-pj1-x1041.google.com with SMTP id d6so1443484pjs.3;
+        Wed, 24 Jun 2020 10:44:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=q66XZq5tVZm4QZtVyx5dc+LjQt4l89O1YXK816M5JxU=;
+        b=YIcfSoxuvmqeZqXnEhrXfx8fYBfSN0iMclikZiiCR5tBm9HHdSFD5NRwBxD7MXShRC
+         cr3NgoGcbi4Ej15eKzuVdIvJLODfLC1QSwxQK0qIsmbp5gTPZE5NAKYv/JhyvGA8Y7SI
+         qJr/L+gTb5nv0ENifRNbg9tb1geqMfATxqBPw/btSLsnB7zp0xRzdpOT9AkXlw7gbq5k
+         z17ITLqdTALlvqdpIP3lHIv62ifAxvAzlk35pZHvc4xdiIcA0geGw+6bEnElErTDiW8j
+         Xnq0ekf1vYiA2Zlw5LltLYPk6cqo7a6m8hX5XPTZtYo42RrAWo03FR7ILKdNlSjmZ1CY
+         qlog==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=q66XZq5tVZm4QZtVyx5dc+LjQt4l89O1YXK816M5JxU=;
+        b=sz/AGABnG9tQIK4rPen5LPlFhPRcDc6lMsrrY4SeU3j5h/l4KWT8HN+Pyq/9anmQAc
+         FwFqytdtQ8jQL+dLkwQLr028eF2QNyb1iFCfWYgAN2/TQJD7RKwBgzkhg2OUGr9fL4LE
+         Ko6vFdHvVYQB7I2t60IuPFcYc+Yl0CqYrOyc8TrTZUg4Yep9YNIq8Hdec47gZigfWWWY
+         5iEqooXjdsMcAQcwQKM145JxiqqB5uu1NXRzFwmXdcdfeg5G/vgQyNQ1tQ8LxfqJ6zPW
+         3IT7FQLXRkFqZsC5QLLsQ80X33fotEWfLBX8UwmSNKaXWoONqMhMSFT1Y3dkoTyVmudB
+         Y7rw==
+X-Gm-Message-State: AOAM532KHkPeKF+DRdBKD4r3O7QggsrPyq/tJ2p8GQvTnPDej3CHlYCo
+        idc06luBqpjUUe2F/rWOPUU=
+X-Google-Smtp-Source: ABdhPJzpC59BuAnXFlgkDpWoDCbUH8H2Ug5AMUQQO3WqUefsyf5wUAv8yEorWyaV4YgvzGvawPvwPQ==
+X-Received: by 2002:a17:902:7896:: with SMTP id q22mr29894001pll.237.1593020644480;
+        Wed, 24 Jun 2020 10:44:04 -0700 (PDT)
+Received: from varodek.iballbatonwifi.com ([103.105.153.57])
+        by smtp.gmail.com with ESMTPSA id b71sm11079297pfb.125.2020.06.24.10.44.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 24 Jun 2020 10:44:03 -0700 (PDT)
+From:   Vaibhav Gupta <vaibhavgupta40@gmail.com>
+To:     Bjorn Helgaas <helgaas@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>, bjorn@helgaas.com,
+        "David S. Miller" <davem@davemloft.net>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Vaibhav Gupta <vaibhav.varodek@gmail.com>
+Cc:     Vaibhav Gupta <vaibhavgupta40@gmail.com>,
+        linux-kernel@vger.kernel.org,
+        linux-kernel-mentees@lists.linuxfoundation.org,
+        skhan@linuxfoundation.org, netdev@vger.kernel.org,
+        linux-wireless@vger.kernel.org
+Subject: [PATCH v1] orinoco: use generic power management
+Date:   Wed, 24 Jun 2020 23:10:49 +0530
+Message-Id: <20200624174048.64754-1-vaibhavgupta40@gmail.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-U3luYyBmcm9tIFNESyB0byB1cGRhdGUgSEUgY2FwYWJpbGl0aWVzLg0KDQpTaWduZWQtb2ZmLWJ5
-OiBSeWRlciBMZWUgPHJ5ZGVyLmxlZUBtZWRpYXRlay5jb20+DQotLS0NCiAuLi4vbmV0L3dpcmVs
-ZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1L2luaXQuYyAgfCA0NCArKysrKysrKysrKy0tLS0tLS0t
-DQogMSBmaWxlIGNoYW5nZWQsIDI2IGluc2VydGlvbnMoKyksIDE4IGRlbGV0aW9ucygtKQ0KDQpk
-aWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvaW5p
-dC5jIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvaW5pdC5jDQpp
-bmRleCAzYTEwYmJlMGUyZGUuLmQxMDJkMTc2NTc1MSAxMDA2NDQNCi0tLSBhL2RyaXZlcnMvbmV0
-L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1L2luaXQuYw0KKysrIGIvZHJpdmVycy9uZXQv
-d2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvaW5pdC5jDQpAQCAtNDI0LDExICs0MjQsNiBA
-QCBtdDc5MTVfaW5pdF9oZV9jYXBzKHN0cnVjdCBtdDc5MTVfcGh5ICpwaHksIGVudW0gbmw4MDIx
-MV9iYW5kIGJhbmQsDQogDQogCQloZV9jYXBfZWxlbS0+bWFjX2NhcF9pbmZvWzBdID0NCiAJCQlJ
-RUVFODAyMTFfSEVfTUFDX0NBUDBfSFRDX0hFOw0KLQkJaGVfY2FwX2VsZW0tPm1hY19jYXBfaW5m
-b1sxXSA9DQotCQkJSUVFRTgwMjExX0hFX01BQ19DQVAxX1RGX01BQ19QQURfRFVSXzBVUyB8DQot
-CQkJSUVFRTgwMjExX0hFX01BQ19DQVAxX01VTFRJX1RJRF9BR0dfUlhfUU9TXzE7DQotCQloZV9j
-YXBfZWxlbS0+bWFjX2NhcF9pbmZvWzJdID0NCi0JCQlJRUVFODAyMTFfSEVfTUFDX0NBUDJfQlNS
-Ow0KIAkJaGVfY2FwX2VsZW0tPm1hY19jYXBfaW5mb1szXSA9DQogCQkJSUVFRTgwMjExX0hFX01B
-Q19DQVAzX09NSV9DT05UUk9MIHwNCiAJCQlJRUVFODAyMTFfSEVfTUFDX0NBUDNfTUFYX0FNUERV
-X0xFTl9FWFBfUkVTRVJWRUQ7DQpAQCAtNDUwLDI3ICs0NDUsMjcgQEAgbXQ3OTE1X2luaXRfaGVf
-Y2FwcyhzdHJ1Y3QgbXQ3OTE1X3BoeSAqcGh5LCBlbnVtIG5sODAyMTFfYmFuZCBiYW5kLA0KIAkJ
-CUlFRUU4MDIxMV9IRV9QSFlfQ0FQMl9TVEJDX1RYX1VOREVSXzgwTUhaIHwNCiAJCQlJRUVFODAy
-MTFfSEVfUEhZX0NBUDJfU1RCQ19SWF9VTkRFUl84ME1IWjsNCiANCi0JCS8qIFRPRE86IE9GRE1B
-ICovDQotDQogCQlzd2l0Y2ggKGkpIHsNCiAJCWNhc2UgTkw4MDIxMV9JRlRZUEVfQVA6DQogCQkJ
-aGVfY2FwX2VsZW0tPm1hY19jYXBfaW5mb1swXSB8PQ0KIAkJCQlJRUVFODAyMTFfSEVfTUFDX0NB
-UDBfVFdUX1JFUzsNCisJCQloZV9jYXBfZWxlbS0+bWFjX2NhcF9pbmZvWzJdIHw9DQorCQkJCUlF
-RUU4MDIxMV9IRV9NQUNfQ0FQMl9CU1I7DQogCQkJaGVfY2FwX2VsZW0tPm1hY19jYXBfaW5mb1s0
-XSB8PQ0KIAkJCQlJRUVFODAyMTFfSEVfTUFDX0NBUDRfQlFSOw0KKwkJCWhlX2NhcF9lbGVtLT5t
-YWNfY2FwX2luZm9bNV0gfD0NCisJCQkJSUVFRTgwMjExX0hFX01BQ19DQVA1X09NX0NUUkxfVUxf
-TVVfREFUQV9ESVNfUlg7DQogCQkJaGVfY2FwX2VsZW0tPnBoeV9jYXBfaW5mb1szXSB8PQ0KIAkJ
-CQlJRUVFODAyMTFfSEVfUEhZX0NBUDNfRENNX01BWF9DT05TVF9UWF9RUFNLIHwNCiAJCQkJSUVF
-RTgwMjExX0hFX1BIWV9DQVAzX0RDTV9NQVhfQ09OU1RfUlhfUVBTSzsNCiAJCQloZV9jYXBfZWxl
-bS0+cGh5X2NhcF9pbmZvWzZdIHw9DQogCQkJCUlFRUU4MDIxMV9IRV9QSFlfQ0FQNl9QUEVfVEhS
-RVNIT0xEX1BSRVNFTlQ7DQotCQkJaGVfY2FwX2VsZW0tPnBoeV9jYXBfaW5mb1s5XSB8PQ0KLQkJ
-CQlJRUVFODAyMTFfSEVfUEhZX0NBUDlfUlhfMTAyNF9RQU1fTEVTU19USEFOXzI0Ml9UT05FX1JV
-Ow0KIAkJCWJyZWFrOw0KIAkJY2FzZSBOTDgwMjExX0lGVFlQRV9TVEFUSU9OOg0KIAkJCWhlX2Nh
-cF9lbGVtLT5tYWNfY2FwX2luZm9bMF0gfD0NCiAJCQkJSUVFRTgwMjExX0hFX01BQ19DQVAwX1RX
-VF9SRVE7DQotCQkJaGVfY2FwX2VsZW0tPm1hY19jYXBfaW5mb1szXSB8PQ0KLQkJCQlJRUVFODAy
-MTFfSEVfTUFDX0NBUDNfRkxFWF9UV1RfU0NIRUQ7DQorCQkJaGVfY2FwX2VsZW0tPm1hY19jYXBf
-aW5mb1sxXSB8PQ0KKwkJCQlJRUVFODAyMTFfSEVfTUFDX0NBUDFfVEZfTUFDX1BBRF9EVVJfMTZV
-UzsNCiANCiAJCQlpZiAoYmFuZCA9PSBOTDgwMjExX0JBTkRfMkdIWikNCiAJCQkJaGVfY2FwX2Vs
-ZW0tPnBoeV9jYXBfaW5mb1swXSB8PQ0KQEAgLTQ4MCwxOCArNDc1LDMxIEBAIG10NzkxNV9pbml0
-X2hlX2NhcHMoc3RydWN0IG10NzkxNV9waHkgKnBoeSwgZW51bSBubDgwMjExX2JhbmQgYmFuZCwN
-CiAJCQkJCUlFRUU4MDIxMV9IRV9QSFlfQ0FQMF9DSEFOTkVMX1dJRFRIX1NFVF9SVV9NQVBQSU5H
-X0lOXzVHOw0KIA0KIAkJCWhlX2NhcF9lbGVtLT5waHlfY2FwX2luZm9bMV0gfD0NCi0JCQkJSUVF
-RTgwMjExX0hFX1BIWV9DQVAxX0RFVklDRV9DTEFTU19BOw0KKwkJCQlJRUVFODAyMTFfSEVfUEhZ
-X0NBUDFfREVWSUNFX0NMQVNTX0EgfA0KKwkJCQlJRUVFODAyMTFfSEVfUEhZX0NBUDFfSEVfTFRG
-X0FORF9HSV9GT1JfSEVfUFBEVVNfMF84VVM7DQorCQkJaGVfY2FwX2VsZW0tPnBoeV9jYXBfaW5m
-b1szXSB8PQ0KKwkJCQlJRUVFODAyMTFfSEVfUEhZX0NBUDNfRENNX01BWF9DT05TVF9UWF9RUFNL
-IHwNCisJCQkJSUVFRTgwMjExX0hFX1BIWV9DQVAzX0RDTV9NQVhfQ09OU1RfUlhfUVBTSzsNCisJ
-CQloZV9jYXBfZWxlbS0+cGh5X2NhcF9pbmZvWzZdIHw9DQorCQkJCUlFRUU4MDIxMV9IRV9QSFlf
-Q0FQNl9UUklHX0NRSV9GQiB8DQorCQkJCUlFRUU4MDIxMV9IRV9QSFlfQ0FQNl9QQVJUSUFMX0JX
-X0VYVF9SQU5HRSB8DQorCQkJCUlFRUU4MDIxMV9IRV9QSFlfQ0FQNl9QUEVfVEhSRVNIT0xEX1BS
-RVNFTlQ7DQorCQkJaGVfY2FwX2VsZW0tPnBoeV9jYXBfaW5mb1s3XSB8PQ0KKwkJCQlJRUVFODAy
-MTFfSEVfUEhZX0NBUDdfUE9XRVJfQk9PU1RfRkFDVE9SX0FSIHwNCisJCQkJSUVFRTgwMjExX0hF
-X1BIWV9DQVA3X0hFX1NVX01VX1BQRFVfNFhMVEZfQU5EXzA4X1VTX0dJOw0KIAkJCWhlX2NhcF9l
-bGVtLT5waHlfY2FwX2luZm9bOF0gfD0NCiAJCQkJSUVFRTgwMjExX0hFX1BIWV9DQVA4XzIwTUha
-X0lOXzQwTUhaX0hFX1BQRFVfSU5fMkcgfA0KIAkJCQlJRUVFODAyMTFfSEVfUEhZX0NBUDhfMjBN
-SFpfSU5fMTYwTUhaX0hFX1BQRFUgfA0KLQkJCQlJRUVFODAyMTFfSEVfUEhZX0NBUDhfODBNSFpf
-SU5fMTYwTUhaX0hFX1BQRFU7DQorCQkJCUlFRUU4MDIxMV9IRV9QSFlfQ0FQOF84ME1IWl9JTl8x
-NjBNSFpfSEVfUFBEVSB8DQorCQkJCUlFRUU4MDIxMV9IRV9QSFlfQ0FQOF9EQ01fTUFYX1JVXzQ4
-NDsNCiAJCQloZV9jYXBfZWxlbS0+cGh5X2NhcF9pbmZvWzldIHw9DQotCQkJCUlFRUU4MDIxMV9I
-RV9QSFlfQ0FQOV9UWF8xMDI0X1FBTV9MRVNTX1RIQU5fMjQyX1RPTkVfUlU7DQorCQkJCUlFRUU4
-MDIxMV9IRV9QSFlfQ0FQOV9MT05HRVJfVEhBTl8xNl9TSUdCX09GRE1fU1lNIHwNCisJCQkJSUVF
-RTgwMjExX0hFX1BIWV9DQVA5X05PTl9UUklHR0VSRURfQ1FJX0ZFRURCQUNLIHwNCisJCQkJSUVF
-RTgwMjExX0hFX1BIWV9DQVA5X1RYXzEwMjRfUUFNX0xFU1NfVEhBTl8yNDJfVE9ORV9SVSB8DQor
-CQkJCUlFRUU4MDIxMV9IRV9QSFlfQ0FQOV9SWF8xMDI0X1FBTV9MRVNTX1RIQU5fMjQyX1RPTkVf
-UlUgfA0KKwkJCQlJRUVFODAyMTFfSEVfUEhZX0NBUDlfUlhfRlVMTF9CV19TVV9VU0lOR19NVV9X
-SVRIX0NPTVBfU0lHQiB8DQorCQkJCUlFRUU4MDIxMV9IRV9QSFlfQ0FQOV9SWF9GVUxMX0JXX1NV
-X1VTSU5HX01VX1dJVEhfTk9OX0NPTVBfU0lHQjsNCiAJCQlicmVhazsNCi0jaWZkZWYgQ09ORklH
-X01BQzgwMjExX01FU0gNCi0JCWNhc2UgTkw4MDIxMV9JRlRZUEVfTUVTSF9QT0lOVDoNCi0JCQli
-cmVhazsNCi0jZW5kaWYNCiAJCX0NCiANCiAJCWhlX21jcy0+cnhfbWNzXzgwID0gY3B1X3RvX2xl
-MTYobWNzX21hcCk7DQotLSANCjIuMTguMA0K
+With the support of generic PM callbacks, drivers no longer need to use
+legacy .suspend() and .resume() in which they had to maintain PCI states
+changes and device's power state themselves. The required operations are
+done by PCI core.
+
+PCI drivers are not expected to invoke PCI helper functions like
+pci_save/restore_state(), pci_enable/disable_device(),
+pci_set_power_state(), etc. Their tasks are completed by PCI core itself.
+
+Compile-tested only.
+
+Signed-off-by: Vaibhav Gupta <vaibhavgupta40@gmail.com>
+---
+ .../intersil/orinoco/orinoco_nortel.c         |  3 +-
+ .../wireless/intersil/orinoco/orinoco_pci.c   |  3 +-
+ .../wireless/intersil/orinoco/orinoco_pci.h   | 32 ++++++-------------
+ .../wireless/intersil/orinoco/orinoco_plx.c   |  3 +-
+ .../wireless/intersil/orinoco/orinoco_tmd.c   |  3 +-
+ 5 files changed, 13 insertions(+), 31 deletions(-)
+
+diff --git a/drivers/net/wireless/intersil/orinoco/orinoco_nortel.c b/drivers/net/wireless/intersil/orinoco/orinoco_nortel.c
+index 048693b6c6c2..96a03d10a080 100644
+--- a/drivers/net/wireless/intersil/orinoco/orinoco_nortel.c
++++ b/drivers/net/wireless/intersil/orinoco/orinoco_nortel.c
+@@ -290,8 +290,7 @@ static struct pci_driver orinoco_nortel_driver = {
+ 	.id_table	= orinoco_nortel_id_table,
+ 	.probe		= orinoco_nortel_init_one,
+ 	.remove		= orinoco_nortel_remove_one,
+-	.suspend	= orinoco_pci_suspend,
+-	.resume		= orinoco_pci_resume,
++	.driver.pm	= &orinoco_pci_pm_ops,
+ };
+ 
+ static char version[] __initdata = DRIVER_NAME " " DRIVER_VERSION
+diff --git a/drivers/net/wireless/intersil/orinoco/orinoco_pci.c b/drivers/net/wireless/intersil/orinoco/orinoco_pci.c
+index 4938a2208a37..f3c86b07b1b9 100644
+--- a/drivers/net/wireless/intersil/orinoco/orinoco_pci.c
++++ b/drivers/net/wireless/intersil/orinoco/orinoco_pci.c
+@@ -230,8 +230,7 @@ static struct pci_driver orinoco_pci_driver = {
+ 	.id_table	= orinoco_pci_id_table,
+ 	.probe		= orinoco_pci_init_one,
+ 	.remove		= orinoco_pci_remove_one,
+-	.suspend	= orinoco_pci_suspend,
+-	.resume		= orinoco_pci_resume,
++	.driver.pm	= &orinoco_pci_pm_ops,
+ };
+ 
+ static char version[] __initdata = DRIVER_NAME " " DRIVER_VERSION
+diff --git a/drivers/net/wireless/intersil/orinoco/orinoco_pci.h b/drivers/net/wireless/intersil/orinoco/orinoco_pci.h
+index 43f5b9f5a0b0..d49d940864b4 100644
+--- a/drivers/net/wireless/intersil/orinoco/orinoco_pci.h
++++ b/drivers/net/wireless/intersil/orinoco/orinoco_pci.h
+@@ -18,51 +18,37 @@ struct orinoco_pci_card {
+ 	void __iomem *attr_io;
+ };
+ 
+-#ifdef CONFIG_PM
+-static int orinoco_pci_suspend(struct pci_dev *pdev, pm_message_t state)
++static int __maybe_unused orinoco_pci_suspend(struct device *dev_d)
+ {
++	struct pci_dev *pdev = to_pci_dev(dev_d);
+ 	struct orinoco_private *priv = pci_get_drvdata(pdev);
+ 
+ 	orinoco_down(priv);
+ 	free_irq(pdev->irq, priv);
+-	pci_save_state(pdev);
+-	pci_disable_device(pdev);
+-	pci_set_power_state(pdev, PCI_D3hot);
+ 
+ 	return 0;
+ }
+ 
+-static int orinoco_pci_resume(struct pci_dev *pdev)
++static int __maybe_unused orinoco_pci_resume(struct device *dev_d)
+ {
++	struct pci_dev *pdev = to_pci_dev(dev_d);
+ 	struct orinoco_private *priv = pci_get_drvdata(pdev);
+ 	struct net_device *dev = priv->ndev;
+ 	int err;
+ 
+-	pci_set_power_state(pdev, PCI_D0);
+-	err = pci_enable_device(pdev);
+-	if (err) {
+-		printk(KERN_ERR "%s: pci_enable_device failed on resume\n",
+-		       dev->name);
+-		return err;
+-	}
+-	pci_restore_state(pdev);
+-
+ 	err = request_irq(pdev->irq, orinoco_interrupt, IRQF_SHARED,
+ 			  dev->name, priv);
+ 	if (err) {
+ 		printk(KERN_ERR "%s: cannot re-allocate IRQ on resume\n",
+ 		       dev->name);
+-		pci_disable_device(pdev);
+ 		return -EBUSY;
+ 	}
+ 
+-	err = orinoco_up(priv);
+-
+-	return err;
++	return orinoco_up(priv);
+ }
+-#else
+-#define orinoco_pci_suspend NULL
+-#define orinoco_pci_resume NULL
+-#endif
++
++static SIMPLE_DEV_PM_OPS(orinoco_pci_pm_ops,
++			 orinoco_pci_suspend,
++			 orinoco_pci_resume);
+ 
+ #endif /* _ORINOCO_PCI_H */
+diff --git a/drivers/net/wireless/intersil/orinoco/orinoco_plx.c b/drivers/net/wireless/intersil/orinoco/orinoco_plx.c
+index 221352027779..16dada94c774 100644
+--- a/drivers/net/wireless/intersil/orinoco/orinoco_plx.c
++++ b/drivers/net/wireless/intersil/orinoco/orinoco_plx.c
+@@ -336,8 +336,7 @@ static struct pci_driver orinoco_plx_driver = {
+ 	.id_table	= orinoco_plx_id_table,
+ 	.probe		= orinoco_plx_init_one,
+ 	.remove		= orinoco_plx_remove_one,
+-	.suspend	= orinoco_pci_suspend,
+-	.resume		= orinoco_pci_resume,
++	.driver.pm	= &orinoco_pci_pm_ops,
+ };
+ 
+ static char version[] __initdata = DRIVER_NAME " " DRIVER_VERSION
+diff --git a/drivers/net/wireless/intersil/orinoco/orinoco_tmd.c b/drivers/net/wireless/intersil/orinoco/orinoco_tmd.c
+index 20ce569b8a43..9a9d335611ac 100644
+--- a/drivers/net/wireless/intersil/orinoco/orinoco_tmd.c
++++ b/drivers/net/wireless/intersil/orinoco/orinoco_tmd.c
+@@ -213,8 +213,7 @@ static struct pci_driver orinoco_tmd_driver = {
+ 	.id_table	= orinoco_tmd_id_table,
+ 	.probe		= orinoco_tmd_init_one,
+ 	.remove		= orinoco_tmd_remove_one,
+-	.suspend	= orinoco_pci_suspend,
+-	.resume		= orinoco_pci_resume,
++	.driver.pm	= &orinoco_pci_pm_ops,
+ };
+ 
+ static char version[] __initdata = DRIVER_NAME " " DRIVER_VERSION
+-- 
+2.27.0
 
