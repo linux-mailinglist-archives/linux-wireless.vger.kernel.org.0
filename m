@@ -2,141 +2,215 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F6E5206BE8
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jun 2020 07:45:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 92D92206ECD
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jun 2020 10:16:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388470AbgFXFph (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 24 Jun 2020 01:45:37 -0400
-Received: from mail-dm6nam10on2117.outbound.protection.outlook.com ([40.107.93.117]:49728
-        "EHLO NAM10-DM6-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726133AbgFXFph (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 24 Jun 2020 01:45:37 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=TV/Xhe497hRrVB9MJud4AKYmDbJRoxqKkLmwq+Iq1j+smyKs4vSSzpmc4oeymbKXNsjVXJVYeaJ4RDrZiBNMIWqTdQX5M3wgtjIFXrzYGrf5PSjFuVUxmy0smbLwUMoiJuSzsVbeykT2RME5Zm2SpYH8mFax6s1UBe+8oalT98DUl1yoAJeC2ej5Cv1+Imz9viud3a2q+MUnEhaL8oJwlxENGEzgehMydY4cgig1qn70/Wh7G0riGyp9Rbph5d4m2P7a7jp6XwggOgUpnWgheg4uB91QWA3muaAcYeODuh/NV+AUjo+VnIihEKuBQUNnWWmzsgTqZpMvz3/xxSno8A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=BOpu3SCmk8RH9MxTQOa0ebjHLZPmK4OiYd7pso2JHRM=;
- b=BYAsA8DORCBQpQz2zoHTCClr/qufb69X87A/1MKQsJDeE4S/JH8WjzRnfJ963fMNOVZkrUXGyWdtJTia0yjkB+swtFOilSXHMlu+3EmHex2kGmBAoIPUWOD8W9KKO7reeqG6gb+fNuiCrP7u+l+I8psQowVTNWMtn+FubNi00AgmBx41aUjEBOs+T431MAgVSYwIedWf1WLD0DkSXhm7AutKK8AhuT1aO3H30gpue3XldBaELCppQdi0zGdEpIRF8qqRn+OORjlgyajRRsN0kc3QUGtHdZunDkXLivR/8ZEf+2IfozGrF5aBOhmxNaWT+avc4c+GszBFzomriz4V+w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=cypress.com; dmarc=pass action=none header.from=cypress.com;
- dkim=pass header.d=cypress.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cypress.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=BOpu3SCmk8RH9MxTQOa0ebjHLZPmK4OiYd7pso2JHRM=;
- b=WIKddf9WY8DwrsNSRUO37+kR/vJhml5t3xMh12JdDANs2pk5pWaMlEGYrIQ0J3ll+pxXd11ZuHDhPud2sZV2hf25gCXVZj1Mwo5pvRKjvMYUV8diJ6Ut4KyvTmEugK5Yly4wpWIgl3tSrcG4eyv0EUpTtC1fy8/JQtH7dtCE5ns=
-Authentication-Results: cypress.com; dkim=none (message not signed)
- header.d=none;cypress.com; dmarc=none action=none header.from=cypress.com;
-Received: from BN8PR06MB5889.namprd06.prod.outlook.com (2603:10b6:408:c2::25)
- by BN7PR06MB3924.namprd06.prod.outlook.com (2603:10b6:406:8a::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3109.22; Wed, 24 Jun
- 2020 05:45:34 +0000
-Received: from BN8PR06MB5889.namprd06.prod.outlook.com
- ([fe80::ed59:825d:5fdf:dd3e]) by BN8PR06MB5889.namprd06.prod.outlook.com
- ([fe80::ed59:825d:5fdf:dd3e%3]) with mapi id 15.20.3131.021; Wed, 24 Jun 2020
- 05:45:34 +0000
-Subject: Re: [PATCH 2/2] brcmfmac: Set pacing shift before transmitting skb to
- bus
-To:     Arend Van Spriel <arend.vanspriel@broadcom.com>,
-        linux-wireless@vger.kernel.org
-Cc:     brcm80211-dev-list@broadcom.com, brcm80211-dev-list@cypress.com,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Kalle Valo <kvalo@codeaurora.org>, chi-hsien.lin@cypress.com
-References: <20200622020721.498-1-wright.feng@cypress.com>
- <20200622020721.498-3-wright.feng@cypress.com>
- <83f89386-f5ae-91ef-d135-a1a0c9a55acb@broadcom.com>
-From:   Wright Feng <wright.feng@cypress.com>
-Message-ID: <c709a13d-d822-4f51-fc56-612a6fb1aebf@cypress.com>
-Date:   Wed, 24 Jun 2020 13:45:25 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.9.0
-In-Reply-To: <83f89386-f5ae-91ef-d135-a1a0c9a55acb@broadcom.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: BY5PR20CA0021.namprd20.prod.outlook.com
- (2603:10b6:a03:1f4::34) To BN8PR06MB5889.namprd06.prod.outlook.com
- (2603:10b6:408:c2::25)
+        id S2388906AbgFXIQP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 24 Jun 2020 04:16:15 -0400
+Received: from mailout1.w1.samsung.com ([210.118.77.11]:52790 "EHLO
+        mailout1.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388048AbgFXIQO (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 24 Jun 2020 04:16:14 -0400
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+        by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20200624081611euoutp01537180a859292b0c073d831d2b55e9ad~bbNi2URUA1103511035euoutp01S;
+        Wed, 24 Jun 2020 08:16:11 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20200624081611euoutp01537180a859292b0c073d831d2b55e9ad~bbNi2URUA1103511035euoutp01S
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1592986571;
+        bh=EHndB5QzgamLkOVrkzrSmd1+bAEHOFM//FEnnR45Bo4=;
+        h=Subject:To:Cc:From:Date:In-Reply-To:References:From;
+        b=Ttjv3W55vyImYB59xCPQGIkn8zbRLXBGasQGUJiz/6sVRQB/SP1QXjVJV0rckcjIA
+         DzXxc/v4LaHLIL3c/8BbMl1q6vOp/OqLyPvixrG6e7B85XhSnhZ0nQBi0A7oVwzy0v
+         fSncipZy8duCvq/9fJ6GPWB8OH792pT13dKUEuTA=
+Received: from eusmges2new.samsung.com (unknown [203.254.199.244]) by
+        eucas1p2.samsung.com (KnoxPortal) with ESMTP id
+        20200624081611eucas1p226b8963e5ae702345134f941d6b96727~bbNisDFHe0174401744eucas1p2H;
+        Wed, 24 Jun 2020 08:16:11 +0000 (GMT)
+Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
+        eusmges2new.samsung.com (EUCPMTA) with SMTP id 86.DD.05997.ACB03FE5; Wed, 24
+        Jun 2020 09:16:10 +0100 (BST)
+Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
+        eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+        20200624081610eucas1p1fb83289f3916bf59400b2ea737c124d1~bbNiOoyMc2767127671eucas1p1U;
+        Wed, 24 Jun 2020 08:16:10 +0000 (GMT)
+Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
+        eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
+        20200624081610eusmtrp1ab30ef185830ae9fc608a966fd014c18~bbNiNZNoB3260232602eusmtrp1X;
+        Wed, 24 Jun 2020 08:16:10 +0000 (GMT)
+X-AuditID: cbfec7f4-65dff7000000176d-3a-5ef30bcaa20a
+Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
+        eusmgms2.samsung.com (EUCPMTA) with SMTP id 67.73.06017.ACB03FE5; Wed, 24
+        Jun 2020 09:16:10 +0100 (BST)
+Received: from [106.120.51.71] (unknown [106.120.51.71]) by
+        eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+        20200624081608eusmtip1aca323a1e91aaac71dd2e364feb4b059~bbNgn-YNL1894018940eusmtip1J;
+        Wed, 24 Jun 2020 08:16:08 +0000 (GMT)
+Subject: Re: [PATCH v4 01/11] acpi: thermal: Fix error handling in the
+ register function
+To:     Andrzej Pietrasiewicz <andrzej.p@collabora.com>
+Cc:     linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
+        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-renesas-soc@vger.kernel.org,
+        linux-rockchip@lists.infradead.org,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Vishal Kulkarni <vishal@chelsio.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jiri Pirko <jiri@mellanox.com>,
+        Ido Schimmel <idosch@mellanox.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        Intel Linux Wireless <linuxwifi@intel.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Peter Kaestle <peter@piie.net>,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Sebastian Reichel <sre@kernel.org>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Amit Kucheria <amit.kucheria@verdurent.com>,
+        Support Opensource <support.opensource@diasemi.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        =?UTF-8?Q?Niklas_S=c3=b6derlund?= <niklas.soderlund@ragnatech.se>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Orson Zhai <orsonzhai@gmail.com>,
+        Baolin Wang <baolin.wang7@gmail.com>,
+        Chunyan Zhang <zhang.lyra@gmail.com>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Allison Randal <allison@lohutok.net>,
+        Enrico Weigelt <info@metux.net>,
+        Gayatri Kammela <gayatri.kammela@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>, kernel@collabora.com
+From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Message-ID: <ecaae46b-5ba5-3c08-2451-34d0dba46143@samsung.com>
+Date:   Wed, 24 Jun 2020 10:16:07 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+        Thunderbird/60.8.0
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from [10.9.112.16] (61.222.14.99) by BY5PR20CA0021.namprd20.prod.outlook.com (2603:10b6:a03:1f4::34) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3131.20 via Frontend Transport; Wed, 24 Jun 2020 05:45:31 +0000
-X-Originating-IP: [61.222.14.99]
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-HT: Tenant
-X-MS-Office365-Filtering-Correlation-Id: f1e133c5-c395-41aa-fc9f-08d81801cff5
-X-MS-TrafficTypeDiagnostic: BN7PR06MB3924:
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <BN7PR06MB3924F22ACB401A5222D295ACFB950@BN7PR06MB3924.namprd06.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:5236;
-X-Forefront-PRVS: 0444EB1997
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 0BszFF6qwDyP1mmK1bnRxUjmcSw7ylMGKPmK7ZAUBujQhISYiTloOe35hrRSldjWmr/rODwOfn1b1TRyDLYCS9pHaAVv4A1QYhIIDllZ+/oVlKVjZpP/KTviZmH/jkRRFSgZusKvVd1fj26kuZG8KwEN/qh4/JL/Ajghb0dFFm0nnIJwxIS02HGQrMBVYtK8gFdI+z1I6jquRO/vKEuejY+xPPbBUsoiHFQm6CzA6YSNfHRM1r0Bx0EkSDcFCWe1vTZTNnWl0L1iLbOkK2oVxj+HzIsyzUJ0nhmmI8VGxZuzoUtmz/n8sqXPc6fEe0yDxrQuQSECmtc1pJ0EebHl1x+gHyKmoSwsy9kj6pfCbmRpZlGmCYBVaF8ECywxVzaf
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN8PR06MB5889.namprd06.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(396003)(39860400002)(366004)(376002)(136003)(346002)(107886003)(6486002)(83380400001)(8676002)(2906002)(31686004)(478600001)(6666004)(5660300002)(52116002)(16526019)(53546011)(26005)(54906003)(186003)(16576012)(66946007)(66556008)(316002)(66476007)(8936002)(86362001)(956004)(4326008)(44832011)(36756003)(31696002)(2616005)(43740500002);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData: 3JViyj2Y4J+7qVNZwTWv45RRGBVEn7fqpsawqT6qspi/eHRHCfxrriSB6IyexLEBEnTPbnl6xgazra4m43noPRHptVz2Rq1/73IxOb3lP48gsTzzr2V1kch9AUBjC1WENNPCgCFKaFQG1Fv3jkRAsjHAs99Q73Q28iqvijsi1U3H4+pe5KkAFoyiFCg5BQyG0LFHi0CUgrtGd9/ABpES/yJp6u/TefJqbtk40Hkv0+S/tcJTfg/3F8nCQefZnlX/DyJxq0/rRplMfo/agK7N9ggZUvXncwbh6B3ODUEH7ak/NQKvR5O8Bu9d03pqE+QHfINlz2CQ7FBiNuNq+rH8IS6wGeicLt/eiYxeE4rMTLeVDQot/FHRRMErgyH7rulOYODvkPTt7ANMsykHPf1I6DJmWIKmcdWRba5phDKgGBc+kZUr0UmbpT3tCvdcItt7DVGfXVRc+AFmDPLuSiTJ2Kw+ea7IDWngvnu8U29YZek=
-X-OriginatorOrg: cypress.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f1e133c5-c395-41aa-fc9f-08d81801cff5
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jun 2020 05:45:33.9901
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 011addfc-2c09-450d-8938-e0bbc2dd2376
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: g9MOIettDzu8rLdEKsU+Dw7+eoLejmGwEcuBQeKMdMcw2pQXQNauND4ExhC4/6W0uBkVHfQobFZWeQI3ZEG/Rw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN7PR06MB3924
+In-Reply-To: <20200528192051.28034-2-andrzej.p@collabora.com>
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA02TbUxTZxTH89x7e9syyi5F7BO2xaVxMzMT3NzYiaLRwYf7bX5Uoow6bpBI
+        q2uhTGUbkvHWKeMlglZ0KMa+oBsWKBSQELrJsFLBZagbb1VAcJa3diIOytpeyPj2O/9z/s//
+        nA+PiJSWCKNEaaoMTq1SpMvpEMp6e8G55c5rnqStvvE4MP3mo2DeuUDAtSdDFJSdWybh5ikX
+        AZc8b0HVve8o0F3eCnnWQQG4/vgM8j3nKFh+/Le/6oiHR6daCaia0MJjo14I9c7TAjCftVFw
+        xXSZBpvLTYOh/QcElif9AtC9MpHgOfMLgsbJKQLmRvxBz40DQiiqL0Vgb6wmwF7QLoDb1euh
+        q6JYAJUzFxD09h6A2rYJEu467gtg1FVMw1KThYKJBhk4WjPgVl4fCfWWsyT0V3soMIy0CHe/
+        z166fpIda64SsL8XnyHY5sGriG0wPSJY41wMa9MPCtl642a2pm2SYC3mIpod6G+j2Smn069f
+        /ZadfT4qZMcr7QRbMuOm9+LEkLgULj1Ny6ljdiWHHK7puUEdmw37auGeF+WgilAdEosw8xEu
+        KHwg1KEQkZQxItxtOY/4wovwsO+ZgC88CHfmPiRWLc4cCxVgKWNAeMhE8ENuhG858oONCCYR
+        T04VBXkdsw0vWN3BDJLRSbD7absw0KCZ7bi0wIwCLGF24daCf+kAU8w72Do/HtQjmX14bsQu
+        4GfCcff50eCjYmYnrmj8PrgRycjwn6M/rvAG3OSuIgNhmHkhxqXTdppfOwFb/xmjeI7Az7oa
+        hDy/iR3lpyne8BPCS4UTK+4mhA3lvhX3DjzgfOVnkT/iPfxzSwwv78FN5psoIGMmDD90h/NL
+        hOEyayXJyxJcmC/lp9/Fddfq6NVYnc1EliC5fs1p+jXn6Neco/8/txpRZiTjMjXKVE7zoYrL
+        itYolJpMVWr0F0eVFuT/Jw5fl7cZtSwe6kSMCMlDJXUjs0lSgUKrOa7sRFhEytdJPu1xJEkl
+        KYrjJzj10c/VmemcphO9IaLkMsm2K5MHpUyqIoM7wnHHOPVqlxCJo3JQdF+WzHN/w+t7cvfP
+        fD12JDbP21OjiPjypUqzsTd7i/TF3evDF3Ofbu84WGUafvDJ9F9LsPOiNSFRHDpkOZB2qFeb
+        Ipo+ERepXVbGRyVIyy/seNnVXbup4U7H7vbYt5cM2b747CnvRl+ycn/Wx2G28Njkxb4yV23z
+        N+W/zp/0rY/cuyinNIcVH2wm1RrFf9z+H0sjBAAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA02SfUxTVxiHd+69vS1il7OC4wRFXRNCNFuxXLAvBrtFY7zxD1lmtiyO4Tq4
+        AzJKTW9p5kwUpwh0yocG0K5BkG5C12Wu5aMMZrQssg0twrJmEFn46AhEacCaGLYObMEl/Pc7
+        v/M8581JXhmtaGETZUUlJsFYoitWshuYweWB8Td+iw3l7vrTsxnaf1lm4JlviYJvpv9i4NKV
+        FRp+ODNJQVMoCWxD5xiwtOyC8q5xCUz+kQ3nQ1cYWJl6FDnd3g+jZ3opsM2aYarNKgW374IE
+        HPU9DFxvb2GhZ3KehRu3ahC4pv0SsPzTTkPo4s8IOueCFDyZiAx63PZQClXuOgT9nc0U9Ffc
+        ksDd5ldhoKFaAo0LXyF48CAHvu2bpeHe4IgEApPVLPzX7WJgtiMBBntN8FP5MA1uVz0N/uYQ
+        AzcmfpS+9Trf5DzJ/+2xSfjfqy9SvGfcjviO9lGKb3uSyvdYx6W8u20n39o3R/EuRxXLP/T3
+        sXzQ54v09tP84uOAlJ9p7Kf42oV59m1yVJVlNJSahO2FBtG0V/mBGtJU6kxQpaVnqtSc5sM9
+        aRnKVG1WvlBcZBaMqdqPVIWt979jji++/NnS0FNUhho2WlCMjOB04itzMdGswF8jcu2LTyxI
+        Fum3kIHvzWtIHAn7LawFbYggjxCpnHJKoxdx+CiZC1atuvGYI0td89IoRONqOemdcUrXjHKK
+        eIa9VJRi8R5SV+FA0SzHWtJb8S8bzQxOJl3PZlb7Tfh90u+xvmBeIb9eDaxOiMF7SUPnl6vv
+        0DiFhJtG6LWcQMYC117020j3vI2uRQrrOt26TrGuU6zrlGbEOFC8UCrqC/RimkrU6cXSkgJV
+        nkHvQpH17Lq71OFBluARL8IypNwovzmxmKuQ6MziCb0XERmtjJfvuz+Yq5Dn6058LhgNx4yl
+        xYLoRRmRz9XRiZvyDJFlLzEdU2eoNZCp1nAabjcoE+SV+E6OAhfoTMKngnBcMP7vUbKYxDKU
+        GW8fGuFS/O9dbfHm67vvaVeGZnbgg7G3L52drV1IOmWoDC9ypw3DzsuOOa6e+9h/+KWE5Jxl
+        Ma/Qbd8W+67ulMf8jrmIzcGdgcrdjW9qRs014XJn9gF72JekNG6tiMtKDuKxovSasZs7FvSX
+        s++EDpW9ZoNAyuh0nauV0yoZsVCn3kkbRd1z33/Dy7QDAAA=
+X-CMS-MailID: 20200624081610eucas1p1fb83289f3916bf59400b2ea737c124d1
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20200528192122eucas1p29d209ad5a885b31deb04dcad13f98ad5
+X-EPHeader: CA
+CMS-TYPE: 201P
+X-CMS-RootMailID: 20200528192122eucas1p29d209ad5a885b31deb04dcad13f98ad5
+References: <Message-ID: <4493c0e4-51aa-3907-810c-74949ff27ca4@samsung.com>
+        <20200528192051.28034-1-andrzej.p@collabora.com>
+        <CGME20200528192122eucas1p29d209ad5a885b31deb04dcad13f98ad5@eucas1p2.samsung.com>
+        <20200528192051.28034-2-andrzej.p@collabora.com>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 
-
-Arend Van Spriel 於 6/22/2020 4:57 PM 寫道:
-> On 6/22/2020 4:07 AM, Wright Feng wrote:
->> Linux 3.6 introduces TSQ which has a per socket threshold for TCP Tx
->> packet to reduce latency. In flow control mode, host driver enqueues skb
->> in hanger and TCP doesn't push new skb frees until host frees the skb 
->> when
->> receiving fwstatus event. So set pacing shift 8 to send them as a single
->> large aggregate frame to the bus layer.
->>
->> 43455 TX TCP throughput in FC mode 2 on Linux 5.4.18
->> sk_pacing_shift : Throughput
->> 10: 190 Mbps
->>   9: 216 Mbps
->>   8: 233 Mbps (Max throughput)
->>   7: 233 Mpbs
+On 5/28/20 9:20 PM, Andrzej Pietrasiewicz wrote:
+> The acpi_thermal_register_thermal_zone() is missing any error handling.
+> This needs to be fixed.
 > 
-> In this patch the pacing shift update is done irrespective of the FC 
-> mode so I would like to see similar measurements for the other FC mode 
-> configurations.
+> Signed-off-by: Andrzej Pietrasiewicz <andrzej.p@collabora.com>
+
+Reviewed-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+
+Best regards,
+--
+Bartlomiej Zolnierkiewicz
+Samsung R&D Institute Poland
+Samsung Electronics
+
+> ---
+>  drivers/acpi/thermal.c | 20 ++++++++++++++++----
+>  1 file changed, 16 insertions(+), 4 deletions(-)
 > 
-Measure 43455 TX TCP throughput again with different FC mode.
-Here is the result and I will update result in patch v2.
+> diff --git a/drivers/acpi/thermal.c b/drivers/acpi/thermal.c
+> index 19067a5e5293..6de8066ca1e7 100644
+> --- a/drivers/acpi/thermal.c
+> +++ b/drivers/acpi/thermal.c
+> @@ -901,23 +901,35 @@ static int acpi_thermal_register_thermal_zone(struct acpi_thermal *tz)
+>  	result = sysfs_create_link(&tz->device->dev.kobj,
+>  				   &tz->thermal_zone->device.kobj, "thermal_zone");
+>  	if (result)
+> -		return result;
+> +		goto unregister_tzd;
+>  
+>  	result = sysfs_create_link(&tz->thermal_zone->device.kobj,
+>  				   &tz->device->dev.kobj, "device");
+>  	if (result)
+> -		return result;
+> +		goto remove_tz_link;
+>  
+>  	status =  acpi_bus_attach_private_data(tz->device->handle,
+>  					       tz->thermal_zone);
+> -	if (ACPI_FAILURE(status))
+> -		return -ENODEV;
+> +	if (ACPI_FAILURE(status)) {
+> +		result = -ENODEV;
+> +		goto remove_dev_link;
+> +	}
+>  
+>  	tz->tz_enabled = 1;
+>  
+>  	dev_info(&tz->device->dev, "registered as thermal_zone%d\n",
+>  		 tz->thermal_zone->id);
+> +
+>  	return 0;
+> +
+> +remove_dev_link:
+> +	sysfs_remove_link(&tz->thermal_zone->device.kobj, "device");
+> +remove_tz_link:
+> +	sysfs_remove_link(&tz->device->dev.kobj, "thermal_zone");
+> +unregister_tzd:
+> +	thermal_zone_device_unregister(tz->thermal_zone);
+> +
+> +	return result;
+>  }
+>  
+>  static void acpi_thermal_unregister_thermal_zone(struct acpi_thermal *tz)
+> 
 
-43455 TX TCP throughput on Linux 5.4.18
-FC mode 0
-sk_pacing_shift : Throughput
-10: 245 Mbps
-  9: 245 Mbps
-  8: 246 Mbps
-  7: 246 Mbps
-
-FC mode 1
-sk_pacing_shift : Throughput
-10: 182 Mbps
-  9: 197 Mbps
-  8: 206 Mbps
-  7: 207 Mbps
-
-FC mode 2
-sk_pacing_shift : Throughput
-10: 180 Mbps
-  9: 197 Mbps
-  8: 206 Mbps
-  7: 207 Mbps
-> Regards,
-> Arend
