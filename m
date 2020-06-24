@@ -2,90 +2,137 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C6A39206F6B
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jun 2020 10:51:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 29373206F91
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jun 2020 11:01:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389322AbgFXIuZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 24 Jun 2020 04:50:25 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:39680 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2389521AbgFXIuT (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 24 Jun 2020 04:50:19 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1592988619; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=VUDZ7CIdCQG2R0dxVIRY2kHAUR5DLpmrneQaOynhiIw=; b=Cvp3M5EvQFv8yErUD5tn0XoWSnpvsSot48pvgGDTWn3aibusiOFW1KzuOIMJbtm1X7PkvHWi
- JmC1K9a8SF5xEIyT3LsTb1nKj8r+apr9XoZeNaYEvHJRZ9B924h3BU+OgeGK89MBQUssnhWx
- g4CNdQ0hYr8d96IBMviuZoEwZeg=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n04.prod.us-west-2.postgun.com with SMTP id
- 5ef313c76f2ee827da5852b8 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 24 Jun 2020 08:50:15
- GMT
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id C156CC433CB; Wed, 24 Jun 2020 08:50:15 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from tynnyri.adurom.net (tynnyri.adurom.net [51.15.11.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 50C06C43395;
-        Wed, 24 Jun 2020 08:50:12 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 50C06C43395
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     <Ajay.Kathat@microchip.com>
-Cc:     <linux-wireless@vger.kernel.org>, <devel@driverdev.osuosl.org>,
-        <gregkh@linuxfoundation.org>, <johannes@sipsolutions.net>,
-        <Nicolas.Ferre@microchip.com>, <Claudiu.Beznea@microchip.com>,
-        <Sripad.Balwadgi@microchip.com>, <Venkateswara.Kaja@microchip.com>
-Subject: Re: [PATCH v7 00/17] wilc1000: move out of staging
+        id S2388949AbgFXJBH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 24 Jun 2020 05:01:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56392 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388864AbgFXJBH (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 24 Jun 2020 05:01:07 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7070C061573
+        for <linux-wireless@vger.kernel.org>; Wed, 24 Jun 2020 02:01:07 -0700 (PDT)
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.93)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1jo1HE-00BFXD-1e; Wed, 24 Jun 2020 11:01:04 +0200
+Message-ID: <11b8d5a5631cc472fce17638ff9e1dfef8750628.camel@sipsolutions.net>
+Subject: Re: [PATCH v7 06/17] wilc1000: add cfg80211.c
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Ajay.Kathat@microchip.com, linux-wireless@vger.kernel.org
+Cc:     devel@driverdev.osuosl.org, gregkh@linuxfoundation.org,
+        Nicolas.Ferre@microchip.com, Claudiu.Beznea@microchip.com,
+        Sripad.Balwadgi@microchip.com, Venkateswara.Kaja@microchip.com
+Date:   Wed, 24 Jun 2020 11:00:52 +0200
+In-Reply-To: <20200623110000.31559-7-ajay.kathat@microchip.com>
 References: <20200623110000.31559-1-ajay.kathat@microchip.com>
-Date:   Wed, 24 Jun 2020 11:50:07 +0300
-In-Reply-To: <20200623110000.31559-1-ajay.kathat@microchip.com> (Ajay Kathat's
-        message of "Tue, 23 Jun 2020 11:00:04 +0000")
-Message-ID: <87ftaketkw.fsf@tynnyri.adurom.net>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+         <20200623110000.31559-7-ajay.kathat@microchip.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.3 (3.36.3-1.fc32) 
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-<Ajay.Kathat@microchip.com> writes:
+On Tue, 2020-06-23 at 11:00 +0000, Ajay.Kathat@microchip.com wrote:
+> 
+> +struct wilc_p2p_pub_act_frame {
+> +	u8 category;
+> +	u8 action;
+> +	u8 oui[3];
+> +	u8 oui_type;
+> +	u8 oui_subtype;
+> +	u8 dialog_token;
+> +	u8 elem[];
+> +} __packed;
+> +
+> +struct wilc_vendor_specific_ie {
+> +	u8 tag_number;
+> +	u8 tag_len;
+> +	u8 oui[3];
+> +	u8 oui_type;
+> +	u8 attr[];
+> +} __packed;
+> +
+> +struct wilc_attr_entry {
+> +	u8  attr_type;
+> +	__le16 attr_len;
+> +	u8 val[];
+> +} __packed;
+> +
+> +struct wilc_attr_oper_ch {
+> +	u8 attr_type;
+> +	__le16 attr_len;
+> +	u8 country_code[IEEE80211_COUNTRY_STRING_LEN];
+> +	u8 op_class;
+> +	u8 op_channel;
+> +} __packed;
+> +
+> +struct wilc_attr_ch_list {
+> +	u8 attr_type;
+> +	__le16 attr_len;
+> +	u8 country_code[IEEE80211_COUNTRY_STRING_LEN];
+> +	u8 elem[];
+> +} __packed;
+> +
+> +struct wilc_ch_list_elem {
+> +	u8 op_class;
+> +	u8 no_of_channels;
+> +	u8 ch_list[];
+> +} __packed;
 
-> From: Ajay Singh <ajay.kathat@microchip.com>
->
-> This patch series is to review and move wilc1000 driver out of staging.
-> Most of the review comments received in [1] & [2] are addressed in the
-> latest code.
-> Please review and provide your inputs.
->
-> [1]. https://lore.kernel.org/linux-wireless/1537957525-11467-1-git-send-email-ajay.kathat@microchip.com/
-> [2]. https://lore.kernel.org/linux-wireless/1562896697-8002-1-git-send-email-ajay.kathat@microchip.com/
->
-> Changes since v6:
->  - added Reviewed-by tag received for DT binding document patch earlier.
->    * https://lore.kernel.org/linux-wireless/20200405013235.GA24105@bogus
->  - merged latest driver and included --base commit as suggested.
+It seems like these should be used from ieee80211.h, and/or added there
+if they don't already exist?
 
-Greg, in preparation for moving the driver to drivers/net/wireless can I
-ask you to not to take wilc1000 patches for the time being? I think that
-way it would be easier to move the driver between trees if there are no
-changes after v5.8-rc1. Or is there a better way handle the move?
+> +static int wilc_wfi_cfg_copy_wpa_info(struct wilc_wfi_key *key_info,
+> +				      struct key_params *params)
+> +{
+> +	kfree(key_info->key);
+> +
+> +	key_info->key = kmemdup(params->key, params->key_len, GFP_KERNEL);
+> +	if (!key_info->key)
+> +		return -ENOMEM;
+> +
+> +	kfree(key_info->seq);
+> +
+> +	if (params->seq_len > 0) {
+> +		key_info->seq = kmemdup(params->seq, params->seq_len,
+> +					GFP_KERNEL);
+> +		if (!key_info->seq)
+> +			return -ENOMEM;
 
-I have not reviewed the latest version yet but I'm hoping it's ready
-now. I would also appreciate comments from other people about the
-readiness of this driver.
+you may leak key_info->key here?
 
--- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+> +static inline void wilc_wfi_cfg_parse_ch_attr(u8 *buf, u32 len, u8 sta_ch)
+
+That's a bit big to be forced inline, imho. if it's used only once the
+compiler will inline it anyway.
+
+> +	d = (struct wilc_p2p_pub_act_frame *)(&mgmt->u.action);
+> +	if (d->oui_subtype != GO_NEG_REQ && d->oui_subtype != GO_NEG_RSP &&
+> +	    d->oui_subtype != P2P_INV_REQ && d->oui_subtype != P2P_INV_RSP)
+> +		goto out_rx_mgmt;
+> +
+> +	vendor_ie = cfg80211_find_vendor_ie(WLAN_OUI_WFA, WLAN_OUI_TYPE_WFA_P2P,
+> +					    buff + ie_offset, size - ie_offset);
+> +	if (!vendor_ie)
+> +		goto out_rx_mgmt;
+> +
+> +	p = (struct wilc_vendor_specific_ie *)vendor_ie;
+> +	wilc_wfi_cfg_parse_ch_attr(p->attr, p->tag_len - 4, vif->wilc->sta_ch);
+
+but overall, why do you even need this? I don't think this is normally
+handled in the driver, but wpa_s?
+
+
+Anyway, I'm not convinced that we should really keep kicking this back
+over minor issues like this ... better to merge it and fix later, imho.
+
+johannes
+
+
