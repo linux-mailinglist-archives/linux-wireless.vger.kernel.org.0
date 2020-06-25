@@ -2,155 +2,110 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 958A7209D16
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Jun 2020 12:52:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BC7F5209D59
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Jun 2020 13:15:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404043AbgFYKwv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 25 Jun 2020 06:52:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41490 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2403952AbgFYKwu (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 25 Jun 2020 06:52:50 -0400
-Received: from mail-lj1-x241.google.com (mail-lj1-x241.google.com [IPv6:2a00:1450:4864:20::241])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A88CC061573;
-        Thu, 25 Jun 2020 03:52:49 -0700 (PDT)
-Received: by mail-lj1-x241.google.com with SMTP id e4so5994160ljn.4;
-        Thu, 25 Jun 2020 03:52:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=0qf+WwjLjZe3vMqS+VrsoQuseqViWgd3zGOf1M8nB9U=;
-        b=Vqg2LD9D0O/2OhntPwkfFH4OpzES5l2IUdWp4EE9OixK9Mfdu1AoSCVbFN6Nbd5Hen
-         5INRLzs9cJR28sG3/hAIdsw2i5VahwO5ToPyhJvIWZxuhBrI/5j232shF+cG9W23QU1t
-         +vQWkwODYHe7hFq4RlZ8V59ZksoWYxyjXROiy9rEpwVzfFZXosVSMrXHfFgG0nSbVdpl
-         9OZysZdpWcNOszUzh/ZNcyDDgYoZe6i6JkLXn2Kl48x9DB7vF9n+Tr3arOswUKnLZLMB
-         ZIlfyCBvXrL2H88rEOjo+OchD4emmXkN3A+PxuGxKTEwdyju2HW2WG+5ej+fDDK8XLeL
-         9HFg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=0qf+WwjLjZe3vMqS+VrsoQuseqViWgd3zGOf1M8nB9U=;
-        b=LnMIDEccNW5S9sWvG92X0rjaiKvwd1G+UOFe6I5WLGMVnE4HwPJDnTkmwf46GC0IBw
-         NnEfqKf8d/UVZMQPWIokpltAZwYeh0hxMmBWCcP0Y3mD94bE0r6GxsNoD7Im0AN/Yk+Q
-         Z0m5IU7Q4YGTeEs8CPPCDrm7TxqtCOsWIkBzFv/2Ot7N+yf5bQ+YN7XG+euYUwAUbY3h
-         go8tLV1/cGWTVdqTyjmGx6AB1DyB5AVs51h2aedbYP4gAXtTkIHEiF8X6SIfy01sx5Wj
-         TYvmhoVNF8qyP6o88ouxRifXQBcFU1OS0vSoANlPLr7ptYp5xHkMXXzgvDeZdYl3XUq6
-         7+lA==
-X-Gm-Message-State: AOAM531Rf9eLyzFMt4SkK62rJcBQ69j1snJIyF9744AoymLwABK3scLV
-        SKrUHNIoUphPxYnanPGOwNR/7a4aGVyBM47hiA==
-X-Google-Smtp-Source: ABdhPJwacAJi0USWhyA6c8/w0XjhDAOSmOvEEAf/E2Qkfh26ELP75vacUc++JsD0X1OE2GVKZAfVe6w7qbq1292+z+4=
-X-Received: by 2002:a05:651c:119a:: with SMTP id w26mr1664799ljo.126.1593082367574;
- Thu, 25 Jun 2020 03:52:47 -0700 (PDT)
-MIME-Version: 1.0
-References: <1592410366125160@kroah.com> <CAEJqkgjV8p6LtBV8YUGbNb0vYzKOQt4-AMAvYw5mzFr3eicyTg@mail.gmail.com>
- <b7993e83-1df7-0c93-f6dd-dba9dc10e27a@kernel.org> <CAEJqkggG2ZB8De_zbP2W7Z9eRYve2br8jALaLRhjC33ksLZpTw@mail.gmail.com>
-In-Reply-To: <CAEJqkggG2ZB8De_zbP2W7Z9eRYve2br8jALaLRhjC33ksLZpTw@mail.gmail.com>
-From:   Gabriel C <nix.or.die@googlemail.com>
-Date:   Thu, 25 Jun 2020 12:52:21 +0200
-Message-ID: <CAEJqkgj4LS7M3zYK51Vagt4rWC9A7uunA+7CvX0Qv=57Or3Ngg@mail.gmail.com>
-Subject: Re: ath9k broken [was: Linux 5.7.3]
-To:     Jiri Slaby <jirislaby@kernel.org>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        stable <stable@vger.kernel.org>, lwn@lwn.net,
-        angrypenguinpoland@gmail.com, Qiujun Huang <hqjagain@gmail.com>,
-        ath9k-devel <ath9k-devel@qca.qualcomm.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        id S2404201AbgFYLPa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 25 Jun 2020 07:15:30 -0400
+Received: from mga11.intel.com ([192.55.52.93]:27499 "EHLO mga11.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2404195AbgFYLP3 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 25 Jun 2020 07:15:29 -0400
+IronPort-SDR: HJsnwG4a0RJkd6jaQFgceoOBF7CzJG4oCGySP/u4V1yBQLM9vg751Uu70QCnEQDOMFIwkUDYaZ
+ iR+O9MKY2Qww==
+X-IronPort-AV: E=McAfee;i="6000,8403,9662"; a="143082221"
+X-IronPort-AV: E=Sophos;i="5.75,279,1589266800"; 
+   d="scan'208";a="143082221"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2020 04:15:29 -0700
+IronPort-SDR: of9TehtZ1pMxuW6CMNd0rcyc3eskj7i5VSr6hoYfmZBavnqc1Cb5G8pczyHU4Ij0z8VVnyFeQp
+ RAJQ97UdSBFw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.75,279,1589266800"; 
+   d="scan'208";a="423703718"
+Received: from kbergman-mobl.ger.corp.intel.com (HELO egrumbac-mobl1.ger.corp.intel.com) ([10.249.94.147])
+  by orsmga004.jf.intel.com with ESMTP; 25 Jun 2020 04:15:27 -0700
+From:   Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+To:     johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Subject: [PATCH v2] cfg80211: allow the low level driver to flush the BSS table
+Date:   Thu, 25 Jun 2020 14:15:24 +0300
+Message-Id: <20200625111524.3992-1-emmanuel.grumbach@intel.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Am Do., 25. Juni 2020 um 12:48 Uhr schrieb Gabriel C
-<nix.or.die@googlemail.com>:
->
-> Am Do., 25. Juni 2020 um 06:57 Uhr schrieb Jiri Slaby <jirislaby@kernel.org>:
-> >
-> > On 25. 06. 20, 0:05, Gabriel C wrote:
-> > > Am Mi., 17. Juni 2020 um 18:13 Uhr schrieb Greg Kroah-Hartman
-> > > <gregkh@linuxfoundation.org>:
-> > >>
-> > >> I'm announcing the release of the 5.7.3 kernel.
-> > >>
-> > >
-> > > Hello Greg,
-> > >
-> > >> Qiujun Huang (5):
-> > >>       ath9k: Fix use-after-free Read in htc_connect_service
-> > >>       ath9k: Fix use-after-free Read in ath9k_wmi_ctrl_rx
-> > >>       ath9k: Fix use-after-free Write in ath9k_htc_rx_msg
-> > >>       ath9x: Fix stack-out-of-bounds Write in ath9k_hif_usb_rx_cb
-> > >>       ath9k: Fix general protection fault in ath9k_hif_usb_rx_cb
-> > >>
-> > >
-> > > We got a report on IRC about 5.7.3+ breaking a USB ath9k Wifi Dongle,
-> > > while working fine on <5.7.3.
-> > >
-> > > I don't have myself such HW, and the reported doesn't have any experience
-> > > in bisecting the kernel, so we build kernels, each with one of the
-> > > above commits reverted,
-> > > to find the bad commit.
-> > >
-> > > The winner is:
-> > >
-> > > commit 6602f080cb28745259e2fab1a4cf55eeb5894f93
-> > > Author: Qiujun Huang <hqjagain@gmail.com>
-> > > Date:   Sat Apr 4 12:18:38 2020 +0800
-> > >
-> > >     ath9k: Fix general protection fault in ath9k_hif_usb_rx_cb
-> > >
-> > >     commit 2bbcaaee1fcbd83272e29f31e2bb7e70d8c49e05 upstream.
-> > > ...
-> > >
-> > > Reverting this one fixed his problem.
-> >
-> > Obvious question: is 5.8-rc1 (containing the commit) broken too?
->
-> Yes, it does, just checked.
->
-> git tag --contains 2bbcaaee1fcbd83272e29f31e2bb7e70d8c49e05
-> v5.8-rc1
-> v5.8-rc2
->
+The low level driver adds its own opaque information
+in the BSS table in the cfg80211_bss structure.
 
-Sorry, I read the wrong, I just woke up.
+The low level driver may need to signal that this information
+is no longer relevant and needs to be recreated.
+Add an API to allow the low level driver to do that.
 
-We didn't test 5.8-rc{1,2} yet but we will today and let you know.
+iwlwifi needs this because it keeps there an information about
+the firmware's internal clock. This is kept in mac80211's
+struct ieee80211_bss::sync_device_ts.
+This information is populated while we scan, we add the
+internal firmware's clock to each beacon which allows us to
+program the firmware correctly after association so that
+it'll know when (in terms of its internal clock) the DTIM
+and TBTT will happen.
 
-> >
-> > I fail to see how the commit could cause an issue like this. Is this
-> > really reproducibly broken with the commit and irreproducible without
-> > it?
->
-> I can't see something obvious wrong either, but yes it's reproducible on his HW.
-> Kernel with this commit breaks the dongle, with the commit reverted it works.
->
-> >As it looks like a USB/wiring problem:
-> > usb 1-2: USB disconnect, device number 2
-> > ath: phy0: Reading Magic # failed
-> > ath: phy0: Unable to initialize hardware; initialization status: -5
-> > ...
-> > usb 1-2: device descriptor read/64, error -110
-> > usb 1-2: device descriptor read/64, error -71
-> >
-> > Ccing ath9k maintainers too.
-> >
-> > > I don't have so much info about the HW, besides a dmesg showing the
-> > > phy breaking.
-> > > I also added the reporter to CC too.
-> > >
-> > > https://gist.github.com/AngryPenguinPL/1e545f0da3c2339e443b9e5044fcccea
-> > >
-> > > If you need more info, please let me know and I'll try my best to get
-> > > it as fast as possible for you.
-> >
->
-> Best Regards,
->
-> Gabriel C
+When the firmware is reset this internal clock is reset as
+well and ieee80211_bss::sync_device_ts is no longer accurate.
+
+iwlwifi will call this new API any time the firmware is started.
+
+Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+---
+v2: do not flush the BSS table upon suspend, and rewrite the commit
+message
+---
+ include/net/cfg80211.h |  6 ++++++
+ net/wireless/scan.c    | 10 ++++++++++
+ 2 files changed, 16 insertions(+)
+
+diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+index fc7e8807838d..03a72b5b1986 100644
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -7882,4 +7882,10 @@ void cfg80211_update_owe_info_event(struct net_device *netdev,
+ 				    struct cfg80211_update_owe_info *owe_info,
+ 				    gfp_t gfp);
+ 
++/**
++ * cfg80211_bss_flush - resets all the scan entries
++ * @wiphy: the wiphy
++ */
++void cfg80211_bss_flush(struct wiphy *wiphy);
++
+ #endif /* __NET_CFG80211_H */
+diff --git a/net/wireless/scan.c b/net/wireless/scan.c
+index 74ea4cfb39fb..e67a74488bbe 100644
+--- a/net/wireless/scan.c
++++ b/net/wireless/scan.c
+@@ -712,6 +712,16 @@ void cfg80211_bss_expire(struct cfg80211_registered_device *rdev)
+ 	__cfg80211_bss_expire(rdev, jiffies - IEEE80211_SCAN_RESULT_EXPIRE);
+ }
+ 
++void cfg80211_bss_flush(struct wiphy *wiphy)
++{
++	struct cfg80211_registered_device *rdev = wiphy_to_rdev(wiphy);
++
++	spin_lock_bh(&rdev->bss_lock);
++	__cfg80211_bss_expire(rdev, jiffies);
++	spin_unlock_bh(&rdev->bss_lock);
++}
++EXPORT_SYMBOL(cfg80211_bss_flush);
++
+ const struct element *
+ cfg80211_find_elem_match(u8 eid, const u8 *ies, unsigned int len,
+ 			 const u8 *match, unsigned int match_len,
+-- 
+2.17.1
+
