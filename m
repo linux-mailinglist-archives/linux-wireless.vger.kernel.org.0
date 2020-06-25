@@ -2,30 +2,30 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 80F79209F3C
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Jun 2020 15:09:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 854B3209F3A
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Jun 2020 15:09:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404945AbgFYNJK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 25 Jun 2020 09:09:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34174 "EHLO
+        id S2404949AbgFYNJB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 25 Jun 2020 09:09:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34166 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2404944AbgFYNI4 (ORCPT
+        with ESMTP id S2404945AbgFYNI4 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Thu, 25 Jun 2020 09:08:56 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 424D2C08C5DD
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8606EC08C5DB
         for <linux-wireless@vger.kernel.org>; Thu, 25 Jun 2020 06:08:56 -0700 (PDT)
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.93)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1joRcc-00BrnC-HO; Thu, 25 Jun 2020 15:08:54 +0200
+        id 1joRcc-00BrnC-R6; Thu, 25 Jun 2020 15:08:54 +0200
 From:   Johannes Berg <johannes@sipsolutions.net>
 To:     me@bcopeland.com
 Cc:     linux-wireless@vger.kernel.org,
         Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 7/9] wmediumd: add the ability to write a pcapng file
-Date:   Thu, 25 Jun 2020 15:08:42 +0200
-Message-Id: <20200625150754.554b7fc226a1.I14409b6cb5998e7bd087c1329952fbfa1a30d45e@changeid>
+Subject: [PATCH 8/9] wmediumd: lib: minor code cleanups
+Date:   Thu, 25 Jun 2020 15:08:43 +0200
+Message-Id: <20200625150754.75ace08e3899.I2631363a1d417f16437bccb99d089277b981e788@changeid>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200625130844.22893-1-johannes@sipsolutions.net>
 References: <20200625130844.22893-1-johannes@sipsolutions.net>
@@ -38,197 +38,139 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-Add the ability to write a pcapng file containing all the data.
-The radiotap header is currently very minimal with only the
-frequency and the signal strength.
-
 ---
- wmediumd/wmediumd.c | 119 +++++++++++++++++++++++++++++++++++++++++++-
- wmediumd/wmediumd.h |   2 +
- 2 files changed, 120 insertions(+), 1 deletion(-)
+ wmediumd/lib/loop.c      |  1 +
+ wmediumd/lib/sched.c     |  2 +-
+ wmediumd/lib/schedctrl.c |  3 ---
+ wmediumd/lib/vhost.c     | 20 ++++++++++----------
+ wmediumd/lib/wallclock.c |  2 +-
+ 5 files changed, 13 insertions(+), 15 deletions(-)
 
-diff --git a/wmediumd/wmediumd.c b/wmediumd/wmediumd.c
-index afc4f16d9ae9..5304931fbf74 100644
---- a/wmediumd/wmediumd.c
-+++ b/wmediumd/wmediumd.c
-@@ -36,6 +36,7 @@
- #include <limits.h>
- #include <unistd.h>
- #include <stdarg.h>
-+#include <endian.h>
- #include <usfstl/loop.h>
- #include <usfstl/sched.h>
- #include <usfstl/schedctrl.h>
-@@ -309,6 +310,48 @@ static void wmediumd_notify_frame_start(struct usfstl_job *job)
+diff --git a/wmediumd/lib/loop.c b/wmediumd/lib/loop.c
+index e5595a33234d..67f6876165c7 100644
+--- a/wmediumd/lib/loop.c
++++ b/wmediumd/lib/loop.c
+@@ -50,6 +50,7 @@ void usfstl_loop_wait_and_handle(void)
+ 		struct usfstl_loop_entry *tmp;
+ 		fd_set rd_set, exc_set;
+ 		unsigned int max = 0, num;
++
+ 		FD_ZERO(&rd_set);
+ 		FD_ZERO(&exc_set);
+ 
+diff --git a/wmediumd/lib/sched.c b/wmediumd/lib/sched.c
+index f23c8190fdce..2694a034d7dd 100644
+--- a/wmediumd/lib/sched.c
++++ b/wmediumd/lib/sched.c
+@@ -262,7 +262,7 @@ static void usfstl_sched_restore_blocked_jobs(struct usfstl_scheduler *sched)
+ 					      entry) {
+ 		if (job == sched->allowed_job ||
+ 		    !((1 << job->group) & sched->blocked_groups))
+-		usfstl_sched_restore_job(sched, job);
++			usfstl_sched_restore_job(sched, job);
  	}
  }
  
-+static void log2pcap(struct wmediumd *ctx, struct frame *frame, uint64_t ts)
-+{
-+	struct {
-+		uint8_t it_version;
-+		uint8_t it_pad;
-+		uint16_t it_len;
-+		uint32_t it_present;
-+		struct {
-+			uint16_t freq, flags;
-+		} channel;
-+		uint8_t signal;
-+	} __attribute__((packed)) radiotap_hdr = {
-+		.it_len = htole16(sizeof(radiotap_hdr)),
-+		.it_present = htole32(1 << 3 /* channel */ |
-+				      1 << 5 /* signal dBm */),
-+		.channel.freq = htole16(frame->freq),
-+		.signal = frame->signal,
-+	};
-+	struct {
-+		uint32_t type, blocklen, ifidx, ts_hi, ts_lo, caplen, pktlen;
-+	} __attribute__((packed)) blockhdr = {
-+		.type = 6,
-+		.ts_hi = ts / (1ULL << 32),
-+		.ts_lo = ts,
-+		.caplen = frame->data_len + sizeof(radiotap_hdr),
-+		.pktlen = frame->data_len + sizeof(radiotap_hdr),
-+	};
-+	static const uint8_t pad[3];
-+	uint32_t sz, align;
-+
-+	sz = blockhdr.caplen + sizeof(blockhdr) + sizeof(uint32_t);
-+	blockhdr.blocklen = (sz + 3) & ~3;
-+	align = blockhdr.blocklen - sz;
-+
-+	fwrite(&blockhdr, sizeof(blockhdr), 1, ctx->pcap_file);
-+	fwrite(&radiotap_hdr, sizeof(radiotap_hdr), 1, ctx->pcap_file);
-+	fwrite(frame->data, frame->data_len, 1, ctx->pcap_file);
-+	fwrite(pad, align, 1, ctx->pcap_file);
-+	fwrite(&blockhdr.blocklen, sizeof(blockhdr.blocklen), 1, ctx->pcap_file);
-+	fflush(ctx->pcap_file);
-+}
-+
- static void queue_frame(struct wmediumd *ctx, struct station *station,
- 			struct frame *frame)
+diff --git a/wmediumd/lib/schedctrl.c b/wmediumd/lib/schedctrl.c
+index ed5a9089124d..540826026d68 100644
+--- a/wmediumd/lib/schedctrl.c
++++ b/wmediumd/lib/schedctrl.c
+@@ -122,9 +122,6 @@ static void usfstl_sched_ctrl_wait(struct usfstl_scheduler *sched)
+ 
+ #define JOB_ASSERT_VAL(j) (j) ? (j)->name : "<NULL>"
+ 
+-extern struct usfstl_sched_ctrl g_schedCtrl;
+-extern struct usfstl_scheduler g_usfstl_task_scheduler;
+-
+ void usfstl_sched_ctrl_start(struct usfstl_sched_ctrl *ctrl,
+ 			     const char *socket,
+ 			     uint32_t nsec_per_tick,
+diff --git a/wmediumd/lib/vhost.c b/wmediumd/lib/vhost.c
+index 9f116f57f04a..cc35d8cd7aa4 100644
+--- a/wmediumd/lib/vhost.c
++++ b/wmediumd/lib/vhost.c
+@@ -69,8 +69,8 @@ CONV(64)
+ 
+ static struct usfstl_vhost_user_buf *
+ usfstl_vhost_user_get_virtq_buf(struct usfstl_vhost_user_dev_int *dev,
+-			      unsigned int virtq_idx,
+-			      struct usfstl_vhost_user_buf *fixed)
++				unsigned int virtq_idx,
++				struct usfstl_vhost_user_buf *fixed)
  {
-@@ -438,6 +481,29 @@ static void queue_frame(struct wmediumd *ctx, struct station *station,
- 		}
- 	}
+ 	struct usfstl_vhost_user_buf *buf = fixed;
+ 	struct vring *virtq = &dev->virtqs[virtq_idx].virtq;
+@@ -103,8 +103,8 @@ usfstl_vhost_user_get_virtq_buf(struct usfstl_vhost_user_dev_int *dev,
+ 	} while (more);
  
-+	if (ctx->pcap_file) {
-+		log2pcap(ctx, frame, target);
-+
-+		if (is_acked && !noack) {
-+			struct {
-+				struct frame frame;
-+				uint16_t fc;
-+				uint16_t dur;
-+				uint8_t ra[6];
-+			} __attribute__((packed, aligned(8))) ack = {
-+				.fc = htole16(0xd4),
-+				.dur = htole16(ack_time_usec),
-+			};
-+
-+			memcpy(&ack.frame, frame, sizeof(ack.frame));
-+			ack.frame.data_len = 10;
-+			memcpy(ack.ra, frame->data + 10, 6);
-+
-+			log2pcap(ctx, &ack.frame,
-+				 target + send_time - ack_time_usec);
-+		}
-+	}
-+
- 	target += send_time;
+ 	if (n_in > fixed->n_in_sg || n_out > fixed->n_out_sg) {
+-	    	size_t sz = sizeof(*buf);
+-	    	struct iovec *vec;
++		size_t sz = sizeof(*buf);
++		struct iovec *vec;
  
- 	frame->duration = send_time;
-@@ -1141,10 +1207,58 @@ static void print_help(int exval)
- 	printf("  -u socket       expose vhost-user socket, don't use netlink\n");
- 	printf("  -a socket       expose wmediumd API socket\n");
- 	printf("  -n              force netlink use even with vhost-user\n");
-+	printf("  -p FILE         log packets to pcapng file FILE\n");
+ 		sz += (n_in + n_out) * sizeof(*vec);
  
- 	exit(exval);
+@@ -242,7 +242,7 @@ static void usfstl_vhost_user_send_virtq_buf(struct usfstl_vhost_user_dev_int *d
+ 	__sync_synchronize();
+ 
+ 	virtq->used->idx = cpu_to_virtio16(dev, widx);
+-	
++
+ 	if (call_fd < 0 &&
+ 	    dev->ext.protocol_features &
+ 			(1ULL << VHOST_USER_PROTOCOL_F_INBAND_NOTIFICATIONS) &&
+@@ -302,7 +302,7 @@ static void usfstl_vhost_user_send_virtq_buf(struct usfstl_vhost_user_dev_int *d
  }
  
-+static void init_pcapng(struct wmediumd *ctx, const char *filename)
-+{
-+	struct {
-+		uint32_t type, blocklen, byte_order;
-+		uint16_t ver_maj, ver_min;
-+		uint64_t seclen;
-+		uint32_t blocklen2;
-+	} __attribute__((packed)) blockhdr = {
-+		.type = 0x0A0D0D0A,
-+		.blocklen = sizeof(blockhdr),
-+		.byte_order = 0x1A2B3C4D,
-+		.ver_maj = 1,
-+		.ver_min = 0,
-+		.seclen = -1,
-+		.blocklen2 = sizeof(blockhdr),
-+	};
-+	struct {
-+		uint32_t type, blocklen;
-+		uint16_t linktype, reserved;
-+		uint32_t snaplen;
-+		struct {
-+			uint16_t code, len;
-+			uint8_t val, pad[3];
-+		} opt_if_tsresol;
-+		struct {
-+			uint16_t code, len;
-+		} opt_endofopt;
-+		uint32_t blocklen2;
-+	} __attribute__((packed)) idb = {
-+		.type = 1,
-+		.blocklen = sizeof(idb),
-+		.linktype = 127, // radiotap
-+		.snaplen = -1,
-+		.opt_if_tsresol.code = 9,
-+		.opt_if_tsresol.len = 1,
-+		.opt_if_tsresol.val = 6, // usec
-+		.blocklen2 = sizeof(idb),
-+	};
-+
-+	if (!filename)
-+		return;
-+
-+	ctx->pcap_file = fopen(filename, "w+");
-+	fwrite(&blockhdr, sizeof(blockhdr), 1, ctx->pcap_file);
-+	fwrite(&idb, sizeof(idb), 1, ctx->pcap_file);
-+}
-+
- int main(int argc, char *argv[])
+ static void usfstl_vhost_user_handle_queue(struct usfstl_vhost_user_dev_int *dev,
+-					 unsigned int virtq_idx)
++					   unsigned int virtq_idx)
  {
- 	int opt;
-@@ -1174,7 +1288,7 @@ int main(int argc, char *argv[])
- 	unsigned long int parse_log_lvl;
- 	char* parse_end_token;
+ 	/* preallocate on the stack for most cases */
+ 	struct iovec in_sg[SG_STACK_PREALLOC] = { };
+@@ -338,7 +338,7 @@ static void usfstl_vhost_user_job_callback(struct usfstl_job *job)
+ }
  
--	while ((opt = getopt(argc, argv, "hVc:l:x:t:u:a:n")) != -1) {
-+	while ((opt = getopt(argc, argv, "hVc:l:x:t:u:a:np:")) != -1) {
- 		switch (opt) {
- 		case 'h':
- 			print_help(EXIT_SUCCESS);
-@@ -1218,6 +1332,9 @@ int main(int argc, char *argv[])
- 		case 'n':
- 			force_netlink = true;
- 			break;
-+		case 'p':
-+			init_pcapng(&ctx, optarg);
-+			break;
- 		case '?':
- 			printf("wmediumd: Error - No such option: "
- 			       "`%c'\n\n", optopt);
-diff --git a/wmediumd/wmediumd.h b/wmediumd/wmediumd.h
-index 6319bb70c8f6..8619e28cbe9a 100644
---- a/wmediumd/wmediumd.h
-+++ b/wmediumd/wmediumd.h
-@@ -227,6 +227,8 @@ struct wmediumd {
- 	u8 log_lvl;
+ static void usfstl_vhost_user_virtq_kick(struct usfstl_vhost_user_dev_int *dev,
+-				       unsigned int virtq)
++					 unsigned int virtq)
+ {
+ 	if (!(dev->ext.server->input_queues & (1ULL << virtq)))
+ 		return;
+@@ -439,7 +439,7 @@ static void usfstl_vhost_user_dev_free(struct usfstl_vhost_user_dev_int *dev)
+ }
  
- 	u32 need_start_notify;
-+
-+	FILE *pcap_file;
- };
+ static void usfstl_vhost_user_get_msg_fds(struct msghdr *msghdr,
+-					int *outfds, int max_fds)
++					  int *outfds, int max_fds)
+ {
+ 	struct cmsghdr *msg;
+ 	int fds;
+@@ -774,8 +774,8 @@ void *usfstl_vhost_user_to_va(struct usfstl_vhost_user_dev *extdev, uint64_t add
+ 			   dev->regions[region].size)
+ 			return (uint8_t *)dev->region_vaddr[region] +
+ 			       (addr -
+-			        dev->regions[region].user_addr +
+-			        dev->regions[region].mmap_offset);
++				dev->regions[region].user_addr +
++				dev->regions[region].mmap_offset);
+ 	}
  
- struct hwsim_tx_rate {
+ 	USFSTL_ASSERT(0, "cannot translate address %"PRIx64"\n", addr);
+diff --git a/wmediumd/lib/wallclock.c b/wmediumd/lib/wallclock.c
+index b4750621348a..4f62a5894329 100644
+--- a/wmediumd/lib/wallclock.c
++++ b/wmediumd/lib/wallclock.c
+@@ -63,7 +63,7 @@ void usfstl_sched_wallclock_wait(struct usfstl_scheduler *sched)
+ }
+ 
+ void usfstl_sched_wallclock_init(struct usfstl_scheduler *sched,
+-			       unsigned int ns_per_tick)
++				 unsigned int ns_per_tick)
+ {
+ 	USFSTL_ASSERT(!sched->external_request && !sched->external_wait);
+ 
 -- 
 2.26.2
 
