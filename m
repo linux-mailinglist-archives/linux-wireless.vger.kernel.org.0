@@ -2,33 +2,34 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D151209BB2
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Jun 2020 11:05:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D8CBF209BB8
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Jun 2020 11:07:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390810AbgFYJFN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 25 Jun 2020 05:05:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53128 "EHLO
+        id S2389917AbgFYJH6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 25 Jun 2020 05:07:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53552 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389473AbgFYJFM (ORCPT
+        with ESMTP id S1727878AbgFYJH6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 25 Jun 2020 05:05:12 -0400
+        Thu, 25 Jun 2020 05:07:58 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA26EC061573
-        for <linux-wireless@vger.kernel.org>; Thu, 25 Jun 2020 02:05:11 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6ACBC061573
+        for <linux-wireless@vger.kernel.org>; Thu, 25 Jun 2020 02:07:57 -0700 (PDT)
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.93)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1joNok-00Bmu1-16; Thu, 25 Jun 2020 11:05:10 +0200
-Message-ID: <27f5d57bb70dae41e59808cd66931f21a362d3b6.camel@sipsolutions.net>
-Subject: Re: [PATCH v3 1/2] mac80211: skip mpath lookup also for control
- port tx
+        id 1joNrP-00BmxG-VU; Thu, 25 Jun 2020 11:07:56 +0200
+Message-ID: <426ce6f8a8dd65f545b4cc094c4ad7f461549934.camel@sipsolutions.net>
+Subject: Re: [PATCH v3 2/2] mac80211: allow rx of mesh eapol frames with
+ default rx key
 From:   Johannes Berg <johannes@sipsolutions.net>
 To:     Markus Theil <markus.theil@tu-ilmenau.de>
-Cc:     linux-wireless@vger.kernel.org
-Date:   Thu, 25 Jun 2020 11:04:54 +0200
-In-Reply-To: <20200617082637.22670-2-markus.theil@tu-ilmenau.de>
+Cc:     linux-wireless@vger.kernel.org,
+        kernel test robot <rong.a.chen@intel.com>
+Date:   Thu, 25 Jun 2020 11:07:46 +0200
+In-Reply-To: <20200617082637.22670-3-markus.theil@tu-ilmenau.de>
 References: <20200617082637.22670-1-markus.theil@tu-ilmenau.de>
-         <20200617082637.22670-2-markus.theil@tu-ilmenau.de>
+         <20200617082637.22670-3-markus.theil@tu-ilmenau.de>
 Content-Type: text/plain; charset="UTF-8"
 User-Agent: Evolution 3.36.3 (3.36.3-1.fc32) 
 MIME-Version: 1.0
@@ -38,25 +39,39 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Applied (at least tentatively, haven't run all the tests yet), but
 
-> @@ -3933,6 +3933,7 @@ void __ieee80211_subif_start_xmit(struct sk_buff *skb,
->  	struct ieee80211_local *local = sdata->local;
->  	struct sta_info *sta;
->  	struct sk_buff *next;
-> +	u32 ctrl_flags_adapted;
+> +	/* check mesh EAPOL frames first */
+> +	if (unlikely(rx->sta && ieee80211_vif_is_mesh(&rx->sdata->vif) && ieee80211_is_data(fc))) {
+> +		struct ieee80211s_hdr *mesh_hdr;
+> +		u16 hdr_len = ieee80211_hdrlen(fc);
+> +		u16 ethertype_offset;
+> +		__be16 ethertype;
+> +
+> +		/* make sure fixed part of mesh header is there, also checks skb len */
+> +		if (!pskb_may_pull(rx->skb, hdr_len + 6))
+> +			goto drop_check;
+> +
+> +		mesh_hdr = (struct ieee80211s_hdr *)(skb->data + hdr_len);
+> +		ethertype_offset = hdr_len + ieee80211_get_mesh_hdrlen(mesh_hdr)
+> +				 + sizeof(rfc1042_header);
+> +		if (!pskb_may_pull(rx->skb, ethertype_offset + sizeof(ethertype)) ||
+> +		    !ether_addr_equal(hdr->addr1, rx->sdata->vif.addr))
 
-I removed this - the loop can only process fragments of the same frame
-that should all be handled the same.
- 
-> -	if (proto == sdata->control_port_protocol)
-> -		ctrl_flags |= IEEE80211_TX_CTRL_PORT_CTRL_PROTO;
-> +	if (proto == sdata->control_port_protocol) {
-> +		ctrl_flags |= IEEE80211_TX_CTRL_PORT_CTRL_PROTO |
-> +			      IEEE80211_TX_CTRL_SKIP_MPATH_LOOKUP;
-> +	}
+might be nicer to check the address first, pskb_may_pull() is
+potentially more expensive, and you should be able to check the header
+address already before even the first pskb_may_pull() here since it's in
+the normal header.
 
-And this doesn't need braces.
+But I don't understand the second pskb_may_pull() anyway, because you
+use skb_copy_bits() below?
+
+
+> +		skb_copy_bits(rx->skb, ethertype_offset, &ethertype, 2);
+> +		if (ethertype == rx->sdata->control_port_protocol)
+> +			goto pass_frame;
+
+can return 0 here immediately and save the label.
 
 johannes
+
 
