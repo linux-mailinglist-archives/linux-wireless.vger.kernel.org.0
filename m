@@ -2,96 +2,87 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 900EC20A9B6
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jun 2020 02:10:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5071020AA95
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jun 2020 05:10:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725801AbgFZAK4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 25 Jun 2020 20:10:56 -0400
-Received: from mail.adapt-ip.com ([173.164.178.19]:46966 "EHLO
-        web.adapt-ip.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1725767AbgFZAK4 (ORCPT
+        id S1728258AbgFZDKK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 25 Jun 2020 23:10:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51668 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728169AbgFZDKK (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 25 Jun 2020 20:10:56 -0400
-Received: from localhost (localhost [127.0.0.1])
-        by web.adapt-ip.com (Postfix) with ESMTP id 8BF104F7791;
-        Fri, 26 Jun 2020 00:10:55 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at web.adapt-ip.com
-Received: from web.adapt-ip.com ([127.0.0.1])
-        by localhost (web.adapt-ip.com [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id dAWo6bD_FtmL; Fri, 26 Jun 2020 00:10:52 +0000 (UTC)
-Received: from mail.ibsgaard.io (c-73-202-5-52.hsd1.ca.comcast.net [73.202.5.52])
-        (Authenticated sender: thomas@adapt-ip.com)
-        by web.adapt-ip.com (Postfix) with ESMTPSA id CDDA34F9333;
-        Fri, 26 Jun 2020 00:10:51 +0000 (UTC)
+        Thu, 25 Jun 2020 23:10:10 -0400
+Received: from mail-qv1-xf2c.google.com (mail-qv1-xf2c.google.com [IPv6:2607:f8b0:4864:20::f2c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 341C1C08C5C1
+        for <linux-wireless@vger.kernel.org>; Thu, 25 Jun 2020 20:10:10 -0700 (PDT)
+Received: by mail-qv1-xf2c.google.com with SMTP id e2so3888734qvw.7
+        for <linux-wireless@vger.kernel.org>; Thu, 25 Jun 2020 20:10:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bobcopeland-com.20150623.gappssmtp.com; s=20150623;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=sDqR/RH5eRkONL+suVWhCYNskZgQprosUuo7AumUTCs=;
+        b=EaOQ9h9mfMIZEReqVNO0z1kaodGmWr5V8Jirq50qHbfm9x6Tkoi4k8/0WqjdhQc1/2
+         j1AERER4kfaN8xOm7bUf6YBtt8Z7qi+WUJKz2bcht+8TNwqdbfJzAql1arfxeuHEGcVw
+         OiirTQFr9bL7qqzPbzL8Rjfw0ieUuF/o1HqyxSt6cIc5R7G+EaqR1GxjfqF2nxCAIAIu
+         tayUHnSmViZTmN7igqPs/FSi8n148J62SnzGeZL1J4S0Bbf/QgSulpBMelr7Qqy0flyi
+         cC93MxmcWjyZ5i0qWO74v1GmEmg3R9WeRi5DzTZFZeVto2wnvq1Wdb/hhElDROgCfKwL
+         lohA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=sDqR/RH5eRkONL+suVWhCYNskZgQprosUuo7AumUTCs=;
+        b=tjne87UjgsLwvVCiE6duBo838jxgDUa6RSAUDytajmT9TapHww3O6hM9HtgUM5f94z
+         7ZjaTRDhCkcMhONVyafeKAEXTVOfxF+1QrlKFDbpx1MIJPuthCwH6QWyncLSlvmuZUXK
+         iYaL+WEPJsKHK3DCMoPtQUleac/YM+F1cvas7nNEG1f0l88kQHxZWQjTswMRogZJLtBs
+         ha3jjEXnqNDvnoFXDl+msAi95EDsoYYDF/zNegRhrI+Z5ZNVcNbjggR0f2MEiF3fhxJJ
+         OflQYlHTFuX0Hy0UvGVazC2vrKbE8OzD8oy3I2yHJsc5c7xd8Oq7T40myGdCDGORfK19
+         /nTA==
+X-Gm-Message-State: AOAM533BeoT+6p3mH5kTBLvGP7SRhF5D7z26SFAb8I/W/6wZ/eV7igoa
+        ObnWd6mcGL49KIROwFf/jYaN8A==
+X-Google-Smtp-Source: ABdhPJzWyuFF6czLJEoY4/WYYRuzL6zDojokSJhxWny3hGU5R/jTKsrRhCRcvnCrBz/DEVKSl8Af1Q==
+X-Received: by 2002:a0c:a8d4:: with SMTP id h20mr1118653qvc.41.1593141008939;
+        Thu, 25 Jun 2020 20:10:08 -0700 (PDT)
+Received: from elrond.bobcopeland.com (CPE30b5c2fb365b-CMa456cc3dfbbf.cpe.net.cable.rogers.com. [99.232.51.173])
+        by smtp.gmail.com with ESMTPSA id e203sm4461342qkb.87.2020.06.25.20.10.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 25 Jun 2020 20:10:07 -0700 (PDT)
+Received: by elrond.bobcopeland.com (Postfix, from userid 1000)
+        id 9A3DAFC00B2; Thu, 25 Jun 2020 23:10:06 -0400 (EDT)
+Date:   Thu, 25 Jun 2020 23:10:06 -0400
+From:   Bob Copeland <me@bobcopeland.com>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     me@bcopeland.com, linux-wireless@vger.kernel.org,
+        Johannes Berg <johannes.berg@intel.com>
+Subject: Re: [PATCH 7/9] wmediumd: add the ability to write a pcapng file
+Message-ID: <20200626031006.GC14303@bobcopeland.com>
+References: <20200625130844.22893-1-johannes@sipsolutions.net>
+ <20200625150754.554b7fc226a1.I14409b6cb5998e7bd087c1329952fbfa1a30d45e@changeid>
 MIME-Version: 1.0
-Date:   Thu, 25 Jun 2020 17:10:51 -0700
-From:   Thomas Pedersen <thomas@adapt-ip.com>
-To:     Nick Owens <mischief@offblast.org>
-Cc:     linux-wireless@vger.kernel.org,
-        Yan-Hsuan Chuang <yhchuang@realtek.com>
-Subject: Re: [PATCH] rtw88: fix skb_under_panic in tx path
-In-Reply-To: <20200625201857.almm27xgzburyxxu@wololo.home.arpa>
-References: <20200625201857.almm27xgzburyxxu@wololo.home.arpa>
-User-Agent: Roundcube Webmail/1.4.5
-Message-ID: <3d8546b66a4f2027a7fab1de291ec40f@adapt-ip.com>
-X-Sender: thomas@adapt-ip.com
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200625150754.554b7fc226a1.I14409b6cb5998e7bd087c1329952fbfa1a30d45e@changeid>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2020-06-25 13:18, Nick Owens wrote:
-> hello :)
-
-Hi Nick :)
-
-> this change fixes a reliable crash on my thinkpad A485.
+On Thu, Jun 25, 2020 at 03:08:42PM +0200, Johannes Berg wrote:
+> From: Johannes Berg <johannes.berg@intel.com>
 > 
-> please note i have no prior experience doing kernel development or
-> sending patches, and i'm not sure if this is a correct approach.
+> Add the ability to write a pcapng file containing all the data.
+> The radiotap header is currently very minimal with only the
+> frequency and the signal strength.
 
-You probably want to submit patches with git-send-email. See 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
-> From aa589182d30a0f99e1b3201ed4f3830e8af71dac Mon Sep 17 00:00:00 2001
-> From: Nick Owens <mischief@offblast.org>
-> Date: Thu, 25 Jun 2020 12:55:41 -0700
-> Subject: [PATCH] rtw88: fix skb_under_panic in tx path
-> 
-> fixes the following panic on my thinkpad A485
-> 
-> Oops#1 Part3
-> <0>[ 3743.881656] skbuff: skb_under_panic: text:000000005f69fd98
-> len:208 put:48 head:000000009e2719e8 data:00000000bd3795e0 tail:0xc2
-> end:0x2c0 dev:wlp2s0
-
-skb->head and skb->data here are really far (0.5GB) apart. Maybe 
-skb->data actually got corrupted earlier?
-
-> diff --git a/drivers/net/wireless/realtek/rtw88/pci.c
-> b/drivers/net/wireless/realtek/rtw88/pci.c
-> index d735f3127fe8..21b3b268cb25 100644
-> --- a/drivers/net/wireless/realtek/rtw88/pci.c
-> +++ b/drivers/net/wireless/realtek/rtw88/pci.c
-> @@ -741,6 +741,12 @@ static int rtw_pci_tx_write_data(struct rtw_dev 
-> *rtwdev,
->  	else if (!avail_desc(ring->r.wp, ring->r.rp, ring->r.len))
->  		return -ENOSPC;
-> 
-> +	if (skb_headroom(skb) < chip->tx_pkt_desc_sz &&
-> +	    pskb_expand_head(skb, chip->tx_pkt_desc_sz - skb_headroom(skb),
-> 0, GFP_ATOMIC)) {
-> +		dev_err(rtwdev->dev, "no headroom available");
-> +		return -ENOMEM;
-> +	}
+> +	if (!filename)
+> +		return;
 > +
+> +	ctx->pcap_file = fopen(filename, "w+");
 
-If it is a headroom issue, you can actually express the needed headroom 
-needed by the driver in hw->extra_tx_headroom during init and avoid the 
-pskb_expand_head() here.
+I know it doesn't actually matter, but would be nice to close this
+somewhere.
 
 -- 
-thomas
+Bob Copeland %% https://bobcopeland.com/
