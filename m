@@ -2,121 +2,124 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AE18020BB7C
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jun 2020 23:26:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D720A20BBB0
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jun 2020 23:38:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726417AbgFZV0E (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 26 Jun 2020 17:26:04 -0400
-Received: from mail.kernel.org ([198.145.29.99]:34160 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725916AbgFZV0D (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 26 Jun 2020 17:26:03 -0400
-Received: from localhost.localdomain.com (unknown [151.48.138.186])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B8A0E20B80;
-        Fri, 26 Jun 2020 21:26:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1593206763;
-        bh=9Q8lIrJ52Zp+iLoYJutgGc2fDNrAyLw63oX+jKzAApM=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fjyPVDymuLomXby+4vgHWtZDhDvwbzBkNGNi2GOsZQTLL6gV6p7FO/Ij/oeoJphow
-         BFX7Q/C7o7rfQZ4m8Ae8vQk32PIpH7byhIlM0gA9qjrSegDG/ZdYrLB05UaRQARm0t
-         IEbsxy3aX/u6IAQ4masxoPc41lb8ABdB2h0WjpMY=
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
-        sean.wang@mediatek.com, ryder.lee@mediatek.com,
-        linux-mediatek@lists.infradead.org
-Subject: [PATCH 17/17] mt76: mt7615: improve mt7615_driver_own reliability
-Date:   Fri, 26 Jun 2020 23:25:17 +0200
-Message-Id: <1b218a4d518c34ea9b9a143ff40b8e5b8ede93ca.1593204577.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <cover.1593204577.git.lorenzo@kernel.org>
-References: <cover.1593204577.git.lorenzo@kernel.org>
+        id S1725828AbgFZViA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 26 Jun 2020 17:38:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53226 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725780AbgFZViA (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 26 Jun 2020 17:38:00 -0400
+Received: from mail-vk1-xa44.google.com (mail-vk1-xa44.google.com [IPv6:2607:f8b0:4864:20::a44])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D086BC03E979
+        for <linux-wireless@vger.kernel.org>; Fri, 26 Jun 2020 14:37:59 -0700 (PDT)
+Received: by mail-vk1-xa44.google.com with SMTP id d64so2532695vke.4
+        for <linux-wireless@vger.kernel.org>; Fri, 26 Jun 2020 14:37:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=je2upLQiNvR0YfyZwqkhD75KKdpn0DZdcrHJes6BiIc=;
+        b=RthFPEqOul77xm5bP15m2z+OMgivB1Mb+BzePQWZ57fEQJvSG3Fkg3cCr5Me11XlqC
+         GURO9UDwDTHOKxcOHQkT/OprpV3A1IuPf6eh7TcHrZ/baw3UxLv7EZFzCgr+/TdAg6vx
+         RLikwq6ApS+HqQ3I/nbeo0DqT4sOsHQiaMKNA=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=je2upLQiNvR0YfyZwqkhD75KKdpn0DZdcrHJes6BiIc=;
+        b=awsJoc/Zv1hfxs1mZOmP6wcj4OMrZQx3OXUIncml95O3sCg1b878sSPxq8PxYPeuEm
+         wFkpuQbGtDs8frW7m8k/2J8d1qBYaF7gq7TyQw7L3anXPxbxAkCOGhgfN6hsH/fnZMfP
+         EDHDfLuuJuKJXQ+rJduglpDjSDcCcjGzI/3mwDtnrhS3Ja5nl1pFRGqP1rWmH0RMrzM6
+         vV71hXE2PouL91UdnpxxZpNyay2B5rGeRYBd3qn2ousFzxrO4QJ30SJoqpZOcIsR6vJ5
+         E3HCCpaYSxEfr/sILDOLSZpX58GiN9WhPDfN4fDEcY4HdS5S4YgXO9nBVEGH2FWzsJ0K
+         VuFw==
+X-Gm-Message-State: AOAM533/chxHJ06YimReT7Ti4RG0XhQeXFNKXERQp/LEJaukAM5ZFxu4
+        o4bVaPLI1JanoIheFXkI/Zm7ORAH9WQ=
+X-Google-Smtp-Source: ABdhPJxG5Y4xOYDran7tbG11WhFAeOxL4uQVCDjymu+N0p5MUOlUtyAVZTnMa8m7qb6qCxH3sSZ5MQ==
+X-Received: by 2002:a1f:a913:: with SMTP id s19mr3702639vke.13.1593207478729;
+        Fri, 26 Jun 2020 14:37:58 -0700 (PDT)
+Received: from mail-ua1-f41.google.com (mail-ua1-f41.google.com. [209.85.222.41])
+        by smtp.gmail.com with ESMTPSA id y135sm2082016vky.15.2020.06.26.14.37.57
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 26 Jun 2020 14:37:57 -0700 (PDT)
+Received: by mail-ua1-f41.google.com with SMTP id g14so3489388ual.11
+        for <linux-wireless@vger.kernel.org>; Fri, 26 Jun 2020 14:37:57 -0700 (PDT)
+X-Received: by 2002:ab0:54cd:: with SMTP id q13mr3917857uaa.91.1593207477223;
+ Fri, 26 Jun 2020 14:37:57 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <1593193967-29897-1-git-send-email-pillair@codeaurora.org>
+In-Reply-To: <1593193967-29897-1-git-send-email-pillair@codeaurora.org>
+From:   Doug Anderson <dianders@chromium.org>
+Date:   Fri, 26 Jun 2020 14:37:46 -0700
+X-Gmail-Original-Message-ID: <CAD=FV=V_ynwukeR92nbJXkuQ7OAW4mLaTjxko7fXt5aEfDUNhA@mail.gmail.com>
+Message-ID: <CAD=FV=V_ynwukeR92nbJXkuQ7OAW4mLaTjxko7fXt5aEfDUNhA@mail.gmail.com>
+Subject: Re: [PATCH] ath10k: Add interrupt summary based CE processing
+To:     Rakesh Pillai <pillair@codeaurora.org>
+Cc:     ath10k@lists.infradead.org,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-mt7615_driver_own can fail if it runs too close to mt7615_fw_own. In
-order to improve mt7615_driver_own reliability, retry to get runtime-pm
-ownership if mt7615_driver_own fails
+Hi,
 
-Co-developed-by: Sean Wang <sean.wang@mediatek.com>
-Signed-off-by: Sean Wang <sean.wang@mediatek.com>
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- .../net/wireless/mediatek/mt76/mt7615/mcu.c   | 27 ++++++++++++-------
- .../wireless/mediatek/mt76/mt7615/mt7615.h    |  2 ++
- 2 files changed, 19 insertions(+), 10 deletions(-)
+On Fri, Jun 26, 2020 at 10:53 AM Rakesh Pillai <pillair@codeaurora.org> wrote:
+>
+> Currently the NAPI processing loops through all
+> the copy engines and processes a particular copy
+> engine is the copy completion is set for that copy
+> engine. The host driver is not supposed to access
+> any copy engine register after clearing the interrupt
+> status register.
+>
+> This might result in kernel crash like the one below
+> [ 1159.220143] Call trace:
+> [ 1159.220170]  ath10k_snoc_read32+0x20/0x40 [ath10k_snoc]
+> [ 1159.220193]  ath10k_ce_per_engine_service_any+0x78/0x130 [ath10k_core]
+> [ 1159.220203]  ath10k_snoc_napi_poll+0x38/0x8c [ath10k_snoc]
+> [ 1159.220270]  net_rx_action+0x100/0x3b0
+> [ 1159.220312]  __do_softirq+0x164/0x30c
+> [ 1159.220345]  run_ksoftirqd+0x2c/0x64
+> [ 1159.220380]  smpboot_thread_fn+0x1b0/0x288
+> [ 1159.220405]  kthread+0x11c/0x12c
+> [ 1159.220423]  ret_from_fork+0x10/0x18
+>
+> To avoid such a scenario, we generate an interrupt
+> summary by reading the copy completion for all the
+> copy engine before actually processing any of them.
+> This will avoid reading the interrupt status register
+> for any CE after the interrupt status is cleared.
+>
+> Tested-on: WCN3990 hw1.0 SNOC WLAN.HL.3.1-01040-QCAHLSWMTPLZ-1
+>
+> Signed-off-by: Rakesh Pillai <pillair@codeaurora.org>
+> ---
+>  drivers/net/wireless/ath/ath10k/ce.c | 63 ++++++++++++++++++++++--------------
+>  drivers/net/wireless/ath/ath10k/ce.h |  5 +--
+>  2 files changed, 42 insertions(+), 26 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-index 293799263412..4f2d25230147 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-@@ -1918,29 +1918,36 @@ int mt7615_driver_own(struct mt7615_dev *dev)
- {
- 	struct mt76_phy *mphy = &dev->mt76.phy;
- 	struct mt76_dev *mdev = &dev->mt76;
--	int err = 0;
--	u32 addr;
-+	int i;
- 
- 	if (!test_and_clear_bit(MT76_STATE_PM, &mphy->state))
- 		goto out;
- 
- 	mt7622_trigger_hif_int(dev, true);
- 
--	addr = is_mt7663(mdev) ? MT_PCIE_DOORBELL_PUSH : MT_CFG_LPCR_HOST;
--	mt76_wr(dev, addr, MT_CFG_LPCR_HOST_DRV_OWN);
-+	for (i = 0; i < MT7615_DRV_OWN_RETRY_COUNT; i++) {
-+		u32 addr;
- 
--	addr = is_mt7663(mdev) ? MT_CONN_HIF_ON_LPCTL : MT_CFG_LPCR_HOST;
--	if (!mt76_poll_msec(dev, addr, MT_CFG_LPCR_HOST_FW_OWN, 0, 3000)) {
--		dev_err(mdev->dev, "Timeout for driver own\n");
--		set_bit(MT76_STATE_PM, &mphy->state);
--		err = -EIO;
-+		addr = is_mt7663(mdev) ? MT_PCIE_DOORBELL_PUSH : MT_CFG_LPCR_HOST;
-+		mt76_wr(dev, addr, MT_CFG_LPCR_HOST_DRV_OWN);
-+
-+		addr = is_mt7663(mdev) ? MT_CONN_HIF_ON_LPCTL : MT_CFG_LPCR_HOST;
-+		if (mt76_poll_msec(dev, addr, MT_CFG_LPCR_HOST_FW_OWN, 0, 50))
-+			break;
- 	}
- 
- 	mt7622_trigger_hif_int(dev, false);
-+
-+	if (i == MT7615_DRV_OWN_RETRY_COUNT) {
-+		dev_err(mdev->dev, "driver own failed\n");
-+		set_bit(MT76_STATE_PM, &mphy->state);
-+		return -EIO;
-+	}
-+
- out:
- 	dev->pm.last_activity = jiffies;
- 
--	return err;
-+	return 0;
- }
- EXPORT_SYMBOL_GPL(mt7615_driver_own);
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
-index d3360196c76a..a555679d8a4a 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
-@@ -33,6 +33,8 @@
- #define MT7615_RX_RING_SIZE		1024
- #define MT7615_RX_MCU_RING_SIZE		512
- 
-+#define MT7615_DRV_OWN_RETRY_COUNT	10
-+
- #define MT7615_FIRMWARE_CR4		"mediatek/mt7615_cr4.bin"
- #define MT7615_FIRMWARE_N9		"mediatek/mt7615_n9.bin"
- #define MT7615_ROM_PATCH		"mediatek/mt7615_rom_patch.bin"
--- 
-2.26.2
+I'm not an expert on this driver, but your change seems sane to me.
 
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+
+With your patch I can no longer find a place to put in a magic delay
+and reproduce the crash, thus:
+
+Tested-by: Douglas Anderson <dianders@chromium.org>
+
+
+If it matters, my WiFi firmware reports this:
+
+WLAN.HL.3.2.2-00490-QCAHLSWMTPL-1
+
+...and it should also be WCN3990.
+
+
+-Doug
