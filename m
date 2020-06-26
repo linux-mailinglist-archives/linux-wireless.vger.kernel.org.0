@@ -2,131 +2,162 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E1F520B2D2
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jun 2020 15:46:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EEA5120B2E1
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jun 2020 15:51:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728917AbgFZNqR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 26 Jun 2020 09:46:17 -0400
-Received: from mail.kernel.org ([198.145.29.99]:40992 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728811AbgFZNqQ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 26 Jun 2020 09:46:16 -0400
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D7020207D8;
-        Fri, 26 Jun 2020 13:46:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1593179175;
-        bh=lXvpjgrXaRMFxrlwi8Jgiz3rcpcrBJD6clWIhgXFK+k=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=gdoGbd9VsejD7yCyx5NnrN9OKGCi77HCHvyGG8UHXfrB6imW8CVLqc4bJuYyVTL6r
-         YQkoCqtNvR3igjefTgYWMQCr5qzgwX3BpxkzD7HbZ2BTPRO9AHP6YsWw8ELe0IdKAJ
-         N5KLHtT5A0tmQCk6mDJoJItomYQlEcgvlOgw3OR0=
-Date:   Fri, 26 Jun 2020 15:46:10 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     devel@driverdev.osuosl.org, Ajay.Kathat@microchip.com,
-        Venkateswara.Kaja@microchip.com, linux-wireless@vger.kernel.org,
-        Nicolas.Ferre@microchip.com, Sripad.Balwadgi@microchip.com,
-        johannes@sipsolutions.net
-Subject: Re: [PATCH v7 00/17] wilc1000: move out of staging
-Message-ID: <20200626134610.GB4095392@kroah.com>
-References: <20200623110000.31559-1-ajay.kathat@microchip.com>
- <87ftaketkw.fsf@tynnyri.adurom.net>
- <20200624091000.GD1731290@kroah.com>
- <87366kztcr.fsf@codeaurora.org>
- <20200624145254.GA1876138@kroah.com>
- <87a70qe6fb.fsf@codeaurora.org>
+        id S1728717AbgFZNvx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 26 Jun 2020 09:51:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37502 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725864AbgFZNvx (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 26 Jun 2020 09:51:53 -0400
+Received: from mail-lj1-x241.google.com (mail-lj1-x241.google.com [IPv6:2a00:1450:4864:20::241])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB88FC03E979;
+        Fri, 26 Jun 2020 06:51:52 -0700 (PDT)
+Received: by mail-lj1-x241.google.com with SMTP id h19so10380910ljg.13;
+        Fri, 26 Jun 2020 06:51:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=46r649Uez0rkaurVXfiiV2hDDKBiLO1oIqGfEBxbuiE=;
+        b=d+RPOD3LHQ7r6y0UgVav6ml+8pzYPHpwaOSlccfAPLt01I+TC9LCvjYahGn3RthkGp
+         i6AqG9q0n1LBZ72ZJH+3RQBoZAafeJWLOrDvuF+/IHdtIzMQXAkOJM61x4An3UjeHXD3
+         LfVvO+Y9vEo/sdHfPiJ9p2/Gg1pW86C5ii7dAMvxZVrrFUEjG2ro9hVtEt0yiht+Nyne
+         sOYItzi4R7euHw12kDqR5yL+TQjTTDRHApUSCFCtN3s1XvY2cIfCcY0pGw9DcCYPZ8rK
+         B6c0l0UEhnvzlG7hQttxDoeag+q6/3y4HJXewqh/6yig8Oqd/fou6CNptI4Li/a70lbW
+         +r9g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=46r649Uez0rkaurVXfiiV2hDDKBiLO1oIqGfEBxbuiE=;
+        b=GMd43tW+YOLkmYro8KEJoWsq62oO1EmMdCtOfInji1hqQX/fJot0WPzTz0SR6Qq2pl
+         pzk5FWCsvHnEDJpHyEkmy45E0Czl+LXlwuUHj0g+3tG2gkQKpi3aPIKTYXvI2lnKF/no
+         tamTMcHD9KAjfsPFVGbDnpbiL1JFkFYYs4Cue5GQ3g+ZUfhAgRNmneRBmmDIJUhfdQjE
+         gSuq4IU2OgWgiv2u6660Q/Do/be1PGRME/8Qqm60CV2PYX5Y4ZmUTQiihMtcsWMC+X5w
+         VokKltmWLTZO5IjOSFXUzMk+b42FSRrKBoXt3po65U7kZJQOnkxfGBTOtUr0569Zuhcc
+         LvkQ==
+X-Gm-Message-State: AOAM530jyE4P5nO3Au9Fpj4cLHTeOCY+ba44V1F8MbcJ1ogtFpX24v/X
+        3IE/As1BTEfN0mJmF9P2BptqIdT/G/1xAY1FPA==
+X-Google-Smtp-Source: ABdhPJyGdBesnUK+NuePNwSJyh+NmZYV6mYDBOcR8dt6U4ZGDC40q01ZvVp2zuKNWne3KBw85iKKP/GU123+2cEwEC4=
+X-Received: by 2002:a2e:b176:: with SMTP id a22mr1429963ljm.291.1593179511327;
+ Fri, 26 Jun 2020 06:51:51 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87a70qe6fb.fsf@codeaurora.org>
+References: <1592410366125160@kroah.com> <CAEJqkgjV8p6LtBV8YUGbNb0vYzKOQt4-AMAvYw5mzFr3eicyTg@mail.gmail.com>
+ <b7993e83-1df7-0c93-f6dd-dba9dc10e27a@kernel.org> <CAEJqkggG2ZB8De_zbP2W7Z9eRYve2br8jALaLRhjC33ksLZpTw@mail.gmail.com>
+ <CAEJqkgj4LS7M3zYK51Vagt4rWC9A7uunA+7CvX0Qv=57Or3Ngg@mail.gmail.com>
+ <CAEJqkghJWGsLCj2Wvt-yhzMewjXwrXhSEDpar6rbDpbSA6R8kQ@mail.gmail.com> <20200626133959.GA4024297@kroah.com>
+In-Reply-To: <20200626133959.GA4024297@kroah.com>
+From:   Gabriel C <nix.or.die@googlemail.com>
+Date:   Fri, 26 Jun 2020 15:51:24 +0200
+Message-ID: <CAEJqkgiACMar-iWsWQgJPAViBBURaNpcOD4FKtp6M8Aw_D4FOw@mail.gmail.com>
+Subject: Re: ath9k broken [was: Linux 5.7.3]
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Jiri Slaby <jirislaby@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        stable <stable@vger.kernel.org>, lwn@lwn.net,
+        angrypenguinpoland@gmail.com, Qiujun Huang <hqjagain@gmail.com>,
+        ath9k-devel <ath9k-devel@qca.qualcomm.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Jun 26, 2020 at 08:34:48AM +0300, Kalle Valo wrote:
-> Greg KH <gregkh@linuxfoundation.org> writes:
-> 
-> > On Wed, Jun 24, 2020 at 12:49:24PM +0300, Kalle Valo wrote:
-> >> Greg KH <gregkh@linuxfoundation.org> writes:
-> >> 
-> >> > On Wed, Jun 24, 2020 at 11:50:07AM +0300, Kalle Valo wrote:
-> >> >> <Ajay.Kathat@microchip.com> writes:
-> >> >> 
-> >> >> > From: Ajay Singh <ajay.kathat@microchip.com>
-> >> >> >
-> >> >> > This patch series is to review and move wilc1000 driver out of staging.
-> >> >> > Most of the review comments received in [1] & [2] are addressed in the
-> >> >> > latest code.
-> >> >> > Please review and provide your inputs.
-> >> >> >
-> >> >> > [1]. https://lore.kernel.org/linux-wireless/1537957525-11467-1-git-send-email-ajay.kathat@microchip.com/
-> >> >> > [2]. https://lore.kernel.org/linux-wireless/1562896697-8002-1-git-send-email-ajay.kathat@microchip.com/
-> >> >> >
-> >> >> > Changes since v6:
-> >> >> >  - added Reviewed-by tag received for DT binding document patch earlier.
-> >> >> >    * https://lore.kernel.org/linux-wireless/20200405013235.GA24105@bogus
-> >> >> >  - merged latest driver and included --base commit as suggested.
-> >> >> 
-> >> >> Greg, in preparation for moving the driver to drivers/net/wireless can I
-> >> >> ask you to not to take wilc1000 patches for the time being? I think that
-> >> >> way it would be easier to move the driver between trees if there are no
-> >> >> changes after v5.8-rc1. Or is there a better way handle the move?
-> >> >
-> >> > The best way is for there to be a series of patches that just adds the
-> >> > driver to the "real" part of the tree, and when that is merged, let me
-> >> > know and I will just delete the driver version in the staging tree.
-> >> >
-> >> > Does that work for you?
-> >> 
-> >> It would be fine for me but won't that approach break the build (eg.
-> >> allyesconfig) due to two duplicate versions of the same driver in
-> >> wireless-drivers-next?
+Am Fr., 26. Juni 2020 um 15:40 Uhr schrieb Greg Kroah-Hartman
+<gregkh@linuxfoundation.org>:
+>
+> On Fri, Jun 26, 2020 at 01:48:59PM +0200, Gabriel C wrote:
+> > Am Do., 25. Juni 2020 um 12:52 Uhr schrieb Gabriel C
+> > <nix.or.die@googlemail.com>:
+> > >
+> > > Am Do., 25. Juni 2020 um 12:48 Uhr schrieb Gabriel C
+> > > <nix.or.die@googlemail.com>:
+> > > >
+> > > > Am Do., 25. Juni 2020 um 06:57 Uhr schrieb Jiri Slaby <jirislaby@kernel.org>:
+> > > > >
+> > > > > On 25. 06. 20, 0:05, Gabriel C wrote:
+> > > > > > Am Mi., 17. Juni 2020 um 18:13 Uhr schrieb Greg Kroah-Hartman
+> > > > > > <gregkh@linuxfoundation.org>:
+> > > > > >>
+> > > > > >> I'm announcing the release of the 5.7.3 kernel.
+> > > > > >>
+> > > > > >
+> > > > > > Hello Greg,
+> > > > > >
+> > > > > >> Qiujun Huang (5):
+> > > > > >>       ath9k: Fix use-after-free Read in htc_connect_service
+> > > > > >>       ath9k: Fix use-after-free Read in ath9k_wmi_ctrl_rx
+> > > > > >>       ath9k: Fix use-after-free Write in ath9k_htc_rx_msg
+> > > > > >>       ath9x: Fix stack-out-of-bounds Write in ath9k_hif_usb_rx_cb
+> > > > > >>       ath9k: Fix general protection fault in ath9k_hif_usb_rx_cb
+> > > > > >>
+> > > > > >
+> > > > > > We got a report on IRC about 5.7.3+ breaking a USB ath9k Wifi Dongle,
+> > > > > > while working fine on <5.7.3.
+> > > > > >
+> > > > > > I don't have myself such HW, and the reported doesn't have any experience
+> > > > > > in bisecting the kernel, so we build kernels, each with one of the
+> > > > > > above commits reverted,
+> > > > > > to find the bad commit.
+> > > > > >
+> > > > > > The winner is:
+> > > > > >
+> > > > > > commit 6602f080cb28745259e2fab1a4cf55eeb5894f93
+> > > > > > Author: Qiujun Huang <hqjagain@gmail.com>
+> > > > > > Date:   Sat Apr 4 12:18:38 2020 +0800
+> > > > > >
+> > > > > >     ath9k: Fix general protection fault in ath9k_hif_usb_rx_cb
+> > > > > >
+> > > > > >     commit 2bbcaaee1fcbd83272e29f31e2bb7e70d8c49e05 upstream.
+> > > > > > ...
+> > > > > >
+> > > > > > Reverting this one fixed his problem.
+> > > > >
+> > > > > Obvious question: is 5.8-rc1 (containing the commit) broken too?
+> > > >
+> > > > Yes, it does, just checked.
+> > > >
+> > > > git tag --contains 2bbcaaee1fcbd83272e29f31e2bb7e70d8c49e05
+> > > > v5.8-rc1
+> > > > v5.8-rc2
+> > > >
+> > >
+> > > Sorry, I read the wrong, I just woke up.
+> > >
+> > > We didn't test 5.8-rc{1,2} yet but we will today and let you know.
+> > >
 > >
-> > For maybe one day, yes, but that's all.
+> > We tested 5.8-rc2 and it is broken too.
 > >
-> >> What I was thinking that Ajay would create a patch moving the driver
-> >> from drivers/staging/wilc1000 to
-> >> drivers/net/wireless/microchip/wilc1000. Using 'git mv' and 'git
-> >> format-patch --find-renames' the patch should be really small, mostly
-> >> just renames and small changes to Kconfig, Makefile and MAINTAINERS
-> >> files. But this of course would require that there are no wilc1000
-> >> patches in your tree until you get the driver move commit during the
-> >> next merge window, otherwise we would see conflicts between staging-next
-> >> and wireless-drivers-next.
-> >> 
-> >> But I don't have any strong opinions, whatever is easiest for everyone :)
+> > The exact HW name is:
 > >
-> > It's kind of hard to review patches that do moves, but if you all want
-> > to do that, that's fine with me.
-> 
-> Actually we have been reviewing the driver with full diffs, one file per
-> patch style[1], so I think everyone are happy. At least I have not heard
-> any complaints.
-> 
-> And Ajay already submitted that the simple rename patch proposed, thanks
-> Ajay!
-> 
-> https://patchwork.kernel.org/patch/11625025/
-> 
-> And indeed the patch is simple as it can get. So Greg, if it's ok for
-> you I would like to apply that simple patch to wireless-drivers-next.
-> 
-> > Note, I can't guarantee that I'll not take any wilc1000 patches, I'll
-> > probably forget, but git mv will handle all of that just fine.
-> 
-> Good point. To be on the safe side one option is that if I create a
-> topic branch for this simple patch and use v5.8-rc1 as the baseline.
-> Then I would pull the topic branch to wireless-drivers-next and you
-> could pull it to staging-next. That way you would not have wilc1000 in
-> your tree anymore and no accidental submission or commits either :) What
-> do you think?
+> > TP-link tl-wn722n (Atheros AR9271 chip)
+>
+> Great!
+>
+> Can you work with the developers to fix this in Linus's tree first?
 
-That sounds great, I will be happy to pull such a branch.
+I'm the man in the middle, but sure we will try patches or any suggestions
+from developers to identify and fix the problem.
 
-thanks,
+>
+> I bet they want to see the output of 'lsusb -v' for this device to see
+> if the endpoint calculations are correct...
+>
 
-greg k-h
+Working on it. As soon the reporter gives me the output, I will post it here.
+I've told him to run it on a broken and one working kernel.
+
+> thanks,
+>
+> greg k-h
+
+Best Regards,
+
+Gabriel C
