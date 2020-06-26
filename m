@@ -2,74 +2,166 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B8C1920AFF7
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jun 2020 12:44:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6223520B0DA
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jun 2020 13:49:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728060AbgFZKoV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 26 Jun 2020 06:44:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36868 "EHLO
+        id S1728631AbgFZLt1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 26 Jun 2020 07:49:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46858 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728018AbgFZKoV (ORCPT
+        with ESMTP id S1726846AbgFZLt1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 26 Jun 2020 06:44:21 -0400
-Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4CFE1C08C5C1
-        for <linux-wireless@vger.kernel.org>; Fri, 26 Jun 2020 03:44:21 -0700 (PDT)
-Received: from [2a04:4540:1402:3b00:296f:a5a1:dad9:1355]
-        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.89)
-        (envelope-from <john@phrozen.org>)
-        id 1jolqF-0000Yi-3S; Fri, 26 Jun 2020 12:44:19 +0200
-Subject: Re: [PATCH 2/2] nl80211: fix memory leak when parsing
- NL80211_ATTR_HE_BSS_COLOR
-To:     Luca Coelho <luca@coelho.fi>, johannes@sipsolutions.net
-Cc:     linux-wireless@vger.kernel.org
-References: <iwlwifi.20200626124931.871ba5b31eee.I97340172d92164ee92f3c803fe20a8a6e97714e1@changeid>
- <iwlwifi.20200626124931.7ad2a3eb894f.I60905fb70bd20389a3b170db515a07275e31845e@changeid>
-From:   John Crispin <john@phrozen.org>
-Message-ID: <ec0f216f-4c01-a808-1eb4-96acefa17f4f@phrozen.org>
-Date:   Fri, 26 Jun 2020 12:44:18 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
+        Fri, 26 Jun 2020 07:49:27 -0400
+Received: from mail-lf1-x141.google.com (mail-lf1-x141.google.com [IPv6:2a00:1450:4864:20::141])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3C66C08C5DB;
+        Fri, 26 Jun 2020 04:49:26 -0700 (PDT)
+Received: by mail-lf1-x141.google.com with SMTP id g2so5012062lfb.0;
+        Fri, 26 Jun 2020 04:49:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=ss1mUQEA71hYwxYf3sh5BP88GR/cUANQn8zzc0btYbU=;
+        b=O/LIwe/zc8JPp/jBjwpyYuXwWZv3UnSIM6MSWeU1kyXjXiqL3oDrijIhOcQHXMu/+g
+         qu1ERd3JTYEEsUx2PhgFBtldsRa6LRIGvG0RnrBeZSHSUS+GAEdD5GapfHwMEARqQ/HS
+         HmFzquwzaUUP8gYN8ul2l0nVgN0fekhv4WUPyXopbXGeY6UBR8cSP0DnC5CCga95DiQI
+         yo5Krwgpx91r2ld92U2zPPUWoWLnVAEWMhjwSh1r3aYYcOXga1DnV29PcovLI9v9GNKb
+         elUheNvKIHNCfFDMrY9XdS00AscTVaNPR7F0QjLAzJ8i78+q3zKqCWZL3CUMVA1xcCrL
+         4R7A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=ss1mUQEA71hYwxYf3sh5BP88GR/cUANQn8zzc0btYbU=;
+        b=SXiiz6JptBNlB8LtaE0cLyjwLTOsoyBB29gIutVjzJc4/79lHxhcRFsSklghjZJJ4r
+         Hpq+rFqhwP0ro5UVkHYlGkFHaJCB+Q9ZjPNkV9snYawNU/3JL3XnTLWgy7wHNMJfxVcn
+         ZxgNXZeQiUsj4d790VG7NLqJq6l2eXojRyFzRgusS7fGhNeECqunGOvWByCYPjqojzT4
+         Tk+7rH439pebA6nmhQPmoOTrzKxZQFNqQVwELcT3IIoInfcPE3H7WTvTXnbbXdWY51XO
+         TwXitdZLB48BIUoC+vxwVN/luY2zw7egwzso1hmXEEVrsP2f56spESyIKdHL08mfBB3o
+         yG/Q==
+X-Gm-Message-State: AOAM531B1jyqOwF8ZrTMuRVnMF2YX/i36c0Afecm1r0RDsPv4NQcaS/o
+        jY+K6ZcsiY6dm4LLm2IN9TPSt7PxuHN+LW8dWw==
+X-Google-Smtp-Source: ABdhPJzIEmOG6suuMShv0PXoi5S0Dx2fUmNIh9k3VNglBE5zGov/Q3DWWKLfrj2FC/OqDp7cDXXM/CnPylwaoRuEHms=
+X-Received: by 2002:a19:7014:: with SMTP id h20mr1614176lfc.49.1593172165222;
+ Fri, 26 Jun 2020 04:49:25 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <iwlwifi.20200626124931.7ad2a3eb894f.I60905fb70bd20389a3b170db515a07275e31845e@changeid>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+References: <1592410366125160@kroah.com> <CAEJqkgjV8p6LtBV8YUGbNb0vYzKOQt4-AMAvYw5mzFr3eicyTg@mail.gmail.com>
+ <b7993e83-1df7-0c93-f6dd-dba9dc10e27a@kernel.org> <CAEJqkggG2ZB8De_zbP2W7Z9eRYve2br8jALaLRhjC33ksLZpTw@mail.gmail.com>
+ <CAEJqkgj4LS7M3zYK51Vagt4rWC9A7uunA+7CvX0Qv=57Or3Ngg@mail.gmail.com>
+In-Reply-To: <CAEJqkgj4LS7M3zYK51Vagt4rWC9A7uunA+7CvX0Qv=57Or3Ngg@mail.gmail.com>
+From:   Gabriel C <nix.or.die@googlemail.com>
+Date:   Fri, 26 Jun 2020 13:48:59 +0200
+Message-ID: <CAEJqkghJWGsLCj2Wvt-yhzMewjXwrXhSEDpar6rbDpbSA6R8kQ@mail.gmail.com>
+Subject: Re: ath9k broken [was: Linux 5.7.3]
+To:     Jiri Slaby <jirislaby@kernel.org>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        stable <stable@vger.kernel.org>, lwn@lwn.net,
+        angrypenguinpoland@gmail.com, Qiujun Huang <hqjagain@gmail.com>,
+        ath9k-devel <ath9k-devel@qca.qualcomm.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-
-On 26.06.20 11:49, Luca Coelho wrote:
-> From: Luca Coelho <luciano.coelho@intel.com>
+Am Do., 25. Juni 2020 um 12:52 Uhr schrieb Gabriel C
+<nix.or.die@googlemail.com>:
 >
-> If there is an error when parsing the NL80211_ATTR_HE_BSS_COLOR
-> attribute, we return immediately without freeing param.acl.  Fit it by
-> using goto out instead of returning immediately.
+> Am Do., 25. Juni 2020 um 12:48 Uhr schrieb Gabriel C
+> <nix.or.die@googlemail.com>:
+> >
+> > Am Do., 25. Juni 2020 um 06:57 Uhr schrieb Jiri Slaby <jirislaby@kernel.org>:
+> > >
+> > > On 25. 06. 20, 0:05, Gabriel C wrote:
+> > > > Am Mi., 17. Juni 2020 um 18:13 Uhr schrieb Greg Kroah-Hartman
+> > > > <gregkh@linuxfoundation.org>:
+> > > >>
+> > > >> I'm announcing the release of the 5.7.3 kernel.
+> > > >>
+> > > >
+> > > > Hello Greg,
+> > > >
+> > > >> Qiujun Huang (5):
+> > > >>       ath9k: Fix use-after-free Read in htc_connect_service
+> > > >>       ath9k: Fix use-after-free Read in ath9k_wmi_ctrl_rx
+> > > >>       ath9k: Fix use-after-free Write in ath9k_htc_rx_msg
+> > > >>       ath9x: Fix stack-out-of-bounds Write in ath9k_hif_usb_rx_cb
+> > > >>       ath9k: Fix general protection fault in ath9k_hif_usb_rx_cb
+> > > >>
+> > > >
+> > > > We got a report on IRC about 5.7.3+ breaking a USB ath9k Wifi Dongle,
+> > > > while working fine on <5.7.3.
+> > > >
+> > > > I don't have myself such HW, and the reported doesn't have any experience
+> > > > in bisecting the kernel, so we build kernels, each with one of the
+> > > > above commits reverted,
+> > > > to find the bad commit.
+> > > >
+> > > > The winner is:
+> > > >
+> > > > commit 6602f080cb28745259e2fab1a4cf55eeb5894f93
+> > > > Author: Qiujun Huang <hqjagain@gmail.com>
+> > > > Date:   Sat Apr 4 12:18:38 2020 +0800
+> > > >
+> > > >     ath9k: Fix general protection fault in ath9k_hif_usb_rx_cb
+> > > >
+> > > >     commit 2bbcaaee1fcbd83272e29f31e2bb7e70d8c49e05 upstream.
+> > > > ...
+> > > >
+> > > > Reverting this one fixed his problem.
+> > >
+> > > Obvious question: is 5.8-rc1 (containing the commit) broken too?
+> >
+> > Yes, it does, just checked.
+> >
+> > git tag --contains 2bbcaaee1fcbd83272e29f31e2bb7e70d8c49e05
+> > v5.8-rc1
+> > v5.8-rc2
+> >
 >
-> Fixes: 5c5e52d1bb96 ("nl80211: add handling for BSS color")
-> Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
-
-Acked-by: John Crispin <john@phrozen.org>
-
-Thanks !
-
-> ---
->   net/wireless/nl80211.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+> Sorry, I read the wrong, I just woke up.
 >
-> diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-> index f31698fd4a7e..0e07fb8585fb 100644
-> --- a/net/wireless/nl80211.c
-> +++ b/net/wireless/nl80211.c
-> @@ -5025,7 +5025,7 @@ static int nl80211_start_ap(struct sk_buff *skb, struct genl_info *info)
->   					info->attrs[NL80211_ATTR_HE_BSS_COLOR],
->   					&params.he_bss_color);
->   		if (err)
-> -			return err;
-> +			goto out;
->   	}
->   
->   	nl80211_calculate_ap_params(&params);
+> We didn't test 5.8-rc{1,2} yet but we will today and let you know.
+>
+
+We tested 5.8-rc2 and it is broken too.
+
+The exact HW name is:
+
+TP-link tl-wn722n (Atheros AR9271 chip)
+
+> > >
+> > > I fail to see how the commit could cause an issue like this. Is this
+> > > really reproducibly broken with the commit and irreproducible without
+> > > it?
+> >
+> > I can't see something obvious wrong either, but yes it's reproducible on his HW.
+> > Kernel with this commit breaks the dongle, with the commit reverted it works.
+> >
+> > >As it looks like a USB/wiring problem:
+> > > usb 1-2: USB disconnect, device number 2
+> > > ath: phy0: Reading Magic # failed
+> > > ath: phy0: Unable to initialize hardware; initialization status: -5
+> > > ...
+> > > usb 1-2: device descriptor read/64, error -110
+> > > usb 1-2: device descriptor read/64, error -71
+> > >
+> > > Ccing ath9k maintainers too.
+> > >
+> > > > I don't have so much info about the HW, besides a dmesg showing the
+> > > > phy breaking.
+> > > > I also added the reporter to CC too.
+> > > >
+> > > > https://gist.github.com/AngryPenguinPL/1e545f0da3c2339e443b9e5044fcccea
+> > > >
+> > > > If you need more info, please let me know and I'll try my best to get
+> > > > it as fast as possible for you.
+> > >
+
+Best Regards,
+
+Gabriel C
