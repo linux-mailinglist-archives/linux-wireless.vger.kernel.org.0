@@ -2,35 +2,35 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 090A220BB7B
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jun 2020 23:26:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE18020BB7C
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jun 2020 23:26:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726413AbgFZV0C (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 26 Jun 2020 17:26:02 -0400
-Received: from mail.kernel.org ([198.145.29.99]:34130 "EHLO mail.kernel.org"
+        id S1726417AbgFZV0E (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 26 Jun 2020 17:26:04 -0400
+Received: from mail.kernel.org ([198.145.29.99]:34160 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725916AbgFZV0C (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 26 Jun 2020 17:26:02 -0400
+        id S1725916AbgFZV0D (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 26 Jun 2020 17:26:03 -0400
 Received: from localhost.localdomain.com (unknown [151.48.138.186])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id EF32520B1F;
-        Fri, 26 Jun 2020 21:25:59 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id B8A0E20B80;
+        Fri, 26 Jun 2020 21:26:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1593206761;
-        bh=rs/tThQUT0zyXGwo/wQ1egLkcyTxG+blDV3R49QluiE=;
+        s=default; t=1593206763;
+        bh=9Q8lIrJ52Zp+iLoYJutgGc2fDNrAyLw63oX+jKzAApM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rZUMEIVDc2FmBIokQo+jjsSViDOYhTS5QY0LXVaS/3tLr/MBWUzNp8RzJuz0McGC4
-         nvTTOPHB291WstMT4WdQPZFbpiUCw9mKiQvhEk/TfqXGjDGCMY/vAMDwk/SbRHzz9w
-         j2QK7k6OlNnJSuD+sIDPSSxxmpNiNPmRHSfb3K74=
+        b=fjyPVDymuLomXby+4vgHWtZDhDvwbzBkNGNi2GOsZQTLL6gV6p7FO/Ij/oeoJphow
+         BFX7Q/C7o7rfQZ4m8Ae8vQk32PIpH7byhIlM0gA9qjrSegDG/ZdYrLB05UaRQARm0t
+         IEbsxy3aX/u6IAQ4masxoPc41lb8ABdB2h0WjpMY=
 From:   Lorenzo Bianconi <lorenzo@kernel.org>
 To:     nbd@nbd.name
 Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
         sean.wang@mediatek.com, ryder.lee@mediatek.com,
         linux-mediatek@lists.infradead.org
-Subject: [PATCH 16/17] mt76: mt7615: add idle-timeout knob in mt7615 debugfs
-Date:   Fri, 26 Jun 2020 23:25:16 +0200
-Message-Id: <ec71634b8fcfb3f85c2e9ba07b65421e10d3e68c.1593204577.git.lorenzo@kernel.org>
+Subject: [PATCH 17/17] mt76: mt7615: improve mt7615_driver_own reliability
+Date:   Fri, 26 Jun 2020 23:25:17 +0200
+Message-Id: <1b218a4d518c34ea9b9a143ff40b8e5b8ede93ca.1593204577.git.lorenzo@kernel.org>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <cover.1593204577.git.lorenzo@kernel.org>
 References: <cover.1593204577.git.lorenzo@kernel.org>
@@ -41,106 +41,82 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Introduce idle-timeout knob in mt7615 debugfs in order to configure the
-idle time to switch to low-power state
+mt7615_driver_own can fail if it runs too close to mt7615_fw_own. In
+order to improve mt7615_driver_own reliability, retry to get runtime-pm
+ownership if mt7615_driver_own fails
 
+Co-developed-by: Sean Wang <sean.wang@mediatek.com>
+Signed-off-by: Sean Wang <sean.wang@mediatek.com>
 Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- .../wireless/mediatek/mt76/mt7615/debugfs.c   | 25 +++++++++++++++++++
- .../net/wireless/mediatek/mt76/mt7615/init.c  |  1 +
- .../net/wireless/mediatek/mt76/mt7615/mac.c   |  4 +--
- .../wireless/mediatek/mt76/mt7615/mt7615.h    |  1 +
- 4 files changed, 29 insertions(+), 2 deletions(-)
+ .../net/wireless/mediatek/mt76/mt7615/mcu.c   | 27 ++++++++++++-------
+ .../wireless/mediatek/mt76/mt7615/mt7615.h    |  2 ++
+ 2 files changed, 19 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7615/debugfs.c
-index 357b3c2fc3f9..9d58ddae0338 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/debugfs.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/debugfs.c
-@@ -69,6 +69,29 @@ mt7615_pm_get(void *data, u64 *val)
- 
- DEFINE_DEBUGFS_ATTRIBUTE(fops_pm, mt7615_pm_get, mt7615_pm_set, "%lld\n");
- 
-+static int
-+mt7615_pm_idle_timeout_set(void *data, u64 val)
-+{
-+	struct mt7615_dev *dev = data;
-+
-+	dev->pm.idle_timeout = msecs_to_jiffies(val);
-+
-+	return 0;
-+}
-+
-+static int
-+mt7615_pm_idle_timeout_get(void *data, u64 *val)
-+{
-+	struct mt7615_dev *dev = data;
-+
-+	*val = jiffies_to_msecs(dev->pm.idle_timeout);
-+
-+	return 0;
-+}
-+
-+DEFINE_DEBUGFS_ATTRIBUTE(fops_pm_idle_timeout, mt7615_pm_idle_timeout_get,
-+			 mt7615_pm_idle_timeout_set, "%lld\n");
-+
- static int
- mt7615_dbdc_set(void *data, u64 val)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+index 293799263412..4f2d25230147 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+@@ -1918,29 +1918,36 @@ int mt7615_driver_own(struct mt7615_dev *dev)
  {
-@@ -360,6 +383,8 @@ int mt7615_init_debugfs(struct mt7615_dev *dev)
- 	debugfs_create_file("dbdc", 0600, dir, dev, &fops_dbdc);
- 	debugfs_create_file("fw_debug", 0600, dir, dev, &fops_fw_debug);
- 	debugfs_create_file("runtime-pm", 0600, dir, dev, &fops_pm);
-+	debugfs_create_file("idle-timeout", 0600, dir, dev,
-+			    &fops_pm_idle_timeout);
- 	debugfs_create_devm_seqfile(dev->mt76.dev, "radio", dir,
- 				    mt7615_radio_read);
- 	debugfs_create_u32("dfs_hw_pattern", 0400, dir, &dev->hw_pattern);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/init.c b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
-index e799f93be510..e26cf762e416 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
-@@ -463,6 +463,7 @@ void mt7615_init_device(struct mt7615_dev *dev)
- 	timer_setup(&dev->phy.roc_timer, mt7615_roc_timer, 0);
+ 	struct mt76_phy *mphy = &dev->mt76.phy;
+ 	struct mt76_dev *mdev = &dev->mt76;
+-	int err = 0;
+-	u32 addr;
++	int i;
  
- 	mt7615_init_wiphy(hw);
-+	dev->pm.idle_timeout = MT7615_PM_TIMEOUT;
- 	dev->mphy.sband_2g.sband.ht_cap.cap |= IEEE80211_HT_CAP_LDPC_CODING;
- 	dev->mphy.sband_5g.sband.ht_cap.cap |= IEEE80211_HT_CAP_LDPC_CODING;
- 	dev->mphy.sband_5g.sband.vht_cap.cap |=
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-index e93d229a7887..cb61a19bc7ce 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-@@ -1913,7 +1913,7 @@ void mt7615_pm_power_save_sched(struct mt7615_dev *dev)
+ 	if (!test_and_clear_bit(MT76_STATE_PM, &mphy->state))
+ 		goto out;
+ 
+ 	mt7622_trigger_hif_int(dev, true);
+ 
+-	addr = is_mt7663(mdev) ? MT_PCIE_DOORBELL_PUSH : MT_CFG_LPCR_HOST;
+-	mt76_wr(dev, addr, MT_CFG_LPCR_HOST_DRV_OWN);
++	for (i = 0; i < MT7615_DRV_OWN_RETRY_COUNT; i++) {
++		u32 addr;
+ 
+-	addr = is_mt7663(mdev) ? MT_CONN_HIF_ON_LPCTL : MT_CFG_LPCR_HOST;
+-	if (!mt76_poll_msec(dev, addr, MT_CFG_LPCR_HOST_FW_OWN, 0, 3000)) {
+-		dev_err(mdev->dev, "Timeout for driver own\n");
+-		set_bit(MT76_STATE_PM, &mphy->state);
+-		err = -EIO;
++		addr = is_mt7663(mdev) ? MT_PCIE_DOORBELL_PUSH : MT_CFG_LPCR_HOST;
++		mt76_wr(dev, addr, MT_CFG_LPCR_HOST_DRV_OWN);
++
++		addr = is_mt7663(mdev) ? MT_CONN_HIF_ON_LPCTL : MT_CFG_LPCR_HOST;
++		if (mt76_poll_msec(dev, addr, MT_CFG_LPCR_HOST_FW_OWN, 0, 50))
++			break;
+ 	}
+ 
+ 	mt7622_trigger_hif_int(dev, false);
++
++	if (i == MT7615_DRV_OWN_RETRY_COUNT) {
++		dev_err(mdev->dev, "driver own failed\n");
++		set_bit(MT76_STATE_PM, &mphy->state);
++		return -EIO;
++	}
++
+ out:
  	dev->pm.last_activity = jiffies;
- 	if (!test_bit(MT76_STATE_PM, &mphy->state))
- 		queue_delayed_work(dev->mt76.wq, &dev->pm.ps_work,
--				   MT7615_PM_TIMEOUT);
-+				   dev->pm.idle_timeout);
+ 
+-	return err;
++	return 0;
  }
- EXPORT_SYMBOL_GPL(mt7615_pm_power_save_sched);
+ EXPORT_SYMBOL_GPL(mt7615_driver_own);
  
-@@ -1926,7 +1926,7 @@ void mt7615_pm_power_save_work(struct work_struct *work)
- 
- 	if (mt7615_firmware_own(dev))
- 		queue_delayed_work(dev->mt76.wq, &dev->pm.ps_work,
--				   MT7615_PM_TIMEOUT);
-+				   dev->pm.idle_timeout);
- }
- 
- static void
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
-index 9591dedee416..d3360196c76a 100644
+index d3360196c76a..a555679d8a4a 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
 +++ b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
-@@ -313,6 +313,7 @@ struct mt7615_dev {
+@@ -33,6 +33,8 @@
+ #define MT7615_RX_RING_SIZE		1024
+ #define MT7615_RX_MCU_RING_SIZE		512
  
- 		struct delayed_work ps_work;
- 		unsigned long last_activity;
-+		unsigned long idle_timeout;
- 	} pm;
- };
- 
++#define MT7615_DRV_OWN_RETRY_COUNT	10
++
+ #define MT7615_FIRMWARE_CR4		"mediatek/mt7615_cr4.bin"
+ #define MT7615_FIRMWARE_N9		"mediatek/mt7615_n9.bin"
+ #define MT7615_ROM_PATCH		"mediatek/mt7615_rom_patch.bin"
 -- 
 2.26.2
 
