@@ -2,64 +2,67 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 520C020AE3E
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jun 2020 10:11:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D59D20AF36
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jun 2020 11:49:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728932AbgFZIK6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 26 Jun 2020 04:10:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41540 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728866AbgFZIK6 (ORCPT
+        id S1726855AbgFZJtp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 26 Jun 2020 05:49:45 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:38322 "EHLO
+        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726699AbgFZJto (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 26 Jun 2020 04:10:58 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5FD42C08C5C1
-        for <linux-wireless@vger.kernel.org>; Fri, 26 Jun 2020 01:10:58 -0700 (PDT)
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        Fri, 26 Jun 2020 05:49:44 -0400
+Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa.ger.corp.intel.com)
+        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
         (Exim 4.93)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1jojRm-00CLIn-L0; Fri, 26 Jun 2020 10:10:54 +0200
-Message-ID: <7ea684a4d2d430030295bf9646238e03ad46e4cd.camel@sipsolutions.net>
-Subject: Re: [PATCH 7/9] wmediumd: add the ability to write a pcapng file
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Bob Copeland <me@bobcopeland.com>
-Cc:     me@bcopeland.com, linux-wireless@vger.kernel.org
-Date:   Fri, 26 Jun 2020 10:10:43 +0200
-In-Reply-To: <20200626031006.GC14303@bobcopeland.com> (sfid-20200626_051012_737630_02B423F6)
-References: <20200625130844.22893-1-johannes@sipsolutions.net>
-         <20200625150754.554b7fc226a1.I14409b6cb5998e7bd087c1329952fbfa1a30d45e@changeid>
-         <20200626031006.GC14303@bobcopeland.com>
-         (sfid-20200626_051012_737630_02B423F6)
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.3 (3.36.3-1.fc32) 
+        (envelope-from <luca@coelho.fi>)
+        id 1jokzO-001EwP-G0; Fri, 26 Jun 2020 12:49:43 +0300
+From:   Luca Coelho <luca@coelho.fi>
+To:     johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org
+Date:   Fri, 26 Jun 2020 12:49:39 +0300
+Message-Id: <iwlwifi.20200626124931.871ba5b31eee.I97340172d92164ee92f3c803fe20a8a6e97714e1@changeid>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on farmhouse.coelho.fi
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+        TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.4
+Subject: [PATCH 1/2] nl80211: don't return err unconditionally in nl80211_start_ap()
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, 2020-06-25 at 23:10 -0400, Bob Copeland wrote:
-> On Thu, Jun 25, 2020 at 03:08:42PM +0200, Johannes Berg wrote:
-> > From: Johannes Berg <johannes.berg@intel.com>
-> > 
-> > Add the ability to write a pcapng file containing all the data.
-> > The radiotap header is currently very minimal with only the
-> > frequency and the signal strength.
-> > +	if (!filename)
-> > +		return;
-> > +
-> > +	ctx->pcap_file = fopen(filename, "w+");
-> 
-> I know it doesn't actually matter, but would be nice to close this
-> somewhere.
+From: Luca Coelho <luciano.coelho@intel.com>
 
-Hah, true.
+When a memory leak was fixed, a return err was changed to goto err,
+but, accidentally, the if (err) was removed, so now we always exit at
+this point.
 
-I guess we could now add to the control socket a way to quit wediumd
-that doesn't involve killing it, and then that starts being a bit more
-relevant :)
+Fix it by adding if (err) back.
 
+Fixes: 9951ebfcdf2b ("nl80211: fix potential leak in AP start")
+Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+---
+ net/wireless/nl80211.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-johannes
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 263ae395ad44..f31698fd4a7e 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -5016,7 +5016,8 @@ static int nl80211_start_ap(struct sk_buff *skb, struct genl_info *info)
+ 		err = nl80211_parse_he_obss_pd(
+ 					info->attrs[NL80211_ATTR_HE_OBSS_PD],
+ 					&params.he_obss_pd);
+-		goto out;
++		if (err)
++			goto out;
+ 	}
+ 
+ 	if (info->attrs[NL80211_ATTR_HE_BSS_COLOR]) {
+-- 
+2.27.0
 
