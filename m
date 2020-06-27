@@ -2,77 +2,81 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E091920C0AC
-	for <lists+linux-wireless@lfdr.de>; Sat, 27 Jun 2020 12:20:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 453F220C2D0
+	for <lists+linux-wireless@lfdr.de>; Sat, 27 Jun 2020 17:28:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726421AbgF0KUH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 27 Jun 2020 06:20:07 -0400
-Received: from rin.romanrm.net ([51.158.148.128]:54094 "EHLO rin.romanrm.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726175AbgF0KUG (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 27 Jun 2020 06:20:06 -0400
-X-Greylist: delayed 392 seconds by postgrey-1.27 at vger.kernel.org; Sat, 27 Jun 2020 06:20:03 EDT
-Received: from natsu (unknown [IPv6:fd39::e99e:8f1b:cfc9:ccb8])
-        by rin.romanrm.net (Postfix) with SMTP id 91C8E42D;
-        Sat, 27 Jun 2020 10:13:28 +0000 (UTC)
-Date:   Sat, 27 Jun 2020 15:13:28 +0500
-From:   Roman Mamedov <rm@romanrm.net>
-To:     Jiri Slaby <jirislaby@kernel.org>
-Cc:     Gabriel C <nix.or.die@googlemail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        stable <stable@vger.kernel.org>, lwn@lwn.net,
-        angrypenguinpoland@gmail.com, Qiujun Huang <hqjagain@gmail.com>,
-        ath9k-devel@qca.qualcomm.com,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: Re: ath9k broken [was: Linux 5.7.3]
-Message-ID: <20200627151328.1611acbc@natsu>
-In-Reply-To: <b7993e83-1df7-0c93-f6dd-dba9dc10e27a@kernel.org>
-References: <1592410366125160@kroah.com>
-        <CAEJqkgjV8p6LtBV8YUGbNb0vYzKOQt4-AMAvYw5mzFr3eicyTg@mail.gmail.com>
-        <b7993e83-1df7-0c93-f6dd-dba9dc10e27a@kernel.org>
+        id S1726012AbgF0P2N (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 27 Jun 2020 11:28:13 -0400
+Received: from mail2.candelatech.com ([208.74.158.173]:51244 "EHLO
+        mail3.candelatech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725864AbgF0P2N (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 27 Jun 2020 11:28:13 -0400
+Received: from [192.168.254.4] (unknown [50.34.202.127])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail3.candelatech.com (Postfix) with ESMTPSA id 63FC813C2B0;
+        Sat, 27 Jun 2020 08:28:12 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 63FC813C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+        s=default; t=1593271692;
+        bh=VIElPMOaz+an56oWfXmIMgNHcT684wvDDGVPb5pBwek=;
+        h=Subject:To:References:Cc:From:Date:In-Reply-To:From;
+        b=aNmpMkyD8WEBke1ruUJbDpl4IdBHK0YCxipoc9ek7MBs4B9YP5vcNsm+sZcKRNb2R
+         x0i9X25QGIgpJblixHaThic0C5XH3ZXprr4FLgyzAHfhVlNy3OylaWBQrW/pS95U53
+         jMv0+idZ8mUJqql3aJaogDZD/Wo7mWpIdE9mkoEQ=
+Subject: Re: [PATCH] ath10k: Add history for tracking certain events
+To:     Rakesh Pillai <pillair@codeaurora.org>, ath10k@lists.infradead.org
+References: <1593238973-23237-1-git-send-email-pillair@codeaurora.org>
+Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+From:   Ben Greear <greearb@candelatech.com>
+Message-ID: <926301ed-e27f-0d8f-0177-6484bfffa40c@candelatech.com>
+Date:   Sat, 27 Jun 2020 08:28:11 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+ Thunderbird/45.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+In-Reply-To: <1593238973-23237-1-git-send-email-pillair@codeaurora.org>
+Content-Type: text/plain; charset=windows-1252; format=flowed
 Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, 25 Jun 2020 06:57:13 +0200
-Jiri Slaby <jirislaby@kernel.org> wrote:
 
-> I fail to see how the commit could cause an issue like this. Is this
-> really reproducibly broken with the commit and irreproducible without
-> it? As it looks like a USB/wiring problem:
-> usb 1-2: USB disconnect, device number 2
-> ath: phy0: Reading Magic # failed
-> ath: phy0: Unable to initialize hardware; initialization status: -5
-> ...
-> usb 1-2: device descriptor read/64, error -110
-> usb 1-2: device descriptor read/64, error -71
-> 
-> Ccing ath9k maintainers too.
 
-Note that this has been previously reported in:
-https://bugzilla.kernel.org/show_bug.cgi?id=208251
-and confirmed by several people on various stable series and the mainline that
-the referenced commit is indeed causing the problem.
+On 06/26/2020 11:22 PM, Rakesh Pillai wrote:
+> For debugging many issues, a history of the
+> below mentioned events can help get an idea
+> of what exactly was going on just before any
+> issue occurred in the system. These event
+> history will be collected only when the host
+> driver is run in debug mode (i.e. with the
+> config ATH10K_DEBUG enabled).
 
-I don't get the "device descriptor read" errors though, my dmesg is posted on
-the bug report, it just says "ath9k_htc: Failed to initialize the device".
+This should be disabled by default unless user specifically pokes some debugfs
+value to turn it on so that it does not impact performance.
 
-> > I don't have so much info about the HW, besides a dmesg showing the
-> > phy breaking.
-> > I also added the reporter to CC too.
-> > 
-> > https://gist.github.com/AngryPenguinPL/1e545f0da3c2339e443b9e5044fcccea
-> > 
-> > If you need more info, please let me know and I'll try my best to get
-> > it as fast as possible for you.
+Thanks,
+Ben
+
+>
+> Add history for tracking the below events
+> - register read
+> - register write
+> - IRQ trigger
+> - IRQ Enable
+> - IRQ Disable
+> - NAPI poll
+> - CE service
+> - WMI cmd
+> - WMI event
+> - WMI tx completion
+>
+> This will help in debugging any crash or any
+> improper behaviour.
+
 
 -- 
-With respect,
-Roman
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
