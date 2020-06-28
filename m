@@ -2,90 +2,120 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CED5720C4A6
-	for <lists+linux-wireless@lfdr.de>; Sun, 28 Jun 2020 00:07:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6E01620C637
+	for <lists+linux-wireless@lfdr.de>; Sun, 28 Jun 2020 07:12:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726819AbgF0WHV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 27 Jun 2020 18:07:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51446 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726783AbgF0WHP (ORCPT
+        id S1725999AbgF1FM2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 28 Jun 2020 01:12:28 -0400
+Received: from mail29.static.mailgun.info ([104.130.122.29]:32691 "EHLO
+        mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725959AbgF1FM2 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 27 Jun 2020 18:07:15 -0400
-Received: from mail-wm1-x344.google.com (mail-wm1-x344.google.com [IPv6:2a00:1450:4864:20::344])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73B7CC03E979
-        for <linux-wireless@vger.kernel.org>; Sat, 27 Jun 2020 15:07:15 -0700 (PDT)
-Received: by mail-wm1-x344.google.com with SMTP id f18so12530135wml.3
-        for <linux-wireless@vger.kernel.org>; Sat, 27 Jun 2020 15:07:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=hDm0J70xfMLbVvceQHwxPddZCp69UMTk2d0jtKg2a8s=;
-        b=f9F4OeCeRmjyCn/l5zWRCnvqn8abBSCJ0Y8qujQ0kmxWn834D2fXcj9rvsWpCDPIuS
-         J4EoerIfxQNxbL3GXEU7ldfNRYPjw9+UDx+oUErzer3ipQGx1bMVBJ4GKw5qxwtLFKgm
-         GIGKX0Yf3u59BQOeDfpIf5jZ+3vnA0ZzLii/fzh6lT1DnoxV12hExchyOgRH8ZWUzh6h
-         YfJSqrAXwDwYWOkanSpTn/205IELx8NOzYqaPLRhLaj+p8d8Tqco8ZlQgP7W4AOriRZo
-         /C1JWu9y1DjEpYGijceZGziK7m0b44a1VzD/YaM40U0hZVpq1t42ddRbOo9XgyjTsiIU
-         X8hQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=hDm0J70xfMLbVvceQHwxPddZCp69UMTk2d0jtKg2a8s=;
-        b=m5EBymU1JWcjYLb/f4gmrfO1wSl2LNcFJ9mnaAjRfTIdcb7lhpr/uIM0J7JR47IjFR
-         pglKWYA5gZsbVhnUrw5jytwsjQmNAMl3tR/ReSi6+h90/2ajEYXPU0dcCv0XSjCiSBgF
-         U47FGQh2pLdwi2zySgaEZzjePWUpEHrq4lYEVFrFa4g78Ac7OxBS6Nsamwtg2BLEOStu
-         kGU3ga/DpeD180OsO3Gov7iAGnL5cuMMLYthLIZV8/kXt/9aAtGEbcbOcofhFzJxZYPT
-         TS1h43k2vyuDN4qliu1Z+tn6uiRPQoXvsNagZg1cRUkpvfZmnnIm0VbLf9SLeTyNf5+d
-         aqew==
-X-Gm-Message-State: AOAM531tWVFt6kHao5iZMgSXSZdGySk+VjHqflKu7EYda1bHUESE5+4t
-        g7PPfCyg7vPVW3OQZpJVDqtZNpsSCTAWPvdtS4I=
-X-Google-Smtp-Source: ABdhPJzB2PS1uLzfXnv9RJ9+8ywF0BTYmMReQpmFB2cwHUGJdFU/VqT1TPNRIciUkUVNxK28Z0jWU0doicUzCH8V5Ek=
-X-Received: by 2002:a7b:c043:: with SMTP id u3mr10377547wmc.185.1593295180142;
- Sat, 27 Jun 2020 14:59:40 -0700 (PDT)
+        Sun, 28 Jun 2020 01:12:28 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1593321147; h=Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Message-ID: Date: Subject: In-Reply-To: References: Cc:
+ To: From: Sender; bh=YTaaN3Hxz2vWl27vpHURFA7UvYiADqyHcDWxUUkAnok=; b=rzgJmwSX86xGHshGYUYFt43RGcFBwNaV44i48qphYB4vOFIz4yPGLTJk7dZ8hGqWwu4VwAXs
+ 29STzOyd78/xZ2Nk+OlqRCuFLZiB/Qi8O64t1yS0/sAcQ9m7jDZZF6OaWQ96DSJT4rRVuPkQ
+ J35ZA0Af0+7uDAngzgewIcOLm8c=
+X-Mailgun-Sending-Ip: 104.130.122.29
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n10.prod.us-west-2.postgun.com with SMTP id
+ 5ef826b7e144dd51152e8031 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sun, 28 Jun 2020 05:12:23
+ GMT
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id C6B5FC433CB; Sun, 28 Jun 2020 05:12:22 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from Pillair (unknown [183.83.71.149])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: pillair)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 97943C433C6;
+        Sun, 28 Jun 2020 05:12:19 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 97943C433C6
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=pillair@codeaurora.org
+From:   "Rakesh Pillai" <pillair@codeaurora.org>
+To:     "'Ben Greear'" <greearb@candelatech.com>,
+        <ath10k@lists.infradead.org>
+Cc:     <linux-wireless@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+References: <1593238973-23237-1-git-send-email-pillair@codeaurora.org> <926301ed-e27f-0d8f-0177-6484bfffa40c@candelatech.com>
+In-Reply-To: <926301ed-e27f-0d8f-0177-6484bfffa40c@candelatech.com>
+Subject: RE: [PATCH] ath10k: Add history for tracking certain events
+Date:   Sun, 28 Jun 2020 10:42:15 +0530
+Message-ID: <000201d64d0a$b3d39d10$1b7ad730$@codeaurora.org>
 MIME-Version: 1.0
-Received: by 2002:adf:f187:0:0:0:0:0 with HTTP; Sat, 27 Jun 2020 14:59:39
- -0700 (PDT)
-Reply-To: un.org@i.ua
-From:   helen <upspostexpress@gmail.com>
-Date:   Sat, 27 Jun 2020 22:59:39 +0100
-Message-ID: <CA+HWcLeFxWA2HFg2eTDi9xRk8OKWn7oojHXSEX-EzsM7GcSGnA@mail.gmail.com>
-Subject: 
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain;
+        charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+X-Mailer: Microsoft Outlook 16.0
+Thread-Index: AQJ0JDYcv05C8nhyAbHgeWn72AC7twKruW4sp5xugGA=
+Content-Language: en-us
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-MONEY-GRAM TRANSFERRED PAYMENT INFO:
-
-Below is the sender=E2=80=99s information
 
 
+> -----Original Message-----
+> From: Ben Greear <greearb@candelatech.com>
+> Sent: Saturday, June 27, 2020 8:58 PM
+> To: Rakesh Pillai <pillair@codeaurora.org>; ath10k@lists.infradead.org
+> Cc: linux-wireless@vger.kernel.org; linux-kernel@vger.kernel.org
+> Subject: Re: [PATCH] ath10k: Add history for tracking certain events
+> 
+> 
+> 
+> On 06/26/2020 11:22 PM, Rakesh Pillai wrote:
+> > For debugging many issues, a history of the
+> > below mentioned events can help get an idea
+> > of what exactly was going on just before any
+> > issue occurred in the system. These event
+> > history will be collected only when the host
+> > driver is run in debug mode (i.e. with the
+> > config ATH10K_DEBUG enabled).
+> 
+> This should be disabled by default unless user specifically pokes some
+> debugfs
+> value to turn it on so that it does not impact performance.
 
-1. MG. REFERENCE NO#: 36360857
+Hi Ben,
+This history is enabled only if the user compiles the kernel with
+ATH10K_DEBUG.
+Making it runtime, adds a lot of "if" conditions for this history record.
+Do you suggest to add support to enable/disable it runtime even in
+ATH10K_DEBUG ?
 
-2. SENDER'S NAME: Johnson Williams
+> 
+> Thanks,
+> Ben
+> 
+> >
+> > Add history for tracking the below events
+> > - register read
+> > - register write
+> > - IRQ trigger
+> > - IRQ Enable
+> > - IRQ Disable
+> > - NAPI poll
+> > - CE service
+> > - WMI cmd
+> > - WMI event
+> > - WMI tx completion
+> >
+> > This will help in debugging any crash or any
+> > improper behaviour.
+> 
+> 
+> --
+> Ben Greear <greearb@candelatech.com>
+> Candela Technologies Inc  http://www.candelatech.com
 
-3. AMOUNT TO PICKUP: US$10,000
-
-
-
-Go to any Money Gram office near you and pick up the payment Track the
-
-Reference Number by visiting and click the link below
-
-(https://secure.moneygram.com/embed/track) and enter the Reference
-
-Number: 36360857 and the Last Name: Williams, you will find the payment
-
-available for pickup instantly.
-
-Yours Sincerely,
-
-Mrs. Helen Marvis
-United Nations Liaison Office
-Directorate for International Payments
