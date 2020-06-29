@@ -2,56 +2,56 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 866C520E05E
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jun 2020 23:56:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4FF6320DFA5
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jun 2020 23:55:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388189AbgF2Upi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 29 Jun 2020 16:45:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43388 "EHLO
+        id S1733200AbgF2Uio (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 29 Jun 2020 16:38:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43390 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731573AbgF2TN5 (ORCPT
+        with ESMTP id S1731746AbgF2TOS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 29 Jun 2020 15:13:57 -0400
-Received: from mail-vs1-xe41.google.com (mail-vs1-xe41.google.com [IPv6:2607:f8b0:4864:20::e41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 746C9C08ED8B
-        for <linux-wireless@vger.kernel.org>; Mon, 29 Jun 2020 00:05:02 -0700 (PDT)
-Received: by mail-vs1-xe41.google.com with SMTP id s18so8680809vsi.6
-        for <linux-wireless@vger.kernel.org>; Mon, 29 Jun 2020 00:05:02 -0700 (PDT)
+        Mon, 29 Jun 2020 15:14:18 -0400
+Received: from mail-vs1-xe42.google.com (mail-vs1-xe42.google.com [IPv6:2607:f8b0:4864:20::e42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2A05C02C3FC
+        for <linux-wireless@vger.kernel.org>; Mon, 29 Jun 2020 00:20:02 -0700 (PDT)
+Received: by mail-vs1-xe42.google.com with SMTP id p25so888388vsg.4
+        for <linux-wireless@vger.kernel.org>; Mon, 29 Jun 2020 00:20:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=verdurent-com.20150623.gappssmtp.com; s=20150623;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=O4CL5jT1tY8QD8FjAFdyHeuWe+dWBhI6iRrYPmWg+K0=;
-        b=ufgK5aOt+VEkKCf7cfv7S4ZtNXtnnmklYABTUv1VaPxOyVYlRF0W+WWMz74ZV08AGE
-         1s1vKmMq4KVk+MBoFIT07TOKURsUNbRQdevHqaQ1aWm8cwm+U1Imt2LTLVn76ZfauBCL
-         Jn8YnNOHw3ZvLP+IWIJlri1ht33n4/CzEON0vrJSMjbdw8TJtfW8X1tddfpQMfXgkCZi
-         BtT26G9ckLhBaXLHozdLJ9i2lXgOWfKOEveukc+nllrmwg/ZQ4vjc16Owk1GMoom+Uhd
-         EtZSUhps1bb5xV0fHsgJxXJI4qzTSeRxyn0KdrZYD00xOxK3NemGIoaULhoM5HjdHhpi
-         jOmA==
+        bh=FLsjiHozNvDgrzZmIQ2WouKu5DGkcV6Zi4pLil1Ar3w=;
+        b=ttB2j8EwlPtN89bjJxgTu6zN6r9fAS6dOKjdEH5q5VgMNoawKPbasYLeO6Wib3Imiu
+         Txm/pUueF19FSodecKaZf3ZCJfrG2w/E1RbAWvWvaWLmozbRr0o+MyQ7Vxyu66mUVwFe
+         /MZk9rP3wex38QGJdlpG8PBJhrr5KQXRJnt7Ook8usx2iRD6oBwGhzP3MrMOF9jCbkfq
+         eSr9Kpja5TQMUcLHo5FvLvaFIOmhzprhE5iUWmMHkVkAKT40wuc3HhlD8Mu+pYd20+vk
+         8fp8IK3heEU6zqUmyhzEWQIjcRkJvNFJ8lZm1mu5e2bjNw9dQXVcD8D+oPj0s/f4WY+P
+         5OuQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=O4CL5jT1tY8QD8FjAFdyHeuWe+dWBhI6iRrYPmWg+K0=;
-        b=HiRRhyzBsIFtK5mfsEYvNgvo1WyMIu9+av9fK+2twRTV4xRmXop83pIn/K3HQFcdKn
-         jO++W+2DZNvKbdENPYlT6hYEhdHE3fTZc/+ovuMEkfeOQQV05jeo0b4DA6qybC878KM+
-         09GYYKP9ALDIl++jzQZKNT+fwboKT1dFbKI8ebuY3H33WjApdNnUSwNv6Bcj+ERvUATg
-         nvwWsEE5piTyq0tko/ble38rK4bh0qOMRrozaistEFwroTo3yFsyuAHyM14AAh94Plq/
-         +/BWVC68k4+/Xy2Wq8QnUcSyAWpuMHt6W3zAmeVU7g7HzquFvBbn/UNL0LvcwwmCtuTA
-         Cnmw==
-X-Gm-Message-State: AOAM531WFWVtiwba0HkFYzCc5pKVgKg9hg0SmxEFLflHlCFP+rkCu1Xs
-        VbzjuVd7HnoEY0OfeZrW95LkWA27BmIwGyeK7asj9A==
-X-Google-Smtp-Source: ABdhPJwExycQo0Z3q8vxfUV0tozODXEDNYpnqbSU0LS4IbWtPA6zbYd6g3HijjZDuNICJGxZ+gh7EBDX0w/h/Xyyvro=
-X-Received: by 2002:a05:6102:203:: with SMTP id z3mr2837721vsp.182.1593414301322;
- Mon, 29 Jun 2020 00:05:01 -0700 (PDT)
+        bh=FLsjiHozNvDgrzZmIQ2WouKu5DGkcV6Zi4pLil1Ar3w=;
+        b=BKPnYSM/cCaqtsMTr4dxEoFqdtIX77p8gbnIVhrE0mqnLzdwa/CTmUvwqN1p2AtNKO
+         5/peJxIy+M3R41ZuAOYkk59UuUH0b861SE+IWjujXGl8Xd9rqI/1DyRFoUKgzdaXse8P
+         N5+JP8A0w/Q372jaCAp90IplOzwHMke8pyqxBUTD+5MIFK2i25EroWanJbE6i0fXMy5y
+         AvZ/xJPZM/ed6eyv17PI3+UVcaAf0Vi5Se8pKAVnOPhNS5DmevEKwsGbJGbo72C75T3C
+         2rFP5IjeLDdALctx9hJPfmasGfwTM21GinNb+LG1Nnufo2YPlhm+Q/KBa5QcLTNT45YZ
+         Vwcw==
+X-Gm-Message-State: AOAM533eWRFY4Sn/HkxddcwzsKMx/IyjWO7fHkZIUn/ncE92kWEnfZjC
+        1j+FtpdFYC/qkDIlc9JNeuAG+qOekNNnmfuzz+6+3g==
+X-Google-Smtp-Source: ABdhPJw1dMYfsxBM8+BKZp4XBDpFgIheslKYpyoIyIHIog2rFo9mF/XWUJd4HbD/zb2zQFhnhGkGFwPawu8DZjqwdrU=
+X-Received: by 2002:a67:7f04:: with SMTP id a4mr5058336vsd.9.1593415201875;
+ Mon, 29 Jun 2020 00:20:01 -0700 (PDT)
 MIME-Version: 1.0
 References: <9cbffad6-69e4-0b33-4640-fde7c4f6a6e7@linaro.org>
- <20200626173755.26379-1-andrzej.p@collabora.com> <20200626173755.26379-7-andrzej.p@collabora.com>
-In-Reply-To: <20200626173755.26379-7-andrzej.p@collabora.com>
+ <20200626173755.26379-1-andrzej.p@collabora.com> <20200626173755.26379-4-andrzej.p@collabora.com>
+In-Reply-To: <20200626173755.26379-4-andrzej.p@collabora.com>
 From:   Amit Kucheria <amit.kucheria@verdurent.com>
-Date:   Mon, 29 Jun 2020 12:34:50 +0530
-Message-ID: <CAHLCerO2XOOX9akEwaTu_cjSqRycFpNmoVxkSe36L8B4ALWidA@mail.gmail.com>
-Subject: Re: [PATCH v5 06/11] thermal: Add mode helpers
+Date:   Mon, 29 Jun 2020 12:49:51 +0530
+Message-ID: <CAHLCerNXcst72EDWf-xRTdUJ78jMDhhxpf31MO2WPgtJxzv6bA@mail.gmail.com>
+Subject: Re: [PATCH v5 03/11] thermal: Add current mode to thermal zone device
 To:     Andrzej Pietrasiewicz <andrzej.p@collabora.com>
 Cc:     Linux PM list <linux-pm@vger.kernel.org>,
         linux-acpi@vger.kernel.org, netdev@vger.kernel.org,
@@ -104,115 +104,42 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 On Fri, Jun 26, 2020 at 11:08 PM Andrzej Pietrasiewicz
 <andrzej.p@collabora.com> wrote:
 >
-> Prepare for making the drivers not access tzd's private members.
+> Prepare for changing the place where the mode is stored: now it is in
+> drivers, which might or might not implement get_mode()/set_mode() methods.
+> A lot of cleanup can be done thanks to storing it in struct tzd. The
+> get_mode() methods will become redundant.
 >
 > Signed-off-by: Andrzej Pietrasiewicz <andrzej.p@collabora.com>
+> Reviewed-by: Guenter Roeck <linux@roeck-us.net>
 > Reviewed-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-> [EXPORT_SYMBOL -> EXPORT_SYMBOL_GPL]
-> Signed-off-by: Andrzej Pietrasiewicz <andrzej.p@collabora.com>
+
+Reviewed-by: Amit Kucheria <amit.kucheria@linaro.org>
+
+
 > ---
->  drivers/thermal/thermal_core.c | 53 ++++++++++++++++++++++++++++++++++
->  include/linux/thermal.h        | 13 +++++++++
->  2 files changed, 66 insertions(+)
+>  include/linux/thermal.h | 2 ++
+>  1 file changed, 2 insertions(+)
 >
-> diff --git a/drivers/thermal/thermal_core.c b/drivers/thermal/thermal_core.c
-> index 14d3b1b94c4f..3181295075b9 100644
-> --- a/drivers/thermal/thermal_core.c
-> +++ b/drivers/thermal/thermal_core.c
-> @@ -459,6 +459,59 @@ static void thermal_zone_device_reset(struct thermal_zone_device *tz)
->         thermal_zone_device_init(tz);
->  }
->
-> +int thermal_zone_device_set_mode(struct thermal_zone_device *tz,
-> +                                enum thermal_device_mode mode)
-
-Should this be static?
-
-> +{
-> +       int ret = 0;
-> +
-> +       mutex_lock(&tz->lock);
-> +
-> +       /* do nothing if mode isn't changing */
-> +       if (mode == tz->mode) {
-> +               mutex_unlock(&tz->lock);
-> +
-> +               return ret;
-> +       }
-> +
-> +       if (tz->ops->set_mode)
-> +               ret = tz->ops->set_mode(tz, mode);
-> +
-> +       if (!ret)
-> +               tz->mode = mode;
-> +
-> +       mutex_unlock(&tz->lock);
-> +
-> +       thermal_zone_device_update(tz, THERMAL_EVENT_UNSPECIFIED);
-> +
-> +       return ret;
-> +}
-> +
-> +int thermal_zone_device_enable(struct thermal_zone_device *tz)
-> +{
-> +       return thermal_zone_device_set_mode(tz, THERMAL_DEVICE_ENABLED);
-> +}
-> +EXPORT_SYMBOL_GPL(thermal_zone_device_enable);
-> +
-> +int thermal_zone_device_disable(struct thermal_zone_device *tz)
-> +{
-> +       return thermal_zone_device_set_mode(tz, THERMAL_DEVICE_DISABLED);
-> +}
-> +EXPORT_SYMBOL_GPL(thermal_zone_device_disable);
-> +
-> +int thermal_zone_device_is_enabled(struct thermal_zone_device *tz)
-> +{
-> +       enum thermal_device_mode mode;
-> +
-> +       mutex_lock(&tz->lock);
-> +
-> +       mode = tz->mode;
-> +
-> +       mutex_unlock(&tz->lock);
-> +
-> +       return mode == THERMAL_DEVICE_ENABLED;
-> +}
-> +EXPORT_SYMBOL_GPL(thermal_zone_device_is_enabled);
-> +
->  void thermal_zone_device_update(struct thermal_zone_device *tz,
->                                 enum thermal_notify_event event)
->  {
 > diff --git a/include/linux/thermal.h b/include/linux/thermal.h
-> index a808f6fa2777..df013c39ba9b 100644
+> index 216185bb3014..5f91d7f04512 100644
 > --- a/include/linux/thermal.h
 > +++ b/include/linux/thermal.h
-> @@ -416,6 +416,9 @@ int thermal_zone_get_offset(struct thermal_zone_device *tz);
->
->  void thermal_cdev_update(struct thermal_cooling_device *);
->  void thermal_notify_framework(struct thermal_zone_device *, int);
-> +int thermal_zone_device_enable(struct thermal_zone_device *tz);
-> +int thermal_zone_device_disable(struct thermal_zone_device *tz);
-> +int thermal_zone_device_is_enabled(struct thermal_zone_device *tz);
->  #else
->  static inline struct thermal_zone_device *thermal_zone_device_register(
->         const char *type, int trips, int mask, void *devdata,
-> @@ -463,6 +466,16 @@ static inline void thermal_cdev_update(struct thermal_cooling_device *cdev)
->  static inline void thermal_notify_framework(struct thermal_zone_device *tz,
->         int trip)
->  { }
-> +
-> +static inline int thermal_zone_device_enable(struct thermal_zone_device *tz)
-> +{ return -ENODEV; }
-> +
-> +static inline int thermal_zone_device_disable(struct thermal_zone_device *tz)
-> +{ return -ENODEV; }
-> +
-> +static inline int
-> +thermal_zone_device_is_enabled(struct thermal_zone_device *tz)
-> +{ return -ENODEV; }
->  #endif /* CONFIG_THERMAL */
->
->  #endif /* __THERMAL_H__ */
+> @@ -128,6 +128,7 @@ struct thermal_cooling_device {
+>   * @trip_temp_attrs:   attributes for trip points for sysfs: trip temperature
+>   * @trip_type_attrs:   attributes for trip points for sysfs: trip type
+>   * @trip_hyst_attrs:   attributes for trip points for sysfs: trip hysteresis
+> + * @mode:              current mode of this thermal zone
+>   * @devdata:   private pointer for device private data
+>   * @trips:     number of trip points the thermal zone supports
+>   * @trips_disabled;    bitmap for disabled trips
+> @@ -170,6 +171,7 @@ struct thermal_zone_device {
+>         struct thermal_attr *trip_temp_attrs;
+>         struct thermal_attr *trip_type_attrs;
+>         struct thermal_attr *trip_hyst_attrs;
+> +       enum thermal_device_mode mode;
+>         void *devdata;
+>         int trips;
+>         unsigned long trips_disabled;   /* bitmap for disabled trips */
 > --
 > 2.17.1
 >
