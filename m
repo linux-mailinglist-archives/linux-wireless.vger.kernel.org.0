@@ -2,60 +2,58 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3007220D80C
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jun 2020 22:08:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C2C120D81B
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jun 2020 22:08:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733131AbgF2TfT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 29 Jun 2020 15:35:19 -0400
-Received: from mail.kernel.org ([198.145.29.99]:44064 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730253AbgF2TfS (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 29 Jun 2020 15:35:18 -0400
-Received: from localhost.localdomain.com (unknown [151.48.138.186])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id BA6B92559F;
-        Mon, 29 Jun 2020 17:06:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1593450373;
-        bh=ef8lBwio12kXWDrwXggNZhc1ZgnclFDfXg9EnWQiIEg=;
-        h=From:To:Cc:Subject:Date:From;
-        b=ogfgoPD0Mb6wMNB4SEkyVz47XzBGYJ3QF75aROu26ZjrEbUxUHI9v1yT8hAqO8gQ8
-         RulPgnUTQd4W8M0mMjQFJpRCpcQhkJhq/q8on4XpIMv0Lz/Ac1xZ9OdvD7fgwB1tsV
-         O3ayIIya+km/++UuUkaiKPIf0vfAc5QkCNnp/a/A=
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com
-Subject: [PATCH] mt76: mt76x2u: enable HC-M7662BU1
-Date:   Mon, 29 Jun 2020 19:05:33 +0200
-Message-Id: <a700daebe49eeaf26b61a199bc3e51db70278dd7.1593450264.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.26.2
+        id S1730842AbgF2Tfs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 29 Jun 2020 15:35:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47282 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1733188AbgF2Tfo (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 29 Jun 2020 15:35:44 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79560C03E979
+        for <linux-wireless@vger.kernel.org>; Mon, 29 Jun 2020 12:35:44 -0700 (PDT)
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.93)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1jpzZ7-00ELy0-CN; Mon, 29 Jun 2020 21:35:41 +0200
+Message-ID: <99ae192566a7c5ae91c6ee92b8c4ddb41a29e34e.camel@sipsolutions.net>
+Subject: Re: RFC: Remote Off-Channel CAC for DFS
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Markus Theil <markus.theil@tu-ilmenau.de>,
+        linux-wireless@vger.kernel.org
+Date:   Mon, 29 Jun 2020 21:35:40 +0200
+In-Reply-To: <c49513d5-9da7-5545-02e1-ff368f9f6961@tu-ilmenau.de> (sfid-20200629_203549_647727_9A89A56D)
+References: <c49513d5-9da7-5545-02e1-ff368f9f6961@tu-ilmenau.de>
+         (sfid-20200629_203549_647727_9A89A56D)
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.3 (3.36.3-1.fc32) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Enable support for HC-M7662BU1 module on mt76x2u driver
+Hi,
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- drivers/net/wireless/mediatek/mt76/mt76x2/usb.c | 1 +
- 1 file changed, 1 insertion(+)
+On Mon, 2020-06-29 at 19:40 +0200, Markus Theil wrote:
+> When using DFS channels, it would be nice, if I could dedicate a small
+> amount of interfaces only to CAC checking channels and set them
+> available or unavailable on multiple other remote APs/Mesh Points in
+> order to use them, when switching to lower utilized channels without
+> going through a full CAC.
+> 
+> Whats the opinion on the mailing list about adding a new command to
+> nl80211 in order to set the DFS state of a currently not used channel
+> after a Off-Channel CAC on another device nearby, but not on the same
+> host? The parameters would roughly be the same as for a channel switch
+> and an additional DFS channel state. Internally, I would trigger the DFS
+> state sync code between multiple interfaces.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c b/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
-index 0be4afef5e6f..4e003c7b62cf 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
-@@ -16,6 +16,7 @@ static const struct usb_device_id mt76x2u_device_table[] = {
- 	{ USB_DEVICE(0x0e8d, 0x7612) },	/* Aukey USBAC1200 - Alfa AWUS036ACM */
- 	{ USB_DEVICE(0x057c, 0x8503) },	/* Avm FRITZ!WLAN AC860 */
- 	{ USB_DEVICE(0x7392, 0xb711) },	/* Edimax EW 7722 UAC */
-+	{ USB_DEVICE(0x0e8d, 0x7632) },	/* HC-M7662BU1 */
- 	{ USB_DEVICE(0x2c4e, 0x0103) },	/* Mercury UD13 */
- 	{ USB_DEVICE(0x0846, 0x9053) },	/* Netgear A6210 */
- 	{ USB_DEVICE(0x045e, 0x02e6) },	/* XBox One Wireless Adapter */
--- 
-2.26.2
+But wait, don't we already sync this within the kernel?
+
+johannes
 
