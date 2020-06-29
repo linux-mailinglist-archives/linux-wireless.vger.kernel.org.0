@@ -2,73 +2,112 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BDAE320DEBD
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jun 2020 23:53:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 694BA20E13E
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jun 2020 23:58:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387742AbgF2U2j (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 29 Jun 2020 16:28:39 -0400
-Received: from mga04.intel.com ([192.55.52.120]:36329 "EHLO mga04.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1732500AbgF2TZX (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 29 Jun 2020 15:25:23 -0400
-IronPort-SDR: jxIgeswT0RQcxiq5i90ukunWtKqg5ZGGIJuZgQDDsIPNsrh7OHZAPW5SAzB/8hrHrRI9ie4Icn
- MB1yn56ptvEw==
-X-IronPort-AV: E=McAfee;i="6000,8403,9666"; a="143414451"
-X-IronPort-AV: E=Sophos;i="5.75,294,1589266800"; 
-   d="scan'208";a="143414451"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jun 2020 03:03:31 -0700
-IronPort-SDR: 4YqE72cLuVtXbqx2btrSflq7dheUQuyC8fcvBY4alz9zIVYF8Iws2pMmeRrszZZPHleRbd8uit
- b9cZgPpk5RBw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.75,294,1589266800"; 
-   d="scan'208";a="312995672"
-Received: from lkp-server01.sh.intel.com (HELO 28879958b202) ([10.239.97.150])
-  by fmsmga002.fm.intel.com with ESMTP; 29 Jun 2020 03:03:30 -0700
-Received: from kbuild by 28879958b202 with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1jpqdN-0000vY-O6; Mon, 29 Jun 2020 10:03:29 +0000
-Date:   Mon, 29 Jun 2020 18:02:53 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Tamizh Chelvam <tamizhr@codeaurora.org>, ath10k@lists.infradead.org
-Cc:     kbuild-all@lists.01.org, linux-wireless@vger.kernel.org,
-        Tamizh Chelvam <tamizhr@codeaurora.org>
-Subject: [RFC PATCH] ath10k: ath10k_mac_set_tid_config() can be static
-Message-ID: <20200629100253.GA83675@930a38d91fed>
-References: <1593363718-5148-4-git-send-email-tamizhr@codeaurora.org>
+        id S2387741AbgF2Uxi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 29 Jun 2020 16:53:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43350 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731271AbgF2TNV (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 29 Jun 2020 15:13:21 -0400
+Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com [IPv6:2a00:1450:4864:20::542])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5B96C00861F;
+        Mon, 29 Jun 2020 03:40:14 -0700 (PDT)
+Received: by mail-ed1-x542.google.com with SMTP id z17so12390218edr.9;
+        Mon, 29 Jun 2020 03:40:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=FW5uuzpZIcFHloIfRx2mV3Q4O9gtnLF6GA6PBU0vnk8=;
+        b=iqGHhWSblMuDs6IMzv34bSi1zEjJ+bzX0WJoEVJdZL4cCExAUrdJjmtPtPjfoCRhO+
+         r4WLmmBS6fP4qQMezE4KKoQGS1BCY08B+N4uAKG0wt0+obJAlOiH7XkWYl74x3/se2dN
+         j1IHtoex6TmCkFXVORpDTrZNKYq7FaT+Bn8CtE2ZJrf08o4PXmCF6i9Trb9zlGY4EQdQ
+         beq9WOFKSogv7rPW2Vbv5qVwPDadUzb4xojHrRZ1pFPrSAF2ZEIP99a/q5VnR4JdUBw2
+         qFp8+l24efMen96u3viwb+IkkbLw1hEirYZmLCugHle5XZOb80DHb4JbOmLlv/RQ+ycF
+         c8og==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=FW5uuzpZIcFHloIfRx2mV3Q4O9gtnLF6GA6PBU0vnk8=;
+        b=t5fxUeHHGT5x5pBkrmiSjKdPPxePhiID9SFTtZ5SGWTVpS2qYmMsr1NB8GkOVWo6/i
+         MRs4QIoXmcif1jvAilHdsHBqOrjDIg19Yv9T5g+mEfgtbP+LQnlGLyBo9zM03Kd1R3IA
+         8AWSvFW64n1Tz8v/kDCoW9ygbS07os77WgYkChTdFEc5R3cdCXGN3cBUw44s3+XrQlI+
+         zNt2o4DV++dMJ7eTeCH+OWYbk7J4pvqeezsxP4mxuQxmb+h8L/B+j1K+jbZW/Q6iT6qs
+         R9p9b+W5v68GOAZnKHdMruCU4DIlkHwwHLSKG0GXxD2gkACvVEwmzT7CMGNRRGxPC6j4
+         0Kvw==
+X-Gm-Message-State: AOAM533eLOEMCHnIH99mFq3ZWnktCCgnsExn7QmjiHQU1W+uRZpPUjzA
+        cqN8t+cCTjyzmW4jNXysHbk=
+X-Google-Smtp-Source: ABdhPJx8yG3u2DN7M9KoPEgDVF3CYbC6iiicJVoUyynOlTfr2a28mbHZ6/emmMLVQyv6VCGIT8aO0w==
+X-Received: by 2002:aa7:db4f:: with SMTP id n15mr1292645edt.193.1593427213599;
+        Mon, 29 Jun 2020 03:40:13 -0700 (PDT)
+Received: from localhost.localdomain ([2a02:a03f:b7f9:7600:cb8:1ada:8c2d:413])
+        by smtp.gmail.com with ESMTPSA id l4sm7443503edw.10.2020.06.29.03.40.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 29 Jun 2020 03:40:13 -0700 (PDT)
+From:   Luc Van Oostenryck <luc.vanoostenryck@gmail.com>
+To:     Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Adham Abozaeid <adham.abozaeid@microchip.com>,
+        Ajay Singh <ajay.kathat@microchip.com>
+Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Luc Van Oostenryck <luc.vanoostenryck@gmail.com>
+Subject: [PATCH] wilc1000: let wilc_mac_xmit() return NETDEV_TX_OK
+Date:   Mon, 29 Jun 2020 12:40:09 +0200
+Message-Id: <20200629104009.84077-1-luc.vanoostenryck@gmail.com>
+X-Mailer: git-send-email 2.27.0
+In-Reply-To: <8a2f50dc-2cbe-64e4-438c-4320bb574f4f@microchip.com>
+References: <8a2f50dc-2cbe-64e4-438c-4320bb574f4f@microchip.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1593363718-5148-4-git-send-email-tamizhr@codeaurora.org>
-X-Patchwork-Hint: ignore
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+The method ndo_start_xmit() is defined as returning an 'netdev_tx_t',
+which is a typedef for an enum type defining 'NETDEV_TX_OK' but this
+driver returns '0' instead of 'NETDEV_TX_OK'.
 
-Signed-off-by: kernel test robot <lkp@intel.com>
+Fix this by returning 'NETDEV_TX_OK' instead of '0'.
+
+Signed-off-by: Luc Van Oostenryck <luc.vanoostenryck@gmail.com>
 ---
- mac.c |    6 +++---
+ drivers/net/wireless/microchip/wilc1000/netdev.c | 6 +++---
  1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
-index b1a89c5869a01..8025c9115e3d6 100644
---- a/drivers/net/wireless/ath/ath10k/mac.c
-+++ b/drivers/net/wireless/ath/ath10k/mac.c
-@@ -6861,9 +6861,9 @@ ath10k_mac_tid_bitrate_config(struct ath10k *ar,
- 	return 0;
+diff --git a/drivers/net/wireless/microchip/wilc1000/netdev.c b/drivers/net/wireless/microchip/wilc1000/netdev.c
+index fda0ab97b02c..be3ae5486f44 100644
+--- a/drivers/net/wireless/microchip/wilc1000/netdev.c
++++ b/drivers/net/wireless/microchip/wilc1000/netdev.c
+@@ -678,14 +678,14 @@ netdev_tx_t wilc_mac_xmit(struct sk_buff *skb, struct net_device *ndev)
+ 
+ 	if (skb->dev != ndev) {
+ 		netdev_err(ndev, "Packet not destined to this device\n");
+-		return 0;
++		return NETDEV_TX_OK;
+ 	}
+ 
+ 	tx_data = kmalloc(sizeof(*tx_data), GFP_ATOMIC);
+ 	if (!tx_data) {
+ 		dev_kfree_skb(skb);
+ 		netif_wake_queue(ndev);
+-		return 0;
++		return NETDEV_TX_OK;
+ 	}
+ 
+ 	tx_data->buff = skb->data;
+@@ -710,7 +710,7 @@ netdev_tx_t wilc_mac_xmit(struct sk_buff *skb, struct net_device *ndev)
+ 		srcu_read_unlock(&wilc->srcu, srcu_idx);
+ 	}
+ 
+-	return 0;
++	return NETDEV_TX_OK;
  }
  
--int ath10k_mac_set_tid_config(struct ath10k *ar, struct ieee80211_sta *sta,
--			      struct ieee80211_vif *vif, u32 changed,
--			      struct wmi_per_peer_per_tid_cfg_arg *arg)
-+static int ath10k_mac_set_tid_config(struct ath10k *ar, struct ieee80211_sta *sta,
-+				     struct ieee80211_vif *vif, u32 changed,
-+				     struct wmi_per_peer_per_tid_cfg_arg *arg)
- {
- 	struct ath10k_vif *arvif = (void *)vif->drv_priv;
- 	struct ath10k_sta *arsta;
+ static int wilc_mac_close(struct net_device *ndev)
+-- 
+2.27.0
+
