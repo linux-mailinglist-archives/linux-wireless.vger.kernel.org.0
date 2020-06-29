@@ -2,103 +2,134 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D15A20E534
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jun 2020 00:06:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 22DB820E332
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jun 2020 00:02:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391210AbgF2VeN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 29 Jun 2020 17:34:13 -0400
-Received: from mail.kernel.org ([198.145.29.99]:60666 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728610AbgF2Sk5 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 29 Jun 2020 14:40:57 -0400
-Received: from ziggy.de (unknown [213.195.114.138])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 08DD423A03;
-        Mon, 29 Jun 2020 11:01:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1593428511;
-        bh=jARi/R4D3lgWV8NV1MNg8COPXHS+phn3bVWAQun1iT0=;
-        h=From:To:Cc:Subject:Date:From;
-        b=gJff2v4TXpfy6hF9V6idvI8o6WC2i340W5y4znsunb9GxFAXu2t/OxlZeOr4CANCE
-         v3g+wgVTjfgtjZKl617qqJw7N+PNK3gGuMBcDHarUaPqWnyMR5N6EyMprUao3IZOp8
-         qsythEBwnsU7SofzrpVhPdVTaGeMNKm0wslVZVMY=
-From:   matthias.bgg@kernel.org
-To:     arend.vanspriel@broadcom.com, kvalo@codeaurora.org,
-        davem@davemloft.net, kuba@kernel.org
-Cc:     brcm80211-dev-list.pdl@broadcom.com, mbrugger@suse.com,
-        netdev@vger.kernel.org, chi-hsien.lin@cypress.com,
-        linux-wireless@vger.kernel.org, hante.meuleman@broadcom.com,
-        linux-kernel@vger.kernel.org, hdegoede@redhat.com,
-        wright.feng@cypress.com, matthias.bgg@kernel.org,
-        brcm80211-dev-list@cypress.com, franky.lin@broadcom.com
-Subject: [PATCH v2] brcmfmac: Transform compatible string for FW loading
-Date:   Mon, 29 Jun 2020 13:01:41 +0200
-Message-Id: <20200629110141.22419-1-matthias.bgg@kernel.org>
-X-Mailer: git-send-email 2.27.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        id S1732138AbgF2VMc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 29 Jun 2020 17:12:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40904 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730157AbgF2S5o (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 29 Jun 2020 14:57:44 -0400
+Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63229C00F807;
+        Mon, 29 Jun 2020 05:29:44 -0700 (PDT)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: andrzej.p)
+        with ESMTPSA id BF6522A2D72
+From:   Andrzej Pietrasiewicz <andrzej.p@collabora.com>
+To:     linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
+        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-renesas-soc@vger.kernel.org,
+        linux-rockchip@lists.infradead.org
+Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Vishal Kulkarni <vishal@chelsio.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jiri Pirko <jiri@mellanox.com>,
+        Ido Schimmel <idosch@mellanox.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        Intel Linux Wireless <linuxwifi@intel.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Peter Kaestle <peter@piie.net>,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Sebastian Reichel <sre@kernel.org>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Amit Kucheria <amit.kucheria@verdurent.com>,
+        Support Opensource <support.opensource@diasemi.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        =?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Orson Zhai <orsonzhai@gmail.com>,
+        Baolin Wang <baolin.wang7@gmail.com>,
+        Chunyan Zhang <zhang.lyra@gmail.com>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Allison Randal <allison@lohutok.net>,
+        Enrico Weigelt <info@metux.net>,
+        Gayatri Kammela <gayatri.kammela@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Andrzej Pietrasiewicz <andrzej.p@collabora.com>,
+        kernel@collabora.com
+Subject: [PATCH v7 00/11] Stop monitoring disabled devices
+Date:   Mon, 29 Jun 2020 14:29:14 +0200
+Message-Id: <20200629122925.21729-1-andrzej.p@collabora.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Matthias Brugger <mbrugger@suse.com>
+A respin of v6 with these changes:
 
-The driver relies on the compatible string from DT to determine which
-FW configuration file it should load. The DTS spec allows for '/' as
-part of the compatible string. We change this to '-' so that we will
-still be able to load the config file, even when the compatible has a
-'/'. This fixes explicitly the firmware loading for
-"solidrun,cubox-i/q".
+v6..v7:
+- removed duplicate S-o-b line from patch 6/11
 
-Signed-off-by: Matthias Brugger <mbrugger@suse.com>
+v5..v6:
+- staticized thermal_zone_device_set_mode() (kbuild test robot)
 
----
+v4..v5:
 
-Changes in v2:
-- use strscpy instead of strncpy (Hans de Goede)
-- use strlen(tmp) + 1 for allocation (Hans de Goede, kernel test robot)
+- EXPORT_SYMBOL -> EXPORT_SYMBOL_GPL (Daniel)
+- dropped unnecessary thermal_zone_device_enable() in int3400_thermal.c
+and in thermal_of.c (Bartlomiej)
 
- .../wireless/broadcom/brcm80211/brcmfmac/of.c  | 18 +++++++++++++++---
- 1 file changed, 15 insertions(+), 3 deletions(-)
+Andrzej Pietrasiewicz (11):
+  acpi: thermal: Fix error handling in the register function
+  thermal: Store thermal mode in a dedicated enum
+  thermal: Add current mode to thermal zone device
+  thermal: Store device mode in struct thermal_zone_device
+  thermal: remove get_mode() operation of drivers
+  thermal: Add mode helpers
+  thermal: Use mode helpers in drivers
+  thermal: Explicitly enable non-changing thermal zone devices
+  thermal: core: Stop polling DISABLED thermal devices
+  thermal: Simplify or eliminate unnecessary set_mode() methods
+  thermal: Rename set_mode() to change_mode()
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
-index b886b56a5e5a..5f0ebaf4d64e 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
-@@ -17,7 +17,6 @@ void brcmf_of_probe(struct device *dev, enum brcmf_bus_type bus_type,
- {
- 	struct brcmfmac_sdio_pd *sdio = &settings->bus.sdio;
- 	struct device_node *root, *np = dev->of_node;
--	struct property *prop;
- 	int irq;
- 	u32 irqf;
- 	u32 val;
-@@ -25,8 +24,21 @@ void brcmf_of_probe(struct device *dev, enum brcmf_bus_type bus_type,
- 	/* Set board-type to the first string of the machine compatible prop */
- 	root = of_find_node_by_path("/");
- 	if (root) {
--		prop = of_find_property(root, "compatible", NULL);
--		settings->board_type = of_prop_next_string(prop, NULL);
-+		int i;
-+		char *board_type;
-+		const char *tmp;
-+
-+		of_property_read_string_index(root, "compatible", 0, &tmp);
-+
-+		/* get rid of '/' in the compatible string to be able to find the FW */
-+		board_type = devm_kzalloc(dev, strlen(tmp) + 1, GFP_KERNEL);
-+		strscpy(board_type, tmp, sizeof(board_type));
-+		for (i = 0; i < strlen(board_type); i++) {
-+			if (board_type[i] == '/')
-+				board_type[i] = '-';
-+		}
-+		settings->board_type = board_type;
-+
- 		of_node_put(root);
- 	}
- 
+ drivers/acpi/thermal.c                        | 75 +++++----------
+ .../ethernet/chelsio/cxgb4/cxgb4_thermal.c    |  8 ++
+ .../ethernet/mellanox/mlxsw/core_thermal.c    | 91 ++++---------------
+ drivers/net/wireless/intel/iwlwifi/mvm/tt.c   |  9 +-
+ drivers/platform/x86/acerhdf.c                | 33 +++----
+ drivers/platform/x86/intel_mid_thermal.c      |  6 ++
+ drivers/power/supply/power_supply_core.c      |  9 +-
+ drivers/thermal/armada_thermal.c              |  6 ++
+ drivers/thermal/da9062-thermal.c              | 16 +---
+ drivers/thermal/dove_thermal.c                |  6 ++
+ drivers/thermal/hisi_thermal.c                |  6 +-
+ drivers/thermal/imx_thermal.c                 | 57 ++++--------
+ .../intel/int340x_thermal/int3400_thermal.c   | 38 ++------
+ .../int340x_thermal/int340x_thermal_zone.c    |  5 +
+ drivers/thermal/intel/intel_pch_thermal.c     |  5 +
+ .../thermal/intel/intel_quark_dts_thermal.c   | 34 ++-----
+ drivers/thermal/intel/intel_soc_dts_iosf.c    |  3 +
+ drivers/thermal/intel/x86_pkg_temp_thermal.c  |  6 ++
+ drivers/thermal/kirkwood_thermal.c            |  7 ++
+ drivers/thermal/rcar_thermal.c                |  9 +-
+ drivers/thermal/rockchip_thermal.c            |  6 +-
+ drivers/thermal/spear_thermal.c               |  7 ++
+ drivers/thermal/sprd_thermal.c                |  6 +-
+ drivers/thermal/st/st_thermal.c               |  5 +
+ drivers/thermal/thermal_core.c                | 76 ++++++++++++++--
+ drivers/thermal/thermal_of.c                  | 41 +--------
+ drivers/thermal/thermal_sysfs.c               | 37 +-------
+ include/linux/thermal.h                       | 19 +++-
+ 28 files changed, 275 insertions(+), 351 deletions(-)
+
+
+base-commit: 9ebcfadb0610322ac537dd7aa5d9cbc2b2894c68
 -- 
-2.27.0
+2.17.1
 
