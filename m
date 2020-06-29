@@ -2,135 +2,63 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 16CEF20E178
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jun 2020 23:58:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4AB9C20E160
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jun 2020 23:58:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733027AbgF2U4K (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 29 Jun 2020 16:56:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43362 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731283AbgF2TNJ (ORCPT
+        id S1728182AbgF2UzQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 29 Jun 2020 16:55:16 -0400
+Received: from smtprelay0103.hostedemail.com ([216.40.44.103]:59408 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1731296AbgF2TNM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 29 Jun 2020 15:13:09 -0400
-Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com [IPv6:2607:f8b0:4864:20::441])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09CDBC03E979;
-        Sun, 28 Jun 2020 20:52:58 -0700 (PDT)
-Received: by mail-pf1-x441.google.com with SMTP id b16so7293971pfi.13;
-        Sun, 28 Jun 2020 20:52:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=mMGxHvmMYl6KmBYcQsFExMxRkPUqi7/TV9d4rzWRr7k=;
-        b=u2R2A9TNTrjVPaCWT+EtNeCfx976UM0/uvyxC3814IxJ3BmtNIBpFQ0ICCey/EcQGc
-         C2eS5fpQk4UcCXH1AL8vjaVjN962La5SVUBbXE9DUXpkS2EulFeP7MKv0QrS30LgmQyA
-         cQ2YIx5Dt2G8V0SVUKirabbIOS+ctzsLxrqbXTTe6FbjXEnT9K169K/WjAZx+6ZX270m
-         k++SJlX43a5xXxXOD4YsBZgNqOf3YZSfrFwcvunodSnyOzYfknDpa3lYOFOoZY8PdBi8
-         RgNZnFHUk+mC3uA38MgCHbsb3oJAcFv/T6tdXFqj0DgTQqEKKIGlhuti9b9huZHg99il
-         aDTw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=mMGxHvmMYl6KmBYcQsFExMxRkPUqi7/TV9d4rzWRr7k=;
-        b=Oj00TvbRgLoUUi5gmJh70uj/58twygrgn7n5JHCKtXPhCE+aDBEFZDjqLrvUpb7jeu
-         yzy4IHuGYvOZg/KblKHYtsSUQK7mSI7oD42jYNKOAVv63bIV/Zc8lohqCxSaJOF1g/se
-         o9l1RvR4mq76eswFlzv4jxaId3C29Y0wLV081BwpT2H/MZAYS1B2/7G7kYKN2IIrp7A7
-         Zd1B1mbQ6cMv6TT/c2bRjmqScUTbTvueeMh4Xnt0+3DF4tSz0LYV5M12GqxzFn+zgd/B
-         6OAagL9esXnOJfoWa5GwS7lqjV21ZISDUJl8uOHqp8kPLxNLpZFncGwPCbX1RZ7UAXEu
-         jGCA==
-X-Gm-Message-State: AOAM5328Pso4MS3TVeS5DW09NaDy0WZ5/GD3dukJB2xTzXc+LK2x83Ti
-        9FDFX8OseeBRuAPMAMrbvZg=
-X-Google-Smtp-Source: ABdhPJydbdI8co0v0o/sBZ2cRFoABhFdoGlHqU5hKHlqf4wT6H8b7R/olOtLPlXq7tzCb6hpIsCqjw==
-X-Received: by 2002:a62:1716:: with SMTP id 22mr12030455pfx.99.1593402777406;
-        Sun, 28 Jun 2020 20:52:57 -0700 (PDT)
-Received: from varodek.iballbatonwifi.com ([103.105.153.57])
-        by smtp.gmail.com with ESMTPSA id b191sm28757684pga.13.2020.06.28.20.52.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 28 Jun 2020 20:52:56 -0700 (PDT)
-From:   Vaibhav Gupta <vaibhavgupta40@gmail.com>
-To:     Bjorn Helgaas <helgaas@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>, bjorn@helgaas.com,
-        Vaibhav Gupta <vaibhav.varodek@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>
-Cc:     Vaibhav Gupta <vaibhavgupta40@gmail.com>, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        linux-kernel-mentees@lists.linuxfoundation.org,
-        skhan@linuxfoundation.org, linux-wireless@vger.kernel.org
-Subject: [PATCH v1] adm8211: use generic power management
-Date:   Mon, 29 Jun 2020 09:20:32 +0530
-Message-Id: <20200629035031.169670-1-vaibhavgupta40@gmail.com>
-X-Mailer: git-send-email 2.27.0
+        Mon, 29 Jun 2020 15:13:12 -0400
+Received: from smtprelay.hostedemail.com (10.5.19.251.rfc1918.com [10.5.19.251])
+        by smtpgrave03.hostedemail.com (Postfix) with ESMTP id D923D180178AE
+        for <linux-wireless@vger.kernel.org>; Mon, 29 Jun 2020 06:18:03 +0000 (UTC)
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay05.hostedemail.com (Postfix) with ESMTP id A7B0A1802912C;
+        Mon, 29 Jun 2020 06:18:03 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:800:960:968:973:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1538:1593:1594:1711:1714:1730:1747:1777:1792:2393:2559:2562:2828:3138:3139:3140:3141:3142:3350:3622:3865:3871:3873:4321:5007:6119:7576:7903:7904:10004:10400:10848:11232:11658:11914:12297:12740:12760:12895:13069:13255:13311:13357:13439:14181:14659:14721:21080:21324:21627:30054:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:2,LUA_SUMMARY:none
+X-HE-Tag: jump22_500d9c826e6d
+X-Filterd-Recvd-Size: 1439
+Received: from XPS-9350.home (unknown [47.151.133.149])
+        (Authenticated sender: joe@perches.com)
+        by omf06.hostedemail.com (Postfix) with ESMTPA;
+        Mon, 29 Jun 2020 06:18:02 +0000 (UTC)
+Message-ID: <300f12f5c266cb0940dfeee94dd13d42851ccdea.camel@perches.com>
+Subject: Re: [PATCH 2/2] rtlwifi: 8821ae: remove unused path B parameters
+ from swing table
+From:   Joe Perches <joe@perches.com>
+To:     Pkshih <pkshih@realtek.com>
+Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "kvalo@codeaurora.org" <kvalo@codeaurora.org>
+Date:   Sun, 28 Jun 2020 23:18:01 -0700
+In-Reply-To: <1593410915.25527.3.camel@realtek.com>
+References: <20200629032937.17374-1-pkshih@realtek.com>
+         <20200629032937.17374-2-pkshih@realtek.com>
+         <be95d3c3e40e3670ed368b0df4ba397a@perches.com>
+         <1593410915.25527.3.camel@realtek.com>
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.36.2-0ubuntu1 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-With legacy PM, drivers themselves were responsible for managing the
-device's power states and takes care of register states.
+On Mon, 2020-06-29 at 06:09 +0000, Pkshih wrote:
+> On Sun, 2020-06-28 at 22:21 -0700, Joe Perches wrote:
+> > On 2020-06-28 20:29, pkshih@realtek.com wrote:
+> > > From: Ping-Ke Shih <pkshih@realtek.com>
+> > >  
+> > > 8821AE is a 1x1 chip, so swing parameters for path B aren't necessary.
+> > 
+> > Then all the now unused arrays could be removed as well.
+> > 
+> My gcc doesn't warn this. Could I know how you find them?
 
-After upgrading to the generic structure, PCI core will take care of
-required tasks and drivers should do only device-specific operations.
+Logic then inspection.
 
-In the case of adm8211, after removing PCI helper functions, .suspend()
-and .resume() became empty-body functions. Hence, define them NULL and
-use dev_pm_ops.
-
-Compile-tested only.
-
-Signed-off-by: Vaibhav Gupta <vaibhavgupta40@gmail.com>
----
- drivers/net/wireless/admtek/adm8211.c | 25 +++++--------------------
- 1 file changed, 5 insertions(+), 20 deletions(-)
-
-diff --git a/drivers/net/wireless/admtek/adm8211.c b/drivers/net/wireless/admtek/adm8211.c
-index ba326f6c1214..22f9f2f8af10 100644
---- a/drivers/net/wireless/admtek/adm8211.c
-+++ b/drivers/net/wireless/admtek/adm8211.c
-@@ -1976,35 +1976,20 @@ static void adm8211_remove(struct pci_dev *pdev)
- }
- 
- 
--#ifdef CONFIG_PM
--static int adm8211_suspend(struct pci_dev *pdev, pm_message_t state)
--{
--	pci_save_state(pdev);
--	pci_set_power_state(pdev, pci_choose_state(pdev, state));
--	return 0;
--}
--
--static int adm8211_resume(struct pci_dev *pdev)
--{
--	pci_set_power_state(pdev, PCI_D0);
--	pci_restore_state(pdev);
--	return 0;
--}
--#endif /* CONFIG_PM */
--
-+#define adm8211_suspend NULL
-+#define adm8211_resume NULL
- 
- MODULE_DEVICE_TABLE(pci, adm8211_pci_id_table);
- 
-+static SIMPLE_DEV_PM_OPS(adm8211_pm_ops, adm8211_suspend, adm8211_resume);
-+
- /* TODO: implement enable_wake */
- static struct pci_driver adm8211_driver = {
- 	.name		= "adm8211",
- 	.id_table	= adm8211_pci_id_table,
- 	.probe		= adm8211_probe,
- 	.remove		= adm8211_remove,
--#ifdef CONFIG_PM
--	.suspend	= adm8211_suspend,
--	.resume		= adm8211_resume,
--#endif /* CONFIG_PM */
-+	.driver.pm	= &adm8211_pm_ops,
- };
- 
- module_pci_driver(adm8211_driver);
--- 
-2.27.0
 
