@@ -2,293 +2,161 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D7E920D502
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jun 2020 21:15:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5880A20D53B
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jun 2020 21:16:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731504AbgF2TNm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 29 Jun 2020 15:13:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43392 "EHLO
+        id S1731773AbgF2TOW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 29 Jun 2020 15:14:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43394 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730918AbgF2TNh (ORCPT
+        with ESMTP id S1731749AbgF2TOT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 29 Jun 2020 15:13:37 -0400
-Received: from mail-ua1-x943.google.com (mail-ua1-x943.google.com [IPv6:2607:f8b0:4864:20::943])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 313E9C08EE7C
-        for <linux-wireless@vger.kernel.org>; Mon, 29 Jun 2020 00:19:57 -0700 (PDT)
-Received: by mail-ua1-x943.google.com with SMTP id e3so4989356uan.2
-        for <linux-wireless@vger.kernel.org>; Mon, 29 Jun 2020 00:19:57 -0700 (PDT)
+        Mon, 29 Jun 2020 15:14:19 -0400
+Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B82DDC00875D
+        for <linux-wireless@vger.kernel.org>; Mon, 29 Jun 2020 01:50:15 -0700 (PDT)
+Received: by mail-wr1-x443.google.com with SMTP id j4so13218980wrp.10
+        for <linux-wireless@vger.kernel.org>; Mon, 29 Jun 2020 01:50:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=verdurent-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=XpYnh8gMYavfYLlo546wBFKAR4SvsyOyU3BwpCQr48Y=;
-        b=13O1W6B1WoYn8RPzdruP1UsaIJjpCs+IyOvzq9Hz0Cb2k6EwAvj3Zp/jB0S6Kft7Nl
-         o4TQYqPUgOaEo/uWqotQ66eV2QrtibbA4DUDHE4leNZi23M9bAJKxke54zBwxNB72yYi
-         1O6c/zqJ69Y0NMv25Jca9Nu60iNQgRing2YBd00Vu1VRiFE+o5C8fEjhIvHwTKKwq+kA
-         fpWvKQy++uWsEtjukRFnzGgeMUDntbJSBHd+6Hkxej1CLrJHk44FNNfa207qLIA+LrNj
-         FTqRgy04tivPRI1OV065nQpiXGXPJtXkPiSp1G1mTd7pzIbU9k8IrQ90x16surkpuXdC
-         r/iA==
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id;
+        bh=wBnwcrwwCg7xzOS/+9Id6g/GU0D6s2nLBw+53T3f4KY=;
+        b=qrIVOLnfGmFeeAsI4/tc5uVMYiRAdXj5/RviOcu8CLHA40oDfsUQ+bwS4FEVXea259
+         CuPvsW/1g7eJPXtVcboNNJI2Q7F9J88qtKWL8HX6uPVPGvQyA3ximdmlSWzV/7mfgm+D
+         JkZLAMJrJG/QVNciVOxRXPBjT3IWqOQBDYwb4oRM6yJRyy8KxDqwcam/Y4aFLlultboT
+         WCfbB2xomajW9eShkdjKGvHRaqQQyAnjiInvf2EQgSlKnbt7oIP8AUXiDqhrYMeG7RS9
+         v11VLCgvUBa9Zlas2LjOriiDXKLjt+k3CZLUT4qR5bO6xUPB1fHU7F4rk8ldqCjOcnan
+         lrQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=XpYnh8gMYavfYLlo546wBFKAR4SvsyOyU3BwpCQr48Y=;
-        b=QaUMT4ewSjeg73fEJnBPsWI7tOBRx/cybx/ooEQAx/AVtp0LTkfY2ZNowGyjPkp8SC
-         nUtvtRrIoV9kvLVl0MsmMv93ZG9xuoA0ONFAYNpS6mRokRZqE3O/wl/A/j5TytKz9pi8
-         JsDBoc4MfDbVowhIhf9ulIre+V6wumlIQSKIbAkuEHo+YprglfkRocobmn7G9kI3dERc
-         RFS+tIlxKrRPfOnSE1KZiKsg0Bvgvsr2fcvoaOmthh6QwjrMiHI7rzqInoj98yryxzDl
-         HYXMI4+BPZVbPyRgxDFGW7LBaKBVPaKFPihrCFGjNtH8fw2VvaWJyps32lGkEJtPEqRq
-         6r0w==
-X-Gm-Message-State: AOAM532GCaCZGLknzo/vORIsSjDJQKPZmabvR4oVmzYHMTMnYeE9KXpc
-        Gak9FjrOUohGClYzNPLSfwY2U4WsWMNq0KSZ4t29xA==
-X-Google-Smtp-Source: ABdhPJxuIMc3AKl58RR5BB2o4v6o+LuGqoOO72B8HIckh2GgWrvSrRyjWB3ObkuGZltyeo/65xaFDUvMh18+fu68Jl8=
-X-Received: by 2002:a9f:3113:: with SMTP id m19mr553540uab.77.1593415196293;
- Mon, 29 Jun 2020 00:19:56 -0700 (PDT)
-MIME-Version: 1.0
-References: <9cbffad6-69e4-0b33-4640-fde7c4f6a6e7@linaro.org>
- <20200626173755.26379-1-andrzej.p@collabora.com> <20200626173755.26379-3-andrzej.p@collabora.com>
-In-Reply-To: <20200626173755.26379-3-andrzej.p@collabora.com>
-From:   Amit Kucheria <amit.kucheria@verdurent.com>
-Date:   Mon, 29 Jun 2020 12:49:45 +0530
-Message-ID: <CAHLCerMF3AusmmUUiE21mAV293fBU5vCxJ0K-dPcVNZBSHtMBg@mail.gmail.com>
-Subject: Re: [PATCH v5 02/11] thermal: Store thermal mode in a dedicated enum
-To:     Andrzej Pietrasiewicz <andrzej.p@collabora.com>
-Cc:     Linux PM list <linux-pm@vger.kernel.org>,
-        linux-acpi@vger.kernel.org, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org,
-        lakml <linux-arm-kernel@lists.infradead.org>,
-        linux-renesas-soc@vger.kernel.org,
-        linux-rockchip@lists.infradead.org,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Vishal Kulkarni <vishal@chelsio.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jiri Pirko <jiri@mellanox.com>,
-        Ido Schimmel <idosch@mellanox.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Intel Linux Wireless <linuxwifi@intel.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Peter Kaestle <peter@piie.net>,
-        Darren Hart <dvhart@infradead.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        Sebastian Reichel <sre@kernel.org>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Support Opensource <support.opensource@diasemi.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        =?UTF-8?Q?Niklas_S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Orson Zhai <orsonzhai@gmail.com>,
-        Baolin Wang <baolin.wang7@gmail.com>,
-        Chunyan Zhang <zhang.lyra@gmail.com>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Allison Randal <allison@lohutok.net>,
-        Enrico Weigelt <info@metux.net>,
-        Gayatri Kammela <gayatri.kammela@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        kernel@collabora.com
-Content-Type: text/plain; charset="UTF-8"
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=wBnwcrwwCg7xzOS/+9Id6g/GU0D6s2nLBw+53T3f4KY=;
+        b=Fdf3aw2NJBsg9XKIpOnVfiKDulUfxNAnHwM5yP1WeBo88OngnGlg0iMiAYjq26r5oY
+         eMLMyLi6aPnymvNp+ckVJUjxh5RVcfJF7MK5yLKbWvzk1zGDNAawPpjN8idhkzbQB7E8
+         1QEp3Ti52/GxIGkM9v12X2mb3J5f8LNdERbIShi8hA1jkAGZrFQcL3/MS9CcSLGDTwQa
+         MuWthrtkw79PPkDJ038hmsbbt4rfhSebvgvMAmdyBB4mjPJiED2jaCU8kd7M+pOCi5Sh
+         KJJKS5Kxiuj/0BU5CYclU/ZKBKv0lv8Gi3uCA3I7lR+Ow5htL/r50AM7eQG0OXNCskSF
+         B3sQ==
+X-Gm-Message-State: AOAM532Bv/QA4DZuP2aH9lONyOnSFTv2MUOC7SEKr6FVOvqtJ9wmV9Yc
+        7zii6cjSjDNDyJV55vaZvT5bWQ==
+X-Google-Smtp-Source: ABdhPJwOD+oH1zxtW5au5p6Ha2yDHZeZ0sx4AlH/rRqEkE95uqMpZh1L5v+ffyH5U/n4MQ3XIcTFAQ==
+X-Received: by 2002:adf:de8d:: with SMTP id w13mr15788239wrl.129.1593420614338;
+        Mon, 29 Jun 2020 01:50:14 -0700 (PDT)
+Received: from localhost.localdomain ([88.122.66.28])
+        by smtp.gmail.com with ESMTPSA id l190sm27094672wml.12.2020.06.29.01.50.13
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 29 Jun 2020 01:50:13 -0700 (PDT)
+From:   Loic Poulain <loic.poulain@linaro.org>
+To:     johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org,
+        Loic Poulain <loic.poulain@linaro.org>
+Subject: [PATCH] mac80211: Inform AP when returning operating channel
+Date:   Mon, 29 Jun 2020 10:55:23 +0200
+Message-Id: <1593420923-26668-1-git-send-email-loic.poulain@linaro.org>
+X-Mailer: git-send-email 2.7.4
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Jun 26, 2020 at 11:08 PM Andrzej Pietrasiewicz
-<andrzej.p@collabora.com> wrote:
->
-> Prepare for storing mode in struct thermal_zone_device.
->
-> Signed-off-by: Andrzej Pietrasiewicz <andrzej.p@collabora.com>
-> Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-> [for acerhdf]
-> Acked-by: Peter Kaestle <peter@piie.net>
-> Reviewed-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Because we can miss AP wakeup (beacon) while scanning other channels,
+It's important to inform the AP as soon as possible when returning
+to the operating channel. This saves precious time, especially when
+we only have 200ms inter-scan period for monitoring the active
+connection.
 
-Reviewed-by: Amit Kucheria <amit.kucheria@linaro.org>
+Signed-off-by: Loic Poulain <loic.poulain@linaro.org>
+---
+ net/mac80211/ieee80211_i.h |  1 -
+ net/mac80211/offchannel.c  | 38 +++++++++-----------------------------
+ 2 files changed, 9 insertions(+), 30 deletions(-)
 
+diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
+index ec1a71a..32bdb16 100644
+--- a/net/mac80211/ieee80211_i.h
++++ b/net/mac80211/ieee80211_i.h
+@@ -1365,7 +1365,6 @@ struct ieee80211_local {
+ 				*/
+ 
+ 	bool pspolling;
+-	bool offchannel_ps_enabled;
+ 	/*
+ 	 * PS can only be enabled when we have exactly one managed
+ 	 * interface (and monitors) in PS, this then points there.
+diff --git a/net/mac80211/offchannel.c b/net/mac80211/offchannel.c
+index db3b8bf..5b878d0 100644
+--- a/net/mac80211/offchannel.c
++++ b/net/mac80211/offchannel.c
+@@ -26,8 +26,7 @@ static void ieee80211_offchannel_ps_enable(struct ieee80211_sub_if_data *sdata)
+ {
+ 	struct ieee80211_local *local = sdata->local;
+ 	struct ieee80211_if_managed *ifmgd = &sdata->u.mgd;
+-
+-	local->offchannel_ps_enabled = false;
++	bool offchannel_ps_enabled = false;
+ 
+ 	/* FIXME: what to do when local->pspolling is true? */
+ 
+@@ -38,12 +37,12 @@ static void ieee80211_offchannel_ps_enable(struct ieee80211_sub_if_data *sdata)
+ 	cancel_work_sync(&local->dynamic_ps_enable_work);
+ 
+ 	if (local->hw.conf.flags & IEEE80211_CONF_PS) {
+-		local->offchannel_ps_enabled = true;
++		offchannel_ps_enabled = true;
+ 		local->hw.conf.flags &= ~IEEE80211_CONF_PS;
+ 		ieee80211_hw_config(local, IEEE80211_CONF_CHANGE_PS);
+ 	}
+ 
+-	if (!local->offchannel_ps_enabled ||
++	if (!offchannel_ps_enabled ||
+ 	    !ieee80211_hw_check(&local->hw, PS_NULLFUNC_STACK))
+ 		/*
+ 		 * If power save was enabled, no need to send a nullfunc
+@@ -58,38 +57,19 @@ static void ieee80211_offchannel_ps_enable(struct ieee80211_sub_if_data *sdata)
+ 		ieee80211_send_nullfunc(local, sdata, true);
+ }
+ 
+-/* inform AP that we are awake again, unless power save is enabled */
++/* inform AP that we are awake again */
+ static void ieee80211_offchannel_ps_disable(struct ieee80211_sub_if_data *sdata)
+ {
+ 	struct ieee80211_local *local = sdata->local;
+ 
+ 	if (!local->ps_sdata)
+ 		ieee80211_send_nullfunc(local, sdata, false);
+-	else if (local->offchannel_ps_enabled) {
+-		/*
+-		 * In !IEEE80211_HW_PS_NULLFUNC_STACK case the hardware
+-		 * will send a nullfunc frame with the powersave bit set
+-		 * even though the AP already knows that we are sleeping.
+-		 * This could be avoided by sending a null frame with power
+-		 * save bit disabled before enabling the power save, but
+-		 * this doesn't gain anything.
+-		 *
+-		 * When IEEE80211_HW_PS_NULLFUNC_STACK is enabled, no need
+-		 * to send a nullfunc frame because AP already knows that
+-		 * we are sleeping, let's just enable power save mode in
+-		 * hardware.
+-		 */
+-		/* TODO:  Only set hardware if CONF_PS changed?
+-		 * TODO:  Should we set offchannel_ps_enabled to false?
+-		 */
+-		local->hw.conf.flags |= IEEE80211_CONF_PS;
+-		ieee80211_hw_config(local, IEEE80211_CONF_CHANGE_PS);
+-	} else if (local->hw.conf.dynamic_ps_timeout > 0) {
++	else if (local->hw.conf.dynamic_ps_timeout > 0) {
+ 		/*
+-		 * If IEEE80211_CONF_PS was not set and the dynamic_ps_timer
+-		 * had been running before leaving the operating channel,
+-		 * restart the timer now and send a nullfunc frame to inform
+-		 * the AP that we are awake.
++		 * the dynamic_ps_timer had been running before leaving the
++		 * operating channel, restart the timer now and send a nullfunc
++		 * frame to inform the AP that we are awake so that AP sends
++		 * the buffered packets (if any).
+ 		 */
+ 		ieee80211_send_nullfunc(local, sdata, false);
+ 		mod_timer(&local->dynamic_ps_timer, jiffies +
+-- 
+2.7.4
 
-> ---
->  drivers/acpi/thermal.c                        | 27 +++++++++----------
->  drivers/platform/x86/acerhdf.c                |  8 ++++--
->  .../intel/int340x_thermal/int3400_thermal.c   | 18 +++++--------
->  3 files changed, 25 insertions(+), 28 deletions(-)
->
-> diff --git a/drivers/acpi/thermal.c b/drivers/acpi/thermal.c
-> index 6de8066ca1e7..fb46070c66d8 100644
-> --- a/drivers/acpi/thermal.c
-> +++ b/drivers/acpi/thermal.c
-> @@ -172,7 +172,7 @@ struct acpi_thermal {
->         struct acpi_thermal_trips trips;
->         struct acpi_handle_list devices;
->         struct thermal_zone_device *thermal_zone;
-> -       int tz_enabled;
-> +       enum thermal_device_mode mode;
->         int kelvin_offset;      /* in millidegrees */
->         struct work_struct thermal_check_work;
->  };
-> @@ -500,7 +500,7 @@ static void acpi_thermal_check(void *data)
->  {
->         struct acpi_thermal *tz = data;
->
-> -       if (!tz->tz_enabled)
-> +       if (tz->mode != THERMAL_DEVICE_ENABLED)
->                 return;
->
->         thermal_zone_device_update(tz->thermal_zone,
-> @@ -534,8 +534,7 @@ static int thermal_get_mode(struct thermal_zone_device *thermal,
->         if (!tz)
->                 return -EINVAL;
->
-> -       *mode = tz->tz_enabled ? THERMAL_DEVICE_ENABLED :
-> -               THERMAL_DEVICE_DISABLED;
-> +       *mode = tz->mode;
->
->         return 0;
->  }
-> @@ -544,27 +543,25 @@ static int thermal_set_mode(struct thermal_zone_device *thermal,
->                                 enum thermal_device_mode mode)
->  {
->         struct acpi_thermal *tz = thermal->devdata;
-> -       int enable;
->
->         if (!tz)
->                 return -EINVAL;
->
-> +       if (mode != THERMAL_DEVICE_DISABLED &&
-> +           mode != THERMAL_DEVICE_ENABLED)
-> +               return -EINVAL;
->         /*
->          * enable/disable thermal management from ACPI thermal driver
->          */
-> -       if (mode == THERMAL_DEVICE_ENABLED)
-> -               enable = 1;
-> -       else if (mode == THERMAL_DEVICE_DISABLED) {
-> -               enable = 0;
-> +       if (mode == THERMAL_DEVICE_DISABLED)
->                 pr_warn("thermal zone will be disabled\n");
-> -       } else
-> -               return -EINVAL;
->
-> -       if (enable != tz->tz_enabled) {
-> -               tz->tz_enabled = enable;
-> +       if (mode != tz->mode) {
-> +               tz->mode = mode;
->                 ACPI_DEBUG_PRINT((ACPI_DB_INFO,
->                         "%s kernel ACPI thermal control\n",
-> -                       tz->tz_enabled ? "Enable" : "Disable"));
-> +                       tz->mode == THERMAL_DEVICE_ENABLED ?
-> +                       "Enable" : "Disable"));
->                 acpi_thermal_check(tz);
->         }
->         return 0;
-> @@ -915,7 +912,7 @@ static int acpi_thermal_register_thermal_zone(struct acpi_thermal *tz)
->                 goto remove_dev_link;
->         }
->
-> -       tz->tz_enabled = 1;
-> +       tz->mode = THERMAL_DEVICE_ENABLED;
->
->         dev_info(&tz->device->dev, "registered as thermal_zone%d\n",
->                  tz->thermal_zone->id);
-> diff --git a/drivers/platform/x86/acerhdf.c b/drivers/platform/x86/acerhdf.c
-> index 4df7609b4aa9..9d1030b1a4f4 100644
-> --- a/drivers/platform/x86/acerhdf.c
-> +++ b/drivers/platform/x86/acerhdf.c
-> @@ -68,6 +68,7 @@ static int kernelmode = 1;
->  #else
->  static int kernelmode;
->  #endif
-> +static enum thermal_device_mode thermal_mode;
->
->  static unsigned int interval = 10;
->  static unsigned int fanon = 60000;
-> @@ -397,6 +398,7 @@ static inline void acerhdf_revert_to_bios_mode(void)
->  {
->         acerhdf_change_fanstate(ACERHDF_FAN_AUTO);
->         kernelmode = 0;
-> +       thermal_mode = THERMAL_DEVICE_DISABLED;
->         if (thz_dev)
->                 thz_dev->polling_delay = 0;
->         pr_notice("kernel mode fan control OFF\n");
-> @@ -404,6 +406,7 @@ static inline void acerhdf_revert_to_bios_mode(void)
->  static inline void acerhdf_enable_kernelmode(void)
->  {
->         kernelmode = 1;
-> +       thermal_mode = THERMAL_DEVICE_ENABLED;
->
->         thz_dev->polling_delay = interval*1000;
->         thermal_zone_device_update(thz_dev, THERMAL_EVENT_UNSPECIFIED);
-> @@ -416,8 +419,7 @@ static int acerhdf_get_mode(struct thermal_zone_device *thermal,
->         if (verbose)
->                 pr_notice("kernel mode fan control %d\n", kernelmode);
->
-> -       *mode = (kernelmode) ? THERMAL_DEVICE_ENABLED
-> -                            : THERMAL_DEVICE_DISABLED;
-> +       *mode = thermal_mode;
->
->         return 0;
->  }
-> @@ -739,6 +741,8 @@ static int __init acerhdf_register_thermal(void)
->         if (IS_ERR(cl_dev))
->                 return -EINVAL;
->
-> +       thermal_mode = kernelmode ?
-> +               THERMAL_DEVICE_ENABLED : THERMAL_DEVICE_DISABLED;
->         thz_dev = thermal_zone_device_register("acerhdf", 2, 0, NULL,
->                                               &acerhdf_dev_ops,
->                                               &acerhdf_zone_params, 0,
-> diff --git a/drivers/thermal/intel/int340x_thermal/int3400_thermal.c b/drivers/thermal/intel/int340x_thermal/int3400_thermal.c
-> index 0b3a62655843..e84faaadff87 100644
-> --- a/drivers/thermal/intel/int340x_thermal/int3400_thermal.c
-> +++ b/drivers/thermal/intel/int340x_thermal/int3400_thermal.c
-> @@ -48,7 +48,7 @@ struct int3400_thermal_priv {
->         struct acpi_device *adev;
->         struct platform_device *pdev;
->         struct thermal_zone_device *thermal;
-> -       int mode;
-> +       enum thermal_device_mode mode;
->         int art_count;
->         struct art *arts;
->         int trt_count;
-> @@ -395,24 +395,20 @@ static int int3400_thermal_set_mode(struct thermal_zone_device *thermal,
->                                 enum thermal_device_mode mode)
->  {
->         struct int3400_thermal_priv *priv = thermal->devdata;
-> -       bool enable;
->         int result = 0;
->
->         if (!priv)
->                 return -EINVAL;
->
-> -       if (mode == THERMAL_DEVICE_ENABLED)
-> -               enable = true;
-> -       else if (mode == THERMAL_DEVICE_DISABLED)
-> -               enable = false;
-> -       else
-> +       if (mode != THERMAL_DEVICE_ENABLED &&
-> +           mode != THERMAL_DEVICE_DISABLED)
->                 return -EINVAL;
->
-> -       if (enable != priv->mode) {
-> -               priv->mode = enable;
-> +       if (mode != priv->mode) {
-> +               priv->mode = mode;
->                 result = int3400_thermal_run_osc(priv->adev->handle,
-> -                                                priv->current_uuid_index,
-> -                                                enable);
-> +                                               priv->current_uuid_index,
-> +                                               mode == THERMAL_DEVICE_ENABLED);
->         }
->
->         evaluate_odvp(priv);
-> --
-> 2.17.1
->
