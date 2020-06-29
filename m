@@ -2,73 +2,127 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B032A20D54F
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jun 2020 21:16:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A009C20D78B
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jun 2020 22:07:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730207AbgF2TQQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 29 Jun 2020 15:16:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44002 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731942AbgF2TQM (ORCPT
+        id S1733053AbgF2Tau (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 29 Jun 2020 15:30:50 -0400
+Received: from smtprelay0012.hostedemail.com ([216.40.44.12]:43666 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1732588AbgF2Tat (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 29 Jun 2020 15:16:12 -0400
-Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com [IPv6:2607:f8b0:4864:20::441])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4A32C08EAF4
-        for <linux-wireless@vger.kernel.org>; Mon, 29 Jun 2020 12:16:03 -0700 (PDT)
-Received: by mail-pf1-x441.google.com with SMTP id j1so8307964pfe.4
-        for <linux-wireless@vger.kernel.org>; Mon, 29 Jun 2020 12:16:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=XdfoRVGuOCD2JOxmLnJxyvoO2f5zjf1xh4i//8cGLHs=;
-        b=E57soH+fAZU9oM/uuDn4bCNx2wALmvA7rwFsDeo/VdmyR4hSt+vRDMPW0qpAcJ9V/h
-         UbYJ9fIR9BUAZrS+1TfrEzBoFSxbLFUBB/IIzj7rfy4Y1SyxPmM/cs9fEremwVWV5m5u
-         b9v38myIgTBJNjasjLIOUO/K2CJS7vPJsURIlWBEC7RA0ax+vZbkexDjvFbqaAUgNm/w
-         yj4NkgHNxXLdKOO4AZsIv5vnXx8YMl4s3e1fTXh2Hp6rhwVI9k4nzVvvlc/OSvXrfpbl
-         +6DOlsrKa8IKCRxKxdcbetpm2uz+ZUKJBnziwlMhGJ11qW6bGQPIDGjYXF06+gry04Zz
-         3NGQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=XdfoRVGuOCD2JOxmLnJxyvoO2f5zjf1xh4i//8cGLHs=;
-        b=A9cyBgtNqZpa2Y/RPLgQY0ttgohEEsXMRiD4gMpuqJI8FIL/pe2M+E4kt9mKc/w5Xw
-         KHu/s3WPtS2NnIlemRZBHMN/MYtCzB6TZZVzZ8+jjaRXyGXaZQPuhuU+YsW0RDLinbu7
-         XmxUwPAobdPb0xLODb/AjRFnEjMssoo9uskrtVmWXt8uEHfzl8TCOgm8a4stJM7IF8Wk
-         nEfKEVQo12NCt+6iEXrDn912zyKZQ9HtZlFOU9hamIgR218gjF5LRsjhJdI3J3oQjV0Z
-         zlZ2eZUpih4OtVvhaY5VLhdjkUmfLfJJAJHBwxGWQWeM4oBedRNZK9yqu+yPXc8+21Oj
-         geMA==
-X-Gm-Message-State: AOAM533ejdhigG/78apRsHwvAqryRi5RVgw9IsB+3mzueacvGC0C7Bvb
-        qzX7hgxh6tD1v9rap/ILjNn55m1sLtJdtPoT4V4wKfOE/h8=
-X-Google-Smtp-Source: ABdhPJyNR5zXZ8o09DSJzsSA3OSccnAxM/c9AxKQjYYOZlXvOMCiHs1YW/1gQi1Sa70TQ2VOPtabshfviWRkV7+ICnM=
-X-Received: by 2002:a6b:db17:: with SMTP id t23mr18236117ioc.4.1593458159284;
- Mon, 29 Jun 2020 12:15:59 -0700 (PDT)
+        Mon, 29 Jun 2020 15:30:49 -0400
+Received: from smtprelay.hostedemail.com (10.5.19.251.rfc1918.com [10.5.19.251])
+        by smtpgrave08.hostedemail.com (Postfix) with ESMTP id 3E23118003EE1
+        for <linux-wireless@vger.kernel.org>; Mon, 29 Jun 2020 05:21:09 +0000 (UTC)
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay03.hostedemail.com (Postfix) with ESMTP id 097AD837F24C;
+        Mon, 29 Jun 2020 05:21:09 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:69:152:355:379:582:599:800:960:968:973:988:989:1152:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1543:1593:1594:1605:1711:1730:1747:1777:1792:2393:2559:2562:3138:3139:3140:3141:3142:3865:3871:4321:5007:6261:7576:7904:9592:10004:10400:10848:11026:11232:11473:11657:11658:11914:12043:12297:12438:12555:12740:12760:12895:13161:13229:13255:14181:14659:14685:14721:21080:21627:30054,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:2,LUA_SUMMARY:none
+X-HE-Tag: rest95_0500c7f26e6c
+X-Filterd-Recvd-Size: 4167
+Received: from perches-mx.perches.com (imap-ext [216.40.42.5])
+        (Authenticated sender: webmail@joe@perches.com)
+        by omf03.hostedemail.com (Postfix) with ESMTPA;
+        Mon, 29 Jun 2020 05:21:08 +0000 (UTC)
 MIME-Version: 1.0
-Received: by 2002:a05:6602:1588:0:0:0:0 with HTTP; Mon, 29 Jun 2020 12:15:58
- -0700 (PDT)
-Reply-To: mrs.victoria.alexander2@gmail.com
-From:   "mrs.victoria alexander" <markalexandermilley321@gmail.com>
-Date:   Mon, 29 Jun 2020 12:15:58 -0700
-Message-ID: <CAP7XNCwEGQ+-Q==u4yk4yvJdk1X+gsfSU6pUV_hROjmF=p-DHw@mail.gmail.com>
-Subject: Hello,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Sun, 28 Jun 2020 22:21:08 -0700
+From:   Joe Perches <joe@perches.com>
+To:     pkshih@realtek.com
+Cc:     kvalo@codeaurora.org, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH 2/2] rtlwifi: 8821ae: remove unused path B parameters from
+ swing table
+In-Reply-To: <20200629032937.17374-2-pkshih@realtek.com>
+References: <20200629032937.17374-1-pkshih@realtek.com>
+ <20200629032937.17374-2-pkshih@realtek.com>
+User-Agent: Roundcube Webmail/1.4-rc2
+Message-ID: <be95d3c3e40e3670ed368b0df4ba397a@perches.com>
+X-Sender: joe@perches.com
+X-Originating-IP: [47.151.133.149]
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Dear friend,
+On 2020-06-28 20:29, pkshih@realtek.com wrote:
+> From: Ping-Ke Shih <pkshih@realtek.com>
+> 
+> 8821AE is a 1x1 chip, so swing parameters for path B aren't necessary.
 
+Then all the now unused arrays could be removed as well.
+---
+  .../net/wireless/realtek/rtlwifi/rtl8821ae/dm.c    | 34 
+----------------------
+  1 file changed, 34 deletions(-)
 
-I have a business container transaction what that some of( $13million dollars)
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/dm.c 
+b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/dm.c
+index 194d56a98ef2..97a30ccf0b27 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/dm.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/dm.c
+@@ -191,14 +191,6 @@ static const u8 
+rtl8812ae_delta_swing_table_idx_5ga_p[][DEL_SW_IDX_SZ] = {
+  	10, 10, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11},
+  };
 
- I would like to discuss with you. If you are interested, please
-contact my email
+-static const u8 rtl8821ae_delta_swing_table_idx_24gb_n[] = {
+-	0, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5, 6, 6,
+-	6, 7, 7, 7, 8, 8, 8, 9, 9, 9, 10, 10, 10};
+-
+-static const u8 rtl8821ae_delta_swing_table_idx_24gb_p[]  = {
+-	0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8,
+-	8, 9, 9, 10, 10, 11, 11, 12, 12, 12, 12, 12, 12};
+-
+  static const u8 rtl8821ae_delta_swing_table_idx_24ga_n[]  = {
+  	0, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5, 6, 6,
+  	6, 7, 7, 7, 8, 8, 8, 9, 9, 9, 10, 10, 10};
+@@ -207,14 +199,6 @@ static const u8 
+rtl8821ae_delta_swing_table_idx_24ga_p[] = {
+  	0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8,
+  	8, 9, 9, 10, 10, 11, 11, 12, 12, 12, 12, 12, 12};
 
-address (mrs.victoria.alexander2@gmail.com)
+-static const u8 rtl8821ae_delta_swing_table_idx_24gcckb_n[] = {
+-	0, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5, 6, 6,
+-	6, 7, 7, 7, 8, 8, 8, 9, 9, 9, 10, 10, 10};
+-
+-static const u8 rtl8821ae_delta_swing_table_idx_24gcckb_p[] = {
+-	0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8,
+-	8, 9, 9, 10, 10, 11, 11, 12, 12, 12, 12, 12, 12};
+-
+  static const u8 rtl8821ae_delta_swing_table_idx_24gccka_n[] = {
+  	0, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5, 6, 6,
+  	6, 7, 7, 7, 8, 8, 8, 9, 9, 9, 10, 10, 10};
+@@ -223,24 +207,6 @@ static const u8 
+rtl8821ae_delta_swing_table_idx_24gccka_p[] = {
+  	0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8,
+  	8, 9, 9, 10, 10, 11, 11, 12, 12, 12, 12, 12, 12};
 
-My WhatsApp number but only message (+19293737780)
+-static const u8 rtl8821ae_delta_swing_table_idx_5gb_n[][DEL_SW_IDX_SZ] 
+= {
+-	{0, 0, 1, 2, 3, 3, 4, 5, 6, 6, 7, 8, 9, 9, 10, 11,
+-	12, 12, 13, 14, 15, 15, 16, 16, 16, 16, 16, 16, 16, 16},
+-	{0, 0, 1, 2, 3, 3, 4, 5, 6, 6, 7, 8, 9, 9, 10, 11,
+-	12, 12, 13, 14, 15, 15, 16, 16, 16, 16, 16, 16, 16, 16},
+-	{0, 0, 1, 2, 3, 3, 4, 5, 6, 6, 7, 8, 9, 9, 10, 11,
+-	12, 12, 13, 14, 15, 15, 16, 16, 16, 16, 16, 16, 16, 16},
+-};
+-
+-static const u8 rtl8821ae_delta_swing_table_idx_5gb_p[][DEL_SW_IDX_SZ] 
+= {
+-	{0, 0, 1, 2, 3, 3, 4, 5, 6, 6, 7, 8, 9, 9, 10, 11,
+-	12, 12, 13, 14, 15, 15, 16, 16, 16, 16, 16, 16, 16, 16},
+-	{0, 0, 1, 2, 3, 3, 4, 5, 6, 6, 7, 8, 9, 9, 10, 11,
+-	12, 12, 13, 14, 15, 15, 16, 16, 16, 16, 16, 16, 16, 16},
+-	{0, 0, 1, 2, 3, 3, 4, 5, 6, 6, 7, 8, 9, 9, 10, 11,
+-	12, 12, 13, 14, 15, 15, 16, 16, 16, 16, 16, 16, 16, 16},
+-};
+-
+  static const u8 rtl8821ae_delta_swing_table_idx_5ga_n[][DEL_SW_IDX_SZ] 
+= {
+  	{0, 0, 1, 2, 3, 3, 4, 5, 6, 6, 7, 8, 9, 9, 10, 11,
+  	12, 12, 13, 14, 15, 15, 16, 16, 16, 16, 16, 16, 16, 16},
 
-Please do not reply if you are not ready
-Thanks
