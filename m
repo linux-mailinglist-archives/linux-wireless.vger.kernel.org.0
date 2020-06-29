@@ -2,112 +2,133 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 694BA20E13E
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jun 2020 23:58:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 48A2D20E041
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jun 2020 23:56:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387741AbgF2Uxi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 29 Jun 2020 16:53:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43350 "EHLO
+        id S2388943AbgF2UoX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 29 Jun 2020 16:44:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43370 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731271AbgF2TNV (ORCPT
+        with ESMTP id S1731606AbgF2TOA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 29 Jun 2020 15:13:21 -0400
-Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com [IPv6:2a00:1450:4864:20::542])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5B96C00861F;
-        Mon, 29 Jun 2020 03:40:14 -0700 (PDT)
-Received: by mail-ed1-x542.google.com with SMTP id z17so12390218edr.9;
-        Mon, 29 Jun 2020 03:40:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=FW5uuzpZIcFHloIfRx2mV3Q4O9gtnLF6GA6PBU0vnk8=;
-        b=iqGHhWSblMuDs6IMzv34bSi1zEjJ+bzX0WJoEVJdZL4cCExAUrdJjmtPtPjfoCRhO+
-         r4WLmmBS6fP4qQMezE4KKoQGS1BCY08B+N4uAKG0wt0+obJAlOiH7XkWYl74x3/se2dN
-         j1IHtoex6TmCkFXVORpDTrZNKYq7FaT+Bn8CtE2ZJrf08o4PXmCF6i9Trb9zlGY4EQdQ
-         beq9WOFKSogv7rPW2Vbv5qVwPDadUzb4xojHrRZ1pFPrSAF2ZEIP99a/q5VnR4JdUBw2
-         qFp8+l24efMen96u3viwb+IkkbLw1hEirYZmLCugHle5XZOb80DHb4JbOmLlv/RQ+ycF
-         c8og==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=FW5uuzpZIcFHloIfRx2mV3Q4O9gtnLF6GA6PBU0vnk8=;
-        b=t5fxUeHHGT5x5pBkrmiSjKdPPxePhiID9SFTtZ5SGWTVpS2qYmMsr1NB8GkOVWo6/i
-         MRs4QIoXmcif1jvAilHdsHBqOrjDIg19Yv9T5g+mEfgtbP+LQnlGLyBo9zM03Kd1R3IA
-         8AWSvFW64n1Tz8v/kDCoW9ygbS07os77WgYkChTdFEc5R3cdCXGN3cBUw44s3+XrQlI+
-         zNt2o4DV++dMJ7eTeCH+OWYbk7J4pvqeezsxP4mxuQxmb+h8L/B+j1K+jbZW/Q6iT6qs
-         R9p9b+W5v68GOAZnKHdMruCU4DIlkHwwHLSKG0GXxD2gkACvVEwmzT7CMGNRRGxPC6j4
-         0Kvw==
-X-Gm-Message-State: AOAM533eLOEMCHnIH99mFq3ZWnktCCgnsExn7QmjiHQU1W+uRZpPUjzA
-        cqN8t+cCTjyzmW4jNXysHbk=
-X-Google-Smtp-Source: ABdhPJx8yG3u2DN7M9KoPEgDVF3CYbC6iiicJVoUyynOlTfr2a28mbHZ6/emmMLVQyv6VCGIT8aO0w==
-X-Received: by 2002:aa7:db4f:: with SMTP id n15mr1292645edt.193.1593427213599;
-        Mon, 29 Jun 2020 03:40:13 -0700 (PDT)
-Received: from localhost.localdomain ([2a02:a03f:b7f9:7600:cb8:1ada:8c2d:413])
-        by smtp.gmail.com with ESMTPSA id l4sm7443503edw.10.2020.06.29.03.40.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 Jun 2020 03:40:13 -0700 (PDT)
-From:   Luc Van Oostenryck <luc.vanoostenryck@gmail.com>
-To:     Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Adham Abozaeid <adham.abozaeid@microchip.com>,
-        Ajay Singh <ajay.kathat@microchip.com>
-Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Luc Van Oostenryck <luc.vanoostenryck@gmail.com>
-Subject: [PATCH] wilc1000: let wilc_mac_xmit() return NETDEV_TX_OK
-Date:   Mon, 29 Jun 2020 12:40:09 +0200
-Message-Id: <20200629104009.84077-1-luc.vanoostenryck@gmail.com>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <8a2f50dc-2cbe-64e4-438c-4320bb574f4f@microchip.com>
-References: <8a2f50dc-2cbe-64e4-438c-4320bb574f4f@microchip.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        Mon, 29 Jun 2020 15:14:00 -0400
+Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B7CEC00862F;
+        Mon, 29 Jun 2020 04:16:24 -0700 (PDT)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: andrzej.p)
+        with ESMTPSA id D0FF72753E0
+From:   Andrzej Pietrasiewicz <andrzej.p@collabora.com>
+To:     linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
+        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-renesas-soc@vger.kernel.org,
+        linux-rockchip@lists.infradead.org
+Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Vishal Kulkarni <vishal@chelsio.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jiri Pirko <jiri@mellanox.com>,
+        Ido Schimmel <idosch@mellanox.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        Intel Linux Wireless <linuxwifi@intel.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Peter Kaestle <peter@piie.net>,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Sebastian Reichel <sre@kernel.org>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Amit Kucheria <amit.kucheria@verdurent.com>,
+        Support Opensource <support.opensource@diasemi.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        =?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Orson Zhai <orsonzhai@gmail.com>,
+        Baolin Wang <baolin.wang7@gmail.com>,
+        Chunyan Zhang <zhang.lyra@gmail.com>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Allison Randal <allison@lohutok.net>,
+        Enrico Weigelt <info@metux.net>,
+        Gayatri Kammela <gayatri.kammela@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Andrzej Pietrasiewicz <andrzej.p@collabora.com>,
+        kernel@collabora.com
+Subject: [PATCH v6 00/11] Stop monitoring disabled devices
+Date:   Mon, 29 Jun 2020 13:16:04 +0200
+Message-Id: <20200629111615.18131-1-andrzej.p@collabora.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <CAHLCerO2XOOX9akEwaTu_cjSqRycFpNmoVxkSe36L8B4ALWidA@mail.gmail.com>
+References: <CAHLCerO2XOOX9akEwaTu_cjSqRycFpNmoVxkSe36L8B4ALWidA@mail.gmail.com>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The method ndo_start_xmit() is defined as returning an 'netdev_tx_t',
-which is a typedef for an enum type defining 'NETDEV_TX_OK' but this
-driver returns '0' instead of 'NETDEV_TX_OK'.
+A respin of v5 with these changes:
 
-Fix this by returning 'NETDEV_TX_OK' instead of '0'.
+v5..v6:
+- staticized thermal_zone_device_set_mode() (kbuild test robot)
 
-Signed-off-by: Luc Van Oostenryck <luc.vanoostenryck@gmail.com>
----
- drivers/net/wireless/microchip/wilc1000/netdev.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+v4..v5:
 
-diff --git a/drivers/net/wireless/microchip/wilc1000/netdev.c b/drivers/net/wireless/microchip/wilc1000/netdev.c
-index fda0ab97b02c..be3ae5486f44 100644
---- a/drivers/net/wireless/microchip/wilc1000/netdev.c
-+++ b/drivers/net/wireless/microchip/wilc1000/netdev.c
-@@ -678,14 +678,14 @@ netdev_tx_t wilc_mac_xmit(struct sk_buff *skb, struct net_device *ndev)
- 
- 	if (skb->dev != ndev) {
- 		netdev_err(ndev, "Packet not destined to this device\n");
--		return 0;
-+		return NETDEV_TX_OK;
- 	}
- 
- 	tx_data = kmalloc(sizeof(*tx_data), GFP_ATOMIC);
- 	if (!tx_data) {
- 		dev_kfree_skb(skb);
- 		netif_wake_queue(ndev);
--		return 0;
-+		return NETDEV_TX_OK;
- 	}
- 
- 	tx_data->buff = skb->data;
-@@ -710,7 +710,7 @@ netdev_tx_t wilc_mac_xmit(struct sk_buff *skb, struct net_device *ndev)
- 		srcu_read_unlock(&wilc->srcu, srcu_idx);
- 	}
- 
--	return 0;
-+	return NETDEV_TX_OK;
- }
- 
- static int wilc_mac_close(struct net_device *ndev)
+- EXPORT_SYMBOL -> EXPORT_SYMBOL_GPL (Daniel)
+- dropped unnecessary thermal_zone_device_enable() in int3400_thermal.c
+and in thermal_of.c (Bartlomiej)
+
+Andrzej Pietrasiewicz (11):
+  acpi: thermal: Fix error handling in the register function
+  thermal: Store thermal mode in a dedicated enum
+  thermal: Add current mode to thermal zone device
+  thermal: Store device mode in struct thermal_zone_device
+  thermal: remove get_mode() operation of drivers
+  thermal: Add mode helpers
+  thermal: Use mode helpers in drivers
+  thermal: Explicitly enable non-changing thermal zone devices
+  thermal: core: Stop polling DISABLED thermal devices
+  thermal: Simplify or eliminate unnecessary set_mode() methods
+  thermal: Rename set_mode() to change_mode()
+
+ drivers/acpi/thermal.c                        | 75 +++++----------
+ .../ethernet/chelsio/cxgb4/cxgb4_thermal.c    |  8 ++
+ .../ethernet/mellanox/mlxsw/core_thermal.c    | 91 ++++---------------
+ drivers/net/wireless/intel/iwlwifi/mvm/tt.c   |  9 +-
+ drivers/platform/x86/acerhdf.c                | 33 +++----
+ drivers/platform/x86/intel_mid_thermal.c      |  6 ++
+ drivers/power/supply/power_supply_core.c      |  9 +-
+ drivers/thermal/armada_thermal.c              |  6 ++
+ drivers/thermal/da9062-thermal.c              | 16 +---
+ drivers/thermal/dove_thermal.c                |  6 ++
+ drivers/thermal/hisi_thermal.c                |  6 +-
+ drivers/thermal/imx_thermal.c                 | 57 ++++--------
+ .../intel/int340x_thermal/int3400_thermal.c   | 38 ++------
+ .../int340x_thermal/int340x_thermal_zone.c    |  5 +
+ drivers/thermal/intel/intel_pch_thermal.c     |  5 +
+ .../thermal/intel/intel_quark_dts_thermal.c   | 34 ++-----
+ drivers/thermal/intel/intel_soc_dts_iosf.c    |  3 +
+ drivers/thermal/intel/x86_pkg_temp_thermal.c  |  6 ++
+ drivers/thermal/kirkwood_thermal.c            |  7 ++
+ drivers/thermal/rcar_thermal.c                |  9 +-
+ drivers/thermal/rockchip_thermal.c            |  6 +-
+ drivers/thermal/spear_thermal.c               |  7 ++
+ drivers/thermal/sprd_thermal.c                |  6 +-
+ drivers/thermal/st/st_thermal.c               |  5 +
+ drivers/thermal/thermal_core.c                | 76 ++++++++++++++--
+ drivers/thermal/thermal_of.c                  | 41 +--------
+ drivers/thermal/thermal_sysfs.c               | 37 +-------
+ include/linux/thermal.h                       | 19 +++-
+ 28 files changed, 275 insertions(+), 351 deletions(-)
+
+
+base-commit: 9ebcfadb0610322ac537dd7aa5d9cbc2b2894c68
 -- 
-2.27.0
+2.17.1
 
