@@ -2,102 +2,371 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 57F2E20CC0D
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jun 2020 05:13:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 20E6B20CC25
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jun 2020 05:30:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726055AbgF2DNT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 28 Jun 2020 23:13:19 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:34405 "EHLO
+        id S1726051AbgF2Da1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 28 Jun 2020 23:30:27 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:35889 "EHLO
         rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725976AbgF2DNT (ORCPT
+        with ESMTP id S1725983AbgF2Da1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 28 Jun 2020 23:13:19 -0400
+        Sun, 28 Jun 2020 23:30:27 -0400
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.69 with qID 05T3Cv0L2020611, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.69 with qID 05T3UD540000897, This message is accepted by code: ctloc85258
 Received: from mail.realtek.com (rtexmb06.realtek.com.tw[172.21.6.99])
-        by rtits2.realtek.com.tw (8.15.2/2.66/5.86) with ESMTPS id 05T3Cv0L2020611
+        by rtits2.realtek.com.tw (8.15.2/2.66/5.86) with ESMTPS id 05T3UD540000897
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Mon, 29 Jun 2020 11:12:57 +0800
-Received: from RTEXMB02.realtek.com.tw (172.21.6.95) by
+        Mon, 29 Jun 2020 11:30:13 +0800
+Received: from RTEXMB04.realtek.com.tw (172.21.6.97) by
  RTEXMB06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Mon, 29 Jun 2020 11:12:57 +0800
-Received: from RTEXMB04.realtek.com.tw (172.21.6.97) by
- RTEXMB02.realtek.com.tw (172.21.6.95) with Microsoft SMTP Server
+ 15.1.1779.2; Mon, 29 Jun 2020 11:30:12 +0800
+Received: from localhost.localdomain (172.21.69.213) by
+ RTEXMB04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Mon, 29 Jun 2020 11:12:56 +0800
-Received: from RTEXMB04.realtek.com.tw ([fe80::941:6388:7d34:5c44]) by
- RTEXMB04.realtek.com.tw ([fe80::941:6388:7d34:5c44%3]) with mapi id
- 15.01.1779.005; Mon, 29 Jun 2020 11:12:56 +0800
-From:   Pkshih <pkshih@realtek.com>
-To:     "joe@perches.com" <joe@perches.com>
-CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "kuba@kernel.org" <kuba@kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Subject: Re: [PATCH] rtlwifi/*/dm.c: Use const in swing_table declarations
-Thread-Topic: [PATCH] rtlwifi/*/dm.c: Use const in swing_table declarations
-Thread-Index: AQHWTTVpFYNDXI1US0K76Im0pij3zqjuU+2AgAALz4CAAAX4gA==
-Date:   Mon, 29 Jun 2020 03:12:56 +0000
-Message-ID: <1593400347.12786.8.camel@realtek.com>
-References: <0f24268338756bb54b4e44674db4aaf90f8a9fca.camel@perches.com>
-         <1593396529.11412.6.camel@realtek.com>
-         <45c908b9b55000dc7b0cf9438c8e6e44@perches.com>
-In-Reply-To: <45c908b9b55000dc7b0cf9438c8e6e44@perches.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.213]
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <8B202493E2F2C84395EEEFC9BEC3ABA1@realtek.com>
-Content-Transfer-Encoding: base64
+ 15.1.1779.2; Mon, 29 Jun 2020 11:30:12 +0800
+From:   <pkshih@realtek.com>
+To:     <kvalo@codeaurora.org>, <joe@perches.com>
+CC:     <linux-wireless@vger.kernel.org>
+Subject: [PATCH 1/2] rtlwifi: Use const in 8188ee/8723be/8821ae swing_table declarations
+Date:   Mon, 29 Jun 2020 11:29:36 +0800
+Message-ID: <20200629032937.17374-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [172.21.69.213]
+X-ClientProxiedBy: RTEXMB03.realtek.com.tw (172.21.6.96) To
+ RTEXMB04.realtek.com.tw (172.21.6.97)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-T24gU3VuLCAyMDIwLTA2LTI4IGF0IDE5OjUxIC0wNzAwLCBqb2VAcGVyY2hlcy5jb20gd3JvdGU6
-DQo+IE9uIDIwMjAtMDYtMjggMTk6MDksIFBrc2hpaCB3cm90ZToNCj4gPiBPbiBTdW4sIDIwMjAt
-MDYtMjggYXQgMDM6MTcgLTA3MDAsIEpvZSBQZXJjaGVzIHdyb3RlOg0KPiA+wqANCj4gPiBVc2Ug
-J3J0bHdpZmk6JyBhcyBzdWJqZWN0IHRpdGxlIHByZWZpeCBpcyBlbm91Z2gsIGxpa2VzDQo+ID4g
-wqAgcnRsd2lmaTogVXNlIGNvbnN0IGluIHN3aW5nX3RhYmxlIGRlY2xhcmF0aW9ucw0KPiANCj4g
-V2UgZGlzYWdyZWUuDQo+IA0KPiBJIGxpa2Uga25vd2luZyB3aGF0IGNvbnRlbnQgaXMgY2hhbmdl
-ZCB2aWEgcGF0Y2ggc3ViamVjdCBsaW5lcw0KPiBhcyB0aGVyZSBhcmUgMyBydGx3aWZpIGRyaXZl
-cnMgYmVpbmcgY2hhbmdlZCBieSB0aGlzIG9uZSBwYXRjaC4NCg0KSWYgMyBkcml2ZXJzIGFyZSBu
-ZWVkZWQgdG8gYmUgbGlzdGVkLCBJJ2QgdXNlIGJlbG93IHN1YmplY3QNCg0KInJ0bHdpZmk6IFVz
-ZSBjb25zdCBpbiBydGw4MTg4ZWUvcnRsODcyM2JlL3J0bDg4MjFhZSBzd2luZ190YWJsZSBkZWNs
-YXJhdGlvbnMiDQoNCj4gDQo+IEJ1dCB5b3VyIGNob2ljZSwgeW91IGNhbiBjaGFuZ2UgaXQgaWYg
-eW91IGNob29zZS4NCj4gDQo+ID4+IFJlZHVjZSBkYXRhIHVzYWdlIGFib3V0IDFLQiBieSB1c2lu
-ZyBjb25zdC4NCj4gW10NCj4gPiBQbGVhc2UgcmVtb3ZlIGJlbG93IHR5cGUgY2FzdGluZzrCoA0K
-PiA+wqANCj4gPiBAQCAtMTg3MiwxMCArMTg3MiwxMCBAQCBzdGF0aWMgdm9pZMKgDQo+ID4gcnRs
-ODgyMWFlX2dldF9kZWx0YV9zd2luZ190YWJsZShzdHJ1Y3QNCj4gPiBpZWVlODAyMTFfaHcgKmh3
-LA0KPiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgKnVwX2IgPSBydGw4ODIxYWVf
-ZGVsdGFfc3dpbmdfdGFibGVfaWR4XzVnYl9wWzJdOw0KPiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgKmRvd25fYiA9IHJ0bDg4MjFhZV9kZWx0YV9zd2luZ190YWJsZV9pZHhfNWdi
-X25bMl07DQo+ID4gwqDCoMKgwqDCoMKgwqDCoH0gZWxzZSB7DQo+ID4gLcKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqAqdXBfYSA9ICh1OCAqKXJ0bDg4MThlX2RlbHRhX3N3aW5nX3RhYmxlX2lkeF8yNGdi
-X3A7DQo+ID4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqAqZG93bl9hID0gKHU4ICopcnRsODgxOGVf
-ZGVsdGFfc3dpbmdfdGFibGVfaWR4XzI0Z2JfbjsNCj4gPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oCp1cF9iID0gKHU4ICopcnRsODgxOGVfZGVsdGFfc3dpbmdfdGFibGVfaWR4XzI0Z2JfcDsNCj4g
-PiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCpkb3duX2IgPSAodTggKilydGw4ODE4ZV9kZWx0YV9z
-d2luZ190YWJsZV9pZHhfMjRnYl9uOw0KPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqAqdXBfYSA9IHJ0bDg4MThlX2RlbHRhX3N3aW5nX3RhYmxlX2lkeF8yNGdiX3A7DQo+ID4gK8Kg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCpkb3duX2EgPSBydGw4ODE4ZV9kZWx0YV9zd2lu
-Z190YWJsZV9pZHhfMjRnYl9uOw0KPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAq
-dXBfYiA9IHJ0bDg4MThlX2RlbHRhX3N3aW5nX3RhYmxlX2lkeF8yNGdiX3A7DQo+ID4gK8KgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCpkb3duX2IgPSBydGw4ODE4ZV9kZWx0YV9zd2luZ190
-YWJsZV9pZHhfMjRnYl9uOw0KPiANCj4gVGhlIGNvbXBpbGVyIGlzIHF1aWV0IGFib3V0IHRoaXMg
-c28gSSBiZWxpZXZlIHRoaXMgdG8gYmUNCj4gYW4gdW5yZWxhdGVkIGNoYW5nZSBhbmQgd2hpdGVz
-cGFjZSBjb3JyZWN0aW9uLg0KDQpJIGtub3cgY29tcGlsZXIgZG9lc24ndCB3YXJuIHRoaXMsIGJ1
-dCBpdCBsb29rcyB3aXJlZCB0byBjYXN0ICdjb25zdCB1OCAqJw0KdG8gJ3U4IConIHRvICdjb25z
-dCB1OCAqJy4NCg0KDQo+IA0KPiBPZiBjb3Vyc2UgeW91IGNvdWxkIG1vZGlmeSBpdCBpZiB5b3Ug
-Y2hvb3NlLg0KPiANCj4gYnR3OiBUaGVyZSdzIGFuIHVubmVjZXNzYXJ5IHJldHVybiBhdCB0aGUg
-Mm5kIGluc3RhbmNlDQo+IMKgwqDCoMKgwqDCoG9mIHRoaXMgY2FzdCByZW1vdmFsIHRvby4NCg0K
-SXQgc2VlbXMgbGlrZSB0byBjb3B5IGZyb23CoHJ0bDg4MTJhZV9nZXRfZGVsdGFfc3dpbmdfdGFi
-bGUoKSwgc28NCkkgY2FuIHJlbW92ZSBpdCBieSBhbm90aGVyIHBhdGNoLg0KDQo+IA0KPiBjaGVl
-cnMsIEpvZQ0KPiANCj4gLS0tLS0tUGxlYXNlIGNvbnNpZGVyIHRoZSBlbnZpcm9ubWVudCBiZWZv
-cmUgcHJpbnRpbmcgdGhpcyBlLW1haWwuDQo=
+From: Joe Perches <joe@perches.com>
+
+Reduce data usage about 1KB by using const.
+
+Signed-off-by: Joe Perches <joe@perches.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+---
+ .../wireless/realtek/rtlwifi/rtl8188ee/dm.c   |   4 +-
+ .../wireless/realtek/rtlwifi/rtl8723be/dm.c   |   4 +-
+ .../wireless/realtek/rtlwifi/rtl8821ae/dm.c   | 114 +++++++++---------
+ 3 files changed, 64 insertions(+), 58 deletions(-)
+
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/dm.c b/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/dm.c
+index dceb04a9b3f5..1ffa188a65c9 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/dm.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/dm.c
+@@ -870,11 +870,11 @@ static void dm_txpower_track_cb_therm(struct ieee80211_hw *hw)
+ 	/*0.1 the following TWO tables decide the
+ 	 *final index of OFDM/CCK swing table
+ 	 */
+-	s8 delta_swing_table_idx[2][15]  = {
++	static const s8 delta_swing_table_idx[2][15]  = {
+ 		{0, 0, 2, 3, 4, 4, 5, 6, 7, 7, 8, 9, 10, 10, 11},
+ 		{0, 0, -1, -2, -3, -4, -4, -4, -4, -5, -7, -8, -9, -9, -10}
+ 	};
+-	u8 thermal_threshold[2][15] = {
++	static const u8 thermal_threshold[2][15] = {
+ 		{0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 27},
+ 		{0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 25, 25, 25}
+ 	};
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8723be/dm.c b/drivers/net/wireless/realtek/rtlwifi/rtl8723be/dm.c
+index b13fd3c0c832..c9b3d9d09c48 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8723be/dm.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8723be/dm.c
+@@ -736,11 +736,11 @@ static void rtl8723be_dm_txpower_tracking_callback_thermalmeter(
+ 	u8 ofdm_min_index = 6;
+ 	u8 index_for_channel = 0;
+ 
+-	s8 delta_swing_table_idx_tup_a[TXSCALE_TABLE_SIZE] = {
++	static const s8 delta_swing_table_idx_tup_a[TXSCALE_TABLE_SIZE] = {
+ 		0, 0, 1, 2, 2, 2, 3, 3, 3, 4,  5,
+ 		5, 6, 6, 7, 7, 8, 8, 9, 9, 9, 10,
+ 		10, 11, 11, 12, 12, 13, 14, 15};
+-	s8 delta_swing_table_idx_tdown_a[TXSCALE_TABLE_SIZE] = {
++	static const s8 delta_swing_table_idx_tdown_a[TXSCALE_TABLE_SIZE] = {
+ 		0, 0, 1, 2, 2, 2, 3, 3, 3, 4,  5,
+ 		5, 6, 6, 6, 6, 7, 7, 7, 8, 8,  9,
+ 		9, 10, 10, 11, 12, 13, 14, 15};
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/dm.c b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/dm.c
+index f57e8794f0ec..e8fb9354cf19 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/dm.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/dm.c
+@@ -115,47 +115,47 @@ static const u32 edca_setting_ul[PEER_MAX] = {
+ 	0x5ea44f,	/* 7 MARV */
+ };
+ 
+-static u8 rtl8818e_delta_swing_table_idx_24gb_p[] = {
++static const u8 rtl8818e_delta_swing_table_idx_24gb_p[] = {
+ 	0, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 4, 4, 4,
+ 	4, 4, 4, 5, 5, 7, 7, 8, 8, 8, 9, 9, 9, 9, 9};
+ 
+-static u8 rtl8818e_delta_swing_table_idx_24gb_n[] = {
++static const u8 rtl8818e_delta_swing_table_idx_24gb_n[] = {
+ 	0, 0, 0, 2, 2, 3, 3, 4, 4, 4, 4, 5, 5, 6, 6,
+ 	7, 7, 7, 7, 8, 8, 9, 9, 10, 10, 10, 11, 11, 11, 11};
+ 
+-static u8 rtl8812ae_delta_swing_table_idx_24gb_n[]  = {
++static const u8 rtl8812ae_delta_swing_table_idx_24gb_n[]  = {
+ 	0, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 5, 5, 5, 6,
+ 	6, 6, 7, 8, 9, 9, 9, 9, 10, 10, 10, 10, 11, 11};
+ 
+-static u8 rtl8812ae_delta_swing_table_idx_24gb_p[] = {
++static const u8 rtl8812ae_delta_swing_table_idx_24gb_p[] = {
+ 	0, 0, 1, 1, 2, 2, 2, 2, 3, 3, 3, 4, 4, 5, 5, 6,
+ 	6, 6, 7, 7, 7, 8, 8, 8, 9, 9, 9, 9, 9, 9};
+ 
+-static u8 rtl8812ae_delta_swing_table_idx_24ga_n[] = {
++static const u8 rtl8812ae_delta_swing_table_idx_24ga_n[] = {
+ 	0, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 5, 5, 5, 6,
+ 	6, 6, 7, 8, 8, 9, 9, 9, 10, 10, 10, 10, 11, 11};
+ 
+-static u8 rtl8812ae_delta_swing_table_idx_24ga_p[] = {
++static const u8 rtl8812ae_delta_swing_table_idx_24ga_p[] = {
+ 	0, 0, 1, 1, 2, 2, 2, 2, 3, 3, 3, 4, 4, 5, 5, 6,
+ 	6, 6, 7, 7, 7, 8, 8, 8, 9, 9, 9, 9, 9, 9};
+ 
+-static u8 rtl8812ae_delta_swing_table_idx_24gcckb_n[] = {
++static const u8 rtl8812ae_delta_swing_table_idx_24gcckb_n[] = {
+ 	0, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 5, 5, 5, 6,
+ 	6, 6, 7, 8, 9, 9, 9, 9, 10, 10, 10, 10, 11, 11};
+ 
+-static u8 rtl8812ae_delta_swing_table_idx_24gcckb_p[] = {
++static const u8 rtl8812ae_delta_swing_table_idx_24gcckb_p[] = {
+ 	0, 0, 1, 1, 2, 2, 2, 2, 3, 3, 3, 4, 4, 5, 5, 6,
+ 	6, 6, 7, 7, 7, 8, 8, 8, 9, 9, 9, 9, 9, 9};
+ 
+-static u8 rtl8812ae_delta_swing_table_idx_24gccka_n[] = {
++static const u8 rtl8812ae_delta_swing_table_idx_24gccka_n[] = {
+ 	0, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 5, 5, 5, 6,
+ 	6, 6, 7, 8, 8, 9, 9, 9, 10, 10, 10, 10, 11, 11};
+ 
+-static u8 rtl8812ae_delta_swing_table_idx_24gccka_p[] = {
++static const u8 rtl8812ae_delta_swing_table_idx_24gccka_p[] = {
+ 	0, 0, 1, 1, 2, 2, 2, 2, 3, 3, 3, 4, 4, 5, 5, 6,
+ 	6, 6, 7, 7, 7, 8, 8, 8, 9, 9, 9, 9, 9, 9};
+ 
+-static u8 rtl8812ae_delta_swing_table_idx_5gb_n[][DEL_SW_IDX_SZ] = {
++static const u8 rtl8812ae_delta_swing_table_idx_5gb_n[][DEL_SW_IDX_SZ] = {
+ 	{0, 1, 1, 2, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 6, 7, 7,
+ 	7, 8, 8, 9, 9, 9, 10, 10, 11, 11, 12, 12, 13},
+ 	{0, 1, 1, 2, 2, 2, 3, 3, 4, 4, 4, 5, 5, 6, 6, 7,
+@@ -164,7 +164,7 @@ static u8 rtl8812ae_delta_swing_table_idx_5gb_n[][DEL_SW_IDX_SZ] = {
+ 	12, 12, 13, 14, 14, 14, 15, 16, 17, 17, 17, 18, 18, 18},
+ };
+ 
+-static u8 rtl8812ae_delta_swing_table_idx_5gb_p[][DEL_SW_IDX_SZ] = {
++static const u8 rtl8812ae_delta_swing_table_idx_5gb_p[][DEL_SW_IDX_SZ] = {
+ 	{0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 6, 7, 7, 8,
+ 	8, 9, 9, 10, 10, 11, 11, 11, 11, 11, 11, 11, 11},
+ 	{0, 1, 1, 2, 2, 3, 3, 4, 4, 4, 5, 5, 6, 6, 7, 7, 8,
+@@ -173,7 +173,7 @@ static u8 rtl8812ae_delta_swing_table_idx_5gb_p[][DEL_SW_IDX_SZ] = {
+ 	9, 10, 10, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11},
+ };
+ 
+-static u8 rtl8812ae_delta_swing_table_idx_5ga_n[][DEL_SW_IDX_SZ] = {
++static const u8 rtl8812ae_delta_swing_table_idx_5ga_n[][DEL_SW_IDX_SZ] = {
+ 	{0, 1, 1, 2, 2, 3, 3, 4, 4, 4, 5, 5, 6, 6, 7, 7, 8,
+ 	8, 9, 9, 10, 10, 11, 11, 12, 12, 12, 13, 13, 13},
+ 	{0, 1, 1, 2, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 8, 9,
+@@ -182,7 +182,7 @@ static u8 rtl8812ae_delta_swing_table_idx_5ga_n[][DEL_SW_IDX_SZ] = {
+ 	12, 13, 14, 14, 15, 15, 15, 16, 16, 16, 17, 17, 18, 18},
+ };
+ 
+-static u8 rtl8812ae_delta_swing_table_idx_5ga_p[][DEL_SW_IDX_SZ] = {
++static const u8 rtl8812ae_delta_swing_table_idx_5ga_p[][DEL_SW_IDX_SZ] = {
+ 	{0, 1, 1, 2, 2, 3, 3, 4, 4, 4, 4, 5, 5, 6, 7, 7, 8,
+ 	8, 9, 9, 10, 10, 11, 11, 11, 11, 11, 11, 11, 11},
+ 	{0, 1, 1, 2, 2, 3, 3, 4, 4, 4, 5, 5, 6, 6, 7, 7, 8,
+@@ -191,39 +191,39 @@ static u8 rtl8812ae_delta_swing_table_idx_5ga_p[][DEL_SW_IDX_SZ] = {
+ 	10, 10, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11},
+ };
+ 
+-static u8 rtl8821ae_delta_swing_table_idx_24gb_n[] = {
++static const u8 rtl8821ae_delta_swing_table_idx_24gb_n[] = {
+ 	0, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5, 6, 6,
+ 	6, 7, 7, 7, 8, 8, 8, 9, 9, 9, 10, 10, 10};
+ 
+-static u8 rtl8821ae_delta_swing_table_idx_24gb_p[]  = {
++static const u8 rtl8821ae_delta_swing_table_idx_24gb_p[]  = {
+ 	0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8,
+ 	8, 9, 9, 10, 10, 11, 11, 12, 12, 12, 12, 12, 12};
+ 
+-static u8 rtl8821ae_delta_swing_table_idx_24ga_n[]  = {
++static const u8 rtl8821ae_delta_swing_table_idx_24ga_n[]  = {
+ 	0, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5, 6, 6,
+ 	6, 7, 7, 7, 8, 8, 8, 9, 9, 9, 10, 10, 10};
+ 
+-static u8 rtl8821ae_delta_swing_table_idx_24ga_p[] = {
++static const u8 rtl8821ae_delta_swing_table_idx_24ga_p[] = {
+ 	0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8,
+ 	8, 9, 9, 10, 10, 11, 11, 12, 12, 12, 12, 12, 12};
+ 
+-static u8 rtl8821ae_delta_swing_table_idx_24gcckb_n[] = {
++static const u8 rtl8821ae_delta_swing_table_idx_24gcckb_n[] = {
+ 	0, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5, 6, 6,
+ 	6, 7, 7, 7, 8, 8, 8, 9, 9, 9, 10, 10, 10};
+ 
+-static u8 rtl8821ae_delta_swing_table_idx_24gcckb_p[] = {
++static const u8 rtl8821ae_delta_swing_table_idx_24gcckb_p[] = {
+ 	0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8,
+ 	8, 9, 9, 10, 10, 11, 11, 12, 12, 12, 12, 12, 12};
+ 
+-static u8 rtl8821ae_delta_swing_table_idx_24gccka_n[] = {
++static const u8 rtl8821ae_delta_swing_table_idx_24gccka_n[] = {
+ 	0, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5, 6, 6,
+ 	6, 7, 7, 7, 8, 8, 8, 9, 9, 9, 10, 10, 10};
+ 
+-static u8 rtl8821ae_delta_swing_table_idx_24gccka_p[] = {
++static const u8 rtl8821ae_delta_swing_table_idx_24gccka_p[] = {
+ 	0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8,
+ 	8, 9, 9, 10, 10, 11, 11, 12, 12, 12, 12, 12, 12};
+ 
+-static u8 rtl8821ae_delta_swing_table_idx_5gb_n[][DEL_SW_IDX_SZ] = {
++static const u8 rtl8821ae_delta_swing_table_idx_5gb_n[][DEL_SW_IDX_SZ] = {
+ 	{0, 0, 1, 2, 3, 3, 4, 5, 6, 6, 7, 8, 9, 9, 10, 11,
+ 	12, 12, 13, 14, 15, 15, 16, 16, 16, 16, 16, 16, 16, 16},
+ 	{0, 0, 1, 2, 3, 3, 4, 5, 6, 6, 7, 8, 9, 9, 10, 11,
+@@ -232,7 +232,7 @@ static u8 rtl8821ae_delta_swing_table_idx_5gb_n[][DEL_SW_IDX_SZ] = {
+ 	12, 12, 13, 14, 15, 15, 16, 16, 16, 16, 16, 16, 16, 16},
+ };
+ 
+-static u8 rtl8821ae_delta_swing_table_idx_5gb_p[][DEL_SW_IDX_SZ] = {
++static const u8 rtl8821ae_delta_swing_table_idx_5gb_p[][DEL_SW_IDX_SZ] = {
+ 	{0, 0, 1, 2, 3, 3, 4, 5, 6, 6, 7, 8, 9, 9, 10, 11,
+ 	12, 12, 13, 14, 15, 15, 16, 16, 16, 16, 16, 16, 16, 16},
+ 	{0, 0, 1, 2, 3, 3, 4, 5, 6, 6, 7, 8, 9, 9, 10, 11,
+@@ -241,7 +241,7 @@ static u8 rtl8821ae_delta_swing_table_idx_5gb_p[][DEL_SW_IDX_SZ] = {
+ 	12, 12, 13, 14, 15, 15, 16, 16, 16, 16, 16, 16, 16, 16},
+ };
+ 
+-static u8 rtl8821ae_delta_swing_table_idx_5ga_n[][DEL_SW_IDX_SZ] = {
++static const u8 rtl8821ae_delta_swing_table_idx_5ga_n[][DEL_SW_IDX_SZ] = {
+ 	{0, 0, 1, 2, 3, 3, 4, 5, 6, 6, 7, 8, 9, 9, 10, 11,
+ 	12, 12, 13, 14, 15, 15, 16, 16, 16, 16, 16, 16, 16, 16},
+ 	{0, 0, 1, 2, 3, 3, 4, 5, 6, 6, 7, 8, 9, 9, 10, 11,
+@@ -250,7 +250,7 @@ static u8 rtl8821ae_delta_swing_table_idx_5ga_n[][DEL_SW_IDX_SZ] = {
+ 	12, 12, 13, 14, 15, 15, 16, 16, 16, 16, 16, 16, 16, 16},
+ };
+ 
+-static u8 rtl8821ae_delta_swing_table_idx_5ga_p[][DEL_SW_IDX_SZ] = {
++static const u8 rtl8821ae_delta_swing_table_idx_5ga_p[][DEL_SW_IDX_SZ] = {
+ 	{0, 0, 1, 2, 3, 3, 4, 5, 6, 6, 7, 8, 9, 9, 10, 11,
+ 	12, 12, 13, 14, 15, 15, 16, 16, 16, 16, 16, 16, 16, 16},
+ 	{0, 0, 1, 2, 3, 3, 4, 5, 6, 6, 7, 8, 9, 9, 10, 11,
+@@ -962,8 +962,10 @@ static void rtl8821ae_dm_iq_calibrate(struct ieee80211_hw *hw)
+ }
+ 
+ static void rtl8812ae_get_delta_swing_table(struct ieee80211_hw *hw,
+-					    u8 **up_a, u8 **down_a,
+-					    u8 **up_b, u8 **down_b)
++					    const u8 **up_a,
++					    const u8 **down_a,
++					    const u8 **up_b,
++					    const u8 **down_b)
+ {
+ 	struct rtl_priv *rtlpriv = rtl_priv(hw);
+ 	struct rtl_phy *rtlphy = &rtlpriv->phy;
+@@ -999,10 +1001,10 @@ static void rtl8812ae_get_delta_swing_table(struct ieee80211_hw *hw,
+ 		*up_b = rtl8812ae_delta_swing_table_idx_5gb_p[2];
+ 		*down_b = rtl8812ae_delta_swing_table_idx_5gb_n[2];
+ 	} else {
+-	    *up_a = (u8 *)rtl8818e_delta_swing_table_idx_24gb_p;
+-	    *down_a = (u8 *)rtl8818e_delta_swing_table_idx_24gb_n;
+-	    *up_b = (u8 *)rtl8818e_delta_swing_table_idx_24gb_p;
+-	    *down_b = (u8 *)rtl8818e_delta_swing_table_idx_24gb_n;
++		*up_a = rtl8818e_delta_swing_table_idx_24gb_p;
++		*down_a = rtl8818e_delta_swing_table_idx_24gb_n;
++		*up_b = rtl8818e_delta_swing_table_idx_24gb_p;
++		*down_b = rtl8818e_delta_swing_table_idx_24gb_n;
+ 	}
+ }
+ 
+@@ -1492,17 +1494,17 @@ void rtl8812ae_dm_txpower_tracking_callback_thermalmeter(
+ 	/* 1. The following TWO tables decide
+ 	 * the final index of OFDM/CCK swing table.
+ 	 */
+-	u8 *delta_swing_table_idx_tup_a;
+-	u8 *delta_swing_table_idx_tdown_a;
+-	u8 *delta_swing_table_idx_tup_b;
+-	u8 *delta_swing_table_idx_tdown_b;
++	const u8 *delta_swing_table_idx_tup_a;
++	const u8 *delta_swing_table_idx_tdown_a;
++	const u8 *delta_swing_table_idx_tup_b;
++	const u8 *delta_swing_table_idx_tdown_b;
+ 
+ 	/*2. Initilization ( 7 steps in total )*/
+ 	rtl8812ae_get_delta_swing_table(hw,
+-		(u8 **)&delta_swing_table_idx_tup_a,
+-		(u8 **)&delta_swing_table_idx_tdown_a,
+-		(u8 **)&delta_swing_table_idx_tup_b,
+-		(u8 **)&delta_swing_table_idx_tdown_b);
++		&delta_swing_table_idx_tup_a,
++		&delta_swing_table_idx_tdown_a,
++		&delta_swing_table_idx_tup_b,
++		&delta_swing_table_idx_tdown_b);
+ 
+ 	rtldm->txpower_trackinginit = true;
+ 
+@@ -1830,8 +1832,11 @@ void rtl8812ae_dm_txpower_tracking_callback_thermalmeter(
+ 		 "<===rtl8812ae_dm_txpower_tracking_callback_thermalmeter\n");
+ }
+ 
+-static void rtl8821ae_get_delta_swing_table(struct ieee80211_hw *hw, u8 **up_a,
+-					    u8 **down_a, u8 **up_b, u8 **down_b)
++static void rtl8821ae_get_delta_swing_table(struct ieee80211_hw *hw,
++					    const u8 **up_a,
++					    const u8 **down_a,
++					    const u8 **up_b,
++					    const u8 **down_b)
+ {
+ 	struct rtl_priv *rtlpriv = rtl_priv(hw);
+ 	struct rtl_phy *rtlphy = &rtlpriv->phy;
+@@ -1867,10 +1872,10 @@ static void rtl8821ae_get_delta_swing_table(struct ieee80211_hw *hw, u8 **up_a,
+ 		*up_b = rtl8821ae_delta_swing_table_idx_5gb_p[2];
+ 		*down_b = rtl8821ae_delta_swing_table_idx_5gb_n[2];
+ 	} else {
+-	    *up_a = (u8 *)rtl8818e_delta_swing_table_idx_24gb_p;
+-	    *down_a = (u8 *)rtl8818e_delta_swing_table_idx_24gb_n;
+-	    *up_b = (u8 *)rtl8818e_delta_swing_table_idx_24gb_p;
+-	    *down_b = (u8 *)rtl8818e_delta_swing_table_idx_24gb_n;
++		*up_a = rtl8818e_delta_swing_table_idx_24gb_p;
++		*down_a = rtl8818e_delta_swing_table_idx_24gb_n;
++		*up_b = rtl8818e_delta_swing_table_idx_24gb_p;
++		*down_b = rtl8818e_delta_swing_table_idx_24gb_n;
+ 	}
+ 	return;
+ }
+@@ -2075,16 +2080,17 @@ void rtl8821ae_dm_txpower_tracking_callback_thermalmeter(
+ 	/* 1. The following TWO tables decide the final
+ 	 * index of OFDM/CCK swing table.
+ 	 */
+-	u8 *delta_swing_table_idx_tup_a;
+-	u8 *delta_swing_table_idx_tdown_a;
+-	u8 *delta_swing_table_idx_tup_b;
+-	u8 *delta_swing_table_idx_tdown_b;
++	const u8 *delta_swing_table_idx_tup_a;
++	const u8 *delta_swing_table_idx_tdown_a;
++	const u8 *delta_swing_table_idx_tup_b;
++	const u8 *delta_swing_table_idx_tdown_b;
+ 
+ 	/*2. Initilization ( 7 steps in total )*/
+-	rtl8821ae_get_delta_swing_table(hw, (u8 **)&delta_swing_table_idx_tup_a,
+-					(u8 **)&delta_swing_table_idx_tdown_a,
+-					(u8 **)&delta_swing_table_idx_tup_b,
+-					(u8 **)&delta_swing_table_idx_tdown_b);
++	rtl8821ae_get_delta_swing_table(hw,
++					&delta_swing_table_idx_tup_a,
++					&delta_swing_table_idx_tdown_a,
++					&delta_swing_table_idx_tup_b,
++					&delta_swing_table_idx_tdown_b);
+ 
+ 	rtldm->txpower_trackinginit = true;
+ 
+-- 
+2.21.0
+
