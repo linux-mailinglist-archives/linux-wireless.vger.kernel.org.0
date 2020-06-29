@@ -2,48 +2,47 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C4B320D7C3
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jun 2020 22:08:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 94BCA20D813
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jun 2020 22:08:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732721AbgF2Tch (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 29 Jun 2020 15:32:37 -0400
-Received: from mga17.intel.com ([192.55.52.151]:62201 "EHLO mga17.intel.com"
+        id S1730884AbgF2Tfd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 29 Jun 2020 15:35:33 -0400
+Received: from mga07.intel.com ([134.134.136.100]:57570 "EHLO mga07.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730437AbgF2Tcf (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 29 Jun 2020 15:32:35 -0400
-IronPort-SDR: /AOIEiuWRI2rF5VyEJdcStJFkj9FcMHERCyGwfhIPCnUHFDepnP2N0DxX9miNHmIle1va5srOZ
- htUTRJd/E/dA==
-X-IronPort-AV: E=McAfee;i="6000,8403,9666"; a="126071552"
+        id S1732113AbgF2Tf1 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 29 Jun 2020 15:35:27 -0400
+IronPort-SDR: //wzba5hTYTo5oQQ5t1kCWj8myg/BXeyxCXxu3je4oVw3y4yN9TwZ6mjpsb4BaFots7ZGnxOSZ
+ UKKECLeqX/Kg==
+X-IronPort-AV: E=McAfee;i="6000,8403,9666"; a="211007859"
 X-IronPort-AV: E=Sophos;i="5.75,294,1589266800"; 
-   d="gz'50?scan'50,208,50";a="126071552"
+   d="gz'50?scan'50,208,50";a="211007859"
 X-Amp-Result: UNKNOWN
 X-Amp-Original-Verdict: FILE UNKNOWN
 X-Amp-File-Uploaded: False
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jun 2020 01:40:04 -0700
-IronPort-SDR: loinvKFSLS2dGgJWmhoIdKBvvLE1EW4yiD4UHlmSkJmwUgyTx38+oUiR2dRLJxrNHB0ON9Zmpb
- Qq7dA/eImkmg==
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jun 2020 02:12:10 -0700
+IronPort-SDR: olwg+DK8GEdsToMO82dS8evDKT8U1fJqgmLWW12/Ll9OMVAdBunfmPlLdzudsdS3zX3iOHpkxf
+ sLuQHNcbWf2g==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.75,294,1589266800"; 
-   d="gz'50?scan'50,208,50";a="277010327"
+   d="gz'50?scan'50,208,50";a="266154357"
 Received: from lkp-server01.sh.intel.com (HELO 28879958b202) ([10.239.97.150])
-  by orsmga003.jf.intel.com with ESMTP; 29 Jun 2020 01:40:01 -0700
+  by fmsmga008.fm.intel.com with ESMTP; 29 Jun 2020 02:12:08 -0700
 Received: from kbuild by 28879958b202 with local (Exim 4.92)
         (envelope-from <lkp@intel.com>)
-        id 1jppKa-0000tE-Nl; Mon, 29 Jun 2020 08:40:00 +0000
-Date:   Mon, 29 Jun 2020 16:39:16 +0800
+        id 1jpppf-0000uC-G8; Mon, 29 Jun 2020 09:12:07 +0000
+Date:   Mon, 29 Jun 2020 17:11:40 +0800
 From:   kernel test robot <lkp@intel.com>
 To:     Tamizh Chelvam <tamizhr@codeaurora.org>, ath10k@lists.infradead.org
 Cc:     kbuild-all@lists.01.org, linux-wireless@vger.kernel.org,
         Tamizh Chelvam <tamizhr@codeaurora.org>
-Subject: Re: [PATCH 3/4] ath10k: Add new api to support TID specific
- configuration
-Message-ID: <202006291602.bUJv5BP7%lkp@intel.com>
-References: <1593363718-5148-4-git-send-email-tamizhr@codeaurora.org>
+Subject: Re: [PATCH 4/4] ath10k: Add new api to support reset TID config
+Message-ID: <202006291735.unjmGoQD%lkp@intel.com>
+References: <1593363718-5148-5-git-send-email-tamizhr@codeaurora.org>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="AqsLC8rIMeq19msA"
+Content-Type: multipart/mixed; boundary="cWoXeonUoKmBZSoM"
 Content-Disposition: inline
-In-Reply-To: <1593363718-5148-4-git-send-email-tamizhr@codeaurora.org>
+In-Reply-To: <1593363718-5148-5-git-send-email-tamizhr@codeaurora.org>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
@@ -51,7 +50,7 @@ List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 
---AqsLC8rIMeq19msA
+--cWoXeonUoKmBZSoM
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
@@ -148,160 +147,80 @@ All warnings (new ones prefixed by >>):
      352 |  if (WARN_ON_ONCE(pfn_valid(PHYS_PFN(phys_addr))))
          |                   ^~~~~~~~~
    drivers/net/wireless/ath/ath10k/mac.c: At top level:
->> drivers/net/wireless/ath/ath10k/mac.c:6864:5: warning: no previous prototype for 'ath10k_mac_set_tid_config' [-Wmissing-prototypes]
-    6864 | int ath10k_mac_set_tid_config(struct ath10k *ar, struct ieee80211_sta *sta,
+   drivers/net/wireless/ath/ath10k/mac.c:6865:5: warning: no previous prototype for 'ath10k_mac_set_tid_config' [-Wmissing-prototypes]
+    6865 | int ath10k_mac_set_tid_config(struct ath10k *ar, struct ieee80211_sta *sta,
          |     ^~~~~~~~~~~~~~~~~~~~~~~~~
    drivers/net/wireless/ath/ath10k/mac.c: In function 'ath10k_sta_tid_cfg_wk':
->> drivers/net/wireless/ath/ath10k/mac.c:7077:24: warning: variable 'vif' set but not used [-Wunused-but-set-variable]
-    7077 |  struct ieee80211_vif *vif;
+   drivers/net/wireless/ath/ath10k/mac.c:7126:24: warning: variable 'vif' set but not used [-Wunused-but-set-variable]
+    7126 |  struct ieee80211_vif *vif;
          |                        ^~~
+   drivers/net/wireless/ath/ath10k/mac.c: In function 'ath10k_mac_reset_tid_config':
+>> drivers/net/wireless/ath/ath10k/mac.c:7085:8: warning: 'i' is used uninitialized in this function [-Wuninitialized]
+    7085 |  while (i < ATH10K_TID_MAX) {
+         |        ^
 
-vim +/ath10k_mac_set_tid_config +6864 drivers/net/wireless/ath/ath10k/mac.c
+vim +/i +7085 drivers/net/wireless/ath/ath10k/mac.c
 
-  6863	
-> 6864	int ath10k_mac_set_tid_config(struct ath10k *ar, struct ieee80211_sta *sta,
-  6865				      struct ieee80211_vif *vif, u32 changed,
-  6866				      struct wmi_per_peer_per_tid_cfg_arg *arg)
-  6867	{
-  6868		struct ath10k_vif *arvif = (void *)vif->drv_priv;
-  6869		struct ath10k_sta *arsta;
-  6870		int ret;
-  6871	
-  6872		if (sta) {
-  6873			if (!sta->wme)
-  6874				return -ENOTSUPP;
-  6875	
-  6876			arsta = (struct ath10k_sta *)sta->drv_priv;
-  6877	
-  6878			if (changed & BIT(NL80211_TID_CONFIG_ATTR_NOACK)) {
-  6879				if ((arsta->retry_long[arg->tid] > 0 ||
-  6880				     arsta->rate_code[arg->tid] > 0 ||
-  6881				     arsta->ampdu[arg->tid] ==
-  6882						WMI_TID_CONFIG_AGGR_CONTROL_ENABLE) &&
-  6883				     arg->ack_policy == WMI_PEER_TID_CONFIG_NOACK) {
-  6884					changed &= ~BIT(NL80211_TID_CONFIG_ATTR_NOACK);
-  6885					arg->ack_policy = 0;
-  6886					arg->aggr_control = 0;
-  6887					arg->rate_ctrl = 0;
-  6888					arg->rcode_flags = 0;
-  6889				}
-  6890			}
-  6891	
-  6892			if (changed & BIT(NL80211_TID_CONFIG_ATTR_AMPDU_CTRL)) {
-  6893				if (arsta->noack[arg->tid] == WMI_PEER_TID_CONFIG_NOACK ||
-  6894				    arvif->noack[arg->tid] == WMI_PEER_TID_CONFIG_NOACK) {
-  6895					arg->aggr_control = 0;
-  6896					changed &= ~BIT(NL80211_TID_CONFIG_ATTR_RETRY_LONG);
-  6897				}
-  6898			}
-  6899	
-  6900			if (changed & (BIT(NL80211_TID_CONFIG_ATTR_TX_RATE) |
-  6901			    BIT(NL80211_TID_CONFIG_ATTR_TX_RATE_TYPE))) {
-  6902				if (arsta->noack[arg->tid] == WMI_PEER_TID_CONFIG_NOACK ||
-  6903				    arvif->noack[arg->tid] == WMI_PEER_TID_CONFIG_NOACK) {
-  6904					arg->rate_ctrl = 0;
-  6905					arg->rcode_flags = 0;
-  6906				}
-  6907			}
-  6908	
-  6909			ether_addr_copy(arg->peer_macaddr.addr, sta->addr);
-  6910			ret = ath10k_wmi_set_per_peer_per_tid_cfg(ar, arg);
-  6911			if (ret)
-  6912				return ret;
-  6913	
-  6914			/* Store the configured parameters in success case */
-  6915			if (changed & BIT(NL80211_TID_CONFIG_ATTR_NOACK)) {
-  6916				arsta->noack[arg->tid] = arg->ack_policy;
-  6917				arg->ack_policy = 0;
-  6918				arg->aggr_control = 0;
-  6919				arg->rate_ctrl = 0;
-  6920				arg->rcode_flags = 0;
-  6921			}
-  6922	
-  6923			if (changed & BIT(NL80211_TID_CONFIG_ATTR_RETRY_LONG)) {
-  6924				arsta->retry_long[arg->tid] = arg->retry_count;
-  6925				arg->retry_count = 0;
-  6926			}
-  6927	
-  6928			if (changed & BIT(NL80211_TID_CONFIG_ATTR_AMPDU_CTRL)) {
-  6929				arsta->ampdu[arg->tid] = arg->aggr_control;
-  6930				arg->aggr_control = 0;
-  6931			}
-  6932	
-  6933			if (changed & (BIT(NL80211_TID_CONFIG_ATTR_TX_RATE) |
-  6934			    BIT(NL80211_TID_CONFIG_ATTR_TX_RATE_TYPE))) {
-  6935				arsta->rate_ctrl[arg->tid] = arg->rate_ctrl;
-  6936				arg->rate_ctrl = 0;
-  6937				arg->rcode_flags = 0;
-  6938			}
-  6939	
-  6940			if (changed & BIT(NL80211_TID_CONFIG_ATTR_RTSCTS_CTRL)) {
-  6941				arsta->rtscts[arg->tid] = arg->rtscts_ctrl;
-  6942				arg->ext_tid_cfg_bitmap = 0;
-  6943			}
-  6944		} else {
-  6945			if (changed & BIT(NL80211_TID_CONFIG_ATTR_NOACK)) {
-  6946				if ((arvif->retry_long[arg->tid] ||
-  6947				     arvif->rate_code[arg->tid] ||
-  6948				     arvif->ampdu[arg->tid] ==
-  6949						WMI_TID_CONFIG_AGGR_CONTROL_ENABLE) &&
-  6950				     arg->ack_policy == WMI_PEER_TID_CONFIG_NOACK) {
-  6951					changed &= ~BIT(NL80211_TID_CONFIG_ATTR_NOACK);
-  6952				} else {
-  6953					arvif->noack[arg->tid] = arg->ack_policy;
-  6954					arvif->ampdu[arg->tid] = arg->aggr_control;
-  6955					arvif->rate_ctrl[arg->tid] = arg->rate_ctrl;
-  6956				}
-  6957			}
-  6958	
-  6959			if (changed & BIT(NL80211_TID_CONFIG_ATTR_RETRY_LONG)) {
-  6960				if (arvif->noack[arg->tid] == WMI_PEER_TID_CONFIG_NOACK)
-  6961					changed &= ~BIT(NL80211_TID_CONFIG_ATTR_RETRY_LONG);
-  6962				else
-  6963					arvif->retry_long[arg->tid] = arg->retry_count;
-  6964			}
-  6965	
-  6966			if (changed & BIT(NL80211_TID_CONFIG_ATTR_AMPDU_CTRL)) {
-  6967				if (arvif->noack[arg->tid] == WMI_PEER_TID_CONFIG_NOACK)
-  6968					changed &= ~BIT(NL80211_TID_CONFIG_ATTR_AMPDU_CTRL);
-  6969				else
-  6970					arvif->ampdu[arg->tid] = arg->aggr_control;
-  6971			}
-  6972	
-  6973			if (changed & (BIT(NL80211_TID_CONFIG_ATTR_TX_RATE) |
-  6974			    BIT(NL80211_TID_CONFIG_ATTR_TX_RATE_TYPE))) {
-  6975				if (arvif->noack[arg->tid] == WMI_PEER_TID_CONFIG_NOACK) {
-  6976					changed &= ~(BIT(NL80211_TID_CONFIG_ATTR_TX_RATE) |
-  6977						     BIT(NL80211_TID_CONFIG_ATTR_TX_RATE_TYPE));
-  6978				} else {
-  6979					arvif->rate_ctrl[arg->tid] = arg->rate_ctrl;
-  6980					arvif->rate_code[arg->tid] = arg->rcode_flags;
-  6981				}
-  6982			}
-  6983	
-  6984			if (changed & BIT(NL80211_TID_CONFIG_ATTR_RTSCTS_CTRL)) {
-  6985				arvif->rtscts[arg->tid] = arg->rtscts_ctrl;
-  6986				arg->ext_tid_cfg_bitmap = 0;
-  6987			}
-  6988	
-  6989			if (changed)
-  6990				arvif->tid_conf_changed[arg->tid] |= changed;
-  6991		}
-  6992	
-  6993		return 0;
-  6994	}
-  6995	
+  7074	
+  7075	static int ath10k_mac_reset_tid_config(struct ath10k *ar,
+  7076					       struct ieee80211_sta *sta,
+  7077					       struct ath10k_vif *arvif,
+  7078					       u8 tids)
+  7079	{
+  7080		struct ath10k_sta *arsta = (struct ath10k_sta *)sta->drv_priv;
+  7081		struct wmi_per_peer_per_tid_cfg_arg arg;
+  7082		int ret = 0, i;
+  7083	
+  7084		arg.vdev_id = arvif->vdev_id;
+> 7085		while (i < ATH10K_TID_MAX) {
+  7086			if (!(tids & BIT(i))) {
+  7087				i++;
+  7088				continue;
+  7089			}
+  7090	
+  7091			arg.tid = i;
+  7092			arg.ack_policy = WMI_PEER_TID_CONFIG_ACK;
+  7093			arg.retry_count = ATH10K_MAX_RETRY_COUNT;
+  7094			arg.rate_ctrl = WMI_TID_CONFIG_RATE_CONTROL_AUTO;
+  7095			arg.aggr_control = WMI_TID_CONFIG_AGGR_CONTROL_ENABLE;
+  7096			arg.rtscts_ctrl = WMI_TID_CONFIG_RTSCTS_CONTROL_ENABLE;
+  7097			arg.ext_tid_cfg_bitmap = WMI_EXT_TID_RTS_CTS_CONFIG;
+  7098			ether_addr_copy(arg.peer_macaddr.addr, sta->addr);
+  7099			ret = ath10k_wmi_set_per_peer_per_tid_cfg(ar, &arg);
+  7100			if (ret)
+  7101				return ret;
+  7102	
+  7103			if (!arvif->tids_rst) {
+  7104				arsta->retry_long[i] = -1;
+  7105				arsta->noack[i] = -1;
+  7106				arsta->ampdu[i] = -1;
+  7107				arsta->rate_code[i] = -1;
+  7108				arsta->rate_ctrl[i] = 0;
+  7109				arsta->rtscts[i] = -1;
+  7110			} else {
+  7111				arvif->retry_long[i] = 0;
+  7112				arvif->noack[i] = 0;
+  7113				arvif->ampdu[i] = 0;
+  7114				arvif->rate_code[i] = 0;
+  7115				arvif->rate_ctrl[i] = 0;
+  7116				arvif->rtscts[i] = 0;
+  7117			}
+  7118			i++;
+  7119		}
+  7120		return ret;
+  7121	}
+  7122	
 
 ---
 0-DAY CI Kernel Test Service, Intel Corporation
 https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
 
---AqsLC8rIMeq19msA
+--cWoXeonUoKmBZSoM
 Content-Type: application/gzip
 Content-Disposition: attachment; filename=".config.gz"
 Content-Transfer-Encoding: base64
 
-H4sICKmX+V4AAy5jb25maWcAlFxJc9w4sr7Pr6hwX2YO3aPNNe73QgeQBKswRRIUAVZJujDK
+H4sICAGc+V4AAy5jb25maWcAlFxJc9w4sr7Pr6hwX2YO3aPNNe73QgeQBKswRRIUAVZJujDK
 ctlWtBaHJPdrz69/meCWWMjy+CLzywSIJXeA9cvfflmw72/Pj/u3+7v9w8OPxZfD0+Fl/3b4
 tPh8/3D430UiF4XUC54I/RswZ/dP3//65+Pywx+L9799+O3k15e708Xm8PJ0eFjEz0+f7798
 h9b3z09/++VvsSxSsWriuNnySglZNJpf68t32PrXB+zo1y93d4u/r+L4H4vffzv/7eQdaSNU
@@ -1362,4 +1281,4 @@ SSM+B82WgsxpvUXuNBJed64zs1EgBsrLKMV4XxW5kOTpupdhstOsf93hXMr89koyewvrJZAL
 T99gqu1Bjxwu5v03dwFgh0ySyb7FByEKGl72rjhV6zJG9Spy5qtOOAqADIl2cDFwnsG0l8dU
 lTIO1fE1RBbU6LcLZdb/B6L6vlwwmQMA
 
---AqsLC8rIMeq19msA--
+--cWoXeonUoKmBZSoM--
