@@ -2,133 +2,60 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E27220D6C3
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jun 2020 22:06:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3007220D80C
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jun 2020 22:08:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731301AbgF2TXo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 29 Jun 2020 15:23:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45104 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732283AbgF2TWo (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 29 Jun 2020 15:22:44 -0400
-Received: from mail-vk1-xa42.google.com (mail-vk1-xa42.google.com [IPv6:2607:f8b0:4864:20::a42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4955C02E2F8
-        for <linux-wireless@vger.kernel.org>; Mon, 29 Jun 2020 07:33:33 -0700 (PDT)
-Received: by mail-vk1-xa42.google.com with SMTP id v26so770220vkn.2
-        for <linux-wireless@vger.kernel.org>; Mon, 29 Jun 2020 07:33:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=YNkvAElAdlylwMX22qVeO6w3DffRcKTQ6SjWLKbis1A=;
-        b=flWt2co8UrsGAn5eM02MB8ewGt+er7i6cSZMso4fN8Fq6W1kWGiTyiiCwMe3Y9kVcr
-         o+jJR0GQp8fWNAU8gkgJ7rGcfEMIpoyg3d1Cfas9VtcRMa9pJIE3zkVz+qW3GOh4y1VQ
-         tz4wtTIW837O3y69hcCAC0FmgG92kdYfWdPf0=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=YNkvAElAdlylwMX22qVeO6w3DffRcKTQ6SjWLKbis1A=;
-        b=ba5tu9BlMED2IznQmRJ8NglT9HlauB38RH6pBOhOqnDJxi4ZM1rdw4H9ch/dOZB3FL
-         tuO4nRhkb6de1M8l5sZ9yG8zncHaXRZ4LLLeFQMZNgszdJ+WGzH+EMFqd8geELQubZt7
-         mqTSlwOjl6pnk8Wr2mHWE/KX3AFITAAlyuuzxdlDwC1sRGkHlym99kq6cBOosPvj49Ys
-         fz6UcBVf0hB4IF+EtYFONfzWpBsDaX/QHZz+VXJDrUv3sX6pwfa5/9ZlBRZ7+CT/NFU4
-         FhCPevn2FindykShs+9xl/my2ZWgk/vSd4d2aCGfF3fvL+zm3OV1WKF3nnWpQOFviUHy
-         FoVg==
-X-Gm-Message-State: AOAM53149H1VeE/HrJ+N4Ol6s0q9XU/vPFlcTqFYeZ7xBYCKJfiDc7W3
-        4f1ZpfVMek6DCuqrFChDXPFLOtRMbu4=
-X-Google-Smtp-Source: ABdhPJxi7Xssbs/aYxAsO559yB3hWZxYo45xrbIVV5clhvCY6uxvsGgEjPRQ7djewIaYfhEqHys1Ew==
-X-Received: by 2002:a1f:a913:: with SMTP id s19mr10205024vke.13.1593441212685;
-        Mon, 29 Jun 2020 07:33:32 -0700 (PDT)
-Received: from mail-ua1-f44.google.com (mail-ua1-f44.google.com. [209.85.222.44])
-        by smtp.gmail.com with ESMTPSA id 140sm18950vkx.20.2020.06.29.07.33.30
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 29 Jun 2020 07:33:31 -0700 (PDT)
-Received: by mail-ua1-f44.google.com with SMTP id b13so5389720uav.3
-        for <linux-wireless@vger.kernel.org>; Mon, 29 Jun 2020 07:33:30 -0700 (PDT)
-X-Received: by 2002:ab0:29c1:: with SMTP id i1mr10886058uaq.120.1593441210383;
- Mon, 29 Jun 2020 07:33:30 -0700 (PDT)
+        id S1733131AbgF2TfT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 29 Jun 2020 15:35:19 -0400
+Received: from mail.kernel.org ([198.145.29.99]:44064 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730253AbgF2TfS (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 29 Jun 2020 15:35:18 -0400
+Received: from localhost.localdomain.com (unknown [151.48.138.186])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id BA6B92559F;
+        Mon, 29 Jun 2020 17:06:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1593450373;
+        bh=ef8lBwio12kXWDrwXggNZhc1ZgnclFDfXg9EnWQiIEg=;
+        h=From:To:Cc:Subject:Date:From;
+        b=ogfgoPD0Mb6wMNB4SEkyVz47XzBGYJ3QF75aROu26ZjrEbUxUHI9v1yT8hAqO8gQ8
+         RulPgnUTQd4W8M0mMjQFJpRCpcQhkJhq/q8on4XpIMv0Lz/Ac1xZ9OdvD7fgwB1tsV
+         O3ayIIya+km/++UuUkaiKPIf0vfAc5QkCNnp/a/A=
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com
+Subject: [PATCH] mt76: mt76x2u: enable HC-M7662BU1
+Date:   Mon, 29 Jun 2020 19:05:33 +0200
+Message-Id: <a700daebe49eeaf26b61a199bc3e51db70278dd7.1593450264.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-References: <1593194502-13164-1-git-send-email-pillair@codeaurora.org>
- <1593194502-13164-3-git-send-email-pillair@codeaurora.org>
- <CAD=FV=V1C2Lu31n8xQ8HPf21fNo_Da2SLtZAeStFBEou9+geEA@mail.gmail.com> <000301d64e0e$b9e32c70$2da98550$@codeaurora.org>
-In-Reply-To: <000301d64e0e$b9e32c70$2da98550$@codeaurora.org>
-From:   Doug Anderson <dianders@chromium.org>
-Date:   Mon, 29 Jun 2020 07:33:18 -0700
-X-Gmail-Original-Message-ID: <CAD=FV=U_qfbCQDy7DOn8VNQU+7yNn0cjS8YD232UFTXW3w3wrw@mail.gmail.com>
-Message-ID: <CAD=FV=U_qfbCQDy7DOn8VNQU+7yNn0cjS8YD232UFTXW3w3wrw@mail.gmail.com>
-Subject: Re: [PATCH 2/2] ath10k: Add support for chain1 regulator supply voting
-To:     Rakesh Pillai <pillair@codeaurora.org>
-Cc:     Kalle Valo <kvalo@codeaurora.org>, ath10k@lists.infradead.org,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+Enable support for HC-M7662BU1 module on mt76x2u driver
 
-On Mon, Jun 29, 2020 at 5:14 AM Rakesh Pillai <pillair@codeaurora.org> wrote:
->
->
->
-> > -----Original Message-----
-> > From: Doug Anderson <dianders@chromium.org>
-> > Sent: Saturday, June 27, 2020 3:22 AM
-> > To: Rakesh Pillai <pillair@codeaurora.org>; Kalle Valo
-> > <kvalo@codeaurora.org>
-> > Cc: ath10k@lists.infradead.org; open list:OPEN FIRMWARE AND FLATTENED
-> > DEVICE TREE BINDINGS <devicetree@vger.kernel.org>; linux-wireless <linux-
-> > wireless@vger.kernel.org>; LKML <linux-kernel@vger.kernel.org>
-> > Subject: Re: [PATCH 2/2] ath10k: Add support for chain1 regulator supply
-> > voting
-> >
-> > Hi,
-> >
-> > On Fri, Jun 26, 2020 at 11:02 AM Rakesh Pillai <pillair@codeaurora.org> wrote:
-> > >
-> > > Add support to vote for chain-1 voltage regulator
-> > > in WCN3990.
-> > >
-> > > Tested-on: WCN3990 hw1.0 SNOC WLAN.HL.3.1-01040-QCAHLSWMTPLZ-1
-> > >
-> > > Signed-off-by: Rakesh Pillai <pillair@codeaurora.org>
-> > > ---
-> > >  drivers/net/wireless/ath/ath10k/snoc.c | 1 +
-> > >  1 file changed, 1 insertion(+)
-> > >
-> > > diff --git a/drivers/net/wireless/ath/ath10k/snoc.c
-> > b/drivers/net/wireless/ath/ath10k/snoc.c
-> > > index 645ed5f..407a074 100644
-> > > --- a/drivers/net/wireless/ath/ath10k/snoc.c
-> > > +++ b/drivers/net/wireless/ath/ath10k/snoc.c
-> > > @@ -45,6 +45,7 @@ static const char * const ath10k_regulators[] = {
-> > >         "vdd-1.8-xo",
-> > >         "vdd-1.3-rfa",
-> > >         "vdd-3.3-ch0",
-> > > +       "vdd-3.3-ch1",
-> >
-> > Reviewed-by: Douglas Anderson <dianders@chromium.org>
-> >
-> > ...with the slight nit that ${SUBJECT} and description should probably
-> > call it "chan1" and not "chain1".  Presumably the maintainer can fix
-> > when applying.
-> >
-> > -Doug
->
-> Hi Doug,
->
-> It has to be chain1 only, not chan1.
-> This is the power supply rail for the wlan-chain1
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+ drivers/net/wireless/mediatek/mt76/mt76x2/usb.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Whoa, really?  "ch1" stands for "chain1", not "chan1"?  That is
-seriously weird (at least to me), but I find at least one document
-that agrees with you.  Sorry for the mistake!
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c b/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
+index 0be4afef5e6f..4e003c7b62cf 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
+@@ -16,6 +16,7 @@ static const struct usb_device_id mt76x2u_device_table[] = {
+ 	{ USB_DEVICE(0x0e8d, 0x7612) },	/* Aukey USBAC1200 - Alfa AWUS036ACM */
+ 	{ USB_DEVICE(0x057c, 0x8503) },	/* Avm FRITZ!WLAN AC860 */
+ 	{ USB_DEVICE(0x7392, 0xb711) },	/* Edimax EW 7722 UAC */
++	{ USB_DEVICE(0x0e8d, 0x7632) },	/* HC-M7662BU1 */
+ 	{ USB_DEVICE(0x2c4e, 0x0103) },	/* Mercury UD13 */
+ 	{ USB_DEVICE(0x0846, 0x9053) },	/* Netgear A6210 */
+ 	{ USB_DEVICE(0x045e, 0x02e6) },	/* XBox One Wireless Adapter */
+-- 
+2.26.2
 
--Doug
