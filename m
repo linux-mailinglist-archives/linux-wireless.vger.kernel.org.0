@@ -2,145 +2,260 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C6CE220D754
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jun 2020 22:07:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CAA0D20D654
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jun 2020 22:05:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729727AbgF2T26 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 29 Jun 2020 15:28:58 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:20190 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1732698AbgF2T2t (ORCPT
+        id S1732042AbgF2TS6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 29 Jun 2020 15:18:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43352 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731759AbgF2TOU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 29 Jun 2020 15:28:49 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1593458929;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=Af4KpIzEgr4pIiV2LebnToq75R4GNH67/fmvTzeBA6Q=;
-        b=EUEHx4LSroOAMC/JIU7nE3pcMOvs75KEXiDClm4nYn8NVcfgsuPJnS4Dr+NDkqstRizX6P
-        4too6K2x6xGVP+EmziX6pBT4ErUEWAALbM5HzBk1CtMEv/fyTazrUIbvt4BwXjXDxPJu5Y
-        7vvBpN0XHNNETXctwGv06uL78ddQ2eU=
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
- [209.85.222.199]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-83-Jj84R5d3Nt-xjj-Ek8ziNg-1; Mon, 29 Jun 2020 06:26:02 -0400
-X-MC-Unique: Jj84R5d3Nt-xjj-Ek8ziNg-1
-Received: by mail-qk1-f199.google.com with SMTP id z1so1870637qkz.3
-        for <linux-wireless@vger.kernel.org>; Mon, 29 Jun 2020 03:26:02 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
-         :message-id:mime-version:content-transfer-encoding;
-        bh=Af4KpIzEgr4pIiV2LebnToq75R4GNH67/fmvTzeBA6Q=;
-        b=MKiw7sLdoRUP1X15+FCcp8nASkNcXydMf6a7/me7CvXZ/W/yuja8aj2hABPMJ5ciKy
-         2YEYx4/whceltGnX1Pel9V+I5zQOef+jYVZpuCk1iin3Fjt7ju16z0i8IOVC5pMNxjaM
-         xX+rcYuqkJyFUiqdAiEdhSsWG+IoO9Xcsy6fA1lpm1st2A9mIUsBmQopqvD2LXSRqPfC
-         cofnvw9EGXNYNpN10iZTOReQRRpwlpelctDVPbWXTq6YN+LP35PVQVvcGtYX8cFu2QDH
-         FD/LySYbVH7iyV417ctwOMUZBUxARmccf3GQgYHM5eUTk148QTLY2kuOXmkiBMPm8P3Q
-         NyKw==
-X-Gm-Message-State: AOAM530KbsiUll3DeDjmYrHthZ1KN8i9R2D7zBfuKKUrz7C0jnQTEoJv
-        o77tlYGsMIjJWCtbX7b/0A6QbOl1PkrGxY5HHjyZZjR8bkYpfm4qVAFubtHFsAKhAjr+XR0XCQu
-        e7R4tcFyRSJHoNfNpY7hDaNz1HmE=
-X-Received: by 2002:a37:4d0f:: with SMTP id a15mr14187679qkb.313.1593426361503;
-        Mon, 29 Jun 2020 03:26:01 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJxVNgQ/1N8oN2928Xm86slDPHkUprPaGNArIarkd0p/jTYrFZfUMeJZ6rsi2b4L6AaDaOvVEw==
-X-Received: by 2002:a37:4d0f:: with SMTP id a15mr14187663qkb.313.1593426361130;
-        Mon, 29 Jun 2020 03:26:01 -0700 (PDT)
-Received: from alrua-x1.borgediget.toke.dk ([45.145.92.2])
-        by smtp.gmail.com with ESMTPSA id d135sm3005834qkg.117.2020.06.29.03.25.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 Jun 2020 03:26:00 -0700 (PDT)
-Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-        id 04E011808CF; Mon, 29 Jun 2020 12:25:56 +0200 (CEST)
-From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-To:     Miguel Catalan Cid <miguel.catalan@i2cat.net>
-Cc:     make-wifi-fast@lists.bufferbloat.net,
-        linux-wireless@vger.kernel.org
-Subject: Re: [Make-wifi-fast] Support for airtime scheduling using ath10k
-In-Reply-To: <CAMHmoouFjdOSBAq00SMeauO2GvEnXMvJG+vEMwhYUD4rdW9rxg@mail.gmail.com>
-References: <CAMHmoovK_m=Yd4uUPhsdHZ588+d1DF-fyS+uGKdRWvd33Q2u+A@mail.gmail.com> <87zh8uruou.fsf@toke.dk> <CAMHmoouFjdOSBAq00SMeauO2GvEnXMvJG+vEMwhYUD4rdW9rxg@mail.gmail.com>
-X-Clacks-Overhead: GNU Terry Pratchett
-Date:   Mon, 29 Jun 2020 12:25:56 +0200
-Message-ID: <87366ei2x7.fsf@toke.dk>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+        Mon, 29 Jun 2020 15:14:20 -0400
+Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4BE6C0085D5;
+        Mon, 29 Jun 2020 04:16:27 -0700 (PDT)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: andrzej.p)
+        with ESMTPSA id 9391127D8DE
+From:   Andrzej Pietrasiewicz <andrzej.p@collabora.com>
+To:     linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
+        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-renesas-soc@vger.kernel.org,
+        linux-rockchip@lists.infradead.org
+Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Vishal Kulkarni <vishal@chelsio.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jiri Pirko <jiri@mellanox.com>,
+        Ido Schimmel <idosch@mellanox.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        Intel Linux Wireless <linuxwifi@intel.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Peter Kaestle <peter@piie.net>,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Sebastian Reichel <sre@kernel.org>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Amit Kucheria <amit.kucheria@verdurent.com>,
+        Support Opensource <support.opensource@diasemi.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        =?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Orson Zhai <orsonzhai@gmail.com>,
+        Baolin Wang <baolin.wang7@gmail.com>,
+        Chunyan Zhang <zhang.lyra@gmail.com>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Allison Randal <allison@lohutok.net>,
+        Enrico Weigelt <info@metux.net>,
+        Gayatri Kammela <gayatri.kammela@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Andrzej Pietrasiewicz <andrzej.p@collabora.com>,
+        kernel@collabora.com
+Subject: [PATCH v6 02/11] thermal: Store thermal mode in a dedicated enum
+Date:   Mon, 29 Jun 2020 13:16:06 +0200
+Message-Id: <20200629111615.18131-3-andrzej.p@collabora.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20200629111615.18131-1-andrzej.p@collabora.com>
+References: <CAHLCerO2XOOX9akEwaTu_cjSqRycFpNmoVxkSe36L8B4ALWidA@mail.gmail.com>
+ <20200629111615.18131-1-andrzej.p@collabora.com>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Miguel Catalan Cid <miguel.catalan@i2cat.net> writes:
+Prepare for storing mode in struct thermal_zone_device.
 
-> El mar., 23 jun. 2020 a las 11:35, Toke H=C3=B8iland-J=C3=B8rgensen
-> (<toke@redhat.com>) escribi=C3=B3:
->>
->> Miguel Catalan Cid <miguel.catalan@i2cat.net> writes:
->>
->> > Hi,
->> >
->> > we are trying to apply different airtime weights to different stations=
- in
->> > order to have some prioritization among connected stations. While this=
- is
->> > working pretty well with ath9k, with ath10k we always obtain a fair
->> > distribution of the airtime (i.e. 50%-50% in the case of two stations),
->> > regardless of the airtime weight specified.
->> >
->> > E.g. STA1:
->> > RX: 0 us
->> > TX: 2295610622 us
->> >
->> > *Weight: 200*Deficit: VO: 256 us VI: 256 us BE: 34 us BK: 256 us
->> >
->> > E.g. STA2:
->> > RX: 0 us
->> > TX: 162597077 us
->>
->> 2295610622/162597077 ~=3D 14
->>
->> which is not *too* far from the 20/1 ratio you've configured? Does the
->> ratio change at all when you change the weights (i.e., if they are
->> equal, do you get closer to a 50/50 split?).
->>
->> Do the two stations have roughly the same signal strength / rate?
->
-> In this case I started the STA1 a bit earlier, so it had a higher
-> airtime aggregate. Indeed, to compare the airtime share, I was
-> continuously monitoring the "airtime rate" (i.e. the difference
-> between Airtime(now) and Airtime (now-4s)) and the results of both
-> STAs were the same (i.e. 50/50 split) independently of the weight
-> being used. But when using ath9k the same test runs perfectly
-> according to the weights.
->
->>
->> > *Weight: 10*Deficit: VO: 256 us VI: 256 us BE: 9 us BK: 256 us
->> >
->> > We are using Compex WLE650V5-18A cards.
->> >
->> > So, does ath10k support airtime scheduling? In such a case, do we need
->> > specific Wi-Fi cards?
->>
->> It should. My guess would be that maybe you're not getting enough
->> backpressure for the scheduler to actually enforce things correctly. You
->> could try to look at the TXQ output and see if you actually have any
->> drops ('iw dev wlan0 station dump -v' and look at the drops/marks
->> columns).
->
-> ok, i will check!
+Signed-off-by: Andrzej Pietrasiewicz <andrzej.p@collabora.com>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+[for acerhdf]
+Acked-by: Peter Kaestle <peter@piie.net>
+Reviewed-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Reviewed-by: Amit Kucheria <amit.kucheria@linaro.org>
+---
+ drivers/acpi/thermal.c                        | 27 +++++++++----------
+ drivers/platform/x86/acerhdf.c                |  8 ++++--
+ .../intel/int340x_thermal/int3400_thermal.c   | 18 +++++--------
+ 3 files changed, 25 insertions(+), 28 deletions(-)
 
-Another thing to check is the value of 'new_flows' in the TXQ output; if
-that is high, it indicates that the queues run empty a lot, which can
-prevent the airtime fairness scheduler from working properly.
-
->> What kernel version are you running? If it's not new enough to have AQL,
->> that might help moving the backlog to where the scheduler can do more
->> with it.
->
-> Kernel 5.5.5.
-
-Hmm, that should have AQL, actually.
-
--Toke
+diff --git a/drivers/acpi/thermal.c b/drivers/acpi/thermal.c
+index 6de8066ca1e7..fb46070c66d8 100644
+--- a/drivers/acpi/thermal.c
++++ b/drivers/acpi/thermal.c
+@@ -172,7 +172,7 @@ struct acpi_thermal {
+ 	struct acpi_thermal_trips trips;
+ 	struct acpi_handle_list devices;
+ 	struct thermal_zone_device *thermal_zone;
+-	int tz_enabled;
++	enum thermal_device_mode mode;
+ 	int kelvin_offset;	/* in millidegrees */
+ 	struct work_struct thermal_check_work;
+ };
+@@ -500,7 +500,7 @@ static void acpi_thermal_check(void *data)
+ {
+ 	struct acpi_thermal *tz = data;
+ 
+-	if (!tz->tz_enabled)
++	if (tz->mode != THERMAL_DEVICE_ENABLED)
+ 		return;
+ 
+ 	thermal_zone_device_update(tz->thermal_zone,
+@@ -534,8 +534,7 @@ static int thermal_get_mode(struct thermal_zone_device *thermal,
+ 	if (!tz)
+ 		return -EINVAL;
+ 
+-	*mode = tz->tz_enabled ? THERMAL_DEVICE_ENABLED :
+-		THERMAL_DEVICE_DISABLED;
++	*mode = tz->mode;
+ 
+ 	return 0;
+ }
+@@ -544,27 +543,25 @@ static int thermal_set_mode(struct thermal_zone_device *thermal,
+ 				enum thermal_device_mode mode)
+ {
+ 	struct acpi_thermal *tz = thermal->devdata;
+-	int enable;
+ 
+ 	if (!tz)
+ 		return -EINVAL;
+ 
++	if (mode != THERMAL_DEVICE_DISABLED &&
++	    mode != THERMAL_DEVICE_ENABLED)
++		return -EINVAL;
+ 	/*
+ 	 * enable/disable thermal management from ACPI thermal driver
+ 	 */
+-	if (mode == THERMAL_DEVICE_ENABLED)
+-		enable = 1;
+-	else if (mode == THERMAL_DEVICE_DISABLED) {
+-		enable = 0;
++	if (mode == THERMAL_DEVICE_DISABLED)
+ 		pr_warn("thermal zone will be disabled\n");
+-	} else
+-		return -EINVAL;
+ 
+-	if (enable != tz->tz_enabled) {
+-		tz->tz_enabled = enable;
++	if (mode != tz->mode) {
++		tz->mode = mode;
+ 		ACPI_DEBUG_PRINT((ACPI_DB_INFO,
+ 			"%s kernel ACPI thermal control\n",
+-			tz->tz_enabled ? "Enable" : "Disable"));
++			tz->mode == THERMAL_DEVICE_ENABLED ?
++			"Enable" : "Disable"));
+ 		acpi_thermal_check(tz);
+ 	}
+ 	return 0;
+@@ -915,7 +912,7 @@ static int acpi_thermal_register_thermal_zone(struct acpi_thermal *tz)
+ 		goto remove_dev_link;
+ 	}
+ 
+-	tz->tz_enabled = 1;
++	tz->mode = THERMAL_DEVICE_ENABLED;
+ 
+ 	dev_info(&tz->device->dev, "registered as thermal_zone%d\n",
+ 		 tz->thermal_zone->id);
+diff --git a/drivers/platform/x86/acerhdf.c b/drivers/platform/x86/acerhdf.c
+index 4df7609b4aa9..9d1030b1a4f4 100644
+--- a/drivers/platform/x86/acerhdf.c
++++ b/drivers/platform/x86/acerhdf.c
+@@ -68,6 +68,7 @@ static int kernelmode = 1;
+ #else
+ static int kernelmode;
+ #endif
++static enum thermal_device_mode thermal_mode;
+ 
+ static unsigned int interval = 10;
+ static unsigned int fanon = 60000;
+@@ -397,6 +398,7 @@ static inline void acerhdf_revert_to_bios_mode(void)
+ {
+ 	acerhdf_change_fanstate(ACERHDF_FAN_AUTO);
+ 	kernelmode = 0;
++	thermal_mode = THERMAL_DEVICE_DISABLED;
+ 	if (thz_dev)
+ 		thz_dev->polling_delay = 0;
+ 	pr_notice("kernel mode fan control OFF\n");
+@@ -404,6 +406,7 @@ static inline void acerhdf_revert_to_bios_mode(void)
+ static inline void acerhdf_enable_kernelmode(void)
+ {
+ 	kernelmode = 1;
++	thermal_mode = THERMAL_DEVICE_ENABLED;
+ 
+ 	thz_dev->polling_delay = interval*1000;
+ 	thermal_zone_device_update(thz_dev, THERMAL_EVENT_UNSPECIFIED);
+@@ -416,8 +419,7 @@ static int acerhdf_get_mode(struct thermal_zone_device *thermal,
+ 	if (verbose)
+ 		pr_notice("kernel mode fan control %d\n", kernelmode);
+ 
+-	*mode = (kernelmode) ? THERMAL_DEVICE_ENABLED
+-			     : THERMAL_DEVICE_DISABLED;
++	*mode = thermal_mode;
+ 
+ 	return 0;
+ }
+@@ -739,6 +741,8 @@ static int __init acerhdf_register_thermal(void)
+ 	if (IS_ERR(cl_dev))
+ 		return -EINVAL;
+ 
++	thermal_mode = kernelmode ?
++		THERMAL_DEVICE_ENABLED : THERMAL_DEVICE_DISABLED;
+ 	thz_dev = thermal_zone_device_register("acerhdf", 2, 0, NULL,
+ 					      &acerhdf_dev_ops,
+ 					      &acerhdf_zone_params, 0,
+diff --git a/drivers/thermal/intel/int340x_thermal/int3400_thermal.c b/drivers/thermal/intel/int340x_thermal/int3400_thermal.c
+index 0b3a62655843..e84faaadff87 100644
+--- a/drivers/thermal/intel/int340x_thermal/int3400_thermal.c
++++ b/drivers/thermal/intel/int340x_thermal/int3400_thermal.c
+@@ -48,7 +48,7 @@ struct int3400_thermal_priv {
+ 	struct acpi_device *adev;
+ 	struct platform_device *pdev;
+ 	struct thermal_zone_device *thermal;
+-	int mode;
++	enum thermal_device_mode mode;
+ 	int art_count;
+ 	struct art *arts;
+ 	int trt_count;
+@@ -395,24 +395,20 @@ static int int3400_thermal_set_mode(struct thermal_zone_device *thermal,
+ 				enum thermal_device_mode mode)
+ {
+ 	struct int3400_thermal_priv *priv = thermal->devdata;
+-	bool enable;
+ 	int result = 0;
+ 
+ 	if (!priv)
+ 		return -EINVAL;
+ 
+-	if (mode == THERMAL_DEVICE_ENABLED)
+-		enable = true;
+-	else if (mode == THERMAL_DEVICE_DISABLED)
+-		enable = false;
+-	else
++	if (mode != THERMAL_DEVICE_ENABLED &&
++	    mode != THERMAL_DEVICE_DISABLED)
+ 		return -EINVAL;
+ 
+-	if (enable != priv->mode) {
+-		priv->mode = enable;
++	if (mode != priv->mode) {
++		priv->mode = mode;
+ 		result = int3400_thermal_run_osc(priv->adev->handle,
+-						 priv->current_uuid_index,
+-						 enable);
++						priv->current_uuid_index,
++						mode == THERMAL_DEVICE_ENABLED);
+ 	}
+ 
+ 	evaluate_odvp(priv);
+-- 
+2.17.1
 
