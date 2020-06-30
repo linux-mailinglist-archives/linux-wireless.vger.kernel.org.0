@@ -2,77 +2,129 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A31320EF18
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jun 2020 09:14:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F2BE20EEF5
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jun 2020 09:07:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730635AbgF3HOQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 30 Jun 2020 03:14:16 -0400
-Received: from smtp23.cstnet.cn ([159.226.251.23]:53978 "EHLO cstnet.cn"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1730538AbgF3HOP (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 30 Jun 2020 03:14:15 -0400
-X-Greylist: delayed 585 seconds by postgrey-1.27 at vger.kernel.org; Tue, 30 Jun 2020 03:14:03 EDT
-Received: from localhost (unknown [159.226.5.99])
-        by APP-03 (Coremail) with SMTP id rQCowAC3OPjl4_peKEhOAQ--.46047S2;
-        Tue, 30 Jun 2020 15:04:05 +0800 (CST)
-From:   Chen Ni <vulab@iscas.ac.cn>
-To:     dsd@gentoo.org, kune@deine-taler.de, kvalo@codeaurora.org,
-        davem@davemloft.net, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org, Xu Wang <vulab@iscas.ac.cn>
-Subject: [PATCH] net: zydas: remove needless check before usb_free_coherent()
-Date:   Tue, 30 Jun 2020 07:04:04 +0000
-Message-Id: <20200630070404.8207-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.17.1
-X-CM-TRANSID: rQCowAC3OPjl4_peKEhOAQ--.46047S2
-X-Coremail-Antispam: 1UD129KBjvdXoWrKFWrZw4UGr47GFWDGFyDWrg_yoWfKrg_Gr
-        Z7WFnxXry5Jw109rWUAay3Z39Yya93Xws5WrsaqrW5Wayjq3sxAw1jyry7JrsrGFnYvFnx
-        Gw1kJFW8JFySqjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-        9fnUUIcSsGvfJTRUUUbfxYjsxI4VW3JwAYFVCjjxCrM7AC8VAFwI0_Gr0_Xr1l1xkIjI8I
-        6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l8cAvFVAK0II2c7xJM2
-        8CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVWUCVW8JwA2z4x0Y4vE2Ix0
-        cI8IcVCY1x0267AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z2
-        80aVCY1x0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAK
-        zVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUtVWrXwAv7VC2z280aVAFwI0_ZcC_Gr8dMc
-        vjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjcxG6xCI17CEII8vrVW3JVW8
-        Jr1lF7I21c0EjII2zVCS5cI20VAGYxC7MxkIecxEwVAFwVW8CwCF04k20xvY0x0EwIxGrw
-        CFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE
-        14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2
-        IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxK
-        x2IYs7xG6rWUJVWrZr1UMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxV
-        AFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0ziiIDnUUUUU=
-X-Originating-IP: [159.226.5.99]
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiAxADA13qZLQmfQAAsv
+        id S1730561AbgF3HHb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 30 Jun 2020 03:07:31 -0400
+Received: from mail.kernel.org ([198.145.29.99]:40294 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730386AbgF3HHb (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 30 Jun 2020 03:07:31 -0400
+Received: from localhost (unknown [151.48.138.186])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 1B9812073E;
+        Tue, 30 Jun 2020 07:07:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1593500850;
+        bh=dPzQ1b+X74tG/VK6jGk6QBhiIJidaJbrfTaR58NFdtE=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=GUtETFoPUrpqTbY5pabj5+jnOVxqsjl6/jlBjhJhlJlDkFKLNYm0rF+TLFkVOAPdR
+         pe/teLzD/xFSVvhtjoSKAl83IvtAGBB4yVoLLl+ICdR1aRetFmSW3EfVHKFJhzUlB/
+         KF/X7ad/Pz2VXoGOdSlGGlyC5O25ExeseEMzcIno=
+Date:   Tue, 30 Jun 2020 09:07:25 +0200
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     sean.wang@mediatek.com
+Cc:     nbd@nbd.name, lorenzo.bianconi@redhat.com, ryder.lee@mediatek.com,
+        linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org
+Subject: Re: [PATCH 1/3] mt76: mt7663u: fix memory leak in set key
+Message-ID: <20200630070725.GA2169@localhost.localdomain>
+References: <5e8786d9cf0ccd09dd9c13c24c48ce441afbf0ff.1593491298.git.sean.wang@mediatek.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="pWyiEgJYm5f9v55/"
+Content-Disposition: inline
+In-Reply-To: <5e8786d9cf0ccd09dd9c13c24c48ce441afbf0ff.1593491298.git.sean.wang@mediatek.com>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Xu Wang <vulab@iscas.ac.cn>
 
-usb_free_coherent() is safe with NULL addr and this check is
-not required.
+--pWyiEgJYm5f9v55/
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Xu Wang <vulab@iscas.ac.cn>
----
- drivers/net/wireless/zydas/zd1211rw/zd_usb.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+> From: Sean Wang <sean.wang@mediatek.com>
+>=20
+> Fix memory leak in set key.
+>=20
 
-diff --git a/drivers/net/wireless/zydas/zd1211rw/zd_usb.c b/drivers/net/wireless/zydas/zd1211rw/zd_usb.c
-index 8ff0374126e4..65b5985ad402 100644
---- a/drivers/net/wireless/zydas/zd1211rw/zd_usb.c
-+++ b/drivers/net/wireless/zydas/zd1211rw/zd_usb.c
-@@ -600,9 +600,7 @@ void zd_usb_disable_int(struct zd_usb *usb)
- 	dev_dbg_f(zd_usb_dev(usb), "urb %p killed\n", urb);
- 	usb_free_urb(urb);
- 
--	if (buffer)
--		usb_free_coherent(udev, USB_MAX_EP_INT_BUFFER,
--				  buffer, buffer_dma);
-+	usb_free_coherent(udev, USB_MAX_EP_INT_BUFFER, buffer, buffer_dma);
- }
- 
- static void handle_rx_packet(struct zd_usb *usb, const u8 *buffer,
--- 
-2.17.1
+Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
 
+> Fixes: eb99cc95c3b6 ("mt76: mt7615: introduce mt7663u support")
+> Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+> ---
+>  .../net/wireless/mediatek/mt76/mt7615/usb.c   | 22 +++++++++++++------
+>  1 file changed, 15 insertions(+), 7 deletions(-)
+>=20
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/usb.c b/drivers/ne=
+t/wireless/mediatek/mt76/mt7615/usb.c
+> index 0ba28d37c414..96a081be108e 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7615/usb.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7615/usb.c
+> @@ -165,12 +165,16 @@ __mt7663u_mac_set_key(struct mt7615_dev *dev,
+> =20
+>  	lockdep_assert_held(&dev->mt76.mutex);
+> =20
+> -	if (!sta)
+> -		return -EINVAL;
+> +	if (!sta) {
+> +		err =3D -EINVAL;
+> +		goto out;
+> +	}
+> =20
+>  	cipher =3D mt7615_mac_get_cipher(key->cipher);
+> -	if (cipher =3D=3D MT_CIPHER_NONE)
+> -		return -EOPNOTSUPP;
+> +	if (cipher =3D=3D MT_CIPHER_NONE) {
+> +		err =3D -EOPNOTSUPP;
+> +		goto out;
+> +	}
+> =20
+>  	wcid =3D &wd->sta->wcid;
+> =20
+> @@ -178,19 +182,23 @@ __mt7663u_mac_set_key(struct mt7615_dev *dev,
+>  	err =3D mt7615_mac_wtbl_update_key(dev, wcid, key->key, key->keylen,
+>  					 cipher, key->cmd);
+>  	if (err < 0)
+> -		return err;
+> +		goto out;
+> =20
+>  	err =3D mt7615_mac_wtbl_update_pk(dev, wcid, cipher, key->keyidx,
+>  					key->cmd);
+>  	if (err < 0)
+> -		return err;
+> +		goto out;
+> =20
+>  	if (key->cmd =3D=3D SET_KEY)
+>  		wcid->cipher |=3D BIT(cipher);
+>  	else
+>  		wcid->cipher &=3D ~BIT(cipher);
+> =20
+> -	return 0;
+> +out:
+> +	kfree(key->key);
+> +	kfree(wd);
+> +
+> +	return err;
+>  }
+> =20
+>  void mt7663u_wtbl_work(struct work_struct *work)
+> --=20
+> 2.25.1
+
+--pWyiEgJYm5f9v55/
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCXvrkqgAKCRA6cBh0uS2t
+rJW7AQDzRpCy7iO+dgNKsP9qclqjjH70wDijsS5eb5HzUjqt9QD7BkwTOimphjKz
+/KpwjRwlo2567sM+026yGKzrds1wgAk=
+=YUPq
+-----END PGP SIGNATURE-----
+
+--pWyiEgJYm5f9v55/--
