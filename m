@@ -2,114 +2,143 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4094620F767
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jun 2020 16:40:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3ABB920F7A0
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jun 2020 16:53:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731761AbgF3Ok6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 30 Jun 2020 10:40:58 -0400
-Received: from smail.rz.tu-ilmenau.de ([141.24.186.67]:57511 "EHLO
-        smail.rz.tu-ilmenau.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726699AbgF3Ok5 (ORCPT
+        id S2389118AbgF3Oxg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 30 Jun 2020 10:53:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57386 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388073AbgF3Oxe (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 30 Jun 2020 10:40:57 -0400
-Received: from [141.24.111.129] (unknown [141.24.111.129])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by smail.rz.tu-ilmenau.de (Postfix) with ESMTPSA id 52257580080
-        for <linux-wireless@vger.kernel.org>; Tue, 30 Jun 2020 16:40:54 +0200 (CEST)
-To:     linux-wireless@vger.kernel.org
-From:   Markus Theil <markus.theil@tu-ilmenau.de>
-Subject: BUG: HE CAP IE is build on hw without HE support in mesh mode
-Message-ID: <6d0293f4-20ae-1069-0221-dbc2f7254682@tu-ilmenau.de>
-Date:   Tue, 30 Jun 2020 16:40:54 +0200
+        Tue, 30 Jun 2020 10:53:34 -0400
+Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 091BEC08C5DB
+        for <linux-wireless@vger.kernel.org>; Tue, 30 Jun 2020 07:53:34 -0700 (PDT)
+Received: by mail-wr1-x443.google.com with SMTP id k6so20524371wrn.3
+        for <linux-wireless@vger.kernel.org>; Tue, 30 Jun 2020 07:53:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=Pd7u04aHacMlHQWEyySnd7sTkXliNVOpzVO8z+Rcu5w=;
+        b=NkFaCQ+V4OEnig591m8AkSZBQ1b/h4v4zSXQCbGQjK8FGeP7BHqOTEEGCastiiIUob
+         M0UVfI/NN4nkXDl8JWTMRjTXXxE7YY82izMG/nYeTbmQmokH3Y5w8MgUsyVL4e1VgYUT
+         N1cPSd+vrHvWo2gcY3lMTw+tftpI6X+sjeq0ogRJa32PGCXGWVSLibvqHvWLGnfsqlAZ
+         gVUWjjOIssl9YbMlBotqTT3aaqp+HzsPKnNLoe8ITTH2Rl9UfczmQAl3YiAfYlwvgbJs
+         Ns773D3M2fHMZu8r4tCMXhWe/imwGkam1Xq5u+xV3f2CTem3P28CCCllcf8ELrD2BE++
+         pOkA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=Pd7u04aHacMlHQWEyySnd7sTkXliNVOpzVO8z+Rcu5w=;
+        b=rdu58jAziuw/1CFTAXVE7PfW9trFnq3eQhcf/Rz0car9u61fRhQbzr1B6eD5sGHLQ/
+         b95Yhl0x5XhmOuG7pcV6SjYWrzilTKE9nCL83vqUVyQwZf+V/cSdxqs8PgNfYblCCPqn
+         1acOuY5V6fPGDywpnahWcL/pn1HcBRCozRXmobO1rQM9VxYbvy98RdveplOXrfEdYB6R
+         sedB462q85rxRkLEbvdaoYLFdzdTTOKcj455rUrgNNfhyA7wAE/e8iEEbG7Je418Jvbz
+         wMoiKxK+2FvUUF/cD72JFSwjO848exVHW1mF8JdDZbByCCog7SZ9s6eidXwDyyLPkrUL
+         Jbtw==
+X-Gm-Message-State: AOAM530qwIsEb6ZT20WEwFPwRvVNDagdXf22xkUwEGbapxDjGwWdmt3g
+        08KGmxhBw79ZxVomYqZ5gdosnA==
+X-Google-Smtp-Source: ABdhPJwhGwFNFixe1BGFQoohJyS2prHI3aMDtNCIwm9jyQOp0qSvzuwh8OQOhlRmoHrNF73pfYRftA==
+X-Received: by 2002:a5d:51ce:: with SMTP id n14mr22295714wrv.155.1593528812400;
+        Tue, 30 Jun 2020 07:53:32 -0700 (PDT)
+Received: from ?IPv6:2a01:e34:ed2f:f020:54f4:a99f:ab88:bc07? ([2a01:e34:ed2f:f020:54f4:a99f:ab88:bc07])
+        by smtp.googlemail.com with ESMTPSA id g14sm3784671wrm.93.2020.06.30.07.53.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 30 Jun 2020 07:53:31 -0700 (PDT)
+Subject: Re: [PATCH v7 00/11] Stop monitoring disabled devices
+To:     Andrzej Pietrasiewicz <andrzej.p@collabora.com>,
+        linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
+        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-renesas-soc@vger.kernel.org,
+        linux-rockchip@lists.infradead.org
+Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Vishal Kulkarni <vishal@chelsio.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jiri Pirko <jiri@mellanox.com>,
+        Ido Schimmel <idosch@mellanox.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        Intel Linux Wireless <linuxwifi@intel.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Peter Kaestle <peter@piie.net>,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Sebastian Reichel <sre@kernel.org>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Amit Kucheria <amit.kucheria@verdurent.com>,
+        Support Opensource <support.opensource@diasemi.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        =?UTF-8?Q?Niklas_S=c3=b6derlund?= <niklas.soderlund@ragnatech.se>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Orson Zhai <orsonzhai@gmail.com>,
+        Baolin Wang <baolin.wang7@gmail.com>,
+        Chunyan Zhang <zhang.lyra@gmail.com>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Allison Randal <allison@lohutok.net>,
+        Enrico Weigelt <info@metux.net>,
+        Gayatri Kammela <gayatri.kammela@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        kernel@collabora.com
+References: <20200629122925.21729-1-andrzej.p@collabora.com>
+ <aab40d90-3f72-657c-5e14-e53a34c4b420@linaro.org>
+ <3d03d1a2-ac06-b69b-93cb-e0203be62c10@collabora.com>
+From:   Daniel Lezcano <daniel.lezcano@linaro.org>
+Message-ID: <47111821-d691-e71d-d740-e4325e290fa4@linaro.org>
+Date:   Tue, 30 Jun 2020 16:53:29 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.9.0
+ Thunderbird/68.8.0
 MIME-Version: 1.0
+In-Reply-To: <3d03d1a2-ac06-b69b-93cb-e0203be62c10@collabora.com>
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
 Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+On 30/06/2020 15:43, Andrzej Pietrasiewicz wrote:
+> Hi Daniel,
+> 
+> I am reading the logs and can't find anything specific to thermal.
+> 
+> What I can see is
+> 
+> "random: crng init done"
+> 
+> with large times (~200s) and then e.g.
+> 
+> 'auto-login-action timed out after 283 seconds'
+> 
+> I'm looking at e.g.
+> https://storage.kernelci.org/thermal/testing/v5.8-rc3-11-gf5e50bf4d3ef/arm/multi_v7_defconfig/gcc-8/lab-baylibre/baseline-imx6q-sabrelite.html
+> 
+> 
+> Is there anywhere else I can look at?
 
-I was able to trigger the following warning with the current
-wireless-testing git as of 2020-06-30.
-wpa_supplicant joins a mesh on ath10k hw without HE support and
-therefore should not run into this warning.
+No unfortunately :/
 
-[ 3138.720146] WARNING: CPU: 1 PID: 1897 at net/mac80211/util.c:2878
-ieee80211_ie_build_he_6ghz_cap+0x149/0x150 [mac80211]
-[ 3138.720149] Modules linked in: esp4 poly1305_generic libpoly1305
-poly1305_x86_64 chacha_generic chacha_x86_64 libchacha chacha20poly1305
-xfrm_user xfrm_algo mt76x2u mt76x2_common mt76x02_usb mt76_usb
-ath10k_pci mt76x02_lib mt76 ath10k_core vrf dummy bridge ath stp llc
-mac80211 amd64_edac_mod edac_mce_amd kvm_amd kvm cfg80211 irqbypass
-crct10dif_pclmul crc32_pclmul pcengines_apuv2 ghash_clmulni_intel
-aesni_intel gpio_keys_polled crypto_simd gpio_amd_fch cryptd glue_helper
-igb pcspkr k10temp sp5100_tco fam15h_power i2c_piix4 ccp i2c_algo_bit
-rfkill rng_core dca libarc4 uio_pdrv_genirq evdev leds_gpio uio
-pinctrl_amd mac_hid coreboot_table acpi_cpufreq drm usbip_host
-usbip_core agpgart ip_tables x_tables ext4 crc32c_generic crc16 mbcache
-jbd2 sdhci_pci cqhci sdhci xhci_pci crc32c_intel ehci_pci xhci_hcd
-mmc_core ehci_hcd gpio_keys
-[ 3138.720292] CPU: 1 PID: 1897 Comm: wpa_supplicant Tainted: G       
-W         5.8.0-rc2-wt-9 #27
-[ 3138.720295] Hardware name: PC Engines apu2/apu2, BIOS v4.10.0.3
-11/07/2019
-[ 3138.720298] RIP: 0010:ieee80211_ie_build_he_6ghz_cap+0x149/0x150
-[mac80211]
-[ 3138.720319] Code: 75 d4 0f 0b eb ca 41 bc 08 00 00 00 e9 0a ff ff ff
-66 41 81 cc 00 02 eb bd 0f 0b 5b 5d 41 5c 41 5d 41 5e e9 59 f1 5f d0 0f
-0b <0f> 0b eb c6 0f 1f 00 0f 1f 44 00 00 41 56 45 89 c6 41 55 41 89 cd
-[ 3138.720334] RSP: 0018:ffffa4ae8101f870 EFLAGS: 00010246
-[ 3138.720338] RAX: ffff8fae5def02e0 RBX: ffff8fae5c1fe900 RCX:
-0000000000000007
-[ 3138.720341] RDX: 0000000000000000 RSI: ffff8fae5def2fd0 RDI:
-ffff8fae5da6bd00
-[ 3138.720344] RBP: ffff8fae57e5d800 R08: 0000000000000000 R09:
-0000000000000005
-[ 3138.720346] R10: 0000000000000004 R11: 0000000000000000 R12:
-0000000000000007
-[ 3138.720349] R13: 0000000000000001 R14: ffff8fae5def07c0 R15:
-0000000000000001
-[ 3138.720352] FS:  00007f4d717f1840(0000) GS:ffff8fae6ac80000(0000)
-knlGS:0000000000000000
-[ 3138.720354] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[ 3138.720357] CR2: 00006210000aecf0 CR3: 0000000117ee6000 CR4:
-00000000000406e0
-[ 3138.720358] Call Trace:
-[ 3138.720361]  ieee80211_mesh_build_beacon+0x462/0x530 [mac80211]
-[ 3138.720363]  ieee80211_start_mesh+0xa8/0xf0 [mac80211]
-[ 3138.720365]  __cfg80211_join_mesh+0x122/0x3e0 [cfg80211]
-[ 3138.720368]  nl80211_join_mesh+0x3d3/0x510 [cfg80211]
-[ 3138.720370]  genl_rcv_msg+0x1b7/0x310
-[ 3138.720372]  ? genl_family_rcv_msg_attrs_parse.isra.0+0x100/0x100
-[ 3138.720374]  netlink_rcv_skb+0x75/0x140
-[ 3138.720376]  genl_rcv+0x24/0x40
-[ 3138.720378]  netlink_unicast+0x242/0x340
-[ 3138.720380]  netlink_sendmsg+0x243/0x480
-[ 3138.720382]  sock_sendmsg+0x5e/0x60
-[ 3138.720384]  ____sys_sendmsg+0x25a/0x2a0
-[ 3138.720386]  ? copy_msghdr_from_user+0x6e/0xa0
-[ 3138.720388]  ___sys_sendmsg+0x97/0xe0
-[ 3138.720390]  __sys_sendmsg+0x81/0xd0
-[ 3138.720392]  do_syscall_64+0x44/0x70
-[ 3138.720394]  entry_SYSCALL_64_after_hwframe+0x44/0xa9
-[ 3138.720396] RIP: 0033:0x7f4d71d4e137
-[ 3138.720398] Code: Bad RIP value.
-[ 3138.720400] RSP: 002b:00007ffee453c468 EFLAGS: 00000246 ORIG_RAX:
-000000000000002e
-[ 3138.720405] RAX: ffffffffffffffda RBX: 0000606000000200 RCX:
-00007f4d71d4e137
-[ 3138.720407] RDX: 0000000000000000 RSI: 00007ffee453c4d0 RDI:
-0000000000000007
-[ 3138.720410] RBP: 00007ffee453c4d0 R08: 0000000000000004 R09:
-0000000000000011
-[ 3138.720413] R10: 00007ffee453c620 R11: 0000000000000246 R12:
-0000607000010be0
-[ 3138.720415] R13: 00007ffee453c4d0 R14: 00007ffee453c5e0 R15:
-0000000000000000
-[ 3138.720418] ---[ end trace 3bdd113d937ace9f ]---
+I have a Meerkat96 which uses the same sensor as the imx6q.
+
+I'll give a try to see if I can reproduce and let you know.
+
+
+-- 
+<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog
