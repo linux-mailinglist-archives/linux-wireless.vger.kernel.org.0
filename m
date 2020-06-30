@@ -2,145 +2,77 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6328E20EE48
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jun 2020 08:26:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A31320EF18
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jun 2020 09:14:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729954AbgF3G01 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 30 Jun 2020 02:26:27 -0400
-Received: from mail29.static.mailgun.info ([104.130.122.29]:41282 "EHLO
-        mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725845AbgF3G00 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 30 Jun 2020 02:26:26 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1593498386; h=Message-Id: Date: Subject: Cc: To: From:
- Sender; bh=bik6olVsHFxI7ynOd4CnDIW+0YcHOHLWVBwDqD735N4=; b=pF9+VBLHFQzi1owwEUhxU5+7xwNTLDxGzoFmfWk9+jhF6fbPrsOhLageClq0b20wo8xoQXHJ
- 3+lAg8zHTCt6vBie8sK9jx7JprN68iNKiozVpLO4Uceq6X5QqItvrAD/TS0fwqipN4C46FCW
- DlygIY9M3FBqEkHID1pA892qYTE=
-X-Mailgun-Sending-Ip: 104.130.122.29
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n02.prod.us-east-1.postgun.com with SMTP id
- 5efadb11567385e8e7a54499 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 30 Jun 2020 06:26:25
- GMT
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id DB849C433CA; Tue, 30 Jun 2020 06:26:24 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.0
-Received: from vmaloo-linux.qualcomm.com (blr-c-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.19.19])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: vmaloo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 75337C433C6;
-        Tue, 30 Jun 2020 06:26:23 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 75337C433C6
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=vmaloo@codeaurora.org
-From:   "Vinita S. Maloo" <vmaloo@codeaurora.org>
-To:     johannes@sipsolutions.net
-Cc:     linux-wireless@vger.kernel.org
-Subject: [PATCH] nl80211: Add support to get BIP failure counters
-Date:   Tue, 30 Jun 2020 11:56:21 +0530
-Message-Id: <1593498381-9337-1-git-send-email-vmaloo@codeaurora.org>
-X-Mailer: git-send-email 2.7.4
+        id S1730635AbgF3HOQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 30 Jun 2020 03:14:16 -0400
+Received: from smtp23.cstnet.cn ([159.226.251.23]:53978 "EHLO cstnet.cn"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1730538AbgF3HOP (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 30 Jun 2020 03:14:15 -0400
+X-Greylist: delayed 585 seconds by postgrey-1.27 at vger.kernel.org; Tue, 30 Jun 2020 03:14:03 EDT
+Received: from localhost (unknown [159.226.5.99])
+        by APP-03 (Coremail) with SMTP id rQCowAC3OPjl4_peKEhOAQ--.46047S2;
+        Tue, 30 Jun 2020 15:04:05 +0800 (CST)
+From:   Chen Ni <vulab@iscas.ac.cn>
+To:     dsd@gentoo.org, kune@deine-taler.de, kvalo@codeaurora.org,
+        davem@davemloft.net, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, Xu Wang <vulab@iscas.ac.cn>
+Subject: [PATCH] net: zydas: remove needless check before usb_free_coherent()
+Date:   Tue, 30 Jun 2020 07:04:04 +0000
+Message-Id: <20200630070404.8207-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.17.1
+X-CM-TRANSID: rQCowAC3OPjl4_peKEhOAQ--.46047S2
+X-Coremail-Antispam: 1UD129KBjvdXoWrKFWrZw4UGr47GFWDGFyDWrg_yoWfKrg_Gr
+        Z7WFnxXry5Jw109rWUAay3Z39Yya93Xws5WrsaqrW5Wayjq3sxAw1jyry7JrsrGFnYvFnx
+        Gw1kJFW8JFySqjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+        9fnUUIcSsGvfJTRUUUbfxYjsxI4VW3JwAYFVCjjxCrM7AC8VAFwI0_Gr0_Xr1l1xkIjI8I
+        6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l8cAvFVAK0II2c7xJM2
+        8CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVWUCVW8JwA2z4x0Y4vE2Ix0
+        cI8IcVCY1x0267AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z2
+        80aVCY1x0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAK
+        zVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUtVWrXwAv7VC2z280aVAFwI0_ZcC_Gr8dMc
+        vjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjcxG6xCI17CEII8vrVW3JVW8
+        Jr1lF7I21c0EjII2zVCS5cI20VAGYxC7MxkIecxEwVAFwVW8CwCF04k20xvY0x0EwIxGrw
+        CFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE
+        14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2
+        IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxK
+        x2IYs7xG6rWUJVWrZr1UMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxV
+        AFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0ziiIDnUUUUU=
+X-Originating-IP: [159.226.5.99]
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiAxADA13qZLQmfQAAsv
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Add support to get number of MIC errors, missing MME incidents and
-packet replay incidents observed while using IGTK/BIGTK keys when
-PMF and/or beacon protection features are enabled.
+From: Xu Wang <vulab@iscas.ac.cn>
 
-Signed-off-by: Vinita S. Maloo <vmaloo@codeaurora.org>
+usb_free_coherent() is safe with NULL addr and this check is
+not required.
 
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index e2dbc9c0..ade5ade 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -1556,6 +1556,16 @@ struct cfg80211_tid_stats {
-  *	an FCS error. This counter should be incremented only when TA of the
-  *	received packet with an FCS error matches the peer MAC address.
-  * @airtime_link_metric: mesh airtime link metric.
-+ * @bip_mic_error_count: number of group addressed robust mgmt. frames received
-+ *	from this station with invalid MIC or missing MME when PMF is enabled.
-+ * @bip_replay_count: number of group addressed robust mgmt. frames received
-+ *	from this station with packet number less than or equal to the last
-+ *	received packet number (Replay packets) when PMF is enabled.
-+ * @beacon_mic_error_count: number of beacons received from this station with
-+ *	invalid MIC or missing MME when beacon protection is enabled.
-+ * @beacon_replay_count: number of beacons received from this station with
-+ *	packet number less than or equal to the last received packet number
-+ *	(Replay packets) when beacon protection is enabled.
-  */
- struct station_info {
- 	u64 filled;
-@@ -1613,6 +1623,11 @@ struct station_info {
- 	u32 fcs_err_count;
+Signed-off-by: Xu Wang <vulab@iscas.ac.cn>
+---
+ drivers/net/wireless/zydas/zd1211rw/zd_usb.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
+
+diff --git a/drivers/net/wireless/zydas/zd1211rw/zd_usb.c b/drivers/net/wireless/zydas/zd1211rw/zd_usb.c
+index 8ff0374126e4..65b5985ad402 100644
+--- a/drivers/net/wireless/zydas/zd1211rw/zd_usb.c
++++ b/drivers/net/wireless/zydas/zd1211rw/zd_usb.c
+@@ -600,9 +600,7 @@ void zd_usb_disable_int(struct zd_usb *usb)
+ 	dev_dbg_f(zd_usb_dev(usb), "urb %p killed\n", urb);
+ 	usb_free_urb(urb);
  
- 	u32 airtime_link_metric;
-+
-+	u32 bip_mic_error_count;
-+	u32 bip_replay_count;
-+	u32 beacon_mic_error_count;
-+	u32 beacon_replay_count;
- };
+-	if (buffer)
+-		usb_free_coherent(udev, USB_MAX_EP_INT_BUFFER,
+-				  buffer, buffer_dma);
++	usb_free_coherent(udev, USB_MAX_EP_INT_BUFFER, buffer, buffer_dma);
+ }
  
- #if IS_ENABLED(CONFIG_CFG80211)
-diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-index c14666b..a06b2c4 100644
---- a/include/uapi/linux/nl80211.h
-+++ b/include/uapi/linux/nl80211.h
-@@ -3365,6 +3365,18 @@ enum nl80211_sta_bss_param {
-  * @NL80211_STA_INFO_AIRTIME_LINK_METRIC: airtime link metric for mesh station
-  * @NL80211_STA_INFO_ASSOC_AT_BOOTTIME: Timestamp (CLOCK_BOOTTIME, nanoseconds)
-  *	of STA's association
-+ * @NL80211_STA_INFO_BIP_MIC_ERROR_COUNT: number of group addressed robust mgmt.
-+ *	frames received from this station with invalid MIC or missing MME when
-+ *	PMF is enabled (u32).
-+ * @NL80211_STA_INFO_BIP_REPLAY_COUNT: number of group addressed robust mgmt.
-+ *	frames received from this station with packet number less than or equal
-+ *	to the last received packet number when PMF is enabled (u32)
-+ * @NL80211_STA_INFO_BEACON_MIC_ERROR_COUNT: number of beacons received from
-+ *	this station with invalid MIC or missing MME when beacon protection is
-+ *	enabled (u32)
-+ * @NL80211_STA_INFO_BEACON_REPLAY_COUNT: number of beacons received from this
-+ *	station with packet number less than or equal to the last received
-+ *	packet number when beacon protection is enabled (u32)
-  * @__NL80211_STA_INFO_AFTER_LAST: internal
-  * @NL80211_STA_INFO_MAX: highest possible station info attribute
-  */
-@@ -3412,6 +3424,10 @@ enum nl80211_sta_info {
- 	NL80211_STA_INFO_AIRTIME_WEIGHT,
- 	NL80211_STA_INFO_AIRTIME_LINK_METRIC,
- 	NL80211_STA_INFO_ASSOC_AT_BOOTTIME,
-+	NL80211_STA_INFO_BIP_MIC_ERROR_COUNT,
-+	NL80211_STA_INFO_BIP_REPLAY_COUNT,
-+	NL80211_STA_INFO_BEACON_MIC_ERROR_COUNT,
-+	NL80211_STA_INFO_BEACON_REPLAY_COUNT,
- 
- 	/* keep last */
- 	__NL80211_STA_INFO_AFTER_LAST,
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 22c4d13..bc6767c 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -5409,6 +5409,10 @@ static int nl80211_send_station(struct sk_buff *msg, u32 cmd, u32 portid,
- 	PUT_SINFO(BEACON_SIGNAL_AVG, rx_beacon_signal_avg, u8);
- 	PUT_SINFO(RX_MPDUS, rx_mpdu_count, u32);
- 	PUT_SINFO(FCS_ERROR_COUNT, fcs_err_count, u32);
-+	PUT_SINFO(BIP_MIC_ERROR_COUNT, bip_mic_error_count, u32);
-+	PUT_SINFO(BIP_REPLAY_COUNT, bip_replay_count, u32);
-+	PUT_SINFO(BEACON_MIC_ERROR_COUNT, beacon_mic_error_count, u32);
-+	PUT_SINFO(BEACON_REPLAY_COUNT, beacon_replay_count, u32);
- 	if (wiphy_ext_feature_isset(&rdev->wiphy,
- 				    NL80211_EXT_FEATURE_ACK_SIGNAL_SUPPORT)) {
- 		PUT_SINFO(ACK_SIGNAL, ack_signal, u8);
+ static void handle_rx_packet(struct zd_usb *usb, const u8 *buffer,
 -- 
-2.7.4
+2.17.1
 
