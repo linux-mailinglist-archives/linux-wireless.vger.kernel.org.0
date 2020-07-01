@@ -2,197 +2,174 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 67A8C2105ED
-	for <lists+linux-wireless@lfdr.de>; Wed,  1 Jul 2020 10:13:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9DE6A210909
+	for <lists+linux-wireless@lfdr.de>; Wed,  1 Jul 2020 12:15:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728448AbgGAINU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 1 Jul 2020 04:13:20 -0400
-Received: from mailgw02.mediatek.com ([210.61.82.184]:40914 "EHLO
-        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1728188AbgGAINU (ORCPT
+        id S1729716AbgGAKPZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 1 Jul 2020 06:15:25 -0400
+Received: from smail.rz.tu-ilmenau.de ([141.24.186.67]:37558 "EHLO
+        smail.rz.tu-ilmenau.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728941AbgGAKPX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 1 Jul 2020 04:13:20 -0400
-X-UUID: 593cccdf174b4e7bb4643e2e53db8b36-20200701
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Transfer-Encoding:Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=76eqmK+mazVMja66kfghM8Lgafw11w7zHlbMjw3VfgM=;
-        b=rnJH5uAt3A8RNF0sG3ncYyVYD/8gc3jlsd9lTiKrUp5WV2YYNhhjD0uCqUTbV5PkD6Oj0BaZjcAS8YHV2WfXWwdeVivEpDiykGNzWCx0pwCLOkCrzQjktboo/iXdnRZS0JkTq0PFkGkz1iQwvSy5iJa5QuAlXw8uu0mn5qlLTBQ=;
-X-UUID: 593cccdf174b4e7bb4643e2e53db8b36-20200701
-Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw02.mediatek.com
-        (envelope-from <ryder.lee@mediatek.com>)
-        (Cellopoint E-mail Firewall v4.1.10 Build 0809 with TLS)
-        with ESMTP id 1899841018; Wed, 01 Jul 2020 16:13:12 +0800
-Received: from mtkcas07.mediatek.inc (172.21.101.84) by
- mtkmbs06n2.mediatek.inc (172.21.101.130) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Wed, 1 Jul 2020 16:13:09 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas07.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Wed, 1 Jul 2020 16:13:06 +0800
-From:   Ryder Lee <ryder.lee@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Sean Wang <sean.wang@mediatek.com>
-CC:     Shayne Chen <shayne.chen@mediatek.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>,
-        Ryder Lee <ryder.lee@mediatek.com>
-Subject: [PATCH] mt76: mt7915: avoid memcpy in rxv operation
-Date:   Wed, 1 Jul 2020 16:13:07 +0800
-Message-ID: <b28636e4388942f8dc26b3a49a34c8b240af445f.1593590293.git.ryder.lee@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+        Wed, 1 Jul 2020 06:15:23 -0400
+Received: from legolas.prakinf.tu-ilmenau.de (unknown [141.24.207.116])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by smail.rz.tu-ilmenau.de (Postfix) with ESMTPSA id 6FAB958005E;
+        Wed,  1 Jul 2020 12:15:20 +0200 (CEST)
+From:   Markus Theil <markus.theil@tu-ilmenau.de>
+To:     johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org,
+        Markus Theil <markus.theil@tu-ilmenau.de>
+Subject: [PATCH v2 1/2] cfg80211: add helper fn for single rule channels
+Date:   Wed,  1 Jul 2020 12:15:01 +0200
+Message-Id: <20200701101502.531240-1-markus.theil@tu-ilmenau.de>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-SNTS-SMTP: E725E782A65BC5D77E6D9A486DAF9AA55E111CC10A764477DFF59323A2558F572000:8
-X-MTK:  N
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-QXZvaWQgbWVtY3B5IGluIFJ4IGhvdCBwYXRoIHRvIHNsaWdodGx5IGltcHJvdmUgcGVyZm9ybWFu
-Y2UuDQoNClNpZ25lZC1vZmYtYnk6IFJ5ZGVyIExlZSA8cnlkZXIubGVlQG1lZGlhdGVrLmNvbT4N
-Ci0tLQ0KIC4uLi9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvbWFjLmMgICB8IDc4
-ICsrKysrKysrKy0tLS0tLS0tLS0NCiAuLi4vbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3
-OTE1L21hYy5oICAgfCAgNyAtLQ0KIDIgZmlsZXMgY2hhbmdlZCwgMzcgaW5zZXJ0aW9ucygrKSwg
-NDggZGVsZXRpb25zKC0pDQoNCmRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRp
-YXRlay9tdDc2L210NzkxNS9tYWMuYyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210
-NzYvbXQ3OTE1L21hYy5jDQppbmRleCA4MjI1NDBlNWRmNmIuLjY4MjVhZmNhMWVmYiAxMDA2NDQN
-Ci0tLSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1L21hYy5jDQor
-KysgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzkxNS9tYWMuYw0KQEAg
-LTE3OCwxNCArMTc4LDE0IEBAIHZvaWQgbXQ3OTE1X21hY19zdGFfcG9sbChzdHJ1Y3QgbXQ3OTE1
-X2RldiAqZGV2KQ0KIA0KIHN0YXRpYyB2b2lkDQogbXQ3OTE1X21hY19kZWNvZGVfaGVfcmFkaW90
-YXBfcnUoc3RydWN0IG10NzZfcnhfc3RhdHVzICpzdGF0dXMsDQotCQkJCSBzdHJ1Y3QgbXQ3OTE1
-X3J4diAqcnh2LA0KLQkJCQkgc3RydWN0IGllZWU4MDIxMV9yYWRpb3RhcF9oZSAqaGUpDQorCQkJ
-CSBzdHJ1Y3QgaWVlZTgwMjExX3JhZGlvdGFwX2hlICpoZSwNCisJCQkJIF9fbGUzMiAqcnh2KQ0K
-IHsNCiAJdTMyIHJ1X2gsIHJ1X2w7DQogCXU4IHJ1LCBvZmZzID0gMDsNCiANCi0JcnVfbCA9IEZJ
-RUxEX0dFVChNVF9QUlhWX0hFX1JVX0FMTE9DX0wsIGxlMzJfdG9fY3B1KHJ4di0+dlswXSkpOw0K
-LQlydV9oID0gRklFTERfR0VUKE1UX1BSWFZfSEVfUlVfQUxMT0NfSCwgbGUzMl90b19jcHUocnh2
-LT52WzFdKSk7DQorCXJ1X2wgPSBGSUVMRF9HRVQoTVRfUFJYVl9IRV9SVV9BTExPQ19MLCBsZTMy
-X3RvX2NwdShyeHZbMF0pKTsNCisJcnVfaCA9IEZJRUxEX0dFVChNVF9QUlhWX0hFX1JVX0FMTE9D
-X0gsIGxlMzJfdG9fY3B1KHJ4dlsxXSkpOw0KIAlydSA9ICh1OCkocnVfbCB8IHJ1X2ggPDwgNCk7
-DQogDQogCXN0YXR1cy0+YncgPSBSQVRFX0lORk9fQldfSEVfUlU7DQpAQCAtMjI4LDcgKzIyOCw3
-IEBAIG10NzkxNV9tYWNfZGVjb2RlX2hlX3JhZGlvdGFwX3J1KHN0cnVjdCBtdDc2X3J4X3N0YXR1
-cyAqc3RhdHVzLA0KIHN0YXRpYyB2b2lkDQogbXQ3OTE1X21hY19kZWNvZGVfaGVfcmFkaW90YXAo
-c3RydWN0IHNrX2J1ZmYgKnNrYiwNCiAJCQkgICAgICBzdHJ1Y3QgbXQ3Nl9yeF9zdGF0dXMgKnN0
-YXR1cywNCi0JCQkgICAgICBzdHJ1Y3QgbXQ3OTE1X3J4diAqcnh2KQ0KKwkJCSAgICAgIF9fbGUz
-MiAqcnh2LCB1MzIgcGh5KQ0KIHsNCiAJLyogVE9ETzogc3RydWN0IGllZWU4MDIxMV9yYWRpb3Rh
-cF9oZV9tdSAqLw0KIAlzdGF0aWMgY29uc3Qgc3RydWN0IGllZWU4MDIxMV9yYWRpb3RhcF9oZSBr
-bm93biA9IHsNCkBAIC0yNDUsNDggKzI0NSw0NSBAQCBtdDc5MTVfbWFjX2RlY29kZV9oZV9yYWRp
-b3RhcChzdHJ1Y3Qgc2tfYnVmZiAqc2tiLA0KIAkJCSBIRV9CSVRTKERBVEEyX1RYT1BfS05PV04p
-LA0KIAl9Ow0KIAlzdHJ1Y3QgaWVlZTgwMjExX3JhZGlvdGFwX2hlICpoZSA9IE5VTEw7DQotCV9f
-bGUzMiB2MiA9IHJ4di0+dlsyXTsNCi0JX19sZTMyIHYxMSA9IHJ4di0+dlsxMV07DQotCV9fbGUz
-MiB2MTQgPSByeHYtPnZbMTRdOw0KLQl1MzIgbHRmX3NpemUgPSBsZTMyX2dldF9iaXRzKHYyLCBN
-VF9DUlhWX0hFX0xURl9TSVpFKSArIDE7DQorCXUzMiBsdGZfc2l6ZSA9IGxlMzJfZ2V0X2JpdHMo
-cnh2WzJdLCBNVF9DUlhWX0hFX0xURl9TSVpFKSArIDE7DQogDQogCWhlID0gc2tiX3B1c2goc2ti
-LCBzaXplb2Yoa25vd24pKTsNCiAJbWVtY3B5KGhlLCAma25vd24sIHNpemVvZihrbm93bikpOw0K
-IA0KLQloZS0+ZGF0YTMgPSBIRV9QUkVQKERBVEEzX0JTU19DT0xPUiwgQlNTX0NPTE9SLCB2MTQp
-IHwNCi0JCSAgICBIRV9QUkVQKERBVEEzX0xEUENfWFNZTVNFRywgTERQQ19FWFRfU1lNLCB2Mik7
-DQotCWhlLT5kYXRhNSA9IEhFX1BSRVAoREFUQTVfUEVfRElTQU1CSUcsIFBFX0RJU0FNQklHLCB2
-MikgfA0KKwloZS0+ZGF0YTMgPSBIRV9QUkVQKERBVEEzX0JTU19DT0xPUiwgQlNTX0NPTE9SLCBy
-eHZbMTRdKSB8DQorCQkgICAgSEVfUFJFUChEQVRBM19MRFBDX1hTWU1TRUcsIExEUENfRVhUX1NZ
-TSwgcnh2WzJdKTsNCisJaGUtPmRhdGE1ID0gSEVfUFJFUChEQVRBNV9QRV9ESVNBTUJJRywgUEVf
-RElTQU1CSUcsIHJ4dlsyXSkgfA0KIAkJICAgIGxlMTZfZW5jb2RlX2JpdHMobHRmX3NpemUsDQog
-CQkJCSAgICAgSUVFRTgwMjExX1JBRElPVEFQX0hFX0RBVEE1X0xURl9TSVpFKTsNCi0JaGUtPmRh
-dGE2ID0gSEVfUFJFUChEQVRBNl9UWE9QLCBUWE9QX0RVUiwgdjE0KSB8DQotCQkgICAgSEVfUFJF
-UChEQVRBNl9ET1BQTEVSLCBET1BQTEVSLCB2MTQpOw0KKwloZS0+ZGF0YTYgPSBIRV9QUkVQKERB
-VEE2X1RYT1AsIFRYT1BfRFVSLCByeHZbMTRdKSB8DQorCQkgICAgSEVfUFJFUChEQVRBNl9ET1BQ
-TEVSLCBET1BQTEVSLCByeHZbMTRdKTsNCiANCi0Jc3dpdGNoIChyeHYtPnBoeSkgew0KKwlzd2l0
-Y2ggKHBoeSkgew0KIAljYXNlIE1UX1BIWV9UWVBFX0hFX1NVOg0KIAkJaGUtPmRhdGExIHw9IEhF
-X0JJVFMoREFUQTFfRk9STUFUX1NVKSB8DQogCQkJICAgICBIRV9CSVRTKERBVEExX1VMX0RMX0tO
-T1dOKSB8DQogCQkJICAgICBIRV9CSVRTKERBVEExX0JFQU1fQ0hBTkdFX0tOT1dOKSB8DQogCQkJ
-ICAgICBIRV9CSVRTKERBVEExX1NQVExfUkVVU0VfS05PV04pOw0KIA0KLQkJaGUtPmRhdGEzIHw9
-IEhFX1BSRVAoREFUQTNfQkVBTV9DSEFOR0UsIEJFQU1fQ0hORywgdjE0KSB8DQotCQkJICAgICBI
-RV9QUkVQKERBVEEzX1VMX0RMLCBVUExJTkssIHYyKTsNCi0JCWhlLT5kYXRhNCB8PSBIRV9QUkVQ
-KERBVEE0X1NVX01VX1NQVExfUkVVU0UsIFNSX01BU0ssIHYxMSk7DQorCQloZS0+ZGF0YTMgfD0g
-SEVfUFJFUChEQVRBM19CRUFNX0NIQU5HRSwgQkVBTV9DSE5HLCByeHZbMTRdKSB8DQorCQkJICAg
-ICBIRV9QUkVQKERBVEEzX1VMX0RMLCBVUExJTkssIHJ4dlsyXSk7DQorCQloZS0+ZGF0YTQgfD0g
-SEVfUFJFUChEQVRBNF9TVV9NVV9TUFRMX1JFVVNFLCBTUl9NQVNLLCByeHZbMTFdKTsNCiAJCWJy
-ZWFrOw0KIAljYXNlIE1UX1BIWV9UWVBFX0hFX0VYVF9TVToNCiAJCWhlLT5kYXRhMSB8PSBIRV9C
-SVRTKERBVEExX0ZPUk1BVF9FWFRfU1UpIHwNCiAJCQkgICAgIEhFX0JJVFMoREFUQTFfVUxfRExf
-S05PV04pOw0KIA0KLQkJaGUtPmRhdGEzIHw9IEhFX1BSRVAoREFUQTNfVUxfREwsIFVQTElOSywg
-djIpOw0KKwkJaGUtPmRhdGEzIHw9IEhFX1BSRVAoREFUQTNfVUxfREwsIFVQTElOSywgcnh2WzJd
-KTsNCiAJCWJyZWFrOw0KIAljYXNlIE1UX1BIWV9UWVBFX0hFX01VOg0KIAkJaGUtPmRhdGExIHw9
-IEhFX0JJVFMoREFUQTFfRk9STUFUX01VKSB8DQogCQkJICAgICBIRV9CSVRTKERBVEExX1VMX0RM
-X0tOT1dOKSB8DQogCQkJICAgICBIRV9CSVRTKERBVEExX1NQVExfUkVVU0VfS05PV04pOw0KIA0K
-LQkJaGUtPmRhdGEzIHw9IEhFX1BSRVAoREFUQTNfVUxfREwsIFVQTElOSywgdjIpOw0KLQkJaGUt
-PmRhdGE0IHw9IEhFX1BSRVAoREFUQTRfU1VfTVVfU1BUTF9SRVVTRSwgU1JfTUFTSywgdjExKTsN
-CisJCWhlLT5kYXRhMyB8PSBIRV9QUkVQKERBVEEzX1VMX0RMLCBVUExJTkssIHJ4dlsyXSk7DQor
-CQloZS0+ZGF0YTQgfD0gSEVfUFJFUChEQVRBNF9TVV9NVV9TUFRMX1JFVVNFLCBTUl9NQVNLLCBy
-eHZbMTFdKTsNCiANCi0JCW10NzkxNV9tYWNfZGVjb2RlX2hlX3JhZGlvdGFwX3J1KHN0YXR1cywg
-cnh2LCBoZSk7DQorCQltdDc5MTVfbWFjX2RlY29kZV9oZV9yYWRpb3RhcF9ydShzdGF0dXMsIGhl
-LCByeHYpOw0KIAkJYnJlYWs7DQogCWNhc2UgTVRfUEhZX1RZUEVfSEVfVEI6DQogCQloZS0+ZGF0
-YTEgfD0gSEVfQklUUyhEQVRBMV9GT1JNQVRfVFJJRykgfA0KQEAgLTI5NSwxMiArMjkyLDEyIEBA
-IG10NzkxNV9tYWNfZGVjb2RlX2hlX3JhZGlvdGFwKHN0cnVjdCBza19idWZmICpza2IsDQogCQkJ
-ICAgICBIRV9CSVRTKERBVEExX1NQVExfUkVVU0UzX0tOT1dOKSB8DQogCQkJICAgICBIRV9CSVRT
-KERBVEExX1NQVExfUkVVU0U0X0tOT1dOKTsNCiANCi0JCWhlLT5kYXRhNCB8PSBIRV9QUkVQKERB
-VEE0X1RCX1NQVExfUkVVU0UxLCBTUl9NQVNLLCB2MTEpIHwNCi0JCQkgICAgIEhFX1BSRVAoREFU
-QTRfVEJfU1BUTF9SRVVTRTIsIFNSMV9NQVNLLCB2MTEpIHwNCi0JCQkgICAgIEhFX1BSRVAoREFU
-QTRfVEJfU1BUTF9SRVVTRTMsIFNSMl9NQVNLLCB2MTEpIHwNCi0JCQkgICAgIEhFX1BSRVAoREFU
-QTRfVEJfU1BUTF9SRVVTRTQsIFNSM19NQVNLLCB2MTEpOw0KKwkJaGUtPmRhdGE0IHw9IEhFX1BS
-RVAoREFUQTRfVEJfU1BUTF9SRVVTRTEsIFNSX01BU0ssIHJ4dlsxMV0pIHwNCisJCQkgICAgIEhF
-X1BSRVAoREFUQTRfVEJfU1BUTF9SRVVTRTIsIFNSMV9NQVNLLCByeHZbMTFdKSB8DQorCQkJICAg
-ICBIRV9QUkVQKERBVEE0X1RCX1NQVExfUkVVU0UzLCBTUjJfTUFTSywgcnh2WzExXSkgfA0KKwkJ
-CSAgICAgSEVfUFJFUChEQVRBNF9UQl9TUFRMX1JFVVNFNCwgU1IzX01BU0ssIHJ4dlsxMV0pOw0K
-IA0KLQkJbXQ3OTE1X21hY19kZWNvZGVfaGVfcmFkaW90YXBfcnUoc3RhdHVzLCByeHYsIGhlKTsN
-CisJCW10NzkxNV9tYWNfZGVjb2RlX2hlX3JhZGlvdGFwX3J1KHN0YXR1cywgaGUsIHJ4dik7DQog
-CQlicmVhazsNCiAJZGVmYXVsdDoNCiAJCWJyZWFrOw0KQEAgLTMxNCw4ICszMTEsOSBAQCBpbnQg
-bXQ3OTE1X21hY19maWxsX3J4KHN0cnVjdCBtdDc5MTVfZGV2ICpkZXYsIHN0cnVjdCBza19idWZm
-ICpza2IpDQogCXN0cnVjdCBtdDc5MTVfcGh5ICpwaHkgPSAmZGV2LT5waHk7DQogCXN0cnVjdCBp
-ZWVlODAyMTFfc3VwcG9ydGVkX2JhbmQgKnNiYW5kOw0KIAlzdHJ1Y3QgaWVlZTgwMjExX2hkciAq
-aGRyOw0KLQlzdHJ1Y3QgbXQ3OTE1X3J4diByeHYgPSB7fTsNCiAJX19sZTMyICpyeGQgPSAoX19s
-ZTMyICopc2tiLT5kYXRhOw0KKwlfX2xlMzIgKnJ4diA9IE5VTEw7DQorCXUzMiBtb2RlID0gMDsN
-CiAJdTMyIHJ4ZDEgPSBsZTMyX3RvX2NwdShyeGRbMV0pOw0KIAl1MzIgcnhkMiA9IGxlMzJfdG9f
-Y3B1KHJ4ZFsyXSk7DQogCXUzMiByeGQzID0gbGUzMl90b19jcHUocnhkWzNdKTsNCkBAIC00Mjcs
-MTUgKzQyNSwxNCBAQCBpbnQgbXQ3OTE1X21hY19maWxsX3J4KHN0cnVjdCBtdDc5MTVfZGV2ICpk
-ZXYsIHN0cnVjdCBza19idWZmICpza2IpDQogCWlmIChyeGQxICYgTVRfUlhEMV9OT1JNQUxfR1JP
-VVBfMykgew0KIAkJdTMyIHYwLCB2MSwgdjI7DQogDQotCQltZW1jcHkocnh2LnYsIHJ4ZCwgc2l6
-ZW9mKHJ4di52KSk7DQotDQorCQlyeHYgPSByeGQ7DQogCQlyeGQgKz0gMjsNCiAJCWlmICgodTgg
-KilyeGQgLSBza2ItPmRhdGEgPj0gc2tiLT5sZW4pDQogCQkJcmV0dXJuIC1FSU5WQUw7DQogDQot
-CQl2MCA9IGxlMzJfdG9fY3B1KHJ4di52WzBdKTsNCi0JCXYxID0gbGUzMl90b19jcHUocnh2LnZb
-MV0pOw0KLQkJdjIgPSBsZTMyX3RvX2NwdShyeHYudlsyXSk7DQorCQl2MCA9IGxlMzJfdG9fY3B1
-KHJ4dlswXSk7DQorCQl2MSA9IGxlMzJfdG9fY3B1KHJ4dlsxXSk7DQorCQl2MiA9IGxlMzJfdG9f
-Y3B1KHJ4dlsyXSk7DQogDQogCQlpZiAodjAgJiBNVF9QUlhWX0hUX0FEX0NPREUpDQogCQkJc3Rh
-dHVzLT5lbmNfZmxhZ3MgfD0gUlhfRU5DX0ZMQUdfTERQQzsNCkBAIC00NjYsOSArNDYzLDkgQEAg
-aW50IG10NzkxNV9tYWNfZmlsbF9yeChzdHJ1Y3QgbXQ3OTE1X2RldiAqZGV2LCBzdHJ1Y3Qgc2tf
-YnVmZiAqc2tiKQ0KIAkJCQlyZXR1cm4gLUVJTlZBTDsNCiANCiAJCQlpZHggPSBpID0gRklFTERf
-R0VUKE1UX1BSWFZfVFhfUkFURSwgdjApOw0KLQkJCXJ4di5waHkgPSBGSUVMRF9HRVQoTVRfQ1JY
-Vl9UWF9NT0RFLCB2Mik7DQorCQkJbW9kZSA9IEZJRUxEX0dFVChNVF9DUlhWX1RYX01PREUsIHYy
-KTsNCiANCi0JCQlzd2l0Y2ggKHJ4di5waHkpIHsNCisJCQlzd2l0Y2ggKG1vZGUpIHsNCiAJCQlj
-YXNlIE1UX1BIWV9UWVBFX0NDSzoNCiAJCQkJY2NrID0gdHJ1ZTsNCiAJCQkJLyogZmFsbCB0aHJv
-dWdoICovDQpAQCAtNTAzLDggKzUwMCw3IEBAIGludCBtdDc5MTVfbWFjX2ZpbGxfcngoc3RydWN0
-IG10NzkxNV9kZXYgKmRldiwgc3RydWN0IHNrX2J1ZmYgKnNrYikNCiAJCQkJaWYgKGdpIDw9IE5M
-ODAyMTFfUkFURV9JTkZPX0hFX0dJXzNfMikNCiAJCQkJCXN0YXR1cy0+aGVfZ2kgPSBnaTsNCiAN
-Ci0JCQkJaWYgKGlkeCAmIE1UX1BSWFZfVFhfRENNKQ0KLQkJCQkJc3RhdHVzLT5oZV9kY20gPSB0
-cnVlOw0KKwkJCQlzdGF0dXMtPmhlX2RjbSA9ICEhKGlkeCAmIE1UX1BSWFZfVFhfRENNKTsNCiAJ
-CQkJYnJlYWs7DQogCQkJZGVmYXVsdDoNCiAJCQkJcmV0dXJuIC1FSU5WQUw7DQpAQCAtNTE1LDcg
-KzUxMSw3IEBAIGludCBtdDc5MTVfbWFjX2ZpbGxfcngoc3RydWN0IG10NzkxNV9kZXYgKmRldiwg
-c3RydWN0IHNrX2J1ZmYgKnNrYikNCiAJCQljYXNlIElFRUU4MDIxMV9TVEFfUlhfQldfMjA6DQog
-CQkJCWJyZWFrOw0KIAkJCWNhc2UgSUVFRTgwMjExX1NUQV9SWF9CV180MDoNCi0JCQkJaWYgKHJ4
-di5waHkgJiBNVF9QSFlfVFlQRV9IRV9FWFRfU1UgJiYNCisJCQkJaWYgKG1vZGUgJiBNVF9QSFlf
-VFlQRV9IRV9FWFRfU1UgJiYNCiAJCQkJICAgIChpZHggJiBNVF9QUlhWX1RYX0VSX1NVXzEwNlQp
-KSB7DQogCQkJCQlzdGF0dXMtPmJ3ID0gUkFURV9JTkZPX0JXX0hFX1JVOw0KIAkJCQkJc3RhdHVz
-LT5oZV9ydSA9DQpAQCAtNTM1LDcgKzUzMSw3IEBAIGludCBtdDc5MTVfbWFjX2ZpbGxfcngoc3Ry
-dWN0IG10NzkxNV9kZXYgKmRldiwgc3RydWN0IHNrX2J1ZmYgKnNrYikNCiAJCQl9DQogDQogCQkJ
-c3RhdHVzLT5lbmNfZmxhZ3MgfD0gUlhfRU5DX0ZMQUdfU1RCQ19NQVNLICogc3RiYzsNCi0JCQlp
-ZiAocnh2LnBoeSA8IE1UX1BIWV9UWVBFX0hFX1NVICYmIGdpKQ0KKwkJCWlmIChtb2RlIDwgTVRf
-UEhZX1RZUEVfSEVfU1UgJiYgZ2kpDQogCQkJCXN0YXR1cy0+ZW5jX2ZsYWdzIHw9IFJYX0VOQ19G
-TEFHX1NIT1JUX0dJOw0KIAkJfQ0KIAl9DQpAQCAtNTQ4LDggKzU0NCw4IEBAIGludCBtdDc5MTVf
-bWFjX2ZpbGxfcngoc3RydWN0IG10NzkxNV9kZXYgKmRldiwgc3RydWN0IHNrX2J1ZmYgKnNrYikN
-CiAJCW10NzZfaW5zZXJ0X2NjbXBfaGRyKHNrYiwga2V5X2lkKTsNCiAJfQ0KIA0KLQlpZiAoc3Rh
-dHVzLT5mbGFnICYgUlhfRkxBR19SQURJT1RBUF9IRSkNCi0JCW10NzkxNV9tYWNfZGVjb2RlX2hl
-X3JhZGlvdGFwKHNrYiwgc3RhdHVzLCAmcnh2KTsNCisJaWYgKHJ4diAmJiBzdGF0dXMtPmZsYWcg
-JiBSWF9GTEFHX1JBRElPVEFQX0hFKQ0KKwkJbXQ3OTE1X21hY19kZWNvZGVfaGVfcmFkaW90YXAo
-c2tiLCBzdGF0dXMsIHJ4diwgbW9kZSk7DQogDQogCWhkciA9IG10NzZfc2tiX2dldF9oZHIoc2ti
-KTsNCiAJaWYgKCFzdGF0dXMtPndjaWQgfHwgIWllZWU4MDIxMV9pc19kYXRhX3FvcyhoZHItPmZy
-YW1lX2NvbnRyb2wpKQ0KZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVr
-L210NzYvbXQ3OTE1L21hYy5oIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9t
-dDc5MTUvbWFjLmgNCmluZGV4IDRiMDg3MWFiMjQxNC4uYzhiYjVlYTk2YzYwIDEwMDY0NA0KLS0t
-IGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvbWFjLmgNCisrKyBi
-L2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1L21hYy5oDQpAQCAtMTI4
-LDEzICsxMjgsNiBAQCBlbnVtIHJ4X3BrdF90eXBlIHsNCiAjZGVmaW5lIE1UX0NSWFZfSEVfQkVB
-TV9DSE5HCQlCSVQoMTMpDQogI2RlZmluZSBNVF9DUlhWX0hFX0RPUFBMRVIJCUJJVCgxNikNCiAN
-Ci1zdHJ1Y3QgbXQ3OTE1X3J4diB7DQotCXUzMiBwaHk7DQotDQotCS8qIFAtUlhWOiBiaXQgMH4x
-LCBDLVJYVjogYml0IDJ+MTkgKi8NCi0JX19sZTMyIHZbMjBdOw0KLX07DQotDQogZW51bSB0eF9o
-ZWFkZXJfZm9ybWF0IHsNCiAJTVRfSERSX0ZPUk1BVF84MDJfMywNCiAJTVRfSERSX0ZPUk1BVF9D
-TUQsDQotLSANCjIuMTguMA0K
+As a preparation to handle adjacent rule channels,
+factor out handling channels located in a single
+regulatory rule.
+
+Signed-off-by: Markus Theil <markus.theil@tu-ilmenau.de>
+---
+ net/wireless/reg.c | 107 +++++++++++++++++++++++++--------------------
+ 1 file changed, 60 insertions(+), 47 deletions(-)
+
+diff --git a/net/wireless/reg.c b/net/wireless/reg.c
+index 0d74a31ef0ab..10c76f27f6e1 100644
+--- a/net/wireless/reg.c
++++ b/net/wireless/reg.c
+@@ -1691,57 +1691,18 @@ static uint32_t reg_rule_to_chan_bw_flags(const struct ieee80211_regdomain *regd
+ 	return bw_flags;
+ }
+ 
+-/*
+- * Note that right now we assume the desired channel bandwidth
+- * is always 20 MHz for each individual channel (HT40 uses 20 MHz
+- * per channel, the primary and the extension channel).
+- */
+-static void handle_channel(struct wiphy *wiphy,
+-			   enum nl80211_reg_initiator initiator,
+-			   struct ieee80211_channel *chan)
++static void handle_channel_single_rule(struct wiphy *wiphy,
++				       enum nl80211_reg_initiator initiator,
++				       struct ieee80211_channel *chan,
++				       u32 flags,
++				       struct regulatory_request *lr,
++				       struct wiphy *request_wiphy,
++				       const struct ieee80211_reg_rule *reg_rule)
+ {
+-	u32 flags, bw_flags = 0;
+-	const struct ieee80211_reg_rule *reg_rule = NULL;
++	u32 bw_flags = 0;
+ 	const struct ieee80211_power_rule *power_rule = NULL;
+-	struct wiphy *request_wiphy = NULL;
+-	struct regulatory_request *lr = get_last_request();
+ 	const struct ieee80211_regdomain *regd;
+ 
+-	request_wiphy = wiphy_idx_to_wiphy(lr->wiphy_idx);
+-
+-	flags = chan->orig_flags;
+-
+-	reg_rule = freq_reg_info(wiphy, ieee80211_channel_to_khz(chan));
+-	if (IS_ERR(reg_rule)) {
+-		/*
+-		 * We will disable all channels that do not match our
+-		 * received regulatory rule unless the hint is coming
+-		 * from a Country IE and the Country IE had no information
+-		 * about a band. The IEEE 802.11 spec allows for an AP
+-		 * to send only a subset of the regulatory rules allowed,
+-		 * so an AP in the US that only supports 2.4 GHz may only send
+-		 * a country IE with information for the 2.4 GHz band
+-		 * while 5 GHz is still supported.
+-		 */
+-		if (initiator == NL80211_REGDOM_SET_BY_COUNTRY_IE &&
+-		    PTR_ERR(reg_rule) == -ERANGE)
+-			return;
+-
+-		if (lr->initiator == NL80211_REGDOM_SET_BY_DRIVER &&
+-		    request_wiphy && request_wiphy == wiphy &&
+-		    request_wiphy->regulatory_flags & REGULATORY_STRICT_REG) {
+-			pr_debug("Disabling freq %d.%03d MHz for good\n",
+-				 chan->center_freq, chan->freq_offset);
+-			chan->orig_flags |= IEEE80211_CHAN_DISABLED;
+-			chan->flags = chan->orig_flags;
+-		} else {
+-			pr_debug("Disabling freq %d.%03d MHz\n",
+-				 chan->center_freq, chan->freq_offset);
+-			chan->flags |= IEEE80211_CHAN_DISABLED;
+-		}
+-		return;
+-	}
+-
+ 	regd = reg_get_regdomain(wiphy);
+ 
+ 	power_rule = &reg_rule->power_rule;
+@@ -1803,6 +1764,58 @@ static void handle_channel(struct wiphy *wiphy,
+ 		chan->max_power = chan->max_reg_power;
+ }
+ 
++/*
++ * Note that right now we assume the desired channel bandwidth
++ * is always 20 MHz for each individual channel (HT40 uses 20 MHz
++ * per channel, the primary and the extension channel).
++ */
++static void handle_channel(struct wiphy *wiphy,
++			   enum nl80211_reg_initiator initiator,
++			   struct ieee80211_channel *chan)
++{
++	u32 flags = 0;
++	const struct ieee80211_reg_rule *reg_rule = NULL;
++	struct wiphy *request_wiphy = NULL;
++	struct regulatory_request *lr = get_last_request();
++
++	request_wiphy = wiphy_idx_to_wiphy(lr->wiphy_idx);
++
++	flags = chan->orig_flags;
++
++	reg_rule = freq_reg_info(wiphy, ieee80211_channel_to_khz(chan));
++	if (IS_ERR(reg_rule)) {
++		/*
++		 * We will disable all channels that do not match our
++		 * received regulatory rule unless the hint is coming
++		 * from a Country IE and the Country IE had no information
++		 * about a band. The IEEE 802.11 spec allows for an AP
++		 * to send only a subset of the regulatory rules allowed,
++		 * so an AP in the US that only supports 2.4 GHz may only send
++		 * a country IE with information for the 2.4 GHz band
++		 * while 5 GHz is still supported.
++		 */
++		if (initiator == NL80211_REGDOM_SET_BY_COUNTRY_IE &&
++		    PTR_ERR(reg_rule) == -ERANGE)
++			return;
++
++		if (lr->initiator == NL80211_REGDOM_SET_BY_DRIVER &&
++		    request_wiphy && request_wiphy == wiphy &&
++		    request_wiphy->regulatory_flags & REGULATORY_STRICT_REG) {
++			pr_debug("Disabling freq %d.%03d MHz for good\n",
++				 chan->center_freq, chan->freq_offset);
++			chan->orig_flags |= IEEE80211_CHAN_DISABLED;
++			chan->flags = chan->orig_flags;
++		} else {
++			pr_debug("Disabling freq %d.%03d MHz\n",
++				 chan->center_freq, chan->freq_offset);
++			chan->flags |= IEEE80211_CHAN_DISABLED;
++		}
++		return;
++	}
++
++	handle_channel_single_rule(wiphy, initiator, chan, flags, lr, request_wiphy, reg_rule);
++}
++
+ static void handle_band(struct wiphy *wiphy,
+ 			enum nl80211_reg_initiator initiator,
+ 			struct ieee80211_supported_band *sband)
+-- 
+2.27.0
 
