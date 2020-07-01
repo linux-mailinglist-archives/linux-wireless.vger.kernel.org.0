@@ -2,214 +2,97 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 337A5210367
-	for <lists+linux-wireless@lfdr.de>; Wed,  1 Jul 2020 07:47:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 31B88210515
+	for <lists+linux-wireless@lfdr.de>; Wed,  1 Jul 2020 09:33:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726830AbgGAFqx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 1 Jul 2020 01:46:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53906 "EHLO
+        id S1728203AbgGAHdJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 1 Jul 2020 03:33:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42056 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725272AbgGAFqw (ORCPT
+        with ESMTP id S1728146AbgGAHdJ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 1 Jul 2020 01:46:52 -0400
-Received: from mail-io1-xd41.google.com (mail-io1-xd41.google.com [IPv6:2607:f8b0:4864:20::d41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4EED1C061755;
-        Tue, 30 Jun 2020 22:46:52 -0700 (PDT)
-Received: by mail-io1-xd41.google.com with SMTP id f23so23711067iof.6;
-        Tue, 30 Jun 2020 22:46:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=BToyqAFI5f5u68K+7r1bZ4zx3KgdmDtvzPbHmq3uErs=;
-        b=KfKiRC9tQw4BCTxYEe5fbyThBOQ4OzQNMWT9nS95Dd2MUMUd4FcSRV0ZZbF7URZAPa
-         IOz4B4rhquUvz50tSYGyUG9ddbU4xGCIlCZqlBwuypVK+1NnxFvIovJiyZTRa6CgUXKo
-         fJoPvVBIYPf5P9TD1QpSwrt6Qt1i5rjDug6EjxjrbRCVSM2s+DGwmuTNcl4brScjdo/F
-         mZ5q5gXYBjX/eF67htk0QBbhmYk8+MsIRWkkkIj2+2T/atFwbjXy7PqT2WQ2FkdIHkQ2
-         xb5Z5p+3Bc7HukIhmcAQC8j0OWveM2gFaU9B1N84o58YoXE4joD+STj8nAbMadqSyQcb
-         s9QQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=BToyqAFI5f5u68K+7r1bZ4zx3KgdmDtvzPbHmq3uErs=;
-        b=qZfqr6OXP4XZOgY91LeXnZAiVkIJR/ozR0D7VwxbB0qyovWzit6e9tIZ5zVrctbSfh
-         eeH6d00Cfr5ql1RaGuWT4Z08uNXuHT0fp4CgiOlH1LI6qNAMkCfgOHSD1b475HRCenoQ
-         QRJY1v9C8I0n26X0+8hFaa5kQkivuHo0LGZpzpYKxb/dnPoY0L4lNNeWbFHWEI38rPk0
-         nWfQZ8+qK8KjAndeAK/MMD7ae23F0572OWIg90nvcOfmlc7arhFpTQhDlHzTIzG93nGs
-         rY0LJ3SUIRg8cShZ8OHuYeLq37XXKV/+Q/QDV+Wnk/hu/obmI79b4O6bmQasmZyjJDgk
-         qLLA==
-X-Gm-Message-State: AOAM530Ljn75y6AKV4Lk700Yi5D+Lf8jbFCwzTk0GIUmxhhymS3oQjWW
-        g19MU3QJ/jMIHkacheSef7QE/PCLgn9wm2NA0eU=
-X-Google-Smtp-Source: ABdhPJxZHh81Bt4nofbb5kaKkT4tjWBeDMkWORXVUhNQejFAOhSFnOLyfE8HJptfnuZMxxjozz4R2n+Jm1Crv+nZgnQ=
-X-Received: by 2002:a5d:9c44:: with SMTP id 4mr629061iof.15.1593582411483;
- Tue, 30 Jun 2020 22:46:51 -0700 (PDT)
+        Wed, 1 Jul 2020 03:33:09 -0400
+Received: from rhcavuit02.kulnet.kuleuven.be (rhcavuit02.kulnet.kuleuven.be [IPv6:2a02:2c40:0:c0::25:130])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 247E1C061755
+        for <linux-wireless@vger.kernel.org>; Wed,  1 Jul 2020 00:33:09 -0700 (PDT)
+X-KULeuven-Envelope-From: mathy.vanhoef@kuleuven.be
+X-Spam-Status: not spam, SpamAssassin (not cached, score=-50.999, required 5,
+        autolearn=disabled, ALL_TRUSTED -1.00, LOCAL_SMTPS -50.00,
+        URIBL_BLOCKED 0.00)
+X-KULeuven-Scanned: Found to be clean
+X-KULeuven-ID: C9718120346.A005C
+X-KULeuven-Information: Katholieke Universiteit Leuven
+Received: from icts-p-smtps-2.cc.kuleuven.be (icts-p-smtps-2e.kulnet.kuleuven.be [134.58.240.34])
+        by rhcavuit02.kulnet.kuleuven.be (Postfix) with ESMTP id C9718120346
+        for <linux-wireless@vger.kernel.org>; Wed,  1 Jul 2020 09:33:01 +0200 (CEST)
+Received: from mathy-work.localhost (unknown [176.205.50.14])
+        (using TLSv1.2 with cipher AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by icts-p-smtps-2.cc.kuleuven.be (Postfix) with ESMTPSA id 0F174200A1;
+        Wed,  1 Jul 2020 09:33:00 +0200 (CEST)
+Date:   Wed, 1 Jul 2020 11:32:57 +0400
+X-Kuleuven: This mail passed the K.U.Leuven mailcluster
+From:   Mathy Vanhoef <Mathy.Vanhoef@kuleuven.be>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH] mac80211: keep non-zero sequence counter of injected
+ frames
+Message-ID: <20200701113257.28af0012@mathy-work.localhost>
+In-Reply-To: <a814fe75135815e85a1968cf6a985c604246bcc8.camel@sipsolutions.net>
+References: <20200628220512.28535ebc@mathy-work.localhost>
+        <a814fe75135815e85a1968cf6a985c604246bcc8.camel@sipsolutions.net>
+X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-References: <20200624174048.64754-1-vaibhavgupta40@gmail.com>
-In-Reply-To: <20200624174048.64754-1-vaibhavgupta40@gmail.com>
-From:   Vaibhav Gupta <vaibhav.varodek@gmail.com>
-Date:   Wed, 1 Jul 2020 11:15:13 +0530
-Message-ID: <CAPBsFfCGfyFkeVvUC0QCnr9J4uvfubHoHjgPR9e+muPkYRj9vg@mail.gmail.com>
-Subject: Re: [PATCH v1] orinoco: use generic power management
-To:     Vaibhav Gupta <vaibhavgupta40@gmail.com>
-Cc:     Bjorn Helgaas <helgaas@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>, bjorn@helgaas.com,
-        "David S. Miller" <davem@davemloft.net>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-kernel-mentees@lists.linuxfoundation.org,
-        skhan@linuxfoundation.org, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 24 Jun 2020 at 23:14, Vaibhav Gupta <vaibhavgupta40@gmail.com> wrote:
->
-> With the support of generic PM callbacks, drivers no longer need to use
-> legacy .suspend() and .resume() in which they had to maintain PCI states
-> changes and device's power state themselves. The required operations are
-> done by PCI core.
->
-> PCI drivers are not expected to invoke PCI helper functions like
-> pci_save/restore_state(), pci_enable/disable_device(),
-> pci_set_power_state(), etc. Their tasks are completed by PCI core itself.
->
-> Compile-tested only.
->
-> Signed-off-by: Vaibhav Gupta <vaibhavgupta40@gmail.com>
-> ---
->  .../intersil/orinoco/orinoco_nortel.c         |  3 +-
->  .../wireless/intersil/orinoco/orinoco_pci.c   |  3 +-
->  .../wireless/intersil/orinoco/orinoco_pci.h   | 32 ++++++-------------
->  .../wireless/intersil/orinoco/orinoco_plx.c   |  3 +-
->  .../wireless/intersil/orinoco/orinoco_tmd.c   |  3 +-
->  5 files changed, 13 insertions(+), 31 deletions(-)
->
-> diff --git a/drivers/net/wireless/intersil/orinoco/orinoco_nortel.c b/drivers/net/wireless/intersil/orinoco/orinoco_nortel.c
-> index 048693b6c6c2..96a03d10a080 100644
-> --- a/drivers/net/wireless/intersil/orinoco/orinoco_nortel.c
-> +++ b/drivers/net/wireless/intersil/orinoco/orinoco_nortel.c
-> @@ -290,8 +290,7 @@ static struct pci_driver orinoco_nortel_driver = {
->         .id_table       = orinoco_nortel_id_table,
->         .probe          = orinoco_nortel_init_one,
->         .remove         = orinoco_nortel_remove_one,
-> -       .suspend        = orinoco_pci_suspend,
-> -       .resume         = orinoco_pci_resume,
-> +       .driver.pm      = &orinoco_pci_pm_ops,
->  };
->
->  static char version[] __initdata = DRIVER_NAME " " DRIVER_VERSION
-> diff --git a/drivers/net/wireless/intersil/orinoco/orinoco_pci.c b/drivers/net/wireless/intersil/orinoco/orinoco_pci.c
-> index 4938a2208a37..f3c86b07b1b9 100644
-> --- a/drivers/net/wireless/intersil/orinoco/orinoco_pci.c
-> +++ b/drivers/net/wireless/intersil/orinoco/orinoco_pci.c
-> @@ -230,8 +230,7 @@ static struct pci_driver orinoco_pci_driver = {
->         .id_table       = orinoco_pci_id_table,
->         .probe          = orinoco_pci_init_one,
->         .remove         = orinoco_pci_remove_one,
-> -       .suspend        = orinoco_pci_suspend,
-> -       .resume         = orinoco_pci_resume,
-> +       .driver.pm      = &orinoco_pci_pm_ops,
->  };
->
->  static char version[] __initdata = DRIVER_NAME " " DRIVER_VERSION
-> diff --git a/drivers/net/wireless/intersil/orinoco/orinoco_pci.h b/drivers/net/wireless/intersil/orinoco/orinoco_pci.h
-> index 43f5b9f5a0b0..d49d940864b4 100644
-> --- a/drivers/net/wireless/intersil/orinoco/orinoco_pci.h
-> +++ b/drivers/net/wireless/intersil/orinoco/orinoco_pci.h
-> @@ -18,51 +18,37 @@ struct orinoco_pci_card {
->         void __iomem *attr_io;
->  };
->
-> -#ifdef CONFIG_PM
-> -static int orinoco_pci_suspend(struct pci_dev *pdev, pm_message_t state)
-> +static int __maybe_unused orinoco_pci_suspend(struct device *dev_d)
->  {
-> +       struct pci_dev *pdev = to_pci_dev(dev_d);
->         struct orinoco_private *priv = pci_get_drvdata(pdev);
->
->         orinoco_down(priv);
->         free_irq(pdev->irq, priv);
-> -       pci_save_state(pdev);
-> -       pci_disable_device(pdev);
-> -       pci_set_power_state(pdev, PCI_D3hot);
->
->         return 0;
->  }
->
-> -static int orinoco_pci_resume(struct pci_dev *pdev)
-> +static int __maybe_unused orinoco_pci_resume(struct device *dev_d)
->  {
-> +       struct pci_dev *pdev = to_pci_dev(dev_d);
->         struct orinoco_private *priv = pci_get_drvdata(pdev);
->         struct net_device *dev = priv->ndev;
->         int err;
->
-> -       pci_set_power_state(pdev, PCI_D0);
-> -       err = pci_enable_device(pdev);
-> -       if (err) {
-> -               printk(KERN_ERR "%s: pci_enable_device failed on resume\n",
-> -                      dev->name);
-> -               return err;
-> -       }
-> -       pci_restore_state(pdev);
-> -
->         err = request_irq(pdev->irq, orinoco_interrupt, IRQF_SHARED,
->                           dev->name, priv);
->         if (err) {
->                 printk(KERN_ERR "%s: cannot re-allocate IRQ on resume\n",
->                        dev->name);
-> -               pci_disable_device(pdev);
->                 return -EBUSY;
->         }
->
-> -       err = orinoco_up(priv);
-> -
-> -       return err;
-> +       return orinoco_up(priv);
->  }
-> -#else
-> -#define orinoco_pci_suspend NULL
-> -#define orinoco_pci_resume NULL
-> -#endif
-> +
-> +static SIMPLE_DEV_PM_OPS(orinoco_pci_pm_ops,
-> +                        orinoco_pci_suspend,
-> +                        orinoco_pci_resume);
->
->  #endif /* _ORINOCO_PCI_H */
-> diff --git a/drivers/net/wireless/intersil/orinoco/orinoco_plx.c b/drivers/net/wireless/intersil/orinoco/orinoco_plx.c
-> index 221352027779..16dada94c774 100644
-> --- a/drivers/net/wireless/intersil/orinoco/orinoco_plx.c
-> +++ b/drivers/net/wireless/intersil/orinoco/orinoco_plx.c
-> @@ -336,8 +336,7 @@ static struct pci_driver orinoco_plx_driver = {
->         .id_table       = orinoco_plx_id_table,
->         .probe          = orinoco_plx_init_one,
->         .remove         = orinoco_plx_remove_one,
-> -       .suspend        = orinoco_pci_suspend,
-> -       .resume         = orinoco_pci_resume,
-> +       .driver.pm      = &orinoco_pci_pm_ops,
->  };
->
->  static char version[] __initdata = DRIVER_NAME " " DRIVER_VERSION
-> diff --git a/drivers/net/wireless/intersil/orinoco/orinoco_tmd.c b/drivers/net/wireless/intersil/orinoco/orinoco_tmd.c
-> index 20ce569b8a43..9a9d335611ac 100644
-> --- a/drivers/net/wireless/intersil/orinoco/orinoco_tmd.c
-> +++ b/drivers/net/wireless/intersil/orinoco/orinoco_tmd.c
-> @@ -213,8 +213,7 @@ static struct pci_driver orinoco_tmd_driver = {
->         .id_table       = orinoco_tmd_id_table,
->         .probe          = orinoco_tmd_init_one,
->         .remove         = orinoco_tmd_remove_one,
-> -       .suspend        = orinoco_pci_suspend,
-> -       .resume         = orinoco_pci_resume,
-> +       .driver.pm      = &orinoco_pci_pm_ops,
->  };
->
->  static char version[] __initdata = DRIVER_NAME " " DRIVER_VERSION
-> --
-> 2.27.0
->
+The kernel test robot highlighted a bug in the patch. So for now do not
+apply this one.
+
+I'm currently testing the injection behavior of some new devices I
+have, since my current ones are getting old, and I'll send updated
+patches within a week or two if all goes well.
+
+On Sun, 28 Jun 2020 20:59:56 +0200
+Johannes Berg <johannes@sipsolutions.net> wrote:
+
+> On Sun, 2020-06-28 at 22:05 +0400, Mathy Vanhoef wrote:
+> > The sequence number of injected frames is being overwritten by the
+> > function ieee80211_tx_h_sequence when the following two conditions
+> > are met:
+> > 
+> > 1. The frame is injected on a virtual interface, and a second
+> > virtual interface on this device is operating in managed/AP/.. mode.
+> > 
+> > 2. The sender MAC address of the injected frame matches the MAC
+> >    address of the second interface operating in managed/AP/.. mode.
+> > 
+> > In some cases this may be desired, for instance when hostap is
+> > configured to send certain frames using a monitor interface, in
+> > which case the user-space will not assign a sequence number and
+> > instead injects frames with a sequence number of zero.  
+> 
+> Yeah, this is where that used to be used. I'm thinking we should
+> "break" this stuff eventually, tell people to use modern hostapd
+> versions, and see who cares ... because all this "cooked monitor"
+> etc. is all quite ugly.
+> 
+> > However, in case the user-space does assign a non-zero sequence
+> > number, this number should not be overwritten by the kernel. This
+> > patch adds a check to see if injected frames have already been
+> > assigned a non-zero sequence number, and if so, this sequence
+> > number will not be overwritten by the kernel.  
+> 
+> Seems reasonable, but I have to wonder what you're up to now ;-)
+> 
+> Anyway, I'll apply this unless I find some tests fail or something,
+> but I'll be going on vacation soon, so it'll be a while (since it's
+> for the -next tree as a feature).
+> 
+> johannes
+> 
+
