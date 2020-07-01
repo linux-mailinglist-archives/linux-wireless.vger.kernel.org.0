@@ -2,60 +2,65 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 579A8210B47
-	for <lists+linux-wireless@lfdr.de>; Wed,  1 Jul 2020 14:49:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F0A81210CBB
+	for <lists+linux-wireless@lfdr.de>; Wed,  1 Jul 2020 15:52:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730552AbgGAMsk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 1 Jul 2020 08:48:40 -0400
-Received: from mail.kernel.org ([198.145.29.99]:59898 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730520AbgGAMsk (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 1 Jul 2020 08:48:40 -0400
-Received: from pali.im (pali.im [31.31.79.79])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 927B120702;
-        Wed,  1 Jul 2020 12:48:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1593607719;
-        bh=gWjezYEIrNhwS+ao6+ABxLzPKZFz2dqby/qKwjmavpo=;
-        h=Date:From:To:Subject:From;
-        b=pR+Jh9FtR9vx1LWMqiqmzPJk/mIYdzRhfYpNcAQMJWM6Boo5xnAp3eCJZwentbBNm
-         Hiq9A7fO7Hw5hgPVGNGsHH3cpzrNi/uf9IRjGGx8GIioBpfIgw2W89zxMPxrp6/jZo
-         SF2YigMZTlbVSgkdVSAAvOEvi0QuYvKg44wh0VYE=
-Received: by pali.im (Postfix)
-        id AA49E102D; Wed,  1 Jul 2020 14:48:37 +0200 (CEST)
-Date:   Wed, 1 Jul 2020 14:48:37 +0200
-From:   Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
-To:     Ganapathi Bhat <ganapathi.bhat@nxp.com>,
-        Amitkumar Karwar <amitkarwar@gmail.com>,
-        Xinming Hu <huxinming820@gmail.com>,
-        linux-wireless@vger.kernel.org
-Subject: mwifiex: mwifiex_cfg80211_change_station and AP mode
-Message-ID: <20200701124837.3jss6u324f7kqeou@pali>
+        id S1731190AbgGANw2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 1 Jul 2020 09:52:28 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:32840 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730947AbgGANw2 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 1 Jul 2020 09:52:28 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1jqd9x-0002q3-Kd; Wed, 01 Jul 2020 13:52:21 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Stanislaw Gruszka <stf_xl@wp.pl>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] iwlegacy: 4965: remove redundant initialization of variable tid
+Date:   Wed,  1 Jul 2020 14:52:21 +0100
+Message-Id: <20200701135221.549700-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: NeoMutt/20180716
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello!
+From: Colin Ian King <colin.king@canonical.com>
 
-I'm looking at mwifiex_cfg80211_change_station() function which
-basically implements NL80211_CMD_SET_STATION nl80211 API.
+The variable tid is being initialized with a value that is never read
+and it is being updated later with a new value.  The initialization is
+redundant and can be removed.
 
-Currently this mwifiex implementation does not support AP mode, only
-client STA mode.
+Addresses-Coverity: ("Unused value")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/net/wireless/intel/iwlegacy/4965-rs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-The most common usage of NL80211_CMD_SET_STATION in AP mode is via
-NL80211_ATTR_STA_VLAN to put clients into separate VLANs.
+diff --git a/drivers/net/wireless/intel/iwlegacy/4965-rs.c b/drivers/net/wireless/intel/iwlegacy/4965-rs.c
+index 0a02d8aca320..1f196665d21f 100644
+--- a/drivers/net/wireless/intel/iwlegacy/4965-rs.c
++++ b/drivers/net/wireless/intel/iwlegacy/4965-rs.c
+@@ -1749,7 +1749,7 @@ il4965_rs_rate_scale_perform(struct il_priv *il, struct sk_buff *skb,
+ 	u8 done_search = 0;
+ 	u16 high_low;
+ 	s32 sr;
+-	u8 tid = MAX_TID_COUNT;
++	u8 tid;
+ 	struct il_tid_data *tid_data;
+ 
+ 	D_RATE("rate scale calculate new rate for skb\n");
+-- 
+2.27.0
 
-Is there any possibility how to implement NL80211_CMD_SET_STATION with
-NL80211_ATTR_STA_VLAN in mwifiex (in mwifiex_cfg80211_change_station)?
-It looks like it is needed some mwifiex firmware command which would do
-it (put client into vlan).
-
-Do you have any information / documentation for this feature?
