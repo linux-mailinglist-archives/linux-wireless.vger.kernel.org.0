@@ -2,215 +2,151 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1609521090A
-	for <lists+linux-wireless@lfdr.de>; Wed,  1 Jul 2020 12:15:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C8EE221092E
+	for <lists+linux-wireless@lfdr.de>; Wed,  1 Jul 2020 12:23:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729769AbgGAKPZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 1 Jul 2020 06:15:25 -0400
-Received: from smail.rz.tu-ilmenau.de ([141.24.186.67]:37562 "EHLO
-        smail.rz.tu-ilmenau.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729671AbgGAKPX (ORCPT
+        id S1729893AbgGAKXj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 1 Jul 2020 06:23:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40606 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729781AbgGAKXi (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 1 Jul 2020 06:15:23 -0400
-Received: from legolas.prakinf.tu-ilmenau.de (unknown [141.24.207.116])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by smail.rz.tu-ilmenau.de (Postfix) with ESMTPSA id 74B72580060;
-        Wed,  1 Jul 2020 12:15:20 +0200 (CEST)
-From:   Markus Theil <markus.theil@tu-ilmenau.de>
-To:     johannes@sipsolutions.net
-Cc:     linux-wireless@vger.kernel.org,
-        Markus Theil <markus.theil@tu-ilmenau.de>
-Subject: [PATCH v2 2/2] cfg80211: add helper fn for adjacent rule channels
-Date:   Wed,  1 Jul 2020 12:15:02 +0200
-Message-Id: <20200701101502.531240-2-markus.theil@tu-ilmenau.de>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20200701101502.531240-1-markus.theil@tu-ilmenau.de>
-References: <20200701101502.531240-1-markus.theil@tu-ilmenau.de>
+        Wed, 1 Jul 2020 06:23:38 -0400
+Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 248D4C03E979;
+        Wed,  1 Jul 2020 03:23:38 -0700 (PDT)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: andrzej.p)
+        with ESMTPSA id 339872A530D
+Subject: Re: [PATCH v7 00/11] Stop monitoring disabled devices
+To:     Daniel Lezcano <daniel.lezcano@linaro.org>,
+        linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
+        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-renesas-soc@vger.kernel.org,
+        linux-rockchip@lists.infradead.org
+Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Vishal Kulkarni <vishal@chelsio.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jiri Pirko <jiri@mellanox.com>,
+        Ido Schimmel <idosch@mellanox.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        Intel Linux Wireless <linuxwifi@intel.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Peter Kaestle <peter@piie.net>,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Sebastian Reichel <sre@kernel.org>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Amit Kucheria <amit.kucheria@verdurent.com>,
+        Support Opensource <support.opensource@diasemi.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        =?UTF-8?Q?Niklas_S=c3=b6derlund?= <niklas.soderlund@ragnatech.se>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Orson Zhai <orsonzhai@gmail.com>,
+        Baolin Wang <baolin.wang7@gmail.com>,
+        Chunyan Zhang <zhang.lyra@gmail.com>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Allison Randal <allison@lohutok.net>,
+        Enrico Weigelt <info@metux.net>,
+        Gayatri Kammela <gayatri.kammela@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        kernel@collabora.com
+References: <20200629122925.21729-1-andrzej.p@collabora.com>
+ <aab40d90-3f72-657c-5e14-e53a34c4b420@linaro.org>
+ <3d03d1a2-ac06-b69b-93cb-e0203be62c10@collabora.com>
+ <47111821-d691-e71d-d740-e4325e290fa4@linaro.org>
+ <be9b7ee3-cad0-e462-126d-08de9b226285@collabora.com>
+ <4353a939-3f5e-8369-5bc0-ad8162b5ffc7@linaro.org>
+ <a531d80f-afd1-2dec-6c77-ed984e97595c@collabora.com>
+ <db1ff4e1-cbf8-89b3-5d64-b91a1fd88a41@linaro.org>
+From:   Andrzej Pietrasiewicz <andrzej.p@collabora.com>
+Message-ID: <73942aea-ae79-753c-fe90-d4a99423d548@collabora.com>
+Date:   Wed, 1 Jul 2020 12:23:29 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.0
 MIME-Version: 1.0
+In-Reply-To: <db1ff4e1-cbf8-89b3-5d64-b91a1fd88a41@linaro.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Some usable channels are located in the union of adjacent
-regulatory rules, for example channel 144 in Germany.
+Hi,
 
-Enable them, by also checking if a channel spans two adjacent
-regulatory rules/frequency ranges.
+W dniu 30.06.2020 o 20:33, Daniel Lezcano pisze:
+> On 30/06/2020 18:56, Andrzej Pietrasiewicz wrote:
+>> Hi,
+>>
+>> W dniu 30.06.2020 o 17:53, Daniel Lezcano pisze:
+>>> On 30/06/2020 17:29, Andrzej Pietrasiewicz wrote:
+>>>> Hi Daniel,
+>>>>
+>>>> W dniu 30.06.2020 o 16:53, Daniel Lezcano pisze:
+>>>>> On 30/06/2020 15:43, Andrzej Pietrasiewicz wrote:
+>>>>>> Hi Daniel,
+>>>>>>
+>>>>>> I am reading the logs and can't find anything specific to thermal.
+>>>>>>
+>>>>>> What I can see is
+>>>>>>
+>>>>>> "random: crng init done"
+>>>>>>
+>>>>>> with large times (~200s) and then e.g.
+>>>>>>
+>>>>>> 'auto-login-action timed out after 283 seconds'
+>>>>>>
+>>>>>> I'm looking at e.g.
+>>>>>> https://storage.kernelci.org/thermal/testing/v5.8-rc3-11-gf5e50bf4d3ef/arm/multi_v7_defconfig/gcc-8/lab-baylibre/baseline-imx6q-sabrelite.html
+>>>>>>
+>>>>>>
+>>>>>>
+>>>>
+>>>> f5e50bf4d3ef is PATCH 11/11. Does the problem happen at PATCH 1-10/11?
+>>>> PATCH 11/11 renames a method and the code compiles, so it seems
+>>>> unlikely that this is causing problems. One should never say never,
+>>>> though ;)
+>>>
+>>> The sha1 is just the HEAD for the kernel reference. The regression
+>>> happens with your series, somewhere.
+>>>
+>>>> The reported failure is not due to some test failing but rather due
+>>>> to timeout logging into the test system. Could it be that there is
+>>>> some other problem?
+>>>
+>>> I did reproduce:
+>>>
+>>> v5.8-rc3 + series => imx6 hang at boot time
+>>> v5.8-rc3 => imx6 boots correctly
+>>>
 
-All flags involved are disabling things, therefore we can build
-the maximum by or-ing them together. Furthermore, take the maximum
-of DFS CAC time values and the minimum of allowed power of both
-adjacent channels in order to comply with both regulatory rules at
-the same time.
+What did you reproduce? Timeout logging in to the test system or a "real" 
+failure of a test?
 
-Signed-off-by: Markus Theil <markus.theil@tu-ilmenau.de>
----
-v2: add check for 10 and 20 MHz flags
+>>
+>> I kindly ask for a bisect.
+> 
+> I will give a try but it is a very long process as the board is running
+> on kernelci.
+> 
+> I was not able to reproduce it on imx7 despite it is the same sensor :/
+> 
+> 
 
- net/wireless/reg.c | 133 +++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 133 insertions(+)
+Could it be that the thermal sensors somehow contribute to entropy and after
+the series is applied on some machines it takes more time to gather enough
+entropy?
 
-diff --git a/net/wireless/reg.c b/net/wireless/reg.c
-index 10c76f27f6e1..b86a29c76a2b 100644
---- a/net/wireless/reg.c
-+++ b/net/wireless/reg.c
-@@ -1764,6 +1764,108 @@ static void handle_channel_single_rule(struct wiphy *wiphy,
- 		chan->max_power = chan->max_reg_power;
- }
- 
-+static void handle_channel_adjacent_rules(struct wiphy *wiphy,
-+					  enum nl80211_reg_initiator initiator,
-+					  struct ieee80211_channel *chan,
-+					  u32 flags,
-+					  struct regulatory_request *lr,
-+					  struct wiphy *request_wiphy,
-+					  const struct ieee80211_reg_rule *reg_rule1,
-+					  const struct ieee80211_reg_rule *reg_rule2,
-+					  struct ieee80211_freq_range *combined_range)
-+{
-+	u32 bw_flags1 = 0;
-+	u32 bw_flags2 = 0;
-+	const struct ieee80211_power_rule *power_rule1 = NULL;
-+	const struct ieee80211_power_rule *power_rule2 = NULL;
-+	const struct ieee80211_regdomain *regd;
-+
-+	regd = reg_get_regdomain(wiphy);
-+
-+	power_rule1 = &reg_rule1->power_rule;
-+	power_rule2 = &reg_rule2->power_rule;
-+	bw_flags1 = reg_rule_to_chan_bw_flags(regd, reg_rule1, chan);
-+	bw_flags2 = reg_rule_to_chan_bw_flags(regd, reg_rule2, chan);
-+
-+	if (lr->initiator == NL80211_REGDOM_SET_BY_DRIVER &&
-+	    request_wiphy && request_wiphy == wiphy &&
-+	    request_wiphy->regulatory_flags & REGULATORY_STRICT_REG) {
-+		/*
-+		 * This guarantees the driver's requested regulatory domain
-+		 * will always be used as a base for further regulatory
-+		 * settings
-+		 */
-+		chan->flags = chan->orig_flags =
-+			map_regdom_flags(reg_rule1->flags) |
-+			map_regdom_flags(reg_rule2->flags) |
-+			bw_flags1 |
-+			bw_flags2;
-+		chan->max_antenna_gain = chan->orig_mag =
-+			min_t(int, MBI_TO_DBI(power_rule1->max_antenna_gain),
-+			      MBI_TO_DBI(power_rule2->max_antenna_gain));
-+		chan->max_reg_power = chan->max_power = chan->orig_mpwr =
-+			min_t(int, MBM_TO_DBM(power_rule1->max_eirp),
-+			      MBM_TO_DBM(power_rule2->max_eirp));
-+
-+		if (chan->flags & IEEE80211_CHAN_RADAR) {
-+			chan->dfs_cac_ms = IEEE80211_DFS_MIN_CAC_TIME_MS;
-+			if (reg_rule1->dfs_cac_ms || reg_rule2->dfs_cac_ms)
-+				chan->dfs_cac_ms = max_t(unsigned int, reg_rule1->dfs_cac_ms, reg_rule2->dfs_cac_ms);
-+		}
-+
-+		return;
-+	}
-+
-+	chan->dfs_state = NL80211_DFS_USABLE;
-+	chan->dfs_state_entered = jiffies;
-+
-+	chan->beacon_found = false;
-+	chan->flags = flags | bw_flags1 | bw_flags2 |
-+		      map_regdom_flags(reg_rule1->flags) |
-+		      map_regdom_flags(reg_rule2->flags);
-+
-+	/* reg_rule_to_chan_bw_flags may forbids 10 and forbids 20 MHz (otherwise no adj. rule case),
-+	   recheck therefore */
-+	if (cfg80211_does_bw_fit_range(combined_range,
-+				       ieee80211_channel_to_khz(chan),
-+				       MHZ_TO_KHZ(10)))
-+		chan->flags &= ~IEEE80211_CHAN_NO_10MHZ;
-+	if (cfg80211_does_bw_fit_range(combined_range,
-+				       ieee80211_channel_to_khz(chan),
-+				       MHZ_TO_KHZ(20)))
-+		chan->flags &= ~IEEE80211_CHAN_NO_20MHZ;
-+
-+	chan->max_antenna_gain =
-+		min_t(int, chan->orig_mag,
-+		      min_t(int,
-+			    MBI_TO_DBI(power_rule1->max_antenna_gain),
-+			    MBI_TO_DBI(power_rule2->max_antenna_gain)));
-+	chan->max_reg_power = min_t(int,
-+				    MBM_TO_DBM(power_rule1->max_eirp),
-+				    MBM_TO_DBM(power_rule2->max_eirp));
-+
-+	if (chan->flags & IEEE80211_CHAN_RADAR) {
-+		if (reg_rule1->dfs_cac_ms || reg_rule2->dfs_cac_ms)
-+			chan->dfs_cac_ms = max_t(unsigned int, reg_rule1->dfs_cac_ms, reg_rule2->dfs_cac_ms);
-+		else
-+			chan->dfs_cac_ms = IEEE80211_DFS_MIN_CAC_TIME_MS;
-+	}
-+
-+	if (chan->orig_mpwr) {
-+		/*
-+		 * Devices that use REGULATORY_COUNTRY_IE_FOLLOW_POWER
-+		 * will always follow the passed country IE power settings.
-+		 */
-+		if (initiator == NL80211_REGDOM_SET_BY_COUNTRY_IE &&
-+		    wiphy->regulatory_flags & REGULATORY_COUNTRY_IE_FOLLOW_POWER)
-+			chan->max_power = chan->max_reg_power;
-+		else
-+			chan->max_power = min(chan->orig_mpwr,
-+					      chan->max_reg_power);
-+	} else
-+		chan->max_power = chan->max_reg_power;
-+}
-+
- /*
-  * Note that right now we assume the desired channel bandwidth
-  * is always 20 MHz for each individual channel (HT40 uses 20 MHz
-@@ -1775,6 +1877,8 @@ static void handle_channel(struct wiphy *wiphy,
- {
- 	u32 flags = 0;
- 	const struct ieee80211_reg_rule *reg_rule = NULL;
-+	const struct ieee80211_reg_rule *reg_rule1 = NULL;
-+	const struct ieee80211_reg_rule *reg_rule2 = NULL;
- 	struct wiphy *request_wiphy = NULL;
- 	struct regulatory_request *lr = get_last_request();
- 
-@@ -1784,6 +1888,35 @@ static void handle_channel(struct wiphy *wiphy,
- 
- 	reg_rule = freq_reg_info(wiphy, ieee80211_channel_to_khz(chan));
- 	if (IS_ERR(reg_rule)) {
-+		/*
-+		 * check for adjacent match, therefore get rules for chan - 20 MHz
-+		 * and chan + 20 MHz and test if reg rules are adjacent
-+		 */
-+		reg_rule1 = freq_reg_info(wiphy, ieee80211_channel_to_khz(chan) - MHZ_TO_KHZ(20));
-+		reg_rule2 = freq_reg_info(wiphy, ieee80211_channel_to_khz(chan) + MHZ_TO_KHZ(20));
-+		if (!IS_ERR(reg_rule1) && !IS_ERR(reg_rule2)) {
-+			struct ieee80211_freq_range combined_range;
-+
-+			if (reg_rule1->freq_range.end_freq_khz !=
-+			    reg_rule2->freq_range.start_freq_khz)
-+				goto disable_chan;
-+
-+			combined_range.start_freq_khz = reg_rule1->freq_range.start_freq_khz;
-+			combined_range.end_freq_khz = reg_rule2->freq_range.end_freq_khz;
-+			combined_range.max_bandwidth_khz = min_t(u32,
-+								 reg_rule1->freq_range.max_bandwidth_khz,
-+								 reg_rule2->freq_range.max_bandwidth_khz);
-+
-+			if (!cfg80211_does_bw_fit_range(&combined_range, ieee80211_channel_to_khz(chan), MHZ_TO_KHZ(20)))
-+				goto disable_chan;
-+
-+			handle_channel_adjacent_rules(wiphy, initiator, chan, flags, lr,
-+						      request_wiphy, reg_rule1, reg_rule2,
-+						      &combined_range);
-+			return;
-+		}
-+
-+disable_chan:
- 		/*
- 		 * We will disable all channels that do not match our
- 		 * received regulatory rule unless the hint is coming
--- 
-2.27.0
-
+Andrzej
