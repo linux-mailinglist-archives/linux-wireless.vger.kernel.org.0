@@ -2,58 +2,62 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A637D211C54
-	for <lists+linux-wireless@lfdr.de>; Thu,  2 Jul 2020 09:01:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 910AE211C5D
+	for <lists+linux-wireless@lfdr.de>; Thu,  2 Jul 2020 09:05:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726145AbgGBHBZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 2 Jul 2020 03:01:25 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:27275 "EHLO m43-7.mailgun.net"
+        id S1726951AbgGBHFW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 2 Jul 2020 03:05:22 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:12717 "EHLO m43-7.mailgun.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726068AbgGBHBY (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 2 Jul 2020 03:01:24 -0400
+        id S1726254AbgGBHFV (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 2 Jul 2020 03:05:21 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1593673284; h=Content-Type: MIME-Version: Message-ID:
+ s=smtp; t=1593673521; h=Content-Type: MIME-Version: Message-ID:
  In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=vV+WEa9lR4z9vQ/BiZfiSTXTYWp+rAsHXFb2XHfCL/c=; b=o3hGUGO2bNSunkT0u+LVnAXBGUKwEL2flahgIs0FQrkyhztH6t0frgnzggs59Ubuud9xhqDU
- asmY++UcN4AUanswAhQAMqQnbV/Hhr4BCbiKAAKWyks4vytPxPS6T0pbd3KUIApljLvO1986
- +PYJ1eFgPjK5so0/gxn5HFhWy3A=
+ bh=3fwwa5vI58tW/Skqz+I+1rB/iH0AQQKspXiTMKHBrjY=; b=xGIh7kmZck8DGAPVbobJATDezJ4aNRuFQe5Tq9vpEM5TR10DDdwrN4bS7p+E/SR9ndlwSh5L
+ msOhyGLO3U006UHVFlH5kc7802OPthupjQPC99dj+vy1kQ2BcQtBeNksiP7zI4ClZcgGnepj
+ dbKlaihS4IZqBrqtqUMw5i+3WSM=
 X-Mailgun-Sending-Ip: 69.72.43.7
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n20.prod.us-west-2.postgun.com with SMTP id
- 5efd861e4c9690533a4052ab (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 02 Jul 2020 07:00:46
+ smtp-out-n15.prod.us-west-2.postgun.com with SMTP id
+ 5efd8721ad153efa343d5f61 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 02 Jul 2020 07:05:05
  GMT
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id D0D1BC43395; Thu,  2 Jul 2020 07:00:45 +0000 (UTC)
+        id 8FF6FC433C8; Thu,  2 Jul 2020 07:05:05 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
 X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
         autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from tynnyri.adurom.net (tynnyri.adurom.net [51.15.11.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 6DB04C433C6;
-        Thu,  2 Jul 2020 07:00:43 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 6DB04C433C6
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 24D13C433C6;
+        Thu,  2 Jul 2020 07:05:02 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 24D13C433C6
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 From:   Kalle Valo <kvalo@codeaurora.org>
-To:     <Ajay.Kathat@microchip.com>
-Cc:     <linux-wireless@vger.kernel.org>, <devel@driverdev.osuosl.org>,
-        <gregkh@linuxfoundation.org>, <johannes@sipsolutions.net>,
-        <Nicolas.Ferre@microchip.com>, <Claudiu.Beznea@microchip.com>,
-        <Sripad.Balwadgi@microchip.com>, <Venkateswara.Kaja@microchip.com>
-Subject: Re: [PATCH] wilc1000: move wilc driver out of staging
-References: <20200625123712.14156-1-ajay.kathat@microchip.com>
-Date:   Thu, 02 Jul 2020 10:00:40 +0300
-In-Reply-To: <20200625123712.14156-1-ajay.kathat@microchip.com> (Ajay Kathat's
-        message of "Thu, 25 Jun 2020 12:37:23 +0000")
-Message-ID: <875zb6e6zr.fsf@tynnyri.adurom.net>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     devel@driverdev.osuosl.org, Ajay.Kathat@microchip.com,
+        Venkateswara.Kaja@microchip.com, linux-wireless@vger.kernel.org,
+        Nicolas.Ferre@microchip.com, Sripad.Balwadgi@microchip.com,
+        johannes@sipsolutions.net
+Subject: Re: [PATCH v7 00/17] wilc1000: move out of staging
+References: <20200623110000.31559-1-ajay.kathat@microchip.com>
+        <87ftaketkw.fsf@tynnyri.adurom.net>
+        <20200624091000.GD1731290@kroah.com> <87366kztcr.fsf@codeaurora.org>
+        <20200624145254.GA1876138@kroah.com> <87a70qe6fb.fsf@codeaurora.org>
+        <20200626134610.GB4095392@kroah.com>
+Date:   Thu, 02 Jul 2020 10:05:01 +0300
+In-Reply-To: <20200626134610.GB4095392@kroah.com> (Greg KH's message of "Fri,
+        26 Jun 2020 15:46:10 +0200")
+Message-ID: <87a70ibdnm.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
@@ -61,43 +65,36 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-<Ajay.Kathat@microchip.com> writes:
+Greg KH <gregkh@linuxfoundation.org> writes:
 
-> From: Ajay Singh <ajay.kathat@microchip.com>
+> On Fri, Jun 26, 2020 at 08:34:48AM +0300, Kalle Valo wrote:
 >
-> WILC1000 is an IEEE 802.11 b/g/n IoT link controller module. The
-> WILC1000 connects to Microchip AVR/SMART MCUs, SMART MPUs, and other
-> processors with minimal resource requirements with a simple
-> SPI/SDIO-to-Wi-Fi interface.
+>> And Ajay already submitted that the simple rename patch proposed, thanks
+>> Ajay!
+>> 
+>> https://patchwork.kernel.org/patch/11625025/
+>> 
+>> And indeed the patch is simple as it can get. So Greg, if it's ok for
+>> you I would like to apply that simple patch to wireless-drivers-next.
+>> 
+>> > Note, I can't guarantee that I'll not take any wilc1000 patches, I'll
+>> > probably forget, but git mv will handle all of that just fine.
+>> 
+>> Good point. To be on the safe side one option is that if I create a
+>> topic branch for this simple patch and use v5.8-rc1 as the baseline.
+>> Then I would pull the topic branch to wireless-drivers-next and you
+>> could pull it to staging-next. That way you would not have wilc1000 in
+>> your tree anymore and no accidental submission or commits either :) What
+>> do you think?
 >
-> WILC1000 driver has been part of staging for few years. With
-> contributions from the community, it has improved significantly. Full
-> driver review has helped in achieving the current state.
-> The details for those reviews are captured in 1 & 2.
->
-> [1]. https://lore.kernel.org/linux-wireless/1537957525-11467-1-git-send-email-ajay.kathat@microchip.com/
-> [2]. https://lore.kernel.org/linux-wireless/1562896697-8002-1-git-send-email-ajay.kathat@microchip.com/
->
-> Signed-off-by: Ajay Singh <ajay.kathat@microchip.com>
-> ---
->
-> As suggested, keeping all the changes in single commit with file rename
-> so it's easy to move out of staging [3].
->
-> Please choose whichever option you prefer between the git mv or patch series
-> sent last Tuesday. The resulting driver is the same as no patch has been
-> queued in between.
->
-> [3]. https://lore.kernel.org/linux-wireless/20200623110000.31559-1-ajay.kathat@microchip.com/
+> That sounds great, I will be happy to pull such a branch.
 
-As discussed with Greg I created an immutable branch for this and merged
-the branch to wireless-drivers-next:
-
-5625f965d764 wilc1000: move wilc driver out of staging
-
-Greg, here's the location of the immutable branch:
+Great! Sorry for taking so long, I'm on vacation right now, but here's
+the immutable branch:
 
 git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git wilc1000-move-out-of-staging
+
+I have pulled it into wireless-drivers-next now.
 
 -- 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
