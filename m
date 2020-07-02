@@ -2,118 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 12E95212B9B
-	for <lists+linux-wireless@lfdr.de>; Thu,  2 Jul 2020 19:52:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D266212BC8
+	for <lists+linux-wireless@lfdr.de>; Thu,  2 Jul 2020 20:00:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726980AbgGBRwZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 2 Jul 2020 13:52:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50806 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727773AbgGBRwY (ORCPT
+        id S1727935AbgGBSA1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 2 Jul 2020 14:00:27 -0400
+Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:54017 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1727932AbgGBSA1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 2 Jul 2020 13:52:24 -0400
-Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com [IPv6:2a00:1450:4864:20::341])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A456C08C5DF
-        for <linux-wireless@vger.kernel.org>; Thu,  2 Jul 2020 10:52:24 -0700 (PDT)
-Received: by mail-wm1-x341.google.com with SMTP id l17so28081465wmj.0
-        for <linux-wireless@vger.kernel.org>; Thu, 02 Jul 2020 10:52:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=subject:from:to:cc:references:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=oglYmDMJJsMPIXYV1ITcnNL4FWv5Lg95ZCqCfgcjHUs=;
-        b=eCKvFL3ymp9ODmh1kib4C/AcPrCHfUe4eQkI84tWMNstC588Mcs/UzyYV+30IgEPIB
-         lfn4BGs06fAPfloAK0p40cJ3BQEuYzsfHY7d9o5Wr4ZrXyQrqXhtnG6F3jFX42w8e/2m
-         weKvXoukAneezHhMB60mGihkb8pcI/kk8sZmWoEft2bkOnM2yQyw4RX50kJPE3J+9MnN
-         fQinPrGJq2HYROL7Dl9fLIK+uTW325NDPRzeAtAAM2vhot8J8DATGO6hnDZGucHe9Jjs
-         qXs+mG8rCVEuhGXBHfDtewoYJIa2KlLkJMQg70p6vJf/FdlJAKW6C6ggeDUiANRQMAFK
-         P1Jw==
+        Thu, 2 Jul 2020 14:00:27 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1593712824;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=9RTAPOlUHkOQw9eYA5K/tFkatYM1nQfJUmd/xyhvdU8=;
+        b=JklZNu73oNOH4DzffZTJ/AYtkI3tiZ1ZRWvUBNEXXWs8BeePi1L2WVvcZ+m8+N5CTp9goK
+        1cY+LcCjuH7toYqWXu25+9ge4+RvOTPFBc9ovy0X5sN0Ou7qX89kEAnnlhEI7Csy/D96+w
+        yMIcYjtF/KplNCaGktQFZ13yjK1pk3M=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-52-m2KhOGx9OV2rJwSM2xaa7g-1; Thu, 02 Jul 2020 14:00:23 -0400
+X-MC-Unique: m2KhOGx9OV2rJwSM2xaa7g-1
+Received: by mail-ed1-f71.google.com with SMTP id g18so29450267edu.22
+        for <linux-wireless@vger.kernel.org>; Thu, 02 Jul 2020 11:00:23 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:from:to:cc:references:message-id:date
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
          :user-agent:mime-version:in-reply-to:content-language
          :content-transfer-encoding;
-        bh=oglYmDMJJsMPIXYV1ITcnNL4FWv5Lg95ZCqCfgcjHUs=;
-        b=Nd7g7UECq3YnQ8RVH9bJ/WafBXsjbOjtNOCDPekieBFvKFXu1Ob7coC0eikaKQECss
-         K57iHFbHEsy9lSxMLOXVmBBX5kUlYazAyFtj6/WzMXdATv5qKiRR+pafn8McULjC4569
-         Q4ARRWNoh4RiHZGWEPTaMno0nsH9PlXHDJT3yOXxpf+n+Iznl9IiYRWh3Oj1qi0738ZU
-         rMeG9IhZO5MBhB06ZRRNgcR2mtFkuRIHyhePgXdIPLWIeHGp6M7ye7XbZ7UmXilrBkEb
-         KdALUP/VmZOehNYgbLQ6/6Tdb4VCwH3NYQPF3rfQyxZiIYBpFp+eZd4k6ddgo7dkrbXZ
-         I4cA==
-X-Gm-Message-State: AOAM5338yUBRovbeNZ3ftMIFxN+/TSl6iggyhlaiVHr/XVA67nf4I7ZS
-        a5XKDBm7NdGtT5uLGJWEcx+eVA==
-X-Google-Smtp-Source: ABdhPJwGnT2w1T0cKggQNb65VkNrkBamKBA/sNFXDWMPWvMyn5BHS1CuhDAFIDm0ZukJhYYRAkgr9A==
-X-Received: by 2002:a7b:c041:: with SMTP id u1mr34629911wmc.56.1593712342780;
-        Thu, 02 Jul 2020 10:52:22 -0700 (PDT)
-Received: from ?IPv6:2a01:e34:ed2f:f020:c88a:7b2b:a4a1:46d0? ([2a01:e34:ed2f:f020:c88a:7b2b:a4a1:46d0])
-        by smtp.googlemail.com with ESMTPSA id h2sm11232487wrw.62.2020.07.02.10.52.19
+        bh=9RTAPOlUHkOQw9eYA5K/tFkatYM1nQfJUmd/xyhvdU8=;
+        b=Og8O2HycpwJiQP9KB9Q0Y5ezffVf46hbY5bNPaFEKFPtbOhWwn3myJMYeTxnjKahXg
+         rpVaSpFdU8v9sA+YRnsuMSNYNPLZ3c/hI6I66vmKWejkOtPErghbr2bp22XnKAVGHfmC
+         uIgOSWmDRbAvj11NkeDApyDVh/0LGuKyQ1dU++pk7haXYY+SLPni+VO5kjf4iKvKYhqt
+         aaB3wXMhBiAWfiWUI0nFw1pLyAPG/7MjIZMvU0xNTgwpTzoafoRlCJu17kUdbTOfjhkN
+         kEdgX10FPrGq2Yz9ro3leuoUPGwk1CTVl2qtFzCM2U9weCi6K2XUQrHyDaekbyenUt4h
+         kXqA==
+X-Gm-Message-State: AOAM532phnZCdAwYbA3hUVwa/09UeUSwk7bMMLEkZAE+PcFyFGaOfvUL
+        NZz6zOquJOLfzyw5i0vCUw2LdEB3DkEtpF0e0KZ4LE0aE6IbfbDEjNXwXDAeSri3KxbTV90KZ9k
+        7cQN8/B5cRiapawS/b5FMHJSQ5+o=
+X-Received: by 2002:a17:906:7c3:: with SMTP id m3mr27739718ejc.30.1593712822202;
+        Thu, 02 Jul 2020 11:00:22 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJzoAanT6l1qUnuzAmJ14QQOgQttXkiEZaoXRw3XHTH4UmRAk7NzoBTFrhoAQmSqdLtzxCypVA==
+X-Received: by 2002:a17:906:7c3:: with SMTP id m3mr27739678ejc.30.1593712821894;
+        Thu, 02 Jul 2020 11:00:21 -0700 (PDT)
+Received: from x1.localdomain (2001-1c00-0c0c-fe00-d2ea-f29d-118b-24dc.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:d2ea:f29d:118b:24dc])
+        by smtp.gmail.com with ESMTPSA id qc16sm7399458ejb.33.2020.07.02.11.00.20
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 02 Jul 2020 10:52:22 -0700 (PDT)
-Subject: Re: [PATCH v7 00/11] Stop monitoring disabled devices
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-To:     Andrzej Pietrasiewicz <andrzej.p@collabora.com>,
-        linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
-        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-renesas-soc@vger.kernel.org,
-        linux-rockchip@lists.infradead.org
-Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Vishal Kulkarni <vishal@chelsio.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jiri Pirko <jiri@mellanox.com>,
-        Ido Schimmel <idosch@mellanox.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Intel Linux Wireless <linuxwifi@intel.com>,
+        Thu, 02 Jul 2020 11:00:21 -0700 (PDT)
+Subject: Re: [PATCH] brcmfmac: expose firmware config files through modinfo
+To:     Matthias Brugger <mbrugger@suse.com>, matthias.bgg@kernel.org,
+        Jakub Kicinski <kuba@kernel.org>,
         Kalle Valo <kvalo@codeaurora.org>,
-        Peter Kaestle <peter@piie.net>,
-        Darren Hart <dvhart@infradead.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        Sebastian Reichel <sre@kernel.org>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Amit Kucheria <amit.kucheria@verdurent.com>,
-        Support Opensource <support.opensource@diasemi.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        =?UTF-8?Q?Niklas_S=c3=b6derlund?= <niklas.soderlund@ragnatech.se>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Orson Zhai <orsonzhai@gmail.com>,
-        Baolin Wang <baolin.wang7@gmail.com>,
-        Chunyan Zhang <zhang.lyra@gmail.com>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Allison Randal <allison@lohutok.net>,
-        Enrico Weigelt <info@metux.net>,
-        Gayatri Kammela <gayatri.kammela@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        kernel@collabora.com
-References: <20200629122925.21729-1-andrzej.p@collabora.com>
- <aab40d90-3f72-657c-5e14-e53a34c4b420@linaro.org>
- <3d03d1a2-ac06-b69b-93cb-e0203be62c10@collabora.com>
- <47111821-d691-e71d-d740-e4325e290fa4@linaro.org>
- <be9b7ee3-cad0-e462-126d-08de9b226285@collabora.com>
- <4353a939-3f5e-8369-5bc0-ad8162b5ffc7@linaro.org>
- <a531d80f-afd1-2dec-6c77-ed984e97595c@collabora.com>
- <db1ff4e1-cbf8-89b3-5d64-b91a1fd88a41@linaro.org>
- <73942aea-ae79-753c-fe90-d4a99423d548@collabora.com>
- <374dddd9-b600-3a30-d6c3-8cfcefc944d9@linaro.org>
- <5a28deb7-f307-8b03-faad-ab05cb8095d1@collabora.com>
- <8aeb4f51-1813-63c1-165b-06640af5968f@linaro.org>
- <685ef627-e377-bbf1-da11-7f7556ca2dd7@collabora.com>
- <d41bf28f-ee91-6946-2334-f11ec81f96fe@linaro.org>
-Message-ID: <b773a49d-c26e-9e20-2a5e-647eb771d617@linaro.org>
-Date:   Thu, 2 Jul 2020 19:52:19 +0200
+        "David S . Miller" <davem@davemloft.net>
+Cc:     =?UTF-8?Q?Pali_Roh=c3=a1r?= <pali@kernel.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Chung-Hsien Hsu <stanley.hsu@cypress.com>,
+        Jean-Philippe Brucker <jean-philippe@linaro.org>,
+        Double Lo <double.lo@cypress.com>,
+        Frank Kao <frank.kao@cypress.com>,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        Arend van Spriel <arend.vanspriel@broadcom.com>,
+        "Gustavo A . R . Silva" <gustavo@embeddedor.com>,
+        netdev@vger.kernel.org,
+        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Wright Feng <wright.feng@cypress.com>,
+        Saravanan Shanmugham <saravanan.shanmugham@cypress.com>,
+        brcm80211-dev-list@cypress.com, linux-kernel@vger.kernel.org,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Soeren Moch <smoch@web.de>
+References: <20200701153123.25602-1-matthias.bgg@kernel.org>
+ <338e3cff-dfa0-c588-cf53-a160d75af2ee@redhat.com>
+ <1013c7e6-f1fb-af0c-fe59-4d6cd612f959@suse.com>
+From:   Hans de Goede <hdegoede@redhat.com>
+Message-ID: <35066b13-9fe2-211d-2ba8-5eb903b46bf7@redhat.com>
+Date:   Thu, 2 Jul 2020 20:00:19 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
+ Thunderbird/68.9.0
 MIME-Version: 1.0
-In-Reply-To: <d41bf28f-ee91-6946-2334-f11ec81f96fe@linaro.org>
-Content-Type: text/plain; charset=utf-8
+In-Reply-To: <1013c7e6-f1fb-af0c-fe59-4d6cd612f959@suse.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
@@ -121,48 +95,142 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 02/07/2020 19:49, Daniel Lezcano wrote:
+Hi,
 
-[ ... ]
-
->> Thanks!
+On 7/1/20 5:46 PM, Matthias Brugger wrote:
+> Hi Hans,
+> 
+> On 01/07/2020 17:38, Hans de Goede wrote:
+>> Hi,
 >>
->> That confirms your suspicions.
+>> On 7/1/20 5:31 PM, matthias.bgg@kernel.org wrote:
+>>> From: Matthias Brugger <mbrugger@suse.com>
+>>>
+>>> Apart from a firmware binary the chip needs a config file used by the
+>>> FW. Add the config files to modinfo so that they can be read by
+>>> userspace.
 >>
->> So the reason is that ->get_temp() is called while the mutex is held and
->> thermal_zone_device_is_enabled() wants to take the same mutex.
+>> The configfile firmware filename is dynamically generated, just adding the list
+>> of all currently shipped ones is not really helpful and this is going to get
+>> out of sync with what we actually have in linux-firmware.
 > 
-> Yes, that's correct.
+> I'm aware of this, and I agree.
 > 
->> Is adding a comment to thermal_zone_device_is_enabled() to never call
->> it while the mutex is held and adding another version of it which does
->> not take the mutex ok?
+>>
+>> I must honestly say that I'm not a fan of this, I guess you are trying to
+>> get some tool which builds a minimal image, such as an initrd generator
+>> to add these files to the image ?
+>>
 > 
-> The thermal_zone_device_is_enabled() is only used in two places, acpi
-> and this imx driver, and given:
+> Yes exactly.
 > 
-> 1. as soon as the mutex is released, there is no guarantee the thermal
-> zone won't be changed right after, the lock is pointless, thus the
-> information also.
+>> I do not immediately have a better idea, but IMHO the solution
+>> this patch proposes is not a good one, so nack from me for this change.
+>>
 > 
-> 2. from a design point of view, I don't see why a driver should know if
-> a thermal zone is disabled or not
-> 
-> It would make sense to end with this function and do not give the
-> different drivers an opportunity to access this information.
-> 
-> Why not add change_mode for the acpi in order to enable or disable the
-> events and for imx_thermal use irq_enabled flag instead of the thermal
-> zone mode? Moreover it is very unclear why this function is needed in
-> imx_get_temp(), and I suspect we should be able to get rid of it.
+> Another path we could go is add a wildcard string instead, for example:
+> MODULE_FIRMWARE("brcm/brcmfmac43455-sdio.*.txt");
 
-If you agree with that you can send a patch on top of your series so I
-can test it fixes the imx platform.
+I was thinking about the same lines, but I'm afraid some user-space
+utils may blow up if we introduce this, which is why I did not suggest
+it in my previous email.
+
+> AFAIK there is no driver in the kernel that does this. I checked with our dracut
+> developer and right now dracut can't cope with that.
+
+Can't cope as in tries to add "/lib/firmware/brcm/brcmfmac43455-sdio.*.txt"
+and then skips it (as it does for other missing firmware files); or can't
+cope as in blows-up and aborts without leaving a valid initrd behind.
+
+If is the former, that is fine, if it is the latter that is a problem.
+
+> But he will try to
+> implement that in the future.
+> 
+> So my idea was to maintain that list for now and switch to the wildcard approach
+> once we have dracut support that.
+
+So lets assume that the wildcard approach is ok and any initrd tools looking at
+the MODULE_FIRMWARE metadata either accidentally do what we want; or fail
+gracefully.  Then if we temporarily add the long MODULE_FIRMWARE list now, those
+which fail gracefully will start doing the right thing (except they add too
+much firmware), and later on we cannot remove all the non wildcard
+MODULE_FIRMWARE list entries because that will cause a regression.
+
+Because of this I'm not a fan of temporarily fixing this like this. Using wifi
+inside the initrd is very much a cornercase anyways, so I think users can
+use a workaround by dropping an /etc/dracut.conf.d file adding the necessary
+config file for now.
+
+As for the long run, I was thinking that even with regular firmware files
+we are adding too much firmware to host-specific initrds since we add all
+the firmwares listed with MODULE_FIRMWARE, and typically only a few are
+actually necessary.
+
+We could modify the firmware_loader code under drivers/base/firmware_loader
+to keep a list of all files loaded since boot; and export that somewhere
+under /sys, then dracut could use that list in host-only mode and we get
+a smaller initrd. One challenge with this approach though is firmware files
+which are necessary for a new kernel, but not used by the running kernel ...
+I'm afraid I do not have a good answer to that.
+
+Regards,
+
+Hans
 
 
--- 
-<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
 
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
+
+
+
+
+>>> Signed-off-by: Matthias Brugger <mbrugger@suse.com>
+>>>
+>>> ---
+>>>
+>>>    .../wireless/broadcom/brcm80211/brcmfmac/sdio.c  | 16 ++++++++++++++++
+>>>    1 file changed, 16 insertions(+)
+>>>
+>>> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+>>> b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+>>> index 310d8075f5d7..ba18df6d8d94 100644
+>>> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+>>> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+>>> @@ -624,6 +624,22 @@ BRCMF_FW_DEF(4359, "brcmfmac4359-sdio");
+>>>    BRCMF_FW_DEF(4373, "brcmfmac4373-sdio");
+>>>    BRCMF_FW_DEF(43012, "brcmfmac43012-sdio");
+>>>    +/* firmware config files */
+>>> +MODULE_FIRMWARE(BRCMF_FW_DEFAULT_PATH
+>>> "brcm/brcmfmac4330-sdio.Prowise-PT301.txt");
+>>> +MODULE_FIRMWARE(BRCMF_FW_DEFAULT_PATH
+>>> "brcm/brcmfmac43340-sdio.meegopad-t08.txt");
+>>> +MODULE_FIRMWARE(BRCMF_FW_DEFAULT_PATH
+>>> "brcm/brcmfmac43340-sdio.pov-tab-p1006w-data.txt");
+>>> +MODULE_FIRMWARE(BRCMF_FW_DEFAULT_PATH
+>>> "brcm/brcmfmac43362-sdio.cubietech,cubietruck.txt");
+>>> +MODULE_FIRMWARE(BRCMF_FW_DEFAULT_PATH
+>>> "brcm/brcmfmac43430a0-sdio.jumper-ezpad-mini3.txt");
+>>> +MODULE_FIRMWARE(BRCMF_FW_DEFAULT_PATH "brcm/brcmfmac43430a0-sdio.ONDA-V80
+>>> PLUS.txt");
+>>> +MODULE_FIRMWARE(BRCMF_FW_DEFAULT_PATH "brcm/brcmfmac43430-sdio.AP6212.txt");
+>>> +MODULE_FIRMWARE(BRCMF_FW_DEFAULT_PATH
+>>> "brcm/brcmfmac43430-sdio.Hampoo-D2D3_Vi8A1.txt");
+>>> +MODULE_FIRMWARE(BRCMF_FW_DEFAULT_PATH "brcm/brcmfmac43430-sdio.MUR1DX.txt");
+>>> +MODULE_FIRMWARE(BRCMF_FW_DEFAULT_PATH
+>>> "brcm/brcmfmac43430-sdio.raspberrypi,3-model-b.txt");
+>>> +MODULE_FIRMWARE(BRCMF_FW_DEFAULT_PATH "brcm/brcmfmac43455-sdio.MINIX-NEO
+>>> Z83-4.txt");
+>>> +MODULE_FIRMWARE(BRCMF_FW_DEFAULT_PATH
+>>> "brcm/brcmfmac43455-sdio.raspberrypi,3-model-b-plus.txt");
+>>> +MODULE_FIRMWARE(BRCMF_FW_DEFAULT_PATH
+>>> "brcm/brcmfmac43455-sdio.raspberrypi,4-model-b.txt");
+>>> +MODULE_FIRMWARE(BRCMF_FW_DEFAULT_PATH
+>>> "brcm/brcmfmac4356-pcie.gpd-win-pocket.txt");
+>>> +
+>>>    static const struct brcmf_firmware_mapping brcmf_sdio_fwnames[] = {
+>>>        BRCMF_FW_ENTRY(BRCM_CC_43143_CHIP_ID, 0xFFFFFFFF, 43143),
+>>>        BRCMF_FW_ENTRY(BRCM_CC_43241_CHIP_ID, 0x0000001F, 43241B0),
+>>>
+>>
+> 
+
