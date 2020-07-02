@@ -2,115 +2,180 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F8CD211F15
-	for <lists+linux-wireless@lfdr.de>; Thu,  2 Jul 2020 10:43:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BC84C21252A
+	for <lists+linux-wireless@lfdr.de>; Thu,  2 Jul 2020 15:47:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726292AbgGBInc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 2 Jul 2020 04:43:32 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:41952 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726042AbgGBInc (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 2 Jul 2020 04:43:32 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1593679411; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=Gt6gtySvQvf4hvmvslOeFNuAum0rAOJn0h3FMcdMzrM=; b=w/wjJUXQmkzHaJmRDyn2fDoZpQglHHWVsJMvRMNUhnQsK+jfiwXN82bVp1z4yeWSb/rGSzmO
- O0thby7StSaCZUsLS3gZXVH61VdNoe2ibp4MC0QBQB6MSDfqEGaJ916HDedXKdPqz7+VKe0E
- nnUN0SAV9ikoN7ZSn0yAwa4dAd4=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n01.prod.us-east-1.postgun.com with SMTP id
- 5efd9e21567385e8e72e65ae (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 02 Jul 2020 08:43:13
- GMT
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 4196AC4339C; Thu,  2 Jul 2020 08:43:12 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 6D3BDC433C8;
-        Thu,  2 Jul 2020 08:43:09 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 6D3BDC433C8
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     <Ajay.Kathat@microchip.com>
-Cc:     <linux-wireless@vger.kernel.org>, <devel@driverdev.osuosl.org>,
-        <gregkh@linuxfoundation.org>, <johannes@sipsolutions.net>,
-        <Nicolas.Ferre@microchip.com>, <Claudiu.Beznea@microchip.com>,
-        <Sripad.Balwadgi@microchip.com>, <Venkateswara.Kaja@microchip.com>
-Subject: Re: [PATCH] wilc1000: move wilc driver out of staging
-References: <20200625123712.14156-1-ajay.kathat@microchip.com>
-        <875zb6e6zr.fsf@tynnyri.adurom.net>
-        <a09157e8-6464-9d48-5d5d-fc168e1b85dc@microchip.com>
-Date:   Thu, 02 Jul 2020 11:43:07 +0300
-In-Reply-To: <a09157e8-6464-9d48-5d5d-fc168e1b85dc@microchip.com> (Ajay
-        Kathat's message of "Thu, 2 Jul 2020 07:30:31 +0000")
-Message-ID: <875zb6b944.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        id S1729314AbgGBNrr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 2 Jul 2020 09:47:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40976 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729335AbgGBNrq (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 2 Jul 2020 09:47:46 -0400
+Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B201BC08C5DE
+        for <linux-wireless@vger.kernel.org>; Thu,  2 Jul 2020 06:47:45 -0700 (PDT)
+Received: by mail-wr1-x443.google.com with SMTP id b6so28461759wrs.11
+        for <linux-wireless@vger.kernel.org>; Thu, 02 Jul 2020 06:47:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=ZwC2KofFJKO2Kz1ZnDpUC9vH2nMKW6u7oZXxLzQv40I=;
+        b=dmiLcwDhJk1NQcYlu03OuKMtUIE/NeC2LLeLbrwxiWP/CQWVh678undWuJpSMFfWKt
+         pqJQFbXDS3SmeqvEKXm69oZpdNbYtPr6K3bey6rLz4r9xng9TFETrFIQ4hIDCxrfauBv
+         GRYt0qlTOeZ49+GYrf+gmLrcYXd/cnfabq6G/6qUAp59taYwc4gBHa3cG+n+S7WK2WBM
+         bGRllAgbervVwDtmS+KJwhmnJnQLcCPvhcoveFej6391OZEALA4RpW2ZaSp+wxwu9qX6
+         lLqF4S+Po6BfziWbngftEcLQyKYRo1r1AtxgL+iQTjhEXqpcEujdUBJ/nnzFqdttjO26
+         +8Ug==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=ZwC2KofFJKO2Kz1ZnDpUC9vH2nMKW6u7oZXxLzQv40I=;
+        b=T4GjFgsvEUmVR/tcdx1Hbzg4Kr++VSwNHyw+V1d4li9H0WnINcl+UGALS3YHuKeMt1
+         5Obi/uOqGrJj4ujw3xdkO7Y4p3+XIEzxPvGjJm6Hkd1kDDskALs+QqgsWmeF0HIXDqOS
+         5LWjS6IAaRZrk8EbHci+5ix+KZPF9EM+hggc383KPidBw61SU4g97Zng3PYS8RxeZVLb
+         BG9Gt8cGPMTJL9JLgoRx7yHLjMYwrJINVf7A+HYVXqnBwx1C5ItUeW5mItBUfgH27jDg
+         m59a8udFFDI+vjnwypmT4MkW8IHi8YGuk7AL0FptaqLPH4r2R5BwprkZpKIJxfphxkmP
+         BGhA==
+X-Gm-Message-State: AOAM530q9j7dggpLS7LVRmOWtnGgR2w6mgn9gA9RmntDccBx/4rHwLJK
+        2iE6yWyJdWd2zYPiPWET70kV9A==
+X-Google-Smtp-Source: ABdhPJxkjl0IEjS3JqN7KaPO6L0oyFA19XXhKeCpfVTk+YyOUUQhs0LWqu5F2t0O0dXW3DG2OnPg/w==
+X-Received: by 2002:adf:c44d:: with SMTP id a13mr32528906wrg.205.1593697663121;
+        Thu, 02 Jul 2020 06:47:43 -0700 (PDT)
+Received: from ?IPv6:2a01:e34:ed2f:f020:c88a:7b2b:a4a1:46d0? ([2a01:e34:ed2f:f020:c88a:7b2b:a4a1:46d0])
+        by smtp.googlemail.com with ESMTPSA id g16sm11988699wrh.91.2020.07.02.06.47.39
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 02 Jul 2020 06:47:42 -0700 (PDT)
+Subject: Re: [PATCH v7 00/11] Stop monitoring disabled devices
+To:     Andrzej Pietrasiewicz <andrzej.p@collabora.com>,
+        linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
+        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-renesas-soc@vger.kernel.org,
+        linux-rockchip@lists.infradead.org
+Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Vishal Kulkarni <vishal@chelsio.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jiri Pirko <jiri@mellanox.com>,
+        Ido Schimmel <idosch@mellanox.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        Intel Linux Wireless <linuxwifi@intel.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Peter Kaestle <peter@piie.net>,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Sebastian Reichel <sre@kernel.org>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Amit Kucheria <amit.kucheria@verdurent.com>,
+        Support Opensource <support.opensource@diasemi.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        =?UTF-8?Q?Niklas_S=c3=b6derlund?= <niklas.soderlund@ragnatech.se>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Orson Zhai <orsonzhai@gmail.com>,
+        Baolin Wang <baolin.wang7@gmail.com>,
+        Chunyan Zhang <zhang.lyra@gmail.com>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Allison Randal <allison@lohutok.net>,
+        Enrico Weigelt <info@metux.net>,
+        Gayatri Kammela <gayatri.kammela@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        kernel@collabora.com
+References: <20200629122925.21729-1-andrzej.p@collabora.com>
+ <aab40d90-3f72-657c-5e14-e53a34c4b420@linaro.org>
+ <3d03d1a2-ac06-b69b-93cb-e0203be62c10@collabora.com>
+ <47111821-d691-e71d-d740-e4325e290fa4@linaro.org>
+ <be9b7ee3-cad0-e462-126d-08de9b226285@collabora.com>
+ <4353a939-3f5e-8369-5bc0-ad8162b5ffc7@linaro.org>
+ <a531d80f-afd1-2dec-6c77-ed984e97595c@collabora.com>
+ <db1ff4e1-cbf8-89b3-5d64-b91a1fd88a41@linaro.org>
+ <73942aea-ae79-753c-fe90-d4a99423d548@collabora.com>
+From:   Daniel Lezcano <daniel.lezcano@linaro.org>
+Message-ID: <374dddd9-b600-3a30-d6c3-8cfcefc944d9@linaro.org>
+Date:   Thu, 2 Jul 2020 15:47:38 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.0
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <73942aea-ae79-753c-fe90-d4a99423d548@collabora.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-<Ajay.Kathat@microchip.com> writes:
+On 01/07/2020 12:23, Andrzej Pietrasiewicz wrote:
+> Hi,
+> 
+> W dniu 30.06.2020 o 20:33, Daniel Lezcano pisze:
+>> On 30/06/2020 18:56, Andrzej Pietrasiewicz wrote:
+>>> Hi,
+>>>
+>>> W dniu 30.06.2020 o 17:53, Daniel Lezcano pisze:
+>>>> On 30/06/2020 17:29, Andrzej Pietrasiewicz wrote:
+>>>>> Hi Daniel,
+>>>>>
+>>>>> W dniu 30.06.2020 o 16:53, Daniel Lezcano pisze:
+>>>>>> On 30/06/2020 15:43, Andrzej Pietrasiewicz wrote:
+>>>>>>> Hi Daniel,
+>>>>>>>
+>>>>>>> I am reading the logs and can't find anything specific to thermal.
+>>>>>>>
+>>>>>>> What I can see is
+>>>>>>>
+>>>>>>> "random: crng init done"
+>>>>>>>
+>>>>>>> with large times (~200s) and then e.g.
+>>>>>>>
+>>>>>>> 'auto-login-action timed out after 283 seconds'
+>>>>>>>
+>>>>>>> I'm looking at e.g.
+>>>>>>> https://storage.kernelci.org/thermal/testing/v5.8-rc3-11-gf5e50bf4d3ef/arm/multi_v7_defconfig/gcc-8/lab-baylibre/baseline-imx6q-sabrelite.html
+>>>>>>>
+>>>>>>>
+>>>>>>>
+>>>>>>>
+>>>>>
+>>>>> f5e50bf4d3ef is PATCH 11/11. Does the problem happen at PATCH 1-10/11?
+>>>>> PATCH 11/11 renames a method and the code compiles, so it seems
+>>>>> unlikely that this is causing problems. One should never say never,
+>>>>> though ;)
+>>>>
+>>>> The sha1 is just the HEAD for the kernel reference. The regression
+>>>> happens with your series, somewhere.
+>>>>
+>>>>> The reported failure is not due to some test failing but rather due
+>>>>> to timeout logging into the test system. Could it be that there is
+>>>>> some other problem?
+>>>>
+>>>> I did reproduce:
+>>>>
+>>>> v5.8-rc3 + series => imx6 hang at boot time
+>>>> v5.8-rc3 => imx6 boots correctly
 
-> On 02/07/20 12:30 pm, Kalle Valo wrote:
->> EXTERNAL EMAIL: Do not click links or open attachments unless you
->> know the content is safe
->> 
->> <Ajay.Kathat@microchip.com> writes:
->> 
->>> From: Ajay Singh <ajay.kathat@microchip.com>
->>>
->>> WILC1000 is an IEEE 802.11 b/g/n IoT link controller module. The
->>> WILC1000 connects to Microchip AVR/SMART MCUs, SMART MPUs, and other
->>> processors with minimal resource requirements with a simple
->>> SPI/SDIO-to-Wi-Fi interface.
->>>
->>> WILC1000 driver has been part of staging for few years. With
->>> contributions from the community, it has improved significantly. Full
->>> driver review has helped in achieving the current state.
->>> The details for those reviews are captured in 1 & 2.
->>>
->>> [1].
->>> https://lore.kernel.org/linux-wireless/1537957525-11467-1-git-send-email-ajay.kathat@microchip.com/
->>> [2].
->>> https://lore.kernel.org/linux-wireless/1562896697-8002-1-git-send-email-ajay.kathat@microchip.com/
->>>
->>> Signed-off-by: Ajay Singh <ajay.kathat@microchip.com>
->>> ---
->>>
->>> As suggested, keeping all the changes in single commit with file rename
->>> so it's easy to move out of staging [3].
->>>
->>> Please choose whichever option you prefer between the git mv or patch series
->>> sent last Tuesday. The resulting driver is the same as no patch has been
->>> queued in between.
->>>
->>> [3].
->>> https://lore.kernel.org/linux-wireless/20200623110000.31559-1-ajay.kathat@microchip.com/
->> 
->> As discussed with Greg I created an immutable branch for this and merged
->> the branch to wireless-drivers-next:
->
-> Thanks Kalle.
->
-> If my understanding is correct, we have to use 'wireless-driver-next'
-> master branch to submit new patches for wilc1000. right?
+So finally I succeeded to reproduce it on my imx7 locally. The sensor
+was failing to initialize for another reason related to the legacy
+cooling device, this is why it is not appearing on the imx7.
 
-Correct. And I also suggest to get familiar with the linux-wireless
-patchwork to follow patch status, more info in the link below.
+I can now git-bisect :)
+
+
 
 -- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog
