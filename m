@@ -2,22 +2,22 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 179BC212641
-	for <lists+linux-wireless@lfdr.de>; Thu,  2 Jul 2020 16:26:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C635C21266A
+	for <lists+linux-wireless@lfdr.de>; Thu,  2 Jul 2020 16:37:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729437AbgGBO0z (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 2 Jul 2020 10:26:55 -0400
-Received: from mail29.static.mailgun.info ([104.130.122.29]:53562 "EHLO
+        id S1729482AbgGBOho (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 2 Jul 2020 10:37:44 -0400
+Received: from mail29.static.mailgun.info ([104.130.122.29]:32484 "EHLO
         mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1729271AbgGBO0y (ORCPT
+        by vger.kernel.org with ESMTP id S1728179AbgGBOhn (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 2 Jul 2020 10:26:54 -0400
+        Thu, 2 Jul 2020 10:37:43 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1593700012; h=Content-Transfer-Encoding: Content-Type:
+ s=smtp; t=1593700662; h=Content-Transfer-Encoding: Content-Type:
  MIME-Version: Message-Id: Date: Subject: Cc: To: From: Sender;
- bh=qLi3pVMiYySeuwcG2ykT5MDSFnVLEjrie2QWWPEfmIc=; b=BTRyk7oL5bg9O8MgH1T9ZTcKAFZAn18ITU4q+DzlwVH/j8904fNvbjRD0UQHgUHM2BtIYDx3
- 37vM5LIgAkR55xGBPTeSkbA8LSEOevqaVyI4TzbLZQ9aMfxi7W6UhN4BOWRAJxcksdGaKiEB
- W0LfY1JvhcrUVV+bsEW9yZOulLI=
+ bh=qLi3pVMiYySeuwcG2ykT5MDSFnVLEjrie2QWWPEfmIc=; b=LDM4EkWkrKls7XwIgLzbkuZvMGYFn4F5mLeFl8h2ldGZA2D+rC80j2DHtKwaDY8coIF0x8Kp
+ nPv5K9jP0lbz76WNsUTTHCM6zyYj3WMXoqXtXaHYQYApSktlDud6qUJc6F1KW/vWZB7LQOke
+ eYVtUXCYvMvHylwopLDRR2vRcsI=
 X-Mailgun-Sending-Ip: 104.130.122.29
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
