@@ -2,55 +2,21 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BC84C21252A
-	for <lists+linux-wireless@lfdr.de>; Thu,  2 Jul 2020 15:47:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 877EB212542
+	for <lists+linux-wireless@lfdr.de>; Thu,  2 Jul 2020 15:53:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729314AbgGBNrr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 2 Jul 2020 09:47:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40976 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729335AbgGBNrq (ORCPT
+        id S1729476AbgGBNxr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 2 Jul 2020 09:53:47 -0400
+Received: from bhuna.collabora.co.uk ([46.235.227.227]:58892 "EHLO
+        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729051AbgGBNxq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 2 Jul 2020 09:47:46 -0400
-Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B201BC08C5DE
-        for <linux-wireless@vger.kernel.org>; Thu,  2 Jul 2020 06:47:45 -0700 (PDT)
-Received: by mail-wr1-x443.google.com with SMTP id b6so28461759wrs.11
-        for <linux-wireless@vger.kernel.org>; Thu, 02 Jul 2020 06:47:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=ZwC2KofFJKO2Kz1ZnDpUC9vH2nMKW6u7oZXxLzQv40I=;
-        b=dmiLcwDhJk1NQcYlu03OuKMtUIE/NeC2LLeLbrwxiWP/CQWVh678undWuJpSMFfWKt
-         pqJQFbXDS3SmeqvEKXm69oZpdNbYtPr6K3bey6rLz4r9xng9TFETrFIQ4hIDCxrfauBv
-         GRYt0qlTOeZ49+GYrf+gmLrcYXd/cnfabq6G/6qUAp59taYwc4gBHa3cG+n+S7WK2WBM
-         bGRllAgbervVwDtmS+KJwhmnJnQLcCPvhcoveFej6391OZEALA4RpW2ZaSp+wxwu9qX6
-         lLqF4S+Po6BfziWbngftEcLQyKYRo1r1AtxgL+iQTjhEXqpcEujdUBJ/nnzFqdttjO26
-         +8Ug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=ZwC2KofFJKO2Kz1ZnDpUC9vH2nMKW6u7oZXxLzQv40I=;
-        b=T4GjFgsvEUmVR/tcdx1Hbzg4Kr++VSwNHyw+V1d4li9H0WnINcl+UGALS3YHuKeMt1
-         5Obi/uOqGrJj4ujw3xdkO7Y4p3+XIEzxPvGjJm6Hkd1kDDskALs+QqgsWmeF0HIXDqOS
-         5LWjS6IAaRZrk8EbHci+5ix+KZPF9EM+hggc383KPidBw61SU4g97Zng3PYS8RxeZVLb
-         BG9Gt8cGPMTJL9JLgoRx7yHLjMYwrJINVf7A+HYVXqnBwx1C5ItUeW5mItBUfgH27jDg
-         m59a8udFFDI+vjnwypmT4MkW8IHi8YGuk7AL0FptaqLPH4r2R5BwprkZpKIJxfphxkmP
-         BGhA==
-X-Gm-Message-State: AOAM530q9j7dggpLS7LVRmOWtnGgR2w6mgn9gA9RmntDccBx/4rHwLJK
-        2iE6yWyJdWd2zYPiPWET70kV9A==
-X-Google-Smtp-Source: ABdhPJxkjl0IEjS3JqN7KaPO6L0oyFA19XXhKeCpfVTk+YyOUUQhs0LWqu5F2t0O0dXW3DG2OnPg/w==
-X-Received: by 2002:adf:c44d:: with SMTP id a13mr32528906wrg.205.1593697663121;
-        Thu, 02 Jul 2020 06:47:43 -0700 (PDT)
-Received: from ?IPv6:2a01:e34:ed2f:f020:c88a:7b2b:a4a1:46d0? ([2a01:e34:ed2f:f020:c88a:7b2b:a4a1:46d0])
-        by smtp.googlemail.com with ESMTPSA id g16sm11988699wrh.91.2020.07.02.06.47.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 02 Jul 2020 06:47:42 -0700 (PDT)
+        Thu, 2 Jul 2020 09:53:46 -0400
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: andrzej.p)
+        with ESMTPSA id 74A4F2A0785
 Subject: Re: [PATCH v7 00/11] Stop monitoring disabled devices
-To:     Andrzej Pietrasiewicz <andrzej.p@collabora.com>,
+To:     Daniel Lezcano <daniel.lezcano@linaro.org>,
         linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
         netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
         platform-driver-x86@vger.kernel.org,
@@ -101,81 +67,39 @@ References: <20200629122925.21729-1-andrzej.p@collabora.com>
  <a531d80f-afd1-2dec-6c77-ed984e97595c@collabora.com>
  <db1ff4e1-cbf8-89b3-5d64-b91a1fd88a41@linaro.org>
  <73942aea-ae79-753c-fe90-d4a99423d548@collabora.com>
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-Message-ID: <374dddd9-b600-3a30-d6c3-8cfcefc944d9@linaro.org>
-Date:   Thu, 2 Jul 2020 15:47:38 +0200
+ <374dddd9-b600-3a30-d6c3-8cfcefc944d9@linaro.org>
+From:   Andrzej Pietrasiewicz <andrzej.p@collabora.com>
+Message-ID: <5a28deb7-f307-8b03-faad-ab05cb8095d1@collabora.com>
+Date:   Thu, 2 Jul 2020 15:53:39 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.8.0
 MIME-Version: 1.0
-In-Reply-To: <73942aea-ae79-753c-fe90-d4a99423d548@collabora.com>
-Content-Type: text/plain; charset=utf-8
+In-Reply-To: <374dddd9-b600-3a30-d6c3-8cfcefc944d9@linaro.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 01/07/2020 12:23, Andrzej Pietrasiewicz wrote:
-> Hi,
+Hi Daniel,
+
+<snip>
+
+>>>>>
+>>>>> I did reproduce:
+>>>>>
+>>>>> v5.8-rc3 + series => imx6 hang at boot time
+>>>>> v5.8-rc3 => imx6 boots correctly
 > 
-> W dniu 30.06.2020 o 20:33, Daniel Lezcano pisze:
->> On 30/06/2020 18:56, Andrzej Pietrasiewicz wrote:
->>> Hi,
->>>
->>> W dniu 30.06.2020 o 17:53, Daniel Lezcano pisze:
->>>> On 30/06/2020 17:29, Andrzej Pietrasiewicz wrote:
->>>>> Hi Daniel,
->>>>>
->>>>> W dniu 30.06.2020 o 16:53, Daniel Lezcano pisze:
->>>>>> On 30/06/2020 15:43, Andrzej Pietrasiewicz wrote:
->>>>>>> Hi Daniel,
->>>>>>>
->>>>>>> I am reading the logs and can't find anything specific to thermal.
->>>>>>>
->>>>>>> What I can see is
->>>>>>>
->>>>>>> "random: crng init done"
->>>>>>>
->>>>>>> with large times (~200s) and then e.g.
->>>>>>>
->>>>>>> 'auto-login-action timed out after 283 seconds'
->>>>>>>
->>>>>>> I'm looking at e.g.
->>>>>>> https://storage.kernelci.org/thermal/testing/v5.8-rc3-11-gf5e50bf4d3ef/arm/multi_v7_defconfig/gcc-8/lab-baylibre/baseline-imx6q-sabrelite.html
->>>>>>>
->>>>>>>
->>>>>>>
->>>>>>>
->>>>>
->>>>> f5e50bf4d3ef is PATCH 11/11. Does the problem happen at PATCH 1-10/11?
->>>>> PATCH 11/11 renames a method and the code compiles, so it seems
->>>>> unlikely that this is causing problems. One should never say never,
->>>>> though ;)
->>>>
->>>> The sha1 is just the HEAD for the kernel reference. The regression
->>>> happens with your series, somewhere.
->>>>
->>>>> The reported failure is not due to some test failing but rather due
->>>>> to timeout logging into the test system. Could it be that there is
->>>>> some other problem?
->>>>
->>>> I did reproduce:
->>>>
->>>> v5.8-rc3 + series => imx6 hang at boot time
->>>> v5.8-rc3 => imx6 boots correctly
+> So finally I succeeded to reproduce it on my imx7 locally. The sensor
+> was failing to initialize for another reason related to the legacy
+> cooling device, this is why it is not appearing on the imx7.
+> 
+> I can now git-bisect :)
+> 
 
-So finally I succeeded to reproduce it on my imx7 locally. The sensor
-was failing to initialize for another reason related to the legacy
-cooling device, this is why it is not appearing on the imx7.
+That would be very kind of you, thank you!
 
-I can now git-bisect :)
-
-
-
--- 
-<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
-
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
+Andrzej
