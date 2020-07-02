@@ -2,25 +2,25 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 550A6212976
-	for <lists+linux-wireless@lfdr.de>; Thu,  2 Jul 2020 18:30:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 03BBE212973
+	for <lists+linux-wireless@lfdr.de>; Thu,  2 Jul 2020 18:30:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726790AbgGBQ35 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 2 Jul 2020 12:29:57 -0400
-Received: from muru.com ([72.249.23.125]:60388 "EHLO muru.com"
+        id S1726829AbgGBQ36 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 2 Jul 2020 12:29:58 -0400
+Received: from muru.com ([72.249.23.125]:60394 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726140AbgGBQ35 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        id S1726750AbgGBQ35 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
         Thu, 2 Jul 2020 12:29:57 -0400
 Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 32E1480B0;
-        Thu,  2 Jul 2020 16:30:49 +0000 (UTC)
+        by muru.com (Postfix) with ESMTP id 51FD980BB;
+        Thu,  2 Jul 2020 16:30:50 +0000 (UTC)
 From:   Tony Lindgren <tony@atomide.com>
 To:     Kalle Valo <kvalo@codeaurora.org>
 Cc:     Eyal Reizer <eyalr@ti.com>, Guy Mishol <guym@ti.com>,
         linux-wireless@vger.kernel.org, linux-omap@vger.kernel.org
-Subject: [PATCH 1/4] wlcore: Simplify runtime resume ELP path
-Date:   Thu,  2 Jul 2020 09:29:48 -0700
-Message-Id: <20200702162951.45392-2-tony@atomide.com>
+Subject: [PATCH 2/4] wlcore: Use spin_trylock in wlcore_irq_locked() for running the queue
+Date:   Thu,  2 Jul 2020 09:29:49 -0700
+Message-Id: <20200702162951.45392-3-tony@atomide.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20200702162951.45392-1-tony@atomide.com>
 References: <20200702162951.45392-1-tony@atomide.com>
@@ -31,121 +31,68 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-We can simplify the runtime resume ELP path by always setting and
-clearing the completion in runtime resume. This way we can test for
-WL1271_FLAG_IRQ_RUNNING after the resume write to see if we need
-completion at all.
+We currently have a collection of flags and locking between the
+threaded irq and tx work:
 
-And in wlcore_irq(), we need to take spinlock for running the
-completion and for the pm_wakeup_event(). Spinlock is not needed
-around the bitops flags check for WL1271_FLAG_SUSPENDED so the
-spinlocked sections get shorter.
+- wl->flags bitops
+- wl->mutex
+- wl->wl_lock spinlock
+
+The bitops flags do not need a spinlock around them, and
+wlcore_irq() already holds the mutex calling wlcore_irq_locked().
+And we only need the spinlock to see if we need to run the queue
+or not.
+
+To simplify the locking, we can use spin_trylock and always run the
+tx queue unless we know there's nothing to do.
 
 Signed-off-by: Tony Lindgren <tony@atomide.com>
 ---
- drivers/net/wireless/ti/wlcore/main.c | 43 ++++++++++-----------------
- 1 file changed, 15 insertions(+), 28 deletions(-)
+ drivers/net/wireless/ti/wlcore/main.c | 22 +++++++++++++---------
+ 1 file changed, 13 insertions(+), 9 deletions(-)
 
 diff --git a/drivers/net/wireless/ti/wlcore/main.c b/drivers/net/wireless/ti/wlcore/main.c
 --- a/drivers/net/wireless/ti/wlcore/main.c
 +++ b/drivers/net/wireless/ti/wlcore/main.c
-@@ -649,24 +649,26 @@ static irqreturn_t wlcore_irq(int irq, void *cookie)
+@@ -521,6 +521,7 @@ static int wlcore_irq_locked(struct wl1271 *wl)
+ 	int ret = 0;
+ 	u32 intr;
+ 	int loopcount = WL1271_IRQ_MAX_LOOPS;
++	bool run_tx_queue = true;
+ 	bool done = false;
+ 	unsigned int defer_count;
  	unsigned long flags;
- 	struct wl1271 *wl = cookie;
+@@ -586,19 +587,22 @@ static int wlcore_irq_locked(struct wl1271 *wl)
+ 				goto err_ret;
  
--	/* complete the ELP completion */
--	spin_lock_irqsave(&wl->wl_lock, flags);
- 	set_bit(WL1271_FLAG_IRQ_RUNNING, &wl->flags);
--	if (wl->elp_compl) {
--		complete(wl->elp_compl);
--		wl->elp_compl = NULL;
+ 			/* Check if any tx blocks were freed */
+-			spin_lock_irqsave(&wl->wl_lock, flags);
+-			if (!test_bit(WL1271_FLAG_FW_TX_BUSY, &wl->flags) &&
+-			    wl1271_tx_total_queue_count(wl) > 0) {
+-				spin_unlock_irqrestore(&wl->wl_lock, flags);
++			if (!test_bit(WL1271_FLAG_FW_TX_BUSY, &wl->flags)) {
++				if (spin_trylock_irqsave(&wl->wl_lock, flags)) {
++					if (!wl1271_tx_total_queue_count(wl))
++						run_tx_queue = false;
++					spin_unlock_irqrestore(&wl->wl_lock, flags);
++				}
 +
-+	/* complete the ELP completion */
-+	if (test_bit(WL1271_FLAG_IN_ELP, &wl->flags)) {
-+		spin_lock_irqsave(&wl->wl_lock, flags);
-+		if (wl->elp_compl)
-+			complete(wl->elp_compl);
-+		spin_unlock_irqrestore(&wl->wl_lock, flags);
- 	}
+ 				/*
+ 				 * In order to avoid starvation of the TX path,
+ 				 * call the work function directly.
+ 				 */
+-				ret = wlcore_tx_work_locked(wl);
+-				if (ret < 0)
+-					goto err_ret;
+-			} else {
+-				spin_unlock_irqrestore(&wl->wl_lock, flags);
++				if (run_tx_queue) {
++					ret = wlcore_tx_work_locked(wl);
++					if (ret < 0)
++						goto err_ret;
++				}
+ 			}
  
- 	if (test_bit(WL1271_FLAG_SUSPENDED, &wl->flags)) {
- 		/* don't enqueue a work right now. mark it as pending */
- 		set_bit(WL1271_FLAG_PENDING_WORK, &wl->flags);
- 		wl1271_debug(DEBUG_IRQ, "should not enqueue work");
-+		spin_lock_irqsave(&wl->wl_lock, flags);
- 		disable_irq_nosync(wl->irq);
- 		pm_wakeup_event(wl->dev, 0);
- 		spin_unlock_irqrestore(&wl->wl_lock, flags);
- 		goto out_handled;
- 	}
--	spin_unlock_irqrestore(&wl->wl_lock, flags);
- 
- 	/* TX might be handled here, avoid redundant work */
- 	set_bit(WL1271_FLAG_TX_PENDING, &wl->flags);
-@@ -6732,7 +6734,6 @@ static int __maybe_unused wlcore_runtime_resume(struct device *dev)
- 	unsigned long flags;
- 	int ret;
- 	unsigned long start_time = jiffies;
--	bool pending = false;
- 	bool recovery = false;
- 
- 	/* Nothing to do if no ELP mode requested */
-@@ -6742,49 +6743,35 @@ static int __maybe_unused wlcore_runtime_resume(struct device *dev)
- 	wl1271_debug(DEBUG_PSM, "waking up chip from elp");
- 
- 	spin_lock_irqsave(&wl->wl_lock, flags);
--	if (test_bit(WL1271_FLAG_IRQ_RUNNING, &wl->flags))
--		pending = true;
--	else
--		wl->elp_compl = &compl;
-+	wl->elp_compl = &compl;
- 	spin_unlock_irqrestore(&wl->wl_lock, flags);
- 
- 	ret = wlcore_raw_write32(wl, HW_ACCESS_ELP_CTRL_REG, ELPCTRL_WAKE_UP);
- 	if (ret < 0) {
- 		recovery = true;
--		goto err;
--	}
--
--	if (!pending) {
-+	} else if (!test_bit(WL1271_FLAG_IRQ_RUNNING, &wl->flags)) {
- 		ret = wait_for_completion_timeout(&compl,
- 			msecs_to_jiffies(WL1271_WAKEUP_TIMEOUT));
- 		if (ret == 0) {
- 			wl1271_warning("ELP wakeup timeout!");
--
--			/* Return no error for runtime PM for recovery */
--			ret = 0;
- 			recovery = true;
--			goto err;
- 		}
- 	}
- 
--	clear_bit(WL1271_FLAG_IN_ELP, &wl->flags);
--
--	wl1271_debug(DEBUG_PSM, "wakeup time: %u ms",
--		     jiffies_to_msecs(jiffies - start_time));
--
--	return 0;
--
--err:
- 	spin_lock_irqsave(&wl->wl_lock, flags);
- 	wl->elp_compl = NULL;
- 	spin_unlock_irqrestore(&wl->wl_lock, flags);
-+	clear_bit(WL1271_FLAG_IN_ELP, &wl->flags);
- 
- 	if (recovery) {
- 		set_bit(WL1271_FLAG_INTENDED_FW_RECOVERY, &wl->flags);
- 		wl12xx_queue_recovery_work(wl);
-+	} else {
-+		wl1271_debug(DEBUG_PSM, "wakeup time: %u ms",
-+			     jiffies_to_msecs(jiffies - start_time));
- 	}
- 
--	return ret;
-+	return 0;
- }
- 
- static const struct dev_pm_ops wlcore_pm_ops = {
+ 			/* check for tx results */
 -- 
 2.27.0
