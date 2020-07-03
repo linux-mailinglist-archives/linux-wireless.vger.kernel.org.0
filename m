@@ -2,35 +2,35 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 50D0521361F
-	for <lists+linux-wireless@lfdr.de>; Fri,  3 Jul 2020 10:17:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A4C4921361C
+	for <lists+linux-wireless@lfdr.de>; Fri,  3 Jul 2020 10:16:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726829AbgGCIQp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 3 Jul 2020 04:16:45 -0400
-Received: from mail.kernel.org ([198.145.29.99]:46112 "EHLO mail.kernel.org"
+        id S1726847AbgGCIQr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 3 Jul 2020 04:16:47 -0400
+Received: from mail.kernel.org ([198.145.29.99]:46150 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726792AbgGCIQo (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 3 Jul 2020 04:16:44 -0400
+        id S1726834AbgGCIQq (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 3 Jul 2020 04:16:46 -0400
 Received: from lore-desk.lan (unknown [151.48.138.186])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D1CF720826;
-        Fri,  3 Jul 2020 08:16:42 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id A03E5207DA;
+        Fri,  3 Jul 2020 08:16:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1593764204;
-        bh=d1bIE0kDegwbTo99G0gWtdE6n0x1lRNv7QhH5gOvehM=;
+        s=default; t=1593764206;
+        bh=wKywMJcjNF6e2YAhradyZPmRGgNZ6TNJaJoCFUTvbt0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=oBq11pbV34mqXydikYbZK9yGN8nfWoXJyLotcFrhsnKLB3VoM85TfCaRCHR50ZQWg
-         4beR82H9XA5MGh0RgCVJJ7c4sHuAmXC4w9j9KZn8WLWXvbomYDVx20IgqeUtJ2QHCF
-         kRuDiaJV07D1scqt5dgAPFLolcj17Ln+OmSXR/qI=
+        b=hOD0XSZcJ1gf7K13TMuuTXOch5PFSheEGpNLJTwasrDvFo2WRNoZiHVMb06g8IcXP
+         oqiTTkH9jehQNmmDPu4rPImqPMAeuX16jWy+TzuV2FRGA/I2mNNRnR1TGQTyyYPv5Z
+         cfBwQHIVA/zRT5BbGmJfgjMzJGI9x/Ih1dfufKIw=
 From:   Lorenzo Bianconi <lorenzo@kernel.org>
 To:     nbd@nbd.name
 Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
         ryder.lee@mediatek.com, sean.wang@mediatek.com,
         linux-mediatek@lists.infradead.org
-Subject: [PATCH v2 13/22] mt76: mt7615: run mt7615_mcu_set_roc holding mt76 mutex
-Date:   Fri,  3 Jul 2020 10:15:52 +0200
-Message-Id: <e3eeaddf7c676810b3cb13ba9c1b6c6c8386b085.1593763584.git.lorenzo@kernel.org>
+Subject: [PATCH v2 14/22] mt76: mt7615: wake device before pulling packets from mac80211 queues
+Date:   Fri,  3 Jul 2020 10:15:53 +0200
+Message-Id: <8352fe8983d7308fd332cfc6579993e5d8054566.1593763584.git.lorenzo@kernel.org>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <cover.1593763584.git.lorenzo@kernel.org>
 References: <cover.1593763584.git.lorenzo@kernel.org>
@@ -41,69 +41,72 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Make sure to run mt7615_mcu_set_roc() holding mt76 mutex in order to
-wake the device from low power state and avoid races
+Make sure the device is in full-power before pulling frames from
+mac80211 queues
 
 Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7615/main.c | 16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ .../net/wireless/mediatek/mt76/mt7615/mac.c   |  6 +++++-
+ .../net/wireless/mediatek/mt76/mt7615/main.c  | 20 ++++++++++++++++++-
+ 2 files changed, 24 insertions(+), 2 deletions(-)
 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
+index f62e7de81bd5..e3dbbf957426 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
+@@ -1841,9 +1841,13 @@ void mt7615_pm_wake_work(struct work_struct *work)
+ 						pm.wake_work);
+ 	mphy = dev->phy.mt76;
+ 
+-	if (mt7615_driver_own(dev))
++	if (mt7615_driver_own(dev)) {
+ 		dev_err(mphy->dev->dev, "failed to wake device\n");
++		goto out;
++	}
+ 
++	tasklet_schedule(&dev->mt76.tx_tasklet);
++out:
+ 	complete_all(&dev->pm.wake_cmpl);
+ }
+ 
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/main.c b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-index c52b5c68ba97..47dca270150d 100644
+index 47dca270150d..3ff387f31659 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7615/main.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-@@ -871,9 +871,11 @@ void mt7615_roc_work(struct work_struct *work)
- 	if (!test_and_clear_bit(MT76_STATE_ROC, &phy->mt76->state))
- 		return;
- 
-+	mt7615_mutex_acquire(phy->dev);
- 	ieee80211_iterate_active_interfaces(phy->mt76->hw,
- 					    IEEE80211_IFACE_ITER_RESUME_ALL,
- 					    mt7615_roc_iter, phy);
-+	mt7615_mutex_release(phy->dev);
- 	ieee80211_remain_on_channel_expired(phy->mt76->hw);
+@@ -638,6 +638,24 @@ static void mt7615_sta_rate_tbl_update(struct ieee80211_hw *hw,
+ 	spin_unlock_bh(&dev->mt76.lock);
  }
  
-@@ -991,20 +993,24 @@ static int mt7615_remain_on_channel(struct ieee80211_hw *hw,
- 	if (test_and_set_bit(MT76_STATE_ROC, &phy->mt76->state))
- 		return 0;
- 
-+	mt7615_mutex_acquire(phy->dev);
++static void
++mt7615_wake_tx_queue(struct ieee80211_hw *hw, struct ieee80211_txq *txq)
++{
++	struct mt7615_dev *dev = mt7615_hw_dev(hw);
++	struct mt7615_phy *phy = mt7615_hw_phy(hw);
++	struct mt76_phy *mphy = phy->mt76;
 +
- 	err = mt7615_mcu_set_roc(phy, vif, chan, duration);
- 	if (err < 0) {
- 		clear_bit(MT76_STATE_ROC, &phy->mt76->state);
--		return err;
-+		goto out;
- 	}
- 
- 	if (!wait_event_timeout(phy->roc_wait, phy->roc_grant, HZ)) {
- 		mt7615_mcu_set_roc(phy, vif, NULL, 0);
- 		clear_bit(MT76_STATE_ROC, &phy->mt76->state);
--
--		return -ETIMEDOUT;
-+		err = -ETIMEDOUT;
- 	}
- 
--	return 0;
-+out:
-+	mt7615_mutex_release(phy->dev);
++	if (!test_bit(MT76_STATE_RUNNING, &mphy->state))
++		return;
 +
-+	return err;
- }
- 
- static int mt7615_cancel_remain_on_channel(struct ieee80211_hw *hw,
-@@ -1018,7 +1024,9 @@ static int mt7615_cancel_remain_on_channel(struct ieee80211_hw *hw,
- 	del_timer_sync(&phy->roc_timer);
- 	cancel_work_sync(&phy->roc_work);
- 
-+	mt7615_mutex_acquire(phy->dev);
- 	mt7615_mcu_set_roc(phy, vif, NULL, 0);
-+	mt7615_mutex_release(phy->dev);
- 
- 	return 0;
- }
++	if (test_bit(MT76_STATE_PM, &mphy->state)) {
++		queue_work(dev->mt76.wq, &dev->pm.wake_work);
++		return;
++	}
++
++	tasklet_schedule(&dev->mt76.tx_tasklet);
++}
++
+ static void mt7615_tx(struct ieee80211_hw *hw,
+ 		      struct ieee80211_tx_control *control,
+ 		      struct sk_buff *skb)
+@@ -1134,7 +1152,7 @@ const struct ieee80211_ops mt7615_ops = {
+ 	.set_key = mt7615_set_key,
+ 	.ampdu_action = mt7615_ampdu_action,
+ 	.set_rts_threshold = mt7615_set_rts_threshold,
+-	.wake_tx_queue = mt76_wake_tx_queue,
++	.wake_tx_queue = mt7615_wake_tx_queue,
+ 	.sta_rate_tbl_update = mt7615_sta_rate_tbl_update,
+ 	.sw_scan_start = mt76_sw_scan,
+ 	.sw_scan_complete = mt76_sw_scan_complete,
 -- 
 2.26.2
 
