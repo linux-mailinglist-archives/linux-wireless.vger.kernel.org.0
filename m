@@ -2,176 +2,136 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 57115213943
-	for <lists+linux-wireless@lfdr.de>; Fri,  3 Jul 2020 13:22:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AF1512139A3
+	for <lists+linux-wireless@lfdr.de>; Fri,  3 Jul 2020 13:57:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726227AbgGCLWn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 3 Jul 2020 07:22:43 -0400
-Received: from mail.kernel.org ([198.145.29.99]:50608 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726039AbgGCLWn (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 3 Jul 2020 07:22:43 -0400
-Received: from pali.im (pali.im [31.31.79.79])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id BA7F720674;
-        Fri,  3 Jul 2020 11:22:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1593775362;
-        bh=6n28vpx/soKyjVr4Qm0kMEuzFjiXcM8KUitLv0Cgf/0=;
-        h=From:To:Cc:Subject:Date:From;
-        b=nQjxyVEI2yn5VgxkwVOEe2ufkTUTzgWidEE+rLTENbUwAvmEEZ4owS02JW0bP0d6f
-         +UCXbi2HQ+GyTycjMd2X+QcR6iOy0z4/jGPopVqgr273u8IGlLt5yEpLsImBk/8jTN
-         QgdT444JVHCw/x+Y2/yx/BX5NdIfdDvQawc/EMAE=
-Received: by pali.im (Postfix)
-        id 7B291121B; Fri,  3 Jul 2020 13:22:40 +0200 (CEST)
-From:   =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>
-To:     Ganapathi Bhat <ganapathi.bhat@nxp.com>,
-        Amitkumar Karwar <amitkarwar@gmail.com>,
-        Xinming Hu <huxinming820@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] mwifiex: Fix reporting 'operation not supported' error code
-Date:   Fri,  3 Jul 2020 13:21:51 +0200
-Message-Id: <20200703112151.18917-1-pali@kernel.org>
-X-Mailer: git-send-email 2.20.1
+        id S1726082AbgGCL5T (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 3 Jul 2020 07:57:19 -0400
+Received: from bhuna.collabora.co.uk ([46.235.227.227]:43562 "EHLO
+        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725984AbgGCL5T (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 3 Jul 2020 07:57:19 -0400
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: andrzej.p)
+        with ESMTPSA id F1F462A63DE
+Subject: Re: [PATCH 0/3] Fixes for stop monitoring disabled devices series
+To:     Daniel Lezcano <daniel.lezcano@linaro.org>,
+        linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
+        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-renesas-soc@vger.kernel.org,
+        linux-rockchip@lists.infradead.org
+Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Vishal Kulkarni <vishal@chelsio.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jiri Pirko <jiri@mellanox.com>,
+        Ido Schimmel <idosch@mellanox.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        Intel Linux Wireless <linuxwifi@intel.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Peter Kaestle <peter@piie.net>,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Sebastian Reichel <sre@kernel.org>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Amit Kucheria <amit.kucheria@verdurent.com>,
+        Support Opensource <support.opensource@diasemi.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        =?UTF-8?Q?Niklas_S=c3=b6derlund?= <niklas.soderlund@ragnatech.se>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Orson Zhai <orsonzhai@gmail.com>,
+        Baolin Wang <baolin.wang7@gmail.com>,
+        Chunyan Zhang <zhang.lyra@gmail.com>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Allison Randal <allison@lohutok.net>,
+        Enrico Weigelt <info@metux.net>,
+        Gayatri Kammela <gayatri.kammela@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        kernel@collabora.com
+References: <20200703104354.19657-1-andrzej.p@collabora.com>
+ <fc1bb7f5-2096-a604-8c30-81d34bf5b737@linaro.org>
+From:   Andrzej Pietrasiewicz <andrzej.p@collabora.com>
+Message-ID: <91db4c89-0615-4a69-9695-ed5d3c42e1b7@collabora.com>
+Date:   Fri, 3 Jul 2020 13:57:12 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+In-Reply-To: <fc1bb7f5-2096-a604-8c30-81d34bf5b737@linaro.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-ENOTSUPP (double PP) is internal linux kernel code 524 available only in
-kernel include file linux/errno.h and not exported to userspace.
+Hi,
 
-EOPNOTSUPP (OP; double PP) is standard code 95 for reporting 'operation not
-supported' available via kernel include file uapi/asm-generic/errno.h.
+W dniu 03.07.2020 o 13:06, Daniel Lezcano pisze:
+> On 03/07/2020 12:43, Andrzej Pietrasiewicz wrote:
+>> This short series contains fixes for "Stop monitoring disabled devices"
+>> series https://www.spinics.net/lists/arm-kernel/msg817861.html
+>>
+>> Invocation of thermal_zone_device_is_enabled() in acpi/thermal is now
+>> redundant, because thermal_zone_device_update() now is capable of
+>> handling disabled devices.
+>>
+>> In imx's ->get_temp() the lock must not be taken, otherwise a deadlock
+>> happens. The decision whether explicitly running a measurement cycle
+>> is needed is taken based on driver's local irq_enabled variable.
+>>
+>> Finally, thermal_zone_device_is_enabled() is made available to the
+>> core only, as there are no driver users of it.
+>>
+>> Andrzej Pietrasiewicz (3):
+>>    acpi: thermal: Don't call thermal_zone_device_is_enabled()
+>>    thermal: imx: Use driver's local data to decide whether to run a
+>>      measurement
+>>    thermal: Make thermal_zone_device_is_enabled() available to core only
+>>
+>>   drivers/acpi/thermal.c         | 3 ---
+>>   drivers/thermal/imx_thermal.c  | 7 ++++---
+>>   drivers/thermal/thermal_core.c | 1 -
+>>   drivers/thermal/thermal_core.h | 2 ++
+>>   include/linux/thermal.h        | 5 -----
+>>   5 files changed, 6 insertions(+), 12 deletions(-)
+> 
+> Is this series easily merge-able with the other series?
+> 
 
-ENOTSUP (single P) is alias for EOPNOTSUPP defined only in userspace
-include file bits/errno.h and not available in kernel.
+So-so.
 
-Because Linux kernel does not support ENOTSUP (single P) and because
-userspace does not support ENOTSUPP (double PP), report error code for
-'operation not supported' via EOPNOTSUPP macro.
+Some simple conflicts needed to be resolved.
 
-This patch fixes problem that mwifiex kernel driver sends to userspace
-unsupported error codes like: "failed: -524 (No error information)".
-After applying this patch userspace see: "failed: -95 (Not supported)".
+I have created a branch for you to look at and decide
+how far off it is from the original and whether the
+original Acked-by/Reviewed-by can be retained.
 
-Signed-off-by: Pali Rohár <pali@kernel.org>
----
- .../net/wireless/marvell/mwifiex/cfg80211.c    | 18 +++++++++---------
- drivers/net/wireless/marvell/mwifiex/main.c    |  2 +-
- drivers/net/wireless/marvell/mwifiex/sta_cmd.c |  4 ++--
- 3 files changed, 12 insertions(+), 12 deletions(-)
+Note that I might have lost some portions of code
+during conflict resolution. It seems to me I haven't
+but you know.
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/cfg80211.c b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-index 867b5cf385a8..96848fa0e417 100644
---- a/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-+++ b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-@@ -3727,11 +3727,11 @@ mwifiex_cfg80211_tdls_mgmt(struct wiphy *wiphy, struct net_device *dev,
- 	int ret;
- 
- 	if (!(wiphy->flags & WIPHY_FLAG_SUPPORTS_TDLS))
--		return -ENOTSUPP;
-+		return -EOPNOTSUPP;
- 
- 	/* make sure we are in station mode and connected */
- 	if (!(priv->bss_type == MWIFIEX_BSS_TYPE_STA && priv->media_connected))
--		return -ENOTSUPP;
-+		return -EOPNOTSUPP;
- 
- 	switch (action_code) {
- 	case WLAN_TDLS_SETUP_REQUEST:
-@@ -3799,11 +3799,11 @@ mwifiex_cfg80211_tdls_oper(struct wiphy *wiphy, struct net_device *dev,
- 
- 	if (!(wiphy->flags & WIPHY_FLAG_SUPPORTS_TDLS) ||
- 	    !(wiphy->flags & WIPHY_FLAG_TDLS_EXTERNAL_SETUP))
--		return -ENOTSUPP;
-+		return -EOPNOTSUPP;
- 
- 	/* make sure we are in station mode and connected */
- 	if (!(priv->bss_type == MWIFIEX_BSS_TYPE_STA && priv->media_connected))
--		return -ENOTSUPP;
-+		return -EOPNOTSUPP;
- 
- 	mwifiex_dbg(priv->adapter, MSG,
- 		    "TDLS peer=%pM, oper=%d\n", peer, action);
-@@ -3833,7 +3833,7 @@ mwifiex_cfg80211_tdls_oper(struct wiphy *wiphy, struct net_device *dev,
- 	default:
- 		mwifiex_dbg(priv->adapter, ERROR,
- 			    "tdls_oper: operation not supported\n");
--		return -ENOTSUPP;
-+		return -EOPNOTSUPP;
- 	}
- 
- 	return mwifiex_tdls_oper(priv, peer, action);
-@@ -3914,11 +3914,11 @@ mwifiex_cfg80211_add_station(struct wiphy *wiphy, struct net_device *dev,
- 	struct mwifiex_private *priv = mwifiex_netdev_get_priv(dev);
- 
- 	if (!(params->sta_flags_set & BIT(NL80211_STA_FLAG_TDLS_PEER)))
--		return -ENOTSUPP;
-+		return -EOPNOTSUPP;
- 
- 	/* make sure we are in station mode and connected */
- 	if ((priv->bss_type != MWIFIEX_BSS_TYPE_STA) || !priv->media_connected)
--		return -ENOTSUPP;
-+		return -EOPNOTSUPP;
- 
- 	return mwifiex_tdls_oper(priv, mac, MWIFIEX_TDLS_CREATE_LINK);
- }
-@@ -4151,11 +4151,11 @@ mwifiex_cfg80211_change_station(struct wiphy *wiphy, struct net_device *dev,
- 
- 	/* we support change_station handler only for TDLS peers*/
- 	if (!(params->sta_flags_set & BIT(NL80211_STA_FLAG_TDLS_PEER)))
--		return -ENOTSUPP;
-+		return -EOPNOTSUPP;
- 
- 	/* make sure we are in station mode and connected */
- 	if ((priv->bss_type != MWIFIEX_BSS_TYPE_STA) || !priv->media_connected)
--		return -ENOTSUPP;
-+		return -EOPNOTSUPP;
- 
- 	priv->sta_params = params;
- 
-diff --git a/drivers/net/wireless/marvell/mwifiex/main.c b/drivers/net/wireless/marvell/mwifiex/main.c
-index 529099137644..9ee5600351a7 100644
---- a/drivers/net/wireless/marvell/mwifiex/main.c
-+++ b/drivers/net/wireless/marvell/mwifiex/main.c
-@@ -953,7 +953,7 @@ int mwifiex_set_mac_address(struct mwifiex_private *priv,
- 	} else {
- 		/* Internal mac address change */
- 		if (priv->bss_type == MWIFIEX_BSS_TYPE_ANY)
--			return -ENOTSUPP;
-+			return -EOPNOTSUPP;
- 
- 		mac_addr = old_mac_addr;
- 
-diff --git a/drivers/net/wireless/marvell/mwifiex/sta_cmd.c b/drivers/net/wireless/marvell/mwifiex/sta_cmd.c
-index 8bd355d7974e..d3a968ef21ef 100644
---- a/drivers/net/wireless/marvell/mwifiex/sta_cmd.c
-+++ b/drivers/net/wireless/marvell/mwifiex/sta_cmd.c
-@@ -1723,7 +1723,7 @@ mwifiex_cmd_tdls_config(struct mwifiex_private *priv,
- 	default:
- 		mwifiex_dbg(priv->adapter, ERROR,
- 			    "Unknown TDLS configuration\n");
--		return -ENOTSUPP;
-+		return -EOPNOTSUPP;
- 	}
- 
- 	le16_unaligned_add_cpu(&cmd->size, len);
-@@ -1849,7 +1849,7 @@ mwifiex_cmd_tdls_oper(struct mwifiex_private *priv,
- 		break;
- 	default:
- 		mwifiex_dbg(priv->adapter, ERROR, "Unknown TDLS operation\n");
--		return -ENOTSUPP;
-+		return -EOPNOTSUPP;
- 	}
- 
- 	le16_unaligned_add_cpu(&cmd->size, config_len);
--- 
-2.20.1
+The branch:
+
+https://gitlab.collabora.com/andrzej.p/kernel-tests/-/tree/thermal-dont-poll-disabled-for-daniel
+
+The code compiles at each stage on x86_64 + COMPILE_TEST.
+
+Andrzej
+
+
+
+
+
+
 
