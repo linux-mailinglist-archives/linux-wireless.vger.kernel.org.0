@@ -2,102 +2,85 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1AB7421445B
-	for <lists+linux-wireless@lfdr.de>; Sat,  4 Jul 2020 08:41:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CD2B321462E
+	for <lists+linux-wireless@lfdr.de>; Sat,  4 Jul 2020 15:43:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727119AbgGDGlR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 4 Jul 2020 02:41:17 -0400
-Received: from mail-io1-f69.google.com ([209.85.166.69]:48154 "EHLO
-        mail-io1-f69.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727112AbgGDGlR (ORCPT
+        id S1727070AbgGDNnJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 4 Jul 2020 09:43:09 -0400
+Received: from relay8-d.mail.gandi.net ([217.70.183.201]:60533 "EHLO
+        relay8-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726643AbgGDNnJ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 4 Jul 2020 02:41:17 -0400
-Received: by mail-io1-f69.google.com with SMTP id r9so3792982ioa.15
-        for <linux-wireless@vger.kernel.org>; Fri, 03 Jul 2020 23:41:16 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
-        bh=dbAGA2EOQ/ON2OekN9vX84E1a2gFJIKvdksnE+aJIXg=;
-        b=rLvvZUmIL7kZiMiznWSnHBJLeA091H0SbWmwmUzWzlqtpawVngHypY4E+lO8cGI3vn
-         0qM8ujHGxXnfnuNqhiqAJ/KGiHfwOTIIPpL1HI4gPg6Ik8hykPcaURXfQI2e0XzPvTqx
-         QKLQxzrvcGP669tKtEk0IWptvpBCVclQRBX72+bnWtVbXMSFGuLpkI4mUvtDuztGeejy
-         OqCYbemBcEvugmvXzp+4hviEb3bDKYo4WQxHOftA0nhl+8WxgczHdizozFM/9PBWNw8j
-         HbaUFWamOJsU7ID8Bl9bi1bMuB5RoXYk/dZ9nqXIrknKe1ZDXRvocsIvnOtYt+qjFiNO
-         moBg==
-X-Gm-Message-State: AOAM532MMmEu2hbVaNRvYYAKmey7H5mPmdzw+Hm6HqZQrdic9cn2ioCo
-        nnKqWVCGRByuB15WcBwF9nQJRo8hLIGJVIh+XRxyDPFHlP2m
-X-Google-Smtp-Source: ABdhPJwFvjbKbYwlvfSZJcJi+xsZs+I4CZcLu/Jdbz7IYY/TzLenHi+O2ZGUUc6HP06Sr+WSEo2Pu4ZfjcFBLKS/XdlA67SulQ82
+        Sat, 4 Jul 2020 09:43:09 -0400
+X-Originating-IP: 82.66.179.123
+Received: from localhost (unknown [82.66.179.123])
+        (Authenticated sender: repk@triplefau.lt)
+        by relay8-d.mail.gandi.net (Postfix) with ESMTPSA id C75CB1BF205;
+        Sat,  4 Jul 2020 13:43:04 +0000 (UTC)
+From:   Remi Pommarel <repk@triplefau.lt>
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>
+Cc:     Javier Cardona <javier@cozybit.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Remi Pommarel <repk@triplefau.lt>
+Subject: [PATCH] mac80211: mesh: Free ie data when leaving mesh
+Date:   Sat,  4 Jul 2020 15:50:07 +0200
+Message-Id: <20200704135007.27292-1-repk@triplefau.lt>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-X-Received: by 2002:a92:cecd:: with SMTP id z13mr20924386ilq.76.1593844875910;
- Fri, 03 Jul 2020 23:41:15 -0700 (PDT)
-Date:   Fri, 03 Jul 2020 23:41:15 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <000000000000a7e38a05a997edb2@google.com>
-Subject: WARNING in __cfg80211_connect_result
-From:   syzbot <syzbot+cc4c0f394e2611edba66@syzkaller.appspotmail.com>
-To:     davem@davemloft.net, johannes@sipsolutions.net, kuba@kernel.org,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
+At ieee80211_join_mesh() some ie data could have been allocated (see
+copy_mesh_setup()) and need to be cleaned up when leaving the mesh.
 
-syzbot found the following crash on:
+This fixes the following kmemleak report:
 
-HEAD commit:    23212a70 Merge branch 'mptcp-add-receive-buffer-auto-tuning'
-git tree:       net-next
-console output: https://syzkaller.appspot.com/x/log.txt?x=155842d5100000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=829871134ca5e230
-dashboard link: https://syzkaller.appspot.com/bug?extid=cc4c0f394e2611edba66
-compiler:       gcc (GCC) 10.1.0-syz 20200507
+unreferenced object 0xffff0000116bc600 (size 128):
+  comm "wpa_supplicant", pid 608, jiffies 4294898983 (age 293.484s)
+  hex dump (first 32 bytes):
+    30 14 01 00 00 0f ac 04 01 00 00 0f ac 04 01 00  0...............
+    00 0f ac 08 00 00 00 00 c4 65 40 00 00 00 00 00  .........e@.....
+  backtrace:
+    [<00000000bebe439d>] __kmalloc_track_caller+0x1c0/0x330
+    [<00000000a349dbe1>] kmemdup+0x28/0x50
+    [<0000000075d69baa>] ieee80211_join_mesh+0x6c/0x3b8 [mac80211]
+    [<00000000683bb98b>] __cfg80211_join_mesh+0x1e8/0x4f0 [cfg80211]
+    [<0000000072cb507f>] nl80211_join_mesh+0x520/0x6b8 [cfg80211]
+    [<0000000077e9bcf9>] genl_family_rcv_msg+0x374/0x680
+    [<00000000b1bd936d>] genl_rcv_msg+0x78/0x108
+    [<0000000022c53788>] netlink_rcv_skb+0xb0/0x1c0
+    [<0000000011af8ec9>] genl_rcv+0x34/0x48
+    [<0000000069e41f53>] netlink_unicast+0x268/0x2e8
+    [<00000000a7517316>] netlink_sendmsg+0x320/0x4c0
+    [<0000000069cba205>] ____sys_sendmsg+0x354/0x3a0
+    [<00000000e06bab0f>] ___sys_sendmsg+0xd8/0x120
+    [<0000000037340728>] __sys_sendmsg+0xa4/0xf8
+    [<000000004fed9776>] __arm64_sys_sendmsg+0x44/0x58
+    [<000000001c1e5647>] el0_svc_handler+0xd0/0x1a0
 
-Unfortunately, I don't have any reproducer for this crash yet.
-
-IMPORTANT: if you fix the bug, please add the following tag to the commit:
-Reported-by: syzbot+cc4c0f394e2611edba66@syzkaller.appspotmail.com
-
-ip6_tunnel: syzkaller1 xmit: Local address not yet configured!
-------------[ cut here ]------------
-WARNING: CPU: 0 PID: 9155 at net/wireless/sme.c:757 __cfg80211_connect_result+0xf71/0x13a0 net/wireless/sme.c:757
-Kernel panic - not syncing: panic_on_warn set ...
-CPU: 0 PID: 9155 Comm: kworker/u4:17 Not tainted 5.8.0-rc2-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
-Workqueue: cfg80211 cfg80211_event_work
-Call Trace:
- __dump_stack lib/dump_stack.c:77 [inline]
- dump_stack+0x18f/0x20d lib/dump_stack.c:118
- panic+0x2e3/0x75c kernel/panic.c:231
- __warn.cold+0x20/0x45 kernel/panic.c:600
- report_bug+0x1bd/0x210 lib/bug.c:198
- exc_invalid_op+0x24d/0x400 arch/x86/kernel/traps.c:235
- asm_exc_invalid_op+0x12/0x20 arch/x86/include/asm/idtentry.h:563
-RIP: 0010:__cfg80211_connect_result+0xf71/0x13a0 net/wireless/sme.c:757
-Code: 89 be ac 02 00 00 48 c7 c7 00 2d 16 89 c6 05 ba ce 34 03 01 e8 35 58 e5 f9 e9 4f f6 ff ff e8 36 ad fe f9 0f 0b e8 2f ad fe f9 <0f> 0b e9 0c f2 ff ff e8 23 ad fe f9 e8 ee 51 71 00 31 ff 89 c3 89
-RSP: 0018:ffffc90001ab7bb8 EFLAGS: 00010293
-RAX: 0000000000000000 RBX: ffff888091d10000 RCX: ffffffff87749792
-RDX: ffff888059f5c4c0 RSI: ffffffff8774a321 RDI: 0000000000000005
-RBP: ffff888040f72618 R08: 0000000000000000 R09: 0000000000000001
-R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000000
-R13: ffff888040f72628 R14: ffff888091d10200 R15: ffff888040f72620
- cfg80211_process_wdev_events+0x2c6/0x5b0 net/wireless/util.c:885
- cfg80211_process_rdev_events+0x6e/0x100 net/wireless/util.c:926
- cfg80211_event_work+0x1a/0x20 net/wireless/core.c:320
- process_one_work+0x94c/0x1670 kernel/workqueue.c:2269
- worker_thread+0x64c/0x1120 kernel/workqueue.c:2415
- kthread+0x3b5/0x4a0 kernel/kthread.c:291
- ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:293
-Kernel Offset: disabled
-
-
+Fixes: c80d545da3f7 (mac80211: Let userspace enable and configure vendor specific path selection.)
+Signed-off-by: Remi Pommarel <repk@triplefau.lt>
 ---
-This bug is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+ net/mac80211/cfg.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-syzbot will keep track of this bug report. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+index 9b360544ad6f..1079a07e43e4 100644
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -2166,6 +2166,7 @@ static int ieee80211_leave_mesh(struct wiphy *wiphy, struct net_device *dev)
+ 	ieee80211_stop_mesh(sdata);
+ 	mutex_lock(&sdata->local->mtx);
+ 	ieee80211_vif_release_channel(sdata);
++	kfree(sdata->u.mesh.ie);
+ 	mutex_unlock(&sdata->local->mtx);
+ 
+ 	return 0;
+-- 
+2.26.2
+
