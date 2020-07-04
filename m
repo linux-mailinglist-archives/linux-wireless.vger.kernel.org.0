@@ -2,170 +2,102 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E145C21428D
-	for <lists+linux-wireless@lfdr.de>; Sat,  4 Jul 2020 03:29:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1AB7421445B
+	for <lists+linux-wireless@lfdr.de>; Sat,  4 Jul 2020 08:41:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726782AbgGDB3c (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 3 Jul 2020 21:29:32 -0400
-Received: from mga17.intel.com ([192.55.52.151]:26842 "EHLO mga17.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726469AbgGDB3b (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 3 Jul 2020 21:29:31 -0400
-IronPort-SDR: jPpuGoFLXH3oz7f9VxfOlIw13f9LrEEIqVWZwbuGu4nrP0w8e9cudNVoQaxsyyztVthHGBhJD7
- +sZUb84a9feg==
-X-IronPort-AV: E=McAfee;i="6000,8403,9671"; a="127303650"
-X-IronPort-AV: E=Sophos;i="5.75,309,1589266800"; 
-   d="scan'208";a="127303650"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jul 2020 18:29:30 -0700
-IronPort-SDR: 0HEiNhnUOEOqnwuXlSxTG5XQ8zZt9Jya8ZrqX6ehcjeXOU4iqSEjiguSSebW76lt/zNkSZTNhL
- p2fxtK9GIxRw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.75,309,1589266800"; 
-   d="scan'208";a="426418996"
-Received: from lkp-server01.sh.intel.com (HELO 6dc8ab148a5d) ([10.239.97.150])
-  by orsmga004.jf.intel.com with ESMTP; 03 Jul 2020 18:29:29 -0700
-Received: from kbuild by 6dc8ab148a5d with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1jrWzg-0000Ua-Ib; Sat, 04 Jul 2020 01:29:28 +0000
-Date:   Sat, 04 Jul 2020 09:28:25 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     linux-wireless@vger.kernel.org
-Subject: [wireless-drivers-next:master] BUILD SUCCESS
- f555abfe2923076315e55c275677cb42e91497c5
-Message-ID: <5effdb39.ZUmBnwxq45OySU5+%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S1727119AbgGDGlR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 4 Jul 2020 02:41:17 -0400
+Received: from mail-io1-f69.google.com ([209.85.166.69]:48154 "EHLO
+        mail-io1-f69.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727112AbgGDGlR (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 4 Jul 2020 02:41:17 -0400
+Received: by mail-io1-f69.google.com with SMTP id r9so3792982ioa.15
+        for <linux-wireless@vger.kernel.org>; Fri, 03 Jul 2020 23:41:16 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
+        bh=dbAGA2EOQ/ON2OekN9vX84E1a2gFJIKvdksnE+aJIXg=;
+        b=rLvvZUmIL7kZiMiznWSnHBJLeA091H0SbWmwmUzWzlqtpawVngHypY4E+lO8cGI3vn
+         0qM8ujHGxXnfnuNqhiqAJ/KGiHfwOTIIPpL1HI4gPg6Ik8hykPcaURXfQI2e0XzPvTqx
+         QKLQxzrvcGP669tKtEk0IWptvpBCVclQRBX72+bnWtVbXMSFGuLpkI4mUvtDuztGeejy
+         OqCYbemBcEvugmvXzp+4hviEb3bDKYo4WQxHOftA0nhl+8WxgczHdizozFM/9PBWNw8j
+         HbaUFWamOJsU7ID8Bl9bi1bMuB5RoXYk/dZ9nqXIrknKe1ZDXRvocsIvnOtYt+qjFiNO
+         moBg==
+X-Gm-Message-State: AOAM532MMmEu2hbVaNRvYYAKmey7H5mPmdzw+Hm6HqZQrdic9cn2ioCo
+        nnKqWVCGRByuB15WcBwF9nQJRo8hLIGJVIh+XRxyDPFHlP2m
+X-Google-Smtp-Source: ABdhPJwFvjbKbYwlvfSZJcJi+xsZs+I4CZcLu/Jdbz7IYY/TzLenHi+O2ZGUUc6HP06Sr+WSEo2Pu4ZfjcFBLKS/XdlA67SulQ82
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+X-Received: by 2002:a92:cecd:: with SMTP id z13mr20924386ilq.76.1593844875910;
+ Fri, 03 Jul 2020 23:41:15 -0700 (PDT)
+Date:   Fri, 03 Jul 2020 23:41:15 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <000000000000a7e38a05a997edb2@google.com>
+Subject: WARNING in __cfg80211_connect_result
+From:   syzbot <syzbot+cc4c0f394e2611edba66@syzkaller.appspotmail.com>
+To:     davem@davemloft.net, johannes@sipsolutions.net, kuba@kernel.org,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git  master
-branch HEAD: f555abfe2923076315e55c275677cb42e91497c5  Merge branch 'wilc1000-move-out-of-staging'
+Hello,
 
-elapsed time: 2500m
+syzbot found the following crash on:
 
-configs tested: 108
-configs skipped: 5
+HEAD commit:    23212a70 Merge branch 'mptcp-add-receive-buffer-auto-tuning'
+git tree:       net-next
+console output: https://syzkaller.appspot.com/x/log.txt?x=155842d5100000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=829871134ca5e230
+dashboard link: https://syzkaller.appspot.com/bug?extid=cc4c0f394e2611edba66
+compiler:       gcc (GCC) 10.1.0-syz 20200507
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Unfortunately, I don't have any reproducer for this crash yet.
 
-arm64                            allyesconfig
-arm64                               defconfig
-arm64                            allmodconfig
-arm64                             allnoconfig
-arm                                 defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-arm                               allnoconfig
-arm                          pxa3xx_defconfig
-arm                       imx_v6_v7_defconfig
-powerpc                      ppc6xx_defconfig
-mips                          ath25_defconfig
-ia64                             allyesconfig
-sh                               j2_defconfig
-sh                             espt_defconfig
-x86_64                           alldefconfig
-arm                          exynos_defconfig
-arc                     nsimosci_hs_defconfig
-arc                          axs103_defconfig
-arm                           efm32_defconfig
-sh                               alldefconfig
-powerpc                    mvme5100_defconfig
-mips                          rb532_defconfig
-xtensa                          iss_defconfig
-h8300                               defconfig
-mips                  maltasmvp_eva_defconfig
-ia64                        generic_defconfig
-s390                              allnoconfig
-microblaze                    nommu_defconfig
-parisc                generic-64bit_defconfig
-mips                        jmr3927_defconfig
-mips                 decstation_r4k_defconfig
-i386                              allnoconfig
-i386                             allyesconfig
-i386                                defconfig
-i386                              debian-10.3
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                              allnoconfig
-m68k                             allmodconfig
-m68k                              allnoconfig
-m68k                           sun3_defconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nds32                               defconfig
-nds32                             allnoconfig
-csky                             allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-h8300                            allmodconfig
-xtensa                              defconfig
-nios2                               defconfig
-nios2                            allyesconfig
-openrisc                            defconfig
-c6x                              allyesconfig
-c6x                               allnoconfig
-openrisc                         allyesconfig
-arc                                 defconfig
-arc                              allyesconfig
-sh                               allmodconfig
-sh                                allnoconfig
-microblaze                        allnoconfig
-mips                             allyesconfig
-mips                              allnoconfig
-mips                             allmodconfig
-parisc                            allnoconfig
-parisc                              defconfig
-parisc                           allyesconfig
-parisc                           allmodconfig
-powerpc                          allyesconfig
-powerpc                          rhel-kconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-powerpc                             defconfig
-i386                 randconfig-a002-20200701
-i386                 randconfig-a001-20200701
-i386                 randconfig-a006-20200701
-i386                 randconfig-a005-20200701
-i386                 randconfig-a004-20200701
-i386                 randconfig-a003-20200701
-riscv                            allyesconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                            allmodconfig
-s390                             allyesconfig
-s390                             allmodconfig
-s390                                defconfig
-sparc                            allyesconfig
-sparc                               defconfig
-sparc64                             defconfig
-sparc64                           allnoconfig
-sparc64                          allyesconfig
-sparc64                          allmodconfig
-um                               allmodconfig
-um                                allnoconfig
-um                                  defconfig
-um                               allyesconfig
-x86_64                               rhel-7.6
-x86_64                    rhel-7.6-kselftests
-x86_64                               rhel-8.3
-x86_64                                  kexec
-x86_64                                   rhel
-x86_64                         rhel-7.2-clear
-x86_64                                    lkp
-x86_64                              fedora-25
+IMPORTANT: if you fix the bug, please add the following tag to the commit:
+Reported-by: syzbot+cc4c0f394e2611edba66@syzkaller.appspotmail.com
+
+ip6_tunnel: syzkaller1 xmit: Local address not yet configured!
+------------[ cut here ]------------
+WARNING: CPU: 0 PID: 9155 at net/wireless/sme.c:757 __cfg80211_connect_result+0xf71/0x13a0 net/wireless/sme.c:757
+Kernel panic - not syncing: panic_on_warn set ...
+CPU: 0 PID: 9155 Comm: kworker/u4:17 Not tainted 5.8.0-rc2-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
+Workqueue: cfg80211 cfg80211_event_work
+Call Trace:
+ __dump_stack lib/dump_stack.c:77 [inline]
+ dump_stack+0x18f/0x20d lib/dump_stack.c:118
+ panic+0x2e3/0x75c kernel/panic.c:231
+ __warn.cold+0x20/0x45 kernel/panic.c:600
+ report_bug+0x1bd/0x210 lib/bug.c:198
+ exc_invalid_op+0x24d/0x400 arch/x86/kernel/traps.c:235
+ asm_exc_invalid_op+0x12/0x20 arch/x86/include/asm/idtentry.h:563
+RIP: 0010:__cfg80211_connect_result+0xf71/0x13a0 net/wireless/sme.c:757
+Code: 89 be ac 02 00 00 48 c7 c7 00 2d 16 89 c6 05 ba ce 34 03 01 e8 35 58 e5 f9 e9 4f f6 ff ff e8 36 ad fe f9 0f 0b e8 2f ad fe f9 <0f> 0b e9 0c f2 ff ff e8 23 ad fe f9 e8 ee 51 71 00 31 ff 89 c3 89
+RSP: 0018:ffffc90001ab7bb8 EFLAGS: 00010293
+RAX: 0000000000000000 RBX: ffff888091d10000 RCX: ffffffff87749792
+RDX: ffff888059f5c4c0 RSI: ffffffff8774a321 RDI: 0000000000000005
+RBP: ffff888040f72618 R08: 0000000000000000 R09: 0000000000000001
+R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000000
+R13: ffff888040f72628 R14: ffff888091d10200 R15: ffff888040f72620
+ cfg80211_process_wdev_events+0x2c6/0x5b0 net/wireless/util.c:885
+ cfg80211_process_rdev_events+0x6e/0x100 net/wireless/util.c:926
+ cfg80211_event_work+0x1a/0x20 net/wireless/core.c:320
+ process_one_work+0x94c/0x1670 kernel/workqueue.c:2269
+ worker_thread+0x64c/0x1120 kernel/workqueue.c:2415
+ kthread+0x3b5/0x4a0 kernel/kthread.c:291
+ ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:293
+Kernel Offset: disabled
+
 
 ---
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+This bug is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this bug report. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
