@@ -2,52 +2,77 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 55798215D5C
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 Jul 2020 19:40:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D42432160EB
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 Jul 2020 23:19:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729684AbgGFRkE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 6 Jul 2020 13:40:04 -0400
-Received: from mx1.reduc.edu.cu ([200.14.53.131]:53474 "EHLO mx1.reduc.edu.cu"
+        id S1726542AbgGFVTs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 6 Jul 2020 17:19:48 -0400
+Received: from m42-7.mailgun.net ([69.72.42.7]:37179 "EHLO m42-7.mailgun.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729632AbgGFRkE (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 6 Jul 2020 13:40:04 -0400
-X-Greylist: delayed 432 seconds by postgrey-1.27 at vger.kernel.org; Mon, 06 Jul 2020 13:40:03 EDT
-Received: from localhost (localhost [127.0.0.1])
-        by mx1.reduc.edu.cu (Postfix) with ESMTP id 504E82A52A4;
-        Mon,  6 Jul 2020 13:32:50 -0400 (CDT)
-X-Virus-Scanned: Scanned at reduc.edu.cu
-Received: from 129.205.124.43
-        (SquirrelMail authenticated user maria.zequeiraa@reduc.edu.cu)
-        by webmail1.reduc.edu.cu with HTTP;
-        Mon, 6 Jul 2020 13:32:45 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=reduc.edu.cu; s=mail;
-        t=1594056765; bh=IaCS37FH8zr+T3nVglpyEmoqpGcm1OBBxJ8tYQ4b5OQ=;
-        h=Date:Subject:From;
-        b=WJBZxRtn0y5Mv1JT2RrK8BblBTS6pk4F+MMk6/Hkh+Op70AKknX2YZeVCK4Sr4a9b
-         n9pGgsDm3A4QJKEjSaTV4K6TC3KHeLi6Es4Joi5qaMwniRyFL90/5T/crg3ZKldcyt
-         TnHRDoPriNeaEvuhMN/jfES4QWmhxVCRtYbBamYs=
-Message-ID: <c3da857d4a3df80c67541a6ecff8fb84.squirrel@webmail1.reduc.edu.cu>
-Date:   Mon, 6 Jul 2020 13:32:45 -0400
-Subject: You have a donation of $800,000.00
-From:   maria.zequeiraa@reduc.edu.cu
-User-Agent: SquirrelMail/1.4.23 [SVN]
+        id S1726001AbgGFVTs (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 6 Jul 2020 17:19:48 -0400
+X-Greylist: delayed 302 seconds by postgrey-1.27 at vger.kernel.org; Mon, 06 Jul 2020 17:19:47 EDT
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.cipht.net; q=dns/txt;
+ s=mailo; t=1594070388; h=Content-Transfer-Encoding: MIME-Version:
+ Message-Id: Date: Subject: Cc: To: From: Sender;
+ bh=y46UTPpAFgIIXslRAziMQZJaZWiv42x6vkspq2qAmcU=; b=N9PIwGNoQZhJgpVH6J21ktrXceyBfqGh/h83p3sohi8tQYxkxV7Bfq9sCZyXl03uufq7E7V9
+ XL3c0bY2F8n3yn6fpbMKYCLdriDqt7ueNfVCBdIyT2wJTmxUBXvYfOn/ROWSC39MZzYJYhCV
+ GtrqD8kOXaky9I5HpvH4eajvCeg=
+X-Mailgun-Sending-Ip: 69.72.42.7
+X-Mailgun-Sid: WyJlMWU0MyIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiZDFjMTNjIl0=
+Received: from localhost.localdomain (172-97-136-92.cpe.distributel.net
+ [172.97.136.92]) by smtp-out-n12.prod.us-west-2.postgun.com with SMTP id
+ 5f03944455886724ff9d8c21 (version=TLS1.3, cipher=TLS_AES_128_GCM_SHA256);
+ Mon, 06 Jul 2020 21:14:44 GMT
+From:   Julian Squires <julian@cipht.net>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless@vger.kernel.org, Julian Squires <julian@cipht.net>
+Subject: [PATCH] cfg80211: check vendor command doit pointer before use
+Date:   Mon,  6 Jul 2020 17:13:53 -0400
+Message-Id: <20200706211353.2366470-1-julian@cipht.net>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Content-Type: text/plain;charset=iso-8859-1
 Content-Transfer-Encoding: 8bit
-X-Priority: 3 (Normal)
-Importance: Normal
-X-Copyrighted-Material: Please visit http://www.reduc.edu.cu
-To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+In the case where a vendor command does not implement doit, and has no
+flags set, doit would not be validated and a NULL pointer dereference
+would occur, for example when invoking the vendor command via iw.
 
+I encountered this while developing new vendor commands.  Perhaps in
+practice it is advisable to always implement doit along with dumpit,
+but it seems reasonable to me to always check doit anyway, not just
+when NEED_WDEV.
 
+Signed-off-by: Julian Squires <julian@cipht.net>
+---
+ net/wireless/nl80211.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 0e07fb8585fb..7fbca0854265 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -13266,13 +13266,13 @@ static int nl80211_vendor_cmd(struct sk_buff *skb, struct genl_info *info)
+ 				if (!wdev_running(wdev))
+ 					return -ENETDOWN;
+ 			}
+-
+-			if (!vcmd->doit)
+-				return -EOPNOTSUPP;
+ 		} else {
+ 			wdev = NULL;
+ 		}
+ 
++		if (!vcmd->doit)
++			return -EOPNOTSUPP;
++
+ 		if (info->attrs[NL80211_ATTR_VENDOR_DATA]) {
+ 			data = nla_data(info->attrs[NL80211_ATTR_VENDOR_DATA]);
+ 			len = nla_len(info->attrs[NL80211_ATTR_VENDOR_DATA]);
+-- 
+2.27.0
 
-Please contact Email:( fedexcommonwealth_1@yahoo.com ) For your donation
-of $800,000.00 by CommonWealth Of Nation
-
----Universidad de Camaguey "Ignacio Agramonte Loynaz", Cuba http://www.reduc.edu.cu/
