@@ -2,35 +2,29 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D42432160EB
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 Jul 2020 23:19:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5BE1F21618C
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Jul 2020 00:25:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726542AbgGFVTs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 6 Jul 2020 17:19:48 -0400
-Received: from m42-7.mailgun.net ([69.72.42.7]:37179 "EHLO m42-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726001AbgGFVTs (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 6 Jul 2020 17:19:48 -0400
-X-Greylist: delayed 302 seconds by postgrey-1.27 at vger.kernel.org; Mon, 06 Jul 2020 17:19:47 EDT
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.cipht.net; q=dns/txt;
- s=mailo; t=1594070388; h=Content-Transfer-Encoding: MIME-Version:
- Message-Id: Date: Subject: Cc: To: From: Sender;
- bh=y46UTPpAFgIIXslRAziMQZJaZWiv42x6vkspq2qAmcU=; b=N9PIwGNoQZhJgpVH6J21ktrXceyBfqGh/h83p3sohi8tQYxkxV7Bfq9sCZyXl03uufq7E7V9
- XL3c0bY2F8n3yn6fpbMKYCLdriDqt7ueNfVCBdIyT2wJTmxUBXvYfOn/ROWSC39MZzYJYhCV
- GtrqD8kOXaky9I5HpvH4eajvCeg=
-X-Mailgun-Sending-Ip: 69.72.42.7
-X-Mailgun-Sid: WyJlMWU0MyIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiZDFjMTNjIl0=
-Received: from localhost.localdomain (172-97-136-92.cpe.distributel.net
- [172.97.136.92]) by smtp-out-n12.prod.us-west-2.postgun.com with SMTP id
- 5f03944455886724ff9d8c21 (version=TLS1.3, cipher=TLS_AES_128_GCM_SHA256);
- Mon, 06 Jul 2020 21:14:44 GMT
-From:   Julian Squires <julian@cipht.net>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org, Julian Squires <julian@cipht.net>
-Subject: [PATCH] cfg80211: check vendor command doit pointer before use
-Date:   Mon,  6 Jul 2020 17:13:53 -0400
-Message-Id: <20200706211353.2366470-1-julian@cipht.net>
-X-Mailer: git-send-email 2.27.0
+        id S1727906AbgGFWYr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 6 Jul 2020 18:24:47 -0400
+Received: from relay3-d.mail.gandi.net ([217.70.183.195]:39317 "EHLO
+        relay3-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727791AbgGFWYr (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 6 Jul 2020 18:24:47 -0400
+X-Originating-IP: 45.72.255.27
+Received: from TesterBox (unknown [45.72.255.27])
+        (Authenticated sender: olivier.crete@ocrete.ca)
+        by relay3-d.mail.gandi.net (Postfix) with ESMTPSA id A0BDF60004;
+        Mon,  6 Jul 2020 22:24:44 +0000 (UTC)
+Message-ID: <ab664a0f23ca833fc531fcad61125da39328c888.camel@ocrete.ca>
+Subject: rtl8812ae: high ping under load (or randomly)
+From:   Olivier =?ISO-8859-1?Q?Cr=EAte?= <olivier.crete@ocrete.ca>
+To:     linux-wireless@vger.kernel.org
+Cc:     pkshih@realtek.com
+Date:   Mon, 06 Jul 2020 18:24:42 -0400
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.3 (3.36.3-1.fc32) 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
@@ -38,41 +32,34 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-In the case where a vendor command does not implement doit, and has no
-flags set, doit would not be validated and a NULL pointer dereference
-would occur, for example when invoking the vendor command via iw.
+Hi,
 
-I encountered this while developing new vendor commands.  Perhaps in
-practice it is advisable to always implement doit along with dumpit,
-but it seems reasonable to me to always check doit anyway, not just
-when NEED_WDEV.
+I have a rtl 8812ae PCI desktop card and I get really poor connectivity
+in Linux. In particular, I get ping times that increase a lot if I use
+the connection a lot.
 
-Signed-off-by: Julian Squires <julian@cipht.net>
----
- net/wireless/nl80211.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+What I noticed by comparing with my Intel-based laptop next to it is
+that iwconfig always reports a rate of 866.7Mb/s, while the rate on my
+laptop fluctuates in the 100-250Mb/s range. I tried forcing the rate
+with iwconfig, and it seems to help a little, but it's still not good
+enough. So I suspect something is wrong with the rate control?
 
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 0e07fb8585fb..7fbca0854265 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -13266,13 +13266,13 @@ static int nl80211_vendor_cmd(struct sk_buff *skb, struct genl_info *info)
- 				if (!wdev_running(wdev))
- 					return -ENETDOWN;
- 			}
--
--			if (!vcmd->doit)
--				return -EOPNOTSUPP;
- 		} else {
- 			wdev = NULL;
- 		}
- 
-+		if (!vcmd->doit)
-+			return -EOPNOTSUPP;
-+
- 		if (info->attrs[NL80211_ATTR_VENDOR_DATA]) {
- 			data = nla_data(info->attrs[NL80211_ATTR_VENDOR_DATA]);
- 			len = nla_len(info->attrs[NL80211_ATTR_VENDOR_DATA]);
+I've played around with the various rtlwifi module options and they
+don't help.
+
+I was suggested disable ASPM, but my motherboard doesn't seem to
+support ASPM at all.
+
+On the same computer, the card works as advertised in Windows, so I'm
+pretty sure it's a driver/software issue.
+
+I'm testing with kernel 5.6.19 and linux-firmware 20200619. And the
+card is a TP-Link Archer T4E.
+
+Please let me know how I can help debug this,
+
 -- 
-2.27.0
+Olivier Crête
+olivier.crete@ocrete.ca
+
 
