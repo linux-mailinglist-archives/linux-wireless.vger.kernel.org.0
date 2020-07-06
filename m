@@ -2,162 +2,107 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 105F4214A7F
-	for <lists+linux-wireless@lfdr.de>; Sun,  5 Jul 2020 08:04:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 69EE72153CB
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 Jul 2020 10:13:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726339AbgGEGEe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 5 Jul 2020 02:04:34 -0400
-Received: from mga03.intel.com ([134.134.136.65]:53525 "EHLO mga03.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725873AbgGEGEe (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 5 Jul 2020 02:04:34 -0400
-IronPort-SDR: pHnVBsnIxSx5WKl1RlaRCjXrBR5HrZUnQ9z4I8Ty1cV8AXChURgWwbzJjdlA4BNDJYgri+i7nc
- +huKGr37dUTw==
-X-IronPort-AV: E=McAfee;i="6000,8403,9672"; a="147301297"
-X-IronPort-AV: E=Sophos;i="5.75,314,1589266800"; 
-   d="scan'208";a="147301297"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jul 2020 23:04:33 -0700
-IronPort-SDR: RTZKJhnrLEZugPly4VtR2NDpLYKGxq/qbqDz6diM18IhrJLYpFDA0aIulzr5x/OJiPJ0R6pdFP
- RzzxPLYsn14A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.75,314,1589266800"; 
-   d="scan'208";a="282715546"
-Received: from yangblan-mobl2.ccr.corp.intel.com ([10.255.29.148])
-  by orsmga006.jf.intel.com with ESMTP; 04 Jul 2020 23:04:22 -0700
-Message-ID: <9627f15fb2145525b40d6c1aed6752e13df876e9.camel@intel.com>
-Subject: Re: [PATCH 0/3] Fixes for stop monitoring disabled devices series
-From:   Zhang Rui <rui.zhang@intel.com>
-To:     Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Andrzej Pietrasiewicz <andrzej.p@collabora.com>,
-        linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
-        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-renesas-soc@vger.kernel.org,
-        linux-rockchip@lists.infradead.org
-Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Vishal Kulkarni <vishal@chelsio.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jiri Pirko <jiri@mellanox.com>,
-        Ido Schimmel <idosch@mellanox.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Intel Linux Wireless <linuxwifi@intel.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Peter Kaestle <peter@piie.net>,
-        Darren Hart <dvhart@infradead.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        Sebastian Reichel <sre@kernel.org>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Amit Kucheria <amit.kucheria@verdurent.com>,
-        Support Opensource <support.opensource@diasemi.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Niklas =?ISO-8859-1?Q?S=F6derlund?= 
-        <niklas.soderlund@ragnatech.se>, Heiko Stuebner <heiko@sntech.de>,
-        Orson Zhai <orsonzhai@gmail.com>,
-        Baolin Wang <baolin.wang7@gmail.com>,
-        Chunyan Zhang <zhang.lyra@gmail.com>,
-        Allison Randal <allison@lohutok.net>,
-        Enrico Weigelt <info@metux.net>,
-        Gayatri Kammela <gayatri.kammela@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        kernel@collabora.com
-Date:   Sun, 05 Jul 2020 14:04:21 +0800
-In-Reply-To: <79ae59af-d3b9-852c-d5f3-5b80d9c6ea8c@linaro.org>
-References: <20200703104354.19657-1-andrzej.p@collabora.com>
-         <fc1bb7f5-2096-a604-8c30-81d34bf5b737@linaro.org>
-         <91db4c89-0615-4a69-9695-ed5d3c42e1b7@collabora.com>
-         <79ae59af-d3b9-852c-d5f3-5b80d9c6ea8c@linaro.org>
+        id S1728235AbgGFINZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 6 Jul 2020 04:13:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54132 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727842AbgGFINZ (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 6 Jul 2020 04:13:25 -0400
+Received: from mail-vs1-xe42.google.com (mail-vs1-xe42.google.com [IPv6:2607:f8b0:4864:20::e42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9FC7C061794
+        for <linux-wireless@vger.kernel.org>; Mon,  6 Jul 2020 01:13:24 -0700 (PDT)
+Received: by mail-vs1-xe42.google.com with SMTP id v1so20119085vsb.10
+        for <linux-wireless@vger.kernel.org>; Mon, 06 Jul 2020 01:13:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=uU0xlJFFa00TPVnoXEPqSp0oyV50ZErE/QACHMhe2N4=;
+        b=wRznHkTxGCiQajCVNy9WSYCnQb05YHLCdtX7y70OCdpBfnc9TEVkeBRekT1E67LAFY
+         34RkjoCc4z4mjEkXMPx598LDq1kUDFRvWLNoT9f1nRTpzIZLB0ZyAbY1Kk0vihaQ2UHz
+         xBooI6oRjCCHVCocp+YFVVlBmLK5KSyc6ZB98i/zL3BLrvzvr4rA9o64sA2/o6BJnJD2
+         pCAP0wAxts2lhzqzswEQLCB0oTnVpiQ87QK8hKNPRDkRgvxFpx5MXrzcZ/nQfoT1jvW3
+         ZFGxsS9bpUe6dK1YXXbjgFaYQ+SdOXP/1vEvjebZGI3JaQX3C9tZRPe2XeNYvUTAVgjQ
+         Cxrw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=uU0xlJFFa00TPVnoXEPqSp0oyV50ZErE/QACHMhe2N4=;
+        b=Bpi6r4IoPSsYJ7LF6cLRY9kA9hs5AGRVZiUDEFcbz04U9/iL/RDUbxMrUo4vvhEMiO
+         TksScoZaYbeu+L2IRKNPq6x3XBfsupTNWc9CsVOOuB4It3smrg+atRivO+KJRpJ/H3g0
+         s5cMIj69jlGyymgZ7bGAxaBCyKwiQFiCpLNOkur7mh+CuoT3hBuDHhBuk2iTUWFVypQf
+         XDV07EdnzrwrSAwLjEzKfUpQDE4uVVASmUC4zhhkJhVoaZE3KvPDxb0LxN6olmnDgzyd
+         aqwxMbFCv5jv2/qbMeTfMIgxY3KGNLJOYLJ+M68GF0GbPlN1S6+CUq9YrR4DiVFL6ON5
+         bmeg==
+X-Gm-Message-State: AOAM5331DwebOGnr5QzULCYfJmO/4CdQOxwuSzyiQO2D3NAgw505oJjl
+        MFT7azyTbu79o09jf53tRw5oE96XnaIGN1UIr4SADQ==
+X-Google-Smtp-Source: ABdhPJw4Bfj4EQ8COBJIeo7D8VGRYlDADzKZonEBAoQVS2UeZtYYqk8AqEi+blrR221WwLcPoQik/mNFDEOYgtH6ncw=
+X-Received: by 2002:a67:ca03:: with SMTP id z3mr27998411vsk.34.1594023203065;
+ Mon, 06 Jul 2020 01:13:23 -0700 (PDT)
+MIME-Version: 1.0
+References: <20200623110000.31559-1-ajay.kathat@microchip.com>
+ <20200629132612.nl6rfpihzlii6ilh@pali> <c23ca5da-b9db-5e98-94e4-edc84ded9611@microchip.com>
+ <20200701075515.zypusfh4xazqu2fl@pali>
+In-Reply-To: <20200701075515.zypusfh4xazqu2fl@pali>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Mon, 6 Jul 2020 10:12:46 +0200
+Message-ID: <CAPDyKFpgXa+z_spubHWQ=2wJvJxA8sdJqgZfo0OvR6LSGE7NAQ@mail.gmail.com>
+Subject: Re: [PATCH v7 00/17] wilc1000: move out of staging
+To:     =?UTF-8?Q?Pali_Roh=C3=A1r?= <pali@kernel.org>,
+        Ajay.Kathat@microchip.com
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
+        driverdevel <devel@driverdev.osuosl.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Nicolas Ferre <Nicolas.Ferre@microchip.com>,
+        Claudiu.Beznea@microchip.com, Sripad.Balwadgi@microchip.com,
+        Venkateswara.Kaja@microchip.com
 Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.1 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 2020-07-03 at 14:05 +0200, Daniel Lezcano wrote:
-> On 03/07/2020 13:57, Andrzej Pietrasiewicz wrote:
-> > Hi,
-> > 
-> > W dniu 03.07.2020 o 13:06, Daniel Lezcano pisze:
-> > > On 03/07/2020 12:43, Andrzej Pietrasiewicz wrote:
-> > > > This short series contains fixes for "Stop monitoring disabled
-> > > > devices"
-> > > > series https://www.spinics.net/lists/arm-kernel/msg817861.html
-> > > > 
-> > > > Invocation of thermal_zone_device_is_enabled() in acpi/thermal
-> > > > is now
-> > > > redundant, because thermal_zone_device_update() now is capable
-> > > > of
-> > > > handling disabled devices.
-> > > > 
-> > > > In imx's ->get_temp() the lock must not be taken, otherwise a
-> > > > deadlock
-> > > > happens. The decision whether explicitly running a measurement
-> > > > cycle
-> > > > is needed is taken based on driver's local irq_enabled
-> > > > variable.
-> > > > 
-> > > > Finally, thermal_zone_device_is_enabled() is made available to
-> > > > the
-> > > > core only, as there are no driver users of it.
-> > > > 
-> > > > Andrzej Pietrasiewicz (3):
-> > > >    acpi: thermal: Don't call thermal_zone_device_is_enabled()
-> > > >    thermal: imx: Use driver's local data to decide whether to
-> > > > run a
-> > > >      measurement
-> > > >    thermal: Make thermal_zone_device_is_enabled() available to
-> > > > core only
-> > > > 
-> > > >   drivers/acpi/thermal.c         | 3 ---
-> > > >   drivers/thermal/imx_thermal.c  | 7 ++++---
-> > > >   drivers/thermal/thermal_core.c | 1 -
-> > > >   drivers/thermal/thermal_core.h | 2 ++
-> > > >   include/linux/thermal.h        | 5 -----
-> > > >   5 files changed, 6 insertions(+), 12 deletions(-)
-> > > 
-> > > Is this series easily merge-able with the other series?
-> > > 
-> > 
-> > So-so.
-> > 
-> > Some simple conflicts needed to be resolved.
-> > 
-> > I have created a branch for you to look at and decide
-> > how far off it is from the original and whether the
-> > original Acked-by/Reviewed-by can be retained.
-> > 
-> > Note that I might have lost some portions of code
-> > during conflict resolution. It seems to me I haven't
-> > but you know.
-> > 
-> > The branch:
-> > 
-> > 
-https://gitlab.collabora.com/andrzej.p/kernel-tests/-/tree/thermal-dont-poll-disabled-for-daniel
-> 
-> Ok, I propose to keep the these three patches on top of V7.
-> 
-> Rui are you fine with that ?
+On Wed, 1 Jul 2020 at 09:55, Pali Roh=C3=A1r <pali@kernel.org> wrote:
+>
+> On Tuesday 30 June 2020 03:17:01 Ajay.Kathat@microchip.com wrote:
+> > On 29/06/20 6:56 pm, Pali Roh=C3=A1r wrote:
+> > > EXTERNAL EMAIL: Do not click links or open attachments unless you kno=
+w the content is safe
+> > >
+> > > On Tuesday 23 June 2020 11:00:04 Ajay.Kathat@microchip.com wrote:
+> > >> This patch series is to review and move wilc1000 driver out of stagi=
+ng.
+> > >> Most of the review comments received in [1] & [2] are addressed in t=
+he
+> > >> latest code.
+> > >> Please review and provide your inputs.
+> > >
+> > > Hello Ajay! Could you please move SDIO vendor/device ID definitions f=
+rom
+> > > driver code wilc1000/sdio.c to common file include/linux/mmc/sdio_ids=
+.h?
+> > >
+> >
+> > Currently, the wilc1000 driver movement changes are present in topic
+> > branch and yet to be merged to master branch. Would it be okay to submi=
+t
+> > the new patch once driver is merged to 'wireless-driver-next' master an=
+d
+> > branch is pulled into Greg's staging repo.
+>
+> I think it should be OK. But maybe Ulf as maintainer of mmc subsystem
+> could have opinion or react on this.
 
-Yes, that works for me.
+That should be fine. Just keep me on cc so I can ack it. Potentially
+we may get some mergeconflict between the trees, but let's resolve
+that if/when that happens.
 
-thanks,
-rui
-> 
-> 
-> 
-
+Kind regards
+Uffe
