@@ -2,331 +2,76 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E2E0B2174FF
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Jul 2020 19:18:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 29CBD2177C2
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Jul 2020 21:17:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728413AbgGGRSb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 7 Jul 2020 13:18:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50608 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728447AbgGGRSb (ORCPT
+        id S1728866AbgGGTRB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 7 Jul 2020 15:17:01 -0400
+Received: from mailgw02.mediatek.com ([210.61.82.184]:40254 "EHLO
+        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1728858AbgGGTRB (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 7 Jul 2020 13:18:31 -0400
-Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com [IPv6:2607:f8b0:4864:20::642])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89EFBC08C5DC
-        for <linux-wireless@vger.kernel.org>; Tue,  7 Jul 2020 10:18:30 -0700 (PDT)
-Received: by mail-pl1-x642.google.com with SMTP id k5so1146294plk.13
-        for <linux-wireless@vger.kernel.org>; Tue, 07 Jul 2020 10:18:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=8cY0UjCqQW+XSyCWIjc/cIyKo3bTfjDtS/okyB/bgKU=;
-        b=HwtUr+jCHgdVdQ/4DQ+mnArfTxmKtDKFK+/dWGDL2hTzGtliqnCvqDjZpUfrNAv3OK
-         V0JhsNG/ymULp48sJeuBFYFpZm2cOZvvC05IOQsz4hS3wtspfm0pqZale2pUORJKSzVW
-         eG3m6ZIg3foorBvtflPR1PabbzK8xB5PpY5cE=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=8cY0UjCqQW+XSyCWIjc/cIyKo3bTfjDtS/okyB/bgKU=;
-        b=jtXziqI+Vlmi5af+WHcVAJK6Zg5+Hn/u5GdchDplrPomAxpmEu9v7dsB8FA96aa2l9
-         cXqQeEQBb4fno3jrY1hmqNxmYpAQcq8xf6VEGxOy3MKGC3BopK5hHgjS659EPRGbG3cz
-         j65ccQyGbyFh3TCUuGRrjxSZX9rpll+uQvaxLrzK6RZGgZZg0/cExDAu0X+JT0JchDB6
-         xV6DHe4Ls3uuUstKVmifMRoeno/FPkpt6zzTw1z+ZmGSOgWq0Qr6c09BfUIdO0O6C/iR
-         NWRRPC5O0GWI14Ma2S2eh+ibVO1jHyDRIQCuymW7qwz/EbL6dgnV7JKLdP+I598dYOlm
-         v4ug==
-X-Gm-Message-State: AOAM530u8yIuGUBG6Ies7mkTDxb+Wj4fiaPzsFRHBpigOkAw6SnIYe1R
-        X81QU4KFYXwlLcsvtFws5xLHBw==
-X-Google-Smtp-Source: ABdhPJxGK0bs1Msv9keoWPtVbcaPgpRLF8GJdwuI1T+wvmJQfbWZ1ep2ADN/b+nXgvZNdJNUpND+cA==
-X-Received: by 2002:a17:90a:ab96:: with SMTP id n22mr5486082pjq.52.1594142309941;
-        Tue, 07 Jul 2020 10:18:29 -0700 (PDT)
-Received: from tictac2.mtv.corp.google.com ([2620:15c:202:1:42b0:34ff:fe3d:58e6])
-        by smtp.gmail.com with ESMTPSA id 16sm2924230pjb.48.2020.07.07.10.18.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Jul 2020 10:18:29 -0700 (PDT)
-From:   Douglas Anderson <dianders@chromium.org>
-To:     kvalo@codeaurora.org, ath10k@lists.infradead.org
-Cc:     saiprakash.ranjan@codeaurora.org, linux-arm-msm@vger.kernel.org,
-        linux-wireless@vger.kernel.org, pillair@codeaurora.org,
-        kuabhs@google.com, Douglas Anderson <dianders@chromium.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, linux-kernel@vger.kernel.org,
-        netdev@vger.kernel.org
-Subject: [PATCH] ath10k: Keep track of which interrupts fired, don't poll them
-Date:   Tue,  7 Jul 2020 10:17:34 -0700
-Message-Id: <20200707101712.1.I4d2f85ffa06f38532631e864a3125691ef5ffe06@changeid>
-X-Mailer: git-send-email 2.27.0.383.g050319c2ae-goog
+        Tue, 7 Jul 2020 15:17:01 -0400
+X-UUID: f330164182ec492bb7d2d01260bf9607-20200708
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+        h=Content-Transfer-Encoding:Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=2sll/Y485e+JNsrlD/BIKIwTJsEpJPT8Kwje84O+F/g=;
+        b=XVo/B7sna3yn2Bnjv2ZnEAx+SuxoQHSNUJVBLUynozxX0xfyiIvpcQM6XP9lJGzwrAZ+6s+pgwbgTbj8q6X/0Uz99AfU3Ihpy5thGXdpPiDL8GskpteNrCpgr0aLcTk00E8sD26x/ZZo1oeDXiJcAmnz3BNcD0D1FUpTrewaOEw=;
+X-UUID: f330164182ec492bb7d2d01260bf9607-20200708
+Received: from mtkcas06.mediatek.inc [(172.21.101.30)] by mailgw02.mediatek.com
+        (envelope-from <sean.wang@mediatek.com>)
+        (Cellopoint E-mail Firewall v4.1.10 Build 0809 with TLS)
+        with ESMTP id 928126492; Wed, 08 Jul 2020 03:16:57 +0800
+Received: from mtkcas08.mediatek.inc (172.21.101.126) by
+ mtkmbs08n1.mediatek.inc (172.21.101.55) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Wed, 8 Jul 2020 03:16:45 +0800
+Received: from mtkswgap22.mediatek.inc (172.21.77.33) by mtkcas08.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Wed, 8 Jul 2020 03:16:46 +0800
+From:   <sean.wang@mediatek.com>
+To:     <nbd@nbd.name>, <lorenzo.bianconi@redhat.com>
+CC:     <sean.wang@mediatek.com>, <ryder.lee@mediatek.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>
+Subject: [PATCH v2 1/3] mt76: mt7663u: fix memory leak in set key
+Date:   Wed, 8 Jul 2020 03:16:46 +0800
+Message-ID: <57b81f8efe7e767616a0d5957728756cbfdfa235.1594148548.git.sean.wang@mediatek.com>
+X-Mailer: git-send-email 1.7.9.5
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-MTK:  N
+Content-Transfer-Encoding: base64
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-If we have a per CE (Copy Engine) IRQ then we have no summary
-register.  Right now the code generates a summary register by
-iterating over all copy engines and seeing if they have an interrupt
-pending.
-
-This has a problem.  Specifically if _none_ if the Copy Engines have
-an interrupt pending then they might go into low power mode and
-reading from their address space will cause a full system crash.  This
-was seen to happen when two interrupts went off at nearly the same
-time.  Both were handled by a single call of ath10k_snoc_napi_poll()
-but, because there were two interrupts handled and thus two calls to
-napi_schedule() there was still a second call to
-ath10k_snoc_napi_poll() which ran with no interrupts pending.
-
-Instead of iterating over all the copy engines, let's just keep track
-of the IRQs that fire.  Then we can effectively generate our own
-summary without ever needing to read the Copy Engines.
-
-Tested-on: WCN3990 SNOC WLAN.HL.3.2.2-00490-QCAHLSWMTPL-1
-
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
----
-This patch continues work to try to squash all instances of the crash
-we've been seeing while reading CE registers and hopefully this patch
-addresses the true root of the issue.
-
-The first patch that attempted to address these problems landed as
-commit 8f9ed93d09a9 ("ath10k: Wait until copy complete is actually
-done before completing").  After that Rakesh Pillai posted ("ath10k:
-Add interrupt summary based CE processing") [1] and this patch is
-based atop that one.  Both of those patches significantly reduced the
-instances of problems but didn't fully eliminate them.  Crossing my
-fingers that they're all gone now.
-
-[1] https://lore.kernel.org/r/1593193967-29897-1-git-send-email-pillair@codeaurora.org
-
- drivers/net/wireless/ath/ath10k/ce.c   | 84 ++++++++++----------------
- drivers/net/wireless/ath/ath10k/ce.h   | 14 ++---
- drivers/net/wireless/ath/ath10k/snoc.c | 18 ++++--
- drivers/net/wireless/ath/ath10k/snoc.h |  1 +
- 4 files changed, 51 insertions(+), 66 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath10k/ce.c b/drivers/net/wireless/ath/ath10k/ce.c
-index 1e16f263854a..84ec80c6d08f 100644
---- a/drivers/net/wireless/ath/ath10k/ce.c
-+++ b/drivers/net/wireless/ath/ath10k/ce.c
-@@ -481,38 +481,6 @@ static inline void ath10k_ce_engine_int_status_clear(struct ath10k *ar,
- 	ath10k_ce_write32(ar, ce_ctrl_addr + wm_regs->addr, mask);
- }
- 
--static bool ath10k_ce_engine_int_status_check(struct ath10k *ar, u32 ce_ctrl_addr,
--					      unsigned int mask)
--{
--	struct ath10k_hw_ce_host_wm_regs *wm_regs = ar->hw_ce_regs->wm_regs;
--
--	return ath10k_ce_read32(ar, ce_ctrl_addr + wm_regs->addr) & mask;
--}
--
--u32 ath10k_ce_gen_interrupt_summary(struct ath10k *ar)
--{
--	struct ath10k_hw_ce_host_wm_regs *wm_regs = ar->hw_ce_regs->wm_regs;
--	struct ath10k_ce_pipe *ce_state;
--	struct ath10k_ce *ce;
--	u32 irq_summary = 0;
--	u32 ctrl_addr;
--	u32 ce_id;
--
--	ce = ath10k_ce_priv(ar);
--
--	for (ce_id = 0; ce_id < CE_COUNT; ce_id++) {
--		ce_state = &ce->ce_states[ce_id];
--		ctrl_addr = ce_state->ctrl_addr;
--		if (ath10k_ce_engine_int_status_check(ar, ctrl_addr,
--						      wm_regs->cc_mask)) {
--			irq_summary |= BIT(ce_id);
--		}
--	}
--
--	return irq_summary;
--}
--EXPORT_SYMBOL(ath10k_ce_gen_interrupt_summary);
--
- /*
-  * Guts of ath10k_ce_send.
-  * The caller takes responsibility for any needed locking.
-@@ -1399,45 +1367,55 @@ static void ath10k_ce_per_engine_handler_adjust(struct ath10k_ce_pipe *ce_state)
- 	ath10k_ce_watermark_intr_disable(ar, ctrl_addr);
- }
- 
--int ath10k_ce_disable_interrupts(struct ath10k *ar)
-+void ath10k_ce_disable_interrupt(struct ath10k *ar, int ce_id)
- {
- 	struct ath10k_ce *ce = ath10k_ce_priv(ar);
- 	struct ath10k_ce_pipe *ce_state;
- 	u32 ctrl_addr;
--	int ce_id;
- 
--	for (ce_id = 0; ce_id < CE_COUNT; ce_id++) {
--		ce_state  = &ce->ce_states[ce_id];
--		if (ce_state->attr_flags & CE_ATTR_POLL)
--			continue;
-+	ce_state  = &ce->ce_states[ce_id];
-+	if (ce_state->attr_flags & CE_ATTR_POLL)
-+		return;
- 
--		ctrl_addr = ath10k_ce_base_address(ar, ce_id);
-+	ctrl_addr = ath10k_ce_base_address(ar, ce_id);
- 
--		ath10k_ce_copy_complete_intr_disable(ar, ctrl_addr);
--		ath10k_ce_error_intr_disable(ar, ctrl_addr);
--		ath10k_ce_watermark_intr_disable(ar, ctrl_addr);
--	}
-+	ath10k_ce_copy_complete_intr_disable(ar, ctrl_addr);
-+	ath10k_ce_error_intr_disable(ar, ctrl_addr);
-+	ath10k_ce_watermark_intr_disable(ar, ctrl_addr);
-+}
-+EXPORT_SYMBOL(ath10k_ce_disable_interrupt);
- 
--	return 0;
-+void ath10k_ce_disable_interrupts(struct ath10k *ar)
-+{
-+	int ce_id;
-+
-+	for (ce_id = 0; ce_id < CE_COUNT; ce_id++)
-+		ath10k_ce_disable_interrupt(ar, ce_id);
- }
- EXPORT_SYMBOL(ath10k_ce_disable_interrupts);
- 
--void ath10k_ce_enable_interrupts(struct ath10k *ar)
-+void ath10k_ce_enable_interrupt(struct ath10k *ar, int ce_id)
- {
- 	struct ath10k_ce *ce = ath10k_ce_priv(ar);
--	int ce_id;
- 	struct ath10k_ce_pipe *ce_state;
- 
-+	ce_state  = &ce->ce_states[ce_id];
-+	if (ce_state->attr_flags & CE_ATTR_POLL)
-+		return;
-+
-+	ath10k_ce_per_engine_handler_adjust(ce_state);
-+}
-+EXPORT_SYMBOL(ath10k_ce_enable_interrupt);
-+
-+void ath10k_ce_enable_interrupts(struct ath10k *ar)
-+{
-+	int ce_id;
-+
- 	/* Enable interrupts for copy engine that
- 	 * are not using polling mode.
- 	 */
--	for (ce_id = 0; ce_id < CE_COUNT; ce_id++) {
--		ce_state  = &ce->ce_states[ce_id];
--		if (ce_state->attr_flags & CE_ATTR_POLL)
--			continue;
--
--		ath10k_ce_per_engine_handler_adjust(ce_state);
--	}
-+	for (ce_id = 0; ce_id < CE_COUNT; ce_id++)
-+		ath10k_ce_enable_interrupt(ar, ce_id);
- }
- EXPORT_SYMBOL(ath10k_ce_enable_interrupts);
- 
-diff --git a/drivers/net/wireless/ath/ath10k/ce.h b/drivers/net/wireless/ath/ath10k/ce.h
-index a440aaf74aa4..666ce384a1d8 100644
---- a/drivers/net/wireless/ath/ath10k/ce.h
-+++ b/drivers/net/wireless/ath/ath10k/ce.h
-@@ -255,12 +255,13 @@ int ath10k_ce_cancel_send_next(struct ath10k_ce_pipe *ce_state,
- /*==================CE Interrupt Handlers====================*/
- void ath10k_ce_per_engine_service_any(struct ath10k *ar);
- void ath10k_ce_per_engine_service(struct ath10k *ar, unsigned int ce_id);
--int ath10k_ce_disable_interrupts(struct ath10k *ar);
-+void ath10k_ce_disable_interrupt(struct ath10k *ar, int ce_id);
-+void ath10k_ce_disable_interrupts(struct ath10k *ar);
-+void ath10k_ce_enable_interrupt(struct ath10k *ar, int ce_id);
- void ath10k_ce_enable_interrupts(struct ath10k *ar);
- void ath10k_ce_dump_registers(struct ath10k *ar,
- 			      struct ath10k_fw_crash_data *crash_data);
- 
--u32 ath10k_ce_gen_interrupt_summary(struct ath10k *ar);
- void ath10k_ce_alloc_rri(struct ath10k *ar);
- void ath10k_ce_free_rri(struct ath10k *ar);
- 
-@@ -376,12 +377,9 @@ static inline u32 ath10k_ce_interrupt_summary(struct ath10k *ar)
- {
- 	struct ath10k_ce *ce = ath10k_ce_priv(ar);
- 
--	if (!ar->hw_params.per_ce_irq)
--		return CE_WRAPPER_INTERRUPT_SUMMARY_HOST_MSI_GET(
--			ce->bus_ops->read32((ar), CE_WRAPPER_BASE_ADDRESS +
--			CE_WRAPPER_INTERRUPT_SUMMARY_ADDRESS));
--	else
--		return ath10k_ce_gen_interrupt_summary(ar);
-+	return CE_WRAPPER_INTERRUPT_SUMMARY_HOST_MSI_GET(
-+		ce->bus_ops->read32((ar), CE_WRAPPER_BASE_ADDRESS +
-+		CE_WRAPPER_INTERRUPT_SUMMARY_ADDRESS));
- }
- 
- /* Host software's Copy Engine configuration. */
-diff --git a/drivers/net/wireless/ath/ath10k/snoc.c b/drivers/net/wireless/ath/ath10k/snoc.c
-index 354d49b1cd45..2fc4dcbab70a 100644
---- a/drivers/net/wireless/ath/ath10k/snoc.c
-+++ b/drivers/net/wireless/ath/ath10k/snoc.c
-@@ -3,6 +3,7 @@
-  * Copyright (c) 2018 The Linux Foundation. All rights reserved.
-  */
- 
-+#include <linux/bits.h>
- #include <linux/clk.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
-@@ -1158,7 +1159,9 @@ static irqreturn_t ath10k_snoc_per_engine_handler(int irq, void *arg)
- 		return IRQ_HANDLED;
- 	}
- 
--	ath10k_snoc_irq_disable(ar);
-+	ath10k_ce_disable_interrupt(ar, ce_id);
-+	set_bit(ce_id, ar_snoc->pending_ce_irqs);
-+
- 	napi_schedule(&ar->napi);
- 
- 	return IRQ_HANDLED;
-@@ -1167,20 +1170,25 @@ static irqreturn_t ath10k_snoc_per_engine_handler(int irq, void *arg)
- static int ath10k_snoc_napi_poll(struct napi_struct *ctx, int budget)
- {
- 	struct ath10k *ar = container_of(ctx, struct ath10k, napi);
-+	struct ath10k_snoc *ar_snoc = ath10k_snoc_priv(ar);
- 	int done = 0;
-+	int ce_id;
- 
- 	if (test_bit(ATH10K_FLAG_CRASH_FLUSH, &ar->dev_flags)) {
- 		napi_complete(ctx);
- 		return done;
- 	}
- 
--	ath10k_ce_per_engine_service_any(ar);
-+	for (ce_id = 0; ce_id < CE_COUNT; ce_id++)
-+		if (test_and_clear_bit(ce_id, ar_snoc->pending_ce_irqs)) {
-+			ath10k_ce_per_engine_service(ar, ce_id);
-+			ath10k_ce_enable_interrupt(ar, ce_id);
-+		}
-+
- 	done = ath10k_htt_txrx_compl_task(ar, budget);
- 
--	if (done < budget) {
-+	if (done < budget)
- 		napi_complete(ctx);
--		ath10k_snoc_irq_enable(ar);
--	}
- 
- 	return done;
- }
-diff --git a/drivers/net/wireless/ath/ath10k/snoc.h b/drivers/net/wireless/ath/ath10k/snoc.h
-index a3dd06f6ac62..5095d1893681 100644
---- a/drivers/net/wireless/ath/ath10k/snoc.h
-+++ b/drivers/net/wireless/ath/ath10k/snoc.h
-@@ -78,6 +78,7 @@ struct ath10k_snoc {
- 	unsigned long flags;
- 	bool xo_cal_supported;
- 	u32 xo_cal_data;
-+	DECLARE_BITMAP(pending_ce_irqs, CE_COUNT_MAX);
- };
- 
- static inline struct ath10k_snoc *ath10k_snoc_priv(struct ath10k *ar)
--- 
-2.27.0.383.g050319c2ae-goog
+RnJvbTogU2VhbiBXYW5nIDxzZWFuLndhbmdAbWVkaWF0ZWsuY29tPg0KDQpGaXggbWVtb3J5IGxl
+YWsgaW4gc2V0IGtleS4NCg0KdjEgLT4gdjI6DQoJLSByZW1vdmUgdW5uZWVkZWQga2ZyZWUNCg0K
+Rml4ZXM6IGViOTljYzk1YzNiNiAoIm10NzY6IG10NzYxNTogaW50cm9kdWNlIG10NzY2M3Ugc3Vw
+cG9ydCIpDQpTaWduZWQtb2ZmLWJ5OiBTZWFuIFdhbmcgPHNlYW4ud2FuZ0BtZWRpYXRlay5jb20+
+DQotLS0NCiAuLi4vbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3NjE1L3VzYi5jICAgfCAy
+MSArKysrKysrKysrKystLS0tLS0tDQogMSBmaWxlIGNoYW5nZWQsIDE0IGluc2VydGlvbnMoKyks
+IDcgZGVsZXRpb25zKC0pDQoNCmRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRp
+YXRlay9tdDc2L210NzYxNS91c2IuYyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210
+NzYvbXQ3NjE1L3VzYi5jDQppbmRleCAwYmEyOGQzN2M0MTQuLmYzYzNhZDM1MDljOCAxMDA2NDQN
+Ci0tLSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3NjE1L3VzYi5jDQor
+KysgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzYxNS91c2IuYw0KQEAg
+LTE2NSwxMiArMTY1LDE2IEBAIF9fbXQ3NjYzdV9tYWNfc2V0X2tleShzdHJ1Y3QgbXQ3NjE1X2Rl
+diAqZGV2LA0KIA0KIAlsb2NrZGVwX2Fzc2VydF9oZWxkKCZkZXYtPm10NzYubXV0ZXgpOw0KIA0K
+LQlpZiAoIXN0YSkNCi0JCXJldHVybiAtRUlOVkFMOw0KKwlpZiAoIXN0YSkgew0KKwkJZXJyID0g
+LUVJTlZBTDsNCisJCWdvdG8gb3V0Ow0KKwl9DQogDQogCWNpcGhlciA9IG10NzYxNV9tYWNfZ2V0
+X2NpcGhlcihrZXktPmNpcGhlcik7DQotCWlmIChjaXBoZXIgPT0gTVRfQ0lQSEVSX05PTkUpDQot
+CQlyZXR1cm4gLUVPUE5PVFNVUFA7DQorCWlmIChjaXBoZXIgPT0gTVRfQ0lQSEVSX05PTkUpIHsN
+CisJCWVyciA9IC1FT1BOT1RTVVBQOw0KKwkJZ290byBvdXQ7DQorCX0NCiANCiAJd2NpZCA9ICZ3
+ZC0+c3RhLT53Y2lkOw0KIA0KQEAgLTE3OCwxOSArMTgyLDIyIEBAIF9fbXQ3NjYzdV9tYWNfc2V0
+X2tleShzdHJ1Y3QgbXQ3NjE1X2RldiAqZGV2LA0KIAllcnIgPSBtdDc2MTVfbWFjX3d0YmxfdXBk
+YXRlX2tleShkZXYsIHdjaWQsIGtleS0+a2V5LCBrZXktPmtleWxlbiwNCiAJCQkJCSBjaXBoZXIs
+IGtleS0+Y21kKTsNCiAJaWYgKGVyciA8IDApDQotCQlyZXR1cm4gZXJyOw0KKwkJZ290byBvdXQ7
+DQogDQogCWVyciA9IG10NzYxNV9tYWNfd3RibF91cGRhdGVfcGsoZGV2LCB3Y2lkLCBjaXBoZXIs
+IGtleS0+a2V5aWR4LA0KIAkJCQkJa2V5LT5jbWQpOw0KIAlpZiAoZXJyIDwgMCkNCi0JCXJldHVy
+biBlcnI7DQorCQlnb3RvIG91dDsNCiANCiAJaWYgKGtleS0+Y21kID09IFNFVF9LRVkpDQogCQl3
+Y2lkLT5jaXBoZXIgfD0gQklUKGNpcGhlcik7DQogCWVsc2UNCiAJCXdjaWQtPmNpcGhlciAmPSB+
+QklUKGNpcGhlcik7DQogDQotCXJldHVybiAwOw0KK291dDoNCisJa2ZyZWUoa2V5LT5rZXkpOw0K
+Kw0KKwlyZXR1cm4gZXJyOw0KIH0NCiANCiB2b2lkIG10NzY2M3Vfd3RibF93b3JrKHN0cnVjdCB3
+b3JrX3N0cnVjdCAqd29yaykNCi0tIA0KMi4yNS4xDQo=
 
