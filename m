@@ -2,89 +2,158 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9BDAA216E62
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Jul 2020 16:09:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A9A3216E68
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Jul 2020 16:11:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727116AbgGGOJh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 7 Jul 2020 10:09:37 -0400
-Received: from mx0b-00256a01.pphosted.com ([67.231.153.242]:13396 "EHLO
-        mx0b-00256a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726805AbgGGOJg (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 7 Jul 2020 10:09:36 -0400
-X-Greylist: delayed 807 seconds by postgrey-1.27 at vger.kernel.org; Tue, 07 Jul 2020 10:09:36 EDT
-Received: from pps.filterd (m0144081.ppops.net [127.0.0.1])
-        by mx0b-00256a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 067DsUiK132029
-        for <linux-wireless@vger.kernel.org>; Tue, 7 Jul 2020 09:56:08 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nyu.edu; h=mime-version :
- references : in-reply-to : from : date : message-id : subject : to : cc :
- content-type; s=20180315; bh=TMydR4YKBmWW8YheUujDldBr0oV9xZ3Hd7/awc9Ym3Y=;
- b=Afh/UVFgpmD0NVm7lAnQdNXTSVszsxFMUNRodkBrxHEPveh5vanh5zRkpeTiNacJFjiU
- zWJ6WrK5LnOvVTCQ+MVU4mFDs5fGpxoZtR+YGvzCMyUr9fyY49L52cclOOknwLydK40s
- sGVb7wbFHgdKNe+3XX60USCh+nYhnr8OgsgCT0en/uhS5Kvo3UPVA34eqyO/drJ2GMY0
- Ka90TaHZMrxPmDHqCZOkhF6ci6ECxJEJbzmOrX9wGoBwfCZPmq2Q+PvPmBSLbVB+oMDn
- uj4HNJ85qsJHZcy8zUflyTsKvtfop09w9K4+lNn8QlgRL8sgIDR0b5CfqKO082dDzepB rw== 
-Received: from mail-ua1-f69.google.com (mail-ua1-f69.google.com [209.85.222.69])
-        by mx0b-00256a01.pphosted.com with ESMTP id 3236uq06mq-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-        for <linux-wireless@vger.kernel.org>; Tue, 07 Jul 2020 09:56:08 -0400
-Received: by mail-ua1-f69.google.com with SMTP id y12so14744451uao.13
-        for <linux-wireless@vger.kernel.org>; Tue, 07 Jul 2020 06:56:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nyu-edu.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=TMydR4YKBmWW8YheUujDldBr0oV9xZ3Hd7/awc9Ym3Y=;
-        b=F1cS8RbG3/7r/Gk43gN33l6KV1b8Vm893d61U0XgFxF4nYdUSx1XkH8Qh0z+tGt1Q/
-         BIZU/9Uqa7ZYKkch91X0gw9NFtXdvB8eOREqhimcHSbtj/hKDoLdv1yC3yrooFZVDJj6
-         BaXElpXgTwJdCCPI5g1sm5LB3drdmfyC1zr5dm6GsmwSUnlRoHGEy5dIvvxY1tsf0Ybp
-         9lSOWeb77yBg881g5HTe7Cj/VBdAvvcwHPNV83fmNwpXzDxSPfpye/koGZJTmDD4UoN/
-         QWL6Bn9fO8eUOvyUanoWXY/+IMGOvOaPTajgXNxeFtAey8v6gWFgpJ4YZpBOgf7bZHD0
-         W5Jg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=TMydR4YKBmWW8YheUujDldBr0oV9xZ3Hd7/awc9Ym3Y=;
-        b=mYYaKe+HFD1aX0zsgo7X+gCENbNGuf/mEUH/+4lm/1pHInur6mEgTZPEjfO+yqsbqC
-         +QEedjHXEiI4DsEoTG4jVN92TpGrq06pXtv6CG/e5XdGO7QK64M0PrBOPNj0R8wGYlfa
-         FxVWdoUegQhGgzDvVeb1LSnrWCwm3gdyyD15bIbDREgZ9vArAOs3WXZsVEiGcq5HW7Qk
-         U21m1nZyoXwSSNTuZLmzJNtY4aeD/KGdTlILEyxQPa/hYJL5kngbn453nWWte3in5waq
-         ImVFklfLqYx3vMXj3Qww6sYv5zae9ZrO8Oq0KsQODGwkAbJA0eFj7zmkLDeIMUzNDvDE
-         3VWA==
-X-Gm-Message-State: AOAM532kAlPOVlSZj92y1YqsHLY2anlngTkWUCdeF4bJYxx1Y5QUiOvk
-        1VLiNiUMj2P0nhO640ceofyh+UjHANHlJuJ/2kZY3Gz3i4t+G2GFYzDLdZN7DDlqVCVJDrnVLPj
-        n5PZRzp7oYPlRu2TIQiK53wGluQV0LWhQh7x2/ggZ
-X-Received: by 2002:a1f:788c:: with SMTP id t134mr32089919vkc.30.1594130167786;
-        Tue, 07 Jul 2020 06:56:07 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJxFqMsOIBaHbBsSEJwjmvFr+pyVVwqddPJUUtGAAqXGKTcO0D+TaphBkn2lIzCLFgmoCgIjMjt488pEjMFUxYQ=
-X-Received: by 2002:a1f:788c:: with SMTP id t134mr32089903vkc.30.1594130167587;
- Tue, 07 Jul 2020 06:56:07 -0700 (PDT)
+        id S1727800AbgGGOLE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 7 Jul 2020 10:11:04 -0400
+Received: from mail.kernel.org ([198.145.29.99]:47222 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725944AbgGGOLE (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 7 Jul 2020 10:11:04 -0400
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id B9A7F206E2;
+        Tue,  7 Jul 2020 14:11:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1594131062;
+        bh=ubBUY7ArJKNzg22lsThqQ8ZAOcAYveuiTokKIE6DQdU=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=z0YmtCLvzLMTTSJz7bMlY9/umz3SJUGxzibrHoxx6MSAmVFtmgkKROC6C5NtzCysG
+         +X4kl+bLGGgRm4RW8UW6LZyXKgip4FvA5xPqeZCiRAPd2BrqrWncOCrwV9kvxkxUqR
+         LT7V/c3yvIsB9QAm6OjPDFYiCpneb6i816qgv0uA=
+Date:   Tue, 7 Jul 2020 16:11:00 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Gabriel C <nix.or.die@googlemail.com>
+Cc:     Jiri Slaby <jirislaby@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        stable <stable@vger.kernel.org>, lwn@lwn.net,
+        angrypenguinpoland@gmail.com, Qiujun Huang <hqjagain@gmail.com>,
+        ath9k-devel <ath9k-devel@qca.qualcomm.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: Re: ath9k broken [was: Linux 5.7.3]
+Message-ID: <20200707141100.GE4064836@kroah.com>
+References: <1592410366125160@kroah.com>
+ <CAEJqkgjV8p6LtBV8YUGbNb0vYzKOQt4-AMAvYw5mzFr3eicyTg@mail.gmail.com>
+ <b7993e83-1df7-0c93-f6dd-dba9dc10e27a@kernel.org>
+ <CAEJqkggG2ZB8De_zbP2W7Z9eRYve2br8jALaLRhjC33ksLZpTw@mail.gmail.com>
+ <CAEJqkgj4LS7M3zYK51Vagt4rWC9A7uunA+7CvX0Qv=57Or3Ngg@mail.gmail.com>
+ <CAEJqkghJWGsLCj2Wvt-yhzMewjXwrXhSEDpar6rbDpbSA6R8kQ@mail.gmail.com>
+ <20200626133959.GA4024297@kroah.com>
+ <CAEJqkgiACMar-iWsWQgJPAViBBURaNpcOD4FKtp6M8Aw_D4FOw@mail.gmail.com>
+ <CAEJqkgg4Ka8oNL7ELoJrR0-Abz3=caLns48KyDC=DQcym6SRvA@mail.gmail.com>
 MIME-Version: 1.0
-References: <20200628220512.28535ebc@mathy-work.localhost> <20200707134523.GV2549@kadam>
-In-Reply-To: <20200707134523.GV2549@kadam>
-From:   Mathy Vanhoef <Mathy.Vanhoef@nyu.edu>
-Date:   Tue, 7 Jul 2020 17:55:51 +0400
-Message-ID: <CAJg+V6msadZ+Qr60p4iMgeSFN13MVFRseX-TPeVO5xaNbDKmkw@mail.gmail.com>
-Subject: Re: [PATCH] mac80211: keep non-zero sequence counter of injected frames
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     kbuild@lists.01.org, Mathy Vanhoef <Mathy.Vanhoef@kuleuven.be>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless@vger.kernel.org, lkp@intel.com,
-        kbuild-all@lists.01.org
-Content-Type: text/plain; charset="UTF-8"
-X-Orig-IP: 209.85.222.69
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 clxscore=1011
- lowpriorityscore=0 mlxlogscore=808 suspectscore=1 adultscore=0
- impostorscore=0 cotscore=-2147483648 spamscore=0 phishscore=0 mlxscore=0
- priorityscore=1501 malwarescore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2004280000 definitions=main-2007070104
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAEJqkgg4Ka8oNL7ELoJrR0-Abz3=caLns48KyDC=DQcym6SRvA@mail.gmail.com>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-> This is wrong.  Also != 0 doesn't add anything.  It should just be:
+On Fri, Jun 26, 2020 at 04:40:18PM +0200, Gabriel C wrote:
+> Am Fr., 26. Juni 2020 um 15:51 Uhr schrieb Gabriel C
+> <nix.or.die@googlemail.com>:
+> >
+> > Am Fr., 26. Juni 2020 um 15:40 Uhr schrieb Greg Kroah-Hartman
+> > <gregkh@linuxfoundation.org>:
+> > >
+> > > On Fri, Jun 26, 2020 at 01:48:59PM +0200, Gabriel C wrote:
+> > > > Am Do., 25. Juni 2020 um 12:52 Uhr schrieb Gabriel C
+> > > > <nix.or.die@googlemail.com>:
+> > > > >
+> > > > > Am Do., 25. Juni 2020 um 12:48 Uhr schrieb Gabriel C
+> > > > > <nix.or.die@googlemail.com>:
+> > > > > >
+> > > > > > Am Do., 25. Juni 2020 um 06:57 Uhr schrieb Jiri Slaby <jirislaby@kernel.org>:
+> > > > > > >
+> > > > > > > On 25. 06. 20, 0:05, Gabriel C wrote:
+> > > > > > > > Am Mi., 17. Juni 2020 um 18:13 Uhr schrieb Greg Kroah-Hartman
+> > > > > > > > <gregkh@linuxfoundation.org>:
+> > > > > > > >>
+> > > > > > > >> I'm announcing the release of the 5.7.3 kernel.
+> > > > > > > >>
+> > > > > > > >
+> > > > > > > > Hello Greg,
+> > > > > > > >
+> > > > > > > >> Qiujun Huang (5):
+> > > > > > > >>       ath9k: Fix use-after-free Read in htc_connect_service
+> > > > > > > >>       ath9k: Fix use-after-free Read in ath9k_wmi_ctrl_rx
+> > > > > > > >>       ath9k: Fix use-after-free Write in ath9k_htc_rx_msg
+> > > > > > > >>       ath9x: Fix stack-out-of-bounds Write in ath9k_hif_usb_rx_cb
+> > > > > > > >>       ath9k: Fix general protection fault in ath9k_hif_usb_rx_cb
+> > > > > > > >>
+> > > > > > > >
+> > > > > > > > We got a report on IRC about 5.7.3+ breaking a USB ath9k Wifi Dongle,
+> > > > > > > > while working fine on <5.7.3.
+> > > > > > > >
+> > > > > > > > I don't have myself such HW, and the reported doesn't have any experience
+> > > > > > > > in bisecting the kernel, so we build kernels, each with one of the
+> > > > > > > > above commits reverted,
+> > > > > > > > to find the bad commit.
+> > > > > > > >
+> > > > > > > > The winner is:
+> > > > > > > >
+> > > > > > > > commit 6602f080cb28745259e2fab1a4cf55eeb5894f93
+> > > > > > > > Author: Qiujun Huang <hqjagain@gmail.com>
+> > > > > > > > Date:   Sat Apr 4 12:18:38 2020 +0800
+> > > > > > > >
+> > > > > > > >     ath9k: Fix general protection fault in ath9k_hif_usb_rx_cb
+> > > > > > > >
+> > > > > > > >     commit 2bbcaaee1fcbd83272e29f31e2bb7e70d8c49e05 upstream.
+> > > > > > > > ...
+> > > > > > > >
+> > > > > > > > Reverting this one fixed his problem.
+> > > > > > >
+> > > > > > > Obvious question: is 5.8-rc1 (containing the commit) broken too?
+> > > > > >
+> > > > > > Yes, it does, just checked.
+> > > > > >
+> > > > > > git tag --contains 2bbcaaee1fcbd83272e29f31e2bb7e70d8c49e05
+> > > > > > v5.8-rc1
+> > > > > > v5.8-rc2
+> > > > > >
+> > > > >
+> > > > > Sorry, I read the wrong, I just woke up.
+> > > > >
+> > > > > We didn't test 5.8-rc{1,2} yet but we will today and let you know.
+> > > > >
+> > > >
+> > > > We tested 5.8-rc2 and it is broken too.
+> > > >
+> > > > The exact HW name is:
+> > > >
+> > > > TP-link tl-wn722n (Atheros AR9271 chip)
+> > >
+> > > Great!
+> > >
+> > > Can you work with the developers to fix this in Linus's tree first?
+> >
+> > I'm the man in the middle, but sure we will try patches or any suggestions
+> > from developers to identify and fix the problem.
+> >
+> > >
+> > > I bet they want to see the output of 'lsusb -v' for this device to see
+> > > if the endpoint calculations are correct...
+> > >
+> >
+> > Working on it. As soon the reporter gives me the output, I will post it here.
+> > I've told him to run it on a broken and one working kernel.
+> 
+> That is from a good kernel with reverted commit
+> https://gist.github.com/AngryPenguinPL/07c8e2abd3b103eaf8978a39ad8577d1
+> 
+> That is from the broken kernel without the commit reverted
+> https://gist.github.com/AngryPenguinPL/5cdc0dd16ce5e59ff3c32c048e2f5111
+> 
+> This is from 5.7.5 kernel, I don't have yet a 5.8-rc2 package with the
+> reverted commit.
 
-Yup, the disadvantage of late-night work. Hence also my follow-up mail
-to drop the patch, will send updated patches at a later time.
+Did this ever get resolved?
+
+thanks,
+
+greg k-h
