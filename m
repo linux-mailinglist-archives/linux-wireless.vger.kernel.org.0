@@ -2,185 +2,253 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A1C621793F
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Jul 2020 22:23:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D0AC217982
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Jul 2020 22:36:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728471AbgGGUXH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 7 Jul 2020 16:23:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51172 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727995AbgGGUXH (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 7 Jul 2020 16:23:07 -0400
-Received: from mout3.freenet.de (mout3.freenet.de [IPv6:2001:748:100:40::2:5])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 442D9C061755;
-        Tue,  7 Jul 2020 13:23:07 -0700 (PDT)
-Received: from [195.4.92.165] (helo=mjail2.freenet.de)
-        by mout3.freenet.de with esmtpa (ID viktor.jaegerskuepper@freenet.de) (port 25) (Exim 4.92 #3)
-        id 1jsu7K-0000A1-Nx; Tue, 07 Jul 2020 22:23:02 +0200
-Received: from [::1] (port=52196 helo=mjail2.freenet.de)
-        by mjail2.freenet.de with esmtpa (ID viktor.jaegerskuepper@freenet.de) (Exim 4.92 #3)
-        id 1jsu7K-000585-Jf; Tue, 07 Jul 2020 22:23:02 +0200
-Received: from sub3.freenet.de ([195.4.92.122]:43090)
-        by mjail2.freenet.de with esmtpa (ID viktor.jaegerskuepper@freenet.de) (Exim 4.92 #3)
-        id 1jsu5B-0004K3-Rf; Tue, 07 Jul 2020 22:20:49 +0200
-Received: from p200300e707178b006cb2a2fb62f37f24.dip0.t-ipconnect.de ([2003:e7:717:8b00:6cb2:a2fb:62f3:7f24]:58184 helo=[127.0.0.1])
-        by sub3.freenet.de with esmtpsa (ID viktor.jaegerskuepper@freenet.de) (TLSv1.2:ECDHE-RSA-CHACHA20-POLY1305:256) (port 465) (Exim 4.92 #3)
-        id 1jsu5B-0001wA-Mf; Tue, 07 Jul 2020 22:20:49 +0200
-Subject: Re: ath9k broken [was: Linux 5.7.3]
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Gabriel C <nix.or.die@googlemail.com>
-Cc:     Jiri Slaby <jirislaby@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        stable <stable@vger.kernel.org>, lwn@lwn.net,
-        angrypenguinpoland@gmail.com, Qiujun Huang <hqjagain@gmail.com>,
-        ath9k-devel <ath9k-devel@qca.qualcomm.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-References: <1592410366125160@kroah.com>
- <CAEJqkgjV8p6LtBV8YUGbNb0vYzKOQt4-AMAvYw5mzFr3eicyTg@mail.gmail.com>
- <b7993e83-1df7-0c93-f6dd-dba9dc10e27a@kernel.org>
- <CAEJqkggG2ZB8De_zbP2W7Z9eRYve2br8jALaLRhjC33ksLZpTw@mail.gmail.com>
- <CAEJqkgj4LS7M3zYK51Vagt4rWC9A7uunA+7CvX0Qv=57Or3Ngg@mail.gmail.com>
- <CAEJqkghJWGsLCj2Wvt-yhzMewjXwrXhSEDpar6rbDpbSA6R8kQ@mail.gmail.com>
- <20200626133959.GA4024297@kroah.com>
- <CAEJqkgiACMar-iWsWQgJPAViBBURaNpcOD4FKtp6M8Aw_D4FOw@mail.gmail.com>
- <CAEJqkgg4Ka8oNL7ELoJrR0-Abz3=caLns48KyDC=DQcym6SRvA@mail.gmail.com>
- <20200707141100.GE4064836@kroah.com>
-From:   =?UTF-8?B?VmlrdG9yIErDpGdlcnNrw7xwcGVy?= 
-        <viktor_jaegerskuepper@freenet.de>
-Message-ID: <07c8d8fa-8bbc-0b4e-191c-b2635214e8b9@freenet.de>
-Date:   Tue, 7 Jul 2020 22:20:41 +0200
+        id S1728626AbgGGUgj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 7 Jul 2020 16:36:39 -0400
+Received: from mail.kernel.org ([198.145.29.99]:50068 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727995AbgGGUgj (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 7 Jul 2020 16:36:39 -0400
+Received: from embeddedor (unknown [200.39.26.250])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id DDF31206BE;
+        Tue,  7 Jul 2020 20:36:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1594154198;
+        bh=5H4ltLodQ0WkuEGu1+NXwO1PtPZgpH8HLPOjUyb6+aE=;
+        h=Date:From:To:Cc:Subject:From;
+        b=WIgQxkVraNpu1LcTQO1M0jASYbLsIfb4p2O62tj3aTen8hXuZspf/GVUrOGkKElng
+         JCyaRNEC8HiX9PMuahWwx8oBcR7oYpwBZqHUQvMM4O38PE9/V9r81FW09bfgCOjza+
+         cptc6dZRutkrOae8Y4akEnhenHcJMYlm9rCMJCAk=
+Date:   Tue, 7 Jul 2020 15:42:03 -0500
+From:   "Gustavo A. R. Silva" <gustavoars@kernel.org>
+To:     Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>
+Cc:     Ryder Lee <ryder.lee@mediatek.com>, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>
+Subject: [PATCH] mt76: Use fallthrough pseudo-keyword
+Message-ID: <20200707204203.GA9149@embeddedor>
 MIME-Version: 1.0
-In-Reply-To: <20200707141100.GE4064836@kroah.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US-large
-Content-Transfer-Encoding: 7bit
-X-Originated-At: 2003:e7:717:8b00:6cb2:a2fb:62f3:7f24!58184
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Greg Kroah-Hartman wrote:
-> On Fri, Jun 26, 2020 at 04:40:18PM +0200, Gabriel C wrote:
->> Am Fr., 26. Juni 2020 um 15:51 Uhr schrieb Gabriel C
->> <nix.or.die@googlemail.com>:
->>>
->>> Am Fr., 26. Juni 2020 um 15:40 Uhr schrieb Greg Kroah-Hartman
->>> <gregkh@linuxfoundation.org>:
->>>>
->>>> On Fri, Jun 26, 2020 at 01:48:59PM +0200, Gabriel C wrote:
->>>>> Am Do., 25. Juni 2020 um 12:52 Uhr schrieb Gabriel C
->>>>> <nix.or.die@googlemail.com>:
->>>>>>
->>>>>> Am Do., 25. Juni 2020 um 12:48 Uhr schrieb Gabriel C
->>>>>> <nix.or.die@googlemail.com>:
->>>>>>>
->>>>>>> Am Do., 25. Juni 2020 um 06:57 Uhr schrieb Jiri Slaby <jirislaby@kernel.org>:
->>>>>>>>
->>>>>>>> On 25. 06. 20, 0:05, Gabriel C wrote:
->>>>>>>>> Am Mi., 17. Juni 2020 um 18:13 Uhr schrieb Greg Kroah-Hartman
->>>>>>>>> <gregkh@linuxfoundation.org>:
->>>>>>>>>>
->>>>>>>>>> I'm announcing the release of the 5.7.3 kernel.
->>>>>>>>>>
->>>>>>>>>
->>>>>>>>> Hello Greg,
->>>>>>>>>
->>>>>>>>>> Qiujun Huang (5):
->>>>>>>>>>       ath9k: Fix use-after-free Read in htc_connect_service
->>>>>>>>>>       ath9k: Fix use-after-free Read in ath9k_wmi_ctrl_rx
->>>>>>>>>>       ath9k: Fix use-after-free Write in ath9k_htc_rx_msg
->>>>>>>>>>       ath9x: Fix stack-out-of-bounds Write in ath9k_hif_usb_rx_cb
->>>>>>>>>>       ath9k: Fix general protection fault in ath9k_hif_usb_rx_cb
->>>>>>>>>>
->>>>>>>>>
->>>>>>>>> We got a report on IRC about 5.7.3+ breaking a USB ath9k Wifi Dongle,
->>>>>>>>> while working fine on <5.7.3.
->>>>>>>>>
->>>>>>>>> I don't have myself such HW, and the reported doesn't have any experience
->>>>>>>>> in bisecting the kernel, so we build kernels, each with one of the
->>>>>>>>> above commits reverted,
->>>>>>>>> to find the bad commit.
->>>>>>>>>
->>>>>>>>> The winner is:
->>>>>>>>>
->>>>>>>>> commit 6602f080cb28745259e2fab1a4cf55eeb5894f93
->>>>>>>>> Author: Qiujun Huang <hqjagain@gmail.com>
->>>>>>>>> Date:   Sat Apr 4 12:18:38 2020 +0800
->>>>>>>>>
->>>>>>>>>     ath9k: Fix general protection fault in ath9k_hif_usb_rx_cb
->>>>>>>>>
->>>>>>>>>     commit 2bbcaaee1fcbd83272e29f31e2bb7e70d8c49e05 upstream.
->>>>>>>>> ...
->>>>>>>>>
->>>>>>>>> Reverting this one fixed his problem.
->>>>>>>>
->>>>>>>> Obvious question: is 5.8-rc1 (containing the commit) broken too?
->>>>>>>
->>>>>>> Yes, it does, just checked.
->>>>>>>
->>>>>>> git tag --contains 2bbcaaee1fcbd83272e29f31e2bb7e70d8c49e05
->>>>>>> v5.8-rc1
->>>>>>> v5.8-rc2
->>>>>>>
->>>>>>
->>>>>> Sorry, I read the wrong, I just woke up.
->>>>>>
->>>>>> We didn't test 5.8-rc{1,2} yet but we will today and let you know.
->>>>>>
->>>>>
->>>>> We tested 5.8-rc2 and it is broken too.
->>>>>
->>>>> The exact HW name is:
->>>>>
->>>>> TP-link tl-wn722n (Atheros AR9271 chip)
->>>>
->>>> Great!
->>>>
->>>> Can you work with the developers to fix this in Linus's tree first?
->>>
->>> I'm the man in the middle, but sure we will try patches or any suggestions
->>> from developers to identify and fix the problem.
->>>
->>>>
->>>> I bet they want to see the output of 'lsusb -v' for this device to see
->>>> if the endpoint calculations are correct...
->>>>
->>>
->>> Working on it. As soon the reporter gives me the output, I will post it here.
->>> I've told him to run it on a broken and one working kernel.
->>
->> That is from a good kernel with reverted commit
->> https://gist.github.com/AngryPenguinPL/07c8e2abd3b103eaf8978a39ad8577d1
->>
->> That is from the broken kernel without the commit reverted
->> https://gist.github.com/AngryPenguinPL/5cdc0dd16ce5e59ff3c32c048e2f5111
->>
->> This is from 5.7.5 kernel, I don't have yet a 5.8-rc2 package with the
->> reverted commit.
-> 
-> Did this ever get resolved?
-> 
-> thanks,
-> 
-> greg k-h
-> 
+Replace the existing /* fall through */ comments and its variants with
+the new pseudo-keyword macro fallthrough[1]. Also, remove unnecessary
+fall-through markings when it is the case.
 
-This bug was also reported on the thread where it had been posted originally:
-https://lore.kernel.org/linux-wireless/20200621020428.6417d6fb@natsu/
+[1] https://www.kernel.org/doc/html/latest/process/deprecated.html?highlight=fallthrough#implicit-switch-case-fall-through
 
-I am waiting for Kalle Valo to accept my patch (v2) which reverts the above
-mentioned commit and which looks correct according to him. He wrote that he
-would take a closer look at this as soon as he could.
+Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+---
+ drivers/net/wireless/mediatek/mt76/mt7603/dma.c  |    2 +-
+ drivers/net/wireless/mediatek/mt76/mt7603/mac.c  |    4 ++--
+ drivers/net/wireless/mediatek/mt76/mt7615/mac.c  |    6 +++---
+ drivers/net/wireless/mediatek/mt76/mt7615/mcu.c  |    2 +-
+ drivers/net/wireless/mediatek/mt76/mt76x0/phy.c  |    2 +-
+ drivers/net/wireless/mediatek/mt76/mt76x02_mac.c |    6 +++---
+ drivers/net/wireless/mediatek/mt76/mt7915/dma.c  |    2 +-
+ drivers/net/wireless/mediatek/mt76/mt7915/mac.c  |    4 ++--
+ drivers/net/wireless/mediatek/mt76/mt7915/mcu.c  |    2 +-
+ drivers/net/wireless/mediatek/mt76/usb.c         |    2 +-
+ 10 files changed, 16 insertions(+), 16 deletions(-)
 
-I don't know how busy Kalle is, especially under the current circumstances.
-I will remind him on Thursday (one week after his last e-mail). At the latest
-I want this to be fixed with the 5.8 release. I think that the patch has to land
-in several networking trees before it reaches the mainline kernel, so if I can
-do anything to speed things up, just tell me.
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/dma.c b/drivers/net/wireless/mediatek/mt76/mt7603/dma.c
+index a08b85281170..1dfcd7407535 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7603/dma.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7603/dma.c
+@@ -123,7 +123,7 @@ void mt7603_queue_rx_skb(struct mt76_dev *mdev, enum mt76_rxq_id q,
+ 			mt76_rx(&dev->mt76, q, skb);
+ 			return;
+ 		}
+-		/* fall through */
++		fallthrough;
+ 	default:
+ 		dev_kfree_skb(skb);
+ 		break;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/mac.c b/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
+index 8060c1514396..95602cbef3c3 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
+@@ -592,7 +592,7 @@ mt7603_mac_fill_rx(struct mt7603_dev *dev, struct sk_buff *skb)
+ 		switch (FIELD_GET(MT_RXV1_TX_MODE, rxdg0)) {
+ 		case MT_PHY_TYPE_CCK:
+ 			cck = true;
+-			/* fall through */
++			fallthrough;
+ 		case MT_PHY_TYPE_OFDM:
+ 			i = mt76_get_rate(&dev->mt76, sband, i, cck);
+ 			break;
+@@ -1161,7 +1161,7 @@ mt7603_fill_txs(struct mt7603_dev *dev, struct mt7603_sta *sta,
+ 	switch (FIELD_GET(MT_TX_RATE_MODE, final_rate)) {
+ 	case MT_PHY_TYPE_CCK:
+ 		cck = true;
+-		/* fall through */
++		fallthrough;
+ 	case MT_PHY_TYPE_OFDM:
+ 		if (dev->mphy.chandef.chan->band == NL80211_BAND_5GHZ)
+ 			sband = &dev->mphy.sband_5g.sband;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
+index 9f1c6ca7a665..d3e4cfabca99 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
+@@ -344,7 +344,7 @@ static int mt7615_mac_fill_rx(struct mt7615_dev *dev, struct sk_buff *skb)
+ 		switch (FIELD_GET(MT_RXV1_TX_MODE, rxdg0)) {
+ 		case MT_PHY_TYPE_CCK:
+ 			cck = true;
+-			/* fall through */
++			fallthrough;
+ 		case MT_PHY_TYPE_OFDM:
+ 			i = mt76_get_rate(&dev->mt76, sband, i, cck);
+ 			break;
+@@ -1212,7 +1212,7 @@ static bool mt7615_fill_txs(struct mt7615_dev *dev, struct mt7615_sta *sta,
+ 	switch (FIELD_GET(MT_TX_RATE_MODE, final_rate)) {
+ 	case MT_PHY_TYPE_CCK:
+ 		cck = true;
+-		/* fall through */
++		fallthrough;
+ 	case MT_PHY_TYPE_OFDM:
+ 		mphy = &dev->mphy;
+ 		if (sta->wcid.ext_phy && dev->mt76.phy2)
+@@ -1413,7 +1413,7 @@ void mt7615_queue_rx_skb(struct mt76_dev *mdev, enum mt76_rxq_id q,
+ 			mt76_rx(&dev->mt76, q, skb);
+ 			return;
+ 		}
+-		/* fall through */
++		fallthrough;
+ 	default:
+ 		dev_kfree_skb(skb);
+ 		break;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+index 6e869b8c5e26..469ba150fea1 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+@@ -3125,7 +3125,7 @@ static int mt7615_dcoc_freq_idx(u16 freq, u8 bw)
+ 			freq = freq_bw40[idx];
+ 			break;
+ 		}
+-		/* fall through */
++		fallthrough;
+ 	case NL80211_CHAN_WIDTH_40:
+ 		idx = mt7615_find_freq_idx(freq_bw40, ARRAY_SIZE(freq_bw40),
+ 					   freq);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x0/phy.c b/drivers/net/wireless/mediatek/mt76/mt76x0/phy.c
+index 09f34deb6ba1..3de33aadf794 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x0/phy.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x0/phy.c
+@@ -734,7 +734,7 @@ mt76x0_phy_get_delta_power(struct mt76x02_dev *dev, u8 tx_mode,
+ 	case 1:
+ 		if (chan->band == NL80211_BAND_2GHZ)
+ 			tssi_target += 29491; /* 3.6 * 8192 */
+-		/* fall through */
++		fallthrough;
+ 	case 0:
+ 		break;
+ 	default:
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_mac.c b/drivers/net/wireless/mediatek/mt76/mt76x02_mac.c
+index e4e03beabe43..11900bcc1be0 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x02_mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x02_mac.c
+@@ -300,7 +300,7 @@ mt76x02_mac_process_tx_rate(struct ieee80211_tx_rate *txrate, u16 rate,
+ 		return 0;
+ 	case MT_PHY_TYPE_HT_GF:
+ 		txrate->flags |= IEEE80211_TX_RC_GREEN_FIELD;
+-		/* fall through */
++		fallthrough;
+ 	case MT_PHY_TYPE_HT:
+ 		txrate->flags |= IEEE80211_TX_RC_MCS;
+ 		txrate->idx = idx;
+@@ -462,7 +462,7 @@ mt76x02_tx_rate_fallback(struct ieee80211_tx_rate *rates, int idx, int phy)
+ 			rates[1].idx = 0;
+ 			break;
+ 		}
+-		/* fall through */
++		fallthrough;
+ 	default:
+ 		rates[1].idx = max_t(int, rates[0].idx - 1, 0);
+ 		break;
+@@ -677,7 +677,7 @@ mt76x02_mac_process_rate(struct mt76x02_dev *dev,
+ 		return 0;
+ 	case MT_PHY_TYPE_HT_GF:
+ 		status->enc_flags |= RX_ENC_FLAG_HT_GF;
+-		/* fall through */
++		fallthrough;
+ 	case MT_PHY_TYPE_HT:
+ 		status->encoding = RX_ENC_HT;
+ 		status->rate_idx = idx;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/dma.c b/drivers/net/wireless/mediatek/mt76/mt7915/dma.c
+index 766185d1aa21..6f7fcd12aff5 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/dma.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/dma.c
+@@ -72,7 +72,7 @@ void mt7915_queue_rx_skb(struct mt76_dev *mdev, enum mt76_rxq_id q,
+ 			mt76_rx(&dev->mt76, q, skb);
+ 			return;
+ 		}
+-		/* fall through */
++		fallthrough;
+ 	default:
+ 		dev_kfree_skb(skb);
+ 		break;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+index a264e304a3df..91a7b8870795 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+@@ -471,7 +471,7 @@ int mt7915_mac_fill_rx(struct mt7915_dev *dev, struct sk_buff *skb)
+ 			switch (rxv.phy) {
+ 			case MT_PHY_TYPE_CCK:
+ 				cck = true;
+-				/* fall through */
++				fallthrough;
+ 			case MT_PHY_TYPE_OFDM:
+ 				i = mt76_get_rate(&dev->mt76, sband, i, cck);
+ 				break;
+@@ -490,7 +490,7 @@ int mt7915_mac_fill_rx(struct mt7915_dev *dev, struct sk_buff *skb)
+ 				break;
+ 			case MT_PHY_TYPE_HE_MU:
+ 				status->flag |= RX_FLAG_RADIOTAP_HE_MU;
+-				/* fall through */
++				fallthrough;
+ 			case MT_PHY_TYPE_HE_SU:
+ 			case MT_PHY_TYPE_HE_EXT_SU:
+ 			case MT_PHY_TYPE_HE_TB:
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+index c8c12c740c1a..3fb6c33de88e 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+@@ -1385,7 +1385,7 @@ mt7915_mcu_sta_he_tlv(struct sk_buff *skb, struct ieee80211_sta *sta)
+ 
+ 		he->max_nss_mcs[CMD_HE_MCS_BW160] =
+ 				he_cap->he_mcs_nss_supp.rx_mcs_160;
+-		/* fall through */
++		fallthrough;
+ 	default:
+ 		he->max_nss_mcs[CMD_HE_MCS_BW80] =
+ 				he_cap->he_mcs_nss_supp.rx_mcs_80;
+diff --git a/drivers/net/wireless/mediatek/mt76/usb.c b/drivers/net/wireless/mediatek/mt76/usb.c
+index fb97ea25b4d4..bd893fa0ce32 100644
+--- a/drivers/net/wireless/mediatek/mt76/usb.c
++++ b/drivers/net/wireless/mediatek/mt76/usb.c
+@@ -616,7 +616,7 @@ static void mt76u_complete_rx(struct urb *urb)
+ 	default:
+ 		dev_err_ratelimited(dev->dev, "rx urb failed: %d\n",
+ 				    urb->status);
+-		/* fall through */
++		fallthrough;
+ 	case 0:
+ 		break;
+ 	}
 
-Thanks,
-Viktor
