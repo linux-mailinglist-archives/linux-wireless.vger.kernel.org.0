@@ -2,96 +2,126 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BD385218774
-	for <lists+linux-wireless@lfdr.de>; Wed,  8 Jul 2020 14:33:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 673DC2193FC
+	for <lists+linux-wireless@lfdr.de>; Thu,  9 Jul 2020 01:03:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729257AbgGHMde (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 8 Jul 2020 08:33:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60334 "EHLO
+        id S1726196AbgGHXDr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 8 Jul 2020 19:03:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45170 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729237AbgGHMdc (ORCPT
+        with ESMTP id S1725903AbgGHXDr (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 8 Jul 2020 08:33:32 -0400
-Received: from mail-io1-xd44.google.com (mail-io1-xd44.google.com [IPv6:2607:f8b0:4864:20::d44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D0D9C08EAF1
-        for <linux-wireless@vger.kernel.org>; Wed,  8 Jul 2020 05:33:30 -0700 (PDT)
-Received: by mail-io1-xd44.google.com with SMTP id i4so46711833iov.11
-        for <linux-wireless@vger.kernel.org>; Wed, 08 Jul 2020 05:33:30 -0700 (PDT)
+        Wed, 8 Jul 2020 19:03:47 -0400
+Received: from mail-qv1-xf44.google.com (mail-qv1-xf44.google.com [IPv6:2607:f8b0:4864:20::f44])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBE88C061A0B
+        for <linux-wireless@vger.kernel.org>; Wed,  8 Jul 2020 16:03:46 -0700 (PDT)
+Received: by mail-qv1-xf44.google.com with SMTP id p7so130751qvl.4
+        for <linux-wireless@vger.kernel.org>; Wed, 08 Jul 2020 16:03:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=/vBVbAxvijag95IA6OM26aTa2bKDnUtimRlc1mZm/7M=;
-        b=CtDA46Te1kJYGFqAkgr9Vub/YrG6WB2S+VlEURQEEM4x6m9sjli+Jz/yotFRmV/AMR
-         T/h2d+e8At09eChsFX2C+mUFLH+FsdwAy78KAtzHqTPpG69rhvmbmMUpZSALFUdgKxT3
-         rKV4TF8A0J+Za5tWsTPtObTKnCJJSeTUvLM0KCUCLapZUiUA/CE0qJguNsnmAcBYT7Bw
-         PUSSiRKtit7eL05YbTu8d4vZk3Rk52mtpEQs926eluhEg6IUrqIesfOKILheZFFzZp0P
-         0kRnPxRkSyAb2gIupk6cQmoDhkGW5ga2ONIfRh7Ui0T+vXHI9OfE4hLpnUDNkQjQgdsE
-         pxTA==
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=To0+Smg43e/9CvTBABgED+cYpEQSStMGVMvi2i5fPzg=;
+        b=RNAYnBEgE2TiqdyUeojImy8gOwbVIOFQQSEjYG9KHdt061+dFG2b6jIUUBiUdQPmWP
+         deilgIVor23VxDCpWJSMXIwqiBgoH2437YnkMzPREaSjNBTwA6LUpqctj7unzQTUdblH
+         y4ikK2xUtF+NbXQGkN8KYqXc1LKB/rvSP17sA=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=/vBVbAxvijag95IA6OM26aTa2bKDnUtimRlc1mZm/7M=;
-        b=rgBFJob/2ibBzwjvNmt8QMD58qCIDCvhvUZjHkPQ3rVH2MsnXmwdCJ3vuzhMs1QAMd
-         s8ISL84CRwN1QFnanF4WYY0OWJj5JqD4BaGC2XxF8bRaTuYGPpLDkcKKHYW8vLJ66eIF
-         Var9bErTF9JoTWAhNv679VmGrg27u4CVR19aOoAw3WlDrIJfh0b2kuOrHWGYG3uuVWTz
-         AiUsMnJ5MnRAQsWwyeyULJ3Ikdfnh4HxfcoWL5Vzmj0bm2lf3E6qM9nfxWaiWdb/2Xr+
-         jr6AmqCyVjA/qSbWdYJ7ED4ntsXWLKHM2Wg42jhZ6tI8CimCEuR2+Fmboa043X3Gv90B
-         EkAQ==
-X-Gm-Message-State: AOAM533WT14eaNaNnDc3jOjegY/ju62rLesA+qJXdE0CS6AgdROqlrNm
-        v7nE24GAZQdT/KiT9TtVI887JGHGQvJ9yvZV0fY=
-X-Google-Smtp-Source: ABdhPJy69qBRFRW2d2u+0xyGHVfmVbQRW6SQ4gKLQIvGwSNWfhZDhNcIlxNh+7AirNZFy3An0aJSkt25Q8y7juQZu8o=
-X-Received: by 2002:a05:6638:12c7:: with SMTP id v7mr64754290jas.56.1594211609022;
- Wed, 08 Jul 2020 05:33:29 -0700 (PDT)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=To0+Smg43e/9CvTBABgED+cYpEQSStMGVMvi2i5fPzg=;
+        b=Ybj9xCkVn8vNtpp82sL/OmAOQsmDK0e3xvZlAOA1s/LP5IaUUpg+OgvSYregt5ojwp
+         T6tid7PhjIUQXTnmgQ2cvISegahnWrFHkCnT7XrIQ/vlZJFDFXomFjmEvN5cOBXCQOHN
+         5oqsus2UuSCWs+7z3TUcgJoVU9oPKQ6ALjXT7R7LTSAUFUivbK1/D0cc14fEBtbDcBBo
+         haR4nw+lNeFF2Baf3AgShJ0h4EBu4dsXwJbh86io94bTMkIj3VfQUbd3dP44+G89cyWZ
+         0Whjc1htqSBw/sJ40RZQ0uLroP+GylPJ0uOjn3r0KG4AuKN3GwTB/nFz0RljZbiTUSE3
+         WkjA==
+X-Gm-Message-State: AOAM530Alv7qGhs6wENnUaa9VauPe0ieVg7E7BfqC/HN5cHoKWtJEhxP
+        LK/zY0KCpwGFI4AK1dKaL6wTcAxt2nc=
+X-Google-Smtp-Source: ABdhPJyVhQJjsxJUnC9iQ2lLmhZhAsjUksJlyXFy6cvlr7SCnVvTvRS9CqZ+sib80wKI+zRQNVwn0Q==
+X-Received: by 2002:a0c:fdc5:: with SMTP id g5mr12429574qvs.189.1594249425129;
+        Wed, 08 Jul 2020 16:03:45 -0700 (PDT)
+Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com. [209.85.222.179])
+        by smtp.gmail.com with ESMTPSA id x36sm1327324qtb.78.2020.07.08.16.03.42
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 08 Jul 2020 16:03:42 -0700 (PDT)
+Received: by mail-qk1-f179.google.com with SMTP id e11so84932qkm.3
+        for <linux-wireless@vger.kernel.org>; Wed, 08 Jul 2020 16:03:42 -0700 (PDT)
+X-Received: by 2002:a37:b6c6:: with SMTP id g189mr44795113qkf.206.1594249421577;
+ Wed, 08 Jul 2020 16:03:41 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:a05:6602:1582:0:0:0:0 with HTTP; Wed, 8 Jul 2020 05:33:28
- -0700 (PDT)
-Reply-To: mmsafiatou057@gmail.com
-From:   "Mrs. Safitaou Zoungrana" <richardlaurentdr@gmail.com>
-Date:   Wed, 8 Jul 2020 12:33:28 +0000
-Message-ID: <CALJAiTVXhrKZYOHVoupnx6hmXXD0i2k4MOSO6HW+mj1BAydXhA@mail.gmail.com>
-Subject: My Dear Beloved One,
-To:     undisclosed-recipients:;
+References: <20200707101712.1.I4d2f85ffa06f38532631e864a3125691ef5ffe06@changeid>
+In-Reply-To: <20200707101712.1.I4d2f85ffa06f38532631e864a3125691ef5ffe06@changeid>
+From:   Brian Norris <briannorris@chromium.org>
+Date:   Wed, 8 Jul 2020 16:03:28 -0700
+X-Gmail-Original-Message-ID: <CA+ASDXMXtwdV4BNL1GSj8DY-3z8-dZ=1hP8Xv_R-AjKvJs0NMw@mail.gmail.com>
+Message-ID: <CA+ASDXMXtwdV4BNL1GSj8DY-3z8-dZ=1hP8Xv_R-AjKvJs0NMw@mail.gmail.com>
+Subject: Re: [PATCH] ath10k: Keep track of which interrupts fired, don't poll them
+To:     Douglas Anderson <dianders@chromium.org>
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        ath10k <ath10k@lists.infradead.org>,
+        saiprakash.ranjan@codeaurora.org,
+        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Rakesh Pillai <pillair@codeaurora.org>,
+        Abhishek Kumar <kuabhs@google.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Linux Kernel <linux-kernel@vger.kernel.org>,
+        "<netdev@vger.kernel.org>" <netdev@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-My Dear Beloved One,
+On Tue, Jul 7, 2020 at 10:18 AM Douglas Anderson <dianders@chromium.org> wrote:
+> diff --git a/drivers/net/wireless/ath/ath10k/ce.h b/drivers/net/wireless/ath/ath10k/ce.h
+> index a440aaf74aa4..666ce384a1d8 100644
+> --- a/drivers/net/wireless/ath/ath10k/ce.h
+> +++ b/drivers/net/wireless/ath/ath10k/ce.h
+...
+> @@ -376,12 +377,9 @@ static inline u32 ath10k_ce_interrupt_summary(struct ath10k *ar)
+>  {
+>         struct ath10k_ce *ce = ath10k_ce_priv(ar);
+>
+> -       if (!ar->hw_params.per_ce_irq)
 
-I greet you in the name of God almighty the givers of all good things
-in life. Please kindly pardon me for any inconvenience this letter may
-cost you because I know it may come to you as a surprise as we have no
-previous correspondence.  I sent this mail praying for it to reach you
-in good health, since I myself are in a very critical health condition
-in which I sleep every night without knowing if I may be alive to see
-the next day.
+If I'm reading correctly, you're removing the only remaining use of
+'per_ce_irq'. Should we kill the field entirely? Or perhaps we should
+leave some kind of WARN_ON() (BUG_ON()?) if this function is called
+erroneously with per_ce_irq==true? But I suppose this driver is full
+of landmines if the CE API is used incorrectly.
 
-I am Mrs. Safiatou Zoungrana,  the wife of late Engineer Ralph
-Alphonso Zoungrana from Paris France but based here in Burkina Faso
-West Africa since eight years ago as a business woman dealing with
-gold exportation and Sales. We have been married for years before his
-sudden death although we were childless. I have been diagnosed with
-ovarian cancer and I have been battling with the sickness when my late
-lovely husband of a blessed memory was alive. May his soul rest in
-peace, Amen.
+> -               return CE_WRAPPER_INTERRUPT_SUMMARY_HOST_MSI_GET(
+> -                       ce->bus_ops->read32((ar), CE_WRAPPER_BASE_ADDRESS +
+> -                       CE_WRAPPER_INTERRUPT_SUMMARY_ADDRESS));
+> -       else
+> -               return ath10k_ce_gen_interrupt_summary(ar);
+> +       return CE_WRAPPER_INTERRUPT_SUMMARY_HOST_MSI_GET(
+> +               ce->bus_ops->read32((ar), CE_WRAPPER_BASE_ADDRESS +
+> +               CE_WRAPPER_INTERRUPT_SUMMARY_ADDRESS));
+>  }
+>
+>  /* Host software's Copy Engine configuration. */
 
-My late Husband left the sum of =E2=82=AC7.900.000.00 Seven Million Nine
-Hundred Thousand Euros in a fix/suspense account in one of the prime
-bank here in Burkina Faso. Recently, my Doctor told me that I have few
-days to live due to the cancer problem. The one that disturbs me most
-is my blood pressure sickness.
+> diff --git a/drivers/net/wireless/ath/ath10k/snoc.h b/drivers/net/wireless/ath/ath10k/snoc.h
+> index a3dd06f6ac62..5095d1893681 100644
+> --- a/drivers/net/wireless/ath/ath10k/snoc.h
+> +++ b/drivers/net/wireless/ath/ath10k/snoc.h
+> @@ -78,6 +78,7 @@ struct ath10k_snoc {
+>         unsigned long flags;
+>         bool xo_cal_supported;
+>         u32 xo_cal_data;
+> +       DECLARE_BITMAP(pending_ce_irqs, CE_COUNT_MAX);
 
-Having known my health condition I decided to seek for your kind
-assistance to transfer this fund into your account and you will use it
-to establish an orphanage home in my name. I will give you more
-details about the project as soon as I receive your reply in my
-private email (mmsafiatou057@gmail.com) to handle this project because
-I do not want to state all here until I see your reply, desire and
-commitment to handle this project.
+Do you need to clear this map if the interface goes down or if there's
+a firmware crash? Right now, I don't think there's a guarantee that
+we'll run through a NAPI poll in those cases, which is the only place
+you clear the map, and if the hardware/firmware has been reset, the
+state map is probably not valid.
 
-My Regards to your family.
-Mrs. Safiatou Zoungrana.
+Otherwise, looks OK to me:
+
+Reviewed-by: Brian Norris <briannorris@chromium.org>
