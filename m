@@ -2,45 +2,46 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CB07F219E29
-	for <lists+linux-wireless@lfdr.de>; Thu,  9 Jul 2020 12:48:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 758AF219EC2
+	for <lists+linux-wireless@lfdr.de>; Thu,  9 Jul 2020 13:07:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726446AbgGIKsO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 9 Jul 2020 06:48:14 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:34154 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726302AbgGIKsO (ORCPT
+        id S1727772AbgGILG6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 9 Jul 2020 07:06:58 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:36184 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726446AbgGILG6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 9 Jul 2020 06:48:14 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 069AhkwZ107693;
-        Thu, 9 Jul 2020 10:47:49 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=+piH9g8eBNCOi62IwT+RVUymcrfDq/wMfcGf2cw6NRo=;
- b=D9H2k2qUfaEIH044sAxxReGDMog0mUT0PWPjYaeh5T6/MPq5ZEoKJkPCiGsjNda98CPg
- 90Ud88UvKEqn3t/H2JP0LnQKgX+yQj0fckQ1z+dTKMVBa/QT5efjjq1tJo4xa1j4KDId
- leR/EeXKaj/1c9m5e0R+k7Z8r/nzp157n8t5O0kFMSgyI6zLTyr9vVTOklNrLtslBds7
- OEb2Eg+WLQ0xf4qiSdKX7gkdKEsXE/SuVM1LIjZGVbC4XAzzQqDAYaP/477HDkp7T9zo
- cdx3+tpQ6R3PcF6vPgdl0lTL4Vduqvp6Y9LTQENfzpYzae9WdN69ZWrTZd46bq+/ycyR MA== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by userp2120.oracle.com with ESMTP id 325y0agwwe-1
+        Thu, 9 Jul 2020 07:06:58 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 069B1qeN029112;
+        Thu, 9 Jul 2020 11:06:48 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : sender
+ : to : cc : subject : message-id : mime-version : content-type :
+ in-reply-to; s=corp-2020-01-29;
+ bh=sIyc7+eDMvD9MJhujp4zGcvwx5knSLBQdXBNBAbm5Yk=;
+ b=P011PvI14FwMg2hbHOCInwZdHSCtknhgLFttIiU/v8tb4Ixp/kVZUrgsB24sJTBN8v5e
+ mDhqWOBdfVYcE9TAvjxQCpbk14kKFbD4PyHQEDpDszNRBSGCys2699lT6WuH5y/hq53m
+ ZqTCBFMaYQkw0qSydx3BIkKzuiuAwpvGAQ3CRczf8oEXHsaZSp6wy8IT9BnAd4E7szzC
+ NBTwJTznillI/eJ/fkW6CnF1OhK1iZ89go5kaVShUgxWJXgMFsepuFUg6N13tnnQljZT
+ nZEZ+lnNB0y3/9jBP9stkBX9FxGwaFM7pzEBY9G7QxL129sAaHFfY27kuiTX/hHrlmJC 9Q== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2130.oracle.com with ESMTP id 325y0ah09c-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 09 Jul 2020 10:47:49 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 069AhM8J072188;
-        Thu, 9 Jul 2020 10:47:49 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by aserp3030.oracle.com with ESMTP id 325k3gpjgd-1
+        Thu, 09 Jul 2020 11:06:48 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 069B3KOf133525;
+        Thu, 9 Jul 2020 11:04:47 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by userp3020.oracle.com with ESMTP id 325k3h0uv7-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 09 Jul 2020 10:47:48 +0000
-Received: from abhmp0005.oracle.com (abhmp0005.oracle.com [141.146.116.11])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 069Allqi023569;
-        Thu, 9 Jul 2020 10:47:47 GMT
-Received: from mwanda (/41.57.98.10)
+        Thu, 09 Jul 2020 11:04:47 +0000
+Received: from abhmp0010.oracle.com (abhmp0010.oracle.com [141.146.116.16])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 069B4jje005437;
+        Thu, 9 Jul 2020 11:04:45 GMT
+Received: from kadam (/105.59.63.18)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Thu, 09 Jul 2020 03:47:46 -0700
-Date:   Thu, 9 Jul 2020 13:47:38 +0300
+        with ESMTP ; Thu, 09 Jul 2020 04:04:44 -0700
+Date:   Thu, 9 Jul 2020 14:04:35 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
 To:     Felix Fietkau <nbd@nbd.name>, Ryder Lee <ryder.lee@mediatek.com>
 Cc:     Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
@@ -53,33 +54,34 @@ Cc:     Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
         Chih-Min Chen <chih-min.chen@mediatek.com>,
         linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org,
         kernel-janitors@vger.kernel.org
-Subject: [PATCH] mt76: mt7915: potential array overflow in
+Subject: [PATCH v2] mt76: mt7915: potential array overflow in
  mt7915_mcu_tx_rate_report()
-Message-ID: <20200709104738.GB20875@mwanda>
+Message-ID: <20200709110435.GM2549@kadam>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
+In-Reply-To: <20200709104738.GB20875@mwanda>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9676 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 phishscore=0
- mlxlogscore=999 bulkscore=0 spamscore=0 mlxscore=0 adultscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2007090085
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 bulkscore=0 mlxscore=0
+ spamscore=0 malwarescore=0 phishscore=0 mlxlogscore=999 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2007090088
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9676 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 adultscore=0 malwarescore=0
- clxscore=1011 impostorscore=0 phishscore=0 suspectscore=0
- priorityscore=1501 bulkscore=0 lowpriorityscore=0 mlxlogscore=999
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2007090085
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 clxscore=1015
+ lowpriorityscore=0 impostorscore=0 malwarescore=0 bulkscore=0 phishscore=0
+ adultscore=0 suspectscore=0 mlxlogscore=999 priorityscore=1501 spamscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2007090088
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Smatch complains that this comes from the "wcidx" value comes from the
-network and thus cannot be trusted.  In this case, it actually seems to
-come from the firmware.  If your wireless firmware is malicious then
-probably no amount of carefulness can protect you.
+Smatch complains that "wcidx" value comes from the network and thus
+cannot be trusted.  In this case, it actually seems to come from the
+firmware.  If your wireless firmware is malicious then probably no
+amount of carefulness can protect you.
 
 On the other hand, these days we still try to check the firmware as much
 as possible.  Verifying that the index is within bounds will silence a
@@ -89,6 +91,8 @@ hardening.  So I suggest that we do add a bounds check.
 Fixes: e57b7901469f ("mt76: add mac80211 driver for MT7915 PCIe-based chipsets")
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
+v2:  Fix a typos in commit message.
+
 Normally for networking patches, when we change the declaration block,
 we must update the order to make sure it's in reverse Christmas tree
 format.  This code wasn't strictly in reverse Christmas tree order
@@ -135,4 +139,3 @@ index c8c12c740c1a..8fb8255650a7 100644
  		mphy = dev->mt76.phy2;
 -- 
 2.27.0
-
