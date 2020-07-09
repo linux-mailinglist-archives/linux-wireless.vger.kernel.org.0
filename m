@@ -2,100 +2,90 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 30ED6219A00
-	for <lists+linux-wireless@lfdr.de>; Thu,  9 Jul 2020 09:33:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 53DF2219D5E
+	for <lists+linux-wireless@lfdr.de>; Thu,  9 Jul 2020 12:15:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726456AbgGIHc5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 9 Jul 2020 03:32:57 -0400
-Received: from mail-ed1-f65.google.com ([209.85.208.65]:39018 "EHLO
-        mail-ed1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726184AbgGIHc4 (ORCPT
+        id S1726818AbgGIKPu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 9 Jul 2020 06:15:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35584 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726302AbgGIKPt (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 9 Jul 2020 03:32:56 -0400
-Received: by mail-ed1-f65.google.com with SMTP id d18so1023768edv.6;
-        Thu, 09 Jul 2020 00:32:54 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=j7DqbPSyBqq2qwNcdYTCxivolsap4LLnpECg1M+YJYk=;
-        b=qZiNwlyRJ57VPjR+dosZ69Gym7GNS4FukUdkgaYsGriBesMWF22pXa3pVLiOfXPOJQ
-         tqPklsHrjCnY4xSsVGStmBcWYDca3eRq3xqpWrLoLZuZkxUTIRZSAS5SVCN/jt7UBvfC
-         JWkPCkrp2b7mAm7VCHEy3g5i2dU2f5qBGCOYds9I/9NHL+mxbckjgBUxczwV44RdlwiX
-         VuOd4cuKP7tVGADCX94TArCvW7SI+nzGX6N/nbOwRfqgA+xd2Rvlyo+rGQW756j6YjI8
-         RNUMh0ewYcb483hIjKyOB8jrUfNHW6gpl6RZ6jCN72lxM9HmtY9eqJ4CJ1sZY+/I4NUG
-         Tx/Q==
-X-Gm-Message-State: AOAM531GEd/SInI4qyhu3bABdWnHgQNCsywdZCeke95PuT+Mo+P9zEBG
-        EuYDAHLIhUr+a0PVB8zlGxQ=
-X-Google-Smtp-Source: ABdhPJwrkOg1VmskPen0ndAgGUffYWkrKR783vprCdOePKnp0T8h/KXoPOC3hmTqCSglRRVLLvqDkw==
-X-Received: by 2002:a50:d8c2:: with SMTP id y2mr62468108edj.114.1594279973653;
-        Thu, 09 Jul 2020 00:32:53 -0700 (PDT)
-Received: from kozik-lap ([194.230.155.195])
-        by smtp.googlemail.com with ESMTPSA id sa10sm1258696ejb.79.2020.07.09.00.32.51
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 09 Jul 2020 00:32:52 -0700 (PDT)
-Date:   Thu, 9 Jul 2020 09:32:49 +0200
-From:   Krzysztof Kozlowski <krzk@kernel.org>
-To:     Richard Henderson <rth@twiddle.net>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Dave Jiang <dave.jiang@intel.com>,
-        Jon Mason <jdmason@kudzu.us>, Allen Hubbe <allenbh@gmail.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        Jason Wang <jasowang@redhat.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-sh@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-ntb@googlegroups.com,
-        virtualization@lists.linux-foundation.org,
-        linux-arch@vger.kernel.org
-Subject: Re: [PATCH v3 1/4] iomap: Constify ioreadX() iomem argument (as in
- generic implementation)
-Message-ID: <20200709073249.GA6335@kozik-lap>
-References: <20200709072837.5869-1-krzk@kernel.org>
- <20200709072837.5869-2-krzk@kernel.org>
+        Thu, 9 Jul 2020 06:15:49 -0400
+Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C5D0C08C5CE
+        for <linux-wireless@vger.kernel.org>; Thu,  9 Jul 2020 03:15:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
+        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=8sYhPAR9qJwQSDG3oPl8OWAxZ647ALhs819e6VG31Hc=; b=YDL9it5cuZfyxFpu8i/aplDADY
+        k34xiNR7IjiDKXOjK/sc+75kmhxyOXwkWGXPLT7XU6bPZsbDUqkKxA4dFwheQ2CI/AvVz55ZIHRXq
+        ACEakq7TeDsje33nj2nAsx/g2YwI/8QTFoXge6SQ1Y6wT7NmrLik3WEkBca4HaM3d4Hg=;
+Received: from p5b20614f.dip0.t-ipconnect.de ([91.32.97.79] helo=nf.local)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1jtTai-0005Ep-V0; Thu, 09 Jul 2020 12:15:45 +0200
+Subject: Re: [PATCH v2 1/3] mt76: mt7663u: fix memory leak in set key
+To:     sean.wang@mediatek.com, lorenzo.bianconi@redhat.com
+Cc:     ryder.lee@mediatek.com, linux-wireless@vger.kernel.org,
+        linux-mediatek@lists.infradead.org
+References: <57b81f8efe7e767616a0d5957728756cbfdfa235.1594148548.git.sean.wang@mediatek.com>
+From:   Felix Fietkau <nbd@nbd.name>
+Autocrypt: addr=nbd@nbd.name; prefer-encrypt=mutual; keydata=
+ xsDiBEah5CcRBADIY7pu4LIv3jBlyQ/2u87iIZGe6f0f8pyB4UjzfJNXhJb8JylYYRzIOSxh
+ ExKsdLCnJqsG1PY1mqTtoG8sONpwsHr2oJ4itjcGHfn5NJSUGTbtbbxLro13tHkGFCoCr4Z5
+ Pv+XRgiANSpYlIigiMbOkide6wbggQK32tC20QxUIwCg4k6dtV/4kwEeiOUfErq00TVqIiEE
+ AKcUi4taOuh/PQWx/Ujjl/P1LfJXqLKRPa8PwD4j2yjoc9l+7LptSxJThL9KSu6gtXQjcoR2
+ vCK0OeYJhgO4kYMI78h1TSaxmtImEAnjFPYJYVsxrhay92jisYc7z5R/76AaELfF6RCjjGeP
+ wdalulG+erWju710Bif7E1yjYVWeA/9Wd1lsOmx6uwwYgNqoFtcAunDaMKi9xVQW18FsUusM
+ TdRvTZLBpoUAy+MajAL+R73TwLq3LnKpIcCwftyQXK5pEDKq57OhxJVv1Q8XkA9Dn1SBOjNB
+ l25vJDFAT9ntp9THeDD2fv15yk4EKpWhu4H00/YX8KkhFsrtUs69+vZQwc0cRmVsaXggRmll
+ dGthdSA8bmJkQG5iZC5uYW1lPsJgBBMRAgAgBQJGoeQnAhsjBgsJCAcDAgQVAggDBBYCAwEC
+ HgECF4AACgkQ130UHQKnbvXsvgCgjsAIIOsY7xZ8VcSm7NABpi91yTMAniMMmH7FRenEAYMa
+ VrwYTIThkTlQzsFNBEah5FQQCACMIep/hTzgPZ9HbCTKm9xN4bZX0JjrqjFem1Nxf3MBM5vN
+ CYGBn8F4sGIzPmLhl4xFeq3k5irVg/YvxSDbQN6NJv8o+tP6zsMeWX2JjtV0P4aDIN1pK2/w
+ VxcicArw0VYdv2ZCarccFBgH2a6GjswqlCqVM3gNIMI8ikzenKcso8YErGGiKYeMEZLwHaxE
+ Y7mTPuOTrWL8uWWRL5mVjhZEVvDez6em/OYvzBwbkhImrryF29e3Po2cfY2n7EKjjr3/141K
+ DHBBdgXlPNfDwROnA5ugjjEBjwkwBQqPpDA7AYPvpHh5vLbZnVGu5CwG7NAsrb2isRmjYoqk
+ wu++3117AAMFB/9S0Sj7qFFQcD4laADVsabTpNNpaV4wAgVTRHKV/kC9luItzwDnUcsZUPdQ
+ f3MueRJ3jIHU0UmRBG3uQftqbZJj3ikhnfvyLmkCNe+/hXhPu9sGvXyi2D4vszICvc1KL4RD
+ aLSrOsROx22eZ26KqcW4ny7+va2FnvjsZgI8h4sDmaLzKczVRIiLITiMpLFEU/VoSv0m1F4B
+ FtRgoiyjFzigWG0MsTdAN6FJzGh4mWWGIlE7o5JraNhnTd+yTUIPtw3ym6l8P+gbvfoZida0
+ TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabwkkE
+ GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCfTKx80VvCR/PvsUlrvdOLsIgeRGAAn1ee
+ RjMaxwtSdaCKMw3j33ZbsWS4
+Message-ID: <943c2cd1-71a4-8ddc-f7a9-83e6350db0fd@nbd.name>
+Date:   Thu, 9 Jul 2020 12:15:44 +0200
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:68.0)
+ Gecko/20100101 Thunderbird/68.10.0
 MIME-Version: 1.0
+In-Reply-To: <57b81f8efe7e767616a0d5957728756cbfdfa235.1594148548.git.sean.wang@mediatek.com>
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20200709072837.5869-2-krzk@kernel.org>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Jul 09, 2020 at 09:28:34AM +0200, Krzysztof Kozlowski wrote:
-> The ioreadX() and ioreadX_rep() helpers have inconsistent interface.  On
-> some architectures void *__iomem address argument is a pointer to const,
-> on some not.
+On 2020-07-07 21:16, sean.wang@mediatek.com wrote:
+> From: Sean Wang <sean.wang@mediatek.com>
 > 
-> Implementations of ioreadX() do not modify the memory under the address
-> so they can be converted to a "const" version for const-safety and
-> consistency among architectures.
+> Fix memory leak in set key.
 > 
-> Suggested-by: Geert Uytterhoeven <geert@linux-m68k.org>
-> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
-> Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-> Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+> v1 -> v2:
+> 	- remove unneeded kfree
+> 
+> Fixes: eb99cc95c3b6 ("mt76: mt7615: introduce mt7663u support")
+> Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+Next time, please move the changelog below the '---' line so that it
+doesn't end up in the patch description.
+I will fix it up locally in my tree.
 
-I forgot to put here one more Ack, for PowerPC:
-Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
+Thanks,
 
-https://lore.kernel.org/lkml/87ftedj0zz.fsf@mpe.ellerman.id.au/
-
-Best regards,
-Krzysztof
-
+- Felix
