@@ -2,87 +2,60 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9EE6921A967
-	for <lists+linux-wireless@lfdr.de>; Thu,  9 Jul 2020 22:55:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AF4E221AA77
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 Jul 2020 00:27:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726795AbgGIUzp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 9 Jul 2020 16:55:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50988 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726275AbgGIUzo (ORCPT
+        id S1726265AbgGIW1e (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 9 Jul 2020 18:27:34 -0400
+Received: from sonic305-3.consmr.mail.bf2.yahoo.com ([74.6.133.42]:33871 "EHLO
+        sonic305-3.consmr.mail.bf2.yahoo.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726213AbgGIW1e (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 9 Jul 2020 16:55:44 -0400
-Received: from mail-yb1-xb43.google.com (mail-yb1-xb43.google.com [IPv6:2607:f8b0:4864:20::b43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54CF4C08C5CE;
-        Thu,  9 Jul 2020 13:55:44 -0700 (PDT)
-Received: by mail-yb1-xb43.google.com with SMTP id a30so1651879ybj.5;
-        Thu, 09 Jul 2020 13:55:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=5wGJa6N/+T5/MzYdjosGhTKMgj9m+3bHMSgEwljc8Rk=;
-        b=Z1N86Mqka14S26ELiAI4BuZzgmYDzknCuJQWjwOWYVCjkk8t/jrgqH5rkWHUwOeXli
-         KlVD1mMM37eBSbaeMkRdcf5+uDjdaufNYvPHtq+VjiaZ/oF9Ytd7hZsTXKNv1FApicBw
-         DFQ319kl3jx7WVrJuL2URL8K4SfZdFhSfOOaLQciXNzdX076LqpW2DbIE4KDQGuBLCgw
-         8jhzzyCz+6tOnV94BAa0QSGJT5W/t/absEJXDVB18sDr1dxpgzAZSzQxzgDMdZ22L7EY
-         S4NcAmpJ+9HJ0v6S7vxDiPIZCyWGIOSmp2zcOOq2B4tFHWHBNt1Z4TbU2xiC7Rv9Y2SL
-         PlKw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=5wGJa6N/+T5/MzYdjosGhTKMgj9m+3bHMSgEwljc8Rk=;
-        b=jBN8+Kmdnh0XqtW1yulMSW8lyP/Vw9y79lBTMqnkYeHTnwhuBFmvVNCYAh0rVZOvvl
-         TAI+3ULj/fitiXWGPYjlj8sdG07dBEzzQtPf5O1Hswu1xMvBPaPXccEQlDtsWj0PU1VQ
-         QfCTMj1ugPUhvIaL7yPwHuDpyOdTo3GQhYdioLNbLVlvDuX+QAsrs3Ut7ugkTBoyIBFr
-         fbh7rd8R5Yr0ATk+LOFF2wgrY996kSyMtl+l3sXe2Avl3qdEyhoGvs/dChto6zK21tVV
-         jW8grQN6dND580CHg8XlZVMDsjB9peQtx7yZa4oM7fZ69jnt+JdffkR5PH8OY6Pj91wq
-         EnNg==
-X-Gm-Message-State: AOAM531lESymEcQ7gt/DPNzc1v5NCPt4oBBOD/T7+pwEcny3d8LXfFGr
-        WPcoIzuPn3vK1cTbNCYQDa4zWyfbcaHDJDCsElRFOG8D
-X-Google-Smtp-Source: ABdhPJz5+s4dpQoauaXI9ppAsXQEah3rB6Qc4dSTEMcRzeJXxIURkyQaYIEwWl2/bYiroqPs15DdP6TeNuktNBcRASc=
-X-Received: by 2002:a25:6e0b:: with SMTP id j11mr11534162ybc.455.1594328143651;
- Thu, 09 Jul 2020 13:55:43 -0700 (PDT)
+        Thu, 9 Jul 2020 18:27:34 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1594333653; bh=0B+SWGCjkrkFK/9PcmlCfBTEHs+4BcMP8kN75VVbocY=; h=Date:From:Reply-To:Subject:References:From:Subject; b=RzrxTePnWKkUQqKbpqfTxZjBjUD+EKU/ui9QMd15irE5EehXgz3dMyfkETL1tRaYprm59yZIPOxryVCyUQVOPBLQdwVjNm5O5bFQyBdVaJbwgE6zZVTdKvBTUu3tLhOLgrV/X1bDri1xAnMsKHtFc9fVznYo9Ph6iUwDCUdljToYNLITc55tYVSASg1tkF7M2w7ff5Dcl3IXarZumJqddIX9ZYcIWJofqVpRTtV25qIoNkKmDiSFnkT36gsGPGaQzCMBtTrTriqvfnqC6wKhTp1nyO+n9/TDCtYpwcmYHqeQjlNdUGQMb6tMthG6HzpZeA1C/ncAHdtbwkeTpOU8kA==
+X-YMail-OSG: wh0VOi4VM1l4UltSToNIXpwvPn6pzPEYJGLcsjGHUuASbZSy8CbJw9UASfPs6U0
+ J3A_ed3Hw8HXOP9kTPTXJCORZoS8HMmTj979MTWQJAIc1TUfOerKEh.JyrL59fvAv.XFwuKqM76T
+ XWz9AFiER4vTXuJX1uMncUVKKDnZdgBd4t7TsbLh5bNXhqUje2OCjrYx1cFaKU6ieNiHvG2gdmq.
+ I6dKbJB79Vgss5A7aIdH7Lsv.cJMyJCHizm0egEz3OfRZITlg0U2aWiNQ3BXZhlRJyd45ZZzIVfO
+ m1FjTYfRWvhvp_jJEb2DtGaALB7K8nnK4JKYHtZkBJovJW4pW0HxR7at2tN74I8gd.2Bh8xupSLz
+ HtMoxyPudRsVYVqx3Zuej2gf9s_iFqWdv36saj9KWiC5kmZ_zhOc5pzbZy9CBW.Z0daq_kabdHRY
+ hyTrnWYgAfH1ENyqoAe62.E.jwjuACTM4AKxO1_WlCqsa0bLCgJ3vibrXNCbRoIFMbFNXW0h902y
+ LDPpaaY5yI5sBHkcouC9s.btrxoMgJfw0fkHJHVo0yE9S65LSakuA4rzaIQxoTjlG6I0vvZlk2wS
+ jkZqd6aJiEINvAZ6pT1q8I.LerF.hqhnDQlZTI8tpH0sxnrPKIe.aPjJ8kSQEpc2R271pG2EdQcM
+ DXE7DG7Fpc6QhuyGY4HwWMqngJWqJZoM9Ic1NQIeZB5mK5akEjFRJ3ES0pYg7E0iDHVYkIDbnRSR
+ FPI3EDYH25MT0cngaztfFSnN1FuKyVktijmJRASrOxkWTQ9kb4ExphA3HR0q6CzMUJ80LeQQUteN
+ 5NjvMKRt2jlkGvoZ73D6HWnzchIrriaOPGiPnt9r_5s8M1LiPHMgv17mzsrhV5G5wvAPQspRzoQ0
+ 944eXTvM2MihX7DjUOBIGUvDMBVg34tNchvr6feKSAks43vZXBYFt2oj_KZZrJZNX3NJSoJADP3S
+ qljBY_r8jU.tAsBqp4zTZwC3_zCOPrDud5.UGIJF1qFqQUEItAzyo44H8FvtDL_A0_rJAAS_3kDF
+ HfOWEbRRL_QgWW0QFV.G3etX6ef0iI8flntMwxT.JROzEUUehdv_T4SQ0nFcek1o5CfDg1OMPzDu
+ LWODEeJFWAvSbAFib850xuD9qdQMqPf5frlOdKyOJTPQkHKp9s1IUr.IIguOICgaylE7WgP1PGqD
+ 9plOlryOPx.iBbo44N8gjUXAD0DZ.kqWZBykFJMbHWZCY.eY7KUYfmRPYEiMpvkxfbezOJoGmnI.
+ Fm1EBhTh1yGAWLCchlSgXigdDUgRaYAHb6qoWsgkqLPVlYKHJqI8YwG3fTQYKvKT1Re88rrUneA-
+ -
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic305.consmr.mail.bf2.yahoo.com with HTTP; Thu, 9 Jul 2020 22:27:33 +0000
+Date:   Thu, 9 Jul 2020 22:27:29 +0000 (UTC)
+From:   MUSTAFA SANI <samustafani3@gmail.com>
+Reply-To: mustafasani281@gmail.com
+Message-ID: <2043822141.2750669.1594333649717@mail.yahoo.com>
+Subject: My good friend,
 MIME-Version: 1.0
-References: <20200709062747.23948-1-grandmaster@al2klimov.de>
-In-Reply-To: <20200709062747.23948-1-grandmaster@al2klimov.de>
-From:   =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
-Date:   Thu, 9 Jul 2020 22:55:31 +0200
-Message-ID: <CACna6ryNBH7ZSie985YV9zXaEa_XmTXX2S2XH5LC8WfMZNFuAg@mail.gmail.com>
-Subject: Re: [PATCH] SONICS SILICON BACKPLANE DRIVER (SSB): Replace HTTP links
- with HTTPS ones
-To:     "Alexander A. Klimov" <grandmaster@al2klimov.de>
-Cc:     =?UTF-8?Q?Michael_B=C3=BCsch?= <m@bues.ch>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+References: <2043822141.2750669.1594333649717.ref@mail.yahoo.com>
+X-Mailer: WebService/1.1.16197 YMailNodin Mozilla/5.0 (Windows NT 6.1; rv:47.0) Gecko/20100101 Firefox/47.0
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, 9 Jul 2020 at 08:30, Alexander A. Klimov
-<grandmaster@al2klimov.de> wrote:
-> Rationale:
-> Reduces attack surface on kernel devs opening the links for MITM
-> as HTTPS traffic is much harder to manipulate.
->
-> Deterministic algorithm:
-> For each file:
->   If not .svg:
->     For each line:
->       If doesn't contain `\bxmlns\b`:
->         For each link, `\bhttp://[^# \t\r\n]*(?:\w|/)`:
->           If neither `\bgnu\.org/license`, nor `\bmozilla\.org/MPL\b`:
->             If both the HTTP and HTTPS versions
->             return 200 OK and serve the same content:
->               Replace HTTP with HTTPS.
 
-I'm not sure how important that change is. You need to adjust your
-PATCH subject though, see how older commits look like:
-git log drivers/ssb/
 
---=20
-Rafa=C5=82
+
+My good friend,
+
+I just want to know if you, can help me, to transfer the amount of ($6Million). After the transfer we have to share it, 50% for me, and 50% for you. Please let me know if you can help me for more information regarding the transfer. I hope you can work with me honestly?
+
+Thanks.
+
+Mustafa Sani,
