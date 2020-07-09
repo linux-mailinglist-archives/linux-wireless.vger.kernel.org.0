@@ -2,156 +2,345 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EC0DA21A245
-	for <lists+linux-wireless@lfdr.de>; Thu,  9 Jul 2020 16:39:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 45BF821A371
+	for <lists+linux-wireless@lfdr.de>; Thu,  9 Jul 2020 17:23:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726806AbgGIOjK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 9 Jul 2020 10:39:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48232 "EHLO
+        id S1728028AbgGIPWT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 9 Jul 2020 11:22:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55000 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726410AbgGIOjK (ORCPT
+        with ESMTP id S1726844AbgGIPWS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 9 Jul 2020 10:39:10 -0400
-Received: from mout1.freenet.de (mout1.freenet.de [IPv6:2001:748:100:40::2:3])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 614EEC08C5CE;
-        Thu,  9 Jul 2020 07:39:10 -0700 (PDT)
-Received: from [195.4.92.163] (helo=mjail0.freenet.de)
-        by mout1.freenet.de with esmtpa (ID viktor.jaegerskuepper@freenet.de) (port 25) (Exim 4.92 #3)
-        id 1jtXhY-0000fE-Jj; Thu, 09 Jul 2020 16:39:04 +0200
-Received: from localhost ([::1]:43698 helo=mjail0.freenet.de)
-        by mjail0.freenet.de with esmtpa (ID viktor.jaegerskuepper@freenet.de) (Exim 4.92 #3)
-        id 1jtXhY-0001zB-HJ; Thu, 09 Jul 2020 16:39:04 +0200
-Received: from sub4.freenet.de ([195.4.92.123]:55558)
-        by mjail0.freenet.de with esmtpa (ID viktor.jaegerskuepper@freenet.de) (Exim 4.92 #3)
-        id 1jtXf7-0000ot-KE; Thu, 09 Jul 2020 16:36:33 +0200
-Received: from p200300e7072d05009530c91dafb9c844.dip0.t-ipconnect.de ([2003:e7:72d:500:9530:c91d:afb9:c844]:35596 helo=[127.0.0.1])
-        by sub4.freenet.de with esmtpsa (ID viktor.jaegerskuepper@freenet.de) (TLSv1.2:ECDHE-RSA-CHACHA20-POLY1305:256) (port 465) (Exim 4.92 #3)
-        id 1jtXf7-0006kg-GW; Thu, 09 Jul 2020 16:36:33 +0200
-Subject: Re: [PATCH] Revert "ath9k: Fix general protection fault in
- ath9k_hif_usb_rx_cb"
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     Roman Mamedov <rm@romanrm.net>, Qiujun Huang <hqjagain@gmail.com>,
-        ath9k-devel@qca.qualcomm.com, davem@davemloft.net,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, anenbupt@gmail.com,
-        syzkaller-bugs@googlegroups.com
-References: <20200404041838.10426-1-hqjagain@gmail.com>
- <20200404041838.10426-6-hqjagain@gmail.com> <20200621020428.6417d6fb@natsu>
- <87lfkff9qe.fsf@codeaurora.org>
- <53940af0-d156-3117-ac86-2f3ccaee9513@freenet.de>
- <87imf6beo0.fsf@codeaurora.org>
-From:   =?UTF-8?B?VmlrdG9yIErDpGdlcnNrw7xwcGVy?= 
-        <viktor_jaegerskuepper@freenet.de>
-Message-ID: <abb99acd-e001-6e80-4d46-fae5ad3887f6@freenet.de>
-Date:   Thu, 9 Jul 2020 16:36:24 +0200
+        Thu, 9 Jul 2020 11:22:18 -0400
+Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com [IPv6:2607:f8b0:4864:20::641])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53DAFC08E6DC
+        for <linux-wireless@vger.kernel.org>; Thu,  9 Jul 2020 08:22:18 -0700 (PDT)
+Received: by mail-pl1-x641.google.com with SMTP id d10so968539pls.5
+        for <linux-wireless@vger.kernel.org>; Thu, 09 Jul 2020 08:22:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=iPn8blZ0MEVGwJOKZlXuKDvgNAX2ZB0tniABOvwydt4=;
+        b=TQGUZh7EoHg8jws9SB2X0XtLZsN7heT0VB1CToeiHcLnv2CpjnSXWnZ0bOOmf/1C3q
+         +y+Qzn7TxzdvNYdqhHluSuEIfotCSaSH7fxRy2Y83ti5cUChmnpJhAHu+A1bQmj4sj/y
+         M0uu20clAR3Z6ljIwF+P+j+Pgfr8uofpC27hg=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=iPn8blZ0MEVGwJOKZlXuKDvgNAX2ZB0tniABOvwydt4=;
+        b=QC/UrqqsipNp1K65AACcy5j5ZsNjxbLnKPvm8pNPNb6bishFfoqg+93oTAGSHlurpi
+         pAdzJGlBoOesIlHILES2YcLERRkqfELKmJdp7zY3lugi4nxP7wvvXq4kGLVKVMTRRGBt
+         oPjWrRRHO3hDWcrqtDLzSbaYRvWh9ISt32sLng0FZiYpKtKefTc8+K5iOGsrKf2opYKa
+         qEbPb8ev54mE5vUtry1AMBXQPST3uAh/mIkFizdbDfongFNrLwbQ0aXBdSty9CkoYaRM
+         wggJzH9ed9EYmbw964+eOmusgkVP4jM44AdXvjcDpPv5VbYTMRR313+769Jv5QxNI0tI
+         w1iw==
+X-Gm-Message-State: AOAM53153VjjbIx3IOhek60UCNO8Rlzo3E8zYylymFSKd0GhBI9Lnk/f
+        sfJqrReraMXkJOM9Q1z/0M7FsA==
+X-Google-Smtp-Source: ABdhPJzWGR47KGZbrDdKZ6xW5mFoNnppI1YbxfLxw02K2xq/J0qpOtAkOCDvC6skJDqJWMKJqQvFKA==
+X-Received: by 2002:a17:90a:8009:: with SMTP id b9mr612654pjn.190.1594308137502;
+        Thu, 09 Jul 2020 08:22:17 -0700 (PDT)
+Received: from tictac2.mtv.corp.google.com ([2620:15c:202:1:42b0:34ff:fe3d:58e6])
+        by smtp.gmail.com with ESMTPSA id 137sm3116462pgg.72.2020.07.09.08.22.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 09 Jul 2020 08:22:16 -0700 (PDT)
+From:   Douglas Anderson <dianders@chromium.org>
+To:     kvalo@codeaurora.org, ath10k@lists.infradead.org
+Cc:     linux-arm-msm@vger.kernel.org, briannorris@chromium.org,
+        saiprakash.ranjan@codeaurora.org, linux-wireless@vger.kernel.org,
+        pillair@codeaurora.org, kuabhs@google.com,
+        Douglas Anderson <dianders@chromium.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, linux-kernel@vger.kernel.org,
+        netdev@vger.kernel.org
+Subject: [PATCH v2 1/2] ath10k: Keep track of which interrupts fired, don't poll them
+Date:   Thu,  9 Jul 2020 08:21:04 -0700
+Message-Id: <20200709082024.v2.1.I4d2f85ffa06f38532631e864a3125691ef5ffe06@changeid>
+X-Mailer: git-send-email 2.27.0.383.g050319c2ae-goog
 MIME-Version: 1.0
-In-Reply-To: <87imf6beo0.fsf@codeaurora.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US-large
 Content-Transfer-Encoding: 8bit
-X-Originated-At: 2003:e7:72d:500:9530:c91d:afb9:c844!35596
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Kalle Valo wrote:
-> Viktor Jägersküpper <viktor_jaegerskuepper@freenet.de> writes:
-> 
->> Kalle Valo writes:
->>> Roman Mamedov <rm@romanrm.net> writes:
->>>
->>>> On Sat,  4 Apr 2020 12:18:38 +0800
->>>> Qiujun Huang <hqjagain@gmail.com> wrote:
->>>>
->>>>> In ath9k_hif_usb_rx_cb interface number is assumed to be 0.
->>>>> usb_ifnum_to_if(urb->dev, 0)
->>>>> But it isn't always true.
->>>>>
->>>>> The case reported by syzbot:
->>>>> https://lore.kernel.org/linux-usb/000000000000666c9c05a1c05d12@google.com
->>>>> usb 2-1: new high-speed USB device number 2 using dummy_hcd
->>>>> usb 2-1: config 1 has an invalid interface number: 2 but max is 0
->>>>> usb 2-1: config 1 has no interface number 0
->>>>> usb 2-1: New USB device found, idVendor=0cf3, idProduct=9271, bcdDevice=
->>>>> 1.08
->>>>> usb 2-1: New USB device strings: Mfr=1, Product=2, SerialNumber=3
->>>>> general protection fault, probably for non-canonical address
->>>>> 0xdffffc0000000015: 0000 [#1] SMP KASAN
->>>>> KASAN: null-ptr-deref in range [0x00000000000000a8-0x00000000000000af]
->>>>> CPU: 0 PID: 0 Comm: swapper/0 Not tainted 5.6.0-rc5-syzkaller #0
->>>>>
->>>>> Call Trace
->>>>> __usb_hcd_giveback_urb+0x29a/0x550 drivers/usb/core/hcd.c:1650
->>>>> usb_hcd_giveback_urb+0x368/0x420 drivers/usb/core/hcd.c:1716
->>>>> dummy_timer+0x1258/0x32ae drivers/usb/gadget/udc/dummy_hcd.c:1966
->>>>> call_timer_fn+0x195/0x6f0 kernel/time/timer.c:1404
->>>>> expire_timers kernel/time/timer.c:1449 [inline]
->>>>> __run_timers kernel/time/timer.c:1773 [inline]
->>>>> __run_timers kernel/time/timer.c:1740 [inline]
->>>>> run_timer_softirq+0x5f9/0x1500 kernel/time/timer.c:1786
->>>>> __do_softirq+0x21e/0x950 kernel/softirq.c:292
->>>>> invoke_softirq kernel/softirq.c:373 [inline]
->>>>> irq_exit+0x178/0x1a0 kernel/softirq.c:413
->>>>> exiting_irq arch/x86/include/asm/apic.h:546 [inline]
->>>>> smp_apic_timer_interrupt+0x141/0x540 arch/x86/kernel/apic/apic.c:1146
->>>>> apic_timer_interrupt+0xf/0x20 arch/x86/entry/entry_64.S:829
->>>>>
->>>>> Reported-and-tested-by: syzbot+40d5d2e8a4680952f042@syzkaller.appspotmail.com
->>>>> Signed-off-by: Qiujun Huang <hqjagain@gmail.com>
->>>>
->>>> This causes complete breakage of ath9k operation across all the stable kernel
->>>> series it got backported to, and I guess the mainline as well. Please see:
->>>> https://bugzilla.kernel.org/show_bug.cgi?id=208251
->>>> https://bugzilla.redhat.com/show_bug.cgi?id=1848631
->>>
->>> So there's no fix for this? I was under impression that someone fixed
->>> this, but maybe I'm mixing with something else.
->>>
->>> If this is not fixed can someone please submit a patch to revert the
->>> offending commit (or commits) so that we get ath9k working again?
->>>
->>
->> This reverts commit 2bbcaaee1fcbd83272e29f31e2bb7e70d8c49e05 ("ath9k: Fix general protection fault
->> in ath9k_hif_usb_rx_cb") because the driver gets stuck like this:
->>
->>   [    5.778803] usb 1-5: Manufacturer: ATHEROS
->>   [   21.697488] usb 1-5: ath9k_htc: Firmware ath9k_htc/htc_9271-1.4.0.fw requested
->>   [   21.701377] usbcore: registered new interface driver ath9k_htc
->>   [   22.053705] usb 1-5: ath9k_htc: Transferred FW: ath9k_htc/htc_9271-1.4.0.fw, size: 51008
->>   [   22.306182] ath9k_htc 1-5:1.0: ath9k_htc: HTC initialized with 33 credits
->>   [  115.708513] ath9k_htc: Failed to initialize the device
->>   [  115.708683] usb 1-5: ath9k_htc: USB layer deinitialized
->>
->> Reported-by: Roman Mamedov <rm@romanrm.net>
->> Ref: https://bugzilla.kernel.org/show_bug.cgi?id=208251
->> Fixes: 2bbcaaee1fcb ("ath9k: Fix general protection fault in ath9k_hif_usb_rx_cb")
->> Tested-by: Viktor Jägersküpper <viktor_jaegerskuepper@freenet.de>
->> Signed-off-by: Viktor Jägersküpper <viktor_jaegerskuepper@freenet.de>
->> ---
->>
->> I couldn't find any fix for this, so here is the patch which reverts the
->> offending commit. I have tested it with 5.8.0-rc3 and with 5.7.4.
->>
->> Feel free to change the commit message if it is necessary or appropriate, I am
->> just a user affected by this bug.
-> 
-> This was badly formatted:
-> 
-> https://patchwork.kernel.org/patch/11636783/
-> 
-> But v2 looks correct:
-> 
-> https://patchwork.kernel.org/patch/11637341/
-> 
-> Thanks, I'll take a closer look at this as soon as I can.
-> 
+If we have a per CE (Copy Engine) IRQ then we have no summary
+register.  Right now the code generates a summary register by
+iterating over all copy engines and seeing if they have an interrupt
+pending.
 
-Hi Kalle,
+This has a problem.  Specifically if _none_ if the Copy Engines have
+an interrupt pending then they might go into low power mode and
+reading from their address space will cause a full system crash.  This
+was seen to happen when two interrupts went off at nearly the same
+time.  Both were handled by a single call of ath10k_snoc_napi_poll()
+but, because there were two interrupts handled and thus two calls to
+napi_schedule() there was still a second call to
+ath10k_snoc_napi_poll() which ran with no interrupts pending.
 
-it seems you didn't have time for this so far. If you don't have time at the
-moment, is there someone else who can fix this? Reverting the commit is just the
-first and easy option and fixing this properly can be done after that.
+Instead of iterating over all the copy engines, let's just keep track
+of the IRQs that fire.  Then we can effectively generate our own
+summary without ever needing to read the Copy Engines.
 
-Thanks,
-Viktor
+Tested-on: WCN3990 SNOC WLAN.HL.3.2.2-00490-QCAHLSWMTPL-1
+
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Reviewed-by: Rakesh Pillai <pillair@codeaurora.org>
+Reviewed-by: Brian Norris <briannorris@chromium.org>
+---
+This patch continues work to try to squash all instances of the crash
+we've been seeing while reading CE registers and hopefully this patch
+addresses the true root of the issue.
+
+The first patch that attempted to address these problems landed as
+commit 8f9ed93d09a9 ("ath10k: Wait until copy complete is actually
+done before completing").  After that Rakesh Pillai posted ("ath10k:
+Add interrupt summary based CE processing") [1] and this patch is
+based atop that one.  Both of those patches significantly reduced the
+instances of problems but didn't fully eliminate them.  Crossing my
+fingers that they're all gone now.
+
+[1] https://lore.kernel.org/r/1593193967-29897-1-git-send-email-pillair@codeaurora.org
+
+Changes in v2:
+- Add bitmap_clear() in ath10k_snoc_hif_start().
+
+ drivers/net/wireless/ath/ath10k/ce.c   | 84 ++++++++++----------------
+ drivers/net/wireless/ath/ath10k/ce.h   | 14 ++---
+ drivers/net/wireless/ath/ath10k/snoc.c | 19 ++++--
+ drivers/net/wireless/ath/ath10k/snoc.h |  1 +
+ 4 files changed, 52 insertions(+), 66 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath10k/ce.c b/drivers/net/wireless/ath/ath10k/ce.c
+index 1e16f263854a..84ec80c6d08f 100644
+--- a/drivers/net/wireless/ath/ath10k/ce.c
++++ b/drivers/net/wireless/ath/ath10k/ce.c
+@@ -481,38 +481,6 @@ static inline void ath10k_ce_engine_int_status_clear(struct ath10k *ar,
+ 	ath10k_ce_write32(ar, ce_ctrl_addr + wm_regs->addr, mask);
+ }
+ 
+-static bool ath10k_ce_engine_int_status_check(struct ath10k *ar, u32 ce_ctrl_addr,
+-					      unsigned int mask)
+-{
+-	struct ath10k_hw_ce_host_wm_regs *wm_regs = ar->hw_ce_regs->wm_regs;
+-
+-	return ath10k_ce_read32(ar, ce_ctrl_addr + wm_regs->addr) & mask;
+-}
+-
+-u32 ath10k_ce_gen_interrupt_summary(struct ath10k *ar)
+-{
+-	struct ath10k_hw_ce_host_wm_regs *wm_regs = ar->hw_ce_regs->wm_regs;
+-	struct ath10k_ce_pipe *ce_state;
+-	struct ath10k_ce *ce;
+-	u32 irq_summary = 0;
+-	u32 ctrl_addr;
+-	u32 ce_id;
+-
+-	ce = ath10k_ce_priv(ar);
+-
+-	for (ce_id = 0; ce_id < CE_COUNT; ce_id++) {
+-		ce_state = &ce->ce_states[ce_id];
+-		ctrl_addr = ce_state->ctrl_addr;
+-		if (ath10k_ce_engine_int_status_check(ar, ctrl_addr,
+-						      wm_regs->cc_mask)) {
+-			irq_summary |= BIT(ce_id);
+-		}
+-	}
+-
+-	return irq_summary;
+-}
+-EXPORT_SYMBOL(ath10k_ce_gen_interrupt_summary);
+-
+ /*
+  * Guts of ath10k_ce_send.
+  * The caller takes responsibility for any needed locking.
+@@ -1399,45 +1367,55 @@ static void ath10k_ce_per_engine_handler_adjust(struct ath10k_ce_pipe *ce_state)
+ 	ath10k_ce_watermark_intr_disable(ar, ctrl_addr);
+ }
+ 
+-int ath10k_ce_disable_interrupts(struct ath10k *ar)
++void ath10k_ce_disable_interrupt(struct ath10k *ar, int ce_id)
+ {
+ 	struct ath10k_ce *ce = ath10k_ce_priv(ar);
+ 	struct ath10k_ce_pipe *ce_state;
+ 	u32 ctrl_addr;
+-	int ce_id;
+ 
+-	for (ce_id = 0; ce_id < CE_COUNT; ce_id++) {
+-		ce_state  = &ce->ce_states[ce_id];
+-		if (ce_state->attr_flags & CE_ATTR_POLL)
+-			continue;
++	ce_state  = &ce->ce_states[ce_id];
++	if (ce_state->attr_flags & CE_ATTR_POLL)
++		return;
+ 
+-		ctrl_addr = ath10k_ce_base_address(ar, ce_id);
++	ctrl_addr = ath10k_ce_base_address(ar, ce_id);
+ 
+-		ath10k_ce_copy_complete_intr_disable(ar, ctrl_addr);
+-		ath10k_ce_error_intr_disable(ar, ctrl_addr);
+-		ath10k_ce_watermark_intr_disable(ar, ctrl_addr);
+-	}
++	ath10k_ce_copy_complete_intr_disable(ar, ctrl_addr);
++	ath10k_ce_error_intr_disable(ar, ctrl_addr);
++	ath10k_ce_watermark_intr_disable(ar, ctrl_addr);
++}
++EXPORT_SYMBOL(ath10k_ce_disable_interrupt);
+ 
+-	return 0;
++void ath10k_ce_disable_interrupts(struct ath10k *ar)
++{
++	int ce_id;
++
++	for (ce_id = 0; ce_id < CE_COUNT; ce_id++)
++		ath10k_ce_disable_interrupt(ar, ce_id);
+ }
+ EXPORT_SYMBOL(ath10k_ce_disable_interrupts);
+ 
+-void ath10k_ce_enable_interrupts(struct ath10k *ar)
++void ath10k_ce_enable_interrupt(struct ath10k *ar, int ce_id)
+ {
+ 	struct ath10k_ce *ce = ath10k_ce_priv(ar);
+-	int ce_id;
+ 	struct ath10k_ce_pipe *ce_state;
+ 
++	ce_state  = &ce->ce_states[ce_id];
++	if (ce_state->attr_flags & CE_ATTR_POLL)
++		return;
++
++	ath10k_ce_per_engine_handler_adjust(ce_state);
++}
++EXPORT_SYMBOL(ath10k_ce_enable_interrupt);
++
++void ath10k_ce_enable_interrupts(struct ath10k *ar)
++{
++	int ce_id;
++
+ 	/* Enable interrupts for copy engine that
+ 	 * are not using polling mode.
+ 	 */
+-	for (ce_id = 0; ce_id < CE_COUNT; ce_id++) {
+-		ce_state  = &ce->ce_states[ce_id];
+-		if (ce_state->attr_flags & CE_ATTR_POLL)
+-			continue;
+-
+-		ath10k_ce_per_engine_handler_adjust(ce_state);
+-	}
++	for (ce_id = 0; ce_id < CE_COUNT; ce_id++)
++		ath10k_ce_enable_interrupt(ar, ce_id);
+ }
+ EXPORT_SYMBOL(ath10k_ce_enable_interrupts);
+ 
+diff --git a/drivers/net/wireless/ath/ath10k/ce.h b/drivers/net/wireless/ath/ath10k/ce.h
+index a440aaf74aa4..666ce384a1d8 100644
+--- a/drivers/net/wireless/ath/ath10k/ce.h
++++ b/drivers/net/wireless/ath/ath10k/ce.h
+@@ -255,12 +255,13 @@ int ath10k_ce_cancel_send_next(struct ath10k_ce_pipe *ce_state,
+ /*==================CE Interrupt Handlers====================*/
+ void ath10k_ce_per_engine_service_any(struct ath10k *ar);
+ void ath10k_ce_per_engine_service(struct ath10k *ar, unsigned int ce_id);
+-int ath10k_ce_disable_interrupts(struct ath10k *ar);
++void ath10k_ce_disable_interrupt(struct ath10k *ar, int ce_id);
++void ath10k_ce_disable_interrupts(struct ath10k *ar);
++void ath10k_ce_enable_interrupt(struct ath10k *ar, int ce_id);
+ void ath10k_ce_enable_interrupts(struct ath10k *ar);
+ void ath10k_ce_dump_registers(struct ath10k *ar,
+ 			      struct ath10k_fw_crash_data *crash_data);
+ 
+-u32 ath10k_ce_gen_interrupt_summary(struct ath10k *ar);
+ void ath10k_ce_alloc_rri(struct ath10k *ar);
+ void ath10k_ce_free_rri(struct ath10k *ar);
+ 
+@@ -376,12 +377,9 @@ static inline u32 ath10k_ce_interrupt_summary(struct ath10k *ar)
+ {
+ 	struct ath10k_ce *ce = ath10k_ce_priv(ar);
+ 
+-	if (!ar->hw_params.per_ce_irq)
+-		return CE_WRAPPER_INTERRUPT_SUMMARY_HOST_MSI_GET(
+-			ce->bus_ops->read32((ar), CE_WRAPPER_BASE_ADDRESS +
+-			CE_WRAPPER_INTERRUPT_SUMMARY_ADDRESS));
+-	else
+-		return ath10k_ce_gen_interrupt_summary(ar);
++	return CE_WRAPPER_INTERRUPT_SUMMARY_HOST_MSI_GET(
++		ce->bus_ops->read32((ar), CE_WRAPPER_BASE_ADDRESS +
++		CE_WRAPPER_INTERRUPT_SUMMARY_ADDRESS));
+ }
+ 
+ /* Host software's Copy Engine configuration. */
+diff --git a/drivers/net/wireless/ath/ath10k/snoc.c b/drivers/net/wireless/ath/ath10k/snoc.c
+index 354d49b1cd45..1ef5fdb8248b 100644
+--- a/drivers/net/wireless/ath/ath10k/snoc.c
++++ b/drivers/net/wireless/ath/ath10k/snoc.c
+@@ -3,6 +3,7 @@
+  * Copyright (c) 2018 The Linux Foundation. All rights reserved.
+  */
+ 
++#include <linux/bits.h>
+ #include <linux/clk.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+@@ -923,6 +924,7 @@ static int ath10k_snoc_hif_start(struct ath10k *ar)
+ {
+ 	struct ath10k_snoc *ar_snoc = ath10k_snoc_priv(ar);
+ 
++	bitmap_clear(ar_snoc->pending_ce_irqs, 0, CE_COUNT_MAX);
+ 	napi_enable(&ar->napi);
+ 	ath10k_snoc_irq_enable(ar);
+ 	ath10k_snoc_rx_post(ar);
+@@ -1158,7 +1160,9 @@ static irqreturn_t ath10k_snoc_per_engine_handler(int irq, void *arg)
+ 		return IRQ_HANDLED;
+ 	}
+ 
+-	ath10k_snoc_irq_disable(ar);
++	ath10k_ce_disable_interrupt(ar, ce_id);
++	set_bit(ce_id, ar_snoc->pending_ce_irqs);
++
+ 	napi_schedule(&ar->napi);
+ 
+ 	return IRQ_HANDLED;
+@@ -1167,20 +1171,25 @@ static irqreturn_t ath10k_snoc_per_engine_handler(int irq, void *arg)
+ static int ath10k_snoc_napi_poll(struct napi_struct *ctx, int budget)
+ {
+ 	struct ath10k *ar = container_of(ctx, struct ath10k, napi);
++	struct ath10k_snoc *ar_snoc = ath10k_snoc_priv(ar);
+ 	int done = 0;
++	int ce_id;
+ 
+ 	if (test_bit(ATH10K_FLAG_CRASH_FLUSH, &ar->dev_flags)) {
+ 		napi_complete(ctx);
+ 		return done;
+ 	}
+ 
+-	ath10k_ce_per_engine_service_any(ar);
++	for (ce_id = 0; ce_id < CE_COUNT; ce_id++)
++		if (test_and_clear_bit(ce_id, ar_snoc->pending_ce_irqs)) {
++			ath10k_ce_per_engine_service(ar, ce_id);
++			ath10k_ce_enable_interrupt(ar, ce_id);
++		}
++
+ 	done = ath10k_htt_txrx_compl_task(ar, budget);
+ 
+-	if (done < budget) {
++	if (done < budget)
+ 		napi_complete(ctx);
+-		ath10k_snoc_irq_enable(ar);
+-	}
+ 
+ 	return done;
+ }
+diff --git a/drivers/net/wireless/ath/ath10k/snoc.h b/drivers/net/wireless/ath/ath10k/snoc.h
+index a3dd06f6ac62..5095d1893681 100644
+--- a/drivers/net/wireless/ath/ath10k/snoc.h
++++ b/drivers/net/wireless/ath/ath10k/snoc.h
+@@ -78,6 +78,7 @@ struct ath10k_snoc {
+ 	unsigned long flags;
+ 	bool xo_cal_supported;
+ 	u32 xo_cal_data;
++	DECLARE_BITMAP(pending_ce_irqs, CE_COUNT_MAX);
+ };
+ 
+ static inline struct ath10k_snoc *ath10k_snoc_priv(struct ath10k *ar)
+-- 
+2.27.0.383.g050319c2ae-goog
+
