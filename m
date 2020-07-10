@@ -2,307 +2,266 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 75A8B21B204
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 Jul 2020 11:08:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B73921B524
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 Jul 2020 14:35:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726820AbgGJJIJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 10 Jul 2020 05:08:09 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:26859 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726615AbgGJJIJ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 10 Jul 2020 05:08:09 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1594372088; h=Content-Transfer-Encoding: Content-Type:
- MIME-Version: Message-Id: Date: Subject: Cc: To: From: Sender;
- bh=8LDVfV3bZSofZGY4D1A3bTSsKduJbRin/6eEA9yrVnU=; b=j/YQCiv/O7faR17xGfbOhlyv8Tkkw1bvCXagIN36u7yrltc6G9uJ+MdVWEpxmmIimh1NaSKC
- 1IavI4K9SU1dv8kxXoi4h3M7QaMVy64XQxuFbJjMMe+ncXIsxonT/CWlLfahqX6xYBdNCPWb
- IFy4N5eeNzDu4A4N3MTdAYyigfU=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n05.prod.us-east-1.postgun.com with SMTP id
- 5f082ff419b27ae9ce44dcb2 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 10 Jul 2020 09:08:04
- GMT
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id AA280C433C8; Fri, 10 Jul 2020 09:08:03 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.0
-Received: from ssreeela-linux.qualcomm.com (blr-c-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.19.19])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: ssreeela)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id AE021C433C6;
-        Fri, 10 Jul 2020 09:08:01 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org AE021C433C6
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=ssreeela@codeaurora.org
-From:   Sowmiya Sree Elavalagan <ssreeela@codeaurora.org>
-To:     ath11k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org,
-        Govindaraj Saminathan <gsamin@codeaurora.org>,
-        Sowmiya Sree Elavalagan <ssreeela@codeaurora.org>
-Subject: [PATCH v2] ath11k: cold boot calibration support
-Date:   Fri, 10 Jul 2020 14:37:29 +0530
-Message-Id: <1594372049-31480-1-git-send-email-ssreeela@codeaurora.org>
-X-Mailer: git-send-email 2.7.4
+        id S1727085AbgGJMfT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 10 Jul 2020 08:35:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54424 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726496AbgGJMfS (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 10 Jul 2020 08:35:18 -0400
+Received: from mail-qk1-x72d.google.com (mail-qk1-x72d.google.com [IPv6:2607:f8b0:4864:20::72d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F46BC08C5CE
+        for <linux-wireless@vger.kernel.org>; Fri, 10 Jul 2020 05:35:18 -0700 (PDT)
+Received: by mail-qk1-x72d.google.com with SMTP id e11so5005331qkm.3
+        for <linux-wireless@vger.kernel.org>; Fri, 10 Jul 2020 05:35:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to;
+        bh=/cBVi24S+BHMbceZQ59aZA38dFbVi+NxYfbLJxdmCP0=;
+        b=L7+ngYjGvaJUocfJGd5YyAJFBlLxlkRrqzJ0WuF3pIhEvdnEId0J+3mv7YXtVdnVdd
+         rdL3iHoFzfXx4zRw+KOQho8o9XR6wKytry2lG9zMV9kMOnlj8oT951A+7svGTLK1udtr
+         w4DIZ/2kDm+GsyUhZXRlUs9H7YykB3XtdaNLCWT/jjGANd5S7tls/ugvaD8XqY0UWuy6
+         EPv72wIuTGdiznFseF+TukvtpB6DkvcDKb79Z7zf+vfX6uPZyNjVthWWMczmcplCQncK
+         9j1YYo9LVYZnxizCfpLaLmoh+gdLgRAb9y41tcpAUo6CwktGsGj7GwreJ7T2oYJXbyr4
+         nsbQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to;
+        bh=/cBVi24S+BHMbceZQ59aZA38dFbVi+NxYfbLJxdmCP0=;
+        b=YrBVuAaJ4fS2yYt2Va5fHu6DOwiYaOWrKvdZjgjQJMB18gi2xSYtGoZt85cLcujRF2
+         FZs/7eDJJueup1B8S59RGq2NKjkHoeT7iBRfJBlEZ4PBeJnpK2U6t63MCPkmBilAKFhz
+         mU2fZEA7IP8s4Ej0bKdpaab2E5wxLy3vNqx6ivaAgeYBISwl6T/sy1vicnC3NEdYMXrd
+         PxYt/P23ZA7R+iHUifEMY5r8PHyNUDFOeERXcYCfu2u06b6/lsdZG1/fioztGW8f97nY
+         e0ApcgNFDMk29wUAtmXQ4vhgl1zL115HvtDIMSsCi0eQeSgqGdTzWo1fDT3FhnS1CAO4
+         x78w==
+X-Gm-Message-State: AOAM532yJV/LklAjxS0RnljpvKCtqNO7JCzV8Pm2kdCnn2quuWTerRM2
+        fWgnv8VoAYlyafqZW9z95cWQs2ISWQUbvZRRyKKR0w==
+X-Google-Smtp-Source: ABdhPJzjF2jpNOBQKvZSjCbGTDe4kNR296kYTkCU8AoPxqRQxAFdOfIwOI4JOcNIe2nvqM9EAIS9cBIoeUD3dDQNpmQ=
+X-Received: by 2002:a37:a711:: with SMTP id q17mr68196617qke.257.1594384517282;
+ Fri, 10 Jul 2020 05:35:17 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <CAC6nOAG7RvX3jzdHDYoOHvycvn0sN6Hqh21fapdJCEXFFtr9_Q@mail.gmail.com>
+In-Reply-To: <CAC6nOAG7RvX3jzdHDYoOHvycvn0sN6Hqh21fapdJCEXFFtr9_Q@mail.gmail.com>
+From:   Alexandru Blanaru <blanarualexandru@gmail.com>
+Date:   Fri, 10 Jul 2020 15:35:06 +0300
+Message-ID: <CAC6nOAFYedBOsku7RkwJndxpU0QQvX3q_WCwFYa3MBdojScNag@mail.gmail.com>
+Subject: Wireless stops working after a few minutes on Ubuntu Mint 20 -
+ Realtek RTL8822BE
+To:     linux-wireless@vger.kernel.org
+Content-Type: multipart/mixed; boundary="000000000000ca183d05aa159284"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Govindaraj Saminathan <gsamin@codeaurora.org>
+--000000000000ca183d05aa159284
+Content-Type: text/plain; charset="UTF-8"
 
-cold boot calibration is the process to calibrate all the channels
-during the boot-up to avoid the calibration delay during the
-channel change.
-During the boot-up, firmware started with mode “cold_boot_calibration”
-Firmware calibrate all channels and generate CalDb(DDR).
-Subsequent WIFI ON will reuse the same CalDb.
-Firmware restarted with Mission mode to continue the normal operation.
+Hello,
+I've updated from linux Mint 19.3 to Mint 20 Cinnamon and now I'm
+experiencing problems with the wifi connection on my laptop with
+Realtek RTL8822BE.
 
-caldb memory address send to firmware through the QMI message.Firmware
-use this address to store the caldb data and use it until next reboot.
+Generally it doesn't work, but after a few restart (eg.4 restarts)
+sometimes works for a little while (eg.5-10 minutes) then drops dead.
 
-This will give the improvement during the channel change. But it is
-increasing the boot-up time(up to 15sec depend on number of radios).
-So if the user want to reduce the boot-up time and accepting for channel
-change delay, user can disable this feature using the module param
-cold_boot_cal =0.
+I've generated some data in the attachment with outputs from the
+Terminal when it works and when it doesn't as well as system details.
+I've seen that the Network port changes from 4000 when it works to
+6040 when it doesn't.
 
-Signed-off-by: Govindaraj Saminathan <gsamin@codeaurora.org>
-Co-developed-by: Sowmiya Sree Elavalagan <ssreeela@codeaurora.org>
-Signed-off-by: Sowmiya Sree Elavalagan <ssreeela@codeaurora.org>
----
-v2:
-   - Fixed compilations warnings
-     Reported-by: kernel test robot <lkp@intel.com>
----
- drivers/net/wireless/ath/ath11k/ahb.c  | 26 ++++++++++++++
- drivers/net/wireless/ath/ath11k/core.c |  1 +
- drivers/net/wireless/ath/ath11k/core.h |  5 +++
- drivers/net/wireless/ath/ath11k/qmi.c  | 66 ++++++++++++++++++++++++++++++----
- drivers/net/wireless/ath/ath11k/qmi.h  |  3 ++
- 5 files changed, 94 insertions(+), 7 deletions(-)
+I've experienced the same problem in ubuntu after an update one year
+ago, then installed Linux Mint and worked flawlessly in 19.3. Now I'm
+back to the same problems again after an kernel update.
 
-diff --git a/drivers/net/wireless/ath/ath11k/ahb.c b/drivers/net/wireless/ath/ath11k/ahb.c
-index 7e9bfea..2e0d61d 100644
---- a/drivers/net/wireless/ath/ath11k/ahb.c
-+++ b/drivers/net/wireless/ath/ath11k/ahb.c
-@@ -638,6 +638,30 @@ static void ath11k_ahb_power_down(struct ath11k_base *ab)
- 	rproc_shutdown(ab->tgt_rproc);
- }
- 
-+static int ath11k_ahb_fwreset_from_cold_boot(struct ath11k_base *ab)
-+{
-+	int timeout;
-+
-+	if (ath11k_cold_boot_cal == 0 || ab->qmi.cal_done)
-+		return 0;
-+
-+	ath11k_dbg(ab, ATH11K_DBG_AHB, "wait for cold boot done\n");
-+	timeout = wait_event_timeout(ab->qmi.cold_boot_waitq,
-+				     (ab->qmi.cal_done  == 1),
-+				     ATH11K_COLD_BOOT_FW_RESET_DELAY);
-+	if (timeout <= 0) {
-+		ath11k_warn(ab, "Coldboot Calibration timed out\n");
-+		return -ETIMEDOUT;
-+	}
-+
-+	/* reset the firmware */
-+	ath11k_ahb_power_down(ab);
-+	ath11k_ahb_power_up(ab);
-+
-+	ath11k_dbg(ab, ATH11K_DBG_AHB, "exit wait for cold boot done\n");
-+	return 0;
-+}
-+
- static void ath11k_ahb_init_qmi_ce_config(struct ath11k_base *ab)
- {
- 	struct ath11k_qmi_ce_cfg *cfg = &ab->qmi.ce_cfg;
-@@ -964,6 +988,8 @@ static int ath11k_ahb_probe(struct platform_device *pdev)
- 		goto err_ce_free;
- 	}
- 
-+	ath11k_ahb_fwreset_from_cold_boot(ab);
-+
- 	return 0;
- 
- err_ce_free:
-diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
-index 38e830a..533c7b2 100644
---- a/drivers/net/wireless/ath/ath11k/core.c
-+++ b/drivers/net/wireless/ath/ath11k/core.c
-@@ -801,6 +801,7 @@ struct ath11k_base *ath11k_core_alloc(struct device *dev, size_t priv_size,
- 	INIT_LIST_HEAD(&ab->peers);
- 	init_waitqueue_head(&ab->peer_mapping_wq);
- 	init_waitqueue_head(&ab->wmi_ab.tx_credits_wq);
-+	init_waitqueue_head(&ab->qmi.cold_boot_waitq);
- 	INIT_WORK(&ab->restart_work, ath11k_core_restart);
- 	timer_setup(&ab->rx_replenish_retry, ath11k_ce_rx_replenish_retry, 0);
- 	ab->dev = dev;
-diff --git a/drivers/net/wireless/ath/ath11k/core.h b/drivers/net/wireless/ath/ath11k/core.h
-index b6ccd9f..d736fb0 100644
---- a/drivers/net/wireless/ath/ath11k/core.h
-+++ b/drivers/net/wireless/ath/ath11k/core.h
-@@ -98,8 +98,13 @@ enum ath11k_firmware_mode {
- 
- 	/* factory tests etc */
- 	ATH11K_FIRMWARE_MODE_FTM,
-+
-+	/* Cold boot calibration */
-+	ATH11K_FIRMWARE_MODE_COLD_BOOT = 7,
- };
- 
-+extern bool ath11k_cold_boot_cal;
-+
- #define ATH11K_IRQ_NUM_MAX 52
- #define ATH11K_EXT_IRQ_GRP_NUM_MAX 11
- #define ATH11K_EXT_IRQ_NUM_MAX	16
-diff --git a/drivers/net/wireless/ath/ath11k/qmi.c b/drivers/net/wireless/ath/ath11k/qmi.c
-index 50812df..f9df3fd 100644
---- a/drivers/net/wireless/ath/ath11k/qmi.c
-+++ b/drivers/net/wireless/ath/ath11k/qmi.c
-@@ -9,6 +9,12 @@
- #include <linux/of.h>
- #include <linux/firmware.h>
- 
-+bool ath11k_cold_boot_cal = 1;
-+module_param_named(cold_boot_cal, ath11k_cold_boot_cal, bool, 0644);
-+MODULE_PARM_DESC(cold_boot_cal,
-+		 "Cold boot will bring down the channel switch time but "
-+		 "it will increase the driver load time (enable:1, disable:0)");
-+
- static struct qmi_elem_info qmi_wlanfw_host_cap_req_msg_v01_ei[] = {
- 	{
- 		.data_type	= QMI_OPT_FLAG,
-@@ -1692,9 +1698,16 @@ static int ath11k_qmi_alloc_target_mem_chunk(struct ath11k_base *ab)
- 				ath11k_warn(ab, "qmi mem size is low to load caldata\n");
- 				return -EINVAL;
- 			}
--			/* TODO ath11k does not support cold boot calibration */
--			ab->qmi.target_mem[idx].paddr = 0;
--			ab->qmi.target_mem[idx].vaddr = 0;
-+
-+			if (ath11k_cold_boot_cal) {
-+				ab->qmi.target_mem[idx].paddr =
-+						     ATH11K_QMI_CALDB_ADDRESS;
-+				ab->qmi.target_mem[idx].vaddr =
-+						     ATH11K_QMI_CALDB_ADDRESS;
-+			} else {
-+				ab->qmi.target_mem[idx].paddr = 0;
-+				ab->qmi.target_mem[idx].vaddr = 0;
-+			}
- 			ab->qmi.target_mem[idx].size = ab->qmi.target_mem[i].size;
- 			ab->qmi.target_mem[idx].type = ab->qmi.target_mem[i].type;
- 			idx++;
-@@ -2111,6 +2124,32 @@ int ath11k_qmi_firmware_start(struct ath11k_base *ab,
- 	return 0;
- }
- 
-+static int ath11k_qmi_process_coldboot_calibration(struct ath11k_base *ab)
-+{
-+	int timeout;
-+	int ret;
-+
-+	ret = ath11k_qmi_wlanfw_mode_send(ab, ATH11K_FIRMWARE_MODE_COLD_BOOT);
-+	if (ret < 0) {
-+		ath11k_warn(ab, "qmi failed to send wlan fw mode:%d\n", ret);
-+		return ret;
-+	}
-+
-+	ath11k_warn(ab, "Coldboot calibration wait started\n");
-+
-+	timeout = wait_event_timeout(ab->qmi.cold_boot_waitq,
-+				     (ab->qmi.cal_done  == 1),
-+				     ATH11K_COLD_BOOT_FW_RESET_DELAY);
-+	if (timeout <= 0) {
-+		ath11k_warn(ab, "Coldboot Calibration timed out\n");
-+		return -ETIMEDOUT;
-+	}
-+
-+	ath11k_warn(ab, "Coldboot calibration wait ended\n");
-+
-+	return 0;
-+}
-+
- static int
- ath11k_qmi_driver_event_post(struct ath11k_qmi *qmi,
- 			     enum ath11k_qmi_event_type type,
-@@ -2247,11 +2286,18 @@ static void ath11k_qmi_msg_fw_ready_cb(struct qmi_handle *qmi_hdl,
- 	ath11k_qmi_driver_event_post(qmi, ATH11K_QMI_EVENT_FW_READY, NULL);
- }
- 
--static void ath11k_qmi_msg_cold_boot_cal_done_cb(struct qmi_handle *qmi,
-+static void ath11k_qmi_msg_cold_boot_cal_done_cb(struct qmi_handle *qmi_hdl,
- 						 struct sockaddr_qrtr *sq,
- 						 struct qmi_txn *txn,
- 						 const void *decoded)
- {
-+	struct ath11k_qmi *qmi = container_of(qmi_hdl,
-+					      struct ath11k_qmi, handle);
-+	struct ath11k_base *ab = qmi->ab;
-+
-+	ab->qmi.cal_done = 1;
-+	wake_up(&ab->qmi.cold_boot_waitq);
-+	ath11k_dbg(ab, ATH11K_DBG_QMI, "qmi cold boot calibration done\n");
- }
- 
- static const struct qmi_msg_handler ath11k_qmi_msg_handlers[] = {
-@@ -2364,9 +2410,15 @@ static void ath11k_qmi_driver_event_work(struct work_struct *work)
- 				break;
- 			}
- 
--			ath11k_core_qmi_firmware_ready(ab);
--			ab->qmi.cal_done = 1;
--			set_bit(ATH11K_FLAG_REGISTERED, &ab->dev_flags);
-+			if (ath11k_cold_boot_cal && ab->qmi.cal_done == 0) {
-+				ath11k_qmi_process_coldboot_calibration(ab);
-+			} else {
-+				clear_bit(ATH11K_FLAG_CRASH_FLUSH,
-+					  &ab->dev_flags);
-+				clear_bit(ATH11K_FLAG_RECOVERY, &ab->dev_flags);
-+				ath11k_core_qmi_firmware_ready(ab);
-+				set_bit(ATH11K_FLAG_REGISTERED, &ab->dev_flags);
-+			}
- 
- 			break;
- 		case ATH11K_QMI_EVENT_COLD_BOOT_CAL_DONE:
-diff --git a/drivers/net/wireless/ath/ath11k/qmi.h b/drivers/net/wireless/ath/ath11k/qmi.h
-index 3307be5..02c05cc 100644
---- a/drivers/net/wireless/ath/ath11k/qmi.h
-+++ b/drivers/net/wireless/ath/ath11k/qmi.h
-@@ -12,6 +12,7 @@
- #define ATH11K_HOST_VERSION_STRING		"WIN"
- #define ATH11K_QMI_WLANFW_TIMEOUT_MS		5000
- #define ATH11K_QMI_MAX_BDF_FILE_NAME_SIZE	64
-+#define ATH11K_QMI_CALDB_ADDRESS		0x4BA00000
- #define ATH11K_QMI_BDF_MAX_SIZE			(256 * 1024)
- #define ATH11K_QMI_CALDATA_OFFSET		(128 * 1024)
- #define ATH11K_QMI_WLANFW_MAX_BUILD_ID_LEN_V01	128
-@@ -31,6 +32,7 @@
- #define QMI_WLANFW_MAX_DATA_SIZE_V01		6144
- #define ATH11K_FIRMWARE_MODE_OFF		4
- #define ATH11K_QMI_TARGET_MEM_MODE_DEFAULT	0
-+#define ATH11K_COLD_BOOT_FW_RESET_DELAY		(40 * HZ)
- 
- struct ath11k_base;
- 
-@@ -110,6 +112,7 @@ struct ath11k_qmi {
- 	u32 target_mem_mode;
- 	u8 cal_done;
- 	struct target_info target;
-+	wait_queue_head_t cold_boot_waitq;
- };
- 
- #define QMI_WLANFW_HOST_CAP_REQ_MSG_V01_MAX_LEN		189
--- 
-2.7.4
+Dunno what to do and I'm asking for support if it's possible.
 
+Thank you and hopefully I've provided all that is needed so we can
+overcome this.
+
+--000000000000ca183d05aa159284
+Content-Type: application/octet-stream; name=when working vs not working
+Content-Disposition: attachment; filename=when working vs not working
+Content-Transfer-Encoding: base64
+Content-ID: <f_kcg6z5wh0>
+X-Attachment-Id: f_kcg6z5wh0
+
+YmxhbmFydWxAYmxhbmFydWwtTGVub3ZvLUxlZ2lvbi1ZNTMwLTE1SUNILTEwNjA6fiQgcmZraWxs
+IGxpc3QKMDogaWRlYXBhZF93bGFuOiBXaXJlbGVzcyBMQU4KCVNvZnQgYmxvY2tlZDogbm8KCUhh
+cmQgYmxvY2tlZDogbm8KMTogaWRlYXBhZF9ibHVldG9vdGg6IEJsdWV0b290aAoJU29mdCBibG9j
+a2VkOiB5ZXMKCUhhcmQgYmxvY2tlZDogbm8KMjogaGNpMDogQmx1ZXRvb3RoCglTb2Z0IGJsb2Nr
+ZWQ6IHllcwoJSGFyZCBibG9ja2VkOiBubwozOiBwaHkwOiBXaXJlbGVzcyBMQU4KCVNvZnQgYmxv
+Y2tlZDogbm8KCUhhcmQgYmxvY2tlZDogbm8KCldoZW4gbm90IHdvcmtpbmcKYmxhbmFydWxAYmxh
+bmFydWwtTGVub3ZvLUxlZ2lvbi1ZNTMwLTE1SUNILTEwNjA6fiQgaW54aSAtRnh6ClN5c3RlbTog
+ICAgS2VybmVsOiA1LjQuMC00MC1nZW5lcmljIHg4Nl82NCBiaXRzOiA2NCBjb21waWxlcjogZ2Nj
+IHY6IDkuMy4wIERlc2t0b3A6IENpbm5hbW9uIDQuNi42IAogICAgICAgICAgIERpc3RybzogTGlu
+dXggTWludCAyMCBVbHlhbmEgYmFzZTogVWJ1bnR1IDIwLjA0IGZvY2FsIApNYWNoaW5lOiAgIFR5
+cGU6IExhcHRvcCBTeXN0ZW06IExFTk9WTyBwcm9kdWN0OiA4MUxCIHY6IExlbm92byBMZWdpb24g
+WTUzMC0xNUlDSC0xMDYwIHNlcmlhbDogPGZpbHRlcj4gCiAgICAgICAgICAgTW9ibzogTEVOT1ZP
+IG1vZGVsOiBMTlZOQjE2MTIxNiB2OiBOTyBEUEsgc2VyaWFsOiA8ZmlsdGVyPiBVRUZJIFtMZWdh
+Y3ldOiBMRU5PVk8gdjogOVZDTjE1V1cgZGF0ZTogMTEvMDgvMjAxOCAKQmF0dGVyeTogICBJRC0x
+OiBCQVQwIGNoYXJnZTogNDYuMCBXaCBjb25kaXRpb246IDQ4LjQvNTcuMCBXaCAoODUlKSBtb2Rl
+bDogU01QIEwxN00zUEcyIHN0YXR1czogVW5rbm93biAKQ1BVOiAgICAgICBUb3BvbG9neTogNi1D
+b3JlIG1vZGVsOiBJbnRlbCBDb3JlIGk3LTg3NTBIIGJpdHM6IDY0IHR5cGU6IE1UIE1DUCBhcmNo
+OiBLYWJ5IExha2UgcmV2OiBBIEwyIGNhY2hlOiA5MjE2IEtpQiAKICAgICAgICAgICBmbGFnczog
+YXZ4IGF2eDIgbG0gbnggcGFlIHNzZSBzc2UyIHNzZTMgc3NlNF8xIHNzZTRfMiBzc3NlMyB2bXgg
+Ym9nb21pcHM6IDUyNzk5IAogICAgICAgICAgIFNwZWVkOiAxMDYxIE1IeiBtaW4vbWF4OiA4MDAv
+NDEwMCBNSHogQ29yZSBzcGVlZHMgKE1Ieik6IDE6IDQwMjggMjogMzk1MyAzOiA0MDYyIDQ6IDQw
+MDMgNTogMzkxNSA2OiAzOTQwIDc6IDQwNDUgCiAgICAgICAgICAgODogNDAyNyA5OiA0MDQ4IDEw
+OiAzOTg2IDExOiAzOTM0IDEyOiA0MDI1IApHcmFwaGljczogIERldmljZS0xOiBJbnRlbCBVSEQg
+R3JhcGhpY3MgNjMwIHZlbmRvcjogTGVub3ZvIGRyaXZlcjogaTkxNSB2OiBrZXJuZWwgYnVzIElE
+OiAwMDowMi4wIAogICAgICAgICAgIERpc3BsYXk6IHgxMSBzZXJ2ZXI6IFguT3JnIDEuMjAuOCBk
+cml2ZXI6IG1vZGVzZXR0aW5nIHVubG9hZGVkOiBmYmRldix2ZXNhIHJlc29sdXRpb246IDE5MjB4
+MTA4MH42MEh6IAogICAgICAgICAgIE9wZW5HTDogcmVuZGVyZXI6IE1lc2EgSW50ZWwgVUhEIEdy
+YXBoaWNzIDYzMCAoQ0ZMIEdUMikgdjogNC42IE1lc2EgMjAuMC44IGRpcmVjdCByZW5kZXI6IFll
+cyAKQXVkaW86ICAgICBEZXZpY2UtMTogSW50ZWwgQ2Fubm9uIExha2UgUENIIGNBVlMgdmVuZG9y
+OiBMZW5vdm8gZHJpdmVyOiBzbmRfaGRhX2ludGVsIHY6IGtlcm5lbCBidXMgSUQ6IDAwOjFmLjMg
+CiAgICAgICAgICAgU291bmQgU2VydmVyOiBBTFNBIHY6IGs1LjQuMC00MC1nZW5lcmljIApOZXR3
+b3JrOiAgIERldmljZS0xOiBSZWFsdGVrIFJUTDg4MjJCRSA4MDIuMTFhL2IvZy9uL2FjIFdpRmkg
+YWRhcHRlciB2ZW5kb3I6IExlbm92byBUaGlua1BhZCBFNTk1IGRyaXZlcjogcnR3Xzg4MjJiZSB2
+OiBrZXJuZWwgCiAgICAgICAgICAgcG9ydDogNDAwMCBidXMgSUQ6IDA3OjAwLjAgCiAgICAgICAg
+ICAgSUY6IHdscDdzMCBzdGF0ZTogdXAgbWFjOiA8ZmlsdGVyPiAKICAgICAgICAgICBEZXZpY2Ut
+MjogUmVhbHRlayBSVEw4MTExLzgxNjgvODQxMSBQQ0kgRXhwcmVzcyBHaWdhYml0IEV0aGVybmV0
+IHZlbmRvcjogTGVub3ZvIGRyaXZlcjogcjgxNjkgdjoga2VybmVsIHBvcnQ6IDMwMDAgCiAgICAg
+ICAgICAgYnVzIElEOiAwODowMC4wIAogICAgICAgICAgIElGOiBlbnA4czAgc3RhdGU6IGRvd24g
+bWFjOiA8ZmlsdGVyPiAKRHJpdmVzOiAgICBMb2NhbCBTdG9yYWdlOiB0b3RhbDogNDc2Ljk0IEdp
+QiB1c2VkOiA5Ljg4IEdpQiAoMi4xJSkgCiAgICAgICAgICAgSUQtMTogL2Rldi9udm1lMG4xIHZl
+bmRvcjogV2VzdGVybiBEaWdpdGFsIG1vZGVsOiBQQyBTTjcyMCBTREFQTlRXLTUxMkctMTEwMSBz
+aXplOiA0NzYuOTQgR2lCIApQYXJ0aXRpb246IElELTE6IC8gc2l6ZTogNDY3Ljk2IEdpQiB1c2Vk
+OiA5Ljg4IEdpQiAoMi4xJSkgZnM6IGV4dDQgZGV2OiAvZGV2L252bWUwbjFwNSAKU2Vuc29yczog
+ICBTeXN0ZW0gVGVtcGVyYXR1cmVzOiBjcHU6IDU5LjAgQyBtb2JvOiBOL0EgCiAgICAgICAgICAg
+RmFuIFNwZWVkcyAoUlBNKTogTi9BIApJbmZvOiAgICAgIFByb2Nlc3NlczogMzI4IFVwdGltZTog
+Ti9BIE1lbW9yeTogNy42NSBHaUIgdXNlZDogODI3LjQgTWlCICgxMC42JSkgSW5pdDogc3lzdGVt
+ZCBydW5sZXZlbDogNSBDb21waWxlcnM6IGdjYzogOS4zLjAgCiAgICAgICAgICAgU2hlbGw6IGJh
+c2ggdjogNS4wLjE2IGlueGk6IDMuMC4zOCAKYmxhbmFydWxAYmxhbmFydWwtTGVub3ZvLUxlZ2lv
+bi1ZNTMwLTE1SUNILTEwNjA6fiQgbHNtb2QgfCBncmVwIHJ0dwpydHdfODgyMmJlICAgICAgICAg
+ICAgIDE2Mzg0ICAwCnJ0d184ODIyYiAgICAgICAgICAgICAyMjUyODAgIDEgcnR3Xzg4MjJiZQpy
+dHdfcGNpICAgICAgICAgICAgICAgIDI0NTc2ICAxIHJ0d184ODIyYmUKcnR3X2NvcmUgICAgICAg
+ICAgICAgIDE2Mzg0MCAgMiBydHdfODgyMmIscnR3X3BjaQptYWM4MDIxMSAgICAgICAgICAgICAg
+ODQzNzc2ICAyIHJ0d19jb3JlLHJ0d19wY2kKY2ZnODAyMTEgICAgICAgICAgICAgIDcwNDUxMiAg
+MiBydHdfY29yZSxtYWM4MDIxMQpibGFuYXJ1bEBibGFuYXJ1bC1MZW5vdm8tTGVnaW9uLVk1MzAt
+MTVJQ0gtMTA2MDp+JCBzdWRvIGxzaHcgLWNsYXNzIG5ldHdvcmsKW3N1ZG9dIHBhc3N3b3JkIGZv
+ciBibGFuYXJ1bDogICAgICAgICAgICAKICAqLW5ldHdvcmsgICAgICAgICAgICAgICAgIAogICAg
+ICAgZGVzY3JpcHRpb246IFdpcmVsZXNzIGludGVyZmFjZQogICAgICAgcHJvZHVjdDogUlRMODgy
+MkJFIDgwMi4xMWEvYi9nL24vYWMgV2lGaSBhZGFwdGVyCiAgICAgICB2ZW5kb3I6IFJlYWx0ZWsg
+U2VtaWNvbmR1Y3RvciBDby4sIEx0ZC4KICAgICAgIHBoeXNpY2FsIGlkOiAwCiAgICAgICBidXMg
+aW5mbzogcGNpQDAwMDA6MDc6MDAuMAogICAgICAgbG9naWNhbCBuYW1lOiB3bHA3czAKICAgICAg
+IHZlcnNpb246IDAwCiAgICAgICBzZXJpYWw6IDQ4OjVmOjk5OmIyOjliOjU5CiAgICAgICB3aWR0
+aDogNjQgYml0cwogICAgICAgY2xvY2s6IDMzTUh6CiAgICAgICBjYXBhYmlsaXRpZXM6IHBtIG1z
+aSBwY2lleHByZXNzIGJ1c19tYXN0ZXIgY2FwX2xpc3QgZXRoZXJuZXQgcGh5c2ljYWwgd2lyZWxl
+c3MKICAgICAgIGNvbmZpZ3VyYXRpb246IGJyb2FkY2FzdD15ZXMgZHJpdmVyPXJ0d184ODIyYmUg
+ZHJpdmVydmVyc2lvbj01LjQuMC00MC1nZW5lcmljIGZpcm13YXJlPU4vQSBpcD0xOTIuMTY4LjAu
+MjIzIGxhdGVuY3k9MCBsaW5rPXllcyBtdWx0aWNhc3Q9eWVzIHdpcmVsZXNzPUlFRUUgODAyLjEx
+CiAgICAgICByZXNvdXJjZXM6IGlycToxNDQgaW9wb3J0OjQwMDAoc2l6ZT0yNTYpIG1lbW9yeTph
+NDMwMDAwMC1hNDMwZmZmZgogICotbmV0d29yawogICAgICAgZGVzY3JpcHRpb246IEV0aGVybmV0
+IGludGVyZmFjZQogICAgICAgcHJvZHVjdDogUlRMODExMS84MTY4Lzg0MTEgUENJIEV4cHJlc3Mg
+R2lnYWJpdCBFdGhlcm5ldCBDb250cm9sbGVyCiAgICAgICB2ZW5kb3I6IFJlYWx0ZWsgU2VtaWNv
+bmR1Y3RvciBDby4sIEx0ZC4KICAgICAgIHBoeXNpY2FsIGlkOiAwCiAgICAgICBidXMgaW5mbzog
+cGNpQDAwMDA6MDg6MDAuMAogICAgICAgbG9naWNhbCBuYW1lOiBlbnA4czAKICAgICAgIHZlcnNp
+b246IDE1CiAgICAgICBzZXJpYWw6IGU4OjZhOjY0OmQ0OmUwOjg4CiAgICAgICBjYXBhY2l0eTog
+MUdiaXQvcwogICAgICAgd2lkdGg6IDY0IGJpdHMKICAgICAgIGNsb2NrOiAzM01IegogICAgICAg
+Y2FwYWJpbGl0aWVzOiBwbSBtc2kgcGNpZXhwcmVzcyBtc2l4IGJ1c19tYXN0ZXIgY2FwX2xpc3Qg
+ZXRoZXJuZXQgcGh5c2ljYWwgdHAgbWlpIDEwYnQgMTBidC1mZCAxMDBidCAxMDBidC1mZCAxMDAw
+YnQtZmQgYXV0b25lZ290aWF0aW9uCiAgICAgICBjb25maWd1cmF0aW9uOiBhdXRvbmVnb3RpYXRp
+b249b24gYnJvYWRjYXN0PXllcyBkcml2ZXI9cjgxNjkgZmlybXdhcmU9cnRsODE2OGgtMl8wLjAu
+MiAwMi8yNi8xNSBsYXRlbmN5PTAgbGluaz1ubyBtdWx0aWNhc3Q9eWVzIHBvcnQ9TUlJCiAgICAg
+ICByZXNvdXJjZXM6IGlycToxNyBpb3BvcnQ6MzAwMChzaXplPTI1NikgbWVtb3J5OmE0MjA0MDAw
+LWE0MjA0ZmZmIG1lbW9yeTphNDIwMDAwMC1hNDIwM2ZmZgoKYmxhbmFydWxAYmxhbmFydWwtTGVu
+b3ZvLUxlZ2lvbi1ZNTMwLTE1SUNILTEwNjA6fiQgbW9kaW5mbyBydHdfODgyMmJlCmZpbGVuYW1l
+OiAgICAgICAvbGliL21vZHVsZXMvNS40LjAtNDAtZ2VuZXJpYy9rZXJuZWwvZHJpdmVycy9uZXQv
+d2lyZWxlc3MvcmVhbHRlay9ydHc4OC9ydHdfODgyMmJlLmtvCmxpY2Vuc2U6ICAgICAgICBEdWFs
+IEJTRC9HUEwKZGVzY3JpcHRpb246ICAgIFJlYWx0ZWsgODAyLjExYWMgd2lyZWxlc3MgODgyMmJl
+IGRyaXZlcgphdXRob3I6ICAgICAgICAgUmVhbHRlayBDb3Jwb3JhdGlvbgpzcmN2ZXJzaW9uOiAg
+ICAgQkIxMTJGOUQzRjkwRDU5OEZDMTI2OEYKYWxpYXM6ICAgICAgICAgIHBjaTp2MDAwMDEwRUNk
+MDAwMEI4MjJzdipzZCpiYypzYyppKgpkZXBlbmRzOiAgICAgICAgcnR3X3BjaSxydHdfODgyMmIK
+cmV0cG9saW5lOiAgICAgIFkKbmFtZTogICAgICAgICAgIHJ0d184ODIyYmUKdmVybWFnaWM6ICAg
+ICAgIDUuNC4wLTQwLWdlbmVyaWMgU01QIG1vZF91bmxvYWQgCgoKCldoZW4gd29ya2luZwpibGFu
+YXJ1bEBibGFuYXJ1bC1MZW5vdm8tTGVnaW9uLVk1MzAtMTVJQ0gtMTA2MDp+JCBpbnhpIC1GeHoK
+U3lzdGVtOiAgICBLZXJuZWw6IDUuNC4wLTQwLWdlbmVyaWMgeDg2XzY0IGJpdHM6IDY0IGNvbXBp
+bGVyOiBnY2MgdjogOS4zLjAgRGVza3RvcDogQ2lubmFtb24gNC42LjYgCiAgICAgICAgICAgRGlz
+dHJvOiBMaW51eCBNaW50IDIwIFVseWFuYSBiYXNlOiBVYnVudHUgMjAuMDQgZm9jYWwgCk1hY2hp
+bmU6ICAgVHlwZTogTGFwdG9wIFN5c3RlbTogTEVOT1ZPIHByb2R1Y3Q6IDgxTEIgdjogTGVub3Zv
+IExlZ2lvbiBZNTMwLTE1SUNILTEwNjAgc2VyaWFsOiA8ZmlsdGVyPiAKICAgICAgICAgICBNb2Jv
+OiBMRU5PVk8gbW9kZWw6IExOVk5CMTYxMjE2IHY6IE5PIERQSyBzZXJpYWw6IDxmaWx0ZXI+IFVF
+RkkgW0xlZ2FjeV06IExFTk9WTyB2OiA5VkNOMTVXVyBkYXRlOiAxMS8wOC8yMDE4IApCYXR0ZXJ5
+OiAgIElELTE6IEJBVDAgY2hhcmdlOiA0Ni4wIFdoIGNvbmRpdGlvbjogNDguNC81Ny4wIFdoICg4
+NSUpIG1vZGVsOiBTTVAgTDE3TTNQRzIgc3RhdHVzOiBVbmtub3duIApDUFU6ICAgICAgIFRvcG9s
+b2d5OiA2LUNvcmUgbW9kZWw6IEludGVsIENvcmUgaTctODc1MEggYml0czogNjQgdHlwZTogTVQg
+TUNQIGFyY2g6IEthYnkgTGFrZSByZXY6IEEgTDIgY2FjaGU6IDkyMTYgS2lCIAogICAgICAgICAg
+IGZsYWdzOiBhdnggYXZ4MiBsbSBueCBwYWUgc3NlIHNzZTIgc3NlMyBzc2U0XzEgc3NlNF8yIHNz
+c2UzIHZteCBib2dvbWlwczogNTI3OTkgCiAgICAgICAgICAgU3BlZWQ6IDEwNjEgTUh6IG1pbi9t
+YXg6IDgwMC80MTAwIE1IeiBDb3JlIHNwZWVkcyAoTUh6KTogMTogNDAyOCAyOiAzOTUzIDM6IDQw
+NjIgNDogNDAwMyA1OiAzOTE1IDY6IDM5NDAgNzogNDA0NSAKICAgICAgICAgICA4OiA0MDI3IDk6
+IDQwNDggMTA6IDM5ODYgMTE6IDM5MzQgMTI6IDQwMjUgCkdyYXBoaWNzOiAgRGV2aWNlLTE6IElu
+dGVsIFVIRCBHcmFwaGljcyA2MzAgdmVuZG9yOiBMZW5vdm8gZHJpdmVyOiBpOTE1IHY6IGtlcm5l
+bCBidXMgSUQ6IDAwOjAyLjAgCiAgICAgICAgICAgRGlzcGxheTogeDExIHNlcnZlcjogWC5Pcmcg
+MS4yMC44IGRyaXZlcjogbW9kZXNldHRpbmcgdW5sb2FkZWQ6IGZiZGV2LHZlc2EgcmVzb2x1dGlv
+bjogMTkyMHgxMDgwfjYwSHogCiAgICAgICAgICAgT3BlbkdMOiByZW5kZXJlcjogTWVzYSBJbnRl
+bCBVSEQgR3JhcGhpY3MgNjMwIChDRkwgR1QyKSB2OiA0LjYgTWVzYSAyMC4wLjggZGlyZWN0IHJl
+bmRlcjogWWVzIApBdWRpbzogICAgIERldmljZS0xOiBJbnRlbCBDYW5ub24gTGFrZSBQQ0ggY0FW
+UyB2ZW5kb3I6IExlbm92byBkcml2ZXI6IHNuZF9oZGFfaW50ZWwgdjoga2VybmVsIGJ1cyBJRDog
+MDA6MWYuMyAKICAgICAgICAgICBTb3VuZCBTZXJ2ZXI6IEFMU0EgdjogazUuNC4wLTQwLWdlbmVy
+aWMgCk5ldHdvcms6ICAgRGV2aWNlLTE6IFJlYWx0ZWsgUlRMODgyMkJFIDgwMi4xMWEvYi9nL24v
+YWMgV2lGaSBhZGFwdGVyIHZlbmRvcjogTGVub3ZvIFRoaW5rUGFkIEU1OTUgZHJpdmVyOiBydHdf
+ODgyMmJlIHY6IGtlcm5lbCAKICAgICAgICAgICBwb3J0OiA0MDAwIGJ1cyBJRDogMDc6MDAuMCAK
+ICAgICAgICAgICBJRjogd2xwN3MwIHN0YXRlOiB1cCBtYWM6IDxmaWx0ZXI+IAogICAgICAgICAg
+IERldmljZS0yOiBSZWFsdGVrIFJUTDgxMTEvODE2OC84NDExIFBDSSBFeHByZXNzIEdpZ2FiaXQg
+RXRoZXJuZXQgdmVuZG9yOiBMZW5vdm8gZHJpdmVyOiByODE2OSB2OiBrZXJuZWwgcG9ydDogMzAw
+MCAKICAgICAgICAgICBidXMgSUQ6IDA4OjAwLjAgCiAgICAgICAgICAgSUY6IGVucDhzMCBzdGF0
+ZTogZG93biBtYWM6IDxmaWx0ZXI+IApEcml2ZXM6ICAgIExvY2FsIFN0b3JhZ2U6IHRvdGFsOiA0
+NzYuOTQgR2lCIHVzZWQ6IDkuODggR2lCICgyLjElKSAKICAgICAgICAgICBJRC0xOiAvZGV2L252
+bWUwbjEgdmVuZG9yOiBXZXN0ZXJuIERpZ2l0YWwgbW9kZWw6IFBDIFNONzIwIFNEQVBOVFctNTEy
+Ry0xMTAxIHNpemU6IDQ3Ni45NCBHaUIgClBhcnRpdGlvbjogSUQtMTogLyBzaXplOiA0NjcuOTYg
+R2lCIHVzZWQ6IDkuODggR2lCICgyLjElKSBmczogZXh0NCBkZXY6IC9kZXYvbnZtZTBuMXA1IApT
+ZW5zb3JzOiAgIFN5c3RlbSBUZW1wZXJhdHVyZXM6IGNwdTogNTkuMCBDIG1vYm86IE4vQSAKICAg
+ICAgICAgICBGYW4gU3BlZWRzIChSUE0pOiBOL0EgCkluZm86ICAgICAgUHJvY2Vzc2VzOiAzMjgg
+VXB0aW1lOiBOL0EgTWVtb3J5OiA3LjY1IEdpQiB1c2VkOiA4MjcuNCBNaUIgKDEwLjYlKSBJbml0
+OiBzeXN0ZW1kIHJ1bmxldmVsOiA1IENvbXBpbGVyczogZ2NjOiA5LjMuMCAKICAgICAgICAgICBT
+aGVsbDogYmFzaCB2OiA1LjAuMTYgaW54aTogMy4wLjM4IApibGFuYXJ1bEBibGFuYXJ1bC1MZW5v
+dm8tTGVnaW9uLVk1MzAtMTVJQ0gtMTA2MDp+JCBsc21vZCB8IGdyZXAgcnR3CnJ0d184ODIyYmUg
+ICAgICAgICAgICAgMTYzODQgIDAKcnR3Xzg4MjJiICAgICAgICAgICAgIDIyNTI4MCAgMSBydHdf
+ODgyMmJlCnJ0d19wY2kgICAgICAgICAgICAgICAgMjQ1NzYgIDEgcnR3Xzg4MjJiZQpydHdfY29y
+ZSAgICAgICAgICAgICAgMTYzODQwICAyIHJ0d184ODIyYixydHdfcGNpCm1hYzgwMjExICAgICAg
+ICAgICAgICA4NDM3NzYgIDIgcnR3X2NvcmUscnR3X3BjaQpjZmc4MDIxMSAgICAgICAgICAgICAg
+NzA0NTEyICAyIHJ0d19jb3JlLG1hYzgwMjExCmJsYW5hcnVsQGJsYW5hcnVsLUxlbm92by1MZWdp
+b24tWTUzMC0xNUlDSC0xMDYwOn4kIHN1ZG8gbHNodyAtY2xhc3MgbmV0d29yawpbc3Vkb10gcGFz
+c3dvcmQgZm9yIGJsYW5hcnVsOiAgICAgICAgICAgIAogICotbmV0d29yayAgICAgICAgICAgICAg
+ICAgCiAgICAgICBkZXNjcmlwdGlvbjogV2lyZWxlc3MgaW50ZXJmYWNlCiAgICAgICBwcm9kdWN0
+OiBSVEw4ODIyQkUgODAyLjExYS9iL2cvbi9hYyBXaUZpIGFkYXB0ZXIKICAgICAgIHZlbmRvcjog
+UmVhbHRlayBTZW1pY29uZHVjdG9yIENvLiwgTHRkLgogICAgICAgcGh5c2ljYWwgaWQ6IDAKICAg
+ICAgIGJ1cyBpbmZvOiBwY2lAMDAwMDowNzowMC4wCiAgICAgICBsb2dpY2FsIG5hbWU6IHdscDdz
+MAogICAgICAgdmVyc2lvbjogMDAKICAgICAgIHNlcmlhbDogNDg6NWY6OTk6YjI6OWI6NTkKICAg
+ICAgIHdpZHRoOiA2NCBiaXRzCiAgICAgICBjbG9jazogMzNNSHoKICAgICAgIGNhcGFiaWxpdGll
+czogcG0gbXNpIHBjaWV4cHJlc3MgYnVzX21hc3RlciBjYXBfbGlzdCBldGhlcm5ldCBwaHlzaWNh
+bCB3aXJlbGVzcwogICAgICAgY29uZmlndXJhdGlvbjogYnJvYWRjYXN0PXllcyBkcml2ZXI9cnR3
+Xzg4MjJiZSBkcml2ZXJ2ZXJzaW9uPTUuNC4wLTQwLWdlbmVyaWMgZmlybXdhcmU9Ti9BIGlwPTE5
+Mi4xNjguMC4yMjMgbGF0ZW5jeT0wIGxpbms9eWVzIG11bHRpY2FzdD15ZXMgd2lyZWxlc3M9SUVF
+RSA4MDIuMTEKICAgICAgIHJlc291cmNlczogaXJxOjE0NCBpb3BvcnQ6NDAwMChzaXplPTI1Nikg
+bWVtb3J5OmE0MzAwMDAwLWE0MzBmZmZmCiAgKi1uZXR3b3JrCiAgICAgICBkZXNjcmlwdGlvbjog
+RXRoZXJuZXQgaW50ZXJmYWNlCiAgICAgICBwcm9kdWN0OiBSVEw4MTExLzgxNjgvODQxMSBQQ0kg
+RXhwcmVzcyBHaWdhYml0IEV0aGVybmV0IENvbnRyb2xsZXIKICAgICAgIHZlbmRvcjogUmVhbHRl
+ayBTZW1pY29uZHVjdG9yIENvLiwgTHRkLgogICAgICAgcGh5c2ljYWwgaWQ6IDAKICAgICAgIGJ1
+cyBpbmZvOiBwY2lAMDAwMDowODowMC4wCiAgICAgICBsb2dpY2FsIG5hbWU6IGVucDhzMAogICAg
+ICAgdmVyc2lvbjogMTUKICAgICAgIHNlcmlhbDogZTg6NmE6NjQ6ZDQ6ZTA6ODgKICAgICAgIGNh
+cGFjaXR5OiAxR2JpdC9zCiAgICAgICB3aWR0aDogNjQgYml0cwogICAgICAgY2xvY2s6IDMzTUh6
+CiAgICAgICBjYXBhYmlsaXRpZXM6IHBtIG1zaSBwY2lleHByZXNzIG1zaXggYnVzX21hc3RlciBj
+YXBfbGlzdCBldGhlcm5ldCBwaHlzaWNhbCB0cCBtaWkgMTBidCAxMGJ0LWZkIDEwMGJ0IDEwMGJ0
+LWZkIDEwMDBidC1mZCBhdXRvbmVnb3RpYXRpb24KICAgICAgIGNvbmZpZ3VyYXRpb246IGF1dG9u
+ZWdvdGlhdGlvbj1vbiBicm9hZGNhc3Q9eWVzIGRyaXZlcj1yODE2OSBmaXJtd2FyZT1ydGw4MTY4
+aC0yXzAuMC4yIDAyLzI2LzE1IGxhdGVuY3k9MCBsaW5rPW5vIG11bHRpY2FzdD15ZXMgcG9ydD1N
+SUkKICAgICAgIHJlc291cmNlczogaXJxOjE3IGlvcG9ydDozMDAwKHNpemU9MjU2KSBtZW1vcnk6
+YTQyMDQwMDAtYTQyMDRmZmYgbWVtb3J5OmE0MjAwMDAwLWE0MjAzZmZmCgpibGFuYXJ1bEBibGFu
+YXJ1bC1MZW5vdm8tTGVnaW9uLVk1MzAtMTVJQ0gtMTA2MDp+JCBtb2RpbmZvIHJ0d184ODIyYmUK
+ZmlsZW5hbWU6ICAgICAgIC9saWIvbW9kdWxlcy81LjQuMC00MC1nZW5lcmljL2tlcm5lbC9kcml2
+ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L3J0d184ODIyYmUua28KbGljZW5zZTogICAg
+ICAgIER1YWwgQlNEL0dQTApkZXNjcmlwdGlvbjogICAgUmVhbHRlayA4MDIuMTFhYyB3aXJlbGVz
+cyA4ODIyYmUgZHJpdmVyCmF1dGhvcjogICAgICAgICBSZWFsdGVrIENvcnBvcmF0aW9uCnNyY3Zl
+cnNpb246ICAgICBCQjExMkY5RDNGOTBENTk4RkMxMjY4RgphbGlhczogICAgICAgICAgcGNpOnYw
+MDAwMTBFQ2QwMDAwQjgyMnN2KnNkKmJjKnNjKmkqCmRlcGVuZHM6ICAgICAgICBydHdfcGNpLHJ0
+d184ODIyYgpyZXRwb2xpbmU6ICAgICAgWQpuYW1lOiAgICAgICAgICAgcnR3Xzg4MjJiZQp2ZXJt
+YWdpYzogICAgICAgNS40LjAtNDAtZ2VuZXJpYyBTTVAgbW9kX3VubG9hZCAKCgo=
+--000000000000ca183d05aa159284--
