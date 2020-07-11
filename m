@@ -2,78 +2,72 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8564521C244
-	for <lists+linux-wireless@lfdr.de>; Sat, 11 Jul 2020 06:35:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 369EA21C57E
+	for <lists+linux-wireless@lfdr.de>; Sat, 11 Jul 2020 19:26:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726786AbgGKEf1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 11 Jul 2020 00:35:27 -0400
-Received: from mout01.posteo.de ([185.67.36.65]:59486 "EHLO mout01.posteo.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726671AbgGKEf0 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 11 Jul 2020 00:35:26 -0400
-Received: from submission (posteo.de [89.146.220.130]) 
-        by mout01.posteo.de (Postfix) with ESMTPS id 7AC3416005C
-        for <linux-wireless@vger.kernel.org>; Sat, 11 Jul 2020 06:35:24 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.net; s=2017;
-        t=1594442124; bh=0ctE+bpyS5tnIfYE4wskqtGvHRlRDTGqPaJ9OIOnNDs=;
-        h=From:To:Cc:Subject:Date:From;
-        b=iw9hzNEqM378iP/dgqv3UEMUY8UKvKbO8PGhpKn/vCH/gAGiBnLhl9F2UUImhQWXx
-         lzGvjm4NeQxMZSyI7LCtj9auKjKc2Sefj1sloddDstVfrO9BEkdicf/J026++wGCq1
-         GFVB5OQthsM9QHIxfpg2loi76RSvemF7wANCPmpJ0Cr/1R3rptC/BW5t0Lua4KDhVK
-         Oxy6KXi3QZEYrFOeHD3aGh53ptIwG3Dy5R0RoWoGYQRw+hfGRWhSqoFiFdmYQ84xAM
-         zzOACfNMs1F240J4FOdlzD6mOZ3tbIIj14LFRF1EXuVkdS4ZLSunP4QbXek/5aIwIF
-         1Fse7GagYQnzw==
-Received: from customer (localhost [127.0.0.1])
-        by submission (posteo.de) with ESMTPSA id 4B3cXV2fc9z6tmH;
-        Sat, 11 Jul 2020 06:35:22 +0200 (CEST)
-From:   Mark O'Donovan <shiftee@posteo.net>
-To:     linux-wireless@vger.kernel.org
-Cc:     kvalo@codeaurora.org, jaegerskuepper@freenet.de,
-        hqjagain@gmail.com, ath9k-devel@qca.qualcomm.com,
-        davem@davemloft.net, kuba@kernel.org,
-        Mark O'Donovan <shiftee@posteo.net>
-Subject: [PATCH 1/1] ath9k: Fix regression with Atheros 9271
-Date:   Sat, 11 Jul 2020 05:33:24 +0100
-Message-Id: <20200711043324.8079-1-shiftee@posteo.net>
-X-Mailer: git-send-email 2.25.1
+        id S1728672AbgGKRZ7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 11 Jul 2020 13:25:59 -0400
+Received: from mailgw02.mediatek.com ([210.61.82.184]:24386 "EHLO
+        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1728507AbgGKRZ7 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 11 Jul 2020 13:25:59 -0400
+X-UUID: b0c6d6c996fd4e42a3b9fd63c9ad292f-20200712
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+        h=Content-Transfer-Encoding:Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=KsPZrYh83BKh7NcfY83O8cMZ2ziWNuHaOaDclSXHB/Y=;
+        b=FxOCxey2I4SzYJKmx8sRZuPR2qFnDRjNLnxrENsDc58fKydoHzkRQSL74kQQOjLsp8K24l0eOI4wJHGrU8OvAXJXZkAPxQD+j0oQzhfbJrN/MTGyje+bkyBuXovcJM9zo66naq4gi3D1iDE9KLPnspgGp94KZ9tXp6Intxw8BKM=;
+X-UUID: b0c6d6c996fd4e42a3b9fd63c9ad292f-20200712
+Received: from mtkcas08.mediatek.inc [(172.21.101.126)] by mailgw02.mediatek.com
+        (envelope-from <ryder.lee@mediatek.com>)
+        (Cellopoint E-mail Firewall v4.1.10 Build 0809 with TLS)
+        with ESMTP id 998760287; Sun, 12 Jul 2020 01:25:55 +0800
+Received: from mtkcas08.mediatek.inc (172.21.101.126) by
+ mtkmbs08n2.mediatek.inc (172.21.101.56) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Sun, 12 Jul 2020 01:25:49 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas08.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Sun, 12 Jul 2020 01:25:49 +0800
+From:   Ryder Lee <ryder.lee@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+CC:     Shayne Chen <shayne.chen@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        Sean Wang <sean.wang@mediatek.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>,
+        Ryder Lee <ryder.lee@mediatek.com>
+Subject: [PATCH] mt76: mt7915: fix potential memory leak in mcu message handler
+Date:   Sun, 12 Jul 2020 01:25:51 +0800
+Message-ID: <4cced050b9b3dc4d1da2a15e38738ba80a30dac0.1594487923.git.ryder.lee@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-TM-SNTS-SMTP: D7429033F07453C9D9C29E3419561C1A46274DDF38E6A64AE525150F343466A32000:8
+X-MTK:  N
+Content-Transfer-Encoding: base64
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This fix allows ath9k_htc modules to connect to WLAN once again.
-
-Fixes: 2bbcaaee1fcb (ath9k: Fix general protection fault in
-ath9k_hif_usb_rx_cb )
-
-https://bugzilla.kernel.org/show_bug.cgi?id=208251
-
-Signed-off-by: Mark O'Donovan <shiftee@posteo.net>
----
- drivers/net/wireless/ath/ath9k/hif_usb.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/ath/ath9k/hif_usb.c b/drivers/net/wireless/ath/ath9k/hif_usb.c
-index 4ed21dad6a8e..3f563e02d17d 100644
---- a/drivers/net/wireless/ath/ath9k/hif_usb.c
-+++ b/drivers/net/wireless/ath/ath9k/hif_usb.c
-@@ -733,11 +733,13 @@ static void ath9k_hif_usb_reg_in_cb(struct urb *urb)
- 			return;
- 		}
- 
-+		rx_buf->skb = nskb;
-+
- 		usb_fill_int_urb(urb, hif_dev->udev,
- 				 usb_rcvintpipe(hif_dev->udev,
- 						 USB_REG_IN_PIPE),
- 				 nskb->data, MAX_REG_IN_BUF_SIZE,
--				 ath9k_hif_usb_reg_in_cb, nskb, 1);
-+				 ath9k_hif_usb_reg_in_cb, rx_buf, 1);
- 	}
- 
- resubmit:
--- 
-2.25.1
+Rml4IHBvdGVudGlhbCBtZW1vcnkgbGVhayBpbiBtY3UgbWVzc2FnZSBoYW5kbGVyIG9uIGVycm9y
+IGNvbmRpdGlvbi4NCg0KRml4ZXM6IGM2YjAwMmJjZGZhNiAoIm10NzY6IGFkZCBtYWM4MDIxMSBk
+cml2ZXIgZm9yIE1UNzkxNSBQQ0llLWJhc2VkIGNoaXBzZXRzIikNClNpZ25lZC1vZmYtYnk6IFJ5
+ZGVyIExlZSA8cnlkZXIubGVlQG1lZGlhdGVrLmNvbT4NCi0tLQ0KIGRyaXZlcnMvbmV0L3dpcmVs
+ZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1L21jdS5jIHwgNyArKysrKy0tDQogMSBmaWxlIGNoYW5n
+ZWQsIDUgaW5zZXJ0aW9ucygrKSwgMiBkZWxldGlvbnMoLSkNCg0KZGlmZiAtLWdpdCBhL2RyaXZl
+cnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1L21jdS5jIGIvZHJpdmVycy9uZXQv
+d2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvbWN1LmMNCmluZGV4IGVlZDMyN2IwOWRkYi4u
+YWIwODYyMmQxNzM2IDEwMDY0NA0KLS0tIGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsv
+bXQ3Ni9tdDc5MTUvbWN1LmMNCisrKyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210
+NzYvbXQ3OTE1L21jdS5jDQpAQCAtMzEyLDggKzMxMiwxMCBAQCBtdDc5MTVfbWN1X3BhcnNlX3Jl
+c3BvbnNlKHN0cnVjdCBtdDc5MTVfZGV2ICpkZXYsIGludCBjbWQsDQogCXN0cnVjdCBtdDc5MTVf
+bWN1X3J4ZCAqcnhkID0gKHN0cnVjdCBtdDc5MTVfbWN1X3J4ZCAqKXNrYi0+ZGF0YTsNCiAJaW50
+IHJldCA9IDA7DQogDQotCWlmIChzZXEgIT0gcnhkLT5zZXEpDQotCQlyZXR1cm4gLUVBR0FJTjsN
+CisJaWYgKHNlcSAhPSByeGQtPnNlcSkgew0KKwkJcmV0ID0gLUVBR0FJTjsNCisJCWdvdG8gb3V0
+Ow0KKwl9DQogDQogCXN3aXRjaCAoY21kKSB7DQogCWNhc2UgLU1DVV9DTURfUEFUQ0hfU0VNX0NP
+TlRST0w6DQpAQCAtMzMwLDYgKzMzMiw3IEBAIG10NzkxNV9tY3VfcGFyc2VfcmVzcG9uc2Uoc3Ry
+dWN0IG10NzkxNV9kZXYgKmRldiwgaW50IGNtZCwNCiAJZGVmYXVsdDoNCiAJCWJyZWFrOw0KIAl9
+DQorb3V0Og0KIAlkZXZfa2ZyZWVfc2tiKHNrYik7DQogDQogCXJldHVybiByZXQ7DQotLSANCjIu
+MTguMA0K
 
