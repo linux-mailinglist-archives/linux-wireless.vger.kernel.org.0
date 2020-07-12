@@ -2,236 +2,183 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A53721C64B
-	for <lists+linux-wireless@lfdr.de>; Sat, 11 Jul 2020 23:03:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C828721C95F
+	for <lists+linux-wireless@lfdr.de>; Sun, 12 Jul 2020 15:17:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727998AbgGKVD4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 11 Jul 2020 17:03:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42934 "EHLO
+        id S1728834AbgGLNR6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 12 Jul 2020 09:17:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50444 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726281AbgGKVD4 (ORCPT
+        with ESMTP id S1728686AbgGLNR5 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 11 Jul 2020 17:03:56 -0400
-Received: from mail-lf1-x143.google.com (mail-lf1-x143.google.com [IPv6:2a00:1450:4864:20::143])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9DC5C08C5DD
-        for <linux-wireless@vger.kernel.org>; Sat, 11 Jul 2020 14:03:55 -0700 (PDT)
-Received: by mail-lf1-x143.google.com with SMTP id u25so5164423lfm.1
-        for <linux-wireless@vger.kernel.org>; Sat, 11 Jul 2020 14:03:55 -0700 (PDT)
+        Sun, 12 Jul 2020 09:17:57 -0400
+Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com [IPv6:2a00:1450:4864:20::32f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33AF1C061794
+        for <linux-wireless@vger.kernel.org>; Sun, 12 Jul 2020 06:17:57 -0700 (PDT)
+Received: by mail-wm1-x32f.google.com with SMTP id l2so10358017wmf.0
+        for <linux-wireless@vger.kernel.org>; Sun, 12 Jul 2020 06:17:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=GupWpkc3Xw4xMgWCS32w8NIxBce7/TnF421DQ0g+UDY=;
-        b=FmVWv8XSOKDqtn5tZKlxmp87Vc7CunggMTHYxA0TsYpEtaIu2UizL1o32mvdhK7JRU
-         3dLHvQUaQuq8ibV+tr0OOv/5JFRneghf7VNoWsjIvQSJxpSa/zJIk7J90+Mu8dp1+oiy
-         Xx0N8rPzFaScfCtKcGRTNRIxg3Q0MwLZ4AUaYiMwL46SNvyBurFtGZgK08CAdy5/buwv
-         22IKf/HazT0nJJwFYQ8WUAGDey7PNaoFqs/MbHF/VCPbZBfZ+gz1NunfzzaNwmulPG8l
-         PuAbOzBaphW6fHF7z36U4mmHUoXkyuFNxc57e14dI7tCTvW8SHksu3/brpbTvEG5/s2e
-         X+Og==
+        d=gmail.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=WiO8m3reEtbAs5WwDH/QNK8BneK0/E/6I2Kwl4JBBIs=;
+        b=uZLm5AvIVRwpxw+cp8/zvoVWOktrXae6KdK+ZXEbiLsZ30+Ik0lXcSiu5F8dx4k+h4
+         LI5XDDpHdGtJbCn2lNrzhUPgTLNOxj58VFxAxJ3OHT4eWvYy20TCLg8Oo5kNmtZhL6EW
+         96deVk9UvHpbLNQQ5bAWlP57H83QcghhKPDMxkqP65dSkNJMEkpy37/Dp90W/sEPScBM
+         TKYXpnXGoknGAn5TBcrLhJvAOBx3+1iVlwMTX7J71AzRCbeYbzkPH89p6rjo8iceREXL
+         2Ze0rtCdxUfRQBKt/tPpmHa1iueFnG/H0lcHQZQrEHKaK3MBTxt5qAFDcvLqIOpC6DjD
+         aiCw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=GupWpkc3Xw4xMgWCS32w8NIxBce7/TnF421DQ0g+UDY=;
-        b=oEwZ8o74qYBYv2v/1jGEe3w8ypfxiJHWuZTj98+y50JBcRWQXWvGrO4N4d/QOK1GTU
-         lByv+IploB2LJIPGzlNPi8d++scG9vMAQwGLY9R820T6M5pYNSv+v3+qnnIZFpcMUBAE
-         PhxU6Pf6YKS3dJCWqaxX3C10WztR/DN4v3TNDN7Ct3I1rJM9TEDvqSy/TzwfzyCRtmaC
-         TLlbmpFbvUgpZ4TkBSQw5O36QDpsyfRsBiyK6heTVHa1pu17ch8n4S0ZFPr0fXvF4HOq
-         8QOQ8hmveo4uk7pzx4SZCxe50HnwPRMGCoi9I7mDqrSwaFGDoq3fve72uNaCYmVMLN7f
-         0m0Q==
-X-Gm-Message-State: AOAM532obZniwr0Lin68oaTo+GM6IU7607WZwd5N6Zo4ykvOzlLmLdtX
-        jPeUMDUw077pzTb60gJcJ9zrDw==
-X-Google-Smtp-Source: ABdhPJyAdlaOnPWadqP8lYbJivEgIeWpp/veJeN1AmLdlwY0oWzxuKsux/hG4ms/Fb84++ZIUiT5aw==
-X-Received: by 2002:a19:691c:: with SMTP id e28mr48309952lfc.131.1594501434331;
-        Sat, 11 Jul 2020 14:03:54 -0700 (PDT)
-Received: from localhost.localdomain (c-92d7225c.014-348-6c756e10.bbcust.telenor.se. [92.34.215.146])
-        by smtp.gmail.com with ESMTPSA id q4sm116882ljq.56.2020.07.11.14.03.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 11 Jul 2020 14:03:53 -0700 (PDT)
-From:   Linus Walleij <linus.walleij@linaro.org>
-To:     Arend van Spriel <arend.vanspriel@broadcom.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
-        Wright Feng <wright.feng@cypress.com>
-Cc:     linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        brcm80211-dev-list@cypress.com,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Frank Kao <frank.kao@cypress.com>,
-        Kalle Valo <kvalo@codeaurora.org>
-Subject: [PATCH v2] brcm80211: brcmsmac: Move LEDs to GPIO descriptors
-Date:   Sat, 11 Jul 2020 23:01:50 +0200
-Message-Id: <20200711210150.4943-1-linus.walleij@linaro.org>
-X-Mailer: git-send-email 2.26.2
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=WiO8m3reEtbAs5WwDH/QNK8BneK0/E/6I2Kwl4JBBIs=;
+        b=U8UQOw3qbJGtWAS1BPU0Zdq3VC27ctwCNHYYpve4n8hSsV0kSH2lU46UNb9LHUxwFP
+         S87REFJSe43pDKeDK4BFrw+HstpEnv8adIcS8QQZQqunjfmzMY5bw53Nb+u5+7E0x8qP
+         q8ueFitde7F8v+BQ33Vi/nZrCSQk3C6ToL70W9wUgdVF039gyNSPFPuGftr3QxnlZqwn
+         nV8tRbhc2nyIf3G4f89jmj0Z/a24cC4N3r8kAmz61eStKaOVjbbNNZkO7qBIwJ9uSJc4
+         YhYQRApNPqCC8c1aBJDUKV6GapGBb/LYzApTJnY+PtBWWluMHCUCgj09oPVOoTLzrQcU
+         ZFRg==
+X-Gm-Message-State: AOAM531kC63961qz/Hp+iLb69t5J035vwqIgF+GHsw/wkJdK9rJCINrT
+        or//8F9t8SUzSh9msPm/AaHPV1lj0o0MOcSkwLK38FlQo6A=
+X-Google-Smtp-Source: ABdhPJw/CY9VZSsG+YSSST6qZ0iWTx0+N+6q0ooeD+/oI55OjJzNRkd4CjjO6yGdFKyJK0O7ApDyxQG1JMVwjWZzsq4=
+X-Received: by 2002:a1c:f609:: with SMTP id w9mr14386923wmc.150.1594559875341;
+ Sun, 12 Jul 2020 06:17:55 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+From:   Tony Thuitai <thuitaitony@gmail.com>
+Date:   Sun, 12 Jul 2020 16:17:44 +0300
+Message-ID: <CAHgcA=v0NyqEA1tc5WvgpXOS3MAX_10uBtWZVi3be+8s_6ygPg@mail.gmail.com>
+Subject: 
+To:     linux-wireless@vger.kernel.org
+Content-Type: multipart/mixed; boundary="000000000000f1da4e05aa3e6673"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The code in the BRCM80211 BRCMSMAC driver is using the legacy
-GPIO API to to a complex check of the validity of the base of
-the GPIO chip and whether it is present at all and then adding
-an offset to the base of the chip.
+--000000000000f1da4e05aa3e6673
+Content-Type: text/plain; charset="UTF-8"
 
-Use the existing function to obtain a GPIO line internally
-from a GPIO chip so we can use the offset directly and
-modernize the code to use GPIO descriptors instead of integers
-from the global GPIO numberspace.
+Linux Distro: Linux Mint 20 Cinnamon
+PC: HP Notebook 15-bs1xx
 
-Cc: Wright Feng <wright.feng@cypress.com>
-Cc: Frank Kao <frank.kao@cypress.com>
-Cc: Kalle Valo <kvalo@codeaurora.org>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
----
-ChangeLog v1->v2:
-- Use the PTR_ERR() error code in an error message found
-  uninitialized by the kernel test robot.
----
- .../broadcom/brcm80211/brcmsmac/led.c         | 62 ++++++++-----------
- .../broadcom/brcm80211/brcmsmac/led.h         |  6 +-
- 2 files changed, 29 insertions(+), 39 deletions(-)
+Network Devices:
+Realtek RTL8111/8168/8411 PCI Express Gigabit Ethernet driver: r8169
+Device-2: Realtek RTL8723DE 802.11b/g/n PCIe Adapter driver: rtw_pci
+Device-3: Realtek 802.11n WLAN Adapter type: USB driver: btusb
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/led.c b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/led.c
-index c0a5449ed72c..c1b9ac692d26 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/led.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/led.c
-@@ -1,7 +1,9 @@
- // SPDX-License-Identifier: GPL-2.0
- #include <net/mac80211.h>
- #include <linux/bcma/bcma_driver_chipcommon.h>
--#include <linux/gpio.h>
-+#include <linux/gpio/driver.h>
-+#include <linux/gpio/machine.h>
-+#include <linux/gpio/consumer.h>
- 
- #include "mac80211_if.h"
- #include "pub.h"
-@@ -19,16 +21,13 @@
- 
- static void brcms_radio_led_ctrl(struct brcms_info *wl, bool state)
- {
--	if (wl->radio_led.gpio == -1)
-+	if (!wl->radio_led.gpiod)
- 		return;
- 
--	if (wl->radio_led.active_low)
--		state = !state;
--
- 	if (state)
--		gpio_set_value(wl->radio_led.gpio, 1);
-+		gpiod_set_value(wl->radio_led.gpiod, 1);
- 	else
--		gpio_set_value(wl->radio_led.gpio, 0);
-+		gpiod_set_value(wl->radio_led.gpiod, 0);
- }
- 
- 
-@@ -45,8 +44,8 @@ void brcms_led_unregister(struct brcms_info *wl)
- {
- 	if (wl->led_dev.dev)
- 		led_classdev_unregister(&wl->led_dev);
--	if (wl->radio_led.gpio != -1)
--		gpio_free(wl->radio_led.gpio);
-+	if (wl->radio_led.gpiod)
-+		gpiochip_free_own_desc(wl->radio_led.gpiod);
- }
- 
- int brcms_led_register(struct brcms_info *wl)
-@@ -61,12 +60,8 @@ int brcms_led_register(struct brcms_info *wl)
- 		&sprom->gpio1,
- 		&sprom->gpio2,
- 		&sprom->gpio3 };
--	unsigned gpio = -1;
--	bool active_low = false;
--
--	/* none by default */
--	radio_led->gpio = -1;
--	radio_led->active_low = false;
-+	int hwnum = -1;
-+	enum gpio_lookup_flags lflags = GPIO_ACTIVE_HIGH;
- 
- 	if (!bcma_gpio || !gpio_is_valid(bcma_gpio->base))
- 		return -ENODEV;
-@@ -75,30 +70,26 @@ int brcms_led_register(struct brcms_info *wl)
- 	for (i = 0; i < BRCMS_LED_NO; i++) {
- 		u8 led = *leds[i];
- 		if ((led & BRCMS_LED_BEH_MASK) == BRCMS_LED_RADIO) {
--			gpio = bcma_gpio->base + i;
-+			hwnum = i;
- 			if (led & BRCMS_LED_AL_MASK)
--				active_low = true;
-+				lflags = GPIO_ACTIVE_LOW;
- 			break;
- 		}
- 	}
- 
--	if (gpio == -1 || !gpio_is_valid(gpio))
-+	/* No LED, bail out */
-+	if (hwnum == -1)
- 		return -ENODEV;
- 
--	/* request and configure LED gpio */
--	err = gpio_request_one(gpio,
--				active_low ? GPIOF_OUT_INIT_HIGH
--					: GPIOF_OUT_INIT_LOW,
--				"radio on");
--	if (err) {
--		wiphy_err(wl->wiphy, "requesting led gpio %d failed (err: %d)\n",
--			  gpio, err);
--		return err;
--	}
--	err = gpio_direction_output(gpio, 1);
--	if (err) {
--		wiphy_err(wl->wiphy, "cannot set led gpio %d to output (err: %d)\n",
--			  gpio, err);
-+	/* Try to obtain this LED GPIO line */
-+	radio_led->gpiod = gpiochip_request_own_desc(bcma_gpio, hwnum,
-+						     "radio on", lflags,
-+						     GPIOD_OUT_LOW);
-+
-+	if (IS_ERR(radio_led->gpiod)) {
-+		err = PTR_ERR(radio_led->gpiod);
-+		wiphy_err(wl->wiphy, "requesting led GPIO failed (err: %d)\n",
-+			  err);
- 		return err;
- 	}
- 
-@@ -117,11 +108,8 @@ int brcms_led_register(struct brcms_info *wl)
- 		return err;
- 	}
- 
--	wiphy_info(wl->wiphy, "registered radio enabled led device: %s gpio: %d\n",
--		   wl->radio_led.name,
--		   gpio);
--	radio_led->gpio = gpio;
--	radio_led->active_low = active_low;
-+	wiphy_info(wl->wiphy, "registered radio enabled led device: %s\n",
-+		   wl->radio_led.name);
- 
- 	return 0;
- }
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/led.h b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/led.h
-index 17a0b1f5dbcf..d65f5c268fd7 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/led.h
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/led.h
-@@ -16,10 +16,12 @@
- 
- #ifndef _BRCM_LED_H_
- #define _BRCM_LED_H_
-+
-+struct gpio_desc;
-+
- struct brcms_led {
- 	char name[32];
--	unsigned gpio;
--	bool active_low;
-+	struct gpio_desc *gpiod;
- };
- 
- #ifdef CONFIG_BCMA_DRIVER_GPIO
--- 
-2.26.2
+I suspect snapd to be the cause of the errors. The errors also occur
+when using rtw_8723de driver from lwfinger's rtw88 (lwfinger's
+rtlwifi_new discontinued and rtw88 branch moved to lwfinger's rtw88
+repo) GitHub repo. When installing snapd for the first time and when
+snapd is still installed: updating network related packages, changing
+a setting in a network related configuration file, disabling bluetooth
+via systemd and creating a startup script/command via Startup
+applications in Cinnamon desktop and rebooting to confirm the changes
+cause the driver to fail and become unavailable. The errors that are
+logged every time the driver fails are in the attached 'driver fail 1'
+file and in 'driver fail 2' file contains some errors that have
+occurred at least once when the driver fails. In the 'driver working
+with error' log contains an error that is repeated which seems to be a
+firmware issue
 
+--000000000000f1da4e05aa3e6673
+Content-Type: application/octet-stream; name=driver fail 1
+Content-Disposition: attachment; filename=driver fail 1
+Content-Transfer-Encoding: base64
+Content-ID: <f_kcj3rmu00>
+X-Attachment-Id: f_kcj3rmu00
+
+MTI6NDg6MTIgd3BhX3N1cHBsaWNhbnQ6IHdsbzE6IEZhaWxlZCB0byBpbml0aWFsaXplIGRyaXZl
+ciBpbnRlcmZhY2UKMTI6NDg6MTIga2VybmVsOiBydHdfcGNpIDAwMDA6MGQ6MDAuMDogZmFpbGVk
+IHRvIHBvd2VyIG9uIG1hYwoxMjo0ODoxMiBOZXR3b3JrTWFuYWdlcjogPGVycm9yPiBbMTU5NDU0
+NzI5Mi42ODQ5XSBzdXAtaWZhY2VbMHg1NWFlNGJjZDczZDAsd2xvMV06IGVycm9yIGFkZGluZyBp
+bnRlcmZhY2U6IHdwYV9zdXBwbGljYW50IGNvdWxkbid0IGdyYWIgdGhpcyBpbnRlcmZhY2UuCjEy
+OjQ4OjEyIHdwYV9zdXBwbGljYW50OiBDb3VsZCBub3Qgc2V0IGludGVyZmFjZSB3bG8xIGZsYWdz
+IChVUCk6IEludmFsaWQgYXJndW1lbnQKMTI6NDg6MDYga2VybmVsOiBydHdfcGNpIDAwMDA6MGQ6
+MDAuMDogZmFpbGVkIHRvIHBvd2VyIG9uIG1hYwoxMjo0ODowNiB3cGFfc3VwcGxpY2FudDogbmw4
+MDIxMTogQ291bGQgbm90IHNldCBpbnRlcmZhY2UgJ3dsbzEnIFVQCjEyOjQ3OjUwIGtlcm5lbDog
+cnR3X3BjaSAwMDAwOjBkOjAwLjA6IGZhaWxlZCB0byBwb3dlciBvbiBtYWMKMTI6NDc6NTAgd3Bh
+X3N1cHBsaWNhbnQ6IHdsbzE6IEZhaWxlZCB0byBpbml0aWFsaXplIGRyaXZlciBpbnRlcmZhY2UK
+MTI6NDc6NTAgTmV0d29ya01hbmFnZXI6IDxlcnJvcj4gWzE1OTQ1NDcyNzAuNzAwNl0gc3VwLWlm
+YWNlWzB4NTVhZTRiY2Q3MmUwLHdsbzFdOiBlcnJvciBhZGRpbmcgaW50ZXJmYWNlOiB3cGFfc3Vw
+cGxpY2FudCBjb3VsZG4ndCBncmFiIHRoaXMgaW50ZXJmYWNlLgoxMjo0Nzo1MCB3cGFfc3VwcGxp
+Y2FudDogV0VYVDogQ291bGQgbm90IHNldCBpbnRlcmZhY2UgJ3dsbzEnIFVQCjEyOjQ3OjQ0IGtl
+cm5lbDogcnR3X3BjaSAwMDAwOjBkOjAwLjA6IGZhaWxlZCB0byBwb3dlciBvbiBtYWMKMTI6NDc6
+NDQgd3BhX3N1cHBsaWNhbnQ6IG5sODAyMTE6IENvdWxkIG5vdCBzZXQgaW50ZXJmYWNlICd3bG8x
+JyBVUAoxMjo0NzoyOCBrZXJuZWw6IHJ0d19wY2kgMDAwMDowZDowMC4wOiBmYWlsZWQgdG8gcG93
+ZXIgb24gbWFjCjEyOjQ3OjI4IHdwYV9zdXBwbGljYW50OiB3bG8xOiBGYWlsZWQgdG8gaW5pdGlh
+bGl6ZSBkcml2ZXIgaW50ZXJmYWNlCjEyOjQ3OjI4IE5ldHdvcmtNYW5hZ2VyOiA8ZXJyb3I+IFsx
+NTk0NTQ3MjQ4LjcyODhdIHN1cC1pZmFjZVsweDU1YWU0YmNkNzFmMCx3bG8xXTogZXJyb3IgYWRk
+aW5nIGludGVyZmFjZTogd3BhX3N1cHBsaWNhbnQgY291bGRuJ3QgZ3JhYiB0aGlzIGludGVyZmFj
+ZS4KMTI6NDc6Mjggd3BhX3N1cHBsaWNhbnQ6IFdFWFQ6IENvdWxkIG5vdCBzZXQgaW50ZXJmYWNl
+ICd3bG8xJyBVUAoxMjo0NzoyMiBwdWxzZWF1ZGlvOiAgIGh3X3B0ciAgICAgICA6IDQyNjY4OAox
+Mjo0NzoyMiB3cGFfc3VwcGxpY2FudDogbmw4MDIxMTogQ291bGQgbm90IHNldCBpbnRlcmZhY2Ug
+J3dsbzEnIFVQCjEyOjQ3OjIyIHB1bHNlYXVkaW86IHNuZF9wY21fYXZhaWwoKSByZXR1cm5lZCBh
+IHZhbHVlIHRoYXQgaXMgZXhjZXB0aW9uYWxseSBsYXJnZTogMTExNzI4MCBieXRlcyAoNjMzMyBt
+cykuCjEyOjQ3OjIyIHdwYV9zdXBwbGljYW50OiBDb3VsZCBub3Qgc2V0IGludGVyZmFjZSB3bG8x
+IGZsYWdzIChVUCk6IEludmFsaWQgYXJndW1lbnQKMTI6NDc6MjIga2VybmVsOiBydHdfcGNpIDAw
+MDA6MGQ6MDAuMDogZmFpbGVkIHRvIHBvd2VyIG9uIG1hYwoxMjo0NzowNiBOZXR3b3JrTWFuYWdl
+cjogPGVycm9yPiBbMTU5NDU0NzIyNi4zNjI2XSBzdXAtaWZhY2VbMHg1NWFlNGJjZDcxMDAsd2xv
+MV06IGVycm9yIGFkZGluZyBpbnRlcmZhY2U6IHdwYV9zdXBwbGljYW50IGNvdWxkbid0IGdyYWIg
+dGhpcyBpbnRlcmZhY2UuCjEyOjQ3OjA2IHdwYV9zdXBwbGljYW50OiB3bG8xOiBGYWlsZWQgdG8g
+aW5pdGlhbGl6ZSBkcml2ZXIgaW50ZXJmYWNlCjEyOjQ3OjA2IGtlcm5lbDogcnR3X3BjaSAwMDAw
+OjBkOjAwLjA6IGZhaWxlZCB0byBwb3dlciBvbiBtYWMKMTI6NDc6MDYgd3BhX3N1cHBsaWNhbnQ6
+IENvdWxkIG5vdCBzZXQgaW50ZXJmYWNlIHdsbzEgZmxhZ3MgKFVQKTogSW52YWxpZCBhcmd1bWVu
+dAoxMjo0NzowMyBrZXJuZWw6IHVzYiB1c2IyLXBvcnQ0OiB1bmFibGUgdG8gZW51bWVyYXRlIFVT
+QiBkZXZpY2UKMTI6NDc6MDAgd3BhX3N1cHBsaWNhbnQ6IG5sODAyMTE6IENvdWxkIG5vdCBzZXQg
+aW50ZXJmYWNlICd3bG8xJyBVUAoxMjo0NzowMCBrZXJuZWw6IHJ0d19wY2kgMDAwMDowZDowMC4w
+OiBmYWlsZWQgdG8gcG93ZXIgb24gbWFjCjEyOjQ3OjAwIHdwYV9zdXBwbGljYW50OiBDb3VsZCBu
+b3Qgc2V0IGludGVyZmFjZSB3bG8xIGZsYWdzIChVUCk6IEludmFsaWQgYXJndW1lbnQKMTI6NDY6
+NTQga2VybmVsOiBydHdfcGNpIDAwMDA6MGQ6MDAuMDogZmFpbGVkIHRvIHBvd2VyIG9uIG1hYwox
+Mjo0Njo1MCBrZXJuZWw6IHVzYiAyLTQ6IGRldmljZSBub3QgYWNjZXB0aW5nIGFkZHJlc3MgMiwg
+ZXJyb3IgLTcxCg==
+--000000000000f1da4e05aa3e6673
+Content-Type: application/octet-stream; name=driver working with error
+Content-Disposition: attachment; filename=driver working with error
+Content-Transfer-Encoding: base64
+Content-ID: <f_kcj3rmyj2>
+X-Attachment-Id: f_kcj3rmyj2
+
+MTU6Mzg6MjYga2VybmVsOiBydHdfcGNpIDAwMDA6MGQ6MDAuMDogZmFpbGVkIHRvIHNlbmQgaDJj
+IGNvbW1hbmQKMTU6MzA6Mzkga2VybmVsOiBydHdfcGNpIDAwMDA6MGQ6MDAuMDogZmFpbGVkIHRv
+IHNlbmQgaDJjIGNvbW1hbmQKMTU6MzA6Mzkga2VybmVsOiBydHdfcGNpIDAwMDA6MGQ6MDAuMDog
+ZmFpbGVkIHRvIHNlbmQgaDJjIGNvbW1hbmQKMTU6MzA6MzYga2VybmVsOiBydHdfcGNpIDAwMDA6
+MGQ6MDAuMDogZmFpbGVkIHRvIHNlbmQgaDJjIGNvbW1hbmQKMTU6MzA6MjMga2VybmVsOiBydHdf
+cGNpIDAwMDA6MGQ6MDAuMDogZmFpbGVkIHRvIHNlbmQgaDJjIGNvbW1hbmQKMTU6MzA6MjIga2Vy
+bmVsOiBydHdfcGNpIDAwMDA6MGQ6MDAuMDogZmFpbGVkIHRvIHNlbmQgaDJjIGNvbW1hbmQK
+--000000000000f1da4e05aa3e6673
+Content-Type: application/octet-stream; name=driver fail 2
+Content-Disposition: attachment; filename=driver fail 2
+Content-Transfer-Encoding: base64
+Content-ID: <f_kcj3rmww1>
+X-Attachment-Id: f_kcj3rmww1
+
+MTI6Mzg6NTEga2VybmVsOiBydHdfcGNpIDAwMDA6MGQ6MDAuMDogZmFpbGVkIHRvIHBvd2VyIG9u
+IG1hYwoxMjozODo1MSBOZXR3b3JrTWFuYWdlcjogPGVycm9yPiBbMTU5NDU0NjczMS43MjE4XSBz
+dXAtaWZhY2VbMHg1NjM5ZDEyMTFhZTAsd2xvMV06IGVycm9yIGFkZGluZyBpbnRlcmZhY2U6IHdw
+YV9zdXBwbGljYW50IGNvdWxkbid0IGdyYWIgdGhpcyBpbnRlcmZhY2UuCjEyOjM4OjUxIHdwYV9z
+dXBwbGljYW50OiB3bG8xOiBGYWlsZWQgdG8gaW5pdGlhbGl6ZSBkcml2ZXIgaW50ZXJmYWNlCjEy
+OjM4OjQ1IGtlcm5lbDogcnR3X3BjaSAwMDAwOjBkOjAwLjA6IGZhaWxlZCB0byBwb3dlciBvbiBt
+YWMKMTI6Mzg6NDUgd3BhX3N1cHBsaWNhbnQ6IG5sODAyMTE6IENvdWxkIG5vdCBzZXQgaW50ZXJm
+YWNlICd3bG8xJyBVUAoxMjozODoyOSBOZXR3b3JrTWFuYWdlcjogPGVycm9yPiBbMTU5NDU0Njcw
+OS43NDE3XSBzdXAtaWZhY2VbMHg1NjM5ZDEyMTE5ZjAsd2xvMV06IGVycm9yIGFkZGluZyBpbnRl
+cmZhY2U6IHdwYV9zdXBwbGljYW50IGNvdWxkbid0IGdyYWIgdGhpcyBpbnRlcmZhY2UuCjEyOjM4
+OjI5IHdwYV9zdXBwbGljYW50OiB3bG8xOiBGYWlsZWQgdG8gaW5pdGlhbGl6ZSBkcml2ZXIgaW50
+ZXJmYWNlCjEyOjM4OjI5IGtlcm5lbDogcnR3X3BjaSAwMDAwOjBkOjAwLjA6IGZhaWxlZCB0byBw
+b3dlciBvbiBtYWMKMTI6Mzg6MjMgd3BhX3N1cHBsaWNhbnQ6IG5sODAyMTE6IENvdWxkIG5vdCBz
+ZXQgaW50ZXJmYWNlICd3bG8xJyBVUAoxMjozODoyMyBrZXJuZWw6IHJ0d19wY2kgMDAwMDowZDow
+MC4wOiBmYWlsZWQgdG8gcG93ZXIgb24gbWFjCjEyOjM4OjIzIHdwYV9zdXBwbGljYW50OiBDb3Vs
+ZCBub3Qgc2V0IGludGVyZmFjZSB3bG8xIGZsYWdzIChVUCk6IEludmFsaWQgYXJndW1lbnQKMTI6
+Mzg6MDcgd3BhX3N1cHBsaWNhbnQ6IHdsbzE6IEZhaWxlZCB0byBpbml0aWFsaXplIGRyaXZlciBp
+bnRlcmZhY2UKMTI6Mzg6MDcgTmV0d29ya01hbmFnZXI6IDxlcnJvcj4gWzE1OTQ1NDY2ODcuMjc5
+Nl0gc3VwLWlmYWNlWzB4NTYzOWQxMjExOTAwLHdsbzFdOiBlcnJvciBhZGRpbmcgaW50ZXJmYWNl
+OiB3cGFfc3VwcGxpY2FudCBjb3VsZG4ndCBncmFiIHRoaXMgaW50ZXJmYWNlLgoxMjozODowNyB3
+cGFfc3VwcGxpY2FudDogQ291bGQgbm90IHNldCBpbnRlcmZhY2Ugd2xvMSBmbGFncyAoVVApOiBJ
+bnZhbGlkIGFyZ3VtZW50CjEyOjM4OjA3IGtlcm5lbDogcnR3X3BjaSAwMDAwOjBkOjAwLjA6IGZh
+aWxlZCB0byBwb3dlciBvbiBtYWMKMTI6Mzg6MDEgd3BhX3N1cHBsaWNhbnQ6IG5sODAyMTE6IENv
+dWxkIG5vdCBzZXQgaW50ZXJmYWNlICd3bG8xJyBVUAoxMjozODowMSBrZXJuZWw6IHJ0d19wY2kg
+MDAwMDowZDowMC4wOiBmYWlsZWQgdG8gcG93ZXIgb24gbWFjCjEyOjM4OjAxIHdwYV9zdXBwbGlj
+YW50OiBDb3VsZCBub3Qgc2V0IGludGVyZmFjZSB3bG8xIGZsYWdzIChVUCk6IEludmFsaWQgYXJn
+dW1lbnQKMTI6Mzc6NTUga2VybmVsOiBydHdfcGNpIDAwMDA6MGQ6MDAuMDogZmFpbGVkIHRvIHBv
+d2VyIG9uIG1hYwoxMjozNzo1MyBrZXJuZWw6IHVzYiB1c2IyLXBvcnQ0OiB1bmFibGUgdG8gZW51
+bWVyYXRlIFVTQiBkZXZpY2UK
+--000000000000f1da4e05aa3e6673--
