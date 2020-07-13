@@ -2,377 +2,70 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 46F4221D057
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Jul 2020 09:21:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BE5BB21D543
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Jul 2020 13:51:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727034AbgGMHVE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 13 Jul 2020 03:21:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46342 "EHLO
+        id S1729578AbgGMLvk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 13 Jul 2020 07:51:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59896 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725985AbgGMHVE (ORCPT
+        with ESMTP id S1729492AbgGMLvk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 13 Jul 2020 03:21:04 -0400
-Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com [IPv6:2a00:1450:4864:20::341])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF0AFC061794
-        for <linux-wireless@vger.kernel.org>; Mon, 13 Jul 2020 00:21:03 -0700 (PDT)
-Received: by mail-wm1-x341.google.com with SMTP id w3so12096293wmi.4
-        for <linux-wireless@vger.kernel.org>; Mon, 13 Jul 2020 00:21:03 -0700 (PDT)
+        Mon, 13 Jul 2020 07:51:40 -0400
+Received: from mail-ej1-x644.google.com (mail-ej1-x644.google.com [IPv6:2a00:1450:4864:20::644])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C118BC061794
+        for <linux-wireless@vger.kernel.org>; Mon, 13 Jul 2020 04:51:39 -0700 (PDT)
+Received: by mail-ej1-x644.google.com with SMTP id dr13so16725361ejc.3
+        for <linux-wireless@vger.kernel.org>; Mon, 13 Jul 2020 04:51:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=REhHnkgXEbSQaERn1akl8iKKW9McHWGxvmJVhHnmDqc=;
-        b=ROovN79C2+lrLf0Me59zvRaFoFuHYQX+etpERNcIPkjcsKOQe9iagEjkeLS7u7Y5ks
-         1FVqyPKiJ5eJhM4oOadwPcE9POjFmEHU8heWb7xyqXnu3ANJmBDBt7W0zseEL6OLPPNH
-         1GvDl/F43BxvB1YJNJXTPzpLiRZ3YYqCb84Oc08/J0hbaV5af6Qv1F5tcFJve7CcZhLy
-         TMt0Z0yyBmH/8UvoPEc/BsADtDL/KmENmZzpXPbk2ksSzWjQbsgdlk5bPL4E3nC0D78D
-         Ynwlj6a2poLHSULRpWaLnuM4rDFOrs/9NPp5vWAuStPNhcrJTNBmCkjQSIJe5EwBx7XK
-         pwsQ==
+        d=chrisdown.name; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=N/DHlb+/nZGG7qN0r183zUnGDtK3Lw0uwrnh4HpX2MQ=;
+        b=K9z4OQXgZqe68WhodObjskXGXhCveTrRy/diBpkEHckhZqpZTCKRqwWhv8gL/c0eJQ
+         HE/ddd4Que9btx6TMvG1ZAjd5MQ39PL1LEH6CtGVG0IrQy0m2Ri/anZu1dieNaHGnA5Q
+         95BZwQjw2WGS50mSmx9I5AIEuFbYZ51P7KjRs=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=REhHnkgXEbSQaERn1akl8iKKW9McHWGxvmJVhHnmDqc=;
-        b=BaIdcVwsu06lf4Ao574RF5akVZcw3HlpWzARYmyfom0XNPCU7xW9FC/DpJIsr6yI2m
-         ZWCWjiUp54SyMJxDipr2Lsz5ZxRQs3/XZORSMGY4DVuaWaZRx7e3J0rTtGVpiRWX2+qA
-         rUOPCe+hPBoR1dvJMUwtTChWWZzmCkM5V21pqKaQ21B5AUtQkKKj+6m8Tc7ZCaz1Yu8F
-         WfVjidYNDUJlkHJqlTBkTS/Pz/NABxj0ItzBdJAPsWXNScJGRWD8e7LUc2HwvYlNiqGR
-         d/s10UNqfBcFEKmph0/UieHc9kg8u/XvkSJr3k7kbBmhLkOMtaggsM8rn15TYkeiZVyq
-         6ZWQ==
-X-Gm-Message-State: AOAM531hGoEZldnlqV0RWSliqRSsAA1U9PDDLoRlk8Ie3MCcb4DvWwiz
-        to6g9FMvYfvmXNZIBq0mBkvRQ3USgXutcHLw3Bb8ZSLU3VI=
-X-Google-Smtp-Source: ABdhPJxXjPFigu8kK7p171wTE3C+v/iBBL4oxSDBzYFlmS1BclDpEycAHh3JV+I7lXnYEsIT7i0b7ddjL5OOs6R0Ijg=
-X-Received: by 2002:a05:600c:2f88:: with SMTP id t8mr17475157wmn.186.1594624861826;
- Mon, 13 Jul 2020 00:21:01 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=N/DHlb+/nZGG7qN0r183zUnGDtK3Lw0uwrnh4HpX2MQ=;
+        b=fsM5fYpjKl9Eg2WqdzoiiDa/cmkYEb0kCnenlRKlqj9TxwxBDBOJ5pms7Flz87FG3w
+         P7jAUtryGzDUzi5VWnh2PB9IwVLkItAsvgGN89wlVnVgIjqkX1mDKjKLR4joRfn4IzGL
+         W79Zz9xoCek2rfaxygms0V3EuoIXKzZAu+xtVpOIvo5BfgXG981yFYoi+H5iNHxXYwmd
+         fdc0g5zFHB8aF4/BJU5ixJ3jJa2ozYWBU92gVwB79KnN0Ugvr9DAEpNygysm3NKxw2Um
+         HUwUwrztqAgcJT24n/90W6vV0Eel3NzabCA9lscOv3WIXyn6s4IWNw2+qakFSHn8s8g6
+         lD7Q==
+X-Gm-Message-State: AOAM531Jk0whUy6YsA+5iIakGv0Ejqj07qz8Q3/+1w/wmnvm+ShCHncp
+        iZxvERhURWmo6IemROYPYHzCvT7nWlmFsQ==
+X-Google-Smtp-Source: ABdhPJyPC6ve+saeYmK+j2jidO9325RIY86E6K3eIRiMv5vbBmkdi1CVDxd1dgGuDRIoWh87T+IKCQ==
+X-Received: by 2002:a17:907:94cf:: with SMTP id dn15mr78740469ejc.457.1594641098243;
+        Mon, 13 Jul 2020 04:51:38 -0700 (PDT)
+Received: from localhost ([2620:10d:c093:400::5:ef88])
+        by smtp.gmail.com with ESMTPSA id s1sm11306128edy.1.2020.07.13.04.51.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 13 Jul 2020 04:51:37 -0700 (PDT)
+Date:   Mon, 13 Jul 2020 12:51:37 +0100
+From:   Chris Down <chris@chrisdown.name>
+To:     linux-wireless@vger.kernel.org
+Cc:     Shahar S Matityahu <shahar.s.matityahu@intel.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iwlwifi: Don't IWL_WARN on FW reconfiguration
+Message-ID: <20200713115137.GA1065134@chrisdown.name>
+References: <20191017144841.GA16393@chrisdown.name>
+ <20191017145321.GA1609@chrisdown.name>
 MIME-Version: 1.0
-From:   Tony Thuitai <thuitaitony@gmail.com>
-Date:   Mon, 13 Jul 2020 10:20:50 +0300
-Message-ID: <CAHgcA=uC-Ku5uzVbdnZPH-0jPXM7KztyNy+qZoAgh6wYzo2BcA@mail.gmail.com>
-Subject: Issues with rtw_8723de and rtw_pci drivers from rtw88 for Realtek
- RTL8723DE module
-To:     linux-wireless@vger.kernel.org, Larry.Finger@lwfinger.net
-Content-Type: multipart/mixed; boundary="00000000000070d76805aa4d8831"
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20191017145321.GA1609@chrisdown.name>
+User-Agent: Mutt/1.14.5 (2020-06-23)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---00000000000070d76805aa4d8831
-Content-Type: text/plain; charset="UTF-8"
+Just to check in again since this is still happening: is this expected?
 
-Larry Finger, I forgot to send the email with the subject only
-realised that the email had no subject after the email had been sent.
-Did not expect a reply because of that. By default Gmail does not
-notify me that I have sent an email without a subject. I tried sending
-emails to linux-wireless@vger.kernel.org but they failed because the
-emails were required to be in plain text format to avoid spam and
-viruses like the Outlook Virus. Googled the solution and switched to
-plain text mode in gmail. Saved the attached logs from the terminal
-using the txt extension. I apologize for any inconveniences caused. I
-re-explain the issue below and add an issue that I did not mention in
-the previous email and the ones that failed to send. I suspect the USB
-errors are from the btusb driver and I do not have any usb device
-connected when the driver fails.
-
-Linux Distro: Linux Mint 20 Cinnamon (Ubuntu 20.04 base)
-PC: HP Notebook 15-bs1xx
-
-Network Devices:
-Realtek RTL8111/8168/8411 PCI Express Gigabit Ethernet driver: r8169
-Device-2: Realtek RTL8723DE 802.11b/g/n PCIe Adapter driver: rtw_pci
-Device-3: Realtek 802.11n WLAN Adapter type: USB driver: btusb
-
-I suspect snapd to be the cause of the errors. Linux Mint 20 uses the
-driver (rtw_pci) that comes with Ubuntu's stock kernel 5.4 and newer
-if it exists. The errors also occur when using the rtw_8723de driver
-as obtained, built and installed using make from Larry Finger's rtw88
-GitHub Repo. Without snapd the driver only fails at least once if I
-switch the kernel to Liquorix custom ubuntu latest kernels. Could not
-remove snapd because some snaps are critically required and the
-flatpaks of the required packages do not work as expected due to a
-flatpak issue.
-
-When installing snapd for the first time and when snapd is still
-installed: updating network related packages except wpa_supplicant,
-changing a setting in a network related configuration file, disabling
-bluetooth via systemd and creating a startup custom command to block
-bluetooth using rfkill via Startup applications in Cinnamon desktop
-and rebooting to confirm the changes cause the driver to fail and
-become unavailable. The errors that are logged every time the driver
-fails are in the attached 'log1.txt' file and in 'log2.txt' file
-contains some errors that have occurred when bluetooth is disabled via
-systemd and then reboot. Some logs in 'log2.txt' are understandable,
-especially the pulseaudio ones. In the 'log3.txt'  file contains a
-repeating error that seems firmware related that is logged only when
-the driver is in use. After a reboot after the driver failure the
-driver works in most cases but in some cases a power reset fixed the
-issue and the driver may fail again when doing the mentioned tasks as
-snapd is still installed.
-
-If ethernet connection is used when installing and setting up Linux
-mint 20 while the WiFi driver (rtw_pci) is loaded, when using WiFi
-after the set up, pages load slow even if the connection is very fast
-and solved by disabling WiFi power management by setting wifi
-powersave to 2. Disabling WiFi power management causes the module to
-become unresponsive after at least an hour of streaming to the point
-that the login pages of the main router and the WiFi range extender
-that is connected to the main router via cable could not load. The
-driver is only best stable with default power management if I use WiFi
-to install and set up Linux Mint 20 and not using ethernet when the
-WiFi is still on and also not setting the crda regdomain to my current
-region but leave it on generic mode.
-
-A user solved his/her RTL8723DE problems by changing the module to an
-intel ax200 if I can recall correctly because he/she was tired of the
-issues of his/her RTL8723DE and will avoid HP laptops in future and
-probably Lenovo laptops if he/she knew about the wrong antenna
-information encoded to the WLAN device but they 'fix' the issue by
-patching the Windows driver.
-
---00000000000070d76805aa4d8831
-Content-Type: text/plain; charset="US-ASCII"; name="log1.txt"
-Content-Disposition: attachment; filename="log1.txt"
-Content-Transfer-Encoding: base64
-Content-ID: <f_kck4kcv30>
-X-Attachment-Id: f_kck4kcv30
-
-LS0gTG9ncyBiZWdpbiBhdCBTdW4gMjAyMC0wNy0xMiAwODo0Mzo1MSBFQVQsIGVuZCBhdCBNb24g
-MjAyMC0wNy0xMyAwOToxNTozOCBFQVQuIC0tCkp1bCAxMiAxMjozMjozMiB0b255LXBjIGtlcm5l
-bDogdXNiIDItNDogZGV2aWNlIGRlc2NyaXB0b3IgcmVhZC82NCwgZXJyb3IgLTcxCkp1bCAxMiAx
-MjozMjozMiB0b255LXBjIGtlcm5lbDogdXNiIDItNDogZGV2aWNlIGRlc2NyaXB0b3IgcmVhZC82
-NCwgZXJyb3IgLTcxCkp1bCAxMiAxMjozMjozMyB0b255LXBjIGtlcm5lbDogdXNiIDItNDogZGV2
-aWNlIGRlc2NyaXB0b3IgcmVhZC82NCwgZXJyb3IgLTcxCkp1bCAxMiAxMjozMjozMyB0b255LXBj
-IGtlcm5lbDogdXNiIDItNDogZGV2aWNlIGRlc2NyaXB0b3IgcmVhZC82NCwgZXJyb3IgLTcxCkp1
-bCAxMiAxMjozMjozNCB0b255LXBjIGtlcm5lbDogdXNiIDItNDogZGV2aWNlIG5vdCBhY2NlcHRp
-bmcgYWRkcmVzcyAyLCBlcnJvciAtNzEKSnVsIDEyIDEyOjMyOjM0IHRvbnktcGMga2VybmVsOiBy
-dHdfcGNpIDAwMDA6MGQ6MDAuMDogZmFpbGVkIHRvIHBvbGwgb2Zmc2V0PTB4NSBtYXNrPTB4MSB2
-YWx1ZT0weDAKSnVsIDEyIDEyOjMyOjM0IHRvbnktcGMga2VybmVsOiBydHdfcGNpIDAwMDA6MGQ6
-MDAuMDogbWFjIHBvd2VyIG9uIGZhaWxlZApKdWwgMTIgMTI6MzI6MzQgdG9ueS1wYyBrZXJuZWw6
-IHJ0d19wY2kgMDAwMDowZDowMC4wOiBmYWlsZWQgdG8gcG93ZXIgb24gbWFjCkp1bCAxMiAxMjoz
-MjozNCB0b255LXBjIGtlcm5lbDogcnR3X3BjaSAwMDAwOjBkOjAwLjA6IGxlYXZlIGlkbGUgc3Rh
-dGUgZmFpbGVkCkp1bCAxMiAxMjozMjozNCB0b255LXBjIGtlcm5lbDogcnR3X3BjaSAwMDAwOjBk
-OjAwLjA6IGZhaWxlZCB0byBsZWF2ZSBpcHMgc3RhdGUKSnVsIDEyIDEyOjMyOjM0IHRvbnktcGMg
-a2VybmVsOiBydHdfcGNpIDAwMDA6MGQ6MDAuMDogZmFpbGVkIHRvIGxlYXZlIGlkbGUgc3RhdGUK
-SnVsIDEyIDEyOjMyOjM0IHRvbnktcGMga2VybmVsOiB1c2IgMi00OiBkZXZpY2Ugbm90IGFjY2Vw
-dGluZyBhZGRyZXNzIDIsIGVycm9yIC03MQpKdWwgMTIgMTI6MzI6MzQgdG9ueS1wYyBrZXJuZWw6
-IHVzYiAyLTQ6IGRldmljZSBkZXNjcmlwdG9yIHJlYWQvNjQsIGVycm9yIC03MQpKdWwgMTIgMTI6
-MzI6MzUgdG9ueS1wYyBrZXJuZWw6IHVzYiAyLTQ6IGRldmljZSBkZXNjcmlwdG9yIHJlYWQvNjQs
-IGVycm9yIC03MQpKdWwgMTIgMTI6MzI6MzUgdG9ueS1wYyBrZXJuZWw6IHVzYiAyLTQ6IGRldmlj
-ZSBkZXNjcmlwdG9yIHJlYWQvNjQsIGVycm9yIC03MQpKdWwgMTIgMTI6MzI6MzUgdG9ueS1wYyBr
-ZXJuZWw6IHVzYiAyLTQ6IGRldmljZSBkZXNjcmlwdG9yIHJlYWQvNjQsIGVycm9yIC03MQpKdWwg
-MTIgMTI6MzI6MzYgdG9ueS1wYyBrZXJuZWw6IHVzYiAyLTQ6IGRldmljZSBub3QgYWNjZXB0aW5n
-IGFkZHJlc3MgNiwgZXJyb3IgLTcxCkp1bCAxMiAxMjozMjozNyB0b255LXBjIGtlcm5lbDogdXNi
-IDItNDogZGV2aWNlIG5vdCBhY2NlcHRpbmcgYWRkcmVzcyA3LCBlcnJvciAtNzEKSnVsIDEyIDEy
-OjMyOjM3IHRvbnktcGMga2VybmVsOiB1c2IgdXNiMi1wb3J0NDogdW5hYmxlIHRvIGVudW1lcmF0
-ZSBVU0IgZGV2aWNlCkp1bCAxMiAxMjozMjozNyB0b255LXBjIGtlcm5lbDogcnR3X3BjaSAwMDAw
-OjBkOjAwLjA6IGZhaWxlZCB0byBwb2xsIG9mZnNldD0weDUgbWFzaz0weDMgdmFsdWU9MHgwCkp1
-bCAxMiAxMjozMjozNyB0b255LXBjIGtlcm5lbDogcnR3X3BjaSAwMDAwOjBkOjAwLjA6IG1hYyBw
-b3dlciBvbiBmYWlsZWQKSnVsIDEyIDEyOjMyOjM3IHRvbnktcGMga2VybmVsOiBydHdfcGNpIDAw
-MDA6MGQ6MDAuMDogZmFpbGVkIHRvIHBvd2VyIG9uIG1hYwpKdWwgMTIgMTI6MzI6MzcgdG9ueS1w
-YyBrZXJuZWw6IHJ0d19wY2kgMDAwMDowZDowMC4wOiBsZWF2ZSBpZGxlIHN0YXRlIGZhaWxlZApK
-dWwgMTIgMTI6MzI6MzcgdG9ueS1wYyBrZXJuZWw6IHJ0d19wY2kgMDAwMDowZDowMC4wOiBmYWls
-ZWQgdG8gbGVhdmUgaXBzIHN0YXRlCkp1bCAxMiAxMjozMjozNyB0b255LXBjIGtlcm5lbDogcnR3
-X3BjaSAwMDAwOjBkOjAwLjA6IGZhaWxlZCB0byBsZWF2ZSBpZGxlIHN0YXRlCkp1bCAxMiAxMjoz
-MjozOCB0b255LXBjIHB1bHNlYXVkaW9bMTQ1Ml06IEdldE1hbmFnZWRPYmplY3RzKCkgZmFpbGVk
-OiBvcmcuZnJlZWRlc2t0b3Auc3lzdGVtZDEuTm9TdWNoVW5pdDogVW5pdCBkYnVzLW9yZy5ibHVl
-ei5zZXJ2aWNlIG5vdCBmb3VuZC4KSnVsIDEyIDEyOjMyOjQzIHRvbnktcGMgcHVsc2VhdWRpb1sx
-NTczXTogR2V0TWFuYWdlZE9iamVjdHMoKSBmYWlsZWQ6IG9yZy5mcmVlZGVza3RvcC5zeXN0ZW1k
-MS5Ob1N1Y2hVbml0OiBVbml0IGRidXMtb3JnLmJsdWV6LnNlcnZpY2Ugbm90IGZvdW5kLgpKdWwg
-MTIgMTI6MzI6NTUgdG9ueS1wYyBwdWxzZWF1ZGlvWzE1NzNdOiBzbmRfcGNtX2F2YWlsKCkgcmV0
-dXJuZWQgYSB2YWx1ZSB0aGF0IGlzIGV4Y2VwdGlvbmFsbHkgbGFyZ2U6IDQxMzI4NCBieXRlcyAo
-MjE1MiBtcykuCkp1bCAxMiAxMjozMjo1NSB0b255LXBjIHB1bHNlYXVkaW9bMTU3M106IE1vc3Qg
-bGlrZWx5IHRoaXMgaXMgYSBidWcgaW4gdGhlIEFMU0EgZHJpdmVyICdzbmRfaGRhX2ludGVsJy4g
-UGxlYXNlIHJlcG9ydCB0aGlzIGlzc3VlIHRvIHRoZSBBTFNBIGRldmVsb3BlcnMuCkp1bCAxMiAx
-MjozMjo1NSB0b255LXBjIHB1bHNlYXVkaW9bMTU3M106IHNuZF9wY21fZHVtcCgpOgpKdWwgMTIg
-MTI6MzI6NTUgdG9ueS1wYyBwdWxzZWF1ZGlvWzE1NzNdOiBTb2Z0IHZvbHVtZSBQQ00KSnVsIDEy
-IDEyOjMyOjU1IHRvbnktcGMgcHVsc2VhdWRpb1sxNTczXTogQ29udHJvbDogUENNIFBsYXliYWNr
-IFZvbHVtZQpKdWwgMTIgMTI6MzI6NTUgdG9ueS1wYyBwdWxzZWF1ZGlvWzE1NzNdOiBtaW5fZEI6
-IC01MQpKdWwgMTIgMTI6MzI6NTUgdG9ueS1wYyBrZXJuZWw6IHJ0d19wY2kgMDAwMDowZDowMC4w
-OiBmYWlsZWQgdG8gcG9sbCBvZmZzZXQ9MHg1IG1hc2s9MHgzIHZhbHVlPTB4MApKdWwgMTIgMTI6
-MzI6NTUgdG9ueS1wYyBrZXJuZWw6IHJ0d19wY2kgMDAwMDowZDowMC4wOiBtYWMgcG93ZXIgb24g
-ZmFpbGVkCkp1bCAxMiAxMjozMjo1NSB0b255LXBjIGtlcm5lbDogcnR3X3BjaSAwMDAwOjBkOjAw
-LjA6IGZhaWxlZCB0byBwb3dlciBvbiBtYWMKSnVsIDEyIDEyOjMyOjU1IHRvbnktcGMga2VybmVs
-OiBydHdfcGNpIDAwMDA6MGQ6MDAuMDogbGVhdmUgaWRsZSBzdGF0ZSBmYWlsZWQKSnVsIDEyIDEy
-OjMyOjU1IHRvbnktcGMga2VybmVsOiBydHdfcGNpIDAwMDA6MGQ6MDAuMDogZmFpbGVkIHRvIGxl
-YXZlIGlwcyBzdGF0ZQpKdWwgMTIgMTI6MzI6NTUgdG9ueS1wYyBrZXJuZWw6IHJ0d19wY2kgMDAw
-MDowZDowMC4wOiBmYWlsZWQgdG8gbGVhdmUgaWRsZSBzdGF0ZQpKdWwgMTIgMTI6MzI6NTUgdG9u
-eS1wYyBwdWxzZWF1ZGlvWzE1NzNdOiBtYXhfZEI6IDAKSnVsIDEyIDEyOjMyOjU1IHRvbnktcGMg
-cHVsc2VhdWRpb1sxNTczXTogcmVzb2x1dGlvbjogMjU2Ckp1bCAxMiAxMjozMjo1NSB0b255LXBj
-IHB1bHNlYXVkaW9bMTU3M106IEl0cyBzZXR1cCBpczoKSnVsIDEyIDEyOjMyOjU1IHRvbnktcGMg
-cHVsc2VhdWRpb1sxNTczXTogICBzdHJlYW0gICAgICAgOiBQTEFZQkFDSwpKdWwgMTIgMTI6MzI6
-NTUgdG9ueS1wYyBwdWxzZWF1ZGlvWzE1NzNdOiAgIGFjY2VzcyAgICAgICA6IE1NQVBfSU5URVJM
-RUFWRUQKSnVsIDEyIDEyOjMyOjU1IHRvbnktcGMgcHVsc2VhdWRpb1sxNTczXTogICBmb3JtYXQg
-ICAgICAgOiBTMTZfTEUKSnVsIDEyIDEyOjMyOjU1IHRvbnktcGMgcHVsc2VhdWRpb1sxNTczXTog
-ICBzdWJmb3JtYXQgICAgOiBTVEQKSnVsIDEyIDEyOjMyOjU1IHRvbnktcGMgcHVsc2VhdWRpb1sx
-NTczXTogICBjaGFubmVscyAgICAgOiAyCkp1bCAxMiAxMjozMjo1NSB0b255LXBjIHB1bHNlYXVk
-aW9bMTU3M106ICAgcmF0ZSAgICAgICAgIDogNDgwMDAKSnVsIDEyIDEyOjMyOjU1IHRvbnktcGMg
-cHVsc2VhdWRpb1sxNTczXTogICBleGFjdCByYXRlICAgOiA0ODAwMCAoNDgwMDAvMSkKSnVsIDEy
-IDEyOjMyOjU1IHRvbnktcGMgcHVsc2VhdWRpb1sxNTczXTogICBtc2JpdHMgICAgICAgOiAxNgpK
-dWwgMTIgMTI6MzI6NTUgdG9ueS1wYyBwdWxzZWF1ZGlvWzE1NzNdOiAgIGJ1ZmZlcl9zaXplICA6
-IDE2Mzg0Ckp1bCAxMiAxMjozMjo1NSB0b255LXBjIHB1bHNlYXVkaW9bMTU3M106ICAgcGVyaW9k
-X3NpemUgIDogODE5MgpKdWwgMTIgMTI6MzI6NTUgdG9ueS1wYyBwdWxzZWF1ZGlvWzE1NzNdOiAg
-IHBlcmlvZF90aW1lICA6IDE3MDY2NgpKdWwgMTIgMTI6MzI6NTUgdG9ueS1wYyBwdWxzZWF1ZGlv
-WzE1NzNdOiAgIHRzdGFtcF9tb2RlICA6IEVOQUJMRQpKdWwgMTIgMTI6MzI6NTUgdG9ueS1wYyBw
-dWxzZWF1ZGlvWzE1NzNdOiAgIHRzdGFtcF90eXBlICA6IE1PTk9UT05JQwpKdWwgMTIgMTI6MzI6
-NTUgdG9ueS1wYyBwdWxzZWF1ZGlvWzE1NzNdOiAgIHBlcmlvZF9zdGVwICA6IDEKSnVsIDEyIDEy
-OjMyOjU1IHRvbnktcGMgcHVsc2VhdWRpb1sxNTczXTogICBhdmFpbF9taW4gICAgOiAxNTUwMwpK
-dWwgMTIgMTI6MzI6NTUgdG9ueS1wYyBwdWxzZWF1ZGlvWzE1NzNdOiAgIHBlcmlvZF9ldmVudCA6
-IDAKSnVsIDEyIDEyOjMyOjU1IHRvbnktcGMgcHVsc2VhdWRpb1sxNTczXTogICBzdGFydF90aHJl
-c2hvbGQgIDogLTEKSnVsIDEyIDEyOjMyOjU1IHRvbnktcGMgcHVsc2VhdWRpb1sxNTczXTogICBz
-dG9wX3RocmVzaG9sZCAgIDogNDYxMTY4NjAxODQyNzM4NzkwNApKdWwgMTIgMTI6MzI6NTUgdG9u
-eS1wYyBwdWxzZWF1ZGlvWzE1NzNdOiAgIHNpbGVuY2VfdGhyZXNob2xkOiAwCkp1bCAxMiAxMjoz
-Mjo1NSB0b255LXBjIHB1bHNlYXVkaW9bMTU3M106ICAgc2lsZW5jZV9zaXplIDogMApKdWwgMTIg
-MTI6MzI6NTUgdG9ueS1wYyBwdWxzZWF1ZGlvWzE1NzNdOiAgIGJvdW5kYXJ5ICAgICA6IDQ2MTE2
-ODYwMTg0MjczODc5MDQKSnVsIDEyIDEyOjMyOjU1IHRvbnktcGMgcHVsc2VhdWRpb1sxNTczXTog
-U2xhdmU6IEhhcmR3YXJlIFBDTSBjYXJkIDEgJ0hEQSBJbnRlbCBQQ0gnIGRldmljZSAwIHN1YmRl
-dmljZSAwCkp1bCAxMiAxMjozMjo1NSB0b255LXBjIHB1bHNlYXVkaW9bMTU3M106IEl0cyBzZXR1
-cCBpczoKSnVsIDEyIDEyOjMyOjU1IHRvbnktcGMgcHVsc2VhdWRpb1sxNTczXTogICBzdHJlYW0g
-ICAgICAgOiBQTEFZQkFDSwpKdWwgMTIgMTI6MzI6NTUgdG9ueS1wYyBwdWxzZWF1ZGlvWzE1NzNd
-OiAgIGFjY2VzcyAgICAgICA6IE1NQVBfSU5URVJMRUFWRUQKSnVsIDEyIDEyOjMyOjU1IHRvbnkt
-cGMgcHVsc2VhdWRpb1sxNTczXTogICBmb3JtYXQgICAgICAgOiBTMTZfTEUKSnVsIDEyIDEyOjMy
-OjU1IHRvbnktcGMgcHVsc2VhdWRpb1sxNTczXTogICBzdWJmb3JtYXQgICAgOiBTVEQKSnVsIDEy
-IDEyOjMyOjU1IHRvbnktcGMgcHVsc2VhdWRpb1sxNTczXTogICBjaGFubmVscyAgICAgOiAyCkp1
-bCAxMiAxMjozMjo1NSB0b255LXBjIHB1bHNlYXVkaW9bMTU3M106ICAgcmF0ZSAgICAgICAgIDog
-NDgwMDAKSnVsIDEyIDEyOjMyOjU1IHRvbnktcGMgcHVsc2VhdWRpb1sxNTczXTogICBleGFjdCBy
-YXRlICAgOiA0ODAwMCAoNDgwMDAvMSkKSnVsIDEyIDEyOjMyOjU1IHRvbnktcGMgcHVsc2VhdWRp
-b1sxNTczXTogICBtc2JpdHMgICAgICAgOiAxNgpKdWwgMTIgMTI6MzI6NTUgdG9ueS1wYyBwdWxz
-ZWF1ZGlvWzE1NzNdOiAgIGJ1ZmZlcl9zaXplICA6IDE2Mzg0Ckp1bCAxMiAxMjozMjo1NSB0b255
-LXBjIHB1bHNlYXVkaW9bMTU3M106ICAgcGVyaW9kX3NpemUgIDogODE5MgpKdWwgMTIgMTI6MzI6
-NTUgdG9ueS1wYyBwdWxzZWF1ZGlvWzE1NzNdOiAgIHBlcmlvZF90aW1lICA6IDE3MDY2NgpKdWwg
-MTIgMTI6MzI6NTUgdG9ueS1wYyBwdWxzZWF1ZGlvWzE1NzNdOiAgIHRzdGFtcF9tb2RlICA6IEVO
-QUJMRQpKdWwgMTIgMTI6MzI6NTUgdG9ueS1wYyBwdWxzZWF1ZGlvWzE1NzNdOiAgIHRzdGFtcF90
-eXBlICA6IE1PTk9UT05JQwpKdWwgMTIgMTI6MzI6NTUgdG9ueS1wYyBwdWxzZWF1ZGlvWzE1NzNd
-OiAgIHBlcmlvZF9zdGVwICA6IDEKSnVsIDEyIDEyOjMyOjU1IHRvbnktcGMgcHVsc2VhdWRpb1sx
-NTczXTogICBhdmFpbF9taW4gICAgOiAxNTUwMwpKdWwgMTIgMTI6MzI6NTUgdG9ueS1wYyBwdWxz
-ZWF1ZGlvWzE1NzNdOiAgIHBlcmlvZF9ldmVudCA6IDAKSnVsIDEyIDEyOjMyOjU1IHRvbnktcGMg
-cHVsc2VhdWRpb1sxNTczXTogICBzdGFydF90aHJlc2hvbGQgIDogLTEKSnVsIDEyIDEyOjMyOjU1
-IHRvbnktcGMgcHVsc2VhdWRpb1sxNTczXTogICBzdG9wX3RocmVzaG9sZCAgIDogNDYxMTY4NjAx
-ODQyNzM4NzkwNApKdWwgMTIgMTI6MzI6NTUgdG9ueS1wYyBwdWxzZWF1ZGlvWzE1NzNdOiAgIHNp
-bGVuY2VfdGhyZXNob2xkOiAwCkp1bCAxMiAxMjozMjo1NSB0b255LXBjIHB1bHNlYXVkaW9bMTU3
-M106ICAgc2lsZW5jZV9zaXplIDogMApKdWwgMTIgMTI6MzI6NTUgdG9ueS1wYyBwdWxzZWF1ZGlv
-WzE1NzNdOiAgIGJvdW5kYXJ5ICAgICA6IDQ2MTE2ODYwMTg0MjczODc5MDQKSnVsIDEyIDEyOjMy
-OjU1IHRvbnktcGMgcHVsc2VhdWRpb1sxNTczXTogICBhcHBsX3B0ciAgICAgOiAyMDMxMTEKSnVs
-IDEyIDEyOjMyOjU1IHRvbnktcGMgcHVsc2VhdWRpb1sxNTczXTogICBod19wdHIgICAgICAgOiAy
-OTAwNDgKSnVsIDEyIDEyOjMzOjI4IHRvbnktcGMga2VybmVsOiBydHdfcGNpIDAwMDA6MGQ6MDAu
-MDogZmFpbGVkIHRvIHBvbGwgb2Zmc2V0PTB4NSBtYXNrPTB4MyB2YWx1ZT0weDAKSnVsIDEyIDEy
-OjMzOjI4IHRvbnktcGMga2VybmVsOiBydHdfcGNpIDAwMDA6MGQ6MDAuMDogbWFjIHBvd2VyIG9u
-IGZhaWxlZApKdWwgMTIgMTI6MzM6MjggdG9ueS1wYyBrZXJuZWw6IHJ0d19wY2kgMDAwMDowZDow
-MC4wOiBmYWlsZWQgdG8gcG93ZXIgb24gbWFjCkp1bCAxMiAxMjozMzoyOCB0b255LXBjIGtlcm5l
-bDogcnR3X3BjaSAwMDAwOjBkOjAwLjA6IGxlYXZlIGlkbGUgc3RhdGUgZmFpbGVkCkp1bCAxMiAx
-MjozMzoyOCB0b255LXBjIGtlcm5lbDogcnR3X3BjaSAwMDAwOjBkOjAwLjA6IGZhaWxlZCB0byBs
-ZWF2ZSBpcHMgc3RhdGUKSnVsIDEyIDEyOjMzOjI4IHRvbnktcGMga2VybmVsOiBydHdfcGNpIDAw
-MDA6MGQ6MDAuMDogZmFpbGVkIHRvIGxlYXZlIGlkbGUgc3RhdGUK
---00000000000070d76805aa4d8831
-Content-Type: text/plain; charset="US-ASCII"; name="log2.txt"
-Content-Disposition: attachment; filename="log2.txt"
-Content-Transfer-Encoding: base64
-Content-ID: <f_kck4kcwt1>
-X-Attachment-Id: f_kck4kcwt1
-
-LS0gTG9ncyBiZWdpbiBhdCBTdW4gMjAyMC0wNy0xMiAwODo0Mzo1MSBFQVQsIGVuZCBhdCBNb24g
-MjAyMC0wNy0xMyAwOToxODo1NyBFQVQuIC0tCkp1bCAxMiAxMjozNzo0OCB0b255LXBjIGtlcm5l
-bDogdXNiIDItNDogZGV2aWNlIGRlc2NyaXB0b3IgcmVhZC82NCwgZXJyb3IgLTcxCkp1bCAxMiAx
-MjozNzo0OSB0b255LXBjIGtlcm5lbDogdXNiIDItNDogZGV2aWNlIGRlc2NyaXB0b3IgcmVhZC82
-NCwgZXJyb3IgLTcxCkp1bCAxMiAxMjozNzo0OSB0b255LXBjIGtlcm5lbDogdXNiIDItNDogZGV2
-aWNlIGRlc2NyaXB0b3IgcmVhZC82NCwgZXJyb3IgLTcxCkp1bCAxMiAxMjozNzo0OSB0b255LXBj
-IGtlcm5lbDogdXNiIDItNDogZGV2aWNlIGRlc2NyaXB0b3IgcmVhZC82NCwgZXJyb3IgLTcxCkp1
-bCAxMiAxMjozNzo1MCB0b255LXBjIGtlcm5lbDogdXNiIDItNDogZGV2aWNlIG5vdCBhY2NlcHRp
-bmcgYWRkcmVzcyAyLCBlcnJvciAtNzEKSnVsIDEyIDEyOjM3OjUxIHRvbnktcGMga2VybmVsOiB1
-c2IgMi00OiBkZXZpY2Ugbm90IGFjY2VwdGluZyBhZGRyZXNzIDIsIGVycm9yIC03MQpKdWwgMTIg
-MTI6Mzc6NTEgdG9ueS1wYyBrZXJuZWw6IHVzYiAyLTQ6IGRldmljZSBkZXNjcmlwdG9yIHJlYWQv
-NjQsIGVycm9yIC03MQpKdWwgMTIgMTI6Mzc6NTEgdG9ueS1wYyBrZXJuZWw6IHVzYiAyLTQ6IGRl
-dmljZSBkZXNjcmlwdG9yIHJlYWQvNjQsIGVycm9yIC03MQpKdWwgMTIgMTI6Mzc6NTEgdG9ueS1w
-YyBrZXJuZWw6IHVzYiAyLTQ6IGRldmljZSBkZXNjcmlwdG9yIHJlYWQvNjQsIGVycm9yIC03MQpK
-dWwgMTIgMTI6Mzc6NTIgdG9ueS1wYyBrZXJuZWw6IHVzYiAyLTQ6IGRldmljZSBkZXNjcmlwdG9y
-IHJlYWQvNjQsIGVycm9yIC03MQpKdWwgMTIgMTI6Mzc6NTMgdG9ueS1wYyBrZXJuZWw6IHVzYiAy
-LTQ6IGRldmljZSBub3QgYWNjZXB0aW5nIGFkZHJlc3MgNiwgZXJyb3IgLTcxCkp1bCAxMiAxMjoz
-Nzo1MyB0b255LXBjIGtlcm5lbDogdXNiIDItNDogZGV2aWNlIG5vdCBhY2NlcHRpbmcgYWRkcmVz
-cyA3LCBlcnJvciAtNzEKSnVsIDEyIDEyOjM3OjUzIHRvbnktcGMga2VybmVsOiB1c2IgdXNiMi1w
-b3J0NDogdW5hYmxlIHRvIGVudW1lcmF0ZSBVU0IgZGV2aWNlCkp1bCAxMiAxMjozNzo1NSB0b255
-LXBjIGtlcm5lbDogcnR3X3BjaSAwMDAwOjBkOjAwLjA6IGZhaWxlZCB0byBwb2xsIG9mZnNldD0w
-eDUgbWFzaz0weDEgdmFsdWU9MHgwCkp1bCAxMiAxMjozNzo1NSB0b255LXBjIGtlcm5lbDogcnR3
-X3BjaSAwMDAwOjBkOjAwLjA6IG1hYyBwb3dlciBvbiBmYWlsZWQKSnVsIDEyIDEyOjM3OjU1IHRv
-bnktcGMga2VybmVsOiBydHdfcGNpIDAwMDA6MGQ6MDAuMDogZmFpbGVkIHRvIHBvd2VyIG9uIG1h
-YwpKdWwgMTIgMTI6Mzg6MDEgdG9ueS1wYyB3cGFfc3VwcGxpY2FudFs5ODVdOiBDb3VsZCBub3Qg
-c2V0IGludGVyZmFjZSB3bG8xIGZsYWdzIChVUCk6IEludmFsaWQgYXJndW1lbnQKSnVsIDEyIDEy
-OjM4OjAxIHRvbnktcGMga2VybmVsOiBydHdfcGNpIDAwMDA6MGQ6MDAuMDogZmFpbGVkIHRvIHBv
-bGwgb2Zmc2V0PTB4NSBtYXNrPTB4MyB2YWx1ZT0weDAKSnVsIDEyIDEyOjM4OjAxIHRvbnktcGMg
-a2VybmVsOiBydHdfcGNpIDAwMDA6MGQ6MDAuMDogbWFjIHBvd2VyIG9uIGZhaWxlZApKdWwgMTIg
-MTI6Mzg6MDEgdG9ueS1wYyBrZXJuZWw6IHJ0d19wY2kgMDAwMDowZDowMC4wOiBmYWlsZWQgdG8g
-cG93ZXIgb24gbWFjCkp1bCAxMiAxMjozODowMSB0b255LXBjIHdwYV9zdXBwbGljYW50Wzk4NV06
-IG5sODAyMTE6IENvdWxkIG5vdCBzZXQgaW50ZXJmYWNlICd3bG8xJyBVUApKdWwgMTIgMTI6Mzg6
-MDcgdG9ueS1wYyBrZXJuZWw6IHJ0d19wY2kgMDAwMDowZDowMC4wOiBmYWlsZWQgdG8gcG9sbCBv
-ZmZzZXQ9MHg1IG1hc2s9MHgzIHZhbHVlPTB4MApKdWwgMTIgMTI6Mzg6MDcgdG9ueS1wYyBrZXJu
-ZWw6IHJ0d19wY2kgMDAwMDowZDowMC4wOiBtYWMgcG93ZXIgb24gZmFpbGVkCkp1bCAxMiAxMjoz
-ODowNyB0b255LXBjIGtlcm5lbDogcnR3X3BjaSAwMDAwOjBkOjAwLjA6IGZhaWxlZCB0byBwb3dl
-ciBvbiBtYWMKSnVsIDEyIDEyOjM4OjA3IHRvbnktcGMgd3BhX3N1cHBsaWNhbnRbOTg1XTogQ291
-bGQgbm90IHNldCBpbnRlcmZhY2Ugd2xvMSBmbGFncyAoVVApOiBJbnZhbGlkIGFyZ3VtZW50Ckp1
-bCAxMiAxMjozODowNyB0b255LXBjIE5ldHdvcmtNYW5hZ2VyWzk0OV06IDxlcnJvcj4gWzE1OTQ1
-NDY2ODcuMjc5Nl0gc3VwLWlmYWNlWzB4NTYzOWQxMjExOTAwLHdsbzFdOiBlcnJvciBhZGRpbmcg
-aW50ZXJmYWNlOiB3cGFfc3VwcGxpY2FudCBjb3VsZG4ndCBncmFiIHRoaXMgaW50ZXJmYWNlLgpK
-dWwgMTIgMTI6Mzg6MDcgdG9ueS1wYyB3cGFfc3VwcGxpY2FudFs5ODVdOiBXRVhUOiBDb3VsZCBu
-b3Qgc2V0IGludGVyZmFjZSAnd2xvMScgVVAKSnVsIDEyIDEyOjM4OjA3IHRvbnktcGMgd3BhX3N1
-cHBsaWNhbnRbOTg1XTogd2xvMTogRmFpbGVkIHRvIGluaXRpYWxpemUgZHJpdmVyIGludGVyZmFj
-ZQpKdWwgMTIgMTI6Mzg6MjMgdG9ueS1wYyB3cGFfc3VwcGxpY2FudFs5ODVdOiBDb3VsZCBub3Qg
-c2V0IGludGVyZmFjZSB3bG8xIGZsYWdzIChVUCk6IEludmFsaWQgYXJndW1lbnQKSnVsIDEyIDEy
-OjM4OjIzIHRvbnktcGMga2VybmVsOiBydHdfcGNpIDAwMDA6MGQ6MDAuMDogZmFpbGVkIHRvIHBv
-bGwgb2Zmc2V0PTB4NSBtYXNrPTB4MyB2YWx1ZT0weDAKSnVsIDEyIDEyOjM4OjIzIHRvbnktcGMg
-a2VybmVsOiBydHdfcGNpIDAwMDA6MGQ6MDAuMDogbWFjIHBvd2VyIG9uIGZhaWxlZApKdWwgMTIg
-MTI6Mzg6MjMgdG9ueS1wYyBrZXJuZWw6IHJ0d19wY2kgMDAwMDowZDowMC4wOiBmYWlsZWQgdG8g
-cG93ZXIgb24gbWFjCkp1bCAxMiAxMjozODoyMyB0b255LXBjIHdwYV9zdXBwbGljYW50Wzk4NV06
-IG5sODAyMTE6IENvdWxkIG5vdCBzZXQgaW50ZXJmYWNlICd3bG8xJyBVUApKdWwgMTIgMTI6Mzg6
-MjkgdG9ueS1wYyBrZXJuZWw6IHJ0d19wY2kgMDAwMDowZDowMC4wOiBmYWlsZWQgdG8gcG9sbCBv
-ZmZzZXQ9MHg1IG1hc2s9MHgzIHZhbHVlPTB4MApKdWwgMTIgMTI6Mzg6MjkgdG9ueS1wYyBrZXJu
-ZWw6IHJ0d19wY2kgMDAwMDowZDowMC4wOiBtYWMgcG93ZXIgb24gZmFpbGVkCkp1bCAxMiAxMjoz
-ODoyOSB0b255LXBjIGtlcm5lbDogcnR3X3BjaSAwMDAwOjBkOjAwLjA6IGZhaWxlZCB0byBwb3dl
-ciBvbiBtYWMKSnVsIDEyIDEyOjM4OjI5IHRvbnktcGMgd3BhX3N1cHBsaWNhbnRbOTg1XTogQ291
-bGQgbm90IHNldCBpbnRlcmZhY2Ugd2xvMSBmbGFncyAoVVApOiBJbnZhbGlkIGFyZ3VtZW50Ckp1
-bCAxMiAxMjozODoyOSB0b255LXBjIHdwYV9zdXBwbGljYW50Wzk4NV06IFdFWFQ6IENvdWxkIG5v
-dCBzZXQgaW50ZXJmYWNlICd3bG8xJyBVUApKdWwgMTIgMTI6Mzg6MjkgdG9ueS1wYyB3cGFfc3Vw
-cGxpY2FudFs5ODVdOiB3bG8xOiBGYWlsZWQgdG8gaW5pdGlhbGl6ZSBkcml2ZXIgaW50ZXJmYWNl
-Ckp1bCAxMiAxMjozODoyOSB0b255LXBjIE5ldHdvcmtNYW5hZ2VyWzk0OV06IDxlcnJvcj4gWzE1
-OTQ1NDY3MDkuNzQxN10gc3VwLWlmYWNlWzB4NTYzOWQxMjExOWYwLHdsbzFdOiBlcnJvciBhZGRp
-bmcgaW50ZXJmYWNlOiB3cGFfc3VwcGxpY2FudCBjb3VsZG4ndCBncmFiIHRoaXMgaW50ZXJmYWNl
-LgpKdWwgMTIgMTI6Mzg6NDUgdG9ueS1wYyB3cGFfc3VwcGxpY2FudFs5ODVdOiBDb3VsZCBub3Qg
-c2V0IGludGVyZmFjZSB3bG8xIGZsYWdzIChVUCk6IEludmFsaWQgYXJndW1lbnQKSnVsIDEyIDEy
-OjM4OjQ1IHRvbnktcGMgd3BhX3N1cHBsaWNhbnRbOTg1XTogbmw4MDIxMTogQ291bGQgbm90IHNl
-dCBpbnRlcmZhY2UgJ3dsbzEnIFVQCkp1bCAxMiAxMjozODo0NSB0b255LXBjIGtlcm5lbDogcnR3
-X3BjaSAwMDAwOjBkOjAwLjA6IGZhaWxlZCB0byBwb2xsIG9mZnNldD0weDUgbWFzaz0weDMgdmFs
-dWU9MHgwCkp1bCAxMiAxMjozODo0NSB0b255LXBjIGtlcm5lbDogcnR3X3BjaSAwMDAwOjBkOjAw
-LjA6IG1hYyBwb3dlciBvbiBmYWlsZWQKSnVsIDEyIDEyOjM4OjQ1IHRvbnktcGMga2VybmVsOiBy
-dHdfcGNpIDAwMDA6MGQ6MDAuMDogZmFpbGVkIHRvIHBvd2VyIG9uIG1hYwpKdWwgMTIgMTI6Mzg6
-NTEgdG9ueS1wYyB3cGFfc3VwcGxpY2FudFs5ODVdOiBDb3VsZCBub3Qgc2V0IGludGVyZmFjZSB3
-bG8xIGZsYWdzIChVUCk6IEludmFsaWQgYXJndW1lbnQKSnVsIDEyIDEyOjM4OjUxIHRvbnktcGMg
-d3BhX3N1cHBsaWNhbnRbOTg1XTogV0VYVDogQ291bGQgbm90IHNldCBpbnRlcmZhY2UgJ3dsbzEn
-IFVQCkp1bCAxMiAxMjozODo1MSB0b255LXBjIHdwYV9zdXBwbGljYW50Wzk4NV06IHdsbzE6IEZh
-aWxlZCB0byBpbml0aWFsaXplIGRyaXZlciBpbnRlcmZhY2UKSnVsIDEyIDEyOjM4OjUxIHRvbnkt
-cGMgTmV0d29ya01hbmFnZXJbOTQ5XTogPGVycm9yPiBbMTU5NDU0NjczMS43MjE4XSBzdXAtaWZh
-Y2VbMHg1NjM5ZDEyMTFhZTAsd2xvMV06IGVycm9yIGFkZGluZyBpbnRlcmZhY2U6IHdwYV9zdXBw
-bGljYW50IGNvdWxkbid0IGdyYWIgdGhpcyBpbnRlcmZhY2UuCkp1bCAxMiAxMjozODo1MSB0b255
-LXBjIGtlcm5lbDogcnR3X3BjaSAwMDAwOjBkOjAwLjA6IGZhaWxlZCB0byBwb2xsIG9mZnNldD0w
-eDUgbWFzaz0weDMgdmFsdWU9MHgwCkp1bCAxMiAxMjozODo1MSB0b255LXBjIGtlcm5lbDogcnR3
-X3BjaSAwMDAwOjBkOjAwLjA6IG1hYyBwb3dlciBvbiBmYWlsZWQKSnVsIDEyIDEyOjM4OjUxIHRv
-bnktcGMga2VybmVsOiBydHdfcGNpIDAwMDA6MGQ6MDAuMDogZmFpbGVkIHRvIHBvd2VyIG9uIG1h
-Ywo=
---00000000000070d76805aa4d8831
-Content-Type: text/plain; charset="US-ASCII"; name="log3.txt"
-Content-Disposition: attachment; filename="log3.txt"
-Content-Transfer-Encoding: base64
-Content-ID: <f_kck4kcxa2>
-X-Attachment-Id: f_kck4kcxa2
-
-SnVsIDEzIDA4OjUxOjA0IHRvbnktcGMga2VybmVsOiBydHdfcGNpIDAwMDA6MGQ6MDAuMDogZmFp
-bGVkIHRvIHNlbmQgaDJjIGNvbW1hbmQKSnVsIDEzIDA4OjU1OjMyIHRvbnktcGMga2VybmVsOiBy
-dHdfcGNpIDAwMDA6MGQ6MDAuMDogZmFpbGVkIHRvIHNlbmQgaDJjIGNvbW1hbmQKSnVsIDEzIDA4
-OjU3OjAwIHRvbnktcGMga2VybmVsOiBydHdfcGNpIDAwMDA6MGQ6MDAuMDogZmFpbGVkIHRvIHNl
-bmQgaDJjIGNvbW1hbmQKSnVsIDEzIDA4OjU3OjU2IHRvbnktcGMga2VybmVsOiBydHdfcGNpIDAw
-MDA6MGQ6MDAuMDogZmFpbGVkIHRvIHNlbmQgaDJjIGNvbW1hbmQKSnVsIDEzIDA5OjA0OjEyIHRv
-bnktcGMga2VybmVsOiBydHdfcGNpIDAwMDA6MGQ6MDAuMDogZmFpbGVkIHRvIHNlbmQgaDJjIGNv
-bW1hbmQKSnVsIDEzIDA5OjA1OjAwIHRvbnktcGMga2VybmVsOiBydHdfcGNpIDAwMDA6MGQ6MDAu
-MDogZmFpbGVkIHRvIHNlbmQgaDJjIGNvbW1hbmQKSnVsIDEzIDA5OjA2OjIxIHRvbnktcGMga2Vy
-bmVsOiBydHdfcGNpIDAwMDA6MGQ6MDAuMDogZmFpbGVkIHRvIHNlbmQgaDJjIGNvbW1hbmQKSnVs
-IDEzIDA5OjEwOjQ5IHRvbnktcGMga2VybmVsOiBydHdfcGNpIDAwMDA6MGQ6MDAuMDogZmFpbGVk
-IHRvIHNlbmQgaDJjIGNvbW1hbmQKSnVsIDEzIDA5OjEzOjIxIHRvbnktcGMga2VybmVsOiBydHdf
-cGNpIDAwMDA6MGQ6MDAuMDogZmFpbGVkIHRvIHNlbmQgaDJjIGNvbW1hbmQKSnVsIDEzIDA5OjE1
-OjM4IHRvbnktcGMga2VybmVsOiBydHdfcGNpIDAwMDA6MGQ6MDAuMDogZmFpbGVkIHRvIHNlbmQg
-aDJjIGNvbW1hbmQKSnVsIDEzIDA5OjIxOjMwIHRvbnktcGMga2VybmVsOiBydHdfcGNpIDAwMDA6
-MGQ6MDAuMDogZmFpbGVkIHRvIHNlbmQgaDJjIGNvbW1hbmQK
---00000000000070d76805aa4d8831--
+I expect that if this is IWL_WARN, it should indicate some unexpected or 
+non-ideal state, but the card seems to operate just fine afterwards.
