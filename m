@@ -2,32 +2,32 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BC05721D8B4
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Jul 2020 16:39:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 235AC21D8BD
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Jul 2020 16:42:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729700AbgGMOje (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 13 Jul 2020 10:39:34 -0400
-Received: from mail29.static.mailgun.info ([104.130.122.29]:44516 "EHLO
+        id S1729947AbgGMOmA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 13 Jul 2020 10:42:00 -0400
+Received: from mail29.static.mailgun.info ([104.130.122.29]:16419 "EHLO
         mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1729871AbgGMOjd (ORCPT
+        by vger.kernel.org with ESMTP id S1729908AbgGMOmA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 13 Jul 2020 10:39:33 -0400
+        Mon, 13 Jul 2020 10:42:00 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1594651173; h=Content-Transfer-Encoding: Content-Type:
- MIME-Version: Message-ID: In-Reply-To: Date: References: Subject: Cc:
- To: From: Sender; bh=RbZonCviqU0Iw3ZoaD2UXTdlv+ufrHYsECP40xt9bL8=; b=xkEQ6y54oQmTgXa9CUwJUcHTec03vFfvRiyuDiOIh3Xisol/bU+NtosVUjvh/btnKzvMORKf
- +JXiTi4VX9y4wNich7atiufcQF2PjvUvalxwa1rWJ7UelkPZdLY91uxFP9ncyZiM8rPf5iP1
- bnWQsD2GEakPynSFKmbl0JEEnkA=
+ s=smtp; t=1594651319; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=njq6ToEc9s/UCKrW6LoyB1yXjuQt4PugDt/wNabnWog=; b=gRf3asfSf2u09CNPEHTt37McXPlxONpVi6hrvmT9b1p+ZqXXAhIOFe+DFEWl+6gtQ/0wSt1I
+ M5y93HHSxexMMAWdd7gPanZO5m0mgLYRltcloVB4UIsq6JpOLb2JwWwysCCgIB6OMgGRnkjc
+ 6IY8n+NulRBHlwgifZNUSSX8C34=
 X-Mailgun-Sending-Ip: 104.130.122.29
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n02.prod.us-west-2.postgun.com with SMTP id
- 5f0c72022991e765cd4ef400 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 13 Jul 2020 14:38:58
+ smtp-out-n05.prod.us-west-2.postgun.com with SMTP id
+ 5f0c72ad512812c070389aad (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 13 Jul 2020 14:41:49
  GMT
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id A6FA8C433CA; Mon, 13 Jul 2020 14:38:57 +0000 (UTC)
+        id 62636C43395; Mon, 13 Jul 2020 14:41:49 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -37,54 +37,61 @@ Received: from x230.qca.qualcomm.com (88-114-240-156.elisa-laajakaista.fi [88.11
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 5D742C433C8;
-        Mon, 13 Jul 2020 14:38:55 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 5D742C433C8
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id D14A4C433C8;
+        Mon, 13 Jul 2020 14:41:45 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org D14A4C433C8
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     Pali =?utf-8?Q?Roh=C3=A1r?= <pali@kernel.org>,
-        "linux-mmc\@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Amitkumar Karwar <amitkarwar@gmail.com>,
-        Siva Rebbagondla <siva8118@gmail.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] mmc: sdio: Move SDIO IDs from rsi_sdio driver to common include file
-References: <20200629072144.24351-1-pali@kernel.org>
-        <CAPDyKFp-meAG4XNgL3ixacYKpFByV-Pynz6-GRDtfT95hC-Jmw@mail.gmail.com>
-Date:   Mon, 13 Jul 2020 17:38:53 +0300
-In-Reply-To: <CAPDyKFp-meAG4XNgL3ixacYKpFByV-Pynz6-GRDtfT95hC-Jmw@mail.gmail.com>
-        (Ulf Hansson's message of "Mon, 6 Jul 2020 16:49:17 +0200")
-Message-ID: <87eepfxywy.fsf@codeaurora.org>
+To:     Vaibhav Gupta <vaibhavgupta40@gmail.com>
+Cc:     Bjorn Helgaas <helgaas@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>, bjorn@helgaas.com,
+        Vaibhav Gupta <vaibhav.varodek@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Stanislav Yakovlev <stas.yakovlev@gmail.com>,
+        Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        linux-kernel-mentees@lists.linuxfoundation.org,
+        skhan@linuxfoundation.org, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH v1 0/2] ipw2x00: use generic power management
+References: <20200629072525.156154-1-vaibhavgupta40@gmail.com>
+Date:   Mon, 13 Jul 2020 17:41:44 +0300
+In-Reply-To: <20200629072525.156154-1-vaibhavgupta40@gmail.com> (Vaibhav
+        Gupta's message of "Mon, 29 Jun 2020 12:55:23 +0530")
+Message-ID: <87a703xys7.fsf@codeaurora.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Ulf Hansson <ulf.hansson@linaro.org> writes:
+Vaibhav Gupta <vaibhavgupta40@gmail.com> writes:
 
-> On Mon, 29 Jun 2020 at 09:22, Pali Roh=C3=A1r <pali@kernel.org> wrote:
->>
->> Define appropriate macro names for consistency with other macros.
->>
->> Signed-off-by: Pali Roh=C3=A1r <pali@kernel.org>
+> Linux Kernel Mentee: Remove Legacy Power Management.
 >
-> Applied for next, thanks!
+> The purpose of this patch series is to remove legacy power management callbacks
+> from amd ethernet drivers.
 >
-> If it turns out that it's a better idea to funnel this via Kale's
-> wireless tree, then I can drop it - and you may consider this as an
-> ack instead.
+> The callbacks performing suspend() and resume() operations are still calling
+> pci_save_state(), pci_set_power_state(), etc. and handling the power management
+> themselves, which is not recommended.
+>
+> The conversion requires the removal of the those function calls and change the
+> callback definition accordingly and make use of dev_pm_ops structure.
+>
+> All patches are compile-tested only.
+>
+> Vaibhav Gupta (2):
+>   ipw2100: use generic power management
+>   ipw2200: use generic power management
+>
+>  drivers/net/wireless/intel/ipw2x00/ipw2100.c | 31 +++++---------------
+>  drivers/net/wireless/intel/ipw2x00/ipw2200.c | 30 +++++--------------
 
-I'm not expecting any conflicts with this so going via mmc tree is fine
-with me.
+amd ethernet drivers? That must be a copy paste error. But no need to
+resend because of this.
 
-Acked-by: Kalle Valo <kvalo@codeaurora.org>
-
---=20
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
-hes
+-- 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
