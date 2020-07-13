@@ -2,138 +2,107 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4089421DE67
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Jul 2020 19:21:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8574721DE20
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Jul 2020 19:02:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730380AbgGMRVq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 13 Jul 2020 13:21:46 -0400
-Received: from mail29.static.mailgun.info ([104.130.122.29]:63577 "EHLO
-        mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1729644AbgGMRVq (ORCPT
+        id S1729849AbgGMRCB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 13 Jul 2020 13:02:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53350 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729751AbgGMRCB (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 13 Jul 2020 13:21:46 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1594660906; h=Date: Message-Id: Cc: To: Subject: From:
- Content-Transfer-Encoding: MIME-Version: Content-Type: Sender;
- bh=LqkEksaaJdeOEzzZiYtV6tDqy6i6SqTmgKw78aAkdQE=; b=gCwfbjXt5UJ/rzc0K4WfvTlF30CNRTOvb8DD/u0NHYGbzYOjYVnjIryX4drATi8ojGUB2Y5I
- 3EkhLS8enWI8if8XfW3mfRafcUx9dNLfhwfN/ZDJqeExw32IFaYN4eLusHcrPdzdXSN/GYF7
- WJZ5WkAqXyZCUSwyt335PH2TvjE=
-X-Mailgun-Sending-Ip: 104.130.122.29
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n06.prod.us-west-2.postgun.com with SMTP id
- 5f0c98211012768490ecc2ee (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 13 Jul 2020 17:21:37
- GMT
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 46086C433C6; Mon, 13 Jul 2020 17:21:37 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
-        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 5E34BC433C8;
-        Mon, 13 Jul 2020 17:21:36 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 5E34BC433C8
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        Mon, 13 Jul 2020 13:02:01 -0400
+Received: from mail-ej1-x642.google.com (mail-ej1-x642.google.com [IPv6:2a00:1450:4864:20::642])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B251DC061755
+        for <linux-wireless@vger.kernel.org>; Mon, 13 Jul 2020 10:02:00 -0700 (PDT)
+Received: by mail-ej1-x642.google.com with SMTP id ga4so18038011ejb.11
+        for <linux-wireless@vger.kernel.org>; Mon, 13 Jul 2020 10:02:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding:content-language;
+        bh=dBpWhohA4qCjmIGT5bfMOr9NwEjL/Z4UnFbenETGipg=;
+        b=uvaZmiBxASuL2qzi+AMjmoPfNhR7BvV8tWOl6pu9wjXtyelMwr3EjAiUFgMNNmB/kd
+         Yuu+jpVTuXk71FabOPEBD1NgCHw/0a4zO7weAValbJikPkjiB5qkWis8dRREoHDPkLlD
+         pxsY2nfaUbZOC2TbbR3I60OY8KT470AOucKyLH/2vrWW/QJ3WcUPITBY7lAM+TqC0xvI
+         Ljwu9L2A/k7L6sRzQVFXgfSMpwoVm3rgAeTrfoXt+wWQk/XHuy5ejU4azzLaZwTDUu8a
+         1k31T2iev6hVeGdzWR4VWK6DGsf5GULtt3aRz00WmndkzUz7z/sSAnQhpu3ConoGskFv
+         ureQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding
+         :content-language;
+        bh=dBpWhohA4qCjmIGT5bfMOr9NwEjL/Z4UnFbenETGipg=;
+        b=bsc+fX/c6nCQf1Y+bsa03WyJad4m0fQCiPHuWrwrcBZEhgAX2pkKjXlazpOZ0LWqtE
+         XoPacVoOpS7TLPDD85wxlxPzc+arwljoiVBcLla2EtyrlZYHzG1jHpepZIdQFsaFnj/G
+         HAYvPKBySeTN1n4GmS2Dvh5SEpnC3iJiHRMe/H3hkTzhSpp8QMTkM2XPER2uOQXXuQj1
+         y+YBXSll36i414AnFxo4dFUSRORZqF0RcICuAnsAraDUcol2VqSCVNC1+J1veyDtRt+2
+         cnxXwA2nhC3RNrj9tbxexqDamLGAkhhZZzze6uOrGNbmujTadHRDCMPE5/GWnc1MNbAD
+         ekyg==
+X-Gm-Message-State: AOAM530g3IocVLDHN8HnYoOTQytKkBNM3LVews8Bs7CePSD70FMI8ifz
+        0s4Rawmsl47kcKuqQ/vAeAwQobgFSMg7jQ==
+X-Google-Smtp-Source: ABdhPJwJ+M9ROc70wUCp7GjyxAJGbscyNjvG6NmOnMoxorDMJhuztFffg+0QpGN6jAm68PEU55Hm/w==
+X-Received: by 2002:a17:907:2654:: with SMTP id ar20mr656650ejc.62.1594659718837;
+        Mon, 13 Jul 2020 10:01:58 -0700 (PDT)
+Received: from net.saheed (54007186.dsl.pool.telekom.hu. [84.0.113.134])
+        by smtp.gmail.com with ESMTPSA id z11sm6069100ejx.17.2020.07.13.10.01.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 13 Jul 2020 10:01:58 -0700 (PDT)
+Subject: Re: [PATCH 4/14 v3] iwlegacy: Check the return value of
+ pcie_capability_read_*()
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     helgaas@kernel.org, "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, bjorn@helgaas.com,
+        linux-wireless@vger.kernel.org
+References: <20200710212026.27136-1-refactormyself@gmail.com>
+ <20200710212026.27136-5-refactormyself@gmail.com>
+ <87wo37a5s5.fsf@codeaurora.org>
+From:   Saheed Bolarinwa <refactormyself@gmail.com>
+Message-ID: <fa99aee8-86ee-558f-cb6f-761519c13159@gmail.com>
+Date:   Mon, 13 Jul 2020 20:02:20 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
+In-Reply-To: <87wo37a5s5.fsf@codeaurora.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 7bit
-From:   Kalle Valo <kvalo@codeaurora.org>
-Subject: pull-request: wireless-drivers-2020-07-13
-To:     netdev@vger.kernel.org
-Cc:     linux-wireless@vger.kernel.org
-Message-Id: <20200713172137.46086C433C6@smtp.codeaurora.org>
-Date:   Mon, 13 Jul 2020 17:21:37 +0000 (UTC)
+Content-Language: en-US
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+Fixed
 
-here's a pull request to net tree, more info below. Please let me know if there
-are any problems.
-
-Kalle
-
-The following changes since commit b3a9e3b9622ae10064826dccb4f7a52bd88c7407:
-
-  Linux 5.8-rc1 (2020-06-14 12:45:04 -0700)
-
-are available in the git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers.git tags/wireless-drivers-2020-07-13
-
-for you to fetch changes up to dc7bd30b97aac8a97eccef0ffe31f6cefb6e2c3e:
-
-  mt76: mt7615: fix EEPROM buffer size (2020-06-23 11:43:41 +0300)
-
-----------------------------------------------------------------
-wireless-drivers fixes for v5.8
-
-First set of fixes for v5.8. Various important fixes for iwlwifi and
-mt76.
-
-iwlwifi
-
-* fix sleeping under RCU
-
-* fix a kernel crash when using compressed firmware images
-
-mt76
-
-* tx queueing fixes for mt7615/22/63
-
-* locking fix
-
-* fix a crash during watchdog reset
-
-* fix memory leaks
-
-----------------------------------------------------------------
-Felix Fietkau (2):
-      mt76: mt76x02: do not access uninitialized NAPI structs
-      mt76: mt7615: fix EEPROM buffer size
-
-Jiri Slaby (1):
-      iwlwifi: fix crash in iwl_dbg_tlv_alloc_trigger
-
-Johannes Berg (1):
-      iwlwifi: mvm: don't call iwl_mvm_free_inactive_queue() under RCU
-
-Kalle Valo (1):
-      Merge tag 'mt76-for-kvalo-2020-06-07' of https://github.com/nbd168/wireless
-
-Lorenzo Bianconi (5):
-      mt76: add missing lock configuring coverage class
-      mt76: mt7615: fix lmac queue debugsfs entry
-      mt76: mt7615: fix hw queue mapping
-      mt76: overwrite qid for non-bufferable mgmt frames
-      mt76: mt7663u: fix memory leaks in mt7663u_probe
-
- drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c   | 16 +++++++--
- drivers/net/wireless/intel/iwlwifi/mvm/sta.c       |  8 ++---
- drivers/net/wireless/mediatek/mt76/mt76.h          |  1 +
- drivers/net/wireless/mediatek/mt76/mt7603/main.c   |  2 ++
- .../net/wireless/mediatek/mt76/mt7615/debugfs.c    |  9 ++---
- drivers/net/wireless/mediatek/mt76/mt7615/dma.c    |  9 ++---
- drivers/net/wireless/mediatek/mt76/mt7615/eeprom.c |  3 +-
- drivers/net/wireless/mediatek/mt76/mt7615/eeprom.h |  2 +-
- drivers/net/wireless/mediatek/mt76/mt7615/mac.c    | 20 ++++-------
- drivers/net/wireless/mediatek/mt76/mt7615/mac.h    | 15 ---------
- drivers/net/wireless/mediatek/mt76/mt7615/main.c   |  4 +++
- drivers/net/wireless/mediatek/mt76/mt7615/mmio.c   |  2 +-
- drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h | 30 +++++++++++++++++
- drivers/net/wireless/mediatek/mt76/mt7615/usb.c    | 13 ++++----
- drivers/net/wireless/mediatek/mt76/mt76x02_mmio.c  |  5 +--
- drivers/net/wireless/mediatek/mt76/mt7915/main.c   |  3 ++
- drivers/net/wireless/mediatek/mt76/tx.c            |  7 ++++
- drivers/net/wireless/mediatek/mt76/usb.c           | 39 ++++++++++++++--------
- 18 files changed, 120 insertions(+), 68 deletions(-)
+On 7/13/20 3:44 PM, Kalle Valo wrote:
+> + linux-wireless
+>
+> Saheed Olayemi Bolarinwa <refactormyself@gmail.com> writes:
+>
+>> From: Bolarinwa Olayemi Saheed <refactormyself@gmail.com>
+>>
+>> Cc: bjorn@helgaas.com,
+>> 	skhan@linuxfoundation.org,
+>> 	linux-pci@vger.kernel.org,
+>> 	linux-kernel-mentees@lists.linuxfoundation.org,
+>> 	linux-kernel@vger.kernel.org,
+>> 	Stanislaw Gruszka <stf_xl@wp.pl>,
+>> 	linux-wireless@vger.kernel.org,
+>> 	netdev@vger.kernel.org
+>>
+>> On failure pcie_capability_read_dword() sets it's last parameter, val
+>> to 0. However, with Patch 14/14, it is possible that val is set to ~0 on
+>> failure. This would introduce a bug because (x & x) == (~0 & x).
+>>
+>> This bug can be avoided without changing the function's behaviour if the
+>> return value of pcie_capability_read_dword is checked to confirm success.
+>>
+>> Check the return value of pcie_capability_read_dword() to ensure success.
+>>
+>> Suggested-by: Bjorn Helgaas <bjorn@helgaas.com>
+>> Signed-off-by: Bolarinwa Olayemi Saheed <refactormyself@gmail.com>
+> Please check your setup, linux-wireless was not in Cc field.
+>
+Thank you for letting me know. I have fixed it and resent to the missing 
+addresses.
