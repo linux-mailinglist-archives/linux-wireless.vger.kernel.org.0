@@ -2,93 +2,83 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1148221EE87
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jul 2020 12:59:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4775721EF34
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jul 2020 13:25:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726934AbgGNK7p (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 14 Jul 2020 06:59:45 -0400
-Received: from bilbo.ozlabs.org ([203.11.71.1]:58017 "EHLO ozlabs.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726041AbgGNK7p (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 14 Jul 2020 06:59:45 -0400
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mail.ozlabs.org (Postfix) with ESMTPSA id 4B5cwb2qV0z9s1x;
-        Tue, 14 Jul 2020 20:59:43 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
-        s=201702; t=1594724383;
-        bh=CaU7hMehrwH/u8zCbwdV66QNc3iG4evLpsX9iI3ZC+Q=;
-        h=Date:From:To:Cc:Subject:From;
-        b=ZcQVvzY6KQEMk0CwfGUxxOYjXPcK05VLW5I2bcw0XwQMqWOhqm6jKRXo+4sgLJbOP
-         yM0KlqRrUQkLiyLqm02ksHByF9A5aOtFP+TOsGyOb1Zow5kHOLTLNzvlu3OKSdFi8t
-         tV05dE6Axo7cVmGMe5TqV8n7a6KbN/3dtE/27Upz/8gHWmlcjpKeZaPajR/7hof0JQ
-         DCeOMEDgGKmaogRoBbT/CDPXFhsGAfrj6kj5wtUuOPDqNoC1N0gKLSsqzxNzhyR62U
-         VTUkpWaKFcVb2BuxXj4glqiwmM28ExAdlKO1kDbSvHuH7XGIOHZWe3FDD1hDryslnb
-         XflqvL8ic4caw==
-Date:   Tue, 14 Jul 2020 20:59:42 +1000
-From:   Stephen Rothwell <sfr@canb.auug.org.au>
-To:     Kalle Valo <kvalo@codeaurora.org>,
-        Wireless <linux-wireless@vger.kernel.org>
-Cc:     Linux Next Mailing List <linux-next@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Joseph Chuang <joseph.chuang@cypress.com>,
-        Chi-Hsien Lin <chi-hsien.lin@cypress.com>
-Subject: linux-next: Fixes tag needs some work in the wireless-drivers-next
- tree
-Message-ID: <20200714205942.26248f1c@canb.auug.org.au>
+        id S1726801AbgGNLYV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 14 Jul 2020 07:24:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53448 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726352AbgGNLYV (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 14 Jul 2020 07:24:21 -0400
+Received: from mail-vk1-xa43.google.com (mail-vk1-xa43.google.com [IPv6:2607:f8b0:4864:20::a43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22258C061755
+        for <linux-wireless@vger.kernel.org>; Tue, 14 Jul 2020 04:24:21 -0700 (PDT)
+Received: by mail-vk1-xa43.google.com with SMTP id t187so3577521vke.5
+        for <linux-wireless@vger.kernel.org>; Tue, 14 Jul 2020 04:24:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=EfFiSsJtAfTP+kMjmRxEbX332rW3E4gmbsUJfmyX7h4=;
+        b=VtYIfyJTejPdYREikuawnxvA5j5ayvVz5SnUINKsjzorRn7W6qT1NypKMV0E1oUyXA
+         B/jEDiFpIpwK/1+wf+4Fjp6AIwbCGIxE8rydMvATNll3P34pF2zeuXAEwrq58/M4pL/q
+         wGvASyhgPeaJBGi7K4y70jbSn/Jccc3V/P6E6Pu6Gfm8lw8ytjmAz6AP3C91YCakeigv
+         FDtL8ta0i7x4COB4neXeZiHj+DTkfwb76NAwhKLw8ytpIniU0yICFihmlUzFL/SiFmqA
+         PiDPKBP8TYAWP3mnM5YZJ7XJ8yyMdbcIebSR7mRqorLSf2G9CI42Zjg3DIzgI63gq5UK
+         PUmQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=EfFiSsJtAfTP+kMjmRxEbX332rW3E4gmbsUJfmyX7h4=;
+        b=R8aoPONYRAIIZzvamGs02V3uyFxXVOeNbagT4EUz+uZpK7KzGa15OmuF3UmJmyqoHz
+         VtCFBb+XSdyzAq0kIb0DjilVP5zWfukVwCiY+ONWB+Jf5rt3PXpXwkEPKkHReUBE6jeE
+         NSIAkn6jtFsMdpULefUyC05X6TS7Eu0+WfR8oBeRgPfgjmXGMTb/tcj3epTek77jord1
+         J2QBD7F1a/Dt2d6o66IP+Gq1CCldUWVQDQkv8Ezded0nQymljSUqGpA/Hn1JZI1ozjoc
+         R7LeTF6TAH55x2yrfR9PxQfHH5XTJvXbOQJAIvzyuuw3D2kao9zpnzqamNFjqoJ7xMjR
+         zxCg==
+X-Gm-Message-State: AOAM531nnM/lZZPWzBCC4olH/6TGYQPZoF7wTAsaxTuYSyIgwRqtjaL6
+        kvAnczZhWBNfnC6N6aiWnOsp8WWXPI3MQUTktjVQTw==
+X-Google-Smtp-Source: ABdhPJxwseHtfoTYpsVbBoyHUHwjpr1DmLApji1oWJ5No5j5zfB+jK3UzXZuHu1TdoF9GBHvCvIK1vDnDv/NsIWr4bM=
+X-Received: by 2002:a1f:dc06:: with SMTP id t6mr3337279vkg.10.1594725860317;
+ Tue, 14 Jul 2020 04:24:20 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/OiDA8Ai=f6igcds2bDJuwLA";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+References: <87imeqcwbt.fsf@tynnyri.adurom.net> <20200714091911.4442-1-alessio.bonfiglio@mail.polimi.it>
+ <877dv6cthg.fsf@tynnyri.adurom.net>
+In-Reply-To: <877dv6cthg.fsf@tynnyri.adurom.net>
+From:   Emmanuel Grumbach <egrumbach@gmail.com>
+Date:   Tue, 14 Jul 2020 14:24:08 +0300
+Message-ID: <CANUX_P3jbE__37Osw2PEZzrwjkxdZXUn-Kb+AmMRUyAAjp+8cQ@mail.gmail.com>
+Subject: Re: [PATCH v2] iwlwifi: Make some Killer Wireless-AC 1550 cards work again
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Alessio Bonfiglio <alessio.bonfiglio@mail.polimi.it>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        Intel Linux Wireless <linuxwifi@intel.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---Sig_/OiDA8Ai=f6igcds2bDJuwLA
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+> Alessio Bonfiglio <alessio.bonfiglio@mail.polimi.it> writes:
+>
+> > Fix the regression introduced by commit c8685937d07f ("iwlwifi: move
+> > pu devices to new table") by adding the ids and the configurations of
+> > two missing Killer 1550 cards in order to configure and let them work
+> > correctly again (following the new table convention).
+> > Resolve bug 208141 ("Wireless ac 9560 not working kernel 5.7.2",
+> > https://bugzilla.kernel.org/show_bug.cgi?id=208141).
+> >
+> > Fixes: c8685937d07f ("iwlwifi: move pu devices to new table")
+> > Signed-off-by: Alessio Bonfiglio <alessio.bonfiglio@mail.polimi.it>
+>
+> Luca, should I take this to v5.8?
 
-Hi all,
+Luca is OOO, but I guess you should, yes.
 
-In commit
-
-  ad96bc27032c ("brcmfmac: initialize the requested dwell time")
-
-Fixes tag
-
-  Fixes: 4905432b28b7 ("brcmfmac: Fix P2P Group Formation failure via Go-ne=
-g method")
-
-has these problem(s):
-
-  - Target SHA1 does not exist
-
-
-Maybe you meant
-
-Fixes: 9c29da3f4e7e ("brcmfmac: Fix P2P Group Formation failure via Go-neg =
-method")
-
---=20
-Cheers,
-Stephen Rothwell
-
---Sig_/OiDA8Ai=f6igcds2bDJuwLA
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAl8NkB4ACgkQAVBC80lX
-0Gw50Af+LW7WJB3/+r+ZbjDE806XKes7SJGPe6XT5WjrV4ULYecYAKRr0v+IZTJr
-V6GzRRJZzQ2KeIeCHSFjekWjsefCRn/Wdd8woFly/lAqWLGXA+t5ma/q4gAFxVOD
-FnER451dMzVpAYyUVI7hcwaQd+W3S1eGBcWNGPDpQ8RU5f/ECQ8N1ushy2Mj0z+L
-5a0XXn6W8DBJLON87dQYBmSubg+d68UMTz0JWP0pPcaoCLGZ/KrGhoHB+VGsMtEi
-zZdk+kGLwpOnm3VACO2OCLd/rMwYB1kdean/n70wt1cJ2lpxxV152QZLCjbKNzbo
-HS07Kz+w01ZP4GK0b50+dzodOiE0IQ==
-=3u/W
------END PGP SIGNATURE-----
-
---Sig_/OiDA8Ai=f6igcds2bDJuwLA--
+Thanks.
