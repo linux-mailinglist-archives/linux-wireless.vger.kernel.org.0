@@ -2,109 +2,94 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1BDD321ED14
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jul 2020 11:42:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 86AD021ED20
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jul 2020 11:44:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726770AbgGNJmN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 14 Jul 2020 05:42:13 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:24196 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726624AbgGNJmM (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 14 Jul 2020 05:42:12 -0400
+        id S1726890AbgGNJob (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 14 Jul 2020 05:44:31 -0400
+Received: from mail29.static.mailgun.info ([104.130.122.29]:11180 "EHLO
+        mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725816AbgGNJoa (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 14 Jul 2020 05:44:30 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1594719731; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=rwaiPjJK4tdDLIrGur1Wip379yC4QzqC1DFY1MsdhpI=; b=wXF+lRYt2xLwZoHLFPIn87NKK9Q4BB2zVR5kjHFNppYHyLzOaUimIEc3vg+tOZjJy5ca7SqO
- oaRw/OKjn87XWdimvgI1Y6sy6lMFQWssNdK3uFF/lELW8jp+KsTI9J/osZ+vEeR3G+HkoLYm
- hOpqJanIwZtFNNKZZzKVV4dGq+U=
-X-Mailgun-Sending-Ip: 69.72.43.7
+ s=smtp; t=1594719870; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=SB1dVKMUKbiIHtS7YcdBx+9RbdVAtKV44lqVVLZR+uw=;
+ b=wptju59Dhe3ZRaWf/yiyiOzrVLko0vJ+G6YiVX+UHAUtP8iQNsgEzMK7mDYcwIct3eVIHjyp
+ xf/CiX01vk0nL0YxyZqepDS+A23G11OOQIez6CE80eU0pUOB4HBOMTHj4XT+pt0md5fd0p+q
+ P3KMw+ouiLAnMw9/BGRThMSX8is=
+X-Mailgun-Sending-Ip: 104.130.122.29
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n08.prod.us-west-2.postgun.com with SMTP id
- 5f0d7de7ee6926bb4f054442 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 14 Jul 2020 09:41:59
+ smtp-out-n20.prod.us-east-1.postgun.com with SMTP id
+ 5f0d7e70e3bee12510435b6b (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 14 Jul 2020 09:44:16
  GMT
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id DC794C433A1; Tue, 14 Jul 2020 09:41:58 +0000 (UTC)
+        id 78855C433CB; Tue, 14 Jul 2020 09:44:15 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from tynnyri.adurom.net (tynnyri.adurom.net [51.15.11.48])
+X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
+        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 6DEE0C433CB;
-        Tue, 14 Jul 2020 09:41:55 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 6DEE0C433CB
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id EB202C433C8;
+        Tue, 14 Jul 2020 09:44:12 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org EB202C433C8
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v2 1/5] brcmfmac: To fix kernel crash on out of boundary
+ access
 From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
-Cc:     linux-kernel@vger.kernel.org,
+In-Reply-To: <20200604071835.3842-2-wright.feng@cypress.com>
+References: <20200604071835.3842-2-wright.feng@cypress.com>
+To:     Wright Feng <wright.feng@cypress.com>
+Cc:     linux-wireless@vger.kernel.org, wright.feng@cypress.com,
+        brcm80211-dev-list@broadcom.com, brcm80211-dev-list@cypress.com,
         Arend van Spriel <arend.vanspriel@broadcom.com>,
         Franky Lin <franky.lin@broadcom.com>,
         Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
-        Wright Feng <wright.feng@cypress.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        brcm80211-dev-list@cypress.com, netdev@vger.kernel.org
-Subject: Re: [PATCH] brcmfmac: set timeout value when configuring power save
-References: <20200707155410.12123-1-nsaenzjulienne@suse.de>
-Date:   Tue, 14 Jul 2020 12:41:52 +0300
-In-Reply-To: <20200707155410.12123-1-nsaenzjulienne@suse.de> (Nicolas Saenz
-        Julienne's message of "Tue, 7 Jul 2020 17:54:10 +0200")
-Message-ID: <87blkicu1r.fsf@tynnyri.adurom.net>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
-MIME-Version: 1.0
-Content-Type: text/plain
+        chi-hsien.lin@cypress.com,
+        Raveendran Somu <raveendran.somu@cypress.com>
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
+Message-Id: <20200714094415.78855C433CB@smtp.codeaurora.org>
+Date:   Tue, 14 Jul 2020 09:44:15 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Nicolas Saenz Julienne <nsaenzjulienne@suse.de> writes:
+Wright Feng <wright.feng@cypress.com> wrote:
 
-> Set the timeout value as per cfg80211's set_power_mgmt() request. If the
-> requested value value is left undefined we set it to 2 seconds, the
-> maximum supported value.
->
-> Signed-off-by: Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
-> ---
->
-> Note: I got the 2 seconds value from the Raspberry Pi downstream kernel.
->
->  .../wireless/broadcom/brcm80211/brcmfmac/cfg80211.c    | 10 ++++++++++
->  1 file changed, 10 insertions(+)
->
-> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-> index a757abd7a599..15578c6e87cd 100644
-> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-> @@ -84,6 +84,8 @@
->  
->  #define BRCMF_ND_INFO_TIMEOUT		msecs_to_jiffies(2000)
->  
-> +#define BRCMF_PS_MAX_TIMEOUT_MS		2000
-> +
->  #define BRCMF_ASSOC_PARAMS_FIXED_SIZE \
->  	(sizeof(struct brcmf_assoc_params_le) - sizeof(u16))
->  
-> @@ -2941,6 +2943,14 @@ brcmf_cfg80211_set_power_mgmt(struct wiphy *wiphy, struct net_device *ndev,
->  		else
->  			bphy_err(drvr, "error (%d)\n", err);
->  	}
-> +
-> +	if ((u32)timeout > BRCMF_PS_MAX_TIMEOUT_MS)
-> +		timeout = BRCMF_PS_MAX_TIMEOUT_MS;
+> From: Raveendran Somu <raveendran.somu@cypress.com>
+> 
+> To truncate the additional bytes, if extra bytes have been received.
+> Current code only have a warning and proceed without handling it.
+> But in one of the crash reported by DVT, these causes the
+> crash intermittently. So the processing is limit to the skb->len.
+> 
+> Signed-off-by: Raveendran Somu <raveendran.somu@cypress.com>
+> Signed-off-by: Chi-hsien Lin <chi-hsien.lin@cypress.com>
+> Signed-off-by: Wright Feng <wright.feng@cypress.com>
 
-Wouldn't min_t() be better? Then you won't need the ugly cast either.
+5 patches applied to wireless-drivers-next.git, thanks.
+
+698bae2e6ea1 brcmfmac: To fix kernel crash on out of boundary access
+1eb4e9f62998 brcmfmac: fix invalid permanent MAC address in wiphy
+eccbf46b15bb brcmfmac: keep SDIO watchdog running when console_interval is non-zero
+ec3428bb8915 brcmfmac: reduce maximum station interface from 2 to 1 in RSDB mode
+fa3266541b13 brcmfmac: To fix Bss Info flag definition Bug
 
 -- 
+https://patchwork.kernel.org/patch/11587075/
+
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
