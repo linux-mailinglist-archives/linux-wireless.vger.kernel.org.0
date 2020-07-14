@@ -2,83 +2,120 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4775721EF34
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jul 2020 13:25:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 796FA21F458
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jul 2020 16:40:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726801AbgGNLYV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 14 Jul 2020 07:24:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53448 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726352AbgGNLYV (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 14 Jul 2020 07:24:21 -0400
-Received: from mail-vk1-xa43.google.com (mail-vk1-xa43.google.com [IPv6:2607:f8b0:4864:20::a43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22258C061755
-        for <linux-wireless@vger.kernel.org>; Tue, 14 Jul 2020 04:24:21 -0700 (PDT)
-Received: by mail-vk1-xa43.google.com with SMTP id t187so3577521vke.5
-        for <linux-wireless@vger.kernel.org>; Tue, 14 Jul 2020 04:24:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=EfFiSsJtAfTP+kMjmRxEbX332rW3E4gmbsUJfmyX7h4=;
-        b=VtYIfyJTejPdYREikuawnxvA5j5ayvVz5SnUINKsjzorRn7W6qT1NypKMV0E1oUyXA
-         B/jEDiFpIpwK/1+wf+4Fjp6AIwbCGIxE8rydMvATNll3P34pF2zeuXAEwrq58/M4pL/q
-         wGvASyhgPeaJBGi7K4y70jbSn/Jccc3V/P6E6Pu6Gfm8lw8ytjmAz6AP3C91YCakeigv
-         FDtL8ta0i7x4COB4neXeZiHj+DTkfwb76NAwhKLw8ytpIniU0yICFihmlUzFL/SiFmqA
-         PiDPKBP8TYAWP3mnM5YZJ7XJ8yyMdbcIebSR7mRqorLSf2G9CI42Zjg3DIzgI63gq5UK
-         PUmQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=EfFiSsJtAfTP+kMjmRxEbX332rW3E4gmbsUJfmyX7h4=;
-        b=R8aoPONYRAIIZzvamGs02V3uyFxXVOeNbagT4EUz+uZpK7KzGa15OmuF3UmJmyqoHz
-         VtCFBb+XSdyzAq0kIb0DjilVP5zWfukVwCiY+ONWB+Jf5rt3PXpXwkEPKkHReUBE6jeE
-         NSIAkn6jtFsMdpULefUyC05X6TS7Eu0+WfR8oBeRgPfgjmXGMTb/tcj3epTek77jord1
-         J2QBD7F1a/Dt2d6o66IP+Gq1CCldUWVQDQkv8Ezded0nQymljSUqGpA/Hn1JZI1ozjoc
-         R7LeTF6TAH55x2yrfR9PxQfHH5XTJvXbOQJAIvzyuuw3D2kao9zpnzqamNFjqoJ7xMjR
-         zxCg==
-X-Gm-Message-State: AOAM531nnM/lZZPWzBCC4olH/6TGYQPZoF7wTAsaxTuYSyIgwRqtjaL6
-        kvAnczZhWBNfnC6N6aiWnOsp8WWXPI3MQUTktjVQTw==
-X-Google-Smtp-Source: ABdhPJxwseHtfoTYpsVbBoyHUHwjpr1DmLApji1oWJ5No5j5zfB+jK3UzXZuHu1TdoF9GBHvCvIK1vDnDv/NsIWr4bM=
-X-Received: by 2002:a1f:dc06:: with SMTP id t6mr3337279vkg.10.1594725860317;
- Tue, 14 Jul 2020 04:24:20 -0700 (PDT)
-MIME-Version: 1.0
-References: <87imeqcwbt.fsf@tynnyri.adurom.net> <20200714091911.4442-1-alessio.bonfiglio@mail.polimi.it>
- <877dv6cthg.fsf@tynnyri.adurom.net>
-In-Reply-To: <877dv6cthg.fsf@tynnyri.adurom.net>
-From:   Emmanuel Grumbach <egrumbach@gmail.com>
-Date:   Tue, 14 Jul 2020 14:24:08 +0300
-Message-ID: <CANUX_P3jbE__37Osw2PEZzrwjkxdZXUn-Kb+AmMRUyAAjp+8cQ@mail.gmail.com>
-Subject: Re: [PATCH v2] iwlwifi: Make some Killer Wireless-AC 1550 cards work again
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     Alessio Bonfiglio <alessio.bonfiglio@mail.polimi.it>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
+        id S1728594AbgGNOi7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 14 Jul 2020 10:38:59 -0400
+Received: from mail.kernel.org ([198.145.29.99]:54182 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728552AbgGNOi6 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 14 Jul 2020 10:38:58 -0400
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id DD03C2067D;
+        Tue, 14 Jul 2020 14:38:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1594737537;
+        bh=10DbsIHggpfnX/L/cuS6NGvTsPwVjqJzSZhttOZm9R8=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=sRWSbPsKZNW+q+17x8ivS09UJScGmg9x83avVYpt77UQzMILywW6DkiLDAPTuQEpz
+         umor4d1+rBip/5C9NJI7D6njsV/WeXusWiuojlocSB6JCeg71AlNZXAT42mRHvGDeD
+         e4KKjR2ALuIpPlj/mlSVLepWxatyavXnmQzAH+7I=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Markus Theil <markus.theil@tu-ilmenau.de>,
         Johannes Berg <johannes.berg@intel.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Intel Linux Wireless <linuxwifi@intel.com>
-Content-Type: text/plain; charset="UTF-8"
+        Sasha Levin <sashal@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.7 06/19] mac80211: allow rx of mesh eapol frames with default rx key
+Date:   Tue, 14 Jul 2020 10:38:36 -0400
+Message-Id: <20200714143849.4035283-6-sashal@kernel.org>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20200714143849.4035283-1-sashal@kernel.org>
+References: <20200714143849.4035283-1-sashal@kernel.org>
+MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-> Alessio Bonfiglio <alessio.bonfiglio@mail.polimi.it> writes:
->
-> > Fix the regression introduced by commit c8685937d07f ("iwlwifi: move
-> > pu devices to new table") by adding the ids and the configurations of
-> > two missing Killer 1550 cards in order to configure and let them work
-> > correctly again (following the new table convention).
-> > Resolve bug 208141 ("Wireless ac 9560 not working kernel 5.7.2",
-> > https://bugzilla.kernel.org/show_bug.cgi?id=208141).
-> >
-> > Fixes: c8685937d07f ("iwlwifi: move pu devices to new table")
-> > Signed-off-by: Alessio Bonfiglio <alessio.bonfiglio@mail.polimi.it>
->
-> Luca, should I take this to v5.8?
+From: Markus Theil <markus.theil@tu-ilmenau.de>
 
-Luca is OOO, but I guess you should, yes.
+[ Upstream commit 0b467b63870d9c05c81456aa9bfee894ab2db3b6 ]
 
-Thanks.
+Without this patch, eapol frames cannot be received in mesh
+mode, when 802.1X should be used. Initially only a MGTK is
+defined, which is found and set as rx->key, when there are
+no other keys set. ieee80211_drop_unencrypted would then
+drop these eapol frames, as they are data frames without
+encryption and there exists some rx->key.
+
+Fix this by differentiating between mesh eapol frames and
+other data frames with existing rx->key. Allow mesh mesh
+eapol frames only if they are for our vif address.
+
+With this patch in-place, ieee80211_rx_h_mesh_fwding continues
+after the ieee80211_drop_unencrypted check and notices, that
+these eapol frames have to be delivered locally, as they should.
+
+Signed-off-by: Markus Theil <markus.theil@tu-ilmenau.de>
+Link: https://lore.kernel.org/r/20200625104214.50319-1-markus.theil@tu-ilmenau.de
+[small code cleanups]
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ net/mac80211/rx.c | 26 ++++++++++++++++++++++++++
+ 1 file changed, 26 insertions(+)
+
+diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
+index 91a13aee43784..961f37c0701bc 100644
+--- a/net/mac80211/rx.c
++++ b/net/mac80211/rx.c
+@@ -2357,6 +2357,7 @@ static int ieee80211_802_1x_port_control(struct ieee80211_rx_data *rx)
+ 
+ static int ieee80211_drop_unencrypted(struct ieee80211_rx_data *rx, __le16 fc)
+ {
++	struct ieee80211_hdr *hdr = (void *)rx->skb->data;
+ 	struct sk_buff *skb = rx->skb;
+ 	struct ieee80211_rx_status *status = IEEE80211_SKB_RXCB(skb);
+ 
+@@ -2367,6 +2368,31 @@ static int ieee80211_drop_unencrypted(struct ieee80211_rx_data *rx, __le16 fc)
+ 	if (status->flag & RX_FLAG_DECRYPTED)
+ 		return 0;
+ 
++	/* check mesh EAPOL frames first */
++	if (unlikely(rx->sta && ieee80211_vif_is_mesh(&rx->sdata->vif) &&
++		     ieee80211_is_data(fc))) {
++		struct ieee80211s_hdr *mesh_hdr;
++		u16 hdr_len = ieee80211_hdrlen(fc);
++		u16 ethertype_offset;
++		__be16 ethertype;
++
++		if (!ether_addr_equal(hdr->addr1, rx->sdata->vif.addr))
++			goto drop_check;
++
++		/* make sure fixed part of mesh header is there, also checks skb len */
++		if (!pskb_may_pull(rx->skb, hdr_len + 6))
++			goto drop_check;
++
++		mesh_hdr = (struct ieee80211s_hdr *)(skb->data + hdr_len);
++		ethertype_offset = hdr_len + ieee80211_get_mesh_hdrlen(mesh_hdr) +
++				   sizeof(rfc1042_header);
++
++		if (skb_copy_bits(rx->skb, ethertype_offset, &ethertype, 2) == 0 &&
++		    ethertype == rx->sdata->control_port_protocol)
++			return 0;
++	}
++
++drop_check:
+ 	/* Drop unencrypted frames if key is set. */
+ 	if (unlikely(!ieee80211_has_protected(fc) &&
+ 		     !ieee80211_is_any_nullfunc(fc) &&
+-- 
+2.25.1
+
