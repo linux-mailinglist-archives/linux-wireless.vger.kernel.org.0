@@ -2,39 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E749A21F4BE
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jul 2020 16:41:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A55921F4AB
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jul 2020 16:41:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729527AbgGNOlt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 14 Jul 2020 10:41:49 -0400
-Received: from mail.kernel.org ([198.145.29.99]:55976 "EHLO mail.kernel.org"
+        id S1729495AbgGNOlL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 14 Jul 2020 10:41:11 -0400
+Received: from mail.kernel.org ([198.145.29.99]:56316 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729283AbgGNOkO (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 14 Jul 2020 10:40:14 -0400
+        id S1729369AbgGNOk1 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 14 Jul 2020 10:40:27 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D5E3C22519;
-        Tue, 14 Jul 2020 14:40:12 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 3314222205;
+        Tue, 14 Jul 2020 14:40:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1594737613;
-        bh=xifNgLzE//dVOjkKwDmRmsYcKoMZQEEAF3yKPXDq0V0=;
+        s=default; t=1594737627;
+        bh=307H0mAGqFThKH7YKYzyGbkMGO1zCL4yynGdqbyR1Cc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EzCxW88LtuS9WdR5t9uqN5H2/c8/k2msZy3LGWeBUJgwAdZ76Xku3d9ZeHDV3LdXN
-         uxvdjMjJ1qU5Ri7JSSmkVAMtO2lBv3YE0tbHzc9wK5+woLNpjx7lSKvp3qe5AwYX+C
-         +9AwWDhCKXbbr5JDSlfykewHwguX9onOXAdqk7Sk=
+        b=ybJtPEkU1hIJztk/3fPQHNY+4Jkiqf75qrL4Vn+wfqVa4seUMQlpDc9TkudmyoSuJ
+         XSS0cf5oqr2in9/cvkHvXf+fD6XGESt1WBjqLFXgmBDM+zCAjMDuNAnJZ+18Ad7gpa
+         zgaWaze+OsQYQ5ieNGK3CE7CB29uwgwkGs3T+QA8=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Markus Theil <markus.theil@tu-ilmenau.de>,
         Johannes Berg <johannes.berg@intel.com>,
         Sasha Levin <sashal@kernel.org>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.9 02/10] mac80211: allow rx of mesh eapol frames with default rx key
-Date:   Tue, 14 Jul 2020 10:40:02 -0400
-Message-Id: <20200714144010.4035987-2-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.4 2/9] mac80211: allow rx of mesh eapol frames with default rx key
+Date:   Tue, 14 Jul 2020 10:40:16 -0400
+Message-Id: <20200714144024.4036118-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200714144010.4035987-1-sashal@kernel.org>
-References: <20200714144010.4035987-1-sashal@kernel.org>
+In-Reply-To: <20200714144024.4036118-1-sashal@kernel.org>
+References: <20200714144024.4036118-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -73,10 +73,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 26 insertions(+)
 
 diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-index d3334fd84ca20..9be82ed02e0e5 100644
+index a74a6ff18f919..886dce84e70c0 100644
 --- a/net/mac80211/rx.c
 +++ b/net/mac80211/rx.c
-@@ -2098,6 +2098,7 @@ static int ieee80211_802_1x_port_control(struct ieee80211_rx_data *rx)
+@@ -1963,6 +1963,7 @@ static int ieee80211_802_1x_port_control(struct ieee80211_rx_data *rx)
  
  static int ieee80211_drop_unencrypted(struct ieee80211_rx_data *rx, __le16 fc)
  {
@@ -84,7 +84,7 @@ index d3334fd84ca20..9be82ed02e0e5 100644
  	struct sk_buff *skb = rx->skb;
  	struct ieee80211_rx_status *status = IEEE80211_SKB_RXCB(skb);
  
-@@ -2108,6 +2109,31 @@ static int ieee80211_drop_unencrypted(struct ieee80211_rx_data *rx, __le16 fc)
+@@ -1973,6 +1974,31 @@ static int ieee80211_drop_unencrypted(struct ieee80211_rx_data *rx, __le16 fc)
  	if (status->flag & RX_FLAG_DECRYPTED)
  		return 0;
  
