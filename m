@@ -2,102 +2,95 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 02EB12210F5
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Jul 2020 17:28:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D66622112E
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Jul 2020 17:34:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727078AbgGOP1i (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 15 Jul 2020 11:27:38 -0400
-Received: from mail29.static.mailgun.info ([104.130.122.29]:32319 "EHLO
-        mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725900AbgGOP1S (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 15 Jul 2020 11:27:18 -0400
+        id S1727103AbgGOPdw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 15 Jul 2020 11:33:52 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:19426 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725897AbgGOPdv (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 15 Jul 2020 11:33:51 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1594826837; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=OS9jfqCnxLfBYtRX/l34nJHSA0Qibt4senv0rOAx718=; b=J79/Nm5XgZap/SOBACYNwS3bgVOhs0/CkGlZPOsYdptKPkMiSwIXlmuq3XjcKpdX0g/vu8qF
- ZmQIFeuMORNG0nar8LD1PVfSkYMoaZh+udW7QY6GRIpcRoAFMspWMMggtIy4p+rucmZ4EyvF
- JpjuzhVz1XmplaXrB+DN8AKIxAo=
-X-Mailgun-Sending-Ip: 104.130.122.29
+ s=smtp; t=1594827231; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=+mHeKpxy4OL7A+AhGE/gf7w/mDoQNzWI30jHQuYoCN4=;
+ b=Ykr/8TtaZSIslb2+d5mKQsZRsG9oXGCdkEg6Zk9dCqQoa9WEExt8XCEQGeLgmvSLMb1sJgJu
+ GmmYPT65j77TeUSEjzeGMtTjl8Htj5u3Irg0yYUjUPRTpEZMjRpS9GeJx6p2OIrsPAMymexB
+ DaMqphzVMxPoN4+KArSGEWIdtoU=
+X-Mailgun-Sending-Ip: 69.72.43.7
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n07.prod.us-east-1.postgun.com with SMTP id
- 5f0f2046f9ca681bd0a4dd9d (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 15 Jul 2020 15:27:02
+ smtp-out-n17.prod.us-east-1.postgun.com with SMTP id
+ 5f0f21cae3bee1251075ab07 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 15 Jul 2020 15:33:30
  GMT
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id B13B4C43391; Wed, 15 Jul 2020 15:27:01 +0000 (UTC)
+        id B5704C433CB; Wed, 15 Jul 2020 15:33:29 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
+        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
 Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 080D3C433C9;
-        Wed, 15 Jul 2020 15:26:58 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 080D3C433C9
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 8E3FCC433C6;
+        Wed, 15 Jul 2020 15:33:28 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 8E3FCC433C6
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Zekun Shen <bruceshenzk@gmail.com>
-Cc:     security@kernel.org, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        ath10k@lists.infradead.org, Jakub Kicinski <kuba@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: Re: [PATCH] net: ath10k: fix OOB: __ath10k_htt_rx_ring_fill_n
-References: <20200623221105.3486-1-bruceshenzk@gmail.com>
-Date:   Wed, 15 Jul 2020 18:26:56 +0300
-In-Reply-To: <20200623221105.3486-1-bruceshenzk@gmail.com> (Zekun Shen's
-        message of "Tue, 23 Jun 2020 18:11:05 -0400")
-Message-ID: <87mu4094u7.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH 1/4] wcn36xx: Fix multiple AMPDU sessions support
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <1593524821-32115-1-git-send-email-loic.poulain@linaro.org>
+References: <1593524821-32115-1-git-send-email-loic.poulain@linaro.org>
+To:     Loic Poulain <loic.poulain@linaro.org>
+Cc:     wcn36xx@lists.infradead.org, linux-wireless@vger.kernel.org,
+        Loic Poulain <loic.poulain@linaro.org>
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
+Message-Id: <20200715153329.B5704C433CB@smtp.codeaurora.org>
+Date:   Wed, 15 Jul 2020 15:33:29 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Zekun Shen <bruceshenzk@gmail.com> writes:
+Loic Poulain <loic.poulain@linaro.org> wrote:
 
-> The idx in __ath10k_htt_rx_ring_fill_n function lives in
-> consistent dma region writable by the device. Malfunctional
-> or malicious device could manipulate such idx to have a OOB
-> write. Either by
->     htt->rx_ring.netbufs_ring[idx] = skb;
-> or by
->     ath10k_htt_set_paddrs_ring(htt, paddr, idx);
->
-> The idx can also be negative as it's signed, giving a large
-> memory space to write to.
->
-> It's possibly exploitable by corruptting a legit pointer with
-> a skb pointer. And then fill skb with payload as rougue object.
->
-> Signed-off-by: Zekun Shen <bruceshenzk@gmail.com>
-> ---
-> Part of the log here. Sometimes it appears as UAF when writing 
-> to a freed memory by chance.
->
->  [   15.594376] BUG: unable to handle page fault for address: ffff887f5c1804f0
->  [   15.595483] #PF: supervisor write access in kernel mode
->  [   15.596250] #PF: error_code(0x0002) - not-present page
->  [   15.597013] PGD 0 P4D 0
->  [   15.597395] Oops: 0002 [#1] SMP KASAN PTI
->  [   15.597967] CPU: 0 PID: 82 Comm: kworker/u2:2 Not tainted 5.6.0 #69
->  [   15.598843] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), 
->  BIOS rel-1.12.1-0-ga5cab58e9a3f-prebuilt.qemu.org 04/01/2014
->  [   15.600438] Workqueue: ath10k_wq ath10k_core_register_work [ath10k_core]
->  [   15.601389] RIP: 0010:__ath10k_htt_rx_ring_fill_n 
->  (linux/drivers/net/wireless/ath/ath10k/htt_rx.c:173) ath10k_core
+> Several AMPDU sessions can be started, e.g. for different TIDs.
+> Currently the driver does not take care of the session ID when
+> requesting block-ack (statically set to 0), which leads to never
+> block-acked packet with sessions other than 0.
+> 
+> Fix this by saving the session id when creating the ba session and
+> use it in subsequent ba operations.
+> 
+> This issue can be reproduced with iperf in two steps (tid 0 strem
+> then tid 6 stream).
+> 
+> 1.0 iperf -s                                # wcn36xx side
+> 1.1 iperf -c ${IP_ADDR}                     # host side
+> 
+> Then
+> 
+> 2.0 iperf -s -u -S 0xC0                     # wcn36xx side
+> 2.1 iperf -c ${IP_ADDR} -u -S 0xC0 -l 2000  # host side
+> 
+> Signed-off-by: Loic Poulain <loic.poulain@linaro.org>
 
-I added the log to the commit log as it looks useful.
+What's the difference from the earlier version:
 
-Also I made minor changes to the title and to the error message.
+https://patchwork.kernel.org/patch/11609871/
+
+A changelog would be nice.
 
 -- 
+https://patchwork.kernel.org/patch/11633975/
+
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
