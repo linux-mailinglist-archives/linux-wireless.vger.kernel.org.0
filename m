@@ -2,151 +2,166 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EBF862202BD
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Jul 2020 05:09:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E81D32202D6
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Jul 2020 05:16:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728124AbgGODJp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 14 Jul 2020 23:09:45 -0400
-Received: from mail29.static.mailgun.info ([104.130.122.29]:23541 "EHLO
-        mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726782AbgGODJp (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 14 Jul 2020 23:09:45 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1594782584; h=Message-Id: Date: Subject: Cc: To: From:
- Sender; bh=LDraCycdrYUFDO+cpsBwm91tCEoFpX6yzK9Lz2c3eKE=; b=xdX0uJcLC2wqlSYf1LpUiTfpjU3Bm4vKm8MdnaNlyOeBq8/l4SYZct/G3yPueH2P9XcLSHIU
- dE3gWO9EN+0DxtscvXq1W/ip8q5qXwwecFMj4dS8bX/PbFmFGp2CaOrlTFIUEZUdDNe1QlIZ
- zZfJ77RciZpCphz7YiaUbbtV7Ck=
-X-Mailgun-Sending-Ip: 104.130.122.29
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n14.prod.us-east-1.postgun.com with SMTP id
- 5f0e73781e603dbb44be5b42 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 15 Jul 2020 03:09:44
- GMT
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 64751C43387; Wed, 15 Jul 2020 03:09:43 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE,
-        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from pradeepc2-linux.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: pradeepc)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 67B20C433CB;
-        Wed, 15 Jul 2020 03:09:42 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 67B20C433CB
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=pradeepc@codeaurora.org
-From:   Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org,
-        Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>
-Subject: [PATCH] mac80211: save he oper info in bss config for AP and mesh
-Date:   Tue, 14 Jul 2020 20:09:37 -0700
-Message-Id: <20200715030937.25290-1-pradeepc@codeaurora.org>
-X-Mailer: git-send-email 2.17.1
+        id S1726780AbgGODQa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 14 Jul 2020 23:16:30 -0400
+Received: from mga11.intel.com ([192.55.52.93]:51847 "EHLO mga11.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726624AbgGODQa (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 14 Jul 2020 23:16:30 -0400
+IronPort-SDR: jLtrKhpbAsQ3V6SUdUOkVUfsdxSiZfCOVVqxMFtEqZCeOlB0rjckL2kIH9YW0x7vUazlGJj2AU
+ S9nhA0BTAx1Q==
+X-IronPort-AV: E=McAfee;i="6000,8403,9682"; a="147080791"
+X-IronPort-AV: E=Sophos;i="5.75,353,1589266800"; 
+   d="scan'208";a="147080791"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jul 2020 20:16:29 -0700
+IronPort-SDR: SbmZ06TrAx4ad/Lej0sFvNC0aLt21m1dsrDKmdsSFkA0WaVfG5ly+C1nNnIt+ujT04NNAwz8UD
+ s15ekUAxIgZw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.75,353,1589266800"; 
+   d="scan'208";a="299745253"
+Received: from lkp-server01.sh.intel.com (HELO e1edd1aee32c) ([10.239.97.150])
+  by orsmga002.jf.intel.com with ESMTP; 14 Jul 2020 20:16:27 -0700
+Received: from kbuild by e1edd1aee32c with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1jvXuF-000020-2j; Wed, 15 Jul 2020 03:16:27 +0000
+Date:   Wed, 15 Jul 2020 11:16:19 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     linux-wireless@vger.kernel.org
+Subject: [wireless-drivers-next:master] BUILD SUCCESS
+ b424808115cb0141da851082d84ede20caa2215c
+Message-ID: <5f0e7503.SCXBNXrdFmUoFRvx%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Currently he_support is set only for AP mode. Storing this
-information for mesh bss as well helps driver to determine
-he support. Also save he operation element params in bss
-conf so that drivers can access this for any configurations
-instead of having to parse the beacon to fetch that info.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git  master
+branch HEAD: b424808115cb0141da851082d84ede20caa2215c  brcm80211: brcmsmac: Move LEDs to GPIO descriptors
 
-Signed-off-by: Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>
+elapsed time: 725m
+
+configs tested: 104
+configs skipped: 10
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+arm                                 defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+arm                               allnoconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm64                            allmodconfig
+arm64                             allnoconfig
+sh                           se7724_defconfig
+sh                          sdk7786_defconfig
+arm                          tango4_defconfig
+sh                            migor_defconfig
+sh                           se7206_defconfig
+mips                malta_qemu_32r6_defconfig
+sparc64                             defconfig
+mips                      pistachio_defconfig
+i386                             allyesconfig
+arm                         s3c6400_defconfig
+m68k                         amcore_defconfig
+c6x                               allnoconfig
+xtensa                generic_kc705_defconfig
+mips                           ip27_defconfig
+mips                  mips_paravirt_defconfig
+c6x                        evmc6474_defconfig
+powerpc                      pasemi_defconfig
+sh                        dreamcast_defconfig
+openrisc                         alldefconfig
+m68k                        m5407c3_defconfig
+arm                          ep93xx_defconfig
+arm                          moxart_defconfig
+sparc                               defconfig
+mips                        maltaup_defconfig
+mips                          rb532_defconfig
+powerpc                mpc7448_hpc2_defconfig
+mips                        nlm_xlp_defconfig
+sh                 kfr2r09-romimage_defconfig
+openrisc                            defconfig
+xtensa                          iss_defconfig
+arm                  colibri_pxa270_defconfig
+ia64                      gensparse_defconfig
+mips                      fuloong2e_defconfig
+sh                          r7780mp_defconfig
+ia64                                defconfig
+powerpc                      ppc6xx_defconfig
+i386                              allnoconfig
+i386                                defconfig
+i386                              debian-10.3
+ia64                             allmodconfig
+ia64                              allnoconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                              allnoconfig
+m68k                           sun3_defconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+nios2                            allyesconfig
+c6x                              allyesconfig
+openrisc                         allyesconfig
+nds32                               defconfig
+nds32                             allnoconfig
+csky                             allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+h8300                            allmodconfig
+xtensa                              defconfig
+arc                                 defconfig
+arc                              allyesconfig
+sh                               allmodconfig
+sh                                allnoconfig
+microblaze                        allnoconfig
+mips                             allyesconfig
+mips                              allnoconfig
+mips                             allmodconfig
+parisc                            allnoconfig
+parisc                              defconfig
+parisc                           allyesconfig
+parisc                           allmodconfig
+powerpc                          allyesconfig
+powerpc                          rhel-kconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+powerpc                             defconfig
+riscv                            allyesconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                            allmodconfig
+s390                             allyesconfig
+s390                              allnoconfig
+s390                             allmodconfig
+s390                                defconfig
+sparc                            allyesconfig
+sparc64                           allnoconfig
+sparc64                          allyesconfig
+sparc64                          allmodconfig
+x86_64                    rhel-7.6-kselftests
+x86_64                               rhel-8.3
+x86_64                                  kexec
+x86_64                                   rhel
+x86_64                                    lkp
+x86_64                              fedora-25
+
 ---
- include/net/mac80211.h     | 3 ++-
- net/mac80211/cfg.c         | 4 ++++
- net/mac80211/ieee80211_i.h | 3 ++-
- net/mac80211/mesh.c        | 2 ++
- net/mac80211/util.c        | 4 +++-
- 5 files changed, 13 insertions(+), 3 deletions(-)
-
-diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index 11d5610d2ad5..ef8ec345a201 100644
---- a/include/net/mac80211.h
-+++ b/include/net/mac80211.h
-@@ -604,7 +604,8 @@ struct ieee80211_ftm_responder_params {
-  *	nontransmitted BSSIDs
-  * @profile_periodicity: the least number of beacon frames need to be received
-  *	in order to discover all the nontransmitted BSSIDs in the set.
-- * @he_oper: HE operation information of the AP we are connected to
-+ * @he_oper: HE operation information of the BSS (AP/Mesh) or of the AP we are
-+ *	connected to (STA)
-  * @he_obss_pd: OBSS Packet Detection parameters.
-  * @he_bss_color: BSS coloring settings, if BSS supports HE
-  */
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index 9b360544ad6f..c80eb5bac86b 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -1019,6 +1019,10 @@ static int ieee80211_start_ap(struct wiphy *wiphy, struct net_device *dev,
- 		sdata->vif.bss_conf.frame_time_rts_th =
- 			le32_get_bits(params->he_oper->he_oper_params,
- 			      IEEE80211_HE_OPERATION_RTS_THRESHOLD_MASK);
-+		sdata->vif.bss_conf.he_oper.params =
-+			__le32_to_cpu(params->he_oper->he_oper_params);
-+		sdata->vif.bss_conf.he_oper.nss_set =
-+			__le16_to_cpu(params->he_oper->he_mcs_nss_set);
- 	}
- 
- 	mutex_lock(&local->mtx);
-diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
-index ec1a71ac65f2..47d1fcf365cf 100644
---- a/net/mac80211/ieee80211_i.h
-+++ b/net/mac80211/ieee80211_i.h
-@@ -2184,7 +2184,8 @@ u8 *ieee80211_ie_build_he_cap(u8 *pos,
- 			      u8 *end);
- void ieee80211_ie_build_he_6ghz_cap(struct ieee80211_sub_if_data *sdata,
- 				    struct sk_buff *skb);
--u8 *ieee80211_ie_build_he_oper(u8 *pos, struct cfg80211_chan_def *chandef);
-+u8 *ieee80211_ie_build_he_oper(u8 *pos, struct cfg80211_chan_def *chandef,
-+			       struct ieee80211_sub_if_data *sdata);
- int ieee80211_parse_bitrates(struct cfg80211_chan_def *chandef,
- 			     const struct ieee80211_supported_band *sband,
- 			     const u8 *srates, int srates_len, u32 *rates);
-diff --git a/net/mac80211/mesh.c b/net/mac80211/mesh.c
-index 5f1ca25b6c97..b84ddf6351db 100644
---- a/net/mac80211/mesh.c
-+++ b/net/mac80211/mesh.c
-@@ -601,6 +601,8 @@ int mesh_add_he_oper_ie(struct ieee80211_sub_if_data *sdata,
- 	    sdata->vif.bss_conf.chandef.width == NL80211_CHAN_WIDTH_10)
- 		return 0;
- 
-+	sdata->vif.bss_conf.he_support = true;
-+
- 	len = 2 + 1 + sizeof(struct ieee80211_he_operation);
- 	if (sdata->vif.bss_conf.chandef.chan->band == NL80211_BAND_6GHZ)
- 		len += sizeof(struct ieee80211_he_6ghz_oper);
-diff --git a/net/mac80211/util.c b/net/mac80211/util.c
-index 21c94094a699..eb3be6b89b0b 100644
---- a/net/mac80211/util.c
-+++ b/net/mac80211/util.c
-@@ -3028,7 +3028,8 @@ u8 *ieee80211_ie_build_vht_oper(u8 *pos, struct ieee80211_sta_vht_cap *vht_cap,
- 	return pos + sizeof(struct ieee80211_vht_operation);
- }
- 
--u8 *ieee80211_ie_build_he_oper(u8 *pos, struct cfg80211_chan_def *chandef)
-+u8 *ieee80211_ie_build_he_oper(u8 *pos, struct cfg80211_chan_def *chandef,
-+			       struct ieee80211_sub_if_data *sdata)
- {
- 	struct ieee80211_he_operation *he_oper;
- 	struct ieee80211_he_6ghz_oper *he_6ghz_op;
-@@ -3056,6 +3057,7 @@ u8 *ieee80211_ie_build_he_oper(u8 *pos, struct cfg80211_chan_def *chandef)
- 	he_oper = (struct ieee80211_he_operation *)pos;
- 	he_oper->he_oper_params = cpu_to_le32(he_oper_params);
- 
-+	sdata->vif.bss_conf.he_oper.params = he_oper_params;
- 	/* don't require special HE peer rates */
- 	he_oper->he_mcs_nss_set = cpu_to_le16(0xffff);
- 	pos += sizeof(struct ieee80211_he_operation);
--- 
-2.17.1
-
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
