@@ -2,102 +2,95 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B626A221DA2
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Jul 2020 09:51:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D7DB4221DCE
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Jul 2020 10:04:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725922AbgGPHvU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 16 Jul 2020 03:51:20 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:58436 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725867AbgGPHvU (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 16 Jul 2020 03:51:20 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1594885879; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=QJNHF8nSyL3KpP3Qe0q4cbzU3goLbrqVRld3h8n0nHk=; b=YlI4ovF7xVSJSQlh/fDCkBU4OBOxlb8FjqDRfPA9HQQEo06JGW8VNt9LD7tCJR2Q0MmQPj2X
- EMr7qd3Knqy0SOQ4MHs/pvTEYHu3DDt7hd0Zp/0JiaVkoyoGinyWhZQ7BhKhv6fSQB1RkqWe
- O0XYRZrZgzqbd1FD598PYrRXB/E=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n19.prod.us-west-2.postgun.com with SMTP id
- 5f1006d4c9bd2efa2e1d4160 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 16 Jul 2020 07:50:44
- GMT
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 68C3CC433C6; Thu, 16 Jul 2020 07:50:44 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.0
-Received: from x230.qca.qualcomm.com (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 14E9FC433C9;
-        Thu, 16 Jul 2020 07:50:42 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 14E9FC433C9
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     John Crispin <john@phrozen.org>
-Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
-Subject: Re: [RESEND 1/2] ath11k: add WMI calls to manually add/del/pause/resume
-References: <20200624080321.2271943-1-john@phrozen.org>
-Date:   Thu, 16 Jul 2020 10:50:41 +0300
-In-Reply-To: <20200624080321.2271943-1-john@phrozen.org> (John Crispin's
-        message of "Wed, 24 Jun 2020 10:03:20 +0200")
-Message-ID: <87pn8vx5im.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        id S1725970AbgGPIEQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 16 Jul 2020 04:04:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44418 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725921AbgGPIEP (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 16 Jul 2020 04:04:15 -0400
+Received: from mout1.freenet.de (mout1.freenet.de [IPv6:2001:748:100:40::2:3])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42E2EC061755
+        for <linux-wireless@vger.kernel.org>; Thu, 16 Jul 2020 01:04:15 -0700 (PDT)
+Received: from [195.4.92.165] (helo=mjail2.freenet.de)
+        by mout1.freenet.de with esmtpa (ID viktor.jaegerskuepper@freenet.de) (port 25) (Exim 4.92 #3)
+        id 1jvys6-0008NN-4B; Thu, 16 Jul 2020 10:04:02 +0200
+Received: from localhost ([::1]:34246 helo=mjail2.freenet.de)
+        by mjail2.freenet.de with esmtpa (ID viktor.jaegerskuepper@freenet.de) (Exim 4.92 #3)
+        id 1jvys6-0004qW-3P; Thu, 16 Jul 2020 10:04:02 +0200
+Received: from sub0.freenet.de ([195.4.92.119]:50510)
+        by mjail2.freenet.de with esmtpa (ID viktor.jaegerskuepper@freenet.de) (Exim 4.92 #3)
+        id 1jvypl-000395-7a; Thu, 16 Jul 2020 10:01:37 +0200
+Received: from p200300e707002e000785056b8e3c0b45.dip0.t-ipconnect.de ([2003:e7:700:2e00:785:56b:8e3c:b45]:51162 helo=[127.0.0.1])
+        by sub0.freenet.de with esmtpsa (ID viktor.jaegerskuepper@freenet.de) (TLSv1.2:ECDHE-RSA-CHACHA20-POLY1305:256) (port 465) (Exim 4.92 #3)
+        id 1jvypl-00008D-4c; Thu, 16 Jul 2020 10:01:37 +0200
+Subject: Re: [PATCH 1/1] ath9k: Fix regression with Atheros 9271
+To:     Mark O'Donovan <shiftee@posteo.net>, linux-wireless@vger.kernel.org
+Cc:     kvalo@codeaurora.org, hqjagain@gmail.com,
+        ath9k-devel@qca.qualcomm.com, davem@davemloft.net, kuba@kernel.org,
+        Roman Mamedov <rm@romanrm.net>
+References: <20200711043324.8079-1-shiftee@posteo.net>
+From:   =?UTF-8?B?VmlrdG9yIErDpGdlcnNrw7xwcGVy?= 
+        <viktor_jaegerskuepper@freenet.de>
+Message-ID: <184f6897-40f8-949c-eca5-2bdb0d2aa8fb@freenet.de>
+Date:   Thu, 16 Jul 2020 10:01:29 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <20200711043324.8079-1-shiftee@posteo.net>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US-large
+Content-Transfer-Encoding: 8bit
+X-Originated-At: 2003:e7:700:2e00:785:56b:8e3c:b45!51162
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-+ linux-wireless
+[I fixed my e-mail address and CC'ed Roman]
 
-John Crispin <john@phrozen.org> writes:
+Mark O'Donovan:
+> This fix allows ath9k_htc modules to connect to WLAN once again.
+> 
+> Fixes: 2bbcaaee1fcb (ath9k: Fix general protection fault in
+> ath9k_hif_usb_rx_cb )
+> 
+> https://bugzilla.kernel.org/show_bug.cgi?id=208251
+> 
+> Signed-off-by: Mark O'Donovan <shiftee@posteo.net>
 
-> These calls are used for debugging and will be required for WFA
-> certification tests.
->
-> Signed-off-by: John Crispin <john@phrozen.org>
+This fixes the issue for me. Please don't forget:
+Reported-by: Roman Mamedov <rm@romanrm.net>
 
-[...]
+And if you want to add this:
+Tested-by: Viktor Jägersküpper <viktor_jaegerskuepper@freenet.de>
 
-> +static void ath11k_wmi_twt_add_dialog_event(struct ath11k_base *ab, struct sk_buff *skb)
-> +{
-> +	static const char * const status[] = {
-> +		"OK", "TWT_NOT_ENABLED", "USED_DIALOG_ID", "INVALID_PARAM",
-> +		"NOT_READY", "NO_RESOURCE", "NO_ACK", "NO_RESPONSE",
-> +		"DENIED", "UNKNOWN_ERROR"
-> +	};
-> +	const void **tb;
-> +	const struct wmi_twt_add_dialog_event *ev;
-> +	int ret;
+These additional lines are mainly useful if the patch doesn't work for someone
+else and they decide to report it, so hopefully Roman and I would receive the
+report, too. And we already have three threads for this bug.
+
+> ---
+>  drivers/net/wireless/ath/ath9k/hif_usb.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/wireless/ath/ath9k/hif_usb.c b/drivers/net/wireless/ath/ath9k/hif_usb.c
+> index 4ed21dad6a8e..3f563e02d17d 100644
+> --- a/drivers/net/wireless/ath/ath9k/hif_usb.c
+> +++ b/drivers/net/wireless/ath/ath9k/hif_usb.c
+> @@ -733,11 +733,13 @@ static void ath9k_hif_usb_reg_in_cb(struct urb *urb)
+>  			return;
+>  		}
+>  
+> +		rx_buf->skb = nskb;
 > +
-> +	tb = ath11k_wmi_tlv_parse_alloc(ab, skb->data, skb->len, GFP_ATOMIC);
-> +	if (IS_ERR(tb)) {
-> +		ret = PTR_ERR(tb);
-> +		ath11k_warn(ab, "failed to parse tlv: %d\n", ret);
-> +		return;
-> +	}
-> +
-> +	ev = tb[WMI_TAG_TWT_ADD_DIALOG_COMPLETE_EVENT];
-> +	if (!ev) {
-> +		ath11k_warn(ab, "failed to fetch twt add dialog ev");
-> +		goto exit;
-> +	}
-> +
-> +	ath11k_info(ab, "TWT Add Dialog Event - Status: %s, DialogId: %d, VdevId: %d\n",
-> +		    status[ev->status], ev->vdev_id, ev->dialog_id);
-
-Shouldn't this be a debug message? The info level should be used very
-sparingly.
-
--- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+>  		usb_fill_int_urb(urb, hif_dev->udev,
+>  				 usb_rcvintpipe(hif_dev->udev,
+>  						 USB_REG_IN_PIPE),
+>  				 nskb->data, MAX_REG_IN_BUF_SIZE,
+> -				 ath9k_hif_usb_reg_in_cb, nskb, 1);
+> +				 ath9k_hif_usb_reg_in_cb, rx_buf, 1);
+>  	}
+>  
+>  resubmit:
+> 
