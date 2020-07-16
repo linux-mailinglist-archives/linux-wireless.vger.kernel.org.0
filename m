@@ -2,281 +2,191 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A33C4221834
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Jul 2020 01:05:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 683C1221C2E
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Jul 2020 07:53:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727062AbgGOXFi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 15 Jul 2020 19:05:38 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:29139 "EHLO m43-7.mailgun.net"
+        id S1726083AbgGPFxS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 16 Jul 2020 01:53:18 -0400
+Received: from mga03.intel.com ([134.134.136.65]:38291 "EHLO mga03.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727052AbgGOXFh (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 15 Jul 2020 19:05:37 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1594854336; h=Content-Transfer-Encoding: MIME-Version:
- References: In-Reply-To: Message-Id: Date: Subject: Cc: To: From:
- Sender; bh=jJ6NB6aA6Xn8jtjz9aW5q6j4CNP4ZixXdxJZyC7N24Q=; b=X/zwb2xZqg+xflABr+6qb6JbFOWU9brvi6MwzYnux01vE5ttkld2HyPW38UH7+Z0LE8o7aT3
- V+H7f+vGBOev7Nsc6reP6EvuEywrPyNs3lt/sT+BtL1jO8Hy4WUTcPzyvXQp/V5QzGT2Hapx
- 5sIITP/M3l0DUeejOYPVy9cofNM=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n16.prod.us-west-2.postgun.com with SMTP id
- 5f0f8bb3166c1c54942f1439 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 15 Jul 2020 23:05:23
- GMT
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 552E5C433C9; Wed, 15 Jul 2020 23:05:23 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.0
-Received: from alokad-linux.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: alokad)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 9AA9AC433C6;
-        Wed, 15 Jul 2020 23:05:22 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 9AA9AC433C6
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=alokad@codeaurora.org
-From:   Aloka Dixit <alokad@codeaurora.org>
-To:     johannes@sipsolutions.net
-Cc:     linux-wireless@vger.kernel.org, Aloka Dixit <alokad@codeaurora.org>
-Subject: [PATCH v3 2/2] mac80211: Unsolicited broadcast probe response support
-Date:   Wed, 15 Jul 2020 16:05:14 -0700
-Message-Id: <20200715230514.26792-3-alokad@codeaurora.org>
-X-Mailer: git-send-email 2.25.0
-In-Reply-To: <20200715230514.26792-1-alokad@codeaurora.org>
-References: <20200715230514.26792-1-alokad@codeaurora.org>
+        id S1725844AbgGPFxS (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 16 Jul 2020 01:53:18 -0400
+IronPort-SDR: 3lWYaVvCe9x/0y3tJtbkeERq8aBUe8E4lzRsOZuGgVQ0gWV5J5jGhISVQoJ+giNKFLNW31qZDT
+ RjFSuJUsecxQ==
+X-IronPort-AV: E=McAfee;i="6000,8403,9683"; a="149314184"
+X-IronPort-AV: E=Sophos;i="5.75,358,1589266800"; 
+   d="scan'208";a="149314184"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jul 2020 22:53:17 -0700
+IronPort-SDR: dYUW4K5MDLaacV1CyofFifd0VZFkQCQkWPDkwj3BA2jWoNuukPY37zOArAmIKhibyriaziSnOS
+ o5q3YkwfVDhQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.75,358,1589266800"; 
+   d="scan'208";a="485981628"
+Received: from lkp-server02.sh.intel.com (HELO 02dcbd16d3ea) ([10.239.97.151])
+  by fmsmga006.fm.intel.com with ESMTP; 15 Jul 2020 22:53:16 -0700
+Received: from kbuild by 02dcbd16d3ea with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1jvwpX-00003V-Vn; Thu, 16 Jul 2020 05:53:15 +0000
+Date:   Thu, 16 Jul 2020 13:52:00 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     linux-wireless@vger.kernel.org
+Subject: [wireless-drivers-next:master] BUILD SUCCESS WITH WARNING
+ 0e20c3e10333326fc63646fa40b159eb88b7e8c8
+Message-ID: <5f0feb00.Ma5reyOGmjZ9Hp1z%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This patch adds mac80211 support to configure unsolicited
-broadcast probe response transmission for in-band discovery in 6GHz.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git  master
+branch HEAD: 0e20c3e10333326fc63646fa40b159eb88b7e8c8  wireless: Fix trivial spelling
 
-Changes include functions to store and retrieve probe response template,
-and packet interval (0 - 20 TUs).
-Setting interval to 0 disables the unsolicited broadcast probe response
-transmission.
+Warning in current branch:
 
-Signed-off-by: Aloka Dixit <alokad@codeaurora.org>
+drivers/net/wireless/realtek/rtw88/rtw8821c.c:71:8: warning: type qualifiers ignored on function return type [-Wignored-qualifiers]
+
+Warning ids grouped by kconfigs:
+
+recent_errors
+|-- arm-allmodconfig
+|   `-- drivers-net-wireless-realtek-rtw88-rtw8821c.c:warning:type-qualifiers-ignored-on-function-return-type
+|-- arm-allyesconfig
+|   `-- drivers-net-wireless-realtek-rtw88-rtw8821c.c:warning:type-qualifiers-ignored-on-function-return-type
+|-- ia64-allmodconfig
+|   `-- drivers-net-wireless-realtek-rtw88-rtw8821c.c:warning:type-qualifiers-ignored-on-function-return-type
+|-- ia64-allyesconfig
+|   `-- drivers-net-wireless-realtek-rtw88-rtw8821c.c:warning:type-qualifiers-ignored-on-function-return-type
+|-- mips-allmodconfig
+|   `-- drivers-net-wireless-realtek-rtw88-rtw8821c.c:warning:type-qualifiers-ignored-on-function-return-type
+|-- mips-allyesconfig
+|   `-- drivers-net-wireless-realtek-rtw88-rtw8821c.c:warning:type-qualifiers-ignored-on-function-return-type
+|-- parisc-allmodconfig
+|   `-- drivers-net-wireless-realtek-rtw88-rtw8821c.c:warning:type-qualifiers-ignored-on-function-return-type
+|-- parisc-allyesconfig
+|   `-- drivers-net-wireless-realtek-rtw88-rtw8821c.c:warning:type-qualifiers-ignored-on-function-return-type
+|-- powerpc-allmodconfig
+|   `-- drivers-net-wireless-realtek-rtw88-rtw8821c.c:warning:type-qualifiers-ignored-on-function-return-type
+|-- powerpc-allyesconfig
+|   `-- drivers-net-wireless-realtek-rtw88-rtw8821c.c:warning:type-qualifiers-ignored-on-function-return-type
+|-- riscv-allmodconfig
+|   `-- drivers-net-wireless-realtek-rtw88-rtw8821c.c:warning:type-qualifiers-ignored-on-function-return-type
+|-- riscv-allyesconfig
+|   `-- drivers-net-wireless-realtek-rtw88-rtw8821c.c:warning:type-qualifiers-ignored-on-function-return-type
+|-- sparc-allyesconfig
+|   `-- drivers-net-wireless-realtek-rtw88-rtw8821c.c:warning:type-qualifiers-ignored-on-function-return-type
+|-- sparc64-allmodconfig
+|   `-- drivers-net-wireless-realtek-rtw88-rtw8821c.c:warning:type-qualifiers-ignored-on-function-return-type
+|-- sparc64-allyesconfig
+|   `-- drivers-net-wireless-realtek-rtw88-rtw8821c.c:warning:type-qualifiers-ignored-on-function-return-type
+`-- xtensa-allyesconfig
+    `-- drivers-net-wireless-realtek-rtw88-rtw8821c.c:warning:type-qualifiers-ignored-on-function-return-type
+
+elapsed time: 723m
+
+configs tested: 92
+configs skipped: 3
+
+arm                                 defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+arm                               allnoconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm64                            allmodconfig
+arm64                             allnoconfig
+arc                          axs101_defconfig
+c6x                        evmc6457_defconfig
+sh                 kfr2r09-romimage_defconfig
+powerpc                    gamecube_defconfig
+arm                          lpd270_defconfig
+sparc                            alldefconfig
+mips                       capcella_defconfig
+mips                        nlm_xlr_defconfig
+powerpc                      pmac32_defconfig
+arm                        clps711x_defconfig
+arm                           corgi_defconfig
+riscv                            allyesconfig
+arm                         orion5x_defconfig
+i386                              allnoconfig
+i386                             allyesconfig
+i386                                defconfig
+i386                              debian-10.3
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                              allnoconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                              allnoconfig
+m68k                           sun3_defconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+nios2                            allyesconfig
+openrisc                            defconfig
+c6x                              allyesconfig
+c6x                               allnoconfig
+openrisc                         allyesconfig
+nds32                               defconfig
+nds32                             allnoconfig
+csky                             allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+h8300                            allmodconfig
+xtensa                              defconfig
+arc                                 defconfig
+arc                              allyesconfig
+sh                               allmodconfig
+sh                                allnoconfig
+microblaze                        allnoconfig
+mips                             allyesconfig
+mips                              allnoconfig
+mips                             allmodconfig
+parisc                            allnoconfig
+parisc                              defconfig
+parisc                           allyesconfig
+parisc                           allmodconfig
+powerpc                          allyesconfig
+powerpc                          rhel-kconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+powerpc                             defconfig
+i386                 randconfig-a016-20200715
+i386                 randconfig-a011-20200715
+i386                 randconfig-a015-20200715
+i386                 randconfig-a012-20200715
+i386                 randconfig-a013-20200715
+i386                 randconfig-a014-20200715
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                            allmodconfig
+s390                             allyesconfig
+s390                              allnoconfig
+s390                             allmodconfig
+s390                                defconfig
+sparc                            allyesconfig
+sparc                               defconfig
+sparc64                             defconfig
+sparc64                           allnoconfig
+sparc64                          allyesconfig
+sparc64                          allmodconfig
+x86_64                    rhel-7.6-kselftests
+x86_64                               rhel-8.3
+x86_64                                  kexec
+x86_64                                   rhel
+x86_64                                    lkp
+x86_64                              fedora-25
+
 ---
- include/net/mac80211.h     | 21 +++++++++++++++++++
- net/mac80211/cfg.c         | 42 ++++++++++++++++++++++++++++++++++++++
- net/mac80211/ieee80211_i.h |  7 +++++++
- net/mac80211/tx.c          | 26 +++++++++++++++++++++++
- 4 files changed, 96 insertions(+)
-
-diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index 11d5610d2ad5..90800558725c 100644
---- a/include/net/mac80211.h
-+++ b/include/net/mac80211.h
-@@ -317,6 +317,8 @@ struct ieee80211_vif_chanctx_switch {
-  * @BSS_CHANGED_TWT: TWT status changed
-  * @BSS_CHANGED_HE_OBSS_PD: OBSS Packet Detection status changed.
-  * @BSS_CHANGED_HE_BSS_COLOR: BSS Color has changed
-+ * @BSS_CHANGED_UNSOL_BCAST_PROBE_RESP: Unsolicited broadcast probe response
-+ *	status changed.
-  *
-  */
- enum ieee80211_bss_change {
-@@ -350,6 +352,7 @@ enum ieee80211_bss_change {
- 	BSS_CHANGED_TWT			= 1<<27,
- 	BSS_CHANGED_HE_OBSS_PD		= 1<<28,
- 	BSS_CHANGED_HE_BSS_COLOR	= 1<<29,
-+	BSS_CHANGED_UNSOL_BCAST_PROBE_RESP = 1<<30,
- 
- 	/* when adding here, make sure to change ieee80211_reconfig */
- };
-@@ -607,6 +610,8 @@ struct ieee80211_ftm_responder_params {
-  * @he_oper: HE operation information of the AP we are connected to
-  * @he_obss_pd: OBSS Packet Detection parameters.
-  * @he_bss_color: BSS coloring settings, if BSS supports HE
-+ * @unsol_bcast_probe_resp_interval: Unsolicited broadcast probe response
-+ *	interval.
-  */
- struct ieee80211_bss_conf {
- 	const u8 *bssid;
-@@ -674,6 +679,7 @@ struct ieee80211_bss_conf {
- 	} he_oper;
- 	struct ieee80211_he_obss_pd he_obss_pd;
- 	struct cfg80211_he_bss_color he_bss_color;
-+	u32 unsol_bcast_probe_resp_interval;
- };
- 
- /**
-@@ -6558,4 +6564,19 @@ u32 ieee80211_calc_tx_airtime(struct ieee80211_hw *hw,
-  */
- bool ieee80211_set_hw_80211_encap(struct ieee80211_vif *vif, bool enable);
- 
-+
-+/**
-+ * ieee80211_get_unsol_bcast_probe_resp_tmpl - Get unsolicited broadcast
-+ *	probe response template.
-+ * @hw: pointer obtained from ieee80211_alloc_hw().
-+ * @vif: &struct ieee80211_vif pointer from the add_interface callback.
-+ *
-+ * The driver is responsible for freeing the returned skb.
-+ *
-+ * Return: Unsolicited broadcast probe response template. %NULL on error.
-+ */
-+struct sk_buff *
-+ieee80211_get_unsol_bcast_probe_resp_tmpl(struct ieee80211_hw *hw,
-+					  struct ieee80211_vif *vif);
-+
- #endif /* MAC80211_H */
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index 9b360544ad6f..3db24325f545 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -837,6 +837,32 @@ static int ieee80211_set_probe_resp(struct ieee80211_sub_if_data *sdata,
- 	return 0;
- }
- 
-+static int
-+ieee80211_set_unsol_bcast_probe_resp(struct ieee80211_sub_if_data *sdata,
-+				     struct cfg80211_unsol_bcast_probe_resp *params)
-+{
-+	struct unsol_bcast_probe_resp_data *new, *old = NULL;
-+
-+	sdata->vif.bss_conf.unsol_bcast_probe_resp_interval =
-+							params->interval;
-+
-+	if (!params->tmpl || !params->tmpl_len) /* Optional template */
-+		return 0;
-+
-+	old = sdata_dereference(sdata->u.ap.unsol_bcast_probe_resp, sdata);
-+	new = kzalloc(sizeof(*new) + params->tmpl_len, GFP_KERNEL);
-+	if (!new)
-+		return -ENOMEM;
-+	new->len = params->tmpl_len;
-+	memcpy(new->data, params->tmpl, params->tmpl_len);
-+	rcu_assign_pointer(sdata->u.ap.unsol_bcast_probe_resp, new);
-+
-+	if (old)
-+		kfree_rcu(old, rcu_head);
-+
-+	return 0;
-+}
-+
- static int ieee80211_set_ftm_responder_params(
- 				struct ieee80211_sub_if_data *sdata,
- 				const u8 *lci, size_t lci_len,
-@@ -1103,6 +1129,15 @@ static int ieee80211_start_ap(struct wiphy *wiphy, struct net_device *dev,
- 	}
- 	changed |= err;
- 
-+	err = ieee80211_set_unsol_bcast_probe_resp(sdata,
-+						   &params->unsol_bcast_probe_resp);
-+	if (err < 0) {
-+		ieee80211_vif_release_channel(sdata);
-+		return err;
-+	} else if (err == 0) {
-+		changed |= BSS_CHANGED_UNSOL_BCAST_PROBE_RESP;
-+	}
-+
- 	err = drv_start_ap(sdata->local, sdata);
- 	if (err) {
- 		old = sdata_dereference(sdata->u.ap.beacon, sdata);
-@@ -1158,6 +1193,7 @@ static int ieee80211_stop_ap(struct wiphy *wiphy, struct net_device *dev)
- 	struct ieee80211_local *local = sdata->local;
- 	struct beacon_data *old_beacon;
- 	struct probe_resp *old_probe_resp;
-+	struct unsol_bcast_probe_resp_data *old_unsol_bcast_probe_resp;
- 	struct cfg80211_chan_def chandef;
- 
- 	sdata_assert_lock(sdata);
-@@ -1166,6 +1202,9 @@ static int ieee80211_stop_ap(struct wiphy *wiphy, struct net_device *dev)
- 	if (!old_beacon)
- 		return -ENOENT;
- 	old_probe_resp = sdata_dereference(sdata->u.ap.probe_resp, sdata);
-+	old_unsol_bcast_probe_resp =
-+		sdata_dereference(sdata->u.ap.unsol_bcast_probe_resp,
-+				  sdata);
- 
- 	/* abort any running channel switch */
- 	mutex_lock(&local->mtx);
-@@ -1189,9 +1228,12 @@ static int ieee80211_stop_ap(struct wiphy *wiphy, struct net_device *dev)
- 	/* remove beacon and probe response */
- 	RCU_INIT_POINTER(sdata->u.ap.beacon, NULL);
- 	RCU_INIT_POINTER(sdata->u.ap.probe_resp, NULL);
-+	RCU_INIT_POINTER(sdata->u.ap.unsol_bcast_probe_resp, NULL);
- 	kfree_rcu(old_beacon, rcu_head);
- 	if (old_probe_resp)
- 		kfree_rcu(old_probe_resp, rcu_head);
-+	if (old_unsol_bcast_probe_resp)
-+		kfree_rcu(old_unsol_bcast_probe_resp, rcu_head);
- 
- 	kfree(sdata->vif.bss_conf.ftmr_params);
- 	sdata->vif.bss_conf.ftmr_params = NULL;
-diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
-index ec1a71ac65f2..b54108ef3560 100644
---- a/net/mac80211/ieee80211_i.h
-+++ b/net/mac80211/ieee80211_i.h
-@@ -272,6 +272,12 @@ struct probe_resp {
- 	u8 data[];
- };
- 
-+struct unsol_bcast_probe_resp_data {
-+	struct rcu_head rcu_head;
-+	int len;
-+	u8 data[];
-+};
-+
- struct ps_data {
- 	/* yes, this looks ugly, but guarantees that we can later use
- 	 * bitmap_empty :)
-@@ -287,6 +293,7 @@ struct ps_data {
- struct ieee80211_if_ap {
- 	struct beacon_data __rcu *beacon;
- 	struct probe_resp __rcu *probe_resp;
-+	struct unsol_bcast_probe_resp_data __rcu *unsol_bcast_probe_resp;
- 
- 	/* to be used after channel switch. */
- 	struct cfg80211_beacon_data *next_beacon;
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index e9ce658141f5..3657dc799ca5 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -4998,6 +4998,32 @@ struct sk_buff *ieee80211_proberesp_get(struct ieee80211_hw *hw,
- }
- EXPORT_SYMBOL(ieee80211_proberesp_get);
- 
-+struct sk_buff *
-+ieee80211_get_unsol_bcast_probe_resp_tmpl(struct ieee80211_hw *hw,
-+					  struct ieee80211_vif *vif)
-+{
-+	struct sk_buff *skb = NULL;
-+	struct unsol_bcast_probe_resp_data *tmpl = NULL;
-+	struct ieee80211_sub_if_data *sdata = vif_to_sdata(vif);
-+
-+	if (sdata->vif.type != NL80211_IFTYPE_AP)
-+		return NULL;
-+
-+	rcu_read_lock();
-+	tmpl = rcu_dereference(sdata->u.ap.unsol_bcast_probe_resp);
-+	if (!tmpl) {
-+		rcu_read_unlock();
-+		return NULL;
-+	}
-+
-+	skb = dev_alloc_skb(tmpl->len);
-+	if (skb)
-+		skb_put_data(skb, tmpl->data, tmpl->len);
-+	rcu_read_unlock();
-+	return skb;
-+}
-+EXPORT_SYMBOL(ieee80211_get_unsol_bcast_probe_resp_tmpl);
-+
- struct sk_buff *ieee80211_pspoll_get(struct ieee80211_hw *hw,
- 				     struct ieee80211_vif *vif)
- {
--- 
-2.25.0
-
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
