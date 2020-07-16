@@ -2,207 +2,115 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7598B221F0A
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Jul 2020 10:55:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E3D91221F52
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Jul 2020 11:03:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727096AbgGPIyO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 16 Jul 2020 04:54:14 -0400
-Received: from szxga05-in.huawei.com ([45.249.212.191]:7758 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725975AbgGPIyN (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 16 Jul 2020 04:54:13 -0400
-Received: from DGGEMS409-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id 35B31ED79A95EA31D2FB;
-        Thu, 16 Jul 2020 16:54:10 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS409-HUB.china.huawei.com (10.3.19.209) with Microsoft SMTP Server id
- 14.3.487.0; Thu, 16 Jul 2020 16:54:08 +0800
-From:   Qinglang Miao <miaoqinglang@huawei.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>
-CC:     <linux-wireless@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH -next] mt76: Convert to DEFINE_SHOW_ATTRIBUTE
-Date:   Thu, 16 Jul 2020 16:58:01 +0800
-Message-ID: <20200716085801.11220-1-miaoqinglang@huawei.com>
-X-Mailer: git-send-email 2.20.1
+        id S1728362AbgGPJC6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 16 Jul 2020 05:02:58 -0400
+Received: from mail29.static.mailgun.info ([104.130.122.29]:41895 "EHLO
+        mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726333AbgGPJC5 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 16 Jul 2020 05:02:57 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1594890176; h=Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Message-ID: In-Reply-To: Date: References: Subject: Cc:
+ To: From: Sender; bh=7CyfaApRY22qfhxW5ZVfuZTLhmfeSWKVhmQOnb67Jk8=; b=cT1CLHEIYxWqBW5CQokAI3y45gN1HhanICCAs/m/Oo45smBG/t2aRZZU32wOxTpgmQl4Wgoi
+ QNhsarjsWqa2fLVkhE7WjwVAj/9detJpCy9LJPFTFVoSB3JxCUufB/sy3LZ6uLYmX+ZbK12c
+ MYnCbYQE6ptTYxMyN90ChpLkt30=
+X-Mailgun-Sending-Ip: 104.130.122.29
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n08.prod.us-west-2.postgun.com with SMTP id
+ 5f1017c0ee6926bb4f75dcff (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 16 Jul 2020 09:02:56
+ GMT
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 9F5FDC433C9; Thu, 16 Jul 2020 09:02:55 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE,
+        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 5E1E1C433CB;
+        Thu, 16 Jul 2020 09:02:51 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 5E1E1C433CB
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Viktor =?utf-8?B?SsOkZ2Vyc2vDvHBwZXI=?= 
+        <viktor_jaegerskuepper@freenet.de>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Gabriel C <nix.or.die@googlemail.com>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        stable <stable@vger.kernel.org>, lwn@lwn.net,
+        angrypenguinpoland@gmail.com, Qiujun Huang <hqjagain@gmail.com>,
+        ath9k-devel <ath9k-devel@qca.qualcomm.com>,
+        "linux-wireless\@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        Roman Mamedov <rm@romanrm.net>
+Subject: Re: ath9k broken [was: Linux 5.7.3]
+References: <1592410366125160@kroah.com>
+        <CAEJqkgjV8p6LtBV8YUGbNb0vYzKOQt4-AMAvYw5mzFr3eicyTg@mail.gmail.com>
+        <b7993e83-1df7-0c93-f6dd-dba9dc10e27a@kernel.org>
+        <CAEJqkggG2ZB8De_zbP2W7Z9eRYve2br8jALaLRhjC33ksLZpTw@mail.gmail.com>
+        <CAEJqkgj4LS7M3zYK51Vagt4rWC9A7uunA+7CvX0Qv=57Or3Ngg@mail.gmail.com>
+        <CAEJqkghJWGsLCj2Wvt-yhzMewjXwrXhSEDpar6rbDpbSA6R8kQ@mail.gmail.com>
+        <20200626133959.GA4024297@kroah.com>
+        <CAEJqkgiACMar-iWsWQgJPAViBBURaNpcOD4FKtp6M8Aw_D4FOw@mail.gmail.com>
+        <CAEJqkgg4Ka8oNL7ELoJrR0-Abz3=caLns48KyDC=DQcym6SRvA@mail.gmail.com>
+        <20200707141100.GE4064836@kroah.com>
+        <07c8d8fa-8bbc-0b4e-191c-b2635214e8b9@freenet.de>
+        <87ft9sbym3.fsf@tynnyri.adurom.net>
+        <20eec98e-960c-cece-21e4-01e26b44233e@freenet.de>
+Date:   Thu, 16 Jul 2020 12:02:49 +0300
+In-Reply-To: <20eec98e-960c-cece-21e4-01e26b44233e@freenet.de> ("Viktor
+        \=\?utf-8\?Q\?J\=C3\=A4gersk\=C3\=BCpper\=22's\?\= message of "Thu, 16 Jul 2020
+ 10:15:30 +0200")
+Message-ID: <87365r96iu.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Use DEFINE_SHOW_ATTRIBUTE macro to simplify the code.
+Viktor J=C3=A4gersk=C3=BCpper <viktor_jaegerskuepper@freenet.de> writes:
 
-Signed-off-by: Qinglang Miao <miaoqinglang@huawei.com>
----
- .../wireless/mediatek/mt76/mt7603/debugfs.c   | 17 ++--------
- .../wireless/mediatek/mt76/mt7615/debugfs.c   | 17 ++--------
- .../wireless/mediatek/mt76/mt76x02_debugfs.c  | 34 ++++---------------
- 3 files changed, 12 insertions(+), 56 deletions(-)
+>>> This bug was also reported on the thread where it had been posted origi=
+nally:
+>>> https://lore.kernel.org/linux-wireless/20200621020428.6417d6fb@natsu/
+>>>
+>>> I am waiting for Kalle Valo to accept my patch (v2) which reverts the a=
+bove
+>>> mentioned commit and which looks correct according to him. He wrote tha=
+t he
+>>> would take a closer look at this as soon as he could.
+>>=20
+>> Mark posted a patch which I'm hoping to fix the issue:
+>>=20
+>> [1/1] ath9k: Fix regression with Atheros 9271
+>>=20
+>> https://patchwork.kernel.org/patch/11657669/
+>>=20
+>> Can someone confirm this, please? I would rather take Mark's fix than
+>> the revert.
+>>=20
+>
+> This fixes the issue for me.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7603/debugfs.c
-index fc913aad2..005a8cb97 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7603/debugfs.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7603/debugfs.c
-@@ -70,7 +70,7 @@ DEFINE_DEBUGFS_ATTRIBUTE(fops_edcca, mt7603_edcca_get,
- 			 mt7603_edcca_set, "%lld\n");
- 
- static int
--mt7603_ampdu_stat_read(struct seq_file *file, void *data)
-+mt7603_ampdu_stat_show(struct seq_file *file, void *data)
- {
- 	struct mt7603_dev *dev = file->private;
- 	int bound[3], i, range;
-@@ -91,18 +91,7 @@ mt7603_ampdu_stat_read(struct seq_file *file, void *data)
- 	return 0;
- }
- 
--static int
--mt7603_ampdu_stat_open(struct inode *inode, struct file *f)
--{
--	return single_open(f, mt7603_ampdu_stat_read, inode->i_private);
--}
--
--static const struct file_operations fops_ampdu_stat = {
--	.open = mt7603_ampdu_stat_open,
--	.read_iter = seq_read_iter,
--	.llseek = seq_lseek,
--	.release = single_release,
--};
-+DEFINE_SHOW_ATTRIBUTE(mt7603_ampdu_stat);
- 
- void mt7603_init_debugfs(struct mt7603_dev *dev)
- {
-@@ -112,7 +101,7 @@ void mt7603_init_debugfs(struct mt7603_dev *dev)
- 	if (!dir)
- 		return;
- 
--	debugfs_create_file("ampdu_stat", 0400, dir, dev, &fops_ampdu_stat);
-+	debugfs_create_file("ampdu_stat", 0400, dir, dev, &mt7603_ampdu_stat_fops);
- 	debugfs_create_devm_seqfile(dev->mt76.dev, "xmit-queues", dir,
- 				    mt76_queues_read);
- 	debugfs_create_file("edcca", 0600, dir, dev, &fops_edcca);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7615/debugfs.c
-index e356d9ec5..360d44331 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/debugfs.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/debugfs.c
-@@ -163,7 +163,7 @@ mt7615_ampdu_stat_read_phy(struct mt7615_phy *phy,
- }
- 
- static int
--mt7615_ampdu_stat_read(struct seq_file *file, void *data)
-+mt7615_ampdu_stat_show(struct seq_file *file, void *data)
- {
- 	struct mt7615_dev *dev = file->private;
- 
-@@ -173,18 +173,7 @@ mt7615_ampdu_stat_read(struct seq_file *file, void *data)
- 	return 0;
- }
- 
--static int
--mt7615_ampdu_stat_open(struct inode *inode, struct file *f)
--{
--	return single_open(f, mt7615_ampdu_stat_read, inode->i_private);
--}
--
--static const struct file_operations fops_ampdu_stat = {
--	.open = mt7615_ampdu_stat_open,
--	.read_iter = seq_read_iter,
--	.llseek = seq_lseek,
--	.release = single_release,
--};
-+DEFINE_SHOW_ATTRIBUTE(mt7615_ampdu_stat);
- 
- static void
- mt7615_radio_read_phy(struct mt7615_phy *phy, struct seq_file *s)
-@@ -301,7 +290,7 @@ int mt7615_init_debugfs(struct mt7615_dev *dev)
- 					    mt76_queues_read);
- 	debugfs_create_devm_seqfile(dev->mt76.dev, "acq", dir,
- 				    mt7615_queues_acq);
--	debugfs_create_file("ampdu_stat", 0400, dir, dev, &fops_ampdu_stat);
-+	debugfs_create_file("ampdu_stat", 0400, dir, dev, &mt7615_ampdu_stat_fops);
- 	debugfs_create_file("scs", 0600, dir, dev, &fops_scs);
- 	debugfs_create_file("dbdc", 0600, dir, dev, &fops_dbdc);
- 	debugfs_create_file("fw_debug", 0600, dir, dev, &fops_fw_debug);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_debugfs.c b/drivers/net/wireless/mediatek/mt76/mt76x02_debugfs.c
-index eda1e49c6..c4fe1c436 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x02_debugfs.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x02_debugfs.c
-@@ -7,7 +7,7 @@
- #include "mt76x02.h"
- 
- static int
--mt76x02_ampdu_stat_read(struct seq_file *file, void *data)
-+mt76x02_ampdu_stat_show(struct seq_file *file, void *data)
- {
- 	struct mt76x02_dev *dev = file->private;
- 	int i, j;
-@@ -31,11 +31,7 @@ mt76x02_ampdu_stat_read(struct seq_file *file, void *data)
- 	return 0;
- }
- 
--static int
--mt76x02_ampdu_stat_open(struct inode *inode, struct file *f)
--{
--	return single_open(f, mt76x02_ampdu_stat_read, inode->i_private);
--}
-+DEFINE_SHOW_ATTRIBUTE(mt76x02_ampdu_stat);
- 
- static int read_txpower(struct seq_file *file, void *data)
- {
-@@ -48,15 +44,8 @@ static int read_txpower(struct seq_file *file, void *data)
- 	return 0;
- }
- 
--static const struct file_operations fops_ampdu_stat = {
--	.open = mt76x02_ampdu_stat_open,
--	.read_iter = seq_read_iter,
--	.llseek = seq_lseek,
--	.release = single_release,
--};
--
- static int
--mt76x02_dfs_stat_read(struct seq_file *file, void *data)
-+mt76x02_dfs_stat_show(struct seq_file *file, void *data)
- {
- 	struct mt76x02_dev *dev = file->private;
- 	struct mt76x02_dfs_pattern_detector *dfs_pd = &dev->dfs_pd;
-@@ -81,18 +70,7 @@ mt76x02_dfs_stat_read(struct seq_file *file, void *data)
- 	return 0;
- }
- 
--static int
--mt76x02_dfs_stat_open(struct inode *inode, struct file *f)
--{
--	return single_open(f, mt76x02_dfs_stat_read, inode->i_private);
--}
--
--static const struct file_operations fops_dfs_stat = {
--	.open = mt76x02_dfs_stat_open,
--	.read_iter = seq_read_iter,
--	.llseek = seq_lseek,
--	.release = single_release,
--};
-+DEFINE_SHOW_ATTRIBUTE(mt76x02_dfs_stat);
- 
- static int read_agc(struct seq_file *file, void *data)
- {
-@@ -150,8 +128,8 @@ void mt76x02_init_debugfs(struct mt76x02_dev *dev)
- 	debugfs_create_bool("tpc", 0600, dir, &dev->enable_tpc);
- 
- 	debugfs_create_file("edcca", 0600, dir, dev, &fops_edcca);
--	debugfs_create_file("ampdu_stat", 0400, dir, dev, &fops_ampdu_stat);
--	debugfs_create_file("dfs_stats", 0400, dir, dev, &fops_dfs_stat);
-+	debugfs_create_file("ampdu_stat", 0400, dir, dev, &mt76x02_ampdu_stat_fops);
-+	debugfs_create_file("dfs_stats", 0400, dir, dev, &mt76x02_dfs_stat_fops);
- 	debugfs_create_devm_seqfile(dev->mt76.dev, "txpower", dir,
- 				    read_txpower);
- 
--- 
-2.17.1
+Great, thanks for testing. I'll wait at least another day for more
+comments and then queue it for v5.8.
 
+--=20
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
+hes
