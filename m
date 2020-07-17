@@ -2,39 +2,41 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C7AB224365
-	for <lists+linux-wireless@lfdr.de>; Fri, 17 Jul 2020 20:56:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C607C2245F9
+	for <lists+linux-wireless@lfdr.de>; Fri, 17 Jul 2020 23:50:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727999AbgGQS4R (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 17 Jul 2020 14:56:17 -0400
-Received: from mail-io1-f71.google.com ([209.85.166.71]:51331 "EHLO
+        id S1727775AbgGQVuV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 17 Jul 2020 17:50:21 -0400
+Received: from mail-io1-f71.google.com ([209.85.166.71]:50789 "EHLO
         mail-io1-f71.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726650AbgGQS4R (ORCPT
+        with ESMTP id S1727001AbgGQVuQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 17 Jul 2020 14:56:17 -0400
-Received: by mail-io1-f71.google.com with SMTP id l1so7045401ioh.18
-        for <linux-wireless@vger.kernel.org>; Fri, 17 Jul 2020 11:56:16 -0700 (PDT)
+        Fri, 17 Jul 2020 17:50:16 -0400
+Received: by mail-io1-f71.google.com with SMTP id 14so7369397ioz.17
+        for <linux-wireless@vger.kernel.org>; Fri, 17 Jul 2020 14:50:15 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
-        bh=/eE1uWfIufW8vQMws/6jTiBN48Hy0hA3uku2kspGanw=;
-        b=gw3Q17GoOF1dzG/BjxLhcrbxJZgBkvebmYOEPf9JNlkWwU0yMtuX8zvfQv9Y8dOdwl
-         lDzN3fmFWlo9A+FUhUQ27CTRp/s9TWUavPPOHt6wjoZJFWKKMkkdZc/dSsWA//C3C/Dp
-         nvf0lrxaM/SPVP1GCHQ3LEpP2G4qayjH8S0+aMwNUPM49KJRTzsGJ0AxYbPkeFJAuwVB
-         zEeIljYozKAepVRm0Bw2Kx7Q+m63GmyNPqKBdnCf+oYXdEi8QVKF/u9bJXWIO4cVYfCI
-         1mDVNVnB0LbXfG1c823vIaglv03rv/ZWahDxGFDGqIIKwiFTXER7QTXyUUvrwdWddfT6
-         2i0A==
-X-Gm-Message-State: AOAM530a1XoArPIo4DgapD4FhzxDefyp5HGJK9FqPCpMwv0QTawRu5CY
-        SRzSCq5YSeaGdJn3AxcEI6cP4dRmeuoXSpYFwixNQiGMGzxW
-X-Google-Smtp-Source: ABdhPJw1KdtA5u31Fl/CNv94wwk5X2Mpayq9H7dYSjQoKDiYimMRrexaFHuYHOiZGYWJ4jbuCnTIrXYo/uhswzv7ZNO6SlvEqSxj
+        h=x-gm-message-state:mime-version:date:in-reply-to:message-id:subject
+         :from:to;
+        bh=85jeZRkVVZR0QWjQqq1R38JosKuOusEK/U+W/rCZr34=;
+        b=doD+5qo8c9/awn+XD9ykjrQ6Frf9kSNs5NYpxGFek22j7w/yCk2V436JMx83qAsiIF
+         NGKf0UmS39rGlVSfWm7HDg3+yQumsG+29ZlQPS1It7DUuRur/C3HatWQEb9ReQaFaFQT
+         gE6CXt3N+7dwY0HjmVi/313ZXnD+KBhZCAVc3ITw0L9ucEfdhcJiMZ08JcA5lIZq6yt9
+         Q8mbHLCfvyN6zD0sqHxe/nCp8FpjoBp3YszFppw+aPzitD8Sa29i6xJQMxhQPK7dVTeK
+         KlDB4Hr7quiuwL/8mPyDOL8N0+Hn6QWBOlYil/d8Qdd9QqD8u/VSYmytfqxnXPF9Rgq0
+         qC9A==
+X-Gm-Message-State: AOAM531C6Ff8aL4pLkziQTHX1ggcSMlB9pwcOhGODDb2pE5L0bKzmMWo
+        MGrpwu/CktPEd10P13rF4ZH7CEDO+Gx6Ha5sUrgcjGOtnVrs
+X-Google-Smtp-Source: ABdhPJy+3h5BOXNPx6JRlmD4LA6y78fC/ycxGDJuw6H+My87ZlKnfolBKrDEEJ4A7990zPNUFVjLiOF+QBWo5iz8NEOLW1sQjMcE
 MIME-Version: 1.0
-X-Received: by 2002:a92:1bdb:: with SMTP id f88mr11577720ill.233.1595012176420;
- Fri, 17 Jul 2020 11:56:16 -0700 (PDT)
-Date:   Fri, 17 Jul 2020 11:56:16 -0700
+X-Received: by 2002:a05:6602:2423:: with SMTP id g3mr11356421iob.183.1595022614768;
+ Fri, 17 Jul 2020 14:50:14 -0700 (PDT)
+Date:   Fri, 17 Jul 2020 14:50:14 -0700
+In-Reply-To: <00000000000030271005aaa7b603@google.com>
 X-Google-Appengine-App-Id: s~syzkaller
 X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <00000000000030271005aaa7b603@google.com>
-Subject: general protection fault in ath9k_hif_usb_rx_cb (2)
+Message-ID: <0000000000005cb69605aaaa2411@google.com>
+Subject: Re: general protection fault in ath9k_hif_usb_rx_cb (2)
 From:   syzbot <syzbot+c6dde1f690b60e0b9fbe@syzkaller.appspotmail.com>
 To:     andreyknvl@google.com, ath9k-devel@qca.qualcomm.com,
         davem@davemloft.net, kuba@kernel.org, kvalo@codeaurora.org,
@@ -47,38 +49,36 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
-
-syzbot found the following issue on:
+syzbot has found a reproducer for the following issue on:
 
 HEAD commit:    313da01a usb: misc: sisusbvga: Move static const tables ou..
 git tree:       https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb.git usb-testing
-console output: https://syzkaller.appspot.com/x/log.txt?x=14226dd0900000
+console output: https://syzkaller.appspot.com/x/log.txt?x=15d1cde7100000
 kernel config:  https://syzkaller.appspot.com/x/.config?x=999be4eb2478ffa5
 dashboard link: https://syzkaller.appspot.com/bug?extid=c6dde1f690b60e0b9fbe
 compiler:       gcc (GCC) 10.1.0-syz 20200507
-
-Unfortunately, I don't have any reproducer for this issue yet.
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=11edde20900000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=178d2680900000
 
 IMPORTANT: if you fix the issue, please add the following tag to the commit:
 Reported-by: syzbot+c6dde1f690b60e0b9fbe@syzkaller.appspotmail.com
 
-general protection fault, probably for non-canonical address 0xdffffc00000001f2: 0000 [#1] SMP KASAN
-KASAN: null-ptr-deref in range [0x0000000000000f90-0x0000000000000f97]
-CPU: 1 PID: 356 Comm: syz-executor.1 Not tainted 5.8.0-rc3-syzkaller #0
+general protection fault, probably for non-canonical address 0xdffffc00000001f3: 0000 [#1] SMP KASAN
+KASAN: null-ptr-deref in range [0x0000000000000f98-0x0000000000000f9f]
+CPU: 1 PID: 0 Comm: swapper/1 Not tainted 5.8.0-rc3-syzkaller #0
 Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
-RIP: 0010:ath9k_hif_usb_rx_stream drivers/net/wireless/ath/ath9k/hif_usb.c:627 [inline]
-RIP: 0010:ath9k_hif_usb_rx_cb+0x843/0xf80 drivers/net/wireless/ath/ath9k/hif_usb.c:671
-Code: 00 00 00 49 8d 7f 08 48 89 f8 48 c1 e8 03 80 3c 28 00 0f 85 51 05 00 00 4d 8b 7f 08 49 8d bf 90 0f 00 00 48 89 f8 48 c1 e8 03 <0f> b6 04 28 84 c0 74 08 3c 03 0f 8e 25 05 00 00 48 8b 44 24 30 0f
-RSP: 0018:ffff8881db309920 EFLAGS: 00010002
-RAX: 00000000000001f2 RBX: 0000000000000c05 RCX: ffffc900006a8000
-RDX: 0000000000040000 RSI: ffffffff82e1f88b RDI: 0000000000000f90
-RBP: dffffc0000000000 R08: 0000000000000001 R09: ffff8881c3e144a3
-R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000000
-R13: 0000000000000c05 R14: ffff8881d9babb40 R15: 0000000000000000
-FS:  0000000002773940(0000) GS:ffff8881db300000(0000) knlGS:0000000000000000
+RIP: 0010:ath9k_hif_usb_rx_stream drivers/net/wireless/ath/ath9k/hif_usb.c:580 [inline]
+RIP: 0010:ath9k_hif_usb_rx_cb+0xc4d/0xf80 drivers/net/wireless/ath/ath9k/hif_usb.c:671
+Code: 48 c1 ea 03 80 3c 02 00 0f 85 0e 03 00 00 48 b8 00 00 00 00 00 fc ff df 48 8b 5b 08 48 8d bb 9c 0f 00 00 48 89 fa 48 c1 ea 03 <0f> b6 14 02 48 89 f8 83 e0 07 83 c0 03 38 d0 7c 09 84 d2 74 05 e8
+RSP: 0018:ffff8881db309920 EFLAGS: 00010007
+RAX: dffffc0000000000 RBX: 0000000000000000 RCX: ffffffff82e1fa3e
+RDX: 00000000000001f3 RSI: ffffffff82e1fcb9 RDI: 0000000000000f9c
+RBP: dffffc0000000000 R08: 0000000000000000 R09: ffff8881d8fc442b
+R10: 0000000000004e00 R11: 1ffffffff123bba9 R12: 0000000000000000
+R13: 0000000000000000 R14: ffff8881d8fc4000 R15: ffff8881c8b5cf40
+FS:  0000000000000000(0000) GS:ffff8881db300000(0000) knlGS:0000000000000000
 CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f052251e740 CR3: 00000001ad63e000 CR4: 00000000001406e0
+CR2: 0000556e7bf7d8d8 CR3: 00000001c3194000 CR4: 00000000001406e0
 DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
 DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
 Call Trace:
@@ -102,51 +102,40 @@ Call Trace:
  irq_exit_rcu+0x150/0x1f0 kernel/softirq.c:429
  sysvec_apic_timer_interrupt+0x49/0xc0 arch/x86/kernel/apic/apic.c:1091
  asm_sysvec_apic_timer_interrupt+0x12/0x20 arch/x86/include/asm/idtentry.h:596
-RIP: 0010:arch_local_irq_restore arch/x86/include/asm/irqflags.h:85 [inline]
-RIP: 0010:__raw_spin_unlock_irqrestore include/linux/spinlock_api_smp.h:160 [inline]
-RIP: 0010:_raw_spin_unlock_irqrestore+0x3b/0x40 kernel/locking/spinlock.c:191
-Code: e8 ca b5 76 fb 48 89 ef e8 62 a2 77 fb f6 c7 02 75 11 53 9d e8 16 46 95 fb 65 ff 0d cf 0d 52 7a 5b 5d c3 e8 f7 4b 95 fb 53 9d <eb> ed 0f 1f 00 55 48 89 fd 65 ff 05 b5 0d 52 7a 45 31 c9 41 b8 01
-RSP: 0018:ffff8881ad7b7c30 EFLAGS: 00000292
-RAX: 0000000000243e09 RBX: 0000000000000292 RCX: 0000000000000000
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffffffff85afe139
-RBP: ffff8881d57fd4a0 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000001 R11: 0000000000000000 R12: 0000000000000000
-R13: ffff8881c6e14b00 R14: 0000000000000000 R15: ffff8881c6e14fd8
- do_wait+0x42e/0x9b0 kernel/exit.c:1473
- kernel_wait4+0x14c/0x260 kernel/exit.c:1621
- __do_sys_wait4+0x13f/0x150 kernel/exit.c:1633
- do_syscall_64+0x50/0x90 arch/x86/entry/common.c:359
- entry_SYSCALL_64_after_hwframe+0x44/0xa9
-RIP: 0033:0x415ffa
-Code: Bad RIP value.
-RSP: 002b:00007ffd2403c368 EFLAGS: 00000246 ORIG_RAX: 000000000000003d
-RAX: ffffffffffffffda RBX: 0000000000023821 RCX: 0000000000415ffa
-RDX: 0000000040000001 RSI: 00007ffd2403c3a0 RDI: ffffffffffffffff
-RBP: 0000000000000060 R08: 0000000000000001 R09: 0000000002773940
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007ffd2403c3a0 R14: 0000000000023821 R15: 00007ffd2403c3b0
+RIP: 0010:native_irq_disable arch/x86/include/asm/irqflags.h:49 [inline]
+RIP: 0010:arch_local_irq_disable arch/x86/include/asm/irqflags.h:89 [inline]
+RIP: 0010:acpi_safe_halt+0x72/0x90 drivers/acpi/processor_idle.c:112
+Code: 74 06 5b e9 60 c8 8f fb e8 5b c8 8f fb e8 a6 53 95 fb e9 0c 00 00 00 e8 4c c8 8f fb 0f 00 2d c5 e5 74 00 e8 40 c8 8f fb fb f4 <fa> e8 98 4d 95 fb 5b e9 32 c8 8f fb 48 89 df e8 fa 72 b9 fb eb ab
+RSP: 0018:ffff8881da22fc80 EFLAGS: 00000293
+RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000000
+RDX: ffff8881da213200 RSI: ffffffff85afd9a0 RDI: ffffffff85afd98a
+RBP: ffff8881d8cca864 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000001 R11: 0000000000000000 R12: ffff8881d8cca864
+R13: 1ffff1103b445f99 R14: ffff8881d8cca865 R15: 0000000000000001
+ acpi_idle_do_entry+0x15c/0x1b0 drivers/acpi/processor_idle.c:525
+ acpi_idle_enter+0x3f0/0xa50 drivers/acpi/processor_idle.c:651
+ cpuidle_enter_state+0xff/0x870 drivers/cpuidle/cpuidle.c:235
+ cpuidle_enter+0x4a/0xa0 drivers/cpuidle/cpuidle.c:346
+ call_cpuidle kernel/sched/idle.c:126 [inline]
+ cpuidle_idle_call kernel/sched/idle.c:214 [inline]
+ do_idle+0x3d6/0x5a0 kernel/sched/idle.c:276
+ cpu_startup_entry+0x14/0x20 kernel/sched/idle.c:372
+ start_secondary+0x2d2/0x3c0 arch/x86/kernel/smpboot.c:268
+ secondary_startup_64+0xb6/0xc0 arch/x86/kernel/head_64.S:243
 Modules linked in:
----[ end trace 1a7827ecbdcfd2ad ]---
-RIP: 0010:ath9k_hif_usb_rx_stream drivers/net/wireless/ath/ath9k/hif_usb.c:627 [inline]
-RIP: 0010:ath9k_hif_usb_rx_cb+0x843/0xf80 drivers/net/wireless/ath/ath9k/hif_usb.c:671
-Code: 00 00 00 49 8d 7f 08 48 89 f8 48 c1 e8 03 80 3c 28 00 0f 85 51 05 00 00 4d 8b 7f 08 49 8d bf 90 0f 00 00 48 89 f8 48 c1 e8 03 <0f> b6 04 28 84 c0 74 08 3c 03 0f 8e 25 05 00 00 48 8b 44 24 30 0f
-RSP: 0018:ffff8881db309920 EFLAGS: 00010002
-RAX: 00000000000001f2 RBX: 0000000000000c05 RCX: ffffc900006a8000
-RDX: 0000000000040000 RSI: ffffffff82e1f88b RDI: 0000000000000f90
-RBP: dffffc0000000000 R08: 0000000000000001 R09: ffff8881c3e144a3
-R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000000
-R13: 0000000000000c05 R14: ffff8881d9babb40 R15: 0000000000000000
-FS:  0000000002773940(0000) GS:ffff8881db300000(0000) knlGS:0000000000000000
+---[ end trace e2f028e5d5706562 ]---
+RIP: 0010:ath9k_hif_usb_rx_stream drivers/net/wireless/ath/ath9k/hif_usb.c:580 [inline]
+RIP: 0010:ath9k_hif_usb_rx_cb+0xc4d/0xf80 drivers/net/wireless/ath/ath9k/hif_usb.c:671
+Code: 48 c1 ea 03 80 3c 02 00 0f 85 0e 03 00 00 48 b8 00 00 00 00 00 fc ff df 48 8b 5b 08 48 8d bb 9c 0f 00 00 48 89 fa 48 c1 ea 03 <0f> b6 14 02 48 89 f8 83 e0 07 83 c0 03 38 d0 7c 09 84 d2 74 05 e8
+RSP: 0018:ffff8881db309920 EFLAGS: 00010007
+RAX: dffffc0000000000 RBX: 0000000000000000 RCX: ffffffff82e1fa3e
+RDX: 00000000000001f3 RSI: ffffffff82e1fcb9 RDI: 0000000000000f9c
+RBP: dffffc0000000000 R08: 0000000000000000 R09: ffff8881d8fc442b
+R10: 0000000000004e00 R11: 1ffffffff123bba9 R12: 0000000000000000
+R13: 0000000000000000 R14: ffff8881d8fc4000 R15: ffff8881c8b5cf40
+FS:  0000000000000000(0000) GS:ffff8881db300000(0000) knlGS:0000000000000000
 CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f052251e740 CR3: 00000001ad63e000 CR4: 00000000001406e0
+CR2: 0000556e7bf7d8d8 CR3: 00000001c3194000 CR4: 00000000001406e0
 DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
 DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
 
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
