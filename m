@@ -2,69 +2,83 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 06B31223B22
-	for <lists+linux-wireless@lfdr.de>; Fri, 17 Jul 2020 14:10:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D175223B7B
+	for <lists+linux-wireless@lfdr.de>; Fri, 17 Jul 2020 14:38:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726040AbgGQMKT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 17 Jul 2020 08:10:19 -0400
-Received: from mail29.static.mailgun.info ([104.130.122.29]:45695 "EHLO
-        mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725950AbgGQMKT (ORCPT
+        id S1726201AbgGQMhy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 17 Jul 2020 08:37:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54988 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726090AbgGQMhy (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 17 Jul 2020 08:10:19 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1594987818; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=a4UUS49f8xWYkK9Ysq//BEon5Ij/GU9RIchsgXMtTVc=; b=iKTGZemRBDqfJNfWcVO1WXpR1UUe3MTnOj0CrYsprZr+oq5fhGABtjyTn3/j00D80qNSQGXr
- 0tYz6kw27SOp4eM7Xy9s4qz+wND+pDZfTrFvt228tQUF0vKvAPszw1p0pOr6+3PMkGu5+sUa
- gA46+t4m9CFVONF8TJT34+HSn+w=
-X-Mailgun-Sending-Ip: 104.130.122.29
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n12.prod.us-east-1.postgun.com with SMTP id
- 5f119526427cd557667181b8 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 17 Jul 2020 12:10:14
- GMT
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 80253C433CA; Fri, 17 Jul 2020 12:10:13 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 9879BC433C6;
-        Fri, 17 Jul 2020 12:10:11 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 9879BC433C6
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     <yhchuang@realtek.com>
-Cc:     <linux-wireless@vger.kernel.org>, <tehuang@realtek.com>,
-        <bigeasy@linutronix.de>
-Subject: Re: [PATCH] rtw88: 8821c: coex: add functions and parameters
-References: <20200717024919.24073-1-yhchuang@realtek.com>
-Date:   Fri, 17 Jul 2020 15:10:09 +0300
-In-Reply-To: <20200717024919.24073-1-yhchuang@realtek.com>
-        (yhchuang@realtek.com's message of "Fri, 17 Jul 2020 10:49:19 +0800")
-Message-ID: <87pn8u736m.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        Fri, 17 Jul 2020 08:37:54 -0400
+Received: from mail-io1-xd42.google.com (mail-io1-xd42.google.com [IPv6:2607:f8b0:4864:20::d42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36E67C061755
+        for <linux-wireless@vger.kernel.org>; Fri, 17 Jul 2020 05:37:54 -0700 (PDT)
+Received: by mail-io1-xd42.google.com with SMTP id e64so10228264iof.12
+        for <linux-wireless@vger.kernel.org>; Fri, 17 Jul 2020 05:37:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=ED3lx+kwU0inDNGcCmyEX9CWBzuv7bcPK4RBun7XBaA=;
+        b=ZFYHTLbYqu9x6vfAYiELTapeMChpw6EMmvmKl9nu+/a6Xb1Lg50jCp7eVBnnCP9MWG
+         +XRxCZseQefRaq+ngDyzY8Q8RJ02hmjSR/ZSYDPKbXYgG+J3Ygg8hHK039ef5cZ3Nldt
+         HhZ7OfQf+j9eA9V/tZYpyHufx7duh/Wcho/QuGjZrsHK3kF5YNDZ+SbuOueZ+uUqpaWa
+         VB0K4H+ZkLQvr7YoixZtxva9QMZflDuGLB1wf+LVH22qodYBMbfuGyxvVtPagvB9m8ts
+         o5ni5DnfssrLHu2MtovssfEqgncN9a0d00DnKiHVVX2FJGV6R/6QxEmofB2tQbg8nOA5
+         FM6Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=ED3lx+kwU0inDNGcCmyEX9CWBzuv7bcPK4RBun7XBaA=;
+        b=AR+x8gcmMBBVDd/He6obLy0nRf6lQPBmfxQNlGORbDYn1pLh4XeIlQyEk6TdLmVbvc
+         mqLUh9YJjgEVDuGqnRlGOm9Pk9Oxzdyj1quBBk/hRUeGqjXYPe+gIB4ih/EZnLKxW4dz
+         9HTahDKFBCIAZGqnxIOoMCSJUwrdmDbm7Mj5AMsejN20ggGbzNprVjUDYn0fqg3blKcP
+         StzsFJHSo8HfK2HfCfobQGgK3X/XP1C3rOgV283GDXNiJL4KE1AFzYsqB4eXooUHr3ZL
+         W1jN2b+SB4nmMoOLirX+ufnF61ErJpdKMBFYxpGHoS8MOE0bpEFs4KLtAI8naJluhm8T
+         TzAA==
+X-Gm-Message-State: AOAM532tA2lHa24MkBFvOglseLYkAxYjV+brF1z5Qqd7c5jXPSwRPXXm
+        /PV5BMW7j/N/bHi6yX15WAZHtbwCbq4K+Atr8Ts=
+X-Google-Smtp-Source: ABdhPJzwLsGgzsTkKjbr42scWfrkPMSW3MhDYDtUr5fJaYfj6Y+Ly0zCErMaRFxGvR7nMsFq9L7HEVXjhPZnRv/qU1w=
+X-Received: by 2002:a05:6602:2295:: with SMTP id d21mr9441490iod.0.1594989473495;
+ Fri, 17 Jul 2020 05:37:53 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
+Received: by 2002:a02:cc63:0:0:0:0:0 with HTTP; Fri, 17 Jul 2020 05:37:52
+ -0700 (PDT)
+Reply-To: ghaziahmed@myself.com
+From:   "Mr.Ghazi Ahmed" <ghazia500@gmail.com>
+Date:   Fri, 17 Jul 2020 05:37:52 -0700
+Message-ID: <CAOo=X5_X3T1VjHAMngV+VF083_wJjrXXwR_OmHq8mCRx6G1dJQ@mail.gmail.com>
+Subject: YOUR URGENT RESPONSE IS NEEDED
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-<yhchuang@realtek.com> writes:
+I have a business proposal in the tune of $10.2m USD for you to handle
+with me. I have opportunity to transfer this abandon fund to your bank
+account in your country which belongs to our client.
 
-> From: jupiter <pc.chen@realtek.com>
+I am inviting you in this transaction where this money can be shared
+between us at ratio of 50/50% and help the needy around us don=E2=80=99t be
+afraid of anything I am with you I will instruct you what you will do
+to maintain this fund.
 
-jupiter?
+Please kindly contact me with your information's if you are interested
+in this tranasction for more details(ghaziahmed@myself.com)
 
--- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+1. Your Full Name.....................
+2. Your Address......................
+3. Your Country of Origin.............
+4. What do you do for living ...............
+5. Your Age..........................
+6. Gender.........................
+7. Your ID card copy and telephone number for easy communication...........=
+....
+
+Mr.Ghazi Ahmed
