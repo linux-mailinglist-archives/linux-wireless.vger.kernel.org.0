@@ -2,123 +2,109 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C6B36224A4F
-	for <lists+linux-wireless@lfdr.de>; Sat, 18 Jul 2020 11:29:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D1932224A84
+	for <lists+linux-wireless@lfdr.de>; Sat, 18 Jul 2020 12:02:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726812AbgGRJ33 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 18 Jul 2020 05:29:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49730 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726532AbgGRJ33 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 18 Jul 2020 05:29:29 -0400
-Received: from mail-vs1-xe44.google.com (mail-vs1-xe44.google.com [IPv6:2607:f8b0:4864:20::e44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 039B0C0619D2
-        for <linux-wireless@vger.kernel.org>; Sat, 18 Jul 2020 02:29:28 -0700 (PDT)
-Received: by mail-vs1-xe44.google.com with SMTP id m6so6065000vsl.12
-        for <linux-wireless@vger.kernel.org>; Sat, 18 Jul 2020 02:29:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=5ti26ee0hY6W3phdmQsoDOeF7v7bPKvFPyrfMjmwB4w=;
-        b=twvL69pRIwWi2+E1B/5uuKwBtq1LID3epjS5uq8iwjNLiLeKu4cB0zNPjLNpUDyGqq
-         jLFKhCwvzkfxqUlNPTUTrRzEML5EqSlax9vagvSerM4iw7FTpYVL/usrvjyh6BtmhvTj
-         /6+OsScpb98Jjg2CFhGoN4SyHpReTIUphE2WFewD/OaYDLKQA9iLjUaMdJa69m/QYf01
-         8Uqbu9e4Ji1aIisPifz+h7nSc47NgmOz0+gEfbkoIJvv5LxG4mQVJnEDbmjT4t1rjldi
-         gUG2+RZ6ilSM4dOcKhxP8Wi4IhNrgXviWBWIwtG1hYt7/LTp1Kb+R2UoMou53/anr/Iw
-         zdfQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=5ti26ee0hY6W3phdmQsoDOeF7v7bPKvFPyrfMjmwB4w=;
-        b=bNS9XsNJIfC7aItkATUFTMQODwkjMvuMPHXGtrIPZBVnOd4C1z5VKULJqfSzlMVMtF
-         M9akFg9GuQAVeRnfjTyUfunYBVttNKKoLdyqhmep6r5ztuOGpjjCmhBEMnQhxUyMpFF3
-         FWQWBYOvsdv/a48137QCr3RSauflIWowrfQbfnksBQsWyigWOkkQA01H4lAIxUPY7j/i
-         asZ/Gmrbivi7rAfzYm/YcfxLrdOOsqS/4AdlJ7MluStgkqJHgp0ZYst77btpznDsNxjc
-         4dkThjsKT4Qq1ARw3mNZ5SyCq+LuvTggu4Mp3stFho2P0RXHnOUaAO0M7gbWTNRMG5zi
-         BMmw==
-X-Gm-Message-State: AOAM530aZHjN3EgwQ1tfMSSaNuTyar79RlfLAyemX7+NqqHt/F4ndXJK
-        i8TU9UWJWGBStRCQKuxqnfN/adaXP3zN+otvH0LFcw==
-X-Google-Smtp-Source: ABdhPJwYKi9bfL+r1N5YF20n2KtPjYeA9rOiy9vFcPtgTtJnIhp3Wj5weSdJTA4jYgbOsylMO5xxwsGozzcGpjl6+4A=
-X-Received: by 2002:a67:f888:: with SMTP id h8mr9724969vso.165.1595064568127;
- Sat, 18 Jul 2020 02:29:28 -0700 (PDT)
+        id S1726528AbgGRKCv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 18 Jul 2020 06:02:51 -0400
+Received: from smtp.al2klimov.de ([78.46.175.9]:59602 "EHLO smtp.al2klimov.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726191AbgGRKCu (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 18 Jul 2020 06:02:50 -0400
+Received: from authenticated-user (PRIMARY_HOSTNAME [PUBLIC_IP])
+        by smtp.al2klimov.de (Postfix) with ESMTPA id 7543CBC053;
+        Sat, 18 Jul 2020 10:02:46 +0000 (UTC)
+From:   "Alexander A. Klimov" <grandmaster@al2klimov.de>
+To:     stas.yakovlev@gmail.com, davem@davemloft.net, kuba@kernel.org,
+        corbet@lwn.net, kvalo@codeaurora.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     "Alexander A. Klimov" <grandmaster@al2klimov.de>
+Subject: [PATCH] ipw2x00: Replace HTTP links with HTTPS ones
+Date:   Sat, 18 Jul 2020 12:02:40 +0200
+Message-Id: <20200718100240.98593-1-grandmaster@al2klimov.de>
 MIME-Version: 1.0
-References: <20200717051134.19160-1-ajay.kathat@microchip.com>
-In-Reply-To: <20200717051134.19160-1-ajay.kathat@microchip.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Sat, 18 Jul 2020 11:28:52 +0200
-Message-ID: <CAPDyKFp5-6QeHLTE4gtc5u6moMsLFhOBZckDZBTD+B1RV28Z3g@mail.gmail.com>
-Subject: Re: [PATCH] wilc1000: Move wilc1000 SDIO ID's from driver source to
- common header file
-To:     Ajay.Kathat@microchip.com
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
-        Claudiu.Beznea@microchip.com, Sripad.Balwadgi@microchip.com,
-        =?UTF-8?Q?Pali_Roh=C3=A1r?= <pali@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Spamd-Bar: ++++++
+X-Spam-Level: ******
+Authentication-Results: smtp.al2klimov.de;
+        auth=pass smtp.auth=aklimov@al2klimov.de smtp.mailfrom=grandmaster@al2klimov.de
+X-Spam: Yes
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 17 Jul 2020 at 07:11, <Ajay.Kathat@microchip.com> wrote:
->
-> From: Ajay Singh <ajay.kathat@microchip.com>
->
-> Moved macros used for Vendor/Device ID from wilc1000 driver to common
-> header file and changed macro name for consistency with other macros.
->
-> Signed-off-by: Ajay Singh <ajay.kathat@microchip.com>
+Rationale:
+Reduces attack surface on kernel devs opening the links for MITM
+as HTTPS traffic is much harder to manipulate.
 
-Acked-by: Ulf Hansson <ulf.hansson@linaro.org>
+Deterministic algorithm:
+For each file:
+  If not .svg:
+    For each line:
+      If doesn't contain `\bxmlns\b`:
+        For each link, `\bhttp://[^# \t\r\n]*(?:\w|/)`:
+	  If neither `\bgnu\.org/license`, nor `\bmozilla\.org/MPL\b`:
+            If both the HTTP and HTTPS versions
+            return 200 OK and serve the same content:
+              Replace HTTP with HTTPS.
 
-Kind regards
-Uffe
+Signed-off-by: Alexander A. Klimov <grandmaster@al2klimov.de>
+---
+ Continuing my work started at 93431e0607e5.
+ See also: git log --oneline '--author=Alexander A. Klimov <grandmaster@al2klimov.de>' v5.7..master
 
-> ---
->  drivers/net/wireless/microchip/wilc1000/sdio.c | 6 ++----
->  include/linux/mmc/sdio_ids.h                   | 3 +++
->  2 files changed, 5 insertions(+), 4 deletions(-)
->
-> diff --git a/drivers/net/wireless/microchip/wilc1000/sdio.c b/drivers/net/wireless/microchip/wilc1000/sdio.c
-> index 36eb589263bf..3ece7b0b0392 100644
-> --- a/drivers/net/wireless/microchip/wilc1000/sdio.c
-> +++ b/drivers/net/wireless/microchip/wilc1000/sdio.c
-> @@ -6,6 +6,7 @@
->
->  #include <linux/clk.h>
->  #include <linux/mmc/sdio_func.h>
-> +#include <linux/mmc/sdio_ids.h>
->  #include <linux/mmc/host.h>
->  #include <linux/mmc/sdio.h>
->  #include <linux/of_irq.h>
-> @@ -15,11 +16,8 @@
->
->  #define SDIO_MODALIAS "wilc1000_sdio"
->
-> -#define SDIO_VENDOR_ID_WILC 0x0296
-> -#define SDIO_DEVICE_ID_WILC 0x5347
-> -
->  static const struct sdio_device_id wilc_sdio_ids[] = {
-> -       { SDIO_DEVICE(SDIO_VENDOR_ID_WILC, SDIO_DEVICE_ID_WILC) },
-> +       { SDIO_DEVICE(SDIO_VENDOR_ID_MICROCHIP_WILC, SDIO_DEVICE_ID_MICROCHIP_WILC1000) },
->         { },
->  };
->
-> diff --git a/include/linux/mmc/sdio_ids.h b/include/linux/mmc/sdio_ids.h
-> index 15ed8ce9d394..519820d18e62 100644
-> --- a/include/linux/mmc/sdio_ids.h
-> +++ b/include/linux/mmc/sdio_ids.h
-> @@ -105,6 +105,9 @@
->  #define SDIO_DEVICE_ID_MEDIATEK_MT7663         0x7663
->  #define SDIO_DEVICE_ID_MEDIATEK_MT7668         0x7668
->
-> +#define SDIO_VENDOR_ID_MICROCHIP_WILC          0x0296
-> +#define SDIO_DEVICE_ID_MICROCHIP_WILC1000      0x5347
-> +
->  #define SDIO_VENDOR_ID_SIANO                   0x039a
->  #define SDIO_DEVICE_ID_SIANO_NOVA_B0           0x0201
->  #define SDIO_DEVICE_ID_SIANO_NICE              0x0202
-> --
-> 2.24.0
+ If there are any URLs to be removed completely
+ or at least not (just) HTTPSified:
+ Just clearly say so and I'll *undo my change*.
+ See also: https://lkml.org/lkml/2020/6/27/64
+
+ If there are any valid, but yet not changed URLs:
+ See: https://lkml.org/lkml/2020/6/26/837
+
+ If you apply the patch, please let me know.
+
+
+ Documentation/networking/device_drivers/intel/ipw2100.rst | 2 +-
+ drivers/net/wireless/intel/ipw2x00/Kconfig                | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/Documentation/networking/device_drivers/intel/ipw2100.rst b/Documentation/networking/device_drivers/intel/ipw2100.rst
+index d54ad522f937..883e96355799 100644
+--- a/Documentation/networking/device_drivers/intel/ipw2100.rst
++++ b/Documentation/networking/device_drivers/intel/ipw2100.rst
+@@ -78,7 +78,7 @@ such, if you are interested in deploying or shipping a driver as part of
+ solution intended to be used for purposes other than development, please
+ obtain a tested driver from Intel Customer Support at:
+ 
+-http://www.intel.com/support/wireless/sb/CS-006408.htm
++https://www.intel.com/support/wireless/sb/CS-006408.htm
+ 
+ 1. Introduction
+ ===============
+diff --git a/drivers/net/wireless/intel/ipw2x00/Kconfig b/drivers/net/wireless/intel/ipw2x00/Kconfig
+index d00386915a9d..f3e09b630d8b 100644
+--- a/drivers/net/wireless/intel/ipw2x00/Kconfig
++++ b/drivers/net/wireless/intel/ipw2x00/Kconfig
+@@ -28,7 +28,7 @@ config IPW2100
+ 	  You will also very likely need the Wireless Tools in order to
+ 	  configure your card:
+ 
+-	  <http://www.hpl.hp.com/personal/Jean_Tourrilhes/Linux/Tools.html>.
++	  <https://www.hpl.hp.com/personal/Jean_Tourrilhes/Linux/Tools.html>.
+ 
+ 	  It is recommended that you compile this driver as a module (M)
+ 	  rather than built-in (Y). This driver requires firmware at device
+@@ -90,7 +90,7 @@ config IPW2200
+ 	  You will also very likely need the Wireless Tools in order to
+ 	  configure your card:
+ 
+-	  <http://www.hpl.hp.com/personal/Jean_Tourrilhes/Linux/Tools.html>.
++	  <https://www.hpl.hp.com/personal/Jean_Tourrilhes/Linux/Tools.html>.
+ 
+ 	  It is recommended that you compile this driver as a module (M)
+ 	  rather than built-in (Y). This driver requires firmware at device
+-- 
+2.27.0
+
