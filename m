@@ -2,140 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C607C2245F9
-	for <lists+linux-wireless@lfdr.de>; Fri, 17 Jul 2020 23:50:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F5292248FA
+	for <lists+linux-wireless@lfdr.de>; Sat, 18 Jul 2020 07:26:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727775AbgGQVuV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 17 Jul 2020 17:50:21 -0400
-Received: from mail-io1-f71.google.com ([209.85.166.71]:50789 "EHLO
-        mail-io1-f71.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727001AbgGQVuQ (ORCPT
+        id S1726448AbgGRF0n (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 18 Jul 2020 01:26:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40848 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725887AbgGRF0m (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 17 Jul 2020 17:50:16 -0400
-Received: by mail-io1-f71.google.com with SMTP id 14so7369397ioz.17
-        for <linux-wireless@vger.kernel.org>; Fri, 17 Jul 2020 14:50:15 -0700 (PDT)
+        Sat, 18 Jul 2020 01:26:42 -0400
+Received: from mail-io1-xd44.google.com (mail-io1-xd44.google.com [IPv6:2607:f8b0:4864:20::d44])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74F75C0619D2;
+        Fri, 17 Jul 2020 22:26:42 -0700 (PDT)
+Received: by mail-io1-xd44.google.com with SMTP id v6so12552455iob.4;
+        Fri, 17 Jul 2020 22:26:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=SCHfx5BI0heiM7sUgX9/TzzuZtUxyDEqeWGyvIFDhhA=;
+        b=sRYpxoRAbVVJddam3wPjUBFy+q++TqDEySUNHSYndfoezqzTo/CV4brjxOsB9Ju6Pw
+         AdHziWCgVlJjRGjKMDJY3bhgYmBV6sUMLfzoCEPl9FROW37s3RepHiB20odn9h/N/8An
+         t54gSf1j3G/d12jADgTphGomHtt8EpR4G2YDYT66p2EzJqmcXeEWP+LQQmgsmUK1CXgw
+         U9JQIOE/cC1pf1rYlHvoKYopmvKS12v2x0ZZedl5O4uWZfYhVom/SItwhlG8kLj5gCW5
+         tOrwZj79RVfLeMW2bX2OXBmsqQ43M+JZPTXeKGPr0+tPxsPLYixgpr+SNMAkQQ4y36tZ
+         eRvg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:date:in-reply-to:message-id:subject
-         :from:to;
-        bh=85jeZRkVVZR0QWjQqq1R38JosKuOusEK/U+W/rCZr34=;
-        b=doD+5qo8c9/awn+XD9ykjrQ6Frf9kSNs5NYpxGFek22j7w/yCk2V436JMx83qAsiIF
-         NGKf0UmS39rGlVSfWm7HDg3+yQumsG+29ZlQPS1It7DUuRur/C3HatWQEb9ReQaFaFQT
-         gE6CXt3N+7dwY0HjmVi/313ZXnD+KBhZCAVc3ITw0L9ucEfdhcJiMZ08JcA5lIZq6yt9
-         Q8mbHLCfvyN6zD0sqHxe/nCp8FpjoBp3YszFppw+aPzitD8Sa29i6xJQMxhQPK7dVTeK
-         KlDB4Hr7quiuwL/8mPyDOL8N0+Hn6QWBOlYil/d8Qdd9QqD8u/VSYmytfqxnXPF9Rgq0
-         qC9A==
-X-Gm-Message-State: AOAM531C6Ff8aL4pLkziQTHX1ggcSMlB9pwcOhGODDb2pE5L0bKzmMWo
-        MGrpwu/CktPEd10P13rF4ZH7CEDO+Gx6Ha5sUrgcjGOtnVrs
-X-Google-Smtp-Source: ABdhPJy+3h5BOXNPx6JRlmD4LA6y78fC/ycxGDJuw6H+My87ZlKnfolBKrDEEJ4A7990zPNUFVjLiOF+QBWo5iz8NEOLW1sQjMcE
-MIME-Version: 1.0
-X-Received: by 2002:a05:6602:2423:: with SMTP id g3mr11356421iob.183.1595022614768;
- Fri, 17 Jul 2020 14:50:14 -0700 (PDT)
-Date:   Fri, 17 Jul 2020 14:50:14 -0700
-In-Reply-To: <00000000000030271005aaa7b603@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <0000000000005cb69605aaaa2411@google.com>
-Subject: Re: general protection fault in ath9k_hif_usb_rx_cb (2)
-From:   syzbot <syzbot+c6dde1f690b60e0b9fbe@syzkaller.appspotmail.com>
-To:     andreyknvl@google.com, ath9k-devel@qca.qualcomm.com,
-        davem@davemloft.net, kuba@kernel.org, kvalo@codeaurora.org,
-        linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=SCHfx5BI0heiM7sUgX9/TzzuZtUxyDEqeWGyvIFDhhA=;
+        b=ajsUMzuwutb1RpUdpkvMsNkSHXnW9vsXpyo+GCxFz43Ma/CmwGQVSe8wHzyYUcqqez
+         F3cpCj/w3teta3xTnUVRIinM+4hPXfXyqCr1bSsaE/XvauHds954j0ZNW0N9/ATUhwaO
+         hC0hZ28Ke3X8OCauHpyvFvS8lytnuJdrxNBmdXh3ZBsr+4TSg26dpq8MSg6Fr3a8FjrE
+         K5vfGLJfRe3MXiPxyEJgC6q32OzMAg5p2GAlv7CIYUlMTD+T7vvaaCM2hQsZjiDoIQ2o
+         tOSjzrhxh1DnLCs4fbgGatKgV5PCWCRR41vki4BLvPcJ2ScF4NlzKsoMO0hhGm2dO1XB
+         F1iA==
+X-Gm-Message-State: AOAM532CVD4ZZX+2Xr9hdNDWnWzqHF6e1FgO091ILlRA9ANYx3gdcFo5
+        IMCkd6qItBbll324x587PH6EJUEVNkQ=
+X-Google-Smtp-Source: ABdhPJzQqlmtBgAX2zPQun++Nq03W8tZGAakz1U8y4y8IC7ATIM4teO1+JqaUrmSpAflgfliW/kn+Q==
+X-Received: by 2002:a5d:9306:: with SMTP id l6mr13072604ion.105.1595050001248;
+        Fri, 17 Jul 2020 22:26:41 -0700 (PDT)
+Received: from cs-dulles.cs.umn.edu (cs-dulles.cs.umn.edu. [160.94.145.20])
+        by smtp.googlemail.com with ESMTPSA id 13sm5357408ilj.81.2020.07.17.22.26.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 17 Jul 2020 22:26:40 -0700 (PDT)
+From:   Navid Emamdoost <navid.emamdoost@gmail.com>
+To:     Jakub Kicinski <kubakici@wp.pl>, Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org
+Cc:     emamd001@umn.edu, Navid Emamdoost <navid.emamdoost@gmail.com>
+Subject: [PATCH] mt7601u: add missing release on skb in mt7601u_mcu_msg_send
+Date:   Sat, 18 Jul 2020 00:26:29 -0500
+Message-Id: <20200718052630.11032-1-navid.emamdoost@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-syzbot has found a reproducer for the following issue on:
+In the implementation of mt7601u_mcu_msg_send(), skb is supposed to be
+consumed on all execution paths. Release skb before returning if
+test_bit() fails.
 
-HEAD commit:    313da01a usb: misc: sisusbvga: Move static const tables ou..
-git tree:       https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb.git usb-testing
-console output: https://syzkaller.appspot.com/x/log.txt?x=15d1cde7100000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=999be4eb2478ffa5
-dashboard link: https://syzkaller.appspot.com/bug?extid=c6dde1f690b60e0b9fbe
-compiler:       gcc (GCC) 10.1.0-syz 20200507
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=11edde20900000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=178d2680900000
+Signed-off-by: Navid Emamdoost <navid.emamdoost@gmail.com>
+---
+ drivers/net/wireless/mediatek/mt7601u/mcu.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+c6dde1f690b60e0b9fbe@syzkaller.appspotmail.com
-
-general protection fault, probably for non-canonical address 0xdffffc00000001f3: 0000 [#1] SMP KASAN
-KASAN: null-ptr-deref in range [0x0000000000000f98-0x0000000000000f9f]
-CPU: 1 PID: 0 Comm: swapper/1 Not tainted 5.8.0-rc3-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
-RIP: 0010:ath9k_hif_usb_rx_stream drivers/net/wireless/ath/ath9k/hif_usb.c:580 [inline]
-RIP: 0010:ath9k_hif_usb_rx_cb+0xc4d/0xf80 drivers/net/wireless/ath/ath9k/hif_usb.c:671
-Code: 48 c1 ea 03 80 3c 02 00 0f 85 0e 03 00 00 48 b8 00 00 00 00 00 fc ff df 48 8b 5b 08 48 8d bb 9c 0f 00 00 48 89 fa 48 c1 ea 03 <0f> b6 14 02 48 89 f8 83 e0 07 83 c0 03 38 d0 7c 09 84 d2 74 05 e8
-RSP: 0018:ffff8881db309920 EFLAGS: 00010007
-RAX: dffffc0000000000 RBX: 0000000000000000 RCX: ffffffff82e1fa3e
-RDX: 00000000000001f3 RSI: ffffffff82e1fcb9 RDI: 0000000000000f9c
-RBP: dffffc0000000000 R08: 0000000000000000 R09: ffff8881d8fc442b
-R10: 0000000000004e00 R11: 1ffffffff123bba9 R12: 0000000000000000
-R13: 0000000000000000 R14: ffff8881d8fc4000 R15: ffff8881c8b5cf40
-FS:  0000000000000000(0000) GS:ffff8881db300000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000556e7bf7d8d8 CR3: 00000001c3194000 CR4: 00000000001406e0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <IRQ>
- __usb_hcd_giveback_urb+0x32d/0x560 drivers/usb/core/hcd.c:1650
- usb_hcd_giveback_urb+0x367/0x410 drivers/usb/core/hcd.c:1716
- dummy_timer+0x11f2/0x3240 drivers/usb/gadget/udc/dummy_hcd.c:1967
- call_timer_fn+0x1ac/0x6e0 kernel/time/timer.c:1404
- expire_timers kernel/time/timer.c:1449 [inline]
- __run_timers.part.0+0x54c/0x9e0 kernel/time/timer.c:1773
- __run_timers kernel/time/timer.c:1745 [inline]
- run_timer_softirq+0x80/0x120 kernel/time/timer.c:1786
- __do_softirq+0x222/0x95b kernel/softirq.c:292
- asm_call_on_stack+0xf/0x20 arch/x86/entry/entry_64.S:711
- </IRQ>
- __run_on_irqstack arch/x86/include/asm/irq_stack.h:22 [inline]
- run_on_irqstack_cond arch/x86/include/asm/irq_stack.h:48 [inline]
- do_softirq_own_stack+0xed/0x140 arch/x86/kernel/irq_64.c:77
- invoke_softirq kernel/softirq.c:387 [inline]
- __irq_exit_rcu kernel/softirq.c:417 [inline]
- irq_exit_rcu+0x150/0x1f0 kernel/softirq.c:429
- sysvec_apic_timer_interrupt+0x49/0xc0 arch/x86/kernel/apic/apic.c:1091
- asm_sysvec_apic_timer_interrupt+0x12/0x20 arch/x86/include/asm/idtentry.h:596
-RIP: 0010:native_irq_disable arch/x86/include/asm/irqflags.h:49 [inline]
-RIP: 0010:arch_local_irq_disable arch/x86/include/asm/irqflags.h:89 [inline]
-RIP: 0010:acpi_safe_halt+0x72/0x90 drivers/acpi/processor_idle.c:112
-Code: 74 06 5b e9 60 c8 8f fb e8 5b c8 8f fb e8 a6 53 95 fb e9 0c 00 00 00 e8 4c c8 8f fb 0f 00 2d c5 e5 74 00 e8 40 c8 8f fb fb f4 <fa> e8 98 4d 95 fb 5b e9 32 c8 8f fb 48 89 df e8 fa 72 b9 fb eb ab
-RSP: 0018:ffff8881da22fc80 EFLAGS: 00000293
-RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000000
-RDX: ffff8881da213200 RSI: ffffffff85afd9a0 RDI: ffffffff85afd98a
-RBP: ffff8881d8cca864 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000001 R11: 0000000000000000 R12: ffff8881d8cca864
-R13: 1ffff1103b445f99 R14: ffff8881d8cca865 R15: 0000000000000001
- acpi_idle_do_entry+0x15c/0x1b0 drivers/acpi/processor_idle.c:525
- acpi_idle_enter+0x3f0/0xa50 drivers/acpi/processor_idle.c:651
- cpuidle_enter_state+0xff/0x870 drivers/cpuidle/cpuidle.c:235
- cpuidle_enter+0x4a/0xa0 drivers/cpuidle/cpuidle.c:346
- call_cpuidle kernel/sched/idle.c:126 [inline]
- cpuidle_idle_call kernel/sched/idle.c:214 [inline]
- do_idle+0x3d6/0x5a0 kernel/sched/idle.c:276
- cpu_startup_entry+0x14/0x20 kernel/sched/idle.c:372
- start_secondary+0x2d2/0x3c0 arch/x86/kernel/smpboot.c:268
- secondary_startup_64+0xb6/0xc0 arch/x86/kernel/head_64.S:243
-Modules linked in:
----[ end trace e2f028e5d5706562 ]---
-RIP: 0010:ath9k_hif_usb_rx_stream drivers/net/wireless/ath/ath9k/hif_usb.c:580 [inline]
-RIP: 0010:ath9k_hif_usb_rx_cb+0xc4d/0xf80 drivers/net/wireless/ath/ath9k/hif_usb.c:671
-Code: 48 c1 ea 03 80 3c 02 00 0f 85 0e 03 00 00 48 b8 00 00 00 00 00 fc ff df 48 8b 5b 08 48 8d bb 9c 0f 00 00 48 89 fa 48 c1 ea 03 <0f> b6 14 02 48 89 f8 83 e0 07 83 c0 03 38 d0 7c 09 84 d2 74 05 e8
-RSP: 0018:ffff8881db309920 EFLAGS: 00010007
-RAX: dffffc0000000000 RBX: 0000000000000000 RCX: ffffffff82e1fa3e
-RDX: 00000000000001f3 RSI: ffffffff82e1fcb9 RDI: 0000000000000f9c
-RBP: dffffc0000000000 R08: 0000000000000000 R09: ffff8881d8fc442b
-R10: 0000000000004e00 R11: 1ffffffff123bba9 R12: 0000000000000000
-R13: 0000000000000000 R14: ffff8881d8fc4000 R15: ffff8881c8b5cf40
-FS:  0000000000000000(0000) GS:ffff8881db300000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000556e7bf7d8d8 CR3: 00000001c3194000 CR4: 00000000001406e0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+diff --git a/drivers/net/wireless/mediatek/mt7601u/mcu.c b/drivers/net/wireless/mediatek/mt7601u/mcu.c
+index af55ed82b96f..1b5cc271a9e1 100644
+--- a/drivers/net/wireless/mediatek/mt7601u/mcu.c
++++ b/drivers/net/wireless/mediatek/mt7601u/mcu.c
+@@ -116,8 +116,10 @@ mt7601u_mcu_msg_send(struct mt7601u_dev *dev, struct sk_buff *skb,
+ 	int sent, ret;
+ 	u8 seq = 0;
+ 
+-	if (test_bit(MT7601U_STATE_REMOVED, &dev->state))
++	if (test_bit(MT7601U_STATE_REMOVED, &dev->state)) {
++		consume_skb(skb);
+ 		return 0;
++	}
+ 
+ 	mutex_lock(&dev->mcu.mutex);
+ 
+-- 
+2.17.1
 
