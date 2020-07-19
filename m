@@ -2,27 +2,27 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EFF9A22518B
-	for <lists+linux-wireless@lfdr.de>; Sun, 19 Jul 2020 13:11:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 715312251CC
+	for <lists+linux-wireless@lfdr.de>; Sun, 19 Jul 2020 14:13:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726073AbgGSLLf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 19 Jul 2020 07:11:35 -0400
-Received: from smtp.al2klimov.de ([78.46.175.9]:41678 "EHLO smtp.al2klimov.de"
+        id S1726173AbgGSMMe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 19 Jul 2020 08:12:34 -0400
+Received: from smtp.al2klimov.de ([78.46.175.9]:55526 "EHLO smtp.al2klimov.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726021AbgGSLLf (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 19 Jul 2020 07:11:35 -0400
+        id S1725836AbgGSMMe (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 19 Jul 2020 08:12:34 -0400
 Received: from authenticated-user (PRIMARY_HOSTNAME [PUBLIC_IP])
-        by smtp.al2klimov.de (Postfix) with ESMTPA id EC2B5BC053;
-        Sun, 19 Jul 2020 11:11:30 +0000 (UTC)
+        by smtp.al2klimov.de (Postfix) with ESMTPA id 6A638BC07E;
+        Sun, 19 Jul 2020 12:12:30 +0000 (UTC)
 From:   "Alexander A. Klimov" <grandmaster@al2klimov.de>
-To:     Larry.Finger@lwfinger.net, kvalo@codeaurora.org,
-        davem@davemloft.net, kuba@kernel.org,
-        linux-wireless@vger.kernel.org, b43-dev@lists.infradead.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+To:     mcgrof@kernel.org, kvalo@codeaurora.org, davem@davemloft.net,
+        kuba@kernel.org, gustavoars@kernel.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
 Cc:     "Alexander A. Klimov" <grandmaster@al2klimov.de>
-Subject: [PATCH for v5.9] b43legacy: Replace HTTP links with HTTPS ones
-Date:   Sun, 19 Jul 2020 13:11:24 +0200
-Message-Id: <20200719111124.58167-1-grandmaster@al2klimov.de>
+Subject: [PATCH for v5.9] prism54: Replace HTTP links with HTTPS ones
+Date:   Sun, 19 Jul 2020 14:12:24 +0200
+Message-Id: <20200719121224.58581-1-grandmaster@al2klimov.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Bar: +++++
@@ -73,130 +73,22 @@ Signed-off-by: Alexander A. Klimov <grandmaster@al2klimov.de>
  Impossible is nothing! :)
 
 
- drivers/net/wireless/broadcom/b43legacy/main.c  | 8 ++++----
- drivers/net/wireless/broadcom/b43legacy/phy.c   | 8 ++++----
- drivers/net/wireless/broadcom/b43legacy/radio.c | 8 ++++----
- 3 files changed, 12 insertions(+), 12 deletions(-)
+ drivers/net/wireless/intersil/prism54/isl_oid.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/broadcom/b43legacy/main.c b/drivers/net/wireless/broadcom/b43legacy/main.c
-index 5208a39fd6f7..177a5d85915f 100644
---- a/drivers/net/wireless/broadcom/b43legacy/main.c
-+++ b/drivers/net/wireless/broadcom/b43legacy/main.c
-@@ -591,7 +591,7 @@ static void b43legacy_synchronize_irq(struct b43legacy_wldev *dev)
- }
- 
- /* DummyTransmission function, as documented on
-- * http://bcm-specs.sipsolutions.net/DummyTransmission
-+ * https://bcm-specs.sipsolutions.net/DummyTransmission
+diff --git a/drivers/net/wireless/intersil/prism54/isl_oid.h b/drivers/net/wireless/intersil/prism54/isl_oid.h
+index 1afc2ccf94ca..b889bb73a485 100644
+--- a/drivers/net/wireless/intersil/prism54/isl_oid.h
++++ b/drivers/net/wireless/intersil/prism54/isl_oid.h
+@@ -143,7 +143,7 @@ enum dot11_priv_t {
+  * together with a CSMA contention. Without this all frames are
+  * sent with a CSMA contention.
+  * Bibliography:
+- * http://www.hpl.hp.com/personal/Jean_Tourrilhes/Papers/Packet.Frame.Grouping.html
++ * https://www.hpl.hp.com/personal/Jean_Tourrilhes/Papers/Packet.Frame.Grouping.html
   */
- void b43legacy_dummy_transmission(struct b43legacy_wldev *dev)
- {
-@@ -1870,7 +1870,7 @@ static int b43legacy_upload_initvals(struct b43legacy_wldev *dev)
- }
- 
- /* Initialize the GPIOs
-- * http://bcm-specs.sipsolutions.net/GPIO
-+ * https://bcm-specs.sipsolutions.net/GPIO
-  */
- static int b43legacy_gpio_init(struct b43legacy_wldev *dev)
- {
-@@ -1960,7 +1960,7 @@ void b43legacy_mac_enable(struct b43legacy_wldev *dev)
- 	}
- }
- 
--/* http://bcm-specs.sipsolutions.net/SuspendMAC */
-+/* https://bcm-specs.sipsolutions.net/SuspendMAC */
- void b43legacy_mac_suspend(struct b43legacy_wldev *dev)
- {
- 	int i;
-@@ -2141,7 +2141,7 @@ static void b43legacy_chip_exit(struct b43legacy_wldev *dev)
- }
- 
- /* Initialize the chip
-- * http://bcm-specs.sipsolutions.net/ChipInit
-+ * https://bcm-specs.sipsolutions.net/ChipInit
-  */
- static int b43legacy_chip_init(struct b43legacy_wldev *dev)
- {
-diff --git a/drivers/net/wireless/broadcom/b43legacy/phy.c b/drivers/net/wireless/broadcom/b43legacy/phy.c
-index a659259bc51a..05404fbd1e70 100644
---- a/drivers/net/wireless/broadcom/b43legacy/phy.c
-+++ b/drivers/net/wireless/broadcom/b43legacy/phy.c
-@@ -129,7 +129,7 @@ void b43legacy_phy_calibrate(struct b43legacy_wldev *dev)
- }
- 
- /* initialize B PHY power control
-- * as described in http://bcm-specs.sipsolutions.net/InitPowerControl
-+ * as described in https://bcm-specs.sipsolutions.net/InitPowerControl
-  */
- static void b43legacy_phy_init_pctl(struct b43legacy_wldev *dev)
- {
-@@ -1461,7 +1461,7 @@ void b43legacy_phy_set_baseband_attenuation(struct b43legacy_wldev *dev,
- 	b43legacy_phy_write(dev, 0x0060, value);
- }
- 
--/* http://bcm-specs.sipsolutions.net/LocalOscillator/Measure */
-+/* https://bcm-specs.sipsolutions.net/LocalOscillator/Measure */
- void b43legacy_phy_lo_g_measure(struct b43legacy_wldev *dev)
- {
- 	static const u8 pairorder[10] = { 3, 1, 5, 7, 9, 2, 0, 4, 6, 8 };
-@@ -1721,7 +1721,7 @@ void b43legacy_phy_lo_mark_all_unused(struct b43legacy_wldev *dev)
- 	}
- }
- 
--/* http://bcm-specs.sipsolutions.net/EstimatePowerOut
-+/* https://bcm-specs.sipsolutions.net/EstimatePowerOut
-  * This function converts a TSSI value to dBm in Q5.2
-  */
- static s8 b43legacy_phy_estimate_power_out(struct b43legacy_wldev *dev, s8 tssi)
-@@ -1747,7 +1747,7 @@ static s8 b43legacy_phy_estimate_power_out(struct b43legacy_wldev *dev, s8 tssi)
- 	return dbm;
- }
- 
--/* http://bcm-specs.sipsolutions.net/RecalculateTransmissionPower */
-+/* https://bcm-specs.sipsolutions.net/RecalculateTransmissionPower */
- void b43legacy_phy_xmitpower(struct b43legacy_wldev *dev)
- {
- 	struct b43legacy_phy *phy = &dev->phy;
-diff --git a/drivers/net/wireless/broadcom/b43legacy/radio.c b/drivers/net/wireless/broadcom/b43legacy/radio.c
-index da40d1ca8723..06891b4f837b 100644
---- a/drivers/net/wireless/broadcom/b43legacy/radio.c
-+++ b/drivers/net/wireless/broadcom/b43legacy/radio.c
-@@ -313,14 +313,14 @@ u8 b43legacy_radio_aci_scan(struct b43legacy_wldev *dev)
- 	return ret[channel - 1];
- }
- 
--/* http://bcm-specs.sipsolutions.net/NRSSILookupTable */
-+/* https://bcm-specs.sipsolutions.net/NRSSILookupTable */
- void b43legacy_nrssi_hw_write(struct b43legacy_wldev *dev, u16 offset, s16 val)
- {
- 	b43legacy_phy_write(dev, B43legacy_PHY_NRSSILT_CTRL, offset);
- 	b43legacy_phy_write(dev, B43legacy_PHY_NRSSILT_DATA, (u16)val);
- }
- 
--/* http://bcm-specs.sipsolutions.net/NRSSILookupTable */
-+/* https://bcm-specs.sipsolutions.net/NRSSILookupTable */
- s16 b43legacy_nrssi_hw_read(struct b43legacy_wldev *dev, u16 offset)
- {
- 	u16 val;
-@@ -331,7 +331,7 @@ s16 b43legacy_nrssi_hw_read(struct b43legacy_wldev *dev, u16 offset)
- 	return (s16)val;
- }
- 
--/* http://bcm-specs.sipsolutions.net/NRSSILookupTable */
-+/* https://bcm-specs.sipsolutions.net/NRSSILookupTable */
- void b43legacy_nrssi_hw_update(struct b43legacy_wldev *dev, u16 val)
- {
- 	u16 i;
-@@ -345,7 +345,7 @@ void b43legacy_nrssi_hw_update(struct b43legacy_wldev *dev, u16 val)
- 	}
- }
- 
--/* http://bcm-specs.sipsolutions.net/NRSSILookupTable */
-+/* https://bcm-specs.sipsolutions.net/NRSSILookupTable */
- void b43legacy_nrssi_mem_update(struct b43legacy_wldev *dev)
- {
- 	struct b43legacy_phy *phy = &dev->phy;
+ enum dot11_maxframeburst_t {
+ 	/* Values for DOT11_OID_MAXFRAMEBURST */
 -- 
 2.27.0
 
