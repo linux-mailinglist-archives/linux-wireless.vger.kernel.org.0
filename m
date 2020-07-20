@@ -2,84 +2,63 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EFD6F225B15
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Jul 2020 11:15:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DF30A225AA8
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Jul 2020 11:01:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727908AbgGTJPc convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 20 Jul 2020 05:15:32 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:58012 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726666AbgGTJPc (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 20 Jul 2020 05:15:32 -0400
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.69 with qID 06K9FJEa8013205, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexmb06.realtek.com.tw[172.21.6.99])
-        by rtits2.realtek.com.tw (8.15.2/2.66/5.86) with ESMTPS id 06K9FJEa8013205
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Mon, 20 Jul 2020 17:15:19 +0800
-Received: from RTEXMB01.realtek.com.tw (172.21.6.94) by
- RTEXMB06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Mon, 20 Jul 2020 17:15:19 +0800
-Received: from RTEXMB04.realtek.com.tw (172.21.6.97) by
- RTEXMB01.realtek.com.tw (172.21.6.94) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Mon, 20 Jul 2020 17:15:19 +0800
-Received: from RTEXMB04.realtek.com.tw ([fe80::941:6388:7d34:5c44]) by
- RTEXMB04.realtek.com.tw ([fe80::941:6388:7d34:5c44%3]) with mapi id
- 15.01.1779.005; Mon, 20 Jul 2020 17:15:19 +0800
-From:   Tony Chuang <yhchuang@realtek.com>
-To:     Kalle Valo <kvalo@codeaurora.org>
-CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "Andy Huang" <tehuang@realtek.com>,
-        "bigeasy@linutronix.de" <bigeasy@linutronix.de>
-Subject: RE: [PATCH v2] rtw88: 8821c: coex: add functions and parameters
-Thread-Topic: [PATCH v2] rtw88: 8821c: coex: add functions and parameters
-Thread-Index: AQHWXjraTvh3jbCqrkKUH2C7bzlC1KkQLkeKgAABtmA=
-Date:   Mon, 20 Jul 2020 09:15:19 +0000
-Message-ID: <33152a8d95804ef5bb68579c8b40ebe3@realtek.com>
-References: <20200720020924.2254-1-yhchuang@realtek.com>
- <87lfje7dv1.fsf@codeaurora.org>
-In-Reply-To: <87lfje7dv1.fsf@codeaurora.org>
-Accept-Language: zh-TW, en-US
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.68.175]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        id S1726938AbgGTJBL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 20 Jul 2020 05:01:11 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:8334 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725815AbgGTJBL (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 20 Jul 2020 05:01:11 -0400
+Received: from DGGEMS404-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id 33C62D6F8F64A458F9B3;
+        Mon, 20 Jul 2020 17:01:04 +0800 (CST)
+Received: from NRM-11.huawei.com (10.175.101.78) by
+ DGGEMS404-HUB.china.huawei.com (10.3.19.204) with Microsoft SMTP Server id
+ 14.3.487.0; Mon, 20 Jul 2020 17:00:57 +0800
+From:   Wang Yufen <wangyufen@huawei.com>
+To:     <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <brcm80211-dev-list@cypress.com>, <linux-wireless@vger.kernel.org>,
+        <davem@davemloft.net>, <kvalo@codeaurora.org>, <kuba@kernel.org>,
+        <franky.lin@broadcom.com>, <wright.feng@cypress.com>
+CC:     Wang Yufen <wangyufen@huawei.com>
+Subject: [PATCH net-next] brcm80211: fix possible memleak in brcmf_proto_msgbuf_attach
+Date:   Mon, 20 Jul 2020 17:33:28 +0800
+Message-ID: <1595237608-66045-1-git-send-email-wangyufen@huawei.com>
+X-Mailer: git-send-email 1.8.3
 MIME-Version: 1.0
+Content-Type: text/plain
+X-Originating-IP: [10.175.101.78]
+X-CFilter-Loop: Reflected
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-> <yhchuang@realtek.com> writes:
-> 
-> > From: Ping-Cheng Chen <pc.chen@realtek.com>
-> >
-> > Without this patch, RTL8821CE will not have coex support,
-> > and will crash the system because of the NULL pointers
-> > for the coex functions.
-> >
-> > While RTL8822C series are WiFi + BT combo chips, it needs
-> > the co-existence mechanism for the device to work on both
-> > WiFi and BT without interfering each other. And the coex
-> > support has already been added before, most of the mechanisms
-> > are implemented. The driver should just add corresponding
-> > functions to operate on different types of chips and its
-> > coex parameters.
-> >
-> > Fixes: f745eb9ca5bf ("rtw88: 8821c: Add 8821CE to Kconfig and Makefile")
-> > Signed-off-by: Ping-Cheng Chen <pc.chen@realtek.com>
-> > Signed-off-by: Tzu-En Huang <tehuang@realtek.com>
-> > Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
-> 
-> What changed from v1?
-> 
+When brcmf_proto_msgbuf_attach fail and msgbuf->txflow_wq != NULL,
+we should destroy the workqueue.
 
-Just the name of the author, nothing else :)
+Fixes: 05491d2ccf20 ("brcm80211: move under broadcom vendor directory")
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: Wang Yufen <wangyufen@huawei.com>
+---
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/msgbuf.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Yen-Hsuan
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/msgbuf.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/msgbuf.c
+index 8bb4f1f..1bb270e 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/msgbuf.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/msgbuf.c
+@@ -1619,6 +1619,8 @@ int brcmf_proto_msgbuf_attach(struct brcmf_pub *drvr)
+ 					  BRCMF_TX_IOCTL_MAX_MSG_SIZE,
+ 					  msgbuf->ioctbuf,
+ 					  msgbuf->ioctbuf_handle);
++		if (msgbuf->txflow_wq)
++			destroy_workqueue(msgbuf->txflow_wq);
+ 		kfree(msgbuf);
+ 	}
+ 	return -ENOMEM;
+-- 
+1.8.3
+
