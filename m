@@ -2,102 +2,90 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3018B2258A1
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Jul 2020 09:31:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A5822258D3
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Jul 2020 09:42:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726127AbgGTHbs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 20 Jul 2020 03:31:48 -0400
-Received: from mail.kernel.org ([198.145.29.99]:49310 "EHLO mail.kernel.org"
+        id S1726428AbgGTHmy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 20 Jul 2020 03:42:54 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:13201 "EHLO m43-7.mailgun.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725815AbgGTHbs (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 20 Jul 2020 03:31:48 -0400
-Received: from pali.im (pali.im [31.31.79.79])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        id S1726307AbgGTHmx (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 20 Jul 2020 03:42:53 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1595230972; h=Content-Transfer-Encoding: MIME-Version:
+ Message-Id: Date: Subject: Cc: To: From: Sender;
+ bh=PSeYnBswFU5Fw3CqxsQiEKZDmGQbE6AV99Oqf6hKHrU=; b=lsijo1Zp1f9tIeafm2EYsMrX3q0NjC19dYaUCxcC+S31eQQGyer8ggwWMAb0xkd6rH9GpuTv
+ zoMEVK3f0yPjbmwJFaYLPu0BZvd2Lx2xc2Dj98E3EqUhygqJg0hOuKYhBTPTAz2o41zrInb8
+ BpXvZN2Xu2fDTSzsyw6aF+73bYc=
+X-Mailgun-Sending-Ip: 69.72.43.7
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n06.prod.us-east-1.postgun.com with SMTP id
+ 5f154af003c8596cdb5287ac (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 20 Jul 2020 07:42:40
+ GMT
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id D7B83C433C6; Mon, 20 Jul 2020 07:42:39 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.0
+Received: from vjakkam-linux.qualcomm.com (unknown [202.46.22.19])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 40BD62073A;
-        Mon, 20 Jul 2020 07:31:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1595230308;
-        bh=8tNqHuq/YTE6AuI4A6xYiMIsgdqAFlhpTpxa1XaFIPw=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=G/y6UUY9EaMj9ZG6LyfK4YvFpSaaBJoKTWr/vNq+oATx4um0coFnZmcptX3IGoiDD
-         6RUmyWvMKYOj2Eokd+Ikjh38ZD2o5m11mCSt3jB0xkkkkBGKtP6AV4qrDxbwDIMx8Y
-         KTNk0X7UpiI/upU0wGSj/QE7O4JdQTjsypMezdJ4=
-Received: by pali.im (Postfix)
-        id E831F778; Mon, 20 Jul 2020 09:31:45 +0200 (CEST)
-Date:   Mon, 20 Jul 2020 09:31:45 +0200
-From:   Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
-To:     Ajay.Kathat@microchip.com
-Cc:     linux-wireless@vger.kernel.org, Claudiu.Beznea@microchip.com,
-        Sripad.Balwadgi@microchip.com, ulf.hansson@linaro.org
-Subject: Re: [PATCH] wilc1000: Move wilc1000 SDIO ID's from driver source to
- common header file
-Message-ID: <20200720073145.3poujatb562cyoig@pali>
-References: <20200717051134.19160-1-ajay.kathat@microchip.com>
+        (Authenticated sender: vjakkam)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 92E4DC433C9;
+        Mon, 20 Jul 2020 07:42:38 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 92E4DC433C9
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=vjakkam@codeaurora.org
+From:   Veerendranath Jakkam <vjakkam@codeaurora.org>
+To:     johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org
+Subject: [PATCH] cfg80211: Add support to advertize OCV support
+Date:   Mon, 20 Jul 2020 13:12:25 +0530
+Message-Id: <20200720074225.8990-1-vjakkam@codeaurora.org>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20200717051134.19160-1-ajay.kathat@microchip.com>
-User-Agent: NeoMutt/20180716
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Friday 17 July 2020 05:11:38 Ajay.Kathat@microchip.com wrote:
-> From: Ajay Singh <ajay.kathat@microchip.com>
-> 
-> Moved macros used for Vendor/Device ID from wilc1000 driver to common
-> header file and changed macro name for consistency with other macros.
-> 
-> Signed-off-by: Ajay Singh <ajay.kathat@microchip.com>
+Add a new feature flag that drivers can use to advertize support for
+Operating Channel Validation (OCV) when using driver's SME for RSNA
+handshakes.
 
-Acked-by: Pali Rohár <pali@kernel.org>
+Signed-off-by: Veerendranath Jakkam <vjakkam@codeaurora.org>
+---
+ include/uapi/linux/nl80211.h | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-> ---
->  drivers/net/wireless/microchip/wilc1000/sdio.c | 6 ++----
->  include/linux/mmc/sdio_ids.h                   | 3 +++
->  2 files changed, 5 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/microchip/wilc1000/sdio.c b/drivers/net/wireless/microchip/wilc1000/sdio.c
-> index 36eb589263bf..3ece7b0b0392 100644
-> --- a/drivers/net/wireless/microchip/wilc1000/sdio.c
-> +++ b/drivers/net/wireless/microchip/wilc1000/sdio.c
-> @@ -6,6 +6,7 @@
->  
->  #include <linux/clk.h>
->  #include <linux/mmc/sdio_func.h>
-> +#include <linux/mmc/sdio_ids.h>
->  #include <linux/mmc/host.h>
->  #include <linux/mmc/sdio.h>
->  #include <linux/of_irq.h>
-> @@ -15,11 +16,8 @@
->  
->  #define SDIO_MODALIAS "wilc1000_sdio"
->  
-> -#define SDIO_VENDOR_ID_WILC 0x0296
-> -#define SDIO_DEVICE_ID_WILC 0x5347
-> -
->  static const struct sdio_device_id wilc_sdio_ids[] = {
-> -	{ SDIO_DEVICE(SDIO_VENDOR_ID_WILC, SDIO_DEVICE_ID_WILC) },
-> +	{ SDIO_DEVICE(SDIO_VENDOR_ID_MICROCHIP_WILC, SDIO_DEVICE_ID_MICROCHIP_WILC1000) },
->  	{ },
->  };
->  
-> diff --git a/include/linux/mmc/sdio_ids.h b/include/linux/mmc/sdio_ids.h
-> index 15ed8ce9d394..519820d18e62 100644
-> --- a/include/linux/mmc/sdio_ids.h
-> +++ b/include/linux/mmc/sdio_ids.h
-> @@ -105,6 +105,9 @@
->  #define SDIO_DEVICE_ID_MEDIATEK_MT7663		0x7663
->  #define SDIO_DEVICE_ID_MEDIATEK_MT7668		0x7668
->  
-> +#define SDIO_VENDOR_ID_MICROCHIP_WILC		0x0296
-> +#define SDIO_DEVICE_ID_MICROCHIP_WILC1000	0x5347
-> +
->  #define SDIO_VENDOR_ID_SIANO			0x039a
->  #define SDIO_DEVICE_ID_SIANO_NOVA_B0		0x0201
->  #define SDIO_DEVICE_ID_SIANO_NICE		0x0202
-> -- 
-> 2.24.0
+diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
+index 4e6339ab1fce..afccae23b0f5 100644
+--- a/include/uapi/linux/nl80211.h
++++ b/include/uapi/linux/nl80211.h
+@@ -5773,6 +5773,9 @@ enum nl80211_feature_flags {
+  * @NL80211_EXT_FEATURE_CONTROL_PORT_OVER_NL80211_TX_STATUS: The driver
+  *	can report tx status for control port over nl80211 tx operations.
+  *
++ * @NL80211_EXT_FEATURE_OPERATING_CHANNEL_VALIDATION: Driver supports Operating
++ *	Channel Validation (OCV) when using driver's SME for RSNA handshakes.
++ *
+  * @NUM_NL80211_EXT_FEATURES: number of extended features.
+  * @MAX_NL80211_EXT_FEATURES: highest extended feature index.
+  */
+@@ -5828,6 +5831,7 @@ enum nl80211_ext_feature_index {
+ 	NL80211_EXT_FEATURE_BEACON_PROTECTION_CLIENT,
+ 	NL80211_EXT_FEATURE_SCAN_FREQ_KHZ,
+ 	NL80211_EXT_FEATURE_CONTROL_PORT_OVER_NL80211_TX_STATUS,
++	NL80211_EXT_FEATURE_OPERATING_CHANNEL_VALIDATION,
+ 
+ 	/* add new features before the definition below */
+ 	NUM_NL80211_EXT_FEATURES,
+-- 
+2.20.1
+
