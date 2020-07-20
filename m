@@ -2,56 +2,82 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B949226A82
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Jul 2020 18:36:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 00CC4226AEA
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Jul 2020 18:40:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731954AbgGTQfK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 20 Jul 2020 12:35:10 -0400
-Received: from mx3.wp.pl ([212.77.101.10]:12698 "EHLO mx3.wp.pl"
+        id S1732200AbgGTQhe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 20 Jul 2020 12:37:34 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:55628 "EHLO m43-7.mailgun.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731342AbgGTPye (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 20 Jul 2020 11:54:34 -0400
-Received: (wp-smtpd smtp.wp.pl 16606 invoked from network); 20 Jul 2020 17:54:30 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=1024a;
-          t=1595260471; bh=Y0bZYOg1d1EJBOpSBHiUjDo02WQDRKDZBBBZtcRjU7Y=;
-          h=From:To:Cc:Subject;
-          b=FYBCbTFUnDIBtbI8nTQmeLGktKbYGctKcXLK3jORi7mXETEucsm7LCdpr4Bf1uKX8
-           bbYHCWx/1KOkegDqDqRBH/pctdGFLWPUKKjFjq5ON0hd/U10aiHTiJHn9vsPgTrx73
-           9GR+tLSiaIUzFWokKbrx3Qq3gQwhVaQ05ylNKn3E=
-Received: from unknown (HELO kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com) (kubakici@wp.pl@[163.114.132.7])
-          (envelope-sender <kubakici@wp.pl>)
-          by smtp.wp.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
-          for <navid.emamdoost@gmail.com>; 20 Jul 2020 17:54:30 +0200
-Date:   Mon, 20 Jul 2020 08:54:22 -0700
-From:   Jakub Kicinski <kubakici@wp.pl>
-To:     Navid Emamdoost <navid.emamdoost@gmail.com>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mt7601u: add missing release on skb in
- mt7601u_mcu_msg_send
-Message-ID: <20200720085422.40539aa4@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-In-Reply-To: <20200718052630.11032-1-navid.emamdoost@gmail.com>
-References: <20200718052630.11032-1-navid.emamdoost@gmail.com>
+        id S1731705AbgGTQhd (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 20 Jul 2020 12:37:33 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1595263052; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=Q+weMKjKZ7I6Ell2MRl3B73PGTmv95MQ7l8CjORq3Uk=;
+ b=S0ydInAvrig25ZV7hM41sqU4XB0/XkVJRNkrhI4gEUyev2vpRb+dooCffh/aJqcWuZmS7QBJ
+ PS6hgbSDjXJ0ORUEh+/2MSkpuvGLV/16U4YwaVmWnuPGtiSfxwgodE1HiAm6KIZRocay+MSq
+ pr3bJLoIws36S2lTtE/lyoHwoPI=
+X-Mailgun-Sending-Ip: 69.72.43.7
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n03.prod.us-east-1.postgun.com with SMTP id
+ 5f15c84cf9ca681bd06f2d31 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 20 Jul 2020 16:37:32
+ GMT
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id B01EEC433B1; Mon, 20 Jul 2020 16:37:30 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
+        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id CB740C433C9;
+        Mon, 20 Jul 2020 16:37:27 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org CB740C433C9
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-WP-MailID: 86ad31f636f93e20d39630a6dd07675f
-X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
-X-WP-SPAM: NO 0000001 [geJz]                               
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH 1/1] ath9k: Fix regression with Atheros 9271
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20200711043324.8079-1-shiftee@posteo.net>
+References: <20200711043324.8079-1-shiftee@posteo.net>
+To:     Mark O'Donovan <shiftee@posteo.net>
+Cc:     linux-wireless@vger.kernel.org, jaegerskuepper@freenet.de,
+        hqjagain@gmail.com, ath9k-devel@qca.qualcomm.com,
+        davem@davemloft.net, kuba@kernel.org,
+        Mark O'Donovan <shiftee@posteo.net>
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
+Message-Id: <20200720163730.B01EEC433B1@smtp.codeaurora.org>
+Date:   Mon, 20 Jul 2020 16:37:30 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sat, 18 Jul 2020 00:26:29 -0500 Navid Emamdoost wrote:
-> In the implementation of mt7601u_mcu_msg_send(), skb is supposed to be
-> consumed on all execution paths. Release skb before returning if
-> test_bit() fails.
-> 
-> Signed-off-by: Navid Emamdoost <navid.emamdoost@gmail.com>
+Mark O'Donovan <shiftee@posteo.net> wrote:
 
-Acked-by: Jakub Kicinski <kubakici@wp.pl>
+> This fix allows ath9k_htc modules to connect to WLAN once again.
+> 
+> Fixes: 2bbcaaee1fcb ("ath9k: Fix general protection fault in ath9k_hif_usb_rx_cb")
+> Link: https://bugzilla.kernel.org/show_bug.cgi?id=208251
+> Signed-off-by: Mark O'Donovan <shiftee@posteo.net>
+> Reported-by: Roman Mamedov <rm@romanrm.net>
+> Tested-by: Viktor Jägersküpper <viktor_jaegerskuepper@freenet.de>
+
+Patch applied to wireless-drivers.git, thanks.
+
+92f53e2fda8b ath9k: Fix regression with Atheros 9271
+
+-- 
+https://patchwork.kernel.org/patch/11657669/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
