@@ -2,93 +2,78 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 715312251CC
-	for <lists+linux-wireless@lfdr.de>; Sun, 19 Jul 2020 14:13:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B10A22558B
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Jul 2020 03:44:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726173AbgGSMMe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 19 Jul 2020 08:12:34 -0400
-Received: from smtp.al2klimov.de ([78.46.175.9]:55526 "EHLO smtp.al2klimov.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725836AbgGSMMe (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 19 Jul 2020 08:12:34 -0400
-Received: from authenticated-user (PRIMARY_HOSTNAME [PUBLIC_IP])
-        by smtp.al2klimov.de (Postfix) with ESMTPA id 6A638BC07E;
-        Sun, 19 Jul 2020 12:12:30 +0000 (UTC)
-From:   "Alexander A. Klimov" <grandmaster@al2klimov.de>
-To:     mcgrof@kernel.org, kvalo@codeaurora.org, davem@davemloft.net,
-        kuba@kernel.org, gustavoars@kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     "Alexander A. Klimov" <grandmaster@al2klimov.de>
-Subject: [PATCH for v5.9] prism54: Replace HTTP links with HTTPS ones
-Date:   Sun, 19 Jul 2020 14:12:24 +0200
-Message-Id: <20200719121224.58581-1-grandmaster@al2klimov.de>
+        id S1726775AbgGTBnv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 19 Jul 2020 21:43:51 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:8326 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726225AbgGTBnv (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 19 Jul 2020 21:43:51 -0400
+Received: from DGGEMS405-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id 442BA402F41282D15FAA
+        for <linux-wireless@vger.kernel.org>; Mon, 20 Jul 2020 09:43:48 +0800 (CST)
+Received: from ubuntu.network (10.175.138.68) by
+ DGGEMS405-HUB.china.huawei.com (10.3.19.205) with Microsoft SMTP Server id
+ 14.3.487.0; Mon, 20 Jul 2020 09:43:40 +0800
+From:   Zheng Yongjun <zhengyongjun3@huawei.com>
+To:     <zajec5@gmail.com>, <linux-wireless@vger.kernel.org>
+CC:     Zheng Yongjun <zhengyongjun3@huawei.com>
+Subject: [PATCH] drivers: bcma: remove set but not used variable `addrh` and `sizeh`
+Date:   Mon, 20 Jul 2020 09:44:41 +0800
+Message-ID: <20200720014441.21893-1-zhengyongjun3@huawei.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Bar: +++++
-X-Spam-Level: *****
-Authentication-Results: smtp.al2klimov.de;
-        auth=pass smtp.auth=aklimov@al2klimov.de smtp.mailfrom=grandmaster@al2klimov.de
+Content-Type: text/plain
+X-Originating-IP: [10.175.138.68]
+X-CFilter-Loop: Reflected
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Rationale:
-Reduces attack surface on kernel devs opening the links for MITM
-as HTTPS traffic is much harder to manipulate.
+Fixes gcc '-Wunused-but-set-variable' warning:
 
-Deterministic algorithm:
-For each file:
-  If not .svg:
-    For each line:
-      If doesn't contain `\bxmlns\b`:
-        For each link, `\bhttp://[^# \t\r\n]*(?:\w|/)`:
-	  If neither `\bgnu\.org/license`, nor `\bmozilla\.org/MPL\b`:
-            If both the HTTP and HTTPS versions
-            return 200 OK and serve the same content:
-              Replace HTTP with HTTPS.
+drivers/bcma/scan.c: In function 'bcma_erom_get_addr_desc':
+drivers/bcma/scan.c:219 warning:
+variable `addrh` and `sizeh` set but not used [-Wunused-but-set-variable]
 
-Signed-off-by: Alexander A. Klimov <grandmaster@al2klimov.de>
+Signed-off-by: Zheng Yongjun <zhengyongjun3@huawei.com>
 ---
- Continuing my work started at 93431e0607e5.
- See also: git log --oneline '--author=Alexander A. Klimov <grandmaster@al2klimov.de>' v5.7..master
- (Actually letting a shell for loop submit all this stuff for me.)
+ drivers/bcma/scan.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
- If there are any URLs to be removed completely
- or at least not (just) HTTPSified:
- Just clearly say so and I'll *undo my change*.
- See also: https://lkml.org/lkml/2020/6/27/64
-
- If there are any valid, but yet not changed URLs:
- See: https://lkml.org/lkml/2020/6/26/837
-
- If you apply the patch, please let me know.
-
- Sorry again to all maintainers who complained about subject lines.
- Now I realized that you want an actually perfect prefixes,
- not just subsystem ones.
- I tried my best...
- And yes, *I could* (at least half-)automate it.
- Impossible is nothing! :)
-
-
- drivers/net/wireless/intersil/prism54/isl_oid.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/intersil/prism54/isl_oid.h b/drivers/net/wireless/intersil/prism54/isl_oid.h
-index 1afc2ccf94ca..b889bb73a485 100644
---- a/drivers/net/wireless/intersil/prism54/isl_oid.h
-+++ b/drivers/net/wireless/intersil/prism54/isl_oid.h
-@@ -143,7 +143,7 @@ enum dot11_priv_t {
-  * together with a CSMA contention. Without this all frames are
-  * sent with a CSMA contention.
-  * Bibliography:
-- * http://www.hpl.hp.com/personal/Jean_Tourrilhes/Papers/Packet.Frame.Grouping.html
-+ * https://www.hpl.hp.com/personal/Jean_Tourrilhes/Papers/Packet.Frame.Grouping.html
-  */
- enum dot11_maxframeburst_t {
- 	/* Values for DOT11_OID_MAXFRAMEBURST */
+diff --git a/drivers/bcma/scan.c b/drivers/bcma/scan.c
+index 1a942f734188..d49e7c0de2b6 100644
+--- a/drivers/bcma/scan.c
++++ b/drivers/bcma/scan.c
+@@ -219,7 +219,7 @@ static s32 bcma_erom_get_mst_port(struct bcma_bus *bus, u32 __iomem **eromptr)
+ static u32 bcma_erom_get_addr_desc(struct bcma_bus *bus, u32 __iomem **eromptr,
+ 				  u32 type, u8 port)
+ {
+-	u32 addrl, addrh, sizeh = 0;
++	u32 addrl;
+ 	u32 size;
+ 
+ 	u32 ent = bcma_erom_get_ent(bus, eromptr);
+@@ -233,14 +233,12 @@ static u32 bcma_erom_get_addr_desc(struct bcma_bus *bus, u32 __iomem **eromptr,
+ 
+ 	addrl = ent & SCAN_ADDR_ADDR;
+ 	if (ent & SCAN_ADDR_AG32)
+-		addrh = bcma_erom_get_ent(bus, eromptr);
+-	else
+-		addrh = 0;
++		bcma_erom_get_ent(bus, eromptr);
+ 
+ 	if ((ent & SCAN_ADDR_SZ) == SCAN_ADDR_SZ_SZD) {
+ 		size = bcma_erom_get_ent(bus, eromptr);
+ 		if (size & SCAN_SIZE_SG32)
+-			sizeh = bcma_erom_get_ent(bus, eromptr);
++			bcma_erom_get_ent(bus, eromptr);
+ 	}
+ 
+ 	return addrl;
 -- 
-2.27.0
+2.17.1
 
