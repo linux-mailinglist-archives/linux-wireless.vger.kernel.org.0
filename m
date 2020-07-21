@@ -2,68 +2,79 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 32F80227A82
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Jul 2020 10:19:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F7C2227AE4
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Jul 2020 10:39:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728275AbgGUIT3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 21 Jul 2020 04:19:29 -0400
-Received: from mail.kernel.org ([198.145.29.99]:44540 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726933AbgGUIT3 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 21 Jul 2020 04:19:29 -0400
-Received: from lore-desk.redhat.com (unknown [151.48.143.159])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 04F8620720;
-        Tue, 21 Jul 2020 08:19:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1595319568;
-        bh=ahYmlHcuyF/trozgYMlx24U5x2wu1v4aDv9Qkb4PwOw=;
-        h=From:To:Cc:Subject:Date:From;
-        b=vl8rvNUKm6Yro75nqOa7q43K2JOnbHzoToL6+wFeguPgavgK5bZu0dYgx4DclAsnY
-         0vO0wkrfW2mGA5SzBxU3yovUVGLzKpAxkaHOhvokF6sO+hXNo2MG5bHTnWDmz6Ub30
-         FHkAaJKapz9xynZ/PCcEd7Ro8ZwKLmC0rVNVf+/I=
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org
-Subject: [PATCH] mt76: mt7615: fix possible memory leak in mt7615_mcu_wtbl_sta_add
-Date:   Tue, 21 Jul 2020 10:19:22 +0200
-Message-Id: <7c17fa2c123ae13c3c77a45a3659d19f986a85b8.1595319246.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.26.2
+        id S1728852AbgGUIjs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 21 Jul 2020 04:39:48 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:8342 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1728418AbgGUIjs (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 21 Jul 2020 04:39:48 -0400
+Received: from DGGEMS406-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id 8CB22C6357DD61580D5E;
+        Tue, 21 Jul 2020 16:39:45 +0800 (CST)
+Received: from ubuntu.network (10.175.138.68) by
+ DGGEMS406-HUB.china.huawei.com (10.3.19.206) with Microsoft SMTP Server id
+ 14.3.487.0; Tue, 21 Jul 2020 16:39:36 +0800
+From:   Zheng Yongjun <zhengyongjun3@huawei.com>
+To:     <zajec5@gmail.com>, <linux-wireless@vger.kernel.org>
+CC:     <linux-kernel@vger.kernel.org>,
+        Zheng Yongjun <zhengyongjun3@huawei.com>
+Subject: [PATCH] drivers: bcma: remove set but not used variable `addrh` and `sizeh`
+Date:   Tue, 21 Jul 2020 16:39:35 +0800
+Message-ID: <20200721083935.13306-1-zhengyongjun3@huawei.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.175.138.68]
+X-CFilter-Loop: Reflected
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Free the second mcu skb if __mt76_mcu_skb_send_msg() fails to transmit
-the first one in mt7615_mcu_wtbl_sta_add().
+Fixes gcc '-Wunused-but-set-variable' warning:
 
-Fixes: 99c457d902cf9 ("mt76: mt7615: move mt7615_mcu_set_bmc to mt7615_mcu_ops")
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+drivers/bcma/scan.c: In function 'bcma_erom_get_addr_desc':
+drivers/bcma/scan.c:219 warning:
+variable `addrh` and `sizeh` set but not used [-Wunused-but-set-variable]
+
+Signed-off-by: Zheng Yongjun <zhengyongjun3@huawei.com>
 ---
- drivers/net/wireless/mediatek/mt76/mt7615/mcu.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/bcma/scan.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-index 179412355ae5..d46287e2b19f 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-@@ -1366,8 +1366,12 @@ mt7615_mcu_wtbl_sta_add(struct mt7615_dev *dev, struct ieee80211_vif *vif,
- 	skb = enable ? wskb : sskb;
+diff --git a/drivers/bcma/scan.c b/drivers/bcma/scan.c
+index 1a942f734188..d49e7c0de2b6 100644
+--- a/drivers/bcma/scan.c
++++ b/drivers/bcma/scan.c
+@@ -219,7 +219,7 @@ static s32 bcma_erom_get_mst_port(struct bcma_bus *bus, u32 __iomem **eromptr)
+ static u32 bcma_erom_get_addr_desc(struct bcma_bus *bus, u32 __iomem **eromptr,
+ 				  u32 type, u8 port)
+ {
+-	u32 addrl, addrh, sizeh = 0;
++	u32 addrl;
+ 	u32 size;
  
- 	err = __mt76_mcu_skb_send_msg(&dev->mt76, skb, cmd, true);
--	if (err < 0)
-+	if (err < 0) {
-+		skb = enable ? sskb : wskb;
-+		dev_kfree_skb(skb);
-+
- 		return err;
-+	}
+ 	u32 ent = bcma_erom_get_ent(bus, eromptr);
+@@ -233,14 +233,12 @@ static u32 bcma_erom_get_addr_desc(struct bcma_bus *bus, u32 __iomem **eromptr,
  
- 	cmd = enable ? MCU_EXT_CMD_STA_REC_UPDATE : MCU_EXT_CMD_WTBL_UPDATE;
- 	skb = enable ? sskb : wskb;
+ 	addrl = ent & SCAN_ADDR_ADDR;
+ 	if (ent & SCAN_ADDR_AG32)
+-		addrh = bcma_erom_get_ent(bus, eromptr);
+-	else
+-		addrh = 0;
++		bcma_erom_get_ent(bus, eromptr);
+ 
+ 	if ((ent & SCAN_ADDR_SZ) == SCAN_ADDR_SZ_SZD) {
+ 		size = bcma_erom_get_ent(bus, eromptr);
+ 		if (size & SCAN_SIZE_SG32)
+-			sizeh = bcma_erom_get_ent(bus, eromptr);
++			bcma_erom_get_ent(bus, eromptr);
+ 	}
+ 
+ 	return addrl;
 -- 
-2.26.2
+2.17.1
 
