@@ -2,177 +2,68 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E575022765F
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Jul 2020 05:06:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 32F80227A82
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Jul 2020 10:19:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728301AbgGUDEU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 20 Jul 2020 23:04:20 -0400
-Received: from mail-io1-f65.google.com ([209.85.166.65]:35621 "EHLO
-        mail-io1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726089AbgGUDEU (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 20 Jul 2020 23:04:20 -0400
-Received: by mail-io1-f65.google.com with SMTP id v8so19864204iox.2;
-        Mon, 20 Jul 2020 20:04:19 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=2GnZO+Ycdsio9KAP5RhSVTIeQOjBv69bMXcFq/3rg2w=;
-        b=FosDq5u1IikOglcsp43QX+KAmiotbfM0Kk26C0G7vsxwVBL41QZMUMLGQbCmEawlRF
-         /DSd6Fc4yCWHtxaH5g2dpBooGwl3rzzjB0D/0aggjpjQsFjFT3jRDRkFwnXHlq+odF98
-         sZ3rS0d2XP3dNBGxfTQhgkJEl1WCYfGDQEO9fTYN2HShBVzVNnJtgoTr4x63NtqsqwNr
-         nfpYyrC1ClBOHLE6P0SYQp4XlXPmVDu86n72dW15s0Rug6UXPtNvlST4x3hCMMqjWdoG
-         Ih0VB31JB+prmkXnHqOMK1MXZtoavsjbJmBBgZlkJg+U095S/krIW134hzWrHGyP531v
-         +mhg==
-X-Gm-Message-State: AOAM532N9OEGe5slyLWh0nsJP5Jk/gBsRXNIuptuD0jnfxL9hKKruF0V
-        egpNNmrFb8/F4DPhlus/TSWo4l6C+g==
-X-Google-Smtp-Source: ABdhPJxYHQOHmwni8IbzLsQFjDjhMW1QMJ0xz7+vMqBmHkJWmfFNmRSzPPYwV8tIvvK+ZPiqNIZRaA==
-X-Received: by 2002:a05:6638:601:: with SMTP id g1mr29790037jar.137.1595300659197;
-        Mon, 20 Jul 2020 20:04:19 -0700 (PDT)
-Received: from xps15 ([64.188.179.252])
-        by smtp.gmail.com with ESMTPSA id b24sm9821963ioh.6.2020.07.20.20.04.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Jul 2020 20:04:18 -0700 (PDT)
-Received: (nullmailer pid 3463148 invoked by uid 1000);
-        Tue, 21 Jul 2020 03:04:16 -0000
-Date:   Mon, 20 Jul 2020 21:04:16 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Felix Fietkau <nbd@nbd.name>
-Cc:     linux-wireless@vger.kernel.org, devicetree@vger.kernel.org,
-        evelyn.tsai@mediatek.com, Shayne Chen <shayne.chen@mediatek.com>
-Subject: Re: [PATCH v3 1/4] dt-bindings: net: wireless: mt76: add
- power-limits node
-Message-ID: <20200721030416.GA3448943@bogus>
-References: <20200715130134.34988-1-nbd@nbd.name>
+        id S1728275AbgGUIT3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 21 Jul 2020 04:19:29 -0400
+Received: from mail.kernel.org ([198.145.29.99]:44540 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726933AbgGUIT3 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 21 Jul 2020 04:19:29 -0400
+Received: from lore-desk.redhat.com (unknown [151.48.143.159])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 04F8620720;
+        Tue, 21 Jul 2020 08:19:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1595319568;
+        bh=ahYmlHcuyF/trozgYMlx24U5x2wu1v4aDv9Qkb4PwOw=;
+        h=From:To:Cc:Subject:Date:From;
+        b=vl8rvNUKm6Yro75nqOa7q43K2JOnbHzoToL6+wFeguPgavgK5bZu0dYgx4DclAsnY
+         0vO0wkrfW2mGA5SzBxU3yovUVGLzKpAxkaHOhvokF6sO+hXNo2MG5bHTnWDmz6Ub30
+         FHkAaJKapz9xynZ/PCcEd7Ro8ZwKLmC0rVNVf+/I=
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org
+Subject: [PATCH] mt76: mt7615: fix possible memory leak in mt7615_mcu_wtbl_sta_add
+Date:   Tue, 21 Jul 2020 10:19:22 +0200
+Message-Id: <7c17fa2c123ae13c3c77a45a3659d19f986a85b8.1595319246.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200715130134.34988-1-nbd@nbd.name>
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Jul 15, 2020 at 03:01:34PM +0200, Felix Fietkau wrote:
-> This subnode can be used to set per-rate tx power limits either per
-> country code / regdomain or globally.
-> These limits are typically provided by the device manufacturers and are
-> used to limit sideband emissions and stay within regulatory limits
-> 
-> Co-developed-by: Shayne Chen <shayne.chen@mediatek.com>
-> Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
-> Signed-off-by: Felix Fietkau <nbd@nbd.name>
-> ---
-> v3:
->  - fix S-o-b order
-> v2:
->  - merge 802.11ax rate changes from Shayne's patch
->  - document txs-delta property
+Free the second mcu skb if __mt76_mcu_skb_send_msg() fails to transmit
+the first one in mt7615_mcu_wtbl_sta_add().
 
-This is an extensive enough change that I think it needs to be in schema 
-format.
+Fixes: 99c457d902cf9 ("mt76: mt7615: move mt7615_mcu_set_bmc to mt7615_mcu_ops")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+ drivers/net/wireless/mediatek/mt76/mt7615/mcu.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
->  .../bindings/net/wireless/mediatek,mt76.txt   | 59 +++++++++++++++++++
->  1 file changed, 59 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/net/wireless/mediatek,mt76.txt b/Documentation/devicetree/bindings/net/wireless/mediatek,mt76.txt
-> index ab7e7a00e534..e4859c974ef4 100644
-> --- a/Documentation/devicetree/bindings/net/wireless/mediatek,mt76.txt
-> +++ b/Documentation/devicetree/bindings/net/wireless/mediatek,mt76.txt
-> @@ -36,6 +36,7 @@ Optional nodes:
->  - led: Properties for a connected LED
->    Optional properties:
->      - led-sources: See Documentation/devicetree/bindings/leds/common.txt
-> +- power-limits: contains per-regdomain/channel rate power limit subnodes
->  
->  &pcie {
->  	pcie0 {
-> @@ -76,3 +77,61 @@ wmac: wmac@18000000 {
->  
->  	power-domains = <&scpsys MT7622_POWER_DOMAIN_WB>;
->  };
-> +
-> +
-> +Subnodes of power-limits:
-> +
-> +Properties:
-> +- country: One or more country codes, as used by the cfg80211 regdomain code
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+index 179412355ae5..d46287e2b19f 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+@@ -1366,8 +1366,12 @@ mt7615_mcu_wtbl_sta_add(struct mt7615_dev *dev, struct ieee80211_vif *vif,
+ 	skb = enable ? wskb : sskb;
+ 
+ 	err = __mt76_mcu_skb_send_msg(&dev->mt76, skb, cmd, true);
+-	if (err < 0)
++	if (err < 0) {
++		skb = enable ? sskb : wskb;
++		dev_kfree_skb(skb);
++
+ 		return err;
++	}
+ 
+ 	cmd = enable ? MCU_EXT_CMD_STA_REC_UPDATE : MCU_EXT_CMD_WTBL_UPDATE;
+ 	skb = enable ? sskb : wskb;
+-- 
+2.26.2
 
-What are the values? cfg80211 is a Linux thing and doesn't belong in 
-bindings.
-
-> +- regdomain: "FCC", "ETSI" or "JP"
-
-These aren't implied by the country code?
-
-> +
-> +If neither country, nor regdomain is specified, the power limits node is used
-> +as a fallback when no other subnode matches.
-> +
-> +Subnodes txpower-2g, txpower-5g:
-> +
-> +Properties:
-> +- channels: pairs of first and last channel number
-
-What's the range in terms of channel numbers and pairs?
-
-> +- cck: 4 half-dBm per-rate power limit values
-> +- ofdm: 8 half-dBm per-rate power limit values
-> +- mcs:
-> +	sets of per-rate power limit values for 802.11n/802.11ac rates for
-> +	multiple channel bandwidth settings.
-> +	Each set starts with the number of channel bandwidth settings for
-> +	which the rate set applies, followed by either 8 (MT7603/MT7628) or
-> +	10 (all other chips) power limit values.
-> +	The order of the channel bandwidth settings is: 20, 40, 80, 160 MHz.
-
-The example only has 2 sets, so which channels are they?
-
-> +- ru:
-> +	sets of per-rate power limit values for 802.11ax rates for multiple
-> +	channel bandwidth or resource unit settings.
-> +	Each set starts with the number of channel bandwidth or resource unit
-> +	settings for which the rate set applies, followed by 12 power limit
-> +	values. The order of the channel resource unit settings is:
-> +	RU26, RU52, RU106, RU242/SU20, RU484/SU40, RU996/SU80, RU2x996/SU160.
-
-Could be 8-bit? Doesn't really matter much for the example, but what's 
-the worst/typical case?
-
-> +- txs-delta: half-dBm power delta for different numbers of antennas (1, 2, ...)
-> +
-> +
-> +power-limit example:
-> +
-> +power-limits {
-> +	r0 {
-
-What's 'r0'? Not documented.
-
-> +		regdomain = "FCC";
-> +		txpower-5g {
-> +			r1 {
-
-What's 'r1' and 'r2'? Not documented.
-
-> +				channels = <36 48>;
-> +				ofdm = <23 23 23 23 23 23 23 23>;
-> +				mcs = <1 23 23 23 23 23 23 23 23 23 23>,
-> +					  <3 22 22 22 22 22 22 22 22 22 22>;
-> +				ru = <3 22 22 22 22 22 22 22 22 22 22 22 22>,
-> +				     <4 20 20 20 20 20 20 20 20 20 20 20 20>;
-> +			};
-> +			r2 {
-> +				channels = <100 181>;
-> +				ofdm = <14 14 14 14 14 14 14 14>;
-> +				mcs = <4 14 14 14 14 14 14 14 14 14 14>;
-> +				txs-delta = <12 9 6>;
-> +				ru = <7 14 14 14 14 14 14 14 14 14 14 14 14>;
-> +			};
-> +		};
-> +	};
-> +};
-> -- 
-> 2.24.0
-> 
