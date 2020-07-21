@@ -2,76 +2,69 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D71ED22807B
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Jul 2020 15:02:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0151B22811D
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Jul 2020 15:39:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727121AbgGUNBc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 21 Jul 2020 09:01:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40656 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726687AbgGUNBb (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 21 Jul 2020 09:01:31 -0400
-Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com [IPv6:2607:f8b0:4864:20::443])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FA03C061794;
-        Tue, 21 Jul 2020 06:01:29 -0700 (PDT)
-Received: by mail-pf1-x443.google.com with SMTP id s26so10696087pfm.4;
-        Tue, 21 Jul 2020 06:01:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=PVh0UoUWYQd3T8847SakLzIV/J/J6Lx8vEgfKUN35n8=;
-        b=nxrIxIJL7rLwgkY3my8Zt5Gh6rDni7leFzWeeRl49CaLT3Q16M1gfCAyFIuvUB5+P6
-         CkhIbVIkXULhjDyR0hGf0OMmAPYQkm378GoxFIFgJDQ1G7SBT4buLfGjZKBwcur/s+i4
-         qFx3VdWwtOJRO2UyVR7A3nWAbY9NjKMy3KWaBXk/+h+ZqfIXl2uAPv7QbqVRyd7hEMdy
-         1bK/5L1jOc3clwuLhMW66CWuwjCdUPXuSz11/F3WTfIx3dSZO2kzBZLVovAFsJOpMk0L
-         y5p6ceMbMGCGlUM01uqvsPymyPZ3c2+5QEbflevWos0nHDWw3xXXBi9aYk5qAabvhOD/
-         TKUA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=PVh0UoUWYQd3T8847SakLzIV/J/J6Lx8vEgfKUN35n8=;
-        b=cI68IngoKYiIIwn9cu3Wyl74SXnGAH4rpl2UREZMiG91cr0++mLAjQMpz05fB8U9vN
-         2ZJdM7zj96+Yq5cGcIhMEAoh3AyoFjPw/quNtJMO65jeL3QJx2vLVtLaffd/NGHkXa/T
-         wUD5XDNtpSKNWGaEiGiJ+lQTGO/Xcb2hPS/tD6xcJLtliLT/LUh6etevAm71GnqLM1HR
-         /TZOyDKidDoyQyR/5rCOaNHLqvLNcEcLP8ssZ91yUpX0r2xG3qZTR0xZrp+OSDrcBqAW
-         6Ofm2rovShdrYdXB4cCpWeUyRaIx1DrSRsLByM1c3tP8dzhxu1qrt3EjT0VQkBm3sEJl
-         i4KQ==
-X-Gm-Message-State: AOAM5303W0dS/o90Qfl3szaQ6WL9I4HFkCj98uFic5OV6ScvGN40y+jS
-        IDwbdNJ169LEcSx1vG+sOnaF1kCC2hVAFg==
-X-Google-Smtp-Source: ABdhPJxzhb9UFg9JQyfO5NooNCWTMMytOO3dNVT0hez4mbKmugYBPNC2GIL8p9+BcoskQXbhEmNsJg==
-X-Received: by 2002:a63:1a0c:: with SMTP id a12mr22295348pga.24.1595336489026;
-        Tue, 21 Jul 2020 06:01:29 -0700 (PDT)
-Received: from gmail.com ([103.105.153.67])
-        by smtp.gmail.com with ESMTPSA id w29sm20191981pfq.128.2020.07.21.06.01.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Jul 2020 06:01:28 -0700 (PDT)
-Date:   Tue, 21 Jul 2020 18:30:07 +0530
-From:   Vaibhav Gupta <vaibhavgupta40@gmail.com>
-To:     Bjorn Helgaas <helgaas@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Bjorn Helgaas <bjorn@helgaas.com>,
-        Vaibhav Gupta <vaibhav.varodek@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        id S1728391AbgGUNjR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 21 Jul 2020 09:39:17 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:8346 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1727914AbgGUNjQ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 21 Jul 2020 09:39:16 -0400
+Received: from DGGEMS402-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id 020FECD3B2A77F10C0E1;
+        Tue, 21 Jul 2020 21:39:13 +0800 (CST)
+Received: from kernelci-master.huawei.com (10.175.101.6) by
+ DGGEMS402-HUB.china.huawei.com (10.3.19.202) with Microsoft SMTP Server id
+ 14.3.487.0; Tue, 21 Jul 2020 21:39:04 +0800
+From:   Wei Yongjun <weiyongjun1@huawei.com>
+To:     Hulk Robot <hulkci@huawei.com>,
+        Yan-Hsuan Chuang <yhchuang@realtek.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
         Jakub Kicinski <kuba@kernel.org>,
-        Luis Chamberlain <mcgrof@kernel.org>,
-        Kalle Valo <kvalo@codeaurora.org>
-Cc:     linux-kernel@vger.kernel.org,
-        linux-kernel-mentees@lists.linuxfoundation.org,
-        Shuah Khan <skhan@linuxfoundation.org>, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org
-Subject: Re: [PATCH v1] prism54: islpci_hotplug: use generic power management
-Message-ID: <20200721130007.GA145812@gmail.com>
-References: <20200721125514.145607-1-vaibhavgupta40@gmail.com>
+        "Tzu-En Huang" <tehuang@realtek.com>
+CC:     Wei Yongjun <weiyongjun1@huawei.com>,
+        <linux-wireless@vger.kernel.org>
+Subject: [PATCH -next] rtw88: 8821c: make symbol 'rtw8821c_rtw_pwr_track_tbl' static
+Date:   Tue, 21 Jul 2020 21:49:01 +0800
+Message-ID: <20200721134901.33968-1-weiyongjun1@huawei.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20200721125514.145607-1-vaibhavgupta40@gmail.com>
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.175.101.6]
+X-CFilter-Loop: Reflected
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This Patch is Compile-tested only.
+The sparse tool complains as follows:
+
+drivers/net/wireless/realtek/rtw88/rtw8821c.c:1374:32: warning:
+ symbol 'rtw8821c_rtw_pwr_track_tbl' was not declared. Should it be static?
+
+This variable is not used outside of rtw8821c.c, so this commit
+marks it static.
+
+Fixes: 3a4312828ce1 ("rtw88: 8821c: add power tracking")
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+---
+ drivers/net/wireless/realtek/rtw88/rtw8821c.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8821c.c b/drivers/net/wireless/realtek/rtw88/rtw8821c.c
+index c41c61ee2fb6..5fef19f19ac1 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8821c.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8821c.c
+@@ -1371,7 +1371,7 @@ static const u8 rtw8821c_pwrtrk_2g_cck_a_p[] = {
+ 	5, 6, 6, 7, 7, 7, 8, 8, 9, 9, 9, 9, 9, 9
+ };
+ 
+-const struct rtw_pwr_track_tbl rtw8821c_rtw_pwr_track_tbl = {
++static const struct rtw_pwr_track_tbl rtw8821c_rtw_pwr_track_tbl = {
+ 	.pwrtrk_5gb_n[0] = rtw8821c_pwrtrk_5gb_n[0],
+ 	.pwrtrk_5gb_n[1] = rtw8821c_pwrtrk_5gb_n[1],
+ 	.pwrtrk_5gb_n[2] = rtw8821c_pwrtrk_5gb_n[2],
+
