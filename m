@@ -2,80 +2,79 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E319229B98
-	for <lists+linux-wireless@lfdr.de>; Wed, 22 Jul 2020 17:38:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1FEA6229CFC
+	for <lists+linux-wireless@lfdr.de>; Wed, 22 Jul 2020 18:20:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732732AbgGVPif (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 22 Jul 2020 11:38:35 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:42437 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730382AbgGVPie (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 22 Jul 2020 11:38:34 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1jyGpC-0004rw-GA; Wed, 22 Jul 2020 15:38:30 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] mac80211: remove the need for variable rates_idx
-Date:   Wed, 22 Jul 2020 16:38:30 +0100
-Message-Id: <20200722153830.959010-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.27.0
+        id S1728229AbgGVQUE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 22 Jul 2020 12:20:04 -0400
+Received: from mail.kernel.org ([198.145.29.99]:45596 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726938AbgGVQUE (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 22 Jul 2020 12:20:04 -0400
+Received: from kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com (unknown [163.114.132.1])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 2763520771;
+        Wed, 22 Jul 2020 16:20:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1595434803;
+        bh=xqB+ywDGvJFkgmF2+tJVX0IcLGW/r2TAe7nxQSJGg5A=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=S68k2PipvzaisQOZTk6U+DfQeK7zpG1ga4w8z1T7nPX6Aep/WFSXGWTMohZM2CzEC
+         DN/tUimFK6xy8t/EEmdUbNxZDoqeqj5lKuj1PrRUrQdv4tJOq2mLfRMSfyQjO11pJH
+         2gh5GwkuMB9uk+BgQ52tceHdrpFaneVEOPI1ycR4=
+Date:   Wed, 22 Jul 2020 09:20:01 -0700
+From:   Jakub Kicinski <kuba@kernel.org>
+To:     Andrew Lunn <andrew@lunn.ch>
+Cc:     Rakesh Pillai <pillair@codeaurora.org>, ath10k@lists.infradead.org,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kvalo@codeaurora.org, johannes@sipsolutions.net,
+        davem@davemloft.net, netdev@vger.kernel.org, dianders@chromium.org,
+        evgreen@chromium.org, Eric Dumazet <edumazet@google.com>
+Subject: Re: [RFC 0/7] Add support to process rx packets in thread
+Message-ID: <20200722092001.62f3772c@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+In-Reply-To: <20200721172514.GT1339445@lunn.ch>
+References: <1595351666-28193-1-git-send-email-pillair@codeaurora.org>
+        <20200721172514.GT1339445@lunn.ch>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+On Tue, 21 Jul 2020 19:25:14 +0200 Andrew Lunn wrote:
+> On Tue, Jul 21, 2020 at 10:44:19PM +0530, Rakesh Pillai wrote:
+> > NAPI gets scheduled on the CPU core which got the
+> > interrupt. The linux scheduler cannot move it to a
+> > different core, even if the CPU on which NAPI is running
+> > is heavily loaded. This can lead to degraded wifi
+> > performance when running traffic at peak data rates.
+> > 
+> > A thread on the other hand can be moved to different
+> > CPU cores, if the one on which its running is heavily
+> > loaded. During high incoming data traffic, this gives
+> > better performance, since the thread can be moved to a
+> > less loaded or sometimes even a more powerful CPU core
+> > to account for the required CPU performance in order
+> > to process the incoming packets.
+> > 
+> > This patch series adds the support to use a high priority
+> > thread to process the incoming packets, as opposed to
+> > everything being done in NAPI context.  
+> 
+> I don't see why this problem is limited to the ath10k driver. I expect
+> it applies to all drivers using NAPI. So shouldn't you be solving this
+> in the NAPI core? Allow a driver to request the NAPI core uses a
+> thread?
 
-Currently rates_idx is being initialized with the value -1 and this
-value is never read so the initialization is redundant and can be
-removed. The next time the variable is used it is assigned a value
-that is returned a few statements later. Just return i - 1 and
-remove the need for rates_idx.
+Agreed, this is a problem we have with all drivers today.
+We see seriously sub-optimal behavior in data center workloads, 
+because kernel overloads the cores doing packet processing.
 
-Addresses-Coverity: ("Unused value")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- net/mac80211/status.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
-
-diff --git a/net/mac80211/status.c b/net/mac80211/status.c
-index cbc40b358ba2..adb1d30ce06e 100644
---- a/net/mac80211/status.c
-+++ b/net/mac80211/status.c
-@@ -799,7 +799,6 @@ static int ieee80211_tx_get_rates(struct ieee80211_hw *hw,
- 				  struct ieee80211_tx_info *info,
- 				  int *retry_count)
- {
--	int rates_idx = -1;
- 	int count = -1;
- 	int i;
- 
-@@ -821,13 +820,12 @@ static int ieee80211_tx_get_rates(struct ieee80211_hw *hw,
- 
- 		count += info->status.rates[i].count;
- 	}
--	rates_idx = i - 1;
- 
- 	if (count < 0)
- 		count = 0;
- 
- 	*retry_count = count;
--	return rates_idx;
-+	return i - 1;
- }
- 
- void ieee80211_tx_monitor(struct ieee80211_local *local, struct sk_buff *skb,
--- 
-2.27.0
-
+I think the fix may actually be in the scheduler. AFAIU the scheduler
+counts the softIRQ time towards the interrupted process, and on top
+of that tries to move processes to the cores handling their IO. In the
+end the configuration which works somewhat okay is when each core has
+its own IRQ and queues, which is seriously sub-optimal.
