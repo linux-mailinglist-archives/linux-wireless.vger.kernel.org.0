@@ -2,32 +2,32 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 83B7C2295F2
-	for <lists+linux-wireless@lfdr.de>; Wed, 22 Jul 2020 12:27:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 19BFA22968A
+	for <lists+linux-wireless@lfdr.de>; Wed, 22 Jul 2020 12:45:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731874AbgGVK1Q (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 22 Jul 2020 06:27:16 -0400
-Received: from smtp05.smtpout.orange.fr ([80.12.242.127]:16466 "EHLO
+        id S1728328AbgGVKpl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 22 Jul 2020 06:45:41 -0400
+Received: from smtp05.smtpout.orange.fr ([80.12.242.127]:43658 "EHLO
         smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726161AbgGVK1P (ORCPT
+        with ESMTP id S1728261AbgGVKpk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 22 Jul 2020 06:27:15 -0400
+        Wed, 22 Jul 2020 06:45:40 -0400
 Received: from localhost.localdomain ([93.23.199.134])
         by mwinf5d52 with ME
-        id 6AT9230072uUVcV03AT9GJ; Wed, 22 Jul 2020 12:27:11 +0200
+        id 6Alb2300F2uUVcV03Alca2; Wed, 22 Jul 2020 12:45:37 +0200
 X-ME-Helo: localhost.localdomain
 X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Wed, 22 Jul 2020 12:27:11 +0200
+X-ME-Date: Wed, 22 Jul 2020 12:45:37 +0200
 X-ME-IP: 93.23.199.134
 From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     chunkeey@googlemail.com, kvalo@codeaurora.org, davem@davemloft.net,
+To:     mcgrof@kernel.org, kvalo@codeaurora.org, davem@davemloft.net,
         kuba@kernel.org
 Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
         Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] p54: switch from 'pci_' to 'dma_' API
-Date:   Wed, 22 Jul 2020 12:27:07 +0200
-Message-Id: <20200722102707.27486-1-christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] prism54: switch from 'pci_' to 'dma_' API
+Date:   Wed, 22 Jul 2020 12:45:34 +0200
+Message-Id: <20200722104534.30760-1-christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -42,9 +42,14 @@ The patch has been generated with the coccinelle script below and has been
 hand modified to replace GFP_ with a correct flag.
 It has been compile tested.
 
-When memory is allocated in 'p54p_probe()', GFP_KERNEL can be used because
-it is the probe function and no spin_lock is taken in the between.
+When memory is allocated in 'islpci_alloc_memory()' (islpci_dev.c),
+GFP_KERNEL can be used because it is only called from a probe function
+and no spin_lock is taken in the between.
 
+The call chain is:
+   prism54_probe                   (probe function, in 'islpci_hotplug.c')
+      --> islpci_setup             (in 'islpci_dev.c')
+         --> islpci_alloc_memory   (in 'islpci_dev.c')
 
 @@
 @@
@@ -167,181 +172,207 @@ Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 If needed, see post from Christoph Hellwig on the kernel-janitors ML:
    https://marc.info/?l=kernel-janitors&m=158745678307186&w=4
 ---
- drivers/net/wireless/intersil/p54/p54pci.c | 65 ++++++++++++----------
- 1 file changed, 35 insertions(+), 30 deletions(-)
+ .../wireless/intersil/prism54/islpci_dev.c    | 30 +++++++++----------
+ .../wireless/intersil/prism54/islpci_eth.c    | 24 +++++++--------
+ .../intersil/prism54/islpci_hotplug.c         |  2 +-
+ .../wireless/intersil/prism54/islpci_mgt.c    | 21 ++++++-------
+ 4 files changed, 36 insertions(+), 41 deletions(-)
 
-diff --git a/drivers/net/wireless/intersil/p54/p54pci.c b/drivers/net/wireless/intersil/p54/p54pci.c
-index 80ad0b7eaef4..9d96c8b8409d 100644
---- a/drivers/net/wireless/intersil/p54/p54pci.c
-+++ b/drivers/net/wireless/intersil/p54/p54pci.c
-@@ -153,12 +153,12 @@ static void p54p_refill_rx_ring(struct ieee80211_hw *dev,
- 			if (!skb)
- 				break;
+diff --git a/drivers/net/wireless/intersil/prism54/islpci_dev.c b/drivers/net/wireless/intersil/prism54/islpci_dev.c
+index a9bae69222dc..efd64e555bb5 100644
+--- a/drivers/net/wireless/intersil/prism54/islpci_dev.c
++++ b/drivers/net/wireless/intersil/prism54/islpci_dev.c
+@@ -636,10 +636,10 @@ islpci_alloc_memory(islpci_private *priv)
+ 	 */
  
--			mapping = pci_map_single(priv->pdev,
-+			mapping = dma_map_single(&priv->pdev->dev,
- 						 skb_tail_pointer(skb),
- 						 priv->common.rx_mtu + 32,
--						 PCI_DMA_FROMDEVICE);
-+						 DMA_FROM_DEVICE);
+ 	/* perform the allocation */
+-	priv->driver_mem_address = pci_alloc_consistent(priv->pdev,
+-							HOST_MEM_BLOCK,
+-							&priv->
+-							device_host_address);
++	priv->driver_mem_address = dma_alloc_coherent(&priv->pdev->dev,
++						      HOST_MEM_BLOCK,
++						      &priv->device_host_address,
++						      GFP_KERNEL);
  
--			if (pci_dma_mapping_error(priv->pdev, mapping)) {
-+			if (dma_mapping_error(&priv->pdev->dev, mapping)) {
- 				dev_kfree_skb_any(skb);
- 				dev_err(&priv->pdev->dev,
- 					"RX DMA Mapping error\n");
-@@ -215,19 +215,22 @@ static void p54p_check_rx_ring(struct ieee80211_hw *dev, u32 *index,
- 			len = priv->common.rx_mtu;
- 		}
- 		dma_addr = le32_to_cpu(desc->host_addr);
--		pci_dma_sync_single_for_cpu(priv->pdev, dma_addr,
--			priv->common.rx_mtu + 32, PCI_DMA_FROMDEVICE);
-+		dma_sync_single_for_cpu(&priv->pdev->dev, dma_addr,
-+					priv->common.rx_mtu + 32,
-+					DMA_FROM_DEVICE);
- 		skb_put(skb, len);
+ 	if (!priv->driver_mem_address) {
+ 		/* error allocating the block of PCI memory */
+@@ -692,11 +692,9 @@ islpci_alloc_memory(islpci_private *priv)
  
- 		if (p54_rx(dev, skb)) {
--			pci_unmap_single(priv->pdev, dma_addr,
--				priv->common.rx_mtu + 32, PCI_DMA_FROMDEVICE);
-+			dma_unmap_single(&priv->pdev->dev, dma_addr,
-+					 priv->common.rx_mtu + 32,
+ 		/* map the allocated skb data area to pci */
+ 		priv->pci_map_rx_address[counter] =
+-		    pci_map_single(priv->pdev, (void *) skb->data,
+-				   MAX_FRAGMENT_SIZE_RX + 2,
+-				   PCI_DMA_FROMDEVICE);
+-		if (pci_dma_mapping_error(priv->pdev,
+-					  priv->pci_map_rx_address[counter])) {
++		    dma_map_single(&priv->pdev->dev, (void *)skb->data,
++				   MAX_FRAGMENT_SIZE_RX + 2, DMA_FROM_DEVICE);
++		if (dma_mapping_error(&priv->pdev->dev, priv->pci_map_rx_address[counter])) {
+ 			priv->pci_map_rx_address[counter] = 0;
+ 			/* error mapping the buffer to device
+ 			   accessible memory address */
+@@ -727,9 +725,9 @@ islpci_free_memory(islpci_private *priv)
+ 
+ 	/* free consistent DMA area... */
+ 	if (priv->driver_mem_address)
+-		pci_free_consistent(priv->pdev, HOST_MEM_BLOCK,
+-				    priv->driver_mem_address,
+-				    priv->device_host_address);
++		dma_free_coherent(&priv->pdev->dev, HOST_MEM_BLOCK,
++				  priv->driver_mem_address,
++				  priv->device_host_address);
+ 
+ 	/* clear some dangling pointers */
+ 	priv->driver_mem_address = NULL;
+@@ -741,8 +739,8 @@ islpci_free_memory(islpci_private *priv)
+         for (counter = 0; counter < ISL38XX_CB_MGMT_QSIZE; counter++) {
+ 		struct islpci_membuf *buf = &priv->mgmt_rx[counter];
+ 		if (buf->pci_addr)
+-			pci_unmap_single(priv->pdev, buf->pci_addr,
+-					 buf->size, PCI_DMA_FROMDEVICE);
++			dma_unmap_single(&priv->pdev->dev, buf->pci_addr,
++					 buf->size, DMA_FROM_DEVICE);
+ 		buf->pci_addr = 0;
+ 		kfree(buf->mem);
+ 		buf->size = 0;
+@@ -752,10 +750,10 @@ islpci_free_memory(islpci_private *priv)
+ 	/* clean up data rx buffers */
+ 	for (counter = 0; counter < ISL38XX_CB_RX_QSIZE; counter++) {
+ 		if (priv->pci_map_rx_address[counter])
+-			pci_unmap_single(priv->pdev,
++			dma_unmap_single(&priv->pdev->dev,
+ 					 priv->pci_map_rx_address[counter],
+ 					 MAX_FRAGMENT_SIZE_RX + 2,
+-					 PCI_DMA_FROMDEVICE);
 +					 DMA_FROM_DEVICE);
- 			rx_buf[i] = NULL;
- 			desc->host_addr = cpu_to_le32(0);
- 		} else {
- 			skb_trim(skb, 0);
--			pci_dma_sync_single_for_device(priv->pdev, dma_addr,
--				priv->common.rx_mtu + 32, PCI_DMA_FROMDEVICE);
-+			dma_sync_single_for_device(&priv->pdev->dev, dma_addr,
-+						   priv->common.rx_mtu + 32,
-+						   DMA_FROM_DEVICE);
- 			desc->len = cpu_to_le16(priv->common.rx_mtu + 32);
+ 		priv->pci_map_rx_address[counter] = 0;
+ 
+ 		if (priv->data_low_rx[counter])
+diff --git a/drivers/net/wireless/intersil/prism54/islpci_eth.c b/drivers/net/wireless/intersil/prism54/islpci_eth.c
+index 8d680250a281..74dd65716afd 100644
+--- a/drivers/net/wireless/intersil/prism54/islpci_eth.c
++++ b/drivers/net/wireless/intersil/prism54/islpci_eth.c
+@@ -50,9 +50,9 @@ islpci_eth_cleanup_transmit(islpci_private *priv,
+ 			      skb, skb->data, skb->len, skb->truesize);
+ #endif
+ 
+-			pci_unmap_single(priv->pdev,
++			dma_unmap_single(&priv->pdev->dev,
+ 					 priv->pci_map_tx_address[index],
+-					 skb->len, PCI_DMA_TODEVICE);
++					 skb->len, DMA_TO_DEVICE);
+ 			dev_kfree_skb_irq(skb);
+ 			skb = NULL;
+ 		}
+@@ -176,10 +176,9 @@ islpci_eth_transmit(struct sk_buff *skb, struct net_device *ndev)
+ #endif
+ 
+ 	/* map the skb buffer to pci memory for DMA operation */
+-	pci_map_address = pci_map_single(priv->pdev,
+-					 (void *) skb->data, skb->len,
+-					 PCI_DMA_TODEVICE);
+-	if (pci_dma_mapping_error(priv->pdev, pci_map_address)) {
++	pci_map_address = dma_map_single(&priv->pdev->dev, (void *)skb->data,
++					 skb->len, DMA_TO_DEVICE);
++	if (dma_mapping_error(&priv->pdev->dev, pci_map_address)) {
+ 		printk(KERN_WARNING "%s: cannot map buffer to PCI\n",
+ 		       ndev->name);
+ 		goto drop_free;
+@@ -323,9 +322,8 @@ islpci_eth_receive(islpci_private *priv)
+ #endif
+ 
+ 	/* delete the streaming DMA mapping before processing the skb */
+-	pci_unmap_single(priv->pdev,
+-			 priv->pci_map_rx_address[index],
+-			 MAX_FRAGMENT_SIZE_RX + 2, PCI_DMA_FROMDEVICE);
++	dma_unmap_single(&priv->pdev->dev, priv->pci_map_rx_address[index],
++			 MAX_FRAGMENT_SIZE_RX + 2, DMA_FROM_DEVICE);
+ 
+ 	/* update the skb structure and align the buffer */
+ 	skb_put(skb, size);
+@@ -431,11 +429,9 @@ islpci_eth_receive(islpci_private *priv)
+ 
+ 		/* set the streaming DMA mapping for proper PCI bus operation */
+ 		priv->pci_map_rx_address[index] =
+-		    pci_map_single(priv->pdev, (void *) skb->data,
+-				   MAX_FRAGMENT_SIZE_RX + 2,
+-				   PCI_DMA_FROMDEVICE);
+-		if (pci_dma_mapping_error(priv->pdev,
+-					  priv->pci_map_rx_address[index])) {
++		    dma_map_single(&priv->pdev->dev, (void *)skb->data,
++				   MAX_FRAGMENT_SIZE_RX + 2, DMA_FROM_DEVICE);
++		if (dma_mapping_error(&priv->pdev->dev, priv->pci_map_rx_address[index])) {
+ 			/* error mapping the buffer to device accessible memory address */
+ 			DEBUG(SHOW_ERROR_MESSAGES,
+ 			      "Error mapping DMA address\n");
+diff --git a/drivers/net/wireless/intersil/prism54/islpci_hotplug.c b/drivers/net/wireless/intersil/prism54/islpci_hotplug.c
+index 20291c0d962d..a8835c4507d9 100644
+--- a/drivers/net/wireless/intersil/prism54/islpci_hotplug.c
++++ b/drivers/net/wireless/intersil/prism54/islpci_hotplug.c
+@@ -106,7 +106,7 @@ prism54_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 	}
+ 
+ 	/* enable PCI DMA */
+-	if (pci_set_dma_mask(pdev, DMA_BIT_MASK(32))) {
++	if (dma_set_mask(&pdev->dev, DMA_BIT_MASK(32))) {
+ 		printk(KERN_ERR "%s: 32-bit PCI DMA not supported", DRV_NAME);
+ 		goto do_pci_disable_device;
+         }
+diff --git a/drivers/net/wireless/intersil/prism54/islpci_mgt.c b/drivers/net/wireless/intersil/prism54/islpci_mgt.c
+index e336eb106429..0c7fb76c7d1c 100644
+--- a/drivers/net/wireless/intersil/prism54/islpci_mgt.c
++++ b/drivers/net/wireless/intersil/prism54/islpci_mgt.c
+@@ -115,10 +115,11 @@ islpci_mgmt_rx_fill(struct net_device *ndev)
+ 			buf->size = MGMT_FRAME_SIZE;
+ 		}
+ 		if (buf->pci_addr == 0) {
+-			buf->pci_addr = pci_map_single(priv->pdev, buf->mem,
++			buf->pci_addr = dma_map_single(&priv->pdev->dev,
++						       buf->mem,
+ 						       MGMT_FRAME_SIZE,
+-						       PCI_DMA_FROMDEVICE);
+-			if (pci_dma_mapping_error(priv->pdev, buf->pci_addr)) {
++						       DMA_FROM_DEVICE);
++			if (dma_mapping_error(&priv->pdev->dev, buf->pci_addr)) {
+ 				printk(KERN_WARNING
+ 				       "Failed to make memory DMA'able.\n");
+ 				return -ENOMEM;
+@@ -203,9 +204,9 @@ islpci_mgt_transmit(struct net_device *ndev, int operation, unsigned long oid,
+ #endif
+ 
+ 	err = -ENOMEM;
+-	buf.pci_addr = pci_map_single(priv->pdev, buf.mem, frag_len,
+-				      PCI_DMA_TODEVICE);
+-	if (pci_dma_mapping_error(priv->pdev, buf.pci_addr)) {
++	buf.pci_addr = dma_map_single(&priv->pdev->dev, buf.mem, frag_len,
++				      DMA_TO_DEVICE);
++	if (dma_mapping_error(&priv->pdev->dev, buf.pci_addr)) {
+ 		printk(KERN_WARNING "%s: cannot map PCI memory for mgmt\n",
+ 		       ndev->name);
+ 		goto error_free;
+@@ -302,8 +303,8 @@ islpci_mgt_receive(struct net_device *ndev)
  		}
  
-@@ -258,8 +261,9 @@ static void p54p_check_tx_ring(struct ieee80211_hw *dev, u32 *index,
- 		skb = tx_buf[i];
- 		tx_buf[i] = NULL;
+ 		/* Ensure the results of device DMA are visible to the CPU. */
+-		pci_dma_sync_single_for_cpu(priv->pdev, buf->pci_addr,
+-					    buf->size, PCI_DMA_FROMDEVICE);
++		dma_sync_single_for_cpu(&priv->pdev->dev, buf->pci_addr,
++					buf->size, DMA_FROM_DEVICE);
  
--		pci_unmap_single(priv->pdev, le32_to_cpu(desc->host_addr),
--				 le16_to_cpu(desc->len), PCI_DMA_TODEVICE);
-+		dma_unmap_single(&priv->pdev->dev,
-+				 le32_to_cpu(desc->host_addr),
-+				 le16_to_cpu(desc->len), DMA_TO_DEVICE);
- 
- 		desc->host_addr = 0;
- 		desc->device_addr = 0;
-@@ -334,9 +338,9 @@ static void p54p_tx(struct ieee80211_hw *dev, struct sk_buff *skb)
- 	idx = le32_to_cpu(ring_control->host_idx[1]);
- 	i = idx % ARRAY_SIZE(ring_control->tx_data);
- 
--	mapping = pci_map_single(priv->pdev, skb->data, skb->len,
+ 		/* Perform endianess conversion for PIMFOR header in-place. */
+ 		header = pimfor_decode_header(buf->mem, frag_len);
+@@ -414,8 +415,8 @@ islpci_mgt_cleanup_transmit(struct net_device *ndev)
+ 	for (; priv->index_mgmt_tx < curr_frag; priv->index_mgmt_tx++) {
+ 		int index = priv->index_mgmt_tx % ISL38XX_CB_MGMT_QSIZE;
+ 		struct islpci_membuf *buf = &priv->mgmt_tx[index];
+-		pci_unmap_single(priv->pdev, buf->pci_addr, buf->size,
 -				 PCI_DMA_TODEVICE);
--	if (pci_dma_mapping_error(priv->pdev, mapping)) {
-+	mapping = dma_map_single(&priv->pdev->dev, skb->data, skb->len,
++		dma_unmap_single(&priv->pdev->dev, buf->pci_addr, buf->size,
 +				 DMA_TO_DEVICE);
-+	if (dma_mapping_error(&priv->pdev->dev, mapping)) {
- 		spin_unlock_irqrestore(&priv->lock, flags);
- 		p54_free_skb(dev, skb);
- 		dev_err(&priv->pdev->dev, "TX DMA mapping error\n");
-@@ -378,10 +382,10 @@ static void p54p_stop(struct ieee80211_hw *dev)
- 	for (i = 0; i < ARRAY_SIZE(priv->rx_buf_data); i++) {
- 		desc = &ring_control->rx_data[i];
- 		if (desc->host_addr)
--			pci_unmap_single(priv->pdev,
-+			dma_unmap_single(&priv->pdev->dev,
- 					 le32_to_cpu(desc->host_addr),
- 					 priv->common.rx_mtu + 32,
--					 PCI_DMA_FROMDEVICE);
-+					 DMA_FROM_DEVICE);
- 		kfree_skb(priv->rx_buf_data[i]);
- 		priv->rx_buf_data[i] = NULL;
- 	}
-@@ -389,10 +393,10 @@ static void p54p_stop(struct ieee80211_hw *dev)
- 	for (i = 0; i < ARRAY_SIZE(priv->rx_buf_mgmt); i++) {
- 		desc = &ring_control->rx_mgmt[i];
- 		if (desc->host_addr)
--			pci_unmap_single(priv->pdev,
-+			dma_unmap_single(&priv->pdev->dev,
- 					 le32_to_cpu(desc->host_addr),
- 					 priv->common.rx_mtu + 32,
--					 PCI_DMA_FROMDEVICE);
-+					 DMA_FROM_DEVICE);
- 		kfree_skb(priv->rx_buf_mgmt[i]);
- 		priv->rx_buf_mgmt[i] = NULL;
- 	}
-@@ -400,10 +404,10 @@ static void p54p_stop(struct ieee80211_hw *dev)
- 	for (i = 0; i < ARRAY_SIZE(priv->tx_buf_data); i++) {
- 		desc = &ring_control->tx_data[i];
- 		if (desc->host_addr)
--			pci_unmap_single(priv->pdev,
-+			dma_unmap_single(&priv->pdev->dev,
- 					 le32_to_cpu(desc->host_addr),
- 					 le16_to_cpu(desc->len),
--					 PCI_DMA_TODEVICE);
-+					 DMA_TO_DEVICE);
- 
- 		p54_free_skb(dev, priv->tx_buf_data[i]);
- 		priv->tx_buf_data[i] = NULL;
-@@ -412,10 +416,10 @@ static void p54p_stop(struct ieee80211_hw *dev)
- 	for (i = 0; i < ARRAY_SIZE(priv->tx_buf_mgmt); i++) {
- 		desc = &ring_control->tx_mgmt[i];
- 		if (desc->host_addr)
--			pci_unmap_single(priv->pdev,
-+			dma_unmap_single(&priv->pdev->dev,
- 					 le32_to_cpu(desc->host_addr),
- 					 le16_to_cpu(desc->len),
--					 PCI_DMA_TODEVICE);
-+					 DMA_TO_DEVICE);
- 
- 		p54_free_skb(dev, priv->tx_buf_mgmt[i]);
- 		priv->tx_buf_mgmt[i] = NULL;
-@@ -568,9 +572,9 @@ static int p54p_probe(struct pci_dev *pdev,
- 		goto err_disable_dev;
- 	}
- 
--	err = pci_set_dma_mask(pdev, DMA_BIT_MASK(32));
-+	err = dma_set_mask(&pdev->dev, DMA_BIT_MASK(32));
- 	if (!err)
--		err = pci_set_consistent_dma_mask(pdev, DMA_BIT_MASK(32));
-+		err = dma_set_coherent_mask(&pdev->dev, DMA_BIT_MASK(32));
- 	if (err) {
- 		dev_err(&pdev->dev, "No suitable DMA available\n");
- 		goto err_free_reg;
-@@ -603,8 +607,9 @@ static int p54p_probe(struct pci_dev *pdev,
- 		goto err_free_dev;
- 	}
- 
--	priv->ring_control = pci_alloc_consistent(pdev, sizeof(*priv->ring_control),
--						  &priv->ring_control_dma);
-+	priv->ring_control = dma_alloc_coherent(&pdev->dev,
-+						sizeof(*priv->ring_control),
-+						&priv->ring_control_dma, GFP_KERNEL);
- 	if (!priv->ring_control) {
- 		dev_err(&pdev->dev, "Cannot allocate rings\n");
- 		err = -ENOMEM;
-@@ -623,8 +628,8 @@ static int p54p_probe(struct pci_dev *pdev,
- 	if (!err)
- 		return 0;
- 
--	pci_free_consistent(pdev, sizeof(*priv->ring_control),
--			    priv->ring_control, priv->ring_control_dma);
-+	dma_free_coherent(&pdev->dev, sizeof(*priv->ring_control),
-+			  priv->ring_control, priv->ring_control_dma);
- 
-  err_iounmap:
- 	iounmap(priv->map);
-@@ -653,8 +658,8 @@ static void p54p_remove(struct pci_dev *pdev)
- 	wait_for_completion(&priv->fw_loaded);
- 	p54_unregister_common(dev);
- 	release_firmware(priv->firmware);
--	pci_free_consistent(pdev, sizeof(*priv->ring_control),
--			    priv->ring_control, priv->ring_control_dma);
-+	dma_free_coherent(&pdev->dev, sizeof(*priv->ring_control),
-+			  priv->ring_control, priv->ring_control_dma);
- 	iounmap(priv->map);
- 	pci_release_regions(pdev);
- 	pci_disable_device(pdev);
+ 		buf->pci_addr = 0;
+ 		kfree(buf->mem);
+ 		buf->mem = NULL;
 -- 
 2.25.1
 
