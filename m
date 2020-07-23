@@ -2,152 +2,94 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B50F22B0CD
-	for <lists+linux-wireless@lfdr.de>; Thu, 23 Jul 2020 15:53:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6565522B308
+	for <lists+linux-wireless@lfdr.de>; Thu, 23 Jul 2020 17:54:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729115AbgGWNxF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 23 Jul 2020 09:53:05 -0400
-Received: from smtp.asem.it ([151.1.184.197]:61446 "EHLO smtp.asem.it"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728942AbgGWNxD (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 23 Jul 2020 09:53:03 -0400
-Received: from webmail.asem.it
-        by asem.it (smtp.asem.it)
-        (SecurityGateway 6.5.2)
-        with ESMTP id SG000400764.MSG 
-        for <linux-wireless@vger.kernel.org>; Thu, 23 Jul 2020 15:52:56 +0200S
-Received: from ASAS044.asem.intra (172.16.16.44) by ASAS044.asem.intra
- (172.16.16.44) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Thu, 23
- Jul 2020 15:52:55 +0200
-Received: from flavio-x.asem.intra (172.16.17.208) by ASAS044.asem.intra
- (172.16.16.44) with Microsoft SMTP Server id 15.1.1979.3 via Frontend
- Transport; Thu, 23 Jul 2020 15:52:55 +0200
-From:   Flavio Suligoi <f.suligoi@asem.it>
-To:     "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "Gustavo A . R . Silva" <gustavoars@kernel.org>,
-        Cong Wang <xiyou.wangcong@gmail.com>
-CC:     <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, Flavio Suligoi <f.suligoi@asem.it>
-Subject: [PATCH v2 7/9] intersil: fix wiki website url
-Date:   Thu, 23 Jul 2020 15:52:54 +0200
-Message-ID: <20200723135254.594984-1-f.suligoi@asem.it>
-X-Mailer: git-send-email 2.25.1
+        id S1729640AbgGWPyW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 23 Jul 2020 11:54:22 -0400
+Received: from mail-il1-f196.google.com ([209.85.166.196]:36599 "EHLO
+        mail-il1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726761AbgGWPyV (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 23 Jul 2020 11:54:21 -0400
+Received: by mail-il1-f196.google.com with SMTP id x9so4746602ila.3;
+        Thu, 23 Jul 2020 08:54:20 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=LannAD2AX1fh6q7gHSRa8VqKVqFIn5KRyC4DsoZMwXo=;
+        b=cMy2certaOv0+zqWXPEKqgOKspoSvXfRLXXkDSZkSVOy/97FC0CzX00KI0w8HJGd5z
+         ruUbQ4mQiZNEmN9JIOFDkH8xWvoHuI+V/tJg3uqSCZgEOlhxsHf0c6DXC/uSVGzPt4Kp
+         5v2u/C/t8PxYRzpMqCL/j6NkJypWQmvy8AO2rKHS9NClzrvULK/wYA6YNYKClb7f/wxN
+         kopqvXSZVt8ZgYLEdg37f9hPHn3L+sRrj6fgJD0Qt0wep3/J9yEDf1+4snsOJ4Z+/svV
+         ZjjCsdyVnXtYORR4yXBgl6UUszu2yakI9jbbCbq1kLKDGapX9FxIIlNBDBOTenrVY21U
+         12Og==
+X-Gm-Message-State: AOAM53281PP7TsZACV+j2uSAzAWDgTl/RtN3dx82a8+OHe7uTVP9C5fW
+        173ln3Inuz0aCHHQ+CaMkkuLmfpcGA==
+X-Google-Smtp-Source: ABdhPJywARBshz2+0DGQQChaKCPrF7Q5cVSGWUX2ed65RXvpBb9WB1QX1mqkbQNg55v9AFpOewT71g==
+X-Received: by 2002:a92:1b5b:: with SMTP id b88mr2651749ilb.104.1595519660249;
+        Thu, 23 Jul 2020 08:54:20 -0700 (PDT)
+Received: from xps15 ([64.188.179.252])
+        by smtp.gmail.com with ESMTPSA id p9sm1660623ilc.78.2020.07.23.08.54.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 Jul 2020 08:54:19 -0700 (PDT)
+Received: (nullmailer pid 440701 invoked by uid 1000);
+        Thu, 23 Jul 2020 15:54:18 -0000
+Date:   Thu, 23 Jul 2020 09:54:18 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Anilkumar Kolli <akolli@codeaurora.org>
+Cc:     linux-wireless@vger.kernel.org, devicetree@vger.kernel.org,
+        ath11k@lists.infradead.org
+Subject: Re: [PATCH v4 1/3] dt: bindings: net: update compatible for ath11k
+Message-ID: <20200723155418.GA439882@bogus>
+References: <1595506264-6393-1-git-send-email-akolli@codeaurora.org>
+ <1595506264-6393-2-git-send-email-akolli@codeaurora.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-SGHeloLookup-Result: pass smtp.helo=webmail.asem.it (ip=172.16.16.44)
-X-SGSPF-Result: none (smtp.asem.it)
-X-SGOP-RefID: str=0001.0A090210.5F199638.0028,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0 (_st=1 _vt=0 _iwf=0)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1595506264-6393-2-git-send-email-akolli@codeaurora.org>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-In some Intersil files, the wiki url is still the old
-"wireless.kernel.org" instead of the new
-"wireless.wiki.kernel.org"
+On Thu, 23 Jul 2020 17:41:02 +0530, Anilkumar Kolli wrote:
+> Add IPQ6018 wireless driver support,
+> its based on ath11k driver.
+> 
+> Signed-off-by: Anilkumar Kolli <akolli@codeaurora.org>
+> ---
+> V3:
+>  - Use 'enum' rather than oneOf+const.
+> V4:
+>  - removed oneOf, use just enum (Rob)
+> 
+>  Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+> 
 
-Signed-off-by: Flavio Suligoi <f.suligoi@asem.it>
----
 
-v2: the previous version failed to apply:
-    "fatal: corrupt patch at line 97
-     error: could not build fake ancestor"
+My bot found errors running 'make dt_binding_check' on your patch:
 
- drivers/net/wireless/intersil/Kconfig                  | 2 +-
- drivers/net/wireless/intersil/p54/Kconfig              | 6 +++---
- drivers/net/wireless/intersil/p54/fwio.c               | 2 +-
- drivers/net/wireless/intersil/p54/p54usb.c             | 2 +-
- drivers/net/wireless/intersil/prism54/islpci_hotplug.c | 3 ++-
- 5 files changed, 8 insertions(+), 7 deletions(-)
+/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml: properties:compatible: [{'enum': ['qcom,ipq8074-wifi', 'qcom,ipq6018-wifi']}] is not of type 'object', 'boolean'
+Documentation/devicetree/bindings/Makefile:20: recipe for target 'Documentation/devicetree/bindings/net/wireless/qcom,ath11k.example.dts' failed
+make[1]: *** [Documentation/devicetree/bindings/net/wireless/qcom,ath11k.example.dts] Error 1
+make[1]: *** Waiting for unfinished jobs....
+/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml: ignoring, error in schema: properties: compatible
+warning: no schema found in file: ./Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml
+/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml: ignoring, error in schema: properties: compatible
+warning: no schema found in file: ./Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml
+Makefile:1347: recipe for target 'dt_binding_check' failed
+make: *** [dt_binding_check] Error 2
 
-diff --git a/drivers/net/wireless/intersil/Kconfig b/drivers/net/wireless/intersil/Kconfig
-index 6a6ce9d4aeee..c52d9b535623 100644
---- a/drivers/net/wireless/intersil/Kconfig
-+++ b/drivers/net/wireless/intersil/Kconfig
-@@ -30,7 +30,7 @@ config PRISM54
- 
- 	  For more information refer to the p54 wiki:
- 
--	  http://wireless.kernel.org/en/users/Drivers/p54
-+	  http://wireless.wiki.kernel.org/en/users/Drivers/p54
- 
- 	  Note: You need a motherboard with DMA support to use any of these cards
- 
-diff --git a/drivers/net/wireless/intersil/p54/Kconfig b/drivers/net/wireless/intersil/p54/Kconfig
-index 024be5507daf..003c378ed131 100644
---- a/drivers/net/wireless/intersil/p54/Kconfig
-+++ b/drivers/net/wireless/intersil/p54/Kconfig
-@@ -10,7 +10,7 @@ config P54_COMMON
- 	  also need to be enabled in order to support any devices.
- 
- 	  These devices require softmac firmware which can be found at
--	  <http://wireless.kernel.org/en/users/Drivers/p54>
-+	  <http://wireless.wiki.kernel.org/en/users/Drivers/p54>
- 
- 	  If you choose to build a module, it'll be called p54common.
- 
-@@ -22,7 +22,7 @@ config P54_USB
- 	  This driver is for USB isl38xx based wireless cards.
- 
- 	  These devices require softmac firmware which can be found at
--	  <http://wireless.kernel.org/en/users/Drivers/p54>
-+	  <http://wireless.wiki.kernel.org/en/users/Drivers/p54>
- 
- 	  If you choose to build a module, it'll be called p54usb.
- 
-@@ -36,7 +36,7 @@ config P54_PCI
- 	  supported by the fullmac driver/firmware.
- 
- 	  This driver requires softmac firmware which can be found at
--	  <http://wireless.kernel.org/en/users/Drivers/p54>
-+	  <http://wireless.wiki.kernel.org/en/users/Drivers/p54>
- 
- 	  If you choose to build a module, it'll be called p54pci.
- 
-diff --git a/drivers/net/wireless/intersil/p54/fwio.c b/drivers/net/wireless/intersil/p54/fwio.c
-index a5afcc865196..bece14e4ff0d 100644
---- a/drivers/net/wireless/intersil/p54/fwio.c
-+++ b/drivers/net/wireless/intersil/p54/fwio.c
-@@ -132,7 +132,7 @@ int p54_parse_firmware(struct ieee80211_hw *dev, const struct firmware *fw)
- 	if (priv->fw_var < 0x500)
- 		wiphy_info(priv->hw->wiphy,
- 			   "you are using an obsolete firmware. "
--			   "visit http://wireless.kernel.org/en/users/Drivers/p54 "
-+			   "visit http://wireless.wiki.kernel.org/en/users/Drivers/p54 "
- 			   "and grab one for \"kernel >= 2.6.28\"!\n");
- 
- 	if (priv->fw_var >= 0x300) {
-diff --git a/drivers/net/wireless/intersil/p54/p54usb.c b/drivers/net/wireless/intersil/p54/p54usb.c
-index ff0e30c0c14c..cae47663b17b 100644
---- a/drivers/net/wireless/intersil/p54/p54usb.c
-+++ b/drivers/net/wireless/intersil/p54/p54usb.c
-@@ -36,7 +36,7 @@ static struct usb_driver p54u_driver;
-  * Note:
-  *
-  * Always update our wiki's device list (located at:
-- * http://wireless.kernel.org/en/users/Drivers/p54/devices ),
-+ * http://wireless.wiki.kernel.org/en/users/Drivers/p54/devices ),
-  * whenever you add a new device.
-  */
- 
-diff --git a/drivers/net/wireless/intersil/prism54/islpci_hotplug.c b/drivers/net/wireless/intersil/prism54/islpci_hotplug.c
-index 20291c0d962d..34912267ff63 100644
---- a/drivers/net/wireless/intersil/prism54/islpci_hotplug.c
-+++ b/drivers/net/wireless/intersil/prism54/islpci_hotplug.c
-@@ -26,7 +26,8 @@ module_param(init_pcitm, int, 0);
- /* In this order: vendor, device, subvendor, subdevice, class, class_mask,
-  * driver_data
-  * If you have an update for this please contact prism54-devel@prism54.org
-- * The latest list can be found at http://wireless.kernel.org/en/users/Drivers/p54 */
-+ * The latest list can be found at http://wireless.wiki.kernel.org/en/users/Drivers/p54
-+ */
- static const struct pci_device_id prism54_id_tbl[] = {
- 	/* Intersil PRISM Duette/Prism GT Wireless LAN adapter */
- 	{
--- 
-2.25.1
+
+See https://patchwork.ozlabs.org/patch/1334839
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure dt-schema is up to date:
+
+pip3 install git+https://github.com/devicetree-org/dt-schema.git@master --upgrade
+
+Please check and re-submit.
 
