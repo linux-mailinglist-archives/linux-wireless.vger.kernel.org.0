@@ -2,123 +2,225 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 11E3722B7FF
-	for <lists+linux-wireless@lfdr.de>; Thu, 23 Jul 2020 22:43:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E63F222B9F9
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 Jul 2020 01:06:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728068AbgGWUnC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 23 Jul 2020 16:43:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50860 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728060AbgGWUnB (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 23 Jul 2020 16:43:01 -0400
-Received: from mail-ot1-x344.google.com (mail-ot1-x344.google.com [IPv6:2607:f8b0:4864:20::344])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97E07C0619D3
-        for <linux-wireless@vger.kernel.org>; Thu, 23 Jul 2020 13:43:01 -0700 (PDT)
-Received: by mail-ot1-x344.google.com with SMTP id w17so5404945otl.4
-        for <linux-wireless@vger.kernel.org>; Thu, 23 Jul 2020 13:43:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=tC6DQ+0Q52tkMZUGhpdr0KiSqE/z3zfCJfqHxGpnFt4=;
-        b=j5zWnvU0j3PlsmMGY+5UbJSzAuN//a+tvt1EomKcupqbGy75xvpQ6HlNQh4nIUQCoV
-         cz8slWIBuGlB3MEVsW420OUKoaWtP+uoULcSvxJHVty/phIR7N4G/+QZC5+eOpQU1kkd
-         0Hh8Zi6bjiCXQliHBdqfq6dDnEdhLEjmDfEbjzD6BT3j8i4+y2zGcwq9l6dykkHEdBSZ
-         72frKGoiMHxr0iRCpXfGQftUI6i2Sm3c5W53Ud9mNfeXeDgQjZ2gV38QHZO20j/da+ab
-         apxzGk7r3Bkb8YpHV6sryulyfoNRtFVt5yUE/V6zrH45Rqo0SMqBLn0btxcwbd77GGN1
-         4JYQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
-         :in-reply-to:references:mime-version:content-transfer-encoding;
-        bh=tC6DQ+0Q52tkMZUGhpdr0KiSqE/z3zfCJfqHxGpnFt4=;
-        b=TbnIB5KgPjV3hzZrPokbo4ObKjiE4sb9Xs34WuqpeZWWJaNp5Zm6RvAFPXNdMAmcx4
-         sdmReaCuj3NCTd7rI3ubZHpvSBiPts684QKD8UUe3K4gKukhsiLGXlbn1Y/AyF51Ssz/
-         IypEpFSmaOlDNnqHZYFp4XqB6Sxbv++GjKmIRQJRGyE1mFRuBf/Wf0NhehKHcFgEXsBV
-         5OYkQdUzdKyGHReIwmlhH2iy+9nkL1GW7MwlIB78jaKF0R56ow6oACpLmuzhizgTVytK
-         PrAiGS4SCDO4a0X0RijITBg8QfUFNL4GXLpJKafBXd+s5UOyeeOMKGxnhFvtIMXs/pgn
-         ODNQ==
-X-Gm-Message-State: AOAM533gw9HmDghu3UrPW4x9WNyirdSdRvnRHNnvRP6dMGjrWr/yYwDu
-        d0weLeNaJ+CcrKOSrz3iv+I=
-X-Google-Smtp-Source: ABdhPJxdjd0dPK9EKQB00gAnULpDXWUEDfMl4mVe5EEERuzp9ShE+p/jNGteUUgX4BkBkWCt4dtA5Q==
-X-Received: by 2002:a9d:66ca:: with SMTP id t10mr5628061otm.358.1595536981072;
-        Thu, 23 Jul 2020 13:43:01 -0700 (PDT)
-Received: from localhost.localdomain (cpe-24-31-245-230.kc.res.rr.com. [24.31.245.230])
-        by smtp.gmail.com with ESMTPSA id x9sm857498ota.9.2020.07.23.13.43.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Jul 2020 13:43:00 -0700 (PDT)
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-To:     kvalo@codeaurora.org
-Cc:     linux-wireless@vger.kernel.org,
-        Larry Finger <Larry.Finger@lwfinger.net>
-Subject: [PATCH v2 15/15] rtlwifi: Remove temporary definition of RT_TRACE
-Date:   Thu, 23 Jul 2020 15:42:44 -0500
-Message-Id: <20200723204244.24457-16-Larry.Finger@lwfinger.net>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20200723204244.24457-1-Larry.Finger@lwfinger.net>
-References: <20200723204244.24457-1-Larry.Finger@lwfinger.net>
+        id S1726657AbgGWXGa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 23 Jul 2020 19:06:30 -0400
+Received: from mail.as201155.net ([185.84.6.188]:30376 "EHLO mail.as201155.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726653AbgGWXGa (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 23 Jul 2020 19:06:30 -0400
+Received: from smtps.newmedia-net.de ([2a05:a1c0:0:de::167]:59700 helo=webmail.newmedia-net.de)
+        by mail.as201155.net with esmtps (TLSv1:DHE-RSA-AES256-SHA:256)
+        (Exim 4.82_1-5b7a7c0-XX)
+        (envelope-from <s.gottschall@dd-wrt.com>)
+        id 1jykIE-0001gh-0A; Fri, 24 Jul 2020 01:06:26 +0200
+X-CTCH-RefID: str=0001.0A782F25.5F1A17F2.000D,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=dd-wrt.com; s=mikd;
+        h=Content-Transfer-Encoding:Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject; bh=y7wndpGYNB6A7pAdmWmgEzm7i2bkmfDpsJHSV7MZfgM=;
+        b=TIgX0JeeNnKHIGHrNifq/iTDlTtMkUsixAQ/YLRLOj1jeGFuITFO3JIW9GSSe3oHu3ND8uaslLfqfpMITVcZ2iSUIq+3X3hQ0hM7FjHyDvoKSYuuDNMvZpfx7q9EkEx9y7ARpvNpWOPpp5NPaf9WTcC1KvemDHhvi83jkp7byHI=;
+Subject: Re: [RFC 7/7] ath10k: Handle rx thread suspend and resume
+To:     Rakesh Pillai <pillair@codeaurora.org>, ath10k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kvalo@codeaurora.org, johannes@sipsolutions.net,
+        davem@davemloft.net, kuba@kernel.org, netdev@vger.kernel.org,
+        dianders@chromium.org, evgreen@chromium.org
+References: <1595351666-28193-1-git-send-email-pillair@codeaurora.org>
+ <1595351666-28193-8-git-send-email-pillair@codeaurora.org>
+From:   Sebastian Gottschall <s.gottschall@dd-wrt.com>
+Message-ID: <1540605b-c54e-d482-296f-8139eb07c195@dd-wrt.com>
+Date:   Fri, 24 Jul 2020 01:06:23 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:79.0) Gecko/20100101
+ Thunderbird/79.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <1595351666-28193-8-git-send-email-pillair@codeaurora.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Received:  from [2003:c9:3f22:a900:a9b6:9d0f:69f2:ec96]
+        by webmail.newmedia-net.de with esmtpsa (TLSv1:AES128-SHA:128)
+        (Exim 4.72)
+        (envelope-from <s.gottschall@dd-wrt.com>)
+        id 1jykID-000JGc-FU; Fri, 24 Jul 2020 01:06:25 +0200
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-A definition of this macro was kept until all drivers had been converted.
-It can now be deleted.
+your patch seem to only affect the WCN3990 chipset. all other ath10k 
+supported chipset are not supported here. so you see a chance to 
+implement this more generic?
 
-This change also renames _rtl_dbg_trace() to _rtl_dbg_out().
+Sebastian
 
-Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
----
-v2 - the renaming of _rtl_dbg_trace was added
----
- drivers/net/wireless/realtek/rtlwifi/debug.h | 17 +++--------------
- 1 file changed, 3 insertions(+), 14 deletions(-)
-
-diff --git a/drivers/net/wireless/realtek/rtlwifi/debug.h b/drivers/net/wireless/realtek/rtlwifi/debug.h
-index dbfb4d67ca31..6028f1ffa5da 100644
---- a/drivers/net/wireless/realtek/rtlwifi/debug.h
-+++ b/drivers/net/wireless/realtek/rtlwifi/debug.h
-@@ -149,8 +149,8 @@ enum dbgp_flag_e {
- struct rtl_priv;
- 
- __printf(4, 5)
--void _rtl_dbg_trace(struct rtl_priv *rtlpriv, u64 comp, int level,
--		    const char *fmt, ...);
-+void _rtl_dbg_out(struct rtl_priv *rtlpriv, u64 comp, int level,
-+		  const char *fmt, ...);
- 
- __printf(4, 5)
- void _rtl_dbg_print(struct rtl_priv *rtlpriv, u64 comp, int level,
-@@ -161,11 +161,7 @@ void _rtl_dbg_print_data(struct rtl_priv *rtlpriv, u64 comp, int level,
- 			 const void *hexdata, int hexdatalen);
- 
- #define rtl_dbg(rtlpriv, comp, level, fmt, ...)			\
--	_rtl_dbg_trace(rtlpriv, comp, level,				\
--		       fmt, ##__VA_ARGS__)
--
--#define RT_TRACE(rtlpriv, comp, level, fmt, ...)			\
--	_rtl_dbg_trace(rtlpriv, comp, level,				\
-+	_rtl_dbg_out(rtlpriv, comp, level,				\
- 		       fmt, ##__VA_ARGS__)
- 
- #define RTPRINT(rtlpriv, dbgtype, dbgflag, fmt, ...)			\
-@@ -187,13 +183,6 @@ static inline void rtl_dbg(struct rtl_priv *rtlpriv,
- {
- }
- 
--__printf(4, 5)
--static inline void RT_TRACE(struct rtl_priv *rtlpriv,
--			    u64 comp, int level,
--			    const char *fmt, ...)
--{
--}
--
- __printf(4, 5)
- static inline void RTPRINT(struct rtl_priv *rtlpriv,
- 			   int dbgtype, int dbgflag,
--- 
-2.27.0
-
+Am 21.07.2020 um 19:14 schrieb Rakesh Pillai:
+> During the system suspend or resume, the rx thread
+> also needs to be suspended or resume respectively.
+>
+> Handle the rx thread as well during the system
+> suspend and resume.
+>
+> Tested-on: WCN3990 hw1.0 SNOC WLAN.HL.3.1-01040-QCAHLSWMTPLZ-1
+>
+> Signed-off-by: Rakesh Pillai <pillair@codeaurora.org>
+> ---
+>   drivers/net/wireless/ath/ath10k/core.c | 23 ++++++++++++++++++
+>   drivers/net/wireless/ath/ath10k/core.h |  5 ++++
+>   drivers/net/wireless/ath/ath10k/snoc.c | 44 +++++++++++++++++++++++++++++++++-
+>   3 files changed, 71 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/net/wireless/ath/ath10k/core.c b/drivers/net/wireless/ath/ath10k/core.c
+> index 4064fa2..b82b355 100644
+> --- a/drivers/net/wireless/ath/ath10k/core.c
+> +++ b/drivers/net/wireless/ath/ath10k/core.c
+> @@ -668,6 +668,27 @@ static unsigned int ath10k_core_get_fw_feature_str(char *buf,
+>   	return scnprintf(buf, buf_len, "%s", ath10k_core_fw_feature_str[feat]);
+>   }
+>   
+> +int ath10k_core_thread_suspend(struct ath10k_thread *thread)
+> +{
+> +	ath10k_dbg(thread->ar, ATH10K_DBG_BOOT, "Suspending thread %s\n",
+> +		   thread->name);
+> +	set_bit(ATH10K_THREAD_EVENT_SUSPEND, thread->event_flags);
+> +	wait_for_completion(&thread->suspend);
+> +
+> +	return 0;
+> +}
+> +EXPORT_SYMBOL(ath10k_core_thread_suspend);
+> +
+> +int ath10k_core_thread_resume(struct ath10k_thread *thread)
+> +{
+> +	ath10k_dbg(thread->ar, ATH10K_DBG_BOOT, "Resuming thread %s\n",
+> +		   thread->name);
+> +	complete(&thread->resume);
+> +
+> +	return 0;
+> +}
+> +EXPORT_SYMBOL(ath10k_core_thread_resume);
+> +
+>   void ath10k_core_thread_post_event(struct ath10k_thread *thread,
+>   				   enum ath10k_thread_events event)
+>   {
+> @@ -700,6 +721,8 @@ int ath10k_core_thread_init(struct ath10k *ar,
+>   
+>   	init_waitqueue_head(&thread->wait_q);
+>   	init_completion(&thread->shutdown);
+> +	init_completion(&thread->suspend);
+> +	init_completion(&thread->resume);
+>   	memcpy(thread->name, thread_name, ATH10K_THREAD_NAME_SIZE_MAX);
+>   	clear_bit(ATH10K_THREAD_EVENT_SHUTDOWN, thread->event_flags);
+>   	ath10k_info(ar, "Starting thread %s\n", thread_name);
+> diff --git a/drivers/net/wireless/ath/ath10k/core.h b/drivers/net/wireless/ath/ath10k/core.h
+> index 596d31b..df65e75 100644
+> --- a/drivers/net/wireless/ath/ath10k/core.h
+> +++ b/drivers/net/wireless/ath/ath10k/core.h
+> @@ -976,6 +976,7 @@ enum ath10k_thread_events {
+>   	ATH10K_THREAD_EVENT_SHUTDOWN,
+>   	ATH10K_THREAD_EVENT_RX_POST,
+>   	ATH10K_THREAD_EVENT_TX_POST,
+> +	ATH10K_THREAD_EVENT_SUSPEND,
+>   	ATH10K_THREAD_EVENT_MAX,
+>   };
+>   
+> @@ -983,6 +984,8 @@ struct ath10k_thread {
+>   	struct ath10k *ar;
+>   	struct task_struct *task;
+>   	struct completion shutdown;
+> +	struct completion suspend;
+> +	struct completion resume;
+>   	wait_queue_head_t wait_q;
+>   	DECLARE_BITMAP(event_flags, ATH10K_THREAD_EVENT_MAX);
+>   	char name[ATH10K_THREAD_NAME_SIZE_MAX];
+> @@ -1296,6 +1299,8 @@ static inline bool ath10k_peer_stats_enabled(struct ath10k *ar)
+>   
+>   extern unsigned long ath10k_coredump_mask;
+>   
+> +int ath10k_core_thread_suspend(struct ath10k_thread *thread);
+> +int ath10k_core_thread_resume(struct ath10k_thread *thread);
+>   void ath10k_core_thread_post_event(struct ath10k_thread *thread,
+>   				   enum ath10k_thread_events event);
+>   int ath10k_core_thread_shutdown(struct ath10k *ar,
+> diff --git a/drivers/net/wireless/ath/ath10k/snoc.c b/drivers/net/wireless/ath/ath10k/snoc.c
+> index 3eb5eac..a373b2b 100644
+> --- a/drivers/net/wireless/ath/ath10k/snoc.c
+> +++ b/drivers/net/wireless/ath/ath10k/snoc.c
+> @@ -932,13 +932,31 @@ int ath10k_snoc_rx_thread_loop(void *data)
+>   					    rx_thread->event_flags) ||
+>   			 test_and_clear_bit(ATH10K_THREAD_EVENT_TX_POST,
+>   					    rx_thread->event_flags) ||
+> +			 test_bit(ATH10K_THREAD_EVENT_SUSPEND,
+> +				  rx_thread->event_flags) ||
+>   			 test_bit(ATH10K_THREAD_EVENT_SHUTDOWN,
+>   				  rx_thread->event_flags)));
+>   
+> +		if (test_and_clear_bit(ATH10K_THREAD_EVENT_SUSPEND,
+> +				       rx_thread->event_flags)) {
+> +			complete(&rx_thread->suspend);
+> +			ath10k_info(ar, "rx thread suspend\n");
+> +			wait_for_completion(&rx_thread->resume);
+> +			ath10k_info(ar, "rx thread resume\n");
+> +		}
+> +
+>   		ath10k_htt_txrx_compl_task(ar, thread_budget);
+>   		if (test_and_clear_bit(ATH10K_THREAD_EVENT_SHUTDOWN,
+>   				       rx_thread->event_flags))
+>   			shutdown = true;
+> +
+> +		if (test_and_clear_bit(ATH10K_THREAD_EVENT_SUSPEND,
+> +				       rx_thread->event_flags)) {
+> +			complete(&rx_thread->suspend);
+> +			ath10k_info(ar, "rx thread suspend\n");
+> +			wait_for_completion(&rx_thread->resume);
+> +			ath10k_info(ar, "rx thread resume\n");
+> +		}
+>   	}
+>   
+>   	ath10k_dbg(ar, ATH10K_DBG_SNOC, "rx thread exiting\n");
+> @@ -1133,15 +1151,30 @@ static int ath10k_snoc_hif_suspend(struct ath10k *ar)
+>   	if (!device_may_wakeup(ar->dev))
+>   		return -EPERM;
+>   
+> +	if (ar->rx_thread_enable) {
+> +		ret = ath10k_core_thread_suspend(&ar->rx_thread);
+> +		if (ret) {
+> +			ath10k_err(ar, "failed to suspend rx_thread, %d\n",
+> +				   ret);
+> +			return ret;
+> +		}
+> +	}
+> +
+>   	ret = enable_irq_wake(ar_snoc->ce_irqs[ATH10K_SNOC_WAKE_IRQ].irq_line);
+>   	if (ret) {
+>   		ath10k_err(ar, "failed to enable wakeup irq :%d\n", ret);
+> -		return ret;
+> +		goto fail;
+>   	}
+>   
+>   	ath10k_dbg(ar, ATH10K_DBG_SNOC, "snoc device suspended\n");
+>   
+>   	return ret;
+> +
+> +fail:
+> +	if (ar->rx_thread_enable)
+> +		ath10k_core_thread_resume(&ar->rx_thread);
+> +
+> +	return ret;
+>   }
+>   
+>   static int ath10k_snoc_hif_resume(struct ath10k *ar)
+> @@ -1158,6 +1191,15 @@ static int ath10k_snoc_hif_resume(struct ath10k *ar)
+>   		return ret;
+>   	}
+>   
+> +	if (ar->rx_thread_enable) {
+> +		ret = ath10k_core_thread_resume(&ar->rx_thread);
+> +		if (ret) {
+> +			ath10k_err(ar, "failed to suspend rx_thread, %d\n",
+> +				   ret);
+> +			return ret;
+> +		}
+> +	}
+> +
+>   	ath10k_dbg(ar, ATH10K_DBG_SNOC, "snoc device resumed\n");
+>   
+>   	return ret;
