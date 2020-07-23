@@ -2,41 +2,41 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D412722AC16
-	for <lists+linux-wireless@lfdr.de>; Thu, 23 Jul 2020 12:03:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4BCEA22AC17
+	for <lists+linux-wireless@lfdr.de>; Thu, 23 Jul 2020 12:03:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728300AbgGWKDZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 23 Jul 2020 06:03:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36146 "EHLO
+        id S1728340AbgGWKD0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 23 Jul 2020 06:03:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36152 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728044AbgGWKDZ (ORCPT
+        with ESMTP id S1728044AbgGWKD0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 23 Jul 2020 06:03:25 -0400
-Received: from rhcavuit04.kulnet.kuleuven.be (rhcavuit04.kulnet.kuleuven.be [IPv6:2a02:2c40:0:c0::25:137])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E704C0619DC
-        for <linux-wireless@vger.kernel.org>; Thu, 23 Jul 2020 03:03:24 -0700 (PDT)
+        Thu, 23 Jul 2020 06:03:26 -0400
+Received: from rhcavuit03.kulnet.kuleuven.be (rhcavuit03.kulnet.kuleuven.be [IPv6:2a02:2c40:0:c0::25:136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 036E1C0619E2
+        for <linux-wireless@vger.kernel.org>; Thu, 23 Jul 2020 03:03:25 -0700 (PDT)
 X-KULeuven-Envelope-From: mathy.vanhoef@kuleuven.be
-X-Spam-Status: not spam, SpamAssassin (cached, score=-50.999, required 5,
+X-Spam-Status: not spam, SpamAssassin (not cached, score=-50.999, required 5,
         autolearn=disabled, ALL_TRUSTED -1.00, LOCAL_SMTPS -50.00,
         URIBL_BLOCKED 0.00)
 X-KULeuven-Scanned: Found to be clean
-X-KULeuven-ID: 78937120334.A0C2C
+X-KULeuven-ID: 7BAE9120330.AF669
 X-KULeuven-Information: Katholieke Universiteit Leuven
 Received: from icts-p-smtps-2.cc.kuleuven.be (icts-p-smtps-2e.kulnet.kuleuven.be [134.58.240.34])
-        by rhcavuit04.kulnet.kuleuven.be (Postfix) with ESMTP id 78937120334
-        for <linux-wireless@vger.kernel.org>; Thu, 23 Jul 2020 12:03:19 +0200 (CEST)
+        by rhcavuit03.kulnet.kuleuven.be (Postfix) with ESMTP id 7BAE9120330
+        for <linux-wireless@vger.kernel.org>; Thu, 23 Jul 2020 12:03:23 +0200 (CEST)
 Received: from mathy-work.localhost (unknown [176.205.50.14])
         (using TLSv1.2 with cipher DHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by icts-p-smtps-2.cc.kuleuven.be (Postfix) with ESMTPSA id 6D1D2200A1;
-        Thu, 23 Jul 2020 12:03:18 +0200 (CEST)
+        by icts-p-smtps-2.cc.kuleuven.be (Postfix) with ESMTPSA id 5351C200A1;
+        Thu, 23 Jul 2020 12:03:22 +0200 (CEST)
 X-Kuleuven: This mail passed the K.U.Leuven mailcluster
 From:   Mathy Vanhoef <Mathy.Vanhoef@kuleuven.be>
 To:     johannes@sipsolutions.net, linux-wireless@vger.kernel.org
 Cc:     Mathy Vanhoef <Mathy.Vanhoef@kuleuven.be>
-Subject: [PATCH 5/6] mac80211: remove unused flags argument in transmit functions
-Date:   Thu, 23 Jul 2020 14:01:52 +0400
-Message-Id: <20200723100153.31631-5-Mathy.Vanhoef@kuleuven.be>
+Subject: [PATCH 6/6] mac80211: parse radiotap header when selecting Tx queue
+Date:   Thu, 23 Jul 2020 14:01:53 +0400
+Message-Id: <20200723100153.31631-6-Mathy.Vanhoef@kuleuven.be>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20200723100153.31631-1-Mathy.Vanhoef@kuleuven.be>
 References: <20200723085126.29127-1-Mathy.Vanhoef@kuleuven.be>
@@ -48,212 +48,190 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The flags argument in transmit functions is no longer being used
-and can be removed.
+Already parse the radiotap header in ieee80211_monitor_select_queue.
+In a subsequent commit this will allow us to add a radiotap flag that
+influences the queue on which injected packets will be sent.
+
+This also fixes the incomplete validation of the injected frame in
+ieee80211_monitor_select_queue: currently an out of bounds memory
+access may occur in in the called function ieee80211_select_queue_80211
+if the 802.11 header is too small.
+
+Note that in ieee80211_monitor_start_xmit the radiotap header is parsed
+again, which is necessairy because ieee80211_monitor_select_queue is not
+always called beforehand.
 
 Signed-off-by: Mathy Vanhoef <Mathy.Vanhoef@kuleuven.be>
 ---
- net/mac80211/cfg.c         |  2 +-
- net/mac80211/ieee80211_i.h | 11 +++++------
- net/mac80211/offchannel.c  |  2 +-
- net/mac80211/rx.c          |  2 +-
- net/mac80211/scan.c        |  2 +-
- net/mac80211/sta_info.c    |  2 +-
- net/mac80211/tx.c          | 19 ++++++++-----------
- 7 files changed, 18 insertions(+), 22 deletions(-)
+ include/net/mac80211.h |  8 +++++++
+ net/mac80211/iface.c   | 15 ++++++++----
+ net/mac80211/tx.c      | 54 +++++++++++++++++++-----------------------
+ 3 files changed, 43 insertions(+), 34 deletions(-)
 
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index 9b360544a..06f57b8b8 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -3583,7 +3583,7 @@ static int ieee80211_probe_client(struct wiphy *wiphy, struct net_device *dev,
- 	}
+diff --git a/include/net/mac80211.h b/include/net/mac80211.h
+index 6615fe450..4e23ad385 100644
+--- a/include/net/mac80211.h
++++ b/include/net/mac80211.h
+@@ -6238,6 +6238,14 @@ bool ieee80211_tx_prepare_skb(struct ieee80211_hw *hw,
+ 			      struct ieee80211_vif *vif, struct sk_buff *skb,
+ 			      int band, struct ieee80211_sta **sta);
  
- 	local_bh_disable();
--	ieee80211_xmit(sdata, sta, skb, 0);
-+	ieee80211_xmit(sdata, sta, skb);
- 	local_bh_enable();
- 
- 	ret = 0;
-diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
-index 8f1a325e0..0e7ef5d5b 100644
---- a/net/mac80211/ieee80211_i.h
-+++ b/net/mac80211/ieee80211_i.h
-@@ -1966,12 +1966,11 @@ void ieee80211_regulatory_limit_wmm_params(struct ieee80211_sub_if_data *sdata,
- void ieee80211_set_wmm_default(struct ieee80211_sub_if_data *sdata,
- 			       bool bss_notify, bool enable_qos);
- void ieee80211_xmit(struct ieee80211_sub_if_data *sdata,
--		    struct sta_info *sta, struct sk_buff *skb,
--		    u32 txdata_flags);
-+		    struct sta_info *sta, struct sk_buff *skb);
- 
- void __ieee80211_tx_skb_tid_band(struct ieee80211_sub_if_data *sdata,
- 				 struct sk_buff *skb, int tid,
--				 enum nl80211_band band, u32 txdata_flags);
-+				 enum nl80211_band band);
- 
- /* sta_out needs to be checked for ERR_PTR() before using */
- int ieee80211_lookup_ra_sta(struct ieee80211_sub_if_data *sdata,
-@@ -1981,10 +1980,10 @@ int ieee80211_lookup_ra_sta(struct ieee80211_sub_if_data *sdata,
- static inline void
- ieee80211_tx_skb_tid_band(struct ieee80211_sub_if_data *sdata,
- 			  struct sk_buff *skb, int tid,
--			  enum nl80211_band band, u32 txdata_flags)
-+			  enum nl80211_band band)
++/**
++ * Sanity-check and parse the radiotap header of injected frames
++ * @skb: packet injected by userspace
++ * @dev: the &struct device of this 802.11 device
++ */
++bool ieee80211_parse_tx_radiotap(struct sk_buff *skb,
++				 struct net_device *dev);
++
+ /**
+  * struct ieee80211_noa_data - holds temporary data for tracking P2P NoA state
+  *
+diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
+index f900c84fb..132ff7678 100644
+--- a/net/mac80211/iface.c
++++ b/net/mac80211/iface.c
+@@ -1183,17 +1183,24 @@ static u16 ieee80211_monitor_select_queue(struct net_device *dev,
  {
- 	rcu_read_lock();
--	__ieee80211_tx_skb_tid_band(sdata, skb, tid, band, txdata_flags);
-+	__ieee80211_tx_skb_tid_band(sdata, skb, tid, band);
- 	rcu_read_unlock();
+ 	struct ieee80211_sub_if_data *sdata = IEEE80211_DEV_TO_SUB_IF(dev);
+ 	struct ieee80211_local *local = sdata->local;
++	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
+ 	struct ieee80211_hdr *hdr;
+-	struct ieee80211_radiotap_header *rtap = (void *)skb->data;
++	int len_rthdr;
+ 
+ 	if (local->hw.queues < IEEE80211_NUM_ACS)
+ 		return 0;
+ 
+-	if (skb->len < 4 ||
+-	    skb->len < le16_to_cpu(rtap->it_len) + 2 /* frame control */)
++	/* reset flags and info before parsing radiotap header */
++	memset(info, 0, sizeof(*info));
++
++	if (!ieee80211_parse_tx_radiotap(skb, dev))
+ 		return 0; /* doesn't matter, frame will be dropped */
+ 
+-	hdr = (void *)((u8 *)skb->data + le16_to_cpu(rtap->it_len));
++	len_rthdr = ieee80211_get_radiotap_len(skb->data);
++	hdr = (struct ieee80211_hdr *)(skb->data + len_rthdr);
++	if (skb->len < len_rthdr + 2 ||
++	    skb->len < len_rthdr + ieee80211_hdrlen(hdr->frame_control))
++		return 0; /* doesn't matter, frame will be dropped */
+ 
+ 	return ieee80211_select_queue_80211(sdata, skb, hdr);
  }
- 
-@@ -2002,7 +2001,7 @@ static inline void ieee80211_tx_skb_tid(struct ieee80211_sub_if_data *sdata,
- 	}
- 
- 	__ieee80211_tx_skb_tid_band(sdata, skb, tid,
--				    chanctx_conf->def.chan->band, 0);
-+				    chanctx_conf->def.chan->band);
- 	rcu_read_unlock();
- }
- 
-diff --git a/net/mac80211/offchannel.c b/net/mac80211/offchannel.c
-index db3b8bf75..882319bdb 100644
---- a/net/mac80211/offchannel.c
-+++ b/net/mac80211/offchannel.c
-@@ -264,7 +264,7 @@ static void ieee80211_handle_roc_started(struct ieee80211_roc_work *roc,
- 	if (roc->mgmt_tx_cookie) {
- 		if (!WARN_ON(!roc->frame)) {
- 			ieee80211_tx_skb_tid_band(roc->sdata, roc->frame, 7,
--						  roc->chan->band, 0);
-+						  roc->chan->band);
- 			roc->frame = NULL;
- 		}
- 	} else {
-diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-index 5c5af4b5f..2c88a69b7 100644
---- a/net/mac80211/rx.c
-+++ b/net/mac80211/rx.c
-@@ -3591,7 +3591,7 @@ ieee80211_rx_h_action_return(struct ieee80211_rx_data *rx)
- 		}
- 
- 		__ieee80211_tx_skb_tid_band(rx->sdata, nskb, 7,
--					    status->band, 0);
-+					    status->band);
- 	}
- 	dev_kfree_skb(rx->skb);
- 	return RX_QUEUED;
-diff --git a/net/mac80211/scan.c b/net/mac80211/scan.c
-index 8ccdafa62..8c6b4ff7b 100644
---- a/net/mac80211/scan.c
-+++ b/net/mac80211/scan.c
-@@ -607,7 +607,7 @@ static void ieee80211_send_scan_probe_req(struct ieee80211_sub_if_data *sdata,
- 				cpu_to_le16(IEEE80211_SN_TO_SEQ(sn));
- 		}
- 		IEEE80211_SKB_CB(skb)->flags |= tx_flags;
--		ieee80211_tx_skb_tid_band(sdata, skb, 7, channel->band, 0);
-+		ieee80211_tx_skb_tid_band(sdata, skb, 7, channel->band);
- 	}
- }
- 
-diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
-index cd8487bc6..6a368f41b 100644
---- a/net/mac80211/sta_info.c
-+++ b/net/mac80211/sta_info.c
-@@ -1455,7 +1455,7 @@ static void ieee80211_send_null_response(struct sta_info *sta, int tid,
- 	}
- 
- 	info->band = chanctx_conf->def.chan->band;
--	ieee80211_xmit(sdata, sta, skb, 0);
-+	ieee80211_xmit(sdata, sta, skb);
- 	rcu_read_unlock();
- }
- 
 diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index 279d1edbb..e2cb933cd 100644
+index e2cb933cd..dac73baeb 100644
 --- a/net/mac80211/tx.c
 +++ b/net/mac80211/tx.c
-@@ -1891,7 +1891,7 @@ EXPORT_SYMBOL(ieee80211_tx_prepare_skb);
-  */
- static bool ieee80211_tx(struct ieee80211_sub_if_data *sdata,
- 			 struct sta_info *sta, struct sk_buff *skb,
--			 bool txpending, u32 txdata_flags)
-+			 bool txpending)
- {
- 	struct ieee80211_local *local = sdata->local;
- 	struct ieee80211_tx_data tx;
-@@ -1909,8 +1909,6 @@ static bool ieee80211_tx(struct ieee80211_sub_if_data *sdata,
- 	led_len = skb->len;
- 	res_prepare = ieee80211_tx_prepare(sdata, &tx, sta, skb);
+@@ -2014,9 +2014,10 @@ void ieee80211_xmit(struct ieee80211_sub_if_data *sdata,
+ 	ieee80211_tx(sdata, sta, skb, false);
+ }
  
--	tx.flags |= txdata_flags;
+-static bool ieee80211_parse_tx_radiotap(struct ieee80211_local *local,
+-					struct sk_buff *skb)
++bool ieee80211_parse_tx_radiotap(struct sk_buff *skb,
++				 struct net_device *dev)
+ {
++	struct ieee80211_local *local = wdev_priv(dev->ieee80211_ptr);
+ 	struct ieee80211_radiotap_iterator iterator;
+ 	struct ieee80211_radiotap_header *rthdr =
+ 		(struct ieee80211_radiotap_header *) skb->data;
+@@ -2035,6 +2036,18 @@ static bool ieee80211_parse_tx_radiotap(struct ieee80211_local *local,
+ 	u8 vht_mcs = 0, vht_nss = 0;
+ 	int i;
+ 
++	/* check for not even having the fixed radiotap header part */
++	if (unlikely(skb->len < sizeof(struct ieee80211_radiotap_header)))
++		return false; /* too short to be possibly valid */
++
++	/* is it a header version we can trust to find length from? */
++	if (unlikely(rthdr->it_version))
++		return false; /* only version 0 is supported */
++
++	/* does the skb contain enough to deliver on the alleged length? */
++	if (unlikely(skb->len < ieee80211_get_radiotap_len(skb->data)))
++		return false; /* skb too short for claimed rt header extent */
++
+ 	info->flags |= IEEE80211_TX_INTFL_DONT_ENCRYPT |
+ 		       IEEE80211_TX_CTL_DONTFRAG;
+ 
+@@ -2188,13 +2201,6 @@ static bool ieee80211_parse_tx_radiotap(struct ieee80211_local *local,
+ 						     local->hw.max_rate_tries);
+ 	}
+ 
+-	/*
+-	 * remove the radiotap header
+-	 * iterator->_max_length was sanity-checked against
+-	 * skb->len by iterator init
+-	 */
+-	skb_pull(skb, iterator._max_length);
 -
- 	if (unlikely(res_prepare == TX_DROP)) {
- 		ieee80211_free_txskb(&local->hw, skb);
- 		return true;
-@@ -1978,8 +1976,7 @@ static int ieee80211_skb_resize(struct ieee80211_sub_if_data *sdata,
+ 	return true;
  }
  
- void ieee80211_xmit(struct ieee80211_sub_if_data *sdata,
--		    struct sta_info *sta, struct sk_buff *skb,
--		    u32 txdata_flags)
-+		    struct sta_info *sta, struct sk_buff *skb)
+@@ -2203,8 +2209,6 @@ netdev_tx_t ieee80211_monitor_start_xmit(struct sk_buff *skb,
  {
- 	struct ieee80211_local *local = sdata->local;
+ 	struct ieee80211_local *local = wdev_priv(dev->ieee80211_ptr);
+ 	struct ieee80211_chanctx_conf *chanctx_conf;
+-	struct ieee80211_radiotap_header *prthdr =
+-		(struct ieee80211_radiotap_header *)skb->data;
  	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
-@@ -2014,7 +2011,7 @@ void ieee80211_xmit(struct ieee80211_sub_if_data *sdata,
+ 	struct ieee80211_hdr *hdr;
+ 	struct ieee80211_sub_if_data *tmp_sdata, *sdata;
+@@ -2212,21 +2216,17 @@ netdev_tx_t ieee80211_monitor_start_xmit(struct sk_buff *skb,
+ 	u16 len_rthdr;
+ 	int hdrlen;
+ 
+-	/* check for not even having the fixed radiotap header part */
+-	if (unlikely(skb->len < sizeof(struct ieee80211_radiotap_header)))
+-		goto fail; /* too short to be possibly valid */
++	memset(info, 0, sizeof(*info));
++	info->flags = IEEE80211_TX_CTL_REQ_TX_STATUS |
++		      IEEE80211_TX_CTL_INJECTED;
+ 
+-	/* is it a header version we can trust to find length from? */
+-	if (unlikely(prthdr->it_version))
+-		goto fail; /* only version 0 is supported */
++	/* Sanity-check and process the injection radiotap header */
++	if (!ieee80211_parse_tx_radiotap(skb, dev))
++		goto fail;
+ 
+-	/* then there must be a radiotap header with a length we can use */
++	/* we now know there is a radiotap header with a length we can use */
+ 	len_rthdr = ieee80211_get_radiotap_len(skb->data);
+ 
+-	/* does the skb contain enough to deliver on the alleged length? */
+-	if (unlikely(skb->len < len_rthdr))
+-		goto fail; /* skb too short for claimed rt header extent */
+-
+ 	/*
+ 	 * fix up the pointers accounting for the radiotap
+ 	 * header still being in there.  We are being given
+@@ -2272,11 +2272,6 @@ netdev_tx_t ieee80211_monitor_start_xmit(struct sk_buff *skb,
+ 		skb->priority = *p & IEEE80211_QOS_CTL_TAG1D_MASK;
  	}
  
- 	ieee80211_set_qos_hdr(sdata, skb);
--	ieee80211_tx(sdata, sta, skb, false, txdata_flags);
-+	ieee80211_tx(sdata, sta, skb, false);
- }
+-	memset(info, 0, sizeof(*info));
+-
+-	info->flags = IEEE80211_TX_CTL_REQ_TX_STATUS |
+-		      IEEE80211_TX_CTL_INJECTED;
+-
+ 	rcu_read_lock();
  
- static bool ieee80211_parse_tx_radiotap(struct ieee80211_local *local,
-@@ -2349,7 +2346,7 @@ netdev_tx_t ieee80211_monitor_start_xmit(struct sk_buff *skb,
- 	if (!ieee80211_parse_tx_radiotap(local, skb))
- 		goto fail_rcu;
+ 	/*
+@@ -2342,9 +2337,8 @@ netdev_tx_t ieee80211_monitor_start_xmit(struct sk_buff *skb,
  
--	ieee80211_xmit(sdata, NULL, skb, 0);
-+	ieee80211_xmit(sdata, NULL, skb);
+ 	info->band = chandef->chan->band;
+ 
+-	/* process and remove the injection radiotap header */
+-	if (!ieee80211_parse_tx_radiotap(local, skb))
+-		goto fail_rcu;
++	/* remove the injection radiotap header */
++	skb_pull(skb, len_rthdr);
+ 
+ 	ieee80211_xmit(sdata, NULL, skb);
  	rcu_read_unlock();
- 
- 	return NETDEV_TX_OK;
-@@ -4011,7 +4008,7 @@ void __ieee80211_subif_start_xmit(struct sk_buff *skb,
- 
- 		ieee80211_tx_stats(dev, skb->len);
- 
--		ieee80211_xmit(sdata, sta, skb, 0);
-+		ieee80211_xmit(sdata, sta, skb);
- 	}
- 	goto out;
-  out_free:
-@@ -4377,7 +4374,7 @@ static bool ieee80211_tx_pending_skb(struct ieee80211_local *local,
- 			return true;
- 		}
- 		info->band = chanctx_conf->def.chan->band;
--		result = ieee80211_tx(sdata, NULL, skb, true, 0);
-+		result = ieee80211_tx(sdata, NULL, skb, true);
- 	} else if (info->control.flags & IEEE80211_TX_CTRL_HW_80211_ENCAP) {
- 		if (ieee80211_lookup_ra_sta(sdata, skb, &sta)) {
- 			dev_kfree_skb(skb);
-@@ -5336,7 +5333,7 @@ EXPORT_SYMBOL(ieee80211_unreserve_tid);
- 
- void __ieee80211_tx_skb_tid_band(struct ieee80211_sub_if_data *sdata,
- 				 struct sk_buff *skb, int tid,
--				 enum nl80211_band band, u32 txdata_flags)
-+				 enum nl80211_band band)
- {
- 	int ac = ieee80211_ac_from_tid(tid);
- 
-@@ -5353,7 +5350,7 @@ void __ieee80211_tx_skb_tid_band(struct ieee80211_sub_if_data *sdata,
- 	 */
- 	local_bh_disable();
- 	IEEE80211_SKB_CB(skb)->band = band;
--	ieee80211_xmit(sdata, NULL, skb, txdata_flags);
-+	ieee80211_xmit(sdata, NULL, skb);
- 	local_bh_enable();
- }
- 
 -- 
 2.27.0
 
