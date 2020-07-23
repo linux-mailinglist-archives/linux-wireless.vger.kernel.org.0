@@ -2,56 +2,84 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 999ED22AD77
-	for <lists+linux-wireless@lfdr.de>; Thu, 23 Jul 2020 13:18:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 36FBC22AEB8
+	for <lists+linux-wireless@lfdr.de>; Thu, 23 Jul 2020 14:11:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728464AbgGWLSZ convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 23 Jul 2020 07:18:25 -0400
-Received: from proxy.egarmatic.com ([195.77.164.94]:47128 "EHLO
-        proxy2.egarmatic.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1727828AbgGWLSY (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 23 Jul 2020 07:18:24 -0400
-X-Greylist: delayed 6422 seconds by postgrey-1.27 at vger.kernel.org; Thu, 23 Jul 2020 07:18:24 EDT
-Received: from MTEXCH03.ofimat.int ([10.200.0.108])
-        by proxy2.egarmatic.com (8.13.4/8.13.4) with ESMTP id 06N9QNNS007959;
-        Thu, 23 Jul 2020 11:26:25 +0200
-Received: from MTEXCH02.ofimat.int ([::1]) by MTEXCH03.ofimat.int ([::1]) with
- mapi id 14.03.0279.002; Thu, 23 Jul 2020 11:26:16 +0200
-From:   "Novellas Canosa, Marga" <mnovellas@mutuaterrassa.es>
-To:     "NO-REPLY@MICROSOFT.NET" <NO-REPLY@MICROSOFT.NET>
-Subject: 10 of your new incoming messages has been suspended
-Thread-Topic: 10 of your new incoming messages has been suspended
-Thread-Index: AdZg01CB6/9ax5T6TS+kWF7A2c31Kg==
-Date:   Thu, 23 Jul 2020 09:26:15 +0000
-Message-ID: <FA0F6F260331CB478DEA7143668F196506B5E34D5C@MTEXCH02.ofimat.int>
-Accept-Language: es-ES, en-US
-Content-Language: es-ES
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [80.248.74.211]
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: 8BIT
-MIME-Version: 1.0
-X-Spam-Score: 1.276 (*) HELO_NO_DOMAIN,RDNS_NONE,URIBL_BLOCKED
-X-Spam-Level: *
-X-Spam-Status: No, score=1.276 required=10 tests=HELO_NO_DOMAIN,RDNS_NONE,URIBL_BLOCKED
-X-Scanned-By: MIMEDefang 2.65 on 10.200.0.11
+        id S1728426AbgGWMLY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 23 Jul 2020 08:11:24 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:62309 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727940AbgGWMLY (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 23 Jul 2020 08:11:24 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1595506283; h=Message-Id: Date: Subject: Cc: To: From:
+ Sender; bh=WvXLJMSd5moKGBo4HGcbWn9Mn8ofEkg1LsUDy5piKlI=; b=D6TlSCEhZYtWjlBKd4YEIVLkRPKWwp8zQWb0IgYnnBjgyDt7C1ji7yTgSR7uEzajUteddrgf
+ zFbNLm+4GTjUhZmpY/iN6uEZcrzy+/duf/rF2+Avz2YL+guzawjSMpx0i0KApMTZIYAqh8rx
+ YlM2f6HLCN9OdC9RHdCE96pq8OA=
+X-Mailgun-Sending-Ip: 69.72.43.7
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n14.prod.us-west-2.postgun.com with SMTP id
+ 5f197e638e9b2c49c6f31de3 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 23 Jul 2020 12:11:15
+ GMT
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 495D0C433C6; Thu, 23 Jul 2020 12:11:15 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from vnaralas-linux.qualcomm.com (blr-c-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.19.19])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: akolli)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 7FD4AC433C9;
+        Thu, 23 Jul 2020 12:11:13 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 7FD4AC433C9
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=akolli@codeaurora.org
+From:   Anilkumar Kolli <akolli@codeaurora.org>
+To:     ath11k@lists.infradead.org
+Cc:     devicetree@vger.kernel.org, linux-wireless@vger.kernel.org,
+        akolli@codeaurora.org
+Subject: [PATCH v4 0/3] ath11k: Add IPQ6018 support
+Date:   Thu, 23 Jul 2020 17:41:01 +0530
+Message-Id: <1595506264-6393-1-git-send-email-akolli@codeaurora.org>
+X-Mailer: git-send-email 2.7.4
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-MICROSOFT URGENT NOTIFICATION MEMO
+IPQ6018 has a 5G radio and 2G radio with 2x2
+and shares IPQ8074 configuration.
 
-10 of your new incoming messages has been suspended from entry into your email box account because your email box account has not been verified for some months now. Do therefore verify<https://miss1286.wixsite.com/mysite> immediately so that all your new incoming messages can be release to you now.
+Tested on: IPQ6018 WLAN.HK.2.2-02134-QCAHKSWPL_SILICONZ-1
+Tested on: IPQ8074 WLAN.HK.2.4.0.1-00009-QCAHKSWPL_SILICONZ-1 
 
+Anilkumar Kolli (3):
+  dt: bindings: net: update compatible for ath11k
+  ath11k: copy ce service configs to hw_params
+  ath11k: add IPQ6018 support
 
-Thank you for your understanding.
+V2:
+ - Added devicetree reviewers 
+V3:
+ - addressed dt bindinds comments
+ - Reworked on Kalles patches
+ - copied ce svc configs to hw_params
+V4:
+ - updated dt patch (Rob)
 
+ .../bindings/net/wireless/qcom,ath11k.yaml         |   4 +-
+ drivers/net/wireless/ath/ath11k/ahb.c              | 131 ++++++++++++++++++++-
+ drivers/net/wireless/ath/ath11k/core.c             |  20 ++--
+ drivers/net/wireless/ath/ath11k/core.h             |   2 +
+ drivers/net/wireless/ath/ath11k/hw.h               |   2 +
+ 5 files changed, 146 insertions(+), 13 deletions(-)
 
-Microsoft Verification Team
+-- 
+2.7.4
 
-
-Copyright © 2020 Webmail.Inc. All rights reserved.
