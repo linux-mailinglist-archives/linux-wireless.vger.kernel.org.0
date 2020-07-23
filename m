@@ -2,250 +2,152 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A06C22AEB9
-	for <lists+linux-wireless@lfdr.de>; Thu, 23 Jul 2020 14:11:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B50F22B0CD
+	for <lists+linux-wireless@lfdr.de>; Thu, 23 Jul 2020 15:53:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728453AbgGWML2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 23 Jul 2020 08:11:28 -0400
-Received: from mail29.static.mailgun.info ([104.130.122.29]:37824 "EHLO
-        mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728396AbgGWML1 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 23 Jul 2020 08:11:27 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1595506286; h=References: In-Reply-To: Message-Id: Date:
- Subject: Cc: To: From: Sender;
- bh=sUTIwmA18KKFD78sQQkujxdQylj2SVkiaYMf8FOj5wo=; b=srx2mqA0PCkBReXR1AFUlpbP98aBbrLmJpAtUhTHU3i4wEiuGGs0InLdVx5+1DFa7G7DrU7w
- wsXjZrfWtjcqCyz0mWN8N8d+2h+S9iYVe+7hpdZs/m+NATgsUdzBeCtKVh+DCT1Dv2r3YPwn
- OV2kco4a2oZEd8P4zo3tdU+d/2I=
-X-Mailgun-Sending-Ip: 104.130.122.29
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n09.prod.us-west-2.postgun.com with SMTP id
- 5f197e6a0cb8533c3ba06ec7 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 23 Jul 2020 12:11:22
- GMT
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 414DCC433C6; Thu, 23 Jul 2020 12:11:22 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from vnaralas-linux.qualcomm.com (blr-c-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.19.19])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: akolli)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 3D707C433CB;
-        Thu, 23 Jul 2020 12:11:19 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 3D707C433CB
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=akolli@codeaurora.org
-From:   Anilkumar Kolli <akolli@codeaurora.org>
-To:     ath11k@lists.infradead.org
-Cc:     devicetree@vger.kernel.org, linux-wireless@vger.kernel.org,
-        akolli@codeaurora.org
-Subject: [PATCH v4 3/3] ath11k: add IPQ6018 support
-Date:   Thu, 23 Jul 2020 17:41:04 +0530
-Message-Id: <1595506264-6393-4-git-send-email-akolli@codeaurora.org>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1595506264-6393-1-git-send-email-akolli@codeaurora.org>
-References: <1595506264-6393-1-git-send-email-akolli@codeaurora.org>
+        id S1729115AbgGWNxF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 23 Jul 2020 09:53:05 -0400
+Received: from smtp.asem.it ([151.1.184.197]:61446 "EHLO smtp.asem.it"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728942AbgGWNxD (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 23 Jul 2020 09:53:03 -0400
+Received: from webmail.asem.it
+        by asem.it (smtp.asem.it)
+        (SecurityGateway 6.5.2)
+        with ESMTP id SG000400764.MSG 
+        for <linux-wireless@vger.kernel.org>; Thu, 23 Jul 2020 15:52:56 +0200S
+Received: from ASAS044.asem.intra (172.16.16.44) by ASAS044.asem.intra
+ (172.16.16.44) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Thu, 23
+ Jul 2020 15:52:55 +0200
+Received: from flavio-x.asem.intra (172.16.17.208) by ASAS044.asem.intra
+ (172.16.16.44) with Microsoft SMTP Server id 15.1.1979.3 via Frontend
+ Transport; Thu, 23 Jul 2020 15:52:55 +0200
+From:   Flavio Suligoi <f.suligoi@asem.it>
+To:     "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "Gustavo A . R . Silva" <gustavoars@kernel.org>,
+        Cong Wang <xiyou.wangcong@gmail.com>
+CC:     <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, Flavio Suligoi <f.suligoi@asem.it>
+Subject: [PATCH v2 7/9] intersil: fix wiki website url
+Date:   Thu, 23 Jul 2020 15:52:54 +0200
+Message-ID: <20200723135254.594984-1-f.suligoi@asem.it>
+X-Mailer: git-send-email 2.25.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-SGHeloLookup-Result: pass smtp.helo=webmail.asem.it (ip=172.16.16.44)
+X-SGSPF-Result: none (smtp.asem.it)
+X-SGOP-RefID: str=0001.0A090210.5F199638.0028,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0 (_st=1 _vt=0 _iwf=0)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-IPQ6018 has one 5G and one 2G radio with 2x2,
-shares ipq8074 configurations.
+In some Intersil files, the wiki url is still the old
+"wireless.kernel.org" instead of the new
+"wireless.wiki.kernel.org"
 
-Signed-off-by: Anilkumar Kolli <akolli@codeaurora.org>
+Signed-off-by: Flavio Suligoi <f.suligoi@asem.it>
 ---
-V3:
- - rebased on Kalles patches
 
- drivers/net/wireless/ath/ath11k/ahb.c  | 115 ++++++++++++++++++++++++++++++++-
- drivers/net/wireless/ath/ath11k/core.c |  12 ++++
- drivers/net/wireless/ath/ath11k/core.h |   1 +
- 3 files changed, 126 insertions(+), 2 deletions(-)
+v2: the previous version failed to apply:
+    "fatal: corrupt patch at line 97
+     error: could not build fake ancestor"
 
-diff --git a/drivers/net/wireless/ath/ath11k/ahb.c b/drivers/net/wireless/ath/ath11k/ahb.c
-index aa74d27e5871..21f23ac75650 100644
---- a/drivers/net/wireless/ath/ath11k/ahb.c
-+++ b/drivers/net/wireless/ath/ath11k/ahb.c
-@@ -20,6 +20,9 @@ static const struct of_device_id ath11k_ahb_of_match[] = {
- 	{ .compatible = "qcom,ipq8074-wifi",
- 	  .data = (void *)ATH11K_HW_IPQ8074,
- 	},
-+	{ .compatible = "qcom,ipq6018-wifi",
-+	  .data = (void *)ATH11K_HW_IPQ6018,
-+	},
- 	{ }
- };
+ drivers/net/wireless/intersil/Kconfig                  | 2 +-
+ drivers/net/wireless/intersil/p54/Kconfig              | 6 +++---
+ drivers/net/wireless/intersil/p54/fwio.c               | 2 +-
+ drivers/net/wireless/intersil/p54/p54usb.c             | 2 +-
+ drivers/net/wireless/intersil/prism54/islpci_hotplug.c | 3 ++-
+ 5 files changed, 8 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/net/wireless/intersil/Kconfig b/drivers/net/wireless/intersil/Kconfig
+index 6a6ce9d4aeee..c52d9b535623 100644
+--- a/drivers/net/wireless/intersil/Kconfig
++++ b/drivers/net/wireless/intersil/Kconfig
+@@ -30,7 +30,7 @@ config PRISM54
  
-@@ -264,6 +267,108 @@ static const struct service_to_pipe target_service_to_ce_map_wlan_ipq8074[] = {
- 	{ /* terminator entry */ }
- };
+ 	  For more information refer to the p54 wiki:
  
-+static const struct service_to_pipe target_service_to_ce_map_wlan_ipq6018[] = {
-+	{
-+		.service_id = __cpu_to_le32(ATH11K_HTC_SVC_ID_WMI_DATA_VO),
-+		.pipedir = __cpu_to_le32(PIPEDIR_OUT),	/* out = UL = host -> target */
-+		.pipenum = __cpu_to_le32(3),
-+	},
-+	{
-+		.service_id = __cpu_to_le32(ATH11K_HTC_SVC_ID_WMI_DATA_VO),
-+		.pipedir = __cpu_to_le32(PIPEDIR_IN),	/* in = DL = target -> host */
-+		.pipenum = __cpu_to_le32(2),
-+	},
-+	{
-+		.service_id = __cpu_to_le32(ATH11K_HTC_SVC_ID_WMI_DATA_BK),
-+		.pipedir = __cpu_to_le32(PIPEDIR_OUT),	/* out = UL = host -> target */
-+		.pipenum = __cpu_to_le32(3),
-+	},
-+	{
-+		.service_id = __cpu_to_le32(ATH11K_HTC_SVC_ID_WMI_DATA_BK),
-+		.pipedir = __cpu_to_le32(PIPEDIR_IN),	/* in = DL = target -> host */
-+		.pipenum = __cpu_to_le32(2),
-+	},
-+	{
-+		.service_id = __cpu_to_le32(ATH11K_HTC_SVC_ID_WMI_DATA_BE),
-+		.pipedir = __cpu_to_le32(PIPEDIR_OUT),	/* out = UL = host -> target */
-+		.pipenum = __cpu_to_le32(3),
-+	},
-+	{
-+		.service_id = __cpu_to_le32(ATH11K_HTC_SVC_ID_WMI_DATA_BE),
-+		.pipedir = __cpu_to_le32(PIPEDIR_IN),	/* in = DL = target -> host */
-+		.pipenum = __cpu_to_le32(2),
-+	},
-+	{
-+		.service_id = __cpu_to_le32(ATH11K_HTC_SVC_ID_WMI_DATA_VI),
-+		.pipedir = __cpu_to_le32(PIPEDIR_OUT),	/* out = UL = host -> target */
-+		.pipenum = __cpu_to_le32(3),
-+	},
-+	{
-+		.service_id = __cpu_to_le32(ATH11K_HTC_SVC_ID_WMI_DATA_VI),
-+		.pipedir = __cpu_to_le32(PIPEDIR_IN),	/* in = DL = target -> host */
-+		.pipenum = __cpu_to_le32(2),
-+	},
-+	{
-+		.service_id = __cpu_to_le32(ATH11K_HTC_SVC_ID_WMI_CONTROL),
-+		.pipedir = __cpu_to_le32(PIPEDIR_OUT),	/* out = UL = host -> target */
-+		.pipenum = __cpu_to_le32(3),
-+	},
-+	{
-+		.service_id = __cpu_to_le32(ATH11K_HTC_SVC_ID_WMI_CONTROL),
-+		.pipedir = __cpu_to_le32(PIPEDIR_IN),	/* in = DL = target -> host */
-+		.pipenum = __cpu_to_le32(2),
-+	},
-+	{
-+		.service_id = __cpu_to_le32(ATH11K_HTC_SVC_ID_WMI_CONTROL_MAC1),
-+		.pipedir = __cpu_to_le32(PIPEDIR_OUT),	/* out = UL = host -> target */
-+		.pipenum = __cpu_to_le32(7),
-+	},
-+	{
-+		.service_id = __cpu_to_le32(ATH11K_HTC_SVC_ID_WMI_CONTROL_MAC1),
-+		.pipedir = __cpu_to_le32(PIPEDIR_IN),	/* in = DL = target -> host */
-+		.pipenum = __cpu_to_le32(2),
-+	},
-+	{
-+		.service_id = __cpu_to_le32(ATH11K_HTC_SVC_ID_RSVD_CTRL),
-+		.pipedir = __cpu_to_le32(PIPEDIR_OUT),	/* out = UL = host -> target */
-+		.pipenum = __cpu_to_le32(0),
-+	},
-+	{
-+		.service_id = __cpu_to_le32(ATH11K_HTC_SVC_ID_RSVD_CTRL),
-+		.pipedir = __cpu_to_le32(PIPEDIR_IN),	/* in = DL = target -> host */
-+		.pipenum = __cpu_to_le32(1),
-+	},
-+	{ /* not used */
-+		.service_id = __cpu_to_le32(ATH11K_HTC_SVC_ID_TEST_RAW_STREAMS),
-+		.pipedir = __cpu_to_le32(PIPEDIR_OUT),	/* out = UL = host -> target */
-+		.pipenum = __cpu_to_le32(0),
-+	},
-+	{ /* not used */
-+		.service_id = __cpu_to_le32(ATH11K_HTC_SVC_ID_TEST_RAW_STREAMS),
-+		.pipedir = __cpu_to_le32(PIPEDIR_IN),	/* in = DL = target -> host */
-+		.pipenum = __cpu_to_le32(1),
-+	},
-+	{
-+		.service_id = __cpu_to_le32(ATH11K_HTC_SVC_ID_HTT_DATA_MSG),
-+		.pipedir = __cpu_to_le32(PIPEDIR_OUT),	/* out = UL = host -> target */
-+		.pipenum = __cpu_to_le32(4),
-+	},
-+	{
-+		.service_id = __cpu_to_le32(ATH11K_HTC_SVC_ID_HTT_DATA_MSG),
-+		.pipedir = __cpu_to_le32(PIPEDIR_IN),	/* in = DL = target -> host */
-+		.pipenum = __cpu_to_le32(1),
-+	},
-+	{
-+		.service_id = __cpu_to_le32(ATH11K_HTC_SVC_ID_PKT_LOG),
-+		.pipedir = __cpu_to_le32(PIPEDIR_IN),	/* in = DL = target -> host */
-+		.pipenum = __cpu_to_le32(5),
-+	},
-+
-+	/* (Additions here) */
-+
-+	{ /* terminator entry */ }
-+};
-+
- #define ATH11K_IRQ_CE0_OFFSET 4
+-	  http://wireless.kernel.org/en/users/Drivers/p54
++	  http://wireless.wiki.kernel.org/en/users/Drivers/p54
  
- static const char *irq_name[ATH11K_IRQ_NUM_MAX] = {
-@@ -956,9 +1061,15 @@ static int ath11k_ahb_probe(struct platform_device *pdev)
- 		return ret;
- 	}
+ 	  Note: You need a motherboard with DMA support to use any of these cards
  
--	ab->hw_params.svc_to_ce_map_len =
-+	if (ab->hw_rev == ATH11K_HW_IPQ8074) {
-+		ab->hw_params.svc_to_ce_map_len =
- 			ARRAY_SIZE(target_service_to_ce_map_wlan_ipq8074);
--	ab->hw_params.svc_to_ce_map = target_service_to_ce_map_wlan_ipq8074;
-+		ab->hw_params.svc_to_ce_map = target_service_to_ce_map_wlan_ipq8074;
-+	} else if (ab->hw_rev == ATH11K_HW_IPQ6018) {
-+		ab->hw_params.svc_to_ce_map_len =
-+			ARRAY_SIZE(target_service_to_ce_map_wlan_ipq6018);
-+		ab->hw_params.svc_to_ce_map = target_service_to_ce_map_wlan_ipq6018;
-+	}
+diff --git a/drivers/net/wireless/intersil/p54/Kconfig b/drivers/net/wireless/intersil/p54/Kconfig
+index 024be5507daf..003c378ed131 100644
+--- a/drivers/net/wireless/intersil/p54/Kconfig
++++ b/drivers/net/wireless/intersil/p54/Kconfig
+@@ -10,7 +10,7 @@ config P54_COMMON
+ 	  also need to be enabled in order to support any devices.
  
- 	ath11k_ahb_init_qmi_ce_config(ab);
+ 	  These devices require softmac firmware which can be found at
+-	  <http://wireless.kernel.org/en/users/Drivers/p54>
++	  <http://wireless.wiki.kernel.org/en/users/Drivers/p54>
  
-diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
-index 0bf8bb1674dc..5f794f97d359 100644
---- a/drivers/net/wireless/ath/ath11k/core.c
-+++ b/drivers/net/wireless/ath/ath11k/core.c
-@@ -30,6 +30,18 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
- 		.bdf_addr = 0x4B0C0000,
- 		.hw_ops = &ipq8074_ops,
- 	},
-+	{
-+		.hw_rev = ATH11K_HW_IPQ6018,
-+		.name = "ipq6018 hw1.0",
-+		.fw = {
-+			.dir = "IPQ6018/hw1.0",
-+			.board_size = 256 * 1024,
-+			.cal_size = 256 * 1024,
-+		},
-+		.max_radios = 2,
-+		.bdf_addr = 0x4ABC0000,
-+		.hw_ops = &ipq6018_ops,
-+	},
- };
+ 	  If you choose to build a module, it'll be called p54common.
  
- static int ath11k_core_create_board_name(struct ath11k_base *ab, char *name,
-diff --git a/drivers/net/wireless/ath/ath11k/core.h b/drivers/net/wireless/ath/ath11k/core.h
-index 98b994984c25..fe11fcd9e914 100644
---- a/drivers/net/wireless/ath/ath11k/core.h
-+++ b/drivers/net/wireless/ath/ath11k/core.h
-@@ -90,6 +90,7 @@ struct ath11k_skb_rxcb {
+@@ -22,7 +22,7 @@ config P54_USB
+ 	  This driver is for USB isl38xx based wireless cards.
  
- enum ath11k_hw_rev {
- 	ATH11K_HW_IPQ8074,
-+	ATH11K_HW_IPQ6018,
- };
+ 	  These devices require softmac firmware which can be found at
+-	  <http://wireless.kernel.org/en/users/Drivers/p54>
++	  <http://wireless.wiki.kernel.org/en/users/Drivers/p54>
  
- enum ath11k_firmware_mode {
+ 	  If you choose to build a module, it'll be called p54usb.
+ 
+@@ -36,7 +36,7 @@ config P54_PCI
+ 	  supported by the fullmac driver/firmware.
+ 
+ 	  This driver requires softmac firmware which can be found at
+-	  <http://wireless.kernel.org/en/users/Drivers/p54>
++	  <http://wireless.wiki.kernel.org/en/users/Drivers/p54>
+ 
+ 	  If you choose to build a module, it'll be called p54pci.
+ 
+diff --git a/drivers/net/wireless/intersil/p54/fwio.c b/drivers/net/wireless/intersil/p54/fwio.c
+index a5afcc865196..bece14e4ff0d 100644
+--- a/drivers/net/wireless/intersil/p54/fwio.c
++++ b/drivers/net/wireless/intersil/p54/fwio.c
+@@ -132,7 +132,7 @@ int p54_parse_firmware(struct ieee80211_hw *dev, const struct firmware *fw)
+ 	if (priv->fw_var < 0x500)
+ 		wiphy_info(priv->hw->wiphy,
+ 			   "you are using an obsolete firmware. "
+-			   "visit http://wireless.kernel.org/en/users/Drivers/p54 "
++			   "visit http://wireless.wiki.kernel.org/en/users/Drivers/p54 "
+ 			   "and grab one for \"kernel >= 2.6.28\"!\n");
+ 
+ 	if (priv->fw_var >= 0x300) {
+diff --git a/drivers/net/wireless/intersil/p54/p54usb.c b/drivers/net/wireless/intersil/p54/p54usb.c
+index ff0e30c0c14c..cae47663b17b 100644
+--- a/drivers/net/wireless/intersil/p54/p54usb.c
++++ b/drivers/net/wireless/intersil/p54/p54usb.c
+@@ -36,7 +36,7 @@ static struct usb_driver p54u_driver;
+  * Note:
+  *
+  * Always update our wiki's device list (located at:
+- * http://wireless.kernel.org/en/users/Drivers/p54/devices ),
++ * http://wireless.wiki.kernel.org/en/users/Drivers/p54/devices ),
+  * whenever you add a new device.
+  */
+ 
+diff --git a/drivers/net/wireless/intersil/prism54/islpci_hotplug.c b/drivers/net/wireless/intersil/prism54/islpci_hotplug.c
+index 20291c0d962d..34912267ff63 100644
+--- a/drivers/net/wireless/intersil/prism54/islpci_hotplug.c
++++ b/drivers/net/wireless/intersil/prism54/islpci_hotplug.c
+@@ -26,7 +26,8 @@ module_param(init_pcitm, int, 0);
+ /* In this order: vendor, device, subvendor, subdevice, class, class_mask,
+  * driver_data
+  * If you have an update for this please contact prism54-devel@prism54.org
+- * The latest list can be found at http://wireless.kernel.org/en/users/Drivers/p54 */
++ * The latest list can be found at http://wireless.wiki.kernel.org/en/users/Drivers/p54
++ */
+ static const struct pci_device_id prism54_id_tbl[] = {
+ 	/* Intersil PRISM Duette/Prism GT Wireless LAN adapter */
+ 	{
 -- 
-2.7.4
+2.25.1
 
