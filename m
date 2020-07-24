@@ -2,83 +2,114 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C40722C615
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 Jul 2020 15:15:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 091B422C6E3
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 Jul 2020 15:43:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727109AbgGXNOw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 24 Jul 2020 09:14:52 -0400
-Received: from mail29.static.mailgun.info ([104.130.122.29]:56614 "EHLO
-        mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726753AbgGXNOt (ORCPT
+        id S1726381AbgGXNnY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 24 Jul 2020 09:43:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39732 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726326AbgGXNnX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 24 Jul 2020 09:14:49 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1595596489; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=yk4bZqC752ih63Wy6zaU9RG+MiXqtZvr+rS//nmMLBs=; b=RHR8gkm8YEC1eUxBWrp2sgdrYYc32npp9D7xeYGQZMtMorMOt0kh7sdrzuuOtplSxfX817sm
- Ja12pYXE33ELsadREZoqt4FyfMa52lG3XTKvMnbsIMv5Z8ixKBsqlpDfH/gUiV6F1KJc1iQ8
- 9psB7hAJWBOhrW2DMyzl5P7Umr8=
-X-Mailgun-Sending-Ip: 104.130.122.29
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n13.prod.us-west-2.postgun.com with SMTP id
- 5f1adebaca57a65d47a1adf8 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 24 Jul 2020 13:14:34
- GMT
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id B2909C43391; Fri, 24 Jul 2020 13:14:34 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 373D6C433CB;
-        Fri, 24 Jul 2020 13:14:30 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 373D6C433CB
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Pavel Machek <pavel@ucw.cz>
-Cc:     amitkarwar@gmail.com, ganapathi.bhat@nxp.com,
-        huxinming820@gmail.com, davem@davemloft.net, kuba@kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, trivial@kernel.org
-Subject: Re: [PATCH] slimbus: ngd: simplify error handling
-References: <20200724130658.GA29458@duo.ucw.cz>
-Date:   Fri, 24 Jul 2020 16:14:27 +0300
-In-Reply-To: <20200724130658.GA29458@duo.ucw.cz> (Pavel Machek's message of
-        "Fri, 24 Jul 2020 15:06:58 +0200")
-Message-ID: <87365h5a30.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        Fri, 24 Jul 2020 09:43:23 -0400
+Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com [IPv6:2a00:1450:4864:20::541])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94218C0619D3
+        for <linux-wireless@vger.kernel.org>; Fri, 24 Jul 2020 06:43:23 -0700 (PDT)
+Received: by mail-ed1-x541.google.com with SMTP id d16so7039098edz.12
+        for <linux-wireless@vger.kernel.org>; Fri, 24 Jul 2020 06:43:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=zI9RmphuNB5Op5Sy+Tz6CXNF6y5ajeijEVpHy2PDqwE=;
+        b=b3g5rALrRSIPOlh1kYuQr55V7bHikBt5PHDM1sMcCNEEIxfXNJBHCKpL3Ws2EV8jgQ
+         rT6R4dZKv2yU87s7lMUlvcGri7uUukB+Z49u24dFkt+ChO+dNvuoNpLzwra19MfRIkS6
+         i+uE1KpqUrgZvVXJCk+ZSbGMFQBXElJWG/0qYEMzNEThELRQ15MUfgiPYyLFNQZ9Yg3y
+         cDelIjZxJ4awNpOtzDhBSYpz47pRIOx3umiSr0Yg3rBYoznrMlEL6Ovofn7lsDtUN/9J
+         JZpvYCa2gxb9h3C+55vnov6LJ+QPRLCLLG8lUETopJrx1t5y2smik3IXt/B1V53WH2uk
+         /MLA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=zI9RmphuNB5Op5Sy+Tz6CXNF6y5ajeijEVpHy2PDqwE=;
+        b=a96mSFpan7feR1q7awRO+JEovUoYr7kspzl/q2WBhh372zaPhb4HM6ewJNH4k+Qvau
+         thkuFj2HzABH3rG8GPEtKv/QwlQpPaJD7Hwz96WeN1e7U+IblqYL2PGdsWymP19UKKeN
+         +YAiJrAgBlQxDJ0Qfa8izsVB5XzvQ+ZjAw3ehQJVYJ/fYk9cr5Z4AgxzsqOgL2GSE0RS
+         GP/xW6xBlp1SXQE1VNOhYXXsY9ppaCClRGQrBYHThR2zhot2XPwVco62PytpxZXsECB5
+         YUkGebztKLk5AITC9Mgyf3ch80F5nwht0vmtAnJYRd42Qv/Tdd4XUwwPlB0jBd+0lDpR
+         axHg==
+X-Gm-Message-State: AOAM530jkqIqQ2sTO27eEVvGvTx1D2ZSBMBL9gRhIQp8mXB4gGOcI83y
+        unEjA5CPS30uKqC4jzMw+Rv39amvOYaVOogl9gM=
+X-Google-Smtp-Source: ABdhPJzwEVXNmV8MPoUc33aYU+xhAYl8ljrT09qQJWPNlRhIjBo8Taa3a8pti4/31xLV9LFO57LmCThf4STJQGLsGWc=
+X-Received: by 2002:a05:6402:1659:: with SMTP id s25mr1769451edx.153.1595598202269;
+ Fri, 24 Jul 2020 06:43:22 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <1595586052-16081-1-git-send-email-loic.poulain@linaro.org>
+ <1595586052-16081-4-git-send-email-loic.poulain@linaro.org>
+ <CA+Kvs9nZm+uoRJfjq33s1_nTbPt82NnEKmgYCWk0q5vH+-ca9w@mail.gmail.com> <877dut5a60.fsf@codeaurora.org>
+In-Reply-To: <877dut5a60.fsf@codeaurora.org>
+From:   Ramon Fried <ramon.fried@gmail.com>
+Date:   Fri, 24 Jul 2020 16:43:10 +0300
+Message-ID: <CA+Kvs9mZ=7TtptfKmrapSqvsM=XeNuyUKJ6zbzgBQb9zHZjewA@mail.gmail.com>
+Subject: Re: [PATCH v2 3/6] wcn36xx: Increase number of TX retries
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Loic Poulain <loic.poulain@linaro.org>,
+        wcn36xx@lists.infradead.org, linux-wireless@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Pavel Machek <pavel@ucw.cz> writes:
+Yes. small glitch. sorry.
 
-> Simplify error handling; we already know mwq is NULL.
+
+On Fri, Jul 24, 2020 at 4:12 PM Kalle Valo <kvalo@codeaurora.org> wrote:
 >
-> Signed-off-by: Pavel Machek (CIP) <pavel@denx.de>
+> Ramon Fried <ramon.fried@gmail.com> writes:
 >
-> diff --git a/drivers/slimbus/qcom-ngd-ctrl.c b/drivers/slimbus/qcom-ngd-ctrl.c
-
-I think you sent this to the wrong lists:
-
-$ scripts/get_maintainer.pl drivers/slimbus/qcom-ngd-ctrl.c
-Andy Gross <agross@kernel.org> (maintainer:ARM/QUALCOMM SUPPORT)
-Bjorn Andersson <bjorn.andersson@linaro.org> (maintainer:ARM/QUALCOMM SUPPORT)
-Srinivas Kandagatla <srinivas.kandagatla@linaro.org> (maintainer:SERIAL LOW-POWER INTER-CHIP MEDIA BUS (SLIMbus))
-linux-arm-msm@vger.kernel.org (open list:ARM/QUALCOMM SUPPORT)
-alsa-devel@alsa-project.org (moderated list:SERIAL LOW-POWER INTER-CHIP MEDIA BUS (SLIMbus))
-linux-kernel@vger.kernel.org (open list)
-
--- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+> > On Fri, Jul 24, 2020 at 1:15 PM Loic Poulain <loic.poulain@linaro.org>
+> > wrote:
+> >
+> >     Increase the short/long retry limit to 15 in order to impove TX
+> >     robustness in noisy/busy environment. 15 is the default value
+> >     defined in the downstream driver. Observed number of ack timeout
+> >     is reduced with this change.
+> >
+> >     Signed-off-by: Loic Poulain <loic.poulain@linaro.org>
+> >     ---
+> >     drivers/net/wireless/ath/wcn36xx/smd.c | 4 ++--
+> >     1 file changed, 2 insertions(+), 2 deletions(-)
+> >
+> >     diff --git a/drivers/net/wireless/ath/wcn36xx/smd.c
+> >     b/drivers/net/wireless/ath/wcn36xx/smd.c
+> >     index 59f9f53..908cc6c 100644
+> >     --- a/drivers/net/wireless/ath/wcn36xx/smd.c
+> >     +++ b/drivers/net/wireless/ath/wcn36xx/smd.c
+> >     @@ -45,8 +45,8 @@ static struct wcn36xx_cfg_val wcn36xx_cfg_vals[]
+> >     = {
+> >     WCN36XX_CFG_VAL(MAX_MEDIUM_TIME, 6000),
+> >     WCN36XX_CFG_VAL(MAX_MPDUS_IN_AMPDU, 64),
+> >     WCN36XX_CFG_VAL(RTS_THRESHOLD, 2347),
+> >     - WCN36XX_CFG_VAL(SHORT_RETRY_LIMIT, 6),
+> >     - WCN36XX_CFG_VAL(LONG_RETRY_LIMIT, 6),
+> >     + WCN36XX_CFG_VAL(SHORT_RETRY_LIMIT, 15),
+> >     + WCN36XX_CFG_VAL(LONG_RETRY_LIMIT, 15),
+> >     WCN36XX_CFG_VAL(FRAGMENTATION_THRESHOLD, 8000),
+> >     WCN36XX_CFG_VAL(DYNAMIC_THRESHOLD_ZERO, 5),
+> >     WCN36XX_CFG_VAL(DYNAMIC_THRESHOLD_ONE, 10),
+> >     --
+> >     2.7.4
+> >
+> >
+> >
+> >
+> > These set of patches fixed my connectivity issues with TP-Link DECO
+> > routers.
+> > Acked-By: Ramon Fried <rfried.dev@gmail.com>
+>
+> HTML emails are dropped by the list, please use text/plain only.
+>
+> --
+> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
