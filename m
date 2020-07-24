@@ -2,58 +2,58 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F36B22C2E5
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 Jul 2020 12:15:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 55BC622C2E6
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 Jul 2020 12:15:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726997AbgGXKPb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 24 Jul 2020 06:15:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35554 "EHLO
+        id S1727811AbgGXKPe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 24 Jul 2020 06:15:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35562 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726810AbgGXKPb (ORCPT
+        with ESMTP id S1726810AbgGXKPd (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 24 Jul 2020 06:15:31 -0400
-Received: from mail-wm1-x342.google.com (mail-wm1-x342.google.com [IPv6:2a00:1450:4864:20::342])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0442BC0619D3
-        for <linux-wireless@vger.kernel.org>; Fri, 24 Jul 2020 03:15:31 -0700 (PDT)
-Received: by mail-wm1-x342.google.com with SMTP id a6so8274782wmm.0
-        for <linux-wireless@vger.kernel.org>; Fri, 24 Jul 2020 03:15:30 -0700 (PDT)
+        Fri, 24 Jul 2020 06:15:33 -0400
+Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81D22C0619D3
+        for <linux-wireless@vger.kernel.org>; Fri, 24 Jul 2020 03:15:32 -0700 (PDT)
+Received: by mail-wr1-x442.google.com with SMTP id f7so7815442wrw.1
+        for <linux-wireless@vger.kernel.org>; Fri, 24 Jul 2020 03:15:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=AC9PhQt3qPoQSVZrvVZhCbJsw+v4/9rtWxCmdq4xQP4=;
-        b=FMoHIRGi20EPBYQiqwOq+4yYuRwsoZy00vuFU/NV4bwSVYTWKjDbVv8+wo68eZqMnt
-         4ydzEno7hr2RZKRgsI7bbUojI0Ohs1EMzkycOX+zxDMC5eG5cWSy5AHON8eXNFLbNIN/
-         mebq+PcEEI9TzJNOCwvOq8QIFw3jQbkZZuOlUKBpQ9EBWAmXsw+eB7Oj+xyDaNIBlgZK
-         80idUukrtsWUO4L5az7mdIOr/GDqf7eaeJe66czkccW46IhNV3EPQIA02G80UJmvBoZI
-         1Gc2dk6PxxTIDWZjgzCldu6QStSYqbW4Ts8XtICZMvgwPuzoKMNB6nDU7ndjmLj2w+xm
-         gFTg==
+        bh=odT6kLPnDXapaMumnxiChGk1KiPid9TEGBDoPxHNhxg=;
+        b=Bc/gd/nq0VwLndk+QoEqDqgBXC7Pk14K+xy9g+dTDDNYvjgzYd21ZMN3Cs8/IH7URm
+         /E6wavmaBVnCw4IcUUyjltvGnG2GFuqrmsixzhdK9wp9LOv9xj1Q2bh8vIfFsfQ3ohc5
+         5KccI+UNzHswiLpx2vajlqRR7WlbT1QdZXQ6yEjSgxjo4gkxEFDtdm9NyD6ck+LDxdSx
+         EOmxMWXsPLVZ7zGs3TiZOcT6zakd17xmWtlHmFnxw+RLoEXUvneN381R8Z73fDba3W2G
+         LURclqc0jC+tXDDQUr7WqONisGoLuVpRXq5oMB+eS/7V3zBBGBB4QghV4/ULaACjocxJ
+         aeFg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=AC9PhQt3qPoQSVZrvVZhCbJsw+v4/9rtWxCmdq4xQP4=;
-        b=tEDlilHaABdz3H6Fqc+NIk6Q2l6lvJxRxf09a1iriZtgbnPY3SF2d1EyN64UeBVCBt
-         DBP9hNraNPkzxT5Ds948SX72oTq+C8FC1br5b65k1aUKqu+s04AvIOtZeMryQxZnNorC
-         rQlXSTBt+RYn2gQdUjLg1hirr8zRWE5fQkrRlLbybxb9QXiQyjo/k7ZFhj4fFQRK8m8q
-         PXVg8h3VukYW1FAOP6Q5AoEr80EqS8tCbFFP3fJUu2wHtJ1U5FrBQ2fSLdOTBTBk/Cl5
-         6RPA+b8iyP2xAvwPJgqerVqejTWZbnJSM3Tu7y/NFrP5rQBxlZr1Qy2uaNj70Ax+PSVe
-         nDlw==
-X-Gm-Message-State: AOAM533IedcS8PtH2DJMCv5T34v/6v5TGfovxxc7lCI6y4R3+TypcK1Q
-        5IEFDmoeso5Djz+v0Ly9oCWeCSX8a+U=
-X-Google-Smtp-Source: ABdhPJwTCUHBI2Wl0j+35e3XAsLcfjR8WxFiiuN/XpeFbr1NkEfVKRBNQdf5GWA/6ZUpH5yZbh2wyA==
-X-Received: by 2002:a1c:9d53:: with SMTP id g80mr2089486wme.70.1595585729629;
-        Fri, 24 Jul 2020 03:15:29 -0700 (PDT)
+        bh=odT6kLPnDXapaMumnxiChGk1KiPid9TEGBDoPxHNhxg=;
+        b=EoutXtnW/4f7n/8l6GcYQ1ikBCECUjqzNWnziCdVNND/cQ2peNG/mcZgAvbALvr3Ds
+         NN9f664qPCD0hfq/6dBmLtEW5+zCwoIG/bpCWgcdfe5h59JrOAMhocb1uE58yvqVYaA3
+         OPWnhEP2oqm3YPRNDQ83SoQInKKOpUzUhGTIaQe16Tcjn1+HJxJR6EjEklihh9Lvzcru
+         0aabl6YsEk9L1Rj83LSbxi6lg1MZyYdGis/GXXnz3ztJclLlwSb5FwCsCI6Xr0BNiAy2
+         Zo9nILwkvL/rmGtJrrFxesOWJLiyT45lppZ6vQcL8AZY4raa4z2KaKIkcR00t4BjRB1l
+         xGfg==
+X-Gm-Message-State: AOAM533gW6fbTsVNmcLe9HA8m8kmbbmrJnM1Gx3vXCO0269/qyyNk1xq
+        ACoBtvDz2FEhYiP1wVLbsMidMQ==
+X-Google-Smtp-Source: ABdhPJyMpBFgYDxS/JG0ZvPGsZ4v20x8hZPVO3GuIH+J28idt43v1QQVuJD1TWPMRQd1dmNvx77Hig==
+X-Received: by 2002:a05:6000:150:: with SMTP id r16mr7770858wrx.63.1595585730938;
+        Fri, 24 Jul 2020 03:15:30 -0700 (PDT)
 Received: from localhost.localdomain ([88.122.66.28])
-        by smtp.gmail.com with ESMTPSA id d18sm774714wrj.8.2020.07.24.03.15.28
+        by smtp.gmail.com with ESMTPSA id d18sm774714wrj.8.2020.07.24.03.15.30
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 24 Jul 2020 03:15:29 -0700 (PDT)
+        Fri, 24 Jul 2020 03:15:30 -0700 (PDT)
 From:   Loic Poulain <loic.poulain@linaro.org>
 To:     kvalo@codeaurora.org
 Cc:     wcn36xx@lists.infradead.org, linux-wireless@vger.kernel.org,
         Loic Poulain <loic.poulain@linaro.org>
-Subject: [PATCH v2 1/6] wcn36xx: Fix multiple AMPDU sessions support
-Date:   Fri, 24 Jul 2020 12:20:47 +0200
-Message-Id: <1595586052-16081-2-git-send-email-loic.poulain@linaro.org>
+Subject: [PATCH v2 2/6] wcn36xx: Add TX ack support
+Date:   Fri, 24 Jul 2020 12:20:48 +0200
+Message-Id: <1595586052-16081-3-git-send-email-loic.poulain@linaro.org>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1595586052-16081-1-git-send-email-loic.poulain@linaro.org>
 References: <1595586052-16081-1-git-send-email-loic.poulain@linaro.org>
@@ -62,170 +62,228 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Several AMPDU sessions can be started, e.g. for different TIDs.
-Currently the driver does not take care of the session ID when
-requesting block-ack (statically set to 0), which leads to never
-block-acked packet with sessions other than 0.
+The controller is capable of reporting TX indication which can be used
+to report TX ack when IEEE80211_TX_CTL_REQ_TX_STATUS is set.
+The support was only partially implemented.
 
-Fix this by saving the session id when creating the ba session and
-use it in subsequent ba operations.
+The firmware can be configured for reporting event when a packet is
+acked, without specifying which packet though. In order to send a
+packet flagged with TX status callback, we need to stop the queue,
+submit the packet and wait for the firmware ack event. Then the queue
+can be restarted and mac80211 status callback called.
 
-This issue can be reproduced with iperf in two steps (tid 0 strem
-then tid 6 stream).
-
-1.0 iperf -s                                # wcn36xx side
-1.1 iperf -c ${IP_ADDR}                     # host side
-
-Then
-
-2.0 iperf -s -u -S 0xC0                     # wcn36xx side
-2.1 iperf -c ${IP_ADDR} -u -S 0xC0 -l 2000  # host side
+In case the packet is not acked, no ack event will be received,
+therefore a timeout mechanism is introduced to restart the queue
+and call the status cb in case no event is received after a 100ms.
 
 Signed-off-by: Loic Poulain <loic.poulain@linaro.org>
 ---
- drivers/net/wireless/ath/wcn36xx/main.c | 10 ++++++----
- drivers/net/wireless/ath/wcn36xx/smd.c  | 32 ++++++++++++++++++++++++++------
- drivers/net/wireless/ath/wcn36xx/smd.h  |  4 ++--
- 3 files changed, 34 insertions(+), 12 deletions(-)
+ drivers/net/wireless/ath/wcn36xx/dxe.c     | 57 ++++++++++++++++++++++++++++--
+ drivers/net/wireless/ath/wcn36xx/main.c    |  1 +
+ drivers/net/wireless/ath/wcn36xx/txrx.c    | 20 +++++++----
+ drivers/net/wireless/ath/wcn36xx/wcn36xx.h |  1 +
+ 4 files changed, 70 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/wcn36xx/main.c b/drivers/net/wireless/ath/wcn36xx/main.c
-index 702b689..af32bd6 100644
---- a/drivers/net/wireless/ath/wcn36xx/main.c
-+++ b/drivers/net/wireless/ath/wcn36xx/main.c
-@@ -1083,6 +1083,7 @@ static int wcn36xx_ampdu_action(struct ieee80211_hw *hw,
- 	u16 tid = params->tid;
- 	u16 *ssn = &params->ssn;
- 	int ret = 0;
-+	u8 session;
+diff --git a/drivers/net/wireless/ath/wcn36xx/dxe.c b/drivers/net/wireless/ath/wcn36xx/dxe.c
+index bab30f7..6307923 100644
+--- a/drivers/net/wireless/ath/wcn36xx/dxe.c
++++ b/drivers/net/wireless/ath/wcn36xx/dxe.c
+@@ -334,6 +334,7 @@ void wcn36xx_dxe_tx_ack_ind(struct wcn36xx *wcn, u32 status)
+ 	spin_lock_irqsave(&wcn->dxe_lock, flags);
+ 	skb = wcn->tx_ack_skb;
+ 	wcn->tx_ack_skb = NULL;
++	del_timer(&wcn->tx_ack_timer);
+ 	spin_unlock_irqrestore(&wcn->dxe_lock, flags);
  
- 	wcn36xx_dbg(WCN36XX_DBG_MAC, "mac ampdu action action %d tid %d\n",
- 		    action, tid);
-@@ -1092,10 +1093,11 @@ static int wcn36xx_ampdu_action(struct ieee80211_hw *hw,
- 	switch (action) {
- 	case IEEE80211_AMPDU_RX_START:
- 		sta_priv->tid = tid;
--		wcn36xx_smd_add_ba_session(wcn, sta, tid, ssn, 0,
--			get_sta_index(vif, sta_priv));
--		wcn36xx_smd_add_ba(wcn);
--		wcn36xx_smd_trigger_ba(wcn, get_sta_index(vif, sta_priv));
-+		session = wcn36xx_smd_add_ba_session(wcn, sta, tid, ssn, 0,
-+						     get_sta_index(vif, sta_priv));
-+		wcn36xx_smd_add_ba(wcn, session);
-+		wcn36xx_smd_trigger_ba(wcn, get_sta_index(vif, sta_priv), tid,
-+				       session);
- 		break;
- 	case IEEE80211_AMPDU_RX_STOP:
- 		wcn36xx_smd_del_ba(wcn, tid, get_sta_index(vif, sta_priv));
-diff --git a/drivers/net/wireless/ath/wcn36xx/smd.c b/drivers/net/wireless/ath/wcn36xx/smd.c
-index 77269ac..59f9f53 100644
---- a/drivers/net/wireless/ath/wcn36xx/smd.c
-+++ b/drivers/net/wireless/ath/wcn36xx/smd.c
-@@ -2102,6 +2102,22 @@ int wcn36xx_smd_feature_caps_exchange(struct wcn36xx *wcn)
- 	return ret;
+ 	if (!skb) {
+@@ -345,6 +346,8 @@ void wcn36xx_dxe_tx_ack_ind(struct wcn36xx *wcn, u32 status)
+ 
+ 	if (status == 1)
+ 		info->flags |= IEEE80211_TX_STAT_ACK;
++	else
++		info->flags &= ~IEEE80211_TX_STAT_ACK;
+ 
+ 	wcn36xx_dbg(WCN36XX_DBG_DXE, "dxe tx ack status: %d\n", status);
+ 
+@@ -352,6 +355,32 @@ void wcn36xx_dxe_tx_ack_ind(struct wcn36xx *wcn, u32 status)
+ 	ieee80211_wake_queues(wcn->hw);
  }
  
-+static int wcn36xx_smd_add_ba_session_rsp(void *buf, int len, u8 *session)
++static void wcn36xx_dxe_tx_timer(struct timer_list *t)
 +{
-+	struct wcn36xx_hal_add_ba_session_rsp_msg *rsp;
++	struct wcn36xx *wcn = from_timer(wcn, t, tx_ack_timer);
++	struct ieee80211_tx_info *info;
++	unsigned long flags;
++	struct sk_buff *skb;
 +
-+	if (len < sizeof(*rsp))
-+		return -EINVAL;
++	/* TX Timeout */
++	wcn36xx_dbg(WCN36XX_DBG_DXE, "TX timeout\n");
 +
-+	rsp = (struct wcn36xx_hal_add_ba_session_rsp_msg *)buf;
-+	if (rsp->status != WCN36XX_FW_MSG_RESULT_SUCCESS)
-+		return rsp->status;
++	spin_lock_irqsave(&wcn->dxe_lock, flags);
++	skb = wcn->tx_ack_skb;
++	wcn->tx_ack_skb = NULL;
++	spin_unlock_irqrestore(&wcn->dxe_lock, flags);
 +
-+	*session = rsp->ba_session_id;
++	if (!skb)
++		return;
 +
-+	return 0;
++	info = IEEE80211_SKB_CB(skb);
++	info->flags &= ~IEEE80211_TX_STAT_ACK;
++	info->flags &= ~IEEE80211_TX_STAT_NOACK_TRANSMITTED;
++
++	ieee80211_tx_status_irqsafe(wcn->hw, skb);
++	ieee80211_wake_queues(wcn->hw);
 +}
 +
- int wcn36xx_smd_add_ba_session(struct wcn36xx *wcn,
- 		struct ieee80211_sta *sta,
- 		u16 tid,
-@@ -2110,6 +2126,7 @@ int wcn36xx_smd_add_ba_session(struct wcn36xx *wcn,
- 		u8 sta_index)
+ static void reap_tx_dxes(struct wcn36xx *wcn, struct wcn36xx_dxe_ch *ch)
  {
- 	struct wcn36xx_hal_add_ba_session_req_msg msg_body;
-+	u8 session_id;
- 	int ret;
+ 	struct wcn36xx_dxe_ctl *ctl;
+@@ -397,6 +426,7 @@ static irqreturn_t wcn36xx_irq_tx_complete(int irq, void *dev)
+ {
+ 	struct wcn36xx *wcn = (struct wcn36xx *)dev;
+ 	int int_src, int_reason;
++	bool transmitted = false;
  
- 	mutex_lock(&wcn->hal_mutex);
-@@ -2135,17 +2152,20 @@ int wcn36xx_smd_add_ba_session(struct wcn36xx *wcn,
- 		wcn36xx_err("Sending hal_add_ba_session failed\n");
- 		goto out;
+ 	wcn36xx_dxe_read_register(wcn, WCN36XX_DXE_INT_SRC_RAW_REG, &int_src);
+ 
+@@ -434,8 +464,10 @@ static irqreturn_t wcn36xx_irq_tx_complete(int irq, void *dev)
+ 			    int_reason);
+ 
+ 		if (int_reason & (WCN36XX_CH_STAT_INT_DONE_MASK |
+-				  WCN36XX_CH_STAT_INT_ED_MASK))
++				  WCN36XX_CH_STAT_INT_ED_MASK)) {
+ 			reap_tx_dxes(wcn, &wcn->dxe_tx_h_ch);
++			transmitted = true;
++		}
  	}
--	ret = wcn36xx_smd_rsp_status_check(wcn->hal_buf, wcn->hal_rsp_len);
-+	ret = wcn36xx_smd_add_ba_session_rsp(wcn->hal_buf, wcn->hal_rsp_len,
-+					     &session_id);
- 	if (ret) {
- 		wcn36xx_err("hal_add_ba_session response failed err=%d\n", ret);
- 		goto out;
- 	}
+ 
+ 	if (int_src & WCN36XX_INT_MASK_CHAN_TX_L) {
+@@ -473,9 +505,27 @@ static irqreturn_t wcn36xx_irq_tx_complete(int irq, void *dev)
+ 			    int_reason);
+ 
+ 		if (int_reason & (WCN36XX_CH_STAT_INT_DONE_MASK |
+-				  WCN36XX_CH_STAT_INT_ED_MASK))
++				  WCN36XX_CH_STAT_INT_ED_MASK)) {
+ 			reap_tx_dxes(wcn, &wcn->dxe_tx_l_ch);
++			transmitted = true;
++		}
++	}
 +
-+	ret = session_id;
- out:
- 	mutex_unlock(&wcn->hal_mutex);
- 	return ret;
++	spin_lock(&wcn->dxe_lock);
++	if (wcn->tx_ack_skb && transmitted) {
++		struct ieee80211_tx_info *info = IEEE80211_SKB_CB(wcn->tx_ack_skb);
++
++		/* TX complete, no need to wait for 802.11 ack indication */
++		if (info->flags & IEEE80211_TX_CTL_REQ_TX_STATUS &&
++		    info->flags & IEEE80211_TX_CTL_NO_ACK) {
++			info->flags |= IEEE80211_TX_STAT_NOACK_TRANSMITTED;
++			del_timer(&wcn->tx_ack_timer);
++			ieee80211_tx_status_irqsafe(wcn->hw, wcn->tx_ack_skb);
++			wcn->tx_ack_skb = NULL;
++			ieee80211_wake_queues(wcn->hw);
++		}
+ 	}
++	spin_unlock(&wcn->dxe_lock);
+ 
+ 	return IRQ_HANDLED;
  }
+@@ -916,6 +966,8 @@ int wcn36xx_dxe_init(struct wcn36xx *wcn)
+ 	if (ret < 0)
+ 		goto out_err_irq;
  
--int wcn36xx_smd_add_ba(struct wcn36xx *wcn)
-+int wcn36xx_smd_add_ba(struct wcn36xx *wcn, u8 session_id)
++	timer_setup(&wcn->tx_ack_timer, wcn36xx_dxe_tx_timer, 0);
++
+ 	return 0;
+ 
+ out_err_irq:
+@@ -934,6 +986,7 @@ void wcn36xx_dxe_deinit(struct wcn36xx *wcn)
  {
- 	struct wcn36xx_hal_add_ba_req_msg msg_body;
- 	int ret;
-@@ -2153,7 +2173,7 @@ int wcn36xx_smd_add_ba(struct wcn36xx *wcn)
- 	mutex_lock(&wcn->hal_mutex);
- 	INIT_HAL_MSG(msg_body, WCN36XX_HAL_ADD_BA_REQ);
+ 	free_irq(wcn->tx_irq, wcn);
+ 	free_irq(wcn->rx_irq, wcn);
++	del_timer(&wcn->tx_ack_timer);
  
--	msg_body.session_id = 0;
-+	msg_body.session_id = session_id;
- 	msg_body.win_size = WCN36XX_AGGR_BUFFER_SIZE;
+ 	if (wcn->tx_ack_skb) {
+ 		ieee80211_tx_status_irqsafe(wcn->hw, wcn->tx_ack_skb);
+diff --git a/drivers/net/wireless/ath/wcn36xx/main.c b/drivers/net/wireless/ath/wcn36xx/main.c
+index af32bd6..c19648f 100644
+--- a/drivers/net/wireless/ath/wcn36xx/main.c
++++ b/drivers/net/wireless/ath/wcn36xx/main.c
+@@ -1175,6 +1175,7 @@ static int wcn36xx_init_ieee80211(struct wcn36xx *wcn)
+ 	ieee80211_hw_set(wcn->hw, SIGNAL_DBM);
+ 	ieee80211_hw_set(wcn->hw, HAS_RATE_CONTROL);
+ 	ieee80211_hw_set(wcn->hw, SINGLE_SCAN_ON_ALL_BANDS);
++	ieee80211_hw_set(wcn->hw, REPORTS_TX_ACK_STATUS);
  
- 	PREPARE_HAL_BUF(wcn->hal_buf, msg_body);
-@@ -2212,7 +2232,7 @@ static int wcn36xx_smd_trigger_ba_rsp(void *buf, int len)
- 	return rsp->status;
- }
+ 	wcn->hw->wiphy->interface_modes = BIT(NL80211_IFTYPE_STATION) |
+ 		BIT(NL80211_IFTYPE_AP) |
+diff --git a/drivers/net/wireless/ath/wcn36xx/txrx.c b/drivers/net/wireless/ath/wcn36xx/txrx.c
+index a690237..274cf58 100644
+--- a/drivers/net/wireless/ath/wcn36xx/txrx.c
++++ b/drivers/net/wireless/ath/wcn36xx/txrx.c
+@@ -191,9 +191,10 @@ static void wcn36xx_set_tx_data(struct wcn36xx_tx_bd *bd,
+ 		bd->dpu_sign = __vif_priv->self_ucast_dpu_sign;
+ 	}
  
--int wcn36xx_smd_trigger_ba(struct wcn36xx *wcn, u8 sta_index)
-+int wcn36xx_smd_trigger_ba(struct wcn36xx *wcn, u8 sta_index, u16 tid, u8 session_id)
- {
- 	struct wcn36xx_hal_trigger_ba_req_msg msg_body;
- 	struct wcn36xx_hal_trigger_ba_req_candidate *candidate;
-@@ -2221,7 +2241,7 @@ int wcn36xx_smd_trigger_ba(struct wcn36xx *wcn, u8 sta_index)
- 	mutex_lock(&wcn->hal_mutex);
- 	INIT_HAL_MSG(msg_body, WCN36XX_HAL_TRIGGER_BA_REQ);
+-	if (ieee80211_is_nullfunc(hdr->frame_control) ||
+-	   (sta_priv && !sta_priv->is_data_encrypted))
++	if (ieee80211_is_any_nullfunc(hdr->frame_control) ||
++	   (sta_priv && !sta_priv->is_data_encrypted)) {
+ 		bd->dpu_ne = 1;
++	}
  
--	msg_body.session_id = 0;
-+	msg_body.session_id = session_id;
- 	msg_body.candidate_cnt = 1;
- 	msg_body.header.len += sizeof(*candidate);
- 	PREPARE_HAL_BUF(wcn->hal_buf, msg_body);
-@@ -2229,7 +2249,7 @@ int wcn36xx_smd_trigger_ba(struct wcn36xx *wcn, u8 sta_index)
- 	candidate = (struct wcn36xx_hal_trigger_ba_req_candidate *)
- 		(wcn->hal_buf + sizeof(msg_body));
- 	candidate->sta_index = sta_index;
--	candidate->tid_bitmap = 1;
-+	candidate->tid_bitmap = 1 << tid;
+ 	if (bcast) {
+ 		bd->ub = 1;
+@@ -287,9 +288,9 @@ int wcn36xx_start_tx(struct wcn36xx *wcn,
  
- 	ret = wcn36xx_smd_send_and_wait(wcn, msg_body.header.len);
- 	if (ret) {
-diff --git a/drivers/net/wireless/ath/wcn36xx/smd.h b/drivers/net/wireless/ath/wcn36xx/smd.h
-index ff15df8..68c59df 100644
---- a/drivers/net/wireless/ath/wcn36xx/smd.h
-+++ b/drivers/net/wireless/ath/wcn36xx/smd.h
-@@ -132,9 +132,9 @@ int wcn36xx_smd_add_ba_session(struct wcn36xx *wcn,
- 		u16 *ssn,
- 		u8 direction,
- 		u8 sta_index);
--int wcn36xx_smd_add_ba(struct wcn36xx *wcn);
-+int wcn36xx_smd_add_ba(struct wcn36xx *wcn, u8 session_id);
- int wcn36xx_smd_del_ba(struct wcn36xx *wcn, u16 tid, u8 sta_index);
--int wcn36xx_smd_trigger_ba(struct wcn36xx *wcn, u8 sta_index);
-+int wcn36xx_smd_trigger_ba(struct wcn36xx *wcn, u8 sta_index, u16 tid, u8 session_id);
+ 	bd.dpu_rf = WCN36XX_BMU_WQ_TX;
  
- int wcn36xx_smd_update_cfg(struct wcn36xx *wcn, u32 cfg_id, u32 value);
+-	bd.tx_comp = !!(info->flags & IEEE80211_TX_CTL_REQ_TX_STATUS);
+-	if (bd.tx_comp) {
++	if (info->flags & IEEE80211_TX_CTL_REQ_TX_STATUS) {
+ 		wcn36xx_dbg(WCN36XX_DBG_DXE, "TX_ACK status requested\n");
++
+ 		spin_lock_irqsave(&wcn->dxe_lock, flags);
+ 		if (wcn->tx_ack_skb) {
+ 			spin_unlock_irqrestore(&wcn->dxe_lock, flags);
+@@ -302,10 +303,15 @@ int wcn36xx_start_tx(struct wcn36xx *wcn,
  
+ 		/* Only one at a time is supported by fw. Stop the TX queues
+ 		 * until the ack status gets back.
+-		 *
+-		 * TODO: Add watchdog in case FW does not answer
+ 		 */
+ 		ieee80211_stop_queues(wcn->hw);
++
++		/* TX watchdog if no TX irq or ack indication received  */
++		mod_timer(&wcn->tx_ack_timer, jiffies + HZ / 10);
++
++		/* Request ack indication from the firmware */
++		if (!(info->flags & IEEE80211_TX_CTL_NO_ACK))
++			bd.tx_comp = 1;
+ 	}
+ 
+ 	/* Data frames served first*/
+@@ -319,7 +325,7 @@ int wcn36xx_start_tx(struct wcn36xx *wcn,
+ 	bd.tx_bd_sign = 0xbdbdbdbd;
+ 
+ 	ret = wcn36xx_dxe_tx_frame(wcn, vif_priv, &bd, skb, is_low);
+-	if (ret && bd.tx_comp) {
++	if (ret && (info->flags & IEEE80211_TX_CTL_REQ_TX_STATUS)) {
+ 		/* If the skb has not been transmitted,
+ 		 * don't keep a reference to it.
+ 		 */
+diff --git a/drivers/net/wireless/ath/wcn36xx/wcn36xx.h b/drivers/net/wireless/ath/wcn36xx/wcn36xx.h
+index a58f313..2d89849 100644
+--- a/drivers/net/wireless/ath/wcn36xx/wcn36xx.h
++++ b/drivers/net/wireless/ath/wcn36xx/wcn36xx.h
+@@ -245,6 +245,7 @@ struct wcn36xx {
+ 	struct wcn36xx_dxe_mem_pool data_mem_pool;
+ 
+ 	struct sk_buff		*tx_ack_skb;
++	struct timer_list	tx_ack_timer;
+ 
+ 	/* RF module */
+ 	unsigned		rf_id;
 -- 
 2.7.4
 
