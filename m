@@ -2,109 +2,82 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C95D22C742
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 Jul 2020 16:03:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A3E3F22C8D4
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 Jul 2020 17:14:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726782AbgGXODu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 24 Jul 2020 10:03:50 -0400
-Received: from mail29.static.mailgun.info ([104.130.122.29]:40491 "EHLO
-        mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726503AbgGXODt (ORCPT
+        id S1726366AbgGXPOe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 24 Jul 2020 11:14:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53978 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726317AbgGXPOe (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 24 Jul 2020 10:03:49 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1595599428; h=Date: Message-Id: Cc: To: Subject: From:
- Content-Transfer-Encoding: MIME-Version: Content-Type: Sender;
- bh=Tu15BLUwKvHQDTbj5GU8pQlCzoGF12QBNrYYHMnPAuQ=; b=pd+tFesJeVPrRpJ/uBMMltFVYQSuw5LLWA4ce2Udr+yZ6+gTQziS7S7HN/DsvKwF7nqg+IAD
- fyohjUtPd5xsmkjmzKRfCsXWmos0eYN0qrQi0kdXRp61aGkPqgH/WuAPoaAzHsydF2NSf20j
- ZCF6TNLRfeLm48tLrJTRA9bHFrE=
-X-Mailgun-Sending-Ip: 104.130.122.29
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n05.prod.us-west-2.postgun.com with SMTP id
- 5f1aea17845c4d05a3d01c3a (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 24 Jul 2020 14:03:03
- GMT
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id D143AC433CB; Fri, 24 Jul 2020 14:03:02 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
-        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 0296CC433C6;
-        Fri, 24 Jul 2020 14:03:01 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 0296CC433C6
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        Fri, 24 Jul 2020 11:14:34 -0400
+Received: from mail-il1-x143.google.com (mail-il1-x143.google.com [IPv6:2607:f8b0:4864:20::143])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63F44C0619D3
+        for <linux-wireless@vger.kernel.org>; Fri, 24 Jul 2020 08:14:34 -0700 (PDT)
+Received: by mail-il1-x143.google.com with SMTP id j9so4104155ilc.11
+        for <linux-wireless@vger.kernel.org>; Fri, 24 Jul 2020 08:14:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=7x64NxS2Ng+Vnu2BFxQPttshlPL+T/4eBilVO98CwkU=;
+        b=FDj10tId39zgZRNDDoWBXuCZvE6UqPrtJs2wNUSagiM0oXQAFwOwbhv3oOzzpZrEiZ
+         6tiq57auJLgUoYwHhd15Nh2XAHRfzI8AAdCNOXeAMyOwdIPcVWmTjMON6DvEFNbwOwPp
+         lwP8LoO3QP7cmvUH5SpUJGCdzBEH4aEC9Yf2svixFzoQF463uVjjserYPRqt82Se7Yu/
+         9iIAAMJGoSMAaEWZv/27wwUyn7i/YiLMxMasMeBkXmk80lhQcHYFU4LR2CwUR8K7I9zU
+         upusbcFp2MoydYLlzziiQc9/2nooqHsPFxMWRpG8JnSt5rZDRcicFiG69BbXTt9Q2X/p
+         ulHA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=7x64NxS2Ng+Vnu2BFxQPttshlPL+T/4eBilVO98CwkU=;
+        b=ucR0Tqp+L+5iY60b6vb8/kmBPIxz92fQx6TH82Wqx8VdcQClBxez8K00RECFoJk772
+         J8rvlXnP9eB+rio0Zi2hFmHJ7QMMeIH/52mySn1yu27arLqcEqvLznPNJRIO75meKegl
+         QZZ31uTIlCvvKvX88ihWWKqlTZPej9iIqZTIGVc0Jo3vZWafxpDfR9KtBoRCO0GUDUYU
+         wDODq3GkFhA1+YIV0IpEk5AoWk4ehMNxMYsVPbOyZHj4SM8yHqts/A9N+bpljNbE+R9l
+         ww3dPikyd8WYSz79US91oO9uIhi3h293Ybt4DROrzJqqtNqfb6B4lacfFwaFN0zBXTTo
+         /RhQ==
+X-Gm-Message-State: AOAM531gJP6wQcxGoYdkVJ4tj00hWf+IvSImvmTv9jk3L5oQqB+F2LMm
+        5uj+i381Sb+XzoYvvAEZpFKRFYqzOWKjqnkOflk=
+X-Google-Smtp-Source: ABdhPJx6PtGkCwL58CgSY0M1BazM4rxL4wvZSw23oDxQ805aU5YCeEujKKaJOBtoV3L/azFh8Lo2ZFjv8qoolRTZXIY=
+X-Received: by 2002:a92:4802:: with SMTP id v2mr10245042ila.32.1595603673516;
+ Fri, 24 Jul 2020 08:14:33 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From:   Kalle Valo <kvalo@codeaurora.org>
-Subject: pull-request: wireless-drivers-2020-07-24
-To:     netdev@vger.kernel.org
-Cc:     linux-wireless@vger.kernel.org
-Message-Id: <20200724140302.D143AC433CB@smtp.codeaurora.org>
-Date:   Fri, 24 Jul 2020 14:03:02 +0000 (UTC)
+Received: by 2002:a6b:14c5:0:0:0:0:0 with HTTP; Fri, 24 Jul 2020 08:14:32
+ -0700 (PDT)
+Reply-To: miss.aminaibrahim@gmail.com
+From:   "miss.amina ibrahim" <lakiahmed030@gmail.com>
+Date:   Fri, 24 Jul 2020 16:14:32 +0100
+Message-ID: <CAOikZvs+gbgG7K71EFxwk0kTjWLGscYKeQzV0i7CgU5m77E2wA@mail.gmail.com>
+Subject: URGENT RESPONSE
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+My Name is Miss Amina Ibrahim from Libya, I am 23 years old, I am in
+St.Christopher's Parish for refugee in Burkina Faso under United
+Nations High commission for Refugee, I lost my parents in the recent
+war in Libya, right now am in Burkina Faso, please save my life i am
+in danger need your help in transferring my inheritance my father left
+behind for me in a Bank in Burkina Faso here, I have every document
+for the transfer, all I need is a foreigner who will stand as the
+foreign partner to my father and beneficiary of the fund. The money
+deposited in the Bank was US10.5 MILLION UNITED STATES DOLLAR) with 15
+kilo Gold I have confirmed from the bank in Burkina Faso where the
+Gold was deposited.
 
-here's a pull request to net tree, more info below. Please let me know if there
-are any problems.
+Please I just need this fund to be transfer to your account so that I
+will come over to your country and complete my education as you know
+that my country have been in deep crisis due to the war in Libya and I
+cannot go back there again because I have nobody again all of my
+family were killed in the war.
 
-Kalle
+Please read this proposal as urgent and get to me as well.
 
-The following changes since commit dc7bd30b97aac8a97eccef0ffe31f6cefb6e2c3e:
+Yours Faithfully,
 
-  mt76: mt7615: fix EEPROM buffer size (2020-06-23 11:43:41 +0300)
-
-are available in the git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers.git tags/wireless-drivers-2020-07-24
-
-for you to fetch changes up to 1cfd3426ef989b83fa6176490a38777057e57f6c:
-
-  ath10k: Fix NULL pointer dereference in AHB device probe (2020-07-20 20:23:48 +0300)
-
-----------------------------------------------------------------
-wireless-drivers fixes for v5.8
-
-Second set of fixes for v5.8, and hopefully also the last. Three
-important regressions fixed.
-
-ath9k
-
-* fix a regression which broke support for all ath9k usb devices
-
-ath10k
-
-* fix a regression which broke support for all QCA4019 AHB devices
-
-iwlwifi
-
-* fix a regression which broke support for some Killer Wireless-AC 1550 cards
-
-----------------------------------------------------------------
-Alessio Bonfiglio (1):
-      iwlwifi: Make some Killer Wireless-AC 1550 cards work again
-
-Hauke Mehrtens (1):
-      ath10k: Fix NULL pointer dereference in AHB device probe
-
-Mark O'Donovan (1):
-      ath9k: Fix regression with Atheros 9271
-
- drivers/net/wireless/ath/ath10k/ahb.c         |  2 +-
- drivers/net/wireless/ath/ath10k/pci.c         | 78 +++++++++++++--------------
- drivers/net/wireless/ath/ath9k/hif_usb.c      |  4 +-
- drivers/net/wireless/intel/iwlwifi/pcie/drv.c |  2 +
- 4 files changed, 43 insertions(+), 43 deletions(-)
+Miss Amina Ibrahim.
