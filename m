@@ -2,98 +2,87 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 758E022C2EA
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 Jul 2020 12:15:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 974BD22C5BC
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 Jul 2020 15:07:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727892AbgGXKPi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 24 Jul 2020 06:15:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35580 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726754AbgGXKPh (ORCPT
+        id S1726572AbgGXNHB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 24 Jul 2020 09:07:01 -0400
+Received: from jabberwock.ucw.cz ([46.255.230.98]:57296 "EHLO
+        jabberwock.ucw.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726182AbgGXNHA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 24 Jul 2020 06:15:37 -0400
-Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9ADA3C0619D3
-        for <linux-wireless@vger.kernel.org>; Fri, 24 Jul 2020 03:15:37 -0700 (PDT)
-Received: by mail-wr1-x442.google.com with SMTP id f18so7819748wrs.0
-        for <linux-wireless@vger.kernel.org>; Fri, 24 Jul 2020 03:15:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=29iinGb2cUivlj3Yy97UBPj5TwYQxxenBj0F2fDuKtQ=;
-        b=OuAeZJWZyi+t0YpFltWxopOi5yvySOM2ve3AT145cSx6P+nZqCUa1cfVEqeEbk7kzK
-         TpxReg6v8tAcqZCxGwNsBOXkXOwG8EWJsTH9xgJlop5+CKDEgzlqU7ptUSukLVcZ3Cgm
-         OlzwUc7ZoC2oXodz7nxqQG0gMhXiqVgUlC0d2TIoVTTjgbkaNHlsncdfDuKQkAYvvo2K
-         KyoW33ir/A50Yn/CO7aewdJE5+zlpnjBKeoYMIC7RIU4cK2Px2E9bNyb95Erabl/JdNM
-         baqmlTT76+6h2YU7LlAIiTmnnRM8oHF6AWWTukm9btqbrIsbwKj9w5SYmkFKVMhc271R
-         oegQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=29iinGb2cUivlj3Yy97UBPj5TwYQxxenBj0F2fDuKtQ=;
-        b=iwYPZNef8mH3DSjGLs93abV6q8g3LW6poTKFWVJr7aftB0QQio9acB8/NwpFMbURyt
-         PwxaEvz0L11h/hHvizcjDXkU9oCWd8gjx6IhZ0w3ObMpx3yuFm2UlWm6hMzwiZrE1gXB
-         wrghAx9XZ//Qz+D1zaXnnrmg2GFxza5l6XGZGRb7rR+mqwN9w/OZn4s1X7Js4ZId7FjM
-         CiTRzR+xt4ckzWpZvv9jj5kvIe5nNVh/gmjt0e+FiVZTBoS8bsCpp+ZrAtEbX2zbtJPR
-         6RacNHspq6PYNLJKqsn743+A1D0ahy6IWVyIOFmy2lI/Wdj8Mz63TBPubvR9xY9uOlHA
-         gyvw==
-X-Gm-Message-State: AOAM533giDc74XF0VogYKZhdfqavS+PZ6SSGE0iomSzqq9t+Td4C3+7n
-        NBFpRKvGS2HtnmOH5c8VmeEmEA==
-X-Google-Smtp-Source: ABdhPJystyvVxyKdSZkFX726yNy/bKwL69gASA5iPFARUr7ka2+Ebhyro9fn/qM/Byv9wUKhogIQ6g==
-X-Received: by 2002:adf:a15c:: with SMTP id r28mr7901311wrr.151.1595585736299;
-        Fri, 24 Jul 2020 03:15:36 -0700 (PDT)
-Received: from localhost.localdomain ([88.122.66.28])
-        by smtp.gmail.com with ESMTPSA id d18sm774714wrj.8.2020.07.24.03.15.35
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 24 Jul 2020 03:15:35 -0700 (PDT)
-From:   Loic Poulain <loic.poulain@linaro.org>
-To:     kvalo@codeaurora.org
-Cc:     wcn36xx@lists.infradead.org, linux-wireless@vger.kernel.org,
-        Loic Poulain <loic.poulain@linaro.org>
-Subject: [PATCH v2 6/6] wcn36xx: Use sequence number allocated by mac80211
-Date:   Fri, 24 Jul 2020 12:20:52 +0200
-Message-Id: <1595586052-16081-7-git-send-email-loic.poulain@linaro.org>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1595586052-16081-1-git-send-email-loic.poulain@linaro.org>
-References: <1595586052-16081-1-git-send-email-loic.poulain@linaro.org>
+        Fri, 24 Jul 2020 09:07:00 -0400
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+        id 0DE021C0BDD; Fri, 24 Jul 2020 15:06:59 +0200 (CEST)
+Date:   Fri, 24 Jul 2020 15:06:58 +0200
+From:   Pavel Machek <pavel@ucw.cz>
+To:     amitkarwar@gmail.com, ganapathi.bhat@nxp.com,
+        huxinming820@gmail.com, kvalo@codeaurora.org, davem@davemloft.net,
+        kuba@kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        trivial@kernel.org
+Subject: [PATCH] slimbus: ngd: simplify error handling
+Message-ID: <20200724130658.GA29458@duo.ucw.cz>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="HcAYCG3uE/tztfnV"
+Content-Disposition: inline
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Instead of using the firmware generated sequence number, use the one
-already allocated by the mac80211 layer. This allows better control
-of the sequence numbers and avoid to rely on same sequence for Data,
-QOS Data and QOS Null Data packets.
 
-Signed-off-by: Loic Poulain <loic.poulain@linaro.org>
----
- drivers/net/wireless/ath/wcn36xx/txrx.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+--HcAYCG3uE/tztfnV
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/drivers/net/wireless/ath/wcn36xx/txrx.c b/drivers/net/wireless/ath/wcn36xx/txrx.c
-index c9cf3db..3f668ef 100644
---- a/drivers/net/wireless/ath/wcn36xx/txrx.c
-+++ b/drivers/net/wireless/ath/wcn36xx/txrx.c
-@@ -93,7 +93,8 @@ static void wcn36xx_set_tx_pdu(struct wcn36xx_tx_bd *bd,
- 		bd->pdu.mpdu_header_off;
- 	bd->pdu.mpdu_len = len;
- 	bd->pdu.tid = tid;
--	bd->pdu.bd_ssn = WCN36XX_TXBD_SSN_FILL_DPU_QOS;
-+	/* Use seq number generated by mac80211 */
-+	bd->pdu.bd_ssn = WCN36XX_TXBD_SSN_FILL_HOST;
- }
- 
- static inline struct wcn36xx_vif *get_vif_by_addr(struct wcn36xx *wcn,
-@@ -200,6 +201,7 @@ static void wcn36xx_set_tx_data(struct wcn36xx_tx_bd *bd,
- 	if (ieee80211_is_any_nullfunc(hdr->frame_control)) {
- 		/* Don't use a regular queue for null packet (no ampdu) */
- 		bd->queue_id = WCN36XX_TX_U_WQ_ID;
-+
+Simplify error handling; we already know mwq is NULL.
+
+Signed-off-by: Pavel Machek (CIP) <pavel@denx.de>
+
+diff --git a/drivers/slimbus/qcom-ngd-ctrl.c b/drivers/slimbus/qcom-ngd-ctr=
+l.c
+index 743ee7b4e63f..3def0c782c7f 100644
+--- a/drivers/slimbus/qcom-ngd-ctrl.c
++++ b/drivers/slimbus/qcom-ngd-ctrl.c
+@@ -1396,17 +1396,11 @@ static int qcom_slim_ngd_probe(struct platform_devi=
+ce *pdev)
+ 	ctrl->mwq =3D create_singlethread_workqueue("ngd_master");
+ 	if (!ctrl->mwq) {
+ 		dev_err(&pdev->dev, "Failed to start master worker\n");
+-		ret =3D -ENOMEM;
+-		goto wq_err;
++		qcom_slim_ngd_qmi_svc_event_deinit(&ctrl->qmi);
++		return -ENOMEM;
  	}
- 
- 	if (bcast) {
--- 
-2.7.4
+=20
+ 	return 0;
+-wq_err:
+-	qcom_slim_ngd_qmi_svc_event_deinit(&ctrl->qmi);
+-	if (ctrl->mwq)
+-		destroy_workqueue(ctrl->mwq);
+-
+-	return ret;
+ }
+=20
+ static int qcom_slim_ngd_ctrl_probe(struct platform_device *pdev)
 
+--=20
+(english) http://www.livejournal.com/~pavelmachek
+(cesky, pictures) http://atrey.karlin.mff.cuni.cz/~pavel/picture/horses/blo=
+g.html
+
+--HcAYCG3uE/tztfnV
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCXxrc8gAKCRAw5/Bqldv6
+8t64AJ9TkLMXPTQazgz1+ieXgOtgBpnQygCggKxDeQohVmkoaZvXGkAfjTtg0hk=
+=qEGF
+-----END PGP SIGNATURE-----
+
+--HcAYCG3uE/tztfnV--
