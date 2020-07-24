@@ -2,139 +2,125 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 32E7C22CDF4
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 Jul 2020 20:44:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4439922CE2A
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 Jul 2020 20:51:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726455AbgGXSoR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 24 Jul 2020 14:44:17 -0400
-Received: from gateway23.websitewelcome.com ([192.185.48.104]:41530 "EHLO
-        gateway23.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726381AbgGXSoR (ORCPT
+        id S1726493AbgGXSv1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 24 Jul 2020 14:51:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60054 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726381AbgGXSv1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 24 Jul 2020 14:44:17 -0400
-X-Greylist: delayed 1252 seconds by postgrey-1.27 at vger.kernel.org; Fri, 24 Jul 2020 14:44:16 EDT
-Received: from cm11.websitewelcome.com (cm11.websitewelcome.com [100.42.49.5])
-        by gateway23.websitewelcome.com (Postfix) with ESMTP id DCD6614E985
-        for <linux-wireless@vger.kernel.org>; Fri, 24 Jul 2020 13:23:13 -0500 (CDT)
-Received: from gator4166.hostgator.com ([108.167.133.22])
-        by cmsmtp with SMTP
-        id z2Lhje0lH4KQcz2LhjpR3y; Fri, 24 Jul 2020 13:23:13 -0500
-X-Authority-Reason: nr=8
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=hhFVfCS7om1F0dbm3hgOuS1I936CVGgCSzL2PaHDmMM=; b=BqWKp7TT/LPdMCr8yrV28J2wZc
-        /lzVkFoKEJeuEVc/1xSx6kD3tYDTG/W71n/CyBgMnw/ynYGUWNO1yi29hLEEYGap49MZG9NR4A/g6
-        ysjpe4LRUxDJsZggYnMseve80M4jcTZbw9Nb1Eo4WmMxcmTBUn6L/wmQGnSfWHguWIlFUio4ByCUF
-        TL3Hz09KCuuazPd4HcP/tCaqCQstuc0dAin25k0mVCM8S9U8HVhUezQC7JDfYmRhNx3CoaK2wolXT
-        nt3/vNPx+46fsCFwe7apUbpx3e5v/N2i+xehqC2qsS8ngoPEiPQ8/npZl0urmRKNRSyOinLtXLsAN
-        qKtDNZpQ==;
-Received: from 187-162-31-110.static.axtel.net ([187.162.31.110]:33742 helo=[192.168.15.6])
-        by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.93)
-        (envelope-from <gustavo@embeddedor.com>)
-        id 1jz2Lh-000YHu-Fv; Fri, 24 Jul 2020 13:23:13 -0500
-Subject: Re: [PATCH][next] wil6210: Avoid the use of one-element array
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Maya Erez <merez@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless@vger.kernel.org, wil6210@qti.qualcomm.com,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20200715215755.GA21716@embeddedor>
- <80fe7b75-a324-9af1-38a9-ee259b886d7e@embeddedor.com>
- <87r1t2689d.fsf@codeaurora.org>
-From:   "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-Autocrypt: addr=gustavo@embeddedor.com; keydata=
- xsFNBFssHAwBEADIy3ZoPq3z5UpsUknd2v+IQud4TMJnJLTeXgTf4biSDSrXn73JQgsISBwG
- 2Pm4wnOyEgYUyJd5tRWcIbsURAgei918mck3tugT7AQiTUN3/5aAzqe/4ApDUC+uWNkpNnSV
- tjOx1hBpla0ifywy4bvFobwSh5/I3qohxDx+c1obd8Bp/B/iaOtnq0inli/8rlvKO9hp6Z4e
- DXL3PlD0QsLSc27AkwzLEc/D3ZaqBq7ItvT9Pyg0z3Q+2dtLF00f9+663HVC2EUgP25J3xDd
- 496SIeYDTkEgbJ7WYR0HYm9uirSET3lDqOVh1xPqoy+U9zTtuA9NQHVGk+hPcoazSqEtLGBk
- YE2mm2wzX5q2uoyptseSNceJ+HE9L+z1KlWW63HhddgtRGhbP8pj42bKaUSrrfDUsicfeJf6
- m1iJRu0SXYVlMruGUB1PvZQ3O7TsVfAGCv85pFipdgk8KQnlRFkYhUjLft0u7CL1rDGZWDDr
- NaNj54q2CX9zuSxBn9XDXvGKyzKEZ4NY1Jfw+TAMPCp4buawuOsjONi2X0DfivFY+ZsjAIcx
- qQMglPtKk/wBs7q2lvJ+pHpgvLhLZyGqzAvKM1sVtRJ5j+ARKA0w4pYs5a5ufqcfT7dN6TBk
- LXZeD9xlVic93Ju08JSUx2ozlcfxq+BVNyA+dtv7elXUZ2DrYwARAQABzStHdXN0YXZvIEEu
- IFIuIFNpbHZhIDxndXN0YXZvYXJzQGtlcm5lbC5vcmc+wsGrBBMBCAA+FiEEkmRahXBSurMI
- g1YvRwW0y0cG2zEFAl6zFvQCGyMFCQlmAYAFCwkIBwIGFQoJCAsCBBYCAwECHgECF4AAIQkQ
- RwW0y0cG2zEWIQSSZFqFcFK6swiDVi9HBbTLRwbbMZsEEACWjJyXLjtTAF21Vuf1VDoGzitP
- oE69rq9UhXIGR+e0KACyIFoB9ibG/1j/ESMa0RPSwLpJDLgfvi/I18H/9cKtdo2uz0XNbDT8
- i3llIu0b43nzGIDzRudINBXC8Coeob+hrp/MMZueyzt0CUoAnY4XqpHQbQsTfTrpFeHT02Qz
- ITw6kTSmK7dNbJj2naH2vSrU11qGdU7aFzI7jnVvGgv4NVQLPxm/t4jTG1o+P1Xk4N6vKafP
- zqzkxj99JrUAPt+LyPS2VpNvmbSNq85PkQ9gpeTHpkio/D9SKsMW62njITPgy6M8TFAmx8JF
- ZAI6k8l1eU29F274WnlQ6ZokkJoNctwHa+88euWKHWUDolCmQpegJJ8932www83GLn1mdUZn
- NsymjFSdMWE+y8apWaV9QsDOKWf7pY2uBuE6GMPRhX7e7h5oQwa1lYeO2L9LTDeXkEOJe+hE
- qQdEEvkC/nok0eoRlBlZh433DQlv4+IvSsfN/uWld2TuQFyjDCLIm1CPRfe7z0TwiCM27F+O
- lHnUspCFSgpnrxqNH6CM4aj1EF4fEX+ZyknTSrKL9BGZ/qRz7Xe9ikU2/7M1ov6rOXCI4NR9
- THsNax6etxCBMzZs2bdMHMcajP5XdRsOIARuN08ytRjDolR2r8SkTN2YMwxodxNWWDC3V8X2
- RHZ4UwQw487BTQRbLBwMARAAsHCE31Ffrm6uig1BQplxMV8WnRBiZqbbsVJBH1AAh8tq2ULl
- 7udfQo1bsPLGGQboJSVN9rckQQNahvHAIK8ZGfU4Qj8+CER+fYPp/MDZj+t0DbnWSOrG7z9H
- IZo6PR9z4JZza3Hn/35jFggaqBtuydHwwBANZ7A6DVY+W0COEU4of7CAahQo5NwYiwS0lGis
- LTqks5R0Vh+QpvDVfuaF6I8LUgQR/cSgLkR//V1uCEQYzhsoiJ3zc1HSRyOPotJTApqGBq80
- X0aCVj1LOiOF4rrdvQnj6iIlXQssdb+WhSYHeuJj1wD0ZlC7ds5zovXh+FfFl5qH5RFY/qVn
- 3mNIVxeO987WSF0jh+T5ZlvUNdhedGndRmwFTxq2Li6GNMaolgnpO/CPcFpDjKxY/HBUSmaE
- 9rNdAa1fCd4RsKLlhXda+IWpJZMHlmIKY8dlUybP+2qDzP2lY7kdFgPZRU+ezS/pzC/YTzAv
- CWM3tDgwoSl17vnZCr8wn2/1rKkcLvTDgiJLPCevqpTb6KFtZosQ02EGMuHQI6Zk91jbx96n
- rdsSdBLGH3hbvLvjZm3C+fNlVb9uvWbdznObqcJxSH3SGOZ7kCHuVmXUcqozol6ioMHMb+In
- rHPP16aVDTBTPEGwgxXI38f7SUEn+NpbizWdLNz2hc907DvoPm6HEGCanpcAEQEAAcLBZQQY
- AQgADwUCWywcDAIbDAUJCWYBgAAKCRBHBbTLRwbbMdsZEACUjmsJx2CAY+QSUMebQRFjKavw
- XB/xE7fTt2ahuhHT8qQ/lWuRQedg4baInw9nhoPE+VenOzhGeGlsJ0Ys52sdXvUjUocKgUQq
- 6ekOHbcw919nO5L9J2ejMf/VC/quN3r3xijgRtmuuwZjmmi8ct24TpGeoBK4WrZGh/1hAYw4
- ieARvKvgjXRstcEqM5thUNkOOIheud/VpY+48QcccPKbngy//zNJWKbRbeVnimua0OpqRXhC
- rEVm/xomeOvl1WK1BVO7z8DjSdEBGzbV76sPDJb/fw+y+VWrkEiddD/9CSfgfBNOb1p1jVnT
- 2mFgGneIWbU0zdDGhleI9UoQTr0e0b/7TU+Jo6TqwosP9nbk5hXw6uR5k5PF8ieyHVq3qatJ
- 9K1jPkBr8YWtI5uNwJJjTKIA1jHlj8McROroxMdI6qZ/wZ1ImuylpJuJwCDCORYf5kW61fcr
- HEDlIvGc371OOvw6ejF8ksX5+L2zwh43l/pKkSVGFpxtMV6d6J3eqwTafL86YJWH93PN+ZUh
- 6i6Rd2U/i8jH5WvzR57UeWxE4P8bQc0hNGrUsHQH6bpHV2lbuhDdqo+cM9ehGZEO3+gCDFmK
- rjspZjkJbB5Gadzvts5fcWGOXEvuT8uQSvl+vEL0g6vczsyPBtqoBLa9SNrSVtSixD1uOgyt
- AP7RWS474w==
-Message-ID: <510aeeb4-5e7b-58bf-f7f3-774247b69ec4@embeddedor.com>
-Date:   Fri, 24 Jul 2020 13:29:01 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
+        Fri, 24 Jul 2020 14:51:27 -0400
+Received: from mail-ed1-x543.google.com (mail-ed1-x543.google.com [IPv6:2a00:1450:4864:20::543])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C666CC0619D3
+        for <linux-wireless@vger.kernel.org>; Fri, 24 Jul 2020 11:51:26 -0700 (PDT)
+Received: by mail-ed1-x543.google.com with SMTP id q4so4491321edv.13
+        for <linux-wireless@vger.kernel.org>; Fri, 24 Jul 2020 11:51:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=Bkqq/dTM1kv52hgARYE8pT8P7uaOvtiVtByu83nhzdU=;
+        b=EP1pTUiDlNYO4WlDComc33qBRO/UcxpuLKFpZZ/5ioXdt6K2PFABeE7pTE3TYu5lV/
+         WOgeCT3eFHheC2Ce38LB2S3cn6WMuld9PV20Bj1Lw1wLiNZEcnmuCVcs2J2M7nnoN3aw
+         z5x54Odum5U8P4bi3ekmdR+3K24ytjQTCxIZmZTFqg3GEqJi1q8i8QUL/paF2BP/pUoz
+         9CTM1S0S6FJY6Qk1FG4SsbjlnI3FP+78TCaRyn9HoxvLRBSkgrj/THvn9E2h+TgtbTFW
+         iXXtaQtu7W8gMDGFTDrUs9fSE49HruNDhuvTKASRks484rBjnKDlxEK7ERjHVCNE0h0r
+         GXWA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Bkqq/dTM1kv52hgARYE8pT8P7uaOvtiVtByu83nhzdU=;
+        b=YBn9UHpFeeQbzYMVj6PC0z5xRhrXnW+H/H66ZMDOECvgPlFSHBNlA3SNjMDYXMhw1d
+         33sstmQzi1SchVq3rQ6g407NIuPXySw7DAN+vH0J2vyjVwSxJypcT+KlHI2iBy+CPL3J
+         7ha4ATdOjwQ33Vsq3w924ytYW5IrQT+riyjMTouk3wNwr5y4KfIEP9CyyKV9fHYuQRkF
+         Sm5quf1tJi0DjUDnvarPMGifZ1Pbq5k3wNIRCzuilZvhMBIJM75LLC/a/N2sG/XnajDR
+         QaRHObWrSnRHFLqp775E5/ZEgp6ezVHNvpM8taF5IgiL7LkK35nik+Jn+X4J5+LT+/99
+         5frA==
+X-Gm-Message-State: AOAM532rjf5JfVo+mi7L8fgbLtv/mlR1X+4RUqgdiVP6EWHw5m/6Wejh
+        qoA8ZO3OXHbLFAg7tM5H234QqDZQ3kXxSBlu7OY=
+X-Google-Smtp-Source: ABdhPJwEket0rQUzWml+3ZLvXlMyaOJyn9ThaWOuWoNc2gW7CWrVkuSNuXEmS47Xy7fxp68xocl4ioTpGcPrtzYBcrI=
+X-Received: by 2002:a05:6402:12d0:: with SMTP id k16mr3425104edx.199.1595616685294;
+ Fri, 24 Jul 2020 11:51:25 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <87r1t2689d.fsf@codeaurora.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - embeddedor.com
-X-BWhitelist: no
-X-Source-IP: 187.162.31.110
-X-Source-L: No
-X-Exim-ID: 1jz2Lh-000YHu-Fv
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: 187-162-31-110.static.axtel.net ([192.168.15.6]) [187.162.31.110]:33742
-X-Source-Auth: gustavo@embeddedor.com
-X-Email-Count: 6
-X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
-X-Local-Domain: yes
+References: <1595586052-16081-1-git-send-email-loic.poulain@linaro.org>
+ <CA+Kvs9mV39gndidkDjMHswQGii74MH4cTDr9az1HLNOtW6PZTA@mail.gmail.com> <CAMZdPi8jgoYsWd6d90WE-sGD8P5LMKO+YAHoP5-xRBV+vncy=A@mail.gmail.com>
+In-Reply-To: <CAMZdPi8jgoYsWd6d90WE-sGD8P5LMKO+YAHoP5-xRBV+vncy=A@mail.gmail.com>
+From:   Ramon Fried <ramon.fried@gmail.com>
+Date:   Fri, 24 Jul 2020 21:51:14 +0300
+Message-ID: <CA+Kvs9=0mJ4-6bZUkB3EG-R6ju8UrwJWo3_6aRxzn1tnrGiq-A@mail.gmail.com>
+Subject: Re: [PATCH v2 0/6] wcn36xx misc fixes
+To:     Loic Poulain <loic.poulain@linaro.org>
+Cc:     Kalle Valo <kvalo@codeaurora.org>, wcn36xx@lists.infradead.org,
+        linux-wireless@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On Fri, Jul 24, 2020 at 4:57 PM Loic Poulain <loic.poulain@linaro.org> wrote:
+>
+> Hi Ramon,
+>
+> On Fri, 24 Jul 2020 at 15:47, Ramon Fried <ramon.fried@gmail.com> wrote:
+> >
+> > On Fri, Jul 24, 2020 at 1:15 PM Loic Poulain <loic.poulain@linaro.org> wrote:
+> > >
+> > > This series contains various fixes for the wcn36xx driver.
+> > > This has been tested with wcn3620, wcn3660 and wcn3680.
+> > >
+> > > v2: - Move TX retries change into its own commit
+> > >     - Additional patch for sequence number assignment
+> > >     - Reword TX ack commit log (timeout detection)
+> > >     - Fix checkpatch issues reported by Bryan
+> > >
+> > > Loic Poulain (6):
+> > >   wcn36xx: Fix multiple AMPDU sessions support
+> > >   wcn36xx: Add TX ack support
+> > >   wcn36xx: Increase number of TX retries
+> > >   wcn36xx: Fix TX data path
+> > >   wcn36xx: Fix software-driven scan
+> > >   wcn36xx: Use sequence number allocated by mac80211
+> > >
+> > >  drivers/net/wireless/ath/wcn36xx/dxe.c     |  57 +++++++++-
+> > >  drivers/net/wireless/ath/wcn36xx/main.c    | 172 +++++++++++++++--------------
+> > >  drivers/net/wireless/ath/wcn36xx/smd.c     |  59 ++++++++--
+> > >  drivers/net/wireless/ath/wcn36xx/smd.h     |  12 +-
+> > >  drivers/net/wireless/ath/wcn36xx/txrx.c    |  57 ++++++----
+> > >  drivers/net/wireless/ath/wcn36xx/wcn36xx.h |   7 +-
+> > >  6 files changed, 241 insertions(+), 123 deletions(-)
+> > >
+> > > --
+> > > 2.7.4
+> > >
+> > >
+> > > _______________________________________________
+> > > wcn36xx mailing list
+> > > wcn36xx@lists.infradead.org
+> > > http://lists.infradead.org/mailman/listinfo/wcn36xx
+> >
+> >
+> > Hi Loic,
+> > What about upstreaming the fixes for several TP-Link AP's ?
+> > The WCN36xx is not usable on those networks and your own tree patches seems to
+> > be working properly.
+>
+> Which ones do you have in mind?
+I didn't inspect each patch, I just took your tree and everything now
+works as expected on  my TP-Link setup.
+I did notice this patch -   "wcn36xx: Fix power-saving with some APs"
+that was missing.
+And there are some patches in your tree that hack the mac802111 core,
+Do you think there's a way to upstream those ?
+
+Thanks,
+Ramon.
 
 
-On 7/23/20 01:43, Kalle Valo wrote:
-> "Gustavo A. R. Silva" <gustavo@embeddedor.com> writes:
-> 
->> Friendly ping: who can take this? :)
-> 
-> I'll take this if it's ok. I have been just busy due to vacation period.
-> 
-
-Thanks, Kalle. :)
-
---
-Gustavo
+> This series normally contains the most important (and clean) patches.
+>
+> Cheers,
+> Loic
