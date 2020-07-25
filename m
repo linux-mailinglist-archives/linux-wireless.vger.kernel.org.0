@@ -2,39 +2,41 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DFC0A22D9B1
-	for <lists+linux-wireless@lfdr.de>; Sat, 25 Jul 2020 21:55:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D8BB722D9B5
+	for <lists+linux-wireless@lfdr.de>; Sat, 25 Jul 2020 21:56:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728006AbgGYTzg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 25 Jul 2020 15:55:36 -0400
-Received: from smtprelay0110.hostedemail.com ([216.40.44.110]:59088 "EHLO
+        id S1728048AbgGYT4L (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 25 Jul 2020 15:56:11 -0400
+Received: from smtprelay0112.hostedemail.com ([216.40.44.112]:55772 "EHLO
         smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726727AbgGYTzg (ORCPT
+        by vger.kernel.org with ESMTP id S1727978AbgGYT4K (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 25 Jul 2020 15:55:36 -0400
+        Sat, 25 Jul 2020 15:56:10 -0400
 Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay06.hostedemail.com (Postfix) with ESMTP id 9D4951822383C;
-        Sat, 25 Jul 2020 19:55:34 +0000 (UTC)
+        by smtprelay07.hostedemail.com (Postfix) with ESMTP id D2749181D3025;
+        Sat, 25 Jul 2020 19:56:08 +0000 (UTC)
 X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:2:41:355:379:541:968:973:988:989:1260:1311:1314:1345:1437:1515:1535:1606:1730:1747:1777:1792:1981:2194:2199:2393:2559:2562:3138:3139:3140:3141:3142:3355:3867:3870:3872:4117:4605:5007:6261:7974:10004:10848:11026:11657:11658:11914:12043:12296:12297:12679:12895:13894:14096:14394:21080:21433:21451:21611:21627:30029:30030:30054,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:1,LUA_SUMMARY:none
-X-HE-Tag: comb92_0614f4a26f52
-X-Filterd-Recvd-Size: 6550
+X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:2:41:355:379:541:800:960:966:973:988:989:1260:1311:1314:1345:1359:1437:1515:1535:1605:1730:1747:1777:1792:2194:2196:2199:2200:2393:2559:2562:2729:3138:3139:3140:3141:3142:3867:4050:4119:4225:4250:4321:4385:4605:5007:6117:6261:6642:8957:9040:10004:10848:11026:11473:11657:11658:11914:12043:12296:12297:12438:12555:12895:13894:14394:21080:21451:21611:21627:21966:21990:30046:30054,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:1,LUA_SUMMARY:none
+X-HE-Tag: cloud03_2802f4d26f52
+X-Filterd-Recvd-Size: 8842
 Received: from joe-laptop.perches.com (unknown [47.151.133.149])
         (Authenticated sender: joe@perches.com)
         by omf18.hostedemail.com (Postfix) with ESMTPA;
-        Sat, 25 Jul 2020 19:55:33 +0000 (UTC)
+        Sat, 25 Jul 2020 19:56:07 +0000 (UTC)
 From:   Joe Perches <joe@perches.com>
 To:     Ping-Ke Shih <pkshih@realtek.com>,
-        Larry Finger <Larry.Finger@lwfinger.net>,
-        linux-wireless@vger.kernel.org
+        Larry Finger <Larry.Finger@lwfinger.net>
 Cc:     Kalle Valo <kvalo@codeaurora.org>,
         "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH 0/6] rtlwifi: Convert RT_TRACE to rtl_dbg and neatening
-Date:   Sat, 25 Jul 2020 12:55:02 -0700
-Message-Id: <cover.1595706419.git.joe@perches.com>
+Subject: [PATCH 2/6] rtlwifi: Remove unnecessary parenthese in rtl_dbg uses
+Date:   Sat, 25 Jul 2020 12:55:04 -0700
+Message-Id: <9b2eaedb7ea123ea766a379459b20a9486d1cd41.1595706420.git.joe@perches.com>
 X-Mailer: git-send-email 2.26.0
+In-Reply-To: <cover.1595706419.git.joe@perches.com>
+References: <cover.1595706419.git.joe@perches.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
@@ -42,108 +44,186 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-RT_TRACE seems like it should be associated to tracing but it's not.
-It's a generic debug logging mechanism.
-Rename it to a more typical name.
-Miscellaneous neatening around these changes.
+Make these statements a little simpler.
 
-Joe Perches (6):
-  rtlwifi: Convert RT_TRACE to rtl_dbg
-  rtlwifi: Remove unnecessary parenthese in rtl_dbg uses
-  rtlwifi: Better spacing around rtl_dbg uses
-  rtlwifi: Convert rtl_dbg embedded function names to %s: ..., __func__
-  rtlwifi: Avoid multiline dereferences in rtl_dbg uses
-  rtlwifi: Convert sleeped to slept in rtl_dbg uses
+Signed-off-by: Joe Perches <joe@perches.com>
+---
+ drivers/net/wireless/realtek/rtlwifi/base.c   | 14 +++++------
+ .../rtlwifi/btcoexist/halbtc8192e2ant.c       | 23 ++++++++++---------
+ .../rtlwifi/btcoexist/halbtc8821a2ant.c       | 12 +++++-----
+ .../realtek/rtlwifi/btcoexist/halbtcoutsrc.c  |  9 ++++----
+ drivers/net/wireless/realtek/rtlwifi/pci.c    |  2 +-
+ 5 files changed, 30 insertions(+), 30 deletions(-)
 
- drivers/net/wireless/realtek/rtlwifi/base.c   | 144 +--
- .../rtlwifi/btcoexist/halbtc8192e2ant.c       | 733 ++++++++--------
- .../rtlwifi/btcoexist/halbtc8723b1ant.c       | 366 ++++----
- .../rtlwifi/btcoexist/halbtc8723b2ant.c       | 720 +++++++--------
- .../rtlwifi/btcoexist/halbtc8821a1ant.c       | 670 +++++++-------
- .../rtlwifi/btcoexist/halbtc8821a2ant.c       | 760 ++++++++--------
- .../realtek/rtlwifi/btcoexist/halbtcoutsrc.c  |  36 +-
- .../realtek/rtlwifi/btcoexist/rtl_btc.c       |   6 +-
- drivers/net/wireless/realtek/rtlwifi/cam.c    |  82 +-
- drivers/net/wireless/realtek/rtlwifi/core.c   | 261 +++---
- drivers/net/wireless/realtek/rtlwifi/debug.c  |   4 +-
- drivers/net/wireless/realtek/rtlwifi/debug.h  |  11 +-
- drivers/net/wireless/realtek/rtlwifi/efuse.c  |  72 +-
- drivers/net/wireless/realtek/rtlwifi/pci.c    | 290 +++---
- drivers/net/wireless/realtek/rtlwifi/ps.c     |  98 +--
- drivers/net/wireless/realtek/rtlwifi/regd.c   |  18 +-
- .../wireless/realtek/rtlwifi/rtl8188ee/dm.c   | 201 +++--
- .../wireless/realtek/rtlwifi/rtl8188ee/fw.c   |  90 +-
- .../wireless/realtek/rtlwifi/rtl8188ee/hw.c   | 194 ++---
- .../wireless/realtek/rtlwifi/rtl8188ee/led.c  |  20 +-
- .../wireless/realtek/rtlwifi/rtl8188ee/phy.c  | 385 ++++----
- .../wireless/realtek/rtlwifi/rtl8188ee/rf.c   |   6 +-
- .../wireless/realtek/rtlwifi/rtl8188ee/trx.c  |  24 +-
- .../realtek/rtlwifi/rtl8192c/dm_common.c      | 225 +++--
- .../realtek/rtlwifi/rtl8192c/fw_common.c      |  88 +-
- .../realtek/rtlwifi/rtl8192c/phy_common.c     | 268 +++---
- .../wireless/realtek/rtlwifi/rtl8192ce/dm.c   |  40 +-
- .../wireless/realtek/rtlwifi/rtl8192ce/hw.c   | 178 ++--
- .../wireless/realtek/rtlwifi/rtl8192ce/led.c  |  12 +-
- .../wireless/realtek/rtlwifi/rtl8192ce/phy.c  | 121 ++-
- .../wireless/realtek/rtlwifi/rtl8192ce/rf.c   |   6 +-
- .../wireless/realtek/rtlwifi/rtl8192ce/trx.c  |  14 +-
- .../wireless/realtek/rtlwifi/rtl8192cu/dm.c   |  40 +-
- .../wireless/realtek/rtlwifi/rtl8192cu/hw.c   | 154 ++--
- .../wireless/realtek/rtlwifi/rtl8192cu/led.c  |  10 +-
- .../wireless/realtek/rtlwifi/rtl8192cu/mac.c  |  66 +-
- .../wireless/realtek/rtlwifi/rtl8192cu/phy.c  | 134 +--
- .../wireless/realtek/rtlwifi/rtl8192cu/rf.c   |   6 +-
- .../wireless/realtek/rtlwifi/rtl8192cu/trx.c  |  58 +-
- .../wireless/realtek/rtlwifi/rtl8192de/dm.c   | 314 +++----
- .../wireless/realtek/rtlwifi/rtl8192de/fw.c   | 116 +--
- .../wireless/realtek/rtlwifi/rtl8192de/hw.c   | 206 ++---
- .../wireless/realtek/rtlwifi/rtl8192de/led.c  |  10 +-
- .../wireless/realtek/rtlwifi/rtl8192de/phy.c  | 422 ++++-----
- .../wireless/realtek/rtlwifi/rtl8192de/rf.c   |  30 +-
- .../wireless/realtek/rtlwifi/rtl8192de/trx.c  |  20 +-
- .../wireless/realtek/rtlwifi/rtl8192ee/dm.c   |  66 +-
- .../wireless/realtek/rtlwifi/rtl8192ee/fw.c   | 102 +--
- .../wireless/realtek/rtlwifi/rtl8192ee/hw.c   | 208 ++---
- .../wireless/realtek/rtlwifi/rtl8192ee/led.c  |  18 +-
- .../wireless/realtek/rtlwifi/rtl8192ee/phy.c  | 357 ++++----
- .../wireless/realtek/rtlwifi/rtl8192ee/rf.c   |   6 +-
- .../wireless/realtek/rtlwifi/rtl8192ee/trx.c  |  32 +-
- .../wireless/realtek/rtlwifi/rtl8192se/dm.c   |  42 +-
- .../wireless/realtek/rtlwifi/rtl8192se/fw.c   |  40 +-
- .../wireless/realtek/rtlwifi/rtl8192se/hw.c   | 158 ++--
- .../wireless/realtek/rtlwifi/rtl8192se/led.c  |  10 +-
- .../wireless/realtek/rtlwifi/rtl8192se/phy.c  | 215 +++--
- .../wireless/realtek/rtlwifi/rtl8192se/rf.c   |  70 +-
- .../wireless/realtek/rtlwifi/rtl8192se/sw.c   |   4 +-
- .../wireless/realtek/rtlwifi/rtl8192se/trx.c  |  10 +-
- .../wireless/realtek/rtlwifi/rtl8723ae/dm.c   | 162 ++--
- .../wireless/realtek/rtlwifi/rtl8723ae/fw.c   |  64 +-
- .../rtlwifi/rtl8723ae/hal_bt_coexist.c        | 151 ++--
- .../realtek/rtlwifi/rtl8723ae/hal_btc.c       | 654 +++++++-------
- .../wireless/realtek/rtlwifi/rtl8723ae/hw.c   | 234 ++---
- .../wireless/realtek/rtlwifi/rtl8723ae/led.c  |  12 +-
- .../wireless/realtek/rtlwifi/rtl8723ae/phy.c  | 344 ++++----
- .../wireless/realtek/rtlwifi/rtl8723ae/rf.c   |   6 +-
- .../wireless/realtek/rtlwifi/rtl8723ae/trx.c  |  14 +-
- .../wireless/realtek/rtlwifi/rtl8723be/dm.c   | 119 ++-
- .../wireless/realtek/rtlwifi/rtl8723be/fw.c   |  66 +-
- .../wireless/realtek/rtlwifi/rtl8723be/hw.c   | 202 ++---
- .../wireless/realtek/rtlwifi/rtl8723be/led.c  |  10 +-
- .../wireless/realtek/rtlwifi/rtl8723be/phy.c  | 309 ++++---
- .../wireless/realtek/rtlwifi/rtl8723be/rf.c   |   6 +-
- .../wireless/realtek/rtlwifi/rtl8723be/trx.c  |  24 +-
- .../realtek/rtlwifi/rtl8723com/fw_common.c    |  22 +-
- .../realtek/rtlwifi/rtl8723com/phy_common.c   |  36 +-
- .../wireless/realtek/rtlwifi/rtl8821ae/dm.c   | 823 +++++++++---------
- .../wireless/realtek/rtlwifi/rtl8821ae/fw.c   | 134 +--
- .../wireless/realtek/rtlwifi/rtl8821ae/hw.c   | 466 +++++-----
- .../wireless/realtek/rtlwifi/rtl8821ae/led.c  |  32 +-
- .../wireless/realtek/rtlwifi/rtl8821ae/phy.c  | 538 ++++++------
- .../wireless/realtek/rtlwifi/rtl8821ae/rf.c   |   6 +-
- .../wireless/realtek/rtlwifi/rtl8821ae/trx.c  |  58 +-
- drivers/net/wireless/realtek/rtlwifi/usb.c    |  18 +-
- 87 files changed, 6766 insertions(+), 6811 deletions(-)
-
+diff --git a/drivers/net/wireless/realtek/rtlwifi/base.c b/drivers/net/wireless/realtek/rtlwifi/base.c
+index 270aea0f841b..b8d184950dac 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/base.c
++++ b/drivers/net/wireless/realtek/rtlwifi/base.c
+@@ -1385,7 +1385,7 @@ bool rtl_action_proc(struct ieee80211_hw *hw, struct sk_buff *skb, u8 is_tx)
+ 			if (mac->act_scanning)
+ 				return false;
+ 
+-			rtl_dbg(rtlpriv, (COMP_SEND | COMP_RECV), DBG_DMESG,
++			rtl_dbg(rtlpriv, COMP_SEND | COMP_RECV, DBG_DMESG,
+ 				"%s ACT_ADDBAREQ From :%pM\n",
+ 				is_tx ? "Tx" : "Rx", hdr->addr2);
+ 			RT_PRINT_DATA(rtlpriv, COMP_INIT, DBG_DMESG, "req\n",
+@@ -1428,12 +1428,12 @@ bool rtl_action_proc(struct ieee80211_hw *hw, struct sk_buff *skb, u8 is_tx)
+ 			}
+ 			break;
+ 		case ACT_ADDBARSP:
+-			rtl_dbg(rtlpriv, (COMP_SEND | COMP_RECV), DBG_DMESG,
++			rtl_dbg(rtlpriv, COMP_SEND | COMP_RECV, DBG_DMESG,
+ 				"%s ACT_ADDBARSP From :%pM\n",
+ 				is_tx ? "Tx" : "Rx", hdr->addr2);
+ 			break;
+ 		case ACT_DELBA:
+-			rtl_dbg(rtlpriv, (COMP_SEND | COMP_RECV), DBG_DMESG,
++			rtl_dbg(rtlpriv, COMP_SEND | COMP_RECV, DBG_DMESG,
+ 				"ACT_ADDBADEL From :%pM\n", hdr->addr2);
+ 			break;
+ 		}
+@@ -1519,9 +1519,9 @@ u8 rtl_is_special_data(struct ieee80211_hw *hw, struct sk_buff *skb, u8 is_tx,
+ 				/* 68 : UDP BOOTP client
+ 				 * 67 : UDP BOOTP server
+ 				 */
+-				rtl_dbg(rtlpriv, (COMP_SEND | COMP_RECV),
++				rtl_dbg(rtlpriv, COMP_SEND | COMP_RECV,
+ 					DBG_DMESG, "dhcp %s !!\n",
+-					(is_tx) ? "Tx" : "Rx");
++					is_tx ? "Tx" : "Rx");
+ 
+ 				if (is_tx)
+ 					setup_special_tx(rtlpriv, ppsc,
+@@ -1540,8 +1540,8 @@ u8 rtl_is_special_data(struct ieee80211_hw *hw, struct sk_buff *skb, u8 is_tx,
+ 		rtlpriv->btcoexist.btc_info.in_4way = true;
+ 		rtlpriv->btcoexist.btc_info.in_4way_ts = jiffies;
+ 
+-		rtl_dbg(rtlpriv, (COMP_SEND | COMP_RECV), DBG_DMESG,
+-			"802.1X %s EAPOL pkt!!\n", (is_tx) ? "Tx" : "Rx");
++		rtl_dbg(rtlpriv, COMP_SEND | COMP_RECV, DBG_DMESG,
++			"802.1X %s EAPOL pkt!!\n", is_tx ? "Tx" : "Rx");
+ 
+ 		if (is_tx) {
+ 			rtlpriv->ra.is_special_data = true;
+diff --git a/drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtc8192e2ant.c b/drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtc8192e2ant.c
+index 4989fd3bae15..30c782d61d70 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtc8192e2ant.c
++++ b/drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtc8192e2ant.c
+@@ -801,8 +801,8 @@ static void btc8192e2ant_bt_auto_report(struct btc_coexist *btcoexist,
+ 
+ 	rtl_dbg(rtlpriv, COMP_BT_COEXIST, DBG_LOUD,
+ 		"[BTCoex], %s BT Auto report = %s\n",
+-		(force_exec ? "force to" : ""),
+-		((enable_auto_report) ? "Enabled" : "Disabled"));
++		force_exec ? "force to" : "",
++		enable_auto_report ? "Enabled" : "Disabled");
+ 	coex_dm->cur_bt_auto_report = enable_auto_report;
+ 
+ 	if (!force_exec) {
+@@ -878,9 +878,9 @@ static void btc8192e2ant_rf_shrink(struct btc_coexist *btcoexist,
+ 	struct rtl_priv *rtlpriv = btcoexist->adapter;
+ 
+ 	rtl_dbg(rtlpriv, COMP_BT_COEXIST, DBG_LOUD,
+-		"[BTCoex], %s turn Rx RF Shrink = %s\n",
+-		(force_exec ? "force to" : ""),
+-		((rx_rf_shrink_on) ? "ON" : "OFF"));
++		"[BTCoex], %sturn Rx RF Shrink = %s\n",
++		force_exec ? "force to " : "",
++		rx_rf_shrink_on ? "ON" : "OFF");
+ 	coex_dm->cur_rf_rx_lpf_shrink = rx_rf_shrink_on;
+ 
+ 	if (!force_exec) {
+@@ -927,9 +927,10 @@ static void btc8192e2ant_dac_swing(struct btc_coexist *btcoexist,
+ 	struct rtl_priv *rtlpriv = btcoexist->adapter;
+ 
+ 	rtl_dbg(rtlpriv, COMP_BT_COEXIST, DBG_LOUD,
+-		"[BTCoex], %s turn DacSwing=%s, dac_swing_lvl = 0x%x\n",
+-		(force_exec ? "force to" : ""),
+-		((dac_swing_on) ? "ON" : "OFF"), dac_swing_lvl);
++		"[BTCoex], %sturn DacSwing=%s, dac_swing_lvl = 0x%x\n",
++		force_exec ? "force to " : "",
++		dac_swing_on ? "ON" : "OFF",
++		dac_swing_lvl);
+ 	coex_dm->cur_dac_swing_on = dac_swing_on;
+ 	coex_dm->cur_dac_swing_lvl = dac_swing_lvl;
+ 
+@@ -987,9 +988,9 @@ static void btc8192e2ant_agc_table(struct btc_coexist *btcoexist,
+ 	struct rtl_priv *rtlpriv = btcoexist->adapter;
+ 
+ 	rtl_dbg(rtlpriv, COMP_BT_COEXIST, DBG_LOUD,
+-		"[BTCoex], %s %s Agc Table\n",
+-		(force_exec ? "force to" : ""),
+-		((agc_table_en) ? "Enable" : "Disable"));
++		"[BTCoex], %s%s Agc Table\n",
++		force_exec ? "force to " : "",
++		agc_table_en ? "Enable" : "Disable");
+ 	coex_dm->cur_agc_table_en = agc_table_en;
+ 
+ 	if (!force_exec) {
+diff --git a/drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtc8821a2ant.c b/drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtc8821a2ant.c
+index d2f4287da9a5..43bd52a62c4f 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtc8821a2ant.c
++++ b/drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtc8821a2ant.c
+@@ -732,9 +732,9 @@ static void btc8821a2ant_low_penalty_ra(struct btc_coexist *btcoexist,
+ 	struct rtl_priv *rtlpriv = btcoexist->adapter;
+ 
+ 	rtl_dbg(rtlpriv, COMP_BT_COEXIST, DBG_LOUD,
+-		"[BTCoex], %s turn LowPenaltyRA = %s\n",
+-		(force_exec ? "force to" : ""),
+-		((low_penalty_ra) ? "ON" : "OFF"));
++		"[BTCoex], %sturn LowPenaltyRA = %s\n",
++		force_exec ? "force to " : "",
++		low_penalty_ra ? "ON" : "OFF");
+ 	coex_dm->cur_low_penalty_ra = low_penalty_ra;
+ 
+ 	if (!force_exec) {
+@@ -780,9 +780,9 @@ static void btc8821a2ant_dac_swing(struct btc_coexist *btcoexist,
+ 	struct rtl_priv *rtlpriv = btcoexist->adapter;
+ 
+ 	rtl_dbg(rtlpriv, COMP_BT_COEXIST, DBG_LOUD,
+-		"[BTCoex], %s turn DacSwing = %s, dac_swing_lvl = 0x%x\n",
+-		(force_exec ? "force to" : ""),
+-		((dac_swing_on) ? "ON" : "OFF"),
++		"[BTCoex], %sturn DacSwing = %s, dac_swing_lvl = 0x%x\n",
++		force_exec ? "force to " : "",
++		dac_swing_on ? "ON" : "OFF",
+ 		dac_swing_lvl);
+ 	coex_dm->cur_dac_swing_on = dac_swing_on;
+ 	coex_dm->cur_dac_swing_lvl = dac_swing_lvl;
+diff --git a/drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtcoutsrc.c b/drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtcoutsrc.c
+index 8d28c68f083e..f9a2d8a6730c 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtcoutsrc.c
++++ b/drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtcoutsrc.c
+@@ -874,11 +874,10 @@ static void halbtc_display_wifi_status(struct btc_coexist *btcoexist,
+ 	seq_printf(m, "\n %-35s = %s / %s/ %s/ AP=%d ",
+ 		   "Wifi freq/ bw/ traffic",
+ 		   gl_btc_wifi_freq_string[wifi_freq],
+-		   ((wifi_under_b_mode) ? "11b" :
+-		    gl_btc_wifi_bw_string[wifi_bw]),
+-		   ((!wifi_busy) ? "idle" : ((BTC_WIFI_TRAFFIC_TX ==
+-					      wifi_traffic_dir) ? "uplink" :
+-					     "downlink")),
++		   wifi_under_b_mode ? "11b" : gl_btc_wifi_bw_string[wifi_bw],
++		   (!wifi_busy ? "idle" :
++		    wifi_traffic_dir == BTC_WIFI_TRAFFIC_TX ? "uplink" :
++		    "downlink"),
+ 		   ap_num);
+ 
+ 	/* power status	 */
+diff --git a/drivers/net/wireless/realtek/rtlwifi/pci.c b/drivers/net/wireless/realtek/rtlwifi/pci.c
+index 1d0af72ee780..3189d1c50d52 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/pci.c
++++ b/drivers/net/wireless/realtek/rtlwifi/pci.c
+@@ -557,7 +557,7 @@ static void _rtl_pci_tx_isr(struct ieee80211_hw *hw, int prio)
+ 		if (rtlpriv->rtlhal.earlymode_enable)
+ 			skb_pull(skb, EM_HDR_LEN);
+ 
+-		rtl_dbg(rtlpriv, (COMP_INTR | COMP_SEND), DBG_TRACE,
++		rtl_dbg(rtlpriv, COMP_INTR | COMP_SEND, DBG_TRACE,
+ 			"new ring->idx:%d, free: skb_queue_len:%d, free: seq:%x\n",
+ 			ring->idx,
+ 			skb_queue_len(&ring->queue),
 -- 
 2.26.0
 
