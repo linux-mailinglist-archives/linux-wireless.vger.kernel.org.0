@@ -2,69 +2,49 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A997022D217
-	for <lists+linux-wireless@lfdr.de>; Sat, 25 Jul 2020 01:12:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 29C1B22D346
+	for <lists+linux-wireless@lfdr.de>; Sat, 25 Jul 2020 02:26:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726576AbgGXXMA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 24 Jul 2020 19:12:00 -0400
-Received: from mga04.intel.com ([192.55.52.120]:19091 "EHLO mga04.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726438AbgGXXMA (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 24 Jul 2020 19:12:00 -0400
-IronPort-SDR: kdQYQhAbn4+6ZIGa9GhlgW6/AM3D4jAfJ3VEG/nWoQpiDwA+6B4iZt3+2K+zWelYOVVXBsZ/Um
- PItmgp4aXcyw==
-X-IronPort-AV: E=McAfee;i="6000,8403,9692"; a="148281972"
-X-IronPort-AV: E=Sophos;i="5.75,392,1589266800"; 
-   d="scan'208";a="148281972"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jul 2020 16:11:58 -0700
-IronPort-SDR: 22DXrr07uwr7NEldS6kJ7cOEQhwSjvWNXbGYq91IJGf27iqRbDgPlUxDncA6tVLjyye/YZ8/qQ
- 1ioPmEbssuDg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.75,392,1589266800"; 
-   d="scan'208";a="289132518"
-Received: from jekeller-mobl1.amr.corp.intel.com (HELO [10.254.52.44]) ([10.254.52.44])
-  by orsmga006.jf.intel.com with ESMTP; 24 Jul 2020 16:11:57 -0700
-Subject: Re: [RFC 2/7] ath10k: Add support to process rx packet in thread
-To:     Rakesh Pillai <pillair@codeaurora.org>,
-        'Rajkumar Manoharan' <rmanohar@codeaurora.org>
-Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kvalo@codeaurora.org,
-        johannes@sipsolutions.net, davem@davemloft.net, kuba@kernel.org,
-        netdev@vger.kernel.org, dianders@chromium.org,
-        evgreen@chromium.org, linux-wireless-owner@vger.kernel.org
-References: <1595351666-28193-1-git-send-email-pillair@codeaurora.org>
- <1595351666-28193-3-git-send-email-pillair@codeaurora.org>
- <13573549c277b34d4c87c471ff1a7060@codeaurora.org>
- <003001d6611e$9afa0cc0$d0ee2640$@codeaurora.org>
-From:   Jacob Keller <jacob.e.keller@intel.com>
-Organization: Intel Corporation
-Message-ID: <0d9baad4-fba7-d362-41b7-f0b37446c5ef@intel.com>
-Date:   Fri, 24 Jul 2020 16:11:57 -0700
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.0.1
-MIME-Version: 1.0
-In-Reply-To: <003001d6611e$9afa0cc0$d0ee2640$@codeaurora.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+        id S1726763AbgGYA0l (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 24 Jul 2020 20:26:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55940 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726573AbgGYA0l (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 24 Jul 2020 20:26:41 -0400
+Received: from shards.monkeyblade.net (shards.monkeyblade.net [IPv6:2620:137:e000::1:9])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CDDE4C0619D3;
+        Fri, 24 Jul 2020 17:26:40 -0700 (PDT)
+Received: from localhost (unknown [IPv6:2601:601:9f00:477::3d5])
+        (using TLSv1 with cipher AES256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id 3F01312763AC8;
+        Fri, 24 Jul 2020 17:09:55 -0700 (PDT)
+Date:   Fri, 24 Jul 2020 17:26:39 -0700 (PDT)
+Message-Id: <20200724.172639.235737337788102335.davem@davemloft.net>
+To:     kvalo@codeaurora.org
+Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org
+Subject: Re: pull-request: wireless-drivers-2020-07-24
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <20200724140302.D143AC433CB@smtp.codeaurora.org>
+References: <20200724140302.D143AC433CB@smtp.codeaurora.org>
+X-Mailer: Mew version 6.8 on Emacs 26.3
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Fri, 24 Jul 2020 17:09:55 -0700 (PDT)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+From: Kalle Valo <kvalo@codeaurora.org>
+Date: Fri, 24 Jul 2020 14:03:02 +0000 (UTC)
 
+> here's a pull request to net tree, more info below. Please let me know if there
+> are any problems.
+ ...
+>   git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers.git tags/wireless-drivers-2020-07-24
 
-On 7/23/2020 11:25 AM, Rakesh Pillai wrote:
-> Hi Rajkumar,
-> In linux, the IRQs are directed to the first core which is booted.
-> I see that all the IRQs are getting routed to CORE0 even if its heavily
-> loaded.
-> 
-
-You should be able to configure the initial IRQ setup so that they don't
-all go on CPU 0 when you create the IRQ. That obviously doesn't help the
-case of wanting scheduler to dynamically move the processing around to
-other CPUs though.
+Pulled, thanks!
