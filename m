@@ -2,47 +2,30 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 013FA22E1E7
-	for <lists+linux-wireless@lfdr.de>; Sun, 26 Jul 2020 20:11:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 658BE22E1F3
+	for <lists+linux-wireless@lfdr.de>; Sun, 26 Jul 2020 20:25:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726935AbgGZSLf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 26 Jul 2020 14:11:35 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:22921 "EHLO m43-7.mailgun.net"
+        id S1726937AbgGZSY7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 26 Jul 2020 14:24:59 -0400
+Received: from mail.kernel.org ([198.145.29.99]:52794 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726738AbgGZSLe (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 26 Jul 2020 14:11:34 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1595787093; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=dkeTWaUqQPIijBo2b2trYUH4UirL83EHI+atIYwWFzE=; b=nHXUexJhGLGLHbwYS+ydju/kRSa5rL+es7uZtSOiIRkroRDiDwx7w7TWmyzKP87lazwsfJTb
- RRVQVHdBpdnJn1I1sjGT1CX6/SDGC7YXm7YmjDsMwu+JE4HDueRgcDorFOyAYJWrNP8UICuW
- +c4tGEc/X5CCIeJlnZsPgcUXRhw=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n11.prod.us-west-2.postgun.com with SMTP id
- 5f1dc75235f3e3d3168ebf00 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sun, 26 Jul 2020 18:11:30
- GMT
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id C6F6FC43391; Sun, 26 Jul 2020 18:11:30 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        id S1725972AbgGZSY7 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 26 Jul 2020 14:24:59 -0400
+Received: from localhost (p5486c93f.dip0.t-ipconnect.de [84.134.201.63])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 09F83C433C9;
-        Sun, 26 Jul 2020 18:11:27 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 09F83C433C9
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Wolfram Sang <wsa@kernel.org>
+        by mail.kernel.org (Postfix) with ESMTPSA id A35892065F;
+        Sun, 26 Jul 2020 18:24:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1595787899;
+        bh=X0SsSOPPqzDtDa3Lf0g5uMtwodCKBTDzAaWYJ2uyP8A=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=reBlES1WaGLzbye+naXlGRq1uc2tWBe1Fwz0X4EXX7pTlwpzlDmbcy2ZTA7wYaGnG
+         CwIGIz1pof9w0QC9+SFkADwZaj3E5b5eQZauZ2DMDtMJMK1J7Ej2vY/7nbR22I4GD+
+         tTRWy15wVrnB1nVzKV8btwPjClhNsuZVSovAOLhU=
+Date:   Sun, 26 Jul 2020 20:24:53 +0200
+From:   Wolfram Sang <wsa@kernel.org>
+To:     Kalle Valo <kvalo@codeaurora.org>
 Cc:     linux-wireless@vger.kernel.org,
         Johannes Berg <johannes.berg@intel.com>,
         Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
@@ -51,41 +34,73 @@ Cc:     linux-wireless@vger.kernel.org,
         "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH] iwlwifi: yoyo: don't print failure if debug firmware is missing
+Subject: Re: [RFC PATCH] iwlwifi: yoyo: don't print failure if debug firmware
+ is missing
+Message-ID: <20200726182453.GA1996@kunai>
 References: <20200625165210.14904-1-wsa@kernel.org>
-        <20200726152642.GA913@ninjato>
-Date:   Sun, 26 Jul 2020 21:11:25 +0300
-In-Reply-To: <20200726152642.GA913@ninjato> (Wolfram Sang's message of "Sun,
-        26 Jul 2020 17:26:42 +0200")
-Message-ID: <87y2n6404y.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+ <20200726152642.GA913@ninjato>
+ <87y2n6404y.fsf@codeaurora.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="uAKRQypu60I7Lcqm"
+Content-Disposition: inline
+In-Reply-To: <87y2n6404y.fsf@codeaurora.org>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Wolfram Sang <wsa@kernel.org> writes:
 
-> On Thu, Jun 25, 2020 at 06:52:10PM +0200, Wolfram Sang wrote:
->> Missing this firmware is not fatal, my wifi card still works. Even more,
->> I couldn't find any documentation what it is or where to get it. So, I
->> don't think the users should be notified if it is missing. If you browse
->> the net, you see the message is present is in quite some logs. Better
->> remove it.
->> 
->> Signed-off-by: Wolfram Sang <wsa@kernel.org>
->> ---
->
-> Any input on this? Or people I should add to CC?
+--uAKRQypu60I7Lcqm
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-This was discussed on another thread:
+On Sun, Jul 26, 2020 at 09:11:25PM +0300, Kalle Valo wrote:
+> Wolfram Sang <wsa@kernel.org> writes:
+>=20
+> > On Thu, Jun 25, 2020 at 06:52:10PM +0200, Wolfram Sang wrote:
+> >> Missing this firmware is not fatal, my wifi card still works. Even mor=
+e,
+> >> I couldn't find any documentation what it is or where to get it. So, I
+> >> don't think the users should be notified if it is missing. If you brow=
+se
+> >> the net, you see the message is present is in quite some logs. Better
+> >> remove it.
+> >>=20
+> >> Signed-off-by: Wolfram Sang <wsa@kernel.org>
+> >> ---
+> >
+> > Any input on this? Or people I should add to CC?
+>=20
+> This was discussed on another thread:
+>=20
+> https://lkml.kernel.org/r/87mu3magfp.fsf@tynnyri.adurom.net
+>=20
+> Unless Intel folks object I'm planning to take this to
+> wireless-drivers-next.
 
-https://lkml.kernel.org/r/87mu3magfp.fsf@tynnyri.adurom.net
+Cool, thanks for the heads up!
 
-Unless Intel folks object I'm planning to take this to
-wireless-drivers-next.
 
--- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+--uAKRQypu60I7Lcqm
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAl8dynEACgkQFA3kzBSg
+KbbLOA//cLtqhtfmDrzHrVvUxjU5Qa1RytBPogje3wfKQ0xIJ0UnI7IXDP04Lj7h
+PhkvasA/m1WlvYy2/xnsuK/ThR1I9eCdoDOkv1oUnO9fQpJ7JvHxGSdRXSPzrCbQ
+2UFwRleBH0uDm0aPn25HmI/O88CWaZiEEPugqCf6uGcUkfY66Z34u4045EJzOU3q
+pkOHD51oHfuQAx+D4MUmUG8lxd5EK69lxHgr4aFMHbM0Kp3bcLR6zDNT0h1aS3U8
+afRiOnPm3Vo11VZDadWu7NIsKoiWHpxKd7toNuvPZvpMkTETC6fmfHEP9mQYd7sA
+aG8af/SD1rQGkgx81N/tjnwtVD8KEZ7dmz/nNsCyiJgpHUfoB1NamCWTNsMDBXGr
+jKCB3kmf8IT3A/gn00+QpQ8G5XciGISHHZ/z2u8WHQzdPU2JYTdpETr91buFGXFz
+qw4G7s/Wlb0LFS8vJTjN5CSJGNoMylV9ISVnluX/IISECAyeaWds3nd301wC9nwH
+RZ1QENemFBFWuT7XI6+pKEPq1cwgdIJRGb/fHy3hvr+8ETkEPFQp4Yba7ydpiQgv
+0KgKk2j5bLKCEMXCamoSViwVNv+zXyLzeEDBUDj733Soc1IeW/7LNlDJ97tt1S7W
+6KdO4s1UEEXSdunmEOyAIbifTkDB52WVlAwKsTHZkhdcLwCKXJs=
+=4VPO
+-----END PGP SIGNATURE-----
+
+--uAKRQypu60I7Lcqm--
