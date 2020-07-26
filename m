@@ -2,68 +2,116 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 49A6722DF6D
-	for <lists+linux-wireless@lfdr.de>; Sun, 26 Jul 2020 15:09:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 64E7A22E0A5
+	for <lists+linux-wireless@lfdr.de>; Sun, 26 Jul 2020 17:26:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726964AbgGZNJv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 26 Jul 2020 09:09:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58074 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726937AbgGZNJv (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 26 Jul 2020 09:09:51 -0400
-Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B741C0619D4
-        for <linux-wireless@vger.kernel.org>; Sun, 26 Jul 2020 06:09:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-         s=20160729; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
-        Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=ASbKazThAxyPI+gS02+4Qf0lChoQbWaIBby5Xxgm/sQ=; b=PXpTcGMFjC6zGuqT9BSRRjMjmX
-        wIZdjYQ35UrvZiVXhpAuG2hhDb79kuBAQeBdqzx5g5Wwdr+eh+Hrg+Ac/EUAaZxZGgh9UZEmPJGte
-        xLAsiLhPkJvtgAA2Pofgo+uEx7SF2UUnnCc4u9G6k63NOZeioqlDL2wqxZLGV5iaWwZ8=;
-Received: from p5b206d80.dip0.t-ipconnect.de ([91.32.109.128] helo=localhost.localdomain)
-        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_CBC_SHA1:128)
-        (Exim 4.89)
-        (envelope-from <nbd@nbd.name>)
-        id 1jzgPU-0000J8-W4; Sun, 26 Jul 2020 15:09:49 +0200
-From:   Felix Fietkau <nbd@nbd.name>
+        id S1726726AbgGZP0v (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 26 Jul 2020 11:26:51 -0400
+Received: from mail.kernel.org ([198.145.29.99]:32794 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726042AbgGZP0u (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 26 Jul 2020 11:26:50 -0400
+Received: from localhost (p5486c93f.dip0.t-ipconnect.de [84.134.201.63])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 2DE272065E;
+        Sun, 26 Jul 2020 15:26:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1595777209;
+        bh=x6KKgIk4k329j0vVx9e+kq8JD+D+KN7RjIWWZE2Ny00=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=T2brAFcJpcXJLjn40fZQeBmZYlUiFmQkfeIN+wjRnSgbe7DO6eJ9YEB9zIn3/QjKN
+         9bzR1QUQyBjTXfqv4P6QZtoKsAx0l3Z4bvfbNtGH2ZfDb0nwRIRoOzOUDJ5ZExrHC2
+         otwRsMaX+FOYDuFx7wlTi7/pUhmV0uoWGjJyHz+E=
+Date:   Sun, 26 Jul 2020 17:26:42 +0200
+From:   Wolfram Sang <wsa@kernel.org>
 To:     linux-wireless@vger.kernel.org
-Cc:     johannes@sipsolutions.net
-Subject: [PATCH 2/2] mac80211: calculcate skb hash early when using itxq
-Date:   Sun, 26 Jul 2020 15:09:47 +0200
-Message-Id: <20200726130947.88145-2-nbd@nbd.name>
-X-Mailer: git-send-email 2.24.0
-In-Reply-To: <20200726130947.88145-1-nbd@nbd.name>
-References: <20200726130947.88145-1-nbd@nbd.name>
+Cc:     Johannes Berg <johannes.berg@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        Intel Linux Wireless <linuxwifi@intel.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH] iwlwifi: yoyo: don't print failure if debug firmware
+ is missing
+Message-ID: <20200726152642.GA913@ninjato>
+References: <20200625165210.14904-1-wsa@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="EVF5PPMfhYS0aIcm"
+Content-Disposition: inline
+In-Reply-To: <20200625165210.14904-1-wsa@kernel.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This avoids flow separation issues when using software encryption
 
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
----
- net/mac80211/tx.c | 1 +
- 1 file changed, 1 insertion(+)
+--EVF5PPMfhYS0aIcm
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index a4e7ef6b0457..7cb73416a372 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -3951,6 +3951,7 @@ void __ieee80211_subif_start_xmit(struct sk_buff *skb,
- 	if (local->ops->wake_tx_queue) {
- 		u16 queue = __ieee80211_select_queue(sdata, sta, skb);
- 		skb_set_queue_mapping(skb, queue);
-+		skb_get_hash(skb);
- 	}
- 
- 	if (sta) {
--- 
-2.24.0
+On Thu, Jun 25, 2020 at 06:52:10PM +0200, Wolfram Sang wrote:
+> Missing this firmware is not fatal, my wifi card still works. Even more,
+> I couldn't find any documentation what it is or where to get it. So, I
+> don't think the users should be notified if it is missing. If you browse
+> the net, you see the message is present is in quite some logs. Better
+> remove it.
+>=20
+> Signed-off-by: Wolfram Sang <wsa@kernel.org>
+> ---
 
+Any input on this? Or people I should add to CC?
+
+>=20
+> This is only build tested because I wanted to get your opinions first. I
+> couldn't find any explanation about yoyo, so I am entering unknown
+> territory here.
+>=20
+>  drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c b/drivers/n=
+et/wireless/intel/iwlwifi/iwl-dbg-tlv.c
+> index 7987a288917b..f180db2936e3 100644
+> --- a/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c
+> +++ b/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c
+> @@ -468,7 +468,7 @@ void iwl_dbg_tlv_load_bin(struct device *dev, struct =
+iwl_trans *trans)
+>  	if (!iwlwifi_mod_params.enable_ini)
+>  		return;
+> =20
+> -	res =3D request_firmware(&fw, "iwl-debug-yoyo.bin", dev);
+> +	res =3D firmware_request_nowarn(&fw, "iwl-debug-yoyo.bin", dev);
+>  	if (res)
+>  		return;
+> =20
+> --=20
+> 2.20.1
+>=20
+
+--EVF5PPMfhYS0aIcm
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAl8doK4ACgkQFA3kzBSg
+KbY5xQ/+M6FCVy2ULUZt7NXzSWEg/BKoQ5/LiakrYE7NNwWV0NshwLe8GV6jsxmK
+sDBc2NAODNbeFgXriTA+x+XnRFnTP440eHyszqHcjKdWf0hAbc5hn8lNqu8iZqk7
+Oe2huVW2rntpe72XSDda/8RnatGJuw10F1L2WP2jkf4MOJqR9Adsmcprvt80MFT5
+VXA15vCjWQ83nAUv5IH0Lwt8ERhsHti/ffmtprQ4CaDyvmF83/onHHi6EMMlyzJT
+6CP6uA1nBaSViEaArnuXQVlBdzjoTIE5NZz1Iblv6kQhC4I1bHDzANTc6xVBNkP9
+natYdhYWVQorDZl9dFvHywoJyMSD/LQ7QMD2YDs/18NB9TGVw7wjkEleBLuwUEHe
+giUmIzJ/EA2Ys0sWFRVxgdvNq7cMZeKT8K4fseRbQxOQkJYcTXH3WRcHx08MrZq1
++Cu1OR0It/d1bcAaP+JLHVSMAxDt87AzFIx8GB7T0e9GjpBQD+fV6ArErWh7EWaC
+qMHVC1/W4zjrGj6iqHC+ZJOJEKTlaAHIt6+1FAeLv38V87ZrTPQDICIa7xynl2rF
+u6vMtCCEwnq1GvYyPRrqO1gIn+MCdMYcvDC2uLb2xaeITPyykPo0fA+QMWKhPxP8
+1OeARpFdGdXHYDGqASOWlbsxgpVSAlxEmfp0gcbuoU+qjvacNGI=
+=vWQI
+-----END PGP SIGNATURE-----
+
+--EVF5PPMfhYS0aIcm--
