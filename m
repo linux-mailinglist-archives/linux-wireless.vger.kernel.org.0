@@ -2,125 +2,241 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 94CCB22DCE9
-	for <lists+linux-wireless@lfdr.de>; Sun, 26 Jul 2020 09:23:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BB04C22DD23
+	for <lists+linux-wireless@lfdr.de>; Sun, 26 Jul 2020 10:08:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725903AbgGZHXP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 26 Jul 2020 03:23:15 -0400
-Received: from mail29.static.mailgun.info ([104.130.122.29]:32243 "EHLO
-        mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725829AbgGZHXO (ORCPT
+        id S1725968AbgGZIIj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 26 Jul 2020 04:08:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39986 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725937AbgGZIIj (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 26 Jul 2020 03:23:14 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1595748194; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=P9/WVVMgNuEVZ2lL6lp5i3zGw0G7WWHSy768IkuWabM=; b=a7d0QhOqBEdr4x9Mx2/IUBQnQ/9doz+ad3kw3mbqsqYE9WcP9IvkjG4s+lmO9vM/Aba2ZDlx
- 5ngdb/xaHcwDqREp880HQVDTQ6+oQpBWcAcTgLIsytdHsDiaBU5YAmZmbbSnGlwifvDs7ZfV
- nwdJB/0j7vjYzbhRlrbBLNDIL2Q=
-X-Mailgun-Sending-Ip: 104.130.122.29
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n03.prod.us-west-2.postgun.com with SMTP id
- 5f1d2f4fa19b5f4b115ed6f3 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sun, 26 Jul 2020 07:22:55
- GMT
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 083F1C433CA; Sun, 26 Jul 2020 07:22:55 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from tynnyri.adurom.net (tynnyri.adurom.net [51.15.11.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id F1F26C433C9;
-        Sun, 26 Jul 2020 07:22:52 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org F1F26C433C9
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Sedat Dilek <sedat.dilek@gmail.com>
-Cc:     Luca Coelho <luciano.coelho@intel.com>,
-        Shahar S Matityahu <shahar.s.matityahu@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Intel Linux Wireless <linuxwifi@intel.com>,
-        linux-wireless@vger.kernel.org
-Subject: Re: iwlwifi: Direct firmware load for iwl-debug-yoyo.bin failed with error -2
-References: <CA+icZUWoycCvAAs5H0sigHTB+GGhX5NRVonYqKg7BRLB97dGkA@mail.gmail.com>
-Date:   Sun, 26 Jul 2020 10:22:50 +0300
-In-Reply-To: <CA+icZUWoycCvAAs5H0sigHTB+GGhX5NRVonYqKg7BRLB97dGkA@mail.gmail.com>
-        (Sedat Dilek's message of "Sat, 25 Jul 2020 14:11:32 +0200")
-Message-ID: <87mu3magfp.fsf@tynnyri.adurom.net>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Sun, 26 Jul 2020 04:08:39 -0400
+Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59C94C0619D2
+        for <linux-wireless@vger.kernel.org>; Sun, 26 Jul 2020 01:08:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject
+        :Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=L7zz29RbpqayIav/4uRGsIudbGtsA/+0V+aSqULt04I=; b=kFCaWusirWUzW4m1gAllvh7C5F
+        u6ztC+h/0uMvuzbQAH2wFxXFvBDcyhPfZqxTWPwFGRYSwXXjyS785csozuHoTD9jIeu2STJfcE9K6
+        /i2qnxAYVap/W/BCTaxIrA1CETxBs2CxJ+AoHVBbOyZaZmDgPD6bMESkDGEV9j2ciuXI=;
+Received: from p5b206d80.dip0.t-ipconnect.de ([91.32.109.128] helo=localhost.localdomain)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_CBC_SHA1:128)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1jzbi0-0007PZ-CK; Sun, 26 Jul 2020 10:08:36 +0200
+From:   Felix Fietkau <nbd@nbd.name>
+To:     linux-wireless@vger.kernel.org
+Cc:     johannes@sipsolutions.net
+Subject: [PATCH] mac80211: add a function for running rx without passing skbs to the stack
+Date:   Sun, 26 Jul 2020 10:08:35 +0200
+Message-Id: <20200726080835.23127-1-nbd@nbd.name>
+X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Sedat Dilek <sedat.dilek@gmail.com> writes:
+This can be used to run mac80211 rx processing on a batch of frames in NAPI
+poll before passing them to the network stack in a large batch.
+This can improve icache footprint, or it can be used to pass frames via
+netif_receive_skb_list.
 
-> Hi,
->
-> I am seeing this failed/error message for a long time:
->
-> [Sat Jul 25 13:03:28 2020] iwlwifi 0000:01:00.0: Direct firmware load
-> for iwl-debug-yoyo.bin failed with error -2
->
-> So, I started to look for the file "iwl-debug-yoyo.bin" in [1], but failed.
-> AFAICS this is a file for debugging purposes?
->
-> Why do I see such a message as an end-user w/o iwlwifi-debugging enabled?
-> For some end-users I can imagine this looks scary and they will look
-> into their cupboards and below their beds but will not find any
-> monsters.
->
-> I found a rename from an ini file to bin here:
-> commit 8d9e982bf9bf ("iwlwifi: dbg_ini: rename external debug
-> configuration file")
->
-> Is "iwl-debug-yoyo.bin" a binary or as before an ini (text) file I
-> have to configure somehow.
->
-> Does this need to be guarded by some "ifdef CONFIG_IWLWIFI_DEBUG" in
-> "drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c"?
->
-> Or does drivers/net/wireless/intel/iwlwifi/Makefile needs some tuning
-> - as said I have no iwlwifi debugging enabled via Kconfig?
-> ...
-> iwlwifi-objs            += iwl-dbg-tlv.o
->
-> Please enlighten me/us?
->
-> Thanks.
->
-> Regards,
-> - Sedat -
->
-> [1] https://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/linux-firmware.git/
-> [2] https://git.kernel.org/linus/e8d9e982bf9bf0e6f99099f1f09a37563b2b95b5
->
->>From my dmesg-output:
->
-> [Sa Jul 25 13:03:28 2020] iwlwifi 0000:01:00.0: can't disable ASPM; OS
-> doesn't have ASPM control
-> [Sa Jul 25 13:03:28 2020] iwlwifi 0000:01:00.0: loaded firmware
-> version 18.168.6.1 6000g2b-6.ucode op_mode iwldvm
-> [Sa Jul 25 13:03:28 2020] iwlwifi 0000:01:00.0: Direct firmware load
-> for iwl-debug-yoyo.bin failed with error -2
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+---
+Changes since RFC:
+- use struct list_head instead of sk_buff_head
+- use netif_receive_skb_list
 
-There's an RFC patch about this:
+ include/net/mac80211.h     | 25 ++++++++++++++++
+ net/mac80211/ieee80211_i.h |  2 +-
+ net/mac80211/rx.c          | 58 +++++++++++++++++++++++---------------
+ 3 files changed, 62 insertions(+), 23 deletions(-)
 
-https://patchwork.kernel.org/patch/11625759/
-
-I think that should be applied. Intel folks, should I take that directly
-to wireless-drivers-next?
-
+diff --git a/include/net/mac80211.h b/include/net/mac80211.h
+index 11d5610d2ad5..e95d7613ebfd 100644
+--- a/include/net/mac80211.h
++++ b/include/net/mac80211.h
+@@ -4357,6 +4357,31 @@ void ieee80211_free_hw(struct ieee80211_hw *hw);
+  */
+ void ieee80211_restart_hw(struct ieee80211_hw *hw);
+ 
++/**
++ * ieee80211_rx_list - receive frame and store processed skbs in a list
++ *
++ * Use this function to hand received frames to mac80211. The receive
++ * buffer in @skb must start with an IEEE 802.11 header. In case of a
++ * paged @skb is used, the driver is recommended to put the ieee80211
++ * header of the frame on the linear part of the @skb to avoid memory
++ * allocation and/or memcpy by the stack.
++ *
++ * This function may not be called in IRQ context. Calls to this function
++ * for a single hardware must be synchronized against each other. Calls to
++ * this function, ieee80211_rx_ni() and ieee80211_rx_irqsafe() may not be
++ * mixed for a single hardware. Must not run concurrently with
++ * ieee80211_tx_status() or ieee80211_tx_status_ni().
++ *
++ * This function must be called with BHs disabled and RCU read lock
++ *
++ * @hw: the hardware this frame came in on
++ * @sta: the station the frame was received from, or %NULL
++ * @skb: the buffer to receive, owned by mac80211 after this call
++ * @list: the destination list
++ */
++void ieee80211_rx_list(struct ieee80211_hw *hw, struct ieee80211_sta *sta,
++		       struct sk_buff *skb, struct list_head *list);
++
+ /**
+  * ieee80211_rx_napi - receive frame from NAPI context
+  *
+diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
+index 28b154c6e72d..6ff97d6bd597 100644
+--- a/net/mac80211/ieee80211_i.h
++++ b/net/mac80211/ieee80211_i.h
+@@ -218,7 +218,7 @@ enum ieee80211_rx_flags {
+ };
+ 
+ struct ieee80211_rx_data {
+-	struct napi_struct *napi;
++	struct list_head *list;
+ 	struct sk_buff *skb;
+ 	struct ieee80211_local *local;
+ 	struct ieee80211_sub_if_data *sdata;
+diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
+index 5c5af4b5fc08..43ea3dc5a1c9 100644
+--- a/net/mac80211/rx.c
++++ b/net/mac80211/rx.c
+@@ -2578,8 +2578,8 @@ static void ieee80211_deliver_skb_to_local_stack(struct sk_buff *skb,
+ 		memset(skb->cb, 0, sizeof(skb->cb));
+ 
+ 		/* deliver to local stack */
+-		if (rx->napi)
+-			napi_gro_receive(rx->napi, skb);
++		if (rx->list)
++			list_add_tail(&skb->list, rx->list);
+ 		else
+ 			netif_receive_skb(skb);
+ 	}
+@@ -3869,7 +3869,6 @@ void ieee80211_release_reorder_timeout(struct sta_info *sta, int tid)
+ 		/* This is OK -- must be QoS data frame */
+ 		.security_idx = tid,
+ 		.seqno_idx = tid,
+-		.napi = NULL, /* must be NULL to not have races */
+ 	};
+ 	struct tid_ampdu_rx *tid_agg_rx;
+ 
+@@ -4479,8 +4478,8 @@ static bool ieee80211_invoke_fast_rx(struct ieee80211_rx_data *rx,
+ 	/* deliver to local stack */
+ 	skb->protocol = eth_type_trans(skb, fast_rx->dev);
+ 	memset(skb->cb, 0, sizeof(skb->cb));
+-	if (rx->napi)
+-		napi_gro_receive(rx->napi, skb);
++	if (rx->list)
++		list_add_tail(&skb->list, rx->list);
+ 	else
+ 		netif_receive_skb(skb);
+ 
+@@ -4547,7 +4546,7 @@ static bool ieee80211_prepare_and_rx_handle(struct ieee80211_rx_data *rx,
+ static void __ieee80211_rx_handle_packet(struct ieee80211_hw *hw,
+ 					 struct ieee80211_sta *pubsta,
+ 					 struct sk_buff *skb,
+-					 struct napi_struct *napi)
++					 struct list_head *list)
+ {
+ 	struct ieee80211_local *local = hw_to_local(hw);
+ 	struct ieee80211_sub_if_data *sdata;
+@@ -4562,7 +4561,7 @@ static void __ieee80211_rx_handle_packet(struct ieee80211_hw *hw,
+ 	memset(&rx, 0, sizeof(rx));
+ 	rx.skb = skb;
+ 	rx.local = local;
+-	rx.napi = napi;
++	rx.list = list;
+ 
+ 	if (ieee80211_is_data(fc) || ieee80211_is_mgmt(fc))
+ 		I802_DEBUG_INC(local->dot11ReceivedFragmentCount);
+@@ -4670,8 +4669,8 @@ static void __ieee80211_rx_handle_packet(struct ieee80211_hw *hw,
+  * This is the receive path handler. It is called by a low level driver when an
+  * 802.11 MPDU is received from the hardware.
+  */
+-void ieee80211_rx_napi(struct ieee80211_hw *hw, struct ieee80211_sta *pubsta,
+-		       struct sk_buff *skb, struct napi_struct *napi)
++void ieee80211_rx_list(struct ieee80211_hw *hw, struct ieee80211_sta *pubsta,
++		       struct sk_buff *skb, struct list_head *list)
+ {
+ 	struct ieee80211_local *local = hw_to_local(hw);
+ 	struct ieee80211_rate *rate = NULL;
+@@ -4762,13 +4761,6 @@ void ieee80211_rx_napi(struct ieee80211_hw *hw, struct ieee80211_sta *pubsta,
+ 
+ 	status->rx_flags = 0;
+ 
+-	/*
+-	 * key references and virtual interfaces are protected using RCU
+-	 * and this requires that we are in a read-side RCU section during
+-	 * receive processing
+-	 */
+-	rcu_read_lock();
+-
+ 	/*
+ 	 * Frames with failed FCS/PLCP checksum are not returned,
+ 	 * all other frames are returned without radiotap header
+@@ -4776,23 +4768,45 @@ void ieee80211_rx_napi(struct ieee80211_hw *hw, struct ieee80211_sta *pubsta,
+ 	 * Also, frames with less than 16 bytes are dropped.
+ 	 */
+ 	skb = ieee80211_rx_monitor(local, skb, rate);
+-	if (!skb) {
+-		rcu_read_unlock();
++	if (!skb)
+ 		return;
+-	}
+ 
+ 	ieee80211_tpt_led_trig_rx(local,
+ 			((struct ieee80211_hdr *)skb->data)->frame_control,
+ 			skb->len);
+ 
+-	__ieee80211_rx_handle_packet(hw, pubsta, skb, napi);
+-
+-	rcu_read_unlock();
++	__ieee80211_rx_handle_packet(hw, pubsta, skb, list);
+ 
+ 	return;
+  drop:
+ 	kfree_skb(skb);
+ }
++EXPORT_SYMBOL(ieee80211_rx_list);
++
++void ieee80211_rx_napi(struct ieee80211_hw *hw, struct ieee80211_sta *pubsta,
++		       struct sk_buff *skb, struct napi_struct *napi)
++{
++	struct sk_buff *tmp;
++	LIST_HEAD(list);
++
++
++	/*
++	 * key references and virtual interfaces are protected using RCU
++	 * and this requires that we are in a read-side RCU section during
++	 * receive processing
++	 */
++	rcu_read_lock();
++	ieee80211_rx_list(hw, pubsta, skb, &list);
++	rcu_read_unlock();
++
++	if (!napi) {
++		netif_receive_skb_list(&list);
++		return;
++	}
++
++	list_for_each_entry_safe(skb, tmp, &list, list)
++		napi_gro_receive(napi, skb);
++}
+ EXPORT_SYMBOL(ieee80211_rx_napi);
+ 
+ /* This is a version of the rx handler that can be called from hard irq
 -- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+2.24.0
+
