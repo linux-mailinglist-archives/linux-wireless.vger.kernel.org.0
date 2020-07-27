@@ -2,280 +2,93 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7DC7D22FA59
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Jul 2020 22:49:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F94F22FDE0
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Jul 2020 01:30:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727103AbgG0UtC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 27 Jul 2020 16:49:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41180 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726899AbgG0Usz (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 27 Jul 2020 16:48:55 -0400
-Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com [IPv6:2607:f8b0:4864:20::442])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87C8CC0619D5
-        for <linux-wireless@vger.kernel.org>; Mon, 27 Jul 2020 13:48:55 -0700 (PDT)
-Received: by mail-pf1-x442.google.com with SMTP id m8so2888995pfh.3
-        for <linux-wireless@vger.kernel.org>; Mon, 27 Jul 2020 13:48:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=cl8j7GopTyZRJUUXdEXAzgEZa0nsCpMSIg/iqYNRNJI=;
-        b=iLaBtnq6xWHbjfS9QuQUioSxC170WYAeutNLBQNmsMY9Y5mX4ojCA5wgEOGVS8YKK9
-         Zhnmc63uw2QgH+kTs90etqDqnzopdR3s57ppLc/b3RXAl9YxGF4x5P9vW410qZyxeU2i
-         R+g6Sc76SziFatI+tH9MDVVyPtjHG+78wlE+8NCVMYjAnwkxd/aKj7o6Rt6VqK1KCHgF
-         At2PEyVi6sodJmb7NuOz8V4OBbZeHTxo5y6EW6OMyaRfqm0t3Oi722HGRLk2BkUdLW61
-         EQixGImDS8VRcz0HoTaUwecOxP0DX793COr0JYu0+mJVUGI+Lczxa3N7Ck35M4FfNScp
-         +kbw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=cl8j7GopTyZRJUUXdEXAzgEZa0nsCpMSIg/iqYNRNJI=;
-        b=kwusZwhgKzQKAUD1EpON571A+e/lJ4mDH4VZvqgjvZAVa1wVByyP2D2UaU4ISLzX3G
-         4e6doTGYRizcFZ6pa1xrrSUL08Bs60GvLLv1g81rp1+dEx/vSWmL7Yi+KV9U9Fma2U8H
-         Adr2SPSjiDzgUds4etSD+zhqpLHM7jMKnlakKiGcj6Wp4R19TFEAO8Ltzms6eBPK3456
-         tyyPunjvXz6Hl6Z7cEvyzNKsVFoXGXcSWn2QHn90+cZF8dm4kDQas+GlzHujH30rtNQj
-         FkCsXZfmSmQsC8uq/PN8V0YxZVdqJU09UzD1gdbygwmUyKGsNTufi10HbCRe172cGOPo
-         LPsw==
-X-Gm-Message-State: AOAM531RLhABH3yHPpAyEojt//3OM2R9gabJSR5M6Z+EEBVtIxCqRVmV
-        8jVWxMcao7tbzc4ap7ex2KdSJw==
-X-Google-Smtp-Source: ABdhPJzCJt3/kFYjKdCkjcIMaqcvuRRHbskkoYcAp1VnT157e73YyUuEdxYzSE508CB7pOpy9v5aTQ==
-X-Received: by 2002:aa7:9f46:: with SMTP id h6mr2443306pfr.321.1595882934807;
-        Mon, 27 Jul 2020 13:48:54 -0700 (PDT)
-Received: from builder.lan (104-188-17-28.lightspeed.sndgca.sbcglobal.net. [104.188.17.28])
-        by smtp.gmail.com with ESMTPSA id n15sm535816pjf.12.2020.07.27.13.48.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Jul 2020 13:48:54 -0700 (PDT)
-Date:   Mon, 27 Jul 2020 13:45:21 -0700
-From:   Bjorn Andersson <bjorn.andersson@linaro.org>
-To:     ????????? <wenhu.wang@vivo.com>
-Cc:     elder@kernel.org, davem@davemloft.net, kuba@kernel.org,
-        kvalo@codeaurora.org, agross@kernel.org, ohad@wizery.com,
-        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-remoteproc@vger.kernel.org, alsa-devel@alsa-project.org,
-        ath11k@lists.infradead.org, netdev@vger.kernel.org,
-        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        srinivas.kandagatla@linaro.org, sibis@codeaurora.org
-Subject: Re: [PATCH] soc: qmi: allow user to set handle wq to hiprio
-Message-ID: <20200727204521.GB229995@builder.lan>
-References: <AMoAtwB9DXJsyd-1khUpzqq9.1.1595862196133.Hmail.wenhu.wang@vivo.com>
+        id S1726861AbgG0XXs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 27 Jul 2020 19:23:48 -0400
+Received: from mail.kernel.org ([198.145.29.99]:34600 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726171AbgG0XXs (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 27 Jul 2020 19:23:48 -0400
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id C907220786;
+        Mon, 27 Jul 2020 23:23:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1595892227;
+        bh=x7YoQtupH7CiYhIjtuOqqsTxqZZSxlDcl4I1Z5TtKrI=;
+        h=From:To:Cc:Subject:Date:From;
+        b=Q433sx5jaX7YtQhjB71uXxNSpyaSrya38qdWSyQ5ByJw3awzIE5X0s/Oc638rkU87
+         av6JGC54Rs09q3BXtfTmB0Vm73CTzfEbkJ5E20QDUNH5+Nfh2d2G/nLtyGO3N2K6yh
+         vF1lmvphvkKD2s7y9vHO0T4CApPGQMuEB7uUjSaI=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Lorenzo Bianconi <lorenzo@kernel.org>,
+        Felix Fietkau <nbd@nbd.name>, Sasha Levin <sashal@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org
+Subject: [PATCH AUTOSEL 5.7 01/25] mt76: mt7615: fix lmac queue debugsfs entry
+Date:   Mon, 27 Jul 2020 19:23:21 -0400
+Message-Id: <20200727232345.717432-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <AMoAtwB9DXJsyd-1khUpzqq9.1.1595862196133.Hmail.wenhu.wang@vivo.com>
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon 27 Jul 08:03 PDT 2020, ????????? wrote:
+From: Lorenzo Bianconi <lorenzo@kernel.org>
 
-> Currently the qmi_handle is initialized single threaded and strictly
-> ordered with the active set to 1. This is pretty simple and safe but
-> sometimes ineffency. So it is better to allow user to decide whether
-> a high priority workqueue should be used.
+[ Upstream commit d941f47caa386931c3b598ad1b43d5ddd65869aa ]
 
-Can you please describe a scenario where this is needed/desired and
-perhaps also comment on why this is not always desired?
+acs and wmm index are swapped in mt7615_queues_acq respect to the hw
+design
 
-Regards,
-Bjorn
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/net/wireless/mediatek/mt76/mt7615/debugfs.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-> 
-> Signed-off-by: Wang Wenhu <wenhu.wang@vivo.com>
-> ---
->  drivers/net/ipa/ipa_qmi.c             | 4 ++--
->  drivers/net/wireless/ath/ath10k/qmi.c | 2 +-
->  drivers/net/wireless/ath/ath11k/qmi.c | 2 +-
->  drivers/remoteproc/qcom_sysmon.c      | 2 +-
->  drivers/slimbus/qcom-ngd-ctrl.c       | 4 ++--
->  drivers/soc/qcom/pdr_interface.c      | 4 ++--
->  drivers/soc/qcom/qmi_interface.c      | 9 +++++++--
->  include/linux/soc/qcom/qmi.h          | 3 ++-
->  samples/qmi/qmi_sample_client.c       | 4 ++--
->  9 files changed, 20 insertions(+), 14 deletions(-)
-> 
-> diff --git a/drivers/net/ipa/ipa_qmi.c b/drivers/net/ipa/ipa_qmi.c
-> index 5090f0f923ad..d78b0fe6bd83 100644
-> --- a/drivers/net/ipa/ipa_qmi.c
-> +++ b/drivers/net/ipa/ipa_qmi.c
-> @@ -486,7 +486,7 @@ int ipa_qmi_setup(struct ipa *ipa)
->  	 */
->  	ret = qmi_handle_init(&ipa_qmi->server_handle,
->  			      IPA_QMI_SERVER_MAX_RCV_SZ, &ipa_server_ops,
-> -			      ipa_server_msg_handlers);
-> +			      ipa_server_msg_handlers, 0);
->  	if (ret)
->  		return ret;
->  
-> @@ -500,7 +500,7 @@ int ipa_qmi_setup(struct ipa *ipa)
->  	 */
->  	ret = qmi_handle_init(&ipa_qmi->client_handle,
->  			      IPA_QMI_CLIENT_MAX_RCV_SZ, &ipa_client_ops,
-> -			      ipa_client_msg_handlers);
-> +			      ipa_client_msg_handlers, 0);
->  	if (ret)
->  		goto err_server_handle_release;
->  
-> diff --git a/drivers/net/wireless/ath/ath10k/qmi.c b/drivers/net/wireless/ath/ath10k/qmi.c
-> index 5468a41e928e..02881882b4d9 100644
-> --- a/drivers/net/wireless/ath/ath10k/qmi.c
-> +++ b/drivers/net/wireless/ath/ath10k/qmi.c
-> @@ -1034,7 +1034,7 @@ int ath10k_qmi_init(struct ath10k *ar, u32 msa_size)
->  
->  	ret = qmi_handle_init(&qmi->qmi_hdl,
->  			      WLFW_BDF_DOWNLOAD_REQ_MSG_V01_MAX_MSG_LEN,
-> -			      &ath10k_qmi_ops, qmi_msg_handler);
-> +			      &ath10k_qmi_ops, qmi_msg_handler, 0);
->  	if (ret)
->  		goto err;
->  
-> diff --git a/drivers/net/wireless/ath/ath11k/qmi.c b/drivers/net/wireless/ath/ath11k/qmi.c
-> index c00a99ad8dbc..91394d58d36e 100644
-> --- a/drivers/net/wireless/ath/ath11k/qmi.c
-> +++ b/drivers/net/wireless/ath/ath11k/qmi.c
-> @@ -2397,7 +2397,7 @@ int ath11k_qmi_init_service(struct ath11k_base *ab)
->  
->  	ab->qmi.target_mem_mode = ATH11K_QMI_TARGET_MEM_MODE_DEFAULT;
->  	ret = qmi_handle_init(&ab->qmi.handle, ATH11K_QMI_RESP_LEN_MAX,
-> -			      &ath11k_qmi_ops, ath11k_qmi_msg_handlers);
-> +			      &ath11k_qmi_ops, ath11k_qmi_msg_handlers, 0);
->  	if (ret < 0) {
->  		ath11k_warn(ab, "failed to initialize qmi handle\n");
->  		return ret;
-> diff --git a/drivers/remoteproc/qcom_sysmon.c b/drivers/remoteproc/qcom_sysmon.c
-> index 8d8996d714f0..4ec470e424ef 100644
-> --- a/drivers/remoteproc/qcom_sysmon.c
-> +++ b/drivers/remoteproc/qcom_sysmon.c
-> @@ -614,7 +614,7 @@ struct qcom_sysmon *qcom_add_sysmon_subdev(struct rproc *rproc,
->  	}
->  
->  	ret = qmi_handle_init(&sysmon->qmi, SSCTL_MAX_MSG_LEN, &ssctl_ops,
-> -			      qmi_indication_handler);
-> +			      qmi_indication_handler, 0);
->  	if (ret < 0) {
->  		dev_err(sysmon->dev, "failed to initialize qmi handle\n");
->  		kfree(sysmon);
-> diff --git a/drivers/slimbus/qcom-ngd-ctrl.c b/drivers/slimbus/qcom-ngd-ctrl.c
-> index 743ee7b4e63f..ba76691fc5a5 100644
-> --- a/drivers/slimbus/qcom-ngd-ctrl.c
-> +++ b/drivers/slimbus/qcom-ngd-ctrl.c
-> @@ -446,7 +446,7 @@ static int qcom_slim_qmi_init(struct qcom_slim_ngd_ctrl *ctrl,
->  		return -ENOMEM;
->  
->  	rc = qmi_handle_init(handle, SLIMBUS_QMI_POWER_REQ_MAX_MSG_LEN,
-> -				NULL, qcom_slim_qmi_msg_handlers);
-> +				NULL, qcom_slim_qmi_msg_handlers, 0);
->  	if (rc < 0) {
->  		dev_err(ctrl->dev, "QMI client init failed: %d\n", rc);
->  		goto qmi_handle_init_failed;
-> @@ -1293,7 +1293,7 @@ static int qcom_slim_ngd_qmi_svc_event_init(struct qcom_slim_ngd_ctrl *ctrl)
->  	int ret;
->  
->  	ret = qmi_handle_init(&qmi->svc_event_hdl, 0,
-> -				&qcom_slim_ngd_qmi_svc_event_ops, NULL);
-> +				&qcom_slim_ngd_qmi_svc_event_ops, NULL, 0);
->  	if (ret < 0) {
->  		dev_err(ctrl->dev, "qmi_handle_init failed: %d\n", ret);
->  		return ret;
-> diff --git a/drivers/soc/qcom/pdr_interface.c b/drivers/soc/qcom/pdr_interface.c
-> index bdcf16f88a97..cc1cb90c1968 100644
-> --- a/drivers/soc/qcom/pdr_interface.c
-> +++ b/drivers/soc/qcom/pdr_interface.c
-> @@ -685,7 +685,7 @@ struct pdr_handle *pdr_handle_alloc(void (*status)(int state,
->  
->  	ret = qmi_handle_init(&pdr->locator_hdl,
->  			      SERVREG_GET_DOMAIN_LIST_RESP_MAX_LEN,
-> -			      &pdr_locator_ops, NULL);
-> +			      &pdr_locator_ops, NULL, 0);
->  	if (ret < 0)
->  		goto destroy_indack;
->  
-> @@ -696,7 +696,7 @@ struct pdr_handle *pdr_handle_alloc(void (*status)(int state,
->  	ret = qmi_handle_init(&pdr->notifier_hdl,
->  			      SERVREG_STATE_UPDATED_IND_MAX_LEN,
->  			      &pdr_notifier_ops,
-> -			      qmi_indication_handler);
-> +			      qmi_indication_handler, 0);
->  	if (ret < 0)
->  		goto release_qmi_handle;
->  
-> diff --git a/drivers/soc/qcom/qmi_interface.c b/drivers/soc/qcom/qmi_interface.c
-> index 1a03eaa38c46..01160dbfc4d0 100644
-> --- a/drivers/soc/qcom/qmi_interface.c
-> +++ b/drivers/soc/qcom/qmi_interface.c
-> @@ -609,6 +609,7 @@ static struct socket *qmi_sock_create(struct qmi_handle *qmi,
->   * @recv_buf_size: maximum size of incoming message
->   * @ops:	reference to callbacks for QRTR notifications
->   * @handlers:	NULL-terminated list of QMI message handlers
-> + * @hiprio:	whether high priority worker is used for workqueue
->   *
->   * This initializes the QMI client handle to allow sending and receiving QMI
->   * messages. As messages are received the appropriate handler will be invoked.
-> @@ -617,9 +618,11 @@ static struct socket *qmi_sock_create(struct qmi_handle *qmi,
->   */
->  int qmi_handle_init(struct qmi_handle *qmi, size_t recv_buf_size,
->  		    const struct qmi_ops *ops,
-> -		    const struct qmi_msg_handler *handlers)
-> +		    const struct qmi_msg_handler *handlers,
-> +		    unsigned int hiprio)
->  {
->  	int ret;
-> +	unsigned int flags = WQ_UNBOUND;
->  
->  	mutex_init(&qmi->txn_lock);
->  	mutex_init(&qmi->sock_lock);
-> @@ -647,7 +650,9 @@ int qmi_handle_init(struct qmi_handle *qmi, size_t recv_buf_size,
->  	if (!qmi->recv_buf)
->  		return -ENOMEM;
->  
-> -	qmi->wq = alloc_workqueue("qmi_msg_handler", WQ_UNBOUND, 1);
-> +	if (hiprio)
-> +		flags |= WQ_HIGHPRI;
-> +	qmi->wq = alloc_workqueue("qmi_msg_handler", flags, 1);
->  	if (!qmi->wq) {
->  		ret = -ENOMEM;
->  		goto err_free_recv_buf;
-> diff --git a/include/linux/soc/qcom/qmi.h b/include/linux/soc/qcom/qmi.h
-> index e712f94b89fc..24062fd7163d 100644
-> --- a/include/linux/soc/qcom/qmi.h
-> +++ b/include/linux/soc/qcom/qmi.h
-> @@ -244,7 +244,8 @@ int qmi_add_server(struct qmi_handle *qmi, unsigned int service,
->  
->  int qmi_handle_init(struct qmi_handle *qmi, size_t max_msg_len,
->  		    const struct qmi_ops *ops,
-> -		    const struct qmi_msg_handler *handlers);
-> +		    const struct qmi_msg_handler *handlers,
-> +		    unsigned int hiprio);
->  void qmi_handle_release(struct qmi_handle *qmi);
->  
->  ssize_t qmi_send_request(struct qmi_handle *qmi, struct sockaddr_qrtr *sq,
-> diff --git a/samples/qmi/qmi_sample_client.c b/samples/qmi/qmi_sample_client.c
-> index c9e7276c3d83..a91d1633ea38 100644
-> --- a/samples/qmi/qmi_sample_client.c
-> +++ b/samples/qmi/qmi_sample_client.c
-> @@ -463,7 +463,7 @@ static int qmi_sample_probe(struct platform_device *pdev)
->  
->  	ret = qmi_handle_init(&sample->qmi, TEST_DATA_REQ_MAX_MSG_LEN_V01,
->  			      NULL,
-> -			      qmi_sample_handlers);
-> +			      qmi_sample_handlers, 0);
->  	if (ret < 0)
->  		return ret;
->  
-> @@ -590,7 +590,7 @@ static int qmi_sample_init(void)
->  	if (ret)
->  		goto err_remove_debug_dir;
->  
-> -	ret = qmi_handle_init(&lookup_client, 0, &lookup_ops, NULL);
-> +	ret = qmi_handle_init(&lookup_client, 0, &lookup_ops, NULL, 0);
->  	if (ret < 0)
->  		goto err_unregister_driver;
->  
-> -- 
-> 2.17.1
-> 
-> 
-> 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7615/debugfs.c
+index b4d0795154e3d..a2afd1a3c51ba 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/debugfs.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/debugfs.c
+@@ -206,10 +206,11 @@ mt7615_queues_acq(struct seq_file *s, void *data)
+ 	int i;
+ 
+ 	for (i = 0; i < 16; i++) {
+-		int j, acs = i / 4, index = i % 4;
++		int j, wmm_idx = i % MT7615_MAX_WMM_SETS;
++		int acs = i / MT7615_MAX_WMM_SETS;
+ 		u32 ctrl, val, qlen = 0;
+ 
+-		val = mt76_rr(dev, MT_PLE_AC_QEMPTY(acs, index));
++		val = mt76_rr(dev, MT_PLE_AC_QEMPTY(acs, wmm_idx));
+ 		ctrl = BIT(31) | BIT(15) | (acs << 8);
+ 
+ 		for (j = 0; j < 32; j++) {
+@@ -217,11 +218,11 @@ mt7615_queues_acq(struct seq_file *s, void *data)
+ 				continue;
+ 
+ 			mt76_wr(dev, MT_PLE_FL_Q0_CTRL,
+-				ctrl | (j + (index << 5)));
++				ctrl | (j + (wmm_idx << 5)));
+ 			qlen += mt76_get_field(dev, MT_PLE_FL_Q3_CTRL,
+ 					       GENMASK(11, 0));
+ 		}
+-		seq_printf(s, "AC%d%d: queued=%d\n", acs, index, qlen);
++		seq_printf(s, "AC%d%d: queued=%d\n", wmm_idx, acs, qlen);
+ 	}
+ 
+ 	return 0;
+-- 
+2.25.1
+
