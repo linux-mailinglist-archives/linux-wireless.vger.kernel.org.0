@@ -2,70 +2,67 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 11EB322ED4E
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Jul 2020 15:29:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A55E22F30C
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Jul 2020 16:52:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728841AbgG0N3T (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 27 Jul 2020 09:29:19 -0400
-Received: from mail.kernel.org ([198.145.29.99]:34044 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727781AbgG0N3T (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 27 Jul 2020 09:29:19 -0400
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8ED242070A;
-        Mon, 27 Jul 2020 13:29:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1595856559;
-        bh=fzY3EDhenJxJ5B3W5+RSAB/NbOO14b8bG5JjNNPXmdA=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=02LJ86cssijbd4K0TLlOj2hNeCZteoY5XA/73M30+s9ahOrCz428NyRyQYVjCcJzJ
-         faGKeY1Z5mWLQczNQ/3RX2q7l0PnuCKnnYYRaYxqpRNNTuQU5qo4MGC7UEZ+5zjFhr
-         f9Y2FRrOOQo5LqB6Vf8kHU2dNxI3NmMCaskn6tFg=
-Date:   Mon, 27 Jul 2020 15:29:14 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Viktor =?iso-8859-1?Q?J=E4gersk=FCpper?= 
-        <viktor_jaegerskuepper@freenet.de>
-Cc:     Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org,
-        Kalle Valo <kvalo@codeaurora.org>,
-        ath9k-devel@qca.qualcomm.com, linux-wireless@vger.kernel.org,
-        Qiujun Huang <hqjagain@gmail.com>,
-        Mark O'Donovan <shiftee@posteo.net>,
-        Roman Mamedov <rm@romanrm.net>
-Subject: Re: Please apply "ath9k: Fix general protection fault in
- ath9k_hif_usb_rx_cb" and the corresponding fix to all stable kernels
-Message-ID: <20200727132914.GA3982320@kroah.com>
-References: <81f07366-59e4-bfc9-c7a6-95c8e686c5e1@freenet.de>
+        id S1729631AbgG0Owj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 27 Jul 2020 10:52:39 -0400
+Received: from smtprelay0056.hostedemail.com ([216.40.44.56]:49920 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1729015AbgG0Owj (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 27 Jul 2020 10:52:39 -0400
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay02.hostedemail.com (Postfix) with ESMTP id 8B7171730851;
+        Mon, 27 Jul 2020 14:52:38 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1537:1568:1593:1594:1711:1714:1730:1747:1777:1792:2393:2553:2559:2562:2828:3138:3139:3140:3141:3142:3622:3867:3868:3872:3873:4321:5007:8531:10004:10400:10848:11232:11658:11914:12297:12740:12760:12895:13069:13311:13357:13439:14659:21080:21627:30054:30090:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:1,LUA_SUMMARY:none
+X-HE-Tag: help13_470362226f62
+X-Filterd-Recvd-Size: 1689
+Received: from XPS-9350.home (unknown [47.151.133.149])
+        (Authenticated sender: joe@perches.com)
+        by omf07.hostedemail.com (Postfix) with ESMTPA;
+        Mon, 27 Jul 2020 14:52:36 +0000 (UTC)
+Message-ID: <6e0c07bc3d2f48d4a62a9e270366c536cfe56783.camel@perches.com>
+Subject: Re: [PATCH 2/6] rtlwifi: Remove unnecessary parenthese in rtl_dbg
+ uses
+From:   Joe Perches <joe@perches.com>
+To:     Pkshih <pkshih@realtek.com>,
+        "Larry.Finger@lwfinger.net" <Larry.Finger@lwfinger.net>
+Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "kuba@kernel.org" <kuba@kernel.org>
+Date:   Mon, 27 Jul 2020 07:52:35 -0700
+In-Reply-To: <1595840670.17671.4.camel@realtek.com>
+References: <cover.1595706419.git.joe@perches.com>
+         <9b2eaedb7ea123ea766a379459b20a9486d1cd41.1595706420.git.joe@perches.com>
+         <1595830034.12227.7.camel@realtek.com>
+         <ae9d562ec9ef765dddd1491d4cfb5f6d18f7025f.camel@perches.com>
+         <1595840670.17671.4.camel@realtek.com>
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.36.3-0ubuntu1 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <81f07366-59e4-bfc9-c7a6-95c8e686c5e1@freenet.de>
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Jul 27, 2020 at 01:20:11PM +0200, Viktor Jägersküpper wrote:
-> Hi Greg, Sasha and all the others,
+On Mon, 2020-07-27 at 09:04 +0000, Pkshih wrote:
+> So, I think you would like to have parenthesis intentionally.
+> If so, 
+> test1 ? : (test2 ? :)
+> would be better.
 > 
-> Hans de Goede requested to revert "ath9k: Fix general protection fault in ath9k_hif_usb_rx_cb"
-> from all stable and longterm kernels because this commit broke certain devices
-> with Atheros 9271 and at that time it seemed that reverting the commit would be
-> done in the mainline kernel. The revert was done in kernel 5.7.9 etc., however
-> Mark O'Donovan found a fix for the original commit - which avoided the revert in
-> the mainline kernel - and this fix is now included in 5.8-rc7 with commit
 > 
-> 92f53e2fda8bb9a559ad61d57bfb397ce67ed0ab ("ath9k: Fix regression with Atheros 9271").
-> 
-> To be consistent with the mainline kernel, please apply the original commit
-> again (or re-revert it, whatever is appropriate for stable kernels) and then
-> apply Mark's fix. I have tested this with the current 5.7.10 kernel to confirm
-> that it works because I was affected by the bug.
-> 
-> All relevant people are CC'ed if someone wants to object.
+> If not,
+> test1 ? : test2 ? :
+> may be what you want (without any parenthesis).
 
-I've now queued both up, thanks!
+Use whatever style you like, it's unimportant to me
+and it's not worth spending any real time on it.
 
-greg k-h
+
