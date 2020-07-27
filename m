@@ -2,86 +2,103 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F05F922F43D
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Jul 2020 18:01:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7018B22F500
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Jul 2020 18:25:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730150AbgG0QB3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 27 Jul 2020 12:01:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52850 "EHLO
+        id S1729031AbgG0QZ0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 27 Jul 2020 12:25:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56556 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730043AbgG0QB3 (ORCPT
+        with ESMTP id S1728446AbgG0QZZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 27 Jul 2020 12:01:29 -0400
-Received: from mail-oo1-xc41.google.com (mail-oo1-xc41.google.com [IPv6:2607:f8b0:4864:20::c41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E643C0619D2
-        for <linux-wireless@vger.kernel.org>; Mon, 27 Jul 2020 09:01:29 -0700 (PDT)
-Received: by mail-oo1-xc41.google.com with SMTP id n21so2349782ooj.5
-        for <linux-wireless@vger.kernel.org>; Mon, 27 Jul 2020 09:01:29 -0700 (PDT)
+        Mon, 27 Jul 2020 12:25:25 -0400
+Received: from mail-oo1-xc43.google.com (mail-oo1-xc43.google.com [IPv6:2607:f8b0:4864:20::c43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8B37C061794;
+        Mon, 27 Jul 2020 09:25:23 -0700 (PDT)
+Received: by mail-oo1-xc43.google.com with SMTP id s190so3250339ooa.13;
+        Mon, 27 Jul 2020 09:25:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=Rze3q4WgyIxzG63CFKl6d1ylwsL33lBvaPpka1ifYpo=;
-        b=uJsz8+os42CViKNyjOFwyWCzdz6vVdOvhRt5FJHx23WJSDxacEvDyfagjkHuIoJMsm
-         7QsJ0QuYiafQhf0g6IDWfij5K+P4HyQxB9QK6PWJrzP/KmfAoUX6GJg7k7UKJauHJKkL
-         MaR9QtazwAEn5Bffx3yI+ifiHkkteNRibbxv3pMipH9G9/JSdC3eFzM8bKph4dphaVLT
-         3VJicgvBGe2pHZCuhpbgss8k6jtHWkQ6ioc6zLHQQAW61tOcdXhO358DClFCP+j14XFc
-         I6PG4oOkLKOGCTGpHGrHkb08JgWiqSnGqg1WmbC8WPOaWViyz6PJlUqZNkaR2tcfRNTH
-         uo+g==
+        h=sender:subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=kLEwg/GwaUFP5MTtIx9yELTFjI7/3rn3DIkXhvdqZaU=;
+        b=SL2Gkjqb+X2fjcvF1VHGdaS4g0KaJfv9brxRvotYAOF1r4cxXgKvQvQvss5Th8BGtI
+         BvrBRUT/gBIbrq7cbH/atelEM7n5eli33tySTmotJQEKTO+DN0DwQnpzzWaf4ck8U+ae
+         IdzzufDV5OI+9mPMzdnwrUS98zsYNZ2a2r5QJHSsh/XdlbWYHHPx9mtprdADuemYo5FY
+         ogap3CWrKEO5FJLugFi++ZdTyfU3JVL99dA2tMhXP2DNaU5iB4wkGYGIg+X5H7JhADGV
+         SJmK7HolDBy8mhHbZ1m3kfBMMZJGS/MliDs+suuBCQRPI/OotD8pSsDKpRTi2YLj8ohq
+         LI6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=Rze3q4WgyIxzG63CFKl6d1ylwsL33lBvaPpka1ifYpo=;
-        b=dSCAxGqx7HxgMHH2sPaimj0Kl3Rtg7kAIbf6LJnrD82OwlC/VNWLA+TDoJsx5wX+ZD
-         984HZ+kVV/rZ685gm3koqSSnTZGeA9AuIJIUSycoUZaxGvfy7KP75cU0HtNfWHuqeOi3
-         14vvaoNdffH0A8auq/UcSF0pdCFPsvGEXhm8mei3NYAdXkoEBTryRz5+vfCZZZ6yHCHI
-         BD2FlUCsy5cbs+EhJy5VSfR5I1V+a0w2i8LYaZYDsEoRv+AhYm9hq0SM70hS5vjK7u9t
-         wjeKAON7vVpL0ZMND/c4CriIWf6yl+Y7iy8UsszWYGF7zyAjzt3fBZW/wYNuPnvwiNer
-         y1mA==
-X-Gm-Message-State: AOAM531uWKZLHu9dKxIFFw1ZeZKJHEA2eloItRAFsLEytyNC93jzKQHy
-        ExTjs5PgIWZaQmcmjQRfsRnZb2CxzSqMoBZkFXM=
-X-Google-Smtp-Source: ABdhPJyE3JBByFMOXyYYxLmbch3kTMGwIZWCW5V1ljsxDKT4cyhiofbGz7D6JoTe1XGJZ2v0cV9EJVO0Lmys6w4egX0=
-X-Received: by 2002:a4a:d988:: with SMTP id k8mr13949089oou.14.1595865688397;
- Mon, 27 Jul 2020 09:01:28 -0700 (PDT)
+        h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
+         :date:user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=kLEwg/GwaUFP5MTtIx9yELTFjI7/3rn3DIkXhvdqZaU=;
+        b=gteji0Kvr85QaN82DXaRK+HpQ3sMqp81sxhsJuO0NK66tWRzPwlxtpPLslQ7NmBpGT
+         3bFzYvTmy5hMVIvfwChyRAyW0idi3LTlzxdew8r5bqJXOWdpTwuOSdKo0rq+VZ/yNDtd
+         hylmDrONYUX3nIhy4mKylSWcl36qAWI5AU6SycnFiT+Bnm4jHBF8ndsteZyxx2nFSnvU
+         uDAL0OOtMw8yXTzvh5/5VllIKfrlvzjuljFiOj2R1xhYgUSp0Rmf7b0m6tYbOx27/8H5
+         ULpewjAMPFGvlPdR+GV2X59XBMqPq03pIS2S3Qr/QGIiwT3GrH2nd9HwPMUKZOSEntCt
+         EKzA==
+X-Gm-Message-State: AOAM532EkkYlv4vr0vFc7DhJ/Gofk58kvJ5jyAEASfbG6GM5Sugd9gh/
+        ATv5hW6dSAwjpaQfWqP1R7Mjl6Ck
+X-Google-Smtp-Source: ABdhPJyNKM4sqOTOSrrgLKu7GyOOBqYh9EpoiC0V0A3UviX3MIkXfMB0DJbeKjOQp9wN+auzOr4t2Q==
+X-Received: by 2002:a4a:ae07:: with SMTP id z7mr20059296oom.25.1595867122954;
+        Mon, 27 Jul 2020 09:25:22 -0700 (PDT)
+Received: from localhost.localdomain (cpe-24-31-245-230.kc.res.rr.com. [24.31.245.230])
+        by smtp.gmail.com with ESMTPSA id g2sm3594103otr.72.2020.07.27.09.25.21
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 27 Jul 2020 09:25:22 -0700 (PDT)
+Subject: Re: [PATCH 2/6] rtlwifi: Remove unnecessary parenthese in rtl_dbg
+ uses
+To:     Joe Perches <joe@perches.com>, Pkshih <pkshih@realtek.com>
+Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "kuba@kernel.org" <kuba@kernel.org>
+References: <cover.1595706419.git.joe@perches.com>
+ <9b2eaedb7ea123ea766a379459b20a9486d1cd41.1595706420.git.joe@perches.com>
+ <1595830034.12227.7.camel@realtek.com>
+ <ae9d562ec9ef765dddd1491d4cfb5f6d18f7025f.camel@perches.com>
+ <1595840670.17671.4.camel@realtek.com>
+ <6e0c07bc3d2f48d4a62a9e270366c536cfe56783.camel@perches.com>
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+Message-ID: <374359f9-8199-f4b9-0596-adc41c8c664f@lwfinger.net>
+Date:   Mon, 27 Jul 2020 11:25:21 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Received: by 2002:a9d:3d23:0:0:0:0:0 with HTTP; Mon, 27 Jul 2020 09:01:27
- -0700 (PDT)
-Reply-To: mis.haleema.zamani1@gmail.com
-From:   Mis Haleema Zamani <tiffany.gagudu113@gmail.com>
-Date:   Tue, 28 Jul 2020 00:01:27 +0800
-Message-ID: <CANYq7d5YG9px=v3xf7x0WUeoL71UZ8ejxH+kbsJ8DAuozc_bbA@mail.gmail.com>
-Subject: =?UTF-8?Q?BITTE_BRAUCHE_ICH_IHRE_UNTERST=C3=9CTZUNG?=
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <6e0c07bc3d2f48d4a62a9e270366c536cfe56783.camel@perches.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Gr=C3=BC=C3=9Fe an dich, mein lieber Freund,
+On 7/27/20 9:52 AM, Joe Perches wrote:
+> On Mon, 2020-07-27 at 09:04 +0000, Pkshih wrote:
+>> So, I think you would like to have parenthesis intentionally.
+>> If so,
+>> test1 ? : (test2 ? :)
+>> would be better.
+>>
+>>
+>> If not,
+>> test1 ? : test2 ? :
+>> may be what you want (without any parenthesis).
+> 
+> Use whatever style you like, it's unimportant to me
+> and it's not worth spending any real time on it.
 
-Mein Name ist Haleema Zamani, ich schreibe Ihnen diese Nachricht mit
-Tr=C3=A4nen in den Augen. Der andauernde B=C3=BCrgerkrieg in meinem Land Sy=
-rien
-hat mein Leben so sehr beeinflusst. Ich habe meine Familie letztes
-Jahr verloren. Bevor der Tod meines Vaters eine feste Einzahlung von
-(VIER MILLIONEN F=C3=9CNF HUNDERT TAUSEND VEREINIGTE STAATEN DOLLAR) auf
-ein Domizilkonto bei einer Bank in den Vereinigten Arabischen Emiraten
-hat, bin ich der n=C3=A4chste Verwandte.
+If you are so busy, why did you jump in with patches that you knew I was already 
+working on? You knew because you critiqued my first submission.
 
-Ich brauche dem=C3=BCtig Ihre Unterst=C3=BCtzung bei der =C3=9Cbertragung d=
-ieses
-Fonds f=C3=BCr Investitionen in Ihrem Land. Ich werde bereit sein, Ihnen
-einen Prozentsatz f=C3=BCr Ihre Unterst=C3=BCtzung anzubieten. Bitte
+@Kalle: Please drop my contributions in the sequence "PATCH v2 00/15] rtlwifi: 
+Change RT_TRACE into rtl_dbg for all drivers".
 
-Lassen Sie mich wissen, ob Sie dies f=C3=BCr mich tun k=C3=B6nnen. Dies ist
-meine wahre Geschichte. Bitte, ich brauche Ihre Hilfe. Sie
-kontaktieren mich per E-Mail
+Larry
 
-(mis.haleema.zamani@gmail.com)
-
-Dein,
-
-Mis Haleema Zamani
