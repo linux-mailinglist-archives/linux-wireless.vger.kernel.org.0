@@ -2,105 +2,80 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 658BE22E1F3
-	for <lists+linux-wireless@lfdr.de>; Sun, 26 Jul 2020 20:25:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F1AD22E3F2
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Jul 2020 04:16:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726937AbgGZSY7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 26 Jul 2020 14:24:59 -0400
-Received: from mail.kernel.org ([198.145.29.99]:52794 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725972AbgGZSY7 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 26 Jul 2020 14:24:59 -0400
-Received: from localhost (p5486c93f.dip0.t-ipconnect.de [84.134.201.63])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A35892065F;
-        Sun, 26 Jul 2020 18:24:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1595787899;
-        bh=X0SsSOPPqzDtDa3Lf0g5uMtwodCKBTDzAaWYJ2uyP8A=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=reBlES1WaGLzbye+naXlGRq1uc2tWBe1Fwz0X4EXX7pTlwpzlDmbcy2ZTA7wYaGnG
-         CwIGIz1pof9w0QC9+SFkADwZaj3E5b5eQZauZ2DMDtMJMK1J7Ej2vY/7nbR22I4GD+
-         tTRWy15wVrnB1nVzKV8btwPjClhNsuZVSovAOLhU=
-Date:   Sun, 26 Jul 2020 20:24:53 +0200
-From:   Wolfram Sang <wsa@kernel.org>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     linux-wireless@vger.kernel.org,
-        Johannes Berg <johannes.berg@intel.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Intel Linux Wireless <linuxwifi@intel.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH] iwlwifi: yoyo: don't print failure if debug firmware
- is missing
-Message-ID: <20200726182453.GA1996@kunai>
-References: <20200625165210.14904-1-wsa@kernel.org>
- <20200726152642.GA913@ninjato>
- <87y2n6404y.fsf@codeaurora.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="uAKRQypu60I7Lcqm"
-Content-Disposition: inline
-In-Reply-To: <87y2n6404y.fsf@codeaurora.org>
+        id S1726807AbgG0CQT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 26 Jul 2020 22:16:19 -0400
+Received: from smtp25.cstnet.cn ([159.226.251.25]:42356 "EHLO cstnet.cn"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726689AbgG0CQS (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 26 Jul 2020 22:16:18 -0400
+Received: from localhost (unknown [159.226.5.99])
+        by APP-05 (Coremail) with SMTP id zQCowABXng7nOB5f4GZ3Aw--.24953S2;
+        Mon, 27 Jul 2020 10:16:07 +0800 (CST)
+From:   Xu Wang <vulab@iscas.ac.cn>
+To:     pkshih@realtek.com, kvalo@codeaurora.org, davem@davemloft.net,
+        kuba@kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, Xu Wang <vulab@iscas.ac.cn>
+Subject: [PATCH] rtlwifi: core: use eth_broadcast_addr() to assign broadcast
+Date:   Mon, 27 Jul 2020 02:16:06 +0000
+Message-Id: <20200727021606.8602-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.17.1
+X-CM-TRANSID: zQCowABXng7nOB5f4GZ3Aw--.24953S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7XrW5uFy8WrW7uF4kZw4UXFb_yoW8Jr1fpF
+        47W397CrWfGF4qyayUXF1IvFyrA3Wrtr97CFySy34F9FsYqryfJa4rCFy7ur1UJFWUWFWY
+        kr1rtrsrWF15Ga7anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+        9KBjDU0xBIdaVrnRJUUUvj14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+        rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+        1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
+        6r4UJwA2z4x0Y4vEx4A2jsIE14v26r4UJVWxJr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r
+        4UJVWxJr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2Wl
+        Yx0E2Ix0cI8IcVAFwI0_JF0_Jw1lYx0Ex4A2jsIE14v26r4UJVWxJr1lOx8S6xCaFVCjc4
+        AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwCY02Avz4vE
+        14v_Gr1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67
+        AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIY
+        rxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14
+        v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWrJr0_WFyUJwCI42IY6I8E87Iv67AKxVWU
+        JVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUr1
+        8BUUUUU
+X-Originating-IP: [159.226.5.99]
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiCAAKA18J9hcKKwAAsX
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+This patch is to use eth_broadcast_addr() to assign broadcast address
+insetad of memcpy().
 
---uAKRQypu60I7Lcqm
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Xu Wang <vulab@iscas.ac.cn>
+---
+ drivers/net/wireless/realtek/rtlwifi/core.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-On Sun, Jul 26, 2020 at 09:11:25PM +0300, Kalle Valo wrote:
-> Wolfram Sang <wsa@kernel.org> writes:
->=20
-> > On Thu, Jun 25, 2020 at 06:52:10PM +0200, Wolfram Sang wrote:
-> >> Missing this firmware is not fatal, my wifi card still works. Even mor=
-e,
-> >> I couldn't find any documentation what it is or where to get it. So, I
-> >> don't think the users should be notified if it is missing. If you brow=
-se
-> >> the net, you see the message is present is in quite some logs. Better
-> >> remove it.
-> >>=20
-> >> Signed-off-by: Wolfram Sang <wsa@kernel.org>
-> >> ---
-> >
-> > Any input on this? Or people I should add to CC?
->=20
-> This was discussed on another thread:
->=20
-> https://lkml.kernel.org/r/87mu3magfp.fsf@tynnyri.adurom.net
->=20
-> Unless Intel folks object I'm planning to take this to
-> wireless-drivers-next.
+diff --git a/drivers/net/wireless/realtek/rtlwifi/core.c b/drivers/net/wireless/realtek/rtlwifi/core.c
+index 4dd82c6052f0..8bb49b77b5c8 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/core.c
++++ b/drivers/net/wireless/realtek/rtlwifi/core.c
+@@ -1512,7 +1512,6 @@ static int rtl_op_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
+ 	bool wep_only = false;
+ 	int err = 0;
+ 	u8 mac_addr[ETH_ALEN];
+-	u8 bcast_addr[ETH_ALEN] = { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff };
+ 
+ 	rtlpriv->btcoexist.btc_info.in_4way = false;
+ 
+@@ -1634,7 +1633,7 @@ static int rtl_op_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
+ 			memcpy(rtlpriv->sec.key_buf[key_idx],
+ 			       key->key, key->keylen);
+ 			rtlpriv->sec.key_len[key_idx] = key->keylen;
+-			memcpy(mac_addr, bcast_addr, ETH_ALEN);
++			eth_broadcast_addr(mac_addr);
+ 		} else {	/* pairwise key */
+ 			RT_TRACE(rtlpriv, COMP_SEC, DBG_DMESG,
+ 				 "set pairwise key\n");
+-- 
+2.17.1
 
-Cool, thanks for the heads up!
-
-
---uAKRQypu60I7Lcqm
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAl8dynEACgkQFA3kzBSg
-KbbLOA//cLtqhtfmDrzHrVvUxjU5Qa1RytBPogje3wfKQ0xIJ0UnI7IXDP04Lj7h
-PhkvasA/m1WlvYy2/xnsuK/ThR1I9eCdoDOkv1oUnO9fQpJ7JvHxGSdRXSPzrCbQ
-2UFwRleBH0uDm0aPn25HmI/O88CWaZiEEPugqCf6uGcUkfY66Z34u4045EJzOU3q
-pkOHD51oHfuQAx+D4MUmUG8lxd5EK69lxHgr4aFMHbM0Kp3bcLR6zDNT0h1aS3U8
-afRiOnPm3Vo11VZDadWu7NIsKoiWHpxKd7toNuvPZvpMkTETC6fmfHEP9mQYd7sA
-aG8af/SD1rQGkgx81N/tjnwtVD8KEZ7dmz/nNsCyiJgpHUfoB1NamCWTNsMDBXGr
-jKCB3kmf8IT3A/gn00+QpQ8G5XciGISHHZ/z2u8WHQzdPU2JYTdpETr91buFGXFz
-qw4G7s/Wlb0LFS8vJTjN5CSJGNoMylV9ISVnluX/IISECAyeaWds3nd301wC9nwH
-RZ1QENemFBFWuT7XI6+pKEPq1cwgdIJRGb/fHy3hvr+8ETkEPFQp4Yba7ydpiQgv
-0KgKk2j5bLKCEMXCamoSViwVNv+zXyLzeEDBUDj733Soc1IeW/7LNlDJ97tt1S7W
-6KdO4s1UEEXSdunmEOyAIbifTkDB52WVlAwKsTHZkhdcLwCKXJs=
-=4VPO
------END PGP SIGNATURE-----
-
---uAKRQypu60I7Lcqm--
