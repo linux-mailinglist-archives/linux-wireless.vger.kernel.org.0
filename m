@@ -2,38 +2,37 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 43A4522F90F
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Jul 2020 21:29:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5BD0022F91A
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Jul 2020 21:32:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728367AbgG0T33 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 27 Jul 2020 15:29:29 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35962 "EHLO mail.kernel.org"
+        id S1727120AbgG0Tc3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 27 Jul 2020 15:32:29 -0400
+Received: from mail.kernel.org ([198.145.29.99]:36788 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726541AbgG0T32 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 27 Jul 2020 15:29:28 -0400
+        id S1726222AbgG0Tc2 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 27 Jul 2020 15:32:28 -0400
 Received: from embeddedor (187-162-31-110.static.axtel.net [187.162.31.110])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id BE7D020729;
-        Mon, 27 Jul 2020 19:29:26 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 9013F20729;
+        Mon, 27 Jul 2020 19:32:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1595878167;
-        bh=ytTEJ+stPjTn4AC1GT+S1W3B63rhspPmd4oDrpegaSw=;
+        s=default; t=1595878348;
+        bh=xrPOpiw5N1f5UyaEzUN10XGXH/Na2P8CYv65GnJlAmw=;
         h=Date:From:To:Cc:Subject:From;
-        b=Wj2MuMRmisOIMf71eqoAVofvEi+5yKNZEwbDdd14S93cWbx8Rd0s7jQe5uEROfTSt
-         MKz+JJ9NdWSLYd8CYK0KBq2Wp1AQwYYbPWKMq5Lts+y6UQHbUADxudmSOWNtuhrVre
-         R2ux50sKyf4rmnK/FzFDV9ODOgBSK4cqsK2y9kKs=
-Date:   Mon, 27 Jul 2020 14:35:20 -0500
+        b=W1Rr08b4qkkNCaHLLEygxujy9aSK/6cNqycM7o5NR+cJQgfR90L9VSomVPSad2280
+         LUtD3/FpnFtQcWbhMPFMs5xlMl7MIbHJB4aiCQx6O3pb/6mys3SYZ/TOVL2ig31Jgp
+         WMGqp4+r2o12WoibuZf8UXb32NaCJ3QXG3jyKeVg=
+Date:   Mon, 27 Jul 2020 14:38:21 -0500
 From:   "Gustavo A. R. Silva" <gustavoars@kernel.org>
-To:     QCA ath9k Development <ath9k-devel@qca.qualcomm.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
+To:     Kalle Valo <kvalo@codeaurora.org>,
         "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
+Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
         "Gustavo A. R. Silva" <gustavoars@kernel.org>
-Subject: [PATCH][next] ath9k: Use fallthrough pseudo-keyword
-Message-ID: <20200727193520.GA832@embeddedor>
+Subject: [PATCH][next] ath10k: Use fallthrough pseudo-keyword
+Message-ID: <20200727193821.GA981@embeddedor>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -44,158 +43,129 @@ List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 Replace the existing /* fall through */ comments and its variants with
-the new pseudo-keyword macro fallthrough[1].
+the new pseudo-keyword macro fallthrough[1]. Also, remove unnecessary
+fall-through markings when it is the case.
 
 [1] https://www.kernel.org/doc/html/v5.7/process/deprecated.html?highlight=fallthrough#implicit-switch-case-fall-through
 
 Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
 ---
- drivers/net/wireless/ath/ath9k/ar5008_phy.c | 4 ++--
- drivers/net/wireless/ath/ath9k/ar9002_mac.c | 2 +-
- drivers/net/wireless/ath/ath9k/ar9002_phy.c | 2 +-
- drivers/net/wireless/ath/ath9k/ar9003_mac.c | 2 +-
- drivers/net/wireless/ath/ath9k/channel.c    | 4 ++--
- drivers/net/wireless/ath/ath9k/eeprom_def.c | 2 +-
- drivers/net/wireless/ath/ath9k/hw.c         | 6 +++---
- drivers/net/wireless/ath/ath9k/main.c       | 2 +-
- 8 files changed, 12 insertions(+), 12 deletions(-)
+ drivers/net/wireless/ath/ath10k/core.c   |  2 +-
+ drivers/net/wireless/ath/ath10k/htt_rx.c |  2 +-
+ drivers/net/wireless/ath/ath10k/htt_tx.c |  6 +++---
+ drivers/net/wireless/ath/ath10k/mac.c    | 18 +++++++++---------
+ drivers/net/wireless/ath/ath10k/wow.c    |  2 +-
+ 5 files changed, 15 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/ar5008_phy.c b/drivers/net/wireless/ath/ath9k/ar5008_phy.c
-index dae95402eb3a..0d34356baf73 100644
---- a/drivers/net/wireless/ath/ath9k/ar5008_phy.c
-+++ b/drivers/net/wireless/ath/ath9k/ar5008_phy.c
-@@ -579,14 +579,14 @@ static void ar5008_hw_init_chain_masks(struct ath_hw *ah)
- 	case 0x5:
- 		REG_SET_BIT(ah, AR_PHY_ANALOG_SWAP,
- 			    AR_PHY_SWAP_ALT_CHAIN);
+diff --git a/drivers/net/wireless/ath/ath10k/core.c b/drivers/net/wireless/ath/ath10k/core.c
+index 340ce327ac14..8afb1d5fc9b5 100644
+--- a/drivers/net/wireless/ath/ath10k/core.c
++++ b/drivers/net/wireless/ath/ath10k/core.c
+@@ -2320,7 +2320,7 @@ static void ath10k_core_restart(struct work_struct *work)
+ 		break;
+ 	case ATH10K_STATE_RESTARTED:
+ 		ar->state = ATH10K_STATE_WEDGED;
 -		/* fall through */
 +		fallthrough;
- 	case 0x3:
- 		if (ah->hw_version.macVersion == AR_SREV_REVISION_5416_10) {
- 			REG_WRITE(ah, AR_PHY_RX_CHAINMASK, 0x7);
- 			REG_WRITE(ah, AR_PHY_CAL_CHAINMASK, 0x7);
+ 	case ATH10K_STATE_WEDGED:
+ 		ath10k_warn(ar, "device is wedged, will not restart\n");
+ 		break;
+diff --git a/drivers/net/wireless/ath/ath10k/htt_rx.c b/drivers/net/wireless/ath/ath10k/htt_rx.c
+index d787cbead56a..56e227f2e096 100644
+--- a/drivers/net/wireless/ath/ath10k/htt_rx.c
++++ b/drivers/net/wireless/ath/ath10k/htt_rx.c
+@@ -3017,7 +3017,7 @@ static int ath10k_htt_rx_in_ord_ind(struct ath10k *ar, struct sk_buff *skb)
+ 			ath10k_htt_rx_h_enqueue(ar, &amsdu, status);
  			break;
- 		}
--		/* fall through */
-+		fallthrough;
- 	case 0x1:
- 	case 0x2:
- 	case 0x7:
-diff --git a/drivers/net/wireless/ath/ath9k/ar9002_mac.c b/drivers/net/wireless/ath/ath9k/ar9002_mac.c
-index 4b3c9b108197..ce9a0a53771e 100644
---- a/drivers/net/wireless/ath/ath9k/ar9002_mac.c
-+++ b/drivers/net/wireless/ath/ath9k/ar9002_mac.c
-@@ -267,7 +267,7 @@ ar9002_set_txdesc(struct ath_hw *ah, void *ds, struct ath_tx_info *i)
- 	switch (i->aggr) {
- 	case AGGR_BUF_FIRST:
- 		ctl6 |= SM(i->aggr_len, AR_AggrLen);
--		/* fall through */
-+		fallthrough;
- 	case AGGR_BUF_MIDDLE:
- 		ctl1 |= AR_IsAggr | AR_MoreAggr;
- 		ctl6 |= SM(i->ndelim, AR_PadDelim);
-diff --git a/drivers/net/wireless/ath/ath9k/ar9002_phy.c b/drivers/net/wireless/ath/ath9k/ar9002_phy.c
-index 6f32b8d2ec7f..fcfed8e59d29 100644
---- a/drivers/net/wireless/ath/ath9k/ar9002_phy.c
-+++ b/drivers/net/wireless/ath/ath9k/ar9002_phy.c
-@@ -119,7 +119,7 @@ static int ar9002_hw_set_channel(struct ath_hw *ah, struct ath9k_channel *chan)
- 				aModeRefSel = 2;
- 			if (aModeRefSel)
- 				break;
+ 		case -EAGAIN:
 -			/* fall through */
 +			fallthrough;
- 		case 1:
  		default:
- 			aModeRefSel = 0;
-diff --git a/drivers/net/wireless/ath/ath9k/ar9003_mac.c b/drivers/net/wireless/ath/ath9k/ar9003_mac.c
-index e1fe7a7c3ad8..76b538942a79 100644
---- a/drivers/net/wireless/ath/ath9k/ar9003_mac.c
-+++ b/drivers/net/wireless/ath/ath9k/ar9003_mac.c
-@@ -120,7 +120,7 @@ ar9003_set_txdesc(struct ath_hw *ah, void *ds, struct ath_tx_info *i)
- 	switch (i->aggr) {
- 	case AGGR_BUF_FIRST:
- 		ctl17 |= SM(i->aggr_len, AR_AggrLen);
+ 			/* Should not happen. */
+ 			ath10k_warn(ar, "failed to extract amsdu: %d\n", ret);
+diff --git a/drivers/net/wireless/ath/ath10k/htt_tx.c b/drivers/net/wireless/ath/ath10k/htt_tx.c
+index bbe869575855..1fc0a312ab58 100644
+--- a/drivers/net/wireless/ath/ath10k/htt_tx.c
++++ b/drivers/net/wireless/ath/ath10k/htt_tx.c
+@@ -1314,7 +1314,7 @@ static int ath10k_htt_tx_hl(struct ath10k_htt *htt, enum ath10k_hw_txrx_mode txm
+ 	case ATH10K_HW_TXRX_RAW:
+ 	case ATH10K_HW_TXRX_NATIVE_WIFI:
+ 		flags0 |= HTT_DATA_TX_DESC_FLAGS0_MAC_HDR_PRESENT;
 -		/* fall through */
 +		fallthrough;
- 	case AGGR_BUF_MIDDLE:
- 		ctl12 |= AR_IsAggr | AR_MoreAggr;
- 		ctl17 |= SM(i->ndelim, AR_PadDelim);
-diff --git a/drivers/net/wireless/ath/ath9k/channel.c b/drivers/net/wireless/ath/ath9k/channel.c
-index fd61ae4782b6..6cf087522157 100644
---- a/drivers/net/wireless/ath/ath9k/channel.c
-+++ b/drivers/net/wireless/ath/ath9k/channel.c
-@@ -706,7 +706,7 @@ void ath_chanctx_event(struct ath_softc *sc, struct ieee80211_vif *vif,
- 			"Move chanctx state from FORCE_ACTIVE to IDLE\n");
- 
- 		sc->sched.state = ATH_CHANCTX_STATE_IDLE;
--		/* fall through */
-+		fallthrough;
- 	case ATH_CHANCTX_EVENT_SWITCH:
- 		if (!test_bit(ATH_OP_MULTI_CHANNEL, &common->op_flags) ||
- 		    sc->sched.state == ATH_CHANCTX_STATE_FORCE_ACTIVE ||
-@@ -1080,7 +1080,7 @@ static void ath_offchannel_timer(struct timer_list *t)
- 			mod_timer(&sc->offchannel.timer, jiffies + HZ / 10);
- 			break;
- 		}
--		/* fall through */
-+		fallthrough;
- 	case ATH_OFFCHANNEL_SUSPEND:
- 		if (!sc->offchannel.scan_req)
- 			return;
-diff --git a/drivers/net/wireless/ath/ath9k/eeprom_def.c b/drivers/net/wireless/ath/ath9k/eeprom_def.c
-index 56b44fc7a8e6..9729a69d3e2e 100644
---- a/drivers/net/wireless/ath/ath9k/eeprom_def.c
-+++ b/drivers/net/wireless/ath/ath9k/eeprom_def.c
-@@ -402,7 +402,7 @@ static u32 ath9k_hw_def_get_eeprom(struct ath_hw *ah,
- 			return AR5416_PWR_TABLE_OFFSET_DB;
- 	case EEP_ANTENNA_GAIN_2G:
- 		band = 1;
--		/* fall through */
-+		fallthrough;
- 	case EEP_ANTENNA_GAIN_5G:
- 		return max_t(u8, max_t(u8,
- 			pModal[band].antennaGainCh[0],
-diff --git a/drivers/net/wireless/ath/ath9k/hw.c b/drivers/net/wireless/ath/ath9k/hw.c
-index 8c97db73e34c..6609ce122e6e 100644
---- a/drivers/net/wireless/ath/ath9k/hw.c
-+++ b/drivers/net/wireless/ath/ath9k/hw.c
-@@ -1277,12 +1277,12 @@ static void ath9k_hw_set_operating_mode(struct ath_hw *ah, int opmode)
- 			REG_SET_BIT(ah, AR_CFG, AR_CFG_AP_ADHOC_INDICATION);
- 			break;
- 		}
--		/* fall through */
-+		fallthrough;
- 	case NL80211_IFTYPE_OCB:
- 	case NL80211_IFTYPE_MESH_POINT:
- 	case NL80211_IFTYPE_AP:
- 		set |= AR_STA_ID1_STA_AP;
--		/* fall through */
-+		fallthrough;
- 	case NL80211_IFTYPE_STATION:
- 		REG_CLR_BIT(ah, AR_CFG, AR_CFG_AP_ADHOC_INDICATION);
+ 	case ATH10K_HW_TXRX_ETHERNET:
+ 		flags0 |= SM(txmode, HTT_DATA_TX_DESC_FLAGS0_PKT_TYPE);
  		break;
-@@ -2293,7 +2293,7 @@ void ath9k_hw_beaconinit(struct ath_hw *ah, u32 next_beacon, u32 beacon_period)
- 	case NL80211_IFTYPE_ADHOC:
- 		REG_SET_BIT(ah, AR_TXCFG,
- 			    AR_TXCFG_ADHOC_BEACON_ATIM_TX_POLICY);
+@@ -1460,7 +1460,7 @@ static int ath10k_htt_tx_32(struct ath10k_htt *htt,
+ 	case ATH10K_HW_TXRX_RAW:
+ 	case ATH10K_HW_TXRX_NATIVE_WIFI:
+ 		flags0 |= HTT_DATA_TX_DESC_FLAGS0_MAC_HDR_PRESENT;
 -		/* fall through */
 +		fallthrough;
- 	case NL80211_IFTYPE_MESH_POINT:
- 	case NL80211_IFTYPE_AP:
- 		REG_WRITE(ah, AR_NEXT_TBTT_TIMER, next_beacon);
-diff --git a/drivers/net/wireless/ath/ath9k/main.c b/drivers/net/wireless/ath/ath9k/main.c
-index a47f6e978095..0ea3b80f664c 100644
---- a/drivers/net/wireless/ath/ath9k/main.c
-+++ b/drivers/net/wireless/ath/ath9k/main.c
-@@ -1934,7 +1934,7 @@ static int ath9k_ampdu_action(struct ieee80211_hw *hw,
- 	case IEEE80211_AMPDU_TX_STOP_FLUSH:
- 	case IEEE80211_AMPDU_TX_STOP_FLUSH_CONT:
- 		flush = true;
+ 	case ATH10K_HW_TXRX_ETHERNET:
+ 		if (ar->hw_params.continuous_frag_desc) {
+ 			ext_desc_t = htt->frag_desc.vaddr_desc_32;
+@@ -1662,7 +1662,7 @@ static int ath10k_htt_tx_64(struct ath10k_htt *htt,
+ 	case ATH10K_HW_TXRX_RAW:
+ 	case ATH10K_HW_TXRX_NATIVE_WIFI:
+ 		flags0 |= HTT_DATA_TX_DESC_FLAGS0_MAC_HDR_PRESENT;
 -		/* fall through */
 +		fallthrough;
- 	case IEEE80211_AMPDU_TX_STOP_CONT:
- 		ath9k_ps_wakeup(sc);
- 		ath_tx_aggr_stop(sc, sta, tid);
+ 	case ATH10K_HW_TXRX_ETHERNET:
+ 		if (ar->hw_params.continuous_frag_desc) {
+ 			ext_desc_t = htt->frag_desc.vaddr_desc_64;
+diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
+index 919d15584d4a..7dd2b019f673 100644
+--- a/drivers/net/wireless/ath/ath10k/mac.c
++++ b/drivers/net/wireless/ath/ath10k/mac.c
+@@ -2473,17 +2473,17 @@ ath10k_peer_assoc_h_vht_limit(u16 tx_mcs_set,
+ 			idx_limit = -1;
+ 
+ 		switch (idx_limit) {
+-		case 0: /* fall through */
+-		case 1: /* fall through */
+-		case 2: /* fall through */
+-		case 3: /* fall through */
+-		case 4: /* fall through */
+-		case 5: /* fall through */
+-		case 6: /* fall through */
++		case 0:
++		case 1:
++		case 2:
++		case 3:
++		case 4:
++		case 5:
++		case 6:
+ 		default:
+ 			/* see ath10k_mac_can_set_bitrate_mask() */
+ 			WARN_ON(1);
+-			/* fall through */
++			fallthrough;
+ 		case -1:
+ 			mcs = IEEE80211_VHT_MCS_NOT_SUPPORTED;
+ 			break;
+@@ -4243,7 +4243,7 @@ void __ath10k_scan_finish(struct ath10k *ar)
+ 		} else if (ar->scan.roc_notify) {
+ 			ieee80211_remain_on_channel_expired(ar->hw);
+ 		}
+-		/* fall through */
++		fallthrough;
+ 	case ATH10K_SCAN_STARTING:
+ 		ar->scan.state = ATH10K_SCAN_IDLE;
+ 		ar->scan_channel = NULL;
+diff --git a/drivers/net/wireless/ath/ath10k/wow.c b/drivers/net/wireless/ath/ath10k/wow.c
+index 8c26adddd034..7d65c115669f 100644
+--- a/drivers/net/wireless/ath/ath10k/wow.c
++++ b/drivers/net/wireless/ath/ath10k/wow.c
+@@ -275,7 +275,7 @@ static int ath10k_vif_wow_set_wakeups(struct ath10k_vif *arvif,
+ 	switch (arvif->vdev_type) {
+ 	case WMI_VDEV_TYPE_IBSS:
+ 		__set_bit(WOW_BEACON_EVENT, &wow_mask);
+-		 /* fall through */
++		fallthrough;
+ 	case WMI_VDEV_TYPE_AP:
+ 		__set_bit(WOW_DEAUTH_RECVD_EVENT, &wow_mask);
+ 		__set_bit(WOW_DISASSOC_RECVD_EVENT, &wow_mask);
 -- 
 2.27.0
 
