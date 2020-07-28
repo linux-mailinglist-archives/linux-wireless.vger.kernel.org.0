@@ -2,96 +2,127 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5188123062B
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Jul 2020 11:09:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A5F9230755
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Jul 2020 12:08:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728432AbgG1JJl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 28 Jul 2020 05:09:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42654 "EHLO
+        id S1728666AbgG1KIg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 28 Jul 2020 06:08:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51820 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728431AbgG1JJl (ORCPT
+        with ESMTP id S1728305AbgG1KId (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 28 Jul 2020 05:09:41 -0400
-Received: from mail-oi1-x241.google.com (mail-oi1-x241.google.com [IPv6:2607:f8b0:4864:20::241])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62AA0C061794
-        for <linux-wireless@vger.kernel.org>; Tue, 28 Jul 2020 02:09:41 -0700 (PDT)
-Received: by mail-oi1-x241.google.com with SMTP id k22so16872595oib.0
-        for <linux-wireless@vger.kernel.org>; Tue, 28 Jul 2020 02:09:41 -0700 (PDT)
+        Tue, 28 Jul 2020 06:08:33 -0400
+Received: from mail-ed1-x544.google.com (mail-ed1-x544.google.com [IPv6:2a00:1450:4864:20::544])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3DBC1C061794
+        for <linux-wireless@vger.kernel.org>; Tue, 28 Jul 2020 03:08:33 -0700 (PDT)
+Received: by mail-ed1-x544.google.com with SMTP id z17so14340476edr.9
+        for <linux-wireless@vger.kernel.org>; Tue, 28 Jul 2020 03:08:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=TryUnnxlDGueUxiqZDiUOPtuG/P748R3/jPUL83wz7o=;
-        b=ehejh+uvxKPPyiU/yZgfYR0rO8S0Er4PQi6XfRP1reg9/CJDtZPC2Fw4PGd8u/ZBpG
-         3QCqLRDxtjPoChvV+otre1xJHMM+fqMS7O/Vn6EK9XU8LjgxLFZFVfNqDuH9aktA3taS
-         VZ08K9030s4+Mz++7gQOau/tcO95ZCWyZz3xi38rmmEWz/I69ZeyUwkRD4xw36UF8/mC
-         1rzk8ZMKiKc9qqTBUb6haZcNzqfmcWw4RslMmL5hcoCLak4CXbEo6toikmK/6XCBg9BD
-         IjTFvQEENR9b7+eunp12P0T7B4tYvHQV7r4aHPL4AbKe6Mswq7OPHWm35u1drjlQ5C61
-         2cJA==
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=ici1nNo6rNlYQpg1lc3t6UQAXO9yQYAF7LL5FlZGfwQ=;
+        b=YyLJcW54k2hJ89sDuOn1bpy9EOzlrivuo8+6oeZt9PkLpMd6Jz0kQdktu3ONK1sR7B
+         DKZ9zQLCY+15o4drTygZt5FSF+GLVSqxgVu9oI8Jpvkw5okjEg2p4liG6lj+ptLJ9QdG
+         27J33pKlOLHRC09IVDj4mLsVbJNMeGWs8sKu8a34I4LHxBegXPwjrfBqohTeJ+d8wPcj
+         kBoKaka2uVK7NN9891Fmv5klhkqt8IuYhrzxxUQ5FqIYOlne6Sgw7R7jRrr1Kdq5Rt4W
+         pn9qpebKe5+zob1vPMxlFmkgVrVOHh8wk9QH/Z/vCesER17NitRb1B8ZZ5RbWe3aVrmV
+         Deyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=TryUnnxlDGueUxiqZDiUOPtuG/P748R3/jPUL83wz7o=;
-        b=g6gzR3ZMF9YGwUvGEHf8Grg4xbtDP+xLss3VLkSxeccIzbwCoH5VaK37BTSRXtQazx
-         hUpMTlbFaN25iNaAj38hEASYnjzncHSfnDpLOmiA0b0FjikYPBiXsbNbG6QTLuB0Tfax
-         HCpxY5nzLzG6byz/8242z4osyCTRgHLtWYJEvMmiFe04YQk+PZ3FPpB27i2IwXxS4Mr1
-         BowOgcGkzjNMuZOqMp2Z5NTxVvYjqgqr4HCpOKjqchoyXmCjTV1GlyNSriBctvt+BTa8
-         6XHbpGH36MBZUpR4UMrRCug2TNzgpUvEerNfI/HxOAKCoeyajAbAbDLtbhvaa+FFTcUK
-         LRRQ==
-X-Gm-Message-State: AOAM533hrkPY9w8fwgQtGSaS0jq0fxaOv52vGJogzvr6gOkG33Q3SOyZ
-        N4u0kfE+RVwepk8D1OybSEVdExq1z7pkY1LxfCA=
-X-Google-Smtp-Source: ABdhPJw8UmeKSJ3mI8v9pWlri48h3Ob68mGg1wvv/7Nf6vxK9019CYNCK3jHCLwI83QQKrMUMVUH6OTHGIAmp65fki0=
-X-Received: by 2002:a54:458f:: with SMTP id z15mr2518588oib.64.1595927380072;
- Tue, 28 Jul 2020 02:09:40 -0700 (PDT)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=ici1nNo6rNlYQpg1lc3t6UQAXO9yQYAF7LL5FlZGfwQ=;
+        b=S5kODEDiAnj2eEq7IEO8RjQJ4pVclP0A5Cy0YzUlHt0NB8zEmMYIPRPMJw5ZvUJExT
+         fNSroa7G4JNXSkIJkBB7j3XI0Fs62aJlwp5h8Cnv/jororfblL310rt44snA/nTktOOx
+         SJFpnjB7hQyk2Vyhh/Jv1Z9wPtxoHDPQAMOhXFzELoMN8oxhI8kVYEr18ykgThGafWbB
+         SqYrcUpx5rJvThKSigFr4CW5IIqmh7zk0sGZw0d3MB2kxrwT0e3IA8hfdsDcTBV/dwI/
+         gTbdeKgR8Ss3bUxrgxAvsdllSD4GfMUjU5TvygT3362O8zVkjkGluLagvt2UIiwzYGFo
+         vhpQ==
+X-Gm-Message-State: AOAM531ukgUVmO8hbEyL9aG/3pGsf526frNDrwO7ogMbh/LRMK4bvu7v
+        h868CKL/RaymKB3dxpjaySMGmAJNihJk7JAN4Cknzo2d
+X-Google-Smtp-Source: ABdhPJwZiyJUzjxf5hpf8toFvfspU8ITbdpv6E0VstGqONdvtSMs9fH09mvSgJg33PZ7IKAtgdknJwKppDzCiAQeBJw=
+X-Received: by 2002:a05:6402:cb3:: with SMTP id cn19mr26309144edb.368.1595930911947;
+ Tue, 28 Jul 2020 03:08:31 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:a4a:2547:0:0:0:0:0 with HTTP; Tue, 28 Jul 2020 02:09:39
- -0700 (PDT)
-Reply-To: sambosalifou4@gmail.com
-From:   Sambo Salifou <maiamook1a@gmail.com>
-Date:   Tue, 28 Jul 2020 09:09:39 +0000
-Message-ID: <CAAa5L=vywyruqzJEK7fGuHv9RpmdXmxY5EN_V=YNNVLcU0vUtw@mail.gmail.com>
-Subject: Mail from your friend
-To:     undisclosed-recipients:;
+References: <1595586052-16081-1-git-send-email-loic.poulain@linaro.org>
+ <CA+Kvs9mV39gndidkDjMHswQGii74MH4cTDr9az1HLNOtW6PZTA@mail.gmail.com>
+ <CAMZdPi8jgoYsWd6d90WE-sGD8P5LMKO+YAHoP5-xRBV+vncy=A@mail.gmail.com> <CA+Kvs9=0mJ4-6bZUkB3EG-R6ju8UrwJWo3_6aRxzn1tnrGiq-A@mail.gmail.com>
+In-Reply-To: <CA+Kvs9=0mJ4-6bZUkB3EG-R6ju8UrwJWo3_6aRxzn1tnrGiq-A@mail.gmail.com>
+From:   Loic Poulain <loic.poulain@linaro.org>
+Date:   Tue, 28 Jul 2020 12:13:19 +0200
+Message-ID: <CAMZdPi9XiDutLKQbLzwnG_3LkFkpCoOh4yJKnENfSSqYEkvs2w@mail.gmail.com>
+Subject: Re: [PATCH v2 0/6] wcn36xx misc fixes
+To:     Ramon Fried <ramon.fried@gmail.com>
+Cc:     Kalle Valo <kvalo@codeaurora.org>, wcn36xx@lists.infradead.org,
+        linux-wireless@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Please lets make joint business
+Hi Ramon,
 
-I am, Dr. Salifou Sambo a bank auditor, I am in-charge of transferring
-out funds for my village, which our village generates from the sales
-of our local mined gold. I have some left over fund in the bank here
-that I alone is aware of, and wants to transfer it out.
-My village that mines gold, has mandated me for sales of our raw Gold,
-and as a bank auditor I help our village to control their funds. I
-want to use this opportunity to look for some one who will provide an
-account to receive the sum of 22.2 million US dollars left in the
-bank, this was realized from gold sold, to be transferred out to our
-foreign account, now it is unknown by our village, This fund has been
-laying for onward transfer to overseas as we transfer out all funds
-sold from our gold, till now this fund is lying in the bank, I have
-all documents concerning the fund, and now I want to use it to
-establish outside my country. So if you are interested, then you will
-provide an account to receive the fund for a joint benefit and
-business and sharing, I will give you 30% of the fund.
-If you are interested in this, with hope you have this quality I
-needed, go ahead and send me your detailed information as stated below
-for us to move forward. I will use your information to edit our bank=E2=80=
-=99s
-computer and your name will appear in our bank file as the existing
-next of kin to the account, then our bank will contact you for the
-release of the fund to you.
-1. Your full name:
-2. Your residence address:
-3. Your age: and sex:
-4. Your passport or identity card:
-5. Your private (mobile) phone:
-6. Your Occupation:
-7 .Your House / Office Address:
- Please reply as soon as possible for the next step.
-Regards
-Dr. SALIFOU Sambo
+On Fri, 24 Jul 2020 at 20:51, Ramon Fried <ramon.fried@gmail.com> wrote:
+>
+> On Fri, Jul 24, 2020 at 4:57 PM Loic Poulain <loic.poulain@linaro.org> wrote:
+> >
+> > Hi Ramon,
+> >
+> > On Fri, 24 Jul 2020 at 15:47, Ramon Fried <ramon.fried@gmail.com> wrote:
+> > >
+> > > On Fri, Jul 24, 2020 at 1:15 PM Loic Poulain <loic.poulain@linaro.org> wrote:
+> > > >
+> > > > This series contains various fixes for the wcn36xx driver.
+> > > > This has been tested with wcn3620, wcn3660 and wcn3680.
+> > > >
+> > > > v2: - Move TX retries change into its own commit
+> > > >     - Additional patch for sequence number assignment
+> > > >     - Reword TX ack commit log (timeout detection)
+> > > >     - Fix checkpatch issues reported by Bryan
+> > > >
+> > > > Loic Poulain (6):
+> > > >   wcn36xx: Fix multiple AMPDU sessions support
+> > > >   wcn36xx: Add TX ack support
+> > > >   wcn36xx: Increase number of TX retries
+> > > >   wcn36xx: Fix TX data path
+> > > >   wcn36xx: Fix software-driven scan
+> > > >   wcn36xx: Use sequence number allocated by mac80211
+> > > >
+> > > >  drivers/net/wireless/ath/wcn36xx/dxe.c     |  57 +++++++++-
+> > > >  drivers/net/wireless/ath/wcn36xx/main.c    | 172 +++++++++++++++--------------
+> > > >  drivers/net/wireless/ath/wcn36xx/smd.c     |  59 ++++++++--
+> > > >  drivers/net/wireless/ath/wcn36xx/smd.h     |  12 +-
+> > > >  drivers/net/wireless/ath/wcn36xx/txrx.c    |  57 ++++++----
+> > > >  drivers/net/wireless/ath/wcn36xx/wcn36xx.h |   7 +-
+> > > >  6 files changed, 241 insertions(+), 123 deletions(-)
+> > > >
+> > > > --
+> > > > 2.7.4
+> > > >
+> > > >
+> > > > _______________________________________________
+> > > > wcn36xx mailing list
+> > > > wcn36xx@lists.infradead.org
+> > > > http://lists.infradead.org/mailman/listinfo/wcn36xx
+> > >
+> > >
+> > > Hi Loic,
+> > > What about upstreaming the fixes for several TP-Link AP's ?
+> > > The WCN36xx is not usable on those networks and your own tree patches seems to
+> > > be working properly.
+> >
+> > Which ones do you have in mind?
+> I didn't inspect each patch, I just took your tree and everything now
+> works as expected on  my TP-Link setup.
+> I did notice this patch -   "wcn36xx: Fix power-saving with some APs"
+> that was missing.
+> And there are some patches in your tree that hack the mac802111 core,
+> Do you think there's a way to upstream those ?
+
+Indeed I've additional fixes in my tree, but they are either not
+strictly required or I need more time for proper testing.
+
+
+Loic
