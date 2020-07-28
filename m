@@ -2,85 +2,96 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A53B322FF09
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Jul 2020 03:45:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5188123062B
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Jul 2020 11:09:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726733AbgG1BpA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 27 Jul 2020 21:45:00 -0400
-Received: from www262.sakura.ne.jp ([202.181.97.72]:52595 "EHLO
-        www262.sakura.ne.jp" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726575AbgG1BpA (ORCPT
+        id S1728432AbgG1JJl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 28 Jul 2020 05:09:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42654 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728431AbgG1JJl (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 27 Jul 2020 21:45:00 -0400
-Received: from fsav303.sakura.ne.jp (fsav303.sakura.ne.jp [153.120.85.134])
-        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 06S1iJxD088794;
-        Tue, 28 Jul 2020 10:44:19 +0900 (JST)
-        (envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
-Received: from www262.sakura.ne.jp (202.181.97.72)
- by fsav303.sakura.ne.jp (F-Secure/fsigk_smtp/550/fsav303.sakura.ne.jp);
- Tue, 28 Jul 2020 10:44:19 +0900 (JST)
-X-Virus-Status: clean(F-Secure/fsigk_smtp/550/fsav303.sakura.ne.jp)
-Received: from localhost.localdomain (M106072142033.v4.enabler.ne.jp [106.72.142.33])
-        (authenticated bits=0)
-        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTPSA id 06S1iFhm088645
-        (version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-        Tue, 28 Jul 2020 10:44:19 +0900 (JST)
-        (envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
-From:   Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-To:     gbhat@marvell.com
-Cc:     amitkarwar@gmail.com, andreyknvl@google.com, davem@davemloft.net,
-        dvyukov@google.com, huxinming820@gmail.com, kvalo@codeaurora.org,
-        linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        nishants@marvell.com,
-        syzbot+dc4127f950da51639216@syzkaller.appspotmail.com,
-        syzkaller-bugs@googlegroups.com,
-        Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-        syzbot <syzbot+373e6719b49912399d21@syzkaller.appspotmail.com>
-Subject: [PATCH] mwifiex: don't call del_timer_sync() on uninitialized timer
-Date:   Tue, 28 Jul 2020 10:44:12 +0900
-Message-Id: <1595900652-3842-1-git-send-email-penguin-kernel@I-love.SAKURA.ne.jp>
-X-Mailer: git-send-email 1.8.3.1
-In-Reply-To: <MN2PR18MB2637D7C742BC235FE38367F0A09C0@MN2PR18MB2637.namprd18.prod.outlook.com>
-References: <MN2PR18MB2637D7C742BC235FE38367F0A09C0@MN2PR18MB2637.namprd18.prod.outlook.com>
+        Tue, 28 Jul 2020 05:09:41 -0400
+Received: from mail-oi1-x241.google.com (mail-oi1-x241.google.com [IPv6:2607:f8b0:4864:20::241])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62AA0C061794
+        for <linux-wireless@vger.kernel.org>; Tue, 28 Jul 2020 02:09:41 -0700 (PDT)
+Received: by mail-oi1-x241.google.com with SMTP id k22so16872595oib.0
+        for <linux-wireless@vger.kernel.org>; Tue, 28 Jul 2020 02:09:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=TryUnnxlDGueUxiqZDiUOPtuG/P748R3/jPUL83wz7o=;
+        b=ehejh+uvxKPPyiU/yZgfYR0rO8S0Er4PQi6XfRP1reg9/CJDtZPC2Fw4PGd8u/ZBpG
+         3QCqLRDxtjPoChvV+otre1xJHMM+fqMS7O/Vn6EK9XU8LjgxLFZFVfNqDuH9aktA3taS
+         VZ08K9030s4+Mz++7gQOau/tcO95ZCWyZz3xi38rmmEWz/I69ZeyUwkRD4xw36UF8/mC
+         1rzk8ZMKiKc9qqTBUb6haZcNzqfmcWw4RslMmL5hcoCLak4CXbEo6toikmK/6XCBg9BD
+         IjTFvQEENR9b7+eunp12P0T7B4tYvHQV7r4aHPL4AbKe6Mswq7OPHWm35u1drjlQ5C61
+         2cJA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=TryUnnxlDGueUxiqZDiUOPtuG/P748R3/jPUL83wz7o=;
+        b=g6gzR3ZMF9YGwUvGEHf8Grg4xbtDP+xLss3VLkSxeccIzbwCoH5VaK37BTSRXtQazx
+         hUpMTlbFaN25iNaAj38hEASYnjzncHSfnDpLOmiA0b0FjikYPBiXsbNbG6QTLuB0Tfax
+         HCpxY5nzLzG6byz/8242z4osyCTRgHLtWYJEvMmiFe04YQk+PZ3FPpB27i2IwXxS4Mr1
+         BowOgcGkzjNMuZOqMp2Z5NTxVvYjqgqr4HCpOKjqchoyXmCjTV1GlyNSriBctvt+BTa8
+         6XHbpGH36MBZUpR4UMrRCug2TNzgpUvEerNfI/HxOAKCoeyajAbAbDLtbhvaa+FFTcUK
+         LRRQ==
+X-Gm-Message-State: AOAM533hrkPY9w8fwgQtGSaS0jq0fxaOv52vGJogzvr6gOkG33Q3SOyZ
+        N4u0kfE+RVwepk8D1OybSEVdExq1z7pkY1LxfCA=
+X-Google-Smtp-Source: ABdhPJw8UmeKSJ3mI8v9pWlri48h3Ob68mGg1wvv/7Nf6vxK9019CYNCK3jHCLwI83QQKrMUMVUH6OTHGIAmp65fki0=
+X-Received: by 2002:a54:458f:: with SMTP id z15mr2518588oib.64.1595927380072;
+ Tue, 28 Jul 2020 02:09:40 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 2002:a4a:2547:0:0:0:0:0 with HTTP; Tue, 28 Jul 2020 02:09:39
+ -0700 (PDT)
+Reply-To: sambosalifou4@gmail.com
+From:   Sambo Salifou <maiamook1a@gmail.com>
+Date:   Tue, 28 Jul 2020 09:09:39 +0000
+Message-ID: <CAAa5L=vywyruqzJEK7fGuHv9RpmdXmxY5EN_V=YNNVLcU0vUtw@mail.gmail.com>
+Subject: Mail from your friend
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-syzbot is reporting that del_timer_sync() is called from
-mwifiex_usb_cleanup_tx_aggr() from mwifiex_unregister_dev() without
-checking timer_setup() from mwifiex_usb_tx_init() was called [1].
-Since mwifiex_usb_prepare_tx_aggr_skb() is calling del_timer() if
-is_hold_timer_set == true, use the same condition for del_timer_sync().
+Please lets make joint business
 
-[1] https://syzkaller.appspot.com/bug?id=fdeef9cf7348be8b8ab5b847f2ed993aba8ea7b6
-
-Reported-by: syzbot <syzbot+373e6719b49912399d21@syzkaller.appspotmail.com>
-Cc: Ganapathi Bhat <gbhat@marvell.com>
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
----
-A patch from Ganapathi Bhat ( https://patchwork.kernel.org/patch/10990275/ ) is stalling
-at https://lore.kernel.org/linux-usb/MN2PR18MB2637D7C742BC235FE38367F0A09C0@MN2PR18MB2637.namprd18.prod.outlook.com/ .
-syzbot by now got this report for 10000 times. Do we want to go with this simple patch?
-
- drivers/net/wireless/marvell/mwifiex/usb.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/marvell/mwifiex/usb.c b/drivers/net/wireless/marvell/mwifiex/usb.c
-index 6f3cfde..04a1461 100644
---- a/drivers/net/wireless/marvell/mwifiex/usb.c
-+++ b/drivers/net/wireless/marvell/mwifiex/usb.c
-@@ -1353,7 +1353,8 @@ static void mwifiex_usb_cleanup_tx_aggr(struct mwifiex_adapter *adapter)
- 				skb_dequeue(&port->tx_aggr.aggr_list)))
- 				mwifiex_write_data_complete(adapter, skb_tmp,
- 							    0, -1);
--		del_timer_sync(&port->tx_aggr.timer_cnxt.hold_timer);
-+		if (port->tx_aggr.timer_cnxt.is_hold_timer_set)
-+			del_timer_sync(&port->tx_aggr.timer_cnxt.hold_timer);
- 		port->tx_aggr.timer_cnxt.is_hold_timer_set = false;
- 		port->tx_aggr.timer_cnxt.hold_tmo_msecs = 0;
- 	}
--- 
-1.8.3.1
-
+I am, Dr. Salifou Sambo a bank auditor, I am in-charge of transferring
+out funds for my village, which our village generates from the sales
+of our local mined gold. I have some left over fund in the bank here
+that I alone is aware of, and wants to transfer it out.
+My village that mines gold, has mandated me for sales of our raw Gold,
+and as a bank auditor I help our village to control their funds. I
+want to use this opportunity to look for some one who will provide an
+account to receive the sum of 22.2 million US dollars left in the
+bank, this was realized from gold sold, to be transferred out to our
+foreign account, now it is unknown by our village, This fund has been
+laying for onward transfer to overseas as we transfer out all funds
+sold from our gold, till now this fund is lying in the bank, I have
+all documents concerning the fund, and now I want to use it to
+establish outside my country. So if you are interested, then you will
+provide an account to receive the fund for a joint benefit and
+business and sharing, I will give you 30% of the fund.
+If you are interested in this, with hope you have this quality I
+needed, go ahead and send me your detailed information as stated below
+for us to move forward. I will use your information to edit our bank=E2=80=
+=99s
+computer and your name will appear in our bank file as the existing
+next of kin to the account, then our bank will contact you for the
+release of the fund to you.
+1. Your full name:
+2. Your residence address:
+3. Your age: and sex:
+4. Your passport or identity card:
+5. Your private (mobile) phone:
+6. Your Occupation:
+7 .Your House / Office Address:
+ Please reply as soon as possible for the next step.
+Regards
+Dr. SALIFOU Sambo
