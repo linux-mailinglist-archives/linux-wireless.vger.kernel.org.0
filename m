@@ -2,79 +2,134 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 326AE230A70
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Jul 2020 14:41:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 142F3230B34
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Jul 2020 15:14:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729834AbgG1MlU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 28 Jul 2020 08:41:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47176 "EHLO
+        id S1730028AbgG1NOB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 28 Jul 2020 09:14:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52248 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729379AbgG1MlT (ORCPT
+        with ESMTP id S1729978AbgG1NOA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 28 Jul 2020 08:41:19 -0400
-Received: from mail-pj1-x1036.google.com (mail-pj1-x1036.google.com [IPv6:2607:f8b0:4864:20::1036])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E090C061794;
-        Tue, 28 Jul 2020 05:41:19 -0700 (PDT)
-Received: by mail-pj1-x1036.google.com with SMTP id c6so4923912pje.1;
-        Tue, 28 Jul 2020 05:41:19 -0700 (PDT)
+        Tue, 28 Jul 2020 09:14:00 -0400
+Received: from mail-il1-x141.google.com (mail-il1-x141.google.com [IPv6:2607:f8b0:4864:20::141])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5ADAC061794
+        for <linux-wireless@vger.kernel.org>; Tue, 28 Jul 2020 06:14:00 -0700 (PDT)
+Received: by mail-il1-x141.google.com with SMTP id z17so988595ill.6
+        for <linux-wireless@vger.kernel.org>; Tue, 28 Jul 2020 06:14:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=Fie8IAXWZ8a1f4IBdyXwUsTRAo2+ebUYgUxfo3SFpeA=;
-        b=haoCqu+L8GW/U4OWwDQnTgb9GtXYeSPf/3t+tetw4UjMKCpOcKW9zEnJX+SwLZ17LL
-         BW2HDc1XLMcKdoK0p3xutk4REkdxx/RTEqfmqaPQZ6gd3tprs77Fsbv56tzrXJUsfN8H
-         2HN8kNTWkCQ0guBjpN74s+oAf3YAehWjQrxT/F3jAFnj7TumR4+r70BFy9ku8o+lHHuk
-         MB6HNeuF3yOVbLRmGdHmyRVIVCPQmsygQFILPj9+DOJdZSPJszFKZXjHo/NjsSx2m/we
-         i5dvQMD8HdIGLmKHCWiBQPVC/OBk+W+iYpVUP4hifZQHXqgZrgyxzdv3UA0qX6eyLxIV
-         7y8A==
+        h=mime-version:references:in-reply-to:reply-to:from:date:message-id
+         :subject:to:cc;
+        bh=9Z95bvBvlUZjClEwxbd+3yZePwIePP5r7+c9u78/i8M=;
+        b=jMg0Uj+RQf02mekZbKsGukfoDu0ib4c/eGs/FKOa17WVzQwLdDiEN0YKzuP+tluPUu
+         NKVdLqJbFsErsibgzAlIJwbIccch1L1Hpk5gs7ZdHClsSu+l3pPJZbGCJxAlBOrqMcyx
+         yFgcWah0u5fwPfrYhki03KhfHuYUva2s98uL/0gPrLfeQrXiauEsF0JR5vw0x3/yLj2r
+         HQxW9tYLw37/Xb2jmwUyciShz5b3Z/9TheImS7cgu1T2OlHTZylH7bO/vUqw56g7Ve+p
+         sqEQUs4zkRGGxTO5blO6vjH5BQW9G/je47vEyZKRvxEAzO9yZjy4qvkf02xOFGAU//ZZ
+         4e2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=Fie8IAXWZ8a1f4IBdyXwUsTRAo2+ebUYgUxfo3SFpeA=;
-        b=kn8lnjWZHjP95pJob9GeXkSKPMI2cnb9rUQhuhEEeVLqnLKLLXuU9NzXM+Sl9Lo8V5
-         8GBST4a4ivMb+5ZSUQY2L1/UN9/mqAONqYQBNucvGx0Kxw9mHft6MWCsd3jcD4mn3dbI
-         W9LI48/PrwNl4D2trwd5BKUaP8DF7RkVJzEkq+9c45W/CPKJoY5IzK3A1jDkhKYbbBje
-         DKuOA3X+z1E9+X5k12ffBm935Ln4yLOfPi3aO6/AKFRb+xbIap70xdoUVoxry3WmRn0t
-         VNpIcQwyxVbD1juBYXV1z3wVXTQ0nXa1np582MnzqUr1ywez8HU8camqUWocd9JbaDwm
-         xBbQ==
-X-Gm-Message-State: AOAM530yeZVYiVK6jQCwhDDUSoK2/bNjEV2D6vUDidtFTwkmIVKJmjBI
-        xa5U+8abadlOQAlr2XanRVE=
-X-Google-Smtp-Source: ABdhPJyOrg3NwW9cQWlvOe1YfodJHn7NnaR+jSpc77kZqqqtD5XzGFf31FbitFJd5NZAB025aWtEhw==
-X-Received: by 2002:a17:90a:ba92:: with SMTP id t18mr4267672pjr.121.1595940079182;
-        Tue, 28 Jul 2020 05:41:19 -0700 (PDT)
-Received: from gmail.com ([2401:4900:2eef:ca92:3545:4a68:f406:d612])
-        by smtp.gmail.com with ESMTPSA id m4sm11387168pgh.9.2020.07.28.05.41.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Jul 2020 05:41:18 -0700 (PDT)
-Date:   Tue, 28 Jul 2020 18:09:48 +0530
-From:   Vaibhav Gupta <vaibhavgupta40@gmail.com>
-To:     Bjorn Helgaas <helgaas@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Bjorn Helgaas <bjorn@helgaas.com>,
-        Vaibhav Gupta <vaibhav.varodek@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        linux-kernel-mentees@lists.linuxfoundation.org,
-        Shuah Khan <skhan@linuxfoundation.org>
-Subject: Re: [PATCH v1] wireless: airo: use generic power management
-Message-ID: <20200728123948.GE1331847@gmail.com>
-References: <20200728114128.1218310-1-vaibhavgupta40@gmail.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:reply-to
+         :from:date:message-id:subject:to:cc;
+        bh=9Z95bvBvlUZjClEwxbd+3yZePwIePP5r7+c9u78/i8M=;
+        b=mFr+8bvGYn7xuDf3U0k9QGqcBROegscQq2ry8//EDth9WDxgtSPqJ4Sib4WUbXiSWB
+         +Ps3Gwc86YEOVpLfJYfF4GwkkO+8zhrzM2T4Meqa+4EQ40hXNsjR44IiXLsGz83U4cp8
+         pwyIh/hN42h6IZZocsEotAts2wQVKPXDvg+3FrnxIvXK4q7Pq/uDLxN/bvbp03t8hZS0
+         KPlhJ29EzQ+2W/a7b1QWMQHz1nJG7KpMsnw52ddcrkyEw+pjKUizgCYZT24dJ6UKzMe2
+         Hi2vjt+X14xfwH/HcZIbHSL8DSM/d/jwZ7zaSAtJz1pXxETbu3eFNfl5SiYs/Vn8FLcO
+         XDeA==
+X-Gm-Message-State: AOAM531zZBpgdRlYZETMtEdnOCZwGlnvKSwtmzAzQAeF79pjIFTiwzmH
+        EN7vL+VfnlUfb1bCyluJFz95QXeIbMfSn3IbJchgmghPl3A=
+X-Google-Smtp-Source: ABdhPJwHCdGoobo795wxmz9HJ/8zCGoZhfEHaYRd2xl9QClLPRaEfcSqMN6wvz/xPeqMy+s/SeQtOaX45JlhOM5tf2Q=
+X-Received: by 2002:a92:bada:: with SMTP id t87mr22866230ill.112.1595942040063;
+ Tue, 28 Jul 2020 06:14:00 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20200728114128.1218310-1-vaibhavgupta40@gmail.com>
+References: <CA+icZUWoycCvAAs5H0sigHTB+GGhX5NRVonYqKg7BRLB97dGkA@mail.gmail.com>
+ <87mu3magfp.fsf@tynnyri.adurom.net>
+In-Reply-To: <87mu3magfp.fsf@tynnyri.adurom.net>
+Reply-To: sedat.dilek@gmail.com
+From:   Sedat Dilek <sedat.dilek@gmail.com>
+Date:   Tue, 28 Jul 2020 15:13:48 +0200
+Message-ID: <CA+icZUUY_cSbhT8piRED_RBw4rjrMesVoNgj-sCLnGU0zoAzWA@mail.gmail.com>
+Subject: Re: iwlwifi: Direct firmware load for iwl-debug-yoyo.bin failed with
+ error -2
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Luca Coelho <luciano.coelho@intel.com>,
+        Shahar S Matityahu <shahar.s.matityahu@intel.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Intel Linux Wireless <linuxwifi@intel.com>,
+        linux-wireless@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This patch is compile-tested only.
+On Sun, Jul 26, 2020 at 9:23 AM Kalle Valo <kvalo@codeaurora.org> wrote:
+>
+> Sedat Dilek <sedat.dilek@gmail.com> writes:
+>
+> > Hi,
+> >
+> > I am seeing this failed/error message for a long time:
+> >
+> > [Sat Jul 25 13:03:28 2020] iwlwifi 0000:01:00.0: Direct firmware load
+> > for iwl-debug-yoyo.bin failed with error -2
+> >
+> > So, I started to look for the file "iwl-debug-yoyo.bin" in [1], but failed.
+> > AFAICS this is a file for debugging purposes?
+> >
+> > Why do I see such a message as an end-user w/o iwlwifi-debugging enabled?
+> > For some end-users I can imagine this looks scary and they will look
+> > into their cupboards and below their beds but will not find any
+> > monsters.
+> >
+> > I found a rename from an ini file to bin here:
+> > commit 8d9e982bf9bf ("iwlwifi: dbg_ini: rename external debug
+> > configuration file")
+> >
+> > Is "iwl-debug-yoyo.bin" a binary or as before an ini (text) file I
+> > have to configure somehow.
+> >
+> > Does this need to be guarded by some "ifdef CONFIG_IWLWIFI_DEBUG" in
+> > "drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c"?
+> >
+> > Or does drivers/net/wireless/intel/iwlwifi/Makefile needs some tuning
+> > - as said I have no iwlwifi debugging enabled via Kconfig?
+> > ...
+> > iwlwifi-objs            += iwl-dbg-tlv.o
+> >
+> > Please enlighten me/us?
+> >
+> > Thanks.
+> >
+> > Regards,
+> > - Sedat -
+> >
+> > [1] https://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/linux-firmware.git/
+> > [2] https://git.kernel.org/linus/e8d9e982bf9bf0e6f99099f1f09a37563b2b95b5
+> >
+> >>From my dmesg-output:
+> >
+> > [Sa Jul 25 13:03:28 2020] iwlwifi 0000:01:00.0: can't disable ASPM; OS
+> > doesn't have ASPM control
+> > [Sa Jul 25 13:03:28 2020] iwlwifi 0000:01:00.0: loaded firmware
+> > version 18.168.6.1 6000g2b-6.ucode op_mode iwldvm
+> > [Sa Jul 25 13:03:28 2020] iwlwifi 0000:01:00.0: Direct firmware load
+> > for iwl-debug-yoyo.bin failed with error -2
+>
+> There's an RFC patch about this:
+>
+> https://patchwork.kernel.org/patch/11625759/
+>
+> I think that should be applied. Intel folks, should I take that directly
+> to wireless-drivers-next?
+>
 
-Thanks
-Vaibhav Gupta
+Reported-by: Sedat Dilek <sedat.dilek@gmail.com>
+Tested-by: Sedat Dilek <sedat.dilek@gmail.com> # Linux v5.8-rc7; GCC
+v10.2 + GNU/ld v2.35
+
+- Sedat -
