@@ -2,139 +2,105 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E4198231489
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Jul 2020 23:23:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA47C231768
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 Jul 2020 03:48:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729264AbgG1VXl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 28 Jul 2020 17:23:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43556 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729243AbgG1VXl (ORCPT
+        id S1730588AbgG2Br7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 28 Jul 2020 21:47:59 -0400
+Received: from mail29.static.mailgun.info ([104.130.122.29]:39428 "EHLO
+        mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1730328AbgG2Br7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 28 Jul 2020 17:23:41 -0400
-Received: from mail-il1-x142.google.com (mail-il1-x142.google.com [IPv6:2607:f8b0:4864:20::142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31891C061794
-        for <linux-wireless@vger.kernel.org>; Tue, 28 Jul 2020 14:23:41 -0700 (PDT)
-Received: by mail-il1-x142.google.com with SMTP id z17so2415061ill.6
-        for <linux-wireless@vger.kernel.org>; Tue, 28 Jul 2020 14:23:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:reply-to:from:date:message-id
-         :subject:to:cc;
-        bh=qbrYLgZbxKVnooJBhqmD5CD+Q10RN0mhpS1Kgqx4Sog=;
-        b=a1fMlXncL3dU4Bc1by3SNT6F4IqDUIPfirwX8mIdgoKbeACCVR8g89eTzr24+kgm7E
-         qOVgaBxlcRlqiBHOl4ehZkQG5gzjjUnKK7J9+TRP1cndUTm8ZejnIqjkjxKmiImUdbvE
-         f/ILD5hRMo1oThxvoRdDQ9Rsy2vc06F4DEqkLa1cWrCJV5ppAoK2PGg0fbc0U7tUoYs2
-         idgkFi8QUsJkb2NClHKMShfTx22p2JJBxXeY9YTZ/q0Vi4vHxLPkdLVJGOYzIKJWUtVn
-         cmaSPlwrW36S14upKg220DW+FsNUP/zD31dqVqkIlS/V2hH7cAIOpnIir16i25WquhOk
-         Oe1g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:reply-to
-         :from:date:message-id:subject:to:cc;
-        bh=qbrYLgZbxKVnooJBhqmD5CD+Q10RN0mhpS1Kgqx4Sog=;
-        b=Cknmrsyk7eMvOrOQYi7zPHkzGRNPm3tTaE5TPjZ8gwVp8fdy5YZXUHDoT7ueUzL6Qa
-         AlXoMJ++c9QUaJ773Sw/AgRrELc3s9mFLxbsu0d0LFLJD1aTQ0D7zn5lM1USv6z72w/S
-         Rv9EK8P8KBlVSkZ1pxvfpi9YWkSDkWyp7p5+QX8opOsZZ2bAUb+0ewCwuuD+7TmYq28R
-         uZQFV8ehOyf/O0QwUqmpTmwTUYQE0PNeCU1K5if8gZDClsQqGWqPKqJilDjTwog+kbmW
-         2aPWNXEt1NrW1JVQTGwYfTUjN4568CWtiMHY+GP6BEMikU0GHiGJ3YAD98y6Auxnv9O1
-         ZEng==
-X-Gm-Message-State: AOAM533ePJCSAGWbXZyYonP3hOaLexvWBfJG1yNz50171YfUclkDt56O
-        mNe996q9uZnxvBZ4jltXvnGsKcaqSDjzxGQUQx504FxU
-X-Google-Smtp-Source: ABdhPJwFOY82YV0+F7TNBtd6wu6ORa9xytsI+BB1ZPjt+sHa5C/5JIyA8qG6PA2bsWUGJZktTf99zJWKtQZJuhBjzGY=
-X-Received: by 2002:a92:7f04:: with SMTP id a4mr10115166ild.10.1595971420633;
- Tue, 28 Jul 2020 14:23:40 -0700 (PDT)
+        Tue, 28 Jul 2020 21:47:59 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1595987278; h=Message-ID: References: In-Reply-To: Subject:
+ Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Sender; bh=5xRi5eAfB+i5FB7oFrSlukKbnt1jfbHChiGR6YfjEjQ=;
+ b=OMTTWnuwaGE9Xg4FqntHEdEhgtJ+bCiMl8ARUFOEKTnY6Wv8Z8wPYAf82Dk4733dDpJCOMjW
+ nGK2mCRmBFKk1Tsp59WL3BHM9oqHANTOq79sn+UQuC2ESobZI33+C+fgzSaVf0XQgixJLLK5
+ JSoPTO4Q8vfF66+OwYNoGF9JUcY=
+X-Mailgun-Sending-Ip: 104.130.122.29
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n03.prod.us-east-1.postgun.com with SMTP id
+ 5f20d5337ab15087eb672dae (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 29 Jul 2020 01:47:31
+ GMT
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 180D8C43391; Wed, 29 Jul 2020 01:47:31 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: rmanohar)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id AB6C0C433C9;
+        Wed, 29 Jul 2020 01:47:30 +0000 (UTC)
 MIME-Version: 1.0
-References: <CA+icZUWoycCvAAs5H0sigHTB+GGhX5NRVonYqKg7BRLB97dGkA@mail.gmail.com>
- <87mu3magfp.fsf@tynnyri.adurom.net> <CA+icZUUY_cSbhT8piRED_RBw4rjrMesVoNgj-sCLnGU0zoAzWA@mail.gmail.com>
-In-Reply-To: <CA+icZUUY_cSbhT8piRED_RBw4rjrMesVoNgj-sCLnGU0zoAzWA@mail.gmail.com>
-Reply-To: sedat.dilek@gmail.com
-From:   Sedat Dilek <sedat.dilek@gmail.com>
-Date:   Tue, 28 Jul 2020 23:23:29 +0200
-Message-ID: <CA+icZUVCPxjp3zQg1rgx+33v1vjZCep6uEg4wkmq3MdY4a9j5w@mail.gmail.com>
-Subject: Re: iwlwifi: Direct firmware load for iwl-debug-yoyo.bin failed with
- error -2
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     Luca Coelho <luciano.coelho@intel.com>,
-        Shahar S Matityahu <shahar.s.matityahu@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Intel Linux Wireless <linuxwifi@intel.com>,
-        linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Tue, 28 Jul 2020 18:47:30 -0700
+From:   Rajkumar Manoharan <rmanohar@codeaurora.org>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     Felix Fietkau <nbd@nbd.name>, linux-wireless@vger.kernel.org,
+        linux-wireless-owner@vger.kernel.org
+Subject: Re: [RFC] mac80211: add a function for running rx without passing
+ skbs to the stack
+In-Reply-To: <c1b2a6583245560952db0cde3e3d6ff9db4cbd5a.camel@sipsolutions.net>
+References: <20200725185554.17346-1-nbd@nbd.name>
+ <c1b2a6583245560952db0cde3e3d6ff9db4cbd5a.camel@sipsolutions.net>
+Message-ID: <801c3763d82b86268797fdc75040ce75@codeaurora.org>
+X-Sender: rmanohar@codeaurora.org
+User-Agent: Roundcube Webmail/1.3.9
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Jul 28, 2020 at 3:13 PM Sedat Dilek <sedat.dilek@gmail.com> wrote:
->
-> On Sun, Jul 26, 2020 at 9:23 AM Kalle Valo <kvalo@codeaurora.org> wrote:
-> >
-> > Sedat Dilek <sedat.dilek@gmail.com> writes:
-> >
-> > > Hi,
-> > >
-> > > I am seeing this failed/error message for a long time:
-> > >
-> > > [Sat Jul 25 13:03:28 2020] iwlwifi 0000:01:00.0: Direct firmware load
-> > > for iwl-debug-yoyo.bin failed with error -2
-> > >
-> > > So, I started to look for the file "iwl-debug-yoyo.bin" in [1], but failed.
-> > > AFAICS this is a file for debugging purposes?
-> > >
-> > > Why do I see such a message as an end-user w/o iwlwifi-debugging enabled?
-> > > For some end-users I can imagine this looks scary and they will look
-> > > into their cupboards and below their beds but will not find any
-> > > monsters.
-> > >
-> > > I found a rename from an ini file to bin here:
-> > > commit 8d9e982bf9bf ("iwlwifi: dbg_ini: rename external debug
-> > > configuration file")
-> > >
-> > > Is "iwl-debug-yoyo.bin" a binary or as before an ini (text) file I
-> > > have to configure somehow.
-> > >
-> > > Does this need to be guarded by some "ifdef CONFIG_IWLWIFI_DEBUG" in
-> > > "drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c"?
-> > >
-> > > Or does drivers/net/wireless/intel/iwlwifi/Makefile needs some tuning
-> > > - as said I have no iwlwifi debugging enabled via Kconfig?
-> > > ...
-> > > iwlwifi-objs            += iwl-dbg-tlv.o
-> > >
-> > > Please enlighten me/us?
-> > >
-> > > Thanks.
-> > >
-> > > Regards,
-> > > - Sedat -
-> > >
-> > > [1] https://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/linux-firmware.git/
-> > > [2] https://git.kernel.org/linus/e8d9e982bf9bf0e6f99099f1f09a37563b2b95b5
-> > >
-> > >>From my dmesg-output:
-> > >
-> > > [Sa Jul 25 13:03:28 2020] iwlwifi 0000:01:00.0: can't disable ASPM; OS
-> > > doesn't have ASPM control
-> > > [Sa Jul 25 13:03:28 2020] iwlwifi 0000:01:00.0: loaded firmware
-> > > version 18.168.6.1 6000g2b-6.ucode op_mode iwldvm
-> > > [Sa Jul 25 13:03:28 2020] iwlwifi 0000:01:00.0: Direct firmware load
-> > > for iwl-debug-yoyo.bin failed with error -2
-> >
-> > There's an RFC patch about this:
-> >
-> > https://patchwork.kernel.org/patch/11625759/
-> >
-> > I think that should be applied. Intel folks, should I take that directly
-> > to wireless-drivers-next?
-> >
->
-> Reported-by: Sedat Dilek <sedat.dilek@gmail.com>
-> Tested-by: Sedat Dilek <sedat.dilek@gmail.com> # Linux v5.8-rc7; GCC
-> v10.2 + GNU/ld v2.35
->
+On 2020-07-25 12:14, Johannes Berg wrote:
+>> +void ieee80211_rx_napi(struct ieee80211_hw *hw, struct ieee80211_sta 
+>> *pubsta,
+>> +		       struct sk_buff *skb, struct napi_struct *napi)
+>> +{
+>> +	struct sk_buff_head list;
+>> +
+>> +	__skb_queue_head_init(&list);
+>> +
+>> +	/*
+>> +	 * key references and virtual interfaces are protected using RCU
+>> +	 * and this requires that we are in a read-side RCU section during
+>> +	 * receive processing
+>> +	 */
+>> +	rcu_read_lock();
+>> +	ieee80211_rx_list(hw, pubsta, skb, &list);
+>> +	rcu_read_unlock();
+>> +
+>> +	while ((skb = __skb_dequeue(&list)) != NULL)
+> 
+> I'd drop the != NULL, but no strong feelings :)
+> 
+>> +		if (napi)
+>> +			napi_gro_receive(napi, skb);
+>> +		else
+>> +			netif_receive_skb(skb);
+> 
+> Nit: I'd prefer braces on the loop, just makes it nicer to read IMHO.
+> 
+> OTOH, the !napi case should use netif_receive_skb_list(), no?
+> 
+> Given the discussion, it also seems a bit odd to add more work for NAPI
+> poll where we process one by one ... But I see why you did that, and I
+> guess it's not actually that much more work.
+> 
+IIUC Sebastian mentioned that threadable NAPI approach is helping in 
+load balancing
+with minor check for dummy netdev for wireless drivers. Does this change 
+improve
+the latency in both threaded and non-threaded modes?
 
-Re-tested with LLVM/Clang/LLD v11.0.0-rc1.
-
-- Sedat -
+-Rajkumar
