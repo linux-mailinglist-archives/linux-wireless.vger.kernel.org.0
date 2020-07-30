@@ -2,171 +2,86 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0ED1D233B1B
-	for <lists+linux-wireless@lfdr.de>; Fri, 31 Jul 2020 00:08:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B73F233B37
+	for <lists+linux-wireless@lfdr.de>; Fri, 31 Jul 2020 00:21:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728532AbgG3WIP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 30 Jul 2020 18:08:15 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:57109 "EHLO m43-7.mailgun.net"
+        id S1730153AbgG3WVJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 30 Jul 2020 18:21:09 -0400
+Received: from bilbo.ozlabs.org ([203.11.71.1]:43881 "EHLO ozlabs.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727072AbgG3WIP (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 30 Jul 2020 18:08:15 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1596146893; h=Message-ID: References: In-Reply-To: Subject:
- Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
- MIME-Version: Sender; bh=RLFa97HrPAGsDxlsGYIm8EEBhnaTyNzG7IeSIgaZrHQ=;
- b=n4gs871DpF9B1T29S5068CN9VLNTPF7qLvfU6H4kl0UDVJP3vPMWb+DnnBH1mmz7I4t01Y4K
- 3zX1+laHFAW/oju9C7XxIMRT5Jv6h8AY07KE+cWVKV19JVEX2I3GQOAyo7wM1WV9e6FXOaTW
- 6JOGCxxU4Nmu//WvTk8goY6kaVc=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n16.prod.us-east-1.postgun.com with SMTP id
- 5f2344cd9403087e10e27564 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 30 Jul 2020 22:08:13
- GMT
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 9CA28C43391; Thu, 30 Jul 2020 22:08:12 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+        id S1728063AbgG3WVJ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 30 Jul 2020 18:21:09 -0400
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
-        (Authenticated sender: alokad)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id BC087C433CA;
-        Thu, 30 Jul 2020 22:08:11 +0000 (UTC)
+        by mail.ozlabs.org (Postfix) with ESMTPSA id 4BHlHR0sPjz9sTC;
+        Fri, 31 Jul 2020 08:21:06 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
+        s=201702; t=1596147667;
+        bh=v81W8GIsNfgI+jNrSnQzwtV4UC776qBdtzVq2xM/XQQ=;
+        h=Date:From:To:Cc:Subject:From;
+        b=UqXHJHdzyspL7lWX4rhLYDvN3nEx4Axl3nmlhDZWHztQzBp3xjhd4W03D2/qlrctd
+         Ce9h6uOCex41gBy1mbMrG1+8SHHHBA9QKCNm4//GdqY6klyTUOTEqZCq4VzCxZFaBI
+         RBawGJaetk2si3MZpNL4yYnWlQYw1H2UyURgerEs+rZAZyLXPYKVA81Hwy0BLZ9YaF
+         N3MBmVh0d1ALlAj45ffnR9cPkHPThUhb2UIJflNp0RjwtotKkwoks1x7JyQnTDE2VO
+         DH0d3P0YqYkEaRJPHhOII49+bEZUfROx/3E51vNeX7hQncuvm2jppTj7zdxNbiateA
+         qYQY7xMXZ3AWQ==
+Date:   Fri, 31 Jul 2020 08:21:05 +1000
+From:   Stephen Rothwell <sfr@canb.auug.org.au>
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        Wireless <linux-wireless@vger.kernel.org>
+Cc:     Linux Next Mailing List <linux-next@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        P Praneesh <ppranees@codeaurora.org>
+Subject: linux-next: Fixes tag needs some work in the mac80211-next tree
+Message-ID: <20200731082105.75e60bda@canb.auug.org.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Thu, 30 Jul 2020 15:08:11 -0700
-From:   Aloka Dixit <alokad@codeaurora.org>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org,
-        linux-wireless-owner@vger.kernel.org
-Subject: Re: [PATCH v4 2/2] mac80211: Add FILS discovery support
-In-Reply-To: <d1b5dd7d9f93d3fc87c58dcfc28c9a3c6b4c923e.camel@sipsolutions.net>
-References: <20200618050427.5891-1-alokad@codeaurora.org>
- <20200618050427.5891-3-alokad@codeaurora.org>
- <bb2be4ac581487aa9e89d3c75180a1766b112370.camel@sipsolutions.net>
- <c86a98180879365bab34d8d9eb2f5c3c@codeaurora.org>
- <d1b5dd7d9f93d3fc87c58dcfc28c9a3c6b4c923e.camel@sipsolutions.net>
-Message-ID: <78c89ff151efbdff2e579733d6b1d98c@codeaurora.org>
-X-Sender: alokad@codeaurora.org
-User-Agent: Roundcube Webmail/1.3.9
+Content-Type: multipart/signed; boundary="Sig_/KdgfdNUuPJW4qH/heNXQkr5";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2020-07-30 14:26, Johannes Berg wrote:
-> On Thu, 2020-07-30 at 14:00 -0700, Aloka Dixit wrote:
-> 
->> > > +	fd = &sdata->vif.bss_conf.fils_discovery;
->> > > +	fd->min_interval = params->min_interval;
->> > > +	fd->max_interval = params->max_interval;
->> > > +
->> > > +	if (!params->tmpl || !params->tmpl_len) /* Optional template */
->> > > +		return 0;
->> >
->> > Now I'm even more confused. If the template is optional, then if it's
->> > not given it doesn't mean *everything* should be ignored, does it?
->> >
->> > What would be the point of that? OTOH, if the template isn't there,
->> > what
->> > would you do?
->> >
->> > But it still doesn't make sense - if no template means you shouldn't do
->> > anything then that doesn't mean the template should be optional, that
->> > just means userspace shouldn't even put the NL80211_ATTR_FILS_DISCOVERY
->> > attribute when it doesn't want anything to be done?
->> >
->> > So it seems to me that something doesn't match. Either the template is
->> > truly optional and then this shouldn't just return success, or the
->> > template isn't actually optional?
->> >
->> 
->> Everything is not ignored, I set the minimum and maximum interval 
->> values
->> before checking for the template so that those are accepted even if
->> template isn't present.
-> 
-> Right, oops, missed that.
-> 
->> For 6GHz, template is required, at least for ath11k driver.
->> But for 2.4GHz and 5GHz FILS discovery transmission is not offloaded 
->> to
->> FW.
-> 
-> But ... now I'm still confused.
-> 
-> If you *don't* offload it, how will it work? Will it all bubble up to
-> hostapd and that will send the response? Does that work without any
-> other changes?
-> 
-> But then what would you need the min/max for? I guess I still don't
-> understand it... I thought this was a periodic frame anyway like 
-> beacon,
-> so how could you _not_ offload it?
-> 
+--Sig_/KdgfdNUuPJW4qH/heNXQkr5
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-Min and max intervals are used to decide if a FILS discovery frame 
-should be sent at all when respective timers expires.
-Depending on how close that time is to the next beacons, the device may 
-just send the beacon instead.
+Hi all,
 
-In lower bands, for non-offloaded case, FW will send events asking for 
-the frame until it gets one.
-Whether that should go all the way to hostapd or should the driver 
-itself handle it remains to be seen.
-My current focus is only 6GHz, but didn't want to restrict kernel 
-implementation so moved 6GHz related checks to the driver instead.
+In commit
 
-All in all, making the template mandatory will be safer so that the 
-driver will always have one if required.
+  5fa4ab3cf34e ("mac80211: avoid bss color setting in non-HE modes")
 
->> We can make the template mandatory instead and then the respective
->> drivers will choose the handling.
->> Please suggest.
-> 
-> I have no idea ... still trying to understand it.
-> 
->> > > +	err = ieee80211_set_fils_discovery(sdata, &params->fils_discovery);
->> > > +	if (err < 0) {
->> > > +		ieee80211_vif_release_channel(sdata);
->> > > +		return err;
->> >
->> > Is there no goto label for this error case?
->> >
->> 
->> Existing function doesn't use goto labels for error cases, only 
->> return.
-> 
-> Maybe add one? Surely the release_channel() must alraedy exist there
-> somewhere.
-> 
+Fixes tag
 
-Okay.
+  Fixes: eb024f1abca3("mac80211: avoid bss color setting in non-he mode")
 
->> > > +	skb = dev_alloc_skb(tmpl->len);
->> > > +	if (skb)
->> > > +		skb_put_data(skb, tmpl->data, tmpl->len);
->> >
->> > You should consider the headroom that the driver may have requested.
->> >
->> 
->> I didn't understand this point, what would the driver request headroom
->> for?
-> 
-> Whatever it wants for ... drivers are allowed request extra headroom
-> (hw->extra_tx_headroom) and we generally honour that for every skb we
-> build for the driver.
-> 
+has these problem(s):
 
-I will look into other instances to understand this requirement.
+  - Target SHA1 does not exist
 
-> johannes
+I can't find which commit is meant.
+
+--=20
+Cheers,
+Stephen Rothwell
+
+--Sig_/KdgfdNUuPJW4qH/heNXQkr5
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAl8jR9EACgkQAVBC80lX
+0Gy34Af/e7rSP2pQ9PkQud80zM3HRxW2nPNYDqI/xj3I28TsaAJRWLPEBWAhikLL
+uoSQdUPTUZA3w3CoP77SSHLbCll/DpgJmouBWunL+5d7y4DVpSk0b8o1vOm8wyyL
+h0KG4b2HGrwiH5KHA5tLExNN7bzELv7cORy7Z8RBD9EZ/Cas8enBi44oa/iLA9GO
+WrJB1yUe4QsGOwSuV5opPkXaMSJuDH6IEn0LNltRNyx9mkkhhWJSsuOVMUsTHGX7
+6cjtZEwT07jgenjPR0ca2uS0LEEzA7RQ6GB56V2Habw7CLbGeH1YNuyMjPyUzdTP
+Y2LE+NdS7gWakniGnPTfa0q8k8qzaQ==
+=DuOS
+-----END PGP SIGNATURE-----
+
+--Sig_/KdgfdNUuPJW4qH/heNXQkr5--
