@@ -2,85 +2,100 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 67A81232FB6
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Jul 2020 11:39:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 79BCC23301D
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Jul 2020 12:15:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726671AbgG3JjG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 30 Jul 2020 05:39:06 -0400
-Received: from mail.kernel.org ([198.145.29.99]:51912 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726273AbgG3JjG (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 30 Jul 2020 05:39:06 -0400
-Received: from lore-desk.redhat.com (unknown [151.48.137.169])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 0E2332075F;
-        Thu, 30 Jul 2020 09:39:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1596101946;
-        bh=LHiwMNvPrrk+GqsIver34TeFJTqsOMZjKbtwJWMKa4Q=;
-        h=From:To:Cc:Subject:Date:From;
-        b=trLp4Gwi4LUQaTHUdM4pAYgWDKAJTyQ1FxgPLQ2XPOrDqafiD1kBXiuvZug5RQoaB
-         ndR5VF/zRmUXsahetRkdphAfGWeOrUJBxuJW/eCKEAd8zx9fPdUUL4T2nLzEMe1FW4
-         rANT/QMnmJXvN2a+jDPz/zNXccr81b/eczdNsTUw=
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     lorenzo.bianconi@redhat.com, sean.wang@mediatek.com,
-        linux-wireless@vger.kernel.org
-Subject: [PATCH] mt76: mt76s: fix oom in mt76s_tx_queue_skb_raw
-Date:   Thu, 30 Jul 2020 11:38:46 +0200
-Message-Id: <368c78ef79cb6782008b33a87d73b5fc51ba2989.1596101881.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.26.2
+        id S1727838AbgG3KPM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 30 Jul 2020 06:15:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44238 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726799AbgG3KPL (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 30 Jul 2020 06:15:11 -0400
+Received: from mail-lf1-x143.google.com (mail-lf1-x143.google.com [IPv6:2a00:1450:4864:20::143])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55374C061794;
+        Thu, 30 Jul 2020 03:15:10 -0700 (PDT)
+Received: by mail-lf1-x143.google.com with SMTP id i19so14631741lfj.8;
+        Thu, 30 Jul 2020 03:15:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=05CuB/jBx9heNKW8cLF7uBdkO4BnahdfB+vJ5sJPIxA=;
+        b=HGw41Cp4dTMIGAiiNj7VzHg7msH9jX4YAeavktOJsxlfItpOGfTTE59jsA2BqaPBge
+         /0xSAKPlJWOXciYutZUZo6OUW+SzmVZ26IzR4Y3PHNY6K3UUImP7rB9G1/8kR6rZdEPt
+         O9MDmU4bp1y9IXRCmX2LmM9ZwE/qmsISAoC+NpvVjngqJbHuupB3eUA84ssj9vpRyTCs
+         ZTiD2ifJsw0Qm2YOssPUVVTr2jGZMde9q19sfnc0lYRJ3bP0MAUf5lIr+U2azn3a9Eht
+         vzBzqrk6esd8rr++Qn5gKRKQDtI172OCXz5SXlZFBNM2t2ysCCncTeKHtAYi7wMIZ/dX
+         BKEw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=05CuB/jBx9heNKW8cLF7uBdkO4BnahdfB+vJ5sJPIxA=;
+        b=HkukjQyux1TmzhlDG9jRYwhUYNZXOriT8otueFJCKb510XDWStnkxU2I3nER8w3L31
+         17ynkZeS3k5jRYLaaSu8M4i0KNL53gD7BMBP5IfLk6kwnYAVd9daaO8I4rAZ5o31ME2M
+         OiYg5ZJu10UOXQMrvYzd4n9BuwvoLIySzyRKZbIaF5I7Q5MrmiQStQAkfJ4s/tOJLsAM
+         J/64OPZKU/CQO58p1ieCDGI1TSFM/4fv3IFnrbDdbin51i9vEopbB1rlivH/HZkSIIyr
+         +UcC6lTantyaOzAteGnch/iAJar4CnDA+9RDOFagSGkTVxuuxNxF3J/yauZ7xDnAf9Qt
+         sF1g==
+X-Gm-Message-State: AOAM530PMYUee3UH6bliRWQtv9mijOD2pECxrKc2JGVqKXPQ7BA7nR6g
+        WCOox6YAGudYGKtqjgIj444=
+X-Google-Smtp-Source: ABdhPJzEO31zmabM48xFaSWUe10ugtknUJjgHvxQSmVNbBb8BKy2hosJA52ElLVZYIHN6WkR3LB6XQ==
+X-Received: by 2002:a05:6512:3182:: with SMTP id i2mr1287339lfe.103.1596104108845;
+        Thu, 30 Jul 2020 03:15:08 -0700 (PDT)
+Received: from curiosity ([5.188.167.236])
+        by smtp.gmail.com with ESMTPSA id w19sm942979ljd.112.2020.07.30.03.15.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 30 Jul 2020 03:15:07 -0700 (PDT)
+Date:   Thu, 30 Jul 2020 13:20:23 +0300
+From:   Sergey Matyukevich <geomatsi@gmail.com>
+To:     Wang Hai <wanghai38@huawei.com>
+Cc:     imitsyanko@quantenna.com, kvalo@codeaurora.org,
+        davem@davemloft.net, kuba@kernel.org, mst@redhat.com,
+        mkarpenko@quantenna.com, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] qtnfmac: Missing platform_device_unregister() on
+ error in qtnf_core_mac_alloc()
+Message-ID: <20200730102023.GA2249@curiosity>
+References: <20200730064910.37589-1-wanghai38@huawei.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200730064910.37589-1-wanghai38@huawei.com>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Free the mcu skb in case of error in mt76s_tx_queue_skb_raw routine
+> Add the missing platform_device_unregister() before return from
+> qtnf_core_mac_alloc() in the error handling case.
+> 
+> Fixes: 616f5701f4ab ("qtnfmac: assign each wiphy to its own virtual platform device")
+> Reported-by: Hulk Robot <hulkci@huawei.com>
+> Signed-off-by: Wang Hai <wanghai38@huawei.com>
+> ---
+>  drivers/net/wireless/quantenna/qtnfmac/core.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/wireless/quantenna/qtnfmac/core.c b/drivers/net/wireless/quantenna/qtnfmac/core.c
+> index eea777f8acea..6aafff9d4231 100644
+> --- a/drivers/net/wireless/quantenna/qtnfmac/core.c
+> +++ b/drivers/net/wireless/quantenna/qtnfmac/core.c
+> @@ -446,8 +446,11 @@ static struct qtnf_wmac *qtnf_core_mac_alloc(struct qtnf_bus *bus,
+>  	}
+>  
+>  	wiphy = qtnf_wiphy_allocate(bus, pdev);
+> -	if (!wiphy)
+> +	if (!wiphy) {
+> +		if (pdev)
+> +			platform_device_unregister(pdev);
+>  		return ERR_PTR(-ENOMEM);
+> +	}
+>  
+>  	mac = wiphy_priv(wiphy);
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- drivers/net/wireless/mediatek/mt76/sdio.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+Reviewed-by: Sergey Matyukevich <geomatsi@gmail.com>
 
-diff --git a/drivers/net/wireless/mediatek/mt76/sdio.c b/drivers/net/wireless/mediatek/mt76/sdio.c
-index d2b38ed7f3b4..5d8353026aaf 100644
---- a/drivers/net/wireless/mediatek/mt76/sdio.c
-+++ b/drivers/net/wireless/mediatek/mt76/sdio.c
-@@ -244,22 +244,27 @@ mt76s_tx_queue_skb_raw(struct mt76_dev *dev, enum mt76_txq_id qid,
- 	struct mt76_queue *q = dev->q_tx[qid].q;
- 	int ret = -ENOSPC, len = skb->len;
- 
--	spin_lock_bh(&q->lock);
- 	if (q->queued == q->ndesc)
--		goto out;
-+		goto error;
- 
- 	ret = mt76_skb_adjust_pad(skb);
- 	if (ret)
--		goto out;
-+		goto error;
-+
-+	spin_lock_bh(&q->lock);
- 
- 	q->entry[q->tail].buf_sz = len;
- 	q->entry[q->tail].skb = skb;
- 	q->tail = (q->tail + 1) % q->ndesc;
- 	q->queued++;
- 
--out:
- 	spin_unlock_bh(&q->lock);
- 
-+	return 0;
-+
-+error:
-+	dev_kfree_skb(skb);
-+
- 	return ret;
- }
- 
--- 
-2.26.2
-
+Thanks,
+Sergey
