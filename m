@@ -2,77 +2,123 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3001023360C
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Jul 2020 17:53:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 937692338AF
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Jul 2020 21:10:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729675AbgG3Pxc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 30 Jul 2020 11:53:32 -0400
-Received: from mga06.intel.com ([134.134.136.31]:54718 "EHLO mga06.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726581AbgG3Pxc (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 30 Jul 2020 11:53:32 -0400
-IronPort-SDR: 3L2R5IXyBM0jivuQXoKrfwTswOUt2W+vRyp6XXQH9W0PY81ATdkWRjSKmvDOmVzPzZ23aOYqsh
- w3f2mz7uCNmg==
-X-IronPort-AV: E=McAfee;i="6000,8403,9698"; a="213159408"
-X-IronPort-AV: E=Sophos;i="5.75,414,1589266800"; 
-   d="scan'208";a="213159408"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jul 2020 08:53:30 -0700
-IronPort-SDR: Ou7VINLVSXhmVPpy5r0ZWhVuUqxgMU0jqVsj/9Aqs8VXN0wOrp0jUkKdHq4aMrpQSKSdkPwHju
- Q68HnaD2fH4g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.75,414,1589266800"; 
-   d="scan'208";a="465288976"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga005.jf.intel.com with ESMTP; 30 Jul 2020 08:53:28 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id 86DB9119; Thu, 30 Jul 2020 18:53:27 +0300 (EEST)
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Arend van Spriel <arend.vanspriel@broadcom.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
-        Wright Feng <wright.feng@cypress.com>,
-        brcm80211-dev-list.pdl@broadcom.com,
-        brcm80211-dev-list@cypress.com, Kalle Valo <kvalo@codeaurora.org>,
-        linux-wireless@vger.kernel.org
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH v1] brcmfmac: use %*ph to print small buffer
-Date:   Thu, 30 Jul 2020 18:53:27 +0300
-Message-Id: <20200730155327.40130-1-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.27.0
+        id S1730418AbgG3TKw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 30 Jul 2020 15:10:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42122 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730411AbgG3TKw (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 30 Jul 2020 15:10:52 -0400
+Received: from mail-wm1-x342.google.com (mail-wm1-x342.google.com [IPv6:2a00:1450:4864:20::342])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 051B0C061574
+        for <linux-wireless@vger.kernel.org>; Thu, 30 Jul 2020 12:10:51 -0700 (PDT)
+Received: by mail-wm1-x342.google.com with SMTP id t14so2004450wmi.3
+        for <linux-wireless@vger.kernel.org>; Thu, 30 Jul 2020 12:10:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=nexus-software-ie.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=CscVsMNnpDg2b000DHJpFBIh3agH1Nhvyq9uWgvASwg=;
+        b=0tZ/E4YxOxlM9Ibk6lZot3+gIOoUaOCDlJh1QLcOYi89b1Ufn3Bk+Ea5wJ1ESWWu2B
+         S+GJztXLe35iM/wbTdLRETB0zkdZ35lTJnqOQlmjoMNxWi4iJlNhN2/I0+gLnGlNOb2f
+         +upWW6lwucQdarNNWtffU3ynbkiXqtrrVDgetgotxFsm0Ycj0A0G3gPj9/3sGMXBquxy
+         2YhHrb+I8QSOrUgYT7ikQKOU6XhNaax5XoDG8SMh6FYj5Kz3Q0RM0XBnfx6NuC04wFmh
+         F/2xClUMh66f4bLypajQK8aGMSyKr90DiIDoCzmv682l3pOq1lmMgpnzikverGms4y3X
+         Mg/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=CscVsMNnpDg2b000DHJpFBIh3agH1Nhvyq9uWgvASwg=;
+        b=luN8m90XD8wr/Eq/AxkarzqU3TpXydp98C4eR8aHvzpGINMXMP9EECX3N4dFiK1FAq
+         fACOZDia83l3pnKZQG9Es1FSSk5akXUEhQVryKVkkHEjIU8nzGh+lEt/hIr62Vzg0K/m
+         iMOijIIbtf8sUY1dC0pPDtTNvTxsf68ikFjIYtvzWB8Bfcr8DH3Lg+qp6cEX4r/zxxHN
+         iQn7+Wm5tmuzyXPSVzlXvj9MX2FsLHEGXI8Hpyq/sijcC4pIOc1arOUIVaOtg+XBHP3J
+         IHuEbOctGjfhW5By0IP4pbJDHyYJP+e6G7oYXIi+WdGGwhuRXyfDTIqhQ/2Km+ucjofE
+         nrZw==
+X-Gm-Message-State: AOAM533jhatsA2NxOGu2+2Pf7WI0CxmpKxundK2YOwPTCBDJC/VF2FPW
+        tQlRIWTSkW5Pb3n556gH1DUvfIuuUZg=
+X-Google-Smtp-Source: ABdhPJwk35VEzk0JD4jBkNHJ9qz9KDvAJuPYD/ydsRSAc2A6rWn3cKAUbERRbl5DHBQi7Aio8WnmHg==
+X-Received: by 2002:a1c:7306:: with SMTP id d6mr538501wmb.113.1596136250537;
+        Thu, 30 Jul 2020 12:10:50 -0700 (PDT)
+Received: from [192.168.0.38] ([176.61.57.127])
+        by smtp.gmail.com with ESMTPSA id l11sm9589533wme.11.2020.07.30.12.10.49
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 30 Jul 2020 12:10:49 -0700 (PDT)
+Subject: Re: [PATCH] wcn36xx: Set operational channel to 0 on disassociation
+To:     Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+        kvalo@codeaurora.org, loic.poulain@linaro.org
+Cc:     wcn36xx@lists.infradead.org, linux-wireless@vger.kernel.org
+References: <20200730110947.57979-1-bryan.odonoghue@linaro.org>
+From:   Bryan O'Donoghue <pure.logic@nexus-software.ie>
+Message-ID: <3a77d3dd-9ac5-6733-f4bb-76fda257f095@nexus-software.ie>
+Date:   Thu, 30 Jul 2020 20:11:36 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20200730110947.57979-1-bryan.odonoghue@linaro.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Use %*ph format to print small buffer as hex string.
+On 30/07/2020 12:09, Bryan O'Donoghue wrote:
+> After a disassociated event we need to make sure we reset the operational
+> channel so that subsequent channel scans will not exclude the channel we
+> were using.
+> 
+> Doing a software scan on a wcn3680 showed that if we disassociated from an
+> AP we would never see it re-appear in a scan - unless we shifted the AP to
+> a different channel.
+> 
+> Setting the operational channel to zero on disassociation ensures that this
+> situation will not arise in the wild.
+> 
+> Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+> ---
+>   drivers/net/wireless/ath/wcn36xx/main.c | 1 +
+>   1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/net/wireless/ath/wcn36xx/main.c b/drivers/net/wireless/ath/wcn36xx/main.c
+> index fb8978a3c11e..4681d085b683 100644
+> --- a/drivers/net/wireless/ath/wcn36xx/main.c
+> +++ b/drivers/net/wireless/ath/wcn36xx/main.c
+> @@ -908,6 +908,7 @@ static void wcn36xx_bss_info_changed(struct ieee80211_hw *hw,
+>   						bss_conf->bssid,
+>   						vif->addr,
+>   						WCN36XX_HAL_LINK_IDLE_STATE);
+> +			wcn36xx_smd_switch_channel(wcn, vif, 0);
+>   		}
+>   	}
+>   
+> 
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Hmm.
+
+This one failed for me too.. eventually.
+
+wcn36xx: ERROR hal_switch_channel=0 response failed err=6.
+
+Looks like channel 0 as a safety channel will not always be accepted by 
+the firmware.
+
+I think the right fix is to set the working channel to any _valid_ 
+channel in our set other than the current channel.
+
+That way the software scan will still run but, the firmware should also 
+still be happy to switch to the channel we have set.
+
+Anyway - ignore this patch for now
+
 ---
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+bod
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-index 5d99771c3f64..a305567b41d0 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-@@ -3983,10 +3983,7 @@ brcmf_cfg80211_set_pmksa(struct wiphy *wiphy, struct net_device *ndev,
- 	}
- 
- 	brcmf_dbg(CONN, "set_pmksa - PMK bssid: %pM =\n", pmk[npmk].bssid);
--	for (i = 0; i < WLAN_PMKID_LEN; i += 4)
--		brcmf_dbg(CONN, "%02x %02x %02x %02x\n", pmk[npmk].pmkid[i],
--			  pmk[npmk].pmkid[i + 1], pmk[npmk].pmkid[i + 2],
--			  pmk[npmk].pmkid[i + 3]);
-+	brcmf_dbg(CONN, "%*ph\n", WLAN_PMKID_LEN, pmk[npmk].pmkid);
- 
- 	err = brcmf_update_pmklist(cfg, ifp);
- 
--- 
-2.27.0
+
 
