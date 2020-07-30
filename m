@@ -2,145 +2,105 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CE753233290
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Jul 2020 15:04:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F9E8233294
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Jul 2020 15:05:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728211AbgG3NEA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 30 Jul 2020 09:04:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42050 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728092AbgG3NEA (ORCPT
+        id S1726846AbgG3NFS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 30 Jul 2020 09:05:18 -0400
+Received: from mail2.candelatech.com ([208.74.158.173]:54214 "EHLO
+        mail3.candelatech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726535AbgG3NFR (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 30 Jul 2020 09:04:00 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35F61C061794
-        for <linux-wireless@vger.kernel.org>; Thu, 30 Jul 2020 06:03:59 -0700 (PDT)
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.93)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1k18E0-00DXFa-Ps; Thu, 30 Jul 2020 15:03:56 +0200
-Message-ID: <518246cd35a827a3652a0fcc5fc655fc4686ca76.camel@sipsolutions.net>
-Subject: Re: [PATCH V2 03/10] mac80211: add multiple bssid support
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     John Crispin <john@phrozen.org>
-Cc:     linux-wireless@vger.kernel.org, ath11k@lists.infradead.org
-Date:   Thu, 30 Jul 2020 15:03:56 +0200
-In-Reply-To: <20200706115219.663650-3-john@phrozen.org>
-References: <20200706115219.663650-1-john@phrozen.org>
-         <20200706115219.663650-3-john@phrozen.org>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.4 (3.36.4-1.fc32) 
+        Thu, 30 Jul 2020 09:05:17 -0400
+Received: from [192.168.254.5] (unknown [50.34.202.127])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail3.candelatech.com (Postfix) with ESMTPSA id 4357B13C2B3;
+        Thu, 30 Jul 2020 06:05:17 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 4357B13C2B3
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+        s=default; t=1596114317;
+        bh=XNjKFknzhMuOsFa0Z1nux0tAwq9b2Vcby6MRYGiq9m0=;
+        h=Subject:To:References:From:Date:In-Reply-To:From;
+        b=M+ekPgfzmjd1vo9rHlyRvi69ccQL1t8A2f5auTFP7v/W6N6JbV8ZyMrbnqQBS7rTG
+         8OVIUbR+xqutzzdXyQmQLSUT3pajwNiCJIbnczMGDcVh0UoPGXqCO3M5Vig4Xnv/CJ
+         ZAHW8uZxzRjgJJRcEWwzWUBmDkA3jpYjov25/3qo=
+Subject: Re: [PATCH] mac80211: do not iterate active interfaces when in
+ re-configure
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless@vger.kernel.org
+References: <20200525165317.2269-1-greearb@candelatech.com>
+ <a3a6a9303eeaf91f83bcbc413ad0782659218966.camel@sipsolutions.net>
+From:   Ben Greear <greearb@candelatech.com>
+Organization: Candela Technologies
+Message-ID: <c53fd2d0-3ffb-3700-f12e-34c1867dded4@candelatech.com>
+Date:   Thu, 30 Jul 2020 06:05:16 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.9.0
 MIME-Version: 1.0
+In-Reply-To: <a3a6a9303eeaf91f83bcbc413ad0782659218966.camel@sipsolutions.net>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-MW
 Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 2020-07-06 at 13:52 +0200, John Crispin wrote:
+On 7/30/20 4:48 AM, Johannes Berg wrote:
+> On Mon, 2020-05-25 at 09:53 -0700, greearb@candelatech.com wrote:
+>> From: Ben Greear <greearb@candelatech.com>
+>>
+>> This appears to fix a problem where ath10k firmware would crash,
 > 
-> +/**
-> + * ieee80211_get_multi_bssid_mode - get a vifs multi bssid mode.
-> + *
-> + * This function is used to help look up the multi bssid mode which is tracked
-> + * inside the wdev.
-> + *
-> + * @vif: &struct ieee80211_vif pointer from the add_interface callback.
-> + */
-> +enum nl80211_multi_bssid_mode ieee80211_get_multi_bssid_mode(struct ieee80211_vif *vif);
-> +
-> +/**
-> + * ieee80211_get_multi_bssid_parent - get a vifs multi bssid parent.
-> + *
-> + * This function is used to help look up the multi bssid parent which is tracked
-> + * inside the wdev.
-> + *
-> + * @vif: &struct ieee80211_vif pointer from the add_interface callback.
-> + */
-> +struct ieee80211_vif *ieee80211_get_multi_bssid_parent(struct ieee80211_vif *vif);
+> 
+> "appears to", heh
+> 
+> Really though, in general, you need to start thinking about mac80211 and
+> the drivers as two separate things. You've also submitted another patch
+> where you say "this iwlwifi thing requires mac80211 to change", and here
+> you're submitting a patch saying "this ath10k thing requires mac80211 to
+> change", but I don't see you considering much the fact that mac80211 is
+> actually used for both.
+> 
+> It'd be good to have a discussion of such things in the commit log for
+> changes that will affect multiple drivers, rather than focusing on a
+> single bug for a single driver. In general, not just in this patch.
+> 
+>> diff --git a/net/mac80211/util.c b/net/mac80211/util.c
+>> index 5db2cd0..186a696 100644
+>> --- a/net/mac80211/util.c
+>> +++ b/net/mac80211/util.c
+>> @@ -831,7 +831,7 @@ static void __iterate_interfaces(struct ieee80211_local *local,
+>>   			break;
+>>   		}
+>>   		if (!(iter_flags & IEEE80211_IFACE_ITER_RESUME_ALL) &&
+>> -		    active_only && !(sdata->flags & IEEE80211_SDATA_IN_DRIVER))
+>> +		    (active_only && (local->in_reconfig || !(sdata->flags & IEEE80211_SDATA_IN_DRIVER))))
+>>   			continue;
+> 
+> Anyway, this seems wrong to me. If anything, it should skip those
+> interfaces that weren't re-added yet, but not all of them. I'm pretty
+> sure this would cause iwlwifi to misbehave with multiple interfaces, as
+> it sometimes relies on iterating to understand what else is going on
+> before configuring something.
+> 
+> It might even be that this can only be done subject to driver choice.
 
-All this can be a lot simpler if you don't just push the data that I
-just mentioned from the wdev down to the sdata, but actually down to the
-vif. Then these are just something like
+I have tested this patch hard for many years with hundreds of station vifs on ath9k radios and
+64 station vifs on ath10k radios, probably way harder than anyone else is testing
+this sort of thing.
 
-	vif->multi_bssid.parent
+Possibly you are correct about iwlwifi, I've never tested it with multi-interface,
+and as you see, have had bad luck on ax200.
 
-without a need to call a function. That'd probably result in
-significantly smaller code too, since exporting a function takes quite a
-bit of space.
+If you'd accept a patch with a new driver flag check (which I can enable for
+ath10k and ath9k), then I'll respin it thus.
 
-(Also, if you insist that it must be in the wdev, you can use the
-function that obtains the wdev from the vif, and dereference that -
-still wouldn't require exporting a lot of new functions.)
+Thanks,
+Ben
 
-> +	if (params->multi_bssid_mode &&
-> +	    !ieee80211_hw_check(&local->hw, SUPPORTS_MULTI_BSSID))
-> +		return -ENOTSUPP;
 
-IMHO that needs to be a new, separate feature bit, probably even at
-nl80211 level. This here was more of a client-side thing, and now you're
-doing AP side. I don't think we can mix those (and iwlwifi surely would
-have issues with that.)
-
->  static int ieee80211_del_iface(struct wiphy *wiphy, struct wireless_dev *wdev)
->  {
-> +	struct ieee80211_sub_if_data *sdata;
-> +	struct wireless_dev *child, *tmp;
-> +
-> +	sdata = IEEE80211_WDEV_TO_SUB_IF(wdev);
-> +	switch (sdata->wdev.multi_bssid_mode) {
-> +	case NL80211_MULTIPLE_BSSID_TRANSMITTED:
-> +		if (list_empty(&sdata->wdev.multi_bssid_list))
-> +			break;
-> +		sdata_info(sdata, "deleting while non-transmitting children still exist\n");
-
-Is that even worth a message? I mean, you could just destroy the
-children too, and document it in the API that way?
-
-> +		list_for_each_entry_safe(child, tmp, &sdata->wdev.multi_bssid_list,
-> +					 multi_bssid_list) {
-> +			list_del(&child->multi_bssid_list);
-> +			child->multi_bssid_parent = NULL;
-> +		}
-
-It also seems you shouldn't just NULL out the pointer but dev_close()
-them so they stop operating?
-
->  	case NL80211_IFTYPE_AP:
->  		sdata->bss = &sdata->u.ap;
-> +		if (wdev->multi_bssid_mode == NL80211_MULTIPLE_BSSID_TRANSMITTED) {
-> +			struct wireless_dev *child;
-> +			int children_down = 0;
-> +
-> +			/* check if all children are already up */
-> +			list_for_each_entry(child, &wdev->multi_bssid_list,
-> +					    multi_bssid_list)
-> +				if (!wdev_running(child))
-> +					children_down = 1;
-> +			if (children_down)
-> +				sdata_info(sdata, "non-transmitting children are not up yet\n");
-
-reject it?
-
-> @@ -800,6 +812,7 @@ static int ieee80211_open(struct net_device *dev)
->  static void ieee80211_do_stop(struct ieee80211_sub_if_data *sdata,
->  			      bool going_down)
->  {
-> +	struct wireless_dev *wdev = ieee80211_vif_to_wdev(&sdata->vif);
->  	struct ieee80211_local *local = sdata->local;
->  	unsigned long flags;
->  	struct sk_buff *skb, *tmp;
-> @@ -810,6 +823,12 @@ static void ieee80211_do_stop(struct ieee80211_sub_if_data *sdata,
->  	bool cancel_scan;
->  	struct cfg80211_nan_func *func;
->  
-> +	if (sdata->vif.type == NL80211_IFTYPE_AP &&
-> +	    wdev->multi_bssid_mode == NL80211_MULTIPLE_BSSID_NON_TRANSMITTED)
-> +		/* make sure the parent is already down */
-> +		if (wdev->multi_bssid_parent && wdev_running(wdev->multi_bssid_parent))
-> +			sdata_info(sdata, "transmitting parent is still up\n");
-
-Reject it? Or dev_close() the parent?
-
-johannes
-
+-- 
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
