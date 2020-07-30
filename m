@@ -2,31 +2,32 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BCC68233494
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Jul 2020 16:38:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E1F4E2334B1
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Jul 2020 16:43:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729574AbgG3OiD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 30 Jul 2020 10:38:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56574 "EHLO
+        id S1729672AbgG3OnU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 30 Jul 2020 10:43:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57376 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726535AbgG3OiC (ORCPT
+        with ESMTP id S1728297AbgG3OnR (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 30 Jul 2020 10:38:02 -0400
+        Thu, 30 Jul 2020 10:43:17 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5C26C061574
-        for <linux-wireless@vger.kernel.org>; Thu, 30 Jul 2020 07:38:02 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71642C061574
+        for <linux-wireless@vger.kernel.org>; Thu, 30 Jul 2020 07:43:17 -0700 (PDT)
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.93)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1k19h2-00DaDx-9q; Thu, 30 Jul 2020 16:38:00 +0200
-Message-ID: <3a608bb13f7115e8b019eea770691239a769dc24.camel@sipsolutions.net>
-Subject: Re: [PATCH V2 01/10] nl80211: add basic multiple bssid support
+        id 1k19m6-00DaQa-Et; Thu, 30 Jul 2020 16:43:15 +0200
+Message-ID: <c3dbcc3e4ee2d3596625e8c1226325180444a961.camel@sipsolutions.net>
+Subject: Re: [PATCH v4 1/2] nl80211: Add FILS discovery support
 From:   Johannes Berg <johannes@sipsolutions.net>
-To:     John Crispin <john@phrozen.org>
-Cc:     linux-wireless@vger.kernel.org, ath11k@lists.infradead.org
-Date:   Thu, 30 Jul 2020 16:37:59 +0200
-In-Reply-To: <20200706115219.663650-1-john@phrozen.org>
-References: <20200706115219.663650-1-john@phrozen.org>
+To:     Aloka Dixit <alokad@codeaurora.org>
+Cc:     linux-wireless@vger.kernel.org
+Date:   Thu, 30 Jul 2020 16:43:13 +0200
+In-Reply-To: <20200618050427.5891-2-alokad@codeaurora.org>
+References: <20200618050427.5891-1-alokad@codeaurora.org>
+         <20200618050427.5891-2-alokad@codeaurora.org>
 Content-Type: text/plain; charset="UTF-8"
 User-Agent: Evolution 3.36.4 (3.36.4-1.fc32) 
 MIME-Version: 1.0
@@ -36,27 +37,55 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 2020-07-06 at 13:52 +0200, John Crispin wrote:
-> 
-> @@ -3761,6 +3765,16 @@ static int nl80211_new_interface(struct sk_buff *skb, struct genl_info *info)
->  	if (err < 0)
->  		return err;
->  
-> +	if (info->attrs[NL80211_ATTR_MULTI_BSSID_MODE])
-> +		params.multi_bssid_mode =
-> +			nla_get_u8(info->attrs[NL80211_ATTR_MULTI_BSSID_MODE]);
-[...]
+On Wed, 2020-06-17 at 22:04 -0700, Aloka Dixit wrote:
+> + * @NL80211_FILS_DISCOVERY_TMPL: Optional FILS discovery template.
+> + *	It has contents of IEEE Std 802.11ai-2016 9.6.8.36 FILS discovery frame
+> + *	(Figure 9-687a).
 
-Oh .. missed this completely until I got to the iw patch :)
+Is that
 
-Why are you adding this in *new interface? IMHO it would be more
-applicable to "start_ap"? I don't see a reason why an interface couldn't
-change the role here regarding multi-BSSID while it's down?
+"It has (contents of ... FILS discovery frame) ..."
 
-That might also address some of the whole "cfg80211" vs. "mac80211"
-thing I raised previously, since now cfg80211 would have a lot more
-knowledge about things if the interface is already operating, i.e. it
-could track and validate more of this?
+or
+
+"It has contents of (... FILS discovery frame) ..."?
+
+I mean, is that with or without headers? The wording doesn't seem
+entirely clear to me.
+
+OTOH, if it's with headers, how could it be optional? In fact, either
+way, how is it optional?
+
+> +static int nl80211_parse_fils_discovery(struct nlattr *attrs,
+> +					struct cfg80211_ap_settings *params)
+> +{
+> +	struct nlattr *tmpl;
+> +	struct nlattr *tb[NL80211_FILS_DISCOVERY_MAX + 1];
+> +	int ret;
+> +	struct cfg80211_fils_discovery *fd = &params->fils_discovery;
+> +
+> +	ret = nla_parse_nested(tb, NL80211_FILS_DISCOVERY_MAX, attrs,
+> +			       fils_discovery_policy, NULL);
+> +	if (ret)
+> +		return ret;
+> +
+> +	if (!tb[NL80211_FILS_DISCOVERY_INT_MIN] ||
+> +	    !tb[NL80211_FILS_DISCOVERY_INT_MAX])
+> +		return -EINVAL;
+> +
+> +	fd->min_interval = nla_get_u32(tb[NL80211_FILS_DISCOVERY_INT_MIN]);
+> +	fd->max_interval = nla_get_u32(tb[NL80211_FILS_DISCOVERY_INT_MAX]);
+> +
+> +	tmpl = tb[NL80211_FILS_DISCOVERY_TMPL];
+> +	if (tmpl) {
+> +		fd->tmpl = nla_data(tmpl);
+> +		fd->tmpl_len = nla_len(tmpl);
+
+And if it's with headers, it should have some kind of minimum length
+too? You've only put a maximum length into the policy.
+
+(Which reminds me I wanted to have an NLA_POLICY_RANGE(NLA_BINARY, min,
+max) but haven't done that yet ...)
 
 johannes
 
