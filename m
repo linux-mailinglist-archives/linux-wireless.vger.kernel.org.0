@@ -2,32 +2,31 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8609123323F
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Jul 2020 14:32:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E4C72233246
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Jul 2020 14:33:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728219AbgG3MbA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 30 Jul 2020 08:31:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36920 "EHLO
+        id S1726631AbgG3Md4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 30 Jul 2020 08:33:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37370 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728197AbgG3Ma7 (ORCPT
+        with ESMTP id S1726581AbgG3Md4 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 30 Jul 2020 08:30:59 -0400
+        Thu, 30 Jul 2020 08:33:56 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B0C2C061794
-        for <linux-wireless@vger.kernel.org>; Thu, 30 Jul 2020 05:30:59 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33B1FC061794
+        for <linux-wireless@vger.kernel.org>; Thu, 30 Jul 2020 05:33:56 -0700 (PDT)
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.93)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1k17i4-00DWCD-FG; Thu, 30 Jul 2020 14:30:56 +0200
-Message-ID: <c9525845a8a8b7291988c92b9f427c64e8eef6c4.camel@sipsolutions.net>
-Subject: Re: ax200, fw crashes, and sdata-in-driver
+        id 1k17kw-00DWH8-90; Thu, 30 Jul 2020 14:33:54 +0200
+Message-ID: <62c74ddba571af59b2aeba116ff78ecc3b9b9710.camel@sipsolutions.net>
+Subject: Re: [PATCH] mac80211:  Fix kernel hang on ax200 firmware crash.
 From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Ben Greear <greearb@candelatech.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Date:   Thu, 30 Jul 2020 14:30:55 +0200
-In-Reply-To: <bb23b798-f347-7559-b3dc-d8f713899d26@candelatech.com> (sfid-20200714_015810_768492_BCCFB763)
-References: <bb23b798-f347-7559-b3dc-d8f713899d26@candelatech.com>
-         (sfid-20200714_015810_768492_BCCFB763)
+To:     greearb@candelatech.com, linux-wireless@vger.kernel.org
+Date:   Thu, 30 Jul 2020 14:33:53 +0200
+In-Reply-To: <20200610204017.4531-1-greearb@candelatech.com> (sfid-20200610_224247_926019_7174DFE4)
+References: <20200610204017.4531-1-greearb@candelatech.com>
+         (sfid-20200610_224247_926019_7174DFE4)
 Content-Type: text/plain; charset="UTF-8"
 User-Agent: Evolution 3.36.4 (3.36.4-1.fc32) 
 MIME-Version: 1.0
@@ -37,33 +36,92 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
-
-> I larded up my 5.4 kernel with KASAN and lockdep, and ran some tests.  This is with my
-> patch that keeps from busy-spinning forever (see previous ignored patch).
-
-Right, sorry, hadn't gotten to patches in a while.
-
-> After a few restarts and FW crashes, the ax200 could not recover firmware.  There
-> were lots of sdata-in-driver errors, and then KASAN hit a use-after-free issue
-> related to ax200 accessing sta object that was previously deleted.
+On Wed, 2020-06-10 at 13:40 -0700, greearb@candelatech.com wrote:
+> From: Ben Greear <greearb@candelatech.com>
 > 
-> Now, I think I know why:
+> I backported out-of-tree ax200 driver from backport-iwlwifi to my
+> 5.4 kernel so that I could run ax200 beside other radios (backports
+> mac80211 otherwise is incompatible and other drivers will crash).
 > 
-> In the ieee80211_handle_reconfig_failure(struct ieee80211_local *local)
-> method, it will clear the SDATA_IN_DRIVER flag, and according to comments,
-> this is run when firmware cannot be recovered.  But, just because FW is
-> dead does not mean that the driver itself has cleaned up its state.
+> Always possible that upstream kernel doesn't suffer from exactly this
+> case, but upstream ax200 is too unstable to even get this far, so...
 > 
-> So question is, should ax200 (and all drivers) be responsible for cleaning
-> up all state when FW cannot be recovered, or should instead mac80211 do cleanup
-> in this case by, among other things, not clearing that flag (and probably
-> not doing the ctx->driver_present = false; config as well)?
+> The ax200 firmware crash often causes the kernel to deadlock due to the
+> while (sta->sta_state == IEEE80211_STA_AUTHORIZED)
+> loop in __sta_info_Destroy_part.  If sta_info_move_state does not
+> make progress, then it will loop forever.  In my case, sta_info_move_state
+> fails due to the sdata-in-driver check.
 
-I think it should be the driver. It's not clear _why_ the driver failed,
-after all. If the firmware is still alive and just rejected something
-then perhaps rolling things back will work. But if the firmware just
-died again, that will just cause even more trouble.
+Interesting. I don't think I've seen this in our testing before.
 
+> iwlwifi 0000:12:00.0: dma_pool_destroy iwlwifi:bc, 00000000d859bd4c busy
+
+Ugh, yeah, as an aside - we still leak stuff there... need to dig into
+that.
+
+> Signed-off-by: Ben Greear <greearb@candelatech.com>
+> ---
+>  net/mac80211/sta_info.c | 23 +++++++++++++++++++++--
+>  1 file changed, 21 insertions(+), 2 deletions(-)
+> 
+> diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
+> index e2a04fc..31a3856 100644
+> --- a/net/mac80211/sta_info.c
+> +++ b/net/mac80211/sta_info.c
+> @@ -1092,6 +1092,7 @@ static void __sta_info_destroy_part2(struct sta_info *sta)
+>  	struct ieee80211_sub_if_data *sdata = sta->sdata;
+>  	struct station_info *sinfo;
+>  	int ret;
+> +	int count = 0;
+>  
+>  	/*
+>  	 * NOTE: This assumes at least synchronize_net() was done
+> @@ -1104,6 +1105,13 @@ static void __sta_info_destroy_part2(struct sta_info *sta)
+>  	while (sta->sta_state == IEEE80211_STA_AUTHORIZED) {
+>  		ret = sta_info_move_state(sta, IEEE80211_STA_ASSOC);
+>  		WARN_ON_ONCE(ret);
+> +		if (++count > 1000) {
+> +			/* WTF, bail out so that at least we don't hang the system. */
+> +			sdata_err(sdata, "Could not move state after 1000 tries, ret: %d  state: %d\n",
+> +				  ret, sta->sta_state);
+> +			WARN_ON_ONCE(1);
+> +			break;
+> +		}
+
+I guess that should be
+
+if (WARN_ON_ONCE()) ...
+
+
+etc.
+
+>  		int err = drv_sta_state(sta->local, sta->sdata, sta,
+>  					sta->sta_state, new_state);
+> -		if (err)
+> -			return err;
+> +		if (err == -EIO) {
+> +			/* Sdata-not-in-driver, we are out of sync, but probably
+> +			 * best to carry on instead of bailing here, at least maybe
+> +			 * we can clean this up.
+> +			 */
+
+It _could_ be the driver itself returning -EIO, so why not check the
+sdata-in-driver flag?
+
+
+Anyway, that mostly looks good and would make mac80211 more robust, but
+like I just said in the other patch I think you need to consider
+mac80211 changes more from mac80211's POV, not from an arbitrary
+driver's POV.
+
+Really here that mostly applies to the commit log, which should probably
+say something like
+
+	mac80211: deadlock due to driver misbehaviour
+
+or so, and then go on to explain what it does in *mac80211*, and show
+the iwlwifi parts only as an *example*.
+
+Thanks,
 johannes
 
