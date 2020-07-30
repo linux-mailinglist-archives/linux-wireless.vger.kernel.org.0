@@ -2,31 +2,31 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 090642330E8
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Jul 2020 13:27:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A53F8233114
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Jul 2020 13:41:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727095AbgG3L1q (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 30 Jul 2020 07:27:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55422 "EHLO
+        id S1726947AbgG3LlO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 30 Jul 2020 07:41:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57492 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726287AbgG3L1q (ORCPT
+        with ESMTP id S1726799AbgG3LlN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 30 Jul 2020 07:27:46 -0400
+        Thu, 30 Jul 2020 07:41:13 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61449C061794
-        for <linux-wireless@vger.kernel.org>; Thu, 30 Jul 2020 04:27:46 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1AE3C061794
+        for <linux-wireless@vger.kernel.org>; Thu, 30 Jul 2020 04:41:13 -0700 (PDT)
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.93)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1k16iu-00DUYH-NI; Thu, 30 Jul 2020 13:27:44 +0200
-Message-ID: <07f23c8856630c866751891c18f0709eb3d1f3f7.camel@sipsolutions.net>
-Subject: Re: [PATCH v2 1/2] cfg80211: add helper fn for single rule channels
+        id 1k16vw-00DUsw-54; Thu, 30 Jul 2020 13:41:12 +0200
+Message-ID: <20d23075fb3437874a311ac18aa94194118a6e2b.camel@sipsolutions.net>
+Subject: Re: [PATCH] nl80211: Add support to get BIP failure counters
 From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Markus Theil <markus.theil@tu-ilmenau.de>
+To:     "Vinita S. Maloo" <vmaloo@codeaurora.org>
 Cc:     linux-wireless@vger.kernel.org
-Date:   Thu, 30 Jul 2020 13:27:27 +0200
-In-Reply-To: <20200701101502.531240-1-markus.theil@tu-ilmenau.de>
-References: <20200701101502.531240-1-markus.theil@tu-ilmenau.de>
+Date:   Thu, 30 Jul 2020 13:41:04 +0200
+In-Reply-To: <1593498381-9337-1-git-send-email-vmaloo@codeaurora.org>
+References: <1593498381-9337-1-git-send-email-vmaloo@codeaurora.org>
 Content-Type: text/plain; charset="UTF-8"
 User-Agent: Evolution 3.36.4 (3.36.4-1.fc32) 
 MIME-Version: 1.0
@@ -36,17 +36,17 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+On Tue, 2020-06-30 at 11:56 +0530, Vinita S. Maloo wrote:
+> Add support to get number of MIC errors, missing MME incidents and
+> packet replay incidents observed while using IGTK/BIGTK keys when
+> PMF and/or beacon protection features are enabled.
 
+I can imagine you need this for WFA tests, but why are the debugfs
+counters not enough for that?
 
-> +
-> +	handle_channel_single_rule(wiphy, initiator, chan, flags, lr, request_wiphy, reg_rule);
-
-Even if checkpatch probably stopped warning, please don't create
-gratuitously long lines. 80 columns is still something to aim for. This
-can easily be broken into two or three.
-
-Same applies to the second patch.
+I don't really see much functional reason (wpa_supplicant or so) to have
+this, and thus why expose it in the nl80211 API?
 
 johannes
+
 
