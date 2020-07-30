@@ -2,30 +2,60 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 039D32330AD
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Jul 2020 13:01:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DFCDE2330BC
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Jul 2020 13:09:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726606AbgG3LBH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 30 Jul 2020 07:01:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51314 "EHLO
+        id S1726664AbgG3LJE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 30 Jul 2020 07:09:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52534 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726496AbgG3LBH (ORCPT
+        with ESMTP id S1726367AbgG3LJD (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 30 Jul 2020 07:01:07 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1D3CC061794
-        for <linux-wireless@vger.kernel.org>; Thu, 30 Jul 2020 04:01:06 -0700 (PDT)
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.93)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1k16J4-00DTsE-3u; Thu, 30 Jul 2020 13:01:02 +0200
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     linux-wireless@vger.kernel.org
-Cc:     Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH] cfg80211: invert HE BSS color 'disabled' to 'enabled'
-Date:   Thu, 30 Jul 2020 13:00:52 +0200
-Message-Id: <20200730130051.5d8399545bd9.Ie62fdcd1a6cd9c969315bc124084a494ca6c8df3@changeid>
-X-Mailer: git-send-email 2.26.2
+        Thu, 30 Jul 2020 07:09:03 -0400
+Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60356C061794
+        for <linux-wireless@vger.kernel.org>; Thu, 30 Jul 2020 04:09:03 -0700 (PDT)
+Received: by mail-wr1-x443.google.com with SMTP id f1so23937970wro.2
+        for <linux-wireless@vger.kernel.org>; Thu, 30 Jul 2020 04:09:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=P/DhgxnH5WfBH2hYybEl9iDSMfSqU98CakpV78w/xJE=;
+        b=y1dxP5nIcz+aRNfTOMHFpVmPNh2aNNZ3LKFuec+rmNKUr020AhzmHZdSDjFT8I78c6
+         jYoImuI2nHnOQ3UQc9CBwOqeOrM7WJd+AQovazT8NWQmhp427BKbTuDzkR2lvQGTfltT
+         KOBje+lpmFhu/Wo9ZYREwSTewCQ2i8Fqs5KOIvMWClgFjwqoxth2RmeXnG6dRzFoHIR9
+         CC6xzVO98gtYsj8Br7pEZAmWcXj6eW35VO9cKVPelWM+NP8ZRm+YZgoQ4lUN3W/FCcyd
+         QTxOFwcDDv3qskv4wR6ck49Ate19JmSoP2VcZxbcNT0lUA599MkqkeoCJ717hYPDYBsz
+         3VHg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=P/DhgxnH5WfBH2hYybEl9iDSMfSqU98CakpV78w/xJE=;
+        b=pRWHEMZX3xy956b5KmOXii35kQaIZTvkuC3TI8UnoNuIhw5suEwp5m61m0HGd8pjHa
+         IXAX7L+N3DNEUe1M2rvKCWJXcqdOVo0zq0bDISGr7JQ9EU/Hz78NvNrdpFk55WgP0yoa
+         hJFcdb94VD/fbjLhRFpYBTasCber4RcOuT1aboJR+c+PLD0bnm/3ibf1oVH8HKCxIfsU
+         YrepYwsuqtFEA04E//jYlGk4TnM5xYKChbBfUNZ2b38FM7CHiwrkydZRPlCMJu4RqO62
+         uVLd+fRomhjECU5wxYwY42D4ILZclhaqPRDylBynJiGKmyl+hrxZXKR1Lph/7szNzMC1
+         2COA==
+X-Gm-Message-State: AOAM5338hUxV910wW07TtZBCCvv64KyI0Lad/CtinzgBfokhLnRTzLKh
+        6ixAIMmrB1GDQZT6C/pdxCufBg==
+X-Google-Smtp-Source: ABdhPJwV2SBB6DChjc7TnOEdu9kgVMdCw58SeAi6O+6kSIkgAMzQ+TLq2KoGYT5UDYCUdWdHfgmTBQ==
+X-Received: by 2002:adf:e7c3:: with SMTP id e3mr2386469wrn.356.1596107342119;
+        Thu, 30 Jul 2020 04:09:02 -0700 (PDT)
+Received: from localhost.localdomain ([176.61.57.127])
+        by smtp.gmail.com with ESMTPSA id b129sm8645758wmb.29.2020.07.30.04.09.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 30 Jul 2020 04:09:01 -0700 (PDT)
+From:   Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+To:     kvalo@codeaurora.org, loic.poulain@linaro.org
+Cc:     wcn36xx@lists.infradead.org, linux-wireless@vger.kernel.org,
+        bryan.odonoghue@linaro.org
+Subject: [PATCH] wcn36xx: Set operational channel to 0 on disassociation
+Date:   Thu, 30 Jul 2020 12:09:47 +0100
+Message-Id: <20200730110947.57979-1-bryan.odonoghue@linaro.org>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
@@ -33,115 +63,34 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+After a disassociated event we need to make sure we reset the operational
+channel so that subsequent channel scans will not exclude the channel we
+were using.
 
-This is in fact 'disabled' in the spec, but there it's in a
-place where that actually makes sense. In our internal data
-structures, it doesn't really make sense, and in fact the
-previous commit just fixed a bug in that area.
+Doing a software scan on a wcn3680 showed that if we disassociated from an
+AP we would never see it re-appear in a scan - unless we shifted the AP to
+a different channel.
 
-Make this safer by inverting the polarity from 'disabled' to
-'enabled'.
+Setting the operational channel to zero on disassociation ensures that this
+situation will not arise in the wild.
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 ---
- drivers/net/wireless/ath/ath11k/mac.c | 2 +-
- include/net/cfg80211.h                | 4 ++--
- net/mac80211/cfg.c                    | 2 +-
- net/mac80211/mlme.c                   | 8 ++++----
- net/wireless/nl80211.c                | 7 ++-----
- 5 files changed, 10 insertions(+), 13 deletions(-)
+ drivers/net/wireless/ath/wcn36xx/main.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index 07d3e031c75a..94ae2b9ea663 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -2072,7 +2072,7 @@ static void ath11k_mac_op_bss_info_changed(struct ieee80211_hw *hw,
- 			ret = ath11k_wmi_send_obss_color_collision_cfg_cmd(
- 				ar, arvif->vdev_id, info->he_bss_color.color,
- 				ATH11K_BSS_COLOR_COLLISION_DETECTION_AP_PERIOD_MS,
--				!info->he_bss_color.disabled);
-+				info->he_bss_color.enabled);
- 			if (ret)
- 				ath11k_warn(ar->ab, "failed to set bss color collision on vdev %i: %d\n",
- 					    arvif->vdev_id,  ret);
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index 39fe21edd2c5..d9e6b9fbd95b 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -267,12 +267,12 @@ struct ieee80211_he_obss_pd {
-  * struct cfg80211_he_bss_color - AP settings for BSS coloring
-  *
-  * @color: the current color.
-- * @disabled: is the feature disabled.
-+ * @enabled: HE BSS color is used
-  * @partial: define the AID equation.
-  */
- struct cfg80211_he_bss_color {
- 	u8 color;
--	bool disabled;
-+	bool enabled;
- 	bool partial;
- };
- 
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index bbd86cd79954..e78832e0ccf9 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -1019,7 +1019,7 @@ static int ieee80211_start_ap(struct wiphy *wiphy, struct net_device *dev,
- 			      IEEE80211_HE_OPERATION_RTS_THRESHOLD_MASK);
- 		changed |= BSS_CHANGED_HE_OBSS_PD;
- 
--		if (!params->he_bss_color.disabled)
-+		if (params->he_bss_color.enabled)
- 			changed |= BSS_CHANGED_HE_BSS_COLOR;
+diff --git a/drivers/net/wireless/ath/wcn36xx/main.c b/drivers/net/wireless/ath/wcn36xx/main.c
+index fb8978a3c11e..4681d085b683 100644
+--- a/drivers/net/wireless/ath/wcn36xx/main.c
++++ b/drivers/net/wireless/ath/wcn36xx/main.c
+@@ -908,6 +908,7 @@ static void wcn36xx_bss_info_changed(struct ieee80211_hw *hw,
+ 						bss_conf->bssid,
+ 						vif->addr,
+ 						WCN36XX_HAL_LINK_IDLE_STATE);
++			wcn36xx_smd_switch_channel(wcn, vif, 0);
+ 		}
  	}
  
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index 8a92a62dc54d..839d0367446c 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -3460,11 +3460,11 @@ static bool ieee80211_assoc_success(struct ieee80211_sub_if_data *sdata,
- 		bss_conf->he_bss_color.partial =
- 			le32_get_bits(elems->he_operation->he_oper_params,
- 				      IEEE80211_HE_OPERATION_PARTIAL_BSS_COLOR);
--		bss_conf->he_bss_color.disabled =
--			le32_get_bits(elems->he_operation->he_oper_params,
--				      IEEE80211_HE_OPERATION_BSS_COLOR_DISABLED);
-+		bss_conf->he_bss_color.enabled =
-+			!le32_get_bits(elems->he_operation->he_oper_params,
-+				       IEEE80211_HE_OPERATION_BSS_COLOR_DISABLED);
- 
--		if (!bss_conf->he_bss_color.disabled)
-+		if (bss_conf->he_bss_color.enabled)
- 			changed |= BSS_CHANGED_HE_BSS_COLOR;
- 
- 		bss_conf->htc_trig_based_pkt_ext =
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index b4048f3c5134..8d78a6fc59a3 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -4713,8 +4713,8 @@ static int nl80211_parse_he_bss_color(struct nlattr *attrs,
- 
- 	he_bss_color->color =
- 		nla_get_u8(tb[NL80211_HE_BSS_COLOR_ATTR_COLOR]);
--	he_bss_color->disabled =
--		nla_get_flag(tb[NL80211_HE_BSS_COLOR_ATTR_DISABLED]);
-+	he_bss_color->enabled =
-+		!nla_get_flag(tb[NL80211_HE_BSS_COLOR_ATTR_DISABLED]);
- 	he_bss_color->partial =
- 		nla_get_flag(tb[NL80211_HE_BSS_COLOR_ATTR_PARTIAL]);
- 
-@@ -4865,9 +4865,6 @@ static int nl80211_start_ap(struct sk_buff *skb, struct genl_info *info)
- 
- 	memset(&params, 0, sizeof(params));
- 
--	/* disable BSS color by default */
--	params.he_bss_color.disabled = true;
--
- 	/* these are required for START_AP */
- 	if (!info->attrs[NL80211_ATTR_BEACON_INTERVAL] ||
- 	    !info->attrs[NL80211_ATTR_DTIM_PERIOD] ||
 -- 
-2.26.2
+2.27.0
 
