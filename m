@@ -2,194 +2,116 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D79E1233AFB
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Jul 2020 23:46:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 57A55233B04
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Jul 2020 23:53:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728723AbgG3VqR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 30 Jul 2020 17:46:17 -0400
-Received: from mail2.candelatech.com ([208.74.158.173]:45048 "EHLO
-        mail3.candelatech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728006AbgG3VqR (ORCPT
+        id S1730587AbgG3Vxz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 30 Jul 2020 17:53:55 -0400
+Received: from mail29.static.mailgun.info ([104.130.122.29]:18137 "EHLO
+        mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1730552AbgG3Vxy (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 30 Jul 2020 17:46:17 -0400
-Received: from ben-dt4.candelatech.com (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
-        by mail3.candelatech.com (Postfix) with ESMTP id 5A14F13C2B0;
-        Thu, 30 Jul 2020 14:46:16 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 5A14F13C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1596145576;
-        bh=wLzKmj3LS6VsdNjQWvRBgvj0nDaqjEVStZunrTM+ZU8=;
-        h=From:To:Cc:Subject:Date:From;
-        b=Ipma8CttLAeCNXyTZkVhGCJNF8kmJb9ZMODkpZMbo87PaXTmhRo08qRqsGxQVnDIZ
-         D25gXZnHZP9WxZI3F4dFKXHvG5irnNXsDYtt3BtaphE4BIeSyVAJdNNpR8yrNYsOE5
-         KtNGe9wKdk8lK4d2/xKS+VZOd3mlUnz2MOaRCaq8=
-From:   greearb@candelatech.com
-To:     linux-wireless@vger.kernel.org
-Cc:     Ben Greear <greearb@candelatech.com>
-Subject: [PATCH] mac80211: Fix kernel hang when driver fails to make progress.
-Date:   Thu, 30 Jul 2020 14:46:13 -0700
-Message-Id: <20200730214613.13239-1-greearb@candelatech.com>
-X-Mailer: git-send-email 2.20.1
+        Thu, 30 Jul 2020 17:53:54 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1596146034; h=Message-ID: References: In-Reply-To: Subject:
+ Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Sender; bh=rLtNgw6dHJHIrGMaL4whUVA8h434vIgTdWSFRpvNr1Y=;
+ b=LXoYi0M4lxGBu6BxEumXEytzAgukmavqs5Fjya22VlRiC7yR9Jy0c/e5RIxbam9uiC0vBlTt
+ AjBNm3SfQhX/GBSOg8Z2IIA5UZUKBcdrf31S7umorX55dl2mQ1DHi/J8oo6zStVOj0CfHylm
+ 3hyfJPRgaVCYMSqrlB4Cu3oNVxY=
+X-Mailgun-Sending-Ip: 104.130.122.29
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n20.prod.us-west-2.postgun.com with SMTP id
+ 5f234165eb556d49a6606a6e (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 30 Jul 2020 21:53:41
+ GMT
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 707D2C433C6; Thu, 30 Jul 2020 21:53:41 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: alokad)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 0999DC433C9;
+        Thu, 30 Jul 2020 21:53:40 +0000 (UTC)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Thu, 30 Jul 2020 14:53:40 -0700
+From:   Aloka Dixit <alokad@codeaurora.org>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless@vger.kernel.org,
+        linux-wireless-owner@vger.kernel.org
+Subject: Re: [PATCH v4 1/2] nl80211: Add FILS discovery support
+In-Reply-To: <54628f052b380e660c37cb9b7c3f224976aa1c83.camel@sipsolutions.net>
+References: <20200618050427.5891-1-alokad@codeaurora.org>
+ <20200618050427.5891-2-alokad@codeaurora.org>
+ <c3dbcc3e4ee2d3596625e8c1226325180444a961.camel@sipsolutions.net>
+ <2b1ea1c4baedcb119f4e632b26399071@codeaurora.org>
+ <54628f052b380e660c37cb9b7c3f224976aa1c83.camel@sipsolutions.net>
+Message-ID: <ca081672e9e3407bec949c963add8530@codeaurora.org>
+X-Sender: alokad@codeaurora.org
+User-Agent: Roundcube Webmail/1.3.9
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Ben Greear <greearb@candelatech.com>
+On 2020-07-30 14:22, Johannes Berg wrote:
+> On Thu, 2020-07-30 at 14:17 -0700, Aloka Dixit wrote:
+> 
+>> > OTOH, if it's with headers, how could it be optional? In fact, either
+>> > way, how is it optional?
+>> >
+>> 
+>> Template has management frame headers as well. Will change the wording
+>> accordingly.
+> 
+> OK.
+> 
+>> I made the template optional because FILS discovery may or may not be
+>> offloaded to FW.
+> 
+> But how would anyone know? Try without it, and then try again if that
+> fails? Would it fail? I mean, you also said it was required at least 
+> for
+> 6 GHz, so wouldn't userspace be better off always giving it - and then
+> we should probably make it mandatory so it doesn't fall into the trap?
+> 
 
-When sta_info_move does not make progress, likely to due driver
-being funky, mac80211 can busy spin forever.  Fix this by detecting
-the lack of progress and attempting to recover as best we can.
+If the template is not provided, FW keeps sending event to get it.
+But as my ath11k driver code is limited to 6GHz, it already throws error 
+if template not provided.
+Yes, in general it will be better to make it mandatory, I will do it in 
+next version.
 
-Painful details on how this bug was found:
+> However - and here that's my ignorance speaking - can it really be
+> offloaded? I mean, is everything in there completely determined by the
+> beacon already, and so you have no choice in how to build it? Or how
+> does that work?
+> 
 
-I backported out-of-tree ax200 driver from backport-iwlwifi to my
-5.4 kernel so that I could run ax200 beside other radios (backports
-mac80211 otherwise is incompatible and other drivers will crash).
+Yes, the frame parameters are fixed except for the timestamp which FW is 
+expected to fill.
 
-While running tx + rx udp and tcp traffic on ax200, it crashes often
-(but backport driver is much more stable than in-kernel driver).
+>> Yeah, I looked through existing examples for NLA_BINARY, those provide
+>> only the higher bound for length.
+> 
+> Yeah, no way to do anything else right now. But you should have a lower
+> bound in the code, I think.
+> 
 
-The crash often causes the kernel to deadlock due to the
-while (sta->sta_state == IEEE80211_STA_AUTHORIZED)
-loop in __sta_info_Destroy_part.  If sta_info_move_state does not
-make progress, then it will loop forever.  In my case, sta_info_move_state
-fails due to the sdata-in-driver check.
+Okay.
 
-Hung process looks like this:
-
-CPU: 7 PID: 23301 Comm: kworker/7:0 Tainted: G        W         5.4.43+ #5
-Hardware name: Default string Default string/SKYBAY, BIOS 5.12 02/19/2019
-Workqueue: events_freezable ieee80211_restart_work [mac80211]
-RIP: 0010:memcpy_erms+0x6/0x10
-Code: 90 90 90 90 eb 1e 0f 1f 00 48 89 f8 48 89 d1 48 c1 e9 03 83 e2 07 f3 48 a5 89 d1 f3 a4 c3 66 0f 1f 44 00 00 48 89 f8 48 89 d1 <f3> a4 ce
-RSP: 0018:ffffc90006117728 EFLAGS: 00010002
-RAX: ffffffff837ca040 RBX: 0000000000000000 RCX: 0000000000000006
-RDX: 0000000000000046 RSI: ffffffff8380aa84 RDI: ffffffff837ca080
-RBP: 0000000000000046 R08: 0000000000000000 R09: 0000000000001697
-R10: 0000000000000007 R11: 0000000000000000 R12: ffffffff837ca040
-R13: 0000000000000046 R14: 0000000000000000 R15: ffffffff8380aa44
-FS:  0000000000000000(0000) GS:ffff88826ddc0000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000562e61e28f18 CR3: 00000002554f6006 CR4: 00000000003606e0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- msg_print_text+0x12a/0x1e0
- console_unlock+0x160/0x600
- vprintk_emit+0x146/0x2c0
- printk+0x4d/0x69
- ? lockdep_hardirqs_on+0xf1/0x190
- __sdata_err+0x61/0x150 [mac80211]
- drv_sta_state+0x433/0x8f0 [mac80211]
- sta_info_move_state+0x28e/0x370 [mac80211]
- __sta_info_destroy_part2+0x48/0x1d0 [mac80211]
- __sta_info_flush+0xf6/0x180 [mac80211]
- ieee80211_set_disassoc+0xc1/0x490 [mac80211]
- ieee80211_mgd_deauth+0x291/0x420 [mac80211]
- cfg80211_mlme_deauth+0xd2/0x330 [cfg80211]
- cfg80211_mlme_down+0x7c/0xc0 [cfg80211]
- cfg80211_disconnect+0x2b1/0x320 [cfg80211]
- cfg80211_leave+0x23/0x30 [cfg80211]
- cfg80211_netdev_notifier_call+0x3a5/0x680 [cfg80211]
- ? lockdep_rtnl_is_held+0x11/0x20
- ? addrconf_notify+0xb4/0xbb0 [ipv6]
- ? packet_notifier+0xb8/0x2c0
- notifier_call_chain+0x40/0x60
- __dev_close_many+0x68/0x120
- dev_close_many+0x83/0x130
- dev_close.part.96+0x3f/0x70
- cfg80211_shutdown_all_interfaces+0x3e/0xc0 [cfg80211]
- ieee80211_reconfig+0x96/0x2180 [mac80211]
- ? cond_synchronize_rcu+0x20/0x20
- ieee80211_restart_work+0xb6/0xe0 [mac80211]
- process_one_work+0x27c/0x640
- worker_thread+0x47/0x3f0
- ? process_one_work+0x640/0x640
- kthread+0xfc/0x130
- ? kthread_create_worker_on_cpu+0x70/0x70
- ret_from_fork+0x24/0x30
-
-With this patch, there is safety code to bail out after 1000 tries of
-moving the sta state, and also I check for EIO which is returned by
-the sdata-in-driver failure case and treat that as success as far as
-changing sta state goes.
-
-Console logs look like this in the failure case, and aside from the ax200
-radio that went phantom, the rest of the system is usable:
-
-iwlwifi 0000:12:00.0: 0x0000025B | CNVR_SCU_SD_REGS_SD_REG_ACTIVE_VDIG_MIRROR
-iwlwifi 0000:12:00.0: Firmware error during reconfiguration - reprobe!
-iwlwifi 0000:12:00.0: Failed to start RT ucode: -5
-wlan2: Failed check-sdata-in-driver check, flags: 0x0 count: 1
-wlan2: Failed check-sdata-in-driver check, flags: 0x0 count: 1
-wlan2: Failed check-sdata-in-driver check, flags: 0x0 count: 1
-iwlwifi 0000:12:00.0: Failed to trigger RX queues sync (-5)
-wlan2: Failed check-sdata-in-driver check, flags: 0x0 count: 1
-wlan2: drv_sta_state failed with EIO (sdata not in driver?), state: 4  new-state: 3
-wlan2: drv_sta_state failed with EIO (sdata not in driver?), state: 3  new-state: 2
-wlan2: drv_sta_state failed with EIO (sdata not in driver?), state: 2  new-state: 1
-wlan2: Failed check-sdata-in-driver check, flags: 0x0 count: 1
-iwlwifi 0000:12:00.0: iwl_trans_wait_txq_empty bad state = 0
-iwlwifi 0000:12:00.0: dma_pool_destroy iwlwifi:bc, 00000000d859bd4c busy
-
-Signed-off-by: Ben Greear <greearb@candelatech.com>
----
-
-v2:  Change title, use WARN_ONCE.  Compile tested only, please
-double-check the WARN_ONCE usage.
-
- net/mac80211/sta_info.c | 21 +++++++++++++++++++--
- 1 file changed, 19 insertions(+), 2 deletions(-)
-
-diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
-index b30291906741..10799d681f2a 100644
---- a/net/mac80211/sta_info.c
-+++ b/net/mac80211/sta_info.c
-@@ -1109,6 +1109,7 @@ static void __sta_info_destroy_part2(struct sta_info *sta)
- 	struct ieee80211_sub_if_data *sdata = sta->sdata;
- 	struct station_info *sinfo;
- 	int ret;
-+	int count = 0;
- 
- 	/*
- 	 * NOTE: This assumes at least synchronize_net() was done
-@@ -1121,6 +1122,11 @@ static void __sta_info_destroy_part2(struct sta_info *sta)
- 	while (sta->sta_state == IEEE80211_STA_AUTHORIZED) {
- 		ret = sta_info_move_state(sta, IEEE80211_STA_ASSOC);
- 		WARN_ON_ONCE(ret);
-+		if (WARN_ONCE(++count > 1000, "%s: Could not move state after 1000 tries, ret: %d  state: %d\n",
-+			      sdata->dev->name, ret, sta->sta_state)) {
-+			/* WTF, bail out so that at least we don't hang the system. */
-+			break;
-+		}
- 	}
- 
- 	/* now keys can no longer be reached */
-@@ -2058,8 +2064,19 @@ int sta_info_move_state(struct sta_info *sta,
- 	if (test_sta_flag(sta, WLAN_STA_INSERTED)) {
- 		int err = drv_sta_state(sta->local, sta->sdata, sta,
- 					sta->sta_state, new_state);
--		if (err)
--			return err;
-+		if (err == -EIO) {
-+			/* Sdata-not-in-driver, we are out of sync, but probably
-+			 * best to carry on instead of bailing here, at least maybe
-+			 * we can clean this up.
-+			 */
-+			sdata_err(sta->sdata, "drv_sta_state failed with EIO (sdata not in driver?), state: %d  new-state: %d\n",
-+				  sta->sta_state, new_state);
-+			WARN_ON_ONCE(1);
-+		}
-+		else {
-+			if (err)
-+				return err;
-+		}
- 	}
- 
- 	/* reflect the change in all state variables */
--- 
-2.20.1
-
+>> But I can modify it to range once that is added.
+> 
+> Later maybe :)
+> 
+> johannes
