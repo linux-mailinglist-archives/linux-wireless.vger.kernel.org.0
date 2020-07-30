@@ -2,95 +2,60 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DF0F62333ED
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Jul 2020 16:08:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2456D2333F6
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Jul 2020 16:09:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729333AbgG3OIe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 30 Jul 2020 10:08:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52042 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728296AbgG3OId (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 30 Jul 2020 10:08:33 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C61FAC061574
-        for <linux-wireless@vger.kernel.org>; Thu, 30 Jul 2020 07:08:33 -0700 (PDT)
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.93)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1k19EW-00DZFm-3Y; Thu, 30 Jul 2020 16:08:32 +0200
-Message-ID: <65bbc2f69fe966d471eff3287a191919311ac641.camel@sipsolutions.net>
-Subject: Re: Lost beacon behavior changed as of 01afc6fed (hwsim)
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     James Prestwood <prestwoj@gmail.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Date:   Thu, 30 Jul 2020 16:08:31 +0200
-In-Reply-To: <ada14dfad76b93d654606c3b397de059d968096b.camel@gmail.com> (sfid-20200702_001244_354404_5FEC9FBA)
-References: <ada14dfad76b93d654606c3b397de059d968096b.camel@gmail.com>
-         (sfid-20200702_001244_354404_5FEC9FBA)
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.4 (3.36.4-1.fc32) 
+        id S1729367AbgG3OJ5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 30 Jul 2020 10:09:57 -0400
+Received: from mail.kernel.org ([198.145.29.99]:41450 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727072AbgG3OJ5 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 30 Jul 2020 10:09:57 -0400
+Received: from lore-desk.redhat.com (unknown [151.48.137.169])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id D1AEB2074B;
+        Thu, 30 Jul 2020 14:09:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1596118196;
+        bh=mvOku7nIw8Z5a6IXKF9aRfAsSAEzHdq1zP2M+CHKnQ8=;
+        h=From:To:Cc:Subject:Date:From;
+        b=HdLf92Prn3FluU+X0TTUKSJobBAfaR7CGLoO5bX+D59VsZeflxuPa6sH1EAgTJeJ0
+         zWk2YYi8Pm5ldnlHLIMxspG23tdHBgu+5XaZdrQkS4FkSx2hRMSPhAnFLYyzgt5V8M
+         SjfVBVcx837mt9UvFPSovQtF97jugduBIaeakKW8=
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     lorenzo.bianconi@redhat.com, sean.wang@mediatek.com,
+        linux-wireless@vger.kernel.org
+Subject: [PATCH 0/4] mt7663s: move tx/rx processing in a dedicated wq
+Date:   Thu, 30 Jul 2020 16:09:47 +0200
+Message-Id: <cover.1596115358.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi James,
+Introduce mt76s_txrx_wq workqueue and move tx/rx processing from
+kthreads to dedicated works.
+Split tx/rx status processing in two separated works.
+This series improves device throughput increasing tx/rx parallelization
 
-> First off, everything described here is using mac80211_hwsim. I have
-> not tested if any of this happens on physical hardware or not.
-> 
-> Commit 01afc6fed seems to have changed the kernel behavior with regard
-> to lost beacons. So much so that it completely breaks all roaming tests
-> for IWD and (if kept this way) will require severe changes to the
-> existing roaming logic we have used for quite a long time. Plus
-> supporting older kernels AND this new behavior is going to be quite
-> annoying to deal with.
-> 
-> Before, the kernel would only send a lost beacon QCM event when it
-> detected beacon loss. This allowed us to scan, find a suitable BSS to
-> roam to, and then roam.
-> 
-> Now it also sends Del Station, Deauthenticate, and Disconnect all
-> immediately after a lost beacon, and the disconnect reason being
-> DISASSOC_DUE_TO_INACTIVITY (4). We handle these extra events as we
-> would at any other time, and fully disconnect which prevents us from
-> being able to roam quickly (as well as breaking tests).
-> 
-> Looking at that commit nothing particular jumps out at me, but
-> obviously those added flags are causing something else to send these
-> extra events.
-> 
-> Was this change actually intended to cause these extra events? And if
-> so, why was it changed?
+Lorenzo Bianconi (4):
+  mt76: mt76s: move tx processing in a dedicated wq
+  mt76: mt7663s: move rx processing in txrx wq
+  mt76: mt76s: move status processing in txrx wq
+  mt76: mt76s: move tx/rx processing in 2 separate works
 
-I don't think that was intentional.
+ drivers/net/wireless/mediatek/mt76/mt76.h     |  12 +-
+ .../wireless/mediatek/mt76/mt7615/mt7615.h    |   3 +-
+ .../net/wireless/mediatek/mt76/mt7615/sdio.c  |  10 +-
+ .../wireless/mediatek/mt76/mt7615/sdio_txrx.c | 134 ++++++++++--------
+ drivers/net/wireless/mediatek/mt76/sdio.c     |  75 +++++-----
+ 5 files changed, 127 insertions(+), 107 deletions(-)
 
-But really that was meant only to enable support for *powersave*.
-
-I suspect that the changes are actually caused by
-adding REPORTS_TX_ACK_STATUS, which is in fact necessary here.
-
-
-But I suspect that it could be that you're testing this in the wrong
-way? From your description, it almost seems like you turn off the AP
-interface, and roam after that? I'm not sure that's really realistic. If
-you wanted to test the "a few beacons were lost" behaviour, then you'd
-really have to lose a few beacons only (perhaps by adding something to
-wmediumd?), and not drop the AP off the air entirely.
-
-If the AP is in fact completely unreachable, then I'm pretty sure real
-hardware will behave just like hwsim here, albeit perhaps a bit slower,
-though not by much. And then you'd have the same issue there.
-
-The fact that hwsim behaved differently would likely have been just a
-timing thing - it didn't advertise REPORTS_TX_ACK_STATUS, so we'd wait a
-bit longer until deciding that the AP really was truly gone. If the ACK
-status is reported we just send a (few?) quick nullfunc(s) and decide
-that very quickly. But that's independent on hwsim or real hardware.
-
-
-johannes
+-- 
+2.26.2
 
