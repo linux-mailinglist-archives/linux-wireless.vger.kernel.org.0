@@ -2,74 +2,107 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BF2C5233372
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Jul 2020 15:52:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CE3232333A4
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Jul 2020 15:59:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728329AbgG3Nwe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 30 Jul 2020 09:52:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49532 "EHLO
+        id S1729489AbgG3N5r (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 30 Jul 2020 09:57:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50334 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726281AbgG3Nwe (ORCPT
+        with ESMTP id S1728286AbgG3N5p (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 30 Jul 2020 09:52:34 -0400
+        Thu, 30 Jul 2020 09:57:45 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E147C061574
-        for <linux-wireless@vger.kernel.org>; Thu, 30 Jul 2020 06:52:34 -0700 (PDT)
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DC54C061574;
+        Thu, 30 Jul 2020 06:57:45 -0700 (PDT)
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.93)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1k18z1-00DYp2-Qv; Thu, 30 Jul 2020 15:52:31 +0200
+        id 1k192s-00DYvR-Pl; Thu, 30 Jul 2020 15:56:30 +0200
+Message-ID: <943c5eaf12bc9e92e817fb9818ebd65038f5fb54.camel@sipsolutions.net>
+Subject: Re: [RFC 1/2] devlink: add simple fw crash helpers
 From:   Johannes Berg <johannes@sipsolutions.net>
-To:     linux-wireless@vger.kernel.org
-Cc:     Ben Greear <greearb@candelatech.com>,
-        Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH] mac80211: make check_sdata_in_driver() once for each callsite
-Date:   Thu, 30 Jul 2020 15:52:13 +0200
-Message-Id: <20200730155212.06fd3a95dbfb.I0b16829aabfaf5f642bce401502a29d16e2dd444@changeid>
-X-Mailer: git-send-email 2.26.2
+To:     Jakub Kicinski <kuba@kernel.org>
+Cc:     Luis Chamberlain <mcgrof@kernel.org>, derosier@gmail.com,
+        greearb@candelatech.com, jeyu@kernel.org,
+        akpm@linux-foundation.org, arnd@arndb.de, rostedt@goodmis.org,
+        mingo@redhat.com, aquini@redhat.com, cai@lca.pw, dyoung@redhat.com,
+        bhe@redhat.com, peterz@infradead.org, tglx@linutronix.de,
+        gpiccoli@canonical.com, pmladek@suse.com, tiwai@suse.de,
+        schlad@suse.de, andriy.shevchenko@linux.intel.com,
+        keescook@chromium.org, daniel.vetter@ffwll.ch, will@kernel.org,
+        mchehab+samsung@kernel.org, kvalo@codeaurora.org,
+        davem@davemloft.net, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        ath10k@lists.infradead.org, jiri@resnulli.us,
+        briannorris@chromium.org
+Date:   Thu, 30 Jul 2020 15:56:25 +0200
+In-Reply-To: <20200525135746.45e764de@kicinski-fedora-PC1C0HJN.hsd1.ca.comcast.net>
+References: <20200519010530.GS11244@42.do-not-panic.com>
+         <20200519211531.3702593-1-kuba@kernel.org>
+         <20200522052046.GY11244@42.do-not-panic.com>
+         <20200522101738.1495f4cc@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+         <2e5199edb433c217c7974ef7408ff8c7253145b6.camel@sipsolutions.net>
+         <20200525135746.45e764de@kicinski-fedora-PC1C0HJN.hsd1.ca.comcast.net>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.4 (3.36.4-1.fc32) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+Hi,
 
-Ben Greear has repeatedly reported in the past (for a few years
-probably) that this triggers repeatedly in certain scenarios.
+Sorry ... long delay.
 
-Make this a macro so that each callsite can trigger the warning
-only once - that will still give us an idea of what's going on
-and what paths can reach it, but avoids being too noisy.
+> > The reason I'm asking is that it's starting to sound like we really
+> > ought to be implementing devlink, but we've got a bunch of
+> > infrastructure that uses the devcoredump, and it'll take time
+> > (significantly so) to change all that...
+> 
+> In devlink world pure FW core dumps are exposed by devlink regions.
+> An API allowing reading device memory, registers, etc., but also 
+> creating dumps of memory regions when things go wrong. It should be
+> a fairly straightforward migration.
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
----
- net/mac80211/driver-ops.h | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+Right. We also have regions (various memory pieces, registers, ...).
 
-diff --git a/net/mac80211/driver-ops.h b/net/mac80211/driver-ops.h
-index de69fc9c4f07..41d495d73d3a 100644
---- a/net/mac80211/driver-ops.h
-+++ b/net/mac80211/driver-ops.h
-@@ -12,12 +12,11 @@
- #include "ieee80211_i.h"
- #include "trace.h"
- 
--static inline bool check_sdata_in_driver(struct ieee80211_sub_if_data *sdata)
--{
--	return !WARN(!(sdata->flags & IEEE80211_SDATA_IN_DRIVER),
--		     "%s:  Failed check-sdata-in-driver check, flags: 0x%x\n",
--		     sdata->dev ? sdata->dev->name : sdata->name, sdata->flags);
--}
-+#define check_sdata_in_driver(sdata)	({					\
-+	!WARN_ONCE(!(sdata->flags & IEEE80211_SDATA_IN_DRIVER),			\
-+		   "%s: Failed check-sdata-in-driver check, flags: 0x%x\n",	\
-+		   sdata->dev ? sdata->dev->name : sdata->name, sdata->flags);	\
-+})
- 
- static inline struct ieee80211_sub_if_data *
- get_bss_sdata(struct ieee80211_sub_if_data *sdata)
--- 
-2.26.2
+One issue might be that for devlink we wouldn't want to expose these as
+a single blob, I guess, but for devcoredump we already have a custom
+format to glue all the things together. Since it seems unlikely that
+anyone else would want to use the *iwlwifi* format to glue things
+together, we'd have to do something there.
+
+But perhaps that could be a matter of providing a "glue things into a
+devcoredump" function that would have a reasonable default but could be
+overridden by the driver for those migration cases.
+
+> Devlink health is more targeted, the dump is supposed to contain only
+> relevant information, selected and formatted by the driver. When device
+> misbehaves driver reads the relevant registers and FW state and creates
+> a formatted state dump. I believe each element of the dump must fit
+> into a netlink message (but there may be multiple elements, see
+> devlink_fmsg_prepare_skb()).
+
+That wouldn't help for our big memory dumps, but OK.
+
+> We should be able to convert dl-regions dumps and dl-health dumps into
+> devcoredumps, but since health reporters are supposed to be more
+> targeted there's usually multiple of them per device.
+
+Right.
+
+> Conversely devcoredumps can be trivially exposed as dl-region dumps,
+> but I believe dl-health would require driver changes to format the
+> information appropriately.
+
+Agree.
+
+Anyway, thanks. I'll put it on my list of things to look at ... not too
+hopeful that will be soon, given how long it even took me to get back to
+this email :)
+
+johannes
 
