@@ -2,119 +2,98 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 48D97233455
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Jul 2020 16:26:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E483223345F
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Jul 2020 16:28:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729278AbgG3O0r (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 30 Jul 2020 10:26:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54848 "EHLO
+        id S1726794AbgG3O2R (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 30 Jul 2020 10:28:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55074 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726794AbgG3O0q (ORCPT
+        with ESMTP id S1726275AbgG3O2R (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 30 Jul 2020 10:26:46 -0400
+        Thu, 30 Jul 2020 10:28:17 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8D8BC061574
-        for <linux-wireless@vger.kernel.org>; Thu, 30 Jul 2020 07:26:46 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB49AC061574
+        for <linux-wireless@vger.kernel.org>; Thu, 30 Jul 2020 07:28:16 -0700 (PDT)
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.93)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1k19W9-00DZsD-4v; Thu, 30 Jul 2020 16:26:45 +0200
-Message-ID: <350e8bd7bc1c892f1e28f0964de6618bb81edfc0.camel@sipsolutions.net>
-Subject: Re: [PATCH V2 1/3] nl80211: add support for BSS coloring
+        id 1k19XZ-00DZv8-7x; Thu, 30 Jul 2020 16:28:13 +0200
+Message-ID: <903ec27f7423574f644312c701ed45fdafdb7ca6.camel@sipsolutions.net>
+Subject: Re: [PATCH] mac80211: Send deauth to STA's upon AP stop
 From:   Johannes Berg <johannes@sipsolutions.net>
-To:     John Crispin <john@phrozen.org>
-Cc:     linux-wireless@vger.kernel.org, ath11k@lists.infradead.org
-Date:   Thu, 30 Jul 2020 16:26:44 +0200
-In-Reply-To: <20200706170616.1764626-1-john@phrozen.org>
-References: <20200706170616.1764626-1-john@phrozen.org>
+To:     Shay Bar <Shay.Bar@celeno.com>,
+        Ben Greear <greearb@candelatech.com>
+Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Date:   Thu, 30 Jul 2020 16:28:12 +0200
+In-Reply-To: <AM0P192MB0468715C6F76AFD51938CC55E7710@AM0P192MB0468.EURP192.PROD.OUTLOOK.COM>
+References: <20200618093609.16514-1-shay.bar@celeno.com>
+         <d57c8bf64d6ea2e3f7355c2f7ca9b376db7fe21c.camel@sipsolutions.net>
+         <AM0P192MB04682E48D814F5F6CAFBF9CAE79B0@AM0P192MB0468.EURP192.PROD.OUTLOOK.COM>
+         <2a7b33ace030fdeda96e60b2abd6c70a11f426e0.camel@sipsolutions.net>
+         <AM0P192MB0468CA3DA7C8EC62366AC04AE79B0@AM0P192MB0468.EURP192.PROD.OUTLOOK.COM>
+         <54236bdd708c53ec2f2a776bb3badcd77c7fecc6.camel@sipsolutions.net>
+         <AM0P192MB046896A59F91F976EE7AB287E79B0@AM0P192MB0468.EURP192.PROD.OUTLOOK.COM>
+         <6da8757ac90a4d34ed1bdc7c84b40aac06c01af9.camel@sipsolutions.net>
+         <f0b038b4-fbd8-0b9b-2c2e-6337f0d408ea@candelatech.com>
+         <AM0P192MB0468ED699FC0BE6431812B03E7960@AM0P192MB0468.EURP192.PROD.OUTLOOK.COM>
+         <2a607392179a76f0f6fc3cef2e6e141f25dc0254.camel@sipsolutions.net>
+         <90ea9478-a42e-be89-0ee1-9e05c2ef8cc9@celeno.com>
+         <5bee074dbf19ab71e3cdc90769dbec0c8ada5274.camel@sipsolutions.net>
+         <AM0P192MB0468715C6F76AFD51938CC55E7710@AM0P192MB0468.EURP192.PROD.OUTLOOK.COM>
 Content-Type: text/plain; charset="UTF-8"
 User-Agent: Evolution 3.36.4 (3.36.4-1.fc32) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 2020-07-06 at 19:06 +0200, John Crispin wrote:
+On Thu, 2020-07-30 at 14:23 +0000, Shay Bar wrote:
+> On 30/07/2020 17:00, Johannes Berg wrote:
+> > External Email
+> > 
+> > 
+> > On Thu, 2020-06-25 at 13:29 +0300, Shay Bar wrote:
+> > > On 25/06/2020 12:51, Johannes Berg wrote:
+> > > > External Email
+> > > > 
+> > > > 
+> > > > On Sun, 2020-06-21 at 10:12 +0000, Shay Bar wrote:
+> > > > > Hi Johannes and Ben,
+> > > > > 
+> > > > > To conclude this thread, hostapd doesn’t send any deauth/disassoc
+> > > > > upon AP stop (when hostapd is killed _or_ when "ifconfig down" the
+> > > > > AP interface).
+> > > > Right. I'm sort of suggesting you just shouldn't be doing this, and it
+> > > > doesn't seem like most people actually do, otherwise we'd have seen this
+> > > > issue before?
+> > > > 
+> > > I shouldn't kill hostapd? Isn't this a very basic action?
+> > > What is the alternative for stopping the AP?
+> > I guess I would say to use hostapd_cli first to "disable" the
+> > interfaces?
 > 
-> +/**
-> + * struct cfg80211_cca_settings - color change settings
-> + *
-> + * Used for color change
-> + *
-> + * @beacon_cca: beacon data while performing the change
-> + * @counter_offsets_beacon: offsets of the counters within the beacon (tail)
-> + * @counter_offsets_presp: offsets of the counters within the probe response
-> + * @beacon_after: beacon data to be used after the change
-> + * @count: number of beacons until the change
-> + * @color: the color that we will have after th change
+> Indeed, using hostapd_cli "DISABLE" will call
+> hostapd_flush_old_stations() that will send broadcast deauth.
 
-typo: the change
+Ah.
 
->   * @WIPHY_FLAG_SUPPORTS_EXT_KEK_KCK: The device supports bigger kek and kck keys
-> + * @WIPHY_FLAG_SUPPORTS_BSS_COLOR: Device supports BSS coloring
->   */
->  enum wiphy_flags {
->  	WIPHY_FLAG_SUPPORTS_EXT_KEK_KCK		= BIT(0),
-> @@ -4198,6 +4224,7 @@ enum wiphy_flags {
->  	WIPHY_FLAG_SUPPORTS_5_10_MHZ		= BIT(22),
->  	WIPHY_FLAG_HAS_CHANNEL_SWITCH		= BIT(23),
->  	WIPHY_FLAG_HAS_STATIC_WEP		= BIT(24),
-> +	WIPHY_FLAG_SUPPORTS_BSS_COLOR		= BIT(25),
+> The problem is (mentioned before) that some stations (e.g. Samsung S8)
+> ignore this broadcast (while it will not ignore unicast
+> deauth/disassoc).
 
-That seems to belong into an entirely different patchset?
+Right, you mentioned that. I guess you could work around by disabling
+all stations separately, but ... not really a great solution either.
 
-And probably should be an extended nl80211 feature?
+Perhaps we should fix that at the hostapd level?
 
-> + * @NL80211_CMD_CCA_STARTED_NOTIFY: Notify userland, that we color change has
-> + *	started
-> + *
-> + * @NL80211_CMD_CCA_ABORTED_NOTIFY: Notify userland, that we color change has
-> + *	been aborted
-> + *
-> + * @NL80211_CMD_CCA_NOTIFY: Notify userland, that we color change has completed
+Not really sure how much trouble we should go to for bad stations
+though. I mean, it's not like they should be ignoring that.
 
-s/userland,/userland/
-s/we/the/
-
-Btw, whoever came up with "CCA" as the acronym for this? if it's not in
-the spec, can you change it? I can't not think "channel clear
-assessment" ...
-
-> + * @NL80211_ATTR_OBSS_COLOR_BITMAP: bitmap of the 64 BSS colors for the
-> + *	%NL80211_CMD_OBSS_COLOR_COLLISION command.
-
-u64 attribute then, presumably?
-
-s/command/event/?
-
-> + * @NL80211_ATTR_CCA_C_OFF_BEACON: An array of offsets (u16) to the color
-> + *	switch counters in the beacons tail (%NL80211_ATTR_BEACON_TAIL).
-> + * @NL80211_ATTR_CCA_C_OFF_PRESP: An array of offsets (u16) to the color
-> + *	switch counters in the probe response (%NL80211_ATTR_PROBE_RESP).
-
-I think we discussed this, and we're not going to support both CSA and
-CCA at the same time, right?
-
-So perhaps we can repurpose the CSA attributes, and even rename them by
-leaving a "#define oldname newname" in nl80211.h. We've done that
-before.
-
-E.g. just NL80211_ATTR_CNTDWN_OFFS_PRESP or something like that?
-
-> +	err = nla_parse_nested_deprecated(cca_attrs, NL80211_ATTR_MAX,
-> +					  info->attrs[NL80211_ATTR_CCA_IES],
-> +					  nl80211_policy, info->extack);
-
-You shouldn't use the _deprecated function for new attributes.
-
-And if this is nested, you should use NLA_POLICY_NESTED() in the policy.
-You're now allowed to nest recursively (i.e. nest nl80211_policy into
-its own nested attributes), but I'm a bit confused as to why you need
-that and didn't move to use a new sub-enum? That'd save a ton of stack
-space - in fact the "cca_attrs" array is probably big enough now to
-cause stack size warnings immediately?
+Maybe they just miss it due to super aggressive powersave, and we should
+send it a few times?
 
 johannes
 
