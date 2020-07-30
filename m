@@ -2,34 +2,36 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E0BF42332D8
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Jul 2020 15:18:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E4482332E6
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Jul 2020 15:24:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726967AbgG3NSF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 30 Jul 2020 09:18:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44238 "EHLO
+        id S1728622AbgG3NYO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 30 Jul 2020 09:24:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45178 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726794AbgG3NSF (ORCPT
+        with ESMTP id S1726772AbgG3NYO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 30 Jul 2020 09:18:05 -0400
+        Thu, 30 Jul 2020 09:24:14 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4778FC061794
-        for <linux-wireless@vger.kernel.org>; Thu, 30 Jul 2020 06:18:05 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A0B8C061794
+        for <linux-wireless@vger.kernel.org>; Thu, 30 Jul 2020 06:24:14 -0700 (PDT)
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.93)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1k18Rb-00DXgi-3n; Thu, 30 Jul 2020 15:17:59 +0200
-Message-ID: <b17c0e5ad80050df4da85653d413a71cfcc37629.camel@sipsolutions.net>
+        id 1k18Xc-00DXqz-2U; Thu, 30 Jul 2020 15:24:12 +0200
+Message-ID: <c3ef60c2263a6840d21f6a797ad3ffb685a728b8.camel@sipsolutions.net>
 Subject: Re: [PATCH 1/2] nl80211: vendor-cmd: qca: add dynamic SAR power
  limits
 From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Brian Norris <briannorris@chromium.org>
-Cc:     Kalle Valo <kvalo@codeaurora.org>, Jouni Malinen <j@w1.fi>,
-        Pkshih <pkshih@realtek.com>,
+To:     Kalle Valo <kvalo@codeaurora.org>,
+        Brian Norris <briannorris@chromium.org>
+Cc:     Jouni Malinen <j@w1.fi>,
         "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "ath10k@lists.infradead.org" <ath10k@lists.infradead.org>
-Date:   Thu, 30 Jul 2020 15:17:57 +0200
-In-Reply-To: <CA+ASDXMf7iXuE9hQ-XitPPfvXP0EK5FchJLCu2+5Ag=ZC=0H0w@mail.gmail.com> (sfid-20200602_033247_740183_F75D1728)
+        Pkshih <pkshih@realtek.com>,
+        "ath10k@lists.infradead.org" <ath10k@lists.infradead.org>,
+        Wen Gong <wgong@codeaurora.org>
+Date:   Thu, 30 Jul 2020 15:24:11 +0200
+In-Reply-To: <87y2n9clhj.fsf@codeaurora.org>
 References: <1576684108-30177-1-git-send-email-kvalo@codeaurora.org>
          <1576684108-30177-2-git-send-email-kvalo@codeaurora.org>
          <1576748692.7758.17.camel@realtek.com> <20191219154828.GA12287@w1.fi>
@@ -39,7 +41,9 @@ References: <1576684108-30177-1-git-send-email-kvalo@codeaurora.org>
          <871rpqly6a.fsf@kamboji.qca.qualcomm.com>
          <e8908eafd8e6050eef8782c6a7019e318d14f65f.camel@sipsolutions.net>
          <CA+ASDXMf7iXuE9hQ-XitPPfvXP0EK5FchJLCu2+5Ag=ZC=0H0w@mail.gmail.com>
-         (sfid-20200602_033247_740183_F75D1728)
+         <87lfjjx0o7.fsf@codeaurora.org>
+         <CA+ASDXOAzPuOn_rMsRj4t56kC-TgoG0p5WhSTPJjB8xTTq5kfg@mail.gmail.com>
+         <87y2n9clhj.fsf@codeaurora.org>
 Content-Type: text/plain; charset="UTF-8"
 User-Agent: Evolution 3.36.4 (3.36.4-1.fc32) 
 MIME-Version: 1.0
@@ -49,41 +53,39 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 2020-06-01 at 18:32 -0700, Brian Norris wrote:
-> I haven't quite reached the 3 month lag on the prior replies here :)
+On Fri, 2020-07-24 at 12:26 +0300, Kalle Valo wrote:
 
-But I did, almost ;-)
+> > > So to me it feels like the best solution forward is to go with the
+> > > vendor API, do you agree? We can, of course, later switch to the common
+> > > API if we manage to create one which is usable for everyone.
 
-> I do want to see this question resolved somehow, or else we'll be
-> dragging along out-of-tree patches for...(counts on fingers)...4
-> different nl80211 APIs for the same feature, and a driver-detecting
-> user space for it.
+But why wouldn't we try that now, while we have it all in our heads (in
+a way ... even if this discussion drags out forever)?
 
-Right.
+I mean, the range-based approach ought to work, and if we define it as a
+nested attribute list or so, we can even later add more attributes to it
+(chain limits, whatnot) without any backward compatibility concerns.
 
-> I think I was half-hoping that we'd get to chat at
-> netdev about this, but that's not happening any time soon. (Topic for
-> another day: does a "wireless workshop" still happen at a virtual-only
-> conference?)
+So what is it that we _cannot_ do in a more common way today?
 
-Yes, but only a short 1.5hr video call I guess. I'm not even sure what
-to do there yet.
+> > I think we've had some healthy (though very protracted) discussion,
+> > and I don't think I've seen anyone bring up anything I wasn't already
+> > aware of that would prevent eventual consolidation. As long as we
+> > acknowledge those things (item 2 at
+> > https://wireless.wiki.kernel.org/en/developers/documentation/nl80211#vendor-specific_api),
+> > I'm happy.
+> 
+> Good, I was just checking that we all are on the same page.
 
-[snip]
+But are we? ;-)
 
-Thanks for the overview!
+I don't really see anything in the new proposal [1] that really explains
+why the common API that we've sort of vaguely outlined in this thread
+couldn't work? It just speaks of technical difficulties ("need a
+reporting API too"), but should we let that stop us?
 
-> Also, Kalle had some concerns about stable ABI questions: shouldn't we
-> bake in some kind of "check for support" feature to these kinds of
-> APIs [3]? That would help ease transition, if we do start with a
-> vendor API and move to a common one in the future. Given the nature of
-> this feature, I wouldn't expect there will be a large variety of users
-> making use of the APIs -- and I, for one, would be happy to migrate my
-> user space over some period of time, as needed.
+[1] https://patchwork.kernel.org/patch/11686317/
 
-We do that? We list out the available vendor APIs, and in most cases
-(perhaps not the one you've noticed there) we also list out the
-availability of real nl80211 APIs in some way.
 
 johannes
 
