@@ -2,33 +2,34 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 25F062332BB
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Jul 2020 15:11:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EFF222332C5
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Jul 2020 15:13:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727844AbgG3NLN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 30 Jul 2020 09:11:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43168 "EHLO
+        id S1727797AbgG3NNp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 30 Jul 2020 09:13:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43560 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726799AbgG3NLN (ORCPT
+        with ESMTP id S1726794AbgG3NNp (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 30 Jul 2020 09:11:13 -0400
+        Thu, 30 Jul 2020 09:13:45 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B1E6C061794
-        for <linux-wireless@vger.kernel.org>; Thu, 30 Jul 2020 06:11:13 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F36AC061794
+        for <linux-wireless@vger.kernel.org>; Thu, 30 Jul 2020 06:13:45 -0700 (PDT)
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.93)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1k18L1-00DXVV-62; Thu, 30 Jul 2020 15:11:11 +0200
-Message-ID: <a91c9337da6458e5f1d61ff36ec07e66132d0c1e.camel@sipsolutions.net>
-Subject: Re: [PATCH] mac80211: Fix kernel hang on ax200 firmware crash.
+        id 1k18NT-00DXak-OV; Thu, 30 Jul 2020 15:13:43 +0200
+Message-ID: <7f2722c9d30bb1a4715398b4f29309b1f383593b.camel@sipsolutions.net>
+Subject: Re: [PATCH] mac80211: do not iterate active interfaces when in
+ re-configure
 From:   Johannes Berg <johannes@sipsolutions.net>
 To:     Ben Greear <greearb@candelatech.com>,
         linux-wireless@vger.kernel.org
-Date:   Thu, 30 Jul 2020 15:11:10 +0200
-In-Reply-To: <fffa6cc5-99b6-f598-e20f-b30270ecd04c@candelatech.com>
-References: <20200610204017.4531-1-greearb@candelatech.com>
-         <62c74ddba571af59b2aeba116ff78ecc3b9b9710.camel@sipsolutions.net>
-         <fffa6cc5-99b6-f598-e20f-b30270ecd04c@candelatech.com>
+Date:   Thu, 30 Jul 2020 15:13:42 +0200
+In-Reply-To: <c53fd2d0-3ffb-3700-f12e-34c1867dded4@candelatech.com>
+References: <20200525165317.2269-1-greearb@candelatech.com>
+         <a3a6a9303eeaf91f83bcbc413ad0782659218966.camel@sipsolutions.net>
+         <c53fd2d0-3ffb-3700-f12e-34c1867dded4@candelatech.com>
 Content-Type: text/plain; charset="UTF-8"
 User-Agent: Evolution 3.36.4 (3.36.4-1.fc32) 
 MIME-Version: 1.0
@@ -38,93 +39,36 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, 2020-07-30 at 05:52 -0700, Ben Greear wrote:
+On Thu, 2020-07-30 at 06:05 -0700, Ben Greear wrote:
+
+> > It might even be that this can only be done subject to driver choice.
 > 
-> > > +		if (++count > 1000) {
-> > > +			/* WTF, bail out so that at least we don't hang the system. */
-> > > +			sdata_err(sdata, "Could not move state after 1000 tries, ret: %d  state: %d\n",
-> > > +				  ret, sta->sta_state);
-> > > +			WARN_ON_ONCE(1);
-> > > +			break;
-> > > +		}
-> > 
-> > I guess that should be
-> > 
-> > if (WARN_ON_ONCE()) ...
-> 
-> If we spin 1000 times, it is worth a second warning.  Or do you mean
-> the WARN_ON_ONCE(ret) should have if in front of it?
+> I have tested this patch hard for many years with hundreds of station vifs on ath9k radios and
+> 64 station vifs on ath10k radios, probably way harder than anyone else is testing
+> this sort of thing.
 
-Ah. I missed the WARN_ON_ONCE(ret) entirely. I just meant that the
-warning could/should be around the condition.
+Yeah, I'm sure!
 
-In fact though, even the message probably should:
+> Possibly you are correct about iwlwifi, I've never tested it with multi-interface,
+> and as you see, have had bad luck on ax200.
 
-	if (WARN_ONCE(++count > 1000, "...", ...))
-		break;
+Right.
 
-That way the message would be captured inside the warning, which is
-better for tooling that parses warnings.
+> If you'd accept a patch with a new driver flag check (which I can enable for
+> ath10k and ath9k), then I'll respin it thus.
 
-> > 
-> > etc.
-> > 
-> > >   		int err = drv_sta_state(sta->local, sta->sdata, sta,
-> > >   					sta->sta_state, new_state);
-> > > -		if (err)
-> > > -			return err;
-> > > +		if (err == -EIO) {
-> > > +			/* Sdata-not-in-driver, we are out of sync, but probably
-> > > +			 * best to carry on instead of bailing here, at least maybe
-> > > +			 * we can clean this up.
-> > > +			 */
-> > 
-> > It _could_ be the driver itself returning -EIO, so why not check the
-> > sdata-in-driver flag?
-> 
-> Right, but if driver is complaining here, we need to bail out regardless of
-> sdata-in-driver or not,
+My order of preference would be something like
 
-Yes. But I'm not sure we should WARN on that?
+1. track per vif whether it was re-added, and skip before it is
 
->  unless you think a driver could return EIO and then
-> a small bit later start working for the same request?
+If that works, I can certainly get behind it for semantic reasons (the
+vif isn't yet active again), although even there I'm not sure how
+iwlwifi would behave - but that's something I'd look into and perhaps
+even consider a bug there since it shouldn't know about that interface
+yet.
 
-Hah, no. If that's a possibility due to some stupid firmware reasons,
-let the driver deal with it.
+2. If for some reason that doesn't work, add an iteration flag that
+controls this, rather than a per-device config?
 
-> > Really here that mostly applies to the commit log, which should probably
-> > say something like
-> > 
-> > 	mac80211: deadlock due to driver misbehaviour
-> > 
-> > or so, and then go on to explain what it does in *mac80211*, and show
-> > the iwlwifi parts only as an *example*.
-> 
-> Its not really driver mis-behaviour per se.  The root cause is that the
-> firmware crashes too badly for the driver to recover (ok, so driver might
-> could be better, but I've also seen cases where ath10k NIC falls off the PCI
-> bus, so nothing the driver can do in that case I think).
-
-Fair enough. We actually do have some code in there that tries to
-unbind/rebind the driver from the device eventually, but that's
-obviously a very last resort.
-
-FWIW, we do have multiple NICs in a single machine, but then we run them
-from VMs so each VM only has a single NIC. But I don't see why that
-should be different from the device/firmware point of view. Perhaps your
-PCIe configuration is different.
-
-> Per my other patches, I've seen this sdata-in-driver crap in the past, so
-> I think I probably hit a similar bug in both ax200 and ath10k, but since
-> ax200 is so easy to crash, it is much more likely to hit this bug than any
-> other driver I'm aware of.
-> 
-> I'll try to re-word the commit message though, I don't really care what it
-> says so long as the code gets in.
-
-:)
-
-Thanks,
 johannes
 
