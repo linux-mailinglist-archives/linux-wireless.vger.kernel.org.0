@@ -2,30 +2,41 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B55BA233510
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Jul 2020 17:08:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 14AA62335B6
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Jul 2020 17:40:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729715AbgG3PIw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 30 Jul 2020 11:08:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33068 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729684AbgG3PIv (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 30 Jul 2020 11:08:51 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35CDEC061575;
-        Thu, 30 Jul 2020 08:08:51 -0700 (PDT)
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.93)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1k1AAr-00Db7Y-7k; Thu, 30 Jul 2020 17:08:49 +0200
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     netdev@vger.kernel.org
-Cc:     linux-wireless@vger.kernel.org
-Subject: pull-request: mac80211 2020-07-30
-Date:   Thu, 30 Jul 2020 17:08:35 +0200
-Message-Id: <20200730150836.66554-1-johannes@sipsolutions.net>
-X-Mailer: git-send-email 2.26.2
+        id S1728352AbgG3Pka (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 30 Jul 2020 11:40:30 -0400
+Received: from mga11.intel.com ([192.55.52.93]:21008 "EHLO mga11.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726581AbgG3Pka (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 30 Jul 2020 11:40:30 -0400
+IronPort-SDR: ipj2XoO92/dbvYqjsPu02dtpjhUB1nBazjfQ+yBPeQG/xwFrxHdpq3QXJKgxpT6WXxwx1JoxfF
+ JRpTeCKAjLsA==
+X-IronPort-AV: E=McAfee;i="6000,8403,9698"; a="149454853"
+X-IronPort-AV: E=Sophos;i="5.75,414,1589266800"; 
+   d="scan'208";a="149454853"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jul 2020 08:40:29 -0700
+IronPort-SDR: jX7rwOJC7GsCLMqwtH90eSpWyDRb8IF4T2pAy5o0xQYboSIZdTMzol3ajJiaQbreZfYk6cs//m
+ a/EEjjUTNpBQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.75,414,1589266800"; 
+   d="scan'208";a="491168652"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga005.fm.intel.com with ESMTP; 30 Jul 2020 08:40:28 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id 041FE119; Thu, 30 Jul 2020 18:40:26 +0300 (EEST)
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Ping-Ke Shih <pkshih@realtek.com>, linux-wireless@vger.kernel.org,
+        Kalle Valo <kvalo@codeaurora.org>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v1] rtlwifi: btcoex: use %*ph to print small buffer
+Date:   Thu, 30 Jul 2020 18:40:26 +0300
+Message-Id: <20200730154026.39901-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
@@ -33,61 +44,31 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Dave,
+Use %*ph format to print small buffer as hex string.
 
-It's been a while, sorry. I have a few more fix that'd be nice
-to get in, though I don't think they affect a majority of users.
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ .../net/wireless/realtek/rtlwifi/btcoexist/halbtcoutsrc.c   | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-Please pull and let me know if there's any problem.
-
-Thanks,
-johannes
-
-
-
-The following changes since commit 27a2145d6f826d1fad9de06ac541b1016ced3427:
-
-  ibmvnic: Fix IRQ mapping disposal in error path (2020-07-29 15:35:55 -0700)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211.git tags/mac80211-for-davem-2020-07-30
-
-for you to fetch changes up to 04e35caa32ec9aae6b306d07f07dc2ee6d69166c:
-
-  mac80211: remove STA txq pending airtime underflow warning (2020-07-30 10:26:04 +0200)
-
-----------------------------------------------------------------
-A couple of more changes:
- * remove a warning that can trigger in certain races
- * check a function pointer before using it
- * check before adding 6 GHz to avoid a warning in mesh
- * fix two memory leaks in mesh
- * fix a TX status bug leading to a memory leak
-
-----------------------------------------------------------------
-Felix Fietkau (1):
-      mac80211: remove STA txq pending airtime underflow warning
-
-Julian Squires (1):
-      cfg80211: check vendor command doit pointer before use
-
-Rajkumar Manoharan (1):
-      mac80211: fix warning in 6 GHz IE addition in mesh mode
-
-Remi Pommarel (2):
-      mac80211: mesh: Free ie data when leaving mesh
-      mac80211: mesh: Free pending skb when destroying a mpath
-
-Vasanthakumar Thiagarajan (1):
-      mac80211: Fix bug in Tx ack status reporting in 802.3 xmit path
-
- net/mac80211/cfg.c          |  1 +
- net/mac80211/mesh.c         | 13 +++++++++++++
- net/mac80211/mesh_pathtbl.c |  1 +
- net/mac80211/sta_info.c     |  4 +---
- net/mac80211/tx.c           |  7 ++++---
- net/mac80211/util.c         |  4 ++++
- net/wireless/nl80211.c      |  6 +++---
- 7 files changed, 27 insertions(+), 9 deletions(-)
+diff --git a/drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtcoutsrc.c b/drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtcoutsrc.c
+index a4940a3842de..0850c5ddad14 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtcoutsrc.c
++++ b/drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtcoutsrc.c
+@@ -894,11 +894,9 @@ static void halbtc_display_wifi_status(struct btc_coexist *btcoexist,
+ 		   (low_power ? ", 32k" : ""));
+ 
+ 	seq_printf(m,
+-		   "\n %-35s = %02x %02x %02x %02x %02x %02x (0x%x/0x%x)",
++		   "\n %-35s = %6ph (0x%x/0x%x)",
+ 		   "Power mode cmd(lps/rpwm)",
+-		   btcoexist->pwr_mode_val[0], btcoexist->pwr_mode_val[1],
+-		   btcoexist->pwr_mode_val[2], btcoexist->pwr_mode_val[3],
+-		   btcoexist->pwr_mode_val[4], btcoexist->pwr_mode_val[5],
++		   btcoexist->pwr_mode_val,
+ 		   btcoexist->bt_info.lps_val,
+ 		   btcoexist->bt_info.rpwm_val);
+ }
+-- 
+2.27.0
 
