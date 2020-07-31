@@ -2,72 +2,105 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0290223416E
-	for <lists+linux-wireless@lfdr.de>; Fri, 31 Jul 2020 10:44:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F2A19234386
+	for <lists+linux-wireless@lfdr.de>; Fri, 31 Jul 2020 11:45:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731918AbgGaIoL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 31 Jul 2020 04:44:11 -0400
-Received: from mail-il1-f198.google.com ([209.85.166.198]:42922 "EHLO
-        mail-il1-f198.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731112AbgGaIoG (ORCPT
+        id S1732358AbgGaJpJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 31 Jul 2020 05:45:09 -0400
+Received: from mail29.static.mailgun.info ([104.130.122.29]:16529 "EHLO
+        mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1732303AbgGaJpI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 31 Jul 2020 04:44:06 -0400
-Received: by mail-il1-f198.google.com with SMTP id c12so7707744iln.9
-        for <linux-wireless@vger.kernel.org>; Fri, 31 Jul 2020 01:44:05 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:date:in-reply-to:message-id:subject
-         :from:to;
-        bh=2MiWhebPAZEwNHbE02ggeQmHTDlIjaaAtS5l21f1BPw=;
-        b=Plxw3VAvIj5FFDnc7X9PAMHEJmN35PqL5GHlmNtLXvpDoK/OLeVl1YRvRjuax2vcQg
-         nYfAgU6dKVupxXipUzRFw4WArONYlyvkUf8YESTVkhjPlicePfqS1RAhZDQMFE3i7YJR
-         YSY75EYNSpADfO+cLHwKx3b2+0q2XTcDdGhQtQ3fLoJWxUKdaZoe78pC6XrtJ6cBzfEd
-         V/H3UTNwRra5NjQ8DTAPHufchcQQFvHMtqAPR4bvTtusVR/xQ6RuTANm71LJP0SX752+
-         7XB2oIUDIbsF6sKzg60vtRMEAyEV40kRmBOoIpgl0qdw9XaUbJQzdMp6NUpGrB37fZB4
-         4xRw==
-X-Gm-Message-State: AOAM533sKEuDctJddgopZzLFoWMucIsPmkMFDL0/g43P56oS9gA/2fni
-        vWjxClRxYNBImHZLPwYV43Nv7334JZOO2wOebbwmBZYjAzKb
-X-Google-Smtp-Source: ABdhPJy4Rj2LLEiAspTEtCegum11hHhIEmst76GFNZjb8ziE/nZyOIvy4zdOy45COS+BYVrIBbRSJc0ymQWmZ3YMzOpl0u7SggRq
-MIME-Version: 1.0
-X-Received: by 2002:a6b:7416:: with SMTP id s22mr2545374iog.160.1596185045466;
- Fri, 31 Jul 2020 01:44:05 -0700 (PDT)
-Date:   Fri, 31 Jul 2020 01:44:05 -0700
-In-Reply-To: <000000000000f6d80505abb42b60@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <000000000000a1816805abb8caa1@google.com>
-Subject: Re: WARNING in cancel_delayed_work
-From:   syzbot <syzbot+35e70efb794757d7e175@syzkaller.appspotmail.com>
-To:     davem@davemloft.net, johan.hedberg@gmail.com,
-        johannes.berg@intel.com, johannes@sipsolutions.net,
-        kuba@kernel.org, linux-bluetooth@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        luciano.coelho@intel.com, marcel@holtmann.org,
-        netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+        Fri, 31 Jul 2020 05:45:08 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1596188708; h=Message-Id: Date: Subject: Cc: To: From:
+ Sender; bh=SyM3bUbcZRvkDLS/uRQdPaWfBMxsdLSFCFADWC6HkKY=; b=qZtSatIZLd+zyXzrIpKk62nbsjC7AyCS3hIFk+arUE+dLxyc7iuEyIvoHw0qcpgXOusrC+6v
+ 2UOO8tQjP55Lbdj12wF1w/u96PqZwGzNsPAHFhPw/T6bgy9PejWZDWiepQoazHKf9vcRAr9b
+ 9voBdXi0OP8PM+ybelZH5UkXMm4=
+X-Mailgun-Sending-Ip: 104.130.122.29
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n17.prod.us-west-2.postgun.com with SMTP id
+ 5f23e822849144fbcb1e4ad3 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 31 Jul 2020 09:45:06
+ GMT
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id CB658C433CA; Fri, 31 Jul 2020 09:45:05 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from ironmsg01-blr.qualcomm.com (blr-c-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.19.19])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: murugana)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 2A9A0C433C9;
+        Fri, 31 Jul 2020 09:45:02 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 2A9A0C433C9
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=murugana@codeaurora.org
+From:   Sathishkumar Muruganandam <murugana@codeaurora.org>
+To:     stable@vger.kernel.org
+Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        Abhishek Ambure <aambure@codeaurora.org>,
+        Balaji Pothunoori <bpothuno@codeaurora.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Sathishkumar Muruganandam <murugana@codeaurora.org>
+Subject: [PATCH] ath10k: enable transmit data ack RSSI for QCA9884
+Date:   Fri, 31 Jul 2020 15:14:16 +0530
+Message-Id: <20200731094416.5172-1-murugana@codeaurora.org>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-syzbot has bisected this issue to:
+From: Abhishek Ambure <aambure@codeaurora.org>
 
-commit fbd05e4a6e82fd573d3aa79e284e424b8d78c149
-Author: Luca Coelho <luciano.coelho@intel.com>
-Date:   Thu Sep 15 15:15:09 2016 +0000
+commit cc78dc3b790619aa05f22a86a9152986bd73698c upstream.
 
-    cfg80211: add helper to find an IE that matches a byte-array
+This commit fixes the regression caused by
+commit 6ddc3860a566 ("ath10k: add support for ack rssi value of data tx packets")
+in linux-5.4.y branch.
 
-bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=1790af82900000
-start commit:   83bdc727 random32: remove net_rand_state from the latent e..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=1050af82900000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=e59ee776d5aa8d55
-dashboard link: https://syzkaller.appspot.com/bug?extid=35e70efb794757d7e175
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=1160faa2900000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=11816098900000
+ath10k_is_rssi_enable() always returns 0 for QCA9984 and this will cause
+the ppdu_info_offset to hold invalid value in ath10k_htt_rx_tx_compl_ind().
 
-Reported-by: syzbot+35e70efb794757d7e175@syzkaller.appspotmail.com
-Fixes: fbd05e4a6e82 ("cfg80211: add helper to find an IE that matches a byte-array")
+This leads to CE corruption for HTC endpoints to cause WMI command failures
+with insufficient HTC credits. Below warnings are seen due to beacon
+command failure in QCA9984.
 
-For information about bisection process see: https://goo.gl/tpsmEJ#bisection
+[  675.939638] ath10k_pci 0000:03:00.0: SWBA overrun on vdev 0, skipped old beacon
+[  675.947828] ath10k_pci 0000:04:00.0: SWBA overrun on vdev 1, skipped old beacon
+
+Tested HW: QCA9984
+Tested FW: 10.4-3.10-00047
+Tested Kernel version: 5.4.22
+
+Fixes: 6ddc3860a566 ("ath10k: add support for ack rssi value of data tx packets")
+Signed-off-by: Abhishek Ambure <aambure@codeaurora.org>
+Signed-off-by: Balaji Pothunoori <bpothuno@codeaurora.org>
+[kvalo@codeaurora.org: improve commit log]
+Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+Signed-off-by: Sathishkumar Muruganandam <murugana@codeaurora.org>
+---
+ drivers/net/wireless/ath/ath10k/hw.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/net/wireless/ath/ath10k/hw.c b/drivers/net/wireless/ath/ath10k/hw.c
+index c415e971735b..004af89a02b8 100644
+--- a/drivers/net/wireless/ath/ath10k/hw.c
++++ b/drivers/net/wireless/ath/ath10k/hw.c
+@@ -1145,6 +1145,7 @@ static bool ath10k_qca99x0_rx_desc_msdu_limit_error(struct htt_rx_desc *rxd)
+ const struct ath10k_hw_ops qca99x0_ops = {
+ 	.rx_desc_get_l3_pad_bytes = ath10k_qca99x0_rx_desc_get_l3_pad_bytes,
+ 	.rx_desc_get_msdu_limit_error = ath10k_qca99x0_rx_desc_msdu_limit_error,
++	.is_rssi_enable = ath10k_htt_tx_rssi_enable,
+ };
+ 
+ const struct ath10k_hw_ops qca6174_ops = {
+-- 
+2.17.1
+
