@@ -2,177 +2,106 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9954D234B3B
-	for <lists+linux-wireless@lfdr.de>; Fri, 31 Jul 2020 20:38:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 51579234B47
+	for <lists+linux-wireless@lfdr.de>; Fri, 31 Jul 2020 20:40:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387854AbgGaSiZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 31 Jul 2020 14:38:25 -0400
-Received: from mail2.candelatech.com ([208.74.158.173]:51824 "EHLO
-        mail3.candelatech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387676AbgGaSiZ (ORCPT
+        id S2387759AbgGaSk5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 31 Jul 2020 14:40:57 -0400
+Received: from mail29.static.mailgun.info ([104.130.122.29]:45623 "EHLO
+        mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S2387676AbgGaSk4 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 31 Jul 2020 14:38:25 -0400
-Received: from [192.168.254.5] (unknown [50.34.202.127])
+        Fri, 31 Jul 2020 14:40:56 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1596220856; h=Content-Transfer-Encoding: MIME-Version:
+ Message-Id: Date: Subject: Cc: To: From: Sender;
+ bh=OREqPJteIHJk2Pk5IqpgXTMFw64sVxYctCvrweMhIWg=; b=b856dJFS1GxfqejMy/v4rvslag/rOBVYEe14fD5OS9oxy+OdlJdSuoY4h7I4JI5rLPqPepnh
+ dNpB8FKHZ4NepN0zs8XXDnvMr3wBBuSC2iZWZeaP+IU6V2s+U7+PdEh76GAIqQZBR7NiiE2n
+ aaoIApebjhFccgoD/G11lOpBpWY=
+X-Mailgun-Sending-Ip: 104.130.122.29
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n12.prod.us-east-1.postgun.com with SMTP id
+ 5f2465aeeecfc978d3a0ee50 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 31 Jul 2020 18:40:46
+ GMT
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 91962C433C6; Fri, 31 Jul 2020 18:40:45 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.0
+Received: from jouni.codeaurora.org (85-76-102-34-nat.elisa-mobile.fi [85.76.102.34])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail3.candelatech.com (Postfix) with ESMTPSA id 342EA13C2B0;
-        Fri, 31 Jul 2020 11:38:16 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 342EA13C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1596220697;
-        bh=0qBeodkViCQFY2Awt7MbLc4IcFIEjXjXkHdae8WCSKk=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=gjjMMDfFSkJOOhylBkDoMIfCzbfbfpAX9P0rDoC31s+cixVaU4ey+C/m1s0B+iVxV
-         zRrhGAcxHXt78sgZ4N4nF05ULZDGfxKZvHPab2slUyif46aYgewq0s2NCVPhb/Mq4N
-         u2kNicYnNEDoIAglakCzMsT5HnlpGsdAQQReHYJs=
-Subject: Re: [PATCH v2 1/3] ath10k: Add history for tracking certain events
-To:     Rakesh Pillai <pillair@codeaurora.org>, ath10k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org,
-        netdev@vger.kernel.org
-References: <1596220042-2778-1-git-send-email-pillair@codeaurora.org>
- <1596220042-2778-2-git-send-email-pillair@codeaurora.org>
-From:   Ben Greear <greearb@candelatech.com>
-Organization: Candela Technologies
-Message-ID: <bedc5fe0-1904-d045-4a84-0869ee1b0b2e@candelatech.com>
-Date:   Fri, 31 Jul 2020 11:38:15 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.9.0
+        (Authenticated sender: jouni)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 52DBAC433C9;
+        Fri, 31 Jul 2020 18:40:44 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 52DBAC433C9
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=jouni@codeaurora.org
+From:   Jouni Malinen <jouni@codeaurora.org>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless@vger.kernel.org,
+        Jouni Malinen <jouni@codeaurora.org>
+Subject: [PATCH] mac80211: Handle special status codes in SAE commit
+Date:   Fri, 31 Jul 2020 21:38:30 +0300
+Message-Id: <20200731183830.18735-1-jouni@codeaurora.org>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-In-Reply-To: <1596220042-2778-2-git-send-email-pillair@codeaurora.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-MW
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 7/31/20 11:27 AM, Rakesh Pillai wrote:
-> Add history for tracking the below events
-> - register read
-> - register write
-> - IRQ trigger
-> - NAPI poll
-> - CE service
-> - WMI cmd
-> - WMI event
-> - WMI tx completion
-> 
-> This will help in debugging any crash or any
-> improper behaviour.
-> 
-> Tested-on: WCN3990 hw1.0 SNOC WLAN.HL.3.1-01040-QCAHLSWMTPLZ-1
-> 
-> Signed-off-by: Rakesh Pillai <pillair@codeaurora.org>
-> ---
->   drivers/net/wireless/ath/ath10k/ce.c      |   1 +
->   drivers/net/wireless/ath/ath10k/core.h    |  74 +++++++++++++++++
->   drivers/net/wireless/ath/ath10k/debug.c   | 133 ++++++++++++++++++++++++++++++
->   drivers/net/wireless/ath/ath10k/debug.h   |  74 +++++++++++++++++
->   drivers/net/wireless/ath/ath10k/snoc.c    |  15 +++-
->   drivers/net/wireless/ath/ath10k/wmi-tlv.c |   1 +
->   drivers/net/wireless/ath/ath10k/wmi.c     |  10 +++
->   7 files changed, 307 insertions(+), 1 deletion(-)
-> 
+SAE authentication has been extended with H2E (IEEE 802.11 REVmd) and PK
+(WFA) options. Those extensions use special status code values in the
+SAE commit messages (Authentication frame with transaction sequence
+number 1) to identify which extension is in use. mac80211 was
+interpreting those new values as the AP denying authentication and that
+resulted in failure to complete SAE authentication in some cases.
 
-> +void ath10k_record_wmi_event(struct ath10k *ar, enum ath10k_wmi_type type,
-> +			     u32 id, unsigned char *data)
-> +{
-> +	struct ath10k_wmi_event_entry *entry;
-> +	u32 idx;
-> +
-> +	if (type == ATH10K_WMI_EVENT) {
-> +		if (!ar->wmi_event_history.record)
-> +			return;
+Fix this by adding exceptions for the new status code values 126 and
+127.
 
-This check above is duplicated below, add it once at top of the method
-instead.
+Signed-off-by: Jouni Malinen <jouni@codeaurora.org>
+---
+ include/linux/ieee80211.h | 2 ++
+ net/mac80211/mlme.c       | 5 ++++-
+ 2 files changed, 6 insertions(+), 1 deletion(-)
 
-> +
-> +		spin_lock_bh(&ar->wmi_event_history.hist_lock);
-> +		idx = ath10k_core_get_next_idx(&ar->reg_access_history.index,
-> +					       ar->wmi_event_history.max_entries);
-> +		spin_unlock_bh(&ar->wmi_event_history.hist_lock);
-> +		entry = &ar->wmi_event_history.record[idx];
-> +	} else {
-> +		if (!ar->wmi_cmd_history.record)
-> +			return;
-> +
-> +		spin_lock_bh(&ar->wmi_cmd_history.hist_lock);
-> +		idx = ath10k_core_get_next_idx(&ar->reg_access_history.index,
-> +					       ar->wmi_cmd_history.max_entries);
-> +		spin_unlock_bh(&ar->wmi_cmd_history.hist_lock);
-> +		entry = &ar->wmi_cmd_history.record[idx];
-> +	}
-> +
-> +	entry->timestamp = ath10k_core_get_timestamp();
-> +	entry->cpu_id = smp_processor_id();
-> +	entry->type = type;
-> +	entry->id = id;
-> +	memcpy(&entry->data, data + 4, ATH10K_WMI_DATA_LEN);
-> +}
-> +EXPORT_SYMBOL(ath10k_record_wmi_event);
-
-> @@ -1660,6 +1668,11 @@ static int ath10k_snoc_probe(struct platform_device *pdev)
->   	ar->ce_priv = &ar_snoc->ce;
->   	msa_size = drv_data->msa_size;
->   
-> +	ath10k_core_reg_access_history_init(ar, ATH10K_REG_ACCESS_HISTORY_MAX);
-> +	ath10k_core_wmi_event_history_init(ar, ATH10K_WMI_EVENT_HISTORY_MAX);
-> +	ath10k_core_wmi_cmd_history_init(ar, ATH10K_WMI_CMD_HISTORY_MAX);
-> +	ath10k_core_ce_event_history_init(ar, ATH10K_CE_EVENT_HISTORY_MAX);
-
-Maybe only enable this once user turns it on?  It sucks up a bit of memory?
-
-> +
->   	ath10k_snoc_quirks_init(ar);
->   
->   	ret = ath10k_snoc_resource_init(ar);
-> diff --git a/drivers/net/wireless/ath/ath10k/wmi-tlv.c b/drivers/net/wireless/ath/ath10k/wmi-tlv.c
-> index 932266d..9df5748 100644
-> --- a/drivers/net/wireless/ath/ath10k/wmi-tlv.c
-> +++ b/drivers/net/wireless/ath/ath10k/wmi-tlv.c
-> @@ -627,6 +627,7 @@ static void ath10k_wmi_tlv_op_rx(struct ath10k *ar, struct sk_buff *skb)
->   	if (skb_pull(skb, sizeof(struct wmi_cmd_hdr)) == NULL)
->   		goto out;
->   
-> +	ath10k_record_wmi_event(ar, ATH10K_WMI_EVENT, id, skb->data);
->   	trace_ath10k_wmi_event(ar, id, skb->data, skb->len);
->   
->   	consumed = ath10k_tm_event_wmi(ar, id, skb);
-> diff --git a/drivers/net/wireless/ath/ath10k/wmi.c b/drivers/net/wireless/ath/ath10k/wmi.c
-> index a81a1ab..8ebd05c 100644
-> --- a/drivers/net/wireless/ath/ath10k/wmi.c
-> +++ b/drivers/net/wireless/ath/ath10k/wmi.c
-> @@ -1802,6 +1802,15 @@ struct sk_buff *ath10k_wmi_alloc_skb(struct ath10k *ar, u32 len)
->   
->   static void ath10k_wmi_htc_tx_complete(struct ath10k *ar, struct sk_buff *skb)
->   {
-> +	struct wmi_cmd_hdr *cmd_hdr;
-> +	enum wmi_tlv_event_id id;
-> +
-> +	cmd_hdr = (struct wmi_cmd_hdr *)skb->data;
-> +	id = MS(__le32_to_cpu(cmd_hdr->cmd_id), WMI_CMD_HDR_CMD_ID);
-> +
-> +	ath10k_record_wmi_event(ar, ATH10K_WMI_TX_COMPL, id,
-> +				skb->data + sizeof(struct wmi_cmd_hdr));
-> +
->   	dev_kfree_skb(skb);
->   }
-
-I think guard the above new code with if (unlikely(ar->ce_event_history.record)) { ... }
-
-All in all, I think I'd want to compile this out (while leaving other debug compiled
-in) since it seems this stuff would be rarely used and it adds method calls to hot
-paths.
-
-That is a decision for Kalle though, so see what he says...
-
-Thanks,
-Ben
-
-
+diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
+index 9f732499ea88..c47f43e65a2f 100644
+--- a/include/linux/ieee80211.h
++++ b/include/linux/ieee80211.h
+@@ -2561,6 +2561,8 @@ enum ieee80211_statuscode {
+ 	/* 802.11ai */
+ 	WLAN_STATUS_FILS_AUTHENTICATION_FAILURE = 108,
+ 	WLAN_STATUS_UNKNOWN_AUTHENTICATION_SERVER = 109,
++	WLAN_STATUS_SAE_HASH_TO_ELEMENT = 126,
++	WLAN_STATUS_SAE_PK = 127,
+ };
+ 
+ 
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index 839d0367446c..8b7ca8ddfe20 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -2988,7 +2988,10 @@ static void ieee80211_rx_mgmt_auth(struct ieee80211_sub_if_data *sdata,
+ 		cfg80211_rx_mlme_mgmt(sdata->dev, (u8 *)mgmt, len);
+ 
+ 		if (auth_alg == WLAN_AUTH_SAE &&
+-		    status_code == WLAN_STATUS_ANTI_CLOG_REQUIRED)
++		    (status_code == WLAN_STATUS_ANTI_CLOG_REQUIRED ||
++		     (auth_transaction == 1 &&
++		      (status_code == WLAN_STATUS_SAE_HASH_TO_ELEMENT ||
++		       status_code == WLAN_STATUS_SAE_PK))))
+ 			return;
+ 
+ 		sdata_info(sdata, "%pM denied authentication (status %d)\n",
 -- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
+2.20.1
+
