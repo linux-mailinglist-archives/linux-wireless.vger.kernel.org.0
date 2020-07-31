@@ -2,107 +2,118 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 50C86233D11
-	for <lists+linux-wireless@lfdr.de>; Fri, 31 Jul 2020 04:01:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 95AF1233D71
+	for <lists+linux-wireless@lfdr.de>; Fri, 31 Jul 2020 04:46:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731068AbgGaCBP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 30 Jul 2020 22:01:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48868 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731043AbgGaCBO (ORCPT
+        id S1731183AbgGaCqW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 30 Jul 2020 22:46:22 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:46509 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731168AbgGaCqV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 30 Jul 2020 22:01:14 -0400
-Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com [IPv6:2a00:1450:4864:20::341])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48FCFC061574
-        for <linux-wireless@vger.kernel.org>; Thu, 30 Jul 2020 19:01:14 -0700 (PDT)
-Received: by mail-wm1-x341.google.com with SMTP id t14so2675256wmi.3
-        for <linux-wireless@vger.kernel.org>; Thu, 30 Jul 2020 19:01:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=hPTOwu7UHWpC3pZFTpj5ZOQFP25apNpGMtND+wg3zXg=;
-        b=lj41+XirH/QLRS46SNN6bQxxdThnpuov9wqjQSyOqUHFSRocWesW40WoVTx2HDlVmU
-         lrKWlKAjRRMtap8dGBFve/ld33JEJsZ+LNiDni5JjPFZ+qVEeYqzIKt+zjzCp85Re9UC
-         oLtO7QJvNbfXn/02c36U5XFm/EcF9JQT1MydvG8jY8kA1QotnpJsHK0QJjSumOhwKCC7
-         Qra4drvA8RYtCTVY6FR2Fbihc3LTJq5s8k1Ovjfjp/lG/WUmVk5B6FMcHfIrkEeR2Qbv
-         St+g9zx5WL9tEmIXwRF8LeVj2LuKsPs/KrHEZG4xHFlwpUzd91oXWj+P+vR0VSqGfyev
-         MQrg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=hPTOwu7UHWpC3pZFTpj5ZOQFP25apNpGMtND+wg3zXg=;
-        b=RIIXjFU30AkwlOzBXBRhs+mK0cWM/R595+rp4uv6aOBRFBsGQteemAaNA7HgZRQ9oR
-         bITdNcgOGsIAR4dorfhHMB0RiB9AF9mHN6QEzVsSynwGFMWwHdjFkSdauNFy5iIEM1qD
-         TPBkC641L2/ggMixaPBraa//AMgMZHDSoQ6+MUe+DTP01mUJcmPHYU+8UOtLqQ68GcoU
-         E1Qk2dgiiECj8wbiyBFA84MNo3O9bKv/Zt2YOSvc8MayHC1jCht0eQBUYgUN60G2gvYh
-         4fzgkuEHFX1Js2atr5y9/UNMjnBWh6GwmfSxJlq/pMk2/Kz+QgZNle4plPbTQ/Ylu4vU
-         XY4A==
-X-Gm-Message-State: AOAM532fpUQChnLGqgnkJ2hvKN2ZxDMxREhw44Sf4a0E8JKhhXHvYp4a
-        yt6zn0BPi4QLUnT6SiSWvvna2w==
-X-Google-Smtp-Source: ABdhPJw+NGhDuNzlisX8XGifRA0PGzh/BQDMf84sh2dhiAnIzDShE05LNPXybc6+038f+WGhxXhjhw==
-X-Received: by 2002:a7b:c953:: with SMTP id i19mr1589422wml.103.1596160872870;
-        Thu, 30 Jul 2020 19:01:12 -0700 (PDT)
-Received: from localhost.localdomain ([176.61.57.127])
-        by smtp.gmail.com with ESMTPSA id a10sm11566954wrx.15.2020.07.30.19.01.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Jul 2020 19:01:11 -0700 (PDT)
-From:   Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-To:     kvalo@codeaurora.org, loic.poulain@linaro.org
-Cc:     wcn36xx@lists.infradead.org, linux-wireless@vger.kernel.org,
-        bryan.odonoghue@linaro.org
-Subject: [PATCH] wcn36xx: Set sw-scan chan to 0 when not associated
-Date:   Fri, 31 Jul 2020 03:01:57 +0100
-Message-Id: <20200731020157.744145-1-bryan.odonoghue@linaro.org>
-X-Mailer: git-send-email 2.27.0
+        Thu, 30 Jul 2020 22:46:21 -0400
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.69 with qID 06V2kD0r9008069, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexmb06.realtek.com.tw[172.21.6.99])
+        by rtits2.realtek.com.tw (8.15.2/2.66/5.86) with ESMTPS id 06V2kD0r9008069
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Fri, 31 Jul 2020 10:46:13 +0800
+Received: from RTEXMB04.realtek.com.tw (172.21.6.97) by
+ RTEXMB06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Fri, 31 Jul 2020 10:46:12 +0800
+Received: from localhost.localdomain (172.21.68.128) by
+ RTEXMB04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Fri, 31 Jul 2020 10:46:12 +0800
+From:   <yhchuang@realtek.com>
+To:     <kvalo@codeaurora.org>
+CC:     <linux-wireless@vger.kernel.org>, <tehuang@realtek.com>,
+        <briannorris@chromium.org>
+Subject: [PATCH v8 0/2] rtw88: update regulatory settings
+Date:   Fri, 31 Jul 2020 10:46:05 +0800
+Message-ID: <20200731024607.5817-1-yhchuang@realtek.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [172.21.68.128]
+X-ClientProxiedBy: RTEXMB03.realtek.com.tw (172.21.6.96) To
+ RTEXMB04.realtek.com.tw (172.21.6.97)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-A patch in ath/pending rewrites the software scan for the wcn36xx to
-accommodate multiplexing with data, link monitoring and so on.
+From: Yan-Hsuan Chuang <yhchuang@realtek.com>
 
-However if a device disassociates from an AP then the last operating
-channel will not be re-scanned.
+This patchset applies regulatory rules for Realtek's chip set.
 
-After some discussion and testing on this topic
+Some of the modules are programmed country-specific code in the efuse.
+And for this kind of modules, driver doesn't want the regulatory to be
+changed, so the driver tends to not listen to the regulatory hint that
+is notified by the stack. Otherwise if the modules are not programmed
+to a country-specific code, then the world-wide (WW) settings will be
+adopted. If the regulatory is WW, the driver will apply the settings
+notified by the stack.
 
-https://www.spinics.net/lists/linux-wireless/msg201242.html
-https://www.spinics.net/lists/linux-wireless/msg201254.html
+If anyone wants to allow regulatory being set from user-space tools
+(ex: iw reg set), a compile option flag RTW88_REGD_USER_REG_HINTS
+should be set to allow regulatory hist from user.
 
-this patch implements a relatively simple fix. It sets the initial software
-scan channel to 0 if we are not associated with an AP or to the current
-operating channel if we are assciated with an AP.
+Also add "Adaptivity" support for some special country codes, because
+they have to stop TX immediately if there's any energy detected.
 
-Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
----
- drivers/net/wireless/ath/wcn36xx/main.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/wcn36xx/main.c b/drivers/net/wireless/ath/wcn36xx/main.c
-index fb8978a3c11e..87fdc073c957 100644
---- a/drivers/net/wireless/ath/wcn36xx/main.c
-+++ b/drivers/net/wireless/ath/wcn36xx/main.c
-@@ -697,10 +697,14 @@ static void wcn36xx_sw_scan_start(struct ieee80211_hw *hw,
- 				  const u8 *mac_addr)
- {
- 	struct wcn36xx *wcn = hw->priv;
-+	struct wcn36xx_vif *vif_priv = wcn36xx_vif_to_priv(vif);
- 
- 	wcn->sw_scan = true;
- 	wcn->sw_scan_vif = vif;
--	wcn->sw_scan_opchannel = WCN36XX_HW_CHANNEL(wcn);
-+	if (vif_priv->sta_assoc)
-+		wcn->sw_scan_opchannel = WCN36XX_HW_CHANNEL(wcn);
-+	else
-+		wcn->sw_scan_opchannel = 0;
- }
- 
- static void wcn36xx_sw_scan_complete(struct ieee80211_hw *hw,
+v2 -> v3
+  * split patch set for further discussion
+
+v3 -> v4
+  * squash patch set, since nobody has different idea for it
+  * "rtw88: add regulatory process strategy for different chipset" and
+    "rtw88: support dynamic user regulatory setting" are squashed
+  * modify the commit log to better describe it
+  * add a new patch for adaptivity support "rtw88: add adaptivity
+    support for EU/JP regulatory"
+
+v4 -> v5
+  * check return value of kstrtobool()
+
+v5 -> v6
+  * remove custom world-wide, use stack world-wide
+  * surface err codes by printing logs
+  * fix incorrect debugfs set parameter for edcca enable
+
+v6 -> v7
+  * restore custom world-wide, because of not to modify USER settings
+  * modify commit message to be more clear
+
+v7 -> v8
+  * rebase on top of master
+  * check return value for kstrtobool()
+  * fix debugfs dereference
+  * accept the same country with driver notified from stack
+  * some wording refine
+
+
+Tzu-En Huang (2):
+  rtw88: add regulatory process strategy for different chipset
+  rtw88: add adaptivity support for EU/JP regulatory
+
+ drivers/net/wireless/realtek/rtw88/Kconfig    | 10 ++
+ drivers/net/wireless/realtek/rtw88/debug.c    | 37 +++++++
+ drivers/net/wireless/realtek/rtw88/main.c     |  8 +-
+ drivers/net/wireless/realtek/rtw88/main.h     | 32 +++++++
+ drivers/net/wireless/realtek/rtw88/phy.c      | 61 ++++++++++++
+ drivers/net/wireless/realtek/rtw88/phy.h      |  2 +
+ drivers/net/wireless/realtek/rtw88/reg.h      |  2 +
+ drivers/net/wireless/realtek/rtw88/regd.c     | 96 +++++++++++++++++--
+ drivers/net/wireless/realtek/rtw88/regd.h     |  4 +
+ drivers/net/wireless/realtek/rtw88/rtw8822b.c | 43 +++++++++
+ drivers/net/wireless/realtek/rtw88/rtw8822b.h |  8 ++
+ drivers/net/wireless/realtek/rtw88/rtw8822c.c | 47 +++++++++
+ drivers/net/wireless/realtek/rtw88/rtw8822c.h |  3 +
+ 13 files changed, 341 insertions(+), 12 deletions(-)
+
 -- 
-2.27.0
+2.17.1
 
