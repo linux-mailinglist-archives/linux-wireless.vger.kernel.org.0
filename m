@@ -2,165 +2,88 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 33CA6234602
-	for <lists+linux-wireless@lfdr.de>; Fri, 31 Jul 2020 14:43:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B945A234754
+	for <lists+linux-wireless@lfdr.de>; Fri, 31 Jul 2020 16:06:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387414AbgGaMnR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 31 Jul 2020 08:43:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34302 "EHLO
+        id S2387430AbgGaOGj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 31 Jul 2020 10:06:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47188 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1733294AbgGaMnQ (ORCPT
+        with ESMTP id S1730799AbgGaOGi (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 31 Jul 2020 08:43:16 -0400
-Received: from mail-ej1-x643.google.com (mail-ej1-x643.google.com [IPv6:2a00:1450:4864:20::643])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39046C061574;
-        Fri, 31 Jul 2020 05:43:16 -0700 (PDT)
-Received: by mail-ej1-x643.google.com with SMTP id a26so5480429ejc.2;
-        Fri, 31 Jul 2020 05:43:16 -0700 (PDT)
+        Fri, 31 Jul 2020 10:06:38 -0400
+Received: from mail-ed1-x543.google.com (mail-ed1-x543.google.com [IPv6:2a00:1450:4864:20::543])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51677C061574
+        for <linux-wireless@vger.kernel.org>; Fri, 31 Jul 2020 07:06:38 -0700 (PDT)
+Received: by mail-ed1-x543.google.com with SMTP id n2so22443574edr.5
+        for <linux-wireless@vger.kernel.org>; Fri, 31 Jul 2020 07:06:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=Z7WaVDyC31Xqp9aG4vaiaHbvwp6b775oA7lj7CzrKBo=;
-        b=Boub8lNC8OOZzaDP7HakRmCigQ9s+TmAZKT/FvTXISovow+eY1+3iv9s7tVr5dADQb
-         tIF5zqqI08ULoL0yyrXmhoapYfXxmRW0lyX2RCJXcewDU1EB9xdyPBrZABXn08aJJ28c
-         Ix6TlonWfWSChmEA3cZnWfApy3SwFu1s8TocFkM7yBDwtH78cBXTAF1xTDgYs+VIg8UE
-         kcTAWODekL0CEEpa/XJHHc7Z1xM6Zm5QjgRxMYhQQz3mO4eSz2plfe9QNw1SAJHLLj1J
-         ZA6BNEbFTnFQK6vaB1h+hfyveE/uv2QDJ4RmDfBaoT3ERtSvXRg9SGL9BruBwod71w3x
-         jyzw==
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=9XeMSOu/cNN2dWpBgsvaLCWuwiunaIF0Gm0EXR6KiSA=;
+        b=zWfvmpLdagwNE3esm2rxRXRkB7YZAvW42qd61qngQSFkgbm9SewSHX22BoF7ipqbNt
+         G4UoBxHJzbuYcKP546F+nKl0Tm1VBBsz9AJj0jHuhC1Z2sUYRpV1iO+g44OxfARTFVg+
+         w7lXJxyQR83d7PltKgdRUMB4QbAb28onDm/BMZuAnLPrxKgz28tNrbRFH/iXGDDx7rQk
+         waXf99LtdFBkaCV2w/rwA/xqUwJdTRepqnxUOgJ6hJp8eNmRYqxI8yljrmggpH/aj/7Y
+         wAyNr0axK5jLmj5tW1oeqFYHQYM0gmnGyqcHeLvl0NBhTY64U/IKRjXk57lwhAgTkaXB
+         vQfA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=Z7WaVDyC31Xqp9aG4vaiaHbvwp6b775oA7lj7CzrKBo=;
-        b=odC0C2Z8qjc/R3Sxg0m4I69+a65FMfT2PdfWwCtNsIWoRrbgPdA+xt0zGud2eEx0/5
-         ngabfGy3s7C4W9vCCQ0o1gmzVhzDwrJHa+wrLnWQIZayyjumBn8lNQRm3lYMXBMtA584
-         LBXgkCEGQh2jyKGcN9NghACKAH4M7awzVYg1VpZs3kayTb10Qn+5lo/f00IJ9C41ipul
-         jiZdEfgvwsirvdJvFev6GW5oGPl5s3uN+oJbhsoXzVbvVl5nWXJL4eBGM0NZvzTv44zI
-         FPZvuIULjyCzNbGLSbnhZq93NPV4mixtQKviRH9hWBdcgs9bLaB4sAdkYnqQYEs/cU9h
-         8+Vg==
-X-Gm-Message-State: AOAM532XKTpbopjI5UTUXS/eMRcU41K8ehA6w8GKqZdSMzL3D1mGOAqk
-        tM+vhD+Xftju+LX5tijJ6sc=
-X-Google-Smtp-Source: ABdhPJz2I4wMlXEMP6P1KRM4mmo8+jpv64fXNEUIP720yCcVBp2o7uTyVYR6ab20bRx5VLVhSw6mFA==
-X-Received: by 2002:a17:906:3281:: with SMTP id 1mr3932259ejw.132.1596199394967;
-        Fri, 31 Jul 2020 05:43:14 -0700 (PDT)
-Received: from net.saheed (95C84E0A.dsl.pool.telekom.hu. [149.200.78.10])
-        by smtp.gmail.com with ESMTPSA id g23sm8668514ejb.24.2020.07.31.05.43.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 31 Jul 2020 05:43:14 -0700 (PDT)
-From:   "Saheed O. Bolarinwa" <refactormyself@gmail.com>
-To:     helgaas@kernel.org
-Cc:     "Saheed O. Bolarinwa" <refactormyself@gmail.com>,
-        bjorn@helgaas.com, skhan@linuxfoundation.org,
-        linux-kernel-mentees@lists.linuxfoundation.org,
-        linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-rdma@vger.kernel.org,
-        QCA ath9k Development <ath9k-devel@qca.qualcomm.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        Mike Marciniszyn <mike.marciniszyn@intel.com>,
-        Dennis Dalessandro <dennis.dalessandro@intel.com>,
-        Doug Ledford <dledford@redhat.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>, Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Russell Currey <ruscur@russell.cc>,
-        Sam Bobroff <sbobroff@linux.ibm.com>,
-        "Oliver O'Halloran" <oohall@gmail.com>
-Subject: [PATCH v4 12/12] PCI: Remove '*val = 0' from pcie_capability_read_*()
-Date:   Fri, 31 Jul 2020 13:43:29 +0200
-Message-Id: <20200731114329.100848-5-refactormyself@gmail.com>
-X-Mailer: git-send-email 2.18.4
-In-Reply-To: <20200731114329.100848-1-refactormyself@gmail.com>
-References: <20200731114329.100848-1-refactormyself@gmail.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=9XeMSOu/cNN2dWpBgsvaLCWuwiunaIF0Gm0EXR6KiSA=;
+        b=pAP6HyqKEyjodAEX9x4f1yNrW5Fl1ikBE6UwrYelzW7TxUbJmXsE+aNCPNv1LHUg5l
+         K4xAFlD/P2IHYFuC57Elrv03dfG9TULGWf7GIgkRe691MME4LPATHFWaWi2uES/T05vz
+         FB5VfzPU0FR92Wir138Dkwe8EOK9mI8Dq8e960tP1JH6SvIoLCJ9CKKyc69GTUg7aZAI
+         bYYzx4n3Clto/ZnYsl0LIuc5Ner7zLuAf4pGmlD9XYL4xauwcJI2A1RYPGIm9v7srFFg
+         2TkO6jRq8QtJjHvlbfKpy69gQ3bqwpUty+0bJmBq77orDmtyIX/bPcqFDG9u3EJdvt1g
+         yvsg==
+X-Gm-Message-State: AOAM532xuF2o99hUkFsckIpnfja6vknNJb4dG8DNCH0Z18Xoh8I0Rgoc
+        sK6d1jC70bbeZqL4MXZHMikMMHnarNiAoFN5bKKcYu+1
+X-Google-Smtp-Source: ABdhPJwv59u44/W6eUKRt6Youj1KSym9oeOj9Ak7FCnevKtp7rg/VbYd7p52YG8tannsVP/T3lHDeZJcHEkgTE3DYoU=
+X-Received: by 2002:aa7:d5d0:: with SMTP id d16mr3925942eds.212.1596204397008;
+ Fri, 31 Jul 2020 07:06:37 -0700 (PDT)
+MIME-Version: 1.0
+References: <20200731020157.744145-1-bryan.odonoghue@linaro.org>
+In-Reply-To: <20200731020157.744145-1-bryan.odonoghue@linaro.org>
+From:   Loic Poulain <loic.poulain@linaro.org>
+Date:   Fri, 31 Jul 2020 16:11:21 +0200
+Message-ID: <CAMZdPi-ZOHHa_nckdKrGEXG3d2ZtP=hPThp+FSNQrViWH1WDOw@mail.gmail.com>
+Subject: Re: [PATCH] wcn36xx: Set sw-scan chan to 0 when not associated
+To:     "Bryan O'Donoghue" <bryan.odonoghue@linaro.org>
+Cc:     Kalle Valo <kvalo@codeaurora.org>, wcn36xx@lists.infradead.org,
+        linux-wireless@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-There are several reasons why a PCI capability read may fail whether the
-device is present or not. If this happens, pcie_capability_read_*() will
-return -EINVAL/PCIBIOS_BAD_REGISTER_NUMBER or PCIBIOS_DEVICE_NOT_FOUND
-and *val is set to 0.
+On Fri, 31 Jul 2020 at 04:01, Bryan O'Donoghue
+<bryan.odonoghue@linaro.org> wrote:
+>
+> A patch in ath/pending rewrites the software scan for the wcn36xx to
+> accommodate multiplexing with data, link monitoring and so on.
+>
+> However if a device disassociates from an AP then the last operating
+> channel will not be re-scanned.
+>
+> After some discussion and testing on this topic
+>
+> https://www.spinics.net/lists/linux-wireless/msg201242.html
+> https://www.spinics.net/lists/linux-wireless/msg201254.html
+>
+> this patch implements a relatively simple fix. It sets the initial software
+> scan channel to 0 if we are not associated with an AP or to the current
+> operating channel if we are assciated with an AP.
+>
+> Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+> ---
+>  drivers/net/wireless/ath/wcn36xx/main.c | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
 
-This behaviour if further ensured by this code inside
-pcie_capability_read_*()
+That looks good to me, that will force regular scanning on all channels
+when disconnected from AP.
 
- ret = pci_read_config_dword(dev, pci_pcie_cap(dev) + pos, val);
- /*
-  * Reset *val to 0 if pci_read_config_dword() fails, it may
-  * have been written as 0xFFFFFFFF if hardware error happens
-  * during pci_read_config_dword().
-  */
- if (ret)
-	 *val = 0;
- return ret;
-
-a) Since all pci_generic_config_read() does is read a register value,
-it may return success after reading a ~0 which *may* have been fabricated
-by the PCI host bridge due to a read timeout. Hence pci_read_config_*()
-will return success with a fabricated ~0 in *val, indicating a problem.
-In this case, the assumed behaviour of  pcie_capability_read_*() will be
-wrong. To avoid error slipping through, more checks are necessary.
-
-b) pci_read_config_*() will return PCIBIOS_DEVICE_NOT_FOUND only if
-dev->error_state = pci_channel_io_perm_failure (i.e.
-pci_dev_is_disconnected()) or if pci_generic_config_read() can't find the
-device. In both cases *val is initially set to ~0 but as shown in the code
-above pcie_capability_read_*() resets it back to 0. Even with this effort,
-drivers still have to perform validation checks more so if 0 is a valid
-value.
-
-Most drivers only consider the case (b) and in some cases, there is the
-expectation that on timeout *val has a fabricated value of ~0, which *may*
-not always be true as explained in (a).
-
-In any case, checks need to be done to validate the value read and maybe
-confirm which error has occurred. It is better left to the drivers to do.
-
-Remove the reset of *val to 0 when pci_read_config_*() fails.
-
-Suggested-by: Bjorn Helgaas <bjorn@helgaas.com>
-Signed-off-by: Saheed O. Bolarinwa <refactormyself@gmail.com>
----
- drivers/pci/access.c | 14 --------------
- 1 file changed, 14 deletions(-)
-
-diff --git a/drivers/pci/access.c b/drivers/pci/access.c
-index 79c4a2ef269a..ec95edbb1ac8 100644
---- a/drivers/pci/access.c
-+++ b/drivers/pci/access.c
-@@ -413,13 +413,6 @@ int pcie_capability_read_word(struct pci_dev *dev, int pos, u16 *val)
- 
- 	if (pcie_capability_reg_implemented(dev, pos)) {
- 		ret = pci_read_config_word(dev, pci_pcie_cap(dev) + pos, val);
--		/*
--		 * Reset *val to 0 if pci_read_config_word() fails, it may
--		 * have been written as 0xFFFF if hardware error happens
--		 * during pci_read_config_word().
--		 */
--		if (ret)
--			*val = 0;
- 		return ret;
- 	}
- 
-@@ -448,13 +441,6 @@ int pcie_capability_read_dword(struct pci_dev *dev, int pos, u32 *val)
- 
- 	if (pcie_capability_reg_implemented(dev, pos)) {
- 		ret = pci_read_config_dword(dev, pci_pcie_cap(dev) + pos, val);
--		/*
--		 * Reset *val to 0 if pci_read_config_dword() fails, it may
--		 * have been written as 0xFFFFFFFF if hardware error happens
--		 * during pci_read_config_dword().
--		 */
--		if (ret)
--			*val = 0;
- 		return ret;
- 	}
- 
--- 
-2.18.4
-
+Reviewed-by: Loic Poulain <loic.poulain@linaro.org>
