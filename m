@@ -2,150 +2,177 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1807A234AFD
-	for <lists+linux-wireless@lfdr.de>; Fri, 31 Jul 2020 20:28:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9954D234B3B
+	for <lists+linux-wireless@lfdr.de>; Fri, 31 Jul 2020 20:38:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387872AbgGaS2J (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 31 Jul 2020 14:28:09 -0400
-Received: from mail29.static.mailgun.info ([104.130.122.29]:26226 "EHLO
-        mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S2387846AbgGaS2J (ORCPT
+        id S2387854AbgGaSiZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 31 Jul 2020 14:38:25 -0400
+Received: from mail2.candelatech.com ([208.74.158.173]:51824 "EHLO
+        mail3.candelatech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387676AbgGaSiZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 31 Jul 2020 14:28:09 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1596220088; h=References: In-Reply-To: Message-Id: Date:
- Subject: Cc: To: From: Sender;
- bh=vjQiGVYzJ12zA+igqujOYlOj1OL8iIPU8CB8EiC7eQw=; b=V/ERma/eflF4cCYF/veW1VrBM0/yRWp+aNYdootEugzfboNLLnuJlGjpSxcbYznYFTcCMaLn
- tkiM3T3UIvg84FISExYZdIHIULTIH11RFvAJRpfEhpliQzN5UADsSJVLaz5gm65sxJt33w/2
- HGsVp7ZGmjJVl+9xERKq/s4jCCo=
-X-Mailgun-Sending-Ip: 104.130.122.29
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n02.prod.us-west-2.postgun.com with SMTP id
- 5f2462a2eb556d49a65354bc (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 31 Jul 2020 18:27:46
- GMT
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id DC2F0C433A0; Fri, 31 Jul 2020 18:27:45 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from pillair-linux.qualcomm.com (unknown [202.46.22.19])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        Fri, 31 Jul 2020 14:38:25 -0400
+Received: from [192.168.254.5] (unknown [50.34.202.127])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        (Authenticated sender: pillair)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 875B1C433A1;
-        Fri, 31 Jul 2020 18:27:42 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 875B1C433A1
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=pillair@codeaurora.org
-From:   Rakesh Pillai <pillair@codeaurora.org>
-To:     ath10k@lists.infradead.org
+        by mail3.candelatech.com (Postfix) with ESMTPSA id 342EA13C2B0;
+        Fri, 31 Jul 2020 11:38:16 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 342EA13C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+        s=default; t=1596220697;
+        bh=0qBeodkViCQFY2Awt7MbLc4IcFIEjXjXkHdae8WCSKk=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+        b=gjjMMDfFSkJOOhylBkDoMIfCzbfbfpAX9P0rDoC31s+cixVaU4ey+C/m1s0B+iVxV
+         zRrhGAcxHXt78sgZ4N4nF05ULZDGfxKZvHPab2slUyif46aYgewq0s2NCVPhb/Mq4N
+         u2kNicYnNEDoIAglakCzMsT5HnlpGsdAQQReHYJs=
+Subject: Re: [PATCH v2 1/3] ath10k: Add history for tracking certain events
+To:     Rakesh Pillai <pillair@codeaurora.org>, ath10k@lists.infradead.org
 Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
         kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org,
-        netdev@vger.kernel.org, Rakesh Pillai <pillair@codeaurora.org>
-Subject: [PATCH v2 3/3] ath10k: Add debugfs support to enable event history
-Date:   Fri, 31 Jul 2020 23:57:22 +0530
-Message-Id: <1596220042-2778-4-git-send-email-pillair@codeaurora.org>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1596220042-2778-1-git-send-email-pillair@codeaurora.org>
+        netdev@vger.kernel.org
 References: <1596220042-2778-1-git-send-email-pillair@codeaurora.org>
+ <1596220042-2778-2-git-send-email-pillair@codeaurora.org>
+From:   Ben Greear <greearb@candelatech.com>
+Organization: Candela Technologies
+Message-ID: <bedc5fe0-1904-d045-4a84-0869ee1b0b2e@candelatech.com>
+Date:   Fri, 31 Jul 2020 11:38:15 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.9.0
+MIME-Version: 1.0
+In-Reply-To: <1596220042-2778-2-git-send-email-pillair@codeaurora.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-MW
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Add the support to enable/disable the recording of
-debug events history.
+On 7/31/20 11:27 AM, Rakesh Pillai wrote:
+> Add history for tracking the below events
+> - register read
+> - register write
+> - IRQ trigger
+> - NAPI poll
+> - CE service
+> - WMI cmd
+> - WMI event
+> - WMI tx completion
+> 
+> This will help in debugging any crash or any
+> improper behaviour.
+> 
+> Tested-on: WCN3990 hw1.0 SNOC WLAN.HL.3.1-01040-QCAHLSWMTPLZ-1
+> 
+> Signed-off-by: Rakesh Pillai <pillair@codeaurora.org>
+> ---
+>   drivers/net/wireless/ath/ath10k/ce.c      |   1 +
+>   drivers/net/wireless/ath/ath10k/core.h    |  74 +++++++++++++++++
+>   drivers/net/wireless/ath/ath10k/debug.c   | 133 ++++++++++++++++++++++++++++++
+>   drivers/net/wireless/ath/ath10k/debug.h   |  74 +++++++++++++++++
+>   drivers/net/wireless/ath/ath10k/snoc.c    |  15 +++-
+>   drivers/net/wireless/ath/ath10k/wmi-tlv.c |   1 +
+>   drivers/net/wireless/ath/ath10k/wmi.c     |  10 +++
+>   7 files changed, 307 insertions(+), 1 deletion(-)
+> 
 
-The enable/disable of the history from debugfs will
-not make any affect if its not enabled via module
-parameter.
+> +void ath10k_record_wmi_event(struct ath10k *ar, enum ath10k_wmi_type type,
+> +			     u32 id, unsigned char *data)
+> +{
+> +	struct ath10k_wmi_event_entry *entry;
+> +	u32 idx;
+> +
+> +	if (type == ATH10K_WMI_EVENT) {
+> +		if (!ar->wmi_event_history.record)
+> +			return;
 
-Tested-on: WCN3990 hw1.0 SNOC WLAN.HL.3.1-01040-QCAHLSWMTPLZ-1
+This check above is duplicated below, add it once at top of the method
+instead.
 
-Signed-off-by: Rakesh Pillai <pillair@codeaurora.org>
----
- drivers/net/wireless/ath/ath10k/debug.c | 56 +++++++++++++++++++++++++++++++++
- 1 file changed, 56 insertions(+)
+> +
+> +		spin_lock_bh(&ar->wmi_event_history.hist_lock);
+> +		idx = ath10k_core_get_next_idx(&ar->reg_access_history.index,
+> +					       ar->wmi_event_history.max_entries);
+> +		spin_unlock_bh(&ar->wmi_event_history.hist_lock);
+> +		entry = &ar->wmi_event_history.record[idx];
+> +	} else {
+> +		if (!ar->wmi_cmd_history.record)
+> +			return;
+> +
+> +		spin_lock_bh(&ar->wmi_cmd_history.hist_lock);
+> +		idx = ath10k_core_get_next_idx(&ar->reg_access_history.index,
+> +					       ar->wmi_cmd_history.max_entries);
+> +		spin_unlock_bh(&ar->wmi_cmd_history.hist_lock);
+> +		entry = &ar->wmi_cmd_history.record[idx];
+> +	}
+> +
+> +	entry->timestamp = ath10k_core_get_timestamp();
+> +	entry->cpu_id = smp_processor_id();
+> +	entry->type = type;
+> +	entry->id = id;
+> +	memcpy(&entry->data, data + 4, ATH10K_WMI_DATA_LEN);
+> +}
+> +EXPORT_SYMBOL(ath10k_record_wmi_event);
 
-diff --git a/drivers/net/wireless/ath/ath10k/debug.c b/drivers/net/wireless/ath/ath10k/debug.c
-index 5d08652..6785fae 100644
---- a/drivers/net/wireless/ath/ath10k/debug.c
-+++ b/drivers/net/wireless/ath/ath10k/debug.c
-@@ -610,6 +610,59 @@ static const struct file_operations fops_simulate_fw_crash = {
- 	.llseek = default_llseek,
- };
- 
-+static ssize_t ath10k_read_history_enable(struct file *file,
-+					  char __user *user_buf,
-+					  size_t count, loff_t *ppos)
-+{
-+	const char buf[] =
-+		"To enable recording of certain event history, write to this file with the enable mask\n"
-+		"BIT(0): Enable Reg Access history\n"
-+		"	- Register write events\n"
-+		"	- Register read events\n"
-+		"BIT(1): Enable CE events history\n"
-+		"	- ATH10K_IRQ_TRIGGER event\n"
-+		"	- ATH10K_NAPI_POLL event\n"
-+		"	- ATH10K_CE_SERVICE event\n"
-+		"	- ATH10K_NAPI_COMPLETE event\n"
-+		"	- ATH10K_NAPI_RESCHED event\n"
-+		"	- ATH10K_IRQ_SUMMARY event\n"
-+		"BIT(2): Enable WMI CMD history\n"
-+		"	- WMI CMD event\n"
-+		"	- WMI CMD TX completion event\n"
-+		"BIT(3): Enable WMI events history\n"
-+		"	- WMI Events event\n";
-+
-+	return simple_read_from_buffer(user_buf, count, ppos, buf, strlen(buf));
-+}
-+
-+static ssize_t ath10k_write_history_enable(struct file *file,
-+					   const char __user *user_buf,
-+					   size_t count, loff_t *ppos)
-+{
-+	u32 history_enable_mask;
-+	int i, ret;
-+
-+	ret = kstrtou32_from_user(user_buf, count, 0, &history_enable_mask);
-+	if (ret)
-+		return ret;
-+
-+	for (i = 0; i < ATH10K_HISTORY_MAX; i++)
-+		if (history_enable_mask & BIT(i))
-+			set_bit(i, &ath10k_history_enable_mask);
-+		else
-+			clear_bit(i, &ath10k_history_enable_mask);
-+
-+	return count;
-+}
-+
-+static const struct file_operations fops_history_enable = {
-+	.read = ath10k_read_history_enable,
-+	.write = ath10k_write_history_enable,
-+	.open = simple_open,
-+	.owner = THIS_MODULE,
-+	.llseek = default_llseek,
-+};
-+
- static ssize_t ath10k_read_chip_id(struct file *file, char __user *user_buf,
- 				   size_t count, loff_t *ppos)
- {
-@@ -2658,6 +2711,9 @@ int ath10k_debug_register(struct ath10k *ar)
- 	debugfs_create_file("reset_htt_stats", 0200, ar->debug.debugfs_phy, ar,
- 			    &fops_reset_htt_stats);
- 
-+	debugfs_create_file("history_enable", 0644, ar->debug.debugfs_phy, ar,
-+			    &fops_history_enable);
-+
- 	return 0;
- }
- 
+> @@ -1660,6 +1668,11 @@ static int ath10k_snoc_probe(struct platform_device *pdev)
+>   	ar->ce_priv = &ar_snoc->ce;
+>   	msa_size = drv_data->msa_size;
+>   
+> +	ath10k_core_reg_access_history_init(ar, ATH10K_REG_ACCESS_HISTORY_MAX);
+> +	ath10k_core_wmi_event_history_init(ar, ATH10K_WMI_EVENT_HISTORY_MAX);
+> +	ath10k_core_wmi_cmd_history_init(ar, ATH10K_WMI_CMD_HISTORY_MAX);
+> +	ath10k_core_ce_event_history_init(ar, ATH10K_CE_EVENT_HISTORY_MAX);
+
+Maybe only enable this once user turns it on?  It sucks up a bit of memory?
+
+> +
+>   	ath10k_snoc_quirks_init(ar);
+>   
+>   	ret = ath10k_snoc_resource_init(ar);
+> diff --git a/drivers/net/wireless/ath/ath10k/wmi-tlv.c b/drivers/net/wireless/ath/ath10k/wmi-tlv.c
+> index 932266d..9df5748 100644
+> --- a/drivers/net/wireless/ath/ath10k/wmi-tlv.c
+> +++ b/drivers/net/wireless/ath/ath10k/wmi-tlv.c
+> @@ -627,6 +627,7 @@ static void ath10k_wmi_tlv_op_rx(struct ath10k *ar, struct sk_buff *skb)
+>   	if (skb_pull(skb, sizeof(struct wmi_cmd_hdr)) == NULL)
+>   		goto out;
+>   
+> +	ath10k_record_wmi_event(ar, ATH10K_WMI_EVENT, id, skb->data);
+>   	trace_ath10k_wmi_event(ar, id, skb->data, skb->len);
+>   
+>   	consumed = ath10k_tm_event_wmi(ar, id, skb);
+> diff --git a/drivers/net/wireless/ath/ath10k/wmi.c b/drivers/net/wireless/ath/ath10k/wmi.c
+> index a81a1ab..8ebd05c 100644
+> --- a/drivers/net/wireless/ath/ath10k/wmi.c
+> +++ b/drivers/net/wireless/ath/ath10k/wmi.c
+> @@ -1802,6 +1802,15 @@ struct sk_buff *ath10k_wmi_alloc_skb(struct ath10k *ar, u32 len)
+>   
+>   static void ath10k_wmi_htc_tx_complete(struct ath10k *ar, struct sk_buff *skb)
+>   {
+> +	struct wmi_cmd_hdr *cmd_hdr;
+> +	enum wmi_tlv_event_id id;
+> +
+> +	cmd_hdr = (struct wmi_cmd_hdr *)skb->data;
+> +	id = MS(__le32_to_cpu(cmd_hdr->cmd_id), WMI_CMD_HDR_CMD_ID);
+> +
+> +	ath10k_record_wmi_event(ar, ATH10K_WMI_TX_COMPL, id,
+> +				skb->data + sizeof(struct wmi_cmd_hdr));
+> +
+>   	dev_kfree_skb(skb);
+>   }
+
+I think guard the above new code with if (unlikely(ar->ce_event_history.record)) { ... }
+
+All in all, I think I'd want to compile this out (while leaving other debug compiled
+in) since it seems this stuff would be rarely used and it adds method calls to hot
+paths.
+
+That is a decision for Kalle though, so see what he says...
+
+Thanks,
+Ben
+
+
 -- 
-2.7.4
-
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
