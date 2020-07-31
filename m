@@ -2,78 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B693E233B5A
-	for <lists+linux-wireless@lfdr.de>; Fri, 31 Jul 2020 00:29:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4FF43233CB2
+	for <lists+linux-wireless@lfdr.de>; Fri, 31 Jul 2020 02:48:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730650AbgG3W26 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 30 Jul 2020 18:28:58 -0400
-Received: from mail.kernel.org ([198.145.29.99]:41070 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730641AbgG3W25 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 30 Jul 2020 18:28:57 -0400
-Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 7D06520829;
-        Thu, 30 Jul 2020 22:28:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1596148137;
-        bh=YH9+ICW/3hXRtSm64orqu19oSdQuuWKrMUBevTvaXkE=;
-        h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-        b=F+0Ydd/Fgutk16gkyGj2gECpPoXbH4sg6UlFq9catgilRzwkQfA9O7G1w0Kz6j0y8
-         QrQ7gUCMeXm93qiW40R2H2WfV9+NT2PCbOx4GxEs87RdYK42aWEzohK3Bf2m4JuD5e
-         DShs/tsbsdcOdvIawMZxl9W+REGJfO6Zjj0yspI8=
-Date:   Thu, 30 Jul 2020 23:28:36 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     linux-rdma@vger.kernel.org, Julia Lawall <Julia.Lawall@inria.fr>
-Cc:     linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, alsa-devel@alsa-project.org,
-        linux-media@vger.kernel.org, kernel-janitors@vger.kernel.org
-In-Reply-To: <1595761112-11003-1-git-send-email-Julia.Lawall@inria.fr>
-References: <1595761112-11003-1-git-send-email-Julia.Lawall@inria.fr>
-Subject: Re: [PATCH 0/7] drop unnecessary list_empty
-Message-Id: <159614804536.1473.16638498246526574558.b4-ty@kernel.org>
+        id S1730945AbgGaAsD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 30 Jul 2020 20:48:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37610 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730888AbgGaAsD (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 30 Jul 2020 20:48:03 -0400
+Received: from shards.monkeyblade.net (shards.monkeyblade.net [IPv6:2620:137:e000::1:9])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A12EC061574;
+        Thu, 30 Jul 2020 17:48:03 -0700 (PDT)
+Received: from localhost (unknown [IPv6:2601:601:9f00:477:9e51:a893:b0fe:602a])
+        (using TLSv1 with cipher AES256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id 9DEB1126C49E9;
+        Thu, 30 Jul 2020 17:31:17 -0700 (PDT)
+Date:   Thu, 30 Jul 2020 17:48:02 -0700 (PDT)
+Message-Id: <20200730.174802.993249892220514817.davem@davemloft.net>
+To:     johannes@sipsolutions.net
+Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org
+Subject: Re: pull-request: mac80211 2020-07-30
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <20200730150836.66554-1-johannes@sipsolutions.net>
+References: <20200730150836.66554-1-johannes@sipsolutions.net>
+X-Mailer: Mew version 6.8 on Emacs 26.3
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Thu, 30 Jul 2020 17:31:17 -0700 (PDT)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sun, 26 Jul 2020 12:58:25 +0200, Julia Lawall wrote:
-> The various list iterators are able to handle an empty list.
-> The only effect of avoiding the loop is not initializing some
-> index variables.
-> Drop list_empty tests in cases where these variables are not
-> used.
+From: Johannes Berg <johannes@sipsolutions.net>
+Date: Thu, 30 Jul 2020 17:08:35 +0200
+
+> It's been a while, sorry. I have a few more fix that'd be nice
+> to get in, though I don't think they affect a majority of users.
 > 
-> The semantic patch that makes these changes is as follows:
-> (http://coccinelle.lip6.fr/)
-> 
-> [...]
+> Please pull and let me know if there's any problem.
 
-Applied to
+No worries, we're all busy, pulled.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
-
-Thanks!
-
-[1/1] ASoC: Intel: drop unnecessary list_empty
-      commit: a383308e50244a28fe927b9c1acbe0a963bf186b
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
+Thank you.
