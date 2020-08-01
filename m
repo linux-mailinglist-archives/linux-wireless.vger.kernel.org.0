@@ -2,29 +2,29 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BE55E23515B
-	for <lists+linux-wireless@lfdr.de>; Sat,  1 Aug 2020 11:10:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 15FC3235162
+	for <lists+linux-wireless@lfdr.de>; Sat,  1 Aug 2020 11:13:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728491AbgHAJKc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 1 Aug 2020 05:10:32 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:9309 "EHLO huawei.com"
+        id S1728631AbgHAJN0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 1 Aug 2020 05:13:26 -0400
+Received: from szxga07-in.huawei.com ([45.249.212.35]:54410 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725876AbgHAJKb (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 1 Aug 2020 05:10:31 -0400
-Received: from DGGEMS405-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id A583C5CD1EA15CCC1FE4;
-        Sat,  1 Aug 2020 17:10:11 +0800 (CST)
-Received: from huawei.com (10.175.101.6) by DGGEMS405-HUB.china.huawei.com
- (10.3.19.205) with Microsoft SMTP Server id 14.3.487.0; Sat, 1 Aug 2020
- 17:10:03 +0800
+        id S1725876AbgHAJN0 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 1 Aug 2020 05:13:26 -0400
+Received: from DGGEMS410-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id D4254CCF6278C7BA1681;
+        Sat,  1 Aug 2020 17:13:19 +0800 (CST)
+Received: from huawei.com (10.175.101.6) by DGGEMS410-HUB.china.huawei.com
+ (10.3.19.210) with Microsoft SMTP Server id 14.3.487.0; Sat, 1 Aug 2020
+ 17:13:13 +0800
 From:   linmiaohe <linmiaohe@huawei.com>
 To:     <johannes@sipsolutions.net>, <davem@davemloft.net>,
         <kuba@kernel.org>
 CC:     <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
         <linux-kernel@vger.kernel.org>, <linmiaohe@huawei.com>
-Subject: [PATCH] mac80211: use eth_zero_addr() to clear mac address
-Date:   Sat, 1 Aug 2020 17:12:38 +0800
-Message-ID: <1596273158-24183-1-git-send-email-linmiaohe@huawei.com>
+Subject: [PATCH] nl80211: use eth_zero_addr() to clear mac address
+Date:   Sat, 1 Aug 2020 17:15:49 +0800
+Message-ID: <1596273349-24333-1-git-send-email-linmiaohe@huawei.com>
 X-Mailer: git-send-email 1.8.3.1
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -41,23 +41,23 @@ Use eth_zero_addr() to clear mac address instead of memset().
 
 Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
 ---
- net/mac80211/trace.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/wireless/nl80211.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/net/mac80211/trace.h b/net/mac80211/trace.h
-index 1b4709694d2a..50ab5b9d8eab 100644
---- a/net/mac80211/trace.h
-+++ b/net/mac80211/trace.h
-@@ -22,7 +22,8 @@
- #define LOCAL_PR_ARG	__entry->wiphy_name
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 7fbca0854265..c88f9d09cb25 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -10394,8 +10394,7 @@ static int nl80211_connect(struct sk_buff *skb, struct genl_info *info)
+ 			memcpy(dev->ieee80211_ptr->disconnect_bssid,
+ 			       connect.bssid, ETH_ALEN);
+ 		else
+-			memset(dev->ieee80211_ptr->disconnect_bssid,
+-			       0, ETH_ALEN);
++			eth_zero_addr(dev->ieee80211_ptr->disconnect_bssid);
+ 	}
  
- #define STA_ENTRY	__array(char, sta_addr, ETH_ALEN)
--#define STA_ASSIGN	(sta ? memcpy(__entry->sta_addr, sta->addr, ETH_ALEN) : memset(__entry->sta_addr, 0, ETH_ALEN))
-+#define STA_ASSIGN	(sta ? memcpy(__entry->sta_addr, sta->addr, ETH_ALEN) : \
-+				eth_zero_addr(__entry->sta_addr))
- #define STA_NAMED_ASSIGN(s)	memcpy(__entry->sta_addr, (s)->addr, ETH_ALEN)
- #define STA_PR_FMT	" sta:%pM"
- #define STA_PR_ARG	__entry->sta_addr
+ 	wdev_unlock(dev->ieee80211_ptr);
 -- 
 2.19.1
 
