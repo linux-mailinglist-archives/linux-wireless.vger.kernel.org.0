@@ -2,32 +2,32 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 304482357C9
-	for <lists+linux-wireless@lfdr.de>; Sun,  2 Aug 2020 16:57:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B17B2357D4
+	for <lists+linux-wireless@lfdr.de>; Sun,  2 Aug 2020 17:00:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726624AbgHBO5u (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 2 Aug 2020 10:57:50 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:13901 "EHLO m43-7.mailgun.net"
+        id S1726764AbgHBO6r (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 2 Aug 2020 10:58:47 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:64488 "EHLO m43-7.mailgun.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725861AbgHBO5t (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 2 Aug 2020 10:57:49 -0400
+        id S1725917AbgHBO6q (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 2 Aug 2020 10:58:46 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1596380269; h=Date: Message-Id: Cc: To: References:
+ s=smtp; t=1596380326; h=Date: Message-Id: Cc: To: References:
  In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=ZOjqGSoWE+lRt82RoqJBfsGT6yPG06YvQ8FfvPleFkI=;
- b=HuWGi6i579G4JSIofDS+4vy8cBroPakYiZjb95cJjJ8+UKAuLvL4cUvLXBKhvZ3vur4F+rSG
- 06EUFOCK206XT6jG7eAGi1PHkRLC5x+dUal3SSR46yF50sRm5q2hJqu9AF73cz+W6cQt8HXM
- MnQSKtjGyjJtzYvvn5RkMpvDfjg=
+ Content-Type: Sender; bh=sJQnBpSFWLzIDnuY7Td1t6HUh2LChvYz8XgiglJnkfs=;
+ b=QF0Kh7z4gW6Ca5X63n/WjKD9AtZQRBL/JuB9YC2OEPhT13n+Sb2fKKL8xLKgmiq1XmnkdOyb
+ 65pMJGNy69vWhTLA95f7HrIjSwL2C4uMIkaHX96tke1uXsQ0K06gxUQE7SPU6Ta+dNtN9/NX
+ adeafKoKSj27iaOxVTBPfWF0G9Y=
 X-Mailgun-Sending-Ip: 69.72.43.7
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n20.prod.us-west-2.postgun.com with SMTP id
- 5f26d457710a7a29d511c8a3 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sun, 02 Aug 2020 14:57:27
+ smtp-out-n04.prod.us-west-2.postgun.com with SMTP id
+ 5f26d4a5ba6d142d1c2e0b43 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sun, 02 Aug 2020 14:58:45
  GMT
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 04FFEC433CA; Sun,  2 Aug 2020 14:57:27 +0000 (UTC)
+        id BFC16C433CB; Sun,  2 Aug 2020 14:58:45 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -37,167 +37,56 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 60C37C433C9;
-        Sun,  2 Aug 2020 14:57:24 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 60C37C433C9
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 15F1DC433C6;
+        Sun,  2 Aug 2020 14:58:42 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 15F1DC433C6
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] p54: switch from 'pci_' to 'dma_' API
+Subject: Re: [PATCH for v5.9] prism54: Replace HTTP links with HTTPS ones
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20200722102707.27486-1-christophe.jaillet@wanadoo.fr>
-References: <20200722102707.27486-1-christophe.jaillet@wanadoo.fr>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     chunkeey@googlemail.com, davem@davemloft.net, kuba@kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+In-Reply-To: <20200719121224.58581-1-grandmaster@al2klimov.de>
+References: <20200719121224.58581-1-grandmaster@al2klimov.de>
+To:     "Alexander A. Klimov" <grandmaster@al2klimov.de>
+Cc:     mcgrof@kernel.org, davem@davemloft.net, kuba@kernel.org,
+        gustavoars@kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        "Alexander A. Klimov" <grandmaster@al2klimov.de>
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20200802145727.04FFEC433CA@smtp.codeaurora.org>
-Date:   Sun,  2 Aug 2020 14:57:27 +0000 (UTC)
+Message-Id: <20200802145845.BFC16C433CB@smtp.codeaurora.org>
+Date:   Sun,  2 Aug 2020 14:58:45 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Christophe JAILLET <christophe.jaillet@wanadoo.fr> wrote:
+"Alexander A. Klimov" <grandmaster@al2klimov.de> wrote:
 
-> The wrappers in include/linux/pci-dma-compat.h should go away.
+> Rationale:
+> Reduces attack surface on kernel devs opening the links for MITM
+> as HTTPS traffic is much harder to manipulate.
 > 
-> The patch has been generated with the coccinelle script below and has been
-> hand modified to replace GFP_ with a correct flag.
-> It has been compile tested.
+> Deterministic algorithm:
+> For each file:
+>   If not .svg:
+>     For each line:
+>       If doesn't contain `\bxmlns\b`:
+>         For each link, `\bhttp://[^# \t\r\n]*(?:\w|/)`:
+> 	  If neither `\bgnu\.org/license`, nor `\bmozilla\.org/MPL\b`:
+>             If both the HTTP and HTTPS versions
+>             return 200 OK and serve the same content:
+>               Replace HTTP with HTTPS.
 > 
-> When memory is allocated in 'p54p_probe()', GFP_KERNEL can be used because
-> it is the probe function and no spin_lock is taken in the between.
-> 
-> 
-> @@
-> @@
-> -    PCI_DMA_BIDIRECTIONAL
-> +    DMA_BIDIRECTIONAL
-> 
-> @@
-> @@
-> -    PCI_DMA_TODEVICE
-> +    DMA_TO_DEVICE
-> 
-> @@
-> @@
-> -    PCI_DMA_FROMDEVICE
-> +    DMA_FROM_DEVICE
-> 
-> @@
-> @@
-> -    PCI_DMA_NONE
-> +    DMA_NONE
-> 
-> @@
-> expression e1, e2, e3;
-> @@
-> -    pci_alloc_consistent(e1, e2, e3)
-> +    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
-> 
-> @@
-> expression e1, e2, e3;
-> @@
-> -    pci_zalloc_consistent(e1, e2, e3)
-> +    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
-> 
-> @@
-> expression e1, e2, e3, e4;
-> @@
-> -    pci_free_consistent(e1, e2, e3, e4)
-> +    dma_free_coherent(&e1->dev, e2, e3, e4)
-> 
-> @@
-> expression e1, e2, e3, e4;
-> @@
-> -    pci_map_single(e1, e2, e3, e4)
-> +    dma_map_single(&e1->dev, e2, e3, e4)
-> 
-> @@
-> expression e1, e2, e3, e4;
-> @@
-> -    pci_unmap_single(e1, e2, e3, e4)
-> +    dma_unmap_single(&e1->dev, e2, e3, e4)
-> 
-> @@
-> expression e1, e2, e3, e4, e5;
-> @@
-> -    pci_map_page(e1, e2, e3, e4, e5)
-> +    dma_map_page(&e1->dev, e2, e3, e4, e5)
-> 
-> @@
-> expression e1, e2, e3, e4;
-> @@
-> -    pci_unmap_page(e1, e2, e3, e4)
-> +    dma_unmap_page(&e1->dev, e2, e3, e4)
-> 
-> @@
-> expression e1, e2, e3, e4;
-> @@
-> -    pci_map_sg(e1, e2, e3, e4)
-> +    dma_map_sg(&e1->dev, e2, e3, e4)
-> 
-> @@
-> expression e1, e2, e3, e4;
-> @@
-> -    pci_unmap_sg(e1, e2, e3, e4)
-> +    dma_unmap_sg(&e1->dev, e2, e3, e4)
-> 
-> @@
-> expression e1, e2, e3, e4;
-> @@
-> -    pci_dma_sync_single_for_cpu(e1, e2, e3, e4)
-> +    dma_sync_single_for_cpu(&e1->dev, e2, e3, e4)
-> 
-> @@
-> expression e1, e2, e3, e4;
-> @@
-> -    pci_dma_sync_single_for_device(e1, e2, e3, e4)
-> +    dma_sync_single_for_device(&e1->dev, e2, e3, e4)
-> 
-> @@
-> expression e1, e2, e3, e4;
-> @@
-> -    pci_dma_sync_sg_for_cpu(e1, e2, e3, e4)
-> +    dma_sync_sg_for_cpu(&e1->dev, e2, e3, e4)
-> 
-> @@
-> expression e1, e2, e3, e4;
-> @@
-> -    pci_dma_sync_sg_for_device(e1, e2, e3, e4)
-> +    dma_sync_sg_for_device(&e1->dev, e2, e3, e4)
-> 
-> @@
-> expression e1, e2;
-> @@
-> -    pci_dma_mapping_error(e1, e2)
-> +    dma_mapping_error(&e1->dev, e2)
-> 
-> @@
-> expression e1, e2;
-> @@
-> -    pci_set_dma_mask(e1, e2)
-> +    dma_set_mask(&e1->dev, e2)
-> 
-> @@
-> expression e1, e2;
-> @@
-> -    pci_set_consistent_dma_mask(e1, e2)
-> +    dma_set_coherent_mask(&e1->dev, e2)
-> 
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> Signed-off-by: Alexander A. Klimov <grandmaster@al2klimov.de>
 
 Patch applied to wireless-drivers-next.git, thanks.
 
-ba78405ecaac p54: switch from 'pci_' to 'dma_' API
+87b589a19901 prism54: Replace HTTP links with HTTPS ones
 
 -- 
-https://patchwork.kernel.org/patch/11678115/
+https://patchwork.kernel.org/patch/11672435/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
