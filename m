@@ -2,126 +2,93 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 65EE0239C0A
-	for <lists+linux-wireless@lfdr.de>; Sun,  2 Aug 2020 22:54:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 91ED8239CB9
+	for <lists+linux-wireless@lfdr.de>; Mon,  3 Aug 2020 00:04:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727788AbgHBUyy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 2 Aug 2020 16:54:54 -0400
-Received: from mail.ispras.ru ([83.149.199.84]:43746 "EHLO mail.ispras.ru"
+        id S1727001AbgHBWEE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 2 Aug 2020 18:04:04 -0400
+Received: from bilbo.ozlabs.org ([203.11.71.1]:48343 "EHLO ozlabs.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726163AbgHBUyy (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 2 Aug 2020 16:54:54 -0400
-X-Greylist: delayed 520 seconds by postgrey-1.27 at vger.kernel.org; Sun, 02 Aug 2020 16:54:52 EDT
-Received: from monopod.intra.ispras.ru (unknown [10.10.3.121])
-        by mail.ispras.ru (Postfix) with ESMTPS id 8E4CF40A2047;
-        Sun,  2 Aug 2020 20:46:10 +0000 (UTC)
-Date:   Sun, 2 Aug 2020 23:46:10 +0300 (MSK)
-From:   Alexander Monakov <amonakov@ispras.ru>
-To:     linux-wireless@vger.kernel.org
-cc:     Luca Coelho <luca@coelho.fi>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>, linuxwifi@intel.com
-Subject: iwlmvm bug: AX 200 firmware crash on boot
-Message-ID: <alpine.LNX.2.20.13.2008022329000.2454@monopod.intra.ispras.ru>
-User-Agent: Alpine 2.20.13 (LNX 116 2015-12-14)
+        id S1726364AbgHBWEE (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 2 Aug 2020 18:04:04 -0400
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mail.ozlabs.org (Postfix) with ESMTPSA id 4BKZmJ1BkMz9sPC;
+        Mon,  3 Aug 2020 08:03:59 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
+        s=201702; t=1596405842;
+        bh=pQ3Sd7U4vE+w2/lTVbDs04/hjZDdOaGEZd/XadR12Ao=;
+        h=Date:From:To:Cc:Subject:From;
+        b=Y8mOqd7hVKh/YCJsydQj0+K4RC0gJBzDXV2ag5TQJ1TEry6nM4mEhvtNlOi4CXRG/
+         wn7Pl0+vVdfNEe5cW+FYqWCdnd19bM9BKek1pvqRjXT8C+6kkjlbQSdtPNzlJ482Tf
+         gCivxyyx8i1dh6PVck3I9f51sJkby9pTKRnVIYR7cQU7KIG5lbX5WL35a5LPHUw8nM
+         /HT5U9OeMCots+BykzpQlFMM1OWXRwaC/kdlDB4r3KvesCBl/ALAyRoZbIWMgWBmDc
+         eNf1Gh2HL572GuQxvSOarApPGeibtZn3R5gChelh23jp2632XmrvswkZhNAf5Vf0s6
+         GUUiINjoMyhhQ==
+Date:   Mon, 3 Aug 2020 08:03:59 +1000
+From:   Stephen Rothwell <sfr@canb.auug.org.au>
+To:     Kalle Valo <kvalo@codeaurora.org>,
+        Wireless <linux-wireless@vger.kernel.org>
+Cc:     Linux Next Mailing List <linux-next@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Felix Fietkau <nbd@nbd.name>
+Subject: linux-next: Fixes tag needs some work in the wireless-drivers-next
+ tree
+Message-ID: <20200803080359.64b417e3@canb.auug.org.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: multipart/signed; boundary="Sig_/.dw=d/6DpwdkTfTtS7D8fHD";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
+--Sig_/.dw=d/6DpwdkTfTtS7D8fHD
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-I'm regularly facing an issue where cold-booting a laptop while on battery
-(not on AC, not on warm reboot) leaves it without wifi because the firmware
-crashed. A simple 'modprobe -r iwlmvm && modprobe iwlmvm' "fixes" the issue.
+Hi all,
 
-The card is Intel Wi-Fi 6 AX 200. I'm pasting 'dmesg | grep iwlwifi' below.
-Can I help in identifying the problem?
+In commit
 
-Thanks.
-Alexander
+  4c7e1711cf4c ("mt76: mt7915: fix potential memory leak in mcu message han=
+dler")
 
-iwlwifi 0000:01:00.0: enabling device (0000 -> 0002)
-iwlwifi 0000:01:00.0: Direct firmware load for iwlwifi-cc-a0-56.ucode failed with error -2
-iwlwifi 0000:01:00.0: api flags index 2 larger than supported by driver
-iwlwifi 0000:01:00.0: TLV_FW_FSEQ_VERSION: FSEQ Version: 89.3.35.22
-iwlwifi 0000:01:00.0: Found debug destination: EXTERNAL_DRAM
-iwlwifi 0000:01:00.0: Found debug configuration: 0
-iwlwifi 0000:01:00.0: loaded firmware version 55.d9698065.0 cc-a0-55.ucode op_mode iwlmvm
-iwlwifi 0000:01:00.0: Direct firmware load for iwl-debug-yoyo.bin failed with error -2
-iwlwifi 0000:01:00.0: Detected Intel(R) Wi-Fi 6 AX200 160MHz, REV=0x340
-iwlwifi 0000:01:00.0: SecBoot CPU1 Status: 0x65d3, CPU2 Status: 0x3
-iwlwifi 0000:01:00.0: UMAC PC: 0x8048074c
-iwlwifi 0000:01:00.0: LMAC PC: 0x4e4bbc
-iwlwifi 0000:01:00.0: WRT: Collecting data: ini trigger 13 fired.
-iwlwifi 0000:01:00.0: Start IWL Error Log Dump:
-iwlwifi 0000:01:00.0: Status: 0x00000000, count: 6
-iwlwifi 0000:01:00.0: Loaded firmware version: 55.d9698065.0 cc-a0-55.ucode
-iwlwifi 0000:01:00.0: 0x00000084 | NMI_INTERRUPT_UNKNOWN       
-iwlwifi 0000:01:00.0: 0x002022F0 | trm_hw_status0
-iwlwifi 0000:01:00.0: 0x00000000 | trm_hw_status1
-iwlwifi 0000:01:00.0: 0x004FA34A | branchlink2
-iwlwifi 0000:01:00.0: 0x004E4BBC | interruptlink1
-iwlwifi 0000:01:00.0: 0x004E4BBC | interruptlink2
-iwlwifi 0000:01:00.0: 0x004F9230 | data1
-iwlwifi 0000:01:00.0: 0xFF000000 | data2
-iwlwifi 0000:01:00.0: 0x00000000 | data3
-iwlwifi 0000:01:00.0: 0x00000000 | beacon time
-iwlwifi 0000:01:00.0: 0x000B1A7A | tsf low
-iwlwifi 0000:01:00.0: 0x00000000 | tsf hi
-iwlwifi 0000:01:00.0: 0x00000000 | time gp1
-iwlwifi 0000:01:00.0: 0x000B8479 | time gp2
-iwlwifi 0000:01:00.0: 0x00000001 | uCode revision type
-iwlwifi 0000:01:00.0: 0x00000037 | uCode version major
-iwlwifi 0000:01:00.0: 0xD9698065 | uCode version minor
-iwlwifi 0000:01:00.0: 0x00000340 | hw version
-iwlwifi 0000:01:00.0: 0x00C89000 | board version
-iwlwifi 0000:01:00.0: 0x8004F502 | hcmd
-iwlwifi 0000:01:00.0: 0x00020000 | isr0
-iwlwifi 0000:01:00.0: 0x00000000 | isr1
-iwlwifi 0000:01:00.0: 0x08F00002 | isr2
-iwlwifi 0000:01:00.0: 0x00C0001C | isr3
-iwlwifi 0000:01:00.0: 0x00000000 | isr4
-iwlwifi 0000:01:00.0: 0x00000000 | last cmd Id
-iwlwifi 0000:01:00.0: 0x004F9230 | wait_event
-iwlwifi 0000:01:00.0: 0x00000000 | l2p_control
-iwlwifi 0000:01:00.0: 0x00000020 | l2p_duration
-iwlwifi 0000:01:00.0: 0x00000000 | l2p_mhvalid
-iwlwifi 0000:01:00.0: 0x00000000 | l2p_addr_match
-iwlwifi 0000:01:00.0: 0x00000009 | lmpm_pmg_sel
-iwlwifi 0000:01:00.0: 0x00000000 | timestamp
-iwlwifi 0000:01:00.0: 0x00000020 | flow_handler
-iwlwifi 0000:01:00.0: Start IWL Error Log Dump:
-iwlwifi 0000:01:00.0: Status: 0x00000000, count: 7
-iwlwifi 0000:01:00.0: 0x20000066 | NMI_INTERRUPT_HOST
-iwlwifi 0000:01:00.0: 0x00000000 | umac branchlink1
-iwlwifi 0000:01:00.0: 0x80465826 | umac branchlink2
-iwlwifi 0000:01:00.0: 0x8048074C | umac interruptlink1
-iwlwifi 0000:01:00.0: 0x8048074C | umac interruptlink2
-iwlwifi 0000:01:00.0: 0x01000000 | umac data1
-iwlwifi 0000:01:00.0: 0x8048074C | umac data2
-iwlwifi 0000:01:00.0: 0x00000000 | umac data3
-iwlwifi 0000:01:00.0: 0x00000037 | umac major
-iwlwifi 0000:01:00.0: 0xD9698065 | umac minor
-iwlwifi 0000:01:00.0: 0x000B8474 | frame pointer
-iwlwifi 0000:01:00.0: 0xC0886270 | stack pointer
-iwlwifi 0000:01:00.0: 0x00000000 | last host cmd
-iwlwifi 0000:01:00.0: 0x00000000 | isr status reg
-iwlwifi 0000:01:00.0: Fseq Registers:
-iwlwifi 0000:01:00.0: 0x20000000 | FSEQ_ERROR_CODE
-iwlwifi 0000:01:00.0: 0x80290021 | FSEQ_TOP_INIT_VERSION
-iwlwifi 0000:01:00.0: 0x00050008 | FSEQ_CNVIO_INIT_VERSION
-iwlwifi 0000:01:00.0: 0x0000A503 | FSEQ_OTP_VERSION
-iwlwifi 0000:01:00.0: 0x80000003 | FSEQ_TOP_CONTENT_VERSION
-iwlwifi 0000:01:00.0: 0x4552414E | FSEQ_ALIVE_TOKEN
-iwlwifi 0000:01:00.0: 0x00100530 | FSEQ_CNVI_ID
-iwlwifi 0000:01:00.0: 0x00000532 | FSEQ_CNVR_ID
-iwlwifi 0000:01:00.0: 0x00100530 | CNVI_AUX_MISC_CHIP
-iwlwifi 0000:01:00.0: 0x00000532 | CNVR_AUX_MISC_CHIP
-iwlwifi 0000:01:00.0: 0x05B0905B | CNVR_SCU_SD_REGS_SD_REG_DIG_DCDC_VTRIM
-iwlwifi 0000:01:00.0: 0x0000025B | CNVR_SCU_SD_REGS_SD_REG_ACTIVE_VDIG_MIRROR
-iwlwifi 0000:01:00.0: Failed to start RT ucode: -110
-iwlwifi 0000:01:00.0: Failed to run INIT ucode: -110
+Fixes tag
 
+  Fixes: c6b002bcdfa6 ("mt76: add mac80211 driver for MT7915 PCIe-based chi=
+psets")
+
+has these problem(s):
+
+  - Target SHA1 does not exist
+
+Maybe you meant
+
+Fixes: e57b7901469f ("mt76: add mac80211 driver for MT7915 PCIe-based chips=
+ets")
+
+--=20
+Cheers,
+Stephen Rothwell
+
+--Sig_/.dw=d/6DpwdkTfTtS7D8fHD
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAl8nOE8ACgkQAVBC80lX
+0GxaUAf/SptKRVKpWm13tMWq0MJ7Yw2NRvk6LlQHOMweDoHDz7a95dmR3g37k5sp
+wrTdKF4Cpt43G8Q1+rNlOk8YW1gY7JhMvQ5A1N3dv8x9mgC69/WJXBSibR7r+GxB
+BxrOiluNB7OWsNyYE1Eyim+BZeq2EeD3cBPVmdW43Wh1HyCzBwVGvTtU68vtZgtM
+Yzv+6zXGp+6eZK4bUTDzziZRLisI2SX0nSgEb1tYau/g2xy4Bupm7dKOmONB4s8U
+6xRjhLDxuCDKYnzLSxTH77IssJGeMu7b1sKHfqxmvemxAr4mOnJK4N1gYvN1dsf2
+CBEKb0qK1qH8OKXiJLs7pDQu3VYSQA==
+=eZJ2
+-----END PGP SIGNATURE-----
+
+--Sig_/.dw=d/6DpwdkTfTtS7D8fHD--
