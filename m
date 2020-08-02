@@ -2,32 +2,32 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D021B235812
-	for <lists+linux-wireless@lfdr.de>; Sun,  2 Aug 2020 17:20:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD137235816
+	for <lists+linux-wireless@lfdr.de>; Sun,  2 Aug 2020 17:21:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726970AbgHBPTh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 2 Aug 2020 11:19:37 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:28607 "EHLO m43-7.mailgun.net"
+        id S1726497AbgHBPUs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 2 Aug 2020 11:20:48 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:16614 "EHLO m43-7.mailgun.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726769AbgHBPTh (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 2 Aug 2020 11:19:37 -0400
+        id S1725793AbgHBPUs (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 2 Aug 2020 11:20:48 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1596381576; h=Date: Message-Id: Cc: To: References:
+ s=smtp; t=1596381647; h=Date: Message-Id: Cc: To: References:
  In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=1ceprmMKUngVAI6NwlVtOnpRsGz6GuKVyY+WV80AFIs=;
- b=O1yfWpfYaSXHYFzXDkaLh6LQlpMTnlaYt2YtXppifWZ0myl1ko5uSAIBvDJjzDJeA0dZ4LoF
- rSQVtqBs2dJaVDZxb8chm44z2hy42FS+oTwBIxhE19H7H51Q65lDMcZjg4dnHevHDoFmWHhQ
- /QbbTJN1PuPPmZk/IyBBp+y58oY=
+ Content-Type: Sender; bh=Y/XJqTYgdOp0UaZSA4QW2k1p+s9dYdd6Love7yCfvE0=;
+ b=CQqmGstKorivtAA3FODfAjF+5fKAu5gHKohy8bVavPqW9a4o8hkvcOt+cCp2ma13Tkq4tTCC
+ /mcRKurJIf20JVE9k0nzN8cBS6Wsl9Xvg8bXktmRcwTNIQIMNccDOS+1AfBzhRqaW75PXuVG
+ E2NLvlCWUaIk5jiJJnAS6bHMveA=
 X-Mailgun-Sending-Ip: 69.72.43.7
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n05.prod.us-east-1.postgun.com with SMTP id
- 5f26d97e2c24b37bbe11a8d5 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sun, 02 Aug 2020 15:19:26
+ smtp-out-n10.prod.us-east-1.postgun.com with SMTP id
+ 5f26d9cfeecfc978d39d75fd (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sun, 02 Aug 2020 15:20:47
  GMT
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 81F7EC433C9; Sun,  2 Aug 2020 15:19:25 +0000 (UTC)
+        id E4F85C433C6; Sun,  2 Aug 2020 15:20:46 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -37,54 +37,49 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 4B677C433C6;
-        Sun,  2 Aug 2020 15:19:23 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 4B677C433C6
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 223C3C433C9;
+        Sun,  2 Aug 2020 15:20:43 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 223C3C433C9
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 1/2] ipw2100: Use GFP_KERNEL instead of GFP_ATOMIC in some
- memory allocation
+Subject: Re: [PATCH net] qtnfmac: Missing platform_device_unregister() on
+ error in
+ qtnf_core_mac_alloc()
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20200722101701.26126-1-christophe.jaillet@wanadoo.fr>
-References: <20200722101701.26126-1-christophe.jaillet@wanadoo.fr>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     stas.yakovlev@gmail.com, davem@davemloft.net, kuba@kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+In-Reply-To: <20200730064910.37589-1-wanghai38@huawei.com>
+References: <20200730064910.37589-1-wanghai38@huawei.com>
+To:     Wang Hai <wanghai38@huawei.com>
+Cc:     <imitsyanko@quantenna.com>, <geomatsi@gmail.com>,
+        <davem@davemloft.net>, <kuba@kernel.org>, <mst@redhat.com>,
+        <mkarpenko@quantenna.com>, <linux-wireless@vger.kernel.org>,
+        <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20200802151925.81F7EC433C9@smtp.codeaurora.org>
-Date:   Sun,  2 Aug 2020 15:19:25 +0000 (UTC)
+Message-Id: <20200802152046.E4F85C433C6@smtp.codeaurora.org>
+Date:   Sun,  2 Aug 2020 15:20:46 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Christophe JAILLET <christophe.jaillet@wanadoo.fr> wrote:
+Wang Hai <wanghai38@huawei.com> wrote:
 
-> The call chain is:
->    ipw2100_pci_init_one            (the probe function)
->      --> ipw2100_queues_allocate
->        --> ipw2100_tx_allocate
+> Add the missing platform_device_unregister() before return from
+> qtnf_core_mac_alloc() in the error handling case.
 > 
-> No lock is taken in the between.
-> So it is safe to use GFP_KERNEL in 'ipw2100_tx_allocate()'.
-> 
-> BTW, 'ipw2100_queues_allocate()' also calls 'ipw2100_msg_allocate()' which
-> already allocates some memory using GFP_KERNEL.
-> 
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> Fixes: 616f5701f4ab ("qtnfmac: assign each wiphy to its own virtual platform device")
+> Reported-by: Hulk Robot <hulkci@huawei.com>
+> Signed-off-by: Wang Hai <wanghai38@huawei.com>
+> Reviewed-by: Sergey Matyukevich <geomatsi@gmail.com>
 
-2 patches applied to wireless-drivers-next.git, thanks.
+Patch applied to wireless-drivers-next.git, thanks.
 
-9130559cf8db ipw2100: Use GFP_KERNEL instead of GFP_ATOMIC in some memory allocation
-e52525c0c320 ipw2x00: switch from 'pci_' to 'dma_' API
+141bc9abbbff qtnfmac: Missing platform_device_unregister() on error in qtnf_core_mac_alloc()
 
 -- 
-https://patchwork.kernel.org/patch/11678101/
+https://patchwork.kernel.org/patch/11692387/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
