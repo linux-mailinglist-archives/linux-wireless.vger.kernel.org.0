@@ -2,258 +2,121 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E847B2357A9
-	for <lists+linux-wireless@lfdr.de>; Sun,  2 Aug 2020 16:53:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E14132357BF
+	for <lists+linux-wireless@lfdr.de>; Sun,  2 Aug 2020 16:55:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725951AbgHBOvc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 2 Aug 2020 10:51:32 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:58200 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725793AbgHBOvc (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 2 Aug 2020 10:51:32 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1596379890; h=Date: Message-Id: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=FjtA2LfnoVb7hoVJkISJ+hyBF4RY+4XS2EoS1MqqI2U=;
- b=He9+YEblWTe/E7q2j9BSm51SxfiSHY9s3LSeQaZR5HDEVXJx1oy0SwejSVoh1xmrz08NlJkP
- TqO8JpBxQ2G+1X5qqUj7sPN8iRHzZfvBYuqC7Sg0mv3rcEvEqR/+/C/X/AHukaA9pLVG3yVu
- ZjT6L8NzHuA+9Y52Wzi5mqVuSU0=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n01.prod.us-east-1.postgun.com with SMTP id
- 5f26d2dfd2bd131f68d1756e (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sun, 02 Aug 2020 14:51:11
- GMT
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 89434C433CA; Sun,  2 Aug 2020 14:51:10 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
-        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 44FBEC433C6;
-        Sun,  2 Aug 2020 14:51:09 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 44FBEC433C6
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        id S1726300AbgHBOzD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 2 Aug 2020 10:55:03 -0400
+Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:60054 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1725780AbgHBOzD (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 2 Aug 2020 10:55:03 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1596380101;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=1kkoTewt7Fx4Q+2DDC1UGcR4JlqqtBcQK2oUP1r3rTc=;
+        b=e2q4VBe63VmQzXjMK+Wmnv8PjqWU5smJNLwCiil1LtXW+t0tVKyC31xOVDsdXe7F3iczgk
+        WLH2i0gor41O+QutifzU593W5KBem/X5CMxciNb1ll3Q04B7EgGd6mRQWGJEt2PyJkLAaX
+        UNiXd+6TpctOzkV2keGdIN5DnRt4bv4=
+Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
+ [209.85.160.199]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-372-Bw577weGMauYJv7-St-3pA-1; Sun, 02 Aug 2020 10:53:51 -0400
+X-MC-Unique: Bw577weGMauYJv7-St-3pA-1
+Received: by mail-qt1-f199.google.com with SMTP id m34so3694364qtf.10
+        for <linux-wireless@vger.kernel.org>; Sun, 02 Aug 2020 07:53:51 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding
+         :content-language;
+        bh=1kkoTewt7Fx4Q+2DDC1UGcR4JlqqtBcQK2oUP1r3rTc=;
+        b=V7TOFA8E6b8mkpYaUfIKX2DdRmoboCEO0KZoXERGjznhvuFZzFBuLME2pj/DwBimPN
+         DErQF7c2BJsZ9ZTb2KDJp5klxKffm99aYRRAnJFdNc8lBNWlF1MxLYpBnTt6M8QURqEW
+         IydAJ3rGNPrqKsNWg3xJ/83QZqb7Ha0UvXXopJKFpN8R2fHoxt/QJM0sl+nDbP484Ng7
+         wCAYo3cNgSjDgORB1BO+VbkQapCtZ2pIpwBa43LSoQI4G0eUG62K/u6NxKeF1KGe+ZwN
+         WevX2MwyCknVsJ0r/jp0Pfa7oGuOgKvNgt6Nl5fVp1mAZC9d0MZq23V//Z9Iwhqr8p60
+         lHog==
+X-Gm-Message-State: AOAM533Gk7NWVWu7j7F0EO1qk/Tc26/xLqhdImTbI+badR6uGHQ3N1AX
+        hm3F94f+iY56sqA6PDRsSmRi6Ee5worJFDiIsZRNEqaHPDkqrE3HX1cacerKDMK4cdv1Bbi4QHM
+        apfxQpXQpmAcMND3u/ElqZhVy+iA=
+X-Received: by 2002:a0c:f007:: with SMTP id z7mr12711377qvk.53.1596380031293;
+        Sun, 02 Aug 2020 07:53:51 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJzsaj772ZR8xxDSmSbCv1i3DbzhNyKSnnIAtdh3ZvECGhzafck69cLoHqLTgfamrb5jJgzXtg==
+X-Received: by 2002:a0c:f007:: with SMTP id z7mr12711349qvk.53.1596380031093;
+        Sun, 02 Aug 2020 07:53:51 -0700 (PDT)
+Received: from trix.remote.csb (075-142-250-213.res.spectrum.com. [75.142.250.213])
+        by smtp.gmail.com with ESMTPSA id t127sm16326265qkc.100.2020.08.02.07.53.46
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 02 Aug 2020 07:53:50 -0700 (PDT)
+Subject: Re: [RFC PATCH 00/17] Drop uses of pci_read_config_*() return value
+To:     Borislav Petkov <bp@alien8.de>,
+        "Saheed O. Bolarinwa" <refactormyself@gmail.com>
+Cc:     helgaas@kernel.org, Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Wolfgang Grandegger <wg@grandegger.com>,
+        Marc Kleine-Budde <mkl@pengutronix.de>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Richard Weinberger <richard@nod.at>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Joerg Roedel <joro@8bytes.org>, bjorn@helgaas.com,
+        skhan@linuxfoundation.org,
+        linux-kernel-mentees@lists.linuxfoundation.org,
+        linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-mtd@lists.infradead.org, iommu@lists.linux-foundation.org,
+        linux-rdma@vger.kernel.org, linux-ide@vger.kernel.org,
+        linux-i2c@vger.kernel.org, linux-hwmon@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+        linux-gpio@vger.kernel.org, linux-fpga@vger.kernel.org,
+        linux-edac@vger.kernel.org, dmaengine@vger.kernel.org,
+        linux-crypto@vger.kernel.org,
+        linux-atm-general@lists.sourceforge.net
+References: <20200801112446.149549-1-refactormyself@gmail.com>
+ <20200801125657.GA25391@nazgul.tnic>
+From:   Tom Rix <trix@redhat.com>
+Message-ID: <6ecce8f3-350a-b5d5-82c9-4609f2298e61@redhat.com>
+Date:   Sun, 2 Aug 2020 07:53:46 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
 MIME-Version: 1.0
+In-Reply-To: <20200801125657.GA25391@nazgul.tnic>
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
-Subject: Re: pull request: mt76 2019-06-07
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <8b3efa2b-f2d4-f4f8-547c-28275bbc99ba@nbd.name>
-References: <8b3efa2b-f2d4-f4f8-547c-28275bbc99ba@nbd.name>
-To:     Felix Fietkau <nbd@nbd.name>
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20200802145110.89434C433CA@smtp.codeaurora.org>
-Date:   Sun,  2 Aug 2020 14:51:10 +0000 (UTC)
+Content-Language: en-US
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Felix Fietkau <nbd@nbd.name> wrote:
 
-> Hi Kalle,
-> 
-> here's a mt76 pull request for 5.9
-> 
-> - Felix
-> 
-> The following changes since commit 71d4364abdc50cb1f0ff5af0f932b110278f620c:
-> 
->   net: dsa: use the ETH_MIN_MTU and ETH_DATA_LEN default values (2020-07-20 18:35:04 -0700)
-> 
-> are available in the Git repository at:
-> 
->   https://github.com/nbd168/wireless tags/mt76-for-kvalo-2020-07-21
-> 
-> for you to fetch changes up to 5648d1c9cadb0a6afb29dd8891159906dadf5c77:
-> 
->   mt76: mt76u: add missing release on skb in __mt76x02u_mcu_send_msg (2020-07-21 19:01:19 +0200)
-> 
-> ----------------------------------------------------------------
-> mt76 patches for 5.9
-> 
-> * locking fixes
-> * tx queue mapping fixes for 7615/7915
-> * ARP filter offload for 7663
-> * runtime power management for 7663
-> * testmode support for mfg calibration
-> * memory leak fixes
-> * support for more channels
-> 
-> ----------------------------------------------------------------
-> Dan Carpenter (1):
->       mt76: mt7915: potential array overflow in mt7915_mcu_tx_rate_report()
-> 
-> Felix Fietkau (8):
->       mt76: mt7615: re-enable offloading of sequence number assignment
->       mt76: mt7615: schedule tx tasklet and sta poll on mac tx free
->       mt76: mt7615: add support for accessing mapped registers via bus ops
->       mt76: mt7615: add support for accessing RF registers via MCU
->       mt76: mt7615: use full on-chip memory address for WF_PHY registers
->       mt76: vif_mask to struct mt76_phy
->       mt76: add API for testmode support
->       mt76: mt7615: implement testmode support
-> 
-> Lorenzo Bianconi (41):
->       mt76: add missing lock configuring coverage class
->       mt76: mt7615: fix lmac queue debugsfs entry
->       mt76: mt7615: fix hw queue mapping
->       mt76: overwrite qid for non-bufferable mgmt frames
->       mt76: usb: rely on mt76_for_each_q_rx
->       mt76: rely on register macros
->       mt76: add U-APSD support on AP side
->       mt76: mt76x2e: rename routines in pci.c
->       mt76: mt76x2: fix pci suspend/resume on mt7612e
->       mt76: mt76x2u: enable HC-M7662BU1
->       mt76: mt7615: avoid polling in fw_own for mt7663
->       mt76: move mt76 workqueue in common code
->       mt76: mt7615: add mt7615_pm_wake utility routine
->       mt76: mt7615: introduce mt7615_mutex_{acquire,release} utilities
->       mt76: mt7615: wake device before accessing regmap in debugfs
->       mt76: mt7615: wake device before configuring hw keys
->       mt76: mt7615: introduce pm_power_save delayed work
->       mt76: mt7615: wake device in mt7615_update_channel before access regmap
->       mt76: mt7615: acquire driver_own before configuring device for suspend
->       mt76: mt7615: wake device before performing freq scan
->       mt76: mt7615: add missing lock in mt7615_regd_notifier
->       mt76: mt7615: run mt7615_mcu_set_wmm holding mt76 mutex
->       mt76: mt7615: run mt7615_mcu_set_roc holding mt76 mutex
->       mt76: mt7615: wake device before pulling packets from mac80211 queues
->       mt76: mt7615: wake device before pushing frames in mt7615_tx
->       mt76: mt7615: run mt7615_pm_wake in mt7615_mac_sta_{add,remove}
->       mt76: mt7615: check MT76_STATE_PM flag before accessing the device
->       mt76: mt7615: do not request {driver,fw}_own if already granted
->       mt76: mt7615: add runtime-pm knob in mt7615 debugfs
->       mt76: mt7615: enable beacon hw filter for runtime-pm
->       mt76: mt7615: add idle-timeout knob in mt7615 debugfs
->       mt76: mt7615: improve mt7615_driver_own reliability
->       mt76: mt7663u: sync probe sampling with rate configuration
->       mt76: mt7615: avoid scheduling runtime-pm during hw scan
->       mt76: mt7615: reschedule ps work according to last activity
->       mt76: mt7615: take into account sdio bus configuring txwi
->       mt76: mt76u: add mt76_skb_adjust_pad utility routine
->       mt76: mt7615: sdio code must access rate/key regs in preocess context
->       mt76: mt7615: introduce mt7663-usb-sdio-common module
->       mt76: mt76s: move queue accounting in mt76s_tx_queue_skb
->       mt76: mt7615: fix possible memory leak in mt7615_mcu_wtbl_sta_add
-> 
-> Markus Theil (2):
->       mt76: allow more channels, allowed in ETSI domain
->       mt76: fix include in pci.h
-> 
-> Navid Emamdoost (1):
->       mt76: mt76u: add missing release on skb in __mt76x02u_mcu_send_msg
-> 
-> Ryder Lee (9):
->       mt76: mt7615: add .set_tsf callback
->       mt76: mt7915: add a fixed AC queue mapping
->       mt76: mt7915: add MU-MIMO support
->       mt76: mt7915: use ieee80211_tx_queue_params to avoid open coded
->       mt76: mt7915: overwrite qid for non-bufferable mgmt frames
->       mt76: mt7915: update HE capabilities
->       mt76: mt7915: avoid memcpy in rxv operation
->       mt76: mt7915: add missing CONFIG_MAC80211_DEBUGFS
->       mt76: mt7915: fix potential memory leak in mcu message handler
-> 
-> Sean Wang (7):
->       mt76: mt7663: introduce ARP filter offload
->       mt76: mt7615: fix up typo in Kconfig for MT7663U
->       mt76: mt7663u: fix memory leak in set key
->       mt76: mt7663u: fix potential memory leak in mcu message handler
->       mt76: mt7615: fix potential memory leak in mcu message handler
->       mt76: introduce mt76_sdio module
->       mt76: mt7615: introduce mt7663s support
-> 
->  drivers/net/wireless/mediatek/mt76/Kconfig            |   4 +
->  drivers/net/wireless/mediatek/mt76/Makefile           |   3 +
->  drivers/net/wireless/mediatek/mt76/debugfs.c          |   7 +-
->  drivers/net/wireless/mediatek/mt76/dma.c              |   6 ++
->  drivers/net/wireless/mediatek/mt76/eeprom.c           |   5 +
->  drivers/net/wireless/mediatek/mt76/mac80211.c         |  37 +++++++-
->  drivers/net/wireless/mediatek/mt76/mt76.h             | 116 ++++++++++++++++++++++-
->  drivers/net/wireless/mediatek/mt76/mt7603/main.c      |   8 +-
->  drivers/net/wireless/mediatek/mt76/mt7603/mt7603.h    |   2 -
->  drivers/net/wireless/mediatek/mt76/mt7615/Kconfig     |  19 +++-
->  drivers/net/wireless/mediatek/mt76/mt7615/Makefile    |   7 +-
->  drivers/net/wireless/mediatek/mt76/mt7615/debugfs.c   | 111 +++++++++++++++++++++-
->  drivers/net/wireless/mediatek/mt76/mt7615/dma.c       |  13 +--
->  drivers/net/wireless/mediatek/mt76/mt7615/init.c      |  17 +++-
->  drivers/net/wireless/mediatek/mt76/mt7615/mac.c       | 330 +++++++++++++++++++++++++++++++++++++++++++++++++++++++---------
->  drivers/net/wireless/mediatek/mt76/mt7615/mac.h       |  20 +---
->  drivers/net/wireless/mediatek/mt76/mt7615/main.c      | 332 ++++++++++++++++++++++++++++++++++++++++++++++++++++------------
->  drivers/net/wireless/mediatek/mt76/mt7615/mcu.c       | 371 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++------------
->  drivers/net/wireless/mediatek/mt76/mt7615/mcu.h       |  54 ++++++++++-
->  drivers/net/wireless/mediatek/mt76/mt7615/mmio.c      |  51 +++++++++-
->  drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h    | 125 +++++++++++++++++++++++-
->  drivers/net/wireless/mediatek/mt76/mt7615/pci.c       |   4 +
->  drivers/net/wireless/mediatek/mt76/mt7615/pci_init.c  |   4 +
->  drivers/net/wireless/mediatek/mt76/mt7615/pci_mac.c   |   1 -
->  drivers/net/wireless/mediatek/mt76/mt7615/regs.h      |  33 ++++++-
->  drivers/net/wireless/mediatek/mt76/mt7615/sdio.c      | 478 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
->  drivers/net/wireless/mediatek/mt76/mt7615/sdio.h      | 115 ++++++++++++++++++++++
->  drivers/net/wireless/mediatek/mt76/mt7615/sdio_mcu.c  | 162 +++++++++++++++++++++++++++++++
->  drivers/net/wireless/mediatek/mt76/mt7615/sdio_txrx.c | 268 ++++++++++++++++++++++++++++++++++++++++++++++++++++
->  drivers/net/wireless/mediatek/mt76/mt7615/testmode.c  | 363 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
->  drivers/net/wireless/mediatek/mt76/mt7615/usb.c       | 248 ++++--------------------------------------------
->  drivers/net/wireless/mediatek/mt76/mt7615/usb_init.c  | 145 ----------------------------
->  drivers/net/wireless/mediatek/mt76/mt7615/usb_mcu.c   |   7 +-
->  drivers/net/wireless/mediatek/mt76/mt7615/usb_sdio.c  | 394 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
->  drivers/net/wireless/mediatek/mt76/mt76x0/usb.c       |   6 +-
->  drivers/net/wireless/mediatek/mt76/mt76x02.h          |   1 -
->  drivers/net/wireless/mediatek/mt76/mt76x02_mmio.c     |   2 +-
->  drivers/net/wireless/mediatek/mt76/mt76x02_usb_core.c |   3 +-
->  drivers/net/wireless/mediatek/mt76/mt76x02_usb_mcu.c  |   7 +-
->  drivers/net/wireless/mediatek/mt76/mt76x02_util.c     |   8 +-
->  drivers/net/wireless/mediatek/mt76/mt76x2/mt76x2.h    |   1 +
->  drivers/net/wireless/mediatek/mt76/mt76x2/pci.c       |  70 ++++++++++++--
->  drivers/net/wireless/mediatek/mt76/mt76x2/pci_init.c  |  17 ++++
->  drivers/net/wireless/mediatek/mt76/mt76x2/usb.c       |   8 +-
->  drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c   |  11 ++-
->  drivers/net/wireless/mediatek/mt76/mt7915/dma.c       |  21 +++--
->  drivers/net/wireless/mediatek/mt76/mt7915/init.c      |  44 +++++----
->  drivers/net/wireless/mediatek/mt76/mt7915/mac.c       |  93 +++++++++---------
->  drivers/net/wireless/mediatek/mt76/mt7915/mac.h       |  17 ----
->  drivers/net/wireless/mediatek/mt76/mt7915/main.c      |  16 ++--
->  drivers/net/wireless/mediatek/mt76/mt7915/mcu.c       | 117 ++++++++++++++++++-----
->  drivers/net/wireless/mediatek/mt76/mt7915/mcu.h       |   6 +-
->  drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h    |  35 +++++--
->  drivers/net/wireless/mediatek/mt76/mt7915/pci.c       |   2 +-
->  drivers/net/wireless/mediatek/mt76/mt7915/regs.h      |   5 +
->  drivers/net/wireless/mediatek/mt76/pci.c              |   1 +
->  drivers/net/wireless/mediatek/mt76/sdio.c             | 368 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
->  drivers/net/wireless/mediatek/mt76/testmode.c         | 497 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
->  drivers/net/wireless/mediatek/mt76/testmode.h         | 156 ++++++++++++++++++++++++++++++
->  drivers/net/wireless/mediatek/mt76/tx.c               |  54 +++++++++++
->  drivers/net/wireless/mediatek/mt76/usb.c              | 107 +++++----------------
->  drivers/net/wireless/mediatek/mt76/util.c             |   4 +-
->  62 files changed, 4691 insertions(+), 846 deletions(-)
->  create mode 100644 drivers/net/wireless/mediatek/mt76/mt7615/sdio.c
->  create mode 100644 drivers/net/wireless/mediatek/mt76/mt7615/sdio.h
->  create mode 100644 drivers/net/wireless/mediatek/mt76/mt7615/sdio_mcu.c
->  create mode 100644 drivers/net/wireless/mediatek/mt76/mt7615/sdio_txrx.c
->  create mode 100644 drivers/net/wireless/mediatek/mt76/mt7615/testmode.c
->  delete mode 100644 drivers/net/wireless/mediatek/mt76/mt7615/usb_init.c
->  create mode 100644 drivers/net/wireless/mediatek/mt76/mt7615/usb_sdio.c
->  create mode 100644 drivers/net/wireless/mediatek/mt76/sdio.c
->  create mode 100644 drivers/net/wireless/mediatek/mt76/testmode.c
->  create mode 100644 drivers/net/wireless/mediatek/mt76/testmode.h
+On 8/1/20 5:56 AM, Borislav Petkov wrote:
+> On Sat, Aug 01, 2020 at 01:24:29PM +0200, Saheed O. Bolarinwa wrote:
+>> The return value of pci_read_config_*() may not indicate a device error.
+>> However, the value read by these functions is more likely to indicate
+>> this kind of error. This presents two overlapping ways of reporting
+>> errors and complicates error checking.
+> So why isn't the *value check done in the pci_read_config_* functions
+> instead of touching gazillion callers?
+>
+> For example, pci_conf{1,2}_read() could check whether the u32 *value it
+> just read depending on the access method, whether that value is ~0 and
+> return proper PCIBIOS_ error in that case.
+>
+> The check you're replicating
+>
+> 	if (val32 == (u32)~0)
+>
+> everywhere, instead, is just ugly and tests a naked value ~0 which
+> doesn't mean anything...
+>
+I agree, if there is a change, it should be in the pci_read_* functions.
 
-Pulled, thanks.
+Anything returning void should not fail and likely future users of the proposed change will not do the extra checks.
 
-98f80899e168 Merge tag 'mt76-for-kvalo-2020-07-21' of https://github.com/nbd168/wireless
-
--- 
-https://patchwork.kernel.org/patch/11676261/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Tom
 
