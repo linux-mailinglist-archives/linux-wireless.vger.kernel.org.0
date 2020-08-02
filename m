@@ -2,32 +2,33 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C0012357F8
-	for <lists+linux-wireless@lfdr.de>; Sun,  2 Aug 2020 17:14:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4FF7C2357FA
+	for <lists+linux-wireless@lfdr.de>; Sun,  2 Aug 2020 17:16:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726534AbgHBPOf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 2 Aug 2020 11:14:35 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:13131 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726299AbgHBPOf (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 2 Aug 2020 11:14:35 -0400
+        id S1726610AbgHBPQQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 2 Aug 2020 11:16:16 -0400
+Received: from mail29.static.mailgun.info ([104.130.122.29]:46321 "EHLO
+        mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726034AbgHBPQQ (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 2 Aug 2020 11:16:16 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1596381274; h=Date: Message-Id: Cc: To: References:
+ s=smtp; t=1596381375; h=Date: Message-Id: Cc: To: References:
  In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=MN8hv/xfsAGGdQUHt7lfq4izDzLjyVfS5K7dU+XV1Pw=;
- b=j25VsjmJPt1T88Eubpc0tB3bG6C0GdPPwY5nL6gP/kPxb52tBNn0Rza4Q1qXaCvSB/iHdP6L
- MAescyazTX2kWgzGUfxybrh5MnVULso64Fh1SDr2rGxFd6ZgwzBIrciGjRUVkqRdXdxt2fu7
- rCJBrtiVdnN3726H8QN1lZlm/QE=
-X-Mailgun-Sending-Ip: 69.72.43.7
+ Content-Type: Sender; bh=uqeT3t/7MSJQMb1ZDXca/5my9A+b02m3EYD9qcMgMi8=;
+ b=ld0v7cYoTqZ/EnPeBwCFhqte+f7op8k0wMJV5HScuahcmjP7ekpQp3aMLlsMwdhI2dFBQjE3
+ wIefKsRSAgNqF0O5UyNxaOUapjHrK5LSMrcMkRUMUJ7VdWfW7riK85/p1GZUmwm3f6Q3aNFN
+ hLUwHnzD5ROHK6618rkuinZT8Pw=
+X-Mailgun-Sending-Ip: 104.130.122.29
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n09.prod.us-west-2.postgun.com with SMTP id
- 5f26d846849144fbcb489de2 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sun, 02 Aug 2020 15:14:14
+ smtp-out-n16.prod.us-west-2.postgun.com with SMTP id
+ 5f26d8b5ba6d142d1c3be76a (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sun, 02 Aug 2020 15:16:05
  GMT
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id A7508C433CA; Sun,  2 Aug 2020 15:14:14 +0000 (UTC)
+        id E24BBC43391; Sun,  2 Aug 2020 15:16:04 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -37,88 +38,57 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id B6038C433C6;
-        Sun,  2 Aug 2020 15:14:10 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org B6038C433C6
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 5738DC433C9;
+        Sun,  2 Aug 2020 15:16:02 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 5738DC433C9
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v1] rt2x00: pci: use generic power management
+Subject: Re: [PATCH] ipw2x00: Replace HTTP links with HTTPS ones
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20200717110928.454867-1-vaibhavgupta40@gmail.com>
-References: <20200717110928.454867-1-vaibhavgupta40@gmail.com>
-To:     Vaibhav Gupta <vaibhavgupta40@gmail.com>
-Cc:     Bjorn Helgaas <helgaas@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Bjorn Helgaas <bjorn@helgaas.com>,
-        Vaibhav Gupta <vaibhav.varodek@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Stanislaw Gruszka <stf_xl@wp.pl>,
-        Helmut Schaa <helmut.schaa@googlemail.com>,
-        Vaibhav Gupta <vaibhavgupta40@gmail.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+In-Reply-To: <20200718100240.98593-1-grandmaster@al2klimov.de>
+References: <20200718100240.98593-1-grandmaster@al2klimov.de>
+To:     "Alexander A. Klimov" <grandmaster@al2klimov.de>
+Cc:     stas.yakovlev@gmail.com, davem@davemloft.net, kuba@kernel.org,
+        corbet@lwn.net, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-doc@vger.kernel.org,
         linux-kernel@vger.kernel.org,
-        linux-kernel-mentees@lists.linuxfoundation.org,
-        Shuah Khan <skhan@linuxfoundation.org>
+        "Alexander A. Klimov" <grandmaster@al2klimov.de>
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20200802151414.A7508C433CA@smtp.codeaurora.org>
-Date:   Sun,  2 Aug 2020 15:14:14 +0000 (UTC)
+Message-Id: <20200802151604.E24BBC43391@smtp.codeaurora.org>
+Date:   Sun,  2 Aug 2020 15:16:04 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Vaibhav Gupta <vaibhavgupta40@gmail.com> wrote:
+"Alexander A. Klimov" <grandmaster@al2klimov.de> wrote:
 
-> Drivers using legacy PM have to manage PCI states and device's PM states
-> themselves. They also need to take care of configuration registers.
+> Rationale:
+> Reduces attack surface on kernel devs opening the links for MITM
+> as HTTPS traffic is much harder to manipulate.
 > 
-> With improved and powerful support of generic PM, PCI Core takes care of
-> above mentioned, device-independent, jobs.
+> Deterministic algorithm:
+> For each file:
+>   If not .svg:
+>     For each line:
+>       If doesn't contain `\bxmlns\b`:
+>         For each link, `\bhttp://[^# \t\r\n]*(?:\w|/)`:
+> 	  If neither `\bgnu\.org/license`, nor `\bmozilla\.org/MPL\b`:
+>             If both the HTTP and HTTPS versions
+>             return 200 OK and serve the same content:
+>               Replace HTTP with HTTPS.
 > 
-> The callbacks make use of PCI helper functions like
-> pci_save/restore_state(), pci_enable/disable_device() and
-> pci_set_power_state() to do required operations. In generic mode, they are
-> no longer needed.
-> 
-> Change function parameter in both .suspend() and .resume() to
-> "struct device*" type. Use dev_get_drvdata() to get drv data.
-> 
-> The .suspend() callback is invoking rt2x00lib_suspend() which needs to be
-> modified as generic rt2x00pci_suspend() has no pm_message_t type argument,
-> passed to it, which is required by it according to its declaration.
-> Although this variable remained unused in the function body. Hence, remove
-> it from the function definition & declaration.
-> 
-> rt2x00lib_suspend() is also invoked by rt2x00usb_suspend() and
-> rt2x00soc_suspend(). Thus, modify the functional call accordingly in their
-> function body.
-> 
-> Earlier, .suspend() & .resume() were exported and were used by the
-> following drivers:
->     - drivers/net/wireless/ralink/rt2x00/rt2400pci.c
->     - drivers/net/wireless/ralink/rt2x00/rt2500pci.c
->     - drivers/net/wireless/ralink/rt2x00/rt2800pci.c
->     - drivers/net/wireless/ralink/rt2x00/rt61pci.c
-> 
-> Now, we only need to bind "struct dev_pm_ops" variable to
-> "struct pci_driver". Thus, make the callbacks static. Declare an
-> "extern const struct dev_pm_ops" variable and bind PM callbacks to it. Now,
-> export the variable instead and use it in respective drivers.
-> 
-> Compile-tested only.
-> 
-> Signed-off-by: Vaibhav Gupta <vaibhavgupta40@gmail.com>
+> Signed-off-by: Alexander A. Klimov <grandmaster@al2klimov.de>
 
 Patch applied to wireless-drivers-next.git, thanks.
 
-560a218d1ce6 rt2x00: pci: use generic power management
+348cb5dc4d70 ipw2x00: Replace HTTP links with HTTPS ones
 
 -- 
-https://patchwork.kernel.org/patch/11669881/
+https://patchwork.kernel.org/patch/11671879/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
