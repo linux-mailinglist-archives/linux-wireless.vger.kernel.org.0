@@ -2,33 +2,32 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B80FB23580B
-	for <lists+linux-wireless@lfdr.de>; Sun,  2 Aug 2020 17:20:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D021B235812
+	for <lists+linux-wireless@lfdr.de>; Sun,  2 Aug 2020 17:20:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726900AbgHBPSv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 2 Aug 2020 11:18:51 -0400
-Received: from mail29.static.mailgun.info ([104.130.122.29]:62672 "EHLO
-        mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726861AbgHBPSv (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 2 Aug 2020 11:18:51 -0400
+        id S1726970AbgHBPTh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 2 Aug 2020 11:19:37 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:28607 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726769AbgHBPTh (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 2 Aug 2020 11:19:37 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1596381531; h=Date: Message-Id: Cc: To: References:
+ s=smtp; t=1596381576; h=Date: Message-Id: Cc: To: References:
  In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=lF5CK9APGgA84oCW0O2cjEHYiYVBHxTZBI+qtWD5O9Q=;
- b=U38o+KbpvJOA+hYLPTJd+8kADpotYtT7eGyzyvVJ6EWJwtJfP3+m90HeJCvjggEQSbO02Yl5
- iJiGE4VOH//+Wzwy9TW7QA38Z/hT0OBe3kGdVgE9XIYlIl84C/7guM/xc6yaJt44EB3kzQ94
- rOBXPsQemIxpMWcaF1gRoHkIGic=
-X-Mailgun-Sending-Ip: 104.130.122.29
+ Content-Type: Sender; bh=1ceprmMKUngVAI6NwlVtOnpRsGz6GuKVyY+WV80AFIs=;
+ b=O1yfWpfYaSXHYFzXDkaLh6LQlpMTnlaYt2YtXppifWZ0myl1ko5uSAIBvDJjzDJeA0dZ4LoF
+ rSQVtqBs2dJaVDZxb8chm44z2hy42FS+oTwBIxhE19H7H51Q65lDMcZjg4dnHevHDoFmWHhQ
+ /QbbTJN1PuPPmZk/IyBBp+y58oY=
+X-Mailgun-Sending-Ip: 69.72.43.7
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n09.prod.us-east-1.postgun.com with SMTP id
- 5f26d949798b102968010182 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sun, 02 Aug 2020 15:18:33
+ smtp-out-n05.prod.us-east-1.postgun.com with SMTP id
+ 5f26d97e2c24b37bbe11a8d5 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sun, 02 Aug 2020 15:19:26
  GMT
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 65606C433CA; Sun,  2 Aug 2020 15:18:32 +0000 (UTC)
+        id 81F7EC433C9; Sun,  2 Aug 2020 15:19:25 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -38,58 +37,54 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 569C5C433C6;
-        Sun,  2 Aug 2020 15:18:29 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 569C5C433C6
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 4B677C433C6;
+        Sun,  2 Aug 2020 15:19:23 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 4B677C433C6
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v1] hostap: use generic power management
+Subject: Re: [PATCH 1/2] ipw2100: Use GFP_KERNEL instead of GFP_ATOMIC in some
+ memory allocation
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20200721150547.371763-1-vaibhavgupta40@gmail.com>
-References: <20200721150547.371763-1-vaibhavgupta40@gmail.com>
-To:     Vaibhav Gupta <vaibhavgupta40@gmail.com>
-Cc:     Bjorn Helgaas <helgaas@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Bjorn Helgaas <bjorn@helgaas.com>,
-        Vaibhav Gupta <vaibhav.varodek@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>, Jouni Malinen <j@w1.fi>,
-        Vaibhav Gupta <vaibhavgupta40@gmail.com>,
+In-Reply-To: <20200722101701.26126-1-christophe.jaillet@wanadoo.fr>
+References: <20200722101701.26126-1-christophe.jaillet@wanadoo.fr>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     stas.yakovlev@gmail.com, davem@davemloft.net, kuba@kernel.org,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        linux-kernel-mentees@lists.linuxfoundation.org,
-        Shuah Khan <skhan@linuxfoundation.org>
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20200802151832.65606C433CA@smtp.codeaurora.org>
-Date:   Sun,  2 Aug 2020 15:18:32 +0000 (UTC)
+Message-Id: <20200802151925.81F7EC433C9@smtp.codeaurora.org>
+Date:   Sun,  2 Aug 2020 15:19:25 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Vaibhav Gupta <vaibhavgupta40@gmail.com> wrote:
+Christophe JAILLET <christophe.jaillet@wanadoo.fr> wrote:
 
-> Drivers using legacy power management .suspen()/.resume() callbacks
-> have to manage PCI states and device's PM states themselves. They also
-> need to take care of standard configuration registers.
+> The call chain is:
+>    ipw2100_pci_init_one            (the probe function)
+>      --> ipw2100_queues_allocate
+>        --> ipw2100_tx_allocate
 > 
-> Switch to generic power management framework using a single
-> "struct dev_pm_ops" variable to take the unnecessary load from the driver.
-> This also avoids the need for the driver to directly call most of the PCI
-> helper functions and device power state control functions as through
-> the generic framework, PCI Core takes care of the necessary operations,
-> and drivers are required to do only device-specific jobs.
+> No lock is taken in the between.
+> So it is safe to use GFP_KERNEL in 'ipw2100_tx_allocate()'.
 > 
-> Signed-off-by: Vaibhav Gupta <vaibhavgupta40@gmail.com>
+> BTW, 'ipw2100_queues_allocate()' also calls 'ipw2100_msg_allocate()' which
+> already allocates some memory using GFP_KERNEL.
+> 
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-Patch applied to wireless-drivers-next.git, thanks.
+2 patches applied to wireless-drivers-next.git, thanks.
 
-99aaa1aafa5c hostap: use generic power management
+9130559cf8db ipw2100: Use GFP_KERNEL instead of GFP_ATOMIC in some memory allocation
+e52525c0c320 ipw2x00: switch from 'pci_' to 'dma_' API
 
 -- 
-https://patchwork.kernel.org/patch/11675851/
+https://patchwork.kernel.org/patch/11678101/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
