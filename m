@@ -2,171 +2,98 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 93A7823AA71
-	for <lists+linux-wireless@lfdr.de>; Mon,  3 Aug 2020 18:27:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9080B23ABAA
+	for <lists+linux-wireless@lfdr.de>; Mon,  3 Aug 2020 19:29:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728388AbgHCQ1p (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 3 Aug 2020 12:27:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51350 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726624AbgHCQ1p (ORCPT
+        id S1728442AbgHCR3I (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 3 Aug 2020 13:29:08 -0400
+Received: from mail29.static.mailgun.info ([104.130.122.29]:34546 "EHLO
+        mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726398AbgHCR3H (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 3 Aug 2020 12:27:45 -0400
-Received: from mail-lj1-x243.google.com (mail-lj1-x243.google.com [IPv6:2a00:1450:4864:20::243])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0762C06174A
-        for <linux-wireless@vger.kernel.org>; Mon,  3 Aug 2020 09:27:44 -0700 (PDT)
-Received: by mail-lj1-x243.google.com with SMTP id 185so30096224ljj.7
-        for <linux-wireless@vger.kernel.org>; Mon, 03 Aug 2020 09:27:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=ZyvQV2E/1bzTIoQT9qYmbilPb07TQ7f9u6JOH0DmQN4=;
-        b=QTqe5ox2bGaV5NWsEdek6Hf8ARBPUB7h25cw/bVdYka5lgB2AvoF7E3K27c5W6ZbgU
-         KrONh9mZ38r6icWY9U3QvFrg4fgVYPh4nJ9UCQ8tQK3chM0vjhaM78pr8oFJ4t8HBHeh
-         N1Rs5Wp/vGGa9Xzodalg+xFbW9u0LEsv748P8dCVZI7Q2zgh8XAGNU50dVgRY5I7AvgF
-         ZAn9hDyqXRzxL+uVwnChh3hN+O5sGD04Pnjtju9t2f2Hk06MYVFNArnB53jUd6W1v6s0
-         +k+2R4sXdM1M+z5PI8UDcBI9Hf4VT5Z6t/dwhqXz8uU1BGWik1DX5GZYRV3MRsRpLAX5
-         r6Kg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=ZyvQV2E/1bzTIoQT9qYmbilPb07TQ7f9u6JOH0DmQN4=;
-        b=B0MQMqimXgYKhcmh6Jxd7KLiMi3IkhWFVWuqGGrNJitOKH7wcPDazOBIW078PYeD7L
-         Dj13ngWULZGLPRPAb/LrT018uZ7jC+zqt3qZpyLe/dnNdDkWLQZd6JUCPkh9Yk6HXVPE
-         FvHv4CvGEWjA3n7R6VuqkDCcPs96ybdqs9RKywOzs5PrJGgEiGF6ak3TvpxW4UkMqsu7
-         Kga98m0dpTjUIB9R0ffAaAf+5pZxfeqrO0F8RZOwcKTZP2o++GnLxugCkPPxUyLCHwuq
-         208p4jsqeamlxVcNoe9WtOMW9vYqmn1MrGQvRb1LG+HKvBHWGR8ugtFnO0u9iH4JlzhT
-         K0tg==
-X-Gm-Message-State: AOAM533RyoKaqeJkQ6PJrJpacnpuafFog764g6ld8FCwwV/g9xQZVT1y
-        NWIz0uGKFKfBJcLdABIpJf4=
-X-Google-Smtp-Source: ABdhPJyUAjJhmXn+p6MRZbGgG0klSOtXerwtwySrN+qKQxsIXI7nA5Uk2ts8xlQSilZxMJ5asjcBTQ==
-X-Received: by 2002:a2e:9811:: with SMTP id a17mr2557113ljj.21.1596472063311;
-        Mon, 03 Aug 2020 09:27:43 -0700 (PDT)
-Received: from [192.168.2.145] (94-29-41-50.dynamic.spd-mgts.ru. [94.29.41.50])
-        by smtp.googlemail.com with ESMTPSA id e14sm1681077ljl.96.2020.08.03.09.27.42
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 03 Aug 2020 09:27:42 -0700 (PDT)
-Subject: Re: [PATCH V2 3/6] brcmfmac: reserve 2 credits for host tx control
- path
-To:     Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
-        linux-wireless@vger.kernel.org, Kalle Valo <kvalo@codeaurora.org>
-Cc:     brcm80211-dev-list@broadcom.com, brcm80211-dev-list@cypress.com,
-        Arend van Spriel <arend.vanspriel@broadcom.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Wright Feng <wright.feng@cypress.com>,
-        Amar Shankar <amsr@cypress.com>,
-        Jia-Shyr Chuang <joseph.chuang@cypress.com>
-References: <20200610152106.175257-1-chi-hsien.lin@cypress.com>
- <20200610152106.175257-4-chi-hsien.lin@cypress.com>
-From:   Dmitry Osipenko <digetx@gmail.com>
-Message-ID: <f0910f96-1d23-daf1-b517-363e59bff105@gmail.com>
-Date:   Mon, 3 Aug 2020 19:27:41 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        Mon, 3 Aug 2020 13:29:07 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1596475747; h=Message-ID: References: In-Reply-To: Subject:
+ Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Sender; bh=0OosOyOReZIaB9lhBiQuqtf/Qc7eZX8uXFImePyi4FE=;
+ b=reBzdnYPuTfiT8Mh6kuSompdz2jw1tG3ysMkjG+wL7wW4uBmWSZrnH78LKe1f9uujddaMCdc
+ i08FF0HRNU9edYPxJvcEFMD7odwmefA+yoqfAO/d4fdKVzVwrUI2ZJZtY48A5vOuLU4bWm/n
+ h0eqereYgEw6bV+8Wnnqo2VmPHA=
+X-Mailgun-Sending-Ip: 104.130.122.29
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n06.prod.us-east-1.postgun.com with SMTP id
+ 5f284954eecfc978d3c68f94 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 03 Aug 2020 17:28:52
+ GMT
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 2BF25C433C9; Mon,  3 Aug 2020 17:28:50 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: alokad)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id EE637C433C6;
+        Mon,  3 Aug 2020 17:28:48 +0000 (UTC)
 MIME-Version: 1.0
-In-Reply-To: <20200610152106.175257-4-chi-hsien.lin@cypress.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Mon, 03 Aug 2020 10:28:48 -0700
+From:   Aloka Dixit <alokad@codeaurora.org>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless@vger.kernel.org
+Subject: Re: [PATCH v3 1/2] nl80211: Unsolicited broadcast probe response
+ support
+In-Reply-To: <b8455091e9ab4c0c3690dc3fadd000f1d1ca9165.camel@sipsolutions.net>
+References: <20200715230514.26792-1-alokad@codeaurora.org>
+ <20200715230514.26792-2-alokad@codeaurora.org>
+ <b8455091e9ab4c0c3690dc3fadd000f1d1ca9165.camel@sipsolutions.net>
+Message-ID: <4c07745c1fd5c6e19a9b01488ca9e92a@codeaurora.org>
+X-Sender: alokad@codeaurora.org
+User-Agent: Roundcube Webmail/1.3.9
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-10.06.2020 18:21, Chi-Hsien Lin пишет:
-> From: Amar Shankar <amsr@cypress.com>
+On 2020-08-03 03:18, Johannes Berg wrote:
+>> +/**
+>> + * enum nl80211_unsol_bcast_probe_resp_attributes - Unsolicited 
+>> broadcast probe
+>> + *	response configuration. Applicable only in 6GHz.
+>> + *
+>> + * @__NL80211_UNSOL_BCAST_PROBE_RESP_INVALID: Invalid
+>> + *
+>> + * @NL80211_UNSOL_BCAST_PROBE_RESP_INT: Maximum packet interval (u32, 
+>> TU).
+>> + *	Allowed range: 0..20 (TU = Time Unit). IEEE P802.11ax/D6.0
+>> + *	26.17.2.3.2 (AP behavior for fast passive scanning.
 > 
-> It is observed that sometimes when sdiod is low in tx credits in low
-> rssi scenarios, the data path consumes all sdiod rx all credits and
-> there is no sdiod rx credit available for control path causing host
-> and card to go out of sync resulting in link loss between host and
-> card. So in order to prevent it some credits are reserved for control
-> path.
+> nit: that "(" never closes
 > 
-> Note that TXCTL_CREDITS can't be larger than the firmware default
-> credit update threshold 2; otherwise there will be a deadlock for both
-> side waiting for each other.
-> 
-> Signed-off-by: Amar Shankar <amsr@cypress.com>
-> Signed-off-by: Jia-Shyr Chuang <joseph.chuang@cypress.com>
-> Signed-off-by: Chi-Hsien Lin <chi-hsien.lin@cypress.com>
-> ---
->  .../broadcom/brcm80211/brcmfmac/sdio.c        | 19 ++++++++++++++++---
->  1 file changed, 16 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-> index ce6f15284277..4da40436b4ab 100644
-> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-> @@ -635,6 +635,8 @@ static const struct brcmf_firmware_mapping brcmf_sdio_fwnames[] = {
->  	BRCMF_FW_ENTRY(CY_CC_43012_CHIP_ID, 0xFFFFFFFF, 43012)
->  };
->  
-> +#define TXCTL_CREDITS	2
-> +
->  static void pkt_align(struct sk_buff *p, int len, int align)
->  {
->  	uint datalign;
-> @@ -648,8 +650,16 @@ static void pkt_align(struct sk_buff *p, int len, int align)
->  /* To check if there's window offered */
->  static bool data_ok(struct brcmf_sdio *bus)
->  {
-> -	return (u8)(bus->tx_max - bus->tx_seq) != 0 &&
-> -	       ((u8)(bus->tx_max - bus->tx_seq) & 0x80) == 0;
-> +	/* Reserve TXCTL_CREDITS credits for txctl */
-> +	return (bus->tx_max - bus->tx_seq) > TXCTL_CREDITS &&
-> +	       ((bus->tx_max - bus->tx_seq) & 0x80) == 0;
-> +}
-> +
-> +/* To check if there's window offered */
-> +static bool txctl_ok(struct brcmf_sdio *bus)
-> +{
-> +	return (bus->tx_max - bus->tx_seq) != 0 &&
-> +	       ((bus->tx_max - bus->tx_seq) & 0x80) == 0;
->  }
->  
->  static int
-> @@ -2655,7 +2665,7 @@ static void brcmf_sdio_dpc(struct brcmf_sdio *bus)
->  	brcmf_sdio_clrintr(bus);
->  
->  	if (bus->ctrl_frame_stat && (bus->clkstate == CLK_AVAIL) &&
-> -	    data_ok(bus)) {
-> +	    txctl_ok(bus)) {
->  		sdio_claim_host(bus->sdiodev->func1);
->  		if (bus->ctrl_frame_stat) {
->  			err = brcmf_sdio_tx_ctrlframe(bus,  bus->ctrl_frame_buf,
-> @@ -2663,6 +2673,9 @@ static void brcmf_sdio_dpc(struct brcmf_sdio *bus)
->  			bus->ctrl_frame_err = err;
->  			wmb();
->  			bus->ctrl_frame_stat = false;
-> +			if (err)
-> +				brcmf_err("sdio ctrlframe tx failed err=%d\n",
-> +					  err);
->  		}
->  		sdio_release_host(bus->sdiodev->func1);
->  		brcmf_sdio_wait_event_wakeup(bus);
+>> +	tmpl = tb[NL80211_UNSOL_BCAST_PROBE_RESP_TMPL];
+>> +	if (tmpl) {
+>> +		presp->tmpl = nla_data(tmpl);
+>> +		presp->tmpl_len = nla_len(tmpl);
+>> +	}
+>> 
+> So, hmm. Similar question here - what do you do without a template? Or
+> OTOH, why do you even need a template? Would you advertise something
+> that's *different* from the regular probe response template you already
+> get for offloaded probe request/response support?
 > 
 
-Hello,
+The template will be same as the probe response, except for the 
+destination MAC address as this one is broadcast.
+Main reason is that this unsolicited broadcast probe response 
+transmission is specific to 6GHz and not applicable to lower bands. 
+Having a separate netlink command allowed not messing with the existing 
+probe response offload feature which is for all bands. Thanks.
 
-This patch causes a severe WiFi performance regression on BCM4329.
-Please fix or revert this patch, thanks in advance.
-
-Before this patch:
-- - - - - - - - - - - - - - - - - - - - - - - - -
-[ ID] Interval           Transfer     Bitrate         Retr
-[  5]   0.00-10.00  sec  17.2 MBytes  14.4 Mbits/sec    0             sender
-[  5]   0.00-10.04  sec  16.9 MBytes  14.1 Mbits/sec
-receiver
-
-
-After this patch:
-- - - - - - - - - - - - - - - - - - - - - - - - -
-[ ID] Interval           Transfer     Bitrate         Retr
-[  5]   0.00-10.00  sec  1.05 MBytes   881 Kbits/sec    3             sender
-[  5]   0.00-14.01  sec   959 KBytes   561 Kbits/sec
-receiver
+> johannes
