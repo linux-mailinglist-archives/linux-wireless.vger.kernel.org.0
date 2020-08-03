@@ -2,87 +2,63 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C65823ABB9
-	for <lists+linux-wireless@lfdr.de>; Mon,  3 Aug 2020 19:35:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA3A023AF7B
+	for <lists+linux-wireless@lfdr.de>; Mon,  3 Aug 2020 23:10:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726797AbgHCRfi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 3 Aug 2020 13:35:38 -0400
-Received: from mail29.static.mailgun.info ([104.130.122.29]:34688 "EHLO
-        mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726398AbgHCRfi (ORCPT
+        id S1729009AbgHCVKP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 3 Aug 2020 17:10:15 -0400
+Received: from sonic314-20.consmr.mail.ir2.yahoo.com ([77.238.177.146]:44540
+        "EHLO sonic314-20.consmr.mail.ir2.yahoo.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728570AbgHCVKP (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 3 Aug 2020 13:35:38 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1596476137; h=Message-ID: References: In-Reply-To: Subject:
- Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
- MIME-Version: Sender; bh=xqsdB8SA2TcLoS7K4Z6j0L9XeBhxnUOyglQeVSMb09g=;
- b=hM39Q9fjK1joQr/sN8jd9aeaJAzPdQiYF7S3GvusM79Aq0pNKZcC93zO4R1woIJtKdJkYS6L
- mhkh2+ETzmuvtE9FhSDDsI3AZVv4miJx+UskVr6X5ptUlIgokfu/qQMQKOUSN7PZJx2x+1nv
- 3fKLgluotAqeKHqqCBcU2YohExU=
-X-Mailgun-Sending-Ip: 104.130.122.29
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n02.prod.us-west-2.postgun.com with SMTP id
- 5f284a7be7a13aa204690340 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 03 Aug 2020 17:33:47
- GMT
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id EB305C433CB; Mon,  3 Aug 2020 17:33:45 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED autolearn=ham
-        autolearn_force=no version=3.4.0
-Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: alokad)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 49249C433C6;
-        Mon,  3 Aug 2020 17:33:45 +0000 (UTC)
+        Mon, 3 Aug 2020 17:10:15 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aol.com; s=a2048; t=1596489013; bh=4GgFxXkhC86dj48BmrELV5zlxicqlhhIXyZgiwEolDI=; h=Date:From:Reply-To:Subject:References:From:Subject; b=hGjgq1AMnFKUNJmvA+Amkr//cQqzWElA++Np18Kdail0Z6OOrdpL4XPNC3qlouCpWcMo3NGZHISaGnrkwO1D3Z6rQY8NioGPnKUYlaUoG/AI6bjqBjwjiNesfNp7ry0OacnP4XL+kO91GxuPK5gATwVqtAWVb4iqm0xiGva+z2Z5THyYtz0KvhcIRYbCse2HCgpACrmhtWHTohO8LvA7HXK3YCB8noT4nBTkuA0yW04Wt6xkam7opDR51YQQkuUqANeTtpsMrsyh3WOtmAUivQeeuzZThN2SfO0k46HiAOePIE/B9PdSkQ8yy+At0paxyLEaO/43A54SA7dFpmvdpg==
+X-YMail-OSG: ZjXOTFUVM1lYDrMD70zhLoSGHcZauZ_QRpaS4OxR3Iy8sl0E8Iec.ApiFrm7Di6
+ _YB6l1NjYVyPVwZ78wyrG2zXiFSfg0e4zhZp4mHpLl977HCNEUR8k5Egf360oNQvsVI12GmSEOyu
+ YZJK4tcAeebUwjF8lZl19nhxqsWOJommZKLsVLwq3n5jCnPruwtKaSoLQrYSfVNZd0xZEmAvlgjb
+ lgTOYoM6i2VohEQEv_xQDEzRAb7bNGVJx5pi6BR9U4sD_q7SvXEzYclztCmGbJ5lzn5bQ7A7bMoH
+ VQbYm4xUYSimuIwe1cJ2CEVz_TQPi6oGX70Lo4IE6dcb6fGEBHXHn2Y1P1st_5kPgDIoB04tFmFx
+ xCJATvOpfcoAve9vyovgC7JKJftQvPEUajNneyEFoA9.hf3SpgxaUtC72agYBgMfREpcerRl6SV3
+ MqhbljfxAf1.MiOAVxQiiALh9hSNrXw8s.d69TG9nhnFIa9iHJvy3dNakspBsQEjwqx7R6ZTHUm4
+ I0BHLStthn.MsKSvcG_ZLNRA_RHDENGOSZocWKWf2AUbbOQx8pAjSggmsDUw9QYx7pugZqG8RUXn
+ 01rXQSqf5GNp4FNm0DbrXU4TMA7mpLeN8n73NKU0EMxJVCPr78cFXDDWMDbOP9ljp7Ysa141T4N_
+ SLQuylEiYMwqvYK_IcWVbRrny9PUJeWpeDnzwlK9HDyZorbnpxiFiGmYMYG6OeMoG79ReoJIkO_H
+ oL8yxC837BdztvgkOZW3wiCbNtJF2YQTPmhRRrDE0nATvVkaFk__c.yQcyJYz_OI9M0BbtqQQDRi
+ mfqnwyj98ME2YETAQ8eTMwhLr4OijtNn98I0YfbZH4trt_u.PGOY8_3PQ6SK_wwz7G9A3vB5m7hb
+ UXmxd2rk_eWm861XH2IskHKOr942NZqkYuxV3RoSStCUGrLBBKisbXlqc41ceypT.ymeOvtsW4__
+ GB0OA8PDX0lBMKZgzSxnTExpYHn6Og7wQn8wYCcUw4Ux3xRIIP1uZfOKPizKmPi5oDrOJoY5OKAK
+ dcA5vB6Rx54dU9hvc9PDpMkquITKdiQHb6uqyni5Oc1Gsepez.UEPNkDtEPlSv7GiuXEhWcTtYoT
+ cjOgerl98O5vyz70Brs5vf26MtUqcKPzCd64PRiU.RdA23bSQXTuV0HE_0d8mN6PuSU_P_cTP9bD
+ Z8aTf.nG.ouLwiHa.J6Xqiogt8cku5NcBjWEukeunLAA8V2mgykn2SD47HHdrcN.QWJ7szwqzGaH
+ tfW0ISmMKrmNPLG2vq5Yaxa8O
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic314.consmr.mail.ir2.yahoo.com with HTTP; Mon, 3 Aug 2020 21:10:13 +0000
+Date:   Mon, 3 Aug 2020 21:10:10 +0000 (UTC)
+From:   Zeena Hamad <zeena.hamad121@aol.com>
+Reply-To: zeenahamad@aol.com
+Message-ID: <713931143.16757734.1596489010375@mail.yahoo.com>
+Subject: Hello Dear.
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Date:   Mon, 03 Aug 2020 10:33:45 -0700
-From:   Aloka Dixit <alokad@codeaurora.org>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org
-Subject: Re: [PATCH v3 1/2] nl80211: Unsolicited broadcast probe response
- support
-In-Reply-To: <df36ecfb6fd72531727a0322f060a57761985294.camel@sipsolutions.net>
-References: <20200715230514.26792-1-alokad@codeaurora.org>
- <20200715230514.26792-2-alokad@codeaurora.org>
- <df36ecfb6fd72531727a0322f060a57761985294.camel@sipsolutions.net>
-Message-ID: <352e032b1b9086df89aa8ba862c5a91f@codeaurora.org>
-X-Sender: alokad@codeaurora.org
-User-Agent: Roundcube Webmail/1.3.9
+References: <713931143.16757734.1596489010375.ref@mail.yahoo.com>
+X-Mailer: WebService/1.1.16271 YMailNodin Mozilla/5.0 (Windows NT 6.2; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2020-08-03 03:20, Johannes Berg wrote:
-> On Wed, 2020-07-15 at 16:05 -0700, Aloka Dixit wrote:
->> This patch adds new attributes to support unsolicited broadcast
->> probe response transmission used for in-band
->> discovery in 6GHz band (IEEE P802.11ax/D6.0 26.17.2.3.2, AP behavior 
->> for
->> fast passive scanning).
->> The new attribute, NL80211_ATTR_UNSOL_BCAST_PROBE_RESP, is nested 
->> which
->> supports following parameters:
->> (1) NL80211_UNSOL_BCAST_PROBE_RESP_INT - Packet interval
->> (2) NL80211_UNSOL_BCAST_PROBE_RESP_TMPL - Template data
-> 
-> And maybe some driver support flag is needed?
-> 
-> johannes
+Hello Dear,
 
-Are you referring to enable/disable flag separate from the interval 
-field being used for that? Or a different command/event from driver to 
-netlink advertising if the driver supports this feature?
+How are you today, I hope you are doing great. It is my great pleasure
+to contact you and i hope you don't mind, I was just surfing through
+the Internet search when I found your email address, I want to make a
+new and special friend, I hope you don't mind.
 
-If former, it isn't needed because interval=0 means disable.
+My name is Zeena Hamad, I am from the South Sudan but presently
+I live in a mission house in Burkina Faso and I will give you pictures
+and details of me as soon as I hear from you.
 
-Thanks.
+Bye
+
+Zeena Hamad
