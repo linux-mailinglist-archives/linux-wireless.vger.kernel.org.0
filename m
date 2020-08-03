@@ -2,59 +2,59 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D37323ABAC
-	for <lists+linux-wireless@lfdr.de>; Mon,  3 Aug 2020 19:31:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C65823ABB9
+	for <lists+linux-wireless@lfdr.de>; Mon,  3 Aug 2020 19:35:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727854AbgHCRbR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 3 Aug 2020 13:31:17 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:38444 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726398AbgHCRbR (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 3 Aug 2020 13:31:17 -0400
+        id S1726797AbgHCRfi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 3 Aug 2020 13:35:38 -0400
+Received: from mail29.static.mailgun.info ([104.130.122.29]:34688 "EHLO
+        mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726398AbgHCRfi (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 3 Aug 2020 13:35:38 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1596475877; h=Message-ID: References: In-Reply-To: Subject:
+ s=smtp; t=1596476137; h=Message-ID: References: In-Reply-To: Subject:
  Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
- MIME-Version: Sender; bh=JLTrPofgpKNRGi4suxW7LkDisdqOjfpt0aeFyUdoBMM=;
- b=CcwTmqacYbPKg77VWESVWqdlk6/DVwAEELYthkPvWDAP8Tu9Zu833psIFUCyi7WVR99VOmjd
- eTqCtCEGEEDFve6B/Tt1egBn73QLwXwBhKXYxxl2qMK2rFvYqrK0EoTYgyw73PctMucNmX3q
- rNNCgxjLz1QIRUcLc/0AdvLeBjc=
-X-Mailgun-Sending-Ip: 69.72.43.7
+ MIME-Version: Sender; bh=xqsdB8SA2TcLoS7K4Z6j0L9XeBhxnUOyglQeVSMb09g=;
+ b=hM39Q9fjK1joQr/sN8jd9aeaJAzPdQiYF7S3GvusM79Aq0pNKZcC93zO4R1woIJtKdJkYS6L
+ mhkh2+ETzmuvtE9FhSDDsI3AZVv4miJx+UskVr6X5ptUlIgokfu/qQMQKOUSN7PZJx2x+1nv
+ 3fKLgluotAqeKHqqCBcU2YohExU=
+X-Mailgun-Sending-Ip: 104.130.122.29
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n05.prod.us-east-1.postgun.com with SMTP id
- 5f2849d2f89b692ba25c817b (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 03 Aug 2020 17:30:58
+ smtp-out-n02.prod.us-west-2.postgun.com with SMTP id
+ 5f284a7be7a13aa204690340 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 03 Aug 2020 17:33:47
  GMT
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 39D48C433CA; Mon,  3 Aug 2020 17:30:57 +0000 (UTC)
+        id EB305C433CB; Mon,  3 Aug 2020 17:33:45 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED
-        autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED autolearn=ham
+        autolearn_force=no version=3.4.0
 Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
         (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: alokad)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id C2704C433C6;
-        Mon,  3 Aug 2020 17:30:55 +0000 (UTC)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 49249C433C6;
+        Mon,  3 Aug 2020 17:33:45 +0000 (UTC)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII;
  format=flowed
 Content-Transfer-Encoding: 7bit
-Date:   Mon, 03 Aug 2020 10:30:55 -0700
+Date:   Mon, 03 Aug 2020 10:33:45 -0700
 From:   Aloka Dixit <alokad@codeaurora.org>
 To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org,
-        linux-wireless-owner@vger.kernel.org
+Cc:     linux-wireless@vger.kernel.org
 Subject: Re: [PATCH v3 1/2] nl80211: Unsolicited broadcast probe response
  support
-In-Reply-To: <6f23e2ac081a3960959f00dedcdf8795aef28a14.camel@sipsolutions.net>
+In-Reply-To: <df36ecfb6fd72531727a0322f060a57761985294.camel@sipsolutions.net>
 References: <20200715230514.26792-1-alokad@codeaurora.org>
  <20200715230514.26792-2-alokad@codeaurora.org>
- <6f23e2ac081a3960959f00dedcdf8795aef28a14.camel@sipsolutions.net>
-Message-ID: <1aca682f4b694c5ea3d1c57291e6c196@codeaurora.org>
+ <df36ecfb6fd72531727a0322f060a57761985294.camel@sipsolutions.net>
+Message-ID: <352e032b1b9086df89aa8ba862c5a91f@codeaurora.org>
 X-Sender: alokad@codeaurora.org
 User-Agent: Roundcube Webmail/1.3.9
 Sender: linux-wireless-owner@vger.kernel.org
@@ -63,27 +63,26 @@ List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 On 2020-08-03 03:20, Johannes Berg wrote:
-> Also,
+> On Wed, 2020-07-15 at 16:05 -0700, Aloka Dixit wrote:
+>> This patch adds new attributes to support unsolicited broadcast
+>> probe response transmission used for in-band
+>> discovery in 6GHz band (IEEE P802.11ax/D6.0 26.17.2.3.2, AP behavior 
+>> for
+>> fast passive scanning).
+>> The new attribute, NL80211_ATTR_UNSOL_BCAST_PROBE_RESP, is nested 
+>> which
+>> supports following parameters:
+>> (1) NL80211_UNSOL_BCAST_PROBE_RESP_INT - Packet interval
+>> (2) NL80211_UNSOL_BCAST_PROBE_RESP_TMPL - Template data
 > 
->> +/**
->> + * enum nl80211_unsol_bcast_probe_resp_attributes - Unsolicited 
->> broadcast probe
->> + *	response configuration. Applicable only in 6GHz.
->> + *
->> + * @__NL80211_UNSOL_BCAST_PROBE_RESP_INVALID: Invalid
->> + *
->> + * @NL80211_UNSOL_BCAST_PROBE_RESP_INT: Maximum packet interval (u32, 
->> TU).
->> + *	Allowed range: 0..20 (TU = Time Unit). IEEE P802.11ax/D6.0
-> 
-> 0 doesn't make sense, you should disallow that.
-> 
-> I see you used it for "turn off" at least in the mac80211 patch but it
-> seems to me that should have a more explicit way at least in the
-> external API? At the very least it needs to documentation.
+> And maybe some driver support flag is needed?
 > 
 > johannes
 
+Are you referring to enable/disable flag separate from the interval 
+field being used for that? Or a different command/event from driver to 
+netlink advertising if the driver supports this feature?
 
-Hi Johannes, interval=0 means 'disable' is given in the specification, 
-will extend the documentation to mention that.
+If former, it isn't needed because interval=0 means disable.
+
+Thanks.
