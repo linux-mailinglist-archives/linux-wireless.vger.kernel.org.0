@@ -2,59 +2,59 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 91E9D239DBD
-	for <lists+linux-wireless@lfdr.de>; Mon,  3 Aug 2020 05:11:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 27921239DBE
+	for <lists+linux-wireless@lfdr.de>; Mon,  3 Aug 2020 05:11:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727865AbgHCDLT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 2 Aug 2020 23:11:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41604 "EHLO
+        id S1727877AbgHCDLU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 2 Aug 2020 23:11:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41610 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727860AbgHCDLS (ORCPT
+        with ESMTP id S1727849AbgHCDLT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 2 Aug 2020 23:11:18 -0400
-Received: from mail-wm1-x344.google.com (mail-wm1-x344.google.com [IPv6:2a00:1450:4864:20::344])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D130FC06174A
-        for <linux-wireless@vger.kernel.org>; Sun,  2 Aug 2020 20:11:17 -0700 (PDT)
-Received: by mail-wm1-x344.google.com with SMTP id f18so10196039wmc.0
-        for <linux-wireless@vger.kernel.org>; Sun, 02 Aug 2020 20:11:17 -0700 (PDT)
+        Sun, 2 Aug 2020 23:11:19 -0400
+Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com [IPv6:2a00:1450:4864:20::341])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0354C06174A
+        for <linux-wireless@vger.kernel.org>; Sun,  2 Aug 2020 20:11:18 -0700 (PDT)
+Received: by mail-wm1-x341.google.com with SMTP id 9so12987440wmj.5
+        for <linux-wireless@vger.kernel.org>; Sun, 02 Aug 2020 20:11:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=f/x0eExpVICVKXEktjj0SGBU1wjl5TjsRllYZDRNbK8=;
-        b=laCKwgH931UpB6FaFWchH4vSzf5kAW/zaUI6nNweH62neq5EF3MYKPUJfQURyvf3Mi
-         t8HyLhj6DErxSLI1eaAybNSb6ziIgVw4eMj3B+8N86Dz45Xn2L/5FkvfOrIL13hzqdsf
-         qZddPGbw9JCPguNBhZVwLt/V+Oj6BOXNHtCe+YXecmE6LoydnvMmeXaLA4CI+8gkQk0b
-         s/s6guDsLVEuMbtpap7qb7ZiYcwozsOk5vcIw1CheBztrFcusvuB1rfGJfN8ETnbiNXP
-         8sHITTDOQ5hnxf70yKq5qmwoDyNCO0w2Mk5LlEvC4o2NO65DLKE4lAeDImYu0aBDoUjM
-         OEOA==
+        bh=r9KmogYdjeDiArvHcPSK2BD1IBaC6ai9UQ+vtopjnEI=;
+        b=YSnZELLiIpi4yphEV/LAs0Pr6WBG1CQBwIPnYh0gs1vqPCb0EkmXaCKqDS3ZCidx7C
+         TwPjFCi8ts0mYmld8V+IHdpj29ab9RFXjt4sU8/AkjjXlE4O2ib3Sfg5gEkwTsj9uSsi
+         Bfsb7P1EDcexR25z3Nka8o70Pp+1K2HHmU1nIfDQ7rvySz/mSBiydk4f93Wbd1xwjPVz
+         +gIWPGC9tENEYFyrv8aXdAPBV9JpOA2Z9/43qSZaPLFyeSDNwb16KPVExmS0oc7X8czS
+         Df6/sMx+ds6wgSdGW5xxgI/YqBlPe6e8IxD675T5r5oxXbOJZyTQe/k9F8imFum0j/xN
+         WaqA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=f/x0eExpVICVKXEktjj0SGBU1wjl5TjsRllYZDRNbK8=;
-        b=jG0vKLCyu6iy/QGjJcusQjL1TXTFh1T3du2P3aFFojwrihDKEymNKnGBDi9EAHefLL
-         vBw3I3gF1s93U3PSYjuC7n/pnbQLVwOZlM/kSYIyE9AX7QmMV8y91VLZOLJDgNV1aI9L
-         7fj3yCykmzPVkqodi6rJgwokOLIItTy8nZq9T8aChkkFs9Qy4JmSrU9JUaq4l+TNyDmP
-         IOyqzI63LlIwAJv9uDdp42PJ7dFFNLRqcZIqdlCCitWDuAVfjGm/oINAsaxDOv4qlZRG
-         tAKia/AtLF5bjEFKs6vIJPXQHbElRotj0G3Ype/Sp67vWXYYoEknpT8p0UBIa4kIn+fC
-         mh8A==
-X-Gm-Message-State: AOAM5333j2Nnl0d3UXHvuZ/QBNcjVexxXH3WfcxlT3O1DXK6A/HptYpW
-        +PsBv+q1gAQke5p/+xH6SY3PEg==
-X-Google-Smtp-Source: ABdhPJzXPbh8AE4RgmMHru4aSU1xEzx2iCsI/M9vTS9nkVAXz0wBq094cl1hiTNGX5DeMaY/53C7kQ==
-X-Received: by 2002:a7b:c14a:: with SMTP id z10mr12997055wmi.63.1596424276604;
-        Sun, 02 Aug 2020 20:11:16 -0700 (PDT)
+        bh=r9KmogYdjeDiArvHcPSK2BD1IBaC6ai9UQ+vtopjnEI=;
+        b=btcdkPV/e1Qu0lOqBEQFwBnfhf3j3f1YHMCxCR1DGr+HtKAorA19ahADb8A28N3pVc
+         UNWK1yqe/BBrOokj5FzGA8/3LCUqF5njQcJhx+qcbunQ3AQC01qtZs/B8nIk/aGJrpic
+         KzwsPoOUYl/IEk2eKGL9cSWWx2GxFbZyrp/RhQlbTpggde/IVBg4s8aPQsPCmeIEVHEu
+         mOpaC0rZHMmwoIvQvOWQ8p7DsVpk2yhOF+TA/lH21ahdb1P82NBh6fH+viPmFHjshjbX
+         QyEC7zcDUYfqdzuNUN8mNwC8YmP6QUt9Wo5MTmDWa10Mp+vMbu5SgxujQ1cEfHyoAu5s
+         LQIw==
+X-Gm-Message-State: AOAM532VgQsWu3RjYMAfJSM01nfGozZzeMs3aIi8JO+DOENN5WVXR5YB
+        ZSi59BQw2whhCHSCNOTGSag8YdZw3xo=
+X-Google-Smtp-Source: ABdhPJwJElN97xbrbgOGoLELYz8lJH1IsMWRUdU8RuGPyD7U+SCpdOBvX/+GW/ixyxwjksja+g244A==
+X-Received: by 2002:a1c:7e12:: with SMTP id z18mr2703516wmc.188.1596424277597;
+        Sun, 02 Aug 2020 20:11:17 -0700 (PDT)
 Received: from localhost.localdomain ([176.61.57.127])
-        by smtp.gmail.com with ESMTPSA id q2sm21956857wro.8.2020.08.02.20.11.15
+        by smtp.gmail.com with ESMTPSA id q2sm21956857wro.8.2020.08.02.20.11.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 02 Aug 2020 20:11:16 -0700 (PDT)
+        Sun, 02 Aug 2020 20:11:17 -0700 (PDT)
 From:   Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 To:     kvalo@codeaurora.org
 Cc:     wcn36xx@lists.infradead.org, linux-wireless@vger.kernel.org,
         bryan.odonoghue@linaro.org, shawn.guo@linaro.org
-Subject: [PATCH 28/36] wcn36xx: Latch VHT specific BSS parameters to firmware
-Date:   Mon,  3 Aug 2020 04:11:24 +0100
-Message-Id: <20200803031132.1427063-29-bryan.odonoghue@linaro.org>
+Subject: [PATCH 29/36] wcn36xx: Add accessor macro HW_VALUE_CHANNEL for hardware channels
+Date:   Mon,  3 Aug 2020 04:11:25 +0100
+Message-Id: <20200803031132.1427063-30-bryan.odonoghue@linaro.org>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20200803031132.1427063-1-bryan.odonoghue@linaro.org>
 References: <20200803031132.1427063-1-bryan.odonoghue@linaro.org>
@@ -65,28 +65,31 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This commit makes use of wcn36xx_smd_set_bss_vht_params() to extract VHT
-parameters from the 80211_sta structure and latch appropriate bits in the
-bss_params_v1 structure for transmission to the wcnss firmware.
+Adds HW_VALUE_CHANNEL(hw_value) an access macro that will be used to
+extract the channel number from struct ieee80211_channel->hw_value in
+preparation for also storing PHY settings for 802.11ac in the upper bits of
+hw_value.
 
 Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 ---
- drivers/net/wireless/ath/wcn36xx/smd.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/wireless/ath/wcn36xx/wcn36xx.h | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/wcn36xx/smd.c b/drivers/net/wireless/ath/wcn36xx/smd.c
-index 1eb13765e1f2..cedf4391a69a 100644
---- a/drivers/net/wireless/ath/wcn36xx/smd.c
-+++ b/drivers/net/wireless/ath/wcn36xx/smd.c
-@@ -1569,6 +1569,8 @@ int wcn36xx_smd_config_bss_v1(struct wcn36xx *wcn, struct ieee80211_vif *vif,
- 	bss->tx_mgmt_power = bss_v0.tx_mgmt_power;
- 	bss->max_tx_power = bss_v0.max_tx_power;
+diff --git a/drivers/net/wireless/ath/wcn36xx/wcn36xx.h b/drivers/net/wireless/ath/wcn36xx/wcn36xx.h
+index 18ccc6c31a38..ae8bda76d573 100644
+--- a/drivers/net/wireless/ath/wcn36xx/wcn36xx.h
++++ b/drivers/net/wireless/ath/wcn36xx/wcn36xx.h
+@@ -83,7 +83,9 @@ enum wcn36xx_ampdu_state {
+ 	WCN36XX_AMPDU_OPERATIONAL,
+ };
  
-+	wcn36xx_smd_set_bss_vht_params(vif, sta_80211, bss);
-+
- 	PREPARE_HAL_BUF(wcn->hal_buf, (*msg_body));
- 
- 	wcn36xx_dbg(WCN36XX_DBG_HAL,
+-#define WCN36XX_HW_CHANNEL(__wcn) (__wcn->hw->conf.chandef.chan->hw_value)
++#define HW_VALUE_CHANNEL(hw_value) ((hw_value) & 0xFF)
++#define WCN36XX_HW_CHANNEL(__wcn)\
++	HW_VALUE_CHANNEL(__wcn->hw->conf.chandef.chan->hw_value)
+ #define WCN36XX_BAND(__wcn) (__wcn->hw->conf.chandef.chan->band)
+ #define WCN36XX_CENTER_FREQ(__wcn) (__wcn->hw->conf.chandef.chan->center_freq)
+ #define WCN36XX_LISTEN_INTERVAL(__wcn) (__wcn->hw->conf.listen_interval)
 -- 
 2.27.0
 
