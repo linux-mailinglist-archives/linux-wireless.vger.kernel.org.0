@@ -2,59 +2,59 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B25B239DA4
-	for <lists+linux-wireless@lfdr.de>; Mon,  3 Aug 2020 05:10:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 757B6239DA5
+	for <lists+linux-wireless@lfdr.de>; Mon,  3 Aug 2020 05:10:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726846AbgHCDKw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 2 Aug 2020 23:10:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41486 "EHLO
+        id S1726935AbgHCDKx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 2 Aug 2020 23:10:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41492 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726845AbgHCDKv (ORCPT
+        with ESMTP id S1726862AbgHCDKw (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 2 Aug 2020 23:10:51 -0400
+        Sun, 2 Aug 2020 23:10:52 -0400
 Received: from mail-wm1-x342.google.com (mail-wm1-x342.google.com [IPv6:2a00:1450:4864:20::342])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4EF44C06174A
-        for <linux-wireless@vger.kernel.org>; Sun,  2 Aug 2020 20:10:51 -0700 (PDT)
-Received: by mail-wm1-x342.google.com with SMTP id q76so12875415wme.4
-        for <linux-wireless@vger.kernel.org>; Sun, 02 Aug 2020 20:10:51 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28B72C06174A
+        for <linux-wireless@vger.kernel.org>; Sun,  2 Aug 2020 20:10:52 -0700 (PDT)
+Received: by mail-wm1-x342.google.com with SMTP id x5so13013369wmi.2
+        for <linux-wireless@vger.kernel.org>; Sun, 02 Aug 2020 20:10:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=rkrUdfDvYsiZC6pLeKL7GcoMXiECZnaO2mZKUo9/A9Q=;
-        b=KOxLmaStr2tx9QXivlWnBrnTFBehDtBsfnwhgzaCtWNb8qyMDXMzt7E2qB2iE1uzwW
-         d4uqo6ISy/id003byB+MOG+mrn5zUk253p5b9CacQOqpsimOM4JPHaNLD/K2BYn4u7ot
-         VGXc/pJR/SXBnh/qZDZm68kp+DskrEFkBvLoBd0r5Kjvl/RMW2eAsPbEyV4F/KfkM4xA
-         6+eqHsCUmgfTwX4kI4v332/Cr1xOQN5BiBiYJ9s2XjDXN1cLs2sEPzVPdqdwxW+N0Mi1
-         ebxfs9WFtO0mbXEV9EVg4e70dWg6WM7Eocq/QYYg0IC6fGsd4rtw/+PvNG8MDpmq384d
-         sY7g==
+        bh=3ombPAKmNa4Z6zut9RJcKKY/F0yxtyCaqxLuyUzdePk=;
+        b=OP5OGP19qXV8Cyz+haelcC1eEkNq5GNBL8bAKpUhU5sCxJR5+00alX+tv8q9OdTjFv
+         Qf960R9R6IO6gFfQVp4fsRNtHvmBXVFhSsNWj8i+BDX2TcoYCv52czsFdzDwsT9HYaaH
+         du/4iE/CUEJTCxcwpOUgqhTopcbpiWR1fs1hVgag1oJAmZAh3dZJQGFKXc28g2rIcc9I
+         f5b0jk/vpLfVoXuEQLPED1v2uKUScnymTM4IH5M8O9cSilvJOh88ul7BYEgQlclLt/wU
+         zwuUW85ecC+U6VeQnGGWVhNNURDazagimWOKtVuaBsuB/U0iAfQj9pGVssAPx8o9JzPk
+         FI9Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=rkrUdfDvYsiZC6pLeKL7GcoMXiECZnaO2mZKUo9/A9Q=;
-        b=HSpiC6KpznLglnJxiF6XIDWRPTGU+L0QMbKBbAbeJ38Urhc/DAmiTp35d6ye1ps7wp
-         oi+QkzRr2t8gGBWtAy4sF8jmIc6BrYwFCl5W1hzfw5w9RXru7u6+J8rIjq/SKsXgxCzy
-         jUDAmnfLNbAJHl73oxxonlvdAaxEYG6vt/Fbbb37g6u4FXMx1JBKeFP4ro9Eje+6QZLa
-         8U1Z5tGGM4KO/D//EeLbwhDoDc5k/FVZHluPGsYXNkYv+F0Vp4pssMJohjDHqLjYhvL6
-         G8HGJ/bWpP1KQ3WMF/LsnLX5hLQPLJHFuPHi8U9lp4X5roex8Ql8lVZ4IqaEmKQqnAWk
-         772w==
-X-Gm-Message-State: AOAM531tcnnxcb1Uq3Prgs9UBU52IicaRYRnj5WMQS5/c3QJLpyoml7q
-        i5zAYSlaKxBAMUp82vNJ2rA71w==
-X-Google-Smtp-Source: ABdhPJwBdmM2lg+SlQvxfNlnDwzzSHZCLZgAZ+yPT6et5pMATaAdYZEokAsEZsItsJz5O/9y8x/Cbg==
-X-Received: by 2002:a7b:ca4b:: with SMTP id m11mr13445313wml.120.1596424250015;
+        bh=3ombPAKmNa4Z6zut9RJcKKY/F0yxtyCaqxLuyUzdePk=;
+        b=M9gSxjkYI62TKyWh7AEsIduLRetkR0q8w4hSaN3RNDP2rzTb0NZqRycaMeJUmaIJ5L
+         h6ohmhh6dVZ8yxDDGmP6VBEudKDWGuC2W5pyvptH2przLCV90P44bW7tGTZyn5rwZcUZ
+         cvP3kzS7VCAT0LYz0jyxy3o+yhWXUSXLmTk69D92SKin2JhvqG53wzG/tUm/Yl6C5bHR
+         GxVNQSlsQM47ssggFwmHAzxQBkeslozFfr0C4LxYh/ABaABX6oc0KQ7KGB7B+xkJXfpu
+         76DMizWLzQgLn2+Tg0JUXofVWRdQRB9ZxXE5VqcSCCRGQkWP/oJ/Jj/2Hpfj1lr2cyPs
+         epzA==
+X-Gm-Message-State: AOAM5318ldGEAnwKH2u95ZndeSKnwqgLs2w/91bNhPep3EB8ZoUzHU8A
+        HooQ9uS2ikBMfvmGdh9vlwuXyg==
+X-Google-Smtp-Source: ABdhPJzGY+/rlx5ixlRsoZ+RNNlnFy0gFEFPDt9JgaMAewIB/h083+UDE2rxifSb2HKXQt/mNX75KA==
+X-Received: by 2002:a1c:6106:: with SMTP id v6mr13576442wmb.178.1596424250947;
         Sun, 02 Aug 2020 20:10:50 -0700 (PDT)
 Received: from localhost.localdomain ([176.61.57.127])
-        by smtp.gmail.com with ESMTPSA id q2sm21956857wro.8.2020.08.02.20.10.49
+        by smtp.gmail.com with ESMTPSA id q2sm21956857wro.8.2020.08.02.20.10.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 02 Aug 2020 20:10:49 -0700 (PDT)
+        Sun, 02 Aug 2020 20:10:50 -0700 (PDT)
 From:   Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 To:     kvalo@codeaurora.org
 Cc:     wcn36xx@lists.infradead.org, linux-wireless@vger.kernel.org,
         bryan.odonoghue@linaro.org, shawn.guo@linaro.org
-Subject: [PATCH 03/36] wcn36xx: Add 802.11ac MCS rates
-Date:   Mon,  3 Aug 2020 04:10:59 +0100
-Message-Id: <20200803031132.1427063-4-bryan.odonoghue@linaro.org>
+Subject: [PATCH 04/36] wcn36xx: Specify ieee80211_rx_status.nss
+Date:   Mon,  3 Aug 2020 04:11:00 +0100
+Message-Id: <20200803031132.1427063-5-bryan.odonoghue@linaro.org>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20200803031132.1427063-1-bryan.odonoghue@linaro.org>
 References: <20200803031132.1427063-1-bryan.odonoghue@linaro.org>
@@ -65,134 +65,30 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This commit incorporates the 802.11ac table defined in downstream into
-upstream wcn36xx.
+Specify the number of spatial streams in ieee80211_rx_status. For non VHT
+data-rates the wireless core doesn't care about this field, however for VHT
+data-rates it does.
+
+Every version of wcn36xx has one spatial stream, so specify nss for
+wcn3620, wcn3660 and wcn3680 now.
 
 Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 ---
- drivers/net/wireless/ath/wcn36xx/txrx.c | 109 +++++++++++++++++++++++-
- 1 file changed, 108 insertions(+), 1 deletion(-)
+ drivers/net/wireless/ath/wcn36xx/txrx.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/drivers/net/wireless/ath/wcn36xx/txrx.c b/drivers/net/wireless/ath/wcn36xx/txrx.c
-index e20dbe0271f8..05a84f82584c 100644
+index 05a84f82584c..903b47b55728 100644
 --- a/drivers/net/wireless/ath/wcn36xx/txrx.c
 +++ b/drivers/net/wireless/ath/wcn36xx/txrx.c
-@@ -114,7 +114,114 @@ static const struct wcn36xx_rate wcn36xx_rate_table[] = {
- 	{ 1215, 6, RX_ENC_HT, RX_ENC_FLAG_HT_GF, RATE_INFO_BW_40 },
- 	{ 1350, 7, RX_ENC_HT, RX_ENC_FLAG_HT_GF, RATE_INFO_BW_40 },
+@@ -272,6 +272,7 @@ int wcn36xx_rx_skb(struct wcn36xx *wcn, struct sk_buff *skb)
+ 		status.bw = rate->bw;
+ 		status.rate_idx = rate->mcs_or_legacy_index;
+ 		sband = wcn->hw->wiphy->bands[status.band];
++		status.nss = 1;
  
--	/* TODO: AC rates */
-+	/* 11ac reserved indices */
-+	{ 1350, 6, RX_ENC_HT, RX_ENC_FLAG_SHORT_GI, RATE_INFO_BW_40 },
-+	{ 1350, 6, RX_ENC_HT, RX_ENC_FLAG_SHORT_GI, RATE_INFO_BW_40 },
-+
-+	/* 11ac 20 MHz 800ns GI MCS 0-8 */
-+	{   65, 0, RX_ENC_HT, 0, RATE_INFO_BW_20 },
-+	{  130, 1, RX_ENC_HT, 0, RATE_INFO_BW_20 },
-+	{  195, 2, RX_ENC_HT, 0, RATE_INFO_BW_20 },
-+	{  260, 3, RX_ENC_HT, 0, RATE_INFO_BW_20 },
-+	{  390, 4, RX_ENC_HT, 0, RATE_INFO_BW_20 },
-+	{  520, 5, RX_ENC_HT, 0, RATE_INFO_BW_20 },
-+	{  585, 6, RX_ENC_HT, 0, RATE_INFO_BW_20 },
-+	{  650, 7, RX_ENC_HT, 0, RATE_INFO_BW_20 },
-+	{  780, 8, RX_ENC_HT, 0, RATE_INFO_BW_20 },
-+
-+	/* 11ac reserved indices */
-+	{ 1350, 6, RX_ENC_HT, RX_ENC_FLAG_SHORT_GI, RATE_INFO_BW_40 },
-+	{ 1350, 6, RX_ENC_HT, RX_ENC_FLAG_SHORT_GI, RATE_INFO_BW_40 },
-+	{ 1350, 6, RX_ENC_HT, RX_ENC_FLAG_SHORT_GI, RATE_INFO_BW_40 },
-+	{ 1350, 6, RX_ENC_HT, RX_ENC_FLAG_SHORT_GI, RATE_INFO_BW_40 },
-+	{ 1350, 6, RX_ENC_HT, RX_ENC_FLAG_SHORT_GI, RATE_INFO_BW_40 },
-+	{ 1350, 6, RX_ENC_HT, RX_ENC_FLAG_SHORT_GI, RATE_INFO_BW_40 },
-+	{ 1350, 6, RX_ENC_HT, RX_ENC_FLAG_SHORT_GI, RATE_INFO_BW_40 },
-+	{ 1350, 6, RX_ENC_HT, RX_ENC_FLAG_SHORT_GI, RATE_INFO_BW_40 },
-+	{ 1350, 6, RX_ENC_HT, RX_ENC_FLAG_SHORT_GI, RATE_INFO_BW_40 },
-+
-+	/* 11ac 20 MHz 400ns SGI MCS 6-8 */
-+	{  655, 6, RX_ENC_HT, RX_ENC_FLAG_SHORT_GI, RATE_INFO_BW_20 },
-+	{  722, 7, RX_ENC_HT, RX_ENC_FLAG_SHORT_GI, RATE_INFO_BW_20 },
-+	{  866, 8, RX_ENC_HT, RX_ENC_FLAG_SHORT_GI, RATE_INFO_BW_20 },
-+
-+	/* 11ac reserved indices */
-+	{ 1350, 6, RX_ENC_HT, RX_ENC_FLAG_SHORT_GI, RATE_INFO_BW_40 },
-+	{ 1350, 6, RX_ENC_HT, RX_ENC_FLAG_SHORT_GI, RATE_INFO_BW_40 },
-+	{ 1350, 6, RX_ENC_HT, RX_ENC_FLAG_SHORT_GI, RATE_INFO_BW_40 },
-+
-+	/* 11ac 40 MHz 800ns GI MCS 0-9 */
-+	{  135, 0, RX_ENC_HT, 0, RATE_INFO_BW_40 },
-+	{  270, 1, RX_ENC_HT, 0, RATE_INFO_BW_40 },
-+	{  405, 2, RX_ENC_HT, 0, RATE_INFO_BW_40 },
-+	{  540, 3, RX_ENC_HT, 0, RATE_INFO_BW_40 },
-+	{  810, 4, RX_ENC_HT, 0, RATE_INFO_BW_40 },
-+	{ 1080, 5, RX_ENC_HT, 0, RATE_INFO_BW_40 },
-+	{ 1215, 6, RX_ENC_HT, 0, RATE_INFO_BW_40 },
-+	{ 1350, 7, RX_ENC_HT, 0, RATE_INFO_BW_40 },
-+	{ 1350, 7, RX_ENC_HT, 0, RATE_INFO_BW_40 },
-+	{ 1620, 8, RX_ENC_HT, 0, RATE_INFO_BW_40 },
-+	{ 1800, 9, RX_ENC_HT, 0, RATE_INFO_BW_40 },
-+
-+	/* 11ac reserved indices */
-+	{ 1350, 6, RX_ENC_HT, RX_ENC_FLAG_SHORT_GI, RATE_INFO_BW_40 },
-+	{ 1350, 6, RX_ENC_HT, RX_ENC_FLAG_SHORT_GI, RATE_INFO_BW_40 },
-+	{ 1350, 6, RX_ENC_HT, RX_ENC_FLAG_SHORT_GI, RATE_INFO_BW_40 },
-+	{ 1350, 6, RX_ENC_HT, RX_ENC_FLAG_SHORT_GI, RATE_INFO_BW_40 },
-+	{ 1350, 6, RX_ENC_HT, RX_ENC_FLAG_SHORT_GI, RATE_INFO_BW_40 },
-+	{ 1350, 6, RX_ENC_HT, RX_ENC_FLAG_SHORT_GI, RATE_INFO_BW_40 },
-+
-+	/* 11ac 40 MHz 400ns SGI MCS 5-7 */
-+	{ 1200, 5, RX_ENC_HT, RX_ENC_FLAG_SHORT_GI, RATE_INFO_BW_40 },
-+	{ 1350, 6, RX_ENC_HT, RX_ENC_FLAG_SHORT_GI, RATE_INFO_BW_40 },
-+	{ 1500, 7, RX_ENC_HT, RX_ENC_FLAG_SHORT_GI, RATE_INFO_BW_40 },
-+
-+	/* 11ac reserved index */
-+	{ 1350, 6, RX_ENC_HT, RX_ENC_FLAG_SHORT_GI, RATE_INFO_BW_40 },
-+
-+	/* 11ac 40 MHz 400ns SGI MCS 5-7 */
-+	{ 1800, 8, RX_ENC_HT, RX_ENC_FLAG_SHORT_GI, RATE_INFO_BW_40 },
-+	{ 2000, 9, RX_ENC_HT, RX_ENC_FLAG_SHORT_GI, RATE_INFO_BW_40 },
-+
-+	/* 11ac reserved index */
-+	{ 1350, 6, RX_ENC_HT,  RX_ENC_FLAG_SHORT_GI, RATE_INFO_BW_40 },
-+
-+	/* 11ac 80 MHz 800ns GI MCS 0-7 */
-+	{  292, 0, RX_ENC_HT, 0, RATE_INFO_BW_80},
-+	{  585, 1, RX_ENC_HT, 0, RATE_INFO_BW_80},
-+	{  877, 2, RX_ENC_HT, 0, RATE_INFO_BW_80},
-+	{ 1170, 3, RX_ENC_HT, 0, RATE_INFO_BW_80},
-+	{ 1755, 4, RX_ENC_HT, 0, RATE_INFO_BW_80},
-+	{ 2340, 5, RX_ENC_HT, 0, RATE_INFO_BW_80},
-+	{ 2632, 6, RX_ENC_HT, 0, RATE_INFO_BW_80},
-+	{ 2925, 7, RX_ENC_HT, 0, RATE_INFO_BW_80},
-+
-+	/* 11 ac reserved index */
-+	{ 1350, 6, RX_ENC_HT,  RX_ENC_FLAG_SHORT_GI, RATE_INFO_BW_40 },
-+
-+	/* 11ac 80 MHz 800 ns GI MCS 8-9 */
-+	{ 3510, 8, RX_ENC_HT, 0, RATE_INFO_BW_80},
-+	{ 3900, 9, RX_ENC_HT, 0, RATE_INFO_BW_80},
-+
-+	/* 11 ac reserved indices */
-+	{ 1350, 6, RX_ENC_HT, RX_ENC_FLAG_SHORT_GI, RATE_INFO_BW_40 },
-+	{ 1350, 6, RX_ENC_HT, RX_ENC_FLAG_SHORT_GI, RATE_INFO_BW_40 },
-+	{ 1350, 6, RX_ENC_HT, RX_ENC_FLAG_SHORT_GI, RATE_INFO_BW_40 },
-+	{ 1350, 6, RX_ENC_HT, RX_ENC_FLAG_SHORT_GI, RATE_INFO_BW_40 },
-+	{ 1350, 6, RX_ENC_HT, RX_ENC_FLAG_SHORT_GI, RATE_INFO_BW_40 },
-+	{ 1350, 6, RX_ENC_HT, RX_ENC_FLAG_SHORT_GI, RATE_INFO_BW_40 },
-+	{ 1350, 6, RX_ENC_HT, RX_ENC_FLAG_SHORT_GI, RATE_INFO_BW_40 },
-+
-+	/* 11ac 80 MHz 400 ns SGI MCS 6-7 */
-+	{ 2925, 6, RX_ENC_HT, RX_ENC_FLAG_SHORT_GI, RATE_INFO_BW_80 },
-+	{ 3250, 7, RX_ENC_HT, RX_ENC_FLAG_SHORT_GI, RATE_INFO_BW_80 },
-+
-+	/* 11ac reserved index */
-+	{ 1350, 6, RX_ENC_HT,  RX_ENC_FLAG_SHORT_GI, RATE_INFO_BW_40 },
-+
-+	/* 11ac 80 MHz 400ns SGI MCS 8-9 */
-+	{ 3900, 8, RX_ENC_VHT, RX_ENC_FLAG_SHORT_GI, RATE_INFO_BW_80 },
-+	{ 4333, 9, RX_ENC_VHT, RX_ENC_FLAG_SHORT_GI, RATE_INFO_BW_80 },
- };
- 
- int wcn36xx_rx_skb(struct wcn36xx *wcn, struct sk_buff *skb)
+ 		if (status.band == NL80211_BAND_5GHZ &&
+ 		    status.encoding == RX_ENC_LEGACY &&
 -- 
 2.27.0
 
