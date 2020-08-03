@@ -2,60 +2,62 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DD44A239DA1
-	for <lists+linux-wireless@lfdr.de>; Mon,  3 Aug 2020 05:10:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C145239DA2
+	for <lists+linux-wireless@lfdr.de>; Mon,  3 Aug 2020 05:10:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726725AbgHCDKt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 2 Aug 2020 23:10:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41474 "EHLO
+        id S1726785AbgHCDKu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 2 Aug 2020 23:10:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41476 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726212AbgHCDKt (ORCPT
+        with ESMTP id S1726757AbgHCDKt (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Sun, 2 Aug 2020 23:10:49 -0400
-Received: from mail-wm1-x342.google.com (mail-wm1-x342.google.com [IPv6:2a00:1450:4864:20::342])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DEC0CC06174A
-        for <linux-wireless@vger.kernel.org>; Sun,  2 Aug 2020 20:10:48 -0700 (PDT)
-Received: by mail-wm1-x342.google.com with SMTP id c19so2916277wmd.1
-        for <linux-wireless@vger.kernel.org>; Sun, 02 Aug 2020 20:10:48 -0700 (PDT)
+Received: from mail-wm1-x344.google.com (mail-wm1-x344.google.com [IPv6:2a00:1450:4864:20::344])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47C9FC061756
+        for <linux-wireless@vger.kernel.org>; Sun,  2 Aug 2020 20:10:49 -0700 (PDT)
+Received: by mail-wm1-x344.google.com with SMTP id k8so14104551wma.2
+        for <linux-wireless@vger.kernel.org>; Sun, 02 Aug 2020 20:10:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=lqr4WPc/7BrgTWw+OnpOygYehvuyz4nwHTynHJhPEa8=;
-        b=CJ5oCIsNq10lgGn6PSm+ZvV7pZaampK3J/0kpSZssZb1DCbubZT79UKSf0dsX3DJki
-         hEDH+Felv5ooYCSVxF+q94gbTRL4zJROdZCWeCfK5bgAjSMaoGSpkGCNdLCBgZhtGqcZ
-         AGA1bPac3TM9nX/GXGsZmS1tYaBt87e2IhPt3duRoZiRGpp47safRDOms/CgCkUX0oq5
-         2j2/26eq219quWhtT3u3RBeP5fLRioConNzuWwZu92ibjwickhsV3Wu8O9DQhwVbxVX7
-         apZ+3cW8MGyllmfG0N74ppGPws/i0dr8BXu/rCkI2tvFUyjVZApfSNMFL+jN/7NGMj4q
-         crVg==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=7sW+j/XKYMsqDf8PANCMztexlMqz8lIFr2FXWlhrblQ=;
+        b=SRIYC5YPQwH5A0WChBwU4DDJiNlPaS9OqnQduz6N14oYn0aPPzSy+Ec54lMITV4WWU
+         gAkF+RzJK9135qQz7Wd9o8Xu20TXdm1UxtjOKvOvD5GiqbdOAzqqh+GO9+gFoDEmbaDS
+         cX/luOGJ+jmQvmfXf3Rad+66Wi7b3Gw98ryZ8wHy1/sht7OLXfodh3zVUcFtqGan5Bjt
+         Y0JCUgVJN61dOuTPBMQCc9pgAmaBQjTsk5E4vXh+1d26U/Gc2rZfveANyXOw6mpw0azm
+         4ldtldVqM9Lq5pHKQwhuIGeH/gCjfJwCojZ3wm6rBI2xMJc12C1Il7+w2z8CJIl29XXD
+         jp9A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=lqr4WPc/7BrgTWw+OnpOygYehvuyz4nwHTynHJhPEa8=;
-        b=AUQuqOEycLBCFvNn5VvKTho73rCHX6QB4y8fxS9Kz+rZmDg8r7MoCj8TZTSuEjgT8E
-         cmfSysusbHRU+ZWWAoh3wtVtaRTVdFpw4Rn3BxxBWRbJPpieg2KweRg5A0uo13+w6vRJ
-         DvIAvzJgFc1QCRPd1YNgrV8zC9HdfCuksQJv9IjC8Edl9lOgdEW9F7eyDnDl6VS/ogSE
-         EGpkVOAkhix7aW4EiD+SvCRP4v+RmVAlgmc9gpVbmZKMQkVAdydgXh6cEkmfBpjCgXHX
-         g5uBSScVz7d74Q4Wu9QF1nAfav/NPXZ6Y63ctknK+GnjwAbkC3vMZ6vrcRncO1U5PLWt
-         XSYA==
-X-Gm-Message-State: AOAM530ssh4d0a//fSEGXyZ6FPqYVB7fmzWSq1m6aBcTbSAQgzY5MQ7C
-        K1qUCEn8EjvJguLrO3Xbz008lw==
-X-Google-Smtp-Source: ABdhPJx32D5PoZWFXAF5aVUqWuVNbYbC1dZWvCkjthSMVfGtZM4/UhnaUo5L9ex6wRvRVzhsPws6Vg==
-X-Received: by 2002:a1c:9c0b:: with SMTP id f11mr13508894wme.0.1596424247087;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=7sW+j/XKYMsqDf8PANCMztexlMqz8lIFr2FXWlhrblQ=;
+        b=IIYFWwprdf7EWijRjnrg0YaS+3ZQrmMSmEEeLY8A2zXWCORA12wSdMgyBnMP8fKIgE
+         5m5vOSKHESIDYVP4oGHVEOEyX7g/XvueGkOORZuvaCZTuOgvoVx5t3dONOOgj3WEYmyY
+         XhsA0qdud3Fhf3lyQjaWoB3z/J9qT9iWTq4lRsrJq5fZkY1nPuq9HDl14PbfbWtRMHvm
+         DANx6rjrs1kKLrDWziytksP77bkmW811fPevoSeHiyP0Q1bFV6k39df80s/ZXTCVBi2f
+         v2cajA19B//ulpi2XfHk42lOTt9flInV4e7Ofy+XuKmk1OroizeVh/xO2zuxiNlhCt6J
+         tlLw==
+X-Gm-Message-State: AOAM531zFBS5u9m8BCHIA5P9xPFup/OsW0qbTnlMYYTg7yKr1nv7tZ14
+        K8cfhKSfst957pWAKjhK91r+vg==
+X-Google-Smtp-Source: ABdhPJzmR81sbdPoi2CPGj0RhZkS7gJMwz5qLxF/0KsQe8emmVdAjdHWHUGIEH5+5ATiK6TrZpYpgw==
+X-Received: by 2002:a1c:9d53:: with SMTP id g80mr13691413wme.70.1596424247984;
         Sun, 02 Aug 2020 20:10:47 -0700 (PDT)
 Received: from localhost.localdomain ([176.61.57.127])
-        by smtp.gmail.com with ESMTPSA id q2sm21956857wro.8.2020.08.02.20.10.46
+        by smtp.gmail.com with ESMTPSA id q2sm21956857wro.8.2020.08.02.20.10.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 02 Aug 2020 20:10:46 -0700 (PDT)
+        Sun, 02 Aug 2020 20:10:47 -0700 (PDT)
 From:   Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 To:     kvalo@codeaurora.org
 Cc:     wcn36xx@lists.infradead.org, linux-wireless@vger.kernel.org,
         bryan.odonoghue@linaro.org, shawn.guo@linaro.org
-Subject: [PATCH 00/36] wcn36xx: Add support for WCN3680 802.11ac
-Date:   Mon,  3 Aug 2020 04:10:56 +0100
-Message-Id: <20200803031132.1427063-1-bryan.odonoghue@linaro.org>
+Subject: [PATCH 01/36] wcn36xx: Add ability to identify WCN3680
+Date:   Mon,  3 Aug 2020 04:10:57 +0100
+Message-Id: <20200803031132.1427063-2-bryan.odonoghue@linaro.org>
 X-Mailer: git-send-email 2.27.0
+In-Reply-To: <20200803031132.1427063-1-bryan.odonoghue@linaro.org>
+References: <20200803031132.1427063-1-bryan.odonoghue@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
@@ -63,130 +65,40 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This series adds support for the 802.11ac data-rates available on the WCN3680.
+The WCN3680 has some specific behaviours that we want to capture to
+distinguish it from the WCN3620 and WCN3660 respectively.
 
-WCN3680:
-- Has one spatial stream
-- MCS9 80Mhz 400ns guard interval
-- 433.3 Mbps
-- RX STBC
-- LDPC (host dependant)
-- MU-MIMO (host dependant)
-- Tx beamformee (host dependant)
+Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+---
+ drivers/net/wireless/ath/wcn36xx/main.c    | 2 ++
+ drivers/net/wireless/ath/wcn36xx/wcn36xx.h | 1 +
+ 2 files changed, 3 insertions(+)
 
-Declared data-rates are around 200 Mbps
-https://preview.tinyurl.com/y2w3jb2b
-
-iw wlan0 link
-Connected to 04:d4:c4:3a:fd:f4 (on wlan0)
-        SSID: linaro-test_5G
-        freq: 5300
-        RX: 761467 bytes (4302 packets)
-        TX: 2492 bytes (28 packets)
-        signal: -29 dBm
-        rx bitrate: 433.3 MBit/s VHT-MCS 9 80MHz short GI VHT-NSS 1
-        tx bitrate: 6.0 MBit/s
-
-        bss flags:      short-slot-time
-        dtim period:    3
-        beacon int:     100
-
-Test Hardware:
-20MHz channels
-[ ID] Interval            Bitrate
-[  5]   0.00-60.00  sec   51.6 Mbits/sec 
-[  5]   0.00-60.16  sec   51.4 Mbits/sec 
-
-40MHz channels
-[  5]   0.00-60.00  sec   109 Mbits/sec
-[  5]   0.00-60.15  sec   109 Mbits/sec
-
-80MHz channels
-[  5]   0.00-60.00  sec   141 Mbits/sec
-[  5]   0.00-60.01  sec   141 Mbits/sec
-
-db410c:
-[ ID] Interval            Bitrate
-[  5]   0.00-60.00  sec   47.9 Mbits/sec
-[  5]   0.00-60.02  sec   47.7 Mbits/sec
-
-Sony M4 Aqua - believed to contain a 3680 with 3.10 downstream prima:
-20MHz channels
-[ ID] Interval            Bitrate
-[  5]   0.00-60.00  sec   25.5 Mbits/sec 
-[  5]   0.00-60.16  sec   25.5 Mbits/sec 
-
-40MHz channels
-[  5]   0.00-60.00  sec   50 Mbits/sec
-[  5]   0.00-60.15  sec   50 Mbits/sec
-
-80MHz channels
-[  5]   0.00-60.00  sec   67.8 Mbits/sec
-[  5]   0.00-60.01  sec   67.8 Mbits/sec
-
-
-The wcn3680 uses the same parameter passing mechanism as earlier versions
-3620 and 3660 however it also supports extended VHT parameters for STA and
-BSS setup.
-
-I've taken the downstream firmware config almost as-is in terms of
-parameters send over the SMD bus to the target with the caveat of switching
-off power-save offload.
-
-I do have some housekeeping patches in the middle of this series where I
-functionally decompose some of the existing code, which in my opinion
-needed some attention before adding any more code to it.
-
-Lastly, I've tested on wcn3680 and wcn3620, since the extended VHT
-parameters only apply to wcn3680 the code-paths for wcn3620 should be the
-same for wcn3660.
-
-Bryan O'Donoghue (36):
-  wcn36xx: Add ability to identify WCN3680
-  wcn36xx: Add ieee802.11 VHT flags
-  wcn36xx: Add 802.11ac MCS rates
-  wcn36xx: Specify ieee80211_rx_status.nss
-  wcn36xx: Add 802.11ac HAL param bitfields
-  wcn36xx: Add Supported rates V1 structure
-  wcn36xx: Use existing pointers in wcn36xx_smd_config_bss_v1
-  wcn36xx: Set feature DOT11AC for wcn3680
-  wcn36xx: Add VHT fields to parameter data structures
-  wcn36xx: Use V1 data structure to store supported rates
-  wcn36xx: Add wcn36xx_set_default_rates_v1
-  wcn36xx: Add VHT rates to wcn36xx_update_allowed_rates()
-  wcn36xx: Add wcn36xx_smd_set_sta_default_vht_params()
-  wcn36xx: Add wcn36xx_smd_set_sta_default_ht_ldpc_params()
-  wcn36xx: Add wcn36xx_smd_set_sta_vht_params()
-  wcn36xx: Add wcn36xx_smd_set_sta_ht_ldpc_params()
-  wcn36xx: Add wcn36xx_smd_set_bss_vht_params()
-  wcn36xx: Add wrapper function wcn36xx_smd_set_sta_params_v1()
-  wcn36xx: Define INIT_HAL_MSG_V1()
-  wcn36xx: Convert to VHT parameter structure on wcn3680
-  wcn36xx: Functionally decompose wcn36xx_smd_config_sta()
-  wcn36xx: Move wcn36xx_smd_set_sta_params() inside
-    wcn36xx_smd_config_bss()
-  wcn36xx: Move BSS parameter setup to wcn36xx_smd_set_bss_params()
-  wcn36xx: Add wcn36xx_smd_config_bss_v0
-  wcn36xx: Update wcn36xx_smd_config_bss_v1() to operate internally
-  wcn36xx: Convert to using wcn36xx_smd_config_bss_v0()
-  wcn36xx: Remove dead code in wcn36xx_smd_config_bss()
-  wcn36xx: Latch VHT specific BSS parameters to firmware
-  wcn36xx: Add accessor macro HW_VALUE_CHANNEL for hardware channels
-  wcn36xx: Use HW_VALUE_CHANNEL macro to get channel number
-  wcn36xx: Add accessor macro HW_VALUE_PHY for PHY settings
-  wcn36xx: Encode PHY mode for 80MHz channel in hw_value
-  wcn36xx: Set PHY into correct mode for 80MHz channel width
-  wcn36xx: Extend HAL param config list
-  wcn36xx: Define wcn3680 specific firmware parameters
-  wcn36xx: Add ability to download wcn3680 specific firmware parameters
-
- drivers/net/wireless/ath/wcn36xx/hal.h     | 214 ++++++-
- drivers/net/wireless/ath/wcn36xx/main.c    |  99 ++-
- drivers/net/wireless/ath/wcn36xx/smd.c     | 678 ++++++++++++++-------
- drivers/net/wireless/ath/wcn36xx/txrx.c    | 110 +++-
- drivers/net/wireless/ath/wcn36xx/wcn36xx.h |  10 +-
- 5 files changed, 861 insertions(+), 250 deletions(-)
-
+diff --git a/drivers/net/wireless/ath/wcn36xx/main.c b/drivers/net/wireless/ath/wcn36xx/main.c
+index f389cd4676e3..73ba30a4d727 100644
+--- a/drivers/net/wireless/ath/wcn36xx/main.c
++++ b/drivers/net/wireless/ath/wcn36xx/main.c
+@@ -1298,6 +1298,8 @@ static int wcn36xx_platform_get_resources(struct wcn36xx *wcn,
+ 	if (iris_node) {
+ 		if (of_device_is_compatible(iris_node, "qcom,wcn3620"))
+ 			wcn->rf_id = RF_IRIS_WCN3620;
++		if (of_device_is_compatible(iris_node, "qcom,wcn3680"))
++			wcn->rf_id = RF_IRIS_WCN3680;
+ 		of_node_put(iris_node);
+ 	}
+ 
+diff --git a/drivers/net/wireless/ath/wcn36xx/wcn36xx.h b/drivers/net/wireless/ath/wcn36xx/wcn36xx.h
+index 3221fed15620..821c4ce61afd 100644
+--- a/drivers/net/wireless/ath/wcn36xx/wcn36xx.h
++++ b/drivers/net/wireless/ath/wcn36xx/wcn36xx.h
+@@ -92,6 +92,7 @@ enum wcn36xx_ampdu_state {
+ 
+ #define RF_UNKNOWN	0x0000
+ #define RF_IRIS_WCN3620	0x3620
++#define RF_IRIS_WCN3680	0x3680
+ 
+ static inline void buff_to_be(u32 *buf, size_t len)
+ {
 -- 
 2.27.0
 
