@@ -2,59 +2,59 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8408C239DA6
+	by mail.lfdr.de (Postfix) with ESMTP id F0571239DA7
 	for <lists+linux-wireless@lfdr.de>; Mon,  3 Aug 2020 05:10:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726918AbgHCDKz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        id S1726985AbgHCDKz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
         Sun, 2 Aug 2020 23:10:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41494 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41500 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726845AbgHCDKx (ORCPT
+        with ESMTP id S1726862AbgHCDKy (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 2 Aug 2020 23:10:53 -0400
-Received: from mail-wm1-x342.google.com (mail-wm1-x342.google.com [IPv6:2a00:1450:4864:20::342])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36067C06174A
-        for <linux-wireless@vger.kernel.org>; Sun,  2 Aug 2020 20:10:53 -0700 (PDT)
-Received: by mail-wm1-x342.google.com with SMTP id k8so14104625wma.2
-        for <linux-wireless@vger.kernel.org>; Sun, 02 Aug 2020 20:10:53 -0700 (PDT)
+        Sun, 2 Aug 2020 23:10:54 -0400
+Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DEC1C06174A
+        for <linux-wireless@vger.kernel.org>; Sun,  2 Aug 2020 20:10:54 -0700 (PDT)
+Received: by mail-wr1-x444.google.com with SMTP id a14so32806684wra.5
+        for <linux-wireless@vger.kernel.org>; Sun, 02 Aug 2020 20:10:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=B5DLtbiyK3rd9edQe5gM8jvZmZ4OmlENPvYbGbm0j2Q=;
-        b=K/c/7AYv8jxtEAqw4NRJLB9gp9r9K4vxkKvVMKLn3DAtS/TJMlAR5TgaZp8GpXhWCE
-         I7ySMzZoM0eCF2G+K7PpRdTIUey55nTdPHtHVNJ218ahfD2tS9C7v1QlZYUPOdq4vnkT
-         T19gY0G89Ww9F4XVNP/6JtC0K12nueY8Mi+Yg7OXG/RMk1joU4tU6DjhkD7cHG2Sorx4
-         EAQ4xUm2GwWbi3gSVnZ86c7FVyydp2XG4n2mr3LHoyTHAgk3qCqqqZY4chzYBEoNFpcm
-         jz69nnR/Njp5jbcHSOJavQIRpZp9d/ac1Ljhp6ZxB7Pw+jbBoohDNQvgm1U9HxNJNPu2
-         zuJA==
+        bh=kqKg5fMNYtu+7rDsvVA0MaJs3YtAp5XzgNcl5s+4fd4=;
+        b=Saycvz9MQ9Ohv0fJwdZdL/qyjUexJZnwD+Jrd/rK+5zUNqDDjy08AThpekjcgt5BuN
+         4D2EllRjUNbN5nh7iSUc9B7T71SRu5tzAbMyTMUs6IYJQRc67bOaBgwLMa6fX5iJzBvU
+         LomJCMpSRXLHqK+YDCXXhozAPPR5ZkDtw1UC0H2oMAKsDh+FTeI8ThyUa3RSMBz/o3/a
+         j+HOlWwhP4Nfj2PWP01tNP+jEA+Bavh1TU8/7e6ca4OHRl1+CZE31jr64yeYLVnACcSk
+         ha8ew0Pj0Dj/97Vkd+wbGt48XimpsAipAS70CMMFhpsE6dJAosw4GL9h3EvbutQeP7da
+         n7GA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=B5DLtbiyK3rd9edQe5gM8jvZmZ4OmlENPvYbGbm0j2Q=;
-        b=lwGjqGjTEwr1dEHkZB/iBipiZPnPW2nY1XnbHO2ofOcrX/0Ht+FEcVpRSbhwPCfVbH
-         UdKFyinCPkE4yAPWhZaSOF5Lfnk4MzAynodFd2psVx0Qb238i4BEyhsXOF9+NjE1ov4f
-         XFC7Jb8B4NINlQmzpTUQoQ7gTveFoj/5p+rpvPojXs2Db2bf2EfBNWa2QpjGxrSLPk8m
-         kiMz2vxcubEiPfBxM49EyOTHer1tCKwQ+xeSK/xBJ09cQiggPnOQu5mf8mZco45oVAk+
-         CcQbd7WfKCaZ5/92Uc4gQUSYB4l8ebjACFUoC+iOjfmEf4Nw8Ivi2Hz61chTcUkiEEaF
-         mGJA==
-X-Gm-Message-State: AOAM531gj7jsb8TjrslGbnL9lUM1ngSyWNFYcJ3sB6P9flejHyK4OFX/
-        qjan9XtSSUurMFIG5ppWdltztg==
-X-Google-Smtp-Source: ABdhPJzpClYtP+kjdzG8/Q0PUpuURcUNrRG2/ejg5Rc4PgtcqmXQ6TGz/TjG8R2DxaixrYTKp4jBcQ==
-X-Received: by 2002:a7b:c38e:: with SMTP id s14mr13683939wmj.124.1596424251970;
-        Sun, 02 Aug 2020 20:10:51 -0700 (PDT)
+        bh=kqKg5fMNYtu+7rDsvVA0MaJs3YtAp5XzgNcl5s+4fd4=;
+        b=buk1tptq8n8j6XdVXZZ6kwhz7TJ/WVl1wODOOXPjCRiCqEE8XHVw6sJOgue+tNlJfc
+         vMDqgfJiFLyoi/j27awOsIokx4tTxzZtlsZGml3gVaoSZfbAf5+s4B32aF8Qh/KkGmdX
+         EIYqhkLCQYSUKIXl7rj/jXhrhK9Ia9I6Mz0sa4NXWLTFqJpETna6yvmUoZvI8vb6ENRx
+         K7hnaQ06fjO7mji1NrKSO4E5+YkAw7l7hfGYsydGz4DeVaPClLtsPDaREa7KcrcuK/cj
+         Sd0TiHOXZJyOfCk9DvaKOfcLVDNqsKF5iSV3g5Elu7MWj1xYprIpfz95xuj6gYFFYEWJ
+         S+yg==
+X-Gm-Message-State: AOAM530NBUtC1czRJOqjaqDaXtmaTqQUl1pgGxjvEqUxtmekuiAqnOL5
+        mkluxDAJpRuVyvu5KIQLvv5Yvw==
+X-Google-Smtp-Source: ABdhPJwCrPCJ79rBanCyISinoLx0gq5j/s+Qg9arBytY/gl29Ttb4g3I6rS0QRJTip2/8Dn0qmH8TQ==
+X-Received: by 2002:adf:aa9e:: with SMTP id h30mr12550541wrc.377.1596424253092;
+        Sun, 02 Aug 2020 20:10:53 -0700 (PDT)
 Received: from localhost.localdomain ([176.61.57.127])
-        by smtp.gmail.com with ESMTPSA id q2sm21956857wro.8.2020.08.02.20.10.51
+        by smtp.gmail.com with ESMTPSA id q2sm21956857wro.8.2020.08.02.20.10.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 02 Aug 2020 20:10:51 -0700 (PDT)
+        Sun, 02 Aug 2020 20:10:52 -0700 (PDT)
 From:   Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 To:     kvalo@codeaurora.org
 Cc:     wcn36xx@lists.infradead.org, linux-wireless@vger.kernel.org,
         bryan.odonoghue@linaro.org, shawn.guo@linaro.org
-Subject: [PATCH 05/36] wcn36xx: Add 802.11ac HAL param bitfields
-Date:   Mon,  3 Aug 2020 04:11:01 +0100
-Message-Id: <20200803031132.1427063-6-bryan.odonoghue@linaro.org>
+Subject: [PATCH 06/36] wcn36xx: Add Supported rates V1 structure
+Date:   Mon,  3 Aug 2020 04:11:02 +0100
+Message-Id: <20200803031132.1427063-7-bryan.odonoghue@linaro.org>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20200803031132.1427063-1-bryan.odonoghue@linaro.org>
 References: <20200803031132.1427063-1-bryan.odonoghue@linaro.org>
@@ -65,36 +65,95 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This patch enumerates four previously unused bits in
-wcn36xx_hal_config_sta_params_v1 describing
-
-- HT LDPC enable
-- VHT LDPC enable
-- VHT TX BF enable
-- VHT MU Beamformee enable
+This commit adds the supported rates V1 structure as defined in Prima
+riva/inc/wlan_hal_msg.h
 
 Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 ---
- drivers/net/wireless/ath/wcn36xx/hal.h | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/net/wireless/ath/wcn36xx/hal.h | 70 ++++++++++++++++++++++++++
+ 1 file changed, 70 insertions(+)
 
 diff --git a/drivers/net/wireless/ath/wcn36xx/hal.h b/drivers/net/wireless/ath/wcn36xx/hal.h
-index aab5a58616fc..8df3184a348d 100644
+index 8df3184a348d..5daac448d4e2 100644
 --- a/drivers/net/wireless/ath/wcn36xx/hal.h
 +++ b/drivers/net/wireless/ath/wcn36xx/hal.h
-@@ -1507,7 +1507,11 @@ struct wcn36xx_hal_config_sta_params_v1 {
- 	u8 p2p;
+@@ -1405,6 +1405,76 @@ struct wcn36xx_hal_config_sta_req_msg {
+ 	struct wcn36xx_hal_config_sta_params sta_params;
+ } __packed;
  
- 	/* Reserved to align next field on a dword boundary */
--	u8 reserved;
-+	u8 ht_ldpc_enabled:1;
-+	u8 vht_ldpc_enabled:1;
-+	u8 vht_tx_bf_enabled:1;
-+	u8 vht_tx_mu_beamformee_capable:1;
-+	u8 reserved:4;
- 
- 	/* These rates are the intersection of peer and self capabilities. */
- 	struct wcn36xx_hal_supported_rates supported_rates;
++struct wcn36xx_hal_supported_rates_v1 {
++	/* For Self STA Entry: this represents Self Mode.
++	 * For Peer Stations, this represents the mode of the peer.
++	 * On Station:
++	 *
++	 * --this mode is updated when PE adds the Self Entry.
++	 *
++	 * -- OR when PE sends 'ADD_BSS' message and station context in BSS
++	 *    is used to indicate the mode of the AP.
++	 *
++	 * ON AP:
++	 *
++	 * -- this mode is updated when PE sends 'ADD_BSS' and Sta entry
++	 *     for that BSS is used to indicate the self mode of the AP.
++	 *
++	 * -- OR when a station is associated, PE sends 'ADD_STA' message
++	 *    with this mode updated.
++	 */
++
++	enum sta_rate_mode op_rate_mode;
++
++	/* 11b, 11a and aniLegacyRates are IE rates which gives rate in
++	 * unit of 500Kbps
++	 */
++	u16 dsss_rates[WCN36XX_HAL_NUM_DSSS_RATES];
++	u16 ofdm_rates[WCN36XX_HAL_NUM_OFDM_RATES];
++	u16 legacy_rates[WCN36XX_HAL_NUM_POLARIS_RATES];
++	u16 reserved;
++
++	/* Taurus only supports 26 Titan Rates(no ESF/concat Rates will be
++	 * supported) First 26 bits are reserved for those Titan rates and
++	 * the last 4 bits(bit28-31) for Taurus, 2(bit26-27) bits are
++	 * reserved
++	 * Titan and Taurus Rates
++	 */
++	u32 enhanced_rate_bitmap;
++
++	/* 0-76 bits used, remaining reserved
++	 * bits 0-15 and 32 should be set.
++	 */
++	u8 supported_mcs_set[WCN36XX_HAL_MAC_MAX_SUPPORTED_MCS_SET];
++
++	/* RX Highest Supported Data Rate defines the highest data
++	 * rate that the STA is able to receive, in unites of 1Mbps.
++	 * This value is derived from "Supported MCS Set field" inside
++	 * the HT capability element.
++	 */
++	u16 rx_highest_data_rate;
++
++	/* Indicates the Maximum MCS that can be received for each spatial
++	 * stream.
++	 */
++	u16 vht_rx_mcs_map;
++
++	/* Indicates the highest VHT data rate that the STA is able to
++	 * receive.
++	 */
++	u16 vht_rx_highest_data_rate;
++
++	/* Indicates the Maximum MCS that can be transmitted for each spatial
++	 * stream.
++	 */
++	u16 vht_tx_mcs_map;
++
++	/* Indicates the highest VHT data rate that the STA is able to
++	 * transmit.
++	 */
++	u16 vht_tx_highest_data_rate;
++} __packed;
++
+ struct wcn36xx_hal_config_sta_params_v1 {
+ 	/* BSSID of STA */
+ 	u8 bssid[ETH_ALEN];
 -- 
 2.27.0
 
