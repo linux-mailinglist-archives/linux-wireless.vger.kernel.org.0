@@ -2,150 +2,138 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F19EF23BBB3
-	for <lists+linux-wireless@lfdr.de>; Tue,  4 Aug 2020 16:05:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E5E523BD97
+	for <lists+linux-wireless@lfdr.de>; Tue,  4 Aug 2020 17:53:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728596AbgHDOAj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 4 Aug 2020 10:00:39 -0400
-Received: from mail.kernel.org ([198.145.29.99]:54014 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728678AbgHDN76 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 4 Aug 2020 09:59:58 -0400
-Received: from mail-oi1-f175.google.com (mail-oi1-f175.google.com [209.85.167.175])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 3B99622CBB;
-        Tue,  4 Aug 2020 13:59:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1596549597;
-        bh=E2bgygJ6YnJNErdqArQCjl4L6O71EKfdlktswy0gz1g=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=DGtNVHxpYgha4luyk0w0xpEnrv7R//zKbx8zb1YJHkiTQWFS/crqKiEMSJECcuATj
-         0bcA+q58yE9wjutxDhGv1C7TQROA22h52Ozc7M2Sk4dpyE1LJbAlV1jilbDVs3Fcyv
-         Hliv13uS4aMIbjuG/PGyTQl72N07kvywL/WjjzZ0=
-Received: by mail-oi1-f175.google.com with SMTP id v13so19772468oiv.13;
-        Tue, 04 Aug 2020 06:59:57 -0700 (PDT)
-X-Gm-Message-State: AOAM531bcPok7S4qDZ5dd//tRTci5DGErvzYaum4+5ks/UD8kOv1pwQZ
-        WmkdzOakMQKkLA9uuBw2oiHPhRCf82rBZWJnC6w=
-X-Google-Smtp-Source: ABdhPJy9K28J73rqwaw8sqyHjeTCf6xPw5eIPlfZNIJ6/BHFKRwVxOkMx9Cqd12y0xpIlPkFwjkELicwa2sz+O6lD+w=
-X-Received: by 2002:a05:6808:b37:: with SMTP id t23mr3607031oij.174.1596549596400;
- Tue, 04 Aug 2020 06:59:56 -0700 (PDT)
+        id S1728467AbgHDPxb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 4 Aug 2020 11:53:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42088 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728157AbgHDPxY (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 4 Aug 2020 11:53:24 -0400
+Received: from mail-lj1-x244.google.com (mail-lj1-x244.google.com [IPv6:2a00:1450:4864:20::244])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 124BEC06174A
+        for <linux-wireless@vger.kernel.org>; Tue,  4 Aug 2020 08:53:24 -0700 (PDT)
+Received: by mail-lj1-x244.google.com with SMTP id 185so33929831ljj.7
+        for <linux-wireless@vger.kernel.org>; Tue, 04 Aug 2020 08:53:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=sRCHmaRWrj71+p+/CjUrSN9Jr6wXyLPJ7hErKYgqGA4=;
+        b=D1ATvsotv6H5IFowhT8XoO+WT+quO4nRfXwAp9F5eUg+fjoZKZBIFrJ1XZBsX2foTV
+         oEAbgunCskKneycUlZmF4PXlVx/5AfiGbzjkxK5iWVC5kKIjrzdauos7gWmEMzjnENQH
+         UlSOyOis97IFwU2tAMcDjmZzGqyrFyzjraaS0v7Pos7+6PdfLmKREd7pENZzbBncH7x3
+         RHgR5a8DLpQbHExpgLZllr4eydaz2ncLY4PxaeCbq3n2brA0JffuUSsA5lqXRHb/+XWs
+         JcBxrpzv4Uyz5aAR5UlivNUT8PTJDF76kMau7tPhkuV2v5mieZDH8SRNxTxIw85Jb3oi
+         kU7Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=sRCHmaRWrj71+p+/CjUrSN9Jr6wXyLPJ7hErKYgqGA4=;
+        b=iD6vkcOQM/1kks4QxmJtsm/zUfIwZ1+qH8PQIG3BFzm1CiZXMCS0Zy5TKjWpyZkl4c
+         Hhkdsi3FHzbn0HIHCMCHqnBBQTG4lBHWkjh5o1ZgyxDUdjUhr0do0SLY05z4ZgM9YYDQ
+         /2PNOxzK9QaLwv2sEnqlv+Gl8aUr0njX9z0oYBbYLFQtWNpS+AF2Gq+Go5zuuXGzsOke
+         Jba3csKBdZH71niK6jhgJvKwhKOTbv7HYXIYBErMQw55Qn3448T2Z3H5U+6n2IfHsdi5
+         hnCS0/Ds4laKIlDDpfhQbSf4Z0wKYcBet8AwxrhvRWwmKpomstNGoj2ZZp2ye44xqJsI
+         +jyg==
+X-Gm-Message-State: AOAM533wKy5aq7/VtQDYd9IE+5tcska3empMaL2pEV8MH1USVHgYGSAm
+        lSv0yEthW1RUpdxkKFfsMoY=
+X-Google-Smtp-Source: ABdhPJyKUbPuAlHqyiBsqYSnkNd0jZU3n53Sfies6mqW6o6DKUaaz5+XHM6rhXiv4Qy5ZKk16FcnUw==
+X-Received: by 2002:a2e:9acc:: with SMTP id p12mr11116397ljj.363.1596556402524;
+        Tue, 04 Aug 2020 08:53:22 -0700 (PDT)
+Received: from [192.168.2.145] (94-29-41-50.dynamic.spd-mgts.ru. [94.29.41.50])
+        by smtp.googlemail.com with ESMTPSA id a7sm3381785ljk.2.2020.08.04.08.53.21
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 04 Aug 2020 08:53:21 -0700 (PDT)
+Subject: Re: [PATCH V2 3/6] brcmfmac: reserve 2 credits for host tx control
+ path
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
+        linux-wireless@vger.kernel.org, brcm80211-dev-list@broadcom.com,
+        brcm80211-dev-list@cypress.com,
+        Arend van Spriel <arend.vanspriel@broadcom.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Wright Feng <wright.feng@cypress.com>,
+        Amar Shankar <amsr@cypress.com>,
+        Jia-Shyr Chuang <joseph.chuang@cypress.com>
+References: <20200610152106.175257-1-chi-hsien.lin@cypress.com>
+ <20200610152106.175257-4-chi-hsien.lin@cypress.com>
+ <f0910f96-1d23-daf1-b517-363e59bff105@gmail.com>
+ <875z9yr7lg.fsf@codeaurora.org>
+From:   Dmitry Osipenko <digetx@gmail.com>
+Message-ID: <ffcf55cc-b27d-78ec-ff4f-e7efa3087712@gmail.com>
+Date:   Tue, 4 Aug 2020 18:53:20 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-References: <20200702101947.682-1-ardb@kernel.org> <20200702101947.682-5-ardb@kernel.org>
- <20200702175022.GA2753@sol.localdomain> <CAMj1kXFen1nickdZab0s8iY7SgauoH56VginEoPdxaAAL2qENw@mail.gmail.com>
- <CAMj1kXG7i1isB9cV57ccaOZhrG3s7x+nKGozzTewuE9uWvX_wg@mail.gmail.com>
- <CAMj1kXGiu5Wr8NAACBUtiJMY8rQAGCTOcQdK1QM6jgH-0Lm=YA@mail.gmail.com> <CAMj1kXHA2R1UDcYROwiLgUQCrOpNWxt-BAP0aBD=3RP4HbcOnA@mail.gmail.com>
-In-Reply-To: <CAMj1kXHA2R1UDcYROwiLgUQCrOpNWxt-BAP0aBD=3RP4HbcOnA@mail.gmail.com>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Tue, 4 Aug 2020 15:59:45 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXGrm7EFtRxx3nhE-eDhp11cDzkzow7ZcwRiW3wXBgVQyg@mail.gmail.com>
-Message-ID: <CAMj1kXGrm7EFtRxx3nhE-eDhp11cDzkzow7ZcwRiW3wXBgVQyg@mail.gmail.com>
-Subject: Re: [RFC PATCH 4/7] crypto: remove ARC4 support from the skcipher API
-To:     Eric Biggers <ebiggers@kernel.org>,
-        Denis Kenzior <denkenz@gmail.com>,
-        Marcel Holtmann <marcel@holtmann.org>
-Cc:     linux-wireless@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Trond Myklebust <trond.myklebust@hammerspace.com>,
-        Anna Schumaker <anna.schumaker@netapp.com>,
-        "J. Bruce Fields" <bfields@fieldses.org>,
-        Chuck Lever <chuck.lever@oracle.com>,
-        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
-        "open list:BPF JIT for MIPS (32-BIT AND 64-BIT)" 
-        <netdev@vger.kernel.org>, devel@driverdev.osuosl.org,
-        linux-nfs@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <875z9yr7lg.fsf@codeaurora.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sat, 25 Jul 2020 at 10:06, Ard Biesheuvel <ardb@kernel.org> wrote:
->
-> On Sat, 18 Jul 2020 at 11:18, Ard Biesheuvel <ardb@kernel.org> wrote:
-> >
-> > On Fri, 3 Jul 2020 at 02:04, Ard Biesheuvel <ardb@kernel.org> wrote:
-> > >
-> > > On Thu, 2 Jul 2020 at 20:21, Ard Biesheuvel <ardb@kernel.org> wrote:
-> > > >
-> > > > On Thu, 2 Jul 2020 at 19:50, Eric Biggers <ebiggers@kernel.org> wrote:
-> > > > >
-> > > > > [+linux-wireless, Marcel Holtmann, and Denis Kenzior]
-> > > > >
-> > > > > On Thu, Jul 02, 2020 at 12:19:44PM +0200, Ard Biesheuvel wrote:
-> > > > > > Remove the generic ecb(arc4) skcipher, which is slightly cumbersome from
-> > > > > > a maintenance perspective, since it does not quite behave like other
-> > > > > > skciphers do in terms of key vs IV lifetime. Since we are leaving the
-> > > > > > library interface in place, which is used by the various WEP and TKIP
-> > > > > > implementations we have in the tree, we can safely drop this code now
-> > > > > > it no longer has any users.
-> > > > > >
-> > > > > > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> > > > >
-> > > > > Last year there was a discussion where it was mentioned that iwd uses
-> > > > > "ecb(arc4)" via AF_ALG.  So can we really remove it yet?
-> > > > > See https://lkml.kernel.org/r/97BB95F6-4A4C-4984-9EAB-6069E19B4A4F@holtmann.org
-> > > > > Note that the code isn't in "iwd" itself but rather in "libell" which iwd
-> > > > > depends on: https://git.kernel.org/pub/scm/libs/ell/ell.git/
-> > > > >
-> > > > > Apparently it also uses md4 and ecb(des) too.
-> > > > >
-> > > >
-> > > > Ah yes, I remember now :-(
-> > > >
-> > > > > Marcel and Denis, what's your deprecation plan for these obsolete and insecure
-> > > > > algorithms?
-> > > > >
-> > > >
-> > > > Given Denis's statement:
-> > > >
-> > > >   It sounds to me like it was broken and should be fixed.  So our vote /
-> > > >   preference is to have ARC4 fixed to follow the proper semantics.  We
-> > > >   can deal with the kernel behavioral change on our end easily enough;
-> > > >   the required workarounds are the worse evil.
-> > > >
-> > > > I would think that an ABI break is not the end of the world for them,
-> > > > and given how trivial it is to implement RC4 in C, the workaround
-> > > > should be to simply implement RC4 in user space, and not even bother
-> > > > trying to use AF_ALG to get at ecb(arc4)
-> > > >
-> > > > (same applies to md4 and ecb(des) btw)
-> > > >
-> > > > There will always be a long tail of use cases, and at some point, we
-> > > > just have to draw the line and remove obsolete and insecure cruft,
-> > > > especially when it impedes progress on other fronts.
-> > > >
-> > >
-> > > I have ported iwd to Nettle's LGPL 2.1 implementation of ARC4, and the
-> > > diffstat is
-> > >
-> > >  src/crypto.c      | 80 ++++++++++++--------
-> > >  src/main.c        |  8 --
-> > >  unit/test-eapol.c |  3 +-
-> > >  3 files changed, 51 insertions(+), 40 deletions(-)
-> > >
-> > > https://git.kernel.org/pub/scm/linux/kernel/git/ardb/iwd.git/log/?h=arc4-cleanup
-> >
-> > Marcel, Denis,
-> >
-> > Do you have any objections to the ecb(arc4) skcipher being dropped
-> > from the kernel, given the fallback i proposed above (which is a much
-> > better way of doing rc4 in user space anyway)?
-> >
-> > For libell, I would suggest dropping rc4 entirely, once iwd stops
-> > relying on it, as using rc4 for tls is obsolete as well.
->
-> Ping?
+04.08.2020 14:08, Kalle Valo пишет:
+> Dmitry Osipenko <digetx@gmail.com> writes:
+> 
+>> 10.06.2020 18:21, Chi-Hsien Lin пишет:
+>>> From: Amar Shankar <amsr@cypress.com>
+>>>
+>>> It is observed that sometimes when sdiod is low in tx credits in low
+>>> rssi scenarios, the data path consumes all sdiod rx all credits and
+>>> there is no sdiod rx credit available for control path causing host
+>>> and card to go out of sync resulting in link loss between host and
+>>> card. So in order to prevent it some credits are reserved for control
+>>> path.
+>>>
+>>> Note that TXCTL_CREDITS can't be larger than the firmware default
+>>> credit update threshold 2; otherwise there will be a deadlock for both
+>>> side waiting for each other.
+>>>
+>>> Signed-off-by: Amar Shankar <amsr@cypress.com>
+>>> Signed-off-by: Jia-Shyr Chuang <joseph.chuang@cypress.com>
+>>> Signed-off-by: Chi-Hsien Lin <chi-hsien.lin@cypress.com>
+> 
+> [...]
+> 
+>> This patch causes a severe WiFi performance regression on BCM4329.
+>> Please fix or revert this patch, thanks in advance.
+>>
+>> Before this patch:
+>> - - - - - - - - - - - - - - - - - - - - - - - - -
+>> [ ID] Interval           Transfer     Bitrate         Retr
+>> [  5]   0.00-10.00  sec  17.2 MBytes  14.4 Mbits/sec    0             sender
+>> [  5]   0.00-10.04  sec  16.9 MBytes  14.1 Mbits/sec
+>> receiver
+>>
+>>
+>> After this patch:
+>> - - - - - - - - - - - - - - - - - - - - - - - - -
+>> [ ID] Interval           Transfer     Bitrate         Retr
+>> [  5]   0.00-10.00  sec  1.05 MBytes   881 Kbits/sec    3             sender
+>> [  5]   0.00-14.01  sec   959 KBytes   561 Kbits/sec
+>> receiver
+> 
+> Can someone please send a revert patch (with the explanation above) if a
+> fix is not quickly found? The commit id is:
+> 
+> commit b41c232d33666191a1db11befc0f040fcbe664e9
+> Author:     Amar Shankar <amsr@cypress.com>
+> AuthorDate: Wed Jun 10 10:21:03 2020 -0500
+> Commit:     Kalle Valo <kvalo@codeaurora.org>
+> CommitDate: Tue Jul 14 12:46:43 2020 +0300
+> 
+>     brcmfmac: reserve 2 credits for host tx control path
+> 
 
-Denis was kind enough to take the changes to iwd and libell that
-remove all dependencies on the ecb(arc4) skcipher exposed by the
-kernel, so we can at least deprecate it in the short term, and
-hopefully remove it entirely at a later stage.
+Hello Kalle,
 
-Perhaps we should introduce a Kconfig symbol that needs to be set to
-enable deprecated algorithms? That way, we can work with the distros
-to phase out the old junk that is piling up, but in a way that doesn't
-break people's systems.
+I'll send the revert if nobody will stand up to address the problem in a
+two weeks, thanks.
