@@ -2,76 +2,143 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3ADB323C6F4
-	for <lists+linux-wireless@lfdr.de>; Wed,  5 Aug 2020 09:31:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0CAE323C75B
+	for <lists+linux-wireless@lfdr.de>; Wed,  5 Aug 2020 10:05:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726640AbgHEHbM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 5 Aug 2020 03:31:12 -0400
-Received: from mail-il1-f198.google.com ([209.85.166.198]:36061 "EHLO
-        mail-il1-f198.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725930AbgHEHbJ (ORCPT
+        id S1728138AbgHEIFi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 5 Aug 2020 04:05:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49908 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728022AbgHEICl (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 5 Aug 2020 03:31:09 -0400
-Received: by mail-il1-f198.google.com with SMTP id o191so30209987ila.3
-        for <linux-wireless@vger.kernel.org>; Wed, 05 Aug 2020 00:31:08 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:date:in-reply-to:message-id:subject
-         :from:to;
-        bh=UAjlV35CqUYg8Wq8iE9joWFodTfiF9zQm++Jk44fcSY=;
-        b=hRIi0+KUt5YStJH6KIDfPbUo5vPW8tYECy19Rgf9iAH6ALACiwYsZNyUeHmyWHTVFv
-         pNNQg0TEfqgYI+mJoLsx0raWtJkub0j3OgW5wgQn7sww0O3wsQ/HQQMt6defEjZuveUD
-         lATiqBoAPwY+80huIdUvr0bljDgIlacNNmsoL6VlPF9c+u0T6XcYJ/ljxUDWTo3KkFNr
-         +xDUj47vlDCocK+Ep5wWePN50vTR003Z/V2SyIHJQxUnsZk/6SsUdlCrcHuyAsRFbQ8z
-         QerJX6py+RT5Ki+mDrqWtlzNdRn48zbgKSLTml1ZgwTxUC1u5q2ZXffvr59PnA4xtkcs
-         yGYw==
-X-Gm-Message-State: AOAM530GJ8P//qHO6q7Ol3zB6kdHCLfCxqhE7SSkxJA8+ZFce9dnnddQ
-        ArnfVH8CexdcHayqaSVQSlKVu2H/8FTzvRwdpNShLFA4NrFf
-X-Google-Smtp-Source: ABdhPJydINKXG6kk6Rt5Q7YptVJc6WU2HIGHbqBbyEup0nCj4eB/muV9ogT+bIQJk1+5SdRMqrFrePgB51/EIuvRRPKG7IPv2d9A
+        Wed, 5 Aug 2020 04:02:41 -0400
+Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95715C061757
+        for <linux-wireless@vger.kernel.org>; Wed,  5 Aug 2020 01:02:34 -0700 (PDT)
+Received: from [134.101.151.222] (helo=localhost.localdomain)
+        by ds12 with esmtpa (Exim 4.89)
+        (envelope-from <john@phrozen.org>)
+        id 1k3ENZ-00045x-BM; Wed, 05 Aug 2020 10:02:29 +0200
+From:   John Crispin <john@phrozen.org>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
+        John Crispin <john@phrozen.org>
+Subject: [PATCH V3 1/5] nl80211: rename csa counter attributes countdown counters
+Date:   Wed,  5 Aug 2020 10:02:16 +0200
+Message-Id: <20200805080220.2884582-1-john@phrozen.org>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-X-Received: by 2002:a92:1b5b:: with SMTP id b88mr2679375ilb.104.1596612668103;
- Wed, 05 Aug 2020 00:31:08 -0700 (PDT)
-Date:   Wed, 05 Aug 2020 00:31:08 -0700
-In-Reply-To: <000000000000a39e4905abeb193f@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <000000000000ed214e05ac1c5ae8@google.com>
-Subject: Re: general protection fault in hci_phy_link_complete_evt
-From:   syzbot <syzbot+18e38290a2a263b31aa0@syzkaller.appspotmail.com>
-To:     a@unstable.cc, b.a.t.m.a.n@lists.open-mesh.org,
-        davem@davemloft.net, johan.hedberg@gmail.com,
-        johannes.berg@intel.com, johannes@sipsolutions.net,
-        kuba@kernel.org, kvalo@codeaurora.org,
-        linux-bluetooth@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-wireless@vger.kernel.org, linux@armlinux.org.uk,
-        marcel@holtmann.org, mareklindner@neomailbox.ch,
-        netdev@vger.kernel.org, sw@simonwunderlich.de,
-        syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-syzbot has bisected this issue to:
+We want to reuse the attributes for other counters such as BSS color
+change. Rename them to more generic names.
 
-commit b59abfbed638037f3b51eeb73266892cd2df177f
-Author: Johannes Berg <johannes.berg@intel.com>
-Date:   Thu Sep 15 13:30:03 2016 +0000
+Signed-off-by: John Crispin <john@phrozen.org>
+---
+ include/uapi/linux/nl80211.h | 14 ++++++++------
+ net/wireless/nl80211.c       | 16 ++++++++--------
+ 2 files changed, 16 insertions(+), 14 deletions(-)
 
-    mac80211_hwsim: statically initialize hwsim_radios list
+diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
+index 631f3a997b3c..bccd16f743b9 100644
+--- a/include/uapi/linux/nl80211.h
++++ b/include/uapi/linux/nl80211.h
+@@ -2082,10 +2082,10 @@ enum nl80211_commands {
+  *	operation).
+  * @NL80211_ATTR_CSA_IES: Nested set of attributes containing the IE information
+  *	for the time while performing a channel switch.
+- * @NL80211_ATTR_CSA_C_OFF_BEACON: An array of offsets (u16) to the channel
+- *	switch counters in the beacons tail (%NL80211_ATTR_BEACON_TAIL).
+- * @NL80211_ATTR_CSA_C_OFF_PRESP: An array of offsets (u16) to the channel
+- *	switch counters in the probe response (%NL80211_ATTR_PROBE_RESP).
++ * @NL80211_ATTR_CNTDWN_OFFS_BEACON: An array of offsets (u16) to the channel
++ *	switch or color change counters in the beacons tail (%NL80211_ATTR_BEACON_TAIL).
++ * @NL80211_ATTR_CNTDWN_OFFS_PRESP: An array of offsets (u16) to the channel
++ *	switch or color change counters in the probe response (%NL80211_ATTR_PROBE_RESP).
+  *
+  * @NL80211_ATTR_RXMGMT_FLAGS: flags for nl80211_send_mgmt(), u32.
+  *	As specified in the &enum nl80211_rxmgmt_flags.
+@@ -2821,8 +2821,8 @@ enum nl80211_attrs {
+ 	NL80211_ATTR_CH_SWITCH_COUNT,
+ 	NL80211_ATTR_CH_SWITCH_BLOCK_TX,
+ 	NL80211_ATTR_CSA_IES,
+-	NL80211_ATTR_CSA_C_OFF_BEACON,
+-	NL80211_ATTR_CSA_C_OFF_PRESP,
++	NL80211_ATTR_CNTDWN_OFFS_BEACON,
++	NL80211_ATTR_CNTDWN_OFFS_PRESP,
+ 
+ 	NL80211_ATTR_RXMGMT_FLAGS,
+ 
+@@ -3009,6 +3009,8 @@ enum nl80211_attrs {
+ #define	NL80211_ATTR_MESH_PARAMS NL80211_ATTR_MESH_CONFIG
+ #define NL80211_ATTR_IFACE_SOCKET_OWNER NL80211_ATTR_SOCKET_OWNER
+ #define NL80211_ATTR_SAE_DATA NL80211_ATTR_AUTH_DATA
++#define NL80211_ATTR_CSA_C_OFF_BEACON NL80211_ATTR_CNTDWN_OFFS_BEACON
++#define NL80211_ATTR_CSA_C_OFF_PRESP NL80211_ATTR_CNTDWN_OFFS_PRESP
+ 
+ /*
+  * Allow user space programs to use #ifdef on new attributes by defining them
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index a096682ec0ad..5622e9f012ca 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -567,8 +567,8 @@ static const struct nla_policy nl80211_policy[NUM_NL80211_ATTR] = {
+ 	[NL80211_ATTR_CH_SWITCH_COUNT] = { .type = NLA_U32 },
+ 	[NL80211_ATTR_CH_SWITCH_BLOCK_TX] = { .type = NLA_FLAG },
+ 	[NL80211_ATTR_CSA_IES] = { .type = NLA_NESTED },
+-	[NL80211_ATTR_CSA_C_OFF_BEACON] = { .type = NLA_BINARY },
+-	[NL80211_ATTR_CSA_C_OFF_PRESP] = { .type = NLA_BINARY },
++	[NL80211_ATTR_CNTDWN_OFFS_BEACON] = { .type = NLA_BINARY },
++	[NL80211_ATTR_CNTDWN_OFFS_PRESP] = { .type = NLA_BINARY },
+ 	[NL80211_ATTR_STA_SUPPORTED_CHANNELS] = { .type = NLA_BINARY },
+ 	[NL80211_ATTR_STA_SUPPORTED_OPER_CLASSES] = { .type = NLA_BINARY },
+ 	[NL80211_ATTR_HANDLE_DFS] = { .type = NLA_FLAG },
+@@ -8787,10 +8787,10 @@ static int nl80211_channel_switch(struct sk_buff *skb, struct genl_info *info)
+ 	if (err)
+ 		return err;
+ 
+-	if (!csa_attrs[NL80211_ATTR_CSA_C_OFF_BEACON])
++	if (!csa_attrs[NL80211_ATTR_CNTDWN_OFFS_BEACON])
+ 		return -EINVAL;
+ 
+-	len = nla_len(csa_attrs[NL80211_ATTR_CSA_C_OFF_BEACON]);
++	len = nla_len(csa_attrs[NL80211_ATTR_CNTDWN_OFFS_BEACON]);
+ 	if (!len || (len % sizeof(u16)))
+ 		return -EINVAL;
+ 
+@@ -8801,7 +8801,7 @@ static int nl80211_channel_switch(struct sk_buff *skb, struct genl_info *info)
+ 		return -EINVAL;
+ 
+ 	params.counter_offsets_beacon =
+-		nla_data(csa_attrs[NL80211_ATTR_CSA_C_OFF_BEACON]);
++		nla_data(csa_attrs[NL80211_ATTR_CNTDWN_OFFS_BEACON]);
+ 
+ 	/* sanity checks - counters should fit and be the same */
+ 	for (i = 0; i < params.n_counter_offsets_beacon; i++) {
+@@ -8814,8 +8814,8 @@ static int nl80211_channel_switch(struct sk_buff *skb, struct genl_info *info)
+ 			return -EINVAL;
+ 	}
+ 
+-	if (csa_attrs[NL80211_ATTR_CSA_C_OFF_PRESP]) {
+-		len = nla_len(csa_attrs[NL80211_ATTR_CSA_C_OFF_PRESP]);
++	if (csa_attrs[NL80211_ATTR_CNTDWN_OFFS_PRESP]) {
++		len = nla_len(csa_attrs[NL80211_ATTR_CNTDWN_OFFS_PRESP]);
+ 		if (!len || (len % sizeof(u16)))
+ 			return -EINVAL;
+ 
+@@ -8826,7 +8826,7 @@ static int nl80211_channel_switch(struct sk_buff *skb, struct genl_info *info)
+ 			return -EINVAL;
+ 
+ 		params.counter_offsets_presp =
+-			nla_data(csa_attrs[NL80211_ATTR_CSA_C_OFF_PRESP]);
++			nla_data(csa_attrs[NL80211_ATTR_CNTDWN_OFFS_PRESP]);
+ 
+ 		/* sanity checks - counters should fit and be the same */
+ 		for (i = 0; i < params.n_counter_offsets_presp; i++) {
+-- 
+2.25.1
 
-bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=15dd5f98900000
-start commit:   c0842fbc random32: move the pseudo-random 32-bit definitio..
-git tree:       upstream
-final oops:     https://syzkaller.appspot.com/x/report.txt?x=17dd5f98900000
-console output: https://syzkaller.appspot.com/x/log.txt?x=13dd5f98900000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=cf567e8c7428377e
-dashboard link: https://syzkaller.appspot.com/bug?extid=18e38290a2a263b31aa0
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=17e4e094900000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1143e7ca900000
-
-Reported-by: syzbot+18e38290a2a263b31aa0@syzkaller.appspotmail.com
-Fixes: b59abfbed638 ("mac80211_hwsim: statically initialize hwsim_radios list")
-
-For information about bisection process see: https://goo.gl/tpsmEJ#bisection
