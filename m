@@ -2,262 +2,166 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D7D423C757
-	for <lists+linux-wireless@lfdr.de>; Wed,  5 Aug 2020 10:05:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3435B23C7B0
+	for <lists+linux-wireless@lfdr.de>; Wed,  5 Aug 2020 10:24:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728068AbgHEIDZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 5 Aug 2020 04:03:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49904 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728021AbgHEICl (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 5 Aug 2020 04:02:41 -0400
-Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7EE81C06174A
-        for <linux-wireless@vger.kernel.org>; Wed,  5 Aug 2020 01:02:34 -0700 (PDT)
-Received: from [134.101.151.222] (helo=localhost.localdomain)
-        by ds12 with esmtpa (Exim 4.89)
-        (envelope-from <john@phrozen.org>)
-        id 1k3ENa-00045x-7G; Wed, 05 Aug 2020 10:02:30 +0200
-From:   John Crispin <john@phrozen.org>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
-        John Crispin <john@phrozen.org>
-Subject: [PATCH V3 5/5] ath11k: add support for BSS coloring
-Date:   Wed,  5 Aug 2020 10:02:20 +0200
-Message-Id: <20200805080220.2884582-5-john@phrozen.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200805080220.2884582-1-john@phrozen.org>
-References: <20200805080220.2884582-1-john@phrozen.org>
-MIME-Version: 1.0
+        id S1725920AbgHEIYZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 5 Aug 2020 04:24:25 -0400
+Received: from mail-eopbgr690109.outbound.protection.outlook.com ([40.107.69.109]:20878
+        "EHLO NAM04-CO1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725809AbgHEIYW (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 5 Aug 2020 04:24:22 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=EGeeXov8Q5e+nSeoObn624lSqYVsJ9Cayyp3G4dYX3bl/t+EHDpk5S7gXVZVRNQPZiUuVUV45wwaQSDMSixSk/lZ75hGcc63DtbtkhIEmCfrkdGTUwO7DSeXqLS9dCkl6Ntw2er6Z+VuMjWjyDj/SUX+yBcVw7Rv7d7Z1O11pai8bhvqUg/3kBqiExl5pGvMgAlTCwsB3rvJNmTkQGNOIzFCX85H3z3NUp0ytuJRqW5f9wqOS4yXUCjtnIerbojvf7o4QJh5nSUzmH2z7uD/BLbZt0FXp/rQyQglfDfbzAbTym7ulLIykk2HzwkqvBbvGu/ZzlRJAfJSKlcuR6YqAg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=6OUAOc0BXkK6IzShTCFvT1f3frmVGm8y+xF+U53ev+8=;
+ b=JYFpCE2GgDzdhJNZN6UqTT0pXZ6EabJHyuNdgSdaCFi6O0SN6IM0/EuAOUdjq/AbnccvtW1HRrEkuznm9IxQhjKqRG2HmLC7QowikXmQCsaI78JcWzqOI3sI563tonA6wkiqf+f8EyobLfAtAs9A9I+VYjCw2vi8hUVCGKrmrgEp6u2SjskvHsUueNEytc1WHbv1JqVaSJm6lQ1aqkQdJUL5GKaSdTdjAUfCbSa6bU9i1gvzr6aqOjP5FD+3+Fzqhnc9gUQTmaGwNkRESE+8gijaQM3JXKK+UUyZFZIph1/vCYzL3jVV4NdafkBkxnZ0+oixqIAk2cW8B/Q6DGcM2Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=cypress.com; dmarc=pass action=none header.from=cypress.com;
+ dkim=pass header.d=cypress.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cypress.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=6OUAOc0BXkK6IzShTCFvT1f3frmVGm8y+xF+U53ev+8=;
+ b=HZxNogwq9ikdPT8/WigtbsMKfLne291vUi9lOG7SNQ2KLqoTuKql6rgKdikheEQm9aZc0SfjT+BH/9/pAkLBHUnEsKZvQV16KkIPrgx+2R3JXAO4G+3Azn8BoEzqR2Wd4UOQH+cK+hPbLRtKg2LeGwbBZAW6Y/XNo4oW0/DORFk=
+Authentication-Results: cypress.com; dkim=none (message not signed)
+ header.d=none;cypress.com; dmarc=none action=none header.from=cypress.com;
+Received: from BYAPR06MB4901.namprd06.prod.outlook.com (2603:10b6:a03:7a::30)
+ by BYAPR06MB4550.namprd06.prod.outlook.com (2603:10b6:a03:4b::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3239.21; Wed, 5 Aug
+ 2020 08:24:17 +0000
+Received: from BYAPR06MB4901.namprd06.prod.outlook.com
+ ([fe80::51af:1a1b:a341:3dc8]) by BYAPR06MB4901.namprd06.prod.outlook.com
+ ([fe80::51af:1a1b:a341:3dc8%5]) with mapi id 15.20.3239.022; Wed, 5 Aug 2020
+ 08:24:17 +0000
+Subject: Re: [PATCH V2 3/6] brcmfmac: reserve 2 credits for host tx control
+ path
+To:     Kalle Valo <kvalo@codeaurora.org>,
+        Dmitry Osipenko <digetx@gmail.com>
+Cc:     linux-wireless@vger.kernel.org, brcm80211-dev-list@broadcom.com,
+        brcm80211-dev-list@cypress.com,
+        Arend van Spriel <arend.vanspriel@broadcom.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Wright Feng <wright.feng@cypress.com>,
+        Amar Shankar <amsr@cypress.com>,
+        Jia-Shyr Chuang <joseph.chuang@cypress.com>
+References: <20200610152106.175257-1-chi-hsien.lin@cypress.com>
+ <20200610152106.175257-4-chi-hsien.lin@cypress.com>
+ <f0910f96-1d23-daf1-b517-363e59bff105@gmail.com>
+ <875z9yr7lg.fsf@codeaurora.org>
+ <ffcf55cc-b27d-78ec-ff4f-e7efa3087712@gmail.com>
+ <87a6zapbqp.fsf@codeaurora.org>
+From:   Chi-Hsien Lin <chi-hsien.lin@cypress.com>
+Message-ID: <0923f45f-03e3-a870-3d2a-35f982482e1a@cypress.com>
+Date:   Wed, 5 Aug 2020 16:24:08 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.11.0
+In-Reply-To: <87a6zapbqp.fsf@codeaurora.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+X-ClientProxiedBy: TYCPR01CA0001.jpnprd01.prod.outlook.com (2603:1096:405::13)
+ To BYAPR06MB4901.namprd06.prod.outlook.com (2603:10b6:a03:7a::30)
+MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from [192.168.5.4] (122.116.94.118) by TYCPR01CA0001.jpnprd01.prod.outlook.com (2603:1096:405::13) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3239.17 via Frontend Transport; Wed, 5 Aug 2020 08:24:15 +0000
+X-Originating-IP: [122.116.94.118]
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-HT: Tenant
+X-MS-Office365-Filtering-Correlation-Id: b9890787-1f4a-48a8-b83f-08d83918f198
+X-MS-TrafficTypeDiagnostic: BYAPR06MB4550:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <BYAPR06MB455038AE83A728FBE85E4233BB4B0@BYAPR06MB4550.namprd06.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:7691;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: ifXAejOJl6tzphGwBAfnY37LwMuKvGUMFoA7Updr+8yEnLoUIzzeWjcYlS0afEwQCq3BVHMuTb4R5ccNAxLf6c2jNfJP/vhVFfFETaSOnRMg4T/DnsWFutXyiVX7PFppNuzXc2k3X6iIOJYFmHVHAMbDusb29V82Jh46fPNOI4X4P8M3UFEhGUkz44EIDeRCR0bX6ULYIWBYk86a0kurvzmNHQEmoqTpJemRBarrPFyUunifEo4YLnTmYyFAy4r9FcyHzfOMGfIJOInKLDjELk8ShlbAfy5U/yvZHMwHG3mNn2cmHKYN8gKIK9lvflv9++4xYdqUjX+sWp4x7rshFK2NHe8o1M91W8mq1FOgPNVbF5w9UO/OiqBwyJTQS7fG
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR06MB4901.namprd06.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(4636009)(346002)(376002)(136003)(39860400002)(396003)(366004)(956004)(8936002)(110136005)(54906003)(316002)(31686004)(5660300002)(8676002)(16576012)(2906002)(36756003)(66946007)(52116002)(66476007)(2616005)(53546011)(66556008)(83380400001)(186003)(16526019)(6486002)(6666004)(86362001)(26005)(31696002)(107886003)(4326008)(478600001)(43740500002);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData: fSlD8slcZ8blehwPJ4TPNNJVOIfBKgJTBDP/nB4dtiDlBK6QiO14ItS9zKQYt703xgH734y0+MJBlNeRmqauWuvfTKz7QP2A+irbFSr3Stp67jf2i164SzgcOaVMa+U2cprqxhWZiNSmK/k4RKJXxiJtkdgeE2JgnOXtB8ssFTiw9iizGeJ1SnYlW1OqwEWaB93y5Pxe7FKNXSxWJC6trSRW66KtMxTvUWIBCwnDa0UEeOUASbNvwzLsG+cVZra9cY2XZbujqifKsRWJn1rf5ayxQaYSHfRn2+0+Axha78wVjGCIKQgtIjZaP1zZbOgFax7/KUc/h3XGsWVeVoBQIOn5XGY3g3oOIoKmFo+Zueh3g9NrRiZVlGAXVHKjI89QZrNOvpM7tvAX5sJ24XVTi9u7sO8x6pCqPF+FJHq1nz/xajgQ9JFed+4ku8BRldHBCd9fLtf95RM9tP8ocwk1eIkcM9+tf7N7kQqva3DA6PdBv40VpnqVRp8IiEkWLBR8D+Cm3Q45wTSmb5lvw+ltjlaHiOPgqAY6P1+ZnSubPqtfOmZ+HCSJBBsELynTo3f852u4f6CSQChxlFQacl+Gb1TC15Qi/xDecpJzypvVZRdfT7K5FhEvVzTl+mezSo0aeDl1ynCqprNQ3DeFac0fEQ==
+X-OriginatorOrg: cypress.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b9890787-1f4a-48a8-b83f-08d83918f198
+X-MS-Exchange-CrossTenant-AuthSource: BYAPR06MB4901.namprd06.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Aug 2020 08:24:17.1959
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 011addfc-2c09-450d-8938-e0bbc2dd2376
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: +5vd+z9Xu/hdONBqkfaz60GYsZpwgsWUGXUOU2+OO/4B3rcSq1OW+rZSh9OERasjAQ5adjNuoleaqFdjQ1N6hg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR06MB4550
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Whenever the MAC detects a color collision or any of its associated station
-detects one the FW will send out an event. Add the code to parse and handle
-this event. and pass the data up to mac80211.
 
-The FW does not provide an offload feature such as the one used for CSA. The
-CCA process is hence triggered via the beacon offload tx completion events
-sent out by the FW.
+On 8/5/2020 1:22 AM, Kalle Valo wrote:
+> Dmitry Osipenko <digetx@gmail.com> writes:
+>
+>> 04.08.2020 14:08, Kalle Valo пишет:
+>>> Dmitry Osipenko <digetx@gmail.com> writes:
+>>>
+>>>> 10.06.2020 18:21, Chi-Hsien Lin пишет:
+>>>>> From: Amar Shankar <amsr@cypress.com>
+>>>>>
+>>>>> It is observed that sometimes when sdiod is low in tx credits in low
+>>>>> rssi scenarios, the data path consumes all sdiod rx all credits and
+>>>>> there is no sdiod rx credit available for control path causing host
+>>>>> and card to go out of sync resulting in link loss between host and
+>>>>> card. So in order to prevent it some credits are reserved for control
+>>>>> path.
+>>>>>
+>>>>> Note that TXCTL_CREDITS can't be larger than the firmware default
+>>>>> credit update threshold 2; otherwise there will be a deadlock for both
+>>>>> side waiting for each other.
+>>>>>
+>>>>> Signed-off-by: Amar Shankar <amsr@cypress.com>
+>>>>> Signed-off-by: Jia-Shyr Chuang <joseph.chuang@cypress.com>
+>>>>> Signed-off-by: Chi-Hsien Lin <chi-hsien.lin@cypress.com>
+>>> [...]
+>>>
+>>>> This patch causes a severe WiFi performance regression on BCM4329.
+>>>> Please fix or revert this patch, thanks in advance.
+>>>>
+>>>> Before this patch:
+>>>> - - - - - - - - - - - - - - - - - - - - - - - - -
+>>>> [ ID] Interval           Transfer     Bitrate         Retr
+>>>> [  5]   0.00-10.00  sec  17.2 MBytes  14.4 Mbits/sec    0             sender
+>>>> [  5]   0.00-10.04  sec  16.9 MBytes  14.1 Mbits/sec
+>>>> receiver
+>>>>
+>>>>
+>>>> After this patch:
+>>>> - - - - - - - - - - - - - - - - - - - - - - - - -
+>>>> [ ID] Interval           Transfer     Bitrate         Retr
+>>>> [  5]   0.00-10.00  sec  1.05 MBytes   881 Kbits/sec    3             sender
+>>>> [  5]   0.00-14.01  sec   959 KBytes   561 Kbits/sec
+>>>> receiver
+>>> Can someone please send a revert patch (with the explanation above) if a
+>>> fix is not quickly found? The commit id is:
+>>>
+>>> commit b41c232d33666191a1db11befc0f040fcbe664e9
+>>> Author:     Amar Shankar <amsr@cypress.com>
+>>> AuthorDate: Wed Jun 10 10:21:03 2020 -0500
+>>> Commit:     Kalle Valo <kvalo@codeaurora.org>
+>>> CommitDate: Tue Jul 14 12:46:43 2020 +0300
+>>>
+>>>      brcmfmac: reserve 2 credits for host tx control path
+>>>
+>> Hello Kalle,
+>>
+>> I'll send the revert if nobody will stand up to address the problem in a
+>> two weeks, thanks.
+> Thanks. Then I should be able to get the revert to v5.9 so that the
+> release won't be broken. (v5.8 is unaffected)
 
-Signed-off-by: John Crispin <john@phrozen.org>
----
- drivers/net/wireless/ath/ath11k/mac.c | 36 +++++++++++++++++
- drivers/net/wireless/ath/ath11k/mac.h |  1 +
- drivers/net/wireless/ath/ath11k/wmi.c | 57 +++++++++++++++++++++++++++
- drivers/net/wireless/ath/ath11k/wmi.h | 14 +++++++
- 4 files changed, 108 insertions(+)
+Dmitry/Kalle,
 
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index 94ae2b9ea663..3c034e8428a2 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -815,6 +815,22 @@ static int ath11k_mac_setup_bcn_tmpl(struct ath11k_vif *arvif)
- 	return ret;
- }
- 
-+void ath11k_mac_bcn_tx_event(struct ath11k_vif *arvif)
-+{
-+	struct ieee80211_vif *vif = arvif->vif;
-+
-+	if (!vif->cca_active)
-+		return;
-+
-+	if (ieee80211_beacon_cntdwn_is_complete(vif)) {
-+		ieee80211_cca_finish(vif);
-+		return;
-+	}
-+
-+	ieee80211_beacon_update_cntdwn(vif);
-+	ath11k_mac_setup_bcn_tmpl(arvif);
-+}
-+
- static void ath11k_control_beaconing(struct ath11k_vif *arvif,
- 				     struct ieee80211_bss_conf *info)
- {
-@@ -2076,6 +2092,24 @@ static void ath11k_mac_op_bss_info_changed(struct ieee80211_hw *hw,
- 			if (ret)
- 				ath11k_warn(ar->ab, "failed to set bss color collision on vdev %i: %d\n",
- 					    arvif->vdev_id,  ret);
-+
-+			param_id = WMI_VDEV_PARAM_BSS_COLOR;
-+			if (info->he_bss_color.enabled)
-+				param_value = info->he_bss_color.color <<
-+						IEEE80211_HE_OPERATION_BSS_COLOR_OFFSET;
-+			else
-+				param_value = IEEE80211_HE_OPERATION_BSS_COLOR_DISABLED;
-+
-+			ret = ath11k_wmi_vdev_set_param_cmd(ar, arvif->vdev_id,
-+							    param_id,
-+							    param_value);
-+			if (ret)
-+				ath11k_warn(ar->ab,
-+					    "failed to set bss color param on vdev %i: %d\n",
-+					    arvif->vdev_id,  ret);
-+
-+			ath11k_info(ar->ab, "bss color param 0x%x set on vdev %i\n",
-+				    param_value, arvif->vdev_id);
- 		} else if (vif->type == NL80211_IFTYPE_STATION) {
- 			ret = ath11k_wmi_send_bss_color_change_enable_cmd(ar,
- 									  arvif->vdev_id,
-@@ -6065,6 +6099,8 @@ static int __ath11k_mac_register(struct ath11k *ar)
- 	ar->hw->wiphy->features |= NL80211_FEATURE_AP_MODE_CHAN_WIDTH_CHANGE |
- 				   NL80211_FEATURE_AP_SCAN;
- 
-+	ar->hw->wiphy->flags |= WIPHY_FLAG_SUPPORTS_BSS_COLOR;
-+
- 	ar->max_num_stations = TARGET_NUM_STATIONS;
- 	ar->max_num_peers = TARGET_NUM_PEERS_PDEV;
- 
-diff --git a/drivers/net/wireless/ath/ath11k/mac.h b/drivers/net/wireless/ath/ath11k/mac.h
-index 0607479774a9..55978744e170 100644
---- a/drivers/net/wireless/ath/ath11k/mac.h
-+++ b/drivers/net/wireless/ath/ath11k/mac.h
-@@ -146,4 +146,5 @@ int ath11k_mac_tx_mgmt_pending_free(int buf_id, void *skb, void *ctx);
- u8 ath11k_mac_bw_to_mac80211_bw(u8 bw);
- enum ath11k_supported_bw ath11k_mac_mac80211_bw_to_ath11k_bw(enum rate_info_bw bw);
- enum hal_encrypt_type ath11k_dp_tx_get_encrypt_type(u32 cipher);
-+void ath11k_mac_bcn_tx_event(struct ath11k_vif *arvif);
- #endif
-diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
-index 9fffa37f1e2e..01931e838b4e 100644
---- a/drivers/net/wireless/ath/ath11k/wmi.c
-+++ b/drivers/net/wireless/ath/ath11k/wmi.c
-@@ -122,6 +122,8 @@ static const struct wmi_tlv_policy wmi_tlv_policies[] = {
- 		= { .min_len = sizeof(struct wmi_stats_event) },
- 	[WMI_TAG_PDEV_CTL_FAILSAFE_CHECK_EVENT]
- 		= { .min_len = sizeof(struct wmi_pdev_ctl_failsafe_chk_event) },
-+	[WMI_TAG_OBSS_COLOR_COLLISION_EVT]
-+		= { .min_len = sizeof(struct wmi_obss_color_collision_event) },
- };
- 
- #define PRIMAP(_hw_mode_) \
-@@ -3058,6 +3060,49 @@ int ath11k_wmi_send_bss_color_change_enable_cmd(struct ath11k *ar, u32 vdev_id,
- 	return ret;
- }
- 
-+static void
-+ath11k_wmi_obss_color_collision_event(struct ath11k_base *ab, struct sk_buff *skb)
-+{
-+	const void **tb;
-+	const struct wmi_obss_color_collision_event *ev;
-+	struct ath11k_vif *arvif;
-+	int ret;
-+
-+	tb = ath11k_wmi_tlv_parse_alloc(ab, skb->data, skb->len, GFP_ATOMIC);
-+	if (IS_ERR(tb)) {
-+		ret = PTR_ERR(tb);
-+		ath11k_warn(ab, "failed to parse tlv: %d\n", ret);
-+		return;
-+	}
-+
-+	ev = tb[WMI_TAG_OBSS_COLOR_COLLISION_EVT];
-+	if (!ev) {
-+		ath11k_warn(ab, "failed to fetch obss color collision ev");
-+		goto exit;
-+	}
-+
-+	arvif = ath11k_mac_get_arvif_by_vdev_id(ab, ev->vdev_id);
-+	switch (ev->evt_type) {
-+	case WMI_BSS_COLOR_COLLISION_DETECTION:
-+		break;
-+	case WMI_BSS_COLOR_COLLISION_DISABLE:
-+	case WMI_BSS_COLOR_FREE_SLOT_TIMER_EXPIRY:
-+	case WMI_BSS_COLOR_FREE_SLOT_AVAILABLE:
-+		goto exit;
-+	default:
-+		ath11k_warn(ab, "received unknown obss color collision detetction event\n");
-+		goto exit;
-+	}
-+
-+	ieeee80211_obss_color_collision_notify(arvif->vif, ev->obss_color_bitmap);
-+
-+	ath11k_dbg(ab, ATH11K_DBG_WMI,
-+		   "OBSS color collision detected vdev:%d, event:%d, bitmap:%08llx\n",
-+		   ev->vdev_id, ev->evt_type, ev->obss_color_bitmap);
-+exit:
-+	kfree(tb);
-+}
-+
- static void
- ath11k_fill_band_to_mac_param(struct ath11k_base  *soc,
- 			      struct wmi_host_pdev_band_to_mac *band_to_mac)
-@@ -5638,6 +5683,7 @@ static void ath11k_vdev_start_resp_event(struct ath11k_base *ab, struct sk_buff
- 
- static void ath11k_bcn_tx_status_event(struct ath11k_base *ab, struct sk_buff *skb)
- {
-+	struct ath11k_vif *arvif;
- 	u32 vdev_id, tx_status;
- 
- 	if (ath11k_pull_bcn_tx_status_ev(ab, skb->data, skb->len,
-@@ -5645,6 +5691,14 @@ static void ath11k_bcn_tx_status_event(struct ath11k_base *ab, struct sk_buff *s
- 		ath11k_warn(ab, "failed to extract bcn tx status");
- 		return;
- 	}
-+
-+	arvif = ath11k_mac_get_arvif_by_vdev_id(ab, vdev_id);
-+	if (!arvif) {
-+		ath11k_warn(ab, "invalid vdev id %d in bcn_tx_status",
-+			    vdev_id);
-+		return;
-+	}
-+	ath11k_mac_bcn_tx_event(arvif);
- }
- 
- static void ath11k_vdev_stopped_event(struct ath11k_base *ab, struct sk_buff *skb)
-@@ -6523,6 +6577,9 @@ static void ath11k_wmi_tlv_op_rx(struct ath11k_base *ab, struct sk_buff *skb)
- 	case WMI_PDEV_DMA_RING_BUF_RELEASE_EVENTID:
- 		ath11k_wmi_pdev_dma_ring_buf_release_event(ab, skb);
- 		break;
-+	case WMI_OBSS_COLOR_COLLISION_DETECTION_EVENTID:
-+		ath11k_wmi_obss_color_collision_event(ab, skb);
-+		break;
- 	/* add Unsupported events here */
- 	case WMI_TBTTOFFSET_EXT_UPDATE_EVENTID:
- 	case WMI_VDEV_DELETE_RESP_EVENTID:
-diff --git a/drivers/net/wireless/ath/ath11k/wmi.h b/drivers/net/wireless/ath/ath11k/wmi.h
-index 5a32ba0eb4f5..4f7078369b3c 100644
---- a/drivers/net/wireless/ath/ath11k/wmi.h
-+++ b/drivers/net/wireless/ath/ath11k/wmi.h
-@@ -740,6 +740,7 @@ enum wmi_tlv_event_id {
- 	WMI_MDNS_STATS_EVENTID = WMI_TLV_CMD(WMI_GRP_MDNS_OFL),
- 	WMI_SAP_OFL_ADD_STA_EVENTID = WMI_TLV_CMD(WMI_GRP_SAP_OFL),
- 	WMI_SAP_OFL_DEL_STA_EVENTID,
-+	WMI_OBSS_COLOR_COLLISION_DETECTION_EVENTID = WMI_EVT_GRP_START_ID(WMI_GRP_OBSS_OFL),
- 	WMI_OCB_SET_CONFIG_RESP_EVENTID = WMI_TLV_CMD(WMI_GRP_OCB),
- 	WMI_OCB_GET_TSF_TIMER_RESP_EVENTID,
- 	WMI_DCC_GET_STATS_RESP_EVENTID,
-@@ -4768,6 +4769,13 @@ struct wmi_obss_spatial_reuse_params_cmd {
- #define ATH11K_BSS_COLOR_COLLISION_DETECTION_STA_PERIOD_MS	10000
- #define ATH11K_BSS_COLOR_COLLISION_DETECTION_AP_PERIOD_MS	5000
- 
-+enum wmi_bss_color_collision {
-+	WMI_BSS_COLOR_COLLISION_DISABLE = 0,
-+	WMI_BSS_COLOR_COLLISION_DETECTION,
-+	WMI_BSS_COLOR_FREE_SLOT_TIMER_EXPIRY,
-+	WMI_BSS_COLOR_FREE_SLOT_AVAILABLE,
-+};
-+
- struct wmi_obss_color_collision_cfg_params_cmd {
- 	u32 tlv_header;
- 	u32 vdev_id;
-@@ -4785,6 +4793,12 @@ struct wmi_bss_color_change_enable_params_cmd {
- 	u32 enable;
- } __packed;
- 
-+struct wmi_obss_color_collision_event {
-+	u32 vdev_id;
-+	u32 evt_type;
-+	u64 obss_color_bitmap;
-+} __packed;
-+
- #define ATH11K_IPV4_TH_SEED_SIZE 5
- #define ATH11K_IPV6_TH_SEED_SIZE 11
- 
--- 
-2.25.1
+We'll take a look and revert/fix it in a few days.
+
 
