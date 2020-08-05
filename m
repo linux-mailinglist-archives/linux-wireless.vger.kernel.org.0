@@ -2,60 +2,53 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BE8B423C12F
-	for <lists+linux-wireless@lfdr.de>; Tue,  4 Aug 2020 23:07:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D78B323C2FA
+	for <lists+linux-wireless@lfdr.de>; Wed,  5 Aug 2020 03:19:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726079AbgHDVHk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 4 Aug 2020 17:07:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34038 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725863AbgHDVHj (ORCPT
+        id S1726980AbgHEBTD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 4 Aug 2020 21:19:03 -0400
+Received: from mail29.static.mailgun.info ([104.130.122.29]:62712 "EHLO
+        mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726762AbgHEBTC (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 4 Aug 2020 17:07:39 -0400
-Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com [IPv6:2607:f8b0:4864:20::543])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 661AEC06174A;
-        Tue,  4 Aug 2020 14:07:39 -0700 (PDT)
-Received: by mail-pg1-x543.google.com with SMTP id t6so23169717pgq.1;
-        Tue, 04 Aug 2020 14:07:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=X4nVZfpA11bzJ0RFuzyjFl+xrsu2f4zFX7lnVom+av8=;
-        b=mk1qdIp+4HC4+UL/kW+mW8mQ/Rw6yZzVC67WWvZcchMN2DNXgrSKLPgyq7SwpjzKiy
-         3idJOI7eGfzGbfdlHS9/OHRksjqggSH5BgbC+KqkShb6TUiVvbVKpSJ4DsYBV1q17jAK
-         1tcrcc8nVCZuAK2Cl/HHz4Z719deYxa7Zlf8MlJAcYi5Oon3+loWtiQFcbom+LUj4fuY
-         X0hFtAhI8Qr8SREaH5mxG6n5p6omI0oD1NJuXdT1cbBJH2LdcEmngwS2+FWGUlJimBzl
-         7JSf6HHPR3/RKZKnB23QEY3QwcaJSIpLANTxnrGAj9gM6IprU+49bU047/ZLbtJlWS2z
-         usMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=X4nVZfpA11bzJ0RFuzyjFl+xrsu2f4zFX7lnVom+av8=;
-        b=h4uJUu5tjmXcaB1WNkkILkMII4xelUoBA1xeWkReBfxHTPcKfkJHHEO7Uf/d5cvFws
-         2B+UGhNHO8xm0tKXatpAJnSUPNQEVnBjgyif/v1gMGhCFxflS6WAdmmN2OD9F/XdSQbP
-         aVaW8mTiLYmy/ry7Ias8SjJIa5amjCynHxAVTyeBaEPpqDoWNfF0y1TSqm1NByaBFSEc
-         tfGHFiqPtXWjN2CByu15aubWemlmP7xjSOiVE2ifMDuYQZ7+zd5Ed+/B76PXTs/j6hCm
-         tYZWnIpd6PpEWkfW3v++cZ0UhVxcRTjcqIKGD6CWlmrCXxEMvUF3lycPIl7qFH32Ff8Z
-         8gcw==
-X-Gm-Message-State: AOAM532NkGTsnl8IjAEovNcHxTUxN0ZDmeJHaYVAw305jjuAVDtVqaod
-        KlvvItlG223tnic/hJ+gVoI=
-X-Google-Smtp-Source: ABdhPJyl6c6dDxe/VGp11VcyqUQxFYTc3kD/Ll6YHHCa/ElQt3nb70ErxeGejwYrEfJpsjXGN8X83g==
-X-Received: by 2002:a05:6a00:14d0:: with SMTP id w16mr239593pfu.39.1596575258714;
-        Tue, 04 Aug 2020 14:07:38 -0700 (PDT)
-Received: from thinkpad.teksavvy.com (104.36.148.139.aurocloud.com. [104.36.148.139])
-        by smtp.gmail.com with ESMTPSA id t28sm19979675pgn.81.2020.08.04.14.07.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Aug 2020 14:07:38 -0700 (PDT)
-From:   Rustam Kovhaev <rkovhaev@gmail.com>
-To:     johannes@sipsolutions.net, davem@davemloft.net, kuba@kernel.org
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Rustam Kovhaev <rkovhaev@gmail.com>
-Subject: [PATCH] cfg80211: switch from WARN() to pr_warn() in is_user_regdom_saved()
-Date:   Tue,  4 Aug 2020 14:05:46 -0700
-Message-Id: <20200804210546.319249-1-rkovhaev@gmail.com>
-X-Mailer: git-send-email 2.28.0
+        Tue, 4 Aug 2020 21:19:02 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1596590341; h=Content-Transfer-Encoding: MIME-Version:
+ Message-Id: Date: Subject: Cc: To: From: Sender;
+ bh=qBDoBREbIYpXiHlIjDswlxm4JgKKfFgqREmkYnxS1tA=; b=qVhhg0+hOP9YNhnxUbMKhOAs6NT/VwoS/HoCCvr0UeiNzdStwerA/8oWFvbU5WA0pnOLeKcX
+ dCTbhmnyVSTOsM2S81oHXE0AX/iAyziiWJHU7dielFCzc8hl4DD9S9LuYvwe/B5h5LVLOwaN
+ 0l4Z/bcT/uYtJce2qx7CkrLxNt4=
+X-Mailgun-Sending-Ip: 104.130.122.29
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n15.prod.us-west-2.postgun.com with SMTP id
+ 5f2a08f60eaac7150eb75031 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 05 Aug 2020 01:18:46
+ GMT
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 311EBC433CA; Wed,  5 Aug 2020 01:18:46 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from alokad-linux.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: alokad)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id A5041C433C6;
+        Wed,  5 Aug 2020 01:18:45 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org A5041C433C6
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=alokad@codeaurora.org
+From:   Aloka Dixit <alokad@codeaurora.org>
+To:     johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org, Aloka Dixit <alokad@codeaurora.org>
+Subject: [PATCH v5 0/2] Add FILS discovery support
+Date:   Tue,  4 Aug 2020 18:18:36 -0700
+Message-Id: <20200805011838.28166-1-alokad@codeaurora.org>
+X-Mailer: git-send-email 2.25.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
@@ -63,34 +56,26 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-this warning can be triggered by userspace, so it should not cause a
-panic if panic_on_warn is set
+This patchset adds support for FILS discovery transmission as per
+IEEE Std 802.11ai-2016.
 
-Reported-and-tested-by: syzbot+d451401ffd00a60677ee@syzkaller.appspotmail.com
-Link: https://syzkaller.appspot.com/bug?extid=d451401ffd00a60677ee
-Signed-off-by: Rustam Kovhaev <rkovhaev@gmail.com>
----
- net/wireless/reg.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+v5: Addressed review comments from v4.
 
-diff --git a/net/wireless/reg.c b/net/wireless/reg.c
-index 0d74a31ef0ab..86355938ae8f 100644
---- a/net/wireless/reg.c
-+++ b/net/wireless/reg.c
-@@ -415,10 +415,10 @@ static bool is_user_regdom_saved(void)
- 		return false;
- 
- 	/* This would indicate a mistake on the design */
--	if (WARN(!is_world_regdom(user_alpha2) && !is_an_alpha2(user_alpha2),
--		 "Unexpected user alpha2: %c%c\n",
--		 user_alpha2[0], user_alpha2[1]))
-+	if (!is_world_regdom(user_alpha2) && !is_an_alpha2(user_alpha2)) {
-+		pr_warn("Unexpected user_alpha2: %c%c\n", user_alpha2[0], user_alpha2[1]);
- 		return false;
-+	}
- 
- 	return true;
- }
+Aloka Dixit (2):
+  nl80211: Add FILS discovery support
+  mac80211: Add FILS discovery support
+
+ include/net/cfg80211.h       | 23 +++++++++++++++
+ include/net/mac80211.h       | 31 ++++++++++++++++++++
+ include/uapi/linux/nl80211.h | 40 +++++++++++++++++++++++++
+ net/mac80211/cfg.c           | 57 ++++++++++++++++++++++++++++++++----
+ net/mac80211/debugfs.c       |  1 +
+ net/mac80211/ieee80211_i.h   |  7 +++++
+ net/mac80211/main.c          |  6 ++++
+ net/mac80211/tx.c            | 28 ++++++++++++++++++
+ net/wireless/nl80211.c       | 45 ++++++++++++++++++++++++++++
+ 9 files changed, 232 insertions(+), 6 deletions(-)
+
 -- 
-2.27.0
+2.25.0
 
