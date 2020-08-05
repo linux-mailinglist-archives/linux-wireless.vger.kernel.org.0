@@ -2,88 +2,63 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2DB5E23CF40
-	for <lists+linux-wireless@lfdr.de>; Wed,  5 Aug 2020 21:18:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D79923D158
+	for <lists+linux-wireless@lfdr.de>; Wed,  5 Aug 2020 22:00:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728779AbgHETRp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 5 Aug 2020 15:17:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41248 "EHLO
+        id S1727933AbgHEQmL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 5 Aug 2020 12:42:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45416 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726841AbgHETPo (ORCPT
+        with ESMTP id S1727104AbgHEQkG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 5 Aug 2020 15:15:44 -0400
-Received: from mail-oo1-xc35.google.com (mail-oo1-xc35.google.com [IPv6:2607:f8b0:4864:20::c35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70ADAC061A2A
-        for <linux-wireless@vger.kernel.org>; Wed,  5 Aug 2020 12:13:26 -0700 (PDT)
-Received: by mail-oo1-xc35.google.com with SMTP id k63so6173788oob.1
-        for <linux-wireless@vger.kernel.org>; Wed, 05 Aug 2020 12:13:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:subject:to:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=AS8u1LDDJrmokPtG/w7gyetT66W9vGtz3XkSpLnzZ5U=;
-        b=KOqCpX306Ky2CYx3qrCGUXtG0AQmubTA/X0BfavfK/UEAiFUwvIGByXwLMjs/4gnaH
-         +duhJ3o92RlLO8uEoNz0/8ctk1aobWMpzuY2C3wnUJ1yPMdDA2znNwftt4URXNnCaEHF
-         L17jZoDInQtyqGduQvAKe5mcPoFObYTQUfTp7G5zRfH/rNUaEDeqBy51URxLkToAqdJX
-         dRIqqLD/WRm7JYmrNArE9WJ/OCbsdwkomrOu3v74tm76gJAOgeO8lplwSaFp57amN4YS
-         08LfcXhG43DGDOMPy+5jTnQMS77uYt6ScLN3zhii2V6C/RaQF5teVA91zSrhfQ7wS9sC
-         Jyjw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:subject:to:references:from:message-id
-         :date:user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=AS8u1LDDJrmokPtG/w7gyetT66W9vGtz3XkSpLnzZ5U=;
-        b=sLkvRqQHjsm1F4hqJANEPHaUFrLNW8mJDKW8NoHutIyREOAki2nfmszz7KKbxcsc9C
-         BYeU5hMn1Tcn2DCH7cQEOT0Mn6J3zcNWqZnpw123tQMDOivaLmqx1etMXsDFJZ/LnTie
-         CEYr3+JKiy+rYI3RBtvBN970V8mMYgy36fSeW4ByT+kVqlmBAlACyktfU0cGZWuJI/va
-         SlrySTT5AjzjPDDyEy9a3Sim+vqPcKYckoShtBt28LYvPReVu/JY14QxZWTiUO5sVEkN
-         zf6bUpVzEkOoELIJSobQOUsU1hpPmmp77/fnwEgkBYBwooZl19s9Zt+lqjNeyTlpdeTE
-         52yg==
-X-Gm-Message-State: AOAM530rP8PSu08pZlHrFO0TNTH/EjdIsxB7Uw82QC/DBAcGAiFPdFaD
-        MIWCGmP3ICC2AaipuIYKYjYheKqm
-X-Google-Smtp-Source: ABdhPJwf87q5pWTEsRZwSKDgJaXht4OwZj/zZ0d6e991OZhTGAIKTx8OPzS+Dzw5U4RD71YwtFu5jQ==
-X-Received: by 2002:a4a:7241:: with SMTP id r1mr4284009ooe.48.1596654805269;
-        Wed, 05 Aug 2020 12:13:25 -0700 (PDT)
-Received: from localhost.localdomain (cpe-24-31-245-230.kc.res.rr.com. [24.31.245.230])
-        by smtp.gmail.com with ESMTPSA id y14sm617737oos.23.2020.08.05.12.13.24
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 05 Aug 2020 12:13:24 -0700 (PDT)
-Subject: Re: RTW88 poor perception
-To:     DImitar Kosev <buboleck@abv.bg>, linux-wireless@vger.kernel.org
-References: <af8abf99-0cb0-ae18-e905-7bbf57270c82@abv.bg>
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-Message-ID: <d9aa9251-cc63-1199-c011-5f34aaee5735@lwfinger.net>
-Date:   Wed, 5 Aug 2020 14:13:23 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        Wed, 5 Aug 2020 12:40:06 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E89AEC0A54DA
+        for <linux-wireless@vger.kernel.org>; Wed,  5 Aug 2020 06:36:45 -0700 (PDT)
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.94)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1k3Jan-00GoHg-1s; Wed, 05 Aug 2020 15:36:29 +0200
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     linux-wireless@vger.kernel.org
+Cc:     Rajkumar Manoharan <rmanohar@codeaurora.org>,
+        Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH] nl80211: fix NL80211_ATTR_HE_6GHZ_CAPABILITY usage
+Date:   Wed,  5 Aug 2020 15:35:18 +0200
+Message-Id: <20200805153516.310cef625955.I0abc04dc8abb2c7c005c88ef8fa2d0e3c9fb95c4@changeid>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-In-Reply-To: <af8abf99-0cb0-ae18-e905-7bbf57270c82@abv.bg>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 8/5/20 2:00 AM, DImitar Kosev wrote:
-> Hello,
-> 
-> I have RTL8821CE card and with this driver I get poor perception on 5GHz (2-3 
-> meters max to the router) and only 30-50cm to the router on 2.4GHz. I'm 
-> currently using this driver https://github.com/tomaspinho/rtl8821ce that works 
-> fine but I understand it will be deprecated once RTW88 goes into the kernel.
+From: Johannes Berg <johannes.berg@intel.com>
 
-I think the word you want is reception not perception.
+In nl80211_set_station(), we check NL80211_ATTR_HE_6GHZ_CAPABILITY
+and then use NL80211_ATTR_HE_CAPABILITY, which is clearly wrong.
+Fix this to use NL80211_ATTR_HE_6GHZ_CAPABILITY as well.
 
-Please quantify how bad your reception really is by running the following 
-commands and posting the output:
+Fixes: 43e64bf301fd ("cfg80211: handle 6 GHz capability of new station")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+---
+ net/wireless/nl80211.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-iw dev | grep Interface
-sudo iw dev <DEVICE> scan | egrep "signal|freq|SSID:"
-
-where <DEVICE> is the interface name from the first command.
-
-Larry
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 19281d0c8c9d..bfda09d24146 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -6008,7 +6008,7 @@ static int nl80211_set_station(struct sk_buff *skb, struct genl_info *info)
+ 
+ 	if (info->attrs[NL80211_ATTR_HE_6GHZ_CAPABILITY])
+ 		params.he_6ghz_capa =
+-			nla_data(info->attrs[NL80211_ATTR_HE_CAPABILITY]);
++			nla_data(info->attrs[NL80211_ATTR_HE_6GHZ_CAPABILITY]);
+ 
+ 	if (info->attrs[NL80211_ATTR_AIRTIME_WEIGHT])
+ 		params.airtime_weight =
+-- 
+2.26.2
 
