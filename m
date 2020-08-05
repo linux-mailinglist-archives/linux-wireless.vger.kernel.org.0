@@ -2,227 +2,132 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8911323D084
-	for <lists+linux-wireless@lfdr.de>; Wed,  5 Aug 2020 21:49:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 214EE23D0C4
+	for <lists+linux-wireless@lfdr.de>; Wed,  5 Aug 2020 21:53:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728667AbgHETtr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 5 Aug 2020 15:49:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47042 "EHLO
+        id S1728750AbgHETwi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 5 Aug 2020 15:52:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47246 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728297AbgHEQyb (ORCPT
+        with ESMTP id S1728101AbgHEQvZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 5 Aug 2020 12:54:31 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9DA8C0A8888
-        for <linux-wireless@vger.kernel.org>; Wed,  5 Aug 2020 06:48:17 -0700 (PDT)
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.94)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1k3Jm8-00Gocm-42; Wed, 05 Aug 2020 15:48:12 +0200
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     linux-wireless@vger.kernel.org
-Cc:     Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH] nl80211: clean up code/policy a bit
-Date:   Wed,  5 Aug 2020 15:47:16 +0200
-Message-Id: <20200805154714.3ba1e233cfa0.I5dc8109b7ab5c3f4ae925f903a30cc9b35753262@changeid>
-X-Mailer: git-send-email 2.26.2
+        Wed, 5 Aug 2020 12:51:25 -0400
+Received: from mail-il1-x143.google.com (mail-il1-x143.google.com [IPv6:2607:f8b0:4864:20::143])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD0A7C0A8890
+        for <linux-wireless@vger.kernel.org>; Wed,  5 Aug 2020 06:55:33 -0700 (PDT)
+Received: by mail-il1-x143.google.com with SMTP id c16so25596828ils.8
+        for <linux-wireless@vger.kernel.org>; Wed, 05 Aug 2020 06:55:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ieee.org; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=T0iHC5DzypW6poy3NDVtNkEOvm1za2UqY6n/ov5xw0A=;
+        b=DAhkOvAYaZ9UtoECfWC2gAqYzdQdZu4/OTZhHotTaCMraihBeTETAb2o+tdVB+R9c/
+         fgruEjKoM8VG+YdsLo4GUZF8VaCggzTi5h3uToTV2f2Sv1hwOpZ5HvtTKuXa2Y1A6q3O
+         zX5fNDo98uB0Sok2zX9/YQGJMJ6y+B1u0vCnk=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=T0iHC5DzypW6poy3NDVtNkEOvm1za2UqY6n/ov5xw0A=;
+        b=iu8HQuu1Wnq6X0XH30oAcM9DBxLLMDgscgnmark6KdrX+162Uwbqo/QUEEfbz10zwR
+         p6lIcp3dKquOz5CmX4fBHu/Ibm5cU3t8y/+P06O04meT0/AHxmosfxrpRMbHzGnLIV7T
+         s+qBTkXraiRHTslNn88Svvbgo9ASKzBZ+RqCOvtl2gyBN0ej/6D9/LIXLftWTcL9B4QO
+         p2+iQAwU1XFNg89dZilv5kuW3SS/naryIHN+m+RptqwqnAZyn7J5m2KUz/ACDRrbqaXd
+         dtKrCTy28r3JyShqWQ5QFjeDxGBTT942tJiNzXkyDg8UbngPwic+TrpQAXcuHYK3U89B
+         eshg==
+X-Gm-Message-State: AOAM532nj/yFwSMqbyc9uuvjrxB4IdaMB75oGoF7of/znnhxvS98AzRN
+        XOfHeJh69jMAoqPP959Xkr8RLw==
+X-Google-Smtp-Source: ABdhPJygRlU9l3OctXlmAVj+p1MKYQ+VT9ZvU9QPRbxWDqUzC6q+bEae4dy82QDhDGDE28iGtnJLqA==
+X-Received: by 2002:a92:c14d:: with SMTP id b13mr3548606ilh.269.1596635733090;
+        Wed, 05 Aug 2020 06:55:33 -0700 (PDT)
+Received: from [172.22.22.26] (c-73-185-129-58.hsd1.mn.comcast.net. [73.185.129.58])
+        by smtp.googlemail.com with ESMTPSA id c2sm1073796iow.6.2020.08.05.06.55.31
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 05 Aug 2020 06:55:32 -0700 (PDT)
+Subject: Re: [PATCH] soc: qmi: allow user to set handle wq to hiprio
+To:     =?UTF-8?B?546L5paH6JmO?= <wenhu.wang@vivo.com>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>
+Cc:     elder@kernel.org, davem@davemloft.net, kuba@kernel.org,
+        kvalo@codeaurora.org, agross@kernel.org, ohad@wizery.com,
+        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-remoteproc@vger.kernel.org, alsa-devel@alsa-project.org,
+        ath11k@lists.infradead.org, netdev@vger.kernel.org,
+        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        srinivas.kandagatla@linaro.org, sibis@codeaurora.org
+References: <ADUAnwD8DVByMMSsrG-r3Kri.3.1596374087585.Hmail.wenhu.wang@vivo.com>
+From:   Alex Elder <elder@ieee.org>
+Message-ID: <5c6123f2-1a65-8615-9d5d-3bb1d25818b2@ieee.org>
+Date:   Wed, 5 Aug 2020 08:55:30 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
+In-Reply-To: <ADUAnwD8DVByMMSsrG-r3Kri.3.1596374087585.Hmail.wenhu.wang@vivo.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+On 8/2/20 8:14 AM, 王文虎 wrote:
+> 
+>>> Currently the qmi_handle is initialized single threaded and strictly
+>>> ordered with the active set to 1. This is pretty simple and safe but
+>>> sometimes ineffency. So it is better to allow user to decide whether
+>>> a high priority workqueue should be used.
+>>
+>> Can you please describe a scenario where this is needed/desired and
+>> perhaps also comment on why this is not always desired?
+>>
+> 
+> Well, one scenario is that when the AP wants to check the status of the
+> subsystems and the whole QMI data path. It first sends out an indication
+> which asks the subsystems to report their status. After the subsystems send
+> responses to the AP, the responses then are queued on the workqueue of
+> the QMI handler. Actually the AP is configured to do the check in a specific
+> interval regularly. And it check the report counts within a specific delay after
+> it sends out the related indication. When the AP has been under a heavy
+> load for long, the reports are queue their without CPU resource to update
+> the report counts within the specific delay. As a result, the thread that checks
+> the report counts takes it misleadingly that the QMI data path or the subsystems
+> are crashed.
+> 
+> The patch can really resolve the problem mentioned abolve.
 
-Use the policy to validate minimum and exact lengths in
-some attributes that weren't previously covered in the
-right ways, and remove associated validation code.
+Is it your intention to submit code that actually does what you describe
+above?  If so, then (as David said) you should propose this change at
+the time it will be needed--which is at the time you send that new
+code out for review.
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
----
- net/wireless/nl80211.c | 60 +++++++++++++-----------------------------
- 1 file changed, 18 insertions(+), 42 deletions(-)
+Even in that case, I don't believe using a high priority workqueue
+would guarantee the improved behavior you think this would provide.
 
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 279c87a2a523..57b989d53064 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -539,7 +539,10 @@ static const struct nla_policy nl80211_policy[NUM_NL80211_ATTR] = {
- 	[NL80211_ATTR_BG_SCAN_PERIOD] = { .type = NLA_U16 },
- 	[NL80211_ATTR_WDEV] = { .type = NLA_U64 },
- 	[NL80211_ATTR_USER_REG_HINT_TYPE] = { .type = NLA_U32 },
--	[NL80211_ATTR_AUTH_DATA] = { .type = NLA_BINARY, },
-+
-+	/* need to include at least Auth Transaction and Status Code */
-+	[NL80211_ATTR_AUTH_DATA] = NLA_POLICY_MIN_LEN(4),
-+
- 	[NL80211_ATTR_VHT_CAPABILITY] = NLA_POLICY_EXACT_LEN_WARN(NL80211_VHT_CAPABILITY_LEN),
- 	[NL80211_ATTR_SCAN_FLAGS] = { .type = NLA_U32 },
- 	[NL80211_ATTR_P2P_CTWINDOW] = NLA_POLICY_MAX(NLA_U8, 127),
-@@ -561,7 +564,8 @@ static const struct nla_policy nl80211_policy[NUM_NL80211_ATTR] = {
- 	[NL80211_ATTR_IE_RIC] = { .type = NLA_BINARY,
- 				  .len = IEEE80211_MAX_DATA_LEN },
- 	[NL80211_ATTR_CRIT_PROT_ID] = { .type = NLA_U16 },
--	[NL80211_ATTR_MAX_CRIT_PROT_DURATION] = { .type = NLA_U16 },
-+	[NL80211_ATTR_MAX_CRIT_PROT_DURATION] =
-+		NLA_POLICY_MAX(NLA_U16, NL80211_CRIT_PROTO_MAX_DURATION),
- 	[NL80211_ATTR_PEER_AID] =
- 		NLA_POLICY_RANGE(NLA_U16, 1, IEEE80211_MAX_AID),
- 	[NL80211_ATTR_CH_SWITCH_COUNT] = { .type = NLA_U32 },
-@@ -569,7 +573,7 @@ static const struct nla_policy nl80211_policy[NUM_NL80211_ATTR] = {
- 	[NL80211_ATTR_CSA_IES] = { .type = NLA_NESTED },
- 	[NL80211_ATTR_CSA_C_OFF_BEACON] = { .type = NLA_BINARY },
- 	[NL80211_ATTR_CSA_C_OFF_PRESP] = { .type = NLA_BINARY },
--	[NL80211_ATTR_STA_SUPPORTED_CHANNELS] = { .type = NLA_BINARY },
-+	[NL80211_ATTR_STA_SUPPORTED_CHANNELS] = NLA_POLICY_MIN_LEN(2),
- 	[NL80211_ATTR_STA_SUPPORTED_OPER_CLASSES] = { .type = NLA_BINARY },
- 	[NL80211_ATTR_HANDLE_DFS] = { .type = NLA_FLAG },
- 	[NL80211_ATTR_OPMODE_NOTIF] = { .type = NLA_U8 },
-@@ -625,6 +629,7 @@ static const struct nla_policy nl80211_policy[NUM_NL80211_ATTR] = {
- 					.len = FILS_ERP_MAX_RRK_LEN },
- 	[NL80211_ATTR_FILS_CACHE_ID] = NLA_POLICY_EXACT_LEN_WARN(2),
- 	[NL80211_ATTR_PMK] = { .type = NLA_BINARY, .len = PMK_MAX_LEN },
-+	[NL80211_ATTR_PMKR0_NAME] = NLA_POLICY_EXACT_LEN(WLAN_PMK_NAME_LEN),
- 	[NL80211_ATTR_SCHED_SCAN_MULTI] = { .type = NLA_FLAG },
- 	[NL80211_ATTR_EXTERNAL_AUTH_SUPPORT] = { .type = NLA_FLAG },
- 
-@@ -738,7 +743,7 @@ nl80211_rekey_policy[NUM_NL80211_REKEY_DATA] = {
- 		.type = NLA_BINARY,
- 		.len = NL80211_KCK_EXT_LEN
- 	},
--	[NL80211_REKEY_DATA_REPLAY_CTR] = NLA_POLICY_EXACT_LEN_WARN(NL80211_REPLAY_CTR_LEN),
-+	[NL80211_REKEY_DATA_REPLAY_CTR] = NLA_POLICY_EXACT_LEN(NL80211_REPLAY_CTR_LEN),
- 	[NL80211_REKEY_DATA_AKM] = { .type = NLA_U32 },
- };
- 
-@@ -778,7 +783,8 @@ nl80211_bss_select_policy[NL80211_BSS_SELECT_ATTR_MAX + 1] = {
- /* policy for NAN function attributes */
- static const struct nla_policy
- nl80211_nan_func_policy[NL80211_NAN_FUNC_ATTR_MAX + 1] = {
--	[NL80211_NAN_FUNC_TYPE] = { .type = NLA_U8 },
-+	[NL80211_NAN_FUNC_TYPE] =
-+		NLA_POLICY_MAX(NLA_U8, NL80211_NAN_FUNC_MAX_TYPE),
- 	[NL80211_NAN_FUNC_SERVICE_ID] = {
- 				    .len = NL80211_NAN_FUNC_SERVICE_ID_LEN },
- 	[NL80211_NAN_FUNC_PUBLISH_TYPE] = { .type = NLA_U8 },
-@@ -4896,8 +4902,7 @@ static int nl80211_start_ap(struct sk_buff *skb, struct genl_info *info)
- 		params.ssid = nla_data(info->attrs[NL80211_ATTR_SSID]);
- 		params.ssid_len =
- 			nla_len(info->attrs[NL80211_ATTR_SSID]);
--		if (params.ssid_len == 0 ||
--		    params.ssid_len > IEEE80211_MAX_SSID_LEN)
-+		if (params.ssid_len == 0)
- 			return -EINVAL;
- 	}
- 
-@@ -5836,11 +5841,9 @@ static int nl80211_parse_sta_channel_info(struct genl_info *info,
- 		     nla_len(info->attrs[NL80211_ATTR_STA_SUPPORTED_CHANNELS]);
- 		/*
- 		 * Need to include at least one (first channel, number of
--		 * channels) tuple for each subband, and must have proper
--		 * tuples for the rest of the data as well.
-+		 * channels) tuple for each subband (checked in policy),
-+		 * and must have proper tuples for the rest of the data as well.
- 		 */
--		if (params->supported_channels_len < 2)
--			return -EINVAL;
- 		if (params->supported_channels_len % 2)
- 			return -EINVAL;
- 	}
-@@ -8412,23 +8415,14 @@ nl80211_parse_sched_scan(struct wiphy *wiphy, struct wireless_dev *wdev,
- 			}
- 
- 			if (ssid) {
--				if (nla_len(ssid) > IEEE80211_MAX_SSID_LEN) {
--					err = -EINVAL;
--					goto out_free;
--				}
- 				memcpy(request->match_sets[i].ssid.ssid,
- 				       nla_data(ssid), nla_len(ssid));
- 				request->match_sets[i].ssid.ssid_len =
- 					nla_len(ssid);
- 			}
--			if (bssid) {
--				if (nla_len(bssid) != ETH_ALEN) {
--					err = -EINVAL;
--					goto out_free;
--				}
-+			if (bssid)
- 				memcpy(request->match_sets[i].bssid,
- 				       nla_data(bssid), ETH_ALEN);
--			}
- 
- 			/* special attribute - old implementation w/a */
- 			request->match_sets[i].rssi_thold = default_match_rssi;
-@@ -9305,9 +9299,6 @@ static int nl80211_authenticate(struct sk_buff *skb, struct genl_info *info)
- 			return -EINVAL;
- 		auth_data = nla_data(info->attrs[NL80211_ATTR_AUTH_DATA]);
- 		auth_data_len = nla_len(info->attrs[NL80211_ATTR_AUTH_DATA]);
--		/* need to include at least Auth Transaction and Status Code */
--		if (auth_data_len < 4)
--			return -EINVAL;
- 	}
- 
- 	local_state_change = !!info->attrs[NL80211_ATTR_LOCAL_STATE_CHANGE];
-@@ -12353,8 +12344,6 @@ static int nl80211_set_rekey_data(struct sk_buff *skb, struct genl_info *info)
- 	if (!tb[NL80211_REKEY_DATA_REPLAY_CTR] || !tb[NL80211_REKEY_DATA_KEK] ||
- 	    !tb[NL80211_REKEY_DATA_KCK])
- 		return -EINVAL;
--	if (nla_len(tb[NL80211_REKEY_DATA_REPLAY_CTR]) != NL80211_REPLAY_CTR_LEN)
--		return -ERANGE;
- 	if (nla_len(tb[NL80211_REKEY_DATA_KEK]) != NL80211_KEK_LEN &&
- 	    !(rdev->wiphy.flags & WIPHY_FLAG_SUPPORTS_EXT_KEK_KCK &&
- 	      nla_len(tb[NL80211_REKEY_DATA_KEK]) == NL80211_KEK_EXT_LEN))
-@@ -12679,8 +12668,7 @@ static int nl80211_nan_add_func(struct sk_buff *skb,
- 
- 	func->cookie = cfg80211_assign_cookie(rdev);
- 
--	if (!tb[NL80211_NAN_FUNC_TYPE] ||
--	    nla_get_u8(tb[NL80211_NAN_FUNC_TYPE]) > NL80211_NAN_FUNC_MAX_TYPE) {
-+	if (!tb[NL80211_NAN_FUNC_TYPE]) {
- 		err = -EINVAL;
- 		goto out;
- 	}
-@@ -13170,9 +13158,6 @@ static int nl80211_crit_protocol_start(struct sk_buff *skb,
- 	duration =
- 		nla_get_u16(info->attrs[NL80211_ATTR_MAX_CRIT_PROT_DURATION]);
- 
--	if (duration > NL80211_CRIT_PROTO_MAX_DURATION)
--		return -ERANGE;
--
- 	ret = rdev_crit_proto_start(rdev, wdev, proto, duration);
- 	if (!ret)
- 		rdev->crit_proto_nlportid = info->snd_portid;
-@@ -13826,17 +13811,9 @@ static int nl80211_set_pmk(struct sk_buff *skb, struct genl_info *info)
- 		goto out;
- 	}
- 
--	if (info->attrs[NL80211_ATTR_PMKR0_NAME]) {
--		int r0_name_len = nla_len(info->attrs[NL80211_ATTR_PMKR0_NAME]);
--
--		if (r0_name_len != WLAN_PMK_NAME_LEN) {
--			ret = -EINVAL;
--			goto out;
--		}
--
-+	if (info->attrs[NL80211_ATTR_PMKR0_NAME])
- 		pmk_conf.pmk_r0_name =
- 			nla_data(info->attrs[NL80211_ATTR_PMKR0_NAME]);
--	}
- 
- 	ret = rdev_set_pmk(rdev, dev, &pmk_conf);
- out:
-@@ -13895,8 +13872,7 @@ static int nl80211_external_auth(struct sk_buff *skb, struct genl_info *info)
- 
- 	if (info->attrs[NL80211_ATTR_SSID]) {
- 		params.ssid.ssid_len = nla_len(info->attrs[NL80211_ATTR_SSID]);
--		if (params.ssid.ssid_len == 0 ||
--		    params.ssid.ssid_len > IEEE80211_MAX_SSID_LEN)
-+		if (params.ssid.ssid_len == 0)
- 			return -EINVAL;
- 		memcpy(params.ssid.ssid,
- 		       nla_data(info->attrs[NL80211_ATTR_SSID]),
--- 
-2.26.2
+In case it wasn't clear already, this change won't be accepted
+at this time (despite your explanation above).
+
+						-Alex
+
+> 
+> For narmal situations, it is enough to just use normal priority QMI workqueue.
+> 
+>> Regards,
+>> Bjorn
+>>
+>>>
+>>> Signed-off-by: Wang Wenhu <wenhu.wang@vivo.com>
+>>> ---
+>>>  drivers/net/ipa/ipa_qmi.c             | 4 ++--
+>>>  drivers/net/wireless/ath/ath10k/qmi.c | 2 +-
+>>>  drivers/net/wireless/ath/ath11k/qmi.c | 2 +-
+>>>  drivers/remoteproc/qcom_sysmon.c      | 2 +-
+>>>  drivers/slimbus/qcom-ngd-ctrl.c       | 4 ++--
+>>>  drivers/soc/qcom/pdr_interface.c      | 4 ++--
+>>>  drivers/soc/qcom/qmi_interface.c      | 9 +++++++--
+>>>  include/linux/soc/qcom/qmi.h          | 3 ++-
+>>>  samples/qmi/qmi_sample_client.c       | 4 ++--
+>>>  9 files changed, 20 insertions(+), 14 deletions(-)
+> 
 
