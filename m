@@ -2,138 +2,76 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A442523D0C0
-	for <lists+linux-wireless@lfdr.de>; Wed,  5 Aug 2020 21:52:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 142C023D2C5
+	for <lists+linux-wireless@lfdr.de>; Wed,  5 Aug 2020 22:16:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729437AbgHETwk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 5 Aug 2020 15:52:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47250 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728174AbgHEQvZ (ORCPT
+        id S1728544AbgHEUQH convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 5 Aug 2020 16:16:07 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:44778 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726294AbgHEQUC (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 5 Aug 2020 12:51:25 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD2DAC0A88B0;
-        Wed,  5 Aug 2020 07:04:21 -0700 (PDT)
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.94)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1k3K1j-00GoxW-2W; Wed, 05 Aug 2020 16:04:19 +0200
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Cc:     Johannes Berg <johannes.berg@intel.com>
-Subject: [RFC 4/4] nl80211: use NLA_POLICY_RANGE(NLA_BINARY, ...) for a few attributes
-Date:   Wed,  5 Aug 2020 16:03:24 +0200
-Message-Id: <20200805154803.e858a2edcead.I9d948d59870e521febcd79bb4a986b1de1dca47b@changeid>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20200805140324.72855-1-johannes@sipsolutions.net>
-References: <20200805140324.72855-1-johannes@sipsolutions.net>
+        Wed, 5 Aug 2020 12:20:02 -0400
+X-SpamFilter-By: ArmorX SpamTrap 5.69 with qID 075BIxjF6020272, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexmb06.realtek.com.tw[172.21.6.99])
+        by rtits2.realtek.com.tw (8.15.2/2.66/5.86) with ESMTPS id 075BIxjF6020272
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Wed, 5 Aug 2020 19:18:59 +0800
+Received: from RTEXMB03.realtek.com.tw (172.21.6.96) by
+ RTEXMB06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Wed, 5 Aug 2020 19:18:59 +0800
+Received: from RTEXMB04.realtek.com.tw (172.21.6.97) by
+ RTEXMB03.realtek.com.tw (172.21.6.96) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Wed, 5 Aug 2020 19:18:59 +0800
+Received: from RTEXMB04.realtek.com.tw ([fe80::941:6388:7d34:5c44]) by
+ RTEXMB04.realtek.com.tw ([fe80::941:6388:7d34:5c44%3]) with mapi id
+ 15.01.1779.005; Wed, 5 Aug 2020 19:18:58 +0800
+From:   Tony Chuang <yhchuang@realtek.com>
+To:     Kai-Heng Feng <kai.heng.feng@canonical.com>,
+        "kvalo@codeaurora.org" <kvalo@codeaurora.org>
+CC:     "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        "open list:REALTEK WIRELESS DRIVER (rtw88)" 
+        <linux-wireless@vger.kernel.org>,
+        "open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>,
+        Andy Huang <tehuang@realtek.com>
+Subject: RE: [PATCH] rtw88: 8821c: Add RFE 2 support
+Thread-Topic: [PATCH] rtw88: 8821c: Add RFE 2 support
+Thread-Index: AQHWawTgrZXV5FXpY0mfKjdCxZOrO6kpXYpw
+Date:   Wed, 5 Aug 2020 11:18:58 +0000
+Message-ID: <c0c336d806584361992d4b52665fbb82@realtek.com>
+References: <20200805084559.30092-1-kai.heng.feng@canonical.com>
+In-Reply-To: <20200805084559.30092-1-kai.heng.feng@canonical.com>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.68.175]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+> 8821CE with RFE 2 isn't supported:
+> [   12.404834] rtw_8821ce 0000:02:00.0: rfe 2 isn't supported
+> [   12.404937] rtw_8821ce 0000:02:00.0: failed to setup chip efuse info
+> [   12.404939] rtw_8821ce 0000:02:00.0: failed to setup chip information
+> 
 
-We have a few attributes with minimum and maximum lengths that are
-not the same, use the new feature of being able to specify both in
-the policy to validate them, removing code and allowing this to be
-advertised to userspace in the policy export.
+NACK
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
----
- net/wireless/nl80211.c | 36 ++++++++++++++----------------------
- 1 file changed, 14 insertions(+), 22 deletions(-)
+The RFE type 2 should be working with some additional fixes.
+Did you tested connecting to AP with BT paired?
 
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 076e3e96c809..e91d5bcb0f8b 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -574,14 +574,20 @@ static const struct nla_policy nl80211_policy[NUM_NL80211_ATTR] = {
- 	[NL80211_ATTR_CSA_C_OFF_BEACON] = { .type = NLA_BINARY },
- 	[NL80211_ATTR_CSA_C_OFF_PRESP] = { .type = NLA_BINARY },
- 	[NL80211_ATTR_STA_SUPPORTED_CHANNELS] = NLA_POLICY_MIN_LEN(2),
--	[NL80211_ATTR_STA_SUPPORTED_OPER_CLASSES] = { .type = NLA_BINARY },
-+	/*
-+	 * The value of the Length field of the Supported Operating
-+	 * Classes element is between 2 and 253.
-+	 */
-+	[NL80211_ATTR_STA_SUPPORTED_OPER_CLASSES] =
-+		NLA_POLICY_RANGE(NLA_BINARY, 2, 253),
- 	[NL80211_ATTR_HANDLE_DFS] = { .type = NLA_FLAG },
- 	[NL80211_ATTR_OPMODE_NOTIF] = { .type = NLA_U8 },
- 	[NL80211_ATTR_VENDOR_ID] = { .type = NLA_U32 },
- 	[NL80211_ATTR_VENDOR_SUBCMD] = { .type = NLA_U32 },
- 	[NL80211_ATTR_VENDOR_DATA] = { .type = NLA_BINARY },
--	[NL80211_ATTR_QOS_MAP] = { .type = NLA_BINARY,
--				   .len = IEEE80211_QOS_MAP_LEN_MAX },
-+	[NL80211_ATTR_QOS_MAP] = NLA_POLICY_RANGE(NLA_BINARY,
-+						  IEEE80211_QOS_MAP_LEN_MIN,
-+						  IEEE80211_QOS_MAP_LEN_MAX),
- 	[NL80211_ATTR_MAC_HINT] = NLA_POLICY_EXACT_LEN_WARN(ETH_ALEN),
- 	[NL80211_ATTR_WIPHY_FREQ_HINT] = { .type = NLA_U32 },
- 	[NL80211_ATTR_TDLS_PEER_CAPABILITY] = { .type = NLA_U32 },
-@@ -636,9 +642,10 @@ static const struct nla_policy nl80211_policy[NUM_NL80211_ATTR] = {
- 	[NL80211_ATTR_TXQ_LIMIT] = { .type = NLA_U32 },
- 	[NL80211_ATTR_TXQ_MEMORY_LIMIT] = { .type = NLA_U32 },
- 	[NL80211_ATTR_TXQ_QUANTUM] = { .type = NLA_U32 },
--	[NL80211_ATTR_HE_CAPABILITY] = { .type = NLA_BINARY,
--					 .len = NL80211_HE_MAX_CAPABILITY_LEN },
--
-+	[NL80211_ATTR_HE_CAPABILITY] =
-+		NLA_POLICY_RANGE(NLA_BINARY,
-+				 NL80211_HE_MIN_CAPABILITY_LEN,
-+				 NL80211_HE_MAX_CAPABILITY_LEN),
- 	[NL80211_ATTR_FTM_RESPONDER] =
- 		NLA_POLICY_NESTED(nl80211_ftm_responder_policy),
- 	[NL80211_ATTR_TIMEOUT] = NLA_POLICY_MIN(NLA_U32, 1),
-@@ -5851,13 +5858,6 @@ static int nl80211_parse_sta_channel_info(struct genl_info *info,
- 		 nla_data(info->attrs[NL80211_ATTR_STA_SUPPORTED_OPER_CLASSES]);
- 		params->supported_oper_classes_len =
- 		  nla_len(info->attrs[NL80211_ATTR_STA_SUPPORTED_OPER_CLASSES]);
--		/*
--		 * The value of the Length field of the Supported Operating
--		 * Classes element is between 2 and 253.
--		 */
--		if (params->supported_oper_classes_len < 2 ||
--		    params->supported_oper_classes_len > 253)
--			return -EINVAL;
- 	}
- 	return 0;
- }
-@@ -5880,9 +5880,6 @@ static int nl80211_set_station_tdls(struct genl_info *info,
- 			nla_data(info->attrs[NL80211_ATTR_HE_CAPABILITY]);
- 		params->he_capa_len =
- 			nla_len(info->attrs[NL80211_ATTR_HE_CAPABILITY]);
--
--		if (params->he_capa_len < NL80211_HE_MIN_CAPABILITY_LEN)
--			return -EINVAL;
- 	}
- 
- 	err = nl80211_parse_sta_channel_info(info, params);
-@@ -6141,10 +6138,6 @@ static int nl80211_new_station(struct sk_buff *skb, struct genl_info *info)
- 			nla_data(info->attrs[NL80211_ATTR_HE_CAPABILITY]);
- 		params.he_capa_len =
- 			nla_len(info->attrs[NL80211_ATTR_HE_CAPABILITY]);
--
--		/* max len is validated in nla policy */
--		if (params.he_capa_len < NL80211_HE_MIN_CAPABILITY_LEN)
--			return -EINVAL;
- 	}
- 
- 	if (info->attrs[NL80211_ATTR_HE_6GHZ_CAPABILITY])
-@@ -13540,8 +13533,7 @@ static int nl80211_set_qos_map(struct sk_buff *skb,
- 		pos = nla_data(info->attrs[NL80211_ATTR_QOS_MAP]);
- 		len = nla_len(info->attrs[NL80211_ATTR_QOS_MAP]);
- 
--		if (len % 2 || len < IEEE80211_QOS_MAP_LEN_MIN ||
--		    len > IEEE80211_QOS_MAP_LEN_MAX)
-+		if (len % 2)
- 			return -EINVAL;
- 
- 		qos_map = kzalloc(sizeof(struct cfg80211_qos_map), GFP_KERNEL);
--- 
-2.26.2
+The antenna configuration is different with RFE type 0.
+I will ask someone else to fix them.
+Then the RFE type 2 modules can be supported.
 
+Yen-Hsuan
