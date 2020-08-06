@@ -2,43 +2,61 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C3BFA23DB70
-	for <lists+linux-wireless@lfdr.de>; Thu,  6 Aug 2020 17:48:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D4D2123DBA8
+	for <lists+linux-wireless@lfdr.de>; Thu,  6 Aug 2020 18:28:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726955AbgHFOUQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 6 Aug 2020 10:20:16 -0400
-Received: from server.techwildhosting.net ([67.222.11.11]:40566 "EHLO
-        server.techwildhosting.net" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726464AbgHFOTy (ORCPT
+        id S1726420AbgHFQ23 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 6 Aug 2020 12:28:29 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:50049 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727961AbgHFQSo (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 6 Aug 2020 10:19:54 -0400
-Received: from delnorte by server.techwildhosting.net with local (Exim 4.93)
-        (envelope-from <delnorte@server.techwildhosting.net>)
-        id 1k3cSh-0006bP-KK
-        for linux-wireless@vger.kernel.org; Thu, 06 Aug 2020 05:45:23 -0400
-To:     linux-wireless@vger.kernel.org
-Subject: [General Information] Ich ein wirklich boses Madchen war. Bestrafen mich mit deinem Schwanz in meinem Mund.  - f4423
-X-PHP-Script: www.delnorte.courts.ca.gov/index.php for 109.248.143.238
+        Thu, 6 Aug 2020 12:18:44 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1k3esI-0004GH-HC; Thu, 06 Aug 2020 12:19:58 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] ath6kl: fix spelling mistake "initilisation" -> "initialization"
+Date:   Thu,  6 Aug 2020 13:19:58 +0100
+Message-Id: <20200806121958.60700-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8; format=flowed; delsp=yes
-Content-Transfer-Encoding: 8Bit
-X-Mailer: Drupal
-From:   info@delnorte.courts.ca.gov
-Message-Id: <E1k3cSh-0006bP-KK@server.techwildhosting.net>
-Date:   Thu, 06 Aug 2020 05:45:23 -0400
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - server.techwildhosting.net
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [509 997] / [47 12]
-X-AntiAbuse: Sender Address Domain - server.techwildhosting.net
-X-Get-Message-Sender-Via: server.techwildhosting.net: authenticated_id: delnorte/from_h
-X-Authenticated-Sender: server.techwildhosting.net: info@delnorte.courts.ca.gov
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Thank you for contacting us.
+From: Colin Ian King <colin.king@canonical.com>
+
+There is a spelling mistake in an ath6kl_err error message. Fix it.
+
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/net/wireless/ath/ath6kl/init.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/ath/ath6kl/init.c b/drivers/net/wireless/ath/ath6kl/init.c
+index 811fad6d60c0..39bf19686175 100644
+--- a/drivers/net/wireless/ath/ath6kl/init.c
++++ b/drivers/net/wireless/ath/ath6kl/init.c
+@@ -1752,7 +1752,7 @@ static int __ath6kl_init_hw_start(struct ath6kl *ar)
+ 
+ 	ret = ath6kl_init_service_ep(ar);
+ 	if (ret) {
+-		ath6kl_err("Endpoint service initilisation failed: %d\n", ret);
++		ath6kl_err("Endpoint service initialization failed: %d\n", ret);
+ 		goto err_cleanup_scatter;
+ 	}
+ 
+-- 
+2.27.0
+
