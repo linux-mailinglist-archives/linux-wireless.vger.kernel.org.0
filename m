@@ -2,42 +2,42 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B20623D794
-	for <lists+linux-wireless@lfdr.de>; Thu,  6 Aug 2020 09:41:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 29AF523D83C
+	for <lists+linux-wireless@lfdr.de>; Thu,  6 Aug 2020 11:02:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728527AbgHFHls convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 6 Aug 2020 03:41:48 -0400
-Received: from [125.140.134.231] ([125.140.134.231]:62767 "EHLO
-        WIN-DAONO245HJF" rhost-flags-FAIL-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1727998AbgHFHlp (ORCPT
+        id S1727115AbgHFJCV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 6 Aug 2020 05:02:21 -0400
+Received: from cloudserver073367.home.pl ([79.96.88.215]:42770 "EHLO
+        cloudserver073367.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725927AbgHFJCU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 6 Aug 2020 03:41:45 -0400
-Received: from [185.191.231.247] ([185.191.231.247]) by WIN-DAONO245HJF with Microsoft SMTPSVC(8.5.9600.16384);
-         Thu, 6 Aug 2020 16:37:16 +0900
-Content-Type: text/plain; charset="iso-8859-1"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: INVESTMENT
+        Thu, 6 Aug 2020 05:02:20 -0400
+X-Greylist: delayed 399 seconds by postgrey-1.27 at vger.kernel.org; Thu, 06 Aug 2020 05:02:20 EDT
+Received: from localhost (127.0.0.1) (HELO localhost)
+ by serwer1783873.home.pl (79.96.88.215) via UNIX with SMTP (IdeaSmtpServer 0.83.415)
+ id 92080f9e830f5780; Thu, 6 Aug 2020 10:55:39 +0200
 To:     linux-wireless@vger.kernel.org
-From:   campbellclark016@gmail.com
-Date:   Thu, 06 Aug 2020 00:37:22 -0700
-Reply-To: campbell.clark24@yahoo.com
-Message-ID: <WIN-DAONO245HJFWhb800aac79f@WIN-DAONO245HJF>
-X-OriginalArrivalTime: 06 Aug 2020 07:37:17.0035 (UTC) FILETIME=[68D1CBB0:01D66BC4]
+Subject: Kopia z: Es ist unpraktisch hier zu reden, lass uns hier gehen. - i5886
+Date:   Thu, 6 Aug 2020 10:55:39 +0200
+From:   =?utf-8?Q?Zesp=C3=B3=C5=82_Szk=C3=B3=C5=82_Samochodowych_w_Bydgoszczy?= 
+        <admin@zss.pl>
+Reply-To: Susanv9528 <linux-wireless@vger.kernel.org>
+Message-ID: <2b2c4d2c30a42e0c78f05a1f2d72be5a@www.zss.pl>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Kopia wiadomości wysłanej przez Ciebie do Zespół Szkół Samochodowych z Zespół Szkół Samochodowych w Bydgoszczy
 
-Good day,
+To jest list z zapytaniem wysłanym z http://www.zss.pl/ przez:
+Susan
+v9528
+ <linux-wireless@vger.kernel.org>
 
- You were recommended by a mutual associate. I write you regarding an investment of bearer bonds I made on behalf of a client. The investment was made in 2009 and has been under my management. The said investor is deceased. The window is now available to assign these bonds to any name or company of my choice. I have all the necessary information to achieve this within 10 banking days. The total value of the bond is 100 million pounds sterling, in a million pound denominations. If you can handle this, do contact me at your earliest convenience via my email campbell.clark24@yahoo.com So we can discuss the finer details
+Hallo, mein Hubscher! Folge dem Link und in dieser Nacht werde ich dich nicht einschlafen lassen! -
+ https://blonda.page.link/cMNF
 
-
-Thank you
-
-
-Mr Campbell Clark
