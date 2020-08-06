@@ -2,98 +2,118 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C22823D35A
-	for <lists+linux-wireless@lfdr.de>; Wed,  5 Aug 2020 23:03:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E4F323D5A1
+	for <lists+linux-wireless@lfdr.de>; Thu,  6 Aug 2020 04:57:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726155AbgHEVDl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 5 Aug 2020 17:03:41 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:43495 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725730AbgHEVDl (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 5 Aug 2020 17:03:41 -0400
-Received: from mail-pf1-f197.google.com ([209.85.210.197])
-        by youngberry.canonical.com with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <kai.heng.feng@canonical.com>)
-        id 1k3HXC-00086H-Bf
-        for linux-wireless@vger.kernel.org; Wed, 05 Aug 2020 11:24:38 +0000
-Received: by mail-pf1-f197.google.com with SMTP id e30so21225342pfj.0
-        for <linux-wireless@vger.kernel.org>; Wed, 05 Aug 2020 04:24:38 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:subject:from:in-reply-to:date:cc
-         :content-transfer-encoding:message-id:references:to;
-        bh=lF9ALM9gRuD9sB/pHsvqa0BtUHkbcECALGd1yP2+BEE=;
-        b=ZgO0CXv/boayGrmrtdmuXkrYNh9s3XPrMBMosO9FV2U/Qox/hK8NE0aC6wj+VMyTLd
-         tmIWGUXTs3XbhaEXCT/h+psV7y+Yfj4C9grY1oLsxfvZymYT0GI4Lusm0bctqjVdAcSk
-         Z9gnNr/1EHm+oweaIPS8NVc6z4rliO7HDWGBNrfHVOTvTYw9N/m2Aw8aRg2ihRdh0+Yn
-         FR58no8wlI2De8oijbAiom3IILuHG9Hu1auQ9aJsLDHAugDDbhCy0GX7a5Vbhg22m7a3
-         2SZPvZGBiwe/n4jpnY1Epov3BpU/1H+CIZnXj2MMJwJB/Zr0m+cDYYf8ocIpd5f8DWlY
-         8D+w==
-X-Gm-Message-State: AOAM5334fx1iuTwzzczH0A0YZ5fzv85+t2UCh3VD1XPsDq6HRk1MaN3X
-        DYq3LQjXPLMkDf3GBwkrWneACm7pYOTf9RPWuc050lnb443JseY1gb7lmSHMMnQqQpJu6aN8Xyw
-        bwlhSeSZX9xkiG4BQGFnhzduiNDNB0DPdiNGcw+KdXLfZ
-X-Received: by 2002:aa7:9a4c:: with SMTP id x12mr2894372pfj.307.1596626676926;
-        Wed, 05 Aug 2020 04:24:36 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJzJvZXSuRgwTlY5y0En/vjiU7lqcs7sM2JL0qxNrQv5cxET1ZLz6FnSZD2pMhacVp3VGxyXoA==
-X-Received: by 2002:aa7:9a4c:: with SMTP id x12mr2894345pfj.307.1596626676533;
-        Wed, 05 Aug 2020 04:24:36 -0700 (PDT)
-Received: from [192.168.1.208] (220-133-187-190.HINET-IP.hinet.net. [220.133.187.190])
-        by smtp.gmail.com with ESMTPSA id i11sm2613913pjv.30.2020.08.05.04.24.34
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 05 Aug 2020 04:24:35 -0700 (PDT)
+        id S1726970AbgHFC5R (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 5 Aug 2020 22:57:17 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:33046 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726899AbgHFC5R (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 5 Aug 2020 22:57:17 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1596682636; h=Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Message-ID: Date: Subject: In-Reply-To: References: Cc:
+ To: From: Sender; bh=H/fMnJVieUL4Dlvn7ai7jzobHw8KyVB1/ebQeG0HImM=; b=e/pM2LpfWGkSXVAP9ixbyDkDm1hkDMae2cuyebZcY9q9SvCACbRE7V3zDzSy2XkGP/ikr4Za
+ Iizbt8Rnkx7o0ioQUO+evV8aYa+KZrRBe1OWSgkpdyNj2K24e5nAD0yedhbiU5CGFCFW0NoJ
+ lG0nLPhW1VNVjMkDCshsucB+8Tg=
+X-Mailgun-Sending-Ip: 69.72.43.7
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n18.prod.us-west-2.postgun.com with SMTP id
+ 5f2b718b2889723bf899ca82 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 06 Aug 2020 02:57:15
+ GMT
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id BF589C433AF; Thu,  6 Aug 2020 02:57:15 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE,
+        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from Pillair (unknown [49.205.240.202])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: pillair)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 51009C433CB;
+        Thu,  6 Aug 2020 02:57:11 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 51009C433CB
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=pillair@codeaurora.org
+From:   "Rakesh Pillai" <pillair@codeaurora.org>
+To:     "'Christophe JAILLET'" <christophe.jaillet@wanadoo.fr>,
+        <kvalo@codeaurora.org>, <davem@davemloft.net>, <kuba@kernel.org>
+Cc:     <ath10k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+        <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>
+References: <20200802122227.678637-1-christophe.jaillet@wanadoo.fr>
+In-Reply-To: <20200802122227.678637-1-christophe.jaillet@wanadoo.fr>
+Subject: RE: [PATCH] ath10k: Fix the size used in a 'dma_free_coherent()' call in an error handling path
+Date:   Thu, 6 Aug 2020 08:27:07 +0530
+Message-ID: <002101d66b9d$497721b0$dc656510$@codeaurora.org>
+MIME-Version: 1.0
 Content-Type: text/plain;
-        charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 13.4 \(3608.120.23.2.1\))
-Subject: Re: [PATCH] rtw88: 8821c: Add RFE 2 support
-From:   Kai-Heng Feng <kai.heng.feng@canonical.com>
-In-Reply-To: <c0c336d806584361992d4b52665fbb82@realtek.com>
-Date:   Wed, 5 Aug 2020 19:24:32 +0800
-Cc:     "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        "open list:REALTEK WIRELESS DRIVER (rtw88)" 
-        <linux-wireless@vger.kernel.org>,
-        "open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        Andy Huang <tehuang@realtek.com>
+        charset="US-ASCII"
 Content-Transfer-Encoding: 7bit
-Message-Id: <9330BBA5-158B-49F1-8B7C-C2733F358AC1@canonical.com>
-References: <20200805084559.30092-1-kai.heng.feng@canonical.com>
- <c0c336d806584361992d4b52665fbb82@realtek.com>
-To:     Tony Chuang <yhchuang@realtek.com>
-X-Mailer: Apple Mail (2.3608.120.23.2.1)
+X-Mailer: Microsoft Outlook 16.0
+Thread-Index: AQL6RW6rmvo2uaX7dS3qhQ/yDQwO+Kbir3+A
+Content-Language: en-us
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Tony,
 
-> On Aug 5, 2020, at 19:18, Tony Chuang <yhchuang@realtek.com> wrote:
+
+> -----Original Message-----
+> From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> Sent: Sunday, August 2, 2020 5:52 PM
+> To: kvalo@codeaurora.org; davem@davemloft.net; kuba@kernel.org;
+> pillair@codeaurora.org
+> Cc: ath10k@lists.infradead.org; linux-wireless@vger.kernel.org;
+> netdev@vger.kernel.org; linux-kernel@vger.kernel.org; kernel-
+> janitors@vger.kernel.org; Christophe JAILLET
+> <christophe.jaillet@wanadoo.fr>
+> Subject: [PATCH] ath10k: Fix the size used in a 'dma_free_coherent()' call
+in
+> an error handling path
 > 
->> 8821CE with RFE 2 isn't supported:
->> [   12.404834] rtw_8821ce 0000:02:00.0: rfe 2 isn't supported
->> [   12.404937] rtw_8821ce 0000:02:00.0: failed to setup chip efuse info
->> [   12.404939] rtw_8821ce 0000:02:00.0: failed to setup chip information
->> 
+> Update the size used in 'dma_free_coherent()' in order to match the one
+> used in the corresponding 'dma_alloc_coherent()'.
 > 
-> NACK
+> Fixes: 1863008369ae ("ath10k: fix shadow register implementation for
+> WCN3990")
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> ---
+> This patch looks obvious to me, but commit 1863008369ae looks also simple.
+> So it is surprising that such a "typo" slipped in.
+
+Reviewed-by: Rakesh Pillai <pillair@codeaurora.org> 
+
+> ---
+>  drivers/net/wireless/ath/ath10k/ce.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> The RFE type 2 should be working with some additional fixes.
-> Did you tested connecting to AP with BT paired?
+> diff --git a/drivers/net/wireless/ath/ath10k/ce.c
+> b/drivers/net/wireless/ath/ath10k/ce.c
+> index 294fbc1e89ab..e6e0284e4783 100644
+> --- a/drivers/net/wireless/ath/ath10k/ce.c
+> +++ b/drivers/net/wireless/ath/ath10k/ce.c
+> @@ -1555,7 +1555,7 @@ ath10k_ce_alloc_src_ring(struct ath10k *ar,
+> unsigned int ce_id,
+>  		ret = ath10k_ce_alloc_shadow_base(ar, src_ring, nentries);
+>  		if (ret) {
+>  			dma_free_coherent(ar->dev,
+> -					  (nentries * sizeof(struct
+> ce_desc_64) +
+> +					  (nentries * sizeof(struct ce_desc)
++
+>  					   CE_DESC_RING_ALIGN),
+>  					  src_ring-
+> >base_addr_owner_space_unaligned,
+>  					  base_addr);
+> --
+> 2.25.1
 
-No, I only tested WiFi.
-
-> The antenna configuration is different with RFE type 0.
-> I will ask someone else to fix them.
-> Then the RFE type 2 modules can be supported.
-
-Good to know that, I'll be patient and wait for a real fix.
-
-Kai-Heng
-
-> 
-> Yen-Hsuan
 
