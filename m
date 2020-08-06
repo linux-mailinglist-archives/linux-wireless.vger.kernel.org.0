@@ -2,38 +2,43 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B7E3D23D949
-	for <lists+linux-wireless@lfdr.de>; Thu,  6 Aug 2020 12:34:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D32BF23DA1F
+	for <lists+linux-wireless@lfdr.de>; Thu,  6 Aug 2020 13:50:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729299AbgHFKeU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 6 Aug 2020 06:34:20 -0400
-Received: from host06.scibile.ch ([164.138.65.136]:44438 "EHLO
-        host06.scibile.ch" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729279AbgHFKeG (ORCPT
+        id S1728189AbgHFLrC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 6 Aug 2020 07:47:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48282 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727821AbgHFLRI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 6 Aug 2020 06:34:06 -0400
-X-Greylist: delayed 353 seconds by postgrey-1.27 at vger.kernel.org; Thu, 06 Aug 2020 06:34:05 EDT
+        Thu, 6 Aug 2020 07:17:08 -0400
+X-Greylist: delayed 473 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 06 Aug 2020 04:07:38 PDT
+Received: from xsi.loading.net (xsi.loading.net [IPv6:2a01:71c1:1:d0ba::ffff])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBF7CC06138D
+        for <linux-wireless@vger.kernel.org>; Thu,  6 Aug 2020 04:07:36 -0700 (PDT)
+Received: by xsi.loading.net (Postfix, from userid 10083)
+        id A94764027B4F7; Thu,  6 Aug 2020 12:59:32 +0200 (CEST)
 To:     linux-wireless@vger.kernel.org
-Subject: Copy of: Ich suche einen netten Mann fur eine Beziehung. f7400
-Date:   Thu, 6 Aug 2020 12:26:10 +0200
-From:   "www.calethon.com" <hostmaster@scibile.ch>
-Message-ID: <180e2e845326a0f1015566e24af3a3a9@calethon.com>
-X-Priority: 3
-X-Mailer: PHPMailer (phpmailer.sourceforge.net) [version 2.0.4]
+Subject: Hallo,
+ mein Hubscher! Folge dem Link und in dieser Nacht werde ich dich
+ nicht einschlafen lassen! - y5547
+Date:   Thu, 6 Aug 2020 10:59:32 +0000
+From:   Eurocamping <info@eurocamping-es.com>
+Message-ID: <3ea805508b33c8fe158ec3ba031cb055@eurocamping-es.com>
+X-Mailer: PHPMailer 5.2.22 (https://github.com/PHPMailer/PHPMailer)
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="utf-8"
+X-PPP-Message-ID: <20200806105932.4020.90622@xsi.loading.net>
+X-PPP-Vhost: eurocamping-es.com
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Copy of:
+Cuerpo del mensaje:
 
-This is an enquiry e-mail via http://calethon.com/ from:
-Mary
-h6665 <linux-wireless@vger.kernel.org>
 
-Es ist unpraktisch hier zu reden, lass uns hier gehen. -
- https://sexy24.page.link/z6tG
+--
+Este e-mail se ha enviado vía formulario de contacto desde Eurocamping (http://eurocamping-es.com)
 
