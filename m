@@ -2,53 +2,47 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4049323DF4F
-	for <lists+linux-wireless@lfdr.de>; Thu,  6 Aug 2020 19:45:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5EFAE23DFE8
+	for <lists+linux-wireless@lfdr.de>; Thu,  6 Aug 2020 19:55:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729751AbgHFRAF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 6 Aug 2020 13:00:05 -0400
-Received: from host.iranfreedom.org ([69.16.237.49]:52562 "EHLO
-        host.newitsolution.net" rhost-flags-OK-FAIL-OK-OK) by vger.kernel.org
-        with ESMTP id S1728624AbgHFQiz (ORCPT
+        id S1728207AbgHFRzD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 6 Aug 2020 13:55:03 -0400
+Received: from system-smtp.xel.nl ([82.94.246.156]:36374 "EHLO
+        system-smtp.xel.nl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727838AbgHFQaI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 6 Aug 2020 12:38:55 -0400
-Received: from iranmani by host.newitsolution.net with local (Exim 4.93)
-        (envelope-from <info@iranmanif.org>)
-        id 1k3cwQ-000O5g-FN
-        for linux-wireless@vger.kernel.org; Thu, 06 Aug 2020 12:16:06 +0200
+        Thu, 6 Aug 2020 12:30:08 -0400
+Received: from localhost (localhost [127.0.0.1])
+        by system-smtp.xel.nl (Postfix) with ESMTP id C4300A3E32
+        for <linux-wireless@vger.kernel.org>; Thu,  6 Aug 2020 12:47:06 +0200 (CEST)
+X-Virus-Scanned: mailscan @ Xel Media MX
+Received: from system-smtp.xel.nl ([127.0.0.1])
+        by localhost (system-smtp.xel.nl [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id N9w8ueBjeHrI for <linux-wireless@vger.kernel.org>;
+        Thu,  6 Aug 2020 12:47:02 +0200 (CEST)
+Received: from xwp-fpm4-node3.xel.nl (unknown [82.94.58.206])
+        by system-smtp.xel.nl (Postfix) with ESMTP id 4CA24A3E2F
+        for <linux-wireless@vger.kernel.org>; Thu,  6 Aug 2020 12:47:02 +0200 (CEST)
+Received: by xwp-fpm4-node3.xel.nl (Postfix, from userid 1085641002)
+        id 46EE23F09F; Thu,  6 Aug 2020 12:47:02 +0200 (CEST)
 To:     linux-wireless@vger.kernel.org
-Subject: Copie de : Alle heiben vollbusigen Kuken nur auf dieser Seite! Folgen Sie dem Link und werden es nicht bereuen! a4719
-X-PHP-Script: www.iranmanif.org/index.php for 188.191.233.57
-X-PHP-Originating-Script: 525:class.phpmailer.php
-Date:   Thu, 6 Aug 2020 10:16:06 +0000
-From:   "www.iranmanif.org" <info@iranmanif.org>
-Reply-To: Ingeborgb2746 <linux-wireless@vger.kernel.org>
-Message-ID: <967828db3303f86be69b453682bfd126@www.iranmanif.org>
+Subject: EURIEC "Schauen Sie sich meine Webcam-Masturbationsvideos an - z8021"
+X-PHP-Originating-Script: 1085641002:class-phpmailer.php
+Date:   Thu, 6 Aug 2020 10:47:02 +0000
+From:   EURIEC <wordpress@euriec.eu>
+Reply-To: jeroen.rademakers@maastricht.nl
+Message-ID: <33c6d2313a7ec8f8be452e9ea5eb0a5c@euriec.eu>
+X-Mailer: PHPMailer 5.2.27 (https://github.com/PHPMailer/PHPMailer)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - host.newitsolution.net
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [525 501] / [47 12]
-X-AntiAbuse: Sender Address Domain - iranmanif.org
-X-Get-Message-Sender-Via: host.newitsolution.net: authenticated_id: iranmani/from_h
-X-Authenticated-Sender: host.newitsolution.net: info@iranmanif.org
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Content-Type: text/plain; charset=UTF-8
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Ceci est une copie du message que vous avez envoyé à Editor via www.iranmanif.org
+Berichtinhoud:
 
-Ceci est un message expédié via https://www.iranmanif.org/ par :
-Ingeborg
-b2746
- <linux-wireless@vger.kernel.org>
 
-Suchst du Sex mit einem Fremden? Ich bin fur alle Experimente bereit! -
- https://sex21.page.link/Xy7V
+-- 
+Deze e-mail is verzonden vanuit het contactformulier op EURIEC https://euriec.eu
 
