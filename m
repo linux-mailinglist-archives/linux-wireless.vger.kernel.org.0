@@ -2,43 +2,42 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D32BF23DA1F
-	for <lists+linux-wireless@lfdr.de>; Thu,  6 Aug 2020 13:50:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C2C6123DA99
+	for <lists+linux-wireless@lfdr.de>; Thu,  6 Aug 2020 15:15:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728189AbgHFLrC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 6 Aug 2020 07:47:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48282 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727821AbgHFLRI (ORCPT
+        id S1727093AbgHFNId convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 6 Aug 2020 09:08:33 -0400
+Received: from [125.140.134.231] ([125.140.134.231]:63272 "EHLO
+        WIN-DAONO245HJF" rhost-flags-FAIL-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1728518AbgHFNHu (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 6 Aug 2020 07:17:08 -0400
-X-Greylist: delayed 473 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 06 Aug 2020 04:07:38 PDT
-Received: from xsi.loading.net (xsi.loading.net [IPv6:2a01:71c1:1:d0ba::ffff])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBF7CC06138D
-        for <linux-wireless@vger.kernel.org>; Thu,  6 Aug 2020 04:07:36 -0700 (PDT)
-Received: by xsi.loading.net (Postfix, from userid 10083)
-        id A94764027B4F7; Thu,  6 Aug 2020 12:59:32 +0200 (CEST)
-To:     linux-wireless@vger.kernel.org
-Subject: Hallo,
- mein Hubscher! Folge dem Link und in dieser Nacht werde ich dich
- nicht einschlafen lassen! - y5547
-Date:   Thu, 6 Aug 2020 10:59:32 +0000
-From:   Eurocamping <info@eurocamping-es.com>
-Message-ID: <3ea805508b33c8fe158ec3ba031cb055@eurocamping-es.com>
-X-Mailer: PHPMailer 5.2.22 (https://github.com/PHPMailer/PHPMailer)
+        Thu, 6 Aug 2020 09:07:50 -0400
+Received: from [185.191.231.247] ([185.191.231.247]) by WIN-DAONO245HJF with Microsoft SMTPSVC(8.5.9600.16384);
+         Thu, 6 Aug 2020 21:22:55 +0900
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-PPP-Message-ID: <20200806105932.4020.90622@xsi.loading.net>
-X-PPP-Vhost: eurocamping-es.com
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: INVESTMENT
+To:     linux-wireless@vger.kernel.org
+From:   campbellclark016@gmail.com
+Date:   Thu, 06 Aug 2020 05:23:00 -0700
+Reply-To: campbell.clark24@yahoo.com
+Message-ID: <WIN-DAONO245HJFbuBH00ab3284@WIN-DAONO245HJF>
+X-OriginalArrivalTime: 06 Aug 2020 12:22:56.0007 (UTC) FILETIME=[50716170:01D66BEC]
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Cuerpo del mensaje:
+
+Good day,
+
+ You were recommended by a mutual associate. I write you regarding an investment of bearer bonds I made on behalf of a client. The investment was made in 2009 and has been under my management. The said investor is deceased. The window is now available to assign these bonds to any name or company of my choice. I have all the necessary information to achieve this within 10 banking days. The total value of the bond is 100 million pounds sterling, in a million pound denominations. If you can handle this, do contact me at your earliest convenience via my email campbell.clark24@yahoo.com So we can discuss the finer details
 
 
---
-Este e-mail se ha enviado vía formulario de contacto desde Eurocamping (http://eurocamping-es.com)
+Thank you
 
+
+Mr Campbell Clark
