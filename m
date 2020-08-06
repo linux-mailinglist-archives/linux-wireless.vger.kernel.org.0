@@ -2,47 +2,75 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5EFAE23DFE8
-	for <lists+linux-wireless@lfdr.de>; Thu,  6 Aug 2020 19:55:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F6A823E145
+	for <lists+linux-wireless@lfdr.de>; Thu,  6 Aug 2020 20:43:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728207AbgHFRzD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 6 Aug 2020 13:55:03 -0400
-Received: from system-smtp.xel.nl ([82.94.246.156]:36374 "EHLO
-        system-smtp.xel.nl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727838AbgHFQaI (ORCPT
+        id S1728189AbgHFSmZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 6 Aug 2020 14:42:25 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:53062 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728332AbgHFSXM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 6 Aug 2020 12:30:08 -0400
-Received: from localhost (localhost [127.0.0.1])
-        by system-smtp.xel.nl (Postfix) with ESMTP id C4300A3E32
-        for <linux-wireless@vger.kernel.org>; Thu,  6 Aug 2020 12:47:06 +0200 (CEST)
-X-Virus-Scanned: mailscan @ Xel Media MX
-Received: from system-smtp.xel.nl ([127.0.0.1])
-        by localhost (system-smtp.xel.nl [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id N9w8ueBjeHrI for <linux-wireless@vger.kernel.org>;
-        Thu,  6 Aug 2020 12:47:02 +0200 (CEST)
-Received: from xwp-fpm4-node3.xel.nl (unknown [82.94.58.206])
-        by system-smtp.xel.nl (Postfix) with ESMTP id 4CA24A3E2F
-        for <linux-wireless@vger.kernel.org>; Thu,  6 Aug 2020 12:47:02 +0200 (CEST)
-Received: by xwp-fpm4-node3.xel.nl (Postfix, from userid 1085641002)
-        id 46EE23F09F; Thu,  6 Aug 2020 12:47:02 +0200 (CEST)
-To:     linux-wireless@vger.kernel.org
-Subject: EURIEC "Schauen Sie sich meine Webcam-Masturbationsvideos an - z8021"
-X-PHP-Originating-Script: 1085641002:class-phpmailer.php
-Date:   Thu, 6 Aug 2020 10:47:02 +0000
-From:   EURIEC <wordpress@euriec.eu>
-Reply-To: jeroen.rademakers@maastricht.nl
-Message-ID: <33c6d2313a7ec8f8be452e9ea5eb0a5c@euriec.eu>
-X-Mailer: PHPMailer 5.2.27 (https://github.com/PHPMailer/PHPMailer)
+        Thu, 6 Aug 2020 14:23:12 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1k3e9G-0000ii-Bs; Thu, 06 Aug 2020 11:33:26 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] wl1251, wlcore: fix spelling mistake "buld" -> "build"
+Date:   Thu,  6 Aug 2020 12:33:26 +0100
+Message-Id: <20200806113326.53779-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Berichtinhoud:
+From: Colin Ian King <colin.king@canonical.com>
 
+There are spelling mistakes in warning messages. Fix these.
 
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/net/wireless/ti/wl1251/main.c | 2 +-
+ drivers/net/wireless/ti/wlcore/cmd.c  | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/wireless/ti/wl1251/main.c b/drivers/net/wireless/ti/wl1251/main.c
+index 480a8d084878..136a0d3b23c9 100644
+--- a/drivers/net/wireless/ti/wl1251/main.c
++++ b/drivers/net/wireless/ti/wl1251/main.c
+@@ -558,7 +558,7 @@ static int wl1251_build_null_data(struct wl1251 *wl)
+ out:
+ 	dev_kfree_skb(skb);
+ 	if (ret)
+-		wl1251_warning("cmd buld null data failed: %d", ret);
++		wl1251_warning("cmd build null data failed: %d", ret);
+ 
+ 	return ret;
+ }
+diff --git a/drivers/net/wireless/ti/wlcore/cmd.c b/drivers/net/wireless/ti/wlcore/cmd.c
+index 6ef8fc9ae627..93424a1dffc9 100644
+--- a/drivers/net/wireless/ti/wlcore/cmd.c
++++ b/drivers/net/wireless/ti/wlcore/cmd.c
+@@ -1080,7 +1080,7 @@ int wl12xx_cmd_build_null_data(struct wl1271 *wl, struct wl12xx_vif *wlvif)
+ out:
+ 	dev_kfree_skb(skb);
+ 	if (ret)
+-		wl1271_warning("cmd buld null data failed %d", ret);
++		wl1271_warning("cmd build null data failed %d", ret);
+ 
+ 	return ret;
+ 
 -- 
-Deze e-mail is verzonden vanuit het contactformulier op EURIEC https://euriec.eu
+2.27.0
 
