@@ -2,21 +2,21 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6728623EF3F
-	for <lists+linux-wireless@lfdr.de>; Fri,  7 Aug 2020 16:49:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7254423EF7B
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 Aug 2020 16:51:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726533AbgHGOtp convert rfc822-to-8bit (ORCPT
+        id S1726878AbgHGOvn convert rfc822-to-8bit (ORCPT
         <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 7 Aug 2020 10:49:45 -0400
+        Fri, 7 Aug 2020 10:51:43 -0400
 Received: from mail.furshetcrimea.ru ([193.27.243.220]:51882 "EHLO
         furshetcrimea.ru" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726518AbgHGOtn (ORCPT
+        with ESMTP id S1726821AbgHGOvh (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 7 Aug 2020 10:49:43 -0400
-X-Greylist: delayed 4972 seconds by postgrey-1.27 at vger.kernel.org; Fri, 07 Aug 2020 10:49:41 EDT
+        Fri, 7 Aug 2020 10:51:37 -0400
+X-Greylist: delayed 5015 seconds by postgrey-1.27 at vger.kernel.org; Fri, 07 Aug 2020 10:51:24 EDT
 Received: from [154.118.61.214] (account info@furshetcrimea.ru HELO [192.168.8.100])
   by furshetcrimea.ru (CommuniGate Pro SMTP 6.1.10)
-  with ESMTPA id 11097404; Fri, 07 Aug 2020 16:34:35 +0300
+  with ESMTPA id 11132947; Fri, 07 Aug 2020 17:58:06 +0300
 Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8BIT
@@ -24,11 +24,11 @@ Content-Description: Mail message body
 Subject: Bei Interesse antworten.
 To:     Recipients <info@furshetcrimea.ru>
 From:   info@furshetcrimea.ru
-Date:   Fri, 07 Aug 2020 14:21:58 +0100
+Date:   Fri, 07 Aug 2020 15:45:29 +0100
 Reply-To: mattiassjoborg751@gmail.com
-X-Antivirus: Avast (VPS 200807-0, 08/07/2020), Outbound message
+X-Antivirus: Avast (VPS 200807-2, 08/07/2020), Outbound message
 X-Antivirus-Status: Clean
-Message-ID: <auto-000011097404@furshetcrimea.ru>
+Message-ID: <auto-000011132947@furshetcrimea.ru>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
