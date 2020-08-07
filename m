@@ -2,347 +2,59 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F99F23E35E
-	for <lists+linux-wireless@lfdr.de>; Thu,  6 Aug 2020 23:04:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6728623EF3F
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 Aug 2020 16:49:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726190AbgHFVEk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 6 Aug 2020 17:04:40 -0400
-Received: from smtp11.smtpout.orange.fr ([80.12.242.133]:47099 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725812AbgHFVEi (ORCPT
+        id S1726533AbgHGOtp convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 7 Aug 2020 10:49:45 -0400
+Received: from mail.furshetcrimea.ru ([193.27.243.220]:51882 "EHLO
+        furshetcrimea.ru" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726518AbgHGOtn (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 6 Aug 2020 17:04:38 -0400
-Received: from localhost.localdomain ([93.22.37.174])
-        by mwinf5d46 with ME
-        id CM4Z230063lSDvh03M4ZCJ; Thu, 06 Aug 2020 23:04:35 +0200
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Thu, 06 Aug 2020 23:04:35 +0200
-X-ME-IP: 93.22.37.174
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org,
-        yuehaibing@huawei.com, vaibhavgupta40@gmail.com
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] adm8211: switch from 'pci_' to 'dma_' API
-Date:   Thu,  6 Aug 2020 23:04:31 +0200
-Message-Id: <20200806210431.736050-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.25.1
+        Fri, 7 Aug 2020 10:49:43 -0400
+X-Greylist: delayed 4972 seconds by postgrey-1.27 at vger.kernel.org; Fri, 07 Aug 2020 10:49:41 EDT
+Received: from [154.118.61.214] (account info@furshetcrimea.ru HELO [192.168.8.100])
+  by furshetcrimea.ru (CommuniGate Pro SMTP 6.1.10)
+  with ESMTPA id 11097404; Fri, 07 Aug 2020 16:34:35 +0300
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: Bei Interesse antworten.
+To:     Recipients <info@furshetcrimea.ru>
+From:   info@furshetcrimea.ru
+Date:   Fri, 07 Aug 2020 14:21:58 +0100
+Reply-To: mattiassjoborg751@gmail.com
+X-Antivirus: Avast (VPS 200807-0, 08/07/2020), Outbound message
+X-Antivirus-Status: Clean
+Message-ID: <auto-000011097404@furshetcrimea.ru>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The wrappers in include/linux/pci-dma-compat.h should go away.
+Schöne Grüße,
 
-The patch has been generated with the coccinelle script below and has been
-hand modified to replace GFP_ with a correct flag.
-It has been compile tested.
+Mein Name ist MATTIAS SJOBORG, ich bin Schweizer Staatsbürger und (Vorsitzender des Vergütungs- und Nominierungsausschusses) von Tethys Petroleum, einem multinationalen Ölkonzern mit Sitz in London-England, Großbritannien. Ich bitte Sie um Ihre Hilfe, um die Summe von vierzig Millionen Dollar abzurufen, die aus zwei Sendungsboxen besteht.
 
-When memory is allocated in 'adm8211_alloc_rings()', GFP_KERNEL can be used
-because it is called only from the probe function and no lock is acquired.
-Moreover, GFP_KERNEL is already used just a few lines above in a kmalloc.
+Dieses Geld wurde von der Firma erworben und von einem Diplomaten begleitet und korrekt in einer Sicherheitsfirma in Amerika hinterlegt. Mein Grund dafür ist, dass ich von der Firma zu lange um meine Ansprüche betrogen wurde, nur weil ich kein bin Britisch. Die Kontaktdaten des Diplomaten erhalten Sie, wenn Sie Ihr Interesse bekunden, mir zu helfen.
 
-@@
-@@
--    PCI_DMA_BIDIRECTIONAL
-+    DMA_BIDIRECTIONAL
+Jede der Schachteln enthält 20 Mio. USD. Für Ihre Hilfe bin ich bereit, 40% an Sie freizugeben. Aus Sicherheitsgründen wurde die Sendung als VERTRAULICHE DIPLOMATISCHE DOKUMENTE registriert, und ich kann erklären, warum dies so erklärt wurde. Denken Sie daran, dass der Diplomat den Inhalt der Sendung nicht kennt. Er ist seit einem Monat dort, während ich nach einem zuverlässigen Partner suchen möchte. Ich werde das Land verlassen, sobald die Sendung für Sie an Sie geliefert wird Private Investitionen und ich haben geschworen, niemals nach London zurückzukehren. Bitte, ich brauche Ihre dringende Antwort, bevor meine Pläne, das Unternehmen zu verlassen, entdeckt werden.
 
-@@
-@@
--    PCI_DMA_TODEVICE
-+    DMA_TO_DEVICE
+www.tethyspetroleum.com/tethys/static/EN_US/au_seniormanagement.html
 
-@@
-@@
--    PCI_DMA_FROMDEVICE
-+    DMA_FROM_DEVICE
+Im Moment ist die sicherste Form der Korrespondenz meine eigene E-Mail-Adresse. Bitte antworten Sie im Interesse der Vertraulichkeit nur über meine direkte E-Mail-Adresse. Antworten Sie zusammen mit Ihrer direkten Telefon- und Faxnummer, unter der ich Sie alternativ erreichen kann.
 
-@@
-@@
--    PCI_DMA_NONE
-+    DMA_NONE
+Bitte, wenn Sie nicht bereit und interessiert sind, mir zu helfen, löschen Sie bitte diese E-Mail aus Ihrer E-Mail und tun Sie so, als hätten Sie sie nie erhalten.
 
-@@
-expression e1, e2, e3;
-@@
--    pci_alloc_consistent(e1, e2, e3)
-+    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
+Freundliche Grüße,
+Mr.Mattias Sjoborg
+(Vorsitzender des Vergütungs- und Nominierungsausschusses)
+Tethys Petroleum.
+London, England
 
-@@
-expression e1, e2, e3;
-@@
--    pci_zalloc_consistent(e1, e2, e3)
-+    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_free_consistent(e1, e2, e3, e4)
-+    dma_free_coherent(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_map_single(e1, e2, e3, e4)
-+    dma_map_single(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_unmap_single(e1, e2, e3, e4)
-+    dma_unmap_single(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4, e5;
-@@
--    pci_map_page(e1, e2, e3, e4, e5)
-+    dma_map_page(&e1->dev, e2, e3, e4, e5)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_unmap_page(e1, e2, e3, e4)
-+    dma_unmap_page(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_map_sg(e1, e2, e3, e4)
-+    dma_map_sg(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_unmap_sg(e1, e2, e3, e4)
-+    dma_unmap_sg(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_dma_sync_single_for_cpu(e1, e2, e3, e4)
-+    dma_sync_single_for_cpu(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_dma_sync_single_for_device(e1, e2, e3, e4)
-+    dma_sync_single_for_device(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_dma_sync_sg_for_cpu(e1, e2, e3, e4)
-+    dma_sync_sg_for_cpu(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_dma_sync_sg_for_device(e1, e2, e3, e4)
-+    dma_sync_sg_for_device(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2;
-@@
--    pci_dma_mapping_error(e1, e2)
-+    dma_mapping_error(&e1->dev, e2)
-
-@@
-expression e1, e2;
-@@
--    pci_set_dma_mask(e1, e2)
-+    dma_set_mask(&e1->dev, e2)
-
-@@
-expression e1, e2;
-@@
--    pci_set_consistent_dma_mask(e1, e2)
-+    dma_set_coherent_mask(&e1->dev, e2)
-
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
-If needed, see post from Christoph Hellwig on the kernel-janitors ML:
-   https://marc.info/?l=kernel-janitors&m=158745678307186&w=4
----
- drivers/net/wireless/admtek/adm8211.c | 83 +++++++++++++--------------
- 1 file changed, 40 insertions(+), 43 deletions(-)
-
-diff --git a/drivers/net/wireless/admtek/adm8211.c b/drivers/net/wireless/admtek/adm8211.c
-index 22f9f2f8af10..5cf2045fadef 100644
---- a/drivers/net/wireless/admtek/adm8211.c
-+++ b/drivers/net/wireless/admtek/adm8211.c
-@@ -324,8 +324,8 @@ static void adm8211_interrupt_tci(struct ieee80211_hw *dev)
- 
- 		/* TODO: check TDES0_STATUS_TUF and TDES0_STATUS_TRO */
- 
--		pci_unmap_single(priv->pdev, info->mapping,
--				 info->skb->len, PCI_DMA_TODEVICE);
-+		dma_unmap_single(&priv->pdev->dev, info->mapping,
-+				 info->skb->len, DMA_TO_DEVICE);
- 
- 		ieee80211_tx_info_clear_status(txi);
- 
-@@ -382,35 +382,34 @@ static void adm8211_interrupt_rci(struct ieee80211_hw *dev)
- 		} else if (pktlen < RX_COPY_BREAK) {
- 			skb = dev_alloc_skb(pktlen);
- 			if (skb) {
--				pci_dma_sync_single_for_cpu(
--					priv->pdev,
--					priv->rx_buffers[entry].mapping,
--					pktlen, PCI_DMA_FROMDEVICE);
-+				dma_sync_single_for_cpu(&priv->pdev->dev,
-+							priv->rx_buffers[entry].mapping,
-+							pktlen,
-+							DMA_FROM_DEVICE);
- 				skb_put_data(skb,
- 					     skb_tail_pointer(priv->rx_buffers[entry].skb),
- 					     pktlen);
--				pci_dma_sync_single_for_device(
--					priv->pdev,
--					priv->rx_buffers[entry].mapping,
--					RX_PKT_SIZE, PCI_DMA_FROMDEVICE);
-+				dma_sync_single_for_device(&priv->pdev->dev,
-+							   priv->rx_buffers[entry].mapping,
-+							   RX_PKT_SIZE,
-+							   DMA_FROM_DEVICE);
- 			}
- 		} else {
- 			newskb = dev_alloc_skb(RX_PKT_SIZE);
- 			if (newskb) {
- 				skb = priv->rx_buffers[entry].skb;
- 				skb_put(skb, pktlen);
--				pci_unmap_single(
--					priv->pdev,
--					priv->rx_buffers[entry].mapping,
--					RX_PKT_SIZE, PCI_DMA_FROMDEVICE);
-+				dma_unmap_single(&priv->pdev->dev,
-+						 priv->rx_buffers[entry].mapping,
-+						 RX_PKT_SIZE, DMA_FROM_DEVICE);
- 				priv->rx_buffers[entry].skb = newskb;
- 				priv->rx_buffers[entry].mapping =
--					pci_map_single(priv->pdev,
-+					dma_map_single(&priv->pdev->dev,
- 						       skb_tail_pointer(newskb),
- 						       RX_PKT_SIZE,
--						       PCI_DMA_FROMDEVICE);
--				if (pci_dma_mapping_error(priv->pdev,
--					   priv->rx_buffers[entry].mapping)) {
-+						       DMA_FROM_DEVICE);
-+				if (dma_mapping_error(&priv->pdev->dev,
-+						      priv->rx_buffers[entry].mapping)) {
- 					priv->rx_buffers[entry].skb = NULL;
- 					dev_kfree_skb(newskb);
- 					skb = NULL;
-@@ -1449,11 +1448,11 @@ static int adm8211_init_rings(struct ieee80211_hw *dev)
- 		rx_info->skb = dev_alloc_skb(RX_PKT_SIZE);
- 		if (rx_info->skb == NULL)
- 			break;
--		rx_info->mapping = pci_map_single(priv->pdev,
-+		rx_info->mapping = dma_map_single(&priv->pdev->dev,
- 						  skb_tail_pointer(rx_info->skb),
- 						  RX_PKT_SIZE,
--						  PCI_DMA_FROMDEVICE);
--		if (pci_dma_mapping_error(priv->pdev, rx_info->mapping)) {
-+						  DMA_FROM_DEVICE);
-+		if (dma_mapping_error(&priv->pdev->dev, rx_info->mapping)) {
- 			dev_kfree_skb(rx_info->skb);
- 			rx_info->skb = NULL;
- 			break;
-@@ -1490,10 +1489,9 @@ static void adm8211_free_rings(struct ieee80211_hw *dev)
- 		if (!priv->rx_buffers[i].skb)
- 			continue;
- 
--		pci_unmap_single(
--			priv->pdev,
--			priv->rx_buffers[i].mapping,
--			RX_PKT_SIZE, PCI_DMA_FROMDEVICE);
-+		dma_unmap_single(&priv->pdev->dev,
-+				 priv->rx_buffers[i].mapping, RX_PKT_SIZE,
-+				 DMA_FROM_DEVICE);
- 
- 		dev_kfree_skb(priv->rx_buffers[i].skb);
- 	}
-@@ -1502,10 +1500,9 @@ static void adm8211_free_rings(struct ieee80211_hw *dev)
- 		if (!priv->tx_buffers[i].skb)
- 			continue;
- 
--		pci_unmap_single(priv->pdev,
-+		dma_unmap_single(&priv->pdev->dev,
- 				 priv->tx_buffers[i].mapping,
--				 priv->tx_buffers[i].skb->len,
--				 PCI_DMA_TODEVICE);
-+				 priv->tx_buffers[i].skb->len, DMA_TO_DEVICE);
- 
- 		dev_kfree_skb(priv->tx_buffers[i].skb);
- 	}
-@@ -1632,9 +1629,9 @@ static int adm8211_tx_raw(struct ieee80211_hw *dev, struct sk_buff *skb,
- 	unsigned int entry;
- 	u32 flag;
- 
--	mapping = pci_map_single(priv->pdev, skb->data, skb->len,
--				 PCI_DMA_TODEVICE);
--	if (pci_dma_mapping_error(priv->pdev, mapping))
-+	mapping = dma_map_single(&priv->pdev->dev, skb->data, skb->len,
-+				 DMA_TO_DEVICE);
-+	if (dma_mapping_error(&priv->pdev->dev, mapping))
- 		return -ENOMEM;
- 
- 	spin_lock_irqsave(&priv->lock, flags);
-@@ -1745,8 +1742,8 @@ static int adm8211_alloc_rings(struct ieee80211_hw *dev)
- 	/* Allocate TX/RX descriptors */
- 	ring_size = sizeof(struct adm8211_desc) * priv->rx_ring_size +
- 		    sizeof(struct adm8211_desc) * priv->tx_ring_size;
--	priv->rx_ring = pci_alloc_consistent(priv->pdev, ring_size,
--					     &priv->rx_ring_dma);
-+	priv->rx_ring = dma_alloc_coherent(&priv->pdev->dev, ring_size,
-+					   &priv->rx_ring_dma, GFP_KERNEL);
- 
- 	if (!priv->rx_ring) {
- 		kfree(priv->rx_buffers);
-@@ -1818,8 +1815,8 @@ static int adm8211_probe(struct pci_dev *pdev,
- 		return err; /* someone else grabbed it? don't disable it */
- 	}
- 
--	if (pci_set_dma_mask(pdev, DMA_BIT_MASK(32)) ||
--	    pci_set_consistent_dma_mask(pdev, DMA_BIT_MASK(32))) {
-+	if (dma_set_mask(&pdev->dev, DMA_BIT_MASK(32)) ||
-+	    dma_set_coherent_mask(&pdev->dev, DMA_BIT_MASK(32))) {
- 		printk(KERN_ERR "%s (adm8211): No suitable DMA available\n",
- 		       pci_name(pdev));
- 		goto err_free_reg;
-@@ -1929,10 +1926,10 @@ static int adm8211_probe(struct pci_dev *pdev,
- 	kfree(priv->eeprom);
- 
-  err_free_desc:
--	pci_free_consistent(pdev,
--			    sizeof(struct adm8211_desc) * priv->rx_ring_size +
--			    sizeof(struct adm8211_desc) * priv->tx_ring_size,
--			    priv->rx_ring, priv->rx_ring_dma);
-+	dma_free_coherent(&pdev->dev,
-+			  sizeof(struct adm8211_desc) * priv->rx_ring_size +
-+			  sizeof(struct adm8211_desc) * priv->tx_ring_size,
-+			  priv->rx_ring, priv->rx_ring_dma);
- 	kfree(priv->rx_buffers);
- 
-  err_iounmap:
-@@ -1962,10 +1959,10 @@ static void adm8211_remove(struct pci_dev *pdev)
- 
- 	priv = dev->priv;
- 
--	pci_free_consistent(pdev,
--			    sizeof(struct adm8211_desc) * priv->rx_ring_size +
--			    sizeof(struct adm8211_desc) * priv->tx_ring_size,
--			    priv->rx_ring, priv->rx_ring_dma);
-+	dma_free_coherent(&pdev->dev,
-+			  sizeof(struct adm8211_desc) * priv->rx_ring_size +
-+			  sizeof(struct adm8211_desc) * priv->tx_ring_size,
-+			  priv->rx_ring, priv->rx_ring_dma);
- 
- 	kfree(priv->rx_buffers);
- 	kfree(priv->eeprom);
 -- 
-2.25.1
+This email has been checked for viruses by Avast antivirus software.
+https://www.avast.com/antivirus
 
