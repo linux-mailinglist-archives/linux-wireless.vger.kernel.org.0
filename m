@@ -2,156 +2,166 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0BF0423F81C
-	for <lists+linux-wireless@lfdr.de>; Sat,  8 Aug 2020 17:59:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2FEF723F852
+	for <lists+linux-wireless@lfdr.de>; Sat,  8 Aug 2020 19:25:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726370AbgHHP7h (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 8 Aug 2020 11:59:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53766 "EHLO
+        id S1726256AbgHHRZr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 8 Aug 2020 13:25:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38682 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726242AbgHHP7g (ORCPT
+        with ESMTP id S1726200AbgHHRZr (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 8 Aug 2020 11:59:36 -0400
-Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [IPv6:2001:67c:2050::465:101])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DED2EC061756
-        for <linux-wireless@vger.kernel.org>; Sat,  8 Aug 2020 08:59:35 -0700 (PDT)
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [IPv6:2001:67c:2050:105:465:1:2:0])
-        (using TLSv1.2 with cipher ECDHE-RSA-CHACHA20-POLY1305 (256/256 bits))
-        (No client certificate requested)
-        by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4BP6P069n8zKmbx;
-        Sat,  8 Aug 2020 17:59:32 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at heinlein-support.de
-Received: from smtp2.mailbox.org ([80.241.60.241])
-        by spamfilter02.heinlein-hosting.de (spamfilter02.heinlein-hosting.de [80.241.56.116]) (amavisd-new, port 10030)
-        with ESMTP id YOlHtS0-6XFH; Sat,  8 Aug 2020 17:59:29 +0200 (CEST)
-To:     "backports@vger.kernel.org" <backports@vger.kernel.org>
-Cc:     linux-wireless@vger.kernel.org
-From:   Hauke Mehrtens <hauke@hauke-m.de>
-Subject: wireless backports 4.19.137-1, 5.4.56-1 and 5.8-1 released
-Autocrypt: addr=hauke@hauke-m.de; keydata=
- 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
-Message-ID: <9516452b-9a6e-cfe7-d308-927d4a2168f7@hauke-m.de>
-Date:   Sat, 8 Aug 2020 17:59:25 +0200
+        Sat, 8 Aug 2020 13:25:47 -0400
+Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2415BC061756
+        for <linux-wireless@vger.kernel.org>; Sat,  8 Aug 2020 10:25:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject
+        :Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=OalnPqJXvUuCPazxtPkqT4L7SXTnx7BkZI7+3jRwAzM=; b=MWMUBgZZYUG/tMo/bIZe4rphcg
+        ujipWy0dQ5B0NKI68OOfSx5mpjtJvWsCt9tdWRL0+jCQE4IqDlrtOTSLEQmlG30ZLmh8nj/KAZ6Od
+        cCwK530Hmy+DHqogGo40MSLz9kZ5KyZnBmLE81X+bYl5ZBidIN7Xc3PEzJU4ulBGBRtU=;
+Received: from p54ae996c.dip0.t-ipconnect.de ([84.174.153.108] helo=localhost.localdomain)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_CBC_SHA1:128)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1k4SbH-0006Dk-ET; Sat, 08 Aug 2020 19:25:43 +0200
+From:   Felix Fietkau <nbd@nbd.name>
+To:     linux-wireless@vger.kernel.org
+Cc:     johannes@sipsolutions.net
+Subject: [PATCH] mac80211: reduce packet loss event false positives
+Date:   Sat,  8 Aug 2020 19:25:42 +0200
+Message-Id: <20200808172542.41628-1-nbd@nbd.name>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature";
- boundary="k6gTEIorqqY71VzwKLdepkPhkepWTnb7T"
-X-MBO-SPAM-Probability: 
-X-Rspamd-Score: -5.82 / 15.00 / 15.00
-X-Rspamd-Queue-Id: 646C4178C
-X-Rspamd-UID: c34c4b
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---k6gTEIorqqY71VzwKLdepkPhkepWTnb7T
-Content-Type: multipart/mixed; boundary="V3oCkN9vDBTJ2rGhT9jaPikuHCNChkbOV"
+When running a large number of packets per second with a high data rate
+and long A-MPDUs, the packet loss threshold can be reached very quickly
+when the link conditions change. This frequently shows up as spurious
+disconnects.
+Mitigate false positives by using a similar logic for regular stations
+as the one being used for TDLS, though with a more aggressive timeout.
+Packet loss events are only reported if no ACK was received for a second.
 
---V3oCkN9vDBTJ2rGhT9jaPikuHCNChkbOV
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+---
+ net/mac80211/sta_info.h |  4 ++--
+ net/mac80211/status.c   | 31 +++++++++++++++----------------
+ 2 files changed, 17 insertions(+), 18 deletions(-)
 
-Hi
+diff --git a/net/mac80211/sta_info.h b/net/mac80211/sta_info.h
+index 49728047dfad..f66fcce8e6a4 100644
+--- a/net/mac80211/sta_info.h
++++ b/net/mac80211/sta_info.h
+@@ -522,7 +522,7 @@ struct ieee80211_sta_rx_stats {
+  * @status_stats.retry_failed: # of frames that failed after retry
+  * @status_stats.retry_count: # of retries attempted
+  * @status_stats.lost_packets: # of lost packets
+- * @status_stats.last_tdls_pkt_time: timestamp of last TDLS packet
++ * @status_stats.last_pkt_time: timestamp of last ACKed packet
+  * @status_stats.msdu_retries: # of MSDU retries
+  * @status_stats.msdu_failed: # of failed MSDUs
+  * @status_stats.last_ack: last ack timestamp (jiffies)
+@@ -595,7 +595,7 @@ struct sta_info {
+ 		unsigned long filtered;
+ 		unsigned long retry_failed, retry_count;
+ 		unsigned int lost_packets;
+-		unsigned long last_tdls_pkt_time;
++		unsigned long last_pkt_time;
+ 		u64 msdu_retries[IEEE80211_NUM_TIDS + 1];
+ 		u64 msdu_failed[IEEE80211_NUM_TIDS + 1];
+ 		unsigned long last_ack;
+diff --git a/net/mac80211/status.c b/net/mac80211/status.c
+index cbc40b358ba2..819c4221c284 100644
+--- a/net/mac80211/status.c
++++ b/net/mac80211/status.c
+@@ -755,12 +755,16 @@ static void ieee80211_report_used_skb(struct ieee80211_local *local,
+  *  - current throughput (higher value for higher tpt)?
+  */
+ #define STA_LOST_PKT_THRESHOLD	50
++#define STA_LOST_PKT_TIME	HZ		/* 1 sec since last ACK */
+ #define STA_LOST_TDLS_PKT_THRESHOLD	10
+ #define STA_LOST_TDLS_PKT_TIME		(10*HZ) /* 10secs since last ACK */
+ 
+ static void ieee80211_lost_packet(struct sta_info *sta,
+ 				  struct ieee80211_tx_info *info)
+ {
++	unsigned long pkt_time = STA_LOST_PKT_TIME;
++	unsigned int pkt_thr = STA_LOST_PKT_THRESHOLD;
++
+ 	/* If driver relies on its own algorithm for station kickout, skip
+ 	 * mac80211 packet loss mechanism.
+ 	 */
+@@ -773,21 +777,20 @@ static void ieee80211_lost_packet(struct sta_info *sta,
+ 		return;
+ 
+ 	sta->status_stats.lost_packets++;
+-	if (!sta->sta.tdls &&
+-	    sta->status_stats.lost_packets < STA_LOST_PKT_THRESHOLD)
+-		return;
++	if (sta->sta.tdls) {
++		pkt_time = STA_LOST_TDLS_PKT_TIME;
++		pkt_thr = STA_LOST_PKT_THRESHOLD;
++	}
+ 
+ 	/*
+ 	 * If we're in TDLS mode, make sure that all STA_LOST_TDLS_PKT_THRESHOLD
+ 	 * of the last packets were lost, and that no ACK was received in the
+ 	 * last STA_LOST_TDLS_PKT_TIME ms, before triggering the CQM packet-loss
+ 	 * mechanism.
++	 * For non-TDLS, use STA_LOST_PKT_THRESHOLD and STA_LOST_PKT_TIME
+ 	 */
+-	if (sta->sta.tdls &&
+-	    (sta->status_stats.lost_packets < STA_LOST_TDLS_PKT_THRESHOLD ||
+-	     time_before(jiffies,
+-			 sta->status_stats.last_tdls_pkt_time +
+-			 STA_LOST_TDLS_PKT_TIME)))
++	if (sta->status_stats.lost_packets < pkt_thr ||
++	    !time_after(jiffies, sta->status_stats.last_pkt_time + pkt_time))
+ 		return;
+ 
+ 	cfg80211_cqm_pktloss_notify(sta->sdata->dev, sta->sta.addr,
+@@ -1035,9 +1038,7 @@ static void __ieee80211_tx_status(struct ieee80211_hw *hw,
+ 					sta->status_stats.lost_packets = 0;
+ 
+ 				/* Track when last TDLS packet was ACKed */
+-				if (test_sta_flag(sta, WLAN_STA_TDLS_PEER_AUTH))
+-					sta->status_stats.last_tdls_pkt_time =
+-						jiffies;
++				sta->status_stats.last_pkt_time = jiffies;
+ 			} else if (noack_success) {
+ 				/* nothing to do here, do not account as lost */
+ 			} else {
+@@ -1170,9 +1171,8 @@ void ieee80211_tx_status_ext(struct ieee80211_hw *hw,
+ 			if (sta->status_stats.lost_packets)
+ 				sta->status_stats.lost_packets = 0;
+ 
+-			/* Track when last TDLS packet was ACKed */
+-			if (test_sta_flag(sta, WLAN_STA_TDLS_PEER_AUTH))
+-				sta->status_stats.last_tdls_pkt_time = jiffies;
++			/* Track when last packet was ACKed */
++			sta->status_stats.last_pkt_time = jiffies;
+ 		} else if (test_sta_flag(sta, WLAN_STA_PS_STA)) {
+ 			return;
+ 		} else if (noack_success) {
+@@ -1261,8 +1261,7 @@ void ieee80211_tx_status_8023(struct ieee80211_hw *hw,
+ 			if (sta->status_stats.lost_packets)
+ 				sta->status_stats.lost_packets = 0;
+ 
+-			if (test_sta_flag(sta, WLAN_STA_TDLS_PEER_AUTH))
+-				sta->status_stats.last_tdls_pkt_time = jiffies;
++			sta->status_stats.last_pkt_time = jiffies;
+ 		} else {
+ 			ieee80211_lost_packet(sta, info);
+ 		}
+-- 
+2.28.0
 
-backports-5.8-1 was released. This is based on Linux 5.8.
-https://cdn.kernel.org/pub/linux/kernel/projects/backports/stable/v5.8/ba=
-ckports-5.8-1.tar.xz
-
-backports-5.4.56-1 was released. This is based on Linux 5.4.56.
-https://cdn.kernel.org/pub/linux/kernel/projects/backports/stable/v5.4.56=
-/backports-5.4.56-1.tar.xz
-
-backports-4.19.137-1 was released. This is based on Linux 4.19.137.
-https://cdn.kernel.org/pub/linux/kernel/projects/backports/stable/v4.19.1=
-37/backports-4.19.137-1.tar.xz
-
-There is now a updated wiki page with the releases:
-https://backports.wiki.kernel.org/index.php/Releases
-
-The source code can be found here:
-https://git.kernel.org/cgit/linux/kernel/git/backports/backports.git/
-
-Hauke
-
-
---V3oCkN9vDBTJ2rGhT9jaPikuHCNChkbOV--
-
---k6gTEIorqqY71VzwKLdepkPhkepWTnb7T
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCgAdFiEEyz0/uAcd+JwXmwtD8bdnhZyy68cFAl8uy90ACgkQ8bdnhZyy
-68cvoQf/YEbmTpkWufmGQ8HNH+npyL+cJDiX94OMvZeeEkzvwDWqWYlYkKa7lxkr
-JOyasdGavlTKZb3+4ncSym9tbopkll7OSgZ84a0h9bM5cGcp81NELlj6bROY0uzy
-VigeG9LBBdW5xpZVdulKBF4sjmGxLQTHxMUp0qOHXLmGeZJKSIK9osO0GFfB3lzC
-hNoTSSwMrriELEirqueoSz9/5zqxxjijd+z0Hic3EM3CS7CIZb0kdkNxSaBCMaqI
-/fhjRZB9B24ZGsJ7gUirRo1kFYbe5r/Ab/odfQxxAZp9wMEP0astICDeH3fqc3HX
-EUntgGRilJU4WHuc/qZsKwAEmQrsvA==
-=SuGw
------END PGP SIGNATURE-----
-
---k6gTEIorqqY71VzwKLdepkPhkepWTnb7T--
