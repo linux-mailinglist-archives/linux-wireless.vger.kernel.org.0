@@ -2,118 +2,78 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 99B2C23F86A
-	for <lists+linux-wireless@lfdr.de>; Sat,  8 Aug 2020 20:01:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0726823F870
+	for <lists+linux-wireless@lfdr.de>; Sat,  8 Aug 2020 20:26:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726375AbgHHSBb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 8 Aug 2020 14:01:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44100 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726250AbgHHSBa (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 8 Aug 2020 14:01:30 -0400
-Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com [IPv6:2a00:1450:4864:20::541])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ECAEFC061756
-        for <linux-wireless@vger.kernel.org>; Sat,  8 Aug 2020 11:01:28 -0700 (PDT)
-Received: by mail-ed1-x541.google.com with SMTP id i6so3536664edy.5
-        for <linux-wireless@vger.kernel.org>; Sat, 08 Aug 2020 11:01:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=wNMGWRpxLCRNhvFBGn2jHdGfSMLwsC5v0n8Wvl9tloI=;
-        b=RrDAKLp+DIWJDyBxuL7EGjOl+uvuEsQWiMmxUldIQgundkg4I5B+fJZqXWuFx1vMnE
-         pGVgzvDoVkSAMQbP7EjI/F3/LUYCucJecIctDzjrUp1n9/R+VfYTI2JS0QkiRDYQOF4Z
-         DvM6XxjspJ+Ff2KVkWQTDpGIaMdlspoiKIuCCuRkWxDbgrkWLMy4FRvrDIbmocZj4aao
-         LnARnBq7PpbwacoH6MRpzJ/o6Ny1JRIJ1hBmPBh5jCyuaH4iz87VK/hWMo1flcQec+z+
-         MEf8hrDrO+GsKiYxtexufv5iIz5CuLQEVdukZdjPrIi1MY8tbeJySfoN/6gPb7DlJmDH
-         N+7Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=wNMGWRpxLCRNhvFBGn2jHdGfSMLwsC5v0n8Wvl9tloI=;
-        b=YHqYlm94rD7o48NgAJauR3bwX1Tiv1jNVyjbjPXNLlzuUMumKxTHm1hhnYF51y5vVC
-         L+l5ZM6s21vj3RORxXgI8hnOJCMfpRhGsaCl78xavFNK2TstHtnHqHDzoyW4cVWgnsiW
-         c3vkQtdmoYDTWQALPI9uE5DlnJkTojWzSUY2hDPz6S6eBOXpe+/w8QoIsDJQAl2yeEzH
-         m7d6IqQcHSHBs1HsOLwKnBf+7NcbP8yCvYruL20vTkEhSHy9u71jg7gp7+1AC+meQw2Q
-         WOOXdk+i9ziVRAshPMFVyiYb7OS9bj/xI40X25XoFu6UUcd6ERz406CI+Kr81YTAlc0E
-         xVag==
-X-Gm-Message-State: AOAM530yxd+x99dui/Pt8j1r0305QPa9T9Rgf6wODvZbDSwh1p/GhNCG
-        qdx44xnDtFSJD1zxkZ5AYGF6attV4KVCl+dx1Kw=
-X-Google-Smtp-Source: ABdhPJwO+qAYZzfY4DVdu4jrtJuqEQEAgJDBQPgUcmUAsW8uqauCkwC2Ac8pWaKoqOLRGUTaLHz6kTE1GQvFWurJiiY=
-X-Received: by 2002:a05:6402:6cc:: with SMTP id n12mr14807902edy.258.1596909683186;
- Sat, 08 Aug 2020 11:01:23 -0700 (PDT)
+        id S1726293AbgHHSZp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 8 Aug 2020 14:25:45 -0400
+Received: from mail.kernel.org ([198.145.29.99]:55752 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726200AbgHHSZo (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 8 Aug 2020 14:25:44 -0400
+Received: from localhost.localdomain (unknown [5.170.224.121])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 1EB77206B6;
+        Sat,  8 Aug 2020 18:25:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1596911144;
+        bh=ivX9oIC/8BDyOQAuwGel0lGjiDp9rT4p9w6XOL4YCDk=;
+        h=From:To:Cc:Subject:Date:From;
+        b=gDdvvDq2FNZefrP0dvboQK9MEX54IMY/AocNp+3E/UjPkOMpFlcrgI/gZKRpDW308
+         11t26ndeDtebTMsS48A8FMTFOh2Y4zcOhQHDNGM1pCYbpPlNHXXIDt4RP2kmFroiAB
+         MYe83gPGeCv7ZhQGfw30XNcvW7UDOD0oARO3ubTc=
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
+        dan.carpenter@oracle.com
+Subject: [PATCH] mt76: mt7615: release mutex in mt7615_reset_test_set
+Date:   Sat,  8 Aug 2020 20:25:41 +0200
+Message-Id: <fc09800f29909e3461a0f8a62fd75f67ee63b7a1.1596910154.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-References: <20200804104535.GA398141@mwanda>
-In-Reply-To: <20200804104535.GA398141@mwanda>
-From:   Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>
-Date:   Sat, 8 Aug 2020 20:01:16 +0200
-Message-ID: <CAA2SeNKdO6bq5yp4k3q6phJmTDnU5oL5vbJ_mFY78uKMz4CFgQ@mail.gmail.com>
-Subject: Re: [bug report] mt76: mt7615: wake device before accessing regmap in debugfs
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Lorenzo Bianconi <lorenzo@kernel.org>,
-        linux-mediatek@lists.infradead.org,
-        linux-wireless <linux-wireless@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
->
-> Hello Lorenzo Bianconi,
->
-> The patch ea4906c4be49: "mt76: mt7615: wake device before accessing
-> regmap in debugfs" from Jul 3, 2020, leads to the following static
-> checker warning:
+Reduce scope of mutex_acquire/mutex_release in mt7615_reset_test_set
+routine in order to fix the following static checker warning:
 
-Hi Dan,
+drivers/net/wireless/mediatek/mt76/mt7615/debugfs.c:179
+mt7615_reset_test_set()
+warn: inconsistent returns 'dev->mt76.mutex'.
 
-thx for the report. I will post a fix soon.
+Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
+Fixes: ea4906c4be49 ("mt76: mt7615: wake device before accessing regmap in debugfs")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+ drivers/net/wireless/mediatek/mt76/mt7615/debugfs.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-Regards,
-Lorenzo
-
->
->         drivers/net/wireless/mediatek/mt76/mt7615/debugfs.c:179 mt7615_reset_test_set()
->         warn: inconsistent returns 'dev->mt76.mutex'.
->
-> drivers/net/wireless/mediatek/mt76/mt7615/debugfs.c
->    159  static int
->    160  mt7615_reset_test_set(void *data, u64 val)
->    161  {
->    162          struct mt7615_dev *dev = data;
->    163          struct sk_buff *skb;
->    164
->    165          if (!mt7615_wait_for_mcu_init(dev))
->    166                  return 0;
->    167
->    168          mt7615_mutex_acquire(dev);
->    169
->    170          skb = alloc_skb(1, GFP_KERNEL);
->    171          if (!skb)
->    172                  return -ENOMEM;
->                         ^^^^^^^^^^^^^^
-> This is returning with the mutex held.  What is the mutex protecting?
-> We could move the allocation and the skb_put() before the
-> mt7615_mutex_acquire().
->
->    173
->    174          skb_put(skb, 1);
->    175          mt76_tx_queue_skb_raw(dev, 0, skb, 0);
->    176
->    177          mt7615_mutex_release(dev);
->    178
->    179          return 0;
->    180  }
->
-> regards,
-> dan carpenter
-
-
-
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7615/debugfs.c
+index 88931658a9fb..937cb71bed64 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/debugfs.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/debugfs.c
+@@ -165,15 +165,14 @@ mt7615_reset_test_set(void *data, u64 val)
+ 	if (!mt7615_wait_for_mcu_init(dev))
+ 		return 0;
+ 
+-	mt7615_mutex_acquire(dev);
+-
+ 	skb = alloc_skb(1, GFP_KERNEL);
+ 	if (!skb)
+ 		return -ENOMEM;
+ 
+ 	skb_put(skb, 1);
+-	mt76_tx_queue_skb_raw(dev, 0, skb, 0);
+ 
++	mt7615_mutex_acquire(dev);
++	mt76_tx_queue_skb_raw(dev, 0, skb, 0);
+ 	mt7615_mutex_release(dev);
+ 
+ 	return 0;
 -- 
-UNIX is Sexy: who | grep -i blonde | talk; cd ~; wine; talk; touch;
-unzip; touch; strip; gasp; finger; gasp; mount; fsck; more; yes; gasp;
-umount; make clean; sleep
+2.26.2
+
