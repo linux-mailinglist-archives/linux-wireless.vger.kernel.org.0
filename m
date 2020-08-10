@@ -2,81 +2,57 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D7DB12403B5
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Aug 2020 10:58:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A2D912403C6
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Aug 2020 11:01:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726648AbgHJI6k (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 10 Aug 2020 04:58:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32984 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726597AbgHJI6h (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 10 Aug 2020 04:58:37 -0400
-Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33452C06178B
-        for <linux-wireless@vger.kernel.org>; Mon, 10 Aug 2020 01:58:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-         s=20160729; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
-        Message-Id:Date:Subject:To:From:Sender:Reply-To:Cc:Content-Type:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=H44c2BMdG1DEMo5nQoHrKZGUmCSWvhrzgn3Sgl6l5dU=; b=k7wwAZZCsLQYzbNRHgxWHnOGnJ
-        Dm7xDk2ne0zgchoJN+32WofEgr89BXGid3oKzREaefOWMNIG+OpdDhXdOVYKiZDnEVpomt1dCPBIF
-        W+2Ekpo8SuICn68LPqiYPUsSvhxRBq/QhyvFiVi/hXaXlihA8qJ/oDC6OVXDXPm3EBRk=;
-Received: from p54ae996c.dip0.t-ipconnect.de ([84.174.153.108] helo=localhost.localdomain)
-        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_CBC_SHA1:128)
-        (Exim 4.89)
-        (envelope-from <nbd@nbd.name>)
-        id 1k53da-0003XJ-Pe
-        for linux-wireless@vger.kernel.org; Mon, 10 Aug 2020 10:58:34 +0200
-From:   Felix Fietkau <nbd@nbd.name>
-To:     linux-wireless@vger.kernel.org
-Subject: [PATCH 6/6] mt76: mt7915: do not do any work in napi poll after calling napi_complete_done()
-Date:   Mon, 10 Aug 2020 10:58:32 +0200
-Message-Id: <20200810085832.65662-6-nbd@nbd.name>
-X-Mailer: git-send-email 2.28.0
-In-Reply-To: <20200810085832.65662-1-nbd@nbd.name>
-References: <20200810085832.65662-1-nbd@nbd.name>
+        id S1726700AbgHJJB3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 10 Aug 2020 05:01:29 -0400
+Received: from mail.kernel.org ([198.145.29.99]:49302 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726675AbgHJJB3 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 10 Aug 2020 05:01:29 -0400
+Received: from pali.im (pali.im [31.31.79.79])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id BA762206B5;
+        Mon, 10 Aug 2020 09:01:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1597050088;
+        bh=iGz664uJ2hWyo6/xsAJ3SeQmQmS8Fq5niSP2WTDZaY8=;
+        h=Date:From:To:Subject:From;
+        b=iTOe/o+tUrENJ3DYTSR5GCfRZhSGku2sb26nMXFZQIAeYrcsZkakeOzubEXeJND9z
+         H346ID4DQ8Bo7N9sJM2YGPalyoJQMxwsOmelR/iV7m3wTyvLVNbCjyz+T4zZbym7Ua
+         U7CbyQos44ofwm1qxknlhxoPU7iHtaTGtOpVxLPw=
+Received: by pali.im (Postfix)
+        id 635057C9; Mon, 10 Aug 2020 11:01:26 +0200 (CEST)
+Date:   Mon, 10 Aug 2020 11:01:26 +0200
+From:   Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
+To:     ath10k@lists.infradead.org, ath9k-devel@qca.qualcomm.com,
+        linux-wireless@vger.kernel.org, Kalle Valo <kvalo@codeaurora.org>
+Subject: CVE-2020-3702: Firmware updates for ath9k and ath10k chips
+Message-ID: <20200810090126.mtu3uocpcjg5se5e@pali>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: NeoMutt/20180716
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fixes a race condition where multiple tx cleanup or sta poll tasks could run
-in parallel.
+Hello!
 
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
----
- drivers/net/wireless/mediatek/mt76/mt7915/dma.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ESET engineers on their blog published some information about new
+security vulnerability CVE-2020-3702 in ath9k wifi cards:
+https://www.welivesecurity.com/2020/08/06/beyond-kr00k-even-more-wifi-chips-vulnerable-eavesdropping/
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/dma.c b/drivers/net/wireless/mediatek/mt76/mt7915/dma.c
-index a8832c5e6004..8a1ae08d9572 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/dma.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/dma.c
-@@ -95,16 +95,13 @@ static int mt7915_poll_tx(struct napi_struct *napi, int budget)
- 	dev = container_of(napi, struct mt7915_dev, mt76.tx_napi);
- 
- 	mt7915_tx_cleanup(dev);
--
--	if (napi_complete_done(napi, 0))
--		mt7915_irq_enable(dev, MT_INT_TX_DONE_ALL);
--
--	mt7915_tx_cleanup(dev);
--
- 	mt7915_mac_sta_poll(dev);
- 
- 	tasklet_schedule(&dev->mt76.tx_tasklet);
- 
-+	if (napi_complete_done(napi, 0))
-+		mt7915_irq_enable(dev, MT_INT_TX_DONE_ALL);
-+
- 	return 0;
- }
- 
--- 
-2.28.0
+According to Qualcomm security bulletin this CVE-2020-3702 affects also
+some Qualcomm IPQ chips which are handled by ath10k driver:
+https://www.qualcomm.com/company/product-security/bulletins/august-2020-security-bulletin#_cve-2020-3702
 
+Kalle, could you or other people from Qualcomm provide updated and fixed
+version of ath9k and ath10k firmwares in linux-firmware git repository?
+
+According to Qualcomm security bulletin this issue has Critical security
+rating, so I think fixed firmware files should be updated also in stable
+releases of linux distributions.
