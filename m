@@ -2,109 +2,124 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 82B73240BC9
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Aug 2020 19:18:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C733240DF4
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Aug 2020 21:12:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727787AbgHJRSP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 10 Aug 2020 13:18:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53042 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726720AbgHJRSO (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 10 Aug 2020 13:18:14 -0400
-Received: from mail-pf1-x430.google.com (mail-pf1-x430.google.com [IPv6:2607:f8b0:4864:20::430])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C0E1C061756
-        for <linux-wireless@vger.kernel.org>; Mon, 10 Aug 2020 10:18:14 -0700 (PDT)
-Received: by mail-pf1-x430.google.com with SMTP id f193so5839552pfa.12
-        for <linux-wireless@vger.kernel.org>; Mon, 10 Aug 2020 10:18:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=message-id:subject:from:to:date:in-reply-to:references:user-agent
-         :mime-version:content-transfer-encoding;
-        bh=ZfiSo/jR3N4STQphSoESnfgc2kvTu9hOFjYWtU62Gys=;
-        b=mfYgUQmeS1apG1xzklxRkyRtc/i4/MrZj62qgnxL6aXaXj4IsJHW2154Oq42GjfRGI
-         h95VBwrreL451G1UJ9lbUCLtA90Hbd8oqd2dLGgHTrVoN7yKufXMfr65x2ycblN6Cqjz
-         /wd8j0WC6LVIIi3/lG07OqZ6eQM007kSGgpOldqc2ugozvew7eQnU2hzwFpDN2IecfAY
-         /2YVhlbc52ADweswe0qvEfiJLYY2IA9MB05oo5XeQUpOuy3xhl3YWYyGaDAtYxBSu9SA
-         YZj1BzT4yFSboXe550RvBPXRlhpndoV78pc1t1OhlcYyazqlxsVItj90Qj942TOfZFpp
-         Nomw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:message-id:subject:from:to:date:in-reply-to
-         :references:user-agent:mime-version:content-transfer-encoding;
-        bh=ZfiSo/jR3N4STQphSoESnfgc2kvTu9hOFjYWtU62Gys=;
-        b=X4NMxCj2iSSSSXdjjwcDCg3kpVU28qfdiCqX5qm7Lb4dhicWSMJYKSr4OST0C7VIDY
-         jhLG9EuDorTM+WgoEQM2Hj7B26MADwET+DyEpAIxw0LdfNLl6kCRNoC5pgO1TOnW0T8U
-         Aa4zwBJ5jc/rMYaS2pX7yQdddCNv2QgwhHOGdVUkkMA0GpkHQ8MoWd48CO+78jPa+aaD
-         zsEcD4jIJ3EH20nikzsheLzn7vp11UHFnreKDl0UV7e13bPBO5YSVwgrP3Jg3dvzwuoR
-         jaNq0xo8tTquuX3KQz1SQ4Ea7P348FHAAr3fg7moWBNCYvA8oRhduD6iCm9FIampggMg
-         XJ9Q==
-X-Gm-Message-State: AOAM532QqWtz6mfTsFuaZfxKijh4JVZe06sw1liZr3J6sRbDtuy51VYU
-        HL/8LFRzycvnoO8Qik1yxgFqsQD8
-X-Google-Smtp-Source: ABdhPJz/Lgby04mcxfqg9vcuQRdONkJkwYAwAsVadzB1LiLh5Uv48234OvHAxB56og9s4lhJmf2PTQ==
-X-Received: by 2002:a65:60cb:: with SMTP id r11mr23171500pgv.131.1597079892968;
-        Mon, 10 Aug 2020 10:18:12 -0700 (PDT)
-Received: from host-29.home (50-126-102-83.drr01.csby.or.frontiernet.net. [50.126.102.83])
-        by smtp.gmail.com with ESMTPSA id t19sm24089002pfc.5.2020.08.10.10.17.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Aug 2020 10:18:02 -0700 (PDT)
-Message-ID: <28f1ab73ad2697578078e05cc40e9b29643d3470.camel@gmail.com>
-Subject: Re: Lost beacon behavior changed as of 01afc6fed (hwsim)
-From:   James Prestwood <prestwoj@gmail.com>
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Date:   Mon, 10 Aug 2020 10:17:58 -0700
-In-Reply-To: <65bbc2f69fe966d471eff3287a191919311ac641.camel@sipsolutions.net>
-References: <ada14dfad76b93d654606c3b397de059d968096b.camel@gmail.com>
-         (sfid-20200702_001244_354404_5FEC9FBA) <65bbc2f69fe966d471eff3287a191919311ac641.camel@sipsolutions.net>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.32.5 (3.32.5-1.fc30) 
+        id S1728387AbgHJTKC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 10 Aug 2020 15:10:02 -0400
+Received: from mail.kernel.org ([198.145.29.99]:37020 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728477AbgHJTKA (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 10 Aug 2020 15:10:00 -0400
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 2A73022D04;
+        Mon, 10 Aug 2020 19:09:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1597086600;
+        bh=EopDIIb4dHomF0BvjVFItju8q9qhFlVsZux9Je0xQw0=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=vvN/n/sC8Bnleor9QDuZo8ff4nuZ0PwhVqPfEIkJ66uKflQE6+e5pT1qMhFEO1YsA
+         MEi20H/t5OELyt/+SGKimT0oNjQuVA0J6+3r5cGYIHZj46QZC2qasH7vCJhJDDg0ly
+         rEx4C67xpJFCDvPKHg95/Oj2GniztfQreBUcGBgY=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Wright Feng <wright.feng@cypress.com>,
+        Arend van Spriel <arend.vanspriel@broadcom.com>,
+        Chi-hsien Lin <chi-hsien.lin@cypress.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Sasha Levin <sashal@kernel.org>,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        brcm80211-dev-list@cypress.com, netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.8 44/64] brcmfmac: set state of hanger slot to FREE when flushing PSQ
+Date:   Mon, 10 Aug 2020 15:08:39 -0400
+Message-Id: <20200810190859.3793319-44-sashal@kernel.org>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20200810190859.3793319-1-sashal@kernel.org>
+References: <20200810190859.3793319-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+From: Wright Feng <wright.feng@cypress.com>
 
-> 
-> But I suspect that it could be that you're testing this in the wrong
-> way? From your description, it almost seems like you turn off the AP
-> interface, and roam after that? I'm not sure that's really realistic.
+[ Upstream commit fcdd7a875def793c38d7369633af3eba6c7cf089 ]
 
-Yes, your right. I guess we just got away with this since the behavior
-was different previously.
+When USB or SDIO device got abnormal bus disconnection, host driver
+tried to clean up the skbs in PSQ and TXQ (The skb's pointer in hanger
+slot linked to PSQ and TSQ), so we should set the state of skb hanger slot
+to BRCMF_FWS_HANGER_ITEM_STATE_FREE before freeing skb.
+In brcmf_fws_bus_txq_cleanup it already sets
+BRCMF_FWS_HANGER_ITEM_STATE_FREE before freeing skb, therefore we add the
+same thing in brcmf_fws_psq_flush to avoid following warning message.
 
-> If
-> you wanted to test the "a few beacons were lost" behaviour, then
-> you'd
-> really have to lose a few beacons only (perhaps by adding something
-> to
-> wmediumd?), and not drop the AP off the air entirely.
+   [ 1580.012880] ------------   [ cut here ]------------
+   [ 1580.017550] WARNING: CPU: 3 PID: 3065 at
+drivers/net/wireless/broadcom/brcm80211/brcmutil/utils.c:49
+brcmu_pkt_buf_free_skb+0x21/0x30 [brcmutil]
+   [ 1580.184017] Call Trace:
+   [ 1580.186514]  brcmf_fws_cleanup+0x14e/0x190 [brcmfmac]
+   [ 1580.191594]  brcmf_fws_del_interface+0x70/0x90 [brcmfmac]
+   [ 1580.197029]  brcmf_proto_bcdc_del_if+0xe/0x10 [brcmfmac]
+   [ 1580.202418]  brcmf_remove_interface+0x69/0x190 [brcmfmac]
+   [ 1580.207888]  brcmf_detach+0x90/0xe0 [brcmfmac]
+   [ 1580.212385]  brcmf_usb_disconnect+0x76/0xb0 [brcmfmac]
+   [ 1580.217557]  usb_unbind_interface+0x72/0x260
+   [ 1580.221857]  device_release_driver_internal+0x141/0x200
+   [ 1580.227152]  device_release_driver+0x12/0x20
+   [ 1580.231460]  bus_remove_device+0xfd/0x170
+   [ 1580.235504]  device_del+0x1d9/0x300
+   [ 1580.239041]  usb_disable_device+0x9e/0x270
+   [ 1580.243160]  usb_disconnect+0x94/0x270
+   [ 1580.246980]  hub_event+0x76d/0x13b0
+   [ 1580.250499]  process_one_work+0x144/0x360
+   [ 1580.254564]  worker_thread+0x4d/0x3c0
+   [ 1580.258247]  kthread+0x109/0x140
+   [ 1580.261515]  ? rescuer_thread+0x340/0x340
+   [ 1580.265543]  ? kthread_park+0x60/0x60
+   [ 1580.269237]  ? SyS_exit_group+0x14/0x20
+   [ 1580.273118]  ret_from_fork+0x25/0x30
+   [ 1580.300446] ------------   [ cut here ]------------
 
-Yeah, I think this is what we will have to do. Target beacons
-specifically to block (and just a few) vs everything. 
+Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+Signed-off-by: Wright Feng <wright.feng@cypress.com>
+Signed-off-by: Chi-hsien Lin <chi-hsien.lin@cypress.com>
+Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+Link: https://lore.kernel.org/r/20200624091608.25154-2-wright.feng@cypress.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwsignal.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-> 
-> If the AP is in fact completely unreachable, then I'm pretty sure
-> real
-> hardware will behave just like hwsim here, albeit perhaps a bit
-> slower,
-> though not by much. And then you'd have the same issue there.
-> 
-> The fact that hwsim behaved differently would likely have been just a
-> timing thing - it didn't advertise REPORTS_TX_ACK_STATUS, so we'd
-> wait a
-> bit longer until deciding that the AP really was truly gone. If the
-> ACK
-> status is reported we just send a (few?) quick nullfunc(s) and decide
-> that very quickly. But that's independent on hwsim or real hardware.
-> 
-> 
-> johannes
-> 
-
-Thanks,
-James
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwsignal.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwsignal.c
+index 09701262330d6..babaac682f132 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwsignal.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwsignal.c
+@@ -621,6 +621,7 @@ static inline int brcmf_fws_hanger_poppkt(struct brcmf_fws_hanger *h,
+ static void brcmf_fws_psq_flush(struct brcmf_fws_info *fws, struct pktq *q,
+ 				int ifidx)
+ {
++	struct brcmf_fws_hanger_item *hi;
+ 	bool (*matchfn)(struct sk_buff *, void *) = NULL;
+ 	struct sk_buff *skb;
+ 	int prec;
+@@ -632,6 +633,9 @@ static void brcmf_fws_psq_flush(struct brcmf_fws_info *fws, struct pktq *q,
+ 		skb = brcmu_pktq_pdeq_match(q, prec, matchfn, &ifidx);
+ 		while (skb) {
+ 			hslot = brcmf_skb_htod_tag_get_field(skb, HSLOT);
++			hi = &fws->hanger.items[hslot];
++			WARN_ON(skb != hi->pkt);
++			hi->state = BRCMF_FWS_HANGER_ITEM_STATE_FREE;
+ 			brcmf_fws_hanger_poppkt(&fws->hanger, hslot, &skb,
+ 						true);
+ 			brcmu_pkt_buf_free_skb(skb);
+-- 
+2.25.1
 
