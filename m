@@ -2,86 +2,143 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 51B482410A2
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Aug 2020 21:31:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 77B372417C8
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Aug 2020 10:01:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730343AbgHJTbk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 10 Aug 2020 15:31:40 -0400
-Received: from mail.kernel.org ([198.145.29.99]:37052 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728800AbgHJTKD (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 10 Aug 2020 15:10:03 -0400
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 210B021775;
-        Mon, 10 Aug 2020 19:10:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1597086603;
-        bh=0hpCvABZStLplECItoq4E4rTIl3EAyzd0ZRKA+1fl1o=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BWmzyrbkx8aRiC3NFHBYqO0QJWgYJHAOrVp/ciahzhXXCThS+hECezdXIXDS8fYoX
-         UrQ/R1voeeC3cJ+sv0qPOk0BBboZBqEVy9fL96Ncy34M+XNydBerAz407rOrIir45i
-         TgJpl+TOs7BqnlFjvEPcgnlbTFfdgdUvi7qhBUH4=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Bolarinwa Olayemi Saheed <refactormyself@gmail.com>,
-        Bjorn Helgaas <bjorn@helgaas.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Sasha Levin <sashal@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.8 46/64] iwlegacy: Check the return value of pcie_capability_read_*()
-Date:   Mon, 10 Aug 2020 15:08:41 -0400
-Message-Id: <20200810190859.3793319-46-sashal@kernel.org>
+        id S1728367AbgHKIBW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 11 Aug 2020 04:01:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47580 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726397AbgHKIBW (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 11 Aug 2020 04:01:22 -0400
+Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 228BBC061787
+        for <linux-wireless@vger.kernel.org>; Tue, 11 Aug 2020 01:01:22 -0700 (PDT)
+Received: from [149.224.185.155] (helo=bertha9.lan)
+        by ds12 with esmtpa (Exim 4.89)
+        (envelope-from <john@phrozen.org>)
+        id 1k5PDg-0002ig-SL; Tue, 11 Aug 2020 10:01:16 +0200
+From:   John Crispin <john@phrozen.org>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
+        John Crispin <john@phrozen.org>
+Subject: [PATCH V4 1/5] nl80211: rename csa counter attributes countdown counters
+Date:   Tue, 11 Aug 2020 10:01:03 +0200
+Message-Id: <20200811080107.3615705-1-john@phrozen.org>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200810190859.3793319-1-sashal@kernel.org>
-References: <20200810190859.3793319-1-sashal@kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Bolarinwa Olayemi Saheed <refactormyself@gmail.com>
+We want to reuse the attributes for other counters such as BSS color
+change. Rename them to more generic names.
 
-[ Upstream commit 9018fd7f2a73e9b290f48a56b421558fa31e8b75 ]
-
-On failure pcie_capability_read_dword() sets it's last parameter, val
-to 0. However, with Patch 14/14, it is possible that val is set to ~0 on
-failure. This would introduce a bug because (x & x) == (~0 & x).
-
-This bug can be avoided without changing the function's behaviour if the
-return value of pcie_capability_read_dword is checked to confirm success.
-
-Check the return value of pcie_capability_read_dword() to ensure success.
-
-Suggested-by: Bjorn Helgaas <bjorn@helgaas.com>
-Signed-off-by: Bolarinwa Olayemi Saheed <refactormyself@gmail.com>
-Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
-Link: https://lore.kernel.org/r/20200713175529.29715-3-refactormyself@gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: John Crispin <john@phrozen.org>
 ---
- drivers/net/wireless/intel/iwlegacy/common.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/uapi/linux/nl80211.h | 14 ++++++++------
+ net/wireless/nl80211.c       | 16 ++++++++--------
+ 2 files changed, 16 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlegacy/common.c b/drivers/net/wireless/intel/iwlegacy/common.c
-index 348c17ce72f5c..f78e062df572a 100644
---- a/drivers/net/wireless/intel/iwlegacy/common.c
-+++ b/drivers/net/wireless/intel/iwlegacy/common.c
-@@ -4286,8 +4286,8 @@ il_apm_init(struct il_priv *il)
- 	 *    power savings, even without L1.
- 	 */
- 	if (il->cfg->set_l0s) {
--		pcie_capability_read_word(il->pci_dev, PCI_EXP_LNKCTL, &lctl);
--		if (lctl & PCI_EXP_LNKCTL_ASPM_L1) {
-+		ret = pcie_capability_read_word(il->pci_dev, PCI_EXP_LNKCTL, &lctl);
-+		if (!ret && (lctl & PCI_EXP_LNKCTL_ASPM_L1)) {
- 			/* L1-ASPM enabled; disable(!) L0S  */
- 			il_set_bit(il, CSR_GIO_REG,
- 				   CSR_GIO_REG_VAL_L0S_ENABLED);
+diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
+index 631f3a997b3c..bccd16f743b9 100644
+--- a/include/uapi/linux/nl80211.h
++++ b/include/uapi/linux/nl80211.h
+@@ -2082,10 +2082,10 @@ enum nl80211_commands {
+  *	operation).
+  * @NL80211_ATTR_CSA_IES: Nested set of attributes containing the IE information
+  *	for the time while performing a channel switch.
+- * @NL80211_ATTR_CSA_C_OFF_BEACON: An array of offsets (u16) to the channel
+- *	switch counters in the beacons tail (%NL80211_ATTR_BEACON_TAIL).
+- * @NL80211_ATTR_CSA_C_OFF_PRESP: An array of offsets (u16) to the channel
+- *	switch counters in the probe response (%NL80211_ATTR_PROBE_RESP).
++ * @NL80211_ATTR_CNTDWN_OFFS_BEACON: An array of offsets (u16) to the channel
++ *	switch or color change counters in the beacons tail (%NL80211_ATTR_BEACON_TAIL).
++ * @NL80211_ATTR_CNTDWN_OFFS_PRESP: An array of offsets (u16) to the channel
++ *	switch or color change counters in the probe response (%NL80211_ATTR_PROBE_RESP).
+  *
+  * @NL80211_ATTR_RXMGMT_FLAGS: flags for nl80211_send_mgmt(), u32.
+  *	As specified in the &enum nl80211_rxmgmt_flags.
+@@ -2821,8 +2821,8 @@ enum nl80211_attrs {
+ 	NL80211_ATTR_CH_SWITCH_COUNT,
+ 	NL80211_ATTR_CH_SWITCH_BLOCK_TX,
+ 	NL80211_ATTR_CSA_IES,
+-	NL80211_ATTR_CSA_C_OFF_BEACON,
+-	NL80211_ATTR_CSA_C_OFF_PRESP,
++	NL80211_ATTR_CNTDWN_OFFS_BEACON,
++	NL80211_ATTR_CNTDWN_OFFS_PRESP,
+ 
+ 	NL80211_ATTR_RXMGMT_FLAGS,
+ 
+@@ -3009,6 +3009,8 @@ enum nl80211_attrs {
+ #define	NL80211_ATTR_MESH_PARAMS NL80211_ATTR_MESH_CONFIG
+ #define NL80211_ATTR_IFACE_SOCKET_OWNER NL80211_ATTR_SOCKET_OWNER
+ #define NL80211_ATTR_SAE_DATA NL80211_ATTR_AUTH_DATA
++#define NL80211_ATTR_CSA_C_OFF_BEACON NL80211_ATTR_CNTDWN_OFFS_BEACON
++#define NL80211_ATTR_CSA_C_OFF_PRESP NL80211_ATTR_CNTDWN_OFFS_PRESP
+ 
+ /*
+  * Allow user space programs to use #ifdef on new attributes by defining them
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 814e23d3ce7c..e41fcec7c306 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -567,8 +567,8 @@ static const struct nla_policy nl80211_policy[NUM_NL80211_ATTR] = {
+ 	[NL80211_ATTR_CH_SWITCH_COUNT] = { .type = NLA_U32 },
+ 	[NL80211_ATTR_CH_SWITCH_BLOCK_TX] = { .type = NLA_FLAG },
+ 	[NL80211_ATTR_CSA_IES] = { .type = NLA_NESTED },
+-	[NL80211_ATTR_CSA_C_OFF_BEACON] = { .type = NLA_BINARY },
+-	[NL80211_ATTR_CSA_C_OFF_PRESP] = { .type = NLA_BINARY },
++	[NL80211_ATTR_CNTDWN_OFFS_BEACON] = { .type = NLA_BINARY },
++	[NL80211_ATTR_CNTDWN_OFFS_PRESP] = { .type = NLA_BINARY },
+ 	[NL80211_ATTR_STA_SUPPORTED_CHANNELS] = { .type = NLA_BINARY },
+ 	[NL80211_ATTR_STA_SUPPORTED_OPER_CLASSES] = { .type = NLA_BINARY },
+ 	[NL80211_ATTR_HANDLE_DFS] = { .type = NLA_FLAG },
+@@ -8787,10 +8787,10 @@ static int nl80211_channel_switch(struct sk_buff *skb, struct genl_info *info)
+ 	if (err)
+ 		return err;
+ 
+-	if (!csa_attrs[NL80211_ATTR_CSA_C_OFF_BEACON])
++	if (!csa_attrs[NL80211_ATTR_CNTDWN_OFFS_BEACON])
+ 		return -EINVAL;
+ 
+-	len = nla_len(csa_attrs[NL80211_ATTR_CSA_C_OFF_BEACON]);
++	len = nla_len(csa_attrs[NL80211_ATTR_CNTDWN_OFFS_BEACON]);
+ 	if (!len || (len % sizeof(u16)))
+ 		return -EINVAL;
+ 
+@@ -8801,7 +8801,7 @@ static int nl80211_channel_switch(struct sk_buff *skb, struct genl_info *info)
+ 		return -EINVAL;
+ 
+ 	params.counter_offsets_beacon =
+-		nla_data(csa_attrs[NL80211_ATTR_CSA_C_OFF_BEACON]);
++		nla_data(csa_attrs[NL80211_ATTR_CNTDWN_OFFS_BEACON]);
+ 
+ 	/* sanity checks - counters should fit and be the same */
+ 	for (i = 0; i < params.n_counter_offsets_beacon; i++) {
+@@ -8814,8 +8814,8 @@ static int nl80211_channel_switch(struct sk_buff *skb, struct genl_info *info)
+ 			return -EINVAL;
+ 	}
+ 
+-	if (csa_attrs[NL80211_ATTR_CSA_C_OFF_PRESP]) {
+-		len = nla_len(csa_attrs[NL80211_ATTR_CSA_C_OFF_PRESP]);
++	if (csa_attrs[NL80211_ATTR_CNTDWN_OFFS_PRESP]) {
++		len = nla_len(csa_attrs[NL80211_ATTR_CNTDWN_OFFS_PRESP]);
+ 		if (!len || (len % sizeof(u16)))
+ 			return -EINVAL;
+ 
+@@ -8826,7 +8826,7 @@ static int nl80211_channel_switch(struct sk_buff *skb, struct genl_info *info)
+ 			return -EINVAL;
+ 
+ 		params.counter_offsets_presp =
+-			nla_data(csa_attrs[NL80211_ATTR_CSA_C_OFF_PRESP]);
++			nla_data(csa_attrs[NL80211_ATTR_CNTDWN_OFFS_PRESP]);
+ 
+ 		/* sanity checks - counters should fit and be the same */
+ 		for (i = 0; i < params.n_counter_offsets_presp; i++) {
 -- 
 2.25.1
 
