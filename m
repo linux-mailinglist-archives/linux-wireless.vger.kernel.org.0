@@ -2,54 +2,69 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6234A2423A7
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Aug 2020 03:23:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E015242464
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Aug 2020 05:50:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726468AbgHLBWs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 11 Aug 2020 21:22:48 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:13396 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726469AbgHLBWs (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 11 Aug 2020 21:22:48 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1597195367; h=Content-Transfer-Encoding: MIME-Version:
- References: In-Reply-To: Message-Id: Date: Subject: Cc: To: From:
- Sender; bh=J7L+88nTc7qorjVMLxd3AfXEbIgR+jocig+WnzDXj98=; b=aPrFrW+XbxQUtTccHboPAfHXsfAgPbSabPln2mXQDVYlukyX9yAhEwYb/9zCL3mMMRDQqIax
- rTyQfRxFRJS2DbTjytwt71NoNXLteWC7O4eE+SHbKGL6up6KrUluQoYpb+fu+8LrRWRveh+0
- 3yIArV5JXLYAUNdp2BzJPxutC8k=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n05.prod.us-east-1.postgun.com with SMTP id
- 5f33445f440a07969a754e0a (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 12 Aug 2020 01:22:39
- GMT
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 6A0EBC433CA; Wed, 12 Aug 2020 01:22:38 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from alokad-linux.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: alokad)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 319DCC433C9;
-        Wed, 12 Aug 2020 01:22:37 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 319DCC433C9
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=alokad@codeaurora.org
-From:   Aloka Dixit <alokad@codeaurora.org>
-To:     johannes@sipsolutions.net
-Cc:     linux-wireless@vger.kernel.org, Aloka Dixit <alokad@codeaurora.org>
-Subject: [PATCH v4 2/2] mac80211: Unsolicited broadcast probe response support
-Date:   Tue, 11 Aug 2020 18:22:26 -0700
-Message-Id: <20200812012226.11347-3-alokad@codeaurora.org>
-X-Mailer: git-send-email 2.25.0
-In-Reply-To: <20200812012226.11347-1-alokad@codeaurora.org>
-References: <20200812012226.11347-1-alokad@codeaurora.org>
+        id S1726595AbgHLDt3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 11 Aug 2020 23:49:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32906 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726577AbgHLDt1 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 11 Aug 2020 23:49:27 -0400
+Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com [IPv6:2607:f8b0:4864:20::443])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2AEE9C061787
+        for <linux-wireless@vger.kernel.org>; Tue, 11 Aug 2020 20:49:27 -0700 (PDT)
+Received: by mail-pf1-x443.google.com with SMTP id d22so336447pfn.5
+        for <linux-wireless@vger.kernel.org>; Tue, 11 Aug 2020 20:49:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=endlessm-com.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=iGZ7oH5irgb8vHttyuKAPTbuHfvCyPqoeu6cHuTeExc=;
+        b=2Dft5flWpUB03NQgpw9xj7T9+NTrzhj/vMHyRIAznuP6lw+xeaq/srnjOBPrJu02GR
+         tcpTC3WsTR1TeSnT+ZEtKuImF2TVg56FFgf+JjlLk3MK0BBMdTmAZJ5nT3yLGHM6QfCs
+         NA4d4y6lqJTeELkH7DQi1RvDAlNE4MDey642d34tekFwnI5179igxFoIDC3qjemebGW3
+         aGxi6Mp7Z7mJPGLRBC18y128pXEvu9d7RFCM05HMxBQWQ2RNc24xWw/uCNm7gVUxEmgX
+         VhdesRuuFJZy4qwDFzjaJwdYAKC3MQspHqv+L6Y+iQzyplkVN6QLsDB5XpuXBRACewJk
+         YjJQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=iGZ7oH5irgb8vHttyuKAPTbuHfvCyPqoeu6cHuTeExc=;
+        b=Qj7cFIlO1qlIg4PRxweMGWqV3GA+fZS0TDRjOsLFSukvjpNvyp+fm9EGq9eDwHQ+nW
+         a9bSuSfA32TJc8vtWTJ3Bltc65dSGc4fhFd/SofFW3/7t+CWan8oo/GvrYqYNGY8fxes
+         VtOXugXYHNMs1e7NocnUgtgjHdUol/iJRI6RrvgNBV8uAj9Zmpfq5Jg2ZjQQLoy/GIW5
+         Vz7z0Lxm/EQX43FQJo6b5b9T6WheQ3So6psk4SHgP7unx/ARzTkqa6w3g9pgiW0spM6x
+         htDovtsF2yR2T0PuIZjYN3WYSKb05jRLE3og496U3oaV7oCMLAfLboTNmD2AuKLAqMvA
+         Qhyg==
+X-Gm-Message-State: AOAM533FzAw1ED9iAkqu11os9uXQPT+HxGVpmCzi/uR+O3Fu0mxAf052
+        QBPmjpJAT0xIKP/gU/FLz6GdFw==
+X-Google-Smtp-Source: ABdhPJzrvSzwT2N1BMUiellgv6g/V2xXKQpYD6iLiVgzojCmV6OSSVfry8e6Y++DlMNQvpq9Zj4P5g==
+X-Received: by 2002:aa7:8c42:: with SMTP id e2mr8861014pfd.181.1597204166326;
+        Tue, 11 Aug 2020 20:49:26 -0700 (PDT)
+Received: from starnight.localdomain (123-204-46-122.static.seed.net.tw. [123.204.46.122])
+        by smtp.googlemail.com with ESMTPSA id cc23sm413610pjb.48.2020.08.11.20.49.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 11 Aug 2020 20:49:25 -0700 (PDT)
+From:   Jian-Hong Pan <jian-hong@endlessm.com>
+To:     Kalle Valo <kvalo@codeaurora.org>,
+        Arend van Spriel <arend.vanspriel@broadcom.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
+        Wright Feng <wright.feng@cypress.com>
+Cc:     linux-firmware@kernel.org, linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        brcm80211-dev-list@cypress.com, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Jian-Hong Pan <jian-hong@endlessm.com>,
+        Nick Xie <nick@khadas.com>
+Subject: [PATCH] brcm: Add 4356 based AP6356S NVRAM for the khadas VIM2
+Date:   Wed, 12 Aug 2020 11:46:12 +0800
+Message-Id: <20200812034611.2944-1-jian-hong@endlessm.com>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
@@ -57,310 +72,153 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This patch adds mac80211 support to configure unsolicited
-broadcast probe response transmission for in-band discovery in 6GHz.
+Add a NVRAM file for the wireless module used in khadas VIM2.  This
+source comes from khadas fenix project's commit 022fdc3a1333 ("hwpacks:
+wlan-firmware: add AP6356S firmware for mainline linux"). [1]
 
-Changes include functions to store and retrieve probe response template,
-and packet interval (0 - 20 TUs).
-Setting interval to 0 disables the unsolicited broadcast probe response
-transmission.
+[1]: https://github.com/khadas/fenix/commit/022fdc3a1333d2d16f84c2e59e4507c92a668a3d
 
-Signed-off-by: Aloka Dixit <alokad@codeaurora.org>
+Suggested-by: Nick Xie <nick@khadas.com>
+Signed-off-by: Jian-Hong Pan <jian-hong@endlessm.com>
 ---
-v4: Addressed comments
+ brcm/brcmfmac4356-sdio.khadas,vim2.txt | 128 +++++++++++++++++++++++++
+ 1 file changed, 128 insertions(+)
+ create mode 100644 brcm/brcmfmac4356-sdio.khadas,vim2.txt
 
- include/net/mac80211.h     | 24 ++++++++++++++++
- net/mac80211/cfg.c         | 57 ++++++++++++++++++++++++++++++++++----
- net/mac80211/debugfs.c     |  1 +
- net/mac80211/ieee80211_i.h |  7 +++++
- net/mac80211/main.c        |  6 ++++
- net/mac80211/tx.c          | 29 +++++++++++++++++++
- 6 files changed, 118 insertions(+), 6 deletions(-)
-
-diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index 11d5610d2ad5..f43f23b13ab6 100644
---- a/include/net/mac80211.h
-+++ b/include/net/mac80211.h
-@@ -317,6 +317,8 @@ struct ieee80211_vif_chanctx_switch {
-  * @BSS_CHANGED_TWT: TWT status changed
-  * @BSS_CHANGED_HE_OBSS_PD: OBSS Packet Detection status changed.
-  * @BSS_CHANGED_HE_BSS_COLOR: BSS Color has changed
-+ * @BSS_CHANGED_UNSOL_BCAST_PROBE_RESP: Unsolicited broadcast probe response
-+ *	status changed.
-  *
-  */
- enum ieee80211_bss_change {
-@@ -350,6 +352,7 @@ enum ieee80211_bss_change {
- 	BSS_CHANGED_TWT			= 1<<27,
- 	BSS_CHANGED_HE_OBSS_PD		= 1<<28,
- 	BSS_CHANGED_HE_BSS_COLOR	= 1<<29,
-+	BSS_CHANGED_UNSOL_BCAST_PROBE_RESP = 1<<30,
- 
- 	/* when adding here, make sure to change ieee80211_reconfig */
- };
-@@ -607,6 +610,8 @@ struct ieee80211_ftm_responder_params {
-  * @he_oper: HE operation information of the AP we are connected to
-  * @he_obss_pd: OBSS Packet Detection parameters.
-  * @he_bss_color: BSS coloring settings, if BSS supports HE
-+ * @unsol_bcast_probe_resp_interval: Unsolicited broadcast probe response
-+ *	interval.
-  */
- struct ieee80211_bss_conf {
- 	const u8 *bssid;
-@@ -674,6 +679,7 @@ struct ieee80211_bss_conf {
- 	} he_oper;
- 	struct ieee80211_he_obss_pd he_obss_pd;
- 	struct cfg80211_he_bss_color he_bss_color;
-+	u32 unsol_bcast_probe_resp_interval;
- };
- 
- /**
-@@ -2325,6 +2331,9 @@ struct ieee80211_txq {
-  *	aggregating MPDUs with the same keyid, allowing mac80211 to keep Tx
-  *	A-MPDU sessions active while rekeying with Extended Key ID.
-  *
-+ * @IEEE80211_HW_SUPPORTS_UNSOL_BCAST_PROBE_RESP: Hardware/driver supports
-+ *	unsolicited broadcast probe response transmission
-+ *
-  * @NUM_IEEE80211_HW_FLAGS: number of hardware flags, used for sizing arrays
-  */
- enum ieee80211_hw_flags {
-@@ -2377,6 +2386,7 @@ enum ieee80211_hw_flags {
- 	IEEE80211_HW_SUPPORTS_MULTI_BSSID,
- 	IEEE80211_HW_SUPPORTS_ONLY_HE_MULTI_BSSID,
- 	IEEE80211_HW_AMPDU_KEYBORDER_SUPPORT,
-+	IEEE80211_HW_SUPPORTS_UNSOL_BCAST_PROBE_RESP,
- 
- 	/* keep last, obviously */
- 	NUM_IEEE80211_HW_FLAGS
-@@ -6558,4 +6568,18 @@ u32 ieee80211_calc_tx_airtime(struct ieee80211_hw *hw,
-  */
- bool ieee80211_set_hw_80211_encap(struct ieee80211_vif *vif, bool enable);
- 
-+/**
-+ * ieee80211_get_unsol_bcast_probe_resp_tmpl - Get unsolicited broadcast
-+ *     probe response template.
-+ * @hw: pointer obtained from ieee80211_alloc_hw().
-+ * @vif: &struct ieee80211_vif pointer from the add_interface callback.
-+ *
-+ * The driver is responsible for freeing the returned skb.
-+ *
-+ * Return: Unsolicited broadcast probe response template. %NULL on error.
-+ */
-+struct sk_buff *
-+ieee80211_get_unsol_bcast_probe_resp_tmpl(struct ieee80211_hw *hw,
-+					  struct ieee80211_vif *vif);
+diff --git a/brcm/brcmfmac4356-sdio.khadas,vim2.txt b/brcm/brcmfmac4356-sdio.khadas,vim2.txt
+new file mode 100644
+index 0000000..4c286cc
+--- /dev/null
++++ b/brcm/brcmfmac4356-sdio.khadas,vim2.txt
+@@ -0,0 +1,128 @@
++#AP6356SL_V1.1_NVRAM_20150805
++#Modified from AP6356SDP_V1.0_NVRAM_20150216
++NVRAMRev=$Rev: 373428 $
++sromrev=11
++boardrev=0x1121
++boardtype=0x073e
++boardflags=0x02400201
++boardflags2=0x00802000
++boardflags3=0x0000010a
++macaddr=00:90:4c:1a:10:01
++ccode=0x5855
++regrev=1
++antswitch=0
++pdgain5g=4
++pdgain2g=4
++tworangetssi2g=0
++tworangetssi5g=0
++paprdis=0
++femctrl=10
++vendid=0x14e4
++devid=0x43a3
++manfid=0x2d0
++nocrc=1
++otpimagesize=502
++xtalfreq=37400
++rxgains2gelnagaina0=0
++rxgains2gtrisoa0=7
++rxgains2gtrelnabypa0=0
++rxgains5gelnagaina0=0
++rxgains5gtrisoa0=11
++rxgains5gtrelnabypa0=0
++rxgains5gmelnagaina0=0
++rxgains5gmtrisoa0=13
++rxgains5gmtrelnabypa0=0
++rxgains5ghelnagaina0=0
++rxgains5ghtrisoa0=12
++rxgains5ghtrelnabypa0=0
++rxgains2gelnagaina1=0
++rxgains2gtrisoa1=7
++rxgains2gtrelnabypa1=0
++rxgains5gelnagaina1=0
++rxgains5gtrisoa1=10
++rxgains5gtrelnabypa1=0
++rxgains5gmelnagaina1=0
++rxgains5gmtrisoa1=11
++rxgains5gmtrelnabypa1=0
++rxgains5ghelnagaina1=0
++rxgains5ghtrisoa1=11
++rxgains5ghtrelnabypa1=0
++rxchain=3
++txchain=3
++aa2g=3
++aa5g=3
++agbg0=2
++agbg1=2
++aga0=2
++aga1=2
++tssipos2g=1
++extpagain2g=2
++tssipos5g=1
++extpagain5g=2
++tempthresh=255
++tempoffset=255
++rawtempsense=0x1ff
++pa2ga0=-135,5769,-647
++pa2ga1=-143,6023,-677
++pa5ga0=-183,5746,-697,-172,5801,-685,-176,5707,-680,-180,5445,-659
++pa5ga1=-186,5543,-669,-193,5506,-675,-210,5282,-661,-199,5367,-665
++subband5gver=0x4
++pdoffsetcckma0=0x4
++pdoffsetcckma1=0x4
++pdoffset40ma0=0x0000
++pdoffset80ma0=0x0000
++pdoffset40ma1=0x0000
++pdoffset80ma1=0x0000
++maxp2ga0=72
++maxp5ga0=69,70,69,68
++maxp2ga1=71
++maxp5ga1=67,67,67,67
++cckbw202gpo=0x1222
++cckbw20ul2gpo=0x0000
++mcsbw202gpo=0x99E644422
++mcsbw402gpo=0xE9744424
++dot11agofdmhrbw202gpo=0x4444
++ofdmlrbw202gpo=0x0022
++mcsbw205glpo=0xEEA86661
++mcsbw405glpo=0xEEB86663
++mcsbw805glpo=0xEEB86663
++mcsbw205gmpo=0xAAA86663
++mcsbw405gmpo=0xECB86663
++mcsbw805gmpo=0xEEA86663
++mcsbw205ghpo=0xCC986663
++mcsbw405ghpo=0xEEA86663
++mcsbw805ghpo=0xEEA86663
++mcslr5glpo=0x0000
++mcslr5gmpo=0x0000
++mcslr5ghpo=0x0000
++sb20in40hrpo=0x0
++sb20in80and160hr5glpo=0x0
++sb40and80hr5glpo=0x0
++sb20in80and160hr5gmpo=0x0
++sb40and80hr5gmpo=0x0
++sb20in80and160hr5ghpo=0x0
++sb40and80hr5ghpo=0x0
++sb20in40lrpo=0x0
++sb20in80and160lr5glpo=0x0
++sb40and80lr5glpo=0x0
++sb20in80and160lr5gmpo=0x0
++sb40and80lr5gmpo=0x0
++sb20in80and160lr5ghpo=0x0
++sb40and80lr5ghpo=0x0
++dot11agduphrpo=0x0
++dot11agduplrpo=0x0
++phycal_tempdelta=255
++temps_period=15
++temps_hysteresis=15
++rssicorrnorm_c0=4,4
++rssicorrnorm_c1=4,4
++rssicorrnorm5g_c0=1,2,3,1,2,3,6,6,8,6,6,8
++rssicorrnorm5g_c1=1,2,3,2,2,2,7,7,8,7,7,8
 +
- #endif /* MAC80211_H */
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index 9b360544ad6f..b4b028599cff 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -837,6 +837,35 @@ static int ieee80211_set_probe_resp(struct ieee80211_sub_if_data *sdata,
- 	return 0;
- }
- 
-+static int
-+ieee80211_set_unsol_bcast_probe_resp(struct ieee80211_sub_if_data *sdata,
-+				     struct cfg80211_unsol_bcast_probe_resp *params)
-+{
-+	struct unsol_bcast_probe_resp_data *new, *old = NULL;
++swctrlmap_2g=0x00001040,0x00004010,0x00004010,0x200010,0xff
++swctrlmap_5g=0x00000202,0x00000101,0x00000101,0x000000,0x47
++swctrlmapext_5g=0x00000000,0x00000000,0x00000000,0x000000,0x000
++swctrlmapext_2g=0x00000000,0x00000000,0x00000000,0x000000,0x000
 +
-+	if (!sdata->local->hw.wiphy->support_unsol_bcast_probe_resp)
-+		return -EOPNOTSUPP;
++muxenab=0x10
 +
-+	if (!params->tmpl || !params->tmpl_len)
-+		return -EINVAL;
-+
-+	old = sdata_dereference(sdata->u.ap.unsol_bcast_probe_resp, sdata);
-+	new = kzalloc(sizeof(*new) + params->tmpl_len, GFP_KERNEL);
-+	if (!new)
-+		return -ENOMEM;
-+	new->len = params->tmpl_len;
-+	memcpy(new->data, params->tmpl, params->tmpl_len);
-+	rcu_assign_pointer(sdata->u.ap.unsol_bcast_probe_resp, new);
-+
-+	if (old)
-+		kfree_rcu(old, rcu_head);
-+
-+	sdata->vif.bss_conf.unsol_bcast_probe_resp_interval =
-+							params->interval;
-+
-+	return 0;
-+}
-+
- static int ieee80211_set_ftm_responder_params(
- 				struct ieee80211_sub_if_data *sdata,
- 				const u8 *lci, size_t lci_len,
-@@ -1097,12 +1126,18 @@ static int ieee80211_start_ap(struct wiphy *wiphy, struct net_device *dev,
- 	}
- 
- 	err = ieee80211_assign_beacon(sdata, &params->beacon, NULL);
--	if (err < 0) {
--		ieee80211_vif_release_channel(sdata);
--		return err;
--	}
-+	if (err < 0)
-+		goto error;
- 	changed |= err;
- 
-+	if (params->unsol_bcast_probe_resp.interval) {
-+		err = ieee80211_set_unsol_bcast_probe_resp(sdata,
-+							   &params->unsol_bcast_probe_resp);
-+		if (err < 0)
-+			goto error;
-+		changed |= BSS_CHANGED_UNSOL_BCAST_PROBE_RESP;
-+	}
-+
- 	err = drv_start_ap(sdata->local, sdata);
- 	if (err) {
- 		old = sdata_dereference(sdata->u.ap.beacon, sdata);
-@@ -1110,8 +1145,7 @@ static int ieee80211_start_ap(struct wiphy *wiphy, struct net_device *dev,
- 		if (old)
- 			kfree_rcu(old, rcu_head);
- 		RCU_INIT_POINTER(sdata->u.ap.beacon, NULL);
--		ieee80211_vif_release_channel(sdata);
--		return err;
-+		goto error;
- 	}
- 
- 	ieee80211_recalc_dtim(local, sdata);
-@@ -1122,6 +1156,10 @@ static int ieee80211_start_ap(struct wiphy *wiphy, struct net_device *dev,
- 		netif_carrier_on(vlan->dev);
- 
- 	return 0;
-+
-+error:
-+	ieee80211_vif_release_channel(sdata);
-+	return err;
- }
- 
- static int ieee80211_change_beacon(struct wiphy *wiphy, struct net_device *dev,
-@@ -1158,6 +1196,7 @@ static int ieee80211_stop_ap(struct wiphy *wiphy, struct net_device *dev)
- 	struct ieee80211_local *local = sdata->local;
- 	struct beacon_data *old_beacon;
- 	struct probe_resp *old_probe_resp;
-+	struct unsol_bcast_probe_resp_data *old_unsol_bcast_probe_resp;
- 	struct cfg80211_chan_def chandef;
- 
- 	sdata_assert_lock(sdata);
-@@ -1166,6 +1205,9 @@ static int ieee80211_stop_ap(struct wiphy *wiphy, struct net_device *dev)
- 	if (!old_beacon)
- 		return -ENOENT;
- 	old_probe_resp = sdata_dereference(sdata->u.ap.probe_resp, sdata);
-+	old_unsol_bcast_probe_resp =
-+		sdata_dereference(sdata->u.ap.unsol_bcast_probe_resp,
-+				  sdata);
- 
- 	/* abort any running channel switch */
- 	mutex_lock(&local->mtx);
-@@ -1189,9 +1231,12 @@ static int ieee80211_stop_ap(struct wiphy *wiphy, struct net_device *dev)
- 	/* remove beacon and probe response */
- 	RCU_INIT_POINTER(sdata->u.ap.beacon, NULL);
- 	RCU_INIT_POINTER(sdata->u.ap.probe_resp, NULL);
-+	RCU_INIT_POINTER(sdata->u.ap.unsol_bcast_probe_resp, NULL);
- 	kfree_rcu(old_beacon, rcu_head);
- 	if (old_probe_resp)
- 		kfree_rcu(old_probe_resp, rcu_head);
-+	if (old_unsol_bcast_probe_resp)
-+		kfree_rcu(old_unsol_bcast_probe_resp, rcu_head);
- 
- 	kfree(sdata->vif.bss_conf.ftmr_params);
- 	sdata->vif.bss_conf.ftmr_params = NULL;
-diff --git a/net/mac80211/debugfs.c b/net/mac80211/debugfs.c
-index 54080290d6e2..18047db2e56f 100644
---- a/net/mac80211/debugfs.c
-+++ b/net/mac80211/debugfs.c
-@@ -408,6 +408,7 @@ static const char *hw_flag_names[] = {
- 	FLAG(SUPPORTS_MULTI_BSSID),
- 	FLAG(SUPPORTS_ONLY_HE_MULTI_BSSID),
- 	FLAG(AMPDU_KEYBORDER_SUPPORT),
-+	FLAG(SUPPORTS_UNSOL_BCAST_PROBE_RESP),
- #undef FLAG
- };
- 
-diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
-index ec1a71ac65f2..b54108ef3560 100644
---- a/net/mac80211/ieee80211_i.h
-+++ b/net/mac80211/ieee80211_i.h
-@@ -272,6 +272,12 @@ struct probe_resp {
- 	u8 data[];
- };
- 
-+struct unsol_bcast_probe_resp_data {
-+	struct rcu_head rcu_head;
-+	int len;
-+	u8 data[];
-+};
-+
- struct ps_data {
- 	/* yes, this looks ugly, but guarantees that we can later use
- 	 * bitmap_empty :)
-@@ -287,6 +293,7 @@ struct ps_data {
- struct ieee80211_if_ap {
- 	struct beacon_data __rcu *beacon;
- 	struct probe_resp __rcu *probe_resp;
-+	struct unsol_bcast_probe_resp_data __rcu *unsol_bcast_probe_resp;
- 
- 	/* to be used after channel switch. */
- 	struct cfg80211_beacon_data *next_beacon;
-diff --git a/net/mac80211/main.c b/net/mac80211/main.c
-index b4a2efe8e83a..0c326d5616ae 100644
---- a/net/mac80211/main.c
-+++ b/net/mac80211/main.c
-@@ -1168,6 +1168,12 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
- 				WLAN_EXT_CAPA3_MULTI_BSSID_SUPPORT;
- 	}
- 
-+	/* mac80211 supports unsolicited broadcast probe response
-+	 * transmission, if the driver supports it
-+	 */
-+	if (ieee80211_hw_check(&local->hw, SUPPORTS_UNSOL_BCAST_PROBE_RESP))
-+		local->hw.wiphy->support_unsol_bcast_probe_resp = true;
-+
- 	local->hw.wiphy->max_num_csa_counters = IEEE80211_MAX_CSA_COUNTERS_NUM;
- 
- 	/*
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index e9ce658141f5..49ca7227c9fa 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -4998,6 +4998,35 @@ struct sk_buff *ieee80211_proberesp_get(struct ieee80211_hw *hw,
- }
- EXPORT_SYMBOL(ieee80211_proberesp_get);
- 
-+struct sk_buff *
-+ieee80211_get_unsol_bcast_probe_resp_tmpl(struct ieee80211_hw *hw,
-+					  struct ieee80211_vif *vif)
-+{
-+	struct sk_buff *skb = NULL;
-+	struct unsol_bcast_probe_resp_data *tmpl = NULL;
-+	struct ieee80211_sub_if_data *sdata = vif_to_sdata(vif);
-+
-+	if (sdata->vif.type != NL80211_IFTYPE_AP)
-+		return NULL;
-+
-+	rcu_read_lock();
-+	tmpl = rcu_dereference(sdata->u.ap.unsol_bcast_probe_resp);
-+	if (!tmpl) {
-+		rcu_read_unlock();
-+		return NULL;
-+	}
-+
-+	skb = dev_alloc_skb(sdata->local->hw.extra_tx_headroom + tmpl->len);
-+	if (skb) {
-+		skb_reserve(skb, sdata->local->hw.extra_tx_headroom);
-+		skb_put_data(skb, tmpl->data, tmpl->len);
-+	}
-+
-+	rcu_read_unlock();
-+	return skb;
-+}
-+EXPORT_SYMBOL(ieee80211_get_unsol_bcast_probe_resp_tmpl);
-+
- struct sk_buff *ieee80211_pspoll_get(struct ieee80211_hw *hw,
- 				     struct ieee80211_vif *vif)
- {
 -- 
-2.25.0
+2.28.0
 
