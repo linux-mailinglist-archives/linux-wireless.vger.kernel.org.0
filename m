@@ -2,223 +2,223 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E015242464
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Aug 2020 05:50:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E8E9242475
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Aug 2020 06:03:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726595AbgHLDt3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 11 Aug 2020 23:49:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32906 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726577AbgHLDt1 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 11 Aug 2020 23:49:27 -0400
-Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com [IPv6:2607:f8b0:4864:20::443])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2AEE9C061787
-        for <linux-wireless@vger.kernel.org>; Tue, 11 Aug 2020 20:49:27 -0700 (PDT)
-Received: by mail-pf1-x443.google.com with SMTP id d22so336447pfn.5
-        for <linux-wireless@vger.kernel.org>; Tue, 11 Aug 2020 20:49:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=endlessm-com.20150623.gappssmtp.com; s=20150623;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=iGZ7oH5irgb8vHttyuKAPTbuHfvCyPqoeu6cHuTeExc=;
-        b=2Dft5flWpUB03NQgpw9xj7T9+NTrzhj/vMHyRIAznuP6lw+xeaq/srnjOBPrJu02GR
-         tcpTC3WsTR1TeSnT+ZEtKuImF2TVg56FFgf+JjlLk3MK0BBMdTmAZJ5nT3yLGHM6QfCs
-         NA4d4y6lqJTeELkH7DQi1RvDAlNE4MDey642d34tekFwnI5179igxFoIDC3qjemebGW3
-         aGxi6Mp7Z7mJPGLRBC18y128pXEvu9d7RFCM05HMxBQWQ2RNc24xWw/uCNm7gVUxEmgX
-         VhdesRuuFJZy4qwDFzjaJwdYAKC3MQspHqv+L6Y+iQzyplkVN6QLsDB5XpuXBRACewJk
-         YjJQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=iGZ7oH5irgb8vHttyuKAPTbuHfvCyPqoeu6cHuTeExc=;
-        b=Qj7cFIlO1qlIg4PRxweMGWqV3GA+fZS0TDRjOsLFSukvjpNvyp+fm9EGq9eDwHQ+nW
-         a9bSuSfA32TJc8vtWTJ3Bltc65dSGc4fhFd/SofFW3/7t+CWan8oo/GvrYqYNGY8fxes
-         VtOXugXYHNMs1e7NocnUgtgjHdUol/iJRI6RrvgNBV8uAj9Zmpfq5Jg2ZjQQLoy/GIW5
-         Vz7z0Lxm/EQX43FQJo6b5b9T6WheQ3So6psk4SHgP7unx/ARzTkqa6w3g9pgiW0spM6x
-         htDovtsF2yR2T0PuIZjYN3WYSKb05jRLE3og496U3oaV7oCMLAfLboTNmD2AuKLAqMvA
-         Qhyg==
-X-Gm-Message-State: AOAM533FzAw1ED9iAkqu11os9uXQPT+HxGVpmCzi/uR+O3Fu0mxAf052
-        QBPmjpJAT0xIKP/gU/FLz6GdFw==
-X-Google-Smtp-Source: ABdhPJzrvSzwT2N1BMUiellgv6g/V2xXKQpYD6iLiVgzojCmV6OSSVfry8e6Y++DlMNQvpq9Zj4P5g==
-X-Received: by 2002:aa7:8c42:: with SMTP id e2mr8861014pfd.181.1597204166326;
-        Tue, 11 Aug 2020 20:49:26 -0700 (PDT)
-Received: from starnight.localdomain (123-204-46-122.static.seed.net.tw. [123.204.46.122])
-        by smtp.googlemail.com with ESMTPSA id cc23sm413610pjb.48.2020.08.11.20.49.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Aug 2020 20:49:25 -0700 (PDT)
-From:   Jian-Hong Pan <jian-hong@endlessm.com>
-To:     Kalle Valo <kvalo@codeaurora.org>,
+        id S1725874AbgHLEDg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 12 Aug 2020 00:03:36 -0400
+Received: from mail-bn1nam07on2091.outbound.protection.outlook.com ([40.107.212.91]:54308
+        "EHLO NAM02-BN1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725766AbgHLEDf (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 12 Aug 2020 00:03:35 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=m7puFZelZLX+SjdSAb1yNZBRyrFWcee9QASiZvcUwBPyJ9mZfxDfkbqXC0KcJoWdzv9n+JVMGPDdn+j2NBHFcbPyQwpKifQKAA5is0V7iKEs2WXCWMp7Ibvw7CtrdpsIjJDXmmeFXRB1dgOnYIMo9UkuQ5mW8eWWeUVK5j2yZquQO87iIILUxagyu4kRAAVqLcppoFukXz7TLmfjXmoOUrSgXKqzpf50KAQxqxJUVyUhgcgLAO0lSX8RbMzVUt7AEztrNXYrafQUrWP8dhDewe5cBhHsy4dGAwWTBdB0hRcCosMINnlex8zHesdRRgzVe8TZ47HyAXoWGWYWFDF2Jg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Fp/rdj4L8hRC6H8IWch//6GILriNUZjsBdZIHbe8S5M=;
+ b=TKBQRNXwf98eyyNCUD0gaeyqnwl/W4QbNhIXbzUaG1XokYi/C8Hzr3N+HLdcvf93QAGwzaa2Aoivyf7E/2F3nC4ziWlFIysWWeVa+lLc+by1DIK69Uoz6uHBMFNR9751JUn+WGw7/q6i9t+zgyHkZFFnPWutcAdZ/KdnrslUH04EnJg4uN01WdDkykvhFfrz8YR8GPCU5+n6SX7ukZ71Pl0GxokVGgqMw8IZmBaMH+UbunaH8GfERgaqELPU4zZ02/frWkQHORabWYB+6G0Y45d1dfUmBWmc9SVbrRD5jpnDJwPeYNVsFadj5uE2s7Q7egxfsMvENdLeHLD7/7Qs3w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=cypress.com; dmarc=pass action=none header.from=cypress.com;
+ dkim=pass header.d=cypress.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cypress.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Fp/rdj4L8hRC6H8IWch//6GILriNUZjsBdZIHbe8S5M=;
+ b=Unq0YUGxxEZVUL4P5M0I/XGoIekIg83+IgvxA8qOBkCZXAMyX2Yb4dGZW4d+HqR4fwbUxp7SHkefFi3impsRw73a0V1VNCJ+VxAeYnzgFcL3EukT80x3OnZ9nl1uIt58Dm1QG0n9llvbHrXioyF7kIRqoVHerp1rTywB2p9GV3A=
+Authentication-Results: cypress.com; dkim=none (message not signed)
+ header.d=none;cypress.com; dmarc=none action=none header.from=cypress.com;
+Received: from BN8PR06MB5889.namprd06.prod.outlook.com (2603:10b6:408:c2::25)
+ by BN8PR06MB5796.namprd06.prod.outlook.com (2603:10b6:408:d0::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3261.20; Wed, 12 Aug
+ 2020 04:03:31 +0000
+Received: from BN8PR06MB5889.namprd06.prod.outlook.com
+ ([fe80::d82b:5f42:b7a8:d819]) by BN8PR06MB5889.namprd06.prod.outlook.com
+ ([fe80::d82b:5f42:b7a8:d819%3]) with mapi id 15.20.3261.024; Wed, 12 Aug 2020
+ 04:03:31 +0000
+Subject: Re: [PATCH V2 3/6] brcmfmac: reserve 2 credits for host tx control
+ path
+To:     Dmitry Osipenko <digetx@gmail.com>,
+        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
+        Kalle Valo <kvalo@codeaurora.org>
+Cc:     linux-wireless@vger.kernel.org, brcm80211-dev-list@broadcom.com,
+        brcm80211-dev-list@cypress.com,
         Arend van Spriel <arend.vanspriel@broadcom.com>,
         Franky Lin <franky.lin@broadcom.com>,
         Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
-        Wright Feng <wright.feng@cypress.com>
-Cc:     linux-firmware@kernel.org, linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        brcm80211-dev-list@cypress.com, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Jian-Hong Pan <jian-hong@endlessm.com>,
-        Nick Xie <nick@khadas.com>
-Subject: [PATCH] brcm: Add 4356 based AP6356S NVRAM for the khadas VIM2
-Date:   Wed, 12 Aug 2020 11:46:12 +0800
-Message-Id: <20200812034611.2944-1-jian-hong@endlessm.com>
-X-Mailer: git-send-email 2.28.0
-MIME-Version: 1.0
+        Amar Shankar <amsr@cypress.com>,
+        Jia-Shyr Chuang <joseph.chuang@cypress.com>
+References: <20200610152106.175257-1-chi-hsien.lin@cypress.com>
+ <20200610152106.175257-4-chi-hsien.lin@cypress.com>
+ <f0910f96-1d23-daf1-b517-363e59bff105@gmail.com>
+ <875z9yr7lg.fsf@codeaurora.org>
+ <ffcf55cc-b27d-78ec-ff4f-e7efa3087712@gmail.com>
+ <87a6zapbqp.fsf@codeaurora.org>
+ <0923f45f-03e3-a870-3d2a-35f982482e1a@cypress.com>
+ <bed18d45-6119-53da-2b9c-d98d121c8298@gmail.com>
+ <a7aaf6ac-d6df-ab57-4939-474b542f007c@cypress.com>
+ <112956e1-df38-0a35-c2f0-8d9e1568d3c5@gmail.com>
+From:   Wright Feng <wright.feng@cypress.com>
+Message-ID: <725e7a73-6cbf-227e-58ea-2457179a5063@cypress.com>
+Date:   Wed, 12 Aug 2020 12:03:20 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.11.0
+In-Reply-To: <112956e1-df38-0a35-c2f0-8d9e1568d3c5@gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: BYAPR03CA0029.namprd03.prod.outlook.com
+ (2603:10b6:a02:a8::42) To BN8PR06MB5889.namprd06.prod.outlook.com
+ (2603:10b6:408:c2::25)
+MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from [192.168.5.77] (122.116.94.118) by BYAPR03CA0029.namprd03.prod.outlook.com (2603:10b6:a02:a8::42) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3261.18 via Frontend Transport; Wed, 12 Aug 2020 04:03:27 +0000
+X-Originating-IP: [122.116.94.118]
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-HT: Tenant
+X-MS-Office365-Filtering-Correlation-Id: 5d78e0f3-d08b-45df-abc7-08d83e74ac71
+X-MS-TrafficTypeDiagnostic: BN8PR06MB5796:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <BN8PR06MB57968C87D588160ECF8DE9ADFB420@BN8PR06MB5796.namprd06.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:4502;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: o4dOF7zphgmTzw6odSRBJMTCqjnxNXuhhZ/wOoggazMKzmjz9OrGoXf8F5DUmy9KX0ZGNKaaqJMiFC5jldfDPSTlUOsZROLcHLuGIzGL4tgBsatQelSqzA+15qFM5xUgbucW+nzFIkpWnyl6t2cJDoL4X7ZEE1jSaGdMnh9bgdPQGwmQOvgusFeV3ntylalouISXk1fB6KjqfrtWYpNGu8p3k3sBx813tNtsM4IRDKTqcWd7Pp5jy8SPyDYaCaj6m+p2igCviHlecTq3KqW+06Ch/6WFGXqquA4UN1HxrkYbL6opWuE+F53xmHHYNGxHO/1m1F0dDaJB97k+9NgtzQkuQSJQIAfAS76DxOZZRICMg0UHTA9MRDSOcOvLX/+sxjYkcKC5VDsxZyCYAGY8lbdYYxJMYLAuuIKu3yL1tbK2j8rObZIPdWuRf/UQXmIp9NfrX1JA1xx/Ww46TxIssg==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN8PR06MB5889.namprd06.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(4636009)(366004)(376002)(346002)(396003)(136003)(39860400002)(316002)(54906003)(110136005)(16576012)(52116002)(107886003)(5660300002)(4326008)(6486002)(186003)(956004)(31686004)(8936002)(2906002)(36756003)(6666004)(26005)(86362001)(66556008)(66476007)(83380400001)(66946007)(8676002)(44832011)(16526019)(31696002)(966005)(478600001)(2616005)(43740500002);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData: oGAYjEgbdSVf3D8H7fDdyQyzED4etlIdAui/f8wGMWa59e63kBROQa6i9JEEZdn4dB5np/PJ3WtLb41FKkrFz9V2BR+uYRSk4NYl5jGI2aBgmQo1eqYc7Hf2v+8E3bav4SOWWkcfyVjlDtYVEVdWFstdg26vLX32q6oXJasxy1VkOkgeWOxFdn+y5Qb3kdu1xr80kY5Cb4/wmat9qQoiHVQRCRZtXFE3h0NfMxrHunHBcpgrQFtqka/pBQXxbZPAB5k0jqKwxJJSn9oie2JjxShbCLawk0N+fi8IoA75vbR+xyJkEd1U1LRRivxUQoiDPsBh8u/mS8ZN6JkmiYKtrq9D0KHlbH1zhu4uxRj7mzr7SSc1y2E4M6/J5prbVV0t/tzInZX4zvtxRNusQCszsACizat90FOE2vuJCav4oGOG9O4InlEkUmY/o8KyGg68CRkdBcdxxcN67DPTO+4mMrllQ0PPk8SLr+hJc7MdvJ1xc9Ht6jB+jPmhMXqqS/svJQZCTKFr5offjVtqy2PxtHAP8s5BViqs42co7n7cXVWa3tHL9tynvJCWTjTCKbA2OCnjadfYXaIc66saHKs0Nc9KcJE3iF2qpx9nYrxOhQiLUP7XL4rJ/kzH2kdBF01JlB2yvVAhEgGdpPFSZX3+aQ==
+X-OriginatorOrg: cypress.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5d78e0f3-d08b-45df-abc7-08d83e74ac71
+X-MS-Exchange-CrossTenant-AuthSource: BN8PR06MB5889.namprd06.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Aug 2020 04:03:31.6426
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 011addfc-2c09-450d-8938-e0bbc2dd2376
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Z7a8qmB4Y8HJ1MeUSvW4xtEzykg337QePBUUj1BhHVuzU9a4JYR/ssU9Nq1+fCTp0o2iYURETu6PL/CcwbI5rQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN8PR06MB5796
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Add a NVRAM file for the wireless module used in khadas VIM2.  This
-source comes from khadas fenix project's commit 022fdc3a1333 ("hwpacks:
-wlan-firmware: add AP6356S firmware for mainline linux"). [1]
 
-[1]: https://github.com/khadas/fenix/commit/022fdc3a1333d2d16f84c2e59e4507c92a668a3d
 
-Suggested-by: Nick Xie <nick@khadas.com>
-Signed-off-by: Jian-Hong Pan <jian-hong@endlessm.com>
+Dmitry Osipenko 於 8/11/2020 10:54 PM 寫道:
+> 11.08.2020 11:35, Wright Feng пишет:
+> ..
+>> Hi Dmitry,
+>> We have a fix for this issue. But we got the different test result
+>> numbers from yours, so would you help us verify the same with
+>> following patch in your setup?
+>> With your confirmation, I can make sure we see the same issue.
+>>
+>> ---
+>>   drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c | 9 +++++++--
+>>   1 file changed, 7 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+>> b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+>> index e8712ad3ac45..ea07bb1bfe27 100644
+>> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+>> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+>> @@ -664,8 +664,13 @@ static void pkt_align(struct sk_buff *p, int len,
+>> int align)
+>>   /* To check if there's window offered */
+>>   static bool data_ok(struct brcmf_sdio *bus)
+>>   {
+>> -    /* Reserve TXCTL_CREDITS credits for txctl */
+>> -    return (bus->tx_max - bus->tx_seq) > TXCTL_CREDITS &&
+>> +    u8 tx_rsv = 0;
+>> +
+>> +    /* Reserve TXCTL_CREDITS credits for txctl when it is ready to send */
+>> +    if (bus->ctrl_frame_stat)
+>> +        tx_rsv = TXCTL_CREDITS;
+>> +
+>> +    return (bus->tx_max - bus->tx_seq) > tx_rsv &&
+>>              ((bus->tx_max - bus->tx_seq) & 0x80) == 0;
+>>   }
+> 
+> Hello, Wright!
+> 
+> I tried this patch and it doesn't fix the problem.
+> 
+> Could you please tell what firmware you're using?
+> 
+> I'm using stock firmware that comes from the linux-firmware package and
+> this NVRAM [1].
+> 
+> [1]
+> https://github.com/grate-driver/linux-firmware/blob/master/brcm/brcmfmac4329-sdio.acer%2Cpicasso.txt
+> 
+>   brcmfmac: brcmf_fw_alloc_request: using brcm/brcmfmac4329-sdio for chip
+> BCM4329/3
+>   brcmfmac: brcmf_c_process_clm_blob: no clm_blob available (err=-2),
+> device may have limited channels available
+>   brcmfmac: brcmf_c_preinit_dcmds: Firmware: BCM4329/3 wl0: Sep  2 2011
+> 14:48:19 version 4.220.48
+> 
+> It also interesting that you're getting 40Mbit/s. I never managed to get
+> that speed on 4329 using upstream brcmfmac driver, but was getting it
+> using downstream BCMDHD driver. At some point I even tried to figure out
+> what's the difference which makes the upstream driver to have
+> significantly lower throughput than downstream and had older BCMDHD
+> ported to a recent upstream kernel, unfortunately I couldn't spot
+> anything obvious. Having BCMDHD and brcmfmac back-to-back on the same
+> hardware, the same kernel and using same firmware (IIRC), the BCMDHD was
+> more than x2 faster. I also remember that I had to enforce HT mode on AP
+> in order to get speeds over 15Mbit/s using BCMDHD, which made me to
+> conclude that upstream brcmfmac driver just doesn't support that HT mode
+> for 4329, but now I'm seeing yours iperf results and it makes me wonder..
+> 
+Hi Dmitry,
+
+The last time the drivers I used is v5.4 and I was not able to see low 
+throughput issue as you saw.
+At this time, I changed the base to tag wt-2020-0727 and I am able to 
+reproduce the issue as you did.
+TX throughput with wt-2020-07-27 FMAC is 190 Kbits/sec
+
+
+The root cause should be that tx_max and tx_seq are circle positive 
+numbers, it should not use ">" to check if it still exists available TX 
+credit.
+With the solution below, I am able to get the normal throughput.
+TX throughput with wt-2020-07-27+patch FMAC is 40.0 Mbits/sec
+
+Regarding another case about 40Mbit/s, I am using 4329b0(4329/2) chip to 
+verify the throughput because we are not able to find 4329b1(4329/3) 
+which is very old product around 10 years ago.
+The firmware I am using is the same version but the build is for 4329b0. 
+(private internal build - 4.220.48). My host platform is x86_64 with 4 
+cores on Linux kernel 4.12. I will try your NVRAM when I have time to 
+see if I can find anything.
+
 ---
- brcm/brcmfmac4356-sdio.khadas,vim2.txt | 128 +++++++++++++++++++++++++
- 1 file changed, 128 insertions(+)
- create mode 100644 brcm/brcmfmac4356-sdio.khadas,vim2.txt
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c 
+b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+index e8712ad..50c8107 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+@@ -664,9 +664,14 @@ static void pkt_align(struct sk_buff *p, int len, 
+int align)
+  /* To check if there's window offered */
+  static bool data_ok(struct brcmf_sdio *bus)
+  {
+-	/* Reserve TXCTL_CREDITS credits for txctl */
+-	return (bus->tx_max - bus->tx_seq) > TXCTL_CREDITS &&
+-	       ((bus->tx_max - bus->tx_seq) & 0x80) == 0;
++	u8 tx_rsv = 0;
++
++	/* Reserve TXCTL_CREDITS credits for txctl when it is ready to send */
++	if (bus->ctrl_frame_stat)
++		tx_rsv = TXCTL_CREDITS;
++
++	return (bus->tx_max - bus->tx_seq - tx_rsv) != 0 &&
++	       ((bus->tx_max - bus->tx_seq - tx_rsv) & 0x80) == 0;
+  }
 
-diff --git a/brcm/brcmfmac4356-sdio.khadas,vim2.txt b/brcm/brcmfmac4356-sdio.khadas,vim2.txt
-new file mode 100644
-index 0000000..4c286cc
---- /dev/null
-+++ b/brcm/brcmfmac4356-sdio.khadas,vim2.txt
-@@ -0,0 +1,128 @@
-+#AP6356SL_V1.1_NVRAM_20150805
-+#Modified from AP6356SDP_V1.0_NVRAM_20150216
-+NVRAMRev=$Rev: 373428 $
-+sromrev=11
-+boardrev=0x1121
-+boardtype=0x073e
-+boardflags=0x02400201
-+boardflags2=0x00802000
-+boardflags3=0x0000010a
-+macaddr=00:90:4c:1a:10:01
-+ccode=0x5855
-+regrev=1
-+antswitch=0
-+pdgain5g=4
-+pdgain2g=4
-+tworangetssi2g=0
-+tworangetssi5g=0
-+paprdis=0
-+femctrl=10
-+vendid=0x14e4
-+devid=0x43a3
-+manfid=0x2d0
-+nocrc=1
-+otpimagesize=502
-+xtalfreq=37400
-+rxgains2gelnagaina0=0
-+rxgains2gtrisoa0=7
-+rxgains2gtrelnabypa0=0
-+rxgains5gelnagaina0=0
-+rxgains5gtrisoa0=11
-+rxgains5gtrelnabypa0=0
-+rxgains5gmelnagaina0=0
-+rxgains5gmtrisoa0=13
-+rxgains5gmtrelnabypa0=0
-+rxgains5ghelnagaina0=0
-+rxgains5ghtrisoa0=12
-+rxgains5ghtrelnabypa0=0
-+rxgains2gelnagaina1=0
-+rxgains2gtrisoa1=7
-+rxgains2gtrelnabypa1=0
-+rxgains5gelnagaina1=0
-+rxgains5gtrisoa1=10
-+rxgains5gtrelnabypa1=0
-+rxgains5gmelnagaina1=0
-+rxgains5gmtrisoa1=11
-+rxgains5gmtrelnabypa1=0
-+rxgains5ghelnagaina1=0
-+rxgains5ghtrisoa1=11
-+rxgains5ghtrelnabypa1=0
-+rxchain=3
-+txchain=3
-+aa2g=3
-+aa5g=3
-+agbg0=2
-+agbg1=2
-+aga0=2
-+aga1=2
-+tssipos2g=1
-+extpagain2g=2
-+tssipos5g=1
-+extpagain5g=2
-+tempthresh=255
-+tempoffset=255
-+rawtempsense=0x1ff
-+pa2ga0=-135,5769,-647
-+pa2ga1=-143,6023,-677
-+pa5ga0=-183,5746,-697,-172,5801,-685,-176,5707,-680,-180,5445,-659
-+pa5ga1=-186,5543,-669,-193,5506,-675,-210,5282,-661,-199,5367,-665
-+subband5gver=0x4
-+pdoffsetcckma0=0x4
-+pdoffsetcckma1=0x4
-+pdoffset40ma0=0x0000
-+pdoffset80ma0=0x0000
-+pdoffset40ma1=0x0000
-+pdoffset80ma1=0x0000
-+maxp2ga0=72
-+maxp5ga0=69,70,69,68
-+maxp2ga1=71
-+maxp5ga1=67,67,67,67
-+cckbw202gpo=0x1222
-+cckbw20ul2gpo=0x0000
-+mcsbw202gpo=0x99E644422
-+mcsbw402gpo=0xE9744424
-+dot11agofdmhrbw202gpo=0x4444
-+ofdmlrbw202gpo=0x0022
-+mcsbw205glpo=0xEEA86661
-+mcsbw405glpo=0xEEB86663
-+mcsbw805glpo=0xEEB86663
-+mcsbw205gmpo=0xAAA86663
-+mcsbw405gmpo=0xECB86663
-+mcsbw805gmpo=0xEEA86663
-+mcsbw205ghpo=0xCC986663
-+mcsbw405ghpo=0xEEA86663
-+mcsbw805ghpo=0xEEA86663
-+mcslr5glpo=0x0000
-+mcslr5gmpo=0x0000
-+mcslr5ghpo=0x0000
-+sb20in40hrpo=0x0
-+sb20in80and160hr5glpo=0x0
-+sb40and80hr5glpo=0x0
-+sb20in80and160hr5gmpo=0x0
-+sb40and80hr5gmpo=0x0
-+sb20in80and160hr5ghpo=0x0
-+sb40and80hr5ghpo=0x0
-+sb20in40lrpo=0x0
-+sb20in80and160lr5glpo=0x0
-+sb40and80lr5glpo=0x0
-+sb20in80and160lr5gmpo=0x0
-+sb40and80lr5gmpo=0x0
-+sb20in80and160lr5ghpo=0x0
-+sb40and80lr5ghpo=0x0
-+dot11agduphrpo=0x0
-+dot11agduplrpo=0x0
-+phycal_tempdelta=255
-+temps_period=15
-+temps_hysteresis=15
-+rssicorrnorm_c0=4,4
-+rssicorrnorm_c1=4,4
-+rssicorrnorm5g_c0=1,2,3,1,2,3,6,6,8,6,6,8
-+rssicorrnorm5g_c1=1,2,3,2,2,2,7,7,8,7,7,8
-+
-+swctrlmap_2g=0x00001040,0x00004010,0x00004010,0x200010,0xff
-+swctrlmap_5g=0x00000202,0x00000101,0x00000101,0x000000,0x47
-+swctrlmapext_5g=0x00000000,0x00000000,0x00000000,0x000000,0x000
-+swctrlmapext_2g=0x00000000,0x00000000,0x00000000,0x000000,0x000
-+
-+muxenab=0x10
-+
--- 
-2.28.0
-
+  /* To check if there's window offered */
+---
