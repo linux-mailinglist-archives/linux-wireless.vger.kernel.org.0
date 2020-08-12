@@ -2,30 +2,30 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C9CB6242BD0
+	by mail.lfdr.de (Postfix) with ESMTP id B83A7242BCF
 	for <lists+linux-wireless@lfdr.de>; Wed, 12 Aug 2020 17:01:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726685AbgHLPBr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 12 Aug 2020 11:01:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51356 "EHLO
+        id S1726606AbgHLPBq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 12 Aug 2020 11:01:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51358 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726578AbgHLPBB (ORCPT
+        with ESMTP id S1726587AbgHLPBC (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 12 Aug 2020 11:01:01 -0400
+        Wed, 12 Aug 2020 11:01:02 -0400
 Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE192C061386
-        for <linux-wireless@vger.kernel.org>; Wed, 12 Aug 2020 08:01:00 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C627C061387
+        for <linux-wireless@vger.kernel.org>; Wed, 12 Aug 2020 08:01:01 -0700 (PDT)
 Received: from [149.224.82.90] (helo=localhost.localdomain)
         by ds12 with esmtpa (Exim 4.89)
         (envelope-from <john@phrozen.org>)
-        id 1k5sFO-0002OP-9b; Wed, 12 Aug 2020 17:00:58 +0200
+        id 1k5sFO-0002OP-Fl; Wed, 12 Aug 2020 17:00:58 +0200
 From:   John Crispin <john@phrozen.org>
 To:     Johannes Berg <johannes@sipsolutions.net>
 Cc:     linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
         John Crispin <john@phrozen.org>
-Subject: [PATCH V3 6/9] ath11k: add the multiple bssid WMI commands
-Date:   Wed, 12 Aug 2020 17:00:47 +0200
-Message-Id: <20200812150050.2683396-7-john@phrozen.org>
+Subject: [PATCH V3 7/9] ath11k: add multiple bssid support to device creation
+Date:   Wed, 12 Aug 2020 17:00:48 +0200
+Message-Id: <20200812150050.2683396-8-john@phrozen.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200812150050.2683396-1-john@phrozen.org>
 References: <20200812150050.2683396-1-john@phrozen.org>
@@ -36,70 +36,71 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Add the code to pass the BSS specific multiple bssid info to the FW.
+We need to pass info such as parent device, bssid count/index and
+(non-)transmit mode information to the FW when we create a new vdev.
 
 Signed-off-by: John Crispin <john@phrozen.org>
 ---
- drivers/net/wireless/ath/ath11k/wmi.c |  3 +++
- drivers/net/wireless/ath/ath11k/wmi.h | 10 ++++++++++
- 2 files changed, 13 insertions(+)
+ drivers/net/wireless/ath/ath11k/mac.c | 22 ++++++++++++++++++++--
+ 1 file changed, 20 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
-index 04ef73d1f032..ffe8d7b1320b 100644
---- a/drivers/net/wireless/ath/ath11k/wmi.c
-+++ b/drivers/net/wireless/ath/ath11k/wmi.c
-@@ -641,6 +641,8 @@ int ath11k_wmi_vdev_create(struct ath11k *ar, u8 *macaddr,
- 	cmd->vdev_subtype = param->subtype;
- 	cmd->num_cfg_txrx_streams = WMI_NUM_SUPPORTED_BAND_MAX;
- 	cmd->pdev_id = param->pdev_id;
-+	cmd->flags = param->flags;
-+	cmd->vdevid_trans = param->vdevid_trans;
- 	ether_addr_copy(cmd->vdev_macaddr.addr, macaddr);
+diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
+index 2e4f1966da21..08e7f4ac8a26 100644
+--- a/drivers/net/wireless/ath/ath11k/mac.c
++++ b/drivers/net/wireless/ath/ath11k/mac.c
+@@ -4269,17 +4269,30 @@ static void ath11k_mac_op_stop(struct ieee80211_hw *hw)
+ 	atomic_set(&ar->num_pending_mgmt_tx, 0);
+ }
  
- 	ptr = skb->data + sizeof(*cmd);
-@@ -1603,6 +1605,7 @@ int ath11k_wmi_bcn_tmpl(struct ath11k *ar, u32 vdev_id,
- 	cmd->csa_switch_count_offset = offs->cntdwn_counter_offs[0];
- 	cmd->ext_csa_switch_count_offset = offs->cntdwn_counter_offs[1];
- 	cmd->buf_len = bcn->len;
-+	cmd->mbssid_ie_offset = offs->multiple_bssid_offset;
+-static void
++static int
+ ath11k_mac_setup_vdev_create_params(struct ath11k_vif *arvif,
+ 				    struct vdev_create_params *params)
+ {
+ 	struct ath11k *ar = arvif->ar;
++	struct ieee80211_vif *parent;
+ 	struct ath11k_pdev *pdev = ar->pdev;
  
- 	ptr = skb->data + sizeof(*cmd);
+ 	params->if_id = arvif->vdev_id;
+ 	params->type = arvif->vdev_type;
+ 	params->subtype = arvif->vdev_subtype;
+ 	params->pdev_id = pdev->pdev_id;
++	params->vdevid_trans = 0;
++	if (arvif->vif->multiple_bssid.non_transmitted) {
++		params->flags = WMI_HOST_VDEV_FLAGS_NON_TRANSMIT_AP;
++		parent = arvif->vif->multiple_bssid.parent;
++		if (!parent)
++			return -ENOENT;
++		if (ar->hw->wiphy != ieee80211_vif_to_wdev(parent)->wiphy)
++			return -EINVAL;
++		params->vdevid_trans = ath11k_vif_to_arvif(parent)->vdev_id;
++	} else {
++		params->flags = WMI_HOST_VDEV_FLAGS_TRANSMIT_AP;
++	}
  
-diff --git a/drivers/net/wireless/ath/ath11k/wmi.h b/drivers/net/wireless/ath/ath11k/wmi.h
-index a2d81abf6356..ad741add1ebe 100644
---- a/drivers/net/wireless/ath/ath11k/wmi.h
-+++ b/drivers/net/wireless/ath/ath11k/wmi.h
-@@ -119,6 +119,12 @@ enum {
- 	WMI_HOST_WLAN_2G_5G_CAP	= 0x3,
- };
+ 	if (pdev->cap.supported_bands & WMI_HOST_WLAN_2G_CAP) {
+ 		params->chains[NL80211_BAND_2GHZ].tx = ar->num_tx_chains;
+@@ -4294,6 +4307,7 @@ ath11k_mac_setup_vdev_create_params(struct ath11k_vif *arvif,
+ 		params->chains[NL80211_BAND_6GHZ].tx = ar->num_tx_chains;
+ 		params->chains[NL80211_BAND_6GHZ].rx = ar->num_rx_chains;
+ 	}
++	return 0;
+ }
  
-+enum {
-+	WMI_HOST_VDEV_FLAGS_NON_MBSSID_AP	= 1,
-+	WMI_HOST_VDEV_FLAGS_TRANSMIT_AP		= 2,
-+	WMI_HOST_VDEV_FLAGS_NON_TRANSMIT_AP	= 4,
-+};
-+
- /*
-  * wmi command groups.
-  */
-@@ -2456,6 +2462,8 @@ struct vdev_create_params {
- 		u8 rx;
- 	} chains[NUM_NL80211_BANDS];
- 	u32 pdev_id;
-+	u32 flags;
-+	u32 vdevid_trans;
- };
+ static u32
+@@ -4443,7 +4457,11 @@ static int ath11k_mac_op_add_interface(struct ieee80211_hw *hw,
+ 	for (i = 0; i < ARRAY_SIZE(vif->hw_queue); i++)
+ 		vif->hw_queue[i] = i % (ATH11K_HW_MAX_QUEUES - 1);
  
- struct wmi_vdev_create_cmd {
-@@ -2466,6 +2474,8 @@ struct wmi_vdev_create_cmd {
- 	struct wmi_mac_addr vdev_macaddr;
- 	u32 num_cfg_txrx_streams;
- 	u32 pdev_id;
-+	u32 flags;
-+	u32 vdevid_trans;
- } __packed;
+-	ath11k_mac_setup_vdev_create_params(arvif, &vdev_param);
++	ret = ath11k_mac_setup_vdev_create_params(arvif, &vdev_param);
++	if (ret) {
++		ath11k_warn(ab, "failed to prepare vdev %d\n", ret);
++		goto err;
++	}
  
- struct wmi_vdev_txrx_streams {
+ 	ret = ath11k_wmi_vdev_create(ar, vif->addr, &vdev_param);
+ 	if (ret) {
 -- 
 2.25.1
 
