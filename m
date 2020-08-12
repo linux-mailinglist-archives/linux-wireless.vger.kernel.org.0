@@ -2,18 +2,18 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 11373242837
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Aug 2020 12:28:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 42A1F24283D
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Aug 2020 12:28:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727794AbgHLK2e (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 12 Aug 2020 06:28:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37668 "EHLO
+        id S1727846AbgHLK2j (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 12 Aug 2020 06:28:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37670 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726846AbgHLK2d (ORCPT
+        with ESMTP id S1726983AbgHLK2d (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Wed, 12 Aug 2020 06:28:33 -0400
 Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E981C061788
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5696C06178A
         for <linux-wireless@vger.kernel.org>; Wed, 12 Aug 2020 03:28:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
          s=20160729; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
@@ -21,20 +21,20 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
         Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
         :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
         List-Post:List-Owner:List-Archive;
-        bh=pboeGOsZF8mBK+lrby76L4nQd6TphDGFqpffL2IDs4A=; b=FHpvXPcHHdqTOAWs9a4Nnidvw9
-        LTfFRh7ZCHZu04Gyesz3dY4xz7x5fF9Vb9rH2Xb3mRrTgZG4jyex1fhKovmwCHhc8kWuvr4mpmGqh
-        kGlfJjOYEj8Dvgduv2OZOysBQkFBv8vTFbQqdxRtbluMTuIhfCOZAeIEDkxt135tvE6I=;
+        bh=dOqAmpAxhE38WVD2u4qgKqtSmbV9yYFa3DQbG4tY6jw=; b=OWCL/WgNKMet1AnvespbJCv6VW
+        13C+W11T+IzqZIf/bzcudqB3zn5kORbsAL6v01C6dvzUk8ejMYic55G6nbdAJH2XeLn4wMZsorGRo
+        egKl3jJfkzy8BOBuqiSkNnY5duQNBIyQwXvisxV+GWugbbQmgAvpOJlWcP2GcQDVWYEo=;
 Received: from p54ae996c.dip0.t-ipconnect.de ([84.174.153.108] helo=localhost.localdomain)
         by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_CBC_SHA1:128)
         (Exim 4.89)
         (envelope-from <nbd@nbd.name>)
-        id 1k5nzk-0002U3-5z
+        id 1k5nzk-0002U3-Bz
         for linux-wireless@vger.kernel.org; Wed, 12 Aug 2020 12:28:32 +0200
 From:   Felix Fietkau <nbd@nbd.name>
 To:     linux-wireless@vger.kernel.org
-Subject: [PATCH 3/8] mt76: mt7915: enable offloading of sequence number assignment
-Date:   Wed, 12 Aug 2020 12:28:26 +0200
-Message-Id: <20200812102831.11991-3-nbd@nbd.name>
+Subject: [PATCH 4/8] mt76: move mt76_check_agg_ssn to driver tx_prepare calls
+Date:   Wed, 12 Aug 2020 12:28:27 +0200
+Message-Id: <20200812102831.11991-4-nbd@nbd.name>
 X-Mailer: git-send-email 2.28.0
 In-Reply-To: <20200812102831.11991-1-nbd@nbd.name>
 References: <20200812102831.11991-1-nbd@nbd.name>
@@ -45,129 +45,140 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Preparation for supporting more offload features
+mt7615 and newer drivers do not need this, since they use sequence number offload
+Moving this code also reduces the number of callsites to make it easier to review
 
 Signed-off-by: Felix Fietkau <nbd@nbd.name>
 ---
- .../net/wireless/mediatek/mt76/mt7915/mac.c   | 49 +++++++++++++------
- .../net/wireless/mediatek/mt76/mt7915/main.c  |  1 -
- 2 files changed, 33 insertions(+), 17 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt76.h     |  1 +
+ .../net/wireless/mediatek/mt76/mt7603/mac.c   |  2 +
+ .../net/wireless/mediatek/mt76/mt76x02_mac.c  |  2 +
+ drivers/net/wireless/mediatek/mt76/tx.c       | 38 +++++++------------
+ 4 files changed, 18 insertions(+), 25 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-index 06371d694618..dde1c93d6701 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-@@ -565,6 +565,7 @@ void mt7915_mac_write_txwi(struct mt7915_dev *dev, __le32 *txwi,
- {
- 	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
- 	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
-+	struct ieee80211_mgmt *mgmt = (struct ieee80211_mgmt *)skb->data;
- 	bool multicast = is_multicast_ether_addr(hdr->addr1);
- 	struct ieee80211_vif *vif = info->control.vif;
- 	struct mt76_phy *mphy = &dev->mphy;
-@@ -572,6 +573,7 @@ void mt7915_mac_write_txwi(struct mt7915_dev *dev, __le32 *txwi,
- 	u8 fc_type, fc_stype, p_fmt, q_idx, omac_idx = 0, wmm_idx = 0;
- 	__le16 fc = hdr->frame_control;
- 	u16 tx_count = 15, seqno = 0;
-+	u8 tid = skb->priority & IEEE80211_QOS_CTL_TID_MASK;
- 	u32 val;
- 
- 	if (vif) {
-@@ -587,6 +589,10 @@ void mt7915_mac_write_txwi(struct mt7915_dev *dev, __le32 *txwi,
- 	fc_type = (le16_to_cpu(fc) & IEEE80211_FCTL_FTYPE) >> 2;
- 	fc_stype = (le16_to_cpu(fc) & IEEE80211_FCTL_STYPE) >> 4;
- 
-+	txwi[4] = 0;
-+	txwi[5] = 0;
-+	txwi[6] = 0;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
+index c7afc1c7cb2f..f11978f2bd8f 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76.h
+@@ -914,6 +914,7 @@ void mt76_txq_remove(struct mt76_dev *dev, struct ieee80211_txq *txq);
+ void mt76_wake_tx_queue(struct ieee80211_hw *hw, struct ieee80211_txq *txq);
+ void mt76_stop_tx_queues(struct mt76_dev *dev, struct ieee80211_sta *sta,
+ 			 bool send_bar);
++void mt76_tx_check_agg_ssn(struct ieee80211_sta *sta, struct sk_buff *skb);
+ void mt76_txq_schedule(struct mt76_phy *phy, enum mt76_txq_id qid);
+ void mt76_txq_schedule_all(struct mt76_phy *phy);
+ void mt76_tx_tasklet(unsigned long data);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/mac.c b/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
+index 8060c1514396..625dc6d581f2 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
+@@ -1036,6 +1036,8 @@ int mt7603_tx_prepare_skb(struct mt76_dev *mdev, void *txwi_ptr,
+ 				    IEEE80211_TX_CTL_CLEAR_PS_FILT)) ||
+ 		    (info->control.flags & IEEE80211_TX_CTRL_PS_RESPONSE))
+ 			mt7603_wtbl_set_ps(dev, msta, false);
 +
- 	if (beacon) {
- 		p_fmt = MT_TX_TYPE_FW;
- 		q_idx = MT_LMAC_BCN0;
-@@ -599,6 +605,20 @@ void mt7915_mac_write_txwi(struct mt7915_dev *dev, __le32 *txwi,
- 			mt7915_lmac_mapping(dev, skb_get_queue_mapping(skb));
++		mt76_tx_check_agg_ssn(sta, tx_info->skb);
  	}
  
-+	if (ieee80211_is_action(fc) &&
-+	    mgmt->u.action.category == WLAN_CATEGORY_BACK &&
-+	    mgmt->u.action.u.addba_req.action_code == WLAN_ACTION_ADDBA_REQ) {
-+		u16 capab = le16_to_cpu(mgmt->u.action.u.addba_req.capab);
-+
-+		txwi[5] |= cpu_to_le32(MT_TXD5_ADD_BA);
-+		tid = (capab >> 2) & IEEE80211_QOS_CTL_TID_MASK;
-+	} else if (ieee80211_is_back_req(hdr->frame_control)) {
-+		struct ieee80211_bar *bar = (struct ieee80211_bar *)hdr;
-+		u16 control = le16_to_cpu(bar->control);
-+
-+		tid = FIELD_GET(IEEE80211_BAR_CTRL_TID_INFO_MASK, control);
-+	}
-+
- 	val = FIELD_PREP(MT_TXD0_TX_BYTES, skb->len + MT_TXD_SIZE) |
- 	      FIELD_PREP(MT_TXD0_PKT_FMT, p_fmt) |
- 	      FIELD_PREP(MT_TXD0_Q_IDX, q_idx);
-@@ -609,8 +629,7 @@ void mt7915_mac_write_txwi(struct mt7915_dev *dev, __le32 *txwi,
- 	      FIELD_PREP(MT_TXD1_HDR_FORMAT, MT_HDR_FORMAT_802_11) |
- 	      FIELD_PREP(MT_TXD1_HDR_INFO,
- 			 ieee80211_get_hdrlen_from_skb(skb) / 2) |
--	      FIELD_PREP(MT_TXD1_TID,
--			 skb->priority & IEEE80211_QOS_CTL_TID_MASK) |
-+	      FIELD_PREP(MT_TXD1_TID, tid) |
- 	      FIELD_PREP(MT_TXD1_OWN_MAC, omac_idx);
+ 	pid = mt76_tx_status_skb_add(mdev, wcid, tx_info->skb);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_mac.c b/drivers/net/wireless/mediatek/mt76/mt76x02_mac.c
+index e4e03beabe43..af2e6ffce001 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x02_mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x02_mac.c
+@@ -349,6 +349,8 @@ void mt76x02_mac_write_txwi(struct mt76x02_dev *dev, struct mt76x02_txwi *txwi,
  
- 	if (ext_phy && q_idx >= MT_LMAC_ALTX0 && q_idx <= MT_LMAC_BCN0)
-@@ -634,10 +653,6 @@ void mt7915_mac_write_txwi(struct mt7915_dev *dev, __le32 *txwi,
- 	}
- 	txwi[2] = cpu_to_le32(val);
+ 	memset(txwi, 0, sizeof(*txwi));
  
--	txwi[4] = 0;
--	txwi[5] = 0;
--	txwi[6] = 0;
--
- 	if (!ieee80211_is_data(fc) || multicast) {
- 		u16 rate;
- 
-@@ -668,17 +683,19 @@ void mt7915_mac_write_txwi(struct mt7915_dev *dev, __le32 *txwi,
- 	txwi[7] = cpu_to_le32(val);
- 
- 	val = FIELD_PREP(MT_TXD3_REM_TX_COUNT, tx_count);
--	if (ieee80211_is_data_qos(fc)) {
--		seqno = IEEE80211_SEQ_TO_SN(le16_to_cpu(hdr->seq_ctrl));
--		val |= MT_TXD3_SN_VALID;
--	} else if (ieee80211_is_back_req(fc)) {
--		struct ieee80211_bar *bar;
--
--		bar = (struct ieee80211_bar *)skb->data;
--		seqno = IEEE80211_SEQ_TO_SN(le16_to_cpu(bar->start_seq_num));
--		val |= MT_TXD3_SN_VALID;
-+	if (info->flags & IEEE80211_TX_CTL_INJECTED) {
-+		seqno = le16_to_cpu(hdr->seq_ctrl);
++	mt76_tx_check_agg_ssn(sta, skb);
 +
-+		if (ieee80211_is_back_req(hdr->frame_control)) {
-+			struct ieee80211_bar *bar;
-+
-+			bar = (struct ieee80211_bar *)skb->data;
-+			seqno = le16_to_cpu(bar->start_seq_num);
-+		}
-+
-+		val |= MT_TXD3_SN_VALID |
-+		       FIELD_PREP(MT_TXD3_SEQ, IEEE80211_SEQ_TO_SN(seqno));
- 	}
--	val |= FIELD_PREP(MT_TXD3_SEQ, seqno);
- 	txwi[3] |= cpu_to_le32(val);
+ 	if (!info->control.hw_key && wcid && wcid->hw_key_idx != 0xff &&
+ 	    ieee80211_has_protected(hdr->frame_control)) {
+ 		wcid = NULL;
+diff --git a/drivers/net/wireless/mediatek/mt76/tx.c b/drivers/net/wireless/mediatek/mt76/tx.c
+index 40ec55ac9a7c..d8252e28bacd 100644
+--- a/drivers/net/wireless/mediatek/mt76/tx.c
++++ b/drivers/net/wireless/mediatek/mt76/tx.c
+@@ -83,17 +83,27 @@ mt76_txq_get_qid(struct ieee80211_txq *txq)
+ 	return txq->ac;
  }
  
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/main.c b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-index 0feea2c33717..9e53f0db87f2 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-@@ -620,7 +620,6 @@ mt7915_ampdu_action(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 		mt7915_mcu_add_tx_ba(dev, params, false);
- 		break;
- 	case IEEE80211_AMPDU_TX_START:
--		mtxq->agg_ssn = IEEE80211_SN_TO_SEQ(ssn);
- 		mt7915_set_aggr_state(msta, tid, MT7915_AGGR_START);
- 		ret = IEEE80211_AMPDU_TX_START_IMMEDIATE;
- 		break;
+-static void
+-mt76_check_agg_ssn(struct mt76_txq *mtxq, struct sk_buff *skb)
++void
++mt76_tx_check_agg_ssn(struct ieee80211_sta *sta, struct sk_buff *skb)
+ {
+ 	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
++	struct ieee80211_txq *txq;
++	struct mt76_txq *mtxq;
++	u8 tid;
+ 
+-	if (!ieee80211_is_data_qos(hdr->frame_control) ||
++	if (!sta || !ieee80211_is_data_qos(hdr->frame_control) ||
+ 	    !ieee80211_is_data_present(hdr->frame_control))
+ 		return;
+ 
++	tid = skb->priority & IEEE80211_QOS_CTL_TAG1D_MASK;
++	txq = sta->txq[tid];
++	mtxq = (struct mt76_txq *)txq->drv_priv;
++	if (!mtxq->aggr)
++		return;
++
+ 	mtxq->agg_ssn = le16_to_cpu(hdr->seq_ctrl) + 0x10;
+ }
++EXPORT_SYMBOL_GPL(mt76_tx_check_agg_ssn);
+ 
+ void
+ mt76_tx_status_lock(struct mt76_dev *dev, struct sk_buff_head *list)
+@@ -288,19 +298,6 @@ mt76_tx(struct mt76_phy *phy, struct ieee80211_sta *sta,
+ 		ieee80211_get_tx_rates(info->control.vif, sta, skb,
+ 				       info->control.rates, 1);
+ 
+-	if (sta && ieee80211_is_data_qos(hdr->frame_control)) {
+-		struct ieee80211_txq *txq;
+-		struct mt76_txq *mtxq;
+-		u8 tid;
+-
+-		tid = skb->priority & IEEE80211_QOS_CTL_TID_MASK;
+-		txq = sta->txq[tid];
+-		mtxq = (struct mt76_txq *)txq->drv_priv;
+-
+-		if (mtxq->aggr)
+-			mt76_check_agg_ssn(mtxq, skb);
+-	}
+-
+ 	if (ext_phy)
+ 		info->hw_queue |= MT_TX_HW_QUEUE_EXT_PHY;
+ 
+@@ -390,9 +387,6 @@ mt76_release_buffered_frames(struct ieee80211_hw *hw, struct ieee80211_sta *sta,
+ 			if (!skb)
+ 				break;
+ 
+-			if (mtxq->aggr)
+-				mt76_check_agg_ssn(mtxq, skb);
+-
+ 			nframes--;
+ 			if (last_skb)
+ 				mt76_queue_ps_skb(dev, sta, last_skb, false);
+@@ -446,9 +440,6 @@ mt76_txq_send_burst(struct mt76_phy *phy, struct mt76_sw_queue *sq,
+ 	ampdu = IEEE80211_SKB_CB(skb)->flags & IEEE80211_TX_CTL_AMPDU;
+ 	limit = ampdu ? 16 : 3;
+ 
+-	if (ampdu)
+-		mt76_check_agg_ssn(mtxq, skb);
+-
+ 	idx = dev->queue_ops->tx_queue_skb(dev, qid, skb, wcid, txq->sta);
+ 
+ 	if (idx < 0)
+@@ -479,9 +470,6 @@ mt76_txq_send_burst(struct mt76_phy *phy, struct mt76_sw_queue *sq,
+ 
+ 		info->control.rates[0] = tx_rate;
+ 
+-		if (cur_ampdu)
+-			mt76_check_agg_ssn(mtxq, skb);
+-
+ 		idx = dev->queue_ops->tx_queue_skb(dev, qid, skb, wcid,
+ 						   txq->sta);
+ 		if (idx < 0)
 -- 
 2.28.0
 
