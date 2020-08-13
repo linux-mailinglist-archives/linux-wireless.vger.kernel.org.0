@@ -2,184 +2,139 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 25AD124329A
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Aug 2020 05:03:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 35A702432C8
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Aug 2020 05:32:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726648AbgHMDDR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 12 Aug 2020 23:03:17 -0400
-Received: from mail-dm6nam10on2101.outbound.protection.outlook.com ([40.107.93.101]:56288
-        "EHLO NAM10-DM6-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726557AbgHMDDR (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 12 Aug 2020 23:03:17 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=AZ1AB8O8B7NtLg+YK63UGByN7xH82ntBOpSpISYoY8obrG76D1pjzDexQvDZscml3tlBq5mMo/8LGyUV0AcmofbsogPP4MvS6lKoQdIfoQCOKr1xahytkQjdI3uncgeukBYaHCFADLDWePtrTKbF/6xqrLFd+Jwtxi8EVGThxEHO7qkkxCCpmqoStlIIshPlWMl+xJ0eggQM12ki4LIv7H0yJgeAuHfU5wb90nX958bkOfvkksoJLadAgVEd0W6wlyQRoyOjJWOVa2OwAWJS/W0bp2WZMkWl0G8HHQVt/4u617NO0l91RBX1HRt4ADIZXok2Oi7iYNOzHn+jsQb/lw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=pyjYpqSqnHjezz3Q1cTWpKaeBwhrY50rhCYn/NQVAIg=;
- b=lvMs4UtPAp9cAEhsZm7rs6cSlR97xrkIONp8BLdfzD2eDbExCJvVNxQrprfmWhTuyt7l045ZId1iNsXReIeJrCQO101HVvMxQIqKcTf3GUcieiSkiJpa2m7lArbw8jnUcX35lCkiQaO+8NFC/y+bXT4zUhJ53I7tSrTSabuIR0TUv7eNTu15fEGFqe6Y7msnOFs9EC0LilUcfguGOMBTB9zA5DL+WHn1v2D5S9efGuiDU2ecTSsMto25g9MqRgS7qfhcQlHm3cS7LC+uSc3XWQ5s+ktHD9ubPNHNMec4WIFZtz1JvSXTBHVAMYYak2qMbU8Flz3MVOut4vQD8snyeA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=cypress.com; dmarc=pass action=none header.from=cypress.com;
- dkim=pass header.d=cypress.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cypress.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=pyjYpqSqnHjezz3Q1cTWpKaeBwhrY50rhCYn/NQVAIg=;
- b=JhOllYs9Rj6tDDIVA7fi4suVa/y7KIVvnmoY+J9QhEi56UizpX+DsKJupFcSlv9HdcpjDr0ulgg4bRA+RNk23B/jM1VSL74vE3J2Wv70/Hl2dkDZiZaw/C4nmlGuqC3zYQxCkiZMz1lhwMF9scZt0DO6hpr0F/US/OE7MnipChY=
-Authentication-Results: cypress.com; dkim=none (message not signed)
- header.d=none;cypress.com; dmarc=none action=none header.from=cypress.com;
-Received: from BN8PR06MB5889.namprd06.prod.outlook.com (2603:10b6:408:c2::25)
- by BN7PR06MB6402.namprd06.prod.outlook.com (2603:10b6:408:3c::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3283.16; Thu, 13 Aug
- 2020 03:03:14 +0000
-Received: from BN8PR06MB5889.namprd06.prod.outlook.com
- ([fe80::d82b:5f42:b7a8:d819]) by BN8PR06MB5889.namprd06.prod.outlook.com
- ([fe80::d82b:5f42:b7a8:d819%3]) with mapi id 15.20.3261.026; Thu, 13 Aug 2020
- 03:03:14 +0000
-Subject: Re: [PATCH V2 3/6] brcmfmac: reserve 2 credits for host tx control
- path
-To:     Dmitry Osipenko <digetx@gmail.com>,
-        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
-        Kalle Valo <kvalo@codeaurora.org>
-Cc:     linux-wireless@vger.kernel.org, brcm80211-dev-list@broadcom.com,
-        brcm80211-dev-list@cypress.com,
-        Arend van Spriel <arend.vanspriel@broadcom.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Amar Shankar <amsr@cypress.com>,
-        Jia-Shyr Chuang <joseph.chuang@cypress.com>
-References: <20200610152106.175257-1-chi-hsien.lin@cypress.com>
- <20200610152106.175257-4-chi-hsien.lin@cypress.com>
- <f0910f96-1d23-daf1-b517-363e59bff105@gmail.com>
- <875z9yr7lg.fsf@codeaurora.org>
- <ffcf55cc-b27d-78ec-ff4f-e7efa3087712@gmail.com>
- <87a6zapbqp.fsf@codeaurora.org>
- <0923f45f-03e3-a870-3d2a-35f982482e1a@cypress.com>
- <bed18d45-6119-53da-2b9c-d98d121c8298@gmail.com>
- <a7aaf6ac-d6df-ab57-4939-474b542f007c@cypress.com>
- <112956e1-df38-0a35-c2f0-8d9e1568d3c5@gmail.com>
- <725e7a73-6cbf-227e-58ea-2457179a5063@cypress.com>
- <df1c734c-ef7c-19ae-fad0-a5db148e5220@gmail.com>
-From:   Wright Feng <wright.feng@cypress.com>
-Message-ID: <8edbb3bb-a28b-6dae-1318-68c4b0478ad7@cypress.com>
-Date:   Thu, 13 Aug 2020 11:03:04 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.11.0
-In-Reply-To: <df1c734c-ef7c-19ae-fad0-a5db148e5220@gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: BY5PR20CA0023.namprd20.prod.outlook.com
- (2603:10b6:a03:1f4::36) To BN8PR06MB5889.namprd06.prod.outlook.com
- (2603:10b6:408:c2::25)
+        id S1726583AbgHMDcT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 12 Aug 2020 23:32:19 -0400
+Received: from mail-il1-f197.google.com ([209.85.166.197]:45012 "EHLO
+        mail-il1-f197.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726131AbgHMDcS (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 12 Aug 2020 23:32:18 -0400
+Received: by mail-il1-f197.google.com with SMTP id z15so3390572ile.11
+        for <linux-wireless@vger.kernel.org>; Wed, 12 Aug 2020 20:32:17 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:date:in-reply-to:message-id:subject
+         :from:to;
+        bh=P9pLEB9Ie9BNOlGpHvN5myjm3ue4cem8ycZ60nuClrc=;
+        b=abLOdYm1P6cCSbOU6DIHvt6gLLPhCkEnsAMXRswINA+q/ocjQQ7ZJIacZ+C0Bf0fM1
+         jcDzqf4a8p2aT5SuZWGBbeVnnN2DpojvNQ0kl9kDYnoF9thhMEHRnZ5SSwosMX4Yf77W
+         cw3MDt91lByla9v474cjZ6YiY84iwQKZGsX4qjlXj5q0kRzApSPJ+x2hPC1ova6Lwyj5
+         xz63equmFhfiTYcuAnSaj0VDDDNf9cYo5DnyAro3aPawUhiG5djNBIojuMeG9jqMWcdx
+         fn9VYsnd+7KVYa6Is+iDlRVXebEE1z9MW6ID57Xzx46ZYVn/trD8S/s0LMB71LzcLIwE
+         IHkA==
+X-Gm-Message-State: AOAM533hZRmq2+w3qzEG6A5z38h0zD6Tmoygyi2mG3BXuLDUNVKn2fF0
+        hXELAdw6vVtjWBW9wUcewqaKLV4Lo3FCZpSnqjaOf7CUoqHr
+X-Google-Smtp-Source: ABdhPJzWa8bZiMsbcj+1jm07c0oi4qAkSaZR3vRyrO7J61eijlNFH5EPnLXipTjPW8ZzzueQu8rtkTdj5NobvZbFN9m0fZ+F1bdR
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from [192.168.5.77] (122.116.94.118) by BY5PR20CA0023.namprd20.prod.outlook.com (2603:10b6:a03:1f4::36) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3283.16 via Frontend Transport; Thu, 13 Aug 2020 03:03:11 +0000
-X-Originating-IP: [122.116.94.118]
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-HT: Tenant
-X-MS-Office365-Filtering-Correlation-Id: 396cd88c-164c-4539-d3cb-08d83f356b57
-X-MS-TrafficTypeDiagnostic: BN7PR06MB6402:
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <BN7PR06MB6402A8722DED8B6F00E2453DFB430@BN7PR06MB6402.namprd06.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:10000;
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: iEMGQ45i+PHeXsIpwnspYVkHoSacrjsuZWXaBfi40JK93HNrfUravZvp9ReqWe1A9mdtN53rGXFdsro7B+IzVPSSN2NusetOyGCLw9HcfaZpAslCtb9i7TKNIZSN/gTQzu0a88BVxTVG9xO/XCfAqM4nX7hCKigobdPyJmZ6qVeyvoykqv73GExPQ3Q/6f3W0YIB76IHUjMlVeCsh/thh/viVb3LXIIuifF7D2BhqPOJ/L2h0fYtQiDhMFpnttNRAFgAolz+eePXiTLvCDxeR502KXqNrhhfpy7eRx2vvr7xDFohiYpg1jjImKKs7fwwyypCuEpgO97dQMKNIky3BjRsgCRfgik9uvQsad1TIWSjGTt1fOfvOh9SEDcwI6vI
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN8PR06MB5889.namprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(376002)(366004)(346002)(39860400002)(136003)(396003)(16526019)(66946007)(26005)(5660300002)(186003)(31696002)(8676002)(8936002)(2906002)(31686004)(66476007)(44832011)(66556008)(316002)(52116002)(4326008)(956004)(83380400001)(54906003)(6666004)(110136005)(6486002)(16576012)(107886003)(2616005)(478600001)(36756003)(86362001)(43740500002);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData: M0ujtGJ9FZpxvk2wu1mk21Ghr52g7YH8hcDN1wFesaQrV6wy9RTH/ta/GK99imaJ4tQp+KIYj2M/RfWTX6gD3B1rD4uXqdX/hf6GBnIUOhuPjUoGIvA8m4arvFV1qU4VZEB8L9dtjF6MG7wp5CgvP23sRa2NnFXoaWYI3IjFqMAW+vJlBdPGzqN8jiRYmrKDo5zabcFPjtUx32SlSKQQ/Cf3Bw2hhnZk5D5dC1TLySDfq3g9XoMuJP6g5vQQX6BYta3897eOs6Lzd00qfm62fKY3J9oo02sK6GxXFR2v5OefGL/53Bg+gLYEMIidVla1lpt8ueU6o22wZoShTAMLtv2Ae0G64Kf3esD2R1zd0FjVZ5ut+UILmHVA8E4zRhajYxLExP1KwB36bxfRWho4C03z0pK7AhHAZNsK+3/s5ABQNwFzO3s2XdbZbawuhoaXQt1uJ4h3rbFj/tkP8YBM7na1AlIaCwx43OSaTsTCQt4+shj/1aB4lKsm8TGAQ2hbuQAdN7bbyjNQUIYnrstEBbN13T4kL3HhdjkII5lYD+3FV1pIguviwq/cF8yBAX6N8oeNCS5XyNtEwYQ88Cz2vHUPoyuErN4GYhIH75SySoQ4m9yJhEcj/xF5BkwB5f3n3cSBqaHg8oi29HqODkKwGw==
-X-OriginatorOrg: cypress.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 396cd88c-164c-4539-d3cb-08d83f356b57
-X-MS-Exchange-CrossTenant-AuthSource: BN8PR06MB5889.namprd06.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Aug 2020 03:03:14.5406
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 011addfc-2c09-450d-8938-e0bbc2dd2376
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: SKzLTCrXZvjPWtw1U14MiasKsE4XY7NSmXyyfnPjWct2kB1Rnra4W+4RsxHJA1FH5dpDW4FAk44Ypx75Mx0v6g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN7PR06MB6402
+X-Received: by 2002:a05:6638:1125:: with SMTP id f5mr2803096jar.51.1597289536899;
+ Wed, 12 Aug 2020 20:32:16 -0700 (PDT)
+Date:   Wed, 12 Aug 2020 20:32:16 -0700
+In-Reply-To: <000000000000c98a7f05ac744f53@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <000000000000734fe705acb9f3a2@google.com>
+Subject: Re: KMSAN: uninit-value in ath9k_htc_rx_msg
+From:   syzbot <syzbot+2ca247c2d60c7023de7f@syzkaller.appspotmail.com>
+To:     ath9k-devel@qca.qualcomm.com, davem@davemloft.net,
+        glider@google.com, kuba@kernel.org, kvalo@codeaurora.org,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+syzbot has found a reproducer for the following issue on:
 
+HEAD commit:    ce8056d1 wip: changed copy_from_user where instrumented
+git tree:       https://github.com/google/kmsan.git master
+console output: https://syzkaller.appspot.com/x/log.txt?x=12985a16900000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=3afe005fb99591f
+dashboard link: https://syzkaller.appspot.com/bug?extid=2ca247c2d60c7023de7f
+compiler:       clang version 10.0.0 (https://github.com/llvm/llvm-project/ c2443155a0fb245c8f17f2c1c72b6ea391e86e81)
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=1468efe2900000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=10bb9fba900000
 
-Dmitry Osipenko 於 8/12/2020 10:22 PM 寫道:
-> 12.08.2020 07:03, Wright Feng пишет:
-> ...
->> Hi Dmitry,
->>
->> The last time the drivers I used is v5.4 and I was not able to see low
->> throughput issue as you saw.
->> At this time, I changed the base to tag wt-2020-0727 and I am able to
->> reproduce the issue as you did.
->> TX throughput with wt-2020-07-27 FMAC is 190 Kbits/sec
->>
->>
->> The root cause should be that tx_max and tx_seq are circle positive
->> numbers, it should not use ">" to check if it still exists available TX
->> credit.
->> With the solution below, I am able to get the normal throughput.
->> TX throughput with wt-2020-07-27+patch FMAC is 40.0 Mbits/sec
->>
->> Regarding another case about 40Mbit/s, I am using 4329b0(4329/2) chip to
->> verify the throughput because we are not able to find 4329b1(4329/3)
->> which is very old product around 10 years ago.
->> The firmware I am using is the same version but the build is for 4329b0.
->> (private internal build - 4.220.48). My host platform is x86_64 with 4
->> cores on Linux kernel 4.12. I will try your NVRAM when I have time to
->> see if I can find anything.
->>
->> ---
->> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
->> b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
->> index e8712ad..50c8107 100644
->> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
->> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
->> @@ -664,9 +664,14 @@ static void pkt_align(struct sk_buff *p, int len,
->> int align)
->>   /* To check if there's window offered */
->>   static bool data_ok(struct brcmf_sdio *bus)
->>   {
->> -    /* Reserve TXCTL_CREDITS credits for txctl */
->> -    return (bus->tx_max - bus->tx_seq) > TXCTL_CREDITS &&
->> -           ((bus->tx_max - bus->tx_seq) & 0x80) == 0;
->> +    u8 tx_rsv = 0;
->> +
->> +    /* Reserve TXCTL_CREDITS credits for txctl when it is ready to send */
->> +    if (bus->ctrl_frame_stat)
->> +        tx_rsv = TXCTL_CREDITS;
->> +
->> +    return (bus->tx_max - bus->tx_seq - tx_rsv) != 0 &&
->> +           ((bus->tx_max - bus->tx_seq - tx_rsv) & 0x80) == 0;
->>   }
->>
->>   /* To check if there's window offered */
->> ---
-> 
-> Wright, thank you very much for the patch! It fixes the problem!
-> 
-> Tested-by: Dmitry Osipenko <digetx@gmail.com>
-> 
-> The 4329/3 is indeed an older chip, but it's also an "old" device (Acer
-> A500 tablet from 2011/12) that I'm using. Upstream v5.9 kernel just got
-> support for the A500. There are quite a lot of other older devices with
-> 4329/3 in a wild that are still very usable if user can wipe off ancient
-> Android and put a modern Linux distro on them. Today that A500 tablet is
-> still rocking hard running a modern upstream kernel, opensource drivers
-> and KDE Plasma 5. The 15Mbit is a good enough speed for a lot of things,
-> but of course 40Mbit will be better. Would be great if you could try to
-> help with improving the speed :) Please feel free to contact me at any
-> time if you'll have patches to try!
-> 
-Dmitry,
-Thanks for the verification. The patch will be submitted to upstream 
-within two days.
-And with regards to low THP problem on Acer A500 tablet, I will create 
-another mail thread to discuss with you.
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+2ca247c2d60c7023de7f@syzkaller.appspotmail.com
 
+=====================================================
+BUG: KMSAN: uninit-value in ath9k_htc_rx_msg+0x28f/0x1f50 drivers/net/wireless/ath/ath9k/htc_hst.c:410
+CPU: 1 PID: 0 Comm: swapper/1 Not tainted 5.8.0-rc5-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
+Call Trace:
+ <IRQ>
+ __dump_stack lib/dump_stack.c:77 [inline]
+ dump_stack+0x21c/0x280 lib/dump_stack.c:118
+ kmsan_report+0xf7/0x1e0 mm/kmsan/kmsan_report.c:121
+ __msan_warning+0x58/0xa0 mm/kmsan/kmsan_instr.c:215
+ ath9k_htc_rx_msg+0x28f/0x1f50 drivers/net/wireless/ath/ath9k/htc_hst.c:410
+ ath9k_hif_usb_rx_stream drivers/net/wireless/ath/ath9k/hif_usb.c:638 [inline]
+ ath9k_hif_usb_rx_cb+0x1841/0x1d10 drivers/net/wireless/ath/ath9k/hif_usb.c:671
+ __usb_hcd_giveback_urb+0x687/0x870 drivers/usb/core/hcd.c:1650
+ usb_hcd_giveback_urb+0x1cb/0x730 drivers/usb/core/hcd.c:1716
+ dummy_timer+0xd98/0x71c0 drivers/usb/gadget/udc/dummy_hcd.c:1967
+ call_timer_fn+0x226/0x550 kernel/time/timer.c:1404
+ expire_timers+0x4fc/0x780 kernel/time/timer.c:1449
+ __run_timers+0xaf4/0xd30 kernel/time/timer.c:1773
+ run_timer_softirq+0x2d/0x50 kernel/time/timer.c:1786
+ __do_softirq+0x2ea/0x7f5 kernel/softirq.c:293
+ asm_call_on_stack+0xf/0x20 arch/x86/entry/entry_64.S:711
+ </IRQ>
+ __run_on_irqstack arch/x86/include/asm/irq_stack.h:23 [inline]
+ run_on_irqstack_cond arch/x86/include/asm/irq_stack.h:50 [inline]
+ do_softirq_own_stack+0x7c/0xa0 arch/x86/kernel/irq_64.c:77
+ invoke_softirq kernel/softirq.c:390 [inline]
+ __irq_exit_rcu+0x226/0x270 kernel/softirq.c:420
+ irq_exit_rcu+0xe/0x10 kernel/softirq.c:432
+ sysvec_apic_timer_interrupt+0x107/0x130 arch/x86/kernel/apic/apic.c:1091
+ asm_sysvec_apic_timer_interrupt+0x12/0x20 arch/x86/include/asm/idtentry.h:593
+RIP: 0010:native_irq_disable arch/x86/include/asm/irqflags.h:49 [inline]
+RIP: 0010:arch_local_irq_disable arch/x86/include/asm/irqflags.h:89 [inline]
+RIP: 0010:acpi_safe_halt drivers/acpi/processor_idle.c:112 [inline]
+RIP: 0010:acpi_idle_do_entry drivers/acpi/processor_idle.c:525 [inline]
+RIP: 0010:acpi_idle_enter+0x817/0xeb0 drivers/acpi/processor_idle.c:651
+Code: 85 db 74 0a f7 d3 44 21 fb 48 85 db 74 32 4d 85 ff 75 3a 48 8b 5d a0 e9 0c 00 00 00 e8 12 b2 78 fb 0f 00 2d 25 15 1c 0b fb f4 <fa> eb 5a 84 c0 8b 7d 90 0f 45 7d 94 e8 d8 9a f4 fb e9 74 fc ff ff
+RSP: 0018:ffff88812df93bc8 EFLAGS: 00000246
+RAX: 0000000000000000 RBX: ffff8881dfefce70 RCX: 000000012db88000
+RDX: ffff88812df88000 RSI: 0000000000000000 RDI: 0000000000000000
+RBP: ffff88812df93ca0 R08: ffffffff86420acc R09: ffff88812fffa000
+R10: 0000000000000002 R11: ffff88812df88000 R12: ffff88812df889d8
+R13: ffff8881dfefcc64 R14: 0000000000000000 R15: 0000000000000000
+ cpuidle_enter_state+0x860/0x12b0 drivers/cpuidle/cpuidle.c:235
+ cpuidle_enter+0xe3/0x170 drivers/cpuidle/cpuidle.c:346
+ call_cpuidle kernel/sched/idle.c:126 [inline]
+ cpuidle_idle_call kernel/sched/idle.c:214 [inline]
+ do_idle+0x668/0x810 kernel/sched/idle.c:276
+ cpu_startup_entry+0x45/0x50 kernel/sched/idle.c:372
+ start_secondary+0x1bf/0x240 arch/x86/kernel/smpboot.c:268
+ secondary_startup_64+0xa4/0xb0 arch/x86/kernel/head_64.S:243
+
+Uninit was created at:
+ kmsan_save_stack_with_flags+0x3c/0x90 mm/kmsan/kmsan.c:144
+ kmsan_internal_alloc_meta_for_pages mm/kmsan/kmsan_shadow.c:269 [inline]
+ kmsan_alloc_page+0xc5/0x1a0 mm/kmsan/kmsan_shadow.c:293
+ __alloc_pages_nodemask+0xdf0/0x1030 mm/page_alloc.c:4889
+ __alloc_pages include/linux/gfp.h:509 [inline]
+ __alloc_pages_node include/linux/gfp.h:522 [inline]
+ alloc_pages_node include/linux/gfp.h:536 [inline]
+ __page_frag_cache_refill mm/page_alloc.c:4964 [inline]
+ page_frag_alloc+0x35b/0x880 mm/page_alloc.c:4994
+ __netdev_alloc_skb+0x2a8/0xc90 net/core/skbuff.c:451
+ __dev_alloc_skb include/linux/skbuff.h:2813 [inline]
+ ath9k_hif_usb_rx_stream drivers/net/wireless/ath/ath9k/hif_usb.c:620 [inline]
+ ath9k_hif_usb_rx_cb+0xe5a/0x1d10 drivers/net/wireless/ath/ath9k/hif_usb.c:671
+ __usb_hcd_giveback_urb+0x687/0x870 drivers/usb/core/hcd.c:1650
+ usb_hcd_giveback_urb+0x1cb/0x730 drivers/usb/core/hcd.c:1716
+ dummy_timer+0xd98/0x71c0 drivers/usb/gadget/udc/dummy_hcd.c:1967
+ call_timer_fn+0x226/0x550 kernel/time/timer.c:1404
+ expire_timers+0x4fc/0x780 kernel/time/timer.c:1449
+ __run_timers+0xaf4/0xd30 kernel/time/timer.c:1773
+ run_timer_softirq+0x2d/0x50 kernel/time/timer.c:1786
+ __do_softirq+0x2ea/0x7f5 kernel/softirq.c:293
+=====================================================
 
