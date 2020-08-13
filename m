@@ -2,103 +2,86 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C982124380E
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Aug 2020 11:56:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3FCF92438FB
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Aug 2020 12:58:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726192AbgHMJ4J (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 13 Aug 2020 05:56:09 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35538 "EHLO mail.kernel.org"
+        id S1726621AbgHMK6I (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 13 Aug 2020 06:58:08 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:19880 "EHLO m43-7.mailgun.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726048AbgHMJ4H (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 13 Aug 2020 05:56:07 -0400
-Received: from localhost.localdomain (unknown [5.170.107.239])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        id S1726567AbgHMK6G (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 13 Aug 2020 06:58:06 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1597316286; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=lFkj72GeE2bw+45X+kHHD0BOzdXRWeQBgIzNSShoJpM=; b=RQYb0J+RHsypr28lBYEUI3a7ViSKVqqLQFIbmF4VS91wbNUOxiYP3oqbhrMGMjzd/hZb8lEN
+ d3NKgFDTdbfryZHbxoTXRy30n+5chRC6Ha8qPNxo+7ZQicJdHy1H5bS85bspZgEjjTYg6fQF
+ zG/F7+4/4j9BWJAkBuHVGF1qGrg=
+X-Mailgun-Sending-Ip: 69.72.43.7
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n04.prod.us-west-2.postgun.com with SMTP id
+ 5f351cae03528d40248bc852 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 13 Aug 2020 10:57:50
+ GMT
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id A4277C433CA; Thu, 13 Aug 2020 10:57:49 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.0
+Received: from x230.qca.qualcomm.com (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 74942206A4;
-        Thu, 13 Aug 2020 09:56:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1597312566;
-        bh=mLH/pKol6stWrBmxdPnlwsEX1fhynhtWGSH/TtMaLYc=;
-        h=From:To:Cc:Subject:Date:From;
-        b=xHdSKxiDB3SCMLBqMfK0etaT3kruTPVofrH+J/WRnHauglspaLdUFRwY9fxNykPGg
-         iJwopHkDeBgusMP1ntAeQTzgLW5zvDNpDxiZbgdwaNJQaR4ACCimkCiRE+dpYGhZot
-         GjbJGe5falGh+e22p/rt3ziD5L0uP2al1//MByEg=
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org
-Subject: [PATCH] mt76: mt7663s: use NULL instead of 0 in sdio code
-Date:   Thu, 13 Aug 2020 11:55:52 +0200
-Message-Id: <10a6537df1c8a05c8fe68b9b779554fca45edeb7.1597312097.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.26.2
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 0F1E1C433C6;
+        Thu, 13 Aug 2020 10:57:46 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 0F1E1C433C6
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Wright Feng <wright.feng@cypress.com>
+Cc:     linux-wireless@vger.kernel.org, brcm80211-dev-list@broadcom.com,
+        brcm80211-dev-list@cypress.com,
+        Arend van Spriel <arend.vanspriel@broadcom.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        chi-hsien.lin@cypress.com, Dmitry Osipenko <digetx@gmail.com>
+Subject: Re: [PATCH] brcmfmac: reserve tx credit only when txctl is ready to send
+References: <20200813070017.89023-1-wright.feng@cypress.com>
+Date:   Thu, 13 Aug 2020 13:57:44 +0300
+In-Reply-To: <20200813070017.89023-1-wright.feng@cypress.com> (Wright Feng's
+        message of "Thu, 13 Aug 2020 02:00:16 -0500")
+Message-ID: <87o8nevmmv.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fix the following sparse warnings in mt7663s driver:
+Wright Feng <wright.feng@cypress.com> writes:
 
-drivers/net/wireless/mediatek/mt76/mt7615/sdio_mcu.c:78:62: warning:
-Using plain integer as NULL pointer
-drivers/net/wireless/mediatek/mt76/mt7615/sdio_mcu.c:110:62: warning:
-Using plain integer as NULL pointer
-drivers/net/wireless/mediatek/mt76/mt7615/sdio_txrx.c:229:64: warning:
-Using plain integer as NULL pointer
-drivers/net/wireless/mediatek/mt76/mt7615/sdio_txrx.c:263:64: warning:
-Using plain integer as NULL pointer
+> The 4329 throughput drops from 40.2 Mbits/sec to 190 Kbits/sec in 2G
+> 11n mode because the commit b41c232d33666 ("brcmfmac: reserve 2 credits
+> for host tx control path"). To fix the issue, host driver only reserves
+> tx control credit when there is a txctl frame is pending to send. And
+> we also check available credit by using "not equal to 0" instead of
+> "greater than 0" because tx_max and tx_seq are circled positive numbers.
+>
+> Reported-by: Dmitry Osipenko <digetx@gmail.com>
+> Fixes: b41c232d33666 ("brcmfmac: reserve 2 credits for host tx control
+> path")
 
-Fixes: a66cbdd6573d ("mt76: mt7615: introduce mt7663s support")
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- drivers/net/wireless/mediatek/mt76/mt7615/sdio_mcu.c  | 4 ++--
- drivers/net/wireless/mediatek/mt76/mt7615/sdio_txrx.c | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+Fixes tag should be in one line, but I can fix it.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/sdio_mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/sdio_mcu.c
-index 953b5893fa67..53fb6018d013 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/sdio_mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/sdio_mcu.c
-@@ -75,7 +75,7 @@ static int mt7663s_mcu_drv_pmctrl(struct mt7615_dev *dev)
- 
- 	sdio_claim_host(func);
- 
--	sdio_writel(func, WHLPCR_FW_OWN_REQ_CLR, MCR_WHLPCR, 0);
-+	sdio_writel(func, WHLPCR_FW_OWN_REQ_CLR, MCR_WHLPCR, NULL);
- 
- 	ret = readx_poll_timeout(mt7663s_read_pcr, dev, status,
- 				 status & WHLPCR_IS_DRIVER_OWN, 2000, 1000000);
-@@ -107,7 +107,7 @@ static int mt7663s_mcu_fw_pmctrl(struct mt7615_dev *dev)
- 
- 	sdio_claim_host(func);
- 
--	sdio_writel(func, WHLPCR_FW_OWN_REQ_SET, MCR_WHLPCR, 0);
-+	sdio_writel(func, WHLPCR_FW_OWN_REQ_SET, MCR_WHLPCR, NULL);
- 
- 	ret = readx_poll_timeout(mt7663s_read_pcr, dev, status,
- 				 !(status & WHLPCR_IS_DRIVER_OWN), 2000, 1000000);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/sdio_txrx.c b/drivers/net/wireless/mediatek/mt76/mt7615/sdio_txrx.c
-index c945b4e0320d..66d8652c756a 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/sdio_txrx.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/sdio_txrx.c
-@@ -226,7 +226,7 @@ void mt7663s_rx_work(struct work_struct *work)
- 
- 	/* disable interrupt */
- 	sdio_claim_host(sdio->func);
--	sdio_writel(sdio->func, WHLPCR_INT_EN_CLR, MCR_WHLPCR, 0);
-+	sdio_writel(sdio->func, WHLPCR_INT_EN_CLR, MCR_WHLPCR, NULL);
- 	sdio_readsb(sdio->func, &intr, MCR_WHISR, sizeof(struct mt76s_intr));
- 	sdio_release_host(sdio->func);
- 
-@@ -260,7 +260,7 @@ void mt7663s_rx_work(struct work_struct *work)
- 
- 	/* enable interrupt */
- 	sdio_claim_host(sdio->func);
--	sdio_writel(sdio->func, WHLPCR_INT_EN_SET, MCR_WHLPCR, 0);
-+	sdio_writel(sdio->func, WHLPCR_INT_EN_SET, MCR_WHLPCR, NULL);
- 	sdio_release_host(sdio->func);
- }
- 
+> Signed-off-by: Wright Feng <wright.feng@cypress.com>
+> Tested-by: Dmitry Osipenko <digetx@gmail.com>
+
+And I'll queue this to v5.9.
+
 -- 
-2.26.2
-
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
