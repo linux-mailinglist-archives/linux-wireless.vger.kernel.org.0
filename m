@@ -2,97 +2,203 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 79B18243B55
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Aug 2020 16:15:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C421D243CCF
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Aug 2020 17:52:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726546AbgHMOPe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 13 Aug 2020 10:15:34 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:56896 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726082AbgHMOP2 (ORCPT
+        id S1726427AbgHMPwT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 13 Aug 2020 11:52:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55210 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726292AbgHMPwT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 13 Aug 2020 10:15:28 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 07DEDiDW057560;
-        Thu, 13 Aug 2020 14:15:24 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=KI1ql7KlybptHZpBvB0+SNJ7mHBXWyhKeS0xGV+durI=;
- b=iQg/5tAlboQ5dXfRgMz//2QHM15wR3IeqUNImmZc3zUVYQMWXcFg3JarIkX5rPXtxg6c
- m+3pVtKaAIT0i8i7ZlO1X40hPZWt8WyYkr+ClpYN/z95Q7NlN2wIJ3lg81EbgtmkWDkA
- 6hIK6Uu+Yqko90QKH0+5nkH37HvT5hZl1dD/G8aDS9UBZbtPBA4ohhqhFvFZnTkdLRdu
- PETxqwPErYVj/EiQ/2rFbK3UUK/xWmfBsy2Tg4hPMt3HOMVdXI9r0EAgWcDDS85bieEX
- 7DYFPw54VjaAniO1KDzRa1sLOYHmN4yyMViKQT6B8nzAJpltf/nOLJK4uEREyJWVtygv Ww== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by aserp2120.oracle.com with ESMTP id 32sm0n0wfp-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 13 Aug 2020 14:15:23 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 07DE7c76175642;
-        Thu, 13 Aug 2020 14:13:23 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by aserp3030.oracle.com with ESMTP id 32t5mru8tw-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 13 Aug 2020 14:13:23 +0000
-Received: from abhmp0015.oracle.com (abhmp0015.oracle.com [141.146.116.21])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 07DEDMT7028637;
-        Thu, 13 Aug 2020 14:13:22 GMT
-Received: from mwanda (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Thu, 13 Aug 2020 14:13:21 +0000
-Date:   Thu, 13 Aug 2020 17:13:15 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     Jakub Kicinski <kuba@kernel.org>,
-        Jouni Malinen <jouni@qca.qualcomm.com>,
-        linux-wireless@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] ath6kl: prevent potential array overflow in
- ath6kl_add_new_sta()
-Message-ID: <20200813141315.GB457408@mwanda>
+        Thu, 13 Aug 2020 11:52:19 -0400
+Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD7ADC061383
+        for <linux-wireless@vger.kernel.org>; Thu, 13 Aug 2020 08:52:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject
+        :Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=uQhJQQITnz3C7SLVQCD8u+Bt7Iip0mypnEhGuUSJQ30=; b=BPgmyYTiSPIARO/rpIv8dd1kDd
+        IxUVoqLKdX9pIUMFF1SzlmC2dhzYqLFBSn6D9JILa/fVFaffQY9d90GS9z7ITIzC+1RYIqvaXfu9h
+        IA4viBftUPaouueJyqKiS5WcQBRgHx9LE/P35P9P0Qb5pNA6RIB19Gzu1E8nrZJvcOxw=;
+Received: from p54ae996c.dip0.t-ipconnect.de ([84.174.153.108] helo=localhost.localdomain)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_CBC_SHA1:128)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1k6FWX-0000Cc-TL; Thu, 13 Aug 2020 17:52:13 +0200
+From:   Felix Fietkau <nbd@nbd.name>
+To:     linux-wireless@vger.kernel.org
+Cc:     johannes@sipsolutions.net
+Subject: [PATCH 5.9 1/3] mac80211: use rate provided via status->rate on ieee80211_tx_status_ext for AQL
+Date:   Thu, 13 Aug 2020 17:52:10 +0200
+Message-Id: <20200813155212.97884-1-nbd@nbd.name>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9711 signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 spamscore=0 mlxscore=0
- adultscore=0 malwarescore=0 mlxlogscore=999 phishscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2008130106
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9711 signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 clxscore=1011
- suspectscore=0 mlxlogscore=999 priorityscore=1501 adultscore=0
- impostorscore=0 spamscore=0 bulkscore=0 mlxscore=0 lowpriorityscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2008130107
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The value for "aid" comes from skb->data so Smatch marks it as
-untrusted.  If it's invalid then it can result in an out of bounds array
-access in ath6kl_add_new_sta().
+Since ieee80211_tx_info does not have enough room to encode HE rates, HE
+drivers use status->rate to provide rate info.
+Store it in struct sta_info and use it for AQL.
 
-Fixes: 572e27c00c9d ("ath6kl: Fix AP mode connect event parsing and TIM updates")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 ---
- drivers/net/wireless/ath/ath6kl/main.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/mac80211/airtime.c  | 53 +++++++++++++++++++++++++++++++++++++++--
+ net/mac80211/sta_info.h |  1 +
+ net/mac80211/status.c   | 12 ++++++----
+ 3 files changed, 60 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath6kl/main.c b/drivers/net/wireless/ath/ath6kl/main.c
-index 5e7ea838a921..814131a0680a 100644
---- a/drivers/net/wireless/ath/ath6kl/main.c
-+++ b/drivers/net/wireless/ath/ath6kl/main.c
-@@ -430,6 +430,9 @@ void ath6kl_connect_ap_mode_sta(struct ath6kl_vif *vif, u16 aid, u8 *mac_addr,
+diff --git a/net/mac80211/airtime.c b/net/mac80211/airtime.c
+index 366f76c9003d..656c9a033714 100644
+--- a/net/mac80211/airtime.c
++++ b/net/mac80211/airtime.c
+@@ -487,14 +487,61 @@ u32 ieee80211_calc_rx_airtime(struct ieee80211_hw *hw,
+ }
+ EXPORT_SYMBOL_GPL(ieee80211_calc_rx_airtime);
  
- 	ath6kl_dbg(ATH6KL_DBG_TRC, "new station %pM aid=%d\n", mac_addr, aid);
- 
-+	if (aid < 1 || aid > AP_MAX_NUM_STA)
-+		return;
++static bool ieee80211_fill_rate_info(struct ieee80211_hw *hw,
++				     struct ieee80211_rx_status *stat, u8 band,
++				     struct rate_info *ri)
++{
++	struct ieee80211_supported_band *sband = hw->wiphy->bands[band];
++	int i;
 +
- 	if (assoc_req_len > sizeof(struct ieee80211_hdr_3addr)) {
- 		struct ieee80211_mgmt *mgmt =
- 			(struct ieee80211_mgmt *) assoc_info;
++	if (!ri || !sband)
++	    return false;
++
++	stat->bw = ri->bw;
++	stat->nss = ri->nss;
++	stat->rate_idx = ri->mcs;
++
++	if (ri->flags & RATE_INFO_FLAGS_HE_MCS)
++		stat->encoding = RX_ENC_HE;
++	else if (ri->flags & RATE_INFO_FLAGS_VHT_MCS)
++		stat->encoding = RX_ENC_VHT;
++	else if (ri->flags & RATE_INFO_FLAGS_MCS)
++		stat->encoding = RX_ENC_HT;
++	else
++		stat->encoding = RX_ENC_LEGACY;
++
++	if (ri->flags & RATE_INFO_FLAGS_SHORT_GI)
++		stat->enc_flags |= RX_ENC_FLAG_SHORT_GI;
++
++	stat->he_gi = ri->he_gi;
++
++	if (stat->encoding != RX_ENC_LEGACY)
++		return true;
++
++	stat->rate_idx = 0;
++	for (i = 0; i < sband->n_bitrates; i++) {
++		if (ri->legacy != sband->bitrates[i].bitrate)
++			continue;
++
++		stat->rate_idx = i;
++		return true;
++	}
++
++	return false;
++}
++
+ static u32 ieee80211_calc_tx_airtime_rate(struct ieee80211_hw *hw,
+ 					  struct ieee80211_tx_rate *rate,
++					  struct rate_info *ri,
+ 					  u8 band, int len)
+ {
+ 	struct ieee80211_rx_status stat = {
+ 		.band = band,
+ 	};
+ 
++	if (ieee80211_fill_rate_info(hw, &stat, band, ri))
++		goto out;
++
+ 	if (rate->idx < 0 || !rate->count)
+ 		return 0;
+ 
+@@ -522,6 +569,7 @@ static u32 ieee80211_calc_tx_airtime_rate(struct ieee80211_hw *hw,
+ 		stat.encoding = RX_ENC_LEGACY;
+ 	}
+ 
++out:
+ 	return ieee80211_calc_rx_airtime(hw, &stat, len);
+ }
+ 
+@@ -536,7 +584,7 @@ u32 ieee80211_calc_tx_airtime(struct ieee80211_hw *hw,
+ 		struct ieee80211_tx_rate *rate = &info->status.rates[i];
+ 		u32 cur_duration;
+ 
+-		cur_duration = ieee80211_calc_tx_airtime_rate(hw, rate,
++		cur_duration = ieee80211_calc_tx_airtime_rate(hw, rate, NULL,
+ 							      info->band, len);
+ 		if (!cur_duration)
+ 			break;
+@@ -573,6 +621,7 @@ u32 ieee80211_calc_expected_tx_airtime(struct ieee80211_hw *hw,
+ 		struct sta_info *sta = container_of(pubsta, struct sta_info,
+ 						    sta);
+ 		struct ieee80211_tx_rate *rate = &sta->tx_stats.last_rate;
++		struct rate_info *ri = &sta->tx_stats.last_rate_info;
+ 		u32 airtime;
+ 
+ 		if (!(rate->flags & (IEEE80211_TX_RC_VHT_MCS |
+@@ -586,7 +635,7 @@ u32 ieee80211_calc_expected_tx_airtime(struct ieee80211_hw *hw,
+ 		 * This will not be very accurate, but much better than simply
+ 		 * assuming un-aggregated tx.
+ 		 */
+-		airtime = ieee80211_calc_tx_airtime_rate(hw, rate, band,
++		airtime = ieee80211_calc_tx_airtime_rate(hw, rate, ri, band,
+ 							 ampdu ? len * 16 : len);
+ 		if (ampdu)
+ 			airtime /= 16;
+diff --git a/net/mac80211/sta_info.h b/net/mac80211/sta_info.h
+index 9d398c9daa4c..8060d142e4f1 100644
+--- a/net/mac80211/sta_info.h
++++ b/net/mac80211/sta_info.h
+@@ -611,6 +611,7 @@ struct sta_info {
+ 		u64 packets[IEEE80211_NUM_ACS];
+ 		u64 bytes[IEEE80211_NUM_ACS];
+ 		struct ieee80211_tx_rate last_rate;
++		struct rate_info last_rate_info;
+ 		u64 msdu[IEEE80211_NUM_TIDS + 1];
+ 	} tx_stats;
+ 	u16 tid_seq[IEEE80211_QOS_CTL_TID_MASK + 1];
+diff --git a/net/mac80211/status.c b/net/mac80211/status.c
+index adb1d30ce06e..6de63f1d8c7b 100644
+--- a/net/mac80211/status.c
++++ b/net/mac80211/status.c
+@@ -1137,9 +1137,17 @@ void ieee80211_tx_status_ext(struct ieee80211_hw *hw,
+ 	struct ieee80211_tx_info *info = status->info;
+ 	struct ieee80211_sta *pubsta = status->sta;
+ 	struct ieee80211_supported_band *sband;
++	struct sta_info *sta;
+ 	int retry_count;
+ 	bool acked, noack_success;
+ 
++	if (pubsta) {
++		sta = container_of(pubsta, struct sta_info, sta);
++
++		if (status->rate)
++			sta->tx_stats.last_rate_info = *status->rate;
++	}
++
+ 	if (status->skb)
+ 		return __ieee80211_tx_status(hw, status);
+ 
+@@ -1154,10 +1162,6 @@ void ieee80211_tx_status_ext(struct ieee80211_hw *hw,
+ 	noack_success = !!(info->flags & IEEE80211_TX_STAT_NOACK_TRANSMITTED);
+ 
+ 	if (pubsta) {
+-		struct sta_info *sta;
+-
+-		sta = container_of(pubsta, struct sta_info, sta);
+-
+ 		if (!acked && !noack_success)
+ 			sta->status_stats.retry_failed++;
+ 		sta->status_stats.retry_count += retry_count;
 -- 
 2.28.0
 
