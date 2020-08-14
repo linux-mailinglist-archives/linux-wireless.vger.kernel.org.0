@@ -2,62 +2,107 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A1E9B24452F
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 Aug 2020 09:06:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 269ED24454E
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 Aug 2020 09:11:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726110AbgHNHFq convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 14 Aug 2020 03:05:46 -0400
-Received: from mail.munisurquillo.gob.pe ([190.187.155.157]:51956 "EHLO
-        mail.munisurquillo.gob.pe" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726006AbgHNHFq (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 14 Aug 2020 03:05:46 -0400
-X-Greylist: delayed 926 seconds by postgrey-1.27 at vger.kernel.org; Fri, 14 Aug 2020 03:05:45 EDT
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by mail.munisurquillo.gob.pe (Postfix) with ESMTP id E25AD400B5AA2;
-        Fri, 14 Aug 2020 01:47:45 -0500 (-05)
-Received: from mail.munisurquillo.gob.pe ([127.0.0.1])
-        by localhost (mail.munisurquillo.gob.pe [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id T1esR5Ml4nIi; Fri, 14 Aug 2020 01:47:45 -0500 (-05)
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by mail.munisurquillo.gob.pe (Postfix) with ESMTP id A232F400B2AB9;
-        Fri, 14 Aug 2020 01:47:45 -0500 (-05)
-X-Virus-Scanned: amavisd-new at munisurquillo.gob.pe
-Received: from mail.munisurquillo.gob.pe ([127.0.0.1])
-        by localhost (mail.munisurquillo.gob.pe [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id p2IYDPHt4jIp; Fri, 14 Aug 2020 01:47:45 -0500 (-05)
-Received: from [10.54.17.114] (unknown [105.4.7.153])
-        by mail.munisurquillo.gob.pe (Postfix) with ESMTPSA id A2112400B0A5C;
-        Fri, 14 Aug 2020 01:47:34 -0500 (-05)
-Content-Type: text/plain; charset="iso-8859-1"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: =?utf-8?q?Covid_19_Wohlt=C3=A4tigkeitsfonds?=
-To:     Recipients <lu.marin@munisurquillo.gob.pe>
-From:   ''charles jackson'' <lu.marin@munisurquillo.gob.pe>
-Date:   Fri, 14 Aug 2020 08:47:24 +0200
-Reply-To: charlesjacksonjr001@gmail.com
-Message-Id: <20200814064735.A2112400B0A5C@mail.munisurquillo.gob.pe>
+        id S1726444AbgHNHLM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 14 Aug 2020 03:11:12 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:29707 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726297AbgHNHLL (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 14 Aug 2020 03:11:11 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1597389071; h=Message-Id: Date: Subject: Cc: To: From:
+ Sender; bh=rxsMtmo16C4gfdZpqWRQed/fOJduuPexfInZqHXC8PA=; b=YbgXKN3BQw1DA1b+k9AfCZznKYDh+X6OaC8Bodmz5dMn3jZ5Xr9LxKmTdFjYtsjgHeIwFTcz
+ vUAoRbmF+yIOFi4SI8r8nb2UoQWLyO21ghWhnat1OjuZtiM/Wzlz02OablXgjR5sAln3nbsP
+ qMhmuFToag37vELhpWdO4FKu2OE=
+X-Mailgun-Sending-Ip: 69.72.43.7
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n03.prod.us-west-2.postgun.com with SMTP id
+ 5f3638eac85a1092b0606f4c (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 14 Aug 2020 07:10:34
+ GMT
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 4D772C433C6; Fri, 14 Aug 2020 07:10:34 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 18B3CC433C9;
+        Fri, 14 Aug 2020 07:10:32 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 18B3CC433C9
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     ath11k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org
+Subject: [PATCH 00/11] ath11k: firmware and board file support for PCI devices
+Date:   Fri, 14 Aug 2020 10:10:19 +0300
+Message-Id: <1597389030-13887-1-git-send-email-kvalo@codeaurora.org>
+X-Mailer: git-send-email 2.7.4
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hallo
+Here's a second set of patches adding QCA6390 PCI support to ath11k.
+Now m3 firmware and board file support is added as well various
+smaller tweaks and fixes needed QCA6390 support.
 
-Ich bin Charles W. Jackson aus North Carolina, Vereinigte Staaten von Amerika, und ich bin der Gewinner des Mega-Millionen-Jackpots von 344 Millionen US-Dollar. Ich spende die Summe von 2.000.000 Millionen Euro als Teil der Hilfsgelder für das Corona-Virus.
+There will be two more patchsets for QCA6390 after this. Please
+review.
 
-Dies ist Ihr Spendencode: [CJ530342019]
+This patchset depends on the patchset:
 
-www.youtube.com/watch?v=BSr8myiLPMQ
+ath11k: initial PCI support
 
-Bitte antworten Sie auf diese E-Mail mit dem SPENDERCODE:
+Kalle
 
-charlesjacksonjr001@gmail.com
+Carl Huang (4):
+  ath11k: allocate smaller chunks of memory for firmware
+  ath11k: fix memory OOB access in qmi_decode
+  ath11k: fix KASAN warning of ath11k_qmi_wlanfw_wlan_cfg_send
+  ath11k: enable internal sleep clock
 
-Ich hoffe, dass Sie und Ihre Familie dies durchkommen
+Govind Singh (6):
+  ath11k: add support for m3 firmware
+  ath11k: add board file support for PCI devices
+  ath11k: fill appropriate QMI service instance id for QCA6390
+  ath11k: pci: add read32() and write32() hif operations
+  ath11k: configure copy engine msi address in CE srng
+  ath11k: setup ce tasklet for control path
 
+Kalle Valo (1):
+  ath11k: hal: create hw_srng_config dynamically
 
-Herr Charles Jackson
+ drivers/net/wireless/ath/ath11k/ahb.c    |   4 +
+ drivers/net/wireless/ath/ath11k/ce.c     |  32 ++++
+ drivers/net/wireless/ath/ath11k/ce.h     |   2 +
+ drivers/net/wireless/ath/ath11k/core.c   |   9 +-
+ drivers/net/wireless/ath/ath11k/core.h   |  16 ++
+ drivers/net/wireless/ath/ath11k/dbring.c |   2 +-
+ drivers/net/wireless/ath/ath11k/dp.c     |   8 +-
+ drivers/net/wireless/ath/ath11k/dp_rx.c  |   4 +-
+ drivers/net/wireless/ath/ath11k/dp_tx.c  |   2 +-
+ drivers/net/wireless/ath/ath11k/hal.c    | 119 +++++++------
+ drivers/net/wireless/ath/ath11k/hal.h    |   8 +-
+ drivers/net/wireless/ath/ath11k/hal_rx.c |   2 +-
+ drivers/net/wireless/ath/ath11k/hal_tx.c |   2 +-
+ drivers/net/wireless/ath/ath11k/hif.h    |  26 +++
+ drivers/net/wireless/ath/ath11k/hw.h     |   3 +
+ drivers/net/wireless/ath/ath11k/pci.c    | 200 ++++++++++++++++++++-
+ drivers/net/wireless/ath/ath11k/pci.h    |   4 +
+ drivers/net/wireless/ath/ath11k/qmi.c    | 293 ++++++++++++++++++++++++++++---
+ drivers/net/wireless/ath/ath11k/qmi.h    |  25 ++-
+ 19 files changed, 654 insertions(+), 107 deletions(-)
+
+-- 
+2.7.4
+
