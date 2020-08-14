@@ -2,93 +2,109 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D5F7244B99
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 Aug 2020 17:07:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 322D3244BB6
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 Aug 2020 17:12:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726967AbgHNPHA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 14 Aug 2020 11:07:00 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:55589 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726268AbgHNPHA (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 14 Aug 2020 11:07:00 -0400
+        id S1728503AbgHNPMs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 14 Aug 2020 11:12:48 -0400
+Received: from mail29.static.mailgun.info ([104.130.122.29]:39267 "EHLO
+        mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726185AbgHNPMr (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 14 Aug 2020 11:12:47 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1597417619; h=Date: Message-Id: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=keU1IkAaHe8KBZmZnzwH0xtfGCXWKBz39FSBCFKQ0ss=;
- b=BFdJAXdlN9GGOSWjF2s3zAooj3IVGevZvtWg/cyNrFNbqCvLjmuQTFTXXkTePg2QlaZ284p5
- 4v6gHCzNf3a4Z2AskOfv4LsQfmUjUTzav2P/1vjEaw8lxFfNiqGACWo+hukij/1dkibRkflh
- Tz9NuNARmRanvhdefhAc7DHBNRQ=
-X-Mailgun-Sending-Ip: 69.72.43.7
+ s=smtp; t=1597417967; h=Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Message-ID: In-Reply-To: Date: References: Subject: Cc:
+ To: From: Sender; bh=pNN2ZqU5l5I1aDtdajbDVZMae5TVPajU+Yoe2FUShBo=; b=BPkWZbJo6t1Lv/lYEllYv0W+DOIVpixJwlyQ89fEYLUwr+O1qPfITYgC+V3LxRrCPoaZcusF
+ bJyps6nQrMlyQHZqBpyq8rbR4a6Cr2tkuKN6zYl+KfNSJehlVxWuW6jJ9Xop34eAINFZ16aJ
+ Rh7cfo/DEFFI5AOBZisFnFhwhDY=
+X-Mailgun-Sending-Ip: 104.130.122.29
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n02.prod.us-west-2.postgun.com with SMTP id
- 5f36a88b46ed996674e6aa55 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 14 Aug 2020 15:06:51
+ smtp-out-n03.prod.us-west-2.postgun.com with SMTP id
+ 5f36a9e203528d402486b23d (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 14 Aug 2020 15:12:34
  GMT
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 99459C43395; Fri, 14 Aug 2020 15:06:50 +0000 (UTC)
+        id 11D01C433AF; Fri, 14 Aug 2020 15:12:33 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
-        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 01A17C433C9;
-        Fri, 14 Aug 2020 15:06:47 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 01A17C433C9
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 95919C433CA;
+        Fri, 14 Aug 2020 15:12:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 95919C433CA
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH for v5.9] ath5k: Replace HTTP links with HTTPS ones
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20200719104041.57916-1-grandmaster@al2klimov.de>
-References: <20200719104041.57916-1-grandmaster@al2klimov.de>
-To:     "Alexander A. Klimov" <grandmaster@al2klimov.de>
-Cc:     jirislaby@gmail.com, mickflemm@gmail.com, mcgrof@kernel.org,
-        davem@davemloft.net, kuba@kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        "Alexander A. Klimov" <grandmaster@al2klimov.de>
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20200814150650.99459C43395@smtp.codeaurora.org>
-Date:   Fri, 14 Aug 2020 15:06:50 +0000 (UTC)
+To:     Lee Jones <lee.jones@linaro.org>
+Cc:     davem@davemloft.net, kuba@kernel.org, linux-kernel@vger.kernel.org,
+        Martin Langer <martin-langer@gmx.de>,
+        Stefano Brivio <stefano.brivio@polimi.it>,
+        Michael Buesch <m@bues.ch>, van Dyk <kugelfang@gentoo.org>,
+        Andreas Jaggi <andreas.jaggi@waterwave.ch>,
+        Albert Herranz <albert_herranz@yahoo.es>,
+        linux-wireless@vger.kernel.org, b43-dev@lists.infradead.org,
+        netdev@vger.kernel.org
+Subject: Re: [PATCH 07/30] net: wireless: broadcom: b43: main: Add braces around empty statements
+References: <20200814113933.1903438-1-lee.jones@linaro.org>
+        <20200814113933.1903438-8-lee.jones@linaro.org>
+Date:   Fri, 14 Aug 2020 18:12:27 +0300
+In-Reply-To: <20200814113933.1903438-8-lee.jones@linaro.org> (Lee Jones's
+        message of "Fri, 14 Aug 2020 12:39:10 +0100")
+Message-ID: <87v9hll0ro.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-"Alexander A. Klimov" <grandmaster@al2klimov.de> wrote:
+Lee Jones <lee.jones@linaro.org> writes:
 
-> Rationale:
-> Reduces attack surface on kernel devs opening the links for MITM
-> as HTTPS traffic is much harder to manipulate.
-> 
-> Deterministic algorithm:
-> For each file:
->   If not .svg:
->     For each line:
->       If doesn't contain `\bxmlns\b`:
->         For each link, `\bhttp://[^# \t\r\n]*(?:\w|/)`:
-> 	  If neither `\bgnu\.org/license`, nor `\bmozilla\.org/MPL\b`:
->             If both the HTTP and HTTPS versions
->             return 200 OK and serve the same content:
->               Replace HTTP with HTTPS.
-> 
-> Signed-off-by: Alexander A. Klimov <grandmaster@al2klimov.de>
-> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+> Fixes the following W=3D1 kernel build warning(s):
+>
+>  drivers/net/wireless/broadcom/b43/main.c: In function =E2=80=98b43_dummy=
+_transmission=E2=80=99:
+>  drivers/net/wireless/broadcom/b43/main.c:785:3: warning: suggest braces =
+around empty body in an =E2=80=98if=E2=80=99 statement [-Wempty-body]
+>  drivers/net/wireless/broadcom/b43/main.c: In function =E2=80=98b43_do_in=
+terrupt_thread=E2=80=99:
+>  drivers/net/wireless/broadcom/b43/main.c:2017:3: warning: suggest braces=
+ around empty body in an =E2=80=98if=E2=80=99 statement [-Wempty-body]
+>
+> Cc: Kalle Valo <kvalo@codeaurora.org>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: Jakub Kicinski <kuba@kernel.org>
+> Cc: Martin Langer <martin-langer@gmx.de>
+> Cc: Stefano Brivio <stefano.brivio@polimi.it>
+> Cc: Michael Buesch <m@bues.ch>
+> Cc: van Dyk <kugelfang@gentoo.org>
+> Cc: Andreas Jaggi <andreas.jaggi@waterwave.ch>
+> Cc: Albert Herranz <albert_herranz@yahoo.es>
+> Cc: linux-wireless@vger.kernel.org
+> Cc: b43-dev@lists.infradead.org
+> Cc: netdev@vger.kernel.org
+> Signed-off-by: Lee Jones <lee.jones@linaro.org>
+> ---
+>  drivers/net/wireless/broadcom/b43/main.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
 
-Patch applied to ath-next branch of ath.git, thanks.
+Please don't copy the full directory structure to the title. I'll change
+the title to more simple version:
 
-5b525ce88af9 ath5k: Replace HTTP links with HTTPS ones
+b43: add braces around empty statements
 
--- 
-https://patchwork.kernel.org/patch/11672417/
+I'll do similar changes to other wireless-drivers patches.
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
+--=20
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
+hes
