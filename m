@@ -2,90 +2,99 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EE61B2448BE
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 Aug 2020 13:18:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C73824492E
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 Aug 2020 13:45:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727123AbgHNLSR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 14 Aug 2020 07:18:17 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:51036 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727109AbgHNLSQ (ORCPT
+        id S1728137AbgHNLop (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 14 Aug 2020 07:44:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39658 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728091AbgHNLjr (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 14 Aug 2020 07:18:16 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 07EBGoNJ070776;
-        Fri, 14 Aug 2020 11:18:09 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2020-01-29;
- bh=41fr713SEuqBN+291fchNgohOxrXXq9eL+cDz9R+CuI=;
- b=FI3d3AXs9xnVCIfnFeN2Z/Aecm+e8qerW6wrBfQ2CFDEqzXMP0ZfJ3ma1fzXHN6znyu1
- OUatmH1UMyG8kvq2g5D+oYDxRoIoi3GbcTzWuz9jL9g0BpOF+ef1JOxfhwy9StJXCPoW
- KEaqA1SSxjy71xI3QosaLd50Pf3XT7KUAtUWlnaGQgoU2C688FSu1pw7/4qovN5rihis
- WOCJOcTYBWwQ75FQD9CsUAy87hKGYB5nZzLBMtSX/CB7/UlQDzNTVJ4wBIgz8z2F7dCj
- DAX/sf9wYX4e1oBbTtvuGVd2+uj6jTyp1mAPE1MH46a0ArE9/tkC+BZ1Q/PKImStf911 eA== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by userp2120.oracle.com with ESMTP id 32w73ccwda-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 14 Aug 2020 11:18:09 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 07EBHg00135553;
-        Fri, 14 Aug 2020 11:18:08 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by userp3020.oracle.com with ESMTP id 32u3h815gv-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 14 Aug 2020 11:18:08 +0000
-Received: from abhmp0009.oracle.com (abhmp0009.oracle.com [141.146.116.15])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 07EBI11j021448;
-        Fri, 14 Aug 2020 11:18:01 GMT
-Received: from kadam (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 14 Aug 2020 11:18:00 +0000
-Date:   Fri, 14 Aug 2020 14:17:54 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Walter Harms <wharms@bfs.de>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Jouni Malinen <jouni@qca.qualcomm.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
-Subject: Re: [PATCH] ath6kl: prevent potential array overflow in
- ath6kl_add_new_sta()
-Message-ID: <20200814111753.GQ1793@kadam>
-References: <20200813141315.GB457408@mwanda>
- <61e34f670a4845f8b1cbf6f6013f8a35@bfs.de>
+        Fri, 14 Aug 2020 07:39:47 -0400
+Received: from mail-wm1-x342.google.com (mail-wm1-x342.google.com [IPv6:2a00:1450:4864:20::342])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BCEDC061386
+        for <linux-wireless@vger.kernel.org>; Fri, 14 Aug 2020 04:39:47 -0700 (PDT)
+Received: by mail-wm1-x342.google.com with SMTP id p14so7223672wmg.1
+        for <linux-wireless@vger.kernel.org>; Fri, 14 Aug 2020 04:39:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=j3TFuBWvx6taUPZUro4+v5BkkgVZieDFqQLYKGmsIgM=;
+        b=bvKIMDsMikcPYW96Fn3utXtu9dLMKak+fKSEqcxJ2kfKkauaLTlDoFJ7kUu1BATx8u
+         caauFpS9nW9cKPOH+hxpBo0zdLH59ujrwjn2WIQBdnNTtEozhc61dYrIT5+Z6/PwyRZF
+         ug7L/HOwoB+qsPTilK5uOl4XwTvHS8Q9k2Abp8srA2CKV3UW4LGcjKNZLUC10BPa8P1F
+         ERKSRj0rE+4+aMzld1AgI2LMDjGJxoB78sFjSB3/G1ekMVIubuYTwtjqM0TmvuaMUstN
+         igPecR1wuJ7WU5qJnxQ4EUPxQU5WBqgI0CtS7mS4jZWnTi8ECakaQSMtun3+wqjmpi2s
+         Cj2Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=j3TFuBWvx6taUPZUro4+v5BkkgVZieDFqQLYKGmsIgM=;
+        b=FAUJpDuJxSByTnL6E7ANchicQTfAwyUZki2YoJNMs4um+R7GTetuHYtKxkdroOFnsb
+         awDw6sh+30P+GyOKHWkK9HpJNePaUyoOM6Fm53BdaXaDGJjPn+KeDMjq12V3VqmxMfx4
+         YfdpchXRDupgZpS/nrSTpsfzvb91hxFYO26WYngg+M5HfjlNrl5qJqh52xKyRwJ3xe8p
+         gTDn6zBEoj/4NxtjfNUl0Bv9U5lWtMZSZZNpUOK4MjVrfrKJMmFX79GUJ9z6+zOn4VJT
+         mb0E3SotbmeTMN9z74nAsxe2nRPcfmIT5MG3pHbFwZ5K0pKRCJVmFuHCQBJXEVIzByd4
+         caIA==
+X-Gm-Message-State: AOAM533xO1Y/cTbIpt2JhnheVleeAqXUWJ2ghK4WXtljksKufGufk6ET
+        al5yddN9QNpB5dO9awQ082EDH89OVc8Duw==
+X-Google-Smtp-Source: ABdhPJy2P0Di40BugpsK0J8/j2MpwLD0+3D1Hh0XMB1MSchU/UDiuDWLC8amz/EV2MYcASC/3IfBgQ==
+X-Received: by 2002:a05:600c:2302:: with SMTP id 2mr2262779wmo.151.1597405186025;
+        Fri, 14 Aug 2020 04:39:46 -0700 (PDT)
+Received: from dell.default ([95.149.164.62])
+        by smtp.gmail.com with ESMTPSA id 32sm16409129wrh.18.2020.08.14.04.39.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 14 Aug 2020 04:39:45 -0700 (PDT)
+From:   Lee Jones <lee.jones@linaro.org>
+To:     davem@davemloft.net, kuba@kernel.org
+Cc:     linux-kernel@vger.kernel.org, Lee Jones <lee.jones@linaro.org>,
+        Simon Kelley <simon@thekelleys.org.uk>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Subject: [PATCH 05/30] net: wireless: atmel: atmel: Demote non-kerneldoc header to standard comment block
+Date:   Fri, 14 Aug 2020 12:39:08 +0100
+Message-Id: <20200814113933.1903438-6-lee.jones@linaro.org>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20200814113933.1903438-1-lee.jones@linaro.org>
+References: <20200814113933.1903438-1-lee.jones@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <61e34f670a4845f8b1cbf6f6013f8a35@bfs.de>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9712 signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 mlxlogscore=999 mlxscore=0
- malwarescore=0 spamscore=0 suspectscore=0 phishscore=0 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2008140087
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9712 signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 mlxlogscore=999
- bulkscore=0 phishscore=0 suspectscore=0 mlxscore=0 priorityscore=1501
- spamscore=0 clxscore=1011 lowpriorityscore=0 adultscore=0 impostorscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2008140087
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Aug 14, 2020 at 08:49:43AM +0000, Walter Harms wrote:
-> nitpicking:
-> 
-> the debugtrace will give the impression that the function is 
-> running. perhaps it is more clever to have this after the check.
-> 
+Fixes the following W=1 kernel build warning(s):
 
-The debug is more useful they way I did it.  Otherwise it doesn't
-print anything.  This is also the normal way to do this sort of
-debugging.
+ drivers/net/wireless/atmel/atmel.c:4232: warning: Cannot understand     This file is part of net.russotto.AtmelMACFW, hereto referred to
 
-regards,
-dan carpenter
+Cc: Simon Kelley <simon@thekelleys.org.uk>
+Cc: Kalle Valo <kvalo@codeaurora.org>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: linux-wireless@vger.kernel.org
+Cc: netdev@vger.kernel.org
+Signed-off-by: Lee Jones <lee.jones@linaro.org>
+---
+ drivers/net/wireless/atmel/atmel.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/atmel/atmel.c b/drivers/net/wireless/atmel/atmel.c
+index d5875836068c0..7d51f18c3b5c6 100644
+--- a/drivers/net/wireless/atmel/atmel.c
++++ b/drivers/net/wireless/atmel/atmel.c
+@@ -4228,7 +4228,7 @@ static void atmel_wmem32(struct atmel_private *priv, u16 pos, u32 data)
+ /* Copyright 2003 Matthew T. Russotto                                      */
+ /* But derived from the Atmel 76C502 firmware written by Atmel and         */
+ /* included in "atmel wireless lan drivers" package                        */
+-/**
++/*
+     This file is part of net.russotto.AtmelMACFW, hereto referred to
+     as AtmelMACFW
+ 
+-- 
+2.25.1
 
