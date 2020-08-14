@@ -2,208 +2,132 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B87424468B
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 Aug 2020 10:41:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 84BF22446A9
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 Aug 2020 10:57:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726982AbgHNIlr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 14 Aug 2020 04:41:47 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:48139 "EHLO m43-7.mailgun.net"
+        id S1727093AbgHNI5p (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 14 Aug 2020 04:57:45 -0400
+Received: from mx01-muc.bfs.de ([193.174.230.67]:46296 "EHLO mx01-muc.bfs.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726937AbgHNIlq (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 14 Aug 2020 04:41:46 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1597394505; h=Message-ID: References: In-Reply-To: Subject:
- Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
- MIME-Version: Sender; bh=MvbjjQ7u//aqilk9HDdb/hCeibT+UpQ7RXFvgnrjOF4=;
- b=ZY8fJhCo+QYsMrMRS0WoNN2wHQyHh+ryMrkl7cxNJRfh21ytynkAsN7x3aVYrtxtnQ5a6UKV
- Kdr62VmrOP5mEf6+ncnIq175w1rGXdrzL5shd/VXGzVAePJTqPQ5kNzkjFZRpGVEmdu72o4M
- uOdM6ZSbCHI/W5O8gDHG4PTNrk0=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n06.prod.us-east-1.postgun.com with SMTP id
- 5f364e43ba4c2cd367d2cb85 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 14 Aug 2020 08:41:39
- GMT
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id F0A09C43391; Fri, 14 Aug 2020 08:41:38 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: periyasa)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 22B14C433C6;
-        Fri, 14 Aug 2020 08:41:38 +0000 (UTC)
+        id S1726050AbgHNI5p (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 14 Aug 2020 04:57:45 -0400
+X-Greylist: delayed 477 seconds by postgrey-1.27 at vger.kernel.org; Fri, 14 Aug 2020 04:57:43 EDT
+Received: from SRVEX01-SZ.bfs.intern (exchange-sz.bfs.de [10.129.90.31])
+        by mx01-muc.bfs.de (Postfix) with ESMTPS id A7F15204EB;
+        Fri, 14 Aug 2020 10:49:44 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bfs.de; s=dkim201901;
+        t=1597394984;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=c4qyJxYn/ovogvflUCd44OAQh57P9+0K5dxbUuNr2sQ=;
+        b=1ESe6Lz4/gAzE4/DqbwUp7INokgmMnvEFL/6i212ILgj7UcW6LGdn5I6DOvmfKpIlrp9lw
+        1D072clfUAGNTt5c6UOiw0lhXxHbE/XDlx1V/Exf6CsGaoQc/mbfeZMEkI1FEnty17dPQC
+        ypjeZcqn069aP6VF3P7CFxkdtd6x/LbPR7tRpww28zxwo5ulQTR0YH8UNoN44/TGoUhNlG
+        aKeWOS9hRT4hoAANS4Ws4bw0CiIjvdp2BTU6DaPgLUDPcdpY6wtAoA6bmotOnq1CTcYlM4
+        sd1Q4tBeb5ahVnYXzY9UYvhYoIPk+wrgPcIup63tDEcIWMzeBM4DppqJ9lJUqQ==
+Received: from SRVEX01-SZ.bfs.intern (10.129.90.31) by SRVEX01-SZ.bfs.intern
+ (10.129.90.31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2044.4; Fri, 14 Aug
+ 2020 10:49:44 +0200
+Received: from SRVEX01-SZ.bfs.intern ([fe80::7d2d:f9cb:2761:d24a]) by
+ SRVEX01-SZ.bfs.intern ([fe80::7d2d:f9cb:2761:d24a%6]) with mapi id
+ 15.01.2044.004; Fri, 14 Aug 2020 10:49:43 +0200
+From:   Walter Harms <wharms@bfs.de>
+To:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Kalle Valo <kvalo@codeaurora.org>
+CC:     Jakub Kicinski <kuba@kernel.org>,
+        Jouni Malinen <jouni@qca.qualcomm.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
+Subject: AW: [PATCH] ath6kl: prevent potential array overflow in
+ ath6kl_add_new_sta()
+Thread-Topic: [PATCH] ath6kl: prevent potential array overflow in
+ ath6kl_add_new_sta()
+Thread-Index: AQHWcXw2vbpoc3kmAEWVoUdybkje7Kk3S5kl
+Date:   Fri, 14 Aug 2020 08:49:43 +0000
+Message-ID: <61e34f670a4845f8b1cbf6f6013f8a35@bfs.de>
+References: <20200813141315.GB457408@mwanda>
+In-Reply-To: <20200813141315.GB457408@mwanda>
+Accept-Language: de-DE, en-US
+Content-Language: de-DE
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.137.16.39]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Fri, 14 Aug 2020 14:11:38 +0530
-From:   Karthikeyan periyasamy <periyasa@codeaurora.org>
-To:     John Crispin <john@phrozen.org>
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
-        linux-wireless-owner@vger.kernel.org
-Subject: Re: [PATCH V4 4/5] mac80211: add support for BSS coloring
-In-Reply-To: <20200811080107.3615705-4-john@phrozen.org>
-References: <20200811080107.3615705-1-john@phrozen.org>
- <20200811080107.3615705-4-john@phrozen.org>
-Message-ID: <fe02e5697e40cb02aa007acc50fb3a60@codeaurora.org>
-X-Sender: periyasa@codeaurora.org
-User-Agent: Roundcube Webmail/1.3.9
+X-Spam-Status: No, score=-0.02
+Authentication-Results: mx01-muc.bfs.de;
+        none
+X-Spamd-Result: default: False [-0.02 / 7.00];
+         ARC_NA(0.00)[];
+         TO_DN_EQ_ADDR_SOME(0.00)[];
+         HAS_XOIP(0.00)[];
+         FROM_HAS_DN(0.00)[];
+         TO_DN_SOME(0.00)[];
+         TO_MATCH_ENVRCPT_ALL(0.00)[];
+         MIME_GOOD(-0.10)[text/plain];
+         RCPT_COUNT_FIVE(0.00)[6];
+         DKIM_SIGNED(0.00)[];
+         NEURAL_HAM(-0.00)[-1.000];
+         RCVD_NO_TLS_LAST(0.10)[];
+         FROM_EQ_ENVFROM(0.00)[];
+         MIME_TRACE(0.00)[0:+];
+         RCVD_COUNT_TWO(0.00)[2];
+         MID_RHS_MATCH_FROM(0.00)[];
+         BAYES_HAM(-0.02)[53.36%]
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-> The CCA (color change announcement) is very similar to how CSA works 
-> where
-> we have an IE that includes a counter. When the counter hits 0, the new
-> color is applied via an updated beacon.
-> 
-> This patch makes the CSA counter functionality reusable, rather than
-> implementing it again. This also allows for future reuse incase support
-> for other counter IEs gets added.
-> 
-> Signed-off-by: John Crispin <john@phrozen.org>
-> ---
->  include/net/mac80211.h     |  28 +++++
->  net/mac80211/cfg.c         | 227 +++++++++++++++++++++++++++++++++++--
->  net/mac80211/ieee80211_i.h |  12 ++
->  net/mac80211/iface.c       |   3 +
->  net/mac80211/tx.c          |  24 ++--
->  5 files changed, 276 insertions(+), 18 deletions(-)
-...
-> 
-> +static int ieee80211_cca_finalize(struct ieee80211_sub_if_data *sdata)
-> +{
-> +	struct ieee80211_local *local = sdata->local;
-> +	u32 changed = 0;
-> +	int err;
-> +
-> +	sdata_assert_lock(sdata);
-> +	lockdep_assert_held(&local->mtx);
-> +
-> +	sdata->vif.cca_active = false;
-> +
-> +	err = ieee80211_set_after_cca_beacon(sdata, &changed);
-> +	if (err) {
-> +		cfg80211_color_change_aborted_notify(sdata->dev);
-> +		return err;
-> +	}
-> +
-> +	sdata->vif.bss_conf.he_bss_color.color = sdata->vif.cca_color;
-> +	sdata->vif.bss_conf.he_bss_color.enabled = 1;
-> +	changed |= BSS_CHANGED_HE_BSS_COLOR;
-> +
+nitpicking:
 
-Why we are not updating the bss color information in he_oper.params.
-IMHO remove the redundant information of bss color in the "struct 
-ieee80211_bss_conf" by removing
-the he_bss_color since he_oper.params holds more information in u32 
-itself.
-What do you think?
+the debugtrace will give the impression that the function is=20
+running. perhaps it is more clever to have this after the check.
 
-> +	ieee80211_bss_info_change_notify(sdata, changed);
-> +
-> +	cfg80211_color_change_notify(sdata->dev);
-> +
-> +	return 0;
-> +}
-> +
-> +void ieee80211_cca_finalize_work(struct work_struct *work)
-> +{
-> +	struct ieee80211_sub_if_data *sdata =
-> +		container_of(work, struct ieee80211_sub_if_data,
-> +			     cca_finalize_work);
-> +	struct ieee80211_local *local = sdata->local;
-> +
-> +	sdata_lock(sdata);
-> +	mutex_lock(&local->mtx);
-> +
-> +	/* AP might have been stopped while waiting for the lock. */
-> +	if (!sdata->vif.cca_active)
-> +		goto unlock;
-> +
-> +	if (!ieee80211_sdata_running(sdata))
-> +		goto unlock;
-> +
-> +	ieee80211_cca_finalize(sdata);
-> +
-> +unlock:
-> +	mutex_unlock(&local->mtx);
-> +	sdata_unlock(sdata);
-> +}
-> +
-> +void ieee80211_cca_finish(struct ieee80211_vif *vif)
-> +{
-> +	struct ieee80211_sub_if_data *sdata = vif_to_sdata(vif);
-> +
-> +	ieee80211_queue_work(&sdata->local->hw,
-> +			     &sdata->cca_finalize_work);
-> +}
-> +EXPORT_SYMBOL_GPL(ieee80211_cca_finish);
-> +
-> +void
-> +ieeee80211_obss_color_collision_notify(struct ieee80211_vif *vif,
-> +				       u64 color_bitmap)
-> +{
-> +	struct ieee80211_sub_if_data *sdata = vif_to_sdata(vif);
-> +
-> +	if (sdata->vif.cca_active || sdata->vif.csa_active)
-> +		return;
-> +
-> +	cfg80211_obss_color_collision_notify(sdata->dev, color_bitmap);
-> +}
-> +EXPORT_SYMBOL_GPL(ieeee80211_obss_color_collision_notify);
-> +
-> +static int
-> +__ieee80211_color_change(struct wiphy *wiphy, struct net_device *dev,
-> +			 struct cfg80211_color_change_settings *params)
-> +{
-> +	struct ieee80211_sub_if_data *sdata = IEEE80211_DEV_TO_SUB_IF(dev);
-> +	struct ieee80211_local *local = sdata->local;
-> +	u32 changed = 0;
-> +	int err;
-> +
-> +	sdata_assert_lock(sdata);
-> +	lockdep_assert_held(&local->mtx);
-> +
-> +	/* don't allow another color change if one is already active or if 
-> csa
-> +	 * is active
-> +	 */
-> +	if (sdata->vif.cca_active || sdata->vif.csa_active)
-> +		return -EBUSY;
-> +
-> +	err = ieee80211_set_cca_beacon(sdata, params, &changed);
-> +	if (err)
-> +		return err;
-> +
-> +	sdata->vif.cca_active = true;
-> +	sdata->vif.cca_color = params->color;
-> +
-> +	cfg80211_color_change_started_notify(sdata->dev, params->count);
-> +
-> +	if (changed) {
-> +		sdata->vif.bss_conf.he_bss_color.enabled = 0;
-> +		changed |= BSS_CHANGED_HE_BSS_COLOR;
+jm2c,
+ wh
+________________________________________
+Von: kernel-janitors-owner@vger.kernel.org [kernel-janitors-owner@vger.kern=
+el.org] im Auftrag von Dan Carpenter [dan.carpenter@oracle.com]
+Gesendet: Donnerstag, 13. August 2020 16:13
+An: Kalle Valo
+Cc: Jakub Kicinski; Jouni Malinen; linux-wireless@vger.kernel.org; kernel-j=
+anitors@vger.kernel.org
+Betreff: [PATCH] ath6kl: prevent potential array overflow in ath6kl_add_new=
+_sta()
 
-same here
+The value for "aid" comes from skb->data so Smatch marks it as
+untrusted.  If it's invalid then it can result in an out of bounds array
+access in ath6kl_add_new_sta().
 
-> +		ieee80211_bss_info_change_notify(sdata, changed);
-> +	} else {
-> +		/* if the beacon didn't change, we can finalize immediately */
-> +		ieee80211_cca_finalize(sdata);
-> +	}
-> +
-> +	return 0;
-> +}
+Fixes: 572e27c00c9d ("ath6kl: Fix AP mode connect event parsing and TIM upd=
+ates")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+ drivers/net/wireless/ath/ath6kl/main.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-Thanks
-Karthikeyan P
+diff --git a/drivers/net/wireless/ath/ath6kl/main.c b/drivers/net/wireless/=
+ath/ath6kl/main.c
+index 5e7ea838a921..814131a0680a 100644
+--- a/drivers/net/wireless/ath/ath6kl/main.c
++++ b/drivers/net/wireless/ath/ath6kl/main.c
+@@ -430,6 +430,9 @@ void ath6kl_connect_ap_mode_sta(struct ath6kl_vif *vif,=
+ u16 aid, u8 *mac_addr,
+
+        ath6kl_dbg(ATH6KL_DBG_TRC, "new station %pM aid=3D%d\n", mac_addr, =
+aid);
+
++       if (aid < 1 || aid > AP_MAX_NUM_STA)
++               return;
++
+        if (assoc_req_len > sizeof(struct ieee80211_hdr_3addr)) {
+                struct ieee80211_mgmt *mgmt =3D
+                        (struct ieee80211_mgmt *) assoc_info;
+--
+2.28.0
+
