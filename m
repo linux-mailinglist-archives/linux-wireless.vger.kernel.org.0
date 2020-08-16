@@ -2,114 +2,97 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F9D1245755
-	for <lists+linux-wireless@lfdr.de>; Sun, 16 Aug 2020 13:31:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E271124582E
+	for <lists+linux-wireless@lfdr.de>; Sun, 16 Aug 2020 16:33:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729084AbgHPL3g (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 16 Aug 2020 07:29:36 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:47928 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728984AbgHPL2v (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 16 Aug 2020 07:28:51 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1597577329; h=References: In-Reply-To: Message-Id: Date:
- Subject: Cc: To: From: Sender;
- bh=WWfiXGSJolN+CYoFTLXe0bKzZJ1O/oCyhOYiEYQ2Drc=; b=gt7shzccsEOrSeEl+tG0CZa/oI3ta7nsVK0RWd+AZWoZCGTjZifBuZYnIaZgV7cm52SXyCN+
- bV+cHH62+75dkCYkEzZ0UTC0xIkP9eAb5zdVZQ3xDB2NZaX/rRt4IuCQ7qaZIZpU0U6+RvWx
- y/QCyTJ/QbJVKlzGjgUFBTlhzDE=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n06.prod.us-west-2.postgun.com with SMTP id
- 5f3915ac2f4952907db1a758 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sun, 16 Aug 2020 11:17:00
- GMT
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 7C0DAC433C6; Sun, 16 Aug 2020 11:17:00 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 5CBD3C43395;
-        Sun, 16 Aug 2020 11:16:59 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 5CBD3C43395
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     ath11k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org
-Subject: [PATCH v2 12/12] ath11k: dp: redefine peer_map and peer_unmap
-Date:   Sun, 16 Aug 2020 14:16:39 +0300
-Message-Id: <1597576599-8857-13-git-send-email-kvalo@codeaurora.org>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1597576599-8857-1-git-send-email-kvalo@codeaurora.org>
-References: <1597576599-8857-1-git-send-email-kvalo@codeaurora.org>
+        id S1726241AbgHPOck (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 16 Aug 2020 10:32:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57210 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729635AbgHPObe (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 16 Aug 2020 10:31:34 -0400
+Received: from mail-wm1-x333.google.com (mail-wm1-x333.google.com [IPv6:2a00:1450:4864:20::333])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C33BC0612F3
+        for <linux-wireless@vger.kernel.org>; Sun, 16 Aug 2020 07:28:39 -0700 (PDT)
+Received: by mail-wm1-x333.google.com with SMTP id c80so11268462wme.0
+        for <linux-wireless@vger.kernel.org>; Sun, 16 Aug 2020 07:28:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=Duxa+mmNF3T3C2WDKsmzowR2OzvdY892XFjTPp0RWRI=;
+        b=NAKDDu3zYGlp6/1rTFA3zLXzfLNUWElMFpld1DGXTqZ3f2C1G5vMMGgQBtzYdv61gR
+         j0gW2VjYzcAEQEK9JcrA+yGSHFEXNhE9RNkaz3uxkanP37gacJrIVytgT7/c7zGkA2Dy
+         XJB3L8ToVDoWAD9Rvm7U849RIrxncLk9xI9S/Uu5ZGT/cXsim2IUQmYeZsKFSBsv6kJT
+         3kDR9KLYjND6JPpx0YTAndrQaTelzP3558OkivI4ykhj79/nak1F6z80uX1/EQIXmTKV
+         I+kUa6Zt2XAbNuMItIuLndMdaWWyo32PYvWKoOywYCMLUV2UDlYdbpJ66arhF+MiPCa0
+         yMKA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=Duxa+mmNF3T3C2WDKsmzowR2OzvdY892XFjTPp0RWRI=;
+        b=TsNYtAH2P9xoH2lOHDg+sUoVPQU414HXO22ylCqbymFSuxdynxOgvgrhF6p76AAlzu
+         iRE/KLWvv1s4kXDPfgRmkNNXtRh0NzMhil8zhOKXVvjFBXM8Fnp5ej8sbj+JM7+VEMX1
+         1t1JdwgWBouz/NkRZK0TGYUv7SKC+Btm8s8t3KKzsuZS30GhwoTRDqW2M+II/R9z+pQL
+         MrH4DZ1Qe2QKCb9uSr+9P2kc24nuDM1LQ/G5YGv4khls+AndjmNc9a6kLG5F3gKTr1Ul
+         abDTr1ORNGfrUtz3PNe2qZYPA5TCwBlreoc905yBG0GJcnoiurZ+WGEeYnq/XsZvHgM3
+         32og==
+X-Gm-Message-State: AOAM531Gi+45Ij0nz6EWblSoOsNVqC054zvrfjq4EVyDOZuCs/RH4Yk0
+        puOjs5cdh2FJlWODfUSQ62rREku34rMG2szGOCk=
+X-Google-Smtp-Source: ABdhPJydZZ8FQlFGmrB/EDLy0Z8gH5X03F6EFXypW4K1vf8iv94WhLhI3iwPKgeJEaRZZocHWED4lUmYPOBkTFPeX+4=
+X-Received: by 2002:a1c:a1c7:: with SMTP id k190mr10461870wme.1.1597588111746;
+ Sun, 16 Aug 2020 07:28:31 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 2002:a5d:6cd3:0:0:0:0:0 with HTTP; Sun, 16 Aug 2020 07:28:30
+ -0700 (PDT)
+Reply-To: sctnld11170@tlen.pl
+From:   "Mr. Scott Donald" <confianzayrentabilidad@gmail.com>
+Date:   Sun, 16 Aug 2020 07:28:30 -0700
+Message-ID: <CANrrfX7wwL97G=jb--8nb9jH8oRO8T90L6NGSfg1HfnzMyyHcw@mail.gmail.com>
+Subject: Hello, Please
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Carl Huang <cjhuang@codeaurora.org>
+--=20
+Dear Friend,
 
-For QCA6390, it uses peer_map and peer_unmap V1. IPQ8074 uses V2.
-Redefine previous definition to peer_map2 and peer_unmap2.
+I'm Mr. Scott Donald a Successful businessMan dealing with
+Exportation, I got your mail contact through search to let you know my
+intension and my Ugly Situation Am a dying Man here in Los Angeles
+California Hospital Bed in (USA), I Lost my Wife and my only Daughter
+for Covid-19 and I also have a problem in my Health and I can die
+anytime I Know,
 
-Tested-on: QCA6390 hw2.0 PCI WLAN.HST.1.0.1-01740-QCAHSTSWPLZ_V2_TO_X86-1
-Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.1.0.1-01238-QCAHKSWPL_SILICONZ-2
+I have a project that I am about to hand over to you. and I already
+instructed the Bankia S.A. Madrid, Spain(BSA) to transfer my fund sum
+of =C2=A33,7M GBP. Equivalent to =E2=82=AC4,077,033.91 EUR, to you as to en=
+able you
+to give 50% of this fund to Charitable Home in your State and take 50%
+don't think otherwise and why would anybody send someone you barely
+know to help you deliver a message, help me do this for the happiness
+of my soul and for God to mercy me and my Family and give Us a good
+place.
 
-Signed-off-by: Carl Huang <cjhuang@codeaurora.org>
-Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
----
- drivers/net/wireless/ath/ath11k/dp.h    | 6 ++++--
- drivers/net/wireless/ath/ath11k/dp_rx.c | 2 ++
- 2 files changed, 6 insertions(+), 2 deletions(-)
+please, do as I said there was someone from your State that I deeply
+love so very very much and I miss her so badly I have no means to
+reach any Charitable Home there. that is why I go for a personal
+search of the Country and State and I got your mail contact through
+search to let you know my Bitterness and please, help me is getting
+Dark I ask my Doctor to help me keep you notice failure for me to
+reach you in person Your urgent Response, here is my Doctor Whats-app
+Number for urgent notice +13019692737
 
-diff --git a/drivers/net/wireless/ath/ath11k/dp.h b/drivers/net/wireless/ath/ath11k/dp.h
-index 7587862d2e32..07876fd521f7 100644
---- a/drivers/net/wireless/ath/ath11k/dp.h
-+++ b/drivers/net/wireless/ath/ath11k/dp.h
-@@ -936,11 +936,13 @@ struct htt_rx_ring_tlv_filter {
- 
- enum htt_t2h_msg_type {
- 	HTT_T2H_MSG_TYPE_VERSION_CONF,
-+	HTT_T2H_MSG_TYPE_PEER_MAP	= 0x3,
-+	HTT_T2H_MSG_TYPE_PEER_UNMAP	= 0x4,
- 	HTT_T2H_MSG_TYPE_RX_ADDBA	= 0x5,
- 	HTT_T2H_MSG_TYPE_PKTLOG		= 0x8,
- 	HTT_T2H_MSG_TYPE_SEC_IND	= 0xb,
--	HTT_T2H_MSG_TYPE_PEER_MAP	= 0x1e,
--	HTT_T2H_MSG_TYPE_PEER_UNMAP	= 0x1f,
-+	HTT_T2H_MSG_TYPE_PEER_MAP2	= 0x1e,
-+	HTT_T2H_MSG_TYPE_PEER_UNMAP2	= 0x1f,
- 	HTT_T2H_MSG_TYPE_PPDU_STATS_IND = 0x1d,
- 	HTT_T2H_MSG_TYPE_EXT_STATS_CONF = 0x1c,
- 	HTT_T2H_MSG_TYPE_BKPRESSURE_EVENT_IND = 0x24,
-diff --git a/drivers/net/wireless/ath/ath11k/dp_rx.c b/drivers/net/wireless/ath/ath11k/dp_rx.c
-index 66002de04aec..6009c26ce525 100644
---- a/drivers/net/wireless/ath/ath11k/dp_rx.c
-+++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
-@@ -1569,6 +1569,7 @@ void ath11k_dp_htt_htc_t2h_msg_handler(struct ath11k_base *ab,
- 		complete(&dp->htt_tgt_version_received);
- 		break;
- 	case HTT_T2H_MSG_TYPE_PEER_MAP:
-+	case HTT_T2H_MSG_TYPE_PEER_MAP2:
- 		vdev_id = FIELD_GET(HTT_T2H_PEER_MAP_INFO_VDEV_ID,
- 				    resp->peer_map_ev.info);
- 		peer_id = FIELD_GET(HTT_T2H_PEER_MAP_INFO_PEER_ID,
-@@ -1582,6 +1583,7 @@ void ath11k_dp_htt_htc_t2h_msg_handler(struct ath11k_base *ab,
- 		ath11k_peer_map_event(ab, vdev_id, peer_id, mac_addr, ast_hash);
- 		break;
- 	case HTT_T2H_MSG_TYPE_PEER_UNMAP:
-+	case HTT_T2H_MSG_TYPE_PEER_UNMAP2:
- 		peer_id = FIELD_GET(HTT_T2H_PEER_UNMAP_INFO_PEER_ID,
- 				    resp->peer_unmap_ev.info);
- 		ath11k_peer_unmap_event(ab, peer_id);
--- 
-2.7.4
+Hope To Hear From You. I'm sending this email to you for the second
+time yet no response from you.
 
+My Regards.
+
+Mr. Scott Donald
+CEO
