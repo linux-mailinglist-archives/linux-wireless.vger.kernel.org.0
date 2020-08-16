@@ -2,31 +2,32 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 029E9245756
-	for <lists+linux-wireless@lfdr.de>; Sun, 16 Aug 2020 13:31:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 55693245759
+	for <lists+linux-wireless@lfdr.de>; Sun, 16 Aug 2020 13:31:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729046AbgHPLaH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 16 Aug 2020 07:30:07 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:60270 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728617AbgHPL2y (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 16 Aug 2020 07:28:54 -0400
+        id S1729071AbgHPLbH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 16 Aug 2020 07:31:07 -0400
+Received: from mail29.static.mailgun.info ([104.130.122.29]:53061 "EHLO
+        mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1729031AbgHPL3K (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 16 Aug 2020 07:29:10 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1597577329; h=References: In-Reply-To: Message-Id: Date:
+ s=smtp; t=1597577348; h=References: In-Reply-To: Message-Id: Date:
  Subject: Cc: To: From: Sender;
- bh=WjnnH3UKCzHreunH2JcbOVALJRvDea90PbkQ1K6uXWk=; b=xLRBwcwLmxstfLMxvOzxT/rDawTTHChNtN0OOYeM9j254p5FBHKIN4JMGBFsbbD3iN+9vpBk
- E6Rek4apm2Jd+RFQ2ubdIlKwqnhGilFXMGcaxHWr32UYbI3EOw8eNj9BDmwT2Hs82m2nZPLO
- gBHoCFmeHorwqCqkxld5Rrafua4=
-X-Mailgun-Sending-Ip: 69.72.43.7
+ bh=bWqau90w54ei2z8m9WbN9HEPqFXaWG+wyH7c2+6W1mA=; b=UwPu6s32gsNV5KzfilPKJkyhntiWZaM2NMyH/V436D03uU6ZB55l3zammWbJmPCRyZJMjSLP
+ Fc7MRp5bTtv1o6Pz1B+Dh+te+aT61xk7tmCNY5LDjgjYU1HsTQim4BInJXLCln6BLYgweJ1i
+ cJmkEpDk3ts5/6x5GQR+P6ZhX6s=
+X-Mailgun-Sending-Ip: 104.130.122.29
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n07.prod.us-west-2.postgun.com with SMTP id
- 5f3915a003528d402494ab3f (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sun, 16 Aug 2020 11:16:48
+ smtp-out-n04.prod.us-west-2.postgun.com with SMTP id
+ 5f3915a14c787f237b97a5dc (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sun, 16 Aug 2020 11:16:49
  GMT
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 78A6BC433C6; Sun, 16 Aug 2020 11:16:48 +0000 (UTC)
+        id F2771C43391; Sun, 16 Aug 2020 11:16:48 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -36,17 +37,17 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 4CFB2C43387;
-        Sun, 16 Aug 2020 11:16:45 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 4CFB2C43387
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 07E75C433CA;
+        Sun, 16 Aug 2020 11:16:46 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 07E75C433CA
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 From:   Kalle Valo <kvalo@codeaurora.org>
 To:     ath11k@lists.infradead.org
 Cc:     linux-wireless@vger.kernel.org
-Subject: [PATCH v2 02/12] ath11k: hal: cleanup dynamic register macros
-Date:   Sun, 16 Aug 2020 14:16:29 +0300
-Message-Id: <1597576599-8857-3-git-send-email-kvalo@codeaurora.org>
+Subject: [PATCH v2 03/12] ath11k: ce: support different CE configurations
+Date:   Sun, 16 Aug 2020 14:16:30 +0300
+Message-Id: <1597576599-8857-4-git-send-email-kvalo@codeaurora.org>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1597576599-8857-1-git-send-email-kvalo@codeaurora.org>
 References: <1597576599-8857-1-git-send-email-kvalo@codeaurora.org>
@@ -55,462 +56,356 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Now some of the HAL register macros access ab variable in a hidden way, make ab
-variable visible in the macro by adding it as an argument.
+From: Carl Huang <cjhuang@codeaurora.org>
 
-This is done in a separate patch to keep the patches simple. No functional changes.
+QCA6390 uses only 9 Copy Engines while IPQ8074 may use 12, make it possible to
+change CE configuration dynamically via hw_params.
+
+The defines for host_ce_config_wlan and CE_COUNT are temporary solutions, they
+will be removed in the following patches to keep things simple.
 
 Tested-on: QCA6390 hw2.0 PCI WLAN.HST.1.0.1-01740-QCAHSTSWPLZ_V2_TO_X86-1
 Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.1.0.1-01238-QCAHKSWPL_SILICONZ-2
 
+Signed-off-by: Carl Huang <cjhuang@codeaurora.org>
 Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 ---
- drivers/net/wireless/ath/ath11k/hal.c    |  66 ++++++------
- drivers/net/wireless/ath/ath11k/hal.h    | 171 +++++++++++++++++--------------
- drivers/net/wireless/ath/ath11k/hal_rx.c |   8 +-
- 3 files changed, 133 insertions(+), 112 deletions(-)
+ drivers/net/wireless/ath/ath11k/ahb.c  | 12 ++---
+ drivers/net/wireless/ath/ath11k/ce.c   | 84 +++++++++++++++++++++++++++++++++-
+ drivers/net/wireless/ath/ath11k/ce.h   | 11 +++--
+ drivers/net/wireless/ath/ath11k/core.c |  4 ++
+ drivers/net/wireless/ath/ath11k/hal.c  |  2 +-
+ drivers/net/wireless/ath/ath11k/hw.c   |  1 +
+ drivers/net/wireless/ath/ath11k/hw.h   |  2 +
+ drivers/net/wireless/ath/ath11k/pci.c  | 12 ++---
+ 8 files changed, 110 insertions(+), 18 deletions(-)
 
+diff --git a/drivers/net/wireless/ath/ath11k/ahb.c b/drivers/net/wireless/ath/ath11k/ahb.c
+index 2e0d90c022bb..4bc3558fc300 100644
+--- a/drivers/net/wireless/ath/ath11k/ahb.c
++++ b/drivers/net/wireless/ath/ath11k/ahb.c
+@@ -387,7 +387,7 @@ static void ath11k_ahb_kill_tasklets(struct ath11k_base *ab)
+ 	for (i = 0; i < CE_COUNT; i++) {
+ 		struct ath11k_ce_pipe *ce_pipe = &ab->ce.ce_pipe[i];
+ 
+-		if (ath11k_ce_get_attr_flags(i) & CE_ATTR_DIS_INTR)
++		if (ath11k_ce_get_attr_flags(ab, i) & CE_ATTR_DIS_INTR)
+ 			continue;
+ 
+ 		tasklet_kill(&ce_pipe->intr_tq);
+@@ -476,7 +476,7 @@ static void ath11k_ahb_sync_ce_irqs(struct ath11k_base *ab)
+ 	int irq_idx;
+ 
+ 	for (i = 0; i < CE_COUNT; i++) {
+-		if (ath11k_ce_get_attr_flags(i) & CE_ATTR_DIS_INTR)
++		if (ath11k_ce_get_attr_flags(ab, i) & CE_ATTR_DIS_INTR)
+ 			continue;
+ 
+ 		irq_idx = ATH11K_IRQ_CE0_OFFSET + i;
+@@ -504,7 +504,7 @@ static void ath11k_ahb_ce_irqs_enable(struct ath11k_base *ab)
+ 	int i;
+ 
+ 	for (i = 0; i < CE_COUNT; i++) {
+-		if (ath11k_ce_get_attr_flags(i) & CE_ATTR_DIS_INTR)
++		if (ath11k_ce_get_attr_flags(ab, i) & CE_ATTR_DIS_INTR)
+ 			continue;
+ 		ath11k_ahb_ce_irq_enable(ab, i);
+ 	}
+@@ -515,7 +515,7 @@ static void ath11k_ahb_ce_irqs_disable(struct ath11k_base *ab)
+ 	int i;
+ 
+ 	for (i = 0; i < CE_COUNT; i++) {
+-		if (ath11k_ce_get_attr_flags(i) & CE_ATTR_DIS_INTR)
++		if (ath11k_ce_get_attr_flags(ab, i) & CE_ATTR_DIS_INTR)
+ 			continue;
+ 		ath11k_ahb_ce_irq_disable(ab, i);
+ 	}
+@@ -602,7 +602,7 @@ static void ath11k_ahb_free_irq(struct ath11k_base *ab)
+ 	int i;
+ 
+ 	for (i = 0; i < CE_COUNT; i++) {
+-		if (ath11k_ce_get_attr_flags(i) & CE_ATTR_DIS_INTR)
++		if (ath11k_ce_get_attr_flags(ab, i) & CE_ATTR_DIS_INTR)
+ 			continue;
+ 		irq_idx = ATH11K_IRQ_CE0_OFFSET + i;
+ 		free_irq(ab->irq_num[irq_idx], &ab->ce.ce_pipe[i]);
+@@ -759,7 +759,7 @@ static int ath11k_ahb_config_irq(struct ath11k_base *ab)
+ 	for (i = 0; i < CE_COUNT; i++) {
+ 		struct ath11k_ce_pipe *ce_pipe = &ab->ce.ce_pipe[i];
+ 
+-		if (ath11k_ce_get_attr_flags(i) & CE_ATTR_DIS_INTR)
++		if (ath11k_ce_get_attr_flags(ab, i) & CE_ATTR_DIS_INTR)
+ 			continue;
+ 
+ 		irq_idx = ATH11K_IRQ_CE0_OFFSET + i;
+diff --git a/drivers/net/wireless/ath/ath11k/ce.c b/drivers/net/wireless/ath/ath11k/ce.c
+index 59cb403b8597..a588e5d0e5e0 100644
+--- a/drivers/net/wireless/ath/ath11k/ce.c
++++ b/drivers/net/wireless/ath/ath11k/ce.c
+@@ -7,7 +7,9 @@
+ #include "debug.h"
+ #include "hif.h"
+ 
+-static const struct ce_attr host_ce_config_wlan[] = {
++#define host_ce_config_wlan ab->hw_params.host_ce_config
++
++const struct ce_attr ath11k_host_ce_config_ipq8074[] = {
+ 	/* CE0: host->target HTC control and raw streams */
+ 	{
+ 		.flags = CE_ATTR_FLAGS,
+@@ -109,6 +111,84 @@ static const struct ce_attr host_ce_config_wlan[] = {
+ 	},
+ };
+ 
++const struct ce_attr ath11k_host_ce_config_qca6390[] = {
++	/* CE0: host->target HTC control and raw streams */
++	{
++		.flags = CE_ATTR_FLAGS,
++		.src_nentries = 16,
++		.src_sz_max = 2048,
++		.dest_nentries = 0,
++	},
++
++	/* CE1: target->host HTT + HTC control */
++	{
++		.flags = CE_ATTR_FLAGS,
++		.src_nentries = 0,
++		.src_sz_max = 2048,
++		.dest_nentries = 512,
++		.recv_cb = ath11k_htc_rx_completion_handler,
++	},
++
++	/* CE2: target->host WMI */
++	{
++		.flags = CE_ATTR_FLAGS,
++		.src_nentries = 0,
++		.src_sz_max = 2048,
++		.dest_nentries = 512,
++		.recv_cb = ath11k_htc_rx_completion_handler,
++	},
++
++	/* CE3: host->target WMI (mac0) */
++	{
++		.flags = CE_ATTR_FLAGS,
++		.src_nentries = 32,
++		.src_sz_max = 2048,
++		.dest_nentries = 0,
++	},
++
++	/* CE4: host->target HTT */
++	{
++		.flags = CE_ATTR_FLAGS | CE_ATTR_DIS_INTR,
++		.src_nentries = 2048,
++		.src_sz_max = 256,
++		.dest_nentries = 0,
++	},
++
++	/* CE5: target->host pktlog */
++	{
++		.flags = CE_ATTR_FLAGS,
++		.src_nentries = 0,
++		.src_sz_max = 2048,
++		.dest_nentries = 512,
++		.recv_cb = ath11k_dp_htt_htc_t2h_msg_handler,
++	},
++
++	/* CE6: target autonomous hif_memcpy */
++	{
++		.flags = CE_ATTR_FLAGS | CE_ATTR_DIS_INTR,
++		.src_nentries = 0,
++		.src_sz_max = 0,
++		.dest_nentries = 0,
++	},
++
++	/* CE7: host->target WMI (mac1) */
++	{
++		.flags = CE_ATTR_FLAGS,
++		.src_nentries = 32,
++		.src_sz_max = 2048,
++		.dest_nentries = 0,
++	},
++
++	/* CE8: target autonomous hif_memcpy */
++	{
++		.flags = CE_ATTR_FLAGS,
++		.src_nentries = 0,
++		.src_sz_max = 0,
++		.dest_nentries = 0,
++	},
++
++};
++
+ static int ath11k_ce_rx_buf_enqueue_pipe(struct ath11k_ce_pipe *pipe,
+ 					 struct sk_buff *skb, dma_addr_t paddr)
+ {
+@@ -834,7 +914,7 @@ void ath11k_ce_byte_swap(void *mem, u32 len)
+ 	}
+ }
+ 
+-int ath11k_ce_get_attr_flags(int ce_id)
++int ath11k_ce_get_attr_flags(struct ath11k_base *ab, int ce_id)
+ {
+ 	if (ce_id >= CE_COUNT)
+ 		return -EINVAL;
+diff --git a/drivers/net/wireless/ath/ath11k/ce.h b/drivers/net/wireless/ath/ath11k/ce.h
+index 6e3a37909ade..8feb6e98ea13 100644
+--- a/drivers/net/wireless/ath/ath11k/ce.h
++++ b/drivers/net/wireless/ath/ath11k/ce.h
+@@ -6,7 +6,8 @@
+ #ifndef ATH11K_CE_H
+ #define ATH11K_CE_H
+ 
+-#define CE_COUNT 12
++#define CE_COUNT (ab->hw_params.ce_count)
++#define CE_COUNT_MAX 12
+ 
+ /* Byte swap data words */
+ #define CE_ATTR_BYTE_SWAP_DATA 2
+@@ -165,11 +166,14 @@ struct ath11k_ce_pipe {
+ };
+ 
+ struct ath11k_ce {
+-	struct ath11k_ce_pipe ce_pipe[CE_COUNT];
++	struct ath11k_ce_pipe ce_pipe[CE_COUNT_MAX];
+ 	/* Protects rings of all ce pipes */
+ 	spinlock_t ce_lock;
+ };
+ 
++extern const struct ce_attr ath11k_host_ce_config_ipq8074[];
++extern const struct ce_attr ath11k_host_ce_config_qca6390[];
++
+ void ath11k_ce_cleanup_pipes(struct ath11k_base *ab);
+ void ath11k_ce_rx_replenish_retry(struct timer_list *t);
+ void ath11k_ce_per_engine_service(struct ath11k_base *ab, u16 ce_id);
+@@ -179,8 +183,9 @@ void ath11k_ce_rx_post_buf(struct ath11k_base *ab);
+ int ath11k_ce_init_pipes(struct ath11k_base *ab);
+ int ath11k_ce_alloc_pipes(struct ath11k_base *ab);
+ void ath11k_ce_free_pipes(struct ath11k_base *ab);
+-int ath11k_ce_get_attr_flags(int ce_id);
++int ath11k_ce_get_attr_flags(struct ath11k_base *ab, int ce_id);
+ void ath11k_ce_poll_send_completed(struct ath11k_base *ab, u8 pipe_id);
+ int ath11k_ce_map_service_to_pipe(struct ath11k_base *ab, u16 service_id,
+ 				  u8 *ul_pipe, u8 *dl_pipe);
++int ath11k_ce_attr_attach(struct ath11k_base *ab);
+ #endif
+diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
+index 613a8a6721ba..c55c886f6276 100644
+--- a/drivers/net/wireless/ath/ath11k/core.c
++++ b/drivers/net/wireless/ath/ath11k/core.c
+@@ -33,6 +33,8 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
+ 		.ring_mask = &ath11k_hw_ring_mask_ipq8074,
+ 		.internal_sleep_clock = false,
+ 		.regs = &ipq8074_regs,
++		.host_ce_config = ath11k_host_ce_config_ipq8074,
++		.ce_count = 12,
+ 	},
+ 	{
+ 		.name = "qca6390 hw2.0",
+@@ -48,6 +50,8 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
+ 		.ring_mask = &ath11k_hw_ring_mask_ipq8074,
+ 		.internal_sleep_clock = true,
+ 		.regs = &qca6390_regs,
++		.host_ce_config = ath11k_host_ce_config_qca6390,
++		.ce_count = 9,
+ 	},
+ };
+ 
 diff --git a/drivers/net/wireless/ath/ath11k/hal.c b/drivers/net/wireless/ath/ath11k/hal.c
-index 25f2270be195..ae4dc6c39e64 100644
+index ae4dc6c39e64..cca019cc0234 100644
 --- a/drivers/net/wireless/ath/ath11k/hal.c
 +++ b/drivers/net/wireless/ath/ath11k/hal.c
-@@ -329,7 +329,7 @@ static void ath11k_hal_srng_dst_hw_init(struct ath11k_base *ab,
+@@ -1160,7 +1160,7 @@ void ath11k_hal_dump_srng_stats(struct ath11k_base *ab)
+ 	for (i = 0; i < CE_COUNT; i++) {
+ 		ce_pipe = &ab->ce.ce_pipe[i];
  
- 	if (srng->flags & HAL_SRNG_FLAGS_MSI_INTR) {
- 		ath11k_hif_write32(ab, reg_base +
--				   HAL_REO1_RING_MSI1_BASE_LSB_OFFSET,
-+				   HAL_REO1_RING_MSI1_BASE_LSB_OFFSET(ab),
- 				   (u32)srng->msi_addr);
+-		if (ath11k_ce_get_attr_flags(i) & CE_ATTR_DIS_INTR)
++		if (ath11k_ce_get_attr_flags(ab, i) & CE_ATTR_DIS_INTR)
+ 			continue;
  
- 		val = FIELD_PREP(HAL_REO1_RING_MSI1_BASE_MSB_ADDR,
-@@ -337,10 +337,10 @@ static void ath11k_hal_srng_dst_hw_init(struct ath11k_base *ab,
- 				  HAL_ADDR_MSB_REG_SHIFT)) |
- 		      HAL_REO1_RING_MSI1_BASE_MSB_MSI1_ENABLE;
- 		ath11k_hif_write32(ab, reg_base +
--				       HAL_REO1_RING_MSI1_BASE_MSB_OFFSET, val);
-+				       HAL_REO1_RING_MSI1_BASE_MSB_OFFSET(ab), val);
+ 		ath11k_err(ab, "CE_id %d pipe_num %d %ums before\n",
+diff --git a/drivers/net/wireless/ath/ath11k/hw.c b/drivers/net/wireless/ath/ath11k/hw.c
+index 51ddd418bc3b..5811eabf2275 100644
+--- a/drivers/net/wireless/ath/ath11k/hw.c
++++ b/drivers/net/wireless/ath/ath11k/hw.c
+@@ -9,6 +9,7 @@
  
- 		ath11k_hif_write32(ab,
--				   reg_base + HAL_REO1_RING_MSI1_DATA_OFFSET,
-+				   reg_base + HAL_REO1_RING_MSI1_DATA_OFFSET(ab),
- 				   srng->msi_data);
+ #include "hw.h"
+ #include "core.h"
++#include "ce.h"
+ 
+ /* Map from pdev index to hw mac index */
+ static u8 ath11k_hw_ipq8074_mac_from_pdev_id(int pdev_idx)
+diff --git a/drivers/net/wireless/ath/ath11k/hw.h b/drivers/net/wireless/ath/ath11k/hw.h
+index eb1d8a2beffd..ef553bafa158 100644
+--- a/drivers/net/wireless/ath/ath11k/hw.h
++++ b/drivers/net/wireless/ath/ath11k/hw.h
+@@ -137,6 +137,8 @@ struct ath11k_hw_params {
+ 	bool internal_sleep_clock;
+ 
+ 	const struct ath11k_hw_regs *regs;
++	const struct ce_attr *host_ce_config;
++	u32 ce_count;
+ };
+ 
+ extern const struct ath11k_hw_ops ipq8074_ops;
+diff --git a/drivers/net/wireless/ath/ath11k/pci.c b/drivers/net/wireless/ath/ath11k/pci.c
+index d5dcbb928baf..e4551fb493ff 100644
+--- a/drivers/net/wireless/ath/ath11k/pci.c
++++ b/drivers/net/wireless/ath/ath11k/pci.c
+@@ -394,7 +394,7 @@ static void ath11k_pci_free_irq(struct ath11k_base *ab)
+ 	int i, irq_idx;
+ 
+ 	for (i = 0; i < CE_COUNT; i++) {
+-		if (ath11k_ce_get_attr_flags(i) & CE_ATTR_DIS_INTR)
++		if (ath11k_ce_get_attr_flags(ab, i) & CE_ATTR_DIS_INTR)
+ 			continue;
+ 		irq_idx = ATH11K_PCI_IRQ_CE0_OFFSET + i;
+ 		free_irq(ab->irq_num[irq_idx], &ab->ce.ce_pipe[i]);
+@@ -422,7 +422,7 @@ static void ath11k_pci_ce_irqs_disable(struct ath11k_base *ab)
+ 	int i;
+ 
+ 	for (i = 0; i < CE_COUNT; i++) {
+-		if (ath11k_ce_get_attr_flags(i) & CE_ATTR_DIS_INTR)
++		if (ath11k_ce_get_attr_flags(ab, i) & CE_ATTR_DIS_INTR)
+ 			continue;
+ 		ath11k_pci_ce_irq_disable(ab, i);
  	}
+@@ -434,7 +434,7 @@ static void ath11k_pci_sync_ce_irqs(struct ath11k_base *ab)
+ 	int irq_idx;
  
-@@ -351,11 +351,11 @@ static void ath11k_hal_srng_dst_hw_init(struct ath11k_base *ab,
- 			  HAL_ADDR_MSB_REG_SHIFT)) |
- 	      FIELD_PREP(HAL_REO1_RING_BASE_MSB_RING_SIZE,
- 			 (srng->entry_size * srng->num_entries));
--	ath11k_hif_write32(ab, reg_base + HAL_REO1_RING_BASE_MSB_OFFSET, val);
-+	ath11k_hif_write32(ab, reg_base + HAL_REO1_RING_BASE_MSB_OFFSET(ab), val);
+ 	for (i = 0; i < CE_COUNT; i++) {
+-		if (ath11k_ce_get_attr_flags(i) & CE_ATTR_DIS_INTR)
++		if (ath11k_ce_get_attr_flags(ab, i) & CE_ATTR_DIS_INTR)
+ 			continue;
  
- 	val = FIELD_PREP(HAL_REO1_RING_ID_RING_ID, srng->ring_id) |
- 	      FIELD_PREP(HAL_REO1_RING_ID_ENTRY_SIZE, srng->entry_size);
--	ath11k_hif_write32(ab, reg_base + HAL_REO1_RING_ID_OFFSET, val);
-+	ath11k_hif_write32(ab, reg_base + HAL_REO1_RING_ID_OFFSET(ab), val);
+ 		irq_idx = ATH11K_PCI_IRQ_CE0_OFFSET + i;
+@@ -482,7 +482,7 @@ static int ath11k_pci_config_irq(struct ath11k_base *ab)
+ 		irq = ath11k_pci_get_msi_irq(ab->dev, msi_data);
+ 		ce_pipe = &ab->ce.ce_pipe[i];
  
- 	/* interrupt setup */
- 	val = FIELD_PREP(HAL_REO1_RING_PRDR_INT_SETUP_INTR_TMR_THOLD,
-@@ -366,21 +366,21 @@ static void ath11k_hal_srng_dst_hw_init(struct ath11k_base *ab,
- 			   srng->entry_size));
+-		if (ath11k_ce_get_attr_flags(i) & CE_ATTR_DIS_INTR)
++		if (ath11k_ce_get_attr_flags(ab, i) & CE_ATTR_DIS_INTR)
+ 			continue;
  
- 	ath11k_hif_write32(ab,
--			   reg_base + HAL_REO1_RING_PRODUCER_INT_SETUP_OFFSET,
-+			   reg_base + HAL_REO1_RING_PRODUCER_INT_SETUP_OFFSET(ab),
- 			   val);
+ 		irq_idx = ATH11K_PCI_IRQ_CE0_OFFSET + i;
+@@ -522,7 +522,7 @@ static void ath11k_pci_ce_irqs_enable(struct ath11k_base *ab)
+ 	int i;
  
- 	hp_addr = hal->rdp.paddr +
- 		  ((unsigned long)srng->u.dst_ring.hp_addr -
- 		   (unsigned long)hal->rdp.vaddr);
--	ath11k_hif_write32(ab, reg_base + HAL_REO1_RING_HP_ADDR_LSB_OFFSET,
-+	ath11k_hif_write32(ab, reg_base + HAL_REO1_RING_HP_ADDR_LSB_OFFSET(ab),
- 			   hp_addr & HAL_ADDR_LSB_REG_MASK);
--	ath11k_hif_write32(ab, reg_base + HAL_REO1_RING_HP_ADDR_MSB_OFFSET,
-+	ath11k_hif_write32(ab, reg_base + HAL_REO1_RING_HP_ADDR_MSB_OFFSET(ab),
- 			   hp_addr >> HAL_ADDR_MSB_REG_SHIFT);
- 
- 	/* Initialize head and tail pointers to indicate ring is empty */
- 	reg_base = srng->hwreg_base[HAL_SRNG_REG_GRP_R2];
- 	ath11k_hif_write32(ab, reg_base, 0);
--	ath11k_hif_write32(ab, reg_base + HAL_REO1_RING_TP_OFFSET, 0);
-+	ath11k_hif_write32(ab, reg_base + HAL_REO1_RING_TP_OFFSET(ab), 0);
- 	*srng->u.dst_ring.hp_addr = 0;
- 
- 	reg_base = srng->hwreg_base[HAL_SRNG_REG_GRP_R0];
-@@ -393,7 +393,7 @@ static void ath11k_hal_srng_dst_hw_init(struct ath11k_base *ab,
- 		val |= HAL_REO1_RING_MISC_MSI_SWAP;
- 	val |= HAL_REO1_RING_MISC_SRNG_ENABLE;
- 
--	ath11k_hif_write32(ab, reg_base + HAL_REO1_RING_MISC_OFFSET, val);
-+	ath11k_hif_write32(ab, reg_base + HAL_REO1_RING_MISC_OFFSET(ab), val);
- }
- 
- static void ath11k_hal_srng_src_hw_init(struct ath11k_base *ab,
-@@ -408,7 +408,7 @@ static void ath11k_hal_srng_src_hw_init(struct ath11k_base *ab,
- 
- 	if (srng->flags & HAL_SRNG_FLAGS_MSI_INTR) {
- 		ath11k_hif_write32(ab, reg_base +
--				    HAL_TCL1_RING_MSI1_BASE_LSB_OFFSET,
-+				   HAL_TCL1_RING_MSI1_BASE_LSB_OFFSET(ab),
- 				   (u32)srng->msi_addr);
- 
- 		val = FIELD_PREP(HAL_TCL1_RING_MSI1_BASE_MSB_ADDR,
-@@ -416,11 +416,11 @@ static void ath11k_hal_srng_src_hw_init(struct ath11k_base *ab,
- 				  HAL_ADDR_MSB_REG_SHIFT)) |
- 		      HAL_TCL1_RING_MSI1_BASE_MSB_MSI1_ENABLE;
- 		ath11k_hif_write32(ab, reg_base +
--				       HAL_TCL1_RING_MSI1_BASE_MSB_OFFSET,
-+				       HAL_TCL1_RING_MSI1_BASE_MSB_OFFSET(ab),
- 				   val);
- 
- 		ath11k_hif_write32(ab, reg_base +
--				       HAL_TCL1_RING_MSI1_DATA_OFFSET,
-+				       HAL_TCL1_RING_MSI1_DATA_OFFSET(ab),
- 				   srng->msi_data);
+ 	for (i = 0; i < CE_COUNT; i++) {
+-		if (ath11k_ce_get_attr_flags(i) & CE_ATTR_DIS_INTR)
++		if (ath11k_ce_get_attr_flags(ab, i) & CE_ATTR_DIS_INTR)
+ 			continue;
+ 		ath11k_pci_ce_irq_enable(ab, i);
  	}
+@@ -683,7 +683,7 @@ static void ath11k_pci_kill_tasklets(struct ath11k_base *ab)
+ 	for (i = 0; i < CE_COUNT; i++) {
+ 		struct ath11k_ce_pipe *ce_pipe = &ab->ce.ce_pipe[i];
  
-@@ -431,10 +431,10 @@ static void ath11k_hal_srng_src_hw_init(struct ath11k_base *ab,
- 			  HAL_ADDR_MSB_REG_SHIFT)) |
- 	      FIELD_PREP(HAL_TCL1_RING_BASE_MSB_RING_SIZE,
- 			 (srng->entry_size * srng->num_entries));
--	ath11k_hif_write32(ab, reg_base + HAL_TCL1_RING_BASE_MSB_OFFSET, val);
-+	ath11k_hif_write32(ab, reg_base + HAL_TCL1_RING_BASE_MSB_OFFSET(ab), val);
+-		if (ath11k_ce_get_attr_flags(i) & CE_ATTR_DIS_INTR)
++		if (ath11k_ce_get_attr_flags(ab, i) & CE_ATTR_DIS_INTR)
+ 			continue;
  
- 	val = FIELD_PREP(HAL_REO1_RING_ID_ENTRY_SIZE, srng->entry_size);
--	ath11k_hif_write32(ab, reg_base + HAL_TCL1_RING_ID_OFFSET, val);
-+	ath11k_hif_write32(ab, reg_base + HAL_TCL1_RING_ID_OFFSET(ab), val);
- 
- 	/* interrupt setup */
- 	/* NOTE: IPQ8074 v2 requires the interrupt timer threshold in the
-@@ -448,7 +448,7 @@ static void ath11k_hal_srng_src_hw_init(struct ath11k_base *ab,
- 			   srng->entry_size));
- 
- 	ath11k_hif_write32(ab,
--			   reg_base + HAL_TCL1_RING_CONSR_INT_SETUP_IX0_OFFSET,
-+			   reg_base + HAL_TCL1_RING_CONSR_INT_SETUP_IX0_OFFSET(ab),
- 			   val);
- 
- 	val = 0;
-@@ -457,7 +457,7 @@ static void ath11k_hal_srng_src_hw_init(struct ath11k_base *ab,
- 				  srng->u.src_ring.low_threshold);
- 	}
- 	ath11k_hif_write32(ab,
--			   reg_base + HAL_TCL1_RING_CONSR_INT_SETUP_IX1_OFFSET,
-+			   reg_base + HAL_TCL1_RING_CONSR_INT_SETUP_IX1_OFFSET(ab),
- 			   val);
- 
- 	if (srng->ring_id != HAL_SRNG_RING_ID_WBM_IDLE_LINK) {
-@@ -465,10 +465,10 @@ static void ath11k_hal_srng_src_hw_init(struct ath11k_base *ab,
- 			  ((unsigned long)srng->u.src_ring.tp_addr -
- 			   (unsigned long)hal->rdp.vaddr);
- 		ath11k_hif_write32(ab,
--				   reg_base + HAL_TCL1_RING_TP_ADDR_LSB_OFFSET,
-+				   reg_base + HAL_TCL1_RING_TP_ADDR_LSB_OFFSET(ab),
- 				   tp_addr & HAL_ADDR_LSB_REG_MASK);
- 		ath11k_hif_write32(ab,
--				   reg_base + HAL_TCL1_RING_TP_ADDR_MSB_OFFSET,
-+				   reg_base + HAL_TCL1_RING_TP_ADDR_MSB_OFFSET(ab),
- 				   tp_addr >> HAL_ADDR_MSB_REG_SHIFT);
- 	}
- 
-@@ -492,7 +492,7 @@ static void ath11k_hal_srng_src_hw_init(struct ath11k_base *ab,
- 
- 	val |= HAL_TCL1_RING_MISC_SRNG_ENABLE;
- 
--	ath11k_hif_write32(ab, reg_base + HAL_TCL1_RING_MISC_OFFSET, val);
-+	ath11k_hif_write32(ab, reg_base + HAL_TCL1_RING_MISC_OFFSET(ab), val);
- }
- 
- static void ath11k_hal_srng_hw_init(struct ath11k_base *ab,
-@@ -1043,7 +1043,7 @@ int ath11k_hal_srng_setup(struct ath11k_base *ab, enum hal_ring_type type,
- 		} else {
- 			srng->u.dst_ring.tp_addr =
- 				(u32 *)((unsigned long)ab->mem + reg_base +
--					(HAL_REO1_RING_TP - HAL_REO1_RING_HP));
-+					(HAL_REO1_RING_TP(ab) - HAL_REO1_RING_HP(ab)));
- 		}
- 	}
- 
-@@ -1072,14 +1072,14 @@ static int ath11k_hal_srng_create_config(struct ath11k_base *ab)
- 		return -ENOMEM;
- 
- 	s = &hal->srng_config[HAL_REO_DST];
--	s->reg_start[0] = HAL_SEQ_WCSS_UMAC_REO_REG + HAL_REO1_RING_BASE_LSB;
--	s->reg_start[1] = HAL_SEQ_WCSS_UMAC_REO_REG + HAL_REO1_RING_HP;
--	s->reg_size[0] = HAL_REO2_RING_BASE_LSB - HAL_REO1_RING_BASE_LSB;
--	s->reg_size[1] = HAL_REO2_RING_HP - HAL_REO1_RING_HP;
-+	s->reg_start[0] = HAL_SEQ_WCSS_UMAC_REO_REG + HAL_REO1_RING_BASE_LSB(ab);
-+	s->reg_start[1] = HAL_SEQ_WCSS_UMAC_REO_REG + HAL_REO1_RING_HP(ab);
-+	s->reg_size[0] = HAL_REO2_RING_BASE_LSB(ab) - HAL_REO1_RING_BASE_LSB(ab);
-+	s->reg_size[1] = HAL_REO2_RING_HP(ab) - HAL_REO1_RING_HP(ab);
- 
- 	s = &hal->srng_config[HAL_REO_EXCEPTION];
--	s->reg_start[0] = HAL_SEQ_WCSS_UMAC_REO_REG + HAL_REO_TCL_RING_BASE_LSB;
--	s->reg_start[1] = HAL_SEQ_WCSS_UMAC_REO_REG + HAL_REO_TCL_RING_HP;
-+	s->reg_start[0] = HAL_SEQ_WCSS_UMAC_REO_REG + HAL_REO_TCL_RING_BASE_LSB(ab);
-+	s->reg_start[1] = HAL_SEQ_WCSS_UMAC_REO_REG + HAL_REO_TCL_RING_HP(ab);
- 
- 	s = &hal->srng_config[HAL_REO_REINJECT];
- 	s->reg_start[0] = HAL_SEQ_WCSS_UMAC_REO_REG + HAL_SW2REO_RING_BASE_LSB;
-@@ -1090,21 +1090,21 @@ static int ath11k_hal_srng_create_config(struct ath11k_base *ab)
- 	s->reg_start[1] = HAL_SEQ_WCSS_UMAC_REO_REG + HAL_REO_CMD_HP;
- 
- 	s = &hal->srng_config[HAL_REO_STATUS];
--	s->reg_start[0] = HAL_SEQ_WCSS_UMAC_REO_REG + HAL_REO_STATUS_RING_BASE_LSB;
--	s->reg_start[1] = HAL_SEQ_WCSS_UMAC_REO_REG + HAL_REO_STATUS_HP;
-+	s->reg_start[0] = HAL_SEQ_WCSS_UMAC_REO_REG + HAL_REO_STATUS_RING_BASE_LSB(ab);
-+	s->reg_start[1] = HAL_SEQ_WCSS_UMAC_REO_REG + HAL_REO_STATUS_HP(ab);
- 
- 	s = &hal->srng_config[HAL_TCL_DATA];
--	s->reg_start[0] = HAL_SEQ_WCSS_UMAC_TCL_REG + HAL_TCL1_RING_BASE_LSB;
-+	s->reg_start[0] = HAL_SEQ_WCSS_UMAC_TCL_REG + HAL_TCL1_RING_BASE_LSB(ab);
- 	s->reg_start[1] = HAL_SEQ_WCSS_UMAC_TCL_REG + HAL_TCL1_RING_HP;
--	s->reg_size[0] = HAL_TCL2_RING_BASE_LSB - HAL_TCL1_RING_BASE_LSB;
-+	s->reg_size[0] = HAL_TCL2_RING_BASE_LSB(ab) - HAL_TCL1_RING_BASE_LSB(ab);
- 	s->reg_size[1] = HAL_TCL2_RING_HP - HAL_TCL1_RING_HP;
- 
- 	s = &hal->srng_config[HAL_TCL_CMD];
--	s->reg_start[0] = HAL_SEQ_WCSS_UMAC_TCL_REG + HAL_TCL_RING_BASE_LSB;
-+	s->reg_start[0] = HAL_SEQ_WCSS_UMAC_TCL_REG + HAL_TCL_RING_BASE_LSB(ab);
- 	s->reg_start[1] = HAL_SEQ_WCSS_UMAC_TCL_REG + HAL_TCL_RING_HP;
- 
- 	s = &hal->srng_config[HAL_TCL_STATUS];
--	s->reg_start[0] = HAL_SEQ_WCSS_UMAC_TCL_REG + HAL_TCL_STATUS_RING_BASE_LSB;
-+	s->reg_start[0] = HAL_SEQ_WCSS_UMAC_TCL_REG + HAL_TCL_STATUS_RING_BASE_LSB(ab);
- 	s->reg_start[1] = HAL_SEQ_WCSS_UMAC_TCL_REG + HAL_TCL_STATUS_RING_HP;
- 
- 	return 0;
-diff --git a/drivers/net/wireless/ath/ath11k/hal.h b/drivers/net/wireless/ath/ath11k/hal.h
-index f52fd61d685d..85192d170b6b 100644
---- a/drivers/net/wireless/ath/ath11k/hal.h
-+++ b/drivers/net/wireless/ath/ath11k/hal.h
-@@ -46,40 +46,47 @@ struct ath11k_base;
- /* SW2TCL(x) R0 ring configuration address */
- #define HAL_TCL1_RING_CMN_CTRL_REG		0x00000014
- #define HAL_TCL1_RING_DSCP_TID_MAP		0x0000002c
--#define HAL_TCL1_RING_BASE_LSB			ab->hw_params.regs->hal_tcl1_ring_base_lsb
--#define HAL_TCL1_RING_BASE_MSB			ab->hw_params.regs->hal_tcl1_ring_base_msb
--#define HAL_TCL1_RING_ID			ab->hw_params.regs->hal_tcl1_ring_id
--#define HAL_TCL1_RING_MISC			ab->hw_params.regs->hal_tcl1_ring_misc
--#define HAL_TCL1_RING_TP_ADDR_LSB		ab->hw_params.regs->hal_tcl1_ring_tp_addr_lsb
--#define HAL_TCL1_RING_TP_ADDR_MSB		ab->hw_params.regs->hal_tcl1_ring_tp_addr_msb
--#define HAL_TCL1_RING_CONSUMER_INT_SETUP_IX0	ab->hw_params.regs->hal_tcl1_ring_consumer_int_setup_ix0
--#define HAL_TCL1_RING_CONSUMER_INT_SETUP_IX1	ab->hw_params.regs->hal_tcl1_ring_consumer_int_setup_ix1
--#define HAL_TCL1_RING_MSI1_BASE_LSB		ab->hw_params.regs->hal_tcl1_ring_msi1_base_lsb
--#define HAL_TCL1_RING_MSI1_BASE_MSB		ab->hw_params.regs->hal_tcl1_ring_msi1_base_msb
--#define HAL_TCL1_RING_MSI1_DATA			ab->hw_params.regs->hal_tcl1_ring_msi1_data
--#define HAL_TCL2_RING_BASE_LSB			ab->hw_params.regs->hal_tcl2_ring_base_lsb
--#define HAL_TCL_RING_BASE_LSB			ab->hw_params.regs->hal_tcl_ring_base_lsb
--
--#define HAL_TCL1_RING_MSI1_BASE_LSB_OFFSET \
--		(HAL_TCL1_RING_MSI1_BASE_LSB - HAL_TCL1_RING_BASE_LSB)
--#define HAL_TCL1_RING_MSI1_BASE_MSB_OFFSET \
--		(HAL_TCL1_RING_MSI1_BASE_MSB - HAL_TCL1_RING_BASE_LSB)
--#define HAL_TCL1_RING_MSI1_DATA_OFFSET \
--		(HAL_TCL1_RING_MSI1_DATA - HAL_TCL1_RING_BASE_LSB)
--#define HAL_TCL1_RING_BASE_MSB_OFFSET \
--		(HAL_TCL1_RING_BASE_MSB - HAL_TCL1_RING_BASE_LSB)
--#define HAL_TCL1_RING_ID_OFFSET \
--		(HAL_TCL1_RING_ID - HAL_TCL1_RING_BASE_LSB)
--#define HAL_TCL1_RING_CONSR_INT_SETUP_IX0_OFFSET \
--		(HAL_TCL1_RING_CONSUMER_INT_SETUP_IX0 - HAL_TCL1_RING_BASE_LSB)
--#define HAL_TCL1_RING_CONSR_INT_SETUP_IX1_OFFSET \
--		(HAL_TCL1_RING_CONSUMER_INT_SETUP_IX1 - HAL_TCL1_RING_BASE_LSB)
--#define HAL_TCL1_RING_TP_ADDR_LSB_OFFSET \
--		(HAL_TCL1_RING_TP_ADDR_LSB - HAL_TCL1_RING_BASE_LSB)
--#define HAL_TCL1_RING_TP_ADDR_MSB_OFFSET \
--		(HAL_TCL1_RING_TP_ADDR_MSB - HAL_TCL1_RING_BASE_LSB)
--#define HAL_TCL1_RING_MISC_OFFSET \
--		(HAL_TCL1_RING_MISC - HAL_TCL1_RING_BASE_LSB)
-+#define HAL_TCL1_RING_BASE_LSB(ab)		ab->hw_params.regs->hal_tcl1_ring_base_lsb
-+#define HAL_TCL1_RING_BASE_MSB(ab)		ab->hw_params.regs->hal_tcl1_ring_base_msb
-+#define HAL_TCL1_RING_ID(ab)			ab->hw_params.regs->hal_tcl1_ring_id
-+#define HAL_TCL1_RING_MISC(ab)			ab->hw_params.regs->hal_tcl1_ring_misc
-+#define HAL_TCL1_RING_TP_ADDR_LSB(ab) \
-+	ab->hw_params.regs->hal_tcl1_ring_tp_addr_lsb
-+#define HAL_TCL1_RING_TP_ADDR_MSB(ab) \
-+	ab->hw_params.regs->hal_tcl1_ring_tp_addr_msb
-+#define HAL_TCL1_RING_CONSUMER_INT_SETUP_IX0(ab) \
-+	ab->hw_params.regs->hal_tcl1_ring_consumer_int_setup_ix0
-+#define HAL_TCL1_RING_CONSUMER_INT_SETUP_IX1(ab) \
-+	ab->hw_params.regs->hal_tcl1_ring_consumer_int_setup_ix1
-+#define HAL_TCL1_RING_MSI1_BASE_LSB(ab) \
-+	ab->hw_params.regs->hal_tcl1_ring_msi1_base_lsb
-+#define HAL_TCL1_RING_MSI1_BASE_MSB(ab) \
-+	ab->hw_params.regs->hal_tcl1_ring_msi1_base_msb
-+#define HAL_TCL1_RING_MSI1_DATA(ab) \
-+	ab->hw_params.regs->hal_tcl1_ring_msi1_data
-+#define HAL_TCL2_RING_BASE_LSB(ab)		ab->hw_params.regs->hal_tcl2_ring_base_lsb
-+#define HAL_TCL_RING_BASE_LSB(ab)		ab->hw_params.regs->hal_tcl_ring_base_lsb
-+
-+#define HAL_TCL1_RING_MSI1_BASE_LSB_OFFSET(ab)				\
-+	(HAL_TCL1_RING_MSI1_BASE_LSB(ab) - HAL_TCL1_RING_BASE_LSB(ab))
-+#define HAL_TCL1_RING_MSI1_BASE_MSB_OFFSET(ab)				\
-+	(HAL_TCL1_RING_MSI1_BASE_MSB(ab) - HAL_TCL1_RING_BASE_LSB(ab))
-+#define HAL_TCL1_RING_MSI1_DATA_OFFSET(ab)				\
-+	(HAL_TCL1_RING_MSI1_DATA(ab) - HAL_TCL1_RING_BASE_LSB(ab))
-+#define HAL_TCL1_RING_BASE_MSB_OFFSET(ab)				\
-+	(HAL_TCL1_RING_BASE_MSB(ab) - HAL_TCL1_RING_BASE_LSB(ab))
-+#define HAL_TCL1_RING_ID_OFFSET(ab)				\
-+	(HAL_TCL1_RING_ID(ab) - HAL_TCL1_RING_BASE_LSB(ab))
-+#define HAL_TCL1_RING_CONSR_INT_SETUP_IX0_OFFSET(ab)			\
-+	(HAL_TCL1_RING_CONSUMER_INT_SETUP_IX0(ab) - HAL_TCL1_RING_BASE_LSB(ab))
-+#define HAL_TCL1_RING_CONSR_INT_SETUP_IX1_OFFSET(ab) \
-+		(HAL_TCL1_RING_CONSUMER_INT_SETUP_IX1(ab) - HAL_TCL1_RING_BASE_LSB(ab))
-+#define HAL_TCL1_RING_TP_ADDR_LSB_OFFSET(ab) \
-+		(HAL_TCL1_RING_TP_ADDR_LSB(ab) - HAL_TCL1_RING_BASE_LSB(ab))
-+#define HAL_TCL1_RING_TP_ADDR_MSB_OFFSET(ab) \
-+		(HAL_TCL1_RING_TP_ADDR_MSB(ab) - HAL_TCL1_RING_BASE_LSB(ab))
-+#define HAL_TCL1_RING_MISC_OFFSET(ab) \
-+		(HAL_TCL1_RING_MISC(ab) - HAL_TCL1_RING_BASE_LSB(ab))
- 
- /* SW2TCL(x) R2 ring pointers (head/tail) address */
- #define HAL_TCL1_RING_HP			0x00002000
-@@ -91,7 +98,8 @@ struct ath11k_base;
- 		(HAL_TCL1_RING_TP - HAL_TCL1_RING_HP)
- 
- /* TCL STATUS ring address */
--#define HAL_TCL_STATUS_RING_BASE_LSB   ab->hw_params.regs->hal_tcl_status_ring_base_lsb
-+#define HAL_TCL_STATUS_RING_BASE_LSB(ab) \
-+	ab->hw_params.regs->hal_tcl_status_ring_base_lsb
- #define HAL_TCL_STATUS_RING_HP			0x00002030
- 
- /* REO2SW(x) R0 ring configuration address */
-@@ -100,51 +108,63 @@ struct ath11k_base;
- #define HAL_REO1_DEST_RING_CTRL_IX_1		0x00000008
- #define HAL_REO1_DEST_RING_CTRL_IX_2		0x0000000c
- #define HAL_REO1_DEST_RING_CTRL_IX_3		0x00000010
-- #define HAL_REO1_RING_BASE_LSB			ab->hw_params.regs->hal_reo1_ring_base_lsb
--#define HAL_REO1_RING_BASE_MSB			ab->hw_params.regs->hal_reo1_ring_base_msb
--#define HAL_REO1_RING_ID			ab->hw_params.regs->hal_reo1_ring_id
--#define HAL_REO1_RING_MISC			ab->hw_params.regs->hal_reo1_ring_misc
--#define HAL_REO1_RING_HP_ADDR_LSB		ab->hw_params.regs->hal_reo1_ring_hp_addr_lsb
--#define HAL_REO1_RING_HP_ADDR_MSB		ab->hw_params.regs->hal_reo1_ring_hp_addr_msb
--#define HAL_REO1_RING_PRODUCER_INT_SETUP	ab->hw_params.regs->hal_reo1_ring_producer_int_setup
--#define HAL_REO1_RING_MSI1_BASE_LSB		ab->hw_params.regs->hal_reo1_ring_msi1_base_lsb
--#define HAL_REO1_RING_MSI1_BASE_MSB		ab->hw_params.regs->hal_reo1_ring_msi1_base_msb
--#define HAL_REO1_RING_MSI1_DATA			ab->hw_params.regs->hal_reo1_ring_msi1_data
--#define HAL_REO2_RING_BASE_LSB			ab->hw_params.regs->hal_reo2_ring_base_lsb
--#define HAL_REO1_AGING_THRESH_IX_0		ab->hw_params.regs->hal_reo1_aging_thresh_ix_0
--#define HAL_REO1_AGING_THRESH_IX_1		ab->hw_params.regs->hal_reo1_aging_thresh_ix_1
--#define HAL_REO1_AGING_THRESH_IX_2		ab->hw_params.regs->hal_reo1_aging_thresh_ix_2
--#define HAL_REO1_AGING_THRESH_IX_3		ab->hw_params.regs->hal_reo1_aging_thresh_ix_3
--
--#define HAL_REO1_RING_MSI1_BASE_LSB_OFFSET \
--		(HAL_REO1_RING_MSI1_BASE_LSB - HAL_REO1_RING_BASE_LSB)
--#define HAL_REO1_RING_MSI1_BASE_MSB_OFFSET \
--		(HAL_REO1_RING_MSI1_BASE_MSB - HAL_REO1_RING_BASE_LSB)
--#define HAL_REO1_RING_MSI1_DATA_OFFSET \
--		(HAL_REO1_RING_MSI1_DATA - HAL_REO1_RING_BASE_LSB)
--#define HAL_REO1_RING_BASE_MSB_OFFSET \
--		(HAL_REO1_RING_BASE_MSB - HAL_REO1_RING_BASE_LSB)
--#define HAL_REO1_RING_ID_OFFSET (HAL_REO1_RING_ID - HAL_REO1_RING_BASE_LSB)
--#define HAL_REO1_RING_PRODUCER_INT_SETUP_OFFSET \
--		(HAL_REO1_RING_PRODUCER_INT_SETUP - HAL_REO1_RING_BASE_LSB)
--#define HAL_REO1_RING_HP_ADDR_LSB_OFFSET \
--		(HAL_REO1_RING_HP_ADDR_LSB - HAL_REO1_RING_BASE_LSB)
--#define HAL_REO1_RING_HP_ADDR_MSB_OFFSET \
--		(HAL_REO1_RING_HP_ADDR_MSB - HAL_REO1_RING_BASE_LSB)
--#define HAL_REO1_RING_MISC_OFFSET (HAL_REO1_RING_MISC - HAL_REO1_RING_BASE_LSB)
-+#define HAL_REO1_RING_BASE_LSB(ab)		ab->hw_params.regs->hal_reo1_ring_base_lsb
-+#define HAL_REO1_RING_BASE_MSB(ab)		ab->hw_params.regs->hal_reo1_ring_base_msb
-+#define HAL_REO1_RING_ID(ab)			ab->hw_params.regs->hal_reo1_ring_id
-+#define HAL_REO1_RING_MISC(ab)			ab->hw_params.regs->hal_reo1_ring_misc
-+#define HAL_REO1_RING_HP_ADDR_LSB(ab) \
-+	ab->hw_params.regs->hal_reo1_ring_hp_addr_lsb
-+#define HAL_REO1_RING_HP_ADDR_MSB(ab) \
-+	ab->hw_params.regs->hal_reo1_ring_hp_addr_msb
-+#define HAL_REO1_RING_PRODUCER_INT_SETUP(ab) \
-+	ab->hw_params.regs->hal_reo1_ring_producer_int_setup
-+#define HAL_REO1_RING_MSI1_BASE_LSB(ab) \
-+	ab->hw_params.regs->hal_reo1_ring_msi1_base_lsb
-+#define HAL_REO1_RING_MSI1_BASE_MSB(ab) \
-+	ab->hw_params.regs->hal_reo1_ring_msi1_base_msb
-+#define HAL_REO1_RING_MSI1_DATA(ab) \
-+	ab->hw_params.regs->hal_reo1_ring_msi1_data
-+#define HAL_REO2_RING_BASE_LSB(ab)		ab->hw_params.regs->hal_reo2_ring_base_lsb
-+#define HAL_REO1_AGING_THRESH_IX_0(ab) \
-+	ab->hw_params.regs->hal_reo1_aging_thresh_ix_0
-+#define HAL_REO1_AGING_THRESH_IX_1(ab) \
-+	ab->hw_params.regs->hal_reo1_aging_thresh_ix_1
-+#define HAL_REO1_AGING_THRESH_IX_2(ab) \
-+	ab->hw_params.regs->hal_reo1_aging_thresh_ix_2
-+#define HAL_REO1_AGING_THRESH_IX_3(ab) \
-+	ab->hw_params.regs->hal_reo1_aging_thresh_ix_3
-+
-+#define HAL_REO1_RING_MSI1_BASE_LSB_OFFSET(ab) \
-+		(HAL_REO1_RING_MSI1_BASE_LSB(ab) - HAL_REO1_RING_BASE_LSB(ab))
-+#define HAL_REO1_RING_MSI1_BASE_MSB_OFFSET(ab) \
-+		(HAL_REO1_RING_MSI1_BASE_MSB(ab) - HAL_REO1_RING_BASE_LSB(ab))
-+#define HAL_REO1_RING_MSI1_DATA_OFFSET(ab) \
-+		(HAL_REO1_RING_MSI1_DATA(ab) - HAL_REO1_RING_BASE_LSB(ab))
-+#define HAL_REO1_RING_BASE_MSB_OFFSET(ab) \
-+		(HAL_REO1_RING_BASE_MSB(ab) - HAL_REO1_RING_BASE_LSB(ab))
-+#define HAL_REO1_RING_ID_OFFSET(ab) (HAL_REO1_RING_ID(ab) - HAL_REO1_RING_BASE_LSB(ab))
-+#define HAL_REO1_RING_PRODUCER_INT_SETUP_OFFSET(ab) \
-+		(HAL_REO1_RING_PRODUCER_INT_SETUP(ab) - HAL_REO1_RING_BASE_LSB(ab))
-+#define HAL_REO1_RING_HP_ADDR_LSB_OFFSET(ab) \
-+		(HAL_REO1_RING_HP_ADDR_LSB(ab) - HAL_REO1_RING_BASE_LSB(ab))
-+#define HAL_REO1_RING_HP_ADDR_MSB_OFFSET(ab) \
-+		(HAL_REO1_RING_HP_ADDR_MSB(ab) - HAL_REO1_RING_BASE_LSB(ab))
-+#define HAL_REO1_RING_MISC_OFFSET(ab) \
-+	(HAL_REO1_RING_MISC(ab) - HAL_REO1_RING_BASE_LSB(ab))
- 
- /* REO2SW(x) R2 ring pointers (head/tail) address */
--#define HAL_REO1_RING_HP			ab->hw_params.regs->hal_reo1_ring_hp
--#define HAL_REO1_RING_TP			ab->hw_params.regs->hal_reo1_ring_tp
--#define HAL_REO2_RING_HP			ab->hw_params.regs->hal_reo2_ring_hp
-+#define HAL_REO1_RING_HP(ab)			ab->hw_params.regs->hal_reo1_ring_hp
-+#define HAL_REO1_RING_TP(ab)			ab->hw_params.regs->hal_reo1_ring_tp
-+#define HAL_REO2_RING_HP(ab)			ab->hw_params.regs->hal_reo2_ring_hp
- 
--#define HAL_REO1_RING_TP_OFFSET	(HAL_REO1_RING_TP - HAL_REO1_RING_HP)
-+#define HAL_REO1_RING_TP_OFFSET(ab)	(HAL_REO1_RING_TP(ab) - HAL_REO1_RING_HP(ab))
- 
- /* REO2TCL R0 ring configuration address */
--#define HAL_REO_TCL_RING_BASE_LSB		ab->hw_params.regs->hal_reo_tcl_ring_base_lsb
-+#define HAL_REO_TCL_RING_BASE_LSB(ab) \
-+	ab->hw_params.regs->hal_reo_tcl_ring_base_lsb
- 
- /* REO2TCL R2 ring pointer (head/tail) address */
--#define HAL_REO_TCL_RING_HP			ab->hw_params.regs->hal_reo_tcl_ring_hp
-+#define HAL_REO_TCL_RING_HP(ab)			ab->hw_params.regs->hal_reo_tcl_ring_hp
- 
- /* REO CMD R0 address */
- #define HAL_REO_CMD_RING_BASE_LSB		0x00000194
-@@ -168,8 +188,9 @@ struct ath11k_base;
- #define HAL_CE_DST_STATUS_RING_HP		0x00000408
- 
- /* REO status address */
--#define HAL_REO_STATUS_RING_BASE_LSB		ab->hw_params.regs->hal_reo_status_ring_base_lsb
--#define HAL_REO_STATUS_HP			ab->hw_params.regs->hal_reo_status_hp
-+#define HAL_REO_STATUS_RING_BASE_LSB(ab) \
-+	ab->hw_params.regs->hal_reo_status_ring_base_lsb
-+#define HAL_REO_STATUS_HP(ab)			ab->hw_params.regs->hal_reo_status_hp
- 
- /* WBM Idle R0 address */
- #define HAL_WBM_IDLE_LINK_RING_BASE_LSB		0x00000860
-diff --git a/drivers/net/wireless/ath/ath11k/hal_rx.c b/drivers/net/wireless/ath/ath11k/hal_rx.c
-index b30f1931313d..4bbad2e341ee 100644
---- a/drivers/net/wireless/ath/ath11k/hal_rx.c
-+++ b/drivers/net/wireless/ath/ath11k/hal_rx.c
-@@ -813,13 +813,13 @@ void ath11k_hal_reo_hw_setup(struct ath11k_base *ab, u32 ring_hash_map)
- 	       FIELD_PREP(HAL_REO1_GEN_ENABLE_AGING_FLUSH_ENABLE, 1);
- 	ath11k_hif_write32(ab, reo_base + HAL_REO1_GEN_ENABLE, val);
- 
--	ath11k_hif_write32(ab, reo_base + HAL_REO1_AGING_THRESH_IX_0,
-+	ath11k_hif_write32(ab, reo_base + HAL_REO1_AGING_THRESH_IX_0(ab),
- 			   HAL_DEFAULT_REO_TIMEOUT_USEC);
--	ath11k_hif_write32(ab, reo_base + HAL_REO1_AGING_THRESH_IX_1,
-+	ath11k_hif_write32(ab, reo_base + HAL_REO1_AGING_THRESH_IX_1(ab),
- 			   HAL_DEFAULT_REO_TIMEOUT_USEC);
--	ath11k_hif_write32(ab, reo_base + HAL_REO1_AGING_THRESH_IX_2,
-+	ath11k_hif_write32(ab, reo_base + HAL_REO1_AGING_THRESH_IX_2(ab),
- 			   HAL_DEFAULT_REO_TIMEOUT_USEC);
--	ath11k_hif_write32(ab, reo_base + HAL_REO1_AGING_THRESH_IX_3,
-+	ath11k_hif_write32(ab, reo_base + HAL_REO1_AGING_THRESH_IX_3(ab),
- 			   HAL_DEFAULT_REO_TIMEOUT_USEC);
- 
- 	ath11k_hif_write32(ab, reo_base + HAL_REO1_DEST_RING_CTRL_IX_0,
+ 		tasklet_kill(&ce_pipe->intr_tq);
 -- 
 2.7.4
 
