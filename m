@@ -2,190 +2,157 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A7F2246086
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Aug 2020 10:44:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E603246122
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Aug 2020 10:50:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727794AbgHQIn5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 17 Aug 2020 04:43:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55534 "EHLO
+        id S1726457AbgHQIuX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 17 Aug 2020 04:50:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56572 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727785AbgHQInx (ORCPT
+        with ESMTP id S1726324AbgHQIuW (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 17 Aug 2020 04:43:53 -0400
-Received: from mail-wm1-x342.google.com (mail-wm1-x342.google.com [IPv6:2a00:1450:4864:20::342])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D89ECC061389
-        for <linux-wireless@vger.kernel.org>; Mon, 17 Aug 2020 01:43:52 -0700 (PDT)
-Received: by mail-wm1-x342.google.com with SMTP id f18so12751347wmc.0
-        for <linux-wireless@vger.kernel.org>; Mon, 17 Aug 2020 01:43:52 -0700 (PDT)
+        Mon, 17 Aug 2020 04:50:22 -0400
+Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0EF25C061388
+        for <linux-wireless@vger.kernel.org>; Mon, 17 Aug 2020 01:50:22 -0700 (PDT)
+Received: by mail-wr1-x443.google.com with SMTP id 88so14145821wrh.3
+        for <linux-wireless@vger.kernel.org>; Mon, 17 Aug 2020 01:50:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=D1UjIIuxlByyuNbDhVDjp8frAQhVC4jXQISXzhYCeyY=;
-        b=pCpD/3JXsVs5IP+p+ECYZCn74rRmRLfvblZjANzhSXMrphOOrXPQddul+iuWq/PzxU
-         KtoPNFawOpX4lVcn/zJMKoWN6dKFtIEHFChWG3oJapMcMB+3M1Exgp+1utBPrZ2ItdGI
-         8iKJxvt3AL8zxcQPcvmfQ5ZYEFfVtj84EUiP1d6saNS/W/WuQmLdTjZD7kSDseJeimoZ
-         KV23YUYbit3ZSGP4sna9htwJvRueZrgvM+kbJJ+f4NFliUSg7BXkUs+l0jtaDoXMLqZ+
-         nS8YZVrZhg0d8ilpLoBOtY+R9Liq9wN9FPAunz3UZ6DIoR9awpRW6Kh5076jYiRH6r7m
-         CaHg==
+        bh=eQE7UF8DcCewmzSExxx8eeLn2OA5wnv+ShoIew846L0=;
+        b=t2fXnGI8Eiq75t3Fr7pvFXGeaPB45TrrNEcEf2MQZrEzQlzGozv7kzn6K+2YbNFu8Q
+         knbVVXOiR+rUUVo8ZguLLDgascNUPNw/DEuc31brqfInPvx0DpJEMOtcKHzuNVjzpLHT
+         6Uby23FLuB+1E8oBo6am19Y5h4O5YWDDfdagNi1AIQtRWTlh5sdWjyBZX9y4Xw8In+qp
+         oaVWN2rKf+15QA7nWU6+nnUtI9oqcNxN5OaqtKPwG5WJAQ05b8VaPHVfZmkTNIpM9Nl2
+         HWghu2YMdmq0yhsYem1feZIY67Q3zQ/FWocs7vqG0Ffyaiwu5q3i/D5EKfqIrWeE5rUo
+         hMQA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:content-transfer-encoding
          :in-reply-to;
-        bh=D1UjIIuxlByyuNbDhVDjp8frAQhVC4jXQISXzhYCeyY=;
-        b=G0Ko3qKnX/rtKz1YfxyEi3MGZTLcqUD6RcBr5xmsVA+FKbPgdpDjN+w0pPaUngsLsR
-         IRi9uuON6s9nhPF0pmkfaMGG8KdkH9lo2E08b21ReEL7q6bS9nkbO3zbxO9aR9UMhk2p
-         A4rQT6f0QmaxzrkmJnCTJgDuZr2RrPe0/hFSRPkzOeZ2y5/cIVlYJdNFK8id0G1EoDid
-         9oQYk5sW3QvlnL/yvfZ2AQuzAGtstC9s4MAQ0vH1goKalYU5dxka5SF20ICDhC8/6CYN
-         6lSUpQDny2rmqPk9S/ee44Y8AYlRRytKn0rrAODdZh6UCFuvUMss17Dx27ZKExigbGvs
-         jkZw==
-X-Gm-Message-State: AOAM5309Nubn5DjrWnfyE6YDo6tyJl507GPXR2AcnW9HavfcSGXGcqEK
-        jMjYlI4yZJffLwbaSoihVDm7hw==
-X-Google-Smtp-Source: ABdhPJyFMeTzYrQ25C/SOkBGds8oWQIcltw8DNk0rq7lyOF6TjCsCEwFGHehTztaqxs4yqkU9K5XMA==
-X-Received: by 2002:a1c:770c:: with SMTP id t12mr14515197wmi.65.1597653831551;
-        Mon, 17 Aug 2020 01:43:51 -0700 (PDT)
+        bh=eQE7UF8DcCewmzSExxx8eeLn2OA5wnv+ShoIew846L0=;
+        b=RXTLwqOz9tptiqgWkKEh5kQBP9d0HXfwR4I1Xd4byW05F4x8oYrq7SVFB0F8Z6TZOh
+         tX8Z2b+RKe8oSYwcTc8y3s6N6dkKyhmQzvHR4zfAIQremE/jHKTaJq/B7tKLhJy3Lai6
+         IuQZ94SAjyekcH55aVPBwuBYfOFWT7Ecp1RZv3HapWj0XHAkNfCAw6pzQDh3TOK90LuU
+         6zSAGtpe0avoIH82Zs6zx6zEZKanm8/7xHDLc7V7XSIMzhIpg4Tg2mu6uzwTWK27QG/g
+         Rqal+2ZddAaKxjeWMyoDJ7yiquyKmzh83sMcE+3EgXqRTJufzopDTheU2Z3w3d0cnkyH
+         Vyng==
+X-Gm-Message-State: AOAM531VxtvyXDzq5lFxOz5rjlSwEBAqHHSSRdpNQYbDDfvLFrzBoPi+
+        roFEBjlY/d2hHYJn1Bm1YlT/Xw==
+X-Google-Smtp-Source: ABdhPJzBHRCazJeaD7mDx5OHG3g9GCrXdWG7uSkk/PgwI614rp3oMJEXUmBMhVIDuZoNpllti0kOkg==
+X-Received: by 2002:adf:f151:: with SMTP id y17mr15077238wro.179.1597654220812;
+        Mon, 17 Aug 2020 01:50:20 -0700 (PDT)
 Received: from dell ([95.149.164.62])
-        by smtp.gmail.com with ESMTPSA id r11sm29259984wrw.78.2020.08.17.01.43.50
+        by smtp.gmail.com with ESMTPSA id h10sm30102985wro.57.2020.08.17.01.50.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Aug 2020 01:43:50 -0700 (PDT)
-Date:   Mon, 17 Aug 2020 09:43:49 +0100
+        Mon, 17 Aug 2020 01:50:20 -0700 (PDT)
+Date:   Mon, 17 Aug 2020 09:50:18 +0100
 From:   Lee Jones <lee.jones@linaro.org>
-To:     Christian Lamparter <chunkeey@gmail.com>
+To:     Kalle Valo <kvalo@codeaurora.org>
 Cc:     davem@davemloft.net, kuba@kernel.org, linux-kernel@vger.kernel.org,
-        Christian Lamparter <chunkeey@googlemail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH 08/30] net: wireless: ath: carl9170: Mark 'ar9170_qmap'
- as __maybe_unused
-Message-ID: <20200817084349.GS4354@dell>
+        Martin Langer <martin-langer@gmx.de>,
+        Stefano Brivio <stefano.brivio@polimi.it>,
+        Michael Buesch <m@bues.ch>, van Dyk <kugelfang@gentoo.org>,
+        Andreas Jaggi <andreas.jaggi@waterwave.ch>,
+        Albert Herranz <albert_herranz@yahoo.es>,
+        linux-wireless@vger.kernel.org, b43-dev@lists.infradead.org,
+        netdev@vger.kernel.org
+Subject: Re: [PATCH 07/30] net: wireless: broadcom: b43: main: Add braces
+ around empty statements
+Message-ID: <20200817085018.GT4354@dell>
 References: <20200814113933.1903438-1-lee.jones@linaro.org>
- <20200814113933.1903438-9-lee.jones@linaro.org>
- <7ef231f2-e6d3-904f-dc3a-7ef82beda6ef@gmail.com>
- <20200814164046.GO4354@dell>
- <0a144311-2085-60b5-ea36-554c6efbf7e9@gmail.com>
+ <20200814113933.1903438-8-lee.jones@linaro.org>
+ <87v9hll0ro.fsf@codeaurora.org>
+ <20200814164322.GP4354@dell>
+ <87eeo9kulw.fsf@codeaurora.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <0a144311-2085-60b5-ea36-554c6efbf7e9@gmail.com>
+In-Reply-To: <87eeo9kulw.fsf@codeaurora.org>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 14 Aug 2020, Christian Lamparter wrote:
+On Fri, 14 Aug 2020, Kalle Valo wrote:
 
-> On 2020-08-14 18:40, Lee Jones wrote:
-> > On Fri, 14 Aug 2020, Christian Lamparter wrote:
-> > 
-> > > On 2020-08-14 13:39, Lee Jones wrote:
-> > > > 'ar9170_qmap' is used in some source files which include carl9170.h,
-> > > > but not all of them.  Mark it as __maybe_unused to show that this is
-> > > > not only okay, it's expected.
-> > > > 
-> > > > Fixes the following W=1 kernel build warning(s)
-> > > 
-> > > Is this W=1 really a "must" requirement? I find it strange having
-> > 
-> > Clean W=1 warnings is the dream, yes.
-> But is it a requirement?
+> Lee Jones <lee.jones@linaro.org> writes:
+> 
+> > On Fri, 14 Aug 2020, Kalle Valo wrote:
+> >
+> >> Lee Jones <lee.jones@linaro.org> writes:
+> >> 
+> >> > Fixes the following W=1 kernel build warning(s):
+> >> >
+> >> >  drivers/net/wireless/broadcom/b43/main.c: In function ‘b43_dummy_transmission’:
+> >> >  drivers/net/wireless/broadcom/b43/main.c:785:3: warning: suggest
+> >> > braces around empty body in an ‘if’ statement [-Wempty-body]
+> >> >  drivers/net/wireless/broadcom/b43/main.c: In function ‘b43_do_interrupt_thread’:
+> >> >  drivers/net/wireless/broadcom/b43/main.c:2017:3: warning: suggest
+> >> > braces around empty body in an ‘if’ statement [-Wempty-body]
+> >> >
+> >> > Cc: Kalle Valo <kvalo@codeaurora.org>
+> >> > Cc: "David S. Miller" <davem@davemloft.net>
+> >> > Cc: Jakub Kicinski <kuba@kernel.org>
+> >> > Cc: Martin Langer <martin-langer@gmx.de>
+> >> > Cc: Stefano Brivio <stefano.brivio@polimi.it>
+> >> > Cc: Michael Buesch <m@bues.ch>
+> >> > Cc: van Dyk <kugelfang@gentoo.org>
+> >> > Cc: Andreas Jaggi <andreas.jaggi@waterwave.ch>
+> >> > Cc: Albert Herranz <albert_herranz@yahoo.es>
+> >> > Cc: linux-wireless@vger.kernel.org
+> >> > Cc: b43-dev@lists.infradead.org
+> >> > Cc: netdev@vger.kernel.org
+> >> > Signed-off-by: Lee Jones <lee.jones@linaro.org>
+> >> > ---
+> >> >  drivers/net/wireless/broadcom/b43/main.c | 6 ++++--
+> >> >  1 file changed, 4 insertions(+), 2 deletions(-)
+> >> 
+> >> Please don't copy the full directory structure to the title. I'll change
+> >> the title to more simple version:
+> >> 
+> >> b43: add braces around empty statements
+> >
+> > This seems to go the other way.
+> >
+> > "net: wireless: b43" seems sensible.
+> 
+> Sorry, not understanding what you mean here.
 
-Depends how you define a requirement.
+So I agree that:
 
-This is required to successfully and usefully enable W=1 warnings in
-our testing builds without being overloaded with current issues.
-Something I know a great number of maintainers have been either trying
-to do, or at least wanting to do for a long time.
+  "net: wireless: broadcom: b43: main"
 
-Being able to enable W=1 builds at the subsystem level is extremely
-helpful in order to keep the kernel clean(er).  As most subsystems
-don't (can't) have them enabled presently (due to being overwhelmed)
-they will likely creep/increase.
+... seems unnecessarily long and verbose.  However, IMHO:
 
-So far, the following subsystems have been on-board with this (and are
-now clean, or very nearly clean, as a result):
+  "b43:"
 
- ASoC
- backlight
- cpufreq
- dmaengine
- gpio
- hwmon
- iio
- mfd
- misc
- mmc
- pinctrl
- pwm
- regulator
- remoteproc
- scsi
- spi
- usb
- video
+... is too short and not forthcoming enough.  Obviously this fine when
+something like `git log -- net/wireless`, as you already know what the
+patch pertains to, however when someone who is not in the know (like I
+would be) does `git log` and sees a "b43:" patch, they would have no
+idea which subsystem this patch is adapting.  Even:
 
-> > I would have thought most Maintainers would be on-board with this.
-> From what I know: It's no changes For changes' sake. Because otherwise this
-> would be pretty broken for maintainers. They could just write and revert the
-> same code over and over to prob up their LOC and commit counter. Wouldn't
-> you agree there?
+  "wireless: b43:"
 
-I don't agree at all.  Why would anyone revert a fix?  That act would
-be intentionally add a warning?  A fools errand I think.
+... would be worlds better.
 
-> > The ones I've worked with thus far have certainly been thankful.  Many
-> > had this on their own TODO lists.
-> Question is, do you really want to be just the cleanup crew there? Since
-> semantic patches came along and a lot of this has been automated.
+A Git log which omitted all subsystem tags would be of limited use.
 
-I'm happy to put in the work.  Most people have been very grateful.
+> >> I'll do similar changes to other wireless-drivers patches.
+> >
+> > Thanks.
+> >
+> > Does that mean it's been applied, or is this future tense?
+> 
+> It's not applied yet, there will be an automatic "applied" email once I
+> have done that.
 
-If this work can be automated, than that would be wonderful.  However,
-18000 warnings (now down to 15000) tell me that this can not be the
-case.
-
-> I'm of course after something else. Like: "Isn't there a better way than
-> manually slapping __maybe_unused there to suppress the warning and call it a
-> day?" If you already went down these avenues and can confirm that there's no
-> alternative than this, then "fine". But if there is a better
-> method of doing this, then "let's go with that!".
-
-So for these kinds of issues we have a choice.
-
-In order of preference:
-
- 1. Genuinely unused; remove it
- 2. Used in a single location; move it to that location
- 3. Used in multiple, but not all locations:
-    a. Mark as __maybe_unused
-    b. Locate or create a special header file between users
-    b. Duplicate it and place it in all used locations
-
-I went for 3a here, as 1 and 2 aren't valid.
-
-> > > __maybe_unused in header files as this "suggests" that the
-> > > definition is redundant.
-> > 
-> > Not true.
-> > 
-> > If it were redundant then we would remove the line entirely.
-> So, why adding __maybe_unused then? I find it not very helpful to
-> tell the compiler to "shut up" when you want it's opinion...
-> This was the vibe I got from gcc's attribute unused help text.
-
-Effectively, you're telling the compiler that it's not correct in
-certain circumstances, like this one.  Here the variable is being
-used, but not by all users who share the header file.  In other valid
-cases of its use the variable may only be used when a given CONFIG_*
-is enabled.
-
-__always_unused however does just tell the compiler to shut-up. :)
-
-If you have any better solutions, other than to let the compiler spout
-useless warnings which taint the build log and hide other, more
-important issues, then I'd be happy to hear them.
+I see.  Thanks for the clarification.
 
 -- 
 Lee Jones [李琼斯]
