@@ -2,95 +2,193 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5855D245FF8
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Aug 2020 10:27:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A7F2246086
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Aug 2020 10:44:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728133AbgHQI1i (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 17 Aug 2020 04:27:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52714 "EHLO
+        id S1727794AbgHQIn5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 17 Aug 2020 04:43:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55534 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728405AbgHQI0T (ORCPT
+        with ESMTP id S1727785AbgHQInx (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 17 Aug 2020 04:26:19 -0400
-Received: from mail-ed1-x544.google.com (mail-ed1-x544.google.com [IPv6:2a00:1450:4864:20::544])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77EBBC061389
-        for <linux-wireless@vger.kernel.org>; Mon, 17 Aug 2020 01:26:19 -0700 (PDT)
-Received: by mail-ed1-x544.google.com with SMTP id ba10so11586682edb.3
-        for <linux-wireless@vger.kernel.org>; Mon, 17 Aug 2020 01:26:19 -0700 (PDT)
+        Mon, 17 Aug 2020 04:43:53 -0400
+Received: from mail-wm1-x342.google.com (mail-wm1-x342.google.com [IPv6:2a00:1450:4864:20::342])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D89ECC061389
+        for <linux-wireless@vger.kernel.org>; Mon, 17 Aug 2020 01:43:52 -0700 (PDT)
+Received: by mail-wm1-x342.google.com with SMTP id f18so12751347wmc.0
+        for <linux-wireless@vger.kernel.org>; Mon, 17 Aug 2020 01:43:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rasmusvillemoes.dk; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=EB784NjPICkYR6SWnOZXgVJnpSq6x26Bh+bf4QaSgmE=;
-        b=WW6BjLlHMZolL6jV9wGUJ2Nqna4uXwJlebSkTA9urlIi6Sa4Pa/NFLVlhsaFlRrn9E
-         XQngChT6EYMcGX3cA8zMULqnTs8j60bTV+lfjDankwdHtdAkUKN1PbSGAMxLTWewd3c0
-         abf5dN1kL9l6jxvEgxS3raK9zw14TFbm9RQxo=
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=D1UjIIuxlByyuNbDhVDjp8frAQhVC4jXQISXzhYCeyY=;
+        b=pCpD/3JXsVs5IP+p+ECYZCn74rRmRLfvblZjANzhSXMrphOOrXPQddul+iuWq/PzxU
+         KtoPNFawOpX4lVcn/zJMKoWN6dKFtIEHFChWG3oJapMcMB+3M1Exgp+1utBPrZ2ItdGI
+         8iKJxvt3AL8zxcQPcvmfQ5ZYEFfVtj84EUiP1d6saNS/W/WuQmLdTjZD7kSDseJeimoZ
+         KV23YUYbit3ZSGP4sna9htwJvRueZrgvM+kbJJ+f4NFliUSg7BXkUs+l0jtaDoXMLqZ+
+         nS8YZVrZhg0d8ilpLoBOtY+R9Liq9wN9FPAunz3UZ6DIoR9awpRW6Kh5076jYiRH6r7m
+         CaHg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=EB784NjPICkYR6SWnOZXgVJnpSq6x26Bh+bf4QaSgmE=;
-        b=oSjkZeiCdp+M/VuinHqztoCz/A4+ZN/GaRysj1T1bdyYOFcFVSykKz8imOg5dCz7ew
-         72oAlMp4y3ybqTqjxHBJJMkXIPLW7t8mKAQn92YcNR9UcqlBnXxmYvIjh0Sas0ST2yrj
-         la+T03lqTgplg2BNI28rxoOWL79/bCzwkIHdVfc3g8S9vzUPEidP4bH6sJ/fx6qzpfFa
-         DPFbq3Bzc0S66OtkI2+rXMzrsz2ndwtImoPBCHWauhjFHLY3igQyCjwU7LwtkdJcRYZ7
-         BoxBZkoUvizwLp85nwGZQJTZoHUp4xnFeL/SxAbz0wgY6lyNgaDBxDza3cSQpZUYEIpg
-         v4DA==
-X-Gm-Message-State: AOAM530s5kkKe0OlIYiULA5Tf5BSiV5KoCo/PGxksiuoUbEfzJN3PnE0
-        tOiSVpY1TtFihovauc0At01g+Q==
-X-Google-Smtp-Source: ABdhPJxsKL8nm53WAnCAbGQdXqx/yIadsPW7nUTLAsMfgGi8OvTQ7NHOoDONUkkkyNaMHrIoZuYVvQ==
-X-Received: by 2002:a50:c3c4:: with SMTP id i4mr13899573edf.244.1597652778082;
-        Mon, 17 Aug 2020 01:26:18 -0700 (PDT)
-Received: from [172.16.11.132] ([81.216.59.226])
-        by smtp.gmail.com with ESMTPSA id v13sm14170727edl.9.2020.08.17.01.26.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 17 Aug 2020 01:26:17 -0700 (PDT)
-Subject: Re: [PATCH 08/30] net: wireless: ath: carl9170: Mark 'ar9170_qmap' as
- __maybe_unused
-To:     Christian Lamparter <chunkeey@gmail.com>,
-        Lee Jones <lee.jones@linaro.org>, davem@davemloft.net,
-        kuba@kernel.org
-Cc:     linux-kernel@vger.kernel.org,
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=D1UjIIuxlByyuNbDhVDjp8frAQhVC4jXQISXzhYCeyY=;
+        b=G0Ko3qKnX/rtKz1YfxyEi3MGZTLcqUD6RcBr5xmsVA+FKbPgdpDjN+w0pPaUngsLsR
+         IRi9uuON6s9nhPF0pmkfaMGG8KdkH9lo2E08b21ReEL7q6bS9nkbO3zbxO9aR9UMhk2p
+         A4rQT6f0QmaxzrkmJnCTJgDuZr2RrPe0/hFSRPkzOeZ2y5/cIVlYJdNFK8id0G1EoDid
+         9oQYk5sW3QvlnL/yvfZ2AQuzAGtstC9s4MAQ0vH1goKalYU5dxka5SF20ICDhC8/6CYN
+         6lSUpQDny2rmqPk9S/ee44Y8AYlRRytKn0rrAODdZh6UCFuvUMss17Dx27ZKExigbGvs
+         jkZw==
+X-Gm-Message-State: AOAM5309Nubn5DjrWnfyE6YDo6tyJl507GPXR2AcnW9HavfcSGXGcqEK
+        jMjYlI4yZJffLwbaSoihVDm7hw==
+X-Google-Smtp-Source: ABdhPJyFMeTzYrQ25C/SOkBGds8oWQIcltw8DNk0rq7lyOF6TjCsCEwFGHehTztaqxs4yqkU9K5XMA==
+X-Received: by 2002:a1c:770c:: with SMTP id t12mr14515197wmi.65.1597653831551;
+        Mon, 17 Aug 2020 01:43:51 -0700 (PDT)
+Received: from dell ([95.149.164.62])
+        by smtp.gmail.com with ESMTPSA id r11sm29259984wrw.78.2020.08.17.01.43.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 17 Aug 2020 01:43:50 -0700 (PDT)
+Date:   Mon, 17 Aug 2020 09:43:49 +0100
+From:   Lee Jones <lee.jones@linaro.org>
+To:     Christian Lamparter <chunkeey@gmail.com>
+Cc:     davem@davemloft.net, kuba@kernel.org, linux-kernel@vger.kernel.org,
         Christian Lamparter <chunkeey@googlemail.com>,
         Kalle Valo <kvalo@codeaurora.org>,
         Johannes Berg <johannes@sipsolutions.net>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH 08/30] net: wireless: ath: carl9170: Mark 'ar9170_qmap'
+ as __maybe_unused
+Message-ID: <20200817084349.GS4354@dell>
 References: <20200814113933.1903438-1-lee.jones@linaro.org>
  <20200814113933.1903438-9-lee.jones@linaro.org>
  <7ef231f2-e6d3-904f-dc3a-7ef82beda6ef@gmail.com>
-From:   Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Message-ID: <9776eb47-6b83-a891-f057-dd34d14ea16e@rasmusvillemoes.dk>
-Date:   Mon, 17 Aug 2020 10:26:16 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+ <20200814164046.GO4354@dell>
+ <0a144311-2085-60b5-ea36-554c6efbf7e9@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <7ef231f2-e6d3-904f-dc3a-7ef82beda6ef@gmail.com>
 Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <0a144311-2085-60b5-ea36-554c6efbf7e9@gmail.com>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 14/08/2020 17.14, Christian Lamparter wrote:
-> On 2020-08-14 13:39, Lee Jones wrote:
->> 'ar9170_qmap' is used in some source files which include carl9170.h,
->> but not all of them.  Mark it as __maybe_unused to show that this is
->> not only okay, it's expected.
->>
->> Fixes the following W=1 kernel build warning(s)
-> 
-> Is this W=1 really a "must" requirement? I find it strange having
-> __maybe_unused in header files as this "suggests" that the
-> definition is redundant.
+On Fri, 14 Aug 2020, Christian Lamparter wrote:
 
-In this case it seems one could replace the table lookup with a
+> On 2020-08-14 18:40, Lee Jones wrote:
+> > On Fri, 14 Aug 2020, Christian Lamparter wrote:
+> > 
+> > > On 2020-08-14 13:39, Lee Jones wrote:
+> > > > 'ar9170_qmap' is used in some source files which include carl9170.h,
+> > > > but not all of them.  Mark it as __maybe_unused to show that this is
+> > > > not only okay, it's expected.
+> > > > 
+> > > > Fixes the following W=1 kernel build warning(s)
+> > > 
+> > > Is this W=1 really a "must" requirement? I find it strange having
+> > 
+> > Clean W=1 warnings is the dream, yes.
+> But is it a requirement?
 
-static inline u8 ar9170_qmap(u8 idx) { return 3 - idx; }
+Depends how you define a requirement.
 
-gcc doesn't warn about unused static inline functions (or one would have
-a million warnings to deal with). Just my $0.02.
+This is required to successfully and usefully enable W=1 warnings in
+our testing builds without being overloaded with current issues.
+Something I know a great number of maintainers have been either trying
+to do, or at least wanting to do for a long time.
 
-Rasmus
+Being able to enable W=1 builds at the subsystem level is extremely
+helpful in order to keep the kernel clean(er).  As most subsystems
+don't (can't) have them enabled presently (due to being overwhelmed)
+they will likely creep/increase.
+
+So far, the following subsystems have been on-board with this (and are
+now clean, or very nearly clean, as a result):
+
+ ASoC
+ backlight
+ cpufreq
+ dmaengine
+ gpio
+ hwmon
+ iio
+ mfd
+ misc
+ mmc
+ pinctrl
+ pwm
+ regulator
+ remoteproc
+ scsi
+ spi
+ usb
+ video
+
+> > I would have thought most Maintainers would be on-board with this.
+> From what I know: It's no changes For changes' sake. Because otherwise this
+> would be pretty broken for maintainers. They could just write and revert the
+> same code over and over to prob up their LOC and commit counter. Wouldn't
+> you agree there?
+
+I don't agree at all.  Why would anyone revert a fix?  That act would
+be intentionally add a warning?  A fools errand I think.
+
+> > The ones I've worked with thus far have certainly been thankful.  Many
+> > had this on their own TODO lists.
+> Question is, do you really want to be just the cleanup crew there? Since
+> semantic patches came along and a lot of this has been automated.
+
+I'm happy to put in the work.  Most people have been very grateful.
+
+If this work can be automated, than that would be wonderful.  However,
+18000 warnings (now down to 15000) tell me that this can not be the
+case.
+
+> I'm of course after something else. Like: "Isn't there a better way than
+> manually slapping __maybe_unused there to suppress the warning and call it a
+> day?" If you already went down these avenues and can confirm that there's no
+> alternative than this, then "fine". But if there is a better
+> method of doing this, then "let's go with that!".
+
+So for these kinds of issues we have a choice.
+
+In order of preference:
+
+ 1. Genuinely unused; remove it
+ 2. Used in a single location; move it to that location
+ 3. Used in multiple, but not all locations:
+    a. Mark as __maybe_unused
+    b. Locate or create a special header file between users
+    b. Duplicate it and place it in all used locations
+
+I went for 3a here, as 1 and 2 aren't valid.
+
+> > > __maybe_unused in header files as this "suggests" that the
+> > > definition is redundant.
+> > 
+> > Not true.
+> > 
+> > If it were redundant then we would remove the line entirely.
+> So, why adding __maybe_unused then? I find it not very helpful to
+> tell the compiler to "shut up" when you want it's opinion...
+> This was the vibe I got from gcc's attribute unused help text.
+
+Effectively, you're telling the compiler that it's not correct in
+certain circumstances, like this one.  Here the variable is being
+used, but not by all users who share the header file.  In other valid
+cases of its use the variable may only be used when a given CONFIG_*
+is enabled.
+
+__always_unused however does just tell the compiler to shut-up. :)
+
+If you have any better solutions, other than to let the compiler spout
+useless warnings which taint the build log and hide other, more
+important issues, then I'd be happy to hear them.
+
+-- 
+Lee Jones [李琼斯]
+Senior Technical Lead - Developer Services
+Linaro.org │ Open source software for Arm SoCs
+Follow Linaro: Facebook | Twitter | Blog
