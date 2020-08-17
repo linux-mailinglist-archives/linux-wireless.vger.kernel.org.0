@@ -2,87 +2,151 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C2CD72466F6
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Aug 2020 15:07:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA16224675A
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Aug 2020 15:28:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728555AbgHQNHI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 17 Aug 2020 09:07:08 -0400
-Received: from www262.sakura.ne.jp ([202.181.97.72]:57353 "EHLO
-        www262.sakura.ne.jp" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728530AbgHQNGp (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 17 Aug 2020 09:06:45 -0400
-Received: from fsav404.sakura.ne.jp (fsav404.sakura.ne.jp [133.242.250.103])
-        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 07HD6GQK065030;
-        Mon, 17 Aug 2020 22:06:16 +0900 (JST)
-        (envelope-from penguin-kernel@i-love.sakura.ne.jp)
-Received: from www262.sakura.ne.jp (202.181.97.72)
- by fsav404.sakura.ne.jp (F-Secure/fsigk_smtp/550/fsav404.sakura.ne.jp);
- Mon, 17 Aug 2020 22:06:16 +0900 (JST)
-X-Virus-Status: clean(F-Secure/fsigk_smtp/550/fsav404.sakura.ne.jp)
-Received: from [192.168.1.9] (M106072142033.v4.enabler.ne.jp [106.72.142.33])
-        (authenticated bits=0)
-        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTPSA id 07HD6A2e065007
-        (version=TLSv1.2 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
-        Mon, 17 Aug 2020 22:06:16 +0900 (JST)
-        (envelope-from penguin-kernel@i-love.sakura.ne.jp)
-Subject: Re: [PATCH] mwifiex: don't call del_timer_sync() on uninitialized
- timer
-To:     Ganapathi Bhat <gbhat@marvell.com>
-Cc:     Brian Norris <briannorris@chromium.org>,
-        amit karwar <amitkarwar@gmail.com>, andreyknvl@google.com,
-        "David S. Miller" <davem@davemloft.net>,
-        Dmitry Vyukov <dvyukov@google.com>,
-        Xinming Hu <huxinming820@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Linux Kernel <linux-kernel@vger.kernel.org>,
-        Linux USB Mailing List <linux-usb@vger.kernel.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        netdev@vger.kernel.org, Nishant Sarmukadam <nishants@marvell.com>,
-        syzbot+dc4127f950da51639216@syzkaller.appspotmail.com,
-        syzkaller-bugs@googlegroups.com,
-        syzbot <syzbot+373e6719b49912399d21@syzkaller.appspotmail.com>
-References: <MN2PR18MB2637D7C742BC235FE38367F0A09C0@MN2PR18MB2637.namprd18.prod.outlook.com>
- <1595900652-3842-1-git-send-email-penguin-kernel@I-love.SAKURA.ne.jp>
- <CA+ASDXMHt2gq9Hy+iP_BYkWXsSreWdp3_bAfMkNcuqJ3K+-jbQ@mail.gmail.com>
-From:   Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
-Message-ID: <45dd8b7c-584d-40dc-342a-6d894e0e68c8@i-love.sakura.ne.jp>
-Date:   Mon, 17 Aug 2020 22:06:07 +0900
-User-Agent: Mozilla/5.0 (Windows NT 6.3; Win64; x64; rv:68.0) Gecko/20100101
- Thunderbird/68.11.0
+        id S1728665AbgHQN1z (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 17 Aug 2020 09:27:55 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:48846 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728650AbgHQN1z (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 17 Aug 2020 09:27:55 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1597670874; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=INTxAt5lNz/SJ0qOc87ualrdr+KyL5wjMAo0+q1t93w=; b=eAvLkRrhXx66upx1NaO5+xNXEnBxjDW1U6CxZ0FjBVivcM6LH+QuSedgATIU/NwS40htRvNO
+ RSDEOxKqDQdGQMCaWKj6XtV7TvvOS8+SZGRSFmD9pU3L4dVxhtKOzEmeLe6HIxNqvwg/SoYR
+ MCNSKmJ/TadxsVwm0dp7xjXM+rc=
+X-Mailgun-Sending-Ip: 69.72.43.7
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n10.prod.us-east-1.postgun.com with SMTP id
+ 5f3a85acf2b697637a049001 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 17 Aug 2020 13:27:08
+ GMT
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 17D74C433AD; Mon, 17 Aug 2020 13:27:06 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from x230.qca.qualcomm.com (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 259DAC433CA;
+        Mon, 17 Aug 2020 13:27:02 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 259DAC433CA
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Lee Jones <lee.jones@linaro.org>
+Cc:     davem@davemloft.net, kuba@kernel.org, linux-kernel@vger.kernel.org,
+        Benjamin Reed <breed@users.sourceforge.net>,
+        Javier Achirica <achirica@users.sourceforge.net>,
+        Jean Tourrilhes <jt@hpl.hp.com>,
+        Fabrice Bellet <fabrice@bellet.info>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        Ondrej Zary <linux@rainbow-software.org>
+Subject: Re: [PATCH 12/30] net: wireless: cisco: airo: Fix a myriad of coding style issues
+References: <20200814113933.1903438-1-lee.jones@linaro.org>
+        <20200814113933.1903438-13-lee.jones@linaro.org>
+        <87r1s9l0mc.fsf@codeaurora.org> <20200814163831.GN4354@dell>
+Date:   Mon, 17 Aug 2020 16:27:01 +0300
+In-Reply-To: <20200814163831.GN4354@dell> (Lee Jones's message of "Fri, 14 Aug
+        2020 17:38:31 +0100")
+Message-ID: <87a6ytmmhm.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-In-Reply-To: <CA+ASDXMHt2gq9Hy+iP_BYkWXsSreWdp3_bAfMkNcuqJ3K+-jbQ@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Ganapathi, how do you want to fix this bug?
+Lee Jones <lee.jones@linaro.org> writes:
 
-On 2020/07/29 3:45, Brian Norris wrote:
->> syzbot is reporting that del_timer_sync() is called from
->> mwifiex_usb_cleanup_tx_aggr() from mwifiex_unregister_dev() without
->> checking timer_setup() from mwifiex_usb_tx_init() was called [1].
->> Since mwifiex_usb_prepare_tx_aggr_skb() is calling del_timer() if
->> is_hold_timer_set == true, use the same condition for del_timer_sync().
->>
->> [1] https://syzkaller.appspot.com/bug?id=fdeef9cf7348be8b8ab5b847f2ed993aba8ea7b6
->>
->> Reported-by: syzbot <syzbot+373e6719b49912399d21@syzkaller.appspotmail.com>
->> Cc: Ganapathi Bhat <gbhat@marvell.com>
->> Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
->> ---
->> A patch from Ganapathi Bhat ( https://patchwork.kernel.org/patch/10990275/ ) is stalling
->> at https://lore.kernel.org/linux-usb/MN2PR18MB2637D7C742BC235FE38367F0A09C0@MN2PR18MB2637.namprd18.prod.outlook.com/ .
->> syzbot by now got this report for 10000 times. Do we want to go with this simple patch?
-> 
-> Sorry, that stall is partly my fault, and partly Ganapathi's. It
-> doesn't help that it took him 4 months to reply to my questions, so I
-> completely lost even the tiny bit of context I had managed to build up
-> in my head at initial review time... and so it's still buried in the
-> dark corners of my inbox. (I think I'll go archive that now, because
-> it really deserves a better sell than it had initially, if Ganapathi
-> really wants to land it.)
+> On Fri, 14 Aug 2020, Kalle Valo wrote:
+>
+>> Lee Jones <lee.jones@linaro.org> writes:
+>> 
+>> >  - Ensure spaces appear after {for, if, while, etc}
+>> >  - Ensure spaces to not appear after '('
+>> >  - Ensure spaces to not appear before ')'
+>> >  - Ensure spaces appear between ')' and '{'
+>> >  - Ensure spaces appear after ','
+>> >  - Ensure spaces do not appear before ','
+>> >  - Ensure spaces appear either side of '='
+>> >  - Ensure '{'s which open functions are on a new line
+>> >  - Remove trailing whitespace
+>> >
+>> > There are still a whole host of issues with this file, but this
+>> > patch certainly breaks the back of them.
+>> >
+>> > Cc: Kalle Valo <kvalo@codeaurora.org>
+>> > Cc: "David S. Miller" <davem@davemloft.net>
+>> > Cc: Jakub Kicinski <kuba@kernel.org>
+>> > Cc: Benjamin Reed <breed@users.sourceforge.net>
+>> > Cc: Javier Achirica <achirica@users.sourceforge.net>
+>> > Cc: Jean Tourrilhes <jt@hpl.hp.com>
+>> > Cc: Fabrice Bellet <fabrice@bellet.info>
+>> > Cc: linux-wireless@vger.kernel.org
+>> > Cc: netdev@vger.kernel.org
+>> > Signed-off-by: Lee Jones <lee.jones@linaro.org>
+>> > ---
+>> >  drivers/net/wireless/cisco/airo.c | 897 ++++++++++++++++--------------
+>> >  1 file changed, 467 insertions(+), 430 deletions(-)
+>> 
+>> This is a driver for ancient hardware, I'm not sure if it's worth trying
+>> to fix any style issues. Is anyone even using it? Should we instead just
+>> remove the driver?
+>
+> Sounds like a reasonable solution to me.
+>
+> I'm also happy to do it, if there are no objections.
+>
+> As it stands, it's polluting the code-base and the build-log, so
+> something should be done.
+
+I tried to find some comments about the driver and here's one successful
+report from 2013:
+
+https://martybugs.net/wireless/aironet4800.cgi
+
+And here's one commit from 2015 where Ondrej (CCed) was also testing the
+driver:
+
+----------------------------------------------------------------------
+commit dae0412d0caa4948da07fe4ad91352b5b61a70ec
+Author:     Ondrej Zary <linux@rainbow-software.org>
+AuthorDate: Fri Oct 16 21:04:14 2015 +0200
+Commit:     Kalle Valo <kvalo@codeaurora.org>
+CommitDate: Wed Oct 28 20:54:39 2015 +0200
+
+    airo: fix scan after SIOCSIWAP (airo_set_wap)
+    
+    SIOCSIWAP (airo_set_wap) affects scan: only the AP specified by
+    SIOCSIWAP is present in scan results.
+    
+    This makes NetworkManager work for the first time but then unable to
+    find any other APs.
+    
+    Clear APList before starting scan and set it back after scan completes
+    to work-around the problem.
+    
+    To avoid losing packets during scan, modify disable_MAC() to omit
+    netif_carrier_off() call when lock == 2.
+    
+    Signed-off-by: Ondrej Zary <linux@rainbow-software.org>
+    Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+----------------------------------------------------------------------
+
+I was surprised to see that someone was using this driver in 2015, so
+I'm not sure anymore what to do. Of course we could still just remove it
+and later revert if someone steps up and claims the driver is still
+usable. Hmm. Does anyone any users of this driver?
+
+-- 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
