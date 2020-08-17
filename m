@@ -2,151 +2,124 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DA16224675A
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Aug 2020 15:28:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 84A78246842
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Aug 2020 16:19:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728665AbgHQN1z (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 17 Aug 2020 09:27:55 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:48846 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728650AbgHQN1z (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 17 Aug 2020 09:27:55 -0400
+        id S1728831AbgHQOTq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 17 Aug 2020 10:19:46 -0400
+Received: from mail29.static.mailgun.info ([104.130.122.29]:36714 "EHLO
+        mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728765AbgHQOTp (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 17 Aug 2020 10:19:45 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1597670874; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=INTxAt5lNz/SJ0qOc87ualrdr+KyL5wjMAo0+q1t93w=; b=eAvLkRrhXx66upx1NaO5+xNXEnBxjDW1U6CxZ0FjBVivcM6LH+QuSedgATIU/NwS40htRvNO
- RSDEOxKqDQdGQMCaWKj6XtV7TvvOS8+SZGRSFmD9pU3L4dVxhtKOzEmeLe6HIxNqvwg/SoYR
- MCNSKmJ/TadxsVwm0dp7xjXM+rc=
-X-Mailgun-Sending-Ip: 69.72.43.7
+ s=smtp; t=1597673984; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=/7zymGBTZtzqMzjA3SFcVGNGjCCtPck3dXUGyjdrbeg=;
+ b=RrjMjLwBSc6Ou8ZlOgfECFFttYbWJoWarCLgCg0IBP545BQxpA8KlVhmtFzR00qE1kcV65Qx
+ FIXOGpEYmRfR21n+uWUmGiBjXtxvQIYHTHj1dEDm/4cM00an8sG637tYkowjkGPm7xEdsJuQ
+ n71Wm3BF+JpKXCI0RGMQgJ8pRoM=
+X-Mailgun-Sending-Ip: 104.130.122.29
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n10.prod.us-east-1.postgun.com with SMTP id
- 5f3a85acf2b697637a049001 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 17 Aug 2020 13:27:08
+ smtp-out-n02.prod.us-west-2.postgun.com with SMTP id
+ 5f3a91f7d96d28d61ec81777 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 17 Aug 2020 14:19:35
  GMT
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 17D74C433AD; Mon, 17 Aug 2020 13:27:06 +0000 (UTC)
+        id A251FC43387; Mon, 17 Aug 2020 14:19:34 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from x230.qca.qualcomm.com (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
+        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 259DAC433CA;
-        Mon, 17 Aug 2020 13:27:02 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 259DAC433CA
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 15647C433CA;
+        Mon, 17 Aug 2020 14:19:32 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 15647C433CA
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Lee Jones <lee.jones@linaro.org>
-Cc:     davem@davemloft.net, kuba@kernel.org, linux-kernel@vger.kernel.org,
-        Benjamin Reed <breed@users.sourceforge.net>,
-        Javier Achirica <achirica@users.sourceforge.net>,
-        Jean Tourrilhes <jt@hpl.hp.com>,
-        Fabrice Bellet <fabrice@bellet.info>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        Ondrej Zary <linux@rainbow-software.org>
-Subject: Re: [PATCH 12/30] net: wireless: cisco: airo: Fix a myriad of coding style issues
-References: <20200814113933.1903438-1-lee.jones@linaro.org>
-        <20200814113933.1903438-13-lee.jones@linaro.org>
-        <87r1s9l0mc.fsf@codeaurora.org> <20200814163831.GN4354@dell>
-Date:   Mon, 17 Aug 2020 16:27:01 +0300
-In-Reply-To: <20200814163831.GN4354@dell> (Lee Jones's message of "Fri, 14 Aug
-        2020 17:38:31 +0100")
-Message-ID: <87a6ytmmhm.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCHv2 3/4] ath10k: Add new api to support TID specific
+ configuration
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <1593875614-5683-4-git-send-email-tamizhr@codeaurora.org>
+References: <1593875614-5683-4-git-send-email-tamizhr@codeaurora.org>
+To:     Tamizh Chelvam <tamizhr@codeaurora.org>
+Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        Tamizh Chelvam <tamizhr@codeaurora.org>
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
+Message-Id: <20200817141934.A251FC43387@smtp.codeaurora.org>
+Date:   Mon, 17 Aug 2020 14:19:34 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Lee Jones <lee.jones@linaro.org> writes:
+Tamizh Chelvam <tamizhr@codeaurora.org> wrote:
 
-> On Fri, 14 Aug 2020, Kalle Valo wrote:
->
->> Lee Jones <lee.jones@linaro.org> writes:
->> 
->> >  - Ensure spaces appear after {for, if, while, etc}
->> >  - Ensure spaces to not appear after '('
->> >  - Ensure spaces to not appear before ')'
->> >  - Ensure spaces appear between ')' and '{'
->> >  - Ensure spaces appear after ','
->> >  - Ensure spaces do not appear before ','
->> >  - Ensure spaces appear either side of '='
->> >  - Ensure '{'s which open functions are on a new line
->> >  - Remove trailing whitespace
->> >
->> > There are still a whole host of issues with this file, but this
->> > patch certainly breaks the back of them.
->> >
->> > Cc: Kalle Valo <kvalo@codeaurora.org>
->> > Cc: "David S. Miller" <davem@davemloft.net>
->> > Cc: Jakub Kicinski <kuba@kernel.org>
->> > Cc: Benjamin Reed <breed@users.sourceforge.net>
->> > Cc: Javier Achirica <achirica@users.sourceforge.net>
->> > Cc: Jean Tourrilhes <jt@hpl.hp.com>
->> > Cc: Fabrice Bellet <fabrice@bellet.info>
->> > Cc: linux-wireless@vger.kernel.org
->> > Cc: netdev@vger.kernel.org
->> > Signed-off-by: Lee Jones <lee.jones@linaro.org>
->> > ---
->> >  drivers/net/wireless/cisco/airo.c | 897 ++++++++++++++++--------------
->> >  1 file changed, 467 insertions(+), 430 deletions(-)
->> 
->> This is a driver for ancient hardware, I'm not sure if it's worth trying
->> to fix any style issues. Is anyone even using it? Should we instead just
->> remove the driver?
->
-> Sounds like a reasonable solution to me.
->
-> I'm also happy to do it, if there are no objections.
->
-> As it stands, it's polluting the code-base and the build-log, so
-> something should be done.
+> This patch add ops for set_tid_config to support TID
+> specific configuration. Station specific TID configuration
+> will have more priority than vif specific TID configuration.
+> WMI_SERVICE_PEER_TID_CONFIGS_SUPPORT service flag introduced
+> to notify host for TID config support. And RTS_CTS extended tid
+> configuration support advertised through the service flag
+> WMI_10_4_SERVICE_EXT_PEER_TID_CONFIGS_SUPPORT.
+> 
+> TID specific noack configuration requires
+> aggregation should be disabled and rate for the data TID packets
+> should be basic rates. So, if the TID already configured
+> with noack policy then driver will ignore the aggregation
+> or TX rate related configuration for the same data TID.
+> 
+> In TX rate configuration should be applied with highest
+> preamble configuration(HT rates should not be applied
+> for the station which supports vht rates).
+> 
+> Tested-on: QCA9984 hw1.0 PCI 10.4-3.9.0.2-00021
+> 
+> Signed-off-by: Tamizh Chelvam <tamizhr@codeaurora.org>
+> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 
-I tried to find some comments about the driver and here's one successful
-report from 2013:
+There few checkpatch warnings which I fixed and also I did some whitespace
+changes to improve readability. Others were trivial but please check carefully
+this change and let me know if it's ok:
 
-https://martybugs.net/wireless/aironet4800.cgi
-
-And here's one commit from 2015 where Ondrej (CCed) was also testing the
-driver:
-
-----------------------------------------------------------------------
-commit dae0412d0caa4948da07fe4ad91352b5b61a70ec
-Author:     Ondrej Zary <linux@rainbow-software.org>
-AuthorDate: Fri Oct 16 21:04:14 2015 +0200
-Commit:     Kalle Valo <kvalo@codeaurora.org>
-CommitDate: Wed Oct 28 20:54:39 2015 +0200
-
-    airo: fix scan after SIOCSIWAP (airo_set_wap)
-    
-    SIOCSIWAP (airo_set_wap) affects scan: only the AP specified by
-    SIOCSIWAP is present in scan results.
-    
-    This makes NetworkManager work for the first time but then unable to
-    find any other APs.
-    
-    Clear APList before starting scan and set it back after scan completes
-    to work-around the problem.
-    
-    To avoid losing packets during scan, modify disable_MAC() to omit
-    netif_carrier_off() call when lock == 2.
-    
-    Signed-off-by: Ondrej Zary <linux@rainbow-software.org>
-    Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
-----------------------------------------------------------------------
-
-I was surprised to see that someone was using this driver in 2015, so
-I'm not sure anymore what to do. Of course we could still just remove it
-and later revert if someone steps up and claims the driver is still
-usable. Hmm. Does anyone any users of this driver?
+--- a/drivers/net/wireless/ath/ath10k/mac.c
++++ b/drivers/net/wireless/ath/ath10k/mac.c
+@@ -7089,6 +7089,7 @@ static void ath10k_sta_tid_cfg_wk(struct work_struct *wk)
+        bool config_apply;
+        int ret, i;
+        u32 changed;
++       u8 nss;
+ 
+        arsta = container_of(wk, struct ath10k_sta, tid_config_wk);
+        sta = container_of((void *)arsta, struct ieee80211_sta, drv_priv);
+@@ -7138,9 +7139,12 @@ static void ath10k_sta_tid_cfg_wk(struct work_struct *wk)
+ 
+                if (changed & (BIT(NL80211_TID_CONFIG_ATTR_TX_RATE) |
+                    BIT(NL80211_TID_CONFIG_ATTR_TX_RATE_TYPE))) {
+-                       if (arvif->rate_ctrl[i] > WMI_TID_CONFIG_RATE_CONTROL_AUTO &&
+-                           ath10k_mac_validate_rate_mask(ar, sta, arvif->rate_code[i],
+-                                                         ATH10K_HW_NSS(arvif->rate_code[i]))) {
++                       nss = ATH10K_HW_NSS(arvif->rate_code[i]);
++                       ret = ath10k_mac_validate_rate_mask(ar, sta,
++                                                           arvif->rate_code[i],
++                                                           nss);
++                       if (ret &&
++                           arvif->rate_ctrl[i] > WMI_TID_CONFIG_RATE_CONTROL_AUTO) {
+                                arg.rate_ctrl = 0;
+                                arg.rcode_flags = 0;
+                        }
 
 -- 
+https://patchwork.kernel.org/patch/11643787/
+
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
