@@ -2,124 +2,103 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 84A78246842
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Aug 2020 16:19:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CE51F246853
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Aug 2020 16:27:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728831AbgHQOTq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 17 Aug 2020 10:19:46 -0400
-Received: from mail29.static.mailgun.info ([104.130.122.29]:36714 "EHLO
+        id S1728737AbgHQO1y (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 17 Aug 2020 10:27:54 -0400
+Received: from mail29.static.mailgun.info ([104.130.122.29]:33190 "EHLO
         mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728765AbgHQOTp (ORCPT
+        by vger.kernel.org with ESMTP id S1728669AbgHQO1w (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 17 Aug 2020 10:19:45 -0400
+        Mon, 17 Aug 2020 10:27:52 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1597673984; h=Date: Message-Id: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=/7zymGBTZtzqMzjA3SFcVGNGjCCtPck3dXUGyjdrbeg=;
- b=RrjMjLwBSc6Ou8ZlOgfECFFttYbWJoWarCLgCg0IBP545BQxpA8KlVhmtFzR00qE1kcV65Qx
- FIXOGpEYmRfR21n+uWUmGiBjXtxvQIYHTHj1dEDm/4cM00an8sG637tYkowjkGPm7xEdsJuQ
- n71Wm3BF+JpKXCI0RGMQgJ8pRoM=
+ s=smtp; t=1597674472; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=6e6Bqrm2jR07xHEe5aaNgE6JVEUspYK2v6jUh9M+BAk=; b=Znz/AOSIiDnYD6ThIMupaL7drpeUxs1p3PDHzwrb2muVU1KBS7ZUrqxgpxgoRq3iVYddyu8p
+ M/Y9jeOJrUXkWLeHYzhWBl4FpRTnMG42leOhkwOHBc1vdOwxfQe6+XcHpiv3N78lVZVf8/85
+ OlhVKe6PtVDQImhyrn3dUqFbii4=
 X-Mailgun-Sending-Ip: 104.130.122.29
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n02.prod.us-west-2.postgun.com with SMTP id
- 5f3a91f7d96d28d61ec81777 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 17 Aug 2020 14:19:35
+ smtp-out-n09.prod.us-east-1.postgun.com with SMTP id
+ 5f3a93b3247ccc308ca301cc (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 17 Aug 2020 14:26:59
  GMT
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id A251FC43387; Mon, 17 Aug 2020 14:19:34 +0000 (UTC)
+        id BBF7BC433CB; Mon, 17 Aug 2020 14:26:58 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
-        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 15647C433CA;
-        Mon, 17 Aug 2020 14:19:32 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 15647C433CA
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 527C0C433C6;
+        Mon, 17 Aug 2020 14:26:56 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 527C0C433C6
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCHv2 3/4] ath10k: Add new api to support TID specific
- configuration
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <1593875614-5683-4-git-send-email-tamizhr@codeaurora.org>
-References: <1593875614-5683-4-git-send-email-tamizhr@codeaurora.org>
-To:     Tamizh Chelvam <tamizhr@codeaurora.org>
-Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        Tamizh Chelvam <tamizhr@codeaurora.org>
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20200817141934.A251FC43387@smtp.codeaurora.org>
-Date:   Mon, 17 Aug 2020 14:19:34 +0000 (UTC)
+To:     Tang Bin <tangbin@cmss.chinamobile.com>
+Cc:     davem@davemloft.net, netdev@vger.kernel.org,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        ath10k@lists.infradead.org,
+        Zhang Shengju <zhangshengju@cmss.chinamobile.com>
+Subject: Re: [PATCH] ath10k: fix the status check and wrong return
+References: <20200814144844.1920-1-tangbin@cmss.chinamobile.com>
+Date:   Mon, 17 Aug 2020 17:26:54 +0300
+In-Reply-To: <20200814144844.1920-1-tangbin@cmss.chinamobile.com> (Tang Bin's
+        message of "Fri, 14 Aug 2020 22:48:44 +0800")
+Message-ID: <87y2mdjqkx.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Tamizh Chelvam <tamizhr@codeaurora.org> wrote:
+Tang Bin <tangbin@cmss.chinamobile.com> writes:
 
-> This patch add ops for set_tid_config to support TID
-> specific configuration. Station specific TID configuration
-> will have more priority than vif specific TID configuration.
-> WMI_SERVICE_PEER_TID_CONFIGS_SUPPORT service flag introduced
-> to notify host for TID config support. And RTS_CTS extended tid
-> configuration support advertised through the service flag
-> WMI_10_4_SERVICE_EXT_PEER_TID_CONFIGS_SUPPORT.
-> 
-> TID specific noack configuration requires
-> aggregation should be disabled and rate for the data TID packets
-> should be basic rates. So, if the TID already configured
-> with noack policy then driver will ignore the aggregation
-> or TX rate related configuration for the same data TID.
-> 
-> In TX rate configuration should be applied with highest
-> preamble configuration(HT rates should not be applied
-> for the station which supports vht rates).
-> 
-> Tested-on: QCA9984 hw1.0 PCI 10.4-3.9.0.2-00021
-> 
-> Signed-off-by: Tamizh Chelvam <tamizhr@codeaurora.org>
-> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+> In the function ath10k_ahb_clock_init(), devm_clk_get() doesn't
+> return NULL. Thus use IS_ERR() and PTR_ERR() to validate
+> the returned value instead of IS_ERR_OR_NULL().
 
-There few checkpatch warnings which I fixed and also I did some whitespace
-changes to improve readability. Others were trivial but please check carefully
-this change and let me know if it's ok:
+Why? What's the benefit of this patch? Or what harm does
+IS_ERR_OR_NULL() create?
 
---- a/drivers/net/wireless/ath/ath10k/mac.c
-+++ b/drivers/net/wireless/ath/ath10k/mac.c
-@@ -7089,6 +7089,7 @@ static void ath10k_sta_tid_cfg_wk(struct work_struct *wk)
-        bool config_apply;
-        int ret, i;
-        u32 changed;
-+       u8 nss;
- 
-        arsta = container_of(wk, struct ath10k_sta, tid_config_wk);
-        sta = container_of((void *)arsta, struct ieee80211_sta, drv_priv);
-@@ -7138,9 +7139,12 @@ static void ath10k_sta_tid_cfg_wk(struct work_struct *wk)
- 
-                if (changed & (BIT(NL80211_TID_CONFIG_ATTR_TX_RATE) |
-                    BIT(NL80211_TID_CONFIG_ATTR_TX_RATE_TYPE))) {
--                       if (arvif->rate_ctrl[i] > WMI_TID_CONFIG_RATE_CONTROL_AUTO &&
--                           ath10k_mac_validate_rate_mask(ar, sta, arvif->rate_code[i],
--                                                         ATH10K_HW_NSS(arvif->rate_code[i]))) {
-+                       nss = ATH10K_HW_NSS(arvif->rate_code[i]);
-+                       ret = ath10k_mac_validate_rate_mask(ar, sta,
-+                                                           arvif->rate_code[i],
-+                                                           nss);
-+                       if (ret &&
-+                           arvif->rate_ctrl[i] > WMI_TID_CONFIG_RATE_CONTROL_AUTO) {
-                                arg.rate_ctrl = 0;
-                                arg.rcode_flags = 0;
-                        }
+> Signed-off-by: Zhang Shengju <zhangshengju@cmss.chinamobile.com>
+> Signed-off-by: Tang Bin <tangbin@cmss.chinamobile.com>
+> ---
+>  drivers/net/wireless/ath/ath10k/ahb.c | 12 ++++++------
+>  1 file changed, 6 insertions(+), 6 deletions(-)
+>
+> diff --git a/drivers/net/wireless/ath/ath10k/ahb.c b/drivers/net/wireless/ath/ath10k/ahb.c
+> index ed87bc00f..ea669af6a 100644
+> --- a/drivers/net/wireless/ath/ath10k/ahb.c
+> +++ b/drivers/net/wireless/ath/ath10k/ahb.c
+> @@ -87,24 +87,24 @@ static int ath10k_ahb_clock_init(struct ath10k *ar)
+>  	dev = &ar_ahb->pdev->dev;
+>  
+>  	ar_ahb->cmd_clk = devm_clk_get(dev, "wifi_wcss_cmd");
+> -	if (IS_ERR_OR_NULL(ar_ahb->cmd_clk)) {
+> +	if (IS_ERR(ar_ahb->cmd_clk)) {
+>  		ath10k_err(ar, "failed to get cmd clk: %ld\n",
+>  			   PTR_ERR(ar_ahb->cmd_clk));
+> -		return ar_ahb->cmd_clk ? PTR_ERR(ar_ahb->cmd_clk) : -ENODEV;
+> +		return PTR_ERR(ar_ahb->cmd_clk);
+>  	}
+
+devm_clk_get() can return NULL if CONFIG_HAVE_CLK is disabled:
+
+static inline struct clk *devm_clk_get(struct device *dev, const char *id)
+{
+	return NULL;
+}
 
 -- 
-https://patchwork.kernel.org/patch/11643787/
-
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
