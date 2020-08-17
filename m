@@ -2,84 +2,66 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 87BFC24647A
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Aug 2020 12:26:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DCCBF24649A
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Aug 2020 12:36:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727882AbgHQK0K (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 17 Aug 2020 06:26:10 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:11620 "EHLO m43-7.mailgun.net"
+        id S1726769AbgHQKgM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 17 Aug 2020 06:36:12 -0400
+Received: from mail.kernel.org ([198.145.29.99]:60282 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726888AbgHQK0J (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 17 Aug 2020 06:26:09 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1597659969; h=Date: Message-Id: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=S5/BdNcXbH5/ZLVYJNYMux3Xzg2BMY0Jmpn0anwhdhA=;
- b=i0T9Caox5XNdjKNhN+4fNwOd628MMP0vPWiqSt+imb1jz4Fetmtm+/7lkaXDgxt9txRYDyJg
- iEG4t42v1Y/q9cY5tZsjXzLrex4oJtzmVACsGh0wbfHf1vT3eDuBkYAPN+oj89gkFzcLyW/s
- BWtweYJUNalyo0AwEqn+pFkFusg=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n06.prod.us-east-1.postgun.com with SMTP id
- 5f3a5b3e61f1d418343ed747 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 17 Aug 2020 10:26:06
- GMT
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 97C15C43391; Mon, 17 Aug 2020 10:26:05 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
-        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        id S1726620AbgHQKgI (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 17 Aug 2020 06:36:08 -0400
+Received: from pali.im (pali.im [31.31.79.79])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 4CA84C433CA;
-        Mon, 17 Aug 2020 10:26:04 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 4CA84C433CA
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        by mail.kernel.org (Postfix) with ESMTPSA id E1CB7207DF;
+        Mon, 17 Aug 2020 10:36:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1597660568;
+        bh=ifjO2f2SSHjGOYyCqga//H1fdXEHCGT7yqXkguLiOoM=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=UshTG6KzjiiqUxhwl60SYOmDkz3yTHeNMV654lBbQsU23F1o5UuFCLqKOwiW+7Gmb
+         X+a4cHg9CjIyY/iFMs71VZs1rYb0D7Bm4wwyaqW3CaVTqccC866qlEAvT9naFQH+Xi
+         7BWCLelkNGiT1tI3g2kOmvDVOdig4osAnHnFB77A=
+Received: by pali.im (Postfix)
+        id C3B799CF; Mon, 17 Aug 2020 12:36:05 +0200 (CEST)
+Date:   Mon, 17 Aug 2020 12:36:05 +0200
+From:   Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     ath10k@lists.infradead.org, ath9k-devel@qca.qualcomm.com,
+        linux-wireless@vger.kernel.org
+Subject: Re: CVE-2020-3702: Firmware updates for ath9k and ath10k chips
+Message-ID: <20200817103605.qgwfbpz75ssuem7c@pali>
+References: <20200810090126.mtu3uocpcjg5se5e@pali>
+ <87a6ytlhk3.fsf@codeaurora.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] wcn36xx: Fix reported 802.11n rx_highest rate
- wcn3660/wcn3680
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20200802004824.1307124-1-bryan.odonoghue@linaro.org>
-References: <20200802004824.1307124-1-bryan.odonoghue@linaro.org>
-To:     Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Cc:     wcn36xx@lists.infradead.org, linux-wireless@vger.kernel.org,
-        bryan.odonoghue@linaro.org
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20200817102605.97C15C43391@smtp.codeaurora.org>
-Date:   Mon, 17 Aug 2020 10:26:05 +0000 (UTC)
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <87a6ytlhk3.fsf@codeaurora.org>
+User-Agent: NeoMutt/20180716
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Bryan O'Donoghue <bryan.odonoghue@linaro.org> wrote:
-
-> Qualcomm's document "80-WL007-1 Rev. J" states that the highest rx rate for
-> the WCN3660 and WCN3680 on MCS 7 is 150 Mbps not the 72 Mbps stated here.
+On Monday 17 August 2020 12:58:52 Kalle Valo wrote:
+> Pali Rohár <pali@kernel.org> writes:
 > 
-> This patch fixes the data-rate declared in the 5GHz table.
+> > ESET engineers on their blog published some information about new
+> > security vulnerability CVE-2020-3702 in ath9k wifi cards:
+> > https://www.welivesecurity.com/2020/08/06/beyond-kr00k-even-more-wifi-chips-vulnerable-eavesdropping/
+> >
+> > According to Qualcomm security bulletin this CVE-2020-3702 affects also
+> > some Qualcomm IPQ chips which are handled by ath10k driver:
+> > https://www.qualcomm.com/company/product-security/bulletins/august-2020-security-bulletin#_cve-2020-3702
 > 
-> Fixes: 8e84c2582169 ("wcn36xx: mac80211 driver for Qualcomm WCN3660/WCN3680
-> hardware")
-> 
-> Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+> I can't find any refererences to ath10k, or hardware with ath10k
+> chipsets, in the links above. Where did you see it?
 
-Patch applied to ath-next branch of ath.git, thanks.
+Now I'm looking at that security bulletin for CVE-2020-3702 and it
+contains different list of affected chipset as at time when I wrote
+previous email. Previously there were IPQ ath10k chipsets and no AR
+chipsets. Now there are lot of ath9k AR9xxx and none of IPQ.
 
-3b9fb6791e71 wcn36xx: Fix reported 802.11n rx_highest rate wcn3660/wcn3680
-
--- 
-https://patchwork.kernel.org/patch/11696251/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
+So meanwhile Qualcomm changed vulnerability list.
