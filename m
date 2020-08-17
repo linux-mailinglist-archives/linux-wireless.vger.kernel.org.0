@@ -2,93 +2,91 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C9E1246436
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Aug 2020 12:15:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 70BC1246443
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Aug 2020 12:19:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726768AbgHQKPw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 17 Aug 2020 06:15:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41680 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726653AbgHQKPs (ORCPT
+        id S1726651AbgHQKTO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 17 Aug 2020 06:19:14 -0400
+Received: from mail29.static.mailgun.info ([104.130.122.29]:34531 "EHLO
+        mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726151AbgHQKTO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 17 Aug 2020 06:15:48 -0400
-Received: from mail-qk1-x741.google.com (mail-qk1-x741.google.com [IPv6:2607:f8b0:4864:20::741])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA5ECC061342
-        for <linux-wireless@vger.kernel.org>; Mon, 17 Aug 2020 03:15:46 -0700 (PDT)
-Received: by mail-qk1-x741.google.com with SMTP id p25so14476496qkp.2
-        for <linux-wireless@vger.kernel.org>; Mon, 17 Aug 2020 03:15:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=xFMCooV+srfeUmENnqHRgCmMMf+HreBw4sTYYL9L8Po=;
-        b=S/hC8jiE66W4lYiSJD+JBpmqCQ1NfvjXLtgAW2YghalM2AGd/ropK2OJ5QJdgEzxiH
-         0VfSgSO/lBId1OsA+uu31pNhCaZrO04XKj3BVoYxMGceI8XB18gQx328saMF4eRJuhpi
-         wqLu1eOZmjesm4ayKqK7XFDelEm81dqVyV/68=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=xFMCooV+srfeUmENnqHRgCmMMf+HreBw4sTYYL9L8Po=;
-        b=L/FKVhHo34vs/CeFYSdrflfrdtGPkX9HujDizk8Mes81T4kzyKvVhsBtbPmmvtSnTR
-         2PCfEQYhQtqT8jGTne2VFmFKK3+TT6VOyM9wiXX1kjfsPnPAJSRQY81g+olI6V7QqJeO
-         l1qGBqDP2FI20vNrFQPFdyES+MPFg0flF7y+ojOoX0Sqrz27T3eyPiDFFHnZWnqUNtBV
-         jvyMXwxRj2M2Saz6nt/oagvJvcEF8oqg+GlfvPMkOB/clNxbrEey0nuiA9pborqeo8UH
-         I76R4+q+3lrTWlF6GQmuc3bDL0DZarf510mXkGUsLX6rO8WXPYroENh3+Pwfzup2uDdp
-         z5EA==
-X-Gm-Message-State: AOAM533Oj21erlp2VEAGgyPNp826wCASRZN7V/NDznR3tDR5ZLetQZVH
-        nlleWR6c81mbOTK1arVA8/xWHQ==
-X-Google-Smtp-Source: ABdhPJyPDevAynADokoTMbQeVLyLhvINF5Maw120EPlX6HsYIVPaRj7K4bCyVzLV+ICE4a16V6aJTw==
-X-Received: by 2002:a05:620a:15b0:: with SMTP id f16mr12024373qkk.191.1597659344690;
-        Mon, 17 Aug 2020 03:15:44 -0700 (PDT)
-Received: from [10.230.34.187] ([192.19.248.250])
-        by smtp.gmail.com with ESMTPSA id k5sm17317588qke.18.2020.08.17.03.15.41
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 17 Aug 2020 03:15:44 -0700 (PDT)
-Subject: Re: [PATCH 07/16] wireless: brcm80211: convert tasklets to use new
- tasklet_setup() API
-To:     Allen Pais <allen.cryptic@gmail.com>, kvalo@codeaurora.org,
-        kuba@kernel.org, jirislaby@kernel.org, mickflemm@gmail.com,
-        mcgrof@kernel.org, chunkeey@googlemail.com,
-        Larry.Finger@lwfinger.net, stas.yakovlev@gmail.com,
-        helmut.schaa@googlemail.com, pkshih@realtek.com,
-        yhchuang@realtek.com, dsd@gentoo.org, kune@deine-taler.de
-Cc:     keescook@chromium.org, ath11k@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, b43-dev@lists.infradead.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        brcm80211-dev-list@cypress.com, Allen Pais <allen.lkml@gmail.com>,
-        Romain Perier <romain.perier@gmail.com>
-References: <20200817090637.26887-1-allen.cryptic@gmail.com>
- <20200817090637.26887-8-allen.cryptic@gmail.com>
-From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
-Message-ID: <5080db28-3112-7d0a-ec7c-f437f670cfa3@broadcom.com>
-Date:   Mon, 17 Aug 2020 12:15:39 +0200
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.11.0
+        Mon, 17 Aug 2020 06:19:14 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1597659553; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=ygawbP2j5cRTeRcGHB/5Z0VSU8uDIA0b+4PjtCnH1GE=;
+ b=YcxkeAE7gnPfRQqW225PhbLmQeSXe4gNY8KpqHbiL2EdEtigCcI5lD46tjDBgWbxQyF/9hHG
+ y4ptJsbh6fyMBQpgpNA8zXp/YeJtCD2aH+ZIzFK+VRNiZ7vxDtAnHX5LEZqfqfSvlJPLMLwX
+ yKsxEabG0rRJDDIO4uxSBPOkw+I=
+X-Mailgun-Sending-Ip: 104.130.122.29
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n02.prod.us-east-1.postgun.com with SMTP id
+ 5f3a59a0440a07969a553528 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 17 Aug 2020 10:19:12
+ GMT
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 5F992C433CB; Mon, 17 Aug 2020 10:19:11 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
+        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 370F0C433CA;
+        Mon, 17 Aug 2020 10:19:10 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 370F0C433CA
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-In-Reply-To: <20200817090637.26887-8-allen.cryptic@gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
 Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH 01/11] ath11k: add support for m3 firmware
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <1597389030-13887-2-git-send-email-kvalo@codeaurora.org>
+References: <1597389030-13887-2-git-send-email-kvalo@codeaurora.org>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
+Message-Id: <20200817101911.5F992C433CB@smtp.codeaurora.org>
+Date:   Mon, 17 Aug 2020 10:19:11 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 8/17/2020 11:06 AM, Allen Pais wrote:
-> From: Allen Pais <allen.lkml@gmail.com>
-> 
-> In preparation for unconditionally passing the
-> struct tasklet_struct pointer to all tasklet
-> callbacks, switch to using the new tasklet_setup()
-> and from_tasklet() to pass the tasklet pointer explicitly.
+Kalle Valo <kvalo@codeaurora.org> wrote:
 
-Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-> Signed-off-by: Romain Perier <romain.perier@gmail.com>
-> Signed-off-by: Allen Pais <allen.lkml@gmail.com>
-> ---
->   .../net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c  | 6 +++---
->   .../net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.h  | 2 +-
->   2 files changed, 4 insertions(+), 4 deletions(-)
+> PCI devices like QCA6390 have a separate firmware image for the m3
+> micro-controller. Add support to load the firmware using m3.bin file.
+> 
+> Tested-on: QCA6390 hw2.0 PCI WLAN.HST.1.0.1-01740-QCAHSTSWPLZ_V2_TO_X86-1
+> Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.1.0.1-01238-QCAHKSWPL_SILICONZ-2
+> 
+> Signed-off-by: Govind Singh <govinds@codeaurora.org>
+> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+
+11 patches applied to ath-next branch of ath.git, thanks.
+
+569704544778 ath11k: add support for m3 firmware
+6eb6ea513828 ath11k: add board file support for PCI devices
+eb8de0490e1f ath11k: fill appropriate QMI service instance id for QCA6390
+654e959ae0a1 ath11k: pci: add read32() and write32() hif operations
+c4eacabee224 ath11k: configure copy engine msi address in CE srng
+2c3960c2253d ath11k: setup ce tasklet for control path
+26f3a021b37c ath11k: allocate smaller chunks of memory for firmware
+f44dd33e6336 ath11k: fix memory OOB access in qmi_decode
+6c809d04c542 ath11k: fix KASAN warning of ath11k_qmi_wlanfw_wlan_cfg_send
+727fae1478a5 ath11k: enable internal sleep clock
+f7eb4b04ce6f ath11k: hal: create hw_srng_config dynamically
+
+-- 
+https://patchwork.kernel.org/patch/11713607/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
