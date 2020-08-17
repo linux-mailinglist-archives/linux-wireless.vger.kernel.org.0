@@ -2,101 +2,102 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F14B246650
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Aug 2020 14:26:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B470F2466CD
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Aug 2020 15:00:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728252AbgHQM04 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 17 Aug 2020 08:26:56 -0400
-Received: from proxima.lasnet.de ([78.47.171.185]:43158 "EHLO
-        proxima.lasnet.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728000AbgHQM0w (ORCPT
+        id S1728460AbgHQNAb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 17 Aug 2020 09:00:31 -0400
+Received: from mail29.static.mailgun.info ([104.130.122.29]:22382 "EHLO
+        mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728422AbgHQNAV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 17 Aug 2020 08:26:52 -0400
-X-Greylist: delayed 429 seconds by postgrey-1.27 at vger.kernel.org; Mon, 17 Aug 2020 08:26:51 EDT
-Received: from localhost.localdomain (p200300e9d747fd86eda1c6650823d2bd.dip0.t-ipconnect.de [IPv6:2003:e9:d747:fd86:eda1:c665:823:d2bd])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        Mon, 17 Aug 2020 09:00:21 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1597669221; h=Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Message-ID: In-Reply-To: Date: References: Subject: Cc:
+ To: From: Sender; bh=EPNl9HJgep9wWTGfsP2AiKKlUSHnaYCKHEIDUjeMiqk=; b=ZmobtiQfaplcflc+s/znm+ZygQIyD5jUoieY1SxlAQeK68YqH3NgVjyyWpEN7j78c+I/593H
+ jscpl/R1FlzlmxvPiFUChk8aaid62jwJU3n81C8zvUiqZO1xsDs+ygPmf1iCDpk0oV/ZJJMw
+ jecXcwgqwNNRshU6jJTEeJL7ElQ=
+X-Mailgun-Sending-Ip: 104.130.122.29
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n04.prod.us-east-1.postgun.com with SMTP id
+ 5f3a7f4aba4c2cd3671651bc (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 17 Aug 2020 12:59:54
+ GMT
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 46AF5C4339C; Mon, 17 Aug 2020 12:59:53 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from x230.qca.qualcomm.com (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        (Authenticated sender: stefan@datenfreihafen.org)
-        by proxima.lasnet.de (Postfix) with ESMTPSA id 49FCBC25F9;
-        Mon, 17 Aug 2020 14:19:40 +0200 (CEST)
-Subject: Re: [PATCH 4/8] net: mac802154: convert tasklets to use new
- tasklet_setup() API
-To:     Allen Pais <allen.cryptic@gmail.com>, gerrit@erg.abdn.ac.uk,
-        davem@davemloft.net, kuba@kernel.org, edumazet@google.com,
-        kuznet@ms2.inr.ac.ru, yoshfuji@linux-ipv6.org,
-        johannes@sipsolutions.net, alex.aring@gmail.com,
-        santosh.shilimkar@oracle.com, jhs@mojatatu.com,
-        xiyou.wangcong@gmail.com, jiri@resnulli.us
-Cc:     keescook@chromium.org, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-wpan@vger.kernel.org, linux-rdma@vger.kernel.org,
-        linux-s390@vger.kernel.org, Allen Pais <allen.lkml@gmail.com>,
-        Romain Perier <romain.perier@gmail.com>
-References: <20200817085120.24894-1-allen.cryptic@gmail.com>
- <20200817085120.24894-4-allen.cryptic@gmail.com>
-From:   Stefan Schmidt <stefan@datenfreihafen.org>
-Message-ID: <5309b90a-1caa-ec22-ddb9-49eca3581957@datenfreihafen.org>
-Date:   Mon, 17 Aug 2020 14:19:39 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.9.0
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 3AAF0C433C6;
+        Mon, 17 Aug 2020 12:59:50 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 3AAF0C433C6
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Cc:     Christian Lamparter <chunkeey@gmail.com>,
+        Lee Jones <lee.jones@linaro.org>, davem@davemloft.net,
+        kuba@kernel.org, linux-kernel@vger.kernel.org,
+        Christian Lamparter <chunkeey@googlemail.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH 08/30] net: wireless: ath: carl9170: Mark 'ar9170_qmap' as __maybe_unused
+References: <20200814113933.1903438-1-lee.jones@linaro.org>
+        <20200814113933.1903438-9-lee.jones@linaro.org>
+        <7ef231f2-e6d3-904f-dc3a-7ef82beda6ef@gmail.com>
+        <9776eb47-6b83-a891-f057-dd34d14ea16e@rasmusvillemoes.dk>
+Date:   Mon, 17 Aug 2020 15:59:47 +0300
+In-Reply-To: <9776eb47-6b83-a891-f057-dd34d14ea16e@rasmusvillemoes.dk> (Rasmus
+        Villemoes's message of "Mon, 17 Aug 2020 10:26:16 +0200")
+Message-ID: <87eeo5mnr0.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-In-Reply-To: <20200817085120.24894-4-allen.cryptic@gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello.
+Rasmus Villemoes <linux@rasmusvillemoes.dk> writes:
 
-On 17.08.20 10:51, Allen Pais wrote:
-> From: Allen Pais <allen.lkml@gmail.com>
-> 
-> In preparation for unconditionally passing the
-> struct tasklet_struct pointer to all tasklet
-> callbacks, switch to using the new tasklet_setup()
-> and from_tasklet() to pass the tasklet pointer explicitly.
-> 
-> Signed-off-by: Romain Perier <romain.perier@gmail.com>
-> Signed-off-by: Allen Pais <allen.lkml@gmail.com>
-> ---
->   net/mac802154/main.c | 8 +++-----
->   1 file changed, 3 insertions(+), 5 deletions(-)
-> 
-> diff --git a/net/mac802154/main.c b/net/mac802154/main.c
-> index 06ea0f8bfd5c..520cedc594e1 100644
-> --- a/net/mac802154/main.c
-> +++ b/net/mac802154/main.c
-> @@ -20,9 +20,9 @@
->   #include "ieee802154_i.h"
->   #include "cfg.h"
->   
-> -static void ieee802154_tasklet_handler(unsigned long data)
-> +static void ieee802154_tasklet_handler(struct tasklet_struct *t)
->   {
-> -	struct ieee802154_local *local = (struct ieee802154_local *)data;
-> +	struct ieee802154_local *local = from_tasklet(local, t, tasklet);
->   	struct sk_buff *skb;
->   
->   	while ((skb = skb_dequeue(&local->skb_queue))) {
-> @@ -91,9 +91,7 @@ ieee802154_alloc_hw(size_t priv_data_len, const struct ieee802154_ops *ops)
->   	INIT_LIST_HEAD(&local->interfaces);
->   	mutex_init(&local->iflist_mtx);
->   
-> -	tasklet_init(&local->tasklet,
-> -		     ieee802154_tasklet_handler,
-> -		     (unsigned long)local);
-> +	tasklet_setup(&local->tasklet, ieee802154_tasklet_handler);
->   
->   	skb_queue_head_init(&local->skb_queue);
->   
-> 
+> On 14/08/2020 17.14, Christian Lamparter wrote:
+>> On 2020-08-14 13:39, Lee Jones wrote:
+>>> 'ar9170_qmap' is used in some source files which include carl9170.h,
+>>> but not all of them.=C2=A0 Mark it as __maybe_unused to show that this =
+is
+>>> not only okay, it's expected.
+>>>
+>>> Fixes the following W=3D1 kernel build warning(s)
+>>=20
+>> Is this W=3D1 really a "must" requirement? I find it strange having
+>> __maybe_unused in header files as this "suggests" that the
+>> definition is redundant.
+>
+> In this case it seems one could replace the table lookup with a
+>
+> static inline u8 ar9170_qmap(u8 idx) { return 3 - idx; }
+>
+> gcc doesn't warn about unused static inline functions (or one would have
+> a million warnings to deal with). Just my $0.02.
 
+Yeah, this is much better.
 
-Acked-by: Stefan Schmidt <stefan@datenfreihafen.org>
+And I think that static variables should not even be in the header
+files. Doesn't it mean that there's a local copy of the variable
+everytime the .h file is included? Sure, in this case the overhead is
+small (4 bytes per include) but still it's wrong. Having a static inline
+function would solve that problem as well the compiler warning.
 
-regards
-Stefan Schmidt
+--=20
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
+hes
