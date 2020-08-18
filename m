@@ -2,69 +2,68 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 16940248CED
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Aug 2020 19:27:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A4131248DA0
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 Aug 2020 20:00:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728122AbgHRR1Z (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 18 Aug 2020 13:27:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51806 "EHLO
+        id S1726763AbgHRSAm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 18 Aug 2020 14:00:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57446 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726715AbgHRR1X (ORCPT
+        with ESMTP id S1726541AbgHRSAi (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 18 Aug 2020 13:27:23 -0400
-Received: from mail-ej1-x643.google.com (mail-ej1-x643.google.com [IPv6:2a00:1450:4864:20::643])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9CDCC061389
-        for <linux-wireless@vger.kernel.org>; Tue, 18 Aug 2020 10:27:22 -0700 (PDT)
-Received: by mail-ej1-x643.google.com with SMTP id f24so23054595ejx.6
-        for <linux-wireless@vger.kernel.org>; Tue, 18 Aug 2020 10:27:22 -0700 (PDT)
+        Tue, 18 Aug 2020 14:00:38 -0400
+Received: from mail-wm1-x344.google.com (mail-wm1-x344.google.com [IPv6:2a00:1450:4864:20::344])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3594C061389
+        for <linux-wireless@vger.kernel.org>; Tue, 18 Aug 2020 11:00:37 -0700 (PDT)
+Received: by mail-wm1-x344.google.com with SMTP id p14so17052846wmg.1
+        for <linux-wireless@vger.kernel.org>; Tue, 18 Aug 2020 11:00:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
+        d=nexus-software-ie.20150623.gappssmtp.com; s=20150623;
         h=subject:to:cc:references:from:message-id:date:user-agent
          :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=6LD9PAOL1f1Dfb178OriVTBmJhiThI8gQx/RZRqDO6g=;
-        b=OUFChZeShZykfMjN2taP9zUynyZplFZ7DX5WnIev6Gf04Yy1ExKRg+ZmoLgviooiVb
-         Y49TsvVtaVqvcHTldDd7cZXhLXWDbZoHuhK/1RRjH80c376iVD0WeaOqJHHgRgboWFWT
-         9pn0C0TRaB4UsaTpdMVQ1uMHzG7UhJEc49oP+fu/5xDktxEbjoGhsxCQj8VSSI+V3O8c
-         EiE0fFYi9/LX+HQuTpux02wWkVeEcvCgJ51xveW6gorw1ce8+G853EySAO93xtVwb44N
-         cAe5q6xDfoph3PWjnYsmiyZa0d3ZS414csy8WN+HtBSl3ezeq/sP00Z8JthVy+8Z6Y84
-         jBSg==
+        bh=y1deqDHaarD9z/Vs9CK6ofvUMo5iINAvwjlUK1TlY1Y=;
+        b=EKXs3WPwMgU7rhdLCkyn3GWscb44kJLoa7wbJH1OVNjB2yf0wOQkmTmGoGBwBRS0Vy
+         l1Wm/IzB1F/bldkcNAFWmiRs3t2tw1XPEApKQwteYn9l5i6K4LAIDhejATLlujLK8gPe
+         YryuFBy2dynQUZl4aE5IuWYjGDS6BWB60BNwYIzQtxWTiC5DgQFW7Ayy1GqMHNcW7yWE
+         aSvE50Ybm+sn1xGfzZoBnb+Tsk8Sl1ijxbQNsbVuEeevcT0kBzM4HwwFIS7//Ak/aIWt
+         TNcBTbF5t+VRgpvZlRFgzQg+vhkt1rW3M2ayls9X+Ge4T1XESbmrzdDhaU8ZShuA7C1x
+         n69w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:subject:to:cc:references:from:message-id:date
          :user-agent:mime-version:in-reply-to:content-language
          :content-transfer-encoding;
-        bh=6LD9PAOL1f1Dfb178OriVTBmJhiThI8gQx/RZRqDO6g=;
-        b=dGYJKmeMdPRaZt+Hy6t0JpBCxU6UJQmaMkaWxgWnLz10SI8Bn53knBebrGzDl4wcUi
-         QAwaSjQU2qgpyv7Z4Rvb7podjDA/vPWbHzBmkEfT7hoLucOGQVJ37ru2soQkE2qnvusQ
-         6yfsxLpfkKj9YxdmzC4PWOUzN8R/T2tGE4FPN1IylvzrRNhWNnOKsVAlPURnqDzOa/Gr
-         JgYvUa4thcPtOqhfpkQRNmB+2B7WN1PBW1QAhAnRcjMMxU8LwgeWaRmNjupQBxpgm1wm
-         ytxOQQ80my+Ks1wWkf1EUAPucPQ5wRNcR5NE+KpRZpiAziti4/6CR9i+e2Aw3K5iFopx
-         5Bow==
-X-Gm-Message-State: AOAM531ejkoBWxJggGPmu4i5oQoMGRsWJKXQVue8kXFvAmYCxdRP0v3M
-        kCARly8X9vx+uvZk+tBj6kZhDV0MzXo=
-X-Google-Smtp-Source: ABdhPJwBCShiqoXNXRkQLbd6faYM2vIlf0rhMct4yF7l5p9KxVaRbeJRa56ix4cRGttPfs+zIp5lqQ==
-X-Received: by 2002:a17:906:1b04:: with SMTP id o4mr22343766ejg.332.1597771640893;
-        Tue, 18 Aug 2020 10:27:20 -0700 (PDT)
-Received: from debian64.daheim (pd9e291c8.dip0.t-ipconnect.de. [217.226.145.200])
-        by smtp.gmail.com with ESMTPSA id n10sm15999018edo.43.2020.08.18.10.27.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Aug 2020 10:27:20 -0700 (PDT)
-Received: from localhost.daheim ([127.0.0.1])
-        by debian64.daheim with esmtp (Exim 4.94)
-        (envelope-from <chunkeey@gmail.com>)
-        id 1k85OD-000B8U-AO; Tue, 18 Aug 2020 19:27:13 +0200
-Subject: Re: [PATCH] p54: avoid accessing the data mapped to streaming DMA
-To:     Jia-Ju Bai <baijiaju@tsinghua.edu.cn>, kvalo@codeaurora.org,
-        kuba@kernel.org
-Cc:     linux-wireless@vger.kernel.org
-References: <20200802132949.26788-1-baijiaju@tsinghua.edu.cn>
-From:   Christian Lamparter <chunkeey@gmail.com>
-Message-ID: <0b432282-8d52-3004-6648-d97c03cdae28@gmail.com>
-Date:   Tue, 18 Aug 2020 19:27:10 +0200
+        bh=y1deqDHaarD9z/Vs9CK6ofvUMo5iINAvwjlUK1TlY1Y=;
+        b=thy2UyjfUJ+nCCaP2mJ+z4ZOwmLnvvzgKMZxE+nupRcL1ORJ3vsetPJZftdYjOVG3V
+         QSmZJjw/KlzaYbIpXMsvrJJ+tmpGQH8bo/eEgQ7MC6VEXV0sLWuKxZJY8TdRb3Y4eGy5
+         V8lWsRyEOcpvNEspQeWWfiBZ9xflnwaN8IfkDKaQRL2al4W4JreF6my5rs/TovQ3yNFu
+         dKfUJRShs5J66L9zTkzikLeL7AeZRitmBQ0r18MpuQGFTHxcdQvtHSamQi/cO5Joj7Vv
+         PgPH5bAFSFJhY69dDsAghe6F+lh/NskxuTqD9s2PJcWtxt91KH2YeAPs3k6zAGq3Y/Lt
+         EYTg==
+X-Gm-Message-State: AOAM532zbgsxXz+t5lQl04A+Q656I2dARBW6+kuRTXzD5sZymh8xbR+9
+        7Zi8VubFRdINTcmg4iU/tTgAyrXC9EONzw==
+X-Google-Smtp-Source: ABdhPJxvol1ZqRBkkf8Dwmw/GNmDEhx4Sm5/jjdsr6Wy86PgJcFz4q88IrSusaaFCu+HYsulbY+SXg==
+X-Received: by 2002:a1c:a1c7:: with SMTP id k190mr983307wme.1.1597773635149;
+        Tue, 18 Aug 2020 11:00:35 -0700 (PDT)
+Received: from [192.168.0.38] ([176.61.57.127])
+        by smtp.gmail.com with ESMTPSA id f63sm952156wmf.9.2020.08.18.11.00.33
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 18 Aug 2020 11:00:34 -0700 (PDT)
+Subject: Re: [PATCH] wcn36xx: Fix software-driven scan
+To:     Loic Poulain <loic.poulain@linaro.org>,
+        Kalle Valo <kvalo@codeaurora.org>
+Cc:     Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+        wcn36xx@lists.infradead.org, linux-wireless@vger.kernel.org
+References: <1597680075-18723-1-git-send-email-loic.poulain@linaro.org>
+ <87pn7ojx8g.fsf@codeaurora.org>
+ <CAMZdPi9sQ2BM4G2cSKNfE06fOtvOtgb+ELqAkxUJdtLbuoeYzQ@mail.gmail.com>
+From:   Bryan O'Donoghue <pure.logic@nexus-software.ie>
+Message-ID: <9ff7836b-2d84-91bc-0691-f8696541ffc2@nexus-software.ie>
+Date:   Tue, 18 Aug 2020 19:01:19 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.11.0
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-In-Reply-To: <20200802132949.26788-1-baijiaju@tsinghua.edu.cn>
+In-Reply-To: <CAMZdPi9sQ2BM4G2cSKNfE06fOtvOtgb+ELqAkxUJdtLbuoeYzQ@mail.gmail.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -73,66 +72,544 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
-
-sorry. Your mail got flagged by google mail as spam. :(
-
-On 2020-08-02 15:29, Jia-Ju Bai wrote:
-> In p54p_tx(), skb->data is mapped to streaming DMA on line 337:
->    mapping = pci_map_single(..., skb->data, ...);
+On 18/08/2020 14:34, Loic Poulain wrote:
+> On Tue, 18 Aug 2020 at 08:15, Kalle Valo <kvalo@codeaurora.org> wrote:
+>>
+>> Loic Poulain <loic.poulain@linaro.org> writes:
+>>
+>>> For software-driven scan, rely on mac80211 software scan instead
+>>> of internal driver implementation. The internal implementation
+>>> cause connection trouble since it keep the antenna busy during
+>>> the entire scan duration, moreover it's only a passive scanning
+>>> (no probe request). Therefore, let mac80211 manages sw scan.
+>>>
+>>> Note: we fallback to software scan if firmware does not report
+>>> scan offload support or if we need to scan the 5Ghz band (currently
+>>> not supported by the offload scan...).
+>>>
+>>> Signed-off-by: Loic Poulain <loic.poulain@linaro.org>
+>>> Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+>>
+>> What changed since v2? Please always include a changelog so that I don't
+>> need to guess what you have changed in the patch. No need to resend, a
+>> reply is enough.
 > 
-> Then skb->data is accessed on line 349:
->    desc->device_addr = ((struct p54_hdr *)skb->data)->req_id;
+> Yes sorry, this patch has been rebased on ath master and squashed with
+> Bryan's fix:
+>       wcn36xx: Set sw-scan chan to 0 when not associated
+> No additional changes have been made on top of the initial patches.
 > 
-> This access may cause data inconsistency between CPU cache and hardware.
-> 
-> To fix this problem, ((struct p54_hdr *)skb->data)->req_id is stored in
-> a local variable before DMA mapping, and then the driver accesses this
-> local variable instead of skb->data.
-
-Interesting. Please bear with me here. From my understanding, the 
-streaming direction is set to PCI_DMA_TODEVICE. So is it really possible
-for the hardware to interfere with the data without the IOMMU catching this?
-
-(That said, patch looks be fine. I'll need to dust off a old PCI PC to 
-check this with real hardware, if requested.)
-
-Cheers,
-Christian
-
-
-
-> 
-> Signed-off-by: Jia-Ju Bai <baijiaju@tsinghua.edu.cn>
-> ---
->   drivers/net/wireless/intersil/p54/p54pci.c | 4 +++-
->   1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/wireless/intersil/p54/p54pci.c b/drivers/net/wireless/intersil/p54/p54pci.c
-> index 80ad0b7eaef4..f8c6027cab6b 100644
-> --- a/drivers/net/wireless/intersil/p54/p54pci.c
-> +++ b/drivers/net/wireless/intersil/p54/p54pci.c
-> @@ -329,10 +329,12 @@ static void p54p_tx(struct ieee80211_hw *dev, struct sk_buff *skb)
->   	struct p54p_desc *desc;
->   	dma_addr_t mapping;
->   	u32 idx, i;
-> +	__le32 device_addr;
->   
->   	spin_lock_irqsave(&priv->lock, flags);
->   	idx = le32_to_cpu(ring_control->host_idx[1]);
->   	i = idx % ARRAY_SIZE(ring_control->tx_data);
-> +	device_addr = ((struct p54_hdr *)skb->data)->req_id;
->   
->   	mapping = pci_map_single(priv->pdev, skb->data, skb->len,
->   				 PCI_DMA_TODEVICE);
-> @@ -346,7 +348,7 @@ static void p54p_tx(struct ieee80211_hw *dev, struct sk_buff *skb)
->   
->   	desc = &ring_control->tx_data[i];
->   	desc->host_addr = cpu_to_le32(mapping);
-> -	desc->device_addr = ((struct p54_hdr *)skb->data)->req_id;
-> +	desc->device_addr = device_addr;
->   	desc->len = cpu_to_le16(skb->len);
->   	desc->flags = 0;
->   
+> Regards,
+> Loic
 > 
 
+This is excruciatingly slow on Android.
+
+Android I'm finding unlike Debian where this stuff was tested, merrily 
+issues scan requests every 30 seconds.
+
+For me this ends up looking like this
+
+[  162.296995] wcn36xx: mac config changed 0x00000040
+[  162.297001] wcn36xx: wcn36xx_config channel switch=1
+[  162.297005] wcn36xx: hal init scan mode 2
+[  162.300011] wcn36xx: indication arrived
+[  162.300525] wcn36xx: SMD command (req 4, rsp 5) completed in 4ms
+[  162.300529] wcn36xx: hal start scan channel 1
+[  162.306930] wcn36xx: SMD command (req 6, rsp 7) completed in 4ms
+
+Big gap here
+
+[  162.368198] wcn36xx: mac config changed 0x00000040
+[  162.368205] wcn36xx: wcn36xx_config channel switch=40
+[  162.368209] wcn36xx: hal finish scan mode 2
+[  162.379085] wcn36xx: SMD command (req 10, rsp 11) completed in 8ms
+[  162.382218] wcn36xx: indication arrived
+[  162.583396] wcn36xx: indication arrived
+[  162.684336] wcn36xx: mac config changed 0x00000040
+[  162.684344] wcn36xx: wcn36xx_config channel switch=2
+[  162.684348] wcn36xx: hal init scan mode 2
+[  162.687547] wcn36xx: SMD command (req 4, rsp 5) completed in 0ms
+[  162.687552] wcn36xx: hal start scan channel 2
+[  162.693935] wcn36xx: SMD command (req 6, rsp 7) completed in 8ms
+[  162.756359] wcn36xx: mac config changed 0x00000040
+[  162.756367] wcn36xx: wcn36xx_config channel switch=40
+[  162.756371] wcn36xx: hal finish scan mode 2
+[  162.767361] wcn36xx: SMD command (req 10, rsp 11) completed in 8ms
+[  162.770445] wcn36xx: indication arrived
+[  162.971533] wcn36xx: indication arrived
+[  163.072318] wcn36xx: mac config changed 0x00000040
+[  163.072325] wcn36xx: wcn36xx_config channel switch=3
+[  163.072329] wcn36xx: hal init scan mode 2
+[  163.075449] wcn36xx: SMD command (req 4, rsp 5) completed in 0ms
+[  163.075453] wcn36xx: hal start scan channel 3
+[  163.081648] wcn36xx: SMD command (req 6, rsp 7) completed in 8ms
+[  163.144202] wcn36xx: mac config changed 0x00000040
+[  163.144210] wcn36xx: wcn36xx_config channel switch=40
+[  163.144214] wcn36xx: hal finish scan mode 2
+[  163.155103] wcn36xx: SMD command (req 10, rsp 11) completed in 8ms
+[  163.158219] wcn36xx: indication arrived
+[  163.359477] wcn36xx: indication arrived
+[  163.460428] wcn36xx: mac config changed 0x00000040
+[  163.460435] wcn36xx: wcn36xx_config channel switch=4
+[  163.460439] wcn36xx: hal init scan mode 2
+[  163.463572] wcn36xx: SMD command (req 4, rsp 5) completed in 0ms
+[  163.463576] wcn36xx: hal start scan channel 4
+[  163.469851] wcn36xx: SMD command (req 6, rsp 7) completed in 8ms
+[  163.532373] wcn36xx: mac config changed 0x00000040
+[  163.532381] wcn36xx: wcn36xx_config channel switch=40
+[  163.532384] wcn36xx: hal finish scan mode 2
+[  163.543736] wcn36xx: SMD command (req 10, rsp 11) completed in 8ms
+[  163.546987] wcn36xx: indication arrived
+[  163.747577] wcn36xx: indication arrived
+[  163.848431] wcn36xx: mac config changed 0x00000040
+[  163.848439] wcn36xx: wcn36xx_config channel switch=5
+[  163.848442] wcn36xx: hal init scan mode 2
+[  163.851668] wcn36xx: SMD command (req 4, rsp 5) completed in 0ms
+[  163.851672] wcn36xx: hal start scan channel 5
+[  163.857929] wcn36xx: SMD command (req 6, rsp 7) completed in 8ms
+[  163.920386] wcn36xx: mac config changed 0x00000040
+[  163.920394] wcn36xx: wcn36xx_config channel switch=40
+[  163.920398] wcn36xx: hal finish scan mode 2
+[  163.931279] wcn36xx: SMD command (req 10, rsp 11) completed in 8ms
+[  163.934460] wcn36xx: indication arrived
+[  164.135411] wcn36xx: indication arrived
+[  164.236376] wcn36xx: mac config changed 0x00000040
+[  164.236383] wcn36xx: wcn36xx_config channel switch=6
+[  164.236387] wcn36xx: hal init scan mode 2
+[  164.239669] wcn36xx: SMD command (req 4, rsp 5) completed in 0ms
+[  164.239673] wcn36xx: hal start scan channel 6
+[  164.245868] wcn36xx: SMD command (req 6, rsp 7) completed in 8ms
+[  164.308339] wcn36xx: mac config changed 0x00000040
+[  164.308347] wcn36xx: wcn36xx_config channel switch=40
+[  164.308351] wcn36xx: hal finish scan mode 2
+[  164.319240] wcn36xx: SMD command (req 10, rsp 11) completed in 8ms
+[  164.322405] wcn36xx: indication arrived
+[  164.523510] wcn36xx: indication arrived
+[  164.624238] wcn36xx: mac config changed 0x00000040
+[  164.624245] wcn36xx: wcn36xx_config channel switch=7
+[  164.624249] wcn36xx: hal init scan mode 2
+[  164.627352] wcn36xx: SMD command (req 4, rsp 5) completed in 0ms
+[  164.627356] wcn36xx: hal start scan channel 7
+[  164.633425] wcn36xx: SMD command (req 6, rsp 7) completed in 8ms
+[  164.696365] wcn36xx: mac config changed 0x00000040
+[  164.696374] wcn36xx: wcn36xx_config channel switch=40
+[  164.696378] wcn36xx: hal finish scan mode 2
+[  164.707355] wcn36xx: SMD command (req 10, rsp 11) completed in 8ms
+[  164.710683] wcn36xx: indication arrived
+[  164.911285] wcn36xx: indication arrived
+[  165.012228] wcn36xx: mac config changed 0x00000040
+[  165.012236] wcn36xx: wcn36xx_config channel switch=8
+[  165.012240] wcn36xx: hal init scan mode 2
+[  165.015434] wcn36xx: SMD command (req 4, rsp 5) completed in 0ms
+[  165.015439] wcn36xx: hal start scan channel 8
+[  165.021509] wcn36xx: SMD command (req 6, rsp 7) completed in 8ms
+[  165.084204] wcn36xx: mac config changed 0x00000040
+[  165.084212] wcn36xx: wcn36xx_config channel switch=40
+[  165.084217] wcn36xx: hal finish scan mode 2
+[  165.095164] wcn36xx: SMD command (req 10, rsp 11) completed in 8ms
+[  165.098269] wcn36xx: indication arrived
+[  165.299691] wcn36xx: indication arrived
+[  165.400304] wcn36xx: mac config changed 0x00000040
+[  165.400309] wcn36xx: wcn36xx_config channel switch=9
+[  165.400313] wcn36xx: hal init scan mode 2
+[  165.403424] wcn36xx: SMD command (req 4, rsp 5) completed in 0ms
+[  165.403428] wcn36xx: hal start scan channel 9
+[  165.409695] wcn36xx: SMD command (req 6, rsp 7) completed in 8ms
+[  165.472378] wcn36xx: mac config changed 0x00000040
+[  165.472386] wcn36xx: wcn36xx_config channel switch=40
+[  165.472390] wcn36xx: hal finish scan mode 2
+[  165.483390] wcn36xx: SMD command (req 10, rsp 11) completed in 8ms
+[  165.486478] wcn36xx: indication arrived
+[  165.687641] wcn36xx: indication arrived
+[  165.788548] wcn36xx: mac config changed 0x00000040
+[  165.788556] wcn36xx: wcn36xx_config channel switch=10
+[  165.788561] wcn36xx: hal init scan mode 2
+[  165.791729] wcn36xx: SMD command (req 4, rsp 5) completed in 0ms
+[  165.791734] wcn36xx: hal start scan channel 10
+[  165.797986] wcn36xx: SMD command (req 6, rsp 7) completed in 8ms
+[  165.860337] wcn36xx: mac config changed 0x00000040
+[  165.860346] wcn36xx: wcn36xx_config channel switch=40
+[  165.860349] wcn36xx: hal finish scan mode 2
+[  165.871185] wcn36xx: SMD command (req 10, rsp 11) completed in 8ms
+[  165.874560] wcn36xx: indication arrived
+[  166.075631] wcn36xx: indication arrived
+[  166.176336] wcn36xx: mac config changed 0x00000040
+[  166.176344] wcn36xx: wcn36xx_config channel switch=11
+[  166.176348] wcn36xx: hal init scan mode 2
+[  166.179753] wcn36xx: SMD command (req 4, rsp 5) completed in 0ms
+[  166.179758] wcn36xx: hal start scan channel 11
+[  166.186033] wcn36xx: SMD command (req 6, rsp 7) completed in 8ms
+[  166.248204] wcn36xx: mac config changed 0x00000040
+[  166.248211] wcn36xx: wcn36xx_config channel switch=40
+[  166.248216] wcn36xx: hal finish scan mode 2
+[  166.259127] wcn36xx: SMD command (req 10, rsp 11) completed in 8ms
+[  166.262339] wcn36xx: indication arrived
+[  166.463387] wcn36xx: indication arrived
+[  166.564353] wcn36xx: mac config changed 0x00000040
+[  166.564362] wcn36xx: wcn36xx_config channel switch=12
+[  166.564366] wcn36xx: hal init scan mode 2
+[  166.567517] wcn36xx: SMD command (req 4, rsp 5) completed in 0ms
+[  166.567522] wcn36xx: hal start scan channel 12
+[  166.573823] wcn36xx: SMD command (req 6, rsp 7) completed in 8ms
+[  166.684383] wcn36xx: mac config changed 0x00000040
+[  166.684390] wcn36xx: wcn36xx_config channel switch=40
+[  166.684394] wcn36xx: hal finish scan mode 2
+[  166.695665] wcn36xx: SMD command (req 10, rsp 11) completed in 8ms
+[  166.698857] wcn36xx: indication arrived
+[  166.899623] wcn36xx: indication arrived
+[  167.000265] wcn36xx: mac config changed 0x00000040
+[  167.000273] wcn36xx: wcn36xx_config channel switch=13
+[  167.000277] wcn36xx: hal init scan mode 2
+[  167.003459] wcn36xx: SMD command (req 4, rsp 5) completed in 0ms
+[  167.003463] wcn36xx: hal start scan channel 13
+[  167.009787] wcn36xx: SMD command (req 6, rsp 7) completed in 8ms
+[  167.120339] wcn36xx: mac config changed 0x00000040
+[  167.120348] wcn36xx: wcn36xx_config channel switch=40
+[  167.120351] wcn36xx: hal finish scan mode 2
+[  167.131208] wcn36xx: SMD command (req 10, rsp 11) completed in 8ms
+[  167.134376] wcn36xx: indication arrived
+[  167.335469] wcn36xx: indication arrived
+[  167.436335] wcn36xx: mac config changed 0x00000040
+[  167.436343] wcn36xx: wcn36xx_config channel switch=14
+[  167.436347] wcn36xx: hal init scan mode 2
+[  167.439492] wcn36xx: SMD command (req 4, rsp 5) completed in 0ms
+[  167.439497] wcn36xx: hal start scan channel 14
+[  167.446075] wcn36xx: SMD command (req 6, rsp 7) completed in 8ms
+[  167.556358] wcn36xx: mac config changed 0x00000040
+[  167.556367] wcn36xx: wcn36xx_config channel switch=40
+[  167.556372] wcn36xx: hal finish scan mode 2
+[  167.567787] wcn36xx: SMD command (req 10, rsp 11) completed in 8ms
+[  167.570712] wcn36xx: indication arrived
+[  167.771184] wcn36xx: indication arrived
+[  167.872093] wcn36xx: mac config changed 0x00000040
+[  167.872104] wcn36xx: wcn36xx_config channel switch=36
+[  167.872110] wcn36xx: hal init scan mode 2
+[  167.875463] wcn36xx: SMD command (req 4, rsp 5) completed in 0ms
+[  167.875469] wcn36xx: hal start scan channel 36
+[  167.880887] wcn36xx: SMD command (req 6, rsp 7) completed in 8ms
+[  167.944229] wcn36xx: mac config changed 0x00000040
+[  167.944238] wcn36xx: wcn36xx_config channel switch=40
+[  167.944243] wcn36xx: hal finish scan mode 2
+[  167.953262] wcn36xx: SMD command (req 10, rsp 11) completed in 8ms
+[  167.956751] wcn36xx: indication arrived
+[  168.159485] wcn36xx: indication arrived
+[  168.260233] wcn36xx: mac config changed 0x00000040
+[  168.260243] wcn36xx: wcn36xx_config channel switch=40
+[  168.260248] wcn36xx: hal finish scan mode 2
+[  168.268055] wcn36xx: SMD command (req 10, rsp 11) completed in 8ms
+[  168.332250] wcn36xx: mac config changed 0x00000040
+[  168.332259] wcn36xx: wcn36xx_config channel switch=40
+[  168.332264] wcn36xx: hal finish scan mode 2
+[  168.340018] wcn36xx: SMD command (req 10, rsp 11) completed in 4ms
+[  168.343231] wcn36xx: indication arrived
+[  168.547404] wcn36xx: indication arrived
+[  168.652662] wcn36xx: mac config changed 0x00000040
+[  168.652666] wcn36xx: wcn36xx_config channel switch=44
+[  168.652670] wcn36xx: hal init scan mode 2
+[  168.655732] wcn36xx: SMD command (req 4, rsp 5) completed in 0ms
+[  168.655736] wcn36xx: hal start scan channel 44
+[  168.660968] wcn36xx: SMD command (req 6, rsp 7) completed in 8ms
+[  168.772327] wcn36xx: mac config changed 0x00000040
+[  168.772334] wcn36xx: wcn36xx_config channel switch=40
+[  168.772338] wcn36xx: hal finish scan mode 2
+[  168.781369] wcn36xx: SMD command (req 10, rsp 11) completed in 8ms
+[  168.784371] wcn36xx: indication arrived
+[  168.987575] wcn36xx: indication arrived
+[  169.088390] wcn36xx: mac config changed 0x00000040
+[  169.088398] wcn36xx: wcn36xx_config channel switch=48
+[  169.088402] wcn36xx: hal init scan mode 2
+[  169.091527] wcn36xx: SMD command (req 4, rsp 5) completed in 0ms
+[  169.091532] wcn36xx: hal start scan channel 48
+[  169.097022] wcn36xx: SMD command (req 6, rsp 7) completed in 8ms
+[  169.208455] wcn36xx: mac config changed 0x00000040
+[  169.208463] wcn36xx: wcn36xx_config channel switch=40
+[  169.208467] wcn36xx: hal finish scan mode 2
+[  169.218407] wcn36xx: SMD command (req 10, rsp 11) completed in 8ms
+[  169.221568] wcn36xx: indication arrived
+[  169.423420] wcn36xx: indication arrived
+[  169.524402] wcn36xx: mac config changed 0x00000040
+[  169.524409] wcn36xx: wcn36xx_config channel switch=52
+[  169.524413] wcn36xx: hal init scan mode 2
+[  169.527559] wcn36xx: SMD command (req 4, rsp 5) completed in 0ms
+[  169.527563] wcn36xx: hal start scan channel 52
+[  169.532973] wcn36xx: SMD command (req 6, rsp 7) completed in 8ms
+[  169.644216] wcn36xx: mac config changed 0x00000040
+[  169.644223] wcn36xx: wcn36xx_config channel switch=40
+[  169.644227] wcn36xx: hal finish scan mode 2
+[  169.653367] wcn36xx: SMD command (req 10, rsp 11) completed in 8ms
+[  169.656579] wcn36xx: indication arrived
+[  169.859998] wcn36xx: indication arrived
+[  169.960478] wcn36xx: mac config changed 0x00000040
+[  169.960489] wcn36xx: wcn36xx_config channel switch=56
+[  169.960494] wcn36xx: hal init scan mode 2
+[  169.963757] wcn36xx: SMD command (req 4, rsp 5) completed in 0ms
+[  169.963762] wcn36xx: hal start scan channel 56
+[  169.969107] wcn36xx: SMD command (req 6, rsp 7) completed in 8ms
+[  170.080126] wcn36xx: mac config changed 0x00000040
+[  170.080136] wcn36xx: wcn36xx_config channel switch=40
+[  170.080141] wcn36xx: hal finish scan mode 2
+[  170.089183] wcn36xx: SMD command (req 10, rsp 11) completed in 8ms
+[  170.092346] wcn36xx: indication arrived
+[  170.295765] wcn36xx: indication arrived
+[  170.396072] wcn36xx: mac config changed 0x00000040
+[  170.396079] wcn36xx: wcn36xx_config channel switch=60
+[  170.396083] wcn36xx: hal init scan mode 2
+[  170.399139] wcn36xx: SMD command (req 4, rsp 5) completed in 0ms
+[  170.399144] wcn36xx: hal start scan channel 60
+[  170.404547] wcn36xx: SMD command (req 6, rsp 7) completed in 8ms
+[  170.516260] wcn36xx: mac config changed 0x00000040
+[  170.516268] wcn36xx: wcn36xx_config channel switch=40
+[  170.516272] wcn36xx: hal finish scan mode 2
+[  170.525323] wcn36xx: SMD command (req 10, rsp 11) completed in 8ms
+[  170.528989] wcn36xx: indication arrived
+[  170.731306] wcn36xx: indication arrived
+[  170.832258] wcn36xx: mac config changed 0x00000040
+[  170.832266] wcn36xx: wcn36xx_config channel switch=64
+[  170.832270] wcn36xx: hal init scan mode 2
+[  170.835453] wcn36xx: SMD command (req 4, rsp 5) completed in 0ms
+[  170.835457] wcn36xx: hal start scan channel 64
+[  170.840746] wcn36xx: SMD command (req 6, rsp 7) completed in 8ms
+[  170.952490] wcn36xx: mac config changed 0x00000040
+[  170.952497] wcn36xx: wcn36xx_config channel switch=40
+[  170.952501] wcn36xx: hal finish scan mode 2
+[  170.961563] wcn36xx: SMD command (req 10, rsp 11) completed in 8ms
+[  170.964663] wcn36xx: indication arrived
+[  171.167256] wcn36xx: indication arrived
+[  171.268465] wcn36xx: mac config changed 0x00000040
+[  171.268474] wcn36xx: wcn36xx_config channel switch=100
+[  171.268478] wcn36xx: hal init scan mode 2
+[  171.271622] wcn36xx: SMD command (req 4, rsp 5) completed in 0ms
+[  171.271626] wcn36xx: hal start scan channel 100
+[  171.277068] wcn36xx: SMD command (req 6, rsp 7) completed in 8ms
+[  171.388309] wcn36xx: mac config changed 0x00000040
+[  171.388316] wcn36xx: wcn36xx_config channel switch=40
+[  171.388320] wcn36xx: hal finish scan mode 2
+[  171.397462] wcn36xx: SMD command (req 10, rsp 11) completed in 8ms
+[  171.400449] wcn36xx: indication arrived
+[  171.603380] wcn36xx: indication arrived
+[  171.704307] wcn36xx: mac config changed 0x00000040
+[  171.704315] wcn36xx: wcn36xx_config channel switch=104
+[  171.704318] wcn36xx: hal init scan mode 2
+[  171.707472] wcn36xx: SMD command (req 4, rsp 5) completed in 0ms
+[  171.707476] wcn36xx: hal start scan channel 104
+[  171.712907] wcn36xx: SMD command (req 6, rsp 7) completed in 8ms
+[  171.824322] wcn36xx: mac config changed 0x00000040
+[  171.824330] wcn36xx: wcn36xx_config channel switch=40
+[  171.824334] wcn36xx: hal finish scan mode 2
+[  171.833404] wcn36xx: SMD command (req 10, rsp 11) completed in 8ms
+[  171.836577] wcn36xx: indication arrived
+[  172.039628] wcn36xx: indication arrived
+[  172.140321] wcn36xx: mac config changed 0x00000040
+[  172.140329] wcn36xx: wcn36xx_config channel switch=108
+[  172.140333] wcn36xx: hal init scan mode 2
+[  172.143442] wcn36xx: SMD command (req 4, rsp 5) completed in 0ms
+[  172.143447] wcn36xx: hal start scan channel 108
+[  172.149071] wcn36xx: SMD command (req 6, rsp 7) completed in 8ms
+[  172.260211] wcn36xx: mac config changed 0x00000040
+[  172.260219] wcn36xx: wcn36xx_config channel switch=40
+[  172.260222] wcn36xx: hal finish scan mode 2
+[  172.269482] wcn36xx: SMD command (req 10, rsp 11) completed in 8ms
+[  172.272333] wcn36xx: indication arrived
+[  172.475588] wcn36xx: indication arrived
+[  172.576210] wcn36xx: mac config changed 0x00000040
+[  172.576217] wcn36xx: wcn36xx_config channel switch=112
+[  172.576221] wcn36xx: hal init scan mode 2
+[  172.579357] wcn36xx: SMD command (req 4, rsp 5) completed in 0ms
+[  172.579362] wcn36xx: hal start scan channel 112
+[  172.584763] wcn36xx: SMD command (req 6, rsp 7) completed in 8ms
+[  172.696318] wcn36xx: mac config changed 0x00000040
+[  172.696325] wcn36xx: wcn36xx_config channel switch=40
+[  172.696329] wcn36xx: hal finish scan mode 2
+[  172.705421] wcn36xx: SMD command (req 10, rsp 11) completed in 8ms
+[  172.708542] wcn36xx: indication arrived
+[  172.911501] wcn36xx: indication arrived
+[  173.012248] wcn36xx: mac config changed 0x00000040
+[  173.012255] wcn36xx: wcn36xx_config channel switch=116
+[  173.012259] wcn36xx: hal init scan mode 2
+[  173.015521] wcn36xx: SMD command (req 4, rsp 5) completed in 0ms
+[  173.015532] wcn36xx: hal start scan channel 116
+[  173.020870] wcn36xx: SMD command (req 6, rsp 7) completed in 8ms
+[  173.132338] wcn36xx: mac config changed 0x00000040
+[  173.132346] wcn36xx: wcn36xx_config channel switch=40
+[  173.132350] wcn36xx: hal finish scan mode 2
+[  173.141388] wcn36xx: SMD command (req 10, rsp 11) completed in 8ms
+[  173.144426] wcn36xx: indication arrived
+[  173.347588] wcn36xx: indication arrived
+[  173.448338] wcn36xx: mac config changed 0x00000040
+[  173.448347] wcn36xx: wcn36xx_config channel switch=120
+[  173.448350] wcn36xx: hal init scan mode 2
+[  173.451499] wcn36xx: SMD command (req 4, rsp 5) completed in 0ms
+[  173.451503] wcn36xx: hal start scan channel 120
+[  173.456889] wcn36xx: SMD command (req 6, rsp 7) completed in 8ms
+[  173.568336] wcn36xx: mac config changed 0x00000040
+[  173.568344] wcn36xx: wcn36xx_config channel switch=40
+[  173.568348] wcn36xx: hal finish scan mode 2
+[  173.577465] wcn36xx: SMD command (req 10, rsp 11) completed in 8ms
+[  173.580602] wcn36xx: indication arrived
+[  173.783414] wcn36xx: indication arrived
+[  173.884494] wcn36xx: mac config changed 0x00000040
+[  173.884504] wcn36xx: wcn36xx_config channel switch=124
+[  173.884508] wcn36xx: hal init scan mode 2
+[  173.887627] wcn36xx: SMD command (req 4, rsp 5) completed in 0ms
+[  173.887633] wcn36xx: hal start scan channel 124
+[  173.892978] wcn36xx: SMD command (req 6, rsp 7) completed in 8ms
+[  174.004293] wcn36xx: mac config changed 0x00000040
+[  174.004303] wcn36xx: wcn36xx_config channel switch=40
+[  174.004308] wcn36xx: hal finish scan mode 2
+[  174.013188] wcn36xx: SMD command (req 10, rsp 11) completed in 8ms
+[  174.017060] wcn36xx: indication arrived
+[  174.219812] wcn36xx: indication arrived
+[  174.320551] wcn36xx: mac config changed 0x00000040
+[  174.320559] wcn36xx: wcn36xx_config channel switch=128
+[  174.320563] wcn36xx: hal init scan mode 2
+[  174.324192] wcn36xx: SMD command (req 4, rsp 5) completed in 4ms
+[  174.324197] wcn36xx: hal start scan channel 128
+[  174.329545] wcn36xx: SMD command (req 6, rsp 7) completed in 4ms
+[  174.440367] wcn36xx: mac config changed 0x00000040
+[  174.440374] wcn36xx: wcn36xx_config channel switch=40
+[  174.440378] wcn36xx: hal finish scan mode 2
+[  174.449705] wcn36xx: SMD command (req 10, rsp 11) completed in 8ms
+[  174.452983] wcn36xx: indication arrived
+[  174.655452] wcn36xx: indication arrived
+[  174.756428] wcn36xx: mac config changed 0x00000040
+[  174.756438] wcn36xx: wcn36xx_config channel switch=132
+[  174.756443] wcn36xx: hal init scan mode 2
+[  174.759554] wcn36xx: SMD command (req 4, rsp 5) completed in 0ms
+[  174.759560] wcn36xx: hal start scan channel 132
+[  174.764959] wcn36xx: SMD command (req 6, rsp 7) completed in 8ms
+[  174.876237] wcn36xx: mac config changed 0x00000040
+[  174.876245] wcn36xx: wcn36xx_config channel switch=40
+[  174.876250] wcn36xx: hal finish scan mode 2
+[  174.885310] wcn36xx: SMD command (req 10, rsp 11) completed in 8ms
+[  174.888341] wcn36xx: indication arrived
+[  175.091324] wcn36xx: indication arrived
+[  175.192423] wcn36xx: mac config changed 0x00000040
+[  175.192430] wcn36xx: wcn36xx_config channel switch=140
+[  175.192433] wcn36xx: hal init scan mode 2
+[  175.195530] wcn36xx: SMD command (req 4, rsp 5) completed in 0ms
+[  175.195534] wcn36xx: hal start scan channel 140
+[  175.200805] wcn36xx: SMD command (req 6, rsp 7) completed in 8ms
+[  175.312321] wcn36xx: mac config changed 0x00000040
+[  175.312329] wcn36xx: wcn36xx_config channel switch=40
+[  175.312333] wcn36xx: hal finish scan mode 2
+[  175.321295] wcn36xx: SMD command (req 10, rsp 11) completed in 8ms
+[  175.324800] wcn36xx: indication arrived
+[  175.527611] wcn36xx: indication arrived
+[  175.628313] wcn36xx: mac config changed 0x00000040
+[  175.628320] wcn36xx: wcn36xx_config channel switch=149
+[  175.628324] wcn36xx: hal init scan mode 2
+[  175.631414] wcn36xx: SMD command (req 4, rsp 5) completed in 0ms
+[  175.631419] wcn36xx: hal start scan channel 149
+[  175.636846] wcn36xx: SMD command (req 6, rsp 7) completed in 8ms
+[  175.748358] wcn36xx: mac config changed 0x00000040
+[  175.748367] wcn36xx: wcn36xx_config channel switch=40
+[  175.748371] wcn36xx: hal finish scan mode 2
+[  175.758146] wcn36xx: SMD command (req 10, rsp 11) completed in 8ms
+[  175.761536] wcn36xx: indication arrived
+[  175.963887] wcn36xx: indication arrived
+[  176.064314] wcn36xx: mac config changed 0x00000040
+[  176.064322] wcn36xx: wcn36xx_config channel switch=153
+[  176.064326] wcn36xx: hal init scan mode 2
+[  176.067659] wcn36xx: SMD command (req 4, rsp 5) completed in 0ms
+[  176.067663] wcn36xx: hal start scan channel 153
+[  176.072911] wcn36xx: SMD command (req 6, rsp 7) completed in 8ms
+[  176.184091] wcn36xx: mac config changed 0x00000040
+[  176.184099] wcn36xx: wcn36xx_config channel switch=40
+[  176.184104] wcn36xx: hal finish scan mode 2
+[  176.193195] wcn36xx: SMD command (req 10, rsp 11) completed in 8ms
+[  176.196177] wcn36xx: indication arrived
+[  176.399382] wcn36xx: indication arrived
+[  176.500288] wcn36xx: mac config changed 0x00000040
+[  176.500295] wcn36xx: wcn36xx_config channel switch=157
+[  176.500299] wcn36xx: hal init scan mode 2
+[  176.503417] wcn36xx: SMD command (req 4, rsp 5) completed in 0ms
+[  176.503421] wcn36xx: hal start scan channel 157
+[  176.508762] wcn36xx: SMD command (req 6, rsp 7) completed in 8ms
+[  176.620389] wcn36xx: mac config changed 0x00000040
+[  176.620396] wcn36xx: wcn36xx_config channel switch=40
+[  176.620400] wcn36xx: hal finish scan mode 2
+[  176.629516] wcn36xx: SMD command (req 10, rsp 11) completed in 8ms
+[  176.632609] wcn36xx: indication arrived
+[  176.835319] wcn36xx: indication arrived
+[  176.936427] wcn36xx: mac config changed 0x00000040
+[  176.936435] wcn36xx: wcn36xx_config channel switch=161
+[  176.936440] wcn36xx: hal init scan mode 2
+[  176.939590] wcn36xx: SMD command (req 4, rsp 5) completed in 0ms
+[  176.939595] wcn36xx: hal start scan channel 161
+[  176.945005] wcn36xx: SMD command (req 6, rsp 7) completed in 8ms
+[  177.056380] wcn36xx: mac config changed 0x00000040
+[  177.056388] wcn36xx: wcn36xx_config channel switch=40
+[  177.056392] wcn36xx: hal finish scan mode 2
+[  177.065466] wcn36xx: SMD command (req 10, rsp 11) completed in 8ms
+[  177.068489] wcn36xx: indication arrived
+[  177.271739] wcn36xx: indication arrived
+[  177.372381] wcn36xx: mac config changed 0x00000040
+[  177.372389] wcn36xx: wcn36xx_config channel switch=165
+[  177.372393] wcn36xx: hal init scan mode 2
+[  177.375538] wcn36xx: SMD command (req 4, rsp 5) completed in 0ms
+[  177.375543] wcn36xx: hal start scan channel 165
+[  177.380982] wcn36xx: SMD command (req 6, rsp 7) completed in 8ms
+[  177.492402] wcn36xx: mac config changed 0x00000040
+[  177.492409] wcn36xx: wcn36xx_config channel switch=40
+[  177.492413] wcn36xx: hal finish scan mode 2
+
+Basically it takes 15 seconds to complete.
+
+Interleaved scan seems very slow and is IMO unusable on Android
+
+After this change - on Android with scan interleaving
+
+console:/ # iperf3 -c 192.168.50.167 -i 1 -t 320 
+
+Connecting to host 192.168.50.167, port 5201
+[  5] local 192.168.50.244 port 33132 connected to 192.168.50.167 port 5201
+[ ID] Interval           Transfer     Bitrate         Retr  Cwnd
+[  5]   0.00-1.00   sec  1.09 MBytes  9.15 Mbits/sec    0   79.2 KBytes 
+
+[  5]   1.00-2.00   sec   954 KBytes  7.82 Mbits/sec    0    116 KBytes 
+
+[  5]   2.00-3.00   sec   891 KBytes  7.30 Mbits/sec    0    158 KBytes 
+
+[  5]   3.00-4.00   sec   764 KBytes  6.25 Mbits/sec    0    199 KBytes 
+
+[  5]   4.00-5.00   sec   764 KBytes  6.26 Mbits/sec    0    219 KBytes 
+
+^C[  5]   5.00-5.09   sec   382 KBytes  33.8 Mbits/sec    0    221 
+KBytes
+
+Before this change - with Android issuing periodic scans on the same 30 
+second cadence.
+
+console:/ # iperf3 -c 192.168.50.167 -i 1 -t 320 
+
+Connecting to host 192.168.50.167, port 5201
+[  5] local 192.168.50.244 port 54378 connected to 192.168.50.167 port 5201
+[ ID] Interval           Transfer     Bitrate         Retr  Cwnd
+[  5]   0.00-1.00   sec  4.57 MBytes  38.3 Mbits/sec    2    148 KBytes 
+
+[  5]   1.00-2.00   sec  14.2 MBytes   119 Mbits/sec    1    164 KBytes 
+
+[  5]   2.00-3.00   sec  14.9 MBytes   125 Mbits/sec    2    173 KBytes 
+
+[  5]   3.00-4.00   sec  14.7 MBytes   124 Mbits/sec    2    133 KBytes 
+
+[  5]   4.00-5.00   sec  15.0 MBytes   126 Mbits/sec    1    148 KBytes 
+
+[  5]   5.00-6.00   sec  14.8 MBytes   124 Mbits/sec    5    164 KBytes 
+
+[  5]   6.00-7.00   sec  15.1 MBytes   127 Mbits/sec    1    178 KBytes 
+
+^C[  5]   7.00-7.39   sec  5.72 MBytes   124 Mbits/sec    2    147 KBytes
+
+I wasn't seeing this on Debian because wpa_supplicant on my test system 
+doesn't behave this way.
+
+I wonder would we be better off trying to serialize txrx::*tx with the 
+old scan method ?
+
+Accepted it would be a passive scan but sw_scan seems to be so very very 
+slow - we might be beter off.
+
+---
+bod
