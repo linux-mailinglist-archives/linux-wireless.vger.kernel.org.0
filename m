@@ -2,85 +2,131 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D070324824E
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Aug 2020 11:53:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3AFA424828A
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 Aug 2020 12:06:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726735AbgHRJxQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 18 Aug 2020 05:53:16 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:59644 "EHLO m43-7.mailgun.net"
+        id S1726370AbgHRKGv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 18 Aug 2020 06:06:51 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:42158 "EHLO m43-7.mailgun.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726593AbgHRJxP (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 18 Aug 2020 05:53:15 -0400
+        id S1726043AbgHRKGu (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 18 Aug 2020 06:06:50 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1597744395; h=Date: Message-Id: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=xseSs+uXX4K+Rt2beTtAlDBtE7LPlu4q7dbUEk5XyIg=;
- b=IC9Mq5HHpo7M7X08ZSdPI5OKg6SsKOYDdas5tjtYBsTL6ndmgFciinrgNNBUlmJuAotzUHgU
- uR0DU0Kc6EC6d7e4uHIlKdS7UlB3DbUs9hqMFESDKApxxfRXVgHk83RLjgAp2RKheaOejlgD
- vlhzqVYM4mu92q51eKEXwE3OtoI=
+ s=smtp; t=1597745210; h=Message-ID: References: In-Reply-To: Subject:
+ Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Sender; bh=g8scnZ99emGWW5FUbY1IqB77/PNnPh6KWmeHR03TRIM=;
+ b=LkVURK84aowWESnR1k2FrPA+QJ0SKiyxiL7hTd20upF+r234mKUBBE5z/bibqzUR5Czvh4nR
+ +1zjNF8tQeDHWwzvhfxjdPwvqc2bCa2pXvf1DK1NrHqnxP6w0JDo2hKX2psfDBzBf80DMI/n
+ bflOm7pndQ7clkUxADK8CuC9SoE=
 X-Mailgun-Sending-Ip: 69.72.43.7
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n10.prod.us-west-2.postgun.com with SMTP id
- 5f3ba4d14c787f237b6e75ac (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 18 Aug 2020 09:52:17
+ smtp-out-n03.prod.us-west-2.postgun.com with SMTP id
+ 5f3ba82f1e4d3989d420164c (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 18 Aug 2020 10:06:39
  GMT
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id A81F2C43395; Tue, 18 Aug 2020 09:52:17 +0000 (UTC)
+        id 6A715C433CA; Tue, 18 Aug 2020 10:06:39 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
-        MISSING_MID,SPF_NONE,URIBL_BLOCKED autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 80249C433C6;
-        Tue, 18 Aug 2020 09:52:15 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 80249C433C6
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        (Authenticated sender: tamizhr)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id DB6B4C433C6;
+        Tue, 18 Aug 2020 10:06:38 +0000 (UTC)
 MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH][next] ath11k: Use fallthrough pseudo-keyword
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20200727194415.GA1275@embeddedor>
-References: <20200727194415.GA1275@embeddedor>
-To:     "Gustavo A. R. Silva" <gustavoars@kernel.org>
-Cc:     "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, ath11k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20200818095217.A81F2C43395@smtp.codeaurora.org>
-Date:   Tue, 18 Aug 2020 09:52:17 +0000 (UTC)
+Date:   Tue, 18 Aug 2020 15:36:38 +0530
+From:   Tamizh Chelvam <tamizhr@codeaurora.org>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org
+Subject: Re: [PATCHv2 3/4] ath10k: Add new api to support TID specific
+ configuration
+In-Reply-To: <20200817141934.733A0C433CB@smtp.codeaurora.org>
+References: <1593875614-5683-4-git-send-email-tamizhr@codeaurora.org>
+ <20200817141934.733A0C433CB@smtp.codeaurora.org>
+Message-ID: <942a13405902460498184ef799f30581@codeaurora.org>
+X-Sender: tamizhr@codeaurora.org
+User-Agent: Roundcube Webmail/1.3.9
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-"Gustavo A. R. Silva" <gustavoars@kernel.org> wrote:
+Hi Kalle,
 
-> Replace the existing /* fall through */ comments and its variants with
-> the new pseudo-keyword macro fallthrough[1]. Also, remove unnecessary
-> fall-through markings when it is the case.
 > 
-> [1] https://www.kernel.org/doc/html/v5.7/process/deprecated.html?highlight=fallthrough#implicit-switch-case-fall-through
+>> This patch add ops for set_tid_config to support TID
+>> specific configuration. Station specific TID configuration
+>> will have more priority than vif specific TID configuration.
+>> WMI_SERVICE_PEER_TID_CONFIGS_SUPPORT service flag introduced
+>> to notify host for TID config support. And RTS_CTS extended tid
+>> configuration support advertised through the service flag
+>> WMI_10_4_SERVICE_EXT_PEER_TID_CONFIGS_SUPPORT.
+>> 
+>> TID specific noack configuration requires
+>> aggregation should be disabled and rate for the data TID packets
+>> should be basic rates. So, if the TID already configured
+>> with noack policy then driver will ignore the aggregation
+>> or TX rate related configuration for the same data TID.
+>> 
+>> In TX rate configuration should be applied with highest
+>> preamble configuration(HT rates should not be applied
+>> for the station which supports vht rates).
+>> 
+>> Tested-on: QCA9984 hw1.0 PCI 10.4-3.9.0.2-00021
+>> 
+>> Signed-off-by: Tamizh Chelvam <tamizhr@codeaurora.org>
+>> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 > 
-> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+> There few checkpatch warnings which I fixed and also I did some 
+> whitespace
+> changes to improve readability. Others were trivial but please check 
+> carefully
+> this change and let me know if it's ok:
+> 
+Thanks for the cleanup. Change looks good to me.
 
-Patch applied to ath-next branch of ath.git, thanks.
+> --- a/drivers/net/wireless/ath/ath10k/mac.c
+> +++ b/drivers/net/wireless/ath/ath10k/mac.c
+> @@ -7089,6 +7089,7 @@ static void ath10k_sta_tid_cfg_wk(struct 
+> work_struct *wk)
+>         bool config_apply;
+>         int ret, i;
+>         u32 changed;
+> +       u8 nss;
+> 
+>         arsta = container_of(wk, struct ath10k_sta, tid_config_wk);
+>         sta = container_of((void *)arsta, struct ieee80211_sta, 
+> drv_priv);
+> @@ -7138,9 +7139,12 @@ static void ath10k_sta_tid_cfg_wk(struct 
+> work_struct *wk)
+> 
+>                 if (changed & (BIT(NL80211_TID_CONFIG_ATTR_TX_RATE) |
+>                     BIT(NL80211_TID_CONFIG_ATTR_TX_RATE_TYPE))) {
+> -                       if (arvif->rate_ctrl[i] >
+> WMI_TID_CONFIG_RATE_CONTROL_AUTO &&
+> -                           ath10k_mac_validate_rate_mask(ar, sta,
+> arvif->rate_code[i],
+> -
+> ATH10K_HW_NSS(arvif->rate_code[i]))) {
+> +                       nss = ATH10K_HW_NSS(arvif->rate_code[i]);
+> +                       ret = ath10k_mac_validate_rate_mask(ar, sta,
+> +                                                           
+> arvif->rate_code[i],
+> +                                                           nss);
+> +                       if (ret &&
+> +                           arvif->rate_ctrl[i] >
+> WMI_TID_CONFIG_RATE_CONTROL_AUTO) {
+>                                 arg.rate_ctrl = 0;
+>                                 arg.rcode_flags = 0;
+>                         }
 
-0b294aebb6a0 ath11k: Use fallthrough pseudo-keyword
-
--- 
-https://patchwork.kernel.org/patch/11687467/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
+Tamizh.
