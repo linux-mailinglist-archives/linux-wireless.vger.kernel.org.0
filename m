@@ -2,163 +2,91 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3828A247D2D
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Aug 2020 06:12:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 964E7247DA2
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 Aug 2020 06:41:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726099AbgHREMj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 18 Aug 2020 00:12:39 -0400
-Received: from mailgw02.mediatek.com ([210.61.82.184]:25041 "EHLO
-        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1725800AbgHREMj (ORCPT
+        id S1726381AbgHRElU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 18 Aug 2020 00:41:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43736 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726099AbgHRElU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 18 Aug 2020 00:12:39 -0400
-X-UUID: c908cc02ce0c42aeb4cda99fb2c9a68d-20200818
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Transfer-Encoding:Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=l59+GLaNjaqnA2PhlUq66s9CLlMDA+ihi7hNkqvW1iY=;
-        b=M3rjIGmWgAdOlWIvKsROHKRA9hWCFcfUOA908o/+ko8s6F9mcy5PH6s1FlAThULHNKracYBFmi215mE5nzrrEHXwXxCh3a/DrYvayH6XsJe/rGbWFRGhfMtH7sp/OQgNSTWPM7LlRSw3qa6T51G8WRR6LzyTtZaYMQXF+Srtk4A=;
-X-UUID: c908cc02ce0c42aeb4cda99fb2c9a68d-20200818
-Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw02.mediatek.com
-        (envelope-from <sean.wang@mediatek.com>)
-        (Cellopoint E-mail Firewall v4.1.10 Build 0809 with TLS)
-        with ESMTP id 2139650985; Tue, 18 Aug 2020 12:12:31 +0800
-Received: from mtkcas08.mediatek.inc (172.21.101.126) by
- mtkmbs01n1.mediatek.inc (172.21.101.68) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Tue, 18 Aug 2020 12:12:29 +0800
-Received: from mtkswgap22.mediatek.inc (172.21.77.33) by mtkcas08.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Tue, 18 Aug 2020 12:12:29 +0800
-From:   <sean.wang@mediatek.com>
-To:     <nbd@nbd.name>, <lorenzo.bianconi@redhat.com>
-CC:     <sean.wang@mediatek.com>, <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>,
-        YN Chen <YN.Chen@mediatek.com>
-Subject: [PATCH] mt76: mt7663s: fix unable to handle kernel paging request
-Date:   Tue, 18 Aug 2020 12:12:28 +0800
-Message-ID: <5941a1b4b394153fa455eab2d057f2d4cdc6889e.1597696208.git.sean.wang@mediatek.com>
-X-Mailer: git-send-email 1.7.9.5
+        Tue, 18 Aug 2020 00:41:20 -0400
+Received: from mail-qv1-xf43.google.com (mail-qv1-xf43.google.com [IPv6:2607:f8b0:4864:20::f43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFF46C061389;
+        Mon, 17 Aug 2020 21:41:19 -0700 (PDT)
+Received: by mail-qv1-xf43.google.com with SMTP id o2so8942622qvk.6;
+        Mon, 17 Aug 2020 21:41:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=Gf51pqCh9hmyZ8rnan6e9c6VTVODdBAKE8gohS5mRuI=;
+        b=lctg0OUx1nHGl0+MBZcnIRFxHXJ91IBQK07BObcp1w622xtRNCSH/XiRtIjrM2NqI3
+         6jlLjDhlKJ/qkWebkxaS7EKlQv6ENHLEjKK6fr1Bg3ZhectDyjp50pR/w02jzXvjOI7X
+         L6a9IzaoRc/k86j70arkeFNsOQAFK+ffjoGAnHzfUao9w+20GlEstjpaJeRiH2iQtO5a
+         LaZb8p6S/uH1NI6wTcyMcHDjS1dgJRJ8gwGiw+VQM/jgY+ypbvhysIWEhfvSgMhkPsZs
+         NmfQhRQcWOkFlRa3vk3cUfjGPNbgo7j6HHKwZ0XWQbk9c30DJn4SWt9UVdz4Y4107Bmg
+         cFsg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=Gf51pqCh9hmyZ8rnan6e9c6VTVODdBAKE8gohS5mRuI=;
+        b=PDq9dep9bVMdXIGoEZ7DPdEzfzzZVK4Vo2e3xXcKOML6WTmAeWVPcfSW03+ZwqwdV7
+         xaa/TEGNQDWIKmAzmE6nx8gvt+5t0aCgrMBx9mxw3LB3ajkFM06siq8ausryQRkPiL2k
+         AtdecK4z0RYJqa+b0otBRqdymBK4Xj0yK/lyHAM7IfHagssecXM9WR7yXfNR01SYdNCJ
+         plg9epYRFR6Vc0IczzaKxxKfsX28tyMdGXL0yJh5FYByRqW+Sv4FL1lWrIJknIUo6cLx
+         /8MGz5c2FyrXqr7crgxsHN9uRp6ukCCtlHKPRjX7RxWxQrL1UfGObJgqAkc+YffGhKzY
+         JKQA==
+X-Gm-Message-State: AOAM530CHhHvUnGCrkUaTz/P/myvvWMibPqSb9uq1UIriis4e4l6cRM0
+        W43/Oq2yJicNXTHFxe47e/XGt8uDdzzNAmwpMVY=
+X-Google-Smtp-Source: ABdhPJwvxKeUMPdxo3bMzBNMWymbnry9oNRXYHBfh9rzch/hoBlCqzQpWoInevxGOownJnHakBc16Ir7szs5Q7bYKTE=
+X-Received: by 2002:a05:6214:11a8:: with SMTP id u8mr17846086qvv.88.1597725678616;
+ Mon, 17 Aug 2020 21:41:18 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
-Content-Transfer-Encoding: base64
+References: <20200814144844.1920-1-tangbin@cmss.chinamobile.com>
+ <87y2mdjqkx.fsf@codeaurora.org> <e53ee8ca-9c2b-2313-6fd7-8f73ae33e1a2@cmss.chinamobile.com>
+In-Reply-To: <e53ee8ca-9c2b-2313-6fd7-8f73ae33e1a2@cmss.chinamobile.com>
+From:   Steve deRosier <derosier@gmail.com>
+Date:   Mon, 17 Aug 2020 21:40:42 -0700
+Message-ID: <CALLGbRL95niReU+e1+5pO_byHdoWNuzBtHr_iz_HTAU0KwV2eg@mail.gmail.com>
+Subject: Re: [PATCH] ath10k: fix the status check and wrong return
+To:     Tang Bin <tangbin@cmss.chinamobile.com>
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Network Development <netdev@vger.kernel.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>, ath10k@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-RnJvbTogU2VhbiBXYW5nIDxzZWFuLndhbmdAbWVkaWF0ZWsuY29tPg0KDQpVc2UgYnVmZmVyIGFs
-bG9jYXRlZCB3aXRoIGttYWxsb2MgaW5zdGVhZCBvZiB3aXRoIHN0YWNrIHRvIGZpeCBrZXJuZWwN
-CmNyYXNoIGR1ZSB0byBVbmFibGUgdG8gaGFuZGxlIGtlcm5lbCBwYWdpbmcgcmVxdWVzdCBhdCB2
-aXJ0dWFsIGFkZHJlc3MNCmZmZmZmZmMwMDk1Y2JjZTguDQoNClsgIDE1Ni45NzczNDldIFVuYWJs
-ZSB0byBoYW5kbGUga2VybmVsIHBhZ2luZyByZXF1ZXN0IGF0IHZpcnR1YWwgYWRkcmVzcyBmZmZm
-ZmZjMDA5NWNiY2U4DQpbICAxNTYuOTg1MjcwXSBNZW0gYWJvcnQgaW5mbzoNClsgIDE1Ni45ODgw
-NTldICAgRVNSID0gMHg5NjAwMDA0NQ0KWyAgMTU2Ljk5MTEwNF0gICBFeGNlcHRpb24gY2xhc3Mg
-PSBEQUJUIChjdXJyZW50IEVMKSwgSUwgPSAzMiBiaXRzDQpbICAxNTYuOTk3MDEzXSAgIFNFVCA9
-IDAsIEZuViA9IDANClsgIDE1Ny4wMDAwNTddICAgRUEgPSAwLCBTMVBUVyA9IDANClsgIDE1Ny4w
-MDMxOTBdIERhdGEgYWJvcnQgaW5mbzoNClsgIDE1Ny4wMDYwNjFdICAgSVNWID0gMCwgSVNTID0g
-MHgwMDAwMDA0NQ0KWyAgMTU3LjAwOTg4N10gICBDTSA9IDAsIFduUiA9IDENClsgIDE1Ny4wMTI4
-NTBdIHN3YXBwZXIgcGd0YWJsZTogNGsgcGFnZXMsIDM5LWJpdCBWQXMsIHBnZHAgPSAwMDAwMDAw
-MDQyYWRjYmEyDQpbICAxNTcuMDE5NzE1XSBbZmZmZmZmYzAwOTVjYmNlOF0gcGdkPTAwMDAwMDAw
-MDAwMDAwMDAsIHB1ZD0wMDAwMDAwMDAwMDAwMDAwDQpbICAxNTcuMDI2NDk5XSBJbnRlcm5hbCBl
-cnJvcjogT29wczogOTYwMDAwNDUgWyMxXSBQUkVFTVBUIFNNUA0KWyAgMTU3LjAzMjA2NV0gTW9k
-dWxlcyBsaW5rZWQgaW46IG10NzY2M3MgbXQ3NjYzX3VzYl9zZGlvX2NvbW1vbiBtdDc2MTVfY29t
-bW9uDQoNCi4uLg0KDQpbICAxNTcuMDczMDA3XSBQcm9jZXNzIENvbXBvc2l0b3JUaWxlVyAocGlk
-OiAxNjI1LCBzdGFjayBsaW1pdCA9IDB4MDAwMDAwMDAzZjIzODlmYykNClsgIDE1Ny4wODA0ODRd
-IENQVTogMCBQSUQ6IDE2MjUgQ29tbTogQ29tcG9zaXRvclRpbGVXIE5vdCB0YWludGVkIDQuMTku
-MTM3ICMzNg0KWyAgMTU3LjA5MjIxOV0gcHN0YXRlOiA4MDAwMDA4NSAoTnpjdiBkYUlmIC1QQU4g
-LVVBTykNClsgIDE1Ny4wOTcwMTJdIHBjIDogX19tZW1jcHkrMHhjMC8weDE4MA0KWyAgMTU3LjEw
-MDU4NV0gbHIgOiBzd2lvdGxiX3RibF91bm1hcF9zaW5nbGUrMHg4NC8weDE0Yw0KWyAgMTU3LjEw
-NTU0MF0gc3AgOiBmZmZmZmY4MDA4MDAzY2IwDQpbICAxNTcuMTA4ODQ1XSB4Mjk6IGZmZmZmZjgw
-MDgwMDNjYjAgeDI4OiBmZmZmZmY5YzFhMjExZjYwDQpbICAxNTcuMTE0MTQ5XSB4Mjc6IGZmZmZm
-ZjljMTllY2MwMTggeDI2OiAwMDAwMDAwMDAwMDAxMDAwDQpbICAxNTcuMTE5NDUyXSB4MjU6IGZm
-ZmZmZjljMWEzNzgwMDAgeDI0OiAwMDAwMDAwMDAwMDAwMDAxDQpbICAxNTcuMTI0NzU1XSB4MjM6
-IGZmZmZmZjljMWEzNzgwMDAgeDIyOiAwMDAwMDAwMDAwMDAwMWZmDQpbICAxNTcuMTMwMDU4XSB4
-MjE6IDAwMDAwMDAwMDAwMDAwMDAgeDIwOiAwMDAwMDAwMGZiZWZlODAwDQpbICAxNTcuMTM1MzYw
-XSB4MTk6IDAwMDAwMDAwMDAwMDAwNzAgeDE4OiAwMDAwMDAwMDAwMDAwMDAwDQpbICAxNTcuMTQw
-NjYzXSB4MTc6IDAwMDAwMDAwMDAwMDAwMDAgeDE2OiAwMDAwMDAwMDAwMDAwMDAwDQpbICAxNTcu
-MTQ1OTY1XSB4MTU6IDAwMDAwMDAwMDAwMDAwMDAgeDE0OiAwMDAwMDAwMDAwMDAwMDAwDQpbICAx
-NTcuMTUxMjY3XSB4MTM6IDAwMDAwMDAwMDAwMDAwMDAgeDEyOiAwMDAwMDAwMDAwMDAwMDBkDQpb
-ICAxNTcuMTU2NTY5XSB4MTE6IDAwMDAwMDAwMDAwMDAwMGMgeDEwOiAwMDAwMDAwYTdiZWZlODAw
-DQpbICAxNTcuMTYxODczXSB4OSA6IGZmZmZmZmY2ODAwMDAwMDAgeDggOiAwMDAwMDAwMDAwMDAw
-MDAwDQpbICAxNTcuMTY3MTc1XSB4NyA6IDAwMDAwMDAxMDAwMDAwMDMgeDYgOiBmZmZmZmZjMDA5
-NWNiY2U4DQpbICAxNTcuMTcyNDc5XSB4NSA6IDAwMDAwMDAwMDAwMDAwMDAgeDQgOiAwMDAwMDAw
-MDAwMDAwMDAwDQpbICAxNTcuMTc3NzgxXSB4MyA6IDAwMDAwMDAwMDAwMDAwMDIgeDIgOiBmZmZm
-ZmZmZmZmZmZmZmYwDQpbICAxNTcuMTgzMDg1XSB4MSA6IGZmZmZmZmNhN2JlZmU4MTAgeDAgOiBm
-ZmZmZmZjMDA5NWNiY2U4DQpbICAxNTcuMTg4Mzg5XSBDYWxsIHRyYWNlOg0KWyAgMTU3LjE5MDgz
-Ml0gIF9fbWVtY3B5KzB4YzAvMHgxODANClsgIDE1Ny4xOTQwNTNdICBzd2lvdGxiX3VubWFwX3Nn
-X2F0dHJzKzB4YTgvMHhiMA0KWyAgMTU3LjE5ODQwNl0gIF9fc3dpb3RsYl91bm1hcF9zZ19hdHRy
-cysweDhjLzB4YTQNClsgIDE1Ny4yMDI5MzFdICBtc2RjX3VucHJlcGFyZV9kYXRhKzB4NmMvMHg4
-NA0KWyAgMTU3LjIwNzAxOV0gIG1zZGNfcmVxdWVzdF9kb25lKzB4NTgvMHg5OA0KWyAgMTU3LjIx
-MDkzNF0gIG1zZGNfZGF0YV94ZmVyX2RvbmUrMHgxYTgvMHgxZDANClsgIDE1Ny4yMTUxOTVdICBt
-c2RjX2lycSsweDEyYy8weDE3Yw0KWyAgMTU3LjIxODUwNV0gIF9faGFuZGxlX2lycV9ldmVudF9w
-ZXJjcHUrMHhkOC8weDI5OA0KWyAgMTU3LjIyMzIwMl0gIGhhbmRsZV9pcnFfZXZlbnQrMHg2MC8w
-eGRjDQpbICAxNTcuMjI3MDMxXSAgaGFuZGxlX2Zhc3Rlb2lfaXJxKzB4YTQvMHgxZDQNClsgIDE1
-Ny4yMzExMjBdICBfX2hhbmRsZV9kb21haW5faXJxKzB4ODQvMHhjNA0KWyAgMTU3LjIzNTIxMF0g
-IGdpY19oYW5kbGVfaXJxKzB4MTI0LzB4MWE0DQpbICAxNTcuMjM5MDM4XSAgZWwwX2lycV9uYWtl
-ZCsweDRjLzB4NTQNClsgIDE1Ny4yNDI2MDhdIENvZGU6IDE0MDAwMDI4IGYxMDIwMDQyIDU0MDAw
-MjRhIGE4YzEyMDI3IChhODgxMjBjNykNClsgIDE1Ny4yNDg2OTNdIC0tLVsgZW5kIHRyYWNlIDI4
-YjgwOTAxMzViMGEyZTEgXS0tLQ0KWyAgMTU3LjI2NTU4OV0gS2VybmVsIHBhbmljIC0gbm90IHN5
-bmNpbmc6IEZhdGFsIGV4Y2VwdGlvbiBpbiBpbnRlcnJ1cHQNClsgIDE1Ny4yNzE5NDRdIFNNUDog
-c3RvcHBpbmcgc2Vjb25kYXJ5IENQVXMNClsgIDE1Ny4yNzU4NjVdIEtlcm5lbCBPZmZzZXQ6IDB4
-MWMxMGUwMDAwMCBmcm9tIDB4ZmZmZmZmODAwODAwMDAwMA0KWyAgMTU3LjI4MTc3OV0gQ1BVIGZl
-YXR1cmVzOiAweDAsMjE4ODIwMGMNClsgIDE1Ny4yODU1MTldIE1lbW9yeSBMaW1pdDogbm9uZQ0K
-DQpGaXhlczogYTY2Y2JkZDY1NzNkICgibXQ3NjogbXQ3NjE1OiBpbnRyb2R1Y2UgbXQ3NjYzcyBz
-dXBwb3J0IikNCkNvLWRldmVsb3BlZC1ieTogWU4gQ2hlbiA8WU4uQ2hlbkBtZWRpYXRlay5jb20+
-DQpTaWduZWQtb2ZmLWJ5OiBZTiBDaGVuIDxZTi5DaGVuQG1lZGlhdGVrLmNvbT4NClNpZ25lZC1v
-ZmYtYnk6IFNlYW4gV2FuZyA8c2Vhbi53YW5nQG1lZGlhdGVrLmNvbT4NCi0tLQ0KIGRyaXZlcnMv
-bmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3Ni5oICAgICAgfCAgMSArDQogLi4uL25ldC93
-aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzYxNS9zZGlvLmMgICB8ICA4ICsrKysrKysrDQogLi4u
-L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3NjE1L3NkaW9fdHhyeC5jICB8IDE4ICsrKysrKysr
-Ky0tLS0tLS0tLQ0KIDMgZmlsZXMgY2hhbmdlZCwgMTggaW5zZXJ0aW9ucygrKSwgOSBkZWxldGlv
-bnMoLSkNCg0KZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYv
-bXQ3Ni5oIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc2LmgNCmluZGV4
-IDNkNTAzN2FmZDVlYS4uOTRmYTgzNWU5MTM0IDEwMDY0NA0KLS0tIGEvZHJpdmVycy9uZXQvd2ly
-ZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc2LmgNCisrKyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21l
-ZGlhdGVrL210NzYvbXQ3Ni5oDQpAQCAtNDY0LDYgKzQ2NCw3IEBAIHN0cnVjdCBtdDc2X3NkaW8g
-ew0KIAlzdHJ1Y3Qgd29ya19zdHJ1Y3Qgc3RhdF93b3JrOw0KIA0KIAlzdHJ1Y3Qgc2Rpb19mdW5j
-ICpmdW5jOw0KKwl2b2lkICppbnRyX2RhdGE7DQogDQogCXN0cnVjdCB7DQogCQlzdHJ1Y3QgbXV0
-ZXggbG9jazsNCmRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2
-L210NzYxNS9zZGlvLmMgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzYx
-NS9zZGlvLmMNCmluZGV4IDU2ZjY1MzQ1ZDA0OC4uZTA2MDNlODJlMzNkIDEwMDY0NA0KLS0tIGEv
-ZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc2MTUvc2Rpby5jDQorKysgYi9k
-cml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzYxNS9zZGlvLmMNCkBAIC0zNzks
-NiArMzc5LDE0IEBAIHN0YXRpYyBpbnQgbXQ3NjYzc19wcm9iZShzdHJ1Y3Qgc2Rpb19mdW5jICpm
-dW5jLA0KIAkJICAgIChtdDc2X3JyKGRldiwgTVRfSFdfUkVWKSAmIDB4ZmYpOw0KIAlkZXZfZGJn
-KG1kZXYtPmRldiwgIkFTSUMgcmV2aXNpb246ICUwNHhcbiIsIG1kZXYtPnJldik7DQogDQorCW1k
-ZXYtPnNkaW8uaW50cl9kYXRhID0gZGV2bV9rbWFsbG9jKG1kZXYtPmRldiwNCisJCQkJCSAgICBz
-aXplb2Yoc3RydWN0IG10NzZzX2ludHIpLA0KKwkJCQkJICAgIEdGUF9LRVJORUwpOw0KKwlpZiAo
-IW1kZXYtPnNkaW8uaW50cl9kYXRhKSB7DQorCQlyZXQgPSAtRU5PTUVNOw0KKwkJZ290byBlcnJf
-ZGVpbml0Ow0KKwl9DQorDQogCXJldCA9IG10NzZzX2FsbG9jX3F1ZXVlcygmZGV2LT5tdDc2KTsN
-CiAJaWYgKHJldCkNCiAJCWdvdG8gZXJyX2RlaW5pdDsNCmRpZmYgLS1naXQgYS9kcml2ZXJzL25l
-dC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzYxNS9zZGlvX3R4cnguYyBiL2RyaXZlcnMvbmV0
-L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3NjE1L3NkaW9fdHhyeC5jDQppbmRleCBjOTQ1YjRl
-MDMyMGQuLmE1ODlmZDU1MzVkYiAxMDA2NDQNCi0tLSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21l
-ZGlhdGVrL210NzYvbXQ3NjE1L3NkaW9fdHhyeC5jDQorKysgYi9kcml2ZXJzL25ldC93aXJlbGVz
-cy9tZWRpYXRlay9tdDc2L210NzYxNS9zZGlvX3R4cnguYw0KQEAgLTIyMSwzNSArMjIxLDM1IEBA
-IHZvaWQgbXQ3NjYzc19yeF93b3JrKHN0cnVjdCB3b3JrX3N0cnVjdCAqd29yaykNCiAJc3RydWN0
-IG10NzZfc2RpbyAqc2RpbyA9IGNvbnRhaW5lcl9vZih3b3JrLCBzdHJ1Y3QgbXQ3Nl9zZGlvLA0K
-IAkJCQkJICAgICAgcngucmVjdl93b3JrKTsNCiAJc3RydWN0IG10NzZfZGV2ICpkZXYgPSBjb250
-YWluZXJfb2Yoc2Rpbywgc3RydWN0IG10NzZfZGV2LCBzZGlvKTsNCi0Jc3RydWN0IG10NzZzX2lu
-dHIgaW50cjsNCisJc3RydWN0IG10NzZzX2ludHIgKmludHIgPSBzZGlvLT5pbnRyX2RhdGE7DQog
-CWludCBuZnJhbWVzID0gMCwgcmV0Ow0KIA0KIAkvKiBkaXNhYmxlIGludGVycnVwdCAqLw0KIAlz
-ZGlvX2NsYWltX2hvc3Qoc2Rpby0+ZnVuYyk7DQogCXNkaW9fd3JpdGVsKHNkaW8tPmZ1bmMsIFdI
-TFBDUl9JTlRfRU5fQ0xSLCBNQ1JfV0hMUENSLCAwKTsNCi0Jc2Rpb19yZWFkc2Ioc2Rpby0+ZnVu
-YywgJmludHIsIE1DUl9XSElTUiwgc2l6ZW9mKHN0cnVjdCBtdDc2c19pbnRyKSk7DQorCXNkaW9f
-cmVhZHNiKHNkaW8tPmZ1bmMsIGludHIsIE1DUl9XSElTUiwgc2l6ZW9mKHN0cnVjdCBtdDc2c19p
-bnRyKSk7DQogCXNkaW9fcmVsZWFzZV9ob3N0KHNkaW8tPmZ1bmMpOw0KIA0KLQl0cmFjZV9kZXZf
-aXJxKGRldiwgaW50ci5pc3IsIDApOw0KKwl0cmFjZV9kZXZfaXJxKGRldiwgaW50ci0+aXNyLCAw
-KTsNCiANCi0JaWYgKGludHIuaXNyICYgV0hJRVJfUlgwX0RPTkVfSU5UX0VOKSB7DQotCQlyZXQg
-PSBtdDc2NjNzX3J4X3J1bl9xdWV1ZShkZXYsIDAsICZpbnRyKTsNCisJaWYgKGludHItPmlzciAm
-IFdISUVSX1JYMF9ET05FX0lOVF9FTikgew0KKwkJcmV0ID0gbXQ3NjYzc19yeF9ydW5fcXVldWUo
-ZGV2LCAwLCBpbnRyKTsNCiAJCWlmIChyZXQgPiAwKSB7DQogCQkJcXVldWVfd29yayhzZGlvLT50
-eHJ4X3dxLCAmc2Rpby0+cngubmV0X3dvcmspOw0KIAkJCW5mcmFtZXMgKz0gcmV0Ow0KIAkJfQ0K
-IAl9DQogDQotCWlmIChpbnRyLmlzciAmIFdISUVSX1JYMV9ET05FX0lOVF9FTikgew0KLQkJcmV0
-ID0gbXQ3NjYzc19yeF9ydW5fcXVldWUoZGV2LCAxLCAmaW50cik7DQorCWlmIChpbnRyLT5pc3Ig
-JiBXSElFUl9SWDFfRE9ORV9JTlRfRU4pIHsNCisJCXJldCA9IG10NzY2M3NfcnhfcnVuX3F1ZXVl
-KGRldiwgMSwgaW50cik7DQogCQlpZiAocmV0ID4gMCkgew0KIAkJCXF1ZXVlX3dvcmsoc2Rpby0+
-dHhyeF93cSwgJnNkaW8tPnJ4Lm5ldF93b3JrKTsNCiAJCQluZnJhbWVzICs9IHJldDsNCiAJCX0N
-CiAJfQ0KIA0KLQlpZiAoaW50ci5pc3IgJiBXSElFUl9UWF9ET05FX0lOVF9FTikgew0KLQkJbXQ3
-NjYzc19yZWZpbGxfc2NoZWRfcXVvdGEoZGV2LCBpbnRyLnR4Lnd0cWNyKTsNCisJaWYgKGludHIt
-PmlzciAmIFdISUVSX1RYX0RPTkVfSU5UX0VOKSB7DQorCQltdDc2NjNzX3JlZmlsbF9zY2hlZF9x
-dW90YShkZXYsIGludHItPnR4Lnd0cWNyKTsNCiAJCXF1ZXVlX3dvcmsoc2Rpby0+dHhyeF93cSwg
-JnNkaW8tPnR4LnhtaXRfd29yayk7DQogCX0NCiANCi0tIA0KMi4yNS4xDQo=
+On Mon, Aug 17, 2020 at 6:43 PM Tang Bin <tangbin@cmss.chinamobile.com> wro=
+te:
+>
+> Hi Kalle=EF=BC=9A
+>
+> =E5=9C=A8 2020/8/17 22:26, Kalle Valo =E5=86=99=E9=81=93:
+> >> In the function ath10k_ahb_clock_init(), devm_clk_get() doesn't
+> >> return NULL. Thus use IS_ERR() and PTR_ERR() to validate
+> >> the returned value instead of IS_ERR_OR_NULL().
+> > Why? What's the benefit of this patch? Or what harm does
+> > IS_ERR_OR_NULL() create?
+>
+> Thanks for you reply, the benefit of this patch is simplify the code,
+> because in
+>
+> this function, I don't think the situation of 'devm_clk_get() return
+> NULL' exists.
+>
 
+I admit I'm not looking at HEAD, but at least in the two versions I've
+got checked out, devm_clk_get() can theoretically return NULL. This
+feels like a gratuitous change anyway, but in any case it's wrong and
+could cause wrong behavior.
+
+- Steve
