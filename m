@@ -2,98 +2,81 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D6E70248188
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Aug 2020 11:09:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C5A1D24819B
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 Aug 2020 11:14:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726656AbgHRJJf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 18 Aug 2020 05:09:35 -0400
-Received: from mail29.static.mailgun.info ([104.130.122.29]:18117 "EHLO
-        mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726635AbgHRJJc (ORCPT
+        id S1726617AbgHRJO0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 18 Aug 2020 05:14:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58434 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726203AbgHRJOY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 18 Aug 2020 05:09:32 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1597741772; h=Content-Transfer-Encoding: Content-Type:
- MIME-Version: Message-ID: In-Reply-To: Date: References: Subject: Cc:
- To: From: Sender; bh=xbw7f7EvWXObjIipWjGcoTIEGzRejBWjPZyzXh3div8=; b=azgT+amb4etpm1l58XAC/zfmQxnsLQk95jgTF2Tfke+qPTdNofbMj9zKR4R3Tl4V2VO2onQd
- +90SQvRVtF0qeeJn7lJ0dwKJ4MGB35NfSOqMjFUh0JDGUlSTo9u4aZLciyKfwr0ESDgp5nm9
- pYwLo2Bl8oXUZJpEeUqjAAz9amE=
-X-Mailgun-Sending-Ip: 104.130.122.29
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n05.prod.us-east-1.postgun.com with SMTP id
- 5f3b9aa0440a07969ad2b825 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 18 Aug 2020 09:08:48
- GMT
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 62C06C43387; Tue, 18 Aug 2020 09:08:47 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE,
-        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 1C4A3C433CA;
-        Tue, 18 Aug 2020 09:08:44 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 1C4A3C433CA
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Tang Bin <tangbin@cmss.chinamobile.com>
-Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        davem@davemloft.net, ath10k@lists.infradead.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] ath10k: fix the status check and wrong return
-References: <20200814144844.1920-1-tangbin@cmss.chinamobile.com>
-        <87y2mdjqkx.fsf@codeaurora.org>
-        <e53ee8ca-9c2b-2313-6fd7-8f73ae33e1a2@cmss.chinamobile.com>
-Date:   Tue, 18 Aug 2020 12:08:42 +0300
-In-Reply-To: <e53ee8ca-9c2b-2313-6fd7-8f73ae33e1a2@cmss.chinamobile.com> (Tang
-        Bin's message of "Tue, 18 Aug 2020 09:42:03 +0800")
-Message-ID: <87lficjp7p.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        Tue, 18 Aug 2020 05:14:24 -0400
+Received: from mail-ot1-x342.google.com (mail-ot1-x342.google.com [IPv6:2607:f8b0:4864:20::342])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7844C061389;
+        Tue, 18 Aug 2020 02:14:24 -0700 (PDT)
+Received: by mail-ot1-x342.google.com with SMTP id x24so15748518otp.3;
+        Tue, 18 Aug 2020 02:14:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=92Ib8mqnWdcCybpCnhffmUEYTmpg4Jq4jg1RQZX0S4A=;
+        b=bvFGk3lrrpct2cWUZxj+prtZpM+oGTkbdgMnN2Ip95daB8W+N/BLavePbfFJn0lHHc
+         7aMSCshxSM/kbdjfDNCPhdW/L1BhLVemPX1X+WeisFQ7VDuYl1GgJq8oTX8V/kB2swfc
+         hJmVVssUtRknVjKLHWEQz5nakfcEY8Mc3dWqKtzZH7YRPLgh01ZfCNpZBvVigq5lPsE9
+         AtRueEvWq5zMYspK1ZO3bw0cZHzyRf/TidoiO3A0qZr5LZBQ6DOf8eynFpPiq/8Pp98H
+         OEvCdI9rI5tBFe01nhhZ66f4659Vj7pr2m7jYm6Tjhga7mJbtD8mXSAACzPjIxNjZXlZ
+         6eXw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=92Ib8mqnWdcCybpCnhffmUEYTmpg4Jq4jg1RQZX0S4A=;
+        b=WLFX60zOJG0ikBcBG3WqG6Zx4VDC4MpY6zqzXcYtknCFg+4WOZepw/ZlhBObuNhy3p
+         MQ43pl6o+OCgar8Ks7ZfMAC3H+/A59UTMNEggG69dkcyiwP9hxJH4G+A1l1GizfNtLrL
+         yO4mU22ZJtPdCLxJ0YzQ0/cpzW9iLn5kTCch1KwYP80jnQ7Z+tqsVYpbZ/nxUjkBsfZL
+         szDSaNTqkOiJfiPNSPGT2qAoQERaDjYKm+aIi6AgfW1U9xcu9KlzaEYfiTBsIhnnAAvm
+         HkkrYmEbJhBns6A2OWVsHdIb8d5QdQlRYx6nBu90cUFDXVYtvQYFVoHSmQcUFxj5Zkwe
+         0Edw==
+X-Gm-Message-State: AOAM531e53PH+asN1AKFgHNIhUCOrWtjLvZy3fKaKhlcUDo0H0fBBSSa
+        v3i45o/0mOiqy28wz4Mf+z5inUH1kdSmnSOPYgE=
+X-Google-Smtp-Source: ABdhPJw5Yg1ZJ/hk9vv2l9CTB62GQWVvgdd0gIFQVRhUFKJQuHEcJzlRnt3ebxQ137Agq9mvj8gvS5P7+aShkn1RxqQ=
+X-Received: by 2002:a05:6830:1c65:: with SMTP id s5mr14047314otg.264.1597742064104;
+ Tue, 18 Aug 2020 02:14:24 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+References: <20200817090637.26887-1-allen.cryptic@gmail.com> <9cbb824a-5769-dd24-dcec-d9522d93e9b2@kernel.org>
+In-Reply-To: <9cbb824a-5769-dd24-dcec-d9522d93e9b2@kernel.org>
+From:   Allen <allen.lkml@gmail.com>
+Date:   Tue, 18 Aug 2020 14:44:12 +0530
+Message-ID: <CAOMdWSKLPuXsQRoVKr5zOLoh1RZ1Z0VTcxvW=++CfoS0s7azSQ@mail.gmail.com>
+Subject: Re: [PATCH 00/16] wirless: convert tasklets to use new tasklet_setup()
+To:     Jiri Slaby <jirislaby@kernel.org>
+Cc:     Allen Pais <allen.cryptic@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>, kuba@kernel.org,
+        mickflemm@gmail.com, mcgrof@kernel.org, chunkeey@googlemail.com,
+        Larry.Finger@lwfinger.net, stas.yakovlev@gmail.com,
+        helmut.schaa@googlemail.com, pkshih@realtek.com,
+        yhchuang@realtek.com, dsd@gentoo.org, kune@deine-taler.de,
+        Kees Cook <keescook@chromium.org>, ath11k@lists.infradead.org,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, b43-dev@lists.infradead.org,
+        brcm80211-dev-list.pdl@broadcom.com, brcm80211-dev-list@cypress.com
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Tang Bin <tangbin@cmss.chinamobile.com> writes:
-
-> =E5=9C=A8 2020/8/17 22:26, Kalle Valo =E5=86=99=E9=81=93:
->>> In the function ath10k_ahb_clock_init(), devm_clk_get() doesn't
->>> return NULL. Thus use IS_ERR() and PTR_ERR() to validate
->>> the returned value instead of IS_ERR_OR_NULL().
->> Why? What's the benefit of this patch? Or what harm does
->> IS_ERR_OR_NULL() create?
 >
-> Thanks for you reply, the benefit of this patch is simplify the code,
-> because in
+> General question for the whole series: have you considered the long-term
+> aim instead? That is: convert away from tasklets completely? I.e. use
+> threaded irqs or workqueues?
 >
-> this function, I don't think the situation of 'devm_clk_get() return
-> NULL' exists.
->
-> So please think about it, thanks.
 
-I think you missed my comment below:
+ Yes, since changing tasklets to workqueues or threaded irqs
+becomes a little trivial when it comes to tree-wide change, this
+approach was considered. I am open to both.
 
->> devm_clk_get() can return NULL if CONFIG_HAVE_CLK is disabled:
->>
->> static inline struct clk *devm_clk_get(struct device *dev, const char *i=
-d)
->> {
->> 	return NULL;
->> }
-
-So I think this patch just creates a new bug and does not improve
-anything.
-
---=20
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
-hes
+-- 
+       - Allen
