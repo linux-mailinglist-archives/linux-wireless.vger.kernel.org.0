@@ -2,102 +2,83 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C36A249BBB
-	for <lists+linux-wireless@lfdr.de>; Wed, 19 Aug 2020 13:28:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5726B249C8A
+	for <lists+linux-wireless@lfdr.de>; Wed, 19 Aug 2020 13:51:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728092AbgHSL2V (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 19 Aug 2020 07:28:21 -0400
-Received: from mail-il1-f198.google.com ([209.85.166.198]:41259 "EHLO
-        mail-il1-f198.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728080AbgHSL2Q (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 19 Aug 2020 07:28:16 -0400
-Received: by mail-il1-f198.google.com with SMTP id l71so16471756ild.8
-        for <linux-wireless@vger.kernel.org>; Wed, 19 Aug 2020 04:28:16 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:date:in-reply-to:message-id:subject
-         :from:to;
-        bh=fZ+jHgbDVnTePiqQLf+qDPU79cvKlvXb87FOaXtnhP4=;
-        b=su9j7h/MY5xEpG9f2Uv6ovs48gE91rs/9zets+v/tVCUTs/gUyYEYIKQKeWUDMBdlW
-         AW0QyyX8csNcNdzS43NT3WsDltcNvJRCGbFGkaNYg9Bpwei/VYpQuk7omFHNrtL7j7+d
-         DRbw1BETNtAMPLGc0cpMbF0YI9RZTd4MchgiLkll+DHGjhEjjvQG46JzEpZWLeIWxF7S
-         JK+li66/Hl55jmj1cbchIdoHgbN/4m2E0AIvxV8w1Zzt/lXFjNhkiLhMTYdf33gu8EX0
-         9jxl+qIV/uH0lZJ7Ggbar0qvGSr/iI8kF8vx5eUecm27USGytH4+nR4+Q2OXM1pjk4SC
-         ZPSw==
-X-Gm-Message-State: AOAM5331p/xhjLeS3ZOJzmSPDKROZTBmlmWKIP8ezFMri4TRIPAzuUrt
-        odIOW2MWklHpejxq4DKRgRYPDdzYCmIHqOJvJG+eoHhMv2OB
-X-Google-Smtp-Source: ABdhPJyYxCaTjoXI5lwBslHbXVUaP0mdunUILc4ZtNELRPRKvkHL8k2pW1d50vmUXXUCxuPOh/VozsgqiR+8Aerk512vkbZi4J8M
-MIME-Version: 1.0
-X-Received: by 2002:a92:d7cd:: with SMTP id g13mr9475062ilq.51.1597836495670;
- Wed, 19 Aug 2020 04:28:15 -0700 (PDT)
-Date:   Wed, 19 Aug 2020 04:28:15 -0700
-In-Reply-To: <0000000000008e983905ac9d0182@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <000000000000bbd1ff05ad394c92@google.com>
-Subject: Re: KASAN: use-after-free Read in rtl_fw_do_work
-From:   syzbot <syzbot+ff4b26b0bfbff2dc7960@syzkaller.appspotmail.com>
-To:     andreyknvl@google.com, davem@davemloft.net, kuba@kernel.org,
-        kvalo@codeaurora.org, linux-kernel@vger.kernel.org,
-        linux-usb@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, pkshih@realtek.com,
-        syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+        id S1728424AbgHSLv0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 19 Aug 2020 07:51:26 -0400
+Received: from mail.zju.edu.cn ([61.164.42.155]:41548 "EHLO zju.edu.cn"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1728382AbgHSLuo (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 19 Aug 2020 07:50:44 -0400
+Received: from localhost.localdomain (unknown [210.32.144.184])
+        by mail-app2 (Coremail) with SMTP id by_KCgBHF7z3ET1fwy8CAg--.51675S4;
+        Wed, 19 Aug 2020 19:50:19 +0800 (CST)
+From:   Dinghao Liu <dinghao.liu@zju.edu.cn>
+To:     dinghao.liu@zju.edu.cn, kjlu@umn.edu
+Cc:     Ajay Singh <ajay.kathat@microchip.com>,
+        Claudiu Beznea <claudiu.beznea@microchip.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Eugen Hristev <eugen.hristev@microchip.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] staging: wilc1000: Fix memleak in wilc_sdio_probe
+Date:   Wed, 19 Aug 2020 19:50:14 +0800
+Message-Id: <20200819115014.28955-1-dinghao.liu@zju.edu.cn>
+X-Mailer: git-send-email 2.17.1
+X-CM-TRANSID: by_KCgBHF7z3ET1fwy8CAg--.51675S4
+X-Coremail-Antispam: 1UD129KBjvdXoWruFWUJF4xAw47Ww1rAr4Dtwb_yoWkuFX_Cr
+        1xXFn2gr1xWw1jyr1UCrW5ZrZFyF1kuFn5Cwsaq3yfGa17ArZ7CF4fuF4fJwsIk3W0vF4U
+        Kw4DWF93Ar4FqjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+        9fnUUIcSsGvfJTRUUUb-kFc2x0x2IEx4CE42xK8VAvwI8IcIk0rVWrJVCq3wAFIxvE14AK
+        wVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK021l84ACjcxK6xIIjxv20x
+        vE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4UJVWxJr1l84ACjcxK6I8E
+        87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_GcCE3s1le2I262IYc4CY6c
+        8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_
+        Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwI
+        xGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc2xSY4AK
+        67AK6r4kMxAIw28IcxkI7VAKI48JMxAIw28IcVCjz48v1sIEY20_GFWkJr1UJwCFx2IqxV
+        CFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r10
+        6r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxV
+        WUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG
+        6rW3Jr0E3s1lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JV
+        W8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUbeT5PUUUUU==
+X-CM-SenderInfo: qrrzjiaqtzq6lmxovvfxof0/1tbiAgcLBlZdtPihowAjsu
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-syzbot has found a reproducer for the following issue on:
+When devm_clk_get() returns -EPROBE_DEFER, sdio_priv
+should be freed just like when wilc_cfg80211_init()
+fails.
 
-HEAD commit:    28157b8c USB: Better name for __check_usb_generic()
-git tree:       https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb.git usb-testing
-console output: https://syzkaller.appspot.com/x/log.txt?x=1064697a900000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=ccafc70ac3d5f49c
-dashboard link: https://syzkaller.appspot.com/bug?extid=ff4b26b0bfbff2dc7960
-compiler:       gcc (GCC) 10.1.0-syz 20200507
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=10f0a00e900000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=162bc289900000
+Fixes: 8692b047e86cf ("staging: wilc1000: look for rtc_clk clock")
+Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>
+---
+ drivers/net/wireless/microchip/wilc1000/sdio.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+ff4b26b0bfbff2dc7960@syzkaller.appspotmail.com
-
-usb 6-1: Direct firmware load for rtlwifi/rtl8192cufw_TMSC.bin failed with error -2
-usb 6-1: Direct firmware load for rtlwifi/rtl8192cufw.bin failed with error -2
-==================================================================
-BUG: KASAN: use-after-free in rtl_fw_do_work+0x407/0x430 drivers/net/wireless/realtek/rtlwifi/core.c:87
-Read of size 8 at addr ffff8881ca9aff38 by task kworker/0:1/328
-
-CPU: 0 PID: 328 Comm: kworker/0:1 Not tainted 5.9.0-rc1-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
-Workqueue: events request_firmware_work_func
-Call Trace:
- __dump_stack lib/dump_stack.c:77 [inline]
- dump_stack+0xf6/0x16e lib/dump_stack.c:118
- print_address_description.constprop.0+0x1c/0x210 mm/kasan/report.c:383
- __kasan_report mm/kasan/report.c:513 [inline]
- kasan_report.cold+0x37/0x7c mm/kasan/report.c:530
- rtl_fw_do_work+0x407/0x430 drivers/net/wireless/realtek/rtlwifi/core.c:87
- request_firmware_work_func+0x126/0x250 drivers/base/firmware_loader/main.c:1001
- process_one_work+0x94c/0x15f0 kernel/workqueue.c:2269
- worker_thread+0x64c/0x1120 kernel/workqueue.c:2415
- kthread+0x392/0x470 kernel/kthread.c:292
- ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:294
-
-The buggy address belongs to the page:
-page:00000000fcdef481 refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x1ca9af
-flags: 0x200000000000000()
-raw: 0200000000000000 0000000000000000 ffffea00072a6bc8 0000000000000000
-raw: 0000000000000000 0000000000000000 00000000ffffffff 0000000000000000
-page dumped because: kasan: bad access detected
-
-Memory state around the buggy address:
- ffff8881ca9afe00: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
- ffff8881ca9afe80: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
->ffff8881ca9aff00: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-                                        ^
- ffff8881ca9aff80: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
- ffff8881ca9b0000: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-==================================================================
+diff --git a/drivers/net/wireless/microchip/wilc1000/sdio.c b/drivers/net/wireless/microchip/wilc1000/sdio.c
+index 3ece7b0b0392..351ff909ab1c 100644
+--- a/drivers/net/wireless/microchip/wilc1000/sdio.c
++++ b/drivers/net/wireless/microchip/wilc1000/sdio.c
+@@ -149,9 +149,10 @@ static int wilc_sdio_probe(struct sdio_func *func,
+ 	wilc->dev = &func->dev;
+ 
+ 	wilc->rtc_clk = devm_clk_get(&func->card->dev, "rtc");
+-	if (PTR_ERR_OR_ZERO(wilc->rtc_clk) == -EPROBE_DEFER)
++	if (PTR_ERR_OR_ZERO(wilc->rtc_clk) == -EPROBE_DEFER) {
++		kfree(sdio_priv);
+ 		return -EPROBE_DEFER;
+-	else if (!IS_ERR(wilc->rtc_clk))
++	} else if (!IS_ERR(wilc->rtc_clk))
+ 		clk_prepare_enable(wilc->rtc_clk);
+ 
+ 	dev_info(&func->dev, "Driver Initializing success\n");
+-- 
+2.17.1
 
