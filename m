@@ -2,72 +2,337 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A293224A61E
-	for <lists+linux-wireless@lfdr.de>; Wed, 19 Aug 2020 20:42:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2165424A830
+	for <lists+linux-wireless@lfdr.de>; Wed, 19 Aug 2020 23:09:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726731AbgHSSmO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 19 Aug 2020 14:42:14 -0400
-Received: from mail-io1-f71.google.com ([209.85.166.71]:57217 "EHLO
-        mail-io1-f71.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726578AbgHSSmI (ORCPT
+        id S1727093AbgHSVJD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 19 Aug 2020 17:09:03 -0400
+Received: from smtp03.smtpout.orange.fr ([80.12.242.125]:59955 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726912AbgHSVJB (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 19 Aug 2020 14:42:08 -0400
-Received: by mail-io1-f71.google.com with SMTP id q20so14712535iod.23
-        for <linux-wireless@vger.kernel.org>; Wed, 19 Aug 2020 11:42:08 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:date:in-reply-to:message-id:subject
-         :from:to;
-        bh=P/Bc9IGKthyb4/4Equ8PDcO5t+DRavD5Kty3CCCxkvw=;
-        b=rQGeLBHGvup86UtMXl4h/vnpT/LJKquo8q4lvtX24AtNQY6CZWX/dbJ7aZ/CdB3nmW
-         Hm1xUxIsneFzkB0xiQ5X/HPUOm79CCF3OawBX+kFRTwyUycCU9u2gjrgVaaVrRDzyBLC
-         GQcDmKAyfCUNOgNEOOuyNXMqTzhz5d6/iLtK/O2HIgzTLg/T4mXsd+8d5MUcDln0jhvu
-         iXDGfwJ2ZvVsPJ4wQmxtub0a+sY6itMV3/PSAWENwr89znfUEptJeeQdpt9vKpAnpsAc
-         tGRncmag+asE4vNpmnQ8xoTT+vdi5i5KjUlpZ1QP7JKe1OnhyhvVRlBnSVKshQeGsqMD
-         MRcQ==
-X-Gm-Message-State: AOAM533Bif1Sev13seADFj7eH1KXKXpqWAu0z/hnU22DnC0TI5VghlyW
-        YYFlQVNOwzwBcyIE+ijaKORw+3t/ru2kEXg58/Hjb5kYK2HS
-X-Google-Smtp-Source: ABdhPJxBnOT/Zs8AQMPWL8g/vwMMvZSe9QJsKh8x44da5tnVZga3SiM38KDJZgB6PtqMxFubNhPzkTmpJxSO7cgDTe17jRpUgh+y
+        Wed, 19 Aug 2020 17:09:01 -0400
+Received: from localhost.localdomain ([77.205.40.3])
+        by mwinf5d50 with ME
+        id HZ8v23004045PnR03Z8vTs; Wed, 19 Aug 2020 23:08:58 +0200
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Wed, 19 Aug 2020 23:08:58 +0200
+X-ME-IP: 77.205.40.3
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     -kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org,
+        vaibhavgupta40@gmail.com
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] rtl818x_pci: switch from 'pci_' to 'dma_' API
+Date:   Wed, 19 Aug 2020 23:08:52 +0200
+Message-Id: <20200819210852.120826-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-X-Received: by 2002:a02:682:: with SMTP id 124mr26096197jav.110.1597862527633;
- Wed, 19 Aug 2020 11:42:07 -0700 (PDT)
-Date:   Wed, 19 Aug 2020 11:42:07 -0700
-In-Reply-To: <000000000000a7e38a05a997edb2@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <0000000000005c13f505ad3f5c42@google.com>
-Subject: Re: WARNING in __cfg80211_connect_result
-From:   syzbot <syzbot+cc4c0f394e2611edba66@syzkaller.appspotmail.com>
-To:     Jason@zx2c4.com, davem@davemloft.net, jason@zx2c4.com,
-        johannes@sipsolutions.net, krzk@kernel.org, kuba@kernel.org,
-        kvalo@codeaurora.org, leon@kernel.org,
-        linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        shuah@kernel.org, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-syzbot has bisected this issue to:
+The wrappers in include/linux/pci-dma-compat.h should go away.
 
-commit e7096c131e5161fa3b8e52a650d7719d2857adfd
-Author: Jason A. Donenfeld <Jason@zx2c4.com>
-Date:   Sun Dec 8 23:27:34 2019 +0000
+The patch has been generated with the coccinelle script below and has been
+hand modified to replace GFP_ with a correct flag.
+It has been compile tested.
 
-    net: WireGuard secure network tunnel
+When memory is allocated in 'rtl8180_init_rx_ring()' and
+'rtl8180_init_tx_ring()' GFP_KERNEL can be used because both functions are
+called from 'rtl8180_start()', which is a .start function (see struct
+ieee80211_ops)
+.start function can sleep, as explicitly stated in include/net/mac80211.h.
 
-bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=175ad8b1900000
-start commit:   e3ec1e8c net: eliminate meaningless memcpy to data in pskb..
-git tree:       net-next
-final oops:     https://syzkaller.appspot.com/x/report.txt?x=14dad8b1900000
-console output: https://syzkaller.appspot.com/x/log.txt?x=10dad8b1900000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=3d400a47d1416652
-dashboard link: https://syzkaller.appspot.com/bug?extid=cc4c0f394e2611edba66
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=15d9de91900000
 
-Reported-by: syzbot+cc4c0f394e2611edba66@syzkaller.appspotmail.com
-Fixes: e7096c131e51 ("net: WireGuard secure network tunnel")
+@@
+@@
+-    PCI_DMA_BIDIRECTIONAL
++    DMA_BIDIRECTIONAL
 
-For information about bisection process see: https://goo.gl/tpsmEJ#bisection
+@@
+@@
+-    PCI_DMA_TODEVICE
++    DMA_TO_DEVICE
+
+@@
+@@
+-    PCI_DMA_FROMDEVICE
++    DMA_FROM_DEVICE
+
+@@
+@@
+-    PCI_DMA_NONE
++    DMA_NONE
+
+@@
+expression e1, e2, e3;
+@@
+-    pci_alloc_consistent(e1, e2, e3)
++    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
+
+@@
+expression e1, e2, e3;
+@@
+-    pci_zalloc_consistent(e1, e2, e3)
++    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_free_consistent(e1, e2, e3, e4)
++    dma_free_coherent(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_map_single(e1, e2, e3, e4)
++    dma_map_single(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_unmap_single(e1, e2, e3, e4)
++    dma_unmap_single(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4, e5;
+@@
+-    pci_map_page(e1, e2, e3, e4, e5)
++    dma_map_page(&e1->dev, e2, e3, e4, e5)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_unmap_page(e1, e2, e3, e4)
++    dma_unmap_page(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_map_sg(e1, e2, e3, e4)
++    dma_map_sg(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_unmap_sg(e1, e2, e3, e4)
++    dma_unmap_sg(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_single_for_cpu(e1, e2, e3, e4)
++    dma_sync_single_for_cpu(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_single_for_device(e1, e2, e3, e4)
++    dma_sync_single_for_device(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_sg_for_cpu(e1, e2, e3, e4)
++    dma_sync_sg_for_cpu(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_sg_for_device(e1, e2, e3, e4)
++    dma_sync_sg_for_device(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2;
+@@
+-    pci_dma_mapping_error(e1, e2)
++    dma_mapping_error(&e1->dev, e2)
+
+@@
+expression e1, e2;
+@@
+-    pci_set_dma_mask(e1, e2)
++    dma_set_mask(&e1->dev, e2)
+
+@@
+expression e1, e2;
+@@
+-    pci_set_consistent_dma_mask(e1, e2)
++    dma_set_coherent_mask(&e1->dev, e2)
+
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+If needed, see post from Christoph Hellwig on the kernel-janitors ML:
+   https://marc.info/?l=kernel-janitors&m=158745678307186&w=4
+---
+ .../wireless/realtek/rtl818x/rtl8180/dev.c    | 70 ++++++++++---------
+ 1 file changed, 37 insertions(+), 33 deletions(-)
+
+diff --git a/drivers/net/wireless/realtek/rtl818x/rtl8180/dev.c b/drivers/net/wireless/realtek/rtl818x/rtl8180/dev.c
+index ba3286f732cc..2477e18c7cae 100644
+--- a/drivers/net/wireless/realtek/rtl818x/rtl8180/dev.c
++++ b/drivers/net/wireless/realtek/rtl818x/rtl8180/dev.c
+@@ -260,20 +260,20 @@ static void rtl8180_handle_rx(struct ieee80211_hw *dev)
+ 			if (unlikely(!new_skb))
+ 				goto done;
+ 
+-			mapping = pci_map_single(priv->pdev,
+-					       skb_tail_pointer(new_skb),
+-					       MAX_RX_SIZE, PCI_DMA_FROMDEVICE);
++			mapping = dma_map_single(&priv->pdev->dev,
++						 skb_tail_pointer(new_skb),
++						 MAX_RX_SIZE, DMA_FROM_DEVICE);
+ 
+-			if (pci_dma_mapping_error(priv->pdev, mapping)) {
++			if (dma_mapping_error(&priv->pdev->dev, mapping)) {
+ 				kfree_skb(new_skb);
+ 				dev_err(&priv->pdev->dev, "RX DMA map error\n");
+ 
+ 				goto done;
+ 			}
+ 
+-			pci_unmap_single(priv->pdev,
++			dma_unmap_single(&priv->pdev->dev,
+ 					 *((dma_addr_t *)skb->cb),
+-					 MAX_RX_SIZE, PCI_DMA_FROMDEVICE);
++					 MAX_RX_SIZE, DMA_FROM_DEVICE);
+ 			skb_put(skb, flags & 0xFFF);
+ 
+ 			rx_status.antenna = (flags2 >> 15) & 1;
+@@ -355,8 +355,8 @@ static void rtl8180_handle_tx(struct ieee80211_hw *dev, unsigned int prio)
+ 
+ 		ring->idx = (ring->idx + 1) % ring->entries;
+ 		skb = __skb_dequeue(&ring->queue);
+-		pci_unmap_single(priv->pdev, le32_to_cpu(entry->tx_buf),
+-				 skb->len, PCI_DMA_TODEVICE);
++		dma_unmap_single(&priv->pdev->dev, le32_to_cpu(entry->tx_buf),
++				 skb->len, DMA_TO_DEVICE);
+ 
+ 		info = IEEE80211_SKB_CB(skb);
+ 		ieee80211_tx_info_clear_status(info);
+@@ -473,10 +473,10 @@ static void rtl8180_tx(struct ieee80211_hw *dev,
+ 	prio = skb_get_queue_mapping(skb);
+ 	ring = &priv->tx_ring[prio];
+ 
+-	mapping = pci_map_single(priv->pdev, skb->data,
+-				 skb->len, PCI_DMA_TODEVICE);
++	mapping = dma_map_single(&priv->pdev->dev, skb->data, skb->len,
++				 DMA_TO_DEVICE);
+ 
+-	if (pci_dma_mapping_error(priv->pdev, mapping)) {
++	if (dma_mapping_error(&priv->pdev->dev, mapping)) {
+ 		kfree_skb(skb);
+ 		dev_err(&priv->pdev->dev, "TX DMA mapping error\n");
+ 		return;
+@@ -1004,8 +1004,9 @@ static int rtl8180_init_rx_ring(struct ieee80211_hw *dev)
+ 	else
+ 		priv->rx_ring_sz = sizeof(struct rtl8180_rx_desc);
+ 
+-	priv->rx_ring = pci_zalloc_consistent(priv->pdev, priv->rx_ring_sz * 32,
+-					      &priv->rx_ring_dma);
++	priv->rx_ring = dma_alloc_coherent(&priv->pdev->dev,
++					   priv->rx_ring_sz * 32,
++					   &priv->rx_ring_dma, GFP_KERNEL);
+ 	if (!priv->rx_ring || (unsigned long)priv->rx_ring & 0xFF) {
+ 		wiphy_err(dev->wiphy, "Cannot allocate RX ring\n");
+ 		return -ENOMEM;
+@@ -1018,20 +1019,23 @@ static int rtl8180_init_rx_ring(struct ieee80211_hw *dev)
+ 		dma_addr_t *mapping;
+ 		entry = priv->rx_ring + priv->rx_ring_sz*i;
+ 		if (!skb) {
+-			pci_free_consistent(priv->pdev, priv->rx_ring_sz * 32,
+-					priv->rx_ring, priv->rx_ring_dma);
++			dma_free_coherent(&priv->pdev->dev,
++					  priv->rx_ring_sz * 32,
++					  priv->rx_ring, priv->rx_ring_dma);
+ 			wiphy_err(dev->wiphy, "Cannot allocate RX skb\n");
+ 			return -ENOMEM;
+ 		}
+ 		priv->rx_buf[i] = skb;
+ 		mapping = (dma_addr_t *)skb->cb;
+-		*mapping = pci_map_single(priv->pdev, skb_tail_pointer(skb),
+-					  MAX_RX_SIZE, PCI_DMA_FROMDEVICE);
++		*mapping = dma_map_single(&priv->pdev->dev,
++					  skb_tail_pointer(skb), MAX_RX_SIZE,
++					  DMA_FROM_DEVICE);
+ 
+-		if (pci_dma_mapping_error(priv->pdev, *mapping)) {
++		if (dma_mapping_error(&priv->pdev->dev, *mapping)) {
+ 			kfree_skb(skb);
+-			pci_free_consistent(priv->pdev, priv->rx_ring_sz * 32,
+-					priv->rx_ring, priv->rx_ring_dma);
++			dma_free_coherent(&priv->pdev->dev,
++					  priv->rx_ring_sz * 32,
++					  priv->rx_ring, priv->rx_ring_dma);
+ 			wiphy_err(dev->wiphy, "Cannot map DMA for RX skb\n");
+ 			return -ENOMEM;
+ 		}
+@@ -1054,14 +1058,13 @@ static void rtl8180_free_rx_ring(struct ieee80211_hw *dev)
+ 		if (!skb)
+ 			continue;
+ 
+-		pci_unmap_single(priv->pdev,
+-				 *((dma_addr_t *)skb->cb),
+-				 MAX_RX_SIZE, PCI_DMA_FROMDEVICE);
++		dma_unmap_single(&priv->pdev->dev, *((dma_addr_t *)skb->cb),
++				 MAX_RX_SIZE, DMA_FROM_DEVICE);
+ 		kfree_skb(skb);
+ 	}
+ 
+-	pci_free_consistent(priv->pdev, priv->rx_ring_sz * 32,
+-			    priv->rx_ring, priv->rx_ring_dma);
++	dma_free_coherent(&priv->pdev->dev, priv->rx_ring_sz * 32,
++			  priv->rx_ring, priv->rx_ring_dma);
+ 	priv->rx_ring = NULL;
+ }
+ 
+@@ -1073,8 +1076,8 @@ static int rtl8180_init_tx_ring(struct ieee80211_hw *dev,
+ 	dma_addr_t dma;
+ 	int i;
+ 
+-	ring = pci_zalloc_consistent(priv->pdev, sizeof(*ring) * entries,
+-				     &dma);
++	ring = dma_alloc_coherent(&priv->pdev->dev, sizeof(*ring) * entries,
++				  &dma, GFP_KERNEL);
+ 	if (!ring || (unsigned long)ring & 0xFF) {
+ 		wiphy_err(dev->wiphy, "Cannot allocate TX ring (prio = %d)\n",
+ 			  prio);
+@@ -1103,14 +1106,15 @@ static void rtl8180_free_tx_ring(struct ieee80211_hw *dev, unsigned int prio)
+ 		struct rtl8180_tx_desc *entry = &ring->desc[ring->idx];
+ 		struct sk_buff *skb = __skb_dequeue(&ring->queue);
+ 
+-		pci_unmap_single(priv->pdev, le32_to_cpu(entry->tx_buf),
+-				 skb->len, PCI_DMA_TODEVICE);
++		dma_unmap_single(&priv->pdev->dev, le32_to_cpu(entry->tx_buf),
++				 skb->len, DMA_TO_DEVICE);
+ 		kfree_skb(skb);
+ 		ring->idx = (ring->idx + 1) % ring->entries;
+ 	}
+ 
+-	pci_free_consistent(priv->pdev, sizeof(*ring->desc)*ring->entries,
+-			    ring->desc, ring->dma);
++	dma_free_coherent(&priv->pdev->dev,
++			  sizeof(*ring->desc) * ring->entries, ring->desc,
++			  ring->dma);
+ 	ring->desc = NULL;
+ }
+ 
+@@ -1754,8 +1758,8 @@ static int rtl8180_probe(struct pci_dev *pdev,
+ 		goto err_free_reg;
+ 	}
+ 
+-	if ((err = pci_set_dma_mask(pdev, DMA_BIT_MASK(32))) ||
+-	    (err = pci_set_consistent_dma_mask(pdev, DMA_BIT_MASK(32)))) {
++	if ((err = dma_set_mask(&pdev->dev, DMA_BIT_MASK(32))) ||
++	    (err = dma_set_coherent_mask(&pdev->dev, DMA_BIT_MASK(32)))) {
+ 		printk(KERN_ERR "%s (rtl8180): No suitable DMA available\n",
+ 		       pci_name(pdev));
+ 		goto err_free_reg;
+-- 
+2.25.1
+
