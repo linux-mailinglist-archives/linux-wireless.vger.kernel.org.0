@@ -2,59 +2,63 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B5BD7249716
-	for <lists+linux-wireless@lfdr.de>; Wed, 19 Aug 2020 09:24:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C200124976A
+	for <lists+linux-wireless@lfdr.de>; Wed, 19 Aug 2020 09:30:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727114AbgHSHY1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 19 Aug 2020 03:24:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40944 "EHLO
+        id S1727970AbgHSH3p (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 19 Aug 2020 03:29:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40922 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726809AbgHSHYN (ORCPT
+        with ESMTP id S1726965AbgHSHYS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 19 Aug 2020 03:24:13 -0400
-Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com [IPv6:2a00:1450:4864:20::441])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50480C061342
-        for <linux-wireless@vger.kernel.org>; Wed, 19 Aug 2020 00:24:11 -0700 (PDT)
-Received: by mail-wr1-x441.google.com with SMTP id a15so20430046wrh.10
-        for <linux-wireless@vger.kernel.org>; Wed, 19 Aug 2020 00:24:11 -0700 (PDT)
+        Wed, 19 Aug 2020 03:24:18 -0400
+Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com [IPv6:2a00:1450:4864:20::343])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86FE8C06134F
+        for <linux-wireless@vger.kernel.org>; Wed, 19 Aug 2020 00:24:12 -0700 (PDT)
+Received: by mail-wm1-x343.google.com with SMTP id g75so1116114wme.4
+        for <linux-wireless@vger.kernel.org>; Wed, 19 Aug 2020 00:24:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=1vaZ+GprAhy2WYAM7ouom3T40mlyDiSFdzkYLUqEOnA=;
-        b=YhK7+Gkgm60xh0/o16dYRkX3oK8trh5m0up4fYpP76ITHXS7Qvs+iz7mM/TtE/kt+C
-         Uuftv5fopnYrIQaSajIr9ZIRXMfpkKvj7QrXOKYAWWKVRi9iFObahuDTC+kpGL91CGek
-         RBYZGakNTHur0l17D+1PC5nI+cgyz2orPmCjyBdNe8uQ25T5tNYz6p9buAaOq0UN/TSY
-         WIXkK0KhDL30pdN59/ns00DgoGnLf5o6pZ62zQx0YhcnlTYJ7CIlI+QcDghQwTnOuqaN
-         NGrCgmC6/Z2u2axxK1T80a6o4llMhwkJNNy+qJMYsCTsobqlAgZ5dcQMVk/24EEKNUq/
-         VSWQ==
+        bh=kFIC75bauZ6Rpz/avISlwE77tX9e6rPrMyzEdUSYEvc=;
+        b=lgBo+nLfWw6UD+4pt1UTY/3TXHxDnstMrcNhEXl7QEcvc5h/hM0LeUSSXQEJQQJ1o/
+         JR2AZRhWNJk/NU4uxKd521AxM8XLlKmwKHwCpCIji5uCxzp/sIne5zll2Tc6MdgEse/H
+         9OMRSEnvpPMQLhNCN5EjGfWho9jctYaqnf9oMAyXnLM5TsZBiD0Km+WA1WKErkMt0zmH
+         QQ4alnk4V03ep2zWKQk0LCBVTy66yYt7mhumvKHSbGfyZ9ZueSNxSRiAb//NLqXqe/ur
+         K9EGBqezMx/VP2exyAfHV8+521PHWEr4oMxAjX3ZxFtz+k4s/ry3PJ7aIaAZWNiH7MfQ
+         ohPA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=1vaZ+GprAhy2WYAM7ouom3T40mlyDiSFdzkYLUqEOnA=;
-        b=PUwIPtSaucnlKD20QVulOWAeJxCZz08yW0rgYZy1TVuyUkLICAdhF4qMOsSqqZiLyP
-         tr+K+eoCNxy4anUGf1FSHCyM96G61xUClaJsLDadA1OUC9bx7Jvrr80MfboT04MHXtYm
-         lgVsKch7ZZ96BIVtxvcClcLdSWWO7M56yta2q+1vszUhb9tZbQ42d3bpwCpeT/owSk48
-         /IB330lnbDgbiTj/QSeMUKfCWQUjiHXR6cbLmCyN3zD+4RvJBednTcJ5Qpe3yDLJrpDG
-         OD0J9MeR5fB4TQnu1yJtPxRgmVF234hmGIvLuMidPgeTIDfQnnOK/87JDZvU66oY8B88
-         WhnA==
-X-Gm-Message-State: AOAM531zvl4QJ9gCtjF/YiR7EduDPu3xHyVBSoUn8ebFWjLHBuFV3Ha5
-        OIajVsZk71w0g2HOnm/5fggA2w==
-X-Google-Smtp-Source: ABdhPJwh4q+qWk7ffnlfepOmSFUtqSc9oXwvRWHyCij00qidVfOMj+GW8jr+2YbYNaQDA+dFBmihlQ==
-X-Received: by 2002:a05:6000:120c:: with SMTP id e12mr23301717wrx.354.1597821850019;
-        Wed, 19 Aug 2020 00:24:10 -0700 (PDT)
+        bh=kFIC75bauZ6Rpz/avISlwE77tX9e6rPrMyzEdUSYEvc=;
+        b=CKY21klcPrvMQ+7+nyFveQmnhuKdT2VEtSistQJV/MUcXg2ma3qNhPXXnrvTdbSAeT
+         unit0DXHPp4EK58d5mfGkfvBZj49q548K2IsiN+DQiXLvstTsHomFxA/2peiWpe9kJFW
+         BjGYYzyGRb5DctgWz1V0CX0BEx697EZbRmzShGJrRl+DzDXthG8RgUcOtpVTUOciqtGr
+         9ay7AlPHEnW7n9HGcmAtf67mcObJGHIrH8g8RNAAjfw2C1Hbe4xb0nrU2aHLcQ78IfjF
+         MBFkDHrMwqUufuebrM7IzzcMj9abH5NitPOWl5t+TKu8m/LQbRLhwtZ5TV+80K3voIXA
+         VHig==
+X-Gm-Message-State: AOAM533OY22m+DwPpVbVMWNN7BoB0mQ7CRDjG/uNrKJ3m2UXKCeRikNR
+        eTtsLmt6ne8sogCeo8f6bsRV6A==
+X-Google-Smtp-Source: ABdhPJxep9SAfEgQ3UqQQk5ZftteMUPLH4iMlYCMWjOj95LkdbfBmgFRoszaYn7hm9krZoUxri1XdQ==
+X-Received: by 2002:a1c:f60e:: with SMTP id w14mr3408680wmc.19.1597821851203;
+        Wed, 19 Aug 2020 00:24:11 -0700 (PDT)
 Received: from dell.default ([95.149.164.62])
-        by smtp.gmail.com with ESMTPSA id c145sm3795808wmd.7.2020.08.19.00.24.08
+        by smtp.gmail.com with ESMTPSA id c145sm3795808wmd.7.2020.08.19.00.24.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Aug 2020 00:24:09 -0700 (PDT)
+        Wed, 19 Aug 2020 00:24:10 -0700 (PDT)
 From:   Lee Jones <lee.jones@linaro.org>
 To:     kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org
 Cc:     linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, Lee Jones <lee.jones@linaro.org>
-Subject: [PATCH 04/28] wireless: marvell: libertas_tf: Demote non-conformant kernel-doc headers
-Date:   Wed, 19 Aug 2020 08:23:38 +0100
-Message-Id: <20200819072402.3085022-5-lee.jones@linaro.org>
+        netdev@vger.kernel.org, Lee Jones <lee.jones@linaro.org>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        Intel Linux Wireless <linuxwifi@intel.com>
+Subject: [PATCH 05/28] wireless: intel: dvm: Demote non-compliant kernel-doc headers
+Date:   Wed, 19 Aug 2020 08:23:39 +0100
+Message-Id: <20200819072402.3085022-6-lee.jones@linaro.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200819072402.3085022-1-lee.jones@linaro.org>
 References: <20200819072402.3085022-1-lee.jones@linaro.org>
@@ -65,18 +69,34 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-There are only 2 kernel-doc headers in this file and both are
-incorrect.  The first one does not attempt to document the function at
-all and the second one is suffering from severe doc-rot; the format is
-wrong and only 1 out of 3 parameters are being documented.
+None of these headers attempt to document any function parameters.
 
 Fixes the following W=1 kernel build warning(s):
 
- drivers/net/wireless/marvell/libertas_tf/main.c:129: warning: Function parameter or member 't' not described in 'command_timer_fn'
- drivers/net/wireless/marvell/libertas_tf/main.c:554: warning: Function parameter or member 'card' not described in 'lbtf_add_card'
- drivers/net/wireless/marvell/libertas_tf/main.c:554: warning: Function parameter or member 'dmdev' not described in 'lbtf_add_card'
- drivers/net/wireless/marvell/libertas_tf/main.c:554: warning: Function parameter or member 'ops' not described in 'lbtf_add_card'
+ drivers/net/wireless/intel/iwlwifi/dvm/main.c:388: warning: Function parameter or member 't' not described in 'iwl_bg_statistics_periodic'
+ drivers/net/wireless/intel/iwlwifi/dvm/main.c:545: warning: Function parameter or member 't' not described in 'iwl_bg_ucode_trace'
+ drivers/net/wireless/intel/iwlwifi/dvm/main.c:771: warning: Function parameter or member 'priv' not described in 'iwl_alive_start'
+ drivers/net/wireless/intel/iwlwifi/dvm/main.c:1692: warning: Function parameter or member 'priv' not described in 'iwl_print_event_log'
+ drivers/net/wireless/intel/iwlwifi/dvm/main.c:1692: warning: Function parameter or member 'start_idx' not described in 'iwl_print_event_log'
+ drivers/net/wireless/intel/iwlwifi/dvm/main.c:1692: warning: Function parameter or member 'num_events' not described in 'iwl_print_event_log'
+ drivers/net/wireless/intel/iwlwifi/dvm/main.c:1692: warning: Function parameter or member 'mode' not described in 'iwl_print_event_log'
+ drivers/net/wireless/intel/iwlwifi/dvm/main.c:1692: warning: Function parameter or member 'pos' not described in 'iwl_print_event_log'
+ drivers/net/wireless/intel/iwlwifi/dvm/main.c:1692: warning: Function parameter or member 'buf' not described in 'iwl_print_event_log'
+ drivers/net/wireless/intel/iwlwifi/dvm/main.c:1692: warning: Function parameter or member 'bufsz' not described in 'iwl_print_event_log'
+ drivers/net/wireless/intel/iwlwifi/dvm/main.c:1772: warning: Function parameter or member 'priv' not described in 'iwl_print_last_event_logs'
+ drivers/net/wireless/intel/iwlwifi/dvm/main.c:1772: warning: Function parameter or member 'capacity' not described in 'iwl_print_last_event_logs'
+ drivers/net/wireless/intel/iwlwifi/dvm/main.c:1772: warning: Function parameter or member 'num_wraps' not described in 'iwl_print_last_event_logs'
+ drivers/net/wireless/intel/iwlwifi/dvm/main.c:1772: warning: Function parameter or member 'next_entry' not described in 'iwl_print_last_event_logs'
+ drivers/net/wireless/intel/iwlwifi/dvm/main.c:1772: warning: Function parameter or member 'size' not described in 'iwl_print_last_event_logs'
+ drivers/net/wireless/intel/iwlwifi/dvm/main.c:1772: warning: Function parameter or member 'mode' not described in 'iwl_print_last_event_logs'
+ drivers/net/wireless/intel/iwlwifi/dvm/main.c:1772: warning: Function parameter or member 'pos' not described in 'iwl_print_last_event_logs'
+ drivers/net/wireless/intel/iwlwifi/dvm/main.c:1772: warning: Function parameter or member 'buf' not described in 'iwl_print_last_event_logs'
+ drivers/net/wireless/intel/iwlwifi/dvm/main.c:1772: warning: Function parameter or member 'bufsz' not described in 'iwl_print_last_event_logs'
 
+Cc: Johannes Berg <johannes.berg@intel.com>
+Cc: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Cc: Luca Coelho <luciano.coelho@intel.com>
+Cc: Intel Linux Wireless <linuxwifi@intel.com>
 Cc: Kalle Valo <kvalo@codeaurora.org>
 Cc: "David S. Miller" <davem@davemloft.net>
 Cc: Jakub Kicinski <kuba@kernel.org>
@@ -84,35 +104,60 @@ Cc: linux-wireless@vger.kernel.org
 Cc: netdev@vger.kernel.org
 Signed-off-by: Lee Jones <lee.jones@linaro.org>
 ---
- drivers/net/wireless/marvell/libertas_tf/main.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/dvm/main.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/marvell/libertas_tf/main.c b/drivers/net/wireless/marvell/libertas_tf/main.c
-index 02bd7c99b3588..5937b645a5334 100644
---- a/drivers/net/wireless/marvell/libertas_tf/main.c
-+++ b/drivers/net/wireless/marvell/libertas_tf/main.c
-@@ -121,7 +121,7 @@ static void lbtf_cmd_work(struct work_struct *work)
- 	lbtf_deb_leave(LBTF_DEB_CMD);
+diff --git a/drivers/net/wireless/intel/iwlwifi/dvm/main.c b/drivers/net/wireless/intel/iwlwifi/dvm/main.c
+index b882705ff66df..461af58311561 100644
+--- a/drivers/net/wireless/intel/iwlwifi/dvm/main.c
++++ b/drivers/net/wireless/intel/iwlwifi/dvm/main.c
+@@ -374,7 +374,7 @@ int iwl_send_statistics_request(struct iwl_priv *priv, u8 flags, bool clear)
+ 					&statistics_cmd);
  }
  
 -/**
 +/*
-  *  This function handles the timeout of command sending.
-  *  It will re-send the same command again.
-  */
-@@ -542,11 +542,9 @@ int lbtf_rx(struct lbtf_private *priv, struct sk_buff *skb)
- }
- EXPORT_SYMBOL_GPL(lbtf_rx);
- 
--/**
-+/*
-  * lbtf_add_card: Add and initialize the card.
+  * iwl_bg_statistics_periodic - Timer callback to queue statistics
   *
-- *  @card    A pointer to card
+  * This callback is provided in order to send a statistics request.
+@@ -533,7 +533,7 @@ static void iwl_continuous_event_trace(struct iwl_priv *priv)
+ 	priv->event_log.next_entry = next_entry;
+ }
+ 
+-/**
++/*
+  * iwl_bg_ucode_trace - Timer callback to log ucode event
+  *
+  * The timer is continually set to execute every
+@@ -762,7 +762,7 @@ static void iwl_send_bt_config(struct iwl_priv *priv)
+ 		IWL_ERR(priv, "failed to send BT Coex Config\n");
+ }
+ 
+-/**
++/*
+  * iwl_alive_start - called after REPLY_ALIVE notification received
+  *                   from protocol/runtime uCode (initialization uCode's
+  *                   Alive gets handled by iwl_init_alive_start()).
+@@ -1682,9 +1682,8 @@ static void iwl_dump_nic_error_log(struct iwl_priv *priv)
+ 
+ #define EVENT_START_OFFSET  (4 * sizeof(u32))
+ 
+-/**
++/*
+  * iwl_print_event_log - Dump error event log to syslog
 - *
-  *  Returns: pointer to struct lbtf_priv.
   */
- struct lbtf_private *lbtf_add_card(void *card, struct device *dmdev,
+ static int iwl_print_event_log(struct iwl_priv *priv, u32 start_idx,
+ 			       u32 num_events, u32 mode,
+@@ -1762,7 +1761,7 @@ static int iwl_print_event_log(struct iwl_priv *priv, u32 start_idx,
+ 	return pos;
+ }
+ 
+-/**
++/*
+  * iwl_print_last_event_logs - Dump the newest # of event log to syslog
+  */
+ static int iwl_print_last_event_logs(struct iwl_priv *priv, u32 capacity,
 -- 
 2.25.1
 
