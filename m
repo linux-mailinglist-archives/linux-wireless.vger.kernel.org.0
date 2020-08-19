@@ -2,81 +2,72 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C93424A508
-	for <lists+linux-wireless@lfdr.de>; Wed, 19 Aug 2020 19:37:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A293224A61E
+	for <lists+linux-wireless@lfdr.de>; Wed, 19 Aug 2020 20:42:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726751AbgHSRgz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 19 Aug 2020 13:36:55 -0400
-Received: from mail29.static.mailgun.info ([104.130.122.29]:38837 "EHLO
-        mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726609AbgHSRgw (ORCPT
+        id S1726731AbgHSSmO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 19 Aug 2020 14:42:14 -0400
+Received: from mail-io1-f71.google.com ([209.85.166.71]:57217 "EHLO
+        mail-io1-f71.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726578AbgHSSmI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 19 Aug 2020 13:36:52 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1597858612; h=Date: Message-Id: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=8Tq5PEF/foUw0IFKugsxPWNHu1HF6vytXmRPCH1gWVc=;
- b=VImPVisl7R3hsSlsC1+6f9gCRvIS7d0KfT+2TXYP9uueD9YRaQOhfqdAD+OrEEcN2A9mfNeP
- nfhs5/b/3yEM0wbXjwZzDIrTpt/n4P9RK8QVR0ChgKPCsUpZZLNXGn9MBzlI1KVuWe+0RX0n
- IgYu1330c1zgpMZNa9nyuXvE06w=
-X-Mailgun-Sending-Ip: 104.130.122.29
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n05.prod.us-east-1.postgun.com with SMTP id
- 5f3d6332b51414ba27104b50 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 19 Aug 2020 17:36:50
- GMT
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id D7F3FC433CB; Wed, 19 Aug 2020 17:36:49 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
-        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id AFABBC433C6;
-        Wed, 19 Aug 2020 17:36:48 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org AFABBC433C6
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        Wed, 19 Aug 2020 14:42:08 -0400
+Received: by mail-io1-f71.google.com with SMTP id q20so14712535iod.23
+        for <linux-wireless@vger.kernel.org>; Wed, 19 Aug 2020 11:42:08 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:date:in-reply-to:message-id:subject
+         :from:to;
+        bh=P/Bc9IGKthyb4/4Equ8PDcO5t+DRavD5Kty3CCCxkvw=;
+        b=rQGeLBHGvup86UtMXl4h/vnpT/LJKquo8q4lvtX24AtNQY6CZWX/dbJ7aZ/CdB3nmW
+         Hm1xUxIsneFzkB0xiQ5X/HPUOm79CCF3OawBX+kFRTwyUycCU9u2gjrgVaaVrRDzyBLC
+         GQcDmKAyfCUNOgNEOOuyNXMqTzhz5d6/iLtK/O2HIgzTLg/T4mXsd+8d5MUcDln0jhvu
+         iXDGfwJ2ZvVsPJ4wQmxtub0a+sY6itMV3/PSAWENwr89znfUEptJeeQdpt9vKpAnpsAc
+         tGRncmag+asE4vNpmnQ8xoTT+vdi5i5KjUlpZ1QP7JKe1OnhyhvVRlBnSVKshQeGsqMD
+         MRcQ==
+X-Gm-Message-State: AOAM533Bif1Sev13seADFj7eH1KXKXpqWAu0z/hnU22DnC0TI5VghlyW
+        YYFlQVNOwzwBcyIE+ijaKORw+3t/ru2kEXg58/Hjb5kYK2HS
+X-Google-Smtp-Source: ABdhPJxBnOT/Zs8AQMPWL8g/vwMMvZSe9QJsKh8x44da5tnVZga3SiM38KDJZgB6PtqMxFubNhPzkTmpJxSO7cgDTe17jRpUgh+y
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v4 1/2] ath10k: add bus type for each layout of coredump
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <1569310030-834-2-git-send-email-wgong@codeaurora.org>
-References: <1569310030-834-2-git-send-email-wgong@codeaurora.org>
-To:     Wen Gong <wgong@codeaurora.org>
-Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20200819173649.D7F3FC433CB@smtp.codeaurora.org>
-Date:   Wed, 19 Aug 2020 17:36:49 +0000 (UTC)
+X-Received: by 2002:a02:682:: with SMTP id 124mr26096197jav.110.1597862527633;
+ Wed, 19 Aug 2020 11:42:07 -0700 (PDT)
+Date:   Wed, 19 Aug 2020 11:42:07 -0700
+In-Reply-To: <000000000000a7e38a05a997edb2@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <0000000000005c13f505ad3f5c42@google.com>
+Subject: Re: WARNING in __cfg80211_connect_result
+From:   syzbot <syzbot+cc4c0f394e2611edba66@syzkaller.appspotmail.com>
+To:     Jason@zx2c4.com, davem@davemloft.net, jason@zx2c4.com,
+        johannes@sipsolutions.net, krzk@kernel.org, kuba@kernel.org,
+        kvalo@codeaurora.org, leon@kernel.org,
+        linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        shuah@kernel.org, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Wen Gong <wgong@codeaurora.org> wrote:
+syzbot has bisected this issue to:
 
-> For some hw version, it has more than one bus type, it need to add bus
-> type to distinguish different chip.
-> 
-> Tested-on: QCA6174 SDIO WLAN.RMH.4.4.1-00018-QCARMSWP-1
-> 
-> Signed-off-by: Wen Gong <wgong@codeaurora.org>
-> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+commit e7096c131e5161fa3b8e52a650d7719d2857adfd
+Author: Jason A. Donenfeld <Jason@zx2c4.com>
+Date:   Sun Dec 8 23:27:34 2019 +0000
 
-2 patches applied to ath-next branch of ath.git, thanks.
+    net: WireGuard secure network tunnel
 
-c796d513c6ae ath10k: add bus type for each layout of coredump
-3c45f21af84e ath10k: sdio: add firmware coredump support
+bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=175ad8b1900000
+start commit:   e3ec1e8c net: eliminate meaningless memcpy to data in pskb..
+git tree:       net-next
+final oops:     https://syzkaller.appspot.com/x/report.txt?x=14dad8b1900000
+console output: https://syzkaller.appspot.com/x/log.txt?x=10dad8b1900000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=3d400a47d1416652
+dashboard link: https://syzkaller.appspot.com/bug?extid=cc4c0f394e2611edba66
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=15d9de91900000
 
--- 
-https://patchwork.kernel.org/patch/11158043/
+Reported-by: syzbot+cc4c0f394e2611edba66@syzkaller.appspotmail.com
+Fixes: e7096c131e51 ("net: WireGuard secure network tunnel")
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
+For information about bisection process see: https://goo.gl/tpsmEJ#bisection
