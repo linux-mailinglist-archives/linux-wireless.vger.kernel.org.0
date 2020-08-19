@@ -2,59 +2,136 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5AE19249552
-	for <lists+linux-wireless@lfdr.de>; Wed, 19 Aug 2020 08:55:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 31601249684
+	for <lists+linux-wireless@lfdr.de>; Wed, 19 Aug 2020 09:07:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726766AbgHSGy7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 19 Aug 2020 02:54:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36374 "EHLO
+        id S1727942AbgHSHHf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 19 Aug 2020 03:07:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36690 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726879AbgHSGy7 (ORCPT
+        with ESMTP id S1726630AbgHSG44 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 19 Aug 2020 02:54:59 -0400
+        Wed, 19 Aug 2020 02:56:56 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9F46C061389
-        for <linux-wireless@vger.kernel.org>; Tue, 18 Aug 2020 23:54:58 -0700 (PDT)
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B360C061343
+        for <linux-wireless@vger.kernel.org>; Tue, 18 Aug 2020 23:56:56 -0700 (PDT)
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.94)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1k8Hzr-006gqa-UK; Wed, 19 Aug 2020 08:54:56 +0200
-Message-ID: <4abebda6ee90ce59b9dc5121b07d1954841351c7.camel@sipsolutions.net>
-Subject: Re: [PATCH] mac80211: send only vlan group traffics in 80211 xmit
- path
+        id 1k8I1j-006gw0-Mz; Wed, 19 Aug 2020 08:56:51 +0200
 From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Seevalamuthu Mariappan <seevalam@codeaurora.org>
-Cc:     linux-wireless@vger.kernel.org
-Date:   Wed, 19 Aug 2020 08:54:55 +0200
-In-Reply-To: <1597819527-31887-1-git-send-email-seevalam@codeaurora.org>
-References: <1597819527-31887-1-git-send-email-seevalam@codeaurora.org>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.5 (3.36.5-1.fc32) 
+To:     linux-wireless@vger.kernel.org
+Cc:     Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH] nl80211: use NLA_POLICY_RANGE(NLA_BINARY, ...) for a few attributes
+Date:   Wed, 19 Aug 2020 08:56:43 +0200
+Message-Id: <20200819085642.8f12ffa14f33.I9d948d59870e521febcd79bb4a986b1de1dca47b@changeid>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 2020-08-19 at 12:15 +0530, Seevalamuthu Mariappan wrote:
-> AP-VLAN multicast/broadcast packets are expected to be encrypted
-> in software. 
+From: Johannes Berg <johannes.berg@intel.com>
 
-Err. Expected by whom?
+We have a few attributes with minimum and maximum lengths that are
+not the same, use the new feature of being able to specify both in
+the policy to validate them, removing code and allowing this to be
+advertised to userspace in the policy export.
 
-> Those packets should follow 802.11 xmit path.
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+---
+ net/wireless/nl80211.c | 36 ++++++++++++++----------------------
+ 1 file changed, 14 insertions(+), 22 deletions(-)
 
-You should explain why ...
-
-> -void __ieee80211_subif_start_xmit(struct sk_buff *skb,
-> -				  struct net_device *dev,
-> -				  u32 info_flags,
-> -				  u32 ctrl_flags,
-> -				  u64 *cookie)
-
-There's no way I can review this if you move the whole function while
-making a small change to it ...
-
-johannes
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 96e55c18ffd5..461b4038c615 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -574,14 +574,20 @@ static const struct nla_policy nl80211_policy[NUM_NL80211_ATTR] = {
+ 	[NL80211_ATTR_CSA_C_OFF_BEACON] = { .type = NLA_BINARY },
+ 	[NL80211_ATTR_CSA_C_OFF_PRESP] = { .type = NLA_BINARY },
+ 	[NL80211_ATTR_STA_SUPPORTED_CHANNELS] = NLA_POLICY_MIN_LEN(2),
+-	[NL80211_ATTR_STA_SUPPORTED_OPER_CLASSES] = { .type = NLA_BINARY },
++	/*
++	 * The value of the Length field of the Supported Operating
++	 * Classes element is between 2 and 253.
++	 */
++	[NL80211_ATTR_STA_SUPPORTED_OPER_CLASSES] =
++		NLA_POLICY_RANGE(NLA_BINARY, 2, 253),
+ 	[NL80211_ATTR_HANDLE_DFS] = { .type = NLA_FLAG },
+ 	[NL80211_ATTR_OPMODE_NOTIF] = { .type = NLA_U8 },
+ 	[NL80211_ATTR_VENDOR_ID] = { .type = NLA_U32 },
+ 	[NL80211_ATTR_VENDOR_SUBCMD] = { .type = NLA_U32 },
+ 	[NL80211_ATTR_VENDOR_DATA] = { .type = NLA_BINARY },
+-	[NL80211_ATTR_QOS_MAP] = { .type = NLA_BINARY,
+-				   .len = IEEE80211_QOS_MAP_LEN_MAX },
++	[NL80211_ATTR_QOS_MAP] = NLA_POLICY_RANGE(NLA_BINARY,
++						  IEEE80211_QOS_MAP_LEN_MIN,
++						  IEEE80211_QOS_MAP_LEN_MAX),
+ 	[NL80211_ATTR_MAC_HINT] = NLA_POLICY_EXACT_LEN_WARN(ETH_ALEN),
+ 	[NL80211_ATTR_WIPHY_FREQ_HINT] = { .type = NLA_U32 },
+ 	[NL80211_ATTR_TDLS_PEER_CAPABILITY] = { .type = NLA_U32 },
+@@ -636,9 +642,10 @@ static const struct nla_policy nl80211_policy[NUM_NL80211_ATTR] = {
+ 	[NL80211_ATTR_TXQ_LIMIT] = { .type = NLA_U32 },
+ 	[NL80211_ATTR_TXQ_MEMORY_LIMIT] = { .type = NLA_U32 },
+ 	[NL80211_ATTR_TXQ_QUANTUM] = { .type = NLA_U32 },
+-	[NL80211_ATTR_HE_CAPABILITY] = { .type = NLA_BINARY,
+-					 .len = NL80211_HE_MAX_CAPABILITY_LEN },
+-
++	[NL80211_ATTR_HE_CAPABILITY] =
++		NLA_POLICY_RANGE(NLA_BINARY,
++				 NL80211_HE_MIN_CAPABILITY_LEN,
++				 NL80211_HE_MAX_CAPABILITY_LEN),
+ 	[NL80211_ATTR_FTM_RESPONDER] =
+ 		NLA_POLICY_NESTED(nl80211_ftm_responder_policy),
+ 	[NL80211_ATTR_TIMEOUT] = NLA_POLICY_MIN(NLA_U32, 1),
+@@ -5852,13 +5859,6 @@ static int nl80211_parse_sta_channel_info(struct genl_info *info,
+ 		 nla_data(info->attrs[NL80211_ATTR_STA_SUPPORTED_OPER_CLASSES]);
+ 		params->supported_oper_classes_len =
+ 		  nla_len(info->attrs[NL80211_ATTR_STA_SUPPORTED_OPER_CLASSES]);
+-		/*
+-		 * The value of the Length field of the Supported Operating
+-		 * Classes element is between 2 and 253.
+-		 */
+-		if (params->supported_oper_classes_len < 2 ||
+-		    params->supported_oper_classes_len > 253)
+-			return -EINVAL;
+ 	}
+ 	return 0;
+ }
+@@ -5881,9 +5881,6 @@ static int nl80211_set_station_tdls(struct genl_info *info,
+ 			nla_data(info->attrs[NL80211_ATTR_HE_CAPABILITY]);
+ 		params->he_capa_len =
+ 			nla_len(info->attrs[NL80211_ATTR_HE_CAPABILITY]);
+-
+-		if (params->he_capa_len < NL80211_HE_MIN_CAPABILITY_LEN)
+-			return -EINVAL;
+ 	}
+ 
+ 	err = nl80211_parse_sta_channel_info(info, params);
+@@ -6142,10 +6139,6 @@ static int nl80211_new_station(struct sk_buff *skb, struct genl_info *info)
+ 			nla_data(info->attrs[NL80211_ATTR_HE_CAPABILITY]);
+ 		params.he_capa_len =
+ 			nla_len(info->attrs[NL80211_ATTR_HE_CAPABILITY]);
+-
+-		/* max len is validated in nla policy */
+-		if (params.he_capa_len < NL80211_HE_MIN_CAPABILITY_LEN)
+-			return -EINVAL;
+ 	}
+ 
+ 	if (info->attrs[NL80211_ATTR_HE_6GHZ_CAPABILITY])
+@@ -13545,8 +13538,7 @@ static int nl80211_set_qos_map(struct sk_buff *skb,
+ 		pos = nla_data(info->attrs[NL80211_ATTR_QOS_MAP]);
+ 		len = nla_len(info->attrs[NL80211_ATTR_QOS_MAP]);
+ 
+-		if (len % 2 || len < IEEE80211_QOS_MAP_LEN_MIN ||
+-		    len > IEEE80211_QOS_MAP_LEN_MAX)
++		if (len % 2)
+ 			return -EINVAL;
+ 
+ 		qos_map = kzalloc(sizeof(struct cfg80211_qos_map), GFP_KERNEL);
+-- 
+2.26.2
 
