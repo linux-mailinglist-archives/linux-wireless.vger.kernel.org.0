@@ -2,95 +2,128 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8CCE42490F2
-	for <lists+linux-wireless@lfdr.de>; Wed, 19 Aug 2020 00:34:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E5EE82491EE
+	for <lists+linux-wireless@lfdr.de>; Wed, 19 Aug 2020 02:48:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726868AbgHRWeH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 18 Aug 2020 18:34:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43392 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726617AbgHRWeH (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 18 Aug 2020 18:34:07 -0400
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15E6EC061389;
-        Tue, 18 Aug 2020 15:34:07 -0700 (PDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mail.ozlabs.org (Postfix) with ESMTPSA id 4BWQgW6XF5z9sPf;
-        Wed, 19 Aug 2020 08:33:59 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
-        s=201702; t=1597790040;
-        bh=k3pxQt90eE1hv4CqHI80gnmB8e6EPfCXSkwk+ZlMmI4=;
-        h=Date:From:To:Cc:Subject:From;
-        b=YybmRaTtsIR4PdObYNnpET3BTRyXgVIAepEKXD6b1M3tIbTFD6o0+EkvcH6PRGZVX
-         cNeRSyaMhJd/9IqdIKajTXdKKhrAkKs5hrUx9PIZWEpqCR8gkBFwE4MwTWgwHpV5Ad
-         6uXBPzlmbxwj8tRUnUygbjlqOxW3z4OJzqeT5Pdg53ALi7VkLpxAvij2dvWAmvacpD
-         X1D1peglLZ2r3J5ebVu9VNQrqXvk5sCnxHrD/KrDDdrgohQfftaWCJ+oQyyiJugnf0
-         mFHqNDrALDXqe6ZIKhFaTlp8wXTh4BdRx7sRD7USjZKxtxvcbLJtGbr6pWzC3Bo8uk
-         PATLoCN/JU3Cw==
-Date:   Wed, 19 Aug 2020 08:33:59 +1000
-From:   Stephen Rothwell <sfr@canb.auug.org.au>
-To:     Kalle Valo <kvalo@codeaurora.org>,
-        Wireless <linux-wireless@vger.kernel.org>
-Cc:     Linux Next Mailing List <linux-next@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Subject: linux-next: Fixes tag needs some work in the wireless-drivers-next
- tree
-Message-ID: <20200819083359.67f45112@canb.auug.org.au>
+        id S1726862AbgHSAsI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 18 Aug 2020 20:48:08 -0400
+Received: from mga11.intel.com ([192.55.52.93]:24080 "EHLO mga11.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727062AbgHSAsF (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 18 Aug 2020 20:48:05 -0400
+IronPort-SDR: YCEDjUYC5MsYPJie375JqJymTRD+EPVvMY6G85IdZWOlCA8bTqVFVbJzP0wI6uH9Se7nyhR2+K
+ radYq07e0+Jw==
+X-IronPort-AV: E=McAfee;i="6000,8403,9717"; a="152646540"
+X-IronPort-AV: E=Sophos;i="5.76,329,1592895600"; 
+   d="scan'208";a="152646540"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Aug 2020 17:48:05 -0700
+IronPort-SDR: mn5aCBw22kJOvgSK/Yj15mAztL0WtsfLN2bVQyoIyu3cS3e2lPuxhAcQtvZ0iCcYVmwLETQpHh
+ JFzS45sVo0Qg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.76,329,1592895600"; 
+   d="scan'208";a="279553155"
+Received: from lkp-server02.sh.intel.com (HELO 2f0d8b563e65) ([10.239.97.151])
+  by fmsmga008.fm.intel.com with ESMTP; 18 Aug 2020 17:48:03 -0700
+Received: from kbuild by 2f0d8b563e65 with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1k8CGp-0001Ur-AU; Wed, 19 Aug 2020 00:48:03 +0000
+Date:   Wed, 19 Aug 2020 08:47:27 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Johannes Berg <johannes.berg@intel.com>
+Cc:     linux-wireless@vger.kernel.org
+Subject: [mac80211-next:netlink-validation] BUILD SUCCESS
+ 09c32e84e35ef9448e33a00f277795580f838e36
+Message-ID: <5f3c769f.QpL9d90JN+dcqezm%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/oHp_qW2ROkDZtlx9g_HdhiR";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---Sig_/oHp_qW2ROkDZtlx9g_HdhiR
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211-next.git  netlink-validation
+branch HEAD: 09c32e84e35ef9448e33a00f277795580f838e36  nl80211: use NLA_POLICY_RANGE(NLA_BINARY, ...) for a few attributes
 
-Hi all,
+elapsed time: 970m
 
-In commit
+configs tested: 66
+configs skipped: 1
 
-  3b9fb6791e71 ("wcn36xx: Fix reported 802.11n rx_highest rate wcn3660/wcn3=
-680")
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-Fixes tag
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+c6x                              allyesconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                             defconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+i386                 randconfig-a005-20200818
+i386                 randconfig-a002-20200818
+i386                 randconfig-a001-20200818
+i386                 randconfig-a006-20200818
+i386                 randconfig-a003-20200818
+i386                 randconfig-a004-20200818
+x86_64               randconfig-a013-20200818
+x86_64               randconfig-a016-20200818
+x86_64               randconfig-a012-20200818
+x86_64               randconfig-a011-20200818
+x86_64               randconfig-a014-20200818
+x86_64               randconfig-a015-20200818
+i386                 randconfig-a016-20200818
+i386                 randconfig-a011-20200818
+i386                 randconfig-a015-20200818
+i386                 randconfig-a013-20200818
+i386                 randconfig-a012-20200818
+i386                 randconfig-a014-20200818
+riscv                            allyesconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                            allmodconfig
+x86_64                                   rhel
+x86_64                           allyesconfig
+x86_64                    rhel-7.6-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                                  kexec
 
-  Fixes: 8e84c2582169 ("wcn36xx: mac80211 driver for Qualcomm WCN3660/WCN36=
-80
-
-has these problem(s):
-
-  - Subject has leading but no trailing parentheses
-  - Subject has leading but no trailing quotes
-
-Please do not split Fixes tags over more that one line.  Also, keep all
-the commit message tags together at the end of the message.
-
---=20
-Cheers,
-Stephen Rothwell
-
---Sig_/oHp_qW2ROkDZtlx9g_HdhiR
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAl88V1cACgkQAVBC80lX
-0Gx7xgf/d1v4bs1bxMPJDa8T426PtGjqkDAj1nMUYX9oAXdyMaKgmHKHOds+sjOP
-BzZPw7TuY8n4Vcni7XOlq+D8IjNPOQVuYKNVPbpu2mApn1qo5u7WZ7MgxvWNjyti
-+2jrmxZ3QwkQBVdj1c37XnCn/Pn/mU/caJnI0kYoRIcp1w+z+1yc7YhwP8OU6pAh
-2d6G+5mP+Uy3Y6zY0jt7dW5Wt3vAWJE3OtYCbLtVQl0pjHnCuCLKRvmyxmwQM3Y9
-RQ0B0b1g0WwSnCZBP8OjwQe6nFyX401KoxFc2YXMn108M+5eDDLQhw3P0tDjTW/q
-euYoO2XsDU3WHHhveKV2vP0oQyBSvA==
-=jnXl
------END PGP SIGNATURE-----
-
---Sig_/oHp_qW2ROkDZtlx9g_HdhiR--
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
