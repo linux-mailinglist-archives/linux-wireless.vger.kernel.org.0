@@ -2,83 +2,115 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 86933249CD6
-	for <lists+linux-wireless@lfdr.de>; Wed, 19 Aug 2020 13:56:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DE5CA249D3A
+	for <lists+linux-wireless@lfdr.de>; Wed, 19 Aug 2020 14:03:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728271AbgHSL4G (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 19 Aug 2020 07:56:06 -0400
-Received: from spam.zju.edu.cn ([61.164.42.155]:41910 "EHLO zju.edu.cn"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1728063AbgHSLys (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 19 Aug 2020 07:54:48 -0400
-Received: from localhost.localdomain (unknown [210.32.144.184])
-        by mail-app2 (Coremail) with SMTP id by_KCgBXWZzyEj1fPjQCAg--.62095S4;
-        Wed, 19 Aug 2020 19:54:30 +0800 (CST)
-From:   Dinghao Liu <dinghao.liu@zju.edu.cn>
-To:     dinghao.liu@zju.edu.cn, kjlu@umn.edu
-Cc:     Ajay Singh <ajay.kathat@microchip.com>,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Adham Abozaeid <adham.abozaeid@microchip.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] staging: wilc1000: Fix memleak in wilc_bus_probe
-Date:   Wed, 19 Aug 2020 19:54:26 +0800
-Message-Id: <20200819115426.29852-1-dinghao.liu@zju.edu.cn>
-X-Mailer: git-send-email 2.17.1
-X-CM-TRANSID: by_KCgBXWZzyEj1fPjQCAg--.62095S4
-X-Coremail-Antispam: 1UD129KBjvdXoWruFWUAw4fWF4UZrykJrWxCrg_yoWkWwb_Cr
-        18XFnay34xur1jvryjkrW5ZrZIyFykuFn5Gw4Iq3yfCa1UArZ7CFWfuF43JwsIk3W09F4j
-        kr4DWFyfAr4SqjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-        9fnUUIcSsGvfJTRUUUb-xFc2x0x2IEx4CE42xK8VAvwI8IcIk0rVWrJVCq3wAFIxvE14AK
-        wVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK021l84ACjcxK6xIIjxv20x
-        vE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4UJVWxJr1l84ACjcxK6I8E
-        87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_GcCE3s1le2I262IYc4CY6c
-        8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JrI_
-        JrylYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwI
-        xGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc2xSY4AK
-        67AK6r4kMxAIw28IcxkI7VAKI48JMxAIw28IcVCjz48v1sIEY20_GFWkJr1UJwCFx2IqxV
-        CFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r10
-        6r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxV
-        WUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG
-        6Fyj6rWUJwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r
-        4UJbIYCTnIWIevJa73UjIFyTuYvjfUOKsjUUUUU
-X-CM-SenderInfo: qrrzjiaqtzq6lmxovvfxof0/1tbiAgcLBlZdtPihowAlso
+        id S1728122AbgHSMDK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 19 Aug 2020 08:03:10 -0400
+Received: from mail29.static.mailgun.info ([104.130.122.29]:22453 "EHLO
+        mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728381AbgHSMDB (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 19 Aug 2020 08:03:01 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1597838578; h=Message-ID: References: In-Reply-To: Subject:
+ Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Sender; bh=iBqC1WAz0kJBE3b1DZscOOX0VcQG3yjHQ9f1eDs35ls=;
+ b=CmsHcnDgo0beW9+aNYqaLiLjn7F/QTjtTozT8KZ9TM/jwBRNbDpNWB53paMeCyKVRnNesi/A
+ jvjtPKQdsHU3fUaNNsDbTM75fTngxx/5a6eQVdNHvO1cwVW30pkmf0PBTdHjZ8FKNUcPv4BR
+ Z1uDSMcJ67RlTYok4DKzHOh9ECY=
+X-Mailgun-Sending-Ip: 104.130.122.29
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n02.prod.us-east-1.postgun.com with SMTP id
+ 5f3d14a7f2b697637a1bcf39 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 19 Aug 2020 12:01:43
+ GMT
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 50A0BC433C6; Wed, 19 Aug 2020 12:01:42 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: wgong)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id F0EBFC433CA;
+        Wed, 19 Aug 2020 12:01:40 +0000 (UTC)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Wed, 19 Aug 2020 20:01:40 +0800
+From:   Wen Gong <wgong@codeaurora.org>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH v4 1/2] ath10k: add refcount for ath10k_core_restart
+In-Reply-To: <87imdlkuw8.fsf@codeaurora.org>
+References: <20200108031957.22308-1-wgong@codeaurora.org>
+ <20200108031957.22308-2-wgong@codeaurora.org>
+ <87imdlkuw8.fsf@codeaurora.org>
+Message-ID: <35a24f0d901be76266f6c9ab020d2acc@codeaurora.org>
+X-Sender: wgong@codeaurora.org
+User-Agent: Roundcube Webmail/1.3.9
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-When devm_clk_get() returns -EPROBE_DEFER, spi_priv
-should be freed just like when wilc_cfg80211_init()
-fails.
+On 2020-08-15 01:19, Kalle Valo wrote:
+...
+> 
+> I have been thinking a different approach for this. I think another
+> option is to have a function like this:
+> 
+> ath10k_core_firmware_crashed()
+> {
+>         queue_work(ar->workqueue, &ar->restart_work);
+> }
+> 
+> In patch 1 we would convert all existing callers to call that
+> function instead of queue_work() directly.
+> 
+> In patch 2 we would add a new flag to enum ath10k_dev_flags, or maybe
+> should actually use existing ATH10K_FLAG_CRASH_FLUSH? Don't know yet
+> which one is better. Now the function would do:
+> 
+> ath10k_core_firmware_crashed()
+> {
+>         if (test_bit(flag))
+>                 return
+> 
+>         set_bit(flag)
+> 	queue_work(ar->workqueue, &ar->restart_work);
+> }
+> 
+It is better to clear_bit ATH10K_FLAG_CRASH_FLUSH/new flag in 
+ath10k_reconfig_complete
+instead of ath10k_core_start because ieee80211_reconfig(called by 
+ieee80211_restart_work)
+of mac80211 do many things and drv_start is 1st thing and 
+drv_reconfig_complete is last thing.
 
-Fixes: 854d66df74aed ("staging: wilc1000: look for rtc_clk clock in spi mode")
-Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>
----
- drivers/net/wireless/microchip/wilc1000/spi.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/wireless/microchip/wilc1000/spi.c b/drivers/net/wireless/microchip/wilc1000/spi.c
-index 3f19e3f38a39..a18dac0aa6b6 100644
---- a/drivers/net/wireless/microchip/wilc1000/spi.c
-+++ b/drivers/net/wireless/microchip/wilc1000/spi.c
-@@ -112,9 +112,10 @@ static int wilc_bus_probe(struct spi_device *spi)
- 	wilc->dev_irq_num = spi->irq;
- 
- 	wilc->rtc_clk = devm_clk_get(&spi->dev, "rtc_clk");
--	if (PTR_ERR_OR_ZERO(wilc->rtc_clk) == -EPROBE_DEFER)
-+	if (PTR_ERR_OR_ZERO(wilc->rtc_clk) == -EPROBE_DEFER) {
-+		kfree(spi_priv);
- 		return -EPROBE_DEFER;
--	else if (!IS_ERR(wilc->rtc_clk))
-+	} else if (!IS_ERR(wilc->rtc_clk))
- 		clk_prepare_enable(wilc->rtc_clk);
- 
- 	return 0;
--- 
-2.17.1
-
+> That way restart_work queue would be called only one time.
+> 
+> Though I'm not sure how ATH10K_STATE_WEDGED would behave after this
+> change, it might get broken. Ah, actually I think even this patch 
+> breaks
+> the WEDGED state. This firmware restart is tricky, difficult to say 
+> what
+> is the best approach. Michal, are you reading? :) Any ideas?
+> 
+> And after looking more about this patch I don't see the need for the 
+> new
+> ar->restart_count atomic variable. Checking for ATH10K_FLAG_CRASH_FLUSH
+> would do the same thing AFAICS.
+> 
+> And related to this, (in a separate patch) I think we should utilise
+> ATH10K_FLAG_CRASH_FLUSH more. For example in ath10k_wmi_cmd_send() to
+> not even try to send a WMI command if the flag is set. Basically all
+> hardware access should be disabled except what is needed to restart the
+> firmware.
