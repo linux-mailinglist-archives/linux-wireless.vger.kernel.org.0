@@ -2,98 +2,214 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B8F32497C2
-	for <lists+linux-wireless@lfdr.de>; Wed, 19 Aug 2020 09:53:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6CCFB249808
+	for <lists+linux-wireless@lfdr.de>; Wed, 19 Aug 2020 10:14:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726570AbgHSHxI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 19 Aug 2020 03:53:08 -0400
-Received: from mail29.static.mailgun.info ([104.130.122.29]:19805 "EHLO
-        mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726187AbgHSHxH (ORCPT
+        id S1726729AbgHSINz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 19 Aug 2020 04:13:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48570 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725275AbgHSINy (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 19 Aug 2020 03:53:07 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1597823587; h=Message-ID: References: In-Reply-To: Subject:
- Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
- MIME-Version: Sender; bh=RrVpEphjVTEqwF6oHShBBsJrviA1GX40o4k/iUO63WM=;
- b=OLfrz5zti241hUvgLjiZbl21wQRip0QFNbuNr7UYoFEShLFuKRomXxOayT0tkZtierQ3itcK
- 2rgsSctGItOVVn4+wRw57r5yLF5pHTs1WeGuUK85aEYWEDYjqAystRasm+4GRpxS+GirZA4w
- tXUdHTqcpVh2jDCfgMPTTbYQufc=
-X-Mailgun-Sending-Ip: 104.130.122.29
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n10.prod.us-west-2.postgun.com with SMTP id
- 5f3cda601e4d3989d45f05b0 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 19 Aug 2020 07:53:04
- GMT
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 6E395C433CA; Wed, 19 Aug 2020 07:53:04 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+        Wed, 19 Aug 2020 04:13:54 -0400
+Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF4B2C061389;
+        Wed, 19 Aug 2020 01:13:53 -0700 (PDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
-        (Authenticated sender: seevalam)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 34FEEC433C6;
-        Wed, 19 Aug 2020 07:53:03 +0000 (UTC)
+        by mail.ozlabs.org (Postfix) with ESMTPSA id 4BWgXc1X2Sz9sPf;
+        Wed, 19 Aug 2020 18:13:52 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
+        s=201702; t=1597824832;
+        bh=guA++f1yRpC2rBx8TG7aZdt5htfsQFg5QsdjEF8Slnc=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=HkYlgI86tIIo9q4JY/XgECsxyrAoTdsJQRWfqI0HrG24kJ+SUFhIaKf53vN35YEMa
+         +QVtvYFr+YIa5Bgp9pdrBXz0B8QGfebCzZwFV8EsPbFHOeXodil01MujqKrUezmcQt
+         OswnK7OR1+hwJF+72aOYyzpLDrM6rCRgg8k9gy/M9onhioxeTeVn86fYi49p1n05DY
+         6mO8YqI/v/K+cvnMdDjFoTYr+pTWOWst5S4Y7SHdSYSeLbT/h/WBvt2fc8LygQaFRS
+         bpZKMCFGaUsUqrpEWL7usPG5CHzH8bhrpCIdLjF+QdjSBvcTyPd+BfsDrmcv2dz2ar
+         8Sj1+p9mH7hpA==
+Date:   Wed, 19 Aug 2020 18:13:51 +1000
+From:   Stephen Rothwell <sfr@canb.auug.org.au>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Wireless <linux-wireless@vger.kernel.org>,
+        Linux Next Mailing List <linux-next@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Subject: Re: linux-next: Fixes tag needs some work in the
+ wireless-drivers-next tree
+Message-ID: <20200819181351.0cd6f414@canb.auug.org.au>
+In-Reply-To: <87y2mbi0u8.fsf@codeaurora.org>
+References: <20200819083359.67f45112@canb.auug.org.au>
+        <87y2mbi0u8.fsf@codeaurora.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Wed, 19 Aug 2020 13:23:03 +0530
-From:   Seevalamuthu Mariappan <seevalam@codeaurora.org>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org
-Subject: Re: [PATCH] mac80211: send only vlan group traffics in 80211 xmit
- path
-In-Reply-To: <4abebda6ee90ce59b9dc5121b07d1954841351c7.camel@sipsolutions.net>
-References: <1597819527-31887-1-git-send-email-seevalam@codeaurora.org>
- <4abebda6ee90ce59b9dc5121b07d1954841351c7.camel@sipsolutions.net>
-Message-ID: <94f16e76ca54dc175a756a51a4907a1c@codeaurora.org>
-X-Sender: seevalam@codeaurora.org
-User-Agent: Roundcube Webmail/1.3.9
+Content-Type: multipart/signed; boundary="Sig_/Xpm70v2409pUXpF.TC69VQ3";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Johannes,
+--Sig_/Xpm70v2409pUXpF.TC69VQ3
+Content-Type: multipart/mixed; boundary="MP_/YsS=Vwo6LjdSFXQR8Wp_D=T"
 
-On 2020-08-19 12:24, Johannes Berg wrote:
-> On Wed, 2020-08-19 at 12:15 +0530, Seevalamuthu Mariappan wrote:
->> AP-VLAN multicast/broadcast packets are expected to be encrypted
->> in software.
-> 
-> Err. Expected by whom?
+--MP_/YsS=Vwo6LjdSFXQR8Wp_D=T
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
 
-Not an expectation exactly. As of now, AP-VLAN multicast/broadcast 
-packets are encrypted in mac80211 itself. So these packets needs to go 
-through 80211_xmit path. This change is just to redirect the other 
-packets (unicast) to 802.3 xmit path if hw encap is enabled on AP 
-interface.
-> 
->> Those packets should follow 802.11 xmit path.
-> 
-> You should explain why ...
-> 
->> -void __ieee80211_subif_start_xmit(struct sk_buff *skb,
->> -				  struct net_device *dev,
->> -				  u32 info_flags,
->> -				  u32 ctrl_flags,
->> -				  u64 *cookie)
-> 
-> There's no way I can review this if you move the whole function while
-> making a small change to it ...
+Hi Kalle,
 
-Will split into two patches, one having function movement and another 
-patch having the actual change.
-> 
-> johannes
+On Wed, 19 Aug 2020 09:52:47 +0300 Kalle Valo <kvalo@codeaurora.org> wrote:
+>
+> Doh, I have checked carefully the commit ids but of course I missed
+> checking the trailing. I really need to automate this. Stephen, are your
+> scripts checking these available somewhere?
 
+I have attached them to this reply.  I should put them up in a git repo som=
+ewhere.
 
-Thanks,
-Seevalamuthu M
+> But I'll leave this as is, no point of rebasing just because of this.
+
+Fair enough.
+
+--=20
+Cheers,
+Stephen Rothwell
+
+--MP_/YsS=Vwo6LjdSFXQR8Wp_D=T
+Content-Type: application/x-shellscript
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename=check_fixes
+
+IyEvYmluL2Jhc2gKCmlmIFsgIiQjIiAtbHQgMSBdOyB0aGVuCiAgICAgICAgcHJpbnRmICdVc2Fn
+ZTogJXMgPGNvbW1pdCByYW5nZT5cbicsICIkMCIgMT4mMgogICAgICAgIGV4aXQgMQpmaQoKY29t
+bWl0cz0kKGdpdCByZXYtbGlzdCAtLW5vLW1lcmdlcyAtaSAtLWdyZXA9J15bWzpzcGFjZTpdXSpG
+aXhlczonICIkQCIpCmlmIFsgLXogIiRjb21taXRzIiBdOyB0aGVuCiAgICAgICAgZXhpdCAwCmZp
+CgojIFRoaXMgc2hvdWxkIGJlIGEgZ2l0IHRyZWUgdGhhdCBjb250YWlucyAqb25seSogTGludXMn
+IHRyZWUKTGludXNfdHJlZT0iJHtIT01FfS9rZXJuZWxzL2xpbnVzLmdpdCIKCnNwbGl0X3JlPSde
+KFtDY11bT29dW01tXVtNbV1bSWldW1R0XSk/W1s6c3BhY2U6XV0qKFtbOnhkaWdpdDpdXXs1LH0p
+KFtbOnNwYWNlOl1dKikoLiopJCcKbmw9JCdcbicKdGFiPSQnXHQnCgojIFN0cmlwIHRoZSBsZWFk
+aW5nIGFuZCB0cmFpbmluZyBzcGFjZXMgZnJvbSBhIHN0cmluZwpzdHJpcF9zcGFjZXMoKQp7Cglb
+WyAiJDEiID1+IF5bWzpzcGFjZTpdXSooLipbXls6c3BhY2U6XV0pW1s6c3BhY2U6XV0qJCBdXQoJ
+ZWNobyAiJHtCQVNIX1JFTUFUQ0hbMV19Igp9Cgpmb3IgYyBpbiAkY29tbWl0czsgZG8KCgljb21t
+aXRfbG9nPSQoZ2l0IGxvZyAtMSAtLWZvcm1hdD0nJWggKCIlcyIpJyAiJGMiKQoJY29tbWl0X21z
+Zz0iSW4gY29tbWl0CgogICRjb21taXRfbG9nCgoiCgoJZml4ZXNfbGluZXM9JChnaXQgbG9nIC0x
+IC0tZm9ybWF0PSclQicgIiRjIiB8CgkJCWdyZXAgLWkgJ15bWzpzcGFjZTpdXSpGaXhlczonKQoK
+CXdoaWxlIHJlYWQgLXIgZmxpbmU7IGRvCgkJW1sgIiRmbGluZSIgPX4gXltbOnNwYWNlOl1dKltG
+Zl1bSWldW1h4XVtFZV1bU3NdOltbOnNwYWNlOl1dKiguKikkIF1dCgkJZj0iJHtCQVNIX1JFTUFU
+Q0hbMV19IgoJCWZpeGVzX21zZz0iRml4ZXMgdGFnCgogICRmbGluZQoKaGFzIHRoZXNlIHByb2Js
+ZW0ocyk6CgoiCgkJc2hhPQoJCXN1YmplY3Q9CgkJbXNnPQoJCWlmIFtbICIkZiIgPX4gJHNwbGl0
+X3JlIF1dOyB0aGVuCgkJCWZpcnN0PSIke0JBU0hfUkVNQVRDSFsxXX0iCgkJCXNoYT0iJHtCQVNI
+X1JFTUFUQ0hbMl19IgoJCQlzcGFjZXM9IiR7QkFTSF9SRU1BVENIWzNdfSIKCQkJc3ViamVjdD0i
+JHtCQVNIX1JFTUFUQ0hbNF19IgoJCQlpZiBbICIkZmlyc3QiIF07IHRoZW4KCQkJCW1zZz0iJHtt
+c2c6KyR7bXNnfSR7bmx9fSAgLSBsZWFkaW5nIHdvcmQgJyRmaXJzdCcgdW5leHBlY3RlZCIKCQkJ
+ZmkKCQkJaWYgWyAteiAiJHN1YmplY3QiIF07IHRoZW4KCQkJCW1zZz0iJHttc2c6KyR7bXNnfSR7
+bmx9fSAgLSBtaXNzaW5nIHN1YmplY3QiCgkJCWVsaWYgWyAteiAiJHNwYWNlcyIgXTsgdGhlbgoJ
+CQkJbXNnPSIke21zZzorJHttc2d9JHtubH19ICAtIG1pc3Npbmcgc3BhY2UgYmV0d2VlbiB0aGUg
+U0hBMSBhbmQgdGhlIHN1YmplY3QiCgkJCWZpCgkJZWxzZQoJCQlwcmludGYgJyVzJXMgIC0gJXNc
+bicgIiRjb21taXRfbXNnIiAiJGZpeGVzX21zZyIgJ05vIFNIQTEgcmVjb2duaXNlZCcKCQkJY29t
+bWl0X21zZz0nJwoJCQljb250aW51ZQoJCWZpCgkJaWYgISBnaXQgcmV2LXBhcnNlIC1xIC0tdmVy
+aWZ5ICIkc2hhIiA+L2Rldi9udWxsOyB0aGVuCgkJCXByaW50ZiAnJXMlcyAgLSAlc1xuJyAiJGNv
+bW1pdF9tc2ciICIkZml4ZXNfbXNnIiAnVGFyZ2V0IFNIQTEgZG9lcyBub3QgZXhpc3QnCgkJCWNv
+bW1pdF9tc2c9JycKCQkJY29udGludWUKCQlmaQoKCQlpZiBbICIkeyNzaGF9IiAtbHQgMTIgXTsg
+dGhlbgoJCQltc2c9IiR7bXNnOiske21zZ30ke25sfX0gIC0gU0hBMSBzaG91bGQgYmUgYXQgbGVh
+c3QgMTIgZGlnaXRzIGxvbmcke25sfSAgICBDYW4gYmUgZml4ZWQgYnkgc2V0dGluZyBjb3JlLmFi
+YnJldiB0byAxMiAob3IgbW9yZSkgb3IgKGZvciBnaXQgdjIuMTEke25sfSAgICBvciBsYXRlcikg
+anVzdCBtYWtpbmcgc3VyZSBpdCBpcyBub3Qgc2V0IChvciBzZXQgdG8gXCJhdXRvXCIpLiIKCQlm
+aQoJCSMgcmVkdWNlIHRoZSBzdWJqZWN0IHRvIHRoZSBwYXJ0IGJldHdlZW4gKCkgaWYgdGhlcmUK
+CQlpZiBbWyAiJHN1YmplY3QiID1+IF5cKCguKilcKSBdXTsgdGhlbgoJCQlzdWJqZWN0PSIke0JB
+U0hfUkVNQVRDSFsxXX0iCgkJZWxpZiBbWyAiJHN1YmplY3QiID1+IF5cKCguKikgXV07IHRoZW4K
+CQkJc3ViamVjdD0iJHtCQVNIX1JFTUFUQ0hbMV19IgoJCQltc2c9IiR7bXNnOiske21zZ30ke25s
+fX0gIC0gU3ViamVjdCBoYXMgbGVhZGluZyBidXQgbm8gdHJhaWxpbmcgcGFyZW50aGVzZXMiCgkJ
+ZmkKCgkJIyBzdHJpcCBtYXRjaGluZyBxdW90ZXMgYXQgdGhlIHN0YXJ0IGFuZCBlbmQgb2YgdGhl
+IHN1YmplY3QKCQkjIHRoZSB1bmljb2RlIGNoYXJhY3RlcnMgaW4gdGhlIGNsYXNzZXMgYXJlCgkJ
+IyBVKzIwMUMgTEVGVCBET1VCTEUgUVVPVEFUSU9OIE1BUksKCQkjIFUrMjAxRCBSSUdIVCBET1VC
+TEUgUVVPVEFUSU9OIE1BUksKCQkjIFUrMjAxOCBMRUZUIFNJTkdMRSBRVU9UQVRJT04gTUFSSwoJ
+CSMgVSsyMDE5IFJJR0hUIFNJTkdMRSBRVU9UQVRJT04gTUFSSwoJCXJlMT0kJ15bXCJcdTIwMUNd
+KC4qKVtcIlx1MjAxRF0kJwoJCXJlMj0kJ15bXCdcdTIwMThdKC4qKVtcJ1x1MjAxOV0kJwoJCXJl
+Mz0kJ15bXCJcJ1x1MjAxQ1x1MjAxOF0oLiopJCcKCQlpZiBbWyAiJHN1YmplY3QiID1+ICRyZTEg
+XV07IHRoZW4KCQkJc3ViamVjdD0iJHtCQVNIX1JFTUFUQ0hbMV19IgoJCWVsaWYgW1sgIiRzdWJq
+ZWN0IiA9fiAkcmUyIF1dOyB0aGVuCgkJCXN1YmplY3Q9IiR7QkFTSF9SRU1BVENIWzFdfSIKCQll
+bGlmIFtbICIkc3ViamVjdCIgPX4gJHJlMyBdXTsgdGhlbgoJCQlzdWJqZWN0PSIke0JBU0hfUkVN
+QVRDSFsxXX0iCgkJCW1zZz0iJHttc2c6KyR7bXNnfSR7bmx9fSAgLSBTdWJqZWN0IGhhcyBsZWFk
+aW5nIGJ1dCBubyB0cmFpbGluZyBxdW90ZXMiCgkJZmkKCgkJc3ViamVjdD0kKHN0cmlwX3NwYWNl
+cyAiJHN1YmplY3QiKQoKCQl0YXJnZXRfc3ViamVjdD0kKGdpdCBsb2cgLTEgLS1mb3JtYXQ9JyVz
+JyAiJHNoYSIpCgkJdGFyZ2V0X3N1YmplY3Q9JChzdHJpcF9zcGFjZXMgIiR0YXJnZXRfc3ViamVj
+dCIpCgoJCSMgbWF0Y2ggd2l0aCBlbGxpcHNlcwoJCWNhc2UgIiRzdWJqZWN0IiBpbgoJCSouLi4p
+CXN1YmplY3Q9IiR7c3ViamVjdCUuLi59IgoJCQl0YXJnZXRfc3ViamVjdD0iJHt0YXJnZXRfc3Vi
+amVjdDowOiR7I3N1YmplY3R9fSIKCQkJOzsKCQkuLi4qKQlzdWJqZWN0PSIke3N1YmplY3QjLi4u
+fSIKCQkJdGFyZ2V0X3N1YmplY3Q9IiR7dGFyZ2V0X3N1YmplY3Q6IC0keyNzdWJqZWN0fX0iCgkJ
+CTs7CgkJKlwgLi4uXCAqKQoJCQlzMT0iJHtzdWJqZWN0JSAuLi4gKn0iCgkJCXMyPSIke3N1Ympl
+Y3QjKiAuLi4gfSIKCQkJc3ViamVjdD0iJHMxICRzMiIKCQkJdDE9IiR7dGFyZ2V0X3N1YmplY3Q6
+MDokeyNzMX19IgoJCQl0Mj0iJHt0YXJnZXRfc3ViamVjdDogLSR7I3MyfX0iCgkJCXRhcmdldF9z
+dWJqZWN0PSIkdDEgJHQyIgoJCQk7OwoJCWVzYWMKCQlzdWJqZWN0PSQoc3RyaXBfc3BhY2VzICIk
+c3ViamVjdCIpCgkJdGFyZ2V0X3N1YmplY3Q9JChzdHJpcF9zcGFjZXMgIiR0YXJnZXRfc3ViamVj
+dCIpCgoJCWlmIFsgIiRzdWJqZWN0IiAhPSAiJHt0YXJnZXRfc3ViamVjdDowOiR7I3N1YmplY3R9
+fSIgXTsgdGhlbgoJCQltc2c9IiR7bXNnOiske21zZ30ke25sfX0gIC0gU3ViamVjdCBkb2VzIG5v
+dCBtYXRjaCB0YXJnZXQgY29tbWl0IHN1YmplY3Qke25sfSAgICBKdXN0IHVzZSR7bmx9JHt0YWJ9
+Z2l0IGxvZyAtMSAtLWZvcm1hdD0nRml4ZXM6ICVoIChcIiVzXCIpJyIKCQlmaQoJCWxzaGE9JChj
+ZCAiJExpbnVzX3RyZWUiICYmIGdpdCByZXYtcGFyc2UgLXEgLS12ZXJpZnkgIiRzaGEiKQoJCWlm
+IFsgLXogIiRsc2hhIiBdOyB0aGVuCgkJCWNvdW50PSQoZ2l0IHJldi1saXN0IC0tY291bnQgIiRz
+aGEiLi4iJGMiKQoJCQlpZiBbICIkY291bnQiIC1lcSAwIF07IHRoZW4KCQkJCW1zZz0iJHttc2c6
+KyR7bXNnfSR7bmx9fSAgLSBUYXJnZXQgaXMgbm90IGFuIGFuY2VzdG9yIG9mIHRoaXMgY29tbWl0
+IgoJCQlmaQoJCWZpCgkJaWYgWyAiJG1zZyIgXTsgdGhlbgoJCQlwcmludGYgJyVzJXMlc1xuJyAi
+JGNvbW1pdF9tc2ciICIkZml4ZXNfbXNnIiAiJG1zZyIKCQkJY29tbWl0X21zZz0nJwoJCWZpCglk
+b25lIDw8PCAiJGZpeGVzX2xpbmVzIgpkb25lCgpleGl0IDAK
+
+--MP_/YsS=Vwo6LjdSFXQR8Wp_D=T
+Content-Type: application/x-shellscript
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename=check_commits
+
+IyEvYmluL2Jhc2gKCmlmIFsgIiQjIiAtbHQgMSBdOyB0aGVuCglwcmludGYgJ1VzYWdlOiAlcyA8
+Y29tbWl0IHJhbmdlPlxuJyAiJDAiIDE+JjIKCWV4aXQgMQpmaQoKY29tbWl0cz0kKGdpdCByZXYt
+bGlzdCAtLW5vLW1lcmdlcyAiJEAiKQppZiBbIC16ICIkY29tbWl0cyIgXTsgdGhlbgoJcHJpbnRm
+ICdObyBjb21taXRzXG4nCglleGl0IDAKZmkKCiIkKHJlYWxwYXRoICIkKGRpcm5hbWUgIiQwIiki
+KS9jaGVja19maXhlcyIgIiRAIgoKZGVjbGFyZSAtYSBhdXRob3JfbWlzc2luZyBjb21taXR0ZXJf
+bWlzc2luZwoKcHJpbnRfY29tbWl0cygpCnsKCWlmIFsgIiQjIiAtZXEgMSBdOyB0aGVuCgkJcmV0
+dXJuCglmaQoKCWxvY2FsIHQ9IiQxIgoKCXNoaWZ0CgoJcz0KCWlzPSdpcycKCWl0cz0naXRzJwoJ
+aWYgWyAiJCMiIC1ndCAxIF07IHRoZW4KCQlzPSdzJwoJCWlzPSdhcmUnCgkJaXRzPSd0aGVpcicK
+CWZpCglwcmludGYgJ0NvbW1pdCVzXG5cbicgIiRzIgoJZ2l0IGxvZyAtLW5vLXdhbGsgLS1wcmV0
+dHk9J2Zvcm1hdDogICVoICgiJXMiKScgIiRAIgoJcHJpbnRmICdcbiVzIG1pc3NpbmcgYSBTaWdu
+ZWQtb2ZmLWJ5IGZyb20gJXMgJXMlcy5cblxuJyBcCgkJIiRpcyIgIiRpdHMiICIkdCIgIiRzIgp9
+CgpjaGVja191bmV4cGVjdGVkX2ZpbGVzKCkKewoJbG9jYWwgZmlsZXMKCglyZWFkYXJyYXkgZmls
+ZXMgPCA8KGdpdCBkaWZmLXRyZWUgLXIgLS1kaWZmLWZpbHRlcj1BIC0tbmFtZS1vbmx5IC0tbm8t
+Y29tbWl0LWlkICIkMSIgJyoucmVqJyAnKi5vcmlnJykKCWlmIFsgIiR7I2ZpbGVzW0BdfSIgLWVx
+IDAgXTsgdGhlbgoJCXJldHVybgoJZmkKCglzPQoJdGhpcz0ndGhpcycKCWlmIFsgIiR7I2ZpbGVz
+W0BdfSIgLWd0IDEgXTsgdGhlbgoJCXM9J3MnCgkJdGhpcz0ndGhlc2UnCglmaQoKCXByaW50ZiAn
+Q29tbWl0XG5cbicKCWdpdCBsb2cgLS1uby13YWxrIC0tcHJldHR5PSdmb3JtYXQ6ICAlaCAoIiVz
+IiknICIkMSIKCXByaW50ZiAnXG5hZGRlZCAlcyB1bmV4cGVjdGVkIGZpbGUlczpcblxuJyAiJHRo
+aXMiICIkcyIKCXByaW50ZiAnICAlc1xuJyAiJHtmaWxlc1tAXX0iCn0KCmZvciBjIGluICRjb21t
+aXRzOyBkbwoJYWU9JChnaXQgbG9nIC0xIC0tZm9ybWF0PSc8JWFlPiVuPCVhRT4lbiAlYW4gJW4g
+JWFOICcgIiRjIiB8IHNvcnQgLXUpCgljZT0kKGdpdCBsb2cgLTEgLS1mb3JtYXQ9JzwlY2U+JW48
+JWNFPiVuICVjbiAlbiAlY04gJyAiJGMiIHwgc29ydCAtdSkKCXNvYj0kKGdpdCBsb2cgLTEgLS1m
+b3JtYXQ9JyViJyAiJGMiIHwKCQlzZWQgLUVuICdzL15ccypTaWduZWQtb2ZmLWJ5Oj9ccyovIC9p
+cCcpCgoJaWYgISBncmVwIC1pIC1GIC1xICIkYWUiIDw8PCIkc29iIjsgdGhlbgoJCWF1dGhvcl9t
+aXNzaW5nKz0oIiRjIikKCWZpCglpZiAhIGdyZXAgLWkgLUYgLXEgIiRjZSIgPDw8IiRzb2IiOyB0
+aGVuCgkJY29tbWl0dGVyX21pc3NpbmcrPSgiJGMiKQoJZmkKCgljaGVja191bmV4cGVjdGVkX2Zp
+bGVzICIkYyIKZG9uZQoKcHJpbnRfY29tbWl0cyAnYXV0aG9yJyAiJHthdXRob3JfbWlzc2luZ1tA
+XX0iCnByaW50X2NvbW1pdHMgJ2NvbW1pdHRlcicgIiR7Y29tbWl0dGVyX21pc3NpbmdbQF19IgoK
+ZXhlYyBnaXRrICIkQCIK
+
+--MP_/YsS=Vwo6LjdSFXQR8Wp_D=T--
+
+--Sig_/Xpm70v2409pUXpF.TC69VQ3
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAl883z8ACgkQAVBC80lX
+0GxgYAf/RCkGs+Q44W5BSswNt36QpchupVR0uANZE6/YA/1o4x6PKqN+89FHxwHp
++DHbls/kF4rEuKMKK/UzTaZZuthD9LclthJ50ChuZwSfZThjQXUtficOnZAJcTWh
+SPQ2rf8539s95y0ys/GSkl5/UJAqXBs+lwcZQd0tai0s4TG7OxKPG5gZTzBR+hp5
+C5ndwZd0+MklI/B8Qg5cahJlk1wGuuEBBwNPDiAytgLmnSsfRsIi/J5ZuWyzJ60H
+kInp/TPaNtAAGNpfYolNejk41lhFZSRxG8ceG0IRzD3mI9QLAYyd3St4bNS5h75a
+0t5F38Zp46hQvotNxVHzGGh0aASBaw==
+=K2hY
+-----END PGP SIGNATURE-----
+
+--Sig_/Xpm70v2409pUXpF.TC69VQ3--
