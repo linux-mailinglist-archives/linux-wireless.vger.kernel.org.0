@@ -2,86 +2,77 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 79DF524A28D
-	for <lists+linux-wireless@lfdr.de>; Wed, 19 Aug 2020 17:10:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DC33C24A2C4
+	for <lists+linux-wireless@lfdr.de>; Wed, 19 Aug 2020 17:22:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726965AbgHSPKW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 19 Aug 2020 11:10:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56804 "EHLO
+        id S1728641AbgHSPWl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 19 Aug 2020 11:22:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58712 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728145AbgHSPKT (ORCPT
+        with ESMTP id S1726187AbgHSPWi (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 19 Aug 2020 11:10:19 -0400
-Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com [IPv6:2607:f8b0:4864:20::442])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DCA82C061342
-        for <linux-wireless@vger.kernel.org>; Wed, 19 Aug 2020 08:10:18 -0700 (PDT)
-Received: by mail-pf1-x442.google.com with SMTP id d22so11827755pfn.5
-        for <linux-wireless@vger.kernel.org>; Wed, 19 Aug 2020 08:10:18 -0700 (PDT)
+        Wed, 19 Aug 2020 11:22:38 -0400
+Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com [IPv6:2607:f8b0:4864:20::444])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4FFBC061757;
+        Wed, 19 Aug 2020 08:22:37 -0700 (PDT)
+Received: by mail-pf1-x444.google.com with SMTP id 74so11825009pfx.13;
+        Wed, 19 Aug 2020 08:22:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=010UDpcnAKhhIkGPA8UjpFKiaNx+4vgqSxtXM4Cd1Nk=;
-        b=mz9lTpetldgS0S+fm+6h6FFN3JXfpgg1cyjs3nKb8u/MuiyYDBRO3S7bf8w5jvNgwk
-         i/Vulk6d5JvfeqhHTV5mwCd/58sVhJY2JMHYCmMjKWQRCDd/OnatpdTy4PGCKp6y/EJG
-         qYD2TT2rraiX6rtuu6jJcwInN/02VWQCyfamIrU85Cj6FVrmlzZDygI4b1U9zeGk47xY
-         MQdziJcE5aJdZ+G8k//5JRBIsH+MX8LLqDBmOdLXWX26fhkqc72LkxrSxnDlh/m35KZl
-         m6usXiPJpuIwk/yyAHWxBgAH+2+nWSsM/ueUjD6L4Pu7GO46Wrrj9hVbj8OEwhM2ObE2
-         CmQQ==
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=b7L+0KgdWeQWWnUDBxKZIfXeQGejCvKOlPf3TPi16gY=;
+        b=gwdEyD9qnxULFNboVzT+X6Uev0yvBZpOhFd530HFGQWp361vLdEJGvJYoDUM7WQqb4
+         VQKa18n1RNI8zrw6Vt/7fDGokxGAwo/4e1E8dCLnXYUhhEIPIISfEnqGryqyi66kGIUa
+         XA7nety1aLqiZdijkQkETEkxuP4y1waQHxDXrI4Jq9g7k0aEdV0K8r4yaJkB1ZJPhos7
+         ndATu/Pib2oagKiBtkb8DGx2Spt7in7tM3i6NtRdS+OFCgZ8bINByPlRRyXg6jmWc9qp
+         i5rchzFQmxvOcdo4fyDzwdqmKshGtLv/63cL2VpBkyphF81Kx+MxOgT+knxbOqDuDOZD
+         ITaw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=010UDpcnAKhhIkGPA8UjpFKiaNx+4vgqSxtXM4Cd1Nk=;
-        b=TKRjYeQygWPxFly8Q3lcu1w5PFY34ob5EbPNktSIW5LPqlMmm5zjJ91Smk6oCrdN2N
-         3iwiyQ0RpiXBvf1zR7is94rpB0d0UH2b8IK1hzZg3zT/X2+Jl2S+NMFGoCSgf6mwSCkj
-         L4ZWBjHq/6mI+WpGnd1UdBNfZ5TxWMBCeFBW3Jh8UerkW5ItA5bUIfcyqnWc2g6vFowF
-         aS0bJv07HkoGQO0wtJdHHKJxQd1pC5gjHJnMXJ/Qw4zC54+HiwhHvnaM5oPx3B0MUBQI
-         5inby3+coGOTMWFxgT/p+SI2lSYBFvDGK8CX9fPgHMFJL7wnfudCLVMH1N1tHdH5szVQ
-         S8JA==
-X-Gm-Message-State: AOAM533ZTEWpxZMBxBH8WUuou/ir+YWXeVl3ZkHGzlx4C/VkMgnR5cFv
-        6VDVAf4Y+PIpa8/w37P+nBzPqT4OLBnnweH2i5g=
-X-Google-Smtp-Source: ABdhPJyaOdH0yFpYrv413gTP9QAwlZJrGsYVrV79AK1i+J7ihmYd5MLrELbipt8gdagZ7jKFGYG3fDToz9WpBCMMRKw=
-X-Received: by 2002:a62:77d2:: with SMTP id s201mr19301227pfc.213.1597849818395;
- Wed, 19 Aug 2020 08:10:18 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=b7L+0KgdWeQWWnUDBxKZIfXeQGejCvKOlPf3TPi16gY=;
+        b=ShoGVti2EcT2AH3JfcqMSTF+24xiRXPwVriiff1ZD9vAhqRnaJ6jBXz2xCfD9l6RVE
+         UASqJYeikWMsPyqr58aJBJthFMwYrMDXlRFt0J8Sa2FwUBMgJ/ysyKhM/wZtNc1tmBPz
+         3Nmqq1iKbXNoC39iCz50GiFkZ0tmF4xy4JP17/KvtextAvF8x6z85ntUX26SyzQuO9Mr
+         0kauCxbgKW8V/Sd9cumGigF1TU77ynpRkgm3+r9vxN/yfcPQlNf1gx74DkNimckFCk6g
+         53LY5j1SOh0g+/9myUFtpVe/J/N+bjJjIrDc8gZ/BgUotv1HjqSH0PLf6HT8zMBwJsw3
+         etQA==
+X-Gm-Message-State: AOAM531Twyw66vitVN1biBacQSgxEktPhNpSdpFrNAjTyYHJ/XwGCckH
+        wW2AoiRNE6p/VFnR8EXM9peU19HYkf0mXQ==
+X-Google-Smtp-Source: ABdhPJwvNUDlolf2CtvfHOzsMIE0MLxrKrBQVQNmZU0mt2fHSS82vp5IYsn/11v8L80mXcrh9a+50g==
+X-Received: by 2002:a63:4b10:: with SMTP id y16mr15420642pga.93.1597850557144;
+        Wed, 19 Aug 2020 08:22:37 -0700 (PDT)
+Received: from thinkpad (104.36.148.139.aurocloud.com. [104.36.148.139])
+        by smtp.gmail.com with ESMTPSA id x136sm28149020pfc.28.2020.08.19.08.22.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 19 Aug 2020 08:22:36 -0700 (PDT)
+Date:   Wed, 19 Aug 2020 08:23:10 -0700
+From:   Rustam Kovhaev <rkovhaev@gmail.com>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     davem@davemloft.net, kuba@kernel.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] cfg80211: switch from WARN() to pr_warn() in
+ is_user_regdom_saved()
+Message-ID: <20200819152310.GA719949@thinkpad>
+References: <20200804210546.319249-1-rkovhaev@gmail.com>
+ <2893e041597524c19f45fa7e58cf92d8234893e7.camel@sipsolutions.net>
 MIME-Version: 1.0
-Received: by 2002:a05:6a10:c58a:0:0:0:0 with HTTP; Wed, 19 Aug 2020 08:10:18
- -0700 (PDT)
-Reply-To: mis.haleema.zamani1@gmail.com
-From:   Mis Haleema Zamani <mariamabudl123@gmail.com>
-Date:   Wed, 19 Aug 2020 23:10:18 +0800
-Message-ID: <CABPXeb2aJaFUZDgOSfMkDFTVoC4JPX7Ghg-v70-A5==fYBBdxg@mail.gmail.com>
-Subject: =?UTF-8?Q?BITTE_BRAUCHE_ICH_IHRE_UNTERST=C3=9CTZUNG?=
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2893e041597524c19f45fa7e58cf92d8234893e7.camel@sipsolutions.net>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Gr=C3=BC=C3=9Fe an dich, mein lieber Freund,
-
-Mein Name ist Haleema Zamani, ich schreibe Ihnen diese Nachricht mit
-Tr=C3=A4nen in den Augen. Der anhaltende B=C3=BCrgerkrieg in meinem Land Sy=
-rien
-hat mein Leben so sehr beeinflusst. Ich habe meine Familie letztes
-Jahr verloren. Bevor der Tod meines Vaters eine feste Einzahlung von
-(VIER MILLIONEN F=C3=9CNF HUNDERT TAUSEND VEREINIGTE STAATEN DOLLAR) auf
-ein Domizilkonto bei einer Bank in den Vereinigten Arabischen Emiraten
-hat, bin ich der n=C3=A4chste Verwandte.
-
-Ich brauche dem=C3=BCtig Ihre Unterst=C3=BCtzung bei der =C3=9Cbertragung d=
-ieses
-Fonds f=C3=BCr Investitionen in Ihrem Land. Ich werde bereit sein, Ihnen
-einen Prozentsatz f=C3=BCr Ihre Unterst=C3=BCtzung anzubieten. Bitte
-
-Lassen Sie mich wissen, ob Sie dies f=C3=BCr mich tun k=C3=B6nnen. Dies ist
-meine wahre Geschichte. Bitte, ich brauche Ihre Hilfe. Sie
-kontaktieren mich per E-Mail
-
-(mis.haleema.zamani@gmail.com)
-
-Dein,
-
-Mis Haleema Zamani
+On Wed, Aug 19, 2020 at 10:46:34AM +0200, Johannes Berg wrote:
+> On Tue, 2020-08-04 at 14:05 -0700, Rustam Kovhaev wrote:
+> > this warning can be triggered by userspace, so it should not cause a
+> > panic if panic_on_warn is set
+> 
+> This is incorrect, it just addresses a particular symptom. I'll make a
+> proper fix.
+tyvm!
