@@ -2,63 +2,61 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F654249748
-	for <lists+linux-wireless@lfdr.de>; Wed, 19 Aug 2020 09:28:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C3DAE249746
+	for <lists+linux-wireless@lfdr.de>; Wed, 19 Aug 2020 09:28:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727972AbgHSH2c (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 19 Aug 2020 03:28:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40976 "EHLO
+        id S1727087AbgHSH2X (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 19 Aug 2020 03:28:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40946 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728022AbgHSHZv (ORCPT
+        with ESMTP id S1727873AbgHSH0J (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 19 Aug 2020 03:25:51 -0400
-Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F971C06137C
-        for <linux-wireless@vger.kernel.org>; Wed, 19 Aug 2020 00:24:34 -0700 (PDT)
-Received: by mail-wr1-x442.google.com with SMTP id z18so20437020wrm.12
-        for <linux-wireless@vger.kernel.org>; Wed, 19 Aug 2020 00:24:34 -0700 (PDT)
+        Wed, 19 Aug 2020 03:26:09 -0400
+Received: from mail-wm1-x342.google.com (mail-wm1-x342.google.com [IPv6:2a00:1450:4864:20::342])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62A70C06137F
+        for <linux-wireless@vger.kernel.org>; Wed, 19 Aug 2020 00:24:35 -0700 (PDT)
+Received: by mail-wm1-x342.google.com with SMTP id 3so1129552wmi.1
+        for <linux-wireless@vger.kernel.org>; Wed, 19 Aug 2020 00:24:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=glqW/Gnt3wlpIqCq2zLjhjH68Neg4Dhca059SWlN3nQ=;
-        b=I017K99G8el9gEBEXvnAP53d5myjKGGOVqLyQjAqTWA1X9ON1mGBYobJt/kuBxImv4
-         lSM9TN5GCAkXid9e8qhjJq5DRL1N1zAD3y0eJrsugDpKRv0wRYg0e8fg1C/O+7ta4ZY4
-         K+kW128w6e71/ORZToYQ0ZMsw3mj7RpT+ESpWFIJ/GtdYjSGZM0AvgKUwkD0JiFoJUUr
-         LBKL3G8UEKUMeiy5Qkua8kG5meEQ+W7uCEWO157BEJsd1a+BysHghtKu/u+1qeREky69
-         V8Lnk++BgKM6Jdk1L5gwQX+nNMmCkRKh87PeiRBgYNacBBR19Qr08G8GamrJGFAVFPWI
-         UFMQ==
+        bh=bBzEfUvbe/jRxzO40K//jsXnpXNEErVa5XTqzMamXvQ=;
+        b=ZPoMu5Mnjwjb2haLK/vWqa5/tiSHCy/nDwn5iNOZzCWhgKIwRtvzNmPbfgsLA9mSCg
+         zRsT6Dl3A9atOt/5phe5ubnK5JMjdzGrA9GilbM4MIWx0166QKyIhojxdypPKC0V5VDK
+         ZnHPLtq4hiYgQpqPWykjq7DJjbaoLzs6L0cejAK7tQXF8sxNxm0iuYv7Nd5EYpxeEDOw
+         RUaCF1WLEKZeRwSl8QLaQmUP5olDYJQF4zxPVdACZYfdP6T2oZBQsW3yHRvpA7zVcJGA
+         Z+xgsDSv/moQJLnT66JMqJgQB0tQMC3JT8GO+kBXgvwGJ4Ol5gE7zRGJOHjC5RGCSU6z
+         qE8A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=glqW/Gnt3wlpIqCq2zLjhjH68Neg4Dhca059SWlN3nQ=;
-        b=DZ2nypcR3qIV5qKok9FF9TOLQ4xeEn+n6NqWzCwVyYhGf6L8oHJmS9oQnvXfOV/jOz
-         Yvru9EKNaUzv+HwdsF3nzNDjPgRyY7BqIWGe+gerVpM42Bj2zSd8CC+GvtFS3T/H31iQ
-         bb7WfsQXWmcKkg55F2/gHIF5pbqPUWsrAiQOLKJZx8pvPQBOHkeIOTYr1RQRitM3B0qT
-         1pJbAnVdpNUjpAZOk2FudeDK/xOExFd+8S/KIURuIg+fjguFmlZKJMtzN3hToqbSBtSV
-         YyDqvq69XJl+40MmOkXJcBYv19IJvmNC7Do7pDH2wexZmxBl+Gre7ggw7B3ChwvUC/qS
-         Sq0g==
-X-Gm-Message-State: AOAM531FfrM0yg+tzJ9Y+6hk81xVJkgP/w8ucyyu8e6Kk40RHlumKjNJ
-        NfqEuNBDf5wvagpsKwfnI6S5rg==
-X-Google-Smtp-Source: ABdhPJydd6ADFG4m5WStcOCSVzjAFmjvijPB/X8rRMCSUp7sP9B3G5muyTERElHI21Bj9s3eq2FS1A==
-X-Received: by 2002:a5d:54c8:: with SMTP id x8mr2710634wrv.405.1597821872851;
-        Wed, 19 Aug 2020 00:24:32 -0700 (PDT)
+        bh=bBzEfUvbe/jRxzO40K//jsXnpXNEErVa5XTqzMamXvQ=;
+        b=rUGdygqIBMLZ7yMY5qwWpoGs74BttqM6d5n/YFXC6bzwXiIQQV/cVhw+O4T+MILbyr
+         nQS42Fi6RSxrjTOQijP5Sd44mb9HO7vMbicACy99TeiskLubFasfO0hkeKIFAjQs4/E2
+         B96EIyx1vhZQzabQkUoiace1xtOlY5lmxlVvSxTSbalaGbAaO2zSveF/VP68tZs/Oea6
+         1kjMIJRtffMMo/LejA5Wi4jWIQb+t6xwFSh4dmBmsnpcb1FWl83aWjajcVuf0kP8g+dh
+         5Sdpdblps/4pHrjv3BF4eW1mSND9PdPy9VQXCzzhMrdhZjs6tLS3JOVzvRtmVc0XUOyZ
+         0vtg==
+X-Gm-Message-State: AOAM531rY7k0mK0YrJNN12DWWE0xmcwqJH5nt7d/Om0pOxj3W7Javr7k
+        7apSZe1gVjZTMBQXoi7Oc3+2tA==
+X-Google-Smtp-Source: ABdhPJzJQETs3WOG9GwjxbvsGTLFleTEdZEW9PtH52FjwBnrRIrjVmDc7IjdsZMb1v2iOUU/ZscM1w==
+X-Received: by 2002:a7b:cf08:: with SMTP id l8mr3322744wmg.183.1597821874070;
+        Wed, 19 Aug 2020 00:24:34 -0700 (PDT)
 Received: from dell.default ([95.149.164.62])
-        by smtp.gmail.com with ESMTPSA id c145sm3795808wmd.7.2020.08.19.00.24.31
+        by smtp.gmail.com with ESMTPSA id c145sm3795808wmd.7.2020.08.19.00.24.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Aug 2020 00:24:32 -0700 (PDT)
+        Wed, 19 Aug 2020 00:24:33 -0700 (PDT)
 From:   Lee Jones <lee.jones@linaro.org>
 To:     kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org
 Cc:     linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
         netdev@vger.kernel.org, Lee Jones <lee.jones@linaro.org>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Intel Linux Wireless <linuxwifi@intel.com>
-Subject: [PATCH 22/28] wireless: intel: iwlwifi: dvm: sta: Demote a bunch of nonconformant kernel-doc headers
-Date:   Wed, 19 Aug 2020 08:23:56 +0100
-Message-Id: <20200819072402.3085022-23-lee.jones@linaro.org>
+        Amitkumar Karwar <amitkarwar@gmail.com>,
+        Siva Rebbagondla <siva8118@gmail.com>
+Subject: [PATCH 23/28] wireless: rsi: rsi_91x_hal: File header comments should not be kernel-doc
+Date:   Wed, 19 Aug 2020 08:23:57 +0100
+Message-Id: <20200819072402.3085022-24-lee.jones@linaro.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200819072402.3085022-1-lee.jones@linaro.org>
 References: <20200819072402.3085022-1-lee.jones@linaro.org>
@@ -71,45 +69,10 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 Fixes the following W=1 kernel build warning(s):
 
- drivers/net/wireless/intel/iwlwifi/dvm/sta.c:244: warning: Function parameter or member 'priv' not described in 'iwl_prep_station'
- drivers/net/wireless/intel/iwlwifi/dvm/sta.c:244: warning: Function parameter or member 'ctx' not described in 'iwl_prep_station'
- drivers/net/wireless/intel/iwlwifi/dvm/sta.c:244: warning: Function parameter or member 'addr' not described in 'iwl_prep_station'
- drivers/net/wireless/intel/iwlwifi/dvm/sta.c:244: warning: Function parameter or member 'is_ap' not described in 'iwl_prep_station'
- drivers/net/wireless/intel/iwlwifi/dvm/sta.c:244: warning: Function parameter or member 'sta' not described in 'iwl_prep_station'
- drivers/net/wireless/intel/iwlwifi/dvm/sta.c:332: warning: Function parameter or member 'priv' not described in 'iwl_add_station_common'
- drivers/net/wireless/intel/iwlwifi/dvm/sta.c:332: warning: Function parameter or member 'ctx' not described in 'iwl_add_station_common'
- drivers/net/wireless/intel/iwlwifi/dvm/sta.c:332: warning: Function parameter or member 'addr' not described in 'iwl_add_station_common'
- drivers/net/wireless/intel/iwlwifi/dvm/sta.c:332: warning: Function parameter or member 'is_ap' not described in 'iwl_add_station_common'
- drivers/net/wireless/intel/iwlwifi/dvm/sta.c:332: warning: Function parameter or member 'sta' not described in 'iwl_add_station_common'
- drivers/net/wireless/intel/iwlwifi/dvm/sta.c:332: warning: Function parameter or member 'sta_id_r' not described in 'iwl_add_station_common'
- drivers/net/wireless/intel/iwlwifi/dvm/sta.c:390: warning: Function parameter or member 'priv' not described in 'iwl_sta_ucode_deactivate'
- drivers/net/wireless/intel/iwlwifi/dvm/sta.c:390: warning: Function parameter or member 'sta_id' not described in 'iwl_sta_ucode_deactivate'
- drivers/net/wireless/intel/iwlwifi/dvm/sta.c:459: warning: Function parameter or member 'priv' not described in 'iwl_remove_station'
- drivers/net/wireless/intel/iwlwifi/dvm/sta.c:459: warning: Function parameter or member 'sta_id' not described in 'iwl_remove_station'
- drivers/net/wireless/intel/iwlwifi/dvm/sta.c:459: warning: Function parameter or member 'addr' not described in 'iwl_remove_station'
- drivers/net/wireless/intel/iwlwifi/dvm/sta.c:614: warning: Function parameter or member 'priv' not described in 'iwl_clear_ucode_stations'
- drivers/net/wireless/intel/iwlwifi/dvm/sta.c:614: warning: Function parameter or member 'ctx' not described in 'iwl_clear_ucode_stations'
- drivers/net/wireless/intel/iwlwifi/dvm/sta.c:648: warning: Function parameter or member 'priv' not described in 'iwl_restore_stations'
- drivers/net/wireless/intel/iwlwifi/dvm/sta.c:648: warning: Function parameter or member 'ctx' not described in 'iwl_restore_stations'
- drivers/net/wireless/intel/iwlwifi/dvm/sta.c:790: warning: Function parameter or member 'priv' not described in 'is_lq_table_valid'
- drivers/net/wireless/intel/iwlwifi/dvm/sta.c:790: warning: Function parameter or member 'ctx' not described in 'is_lq_table_valid'
- drivers/net/wireless/intel/iwlwifi/dvm/sta.c:790: warning: Function parameter or member 'lq' not described in 'is_lq_table_valid'
- drivers/net/wireless/intel/iwlwifi/dvm/sta.c:822: warning: Function parameter or member 'priv' not described in 'iwl_send_lq_cmd'
- drivers/net/wireless/intel/iwlwifi/dvm/sta.c:822: warning: Function parameter or member 'ctx' not described in 'iwl_send_lq_cmd'
- drivers/net/wireless/intel/iwlwifi/dvm/sta.c:822: warning: Function parameter or member 'lq' not described in 'iwl_send_lq_cmd'
- drivers/net/wireless/intel/iwlwifi/dvm/sta.c:822: warning: Function parameter or member 'flags' not described in 'iwl_send_lq_cmd'
- drivers/net/wireless/intel/iwlwifi/dvm/sta.c:1270: warning: Function parameter or member 'priv' not described in 'iwlagn_alloc_bcast_station'
- drivers/net/wireless/intel/iwlwifi/dvm/sta.c:1270: warning: Function parameter or member 'ctx' not described in 'iwlagn_alloc_bcast_station'
- drivers/net/wireless/intel/iwlwifi/dvm/sta.c:1309: warning: Function parameter or member 'priv' not described in 'iwl_update_bcast_station'
- drivers/net/wireless/intel/iwlwifi/dvm/sta.c:1309: warning: Function parameter or member 'ctx' not described in 'iwl_update_bcast_station'
- drivers/net/wireless/intel/iwlwifi/dvm/sta.c:1348: warning: Function parameter or member 'priv' not described in 'iwl_sta_tx_modify_enable_tid'
- drivers/net/wireless/intel/iwlwifi/dvm/sta.c:1348: warning: Function parameter or member 'sta_id' not described in 'iwl_sta_tx_modify_enable_tid'
- drivers/net/wireless/intel/iwlwifi/dvm/sta.c:1348: warning: Function parameter or member 'tid' not described in 'iwl_sta_tx_modify_enable_tid'
+ drivers/net/wireless/rsi/rsi_91x_hal.c:25: warning: cannot understand function prototype: 'struct ta_metadata metadata_flash_content[] = '
 
-Cc: Johannes Berg <johannes.berg@intel.com>
-Cc: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Cc: Luca Coelho <luciano.coelho@intel.com>
-Cc: Intel Linux Wireless <linuxwifi@intel.com>
+Cc: Amitkumar Karwar <amitkarwar@gmail.com>
+Cc: Siva Rebbagondla <siva8118@gmail.com>
 Cc: Kalle Valo <kvalo@codeaurora.org>
 Cc: "David S. Miller" <davem@davemloft.net>
 Cc: Jakub Kicinski <kuba@kernel.org>
@@ -117,112 +80,19 @@ Cc: linux-wireless@vger.kernel.org
 Cc: netdev@vger.kernel.org
 Signed-off-by: Lee Jones <lee.jones@linaro.org>
 ---
- drivers/net/wireless/intel/iwlwifi/dvm/sta.c | 22 ++++++++++----------
- 1 file changed, 11 insertions(+), 11 deletions(-)
+ drivers/net/wireless/rsi/rsi_91x_hal.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/dvm/sta.c b/drivers/net/wireless/intel/iwlwifi/dvm/sta.c
-index 51158edce15b0..e622948661fa8 100644
---- a/drivers/net/wireless/intel/iwlwifi/dvm/sta.c
-+++ b/drivers/net/wireless/intel/iwlwifi/dvm/sta.c
-@@ -234,7 +234,7 @@ static void iwl_set_ht_add_station(struct iwl_priv *priv, u8 index,
- 	priv->stations[index].sta.station_flags |= flags;
- }
- 
+diff --git a/drivers/net/wireless/rsi/rsi_91x_hal.c b/drivers/net/wireless/rsi/rsi_91x_hal.c
+index 6f8d5f9a9f7e6..3f7e3cfb6f00d 100644
+--- a/drivers/net/wireless/rsi/rsi_91x_hal.c
++++ b/drivers/net/wireless/rsi/rsi_91x_hal.c
+@@ -1,4 +1,4 @@
 -/**
 +/*
-  * iwl_prep_station - Prepare station information for addition
+  * Copyright (c) 2014 Redpine Signals Inc.
   *
-  * should be called with sta_lock held
-@@ -323,7 +323,7 @@ u8 iwl_prep_station(struct iwl_priv *priv, struct iwl_rxon_context *ctx,
- 
- #define STA_WAIT_TIMEOUT (HZ/2)
- 
--/**
-+/*
-  * iwl_add_station_common -
-  */
- int iwl_add_station_common(struct iwl_priv *priv, struct iwl_rxon_context *ctx,
-@@ -383,7 +383,7 @@ int iwl_add_station_common(struct iwl_priv *priv, struct iwl_rxon_context *ctx,
- 	return ret;
- }
- 
--/**
-+/*
-  * iwl_sta_ucode_deactivate - deactivate ucode status for a station
-  */
- static void iwl_sta_ucode_deactivate(struct iwl_priv *priv, u8 sta_id)
-@@ -451,7 +451,7 @@ static int iwl_send_remove_station(struct iwl_priv *priv,
- 	return ret;
- }
- 
--/**
-+/*
-  * iwl_remove_station - Remove driver's knowledge of station.
-  */
- int iwl_remove_station(struct iwl_priv *priv, const u8 sta_id,
-@@ -601,7 +601,7 @@ static void iwl_sta_fill_lq(struct iwl_priv *priv, struct iwl_rxon_context *ctx,
- 	link_cmd->sta_id = sta_id;
- }
- 
--/**
-+/*
-  * iwl_clear_ucode_stations - clear ucode station table bits
-  *
-  * This function clears all the bits in the driver indicating
-@@ -636,7 +636,7 @@ void iwl_clear_ucode_stations(struct iwl_priv *priv,
- 			       "No active stations found to be cleared\n");
- }
- 
--/**
-+/*
-  * iwl_restore_stations() - Restore driver known stations to device
-  *
-  * All stations considered active by driver, but not present in ucode, is
-@@ -773,7 +773,7 @@ static inline void iwl_dump_lq_cmd(struct iwl_priv *priv,
- }
- #endif
- 
--/**
-+/*
-  * is_lq_table_valid() - Test one aspect of LQ cmd for validity
-  *
-  * It sometimes happens when a HT rate has been in use and we
-@@ -807,7 +807,7 @@ static bool is_lq_table_valid(struct iwl_priv *priv,
- 	return true;
- }
- 
--/**
-+/*
-  * iwl_send_lq_cmd() - Send link quality command
-  * @init: This command is sent as part of station initialization right
-  *        after station has been added.
-@@ -1258,7 +1258,7 @@ int iwl_set_dynamic_key(struct iwl_priv *priv,
- 	return ret;
- }
- 
--/**
-+/*
-  * iwlagn_alloc_bcast_station - add broadcast station into driver's station table.
-  *
-  * This adds the broadcast station into the driver's station table
-@@ -1298,7 +1298,7 @@ int iwlagn_alloc_bcast_station(struct iwl_priv *priv,
- 	return 0;
- }
- 
--/**
-+/*
-  * iwl_update_bcast_station - update broadcast station's LQ command
-  *
-  * Only used by iwlagn. Placed here to have all bcast station management
-@@ -1341,7 +1341,7 @@ int iwl_update_bcast_stations(struct iwl_priv *priv)
- 	return ret;
- }
- 
--/**
-+/*
-  * iwl_sta_tx_modify_enable_tid - Enable Tx for this TID in station table
-  */
- int iwl_sta_tx_modify_enable_tid(struct iwl_priv *priv, int sta_id, int tid)
+  * Permission to use, copy, modify, and/or distribute this software for any
 -- 
 2.25.1
 
