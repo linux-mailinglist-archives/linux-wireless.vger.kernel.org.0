@@ -2,340 +2,94 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 81D5624C05E
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Aug 2020 16:15:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B1B4524C0BA
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Aug 2020 16:38:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726969AbgHTOPG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 20 Aug 2020 10:15:06 -0400
-Received: from smtp07.smtpout.orange.fr ([80.12.242.129]:33580 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726911AbgHTOOz (ORCPT
+        id S1727866AbgHTOiB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 20 Aug 2020 10:38:01 -0400
+Received: from mail29.static.mailgun.info ([104.130.122.29]:33626 "EHLO
+        mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727107AbgHTOiA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 20 Aug 2020 10:14:55 -0400
-Received: from localhost.localdomain ([93.22.135.164])
-        by mwinf5d87 with ME
-        id HqEm2300M3YzEb903qEn9X; Thu, 20 Aug 2020 16:14:50 +0200
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Thu, 20 Aug 2020 16:14:50 +0200
-X-ME-IP: 93.22.135.164
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org,
-        vaibhavgupta40@gmail.com
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH RESEND] rtl818x_pci: switch from 'pci_' to 'dma_' API
-Date:   Thu, 20 Aug 2020 16:14:42 +0200
-Message-Id: <20200820141443.130698-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.25.1
+        Thu, 20 Aug 2020 10:38:00 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1597934280; h=Message-ID: References: In-Reply-To: Subject:
+ Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Sender; bh=6nZH+MOtU7JM7B/Js9Nzq8u18EdhiJWbmrNEHfbOCro=;
+ b=J6E3jemsgRF1EXDxChqxYcABVd7cw1IWOnJy8YHkHoV44VgDH2BGOdHusIZffcIqYae6B/RN
+ QeDIvZAypNROC0I3hsT0JT0oBAyCWc37HJ8RgZEaU6m/aSxyP8hwKIZXdXwpyqTBZx1/JXi7
+ VbS+6CUZSO5TYtAr9qEwmw78Dzc=
+X-Mailgun-Sending-Ip: 104.130.122.29
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n05.prod.us-east-1.postgun.com with SMTP id
+ 5f3e8ac07eb4541d93df86ae (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 20 Aug 2020 14:37:52
+ GMT
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 0A2B6C43387; Thu, 20 Aug 2020 14:37:51 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: wgong)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 87D55C433CA;
+        Thu, 20 Aug 2020 14:37:50 +0000 (UTC)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Thu, 20 Aug 2020 22:37:50 +0800
+From:   Wen Gong <wgong@codeaurora.org>
+To:     Krishna Chaitanya <chaitanya.mgit@gmail.com>
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        ath10k <ath10k@lists.infradead.org>
+Subject: Re: [RFC] ath10k: change to do napi_enable and napi_disable when
+ insmod and rmmod for sdio
+In-Reply-To: <CABPxzYK6wd8FGaM9tb_PYroARJ8RCjJ0Y-nVxY3AoubrfSbZ4w@mail.gmail.com>
+References: <20200214035555.24762-1-wgong@codeaurora.org>
+ <878se9iup3.fsf@codeaurora.org>
+ <CABPxzYK4kYvBAvYxk6rs-PHM==vBaHQTm3dCCh_+Z+KOB+c6qA@mail.gmail.com>
+ <b7e0e8dfe9a4ee0cb92c6c0f153c7bc2@codeaurora.org>
+ <CABPxzYK6wd8FGaM9tb_PYroARJ8RCjJ0Y-nVxY3AoubrfSbZ4w@mail.gmail.com>
+Message-ID: <dcc45384935dca14ac6ab31ec1123414@codeaurora.org>
+X-Sender: wgong@codeaurora.org
+User-Agent: Roundcube Webmail/1.3.9
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The wrappers in include/linux/pci-dma-compat.h should go away.
-
-The patch has been generated with the coccinelle script below and has been
-hand modified to replace GFP_ with a correct flag.
-It has been compile tested.
-
-When memory is allocated in 'rtl8180_init_rx_ring()' and
-'rtl8180_init_tx_ring()' GFP_KERNEL can be used because both functions are
-called from 'rtl8180_start()', which is a .start function (see struct
-ieee80211_ops)
-.start function can sleep, as explicitly stated in include/net/mac80211.h.
-
-
-@@
-@@
--    PCI_DMA_BIDIRECTIONAL
-+    DMA_BIDIRECTIONAL
-
-@@
-@@
--    PCI_DMA_TODEVICE
-+    DMA_TO_DEVICE
-
-@@
-@@
--    PCI_DMA_FROMDEVICE
-+    DMA_FROM_DEVICE
-
-@@
-@@
--    PCI_DMA_NONE
-+    DMA_NONE
-
-@@
-expression e1, e2, e3;
-@@
--    pci_alloc_consistent(e1, e2, e3)
-+    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
-
-@@
-expression e1, e2, e3;
-@@
--    pci_zalloc_consistent(e1, e2, e3)
-+    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_free_consistent(e1, e2, e3, e4)
-+    dma_free_coherent(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_map_single(e1, e2, e3, e4)
-+    dma_map_single(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_unmap_single(e1, e2, e3, e4)
-+    dma_unmap_single(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4, e5;
-@@
--    pci_map_page(e1, e2, e3, e4, e5)
-+    dma_map_page(&e1->dev, e2, e3, e4, e5)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_unmap_page(e1, e2, e3, e4)
-+    dma_unmap_page(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_map_sg(e1, e2, e3, e4)
-+    dma_map_sg(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_unmap_sg(e1, e2, e3, e4)
-+    dma_unmap_sg(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_dma_sync_single_for_cpu(e1, e2, e3, e4)
-+    dma_sync_single_for_cpu(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_dma_sync_single_for_device(e1, e2, e3, e4)
-+    dma_sync_single_for_device(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_dma_sync_sg_for_cpu(e1, e2, e3, e4)
-+    dma_sync_sg_for_cpu(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2, e3, e4;
-@@
--    pci_dma_sync_sg_for_device(e1, e2, e3, e4)
-+    dma_sync_sg_for_device(&e1->dev, e2, e3, e4)
-
-@@
-expression e1, e2;
-@@
--    pci_dma_mapping_error(e1, e2)
-+    dma_mapping_error(&e1->dev, e2)
-
-@@
-expression e1, e2;
-@@
--    pci_set_dma_mask(e1, e2)
-+    dma_set_mask(&e1->dev, e2)
-
-@@
-expression e1, e2;
-@@
--    pci_set_consistent_dma_mask(e1, e2)
-+    dma_set_coherent_mask(&e1->dev, e2)
-
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
-If needed, see post from Christoph Hellwig on the kernel-janitors ML:
-   https://marc.info/?l=kernel-janitors&m=158745678307186&w=4
-
-This patch is a ressend because there was a typo in Kalle Valo
-<kvalo@codeaurora.org> mail address.
----
- .../wireless/realtek/rtl818x/rtl8180/dev.c    | 70 ++++++++++---------
- 1 file changed, 37 insertions(+), 33 deletions(-)
-
-diff --git a/drivers/net/wireless/realtek/rtl818x/rtl8180/dev.c b/drivers/net/wireless/realtek/rtl818x/rtl8180/dev.c
-index ba3286f732cc..2477e18c7cae 100644
---- a/drivers/net/wireless/realtek/rtl818x/rtl8180/dev.c
-+++ b/drivers/net/wireless/realtek/rtl818x/rtl8180/dev.c
-@@ -260,20 +260,20 @@ static void rtl8180_handle_rx(struct ieee80211_hw *dev)
- 			if (unlikely(!new_skb))
- 				goto done;
- 
--			mapping = pci_map_single(priv->pdev,
--					       skb_tail_pointer(new_skb),
--					       MAX_RX_SIZE, PCI_DMA_FROMDEVICE);
-+			mapping = dma_map_single(&priv->pdev->dev,
-+						 skb_tail_pointer(new_skb),
-+						 MAX_RX_SIZE, DMA_FROM_DEVICE);
- 
--			if (pci_dma_mapping_error(priv->pdev, mapping)) {
-+			if (dma_mapping_error(&priv->pdev->dev, mapping)) {
- 				kfree_skb(new_skb);
- 				dev_err(&priv->pdev->dev, "RX DMA map error\n");
- 
- 				goto done;
- 			}
- 
--			pci_unmap_single(priv->pdev,
-+			dma_unmap_single(&priv->pdev->dev,
- 					 *((dma_addr_t *)skb->cb),
--					 MAX_RX_SIZE, PCI_DMA_FROMDEVICE);
-+					 MAX_RX_SIZE, DMA_FROM_DEVICE);
- 			skb_put(skb, flags & 0xFFF);
- 
- 			rx_status.antenna = (flags2 >> 15) & 1;
-@@ -355,8 +355,8 @@ static void rtl8180_handle_tx(struct ieee80211_hw *dev, unsigned int prio)
- 
- 		ring->idx = (ring->idx + 1) % ring->entries;
- 		skb = __skb_dequeue(&ring->queue);
--		pci_unmap_single(priv->pdev, le32_to_cpu(entry->tx_buf),
--				 skb->len, PCI_DMA_TODEVICE);
-+		dma_unmap_single(&priv->pdev->dev, le32_to_cpu(entry->tx_buf),
-+				 skb->len, DMA_TO_DEVICE);
- 
- 		info = IEEE80211_SKB_CB(skb);
- 		ieee80211_tx_info_clear_status(info);
-@@ -473,10 +473,10 @@ static void rtl8180_tx(struct ieee80211_hw *dev,
- 	prio = skb_get_queue_mapping(skb);
- 	ring = &priv->tx_ring[prio];
- 
--	mapping = pci_map_single(priv->pdev, skb->data,
--				 skb->len, PCI_DMA_TODEVICE);
-+	mapping = dma_map_single(&priv->pdev->dev, skb->data, skb->len,
-+				 DMA_TO_DEVICE);
- 
--	if (pci_dma_mapping_error(priv->pdev, mapping)) {
-+	if (dma_mapping_error(&priv->pdev->dev, mapping)) {
- 		kfree_skb(skb);
- 		dev_err(&priv->pdev->dev, "TX DMA mapping error\n");
- 		return;
-@@ -1004,8 +1004,9 @@ static int rtl8180_init_rx_ring(struct ieee80211_hw *dev)
- 	else
- 		priv->rx_ring_sz = sizeof(struct rtl8180_rx_desc);
- 
--	priv->rx_ring = pci_zalloc_consistent(priv->pdev, priv->rx_ring_sz * 32,
--					      &priv->rx_ring_dma);
-+	priv->rx_ring = dma_alloc_coherent(&priv->pdev->dev,
-+					   priv->rx_ring_sz * 32,
-+					   &priv->rx_ring_dma, GFP_KERNEL);
- 	if (!priv->rx_ring || (unsigned long)priv->rx_ring & 0xFF) {
- 		wiphy_err(dev->wiphy, "Cannot allocate RX ring\n");
- 		return -ENOMEM;
-@@ -1018,20 +1019,23 @@ static int rtl8180_init_rx_ring(struct ieee80211_hw *dev)
- 		dma_addr_t *mapping;
- 		entry = priv->rx_ring + priv->rx_ring_sz*i;
- 		if (!skb) {
--			pci_free_consistent(priv->pdev, priv->rx_ring_sz * 32,
--					priv->rx_ring, priv->rx_ring_dma);
-+			dma_free_coherent(&priv->pdev->dev,
-+					  priv->rx_ring_sz * 32,
-+					  priv->rx_ring, priv->rx_ring_dma);
- 			wiphy_err(dev->wiphy, "Cannot allocate RX skb\n");
- 			return -ENOMEM;
- 		}
- 		priv->rx_buf[i] = skb;
- 		mapping = (dma_addr_t *)skb->cb;
--		*mapping = pci_map_single(priv->pdev, skb_tail_pointer(skb),
--					  MAX_RX_SIZE, PCI_DMA_FROMDEVICE);
-+		*mapping = dma_map_single(&priv->pdev->dev,
-+					  skb_tail_pointer(skb), MAX_RX_SIZE,
-+					  DMA_FROM_DEVICE);
- 
--		if (pci_dma_mapping_error(priv->pdev, *mapping)) {
-+		if (dma_mapping_error(&priv->pdev->dev, *mapping)) {
- 			kfree_skb(skb);
--			pci_free_consistent(priv->pdev, priv->rx_ring_sz * 32,
--					priv->rx_ring, priv->rx_ring_dma);
-+			dma_free_coherent(&priv->pdev->dev,
-+					  priv->rx_ring_sz * 32,
-+					  priv->rx_ring, priv->rx_ring_dma);
- 			wiphy_err(dev->wiphy, "Cannot map DMA for RX skb\n");
- 			return -ENOMEM;
- 		}
-@@ -1054,14 +1058,13 @@ static void rtl8180_free_rx_ring(struct ieee80211_hw *dev)
- 		if (!skb)
- 			continue;
- 
--		pci_unmap_single(priv->pdev,
--				 *((dma_addr_t *)skb->cb),
--				 MAX_RX_SIZE, PCI_DMA_FROMDEVICE);
-+		dma_unmap_single(&priv->pdev->dev, *((dma_addr_t *)skb->cb),
-+				 MAX_RX_SIZE, DMA_FROM_DEVICE);
- 		kfree_skb(skb);
- 	}
- 
--	pci_free_consistent(priv->pdev, priv->rx_ring_sz * 32,
--			    priv->rx_ring, priv->rx_ring_dma);
-+	dma_free_coherent(&priv->pdev->dev, priv->rx_ring_sz * 32,
-+			  priv->rx_ring, priv->rx_ring_dma);
- 	priv->rx_ring = NULL;
- }
- 
-@@ -1073,8 +1076,8 @@ static int rtl8180_init_tx_ring(struct ieee80211_hw *dev,
- 	dma_addr_t dma;
- 	int i;
- 
--	ring = pci_zalloc_consistent(priv->pdev, sizeof(*ring) * entries,
--				     &dma);
-+	ring = dma_alloc_coherent(&priv->pdev->dev, sizeof(*ring) * entries,
-+				  &dma, GFP_KERNEL);
- 	if (!ring || (unsigned long)ring & 0xFF) {
- 		wiphy_err(dev->wiphy, "Cannot allocate TX ring (prio = %d)\n",
- 			  prio);
-@@ -1103,14 +1106,15 @@ static void rtl8180_free_tx_ring(struct ieee80211_hw *dev, unsigned int prio)
- 		struct rtl8180_tx_desc *entry = &ring->desc[ring->idx];
- 		struct sk_buff *skb = __skb_dequeue(&ring->queue);
- 
--		pci_unmap_single(priv->pdev, le32_to_cpu(entry->tx_buf),
--				 skb->len, PCI_DMA_TODEVICE);
-+		dma_unmap_single(&priv->pdev->dev, le32_to_cpu(entry->tx_buf),
-+				 skb->len, DMA_TO_DEVICE);
- 		kfree_skb(skb);
- 		ring->idx = (ring->idx + 1) % ring->entries;
- 	}
- 
--	pci_free_consistent(priv->pdev, sizeof(*ring->desc)*ring->entries,
--			    ring->desc, ring->dma);
-+	dma_free_coherent(&priv->pdev->dev,
-+			  sizeof(*ring->desc) * ring->entries, ring->desc,
-+			  ring->dma);
- 	ring->desc = NULL;
- }
- 
-@@ -1754,8 +1758,8 @@ static int rtl8180_probe(struct pci_dev *pdev,
- 		goto err_free_reg;
- 	}
- 
--	if ((err = pci_set_dma_mask(pdev, DMA_BIT_MASK(32))) ||
--	    (err = pci_set_consistent_dma_mask(pdev, DMA_BIT_MASK(32)))) {
-+	if ((err = dma_set_mask(&pdev->dev, DMA_BIT_MASK(32))) ||
-+	    (err = dma_set_coherent_mask(&pdev->dev, DMA_BIT_MASK(32)))) {
- 		printk(KERN_ERR "%s (rtl8180): No suitable DMA available\n",
- 		       pci_name(pdev));
- 		goto err_free_reg;
--- 
-2.25.1
-
+On 2020-08-20 18:52, Krishna Chaitanya wrote:
+> On Thu, Aug 20, 2020 at 3:45 PM Wen Gong <wgong@codeaurora.org> wrote:
+>> 
+>> On 2020-08-20 17:19, Krishna Chaitanya wrote:
+...
+>> >> I'm not really convinced that this is the right fix, but I'm no NAPI
+>> >> expert. Can anyone else help?
+>> > Calling napi_disable() twice can lead to hangs, but moving NAPI from
+>> > start/stop to
+>> > the probe isn't the right approach as the datapath is tied to
+>> > start/stop.
+>> >
+>> > Maybe check the state of NAPI before disable?
+>> >
+>> >  if (test_bit(NAPI_STATE_SCHED, &ar->napi.napi.state))
+>> >   napi_disable(&ar->napi)
+>> > or maintain napi_state like this
+>> > https://patchwork.kernel.org/patch/10249365/
+>> it is better to use above link's patch.
+>> napi.state is controlled by napi API, it is better ath10k not know it.
+> Sure, but IMHO just canceling the async rx work should solve the issue.
+Oh no, canceling the async rx work will not solve this issue, rx worker
+ath10k_rx_indication_async_work call napi_schedule, after napi_complete,
+the NAPI_STATE_SCHED will clear.
+The issue of this patch is because 2 thread called to hif_stop and
+NAPI_STATE_SCHED not clear.
+...
