@@ -2,81 +2,82 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D4AAA24BBEB
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Aug 2020 14:36:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 437F524BC4F
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Aug 2020 14:44:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730236AbgHTMfu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 20 Aug 2020 08:35:50 -0400
-Received: from mail.zx2c4.com ([192.95.5.64]:39071 "EHLO mail.zx2c4.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729515AbgHTJsH (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 20 Aug 2020 05:48:07 -0400
-Received: by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTP id 2a71feb8;
-        Thu, 20 Aug 2020 09:21:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha1; c=relaxed; d=zx2c4.com; h=mime-version
-        :references:in-reply-to:from:date:message-id:subject:to:cc
-        :content-type; s=mail; bh=cC4XKmjMItkWu82Ddd4N3/mfNJY=; b=aH3z0j
-        ih2A6UbHCt3IxPb9cGURoW1AdUF79cwHzp+slOvV8CXFkpZjl6EwYEA+JlKT5gjg
-        zXUFARHfV2sFXTmSREd8NhJunCIHY4nLafXpXu1CpMGAdsfYq1ZI7Ulbh+f6nFuU
-        GLpyQGqn20N+3jb0blAVWJ4mBsKgajaVO0bu5fJURP7VRaYN89n0QypNDmBbRufv
-        ee0CyvIMq5UV+mGRrzaGLR7yKNhLsfMBrsRgpAAPY0ix1nrsuR83acVzKS7914El
-        0vW2TT1WjeT+Ulx5s/6fFxHTTSITqe0SO9LaYWBs5aRN38VHZxd5DoUNpQtc1oJx
-        mQHl+eYy/l9WTo+Q==
-Received: by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 18dd5401 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
-        Thu, 20 Aug 2020 09:21:41 +0000 (UTC)
-Received: by mail-io1-f50.google.com with SMTP id z17so385964ioi.6;
-        Thu, 20 Aug 2020 02:48:06 -0700 (PDT)
-X-Gm-Message-State: AOAM533pN3W79s134djddKcgXm3DtAhueZEDHWNsMOx+g89DE9LGy6Z0
-        nvgqpWN0nwu7SaecnD3KF0JrCiBgFDzwFZD/hPw=
-X-Google-Smtp-Source: ABdhPJwxqXuh3zpZ+vXV6pG3wfV26J+WMkYRDPSnD0jh7SwXM3vLbJ0QIOl7CaiQOrNMVRuAQnK6mTMYW9n8YZipXUs=
-X-Received: by 2002:a05:6638:138a:: with SMTP id w10mr2407389jad.36.1597916885689;
- Thu, 20 Aug 2020 02:48:05 -0700 (PDT)
+        id S1729319AbgHTMoK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 20 Aug 2020 08:44:10 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:51687 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1729508AbgHTMoE (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 20 Aug 2020 08:44:04 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1597927443;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=90C0tk9lG7EAHa53ku1Pvna6aL8rHbPZbMBZTTSPNRQ=;
+        b=VzLyc2QYL96UHioJ4mhYixaJtFibUqOLaNEb5a2vaHZzsWPGnmm8uKu/kxtnpEShOp82Gr
+        Dd1IsnRHGXJDekRpdRi+Jj5nVs4HgLZO1ltKxbbevpGcXy5sCrb9HeSLDhElg1tC5tHB/G
+        HBzOUP0V0CzrNv2BwGuut7Xacksy084=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-403-2lczvF3LOuK2JWv07JPsHw-1; Thu, 20 Aug 2020 08:44:01 -0400
+X-MC-Unique: 2lczvF3LOuK2JWv07JPsHw-1
+Received: by mail-wm1-f69.google.com with SMTP id a5so746068wmj.5
+        for <linux-wireless@vger.kernel.org>; Thu, 20 Aug 2020 05:44:01 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
+         :message-id:mime-version:content-transfer-encoding;
+        bh=90C0tk9lG7EAHa53ku1Pvna6aL8rHbPZbMBZTTSPNRQ=;
+        b=mSfQDFIzFE9zHj4Jn/c/r41XxMJYoJBJZdKU7co3PEsUkeAcdL12OFQUD6mPIlVcei
+         rnZDH6gwfsD4pk6vJVu8ZLfE0IUOsAvEa8g93e4On3T9nJ3+qLE9FGcmWY7nMzQh+sh1
+         JvV31VFRiOowLIQqLQxoun9hxIIaY0FjhtG6+/GokZ7iob23X3EAjroc2T80RCGqiYWh
+         mfihm2le1hzJEKMBIpLrF1UwyMysomdb2JF2qJea8+N9BiBac+36noTYTYCJk8F2V3rg
+         vFiWsZDagPDvhj4bXnRwVKqkXdjSZvi9+akM1XGQRWUchuYR5pDe8HJ2nqh2OiGybvRq
+         PScg==
+X-Gm-Message-State: AOAM533bX9IskgGP+HrnmQdOT+/Wp5Q88ABJ3fAKXyLg1YJ4aEMSgNqM
+        ftVOJOA9vqZMW0UXXIM8lGV2xKLQlGoJvjuo8w4o/HxEsPwOYwjsm/xRE+GZaIOTeOOffncq0S4
+        cCN3aJeh/HuKoGdpk0GMfMgVdR2U=
+X-Received: by 2002:adf:9463:: with SMTP id 90mr3000330wrq.223.1597927440379;
+        Thu, 20 Aug 2020 05:44:00 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJzHvpseUhROjflL451g0/jKQ/9BOnGeJWb6JgvO0Kgo64Jj1ApLXxi2UtMOLIy+/K/ffRfwPw==
+X-Received: by 2002:adf:9463:: with SMTP id 90mr3000320wrq.223.1597927440144;
+        Thu, 20 Aug 2020 05:44:00 -0700 (PDT)
+Received: from alrua-x1.borgediget.toke.dk ([2a0c:4d80:42:443::2])
+        by smtp.gmail.com with ESMTPSA id n124sm4103680wmn.29.2020.08.20.05.43.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 20 Aug 2020 05:43:59 -0700 (PDT)
+Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
+        id B3D06182B55; Thu, 20 Aug 2020 14:43:58 +0200 (CEST)
+From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
+To:     Felix Fietkau <nbd@nbd.name>, linux-wireless@vger.kernel.org
+Cc:     johannes@sipsolutions.net
+Subject: Re: [PATCH 5.9 1/3] mac80211: use rate provided via status->rate on
+ ieee80211_tx_status_ext for AQL
+In-Reply-To: <20200813155212.97884-1-nbd@nbd.name>
+References: <20200813155212.97884-1-nbd@nbd.name>
+X-Clacks-Overhead: GNU Terry Pratchett
+Date:   Thu, 20 Aug 2020 14:43:58 +0200
+Message-ID: <87lfi9zdv5.fsf@toke.dk>
 MIME-Version: 1.0
-References: <000000000000a7e38a05a997edb2@google.com> <0000000000005c13f505ad3f5c42@google.com>
-In-Reply-To: <0000000000005c13f505ad3f5c42@google.com>
-From:   "Jason A. Donenfeld" <Jason@zx2c4.com>
-Date:   Thu, 20 Aug 2020 11:47:54 +0200
-X-Gmail-Original-Message-ID: <CAHmME9rd+54EOO-b=wmVxtzbvckET2WSMm-3q8LJmfp38A9ceg@mail.gmail.com>
-Message-ID: <CAHmME9rd+54EOO-b=wmVxtzbvckET2WSMm-3q8LJmfp38A9ceg@mail.gmail.com>
-Subject: Re: WARNING in __cfg80211_connect_result
-To:     syzbot <syzbot+cc4c0f394e2611edba66@syzkaller.appspotmail.com>
-Cc:     David Miller <davem@davemloft.net>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>, kvalo@codeaurora.org,
-        leon@kernel.org, LKML <linux-kernel@vger.kernel.org>,
-        linux-kselftest@vger.kernel.org,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Netdev <netdev@vger.kernel.org>, Shuah Khan <shuah@kernel.org>,
-        syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Aug 19, 2020 at 8:42 PM syzbot
-<syzbot+cc4c0f394e2611edba66@syzkaller.appspotmail.com> wrote:
->
-> syzbot has bisected this issue to:
->
-> commit e7096c131e5161fa3b8e52a650d7719d2857adfd
-> Author: Jason A. Donenfeld <Jason@zx2c4.com>
-> Date:   Sun Dec 8 23:27:34 2019 +0000
->
->     net: WireGuard secure network tunnel
->
-> bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=175ad8b1900000
-> start commit:   e3ec1e8c net: eliminate meaningless memcpy to data in pskb..
-> git tree:       net-next
-> final oops:     https://syzkaller.appspot.com/x/report.txt?x=14dad8b1900000
-> console output: https://syzkaller.appspot.com/x/log.txt?x=10dad8b1900000
-> kernel config:  https://syzkaller.appspot.com/x/.config?x=3d400a47d1416652
-> dashboard link: https://syzkaller.appspot.com/bug?extid=cc4c0f394e2611edba66
-> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=15d9de91900000
->
-> Reported-by: syzbot+cc4c0f394e2611edba66@syzkaller.appspotmail.com
-> Fixes: e7096c131e51 ("net: WireGuard secure network tunnel")
+Felix Fietkau <nbd@nbd.name> writes:
 
-Having trouble linking this back to wireguard... Those oopses don't
-have anything to do with it either. Bisection error?
+> Since ieee80211_tx_info does not have enough room to encode HE rates, HE
+> drivers use status->rate to provide rate info.
+> Store it in struct sta_info and use it for AQL.
+>
+> Signed-off-by: Felix Fietkau <nbd@nbd.name>
+
+Acked-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
+
