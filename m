@@ -2,72 +2,84 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6CAAD24BA4C
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Aug 2020 14:05:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C6BDB24BA7A
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Aug 2020 14:10:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730582AbgHTMF2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 20 Aug 2020 08:05:28 -0400
-Received: from mail.kernel.org ([198.145.29.99]:54238 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730654AbgHTMFE (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 20 Aug 2020 08:05:04 -0400
-Received: from kozik-lap.mshome.net (unknown [194.230.155.216])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 0079C22B4D;
-        Thu, 20 Aug 2020 12:05:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1597925103;
-        bh=NJ32BmIFgihAAZhAhjKEFu2hdvQMQjj1VvlRmUqjHBs=;
-        h=From:To:Cc:Subject:Date:From;
-        b=Q743CPKtujSGcC+4e2ik8LeVHUPU/2B1w5nONEeqilx5rCLH9MrAGiuYC6KT3q/gW
-         U0UytFKtLy+XiIA0XprDzUtuJuXNOKWGJWO8ncJkmeAZRYKf39YJS6rIdZ6NCJ9Pz2
-         WmI3VlaBYWKJckJa/OZqOumdEL8zActRq4YLXlyo=
-From:   Krzysztof Kozlowski <krzk@kernel.org>
-To:     QCA ath9k Development <ath9k-devel@qca.qualcomm.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     Krzysztof Kozlowski <krzk@kernel.org>
-Subject: [PATCH] ath9k_htc: Do not select MAC80211_LEDS by default
-Date:   Thu, 20 Aug 2020 14:04:44 +0200
-Message-Id: <20200820120444.8809-1-krzk@kernel.org>
-X-Mailer: git-send-email 2.17.1
+        id S1730416AbgHTMJo convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 20 Aug 2020 08:09:44 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:43386 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730567AbgHTMIx (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 20 Aug 2020 08:08:53 -0400
+Received: from mail-pl1-f197.google.com ([209.85.214.197])
+        by youngberry.canonical.com with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <kai.heng.feng@canonical.com>)
+        id 1k8jNC-00056q-K7
+        for linux-wireless@vger.kernel.org; Thu, 20 Aug 2020 12:08:50 +0000
+Received: by mail-pl1-f197.google.com with SMTP id g17so1438068plg.10
+        for <linux-wireless@vger.kernel.org>; Thu, 20 Aug 2020 05:08:50 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:content-transfer-encoding:mime-version
+         :subject:message-id:date:cc:to;
+        bh=mjchfL9evM/xQH2T8tucHnWJ3UafXQUAcWo9OBT0Lw0=;
+        b=c3iC5EbfbQxZqytTmDVGAs5IBwyuKGNeMRzbNYsv+868lXcr9Fkb/qLKpfWK/EwU+N
+         iu9Wi50vuTb7e9bKEhiscayLmgegCNIGnwwc8lR50c9E+gDzfrDOCVXlUNzaYd1rWOpr
+         sbqliiczOZyJVR56Kr2Dq4fl9QP1BQZWh+JPJbGeA+Wdy88PsG7MAY8KlSzsEmzHTMsZ
+         MNCfJRHy4Vn4KP87Fu1rZYuMJdzE8MeKw04SKuJjka/KMwURGeixuNleTz2AxhnV1KBN
+         xqUeSSJEVguH8MV5d89P/a9xq5AlDntbLKTy4Lt1DZA3cDZbejNhhzv5gQVRvr40/opV
+         pVVg==
+X-Gm-Message-State: AOAM531FJYjycI0GMeXr1lhoXaahWdcm+92AmXeykZpZkO0PmHfmeVzz
+        W7RR+2o2CUKFjVgiicXWD3bDuykJi4KZBr3OmFDki1v227j6rMjgPg6uhNEq9k+618Xi1TF5zMp
+        riQ2SJRKPilBvPopuC3wDCHgEhzfxXXdHLT/+L2ypO7Hm
+X-Received: by 2002:a17:902:b20d:: with SMTP id t13mr2354386plr.312.1597925329005;
+        Thu, 20 Aug 2020 05:08:49 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJywPOb3waDUAaPcj+Z4fgRTQzuufrn+J7f/fR6Ld13anut5T3aSsqitdJHEOlNna0cpc1aN4Q==
+X-Received: by 2002:a17:902:b20d:: with SMTP id t13mr2354369plr.312.1597925328653;
+        Thu, 20 Aug 2020 05:08:48 -0700 (PDT)
+Received: from [192.168.1.208] (220-133-187-190.HINET-IP.hinet.net. [220.133.187.190])
+        by smtp.gmail.com with ESMTPSA id e9sm2793343pfh.151.2020.08.20.05.08.47
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 20 Aug 2020 05:08:48 -0700 (PDT)
+From:   Kai-Heng Feng <kai.heng.feng@canonical.com>
+Content-Type: text/plain;
+        charset=us-ascii
+Content-Transfer-Encoding: 8BIT
+Mime-Version: 1.0 (Mac OS X Mail 13.4 \(3608.120.23.2.1\))
+Subject: rtw88 8723de WiFi speed drops when BT is connected
+Message-Id: <E4A0310D-6C59-49D0-B618-8B1635BC3F81@canonical.com>
+Date:   Thu, 20 Aug 2020 20:08:45 +0800
+Cc:     Anthony Wong <anthony.wong@canonical.com>,
+        "open list:REALTEK WIRELESS DRIVER (rtw88)" 
+        <linux-wireless@vger.kernel.org>
+To:     Tony Chuang <yhchuang@realtek.com>, pkshih@realtek.com
+X-Mailer: Apple Mail (2.3608.120.23.2.1)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The ath9k_htc driver hides all LEDs related code behind
-CONFIG_MAC80211_LEDS ifdefs so it does not really require the
-MAC80211_LEDS.  The code builds and works just fine.  Convert the
-"select" into "imply" to allow disabling LED trigger when not needed.
+WiFi becomes super slow after a while, if BT is connected.
+Output from `iperf3 -R`:
+[ 4] 334.00-335.00 sec 112 MBytes 941 Mbits/sec
+[ 4] 335.00-336.00 sec 72.5 MBytes 608 Mbits/sec
+[ 4] 336.00-337.00 sec 0.00 Bytes 0.00 bits/sec
+[ 4] 337.00-338.00 sec 3.36 MBytes 28.2 Mbits/sec
+[ 4] 338.00-339.00 sec 2.98 MBytes 25.0 Mbits/sec
 
-Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
----
- drivers/net/wireless/ath/ath9k/Kconfig | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Still reproducible on latest wireless-drivers-next, top commit for rtw88 is 7b080e085943 ("rtw88: 8821c: coex: add functions and parameters").
 
-diff --git a/drivers/net/wireless/ath/ath9k/Kconfig b/drivers/net/wireless/ath/ath9k/Kconfig
-index d5e9af2dddd8..5effb3886631 100644
---- a/drivers/net/wireless/ath/ath9k/Kconfig
-+++ b/drivers/net/wireless/ath/ath9k/Kconfig
-@@ -177,10 +177,10 @@ config ATH9K_HTC
- 	tristate "Atheros HTC based wireless cards support"
- 	depends on USB && MAC80211
- 	select ATH9K_HW
--	select MAC80211_LEDS
--	select LEDS_CLASS
--	select NEW_LEDS
- 	select ATH9K_COMMON
-+	imply NEW_LEDS
-+	imply LEDS_CLASS
-+	imply MAC80211_LEDS
- 	help
- 	  Support for Atheros HTC based cards.
- 	  Chipsets supported: AR9271
--- 
-2.17.1
+Firmwares are also latest:
+u@u:/lib/firmware/rtw88$ md5sum *8723d*
+ea7a621393871e579bcca1b9539e9639 rtw8723d_fw.bin
 
+u@u:/lib/firmware/rtl_bt$ md5sum *8723d*
+6551d1f5c5a9c4ce7ab755d58576e0b0 rtl8723d_config.bin
+e66f08b49eb0c8b79b175298b1be328a rtl8723d_fw.bin
+
+Thanks!
+
+Kai-Heng
