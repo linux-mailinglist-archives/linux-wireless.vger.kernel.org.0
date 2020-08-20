@@ -2,100 +2,55 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B2A0124AE50
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Aug 2020 07:15:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C1AA24AE54
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Aug 2020 07:16:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725820AbgHTFPY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 20 Aug 2020 01:15:24 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:21587 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725778AbgHTFPV (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 20 Aug 2020 01:15:21 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1597900520; h=Message-Id: Date: Subject: Cc: To: From:
- Sender; bh=5+szVYDqnoVVDDx1+q3X3XssRFHIxhGh3LoZIm3QOBI=; b=eLhDhhezj0w8o6wszfgXkaFxAP1H7AQ7F4wFPw/hd8qZ7C0Se+ll8I7c6I7mYMdXVZRl1nEG
- 5HvDCGxWIQQDME2t51UJtUOUNusQCMNzLCe15ZcRrGQ6Y2Cq9uXkunwBAlshnaMz1q3/MafL
- s2EfnKyjEgSGH4KGpTGE/qOAZ6M=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n02.prod.us-east-1.postgun.com with SMTP id
- 5f3e06d1f729de10789923d7 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 20 Aug 2020 05:14:57
- GMT
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 59894C43387; Thu, 20 Aug 2020 05:14:56 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE,
-        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from seevalam-linux.qualcomm.com (blr-c-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.19.19])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: tamizhr)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id B6242C433CA;
-        Thu, 20 Aug 2020 05:14:54 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org B6242C433CA
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=tamizhr@codeaurora.org
-From:   Tamizh Chelvam <tamizhr@codeaurora.org>
-To:     johannes@sipsolutions.net
-Cc:     linux-wireless@vger.kernel.org,
-        Tamizh Chelvam <tamizhr@codeaurora.org>
-Subject: [PATCH] iw: print hop_count and path_change info of mpath
-Date:   Thu, 20 Aug 2020 10:44:45 +0530
-Message-Id: <1597900485-673-1-git-send-email-tamizhr@codeaurora.org>
-X-Mailer: git-send-email 2.7.4
+        id S1725823AbgHTFQI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 20 Aug 2020 01:16:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46128 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725778AbgHTFQH (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 20 Aug 2020 01:16:07 -0400
+Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDE80C061757
+        for <linux-wireless@vger.kernel.org>; Wed, 19 Aug 2020 22:16:06 -0700 (PDT)
+Received: from [2a04:4540:1403:2e00:31a9:2b49:2694:f8ad]
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.89)
+        (envelope-from <john@phrozen.org>)
+        id 1k8cvi-0005db-Ek; Thu, 20 Aug 2020 07:16:02 +0200
+Subject: Re: [PATCH V6 1/2] ath11k: switch to using ieee80211_tx_status_ext()
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     linux-wireless@vger.kernel.org, ath11k@lists.infradead.org
+References: <20200803145444.473810-1-john@phrozen.org>
+ <87d03milp7.fsf@codeaurora.org>
+From:   John Crispin <john@phrozen.org>
+Message-ID: <fb192822-935e-9886-38b0-288ca34b43c2@phrozen.org>
+Date:   Thu, 20 Aug 2020 07:16:02 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
+MIME-Version: 1.0
+In-Reply-To: <87d03milp7.fsf@codeaurora.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Print hop_count and path_change info which is already providing
-by Driver for all mpath through mpath dump command.
 
-Signed-off-by: Tamizh Chelvam <tamizhr@codeaurora.org>
----
- mpath.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+On 19.08.20 19:34, Kalle Valo wrote:
+> John Crispin <john@phrozen.org> writes:
+>
+>> This allows us to pass HE rates down into the stack.
+>>
+>> Signed-off-by: John Crispin <john@phrozen.org>
+> On what hardware and firmware was this tested?
+>
+Miles can give more insight, the patch was written by him, I just 
+rebased it, removed the checkpatch warnings and did some basic testing.
 
-diff --git a/mpath.c b/mpath.c
-index e39c24b..a88f89f 100644
---- a/mpath.c
-+++ b/mpath.c
-@@ -38,6 +38,8 @@ static int print_mpath_handler(struct nl_msg *msg, void *arg)
- 		[NL80211_MPATH_INFO_DISCOVERY_TIMEOUT] = { .type = NLA_U32 },
- 		[NL80211_MPATH_INFO_DISCOVERY_RETRIES] = { .type = NLA_U8 },
- 		[NL80211_MPATH_INFO_FLAGS] = { .type = NLA_U8 },
-+		[NL80211_MPATH_INFO_HOP_COUNT] = { .type = NLA_U8 },
-+		[NL80211_MPATH_INFO_PATH_CHANGE] = { .type = NLA_U32 },
- 	};
- 
- 	nla_parse(tb, NL80211_ATTR_MAX, genlmsg_attrdata(gnlh, 0),
-@@ -85,6 +87,12 @@ static int print_mpath_handler(struct nl_msg *msg, void *arg)
- 	if (pinfo[NL80211_MPATH_INFO_FLAGS])
- 		printf("\t0x%x",
- 			nla_get_u8(pinfo[NL80211_MPATH_INFO_FLAGS]));
-+	if (pinfo[NL80211_MPATH_INFO_HOP_COUNT])
-+		printf("\t%u",
-+		       nla_get_u8(pinfo[NL80211_MPATH_INFO_HOP_COUNT]));
-+	if (pinfo[NL80211_MPATH_INFO_PATH_CHANGE])
-+		printf("\t%u",
-+		       nla_get_u32(pinfo[NL80211_MPATH_INFO_PATH_CHANGE]));
- 
- 	printf("\n");
- 	return NL_SKIP;
-@@ -218,7 +226,7 @@ static int handle_mpath_dump(struct nl80211_state *state,
- 			     enum id_input id)
- {
- 	printf("DEST ADDR         NEXT HOP          IFACE\tSN\tMETRIC\tQLEN\t"
--	       "EXPTIME\t\tDTIM\tDRET\tFLAGS\n");
-+	       "EXPTIME\t\tDTIM\tDRET\tFLAGS\tHOP_COUNT\tPATH_CHANGE\n");
- 	register_handler(print_mpath_handler, NULL);
- 	return 0;
- }
--- 
-1.9.1
+     John
 
