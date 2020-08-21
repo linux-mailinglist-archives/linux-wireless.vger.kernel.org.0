@@ -2,38 +2,40 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F2B024CE1D
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Aug 2020 08:38:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1574224CE22
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Aug 2020 08:41:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727110AbgHUGi1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 21 Aug 2020 02:38:27 -0400
-Received: from mail.kernel.org ([198.145.29.99]:44694 "EHLO mail.kernel.org"
+        id S1726767AbgHUGlf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 21 Aug 2020 02:41:35 -0400
+Received: from mail.kernel.org ([198.145.29.99]:45490 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726057AbgHUGiZ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 21 Aug 2020 02:38:25 -0400
+        id S1726057AbgHUGle (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 21 Aug 2020 02:41:34 -0400
 Received: from embeddedor (187-162-31-110.static.axtel.net [187.162.31.110])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 9D2A820732;
-        Fri, 21 Aug 2020 06:38:24 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 9264120732;
+        Fri, 21 Aug 2020 06:41:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1597991905;
-        bh=Ot86Wj7sGjwZ7S3FH9jm1Yn6Pi0PnzBLyHIPsHidRJU=;
+        s=default; t=1597992093;
+        bh=zx1WG7372o1PzR/3ixloWF65ocSDbw/i79bZ5GZdrto=;
         h=Date:From:To:Cc:Subject:From;
-        b=qufkHiis02jnJfGAZaugIRfoT9J+KnnMiuwCZJedt128Z0/B624C0PM3XpxIaswzc
-         4tPz8LUc2UeTxbP0c7Pbr16XRhBhIWwZ7m4HyNCdDlyLkZCZFByOrV1aSGrf01Aqrk
-         BTbG/sGPiRGPaAictnmiuPSPxy6l/hIK7SwBzcpE=
-Date:   Fri, 21 Aug 2020 01:44:12 -0500
+        b=nCS0QGqwHdGXyMA8O6IaQbCQy5vQjpcWkIhd7UOSwZhj0uuEnctoc32wMXe8S0kYC
+         2rd7swzD7dTpFszzAkbNKv6OXKk4xogU1K4YCSZMzlNm5ZHQmBGB05xrckmugfsvMn
+         MXgS9xMSR9WBCRnjRAzxWvn30UaYU60NVWTonAUI=
+Date:   Fri, 21 Aug 2020 01:47:20 -0500
 From:   "Gustavo A. R. Silva" <gustavoars@kernel.org>
-To:     Larry Finger <Larry.Finger@lwfinger.net>,
+To:     Amitkumar Karwar <amitkarwar@gmail.com>,
+        Ganapathi Bhat <ganapathi.bhat@nxp.com>,
+        Xinming Hu <huxinming820@gmail.com>,
         Kalle Valo <kvalo@codeaurora.org>,
         "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>
-Cc:     linux-wireless@vger.kernel.org, b43-dev@lists.infradead.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
         "Gustavo A. R. Silva" <gustavoars@kernel.org>
-Subject: [PATCH][next] b43legacy: Use fallthrough pseudo-keyword
-Message-ID: <20200821064412.GA20612@embeddedor>
+Subject: [PATCH][next] mwifiex: Use fallthrough pseudo-keyword
+Message-ID: <20200821064720.GA22182@embeddedor>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -50,45 +52,77 @@ the new pseudo-keyword macro fallthrough[1].
 
 Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
 ---
- drivers/net/wireless/broadcom/b43legacy/dma.c  | 2 +-
- drivers/net/wireless/broadcom/b43legacy/main.c | 4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/wireless/marvell/mwifiex/cfg80211.c | 8 ++++----
+ drivers/net/wireless/marvell/mwifiex/ie.c       | 2 +-
+ drivers/net/wireless/marvell/mwifiex/scan.c     | 2 +-
+ 3 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/broadcom/b43legacy/dma.c b/drivers/net/wireless/broadcom/b43legacy/dma.c
-index f7594e2a896e..7e2f70c4207c 100644
---- a/drivers/net/wireless/broadcom/b43legacy/dma.c
-+++ b/drivers/net/wireless/broadcom/b43legacy/dma.c
-@@ -189,7 +189,7 @@ return dev->dma.tx_ring1;
- 	switch (queue_priority) {
- 	default:
- 		B43legacy_WARN_ON(1);
--		/* fallthrough */
-+		fallthrough;
- 	case 0:
- 		ring = dev->dma.tx_ring3;
- 		break;
-diff --git a/drivers/net/wireless/broadcom/b43legacy/main.c b/drivers/net/wireless/broadcom/b43legacy/main.c
-index 2eaf481f03f1..7fab9f107c10 100644
---- a/drivers/net/wireless/broadcom/b43legacy/main.c
-+++ b/drivers/net/wireless/broadcom/b43legacy/main.c
-@@ -1537,7 +1537,7 @@ static int do_request_fw(struct b43legacy_wldev *dev,
- 		size = be32_to_cpu(hdr->size);
- 		if (size != (*fw)->size - sizeof(struct b43legacy_fw_header))
- 			goto err_format;
--		/* fallthrough */
-+		fallthrough;
- 	case B43legacy_FW_TYPE_IV:
- 		if (hdr->ver != 1)
- 			goto err_format;
-@@ -2076,7 +2076,7 @@ static void b43legacy_rate_memory_init(struct b43legacy_wldev *dev)
- 		b43legacy_rate_memory_write(dev, B43legacy_OFDM_RATE_36MB, 1);
- 		b43legacy_rate_memory_write(dev, B43legacy_OFDM_RATE_48MB, 1);
- 		b43legacy_rate_memory_write(dev, B43legacy_OFDM_RATE_54MB, 1);
--		/* fallthrough */
-+		fallthrough;
- 	case B43legacy_PHYTYPE_B:
- 		b43legacy_rate_memory_write(dev, B43legacy_CCK_RATE_1MB, 0);
- 		b43legacy_rate_memory_write(dev, B43legacy_CCK_RATE_2MB, 0);
+diff --git a/drivers/net/wireless/marvell/mwifiex/cfg80211.c b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
+index 96848fa0e417..a6b9dc6700b1 100644
+--- a/drivers/net/wireless/marvell/mwifiex/cfg80211.c
++++ b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
+@@ -1163,7 +1163,7 @@ mwifiex_cfg80211_change_virtual_intf(struct wiphy *wiphy,
+ 		case NL80211_IFTYPE_UNSPECIFIED:
+ 			mwifiex_dbg(priv->adapter, INFO,
+ 				    "%s: kept type as IBSS\n", dev->name);
+-			/* fall through */
++			fallthrough;
+ 		case NL80211_IFTYPE_ADHOC:	/* This shouldn't happen */
+ 			return 0;
+ 		default:
+@@ -1194,7 +1194,7 @@ mwifiex_cfg80211_change_virtual_intf(struct wiphy *wiphy,
+ 		case NL80211_IFTYPE_UNSPECIFIED:
+ 			mwifiex_dbg(priv->adapter, INFO,
+ 				    "%s: kept type as STA\n", dev->name);
+-			/* fall through */
++			fallthrough;
+ 		case NL80211_IFTYPE_STATION:	/* This shouldn't happen */
+ 			return 0;
+ 		default:
+@@ -1217,7 +1217,7 @@ mwifiex_cfg80211_change_virtual_intf(struct wiphy *wiphy,
+ 		case NL80211_IFTYPE_UNSPECIFIED:
+ 			mwifiex_dbg(priv->adapter, INFO,
+ 				    "%s: kept type as AP\n", dev->name);
+-			/* fall through */
++			fallthrough;
+ 		case NL80211_IFTYPE_AP:		/* This shouldn't happen */
+ 			return 0;
+ 		default:
+@@ -1257,7 +1257,7 @@ mwifiex_cfg80211_change_virtual_intf(struct wiphy *wiphy,
+ 		case NL80211_IFTYPE_UNSPECIFIED:
+ 			mwifiex_dbg(priv->adapter, INFO,
+ 				    "%s: kept type as P2P\n", dev->name);
+-			/* fall through */
++			fallthrough;
+ 		case NL80211_IFTYPE_P2P_CLIENT:
+ 		case NL80211_IFTYPE_P2P_GO:
+ 			return 0;
+diff --git a/drivers/net/wireless/marvell/mwifiex/ie.c b/drivers/net/wireless/marvell/mwifiex/ie.c
+index 811abe963af2..40e99eaf5a30 100644
+--- a/drivers/net/wireless/marvell/mwifiex/ie.c
++++ b/drivers/net/wireless/marvell/mwifiex/ie.c
+@@ -374,7 +374,7 @@ static int mwifiex_uap_parse_tail_ies(struct mwifiex_private *priv,
+ 						    (const u8 *)hdr,
+ 						    token_len))
+ 				break;
+-			/* fall through */
++			fallthrough;
+ 		default:
+ 			if (ie_len + token_len > IEEE_MAX_IE_SIZE) {
+ 				err = -EINVAL;
+diff --git a/drivers/net/wireless/marvell/mwifiex/scan.c b/drivers/net/wireless/marvell/mwifiex/scan.c
+index 2fb69a590bd8..c2a685f63e95 100644
+--- a/drivers/net/wireless/marvell/mwifiex/scan.c
++++ b/drivers/net/wireless/marvell/mwifiex/scan.c
+@@ -1328,7 +1328,7 @@ int mwifiex_update_bss_desc_with_ie(struct mwifiex_adapter *adapter,
+ 
+ 		case WLAN_EID_CHANNEL_SWITCH:
+ 			bss_entry->chan_sw_ie_present = true;
+-			/* fall through */
++			fallthrough;
+ 		case WLAN_EID_PWR_CAPABILITY:
+ 		case WLAN_EID_TPC_REPORT:
+ 		case WLAN_EID_QUIET:
 -- 
 2.27.0
 
