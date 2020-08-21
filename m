@@ -2,42 +2,34 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 02C6124D0E5
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Aug 2020 10:55:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B8C424D14E
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Aug 2020 11:20:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727006AbgHUIzL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 21 Aug 2020 04:55:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48800 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726062AbgHUIzJ (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 21 Aug 2020 04:55:09 -0400
-Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDECCC061385
-        for <linux-wireless@vger.kernel.org>; Fri, 21 Aug 2020 01:55:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-         s=20160729; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
-        Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=3Ph7ZH4jmXu/uxMcDwQcp83/aBFYb/qx5NJX2udfT6s=; b=FV7DWwViNzfvm5G6b9vanVFmT0
-        IJ8uygSy/dfqf0WQT7KfI8ziRHLTz9lqbvFOmwBr19t+kXYLC8V0JvRjJ/Au2jwA9KqXMJddSjXTv
-        MtP8ObNC4sjjUXZh2dRBZWKyzhRmBceB1g50iDOGYnbc8QE3e2Z5t/bRWnHajQsSmlDY=;
-Received: from p5b206497.dip0.t-ipconnect.de ([91.32.100.151] helo=localhost.localdomain)
-        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_CBC_SHA1:128)
-        (Exim 4.89)
-        (envelope-from <nbd@nbd.name>)
-        id 1k92jr-0005lO-Jy; Fri, 21 Aug 2020 10:49:31 +0200
-From:   Felix Fietkau <nbd@nbd.name>
-To:     linux-wireless@vger.kernel.org
-Cc:     johannes@sipsolutions.net
-Subject: [PATCH v3 13/13] mac80211: set info->control.hw_key for encap offload packets
-Date:   Fri, 21 Aug 2020 10:49:26 +0200
-Message-Id: <20200821084926.10650-14-nbd@nbd.name>
-X-Mailer: git-send-email 2.28.0
-In-Reply-To: <20200821084926.10650-1-nbd@nbd.name>
-References: <20200821084926.10650-1-nbd@nbd.name>
+        id S1727903AbgHUJUH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 21 Aug 2020 05:20:07 -0400
+Received: from mail.kernel.org ([198.145.29.99]:47230 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725806AbgHUJUG (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 21 Aug 2020 05:20:06 -0400
+Received: from lore-desk.redhat.com (unknown [151.48.139.80])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id A6936207DA;
+        Fri, 21 Aug 2020 09:20:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1598001606;
+        bh=x8lsLAUKN4w5AQhotb6Di6BMjhDcDyVm5uPhBjD5yDE=;
+        h=From:To:Cc:Subject:Date:From;
+        b=aHPdvPoKfD+MJXtjGuBw2qlCM9+IeXj33qc52ch7wvgqpGskIHXd88E4UD1w5/Ka6
+         +fw3Ukaw3uVhOimLJ4wA0jg0Mt5wLm5QhKdk5ZZGWfHXmJKbJ34rBdiNihR9XA/eN8
+         xPlZDsBmf2dL08F4esnQHcOd9ckMM1QfeTWQ0Xk8=
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org
+Subject: [PATCH] mt76: mt7615: fix possible memory leak in mt7615_tm_set_tx_power
+Date:   Fri, 21 Aug 2020 11:19:51 +0200
+Message-Id: <df64ab1001dd2374190cd6e35631bd2945e53528.1598001436.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
@@ -45,36 +37,41 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This is needed for drivers that don't do the key lookup themselves
+Fix a memory leak in mt7615_tm_set_tx_power routine if
+mt7615_eeprom_get_target_power_index fails.
+Moreover do not account req_header twice in mcu skb allocation.
 
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Fixes: 4f0bce1c88882 ("mt76: mt7615: implement testmode support")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- net/mac80211/tx.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/net/wireless/mediatek/mt76/mt7615/testmode.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index 4cf4840f2886..e3d061308113 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -4194,6 +4194,7 @@ static void ieee80211_8023_xmit(struct ieee80211_sub_if_data *sdata,
- {
- 	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
- 	struct ieee80211_local *local = sdata->local;
-+	struct ieee80211_key *key;
- 	struct tid_ampdu_tx *tid_tx;
- 	u8 tid;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/testmode.c b/drivers/net/wireless/mediatek/mt76/mt7615/testmode.c
+index 1730751133aa..2cfa58d49832 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/testmode.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/testmode.c
+@@ -70,7 +70,7 @@ mt7615_tm_set_tx_power(struct mt7615_phy *phy)
+ 	if (dev->mt76.test.state != MT76_TM_STATE_OFF)
+ 		tx_power = dev->mt76.test.tx_power;
  
-@@ -4242,6 +4243,10 @@ static void ieee80211_8023_xmit(struct ieee80211_sub_if_data *sdata,
- 	info->flags |= IEEE80211_TX_CTL_HW_80211_ENCAP;
- 	info->control.vif = &sdata->vif;
+-	len = sizeof(req_hdr) + MT7615_EE_MAX - MT_EE_NIC_CONF_0;
++	len = MT7615_EE_MAX - MT_EE_NIC_CONF_0;
+ 	skb = mt76_mcu_msg_alloc(&dev->mt76, NULL, sizeof(req_hdr) + len);
+ 	if (!skb)
+ 		return -ENOMEM;
+@@ -83,8 +83,10 @@ mt7615_tm_set_tx_power(struct mt7615_phy *phy)
+ 		int index;
  
-+	key = rcu_dereference(sta->ptk[sta->ptk_idx]);
-+	if (key)
-+		info->control.hw_key = &key->conf;
-+
- 	ieee80211_tx_8023(sdata, skb, skb->len, sta, false);
+ 		ret = mt7615_eeprom_get_target_power_index(dev, chandef->chan, i);
+-		if (ret < 0)
++		if (ret < 0) {
++			dev_kfree_skb(skb);
+ 			return -EINVAL;
++		}
  
- 	return;
+ 		index = ret - MT_EE_NIC_CONF_0;
+ 		if (tx_power && tx_power[i])
 -- 
-2.28.0
+2.26.2
 
