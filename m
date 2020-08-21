@@ -2,63 +2,65 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0FC7124CEC6
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Aug 2020 09:17:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B5FD24CEC0
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Aug 2020 09:17:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728083AbgHUHRM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 21 Aug 2020 03:17:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33480 "EHLO
+        id S1728068AbgHUHRF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 21 Aug 2020 03:17:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33496 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727982AbgHUHQy (ORCPT
+        with ESMTP id S1728018AbgHUHQ5 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 21 Aug 2020 03:16:54 -0400
-Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A586C061344
-        for <linux-wireless@vger.kernel.org>; Fri, 21 Aug 2020 00:16:53 -0700 (PDT)
-Received: by mail-wr1-x443.google.com with SMTP id d16so988413wrq.9
-        for <linux-wireless@vger.kernel.org>; Fri, 21 Aug 2020 00:16:53 -0700 (PDT)
+        Fri, 21 Aug 2020 03:16:57 -0400
+Received: from mail-wm1-x344.google.com (mail-wm1-x344.google.com [IPv6:2a00:1450:4864:20::344])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0368C061345
+        for <linux-wireless@vger.kernel.org>; Fri, 21 Aug 2020 00:16:54 -0700 (PDT)
+Received: by mail-wm1-x344.google.com with SMTP id t2so593212wma.0
+        for <linux-wireless@vger.kernel.org>; Fri, 21 Aug 2020 00:16:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=jkJnqXxLKchHWxEQRJwgWXXCncTXSd4DzK09wyk1JRk=;
-        b=imjQbPJVVZShA4Q+n/mfzt9cNHPoknvEEchPr3hoZ3sCDTX9LnvxrFnwqSUjtaMJib
-         No6IK1zcjccFbBZN3v1Y/L1CN0IReoDTnYEweipYWzPK4GlUUHm1j2bviT9xJry9++Wp
-         ksKRo/9pfxPPK69NLV3WeebLFmxi+8Z1K+teNTW2ZfuIqASqjLcIs9LkoaoMi2XqlYhZ
-         QV2VW5ET78aYF6CAzVs1rM7ECwu8X5uy2b1r3ExlTtveoarvtIoZ79XhZ3PL8DYNTvVg
-         EvzS5Y+VLRh+BIcdEcz6IzW28c/4LVlpfF9LlWJgLiFYQE765HOOr65IQ9IatBYAoDA2
-         Oowg==
+        bh=Hmu7eebnVLf+96DkNkuKqCpbKAzUinX5DGlufPTCB0k=;
+        b=gsb82YiYQKyiCSN6cR4D5iRKbQ2Kyz/Qdq6HNzNcfckP/jNbjJvYELTaNz00TZZ9sL
+         55v4iPqLYSJfy81oJpurNyJTKzoz5CvI6An1+dTUEEGRK4Zcw4FawDAaCirmrYCxMr+F
+         y20gSRf6XfSa43Ik5qFiY+MYp/XTHnKRpPsadqeeq9wUN+a/G0q2y0Vi72zA3o4lWTV4
+         +w0WhPb+LHZ7900S+Slf40k8Vuh7twqAQ0NlWX2UVxUeOe/QGw938k2Qi36BWftVAT+Q
+         YR6JqABHiU9IJRxw82AgZrLYt0szMwUy4ndEA7CMMFrAYmfz6LAgTRzor07gYkMj9C1T
+         2j+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=jkJnqXxLKchHWxEQRJwgWXXCncTXSd4DzK09wyk1JRk=;
-        b=mcK7p0K2WqHjue5heCSPSRaesdS7VPE4mdXVWdKICD8tahQuDzn41tNvd1fsiRrxTw
-         1IzCjlBYilbAizHeUJAuq6C2EtUbWKIVHWRmUMuMxEGdqrgMOHUN4m/ub8ZlKgY/QiKv
-         VL1/RxKdo9f/AQeoxNDzNyzo3WRgrk3muvhmAZvJ9LLWSr1Q/ricscGv6/j2Zow0BwBh
-         PwUN4pINu8j1PkctC5UlwlKy9+viFILjPHSv6qEc31bOpDV4VfeagSwDGOhlS/Krnyt4
-         +hGAWDV3UgcSS8LWy9WhLrv1E3xkYafXqcQIBFQDU+9yymCRPrK8HNip489IGbvVvuDZ
-         SHpA==
-X-Gm-Message-State: AOAM5325GS+JjnpKhSQqN1LvhwBq7e5rxl/4kQKD/R2yVcJx6zbb3EHW
-        ij1UzKpTInO4yXn8YsI9bQXMLw==
-X-Google-Smtp-Source: ABdhPJyOVV0ODNrXRXl4GTB1L8JglbkkcmT5s6PLzgeWhThPD84T4n78OmQCtqg3gE+tvn9EzvWdGA==
-X-Received: by 2002:adf:e80a:: with SMTP id o10mr492035wrm.312.1597994212188;
-        Fri, 21 Aug 2020 00:16:52 -0700 (PDT)
+        bh=Hmu7eebnVLf+96DkNkuKqCpbKAzUinX5DGlufPTCB0k=;
+        b=GDBO6uaYsQ2qUxPiphqWCoO090eC2xeItG2F/ONJpiU/jSk0LmsHLFvIr+ofV01vg5
+         evih3KM+uZ73OZWURBKawlAK1b3oLiEq2kgNKb4Ef64gwua0pe5lBHCyTQ08I5P8GU46
+         OY3Q++SAV422zpbwWmUWLmXxEHSTE4iG/vw4yKyjh5trOjAXHsiwpx0EarM6CxgJ/xlv
+         g67y5cyUF4AeJYBjrACl5iCWX77Xx5Yuy9FDyTxoTYP5sCArgs2xfZqW/FXpMfJv0JlM
+         zjhlHTwc4qZdJJ9KAuABY5ktCFi1lU3zHN/OHlOIkMgRKfYyqS6mUAQ2byDU29+kCvkR
+         viRg==
+X-Gm-Message-State: AOAM530S80qkNDNjECsAcTz8MPzEBfH/7MGSN+sfXbRZYh7UOTlwTHrj
+        CTO3L58/97AL3Rt93+PPTEY0dw==
+X-Google-Smtp-Source: ABdhPJxyIrCUEFdB5pQvSe1V5F6WSkOzb5K3eG9bgIeNA4VN8z5+mNW0IsDm6qn/dgWIEJzOtBfusQ==
+X-Received: by 2002:a7b:c4c4:: with SMTP id g4mr1669266wmk.110.1597994213400;
+        Fri, 21 Aug 2020 00:16:53 -0700 (PDT)
 Received: from dell.default ([95.149.164.62])
-        by smtp.gmail.com with ESMTPSA id y24sm2667957wmi.17.2020.08.21.00.16.50
+        by smtp.gmail.com with ESMTPSA id y24sm2667957wmi.17.2020.08.21.00.16.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Aug 2020 00:16:51 -0700 (PDT)
+        Fri, 21 Aug 2020 00:16:52 -0700 (PDT)
 From:   Lee Jones <lee.jones@linaro.org>
 To:     kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org
 Cc:     linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
         netdev@vger.kernel.org, Lee Jones <lee.jones@linaro.org>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Intel Linux Wireless <linuxwifi@intel.com>
-Subject: [PATCH 03/32] wireless: intel: iwlwifi: mvm: ops: Remove unused static struct 'iwl_mvm_debug_names'
-Date:   Fri, 21 Aug 2020 08:16:15 +0100
-Message-Id: <20200821071644.109970-4-lee.jones@linaro.org>
+        Arend van Spriel <arend.vanspriel@broadcom.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
+        Wright Feng <wright.feng@cypress.com>,
+        brcm80211-dev-list.pdl@broadcom.com, brcm80211-dev-list@cypress.com
+Subject: [PATCH 04/32] wireless: broadcom: brcm80211: brcmsmac: ampdu: Remove a bunch of unused variables
+Date:   Fri, 21 Aug 2020 08:16:16 +0100
+Message-Id: <20200821071644.109970-5-lee.jones@linaro.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200821071644.109970-1-lee.jones@linaro.org>
 References: <20200821071644.109970-1-lee.jones@linaro.org>
@@ -70,46 +72,137 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Looks as if it's never been used.
-
 Fixes the following W=1 kernel build warning(s):
 
- drivers/net/wireless/intel/iwlwifi/mvm/ops.c:466:36: warning: ‘iwl_mvm_debug_names’ defined but not used [-Wunused-const-variable=]
+ from drivers/net/wireless/broadcom/brcm80211/brcmsmac/ampdu.c:18:
+ drivers/net/wireless/broadcom/brcm80211/brcmsmac/ampdu.c: In function ‘brcms_c_ampdu_finalize’:
+ drivers/net/wireless/broadcom/brcm80211/brcmsmac/ampdu.c:648:25: warning: variable ‘sgi’ set but not used [-Wunused-but-set-variable]
+ drivers/net/wireless/broadcom/brcm80211/brcmsmac/ampdu.c: In function ‘brcms_c_ampdu_dotxstatus_complete’:
+ drivers/net/wireless/broadcom/brcm80211/brcmsmac/ampdu.c:856:18: warning: variable ‘rr_retry_limit’ set but not used [-Wunused-but-set-variable]
+ drivers/net/wireless/broadcom/brcm80211/brcmsmac/ampdu.c:855:5: warning: variable ‘antselid’ set but not used [-Wunused-but-set-variable]
+ drivers/net/wireless/broadcom/brcm80211/brcmsmac/ampdu.c:853:41: warning: variable ‘tx_error’ set but not used [-Wunused-but-set-variable]
+ drivers/net/wireless/broadcom/brcm80211/brcmsmac/ampdu.c:853:7: warning: variable ‘update_rate’ set but not used [-Wunused-but-set-variable]
+ drivers/net/wireless/broadcom/brcm80211/brcmsmac/ampdu.c: In function ‘brcms_c_ampdu_dotxstatus’:
+ drivers/net/wireless/broadcom/brcm80211/brcmsmac/ampdu.c:1037:28: warning: variable ‘tx_info’ set but not used [-Wunused-but-set-variable]
+ drivers/net/wireless/broadcom/brcm80211/brcmsmac/ampdu.c:1035:28: warning: variable ‘ini’ set but not used [-Wunused-but-set-variable]
 
-Cc: Johannes Berg <johannes.berg@intel.com>
-Cc: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Cc: Luca Coelho <luciano.coelho@intel.com>
-Cc: Intel Linux Wireless <linuxwifi@intel.com>
+Cc: Arend van Spriel <arend.vanspriel@broadcom.com>
+Cc: Franky Lin <franky.lin@broadcom.com>
+Cc: Hante Meuleman <hante.meuleman@broadcom.com>
+Cc: Chi-Hsien Lin <chi-hsien.lin@cypress.com>
+Cc: Wright Feng <wright.feng@cypress.com>
 Cc: Kalle Valo <kvalo@codeaurora.org>
 Cc: "David S. Miller" <davem@davemloft.net>
 Cc: Jakub Kicinski <kuba@kernel.org>
 Cc: linux-wireless@vger.kernel.org
+Cc: brcm80211-dev-list.pdl@broadcom.com
+Cc: brcm80211-dev-list@cypress.com
 Cc: netdev@vger.kernel.org
 Signed-off-by: Lee Jones <lee.jones@linaro.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/ops.c | 9 ---------
- 1 file changed, 9 deletions(-)
+ .../broadcom/brcm80211/brcmsmac/ampdu.c       | 28 ++++++-------------
+ 1 file changed, 8 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-index d095ff847be92..8e1e9ffbbf59a 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-@@ -460,15 +460,6 @@ static const struct iwl_hcmd_names iwl_mvm_data_path_names[] = {
- 	HCMD_NAME(RX_QUEUES_NOTIFICATION),
- };
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/ampdu.c b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/ampdu.c
+index fa391e4eb0989..cbad1a11673ae 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/ampdu.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/ampdu.c
+@@ -645,7 +645,7 @@ void brcms_c_ampdu_finalize(struct brcms_ampdu_session *session)
+ 	u16 mimo_ctlchbw = PHY_TXC1_BW_20MHZ;
+ 	u32 rspec = 0, rspec_fallback = 0;
+ 	u32 rts_rspec = 0, rts_rspec_fallback = 0;
+-	u8 plcp0, plcp3, is40, sgi, mcs;
++	u8 plcp0, is40, mcs;
+ 	u16 mch;
+ 	u8 preamble_type = BRCMS_GF_PREAMBLE;
+ 	u8 fbr_preamble_type = BRCMS_GF_PREAMBLE;
+@@ -704,15 +704,12 @@ void brcms_c_ampdu_finalize(struct brcms_ampdu_session *session)
+ 	txh->MacTxControlLow = cpu_to_le16(mcl);
  
--/* Please keep this array *SORTED* by hex value.
-- * Access is done through binary search
-- */
--static const struct iwl_hcmd_names iwl_mvm_debug_names[] = {
--	HCMD_NAME(DBGC_SUSPEND_RESUME),
--	HCMD_NAME(BUFFER_ALLOCATION),
--	HCMD_NAME(MFU_ASSERT_DUMP_NTF),
--};
+ 	fbr = txrate[1].count > 0;
+-	if (!fbr) {
++	if (!fbr)
+ 		plcp0 = plcp[0];
+-		plcp3 = plcp[3];
+-	} else {
++	else
+ 		plcp0 = txh->FragPLCPFallback[0];
+-		plcp3 = txh->FragPLCPFallback[3];
+-	}
++
+ 	is40 = (plcp0 & MIMO_PLCP_40MHZ) ? 1 : 0;
+-	sgi = plcp3_issgi(plcp3) ? 1 : 0;
+ 	mcs = plcp0 & ~MIMO_PLCP_40MHZ;
+ 
+ 	if (is40) {
+@@ -850,10 +847,9 @@ brcms_c_ampdu_dotxstatus_complete(struct ampdu_info *ampdu, struct scb *scb,
+ 	bool ba_recd = false, ack_recd = false;
+ 	u8 suc_mpdu = 0, tot_mpdu = 0;
+ 	uint supr_status;
+-	bool update_rate = true, retry = true, tx_error = false;
++	bool update_rate = true, retry = true;
+ 	u16 mimoantsel = 0;
+-	u8 antselid = 0;
+-	u8 retry_limit, rr_retry_limit;
++	u8 retry_limit;
+ 	struct ieee80211_tx_info *tx_info = IEEE80211_SKB_CB(p);
+ 
+ #ifdef DEBUG
+@@ -866,7 +862,6 @@ brcms_c_ampdu_dotxstatus_complete(struct ampdu_info *ampdu, struct scb *scb,
+ 
+ 	ini = &scb_ampdu->ini[tid];
+ 	retry_limit = ampdu->retry_limit_tid[tid];
+-	rr_retry_limit = ampdu->rr_retry_limit_tid[tid];
+ 	memset(bitmap, 0, sizeof(bitmap));
+ 	queue = txs->frameid & TXFID_QUEUE_MASK;
+ 	supr_status = txs->status & TX_STATUS_SUPR_MASK;
+@@ -923,8 +918,7 @@ brcms_c_ampdu_dotxstatus_complete(struct ampdu_info *ampdu, struct scb *scb,
+ 				 * if there were underflows, but pre-loading
+ 				 * is not active, notify rate adaptation.
+ 				 */
+-				if (brcms_c_ffpld_check_txfunfl(wlc, queue) > 0)
+-					tx_error = true;
++				brcms_c_ffpld_check_txfunfl(wlc, queue);
+ 			}
+ 		} else if (txs->phyerr) {
+ 			update_rate = false;
+@@ -1023,7 +1017,7 @@ brcms_c_ampdu_dotxstatus_complete(struct ampdu_info *ampdu, struct scb *scb,
+ 	}
+ 
+ 	/* update rate state */
+-	antselid = brcms_c_antsel_antsel2id(wlc->asi, mimoantsel);
++	brcms_c_antsel_antsel2id(wlc->asi, mimoantsel);
+ }
+ 
+ void
+@@ -1032,11 +1026,7 @@ brcms_c_ampdu_dotxstatus(struct ampdu_info *ampdu, struct scb *scb,
+ {
+ 	struct scb_ampdu *scb_ampdu;
+ 	struct brcms_c_info *wlc = ampdu->wlc;
+-	struct scb_ampdu_tid_ini *ini;
+ 	u32 s1 = 0, s2 = 0;
+-	struct ieee80211_tx_info *tx_info;
 -
- /* Please keep this array *SORTED* by hex value.
-  * Access is done through binary search
-  */
+-	tx_info = IEEE80211_SKB_CB(p);
+ 
+ 	/* BMAC_NOTE: For the split driver, second level txstatus comes later
+ 	 * So if the ACK was received then wait for the second level else just
+@@ -1061,7 +1051,6 @@ brcms_c_ampdu_dotxstatus(struct ampdu_info *ampdu, struct scb *scb,
+ 
+ 	if (scb) {
+ 		scb_ampdu = &scb->scb_ampdu;
+-		ini = &scb_ampdu->ini[p->priority];
+ 		brcms_c_ampdu_dotxstatus_complete(ampdu, scb, p, txs, s1, s2);
+ 	} else {
+ 		/* loop through all pkts and free */
+@@ -1069,7 +1058,6 @@ brcms_c_ampdu_dotxstatus(struct ampdu_info *ampdu, struct scb *scb,
+ 		struct d11txh *txh;
+ 		u16 mcl;
+ 		while (p) {
+-			tx_info = IEEE80211_SKB_CB(p);
+ 			txh = (struct d11txh *) p->data;
+ 			trace_brcms_txdesc(&wlc->hw->d11core->dev, txh,
+ 					   sizeof(*txh));
 -- 
 2.25.1
 
