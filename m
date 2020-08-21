@@ -2,84 +2,183 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E95C24CE33
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Aug 2020 08:48:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B9E924CEB7
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Aug 2020 09:16:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727008AbgHUGsK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 21 Aug 2020 02:48:10 -0400
-Received: from mail.kernel.org ([198.145.29.99]:47926 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726119AbgHUGsI (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 21 Aug 2020 02:48:08 -0400
-Received: from embeddedor (187-162-31-110.static.axtel.net [187.162.31.110])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 5B78720748;
-        Fri, 21 Aug 2020 06:48:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1597992488;
-        bh=TnGIq0rWWRRhRPKScOtrs8fL6SIFwsJTAU40M1xoTzc=;
-        h=Date:From:To:Cc:Subject:From;
-        b=JOvJxLh1t2CQ4d/xcBnQdC4M/PlcgWRcQbzKImB41SdTEbYbavlIKPe/eCIOHlH3d
-         GdxiHWH/fvDeFlou3aAU7ncyo2qcFwpf51JlJZIPPpBj6naLzPWVpSiN7oOa/wcmPB
-         PdBLHlbUnvu7QiZF/VdP0pnlhh6ktUMV7lwnuQYU=
-Date:   Fri, 21 Aug 2020 01:53:55 -0500
-From:   "Gustavo A. R. Silva" <gustavoars@kernel.org>
-To:     Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Simon Kelley <simon@thekelleys.org.uk>
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>
-Subject: [PATCH][next] atmel: Use fallthrough pseudo-keyword
-Message-ID: <20200821065355.GA25808@embeddedor>
+        id S1727898AbgHUHQu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 21 Aug 2020 03:16:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33448 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726119AbgHUHQt (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 21 Aug 2020 03:16:49 -0400
+Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com [IPv6:2a00:1450:4864:20::341])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6040CC061385
+        for <linux-wireless@vger.kernel.org>; Fri, 21 Aug 2020 00:16:49 -0700 (PDT)
+Received: by mail-wm1-x341.google.com with SMTP id g75so818230wme.4
+        for <linux-wireless@vger.kernel.org>; Fri, 21 Aug 2020 00:16:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=I6WRe1DNPmMYz2suAKa+qs1Ya8MpFkjuyKsOftRNQ1s=;
+        b=TBUFBZD1rg3Np8Lb2UmmC8v+fh2kJRixdHWO8ofDNsgOF12inMrg8qltrMoIi1DTj8
+         KPF9MsffX7XhyO/zEtOqj3cZHiWAsSMa3sMqJcde6d0ZDp6zf/WYJ+KpHz0I8Bnrfj9n
+         FyTGKuPpMNXNApvgnGrbeRGT4f8ftse0Spbvov7MnMimKB6TaRzRD3/8CHCDe/OVjKNC
+         15RkxMGgkoJMOZ4PEzTtWMGaF0OMofv5lb9xr5Tw5xIF4fjdq9almyEDsHLUyObsXBBI
+         a0F7dfjxmuooIXDKHN2aWGQ23yzfNg1iPDk9T4ckzHDcac2ctFvDBawK8cIJ4XpCyf1F
+         hMOQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=I6WRe1DNPmMYz2suAKa+qs1Ya8MpFkjuyKsOftRNQ1s=;
+        b=fxm6ph6CO2lsBi8fEvILh3QCZ8sEh5yTUBDch1BFdKUtGGEB8gPivDVoZsWBPSNg+T
+         1v7KaYnTWFTJU5+SKT5eadhxhwqTZtw0KKWH2bkES8IjnZaViddMPEAoqxbSEQ8pCqU9
+         oFL1yw71KJmFpFyP/9R8Z6i3QV2JW6eVdjdlxFovxnL7ZzCN1CVz62mKSFDevIjlVzjO
+         vW57jmzleFR1oPjtVl2YdZdnWtETxzVmbNE62PblfieAzoc0WUBjqgfHyuW2hsXDMb1Z
+         Xwx+h8zWBCT9ue2KTJG+hf0x3RRtkQspyevVV/ML2J0ddTIct5Dr+IZzz0OUvPx/s8N4
+         8QBA==
+X-Gm-Message-State: AOAM532MXZeGkTeW/SZTUyFiikMShaqvSti9Am3oQFVsniTtOmQwPm60
+        Bl2wORqr9iMLC+NsRfYMotEo4g==
+X-Google-Smtp-Source: ABdhPJxgwb0DgdkWDYC0d/filKBy3thLKecF0jLOs4GiMGdboMQW4RAjITGQ66/QvcxcV6Wt2FEFRg==
+X-Received: by 2002:a05:600c:2945:: with SMTP id n5mr2115132wmd.66.1597994207849;
+        Fri, 21 Aug 2020 00:16:47 -0700 (PDT)
+Received: from dell.default ([95.149.164.62])
+        by smtp.gmail.com with ESMTPSA id y24sm2667957wmi.17.2020.08.21.00.16.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 21 Aug 2020 00:16:47 -0700 (PDT)
+From:   Lee Jones <lee.jones@linaro.org>
+To:     kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org
+Cc:     linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, Lee Jones <lee.jones@linaro.org>
+Subject: [PATCH 00/32] Set 2: Rid W=1 warnings in Wireless
+Date:   Fri, 21 Aug 2020 08:16:12 +0100
+Message-Id: <20200821071644.109970-1-lee.jones@linaro.org>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Replace the existing /* fall through */ comments and its variants with
-the new pseudo-keyword macro fallthrough[1].
+This set is part of a larger effort attempting to clean-up W=1
+kernel builds, which are currently overwhelmingly riddled with
+niggly little warnings.
 
-[1] https://www.kernel.org/doc/html/v5.7/process/deprecated.html?highlight=fallthrough#implicit-switch-case-fall-through
+There are quite a few W=1 warnings in the Wireless.  My plan
+is to work through all of them over the next few weeks.
+Hopefully it won't be too long before drivers/net/wireless
+builds clean with W=1 enabled.
 
-Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
----
- drivers/net/wireless/atmel/at76c50x-usb.c | 2 +-
- drivers/net/wireless/atmel/atmel.c        | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+This set brings the total number of (arm, arm64, x86, mips and
+ppc *combined* i.e. some duplicated) warnings down from 4983
+(since the last set) to 2066.
 
-diff --git a/drivers/net/wireless/atmel/at76c50x-usb.c b/drivers/net/wireless/atmel/at76c50x-usb.c
-index a63b5c2f1e17..b760c6682c4f 100644
---- a/drivers/net/wireless/atmel/at76c50x-usb.c
-+++ b/drivers/net/wireless/atmel/at76c50x-usb.c
-@@ -432,7 +432,7 @@ static int at76_usbdfu_download(struct usb_device *udev, u8 *buf, u32 size,
- 
- 		case STATE_DFU_DOWNLOAD_IDLE:
- 			at76_dbg(DBG_DFU, "DOWNLOAD...");
--			/* fall through */
-+			fallthrough;
- 		case STATE_DFU_IDLE:
- 			at76_dbg(DBG_DFU, "DFU IDLE");
- 
-diff --git a/drivers/net/wireless/atmel/atmel.c b/drivers/net/wireless/atmel/atmel.c
-index d5875836068c..6c97a1af5e8e 100644
---- a/drivers/net/wireless/atmel/atmel.c
-+++ b/drivers/net/wireless/atmel/atmel.c
-@@ -1227,7 +1227,7 @@ static irqreturn_t service_interrupt(int irq, void *dev_id)
- 
- 		case ISR_RxFRAMELOST:
- 			priv->wstats.discard.misc++;
--			/* fall through */
-+			fallthrough;
- 		case ISR_RxCOMPLETE:
- 			rx_done_irq(priv);
- 			break;
+Lee Jones (32):
+  wireless: marvell: mwifiex: sdio: Move 'static const struct's into
+    their own header file
+  wireless: rsi: rsi_91x_mac80211: Add description for function param
+    'sta'
+  wireless: intel: iwlwifi: mvm: ops: Remove unused static struct
+    'iwl_mvm_debug_names'
+  wireless: broadcom: brcm80211: brcmsmac: ampdu: Remove a bunch of
+    unused variables
+  wireless: broadcom: brcm80211: brcmfmac: p2p: Fix a bunch of function
+    docs
+  wireless: rsi: rsi_91x_mgmt: Add descriptions for
+    rsi_set_vap_capabilities()'s parameters
+  wireless: intel: iwlwifi: dvm: rx: Demote a couple of nonconformant
+    kernel-doc headers
+  wireless: intel: iwlwifi: mvm: utils: Fix some doc-rot
+  wireless: broadcom: brcm80211: brcmsmac: main: Remove a bunch of
+    unused variables
+  wireless: rsi: rsi_91x_ps: Source file headers do not make good
+    kernel-doc candidates
+  wireless: intel: iwlwifi: dvm: scan: Demote a few nonconformant
+    kernel-doc headers
+  wireless: brcm80211: brcmfmac: firmware: Demote seemingly
+    unintentional kernel-doc header
+  wireless: intel: iwlwifi: dvm: rxon: Demote non-conformant kernel-doc
+    headers
+  wireless: rsi: rsi_91x_coex: File headers are not suitable for
+    kernel-doc
+  wireless: intel: iwlegacy: 4965-mac: Convert function headers to
+    standard comment blocks
+  wireless: brcm80211: btcoex: Update 'brcmf_btcoex_state' and demote
+    others
+  wireless: broadcom: b43: phy_ht: Remove 9 year old TODO
+  wireless: intel: iwlwifi: mvm: tx: Demote misuse of kernel-doc headers
+  wireless: intel: iwlwifi: dvm: devices: Fix function documentation
+    formatting issues
+  wireless: rsi: rsi_91x_debugfs: Source file headers are not suitable
+    for kernel-doc
+  wireless: intel: iwlwifi: iwl-drv: Provide descriptions debugfs
+    dentries
+  wireless: intel: iwlegacy: 4965-rs: Demote non kernel-doc headers to
+    standard comment blocks
+  wireless: intel: iwlegacy: 4965-calib: Demote seemingly accidental
+    kernel-doc header
+  wireless: brcmfmac: fwsignal: Remove unused variable
+    'brcmf_fws_prio2fifo'
+  wireless: ath: wil6210: wmi: Fix formatting and demote non-conforming
+    function headers
+  wireless: ath: wil6210: interrupt: Demote comment header which is
+    clearly not kernel-doc
+  wireless: ath: wil6210: txrx: Demote obvious abuse of kernel-doc
+  wireless: ath: wil6210: txrx_edma: Demote comments which are clearly
+    not kernel-doc
+  wireless: realtek: rtl8192c: phy_common: Remove unused variable
+    'bbvalue'
+  wireless: ath: wil6210: pmc: Demote a few nonconformant kernel-doc
+    function headers
+  wireless: ath: wil6210: wil_platform: Demote kernel-doc header to
+    standard comment block
+  wireless: mediatek: mt76x0: Move tables used only by init.c to their
+    own header file
+
+ drivers/net/wireless/ath/wil6210/interrupt.c  |   2 +-
+ drivers/net/wireless/ath/wil6210/pmc.c        |   8 +-
+ drivers/net/wireless/ath/wil6210/txrx.c       |  20 +-
+ drivers/net/wireless/ath/wil6210/txrx_edma.c  |   6 +-
+ .../net/wireless/ath/wil6210/wil_platform.c   |   2 +-
+ drivers/net/wireless/ath/wil6210/wmi.c        |  28 +-
+ drivers/net/wireless/broadcom/b43/phy_ht.c    |   3 -
+ .../broadcom/brcm80211/brcmfmac/btcoex.c      |  12 +-
+ .../broadcom/brcm80211/brcmfmac/firmware.c    |   2 +-
+ .../broadcom/brcm80211/brcmfmac/fwsignal.c    |  14 -
+ .../broadcom/brcm80211/brcmfmac/p2p.c         |  22 +-
+ .../broadcom/brcm80211/brcmsmac/ampdu.c       |  28 +-
+ .../broadcom/brcm80211/brcmsmac/main.c        |  38 +-
+ .../net/wireless/intel/iwlegacy/4965-calib.c  |   2 +-
+ .../net/wireless/intel/iwlegacy/4965-mac.c    |  55 +--
+ drivers/net/wireless/intel/iwlegacy/4965-rs.c |  10 +-
+ .../net/wireless/intel/iwlwifi/dvm/devices.c  |   8 +-
+ drivers/net/wireless/intel/iwlwifi/dvm/rx.c   |   4 +-
+ drivers/net/wireless/intel/iwlwifi/dvm/rxon.c |   6 +-
+ drivers/net/wireless/intel/iwlwifi/dvm/scan.c |   8 +-
+ drivers/net/wireless/intel/iwlwifi/iwl-drv.c  |   5 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/ops.c  |   9 -
+ drivers/net/wireless/intel/iwlwifi/mvm/tx.c   |   4 +-
+ .../net/wireless/intel/iwlwifi/mvm/utils.c    |   7 +-
+ .../wireless/marvell/mwifiex/sdio-tables.h    | 451 ++++++++++++++++++
+ drivers/net/wireless/marvell/mwifiex/sdio.c   |   1 +
+ drivers/net/wireless/marvell/mwifiex/sdio.h   | 427 -----------------
+ .../net/wireless/mediatek/mt76/mt76x0/init.c  |   1 +
+ .../wireless/mediatek/mt76/mt76x0/initvals.h  | 145 ------
+ .../mediatek/mt76/mt76x0/initvals_init.h      | 159 ++++++
+ .../realtek/rtlwifi/rtl8192c/phy_common.c     |   3 +-
+ drivers/net/wireless/rsi/rsi_91x_coex.c       |   2 +-
+ drivers/net/wireless/rsi/rsi_91x_debugfs.c    |   2 +-
+ drivers/net/wireless/rsi/rsi_91x_mac80211.c   |   1 +
+ drivers/net/wireless/rsi/rsi_91x_mgmt.c       |   3 +
+ drivers/net/wireless/rsi/rsi_91x_ps.c         |   2 +-
+ 36 files changed, 738 insertions(+), 762 deletions(-)
+ create mode 100644 drivers/net/wireless/marvell/mwifiex/sdio-tables.h
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt76x0/initvals_init.h
+
 -- 
-2.27.0
+2.25.1
 
