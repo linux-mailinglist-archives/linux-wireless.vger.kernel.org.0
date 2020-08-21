@@ -2,66 +2,64 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D6E624CEDC
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Aug 2020 09:19:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E5A8324CEE2
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Aug 2020 09:19:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728394AbgHUHTI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 21 Aug 2020 03:19:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33520 "EHLO
+        id S1728427AbgHUHTb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 21 Aug 2020 03:19:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33532 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728101AbgHUHSZ (ORCPT
+        with ESMTP id S1728353AbgHUHSg (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 21 Aug 2020 03:18:25 -0400
-Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95ACBC0612F5
-        for <linux-wireless@vger.kernel.org>; Fri, 21 Aug 2020 00:17:25 -0700 (PDT)
-Received: by mail-wr1-x444.google.com with SMTP id a15so987080wrh.10
-        for <linux-wireless@vger.kernel.org>; Fri, 21 Aug 2020 00:17:25 -0700 (PDT)
+        Fri, 21 Aug 2020 03:18:36 -0400
+Received: from mail-wm1-x344.google.com (mail-wm1-x344.google.com [IPv6:2a00:1450:4864:20::344])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1887C0612FA
+        for <linux-wireless@vger.kernel.org>; Fri, 21 Aug 2020 00:17:26 -0700 (PDT)
+Received: by mail-wm1-x344.google.com with SMTP id 9so815116wmj.5
+        for <linux-wireless@vger.kernel.org>; Fri, 21 Aug 2020 00:17:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=ikJrPqLtaYXNecWR7DLDG7Iz5IzAnzmdF64bzAd6wno=;
-        b=Uy9ndG1aCoadDrvykF3vodVZv3Ha9iFVjXPsA3i8oYjvo0l8Gq7q0QToEG4+lZNVYx
-         RUCevn4X3h3KJEjQ4YdlV4Jn+Zoqq1uICmH/b3JBH7BxsNWidjVJZaNvUB0p6Tkes5uq
-         SW9vkChKipu+8P2b1jWgiTAPvXpPywelv9eetzolSy8okZup6sQT6JqndoAhR5SFnLsE
-         skm5LX8p6nnSvPbte4PiGc2OtJgEppTZlAUVIldNxnxhmeIlH/oJXaUT39maHiqdtVB0
-         z88cjcengpbyYlt3NnV12Xiz68I7iUmdsBqHQli9ehfRc+t2UHAUOx+LQ9BFsDG4jDd+
-         JfGw==
+        bh=0cwQsdufxnc4pN7fsmYo59Iy4Q4AM2Yb3JhbPSf5qiY=;
+        b=R+3m+u3poa/Vn29Opfe2sUchJ/dGM0K1IS/sk+C8FAmSIBMOwznaLCE17D5+pFVYA5
+         97ua2d/r2BghhczYKv1pFMA6GOoYm2qakrcio4F2sKDZmVcQWQJdeez0Q9cbfOEom3yF
+         +p6nO3goFBp6W4KQPfSOxhOqSduWKHh/GCjBWMSC+eKdLvahJBLcukFQ/ZpP12lsLXdJ
+         h7iFDxfCHO3/HFCBKIXeJvEgHocUPdzcdilZAR4u61iZysFIZKHbyiSUcEkkQ8YDtqx1
+         D/KRsgM29hpq/eCylS7UMa0NrUWR9EngC8SYC7n8pgY0rQaH0Y2gdg72UbzhP5bB6wqH
+         aXvw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=ikJrPqLtaYXNecWR7DLDG7Iz5IzAnzmdF64bzAd6wno=;
-        b=VSc9117NLeQkYe7ceuGsCDV3MqRc5o+7IqMgyUf1nWCtM9tdQJpGpw2YrqhzNwJLBi
-         pOBb3OTfVhx1qufkp+tULyMdqWLLLkLevijnsKAbkAtI3tlWJ/l5/4nSnZUacz5vaOIb
-         mQ+D9uZTBqZspofXU8vVTjTR6/tS5cZCJNE7xMD38bAx4syxn4ZIRP4ADO/YcGj5VkdM
-         Co27TfLAu3REQySIHZn9bHMky1nPFwwdGmgY+x5LpTHr/JsoQ7LoVt8aX6uHOvpKFl3B
-         X2WdpJzoz0CbzZDjP458ZyJPOkjsAYSdemPyZHNf+2+ou5xONL4UB/i4jZ5nOe/lvECu
-         xghw==
-X-Gm-Message-State: AOAM531KEFjaRB1s2RlbUrUMx8tbXs9/Qo33pr3qTpwYvEw76VqJvcgC
-        RJZz6u4wLBb8KE/qiVwMuXKCMQ==
-X-Google-Smtp-Source: ABdhPJzk/E+GxnhTpj4IxYEkR/RBbYesDLOTF2cF6bkxcCYQCm8TFkuxP3b/YnXUju6Mh+c+JMO2Vw==
-X-Received: by 2002:adf:9ec5:: with SMTP id b5mr1336455wrf.190.1597994244313;
-        Fri, 21 Aug 2020 00:17:24 -0700 (PDT)
+        bh=0cwQsdufxnc4pN7fsmYo59Iy4Q4AM2Yb3JhbPSf5qiY=;
+        b=cPeFwumCi5kLQisjRTVuY3GED8pBLFrkTSB25+2YiQ17puPg/9ITFGDmgG6GlNLTGY
+         s/EjWj/0nnBYFcwC0h4iQt1WLrzTrHOKFAsU3OH98UZCryI4hWmlGUMbiIdoX9pH1JuO
+         UfPWZI3SAQBNtUNGb6XUeCaP1UBY9acz8qTU80H53V06zROazWSOLoQpONYZBActIY08
+         +G7xVBH/EDajcFLg7GHHO0Ph/fqbjQHu6wAlzIo4WY7KU5EVtr+/yVpAMwDT6FDxSCQh
+         fAn2bo8OhB5KjFwZXKIh5xsPxGpIZO1QsJkBR8nqyGgI/4qhlgIKkVQExnupCFdF0+of
+         sISg==
+X-Gm-Message-State: AOAM531YBfyTE9tJ/hqf0bVzdGyb+mP2fLWyqzt4xLxG26Z6g5hbyf9C
+        u53/uEVTnMTJKZneV1neu4Iaag==
+X-Google-Smtp-Source: ABdhPJxnf3HC2s0HKGnW6c6zYLCClp7mgrSXqP4FJ4Vl76ue4Po6Vwg/9QmaJDgogtgQq16QkVswRA==
+X-Received: by 2002:a1c:2dcb:: with SMTP id t194mr2235144wmt.94.1597994245415;
+        Fri, 21 Aug 2020 00:17:25 -0700 (PDT)
 Received: from dell.default ([95.149.164.62])
-        by smtp.gmail.com with ESMTPSA id y24sm2667957wmi.17.2020.08.21.00.17.23
+        by smtp.gmail.com with ESMTPSA id y24sm2667957wmi.17.2020.08.21.00.17.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Aug 2020 00:17:23 -0700 (PDT)
+        Fri, 21 Aug 2020 00:17:24 -0700 (PDT)
 From:   Lee Jones <lee.jones@linaro.org>
 To:     kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org
 Cc:     linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
         netdev@vger.kernel.org, Lee Jones <lee.jones@linaro.org>,
-        Ping-Ke Shih <pkshih@realtek.com>,
-        zhengbin <zhengbin13@huawei.com>
-Subject: [PATCH 29/32] wireless: realtek: rtl8192c: phy_common: Remove unused variable 'bbvalue'
-Date:   Fri, 21 Aug 2020 08:16:41 +0100
-Message-Id: <20200821071644.109970-30-lee.jones@linaro.org>
+        Maya Erez <merez@codeaurora.org>, wil6210@qti.qualcomm.com
+Subject: [PATCH 30/32] wireless: ath: wil6210: pmc: Demote a few nonconformant kernel-doc function headers
+Date:   Fri, 21 Aug 2020 08:16:42 +0100
+Message-Id: <20200821071644.109970-31-lee.jones@linaro.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200821071644.109970-1-lee.jones@linaro.org>
 References: <20200821071644.109970-1-lee.jones@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
@@ -70,37 +68,69 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 Fixes the following W=1 kernel build warning(s):
 
- drivers/net/wireless/realtek/rtlwifi/rtl8192c/phy_common.c: In function ‘_rtl92c_phy_iq_calibrate’:
- drivers/net/wireless/realtek/rtlwifi/rtl8192c/phy_common.c:1223:6: warning: variable ‘bbvalue’ set but not used [-Wunused-but-set-variable]
+ drivers/net/wireless/ath/wil6210/pmc.c:43: warning: Function parameter or member 'wil' not described in 'wil_pmc_alloc'
+ drivers/net/wireless/ath/wil6210/pmc.c:43: warning: Function parameter or member 'num_descriptors' not described in 'wil_pmc_alloc'
+ drivers/net/wireless/ath/wil6210/pmc.c:43: warning: Function parameter or member 'descriptor_size' not described in 'wil_pmc_alloc'
+ drivers/net/wireless/ath/wil6210/pmc.c:229: warning: Function parameter or member 'wil' not described in 'wil_pmc_free'
+ drivers/net/wireless/ath/wil6210/pmc.c:229: warning: Function parameter or member 'send_pmc_cmd' not described in 'wil_pmc_free'
+ drivers/net/wireless/ath/wil6210/pmc.c:307: warning: Function parameter or member 'wil' not described in 'wil_pmc_last_cmd_status'
+ drivers/net/wireless/ath/wil6210/pmc.c:320: warning: Function parameter or member 'filp' not described in 'wil_pmc_read'
+ drivers/net/wireless/ath/wil6210/pmc.c:320: warning: Function parameter or member 'buf' not described in 'wil_pmc_read'
+ drivers/net/wireless/ath/wil6210/pmc.c:320: warning: Function parameter or member 'count' not described in 'wil_pmc_read'
+ drivers/net/wireless/ath/wil6210/pmc.c:320: warning: Function parameter or member 'f_pos' not described in 'wil_pmc_read'
 
-Cc: Ping-Ke Shih <pkshih@realtek.com>
+Cc: Maya Erez <merez@codeaurora.org>
 Cc: Kalle Valo <kvalo@codeaurora.org>
 Cc: "David S. Miller" <davem@davemloft.net>
 Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: zhengbin <zhengbin13@huawei.com>
 Cc: linux-wireless@vger.kernel.org
+Cc: wil6210@qti.qualcomm.com
 Cc: netdev@vger.kernel.org
 Signed-off-by: Lee Jones <lee.jones@linaro.org>
 ---
- drivers/net/wireless/realtek/rtlwifi/rtl8192c/phy_common.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/net/wireless/ath/wil6210/pmc.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192c/phy_common.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192c/phy_common.c
-index 661249d618c09..70706d51805da 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192c/phy_common.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192c/phy_common.c
-@@ -1220,10 +1220,9 @@ static void _rtl92c_phy_iq_calibrate(struct ieee80211_hw *hw,
- 		0x522, 0x550, 0x551, 0x040
- 	};
- 	const u32 retrycount = 2;
--	u32 bbvalue;
+diff --git a/drivers/net/wireless/ath/wil6210/pmc.c b/drivers/net/wireless/ath/wil6210/pmc.c
+index 9b4ca6b256d26..783107cb6f54a 100644
+--- a/drivers/net/wireless/ath/wil6210/pmc.c
++++ b/drivers/net/wireless/ath/wil6210/pmc.c
+@@ -29,7 +29,7 @@ void wil_pmc_init(struct wil6210_priv *wil)
+ 	mutex_init(&wil->pmc.lock);
+ }
  
- 	if (t == 0) {
--		bbvalue = rtl_get_bbreg(hw, 0x800, MASKDWORD);
-+		rtl_get_bbreg(hw, 0x800, MASKDWORD);
+-/**
++/*
+  * Allocate the physical ring (p-ring) and the required
+  * number of descriptors of required size.
+  * Initialize the descriptors as required by pmc dma.
+@@ -221,7 +221,7 @@ void wil_pmc_alloc(struct wil6210_priv *wil,
+ 	mutex_unlock(&pmc->lock);
+ }
  
- 		_rtl92c_phy_save_adda_registers(hw, adda_reg,
- 						rtlphy->adda_backup, 16);
+-/**
++/*
+  * Traverse the p-ring and release all buffers.
+  * At the end release the p-ring memory
+  */
+@@ -299,7 +299,7 @@ void wil_pmc_free(struct wil6210_priv *wil, int send_pmc_cmd)
+ 	mutex_unlock(&pmc->lock);
+ }
+ 
+-/**
++/*
+  * Status of the last operation requested via debugfs: alloc/free/read.
+  * 0 - success or negative errno
+  */
+@@ -311,7 +311,7 @@ int wil_pmc_last_cmd_status(struct wil6210_priv *wil)
+ 	return wil->pmc.last_cmd_status;
+ }
+ 
+-/**
++/*
+  * Read from required position up to the end of current descriptor,
+  * depends on descriptor size configured during alloc request.
+  */
 -- 
 2.25.1
 
