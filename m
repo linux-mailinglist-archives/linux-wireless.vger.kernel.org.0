@@ -2,89 +2,94 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A732F24D082
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Aug 2020 10:28:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A82A824D0C3
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Aug 2020 10:49:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727772AbgHUI2P (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 21 Aug 2020 04:28:15 -0400
-Received: from www262.sakura.ne.jp ([202.181.97.72]:49964 "EHLO
-        www262.sakura.ne.jp" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725965AbgHUI2O (ORCPT
+        id S1727902AbgHUItg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 21 Aug 2020 04:49:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47914 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726243AbgHUItc (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 21 Aug 2020 04:28:14 -0400
-Received: from fsav405.sakura.ne.jp (fsav405.sakura.ne.jp [133.242.250.104])
-        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 07L8RP4f093330;
-        Fri, 21 Aug 2020 17:27:25 +0900 (JST)
-        (envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
-Received: from www262.sakura.ne.jp (202.181.97.72)
- by fsav405.sakura.ne.jp (F-Secure/fsigk_smtp/550/fsav405.sakura.ne.jp);
- Fri, 21 Aug 2020 17:27:25 +0900 (JST)
-X-Virus-Status: clean(F-Secure/fsigk_smtp/550/fsav405.sakura.ne.jp)
-Received: from localhost.localdomain (M106072142033.v4.enabler.ne.jp [106.72.142.33])
-        (authenticated bits=0)
-        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTPSA id 07L8RILL093307
-        (version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-        Fri, 21 Aug 2020 17:27:25 +0900 (JST)
-        (envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
-From:   Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-To:     Ganapathi Bhat <ganapathi.bhat@nxp.com>,
-        Brian Norris <briannorris@chromium.org>
-Cc:     amitkarwar@gmail.com, andreyknvl@google.com, davem@davemloft.net,
-        dvyukov@google.com, huxinming820@gmail.com, kvalo@codeaurora.org,
-        linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        nishants@marvell.com, syzkaller-bugs@googlegroups.com,
-        syzbot <syzbot+373e6719b49912399d21@syzkaller.appspotmail.com>,
-        Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-        syzbot <syzbot+dc4127f950da51639216@syzkaller.appspotmail.com>
-Subject: [PATCH v2] mwifiex: don't call del_timer_sync() on uninitialized timer
-Date:   Fri, 21 Aug 2020 17:27:19 +0900
-Message-Id: <20200821082720.7716-1-penguin-kernel@I-love.SAKURA.ne.jp>
-X-Mailer: git-send-email 2.18.4
-In-Reply-To: <MN2PR18MB2637D7C742BC235FE38367F0A09C0@MN2PR18MB2637.namprd18.prod.outlook.com>
-References: <MN2PR18MB2637D7C742BC235FE38367F0A09C0@MN2PR18MB2637.namprd18.prod.outlook.com>
+        Fri, 21 Aug 2020 04:49:32 -0400
+Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20FB2C061385
+        for <linux-wireless@vger.kernel.org>; Fri, 21 Aug 2020 01:49:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject
+        :Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=AOnXIogeXZYi6SSNrogikUVvDl/uxvBl8vz5fnpP04k=; b=OYeY8FAsVHMff5BtS7Qu2TKYYx
+        ZI7Ddokh5S2dzgimDsoZGpHr1nWU2UGJRh2E1Qi2/nD34yy7KN3DaBunLdqiEcMrdkFrVNgbrbdIw
+        1rfzV2QYDOePx0aOULkv7bUXNhTSnfmMHG4/LksSmSg1sg53dSeoxlimE1EvFYAg+ip8=;
+Received: from p5b206497.dip0.t-ipconnect.de ([91.32.100.151] helo=localhost.localdomain)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_CBC_SHA1:128)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1k92jo-0005lO-QX; Fri, 21 Aug 2020 10:49:28 +0200
+From:   Felix Fietkau <nbd@nbd.name>
+To:     linux-wireless@vger.kernel.org
+Cc:     johannes@sipsolutions.net
+Subject: [PATCH v3 00/13] mac80211 encapsulation offload / performance patches
+Date:   Fri, 21 Aug 2020 10:49:13 +0200
+Message-Id: <20200821084926.10650-1-nbd@nbd.name>
+X-Mailer: git-send-email 2.28.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-syzbot is reporting that del_timer_sync() is called from
-mwifiex_usb_cleanup_tx_aggr() from mwifiex_unregister_dev() without
-checking timer_setup() from mwifiex_usb_tx_init() was called [1].
+v3:
+- fix sta pointer and skb info pointer in ieee80211_tx_status_ext skb free patch
 
-Ganapathi Bhat proposed a possibly cleaner fix, but it seems that
-that fix was forgotten [2].
+v2:
+- add cover letter
+- fix netdev ops for vlan interfaces
+- make multicast traffic fall back to non-offload path to support sw crypto
+- use ieee80211_tx_status_ext as replacements for ieee80211_free_txskb
+  (the latter does not work with encap offload packets)
+- add api for bulk free after tx status
 
-"grep -FrB1 'del_timer' drivers/ | grep -FA1 '.function)'" says that
-currently there are 28 locations which call del_timer[_sync]() only if
-that timer's function field was initialized (because timer_setup() sets
-that timer's function field). Therefore, let's use same approach here.
 
-[1] https://syzkaller.appspot.com/bug?id=26525f643f454dd7be0078423e3cdb0d57744959
-[2] https://lkml.kernel.org/r/CA+ASDXMHt2gq9Hy+iP_BYkWXsSreWdp3_bAfMkNcuqJ3K+-jbQ@mail.gmail.com
+Felix Fietkau (13):
+  mac80211: rework tx encapsulation offload API
+  mac80211: reduce duplication in tx status functions
+  mac80211: remove tx status call to ieee80211_sta_register_airtime
+  mac80211: optimize station connection monitor
+  mac80211: swap NEED_TXPROCESSING and HW_80211_ENCAP tx flags
+  mac80211: unify 802.3 (offload) and 802.11 tx status codepath
+  mac80211: add missing queue/hash initialization to 802.3 xmit
+  mac80211: check and refresh aggregation session in encap offload tx
+  mac80211: support using ieee80211_tx_status_ext to free skbs without
+    status info
+  mac80211: extend ieee80211_tx_status_ext to support bulk free
+  mac80211: notify the driver when a sta uses 4-address mode
+  mac80211: skip encap offload for tx multicast/control packets
+  mac80211: set info->control.hw_key for encap offload packets
 
-Reported-by: syzbot <syzbot+dc4127f950da51639216@syzkaller.appspotmail.com>
-Cc: Ganapathi Bhat <ganapathi.bhat@nxp.com>
-Cc: Brian Norris <briannorris@chromium.org>
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
----
- drivers/net/wireless/marvell/mwifiex/usb.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath11k/dp_tx.c |   4 +-
+ drivers/net/wireless/ath/ath11k/mac.c   |  61 ++++---
+ include/net/mac80211.h                  |  49 +++++-
+ net/mac80211/cfg.c                      |   6 +
+ net/mac80211/debugfs.c                  |   1 +
+ net/mac80211/driver-ops.h               |  29 ++++
+ net/mac80211/ieee80211_i.h              |   5 +-
+ net/mac80211/iface.c                    | 204 ++++++++++++++++------
+ net/mac80211/key.c                      |  23 +--
+ net/mac80211/mesh_hwmp.c                |   4 +-
+ net/mac80211/mesh_ps.c                  |   2 +-
+ net/mac80211/mlme.c                     |  56 +++---
+ net/mac80211/rx.c                       |  11 +-
+ net/mac80211/sta_info.h                 |   2 -
+ net/mac80211/status.c                   | 218 +++++++++---------------
+ net/mac80211/trace.h                    |  33 ++++
+ net/mac80211/tx.c                       |  96 +++++------
+ 17 files changed, 451 insertions(+), 353 deletions(-)
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/usb.c b/drivers/net/wireless/marvell/mwifiex/usb.c
-index 6f3cfde4654c..426e39d4ccf0 100644
---- a/drivers/net/wireless/marvell/mwifiex/usb.c
-+++ b/drivers/net/wireless/marvell/mwifiex/usb.c
-@@ -1353,7 +1353,8 @@ static void mwifiex_usb_cleanup_tx_aggr(struct mwifiex_adapter *adapter)
- 				skb_dequeue(&port->tx_aggr.aggr_list)))
- 				mwifiex_write_data_complete(adapter, skb_tmp,
- 							    0, -1);
--		del_timer_sync(&port->tx_aggr.timer_cnxt.hold_timer);
-+		if (port->tx_aggr.timer_cnxt.hold_timer.function)
-+			del_timer_sync(&port->tx_aggr.timer_cnxt.hold_timer);
- 		port->tx_aggr.timer_cnxt.is_hold_timer_set = false;
- 		port->tx_aggr.timer_cnxt.hold_tmo_msecs = 0;
- 	}
 -- 
-2.18.4
+2.28.0
 
