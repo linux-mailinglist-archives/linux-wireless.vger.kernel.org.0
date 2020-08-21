@@ -2,42 +2,41 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 09F8B24CD85
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Aug 2020 08:02:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4021624CDAF
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Aug 2020 08:06:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727082AbgHUGCE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 21 Aug 2020 02:02:04 -0400
-Received: from mail.kernel.org ([198.145.29.99]:53122 "EHLO mail.kernel.org"
+        id S1726239AbgHUGGG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 21 Aug 2020 02:06:06 -0400
+Received: from mail.kernel.org ([198.145.29.99]:58260 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725268AbgHUGCC (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 21 Aug 2020 02:02:02 -0400
+        id S1725867AbgHUGGA (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 21 Aug 2020 02:06:00 -0400
 Received: from embeddedor (187-162-31-110.static.axtel.net [187.162.31.110])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 7DBF3207DA;
-        Fri, 21 Aug 2020 06:02:00 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 6E25D207DA;
+        Fri, 21 Aug 2020 06:05:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1597989721;
-        bh=RL2kB1qW+T6kXdM6zLOpMVYt13gSjORoiUbt1H23+vY=;
+        s=default; t=1597989958;
+        bh=59Bhlg03bophqCjhTvXtoOFm/L0sB/uyuECPf6berIs=;
         h=Date:From:To:Cc:Subject:From;
-        b=Z9C//bmM2g7aRchQxAjb7DiBdBofi3otaExWunuzrxg8l/ElAiGwExx8tWw1S2iiT
-         26qylZcyX00rTKvxCdjGUvszgtYzH7/E1TCIVDagl3tosIOFESW0V/j9gHbFSpX4nR
-         Lg/DY+uKsHCabQ60JJq5D2SByWuTlxprMkgm5S8E=
-Date:   Fri, 21 Aug 2020 01:07:48 -0500
+        b=NwSOydEuElShglZkcANik6Ec+qKCU4ZLgxu0vHQZxJQqfvQdvpIdP7oLlA6ljM88H
+         rJE7c1kIgmjRSKukoshBZNdd45YdLefdC8mnRsf5Ergp8XawCZFXzyZI8y0xKJ5HaT
+         5gPPq9u91BiPg6obEjQhNuAkSc61Jxfac9QWuc2k=
+Date:   Fri, 21 Aug 2020 01:11:45 -0500
 From:   "Gustavo A. R. Silva" <gustavoars@kernel.org>
-To:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
+To:     Johannes Berg <johannes.berg@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        Intel Linux Wireless <linuxwifi@intel.com>,
         Kalle Valo <kvalo@codeaurora.org>,
         "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>
+        Jakub Kicinski <kuba@kernel.org>
 Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
         "Gustavo A. R. Silva" <gustavoars@kernel.org>
-Subject: [PATCH][next] mediatek: Use fallthrough pseudo-keyword
-Message-ID: <20200821060748.GA2483@embeddedor>
+Subject: [PATCH][next] iwlwifi: Use fallthrough pseudo-keyword
+Message-ID: <20200821061145.GA2859@embeddedor>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -48,282 +47,303 @@ List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 Replace the existing /* fall through */ comments and its variants with
-the new pseudo-keyword macro fallthrough[1]. Also, remove unnecessary
-fall-through markings when it is the case.
+the new pseudo-keyword macro fallthrough[1].
 
 [1] https://www.kernel.org/doc/html/v5.7/process/deprecated.html?highlight=fallthrough#implicit-switch-case-fall-through
 
 Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7603/dma.c     | 2 +-
- drivers/net/wireless/mediatek/mt76/mt7603/mac.c     | 4 ++--
- drivers/net/wireless/mediatek/mt76/mt7615/mac.c     | 6 +++---
- drivers/net/wireless/mediatek/mt76/mt7615/mcu.c     | 2 +-
- drivers/net/wireless/mediatek/mt76/mt76x0/phy.c     | 2 +-
- drivers/net/wireless/mediatek/mt76/mt76x02_mac.c    | 6 +++---
- drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c | 1 -
- drivers/net/wireless/mediatek/mt76/mt7915/dma.c     | 2 +-
- drivers/net/wireless/mediatek/mt76/mt7915/mac.c     | 4 ++--
- drivers/net/wireless/mediatek/mt76/mt7915/mcu.c     | 2 +-
- drivers/net/wireless/mediatek/mt76/usb.c            | 2 +-
- drivers/net/wireless/mediatek/mt7601u/dma.c         | 4 ++--
- drivers/net/wireless/mediatek/mt7601u/mac.c         | 4 ++--
- drivers/net/wireless/mediatek/mt7601u/phy.c         | 2 +-
- 14 files changed, 21 insertions(+), 22 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/dvm/mac80211.c |  2 +-
+ drivers/net/wireless/intel/iwlwifi/dvm/rx.c       |  6 +++---
+ drivers/net/wireless/intel/iwlwifi/dvm/scan.c     |  2 +-
+ drivers/net/wireless/intel/iwlwifi/dvm/sta.c      |  2 +-
+ drivers/net/wireless/intel/iwlwifi/dvm/tx.c       |  2 +-
+ drivers/net/wireless/intel/iwlwifi/iwl-drv.c      |  2 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/led.c      |  2 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c |  2 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c |  2 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/phy-ctxt.c |  2 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/rx.c       |  2 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c     |  8 ++++----
+ drivers/net/wireless/intel/iwlwifi/mvm/scan.c     |  2 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/sta.c      | 10 +++++-----
+ drivers/net/wireless/intel/iwlwifi/mvm/tx.c       |  4 ++--
+ 15 files changed, 25 insertions(+), 25 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/dma.c b/drivers/net/wireless/mediatek/mt76/mt7603/dma.c
-index a08b85281170..1dfcd7407535 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7603/dma.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7603/dma.c
-@@ -123,7 +123,7 @@ void mt7603_queue_rx_skb(struct mt76_dev *mdev, enum mt76_rxq_id q,
- 			mt76_rx(&dev->mt76, q, skb);
- 			return;
+diff --git a/drivers/net/wireless/intel/iwlwifi/dvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/dvm/mac80211.c
+index 423d3c396b2d..75e7665773c5 100644
+--- a/drivers/net/wireless/intel/iwlwifi/dvm/mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/dvm/mac80211.c
+@@ -619,7 +619,7 @@ static int iwlagn_mac_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
+ 	switch (key->cipher) {
+ 	case WLAN_CIPHER_SUITE_TKIP:
+ 		key->flags |= IEEE80211_KEY_FLAG_GENERATE_MMIC;
+-		/* fall through */
++		fallthrough;
+ 	case WLAN_CIPHER_SUITE_CCMP:
+ 		key->flags |= IEEE80211_KEY_FLAG_GENERATE_IV;
+ 		break;
+diff --git a/drivers/net/wireless/intel/iwlwifi/dvm/rx.c b/drivers/net/wireless/intel/iwlwifi/dvm/rx.c
+index 673d60784bfa..e16589018ebb 100644
+--- a/drivers/net/wireless/intel/iwlwifi/dvm/rx.c
++++ b/drivers/net/wireless/intel/iwlwifi/dvm/rx.c
+@@ -582,7 +582,7 @@ static int iwlagn_set_decrypted_flag(struct iwl_priv *priv,
+ 		if ((decrypt_res & RX_RES_STATUS_DECRYPT_TYPE_MSK) ==
+ 		    RX_RES_STATUS_BAD_KEY_TTAK)
+ 			break;
+-		/* fall through */
++		fallthrough;
+ 	case RX_RES_STATUS_SEC_TYPE_WEP:
+ 		if ((decrypt_res & RX_RES_STATUS_DECRYPT_TYPE_MSK) ==
+ 		    RX_RES_STATUS_BAD_ICV_MIC) {
+@@ -591,7 +591,7 @@ static int iwlagn_set_decrypted_flag(struct iwl_priv *priv,
+ 			IWL_DEBUG_RX(priv, "Packet destroyed\n");
+ 			return -1;
+ 		}
+-		/* fall through */
++		fallthrough;
+ 	case RX_RES_STATUS_SEC_TYPE_CCMP:
+ 		if ((decrypt_res & RX_RES_STATUS_DECRYPT_TYPE_MSK) ==
+ 		    RX_RES_STATUS_DECRYPT_OK) {
+@@ -720,7 +720,7 @@ static u32 iwlagn_translate_rx_status(struct iwl_priv *priv, u32 decrypt_in)
+ 			decrypt_out |= RX_RES_STATUS_BAD_KEY_TTAK;
+ 			break;
  		}
 -		/* fall through */
 +		fallthrough;
  	default:
- 		dev_kfree_skb(skb);
- 		break;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/mac.c b/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
-index 8060c1514396..95602cbef3c3 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
-@@ -592,7 +592,7 @@ mt7603_mac_fill_rx(struct mt7603_dev *dev, struct sk_buff *skb)
- 		switch (FIELD_GET(MT_RXV1_TX_MODE, rxdg0)) {
- 		case MT_PHY_TYPE_CCK:
- 			cck = true;
--			/* fall through */
-+			fallthrough;
- 		case MT_PHY_TYPE_OFDM:
- 			i = mt76_get_rate(&dev->mt76, sband, i, cck);
- 			break;
-@@ -1161,7 +1161,7 @@ mt7603_fill_txs(struct mt7603_dev *dev, struct mt7603_sta *sta,
- 	switch (FIELD_GET(MT_TX_RATE_MODE, final_rate)) {
- 	case MT_PHY_TYPE_CCK:
- 		cck = true;
+ 		if (!(decrypt_in & RX_MPDU_RES_STATUS_ICV_OK))
+ 			decrypt_out |= RX_RES_STATUS_BAD_ICV_MIC;
+diff --git a/drivers/net/wireless/intel/iwlwifi/dvm/scan.c b/drivers/net/wireless/intel/iwlwifi/dvm/scan.c
+index 1d8590046ff7..0eecc2afcf4d 100644
+--- a/drivers/net/wireless/intel/iwlwifi/dvm/scan.c
++++ b/drivers/net/wireless/intel/iwlwifi/dvm/scan.c
+@@ -406,7 +406,7 @@ static u16 iwl_limit_dwell(struct iwl_priv *priv, u16 dwell_time)
+ 		limit = (limits[1] * 98) / 100 - IWL_CHANNEL_TUNE_TIME * 2;
+ 		limit /= 2;
+ 		dwell_time = min(limit, dwell_time);
 -		/* fall through */
 +		fallthrough;
- 	case MT_PHY_TYPE_OFDM:
- 		if (dev->mphy.chandef.chan->band == NL80211_BAND_5GHZ)
- 			sband = &dev->mphy.sband_5g.sband;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-index 3dd8dd28690e..60be7f409470 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-@@ -378,7 +378,7 @@ static int mt7615_mac_fill_rx(struct mt7615_dev *dev, struct sk_buff *skb)
- 		switch (FIELD_GET(MT_RXV1_TX_MODE, rxdg0)) {
- 		case MT_PHY_TYPE_CCK:
- 			cck = true;
--			/* fall through */
-+			fallthrough;
- 		case MT_PHY_TYPE_OFDM:
- 			i = mt76_get_rate(&dev->mt76, sband, i, cck);
- 			break;
-@@ -1271,7 +1271,7 @@ static bool mt7615_fill_txs(struct mt7615_dev *dev, struct mt7615_sta *sta,
- 	switch (FIELD_GET(MT_TX_RATE_MODE, final_rate)) {
- 	case MT_PHY_TYPE_CCK:
- 		cck = true;
--		/* fall through */
-+		fallthrough;
- 	case MT_PHY_TYPE_OFDM:
- 		mphy = &dev->mphy;
- 		if (sta->wcid.ext_phy && dev->mt76.phy2)
-@@ -1478,7 +1478,7 @@ void mt7615_queue_rx_skb(struct mt76_dev *mdev, enum mt76_rxq_id q,
- 			mt76_rx(&dev->mt76, q, skb);
- 			return;
- 		}
--		/* fall through */
-+		fallthrough;
- 	default:
- 		dev_kfree_skb(skb);
- 		break;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-index d0cbb283982f..745133b6b7af 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-@@ -3278,7 +3278,7 @@ static int mt7615_dcoc_freq_idx(u16 freq, u8 bw)
- 			freq = freq_bw40[idx];
- 			break;
- 		}
--		/* fall through */
-+		fallthrough;
- 	case NL80211_CHAN_WIDTH_40:
- 		idx = mt7615_find_freq_idx(freq_bw40, ARRAY_SIZE(freq_bw40),
- 					   freq);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x0/phy.c b/drivers/net/wireless/mediatek/mt76/mt76x0/phy.c
-index 09f34deb6ba1..3de33aadf794 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x0/phy.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x0/phy.c
-@@ -734,7 +734,7 @@ mt76x0_phy_get_delta_power(struct mt76x02_dev *dev, u8 tx_mode,
  	case 1:
- 		if (chan->band == NL80211_BAND_2GHZ)
- 			tssi_target += 29491; /* 3.6 * 8192 */
+ 		limit = (limits[0] * 98) / 100 - IWL_CHANNEL_TUNE_TIME * 2;
+ 		limit /= n_active;
+diff --git a/drivers/net/wireless/intel/iwlwifi/dvm/sta.c b/drivers/net/wireless/intel/iwlwifi/dvm/sta.c
+index 51158edce15b..d49c46914275 100644
+--- a/drivers/net/wireless/intel/iwlwifi/dvm/sta.c
++++ b/drivers/net/wireless/intel/iwlwifi/dvm/sta.c
+@@ -1109,7 +1109,7 @@ static int iwlagn_send_sta_key(struct iwl_priv *priv,
+ 		break;
+ 	case WLAN_CIPHER_SUITE_WEP104:
+ 		key_flags |= STA_KEY_FLG_KEY_SIZE_MSK;
 -		/* fall through */
 +		fallthrough;
- 	case 0:
+ 	case WLAN_CIPHER_SUITE_WEP40:
+ 		key_flags |= STA_KEY_FLG_WEP;
+ 		memcpy(&sta_cmd.key.key[3], keyconf->key, keyconf->keylen);
+diff --git a/drivers/net/wireless/intel/iwlwifi/dvm/tx.c b/drivers/net/wireless/intel/iwlwifi/dvm/tx.c
+index fd454836adbe..52c682dd5957 100644
+--- a/drivers/net/wireless/intel/iwlwifi/dvm/tx.c
++++ b/drivers/net/wireless/intel/iwlwifi/dvm/tx.c
+@@ -210,7 +210,7 @@ static void iwlagn_tx_cmd_build_hwcrypto(struct iwl_priv *priv,
+ 
+ 	case WLAN_CIPHER_SUITE_WEP104:
+ 		tx_cmd->sec_ctl |= TX_CMD_SEC_KEY128;
+-		/* fall through */
++		fallthrough;
+ 	case WLAN_CIPHER_SUITE_WEP40:
+ 		tx_cmd->sec_ctl |= (TX_CMD_SEC_WEP |
+ 			(keyconf->keyidx & TX_CMD_SEC_MSK) << TX_CMD_SEC_SHIFT);
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
+index 04f14bfdd091..1a7bc29d1a72 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
+@@ -1561,7 +1561,7 @@ static void iwl_req_fw_callback(const struct firmware *ucode_raw, void *context)
  		break;
  	default:
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_mac.c b/drivers/net/wireless/mediatek/mt76/mt76x02_mac.c
-index e4e03beabe43..11900bcc1be0 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x02_mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x02_mac.c
-@@ -300,7 +300,7 @@ mt76x02_mac_process_tx_rate(struct ieee80211_tx_rate *txrate, u16 rate,
- 		return 0;
- 	case MT_PHY_TYPE_HT_GF:
- 		txrate->flags |= IEEE80211_TX_RC_GREEN_FIELD;
+ 		WARN(1, "Invalid fw type %d\n", fw->type);
 -		/* fall through */
 +		fallthrough;
- 	case MT_PHY_TYPE_HT:
- 		txrate->flags |= IEEE80211_TX_RC_MCS;
- 		txrate->idx = idx;
-@@ -462,7 +462,7 @@ mt76x02_tx_rate_fallback(struct ieee80211_tx_rate *rates, int idx, int phy)
- 			rates[1].idx = 0;
+ 	case IWL_FW_MVM:
+ 		op = &iwlwifi_opmode_table[MVM_OP_MODE];
+ 		break;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/led.c b/drivers/net/wireless/intel/iwlwifi/mvm/led.c
+index 72c4b2b8399d..6c910d681a92 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/led.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/led.c
+@@ -115,7 +115,7 @@ int iwl_mvm_leds_init(struct iwl_mvm *mvm)
+ 	switch (mode) {
+ 	case IWL_LED_BLINK:
+ 		IWL_ERR(mvm, "Blink led mode not supported, used default\n");
+-		/* fall through */
++		fallthrough;
+ 	case IWL_LED_DEFAULT:
+ 	case IWL_LED_RF_STATE:
+ 		mode = IWL_LED_RF_STATE;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
+index b78992e341d5..4581edcecd64 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
+@@ -289,7 +289,7 @@ int iwl_mvm_mac_ctxt_init(struct iwl_mvm *mvm, struct ieee80211_vif *vif)
+ 	case NL80211_IFTYPE_STATION:
+ 		if (!vif->p2p)
+ 			break;
+-		/* fall through */
++		fallthrough;
+ 	default:
+ 		__clear_bit(0, data.available_mac_ids);
+ 	}
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+index 9374c85c5caf..e58898951815 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+@@ -4059,7 +4059,7 @@ static int __iwl_mvm_assign_vif_chanctx(struct iwl_mvm *mvm,
+ 			mvmvif->ap_ibss_active = true;
  			break;
  		}
 -		/* fall through */
 +		fallthrough;
+ 	case NL80211_IFTYPE_ADHOC:
+ 		/*
+ 		 * The AP binding flow is handled as part of the start_ap flow
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/phy-ctxt.c b/drivers/net/wireless/intel/iwlwifi/mvm/phy-ctxt.c
+index 0243dbe8ac49..103294969a26 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/phy-ctxt.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/phy-ctxt.c
+@@ -109,7 +109,7 @@ u8 iwl_mvm_get_ctrl_pos(struct cfg80211_chan_def *chandef)
+ 		return PHY_VHT_CTRL_POS_4_ABOVE;
  	default:
- 		rates[1].idx = max_t(int, rates[0].idx - 1, 0);
- 		break;
-@@ -677,7 +677,7 @@ mt76x02_mac_process_rate(struct mt76x02_dev *dev,
- 		return 0;
- 	case MT_PHY_TYPE_HT_GF:
- 		status->enc_flags |= RX_ENC_FLAG_HT_GF;
+ 		WARN(1, "Invalid channel definition");
 -		/* fall through */
 +		fallthrough;
- 	case MT_PHY_TYPE_HT:
- 		status->encoding = RX_ENC_HT;
- 		status->rate_idx = idx;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
-index 38f473d587c9..e7febc982930 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
-@@ -21,7 +21,6 @@ static int mt7915_ser_trigger_set(void *data, u64 val)
- 	switch (val) {
- 	case SER_SET_RECOVER_L1:
- 	case SER_SET_RECOVER_L2:
--		/* fall through */
- 		ret = mt7915_mcu_set_ser(dev, SER_ENABLE, BIT(val), 0);
- 		if (ret)
- 			return ret;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/dma.c b/drivers/net/wireless/mediatek/mt76/mt7915/dma.c
-index a8832c5e6004..12e5a4988d70 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/dma.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/dma.c
-@@ -72,7 +72,7 @@ void mt7915_queue_rx_skb(struct mt76_dev *mdev, enum mt76_rxq_id q,
- 			mt76_rx(&dev->mt76, q, skb);
- 			return;
- 		}
+ 	case 0:
+ 		/*
+ 		 * The FW is expected to check the control channel position only
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rx.c b/drivers/net/wireless/intel/iwlwifi/mvm/rx.c
+index 77b8def26edb..9cf4c8e12a82 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/rx.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/rx.c
+@@ -226,7 +226,7 @@ static u32 iwl_mvm_set_mac80211_rx_flag(struct iwl_mvm *mvm,
+ 		    !(rx_pkt_status & RX_MPDU_RES_STATUS_TTAK_OK))
+ 			return 0;
+ 		*crypt_len = IEEE80211_TKIP_IV_LEN;
 -		/* fall through */
 +		fallthrough;
- 	default:
- 		dev_kfree_skb(skb);
- 		break;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-index 6825afca1efb..4b38e921ad4a 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-@@ -468,7 +468,7 @@ int mt7915_mac_fill_rx(struct mt7915_dev *dev, struct sk_buff *skb)
- 			switch (mode) {
- 			case MT_PHY_TYPE_CCK:
- 				cck = true;
--				/* fall through */
-+				fallthrough;
- 			case MT_PHY_TYPE_OFDM:
- 				i = mt76_get_rate(&dev->mt76, sband, i, cck);
- 				break;
-@@ -487,7 +487,7 @@ int mt7915_mac_fill_rx(struct mt7915_dev *dev, struct sk_buff *skb)
- 				break;
- 			case MT_PHY_TYPE_HE_MU:
- 				status->flag |= RX_FLAG_RADIOTAP_HE_MU;
--				/* fall through */
-+				fallthrough;
- 			case MT_PHY_TYPE_HE_SU:
- 			case MT_PHY_TYPE_HE_EXT_SU:
- 			case MT_PHY_TYPE_HE_TB:
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-index eaed5ef05401..323d0a396755 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-@@ -1407,7 +1407,7 @@ mt7915_mcu_sta_he_tlv(struct sk_buff *skb, struct ieee80211_sta *sta)
  
- 		he->max_nss_mcs[CMD_HE_MCS_BW160] =
- 				he_cap->he_mcs_nss_supp.rx_mcs_160;
+ 	case RX_MPDU_RES_STATUS_SEC_WEP_ENC:
+ 		if (!(rx_pkt_status & RX_MPDU_RES_STATUS_ICV_OK))
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
+index c15f7dbc9516..78f4cc11e2eb 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
+@@ -354,7 +354,7 @@ static int iwl_mvm_rx_crypto(struct iwl_mvm *mvm, struct ieee80211_hdr *hdr,
+ 			stats->flag |= RX_FLAG_MMIC_ERROR;
+ 
+ 		*crypt_len = IEEE80211_TKIP_IV_LEN;
+-		/* fall through */
++		fallthrough;
+ 	case IWL_RX_MPDU_STATUS_SEC_WEP:
+ 		if (!(status & IWL_RX_MPDU_STATUS_ICV_OK))
+ 			return -1;
+@@ -1275,7 +1275,7 @@ static void iwl_mvm_decode_he_phy_data(struct iwl_mvm *mvm,
+ 		he->data4 |= le16_encode_bits(le32_get_bits(phy_data->d2,
+ 							    IWL_RX_PHY_DATA2_HE_TB_EXT_SPTL_REUSE4),
+ 					      IEEE80211_RADIOTAP_HE_DATA4_TB_SPTL_REUSE4);
+-		/* fall through */
++		fallthrough;
+ 	case IWL_RX_PHY_INFO_TYPE_HE_SU:
+ 	case IWL_RX_PHY_INFO_TYPE_HE_MU:
+ 	case IWL_RX_PHY_INFO_TYPE_HE_MU_EXT:
+@@ -1348,7 +1348,7 @@ static void iwl_mvm_decode_he_phy_data(struct iwl_mvm *mvm,
+ 						       IWL_RX_PHY_DATA4_HE_MU_EXT_PREAMBLE_PUNC_TYPE_MASK),
+ 					 IEEE80211_RADIOTAP_HE_MU_FLAGS2_PUNC_FROM_SIG_A_BW);
+ 		iwl_mvm_decode_he_mu_ext(mvm, phy_data, rate_n_flags, he_mu);
+-		/* fall through */
++		fallthrough;
+ 	case IWL_RX_PHY_INFO_TYPE_HE_MU:
+ 		he_mu->flags2 |=
+ 			le16_encode_bits(le32_get_bits(phy_data->d1,
+@@ -1358,7 +1358,7 @@ static void iwl_mvm_decode_he_phy_data(struct iwl_mvm *mvm,
+ 			le16_encode_bits(le32_get_bits(phy_data->d1,
+ 						       IWL_RX_PHY_DATA1_HE_MU_SIGB_COMPRESSION),
+ 					 IEEE80211_RADIOTAP_HE_MU_FLAGS2_SIG_B_COMP);
+-		/* fall through */
++		fallthrough;
+ 	case IWL_RX_PHY_INFO_TYPE_HE_TB:
+ 	case IWL_RX_PHY_INFO_TYPE_HE_TB_EXT:
+ 		iwl_mvm_decode_he_phy_ru_alloc(phy_data, rate_n_flags,
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
+index 51a061b138ba..04ee18e565ba 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
+@@ -2149,7 +2149,7 @@ static int iwl_mvm_check_running_scans(struct iwl_mvm *mvm, int type)
+ 		/* Something is wrong if no scan was running but we
+ 		 * ran out of scans.
+ 		 */
 -		/* fall through */
 +		fallthrough;
  	default:
- 		he->max_nss_mcs[CMD_HE_MCS_BW80] =
- 				he_cap->he_mcs_nss_supp.rx_mcs_80;
-diff --git a/drivers/net/wireless/mediatek/mt76/usb.c b/drivers/net/wireless/mediatek/mt76/usb.c
-index dcab5993763a..aa44b10f69e8 100644
---- a/drivers/net/wireless/mediatek/mt76/usb.c
-+++ b/drivers/net/wireless/mediatek/mt76/usb.c
-@@ -616,7 +616,7 @@ static void mt76u_complete_rx(struct urb *urb)
- 	default:
- 		dev_err_ratelimited(dev->dev, "rx urb failed: %d\n",
- 				    urb->status);
--		/* fall through */
-+		fallthrough;
- 	case 0:
+ 		WARN_ON(1);
  		break;
- 	}
-diff --git a/drivers/net/wireless/mediatek/mt7601u/dma.c b/drivers/net/wireless/mediatek/mt7601u/dma.c
-index f6a0454abe04..09f931d4598c 100644
---- a/drivers/net/wireless/mediatek/mt7601u/dma.c
-+++ b/drivers/net/wireless/mediatek/mt7601u/dma.c
-@@ -196,7 +196,7 @@ static void mt7601u_complete_rx(struct urb *urb)
- 	default:
- 		dev_err_ratelimited(dev->dev, "rx urb failed: %d\n",
- 				    urb->status);
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/sta.c b/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
+index 9e124755a3ce..f4bf102633af 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
+@@ -144,13 +144,13 @@ int iwl_mvm_sta_send_to_fw(struct iwl_mvm *mvm, struct ieee80211_sta *sta,
+ 	switch (sta->bandwidth) {
+ 	case IEEE80211_STA_RX_BW_160:
+ 		add_sta_cmd.station_flags |= cpu_to_le32(STA_FLG_FAT_EN_160MHZ);
 -		/* fall through */
 +		fallthrough;
- 	case 0:
+ 	case IEEE80211_STA_RX_BW_80:
+ 		add_sta_cmd.station_flags |= cpu_to_le32(STA_FLG_FAT_EN_80MHZ);
+-		/* fall through */
++		fallthrough;
+ 	case IEEE80211_STA_RX_BW_40:
+ 		add_sta_cmd.station_flags |= cpu_to_le32(STA_FLG_FAT_EN_40MHZ);
+-		/* fall through */
++		fallthrough;
+ 	case IEEE80211_STA_RX_BW_20:
+ 		if (sta->ht_cap.ht_supported)
+ 			add_sta_cmd.station_flags |=
+@@ -3258,14 +3258,14 @@ static int iwl_mvm_send_sta_key(struct iwl_mvm *mvm,
  		break;
- 	}
-@@ -241,7 +241,7 @@ static void mt7601u_complete_tx(struct urb *urb)
- 	default:
- 		dev_err_ratelimited(dev->dev, "tx urb failed: %d\n",
- 				    urb->status);
+ 	case WLAN_CIPHER_SUITE_WEP104:
+ 		key_flags |= cpu_to_le16(STA_KEY_FLG_WEP_13BYTES);
 -		/* fall through */
 +		fallthrough;
- 	case 0:
+ 	case WLAN_CIPHER_SUITE_WEP40:
+ 		key_flags |= cpu_to_le16(STA_KEY_FLG_WEP);
+ 		memcpy(u.cmd.common.key + 3, key->key, key->keylen);
  		break;
- 	}
-diff --git a/drivers/net/wireless/mediatek/mt7601u/mac.c b/drivers/net/wireless/mediatek/mt7601u/mac.c
-index cad5e81fcf77..d2ee1aaa3c81 100644
---- a/drivers/net/wireless/mediatek/mt7601u/mac.c
-+++ b/drivers/net/wireless/mediatek/mt7601u/mac.c
-@@ -45,7 +45,7 @@ mt76_mac_process_tx_rate(struct ieee80211_tx_rate *txrate, u16 rate)
- 		return;
- 	case MT_PHY_TYPE_HT_GF:
- 		txrate->flags |= IEEE80211_TX_RC_GREEN_FIELD;
+ 	case WLAN_CIPHER_SUITE_GCMP_256:
+ 		key_flags |= cpu_to_le16(STA_KEY_FLG_KEY_32BYTES);
 -		/* fall through */
 +		fallthrough;
- 	case MT_PHY_TYPE_HT:
- 		txrate->flags |= IEEE80211_TX_RC_MCS;
- 		txrate->idx = idx;
-@@ -419,7 +419,7 @@ mt76_mac_process_rate(struct ieee80211_rx_status *status, u16 rate)
- 		return;
- 	case MT_PHY_TYPE_HT_GF:
- 		status->enc_flags |= RX_ENC_FLAG_HT_GF;
+ 	case WLAN_CIPHER_SUITE_GCMP:
+ 		key_flags |= cpu_to_le16(STA_KEY_FLG_GCMP);
+ 		memcpy(u.cmd.common.key, key->key, key->keylen);
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
+index 2f6484e0d726..b536e04a35e6 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
+@@ -459,7 +459,7 @@ static void iwl_mvm_set_tx_cmd_crypto(struct iwl_mvm *mvm,
+ 
+ 	case WLAN_CIPHER_SUITE_WEP104:
+ 		tx_cmd->sec_ctl |= TX_CMD_SEC_KEY128;
 -		/* fall through */
 +		fallthrough;
- 	case MT_PHY_TYPE_HT:
- 		status->encoding = RX_ENC_HT;
- 		status->rate_idx = idx;
-diff --git a/drivers/net/wireless/mediatek/mt7601u/phy.c b/drivers/net/wireless/mediatek/mt7601u/phy.c
-index d863ab4a66c9..430ae4c1d7db 100644
---- a/drivers/net/wireless/mediatek/mt7601u/phy.c
-+++ b/drivers/net/wireless/mediatek/mt7601u/phy.c
-@@ -787,7 +787,7 @@ mt7601u_phy_rf_pa_mode_val(struct mt7601u_dev *dev, int phy_mode, int tx_rate)
- 	switch (phy_mode) {
- 	case MT_PHY_TYPE_OFDM:
- 		tx_rate += 4;
--		/* fall through */
+ 	case WLAN_CIPHER_SUITE_WEP40:
+ 		tx_cmd->sec_ctl |= TX_CMD_SEC_WEP |
+ 			((keyconf->keyidx << TX_CMD_SEC_WEP_KEY_IDX_POS) &
+@@ -470,7 +470,7 @@ static void iwl_mvm_set_tx_cmd_crypto(struct iwl_mvm *mvm,
+ 	case WLAN_CIPHER_SUITE_GCMP:
+ 	case WLAN_CIPHER_SUITE_GCMP_256:
+ 		type = TX_CMD_SEC_GCMP;
+-		/* Fall through */
 +		fallthrough;
- 	case MT_PHY_TYPE_CCK:
- 		reg = dev->rf_pa_mode[0];
- 		break;
+ 	case WLAN_CIPHER_SUITE_CCMP_256:
+ 		/* TODO: Taking the key from the table might introduce a race
+ 		 * when PTK rekeying is done, having an old packets with a PN
 -- 
 2.27.0
 
