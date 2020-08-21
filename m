@@ -2,39 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 299C624D0E4
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Aug 2020 10:55:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2FD7424D0E3
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Aug 2020 10:55:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727846AbgHUIzE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 21 Aug 2020 04:55:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48782 "EHLO
+        id S1727921AbgHUIy7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 21 Aug 2020 04:54:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48770 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726062AbgHUIzD (ORCPT
+        with ESMTP id S1726661AbgHUIy7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 21 Aug 2020 04:55:03 -0400
+        Fri, 21 Aug 2020 04:54:59 -0400
 Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9CCEC061385
-        for <linux-wireless@vger.kernel.org>; Fri, 21 Aug 2020 01:55:03 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2DFAC061385
+        for <linux-wireless@vger.kernel.org>; Fri, 21 Aug 2020 01:54:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
          s=20160729; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
         Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
         Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
         :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
         List-Post:List-Owner:List-Archive;
-        bh=tYmGpit2WzdR714I533v7RCEMSRHkF01kQPnAt4kQlw=; b=FoLh2wRx1AdUSPSgtIcJD2p/Le
-        0GFYVoq2NEca89L02EAN1EkC1P9ZIbKHe/fx8h9i1BDvwISSM0QOgbJPxZwEzumaYv+c51B2SgIOt
-        A+fvS5RIKNaZjqojMm1NhClJj8lww+eonsKAAMPEpe+iaZfziJWAxLdrDqruSeF0FakY=;
+        bh=RaJjGRXkc8NkBwisJdPioknalkzGou4ilt0uYm6XxvY=; b=LITMTDv7aaEA3PBxxuS09tIDdA
+        C9xOKReL+FVaiCK1Jk3cD7ezsDkaSir7pp4H55P+GmRPIpBLJaPoq/DYu5S9clr/2GGY9yud079LU
+        OeKE2h5taCX9RGNp2+SmUJpcBDE5190SpSRUkVczjUkhv4Yzda37cpEyd3YTQvyboZ5U=;
 Received: from p5b206497.dip0.t-ipconnect.de ([91.32.100.151] helo=localhost.localdomain)
         by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_CBC_SHA1:128)
         (Exim 4.89)
         (envelope-from <nbd@nbd.name>)
-        id 1k92jr-0005lO-5X; Fri, 21 Aug 2020 10:49:31 +0200
+        id 1k92jr-0005lO-CG; Fri, 21 Aug 2020 10:49:31 +0200
 From:   Felix Fietkau <nbd@nbd.name>
 To:     linux-wireless@vger.kernel.org
 Cc:     johannes@sipsolutions.net
-Subject: [PATCH v3 11/13] mac80211: notify the driver when a sta uses 4-address mode
-Date:   Fri, 21 Aug 2020 10:49:24 +0200
-Message-Id: <20200821084926.10650-12-nbd@nbd.name>
+Subject: [PATCH v3 12/13] mac80211: skip encap offload for tx multicast/control packets
+Date:   Fri, 21 Aug 2020 10:49:25 +0200
+Message-Id: <20200821084926.10650-13-nbd@nbd.name>
 X-Mailer: git-send-email 2.28.0
 In-Reply-To: <20200821084926.10650-1-nbd@nbd.name>
 References: <20200821084926.10650-1-nbd@nbd.name>
@@ -45,126 +45,166 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This is needed for encapsulation offload of 4-address mode packets
+This simplifies the checks in the encap offload tx handler and allows using
+it in cases where software crypto is used for multicast packets, e.g. when
+using an AP_VLAN.
 
 Signed-off-by: Felix Fietkau <nbd@nbd.name>
 ---
- include/net/mac80211.h    |  4 ++++
- net/mac80211/cfg.c        |  1 +
- net/mac80211/driver-ops.h | 14 ++++++++++++++
- net/mac80211/mlme.c       |  3 +++
- net/mac80211/trace.h      | 27 +++++++++++++++++++++++++++
- 5 files changed, 49 insertions(+)
+ net/mac80211/iface.c |  6 ++--
+ net/mac80211/tx.c    | 74 ++++++++++++--------------------------------
+ 2 files changed, 23 insertions(+), 57 deletions(-)
 
-diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index aaec7688e965..31bfe1b445e2 100644
---- a/include/net/mac80211.h
-+++ b/include/net/mac80211.h
-@@ -3843,6 +3843,8 @@ enum ieee80211_reconfig_type {
-  *	This callback may sleep.
-  * @update_vif_config: Update virtual interface offload flags
-  *	This callback may sleep.
-+ * @sta_set_4addr: Called to notify the driver when a station starts/stops using
-+ *	4-address mode
-  */
- struct ieee80211_ops {
- 	void (*tx)(struct ieee80211_hw *hw,
-@@ -4156,6 +4158,8 @@ struct ieee80211_ops {
- 				struct ieee80211_sta *sta, u8 tids);
- 	void (*update_vif_offload)(struct ieee80211_hw *hw,
- 				   struct ieee80211_vif *vif);
-+	void (*sta_set_4addr)(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
-+			      struct ieee80211_sta *sta, bool enabled);
- };
+diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
+index 61883ec1128e..e49ae6de1f0a 100644
+--- a/net/mac80211/iface.c
++++ b/net/mac80211/iface.c
+@@ -378,7 +378,8 @@ static bool ieee80211_set_sdata_offload_flags(struct ieee80211_sub_if_data *sdat
+ 			if (key->conf.cipher == WLAN_CIPHER_SUITE_AES_CMAC ||
+ 			    key->conf.cipher == WLAN_CIPHER_SUITE_BIP_GMAC_128 ||
+ 			    key->conf.cipher == WLAN_CIPHER_SUITE_BIP_GMAC_256 ||
+-			    key->conf.cipher == WLAN_CIPHER_SUITE_BIP_CMAC_256)
++			    key->conf.cipher == WLAN_CIPHER_SUITE_BIP_CMAC_256 ||
++			    !(key->conf.flags & IEEE80211_KEY_FLAG_PAIRWISE))
+ 				continue;
+ 			if (key->conf.cipher == WLAN_CIPHER_SUITE_TKIP ||
+ 			    !(key->flags & KEY_FLAG_UPLOADED_TO_HARDWARE))
+@@ -1379,7 +1380,8 @@ static void ieee80211_set_vif_encap_ops(struct ieee80211_sub_if_data *sdata)
+ 			if (key->conf.cipher == WLAN_CIPHER_SUITE_AES_CMAC ||
+ 			    key->conf.cipher == WLAN_CIPHER_SUITE_BIP_GMAC_128 ||
+ 			    key->conf.cipher == WLAN_CIPHER_SUITE_BIP_GMAC_256 ||
+-			    key->conf.cipher == WLAN_CIPHER_SUITE_BIP_CMAC_256)
++			    key->conf.cipher == WLAN_CIPHER_SUITE_BIP_CMAC_256 ||
++			    !(key->conf.flags & IEEE80211_KEY_FLAG_PAIRWISE))
+ 				continue;
+ 			if (!(key->flags & KEY_FLAG_UPLOADED_TO_HARDWARE))
+ 				enabled = false;
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index 64590ad930fe..4cf4840f2886 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -4193,88 +4193,47 @@ static void ieee80211_8023_xmit(struct ieee80211_sub_if_data *sdata,
+ 				struct sk_buff *skb)
+ {
+ 	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
+-	struct ethhdr *ehdr = (struct ethhdr *)skb->data;
+ 	struct ieee80211_local *local = sdata->local;
+-	bool authorized = false;
+-	bool multicast;
+-	unsigned char *ra = ehdr->h_dest;
+ 	struct tid_ampdu_tx *tid_tx;
+ 	u8 tid;
  
- /**
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index ea6f4d83f529..7b6c43e46a44 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -1701,6 +1701,7 @@ static int ieee80211_change_station(struct wiphy *wiphy,
- 
- 			rcu_assign_pointer(vlansdata->u.vlan.sta, sta);
- 			__ieee80211_check_fast_rx_iface(vlansdata);
-+			drv_sta_set_4addr(local, sta->sdata, &sta->sta, true);
- 		}
- 
- 		if (sta->sdata->vif.type == NL80211_IFTYPE_AP_VLAN &&
-diff --git a/net/mac80211/driver-ops.h b/net/mac80211/driver-ops.h
-index e3dfb9307fae..bcdfd19a596b 100644
---- a/net/mac80211/driver-ops.h
-+++ b/net/mac80211/driver-ops.h
-@@ -1399,4 +1399,18 @@ static inline void drv_update_vif_offload(struct ieee80211_local *local,
- 	trace_drv_return_void(local);
- }
- 
-+static inline void drv_sta_set_4addr(struct ieee80211_local *local,
-+				     struct ieee80211_sub_if_data *sdata,
-+				     struct ieee80211_sta *sta, bool enabled)
-+{
-+	sdata = get_bss_sdata(sdata);
-+	if (!check_sdata_in_driver(sdata))
-+		return;
-+
-+	trace_drv_sta_set_4addr(local, sdata, sta, enabled);
-+	if (local->ops->sta_set_4addr)
-+		local->ops->sta_set_4addr(&local->hw, &sdata->vif, sta, enabled);
-+	trace_drv_return_void(local);
-+}
-+
- #endif /* __MAC80211_DRIVER_OPS */
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index f241decf843d..50a9b9025725 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -3523,6 +3523,9 @@ static bool ieee80211_assoc_success(struct ieee80211_sub_if_data *sdata,
- 		goto out;
+-	if (IS_ERR(sta) || (sta && !sta->uploaded))
+-		sta = NULL;
+-
+-	if (sdata->vif.type == NL80211_IFTYPE_STATION &&
+-	    (!sta || !test_sta_flag(sta, WLAN_STA_TDLS_PEER)))
+-		ra = sdata->u.mgd.bssid;
+-
+-	if (is_zero_ether_addr(ra))
+-		goto out_free;
+-
+ 	if (local->ops->wake_tx_queue) {
+ 		u16 queue = __ieee80211_select_queue(sdata, sta, skb);
+ 		skb_set_queue_mapping(skb, queue);
+ 		skb_get_hash(skb);
  	}
  
-+	if (sdata->wdev.use_4addr)
-+		drv_sta_set_4addr(local, sdata, &sta->sta, true);
-+
- 	mutex_unlock(&sdata->local->sta_mtx);
+-	multicast = is_multicast_ether_addr(ra);
+-
+-	if (sta)
+-		authorized = test_sta_flag(sta, WLAN_STA_AUTHORIZED);
+-
+-	if (!multicast && !authorized &&
+-	    (ehdr->h_proto != sdata->control_port_protocol ||
+-	     !ether_addr_equal(sdata->vif.addr, ehdr->h_source)))
+-		goto out_free;
+-
+-	if (multicast && sdata->vif.type == NL80211_IFTYPE_AP &&
+-	    !atomic_read(&sdata->u.ap.num_mcast_sta))
+-		goto out_free;
+-
+ 	if (unlikely(test_bit(SCAN_SW_SCANNING, &local->scanning)) &&
+ 	    test_bit(SDATA_STATE_OFFCHANNEL, &sdata->state))
+ 		goto out_free;
  
- 	/*
-diff --git a/net/mac80211/trace.h b/net/mac80211/trace.h
-index 50a0a83e96fc..89723907a094 100644
---- a/net/mac80211/trace.h
-+++ b/net/mac80211/trace.h
-@@ -2740,6 +2740,33 @@ DEFINE_EVENT(local_sdata_addr_evt, drv_update_vif_offload,
- 	TP_ARGS(local, sdata)
- );
+ 	memset(info, 0, sizeof(*info));
  
-+TRACE_EVENT(drv_sta_set_4addr,
-+	TP_PROTO(struct ieee80211_local *local,
-+		 struct ieee80211_sub_if_data *sdata,
-+		 struct ieee80211_sta *sta, bool enabled),
+-	if (sta) {
+-		tid = skb->priority & IEEE80211_QOS_CTL_TAG1D_MASK;
+-		tid_tx = rcu_dereference(sta->ampdu_mlme.tid_tx[tid]);
+-		if (tid_tx) {
+-			if (!test_bit(HT_AGG_STATE_OPERATIONAL, &tid_tx->state)) {
+-				/* fall back to non-offload slow path */
+-				__ieee80211_subif_start_xmit(skb, dev, 0, 0, NULL);
+-				return;
+-			}
+-
+-			info->flags |= IEEE80211_TX_CTL_AMPDU;
+-			if (tid_tx->timeout)
+-				tid_tx->last_tx = jiffies;
++	tid = skb->priority & IEEE80211_QOS_CTL_TAG1D_MASK;
++	tid_tx = rcu_dereference(sta->ampdu_mlme.tid_tx[tid]);
++	if (tid_tx) {
++		if (!test_bit(HT_AGG_STATE_OPERATIONAL, &tid_tx->state)) {
++			/* fall back to non-offload slow path */
++			__ieee80211_subif_start_xmit(skb, dev, 0, 0, NULL);
++			return;
+ 		}
 +
-+	TP_ARGS(local, sdata, sta, enabled),
-+
-+	TP_STRUCT__entry(
-+		LOCAL_ENTRY
-+		VIF_ENTRY
-+		STA_ENTRY
-+		__field(bool, enabled)
-+	),
-+
-+	TP_fast_assign(
-+		LOCAL_ASSIGN;
-+		VIF_ASSIGN;
-+		STA_ASSIGN;
-+		__entry->enabled = enabled;
-+	),
-+
-+	TP_printk(
-+		LOCAL_PR_FMT  VIF_PR_FMT  STA_PR_FMT " enabled:%d",
-+		LOCAL_PR_ARG, VIF_PR_ARG, STA_PR_ARG, __entry->enabled
-+	)
-+);
-+
- #endif /* !__MAC80211_DRIVER_TRACE || TRACE_HEADER_MULTI_READ */
++		info->flags |= IEEE80211_TX_CTL_AMPDU;
++		if (tid_tx->timeout)
++			tid_tx->last_tx = jiffies;
+ 	}
  
- #undef TRACE_INCLUDE_PATH
+-	if (unlikely(!multicast && skb->sk &&
++	if (unlikely(skb->sk &&
+ 		     skb_shinfo(skb)->tx_flags & SKBTX_WIFI_STATUS))
+ 		info->ack_frame_id = ieee80211_store_ack_skb(local, skb,
+ 							     &info->flags, NULL);
+ 
+-	if (unlikely(sdata->control_port_protocol == ehdr->h_proto)) {
+-		if (sdata->control_port_no_encrypt)
+-			info->flags |= IEEE80211_TX_INTFL_DONT_ENCRYPT;
+-		info->control.flags |= IEEE80211_TX_CTRL_PORT_CTRL_PROTO;
+-	}
+-
+-	if (multicast)
+-		info->flags |= IEEE80211_TX_CTL_NO_ACK;
+-
+ 	info->hw_queue = sdata->vif.hw_queue[skb_get_queue_mapping(skb)];
+ 
+ 	ieee80211_tx_stats(dev, skb->len);
+ 
+-	if (sta) {
+-		sta->tx_stats.bytes[skb_get_queue_mapping(skb)] += skb->len;
+-		sta->tx_stats.packets[skb_get_queue_mapping(skb)]++;
+-	}
++	sta->tx_stats.bytes[skb_get_queue_mapping(skb)] += skb->len;
++	sta->tx_stats.packets[skb_get_queue_mapping(skb)]++;
+ 
+ 	if (sdata->vif.type == NL80211_IFTYPE_AP_VLAN)
+ 		sdata = container_of(sdata->bss,
+@@ -4295,6 +4254,7 @@ netdev_tx_t ieee80211_subif_start_xmit_8023(struct sk_buff *skb,
+ 					    struct net_device *dev)
+ {
+ 	struct ieee80211_sub_if_data *sdata = IEEE80211_DEV_TO_SUB_IF(dev);
++	struct ethhdr *ehdr = (struct ethhdr *)skb->data;
+ 	struct sta_info *sta;
+ 
+ 	if (unlikely(skb->len < ETH_HLEN)) {
+@@ -4306,6 +4266,10 @@ netdev_tx_t ieee80211_subif_start_xmit_8023(struct sk_buff *skb,
+ 
+ 	if (ieee80211_lookup_ra_sta(sdata, skb, &sta))
+ 		kfree_skb(skb);
++	else if (unlikely(IS_ERR_OR_NULL(sta) || !sta->uploaded ||
++			  !test_sta_flag(sta, WLAN_STA_AUTHORIZED) ||
++			  sdata->control_port_protocol == ehdr->h_proto))
++		ieee80211_subif_start_xmit(skb, dev);
+ 	else
+ 		ieee80211_8023_xmit(sdata, dev, sta, skb);
+ 
 -- 
 2.28.0
 
