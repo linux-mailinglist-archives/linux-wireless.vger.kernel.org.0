@@ -2,39 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E6CF24CC9F
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Aug 2020 06:24:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA80B24CCCC
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Aug 2020 06:27:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725268AbgHUEY5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 21 Aug 2020 00:24:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34996 "EHLO
+        id S1725867AbgHUE1Y (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 21 Aug 2020 00:27:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35412 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725270AbgHUEY4 (ORCPT
+        with ESMTP id S1725270AbgHUE1Y (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 21 Aug 2020 00:24:56 -0400
+        Fri, 21 Aug 2020 00:27:24 -0400
 Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F080C061385
-        for <linux-wireless@vger.kernel.org>; Thu, 20 Aug 2020 21:24:56 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5336FC061385
+        for <linux-wireless@vger.kernel.org>; Thu, 20 Aug 2020 21:27:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
          s=20160729; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
         Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
         Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
         :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
         List-Post:List-Owner:List-Archive;
-        bh=gNTrA+Wd7KQ4l/sPK4M7yb3QtTmeFD5TbtOyQVNQUqE=; b=LOXjyAGefy+ePL4LJNJ+i08Y/J
-        lXSPdkz9PQMm0ntOX5GiDFS8ITrNy21GJVpS0qDIgQ7ceoEP4NBte2rsOMp4131fAEpkoAXOXWPOA
-        h3JShZp9v0pNvDEoMo/0uuR/awOCvdjbdX+POQ3pF6/+6ORc1wrFUuIY5uVaE6P2V94c=;
+        bh=tYmGpit2WzdR714I533v7RCEMSRHkF01kQPnAt4kQlw=; b=ZTrMo5q5YHfBoJQE//H0lhJvBw
+        qxkz00qUAmwZVzwshwwzDlBpiS1WQH3t9FNIbXM+XllHdNi2MjINpeKLOe0UvovzQQ89P5yHiMofH
+        f+wNxSZXod+0Ly7TrTaI7cn8ITuqs7Dn3qiQ4tWLcSu6aX2pvpM5BlC9DShIjF1abPSo=;
 Received: from p5b206497.dip0.t-ipconnect.de ([91.32.100.151] helo=localhost.localdomain)
         by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_CBC_SHA1:128)
         (Exim 4.89)
         (envelope-from <nbd@nbd.name>)
-        id 1k8yX7-0005s7-N2; Fri, 21 Aug 2020 06:20:05 +0200
+        id 1k8yX7-0005s7-TV; Fri, 21 Aug 2020 06:20:05 +0200
 From:   Felix Fietkau <nbd@nbd.name>
 To:     linux-wireless@vger.kernel.org
 Cc:     johannes@sipsolutions.net
-Subject: [PATCH v2 10/13] mac80211: extend ieee80211_tx_status_ext to support bulk free
-Date:   Fri, 21 Aug 2020 06:19:58 +0200
-Message-Id: <20200821042001.23388-11-nbd@nbd.name>
+Subject: [PATCH v2 11/13] mac80211: notify the driver when a sta uses 4-address mode
+Date:   Fri, 21 Aug 2020 06:19:59 +0200
+Message-Id: <20200821042001.23388-12-nbd@nbd.name>
 X-Mailer: git-send-email 2.28.0
 In-Reply-To: <20200821042001.23388-1-nbd@nbd.name>
 References: <20200821042001.23388-1-nbd@nbd.name>
@@ -45,61 +45,126 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Store processed skbs ready to be freed in a list so the driver bulk free them
+This is needed for encapsulation offload of 4-address mode packets
 
 Signed-off-by: Felix Fietkau <nbd@nbd.name>
 ---
- include/net/mac80211.h |  2 ++
- net/mac80211/status.c  | 10 ++++++++--
- 2 files changed, 10 insertions(+), 2 deletions(-)
+ include/net/mac80211.h    |  4 ++++
+ net/mac80211/cfg.c        |  1 +
+ net/mac80211/driver-ops.h | 14 ++++++++++++++
+ net/mac80211/mlme.c       |  3 +++
+ net/mac80211/trace.h      | 27 +++++++++++++++++++++++++++
+ 5 files changed, 49 insertions(+)
 
 diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index 0cd8dbe4e688..aaec7688e965 100644
+index aaec7688e965..31bfe1b445e2 100644
 --- a/include/net/mac80211.h
 +++ b/include/net/mac80211.h
-@@ -1095,12 +1095,14 @@ ieee80211_info_get_tx_time_est(struct ieee80211_tx_info *info)
-  * @info: Basic tx status information
-  * @skb: Packet skb (can be NULL if not provided by the driver)
-  * @rate: The TX rate that was used when sending the packet
-+ * @free_list: list where processed skbs are stored to be free'd by the driver
+@@ -3843,6 +3843,8 @@ enum ieee80211_reconfig_type {
+  *	This callback may sleep.
+  * @update_vif_config: Update virtual interface offload flags
+  *	This callback may sleep.
++ * @sta_set_4addr: Called to notify the driver when a station starts/stops using
++ *	4-address mode
   */
- struct ieee80211_tx_status {
- 	struct ieee80211_sta *sta;
- 	struct ieee80211_tx_info *info;
- 	struct sk_buff *skb;
- 	struct rate_info *rate;
-+	struct list_head *free_list;
+ struct ieee80211_ops {
+ 	void (*tx)(struct ieee80211_hw *hw,
+@@ -4156,6 +4158,8 @@ struct ieee80211_ops {
+ 				struct ieee80211_sta *sta, u8 tids);
+ 	void (*update_vif_offload)(struct ieee80211_hw *hw,
+ 				   struct ieee80211_vif *vif);
++	void (*sta_set_4addr)(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
++			      struct ieee80211_sta *sta, bool enabled);
  };
  
  /**
-diff --git a/net/mac80211/status.c b/net/mac80211/status.c
-index 261bdda2ec08..4cfd569a5f55 100644
---- a/net/mac80211/status.c
-+++ b/net/mac80211/status.c
-@@ -1044,7 +1044,10 @@ static void __ieee80211_tx_status(struct ieee80211_hw *hw,
- 	 * with this test...
- 	 */
- 	if (!local->monitors && (!send_to_cooked || !local->cooked_mntrs)) {
--		dev_kfree_skb(skb);
-+		if (status->free_list)
-+			list_add_tail(&skb->list, status->free_list);
-+		else
-+			dev_kfree_skb(skb);
- 		return;
+diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+index ea6f4d83f529..7b6c43e46a44 100644
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -1701,6 +1701,7 @@ static int ieee80211_change_station(struct wiphy *wiphy,
+ 
+ 			rcu_assign_pointer(vlansdata->u.vlan.sta, sta);
+ 			__ieee80211_check_fast_rx_iface(vlansdata);
++			drv_sta_set_4addr(local, sta->sdata, &sta->sta, true);
+ 		}
+ 
+ 		if (sta->sdata->vif.type == NL80211_IFTYPE_AP_VLAN &&
+diff --git a/net/mac80211/driver-ops.h b/net/mac80211/driver-ops.h
+index e3dfb9307fae..bcdfd19a596b 100644
+--- a/net/mac80211/driver-ops.h
++++ b/net/mac80211/driver-ops.h
+@@ -1399,4 +1399,18 @@ static inline void drv_update_vif_offload(struct ieee80211_local *local,
+ 	trace_drv_return_void(local);
+ }
+ 
++static inline void drv_sta_set_4addr(struct ieee80211_local *local,
++				     struct ieee80211_sub_if_data *sdata,
++				     struct ieee80211_sta *sta, bool enabled)
++{
++	sdata = get_bss_sdata(sdata);
++	if (!check_sdata_in_driver(sdata))
++		return;
++
++	trace_drv_sta_set_4addr(local, sdata, sta, enabled);
++	if (local->ops->sta_set_4addr)
++		local->ops->sta_set_4addr(&local->hw, &sdata->vif, sta, enabled);
++	trace_drv_return_void(local);
++}
++
+ #endif /* __MAC80211_DRIVER_OPS */
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index f241decf843d..50a9b9025725 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -3523,6 +3523,9 @@ static bool ieee80211_assoc_success(struct ieee80211_sub_if_data *sdata,
+ 		goto out;
  	}
  
-@@ -1168,7 +1171,10 @@ void ieee80211_tx_status_ext(struct ieee80211_hw *hw,
- 		return;
++	if (sdata->wdev.use_4addr)
++		drv_sta_set_4addr(local, sdata, &sta->sta, true);
++
+ 	mutex_unlock(&sdata->local->sta_mtx);
  
- 	ieee80211_report_used_skb(local, skb, false);
--	dev_kfree_skb(skb);
-+	if (status->free_list)
-+		list_add_tail(&skb->list, status->free_list);
-+	else
-+		dev_kfree_skb(skb);
- }
- EXPORT_SYMBOL(ieee80211_tx_status_ext);
+ 	/*
+diff --git a/net/mac80211/trace.h b/net/mac80211/trace.h
+index 50a0a83e96fc..89723907a094 100644
+--- a/net/mac80211/trace.h
++++ b/net/mac80211/trace.h
+@@ -2740,6 +2740,33 @@ DEFINE_EVENT(local_sdata_addr_evt, drv_update_vif_offload,
+ 	TP_ARGS(local, sdata)
+ );
  
++TRACE_EVENT(drv_sta_set_4addr,
++	TP_PROTO(struct ieee80211_local *local,
++		 struct ieee80211_sub_if_data *sdata,
++		 struct ieee80211_sta *sta, bool enabled),
++
++	TP_ARGS(local, sdata, sta, enabled),
++
++	TP_STRUCT__entry(
++		LOCAL_ENTRY
++		VIF_ENTRY
++		STA_ENTRY
++		__field(bool, enabled)
++	),
++
++	TP_fast_assign(
++		LOCAL_ASSIGN;
++		VIF_ASSIGN;
++		STA_ASSIGN;
++		__entry->enabled = enabled;
++	),
++
++	TP_printk(
++		LOCAL_PR_FMT  VIF_PR_FMT  STA_PR_FMT " enabled:%d",
++		LOCAL_PR_ARG, VIF_PR_ARG, STA_PR_ARG, __entry->enabled
++	)
++);
++
+ #endif /* !__MAC80211_DRIVER_TRACE || TRACE_HEADER_MULTI_READ */
+ 
+ #undef TRACE_INCLUDE_PATH
 -- 
 2.28.0
 
