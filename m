@@ -2,261 +2,110 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 763F724E665
-	for <lists+linux-wireless@lfdr.de>; Sat, 22 Aug 2020 10:24:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D8B1A24E702
+	for <lists+linux-wireless@lfdr.de>; Sat, 22 Aug 2020 13:07:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726856AbgHVIYl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 22 Aug 2020 04:24:41 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:10310 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725995AbgHVIYl (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 22 Aug 2020 04:24:41 -0400
-Received: from DGGEMS413-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id DAFA4C68FD912D3A5FC6;
-        Sat, 22 Aug 2020 16:24:37 +0800 (CST)
-Received: from huawei.com (10.175.104.175) by DGGEMS413-HUB.china.huawei.com
- (10.3.19.213) with Microsoft SMTP Server id 14.3.487.0; Sat, 22 Aug 2020
- 16:24:30 +0800
-From:   Miaohe Lin <linmiaohe@huawei.com>
-To:     <johannes@sipsolutions.net>, <davem@davemloft.net>,
-        <kuba@kernel.org>
-CC:     <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linmiaohe@huawei.com>
-Subject: [PATCH] net: wireless: Convert to use the preferred fallthrough macro
-Date:   Sat, 22 Aug 2020 04:23:23 -0400
-Message-ID: <20200822082323.45495-1-linmiaohe@huawei.com>
-X-Mailer: git-send-email 2.19.1
+        id S1727802AbgHVLHm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 22 Aug 2020 07:07:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37674 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726938AbgHVLHl (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 22 Aug 2020 07:07:41 -0400
+Received: from mail-qk1-x744.google.com (mail-qk1-x744.google.com [IPv6:2607:f8b0:4864:20::744])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48F26C061573
+        for <linux-wireless@vger.kernel.org>; Sat, 22 Aug 2020 04:07:41 -0700 (PDT)
+Received: by mail-qk1-x744.google.com with SMTP id 2so3567762qkf.10
+        for <linux-wireless@vger.kernel.org>; Sat, 22 Aug 2020 04:07:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:sender:from:date:message-id:subject:to;
+        bh=5zSnjb9Zspl6g/pM1KANeTl5vYUfq5H+Gyn3XaXjKMg=;
+        b=YyAd+BCCRIrju0VJAjaK9LGnqGT+/nCcxLXbgMxiJXJs7CIl97w7BtSO7Bp0QI4+ME
+         KSdjdWZSIW+wcA6r+U/pzivtMmOuAiwsB1oH3IQiRUBI5lHnG9v+Ux8WeE7mG8GEHWJS
+         MPxfRxbn9POm+90j3YPUXQdczT17bQMv9CS76JtTYCKB4IokDtseQHUQi7pvWeVm2n5t
+         QBtC3VaEgIS4eXv+dSx4IXBPgQ6uxnxcyGQqKoai6UtxF3PgcBwcn78pS7yJflHrEXJM
+         Ou3s7r4L/7IV3Wk2acJ3w4AezF821/xA4v2LpQ86mpDw98vIqq459M37Gi7u/9eP4Z1D
+         s0dw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:sender:from:date
+         :message-id:subject:to;
+        bh=5zSnjb9Zspl6g/pM1KANeTl5vYUfq5H+Gyn3XaXjKMg=;
+        b=CKxsKc59hC8mhxtrnNnkT5bV58AI4K5zk2zpN3QeP0ade0gk/w81w+5PpqpM3zUI7h
+         S+G2NXLrLdTM++P3RaCXtHllT2gE6CStBemIdMYufMmnpkqF+fGNQwLy3PAVjOkFD66B
+         OkWiUOFmLGeJNWp+5CpIKb6gKy4eREKmTiDf960ls9FRGk3LKROskv+ozjQY/ocpNS3l
+         zHHHG5PyyyeLPC4VeV2qcaFRkUcg8p0fC/ttLYAOfpubmdA4zFurRW5sw3j0kOWC4U6P
+         z2sU0JhfAo368EWQLBC08H7K6Yig4Y5WDfzZaUAekTAyymv74MLWc5NFzW6IxV9Ywl2T
+         1oGQ==
+X-Gm-Message-State: AOAM5301trlsg8ItF8bM5HXXMSuiGHlQVCIbldqTggZI3xKw9JuqORZw
+        Vm68oCxI4e+kO4myRqcGfFDUVJtk4mgutRxsV+0=
+X-Google-Smtp-Source: ABdhPJzkyvfzk1IbSiJJmnoYCKJqQvvCpfnoXAs14eYlLzoLjAbOV8JdcXQOUP2cUepViQ3vFYDMDbNBqMEsgcqClrg=
+X-Received: by 2002:a37:9746:: with SMTP id z67mr6175037qkd.425.1598094460517;
+ Sat, 22 Aug 2020 04:07:40 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.104.175]
-X-CFilter-Loop: Reflected
+Reply-To: mr_mohammadahmed62@yahoo.com
+Received: by 2002:a0c:bdad:0:0:0:0:0 with HTTP; Sat, 22 Aug 2020 04:07:39
+ -0700 (PDT)
+From:   MOHAMMAD AHMED <mohamadahmed0055@gmail.com>
+Date:   Sat, 22 Aug 2020 04:07:39 -0700
+X-Google-Sender-Auth: 79lckAqy4St_VyiuFSShQIA8LtM
+Message-ID: <CAD5ary+kQ7vQZ3u75OG3uCOLCVK0seXB9259DBnmU4WTwFD4HA@mail.gmail.com>
+Subject: GREETINGS FROM MR.MOHAMMAD AHMED / CAN I TRUST YOU?
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Convert the uses of fallthrough comments to fallthrough macro.
+My Dear Friend
 
-Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
----
- net/wireless/chan.c        |  4 ++--
- net/wireless/mlme.c        |  2 +-
- net/wireless/nl80211.c     | 20 ++++++++++----------
- net/wireless/scan.c        |  2 +-
- net/wireless/sme.c         |  4 ++--
- net/wireless/util.c        |  4 ++--
- net/wireless/wext-compat.c |  4 ++--
- 7 files changed, 20 insertions(+), 20 deletions(-)
+Greetings.
 
-diff --git a/net/wireless/chan.c b/net/wireless/chan.c
-index 90f0f82cd9ca..e97a4f0c32a3 100644
---- a/net/wireless/chan.c
-+++ b/net/wireless/chan.c
-@@ -957,7 +957,7 @@ bool cfg80211_chandef_usable(struct wiphy *wiphy,
- 		if (!ht_cap->ht_supported &&
- 		    chandef->chan->band != NL80211_BAND_6GHZ)
- 			return false;
--		/* fall through */
-+		fallthrough;
- 	case NL80211_CHAN_WIDTH_20_NOHT:
- 		prohibited_flags |= IEEE80211_CHAN_NO_20MHZ;
- 		width = 20;
-@@ -983,7 +983,7 @@ bool cfg80211_chandef_usable(struct wiphy *wiphy,
- 		if (chandef->chan->band != NL80211_BAND_6GHZ &&
- 		    cap != IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160_80PLUS80MHZ)
- 			return false;
--		/* fall through */
-+		fallthrough;
- 	case NL80211_CHAN_WIDTH_80:
- 		prohibited_flags |= IEEE80211_CHAN_NO_80MHZ;
- 		width = 80;
-diff --git a/net/wireless/mlme.c b/net/wireless/mlme.c
-index a6c61a2e6569..db7333e20dd7 100644
---- a/net/wireless/mlme.c
-+++ b/net/wireless/mlme.c
-@@ -941,7 +941,7 @@ void cfg80211_cac_event(struct net_device *netdev,
- 		       sizeof(struct cfg80211_chan_def));
- 		queue_work(cfg80211_wq, &rdev->propagate_cac_done_wk);
- 		cfg80211_sched_dfs_chan_update(rdev);
--		/* fall through */
-+		fallthrough;
- 	case NL80211_RADAR_CAC_ABORTED:
- 		wdev->cac_started = false;
- 		break;
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index c04fc6cf6583..fde420af3f00 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -2107,7 +2107,7 @@ static int nl80211_send_wiphy(struct cfg80211_registered_device *rdev,
- 		state->split_start++;
- 		if (state->split)
- 			break;
--		/* fall through */
-+		fallthrough;
- 	case 1:
- 		if (nla_put(msg, NL80211_ATTR_CIPHER_SUITES,
- 			    sizeof(u32) * rdev->wiphy.n_cipher_suites,
-@@ -2154,7 +2154,7 @@ static int nl80211_send_wiphy(struct cfg80211_registered_device *rdev,
- 		state->split_start++;
- 		if (state->split)
- 			break;
--		/* fall through */
-+		fallthrough;
- 	case 2:
- 		if (nl80211_put_iftypes(msg, NL80211_ATTR_SUPPORTED_IFTYPES,
- 					rdev->wiphy.interface_modes))
-@@ -2162,7 +2162,7 @@ static int nl80211_send_wiphy(struct cfg80211_registered_device *rdev,
- 		state->split_start++;
- 		if (state->split)
- 			break;
--		/* fall through */
-+		fallthrough;
- 	case 3:
- 		nl_bands = nla_nest_start_noflag(msg,
- 						 NL80211_ATTR_WIPHY_BANDS);
-@@ -2189,7 +2189,7 @@ static int nl80211_send_wiphy(struct cfg80211_registered_device *rdev,
- 				state->chan_start++;
- 				if (state->split)
- 					break;
--				/* fall through */
-+				fallthrough;
- 			default:
- 				/* add frequencies */
- 				nl_freqs = nla_nest_start_noflag(msg,
-@@ -2244,7 +2244,7 @@ static int nl80211_send_wiphy(struct cfg80211_registered_device *rdev,
- 			state->split_start++;
- 		if (state->split)
- 			break;
--		/* fall through */
-+		fallthrough;
- 	case 4:
- 		nl_cmds = nla_nest_start_noflag(msg,
- 						NL80211_ATTR_SUPPORTED_COMMANDS);
-@@ -2273,7 +2273,7 @@ static int nl80211_send_wiphy(struct cfg80211_registered_device *rdev,
- 		state->split_start++;
- 		if (state->split)
- 			break;
--		/* fall through */
-+		fallthrough;
- 	case 5:
- 		if (rdev->ops->remain_on_channel &&
- 		    (rdev->wiphy.flags & WIPHY_FLAG_HAS_REMAIN_ON_CHANNEL) &&
-@@ -2291,7 +2291,7 @@ static int nl80211_send_wiphy(struct cfg80211_registered_device *rdev,
- 		state->split_start++;
- 		if (state->split)
- 			break;
--		/* fall through */
-+		fallthrough;
- 	case 6:
- #ifdef CONFIG_PM
- 		if (nl80211_send_wowlan(msg, rdev, state->split))
-@@ -2302,7 +2302,7 @@ static int nl80211_send_wiphy(struct cfg80211_registered_device *rdev,
- #else
- 		state->split_start++;
- #endif
--		/* fall through */
-+		fallthrough;
- 	case 7:
- 		if (nl80211_put_iftypes(msg, NL80211_ATTR_SOFTWARE_IFTYPES,
- 					rdev->wiphy.software_iftypes))
-@@ -2315,7 +2315,7 @@ static int nl80211_send_wiphy(struct cfg80211_registered_device *rdev,
- 		state->split_start++;
- 		if (state->split)
- 			break;
--		/* fall through */
-+		fallthrough;
- 	case 8:
- 		if ((rdev->wiphy.flags & WIPHY_FLAG_HAVE_AP_SME) &&
- 		    nla_put_u32(msg, NL80211_ATTR_DEVICE_AP_SME,
-@@ -5207,7 +5207,7 @@ bool nl80211_put_sta_rate(struct sk_buff *msg, struct rate_info *info, int attr)
- 		break;
- 	default:
- 		WARN_ON(1);
--		/* fall through */
-+		fallthrough;
- 	case RATE_INFO_BW_20:
- 		rate_flg = 0;
- 		break;
-diff --git a/net/wireless/scan.c b/net/wireless/scan.c
-index e67a74488bbe..04f2d198c215 100644
---- a/net/wireless/scan.c
-+++ b/net/wireless/scan.c
-@@ -1433,7 +1433,7 @@ cfg80211_inform_single_bss_data(struct wiphy *wiphy,
- 	switch (ftype) {
- 	case CFG80211_BSS_FTYPE_BEACON:
- 		ies->from_beacon = true;
--		/* fall through */
-+		fallthrough;
- 	case CFG80211_BSS_FTYPE_UNKNOWN:
- 		rcu_assign_pointer(tmp.pub.beacon_ies, ies);
- 		break;
-diff --git a/net/wireless/sme.c b/net/wireless/sme.c
-index 985f3c23f054..079ce320dc1e 100644
---- a/net/wireless/sme.c
-+++ b/net/wireless/sme.c
-@@ -205,7 +205,7 @@ static int cfg80211_conn_do_work(struct wireless_dev *wdev,
- 		return err;
- 	case CFG80211_CONN_ASSOC_FAILED_TIMEOUT:
- 		*treason = NL80211_TIMEOUT_ASSOC;
--		/* fall through */
-+		fallthrough;
- 	case CFG80211_CONN_ASSOC_FAILED:
- 		cfg80211_mlme_deauth(rdev, wdev->netdev, params->bssid,
- 				     NULL, 0,
-@@ -215,7 +215,7 @@ static int cfg80211_conn_do_work(struct wireless_dev *wdev,
- 		cfg80211_mlme_deauth(rdev, wdev->netdev, params->bssid,
- 				     NULL, 0,
- 				     WLAN_REASON_DEAUTH_LEAVING, false);
--		/* fall through */
-+		fallthrough;
- 	case CFG80211_CONN_ABANDON:
- 		/* free directly, disconnected event already sent */
- 		cfg80211_sme_free(wdev);
-diff --git a/net/wireless/util.c b/net/wireless/util.c
-index dfad1c0f57ad..7c5d5365a5eb 100644
---- a/net/wireless/util.c
-+++ b/net/wireless/util.c
-@@ -198,7 +198,7 @@ static void set_mandatory_flags_band(struct ieee80211_supported_band *sband)
- 				sband->bitrates[i].flags |=
- 					IEEE80211_RATE_MANDATORY_G;
- 				want--;
--				/* fall through */
-+				fallthrough;
- 			default:
- 				sband->bitrates[i].flags |=
- 					IEEE80211_RATE_ERP_G;
-@@ -1008,7 +1008,7 @@ int cfg80211_change_iface(struct cfg80211_registered_device *rdev,
- 		case NL80211_IFTYPE_STATION:
- 			if (dev->ieee80211_ptr->use_4addr)
- 				break;
--			/* fall through */
-+			fallthrough;
- 		case NL80211_IFTYPE_OCB:
- 		case NL80211_IFTYPE_P2P_CLIENT:
- 		case NL80211_IFTYPE_ADHOC:
-diff --git a/net/wireless/wext-compat.c b/net/wireless/wext-compat.c
-index aa918d7ff6bd..4d2160c989a3 100644
---- a/net/wireless/wext-compat.c
-+++ b/net/wireless/wext-compat.c
-@@ -1334,7 +1334,7 @@ static struct iw_statistics *cfg80211_wireless_stats(struct net_device *dev)
- 			wstats.qual.qual = sig + 110;
- 			break;
- 		}
--		/* fall through */
-+		fallthrough;
- 	case CFG80211_SIGNAL_TYPE_UNSPEC:
- 		if (sinfo.filled & BIT_ULL(NL80211_STA_INFO_SIGNAL)) {
- 			wstats.qual.updated |= IW_QUAL_LEVEL_UPDATED;
-@@ -1343,7 +1343,7 @@ static struct iw_statistics *cfg80211_wireless_stats(struct net_device *dev)
- 			wstats.qual.qual = sinfo.signal;
- 			break;
- 		}
--		/* fall through */
-+		fallthrough;
- 	default:
- 		wstats.qual.updated |= IW_QUAL_LEVEL_INVALID;
- 		wstats.qual.updated |= IW_QUAL_QUAL_INVALID;
--- 
-2.19.1
+I know this message will come to you as a surprise; My name is Mr.
+Mohammad Ahmed a banker with Bank of Africa Burkina Faso West Africa,
+Please i want to transfer an abandoned fund in total sum of 13.5
+Million United States Dollars into your account and if you are
+interested do not hesitate to get back to me with your personal
+information for trust and confident to enable me feed you with more
+detail such as to let you know source of the fund and how it will be
+transfer into your account.
 
+My dear you will provide account for transfer of the fund in your
+favor by our bank management and once the fund transferred into your
+account 50% is for you and 50% for me and do not entertain any atom
+for fear for the transaction will be done legal and official without
+any problem.
+
+The transaction is risk free and there will be no harm, I will like
+you to respond back to me immediately after reading this message to
+enable us proceed ahead for mutual benefit.
+
+I know the source of the fund and I assure you of receiving it into
+your account without any problem, My dear read this message and if we
+have business urgently get back to me with your personal information
+required bellow for more details on how the transaction will be
+executed.
+
+I am looking forward to hear back from you urgently and feel free to
+ask question or whatever you care to know about the business and I
+will not hesitate to clarify you to your own understanding to enable
+us proceed for transfer of the fund into your account.
+
+I will to have your personal info listed bellow for more trust and confident.
+
+1. Full name:.........
+2. Home Address:.........
+3. Phone.............
+4. Occupation:.............
+5. Age:............
+6. Country:........
+7. Sex........
+8. Your Passport or ID card or Driving License
+
+Thanks.
+
+Yours faithfully
+
+Mr. Mohammad Ahmed.
