@@ -2,100 +2,261 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 41B1F24E408
-	for <lists+linux-wireless@lfdr.de>; Sat, 22 Aug 2020 01:57:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 763F724E665
+	for <lists+linux-wireless@lfdr.de>; Sat, 22 Aug 2020 10:24:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726719AbgHUX5j (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 21 Aug 2020 19:57:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47636 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726688AbgHUX5i (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 21 Aug 2020 19:57:38 -0400
-Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com [IPv6:2607:f8b0:4864:20::542])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1530FC061573
-        for <linux-wireless@vger.kernel.org>; Fri, 21 Aug 2020 16:57:38 -0700 (PDT)
-Received: by mail-pg1-x542.google.com with SMTP id v15so1724061pgh.6
-        for <linux-wireless@vger.kernel.org>; Fri, 21 Aug 2020 16:57:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=UJ2x4KM5PrX4y4rhTZdVG0hrG36y7XnXtnRtTx5sPx4=;
-        b=I6A0A8ycECfad2dfoGURONy4ytDiTdJXJuIdOf914Y0652hY4VGgTi8BEhLjj3CYYX
-         mkgYScJ6UcTBpemYPvyevNk5dHz08UOQp9vth7Z/7dXXBf0fGnMZMG/a+lAudrXaRU35
-         NoeNBbpoQFHr1js5vamhBtUz7JeXdW6EhJv+I=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=UJ2x4KM5PrX4y4rhTZdVG0hrG36y7XnXtnRtTx5sPx4=;
-        b=r3Op/xOckNeP2gFqyTMFt9UQjjSJZ9GLlU8vxKw1tpthmfM/ulRlSwzdZGcgHDNymu
-         Sve5Qj+Fhi+GjoiZQ1x+MJqMs06I/Qjxbzo9dSOGPn5mXRd3ydbQIQTFrxxly6OYRMAZ
-         gNWItBrt18QuOEkSby757NPuZXMzLZEZY7Lr8sZ7MDuKUjBp381xYhymx6ByRl0Gi2gv
-         TE5VJxeS3fRV3gCXsGsfMkBNA78Y0qI4XFPMtOLKdro9Q92vvRu15/LE+0/CT/Lp+oJz
-         mX7DqS6awv45finaJe1LiaHvtLz8pOsPJV9zl3RbTw4+3v8eyuBLLDdyErvBUccbY5Bn
-         jbkw==
-X-Gm-Message-State: AOAM533NKrv18SEWafN17hsCLNpjMMvFlpqCTBMuIiMlpdD8TEX+pyi4
-        EJlnWsvYvq5NUPoTafxttn1sSXwDQFBSJA==
-X-Google-Smtp-Source: ABdhPJyug2/DbQmAvTUPd08qYspydliDSTlQcGK30yEmiv8RPpQUsOvmwDnnNqcd0FOyikZqKcYASw==
-X-Received: by 2002:a63:471b:: with SMTP id u27mr3927400pga.139.1598054256966;
-        Fri, 21 Aug 2020 16:57:36 -0700 (PDT)
-Received: from smtp.gmail.com ([2620:15c:202:1:8edc:d4ff:fe53:350d])
-        by smtp.gmail.com with ESMTPSA id e125sm3740097pfh.69.2020.08.21.16.57.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Aug 2020 16:57:36 -0700 (PDT)
-From:   Brian Norris <briannorris@chromium.org>
-To:     <linux-wireless@vger.kernel.org>
-Cc:     Yan-Hsuan Chuang <yhchuang@realtek.com>,
-        Brian Norris <briannorris@chromium.org>
-Subject: [PATCH] rtw88: use read_poll_timeout_atomic() for poll loop
-Date:   Fri, 21 Aug 2020 16:57:33 -0700
-Message-Id: <20200821235733.1785009-1-briannorris@chromium.org>
-X-Mailer: git-send-email 2.28.0.297.g1956fa8f8d-goog
+        id S1726856AbgHVIYl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 22 Aug 2020 04:24:41 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:10310 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725995AbgHVIYl (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 22 Aug 2020 04:24:41 -0400
+Received: from DGGEMS413-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id DAFA4C68FD912D3A5FC6;
+        Sat, 22 Aug 2020 16:24:37 +0800 (CST)
+Received: from huawei.com (10.175.104.175) by DGGEMS413-HUB.china.huawei.com
+ (10.3.19.213) with Microsoft SMTP Server id 14.3.487.0; Sat, 22 Aug 2020
+ 16:24:30 +0800
+From:   Miaohe Lin <linmiaohe@huawei.com>
+To:     <johannes@sipsolutions.net>, <davem@davemloft.net>,
+        <kuba@kernel.org>
+CC:     <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linmiaohe@huawei.com>
+Subject: [PATCH] net: wireless: Convert to use the preferred fallthrough macro
+Date:   Sat, 22 Aug 2020 04:23:23 -0400
+Message-ID: <20200822082323.45495-1-linmiaohe@huawei.com>
+X-Mailer: git-send-email 2.19.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.104.175]
+X-CFilter-Loop: Reflected
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This gives the added bonus of not wasting an extra udelay() if we're
-timing out -- we double-check the register state one last time before
-returning.
+Convert the uses of fallthrough comments to fallthrough macro.
 
-Signed-off-by: Brian Norris <briannorris@chromium.org>
+Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
 ---
- drivers/net/wireless/realtek/rtw88/mac.c | 13 ++++---------
- 1 file changed, 4 insertions(+), 9 deletions(-)
+ net/wireless/chan.c        |  4 ++--
+ net/wireless/mlme.c        |  2 +-
+ net/wireless/nl80211.c     | 20 ++++++++++----------
+ net/wireless/scan.c        |  2 +-
+ net/wireless/sme.c         |  4 ++--
+ net/wireless/util.c        |  4 ++--
+ net/wireless/wext-compat.c |  4 ++--
+ 7 files changed, 20 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/mac.c b/drivers/net/wireless/realtek/rtw88/mac.c
-index 19b9b7ab016b..59028b121b00 100644
---- a/drivers/net/wireless/realtek/rtw88/mac.c
-+++ b/drivers/net/wireless/realtek/rtw88/mac.c
-@@ -114,18 +114,13 @@ static int rtw_mac_pre_system_cfg(struct rtw_dev *rtwdev)
- 
- static bool do_pwr_poll_cmd(struct rtw_dev *rtwdev, u32 addr, u32 mask, u32 target)
- {
--	u32 cnt;
-+	u32 val;
- 
- 	target &= mask;
- 
--	for (cnt = 0; cnt < RTW_PWR_POLLING_CNT; cnt++) {
--		if ((rtw_read8(rtwdev, addr) & mask) == target)
--			return true;
--
--		udelay(50);
--	}
--
--	return false;
-+	return read_poll_timeout_atomic(rtw_read8, val, (val & mask) == target,
-+					50, 50 * RTW_PWR_POLLING_CNT, false,
-+					rtwdev, addr) == 0;
- }
- 
- static int rtw_pwr_cmd_polling(struct rtw_dev *rtwdev,
+diff --git a/net/wireless/chan.c b/net/wireless/chan.c
+index 90f0f82cd9ca..e97a4f0c32a3 100644
+--- a/net/wireless/chan.c
++++ b/net/wireless/chan.c
+@@ -957,7 +957,7 @@ bool cfg80211_chandef_usable(struct wiphy *wiphy,
+ 		if (!ht_cap->ht_supported &&
+ 		    chandef->chan->band != NL80211_BAND_6GHZ)
+ 			return false;
+-		/* fall through */
++		fallthrough;
+ 	case NL80211_CHAN_WIDTH_20_NOHT:
+ 		prohibited_flags |= IEEE80211_CHAN_NO_20MHZ;
+ 		width = 20;
+@@ -983,7 +983,7 @@ bool cfg80211_chandef_usable(struct wiphy *wiphy,
+ 		if (chandef->chan->band != NL80211_BAND_6GHZ &&
+ 		    cap != IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160_80PLUS80MHZ)
+ 			return false;
+-		/* fall through */
++		fallthrough;
+ 	case NL80211_CHAN_WIDTH_80:
+ 		prohibited_flags |= IEEE80211_CHAN_NO_80MHZ;
+ 		width = 80;
+diff --git a/net/wireless/mlme.c b/net/wireless/mlme.c
+index a6c61a2e6569..db7333e20dd7 100644
+--- a/net/wireless/mlme.c
++++ b/net/wireless/mlme.c
+@@ -941,7 +941,7 @@ void cfg80211_cac_event(struct net_device *netdev,
+ 		       sizeof(struct cfg80211_chan_def));
+ 		queue_work(cfg80211_wq, &rdev->propagate_cac_done_wk);
+ 		cfg80211_sched_dfs_chan_update(rdev);
+-		/* fall through */
++		fallthrough;
+ 	case NL80211_RADAR_CAC_ABORTED:
+ 		wdev->cac_started = false;
+ 		break;
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index c04fc6cf6583..fde420af3f00 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -2107,7 +2107,7 @@ static int nl80211_send_wiphy(struct cfg80211_registered_device *rdev,
+ 		state->split_start++;
+ 		if (state->split)
+ 			break;
+-		/* fall through */
++		fallthrough;
+ 	case 1:
+ 		if (nla_put(msg, NL80211_ATTR_CIPHER_SUITES,
+ 			    sizeof(u32) * rdev->wiphy.n_cipher_suites,
+@@ -2154,7 +2154,7 @@ static int nl80211_send_wiphy(struct cfg80211_registered_device *rdev,
+ 		state->split_start++;
+ 		if (state->split)
+ 			break;
+-		/* fall through */
++		fallthrough;
+ 	case 2:
+ 		if (nl80211_put_iftypes(msg, NL80211_ATTR_SUPPORTED_IFTYPES,
+ 					rdev->wiphy.interface_modes))
+@@ -2162,7 +2162,7 @@ static int nl80211_send_wiphy(struct cfg80211_registered_device *rdev,
+ 		state->split_start++;
+ 		if (state->split)
+ 			break;
+-		/* fall through */
++		fallthrough;
+ 	case 3:
+ 		nl_bands = nla_nest_start_noflag(msg,
+ 						 NL80211_ATTR_WIPHY_BANDS);
+@@ -2189,7 +2189,7 @@ static int nl80211_send_wiphy(struct cfg80211_registered_device *rdev,
+ 				state->chan_start++;
+ 				if (state->split)
+ 					break;
+-				/* fall through */
++				fallthrough;
+ 			default:
+ 				/* add frequencies */
+ 				nl_freqs = nla_nest_start_noflag(msg,
+@@ -2244,7 +2244,7 @@ static int nl80211_send_wiphy(struct cfg80211_registered_device *rdev,
+ 			state->split_start++;
+ 		if (state->split)
+ 			break;
+-		/* fall through */
++		fallthrough;
+ 	case 4:
+ 		nl_cmds = nla_nest_start_noflag(msg,
+ 						NL80211_ATTR_SUPPORTED_COMMANDS);
+@@ -2273,7 +2273,7 @@ static int nl80211_send_wiphy(struct cfg80211_registered_device *rdev,
+ 		state->split_start++;
+ 		if (state->split)
+ 			break;
+-		/* fall through */
++		fallthrough;
+ 	case 5:
+ 		if (rdev->ops->remain_on_channel &&
+ 		    (rdev->wiphy.flags & WIPHY_FLAG_HAS_REMAIN_ON_CHANNEL) &&
+@@ -2291,7 +2291,7 @@ static int nl80211_send_wiphy(struct cfg80211_registered_device *rdev,
+ 		state->split_start++;
+ 		if (state->split)
+ 			break;
+-		/* fall through */
++		fallthrough;
+ 	case 6:
+ #ifdef CONFIG_PM
+ 		if (nl80211_send_wowlan(msg, rdev, state->split))
+@@ -2302,7 +2302,7 @@ static int nl80211_send_wiphy(struct cfg80211_registered_device *rdev,
+ #else
+ 		state->split_start++;
+ #endif
+-		/* fall through */
++		fallthrough;
+ 	case 7:
+ 		if (nl80211_put_iftypes(msg, NL80211_ATTR_SOFTWARE_IFTYPES,
+ 					rdev->wiphy.software_iftypes))
+@@ -2315,7 +2315,7 @@ static int nl80211_send_wiphy(struct cfg80211_registered_device *rdev,
+ 		state->split_start++;
+ 		if (state->split)
+ 			break;
+-		/* fall through */
++		fallthrough;
+ 	case 8:
+ 		if ((rdev->wiphy.flags & WIPHY_FLAG_HAVE_AP_SME) &&
+ 		    nla_put_u32(msg, NL80211_ATTR_DEVICE_AP_SME,
+@@ -5207,7 +5207,7 @@ bool nl80211_put_sta_rate(struct sk_buff *msg, struct rate_info *info, int attr)
+ 		break;
+ 	default:
+ 		WARN_ON(1);
+-		/* fall through */
++		fallthrough;
+ 	case RATE_INFO_BW_20:
+ 		rate_flg = 0;
+ 		break;
+diff --git a/net/wireless/scan.c b/net/wireless/scan.c
+index e67a74488bbe..04f2d198c215 100644
+--- a/net/wireless/scan.c
++++ b/net/wireless/scan.c
+@@ -1433,7 +1433,7 @@ cfg80211_inform_single_bss_data(struct wiphy *wiphy,
+ 	switch (ftype) {
+ 	case CFG80211_BSS_FTYPE_BEACON:
+ 		ies->from_beacon = true;
+-		/* fall through */
++		fallthrough;
+ 	case CFG80211_BSS_FTYPE_UNKNOWN:
+ 		rcu_assign_pointer(tmp.pub.beacon_ies, ies);
+ 		break;
+diff --git a/net/wireless/sme.c b/net/wireless/sme.c
+index 985f3c23f054..079ce320dc1e 100644
+--- a/net/wireless/sme.c
++++ b/net/wireless/sme.c
+@@ -205,7 +205,7 @@ static int cfg80211_conn_do_work(struct wireless_dev *wdev,
+ 		return err;
+ 	case CFG80211_CONN_ASSOC_FAILED_TIMEOUT:
+ 		*treason = NL80211_TIMEOUT_ASSOC;
+-		/* fall through */
++		fallthrough;
+ 	case CFG80211_CONN_ASSOC_FAILED:
+ 		cfg80211_mlme_deauth(rdev, wdev->netdev, params->bssid,
+ 				     NULL, 0,
+@@ -215,7 +215,7 @@ static int cfg80211_conn_do_work(struct wireless_dev *wdev,
+ 		cfg80211_mlme_deauth(rdev, wdev->netdev, params->bssid,
+ 				     NULL, 0,
+ 				     WLAN_REASON_DEAUTH_LEAVING, false);
+-		/* fall through */
++		fallthrough;
+ 	case CFG80211_CONN_ABANDON:
+ 		/* free directly, disconnected event already sent */
+ 		cfg80211_sme_free(wdev);
+diff --git a/net/wireless/util.c b/net/wireless/util.c
+index dfad1c0f57ad..7c5d5365a5eb 100644
+--- a/net/wireless/util.c
++++ b/net/wireless/util.c
+@@ -198,7 +198,7 @@ static void set_mandatory_flags_band(struct ieee80211_supported_band *sband)
+ 				sband->bitrates[i].flags |=
+ 					IEEE80211_RATE_MANDATORY_G;
+ 				want--;
+-				/* fall through */
++				fallthrough;
+ 			default:
+ 				sband->bitrates[i].flags |=
+ 					IEEE80211_RATE_ERP_G;
+@@ -1008,7 +1008,7 @@ int cfg80211_change_iface(struct cfg80211_registered_device *rdev,
+ 		case NL80211_IFTYPE_STATION:
+ 			if (dev->ieee80211_ptr->use_4addr)
+ 				break;
+-			/* fall through */
++			fallthrough;
+ 		case NL80211_IFTYPE_OCB:
+ 		case NL80211_IFTYPE_P2P_CLIENT:
+ 		case NL80211_IFTYPE_ADHOC:
+diff --git a/net/wireless/wext-compat.c b/net/wireless/wext-compat.c
+index aa918d7ff6bd..4d2160c989a3 100644
+--- a/net/wireless/wext-compat.c
++++ b/net/wireless/wext-compat.c
+@@ -1334,7 +1334,7 @@ static struct iw_statistics *cfg80211_wireless_stats(struct net_device *dev)
+ 			wstats.qual.qual = sig + 110;
+ 			break;
+ 		}
+-		/* fall through */
++		fallthrough;
+ 	case CFG80211_SIGNAL_TYPE_UNSPEC:
+ 		if (sinfo.filled & BIT_ULL(NL80211_STA_INFO_SIGNAL)) {
+ 			wstats.qual.updated |= IW_QUAL_LEVEL_UPDATED;
+@@ -1343,7 +1343,7 @@ static struct iw_statistics *cfg80211_wireless_stats(struct net_device *dev)
+ 			wstats.qual.qual = sinfo.signal;
+ 			break;
+ 		}
+-		/* fall through */
++		fallthrough;
+ 	default:
+ 		wstats.qual.updated |= IW_QUAL_LEVEL_INVALID;
+ 		wstats.qual.updated |= IW_QUAL_QUAL_INVALID;
 -- 
-2.28.0.297.g1956fa8f8d-goog
+2.19.1
 
