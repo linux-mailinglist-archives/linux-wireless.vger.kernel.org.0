@@ -2,91 +2,73 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3880C25088E
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Aug 2020 20:55:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 42EC7250AD7
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Aug 2020 23:27:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726666AbgHXSzU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 24 Aug 2020 14:55:20 -0400
-Received: from mail.kernel.org ([198.145.29.99]:52748 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726306AbgHXSzT (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 24 Aug 2020 14:55:19 -0400
-Received: from lore-desk.redhat.com (unknown [151.48.139.80])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8C5CD206BE;
-        Mon, 24 Aug 2020 18:55:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1598295319;
-        bh=SyNgphRxE/HwLHW+1vtk437GBaZDWSY5SDMzB+B5eCQ=;
-        h=From:To:Cc:Subject:Date:From;
-        b=VZ7uDKUGmTMZ13gRgUpxgZjaDiCbUDfJ7zTCLptIFqjLHPWNuNspdoCPuvMvXpr9a
-         0bYgcWQCZtcvCGmyp4KyopbCu1yS2lm+aQ1TlcVRnlHtiL3eTK+aRy8ZbBq1Wi720U
-         6M1nyDuUYNW+6DOgX+mRHWlRpH1A9wC7xq/7iyp8=
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org
-Subject: [PATCH] mt76: mt7663u: fix dma header initialization
-Date:   Mon, 24 Aug 2020 20:55:12 +0200
-Message-Id: <51992d5fe23804390fa64d771cb1b3ccbdfa97ee.1598295054.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.26.2
+        id S1726532AbgHXV1g (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 24 Aug 2020 17:27:36 -0400
+Received: from mail-io1-f66.google.com ([209.85.166.66]:44359 "EHLO
+        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726189AbgHXV1f (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 24 Aug 2020 17:27:35 -0400
+Received: by mail-io1-f66.google.com with SMTP id v6so10283717iow.11;
+        Mon, 24 Aug 2020 14:27:34 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=oC1bCYtbH785PwJcnJAiG6IM7n4aDDrx+MXFC9Xswok=;
+        b=Wkus/w4Zw94lXu2jZM8IqVTwwnUC/Xo0Hz5JA7jFF/qoltYRb8dUBnCoymY8qu3IDp
+         vZU8wVxnIqWDFHtayRjDz8nHlUZA3CwyeC+2Mu19eWRGk+6wScYgYFZAO1r7y9LAM6G3
+         AOnT+s9z/UzaJ8qfaJjnj8kV6eQrPVz4dSxEFX2CbR98Zyc3IXP9f5LwInhVulD8tqea
+         /J6rS7v2PYizr75lxlrM0EUxcNrTY+WStQMODyqtHV0gjVGPuOO00TXF9Ou/ORqCUvrR
+         /pqoyVQPNYbkVyLes5LQQ76FVHeaGADO5H56y7oszU8p2RjcQT9N8B7ciGqkJdD3UZi3
+         Wj6w==
+X-Gm-Message-State: AOAM532bw3YvKy/pHgsrDfy7vWkUX9NoVQ+TJuahwCQLsOv7nSRy/rVv
+        fyBqVDarJtv2a6HOFAt2a3ZF+6jMdw==
+X-Google-Smtp-Source: ABdhPJwW4GGVZk4Kul9nCfbrZTW+ONHKhy6SSgc0n/ONVpRQjcMn/3Ip3QeWumq0JpgMeN5NirEGZg==
+X-Received: by 2002:a02:454:: with SMTP id 81mr7764300jab.142.1598304454301;
+        Mon, 24 Aug 2020 14:27:34 -0700 (PDT)
+Received: from xps15 ([64.188.179.249])
+        by smtp.gmail.com with ESMTPSA id l5sm7903381ilj.88.2020.08.24.14.27.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Aug 2020 14:27:33 -0700 (PDT)
+Received: (nullmailer pid 3331741 invoked by uid 1000);
+        Mon, 24 Aug 2020 21:27:32 -0000
+Date:   Mon, 24 Aug 2020 15:27:32 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Anilkumar Kolli <akolli@codeaurora.org>
+Cc:     devicetree@vger.kernel.org, linux-wireless@vger.kernel.org,
+        ath11k@lists.infradead.org
+Subject: Re: [PATCH v6 1/3] dt: bindings: net: update compatible for ath11k
+Message-ID: <20200824212732.GA3331346@bogus>
+References: <1598287470-1871-1-git-send-email-akolli@codeaurora.org>
+ <1598287470-1871-2-git-send-email-akolli@codeaurora.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1598287470-1871-2-git-send-email-akolli@codeaurora.org>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fix length field corruption in usb dma header introduced adding sdio
-support
+On Mon, 24 Aug 2020 22:14:28 +0530, Anilkumar Kolli wrote:
+> Add IPQ6018 wireless driver support,
+> its based on ath11k driver.
+> 
+> Signed-off-by: Anilkumar Kolli <akolli@codeaurora.org>
+> ---
+> V3:
+>  - Use 'enum' rather than oneOf+const.
+> V4:
+>  - removed oneOf, use just enum (Rob)
+> V5:
+>  - Fixes errors in 'make dt_binding_check' (Rob)
+> 
+>  Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+> 
 
-Fixes: 75b10f0cbd0b ("mt76: mt76u: add mt76_skb_adjust_pad utility routine")
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- drivers/net/wireless/mediatek/mt76/mt7615/usb_mcu.c  | 4 +++-
- drivers/net/wireless/mediatek/mt76/mt7615/usb_sdio.c | 7 +++++--
- 2 files changed, 8 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/usb_mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/usb_mcu.c
-index 0b33df3e3bfe..adbed373798e 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/usb_mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/usb_mcu.c
-@@ -19,6 +19,7 @@ mt7663u_mcu_send_message(struct mt76_dev *mdev, struct sk_buff *skb,
- {
- 	struct mt7615_dev *dev = container_of(mdev, struct mt7615_dev, mt76);
- 	int ret, seq, ep;
-+	u32 len;
- 
- 	mutex_lock(&mdev->mcu.mutex);
- 
-@@ -28,7 +29,8 @@ mt7663u_mcu_send_message(struct mt76_dev *mdev, struct sk_buff *skb,
- 	else
- 		ep = MT_EP_OUT_AC_BE;
- 
--	put_unaligned_le32(skb->len, skb_push(skb, sizeof(skb->len)));
-+	len = skb->len;
-+	put_unaligned_le32(len, skb_push(skb, sizeof(len)));
- 	ret = mt76_skb_adjust_pad(skb);
- 	if (ret < 0)
- 		goto out;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/usb_sdio.c b/drivers/net/wireless/mediatek/mt76/mt7615/usb_sdio.c
-index 6dffdaaa9ad5..294276e2280d 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/usb_sdio.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/usb_sdio.c
-@@ -259,8 +259,11 @@ int mt7663_usb_sdio_tx_prepare_skb(struct mt76_dev *mdev, void *txwi_ptr,
- 	}
- 
- 	mt7663_usb_sdio_write_txwi(dev, wcid, qid, sta, skb);
--	if (mt76_is_usb(mdev))
--		put_unaligned_le32(skb->len, skb_push(skb, sizeof(skb->len)));
-+	if (mt76_is_usb(mdev)) {
-+		u32 len = skb->len;
-+
-+		put_unaligned_le32(len, skb_push(skb, sizeof(len)));
-+	}
- 
- 	return mt76_skb_adjust_pad(skb);
- }
--- 
-2.26.2
-
+Reviewed-by: Rob Herring <robh@kernel.org>
