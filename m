@@ -2,179 +2,165 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B551324FD6D
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Aug 2020 14:03:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B147C24FF5D
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Aug 2020 15:58:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726784AbgHXMDr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 24 Aug 2020 08:03:47 -0400
-Received: from mail-dm6nam10on2053.outbound.protection.outlook.com ([40.107.93.53]:22978
-        "EHLO NAM10-DM6-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726466AbgHXMDn (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 24 Aug 2020 08:03:43 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=g63dxQyySU2N/00wlw7PVZH++L+Q7wU2pAAu05Awxw5dQQcdoEEMZ5vcLcHkMD14MQJAH/LtKNp6tyTLSQfedFCkHyE1BhYz2zHMY91JlkJ47nGbyX1qGC+fjzAfNXBM9U0CdG6TIxCGOQWPUkTM81sKYIc5DL4Kku6rxZT7cRf15GyGF9SN0grLxI9TijpqqJXY8PD4NPqJ+IeeJJHYlz6jPL/IoUhVA1edsRobOcBj6IrHw6wCaUYR/9cJz5RtmrtAA8KFIAWCTH7C6Q90JkUp3vz0CtMvgJMtgyffWrb1D68eR6lapmLMGRuk8fwk4EKYFrmaGiLSq2ydUO3Baw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zj2UzhlYptTmVUjphLKhxk60r5Lpq9m484szGYOJcRg=;
- b=j5AqEB4cTypD2Sb2jwVCNqzaxWSSKip66K5O6CAd95L4U8oG3IuHU08P+AVv5X7mjlTMYouAYl5RaNVCbd8zphlF0wjEGOx/rdLpGYyeycUIgs7rZUoyFtnejzFLiVYqKcLEQqJHABUM345EaanPAi8JF9FWZwy071XGgf6YIbz6CWU8947DgoxWRXlrpaTSgQg9j9lKMfj6jHsdUMcQsltP5YhuIDfObGEB02T0XqtUvCbHFvqxSf2dOWxVuZzpNjoREzZHtt5CDiv/l3IcbC7t6di5qCxmFojWJWD6KkL46loIrs1khKqqKAlpQLulXBza7ALWkDRY2dZSXF4fvw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=silabs.com; dmarc=pass action=none header.from=silabs.com;
- dkim=pass header.d=silabs.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=silabs.onmicrosoft.com; s=selector2-silabs-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zj2UzhlYptTmVUjphLKhxk60r5Lpq9m484szGYOJcRg=;
- b=hYKONIzaU7L/65AZZ99IgFxhOstg40KMHCnVMmbVgPIHQ9v+X2XNlFyPyh7M/RR1GWBiDvq9c4qkaC5OUOBLUZyFMvys7kt+wEYDy6Vld++5lhpWie7eMqKJKb1i5KTl2fykRZF/oLB7gq/DLak0fn1rv2cY3ZwI0T/+OBP3H1E=
-Authentication-Results: oracle.com; dkim=none (message not signed)
- header.d=none;oracle.com; dmarc=none action=none header.from=silabs.com;
-Received: from SN6PR11MB2718.namprd11.prod.outlook.com (2603:10b6:805:63::18)
- by SA0PR11MB4685.namprd11.prod.outlook.com (2603:10b6:806:9e::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3305.25; Mon, 24 Aug
- 2020 12:03:40 +0000
-Received: from SN6PR11MB2718.namprd11.prod.outlook.com
- ([fe80::85c9:1aa9:aeab:3fa6]) by SN6PR11MB2718.namprd11.prod.outlook.com
- ([fe80::85c9:1aa9:aeab:3fa6%4]) with mapi id 15.20.3305.026; Mon, 24 Aug 2020
- 12:03:40 +0000
-From:   =?ISO-8859-1?Q?J=E9r=F4me?= Pouiller <jerome.pouiller@silabs.com>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     devel@driverdev.osuosl.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Kalle Valo <kvalo@codeaurora.org>
-Subject: Re: [PATCH 01/12] staging: wfx: fix BA when device is AP and MFP is enabled
-Date:   Mon, 24 Aug 2020 14:03:33 +0200
-Message-ID: <9806363.PRSCUAgTIS@pc-42>
-Organization: Silicon Labs
-In-Reply-To: <20200824095042.GZ1793@kadam>
-References: <20200820155858.351292-1-Jerome.Pouiller@silabs.com> <20200824095042.GZ1793@kadam>
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-X-ClientProxiedBy: PR3P191CA0060.EURP191.PROD.OUTLOOK.COM
- (2603:10a6:102:55::35) To SN6PR11MB2718.namprd11.prod.outlook.com
- (2603:10b6:805:63::18)
+        id S1726782AbgHXN61 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 24 Aug 2020 09:58:27 -0400
+Received: from mail-io1-f72.google.com ([209.85.166.72]:45978 "EHLO
+        mail-io1-f72.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725780AbgHXN6Z (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 24 Aug 2020 09:58:25 -0400
+Received: by mail-io1-f72.google.com with SMTP id q5so6138440ion.12
+        for <linux-wireless@vger.kernel.org>; Mon, 24 Aug 2020 06:58:23 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
+        bh=+V0QzvgG14Z720o2lIX3LxzlzhonjMzU55Q/hPYeJzs=;
+        b=S2wAhcab8yYXHrpFzGYlCtnDycZMxIuVk0zPtJU6rvp2Sb6LWXTMDdesp/tZJLcLA+
+         xxt1fM1eZC3zR/wxDgYOSVT3g8XLnC2sVDNN+GTsYKAwSvorQbgX35iU7ucCDQrvOXUY
+         w+DVl19NUY+1JzxFKpbCHUAgCU+7J2IieJsVmYgY7sch01eSRMSYiazU/iKKuLnQ6eRB
+         KeUeK3wAmUZwnaOp52zgyViulmL+nSjQUajPbjBJeAIiDpgFuKsxQZmng3ONwMf6qowg
+         Wml7fdty28mjfvH5CTypujPKyf1WtV0B8mPLVCZfZFcbuMt/IEMzBQ5jA7iyRK8+iP9Y
+         B46g==
+X-Gm-Message-State: AOAM53099+6/oQCgCm1qsbKv7nwhn9cyIufRLaUjDDJEEwJI+Gi6iHM5
+        /UswmOEW+ehcNf1gF9l7Uv6fAb0X1LJuSFpoWrIOrpT+a2eR
+X-Google-Smtp-Source: ABdhPJz9+MNTbmYaygbznNojo1zCWjjM1cvV8uf26efNvgfqFvYArf/xzRYpvkp3qupeC3r8pUBY7AdMzFgka09oRgeWFyO2p1i1
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from 255.255.255.255 (255.255.255.255) by PR3P191CA0060.EURP191.PROD.OUTLOOK.COM (2603:10a6:102:55::35) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3305.24 via Frontend Transport; Mon, 24 Aug 2020 12:03:38 +0000
-X-Originating-IP: [37.71.187.125]
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: b6fa0e75-dd5c-4f53-2a0d-08d84825bd63
-X-MS-TrafficTypeDiagnostic: SA0PR11MB4685:
-X-Microsoft-Antispam-PRVS: <SA0PR11MB4685E767FA2DD1AEA56592CE93560@SA0PR11MB4685.namprd11.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: HqxWb+s/nkTPU8c4N9/4B1UdYtuIoRlU8udGcN3705lpod7PxZcjBosk4GkJK7hTLYcARJn1fTU82LnqxNazt5WxrUUsZWCf3ONfkytbm5r+2B4AzgLsBEVdW85ovHjFyNVJc6l864XsU0HC241F9rM9kBetJE0gKUBkSHzjUKgcn+zGMJQNKTGo3i6JqH6xPyP2saOXMhKLYtM6rZMHD6fXu2fqUFcUuIonZ6or3EpFH9FAqeYxfR3PC0FoBfEBf1JUMZ9Rmj1+TnwZ/oHZztudVVGxmiz1EsMqpjrbVuZaexXczNb4KLWhVn8hxYomxN9FTXb9xj24fhqfsxwqcA==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR11MB2718.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(7916004)(346002)(366004)(39850400004)(376002)(396003)(136003)(5660300002)(66476007)(66556008)(33716001)(2906002)(8936002)(8676002)(36916002)(6666004)(66946007)(4326008)(52116002)(83380400001)(6916009)(956004)(66574015)(9686003)(316002)(54906003)(16576012)(478600001)(186003)(86362001)(26005)(6486002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData: F/Wcfa2d8VtcrDIo0jvx30XaM3IabjzUw5k8jMqG7E/j+64vrW1gICp7biaMYJAIWPobL2yMIF1L3UD02c0DStrSxYm1X61QMsSmtEc0ZYFx/su5pLscJDMsetbL7wgKrXlZeL5AathBc+n96q1RGKfq9IuYeBPO8SmBGM72mVTIJIqbTZoV9uJZKEw/QWC5uq9ShpKrwwKr4BK0aO5Aj1jeGUQsGOtHlKAFc5nWRk0lXLAjvAg70N83sq35+en6x01dnNRuSYDCu1qlU3nuiLYfv+wI6LeE/bBQBzreNPP9F94+oju7JpjUUVaULriU+4o4K1aFGHtxMl9G3nUZBat9F3JD2T5pjK35iINS5ZNdY1lyaxfcec8pt82xFMAUQR1e0+c3icWCUULPb4tDU96zcrrQ95pcyeF/S6fSMzrMG0nmadggWqd4mrBWVPfp7wGjq7CkFgMyA1E3JyCKO3LAfABnDa2YViaRDDLgkiJ57wr6BACKR+ZxZaKvQTuvlbLjC29VBdx9dSDq2Y2xFy0IbcMuB5Iu62TC986iF/4lPjpMAoA7+RAvgAE9Ixf3UNOHdl+8AHmjM/1ReWtR6QYPbkS/xQlRQ4UJroBcdXUdyTM79xAxxZuMqmlZLO9G8kt3eMaoTdAU/V+GBAPvPw==
-X-OriginatorOrg: silabs.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b6fa0e75-dd5c-4f53-2a0d-08d84825bd63
-X-MS-Exchange-CrossTenant-AuthSource: SN6PR11MB2718.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Aug 2020 12:03:40.3766
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 54dbd822-5231-4b20-944d-6f4abcd541fb
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: GGzr56cJdUGfJq3y9jVsQNCRmmvk6iK4zJZQFgJIppkuzl22+XaBupm8kAee1A5/9Xu56wlPLNztriNJ0VLahw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR11MB4685
+X-Received: by 2002:a5d:8b4f:: with SMTP id c15mr4900416iot.146.1598277503540;
+ Mon, 24 Aug 2020 06:58:23 -0700 (PDT)
+Date:   Mon, 24 Aug 2020 06:58:23 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <000000000000d9e4bb05ad9ffaef@google.com>
+Subject: KMSAN: uninit-value in skb_trim
+From:   syzbot <syzbot+e4534e8c1c382508312c@syzkaller.appspotmail.com>
+To:     ath9k-devel@qca.qualcomm.com, davem@davemloft.net,
+        glider@google.com, kuba@kernel.org, kvalo@codeaurora.org,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Monday 24 August 2020 11:50:42 CEST Dan Carpenter wrote:
-> On Thu, Aug 20, 2020 at 05:58:47PM +0200, Jerome Pouiller wrote:
-> > From: J=E9r=F4me Pouiller <jerome.pouiller@silabs.com>
-> >
-> > The protection of the management frames is mainly done by mac80211.
-> > However, frames for the management of the BlockAck sessions are directl=
-y
-> > sent by the device. These frames have to be protected if MFP is in use.
-> > So the driver has to pass the MFP configuration to the device.
-> >
-> > Until now, the BlockAck management frames were completely unprotected
-> > whatever the status of the MFP negotiation. So, some devices dropped
-> > these frames.
-> >
-> > The device has two knobs to control the MFP. One global and one per
-> > station. Normally, the driver should always enable global MFP. Then it
-> > should enable MFP on every station with which MFP was successfully
-> > negotiated. Unfortunately, the older firmwares only provide the
-> > global control.
-> >
-> > So, this patch enable global MFP as it is exposed in the beacon. Then i=
-t
-> > marks every station with which the MFP is effective.
-> >
-> > Thus, the support for the old firmwares is not so bad. It may only
-> > encounter some difficulties to negotiate BA sessions when the local
-> > device (the AP) is MFP capable (ieee80211w=3D1) but the station is not.
-> > The only solution for this case is to upgrade the firmware.
-> >
-> > Signed-off-by: J=E9r=F4me Pouiller <jerome.pouiller@silabs.com>
-> > ---
-> >  drivers/staging/wfx/sta.c | 22 +++++++++++++++++++++-
-> >  1 file changed, 21 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/staging/wfx/sta.c b/drivers/staging/wfx/sta.c
-> > index ad63332f690c..9c1c8223a49f 100644
-> > --- a/drivers/staging/wfx/sta.c
-> > +++ b/drivers/staging/wfx/sta.c
-> > @@ -434,7 +434,7 @@ int wfx_sta_add(struct ieee80211_hw *hw, struct iee=
-e80211_vif *vif,
-> >       wvif->link_id_map |=3D BIT(sta_priv->link_id);
-> >       WARN_ON(!sta_priv->link_id);
-> >       WARN_ON(sta_priv->link_id >=3D HIF_LINK_ID_MAX);
-> > -     hif_map_link(wvif, sta->addr, 0, sta_priv->link_id);
-> > +     hif_map_link(wvif, sta->addr, sta->mfp ? 2 : 0, sta_priv->link_id=
-);
-> >
-> >       return 0;
-> >  }
-> > @@ -474,6 +474,25 @@ static int wfx_upload_ap_templates(struct wfx_vif =
-*wvif)
-> >       return 0;
-> >  }
-> >
-> > +static void wfx_set_mfp_ap(struct wfx_vif *wvif)
-> > +{
-> > +     struct sk_buff *skb =3D ieee80211_beacon_get(wvif->wdev->hw, wvif=
-->vif);
-> > +     const int ieoffset =3D offsetof(struct ieee80211_mgmt, u.beacon.v=
-ariable);
-> > +     const u16 *ptr =3D (u16 *)cfg80211_find_ie(WLAN_EID_RSN,
-> > +                                              skb->data + ieoffset,
-> > +                                              skb->len - ieoffset);
-> > +     const int pairwise_cipher_suite_count_offset =3D 8 / sizeof(u16);
-> > +     const int pairwise_cipher_suite_size =3D 4 / sizeof(u16);
-> > +     const int akm_suite_size =3D 4 / sizeof(u16);
-> > +
-> > +     if (ptr) {
-> > +             ptr +=3D pairwise_cipher_suite_count_offset;
-> > +             ptr +=3D 1 + pairwise_cipher_suite_size * *ptr;
->=20
-> The value of "*ptr" comes from skb->data.  How do we know that it
-> doesn't point to something beyond the end of the skb->data buffer?
+Hello,
 
-I think the beacon come from hostapd (or any userspace application with
-the necessary permissions). Indeed, it could be corrupted.
+syzbot found the following issue on:
 
-I have noticed that WLAN_EID_RSN is parsed at multiple places in the
-kernel and I haven't seen any particular check :( (and WLAN_EID_RSN is
-probably not the only dangerous IE).
+HEAD commit:    ce8056d1 wip: changed copy_from_user where instrumented
+git tree:       https://github.com/google/kmsan.git master
+console output: https://syzkaller.appspot.com/x/log.txt?x=16e3c4b6900000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=3afe005fb99591f
+dashboard link: https://syzkaller.appspot.com/bug?extid=e4534e8c1c382508312c
+compiler:       clang version 10.0.0 (https://github.com/llvm/llvm-project/ c2443155a0fb245c8f17f2c1c72b6ea391e86e81)
 
-Anyway, I am going to add a few checks on values of ptr.
+Unfortunately, I don't have any reproducer for this issue yet.
 
-> > +             ptr +=3D 1 + akm_suite_size * *ptr;
-> > +             hif_set_mfp(wvif, *ptr & BIT(7), *ptr & BIT(6));
-> > +     }
-> > +}
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+e4534e8c1c382508312c@syzkaller.appspotmail.com
 
---=20
-J=E9r=F4me Pouiller
+=====================================================
+BUG: KMSAN: uninit-value in skb_trim+0x1f2/0x280 net/core/skbuff.c:1916
+CPU: 1 PID: 8770 Comm: syz-executor.1 Not tainted 5.8.0-rc5-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
+Call Trace:
+ <IRQ>
+ __dump_stack lib/dump_stack.c:77 [inline]
+ dump_stack+0x21c/0x280 lib/dump_stack.c:118
+ kmsan_report+0xf7/0x1e0 mm/kmsan/kmsan_report.c:121
+ __msan_warning+0x58/0xa0 mm/kmsan/kmsan_instr.c:215
+ skb_trim+0x1f2/0x280 net/core/skbuff.c:1916
+ ath9k_htc_rx_msg+0x5f6/0x1f50 drivers/net/wireless/ath/ath9k/htc_hst.c:453
+ ath9k_hif_usb_rx_stream drivers/net/wireless/ath/ath9k/hif_usb.c:638 [inline]
+ ath9k_hif_usb_rx_cb+0x1841/0x1d10 drivers/net/wireless/ath/ath9k/hif_usb.c:671
+ __usb_hcd_giveback_urb+0x687/0x870 drivers/usb/core/hcd.c:1650
+ usb_hcd_giveback_urb+0x1cb/0x730 drivers/usb/core/hcd.c:1716
+ dummy_timer+0xd98/0x71c0 drivers/usb/gadget/udc/dummy_hcd.c:1967
+ call_timer_fn+0x226/0x550 kernel/time/timer.c:1404
+ expire_timers+0x4fc/0x780 kernel/time/timer.c:1449
+ __run_timers+0xaf4/0xd30 kernel/time/timer.c:1773
+ run_timer_softirq+0x2d/0x50 kernel/time/timer.c:1786
+ __do_softirq+0x2ea/0x7f5 kernel/softirq.c:293
+ asm_call_on_stack+0xf/0x20 arch/x86/entry/entry_64.S:711
+ </IRQ>
+ __run_on_irqstack arch/x86/include/asm/irq_stack.h:23 [inline]
+ run_on_irqstack_cond arch/x86/include/asm/irq_stack.h:50 [inline]
+ do_softirq_own_stack+0x7c/0xa0 arch/x86/kernel/irq_64.c:77
+ invoke_softirq kernel/softirq.c:390 [inline]
+ __irq_exit_rcu+0x226/0x270 kernel/softirq.c:420
+ irq_exit_rcu+0xe/0x10 kernel/softirq.c:432
+ sysvec_apic_timer_interrupt+0x107/0x130 arch/x86/kernel/apic/apic.c:1091
+ asm_sysvec_apic_timer_interrupt+0x12/0x20 arch/x86/include/asm/idtentry.h:593
+RIP: 0010:kmsan_slab_free+0x8c/0xb0 mm/kmsan/kmsan_hooks.c:109
+Code: 00 00 b9 03 00 00 00 e8 12 ea ff ff be ff ff ff ff 65 0f c1 35 75 57 cc 7d ff ce 75 1a e8 6c ff 14 ff 4c 89 7d e0 ff 75 e0 9d <48> 83 c4 10 5b 41 5e 41 5f 5d c3 0f 0b 48 c7 c7 b0 63 e1 91 31 c0
+RSP: 0018:ffff888036ea36e8 EFLAGS: 00000246
+RAX: c38ce7a59d21d100 RBX: ffff88812f403c00 RCX: 0000000000000003
+RDX: 0000000000000002 RSI: 0000000000000000 RDI: ffff8881c7f65bb0
+RBP: ffff888036ea3710 R08: ffffea000000000f R09: ffff88812fffa000
+R10: 0000000000000010 R11: ffffffff912007f5 R12: 0000000000000000
+R13: 0000000000000000 R14: ffff8881c7f65bb0 R15: 0000000000000246
+ slab_free_freelist_hook mm/slub.c:1507 [inline]
+ slab_free mm/slub.c:3088 [inline]
+ kfree+0x4f3/0x3000 mm/slub.c:4069
+ kvfree+0x91/0xa0 mm/util.c:603
+ __vunmap+0xfec/0x1080 mm/vmalloc.c:2320
+ __vfree mm/vmalloc.c:2364 [inline]
+ vfree+0xcc/0x1c0 mm/vmalloc.c:2394
+ copy_entries_to_user net/ipv4/netfilter/ip_tables.c:867 [inline]
+ get_entries net/ipv4/netfilter/ip_tables.c:1024 [inline]
+ do_ipt_get_ctl+0x115c/0x11e0 net/ipv4/netfilter/ip_tables.c:1700
+ nf_sockopt net/netfilter/nf_sockopt.c:104 [inline]
+ nf_getsockopt+0x588/0x5e0 net/netfilter/nf_sockopt.c:122
+ ip_getsockopt+0x34e/0x520 net/ipv4/ip_sockglue.c:1749
+ tcp_getsockopt+0x1de/0x210 net/ipv4/tcp.c:3893
+ sock_common_getsockopt+0x13a/0x170 net/core/sock.c:3221
+ __sys_getsockopt+0x6c7/0x820 net/socket.c:2172
+ __do_sys_getsockopt net/socket.c:2187 [inline]
+ __se_sys_getsockopt+0xe1/0x100 net/socket.c:2184
+ __x64_sys_getsockopt+0x62/0x80 net/socket.c:2184
+ do_syscall_64+0xad/0x160 arch/x86/entry/common.c:386
+ entry_SYSCALL_64_after_hwframe+0x44/0xa9
+RIP: 0033:0x46008a
+Code: Bad RIP value.
+RSP: 002b:000000000169f6b8 EFLAGS: 00000212 ORIG_RAX: 0000000000000037
+RAX: ffffffffffffffda RBX: 000000000169f6e0 RCX: 000000000046008a
+RDX: 0000000000000041 RSI: 0000000000000000 RDI: 0000000000000003
+RBP: 0000000000749e60 R08: 000000000169f6dc R09: 0000000000004000
+R10: 000000000169f740 R11: 0000000000000212 R12: 000000000169f740
+R13: 0000000000000003 R14: 0000000000748a20 R15: 0000000000000000
+
+Uninit was created at:
+ kmsan_save_stack_with_flags+0x3c/0x90 mm/kmsan/kmsan.c:144
+ kmsan_internal_alloc_meta_for_pages mm/kmsan/kmsan_shadow.c:269 [inline]
+ kmsan_alloc_page+0xc5/0x1a0 mm/kmsan/kmsan_shadow.c:293
+ __alloc_pages_nodemask+0xdf0/0x1030 mm/page_alloc.c:4889
+ __alloc_pages include/linux/gfp.h:509 [inline]
+ __alloc_pages_node include/linux/gfp.h:522 [inline]
+ alloc_pages_node include/linux/gfp.h:536 [inline]
+ __page_frag_cache_refill mm/page_alloc.c:4964 [inline]
+ page_frag_alloc+0x35b/0x880 mm/page_alloc.c:4994
+ __netdev_alloc_skb+0x2a8/0xc90 net/core/skbuff.c:451
+ __dev_alloc_skb include/linux/skbuff.h:2813 [inline]
+ ath9k_hif_usb_rx_stream drivers/net/wireless/ath/ath9k/hif_usb.c:620 [inline]
+ ath9k_hif_usb_rx_cb+0xe5a/0x1d10 drivers/net/wireless/ath/ath9k/hif_usb.c:671
+ __usb_hcd_giveback_urb+0x687/0x870 drivers/usb/core/hcd.c:1650
+ usb_hcd_giveback_urb+0x1cb/0x730 drivers/usb/core/hcd.c:1716
+ dummy_timer+0xd98/0x71c0 drivers/usb/gadget/udc/dummy_hcd.c:1967
+ call_timer_fn+0x226/0x550 kernel/time/timer.c:1404
+ expire_timers+0x4fc/0x780 kernel/time/timer.c:1449
+ __run_timers+0xaf4/0xd30 kernel/time/timer.c:1773
+ run_timer_softirq+0x2d/0x50 kernel/time/timer.c:1786
+ __do_softirq+0x2ea/0x7f5 kernel/softirq.c:293
+=====================================================
 
 
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
