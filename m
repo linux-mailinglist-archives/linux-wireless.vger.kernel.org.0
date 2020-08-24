@@ -2,150 +2,137 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3621D24FA22
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Aug 2020 11:53:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 83E3424FA7A
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Aug 2020 11:56:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728440AbgHXJxG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 24 Aug 2020 05:53:06 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:34620 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728271AbgHXJw7 (ORCPT
+        id S1727966AbgHXJ4i (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 24 Aug 2020 05:56:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47316 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728211AbgHXJ4c (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 24 Aug 2020 05:52:59 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 07O9nAJn189449;
-        Mon, 24 Aug 2020 09:52:52 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- content-transfer-encoding : in-reply-to; s=corp-2020-01-29;
- bh=Ww/d3IUbFL+bGXtX95YfELstyo8GnB/9kJBk/e0Gx8s=;
- b=MBYlbK+P8G+ZDmi1DzhBHkCHRCma9SZCEJ4P2kLej2CFXFsQpCGZ4M8CX7Ir+oxt0e+8
- PBKRyrRS8kT34FxTEyN6kLqaJbYytJ57/vkEHRLzNKFlzNrLceQH6aFa22fh4fP9L5oc
- k2aTMmGDZ2/Z4DjoDC/tKM+2Lh2sseXM7R6YyqlMomZs/BA1jJSyvIYGCeLWWu9dmN5a
- z/+fRhMwIk0WU8ZdA+Gw8kqbTE9SHj+54oURR25DwCShw+JGZkgHVzyGww+vw/70ehHG
- aInYhNPc9QjqiojYwt4uITJBwEiCdV1rQK4HaylF6XYiq8kFP6JbuqBqAN9cI4sqIDE0 wg== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by userp2120.oracle.com with ESMTP id 333w6tj4hh-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 24 Aug 2020 09:52:52 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 07O9jD2c118769;
-        Mon, 24 Aug 2020 09:50:51 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by userp3030.oracle.com with ESMTP id 333r9gy74n-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 24 Aug 2020 09:50:51 +0000
-Received: from abhmp0012.oracle.com (abhmp0012.oracle.com [141.146.116.18])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 07O9oo07023975;
-        Mon, 24 Aug 2020 09:50:50 GMT
-Received: from kadam (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 24 Aug 2020 02:50:49 -0700
-Date:   Mon, 24 Aug 2020 12:50:42 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Jerome Pouiller <Jerome.Pouiller@silabs.com>
-Cc:     devel@driverdev.osuosl.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Kalle Valo <kvalo@codeaurora.org>
-Subject: Re: [PATCH 01/12] staging: wfx: fix BA when device is AP and MFP is
- enabled
-Message-ID: <20200824095042.GZ1793@kadam>
-References: <20200820155858.351292-1-Jerome.Pouiller@silabs.com>
+        Mon, 24 Aug 2020 05:56:32 -0400
+Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com [IPv6:2a00:1450:4864:20::441])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81F75C061573
+        for <linux-wireless@vger.kernel.org>; Mon, 24 Aug 2020 02:56:31 -0700 (PDT)
+Received: by mail-wr1-x441.google.com with SMTP id r15so7985993wrp.13
+        for <linux-wireless@vger.kernel.org>; Mon, 24 Aug 2020 02:56:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=NUyYs+yT6DMLv1Wfu0LNRH+QPv/EaW4t1A1ZYkB7MVA=;
+        b=K0SqdOU1Shs7CqSFziqBkb0io+ojMrYkRRVnI3PTIOLpVS5sP/hq3eC2ctlNtGE3nM
+         hu1ikyNUYMKMr0eQIAaALueYSvIgnmPo4Zju3mBjnga2hyFbTJQgYb+KNY1BQwucSbCs
+         kmiGZfhIpcBUca9m3W8FVqFD3Nkw84Qfyiv9wi0jv9vcN67t1IUrkZCJa1mtbusSJPnF
+         jFyeNnH4klJmAQCAHOvVs8ToTXekaSVJVziWFQX94hGkns0DrCZnxvO1SoEZauH50j5i
+         nPSFDaLoNhzXSWmU1r85pVQsOBsGte9pBRQEEqSDle4uNfqGJ5icoATowCeC/3rup8tT
+         v12Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=NUyYs+yT6DMLv1Wfu0LNRH+QPv/EaW4t1A1ZYkB7MVA=;
+        b=NBJZOZNqm82M+y/n1bh1epEDkAuVc/bnLl+EqjaTfzJbMhGUszeRNrS3OvgHOwe30L
+         2R8FtKqhpDWlsLTTX5E+sfyMYvBGWHJ696J5s5yDKSHSme5BPsAoQC2vKxFA8ZirXwxm
+         a53ZNjQabhO2V6Rnq8VuRU96bwbp6OVv1tZIIYNc/WS2R8VE7HC1wJIxztLUdWiNxMB1
+         VgcMPXmsvGSuepYbIYg7qziHj//clrW4vw3CHi9hA/tSs5oVIKHfeCCNTl/nuTwq5xYg
+         oQG/LoR7ZvwMO0jbLsParrsRUSkku9QPM9Ddu2f1OjiJ47IZUfviaT0SD75eKM30BtqY
+         cSAA==
+X-Gm-Message-State: AOAM532ZDuKP3H2/IIyHrFi7rFEsE0tzPBgxmoobbCYp7c1rl2p02mFU
+        Ezrdh+xVIfGsdu0/MH4VDOiplV1s2lRA09TN
+X-Google-Smtp-Source: ABdhPJyPduK4LB4GT1+1/7pTUI7drZichQw2LEWeOKiMvA2Lempn8DPBeLqUF/vMn9GnnV4tYKZ6jA==
+X-Received: by 2002:adf:d092:: with SMTP id y18mr4843523wrh.145.1598262989825;
+        Mon, 24 Aug 2020 02:56:29 -0700 (PDT)
+Received: from [192.168.0.38] ([176.61.57.127])
+        by smtp.gmail.com with ESMTPSA id p11sm11836029wrw.23.2020.08.24.02.56.28
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 24 Aug 2020 02:56:29 -0700 (PDT)
+Subject: Re: [PATCH] wcn36xx: Fix software-driven scan
+To:     Loic Poulain <loic.poulain@linaro.org>
+Cc:     Kalle Valo <kvalo@codeaurora.org>, wcn36xx@lists.infradead.org,
+        linux-wireless@vger.kernel.org
+References: <1597680075-18723-1-git-send-email-loic.poulain@linaro.org>
+ <db8adbab-bf1a-0552-0dce-af4acee9719e@linaro.org>
+ <CAMZdPi8KRJ3Jb129xAqR8fnfc7tKaVvLZH00DF_z+Vx+wOD3Ow@mail.gmail.com>
+From:   Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Message-ID: <5fc88e36-385c-68eb-091f-f53edac7ca29@linaro.org>
+Date:   Mon, 24 Aug 2020 10:57:16 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20200820155858.351292-1-Jerome.Pouiller@silabs.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9722 signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 phishscore=0
- suspectscore=0 malwarescore=0 spamscore=0 mlxlogscore=999 mlxscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2008240076
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9722 signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 impostorscore=0
- mlxlogscore=999 suspectscore=0 phishscore=0 malwarescore=0 spamscore=0
- priorityscore=1501 clxscore=1011 mlxscore=0 lowpriorityscore=0 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2008240076
+In-Reply-To: <CAMZdPi8KRJ3Jb129xAqR8fnfc7tKaVvLZH00DF_z+Vx+wOD3Ow@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Aug 20, 2020 at 05:58:47PM +0200, Jerome Pouiller wrote:
-> From: Jérôme Pouiller <jerome.pouiller@silabs.com>
+On 24/08/2020 08:51, Loic Poulain wrote:
+> Hi Bryan,
 > 
-> The protection of the management frames is mainly done by mac80211.
-> However, frames for the management of the BlockAck sessions are directly
-> sent by the device. These frames have to be protected if MFP is in use.
-> So the driver has to pass the MFP configuration to the device.
+> On Mon, 24 Aug 2020 at 03:45, Bryan O'Donoghue
+> <bryan.odonoghue@linaro.org> wrote:
+>>
+>> On 17/08/2020 17:01, Loic Poulain wrote:
+>>> For software-driven scan, rely on mac80211 software scan instead
+>>> of internal driver implementation. The internal implementation
+>>> cause connection trouble since it keep the antenna busy during
+>>> the entire scan duration, moreover it's only a passive scanning
+>>> (no probe request). Therefore, let mac80211 manages sw scan.
+>>>
+>>> Note: we fallback to software scan if firmware does not report
+>>> scan offload support or if we need to scan the 5Ghz band (currently
+>>> not supported by the offload scan...).
+>>>
+>>> Signed-off-by: Loic Poulain <loic.poulain@linaro.org>
+>>> Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+>>
+>> OK.
+>>
+>> TL;DR included diff fixes the performance issue.
+>>
+>> I've poked about with the old scan, and this new scan and I've managed
+>> to find to find where the new scan is killing performance.
+>>
+>> Please see below.
+>>
+>> @@ -792,6 +792,7 @@ int wcn36xx_smd_finish_scan(struct wcn36xx *wcn,
+>>    {
+>>           struct wcn36xx_vif *vif_priv = wcn36xx_vif_to_priv(vif);
+>>           struct wcn36xx_hal_finish_scan_req_msg msg_body;
+>> +       u8 oper_channel;
+>>           int ret;
+>>
+>>           mutex_lock(&wcn->hal_mutex);
+>> @@ -802,7 +803,9 @@ int wcn36xx_smd_finish_scan(struct wcn36xx *wcn,
+>>                   /* Notify BSSID with null data packet */
+>>                   msg_body.notify = 1;
+>>                   msg_body.frame_type = 2;
+>> -               msg_body.oper_channel = channel;
+>> +               oper_channel = WCN36XX_HW_CHANNEL(wcn);
+>> +               if (oper_channel != channel)
+>> +                       msg_body.oper_channel = channel;
 > 
-> Until now, the BlockAck management frames were completely unprotected
-> whatever the status of the MFP negotiation. So, some devices dropped
-> these frames.
-> 
-> The device has two knobs to control the MFP. One global and one per
-> station. Normally, the driver should always enable global MFP. Then it
-> should enable MFP on every station with which MFP was successfully
-> negotiated. Unfortunately, the older firmwares only provide the
-> global control.
-> 
-> So, this patch enable global MFP as it is exposed in the beacon. Then it
-> marks every station with which the MFP is effective.
-> 
-> Thus, the support for the old firmwares is not so bad. It may only
-> encounter some difficulties to negotiate BA sessions when the local
-> device (the AP) is MFP capable (ieee80211w=1) but the station is not.
-> The only solution for this case is to upgrade the firmware.
-> 
-> Signed-off-by: Jérôme Pouiller <jerome.pouiller@silabs.com>
-> ---
->  drivers/staging/wfx/sta.c | 22 +++++++++++++++++++++-
->  1 file changed, 21 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/staging/wfx/sta.c b/drivers/staging/wfx/sta.c
-> index ad63332f690c..9c1c8223a49f 100644
-> --- a/drivers/staging/wfx/sta.c
-> +++ b/drivers/staging/wfx/sta.c
-> @@ -434,7 +434,7 @@ int wfx_sta_add(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
->  	wvif->link_id_map |= BIT(sta_priv->link_id);
->  	WARN_ON(!sta_priv->link_id);
->  	WARN_ON(sta_priv->link_id >= HIF_LINK_ID_MAX);
-> -	hif_map_link(wvif, sta->addr, 0, sta_priv->link_id);
-> +	hif_map_link(wvif, sta->addr, sta->mfp ? 2 : 0, sta_priv->link_id);
->  
->  	return 0;
->  }
-> @@ -474,6 +474,25 @@ static int wfx_upload_ap_templates(struct wfx_vif *wvif)
->  	return 0;
->  }
->  
-> +static void wfx_set_mfp_ap(struct wfx_vif *wvif)
-> +{
-> +	struct sk_buff *skb = ieee80211_beacon_get(wvif->wdev->hw, wvif->vif);
-> +	const int ieoffset = offsetof(struct ieee80211_mgmt, u.beacon.variable);
-> +	const u16 *ptr = (u16 *)cfg80211_find_ie(WLAN_EID_RSN,
-> +						 skb->data + ieoffset,
-> +						 skb->len - ieoffset);
-> +	const int pairwise_cipher_suite_count_offset = 8 / sizeof(u16);
-> +	const int pairwise_cipher_suite_size = 4 / sizeof(u16);
-> +	const int akm_suite_size = 4 / sizeof(u16);
-> +
-> +	if (ptr) {
-> +		ptr += pairwise_cipher_suite_count_offset;
-> +		ptr += 1 + pairwise_cipher_suite_size * *ptr;
+> Is this condition ever satisfied? I mean, finish_scan is normally always
+> called with operating-channel as channel parameter.
 
-The value of "*ptr" comes from skb->data.  How do we know that it
-doesn't point to something beyond the end of the skb->data buffer?
+I had a debug statement and never saw it run, so I think no is probably 
+the answer to that.
 
-> +		ptr += 1 + akm_suite_size * *ptr;
-> +		hif_set_mfp(wvif, *ptr & BIT(7), *ptr & BIT(6));
-> +	}
-> +}
+Basically though the msg_body.oper_channel needs to be left at zero. 
+Whatever the firmware does with non-zero is not correct @ 80Mhz/5ghz
 
-regards,
-dan carpenter
 
+>> 2. Performance is as expected
+>>      I see throughput oscillate between 30 mbit and 100 mbit
+>>      - Android runs a scan every 15 seconds
+> 
+> With scanning app in the foreground, right?
+> While connected to an AP, Android 'should' only background scan if
+> RSSI becomes too low (for roaming).
+
+Foreground scanning yes, I'm forcing a constant interleaving.
