@@ -2,67 +2,80 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D98124F878
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Aug 2020 11:32:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B208324F901
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Aug 2020 11:40:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727840AbgHXJco (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 24 Aug 2020 05:32:44 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:53113 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728544AbgHXJcl (ORCPT
+        id S1728894AbgHXJkE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 24 Aug 2020 05:40:04 -0400
+Received: from mail29.static.mailgun.info ([104.130.122.29]:15473 "EHLO
+        mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1729655AbgHXJkD (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 24 Aug 2020 05:32:41 -0400
-Received: from 61-220-137-37.hinet-ip.hinet.net ([61.220.137.37] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <kai.heng.feng@canonical.com>)
-        id 1kA8q5-0007of-NZ; Mon, 24 Aug 2020 09:32:30 +0000
-From:   Kai-Heng Feng <kai.heng.feng@canonical.com>
-To:     yhchuang@realtek.com, kvalo@codeaurora.org
-Cc:     Kai-Heng Feng <kai.heng.feng@canonical.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless@vger.kernel.org (open list:REALTEK WIRELESS DRIVER
-        (rtw88)), netdev@vger.kernel.org (open list:NETWORKING DRIVERS),
-        linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH] rtw88: pci: Power cycle device during shutdown
-Date:   Mon, 24 Aug 2020 17:32:25 +0800
-Message-Id: <20200824093225.13689-1-kai.heng.feng@canonical.com>
-X-Mailer: git-send-email 2.17.1
+        Mon, 24 Aug 2020 05:40:03 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1598262002; h=Message-ID: References: In-Reply-To: Subject:
+ Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Sender; bh=/W60DV+q7apLS9fQPMek5ErShgRw9F/dCNveL9AWUOE=;
+ b=Zn8GoZBsTXrFad3ffkKLJR3CkNdDV9AH/Z5T59iWIq1/79cKkjNN0EOocsZnwfOJSaUoGuob
+ ZhHd/0vUHdrWRW41QwohIG84DTpTCPtHBouBk/TS6McpwdYkCTiI1e5yJBuHVTRu66yxn2z3
+ mNr2ZepNQWreGJfZFlCUB0wApxA=
+X-Mailgun-Sending-Ip: 104.130.122.29
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n03.prod.us-east-1.postgun.com with SMTP id
+ 5f438af06704ba80965d41ef (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 24 Aug 2020 09:40:00
+ GMT
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 85EBAC433CA; Mon, 24 Aug 2020 09:39:59 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: wgong)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 0D42FC433C6;
+        Mon, 24 Aug 2020 09:39:59 +0000 (UTC)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Mon, 24 Aug 2020 17:39:58 +0800
+From:   Wen Gong <wgong@codeaurora.org>
+To:     Krishna Chaitanya <chaitanya.mgit@gmail.com>
+Cc:     ath10k <ath10k@lists.infradead.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH v2] ath10k: add flag to protect napi operation to avoid
+ dead loop hang for SDIO
+In-Reply-To: <CABPxzYLjys+cXXRM5J680ZOs+6VrYt=_3rWv-gqkCod=-A1VrA@mail.gmail.com>
+References: <1598243612-4627-1-git-send-email-wgong@codeaurora.org>
+ <CABPxzYLjys+cXXRM5J680ZOs+6VrYt=_3rWv-gqkCod=-A1VrA@mail.gmail.com>
+Message-ID: <fd98989a87f2a50655dc95bdcd535c0d@codeaurora.org>
+X-Sender: wgong@codeaurora.org
+User-Agent: Roundcube Webmail/1.3.9
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Sometimes system freeze on cold/warm boot when rtw88 is probing.
-
-According to [1], platform firmware may not properly power manage the
-device during shutdown. I did some expirements and putting the device to
-D3 can workaround the issue.
-
-So let's power cycle the device by putting the device to D3 at shutdown
-to prevent the issue from happening.
-
-[1] https://bugzilla.kernel.org/show_bug.cgi?id=206411#c9
-
-Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
----
- drivers/net/wireless/realtek/rtw88/pci.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/net/wireless/realtek/rtw88/pci.c b/drivers/net/wireless/realtek/rtw88/pci.c
-index 3413973bc475..7f1f5073b9f4 100644
---- a/drivers/net/wireless/realtek/rtw88/pci.c
-+++ b/drivers/net/wireless/realtek/rtw88/pci.c
-@@ -1599,6 +1599,8 @@ void rtw_pci_shutdown(struct pci_dev *pdev)
- 
- 	if (chip->ops->shutdown)
- 		chip->ops->shutdown(rtwdev);
-+
-+	pci_set_power_state(pdev, PCI_D3hot);
- }
- EXPORT_SYMBOL(rtw_pci_shutdown);
- 
--- 
-2.17.1
-
+On 2020-08-24 16:35, Krishna Chaitanya wrote:
+> On Mon, Aug 24, 2020 at 10:03 AM Wen Gong <wgong@codeaurora.org> wrote:
+>> 
+>> It happened "Kernel panic - not syncing: hung_task: blocked tasks" 
+>> when
+>> test simulate crash and ifconfig down/rmmod meanwhile.
+>> 
+...
+>> 
+>>  #ifdef CONFIG_PM
+> Even though your DUT is SDIO based we should be doing this in general
+> for all, no?
+> core_restart + hif_stop is common to all.
+this patch does not have core_restart.
+I dit not hit the issue for others bus(PCIe,SNOC...), so I can not 
+change them with a
+assumption they also have this issue.
