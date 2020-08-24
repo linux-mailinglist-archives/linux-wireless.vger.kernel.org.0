@@ -2,124 +2,128 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D3BD24F3C3
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Aug 2020 10:16:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D6DD224F3FC
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Aug 2020 10:27:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726257AbgHXIQ1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 24 Aug 2020 04:16:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58950 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725999AbgHXIQ0 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 24 Aug 2020 04:16:26 -0400
-Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com [IPv6:2a00:1450:4864:20::441])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62645C061575
-        for <linux-wireless@vger.kernel.org>; Mon, 24 Aug 2020 01:16:26 -0700 (PDT)
-Received: by mail-wr1-x441.google.com with SMTP id r15so7688569wrp.13
-        for <linux-wireless@vger.kernel.org>; Mon, 24 Aug 2020 01:16:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=WIZAf3x2BneXQTTKPWzLh7lCftlSclIRyCF/Mlb3EW4=;
-        b=UHKFH64eK+dJNPTMUEG2GKmEf2QnNltVe6HCRpFWZspvwFb52ZYmQiiZ4kCn7gaF2n
-         SXWHdJsGJdH3VASepqgugyFAniRVIf2/X+rV8wETDho6CtJwZxWFMEqRrP7qLqT0XnBu
-         YeX+uSKhRk43xBqG+pNd/UgX22Fejf0PMRAWhlTDfbe4xvd6zuPGst55lUXGpU5bGOSi
-         JJc8XAbBvVpdlaTys1EakKWsoJfhau+xKzZ49CNCDNf/Xm8fye7qn+8sIvjmFYZmYqDK
-         51Pg1dKN8+2RkirYUoo7Y6SGAHGMfsl7fyD6/Xi2nyGomPK46Dz9HxN0fIKyv90Y7jg8
-         ho2A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=WIZAf3x2BneXQTTKPWzLh7lCftlSclIRyCF/Mlb3EW4=;
-        b=ePR4sb3HQ77uznQ1R2CLhf30HTekJrTSCvAc9tPwFgbvwJKN+Q/wf0/PbTe1pqSz/w
-         TXBlDrl/G2uRQuydA2DjI0KNIISpFdtgQEJnv8HHV/0GTm+/BY1rIj2howgO2iJay5BK
-         n+cx6Q8X30zFBfExWlK7+JaRJcWuHmkuex5O/FaJpGN+afjFBXHloefqPKfGk+xLaqa0
-         AOVGITVzc4dA1/FvP3Cf9blNGB38lT+kMXw2HuQtPw8ZR2/ZNqGp7ywrTE3zyoQ+hrRz
-         /nfecKjV4qdkAiUDLSFeVq4DEDY4jXbhRFfgfdfree9nBlPUtwjZc9Q6ni5+ctG+Q0xd
-         GeSA==
-X-Gm-Message-State: AOAM53199qVREdN/V5HEhlOnHdKKtEFf6wzddtzAaZ0ReE81+sEMud8w
-        zQCu4jIMyc2G97ZIO9DEFOgl7Q==
-X-Google-Smtp-Source: ABdhPJyQ1dfhud31uvmhWjcNOV9nz6EpZ3fFDfyZlE0Rpp4BVPYFIT8QORlNPZLa72KkbDqugJRCWA==
-X-Received: by 2002:a05:6000:1211:: with SMTP id e17mr4734550wrx.263.1598256984974;
-        Mon, 24 Aug 2020 01:16:24 -0700 (PDT)
-Received: from dell ([95.149.164.62])
-        by smtp.gmail.com with ESMTPSA id w1sm22294675wmc.18.2020.08.24.01.16.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Aug 2020 01:16:24 -0700 (PDT)
-Date:   Mon, 24 Aug 2020 09:16:22 +0100
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Christian Lamparter <chunkeey@gmail.com>
-Cc:     kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org
-Subject: Re: [PATCH 00/32] Set 2: Rid W=1 warnings in Wireless
-Message-ID: <20200824081622.GI3248864@dell>
-References: <20200821071644.109970-1-lee.jones@linaro.org>
- <a3915e15-0583-413f-1fcf-7cb9933ec0bf@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <a3915e15-0583-413f-1fcf-7cb9933ec0bf@gmail.com>
+        id S1726113AbgHXI1D (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 24 Aug 2020 04:27:03 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:36729 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726075AbgHXI1C (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 24 Aug 2020 04:27:02 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1598257621; h=Message-Id: Date: Subject: Cc: To: From:
+ Sender; bh=c/x6JXImN8vWdxQWZdIwU46g75ZKMtLZKGunCqSnPAk=; b=DTWOGwfdFRWwsgtua4U3Iuc0RS2FwgGMTYGNcKVf7vdcW0O322UyABYL7RF2ViiYnrCm41ET
+ kfl76TtPoCgZmR56cjspVHXVertdGjX5l0ONTlAoNyUHoGabzujLIIq2ujwbn+mwyR+uRFUe
+ IVCplJMPXPUT+jyr6PqirEzRVW8=
+X-Mailgun-Sending-Ip: 69.72.43.7
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n07.prod.us-east-1.postgun.com with SMTP id
+ 5f4379c1af2691fc9cc9bb24 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 24 Aug 2020 08:26:41
+ GMT
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 61335C433CB; Mon, 24 Aug 2020 08:26:40 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.0
+Received: from vnaralas-linux.qualcomm.com (blr-c-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.19.19])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: vnaralas)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 8E1FCC433C6;
+        Mon, 24 Aug 2020 08:26:38 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 8E1FCC433C6
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=vnaralas@codeaurora.org
+From:   Venkateswara Naralasetty <vnaralas@codeaurora.org>
+To:     ath11k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org,
+        Venkateswara Naralasetty <vnaralas@codeaurora.org>
+Subject: [PATCHv2 1/2] nl80211: vendor-cmd: qca: add command for ap power save
+Date:   Mon, 24 Aug 2020 13:56:28 +0530
+Message-Id: <1598257589-19091-1-git-send-email-vnaralas@codeaurora.org>
+X-Mailer: git-send-email 2.7.4
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sat, 22 Aug 2020, Christian Lamparter wrote:
+AP power save feature is to save power in AP mode, where AP goes
+to power save mode when no stations associate to it and comes out
+of power save when any station associate to AP.
 
-> On 2020-08-21 09:16, Lee Jones wrote:
-> > This set is part of a larger effort attempting to clean-up W=1
-> > kernel builds, which are currently overwhelmingly riddled with
-> > niggly little warnings.
-> > 
-> I see that after our discussion about the carl9170 change in this
-> thread following your patch: <https://lkml.org/lkml/2020/8/14/291>
-> 
-> you decided the best way to address our requirements, was to "drop"
-> your patch from the series, instead of just implementing the requested
-> changes. :(
+This patch is to add vendor command support to enable/disable
+ap power save.
 
-No, this is "set 2", not "v2".
+An example of usage: iw dev wlanx vendor send 0x1374 0x4a ap-ps <val>
 
-The patch you refer to is in the first set.
+0x1374: vendor id
+0x4a: vendor subcmd id
+val: 0 - disable power save
+     1 - enable power save
 
-Looks like I am waiting for your reply [0]:
+Signed-off-by: Venkateswara Naralasetty <vnaralas@codeaurora.org>
+---
+v2:
+ * added use case in the commit log.
 
-[0] https://lkml.org/lkml/2020/8/18/334
+ include/uapi/nl80211-vnd-qca.h | 42 ++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 42 insertions(+)
+ create mode 100644 include/uapi/nl80211-vnd-qca.h
 
-> > There are quite a few W=1 warnings in the Wireless.  My plan
-> > is to work through all of them over the next few weeks.
-> > Hopefully it won't be too long before drivers/net/wireless
-> > builds clean with W=1 enabled.
-> 
-> Just a parting note for your consideration:
-> 
-> Since 5.7 [0], it has become rather easy to also compile the linux kernel
-> with clang and the LLVM Utilities.
-> <https://www.kernel.org/doc/html/latest/kbuild/llvm.html>
-> 
-> I hope this information can help you to see beyond that one-unamed
-> "compiler" bias there... I wish you the best of luck in your endeavors.
-
-Never used them.
-
-GCC has always worked well for me.  What are their benefits over GCC?
-
-I already build for 5 architectures locally and a great deal more
-(arch * defconfigs) using remote testing infrastructures.  Multiplying
-them without very good reason sounds like a *potential* waste of
-already limited computation resources.
-
-> Christian
-> 
-> [0] <https://www.phoronix.com/scan.php?page=news_item&px=Linux-5.7-Kbuild-Easier-LLVM>
-
+diff --git a/include/uapi/nl80211-vnd-qca.h b/include/uapi/nl80211-vnd-qca.h
+new file mode 100644
+index 0000000..357040a
+--- /dev/null
++++ b/include/uapi/nl80211-vnd-qca.h
+@@ -0,0 +1,42 @@
++/* SPDX-License-Identifier: ISC */
++/*
++ * Copyright (c) 2019-2020 The Linux Foundation. All rights reserved.
++ */
++
++#ifndef _UAPI_NL80211_VND_QCA_H
++#define _UAPI_NL80211_VND_QCA_H
++
++/* Vendor id to be used in vendor specific command and events to user space
++ * NOTE: The authoritative place for definition of QCA_NL80211_VENDOR_ID,
++ * vendor subcmd definitions prefixed with QCA_NL80211_VENDOR_SUBCMD, and
++ * qca_wlan_vendor_attr is open source file src/common/qca-vendor.h in
++ * git://w1.fi/srv/git/hostap.git; the values here are just a copy of that
++ */
++#define QCA_NL80211_VENDOR_ID 0x001374
++
++/**
++ * enum qca_nl80211_vendor_subcmds - QCA nl80211 vendor command identifiers
++ *
++ * @QCA_NL80211_VENDOR_SUBCMD_SET_WIFI_CONFIGURATION: This vendor subcommand is
++ * used to set wifi configurations by the attributes defined in
++ * enum qca_wlan_vendor_attr_config.
++ */
++enum qca_nl80211_vendor_subcmds {
++	QCA_NL80211_VENDOR_SUBCMD_SET_WIFI_CONFIGURATION = 74,
++};
++
++/**
++ * enum qca_wlan_vendor_attr_config: Attributes for data used by
++ * QCA_NL80211_VENDOR_SUBCMD_SET_WIFI_CONFIGURATION.
++ *
++ * @QCA_WLAN_VENDOR_ATTR_CONFIG_GTX: 8-bit unsigned value to trigger
++ * green Tx power saving 1-Enable, 0-Disable.
++ */
++enum qca_wlan_vendor_attr_config {
++	QCA_WLAN_VENDOR_ATTR_CONFIG_GTX = 57,
++
++	QCA_WLAN_VENDOR_ATTR_CONFIG_AFTER_LAST,
++	QCA_WLAN_VENDOR_ATTR_CONFIG_MAX =
++		QCA_WLAN_VENDOR_ATTR_CONFIG_AFTER_LAST - 1,
++};
++#endif /* _UAPI_NL80211_VND_QCA_H_ */
 -- 
-Lee Jones [李琼斯]
-Senior Technical Lead - Developer Services
-Linaro.org │ Open source software for Arm SoCs
-Follow Linaro: Facebook | Twitter | Blog
+2.7.4
+
