@@ -2,193 +2,233 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8716224F1C4
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Aug 2020 06:18:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B846924F1F4
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Aug 2020 06:33:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726912AbgHXESo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 24 Aug 2020 00:18:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50756 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726851AbgHXESn (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 24 Aug 2020 00:18:43 -0400
-Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E86FC061573
-        for <linux-wireless@vger.kernel.org>; Sun, 23 Aug 2020 21:18:43 -0700 (PDT)
-Received: by mail-ed1-x534.google.com with SMTP id l23so6783204edv.11
-        for <linux-wireless@vger.kernel.org>; Sun, 23 Aug 2020 21:18:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to;
-        bh=WH3QHHsw4xw6mDC6fNyhlE+BuqcYXX0QNSVeL+dps6E=;
-        b=SXI01djbW/WOXlvPwVw1tGMlSSWRsdaEsBdgiOQ7/GdNWT2HxvuYEnQREGFeu3BKQu
-         fGGVdgpzR5scAmafE+K1UlALh2yFWiUFkygH7CNNcqCLU2hxIyvVw+J62XYk7E9mDbsU
-         Ictb6L6L6yMxCr31rA5AfKkKBUSCwBRbQsMD/hPVvf6MWO1uTIgNl45rfZS5TPujW1eu
-         C5p+mKKscWjS7k+ibmtE6tFByh3wdjp2bTJZ9UD66Z3oG0owKyQvLyNZ7Cjyf5uGIGx/
-         O66xcNDCpCU94fEGyU41sMLCNublFdNfxCojh/ohu5y1xeHvQLodRFD92/u1dZaEsymA
-         oWIg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to;
-        bh=WH3QHHsw4xw6mDC6fNyhlE+BuqcYXX0QNSVeL+dps6E=;
-        b=DRKUWcyyiem/Q+q8VVjdjwKNsiJI4fo+8daw4UdImCZ0hWhQPvyjAdmlb9H3kJIqbJ
-         my2bVDlxK78WDbUEohC2ss7ytUUk54kUcIHtunCO2zlTqCoI5dP6YLfeejqgOCKW/4v0
-         iS8rygqxsdF/XdtXaNMgug3P5qWDJ1LNntuhNTbjL2Wkn2a/yZGopalim/tn6uLVKc0b
-         9rlLFgoOeLcMWH1uG8qBrdUvvTO96mS1WexOzH5h/+HmU3hYR0AuXMTslhMCDbrOeQsV
-         f5KqcFIKs74pz4D1+L80JnCzhV1vqNA3q2UKrjnPMCHLJM3hh2p8kYaoaKCI71RYr1Bd
-         td6Q==
-X-Gm-Message-State: AOAM532fE/pq1TE7zoZNYWad+kGiCuSUNGPze18XCqn+yiOhnbwfmFje
-        GFeCLxjCeTVaEhqaq6ZuBkFq4zQRo5ioijTyzs5R6PAFZpc=
-X-Google-Smtp-Source: ABdhPJyONY71Fb5HPSS9tn4DTkwoqupzrR59fefpBLKju93dPVmeAlIOkWTwx4n4KVV2hDg2EzlipAaoRUdjCfHnJ/s=
-X-Received: by 2002:a05:6402:6d9:: with SMTP id n25mr3615183edy.304.1598242721060;
- Sun, 23 Aug 2020 21:18:41 -0700 (PDT)
-MIME-Version: 1.0
-References: <CAPWex-BT-cTFv-zWBLGkZUV72eRsV9WP0PAN8GT0m-1RA5NTxQ@mail.gmail.com>
-In-Reply-To: <CAPWex-BT-cTFv-zWBLGkZUV72eRsV9WP0PAN8GT0m-1RA5NTxQ@mail.gmail.com>
-From:   sdnlabs Janakaraj <wsuprabhu@gmail.com>
-Date:   Mon, 24 Aug 2020 00:18:29 -0400
-Message-ID: <CAPWex-Aan+kQmD=1WZbjFZUW2WAOEyUwU5jwEN8obJZbTh8X8g@mail.gmail.com>
-Subject: Fwd: Ath10k mesh mode - Kernel Panic
-To:     linux-wireless <linux-wireless@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        id S1727064AbgHXEdJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 24 Aug 2020 00:33:09 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:54978 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726684AbgHXEdI (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 24 Aug 2020 00:33:08 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1598243587; h=Message-Id: Date: Subject: Cc: To: From:
+ Sender; bh=LJeQMa/6oxjRaE+iQIl/9pXAf4cEkuFLkz/1TglC0ug=; b=XDUsokUNSNZQCp9i8Rgmft8+PmB3mzxVWKLvimXKpEsBZ8uEOXmKoV3EG59vceLOCXMQ4kIA
+ vDUVmWipJH0Iu32GBHZ0xkJmWI4jiP+KofjjVCuzGUPPr2x9UCukgZHIq+Ta1CKksnq8/97k
+ 1boqBZ0JYO0dH7DXz10v/JgmdDU=
+X-Mailgun-Sending-Ip: 69.72.43.7
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n03.prod.us-east-1.postgun.com with SMTP id
+ 5f4343020c97c4532aac75ec (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 24 Aug 2020 04:33:06
+ GMT
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 20827C433CB; Mon, 24 Aug 2020 04:33:06 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from gongwen-ThinkPad-T420.qca.qualcomm.com (unknown [180.166.53.21])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: wgong)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 73B80C433C6;
+        Mon, 24 Aug 2020 04:33:04 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 73B80C433C6
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=wgong@codeaurora.org
+From:   Wen Gong <wgong@codeaurora.org>
+To:     ath10k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org, wgong@codeaurora.org
+Subject: [PATCH v2] ath10k: add flag to protect napi operation to avoid dead loop hang for SDIO
+Date:   Mon, 24 Aug 2020 12:33:32 +0800
+Message-Id: <1598243612-4627-1-git-send-email-wgong@codeaurora.org>
+X-Mailer: git-send-email 2.7.4
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
-I am having issues in operating mesh mode on QCA9888 chipset. When I
-bring up the mesh interface, my links are not established.
+It happened "Kernel panic - not syncing: hung_task: blocked tasks" when
+test simulate crash and ifconfig down/rmmod meanwhile.
 
-I have tried iw and wpa_supplicant tools for creating mesh, but all
-end up at the same issue.
+Test steps:
 
-dmesg command output showed there was panic on kernel as shown below:
+1.Test commands, either can reproduce the hang.
+echo soft > /sys/kernel/debug/ieee80211/phy0/ath10k/simulate_fw_crash;sleep 0.05;ifconfig wlan0 down
+echo soft > /sys/kernel/debug/ieee80211/phy0/ath10k/simulate_fw_crash;rmmod ath10k_sdio
 
-Aug 23 23:41:41 mydev kernel: [ 1384.897186] ath10k_pci 0000:05:00.0:
-unsupported HTC service id: 1536
-Aug 23 23:41:41 mydev kernel: [ 1384.918285] ath10k_pci 0000:05:00.0:
-pdev param 0 not supported by firmware
-Aug 23 23:41:41 mydev kernel: [ 1384.944568] IPv6:
-ADDRCONF(NETDEV_CHANGE): mesh2: link becomes ready
-Aug 23 23:41:46 mydev kernel: [ 1389.253229] ath10k_pci 0000:04:00.0:
-unsupported HTC service id: 1536
-Aug 23 23:41:46 mydev kernel: [ 1389.273405] ath10k_pci 0000:04:00.0:
-pdev param 0 not supported by firmware
-Aug 23 23:41:46 mydev kernel: [ 1389.298658] IPv6:
-ADDRCONF(NETDEV_CHANGE): mesh1: link becomes ready
-Aug 23 23:41:47 mydev kernel: [ 1390.129916] ------------[ cut here
-]------------
-Aug 23 23:41:47 mydev kernel: [ 1390.129931] WARNING: CPU: 7 PID: 0 at
-net/core/flow_dissector.c:958 __skb_flow_dissect+0x3ba/0x1590
-Aug 23 23:41:47 mydev kernel: [ 1390.129932] Modules linked in:
-xt_CHECKSUM xt_MASQUERADE xt_conntrack ipt_REJECT nf_reject_ipv4
-xt_tcpudp ip6table_mangle ip6table_nat iptable_mangle iptable_nat
-nf_tables nfnetlink ip6table_filter bridge ip6_tables stp llc
-iptable_filter bpfilter snd_hda_codec_hdmi snd_hda_codec_realtek
-snd_hda_codec_generic intel_rapl_msr intel_rapl_common
-x86_pkg_temp_thermal intel_powerclamp coretemp kvm_intel kvm
-snd_sof_pci snd_sof_intel_hda_common snd_soc_hdac_hda
-snd_sof_intel_hda snd_sof_intel_byt snd_sof_intel_ipc snd_sof
-snd_sof_xtensa_dsp snd_hda_ext_core snd_soc_acpi_intel_match
-snd_soc_acpi ledtrig_audio snd_soc_core mei_hdcp snd_compress ac97_bus
-snd_pcm_dmaengine snd_hda_intel snd_intel_dspcfg snd_hda_codec
-snd_hda_core snd_hwdep nls_iso8859_1 snd_pcm crct10dif_pclmul
-ghash_clmulni_intel ath10k_pci ath10k_core snd_seq_midi
-snd_seq_midi_event ath snd_rawmidi mac80211 snd_seq aesni_intel
-dell_wmi crypto_simd dell_smbios snd_seq_device cryptd dcdbas
-glue_helper snd_timer joydev intel_cstate
-Aug 23 23:41:47 mydev kernel: [ 1390.129986]  dell_wmi_aio i915
-dell_wmi_descriptor input_leds intel_rapl_perf sparse_keymap cfg80211
-intel_wmi_thunderbolt wmi_bmof snd openvswitch nsh drm_kms_helper
-soundcore nf_conncount libarc4 i2c_algo_bit nf_nat mei_me fb_sys_fops
-syscopyarea nf_conntrack mei sysfillrect sysimgblt intel_pch_thermal
-nf_defrag_ipv6 ie31200_edac nf_defrag_ipv4 libcrc32c mac_hid acpi_pad
-sch_fq_codel parport_pc ppdev lp parport drm ip_tables x_tables
-autofs4 hid_logitech_hidpp hid_logitech_dj hid_generic usbhid hid
-crc32_pclmul e1000e nvme intel_lpss_pci ahci i2c_i801 intel_lpss
-nvme_core idma64 libahci virt_dma wmi pinctrl_cannonlake video
-pinctrl_intel
-Aug 23 23:41:47 mydev kernel: [ 1390.130034] CPU: 7 PID: 0 Comm:
-swapper/7 Not tainted 5.4.0-42-generic #46-Ubuntu
-Aug 23 23:41:47 mydev kernel: [ 1390.130036] Hardware name: Dell Inc.
-OptiPlex 7071/097YXY, BIOS 1.1.2 08/29/2019
-Aug 23 23:41:47 mydev kernel: [ 1390.130040] RIP:
-0010:__skb_flow_dissect+0x3ba/0x1590
-Aug 23 23:41:47 mydev kernel: [ 1390.130044] Code: 65 d8 5b 41 5c 41
-5d 41 5e 41 5f 5d c3 48 8b 53 10 48 85 d2 0f 84 bd 05 00 00 4c 8b ba
-e8 04 00 00 4d 85 ff 0f 85 bf fc ff ff <0f> 0b e9 bf fd ff ff 66 41 81
-ff 08 06 0f 84 3a fe ff ff 31 c0 e9
-Aug 23 23:41:47 mydev kernel: [ 1390.130046] RSP:
-0018:ffffbeb1002c0c30 EFLAGS: 00010246
-Aug 23 23:41:47 mydev kernel: [ 1390.130050] RAX: 0000000000000000
-RBX: ffff9a6b3dfb4f00 RCX: 000000000000fe58
-Aug 23 23:41:47 mydev kernel: [ 1390.130051] RDX: 0000000000000000
-RSI: ffff9a6b3dfb4f00 RDI: 0000000000000008
-Aug 23 23:41:47 mydev kernel: [ 1390.130053] RBP: ffffbeb1002c0d18
-R08: 0000000000000070 R09: 0000000000000000
-Aug 23 23:41:47 mydev kernel: [ 1390.130055] R10: ffff9a6bd8c1e818
-R11: ffff9a6bdebba8c0 R12: ffffffffb6a53140
-Aug 23 23:41:47 mydev kernel: [ 1390.130057] R13: 000000000000fe58
-R14: ffffbeb1002c0d40 R15: 0000000000000000
-Aug 23 23:41:47 mydev kernel: [ 1390.130060] FS:
-0000000000000000(0000) GS:ffff9a6c1c1c0000(0000)
-knlGS:0000000000000000
-Aug 23 23:41:47 mydev kernel: [ 1390.130062] CS:  0010 DS: 0000 ES:
-0000 CR0: 0000000080050033
-Aug 23 23:41:47 mydev kernel: [ 1390.130064] CR2: 00007f563df2b000
-CR3: 000000024b20a004 CR4: 00000000003606e0
-Aug 23 23:41:47 mydev kernel: [ 1390.130066] DR0: 0000000000000000
-DR1: 0000000000000000 DR2: 0000000000000000
-Aug 23 23:41:47 mydev kernel: [ 1390.130068] DR3: 0000000000000000
-DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Aug 23 23:41:47 mydev kernel: [ 1390.130069] Call Trace:
-Aug 23 23:41:47 mydev kernel: [ 1390.130072]  <IRQ>
-Aug 23 23:41:47 mydev kernel: [ 1390.130082]  ? swiotlb_map+0x6c/0x1c0
-Aug 23 23:41:47 mydev kernel: [ 1390.130087]  skb_get_hash_perturb+0x56/0x160
-Aug 23 23:41:47 mydev kernel: [ 1390.130142]
-ieee80211_queue_skb+0xd7/0x420 [mac80211]
-Aug 23 23:41:47 mydev kernel: [ 1390.130185]  ieee80211_tx+0xe1/0x140 [mac80211]
-Aug 23 23:41:47 mydev kernel: [ 1390.130224]
-ieee80211_tx_pending+0xa5/0x210 [mac80211]
-Aug 23 23:41:47 mydev kernel: [ 1390.130231]  ?
-ath10k_pci_napi_poll+0xc8/0x120 [ath10k_pci]
-Aug 23 23:41:47 mydev kernel: [ 1390.130238]
-tasklet_action_common.isra.0+0x60/0x110
-Aug 23 23:41:47 mydev kernel: [ 1390.130242]  tasklet_action+0x22/0x30
-Aug 23 23:41:47 mydev kernel: [ 1390.130246]  __do_softirq+0xe1/0x2d6
-Aug 23 23:41:47 mydev kernel: [ 1390.130251]  irq_exit+0xae/0xb0
-Aug 23 23:41:47 mydev kernel: [ 1390.130253]  do_IRQ+0x5a/0xf0
-Aug 23 23:41:47 mydev kernel: [ 1390.130259]  common_interrupt+0xf/0xf
-Aug 23 23:41:47 mydev kernel: [ 1390.130260]  </IRQ>
-Aug 23 23:41:47 mydev kernel: [ 1390.130266] RIP:
-0010:cpuidle_enter_state+0xc5/0x450
-Aug 23 23:41:47 mydev kernel: [ 1390.130270] Code: ff e8 bf 08 81 ff
-80 7d c7 00 74 17 9c 58 0f 1f 44 00 00 f6 c4 02 0f 85 65 03 00 00 31
-ff e8 12 6c 87 ff fb 66 0f 1f 44 00 00 <45> 85 ed 0f 88 8f 02 00 00 49
-63 cd 4c 8b 7d d0 4c 2b 7d c8 48 8d
-Aug 23 23:41:47 mydev kernel: [ 1390.130272] RSP:
-0018:ffffbeb10010be38 EFLAGS: 00000246 ORIG_RAX: ffffffffffffffdc
-Aug 23 23:41:47 mydev kernel: [ 1390.130275] RAX: ffff9a6c1c1ead00
-RBX: ffffffffb6959c00 RCX: 000000000000001f
-Aug 23 23:41:47 mydev kernel: [ 1390.130277] RDX: 0000000000000000
-RSI: 0000000029580295 RDI: 0000000000000000
-Aug 23 23:41:47 mydev kernel: [ 1390.130278] RBP: ffffbeb10010be78
-R08: 00000143aa30f14e R09: 0000016b9fd179ba
-Aug 23 23:41:47 mydev kernel: [ 1390.130280] R10: ffff9a6c1c1e9a00
-R11: ffff9a6c1c1e99e0 R12: ffffdeb0ffbc0000
-Aug 23 23:41:47 mydev kernel: [ 1390.130282] R13: 0000000000000008
-R14: 0000000000000008 R15: ffffdeb0ffbc0000
-Aug 23 23:41:47 mydev kernel: [ 1390.130287]  ? cpuidle_enter_state+0xa1/0x450
-Aug 23 23:41:47 mydev kernel: [ 1390.130291]  cpuidle_enter+0x2e/0x40
-Aug 23 23:41:47 mydev kernel: [ 1390.130295]  call_cpuidle+0x23/0x40
-Aug 23 23:41:47 mydev kernel: [ 1390.130299]  do_idle+0x1dd/0x270
-Aug 23 23:41:47 mydev kernel: [ 1390.130303]  cpu_startup_entry+0x20/0x30
-Aug 23 23:41:47 mydev kernel: [ 1390.130309]  start_secondary+0x167/0x1c0
-Aug 23 23:41:47 mydev kernel: [ 1390.130314]  secondary_startup_64+0xa4/0xb0
-Aug 23 23:41:47 mydev kernel: [ 1390.130318] ---[ end trace
-4b178e9a3daab927 ]---
+2. dmesg:
+[ 5622.548630] ath10k_sdio mmc1:0001:1: simulating soft firmware crash
+[ 5622.655995] ieee80211 phy0: Hardware restart was requested
+[ 5776.355164] INFO: task shill:1572 blocked for more than 122 seconds.
+[ 5776.355687] INFO: task kworker/1:2:24437 blocked for more than 122 seconds.
+[ 5776.359812] Kernel panic - not syncing: hung_task: blocked tasks
+[ 5776.359836] CPU: 1 PID: 55 Comm: khungtaskd Tainted: G        W         4.19.86 #137
+[ 5776.359846] Hardware name: MediaTek krane sku176 board (DT)
+[ 5776.359855] Call trace:
+[ 5776.359868]  dump_backtrace+0x0/0x170
+[ 5776.359881]  show_stack+0x20/0x2c
+[ 5776.359896]  dump_stack+0xd4/0x10c
+[ 5776.359916]  panic+0x12c/0x29c
+[ 5776.359937]  hung_task_panic+0x0/0x50
+[ 5776.359953]  kthread+0x120/0x130
+[ 5776.359965]  ret_from_fork+0x10/0x18
+[ 5776.359986] SMP: stopping secondary CPUs
+[ 5776.360012] Kernel Offset: 0x141ea00000 from 0xffffff8008000000
+[ 5776.360026] CPU features: 0x0,2188200c
+[ 5776.360035] Memory Limit: none
 
+command "ifconfig wlan0 down" or "rmmod ath10k_sdio" will be blocked
+callstack of ifconfig:
+[<0>] __switch_to+0x120/0x13c
+[<0>] msleep+0x28/0x38
+[<0>] ath10k_sdio_hif_stop+0x24c/0x294 [ath10k_sdio]
+[<0>] ath10k_core_stop+0x50/0x78 [ath10k_core]
+[<0>] ath10k_halt+0x120/0x178 [ath10k_core]
+[<0>] ath10k_stop+0x4c/0x8c [ath10k_core]
+[<0>] drv_stop+0xe0/0x1e4 [mac80211]
+[<0>] ieee80211_stop_device+0x48/0x54 [mac80211]
+[<0>] ieee80211_do_stop+0x678/0x6f8 [mac80211]
+[<0>] ieee80211_stop+0x20/0x30 [mac80211]
+[<0>] __dev_close_many+0xb8/0x11c
+[<0>] __dev_change_flags+0xe0/0x1d0
+[<0>] dev_change_flags+0x30/0x6c
+[<0>] devinet_ioctl+0x370/0x564
+[<0>] inet_ioctl+0xdc/0x304
+[<0>] sock_do_ioctl+0x50/0x288
+[<0>] compat_sock_ioctl+0x1b4/0x1aac
+[<0>] __se_compat_sys_ioctl+0x100/0x26fc
+[<0>] __arm64_compat_sys_ioctl+0x20/0x2c
+[<0>] el0_svc_common+0xa4/0x154
+[<0>] el0_svc_compat_handler+0x2c/0x38
+[<0>] el0_svc_compat+0x8/0x18
+[<0>] 0xffffffffffffffff
 
-I am using Ubuntu 20.04 with 5.4.0-42-generic kernel.
+callstack of rmmod:
+[<0>] __switch_to+0x120/0x13c
+[<0>] msleep+0x28/0x38
+[<0>] ath10k_sdio_hif_stop+0x294/0x31c [ath10k_sdio]
+[<0>] ath10k_core_stop+0x50/0x78 [ath10k_core]
+[<0>] ath10k_halt+0x120/0x178 [ath10k_core]
+[<0>] ath10k_stop+0x4c/0x8c [ath10k_core]
+[<0>] drv_stop+0xe0/0x1e4 [mac80211]
+[<0>] ieee80211_stop_device+0x48/0x54 [mac80211]
+[<0>] ieee80211_do_stop+0x678/0x6f8 [mac80211]
+[<0>] ieee80211_stop+0x20/0x30 [mac80211]
+[<0>] __dev_close_many+0xb8/0x11c
+[<0>] dev_close_many+0x70/0x100
+[<0>] dev_close+0x4c/0x80
+[<0>] cfg80211_shutdown_all_interfaces+0x50/0xcc [cfg80211]
+[<0>] ieee80211_remove_interfaces+0x58/0x1a0 [mac80211]
+[<0>] ieee80211_unregister_hw+0x40/0x100 [mac80211]
+[<0>] ath10k_mac_unregister+0x1c/0x44 [ath10k_core]
+[<0>] ath10k_core_unregister+0x38/0x7c [ath10k_core]
+[<0>] ath10k_sdio_remove+0x8c/0xd0 [ath10k_sdio]
+[<0>] sdio_bus_remove+0x48/0x108
+[<0>] device_release_driver_internal+0x138/0x1ec
+[<0>] driver_detach+0x6c/0xa8
+[<0>] bus_remove_driver+0x78/0xa8
+[<0>] driver_unregister+0x30/0x50
+[<0>] sdio_unregister_driver+0x28/0x34
+[<0>] cleanup_module+0x14/0x6bc [ath10k_sdio]
+[<0>] __arm64_sys_delete_module+0x1e0/0x22c
+[<0>] el0_svc_common+0xa4/0x154
+[<0>] el0_svc_compat_handler+0x2c/0x38
+[<0>] el0_svc_compat+0x8/0x18
+[<0>] 0xffffffffffffffff
+
+The test command run simulate_fw_crash firstly and it call into
+ath10k_sdio_hif_stop from ath10k_core_restart, then napi_disable
+is called and bit NAPI_STATE_SCHED is set. After that, function
+ath10k_sdio_hif_stop is called again from ath10k_stop by command
+"ifconfig wlan0 down" or "rmmod ath10k_sdio", then command blocked.
+
+It is blocked by napi_synchronize, napi_disable will set bit with
+NAPI_STATE_SCHED, and then napi_synchronize will enter dead loop
+becuase bit NAPI_STATE_SCHED is set by napi_disable.
+
+function of napi_synchronize
+static inline void napi_synchronize(const struct napi_struct *n)
+{
+	if (IS_ENABLED(CONFIG_SMP))
+		while (test_bit(NAPI_STATE_SCHED, &n->state))
+			msleep(1);
+	else
+		barrier();
+}
+
+function of napi_disable
+void napi_disable(struct napi_struct *n)
+{
+	might_sleep();
+	set_bit(NAPI_STATE_DISABLE, &n->state);
+
+	while (test_and_set_bit(NAPI_STATE_SCHED, &n->state))
+		msleep(1);
+	while (test_and_set_bit(NAPI_STATE_NPSVC, &n->state))
+		msleep(1);
+
+	hrtimer_cancel(&n->timer);
+
+	clear_bit(NAPI_STATE_DISABLE, &n->state);
+}
+
+Add flag for it avoid the hang and crash.
+
+Tested-on: QCA6174 hw3.2 SDIO WLAN.RMH.4.4.1-00049
+
+Signed-off-by: Wen Gong <wgong@codeaurora.org>
+---
+ drivers/net/wireless/ath/ath10k/core.h |  1 +
+ drivers/net/wireless/ath/ath10k/sdio.c | 12 +++++++++---
+ 2 files changed, 10 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath10k/core.h b/drivers/net/wireless/ath/ath10k/core.h
+index 5c18f6c20462..11a6b18c272d 100644
+--- a/drivers/net/wireless/ath/ath10k/core.h
++++ b/drivers/net/wireless/ath/ath10k/core.h
+@@ -1230,6 +1230,7 @@ struct ath10k {
+ 	/* NAPI */
+ 	struct net_device napi_dev;
+ 	struct napi_struct napi;
++	bool napi_enabled;
+ 
+ 	struct work_struct set_coverage_class_work;
+ 	/* protected by conf_mutex */
+diff --git a/drivers/net/wireless/ath/ath10k/sdio.c b/drivers/net/wireless/ath/ath10k/sdio.c
+index 81ddaafb6721..873f5492f93c 100644
+--- a/drivers/net/wireless/ath/ath10k/sdio.c
++++ b/drivers/net/wireless/ath/ath10k/sdio.c
+@@ -1859,7 +1859,10 @@ static int ath10k_sdio_hif_start(struct ath10k *ar)
+ 	struct ath10k_sdio *ar_sdio = ath10k_sdio_priv(ar);
+ 	int ret;
+ 
+-	napi_enable(&ar->napi);
++	if (!ar->napi_enabled) {
++		napi_enable(&ar->napi);
++		ar->napi_enabled = true;
++	}
+ 
+ 	/* Sleep 20 ms before HIF interrupts are disabled.
+ 	 * This will give target plenty of time to process the BMI done
+@@ -1986,8 +1989,11 @@ static void ath10k_sdio_hif_stop(struct ath10k *ar)
+ 
+ 	spin_unlock_bh(&ar_sdio->wr_async_lock);
+ 
+-	napi_synchronize(&ar->napi);
+-	napi_disable(&ar->napi);
++	if (ar->napi_enabled) {
++		napi_synchronize(&ar->napi);
++		napi_disable(&ar->napi);
++		ar->napi_enabled = false;
++	}
+ }
+ 
+ #ifdef CONFIG_PM
+-- 
+2.23.0
+
