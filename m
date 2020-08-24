@@ -2,140 +2,130 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D1E22506E7
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Aug 2020 19:51:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BE3E725087B
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Aug 2020 20:53:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727780AbgHXRvZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 24 Aug 2020 13:51:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37166 "EHLO
+        id S1726706AbgHXSxP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 24 Aug 2020 14:53:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46856 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726529AbgHXRvX (ORCPT
+        with ESMTP id S1726336AbgHXSxN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 24 Aug 2020 13:51:23 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F32A5C061574;
-        Mon, 24 Aug 2020 10:51:22 -0700 (PDT)
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.94)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1kAGcp-00A1ue-72; Mon, 24 Aug 2020 19:51:19 +0200
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     linux-wireless@vger.kernel.org,
-        Stephen Hemminger <stephen@networkplumber.org>,
-        netdev@vger.kernel.org
-Cc:     David Ahern <dsahern@gmail.com>
-Subject: [PATCH 3/3] genl: ctrl: support dumping netlink policy
-Date:   Mon, 24 Aug 2020 19:51:08 +0200
-Message-Id: <20200824175108.53101-3-johannes@sipsolutions.net>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20200824175108.53101-1-johannes@sipsolutions.net>
-References: <20200824175108.53101-1-johannes@sipsolutions.net>
+        Mon, 24 Aug 2020 14:53:13 -0400
+Received: from mail-lj1-x243.google.com (mail-lj1-x243.google.com [IPv6:2a00:1450:4864:20::243])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F282C061573
+        for <linux-wireless@vger.kernel.org>; Mon, 24 Aug 2020 11:53:11 -0700 (PDT)
+Received: by mail-lj1-x243.google.com with SMTP id v4so10912362ljd.0
+        for <linux-wireless@vger.kernel.org>; Mon, 24 Aug 2020 11:53:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=kr/ilKP3KtnpaNLBR4Wfqo2ibtevdlA/61dd3WxVQbQ=;
+        b=bqOH7tKogCiyKYB3sMzalRYYv42T8tBwVa1C577l6dLDiQqHISTeBcw3/rVMjcQVRr
+         +oeKkG0mXbC9eLC33+u8/ltcR8dvp2UukEC9uSYpxY/C3Gkwd5Y8jfWXavf3P3sBT+Er
+         X0gXWdng+UeTkQ4qPQxDaSxZZL7g5raQtCJsQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=kr/ilKP3KtnpaNLBR4Wfqo2ibtevdlA/61dd3WxVQbQ=;
+        b=Gi0u4R3v7IjjDbQCu/meXp/HR3KHxtAW3UoK+Bt1obLubnf6jkSXt1UryoystdwWoa
+         k4bLwwk0CMzDHpcgJUXBD5bbJcj6Tt16N4SiExpaEhlrhjEqaaJRh8CJ48QYx482si3n
+         D227WdRnllL0kM+uqj1K/RQx5PHSJQ/+mo1CWif2MQ73CGrUD0cORI1zvVc5I5OyMLzL
+         Dv+qN/sP5+zezfPqlFvenCRTfuKLRTHPofDMB0iTLt9Q4MmCk8E9pRx8UWLMwnAXz+uG
+         ejmB93aEdF2r+T1gdjhLNMnGkGyTveqTv931DG3BBerg9i2R7mFI+nEP+HEZQE37VOqh
+         gAjQ==
+X-Gm-Message-State: AOAM533d4E2zfiHLfbnruAp+wqAMuzMs4Fu1iPtsZ1oQdB+oA2hMQwt2
+        IgBhBswovIRAED/l3h8Ys6OI/9BOR7adXw==
+X-Google-Smtp-Source: ABdhPJyDlPkZ43nfVE30qByjyuQZcTAM1/1P1gwXwVMoHVm5uPke47U+VNqVDLiA+Sqj2if6SLpeOA==
+X-Received: by 2002:a2e:b80b:: with SMTP id u11mr3400638ljo.286.1598295188485;
+        Mon, 24 Aug 2020 11:53:08 -0700 (PDT)
+Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com. [209.85.208.181])
+        by smtp.gmail.com with ESMTPSA id t12sm2425136lfe.43.2020.08.24.11.53.06
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 24 Aug 2020 11:53:06 -0700 (PDT)
+Received: by mail-lj1-f181.google.com with SMTP id t23so10902988ljc.3
+        for <linux-wireless@vger.kernel.org>; Mon, 24 Aug 2020 11:53:06 -0700 (PDT)
+X-Received: by 2002:a05:651c:d5:: with SMTP id 21mr2906073ljr.276.1598295186265;
+ Mon, 24 Aug 2020 11:53:06 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <MN2PR18MB2637D7C742BC235FE38367F0A09C0@MN2PR18MB2637.namprd18.prod.outlook.com>
+ <20200821082720.7716-1-penguin-kernel@I-love.SAKURA.ne.jp>
+In-Reply-To: <20200821082720.7716-1-penguin-kernel@I-love.SAKURA.ne.jp>
+From:   Brian Norris <briannorris@chromium.org>
+Date:   Mon, 24 Aug 2020 11:52:53 -0700
+X-Gmail-Original-Message-ID: <CA+ASDXOHDU+SWmr+7aOUtbuzC22T-UWhZXJ5UXtcsev5ZTbqMw@mail.gmail.com>
+Message-ID: <CA+ASDXOHDU+SWmr+7aOUtbuzC22T-UWhZXJ5UXtcsev5ZTbqMw@mail.gmail.com>
+Subject: Re: [PATCH v2] mwifiex: don't call del_timer_sync() on uninitialized timer
+To:     Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
+Cc:     Ganapathi Bhat <ganapathi.bhat@nxp.com>,
+        amit karwar <amitkarwar@gmail.com>,
+        Andrey Konovalov <andreyknvl@google.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Dmitry Vyukov <dvyukov@google.com>,
+        Xinming Hu <huxinming820@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Linux Kernel <linux-kernel@vger.kernel.org>,
+        Linux USB Mailing List <linux-usb@vger.kernel.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        "<netdev@vger.kernel.org>" <netdev@vger.kernel.org>,
+        Nishant Sarmukadam <nishants@marvell.com>,
+        syzkaller-bugs@googlegroups.com,
+        syzbot <syzbot+373e6719b49912399d21@syzkaller.appspotmail.com>,
+        syzbot <syzbot+dc4127f950da51639216@syzkaller.appspotmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Support dumping the netlink policy of a given generic netlink
-family, the policy (with any sub-policies if appropriate) is
-exported by the kernel in a general fashion.
+On Fri, Aug 21, 2020 at 1:28 AM Tetsuo Handa
+<penguin-kernel@i-love.sakura.ne.jp> wrote:
+>
+> syzbot is reporting that del_timer_sync() is called from
+> mwifiex_usb_cleanup_tx_aggr() from mwifiex_unregister_dev() without
+> checking timer_setup() from mwifiex_usb_tx_init() was called [1].
+>
+> Ganapathi Bhat proposed a possibly cleaner fix, but it seems that
+> that fix was forgotten [2].
+>
+> "grep -FrB1 'del_timer' drivers/ | grep -FA1 '.function)'" says that
+> currently there are 28 locations which call del_timer[_sync]() only if
+> that timer's function field was initialized (because timer_setup() sets
+> that timer's function field). Therefore, let's use same approach here.
+>
+> [1] https://syzkaller.appspot.com/bug?id=26525f643f454dd7be0078423e3cdb0d57744959
+> [2] https://lkml.kernel.org/r/CA+ASDXMHt2gq9Hy+iP_BYkWXsSreWdp3_bAfMkNcuqJ3K+-jbQ@mail.gmail.com
+>
+> Reported-by: syzbot <syzbot+dc4127f950da51639216@syzkaller.appspotmail.com>
+> Cc: Ganapathi Bhat <ganapathi.bhat@nxp.com>
+> Cc: Brian Norris <briannorris@chromium.org>
+> Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-Signed-off-by: Johannes Berg <johannes@sipsolutions.net>
----
- genl/ctrl.c | 24 ++++++++++++++++++------
- 1 file changed, 18 insertions(+), 6 deletions(-)
+This seems good to me:
 
-diff --git a/genl/ctrl.c b/genl/ctrl.c
-index 0fb464b01cfb..68099fe97f1a 100644
---- a/genl/ctrl.c
-+++ b/genl/ctrl.c
-@@ -28,13 +28,15 @@
- static int usage(void)
- {
- 	fprintf(stderr,"Usage: ctrl <CMD>\n" \
--		       "CMD   := get <PARMS> | list | monitor\n" \
-+		       "CMD   := get <PARMS> | list | monitor | policy <PARMS>\n" \
- 		       "PARMS := name <name> | id <id>\n" \
- 		       "Examples:\n" \
- 		       "\tctrl ls\n" \
- 		       "\tctrl monitor\n" \
- 		       "\tctrl get name foobar\n" \
--		       "\tctrl get id 0xF\n");
-+		       "\tctrl get id 0xF\n"
-+		       "\tctrl policy name foobar\n"
-+		       "\tctrl policy id 0xF\n");
- 	return -1;
- }
- 
-@@ -123,7 +125,8 @@ static int print_ctrl(struct rtnl_ctrl_data *ctrl,
- 	    ghdr->cmd != CTRL_CMD_DELFAMILY &&
- 	    ghdr->cmd != CTRL_CMD_NEWFAMILY &&
- 	    ghdr->cmd != CTRL_CMD_NEWMCAST_GRP &&
--	    ghdr->cmd != CTRL_CMD_DELMCAST_GRP) {
-+	    ghdr->cmd != CTRL_CMD_DELMCAST_GRP &&
-+	    ghdr->cmd != CTRL_CMD_GETPOLICY) {
- 		fprintf(stderr, "Unknown controller command %d\n", ghdr->cmd);
- 		return 0;
- 	}
-@@ -136,7 +139,7 @@ static int print_ctrl(struct rtnl_ctrl_data *ctrl,
- 	}
- 
- 	attrs = (struct rtattr *) ((char *) ghdr + GENL_HDRLEN);
--	parse_rtattr(tb, CTRL_ATTR_MAX, attrs, len);
-+	parse_rtattr_flags(tb, CTRL_ATTR_MAX, attrs, len, NLA_F_NESTED);
- 
- 	if (tb[CTRL_ATTR_FAMILY_NAME]) {
- 		char *name = RTA_DATA(tb[CTRL_ATTR_FAMILY_NAME]);
-@@ -159,6 +162,9 @@ static int print_ctrl(struct rtnl_ctrl_data *ctrl,
- 		__u32 *ma = RTA_DATA(tb[CTRL_ATTR_MAXATTR]);
- 		fprintf(fp, " max attribs: %d ",*ma);
- 	}
-+	if (tb[CTRL_ATTR_POLICY])
-+		nl_print_policy(tb[CTRL_ATTR_POLICY], fp);
-+
- 	/* end of family definitions .. */
- 	fprintf(fp,"\n");
- 	if (tb[CTRL_ATTR_OPS]) {
-@@ -235,7 +241,9 @@ static int ctrl_list(int cmd, int argc, char **argv)
- 		exit(1);
- 	}
- 
--	if (cmd == CTRL_CMD_GETFAMILY) {
-+	if (cmd == CTRL_CMD_GETFAMILY || cmd == CTRL_CMD_GETPOLICY) {
-+		req.g.cmd = cmd;
-+
- 		if (argc != 2) {
- 			fprintf(stderr, "Wrong number of params\n");
- 			return -1;
-@@ -260,7 +268,9 @@ static int ctrl_list(int cmd, int argc, char **argv)
- 			fprintf(stderr, "Wrong params\n");
- 			goto ctrl_done;
- 		}
-+	}
- 
-+	if (cmd == CTRL_CMD_GETFAMILY) {
- 		if (rtnl_talk(&rth, nlh, &answer) < 0) {
- 			fprintf(stderr, "Error talking to the kernel\n");
- 			goto ctrl_done;
-@@ -273,7 +283,7 @@ static int ctrl_list(int cmd, int argc, char **argv)
- 
- 	}
- 
--	if (cmd == CTRL_CMD_UNSPEC) {
-+	if (cmd == CTRL_CMD_UNSPEC || cmd == CTRL_CMD_GETPOLICY) {
- 		nlh->nlmsg_flags = NLM_F_ROOT|NLM_F_MATCH|NLM_F_REQUEST;
- 		nlh->nlmsg_seq = rth.dump = ++rth.seq;
- 
-@@ -324,6 +334,8 @@ static int parse_ctrl(struct genl_util *a, int argc, char **argv)
- 	    matches(*argv, "show") == 0 ||
- 	    matches(*argv, "lst") == 0)
- 		return ctrl_list(CTRL_CMD_UNSPEC, argc-1, argv+1);
-+	if (matches(*argv, "policy") == 0)
-+		return ctrl_list(CTRL_CMD_GETPOLICY, argc-1, argv+1);
- 	if (matches(*argv, "help") == 0)
- 		return usage();
- 
--- 
-2.26.2
+Reviewed-by: Brian Norris <briannorris@chromium.org>
 
+> ---
+>  drivers/net/wireless/marvell/mwifiex/usb.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/net/wireless/marvell/mwifiex/usb.c b/drivers/net/wireless/marvell/mwifiex/usb.c
+> index 6f3cfde4654c..426e39d4ccf0 100644
+> --- a/drivers/net/wireless/marvell/mwifiex/usb.c
+> +++ b/drivers/net/wireless/marvell/mwifiex/usb.c
+> @@ -1353,7 +1353,8 @@ static void mwifiex_usb_cleanup_tx_aggr(struct mwifiex_adapter *adapter)
+>                                 skb_dequeue(&port->tx_aggr.aggr_list)))
+>                                 mwifiex_write_data_complete(adapter, skb_tmp,
+>                                                             0, -1);
+> -               del_timer_sync(&port->tx_aggr.timer_cnxt.hold_timer);
+> +               if (port->tx_aggr.timer_cnxt.hold_timer.function)
+> +                       del_timer_sync(&port->tx_aggr.timer_cnxt.hold_timer);
+>                 port->tx_aggr.timer_cnxt.is_hold_timer_set = false;
+>                 port->tx_aggr.timer_cnxt.hold_tmo_msecs = 0;
+>         }
+> --
+> 2.18.4
+>
