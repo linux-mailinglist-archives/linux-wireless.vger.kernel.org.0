@@ -2,62 +2,67 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3609C251AD3
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Aug 2020 16:30:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 09711251C6F
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Aug 2020 17:38:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726191AbgHYOas (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 25 Aug 2020 10:30:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33728 "EHLO
+        id S1726548AbgHYPio (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 25 Aug 2020 11:38:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44356 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726104AbgHYOar (ORCPT
+        with ESMTP id S1726015AbgHYPim (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 25 Aug 2020 10:30:47 -0400
-Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA0B0C061574;
-        Tue, 25 Aug 2020 07:30:46 -0700 (PDT)
-Received: by mail-wr1-x444.google.com with SMTP id y3so12927420wrl.4;
-        Tue, 25 Aug 2020 07:30:46 -0700 (PDT)
+        Tue, 25 Aug 2020 11:38:42 -0400
+Received: from mail-ej1-x641.google.com (mail-ej1-x641.google.com [IPv6:2a00:1450:4864:20::641])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73CDDC061574;
+        Tue, 25 Aug 2020 08:38:42 -0700 (PDT)
+Received: by mail-ej1-x641.google.com with SMTP id a26so17186240ejc.2;
+        Tue, 25 Aug 2020 08:38:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=S+6VLNo7jVsZMs96k3TAyrUWwYE2zYV0Z+aJV/lR5gQ=;
-        b=g2MtYo/faVMcap4ysEZrl6A4Ung7mIbCAJzz7IoQg2X+KEOtDexjY0CKf8Abg88vvG
-         Geq/Va9NTnsEEKdGFIwf1DmOJfz6rl8Tygzl3Gu+Bxfcsowzu0HwX+ESKQqjHlcJDi8T
-         Jj7JyQce28dmgusLiUOufnJ4427xUcxw7in3DxCrzYllOrlU2+EUFmVQB/+7WiuWtHi9
-         PIHRvDaAJfRuJ9xc7/m2djZ/BXv7lSgr2pleVUt8xCjDacc12/Pe8l32pRLqOYFpmvLq
-         8Yo7E4+XE4yGU7lQpUesfKdJX1a4ihCgD580a6TarIKkbHFAJ2hfq94o7hxbENgd9Cfb
-         Z1aw==
+        bh=aOC7A48azq7u/Y2PtBK0riAhUlLviqiXpwCgqBbMTlA=;
+        b=MiQdsXLBEShUJ3UfYx+HFrMQ3lqH48i2EWUdUukYa7h9wqemD9VAq/8/CVS6AEYiXM
+         Q/nA1/NVN+JcYAUyeoJAj+IghWrQe+PELqxBqdmzWLXEkziwL4I+gylS8fXXupJkoA8V
+         AI5dHIdhZlk7LU/XE4D0lC3euvaM5CmgZk5tjp+qkJUjGvkcyoHppfC2yX8NUrEaHo2a
+         sYpbyGTI70YWCic4UMWwCS/7I+U/KgePrT1pkWY6qRUePX+3ugMWUSIKecu7wK8l/b1r
+         4c4jBek6Sl6QR3287MliHSSQCUTPB8MNXeuWUiapkF2kJUOSRItNM8PF37UFQ0arnAdu
+         8drQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=S+6VLNo7jVsZMs96k3TAyrUWwYE2zYV0Z+aJV/lR5gQ=;
-        b=KH7L8Dni9E3f8Qx02qPatPI7K2I+Adt4Srw8xsNsrkWNyYkgChsNPBeGy6kVLaylMZ
-         PISnt2nqEV5nLa3I0euyks+yRDWZhca81qHiNwzAPv6ELIgPEIWWlXUOVJKNYifQGP4C
-         gCJXQsmZ95zfu4NuwkOAteQtmyWQ3xjfnyn80zEd1oYnAwtyEUQsFvb3KGxlskzUULI7
-         1PlRXjRBWHHHgub8vx9yV7Ku3OAcLhCeihsxeVs+K6KHnYAJeOcCsAlUwdA6lWaAWB7A
-         mE4O5Elmyh3nskw4DE9GE1QuNlCd/r6uznpPltNftzVAns+Ix3A5pqYQ0P9FLpkVdXRB
-         p6HQ==
-X-Gm-Message-State: AOAM531XXDQJmGQtUaRGJUZDrEJxVZnh3cMvXiCADomaQjB5Irv9oBmq
-        gIVSjdJfKrxczX2m0/DhbWo=
-X-Google-Smtp-Source: ABdhPJxRIor0FRGt3Lk2eyf4YUKwzH2RveG1kfqYaMMOrZft0AIIOd3ZMew9upHyFc92y9jUmCye9Q==
-X-Received: by 2002:adf:e6cc:: with SMTP id y12mr10863958wrm.391.1598365845380;
-        Tue, 25 Aug 2020 07:30:45 -0700 (PDT)
-Received: from localhost.localdomain (cpc83661-brig20-2-0-cust443.3-3.cable.virginm.net. [82.28.105.188])
-        by smtp.gmail.com with ESMTPSA id j11sm30078337wrq.69.2020.08.25.07.30.44
+        bh=aOC7A48azq7u/Y2PtBK0riAhUlLviqiXpwCgqBbMTlA=;
+        b=sPN4O4Rw/sPKR5hfJCleCPB1T42/rVOSDhhQ7ctlj6ouaBl3DjI2NsIt4BQr/ItZ5f
+         vW4sx08f+QtceyO5XMrimgQ/lY0Ljn0oHGx2v10B4b5c8oLNnKbiV7+gceqkyt5bapWJ
+         Jzia2F3JwmTo47EEX/sCdZdKo1UtAHIIBJm/wsczneFUr3D7AWLW4rFLcRqyZmK7Fdg7
+         kVddFekH6l9DKBk+Cn9SivE5y3u3jr5oyKLbE1SCsUurxrgSH+WyUYE/2/cs22w+sPZO
+         T2NBF5/28iOZQ7ztnt9dAbVOSa1dvgABbXFewFgt4n+JmBWke2ITfpbHVD196x9UcybN
+         ac5Q==
+X-Gm-Message-State: AOAM530IiVn69L7+1LLoN+vgrwOqVW9z6lri0+Houa0QEk46sZGzeizb
+        rQL/Opa/Ph/bSVgOai5CdB4=
+X-Google-Smtp-Source: ABdhPJxwMaSNXf1QripcVRS+1j9m9OfmVU8oepZwgCrffk6lLC2hdUZ6uAM34yxzm/szM8Ctw7BEAw==
+X-Received: by 2002:a17:906:e24e:: with SMTP id gq14mr5213550ejb.378.1598369921131;
+        Tue, 25 Aug 2020 08:38:41 -0700 (PDT)
+Received: from xws.fritz.box (pd9ea301b.dip0.t-ipconnect.de. [217.234.48.27])
+        by smtp.gmail.com with ESMTPSA id t22sm13105804ejf.24.2020.08.25.08.38.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Aug 2020 07:30:44 -0700 (PDT)
-From:   Alex Dewar <alex.dewar90@gmail.com>
-Cc:     Alex Dewar <alex.dewar90@gmail.com>,
+        Tue, 25 Aug 2020 08:38:40 -0700 (PDT)
+From:   Maximilian Luz <luzmaximilian@gmail.com>
+Cc:     Amitkumar Karwar <amitkarwar@gmail.com>,
+        Ganapathi Bhat <ganapathi.bhat@nxp.com>,
+        Xinming Hu <huxinming820@gmail.com>,
         Kalle Valo <kvalo@codeaurora.org>,
         "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, ath11k@lists.infradead.org,
+        Jakub Kicinski <kuba@kernel.org>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] ath11k: return error if firmware request fails
-Date:   Tue, 25 Aug 2020 15:30:39 +0100
-Message-Id: <20200825143040.233619-1-alex.dewar90@gmail.com>
+        linux-kernel@vger.kernel.org,
+        Maximilian Luz <luzmaximilian@gmail.com>,
+        Kaloyan Nikolov <konik98@gmail.com>
+Subject: [PATCH net] mwifiex: Increase AES key storage size to 256 bits
+Date:   Tue, 25 Aug 2020 17:38:29 +0200
+Message-Id: <20200825153829.38043-1-luzmaximilian@gmail.com>
 X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -67,76 +72,67 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-In ath11k_qmi_prepare_bdf_download(), ath11k_core_firmware_request() is
-called, but the returned pointer is not checked for errors. Rather the
-variable ret (which will always be zero) is checked by mistake. Fix
-this and replace the various gotos with simple returns for clarity.
+Following commit e18696786548 ("mwifiex: Prevent memory corruption
+handling keys") the mwifiex driver fails to authenticate with certain
+networks, specifically networks with 256 bit keys, and repeatedly asks
+for the password. The kernel log repeats the following lines (id and
+bssid redacted):
 
-While we are at it, move the call to memset, as variable bd is not used
-on all code paths.
+    mwifiex_pcie 0000:01:00.0: info: trying to associate to '<id>' bssid <bssid>
+    mwifiex_pcie 0000:01:00.0: info: associated to bssid <bssid> successfully
+    mwifiex_pcie 0000:01:00.0: crypto keys added
+    mwifiex_pcie 0000:01:00.0: info: successfully disconnected from <bssid>: reason code 3
 
-Fixes: 7b57b2ddec21 ("ath11k: create a common function to request all firmware files")
-Signed-off-by: Alex Dewar <alex.dewar90@gmail.com>
+Tracking down this problem lead to the overflow check introduced by the
+aforementioned commit into mwifiex_ret_802_11_key_material_v2(). This
+check fails on networks with 256 bit keys due to the current storage
+size for AES keys in struct mwifiex_aes_param being only 128 bit.
+
+To fix this issue, increase the storage size for AES keys to 256 bit.
+
+Signed-off-by: Maximilian Luz <luzmaximilian@gmail.com>
+Reported-by: Kaloyan Nikolov <konik98@gmail.com>
+Tested-by: Kaloyan Nikolov <konik98@gmail.com>
 ---
- drivers/net/wireless/ath/ath11k/qmi.c | 20 +++++++++-----------
- 1 file changed, 9 insertions(+), 11 deletions(-)
+ drivers/net/wireless/marvell/mwifiex/fw.h          | 2 +-
+ drivers/net/wireless/marvell/mwifiex/sta_cmdresp.c | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/qmi.c b/drivers/net/wireless/ath/ath11k/qmi.c
-index 91134510364c..b906b50ee57e 100644
---- a/drivers/net/wireless/ath/ath11k/qmi.c
-+++ b/drivers/net/wireless/ath/ath11k/qmi.c
-@@ -1868,16 +1868,16 @@ ath11k_qmi_prepare_bdf_download(struct ath11k_base *ab, int type,
- 	const struct firmware *fw_entry;
- 	struct ath11k_board_data bd;
- 	u32 fw_size;
--	int ret = 0;
--
--	memset(&bd, 0, sizeof(bd));
-+	int ret;
+diff --git a/drivers/net/wireless/marvell/mwifiex/fw.h b/drivers/net/wireless/marvell/mwifiex/fw.h
+index 8047e307892e3..d9f8bdbc817b2 100644
+--- a/drivers/net/wireless/marvell/mwifiex/fw.h
++++ b/drivers/net/wireless/marvell/mwifiex/fw.h
+@@ -954,7 +954,7 @@ struct mwifiex_tkip_param {
+ struct mwifiex_aes_param {
+ 	u8 pn[WPA_PN_SIZE];
+ 	__le16 key_len;
+-	u8 key[WLAN_KEY_LEN_CCMP];
++	u8 key[WLAN_KEY_LEN_CCMP_256];
+ } __packed;
  
- 	switch (type) {
- 	case ATH11K_QMI_FILE_TYPE_BDF_GOLDEN:
-+		memset(&bd, 0, sizeof(bd));
-+
- 		ret = ath11k_core_fetch_bdf(ab, &bd);
- 		if (ret) {
- 			ath11k_warn(ab, "qmi failed to load BDF\n");
--			goto out;
-+			return ret;
- 		}
+ struct mwifiex_wapi_param {
+diff --git a/drivers/net/wireless/marvell/mwifiex/sta_cmdresp.c b/drivers/net/wireless/marvell/mwifiex/sta_cmdresp.c
+index 962d8bfe6f101..119ccacd1fcc4 100644
+--- a/drivers/net/wireless/marvell/mwifiex/sta_cmdresp.c
++++ b/drivers/net/wireless/marvell/mwifiex/sta_cmdresp.c
+@@ -619,7 +619,7 @@ static int mwifiex_ret_802_11_key_material_v2(struct mwifiex_private *priv,
+ 	key_v2 = &resp->params.key_material_v2;
  
- 		fw_size = min_t(u32, ab->hw_params.fw.board_size, bd.len);
-@@ -1886,10 +1886,11 @@ ath11k_qmi_prepare_bdf_download(struct ath11k_base *ab, int type,
- 		break;
- 	case ATH11K_QMI_FILE_TYPE_CALDATA:
- 		fw_entry = ath11k_core_firmware_request(ab, ATH11K_DEFAULT_CAL_FILE);
--		if (ret) {
-+		if (IS_ERR(fw_entry)) {
-+			ret = PTR_ERR(fw_entry);
- 			ath11k_warn(ab, "failed to load %s: %d\n",
- 				    ATH11K_DEFAULT_CAL_FILE, ret);
--			goto out;
-+			return ret;
- 		}
+ 	len = le16_to_cpu(key_v2->key_param_set.key_params.aes.key_len);
+-	if (len > WLAN_KEY_LEN_CCMP)
++	if (len > sizeof(key_v2->key_param_set.key_params.aes.key))
+ 		return -EINVAL;
  
- 		fw_size = min_t(u32, ab->hw_params.fw.board_size,
-@@ -1901,14 +1902,11 @@ ath11k_qmi_prepare_bdf_download(struct ath11k_base *ab, int type,
- 		release_firmware(fw_entry);
- 		break;
- 	default:
--		ret = -EINVAL;
--		goto out;
-+		return -EINVAL;
- 	}
+ 	if (le16_to_cpu(key_v2->action) == HostCmd_ACT_GEN_SET) {
+@@ -635,7 +635,7 @@ static int mwifiex_ret_802_11_key_material_v2(struct mwifiex_private *priv,
+ 		return 0;
  
- 	req->total_size = fw_size;
--
--out:
--	return ret;
-+	return 0;
- }
- 
- static int ath11k_qmi_load_bdf_fixed_addr(struct ath11k_base *ab)
+ 	memset(priv->aes_key_v2.key_param_set.key_params.aes.key, 0,
+-	       WLAN_KEY_LEN_CCMP);
++	       sizeof(key_v2->key_param_set.key_params.aes.key));
+ 	priv->aes_key_v2.key_param_set.key_params.aes.key_len =
+ 				cpu_to_le16(len);
+ 	memcpy(priv->aes_key_v2.key_param_set.key_params.aes.key,
 -- 
 2.28.0
 
