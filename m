@@ -2,103 +2,97 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F9502521D0
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Aug 2020 22:18:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD22D252245
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Aug 2020 22:57:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726617AbgHYUSr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 25 Aug 2020 16:18:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59664 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726149AbgHYUSp (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 25 Aug 2020 16:18:45 -0400
-Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com [IPv6:2a00:1450:4864:20::541])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 522B8C061574;
-        Tue, 25 Aug 2020 13:18:45 -0700 (PDT)
-Received: by mail-ed1-x541.google.com with SMTP id f24so10087472edw.10;
-        Tue, 25 Aug 2020 13:18:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:subject:to:cc:references:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=8k54/wE0SJdSYHFKB65kPT2GfYY/F68XNItC0ZawlMs=;
-        b=Rv4w+BsVBU9bQLlMX5nPmcv/iby7Atp6ZZWB8ouG2LBYQCQO6yK3bsOCRaDyo0fD2u
-         z9mvfWrDzWtn31JC7edW3JoTUVRsmcLVRWv0KqFtwGB54Mop9v5/IkA+0dSfl3zpVCqv
-         ukYUDPpLX4NrCWY36fBvJ0Gk1IpgbeDkXLPldeQ1+F27Yp0oC1XCDd6v/zL/V82b+ByN
-         MkZek+GZtchOBGt2lEkrS4ZdivRtPfSHCHtxJ1IMoI5oztjwEMMP3NlekvDiTfOmo2Y2
-         sMxaHNw4h65nSS0f+uiyIHOrYK0rOmgoHrvd4AuFoc3lFFDUUKoFZBLjxJ95PsQWMpSa
-         5XKQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:subject:to:cc:references:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=8k54/wE0SJdSYHFKB65kPT2GfYY/F68XNItC0ZawlMs=;
-        b=U+tJMUqjnziRCeMyDZf0ZO7QLd2crpM88kmJdRwOUy+rH5kbc6MvRAgG6PZ08+N6+e
-         buGU1gAQF7KhiyU3uOPWeffsztAIkREp05/B66X6PX9II+VWlcZbED2lll5DhQp4jNmj
-         2BphTGwl0GdXLf4MU1VOBcgybokLtI/vrJZn64lLd0QgzAoJswYYy5pqIUuTrbB36IzW
-         Xg5pgT743aobNw5EkFBlGeYTfUFF3+pxsfq7MUfZAC6qtFkXdqCeC0M691fMjv4pBnET
-         G/k69WuT3Q8jq+brQu1soqQKYlyVWVj5Bv1ZOaipMtD6g1ja4Bg0rgkQwbgP+GCLQ44z
-         XJyg==
-X-Gm-Message-State: AOAM532OoNpwdtHSciEOcoxZ7iYO+2FSTROojb/MsleCsmcUDmrffcUx
-        eTu4dujb500TL/ZCKeajGKyYghdcdfotHA==
-X-Google-Smtp-Source: ABdhPJwjRBjRSuLtemmLEN8j2cEzr4ZD1/ajIblLZhbYqPBNqz/8YT4tY6U4+d4dS25qBeJ7gxnJHg==
-X-Received: by 2002:a05:6402:74f:: with SMTP id p15mr10295040edy.377.1598386723973;
-        Tue, 25 Aug 2020 13:18:43 -0700 (PDT)
-Received: from [192.168.2.202] (pd9ea301b.dip0.t-ipconnect.de. [217.234.48.27])
-        by smtp.gmail.com with ESMTPSA id dr21sm15574816ejc.112.2020.08.25.13.18.42
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 25 Aug 2020 13:18:43 -0700 (PDT)
-From:   Maximilian Luz <luzmaximilian@gmail.com>
-Subject: Re: [PATCH net] mwifiex: Increase AES key storage size to 256 bits
-To:     Brian Norris <briannorris@chromium.org>
-Cc:     Amitkumar Karwar <amitkarwar@gmail.com>,
-        Ganapathi Bhat <ganapathi.bhat@nxp.com>,
-        Xinming Hu <huxinming820@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        netdev@vger.kernel.org,
-        Linux Kernel <linux-kernel@vger.kernel.org>,
-        Kaloyan Nikolov <konik98@gmail.com>
-References: <20200825153829.38043-1-luzmaximilian@gmail.com>
- <CA+ASDXPoxdMb4b5d0Ayv=JFACHcq7EXub14pJtJfcCV2di95Rg@mail.gmail.com>
-Message-ID: <65b14706-321d-4025-f199-a89768815dfe@gmail.com>
-Date:   Tue, 25 Aug 2020 22:18:42 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.11.0
+        id S1726713AbgHYU5G (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 25 Aug 2020 16:57:06 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:15953 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726337AbgHYU5E (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 25 Aug 2020 16:57:04 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1598389023; h=Message-ID: References: In-Reply-To: Subject:
+ Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Sender; bh=D0pgoa12U+Gd/NH8un3c93cqAwl64FvasNwM0PnJW3I=;
+ b=ZoZPYsyg2vt91h84R2CPdeJboQtInsNJ9O0YsikQOgAps7NnrGF7SRLPDWSliX8A+3aH6WLz
+ YXMeWVcJ/RNH6jh6rBeQnnZK9L1OR/ehY1vWrIiR3+jtIg/cwszipjsNr6ZbIiTLBWSiya00
+ tqv0hifcUb1g+BDfVd62dDjbLao=
+X-Mailgun-Sending-Ip: 69.72.43.7
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n04.prod.us-east-1.postgun.com with SMTP id
+ 5f457b0e2ec932ecb7ba0273 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 25 Aug 2020 20:56:46
+ GMT
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 38555C43391; Tue, 25 Aug 2020 20:56:46 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: merez)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 90C8CC433C6;
+        Tue, 25 Aug 2020 20:56:45 +0000 (UTC)
 MIME-Version: 1.0
-In-Reply-To: <CA+ASDXPoxdMb4b5d0Ayv=JFACHcq7EXub14pJtJfcCV2di95Rg@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
 Content-Transfer-Encoding: 7bit
+Date:   Tue, 25 Aug 2020 23:56:45 +0300
+From:   merez@codeaurora.org
+To:     Lee Jones <lee.jones@linaro.org>
+Cc:     kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, wil6210@qti.qualcomm.com
+Subject: Re: [PATCH 21/28] wireless: ath: wil6210: debugfs: Fix a couple of
+ formatting issues in 'wil6210_debugfs_init'
+In-Reply-To: <20200819072402.3085022-22-lee.jones@linaro.org>
+References: <20200819072402.3085022-1-lee.jones@linaro.org>
+ <20200819072402.3085022-22-lee.jones@linaro.org>
+Message-ID: <343d27c36245296e9dc27d5f3449e8b1@codeaurora.org>
+X-Sender: merez@codeaurora.org
+User-Agent: Roundcube Webmail/1.3.9
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 8/25/20 9:30 PM, Brian Norris wrote:
-> Also, while technically the regressing commit (e18696786548 ("mwifiex:
-> Prevent memory corruption handling keys")) was fixing a potential
-> overflow, the encasing command structure (struct host_cmd_ds_command)
-> is a union of a ton of other command layouts, and likely had plenty of
-> padding at the end, which would at least explain why non-malicious
-> scenarios weren't problematic pre-commit-e18696786548.
+On 2020-08-19 10:23, Lee Jones wrote:
+> Kerneldoc expects attributes/parameters to be in '@*.: ' format and
+> gets confused if the variable does not follow the type/attribute
+> definitions.
+> 
+> Fixes the following W=1 kernel build warning(s):
+> 
+>  drivers/net/wireless/ath/wil6210/debugfs.c:456: warning: Function
+> parameter or member 'wil' not described in
+> 'wil6210_debugfs_init_offset'
+>  drivers/net/wireless/ath/wil6210/debugfs.c:456: warning: Function
+> parameter or member 'dbg' not described in
+> 'wil6210_debugfs_init_offset'
+>  drivers/net/wireless/ath/wil6210/debugfs.c:456: warning: Function
+> parameter or member 'base' not described in
+> 'wil6210_debugfs_init_offset'
+>  drivers/net/wireless/ath/wil6210/debugfs.c:456: warning: Function
+> parameter or member 'tbl' not described in
+> 'wil6210_debugfs_init_offset'
+> 
+> Cc: Maya Erez <merez@codeaurora.org>
+> Cc: Kalle Valo <kvalo@codeaurora.org>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: Jakub Kicinski <kuba@kernel.org>
+> Cc: linux-wireless@vger.kernel.org
+> Cc: wil6210@qti.qualcomm.com
+> Cc: netdev@vger.kernel.org
+> Signed-off-by: Lee Jones <lee.jones@linaro.org>
+> ---
+>  drivers/net/wireless/ath/wil6210/debugfs.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+> 
 
-This is pretty much spot on, although as far as I can tell, the padding
-comes from struct mwifiex_ie_type_key_param_set_v2. That contains a
-key_params member, which is a union over all supported key types,
-including other 256 bit types (like struct mwifiex_wapi_param).
-
-I should also note that this fix also affects mwifiex_set_aes_key_v2(),
-where sizeof(struct mwifiex_aes_param) is used to calculate the command
-length of what looks like a command being sent to the chip. This should
-probably be reviewed by someone with a bit more inside knowledge about
-the driver, as this could potentially break something due to the commit
-changing it from 16 to 32. I think, however, that this might actually
-also fix a potential issue when setting 256 bit AES keys.
-
-Regards,
-Max
+Reviewed-by: Maya Erez <merez@codeaurora.org>
