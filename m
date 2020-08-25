@@ -2,107 +2,71 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 22829251181
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Aug 2020 07:29:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 839CC2511EE
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Aug 2020 08:15:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728670AbgHYF3R (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 25 Aug 2020 01:29:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33020 "EHLO
+        id S1728670AbgHYGP6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 25 Aug 2020 02:15:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40228 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728333AbgHYF3Q (ORCPT
+        with ESMTP id S1726015AbgHYGP5 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 25 Aug 2020 01:29:16 -0400
-Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9BE4C0613ED
-        for <linux-wireless@vger.kernel.org>; Mon, 24 Aug 2020 22:29:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-         s=20160729; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
-        Message-Id:Date:Subject:To:From:Sender:Reply-To:Cc:Content-Type:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=TQUY20uymugMjzesOEr4DiO2q9rqRWCCRtR6t9JNX6c=; b=KZ/UJhulXhT4ttCslp4l2I8IZA
-        lLV0z/sEPUIvtL8PWLRraZru242rMgkorwujOnym7aFkxmRtTnUQjStnDyv/Z3nNwZYMoj7ZWGrnD
-        0AOd/N//9i42QbsErV3mrMOcIj/2IiE40rO9OWC/4fBNcSB1fcQeq752Ze2mLT3ieVxw=;
-Received: from p5b206497.dip0.t-ipconnect.de ([91.32.100.151] helo=localhost.localdomain)
-        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_CBC_SHA1:128)
-        (Exim 4.89)
-        (envelope-from <nbd@nbd.name>)
-        id 1kARWC-0006jr-RD
-        for linux-wireless@vger.kernel.org; Tue, 25 Aug 2020 07:29:12 +0200
-From:   Felix Fietkau <nbd@nbd.name>
+        Tue, 25 Aug 2020 02:15:57 -0400
+Received: from mail-il1-x12e.google.com (mail-il1-x12e.google.com [IPv6:2607:f8b0:4864:20::12e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DDD9C061574
+        for <linux-wireless@vger.kernel.org>; Mon, 24 Aug 2020 23:15:57 -0700 (PDT)
+Received: by mail-il1-x12e.google.com with SMTP id r13so9464436iln.0
+        for <linux-wireless@vger.kernel.org>; Mon, 24 Aug 2020 23:15:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=to:from:subject:message-id:date:user-agent:mime-version
+         :content-transfer-encoding:content-language;
+        bh=uAD/ydHflsHBI+MpzNDORMixj6+tGLaibqxSoOUvTwM=;
+        b=Kl3lbNpqicHmnkTqw7uyu2O9N5R85wYsmjbkkF040GeWXZ61GdlQftAZpWprVXfezb
+         wJJNVBhybsD/+ggEMHFzbDUuYBfe183H+3+gKFvzC/HfO22hTRw39bhzlekjWVHRzZE/
+         hYEvSC6+jaEfaCnQzpoj7hq+57KmROxRkA/5C0NCzMb0/TBb3oJ2k1yP8xBQ+fAnDySZ
+         ElypPdTLBBzI55KLo3SROivipynpf75+uz+w5lSuZmTeAUSyIO+wX7SRpVCBN64g4NHu
+         iQFLaaPEeOkovwAUxoCdWnLYJhOhlKweeWyRR5hKbXvDW0+ItuPd/wdLQifSXoCgf+Gh
+         e8SQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:to:from:subject:message-id:date:user-agent
+         :mime-version:content-transfer-encoding:content-language;
+        bh=uAD/ydHflsHBI+MpzNDORMixj6+tGLaibqxSoOUvTwM=;
+        b=C6fAvAnlYgIT4P3reoumWtVtakmeeMtRHJGfUu1J1DKbAlv82vBm+k765LWQqq9G+A
+         9WStIYy5Hc5dC1tzQl6GAnsdNziTPpEiKGujS0M+65oYCImLEA5Ve8kx/UKG0f9ePhk9
+         lzJTu3FVGCbWR7WmcpRLdICNvPcOnJdZbZF1kC/BS0opiROlZYm5SxVQRlo99MqKfsoZ
+         7wpnLHpnuXZHyGqtXYY9zrg6PfbrlnBU4MxTtuIw0N1OOdTq/qO0qxBZDpOzMUgrrhXJ
+         FExe2mTjTAHLqijZ1WrFvurnVoMLEptX7lct2gcQThxG4avJMzIYwAN6A6OaVAY2S0E9
+         d9uw==
+X-Gm-Message-State: AOAM531Ws0Q5hYH4aNHMjBQr9JO9B69fZ0oRuBE9xgmJx8Cb0ZUFxgT9
+        fRWMYrtGdMnZXzO+b21UPPFhFx2vxoRNdQ==
+X-Google-Smtp-Source: ABdhPJzPiMlzbGhAOEPxfzoFoxmfIhxsXPC5nKa67TCJXbMXU6qxNHAQjv8PYnqxtCcsnadcQtJFqA==
+X-Received: by 2002:a92:d4cf:: with SMTP id o15mr6999075ilm.160.1598336156385;
+        Mon, 24 Aug 2020 23:15:56 -0700 (PDT)
+Received: from [192.168.42.220] ([104.243.234.151])
+        by smtp.gmail.com with ESMTPSA id v16sm8510542ilq.84.2020.08.24.23.15.55
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 24 Aug 2020 23:15:56 -0700 (PDT)
 To:     linux-wireless@vger.kernel.org
-Subject: [PATCH 9/9] mt76: mt7603: check for single-stream EEPROM configuration
-Date:   Tue, 25 Aug 2020 07:29:09 +0200
-Message-Id: <20200825052909.36955-9-nbd@nbd.name>
-X-Mailer: git-send-email 2.28.0
-In-Reply-To: <20200825052909.36955-1-nbd@nbd.name>
-References: <20200825052909.36955-1-nbd@nbd.name>
+From:   isaac reemtsma <isaacjohnr22@gmail.com>
+Subject: Apparent poor reception of WiFi on rtl8821ce, especially 2.4g WiFi.
+Message-ID: <aebff74a-2621-ffef-857c-9aca7690cdc1@gmail.com>
+Date:   Tue, 25 Aug 2020 01:15:51 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.11.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Some devices using MT7628 or MT7603 have only one antenna chain connected.
-Detect these using the EEPROM rx/tx path settings
-
-Reported-by: Qin Wei <me@vonger.cn>
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
----
- drivers/net/wireless/mediatek/mt76/mt7603/eeprom.h |  3 +++
- drivers/net/wireless/mediatek/mt76/mt7603/init.c   | 12 ++++++++++--
- 2 files changed, 13 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/eeprom.h b/drivers/net/wireless/mediatek/mt76/mt7603/eeprom.h
-index b893facfba48..4687d6dc00dc 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7603/eeprom.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7603/eeprom.h
-@@ -85,4 +85,7 @@ enum mt7603_eeprom_source {
- 	MT_EE_SRC_FLASH,
- };
- 
-+#define MT_EE_NIC_CONF_0_RX_PATH		GENMASK(3, 0)
-+#define MT_EE_NIC_CONF_0_TX_PATH		GENMASK(7, 4)
-+
- #endif
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/init.c b/drivers/net/wireless/mediatek/mt76/mt7603/init.c
-index 94196599797e..43dbabccc083 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7603/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7603/init.c
-@@ -510,11 +510,17 @@ mt7603_init_txpower(struct mt7603_dev *dev,
- 	}
- }
- 
-+static inline bool is_mt7688(struct mt7603_dev *dev)
-+{
-+	return mt76_rr(dev, MT_EFUSE_BASE + 0x64) & BIT(4);
-+}
-+
- int mt7603_register_device(struct mt7603_dev *dev)
- {
- 	struct mt76_bus_ops *bus_ops;
- 	struct ieee80211_hw *hw = mt76_hw(dev);
- 	struct wiphy *wiphy = hw->wiphy;
-+	u8 *eeprom = (u8 *)dev->mt76.eeprom.data;
- 	int ret;
- 
- 	dev->bus_ops = dev->mt76.bus;
-@@ -536,9 +542,11 @@ int mt7603_register_device(struct mt7603_dev *dev)
- 	tasklet_init(&dev->mt76.pre_tbtt_tasklet, mt7603_pre_tbtt_tasklet,
- 		     (unsigned long)dev);
- 
--	/* Check for 7688, which only has 1SS */
-+	/* Check for 1SS devices */
- 	dev->mphy.antenna_mask = 3;
--	if (mt76_rr(dev, MT_EFUSE_BASE + 0x64) & BIT(4))
-+	if (FIELD_GET(MT_EE_NIC_CONF_0_RX_PATH, eeprom[MT_EE_NIC_CONF_0]) == 1 ||
-+	    FIELD_GET(MT_EE_NIC_CONF_0_TX_PATH, eeprom[MT_EE_NIC_CONF_0]) == 1 ||
-+	    is_mt7688(dev))
- 		dev->mphy.antenna_mask = 1;
- 
- 	dev->slottime = 9;
--- 
-2.28.0
+I have tried this driver as presented in lwfinger's repository 
+(https://github.com/lwfinger/rtw88.) The distribution I use is Arch 
+Linux. Please follow up with any further requests for needed 
+information, as I am new to this
 
