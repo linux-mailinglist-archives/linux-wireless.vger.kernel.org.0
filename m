@@ -2,127 +2,143 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BA5412517FA
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Aug 2020 13:43:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 29A702519E6
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Aug 2020 15:40:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729978AbgHYLm7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 25 Aug 2020 07:42:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35068 "EHLO
+        id S1726374AbgHYNkI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 25 Aug 2020 09:40:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53922 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729882AbgHYLmf (ORCPT
+        with ESMTP id S1726803AbgHYNj7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 25 Aug 2020 07:42:35 -0400
-Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 072F5C061574
-        for <linux-wireless@vger.kernel.org>; Tue, 25 Aug 2020 04:42:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-         s=20160729; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
-        Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=s1btEU4pVB7qjUZ+NZT1w7uWFECNet3LBQ5w/SxnKQ8=; b=Lb2aTpoMRHNO/W/ac/NDG5e4Ir
-        qv8fCTpWuTjLFtIXxmiYXSdWSNCNtLWnc7THYtTmAfJbV0U0qU3sKir6pHnHoZDrUW1gvAnNgzdgj
-        Hcmq1DBEf49gD3uqbWvXpaCHdKPTsmg3ezar+LAv61bcIfmg573F4gLSWMbsj0rzADok=;
-Received: from p5b206497.dip0.t-ipconnect.de ([91.32.100.151] helo=localhost.localdomain)
-        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_CBC_SHA1:128)
-        (Exim 4.89)
-        (envelope-from <nbd@nbd.name>)
-        id 1kAXLT-0000hM-7q; Tue, 25 Aug 2020 13:42:31 +0200
-From:   Felix Fietkau <nbd@nbd.name>
-To:     linux-wireless@vger.kernel.org
-Cc:     Qin Wei <me@vonger.cn>
-Subject: [PATCH v2 9/9] mt76: mt7603: check for single-stream EEPROM configuration
-Date:   Tue, 25 Aug 2020 13:42:30 +0200
-Message-Id: <20200825114230.90723-1-nbd@nbd.name>
-X-Mailer: git-send-email 2.28.0
-In-Reply-To: <20200825052909.36955-9-nbd@nbd.name>
-References: <20200825052909.36955-9-nbd@nbd.name>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        Tue, 25 Aug 2020 09:39:59 -0400
+Received: from mail-wm1-x342.google.com (mail-wm1-x342.google.com [IPv6:2a00:1450:4864:20::342])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9101C0617AA
+        for <linux-wireless@vger.kernel.org>; Tue, 25 Aug 2020 06:39:58 -0700 (PDT)
+Received: by mail-wm1-x342.google.com with SMTP id x9so2137891wmi.2
+        for <linux-wireless@vger.kernel.org>; Tue, 25 Aug 2020 06:39:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id;
+        bh=No8SyHqzD2caZRXy6mcGyAfPZwJv+oQlCeaNaxA2XHM=;
+        b=tERKdQ6v5+RR2fn41t46VA8TynCy8qycPPjbEPvCoLOvI4OuF+A9/nPwrY026piv9z
+         2ZG/Z50j3FMtj4UISn/Z5QOaGlsTSMX475k/5HssH6H25jKvAaTsxOCPwzbT1ZuQoRkc
+         CyjNWMP95r50xzg245S4kSsGqekdMbHYCM+Qp+mVj/BkEH0QKJj2J4GgkQKMneA00zf2
+         ohmK5TyBARa5D8qeSXwJH4rQ7Kbra15HzYOeJpVMu2aH+2C1KcvBQT0MXoTPggIYlGhU
+         9xBbFCetxr4lA23iIczGZ3MV0D7NTTXYhxIIHVh//BrPSMIAG/GR0RIit9PYtmE/rnMV
+         AAsQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=No8SyHqzD2caZRXy6mcGyAfPZwJv+oQlCeaNaxA2XHM=;
+        b=GWXTVCUJlbAg7bpeRWBVHl2myetifQZ0GNd1opw8/Dd9ULEW8UrXIKAQeijKpD0c0+
+         Tk9Tioq/2TwTtVU6Es1MvZm/HU8N6p6I9AeRqWt9GDvhSmVcocSlmvzT3haPv/5AAmLA
+         qjeSID6d9epMJn+jNbboDkLfMC40AEjukEO9I/bf1hDV6xOHG0iSlkxI6827EynBa/8j
+         8tHMAeplCjM+nU8s+dqHaUjaH//AvI8mqafUXXL7sm5vGTujXt7Mkmb0dK/QdxjhNtM5
+         dIm+Y7caveJ1+1hNwZ1prb0osdxAzWXrDL6wXGOZiWanwMl9IfUeZvxwVxLnXX3bLMs9
+         dfag==
+X-Gm-Message-State: AOAM532fA3NqMTYe74SFBFq8zB5ljs0MAd8yRuQmtiTmrBpKTqEzDc2n
+        dyXVr28uo73WUxP5FoK1iqM1wg==
+X-Google-Smtp-Source: ABdhPJyEkwMTVeqZM1keZ3bOGyH2UxrU8krRSB7gDr4Nr0EXIod1211RD3mRHQtRLjI3MWPqPFF6wg==
+X-Received: by 2002:a7b:c084:: with SMTP id r4mr2087476wmh.23.1598362797214;
+        Tue, 25 Aug 2020 06:39:57 -0700 (PDT)
+Received: from localhost.localdomain ([88.122.66.28])
+        by smtp.gmail.com with ESMTPSA id h11sm31361181wrb.68.2020.08.25.06.39.56
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 25 Aug 2020 06:39:56 -0700 (PDT)
+From:   Loic Poulain <loic.poulain@linaro.org>
+To:     kvalo@codeaurora.org
+Cc:     wcn36xx@lists.infradead.org, linux-wireless@vger.kernel.org,
+        bryan.odonoghue@linaro.org, Loic Poulain <loic.poulain@linaro.org>
+Subject: [PATCH] wcn36xx: Disable bmps when encryption is disabled
+Date:   Tue, 25 Aug 2020 15:45:27 +0200
+Message-Id: <1598363127-26066-1-git-send-email-loic.poulain@linaro.org>
+X-Mailer: git-send-email 2.7.4
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Some devices using MT7628 or MT7603 have only one antenna chain connected.
-Detect these using the EEPROM rx/tx path settings
+For whatever reason, when connected to an open/no-security BSS,
+the wcn36xx controller in bmps mode does not forward 'wake-up'
+beacons despite AP sends DTIM with station AID.
 
-Reported-by: Qin Wei <me@vonger.cn>
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Meaning that AP is not able to wakeup the station and needs to wait
+for the station to wakeup by its own (TX data, keep alive pkt...),
+causing serious latency issues and unexpected deauth.
+
+When connected to AP with encryption enabled, this issue does not occur.
+So a simple workaround is to only enable bmps support in that case.
+
+Ideally, it should be propertly fixed to allow bmps support with open
+BSS, whatever the issue is at driver or firmware level.
+
+Tested on wcn3620 and wcn3680.
+
+Signed-off-by: Loic Poulain <loic.poulain@linaro.org>
+Tested-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 ---
-v2: move to eeprom.c to fix initialization order
- .../net/wireless/mediatek/mt76/mt7603/eeprom.c  | 17 +++++++++++++++--
- .../net/wireless/mediatek/mt76/mt7603/eeprom.h  |  3 +++
- .../net/wireless/mediatek/mt76/mt7603/init.c    |  5 -----
- 3 files changed, 18 insertions(+), 7 deletions(-)
+ drivers/net/wireless/ath/wcn36xx/main.c    | 10 ++++++++++
+ drivers/net/wireless/ath/wcn36xx/pmc.c     |  5 ++++-
+ drivers/net/wireless/ath/wcn36xx/wcn36xx.h |  1 +
+ 3 files changed, 15 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/eeprom.c b/drivers/net/wireless/mediatek/mt76/mt7603/eeprom.c
-index 3ee06e2577b8..01f1e0da5ee1 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7603/eeprom.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7603/eeprom.c
-@@ -147,8 +147,14 @@ static int mt7603_check_eeprom(struct mt76_dev *dev)
- 	}
- }
- 
-+static inline bool is_mt7688(struct mt7603_dev *dev)
-+{
-+	return mt76_rr(dev, MT_EFUSE_BASE + 0x64) & BIT(4);
-+}
-+
- int mt7603_eeprom_init(struct mt7603_dev *dev)
+diff --git a/drivers/net/wireless/ath/wcn36xx/main.c b/drivers/net/wireless/ath/wcn36xx/main.c
+index 2f36656..39d658c 100644
+--- a/drivers/net/wireless/ath/wcn36xx/main.c
++++ b/drivers/net/wireless/ath/wcn36xx/main.c
+@@ -610,6 +610,15 @@ static int wcn36xx_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
+ 				}
+ 			}
+ 		}
++		/* FIXME: Only enable bmps support when encryption is enabled.
++		 * For any reasons, when connected to open/no-security BSS,
++		 * the wcn36xx controller in bmps mode does not forward
++		 * 'wake-up' beacons despite AP sends DTIM with station AID.
++		 * It could be due to a firmware issue or to the way driver
++		 * configure the station.
++		 */
++		if (vif->type == NL80211_IFTYPE_STATION)
++			vif_priv->allow_bmps = true;
+ 		break;
+ 	case DISABLE_KEY:
+ 		if (!(IEEE80211_KEY_FLAG_PAIRWISE & key_conf->flags)) {
+@@ -891,6 +900,7 @@ static void wcn36xx_bss_info_changed(struct ieee80211_hw *hw,
+ 				    vif->addr,
+ 				    bss_conf->aid);
+ 			vif_priv->sta_assoc = false;
++			vif_priv->allow_bmps = false;
+ 			wcn36xx_smd_set_link_st(wcn,
+ 						bss_conf->bssid,
+ 						vif->addr,
+diff --git a/drivers/net/wireless/ath/wcn36xx/pmc.c b/drivers/net/wireless/ath/wcn36xx/pmc.c
+index 2936aaf..2d0780f 100644
+--- a/drivers/net/wireless/ath/wcn36xx/pmc.c
++++ b/drivers/net/wireless/ath/wcn36xx/pmc.c
+@@ -23,7 +23,10 @@ int wcn36xx_pmc_enter_bmps_state(struct wcn36xx *wcn,
  {
-+	u8 *eeprom;
- 	int ret;
- 
- 	ret = mt7603_eeprom_load(dev);
-@@ -163,9 +169,16 @@ int mt7603_eeprom_init(struct mt7603_dev *dev)
- 			       MT7603_EEPROM_SIZE);
- 	}
- 
-+	eeprom = (u8 *)dev->mt76.eeprom.data;
- 	dev->mt76.cap.has_2ghz = true;
--	memcpy(dev->mt76.macaddr, dev->mt76.eeprom.data + MT_EE_MAC_ADDR,
--	       ETH_ALEN);
-+	memcpy(dev->mt76.macaddr, eeprom + MT_EE_MAC_ADDR, ETH_ALEN);
+ 	int ret = 0;
+ 	struct wcn36xx_vif *vif_priv = wcn36xx_vif_to_priv(vif);
+-	/* TODO: Make sure the TX chain clean */
 +
-+	/* Check for 1SS devices */
-+	dev->mphy.antenna_mask = 3;
-+	if (FIELD_GET(MT_EE_NIC_CONF_0_RX_PATH, eeprom[MT_EE_NIC_CONF_0]) == 1 ||
-+	    FIELD_GET(MT_EE_NIC_CONF_0_TX_PATH, eeprom[MT_EE_NIC_CONF_0]) == 1 ||
-+	    is_mt7688(dev))
-+		dev->mphy.antenna_mask = 1;
- 
- 	mt76_eeprom_override(&dev->mt76);
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/eeprom.h b/drivers/net/wireless/mediatek/mt76/mt7603/eeprom.h
-index b893facfba48..4687d6dc00dc 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7603/eeprom.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7603/eeprom.h
-@@ -85,4 +85,7 @@ enum mt7603_eeprom_source {
- 	MT_EE_SRC_FLASH,
- };
- 
-+#define MT_EE_NIC_CONF_0_RX_PATH		GENMASK(3, 0)
-+#define MT_EE_NIC_CONF_0_TX_PATH		GENMASK(7, 4)
++	if (!vif_priv->allow_bmps)
++		return -ENOTSUPP;
 +
- #endif
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/init.c b/drivers/net/wireless/mediatek/mt76/mt7603/init.c
-index 94196599797e..c4848fafd270 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7603/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7603/init.c
-@@ -536,11 +536,6 @@ int mt7603_register_device(struct mt7603_dev *dev)
- 	tasklet_init(&dev->mt76.pre_tbtt_tasklet, mt7603_pre_tbtt_tasklet,
- 		     (unsigned long)dev);
+ 	ret = wcn36xx_smd_enter_bmps(wcn, vif);
+ 	if (!ret) {
+ 		wcn36xx_dbg(WCN36XX_DBG_PMC, "Entered BMPS\n");
+diff --git a/drivers/net/wireless/ath/wcn36xx/wcn36xx.h b/drivers/net/wireless/ath/wcn36xx/wcn36xx.h
+index 3221fed..719a6da 100644
+--- a/drivers/net/wireless/ath/wcn36xx/wcn36xx.h
++++ b/drivers/net/wireless/ath/wcn36xx/wcn36xx.h
+@@ -122,6 +122,7 @@ struct wcn36xx_vif {
+ 	enum wcn36xx_hal_bss_type bss_type;
  
--	/* Check for 7688, which only has 1SS */
--	dev->mphy.antenna_mask = 3;
--	if (mt76_rr(dev, MT_EFUSE_BASE + 0x64) & BIT(4))
--		dev->mphy.antenna_mask = 1;
--
- 	dev->slottime = 9;
- 	dev->sensitivity_limit = 28;
- 	dev->dynamic_sensitivity = true;
+ 	/* Power management */
++	bool allow_bmps;
+ 	enum wcn36xx_power_state pw_state;
+ 
+ 	u8 bss_index;
 -- 
-2.28.0
+2.7.4
 
