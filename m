@@ -2,84 +2,134 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 384E9251008
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Aug 2020 05:36:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0626925100C
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Aug 2020 05:41:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728592AbgHYDgY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 24 Aug 2020 23:36:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43724 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726532AbgHYDgY (ORCPT
+        id S1728105AbgHYDlK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 24 Aug 2020 23:41:10 -0400
+Received: from mail29.static.mailgun.info ([104.130.122.29]:25539 "EHLO
+        mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727011AbgHYDlJ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 24 Aug 2020 23:36:24 -0400
-Received: from mail-oi1-x244.google.com (mail-oi1-x244.google.com [IPv6:2607:f8b0:4864:20::244])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2738BC061574;
-        Mon, 24 Aug 2020 20:36:24 -0700 (PDT)
-Received: by mail-oi1-x244.google.com with SMTP id v13so10383122oiv.13;
-        Mon, 24 Aug 2020 20:36:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:references:from:message-id:date:user-agent:mime-version
-         :in-reply-to:content-language:content-transfer-encoding;
-        bh=aJK4CYpBJPrH1toP8zLPbQR7/OSGwyBsRegpuVoVLfM=;
-        b=U3Kxms8nGHG/4Cel6thKiw6GhrtcjVEviQYZYOrBThIqVF1LjLzpMsocDb3ui37Flj
-         oBMq07YDPBK89FbhnNeenmJgGg4Q3NEVADr96BcxqGh01I6Oo7qOMyZp9NkZQNwCZKad
-         khaeh13gdeYgwrGdTzfeQW9cdR97D3D8Pv++aOVvClcqRcOkjpG/+IpzayqLD6CuNMK9
-         dmbFXLz20bCjF1zauTjo0mUY/PgTxuFADrCG/IefnYrK2H5vpxrhv4HeU7PQs6QExccD
-         zIYuRhRXwU/ru2mknYkNkUYKJZH9y2od7q9LqQEsBeXLpnVydT1AK/QSxyQNwTIO8BSH
-         SkXg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=aJK4CYpBJPrH1toP8zLPbQR7/OSGwyBsRegpuVoVLfM=;
-        b=W3/JnMQOTEkg4xIkI7gv6L54Kn+GS7peGvmbu8gFxhiMQcQ8x2w5Xc/G6aKoQkpBh/
-         8SYXiudhn9Oxf1ymJwQ0XkUTOJFpBxnkSaCBWS7HlD99D43OG+CyTb2VglmVK4Ig3GDk
-         yEiGMtBFeITdvHep4dA1+Ma1UqWD6bvsjVfeddCK6yZL6SVAL4h3un+hxj6hwKCn0sqn
-         DGNXQ5JUwSbfGIoxmf4LBa+rfT26hq1FHu37X9DAp0Mv++kbfWkcGe57a3UIns3I004p
-         MPJBxU0pd7av9ZcDmWeP9L+35Fjm+dRo7nHb6bpdOOFj6JbLgRoI6TGXH+7wCjDUMN03
-         Zr6w==
-X-Gm-Message-State: AOAM530uptShst+tYoX3loVmBlGBduswspp03GA8UgDoSmt2hIPF/QWI
-        wo5BlELeRhlugQAlS1nCpN08TOkoKOTNMw==
-X-Google-Smtp-Source: ABdhPJxtP6KLYyj5cNr/5kaxw4wmrCX+oW628EQ4RUi1uvc3OHt6U1jaXcmM4/8hxGmG5ugwK+sbtQ==
-X-Received: by 2002:aca:adc4:: with SMTP id w187mr1492697oie.153.1598326582277;
-        Mon, 24 Aug 2020 20:36:22 -0700 (PDT)
-Received: from Davids-MacBook-Pro.local ([2601:282:803:7700:12c:2110:d2ae:4b39])
-        by smtp.googlemail.com with ESMTPSA id 22sm71587oin.26.2020.08.24.20.36.21
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 24 Aug 2020 20:36:21 -0700 (PDT)
-Subject: Re: [PATCH 1/3] libnetlink: add rtattr_for_each_nested() iteration
- macro
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless@vger.kernel.org,
-        Stephen Hemminger <stephen@networkplumber.org>,
-        netdev@vger.kernel.org
-References: <20200824175108.53101-1-johannes@sipsolutions.net>
-From:   David Ahern <dsahern@gmail.com>
-Message-ID: <5b6ed1d7-ff05-50e7-2194-3a59b799c014@gmail.com>
-Date:   Mon, 24 Aug 2020 21:36:20 -0600
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:68.0)
- Gecko/20100101 Thunderbird/68.11.0
+        Mon, 24 Aug 2020 23:41:09 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1598326868; h=Message-ID: References: In-Reply-To: Subject:
+ Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Sender; bh=Uvcu1ht5kV9VgGpjCT/tlLrb1xXWHrIjP9OCITouXRM=;
+ b=ZfnC/e+6GOoK6L6lb/hlsDWEArDspMyQdpkSzeHPv2wQ1rxNDyd6OOLC5QJEssYbOSjj0LD4
+ lO6xMg71zw/9YKkX0gaXZaj7+Wdst/XbrjK+8xRgF48jbDv/2+VJz30h07OZKbSE9To1H+2V
+ QpoQ18Wxt7vMyF/q7W782MCsDhI=
+X-Mailgun-Sending-Ip: 104.130.122.29
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n03.prod.us-west-2.postgun.com with SMTP id
+ 5f448850fb5eb2479c4af92b (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 25 Aug 2020 03:41:04
+ GMT
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 6904CC433CB; Tue, 25 Aug 2020 03:41:04 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: wgong)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id C7983C433CA;
+        Tue, 25 Aug 2020 03:41:03 +0000 (UTC)
 MIME-Version: 1.0
-In-Reply-To: <20200824175108.53101-1-johannes@sipsolutions.net>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
 Content-Transfer-Encoding: 7bit
+Date:   Tue, 25 Aug 2020 11:41:03 +0800
+From:   Wen Gong <wgong@codeaurora.org>
+To:     Krishna Chaitanya <chaitanya.mgit@gmail.com>
+Cc:     ath10k <ath10k@lists.infradead.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH v2] ath10k: add flag to protect napi operation to avoid
+ dead loop hang for SDIO
+In-Reply-To: <CABPxzY+Fc22ke1ygRnDs0Uds0a7n=792QN8ALXciDrnx9SQuqQ@mail.gmail.com>
+References: <1598243612-4627-1-git-send-email-wgong@codeaurora.org>
+ <CABPxzYLjys+cXXRM5J680ZOs+6VrYt=_3rWv-gqkCod=-A1VrA@mail.gmail.com>
+ <fd98989a87f2a50655dc95bdcd535c0d@codeaurora.org>
+ <CABPxzYKvPwtQwxMfRcv9jT+d92ErhYGR91SKBH86T3Rd2QH9Qg@mail.gmail.com>
+ <2d6362ce85956d0f7df2e596b89a7028@codeaurora.org>
+ <CABPxzY+Fc22ke1ygRnDs0Uds0a7n=792QN8ALXciDrnx9SQuqQ@mail.gmail.com>
+Message-ID: <663fbb682fd8df555b2964d7d86b8eca@codeaurora.org>
+X-Sender: wgong@codeaurora.org
+User-Agent: Roundcube Webmail/1.3.9
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 8/24/20 11:51 AM, Johannes Berg wrote:
-> This is useful for iterating elements in a nested attribute,
-> if they're not parsed with a strict length limit or such.
-> 
-> Signed-off-by: Johannes Berg <johannes@sipsolutions.net>
-> ---
->  include/libnetlink.h | 5 +++++
->  1 file changed, 5 insertions(+)
-> 
+On 2020-08-24 19:15, Krishna Chaitanya wrote:
+> On Mon, Aug 24, 2020 at 4:15 PM Wen Gong <wgong@codeaurora.org> wrote:
+>> 
+>> On 2020-08-24 18:03, Krishna Chaitanya wrote:
+>> > On Mon, Aug 24, 2020 at 3:10 PM Wen Gong <wgong@codeaurora.org> wrote:
+>> >>
+>> >> On 2020-08-24 16:35, Krishna Chaitanya wrote:
+>> >> > On Mon, Aug 24, 2020 at 10:03 AM Wen Gong <wgong@codeaurora.org> wrote:
+>> >> >>
+>> >> >> It happened "Kernel panic - not syncing: hung_task: blocked tasks"
+>> >> >> when
+>> >> >> test simulate crash and ifconfig down/rmmod meanwhile.
+>> >> >>
+>> >> ...
+>> >> >>
+>> >> >>  #ifdef CONFIG_PM
+>> >> > Even though your DUT is SDIO based we should be doing this in general
+>> >> > for all, no?
+>> >> > core_restart + hif_stop is common to all.
+>> >> this patch does not have core_restart.
+>> > I was referring to the combination which is causing the issue.
+>> >
+>> >> I dit not hit the issue for others bus(PCIe,SNOC...), so I can not
+>> >> change them with a
+>> >> assumption they also have this issue.
+>> > But that doesn't make sense, the combination is being hit for others
+>> > also.
+>> > (they should also endup calling napi_disable twice?) or they are using
+>> > some other check to avoid this (doesn't appear so from a quick look at
+>> > the
+>> > code).
+>> Because I only use SDIO, I did not use others BUS, so I did not hit 
+>> the
+>> issue
+>> on other BUS.
+> I understand, my point was based on the description the issue looks 
+> independent
+> of the BUS type, so, the fix should also be generic. I understand that
+> your testing
+> is only focused on SDIO, but we should have a generic fix and probably 
+> use
+> communities help to get it tested rather than fixing SDIO only.
+I checked the ath10k, only sdio.c, snoc.c, pci.c have used napi.
+I think it can change to move the 
+napi_synchronize/napi_disable/napi_enable from
+sido.c/snoc.c/pci.c to ath10k_core.ko as below:
+void ath10k_core_napi_enable(struct ath10k *ar)
+{
+        if (!ar->napi_enabled) {
+                napi_enable(&ar->napi);
+                ar->napi_enabled = true;
+        }
+}
+EXPORT_SYMBOL(ath10k_core_napi_enable);
 
-applied to iproute2-next. Thanks, Johannes.
+void ath10k_core_napi_disable_sync(struct ath10k *ar)
+{
+        if (ar->napi_enabled) {
+                napi_synchronize(&ar->napi);
+                napi_disable(&ar->napi);
+                ar->napi_enabled = false;
+        }
+}
+EXPORT_SYMBOL(ath10k_core_napi_disable_sync);
 
+is it appropriate?
+...
