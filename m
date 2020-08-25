@@ -2,136 +2,127 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E5ED2517D4
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Aug 2020 13:40:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BA5412517FA
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Aug 2020 13:43:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729996AbgHYLkR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 25 Aug 2020 07:40:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34664 "EHLO
+        id S1729978AbgHYLm7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 25 Aug 2020 07:42:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35068 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729873AbgHYLj7 (ORCPT
+        with ESMTP id S1729882AbgHYLmf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 25 Aug 2020 07:39:59 -0400
-Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com [IPv6:2a00:1450:4864:20::341])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4D0EC061574
-        for <linux-wireless@vger.kernel.org>; Tue, 25 Aug 2020 04:39:59 -0700 (PDT)
-Received: by mail-wm1-x341.google.com with SMTP id t2so2097204wma.0
-        for <linux-wireless@vger.kernel.org>; Tue, 25 Aug 2020 04:39:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=jukB4zz6dwC5ey5IRBypMctEG1CK3rIG/3PkqkNzlVU=;
-        b=vzJH3vbky8C5YVfoDZYsRFc7vVgRnSxYw8tlBZf84LlDnDTr7e1udj8jfUp3X8vk8A
-         QW+U35IUpu5BCDOXS20iloP2MLTTDiM/T2Yd8+ONZH795kPzJfiYZlSmxbJnpshjjHCL
-         OEL2UuY/hqpyqmXJ2DSctiX9vv1yq1BvYlHDVxJCc7xdScXUJC5b0d41hUjNfhhqDWA5
-         BtrsHoqnh4HxC+JRoXVRIppddE4kxs4cvZyMBNdalISDl3imfc5/66yFi6ngAbhJqjy5
-         6eu+QthGjXNNgmERURvqx/oemlzwQOTOUO7HUwnO+llIp32xnafV0RC0fT57/fkB/8Al
-         Tn3A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=jukB4zz6dwC5ey5IRBypMctEG1CK3rIG/3PkqkNzlVU=;
-        b=rFDuMAibL2DFRrvhoMktjT6qiv2Iiz9jCrGlikmwSSMkSfjMq79QMbroXZAR531QyI
-         Ck7mNagRcfFw4dnO+XPRYXFVCpWpRAoS8Y46ZXVAOqNGfwMC6bxxoZHDQoGPvThe8Txn
-         Vc9454pKMeRzd784TzZEh9rwPAYh7fQBUat7/CqFEyIQjs9ysru3G4Rrhyd9jWAmbMZZ
-         JbO4ALbczk1xugf6HLElLDHqqdy+9UhuLPdq/4mpKQPkyx+MFObSzuRcl6azWpPvvPPP
-         HMLSxysh4J9AGSfp0pCn2d8tBImHfLjpWOZgLRv8eZmCJhdjyhUww+oeVaxONmh2kC3r
-         7z0A==
-X-Gm-Message-State: AOAM530mzIh6pLxQpB++vY2SNnUhXwqwdh+O9VqLM5trVgmnYVWVO0Ji
-        f3BjP/iLqI4AqfXpvjEbmF5QQyMmR+ml31jb
-X-Google-Smtp-Source: ABdhPJxS/xdz42wio1PRNg1SQOuLGeXRcvGy4ZAnZKOJSYCFWXZgXZOaipo3TFGWiAmBppuHKApdhQ==
-X-Received: by 2002:a05:600c:202:: with SMTP id 2mr1632698wmi.139.1598355597907;
-        Tue, 25 Aug 2020 04:39:57 -0700 (PDT)
-Received: from [192.168.0.38] ([176.61.57.127])
-        by smtp.gmail.com with ESMTPSA id k15sm27470005wrp.43.2020.08.25.04.39.56
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 25 Aug 2020 04:39:57 -0700 (PDT)
-Subject: Re: [PATCH] wcn36xx: Setup starting bitrate to MCS-5
-To:     Loic Poulain <loic.poulain@linaro.org>, kvalo@codeaurora.org
-Cc:     wcn36xx@lists.infradead.org, linux-wireless@vger.kernel.org
-References: <1598345341-4505-1-git-send-email-loic.poulain@linaro.org>
-From:   Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Message-ID: <23c5eccc-a23e-0b14-ba16-ce6de7a3fb11@linaro.org>
-Date:   Tue, 25 Aug 2020 12:40:44 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        Tue, 25 Aug 2020 07:42:35 -0400
+Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 072F5C061574
+        for <linux-wireless@vger.kernel.org>; Tue, 25 Aug 2020 04:42:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
+        Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=s1btEU4pVB7qjUZ+NZT1w7uWFECNet3LBQ5w/SxnKQ8=; b=Lb2aTpoMRHNO/W/ac/NDG5e4Ir
+        qv8fCTpWuTjLFtIXxmiYXSdWSNCNtLWnc7THYtTmAfJbV0U0qU3sKir6pHnHoZDrUW1gvAnNgzdgj
+        Hcmq1DBEf49gD3uqbWvXpaCHdKPTsmg3ezar+LAv61bcIfmg573F4gLSWMbsj0rzADok=;
+Received: from p5b206497.dip0.t-ipconnect.de ([91.32.100.151] helo=localhost.localdomain)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_CBC_SHA1:128)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1kAXLT-0000hM-7q; Tue, 25 Aug 2020 13:42:31 +0200
+From:   Felix Fietkau <nbd@nbd.name>
+To:     linux-wireless@vger.kernel.org
+Cc:     Qin Wei <me@vonger.cn>
+Subject: [PATCH v2 9/9] mt76: mt7603: check for single-stream EEPROM configuration
+Date:   Tue, 25 Aug 2020 13:42:30 +0200
+Message-Id: <20200825114230.90723-1-nbd@nbd.name>
+X-Mailer: git-send-email 2.28.0
+In-Reply-To: <20200825052909.36955-9-nbd@nbd.name>
+References: <20200825052909.36955-9-nbd@nbd.name>
 MIME-Version: 1.0
-In-Reply-To: <1598345341-4505-1-git-send-email-loic.poulain@linaro.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 25/08/2020 09:49, Loic Poulain wrote:
-> By default, after associated to an AP, the wcn36xx bitrate adjustment
-> algorithm starts sending data at 1Mbps, and increases the rate slowly
-> (1Mbps, 2Mbps, 6Mbps...) over the further TX packets.
-> 
-> Starting at 1Mbps usually causes the initial throughput to be really
-> low and the maximum possible bitrate to be reached after about hundreed
-> of TX packets.
-> 
-> That can be improved by setting a different initial bitrate for data
-> packets via the ENABLE_DYNAMIC_RA_START_RATE configuration value, this
-> value can be a legacy or MCS rate.
-> 
-> This patch sets the starting bitrate value to MCS-5, which seems to be
-> a good compromise given it can be quickly adjusted low or up if necessary.
-> (and based on what I observed in the wild with some mobile devices)
-> 
-> Signed-off-by: Loic Poulain <loic.poulain@linaro.org>
-> ---
->   drivers/net/wireless/ath/wcn36xx/hal.h | 8 ++++++++
->   drivers/net/wireless/ath/wcn36xx/smd.c | 1 +
->   2 files changed, 9 insertions(+)
-> 
-> diff --git a/drivers/net/wireless/ath/wcn36xx/hal.h b/drivers/net/wireless/ath/wcn36xx/hal.h
-> index 6ba0fd5..88e1ed5 100644
-> --- a/drivers/net/wireless/ath/wcn36xx/hal.h
-> +++ b/drivers/net/wireless/ath/wcn36xx/hal.h
-> @@ -728,6 +728,14 @@ enum pe_stats_mask {
->   #define WCN36XX_HAL_CFG_ENABLE_TDLS_OXYGEN_MODE		104
->   #define WCN36XX_HAL_CFG_MAX_PARAMS			105
->   
-> +/* Specify the starting bitrate, 11B and 11A/G rates can be specified in
-> + * multiples of 0.5 So for 5.5 mbps => 11. for MCS 0 - 7 rates, Bit 7 should
-> + * set to 1 and Bit 0-6 represent the MCS index. so for MCS2 => 130.
-> + * Any invalid non-zero value or unsupported rate will set the start rate
-> + * to 6 mbps.
-> + */
-> +#define WCN36XX_HAL_CFG_ENABLE_DYNAMIC_RA_START_RATE	210
-> +
->   /* Message definitons - All the messages below need to be packed */
->   
->   /* Definition for HAL API Version. */
-> diff --git a/drivers/net/wireless/ath/wcn36xx/smd.c b/drivers/net/wireless/ath/wcn36xx/smd.c
-> index 9864c6f..83247d3 100644
-> --- a/drivers/net/wireless/ath/wcn36xx/smd.c
-> +++ b/drivers/net/wireless/ath/wcn36xx/smd.c
-> @@ -77,6 +77,7 @@ static struct wcn36xx_cfg_val wcn36xx_cfg_vals[] = {
->   	WCN36XX_CFG_VAL(BTC_STATIC_LEN_LE_WLAN, 30000),
->   	WCN36XX_CFG_VAL(MAX_ASSOC_LIMIT, 10),
->   	WCN36XX_CFG_VAL(ENABLE_MCC_ADAPTIVE_SCHEDULER, 0),
-> +	WCN36XX_CFG_VAL(ENABLE_DYNAMIC_RA_START_RATE, 133), /* MCS 5 */
->   };
->   
->   static int put_cfg_tlv_u32(struct wcn36xx *wcn, size_t *len, u32 id, u32 value)
-> 
+Some devices using MT7628 or MT7603 have only one antenna chain connected.
+Detect these using the EEPROM rx/tx path settings
 
-Interesting.
+Reported-by: Qin Wei <me@vonger.cn>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+---
+v2: move to eeprom.c to fix initialization order
+ .../net/wireless/mediatek/mt76/mt7603/eeprom.c  | 17 +++++++++++++++--
+ .../net/wireless/mediatek/mt76/mt7603/eeprom.h  |  3 +++
+ .../net/wireless/mediatek/mt76/mt7603/init.c    |  5 -----
+ 3 files changed, 18 insertions(+), 7 deletions(-)
 
-I did this to the wcn3680 config I have, which if I've understood your 
-description right is MCS8 default
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/eeprom.c b/drivers/net/wireless/mediatek/mt76/mt7603/eeprom.c
+index 3ee06e2577b8..01f1e0da5ee1 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7603/eeprom.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7603/eeprom.c
+@@ -147,8 +147,14 @@ static int mt7603_check_eeprom(struct mt76_dev *dev)
+ 	}
+ }
+ 
++static inline bool is_mt7688(struct mt7603_dev *dev)
++{
++	return mt76_rr(dev, MT_EFUSE_BASE + 0x64) & BIT(4);
++}
++
+ int mt7603_eeprom_init(struct mt7603_dev *dev)
+ {
++	u8 *eeprom;
+ 	int ret;
+ 
+ 	ret = mt7603_eeprom_load(dev);
+@@ -163,9 +169,16 @@ int mt7603_eeprom_init(struct mt7603_dev *dev)
+ 			       MT7603_EEPROM_SIZE);
+ 	}
+ 
++	eeprom = (u8 *)dev->mt76.eeprom.data;
+ 	dev->mt76.cap.has_2ghz = true;
+-	memcpy(dev->mt76.macaddr, dev->mt76.eeprom.data + MT_EE_MAC_ADDR,
+-	       ETH_ALEN);
++	memcpy(dev->mt76.macaddr, eeprom + MT_EE_MAC_ADDR, ETH_ALEN);
++
++	/* Check for 1SS devices */
++	dev->mphy.antenna_mask = 3;
++	if (FIELD_GET(MT_EE_NIC_CONF_0_RX_PATH, eeprom[MT_EE_NIC_CONF_0]) == 1 ||
++	    FIELD_GET(MT_EE_NIC_CONF_0_TX_PATH, eeprom[MT_EE_NIC_CONF_0]) == 1 ||
++	    is_mt7688(dev))
++		dev->mphy.antenna_mask = 1;
+ 
+ 	mt76_eeprom_override(&dev->mt76);
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/eeprom.h b/drivers/net/wireless/mediatek/mt76/mt7603/eeprom.h
+index b893facfba48..4687d6dc00dc 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7603/eeprom.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7603/eeprom.h
+@@ -85,4 +85,7 @@ enum mt7603_eeprom_source {
+ 	MT_EE_SRC_FLASH,
+ };
+ 
++#define MT_EE_NIC_CONF_0_RX_PATH		GENMASK(3, 0)
++#define MT_EE_NIC_CONF_0_TX_PATH		GENMASK(7, 4)
++
+ #endif
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/init.c b/drivers/net/wireless/mediatek/mt76/mt7603/init.c
+index 94196599797e..c4848fafd270 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7603/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7603/init.c
+@@ -536,11 +536,6 @@ int mt7603_register_device(struct mt7603_dev *dev)
+ 	tasklet_init(&dev->mt76.pre_tbtt_tasklet, mt7603_pre_tbtt_tasklet,
+ 		     (unsigned long)dev);
+ 
+-	/* Check for 7688, which only has 1SS */
+-	dev->mphy.antenna_mask = 3;
+-	if (mt76_rr(dev, MT_EFUSE_BASE + 0x64) & BIT(4))
+-		dev->mphy.antenna_mask = 1;
+-
+ 	dev->slottime = 9;
+ 	dev->sensitivity_limit = 28;
+ 	dev->dynamic_sensitivity = true;
+-- 
+2.28.0
 
-+       WCN36XX_CFG_VAL(ENABLE_DYNAMIC_RA_START_RATE, 136),
-
-I'd say anecdotally I get up to higher data-rates faster. So its 
-probably the right thing to do on the 3620/3660 too.
-
-I'll rebase my 3680 patches since this patch will conflict
