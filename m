@@ -2,65 +2,67 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F6F8252A48
-	for <lists+linux-wireless@lfdr.de>; Wed, 26 Aug 2020 11:37:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F8E4252A3E
+	for <lists+linux-wireless@lfdr.de>; Wed, 26 Aug 2020 11:37:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728525AbgHZJhZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 26 Aug 2020 05:37:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40918 "EHLO
+        id S1728523AbgHZJg4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 26 Aug 2020 05:36:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41002 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728379AbgHZJfH (ORCPT
+        with ESMTP id S1728382AbgHZJfJ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 26 Aug 2020 05:35:07 -0400
-Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com [IPv6:2a00:1450:4864:20::343])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5708CC06134E
-        for <linux-wireless@vger.kernel.org>; Wed, 26 Aug 2020 02:34:33 -0700 (PDT)
-Received: by mail-wm1-x343.google.com with SMTP id z9so1079162wmk.1
-        for <linux-wireless@vger.kernel.org>; Wed, 26 Aug 2020 02:34:33 -0700 (PDT)
+        Wed, 26 Aug 2020 05:35:09 -0400
+Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 815F3C061357
+        for <linux-wireless@vger.kernel.org>; Wed, 26 Aug 2020 02:34:34 -0700 (PDT)
+Received: by mail-wr1-x442.google.com with SMTP id d10so174118wrw.2
+        for <linux-wireless@vger.kernel.org>; Wed, 26 Aug 2020 02:34:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=B4E9cSfXHfJFsjO894WOptYPwQ5/EooDFGNjs8a9MbA=;
-        b=r726au1UQ7kMPGArZ786mhNfI/fKyc+1LUzeKJihwwMlnchKe/lERgKWP64vUe1I1Y
-         Y0gkWO+MPKS9vCVA2CQ+NstGLZ63RejpdbctRvfT/O7Br7lKyGN2whD+FK7eGP6I0w0u
-         Sq6lNnWp4FSZ8OzaKrEziBms5T7UgFNJ3+KNg8l3iN7zNMfgcCvZIckv1RLy+/1a1foE
-         zfbyQo4Ui+txno8sEohJnzczCJrpoaoIp4z/btaJoG/G/DCpeSfEQdE9xuNW5GrxPtxv
-         UwaPGRS5aS9vlfJLt/8F40AvQeYwr5xL+xXX9FEUqRWEatyULgQBmdICjlGQjsnkwmQb
-         632w==
+        bh=yvoQanaWTpWNQEXwywlAc7o43dgHa3QRlp1C/cAGUU4=;
+        b=s03wRDxSuZJrkgF2oUckm/dxkHDlEzj7UzMo4Rqm6Jg4UF21WboPJXhBjmsdYI44VB
+         T80Qv+u/ejdXfR88W2SGz656OtO/FWRBPOKx1iuuWvDdQrNMTfC5JE0nyJWAnusYydDc
+         GOPazXC8CxR2wMTlSrN063oegcaXdEmuxL7OHTkh89TSmAWGWQJIp8QMfdTY51HreW3U
+         kc8nEWXR50Oqtd60Nj305DBmXokL7F6Yf9ZUX0h/JTqLq9oSZV5GdQmUxXwIKir3clme
+         AOdeWWnagZRvMsJg5BwaVzJpqvtcPMKSGuJ6WkwKZbXsyz1GFTc1PqqJ+D0GvAOe2vAZ
+         2yhg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=B4E9cSfXHfJFsjO894WOptYPwQ5/EooDFGNjs8a9MbA=;
-        b=fanQ2rHqA7m69ELjECJZ9rcoEKdY8x1SqEvvPQNqBLCJjlhPchf9tTAT5dzaJ8jiXs
-         73MpcjOxLYPtWDoqSzEgE/l/KzY8AwCBc+K0YGajNAY5QTaSaz06hjlt3R6vBdHpyW4h
-         +zt/+mM6xzl1Xvug3JKW4Ainu9h5OHFUQbGZVjKtS14wsMAd05OPctZLnpUFD0OE1qCM
-         vAef9Rlas2K8E/EWEgy/NiN5IvdaMrVjUd2w635+aJRRw4QdLK5xcJRQQ8b53yvrb/Aj
-         8LIju67mpcyUdtJ6MHFuEwmkufjgt+oSP0zzOYRlX0Xz180OM67zxLxRvDMJVL5oDLqY
-         CSkQ==
-X-Gm-Message-State: AOAM530X9iyMeASNmCMneoClJvM3tZsIAIMuGejYHvCZMLlhGmW9QNCd
-        24D1Nd0EQGHzQZ9HfJQKMUw6Fw==
-X-Google-Smtp-Source: ABdhPJyBLvA6umNRRhVN3ftfM9O0qrl1SQRnCExSXd25zEos5hTnBsQI0+4oZ30F+EHrD5r3+cToow==
-X-Received: by 2002:a1c:e4c3:: with SMTP id b186mr6112239wmh.84.1598434471957;
-        Wed, 26 Aug 2020 02:34:31 -0700 (PDT)
+        bh=yvoQanaWTpWNQEXwywlAc7o43dgHa3QRlp1C/cAGUU4=;
+        b=dEXqJKe0YsEkH57vADea7qO8mnSmI2HjqVoMOmtItyANTI828Se9499cYh2NgrjLnB
+         oszNg9h7J30uAEbQi/+KvlZAidJp9lSpdT6t1VkQXDrAr6oYjALfr85VceQuDxyWLmc1
+         4eTltriWkgtcQ2n8KqWE5iIJAOtgyTHqFqybjlaEXvNDhdDCyJFKcte5ABnxTcsV1Vqz
+         Kb8V3ZmkSzAeWR/lw5QYk0VrDnZmohoLTHwxZFV9UOD7vUA2xMLhxkirimm8/6l4wiyN
+         Vh3iZ7Sv5rO2mA8tCtxz1vnOlDl4Ng6JGskEAuhmdfa3v9DeOPApST14fh5ySj+3w9Dz
+         6xzg==
+X-Gm-Message-State: AOAM531/z62qy335ySuLv+7tB6rthqfXTKGMgE86/bfqF6dcE5IWOpE+
+        K3qHqZyGO7nAH4QOfFfwJsSOAA==
+X-Google-Smtp-Source: ABdhPJxOfF7uQYb9qaD3r7dWTNKRZIkhB0UM17JPesq9XXKWzSzFYvmfyfGy2TKdAm+01oYhG5XIAA==
+X-Received: by 2002:a5d:43ca:: with SMTP id v10mr14464274wrr.299.1598434473214;
+        Wed, 26 Aug 2020 02:34:33 -0700 (PDT)
 Received: from dell.default ([95.149.164.62])
-        by smtp.gmail.com with ESMTPSA id u3sm3978759wml.44.2020.08.26.02.34.30
+        by smtp.gmail.com with ESMTPSA id u3sm3978759wml.44.2020.08.26.02.34.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Aug 2020 02:34:31 -0700 (PDT)
+        Wed, 26 Aug 2020 02:34:32 -0700 (PDT)
 From:   Lee Jones <lee.jones@linaro.org>
 To:     kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org
 Cc:     linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
         netdev@vger.kernel.org, Lee Jones <lee.jones@linaro.org>,
-        Amitkumar Karwar <amitkarwar@gmail.com>,
-        Siva Rebbagondla <siva8118@gmail.com>
-Subject: [PATCH 22/30] wireless: rsi: rsi_91x_sdio_ops: File headers are not good kernel-doc candidates
-Date:   Wed, 26 Aug 2020 10:33:53 +0100
-Message-Id: <20200826093401.1458456-23-lee.jones@linaro.org>
+        Luis Chamberlain <mcgrof@kernel.org>,
+        Aurelien Alleaume <slts@free.fr>, Valerio Riedel <hvr@gnu.org>,
+        "Luis R. Rodriguez" <mcgrof@ruslug.rutgers.edu>
+Subject: [PATCH 23/30] wireless: intersil: prism54: isl_ioctl:  Remove unused variable 'j'
+Date:   Wed, 26 Aug 2020 10:33:54 +0100
+Message-Id: <20200826093401.1458456-24-lee.jones@linaro.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200826093401.1458456-1-lee.jones@linaro.org>
 References: <20200826093401.1458456-1-lee.jones@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
@@ -69,32 +71,44 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 Fixes the following W=1 kernel build warning(s):
 
- drivers/net/wireless/rsi/rsi_91x_sdio_ops.c:24: warning: Incorrect use of kernel-doc format:  * rsi_sdio_master_access_msword() - This function sets the AHB master access
- drivers/net/wireless/rsi/rsi_91x_sdio_ops.c:32: warning: Function parameter or member 'adapter' not described in 'rsi_sdio_master_access_msword'
- drivers/net/wireless/rsi/rsi_91x_sdio_ops.c:32: warning: Function parameter or member 'ms_word' not described in 'rsi_sdio_master_access_msword'
+ drivers/net/wireless/intersil/prism54/isl_ioctl.c: In function ‘prism54_update_stats’:
+ drivers/net/wireless/intersil/prism54/isl_ioctl.c:166:6: warning: variable ‘j’ set but not used [-Wunused-but-set-variable]
 
-Cc: Amitkumar Karwar <amitkarwar@gmail.com>
-Cc: Siva Rebbagondla <siva8118@gmail.com>
+Cc: Luis Chamberlain <mcgrof@kernel.org>
 Cc: Kalle Valo <kvalo@codeaurora.org>
 Cc: "David S. Miller" <davem@davemloft.net>
 Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Aurelien Alleaume <slts@free.fr>
+Cc: Valerio Riedel <hvr@gnu.org>
+Cc: "Luis R. Rodriguez" <mcgrof@ruslug.rutgers.edu>
 Cc: linux-wireless@vger.kernel.org
 Cc: netdev@vger.kernel.org
 Signed-off-by: Lee Jones <lee.jones@linaro.org>
 ---
- drivers/net/wireless/rsi/rsi_91x_sdio_ops.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/intersil/prism54/isl_ioctl.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/rsi/rsi_91x_sdio_ops.c b/drivers/net/wireless/rsi/rsi_91x_sdio_ops.c
-index 449f6d23c5e36..7825c9a889d36 100644
---- a/drivers/net/wireless/rsi/rsi_91x_sdio_ops.c
-+++ b/drivers/net/wireless/rsi/rsi_91x_sdio_ops.c
-@@ -1,4 +1,4 @@
--/**
-+/*
-  * Copyright (c) 2014 Redpine Signals Inc.
-  *
-  * Permission to use, copy, modify, and/or distribute this software for any
+diff --git a/drivers/net/wireless/intersil/prism54/isl_ioctl.c b/drivers/net/wireless/intersil/prism54/isl_ioctl.c
+index 3ccf2a4b548c6..5c49b9e52a0c4 100644
+--- a/drivers/net/wireless/intersil/prism54/isl_ioctl.c
++++ b/drivers/net/wireless/intersil/prism54/isl_ioctl.c
+@@ -163,7 +163,6 @@ prism54_update_stats(struct work_struct *work)
+ {
+ 	islpci_private *priv = container_of(work, islpci_private, stats_work);
+ 	char *data;
+-	int j;
+ 	struct obj_bss bss, *bss2;
+ 	union oid_res_t r;
+ 
+@@ -187,7 +186,7 @@ prism54_update_stats(struct work_struct *work)
+ 	kfree(data);
+ 
+ 	/* now ask for the corresponding bss */
+-	j = mgt_get_request(priv, DOT11_OID_BSSFIND, 0, (void *) &bss, &r);
++	mgt_get_request(priv, DOT11_OID_BSSFIND, 0, (void *) &bss, &r);
+ 	bss2 = r.ptr;
+ 	/* report the rssi and use it to calculate
+ 	 *  link quality through a signal-noise
 -- 
 2.25.1
 
