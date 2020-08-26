@@ -2,66 +2,66 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C5C16252A57
-	for <lists+linux-wireless@lfdr.de>; Wed, 26 Aug 2020 11:38:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 08C06252A50
+	for <lists+linux-wireless@lfdr.de>; Wed, 26 Aug 2020 11:37:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728405AbgHZJhx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 26 Aug 2020 05:37:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40934 "EHLO
+        id S1728577AbgHZJhf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 26 Aug 2020 05:37:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40958 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728370AbgHZJfD (ORCPT
+        with ESMTP id S1728374AbgHZJfE (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 26 Aug 2020 05:35:03 -0400
-Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBC4FC061346
-        for <linux-wireless@vger.kernel.org>; Wed, 26 Aug 2020 02:34:29 -0700 (PDT)
-Received: by mail-wr1-x442.google.com with SMTP id o4so1107299wrn.0
-        for <linux-wireless@vger.kernel.org>; Wed, 26 Aug 2020 02:34:29 -0700 (PDT)
+        Wed, 26 Aug 2020 05:35:04 -0400
+Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA6C9C061349
+        for <linux-wireless@vger.kernel.org>; Wed, 26 Aug 2020 02:34:30 -0700 (PDT)
+Received: by mail-wr1-x443.google.com with SMTP id a5so1093599wrm.6
+        for <linux-wireless@vger.kernel.org>; Wed, 26 Aug 2020 02:34:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=5xYAPYXZqKI3g1GFZmnrzEgVa6jjBFa/aMcqWmXa5Dc=;
-        b=NtAv25hji32BSctbHNSG6hvgojalWPH/q2SbQ6HmZPxPxofhzszwXZbiKeVhObOPRu
-         9FGE5aT64rD+pIVxs5baems82rqFmheemeohT5g0YqsAUxq4VzJ0QDqpHV8+7kaKCHfM
-         7g09v5S3ArlX5RSV2C7h+c9p5TXpyTkOVveKkl1BdsSYSftFphmajGgdnfWZUd6TWOn3
-         V95i0Yav3ECduA2ieGEHHnkRoEckdthoggrF0Hc7vGnmtdWsoz+pbgAWGuTbW+bfOdVJ
-         k03tb/D35hhKdjGQUZLufVJhsvkPrSb9ks8YB8kPodnKxjU/Z0KyjAhF59cMnf/yDq1w
-         bW6g==
+        bh=xyQoG+wQHbbYlAwDR9Bn2T0hbUw5R72XJoccL9iEkJo=;
+        b=FNLJxtoVrKxlB4vCGPDuiCbB7S8XUvS4J1q45/v6Sr8NhRJ4fqNYXpCC4jETbEERE9
+         FxJosK13MYeGiugDoo1nLglq3De76KFu635G5p6i4E2KZqLOxscfPcB1eCOW5gMx4FUY
+         qlTX4l31OguD2Dp9d561huIcQI/T+v2mpk6+DOzk2sLo/VOamMqvm+BcEPHf+Ay1xNjJ
+         O1o/W8gkYG9ObrHJe7y2KcQYwOfZDjcDdw1iZV5wVAghQFzizdtHurIlWrk0QoP5gfnQ
+         SxvGVQHSR/AxztB/6C/sZF3+AkIlQO/1Unajvzj3Jv/RqaVVk1yctcZiUqbI0ESq6mh3
+         BtaA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=5xYAPYXZqKI3g1GFZmnrzEgVa6jjBFa/aMcqWmXa5Dc=;
-        b=BzbgNHqp5PCxHggw26bwdXkDHUfKxQlZDVIWxU99zP8DF7gMuUo9KhO6FObqw0YqMI
-         jfQHz8MgsRCkij4PgZf10e4cb11VeMSU1NnlBP1zXC50YVExV+u2ScNN3WO3Wr++plsk
-         EX4GlKJmGCv2wTB91+K2xNY+tNqCz25U2kelA43lF2poq2oXC2LqfcVnaYOrOdAtbaBP
-         PzOpr/oL/B5GKkFAV2gQQbDGI3Wo+w8A+3G4c/SRk5P1Ik8Xhc6E53Eh/nlzXPObIFQ8
-         AGFNozGCd8nQ6i0WJMc4slMD6INoGBUoBuzBcOJwZ6b3NeuE/HUJc9pP2XEJ4e0uwD0j
-         GvkA==
-X-Gm-Message-State: AOAM533rgFHcCKc2VF8grblhS8DyiAQG+6l4IeWozCWGhl3u3Qm8gXOW
-        W3QXu1InMvpGXiFfigj7pWA0GA==
-X-Google-Smtp-Source: ABdhPJwlHgHvN4aaFIAjEP8d/rVGWNg4vJOAzlVz1zWIu7YkcH9UYqB9S9fIOyuB6XE6PgXJ4tP9XA==
-X-Received: by 2002:adf:f388:: with SMTP id m8mr15137432wro.338.1598434468397;
-        Wed, 26 Aug 2020 02:34:28 -0700 (PDT)
+        bh=xyQoG+wQHbbYlAwDR9Bn2T0hbUw5R72XJoccL9iEkJo=;
+        b=U+goSmamz2Lu4L7IP+fFfSHYp5H0tmSu4bOifI7cwrTi7kfPGed/1JJN6QebtLf0Cv
+         mgIJgbS7i9Qw56Gm3lECqTGkhf4l4vvsZKIwueYsk031iftOmiyyGaXATm+8eNnhfK/E
+         jOBXfXU9RQabXWfv0KQJTjKEMcQrg7BR5FQDMp0IWwa9mF9l7t4d7mDqJMOr7qcqJNKd
+         KV6rF68TnsOA4SgRVwNfwOl+zeUs2dyt1UCsR3RE5mNdKSjftKbeeBywVlvC7Cnl+xG9
+         KoEH0emBlua8ZXGcY3t2jr3n3BPOdZD2ESLGD+QYWF6D+oWlGKD8Zw4PZ4LGTGtCRdOC
+         Iltg==
+X-Gm-Message-State: AOAM530qhghqlFDnTcU3CHOXpmktve6BNH22z0XTC0lJj4Y/vLVU9Ecv
+        rNv3FcI157rCmcWWQu4rDIg2cA==
+X-Google-Smtp-Source: ABdhPJy50afRgESSXY0c75KtMkQTRCXM/0frNsxBhu29VRIOqcBUU+nGL06ugSrYWVuhv3Ig6hV5Mw==
+X-Received: by 2002:a5d:63c2:: with SMTP id c2mr14485590wrw.346.1598434469550;
+        Wed, 26 Aug 2020 02:34:29 -0700 (PDT)
 Received: from dell.default ([95.149.164.62])
-        by smtp.gmail.com with ESMTPSA id u3sm3978759wml.44.2020.08.26.02.34.27
+        by smtp.gmail.com with ESMTPSA id u3sm3978759wml.44.2020.08.26.02.34.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Aug 2020 02:34:27 -0700 (PDT)
+        Wed, 26 Aug 2020 02:34:29 -0700 (PDT)
 From:   Lee Jones <lee.jones@linaro.org>
 To:     kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org
 Cc:     linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
         netdev@vger.kernel.org, Lee Jones <lee.jones@linaro.org>,
-        Jouni Malinen <j@w1.fi>, Cong Wang <xiyou.wangcong@gmail.com>,
-        Taehee Yoo <ap420073@gmail.com>
-Subject: [PATCH 19/30] wireless: intersil: hostap: hostap_hw: Remove unused variable 'fc'
-Date:   Wed, 26 Aug 2020 10:33:50 +0100
-Message-Id: <20200826093401.1458456-20-lee.jones@linaro.org>
+        Fox Chen <mhchen@golf.ccl.itri.org.tw>,
+        de Melo <acme@conectiva.com.br>,
+        Gustavo Niemeyer <niemeyer@conectiva.com>
+Subject: [PATCH 20/30] wireless: wl3501_cs: Fix a bunch of formatting issues related to function docs
+Date:   Wed, 26 Aug 2020 10:33:51 +0100
+Message-Id: <20200826093401.1458456-21-lee.jones@linaro.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200826093401.1458456-1-lee.jones@linaro.org>
 References: <20200826093401.1458456-1-lee.jones@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
@@ -70,56 +70,131 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 Fixes the following W=1 kernel build warning(s):
 
- In file included from drivers/net/wireless/intersil/hostap/hostap_cs.c:196:
- drivers/net/wireless/intersil/hostap/hostap_hw.c: In function ‘prism2_tx_80211’:
- drivers/net/wireless/intersil/hostap/hostap_hw.c:1806:18: warning: variable ‘fc’ set but not used [-Wunused-but-set-variable]
- 1806 | u16 tx_control, fc;
- | ^~
- In file included from drivers/net/wireless/intersil/hostap/hostap_plx.c:264:
- drivers/net/wireless/intersil/hostap/hostap_hw.c: In function ‘prism2_tx_80211’:
- drivers/net/wireless/intersil/hostap/hostap_hw.c:1806:18: warning: variable ‘fc’ set but not used [-Wunused-but-set-variable]
- 1806 | u16 tx_control, fc;
- | ^~
- In file included from drivers/net/wireless/intersil/hostap/hostap_pci.c:221:
- drivers/net/wireless/intersil/hostap/hostap_hw.c: In function ‘prism2_tx_80211’:
- drivers/net/wireless/intersil/hostap/hostap_hw.c:1806:18: warning: variable ‘fc’ set but not used [-Wunused-but-set-variable]
- 1806 | u16 tx_control, fc;
- | ^~
+ In file included from drivers/net/wireless/wl3501_cs.c:57:
+ drivers/net/wireless/wl3501_cs.c:143: warning: Function parameter or member 'reg_domain' not described in 'iw_valid_channel'
+ drivers/net/wireless/wl3501_cs.c:143: warning: Function parameter or member 'channel' not described in 'iw_valid_channel'
+ drivers/net/wireless/wl3501_cs.c:162: warning: Function parameter or member 'reg_domain' not described in 'iw_default_channel'
+ drivers/net/wireless/wl3501_cs.c:248: warning: Function parameter or member 'this' not described in 'wl3501_set_to_wla'
+ drivers/net/wireless/wl3501_cs.c:270: warning: Function parameter or member 'this' not described in 'wl3501_get_from_wla'
+ drivers/net/wireless/wl3501_cs.c:467: warning: Function parameter or member 'this' not described in 'wl3501_send_pkt'
+ drivers/net/wireless/wl3501_cs.c:467: warning: Function parameter or member 'data' not described in 'wl3501_send_pkt'
+ drivers/net/wireless/wl3501_cs.c:467: warning: Function parameter or member 'len' not described in 'wl3501_send_pkt'
+ drivers/net/wireless/wl3501_cs.c:729: warning: Function parameter or member 'this' not described in 'wl3501_block_interrupt'
+ drivers/net/wireless/wl3501_cs.c:746: warning: Function parameter or member 'this' not described in 'wl3501_unblock_interrupt'
+ drivers/net/wireless/wl3501_cs.c:1124: warning: Function parameter or member 'irq' not described in 'wl3501_interrupt'
+ drivers/net/wireless/wl3501_cs.c:1124: warning: Function parameter or member 'dev_id' not described in 'wl3501_interrupt'
+ drivers/net/wireless/wl3501_cs.c:1257: warning: Function parameter or member 'dev' not described in 'wl3501_reset'
+ drivers/net/wireless/wl3501_cs.c:1420: warning: Function parameter or member 'link' not described in 'wl3501_detach'
 
-Cc: Jouni Malinen <j@w1.fi>
 Cc: Kalle Valo <kvalo@codeaurora.org>
 Cc: "David S. Miller" <davem@davemloft.net>
 Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Cong Wang <xiyou.wangcong@gmail.com>
-Cc: Taehee Yoo <ap420073@gmail.com>
+Cc: Fox Chen <mhchen@golf.ccl.itri.org.tw>
+Cc: de Melo <acme@conectiva.com.br>
+Cc: Gustavo Niemeyer <niemeyer@conectiva.com>
 Cc: linux-wireless@vger.kernel.org
 Cc: netdev@vger.kernel.org
 Signed-off-by: Lee Jones <lee.jones@linaro.org>
 ---
- drivers/net/wireless/intersil/hostap/hostap_hw.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/net/wireless/wl3501_cs.c | 22 ++++++++++++----------
+ 1 file changed, 12 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/net/wireless/intersil/hostap/hostap_hw.c b/drivers/net/wireless/intersil/hostap/hostap_hw.c
-index b6c497ce12e12..a8aa8f64abe0c 100644
---- a/drivers/net/wireless/intersil/hostap/hostap_hw.c
-+++ b/drivers/net/wireless/intersil/hostap/hostap_hw.c
-@@ -1803,7 +1803,7 @@ static int prism2_tx_80211(struct sk_buff *skb, struct net_device *dev)
- 	struct hfa384x_tx_frame txdesc;
- 	struct hostap_skb_tx_data *meta;
- 	int hdr_len, data_len, idx, res, ret = -1;
--	u16 tx_control, fc;
-+	u16 tx_control;
+diff --git a/drivers/net/wireless/wl3501_cs.c b/drivers/net/wireless/wl3501_cs.c
+index 686161db8706c..4e7a2140649b4 100644
+--- a/drivers/net/wireless/wl3501_cs.c
++++ b/drivers/net/wireless/wl3501_cs.c
+@@ -134,8 +134,8 @@ static const struct {
  
- 	iface = netdev_priv(dev);
- 	local = iface->local;
-@@ -1826,7 +1826,6 @@ static int prism2_tx_80211(struct sk_buff *skb, struct net_device *dev)
- 	/* skb->data starts with txdesc->frame_control */
- 	hdr_len = 24;
- 	skb_copy_from_linear_data(skb, &txdesc.frame_control, hdr_len);
-- 	fc = le16_to_cpu(txdesc.frame_control);
- 	if (ieee80211_is_data(txdesc.frame_control) &&
- 	    ieee80211_has_a4(txdesc.frame_control) &&
- 	    skb->len >= 30) {
+ /**
+  * iw_valid_channel - validate channel in regulatory domain
+- * @reg_comain - regulatory domain
+- * @channel - channel to validate
++ * @reg_comain: regulatory domain
++ * @channel: channel to validate
+  *
+  * Returns 0 if invalid in the specified regulatory domain, non-zero if valid.
+  */
+@@ -154,7 +154,7 @@ static int iw_valid_channel(int reg_domain, int channel)
+ 
+ /**
+  * iw_default_channel - get default channel for a regulatory domain
+- * @reg_comain - regulatory domain
++ * @reg_domain: regulatory domain
+  *
+  * Returns the default channel for a regulatory domain
+  */
+@@ -237,6 +237,7 @@ static int wl3501_get_flash_mac_addr(struct wl3501_card *this)
+ 
+ /**
+  * wl3501_set_to_wla - Move 'size' bytes from PC to card
++ * @this: Card
+  * @dest: Card addressing space
+  * @src: PC addressing space
+  * @size: Bytes to move
+@@ -259,6 +260,7 @@ static void wl3501_set_to_wla(struct wl3501_card *this, u16 dest, void *src,
+ 
+ /**
+  * wl3501_get_from_wla - Move 'size' bytes from card to PC
++ * @this: Card
+  * @src: Card addressing space
+  * @dest: PC addressing space
+  * @size: Bytes to move
+@@ -455,7 +457,7 @@ static int wl3501_pwr_mgmt(struct wl3501_card *this, int suspend)
+ 
+ /**
+  * wl3501_send_pkt - Send a packet.
+- * @this - card
++ * @this: Card
+  *
+  * Send a packet.
+  *
+@@ -720,7 +722,7 @@ static void wl3501_mgmt_scan_confirm(struct wl3501_card *this, u16 addr)
+ 
+ /**
+  * wl3501_block_interrupt - Mask interrupt from SUTRO
+- * @this - card
++ * @this: Card
+  *
+  * Mask interrupt from SUTRO. (i.e. SUTRO cannot interrupt the HOST)
+  * Return: 1 if interrupt is originally enabled
+@@ -737,7 +739,7 @@ static int wl3501_block_interrupt(struct wl3501_card *this)
+ 
+ /**
+  * wl3501_unblock_interrupt - Enable interrupt from SUTRO
+- * @this - card
++ * @this: Card
+  *
+  * Enable interrupt from SUTRO. (i.e. SUTRO can interrupt the HOST)
+  * Return: 1 if interrupt is originally enabled
+@@ -1110,8 +1112,8 @@ static inline void wl3501_ack_interrupt(struct wl3501_card *this)
+ 
+ /**
+  * wl3501_interrupt - Hardware interrupt from card.
+- * @irq - Interrupt number
+- * @dev_id - net_device
++ * @irq: Interrupt number
++ * @dev_id: net_device
+  *
+  * We must acknowledge the interrupt as soon as possible, and block the
+  * interrupt from the same card immediately to prevent re-entry.
+@@ -1247,7 +1249,7 @@ static int wl3501_close(struct net_device *dev)
+ 
+ /**
+  * wl3501_reset - Reset the SUTRO.
+- * @dev - network device
++ * @dev: network device
+  *
+  * It is almost the same as wl3501_open(). In fact, we may just wl3501_close()
+  * and wl3501_open() again, but I wouldn't like to free_irq() when the driver
+@@ -1410,7 +1412,7 @@ static struct iw_statistics *wl3501_get_wireless_stats(struct net_device *dev)
+ 
+ /**
+  * wl3501_detach - deletes a driver "instance"
+- * @link - FILL_IN
++ * @link: FILL_IN
+  *
+  * This deletes a driver "instance". The device is de-registered with Card
+  * Services. If it has been released, all local data structures are freed.
 -- 
 2.25.1
 
