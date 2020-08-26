@@ -2,65 +2,35 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E9838253A72
-	for <lists+linux-wireless@lfdr.de>; Thu, 27 Aug 2020 00:57:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9BDED253A99
+	for <lists+linux-wireless@lfdr.de>; Thu, 27 Aug 2020 01:20:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727017AbgHZW45 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 26 Aug 2020 18:56:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53238 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726947AbgHZW4r (ORCPT
+        id S1726186AbgHZXUv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 26 Aug 2020 19:20:51 -0400
+Received: from mail2.candelatech.com ([208.74.158.173]:52040 "EHLO
+        mail3.candelatech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726077AbgHZXUu (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 26 Aug 2020 18:56:47 -0400
-Received: from mail-lj1-x243.google.com (mail-lj1-x243.google.com [IPv6:2a00:1450:4864:20::243])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 230A6C061757;
-        Wed, 26 Aug 2020 15:56:47 -0700 (PDT)
-Received: by mail-lj1-x243.google.com with SMTP id m22so4252059ljj.5;
-        Wed, 26 Aug 2020 15:56:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=afC6eoAZztl3Q8Idac3immDWpySqEFxQWwnaYLkH85k=;
-        b=EnWlVTpWzPBTdMBz89ngZhwDupx5yWCX2+sryIokHLdjAqsApZAhF6ehBHAuNMxZS/
-         ci/TQqwSBszsV73XX7GAVNkJX6V+VLtV/xbBzPv3a7gMXIZp/C1CMCIP5XP8D/OHJ09w
-         Ai3l9jzOHlBBQcnJmAbu6tqSBoVwHZlPSMqxPfmkjYkFF4ZYTxxcNfx7maGtP00HfTL1
-         KDIEVpU/SDNLpbDHUAD/wxA9FLRK9ccEx7wR2UxCG4QSG4T/tcWXFML8VPPIAZOg9Mbi
-         Iu8vMrDwSFQH6cb6Ks+0UPnFBGy4YUzPss1hbpRBYuYihrBZJXFYOp5AbvnYe1U1rLGk
-         8Apw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=afC6eoAZztl3Q8Idac3immDWpySqEFxQWwnaYLkH85k=;
-        b=EqOa+SybYbWxWSl4pYYPgIEVR4XXD4DKoi27yhrUOuChFgyRgZM9+kaIgOh/jSkjBK
-         hbQHvYSe8UF+EWvdevjTEw2MUchTjhSzmeQ8aS3CQl2tBu9Z7og1D46l4t/VQ3S11cvn
-         SBXEsrIftFCNo7D4v9Crx/qhp5fXdW56w3hGcsjGhAcT0dLaSAWGODtX4ApnpG5Q7cev
-         PLUEetiewkbL4fbdoHlF4jI79cUijFnI6hZDN3AD70mMQt0o6cburrkxUzDIgmdrA7GD
-         L4ayHTnKhijDMb7befCBAWlltV+VjbD01QR8ahw9AHAHCdJ7EiixE4t3SQo7Em0GvT6B
-         12iA==
-X-Gm-Message-State: AOAM531RXBk7MySKuxoS9CZNLwFl/iuTkMGBB4CgD9hrOPV2NOqclEB2
-        yr1Ui313572NugyygPjm+ew=
-X-Google-Smtp-Source: ABdhPJwyQjh8FYd5hcYFWrzSRrsgrgmpsXsNdXoLfkbX3mN44hHwU9EOjmMsVfR9kqYxQ5+Ilhq2/g==
-X-Received: by 2002:a2e:b0c9:: with SMTP id g9mr7947765ljl.65.1598482605563;
-        Wed, 26 Aug 2020 15:56:45 -0700 (PDT)
-Received: from localhost.localdomain (h-82-196-111-59.NA.cust.bahnhof.se. [82.196.111.59])
-        by smtp.gmail.com with ESMTPSA id u28sm49075ljd.39.2020.08.26.15.56.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Aug 2020 15:56:44 -0700 (PDT)
-From:   Rikard Falkeborn <rikard.falkeborn@gmail.com>
-To:     "David S . Miller" <davem@davemloft.net>
-Cc:     Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Rikard Falkeborn <rikard.falkeborn@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>, ath11k@lists.infradead.org,
-        linux-wireless@vger.kernel.org
-Subject: [PATCH net-next 6/6] net: ath11k: constify ath11k_thermal_ops
-Date:   Thu, 27 Aug 2020 00:56:08 +0200
-Message-Id: <20200826225608.90299-7-rikard.falkeborn@gmail.com>
-X-Mailer: git-send-email 2.28.0
-In-Reply-To: <20200826225608.90299-1-rikard.falkeborn@gmail.com>
-References: <20200826225608.90299-1-rikard.falkeborn@gmail.com>
+        Wed, 26 Aug 2020 19:20:50 -0400
+Received: from ben-dt4.candelatech.com (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
+        by mail3.candelatech.com (Postfix) with ESMTP id 718B613C2B0;
+        Wed, 26 Aug 2020 16:20:46 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 718B613C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+        s=default; t=1598484046;
+        bh=hlkOdEkpj5SSiVXE4RnPDRbOtL3tNfP1w1416ALnnxU=;
+        h=From:To:Cc:Subject:Date:From;
+        b=rRlCEZFlTqdjkguYmr2bzi0umYPmhQiFDARYqdcFOAr9zzPNH5WuuQ26g5YdHVZir
+         z4iPYDPCnHQ4lP3n7VGOWZ18FLv1xxaQ28xCX4Jmd9RYQJa1UBbIRit3ZDYRtEeFm0
+         nvG5sd3YcX+5KJU0iVx4X1r6lrx1ahYU06DAtDt8=
+From:   greearb@candelatech.com
+To:     ath11k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org,
+        Ben Greear <greearb@candelatech.com>
+Subject: [PATCH] ath11k:  Support loading ELF board files.
+Date:   Wed, 26 Aug 2020 16:20:44 -0700
+Message-Id: <20200826232044.6799-1-greearb@candelatech.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
@@ -68,28 +38,59 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The only usage of ath11k_thermal_ops is to pass its address to
-thermal_cooling_device_register() which takes a const pointer. Make it
-const to allow the compiler to put it in read-only memory.
+From: Ben Greear <greearb@candelatech.com>
 
-Signed-off-by: Rikard Falkeborn <rikard.falkeborn@gmail.com>
+The QCA6390 board I have, model 8291M-PR comes with an ELF board
+file.  To get this to at least somewhat work, I renamed bdwlan.e04
+to 'board.bin' and then added this patch to check for .ELF as
+starting bytes of the board file.  If that is found, use type
+ELF.  After this the driver loads.
+
+Signed-off-by: Ben Greear <greearb@candelatech.com>
 ---
- drivers/net/wireless/ath/ath11k/thermal.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/thermal.c b/drivers/net/wireless/ath/ath11k/thermal.c
-index 5a7e150c621b..c96b26f39a25 100644
---- a/drivers/net/wireless/ath/ath11k/thermal.c
-+++ b/drivers/net/wireless/ath/ath11k/thermal.c
-@@ -53,7 +53,7 @@ ath11k_thermal_set_cur_throttle_state(struct thermal_cooling_device *cdev,
- 	return ret;
- }
+This is on top of recent kvallo ath tree.
+
+ drivers/net/wireless/ath/ath11k/qmi.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/ath/ath11k/qmi.c b/drivers/net/wireless/ath/ath11k/qmi.c
+index 91134510364c..f87f1d1564f4 100644
+--- a/drivers/net/wireless/ath/ath11k/qmi.c
++++ b/drivers/net/wireless/ath/ath11k/qmi.c
+@@ -1992,6 +1992,7 @@ static int ath11k_qmi_load_bdf_qmi(struct ath11k_base *ab)
+ 	struct qmi_txn txn = {};
+ 	int ret;
+ 	const u8 *temp;
++	int bdf_type = ATH11K_QMI_BDF_TYPE_BIN;
  
--static struct thermal_cooling_device_ops ath11k_thermal_ops = {
-+static const struct thermal_cooling_device_ops ath11k_thermal_ops = {
- 	.get_max_state = ath11k_thermal_get_max_throttle_state,
- 	.get_cur_state = ath11k_thermal_get_cur_throttle_state,
- 	.set_cur_state = ath11k_thermal_set_cur_throttle_state,
+ 	req = kzalloc(sizeof(*req), GFP_KERNEL);
+ 	if (!req)
+@@ -2008,6 +2009,15 @@ static int ath11k_qmi_load_bdf_qmi(struct ath11k_base *ab)
+ 	temp = bd.data;
+ 	remaining = bd.len;
+ 
++	if (bd.len >= 4) {
++		char* edata = (char*)(temp);
++		if (edata[1] == 'E' &&
++		    edata[2] == 'L' &&
++		    edata[3] == 'F') {
++			bdf_type = ATH11K_QMI_BDF_TYPE_ELF;
++		}
++	}
++
+ 	while (remaining) {
+ 		req->valid = 1;
+ 		req->file_id_valid = 1;
+@@ -2017,7 +2027,7 @@ static int ath11k_qmi_load_bdf_qmi(struct ath11k_base *ab)
+ 		req->seg_id_valid = 1;
+ 		req->data_valid = 1;
+ 		req->data_len = ATH11K_QMI_MAX_BDF_FILE_NAME_SIZE;
+-		req->bdf_type = ATH11K_QMI_BDF_TYPE_BIN;
++		req->bdf_type = bdf_type;
+ 		req->bdf_type_valid = 1;
+ 		req->end_valid = 1;
+ 		req->end = 0;
 -- 
-2.28.0
+2.26.2
 
