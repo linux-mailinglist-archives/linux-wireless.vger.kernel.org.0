@@ -2,166 +2,189 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0666D252B4D
-	for <lists+linux-wireless@lfdr.de>; Wed, 26 Aug 2020 12:21:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7779C252CC5
+	for <lists+linux-wireless@lfdr.de>; Wed, 26 Aug 2020 13:47:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728176AbgHZKV5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 26 Aug 2020 06:21:57 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:44436 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728116AbgHZKV5 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 26 Aug 2020 06:21:57 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1598437315; h=Message-ID: References: In-Reply-To: Subject:
- Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
- MIME-Version: Sender; bh=MkBteFA49aiDVrV3uQvOo1CKvWxeAW0hpmXtiWdWsqg=;
- b=HccxUO9HC5Jhja9JO5WM+r8eR7YQ98nGtjPY4w/H71se437/j2bHqeLiBz18P8eji3S67mpn
- S9pMAwHq9qE7XKLtT8WEbjz99YxUk6hc+NtbDiSg4UYqYdZeYauIakneI+09RpTaTd9dxz/A
- nn9KnId8v0IusLEnnnTlmxzcMsk=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n05.prod.us-west-2.postgun.com with SMTP id
- 5f4637c2e2d4d29fc898b68d (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 26 Aug 2020 10:21:54
- GMT
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id B653AC433CA; Wed, 26 Aug 2020 10:21:54 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: merez)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id ACA26C433C6;
-        Wed, 26 Aug 2020 10:21:53 +0000 (UTC)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Wed, 26 Aug 2020 13:21:53 +0300
-From:   merez@codeaurora.org
-To:     Lee Jones <lee.jones@linaro.org>
+        id S1729161AbgHZLrk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 26 Aug 2020 07:47:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57566 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728907AbgHZLVk (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 26 Aug 2020 07:21:40 -0400
+Received: from mail-wm1-x344.google.com (mail-wm1-x344.google.com [IPv6:2a00:1450:4864:20::344])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6714C061757
+        for <linux-wireless@vger.kernel.org>; Wed, 26 Aug 2020 04:21:27 -0700 (PDT)
+Received: by mail-wm1-x344.google.com with SMTP id x5so1382388wmi.2
+        for <linux-wireless@vger.kernel.org>; Wed, 26 Aug 2020 04:21:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=SEDuZLoEMjEHog4pApJjNCMgFg9dzBqJXIk1pFgNb80=;
+        b=tj1ZX9QaB4QGO9d4/spzrqx89NYfYamXLXhILYwshGhtiGjacdxXcGR/ehyTyM9sU/
+         cH2MkkHG8d4hUjmtFhEUgcIrg/US6K/ZezMARZ3YETc2gT8IolPxBNJpBHBk/7I9YcMx
+         8ppmQhFRyLlquFbvQyz6iSJVqJ7Y9XgwPZca62eQJtkzoR3uG9SjxR/6or9jaocJLico
+         gTv+O7jcD+kq3DpraaKuNZOcdxdQL+K/dRZV1l2aQT+mqirwCICbLGGkN+kKuYsCOsit
+         Vd5YRrNP0DmW8AOFBDRzM1LLtt4IifdYL6i7093b3j/NPtKkiNEw8JbuVCErU2VwuSOL
+         pU5w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=SEDuZLoEMjEHog4pApJjNCMgFg9dzBqJXIk1pFgNb80=;
+        b=LZk7pSmMmEEVZnQavMP73SrRsMJ8gDiyPDVEEFh9iLEhue1LGdcrysbnQ4DWXnaWDI
+         sIcb7iW8AMVduHvRxyuG2jDjMD4bI/K0cL79CbOmmB/qqDQ9xFne4j+7mJuUz/qoxhU8
+         QokRr/8SuMN/d89G+UHQ95dFc339FSndtOFqVcFssZe6JSdocQtRngcWS0esl+zMqOUT
+         vzn/mkeT0IWgRJSNfhxvj8oNKsfMWXKcDP9TbZINlgDpJfc855pnSuSRSvW4FeWKAM5E
+         UAdGxqOwuKqZTHwOzWjMeIp+0d4A7OVWsBjOguGpYmXb8YLjKEufcx2Yx4WqprEO/DyD
+         wCsw==
+X-Gm-Message-State: AOAM531pBkpEELw0kAwHItsS3epgtFHnJOm5qGXd1L4go/Su+mGRvtcf
+        ELVA2cHMof7AhZ9m4ISNHgn+vvtu96vgeQ==
+X-Google-Smtp-Source: ABdhPJzMnJP2DhJKlKa0q/INIKLrcWwlyHS0fmuV/bjwj4iefa5IJkdfbtDVq8kV6WpCJ0owLKxtUw==
+X-Received: by 2002:a1c:bc45:: with SMTP id m66mr6121110wmf.36.1598440886485;
+        Wed, 26 Aug 2020 04:21:26 -0700 (PDT)
+Received: from dell ([95.149.164.62])
+        by smtp.gmail.com with ESMTPSA id 3sm4623945wms.36.2020.08.26.04.21.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 26 Aug 2020 04:21:25 -0700 (PDT)
+Date:   Wed, 26 Aug 2020 12:21:24 +0100
+From:   Lee Jones <lee.jones@linaro.org>
+To:     merez@codeaurora.org
 Cc:     kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org,
         linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
         netdev@vger.kernel.org, wil6210@qti.qualcomm.com
 Subject: Re: [PATCH 25/32] wireless: ath: wil6210: wmi: Fix formatting and
  demote non-conforming function headers
-In-Reply-To: <20200821071644.109970-26-lee.jones@linaro.org>
+Message-ID: <20200826112124.GN3248864@dell>
 References: <20200821071644.109970-1-lee.jones@linaro.org>
  <20200821071644.109970-26-lee.jones@linaro.org>
-Message-ID: <330bc340a4d16f383c9adef2324db60e@codeaurora.org>
-X-Sender: merez@codeaurora.org
-User-Agent: Roundcube Webmail/1.3.9
+ <330bc340a4d16f383c9adef2324db60e@codeaurora.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <330bc340a4d16f383c9adef2324db60e@codeaurora.org>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2020-08-21 10:16, Lee Jones wrote:
-> Fixes the following W=1 kernel build warning(s):
-> 
->  drivers/net/wireless/ath/wil6210/wmi.c:52: warning: Incorrect use of
-> kernel-doc format:  * Addressing - theory of operations
->  drivers/net/wireless/ath/wil6210/wmi.c:70: warning: Incorrect use of
-> kernel-doc format:  * @sparrow_fw_mapping provides memory remapping
-> table for sparrow
->  drivers/net/wireless/ath/wil6210/wmi.c:80: warning: cannot understand
-> function prototype: 'const struct fw_map sparrow_fw_mapping[] = '
->  drivers/net/wireless/ath/wil6210/wmi.c:107: warning: Cannot
-> understand  * @sparrow_d0_mac_rgf_ext - mac_rgf_ext section for
-> Sparrow D0
->  drivers/net/wireless/ath/wil6210/wmi.c:115: warning: Cannot
-> understand  * @talyn_fw_mapping provides memory remapping table for
-> Talyn
->  drivers/net/wireless/ath/wil6210/wmi.c:158: warning: Cannot
-> understand  * @talyn_mb_fw_mapping provides memory remapping table for
-> Talyn-MB
->  drivers/net/wireless/ath/wil6210/wmi.c:236: warning: Function
-> parameter or member 'x' not described in 'wmi_addr_remap'
->  drivers/net/wireless/ath/wil6210/wmi.c:255: warning: Function
-> parameter or member 'section' not described in 'wil_find_fw_mapping'
->  drivers/net/wireless/ath/wil6210/wmi.c:278: warning: Function
-> parameter or member 'wil' not described in 'wmi_buffer_block'
->  drivers/net/wireless/ath/wil6210/wmi.c:278: warning: Function
-> parameter or member 'ptr_' not described in 'wmi_buffer_block'
->  drivers/net/wireless/ath/wil6210/wmi.c:278: warning: Function
-> parameter or member 'size' not described in 'wmi_buffer_block'
->  drivers/net/wireless/ath/wil6210/wmi.c:307: warning: Function
-> parameter or member 'wil' not described in 'wmi_addr'
->  drivers/net/wireless/ath/wil6210/wmi.c:307: warning: Function
-> parameter or member 'ptr' not described in 'wmi_addr'
->  drivers/net/wireless/ath/wil6210/wmi.c:1589: warning: Function
-> parameter or member 'wil' not described in 'wil_find_cid_ringid_sta'
->  drivers/net/wireless/ath/wil6210/wmi.c:1589: warning: Function
-> parameter or member 'vif' not described in 'wil_find_cid_ringid_sta'
->  drivers/net/wireless/ath/wil6210/wmi.c:1589: warning: Function
-> parameter or member 'cid' not described in 'wil_find_cid_ringid_sta'
->  drivers/net/wireless/ath/wil6210/wmi.c:1589: warning: Function
-> parameter or member 'ringid' not described in
-> 'wil_find_cid_ringid_sta'
->  drivers/net/wireless/ath/wil6210/wmi.c:1876: warning: Function
-> parameter or member 'vif' not described in 'wmi_evt_ignore'
->  drivers/net/wireless/ath/wil6210/wmi.c:1876: warning: Function
-> parameter or member 'id' not described in 'wmi_evt_ignore'
->  drivers/net/wireless/ath/wil6210/wmi.c:1876: warning: Function
-> parameter or member 'd' not described in 'wmi_evt_ignore'
->  drivers/net/wireless/ath/wil6210/wmi.c:1876: warning: Function
-> parameter or member 'len' not described in 'wmi_evt_ignore'
->  drivers/net/wireless/ath/wil6210/wmi.c:2588: warning: Function
-> parameter or member 'wil' not described in 'wmi_rxon'
-> 
-> Cc: Maya Erez <merez@codeaurora.org>
-> Cc: Kalle Valo <kvalo@codeaurora.org>
-> Cc: "David S. Miller" <davem@davemloft.net>
-> Cc: Jakub Kicinski <kuba@kernel.org>
-> Cc: linux-wireless@vger.kernel.org
-> Cc: wil6210@qti.qualcomm.com
-> Cc: netdev@vger.kernel.org
-> Signed-off-by: Lee Jones <lee.jones@linaro.org>
-> ---
->  drivers/net/wireless/ath/wil6210/wmi.c | 28 ++++++++++++++------------
->  1 file changed, 15 insertions(+), 13 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/ath/wil6210/wmi.c
-> b/drivers/net/wireless/ath/wil6210/wmi.c
-> index c7136ce567eea..3a6ee85acf6c7 100644
-> --- a/drivers/net/wireless/ath/wil6210/wmi.c
-> +++ b/drivers/net/wireless/ath/wil6210/wmi.c
-> @@ -31,7 +31,7 @@ MODULE_PARM_DESC(led_id,
->  #define WIL_WAIT_FOR_SUSPEND_RESUME_COMP 200
->  #define WIL_WMI_PCP_STOP_TO_MS 5000
-> 
-> -/**
-> +/*
->   * WMI event receiving - theory of operations
->   *
->   * When firmware about to report WMI event, it fills memory area
+On Wed, 26 Aug 2020, merez@codeaurora.org wrote:
 
-The correct format for such documentation blocks is:
-/**
-  * DOC: Theory of Operation
-
-This comment is also applicable for the rest of such documentation 
-blocks changed in this patch.
-
-> @@ -66,7 +66,7 @@ MODULE_PARM_DESC(led_id,
->   * AHB address must be used.
->   */
+> On 2020-08-21 10:16, Lee Jones wrote:
+> > Fixes the following W=1 kernel build warning(s):
+> > 
+> >  drivers/net/wireless/ath/wil6210/wmi.c:52: warning: Incorrect use of
+> > kernel-doc format:  * Addressing - theory of operations
+> >  drivers/net/wireless/ath/wil6210/wmi.c:70: warning: Incorrect use of
+> > kernel-doc format:  * @sparrow_fw_mapping provides memory remapping
+> > table for sparrow
+> >  drivers/net/wireless/ath/wil6210/wmi.c:80: warning: cannot understand
+> > function prototype: 'const struct fw_map sparrow_fw_mapping[] = '
+> >  drivers/net/wireless/ath/wil6210/wmi.c:107: warning: Cannot
+> > understand  * @sparrow_d0_mac_rgf_ext - mac_rgf_ext section for
+> > Sparrow D0
+> >  drivers/net/wireless/ath/wil6210/wmi.c:115: warning: Cannot
+> > understand  * @talyn_fw_mapping provides memory remapping table for
+> > Talyn
+> >  drivers/net/wireless/ath/wil6210/wmi.c:158: warning: Cannot
+> > understand  * @talyn_mb_fw_mapping provides memory remapping table for
+> > Talyn-MB
+> >  drivers/net/wireless/ath/wil6210/wmi.c:236: warning: Function
+> > parameter or member 'x' not described in 'wmi_addr_remap'
+> >  drivers/net/wireless/ath/wil6210/wmi.c:255: warning: Function
+> > parameter or member 'section' not described in 'wil_find_fw_mapping'
+> >  drivers/net/wireless/ath/wil6210/wmi.c:278: warning: Function
+> > parameter or member 'wil' not described in 'wmi_buffer_block'
+> >  drivers/net/wireless/ath/wil6210/wmi.c:278: warning: Function
+> > parameter or member 'ptr_' not described in 'wmi_buffer_block'
+> >  drivers/net/wireless/ath/wil6210/wmi.c:278: warning: Function
+> > parameter or member 'size' not described in 'wmi_buffer_block'
+> >  drivers/net/wireless/ath/wil6210/wmi.c:307: warning: Function
+> > parameter or member 'wil' not described in 'wmi_addr'
+> >  drivers/net/wireless/ath/wil6210/wmi.c:307: warning: Function
+> > parameter or member 'ptr' not described in 'wmi_addr'
+> >  drivers/net/wireless/ath/wil6210/wmi.c:1589: warning: Function
+> > parameter or member 'wil' not described in 'wil_find_cid_ringid_sta'
+> >  drivers/net/wireless/ath/wil6210/wmi.c:1589: warning: Function
+> > parameter or member 'vif' not described in 'wil_find_cid_ringid_sta'
+> >  drivers/net/wireless/ath/wil6210/wmi.c:1589: warning: Function
+> > parameter or member 'cid' not described in 'wil_find_cid_ringid_sta'
+> >  drivers/net/wireless/ath/wil6210/wmi.c:1589: warning: Function
+> > parameter or member 'ringid' not described in
+> > 'wil_find_cid_ringid_sta'
+> >  drivers/net/wireless/ath/wil6210/wmi.c:1876: warning: Function
+> > parameter or member 'vif' not described in 'wmi_evt_ignore'
+> >  drivers/net/wireless/ath/wil6210/wmi.c:1876: warning: Function
+> > parameter or member 'id' not described in 'wmi_evt_ignore'
+> >  drivers/net/wireless/ath/wil6210/wmi.c:1876: warning: Function
+> > parameter or member 'd' not described in 'wmi_evt_ignore'
+> >  drivers/net/wireless/ath/wil6210/wmi.c:1876: warning: Function
+> > parameter or member 'len' not described in 'wmi_evt_ignore'
+> >  drivers/net/wireless/ath/wil6210/wmi.c:2588: warning: Function
+> > parameter or member 'wil' not described in 'wmi_rxon'
+> > 
+> > Cc: Maya Erez <merez@codeaurora.org>
+> > Cc: Kalle Valo <kvalo@codeaurora.org>
+> > Cc: "David S. Miller" <davem@davemloft.net>
+> > Cc: Jakub Kicinski <kuba@kernel.org>
+> > Cc: linux-wireless@vger.kernel.org
+> > Cc: wil6210@qti.qualcomm.com
+> > Cc: netdev@vger.kernel.org
+> > Signed-off-by: Lee Jones <lee.jones@linaro.org>
+> > ---
+> >  drivers/net/wireless/ath/wil6210/wmi.c | 28 ++++++++++++++------------
+> >  1 file changed, 15 insertions(+), 13 deletions(-)
+> > 
+> > diff --git a/drivers/net/wireless/ath/wil6210/wmi.c
+> > b/drivers/net/wireless/ath/wil6210/wmi.c
+> > index c7136ce567eea..3a6ee85acf6c7 100644
+> > --- a/drivers/net/wireless/ath/wil6210/wmi.c
+> > +++ b/drivers/net/wireless/ath/wil6210/wmi.c
+> > @@ -31,7 +31,7 @@ MODULE_PARM_DESC(led_id,
+> >  #define WIL_WAIT_FOR_SUSPEND_RESUME_COMP 200
+> >  #define WIL_WMI_PCP_STOP_TO_MS 5000
+> > 
+> > -/**
+> > +/*
+> >   * WMI event receiving - theory of operations
+> >   *
+> >   * When firmware about to report WMI event, it fills memory area
 > 
-> -/**
-> +/*
->   * @sparrow_fw_mapping provides memory remapping table for sparrow
->   *
->   * array size should be in sync with the declaration in the wil6210.h
-For files in net/ and drivers/net/ the preferred style for long 
-(multi-line) comments is a different and
-the text should be in the same line as /*, as follows:
-/* sparrow_fw_mapping provides memory remapping table for sparrow
-I would also remove the @ from @sparrow_fw_mapping.
-This comment is also applicable for the rest of such documentation 
-blocks changed in this patch.
+> The correct format for such documentation blocks is:
+> /**
+>  * DOC: Theory of Operation
+> 
+> This comment is also applicable for the rest of such documentation blocks
+> changed in this patch.
+
+Ah yes, good point.  Will fix.
+
+> > @@ -66,7 +66,7 @@ MODULE_PARM_DESC(led_id,
+> >   * AHB address must be used.
+> >   */
+> > 
+> > -/**
+> > +/*
+> >   * @sparrow_fw_mapping provides memory remapping table for sparrow
+> >   *
+> >   * array size should be in sync with the declaration in the wil6210.h
+> For files in net/ and drivers/net/ the preferred style for long (multi-line)
+> comments is a different and
+> the text should be in the same line as /*, as follows:
+> /* sparrow_fw_mapping provides memory remapping table for sparrow
+> I would also remove the @ from @sparrow_fw_mapping.
+> This comment is also applicable for the rest of such documentation blocks
+> changed in this patch.
+
+Sounds fair.  Will also fix.
+
+Thank you.
+
+-- 
+Lee Jones [李琼斯]
+Senior Technical Lead - Developer Services
+Linaro.org │ Open source software for Arm SoCs
+Follow Linaro: Facebook | Twitter | Blog
