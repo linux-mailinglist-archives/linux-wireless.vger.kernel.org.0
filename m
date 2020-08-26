@@ -2,164 +2,132 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E4DA7253158
-	for <lists+linux-wireless@lfdr.de>; Wed, 26 Aug 2020 16:32:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2279C2531AB
+	for <lists+linux-wireless@lfdr.de>; Wed, 26 Aug 2020 16:44:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726953AbgHZOcr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 26 Aug 2020 10:32:47 -0400
-Received: from mail-eopbgr10085.outbound.protection.outlook.com ([40.107.1.85]:17203
-        "EHLO EUR02-HE1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727061AbgHZOcD (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 26 Aug 2020 10:32:03 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=gqkwE/5fVs1gDJiRJ/iAKNOLlrEIABzcvUAXieDdzcVw+RAdAUA9CbxXHm3faBt4LHM8n4LePHtnL8FwTPVhhCnHtVdw0x9gdeopwpFyrJ/vaoibhpCUvOAeBsEOkMKSm+dlKqaCcnWhU1QWQTuvNylHJe1v2KVuKBNUidKjw2OZFf7d8tBnChLOxfhYsDgN9FM+tcD7AacOPL9c8c+en6CDkFXy4QDPLoYkBh9oh2vBY8Ktn/3aLxKeTjxj0lSEWQze57p1B98TiER1mmf3BZ/nbS190fgZy29XVpM0s4wkZsBpU2oLPJt++W6MxqWILouC3881U1hRhGFTYIZIbw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ZYk1KRFxrBKAmkCY3ju3RocvsEHsX369343xIoiuxLg=;
- b=ACA6y+c5ziildKwEj8n/Na3bOpIyeqrYHh+j7+y6wlI5gAqnEfaHXTjmqDP0DsYRIjTaqkGAhRiGEkovT1MhCFkTgFWVhKXiaOgX8ErM5eLJCkuDK8EcFgF9AMmxry6U+5Y2rbgZYgiNL+q89h49fE0RUC1iqBW0redjzL+Vv5+VPIo7v/EQxc+Bn2uL+6mMsnELRASFQF77mpip5oHJMr/nepsU/fhHP+fevkkbq8xaHTwLG1NRaT/ivnGUlfc9g1ISsu8Bl+rXmd0vJ0216QjHXUtrJl8SnZHCyxLDTYj7YuTsgAYnJhqldzdrF2cKs0LSLm/mYW6NM7mj4118/A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=celeno.com; dmarc=pass action=none header.from=celeno.com;
- dkim=pass header.d=celeno.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=celeno.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ZYk1KRFxrBKAmkCY3ju3RocvsEHsX369343xIoiuxLg=;
- b=uKzXmFHwd1IoUdVdWW2UQqmZLoT0OFT/094JOY01Rg0+VLqs1i6pjeLKDMcxHxHkQR1RvooDN9BvFpYpLKK8iTK0nYgnyMhQ55zMQmi9oVEFHminNJ9cW6CBvnG74XsPO3h/bz8dvR02heQjkkPDO3ttmT3NCtPNSl4k5eilmgI=
-Authentication-Results: sipsolutions.net; dkim=none (message not signed)
- header.d=none;sipsolutions.net; dmarc=none action=none
- header.from=celeno.com;
-Received: from VI1P192MB0479.EURP192.PROD.OUTLOOK.COM (2603:10a6:803:38::31)
- by VE1P192MB0733.EURP192.PROD.OUTLOOK.COM (2603:10a6:800:160::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3326.19; Wed, 26 Aug
- 2020 14:31:58 +0000
-Received: from VI1P192MB0479.EURP192.PROD.OUTLOOK.COM
- ([fe80::d9f3:c73:3d30:1467]) by VI1P192MB0479.EURP192.PROD.OUTLOOK.COM
- ([fe80::d9f3:c73:3d30:1467%6]) with mapi id 15.20.3305.026; Wed, 26 Aug 2020
- 14:31:58 +0000
-From:   Shay Bar <shay.bar@celeno.com>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org, aviad.brikman@celeno.com,
-        eliav.farber@celeno.com
-Subject: [PATCH] wireless: fix wrong 160/80+80 MHz setting
-Date:   Wed, 26 Aug 2020 17:31:39 +0300
-Message-Id: <20200826143139.25976-1-shay.bar@celeno.com>
-X-Mailer: git-send-email 2.17.1
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: AM3PR05CA0089.eurprd05.prod.outlook.com
- (2603:10a6:207:1::15) To VI1P192MB0479.EURP192.PROD.OUTLOOK.COM
- (2603:10a6:803:38::31)
+        id S1726854AbgHZOoX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 26 Aug 2020 10:44:23 -0400
+Received: from mail29.static.mailgun.info ([104.130.122.29]:63871 "EHLO
+        mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726734AbgHZOoX (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 26 Aug 2020 10:44:23 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1598453062; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=U/m4jJyjO54IDfksgY4gT/Ig37eP0pugC9C6u4Tuz0M=; b=N2ddSfTDrx3ypW0qBMqUhSgVs+F/PnfFX+npbgycSyZ/jGmJJNN83ExBjygmLUG0jswJtVwr
+ owXAmRwLqGhuIW8jFihTIROXF2B/HRlFewLZSwReTDLs16AIymHkwq2QpYzlBGsFSajgU9af
+ b406LEEQaWyjNhgy/vABT2dIAuI=
+X-Mailgun-Sending-Ip: 104.130.122.29
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n01.prod.us-east-1.postgun.com with SMTP id
+ 5f4675240f94f6538daf66e5 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 26 Aug 2020 14:43:48
+ GMT
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 451C4C43387; Wed, 26 Aug 2020 14:43:47 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id DDAC2C433CA;
+        Wed, 26 Aug 2020 14:43:44 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org DDAC2C433CA
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     "Rakesh Pillai" <pillair@codeaurora.org>
+Cc:     "'Peter Oh'" <peter.oh@eero.com>,
+        'Brian Norris' <briannorris@chromium.org>,
+        'linux-wireless' <linux-wireless@vger.kernel.org>,
+        'Doug Anderson' <dianders@chromium.org>,
+        'ath10k' <ath10k@lists.infradead.org>,
+        'LKML' <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] ath10k: Add interrupt summary based CE processing
+References: <1593193967-29897-1-git-send-email-pillair@codeaurora.org>
+        <CAD=FV=V_ynwukeR92nbJXkuQ7OAW4mLaTjxko7fXt5aEfDUNhA@mail.gmail.com>
+        <CAD=FV=XJDmGbEJQ1U-VDuN2p0+V+uRm_1=DwBnDPmPQsXqS4ZA@mail.gmail.com>
+        <CA+ASDXNOCFZhdNMDk9XTuC2H+owQ0+wHipDbkJAGnU9q7BXz_w@mail.gmail.com>
+        <871rlcx8uv.fsf@codeaurora.org>
+        <CALhWmc1PbTKhrkaPn9yfpx3gZHAMuR-bPY=4_o4wQHv_H5D9dA@mail.gmail.com>
+        <CALhWmc3i9Z+KiG1cJNvpSWNsiFhOa5jBw=XfcFz_gKwi_5QibA@mail.gmail.com>
+        <CALhWmc1B0+SONV6_AF+nUzgxZdekPD3sZuhrsmwVQx1Q-cgT_g@mail.gmail.com>
+        <CALhWmc0qF5stKRcikjwbeFmE-32hNCDazgQdqTMidUyt7u-T1Q@mail.gmail.com>
+        <CALhWmc0JtQZE5CfLPb1WnwhE9wCYsjE-53kYWbwtFCs1k7FrCQ@mail.gmail.com>
+        <CALhWmc11OefTh6Ov5GqP-yHMVTUO4r9CxqkdHT1F3yzor72v7g@mail.gmail.com>
+        <000201d65f51$83d2ac60$8b780520$@codeaurora.org>
+Date:   Wed, 26 Aug 2020 17:43:42 +0300
+In-Reply-To: <000201d65f51$83d2ac60$8b780520$@codeaurora.org> (Rakesh Pillai's
+        message of "Tue, 21 Jul 2020 16:54:30 +0530")
+Message-ID: <877dtlcvs1.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from localhost.localdomain (77.126.12.128) by AM3PR05CA0089.eurprd05.prod.outlook.com (2603:10a6:207:1::15) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3326.19 via Frontend Transport; Wed, 26 Aug 2020 14:31:56 +0000
-X-Mailer: git-send-email 2.17.1
-X-Originating-IP: [77.126.12.128]
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 3fff7408-0c43-4dd2-1a32-08d849ccc981
-X-MS-TrafficTypeDiagnostic: VE1P192MB0733:
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <VE1P192MB07336AF49E7642FD04F161EDE7540@VE1P192MB0733.EURP192.PROD.OUTLOOK.COM>
-X-MS-Oob-TLC-OOBClassifiers: OLM:2512;
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 0lisMMXmk9VrdZeBUn3iQSw+AzDhxWkLyNopmQmUpeosTBK1dNnLrv3wxb3RgAM+ncaELlpkm5KdhsqZC5w+kFTmVO1y9hCIGi4tp6kKfv/c8E6r6ODz4scq/bsM+KAxXnGy52tNkxX79L8wCA+xaEhJ7c1W3Csia2ibzGwu2sVXdlw/yGlilu8e67YNsOrLUTb6lEMiqgWJi9RAxDVGmdVKvMSXjqTQwYWVdQTMUjLTvZH6Fcg32NqTuZf0ZEyFunDKonM3nLvt/H3+bFd6kCvB1CihvjARwXlunsU5kTdjZgERR9HHOJlrs5kkbygko5c8tkT1gIiC2Fp9Twb8xg==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1P192MB0479.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(136003)(39840400004)(396003)(366004)(346002)(376002)(478600001)(6512007)(6506007)(2616005)(66946007)(107886003)(956004)(26005)(6486002)(66556008)(316002)(6666004)(4326008)(66476007)(36756003)(6916009)(83380400001)(86362001)(16526019)(8676002)(52116002)(44832011)(186003)(1076003)(8936002)(2906002)(5660300002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData: jEanEI3ZKUjJlckcT7YlY4AiLld2VWQs2/cgXJe/iC45Tx1yaZsN9ffc2qlDKH4/bUuv0guoLKjByYKGkYeN72FcHl7spCGjCHvqiiuQQYvaY4pFqBJBY5iGWBgKtR74Mur31BuSa6J+Ohxg4DWszUjgvbrosaIMdOpZ6sohhw+u7nfsC7ws7XXYgjEbEEt9BTLU+yX1Io0/Ku6adgaz3s9H1RiUMvWzWT1vk3sKDOjkNiUhsdBER7tGpmelxGp2JmrOP3F8b8jmZI6QSqA0Sb7X6qTyx9zc3DQWkYCfoKcqotxKa34X4B207mGucG+MAzPEJVnWZ/+iXXeSzfWiX0WUGgzYMxNzmWAoD1HoJkkYQ3yxxi9GS7AOn7wiqf4Lchvws4r01VPy6bZincV9DygwFUFi63y1EUfbwjKwulqXOmj3Erc7aB+E3Mo/PXnoSts2bgapGICIouZlaSFEYl/MV7vGFyDoPtb/FqYbXg8VZdJMCQrqBYFHlAxzuPbdXpbz8vUaARquovpABp7UUKq4V4XrJpVJMWFW/tADlV1SrLQuRuRRTVBw9NW1j22WSE7dEN7nXkBy7D9yD6pIMglpisDYuBkuzZQIK8/oTU91k36e00rsVBzCUyYngDRsyI4d/w6i5u7S4cW1BlImFA==
-X-OriginatorOrg: celeno.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3fff7408-0c43-4dd2-1a32-08d849ccc981
-X-MS-Exchange-CrossTenant-AuthSource: VI1P192MB0479.EURP192.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Aug 2020 14:31:58.2368
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: f313103b-4c9f-4fd3-b5cf-b97f91c4afa8
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: derCDZmazIWBMNnH1H/fov9sw60OEEIvGsEV3XR2NeUBhvHb6MNAnrqX1KZDi6IPBvOJqz0TU2bq5PhK0jVtWQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1P192MB0733
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fix cfg80211_chandef_usable():
-consider IEEE80211_VHT_CAP_EXT_NSS_BW when verifying 160/80+80 MHz.
+(Guys, PLEASE edit your quotes. These long emails my use of patchwork
+horrible.)
 
-Based on:
-"Table 9-272 =E2=80=94 Setting of the Supported Channel Width Set subfield =
-and Extended NSS BW
-Support subfield at a STA transmitting the VHT Capabilities Information fie=
-ld"
-From "Draft P802.11REVmd_D3.0.pdf"
+"Rakesh Pillai" <pillair@codeaurora.org> writes:
 
-Signed-off-by: Aviad Brikman <aviad.brikman@celeno.com>
-Signed-off-by: Shay Bar <shay.bar@celeno.com>
----
- net/wireless/chan.c | 15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+>> -----Original Message-----
+>> From: Peter Oh <peter.oh@eero.com>
+>> Sent: Tuesday, July 21, 2020 7:03 AM
+>> To: Kalle Valo <kvalo@codeaurora.org>
+>> Cc: Brian Norris <briannorris@chromium.org>; Doug Anderson
+>> <dianders@chromium.org>; linux-wireless <linux-
+>> wireless@vger.kernel.org>; Rakesh Pillai <pillair@codeaurora.org>; ath10k
+>> <ath10k@lists.infradead.org>; LKML <linux-kernel@vger.kernel.org>
+>> Subject: Re: [PATCH] ath10k: Add interrupt summary based CE processing
+>> 
+>> I'll take my word back.
+>> It's not this patch problem, but by others.
+>> I have 2 extra patches before the 3 patches so my system looks like
+>> 
+>> backports from ath.git 5.6-rc1 + linux kernel 4.4 (similar to OpenWrt)
+>> On top of the working system, I cherry-picked these 5.
+>> 
+>> #1.
+>> ath10k: Avoid override CE5 configuration for QCA99X0 chipsets
+>> ath.git commit 521fc37be3d879561ca5ab42d64719cf94116af0
+>> #2.
+>> ath10k: Fix NULL pointer dereference in AHB device probe
+>> wireless-drivers.git commit 1cfd3426ef989b83fa6176490a38777057e57f6c
+>> #3.
+>> ath10k: Add interrupt summary based CE processing
+>> https://patchwork.kernel.org/patch/11628299/
+>
+> This patch is applicable only for snoc target WCN3990, since there is
+> a check for per_ce_irq. For PCI targets, per_ce_irq is false, and
+> hence follows a different path.
 
-diff --git a/net/wireless/chan.c b/net/wireless/chan.c
-index 90f0f82cd9ca..a51d11d3be33 100644
---- a/net/wireless/chan.c
-+++ b/net/wireless/chan.c
-@@ -912,6 +912,7 @@ bool cfg80211_chandef_usable(struct wiphy *wiphy,
-        struct ieee80211_sta_vht_cap *vht_cap;
-        struct ieee80211_edmg *edmg_cap;
-        u32 width, control_freq, cap;
-+       bool support_80_80 =3D false;
+This information should be in the commit log. But I have a patch in the
+pending branch which removes per_ce_irq:
 
-        if (WARN_ON(!cfg80211_chandef_valid(chandef)))
-                return false;
-@@ -979,9 +980,16 @@ bool cfg80211_chandef_usable(struct wiphy *wiphy,
-                        return false;
-                break;
-        case NL80211_CHAN_WIDTH_80P80:
--               cap =3D vht_cap->cap & IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_MA=
-SK;
-+               cap =3D vht_cap->cap;
-+               support_80_80 =3D
-+                       ((cap &
-+                         IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160_80PLUS80MHZ=
-) ||
-+                       (cap & IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160MHZ &&
-+                        cap & IEEE80211_VHT_CAP_EXT_NSS_BW_MASK) ||
-+                       ((cap & IEEE80211_VHT_CAP_EXT_NSS_BW_MASK) >>
-+                                   IEEE80211_VHT_CAP_EXT_NSS_BW_SHIFT > 1)=
-);
-                if (chandef->chan->band !=3D NL80211_BAND_6GHZ &&
--                   cap !=3D IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160_80PLUS80=
-MHZ)
-+                   !support_80_80)
-                        return false;
-                /* fall through */
-        case NL80211_CHAN_WIDTH_80:
-@@ -1001,7 +1009,8 @@ bool cfg80211_chandef_usable(struct wiphy *wiphy,
-                        return false;
-                cap =3D vht_cap->cap & IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_MA=
-SK;
-                if (cap !=3D IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160MHZ &&
--                   cap !=3D IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160_80PLUS80=
-MHZ)
-+                   cap !=3D IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160_80PLUS80=
-MHZ &&
-+                   !(vht_cap->cap & IEEE80211_VHT_CAP_EXT_NSS_BW_MASK))
-                        return false;
-                break;
-        default:
---
-2.17.1
+[v2,2/2] ath10k: Get rid of "per_ce_irq" hw param
 
-________________________________
-The information transmitted is intended only for the person or entity to wh=
-ich it is addressed and may contain confidential and/or privileged material=
-. Any retransmission, dissemination, copying or other use of, or taking of =
-any action in reliance upon this information is prohibited. If you received=
- this in error, please contact the sender and delete the material from any =
-computer. Nothing contained herein shall be deemed as a representation, war=
-ranty or a commitment by Celeno. No warranties are expressed or implied, in=
-cluding, but not limited to, any implied warranties of non-infringement, me=
-rchantability and fitness for a particular purpose.
-________________________________
+https://patchwork.kernel.org/patch/11654621/
 
+So how will multilple hardware support work then?
+
+In theory I like the patch but there's no information in the patch if
+this works or breaks other hardware, especially QCA9884 or QCA6174 PCI
+devices. I really need some kind of assurance that this works with all
+ath10k devices, not just WCN3990 which you are working on.
+
+I have written about this in the wiki:
+
+https://wireless.wiki.kernel.org/en/users/drivers/ath10k/submittingpatches#hardware_families
+
+-- 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
