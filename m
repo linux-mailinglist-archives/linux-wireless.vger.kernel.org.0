@@ -2,261 +2,165 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7EF6125269D
-	for <lists+linux-wireless@lfdr.de>; Wed, 26 Aug 2020 07:57:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 06FB5252A1D
+	for <lists+linux-wireless@lfdr.de>; Wed, 26 Aug 2020 11:34:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726697AbgHZF5F (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 26 Aug 2020 01:57:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35688 "EHLO
+        id S1728254AbgHZJeZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 26 Aug 2020 05:34:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40894 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725957AbgHZF5E (ORCPT
+        with ESMTP id S1728005AbgHZJeG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 26 Aug 2020 01:57:04 -0400
-Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CAA4C061756
-        for <linux-wireless@vger.kernel.org>; Tue, 25 Aug 2020 22:57:03 -0700 (PDT)
-Received: from [149.224.157.14] (helo=localhost.localdomain)
-        by ds12 with esmtpa (Exim 4.89)
-        (envelope-from <john@phrozen.org>)
-        id 1kAoQd-0004ao-3a; Wed, 26 Aug 2020 07:56:59 +0200
-From:   John Crispin <john@phrozen.org>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
-        John Crispin <john@phrozen.org>
-Subject: [PATCH V5 5/5] ath11k: add support for BSS coloring
-Date:   Wed, 26 Aug 2020 07:56:50 +0200
-Message-Id: <20200826055650.1101224-5-john@phrozen.org>
+        Wed, 26 Aug 2020 05:34:06 -0400
+Received: from mail-wm1-x344.google.com (mail-wm1-x344.google.com [IPv6:2a00:1450:4864:20::344])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C1E0C061574
+        for <linux-wireless@vger.kernel.org>; Wed, 26 Aug 2020 02:34:06 -0700 (PDT)
+Received: by mail-wm1-x344.google.com with SMTP id z9so1077675wmk.1
+        for <linux-wireless@vger.kernel.org>; Wed, 26 Aug 2020 02:34:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Nj39KvvJBDQl5ELAslfY4/i9vvM4QKppfETPhCXArpc=;
+        b=jVsOQgq3bmDNN84kXzuXjYV8L219/+agEp0AYrZTWi5mNYBgR3wJWjK+E3NUMNqTSe
+         3KFmoA6/7YIs9JZpCb74AcRq9O9xaj6fPkyteXmvcuajLsbeghuzoHxVAHPPXeSg2gQO
+         T2GCNNXYeuCb2bro/kdqyOU2+rUESJ8vJX3xsQDV6i6dhGQdBJgDo+knImzjnlvTLXDH
+         M1XL3XkTrIlxP3VfixZNTU+3iwZAM27dY/Zol2KPSQp0YzUqPKr3ww3GVEjZ+GsLa6zB
+         BRq9+P37N55Se0YARaCTvStQAhPkLSLc6KTxuOjimy3oJ/Ie2JUhsvOqLOfyBBrC3HHt
+         KLjg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Nj39KvvJBDQl5ELAslfY4/i9vvM4QKppfETPhCXArpc=;
+        b=uF8cSsnjfyNgw1DyB0b6QQiuE//a2rsiychz+tToSTpu0sZEkwfhGiQBuHb6SSO0Ve
+         g2jmHLyRusJvAx1Gxi9Mf2LQJaLMysQ1QDJm0ZBW2Yi5uYi/h3ICQfrXs1+8I+cRBDOj
+         FX3K1r/7XQpZSg5wiWWZMuMJgTIzGkEGUUOqq+4V4LsbmDzSlsQQrpnlJ7A0gFbskr1C
+         8FW2FDVsETASnpoEXURBnApUAKnRO1IaqsupMCGFv7jtTJZtBkwzASusQfk7TomMR4v0
+         Z2hn+aHatn5WHbftxrx5xD4mfvnbpiMOL9AjITuAcdk5Q76f7wLVP9ZIJbEROMKW/5u0
+         NDGw==
+X-Gm-Message-State: AOAM531/HmKTxlxvz7QDtkgurXkysNY31vJROvKqNlnY/w3otPw5zDBL
+        0pXZKqSRz28zzbRTgzfMa+7r5A==
+X-Google-Smtp-Source: ABdhPJzkQOqGFOcEg9whbSvuGXmCwHXjNrJoG5glhH0qTG+uI4IMx4m3mRLJ96FmImpnqfyHHaoxLQ==
+X-Received: by 2002:a05:600c:2212:: with SMTP id z18mr6041484wml.186.1598434444635;
+        Wed, 26 Aug 2020 02:34:04 -0700 (PDT)
+Received: from dell.default ([95.149.164.62])
+        by smtp.gmail.com with ESMTPSA id u3sm3978759wml.44.2020.08.26.02.34.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 26 Aug 2020 02:34:04 -0700 (PDT)
+From:   Lee Jones <lee.jones@linaro.org>
+To:     kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org
+Cc:     linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, Lee Jones <lee.jones@linaro.org>
+Subject: [PATCH 00/30] Set 3: Rid W=1 warnings in Wireless
+Date:   Wed, 26 Aug 2020 10:33:31 +0100
+Message-Id: <20200826093401.1458456-1-lee.jones@linaro.org>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200826055650.1101224-1-john@phrozen.org>
-References: <20200826055650.1101224-1-john@phrozen.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Whenever the MAC detects a color collision or any of its associated station
-detects one the FW will send out an event. Add the code to parse and handle
-this event. and pass the data up to mac80211.
+This set is part of a larger effort attempting to clean-up W=1
+kernel builds, which are currently overwhelmingly riddled with
+niggly little warnings.
 
-The FW does not provide an offload feature such as the one used for CSA. The
-color change process is hence triggered via the beacon offload tx completion events
-sent out by the FW.
+There are quite a few W=1 warnings in the Wireless.  My plan
+is to work through all of them over the next few weeks.
+Hopefully it won't be too long before drivers/net/wireless
+builds clean with W=1 enabled.
 
-Signed-off-by: John Crispin <john@phrozen.org>
----
- drivers/net/wireless/ath/ath11k/mac.c | 35 ++++++++++++++++
- drivers/net/wireless/ath/ath11k/mac.h |  1 +
- drivers/net/wireless/ath/ath11k/wmi.c | 57 +++++++++++++++++++++++++++
- drivers/net/wireless/ath/ath11k/wmi.h | 14 +++++++
- 4 files changed, 107 insertions(+)
+This set brings the total number of (arm, arm64, x86, mips and
+ppc *combined* i.e. some duplicated) warnings down from 2066
+(since the last set) to 1018.
 
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index 94ae2b9ea663..b2ecd79e1a6c 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -815,6 +815,22 @@ static int ath11k_mac_setup_bcn_tmpl(struct ath11k_vif *arvif)
- 	return ret;
- }
- 
-+void ath11k_mac_bcn_tx_event(struct ath11k_vif *arvif)
-+{
-+	struct ieee80211_vif *vif = arvif->vif;
-+
-+	if (!vif->color_change_active)
-+		return;
-+
-+	if (ieee80211_beacon_cntdwn_is_complete(vif)) {
-+		ieee80211_color_change_finish(vif);
-+		return;
-+	}
-+
-+	ieee80211_beacon_update_cntdwn(vif);
-+	ath11k_mac_setup_bcn_tmpl(arvif);
-+}
-+
- static void ath11k_control_beaconing(struct ath11k_vif *arvif,
- 				     struct ieee80211_bss_conf *info)
- {
-@@ -2076,6 +2092,24 @@ static void ath11k_mac_op_bss_info_changed(struct ieee80211_hw *hw,
- 			if (ret)
- 				ath11k_warn(ar->ab, "failed to set bss color collision on vdev %i: %d\n",
- 					    arvif->vdev_id,  ret);
-+
-+			param_id = WMI_VDEV_PARAM_BSS_COLOR;
-+			if (info->he_bss_color.enabled)
-+				param_value = info->he_bss_color.color <<
-+						IEEE80211_HE_OPERATION_BSS_COLOR_OFFSET;
-+			else
-+				param_value = IEEE80211_HE_OPERATION_BSS_COLOR_DISABLED;
-+
-+			ret = ath11k_wmi_vdev_set_param_cmd(ar, arvif->vdev_id,
-+							    param_id,
-+							    param_value);
-+			if (ret)
-+				ath11k_warn(ar->ab,
-+					    "failed to set bss color param on vdev %i: %d\n",
-+					    arvif->vdev_id,  ret);
-+
-+			ath11k_info(ar->ab, "bss color param 0x%x set on vdev %i\n",
-+				    param_value, arvif->vdev_id);
- 		} else if (vif->type == NL80211_IFTYPE_STATION) {
- 			ret = ath11k_wmi_send_bss_color_change_enable_cmd(ar,
- 									  arvif->vdev_id,
-@@ -6083,6 +6117,7 @@ static int __ath11k_mac_register(struct ath11k *ar)
- 
- 	wiphy_ext_feature_set(ar->hw->wiphy, NL80211_EXT_FEATURE_CQM_RSSI_LIST);
- 	wiphy_ext_feature_set(ar->hw->wiphy, NL80211_EXT_FEATURE_STA_TX_PWR);
-+	wiphy_ext_feature_set(ar->hw->wiphy, NL80211_EXT_FEATURE_BSS_COLOR);
- 
- 	ar->hw->wiphy->cipher_suites = cipher_suites;
- 	ar->hw->wiphy->n_cipher_suites = ARRAY_SIZE(cipher_suites);
-diff --git a/drivers/net/wireless/ath/ath11k/mac.h b/drivers/net/wireless/ath/ath11k/mac.h
-index 0607479774a9..55978744e170 100644
---- a/drivers/net/wireless/ath/ath11k/mac.h
-+++ b/drivers/net/wireless/ath/ath11k/mac.h
-@@ -146,4 +146,5 @@ int ath11k_mac_tx_mgmt_pending_free(int buf_id, void *skb, void *ctx);
- u8 ath11k_mac_bw_to_mac80211_bw(u8 bw);
- enum ath11k_supported_bw ath11k_mac_mac80211_bw_to_ath11k_bw(enum rate_info_bw bw);
- enum hal_encrypt_type ath11k_dp_tx_get_encrypt_type(u32 cipher);
-+void ath11k_mac_bcn_tx_event(struct ath11k_vif *arvif);
- #endif
-diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
-index 9fffa37f1e2e..01931e838b4e 100644
---- a/drivers/net/wireless/ath/ath11k/wmi.c
-+++ b/drivers/net/wireless/ath/ath11k/wmi.c
-@@ -122,6 +122,8 @@ static const struct wmi_tlv_policy wmi_tlv_policies[] = {
- 		= { .min_len = sizeof(struct wmi_stats_event) },
- 	[WMI_TAG_PDEV_CTL_FAILSAFE_CHECK_EVENT]
- 		= { .min_len = sizeof(struct wmi_pdev_ctl_failsafe_chk_event) },
-+	[WMI_TAG_OBSS_COLOR_COLLISION_EVT]
-+		= { .min_len = sizeof(struct wmi_obss_color_collision_event) },
- };
- 
- #define PRIMAP(_hw_mode_) \
-@@ -3058,6 +3060,49 @@ int ath11k_wmi_send_bss_color_change_enable_cmd(struct ath11k *ar, u32 vdev_id,
- 	return ret;
- }
- 
-+static void
-+ath11k_wmi_obss_color_collision_event(struct ath11k_base *ab, struct sk_buff *skb)
-+{
-+	const void **tb;
-+	const struct wmi_obss_color_collision_event *ev;
-+	struct ath11k_vif *arvif;
-+	int ret;
-+
-+	tb = ath11k_wmi_tlv_parse_alloc(ab, skb->data, skb->len, GFP_ATOMIC);
-+	if (IS_ERR(tb)) {
-+		ret = PTR_ERR(tb);
-+		ath11k_warn(ab, "failed to parse tlv: %d\n", ret);
-+		return;
-+	}
-+
-+	ev = tb[WMI_TAG_OBSS_COLOR_COLLISION_EVT];
-+	if (!ev) {
-+		ath11k_warn(ab, "failed to fetch obss color collision ev");
-+		goto exit;
-+	}
-+
-+	arvif = ath11k_mac_get_arvif_by_vdev_id(ab, ev->vdev_id);
-+	switch (ev->evt_type) {
-+	case WMI_BSS_COLOR_COLLISION_DETECTION:
-+		break;
-+	case WMI_BSS_COLOR_COLLISION_DISABLE:
-+	case WMI_BSS_COLOR_FREE_SLOT_TIMER_EXPIRY:
-+	case WMI_BSS_COLOR_FREE_SLOT_AVAILABLE:
-+		goto exit;
-+	default:
-+		ath11k_warn(ab, "received unknown obss color collision detetction event\n");
-+		goto exit;
-+	}
-+
-+	ieeee80211_obss_color_collision_notify(arvif->vif, ev->obss_color_bitmap);
-+
-+	ath11k_dbg(ab, ATH11K_DBG_WMI,
-+		   "OBSS color collision detected vdev:%d, event:%d, bitmap:%08llx\n",
-+		   ev->vdev_id, ev->evt_type, ev->obss_color_bitmap);
-+exit:
-+	kfree(tb);
-+}
-+
- static void
- ath11k_fill_band_to_mac_param(struct ath11k_base  *soc,
- 			      struct wmi_host_pdev_band_to_mac *band_to_mac)
-@@ -5638,6 +5683,7 @@ static void ath11k_vdev_start_resp_event(struct ath11k_base *ab, struct sk_buff
- 
- static void ath11k_bcn_tx_status_event(struct ath11k_base *ab, struct sk_buff *skb)
- {
-+	struct ath11k_vif *arvif;
- 	u32 vdev_id, tx_status;
- 
- 	if (ath11k_pull_bcn_tx_status_ev(ab, skb->data, skb->len,
-@@ -5645,6 +5691,14 @@ static void ath11k_bcn_tx_status_event(struct ath11k_base *ab, struct sk_buff *s
- 		ath11k_warn(ab, "failed to extract bcn tx status");
- 		return;
- 	}
-+
-+	arvif = ath11k_mac_get_arvif_by_vdev_id(ab, vdev_id);
-+	if (!arvif) {
-+		ath11k_warn(ab, "invalid vdev id %d in bcn_tx_status",
-+			    vdev_id);
-+		return;
-+	}
-+	ath11k_mac_bcn_tx_event(arvif);
- }
- 
- static void ath11k_vdev_stopped_event(struct ath11k_base *ab, struct sk_buff *skb)
-@@ -6523,6 +6577,9 @@ static void ath11k_wmi_tlv_op_rx(struct ath11k_base *ab, struct sk_buff *skb)
- 	case WMI_PDEV_DMA_RING_BUF_RELEASE_EVENTID:
- 		ath11k_wmi_pdev_dma_ring_buf_release_event(ab, skb);
- 		break;
-+	case WMI_OBSS_COLOR_COLLISION_DETECTION_EVENTID:
-+		ath11k_wmi_obss_color_collision_event(ab, skb);
-+		break;
- 	/* add Unsupported events here */
- 	case WMI_TBTTOFFSET_EXT_UPDATE_EVENTID:
- 	case WMI_VDEV_DELETE_RESP_EVENTID:
-diff --git a/drivers/net/wireless/ath/ath11k/wmi.h b/drivers/net/wireless/ath/ath11k/wmi.h
-index 5a32ba0eb4f5..4f7078369b3c 100644
---- a/drivers/net/wireless/ath/ath11k/wmi.h
-+++ b/drivers/net/wireless/ath/ath11k/wmi.h
-@@ -740,6 +740,7 @@ enum wmi_tlv_event_id {
- 	WMI_MDNS_STATS_EVENTID = WMI_TLV_CMD(WMI_GRP_MDNS_OFL),
- 	WMI_SAP_OFL_ADD_STA_EVENTID = WMI_TLV_CMD(WMI_GRP_SAP_OFL),
- 	WMI_SAP_OFL_DEL_STA_EVENTID,
-+	WMI_OBSS_COLOR_COLLISION_DETECTION_EVENTID = WMI_EVT_GRP_START_ID(WMI_GRP_OBSS_OFL),
- 	WMI_OCB_SET_CONFIG_RESP_EVENTID = WMI_TLV_CMD(WMI_GRP_OCB),
- 	WMI_OCB_GET_TSF_TIMER_RESP_EVENTID,
- 	WMI_DCC_GET_STATS_RESP_EVENTID,
-@@ -4768,6 +4769,13 @@ struct wmi_obss_spatial_reuse_params_cmd {
- #define ATH11K_BSS_COLOR_COLLISION_DETECTION_STA_PERIOD_MS	10000
- #define ATH11K_BSS_COLOR_COLLISION_DETECTION_AP_PERIOD_MS	5000
- 
-+enum wmi_bss_color_collision {
-+	WMI_BSS_COLOR_COLLISION_DISABLE = 0,
-+	WMI_BSS_COLOR_COLLISION_DETECTION,
-+	WMI_BSS_COLOR_FREE_SLOT_TIMER_EXPIRY,
-+	WMI_BSS_COLOR_FREE_SLOT_AVAILABLE,
-+};
-+
- struct wmi_obss_color_collision_cfg_params_cmd {
- 	u32 tlv_header;
- 	u32 vdev_id;
-@@ -4785,6 +4793,12 @@ struct wmi_bss_color_change_enable_params_cmd {
- 	u32 enable;
- } __packed;
- 
-+struct wmi_obss_color_collision_event {
-+	u32 vdev_id;
-+	u32 evt_type;
-+	u64 obss_color_bitmap;
-+} __packed;
-+
- #define ATH11K_IPV4_TH_SEED_SIZE 5
- #define ATH11K_IPV6_TH_SEED_SIZE 11
- 
+Lee Jones (30):
+  wireless: marvell: mwifiex: pcie: Move tables to the only place
+    they're used
+  wireless: broadcom: brcmsmac: ampdu: Remove a couple set but unused
+    variables
+  wireless: intel: iwlegacy: 3945-mac: Remove all non-conformant
+    kernel-doc headers
+  wireless: intel: iwlegacy: 3945-rs: Remove all non-conformant
+    kernel-doc headers
+  wireless: intel: iwlegacy: 3945: Remove all non-conformant kernel-doc
+    headers
+  wireless: broadcom: brcmfmac: p2p: Fix a couple of function headers
+  wireless: intersil: orinoco_usb: Downgrade non-conforming kernel-doc
+    headers
+  wireless: broadcom: brcmsmac: phy_cmn: Remove a unused variables
+    'vbat' and 'temp'
+  wireless: zydas: zd1211rw: zd_chip: Fix formatting
+  wireless: zydas: zd1211rw: zd_mac: Add missing or incorrect function
+    documentation
+  wireless: zydas: zd1211rw: zd_chip: Correct misspelled function
+    argument
+  wireless: ath: wil6210: wmi: Correct misnamed function parameter
+    'ptr_'
+  wireless: broadcom: brcm80211: brcmfmac: fwsignal: Finish documenting
+    'brcmf_fws_mac_descriptor'
+  wireless: ath: ath6kl: wmi: Remove unused variable 'rate'
+  wireless: ti: wlcore: debugfs: Remove unused variable 'res'
+  wireless: rsi: rsi_91x_sdio: Fix a few kernel-doc related issues
+  wireless: ath: ath9k: ar9002_initvals: Remove unused array
+    'ar9280PciePhy_clkreq_off_L1_9280'
+  wireless: ath: ath9k: ar9001_initvals: Remove unused array
+    'ar5416Bank6_9100'
+  wireless: intersil: hostap: hostap_hw: Remove unused variable 'fc'
+  wireless: wl3501_cs: Fix a bunch of formatting issues related to
+    function docs
+  wireless: realtek: rtw88: debug: Remove unused variables 'val'
+  wireless: rsi: rsi_91x_sdio_ops: File headers are not good kernel-doc
+    candidates
+  wireless: intersil: prism54: isl_ioctl:  Remove unused variable 'j'
+  wireless: marvell: mwifiex: wmm: Mark 'mwifiex_1d_to_wmm_queue' as
+    __maybe_unused
+  wireless: ath: ath9k: ar5008_initvals: Remove unused table entirely
+  wireless: ath: ath9k: ar5008_initvals: Move ar5416Bank{0,1,2,3,7} to
+    where they are used
+  wireless: broadcom: brcm80211: phy_lcn: Remove a bunch of unused
+    variables
+  wireless: broadcom: brcm80211: phy_n: Remove a bunch of unused
+    variables
+  wireless: broadcom: brcm80211: phytbl_lcn: Remove unused array
+    'dot11lcnphytbl_rx_gain_info_rev1'
+  wireless: broadcom: brcm80211: phytbl_n: Remove a few unused arrays
+
+ drivers/net/wireless/ath/ath6kl/wmi.c         |  10 +-
+ .../net/wireless/ath/ath9k/ar5008_initvals.h  |  68 -----
+ drivers/net/wireless/ath/ath9k/ar5008_phy.c   |  31 +-
+ .../net/wireless/ath/ath9k/ar9001_initvals.h  |  37 ---
+ .../net/wireless/ath/ath9k/ar9002_initvals.h  |  14 -
+ drivers/net/wireless/ath/wil6210/wmi.c        |   2 +-
+ .../broadcom/brcm80211/brcmfmac/fwsignal.c    |   6 +
+ .../broadcom/brcm80211/brcmfmac/p2p.c         |   5 +-
+ .../broadcom/brcm80211/brcmsmac/ampdu.c       |   9 +-
+ .../broadcom/brcm80211/brcmsmac/phy/phy_cmn.c |   6 +-
+ .../broadcom/brcm80211/brcmsmac/phy/phy_lcn.c |  40 +--
+ .../broadcom/brcm80211/brcmsmac/phy/phy_n.c   |  47 +--
+ .../brcm80211/brcmsmac/phy/phytbl_lcn.c       |  13 -
+ .../brcm80211/brcmsmac/phy/phytbl_n.c         | 268 ------------------
+ .../net/wireless/intel/iwlegacy/3945-mac.c    |  24 +-
+ drivers/net/wireless/intel/iwlegacy/3945-rs.c |   8 +-
+ drivers/net/wireless/intel/iwlegacy/3945.c    |  46 +--
+ .../net/wireless/intersil/hostap/hostap_hw.c  |   3 +-
+ .../wireless/intersil/orinoco/orinoco_usb.c   |   6 +-
+ .../net/wireless/intersil/prism54/isl_ioctl.c |   3 +-
+ drivers/net/wireless/marvell/mwifiex/pcie.c   | 149 ++++++++++
+ drivers/net/wireless/marvell/mwifiex/pcie.h   | 149 ----------
+ drivers/net/wireless/marvell/mwifiex/wmm.h    |   3 +-
+ drivers/net/wireless/realtek/rtw88/debug.c    |   6 +-
+ drivers/net/wireless/rsi/rsi_91x_sdio.c       |   7 +-
+ drivers/net/wireless/rsi/rsi_91x_sdio_ops.c   |   2 +-
+ drivers/net/wireless/ti/wlcore/debugfs.h      |   6 +-
+ drivers/net/wireless/wl3501_cs.c              |  22 +-
+ drivers/net/wireless/zydas/zd1211rw/zd_chip.c |   4 +-
+ drivers/net/wireless/zydas/zd1211rw/zd_mac.c  |  15 +-
+ 30 files changed, 288 insertions(+), 721 deletions(-)
+
 -- 
 2.25.1
 
