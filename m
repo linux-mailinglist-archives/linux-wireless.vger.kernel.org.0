@@ -2,379 +2,166 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 00683252A36
-	for <lists+linux-wireless@lfdr.de>; Wed, 26 Aug 2020 11:36:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0666D252B4D
+	for <lists+linux-wireless@lfdr.de>; Wed, 26 Aug 2020 12:21:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728467AbgHZJgE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 26 Aug 2020 05:36:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40994 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728425AbgHZJfd (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 26 Aug 2020 05:35:33 -0400
-Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80C6FC061368
-        for <linux-wireless@vger.kernel.org>; Wed, 26 Aug 2020 02:34:43 -0700 (PDT)
-Received: by mail-wr1-x444.google.com with SMTP id y3so1098648wrl.4
-        for <linux-wireless@vger.kernel.org>; Wed, 26 Aug 2020 02:34:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=EWWkC93UJ7xj7BkZ2b7U7Aw6lomOHNe1aGRj0IYiNWw=;
-        b=Ajx7/Kr/e8GtU4LIIPcwjtWRUh0vF1emJA2VjOu2Gia+48u0R30etyRK1i63xNy7L5
-         hMXIkmWto3dxWPN8FrOWpBl1pqjQ4dLkksZjPNfxFQVcXIlzVqQH+2wEkDf3NQRTgwJ1
-         VU8abeFTBhMh0hlrVZhbR1ni0bThPfgm0f0QKIidxW2P9i7yEtiTPcKCU0bqCScTrdJl
-         nxse+3AwcjpD7ic6ZCoxS6GYLOOaAEDg2uwmoAY1N3brpUTSEsFzJ2D3I5FCnyPV8ox1
-         A+5T6/V5cMM2kr6bgevVjvMLYEjkqjoDNFOlGSuF/tKcGg5cfarQsONjK+8TnMoSEND/
-         FGjA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=EWWkC93UJ7xj7BkZ2b7U7Aw6lomOHNe1aGRj0IYiNWw=;
-        b=QxeQoMaUC8WDkVKaU49yuyIgsY/d5pAXFDa5Tbgj1vMZXXNn0kJKCpfJojW5vc15jf
-         UOp04p23QGtdAfLLs9zrNUqZIu+zKDYW18LJ/auXj7Ka53OA47ZY9oaPhlHRvbqj1w3z
-         +ycKOp8rzwgTLIkGuOrT9CvwCb8U20j48qrKz8mXgzysdPWOTWLEgragPTYcsCincEcf
-         82BdnZ/kNOV324z0tnUaGFm0zLbqkT2TlspeDzO1pP7VIJWXXsdTGloWGl/ZkHtemX1Z
-         2rwaim6b/qyYaF3weP3G6ABjLrSoSRHlFTitJT2v9LOHngv49UJSQl2czcFc2zcYmY5x
-         SjFg==
-X-Gm-Message-State: AOAM531jol5RVxpH8N/mAbXKMWND06BnHml9oudpWOnF6+tu/dU4sfJy
-        2CwfB2rFWVgARgPOW10gN+trVQ==
-X-Google-Smtp-Source: ABdhPJyEEniXrXM8b6V6fPBEVaHRa3glrYLaPukKyjYAcSu/RiB5EgJ/+SOPvpFgOZOkfqNpKXLIAA==
-X-Received: by 2002:adf:c453:: with SMTP id a19mr1604492wrg.179.1598434482172;
-        Wed, 26 Aug 2020 02:34:42 -0700 (PDT)
-Received: from dell.default ([95.149.164.62])
-        by smtp.gmail.com with ESMTPSA id u3sm3978759wml.44.2020.08.26.02.34.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Aug 2020 02:34:41 -0700 (PDT)
-From:   Lee Jones <lee.jones@linaro.org>
-To:     kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org
-Cc:     linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, Lee Jones <lee.jones@linaro.org>,
-        Arend van Spriel <arend.vanspriel@broadcom.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
-        Wright Feng <wright.feng@cypress.com>,
-        brcm80211-dev-list.pdl@broadcom.com, brcm80211-dev-list@cypress.com
-Subject: [PATCH 30/30] wireless: broadcom: brcm80211: phytbl_n: Remove a few unused arrays
-Date:   Wed, 26 Aug 2020 10:34:01 +0100
-Message-Id: <20200826093401.1458456-31-lee.jones@linaro.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200826093401.1458456-1-lee.jones@linaro.org>
-References: <20200826093401.1458456-1-lee.jones@linaro.org>
+        id S1728176AbgHZKV5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 26 Aug 2020 06:21:57 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:44436 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728116AbgHZKV5 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 26 Aug 2020 06:21:57 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1598437315; h=Message-ID: References: In-Reply-To: Subject:
+ Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Sender; bh=MkBteFA49aiDVrV3uQvOo1CKvWxeAW0hpmXtiWdWsqg=;
+ b=HccxUO9HC5Jhja9JO5WM+r8eR7YQ98nGtjPY4w/H71se437/j2bHqeLiBz18P8eji3S67mpn
+ S9pMAwHq9qE7XKLtT8WEbjz99YxUk6hc+NtbDiSg4UYqYdZeYauIakneI+09RpTaTd9dxz/A
+ nn9KnId8v0IusLEnnnTlmxzcMsk=
+X-Mailgun-Sending-Ip: 69.72.43.7
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n05.prod.us-west-2.postgun.com with SMTP id
+ 5f4637c2e2d4d29fc898b68d (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 26 Aug 2020 10:21:54
+ GMT
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id B653AC433CA; Wed, 26 Aug 2020 10:21:54 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: merez)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id ACA26C433C6;
+        Wed, 26 Aug 2020 10:21:53 +0000 (UTC)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Wed, 26 Aug 2020 13:21:53 +0300
+From:   merez@codeaurora.org
+To:     Lee Jones <lee.jones@linaro.org>
+Cc:     kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, wil6210@qti.qualcomm.com
+Subject: Re: [PATCH 25/32] wireless: ath: wil6210: wmi: Fix formatting and
+ demote non-conforming function headers
+In-Reply-To: <20200821071644.109970-26-lee.jones@linaro.org>
+References: <20200821071644.109970-1-lee.jones@linaro.org>
+ <20200821071644.109970-26-lee.jones@linaro.org>
+Message-ID: <330bc340a4d16f383c9adef2324db60e@codeaurora.org>
+X-Sender: merez@codeaurora.org
+User-Agent: Roundcube Webmail/1.3.9
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fixes the following W=1 kernel build warning(s):
+On 2020-08-21 10:16, Lee Jones wrote:
+> Fixes the following W=1 kernel build warning(s):
+> 
+>  drivers/net/wireless/ath/wil6210/wmi.c:52: warning: Incorrect use of
+> kernel-doc format:  * Addressing - theory of operations
+>  drivers/net/wireless/ath/wil6210/wmi.c:70: warning: Incorrect use of
+> kernel-doc format:  * @sparrow_fw_mapping provides memory remapping
+> table for sparrow
+>  drivers/net/wireless/ath/wil6210/wmi.c:80: warning: cannot understand
+> function prototype: 'const struct fw_map sparrow_fw_mapping[] = '
+>  drivers/net/wireless/ath/wil6210/wmi.c:107: warning: Cannot
+> understand  * @sparrow_d0_mac_rgf_ext - mac_rgf_ext section for
+> Sparrow D0
+>  drivers/net/wireless/ath/wil6210/wmi.c:115: warning: Cannot
+> understand  * @talyn_fw_mapping provides memory remapping table for
+> Talyn
+>  drivers/net/wireless/ath/wil6210/wmi.c:158: warning: Cannot
+> understand  * @talyn_mb_fw_mapping provides memory remapping table for
+> Talyn-MB
+>  drivers/net/wireless/ath/wil6210/wmi.c:236: warning: Function
+> parameter or member 'x' not described in 'wmi_addr_remap'
+>  drivers/net/wireless/ath/wil6210/wmi.c:255: warning: Function
+> parameter or member 'section' not described in 'wil_find_fw_mapping'
+>  drivers/net/wireless/ath/wil6210/wmi.c:278: warning: Function
+> parameter or member 'wil' not described in 'wmi_buffer_block'
+>  drivers/net/wireless/ath/wil6210/wmi.c:278: warning: Function
+> parameter or member 'ptr_' not described in 'wmi_buffer_block'
+>  drivers/net/wireless/ath/wil6210/wmi.c:278: warning: Function
+> parameter or member 'size' not described in 'wmi_buffer_block'
+>  drivers/net/wireless/ath/wil6210/wmi.c:307: warning: Function
+> parameter or member 'wil' not described in 'wmi_addr'
+>  drivers/net/wireless/ath/wil6210/wmi.c:307: warning: Function
+> parameter or member 'ptr' not described in 'wmi_addr'
+>  drivers/net/wireless/ath/wil6210/wmi.c:1589: warning: Function
+> parameter or member 'wil' not described in 'wil_find_cid_ringid_sta'
+>  drivers/net/wireless/ath/wil6210/wmi.c:1589: warning: Function
+> parameter or member 'vif' not described in 'wil_find_cid_ringid_sta'
+>  drivers/net/wireless/ath/wil6210/wmi.c:1589: warning: Function
+> parameter or member 'cid' not described in 'wil_find_cid_ringid_sta'
+>  drivers/net/wireless/ath/wil6210/wmi.c:1589: warning: Function
+> parameter or member 'ringid' not described in
+> 'wil_find_cid_ringid_sta'
+>  drivers/net/wireless/ath/wil6210/wmi.c:1876: warning: Function
+> parameter or member 'vif' not described in 'wmi_evt_ignore'
+>  drivers/net/wireless/ath/wil6210/wmi.c:1876: warning: Function
+> parameter or member 'id' not described in 'wmi_evt_ignore'
+>  drivers/net/wireless/ath/wil6210/wmi.c:1876: warning: Function
+> parameter or member 'd' not described in 'wmi_evt_ignore'
+>  drivers/net/wireless/ath/wil6210/wmi.c:1876: warning: Function
+> parameter or member 'len' not described in 'wmi_evt_ignore'
+>  drivers/net/wireless/ath/wil6210/wmi.c:2588: warning: Function
+> parameter or member 'wil' not described in 'wmi_rxon'
+> 
+> Cc: Maya Erez <merez@codeaurora.org>
+> Cc: Kalle Valo <kvalo@codeaurora.org>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: Jakub Kicinski <kuba@kernel.org>
+> Cc: linux-wireless@vger.kernel.org
+> Cc: wil6210@qti.qualcomm.com
+> Cc: netdev@vger.kernel.org
+> Signed-off-by: Lee Jones <lee.jones@linaro.org>
+> ---
+>  drivers/net/wireless/ath/wil6210/wmi.c | 28 ++++++++++++++------------
+>  1 file changed, 15 insertions(+), 13 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/ath/wil6210/wmi.c
+> b/drivers/net/wireless/ath/wil6210/wmi.c
+> index c7136ce567eea..3a6ee85acf6c7 100644
+> --- a/drivers/net/wireless/ath/wil6210/wmi.c
+> +++ b/drivers/net/wireless/ath/wil6210/wmi.c
+> @@ -31,7 +31,7 @@ MODULE_PARM_DESC(led_id,
+>  #define WIL_WAIT_FOR_SUSPEND_RESUME_COMP 200
+>  #define WIL_WMI_PCP_STOP_TO_MS 5000
+> 
+> -/**
+> +/*
+>   * WMI event receiving - theory of operations
+>   *
+>   * When firmware about to report WMI event, it fills memory area
 
- drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phytbl_n.c:9218:18: warning: ‘papd_cal_scalars_tbl_core1_rev3’ defined but not used [-Wunused-const-variable=]
- drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phytbl_n.c:9151:18: warning: ‘papd_comp_epsilon_tbl_core1_rev3’ defined but not used [-Wunused-const-variable=]
- drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phytbl_n.c:9084:18: warning: ‘papd_cal_scalars_tbl_core0_rev3’ defined but not used [-Wunused-const-variable=]
- drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phytbl_n.c:9017:18: warning: ‘papd_comp_epsilon_tbl_core0_rev3’ defined but not used [-Wunused-const-variable=]
+The correct format for such documentation blocks is:
+/**
+  * DOC: Theory of Operation
 
-Cc: Arend van Spriel <arend.vanspriel@broadcom.com>
-Cc: Franky Lin <franky.lin@broadcom.com>
-Cc: Hante Meuleman <hante.meuleman@broadcom.com>
-Cc: Chi-Hsien Lin <chi-hsien.lin@cypress.com>
-Cc: Wright Feng <wright.feng@cypress.com>
-Cc: Kalle Valo <kvalo@codeaurora.org>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: linux-wireless@vger.kernel.org
-Cc: brcm80211-dev-list.pdl@broadcom.com
-Cc: brcm80211-dev-list@cypress.com
-Cc: netdev@vger.kernel.org
-Signed-off-by: Lee Jones <lee.jones@linaro.org>
----
- .../brcm80211/brcmsmac/phy/phytbl_n.c         | 268 ------------------
- 1 file changed, 268 deletions(-)
+This comment is also applicable for the rest of such documentation 
+blocks changed in this patch.
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phytbl_n.c b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phytbl_n.c
-index 7607e67d20c75..396d005f4d165 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phytbl_n.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phytbl_n.c
-@@ -9014,274 +9014,6 @@ static const u16 papd_comp_rfpwr_tbl_core1_rev3[] = {
- 	0x01d6,
- };
- 
--static const u32 papd_comp_epsilon_tbl_core0_rev3[] = {
--	0x00000000,
--	0x00001fa0,
--	0x00019f78,
--	0x0001df7e,
--	0x03fa9f86,
--	0x03fd1f90,
--	0x03fe5f8a,
--	0x03fb1f94,
--	0x03fd9fa0,
--	0x00009f98,
--	0x03fd1fac,
--	0x03ff9fa2,
--	0x03fe9fae,
--	0x00001fae,
--	0x03fddfb4,
--	0x03ff1fb8,
--	0x03ff9fbc,
--	0x03ffdfbe,
--	0x03fe9fc2,
--	0x03fedfc6,
--	0x03fedfc6,
--	0x03ff9fc8,
--	0x03ff5fc6,
--	0x03fedfc2,
--	0x03ff9fc0,
--	0x03ff5fac,
--	0x03ff5fac,
--	0x03ff9fa2,
--	0x03ff9fa6,
--	0x03ff9faa,
--	0x03ff5fb0,
--	0x03ff5fb4,
--	0x03ff1fca,
--	0x03ff5fce,
--	0x03fcdfdc,
--	0x03fb4006,
--	0x00000030,
--	0x03ff808a,
--	0x03ff80da,
--	0x0000016c,
--	0x03ff8318,
--	0x03ff063a,
--	0x03fd8bd6,
--	0x00014ffe,
--	0x00034ffe,
--	0x00034ffe,
--	0x0003cffe,
--	0x00040ffe,
--	0x00040ffe,
--	0x0003cffe,
--	0x0003cffe,
--	0x00020ffe,
--	0x03fe0ffe,
--	0x03fdcffe,
--	0x03f94ffe,
--	0x03f54ffe,
--	0x03f44ffe,
--	0x03ef8ffe,
--	0x03ee0ffe,
--	0x03ebcffe,
--	0x03e8cffe,
--	0x03e74ffe,
--	0x03e4cffe,
--	0x03e38ffe,
--};
--
--static const u32 papd_cal_scalars_tbl_core0_rev3[] = {
--	0x05af005a,
--	0x0571005e,
--	0x05040066,
--	0x04bd006c,
--	0x047d0072,
--	0x04430078,
--	0x03f70081,
--	0x03cb0087,
--	0x03870091,
--	0x035e0098,
--	0x032e00a1,
--	0x030300aa,
--	0x02d800b4,
--	0x02ae00bf,
--	0x028900ca,
--	0x026400d6,
--	0x024100e3,
--	0x022200f0,
--	0x020200ff,
--	0x01e5010e,
--	0x01ca011e,
--	0x01b0012f,
--	0x01990140,
--	0x01830153,
--	0x016c0168,
--	0x0158017d,
--	0x01450193,
--	0x013301ab,
--	0x012101c5,
--	0x011101e0,
--	0x010201fc,
--	0x00f4021a,
--	0x00e6011d,
--	0x00d9012e,
--	0x00cd0140,
--	0x00c20153,
--	0x00b70167,
--	0x00ac017c,
--	0x00a30193,
--	0x009a01ab,
--	0x009101c4,
--	0x008901df,
--	0x008101fb,
--	0x007a0219,
--	0x00730239,
--	0x006d025b,
--	0x0067027e,
--	0x006102a4,
--	0x005c02cc,
--	0x005602f6,
--	0x00520323,
--	0x004d0353,
--	0x00490385,
--	0x004503bb,
--	0x004103f3,
--	0x003d042f,
--	0x003a046f,
--	0x003704b2,
--	0x003404f9,
--	0x00310545,
--	0x002e0596,
--	0x002b05f5,
--	0x00290640,
--	0x002606a4,
--};
--
--static const u32 papd_comp_epsilon_tbl_core1_rev3[] = {
--	0x00000000,
--	0x00001fa0,
--	0x00019f78,
--	0x0001df7e,
--	0x03fa9f86,
--	0x03fd1f90,
--	0x03fe5f8a,
--	0x03fb1f94,
--	0x03fd9fa0,
--	0x00009f98,
--	0x03fd1fac,
--	0x03ff9fa2,
--	0x03fe9fae,
--	0x00001fae,
--	0x03fddfb4,
--	0x03ff1fb8,
--	0x03ff9fbc,
--	0x03ffdfbe,
--	0x03fe9fc2,
--	0x03fedfc6,
--	0x03fedfc6,
--	0x03ff9fc8,
--	0x03ff5fc6,
--	0x03fedfc2,
--	0x03ff9fc0,
--	0x03ff5fac,
--	0x03ff5fac,
--	0x03ff9fa2,
--	0x03ff9fa6,
--	0x03ff9faa,
--	0x03ff5fb0,
--	0x03ff5fb4,
--	0x03ff1fca,
--	0x03ff5fce,
--	0x03fcdfdc,
--	0x03fb4006,
--	0x00000030,
--	0x03ff808a,
--	0x03ff80da,
--	0x0000016c,
--	0x03ff8318,
--	0x03ff063a,
--	0x03fd8bd6,
--	0x00014ffe,
--	0x00034ffe,
--	0x00034ffe,
--	0x0003cffe,
--	0x00040ffe,
--	0x00040ffe,
--	0x0003cffe,
--	0x0003cffe,
--	0x00020ffe,
--	0x03fe0ffe,
--	0x03fdcffe,
--	0x03f94ffe,
--	0x03f54ffe,
--	0x03f44ffe,
--	0x03ef8ffe,
--	0x03ee0ffe,
--	0x03ebcffe,
--	0x03e8cffe,
--	0x03e74ffe,
--	0x03e4cffe,
--	0x03e38ffe,
--};
--
--static const u32 papd_cal_scalars_tbl_core1_rev3[] = {
--	0x05af005a,
--	0x0571005e,
--	0x05040066,
--	0x04bd006c,
--	0x047d0072,
--	0x04430078,
--	0x03f70081,
--	0x03cb0087,
--	0x03870091,
--	0x035e0098,
--	0x032e00a1,
--	0x030300aa,
--	0x02d800b4,
--	0x02ae00bf,
--	0x028900ca,
--	0x026400d6,
--	0x024100e3,
--	0x022200f0,
--	0x020200ff,
--	0x01e5010e,
--	0x01ca011e,
--	0x01b0012f,
--	0x01990140,
--	0x01830153,
--	0x016c0168,
--	0x0158017d,
--	0x01450193,
--	0x013301ab,
--	0x012101c5,
--	0x011101e0,
--	0x010201fc,
--	0x00f4021a,
--	0x00e6011d,
--	0x00d9012e,
--	0x00cd0140,
--	0x00c20153,
--	0x00b70167,
--	0x00ac017c,
--	0x00a30193,
--	0x009a01ab,
--	0x009101c4,
--	0x008901df,
--	0x008101fb,
--	0x007a0219,
--	0x00730239,
--	0x006d025b,
--	0x0067027e,
--	0x006102a4,
--	0x005c02cc,
--	0x005602f6,
--	0x00520323,
--	0x004d0353,
--	0x00490385,
--	0x004503bb,
--	0x004103f3,
--	0x003d042f,
--	0x003a046f,
--	0x003704b2,
--	0x003404f9,
--	0x00310545,
--	0x002e0596,
--	0x002b05f5,
--	0x00290640,
--	0x002606a4,
--};
--
- const struct phytbl_info mimophytbl_info_rev3_volatile[] = {
- 	{&ant_swctrl_tbl_rev3, ARRAY_SIZE(ant_swctrl_tbl_rev3), 9, 0, 16},
- };
--- 
-2.25.1
-
+> @@ -66,7 +66,7 @@ MODULE_PARM_DESC(led_id,
+>   * AHB address must be used.
+>   */
+> 
+> -/**
+> +/*
+>   * @sparrow_fw_mapping provides memory remapping table for sparrow
+>   *
+>   * array size should be in sync with the declaration in the wil6210.h
+For files in net/ and drivers/net/ the preferred style for long 
+(multi-line) comments is a different and
+the text should be in the same line as /*, as follows:
+/* sparrow_fw_mapping provides memory remapping table for sparrow
+I would also remove the @ from @sparrow_fw_mapping.
+This comment is also applicable for the rest of such documentation 
+blocks changed in this patch.
