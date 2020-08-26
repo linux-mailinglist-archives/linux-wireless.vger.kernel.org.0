@@ -2,60 +2,65 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BBF6A252A2D
-	for <lists+linux-wireless@lfdr.de>; Wed, 26 Aug 2020 11:36:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5BCFD252A2A
+	for <lists+linux-wireless@lfdr.de>; Wed, 26 Aug 2020 11:35:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728444AbgHZJfg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 26 Aug 2020 05:35:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40932 "EHLO
+        id S1728453AbgHZJfh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 26 Aug 2020 05:35:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40958 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728403AbgHZJfS (ORCPT
+        with ESMTP id S1728047AbgHZJfY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 26 Aug 2020 05:35:18 -0400
-Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16070C06135E
-        for <linux-wireless@vger.kernel.org>; Wed, 26 Aug 2020 02:34:38 -0700 (PDT)
-Received: by mail-wr1-x444.google.com with SMTP id x7so1108340wro.3
-        for <linux-wireless@vger.kernel.org>; Wed, 26 Aug 2020 02:34:38 -0700 (PDT)
+        Wed, 26 Aug 2020 05:35:24 -0400
+Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8FBFC061361
+        for <linux-wireless@vger.kernel.org>; Wed, 26 Aug 2020 02:34:39 -0700 (PDT)
+Received: by mail-wr1-x442.google.com with SMTP id 2so1083998wrj.10
+        for <linux-wireless@vger.kernel.org>; Wed, 26 Aug 2020 02:34:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=7UKR3rYf74POYGl3zWTm2JLEunC4uofhzAPfhP0pocI=;
-        b=AwyjC/u6v4PkRTDEUzW5YTwptUu33aZaKickGcM2cAwHsFaZSh3VUhKDX1bvVBJrSO
-         4bz4KBORUASDwdQfqAKx3d88J5wrfhGzYxAKrmqBGECjC3c7CnDdGYkY9lBhDFCymUQj
-         EDw6sSFzrbfef9cPsOW9n3jp+dy66uiSFPNf83D/FHYRlKG88XLNNq96ZivWt25TfrVT
-         sdHCBVi+qgdfiq6w8seV/4/KZ/BtO3IBixxQ1EQOKk/to29iEE5l7cDQF8IjNQg4bB7S
-         Rc3gzyrMcyijHr9sVaD/IuJGXpKovsNCxwzzB1BfVsNpF+pBAnlBEJs/Qp9ie+YpI0MZ
-         o1lQ==
+        bh=rUAO3RuW/3xrjV/jLQoBhZg+qrtryFN4uR4f5U2383M=;
+        b=As6cWuop/UitBN8qYzmoyyS8vCPET7V+08ebuq6oQcV6utLW7d2Wq3FC6+itt/QdM6
+         vJWvBjw4LqqhgSlcfR1SELi/4siTNwvRB6Jm2f3cik6e6/b7x2u4BDO47TPxwO1L4R06
+         d9SF74TQV6b21kHyDGr+r/5Sh1/eAZ6zYtppbV1UA55rXGMppf4Vplbb/bDgaRpAWLUr
+         EwMvE7zOItgvt5lcKzz6GBg/x7iSpWuPIPW3rdoADPuZNeFe5UKcu6EkPg/iFw9LVAKR
+         1ZHYlNVyF5FsBso5UfAsFt825rivgBwDix2VBBQxYxYMcMoiOs8n98V25qtafhCAAVV1
+         H2Vw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=7UKR3rYf74POYGl3zWTm2JLEunC4uofhzAPfhP0pocI=;
-        b=tRU6I6X0/VPRVjhEGMjcc8NoAknjGTVH9s+T2+N4Gbzy07b+QpvkM8/85BWINVvSu/
-         EZBo+/MEyTOkUExLRcqQJlJBkUbEIc7UHpNOsjWx7w3mWZd/pOkm9RMOz2hSgbJ9/CVi
-         5pRkhxOduAHPLDE5tYi1sXilR6592qvSG5Iv0xAylTmIb+sZoXzxl76yD0e0FEzJn/AT
-         N+HJVAgzQWKqC7J8D5zN8gax+oUck/XhkRYW31KrFySXAcX96YEyJmvdi9US/rL12qkR
-         9AJOGWsN3qqLxuN8dp7XvGYS+vYZpFwKi2tR9yyG7c/M/q8NT0eg0tbbyUdGTD/cOgb1
-         ntcQ==
-X-Gm-Message-State: AOAM531mVIayl7h5VgtSKLtv/RBNDnnX9HVlHumY7mb3e3M1oNE+oaXc
-        PhcHi5LsuB8ABEGFaXTTlzqevw==
-X-Google-Smtp-Source: ABdhPJx0+PGYRxM+X3LewS3JB02QeZrJW/r5M6uw0gn3QWnbZnHsBzFex7YLoQ9d6uScoAa3F2SEgA==
-X-Received: by 2002:adf:fc02:: with SMTP id i2mr8811277wrr.165.1598434476657;
-        Wed, 26 Aug 2020 02:34:36 -0700 (PDT)
+        bh=rUAO3RuW/3xrjV/jLQoBhZg+qrtryFN4uR4f5U2383M=;
+        b=T/rStxCOCpKaK6lL4ARJY6SXgNlIL5PsBo6cLivO8yF7V/4NM854sJS+4OlOiY646I
+         kv9ztDgezEo+gV4CSmFe0sdWWjVjBdO1aCF632NxbIO8P6csSlyHZkCkP4saOz8FF2KY
+         blatYkD9fhCTVKWmPiCR0W/4t+Cg5W6ExuNoqZd1r2BTM5ljCeSh0svRHX113H4OiU72
+         EZDgm0LJjR/4H6k0LkdiyGPBiz9j+l1swVYlRwpfxSkbKxJgmoLU6LWhvsQEenQbDbqw
+         LoAHeUhfrcyKs3AZ7kxao531Ul7wFIMdjzd2RMK1D4fGlYvGbOhU9nuRAU5kZt4kA84B
+         we3A==
+X-Gm-Message-State: AOAM532tamQtvxyBNN4hWrkVTec3DvzStpv6NFswOljRer2GogUKI50Q
+        vmJBSYZjGkI5nlhGOukb6VQKcQ==
+X-Google-Smtp-Source: ABdhPJziN1RDbNaC2S+YMAoUkGKn2f+KngJEz1+d5F2GY3qWG0qGkU38nN0FtIz1QZ2HPMATScxOyg==
+X-Received: by 2002:a5d:43ca:: with SMTP id v10mr14464632wrr.299.1598434478379;
+        Wed, 26 Aug 2020 02:34:38 -0700 (PDT)
 Received: from dell.default ([95.149.164.62])
-        by smtp.gmail.com with ESMTPSA id u3sm3978759wml.44.2020.08.26.02.34.35
+        by smtp.gmail.com with ESMTPSA id u3sm3978759wml.44.2020.08.26.02.34.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Aug 2020 02:34:35 -0700 (PDT)
+        Wed, 26 Aug 2020 02:34:37 -0700 (PDT)
 From:   Lee Jones <lee.jones@linaro.org>
 To:     kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org
 Cc:     linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
         netdev@vger.kernel.org, Lee Jones <lee.jones@linaro.org>,
-        QCA ath9k Development <ath9k-devel@qca.qualcomm.com>
-Subject: [PATCH 26/30] wireless: ath: ath9k: ar5008_initvals: Move ar5416Bank{0,1,2,3,7} to where they are used
-Date:   Wed, 26 Aug 2020 10:33:57 +0100
-Message-Id: <20200826093401.1458456-27-lee.jones@linaro.org>
+        Arend van Spriel <arend.vanspriel@broadcom.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
+        Wright Feng <wright.feng@cypress.com>,
+        brcm80211-dev-list.pdl@broadcom.com, brcm80211-dev-list@cypress.com
+Subject: [PATCH 27/30] wireless: broadcom: brcm80211: phy_lcn: Remove a bunch of unused variables
+Date:   Wed, 26 Aug 2020 10:33:58 +0100
+Message-Id: <20200826093401.1458456-28-lee.jones@linaro.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200826093401.1458456-1-lee.jones@linaro.org>
 References: <20200826093401.1458456-1-lee.jones@linaro.org>
@@ -69,143 +74,180 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 Fixes the following W=1 kernel build warning(s):
 
- drivers/net/wireless/ath/ath9k/ar5008_initvals.h:627:18: warning: ‘ar5416Bank7’ defined but not used [-Wunused-const-variable=]
- 627 | static const u32 ar5416Bank7[][2] = {
- | ^~~~~~~~~~~
- drivers/net/wireless/ath/ath9k/ar5008_initvals.h:548:18: warning: ‘ar5416Bank3’ defined but not used [-Wunused-const-variable=]
- 548 | static const u32 ar5416Bank3[][3] = {
- | ^~~~~~~~~~~
- drivers/net/wireless/ath/ath9k/ar5008_initvals.h:542:18: warning: ‘ar5416Bank2’ defined but not used [-Wunused-const-variable=]
- 542 | static const u32 ar5416Bank2[][2] = {
- | ^~~~~~~~~~~
- drivers/net/wireless/ath/ath9k/ar5008_initvals.h:536:18: warning: ‘ar5416Bank1’ defined but not used [-Wunused-const-variable=]
- 536 | static const u32 ar5416Bank1[][2] = {
- | ^~~~~~~~~~~
- drivers/net/wireless/ath/ath9k/ar5008_initvals.h:462:18: warning: ‘ar5416Bank0’ defined but not used [-Wunused-const-variable=]
- 462 | static const u32 ar5416Bank0[][2] = {
- | ^~~~~~~~~~~
+ In file included from drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c:11:
+ drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c: In function ‘wlc_lcnphy_rx_iq_cal’:
+ drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c:1366:29: warning: variable ‘RFOverride0_old’ set but not used [-Wunused-but-set-variable]
+ drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c: In function ‘wlc_lcnphy_radio_2064_channel_tune_4313’:
+ drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c:1667:21: warning: variable ‘qFvco’ set but not used [-Wunused-but-set-variable]
+ drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c:1667:14: warning: variable ‘qFref’ set but not used [-Wunused-but-set-variable]
+ drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c:1667:6: warning: variable ‘qFxtal’ set but not used [-Wunused-but-set-variable]
+ drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c: In function ‘wlc_lcnphy_idle_tssi_est’:
+ drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c:2856:6: warning: variable ‘idleTssi’ set but not used [-Wunused-but-set-variable]
+ drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c: In function ‘wlc_lcnphy_tx_iqlo_soft_cal_full’:
+ drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c:3861:53: warning: variable ‘locc4’ set but not used [-Wunused-but-set-variable]
+ drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c:3861:46: warning: variable ‘locc3’ set but not used [-Wunused-but-set-variable]
+ drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c:3861:39: warning: variable ‘locc2’ set but not used [-Wunused-but-set-variable]
+ drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c:3861:32: warning: variable ‘iqcc0’ set but not used [-Wunused-but-set-variable]
+ drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c: In function ‘wlc_lcnphy_periodic_cal’:
+ drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c:4196:6: warning: variable ‘rx_iqcomp_sz’ set but not used [-Wunused-but-set-variable]
+ drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c:4195:33: warning: variable ‘rx_iqcomp’ set but not used [-Wunused-but-set-variable]
+ drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c:4194:16: warning: variable ‘full_cal’ set but not used [-Wunused-but-set-variable]
+ drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c: In function ‘wlc_phy_txpwr_srom_read_lcnphy’:
+ drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c:4919:7: warning: variable ‘opo’ set but not used [-Wunused-but-set-variable]
 
-Cc: QCA ath9k Development <ath9k-devel@qca.qualcomm.com>
+Cc: Arend van Spriel <arend.vanspriel@broadcom.com>
+Cc: Franky Lin <franky.lin@broadcom.com>
+Cc: Hante Meuleman <hante.meuleman@broadcom.com>
+Cc: Chi-Hsien Lin <chi-hsien.lin@cypress.com>
+Cc: Wright Feng <wright.feng@cypress.com>
 Cc: Kalle Valo <kvalo@codeaurora.org>
 Cc: "David S. Miller" <davem@davemloft.net>
 Cc: Jakub Kicinski <kuba@kernel.org>
 Cc: linux-wireless@vger.kernel.org
+Cc: brcm80211-dev-list.pdl@broadcom.com
+Cc: brcm80211-dev-list@cypress.com
 Cc: netdev@vger.kernel.org
 Signed-off-by: Lee Jones <lee.jones@linaro.org>
 ---
- .../net/wireless/ath/ath9k/ar5008_initvals.h  | 31 -------------------
- drivers/net/wireless/ath/ath9k/ar5008_phy.c   | 31 ++++++++++++++++++-
- 2 files changed, 30 insertions(+), 32 deletions(-)
+ .../broadcom/brcm80211/brcmsmac/phy/phy_lcn.c | 40 +++++--------------
+ 1 file changed, 11 insertions(+), 29 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/ar5008_initvals.h b/drivers/net/wireless/ath/ath9k/ar5008_initvals.h
-index 8d251600d8458..7da8365ae69a8 100644
---- a/drivers/net/wireless/ath/ath9k/ar5008_initvals.h
-+++ b/drivers/net/wireless/ath/ath9k/ar5008_initvals.h
-@@ -459,12 +459,6 @@ static const u32 ar5416Common[][2] = {
- 	{0x0000a3e0, 0x000001ce},
- };
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c
+index 7ef36234a25dc..b8193c99e8642 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c
+@@ -1363,7 +1363,7 @@ wlc_lcnphy_rx_iq_cal(struct brcms_phy *pi,
+ 	u16 tx_pwr_ctrl;
+ 	u8 tx_gain_index_old = 0;
+ 	bool result = false, tx_gain_override_old = false;
+-	u16 i, Core1TxControl_old, RFOverride0_old,
++	u16 i, Core1TxControl_old,
+ 	    RFOverrideVal0_old, rfoverride2_old, rfoverride2val_old,
+ 	    rfoverride3_old, rfoverride3val_old, rfoverride4_old,
+ 	    rfoverride4val_old, afectrlovr_old, afectrlovrval_old;
+@@ -1404,7 +1404,7 @@ wlc_lcnphy_rx_iq_cal(struct brcms_phy *pi,
  
--static const u32 ar5416Bank0[][2] = {
--	/* Addr      allmodes  */
--	{0x000098b0, 0x1e5795e5},
--	{0x000098e0, 0x02008020},
--};
--
- static const u32 ar5416BB_RfGain[][3] = {
- 	/* Addr      5G          2G        */
- 	{0x00009a00, 0x00000000, 0x00000000},
-@@ -533,23 +527,6 @@ static const u32 ar5416BB_RfGain[][3] = {
- 	{0x00009afc, 0x000000f9, 0x000000f9},
- };
+ 	or_phy_reg(pi, 0x631, 0x0015);
  
--static const u32 ar5416Bank1[][2] = {
--	/* Addr      allmodes  */
--	{0x000098b0, 0x02108421},
--	{0x000098ec, 0x00000008},
--};
--
--static const u32 ar5416Bank2[][2] = {
--	/* Addr      allmodes  */
--	{0x000098b0, 0x0e73ff17},
--	{0x000098e0, 0x00000420},
--};
--
--static const u32 ar5416Bank3[][3] = {
--	/* Addr      5G          2G        */
--	{0x000098f0, 0x01400018, 0x01c00018},
--};
--
- static const u32 ar5416Bank6TPC[][3] = {
- 	/* Addr      5G          2G        */
- 	{0x0000989c, 0x00000000, 0x00000000},
-@@ -587,13 +564,6 @@ static const u32 ar5416Bank6TPC[][3] = {
- 	{0x000098d0, 0x0000000f, 0x0010000f},
- };
+-	RFOverride0_old = read_phy_reg(pi, 0x44c);
++	read_phy_reg(pi, 0x44c); /* RFOverride0_old */
+ 	RFOverrideVal0_old = read_phy_reg(pi, 0x44d);
+ 	rfoverride2_old = read_phy_reg(pi, 0x4b0);
+ 	rfoverride2val_old = read_phy_reg(pi, 0x4b1);
+@@ -1664,7 +1664,7 @@ wlc_lcnphy_radio_2064_channel_tune_4313(struct brcms_phy *pi, u8 channel)
+ 	const struct chan_info_2064_lcnphy *ci;
+ 	u8 rfpll_doubler = 0;
+ 	u8 pll_pwrup, pll_pwrup_ovr;
+-	s32 qFxtal, qFref, qFvco, qFcal;
++	s32 qFcal;
+ 	u8 d15, d16, f16, e44, e45;
+ 	u32 div_int, div_frac, fvco3, fpfd, fref3, fcal_div;
+ 	u16 loop_bw, d30, setCount;
+@@ -1738,10 +1738,7 @@ wlc_lcnphy_radio_2064_channel_tune_4313(struct brcms_phy *pi, u8 channel)
+ 	fvco3 = (ci->freq * 3);
+ 	fref3 = 2 * fpfd;
  
--static const u32 ar5416Bank7[][2] = {
--	/* Addr      allmodes  */
--	{0x0000989c, 0x00000500},
--	{0x0000989c, 0x00000800},
--	{0x000098cc, 0x0000000e},
--};
+-	qFxtal = wlc_lcnphy_qdiv_roundup(pi->xtalfreq, PLL_2064_MHZ, 16);
+-	qFref = wlc_lcnphy_qdiv_roundup(fpfd, PLL_2064_MHZ, 16);
+ 	qFcal = pi->xtalfreq * fcal_div / PLL_2064_MHZ;
+-	qFvco = wlc_lcnphy_qdiv_roundup(fvco3, 2, 16);
+ 
+ 	write_radio_reg(pi, RADIO_2064_REG04F, 0x02);
+ 
+@@ -2853,7 +2850,7 @@ static void wlc_lcnphy_idle_tssi_est(struct brcms_phy_pub *ppi)
+ 	bool suspend, tx_gain_override_old;
+ 	struct lcnphy_txgains old_gains;
+ 	struct brcms_phy *pi = container_of(ppi, struct brcms_phy, pubpi_ro);
+-	u16 idleTssi, idleTssi0_2C, idleTssi0_OB, idleTssi0_regvalue_OB,
++	u16 idleTssi0_2C, idleTssi0_OB, idleTssi0_regvalue_OB,
+ 	    idleTssi0_regvalue_2C;
+ 	u16 SAVE_txpwrctrl = wlc_lcnphy_get_tx_pwr_ctrl(pi);
+ 	u16 SAVE_lpfgain = read_radio_reg(pi, RADIO_2064_REG112);
+@@ -2863,7 +2860,7 @@ static void wlc_lcnphy_idle_tssi_est(struct brcms_phy_pub *ppi)
+ 	u16 SAVE_iqadc_aux_en = read_radio_reg(pi, RADIO_2064_REG11F) & 4;
+ 	u8 SAVE_bbmult = wlc_lcnphy_get_bbmult(pi);
+ 
+-	idleTssi = read_phy_reg(pi, 0x4ab);
++	read_phy_reg(pi, 0x4ab); /* idleTssi */
+ 	suspend = (0 == (bcma_read32(pi->d11core, D11REGOFFS(maccontrol)) &
+ 			 MCTL_EN_MAC));
+ 	if (!suspend)
+@@ -2887,8 +2884,7 @@ static void wlc_lcnphy_idle_tssi_est(struct brcms_phy_pub *ppi)
+ 	wlc_lcnphy_set_bbmult(pi, 0x0);
+ 
+ 	wlc_phy_do_dummy_tx(pi, true, OFF);
+-	idleTssi = ((read_phy_reg(pi, 0x4ab) & (0x1ff << 0))
+-		    >> 0);
++	read_phy_reg(pi, 0x4ab); /* idleTssi */
+ 
+ 	idleTssi0_2C = ((read_phy_reg(pi, 0x63e) & (0x1ff << 0))
+ 			>> 0);
+@@ -3858,8 +3854,6 @@ void wlc_lcnphy_get_tx_iqcc(struct brcms_phy *pi, u16 *a, u16 *b)
+ 
+ static void wlc_lcnphy_tx_iqlo_soft_cal_full(struct brcms_phy *pi)
+ {
+-	struct lcnphy_unsign16_struct iqcc0, locc2, locc3, locc4;
 -
- static const u32 ar5416Addac[][2] = {
- 	/* Addr      allmodes  */
- 	{0x0000989c, 0x00000000},
-@@ -634,4 +604,3 @@ static const u32 ar5416Addac[][2] = {
- 	{0x0000989c, 0x00000000},
- 	{0x000098c4, 0x00000000},
- };
+ 	wlc_lcnphy_set_cc(pi, 0, 0, 0);
+ 	wlc_lcnphy_set_cc(pi, 2, 0, 0);
+ 	wlc_lcnphy_set_cc(pi, 3, 0, 0);
+@@ -3872,10 +3866,10 @@ static void wlc_lcnphy_tx_iqlo_soft_cal_full(struct brcms_phy *pi)
+ 	wlc_lcnphy_a1(pi, 2, 2, 1);
+ 	wlc_lcnphy_a1(pi, 0, 4, 3);
+ 
+-	iqcc0 = wlc_lcnphy_get_cc(pi, 0);
+-	locc2 = wlc_lcnphy_get_cc(pi, 2);
+-	locc3 = wlc_lcnphy_get_cc(pi, 3);
+-	locc4 = wlc_lcnphy_get_cc(pi, 4);
++	wlc_lcnphy_get_cc(pi, 0);
++	wlc_lcnphy_get_cc(pi, 2);
++	wlc_lcnphy_get_cc(pi, 3);
++	wlc_lcnphy_get_cc(pi, 4);
+ }
+ 
+ u16 wlc_lcnphy_get_tx_locc(struct brcms_phy *pi)
+@@ -4191,9 +4185,7 @@ static void wlc_lcnphy_glacial_timer_based_cal(struct brcms_phy *pi)
+ 
+ static void wlc_lcnphy_periodic_cal(struct brcms_phy *pi)
+ {
+-	bool suspend, full_cal;
+-	const struct lcnphy_rx_iqcomp *rx_iqcomp;
+-	int rx_iqcomp_sz;
++	bool suspend;
+ 	u16 SAVE_pwrctrl = wlc_lcnphy_get_tx_pwr_ctrl(pi);
+ 	s8 index;
+ 	struct phytbl_info tab;
+@@ -4203,9 +4195,6 @@ static void wlc_lcnphy_periodic_cal(struct brcms_phy *pi)
+ 
+ 	pi->phy_lastcal = pi->sh->now;
+ 	pi->phy_forcecal = false;
+-	full_cal =
+-		(pi_lcn->lcnphy_full_cal_channel !=
+-		 CHSPEC_CHANNEL(pi->radio_chanspec));
+ 	pi_lcn->lcnphy_full_cal_channel = CHSPEC_CHANNEL(pi->radio_chanspec);
+ 	index = pi_lcn->lcnphy_current_index;
+ 
+@@ -4220,9 +4209,6 @@ static void wlc_lcnphy_periodic_cal(struct brcms_phy *pi)
+ 
+ 	wlc_lcnphy_txpwrtbl_iqlo_cal(pi);
+ 
+-	rx_iqcomp = lcnphy_rx_iqcomp_table_rev0;
+-	rx_iqcomp_sz = ARRAY_SIZE(lcnphy_rx_iqcomp_table_rev0);
 -
-diff --git a/drivers/net/wireless/ath/ath9k/ar5008_phy.c b/drivers/net/wireless/ath/ath9k/ar5008_phy.c
-index dae95402eb3a9..55b2d9aa080d5 100644
---- a/drivers/net/wireless/ath/ath9k/ar5008_phy.c
-+++ b/drivers/net/wireless/ath/ath9k/ar5008_phy.c
-@@ -18,7 +18,6 @@
- #include "hw-ops.h"
- #include "../regd.h"
- #include "ar9002_phy.h"
--#include "ar5008_initvals.h"
+ 	if (LCNREV_IS(pi->pubpi.phy_rev, 1))
+ 		wlc_lcnphy_rx_iq_cal(pi, NULL, 0, true, false, 1, 40);
+ 	else
+@@ -4916,10 +4902,6 @@ static bool wlc_phy_txpwr_srom_read_lcnphy(struct brcms_phy *pi)
+ 				offset_ofdm >>= 4;
+ 			}
+ 		} else {
+-			u8 opo = 0;
+-
+-			opo = sprom->opo;
+-
+ 			for (i = TXP_FIRST_CCK; i <= TXP_LAST_CCK; i++)
+ 				pi->tx_srom_max_rate_2g[i] = txpwr;
  
- /* All code below is for AR5008, AR9001, AR9002 */
- 
-@@ -51,6 +50,36 @@ static const int m2ThreshLowExt_off = 127;
- static const int m1ThreshExt_off = 127;
- static const int m2ThreshExt_off = 127;
- 
-+static const u32 ar5416Bank0[][2] = {
-+	/* Addr      allmodes  */
-+	{0x000098b0, 0x1e5795e5},
-+	{0x000098e0, 0x02008020},
-+};
-+
-+static const u32 ar5416Bank1[][2] = {
-+	/* Addr      allmodes  */
-+	{0x000098b0, 0x02108421},
-+	{0x000098ec, 0x00000008},
-+};
-+
-+static const u32 ar5416Bank2[][2] = {
-+	/* Addr      allmodes  */
-+	{0x000098b0, 0x0e73ff17},
-+	{0x000098e0, 0x00000420},
-+};
-+
-+static const u32 ar5416Bank3[][3] = {
-+	/* Addr      5G          2G        */
-+	{0x000098f0, 0x01400018, 0x01c00018},
-+};
-+
-+static const u32 ar5416Bank7[][2] = {
-+	/* Addr      allmodes  */
-+	{0x0000989c, 0x00000500},
-+	{0x0000989c, 0x00000800},
-+	{0x000098cc, 0x0000000e},
-+};
-+
- static const struct ar5416IniArray bank0 = STATIC_INI_ARRAY(ar5416Bank0);
- static const struct ar5416IniArray bank1 = STATIC_INI_ARRAY(ar5416Bank1);
- static const struct ar5416IniArray bank2 = STATIC_INI_ARRAY(ar5416Bank2);
 -- 
 2.25.1
 
