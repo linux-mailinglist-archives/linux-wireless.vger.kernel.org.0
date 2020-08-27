@@ -2,162 +2,83 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 29DFA25427D
-	for <lists+linux-wireless@lfdr.de>; Thu, 27 Aug 2020 11:34:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4EF2B2542A0
+	for <lists+linux-wireless@lfdr.de>; Thu, 27 Aug 2020 11:42:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728453AbgH0Jd6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 27 Aug 2020 05:33:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39944 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728185AbgH0Jdz (ORCPT
+        id S1727902AbgH0JmU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 27 Aug 2020 05:42:20 -0400
+Received: from mail29.static.mailgun.info ([104.130.122.29]:28836 "EHLO
+        mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726157AbgH0JmT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 27 Aug 2020 05:33:55 -0400
-Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com [IPv6:2a00:1450:4864:20::343])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD18FC061264
-        for <linux-wireless@vger.kernel.org>; Thu, 27 Aug 2020 02:33:54 -0700 (PDT)
-Received: by mail-wm1-x343.google.com with SMTP id w2so4297604wmi.1
-        for <linux-wireless@vger.kernel.org>; Thu, 27 Aug 2020 02:33:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=s5e7PAlfYft9eFvmMXp+FriUBHbpOi2nhrqdvKXRL50=;
-        b=dYuJGVBmRmkmXcoI/V4nntaTYx0qVN96dznRjB5R99zgjt5H9u2l2suAYGkf2qk4ZR
-         RsUF2Uz5WhB1nfeZXqMidyIy+q4T6fVEwGcLaNB7Edoeha/7YEeM556KKBTSV7eMXuF6
-         Krva4Tp7eXmq2Cq1coYzDJCPsBvSCoExnMmb9DadVQY0ADbqBnoxz76CmueCHXwuB7t4
-         Cdmlpq2WBEN0fGM0Fm6nsxVeLbqMvPqR4JDzUDNUhB+b0NtYmhMq53ROTjzCpejkw+k1
-         aJnVc9hay1VHePkWxNQApXCtZt9Ofh0sgfBQdtvsahoiWizIFVfTK+5W285a/FFH27hv
-         MTPw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=s5e7PAlfYft9eFvmMXp+FriUBHbpOi2nhrqdvKXRL50=;
-        b=QqmtOafdR227Aa+1svoLeE39IZqOnQRqbj88IFKIjRLAj6lcMPZndS5ykSsOubadGw
-         haZlX3W+qSutCkn4s24HGQEw8hvhjml0RPAKX8ulmqIWBeIkaKvLJF5D99BlfQAinTxb
-         mAO8CUHUovV8IdZwr1m85I4QzArpMRXR7UNBENqDDiS3pXsIM5A4NQDXtUgVG0gkyNYc
-         96YWUOUPTziM3aZnnimTF2DwBZULCynAhoqMxLgj4vIDqLbB3XtWf6HQr5OPLNdiHMg8
-         p4Vl2pL4EXHQAvOZ/mr+Hi5ln0EV9ph4ORTEfQTdlKtp1YJ5I/FpF/Y0pEB2BoTrx+tG
-         WJpw==
-X-Gm-Message-State: AOAM5322AVulAEO+TyJKhPefJACUJRii9GVDHZdzHOeC2ppa1Bai9ock
-        R2Us9w1GCp8+1l89NOilwfOJKQ==
-X-Google-Smtp-Source: ABdhPJxh3MiG9wj6HGV/dnuv7EM7Uw1UBREO8gCQvp6ytS6Ki4av4AnJOt6sdwhcW3suy7Gn9E7xfA==
-X-Received: by 2002:a1c:f00a:: with SMTP id a10mr10797514wmb.84.1598520833319;
-        Thu, 27 Aug 2020 02:33:53 -0700 (PDT)
-Received: from dell ([91.110.221.141])
-        by smtp.gmail.com with ESMTPSA id z8sm3879309wmf.42.2020.08.27.02.33.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 Aug 2020 02:33:52 -0700 (PDT)
-Date:   Thu, 27 Aug 2020 10:33:51 +0100
-From:   Lee Jones <lee.jones@linaro.org>
-To:     davem@davemloft.net, kuba@kernel.org
-Cc:     linux-kernel@vger.kernel.org,
-        Christian Lamparter <chunkeey@googlemail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH v2 08/30] net: wireless: ath: carl9170: Convert 'ar9170_qmap'
- to inline function
-Message-ID: <20200827093351.GA1627017@dell>
-References: <20200814113933.1903438-1-lee.jones@linaro.org>
- <20200814113933.1903438-9-lee.jones@linaro.org>
+        Thu, 27 Aug 2020 05:42:19 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1598521339; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=wDL5smpFuHK1RVU40LuGBzvmSaHNufP3hdJpSXobU2w=;
+ b=SQOnEvl1InU5RqBHGQDoWEklSpASDCHTETJwPcl4NlZxADibQTh/CnRi9iEzwjjKLc5PPX8F
+ caE76vt0My60gZzpeZS2BcOGgAiqJpufHvjowaSz3DTJIFDGZRzetonYbeMamWzl3gX7UszK
+ cXS7dHpC2Z4AV63KAplclgDlFFQ=
+X-Mailgun-Sending-Ip: 104.130.122.29
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n04.prod.us-east-1.postgun.com with SMTP id
+ 5f477ffadb22b129dfd2cb12 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 27 Aug 2020 09:42:18
+ GMT
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 6DD4DC433C6; Thu, 27 Aug 2020 09:42:17 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
+        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 5B491C433CA;
+        Thu, 27 Aug 2020 09:42:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 5B491C433CA
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20200814113933.1903438-9-lee.jones@linaro.org>
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v2 15/15] rtlwifi: Remove temporary definition of RT_TRACE
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20200723204244.24457-16-Larry.Finger@lwfinger.net>
+References: <20200723204244.24457-16-Larry.Finger@lwfinger.net>
+To:     Larry Finger <Larry.Finger@lwfinger.net>
+Cc:     linux-wireless@vger.kernel.org,
+        Larry Finger <Larry.Finger@lwfinger.net>
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
+Message-Id: <20200827094217.6DD4DC433C6@smtp.codeaurora.org>
+Date:   Thu, 27 Aug 2020 09:42:17 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-'ar9170_qmap' is used in some source files which include carl9170.h,
-but not all of them.  A 'defined but not used' warning is thrown when
-compiling the ones which do not use it.
+Larry Finger <Larry.Finger@lwfinger.net> wrote:
 
-Fixes the following W=1 kernel build warning(s)
+> A definition of this macro was kept until all drivers had been converted.
+> It can now be deleted.
+> 
+> This change also renames _rtl_dbg_trace() to _rtl_dbg_out().
+> 
+> Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
+> Reported-by: kernel test robot <lkp@intel.com>
+> Reported-by: kernel test robot <lkp@intel.com>
 
- from drivers/net/wireless/ath/carl9170/carl9170.h:57,
- In file included from drivers/net/wireless/ath/carl9170/carl9170.h:57,
- drivers/net/wireless/ath/carl9170/carl9170.h:71:17: warning: ‘ar9170_qmap’ defined but not used [-Wunused-const-variable=]
+Dropping patch 15 due to the reported build error, please resubmit that
+separately.
 
- NB: Snipped - lots of these repeat
+Patch set to Changes Requested.
 
-Cc: Christian Lamparter <chunkeey@googlemail.com>
-Cc: Kalle Valo <kvalo@codeaurora.org>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Johannes Berg <johannes@sipsolutions.net>
-Cc: linux-wireless@vger.kernel.org
-Cc: netdev@vger.kernel.org
-Suggested-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Signed-off-by: Lee Jones <lee.jones@linaro.org>
----
- drivers/net/wireless/ath/carl9170/carl9170.h | 5 ++++-
- drivers/net/wireless/ath/carl9170/main.c     | 2 +-
- drivers/net/wireless/ath/carl9170/tx.c       | 6 +++---
- 3 files changed, 8 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/carl9170/carl9170.h b/drivers/net/wireless/ath/carl9170/carl9170.h
-index 237d0cda1bcb0..0d38100d6e4f5 100644
---- a/drivers/net/wireless/ath/carl9170/carl9170.h
-+++ b/drivers/net/wireless/ath/carl9170/carl9170.h
-@@ -68,7 +68,10 @@
- 
- #define PAYLOAD_MAX	(CARL9170_MAX_CMD_LEN / 4 - 1)
- 
--static const u8 ar9170_qmap[__AR9170_NUM_TXQ] = { 3, 2, 1, 0 };
-+static inline u8 ar9170_qmap(u8 idx)
-+{
-+	return 3 - idx; /* { 3, 2, 1, 0 } */
-+}
- 
- #define CARL9170_MAX_RX_BUFFER_SIZE		8192
- 
-diff --git a/drivers/net/wireless/ath/carl9170/main.c b/drivers/net/wireless/ath/carl9170/main.c
-index 816929fb5b143..dbef9d8fc893b 100644
---- a/drivers/net/wireless/ath/carl9170/main.c
-+++ b/drivers/net/wireless/ath/carl9170/main.c
-@@ -1374,7 +1374,7 @@ static int carl9170_op_conf_tx(struct ieee80211_hw *hw,
- 	int ret;
- 
- 	mutex_lock(&ar->mutex);
--	memcpy(&ar->edcf[ar9170_qmap[queue]], param, sizeof(*param));
-+	memcpy(&ar->edcf[ar9170_qmap(queue)], param, sizeof(*param));
- 	ret = carl9170_set_qos(ar);
- 	mutex_unlock(&ar->mutex);
- 	return ret;
-diff --git a/drivers/net/wireless/ath/carl9170/tx.c b/drivers/net/wireless/ath/carl9170/tx.c
-index 2407931440edb..2f9e275db8ef0 100644
---- a/drivers/net/wireless/ath/carl9170/tx.c
-+++ b/drivers/net/wireless/ath/carl9170/tx.c
-@@ -663,7 +663,7 @@ static void __carl9170_tx_process_status(struct ar9170 *ar,
- 	unsigned int r, t, q;
- 	bool success = true;
- 
--	q = ar9170_qmap[info & CARL9170_TX_STATUS_QUEUE];
-+	q = ar9170_qmap(info & CARL9170_TX_STATUS_QUEUE);
- 
- 	skb = carl9170_get_queued_skb(ar, cookie, &ar->tx_status[q]);
- 	if (!skb) {
-@@ -979,7 +979,7 @@ static int carl9170_tx_prepare(struct ar9170 *ar,
- 		((CARL9170_TX_SUPER_MISC_VIF_ID >>
- 		 CARL9170_TX_SUPER_MISC_VIF_ID_S) + 1));
- 
--	hw_queue = ar9170_qmap[carl9170_get_queue(ar, skb)];
-+	hw_queue = ar9170_qmap(carl9170_get_queue(ar, skb));
- 
- 	hdr = (void *)skb->data;
- 	info = IEEE80211_SKB_CB(skb);
-@@ -1279,7 +1279,7 @@ void carl9170_tx_drop(struct ar9170 *ar, struct sk_buff *skb)
- 
- 	super = (void *)skb->data;
- 	SET_VAL(CARL9170_TX_SUPER_MISC_QUEUE, q,
--		ar9170_qmap[carl9170_get_queue(ar, skb)]);
-+		ar9170_qmap(carl9170_get_queue(ar, skb)));
- 	__carl9170_tx_process_status(ar, super->s.cookie, q);
- }
- 
 -- 
-2.25.1
+https://patchwork.kernel.org/patch/11681621/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
