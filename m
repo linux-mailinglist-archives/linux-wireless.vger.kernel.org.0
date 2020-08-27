@@ -2,55 +2,43 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4FD10253DA0
-	for <lists+linux-wireless@lfdr.de>; Thu, 27 Aug 2020 08:21:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4EC04253DF4
+	for <lists+linux-wireless@lfdr.de>; Thu, 27 Aug 2020 08:38:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727041AbgH0GUu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 27 Aug 2020 02:20:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37794 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725909AbgH0GUt (ORCPT
+        id S1726395AbgH0Gil (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 27 Aug 2020 02:38:41 -0400
+Received: from gateway34.websitewelcome.com ([192.185.149.13]:19507 "EHLO
+        gateway34.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726199AbgH0Gik (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 27 Aug 2020 02:20:49 -0400
-Received: from mail-lf1-x143.google.com (mail-lf1-x143.google.com [IPv6:2a00:1450:4864:20::143])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7C0EC06125E;
-        Wed, 26 Aug 2020 23:20:48 -0700 (PDT)
-Received: by mail-lf1-x143.google.com with SMTP id i14so2291424lfl.12;
-        Wed, 26 Aug 2020 23:20:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=r5l/iVKTiUVvbZkbB/b51IFn+fyGDLG9SnEtHS4suU8=;
-        b=gGiDwhEv1QTfrUcR+8cI034luCHsccSlcEBu4qtLH2RwvgnJcG4Xeof1mqqStFpDrt
-         Lc5RGJvFLZlBeIaF2tGRfAQiUrFpdrhbM5ikcbQGCBGC58HXByLL0FPK0zjXgLrniLBg
-         5z28r0D1s1gNrUcdVnRezy9M6WJUiIEDjh7PrE0KV5CcFOdZDiVCb2kOIpSSf1h9Z0Zs
-         h1tR1EKXWFKic6cKMfCIIwnO/eW014LBv/LYHMJI/TVlvu/6g/RZnprFr1gZih8PJLLr
-         SJTs8wXIifRDi4IVCTdZUNXjsARJdL48H+QEf1mEJAZmKTgUBX8VzVnQEEH9k2S9iZoS
-         oPkg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=r5l/iVKTiUVvbZkbB/b51IFn+fyGDLG9SnEtHS4suU8=;
-        b=qkZFGpft5NE4LZILhwLxhCI2OguxSwLHmjH1ucTvka0OCbz0riKyTT8XuyLcW5YdoH
-         XPQ+/5Igl6fyTSSzDP4w87rV8QI6XKhZYHLdbk7S87flRu5XDG/NaEQtZfbLnwEgttJA
-         cAeNbPPfZhMNpP5JmwWlrc8h1SXNJrMdI9MgWhGcTtfOSXYFHkXt5ou9pOAEHe67vAP1
-         ZrY13Zs7qbGz0HTsYKzA9MULYkQrvrPEJjioEJIbvSPIm3LvUhIBi9kMTFOi8GUilXLT
-         YvXRyLsBasXES8WdX94CQqh4uwZgHMF4/2BOLs0cx0pO1RCWXrxSt3d/0w/cTk2PWC2e
-         0nVw==
-X-Gm-Message-State: AOAM5314EP8BT866nnzgT+qiDuzDpRK1XhhKcq3T+9QD3byuGNeg/mkY
-        CIGJ09zLAa486QzkjtWTzP+GTB/ZmYo=
-X-Google-Smtp-Source: ABdhPJy2QOqs34ZJMXeyTLFZt00WuO7FOhxkaAatGFpajU2bYLSOfwWUHJeYlGDqqIiuHil3tSkEPg==
-X-Received: by 2002:a05:6512:3e8:: with SMTP id n8mr9177272lfq.210.1598509247095;
-        Wed, 26 Aug 2020 23:20:47 -0700 (PDT)
-Received: from [192.168.2.145] (109-252-170-211.dynamic.spd-mgts.ru. [109.252.170.211])
-        by smtp.googlemail.com with ESMTPSA id m15sm244209ljh.62.2020.08.26.23.20.46
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 26 Aug 2020 23:20:46 -0700 (PDT)
+        Thu, 27 Aug 2020 02:38:40 -0400
+X-Greylist: delayed 1244 seconds by postgrey-1.27 at vger.kernel.org; Thu, 27 Aug 2020 02:38:39 EDT
+Received: from cm16.websitewelcome.com (cm16.websitewelcome.com [100.42.49.19])
+        by gateway34.websitewelcome.com (Postfix) with ESMTP id DB1DD5DC77
+        for <linux-wireless@vger.kernel.org>; Thu, 27 Aug 2020 01:17:52 -0500 (CDT)
+Received: from gator4166.hostgator.com ([108.167.133.22])
+        by cmsmtp with SMTP
+        id BBEOkPIwmCjCVBBEOkAcZR; Thu, 27 Aug 2020 01:17:52 -0500
+X-Authority-Reason: nr=8
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=qHxOnyBIlnPK0Cq/zWOJblisYvm45RWVknmbdrQpGHk=; b=xpzEgaM11EX/CfqgzsxXGERJgx
+        dRv/NW4pbAJZ6+ZRnGx/+hbiChmfGtgS8uiNtM8AI1HHeR/+caudItE14kZegj7qoEs1X+QN9Zt6B
+        zjcsbquQtKrJ6/UnhAmXoD35QOIPIv5TgJ0dfk4cs7nH1xWACHneMSZ7ciyECo+P5hV+OkMr6sxeb
+        11BbwNM4qDor8EcdZtXn6k2/JIS7uPHD2X+vYhw9bm+XqFZrkYrRboZDGMEH/OSTsaNUnGAhPr6hP
+        Q89kUgZjLeW1h82iskK/q+QVG0NRS82KhqgL/fYPyBgA6B6XeGh/e0j5fO4DU4TWWIFAxSUj5Tpc8
+        PG5KfxSQ==;
+Received: from 187-162-31-110.static.axtel.net ([187.162.31.110]:44752 helo=[192.168.15.8])
+        by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.93)
+        (envelope-from <gustavo@embeddedor.com>)
+        id 1kBBEO-000D9J-C6; Thu, 27 Aug 2020 01:17:52 -0500
 Subject: Re: [PATCH v2 2/4] brcmfmac: drop unnecessary "fallthrough" comments
-To:     "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
+To:     Dmitry Osipenko <digetx@gmail.com>,
         Arend van Spriel <arend.vanspriel@broadcom.com>,
         Franky Lin <franky.lin@broadcom.com>,
         Hante Meuleman <hante.meuleman@broadcom.com>,
@@ -63,29 +51,129 @@ Cc:     linux-wireless@vger.kernel.org,
         linux-tegra@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <20200827060441.15487-1-digetx@gmail.com>
  <20200827060441.15487-3-digetx@gmail.com>
- <9ba55d08-879b-cf66-b5d9-cc8fd292a4aa@embeddedor.com>
-From:   Dmitry Osipenko <digetx@gmail.com>
-Message-ID: <d34ef95d-fd65-67ad-520a-7cba17eaadc0@gmail.com>
-Date:   Thu, 27 Aug 2020 09:20:10 +0300
+From:   "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+Autocrypt: addr=gustavo@embeddedor.com; keydata=
+ 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
+ AP7RWS474w==
+Message-ID: <9ba55d08-879b-cf66-b5d9-cc8fd292a4aa@embeddedor.com>
+Date:   Thu, 27 Aug 2020 01:23:55 -0500
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.10.0
 MIME-Version: 1.0
-In-Reply-To: <9ba55d08-879b-cf66-b5d9-cc8fd292a4aa@embeddedor.com>
+In-Reply-To: <20200827060441.15487-3-digetx@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - embeddedor.com
+X-BWhitelist: no
+X-Source-IP: 187.162.31.110
+X-Source-L: No
+X-Exim-ID: 1kBBEO-000D9J-C6
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: 187-162-31-110.static.axtel.net ([192.168.15.8]) [187.162.31.110]:44752
+X-Source-Auth: gustavo@embeddedor.com
+X-Email-Count: 8
+X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
+X-Local-Domain: yes
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-27.08.2020 09:23, Gustavo A. R. Silva пишет:
-> Hi,
-> 
-> There is a patch that address this, already:
-> 
-> https://lore.kernel.org/lkml/20200821063758.GA17783@embeddedor/
-> 
-> Thanks
+Hi,
 
-Okay, then my patch is unnecessary. Thank you!
+There is a patch that address this, already:
+
+https://lore.kernel.org/lkml/20200821063758.GA17783@embeddedor/
+
+Thanks
+--
+Gustavo
+
+On 8/27/20 01:04, Dmitry Osipenko wrote:
+> There is no need to insert the "fallthrough" comment if there is nothing
+> in-between of case switches. Hence let's remove the unnecessary comments
+> in order to make code cleaner a tad.
+> 
+> Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
+> ---
+>  drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c | 2 --
+>  drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c   | 2 --
+>  2 files changed, 4 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
+> index 1a7ab49295aa..0dc4de2fa9f6 100644
+> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
+> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
+> @@ -916,9 +916,7 @@ int brcmf_sdiod_probe(struct brcmf_sdio_dev *sdiodev)
+>  		f2_blksz = SDIO_4373_FUNC2_BLOCKSIZE;
+>  		break;
+>  	case SDIO_DEVICE_ID_BROADCOM_4359:
+> -		/* fallthrough */
+>  	case SDIO_DEVICE_ID_BROADCOM_4354:
+> -		/* fallthrough */
+>  	case SDIO_DEVICE_ID_BROADCOM_4356:
+>  		f2_blksz = SDIO_435X_FUNC2_BLOCKSIZE;
+>  		break;
+> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+> index ac3ee93a2378..b16944a898f9 100644
+> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+> @@ -4306,9 +4306,7 @@ static void brcmf_sdio_firmware_callback(struct device *dev, int err,
+>  					   CY_43455_MESBUSYCTRL, &err);
+>  			break;
+>  		case SDIO_DEVICE_ID_BROADCOM_4359:
+> -			/* fallthrough */
+>  		case SDIO_DEVICE_ID_BROADCOM_4354:
+> -			/* fallthrough */
+>  		case SDIO_DEVICE_ID_BROADCOM_4356:
+>  			brcmf_dbg(INFO, "set F2 watermark to 0x%x*4 bytes\n",
+>  				  CY_435X_F2_WATERMARK);
+> 
