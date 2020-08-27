@@ -2,53 +2,85 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DE6122545B8
-	for <lists+linux-wireless@lfdr.de>; Thu, 27 Aug 2020 15:11:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0BF12254817
+	for <lists+linux-wireless@lfdr.de>; Thu, 27 Aug 2020 16:58:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727041AbgH0NKh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 27 Aug 2020 09:10:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45504 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726322AbgH0NKN (ORCPT
+        id S1727043AbgH0O6n (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 27 Aug 2020 10:58:43 -0400
+Received: from mail29.static.mailgun.info ([104.130.122.29]:33961 "EHLO
+        mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1729034AbgH0MOy (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 27 Aug 2020 09:10:13 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C329FC061233
-        for <linux-wireless@vger.kernel.org>; Thu, 27 Aug 2020 06:10:08 -0700 (PDT)
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.94)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1kBHfL-00BbGI-3c; Thu, 27 Aug 2020 15:10:07 +0200
-Message-ID: <9037f817f2b65ca469967eff6c4b7301d4ae796e.camel@sipsolutions.net>
-Subject: Re: [PATCH V3 4/9] mac80211: add multiple bssid/ema support to bcn
- templating
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     John Crispin <john@phrozen.org>
-Cc:     linux-wireless@vger.kernel.org, ath11k@lists.infradead.org
-Date:   Thu, 27 Aug 2020 15:10:06 +0200
-In-Reply-To: <20200812150050.2683396-5-john@phrozen.org>
-References: <20200812150050.2683396-1-john@phrozen.org>
-         <20200812150050.2683396-5-john@phrozen.org>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.5 (3.36.5-1.fc32) 
+        Thu, 27 Aug 2020 08:14:54 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1598530493; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=xKkJldCpFuFFwvk5Ekpm5a9GeD8MRoy70tGm5lWY6Xk=; b=feycNM2nAWmxYGl657imEhdwe4tGv7xc2gGT4PHc5kLlLdtAME/GwDXgNB8XkLcypg5yu6Ey
+ LrVhIXaVdpkYPQWIfSavWlcq09nks/UCqCdH2w2BQq3ibEwBPHfIu6PY8TYdQx0nqyioMwgd
+ 3CwGo483gPpGnNiRDC78olwpEB4=
+X-Mailgun-Sending-Ip: 104.130.122.29
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n01.prod.us-east-1.postgun.com with SMTP id
+ 5f47a11dc9ede11f5eb5592a (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 27 Aug 2020 12:03:41
+ GMT
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 2039EC43391; Thu, 27 Aug 2020 12:03:41 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 1E98DC433C6;
+        Thu, 27 Aug 2020 12:03:38 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 1E98DC433C6
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Lee Jones <lee.jones@linaro.org>
+Cc:     davem@davemloft.net, kuba@kernel.org, linux-kernel@vger.kernel.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH 00/30] Set 3: Rid W=1 warnings in Wireless
+References: <20200826093401.1458456-1-lee.jones@linaro.org>
+Date:   Thu, 27 Aug 2020 15:03:37 +0300
+In-Reply-To: <20200826093401.1458456-1-lee.jones@linaro.org> (Lee Jones's
+        message of "Wed, 26 Aug 2020 10:33:31 +0100")
+Message-ID: <87y2m09tye.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 2020-08-12 at 17:00 +0200, John Crispin wrote:
-> Extend ieee80211_beacon_get_template() to allow generation of EMA beacons.
-> Drivers for hardware that does not support ema offloading can use this
-> function to update their becaons after they receive beacon completion
-> events from the hardware.
-> 
+Lee Jones <lee.jones@linaro.org> writes:
 
-This all seems really quite simple when you have the software fallbacks,
-so is there any chance you could add it to hwsim, in particular for
-hostap tests? I'm sure Jouni would also appreciate tests for this on the
-hostap side.
+> This set is part of a larger effort attempting to clean-up W=1
+> kernel builds, which are currently overwhelmingly riddled with
+> niggly little warnings.
+>
+> There are quite a few W=1 warnings in the Wireless.  My plan
+> is to work through all of them over the next few weeks.
+> Hopefully it won't be too long before drivers/net/wireless
+> builds clean with W=1 enabled.
 
-johannes
+How much patches are there going to be? I was first positive about the
+idea but now I am really starting to wonder if this is worth the effort,
+these patches are spamming my patchwork significantly and taking too
+much time. At least please hold of on any new patches for at least a
+week so I can catch up with all patches I have.
 
+And like I said already before, follow the title style we use so that I
+don't need to edit every patch myself:
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches#commit_title_is_wrong
+
+-- 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
