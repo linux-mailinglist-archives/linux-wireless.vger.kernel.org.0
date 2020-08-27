@@ -2,59 +2,32 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0CC982549D6
-	for <lists+linux-wireless@lfdr.de>; Thu, 27 Aug 2020 17:49:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CE14D254C57
+	for <lists+linux-wireless@lfdr.de>; Thu, 27 Aug 2020 19:42:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726798AbgH0PtI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 27 Aug 2020 11:49:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42398 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726200AbgH0PtI (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 27 Aug 2020 11:49:08 -0400
-Received: from mail-qv1-xf43.google.com (mail-qv1-xf43.google.com [IPv6:2607:f8b0:4864:20::f43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBF42C061264;
-        Thu, 27 Aug 2020 08:49:07 -0700 (PDT)
-Received: by mail-qv1-xf43.google.com with SMTP id j10so2789080qvo.13;
-        Thu, 27 Aug 2020 08:49:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=bhg41soIay7+587Qkw7LUVijSMFtZApm/WI52siUHqo=;
-        b=r+0Z51AzGh3RpvLN7SrOrKt0OzXk1uO3gIBm2Pu/DOuix3nSPCCqDG/qHztIaXh8QN
-         HiKQC4O9rhKhDi26XChu3hE3TUHUtKZn9lndImODCUaorVuYIPQjYAx2P4/s4oXPhJLr
-         obECsPYChpudqJw0yFiMpzBRHGmzAflQMOaxX+Mr6cGcPSgwMDhh9Maz08NIpbQP5dUs
-         rugrILqOCy9Jbs6n3dzYfgVB1IyGk5ikOE4sP+wQO6OFfEhipESsiIELqzOr0tqZst49
-         TIaBzpWtk+ssgZKjAMSx4i3jtObVPBTkvz0Kb8kc8IzsXI5Bco2IwBenmb/jelgP4jQg
-         eupw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=bhg41soIay7+587Qkw7LUVijSMFtZApm/WI52siUHqo=;
-        b=mXfyMg2mk5WApq8ampzsMUD6VTECn90wFOD6m3QzWoGmNYT30en8DjZ1ygsKTjIhe3
-         xsizKba6d9Eh/GYeJBu2RL7ETJAE0mL54+4gd9+VSi8HhuroxPcnmFQF823uZBhAa10j
-         Lcddcpa5z45LOslVBkq/Psrk3ZXOuWvXvQVy+pV2Rdy0K2pGDriXULYHwV1k5+atf8MY
-         qTpJadPOKVMdxA/zfrpjI1hFaWzReJaaKMsQo4WuPYIZkSzrtT3DOzkOhRjObhzdI/1j
-         2kMGtXiX6q+Ft9GweXaX2v+LsmyGLDCZqZA35tnrgBxhBPEmi/Tjv9kYkR5eaElD+SUo
-         juiQ==
-X-Gm-Message-State: AOAM531bL0KmGxKJz8LtH0bkQc/6/pik/l7J/BMefdaSJRhl6J7ANVwR
-        P0I8bpFvnotcCzdgVbOVA27Qqgr4NR+JZS7aP8jEokGQvhY=
-X-Google-Smtp-Source: ABdhPJw1Rl4RnR6X/MbtbB5gxI0GdiLcMsChgSFbr5UNmVwq/YZtYaADIxZ92er5Ilp/EDcy0juMltTIu0VNIpc1uZA=
-X-Received: by 2002:ad4:4992:: with SMTP id t18mr18408206qvx.193.1598543346813;
- Thu, 27 Aug 2020 08:49:06 -0700 (PDT)
-MIME-Version: 1.0
-References: <f0a2cb7ea606f1a284d4c23cbf983da2954ce9b6.1598420968.git.mchehab+huawei@kernel.org>
-In-Reply-To: <f0a2cb7ea606f1a284d4c23cbf983da2954ce9b6.1598420968.git.mchehab+huawei@kernel.org>
-From:   Steve deRosier <derosier@gmail.com>
-Date:   Thu, 27 Aug 2020 08:48:30 -0700
-Message-ID: <CALLGbRL+duiHFd3w7hcD=u47k+JM5rLpOkMrRpW0aQm=oTfUnA@mail.gmail.com>
-Subject: Re: [PATCH] Revert "wlcore: Adding suppoprt for IGTK key in wlcore driver"
-To:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        Kalle Valo <kvalo@codeaurora.org>
-Cc:     linuxarm@huawei.com, mauro.chehab@huawei.com,
-        John Stultz <john.stultz@linaro.org>,
+        id S1726395AbgH0Rme (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 27 Aug 2020 13:42:34 -0400
+Received: from mail.kernel.org ([198.145.29.99]:37152 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726307AbgH0Rmd (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 27 Aug 2020 13:42:33 -0400
+Received: from coco.lan (ip5f5ad5a8.dynamic.kabel-deutschland.de [95.90.213.168])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 2A2762087E;
+        Thu, 27 Aug 2020 17:42:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1598550152;
+        bh=zyfUowNsWV1AH9t2Y/OhVrtMRfKaUwAivYAzLDicwBM=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=07ZU3viQ9K4W/2j7rtUmnY13uTbszZo4JxebwRXpVTU0rbPDvX8crv4sulA5txXDE
+         kYmlUOuNr9MdYmatsOfu9hXzg5jshHEN71HClrwf41F7Sbk0qcHLXN5PzjHJnVgRLn
+         r0uWVOa7IlmgAj8HdF77sDzEoeitLX/MPi0J6RwU=
+Date:   Thu, 27 Aug 2020 19:42:25 +0200
+From:   Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To:     Steve deRosier <derosier@gmail.com>
+Cc:     Kalle Valo <kvalo@codeaurora.org>, linuxarm@huawei.com,
+        mauro.chehab@huawei.com, John Stultz <john.stultz@linaro.org>,
         Manivannan Sadhasivam <mani@kernel.org>,
         "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>, Maital Hahn <maitalm@ti.com>,
@@ -67,48 +40,108 @@ Cc:     linuxarm@huawei.com, mauro.chehab@huawei.com,
         linux-wireless <linux-wireless@vger.kernel.org>,
         Network Development <netdev@vger.kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [PATCH] Revert "wlcore: Adding suppoprt for IGTK key in wlcore
+ driver"
+Message-ID: <20200827194225.281eb7dc@coco.lan>
+In-Reply-To: <CALLGbRL+duiHFd3w7hcD=u47k+JM5rLpOkMrRpW0aQm=oTfUnA@mail.gmail.com>
+References: <f0a2cb7ea606f1a284d4c23cbf983da2954ce9b6.1598420968.git.mchehab+huawei@kernel.org>
+        <CALLGbRL+duiHFd3w7hcD=u47k+JM5rLpOkMrRpW0aQm=oTfUnA@mail.gmail.com>
+X-Mailer: Claws Mail 3.17.6 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Aug 25, 2020 at 10:49 PM Mauro Carvalho Chehab
-<mchehab+huawei@kernel.org> wrote:
->
-> This patch causes a regression betwen Kernel 5.7 and 5.8 at wlcore:
-> with it applied, WiFi stops working, and the Kernel starts printing
-> this message every second:
->
->    wlcore: PHY firmware version: Rev 8.2.0.0.242
->    wlcore: firmware booted (Rev 8.9.0.0.79)
->    wlcore: ERROR command execute failure 14
+Em Thu, 27 Aug 2020 08:48:30 -0700
+Steve deRosier <derosier@gmail.com> escreveu:
 
-Only if NO firmware for the device in question supports the `KEY_IGTK`
-value, then this revert is appropriate. Otherwise, it likely isn't.
- My suspicion is that the feature that `KEY_IGTK` is enabling is
-specific to a newer firmware that Mauro hasn't upgraded to. What the
-OP should do is find the updated firmware and give it a try.
+> On Tue, Aug 25, 2020 at 10:49 PM Mauro Carvalho Chehab
+> <mchehab+huawei@kernel.org> wrote:
+> >
+> > This patch causes a regression betwen Kernel 5.7 and 5.8 at wlcore:
+> > with it applied, WiFi stops working, and the Kernel starts printing
+> > this message every second:
+> >
+> >    wlcore: PHY firmware version: Rev 8.2.0.0.242
+> >    wlcore: firmware booted (Rev 8.9.0.0.79)
+> >    wlcore: ERROR command execute failure 14  
+> 
+> Only if NO firmware for the device in question supports the `KEY_IGTK`
+> value, then this revert is appropriate. Otherwise, it likely isn't.
 
-AND - since there's some firmware the feature doesn't work with, the
-driver should be fixed to detect the running firmware version and not
-do things that the firmware doesn't support.  AND the firmware writer
-should also make it so the firmware doesn't barf on bad input and
-instead rejects it politely.
+Yeah, that's what I suspect too: some specific firmware is required
+for KEY_IGTK to work.
 
-But I will say I'm making an educated guess; while I have played with
-the TI devices in the past, it was years ago and I won't claim to be
-an expert. I also am unable to fix it myself at this time.
+>  My suspicion is that the feature that `KEY_IGTK` is enabling is
+> specific to a newer firmware that Mauro hasn't upgraded to. What the
+> OP should do is find the updated firmware and give it a try.
 
-I'd just rather see it fixed properly instead of a knee-jerk reaction
-of reverting it simply because the OP doesn't have current firmware.
+I didn't try checking if linux-firmware tree has a newer version on
+it. I'm using Debian Bullseye on this device. So, I suspect that
+it may have a relatively new firmware.
 
-And let's revisit the discussion of having a kernel splat because an
-unrelated piece of code fails yet the driver does exactly what it is
-supposed to do. We shouldn't be dumping registers and stack-trace when
-the code that crashed has nothing to do with the registers and
-stack-trace outputted. It is a false positive.  A simple printk WARN
-or ERROR should output notifying us that the chip firmware has crashed
-and why.  IMHO.
+Btw, that's also the version that came together with Fedora 32:
 
-- Steve
+	$ strings /lib/firmware/ti-connectivity/wl18xx-fw-4.bin |grep FRev
+	FRev 8.9.0.0.79
+	FRev 8.2.0.0.242
+
+Looking at:
+	https://git.ti.com/cgit/wilink8-wlan/wl18xx_fw/
+
+It sounds that there's a newer version released this year:
+
+	2020-05-28	Updated to FW 8.9.0.0.81
+	2018-07-29	Updated to FW 8.9.0.0.79
+
+However, it doesn't reached linux-firmware upstream yet:
+
+	$ git log --pretty=oneline ti-connectivity/wl18xx-fw-4.bin
+	3a5103fc3c29 wl18xx: update firmware file 8.9.0.0.79
+	65b1c68c63f9 wl18xx: update firmware file 8.9.0.0.76
+	dbb85a5154a5 wl18xx: update firmware file
+	69a250dd556b wl18xx: update firmware file
+	dbe3f134bb69 wl18xx: update firmware file, remove conf file
+	dab4b79b3fbc wl18xx: add version 4 of the wl18xx firmware
+
+> AND - since there's some firmware the feature doesn't work with, the
+> driver should be fixed to detect the running firmware version and not
+> do things that the firmware doesn't support.  AND the firmware writer
+> should also make it so the firmware doesn't barf on bad input and
+> instead rejects it politely.
+
+Agreed. The main issue here seems to be that the current patch
+assumes that this feature is available. A proper approach would 
+be to check if this feature is available before trying to use it.
+
+Now, I dunno if version 8.9.0.0.81 has what's required for it to
+work - or if KEY_IGTK require some custom firmware version.
+
+If it works with such version, one way would be to add a check
+for this specific version, disabling KEY_IGTK otherwise.
+
+Also, someone from TI should be sending the newer version to
+be added at linux-firmware.
+
+I'll try to do a test maybe tomorrow.
+
+> But I will say I'm making an educated guess; while I have played with
+> the TI devices in the past, it was years ago and I won't claim to be
+> an expert. I also am unable to fix it myself at this time.
+> 
+> I'd just rather see it fixed properly instead of a knee-jerk reaction
+> of reverting it simply because the OP doesn't have current firmware.
+
+> And let's revisit the discussion of having a kernel splat because an
+> unrelated piece of code fails yet the driver does exactly what it is
+> supposed to do. We shouldn't be dumping registers and stack-trace when
+> the code that crashed has nothing to do with the registers and
+> stack-trace outputted. It is a false positive.  A simple printk WARN
+> or ERROR should output notifying us that the chip firmware has crashed
+> and why.  IMHO.
+
+Thanks,
+Mauro
