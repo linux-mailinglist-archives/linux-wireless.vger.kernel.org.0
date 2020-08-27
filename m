@@ -2,121 +2,113 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E7812548C9
-	for <lists+linux-wireless@lfdr.de>; Thu, 27 Aug 2020 17:13:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0CC982549D6
+	for <lists+linux-wireless@lfdr.de>; Thu, 27 Aug 2020 17:49:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728252AbgH0PND (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 27 Aug 2020 11:13:03 -0400
-Received: from mail29.static.mailgun.info ([104.130.122.29]:18181 "EHLO
-        mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728790AbgH0Lkm (ORCPT
+        id S1726798AbgH0PtI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 27 Aug 2020 11:49:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42398 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726200AbgH0PtI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 27 Aug 2020 07:40:42 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1598528436; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=w7fCvr48yy18hQcvWfj5BBx2HYb6MogSv84HemZHdz0=; b=xJXyfR+FRBdQ25BfsxCTCCWm+Pk4ZY7hv2ia1NBQ3qXvwO8xdtAd0wFsXoctOAH4mm1sI4XB
- v7q2xT23pcJ7ORnOj43St3QQX7XreVGACsbCb1UqTMOIQtEzgQiRVoMaTaEtlUpQ1SbWB81L
- pqHcG2CHmf8Jn0CFJ0XdxBCIqjw=
-X-Mailgun-Sending-Ip: 104.130.122.29
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n02.prod.us-west-2.postgun.com with SMTP id
- 5f479baa630b177c47077e2e (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 27 Aug 2020 11:40:26
- GMT
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 2DE8BC43391; Thu, 27 Aug 2020 11:40:26 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 59F14C433CA;
-        Thu, 27 Aug 2020 11:40:23 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 59F14C433CA
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Lee Jones <lee.jones@linaro.org>
-Cc:     davem@davemloft.net, kuba@kernel.org, linux-kernel@vger.kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        Maya Erez <merez@codeaurora.org>, wil6210@qti.qualcomm.com
-Subject: Re: [PATCH 12/30] wireless: ath: wil6210: wmi: Correct misnamed function parameter 'ptr_'
-References: <20200826093401.1458456-13-lee.jones@linaro.org>
-        <20200826155625.A5A88C433A1@smtp.codeaurora.org>
-        <20200827063559.GP3248864@dell> <20200827074100.GX3248864@dell>
-Date:   Thu, 27 Aug 2020 14:40:21 +0300
-In-Reply-To: <20200827074100.GX3248864@dell> (Lee Jones's message of "Thu, 27
-        Aug 2020 08:41:00 +0100")
-Message-ID: <877dtkb9lm.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        Thu, 27 Aug 2020 11:49:08 -0400
+Received: from mail-qv1-xf43.google.com (mail-qv1-xf43.google.com [IPv6:2607:f8b0:4864:20::f43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBF42C061264;
+        Thu, 27 Aug 2020 08:49:07 -0700 (PDT)
+Received: by mail-qv1-xf43.google.com with SMTP id j10so2789080qvo.13;
+        Thu, 27 Aug 2020 08:49:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=bhg41soIay7+587Qkw7LUVijSMFtZApm/WI52siUHqo=;
+        b=r+0Z51AzGh3RpvLN7SrOrKt0OzXk1uO3gIBm2Pu/DOuix3nSPCCqDG/qHztIaXh8QN
+         HiKQC4O9rhKhDi26XChu3hE3TUHUtKZn9lndImODCUaorVuYIPQjYAx2P4/s4oXPhJLr
+         obECsPYChpudqJw0yFiMpzBRHGmzAflQMOaxX+Mr6cGcPSgwMDhh9Maz08NIpbQP5dUs
+         rugrILqOCy9Jbs6n3dzYfgVB1IyGk5ikOE4sP+wQO6OFfEhipESsiIELqzOr0tqZst49
+         TIaBzpWtk+ssgZKjAMSx4i3jtObVPBTkvz0Kb8kc8IzsXI5Bco2IwBenmb/jelgP4jQg
+         eupw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=bhg41soIay7+587Qkw7LUVijSMFtZApm/WI52siUHqo=;
+        b=mXfyMg2mk5WApq8ampzsMUD6VTECn90wFOD6m3QzWoGmNYT30en8DjZ1ygsKTjIhe3
+         xsizKba6d9Eh/GYeJBu2RL7ETJAE0mL54+4gd9+VSi8HhuroxPcnmFQF823uZBhAa10j
+         Lcddcpa5z45LOslVBkq/Psrk3ZXOuWvXvQVy+pV2Rdy0K2pGDriXULYHwV1k5+atf8MY
+         qTpJadPOKVMdxA/zfrpjI1hFaWzReJaaKMsQo4WuPYIZkSzrtT3DOzkOhRjObhzdI/1j
+         2kMGtXiX6q+Ft9GweXaX2v+LsmyGLDCZqZA35tnrgBxhBPEmi/Tjv9kYkR5eaElD+SUo
+         juiQ==
+X-Gm-Message-State: AOAM531bL0KmGxKJz8LtH0bkQc/6/pik/l7J/BMefdaSJRhl6J7ANVwR
+        P0I8bpFvnotcCzdgVbOVA27Qqgr4NR+JZS7aP8jEokGQvhY=
+X-Google-Smtp-Source: ABdhPJw1Rl4RnR6X/MbtbB5gxI0GdiLcMsChgSFbr5UNmVwq/YZtYaADIxZ92er5Ilp/EDcy0juMltTIu0VNIpc1uZA=
+X-Received: by 2002:ad4:4992:: with SMTP id t18mr18408206qvx.193.1598543346813;
+ Thu, 27 Aug 2020 08:49:06 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <f0a2cb7ea606f1a284d4c23cbf983da2954ce9b6.1598420968.git.mchehab+huawei@kernel.org>
+In-Reply-To: <f0a2cb7ea606f1a284d4c23cbf983da2954ce9b6.1598420968.git.mchehab+huawei@kernel.org>
+From:   Steve deRosier <derosier@gmail.com>
+Date:   Thu, 27 Aug 2020 08:48:30 -0700
+Message-ID: <CALLGbRL+duiHFd3w7hcD=u47k+JM5rLpOkMrRpW0aQm=oTfUnA@mail.gmail.com>
+Subject: Re: [PATCH] Revert "wlcore: Adding suppoprt for IGTK key in wlcore driver"
+To:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        Kalle Valo <kvalo@codeaurora.org>
+Cc:     linuxarm@huawei.com, mauro.chehab@huawei.com,
+        John Stultz <john.stultz@linaro.org>,
+        Manivannan Sadhasivam <mani@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, Maital Hahn <maitalm@ti.com>,
+        "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
+        Raz Bouganim <r-bouganim@ti.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Dinghao Liu <dinghao.liu@zju.edu.cn>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Fuqian Huang <huangfq.daxian@gmail.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Network Development <netdev@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Lee Jones <lee.jones@linaro.org> writes:
-
-> On Thu, 27 Aug 2020, Lee Jones wrote:
+On Tue, Aug 25, 2020 at 10:49 PM Mauro Carvalho Chehab
+<mchehab+huawei@kernel.org> wrote:
 >
->> On Wed, 26 Aug 2020, Kalle Valo wrote:
->> 
->> > Lee Jones <lee.jones@linaro.org> wrote:
->> > 
->> > > Fixes the following W=1 kernel build warning(s):
->> > > 
->> > >  drivers/net/wireless/ath/wil6210/wmi.c:279: warning: Function
->> > > parameter or member 'ptr_' not described in 'wmi_buffer_block'
->> > >  drivers/net/wireless/ath/wil6210/wmi.c:279: warning: Excess
->> > > function parameter 'ptr' description in 'wmi_buffer_block'
->> > > 
->> > > Cc: Maya Erez <merez@codeaurora.org>
->> > > Cc: Kalle Valo <kvalo@codeaurora.org>
->> > > Cc: "David S. Miller" <davem@davemloft.net>
->> > > Cc: Jakub Kicinski <kuba@kernel.org>
->> > > Cc: linux-wireless@vger.kernel.org
->> > > Cc: wil6210@qti.qualcomm.com
->> > > Cc: netdev@vger.kernel.org
->> > > Signed-off-by: Lee Jones <lee.jones@linaro.org>
->> > 
->> > Failed to apply:
->> > 
->> > error: patch failed: drivers/net/wireless/ath/wil6210/wmi.c:266
->> > error: drivers/net/wireless/ath/wil6210/wmi.c: patch does not apply
->> > stg import: Diff does not apply cleanly
->> > 
->> > Patch set to Changes Requested.
->> 
->> Are you applying them in order?
->> 
->> It may be affected by:
->> 
->>  wireless: ath: wil6210: wmi: Fix formatting and demote
->> non-conforming function headers
->> 
->> I'll also rebase onto the latest -next and resubmit.
+> This patch causes a regression betwen Kernel 5.7 and 5.8 at wlcore:
+> with it applied, WiFi stops working, and the Kernel starts printing
+> this message every second:
 >
-> I just rebased all 3 sets onto the latest -next (next-20200827)
-> without issue.  Not sure what problem you're seeing.  Did you apply
-> the first set before attempting the second?
+>    wlcore: PHY firmware version: Rev 8.2.0.0.242
+>    wlcore: firmware booted (Rev 8.9.0.0.79)
+>    wlcore: ERROR command execute failure 14
 
-I can't remember the order, patchwork sorts them based on the order they
-have been submitted and that's what I usually use.
+Only if NO firmware for the device in question supports the `KEY_IGTK`
+value, then this revert is appropriate. Otherwise, it likely isn't.
+ My suspicion is that the feature that `KEY_IGTK` is enabling is
+specific to a newer firmware that Mauro hasn't upgraded to. What the
+OP should do is find the updated firmware and give it a try.
 
-Do note that there's a separate tree for drivers in
-drivers/net/wireless/ath:
+AND - since there's some firmware the feature doesn't work with, the
+driver should be fixed to detect the running firmware version and not
+do things that the firmware doesn't support.  AND the firmware writer
+should also make it so the firmware doesn't barf on bad input and
+instead rejects it politely.
 
-https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/
+But I will say I'm making an educated guess; while I have played with
+the TI devices in the past, it was years ago and I won't claim to be
+an expert. I also am unable to fix it myself at this time.
 
-And it takes a week or two before patches go to linux-next.
+I'd just rather see it fixed properly instead of a knee-jerk reaction
+of reverting it simply because the OP doesn't have current firmware.
 
--- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+And let's revisit the discussion of having a kernel splat because an
+unrelated piece of code fails yet the driver does exactly what it is
+supposed to do. We shouldn't be dumping registers and stack-trace when
+the code that crashed has nothing to do with the registers and
+stack-trace outputted. It is a false positive.  A simple printk WARN
+or ERROR should output notifying us that the chip firmware has crashed
+and why.  IMHO.
+
+- Steve
