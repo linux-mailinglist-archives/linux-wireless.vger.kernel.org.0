@@ -2,31 +2,31 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6EBF9253F91
-	for <lists+linux-wireless@lfdr.de>; Thu, 27 Aug 2020 09:49:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 56A36253FB3
+	for <lists+linux-wireless@lfdr.de>; Thu, 27 Aug 2020 09:55:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728351AbgH0Htp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 27 Aug 2020 03:49:45 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:59125 "EHLO m43-7.mailgun.net"
+        id S1728455AbgH0HzT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 27 Aug 2020 03:55:19 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:37001 "EHLO m43-7.mailgun.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726851AbgH0Hto (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 27 Aug 2020 03:49:44 -0400
+        id S1728413AbgH0Hyy (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 27 Aug 2020 03:54:54 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1598514584; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=t5gOl7DiMwPormDKrvq/jDuEzzPigBia0L5h8NiJzbE=; b=fGt2KG+QpN/O+/v2dB7d7bVVXXl2rdGCvNwAihewTvmCgZc6GXvaQ2+Cwplho4hHcUTAd0f8
- lZd+aTjMabiMFjpxz/ffswg2TBkFV9wHIwyZV2h6MNnp+gV18Lvhyw8g9ORa3Mvfbvwctel/
- /CDYvaohDRM7j6kP7m/ZganZBIE=
+ s=smtp; t=1598514894; h=Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Message-ID: In-Reply-To: Date: References: Subject: Cc:
+ To: From: Sender; bh=R3GfTB2n3TnLY699vSjPfiKPod4E8AJXYwtplDEpXT0=; b=DfEISsinezeZJX3ajJu0VK56DTSk1H/ejylpqZdngH+oZ8fyx/90CKxAkR8IX0MmSnYxWTZX
+ T0+0YXuZcLGQnG0ZB+DYKRUVPbgVwbG9yrkMubD/9hSfGIxBpF0pFR3fxqHjx76kjcwjrPGc
+ Fft3CLcHQt4PXJGVPgjMMi0AXxM=
 X-Mailgun-Sending-Ip: 69.72.43.7
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n04.prod.us-west-2.postgun.com with SMTP id
- 5f47657ffb5eb2479c9e4640 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 27 Aug 2020 07:49:19
+ smtp-out-n07.prod.us-east-1.postgun.com with SMTP id
+ 5f4766b44b23cecfe27dd07b (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 27 Aug 2020 07:54:28
  GMT
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 63DA4C433C6; Thu, 27 Aug 2020 07:49:19 +0000 (UTC)
+        id A4E04C433A0; Thu, 27 Aug 2020 07:54:27 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -36,61 +36,103 @@ Received: from x230.qca.qualcomm.com (88-114-240-156.elisa-laajakaista.fi [88.11
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 0D5B5C433CA;
-        Thu, 27 Aug 2020 07:49:14 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 0D5B5C433CA
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 8D16FC433C6;
+        Thu, 27 Aug 2020 07:54:23 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 8D16FC433C6
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Ondrej Zary <linux@zary.sk>
-Cc:     Jesse Brandeburg <jesse.brandeburg@intel.com>,
-        Lee Jones <lee.jones@linaro.org>, davem@davemloft.net,
+To:     Lee Jones <lee.jones@linaro.org>
+Cc:     Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        Christian Lamparter <chunkeey@gmail.com>, davem@davemloft.net,
         kuba@kernel.org, linux-kernel@vger.kernel.org,
-        Benjamin Reed <breed@users.sourceforge.net>,
-        Javier Achirica <achirica@users.sourceforge.net>,
-        Jean Tourrilhes <jt@hpl.hp.com>,
-        "Fabrice Bellet" <fabrice@bellet.info>,
+        Christian Lamparter <chunkeey@googlemail.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH 12/30] net: wireless: cisco: airo: Fix a myriad of coding style issues
+Subject: Re: [PATCH 08/30] net: wireless: ath: carl9170: Mark 'ar9170_qmap' as __maybe_unused
 References: <20200814113933.1903438-1-lee.jones@linaro.org>
-        <87a6ytmmhm.fsf@codeaurora.org> <20200817112706.000000f2@intel.com>
-        <202008172335.02988.linux@zary.sk>
-Date:   Thu, 27 Aug 2020 10:49:12 +0300
-In-Reply-To: <202008172335.02988.linux@zary.sk> (Ondrej Zary's message of
-        "Mon, 17 Aug 2020 23:35:02 +0200")
-Message-ID: <87v9h4le9z.fsf@codeaurora.org>
+        <20200814113933.1903438-9-lee.jones@linaro.org>
+        <7ef231f2-e6d3-904f-dc3a-7ef82beda6ef@gmail.com>
+        <9776eb47-6b83-a891-f057-dd34d14ea16e@rasmusvillemoes.dk>
+        <87eeo5mnr0.fsf@codeaurora.org> <20200818095024.GZ4354@dell>
+Date:   Thu, 27 Aug 2020 10:54:21 +0300
+In-Reply-To: <20200818095024.GZ4354@dell> (Lee Jones's message of "Tue, 18 Aug
+        2020 10:50:24 +0100")
+Message-ID: <87r1rsle1e.fsf@codeaurora.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Ondrej Zary <linux@zary.sk> writes:
+Lee Jones <lee.jones@linaro.org> writes:
 
-> On Monday 17 August 2020 20:27:06 Jesse Brandeburg wrote:
->> On Mon, 17 Aug 2020 16:27:01 +0300
->> Kalle Valo <kvalo@codeaurora.org> wrote:
->> 
->> > I was surprised to see that someone was using this driver in 2015, so
->> > I'm not sure anymore what to do. Of course we could still just remove
->> > it and later revert if someone steps up and claims the driver is still
->> > usable. Hmm. Does anyone any users of this driver?
->> 
->> What about moving the driver over into staging, which is generally the
->> way I understood to move a driver slowly out of the kernel?
+> On Mon, 17 Aug 2020, Kalle Valo wrote:
 >
-> Please don't remove random drivers.
+>> Rasmus Villemoes <linux@rasmusvillemoes.dk> writes:
+>>=20
+>> > On 14/08/2020 17.14, Christian Lamparter wrote:
+>> >> On 2020-08-14 13:39, Lee Jones wrote:
+>> >>> 'ar9170_qmap' is used in some source files which include carl9170.h,
+>> >>> but not all of them.=C2=A0 Mark it as __maybe_unused to show that th=
+is is
+>> >>> not only okay, it's expected.
+>> >>>
+>> >>> Fixes the following W=3D1 kernel build warning(s)
+>> >>=20
+>> >> Is this W=3D1 really a "must" requirement? I find it strange having
+>> >> __maybe_unused in header files as this "suggests" that the
+>> >> definition is redundant.
+>> >
+>> > In this case it seems one could replace the table lookup with a
+>> >
+>> > static inline u8 ar9170_qmap(u8 idx) { return 3 - idx; }
+>> >
+>> > gcc doesn't warn about unused static inline functions (or one would ha=
+ve
+>> > a million warnings to deal with). Just my $0.02.
+>>=20
+>> Yeah, this is much better.
+>>=20
+>> And I think that static variables should not even be in the header
+>> files. Doesn't it mean that there's a local copy of the variable
+>> everytime the .h file is included? Sure, in this case the overhead is
+>> small (4 bytes per include) but still it's wrong.
+>
+> It happens a lot.
+>
+> As I stated before, the 2 viable options are to a) move it into the
+> source files; ensuring code duplication, unnecessary maintenance
+> burden and probably disparity over time, or b) create (or locate if
+> there is one already) a special header file which is only to be
+> included by the users.
+>
+> The later option gets really complicated if there are a variety of
+> tables which are included by any given number of source file
+> permutations.
+>
+> The accepted answer in all of the other subsystems I've worked with so
+> far, is to use __maybe_unused.  It's simple, non-intrusive and doesn't
+> rely on any functional changes.
+>
+>> Having a static inline
+>> function would solve that problem as well the compiler warning.
+>
+> This time yes, but it's a hack that will only work with simple,
+> linear data.=20=20
 
-We don't want to waste time on obsolete drivers and instead prefer to
-use our time on more productive tasks. For us wireless maintainers it's
-really hard to know if old drivers are still in use or if they are just
-broken.
+To me __maybe_unused is a hack and a static inline function is a much
+better solution.
 
-> I still have the Aironet PCMCIA card and can test the driver.
+> Try doing that with some of the other, more complicated
+> tables, like mwifiex_sdio_sd8*.
 
-Great. Do you know if the airo driver still works with recent kernels?
+Then the table should be moved to a .c file and the .h file should have
+"extern const int foo[]"
 
--- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+--=20
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
+hes
