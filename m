@@ -2,99 +2,97 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7032F2543F7
-	for <lists+linux-wireless@lfdr.de>; Thu, 27 Aug 2020 12:45:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3233D2543FE
+	for <lists+linux-wireless@lfdr.de>; Thu, 27 Aug 2020 12:46:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728222AbgH0KpB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 27 Aug 2020 06:45:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51046 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726851AbgH0Ko7 (ORCPT
+        id S1726988AbgH0KqR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 27 Aug 2020 06:46:17 -0400
+Received: from mail29.static.mailgun.info ([104.130.122.29]:42301 "EHLO
+        mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727030AbgH0KqI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 27 Aug 2020 06:44:59 -0400
-Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87C50C061264;
-        Thu, 27 Aug 2020 03:44:58 -0700 (PDT)
-Received: by mail-wr1-x443.google.com with SMTP id x7so4911198wro.3;
-        Thu, 27 Aug 2020 03:44:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=jHZbJ00C/f1K1DaZMLb0eY9W+8FWEJIJdHMmXmrVo2E=;
-        b=CWltxGSqJqTnBvTSqb044t2/wgwetRPVnoGQy++DNRNCyk2xQLZOMzxwDszpWyIMJO
-         2UnJmIQpyDzlX2SsQo6KZUeIr4gB5+gCrxEgFrwNWAAe/75o7PMcNI0u65YjG9YG6ODH
-         njANnMzoXh7jMcj7ZyfAyhMG12cWr+EXjyn70VNNUr3yXFGxxY6qg7GnmKH+B9u3xn/U
-         WKiUgbgzYFBxrLqgKSvDhdRXg0Y0dwRMLrkX20F3xIqpiWw+wAw3CpO2POWq2m/ACM1d
-         pTcLwlz5FB5JaFIHz4nrDrI4aWrOUp3ueVsWSo+3Om8ulic6d893MVSHuV5kUDd3kOxt
-         c7aw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=jHZbJ00C/f1K1DaZMLb0eY9W+8FWEJIJdHMmXmrVo2E=;
-        b=OSCJQAVR8f+kpb6cdQrdTzTV34zbkfNxUKT8ZF6krSa1Gq07gtuY9srT6Xy5Da/zGS
-         WphTRjBnmXZC3+sEvNbhEx8f0hU76D/sNTd2yrjn+AodQkX8Uiqc7DFSrdN8AZ6lqSHf
-         wq5bA6s2X8f0a64CsRbxAuhBS+ZKPQHuH4Goe4lvhTrFUn8Nqbz+ZYOWatfxmUOdhL8c
-         l802GB1FB+g2vGYDXTt3o457VpjDyJw8MREHc7cVsRIccH22M/ESsj5uhBKfZ8k/86jG
-         YH3LYoYYKbyEs4QQNU8/fRDB9YlXWwdSI8oPhzf+7xpBqi4K6zNQnzMFsE0t8yapRjRH
-         jtOQ==
-X-Gm-Message-State: AOAM530LQddgZitI/PcVQvU3Yimx91Q3iqAYkTDTuZdCHXj06rxutHdX
-        adLNa9yEcSnJb8Y5f+EMevNFeZA5WzKLeqpMz/Y=
-X-Google-Smtp-Source: ABdhPJx/nnMNZzdz51vNTwqRRAqSdXIEeo5csO5i7hm5GF700/WOBx/88e08iEWcI7Y3UO4eC2wffxgx1/oGC+i/voc=
-X-Received: by 2002:adf:f483:: with SMTP id l3mr6596174wro.148.1598525097155;
- Thu, 27 Aug 2020 03:44:57 -0700 (PDT)
+        Thu, 27 Aug 2020 06:46:08 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1598525168; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=/djNcFo+TzE4bc98l9f056AzR9LQN0CbdceKx4XXNI8=; b=X9L2sVTc0BNuPxYB/aZc76Wmuz+JKTQXPQYjK8cXWoVhPi5JxJnvojU+KKzgSb5cqSncwHUz
+ F7ApBvK68YTxPbsQRUkZC/a6Ud8s910AmfroLrU8tNOhGjumBuucomk2VY16r6iuS5s39z0f
+ rXKp2ZPWRDshcnVt+x/uH4VqSOA=
+X-Mailgun-Sending-Ip: 104.130.122.29
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n06.prod.us-east-1.postgun.com with SMTP id
+ 5f478edf1d69e438cb2cd215 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 27 Aug 2020 10:45:51
+ GMT
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 95D0BC4339C; Thu, 27 Aug 2020 10:45:50 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 83216C433C6;
+        Thu, 27 Aug 2020 10:45:48 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 83216C433C6
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     kernel test robot <lkp@intel.com>
+Cc:     Tzu-En Huang <tehuang@realtek.com>, kbuild-all@lists.01.org,
+        linux-kernel@vger.kernel.org,
+        Yan-Hsuan Chuang <yhchuang@realtek.com>,
+        linux-wireless@vger.kernel.org
+Subject: Re: drivers/net/wireless/realtek/rtw88/rtw8821c.c:71:8: warning: type qualifiers ignored on function return type
+References: <202008271827.tuwLEqMO%lkp@intel.com>
+Date:   Thu, 27 Aug 2020 13:45:46 +0300
+In-Reply-To: <202008271827.tuwLEqMO%lkp@intel.com> (kernel test robot's
+        message of "Thu, 27 Aug 2020 18:36:30 +0800")
+Message-ID: <87imd4bc4l.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-References: <20200817090637.26887-2-allen.cryptic@gmail.com> <20200827101540.6589BC433CB@smtp.codeaurora.org>
-In-Reply-To: <20200827101540.6589BC433CB@smtp.codeaurora.org>
-From:   Allen Pais <allen.cryptic@gmail.com>
-Date:   Thu, 27 Aug 2020 16:14:45 +0530
-Message-ID: <CAEogwTB=S6M6Xp4w5dd_W3b6Depmn6Gmu3RmAf96pRankoJQqg@mail.gmail.com>
-Subject: Re: [PATCH 01/16] wireless: ath5k: convert tasklets to use new
- tasklet_setup() API
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     Jakub Kicinski <kuba@kernel.org>, jirislaby@kernel.org,
-        mickflemm@gmail.com, mcgrof@kernel.org, chunkeey@googlemail.com,
-        Larry.Finger@lwfinger.net, stas.yakovlev@gmail.com,
-        helmut.schaa@googlemail.com, pkshih@realtek.com,
-        yhchuang@realtek.com, dsd@gentoo.org, kune@deine-taler.de,
-        Kees Cook <keescook@chromium.org>, ath11k@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, b43-dev@lists.infradead.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        brcm80211-dev-list@cypress.com, Allen Pais <allen.lkml@gmail.com>,
-        Romain Perier <romain.perier@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
->
-> Allen Pais <allen.cryptic@gmail.com> wrote:
->
-> > In preparation for unconditionally passing the
-> > struct tasklet_struct pointer to all tasklet
-> > callbacks, switch to using the new tasklet_setup()
-> > and from_tasklet() to pass the tasklet pointer explicitly.
-> >
-> > Signed-off-by: Romain Perier <romain.perier@gmail.com>
-> > Signed-off-by: Allen Pais <allen.lkml@gmail.com>
-> > Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
->
-> Patch applied to ath-next branch of ath.git, thanks.
->
-> c068a9ec3c94 ath5k: convert tasklets to use new tasklet_setup() API
->
-> --
-> https://patchwork.kernel.org/patch/11717393/
->
-> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
++ linux-wireless
 
-Could you please drop these and wait for V2. A change was proposed
-for from_tasklet() api. The new API should be picked shortly. I will send out
-the updated version early next week.
+kernel test robot <lkp@intel.com> writes:
 
-Thanks,
-- Allen
+> Hi Tzu-En,
+>
+> First bad commit (maybe != root cause):
+>
+> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
+> head:   15bc20c6af4ceee97a1f90b43c0e386643c071b4
+> commit: f745eb9ca5bf823bc5c0f82a434cefb41c57844e rtw88: 8821c: Add 8821CE to Kconfig and Makefile
+> date:   6 weeks ago
+> config: arm-randconfig-r012-20200827 (attached as .config)
+> compiler: arm-linux-gnueabi-gcc (GCC) 9.3.0
+> reproduce (this is a W=1 build):
+>         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+>         chmod +x ~/bin/make.cross
+>         git checkout f745eb9ca5bf823bc5c0f82a434cefb41c57844e
+>         # save the attached .config to linux build tree
+>         COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-9.3.0 make.cross ARCH=arm 
+>
+> If you fix the issue, kindly add following tag as appropriate
+> Reported-by: kernel test robot <lkp@intel.com>
+>
+> All warnings (new ones prefixed by >>):
+>
+>>> drivers/net/wireless/realtek/rtw88/rtw8821c.c:71:8: warning: type qualifiers ignored on function return type [-Wignored-qualifiers]
+>       71 | static const u8 rtw8821c_get_swing_index(struct rtw_dev *rtwdev)
+>          |        ^~~~~
+
+Tony, please check this.
+
+-- 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
