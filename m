@@ -2,83 +2,77 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4EF2B2542A0
-	for <lists+linux-wireless@lfdr.de>; Thu, 27 Aug 2020 11:42:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F8A62542AF
+	for <lists+linux-wireless@lfdr.de>; Thu, 27 Aug 2020 11:47:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727902AbgH0JmU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 27 Aug 2020 05:42:20 -0400
-Received: from mail29.static.mailgun.info ([104.130.122.29]:28836 "EHLO
-        mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726157AbgH0JmT (ORCPT
+        id S1728172AbgH0JrQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 27 Aug 2020 05:47:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42024 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726826AbgH0JrQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 27 Aug 2020 05:42:19 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1598521339; h=Date: Message-Id: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=wDL5smpFuHK1RVU40LuGBzvmSaHNufP3hdJpSXobU2w=;
- b=SQOnEvl1InU5RqBHGQDoWEklSpASDCHTETJwPcl4NlZxADibQTh/CnRi9iEzwjjKLc5PPX8F
- caE76vt0My60gZzpeZS2BcOGgAiqJpufHvjowaSz3DTJIFDGZRzetonYbeMamWzl3gX7UszK
- cXS7dHpC2Z4AV63KAplclgDlFFQ=
-X-Mailgun-Sending-Ip: 104.130.122.29
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n04.prod.us-east-1.postgun.com with SMTP id
- 5f477ffadb22b129dfd2cb12 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 27 Aug 2020 09:42:18
- GMT
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 6DD4DC433C6; Thu, 27 Aug 2020 09:42:17 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
-        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 5B491C433CA;
-        Thu, 27 Aug 2020 09:42:16 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 5B491C433CA
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        Thu, 27 Aug 2020 05:47:16 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8C18C061264
+        for <linux-wireless@vger.kernel.org>; Thu, 27 Aug 2020 02:47:15 -0700 (PDT)
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.94)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1kBEV0-00BX6w-7E; Thu, 27 Aug 2020 11:47:14 +0200
+Message-ID: <01ec43694f7b35c64eaf9c357a37b5b7ddc166c3.camel@sipsolutions.net>
+Subject: Re: [PATCH v5 1/2] nl80211: Add FILS discovery support
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Aloka Dixit <alokad@codeaurora.org>
+Cc:     linux-wireless@vger.kernel.org
+Date:   Thu, 27 Aug 2020 11:47:08 +0200
+In-Reply-To: <20200805011838.28166-2-alokad@codeaurora.org>
+References: <20200805011838.28166-1-alokad@codeaurora.org>
+         <20200805011838.28166-2-alokad@codeaurora.org>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.5 (3.36.5-1.fc32) 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2 15/15] rtlwifi: Remove temporary definition of RT_TRACE
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20200723204244.24457-16-Larry.Finger@lwfinger.net>
-References: <20200723204244.24457-16-Larry.Finger@lwfinger.net>
-To:     Larry Finger <Larry.Finger@lwfinger.net>
-Cc:     linux-wireless@vger.kernel.org,
-        Larry Finger <Larry.Finger@lwfinger.net>
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20200827094217.6DD4DC433C6@smtp.codeaurora.org>
-Date:   Thu, 27 Aug 2020 09:42:17 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Larry Finger <Larry.Finger@lwfinger.net> wrote:
+On Tue, 2020-08-04 at 18:18 -0700, Aloka Dixit wrote:
+> FILS discovery attribute, NL80211_ATTR_FILS_DISCOVERY, is nested which
+> supports following parameters as given in IEEE Std 802.11ai-2016,
+> Annex C.3 MIB detail:
+> (1) NL80211_FILS_DISCOVERY_INT_MIN - Minimum packet interval
+> (2) NL80211_FILS_DISCOVERY_INT_MAX - Maximum packet interval
+> (3) NL0211_FILS_DISCOVERY_TMPL - Template data
 
-> A definition of this macro was kept until all drivers had been converted.
-> It can now be deleted.
-> 
-> This change also renames _rtl_dbg_trace() to _rtl_dbg_out().
-> 
-> Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
-> Reported-by: kernel test robot <lkp@intel.com>
-> Reported-by: kernel test robot <lkp@intel.com>
+Please keep _ATTR_ in these names. I've sent you some cleaned up version
+that you can start working from. I was going to do all the cleanups, but
+then realized that there are some questions I cannot answer.
 
-Dropping patch 15 due to the reported build error, please resubmit that
-separately.
+> + * @support_fils_discovery: can HW support FILS discovery transmission
+> + *
+>   * @pmsr_capa: peer measurement capabilities
+>   *
+>   * @tid_config_support: describes the per-TID config support that the
+> @@ -4880,6 +4901,8 @@ struct wiphy {
+>  	u8 support_mbssid:1,
+>  	   support_only_he_mbssid:1;
+>  
+> +	u8 support_fils_discovery:1;
 
-Patch set to Changes Requested.
+Notably, you never use this.
 
--- 
-https://patchwork.kernel.org/patch/11681621/
+Actually, you do later, in the mac80211 patch, but that makes no sense.
+Somehow it should be used in cfg80211 if the information lives there.
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+I suspect this might actually want to be an extended feature flag to
+userspace also knows, and also that cfg80211 should reject the operation
+if not supported?
+
+
+The rest of my minor comments are about policy use, using
+NLA_POLICY_RANGE() with NLA_BINARY now, etc. which I've all cleaned up
+in the versions I just sent you.
+
+johannes
 
