@@ -2,32 +2,33 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 39186254394
-	for <lists+linux-wireless@lfdr.de>; Thu, 27 Aug 2020 12:20:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C81A254396
+	for <lists+linux-wireless@lfdr.de>; Thu, 27 Aug 2020 12:21:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728498AbgH0KUC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 27 Aug 2020 06:20:02 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:24719 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726266AbgH0KUB (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 27 Aug 2020 06:20:01 -0400
+        id S1727814AbgH0KVK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 27 Aug 2020 06:21:10 -0400
+Received: from mail29.static.mailgun.info ([104.130.122.29]:50189 "EHLO
+        mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726266AbgH0KVJ (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 27 Aug 2020 06:21:09 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1598523600; h=Date: Message-Id: Cc: To: References:
+ s=smtp; t=1598523669; h=Date: Message-Id: Cc: To: References:
  In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=Uawuq2NYt+0L1rE6kxLrW9ZoyRhlo6eBolXppPMnzfk=;
- b=Qu/muh/k4rlP8AQQjTo/zFqT3LuB0SiYqZRU3jVFIniUSxm5brAR/vy20SxWof0oR3sjOox9
- gDoq9hXKv75aNffEd2f8DG2+P+tkEGqcxrvHH+KwryJwpGbsGmrzxHs13mWObZ2Ag0xyZJjz
- JjnyFnDoZrNtk8zOsiw2vRVNHeU=
-X-Mailgun-Sending-Ip: 69.72.43.7
+ Content-Type: Sender; bh=qtDjKTtEH2F7L1e+vySZwaqe/vmSsevrh+ClMZMAU6w=;
+ b=cLO347QtYbrOogvTEGGdsOyVd2udVEsj4nhTRm7N5vei5FQIU/J7V/mIKjuy4JMlERWHhmeC
+ JTPOHGGOjpu9XhzJFvi8dx6jIF7lv9YLIdCRp/VkvkAsa8q3clf47GckFQ8iSGuAjC9JNYwj
+ 7tVZb+Be2eLH+93Iozta5KdV/T0=
+X-Mailgun-Sending-Ip: 104.130.122.29
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n02.prod.us-west-2.postgun.com with SMTP id
- 5f4788cf8741f54bbd725a4e (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 27 Aug 2020 10:19:59
+ smtp-out-n07.prod.us-east-1.postgun.com with SMTP id
+ 5f4788f80c12a2db3b4c2589 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 27 Aug 2020 10:20:40
  GMT
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id C95A3C433C6; Thu, 27 Aug 2020 10:19:59 +0000 (UTC)
+        id 70210C43387; Thu, 27 Aug 2020 10:20:39 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -37,45 +38,50 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 460FCC433CA;
-        Thu, 27 Aug 2020 10:19:58 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 460FCC433CA
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 579DCC433C6;
+        Thu, 27 Aug 2020 10:20:37 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 579DCC433C6
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH net-next] ath11k: return -ENOMEM on allocation failure
+Subject: Re: [PATCH][next] carl9170: Use fallthrough pseudo-keyword
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20200826113417.GE393664@mwanda>
-References: <20200826113417.GE393664@mwanda>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Jakub Kicinski <kuba@kernel.org>,
-        Govind Singh <govinds@codeaurora.org>,
-        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
+In-Reply-To: <20200821065204.GA24827@embeddedor>
+References: <20200821065204.GA24827@embeddedor>
+To:     "Gustavo A. R. Silva" <gustavoars@kernel.org>
+Cc:     Christian Lamparter <chunkeey@googlemail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20200827101959.C95A3C433C6@smtp.codeaurora.org>
-Date:   Thu, 27 Aug 2020 10:19:59 +0000 (UTC)
+Message-Id: <20200827102039.70210C43387@smtp.codeaurora.org>
+Date:   Thu, 27 Aug 2020 10:20:39 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Dan Carpenter <dan.carpenter@oracle.com> wrote:
+"Gustavo A. R. Silva" <gustavoars@kernel.org> wrote:
 
-> Returning PTR_ERR(NULL) means success, but we should return -ENOMEM.
+> Replace the existing /* fall through */ comments and its variants with
+> the new pseudo-keyword macro fallthrough[1].
 > 
-> Fixes: 1399fb87ea3e ("ath11k: register MHI controller device for QCA6390")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> [1] https://www.kernel.org/doc/html/v5.7/process/deprecated.html?highlight=fallthrough#implicit-switch-case-fall-through
+> 
+> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+> Acked-by: Christian Lamparter <chunkeey@gmail.com>
 > Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 
 Patch applied to ath-next branch of ath.git, thanks.
 
-fd0a09097233 ath11k: return -ENOMEM on allocation failure
+6df74f61e9a2 carl9170: Use fallthrough pseudo-keyword
 
 -- 
-https://patchwork.kernel.org/patch/11738005/
+https://patchwork.kernel.org/patch/11728239/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
