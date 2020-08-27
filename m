@@ -2,188 +2,120 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BDCDC2550BE
-	for <lists+linux-wireless@lfdr.de>; Thu, 27 Aug 2020 23:48:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 209C3255116
+	for <lists+linux-wireless@lfdr.de>; Fri, 28 Aug 2020 00:33:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727817AbgH0Vs0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 27 Aug 2020 17:48:26 -0400
-Received: from mga04.intel.com ([192.55.52.120]:22959 "EHLO mga04.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726147AbgH0VsV (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 27 Aug 2020 17:48:21 -0400
-IronPort-SDR: m5L/1uk1UMhHM++Jf3lxguJwrqa3m3B6r2pN4gTCCk5/GHXvvU/V+QAx1RjBQE5KcLfpPv6GHa
- +SrFHIRdEBaQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9726"; a="153986872"
-X-IronPort-AV: E=Sophos;i="5.76,361,1592895600"; 
-   d="scan'208";a="153986872"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Aug 2020 14:48:20 -0700
-IronPort-SDR: Jr/6qeBMOJGO6jrdpeCADnzIGuR4Vg3pDOeWG7xCEGyveAgil+cPrv9s/dxxN4WMHfxDfKF35B
- 00x086PQFtxQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.76,361,1592895600"; 
-   d="scan'208";a="280762545"
-Received: from lkp-server01.sh.intel.com (HELO 4f455964fc6c) ([10.239.97.150])
-  by fmsmga007.fm.intel.com with ESMTP; 27 Aug 2020 14:48:19 -0700
-Received: from kbuild by 4f455964fc6c with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1kBPko-0002Jo-E4; Thu, 27 Aug 2020 21:48:18 +0000
-Date:   Fri, 28 Aug 2020 05:48:05 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     linux-wireless@vger.kernel.org
-Subject: [wireless-drivers-next:pending] BUILD SUCCESS
- ee48f2b5670942c15aa1a1d4d376d904ad13ec4e
-Message-ID: <5f482a15.A1hlPCWSBlBDsMYP%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S1727008AbgH0WdL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 27 Aug 2020 18:33:11 -0400
+Received: from mail.adapt-ip.com ([173.164.178.19]:50308 "EHLO
+        web.adapt-ip.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726234AbgH0WdK (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 27 Aug 2020 18:33:10 -0400
+Received: from localhost (localhost [127.0.0.1])
+        by web.adapt-ip.com (Postfix) with ESMTP id AF1B54F812A;
+        Thu, 27 Aug 2020 22:33:09 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at web.adapt-ip.com
+Received: from web.adapt-ip.com ([127.0.0.1])
+        by localhost (web.adapt-ip.com [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id Yi1ig4_msQVn; Thu, 27 Aug 2020 22:33:06 +0000 (UTC)
+Received: from atlas.campbell.adapt-ip.com (gateway.adapt-ip.com [173.164.178.20])
+        (Authenticated sender: thomas@adapt-ip.com)
+        by web.adapt-ip.com (Postfix) with ESMTPSA id CC1914F7FD9;
+        Thu, 27 Aug 2020 22:33:05 +0000 (UTC)
+From:   Thomas Pedersen <thomas@adapt-ip.com>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
+        Thomas Pedersen <thomas@adapt-ip.com>
+Subject: [PATCH 00/22] add initial S1G support
+Date:   Thu, 27 Aug 2020 15:32:42 -0700
+Message-Id: <20200827223304.16155-1-thomas@adapt-ip.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git  pending
-branch HEAD: ee48f2b5670942c15aa1a1d4d376d904ad13ec4e  rtlwifi: rtl8821ae: Rename RT_TRACE to rtl_dbg
+This is the initial 802.11ah (S1G) patchset which adds support for:
 
-elapsed time: 725m
+- defining the S1G 900MHz bands in a custom regulatory database
+- setting and receiving S1G beacons (sending short beacons will be
+  supported in a future patch)
+- configuring S1G capabilities in Association Request (setting
+  capabilities along with NL80211_CMD_SET_STATION will be added later).
+- scanning on S1G bands
+- handling S1G Association Response format
+- correctly encoding Listen Interval for S1G
+- associating in mac80211
+- S1G in mac80211_hwsim
 
-configs tested: 126
-configs skipped: 15
+Rate control is still TBD, this patchset simply lops off the rate
+control hooks for S1G so eg. missing sband->bitrates and S1G Basic Rate
+set can't do too much damage.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Note the mac80211_hwsim S1G support introduces a regression in a few
+hostap hwsim tests. This is because when processing the reported bands,
+hostap assumes freq < 4000 is 11b, and the actual 11b/g band is
+overwritten by the S1G band info. Though it does count as a userspace
+regression, I'm not sure there is much to do about it besides apply a
+small patch to hostapd which treats freq < 2000 as an unknown band.
 
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-riscv                    nommu_k210_defconfig
-mips                     decstation_defconfig
-arm                   milbeaut_m10v_defconfig
-powerpc                mpc7448_hpc2_defconfig
-sh                              ul2_defconfig
-sh                ecovec24-romimage_defconfig
-arm                      pxa255-idp_defconfig
-mips                           ip32_defconfig
-sh                           se7721_defconfig
-powerpc                         ps3_defconfig
-arm                             rpc_defconfig
-sh                            shmin_defconfig
-arm                         s3c2410_defconfig
-m68k                        m5272c3_defconfig
-sh                            migor_defconfig
-arm                        multi_v7_defconfig
-sparc64                          alldefconfig
-arm                          pxa168_defconfig
-ia64                             allmodconfig
-sh                        sh7763rdp_defconfig
-arm                         orion5x_defconfig
-mips                          malta_defconfig
-arm                           spitz_defconfig
-mips                       rbtx49xx_defconfig
-mips                         mpc30x_defconfig
-powerpc                      ppc40x_defconfig
-parisc                           allyesconfig
-powerpc                     mpc5200_defconfig
-mips                           ip22_defconfig
-arc                           tb10x_defconfig
-sh                        sh7757lcr_defconfig
-mips                      maltaaprp_defconfig
-arm                    vt8500_v6_v7_defconfig
-sh                             sh03_defconfig
-arm                         mv78xx0_defconfig
-arc                              allyesconfig
-powerpc                     powernv_defconfig
-mips                          rb532_defconfig
-ia64                         bigsur_defconfig
-arm                        multi_v5_defconfig
-sh                         ecovec24_defconfig
-sh                          sdk7780_defconfig
-c6x                         dsk6455_defconfig
-arc                              alldefconfig
-arm                  colibri_pxa270_defconfig
-mips                       lemote2f_defconfig
-c6x                        evmc6678_defconfig
-sparc                               defconfig
-arc                    vdk_hs38_smp_defconfig
-sh                        apsh4ad0a_defconfig
-arm                         at91_dt_defconfig
-sh                          kfr2r09_defconfig
-arm                          pcm027_defconfig
-powerpc                      ppc6xx_defconfig
-nios2                            alldefconfig
-powerpc                    amigaone_defconfig
-powerpc                     skiroot_defconfig
-arm                         bcm2835_defconfig
-mips                     loongson1b_defconfig
-mips                            ar7_defconfig
-arc                            hsdk_defconfig
-alpha                               defconfig
-arm                          exynos_defconfig
-powerpc                      tqm8xx_defconfig
-arm                       aspeed_g4_defconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-nds32                             allnoconfig
-c6x                              allyesconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                             defconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-x86_64               randconfig-a003-20200827
-x86_64               randconfig-a002-20200827
-x86_64               randconfig-a001-20200827
-x86_64               randconfig-a005-20200827
-x86_64               randconfig-a006-20200827
-x86_64               randconfig-a004-20200827
-i386                 randconfig-a002-20200827
-i386                 randconfig-a004-20200827
-i386                 randconfig-a003-20200827
-i386                 randconfig-a005-20200827
-i386                 randconfig-a006-20200827
-i386                 randconfig-a001-20200827
-i386                 randconfig-a013-20200827
-i386                 randconfig-a012-20200827
-i386                 randconfig-a011-20200827
-i386                 randconfig-a016-20200827
-i386                 randconfig-a015-20200827
-i386                 randconfig-a014-20200827
-riscv                            allyesconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                            allmodconfig
-x86_64                                   rhel
-x86_64                           allyesconfig
-x86_64                    rhel-7.6-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                                  kexec
+After the hostap workaround (https://p.ibsgaard.io/raw/xaweyacunu),
+these patches continue to pass the hwsim tests as well as HEAD.
 
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+Thomas Pedersen (22):
+  nl80211: advertise supported channel width in S1G
+  cfg80211: regulatory: pass min. bandwidth to regulatory rule extractor
+  cfg80211: regulatory: handle S1G channels
+  nl80211: correctly validate S1G beacon head
+  nl80211: support setting S1G channels
+  {cfg,mac}80211: get correct default channel width for S1G
+  mac80211: s1g: choose scanning width based on frequency
+  nl80211: support S1G capabilities
+  mac80211: support S1G STA capabilities
+  cfg80211: convert S1G beacon to scan results
+  cfg80211: parse S1G Operation element for BSS channel
+  mac80211: convert S1G beacon to scan results
+  cfg80211: handle Association Response from S1G STA
+  mac80211: encode listen interval for S1G
+  mac80211: don't calculate duration for S1G
+  mac80211: handle S1G low rates
+  mac80211: avoid rate init for S1G band
+  mac80211: receive and process S1G beacons
+  mac80211: support S1G association
+  nl80211: include frequency offset in survey info
+  mac80211_hwsim: indicate support for S1G
+  mac80211_hwsim: fix TSF timestamp write to S1G beacon
+
+ drivers/net/wireless/ath/regd.c               |   2 +-
+ .../broadcom/brcm80211/brcmsmac/channel.c     |   3 +-
+ drivers/net/wireless/mac80211_hwsim.c         |  93 +++++++-
+ drivers/net/wireless/realtek/rtlwifi/regd.c   |   7 +-
+ include/linux/ieee80211.h                     |  82 ++++++-
+ include/net/cfg80211.h                        |  31 ++-
+ include/net/mac80211.h                        |   3 +
+ include/uapi/linux/nl80211.h                  |  26 +++
+ net/mac80211/cfg.c                            |   2 +
+ net/mac80211/chan.c                           |   9 +-
+ net/mac80211/ibss.c                           |   3 +-
+ net/mac80211/ieee80211_i.h                    |  20 ++
+ net/mac80211/iface.c                          |   5 +
+ net/mac80211/mlme.c                           | 184 +++++++++++++---
+ net/mac80211/rate.c                           |  39 +++-
+ net/mac80211/rx.c                             |  87 ++++----
+ net/mac80211/scan.c                           |  37 +++-
+ net/mac80211/tx.c                             |   4 +
+ net/mac80211/util.c                           | 207 +++++++++++++++++-
+ net/wireless/chan.c                           | 140 +++++++-----
+ net/wireless/mlme.c                           |  20 ++
+ net/wireless/nl80211.c                        |  56 ++++-
+ net/wireless/reg.c                            |  74 +++++--
+ net/wireless/scan.c                           |  80 +++++--
+ net/wireless/util.c                           |  32 +++
+ 25 files changed, 1046 insertions(+), 200 deletions(-)
+
+-- 
+2.20.1
+
