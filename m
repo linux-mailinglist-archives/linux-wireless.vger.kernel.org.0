@@ -2,41 +2,41 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 87018255092
-	for <lists+linux-wireless@lfdr.de>; Thu, 27 Aug 2020 23:29:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BDCDC2550BE
+	for <lists+linux-wireless@lfdr.de>; Thu, 27 Aug 2020 23:48:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726854AbgH0V3L (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 27 Aug 2020 17:29:11 -0400
-Received: from mga12.intel.com ([192.55.52.136]:22238 "EHLO mga12.intel.com"
+        id S1727817AbgH0Vs0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 27 Aug 2020 17:48:26 -0400
+Received: from mga04.intel.com ([192.55.52.120]:22959 "EHLO mga04.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726120AbgH0V3L (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 27 Aug 2020 17:29:11 -0400
-IronPort-SDR: +HhYxcWQd3sUl02h0FSjeou4jDw0pnNor6cgpxEt14Bj1kvivvZrSJxBcYUvsSJm3fIKHMtkzC
- sgQeozyTN3tg==
-X-IronPort-AV: E=McAfee;i="6000,8403,9726"; a="136114369"
+        id S1726147AbgH0VsV (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 27 Aug 2020 17:48:21 -0400
+IronPort-SDR: m5L/1uk1UMhHM++Jf3lxguJwrqa3m3B6r2pN4gTCCk5/GHXvvU/V+QAx1RjBQE5KcLfpPv6GHa
+ +SrFHIRdEBaQ==
+X-IronPort-AV: E=McAfee;i="6000,8403,9726"; a="153986872"
 X-IronPort-AV: E=Sophos;i="5.76,361,1592895600"; 
-   d="scan'208";a="136114369"
+   d="scan'208";a="153986872"
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Aug 2020 14:29:10 -0700
-IronPort-SDR: D8IVMqDitmxd98uQGi4yzmUGCLbi2hYCVVlj8rRy3GWiaGxIVhNXNbkFXNNSnTm+1sxCeffFxS
- k6CAC4mq72hw==
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Aug 2020 14:48:20 -0700
+IronPort-SDR: Jr/6qeBMOJGO6jrdpeCADnzIGuR4Vg3pDOeWG7xCEGyveAgil+cPrv9s/dxxN4WMHfxDfKF35B
+ 00x086PQFtxQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.76,361,1592895600"; 
-   d="scan'208";a="403539238"
+   d="scan'208";a="280762545"
 Received: from lkp-server01.sh.intel.com (HELO 4f455964fc6c) ([10.239.97.150])
-  by fmsmga001.fm.intel.com with ESMTP; 27 Aug 2020 14:29:09 -0700
+  by fmsmga007.fm.intel.com with ESMTP; 27 Aug 2020 14:48:19 -0700
 Received: from kbuild by 4f455964fc6c with local (Exim 4.92)
         (envelope-from <lkp@intel.com>)
-        id 1kBPSG-0002J1-GM; Thu, 27 Aug 2020 21:29:08 +0000
-Date:   Fri, 28 Aug 2020 05:28:40 +0800
+        id 1kBPko-0002Jo-E4; Thu, 27 Aug 2020 21:48:18 +0000
+Date:   Fri, 28 Aug 2020 05:48:05 +0800
 From:   kernel test robot <lkp@intel.com>
-To:     Johannes Berg <johannes.berg@intel.com>
+To:     Kalle Valo <kvalo@codeaurora.org>
 Cc:     linux-wireless@vger.kernel.org
-Subject: [mac80211:master] BUILD SUCCESS
- 2d9b55508556ccee6410310fb9ea2482fd3328eb
-Message-ID: <5f482588.ezRqY0XO7Wk8odAj%lkp@intel.com>
+Subject: [wireless-drivers-next:pending] BUILD SUCCESS
+ ee48f2b5670942c15aa1a1d4d376d904ad13ec4e
+Message-ID: <5f482a15.A1hlPCWSBlBDsMYP%lkp@intel.com>
 User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -46,13 +46,13 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211.git  master
-branch HEAD: 2d9b55508556ccee6410310fb9ea2482fd3328eb  cfg80211: Adjust 6 GHz frequency to channel conversion
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git  pending
+branch HEAD: ee48f2b5670942c15aa1a1d4d376d904ad13ec4e  rtlwifi: rtl8821ae: Rename RT_TRACE to rtl_dbg
 
 elapsed time: 725m
 
-configs tested: 125
-configs skipped: 13
+configs tested: 126
+configs skipped: 15
 
 The following configs have been built successfully.
 More configs may be tested in the coming days.
@@ -78,38 +78,40 @@ arm                         s3c2410_defconfig
 m68k                        m5272c3_defconfig
 sh                            migor_defconfig
 arm                        multi_v7_defconfig
+sparc64                          alldefconfig
+arm                          pxa168_defconfig
+ia64                             allmodconfig
+sh                        sh7763rdp_defconfig
+arm                         orion5x_defconfig
+mips                          malta_defconfig
+arm                           spitz_defconfig
+mips                       rbtx49xx_defconfig
 mips                         mpc30x_defconfig
 powerpc                      ppc40x_defconfig
 parisc                           allyesconfig
 powerpc                     mpc5200_defconfig
 mips                           ip22_defconfig
 arc                           tb10x_defconfig
-sparc64                          alldefconfig
 sh                        sh7757lcr_defconfig
 mips                      maltaaprp_defconfig
-arm                         hackkit_defconfig
-arm                          moxart_defconfig
-parisc                           alldefconfig
-arm                        mvebu_v7_defconfig
 arm                    vt8500_v6_v7_defconfig
 sh                             sh03_defconfig
 arm                         mv78xx0_defconfig
 arc                              allyesconfig
-arm                       mainstone_defconfig
-m68k                             allmodconfig
-c6x                         dsk6455_defconfig
-arm                         axm55xx_defconfig
-sh                          urquell_defconfig
-arm                         assabet_defconfig
-h8300                    h8300h-sim_defconfig
-h8300                               defconfig
+powerpc                     powernv_defconfig
+mips                          rb532_defconfig
+ia64                         bigsur_defconfig
+arm                        multi_v5_defconfig
+sh                         ecovec24_defconfig
 sh                          sdk7780_defconfig
+c6x                         dsk6455_defconfig
 arc                              alldefconfig
 arm                  colibri_pxa270_defconfig
 mips                       lemote2f_defconfig
-m68k                         apollo_defconfig
-sh                        edosk7760_defconfig
-sh                           sh2007_defconfig
+c6x                        evmc6678_defconfig
+sparc                               defconfig
+arc                    vdk_hs38_smp_defconfig
+sh                        apsh4ad0a_defconfig
 arm                         at91_dt_defconfig
 sh                          kfr2r09_defconfig
 arm                          pcm027_defconfig
@@ -125,9 +127,9 @@ alpha                               defconfig
 arm                          exynos_defconfig
 powerpc                      tqm8xx_defconfig
 arm                       aspeed_g4_defconfig
-ia64                             allmodconfig
 ia64                                defconfig
 ia64                             allyesconfig
+m68k                             allmodconfig
 m68k                                defconfig
 m68k                             allyesconfig
 nios2                               defconfig
@@ -146,7 +148,6 @@ s390                             allyesconfig
 s390                                defconfig
 i386                             allyesconfig
 sparc                            allyesconfig
-sparc                               defconfig
 i386                                defconfig
 mips                             allyesconfig
 mips                             allmodconfig
