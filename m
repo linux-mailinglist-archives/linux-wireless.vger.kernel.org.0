@@ -2,54 +2,219 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 04AF72542B0
-	for <lists+linux-wireless@lfdr.de>; Thu, 27 Aug 2020 11:48:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 190F42542E2
+	for <lists+linux-wireless@lfdr.de>; Thu, 27 Aug 2020 11:58:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728072AbgH0JsL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 27 Aug 2020 05:48:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42166 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726826AbgH0JsI (ORCPT
+        id S1728582AbgH0J6s (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 27 Aug 2020 05:58:48 -0400
+Received: from mail29.static.mailgun.info ([104.130.122.29]:54249 "EHLO
+        mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728576AbgH0J6q (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 27 Aug 2020 05:48:08 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5BFBC061264
-        for <linux-wireless@vger.kernel.org>; Thu, 27 Aug 2020 02:48:08 -0700 (PDT)
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.94)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1kBEVq-00BX86-Vh; Thu, 27 Aug 2020 11:48:07 +0200
-Message-ID: <5ca724421a6a9d8be3402e10dbd62a19b910b03a.camel@sipsolutions.net>
-Subject: Re: [PATCH v5 2/2] mac80211: Add FILS discovery support
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Aloka Dixit <alokad@codeaurora.org>
-Cc:     linux-wireless@vger.kernel.org
-Date:   Thu, 27 Aug 2020 11:48:06 +0200
-In-Reply-To: <20200805011838.28166-3-alokad@codeaurora.org>
-References: <20200805011838.28166-1-alokad@codeaurora.org>
-         <20200805011838.28166-3-alokad@codeaurora.org>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.5 (3.36.5-1.fc32) 
+        Thu, 27 Aug 2020 05:58:46 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1598522324; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=WP6K/m86m5Agf2av5a4eUUl7nH3ft4KQzbUnpZTtPek=;
+ b=X0LSInnVNnaEY6beil3n+Wr7xe7m8qeK2gO4OzEq1EmKSnSU+0/xPJGGvFlvCJlMrzlSZXqh
+ zi4HRxVh/oxmMyLlGIB4uKiW7H/Ifbs5fXCVepCLbjwYSBYiJtlG+PJpaAgpKN5TpWDAEOQM
+ XBmhNqbDBFXgaPCptcHPdHKxgX4=
+X-Mailgun-Sending-Ip: 104.130.122.29
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n06.prod.us-east-1.postgun.com with SMTP id
+ 5f4783d4c9ede11f5e6f11b7 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 27 Aug 2020 09:58:44
+ GMT
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id C1548C4339C; Thu, 27 Aug 2020 09:58:43 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
+        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id C39D7C433CA;
+        Thu, 27 Aug 2020 09:58:40 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org C39D7C433CA
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] mwifiex: switch from 'pci_' to 'dma_' API
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20200819070152.111522-1-christophe.jaillet@wanadoo.fr>
+References: <20200819070152.111522-1-christophe.jaillet@wanadoo.fr>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     amitkarwar@gmail.com, ganapathi.bhat@nxp.com,
+        huxinming820@gmail.com, davem@davemloft.net, kuba@kernel.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
+Message-Id: <20200827095843.C1548C4339C@smtp.codeaurora.org>
+Date:   Thu, 27 Aug 2020 09:58:43 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Christophe JAILLET <christophe.jaillet@wanadoo.fr> wrote:
 
-> + *  @IEEE80211_HW_SUPPORTS_FILS_DISCOVERY: Hardware/driver supports FILS
-> + *	discovery frame transmission
+> The wrappers in include/linux/pci-dma-compat.h should go away.
+> 
+> The patch has been generated with the coccinelle script below and has been
+> hand modified to replace GFP_ with a correct flag.
+> It has been compile tested.
+> 
+> When memory is allocated in 'mwifiex_pcie_alloc_buffers()' (see details in
+> the call chain below) GFP_KERNEL can be used because both
+> 'mwifiex_register()' and 'mwifiex_reinit_sw()' already use GFP_KERNEL.
+> (for 'mwifiex_reinit_sw()', it is hidden in a call to 'alloc_workqueue()')
+> 
+> The call chain is:
+>   mwifiex_register
+>     --> mwifiex_init_pcie        (.init_if function, see mwifiex_if_ops)
+>    [ or ]
+>   mwifiex_reinit_sw
+>     -->mwifiex_pcie_up_dev       (.up_dev function, see mwifiex_if_ops)
+> 
+>     [ then in both case ]
+>       -->mwifiex_pcie_alloc_buffers
+>         --> mwifiex_pcie_create_txbd_ring
+>         --> mwifiex_pcie_create_rxbd_ring
+>         --> mwifiex_pcie_create_evtbd_ring
+>         --> mwifiex_pcie_alloc_sleep_cookie_buf
+> 
+> @@
+> @@
+> -    PCI_DMA_BIDIRECTIONAL
+> +    DMA_BIDIRECTIONAL
+> 
+> @@
+> @@
+> -    PCI_DMA_TODEVICE
+> +    DMA_TO_DEVICE
+> 
+> @@
+> @@
+> -    PCI_DMA_FROMDEVICE
+> +    DMA_FROM_DEVICE
+> 
+> @@
+> @@
+> -    PCI_DMA_NONE
+> +    DMA_NONE
+> 
+> @@
+> expression e1, e2, e3;
+> @@
+> -    pci_alloc_consistent(e1, e2, e3)
+> +    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
+> 
+> @@
+> expression e1, e2, e3;
+> @@
+> -    pci_zalloc_consistent(e1, e2, e3)
+> +    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
+> 
+> @@
+> expression e1, e2, e3, e4;
+> @@
+> -    pci_free_consistent(e1, e2, e3, e4)
+> +    dma_free_coherent(&e1->dev, e2, e3, e4)
+> 
+> @@
+> expression e1, e2, e3, e4;
+> @@
+> -    pci_map_single(e1, e2, e3, e4)
+> +    dma_map_single(&e1->dev, e2, e3, e4)
+> 
+> @@
+> expression e1, e2, e3, e4;
+> @@
+> -    pci_unmap_single(e1, e2, e3, e4)
+> +    dma_unmap_single(&e1->dev, e2, e3, e4)
+> 
+> @@
+> expression e1, e2, e3, e4, e5;
+> @@
+> -    pci_map_page(e1, e2, e3, e4, e5)
+> +    dma_map_page(&e1->dev, e2, e3, e4, e5)
+> 
+> @@
+> expression e1, e2, e3, e4;
+> @@
+> -    pci_unmap_page(e1, e2, e3, e4)
+> +    dma_unmap_page(&e1->dev, e2, e3, e4)
+> 
+> @@
+> expression e1, e2, e3, e4;
+> @@
+> -    pci_map_sg(e1, e2, e3, e4)
+> +    dma_map_sg(&e1->dev, e2, e3, e4)
+> 
+> @@
+> expression e1, e2, e3, e4;
+> @@
+> -    pci_unmap_sg(e1, e2, e3, e4)
+> +    dma_unmap_sg(&e1->dev, e2, e3, e4)
+> 
+> @@
+> expression e1, e2, e3, e4;
+> @@
+> -    pci_dma_sync_single_for_cpu(e1, e2, e3, e4)
+> +    dma_sync_single_for_cpu(&e1->dev, e2, e3, e4)
+> 
+> @@
+> expression e1, e2, e3, e4;
+> @@
+> -    pci_dma_sync_single_for_device(e1, e2, e3, e4)
+> +    dma_sync_single_for_device(&e1->dev, e2, e3, e4)
+> 
+> @@
+> expression e1, e2, e3, e4;
+> @@
+> -    pci_dma_sync_sg_for_cpu(e1, e2, e3, e4)
+> +    dma_sync_sg_for_cpu(&e1->dev, e2, e3, e4)
+> 
+> @@
+> expression e1, e2, e3, e4;
+> @@
+> -    pci_dma_sync_sg_for_device(e1, e2, e3, e4)
+> +    dma_sync_sg_for_device(&e1->dev, e2, e3, e4)
+> 
+> @@
+> expression e1, e2;
+> @@
+> -    pci_dma_mapping_error(e1, e2)
+> +    dma_mapping_error(&e1->dev, e2)
+> 
+> @@
+> expression e1, e2;
+> @@
+> -    pci_set_dma_mask(e1, e2)
+> +    dma_set_mask(&e1->dev, e2)
+> 
+> @@
+> expression e1, e2;
+> @@
+> -    pci_set_consistent_dma_mask(e1, e2)
+> +    dma_set_coherent_mask(&e1->dev, e2)
+> 
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
+Patch applied to wireless-drivers-next.git, thanks.
 
-nit: extra space before the @
+4cf975f640fe mwifiex: switch from 'pci_' to 'dma_' API
 
-but in any case you really ought to just remove this, the driver can set
-up whatever method you decide to use in cfg80211 (e.g. extended feature
-flag) - no need for mac80211 to have extra code just to pass it through.
+-- 
+https://patchwork.kernel.org/patch/11722857/
 
-The flags here are intended for things that only mac80211 cares about.
-
-johannes
-
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
