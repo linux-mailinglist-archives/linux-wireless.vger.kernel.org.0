@@ -2,109 +2,73 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A0F8254245
-	for <lists+linux-wireless@lfdr.de>; Thu, 27 Aug 2020 11:27:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 49F9325426F
+	for <lists+linux-wireless@lfdr.de>; Thu, 27 Aug 2020 11:33:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728692AbgH0J1s (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 27 Aug 2020 05:27:48 -0400
-Received: from mail29.static.mailgun.info ([104.130.122.29]:35805 "EHLO
-        mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727030AbgH0J1q (ORCPT
+        id S1728358AbgH0JdW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 27 Aug 2020 05:33:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39850 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728303AbgH0JdU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 27 Aug 2020 05:27:46 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1598520465; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=QWdQHQuPvLrCO8rowzZZm4QHVqIRVrvYDpdAOb7yDRk=; b=p2X7MXZ+rp+v2wxf/MfjFQ3M7ZHHKa1iiqaBfsj9/ocxiRtDQJFa5mm8SJVtYegxJ7Q6EPEv
- j8OoPOmu4rKkcBAx2lnXDvU8+S8w1RD0pWxOOhXcocI3euNw4Zld11nNNlIc2QRjQYWPONQW
- 9oVFRiESncY9DZ7Vs0WaDLvBMeI=
-X-Mailgun-Sending-Ip: 104.130.122.29
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n05.prod.us-west-2.postgun.com with SMTP id
- 5f477c89c598aced542063f3 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 27 Aug 2020 09:27:37
- GMT
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 41AC8C433C6; Thu, 27 Aug 2020 09:27:37 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id B735FC433A0;
-        Thu, 27 Aug 2020 09:27:34 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org B735FC433A0
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Larry Finger <Larry.Finger@lwfinger.net>
-Cc:     Joe Perches <joe@perches.com>, Pkshih <pkshih@realtek.com>,
-        "linux-wireless\@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "davem\@davemloft.net" <davem@davemloft.net>,
-        "netdev\@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel\@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "kuba\@kernel.org" <kuba@kernel.org>
-Subject: Re: [PATCH 2/6] rtlwifi: Remove unnecessary parenthese in rtl_dbg uses
-References: <cover.1595706419.git.joe@perches.com>
-        <9b2eaedb7ea123ea766a379459b20a9486d1cd41.1595706420.git.joe@perches.com>
-        <1595830034.12227.7.camel@realtek.com>
-        <ae9d562ec9ef765dddd1491d4cfb5f6d18f7025f.camel@perches.com>
-        <1595840670.17671.4.camel@realtek.com>
-        <6e0c07bc3d2f48d4a62a9e270366c536cfe56783.camel@perches.com>
-        <374359f9-8199-f4b9-0596-adc41c8c664f@lwfinger.net>
-Date:   Thu, 27 Aug 2020 12:27:32 +0300
-In-Reply-To: <374359f9-8199-f4b9-0596-adc41c8c664f@lwfinger.net> (Larry
-        Finger's message of "Mon, 27 Jul 2020 11:25:21 -0500")
-Message-ID: <87v9h4bfqz.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        Thu, 27 Aug 2020 05:33:20 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10220C061264
+        for <linux-wireless@vger.kernel.org>; Thu, 27 Aug 2020 02:33:19 -0700 (PDT)
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.94)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1kBEHU-00BWop-GC; Thu, 27 Aug 2020 11:33:16 +0200
+Message-ID: <f57db5715fe2177ae4901ba981fdc3a580b94b54.camel@sipsolutions.net>
+Subject: Re: [PATCH] cfg80211: Add feature flag to indicate RSNXE IE support
+ in FT
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Veerendranath Jakkam <vjakkam@codeaurora.org>
+Cc:     linux-wireless@vger.kernel.org
+Date:   Thu, 27 Aug 2020 11:33:12 +0200
+In-Reply-To: <1596511970-8415-1-git-send-email-vjakkam@codeaurora.org>
+References: <1596511970-8415-1-git-send-email-vjakkam@codeaurora.org>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.5 (3.36.5-1.fc32) 
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Larry Finger <Larry.Finger@lwfinger.net> writes:
+On Tue, 2020-08-04 at 09:02 +0530, Veerendranath Jakkam wrote:
+> Add a new feature flag that drivers in which FT handshake is offloaded,
 
-> On 7/27/20 9:52 AM, Joe Perches wrote:
->> On Mon, 2020-07-27 at 09:04 +0000, Pkshih wrote:
->>> So, I think you would like to have parenthesis intentionally.
->>> If so,
->>> test1 ? : (test2 ? :)
->>> would be better.
->>>
->>>
->>> If not,
->>> test1 ? : test2 ? :
->>> may be what you want (without any parenthesis).
->>
->> Use whatever style you like, it's unimportant to me
->> and it's not worth spending any real time on it.
->
-> If you are so busy, why did you jump in with patches that you knew I
-> was already working on? You knew because you critiqued my first
-> submission.
+"that drivers (in which ...)" what? Can set? Are expected to use?
 
-Yeah, I don't understand this either. First stepping on Larry's work and
-when after getting review comments claiming being busy and not caring is
-contradicting.
+> to advertise support for interoperability with legacy clients which
+> doesn't
 
-> @Kalle: Please drop my contributions in the sequence "PATCH v2 00/15]
-> rtlwifi: Change RT_TRACE into rtl_dbg for all drivers".
+don't? or what does "doesn't" refer to?
 
-Is there a technical reason for that? I prefer that patchset more,
-nicely split in smaller patches and it's fully available from patchwork.
+>  support using RSNXE IE for MIC calculation in FT handshake. The
+> userspace can choose to enable/disable FT protocols that require RSNXE IE
+> to be used based on this flag advertised by drivers.
 
-Patch 15 had a build problem but I can drop that for now, it can be
-resent separately:
+I can't say I really understand this.
 
-https://patchwork.kernel.org/patch/11681621/
+> Signed-off-by: Veerendranath Jakkam <vjakkam@codeaurora.org>
+> 
+> diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
+> index 631f3a99..83e8079 100644
+> --- a/include/uapi/linux/nl80211.h
+> +++ b/include/uapi/linux/nl80211.h
+> @@ -5820,6 +5820,9 @@ enum nl80211_feature_flags {
+>   * @NL80211_EXT_FEATURE_4WAY_HANDSHAKE_AP_PSK: Device wants to do 4-way
+>   *	handshake with PSK in AP mode (PSK is passed as part of the start AP
+>   *	command).
+> + * @NL80211_EXT_FEATURE_FT_RSNXE: Driver supports RSNXE element in FT handshake
+> + *	and interoperable with legacy clients that doesn't support using RSNXE
+> + *	IE for MIC computation in FT handshake.
 
--- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Nor this. Please rewrite the commit message and comment to be more
+explanatory (and grammatically correct).
+
+johannes
+
