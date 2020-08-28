@@ -2,135 +2,177 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AF332255190
-	for <lists+linux-wireless@lfdr.de>; Fri, 28 Aug 2020 01:30:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 05F7525528A
+	for <lists+linux-wireless@lfdr.de>; Fri, 28 Aug 2020 03:29:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727964AbgH0XaJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 27 Aug 2020 19:30:09 -0400
-Received: from mail2.candelatech.com ([208.74.158.173]:45062 "EHLO
-        mail3.candelatech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726147AbgH0XaH (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 27 Aug 2020 19:30:07 -0400
-Received: from ben-dt4.candelatech.com (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
-        by mail3.candelatech.com (Postfix) with ESMTP id 5773B13C2B0;
-        Thu, 27 Aug 2020 16:30:06 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 5773B13C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1598571006;
-        bh=lX2hkrw1BWRViNiVQI/gAHoTKuKiXummP18AsIAO1QE=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BdfLH1w7QsQUMA75pJQXrvrFKGumRgxIQipMNNoEJPU6ZayCMMcYKey9sBgbDA847
-         O3kTf8i7m/pb0ddgXE5c0+v13dxdf+DI7RUzEBYGgwO+0JcVzTYvL5MwqpIDBlr9tU
-         I5kHpU66hro8RvpavvdeX01F9QScrwirKNUsa+l4=
-From:   greearb@candelatech.com
-To:     ath11k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org,
-        Ben Greear <greearb@candelatech.com>
-Subject: [PATCH 2/2] ath11k:  Add firmware_info file to debugfs
-Date:   Thu, 27 Aug 2020 16:30:02 -0700
-Message-Id: <20200827233002.21483-2-greearb@candelatech.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200827233002.21483-1-greearb@candelatech.com>
-References: <20200827233002.21483-1-greearb@candelatech.com>
+        id S1728192AbgH1B3r (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 27 Aug 2020 21:29:47 -0400
+Received: from mga12.intel.com ([192.55.52.136]:39900 "EHLO mga12.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726147AbgH1B3r (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 27 Aug 2020 21:29:47 -0400
+IronPort-SDR: FYEMHEz/q1FiHGAy6BZU37sRABcvYBth71wWZOjWMCknmVMCY5PatVQe1/p7TLD/pF097v7NYc
+ 9caRujGbbWpw==
+X-IronPort-AV: E=McAfee;i="6000,8403,9726"; a="136136610"
+X-IronPort-AV: E=Sophos;i="5.76,361,1592895600"; 
+   d="scan'208";a="136136610"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Aug 2020 18:29:46 -0700
+IronPort-SDR: mAB4zzDAwCSa5Jdsjz7vU+TBdbarRe2rpqHIqifC/4w53z9NrtyReIRwGmI0+SAGAI0bCDaYrV
+ vzwXblT2FNAQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.76,361,1592895600"; 
+   d="scan'208";a="332388390"
+Received: from lkp-server01.sh.intel.com (HELO 4f455964fc6c) ([10.239.97.150])
+  by fmsmga002.fm.intel.com with ESMTP; 27 Aug 2020 18:29:45 -0700
+Received: from kbuild by 4f455964fc6c with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1kBTD7-0002Px-15; Fri, 28 Aug 2020 01:29:45 +0000
+Date:   Fri, 28 Aug 2020 09:29:05 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Johannes Berg <johannes.berg@intel.com>
+Cc:     linux-wireless@vger.kernel.org
+Subject: [mac80211-next:master] BUILD SUCCESS
+ 2831a631022eed6e3f800f08892132c6edde652c
+Message-ID: <5f485de1.S/Kp19zWh/+8i9uD%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Ben Greear <greearb@candelatech.com>
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211-next.git  master
+branch HEAD: 2831a631022eed6e3f800f08892132c6edde652c  nl80211: support SAE authentication offload in AP mode
 
-This shows the fwcfg file name so that users don't have to guess,
-as well as some other info about the firmware and radio.
+elapsed time: 727m
 
-directory: QCA6390/hw2.0
-fwcfg:     fwcfg-pci-0000:14:00.0.txt
-bus:       0000:14:00.0
-version:   0x101c06cc
-hw_rev:    6390-hw2
-board:     board.bin
+configs tested: 115
+configs skipped: 13
 
-Signed-off-by: Ben Greear <greearb@candelatech.com>
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+mips                         bigsur_defconfig
+sh                   sh7770_generic_defconfig
+arm                          iop32x_defconfig
+c6x                              alldefconfig
+arm                          pxa168_defconfig
+powerpc                         ps3_defconfig
+arm                             rpc_defconfig
+arm                            zeus_defconfig
+arm                       aspeed_g4_defconfig
+mips                           xway_defconfig
+mips                     loongson1c_defconfig
+mips                            gpr_defconfig
+s390                          debug_defconfig
+sh                           se7712_defconfig
+arm                           stm32_defconfig
+ia64                             allyesconfig
+sparc64                          alldefconfig
+powerpc                mpc7448_hpc2_defconfig
+ia64                             allmodconfig
+sh                        sh7763rdp_defconfig
+arm                         orion5x_defconfig
+mips                         rt305x_defconfig
+mips                          malta_defconfig
+arm                         lpc32xx_defconfig
+arc                            hsdk_defconfig
+powerpc                     pseries_defconfig
+arc                           tb10x_defconfig
+sh                        sh7757lcr_defconfig
+mips                      maltaaprp_defconfig
+arm                       mainstone_defconfig
+m68k                             allmodconfig
+c6x                         dsk6455_defconfig
+powerpc                     powernv_defconfig
+mips                          rb532_defconfig
+ia64                         bigsur_defconfig
+arm                        multi_v5_defconfig
+sh                         ecovec24_defconfig
+c6x                        evmc6678_defconfig
+sparc                               defconfig
+arc                    vdk_hs38_smp_defconfig
+sh                        apsh4ad0a_defconfig
+powerpc                      pasemi_defconfig
+arm                           omap1_defconfig
+m68k                        m5272c3_defconfig
+m68k                       m5475evb_defconfig
+sh                          sdk7780_defconfig
+mips                           ip22_defconfig
+ia64                                defconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+parisc                           allyesconfig
+s390                                defconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+c6x                              allyesconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+i386                                defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+powerpc                             defconfig
+x86_64               randconfig-a003-20200827
+x86_64               randconfig-a002-20200827
+x86_64               randconfig-a001-20200827
+x86_64               randconfig-a005-20200827
+x86_64               randconfig-a006-20200827
+x86_64               randconfig-a004-20200827
+i386                 randconfig-a002-20200827
+i386                 randconfig-a004-20200827
+i386                 randconfig-a003-20200827
+i386                 randconfig-a005-20200827
+i386                 randconfig-a006-20200827
+i386                 randconfig-a001-20200827
+i386                 randconfig-a013-20200827
+i386                 randconfig-a012-20200827
+i386                 randconfig-a011-20200827
+i386                 randconfig-a016-20200827
+i386                 randconfig-a015-20200827
+i386                 randconfig-a014-20200827
+i386                 randconfig-a013-20200828
+i386                 randconfig-a012-20200828
+i386                 randconfig-a011-20200828
+i386                 randconfig-a016-20200828
+i386                 randconfig-a014-20200828
+i386                 randconfig-a015-20200828
+riscv                            allyesconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                            allmodconfig
+x86_64                                   rhel
+x86_64                           allyesconfig
+x86_64                    rhel-7.6-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                                  kexec
+
 ---
- drivers/net/wireless/ath/ath11k/debug.c | 56 +++++++++++++++++++++++++
- 1 file changed, 56 insertions(+)
-
-diff --git a/drivers/net/wireless/ath/ath11k/debug.c b/drivers/net/wireless/ath/ath11k/debug.c
-index 2ac0df8aee26..38ffcae67ab5 100644
---- a/drivers/net/wireless/ath/ath11k/debug.c
-+++ b/drivers/net/wireless/ath/ath11k/debug.c
-@@ -398,6 +398,59 @@ static const struct file_operations fops_pdev_stats = {
- 	.llseek = default_llseek,
- };
- 
-+static ssize_t ath11k_read_fwinfo(struct file *file,
-+				  char __user *user_buf,
-+				  size_t count, loff_t *ppos)
-+{
-+	struct ath11k_base *ab = file->private_data;
-+	char *buf;
-+	unsigned int len = 0, buf_len = 1000;
-+	ssize_t ret_cnt;
-+
-+	buf = kzalloc(buf_len, GFP_KERNEL);
-+	if (!buf)
-+		return -ENOMEM;
-+
-+	/* TODO:  Locking? */
-+
-+	len = snprintf(buf, buf_len, "directory: %s\nfwcfg:     fwcfg-%s-%s.txt\nbus:       %s",
-+		       ab->hw_params.fw.dir,
-+		       ath11k_bus_str(ab->hif.bus), dev_name(ab->dev), dev_name(ab->dev));
-+
-+	/* Just to be safe */
-+	buf[buf_len - 1] = 0;
-+	len = strlen(buf);
-+
-+	len += snprintf(buf + len, buf_len - len, "\nversion:   0x%0x\nhw_rev:    ",
-+			ab->qmi.target.fw_version);
-+	switch (ab->hw_rev) {
-+	case ATH11K_HW_QCA6390_HW11:
-+		len += snprintf(buf + len, buf_len - len, "6390-hw1\n");
-+		break;
-+	case ATH11K_HW_QCA6390_HW20:
-+		len += snprintf(buf + len, buf_len - len, "6390-hw2\n");
-+		break;
-+	case ATH11K_HW_IPQ8074:
-+		len += snprintf(buf + len, buf_len - len, "8074\n");
-+		break;
-+	}
-+
-+	len += snprintf(buf + len, buf_len - len, "board:     %s\n",
-+			ab->fw_board_name);
-+
-+	ret_cnt = simple_read_from_buffer(user_buf, count, ppos, buf, len);
-+
-+	kfree(buf);
-+	return ret_cnt;
-+}
-+
-+static const struct file_operations fops_fwinfo_services = {
-+	.read = ath11k_read_fwinfo,
-+	.open = simple_open,
-+	.owner = THIS_MODULE,
-+	.llseek = default_llseek,
-+};
-+
- static int ath11k_open_vdev_stats(struct inode *inode, struct file *file)
- {
- 	struct ath11k *ar = inode->i_private;
-@@ -1201,6 +1254,9 @@ int ath11k_debug_register(struct ath11k *ar)
- 				    &ar->dfs_block_radar_events);
- 	}
- 
-+	debugfs_create_file("firmware_info", 0400, ar->debug.debugfs_pdev, ab,
-+			    &fops_fwinfo_services);
-+
- 	return 0;
- }
- 
--- 
-2.26.2
-
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
