@@ -2,106 +2,82 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 007FD255307
-	for <lists+linux-wireless@lfdr.de>; Fri, 28 Aug 2020 04:27:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 37C74255344
+	for <lists+linux-wireless@lfdr.de>; Fri, 28 Aug 2020 05:21:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728362AbgH1C1J convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 27 Aug 2020 22:27:09 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:59260 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727124AbgH1C1I (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 27 Aug 2020 22:27:08 -0400
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.69 with qID 07S2QwWK2018754, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexmb06.realtek.com.tw[172.21.6.99])
-        by rtits2.realtek.com.tw (8.15.2/2.66/5.86) with ESMTPS id 07S2QwWK2018754
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Fri, 28 Aug 2020 10:26:58 +0800
-Received: from RTEXMB05.realtek.com.tw (172.21.6.98) by
- RTEXMB06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Fri, 28 Aug 2020 10:26:58 +0800
-Received: from RTEXMB04.realtek.com.tw (172.21.6.97) by
- RTEXMB05.realtek.com.tw (172.21.6.98) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Fri, 28 Aug 2020 10:26:58 +0800
-Received: from RTEXMB04.realtek.com.tw ([fe80::e076:9c5c:7feb:1364]) by
- RTEXMB04.realtek.com.tw ([fe80::e076:9c5c:7feb:1364%3]) with mapi id
- 15.01.1779.005; Fri, 28 Aug 2020 10:26:58 +0800
-From:   Tony Chuang <yhchuang@realtek.com>
-To:     Kalle Valo <kvalo@codeaurora.org>,
-        kernel test robot <lkp@intel.com>
-CC:     Andy Huang <tehuang@realtek.com>,
-        "kbuild-all@lists.01.org" <kbuild-all@lists.01.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: RE: drivers/net/wireless/realtek/rtw88/rtw8821c.c:71:8: warning: type qualifiers ignored on function return type
-Thread-Topic: drivers/net/wireless/realtek/rtw88/rtw8821c.c:71:8: warning:
- type qualifiers ignored on function return type
-Thread-Index: AQHWfF4UTnmAkkSvPEutQmVesFW8RalMzHSg
-Date:   Fri, 28 Aug 2020 02:26:58 +0000
-Message-ID: <64a0c445dfe74ec183cc67636a9b6fee@realtek.com>
-References: <202008271827.tuwLEqMO%lkp@intel.com>
- <87imd4bc4l.fsf@codeaurora.org>
-In-Reply-To: <87imd4bc4l.fsf@codeaurora.org>
-Accept-Language: zh-TW, en-US
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.68.175]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        id S1727954AbgH1DVn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 27 Aug 2020 23:21:43 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:38253 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727817AbgH1DVn (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 27 Aug 2020 23:21:43 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1598584902; h=Message-ID: References: In-Reply-To: Subject:
+ Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Sender; bh=F7TvPtSUDXP1g1CLe1EeWey5ER9XS9KX4Ji30pM/v0w=;
+ b=L1tKtqygqqxrOsPGeBqvHdXXDjFLwaMzvzulalub3JU2op5GgXyPSWazk73Yvs/Db0/TGble
+ sJ8oayyNvB/p8CIauNE6gq4UxlHpbUzOh4tYCVPNg0WAjkeYlhDaZb7sg+dBwD5Q3FUPJ8ya
+ ib/47LswWMKpZXe49Vo6kFKgr2k=
+X-Mailgun-Sending-Ip: 69.72.43.7
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n03.prod.us-west-2.postgun.com with SMTP id
+ 5f487819630b177c47ce5e12 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 28 Aug 2020 03:20:57
+ GMT
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 606A7C433CA; Fri, 28 Aug 2020 03:20:57 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: alokad)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id F1D6AC433C6;
+        Fri, 28 Aug 2020 03:20:56 +0000 (UTC)
 MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Thu, 27 Aug 2020 20:20:56 -0700
+From:   Aloka Dixit <alokad@codeaurora.org>
+To:     John Crispin <john@phrozen.org>
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
+        linux-wireless-owner@vger.kernel.org
+Subject: Re: [PATCH V3 4/9] mac80211: add multiple bssid/ema support to bcn
+ templating
+In-Reply-To: <20200812150050.2683396-5-john@phrozen.org>
+References: <20200812150050.2683396-1-john@phrozen.org>
+ <20200812150050.2683396-5-john@phrozen.org>
+Message-ID: <e1822f692145388684e5c9cca767bbda@codeaurora.org>
+X-Sender: alokad@codeaurora.org
+User-Agent: Roundcube Webmail/1.3.9
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Andy
+> +static void
+> +ieee80211_beacon_add_multiple_bssid_config(struct ieee80211_vif *vif,
+> struct sk_buff *skb,
+> +					   struct cfg80211_multiple_bssid_data *config)
+> +{
+> +	u8 *pos = skb_put(skb, 6);
+> +
+> +	*pos++ = WLAN_EID_EXTENSION;
+> +	*pos++ = 4;
+> +	*pos++ = WLAN_EID_EXT_MULTIPLE_BSSID_CONFIGURATION;
+> +	*pos++ = 2;
+> +	*pos++ = vif->bss_conf.multiple_bssid.count;
+> +	*pos++ = config->cnt;
+> +}
+> +
 
-> + linux-wireless
-> 
-> kernel test robot <lkp@intel.com> writes:
-> 
-> > Hi Tzu-En,
-> >
-> > First bad commit (maybe != root cause):
-> >
-> > tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
-> master
-> > head:   15bc20c6af4ceee97a1f90b43c0e386643c071b4
-> > commit: f745eb9ca5bf823bc5c0f82a434cefb41c57844e rtw88: 8821c: Add
-> 8821CE to Kconfig and Makefile
-> > date:   6 weeks ago
-> > config: arm-randconfig-r012-20200827 (attached as .config)
-> > compiler: arm-linux-gnueabi-gcc (GCC) 9.3.0
-> > reproduce (this is a W=1 build):
-> >         wget
-> https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O
-> ~/bin/make.cross
-> >         chmod +x ~/bin/make.cross
-> >         git checkout f745eb9ca5bf823bc5c0f82a434cefb41c57844e
-> >         # save the attached .config to linux build tree
-> >         COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-9.3.0
-> make.cross ARCH=arm
-> >
-> > If you fix the issue, kindly add following tag as appropriate
-> > Reported-by: kernel test robot <lkp@intel.com>
-> >
-> > All warnings (new ones prefixed by >>):
-> >
-> >>> drivers/net/wireless/realtek/rtw88/rtw8821c.c:71:8: warning: type
-> qualifiers ignored on function return type [-Wignored-qualifiers]
-> >       71 | static const u8 rtw8821c_get_swing_index(struct rtw_dev
-> *rtwdev)
-> >          |        ^~~~~
-> 
-> Tony, please check this.
-> 
-
-Andy, please send a patch to fix it.
-
-Thanks,
-Yen-Hsuan
+Hi John,
+Which field in the IE is this line for : '*pos++ = 2;' ?
+This IE should be total 5 bytes with length=3.
