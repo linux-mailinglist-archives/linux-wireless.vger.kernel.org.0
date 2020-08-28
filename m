@@ -2,103 +2,144 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C7A01256200
-	for <lists+linux-wireless@lfdr.de>; Fri, 28 Aug 2020 22:28:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C07D256266
+	for <lists+linux-wireless@lfdr.de>; Fri, 28 Aug 2020 23:19:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726859AbgH1U2s (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 28 Aug 2020 16:28:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55418 "EHLO
+        id S1726396AbgH1VTT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 28 Aug 2020 17:19:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34966 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726033AbgH1U2q (ORCPT
+        with ESMTP id S1726338AbgH1VTS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 28 Aug 2020 16:28:46 -0400
+        Fri, 28 Aug 2020 17:19:18 -0400
 Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com [IPv6:2a00:1450:4864:20::542])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 601BDC061264;
-        Fri, 28 Aug 2020 13:28:46 -0700 (PDT)
-Received: by mail-ed1-x542.google.com with SMTP id i17so207442edx.12;
-        Fri, 28 Aug 2020 13:28:46 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E61AC061264
+        for <linux-wireless@vger.kernel.org>; Fri, 28 Aug 2020 14:19:18 -0700 (PDT)
+Received: by mail-ed1-x542.google.com with SMTP id u1so347720edi.4
+        for <linux-wireless@vger.kernel.org>; Fri, 28 Aug 2020 14:19:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=61/0HpbFm2wHtSAuVzJ/JzzCVPKNOSaE1LfRMb2GYp4=;
-        b=LBhkUzXilK2L/xRRhj5WmjgRTN3W2PHOPk+s6lQSpKtMocha/PAIHXHR6/abwDPbZS
-         nvkR1xj8NSZKu4di3TDClKv3SvBjxbIWQ6WwNSreFL7q9sRENFiqMikjktH9SbwAYvJz
-         Daq6VElU8dHnrAbZiNGSWAQAuIWnHHuk/YFUgbCPlMz4MPOBK1FymcxPUzSPehaIqMDx
-         fVxFPI/apnkQ5YL4XYLdWgDt05u8RIl23xARrbVT2DP4XiHhxF+4C6eMBwIC/Qx57aZg
-         p3UE9WSqkSwXGse265OJuy7DpeVkZTqGlQOPKdD90zm8YuVa59nizEBtIdhAK3BdpEyP
-         Ujzg==
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=3Y8bOudtUrTDSSDWKH7J9YA/62v+G5TLDE0YfKsOnUQ=;
+        b=p8bQOpoHlERQ4nkNH6ybr4BQ+EXMpV17dq7dlXnSsSIYCy8WQmWt3XDpKeRNEdqUxM
+         zChcdjHKmvc1hSRyNzGmoQ93O4eTgsjfBddltlR8JM/a6NoYHowg0V2ZW3JVdBRAc+Ph
+         GwBbEFasW8VEhLqZMw31DB7px35QodLqIUFTgOrPBhwtZKIZi5g86QDlhnOYYXlywuir
+         viau3tLOEZyRpqtvMFCDkOWIVqz/cKxRMJThlJr7aPIKnn92SeE1sMzevS+i8dR5XqPe
+         xZUHjCa3sjYfvOP52/WkuVmZwou/4kcPlK2oPXpZzhmj09woZSUv2HaCZNs/S/t1LA+W
+         ArQA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=61/0HpbFm2wHtSAuVzJ/JzzCVPKNOSaE1LfRMb2GYp4=;
-        b=ayRq0EtrQvvHE2OwOf2yaNKaLWLIeGvR4Cs7GXxMw4efoKyvFTYopHwIeyQfa+Hwun
-         xOEt5oZt4As4idSQARRBYidxp+UAa8H+stggxLI7+NAOiRRU7j/ZI0NOchTltypp/BAL
-         IW9AXHQn641aSTiKlD2pr1GXRYhBfVYT6J79vPNViKRgUNawUziAu17pzRvZFZEUT4p3
-         BoH34YgWLYBH+HKRQMk5mexwRNQgK9nmKzjd5G+q1USZFm0jnlaWq3enlx0QlaXCFeMN
-         nwnFz8jNiXGfF4G3kkLSAkaAmmTcaZAhlk/k3q0LWXt8qcWf77COigjyHrt46JaDvNKS
-         0z5g==
-X-Gm-Message-State: AOAM532VqpZOsAGY5FkkKwIasfsT2UlC6q90nPhmwhHctKkHJ0NfmP9l
-        5PU1D/ICGRbPFjezYwFhcNdr0S2cQvM=
-X-Google-Smtp-Source: ABdhPJwYBX0ibc6Z3fGzfDaQ44NVfdf5SeQuO66ACT9XbKW+NUkusOXvkPN7Y5YGzsxTpy4E/ZQFEQ==
-X-Received: by 2002:aa7:ca19:: with SMTP id y25mr479745eds.211.1598646525048;
-        Fri, 28 Aug 2020 13:28:45 -0700 (PDT)
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=3Y8bOudtUrTDSSDWKH7J9YA/62v+G5TLDE0YfKsOnUQ=;
+        b=gHbukh+g18GiS5ibOaGOawFZucpQCKi/dD9NU3scTqAxOgSyLrqeUQjPjamw5uMjXA
+         FpdEraEbElu6sJOUl4XnvPLhMv7DevC7bHdRZI4pyKoPcBllw0nIVgj4yv251R4BX2g0
+         2uLWzhqjShk6lyzrPFm5sTwF69rsUC4Y/gOVWC75TJwQ9yd+Tgv2/y1PgmkUariqol8Z
+         ROmHldOB2BloVp3j2/GmnzZv+BProm7/gxC131EePJbZFPepw4/RPIBj+yFqxSANWHGP
+         0IHg/E/NeWHv9p2ZH3SM/BHJPjejSBS1haC0gRSyCSDffsxaKzMeyQUk/mReS0jbLbW3
+         GCFA==
+X-Gm-Message-State: AOAM530p7wlx2I/DgLNp7Rq0jkfw6l8IUm2GbkShTO7XhZQPmUnA2mCk
+        TDLYv8lgZKehbBQDKmKu83StL7hWpYA=
+X-Google-Smtp-Source: ABdhPJyZV2CbX251XRyJrBITtsqY7qEJ361EL9ob5j4n8KQC5uHSy1Rv19/rwIPJT4C87FW/GKpRAA==
+X-Received: by 2002:aa7:cd52:: with SMTP id v18mr682700edw.165.1598649556544;
+        Fri, 28 Aug 2020 14:19:16 -0700 (PDT)
 Received: from debian64.daheim (p5b0d7429.dip0.t-ipconnect.de. [91.13.116.41])
-        by smtp.gmail.com with ESMTPSA id r26sm228648edp.62.2020.08.28.13.28.44
+        by smtp.gmail.com with ESMTPSA id z23sm336318eja.29.2020.08.28.14.19.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 28 Aug 2020 13:28:44 -0700 (PDT)
-Received: from localhost.daheim ([127.0.0.1] helo=debian64.localnet)
+        Fri, 28 Aug 2020 14:19:15 -0700 (PDT)
+Received: from localhost.daheim ([127.0.0.1])
         by debian64.daheim with esmtp (Exim 4.94)
         (envelope-from <chunkeey@gmail.com>)
-        id 1kBkz2-000gBn-69; Fri, 28 Aug 2020 22:28:24 +0200
+        id 1kBlmE-000gk7-3Q; Fri, 28 Aug 2020 23:19:14 +0200
+Subject: Re: [PATCH] p54: avoid accessing the data mapped to streaming DMA
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Jia-Ju Bai <baijiaju@tsinghua.edu.cn>, kuba@kernel.org,
+        linux-wireless@vger.kernel.org, Vinod Koul <vkoul@kernel.org>
+References: <20200802132949.26788-1-baijiaju@tsinghua.edu.cn>
+ <0b432282-8d52-3004-6648-d97c03cdae28@gmail.com>
+ <873649cs4c.fsf@codeaurora.org>
 From:   Christian Lamparter <chunkeey@gmail.com>
-To:     davem@davemloft.net, kuba@kernel.org,
-        Lee Jones <lee.jones@linaro.org>,
-        Kalle Valo <kvalo@codeaurora.org>
-Cc:     linux-kernel@vger.kernel.org,
-        Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH v2 08/30] net: wireless: ath: carl9170: Convert 'ar9170_qmap' to inline function
-Date:   Fri, 28 Aug 2020 22:28:20 +0200
-Message-ID: <5498132.V4cn31ggaO@debian64>
-In-Reply-To: <20200827093351.GA1627017@dell>
-References: <20200814113933.1903438-1-lee.jones@linaro.org> <20200814113933.1903438-9-lee.jones@linaro.org> <20200827093351.GA1627017@dell>
+Message-ID: <a7878a0d-fe97-0c88-3c99-a08dab7be6bc@gmail.com>
+Date:   Fri, 28 Aug 2020 23:19:09 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.11.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <873649cs4c.fsf@codeaurora.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thursday, 27 August 2020 11:33:51 CEST Lee Jones wrote:
-> 'ar9170_qmap' is used in some source files which include carl9170.h,
-> but not all of them.  A 'defined but not used' warning is thrown when
-> compiling the ones which do not use it.
->=20
-> Fixes the following W=3D1 kernel build warning(s)
->=20
->  from drivers/net/wireless/ath/carl9170/carl9170.h:57,
->  In file included from drivers/net/wireless/ath/carl9170/carl9170.h:57,
->  drivers/net/wireless/ath/carl9170/carl9170.h:71:17: warning: =E2=80=98ar=
-9170_qmap=E2=80=99 defined but not used [-Wunused-const-variable=3D]
->=20
->  NB: Snipped - lots of these repeat
->=20
-> Cc: Christian Lamparter <chunkeey@googlemail.com>
-> Cc: Kalle Valo <kvalo@codeaurora.org>
-> Cc: "David S. Miller" <davem@davemloft.net>
-> Cc: Jakub Kicinski <kuba@kernel.org>
-> Cc: Johannes Berg <johannes@sipsolutions.net>
-> Cc: linux-wireless@vger.kernel.org
-> Cc: netdev@vger.kernel.org
-> Suggested-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-> Signed-off-by: Lee Jones <lee.jones@linaro.org>
-> ---
+On 2020-08-26 18:02, Kalle Valo wrote:
+> Christian Lamparter <chunkeey@gmail.com> writes:
+> 
+>> On 2020-08-02 15:29, Jia-Ju Bai wrote:
+>>> In p54p_tx(), skb->data is mapped to streaming DMA on line 337:
+>>>     mapping = pci_map_single(..., skb->data, ...);
+>>>
+>>> Then skb->data is accessed on line 349:
+>>>     desc->device_addr = ((struct p54_hdr *)skb->data)->req_id;
+>>>
+>>> This access may cause data inconsistency between CPU cache and hardware.
+>>>
+>>> To fix this problem, ((struct p54_hdr *)skb->data)->req_id is stored in
+>>> a local variable before DMA mapping, and then the driver accesses this
+>>> local variable instead of skb->data.
+>>
+>> Interesting. Please bear with me here. From my understanding, the
+>> streaming direction is set to PCI_DMA_TODEVICE. So is it really
+>> possible for the hardware to interfere with the data without the IOMMU
+>> catching this?
+> 
+> Also is there any documentation about this scenario? I would like to
+> understand this better.
 
-=46or what it's worth:
+I usually rely on the information present in Documentation:
+<https://www.kernel.org/doc/Documentation/DMA-API-HOWTO.txt>
+
+The relevant extract for p54's DMA_TO_DEVICE decision likely comes from:
+
+"For Networking drivers, it's a rather simple affair.  For transmit
+packets, map/unmap them with the DMA_TO_DEVICE direction
+specifier.  For receive packets, just the opposite, map/unmap them
+with the DMA_FROM_DEVICE direction specifier."
+
+"Only streaming mappings specify a direction, consistent mappings
+implicitly have a direction attribute setting of DMA_BIDIRECTIONAL."
+
+But looking around on the Internet, I came across this in "Chapter 15. 
+Memory Mapping and DMA" of the Linux Device Drivers, 3rd Edition:
+
+<https://www.oreilly.com/library/view/linux-device-drivers/0596005903/ch15.html>
+
+|Setting up streaming DMA mappings
+|[...]
+|
+|Some important rules apply to streaming DMA mappings:
+| * [...]
+|
+| * Once a buffer has been mapped, it belongs to the device, not the
+|   processor. Until the buffer has been unmapped, the driver should not 
+|   touch its contents in any way. Only after dma_unmap_single has been 
+|   called is it safe for the driver to access the contents of the
+|   buffer (with one exception that we see shortly). Among other things,
+|   this rule implies that a buffer being written to a device cannot be
+|   mapped until it contains all the data to write."
+|
+| [...] (More informative text, but only)
+
+ From the sentence "Once a buffer has been mapped, it belongs to the 
+device, not the processor". I think that Jia-Ju Bai's patch is doing
+exactly this "by the book". Therefore, it should be applied and
+backported:
+
+Cc: <stable@vger.kernel.org>
 Acked-by: Christian Lamparter <chunkeey@gmail.com>
 
-
-
+Cheers,
+Christian
