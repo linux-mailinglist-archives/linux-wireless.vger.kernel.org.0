@@ -2,144 +2,83 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C07D256266
-	for <lists+linux-wireless@lfdr.de>; Fri, 28 Aug 2020 23:19:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A192E25627F
+	for <lists+linux-wireless@lfdr.de>; Fri, 28 Aug 2020 23:34:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726396AbgH1VTT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 28 Aug 2020 17:19:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34966 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726338AbgH1VTS (ORCPT
+        id S1726873AbgH1VeZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 28 Aug 2020 17:34:25 -0400
+Received: from hosting.gsystem.sk ([212.5.213.30]:32958 "EHLO
+        hosting.gsystem.sk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726033AbgH1VeV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 28 Aug 2020 17:19:18 -0400
-Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com [IPv6:2a00:1450:4864:20::542])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E61AC061264
-        for <linux-wireless@vger.kernel.org>; Fri, 28 Aug 2020 14:19:18 -0700 (PDT)
-Received: by mail-ed1-x542.google.com with SMTP id u1so347720edi.4
-        for <linux-wireless@vger.kernel.org>; Fri, 28 Aug 2020 14:19:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=3Y8bOudtUrTDSSDWKH7J9YA/62v+G5TLDE0YfKsOnUQ=;
-        b=p8bQOpoHlERQ4nkNH6ybr4BQ+EXMpV17dq7dlXnSsSIYCy8WQmWt3XDpKeRNEdqUxM
-         zChcdjHKmvc1hSRyNzGmoQ93O4eTgsjfBddltlR8JM/a6NoYHowg0V2ZW3JVdBRAc+Ph
-         GwBbEFasW8VEhLqZMw31DB7px35QodLqIUFTgOrPBhwtZKIZi5g86QDlhnOYYXlywuir
-         viau3tLOEZyRpqtvMFCDkOWIVqz/cKxRMJThlJr7aPIKnn92SeE1sMzevS+i8dR5XqPe
-         xZUHjCa3sjYfvOP52/WkuVmZwou/4kcPlK2oPXpZzhmj09woZSUv2HaCZNs/S/t1LA+W
-         ArQA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=3Y8bOudtUrTDSSDWKH7J9YA/62v+G5TLDE0YfKsOnUQ=;
-        b=gHbukh+g18GiS5ibOaGOawFZucpQCKi/dD9NU3scTqAxOgSyLrqeUQjPjamw5uMjXA
-         FpdEraEbElu6sJOUl4XnvPLhMv7DevC7bHdRZI4pyKoPcBllw0nIVgj4yv251R4BX2g0
-         2uLWzhqjShk6lyzrPFm5sTwF69rsUC4Y/gOVWC75TJwQ9yd+Tgv2/y1PgmkUariqol8Z
-         ROmHldOB2BloVp3j2/GmnzZv+BProm7/gxC131EePJbZFPepw4/RPIBj+yFqxSANWHGP
-         0IHg/E/NeWHv9p2ZH3SM/BHJPjejSBS1haC0gRSyCSDffsxaKzMeyQUk/mReS0jbLbW3
-         GCFA==
-X-Gm-Message-State: AOAM530p7wlx2I/DgLNp7Rq0jkfw6l8IUm2GbkShTO7XhZQPmUnA2mCk
-        TDLYv8lgZKehbBQDKmKu83StL7hWpYA=
-X-Google-Smtp-Source: ABdhPJyZV2CbX251XRyJrBITtsqY7qEJ361EL9ob5j4n8KQC5uHSy1Rv19/rwIPJT4C87FW/GKpRAA==
-X-Received: by 2002:aa7:cd52:: with SMTP id v18mr682700edw.165.1598649556544;
-        Fri, 28 Aug 2020 14:19:16 -0700 (PDT)
-Received: from debian64.daheim (p5b0d7429.dip0.t-ipconnect.de. [91.13.116.41])
-        by smtp.gmail.com with ESMTPSA id z23sm336318eja.29.2020.08.28.14.19.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 28 Aug 2020 14:19:15 -0700 (PDT)
-Received: from localhost.daheim ([127.0.0.1])
-        by debian64.daheim with esmtp (Exim 4.94)
-        (envelope-from <chunkeey@gmail.com>)
-        id 1kBlmE-000gk7-3Q; Fri, 28 Aug 2020 23:19:14 +0200
-Subject: Re: [PATCH] p54: avoid accessing the data mapped to streaming DMA
+        Fri, 28 Aug 2020 17:34:21 -0400
+Received: from [192.168.0.2] (188-167-68-178.dynamic.chello.sk [188.167.68.178])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by hosting.gsystem.sk (Postfix) with ESMTPSA id CF3E37A0188;
+        Fri, 28 Aug 2020 23:34:18 +0200 (CEST)
+From:   Ondrej Zary <linux@zary.sk>
 To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     Jia-Ju Bai <baijiaju@tsinghua.edu.cn>, kuba@kernel.org,
-        linux-wireless@vger.kernel.org, Vinod Koul <vkoul@kernel.org>
-References: <20200802132949.26788-1-baijiaju@tsinghua.edu.cn>
- <0b432282-8d52-3004-6648-d97c03cdae28@gmail.com>
- <873649cs4c.fsf@codeaurora.org>
-From:   Christian Lamparter <chunkeey@gmail.com>
-Message-ID: <a7878a0d-fe97-0c88-3c99-a08dab7be6bc@gmail.com>
-Date:   Fri, 28 Aug 2020 23:19:09 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.11.0
+Subject: Re: [PATCH 12/30] net: wireless: cisco: airo: Fix a myriad of coding style issues
+Date:   Fri, 28 Aug 2020 23:34:15 +0200
+User-Agent: KMail/1.9.10
+Cc:     Jesse Brandeburg <jesse.brandeburg@intel.com>,
+        Lee Jones <lee.jones@linaro.org>, davem@davemloft.net,
+        kuba@kernel.org, linux-kernel@vger.kernel.org,
+        Benjamin Reed <breed@users.sourceforge.net>,
+        Javier Achirica <achirica@users.sourceforge.net>,
+        Jean Tourrilhes <jt@hpl.hp.com>,
+        "Fabrice Bellet" <fabrice@bellet.info>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+References: <20200814113933.1903438-1-lee.jones@linaro.org> <202008272223.57461.linux@zary.sk> <87lfhz9mdi.fsf@codeaurora.org>
+In-Reply-To: <87lfhz9mdi.fsf@codeaurora.org>
+X-KMail-QuotePrefix: > 
 MIME-Version: 1.0
-In-Reply-To: <873649cs4c.fsf@codeaurora.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
+Content-Type: Text/Plain;
+  charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+Message-Id: <202008282334.15902.linux@zary.sk>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2020-08-26 18:02, Kalle Valo wrote:
-> Christian Lamparter <chunkeey@gmail.com> writes:
+On Friday 28 August 2020 10:59:37 Kalle Valo wrote:
+> Ondrej Zary <linux@zary.sk> writes:
 > 
->> On 2020-08-02 15:29, Jia-Ju Bai wrote:
->>> In p54p_tx(), skb->data is mapped to streaming DMA on line 337:
->>>     mapping = pci_map_single(..., skb->data, ...);
->>>
->>> Then skb->data is accessed on line 349:
->>>     desc->device_addr = ((struct p54_hdr *)skb->data)->req_id;
->>>
->>> This access may cause data inconsistency between CPU cache and hardware.
->>>
->>> To fix this problem, ((struct p54_hdr *)skb->data)->req_id is stored in
->>> a local variable before DMA mapping, and then the driver accesses this
->>> local variable instead of skb->data.
->>
->> Interesting. Please bear with me here. From my understanding, the
->> streaming direction is set to PCI_DMA_TODEVICE. So is it really
->> possible for the hardware to interfere with the data without the IOMMU
->> catching this?
+> > On Thursday 27 August 2020 09:49:12 Kalle Valo wrote:
+> >> Ondrej Zary <linux@zary.sk> writes:
+> >> 
+> >> > On Monday 17 August 2020 20:27:06 Jesse Brandeburg wrote:
+> >> >> On Mon, 17 Aug 2020 16:27:01 +0300
+> >> >> Kalle Valo <kvalo@codeaurora.org> wrote:
+> >> >> 
+> >> >> > I was surprised to see that someone was using this driver in 2015, so
+> >> >> > I'm not sure anymore what to do. Of course we could still just remove
+> >> >> > it and later revert if someone steps up and claims the driver is still
+> >> >> > usable. Hmm. Does anyone any users of this driver?
+> >> >> 
+> >> >> What about moving the driver over into staging, which is generally the
+> >> >> way I understood to move a driver slowly out of the kernel?
+> >> >
+> >> > Please don't remove random drivers.
+> >> 
+> >> We don't want to waste time on obsolete drivers and instead prefer to
+> >> use our time on more productive tasks. For us wireless maintainers it's
+> >> really hard to know if old drivers are still in use or if they are just
+> >> broken.
+> >> 
+> >> > I still have the Aironet PCMCIA card and can test the driver.
+> >> 
+> >> Great. Do you know if the airo driver still works with recent kernels?
+> >
+> > Yes, it does.
 > 
-> Also is there any documentation about this scenario? I would like to
-> understand this better.
+> Nice, I'm very surprised that so old and unmaintained driver still
+> works. Thanks for testing.
 
-I usually rely on the information present in Documentation:
-<https://www.kernel.org/doc/Documentation/DMA-API-HOWTO.txt>
+Thanks to great work of all kernel maintainers most of the old drivers still work so Linux users aren't forced to throw away hardware just because it stopped working after a software update.
 
-The relevant extract for p54's DMA_TO_DEVICE decision likely comes from:
-
-"For Networking drivers, it's a rather simple affair.  For transmit
-packets, map/unmap them with the DMA_TO_DEVICE direction
-specifier.  For receive packets, just the opposite, map/unmap them
-with the DMA_FROM_DEVICE direction specifier."
-
-"Only streaming mappings specify a direction, consistent mappings
-implicitly have a direction attribute setting of DMA_BIDIRECTIONAL."
-
-But looking around on the Internet, I came across this in "Chapter 15. 
-Memory Mapping and DMA" of the Linux Device Drivers, 3rd Edition:
-
-<https://www.oreilly.com/library/view/linux-device-drivers/0596005903/ch15.html>
-
-|Setting up streaming DMA mappings
-|[...]
-|
-|Some important rules apply to streaming DMA mappings:
-| * [...]
-|
-| * Once a buffer has been mapped, it belongs to the device, not the
-|   processor. Until the buffer has been unmapped, the driver should not 
-|   touch its contents in any way. Only after dma_unmap_single has been 
-|   called is it safe for the driver to access the contents of the
-|   buffer (with one exception that we see shortly). Among other things,
-|   this rule implies that a buffer being written to a device cannot be
-|   mapped until it contains all the data to write."
-|
-| [...] (More informative text, but only)
-
- From the sentence "Once a buffer has been mapped, it belongs to the 
-device, not the processor". I think that Jia-Ju Bai's patch is doing
-exactly this "by the book". Therefore, it should be applied and
-backported:
-
-Cc: <stable@vger.kernel.org>
-Acked-by: Christian Lamparter <chunkeey@gmail.com>
-
-Cheers,
-Christian
+-- 
+Ondrej Zary
