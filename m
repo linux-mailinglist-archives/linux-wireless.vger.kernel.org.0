@@ -2,103 +2,94 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B65AD255707
-	for <lists+linux-wireless@lfdr.de>; Fri, 28 Aug 2020 11:00:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 06EE6255851
+	for <lists+linux-wireless@lfdr.de>; Fri, 28 Aug 2020 12:08:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728822AbgH1JAB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 28 Aug 2020 05:00:01 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:58868 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726010AbgH1I76 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 28 Aug 2020 04:59:58 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1598605197; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=fotnpsF0EYIr+SiKtcUih+0Uan6DLmURDNPjSJ8hGBA=; b=PLuz3whksxn3bNgUzK9g6U3idKQSf19SE5d/morQ0Mi1QZqbCnNHpPDouyiDisb7mrLO2KzL
- UXRC6EKko6o0W62zfIcuc0NsesMXhwC0FAyof2pu/TEUJta3EI1l8vZoB/jVegPKQkevYHMK
- ySQrvg8PryguFEiBoR7FQhgKM8A=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n01.prod.us-east-1.postgun.com with SMTP id
- 5f48c78112acec35e2f3fbc5 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 28 Aug 2020 08:59:45
- GMT
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id EEEC5C433C6; Fri, 28 Aug 2020 08:59:44 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 101C9C433CB;
-        Fri, 28 Aug 2020 08:59:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 101C9C433CB
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Ondrej Zary <linux@zary.sk>
-Cc:     Jesse Brandeburg <jesse.brandeburg@intel.com>,
-        Lee Jones <lee.jones@linaro.org>, davem@davemloft.net,
-        kuba@kernel.org, linux-kernel@vger.kernel.org,
-        Benjamin Reed <breed@users.sourceforge.net>,
-        Javier Achirica <achirica@users.sourceforge.net>,
-        Jean Tourrilhes <jt@hpl.hp.com>,
-        "Fabrice Bellet" <fabrice@bellet.info>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH 12/30] net: wireless: cisco: airo: Fix a myriad of coding style issues
-References: <20200814113933.1903438-1-lee.jones@linaro.org>
-        <202008172335.02988.linux@zary.sk> <87v9h4le9z.fsf@codeaurora.org>
-        <202008272223.57461.linux@zary.sk>
-Date:   Fri, 28 Aug 2020 11:59:37 +0300
-In-Reply-To: <202008272223.57461.linux@zary.sk> (Ondrej Zary's message of
-        "Thu, 27 Aug 2020 22:23:57 +0200")
-Message-ID: <87lfhz9mdi.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        id S1729012AbgH1KIV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 28 Aug 2020 06:08:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43496 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728218AbgH1KIS (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 28 Aug 2020 06:08:18 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5FAA8C061264;
+        Fri, 28 Aug 2020 03:08:18 -0700 (PDT)
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.94)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1kBbIt-00C1Qp-Hw; Fri, 28 Aug 2020 12:08:15 +0200
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     netdev@vger.kernel.org
+Cc:     linux-wireless@vger.kernel.org
+Subject: pull-request: mac80211 2020-08-28
+Date:   Fri, 28 Aug 2020 12:08:04 +0200
+Message-Id: <20200828100805.17954-1-johannes@sipsolutions.net>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Ondrej Zary <linux@zary.sk> writes:
+Hi Dave,
 
-> On Thursday 27 August 2020 09:49:12 Kalle Valo wrote:
->> Ondrej Zary <linux@zary.sk> writes:
->> 
->> > On Monday 17 August 2020 20:27:06 Jesse Brandeburg wrote:
->> >> On Mon, 17 Aug 2020 16:27:01 +0300
->> >> Kalle Valo <kvalo@codeaurora.org> wrote:
->> >> 
->> >> > I was surprised to see that someone was using this driver in 2015, so
->> >> > I'm not sure anymore what to do. Of course we could still just remove
->> >> > it and later revert if someone steps up and claims the driver is still
->> >> > usable. Hmm. Does anyone any users of this driver?
->> >> 
->> >> What about moving the driver over into staging, which is generally the
->> >> way I understood to move a driver slowly out of the kernel?
->> >
->> > Please don't remove random drivers.
->> 
->> We don't want to waste time on obsolete drivers and instead prefer to
->> use our time on more productive tasks. For us wireless maintainers it's
->> really hard to know if old drivers are still in use or if they are just
->> broken.
->> 
->> > I still have the Aironet PCMCIA card and can test the driver.
->> 
->> Great. Do you know if the airo driver still works with recent kernels?
->
-> Yes, it does.
+We have a number of fixes for the current release cycle,
+one is for a syzbot reported warning (the sanity check)
+but most are more wifi protocol related.
 
-Nice, I'm very surprised that so old and unmaintained driver still
-works. Thanks for testing.
+Please pull and let me know if there's any problem.
 
--- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Thanks,
+johannes
+
+
+
+The following changes since commit cf96d977381d4a23957bade2ddf1c420b74a26b6:
+
+  net: gemini: Fix missing free_netdev() in error path of gemini_ethernet_port_probe() (2020-08-19 16:37:18 -0700)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211.git tags/mac80211-for-davem-2020-08-28
+
+for you to fetch changes up to 2d9b55508556ccee6410310fb9ea2482fd3328eb:
+
+  cfg80211: Adjust 6 GHz frequency to channel conversion (2020-08-27 10:53:21 +0200)
+
+----------------------------------------------------------------
+We have:
+ * fixes for AQL (airtime queue limits)
+ * reduce packet loss detection false positives
+ * a small channel number fix for the 6 GHz band
+ * a fix for 80+80/160 MHz negotiation
+ * an nl80211 attribute (NL80211_ATTR_HE_6GHZ_CAPABILITY) fix
+ * add a missing sanity check for the regulatory code
+
+----------------------------------------------------------------
+Amar Singhal (1):
+      cfg80211: Adjust 6 GHz frequency to channel conversion
+
+Felix Fietkau (4):
+      mac80211: use rate provided via status->rate on ieee80211_tx_status_ext for AQL
+      mac80211: factor out code to look up the average packet length duration for a rate
+      mac80211: improve AQL aggregation estimation for low data rates
+      mac80211: reduce packet loss event false positives
+
+Johannes Berg (2):
+      nl80211: fix NL80211_ATTR_HE_6GHZ_CAPABILITY usage
+      cfg80211: regulatory: reject invalid hints
+
+Shay Bar (1):
+      wireless: fix wrong 160/80+80 MHz setting
+
+ net/mac80211/airtime.c  | 202 ++++++++++++++++++++++++++++++++++--------------
+ net/mac80211/sta_info.h |   5 +-
+ net/mac80211/status.c   |  43 ++++++-----
+ net/wireless/chan.c     |  15 +++-
+ net/wireless/nl80211.c  |   2 +-
+ net/wireless/reg.c      |   3 +
+ net/wireless/util.c     |   8 +-
+ 7 files changed, 192 insertions(+), 86 deletions(-)
+
