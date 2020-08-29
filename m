@@ -2,63 +2,61 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B0EEF256473
-	for <lists+linux-wireless@lfdr.de>; Sat, 29 Aug 2020 05:39:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F0B07256475
+	for <lists+linux-wireless@lfdr.de>; Sat, 29 Aug 2020 05:39:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727084AbgH2Di7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 28 Aug 2020 23:38:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36982 "EHLO
+        id S1727093AbgH2DjC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 28 Aug 2020 23:39:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36996 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727031AbgH2Dih (ORCPT
+        with ESMTP id S1726977AbgH2Dip (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 28 Aug 2020 23:38:37 -0400
+        Fri, 28 Aug 2020 23:38:45 -0400
 Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com [IPv6:2a00:1450:4864:20::441])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 732DAC06123C
-        for <linux-wireless@vger.kernel.org>; Fri, 28 Aug 2020 20:38:36 -0700 (PDT)
-Received: by mail-wr1-x441.google.com with SMTP id c18so861046wrm.9
-        for <linux-wireless@vger.kernel.org>; Fri, 28 Aug 2020 20:38:36 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BEFF0C061264
+        for <linux-wireless@vger.kernel.org>; Fri, 28 Aug 2020 20:38:44 -0700 (PDT)
+Received: by mail-wr1-x441.google.com with SMTP id k15so859901wrn.10
+        for <linux-wireless@vger.kernel.org>; Fri, 28 Aug 2020 20:38:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=N19y8kE9YeS2Ow4HV/sGzCGkQdJHD/4e5dDKui+iRUE=;
-        b=yepbCAl1pABiRrbEhw8HL5Fd8y8urACMv1Icyc6Nod2qle0Svzqp8ruh0DgZ1/cx1H
-         unsYimJT49O92Bipn9tETk0McJHP6HUBH5TZM+v4Puw0zHN0OkZ+z6WlD9JiU4yc4KVq
-         ixlJjKUcCaDffhaPpGWsf/4HD2anBH35FOJJpbhZbaC6BX9NfblR3752aw4KuPY3wLpf
-         bm2woP7iOfVYgb7vMuV/F+vb9HmwUIJjiWImp4zP5dcMCJ9JZQqrHZdqHZChReHQqhOa
-         e9cwJ6o3kSJSCyRegoEBZMURzMd9jz2NNZUfh9ez8sj5/+0tsVOF36ijH0JH+R/82shD
-         r1ow==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=i/tDMzToGhn5zkUCIJf+cXavnQyI/guUVXMmCWA+AHU=;
+        b=Szt7SoQfWq5T4YtzuYZmAB+4D8tCwMcyzI/THkSiJ6LG+XRdvXu3CfEaWcBhPErzGm
+         r/r2jPO8uYdt4JUrAZYiSK16aPjHJEyzB5mCcfNo92fEmpb0TY4mHyBo8hoL3uxP5Pd1
+         7TLrr8BPsdPVbGbp6rgnP5B6NJjDFw49UyeywFh/kLQdtjpSHgctodW+jyHplQhVcVAA
+         Tu3HDyTipbbwwxdysMx3h5NJcQ9pjBXqbLOBsVMEJ/WSiHIhEk4CEeoCyqD6sqU0qolu
+         x7elNaR28H+yyz/FehxaPoG0o7dRB2DMjtAWp7TtnDsTRUN1mvAnSjspeCgYAQ8sIOWL
+         obig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=N19y8kE9YeS2Ow4HV/sGzCGkQdJHD/4e5dDKui+iRUE=;
-        b=U5l/8bYn9YMHkZlMzjh+GWoQNUvAiYw2D1kbyFawCK5M7rcUX7vFVBvXxBs5X5rtm6
-         0IpIpra5dJixbBbIVvpby/hGVa5nhr4I5TUPXpIsGayuZcJOzjYmx3exzuyz+9bCPvfT
-         GQO+9p98G8FtUnh8x+TVtDH8+CHQQQfwLVWTRqByZkwMwRMIQBlrQVzd261TTiZnwbiD
-         6AsAj3bqUHNukbc5hFEHsncgV9rik3E5v8s+4F5bhSvGlaVJJg86U6SsbUFeOU2eBE+M
-         zmZ1Mu4h9SIUp6gApUd9nqdu/a5wXnKVXCcSb2dS3tO7knTSC/c+IV7LCjzBfq2A0qc+
-         fU7g==
-X-Gm-Message-State: AOAM5332nXjwr+EbhsGeD9eqf7ZdCDNMYQuz5YSgOLAVMz+pVizVqdLm
-        0XoLYk2pL+pIjYPBr59TI3YG7w==
-X-Google-Smtp-Source: ABdhPJwDCVid4jB1XBLc/5dRgTznllPWmc7r6Z4RAApTOd+g8Zm3/pJVctNaxXr4/3n0yAJe0Ono/w==
-X-Received: by 2002:adf:8b8c:: with SMTP id o12mr1661873wra.353.1598672315173;
-        Fri, 28 Aug 2020 20:38:35 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=i/tDMzToGhn5zkUCIJf+cXavnQyI/guUVXMmCWA+AHU=;
+        b=s2WtPgGuBVFX0WPVvmSABEWVhJi/ElshyRHx9xxSXNImxJqHxZpN/ebuWoaMwFVHGu
+         Gq3TAODmvRTcjq1gFDJ5B0vovvuvwaatXGtG89uV6AsKXpz2KdBW7e8iZZCKbDPltYY8
+         G8pLo6zt9iW9jd/26gqaAjykAr8pnCiyaS+e8SPmRUfm+LoXNvZ/NvLmMrsIRfsbbUKB
+         NsNGt9x7oPE1moG0GfL0IhRlPqdwkU2gtr9J/ZvF6IVQzl4nbWyHQbsCOmsgxSwsLBGK
+         RnvCemEx7dFZJ+H0cY4Wmhn6f1NSo3j7cVMPpFJ4F3R0ghT7lz9fjmKvKkBQAwdRRsGh
+         RjGg==
+X-Gm-Message-State: AOAM531fpkRE5OWhLqQ4SXHYT3iV2go+Yt4r9YDlHvN8ZXI2w7jYw4dV
+        Bh1+aQhYOWXtreZu82gsds8IBw==
+X-Google-Smtp-Source: ABdhPJw8p0CjthemEG/9A5gWbC3H6QtFejbHbtc/adbBC9l/Rn638hohb0p9GKDitcMO85c5e/lSIQ==
+X-Received: by 2002:adf:80cb:: with SMTP id 69mr1795594wrl.313.1598672323489;
+        Fri, 28 Aug 2020 20:38:43 -0700 (PDT)
 Received: from localhost.localdomain ([176.61.57.127])
-        by smtp.gmail.com with ESMTPSA id t9sm1649179wmj.47.2020.08.28.20.38.34
+        by smtp.gmail.com with ESMTPSA id s20sm1691700wmh.21.2020.08.28.20.38.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 28 Aug 2020 20:38:34 -0700 (PDT)
+        Fri, 28 Aug 2020 20:38:43 -0700 (PDT)
 From:   Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 To:     kvalo@codeaurora.org, wcn36xx@lists.infradead.org,
         linux-wireless@vger.kernel.org
 Cc:     bryan.odonoghue@linaro.org, shawn.guo@linaro.org,
         loic.poulain@linaro.org
-Subject: [PATCH v2 12/12] wcn36xx: Convert to VHT parameter structure on wcn3680
-Date:   Sat, 29 Aug 2020 04:39:08 +0100
-Message-Id: <20200829033908.2167689-13-bryan.odonoghue@linaro.org>
+Subject: [PATCH v2 0/7] wcn36xx: Tidy up BSS/STA config
+Date:   Sat, 29 Aug 2020 04:39:22 +0100
+Message-Id: <20200829033929.2167761-1-bryan.odonoghue@linaro.org>
 X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20200829033908.2167689-1-bryan.odonoghue@linaro.org>
-References: <20200829033908.2167689-1-bryan.odonoghue@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
@@ -66,57 +64,39 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-In order to send VHT parameters to wcn3680 we need to pass the extended V1
-parameter structures to the firmware. These commands need to have the
-version number set to 1.
+This series is three of a set of five to add support for wcn3680 at
+802.11ac data-rates.
 
-This patch makes the conversion. The conversion consists of
+Both the BSS and STA config paths have redundant/duplicate code and before
+adding more code to either it makes sense to reduce/reuse and functionally
+decompose as much as possible.
 
-1. Setting the version number for wcn3680 or leaving it at 0 otherwise
-2. Setting the sizeo of the packet header lower for wcn3620 and wcn3660
+While not strictly necessary to get the wcn3680/80211.ac functioning in
+this driver, it seems like a missed opportunity to leave the code as is.
 
-Once done all three chips can continue to use the same code to pass
-parameters to their respective firmware. In the case of the wcn3680 the
-passed structures will be slightly larger to accommodate communication of
-VHT descriptors.
+Lets reduce down before adding more.
 
-Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
----
- drivers/net/wireless/ath/wcn36xx/smd.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+V2:
+- Adds a memset to wcn36xx_smd_config_bss_v1()
+  Since we are doing one less kzalloc() we need to make sure we clear
+  out the bss config.
 
-diff --git a/drivers/net/wireless/ath/wcn36xx/smd.c b/drivers/net/wireless/ath/wcn36xx/smd.c
-index d9bbbdc8d013..97fb47a8bc1a 100644
---- a/drivers/net/wireless/ath/wcn36xx/smd.c
-+++ b/drivers/net/wireless/ath/wcn36xx/smd.c
-@@ -1317,7 +1317,12 @@ static int wcn36xx_smd_config_sta_v1(struct wcn36xx *wcn,
- 	struct wcn36xx_hal_config_sta_req_msg_v1 msg_body;
- 	struct wcn36xx_hal_config_sta_params_v1 *sta = &msg_body.sta_params;
- 
--	INIT_HAL_MSG(msg_body, WCN36XX_HAL_CONFIG_STA_REQ);
-+	if (wcn->rf_id == RF_IRIS_WCN3680) {
-+		INIT_HAL_MSG_V1(msg_body, WCN36XX_HAL_CONFIG_STA_REQ);
-+	} else {
-+		INIT_HAL_MSG(msg_body, WCN36XX_HAL_CONFIG_STA_REQ);
-+		msg_body.header.len -= WCN36XX_DIFF_STA_PARAMS_V1_NOVHT;
-+	}
- 
- 	wcn36xx_smd_convert_sta_to_v1(wcn, &orig->sta_params,
- 				      &msg_body.sta_params);
-@@ -1388,7 +1393,12 @@ static int wcn36xx_smd_config_bss_v1(struct wcn36xx *wcn,
- 	if (!msg_body)
- 		return -ENOMEM;
- 
--	INIT_HAL_MSG((*msg_body), WCN36XX_HAL_CONFIG_BSS_REQ);
-+	if (wcn->rf_id == RF_IRIS_WCN3680) {
-+		INIT_HAL_MSG_V1((*msg_body), WCN36XX_HAL_CONFIG_BSS_REQ);
-+	} else {
-+		INIT_HAL_MSG((*msg_body), WCN36XX_HAL_CONFIG_BSS_REQ);
-+		msg_body->header.len -= WCN36XX_DIFF_BSS_PARAMS_V1_NOVHT;
-+	}
- 
- 	bss = &msg_body->bss_params;
- 	sta = &bss->sta;
+V1:
+https://lore.kernel.org/linux-wireless/87eensldhi.fsf@codeaurora.org/T/#t
+
+Bryan O'Donoghue (7):
+  wcn36xx: Functionally decompose wcn36xx_smd_config_sta()
+  wcn36xx: Move wcn36xx_smd_set_sta_params() inside
+    wcn36xx_smd_config_bss()
+  wcn36xx: Move BSS parameter setup to wcn36xx_smd_set_bss_params()
+  wcn36xx: Add wcn36xx_smd_config_bss_v0
+  wcn36xx: Update wcn36xx_smd_config_bss_v1() to operate internally
+  wcn36xx: Convert to using wcn36xx_smd_config_bss_v0()
+  wcn36xx: Remove dead code in wcn36xx_smd_config_bss()
+
+ drivers/net/wireless/ath/wcn36xx/smd.c | 416 ++++++++++++++-----------
+ 1 file changed, 227 insertions(+), 189 deletions(-)
+
 -- 
 2.27.0
 
