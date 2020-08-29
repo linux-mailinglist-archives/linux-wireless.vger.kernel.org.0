@@ -2,83 +2,83 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A192E25627F
-	for <lists+linux-wireless@lfdr.de>; Fri, 28 Aug 2020 23:34:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8AF142563D1
+	for <lists+linux-wireless@lfdr.de>; Sat, 29 Aug 2020 02:55:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726873AbgH1VeZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 28 Aug 2020 17:34:25 -0400
-Received: from hosting.gsystem.sk ([212.5.213.30]:32958 "EHLO
-        hosting.gsystem.sk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726033AbgH1VeV (ORCPT
+        id S1726771AbgH2AzB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 28 Aug 2020 20:55:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40142 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726940AbgH2Ay4 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 28 Aug 2020 17:34:21 -0400
-Received: from [192.168.0.2] (188-167-68-178.dynamic.chello.sk [188.167.68.178])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by hosting.gsystem.sk (Postfix) with ESMTPSA id CF3E37A0188;
-        Fri, 28 Aug 2020 23:34:18 +0200 (CEST)
-From:   Ondrej Zary <linux@zary.sk>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Subject: Re: [PATCH 12/30] net: wireless: cisco: airo: Fix a myriad of coding style issues
-Date:   Fri, 28 Aug 2020 23:34:15 +0200
-User-Agent: KMail/1.9.10
-Cc:     Jesse Brandeburg <jesse.brandeburg@intel.com>,
-        Lee Jones <lee.jones@linaro.org>, davem@davemloft.net,
-        kuba@kernel.org, linux-kernel@vger.kernel.org,
-        Benjamin Reed <breed@users.sourceforge.net>,
-        Javier Achirica <achirica@users.sourceforge.net>,
-        Jean Tourrilhes <jt@hpl.hp.com>,
-        "Fabrice Bellet" <fabrice@bellet.info>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-References: <20200814113933.1903438-1-lee.jones@linaro.org> <202008272223.57461.linux@zary.sk> <87lfhz9mdi.fsf@codeaurora.org>
-In-Reply-To: <87lfhz9mdi.fsf@codeaurora.org>
-X-KMail-QuotePrefix: > 
+        Fri, 28 Aug 2020 20:54:56 -0400
+Received: from mail-ot1-x344.google.com (mail-ot1-x344.google.com [IPv6:2607:f8b0:4864:20::344])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57200C061264
+        for <linux-wireless@vger.kernel.org>; Fri, 28 Aug 2020 17:54:56 -0700 (PDT)
+Received: by mail-ot1-x344.google.com with SMTP id 5so751385otp.12
+        for <linux-wireless@vger.kernel.org>; Fri, 28 Aug 2020 17:54:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=eHcR5PhbYH26I6HoLHCkhZHx8aDJz0yZDT0dInE71+g=;
+        b=U8dmBqQJFdHCjKB+ihXIaZKgdBRWlpo2KcoB1eSPvnI0AL70AoTTdPPbqXFIeq8feh
+         HflWjg/EiJ6QvQk91tSa+ME/gP2vp0/7MFGuETnM5z/V7vzDqXN4fGiZOeoN5tPzkOcr
+         J4vdLlbikrjg+6D3c/ouM5EBLTEnfNPGn1ijlOvdmy7D0yIzE0+bhS1aezn4eHwScmSb
+         BM4KuOfMHnNFAO2R0MkwQUrG98Nc9OOFTQE+jYnMrzehATW82FtpIVs5R5K+uTrZ41Yx
+         eBCJFpPF/R4wnd2opQJe5J4UeEY11Vc3IoyvxsuVbpER1BP0iIzP93Q5veKd13olRPsE
+         SsSw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
+         :mime-version:content-transfer-encoding;
+        bh=eHcR5PhbYH26I6HoLHCkhZHx8aDJz0yZDT0dInE71+g=;
+        b=qPrrK46p7yRF1rbKcxkP5MZjRndXlelnswk48/GSt7beJXc5kT/MIBzgtfTt87vA5c
+         xFd/tf82b39IuXy7aw1IE1qh4fRg1gQPUzjz6hUC47wn6s1POoOlFE1K+LAdIU9aGhPf
+         TIF1boIuYMCs3JPgfNx74ur7Jpqpj6lKJN4SIgZ9E0dXiYOTYXjKitED8WX858HupGr7
+         ZI0kDkkMV5eDt7hCwNpeaekKPxzzxg998crLHPsvDVYYdd1uobO6I8ujJG6rpI8CHN6K
+         3+2lg4Ty1BfHNEYh6sWzDZFkso0lUZ/e/0xEbhqVXuRwdL6fx2DCK/xgO7urP0J1G7PA
+         LG1A==
+X-Gm-Message-State: AOAM530lUzLvjsToH2qhUexFcsqb4Y/TV2N7YOXrQULgBPfAZkzb1yCL
+        cb7+Gq05XMTOTooTufyZWy608IkOzUU=
+X-Google-Smtp-Source: ABdhPJybdDn9aget+t9dWTAQhTIqLNy+yl3TXXVw/URei8/BrQN2nLwjCojzwQNdly8jXSx+gppIyA==
+X-Received: by 2002:a9d:ae8:: with SMTP id 95mr114856otq.260.1598662495712;
+        Fri, 28 Aug 2020 17:54:55 -0700 (PDT)
+Received: from localhost.localdomain (cpe-24-31-245-230.kc.res.rr.com. [24.31.245.230])
+        by smtp.gmail.com with ESMTPSA id w136sm202253oif.14.2020.08.28.17.54.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 28 Aug 2020 17:54:54 -0700 (PDT)
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+To:     kvalo@codeaurora.org
+Cc:     linux-wireless@vger.kernel.org,
+        Larry Finger <Larry.Finger@lwfinger.net>
+Subject: [PATCH v3 00/15 rtlwifi: Change RT_TRACE into rtl_dbg for all drivers
+Date:   Fri, 28 Aug 2020 19:54:40 -0500
+Message-Id: <20200829005442.32318-1-Larry.Finger@lwfinger.net>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
-Content-Type: Text/Plain;
-  charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-Message-Id: <202008282334.15902.linux@zary.sk>
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Friday 28 August 2020 10:59:37 Kalle Valo wrote:
-> Ondrej Zary <linux@zary.sk> writes:
-> 
-> > On Thursday 27 August 2020 09:49:12 Kalle Valo wrote:
-> >> Ondrej Zary <linux@zary.sk> writes:
-> >> 
-> >> > On Monday 17 August 2020 20:27:06 Jesse Brandeburg wrote:
-> >> >> On Mon, 17 Aug 2020 16:27:01 +0300
-> >> >> Kalle Valo <kvalo@codeaurora.org> wrote:
-> >> >> 
-> >> >> > I was surprised to see that someone was using this driver in 2015, so
-> >> >> > I'm not sure anymore what to do. Of course we could still just remove
-> >> >> > it and later revert if someone steps up and claims the driver is still
-> >> >> > usable. Hmm. Does anyone any users of this driver?
-> >> >> 
-> >> >> What about moving the driver over into staging, which is generally the
-> >> >> way I understood to move a driver slowly out of the kernel?
-> >> >
-> >> > Please don't remove random drivers.
-> >> 
-> >> We don't want to waste time on obsolete drivers and instead prefer to
-> >> use our time on more productive tasks. For us wireless maintainers it's
-> >> really hard to know if old drivers are still in use or if they are just
-> >> broken.
-> >> 
-> >> > I still have the Aironet PCMCIA card and can test the driver.
-> >> 
-> >> Great. Do you know if the airo driver still works with recent kernels?
-> >
-> > Yes, it does.
-> 
-> Nice, I'm very surprised that so old and unmaintained driver still
-> works. Thanks for testing.
+This submission consists of the two patches that failed in the v2 case.
 
-Thanks to great work of all kernel maintainers most of the old drivers still work so Linux users aren't forced to throw away hardware just because it stopped working after a software update.
+Larry Finger (2):
+  rtlwifi: rtl8821ae: Rename RT_TRACE to rtl_dbg
+  rtlwifi: Remove temporary definition of RT_TRACE
+
+ drivers/net/wireless/realtek/rtlwifi/debug.h  |  17 +-
+ .../wireless/realtek/rtlwifi/rtl8821ae/dm.c   | 821 +++++++++---------
+ .../wireless/realtek/rtlwifi/rtl8821ae/fw.c   | 134 +--
+ .../wireless/realtek/rtlwifi/rtl8821ae/hw.c   | 456 +++++-----
+ .../wireless/realtek/rtlwifi/rtl8821ae/led.c  |  32 +-
+ .../wireless/realtek/rtlwifi/rtl8821ae/phy.c  | 527 +++++------
+ .../wireless/realtek/rtlwifi/rtl8821ae/rf.c   |   6 +-
+ .../wireless/realtek/rtlwifi/rtl8821ae/trx.c  |  59 +-
+ 8 files changed, 1023 insertions(+), 1029 deletions(-)
 
 -- 
-Ondrej Zary
+2.28.0
+
