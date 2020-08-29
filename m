@@ -2,61 +2,63 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 63B6925648A
-	for <lists+linux-wireless@lfdr.de>; Sat, 29 Aug 2020 05:39:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0ED20256487
+	for <lists+linux-wireless@lfdr.de>; Sat, 29 Aug 2020 05:39:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727883AbgH2Dj3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 28 Aug 2020 23:39:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37142 "EHLO
+        id S1727822AbgH2Dj0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 28 Aug 2020 23:39:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37156 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727820AbgH2DjS (ORCPT
+        with ESMTP id S1727839AbgH2DjV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 28 Aug 2020 23:39:18 -0400
-Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B254C061264
-        for <linux-wireless@vger.kernel.org>; Fri, 28 Aug 2020 20:39:17 -0700 (PDT)
-Received: by mail-wr1-x443.google.com with SMTP id f7so900375wrw.1
-        for <linux-wireless@vger.kernel.org>; Fri, 28 Aug 2020 20:39:17 -0700 (PDT)
+        Fri, 28 Aug 2020 23:39:21 -0400
+Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E15CC061264
+        for <linux-wireless@vger.kernel.org>; Fri, 28 Aug 2020 20:39:20 -0700 (PDT)
+Received: by mail-wm1-x335.google.com with SMTP id e17so743063wme.0
+        for <linux-wireless@vger.kernel.org>; Fri, 28 Aug 2020 20:39:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=3BeopINcH5vrrIy/IFq7Ef3qxAxmwlwpRdpz51J2al0=;
-        b=miS5bnFOnQu6gfgUI3bESIhf9w0O35rIsXfTvkauy9rWAGMwAKoPaXhDF3OyYfzem6
-         kSgs1gr0Oslgr5LSGeiYM8b5lCVI5BSs3uAnVl76V3MUzohXVjpFPmPI5eNFV5JpRsq4
-         zxrsFq53MfiB+zkOP3ksIMTylYXiBXM8qT1vfjikNB/ZCtAB6LIqZp9S+YK5ermNf3Kn
-         KamEJmt0NE/bCb72GIEPIOl+gFyzK8qKzHzH+TtB/oaasabvwAwnjmhFQyI2QYoodL5o
-         bIbukS3uNvSiSJvumeqaa7ote0qY3vcP52ZDPt3k6+FBj881x+AOsqODXg7CHhmAYzfc
-         GELg==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=NhCY8oQAJMhMp7rjCQoI5czE5oev8Z6ZeTgeJVUiBkc=;
+        b=fOEfxE1jLAxHKIq9wADGSgVgygxjg+2WY0ZfcaaSiDF/gC/bC6LLujm4RND3/zsegE
+         X8zoa6VaPrVtv7quuHMU3y+ZkI/j8OIZ4s+FTIfGTuFx6yyTJJEFzplWI1qbbYPLU2t9
+         gvSIJJZ7BjsFxWsnlM69vNXA2Hnnf0fBL30L+xzTzUFQrg1rMgdrgIPJnLAuMlPGc8OS
+         DzqVLSWOAnWMEzOHXaSjXPCYzByYs2DS/RdGNxpDX3XqnT7HoWv0SGhlwZagsIlAfNb+
+         u4OQXa9flTkbS0z9lupEVbVbbDvaSglbeljVJv/GMElza4wqDLruLM/JIGQADnEu9g/p
+         9ToA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=3BeopINcH5vrrIy/IFq7Ef3qxAxmwlwpRdpz51J2al0=;
-        b=n5f8MT9S6CDg17VDVrcvmIBNG2tpVvKtZK2YZ6yDUbzRk80ulI8axg19u9JkPVUZeH
-         6UcC/XBVo8FycZH/97izx3unIeSIXewbGpXzxozEpDa0KoDO5nB1BPt6kEy2nwYe+ktK
-         ULDVY7ldvYzRgwaV+Q3R9oH2JV2F7htBfQUj7H1Iysl5KzIuWGpuijgNz9Ax0JP7xbuP
-         fmOpsE8lk9G/4rOhHLQ+V8qwPXsooPhquUmD0byebNBccEHfMkaHLjhdKisIwYGt/C+t
-         jN1JLY/4SWN1ZUgatUFAI6z9YwIkzwC5Y8/xd/9PC8dH7cPw1uMClwZam8baIr9sld6u
-         SOVg==
-X-Gm-Message-State: AOAM530HFZ29em1Ug7FHAifKacXhnTJTxf8Ul2SXXkqlNsnWqpbH0vPk
-        zC4kUcALTkG/xnf/XHUeyZe67w==
-X-Google-Smtp-Source: ABdhPJxSObmvqqIUqyaO8bckPQPwosFevcqzTsh/6pHi7EUtRb/75dw4Xhrj0P6SHQfE69PXc3m4vg==
-X-Received: by 2002:adf:f34f:: with SMTP id e15mr1639272wrp.387.1598672355845;
-        Fri, 28 Aug 2020 20:39:15 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=NhCY8oQAJMhMp7rjCQoI5czE5oev8Z6ZeTgeJVUiBkc=;
+        b=bZteXLOcah4fK3wITdYTYdUGxaPCf1Bfem6ukPdyg7pKs6//X61h5KzpVwm+yjMNad
+         VWUrryCW+0mBgzjD2E5c3xO15awu9J8V16TNqcQ3pg14BXAyryHp/iYpMr2uanPNy79k
+         lCiRe4V+APIrQbhUAjJL2U82UJPfHiLC/PGpKDN9lJRy2jN/SPuw3DeM+z8cLseJ6CG1
+         kf7K0ddYHIAz3ifYJkAh/3ulEn+JEJLlvuVH+YPHpUqzOGlsIL2Z0+VRJFQiZZ1u1Ub+
+         cQqMLIhrFDZ1pWZbcV84jzs4fBAje93Qv6vtULsjvzbN2tQU/Ttxp6UEKnqe1p1uT3yd
+         V6Ug==
+X-Gm-Message-State: AOAM530jcp8HPuIouJshrK2E2VeTfF9uNgXXAyYDQsHRe91PMyngGL2K
+        xLiq3rSYX+nonIJHkS0GSR54BQ==
+X-Google-Smtp-Source: ABdhPJxl7CKp+9hizm09NspK7NwZpTsde1/uM0R9GOYGNjKxlgtkJVRGt9O+1t7aASS3SRq48575nQ==
+X-Received: by 2002:a1c:f413:: with SMTP id z19mr697568wma.71.1598672356852;
+        Fri, 28 Aug 2020 20:39:16 -0700 (PDT)
 Received: from localhost.localdomain ([176.61.57.127])
         by smtp.gmail.com with ESMTPSA id v3sm1735083wmh.6.2020.08.28.20.39.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 28 Aug 2020 20:39:15 -0700 (PDT)
+        Fri, 28 Aug 2020 20:39:16 -0700 (PDT)
 From:   Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 To:     kvalo@codeaurora.org, wcn36xx@lists.infradead.org,
         linux-wireless@vger.kernel.org
 Cc:     bryan.odonoghue@linaro.org, shawn.guo@linaro.org,
         loic.poulain@linaro.org
-Subject: [PATCH v2 0/4] wcn36xx: Update firmware config to support wcn3680
-Date:   Sat, 29 Aug 2020 04:39:58 +0100
-Message-Id: <20200829034002.2167878-1-bryan.odonoghue@linaro.org>
+Subject: [PATCH v2 1/4] wcn36xx: Extend HAL param config list
+Date:   Sat, 29 Aug 2020 04:39:59 +0100
+Message-Id: <20200829034002.2167878-2-bryan.odonoghue@linaro.org>
 X-Mailer: git-send-email 2.27.0
+In-Reply-To: <20200829034002.2167878-1-bryan.odonoghue@linaro.org>
+References: <20200829034002.2167878-1-bryan.odonoghue@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
@@ -64,55 +66,156 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This series is five of a set of five to add support for wcn3680 at 802.11ac
-data-rates.
+In order to get 802.11ac working the way we want, additional parameters
+need to be passed down to the firmware.
 
-This series is about providing a parameters to firmware to get us up onto
-802.11ac data-rates finally.
+This patch takes the full remaining set of parameters defined in the
+downstream riva/inc/wlan_hal_cfg.h and imports them into hal.h with some
+minor name length adjustments.
 
-Once the firmware config is provided to the chip and VHT parameters are
-populated we are good to go in terms of the higher data-rate for the
-wcn3680.
+This addition will allow us to pass a larger firmware configuration set
+later on.
 
-I get typical data-rates of:
-
-[ ID] Interval           Transfer     Bitrate         Retr
-[  5]   0.00-320.00 sec  4.93 GBytes   132 Mbits/sec  445     sender
-[  5]   0.00-320.14 sec  4.93 GBytes   132 Mbits/sec          receiver
-
-Downstream 3.10 prima is getting I'm told 180-200 Mbits/sec on the same
-hardware so with time and effort there's certainly some performance gain to
-be squeezed out of this silicon yet.
-
-However as a first pass, I believe this is good enough and useful enough to
-others to submit for upstream inclusion.
-
-An interesting project and a medium term goal would be to have a unified
-configuration for all three supported chipsets.
-
-For now suggesting a separate firmware configuration to make sure the
-existing lower-speed 802.11n and higher-speed 802.11ac chips don't step on
-each other's toes vis-a-vis firmware parameters.
-
-V2:
-- Sets the default data-rate for wcn3680 to MCS8
-- Zapps a few firmware settings for power-saving
-  Powersave configuration as a specific wcn3680 topic is WIP on my end
-  and I think therefore better left out of an intiial submission.
-
-V1:
-https://lore.kernel.org/linux-wireless/87eensldhi.fsf@codeaurora.org/T/#t
-
-Bryan O'Donoghue (4):
-  wcn36xx: Extend HAL param config list
-  wcn36xx: Define wcn3680 specific firmware parameters
-  wcn36xx: Add ability to download wcn3680 specific firmware parameters
-  wcn36xx: Latch VHT specific BSS parameters to firmware
-
+Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+---
  drivers/net/wireless/ath/wcn36xx/hal.h | 124 ++++++++++++++++++++++++-
- drivers/net/wireless/ath/wcn36xx/smd.c | 114 ++++++++++++++++++++++-
- 2 files changed, 234 insertions(+), 4 deletions(-)
+ 1 file changed, 123 insertions(+), 1 deletion(-)
 
+diff --git a/drivers/net/wireless/ath/wcn36xx/hal.h b/drivers/net/wireless/ath/wcn36xx/hal.h
+index 3cceeaf0136f..65ef893f2736 100644
+--- a/drivers/net/wireless/ath/wcn36xx/hal.h
++++ b/drivers/net/wireless/ath/wcn36xx/hal.h
+@@ -726,7 +726,129 @@ enum pe_stats_mask {
+ #define WCN36XX_HAL_CFG_AP_LINK_MONITOR_TIMEOUT		102
+ #define WCN36XX_HAL_CFG_BTC_DWELL_TIME_MULTIPLIER	103
+ #define WCN36XX_HAL_CFG_ENABLE_TDLS_OXYGEN_MODE		104
+-#define WCN36XX_HAL_CFG_MAX_PARAMS			105
++#define WCN36XX_HAL_CFG_ENABLE_NAT_KEEP_ALIVE_FILTER	105
++#define WCN36XX_HAL_CFG_ENABLE_SAP_OBSS_PROT		106
++#define WCN36XX_HAL_CFG_PSPOLL_DATA_RECEP_TIMEOUT	107
++#define WCN36XX_HAL_CFG_TDLS_PUAPSD_BUFFER_STA_CAPABLE	108
++#define WCN36XX_HAL_CFG_TDLS_PUAPSD_MASK		109
++#define WCN36XX_HAL_CFG_TDLS_PUAPSD_INACTIVITY_TIME	110
++#define WCN36XX_HAL_CFG_TDLS_PUAPSD_RX_FRAME_THRESHOLD	111
++#define WCN36XX_HAL_CFG_ANTENNA_DIVERSITY		112
++#define WCN36XX_HAL_CFG_ATH_DISABLE			113
++#define WCN36XX_HAL_CFG_FLEXCONNECT_POWER_FACTOR	114
++#define WCN36XX_HAL_CFG_ENABLE_ADAPTIVE_RX_DRAIN	115
++#define WCN36XX_HAL_CFG_TDLS_OFF_CHANNEL_CAPABLE	116
++#define WCN36XX_HAL_CFG_MWS_COEX_V1_WAN_FREQ		117
++#define WCN36XX_HAL_CFG_MWS_COEX_V1_WLAN_FREQ		118
++#define WCN36XX_HAL_CFG_MWS_COEX_V1_CONFIG		119
++#define WCN36XX_HAL_CFG_MWS_COEX_V1_CONFIG2		120
++#define WCN36XX_HAL_CFG_MWS_COEX_V2_WAN_FREQ		121
++#define WCN36XX_HAL_CFG_MWS_COEX_V2_WLAN_FREQ		122
++#define WCN36XX_HAL_CFG_MWS_COEX_V2_CONFIG		123
++#define WCN36XX_HAL_CFG_MWS_COEX_V2_CONFIG2		124
++#define WCN36XX_HAL_CFG_MWS_COEX_V3_WAN_FREQ		125
++#define WCN36XX_HAL_CFG_MWS_COEX_V3_WLAN_FREQ		126
++#define WCN36XX_HAL_CFG_MWS_COEX_V3_CONFIG		127
++#define WCN36XX_HAL_CFG_MWS_COEX_V3_CONFIG2		128
++#define WCN36XX_HAL_CFG_MWS_COEX_V4_WAN_FREQ		129
++#define WCN36XX_HAL_CFG_MWS_COEX_V4_WLAN_FREQ		130
++#define WCN36XX_HAL_CFG_MWS_COEX_V4_CONFIG		131
++#define WCN36XX_HAL_CFG_MWS_COEX_V4_CONFIG2		132
++#define WCN36XX_HAL_CFG_MWS_COEX_V5_WAN_FREQ		133
++#define WCN36XX_HAL_CFG_MWS_COEX_V5_WLAN_FREQ		134
++#define WCN36XX_HAL_CFG_MWS_COEX_V5_CONFIG		135
++#define WCN36XX_HAL_CFG_MWS_COEX_V5_CONFIG2		136
++#define WCN36XX_HAL_CFG_MWS_COEX_V6_WAN_FREQ		137
++#define WCN36XX_HAL_CFG_MWS_COEX_V6_WLAN_FREQ		138
++#define WCN36XX_HAL_CFG_MWS_COEX_V6_CONFIG		139
++#define WCN36XX_HAL_CFG_MWS_COEX_V6_CONFIG2		140
++#define WCN36XX_HAL_CFG_MWS_COEX_V7_WAN_FREQ		141
++#define WCN36XX_HAL_CFG_MWS_COEX_V7_WLAN_FREQ		142
++#define WCN36XX_HAL_CFG_MWS_COEX_V7_CONFIG		143
++#define WCN36XX_HAL_CFG_MWS_COEX_V7_CONFIG2		144
++#define WCN36XX_HAL_CFG_MWS_COEX_V8_WAN_FREQ		145
++#define WCN36XX_HAL_CFG_MWS_COEX_V8_WLAN_FREQ		146
++#define WCN36XX_HAL_CFG_MWS_COEX_V8_CONFIG		147
++#define WCN36XX_HAL_CFG_MWS_COEX_V8_CONFIG2		148
++#define WCN36XX_HAL_CFG_MWS_COEX_V9_WAN_FREQ		149
++#define WCN36XX_HAL_CFG_MWS_COEX_V9_WLAN_FREQ		150
++#define WCN36XX_HAL_CFG_MWS_COEX_V9_CONFIG		151
++#define WCN36XX_HAL_CFG_MWS_COEX_V9_CONFIG2		152
++#define WCN36XX_HAL_CFG_MWS_COEX_V10_WAN_FREQ		153
++#define WCN36XX_HAL_CFG_MWS_COEX_V10_WLAN_FREQ		154
++#define WCN36XX_HAL_CFG_MWS_COEX_V10_CONFIG		155
++#define WCN36XX_HAL_CFG_MWS_COEX_V10_CONFIG2		156
++#define WCN36XX_HAL_CFG_MWS_COEX_MODEM_BACKOFF		157
++#define WCN36XX_HAL_CFG_MWS_COEX_CONFIG1		158
++#define WCN36XX_HAL_CFG_MWS_COEX_CONFIG2		159
++#define WCN36XX_HAL_CFG_MWS_COEX_CONFIG3		160
++#define WCN36XX_HAL_CFG_MWS_COEX_CONFIG4		161
++#define WCN36XX_HAL_CFG_MWS_COEX_CONFIG5		162
++#define WCN36XX_HAL_CFG_MWS_COEX_CONFIG6		163
++#define WCN36XX_HAL_CFG_SAR_POWER_BACKOFF		164
++#define WCN36XX_HAL_CFG_GO_LINK_MONITOR_TIMEOUT		165
++#define WCN36XX_HAL_CFG_BTC_STATIC_OPP_WLAN_ACTIVE_WLAN_LEN	166
++#define WCN36XX_HAL_CFG_BTC_STATIC_OPP_WLAN_ACTIVE_BT_LEN	167
++#define WCN36XX_HAL_CFG_BTC_SAP_STATIC_OPP_ACTIVE_WLAN_LEN	168
++#define WCN36XX_HAL_CFG_BTC_SAP_STATIC_OPP_ACTIVE_BT_LEN	169
++#define WCN36XX_HAL_CFG_RMC_FIXED_RATE			170
++#define WCN36XX_HAL_CFG_ASD_PROBE_INTERVAL		171
++#define WCN36XX_HAL_CFG_ASD_TRIGGER_THRESHOLD		172
++#define WCN36XX_HAL_CFG_ASD_RTT_RSSI_HYST_THRESHOLD	173
++#define WCN36XX_HAL_CFG_BTC_CTS2S_ON_STA_DURING_SCO	174
++#define WCN36XX_HAL_CFG_SHORT_PREAMBLE			175
++#define WCN36XX_HAL_CFG_SHORT_SLOT_TIME			176
++#define WCN36XX_HAL_CFG_DELAYED_BA			177
++#define WCN36XX_HAL_CFG_IMMEDIATE_BA			178
++#define WCN36XX_HAL_CFG_DOT11_MODE			179
++#define WCN36XX_HAL_CFG_HT_CAPS				180
++#define WCN36XX_HAL_CFG_AMPDU_PARAMS			181
++#define WCN36XX_HAL_CFG_TX_BF_INFO			182
++#define WCN36XX_HAL_CFG_ASC_CAP_INFO			183
++#define WCN36XX_HAL_CFG_EXT_HT_CAPS			184
++#define WCN36XX_HAL_CFG_QOS_ENABLED			185
++#define WCN36XX_HAL_CFG_WME_ENABLED			186
++#define WCN36XX_HAL_CFG_WSM_ENABLED			187
++#define WCN36XX_HAL_CFG_WMM_ENABLED			188
++#define WCN36XX_HAL_CFG_UAPSD_PER_AC_BITMASK		189
++#define WCN36XX_HAL_CFG_MCS_RATES			190
++#define WCN36XX_HAL_CFG_VHT_CAPS			191
++#define WCN36XX_HAL_CFG_VHT_RX_SUPP_MCS			192
++#define WCN36XX_HAL_CFG_VHT_TX_SUPP_MCS			193
++#define WCN36XX_HAL_CFG_RA_FILTER_ENABLE		194
++#define WCN36XX_HAL_CFG_RA_RATE_LIMIT_INTERVAL		195
++#define WCN36XX_HAL_CFG_BTC_FATAL_HID_NSNIFF_BLK	196
++#define WCN36XX_HAL_CFG_BTC_CRITICAL_HID_NSNIFF_BLK	197
++#define WCN36XX_HAL_CFG_BTC_DYN_A2DP_TX_QUEUE_THOLD	198
++#define WCN36XX_HAL_CFG_BTC_DYN_OPP_TX_QUEUE_THOLD	199
++#define WCN36XX_HAL_CFG_LINK_FAIL_TIMEOUT		200
++#define WCN36XX_HAL_CFG_MAX_UAPSD_CONSEC_SP		201
++#define WCN36XX_HAL_CFG_MAX_UAPSD_CONSEC_RX_CNT		202
++#define WCN36XX_HAL_CFG_MAX_UAPSD_CONSEC_TX_CNT		203
++#define WCN36XX_HAL_CFG_MAX_UAPSD_CONSEC_RX_CNT_MEAS_WINDOW	204
++#define WCN36XX_HAL_CFG_MAX_UAPSD_CONSEC_TX_CNT_MEAS_WINDOW	205
++#define WCN36XX_HAL_CFG_MAX_PSPOLL_IN_WMM_UAPSD_PS_MODE	206
++#define WCN36XX_HAL_CFG_MAX_UAPSD_INACTIVITY_INTERVALS	207
++#define WCN36XX_HAL_CFG_ENABLE_DYNAMIC_WMMPS		208
++#define WCN36XX_HAL_CFG_BURST_MODE_BE_TXOP_VALUE	209
++#define WCN36XX_HAL_CFG_ENABLE_DYNAMIC_RA_START_RATE	210
++#define WCN36XX_HAL_CFG_BTC_FAST_WLAN_CONN_PREF		211
++#define WCN36XX_HAL_CFG_ENABLE_RTSCTS_HTVHT		212
++#define WCN36XX_HAL_CFG_BTC_STATIC_OPP_WLAN_IDLE_WLAN_LEN	213
++#define WCN36XX_HAL_CFG_BTC_STATIC_OPP_WLAN_IDLE_BT_LEN	214
++#define WCN36XX_HAL_CFG_LINK_FAIL_TX_CNT		215
++#define WCN36XX_HAL_CFG_TOGGLE_ARP_BDRATES		216
++#define WCN36XX_HAL_CFG_OPTIMIZE_CA_EVENT		217
++#define WCN36XX_HAL_CFG_EXT_SCAN_CONC_MODE		218
++#define WCN36XX_HAL_CFG_BAR_WAKEUP_HOST_DISABLE		219
++#define WCN36XX_HAL_CFG_SAR_BOFFSET_CORRECTION_ENABLE	220
++#define WCN36XX_HAL_CFG_UNITS_OF_BCN_WAIT_TIME		221
++#define WCN36XX_HAL_CFG_CONS_BCNMISS_COUNT		222
++#define WCN36XX_HAL_CFG_BTC_DISABLE_WLAN_LINK_CRITICAL	223
++#define WCN36XX_HAL_CFG_DISABLE_SCAN_DURING_SCO		224
++#define WCN36XX_HAL_CFG_TRIGGER_NULLFRAME_BEFORE_HB	225
++#define WCN36XX_HAL_CFG_ENABLE_POWERSAVE_OFFLOAD	226
++#define WCN36XX_HAL_CFG_MAX_PARAMS			227
+ 
+ /* Specify the starting bitrate, 11B and 11A/G rates can be specified in
+  * multiples of 0.5 So for 5.5 mbps => 11. for MCS 0 - 7 rates, Bit 7 should
 -- 
 2.27.0
 
