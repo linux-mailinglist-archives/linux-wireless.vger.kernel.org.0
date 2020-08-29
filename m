@@ -2,60 +2,60 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1797C256483
-	for <lists+linux-wireless@lfdr.de>; Sat, 29 Aug 2020 05:39:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 29A37256485
+	for <lists+linux-wireless@lfdr.de>; Sat, 29 Aug 2020 05:39:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727848AbgH2DjX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 28 Aug 2020 23:39:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37112 "EHLO
+        id S1727853AbgH2DjY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 28 Aug 2020 23:39:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37116 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727772AbgH2DjG (ORCPT
+        with ESMTP id S1727781AbgH2DjH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 28 Aug 2020 23:39:06 -0400
-Received: from mail-wm1-x342.google.com (mail-wm1-x342.google.com [IPv6:2a00:1450:4864:20::342])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44399C061233
-        for <linux-wireless@vger.kernel.org>; Fri, 28 Aug 2020 20:39:06 -0700 (PDT)
-Received: by mail-wm1-x342.google.com with SMTP id z9so855988wmk.1
-        for <linux-wireless@vger.kernel.org>; Fri, 28 Aug 2020 20:39:06 -0700 (PDT)
+        Fri, 28 Aug 2020 23:39:07 -0400
+Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com [IPv6:2a00:1450:4864:20::441])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47E85C061234
+        for <linux-wireless@vger.kernel.org>; Fri, 28 Aug 2020 20:39:07 -0700 (PDT)
+Received: by mail-wr1-x441.google.com with SMTP id c15so852366wrs.11
+        for <linux-wireless@vger.kernel.org>; Fri, 28 Aug 2020 20:39:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=yQy8OHTZ0idummaIvQ2bIiI3uqJoP/LErWU5Dq1ghsQ=;
-        b=kIVZi9oRTiO/jlsjnSJGa1Ewk4JNmh/k5+zIOdrkGi3h63VS8T96KLGBVem9EiZLkq
-         qSB64lE+d3sZYzeoq2i2wtvjyvcte3Q9eivrrjq6tleyUEAXz2lABbFP5sUtnr7NYDQK
-         m0bwUPaJjMsrRKEb55+V4NF5lR6SAHFmoW5pnHwCUvjDxsOztZjxzVJ5qwfbK+IGNObi
-         oKTXwRDG71Chq5hB6l8cAFJcDwqsRfzRxygRBgm5CcDfP4fXKs+ivin8Yjq0sYJiQdcb
-         jo4hmhy4Onw7MRkDZ3hMUsLaXkujQczF6LgW7foTK+q7zlUMvM9lQt+VGAKUoBCUozaV
-         vT6Q==
+        bh=+gz5nCyObldL5Gm9cjjoAI5bGBbxcrE8UnaMm3PvfTM=;
+        b=yhAvw0w35tHzVG2StztQGtBFWWj+pdnd7KCWqy13B35Z2J1rwMFZKsHOWIXhQAmMzW
+         78Jh5t9kEE3gC8MBkhYHATVsIei4XWleRHuyPWUCcd5jsRTEVXUKmsTvhlVuXkoZLqBd
+         0lglK5kdX9ScMoht1EOKG2tXnPlYnPesL7Wjlafp8Pj6lq+rkWnr7dMqsOQelY/1cwh5
+         4fomDTtOC4MCAHNGYBkfEAMFUv/hxD5wzOs3VEu/n5Guphj1ITV5RmewzmE4jIFxcKiz
+         wfNb+7BQJTHHC45eWZzJeVKtzWHnJ6Z8C3kqBEBhX9qj5Z0DbtOZn2IhsKX9E7dlFU3F
+         31aA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=yQy8OHTZ0idummaIvQ2bIiI3uqJoP/LErWU5Dq1ghsQ=;
-        b=uEIDqKQmiN4pd1RaHc8XeAYyw9mFqV6PbwZOcASP2fezN7x9TWb13XLg12DanMtBSe
-         KesXob1TODBr9itNsr0nlaCemCONgXbUEQWSLZ14GQbCJfzO981++YlpOEWmZxNnaK6A
-         PGAgDXf8VUk2F8cQwIfCq5FBygMGpX7W8IEdrhdwDl57YvQyygCeC9BedbrEx9FO3Aq6
-         3Yxn7P8V9YCzIBKqbKrhqPaPXuON0zPi373AEsa+rpg4G38aBcAroXcBDT6CX60d3xC4
-         TrPWvT3Wg/D2lIIO3JyXHRRcjbmzHYjOwXn4D3Jfc518txqx8JVg/NKQVP01vJ6iRgMp
-         CxRA==
-X-Gm-Message-State: AOAM530sZp1Fkd9JRkzcfMGZkW6EB5yYJdqvnZz9jOS7U9ObRiDIp/SR
-        KzF6/kLu1mF7zAvbZNxfpQVKlA==
-X-Google-Smtp-Source: ABdhPJzSC3IZktFW/wx1T7A7lihijJoVSM2wXkoYlhF4O4XO2LgWlZDOWQiKqQAEssPTQBCl3Had8w==
-X-Received: by 2002:a7b:c399:: with SMTP id s25mr1548265wmj.13.1598672344983;
-        Fri, 28 Aug 2020 20:39:04 -0700 (PDT)
+        bh=+gz5nCyObldL5Gm9cjjoAI5bGBbxcrE8UnaMm3PvfTM=;
+        b=uguLacfQMBtNiBiB9gjOZw5retSZDCsnMiwFUmV4DQIDK1XCDKoBkI551uDvz/+8Ak
+         vPocAnFz8+XqrgZJHfS2T4NFejicLKDzycUcHeEZ7RqW2bMow+Ko7cd10TSD+EOWjuzW
+         PqHyjj8NHSzEKfRm7ZqOoC4leKbFiv3U2kDPZRhQeibWJdnMujnFhFFM6qiRYLE/0uqO
+         8y9k64jpPsi1vlCtiy2tYLDFk4HafqSyH5dudId5Fhg5H9gmE90a4bnUZTKizNwKB7O9
+         CH3fubj+Kd5CPOg2GOPYJBvAOSV3HA+47+pn6Bv20UDN+APp0guDHfGkbQQTBPpO0rA4
+         2LHQ==
+X-Gm-Message-State: AOAM532b0cZFsu4/Qgg+woWiZBRpfsWzLWrpfJD2Gx/8+rjLGYbmJjZH
+        iOTeiybGjx80FsJnAX/eaWipVg==
+X-Google-Smtp-Source: ABdhPJzAGieFfHLCjmPvS4/ik9ECFgcLwdWkYeI+da9WLk2sRZKNHjWdPsaHohAtxfjby2Jfyge/2A==
+X-Received: by 2002:adf:ab57:: with SMTP id r23mr1777893wrc.386.1598672345939;
+        Fri, 28 Aug 2020 20:39:05 -0700 (PDT)
 Received: from localhost.localdomain ([176.61.57.127])
-        by smtp.gmail.com with ESMTPSA id l9sm1732151wmh.1.2020.08.28.20.39.04
+        by smtp.gmail.com with ESMTPSA id l9sm1732151wmh.1.2020.08.28.20.39.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 28 Aug 2020 20:39:04 -0700 (PDT)
+        Fri, 28 Aug 2020 20:39:05 -0700 (PDT)
 From:   Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 To:     kvalo@codeaurora.org, wcn36xx@lists.infradead.org,
         linux-wireless@vger.kernel.org
 Cc:     bryan.odonoghue@linaro.org, shawn.guo@linaro.org,
         loic.poulain@linaro.org
-Subject: [PATCH v2 4/5] wcn36xx: Encode PHY mode for 80MHz channel in hw_value
-Date:   Sat, 29 Aug 2020 04:39:46 +0100
-Message-Id: <20200829033947.2167817-5-bryan.odonoghue@linaro.org>
+Subject: [PATCH v2 5/5] wcn36xx: Set PHY into correct mode for 80MHz channel width
+Date:   Sat, 29 Aug 2020 04:39:47 +0100
+Message-Id: <20200829033947.2167817-6-bryan.odonoghue@linaro.org>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20200829033947.2167817-1-bryan.odonoghue@linaro.org>
 References: <20200829033947.2167817-1-bryan.odonoghue@linaro.org>
@@ -66,85 +66,44 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This commit encodes the 802.11ac PHY mode for a given channel in the upper
-bits of the hw_value field. This allows for a neat read-out and application
-of the relevant PHY setting.
+For the 80MHz channel we need to set the PHY mode to one of four PHY modes
+that span the 80MHz range.
+
+This patch latches the hw_value PHY field previously defined for 5GHz
+channels directly to the parameter passed to the firmware.
 
 Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 ---
- drivers/net/wireless/ath/wcn36xx/main.c | 50 ++++++++++++-------------
- 1 file changed, 25 insertions(+), 25 deletions(-)
+ drivers/net/wireless/ath/wcn36xx/smd.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/wcn36xx/main.c b/drivers/net/wireless/ath/wcn36xx/main.c
-index e92907a33443..9e97513feeb5 100644
---- a/drivers/net/wireless/ath/wcn36xx/main.c
-+++ b/drivers/net/wireless/ath/wcn36xx/main.c
-@@ -39,10 +39,10 @@ MODULE_PARM_DESC(debug_mask, "Debugging mask");
- 	.max_power = 25, \
- }
+diff --git a/drivers/net/wireless/ath/wcn36xx/smd.c b/drivers/net/wireless/ath/wcn36xx/smd.c
+index 729708d96586..4b967f8ba949 100644
+--- a/drivers/net/wireless/ath/wcn36xx/smd.c
++++ b/drivers/net/wireless/ath/wcn36xx/smd.c
+@@ -1493,6 +1493,7 @@ int wcn36xx_smd_config_bss_v1(struct wcn36xx *wcn, struct ieee80211_vif *vif,
+ 	struct wcn36xx_hal_config_bss_params_v1 *bss;
+ 	struct wcn36xx_hal_config_bss_params bss_v0;
+ 	struct wcn36xx_hal_config_sta_params_v1 *sta;
++	struct cfg80211_chan_def *chandef;
+ 	int ret;
  
--#define CHAN5G(_freq, _idx) { \
-+#define CHAN5G(_freq, _idx, _phy_val) { \
- 	.band = NL80211_BAND_5GHZ, \
- 	.center_freq = (_freq), \
--	.hw_value = (_idx), \
-+	.hw_value = (_phy_val) << HW_VALUE_PHY_SHIFT | HW_VALUE_CHANNEL(_idx), \
- 	.max_power = 25, \
- }
+ 	msg_body = kzalloc(sizeof(*msg_body), GFP_KERNEL);
+@@ -1536,7 +1537,13 @@ int wcn36xx_smd_config_bss_v1(struct wcn36xx *wcn, struct ieee80211_vif *vif,
+ 	bss->dtim_period = bss_v0.dtim_period;
+ 	bss->tx_channel_width_set = bss_v0.tx_channel_width_set;
+ 	bss->oper_channel = bss_v0.oper_channel;
+-	bss->ext_channel = bss_v0.ext_channel;
++
++	if (wcn->hw->conf.chandef.width == NL80211_CHAN_WIDTH_80) {
++		chandef = &wcn->hw->conf.chandef;
++		bss->ext_channel = HW_VALUE_PHY(chandef->chan->hw_value);
++	} else {
++		bss->ext_channel = bss_v0.ext_channel;
++	}
  
-@@ -67,29 +67,29 @@ static struct ieee80211_channel wcn_2ghz_channels[] = {
- };
+ 	bss->reserved = bss_v0.reserved;
  
- static struct ieee80211_channel wcn_5ghz_channels[] = {
--	CHAN5G(5180, 36),
--	CHAN5G(5200, 40),
--	CHAN5G(5220, 44),
--	CHAN5G(5240, 48),
--	CHAN5G(5260, 52),
--	CHAN5G(5280, 56),
--	CHAN5G(5300, 60),
--	CHAN5G(5320, 64),
--	CHAN5G(5500, 100),
--	CHAN5G(5520, 104),
--	CHAN5G(5540, 108),
--	CHAN5G(5560, 112),
--	CHAN5G(5580, 116),
--	CHAN5G(5600, 120),
--	CHAN5G(5620, 124),
--	CHAN5G(5640, 128),
--	CHAN5G(5660, 132),
--	CHAN5G(5700, 140),
--	CHAN5G(5745, 149),
--	CHAN5G(5765, 153),
--	CHAN5G(5785, 157),
--	CHAN5G(5805, 161),
--	CHAN5G(5825, 165)
-+	CHAN5G(5180, 36, PHY_QUADRUPLE_CHANNEL_20MHZ_LOW_40MHZ_LOW),
-+	CHAN5G(5200, 40, PHY_QUADRUPLE_CHANNEL_20MHZ_HIGH_40MHZ_LOW),
-+	CHAN5G(5220, 44, PHY_QUADRUPLE_CHANNEL_20MHZ_LOW_40MHZ_HIGH),
-+	CHAN5G(5240, 48, PHY_QUADRUPLE_CHANNEL_20MHZ_HIGH_40MHZ_HIGH),
-+	CHAN5G(5260, 52, PHY_QUADRUPLE_CHANNEL_20MHZ_LOW_40MHZ_LOW),
-+	CHAN5G(5280, 56, PHY_QUADRUPLE_CHANNEL_20MHZ_HIGH_40MHZ_LOW),
-+	CHAN5G(5300, 60, PHY_QUADRUPLE_CHANNEL_20MHZ_LOW_40MHZ_HIGH),
-+	CHAN5G(5320, 64, PHY_QUADRUPLE_CHANNEL_20MHZ_HIGH_40MHZ_HIGH),
-+	CHAN5G(5500, 100, PHY_QUADRUPLE_CHANNEL_20MHZ_LOW_40MHZ_LOW),
-+	CHAN5G(5520, 104, PHY_QUADRUPLE_CHANNEL_20MHZ_HIGH_40MHZ_LOW),
-+	CHAN5G(5540, 108, PHY_QUADRUPLE_CHANNEL_20MHZ_LOW_40MHZ_HIGH),
-+	CHAN5G(5560, 112, PHY_QUADRUPLE_CHANNEL_20MHZ_HIGH_40MHZ_HIGH),
-+	CHAN5G(5580, 116, PHY_QUADRUPLE_CHANNEL_20MHZ_LOW_40MHZ_LOW),
-+	CHAN5G(5600, 120, PHY_QUADRUPLE_CHANNEL_20MHZ_HIGH_40MHZ_LOW),
-+	CHAN5G(5620, 124, PHY_QUADRUPLE_CHANNEL_20MHZ_LOW_40MHZ_HIGH),
-+	CHAN5G(5640, 128, PHY_QUADRUPLE_CHANNEL_20MHZ_HIGH_40MHZ_HIGH),
-+	CHAN5G(5660, 132, PHY_QUADRUPLE_CHANNEL_20MHZ_LOW_40MHZ_LOW),
-+	CHAN5G(5700, 140, PHY_QUADRUPLE_CHANNEL_20MHZ_LOW_40MHZ_HIGH),
-+	CHAN5G(5745, 149, PHY_QUADRUPLE_CHANNEL_20MHZ_LOW_40MHZ_LOW),
-+	CHAN5G(5765, 153, PHY_QUADRUPLE_CHANNEL_20MHZ_HIGH_40MHZ_LOW),
-+	CHAN5G(5785, 157, PHY_QUADRUPLE_CHANNEL_20MHZ_LOW_40MHZ_HIGH),
-+	CHAN5G(5805, 161, PHY_QUADRUPLE_CHANNEL_20MHZ_HIGH_40MHZ_HIGH),
-+	CHAN5G(5825, 165, 0)
- };
- 
- #define RATE(_bitrate, _hw_rate, _flags) { \
 -- 
 2.27.0
 
