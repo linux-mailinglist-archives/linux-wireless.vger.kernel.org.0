@@ -2,95 +2,105 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BB727257A5A
-	for <lists+linux-wireless@lfdr.de>; Mon, 31 Aug 2020 15:27:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B4FCA257AF0
+	for <lists+linux-wireless@lfdr.de>; Mon, 31 Aug 2020 15:56:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727872AbgHaN1K (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 31 Aug 2020 09:27:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35948 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726384AbgHaN0h (ORCPT
+        id S1727815AbgHaN4P (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 31 Aug 2020 09:56:15 -0400
+Received: from mail29.static.mailgun.info ([104.130.122.29]:32000 "EHLO
+        mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726292AbgHaN4N (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 31 Aug 2020 09:26:37 -0400
-Received: from mail-lj1-x243.google.com (mail-lj1-x243.google.com [IPv6:2a00:1450:4864:20::243])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DF71C0611E0
-        for <linux-wireless@vger.kernel.org>; Mon, 31 Aug 2020 06:26:20 -0700 (PDT)
-Received: by mail-lj1-x243.google.com with SMTP id y4so5605321ljk.8
-        for <linux-wireless@vger.kernel.org>; Mon, 31 Aug 2020 06:26:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:sender:from:date:message-id:subject:to;
-        bh=o69Nac3LLMj5CDhyPqLcnP7WGq46U4gQb9HzFdG/MvE=;
-        b=HyW5/n2KU8W3FGefd/FUm/bl6fINTQmZ8owzYdBGhP5oyAu9pJQPQCMOdYEDNFegUA
-         if9VN+pra3iBgWNYJjHcBV7T99CY2GFOcHOVU+3vJ7r2Hvzgah2ZCqHTq6bk4iv0uilM
-         xQiEPrdMcYz9cIZL++pevJSb5RdixTZAk95pbnwmQ3/GOLv8xUS1vQ8t141F6N8CgROI
-         mubb31iIEGHTmIRsfQchZCL6N1v85LnpPi/V/jmyUdodp49jy+hBMBGM/QhsUL+AVu8e
-         3Cg9SzlMyigtpwqPqg6kcnc+pElD0XMp/EB9mY9MxbJL6EWXLnnT1YiTj0+V+0DhoQI2
-         wJdQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:sender:from:date
-         :message-id:subject:to;
-        bh=o69Nac3LLMj5CDhyPqLcnP7WGq46U4gQb9HzFdG/MvE=;
-        b=cVGbauqLnUOI+yRndYPgrKv53lE0HxoqhaBClOlaKJAdWkDEzBSIDLpj2TIvjEOCF6
-         W8P5e7xUDR/c4HsrlMwp2JoYGeUWsI91LLuMiE/AYznDHS4+cJRD0RAQTacPIeI0dxGV
-         QmEDnt8hJYPE98zGyQxQQQ/FSP1dLLC2BeC2zSadaycumzXQqXQiP4COWUytBXOr5A6e
-         yC5SY+1kF75rzy+jZ2xAx8bY9nDfFWSZn7qOlX5xkATP/za5ESYzgWoQD8e7w/N2BQ+s
-         OOa4boBe4fiBuWkE2Rtt0aCEf9AaGrfWFzWYdDWBBlOfzvMFCufjGsij67L6xj0Cb0f2
-         9dEQ==
-X-Gm-Message-State: AOAM531WvKUk5E2+PYBx1j6N+sfirWJN98RO2NxiKp6z5//xaLY5nu/7
-        MkofP7661LigMyTkLFErMgVa1r8GjOJdz8TEHIY=
-X-Google-Smtp-Source: ABdhPJxEvvXnVfErpjDwHOkyCqRTciyX/SNwRaUYVOHmxIQS6MbFpht1V2v8jY7chkhk3ZxIDw/BvL8uxGOjXPjCGG8=
-X-Received: by 2002:a2e:9c86:: with SMTP id x6mr662832lji.346.1598880379026;
- Mon, 31 Aug 2020 06:26:19 -0700 (PDT)
+        Mon, 31 Aug 2020 09:56:13 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1598882172; h=Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Message-ID: In-Reply-To: Date: References: Subject: Cc:
+ To: From: Sender; bh=l4ktEq8o7WvDy0rk/XyMBx2xUqUH9rI3Uw2PKVTyEv8=; b=MCF3J+G1JND01Xp1rhd52teXi7wTm1Moh8d24de21jCgWBcEdSbE+t7TFEl+Exf2Z9Ya87KW
+ FBqFtVSueYu0CzhdEx/kGdMBNHJ9FLmDweJyejBEc2iD/oAAASfpnXPqzxuofIqHthsZ6gNH
+ ksapzB0IZj/TsyWoIsg7ahi6A5E=
+X-Mailgun-Sending-Ip: 104.130.122.29
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n02.prod.us-east-1.postgun.com with SMTP id
+ 5f4d017c73afa3417e6b8d0b (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 31 Aug 2020 13:56:12
+ GMT
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 76E16C433CA; Mon, 31 Aug 2020 13:56:11 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id B9EE8C433CA;
+        Mon, 31 Aug 2020 13:56:08 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org B9EE8C433CA
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Christian Lamparter <chunkeey@gmail.com>
+Cc:     davem@davemloft.net, kuba@kernel.org,
+        Lee Jones <lee.jones@linaro.org>, linux-kernel@vger.kernel.org,
+        Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH v2 08/30] net: wireless: ath: carl9170: Convert 'ar9170_qmap' to inline function
+References: <20200814113933.1903438-1-lee.jones@linaro.org>
+        <20200814113933.1903438-9-lee.jones@linaro.org>
+        <20200827093351.GA1627017@dell> <5498132.V4cn31ggaO@debian64>
+Date:   Mon, 31 Aug 2020 16:56:06 +0300
+In-Reply-To: <5498132.V4cn31ggaO@debian64> (Christian Lamparter's message of
+        "Fri, 28 Aug 2020 22:28:20 +0200")
+Message-ID: <877dte7wcp.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-Reply-To: marie_avis12@yahoo.com
-Received: by 2002:a2e:9817:0:0:0:0:0 with HTTP; Mon, 31 Aug 2020 06:26:18
- -0700 (PDT)
-From:   Miss Maris Avis <marie.avis11@gmail.com>
-Date:   Mon, 31 Aug 2020 13:26:18 +0000
-X-Google-Sender-Auth: ENkN_TdcXF5NiFOWAHQrklZpWrk
-Message-ID: <CADTVshNj9Ztqm75AkbunLeeRTsk07qB5LsiKLoagvmiH7TvYgQ@mail.gmail.com>
-Subject: Hello
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-My Dear,
+Christian Lamparter <chunkeey@gmail.com> writes:
 
-My name is Miss Marie Avis the only daughter of Mr. Gabriel Avis, my
-Father was dealing in Cocoa and Timber in this country before his
-death,  It is my pleasure to contact you for a business venture which
-I intend to establish in your country. Though I have not met with you
-before but I believe one has to risk confiding before you can succeed
-sometimes in life.
+> On Thursday, 27 August 2020 11:33:51 CEST Lee Jones wrote:
+>> 'ar9170_qmap' is used in some source files which include carl9170.h,
+>> but not all of them.  A 'defined but not used' warning is thrown when
+>> compiling the ones which do not use it.
+>>=20
+>> Fixes the following W=3D1 kernel build warning(s)
+>>=20
+>>  from drivers/net/wireless/ath/carl9170/carl9170.h:57,
+>>  In file included from drivers/net/wireless/ath/carl9170/carl9170.h:57,
+>>  drivers/net/wireless/ath/carl9170/carl9170.h:71:17: warning:
+>> =E2=80=98ar9170_qmap=E2=80=99 defined but not used [-Wunused-const-varia=
+ble=3D]
+>>=20
+>>  NB: Snipped - lots of these repeat
+>>=20
+>> Cc: Christian Lamparter <chunkeey@googlemail.com>
+>> Cc: Kalle Valo <kvalo@codeaurora.org>
+>> Cc: "David S. Miller" <davem@davemloft.net>
+>> Cc: Jakub Kicinski <kuba@kernel.org>
+>> Cc: Johannes Berg <johannes@sipsolutions.net>
+>> Cc: linux-wireless@vger.kernel.org
+>> Cc: netdev@vger.kernel.org
+>> Suggested-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+>> Signed-off-by: Lee Jones <lee.jones@linaro.org>
+>> ---
+>
+> For what it's worth:
+> Acked-by: Christian Lamparter <chunkeey@gmail.com>
 
-I can confide in you for my brighter future since you are a human
-being like me. There is this huge amount of Ten Million five hundred
-thousand United States dollars. ($10.500.000.00) which my late Father
-kept for me in a suspense account with one of the bank here in Abidjan
-Cote d'Ivoire before he was assassinated by unknown persons, Now I
-have decided to invest these money in your country or anywhere safe
-enough for me.
+BTW for me Acked-by tags from the maintainer are very useful. Patchwork
+even collects them automatically and shows the statistics so I can
+quickly see what patches are ready to be applied. So please do send them
+if you can :)
 
-I want you to help me claim this fund from the bank and have it
-transfer into your personal account in your country for investment
-purposes in your country in these areas:
-
-1). Telecommunication
-2). The transport Industry
-3). Five Star Hotel
-4). Tourism
-5). Real Estate
-
-If you can be of assistance to me I will be pleased to offer you 20%
-of the total fund.
-
-I await your soonest response.
-
-Respectfully yours,
-Miss Marie Evis
-Tel: +225597438528
+--=20
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
+hes
