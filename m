@@ -2,113 +2,145 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A2ABE2578A7
-	for <lists+linux-wireless@lfdr.de>; Mon, 31 Aug 2020 13:48:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D3DB825792D
+	for <lists+linux-wireless@lfdr.de>; Mon, 31 Aug 2020 14:26:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726467AbgHaLsT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 31 Aug 2020 07:48:19 -0400
-Received: from mail-il1-f197.google.com ([209.85.166.197]:43187 "EHLO
-        mail-il1-f197.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726121AbgHaLsQ (ORCPT
+        id S1726928AbgHaM01 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 31 Aug 2020 08:26:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54712 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726821AbgHaM0N (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 31 Aug 2020 07:48:16 -0400
-Received: by mail-il1-f197.google.com with SMTP id 2so4838054ill.10
-        for <linux-wireless@vger.kernel.org>; Mon, 31 Aug 2020 04:48:15 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
-        bh=/iTRQyL/57CWo3c4FNSLWhOYt/YjpXSA+mhZxmmaW1c=;
-        b=h+4wsLf5wwRRmIn2BwfkTT1z13N2Yeo7tdngnk6mFTN4OC1TBfzWJe2fXCQKVVZwKK
-         xUkod5qNaE1Cs3QSMFezb4iur+yUXhHmCymh0qwgc3vNeLE6LSokQrEpsAqzUzP6oWGS
-         U8YbmJmaNbk7cgvqJBIBmm0CDtIQ4x0fh7oozyuMWMZFhJ0BMqFQfd/QUk3hgedzLKl/
-         K9ziRjiQE88bUNmJP/jCgoKHcfldPiuE/UpxvK94VW3BT3DwMDeFs+4mQfYw9W0tnpk/
-         7AoEEQskt1hKLFAbwh9QpRxmdP7Px7+1+RKrW+sYV0eWob1SLUL/dA1U1V5k2zhhnPzG
-         B9iw==
-X-Gm-Message-State: AOAM533bRYWDK0yQqIFgEjH4G5pwnHslsrOHUEGX/SW5JFEPtbIuCNm8
-        doJ45kLIJL6EjLEhepg8VxDvAp7MT56FKHeZQC+NV69GRdmP
-X-Google-Smtp-Source: ABdhPJyf0IWvn2xSDtVDcy9jX1mz8uFJZ2ZodF7CPXTs66vFHYZXXKd+eUzFUOOruTJFjocyhSNDf4WK9HL/mjX1bIBQdv5MigNK
+        Mon, 31 Aug 2020 08:26:13 -0400
+Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E254C06123A
+        for <linux-wireless@vger.kernel.org>; Mon, 31 Aug 2020 05:26:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject
+        :To:From:Sender:Reply-To:Cc:Content-Type:Content-ID:Content-Description:
+        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=HTBk4pB1isCPzFUCSAE0aANTISnsv4wbU6byxDLPRws=; b=bqLk4m9SfXLRWwuT/C9otpBGes
+        gTVm99W1DxlYUWjVvUAKacK/WaXwF+g2MjtsoHtPPx6fbli8ideCr/a9Mo3CK2Ajm1/xQbGBiig3H
+        41WC3mIkFpTl1cCAwd0PADqE1Z7EwB5lnQFD1Y6UzJlXuEXHuwQ0p+dncQi2a/00GSzw=;
+Received: from p4ff13fcb.dip0.t-ipconnect.de ([79.241.63.203] helo=localhost.localdomain)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_CBC_SHA1:128)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1kCisr-0000Ok-IK
+        for linux-wireless@vger.kernel.org; Mon, 31 Aug 2020 14:26:01 +0200
+From:   Felix Fietkau <nbd@nbd.name>
+To:     linux-wireless@vger.kernel.org
+Subject: [PATCH 1/9] mt76: usb: fix use of q->head and q->tail
+Date:   Mon, 31 Aug 2020 14:25:50 +0200
+Message-Id: <20200831122558.1388-1-nbd@nbd.name>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
-X-Received: by 2002:a92:c9ca:: with SMTP id k10mr1023132ilq.81.1598874495578;
- Mon, 31 Aug 2020 04:48:15 -0700 (PDT)
-Date:   Mon, 31 Aug 2020 04:48:15 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <00000000000059779405ae2afa90@google.com>
-Subject: KASAN: use-after-free Write in rtl_fw_do_work
-From:   syzbot <syzbot+dc3cab055dff074f2d7f@syzkaller.appspotmail.com>
-To:     andreyknvl@google.com, davem@davemloft.net, kuba@kernel.org,
-        kvalo@codeaurora.org, linux-kernel@vger.kernel.org,
-        linux-usb@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, pkshih@realtek.com,
-        syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
+Their use is reversed compared to DMA. The order for DMA makes more sense,
+so let's use that
 
-syzbot found the following issue on:
-
-HEAD commit:    3ed8e1c2 usb: typec: tcpm: Migrate workqueue to RT priorit..
-git tree:       https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb.git usb-testing
-console output: https://syzkaller.appspot.com/x/log.txt?x=111f9015900000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=ccafc70ac3d5f49c
-dashboard link: https://syzkaller.appspot.com/bug?extid=dc3cab055dff074f2d7f
-compiler:       gcc (GCC) 10.1.0-syz 20200507
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=148a00c9900000
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+dc3cab055dff074f2d7f@syzkaller.appspotmail.com
-
-usb 1-1: Direct firmware load for rtlwifi/rtl8192cufw_TMSC.bin failed with error -2
-usb 1-1: Direct firmware load for rtlwifi/rtl8192cufw.bin failed with error -2
-rtlwifi: Loading alternative firmware rtlwifi/rtl8192cufw.bin
-rtlwifi: Selected firmware is not available
-==================================================================
-BUG: KASAN: use-after-free in rtl_fw_do_work.cold+0x68/0x6a drivers/net/wireless/realtek/rtlwifi/core.c:93
-Write of size 4 at addr ffff8881c9c2ff30 by task kworker/1:5/3063
-
-CPU: 1 PID: 3063 Comm: kworker/1:5 Not tainted 5.9.0-rc1-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
-Workqueue: events request_firmware_work_func
-Call Trace:
- __dump_stack lib/dump_stack.c:77 [inline]
- dump_stack+0xf6/0x16e lib/dump_stack.c:118
- print_address_description.constprop.0+0x1c/0x210 mm/kasan/report.c:383
- __kasan_report mm/kasan/report.c:513 [inline]
- kasan_report.cold+0x37/0x7c mm/kasan/report.c:530
- rtl_fw_do_work.cold+0x68/0x6a drivers/net/wireless/realtek/rtlwifi/core.c:93
- request_firmware_work_func+0x126/0x250 drivers/base/firmware_loader/main.c:1001
- process_one_work+0x94c/0x15f0 kernel/workqueue.c:2269
- worker_thread+0x64c/0x1120 kernel/workqueue.c:2415
- kthread+0x392/0x470 kernel/kthread.c:292
- ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:294
-
-The buggy address belongs to the page:
-page:000000008323bb9d refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x1c9c2f
-flags: 0x200000000000000()
-raw: 0200000000000000 0000000000000000 ffffea0007270bc8 0000000000000000
-raw: 0000000000000000 0000000000000000 00000000ffffffff 0000000000000000
-page dumped because: kasan: bad access detected
-
-Memory state around the buggy address:
- ffff8881c9c2fe00: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
- ffff8881c9c2fe80: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
->ffff8881c9c2ff00: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-                                     ^
- ffff8881c9c2ff80: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
- ffff8881c9c30000: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-==================================================================
-
-
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+ drivers/net/wireless/mediatek/mt76/usb.c | 30 ++++++++++++------------
+ 1 file changed, 15 insertions(+), 15 deletions(-)
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-syzbot can test patches for this issue, for details see:
-https://goo.gl/tpsmEJ#testing-patches
+diff --git a/drivers/net/wireless/mediatek/mt76/usb.c b/drivers/net/wireless/mediatek/mt76/usb.c
+index dcab5993763a..36e6cc3535fa 100644
+--- a/drivers/net/wireless/mediatek/mt76/usb.c
++++ b/drivers/net/wireless/mediatek/mt76/usb.c
+@@ -497,8 +497,8 @@ mt76u_get_next_rx_entry(struct mt76_queue *q)
+ 
+ 	spin_lock_irqsave(&q->lock, flags);
+ 	if (q->queued > 0) {
+-		urb = q->entry[q->head].urb;
+-		q->head = (q->head + 1) % q->ndesc;
++		urb = q->entry[q->tail].urb;
++		q->tail = (q->tail + 1) % q->ndesc;
+ 		q->queued--;
+ 	}
+ 	spin_unlock_irqrestore(&q->lock, flags);
+@@ -622,10 +622,10 @@ static void mt76u_complete_rx(struct urb *urb)
+ 	}
+ 
+ 	spin_lock_irqsave(&q->lock, flags);
+-	if (WARN_ONCE(q->entry[q->tail].urb != urb, "rx urb mismatch"))
++	if (WARN_ONCE(q->entry[q->head].urb != urb, "rx urb mismatch"))
+ 		goto out;
+ 
+-	q->tail = (q->tail + 1) % q->ndesc;
++	q->head = (q->head + 1) % q->ndesc;
+ 	q->queued++;
+ 	tasklet_schedule(&dev->usb.rx_tasklet);
+ out:
+@@ -808,17 +808,17 @@ static void mt76u_tx_tasklet(unsigned long data)
+ 		q = sq->q;
+ 
+ 		while (q->queued > n_dequeued) {
+-			if (!q->entry[q->head].done)
++			if (!q->entry[q->tail].done)
+ 				break;
+ 
+-			if (q->entry[q->head].schedule) {
+-				q->entry[q->head].schedule = false;
++			if (q->entry[q->tail].schedule) {
++				q->entry[q->tail].schedule = false;
+ 				n_sw_dequeued++;
+ 			}
+ 
+-			entry = q->entry[q->head];
+-			q->entry[q->head].done = false;
+-			q->head = (q->head + 1) % q->ndesc;
++			entry = q->entry[q->tail];
++			q->entry[q->tail].done = false;
++			q->tail = (q->tail + 1) % q->ndesc;
+ 			n_dequeued++;
+ 
+ 			dev->drv->tx_complete_skb(dev, i, &entry);
+@@ -913,7 +913,7 @@ mt76u_tx_queue_skb(struct mt76_dev *dev, enum mt76_txq_id qid,
+ 	struct mt76_tx_info tx_info = {
+ 		.skb = skb,
+ 	};
+-	u16 idx = q->tail;
++	u16 idx = q->head;
+ 	int err;
+ 
+ 	if (q->queued == q->ndesc)
+@@ -932,7 +932,7 @@ mt76u_tx_queue_skb(struct mt76_dev *dev, enum mt76_txq_id qid,
+ 			    q->entry[idx].urb, mt76u_complete_tx,
+ 			    &q->entry[idx]);
+ 
+-	q->tail = (q->tail + 1) % q->ndesc;
++	q->head = (q->head + 1) % q->ndesc;
+ 	q->entry[idx].skb = tx_info.skb;
+ 	q->queued++;
+ 
+@@ -944,7 +944,7 @@ static void mt76u_tx_kick(struct mt76_dev *dev, struct mt76_queue *q)
+ 	struct urb *urb;
+ 	int err;
+ 
+-	while (q->first != q->tail) {
++	while (q->first != q->head) {
+ 		urb = q->entry[q->first].urb;
+ 
+ 		trace_submit_urb(dev, urb);
+@@ -1071,8 +1071,8 @@ void mt76u_stop_tx(struct mt76_dev *dev)
+ 			/* Assure we are in sync with killed tasklet. */
+ 			spin_lock_bh(&q->lock);
+ 			while (q->queued) {
+-				entry = q->entry[q->head];
+-				q->head = (q->head + 1) % q->ndesc;
++				entry = q->entry[q->tail];
++				q->tail = (q->tail + 1) % q->ndesc;
+ 				q->queued--;
+ 
+ 				dev->drv->tx_complete_skb(dev, i, &entry);
+-- 
+2.28.0
+
