@@ -2,109 +2,149 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D17A025814E
-	for <lists+linux-wireless@lfdr.de>; Mon, 31 Aug 2020 20:47:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F8E825815B
+	for <lists+linux-wireless@lfdr.de>; Mon, 31 Aug 2020 20:50:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727965AbgHaSrN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 31 Aug 2020 14:47:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57944 "EHLO
+        id S1728148AbgHaSuz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 31 Aug 2020 14:50:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58512 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727954AbgHaSrM (ORCPT
+        with ESMTP id S1727933AbgHaSuz (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 31 Aug 2020 14:47:12 -0400
-Received: from mail-ot1-x342.google.com (mail-ot1-x342.google.com [IPv6:2607:f8b0:4864:20::342])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6129BC061573
-        for <linux-wireless@vger.kernel.org>; Mon, 31 Aug 2020 11:47:12 -0700 (PDT)
-Received: by mail-ot1-x342.google.com with SMTP id e23so6255741otk.7
-        for <linux-wireless@vger.kernel.org>; Mon, 31 Aug 2020 11:47:12 -0700 (PDT)
+        Mon, 31 Aug 2020 14:50:55 -0400
+Received: from mail-ot1-x341.google.com (mail-ot1-x341.google.com [IPv6:2607:f8b0:4864:20::341])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30CB7C061573
+        for <linux-wireless@vger.kernel.org>; Mon, 31 Aug 2020 11:50:55 -0700 (PDT)
+Received: by mail-ot1-x341.google.com with SMTP id t7so6286875otp.0
+        for <linux-wireless@vger.kernel.org>; Mon, 31 Aug 2020 11:50:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=sender:subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=aBccLzXC9rSMX+ESOOtEEaezBUg1+RE0+B2TlTmRawc=;
-        b=pzygCV1ELyDxGFHbngrmLSy9D7pKvN6oeuTLkBdDV/Sb8kt5L9iofubm/bX4swP/Xy
-         B0mmE72mnM8FNH8MXq6n6F6Dv/WqU7T/5HNArFwXc+Bakj8fByEG51s+GqNB+rUcLkLv
-         hOR95OhZyvD9l0t9MdvxbY+eyxcpDaAKOB9Qx5MoHWuoLIyG23+dWAGp8pjS5rkkJTz2
-         fvc+bHSNuhrItd/X6JIH3hGkqPUb+zUWut9G8+VywTQnpHDq5e87lDBLZSUfCtOIM84u
-         Lc6JzK4UdX/tn8h9Yksoxk7hGM5FGIh1wh/mWJ4N9a+6z5WZI9dVGGYTmftpZnA5oEWR
-         o3lQ==
+        h=sender:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=lRZTfMUNoTfqMIHstBB6IDHNONtkF33XnbARN6sgI9o=;
+        b=OGgIkMrfcuOv6d9yBPidwQSSQuhWrNFK6tDzicaA83HkIhRMkPSYTeNY4Yy+s4FuTk
+         8tBnc68dgkT5N6c9C8oYDOYqsEHSYthjJc3ABNR7z/+EyJ69q8obwuhWPOW995W+NMOi
+         oD3wscqM+w5w1yJR+xq+QSW9rftRYpZFnCd2zo1rcNV331PNbOfXz+/qM36uupoDRneN
+         qkOWwm2Cp41/6StjwEk3xmDR1OPU6eO/iwJaHmT0v+Gk1lwwps73YZmEw6OlhAFnXpiR
+         XZPy5m8zTB2rcrFTm7c0lq7LcYVjr2m+BELy4gEKINgw80B+e5vp4rWXQ752mJBQeV6T
+         5XOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
-         :date:user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=aBccLzXC9rSMX+ESOOtEEaezBUg1+RE0+B2TlTmRawc=;
-        b=A/an9H532YT74hSiLEpZlB6g1keibAtIGPEEeCA1ByX9kVBT6GsnHbEI/dc5Mm/oq+
-         bDKWYW+LbzF553n10sMi1tdqJqudfDzu8XVjg1PVAAI3cFTyV+oyoc3CZEx54oNSJoQE
-         Bz9E6RPBDqgcTNdMeosrsd28uw9zm9LRHt2NumcgfSL3utj89mwlyvBllLZZYYnLftiG
-         dJfA+pwoMzLBpmi6w5K5gbw39cPQ4U+MqvBGtpVx6nGgzUrvrsz6Kl+A2+Xa+ti9n5/P
-         NdnAJRNWBuxMb8bhXyMhV0t9Yzl/FuJ14CXS2KFJzR+Aw8ujdq5eTFwmU78aZF6uzf92
-         dMfQ==
-X-Gm-Message-State: AOAM5306qbNQoeIKwHj5Hd5bpYQnhQnp2BIa55n5J6P/qGaiSSSCeG/a
-        NSNsOMHF/MMxuGWTGDDbOHESMAxcKx4=
-X-Google-Smtp-Source: ABdhPJyAlJzc4tPlXpCOp7UWIOBe/YXL2BQRjHznhaYBseQx51XU02J5MDCh1UiaOd6mrhtBtbRf7g==
-X-Received: by 2002:a9d:32e5:: with SMTP id u92mr1356481otb.107.1598899630782;
-        Mon, 31 Aug 2020 11:47:10 -0700 (PDT)
+        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
+         :mime-version:content-transfer-encoding;
+        bh=lRZTfMUNoTfqMIHstBB6IDHNONtkF33XnbARN6sgI9o=;
+        b=LZN0wEpmNYb4H0Ha3fdL+d+82IW/WvDE6OTQRxYaRELZ5W0bEG7Nq6DOXAq6/I0g1n
+         fVMt8XYwpNy1xQQYmFWrGn6wZGRVdtC1MbRt73uSK+9hJFaQmNnGHe8Np9yW/h8WSipN
+         g/BaaJKfxdVnKqdIGtwthfOn15ZwKDNUp71afeYNBt69WHCBhi4HGnGjfBQo/6JQ9kdi
+         XF7qScBlOTjSaomHpwFmP6J9InXT92ztFUyoclrIm0PZmAYaKFJb6c3PHYxzjPOHP2lq
+         VIqU72yjyNWZT2RdEn5Dse8kUtDfK/c7oY4/RQCCezYOJZaz4thSGZKGIH3e2ar/v7QY
+         FDjQ==
+X-Gm-Message-State: AOAM532gyZxAgis18cqT6fi+710Nza0uCLjcPTpgT8ZT/TxZtGnjdcGF
+        Pj9NNSVJam0xSnmh63xYHJ4=
+X-Google-Smtp-Source: ABdhPJyYY+pRtd0pxD6+d1F4l8Sekw2rQVRM8ctZ2pIitlj771LAf9aC/vOUfENBSwa5mvin+fzLOA==
+X-Received: by 2002:a9d:3d74:: with SMTP id a107mr1784087otc.360.1598899854642;
+        Mon, 31 Aug 2020 11:50:54 -0700 (PDT)
 Received: from localhost.localdomain (cpe-24-31-245-230.kc.res.rr.com. [24.31.245.230])
-        by smtp.gmail.com with ESMTPSA id 63sm1938171ooj.32.2020.08.31.11.47.09
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 31 Aug 2020 11:47:10 -0700 (PDT)
-Subject: Re: [PATCH v3 14/15] rtlwifi: rtl8821ae: Rename RT_TRACE to rtl_dbg
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     linux-wireless@vger.kernel.org
-References: <20200829005442.32318-2-Larry.Finger@lwfinger.net>
- <20200831153219.B779FC433AF@smtp.codeaurora.org>
+        by smtp.gmail.com with ESMTPSA id 98sm1911952otd.71.2020.08.31.11.50.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 31 Aug 2020 11:50:53 -0700 (PDT)
 From:   Larry Finger <Larry.Finger@lwfinger.net>
-Message-ID: <3744205c-6e33-33ef-68f6-03bd8c2155f2@lwfinger.net>
-Date:   Mon, 31 Aug 2020 13:47:09 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.11.0
+To:     kvalo@codeaurora.org
+Cc:     linux-wireless@vger.kernel.org,
+        Larry Finger <Larry.Finger@lwfinger.net>
+Subject: [PATCH v4 15/15] rtlwifi: Remove temporary definition of RT_TRACE
+Date:   Mon, 31 Aug 2020 13:50:46 -0500
+Message-Id: <20200831185046.30307-1-Larry.Finger@lwfinger.net>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
-In-Reply-To: <20200831153219.B779FC433AF@smtp.codeaurora.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 8/31/20 10:32 AM, Kalle Valo wrote:
-> Larry Finger <Larry.Finger@lwfinger.net> wrote:
-> 
->> Change the misleading macro name to one that is more descriptive for
->> rtl8821ae. Changes suggested by ckeckpatch.pl have been made.
->>
->> Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
-> 
-> Fails to link:
-> 
-> ERROR: modpost: "_rtl_dbg_out" [drivers/net/wireless/realtek/rtlwifi/rtl8192ee/rtl8192ee.ko] undefined!
-> ERROR: modpost: "_rtl_dbg_out" [drivers/net/wireless/realtek/rtlwifi/rtl8821ae/rtl8821ae.ko] undefined!
-> ERROR: modpost: "_rtl_dbg_out" [drivers/net/wireless/realtek/rtlwifi/rtl8723com/rtl8723-common.ko] undefined!
-> ERROR: modpost: "_rtl_dbg_out" [drivers/net/wireless/realtek/rtlwifi/btcoexist/btcoexist.ko] undefined!
-> ERROR: modpost: "_rtl_dbg_out" [drivers/net/wireless/realtek/rtlwifi/rtl8188ee/rtl8188ee.ko] undefined!
-> ERROR: modpost: "_rtl_dbg_out" [drivers/net/wireless/realtek/rtlwifi/rtl8723be/rtl8723be.ko] undefined!
-> ERROR: modpost: "_rtl_dbg_out" [drivers/net/wireless/realtek/rtlwifi/rtl8723ae/rtl8723ae.ko] undefined!
-> ERROR: modpost: "_rtl_dbg_out" [drivers/net/wireless/realtek/rtlwifi/rtl8192de/rtl8192de.ko] undefined!
-> ERROR: modpost: "_rtl_dbg_out" [drivers/net/wireless/realtek/rtlwifi/rtl8192se/rtl8192se.ko] undefined!
-> ERROR: modpost: "_rtl_dbg_out" [drivers/net/wireless/realtek/rtlwifi/rtl8192cu/rtl8192cu.ko] undefined!
-> ERROR: modpost: "_rtl_dbg_out" [drivers/net/wireless/realtek/rtlwifi/rtl8192ce/rtl8192ce.ko] undefined!
-> ERROR: modpost: "_rtl_dbg_out" [drivers/net/wireless/realtek/rtlwifi/rtl8192c/rtl8192c-common.ko] undefined!
-> ERROR: modpost: "_rtl_dbg_out" [drivers/net/wireless/realtek/rtlwifi/rtl_usb.ko] undefined!
-> ERROR: modpost: "_rtl_dbg_out" [drivers/net/wireless/realtek/rtlwifi/rtl_pci.ko] undefined!
-> ERROR: modpost: "_rtl_dbg_out" [drivers/net/wireless/realtek/rtlwifi/rtlwifi.ko] undefined!
-> make[1]: *** [Module.symvers] Error 1
-> make[1]: *** Deleting file 'Module.symvers'
-> make: *** [modules] Error 2
-> 
-> 2 patches set to Changes Requested.
-> 
-> 11743855 [v3,14/15] rtlwifi: rtl8821ae: Rename RT_TRACE to rtl_dbg
-> 11743853 [v3,15/15] rtlwifi: Remove temporary definition of RT_TRACE
+A definition of this macro was kept until all drivers had been converted.
+It can now be deleted.
 
-Kalle,
+This change also renames _rtl_dbg_trace() to _rtl_dbg_out().
 
-I missed adding one change to patch 15/15. v4 should be the charm.
+Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
+---
+v2 - rtl_dbg is used rather than RTL_DEBUG
+v3 - the problems with the original submission are fixed.
+v4 - Change to debug.c was missed.
+---
 
-Larry
+ drivers/net/wireless/realtek/rtlwifi/debug.c |  6 +++---
+ drivers/net/wireless/realtek/rtlwifi/debug.h | 17 +++--------------
+ 2 files changed, 6 insertions(+), 17 deletions(-)
+
+diff --git a/drivers/net/wireless/realtek/rtlwifi/debug.c b/drivers/net/wireless/realtek/rtlwifi/debug.c
+index de15d42c7b3c..455b87e7548b 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/debug.c
++++ b/drivers/net/wireless/realtek/rtlwifi/debug.c
+@@ -8,8 +8,8 @@
+ #include <linux/vmalloc.h>
+ 
+ #ifdef CONFIG_RTLWIFI_DEBUG
+-void _rtl_dbg_trace(struct rtl_priv *rtlpriv, u64 comp, int level,
+-		    const char *fmt, ...)
++void _rtl_dbg_out(struct rtl_priv *rtlpriv, u64 comp, int level,
++		  const char *fmt, ...)
+ {
+ 	if (unlikely((comp & rtlpriv->cfg->mod_params->debug_mask) &&
+ 		     level <= rtlpriv->cfg->mod_params->debug_level)) {
+@@ -26,7 +26,7 @@ void _rtl_dbg_trace(struct rtl_priv *rtlpriv, u64 comp, int level,
+ 		va_end(args);
+ 	}
+ }
+-EXPORT_SYMBOL_GPL(_rtl_dbg_trace);
++EXPORT_SYMBOL_GPL(_rtl_dbg_out);
+ 
+ void _rtl_dbg_print(struct rtl_priv *rtlpriv, u64 comp, int level,
+ 		    const char *fmt, ...)
+diff --git a/drivers/net/wireless/realtek/rtlwifi/debug.h b/drivers/net/wireless/realtek/rtlwifi/debug.h
+index dbfb4d67ca31..6028f1ffa5da 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/debug.h
++++ b/drivers/net/wireless/realtek/rtlwifi/debug.h
+@@ -149,8 +149,8 @@ enum dbgp_flag_e {
+ struct rtl_priv;
+ 
+ __printf(4, 5)
+-void _rtl_dbg_trace(struct rtl_priv *rtlpriv, u64 comp, int level,
+-		    const char *fmt, ...);
++void _rtl_dbg_out(struct rtl_priv *rtlpriv, u64 comp, int level,
++		  const char *fmt, ...);
+ 
+ __printf(4, 5)
+ void _rtl_dbg_print(struct rtl_priv *rtlpriv, u64 comp, int level,
+@@ -161,11 +161,7 @@ void _rtl_dbg_print_data(struct rtl_priv *rtlpriv, u64 comp, int level,
+ 			 const void *hexdata, int hexdatalen);
+ 
+ #define rtl_dbg(rtlpriv, comp, level, fmt, ...)			\
+-	_rtl_dbg_trace(rtlpriv, comp, level,				\
+-		       fmt, ##__VA_ARGS__)
+-
+-#define RT_TRACE(rtlpriv, comp, level, fmt, ...)			\
+-	_rtl_dbg_trace(rtlpriv, comp, level,				\
++	_rtl_dbg_out(rtlpriv, comp, level,				\
+ 		       fmt, ##__VA_ARGS__)
+ 
+ #define RTPRINT(rtlpriv, dbgtype, dbgflag, fmt, ...)			\
+@@ -187,13 +183,6 @@ static inline void rtl_dbg(struct rtl_priv *rtlpriv,
+ {
+ }
+ 
+-__printf(4, 5)
+-static inline void RT_TRACE(struct rtl_priv *rtlpriv,
+-			    u64 comp, int level,
+-			    const char *fmt, ...)
+-{
+-}
+-
+ __printf(4, 5)
+ static inline void RTPRINT(struct rtl_priv *rtlpriv,
+ 			   int dbgtype, int dbgflag,
+-- 
+2.28.0
+
