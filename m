@@ -2,149 +2,211 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F8E825815B
-	for <lists+linux-wireless@lfdr.de>; Mon, 31 Aug 2020 20:50:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D0C1425819F
+	for <lists+linux-wireless@lfdr.de>; Mon, 31 Aug 2020 21:15:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728148AbgHaSuz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 31 Aug 2020 14:50:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58512 "EHLO
+        id S1726307AbgHaTPR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 31 Aug 2020 15:15:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34122 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727933AbgHaSuz (ORCPT
+        with ESMTP id S1725886AbgHaTPR (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 31 Aug 2020 14:50:55 -0400
-Received: from mail-ot1-x341.google.com (mail-ot1-x341.google.com [IPv6:2607:f8b0:4864:20::341])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30CB7C061573
-        for <linux-wireless@vger.kernel.org>; Mon, 31 Aug 2020 11:50:55 -0700 (PDT)
-Received: by mail-ot1-x341.google.com with SMTP id t7so6286875otp.0
-        for <linux-wireless@vger.kernel.org>; Mon, 31 Aug 2020 11:50:55 -0700 (PDT)
+        Mon, 31 Aug 2020 15:15:17 -0400
+Received: from mail-qk1-x744.google.com (mail-qk1-x744.google.com [IPv6:2607:f8b0:4864:20::744])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9AE2C061573;
+        Mon, 31 Aug 2020 12:15:16 -0700 (PDT)
+Received: by mail-qk1-x744.google.com with SMTP id n129so7226402qkd.6;
+        Mon, 31 Aug 2020 12:15:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=sender:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=lRZTfMUNoTfqMIHstBB6IDHNONtkF33XnbARN6sgI9o=;
-        b=OGgIkMrfcuOv6d9yBPidwQSSQuhWrNFK6tDzicaA83HkIhRMkPSYTeNY4Yy+s4FuTk
-         8tBnc68dgkT5N6c9C8oYDOYqsEHSYthjJc3ABNR7z/+EyJ69q8obwuhWPOW995W+NMOi
-         oD3wscqM+w5w1yJR+xq+QSW9rftRYpZFnCd2zo1rcNV331PNbOfXz+/qM36uupoDRneN
-         qkOWwm2Cp41/6StjwEk3xmDR1OPU6eO/iwJaHmT0v+Gk1lwwps73YZmEw6OlhAFnXpiR
-         XZPy5m8zTB2rcrFTm7c0lq7LcYVjr2m+BELy4gEKINgw80B+e5vp4rWXQ752mJBQeV6T
-         5XOw==
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=hxfDO0uX7x7R+DcjMNt3edLL6iVYRbuCVp5kcEOYrro=;
+        b=KOwzAdOsTL7UaRr6rGsVGfIc1dlr0pLX/6aqjoJHP7b/aPsF8uRek99N/UY7zOLjWu
+         uSyFCD/fNZ58NKEWzKg5MdFhmytSKNpca86RGUmDf0Hru5qdHZmyUwovxJ/IXm5BEEGf
+         /igmA8eNKdweC6LxMrBQshlG+Z1pVcBQdVNlw8HhSD5+OCocXg+SewJx2B4kJOuDBoJh
+         Ysi2K9psMuvCYXFUktb7P1YiOCoGUf3ZSXO2wYaCKlTW77zzua0Za4zD61eLYLox8KRH
+         GIPy8mRbA/j+NlRZZ5nq+8m96HPZ5bWTlHLCd7Z2D+pdR7kw/XYChf3SdQ7G0s7R1W/O
+         EO/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
-         :mime-version:content-transfer-encoding;
-        bh=lRZTfMUNoTfqMIHstBB6IDHNONtkF33XnbARN6sgI9o=;
-        b=LZN0wEpmNYb4H0Ha3fdL+d+82IW/WvDE6OTQRxYaRELZ5W0bEG7Nq6DOXAq6/I0g1n
-         fVMt8XYwpNy1xQQYmFWrGn6wZGRVdtC1MbRt73uSK+9hJFaQmNnGHe8Np9yW/h8WSipN
-         g/BaaJKfxdVnKqdIGtwthfOn15ZwKDNUp71afeYNBt69WHCBhi4HGnGjfBQo/6JQ9kdi
-         XF7qScBlOTjSaomHpwFmP6J9InXT92ztFUyoclrIm0PZmAYaKFJb6c3PHYxzjPOHP2lq
-         VIqU72yjyNWZT2RdEn5Dse8kUtDfK/c7oY4/RQCCezYOJZaz4thSGZKGIH3e2ar/v7QY
-         FDjQ==
-X-Gm-Message-State: AOAM532gyZxAgis18cqT6fi+710Nza0uCLjcPTpgT8ZT/TxZtGnjdcGF
-        Pj9NNSVJam0xSnmh63xYHJ4=
-X-Google-Smtp-Source: ABdhPJyYY+pRtd0pxD6+d1F4l8Sekw2rQVRM8ctZ2pIitlj771LAf9aC/vOUfENBSwa5mvin+fzLOA==
-X-Received: by 2002:a9d:3d74:: with SMTP id a107mr1784087otc.360.1598899854642;
-        Mon, 31 Aug 2020 11:50:54 -0700 (PDT)
-Received: from localhost.localdomain (cpe-24-31-245-230.kc.res.rr.com. [24.31.245.230])
-        by smtp.gmail.com with ESMTPSA id 98sm1911952otd.71.2020.08.31.11.50.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 31 Aug 2020 11:50:53 -0700 (PDT)
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-To:     kvalo@codeaurora.org
-Cc:     linux-wireless@vger.kernel.org,
-        Larry Finger <Larry.Finger@lwfinger.net>
-Subject: [PATCH v4 15/15] rtlwifi: Remove temporary definition of RT_TRACE
-Date:   Mon, 31 Aug 2020 13:50:46 -0500
-Message-Id: <20200831185046.30307-1-Larry.Finger@lwfinger.net>
-X-Mailer: git-send-email 2.28.0
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=hxfDO0uX7x7R+DcjMNt3edLL6iVYRbuCVp5kcEOYrro=;
+        b=tWMYtp0o0woqyZKZ9ZkByS8n7UQSGhHp0hCwXD+QpmVdatiMgGCBiyZKg1aZORo5UM
+         rB9e2FmkVAG9Y7iycVa6gFjbGLsTfWGImX/KuZFirLgKQtkmQ03Poqr1/Vao0yRUNv0Q
+         feB606vCLvAYt13hAnw6UMtp0Zj1AH2+dzpj0OyTYZznys3Ql3JzU4Job9Qwnf1WNGKJ
+         A3ItWON9mZc67kr14CS+Jzb3+nW99M98bC1dGW6OiCu/PXxj5Pi1S8Pc6wYGboejnCxo
+         pF15j6Ur7tXys0NTiPsT+P8vuNBTvk5IP+9EhsGIvjGCOrKxfA97pgnCgw5PKgkLzFlS
+         Cl0A==
+X-Gm-Message-State: AOAM530R5JS+QKMifhUYh4xiuwEexzBBCrlq9D3Fx2kiQZtXy/2Bct+p
+        rCqlqzroGKIymugGpTsu6n0=
+X-Google-Smtp-Source: ABdhPJwolbll+xGVR++5dGxOQeXP4li///iUT9Zw/A80iVW+gBssgXb4FMTTWQ41oIGe/tgRh2eqAw==
+X-Received: by 2002:a37:2713:: with SMTP id n19mr2969783qkn.497.1598901315014;
+        Mon, 31 Aug 2020 12:15:15 -0700 (PDT)
+Received: from [192.168.1.181] (pool-173-75-208-99.phlapa.fios.verizon.net. [173.75.208.99])
+        by smtp.gmail.com with ESMTPSA id p63sm3870764qkc.4.2020.08.31.12.15.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 31 Aug 2020 12:15:14 -0700 (PDT)
+Subject: Re: KASAN: use-after-free Write in rtl_fw_do_work
+To:     Hillf Danton <hdanton@sina.com>
+Cc:     syzbot <syzbot+dc3cab055dff074f2d7f@syzkaller.appspotmail.com>,
+        andreyknvl@google.com, davem@davemloft.net, kuba@kernel.org,
+        kvalo@codeaurora.org, linux-kernel@vger.kernel.org,
+        linux-usb@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, pkshih@realtek.com,
+        syzkaller-bugs@googlegroups.com
+References: <00000000000059779405ae2afa90@google.com>
+ <20200831133053.9300-1-hdanton@sina.com>
+From:   Brooke Basile <brookebasile@gmail.com>
+Message-ID: <35bb65f9-0a9e-7fb8-ee8d-47ce3c781fe4@gmail.com>
+Date:   Mon, 31 Aug 2020 15:15:13 -0400
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.12.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20200831133053.9300-1-hdanton@sina.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-A definition of this macro was kept until all drivers had been converted.
-It can now be deleted.
+On 8/31/20 9:30 AM, Hillf Danton wrote:
+> 
+> Mon, 31 Aug 2020 04:48:15 -0700
+>> syzbot found the following issue on:
+>>
+>> HEAD commit:    3ed8e1c2 usb: typec: tcpm: Migrate workqueue to RT priorit..
+>> git tree:       https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb.git usb-testing
+>> console output: https://syzkaller.appspot.com/x/log.txt?x=111f9015900000
+>> kernel config:  https://syzkaller.appspot.com/x/.config?x=ccafc70ac3d5f49c
+>> dashboard link: https://syzkaller.appspot.com/bug?extid=dc3cab055dff074f2d7f
+>> compiler:       gcc (GCC) 10.1.0-syz 20200507
+>> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=148a00c9900000
+>>
+>> IMPORTANT: if you fix the issue, please add the following tag to the commit:
+>> Reported-by: syzbot+dc3cab055dff074f2d7f@syzkaller.appspotmail.com
+>>
+>> usb 1-1: Direct firmware load for rtlwifi/rtl8192cufw_TMSC.bin failed with error -2
+>> usb 1-1: Direct firmware load for rtlwifi/rtl8192cufw.bin failed with error -2
+>> rtlwifi: Loading alternative firmware rtlwifi/rtl8192cufw.bin
+>> rtlwifi: Selected firmware is not available
+>> ==================================================================
+>> BUG: KASAN: use-after-free in rtl_fw_do_work.cold+0x68/0x6a drivers/net/wireless/realtek/rtlwifi/core.c:93
+>> Write of size 4 at addr ffff8881c9c2ff30 by task kworker/1:5/3063
+>>
+>> CPU: 1 PID: 3063 Comm: kworker/1:5 Not tainted 5.9.0-rc1-syzkaller #0
+>> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
+>> Workqueue: events request_firmware_work_func
+>> Call Trace:
+>>   __dump_stack lib/dump_stack.c:77 [inline]
+>>   dump_stack+0xf6/0x16e lib/dump_stack.c:118
+>>   print_address_description.constprop.0+0x1c/0x210 mm/kasan/report.c:383
+>>   __kasan_report mm/kasan/report.c:513 [inline]
+>>   kasan_report.cold+0x37/0x7c mm/kasan/report.c:530
+>>   rtl_fw_do_work.cold+0x68/0x6a drivers/net/wireless/realtek/rtlwifi/core.c:93
+>>   request_firmware_work_func+0x126/0x250 drivers/base/firmware_loader/main.c:1001
+>>   process_one_work+0x94c/0x15f0 kernel/workqueue.c:2269
+>>   worker_thread+0x64c/0x1120 kernel/workqueue.c:2415
+>>   kthread+0x392/0x470 kernel/kthread.c:292
+>>   ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:294
+>>
+>> The buggy address belongs to the page:
+>> page:000000008323bb9d refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x1c9c2f
+>> flags: 0x200000000000000()
+>> raw: 0200000000000000 0000000000000000 ffffea0007270bc8 0000000000000000
+>> raw: 0000000000000000 0000000000000000 00000000ffffffff 0000000000000000
+>> page dumped because: kasan: bad access detected
+>>
+>> Memory state around the buggy address:
+>>   ffff8881c9c2fe00: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+>>   ffff8881c9c2fe80: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+>>> ffff8881c9c2ff00: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+>>                                       ^
+>>   ffff8881c9c2ff80: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+>>   ffff8881c9c30000: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+>> ==================================================================
+> 
+> 
+> While probing pci for instance, wait for kworker to finish its work in the
+> err branches.
+> 
+> 
+> --- a/drivers/net/wireless/realtek/rtlwifi/core.c
+> +++ b/drivers/net/wireless/realtek/rtlwifi/core.c
+> @@ -78,7 +78,6 @@ static void rtl_fw_do_work(const struct
+>   
+>   	RT_TRACE(rtlpriv, COMP_ERR, DBG_LOUD,
+>   		 "Firmware callback routine entered!\n");
+> -	complete(&rtlpriv->firmware_loading_complete);
+>   	if (!firmware) {
+>   		if (rtlpriv->cfg->alt_fw_name) {
+>   			err = request_firmware(&firmware,
+> @@ -91,13 +90,12 @@ static void rtl_fw_do_work(const struct
+>   		}
+>   		pr_err("Selected firmware is not available\n");
+>   		rtlpriv->max_fw_size = 0;
+> -		return;
+> +		goto out;
+>   	}
+>   found_alt:
+>   	if (firmware->size > rtlpriv->max_fw_size) {
+>   		pr_err("Firmware is too big!\n");
+> -		release_firmware(firmware);
+> -		return;
+> +		goto release;
+>   	}
+>   	if (!is_wow) {
+>   		memcpy(rtlpriv->rtlhal.pfirmware, firmware->data,
+> @@ -108,7 +106,11 @@ found_alt:
+>   		       firmware->size);
+>   		rtlpriv->rtlhal.wowlan_fwsize = firmware->size;
+>   	}
+> +
+> +release:
+>   	release_firmware(firmware);
+> +out:
+> +	complete(&rtlpriv->firmware_loading_complete);
+>   }
+>   
+>   void rtl_fw_cb(const struct firmware *firmware, void *context)
+> --- a/drivers/net/wireless/realtek/rtlwifi/pci.c
+> +++ b/drivers/net/wireless/realtek/rtlwifi/pci.c
+> @@ -2161,6 +2161,7 @@ int rtl_pci_probe(struct pci_dev *pdev,
+>   	struct rtl_pci *rtlpci;
+>   	unsigned long pmem_start, pmem_len, pmem_flags;
+>   	int err;
+> +	bool wait_kworker = false;
+>   
+>   	err = pci_enable_device(pdev);
+>   	if (err) {
+> @@ -2272,6 +2273,7 @@ int rtl_pci_probe(struct pci_dev *pdev,
+>   		err = -ENODEV;
+>   		goto fail3;
+>   	}
+> +	wait_kworker = true;
+>   	rtlpriv->cfg->ops->init_sw_leds(hw);
+>   
+>   	/*aspm */
+> @@ -2327,7 +2329,8 @@ fail2:
+>   		pci_iounmap(pdev, (void __iomem *)rtlpriv->io.pci_mem_start);
+>   
+>   	pci_release_regions(pdev);
+> -	complete(&rtlpriv->firmware_loading_complete);
+> +	if (wait_kworker == true)
+> +		wait_for_completion(&rtlpriv->firmware_loading_complete);
+>   
+>   fail1:
+>   	if (hw)
+> 
 
-This change also renames _rtl_dbg_trace() to _rtl_dbg_out().
+Hi,
 
-Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
----
-v2 - rtl_dbg is used rather than RTL_DEBUG
-v3 - the problems with the original submission are fixed.
-v4 - Change to debug.c was missed.
----
+It looks like this is probably a duplicate related to this patch:
+https://syzkaller.appspot.com/bug?id=1f05ed98df706bb64aeee4dccc5ab48cd7542643
 
- drivers/net/wireless/realtek/rtlwifi/debug.c |  6 +++---
- drivers/net/wireless/realtek/rtlwifi/debug.h | 17 +++--------------
- 2 files changed, 6 insertions(+), 17 deletions(-)
-
-diff --git a/drivers/net/wireless/realtek/rtlwifi/debug.c b/drivers/net/wireless/realtek/rtlwifi/debug.c
-index de15d42c7b3c..455b87e7548b 100644
---- a/drivers/net/wireless/realtek/rtlwifi/debug.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/debug.c
-@@ -8,8 +8,8 @@
- #include <linux/vmalloc.h>
- 
- #ifdef CONFIG_RTLWIFI_DEBUG
--void _rtl_dbg_trace(struct rtl_priv *rtlpriv, u64 comp, int level,
--		    const char *fmt, ...)
-+void _rtl_dbg_out(struct rtl_priv *rtlpriv, u64 comp, int level,
-+		  const char *fmt, ...)
- {
- 	if (unlikely((comp & rtlpriv->cfg->mod_params->debug_mask) &&
- 		     level <= rtlpriv->cfg->mod_params->debug_level)) {
-@@ -26,7 +26,7 @@ void _rtl_dbg_trace(struct rtl_priv *rtlpriv, u64 comp, int level,
- 		va_end(args);
- 	}
- }
--EXPORT_SYMBOL_GPL(_rtl_dbg_trace);
-+EXPORT_SYMBOL_GPL(_rtl_dbg_out);
- 
- void _rtl_dbg_print(struct rtl_priv *rtlpriv, u64 comp, int level,
- 		    const char *fmt, ...)
-diff --git a/drivers/net/wireless/realtek/rtlwifi/debug.h b/drivers/net/wireless/realtek/rtlwifi/debug.h
-index dbfb4d67ca31..6028f1ffa5da 100644
---- a/drivers/net/wireless/realtek/rtlwifi/debug.h
-+++ b/drivers/net/wireless/realtek/rtlwifi/debug.h
-@@ -149,8 +149,8 @@ enum dbgp_flag_e {
- struct rtl_priv;
- 
- __printf(4, 5)
--void _rtl_dbg_trace(struct rtl_priv *rtlpriv, u64 comp, int level,
--		    const char *fmt, ...);
-+void _rtl_dbg_out(struct rtl_priv *rtlpriv, u64 comp, int level,
-+		  const char *fmt, ...);
- 
- __printf(4, 5)
- void _rtl_dbg_print(struct rtl_priv *rtlpriv, u64 comp, int level,
-@@ -161,11 +161,7 @@ void _rtl_dbg_print_data(struct rtl_priv *rtlpriv, u64 comp, int level,
- 			 const void *hexdata, int hexdatalen);
- 
- #define rtl_dbg(rtlpriv, comp, level, fmt, ...)			\
--	_rtl_dbg_trace(rtlpriv, comp, level,				\
--		       fmt, ##__VA_ARGS__)
--
--#define RT_TRACE(rtlpriv, comp, level, fmt, ...)			\
--	_rtl_dbg_trace(rtlpriv, comp, level,				\
-+	_rtl_dbg_out(rtlpriv, comp, level,				\
- 		       fmt, ##__VA_ARGS__)
- 
- #define RTPRINT(rtlpriv, dbgtype, dbgflag, fmt, ...)			\
-@@ -187,13 +183,6 @@ static inline void rtl_dbg(struct rtl_priv *rtlpriv,
- {
- }
- 
--__printf(4, 5)
--static inline void RT_TRACE(struct rtl_priv *rtlpriv,
--			    u64 comp, int level,
--			    const char *fmt, ...)
--{
--}
--
- __printf(4, 5)
- static inline void RTPRINT(struct rtl_priv *rtlpriv,
- 			   int dbgtype, int dbgflag,
--- 
-2.28.0
-
+Best,
+Brooke Basile
