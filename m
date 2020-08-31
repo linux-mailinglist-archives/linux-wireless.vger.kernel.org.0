@@ -2,115 +2,100 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 884B3257E05
-	for <lists+linux-wireless@lfdr.de>; Mon, 31 Aug 2020 17:52:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 011F7257EF5
+	for <lists+linux-wireless@lfdr.de>; Mon, 31 Aug 2020 18:42:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727952AbgHaPwE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 31 Aug 2020 11:52:04 -0400
-Received: from mail29.static.mailgun.info ([104.130.122.29]:30744 "EHLO
-        mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726714AbgHaPwB (ORCPT
+        id S1728270AbgHaQm2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 31 Aug 2020 12:42:28 -0400
+Received: from mail.adapt-ip.com ([173.164.178.19]:48406 "EHLO
+        web.adapt-ip.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726204AbgHaQm1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 31 Aug 2020 11:52:01 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1598889120; h=Date: Message-Id: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=UiCtEuXB1/ghowuh3jHXLuUWPllC4130UQOUkOzWhjg=;
- b=rYJH3FKesDZEVD7VMScMzduznFRGXQBH/5UMIbS0Tq5ob/fKvKfAzLcKVt8ExgfGkkiWSHQ5
- +qyxluT+QarNSHTbakGZ0/PbnxDUvHJand9XI1k57SphAg+5/Vgo2e6dvNZN/gNpsbOkFqvV
- vdDiYEgBDQdS4wbz/XwRLFn3Jj0=
-X-Mailgun-Sending-Ip: 104.130.122.29
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n02.prod.us-west-2.postgun.com with SMTP id
- 5f4d1c979bdf68cc0373e20c (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 31 Aug 2020 15:51:51
- GMT
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 0DCB5C4339C; Mon, 31 Aug 2020 15:51:51 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
-        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 22DADC433CA;
-        Mon, 31 Aug 2020 15:51:47 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 22DADC433CA
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        Mon, 31 Aug 2020 12:42:27 -0400
+Received: from localhost (localhost [127.0.0.1])
+        by web.adapt-ip.com (Postfix) with ESMTP id 0F5204F8BF1;
+        Mon, 31 Aug 2020 16:42:27 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at web.adapt-ip.com
+Received: from web.adapt-ip.com ([127.0.0.1])
+        by localhost (web.adapt-ip.com [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id VWoO1RYiAiro; Mon, 31 Aug 2020 16:42:24 +0000 (UTC)
+Received: from mail.ibsgaard.io (c-73-223-60-234.hsd1.ca.comcast.net [73.223.60.234])
+        (Authenticated sender: thomas@adapt-ip.com)
+        by web.adapt-ip.com (Postfix) with ESMTPSA id 32C584F78CC;
+        Mon, 31 Aug 2020 16:42:24 +0000 (UTC)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH 16/28] wireless: marvell: mwifiex: init: Move
- 'tos_to_tid_inv'
- to where it's used
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20200819072402.3085022-17-lee.jones@linaro.org>
-References: <20200819072402.3085022-17-lee.jones@linaro.org>
-To:     Lee Jones <lee.jones@linaro.org>
-Cc:     davem@davemloft.net, kuba@kernel.org, linux-kernel@vger.kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        Lee Jones <lee.jones@linaro.org>,
-        Amitkumar Karwar <amitkarwar@gmail.com>,
-        Ganapathi Bhat <ganapathi.bhat@nxp.com>,
-        Xinming Hu <huxinming820@gmail.com>
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20200831155151.0DCB5C4339C@smtp.codeaurora.org>
-Date:   Mon, 31 Aug 2020 15:51:51 +0000 (UTC)
+Date:   Mon, 31 Aug 2020 09:42:23 -0700
+From:   Thomas Pedersen <thomas@adapt-ip.com>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH 21/22] mac80211_hwsim: indicate support for S1G
+In-Reply-To: <87d03b6wcw.fsf@tynnyri.adurom.net>
+References: <20200827223304.16155-1-thomas@adapt-ip.com>
+ <20200827223304.16155-22-thomas@adapt-ip.com>
+ <87d03b6wcw.fsf@tynnyri.adurom.net>
+User-Agent: Roundcube Webmail/1.4.7
+Message-ID: <1d240f308559342dbd96023a2bc86970@adapt-ip.com>
+X-Sender: thomas@adapt-ip.com
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Lee Jones <lee.jones@linaro.org> wrote:
+On 2020-08-28 00:52, Kalle Valo wrote:
+> Thomas Pedersen <thomas@adapt-ip.com> writes:
+> 
+>> Advertise S1G Capabilities and channels to mac80211.
+>> 
+>> Requires a few fixups to account for missing
+>> sband->bitrates, and a custom regulatory db to actually
+>> enable the S1G channels.
+>> 
+>> Signed-off-by: Thomas Pedersen <thomas@adapt-ip.com>
+>> ---
+>>  drivers/net/wireless/mac80211_hwsim.c | 80 
+>> ++++++++++++++++++++++++---
+>>  include/linux/ieee80211.h             | 12 +++-
+> 
+> IMHO a mac80211_hwsim patch should not touch ieee80211.h.
 
-> 'tos_to_tid_inv' is only used in 2 of 17 files it's current being
-> included into.
-> 
-> Fixes the following W=1 kernel build warning(s):
-> 
->  In file included from drivers/net/wireless/marvell/mwifiex/main.c:23:
->  In file included from drivers/net/wireless/marvell/mwifiex/cmdevt.c:26:
->  In file included from drivers/net/wireless/marvell/mwifiex/util.c:25:
->  In file included from drivers/net/wireless/marvell/mwifiex/txrx.c:25:
->  In file included from drivers/net/wireless/marvell/mwifiex/11n.c:25:
->  In file included from drivers/net/wireless/marvell/mwifiex/wmm.c:25:
->  In file included from drivers/net/wireless/marvell/mwifiex/11n_aggr.c:25:
->  In file included from drivers/net/wireless/marvell/mwifiex/11n_rxreorder.c:25:
->  In file included from drivers/net/wireless/marvell/mwifiex/join.c:25:
->  In file included from drivers/net/wireless/marvell/mwifiex/sta_cmd.c:25:
->  In file included from drivers/net/wireless/marvell/mwifiex/sta_ioctl.c:25:
->  In file included from drivers/net/wireless/marvell/mwifiex/sta_event.c:25:
->  In file included from drivers/net/wireless/marvell/mwifiex/uap_txrx.c:23:
->  In file included from drivers/net/wireless/marvell/mwifiex/sdio.c:27:
->  In file included from drivers/net/wireless/marvell/mwifiex/sta_tx.c:25:
->  drivers/net/wireless/marvell/mwifiex/wmm.h:41:17: warning: ‘tos_to_tid_inv’ defined but not used [-Wunused-const-variable=]
->  41 | static const u8 tos_to_tid_inv[] = {
-> 
->  NB: Snipped for brevity
-> 
-> Cc: Amitkumar Karwar <amitkarwar@gmail.com>
-> Cc: Ganapathi Bhat <ganapathi.bhat@nxp.com>
-> Cc: Xinming Hu <huxinming820@gmail.com>
-> Cc: Kalle Valo <kvalo@codeaurora.org>
-> Cc: "David S. Miller" <davem@davemloft.net>
-> Cc: Jakub Kicinski <kuba@kernel.org>
-> Cc: linux-wireless@vger.kernel.org
-> Cc: netdev@vger.kernel.org
-> Signed-off-by: Lee Jones <lee.jones@linaro.org>
+Fair enough, I'll split it out.
 
-The patch creates two duplicate arrays, this makes it worse than it was
-before.
+>> --- a/include/linux/ieee80211.h
+>> +++ b/include/linux/ieee80211.h
+>> @@ -2385,6 +2385,9 @@ ieee80211_he_spr_size(const u8 *he_spr_ie)
+>>  	return spr_len;
+>>  }
+>> 
+>> +#define SM(f, v)	(((v) << f##_SHIFT) & f)
+>> +#define MS(f, v)	(((v) & f) >> f##_SHIFT)
+>> +
+>>  /* S1G Capabilities Information field */
+>>  #define S1G_CAPAB_B0_S1G_LONG BIT(0)
+>>  #define S1G_CAPAB_B0_SGI_1MHZ BIT(1)
+>> @@ -2392,9 +2395,16 @@ ieee80211_he_spr_size(const u8 *he_spr_ie)
+>>  #define S1G_CAPAB_B0_SGI_4MHZ BIT(3)
+>>  #define S1G_CAPAB_B0_SGI_8MHZ BIT(4)
+>>  #define S1G_CAPAB_B0_SGI_16MHZ BIT(5)
+>> -#define S1G_CAPAB_B0_SUPP_CH_WIDTH_MASK (BIT(6) | BIT(7))
+>> +#define S1G_CAPAB_B0_SUPP_CH_WIDTH	(BIT(6) | BIT(7))
+>>  #define S1G_CAPAB_B0_SUPP_CH_WIDTH_SHIFT 6
+>> 
+>> +#define S1G_SUPP_CH_WIDTH_2	0
+>> +#define S1G_SUPP_CH_WIDTH_4	1
+>> +#define S1G_SUPP_CH_WIDTH_8	2
+>> +#define S1G_SUPP_CH_WIDTH_16	3
+>> +#define S1G_SUPP_CH_WIDTH_MAX(cap) ((1 << 
+>> MS(S1G_CAPAB_B0_SUPP_CH_WIDTH, \
+>> +					     cap[0])) << 1)
+> 
+> We have GENMASK(), FIELD_GET() & co nowadays so no need for custom
+> macros.
 
-Patch set to Changes Requested.
+Nice. Thanks for the heads up.
 
 -- 
-https://patchwork.kernel.org/patch/11723177/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
+thomas
