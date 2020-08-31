@@ -2,88 +2,95 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DFD11257A1E
-	for <lists+linux-wireless@lfdr.de>; Mon, 31 Aug 2020 15:11:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BB727257A5A
+	for <lists+linux-wireless@lfdr.de>; Mon, 31 Aug 2020 15:27:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726312AbgHaNLy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 31 Aug 2020 09:11:54 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:32302 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726144AbgHaNLp (ORCPT
+        id S1727872AbgHaN1K (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 31 Aug 2020 09:27:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35948 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726384AbgHaN0h (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 31 Aug 2020 09:11:45 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1598879503;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=7nF5sKzdQpqrhvwSpdopxfb0fKEw2qVbNLvuVMDTjdc=;
-        b=QG/9SKmVXFV+bPsyLVM0Z835WbAMATm5zFuTX76bMKq+ng9Vj7JR/dGvRMC5rLsonUZ3ub
-        UWrNqjkJVtyNZ/fUrfe5o1tiVgzHQJ0nr6G9MHZme75apwWxKiG6NejEFC9eS1M0lkHK+Y
-        tK0a6mLS0MZbUv5ZnbVmUpqAxk8AuaE=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-399-Fw4RHxYXOwaY36MRJBW4Hg-1; Mon, 31 Aug 2020 09:11:42 -0400
-X-MC-Unique: Fw4RHxYXOwaY36MRJBW4Hg-1
-Received: by mail-ej1-f72.google.com with SMTP id f13so479745ejt.16
-        for <linux-wireless@vger.kernel.org>; Mon, 31 Aug 2020 06:11:41 -0700 (PDT)
+        Mon, 31 Aug 2020 09:26:37 -0400
+Received: from mail-lj1-x243.google.com (mail-lj1-x243.google.com [IPv6:2a00:1450:4864:20::243])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DF71C0611E0
+        for <linux-wireless@vger.kernel.org>; Mon, 31 Aug 2020 06:26:20 -0700 (PDT)
+Received: by mail-lj1-x243.google.com with SMTP id y4so5605321ljk.8
+        for <linux-wireless@vger.kernel.org>; Mon, 31 Aug 2020 06:26:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:sender:from:date:message-id:subject:to;
+        bh=o69Nac3LLMj5CDhyPqLcnP7WGq46U4gQb9HzFdG/MvE=;
+        b=HyW5/n2KU8W3FGefd/FUm/bl6fINTQmZ8owzYdBGhP5oyAu9pJQPQCMOdYEDNFegUA
+         if9VN+pra3iBgWNYJjHcBV7T99CY2GFOcHOVU+3vJ7r2Hvzgah2ZCqHTq6bk4iv0uilM
+         xQiEPrdMcYz9cIZL++pevJSb5RdixTZAk95pbnwmQ3/GOLv8xUS1vQ8t141F6N8CgROI
+         mubb31iIEGHTmIRsfQchZCL6N1v85LnpPi/V/jmyUdodp49jy+hBMBGM/QhsUL+AVu8e
+         3Cg9SzlMyigtpwqPqg6kcnc+pElD0XMp/EB9mY9MxbJL6EWXLnnT1YiTj0+V+0DhoQI2
+         wJdQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:subject:in-reply-to:references:date
-         :message-id:mime-version;
-        bh=7nF5sKzdQpqrhvwSpdopxfb0fKEw2qVbNLvuVMDTjdc=;
-        b=jvXsABfoVRnrE5i61k0YXMM/7xYzBsu/M67v/EVEk0exNE5QlIUcmASPC1IaVv1ixR
-         HgUDbQzzJcKBpfsDeQ2XASlSSdjjJ8l+XO8PP6q+bsEfSregMSlToUNXnax8ll84l7qz
-         ZPsOgEwF8Op82Ygo+aVVN4e/KKBxGWvevq33OJd7Tw2wLM0B9RzmmDWg1+VcrBHo0JiQ
-         Aw4zKR/vg0TWtduwyQfRS91DJBioak9Lg/B+6WKqkGAdoYjaU/2w9bGdaggla7SGUexY
-         DWN0W8ydfOytpXLXMsrUBrdA7BvvLozVGDnu8vxN03txxw4bo8PO99bsnNsQF42oRIuq
-         HqOQ==
-X-Gm-Message-State: AOAM5303/Yw0/8k38fHLpGD33osgTsI/w/fNIGecqTAMFek2Otc2Cjui
-        o5SIfIoIcjK1w2EQ8/9+m2m+jlZxdemeHUFqWSm6zMym2+wYh18ckYB+I9yu3C1K6idNRnJx1Ve
-        2nqIhdzn0h5J6zbRgE3+feYCGNOA=
-X-Received: by 2002:a17:906:6801:: with SMTP id k1mr1096263ejr.492.1598879501003;
-        Mon, 31 Aug 2020 06:11:41 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJzItLH86Ckd/S1T4CSysXzsOleHn5Gn0gTMPopx+V52YiWH6pI5k1RkLYwrROAXQWf5ezYHEw==
-X-Received: by 2002:a17:906:6801:: with SMTP id k1mr1096249ejr.492.1598879500731;
-        Mon, 31 Aug 2020 06:11:40 -0700 (PDT)
-Received: from alrua-x1.borgediget.toke.dk ([45.145.92.2])
-        by smtp.gmail.com with ESMTPSA id sb9sm8135015ejb.90.2020.08.31.06.11.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 31 Aug 2020 06:11:40 -0700 (PDT)
-Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-        id B0CC518200B; Mon, 31 Aug 2020 15:11:39 +0200 (CEST)
-From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-To:     Felix Fietkau <nbd@nbd.name>, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH 6/9] mt76: rely on AQL for burst size limits on tx queueing
-In-Reply-To: <20200831122558.1388-6-nbd@nbd.name>
-References: <20200831122558.1388-1-nbd@nbd.name>
- <20200831122558.1388-6-nbd@nbd.name>
-X-Clacks-Overhead: GNU Terry Pratchett
-Date:   Mon, 31 Aug 2020 15:11:39 +0200
-Message-ID: <87h7sjj6yc.fsf@toke.dk>
+        h=x-gm-message-state:mime-version:reply-to:sender:from:date
+         :message-id:subject:to;
+        bh=o69Nac3LLMj5CDhyPqLcnP7WGq46U4gQb9HzFdG/MvE=;
+        b=cVGbauqLnUOI+yRndYPgrKv53lE0HxoqhaBClOlaKJAdWkDEzBSIDLpj2TIvjEOCF6
+         W8P5e7xUDR/c4HsrlMwp2JoYGeUWsI91LLuMiE/AYznDHS4+cJRD0RAQTacPIeI0dxGV
+         QmEDnt8hJYPE98zGyQxQQQ/FSP1dLLC2BeC2zSadaycumzXQqXQiP4COWUytBXOr5A6e
+         yC5SY+1kF75rzy+jZ2xAx8bY9nDfFWSZn7qOlX5xkATP/za5ESYzgWoQD8e7w/N2BQ+s
+         OOa4boBe4fiBuWkE2Rtt0aCEf9AaGrfWFzWYdDWBBlOfzvMFCufjGsij67L6xj0Cb0f2
+         9dEQ==
+X-Gm-Message-State: AOAM531WvKUk5E2+PYBx1j6N+sfirWJN98RO2NxiKp6z5//xaLY5nu/7
+        MkofP7661LigMyTkLFErMgVa1r8GjOJdz8TEHIY=
+X-Google-Smtp-Source: ABdhPJxEvvXnVfErpjDwHOkyCqRTciyX/SNwRaUYVOHmxIQS6MbFpht1V2v8jY7chkhk3ZxIDw/BvL8uxGOjXPjCGG8=
+X-Received: by 2002:a2e:9c86:: with SMTP id x6mr662832lji.346.1598880379026;
+ Mon, 31 Aug 2020 06:26:19 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
+Reply-To: marie_avis12@yahoo.com
+Received: by 2002:a2e:9817:0:0:0:0:0 with HTTP; Mon, 31 Aug 2020 06:26:18
+ -0700 (PDT)
+From:   Miss Maris Avis <marie.avis11@gmail.com>
+Date:   Mon, 31 Aug 2020 13:26:18 +0000
+X-Google-Sender-Auth: ENkN_TdcXF5NiFOWAHQrklZpWrk
+Message-ID: <CADTVshNj9Ztqm75AkbunLeeRTsk07qB5LsiKLoagvmiH7TvYgQ@mail.gmail.com>
+Subject: Hello
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Felix Fietkau <nbd@nbd.name> writes:
+My Dear,
 
-> Now that AQL works well on all mt76 drivers,
+My name is Miss Marie Avis the only daughter of Mr. Gabriel Avis, my
+Father was dealing in Cocoa and Timber in this country before his
+death,  It is my pleasure to contact you for a business venture which
+I intend to establish in your country. Though I have not met with you
+before but I believe one has to risk confiding before you can succeed
+sometimes in life.
 
-Yay, great to hear! :)
+I can confide in you for my brighter future since you are a human
+being like me. There is this huge amount of Ten Million five hundred
+thousand United States dollars. ($10.500.000.00) which my late Father
+kept for me in a suspense account with one of the bank here in Abidjan
+Cote d'Ivoire before he was assassinated by unknown persons, Now I
+have decided to invest these money in your country or anywhere safe
+enough for me.
 
-> completely replace the arbitrary
-> burst sizing and number of bursts logic for tx scheduling.
-> For the short period of time in which AQL does not work well yet, limit each
-> stations to 16 in-flight packets that have no estimated tx time.
-> This should avoid filling the queue if a station connects and queues up a
-> large number of packets before rate control information is available, especially
-> with hardware rate control
+I want you to help me claim this fund from the bank and have it
+transfer into your personal account in your country for investment
+purposes in your country in these areas:
 
-I guess we could do accounting like this in the AQL mechanism itself?
-Presumably this issue is not unique to mt76?
+1). Telecommunication
+2). The transport Industry
+3). Five Star Hotel
+4). Tourism
+5). Real Estate
 
--Toke
+If you can be of assistance to me I will be pleased to offer you 20%
+of the total fund.
 
+I await your soonest response.
+
+Respectfully yours,
+Miss Marie Evis
+Tel: +225597438528
