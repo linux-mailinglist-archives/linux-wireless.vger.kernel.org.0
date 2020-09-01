@@ -2,33 +2,33 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 40737258F8A
-	for <lists+linux-wireless@lfdr.de>; Tue,  1 Sep 2020 15:54:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7DD73258FED
+	for <lists+linux-wireless@lfdr.de>; Tue,  1 Sep 2020 16:11:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728245AbgIANyb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 1 Sep 2020 09:54:31 -0400
-Received: from mail29.static.mailgun.info ([104.130.122.29]:61881 "EHLO
+        id S1727061AbgIAOLO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 1 Sep 2020 10:11:14 -0400
+Received: from mail29.static.mailgun.info ([104.130.122.29]:20354 "EHLO
         mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728074AbgIANRL (ORCPT
+        by vger.kernel.org with ESMTP id S1728157AbgIANQS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 1 Sep 2020 09:17:11 -0400
+        Tue, 1 Sep 2020 09:16:18 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1598966221; h=Date: Message-Id: Cc: To: References:
+ s=smtp; t=1598966177; h=Date: Message-Id: Cc: To: References:
  In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=YM9Qu8iaSg17vOiKOSEaiOrrZ7khXhVMHrg6aC0+lAE=;
- b=moWK3/weDXPHCgFNIhyK2VLnCblIg0Vc6wez4a0O/X9+JPgXxJS1FySSJm1a2O2AJkVKbcv7
- Ob8OvXoQelN5FCem91tulmRmhHWHClZZYhlFSuFtIFeTVy4lqtpB9eYgxcSYgPhgvs6Ffr92
- XMa+a2TejXHeMC/vCA/E8XUWy1E=
+ Content-Type: Sender; bh=IxhaiARGy6S7cCA9/XiPB7/BjFCpZnTIv0Ugb7vuLHY=;
+ b=NA3NAfQVcZmmgO1L2uuu4+Cf5oe3CxUlGObx+QwZ1scXME1T6N5YvGT7sB9X4h7eRZFhypH1
+ r9s6JpiMcU5r3AVLth0YIty2RksFxxL1XBhmPepOOGi/iBD+mR+ygHKwwiridRWfmBuazCXg
+ sdpEZAeObQyW86zna+dRYUtyJmo=
 X-Mailgun-Sending-Ip: 104.130.122.29
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n05.prod.us-east-1.postgun.com with SMTP id
- 5f4e49c573afa3417edf4f2d (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 01 Sep 2020 13:16:53
+ smtp-out-n06.prod.us-east-1.postgun.com with SMTP id
+ 5f4e49704f13e63f040dd7a4 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 01 Sep 2020 13:15:28
  GMT
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 546FEC43391; Tue,  1 Sep 2020 13:16:52 +0000 (UTC)
+        id 2FCE3C43391; Tue,  1 Sep 2020 13:15:28 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -39,31 +39,27 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 7E87DC433C6;
-        Tue,  1 Sep 2020 13:16:48 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 7E87DC433C6
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 83E78C433C9;
+        Tue,  1 Sep 2020 13:15:25 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 83E78C433C9
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [27/30] brcmsmac: phy_lcn: Remove a bunch of unused variables
+Content-Transfer-Encoding: 7bit
+Subject: Re: [11/30] zd1211rw: zd_chip: Correct misspelled function argument
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20200826093401.1458456-28-lee.jones@linaro.org>
-References: <20200826093401.1458456-28-lee.jones@linaro.org>
+In-Reply-To: <20200826093401.1458456-12-lee.jones@linaro.org>
+References: <20200826093401.1458456-12-lee.jones@linaro.org>
 To:     Lee Jones <lee.jones@linaro.org>
 Cc:     davem@davemloft.net, kuba@kernel.org, linux-kernel@vger.kernel.org,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         Lee Jones <lee.jones@linaro.org>,
-        Arend van Spriel <arend.vanspriel@broadcom.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
-        Wright Feng <wright.feng@cypress.com>,
-        brcm80211-dev-list.pdl@broadcom.com, brcm80211-dev-list@cypress.com
+        Daniel Drake <dsd@gentoo.org>,
+        Ulrich Kunitz <kune@deine-taler.de>
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20200901131652.546FEC43391@smtp.codeaurora.org>
-Date:   Tue,  1 Sep 2020 13:16:52 +0000 (UTC)
+Message-Id: <20200901131528.2FCE3C43391@smtp.codeaurora.org>
+Date:   Tue,  1 Sep 2020 13:15:28 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
@@ -73,50 +69,32 @@ Lee Jones <lee.jones@linaro.org> wrote:
 
 > Fixes the following W=1 kernel build warning(s):
 > 
->  In file included from drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c:11:
->  drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c: In function ‘wlc_lcnphy_rx_iq_cal’:
->  drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c:1366:29: warning: variable ‘RFOverride0_old’ set but not used [-Wunused-but-set-variable]
->  drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c: In function ‘wlc_lcnphy_radio_2064_channel_tune_4313’:
->  drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c:1667:21: warning: variable ‘qFvco’ set but not used [-Wunused-but-set-variable]
->  drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c:1667:14: warning: variable ‘qFref’ set but not used [-Wunused-but-set-variable]
->  drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c:1667:6: warning: variable ‘qFxtal’ set but not used [-Wunused-but-set-variable]
->  drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c: In function ‘wlc_lcnphy_idle_tssi_est’:
->  drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c:2856:6: warning: variable ‘idleTssi’ set but not used [-Wunused-but-set-variable]
->  drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c: In function ‘wlc_lcnphy_tx_iqlo_soft_cal_full’:
->  drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c:3861:53: warning: variable ‘locc4’ set but not used [-Wunused-but-set-variable]
->  drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c:3861:46: warning: variable ‘locc3’ set but not used [-Wunused-but-set-variable]
->  drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c:3861:39: warning: variable ‘locc2’ set but not used [-Wunused-but-set-variable]
->  drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c:3861:32: warning: variable ‘iqcc0’ set but not used [-Wunused-but-set-variable]
->  drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c: In function ‘wlc_lcnphy_periodic_cal’:
->  drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c:4196:6: warning: variable ‘rx_iqcomp_sz’ set but not used [-Wunused-but-set-variable]
->  drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c:4195:33: warning: variable ‘rx_iqcomp’ set but not used [-Wunused-but-set-variable]
->  drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c:4194:16: warning: variable ‘full_cal’ set but not used [-Wunused-but-set-variable]
->  drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c: In function ‘wlc_phy_txpwr_srom_read_lcnphy’:
->  drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c:4919:7: warning: variable ‘opo’ set but not used [-Wunused-but-set-variable]
+>  drivers/net/wireless/zydas/zd1211rw/zd_chip.c:1385: warning: Function parameter or member 'status' not described in 'zd_rx_rate'
+>  drivers/net/wireless/zydas/zd1211rw/zd_chip.c:1385: warning: Excess function parameter 'rx_status' description in 'zd_rx_rate'
 > 
-> Cc: Arend van Spriel <arend.vanspriel@broadcom.com>
-> Cc: Franky Lin <franky.lin@broadcom.com>
-> Cc: Hante Meuleman <hante.meuleman@broadcom.com>
-> Cc: Chi-Hsien Lin <chi-hsien.lin@cypress.com>
-> Cc: Wright Feng <wright.feng@cypress.com>
+> Cc: Daniel Drake <dsd@gentoo.org>
+> Cc: Ulrich Kunitz <kune@deine-taler.de>
 > Cc: Kalle Valo <kvalo@codeaurora.org>
 > Cc: "David S. Miller" <davem@davemloft.net>
 > Cc: Jakub Kicinski <kuba@kernel.org>
 > Cc: linux-wireless@vger.kernel.org
-> Cc: brcm80211-dev-list.pdl@broadcom.com
-> Cc: brcm80211-dev-list@cypress.com
 > Cc: netdev@vger.kernel.org
 > Signed-off-by: Lee Jones <lee.jones@linaro.org>
 
-4 patches applied to wireless-drivers-next.git, thanks.
+9 patches applied to wireless-drivers-next.git, thanks.
 
-38c95e0258a0 brcmsmac: phy_lcn: Remove a bunch of unused variables
-a36e4e4a898b brcmsmac: phy_n: Remove a bunch of unused variables
-ebcfc66f56a4 brcmsmac: phytbl_lcn: Remove unused array 'dot11lcnphytbl_rx_gain_info_rev1'
-e1920d6ae6bd brcmsmac: phytbl_n: Remove a few unused arrays
+bb4b2c8ba39d zd1211rw: zd_chip: Correct misspelled function argument
+e769ab5359cb brcmfmac: fwsignal: Finish documenting 'brcmf_fws_mac_descriptor'
+b95451e02e1c wlcore: debugfs: Remove unused variable 'res'
+64403dc35cb7 rsi: rsi_91x_sdio: Fix a few kernel-doc related issues
+8cea7f1c8813 hostap: Remove unused variable 'fc'
+2307d0bc9d8b wl3501_cs: Fix a bunch of formatting issues related to function docs
+0e25262bc367 rtw88: debug: Remove unused variables 'val'
+73ffcd404a7e rsi: rsi_91x_sdio_ops: File headers are not good kernel-doc candidates
+2d4a48d1f92b prism54: isl_ioctl: Remove unused variable 'j'
 
 -- 
-https://patchwork.kernel.org/patch/11737697/
+https://patchwork.kernel.org/patch/11737731/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
