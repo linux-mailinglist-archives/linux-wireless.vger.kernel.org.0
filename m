@@ -2,135 +2,83 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D067F2588C3
-	for <lists+linux-wireless@lfdr.de>; Tue,  1 Sep 2020 09:08:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E4AA258AE0
+	for <lists+linux-wireless@lfdr.de>; Tue,  1 Sep 2020 11:00:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726313AbgIAHIn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 1 Sep 2020 03:08:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33158 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726006AbgIAHIm (ORCPT
+        id S1726020AbgIAI77 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 1 Sep 2020 04:59:59 -0400
+Received: from mail29.static.mailgun.info ([104.130.122.29]:22142 "EHLO
+        mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725949AbgIAI77 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 1 Sep 2020 03:08:42 -0400
-Received: from mail-qt1-x844.google.com (mail-qt1-x844.google.com [IPv6:2607:f8b0:4864:20::844])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F9B2C0612AC;
-        Tue,  1 Sep 2020 00:08:41 -0700 (PDT)
-Received: by mail-qt1-x844.google.com with SMTP id e7so169745qtj.11;
-        Tue, 01 Sep 2020 00:08:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=GmXuUYU+0Jf5IK/tkXEzwkvIda53kaFZm8Sq7KP0sFU=;
-        b=JOWb9jTrRxl2PkSgSC8c9FlfkpWDLq5/Lhaml4xlqzfc3Un+/SGCfHVvyBP3CWgtjS
-         xPEzVDX7bb38uAwHm2qhJ/KNWWCKhGE4T8jWDULYrB8EhTXJNa8ZjVXTS10UokqP0Z/0
-         tWN0XysiJmkXbW3ZFovPFiSn4TP10N07s0iZhh6d0BCOcX5LAtnCq81WCMxwPJ6AQZaJ
-         /xcqz6qo42a8SYeLtXX3IaprSv02eawXA/LKiqSrrRoCaOo7NeNeOnoJwu571jIKO+nV
-         yFcOPttd1LWlld8MKdGnSwhDKYYv4/6ZrHMO69luWoY1bj/FDLkLT5jtRFcZ1qNkeIV/
-         i7QA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=GmXuUYU+0Jf5IK/tkXEzwkvIda53kaFZm8Sq7KP0sFU=;
-        b=lW0rFykP4SOtLM3Zy0OphaA5EcyHEcjqO7LHB1ZCvLq8nBArKhlxMspthTQOu/Iw6d
-         KBTpGWPbejKNpgwAdc7+MVZ9zFTjNiV5ohzaFUrL0y3FW79Sl4Q5DATvu4GR5d49HZD2
-         zoCTznxGmJv5D1gtHhGn5+XVSzjidaMj8PddWa/ezRu5RIiux/0tzXt4v26MXKD9dUU4
-         Xj53U8bFO+9tDdKQhdq6Xzwmq+W0VnsiNObdU+SOFIUXmY6S7ribfYn+nbBSXDqy4vkg
-         fFPqj9b4PaNcooJK4u2gpRoDCIfK+nPr6QWyiJEPZPswwHjXsCW9dyxqd6VD/I08O5GK
-         +a5Q==
-X-Gm-Message-State: AOAM5331EOQByRlGRXgqLl8LVH/CaI9EGOas25NgIi32rkwX/xT7t9HC
-        7ynAOPOY6fN8iS+hmsCsgX8=
-X-Google-Smtp-Source: ABdhPJzf3KOZbzItfgAW+zC8vk2ksm2e5eC805X9mt3sL0983IgO1KRkKb1qurFhVMGIZwSz2J+tIQ==
-X-Received: by 2002:ac8:72d3:: with SMTP id o19mr379699qtp.190.1598944120846;
-        Tue, 01 Sep 2020 00:08:40 -0700 (PDT)
-Received: from localhost.localdomain ([2604:1380:45d1:2600::1])
-        by smtp.gmail.com with ESMTPSA id l64sm570996qkc.21.2020.09.01.00.08.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Sep 2020 00:08:39 -0700 (PDT)
-From:   Nathan Chancellor <natechancellor@gmail.com>
-To:     Amitkumar Karwar <amitkarwar@gmail.com>,
-        Ganapathi Bhat <ganapathi.bhat@nxp.com>,
-        Xinming Hu <huxinming820@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, clang-built-linux@googlegroups.com,
-        Nathan Chancellor <natechancellor@gmail.com>,
-        Andy Lavr <andy.lavr@gmail.com>
-Subject: [PATCH] mwifiex: Remove unnecessary braces from HostCmd_SET_SEQ_NO_BSS_INFO
-Date:   Tue,  1 Sep 2020 00:08:34 -0700
-Message-Id: <20200901070834.1015754-1-natechancellor@gmail.com>
-X-Mailer: git-send-email 2.28.0
+        Tue, 1 Sep 2020 04:59:59 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1598950798; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=zbhKl6lD3pv/gs8uCjSNoyREd8+EABNS5ndMiO8VBfg=;
+ b=M4aF2XFNgZcCllg/HDB4fMuVcJU+94DqtRGS2l70ibjBRSlU00E7l8fE37DSOz3h32GP5sMz
+ 0j9IxaafhEcCmQrzbVBuXfPc9zWBQuG5rei+22a8heS/qF8th9CiRQ8GwXIht/uUl+O61dQd
+ NZxkJKaER2jJKtVpmEJF+yItu1E=
+X-Mailgun-Sending-Ip: 104.130.122.29
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n03.prod.us-west-2.postgun.com with SMTP id
+ 5f4e0d7125e1ee7586bbfb05 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 01 Sep 2020 08:59:29
+ GMT
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 7FA3CC433A0; Tue,  1 Sep 2020 08:59:29 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
+        MISSING_MID,SPF_NONE,URIBL_BLOCKED autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 36BD0C433C6;
+        Tue,  1 Sep 2020 08:59:27 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 36BD0C433C6
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-X-Patchwork-Bot: notify
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+Subject: Re: zd1211rw: fix build warning
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20200831043425.281538-1-allen.lkml@gmail.com>
+References: <20200831043425.281538-1-allen.lkml@gmail.com>
+To:     Allen Pais <allen.lkml@gmail.com>
+Cc:     dsd@gentoo.org, kune@deine-taler.de, davem@davemloft.net,
+        kuba@kernel.org, linux-wireless@vger.kernel.org,
+        Allen Pais <allen.lkml@gmail.com>,
+        kernel test robot <lkp@intel.com>
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
+Message-Id: <20200901085929.7FA3CC433A0@smtp.codeaurora.org>
+Date:   Tue,  1 Sep 2020 08:59:29 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-A new warning in clang points out when macro expansion might result in a
-GNU C statement expression. There is an instance of this in the mwifiex
-driver:
+Allen Pais <allen.lkml@gmail.com> wrote:
 
-drivers/net/wireless/marvell/mwifiex/cmdevt.c:217:34: warning: '}' and
-')' tokens terminating statement expression appear in different macro
-expansion contexts [-Wcompound-token-split-by-macro]
-        host_cmd->seq_num = cpu_to_le16(HostCmd_SET_SEQ_NO_BSS_INFO
-                                        ^~~~~~~~~~~~~~~~~~~~~~~~~~~
-drivers/net/wireless/marvell/mwifiex/fw.h:519:46: note: expanded from
-macro 'HostCmd_SET_SEQ_NO_BSS_INFO'
-        (((type) & 0x000f) << 12);                  }
-                                                    ^
+> Tasklet conversion patches intoruced a build warning
+> in init_usb_rx(), this patch fixes the same.
+> 
+> Reported-by: kernel test robot <lkp@intel.com>
+> Fixes: 26721b02466e ("zd1211rw: convert tasklets to use new tasklet_setup() API")
+> Signed-off-by: Allen Pais <allen.lkml@gmail.com>
 
-This does not appear to be a real issue. Removing the braces and
-replacing them with parentheses will fix the warning and not change the
-meaning of the code.
+Patch applied to wireless-drivers-next.git, thanks.
 
-Fixes: 5e6e3a92b9a4 ("wireless: mwifiex: initial commit for Marvell mwifiex driver")
-Link: https://github.com/ClangBuiltLinux/linux/issues/1146
-Reported-by: Andy Lavr <andy.lavr@gmail.com>
-Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
----
- drivers/net/wireless/marvell/mwifiex/cmdevt.c | 4 ++--
- drivers/net/wireless/marvell/mwifiex/fw.h     | 8 ++++----
- 2 files changed, 6 insertions(+), 6 deletions(-)
+5d4650ae8ba6 zd1211rw: fix build warning
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/cmdevt.c b/drivers/net/wireless/marvell/mwifiex/cmdevt.c
-index d068b9075c32..3a11342a6bde 100644
---- a/drivers/net/wireless/marvell/mwifiex/cmdevt.c
-+++ b/drivers/net/wireless/marvell/mwifiex/cmdevt.c
-@@ -322,9 +322,9 @@ static int mwifiex_dnld_sleep_confirm_cmd(struct mwifiex_adapter *adapter)
- 
- 	adapter->seq_num++;
- 	sleep_cfm_buf->seq_num =
--		cpu_to_le16((HostCmd_SET_SEQ_NO_BSS_INFO
-+		cpu_to_le16(HostCmd_SET_SEQ_NO_BSS_INFO
- 					(adapter->seq_num, priv->bss_num,
--					 priv->bss_type)));
-+					 priv->bss_type));
- 
- 	mwifiex_dbg(adapter, CMD,
- 		    "cmd: DNLD_CMD: %#x, act %#x, len %d, seqno %#x\n",
-diff --git a/drivers/net/wireless/marvell/mwifiex/fw.h b/drivers/net/wireless/marvell/mwifiex/fw.h
-index 8047e307892e..1f02c5058aed 100644
---- a/drivers/net/wireless/marvell/mwifiex/fw.h
-+++ b/drivers/net/wireless/marvell/mwifiex/fw.h
-@@ -513,10 +513,10 @@ enum mwifiex_channel_flags {
- 
- #define RF_ANTENNA_AUTO                 0xFFFF
- 
--#define HostCmd_SET_SEQ_NO_BSS_INFO(seq, num, type) {   \
--	(((seq) & 0x00ff) |                             \
--	 (((num) & 0x000f) << 8)) |                     \
--	(((type) & 0x000f) << 12);                  }
-+#define HostCmd_SET_SEQ_NO_BSS_INFO(seq, num, type) \
-+	((((seq) & 0x00ff) |                        \
-+	 (((num) & 0x000f) << 8)) |                 \
-+	(((type) & 0x000f) << 12))
- 
- #define HostCmd_GET_SEQ_NO(seq)       \
- 	((seq) & HostCmd_SEQ_NUM_MASK)
 -- 
-2.28.0
+https://patchwork.kernel.org/patch/11745469/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
