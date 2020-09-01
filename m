@@ -2,99 +2,105 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5CF57258DEF
-	for <lists+linux-wireless@lfdr.de>; Tue,  1 Sep 2020 14:10:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A601F258DE5
+	for <lists+linux-wireless@lfdr.de>; Tue,  1 Sep 2020 14:06:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728148AbgIAMIg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 1 Sep 2020 08:08:36 -0400
+        id S1728082AbgIAMGr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 1 Sep 2020 08:06:47 -0400
 Received: from mail29.static.mailgun.info ([104.130.122.29]:47999 "EHLO
         mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727924AbgIAMGG (ORCPT
+        by vger.kernel.org with ESMTP id S1728076AbgIAMGj (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 1 Sep 2020 08:06:06 -0400
+        Tue, 1 Sep 2020 08:06:39 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1598961965; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=LFLJVLiMOd/9uDVWba2LfAHY5K36vSixn2hJZnKHiTY=; b=HnhwerhLN3n0rkCBln0NW7tXYFwrCCDh2PzOjKczE9dFWrbDHxs6iDHIj3GipUjJeZ+r4VKi
- ucBukq23n2f98Qng7wVp+E4pGKUVPCmMaRaVfJ+B2ohDlFHv9j4l9tpUt1RZcD+yd4AwtHrM
- 7zYcyv/Ita5yaKbyMk4k2AefVkw=
+ s=smtp; t=1598961998; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=ZxeLT4MW4DxY+rjg8qHyVNjzZt9/BxvL8nAh3ydoWAU=;
+ b=NX9yaFTUL66zSVgfh8t0oL5hYfXd+WlIox3naaZw9AYVG32Xqzwv4IXgz7aGMQA9Es4LoqCr
+ FiugQv9BIJd9DlfA/U3FyIay3RnZyu5Xas4TgbcDvEC3Rfipn0r6Zm/B6c3Fp9i2h5hRF4Px
+ ekrc4/upLGdKxmmU7TKCLqDgKBQ=
 X-Mailgun-Sending-Ip: 104.130.122.29
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n07.prod.us-west-2.postgun.com with SMTP id
- 5f4e392025e1ee7586153557 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 01 Sep 2020 12:05:52
+ smtp-out-n04.prod.us-west-2.postgun.com with SMTP id
+ 5f4e392dbe06707b34638bb9 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 01 Sep 2020 12:06:05
  GMT
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 94C16C433C6; Tue,  1 Sep 2020 12:05:52 +0000 (UTC)
+        id EBCDEC433A1; Tue,  1 Sep 2020 12:06:04 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
+        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
 Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 1A265C433CB;
-        Tue,  1 Sep 2020 12:05:49 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 1A265C433CB
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 51E7CC433CA;
+        Tue,  1 Sep 2020 12:06:01 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 51E7CC433CA
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     kernel test robot <lkp@intel.com>
-Cc:     Lee Jones <lee.jones@linaro.org>, kbuild-all@lists.01.org,
-        linux-wireless@vger.kernel.org
-Subject: Re: [wireless-drivers-next:pending 90/109] drivers/net/wireless/broadcom/brcm80211/brcmsmac/ampdu.c:1027:20: warning: variable 'scb_ampdu' set but not used
-References: <202009011913.HKFaLG2U%lkp@intel.com>
-Date:   Tue, 01 Sep 2020 15:05:48 +0300
-In-Reply-To: <202009011913.HKFaLG2U%lkp@intel.com> (kernel test robot's
-        message of "Tue, 1 Sep 2020 19:54:19 +0800")
-Message-ID: <87ft8166sj.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v2 1/2] ath10k: Keep track of which interrupts fired,
+ don't poll them
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20200709082024.v2.1.I4d2f85ffa06f38532631e864a3125691ef5ffe06@changeid>
+References: <20200709082024.v2.1.I4d2f85ffa06f38532631e864a3125691ef5ffe06@changeid>
+To:     Douglas Anderson <dianders@chromium.org>
+Cc:     ath10k@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+        briannorris@chromium.org, saiprakash.ranjan@codeaurora.org,
+        linux-wireless@vger.kernel.org, pillair@codeaurora.org,
+        kuabhs@google.com, Douglas Anderson <dianders@chromium.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, linux-kernel@vger.kernel.org,
+        netdev@vger.kernel.org
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
+Message-Id: <20200901120604.EBCDEC433A1@smtp.codeaurora.org>
+Date:   Tue,  1 Sep 2020 12:06:04 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-kernel test robot <lkp@intel.com> writes:
+Douglas Anderson <dianders@chromium.org> wrote:
 
-> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git pending
-> head:   391ddee90739538e99cb73bd26d7a90452d37f30
-> commit: d7f95d9204ca1a73183fde8c5a017f2060763d05 [90/109] brcmsmac: ampdu: Remove a bunch of unused variables
-> config: i386-randconfig-r015-20200901 (attached as .config)
-> compiler: gcc-9 (Debian 9.3.0-15) 9.3.0
-> reproduce (this is a W=1 build):
->         git checkout d7f95d9204ca1a73183fde8c5a017f2060763d05
->         # save the attached .config to linux build tree
->         make W=1 ARCH=i386 
->
-> If you fix the issue, kindly add following tag as appropriate
-> Reported-by: kernel test robot <lkp@intel.com>
->
-> All warnings (new ones prefixed by >>):
->
->    In file included from drivers/net/wireless/broadcom/brcm80211/brcmsmac/rate.h:21,
->                     from drivers/net/wireless/broadcom/brcm80211/brcmsmac/ampdu.c:18:
->    drivers/net/wireless/broadcom/brcm80211/brcmsmac/d11.h:786:1: warning: alignment 1 of 'struct d11txh' is less than 2 [-Wpacked-not-aligned]
->      786 | } __packed;
->          | ^
->    drivers/net/wireless/broadcom/brcm80211/brcmsmac/ampdu.c: In
-> function 'brcms_c_ampdu_dotxstatus_complete':
->    drivers/net/wireless/broadcom/brcm80211/brcmsmac/ampdu.c:850:7:
-> warning: variable 'update_rate' set but not used
-> [-Wunused-but-set-variable]
->      850 |  bool update_rate = true, retry = true;
->          |       ^~~~~~~~~~~
->    drivers/net/wireless/broadcom/brcm80211/brcmsmac/ampdu.c: In function 'brcms_c_ampdu_dotxstatus':
->>> drivers/net/wireless/broadcom/brcm80211/brcmsmac/ampdu.c:1027:20: warning: variable 'scb_ampdu' set but not used [-Wunused-but-set-variable]
->     1027 |  struct scb_ampdu *scb_ampdu;
->          |                    ^~~~~~~~~
+> If we have a per CE (Copy Engine) IRQ then we have no summary
+> register.  Right now the code generates a summary register by
+> iterating over all copy engines and seeing if they have an interrupt
+> pending.
+> 
+> This has a problem.  Specifically if _none_ if the Copy Engines have
+> an interrupt pending then they might go into low power mode and
+> reading from their address space will cause a full system crash.  This
+> was seen to happen when two interrupts went off at nearly the same
+> time.  Both were handled by a single call of ath10k_snoc_napi_poll()
+> but, because there were two interrupts handled and thus two calls to
+> napi_schedule() there was still a second call to
+> ath10k_snoc_napi_poll() which ran with no interrupts pending.
+> 
+> Instead of iterating over all the copy engines, let's just keep track
+> of the IRQs that fire.  Then we can effectively generate our own
+> summary without ever needing to read the Copy Engines.
+> 
+> Tested-on: WCN3990 SNOC WLAN.HL.3.2.2-00490-QCAHLSWMTPL-1
+> 
+> Signed-off-by: Douglas Anderson <dianders@chromium.org>
+> Reviewed-by: Rakesh Pillai <pillair@codeaurora.org>
+> Reviewed-by: Brian Norris <briannorris@chromium.org>
+> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 
-Lee, please send a followup patch to fix these issues.
+2 patches applied to ath-next branch of ath.git, thanks.
+
+d66d24ac300c ath10k: Keep track of which interrupts fired, don't poll them
+7f8655166512 ath10k: Get rid of "per_ce_irq" hw param
 
 -- 
+https://patchwork.kernel.org/patch/11654625/
+
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
