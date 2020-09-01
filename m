@@ -2,31 +2,31 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 871E7258842
-	for <lists+linux-wireless@lfdr.de>; Tue,  1 Sep 2020 08:32:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 96BDE258844
+	for <lists+linux-wireless@lfdr.de>; Tue,  1 Sep 2020 08:33:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726623AbgIAGcy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 1 Sep 2020 02:32:54 -0400
+        id S1726724AbgIAGdI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 1 Sep 2020 02:33:08 -0400
 Received: from mail-bn8nam11on2136.outbound.protection.outlook.com ([40.107.236.136]:32243
         "EHLO NAM11-BN8-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726044AbgIAGcx (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 1 Sep 2020 02:32:53 -0400
+        id S1726586AbgIAGdH (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 1 Sep 2020 02:33:07 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=h+ghoBoff/fNgTJfg75Uda8MkoWgy5Bf4OB5Vw2AjCoNPgJCCnzATFY4FgRCTr8uOVuC2R9Z0Xqai1pWpNPOwUwP4udGbcCdrW88nXRIWHFla4x6EdLFEmWFQPfIKPDuzLYanPskD/LhyBjjqrzxVSNmp3cD5RYBT3HuFrkT6HqZWwYo/sk2Qr+hgt4Meq4bjfY0ni1SxJOoFwfDGmZq00/1f1Y6p3Q9Wr7UvGHDbIumfWeIxioXJLslTgMPYvc9UB6tE3l+lyf22e1snp5c+RnmA+7dtpksYK6+IgdZmR66JXI10lyy/T5F2hN85P6+yxZHJJDUbbm/rYfJV9ov0w==
+ b=dx+VFkX6wlsD79eur9bc3aRcqX0ha6XtWdCBI1M+Jv4jU9qDCV280h82zofBgtSMUwX1X2Xnl717ZEjfOO0RJx1RiS65gU7xG7iV4s1k0sgXDgvLoAQIaq9OKZTDXoqDp5QB2MLgo7SRIuZiC3RLKy9b8UKtDrFocIecxlzjjFcRXp7gGk38kuV9gxdjpDFuOJH3j2yLctLqM5dFkeyrbYf4bNRf3Vv5HirDhfKaAIKuAzbn+LGql66OtGN+2USWCJbe7xRIJh2deeuOK9T33TDLS4JeJ73ut/0xnU7diJivriv5UTzhE5S92qjyG22lQLD+IlqFb7BoXsw+MS9idA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9MpGiPjnDLF9HprRDVXneZSIuoI0foKR0ud2KcWljy8=;
- b=LF6ApP8rQYVFv6mcYo5FXETRTM/eD9/GLj33F20v6xD4usdh6pTrDQOGcxF40QgCfrO65YOGihBeSs678GCf1nP6cN/2Vx4qdKQuGwve3HEjOZ0+AAAGUiAW1ZOTuRWJdpA5ZadCPRANqN4uAkOuxdBf4jL+dtGcPkOZpeTsa/r73L3dNvJHUD9sqaUspFQHT4gRWRKc/Le0byWBLARUaH09cFzE9hRGG0uLIBl72Zpr+BOQXun4o1wYVVU3hgmjyY2Y3yNqh4PVgePlUIKfzsnbpxJ5MGX8NvI5F2VrxwqelBiCPVrMEQApck9/OUeGDySaTbwnr31ZTL14ropYWQ==
+ bh=R74FJNe0wB0ngb/sp/5B1pYwCUew++USVnbW8gawy0A=;
+ b=g6uTHt52yTROwHJYpwQ3WACiaDeRqTNdwKuSWjy/Hq4M/aKD1ddmiSS59MESlNLzqG/5LflN3xBusQzPEZeD5H8IwbLn1zpffEkmtXuVUNzJC4RmKnHK73sRExBN+qhLyMU9CiouV0SCqsca5IDV4A3m5TBd2hAtK3SitobCZcJSHGdXlivHFcG6TAzh7pJKcHSQjgHTfsrfg2+artk+t5hre+Om00CxdEBGzjXN/P/m741VuEU/ShulgowHl9l3rs5PgSdx8/YpIVw0uiJhZvlHE/jFHagEng4axXL/UYdqoMLuCmi8EggECBiaMo96k+epPtp9THL8HtyrN61/NA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=cypress.com; dmarc=pass action=none header.from=cypress.com;
  dkim=pass header.d=cypress.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cypress.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9MpGiPjnDLF9HprRDVXneZSIuoI0foKR0ud2KcWljy8=;
- b=WfaoZXBzb+HIpxkMUA9jVz6KCD6S2umv9oY4aZ9nhccADvXYH14EJ6WIyOTH3dUwbGp+1/Bjaoy1LBkogu+eA6OOjnfQcd8oS/zEA3d8Ia/TXptmKFTr0Nd8qBHn6buXhreS+iRTar9UkOQQRSdty/3U9Tf4G0GmWTFSQr+xi0w=
+ bh=R74FJNe0wB0ngb/sp/5B1pYwCUew++USVnbW8gawy0A=;
+ b=hiRWMPHGoieTdl3CqlMhaOhMFdjRp4mUDa22Pu2NW4QlDGhsLvyOOnXyw+n66VJAuB+MQvkpo587Nu+JVyCoyX9EyNdqWNwyiN4AHEWPaz7/572OB4B08xUILcp3WbB7ntIn/zHEAKL6uatDEc85UZ4g4kWg94MkChvDSyjjMBw=
 Authentication-Results: vger.kernel.org; dkim=none (message not signed)
  header.d=none;vger.kernel.org; dmarc=none action=none
  header.from=cypress.com;
@@ -34,11 +34,11 @@ Received: from BN8PR06MB5889.namprd06.prod.outlook.com (2603:10b6:408:c2::25)
  by BN6PR06MB2867.namprd06.prod.outlook.com (2603:10b6:404:114::14) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3326.21; Tue, 1 Sep
- 2020 06:32:50 +0000
+ 2020 06:32:53 +0000
 Received: from BN8PR06MB5889.namprd06.prod.outlook.com
  ([fe80::d82b:5f42:b7a8:d819]) by BN8PR06MB5889.namprd06.prod.outlook.com
  ([fe80::d82b:5f42:b7a8:d819%3]) with mapi id 15.20.3326.025; Tue, 1 Sep 2020
- 06:32:50 +0000
+ 06:32:53 +0000
 From:   Wright Feng <wright.feng@cypress.com>
 To:     linux-wireless@vger.kernel.org
 Cc:     wright.feng@cypress.com, brcm80211-dev-list@broadcom.com,
@@ -46,10 +46,11 @@ Cc:     wright.feng@cypress.com, brcm80211-dev-list@broadcom.com,
         Arend van Spriel <arend.vanspriel@broadcom.com>,
         Franky Lin <franky.lin@broadcom.com>,
         Hante Meuleman <hante.meuleman@broadcom.com>,
-        Kalle Valo <kvalo@codeaurora.org>, chi-hsien.lin@cypress.com
-Subject: [PATCH 1/4] brcmfmac: add change_bss to support AP isolation
-Date:   Tue,  1 Sep 2020 01:32:34 -0500
-Message-Id: <20200901063237.15549-2-wright.feng@cypress.com>
+        Kalle Valo <kvalo@codeaurora.org>, chi-hsien.lin@cypress.com,
+        Ting-Ying Li <tingying.li@cypress.com>
+Subject: [PATCH 2/4] brcmfmac: don't allow arp/nd offload to be enabled if ap mode exists
+Date:   Tue,  1 Sep 2020 01:32:35 -0500
+Message-Id: <20200901063237.15549-3-wright.feng@cypress.com>
 X-Mailer: git-send-email 2.25.0
 In-Reply-To: <20200901063237.15549-1-wright.feng@cypress.com>
 References: <20200901063237.15549-1-wright.feng@cypress.com>
@@ -60,117 +61,114 @@ X-ClientProxiedBy: MN2PR06CA0028.namprd06.prod.outlook.com
  (2603:10b6:408:c2::25)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from 255.255.255.255 (255.255.255.255) by MN2PR06CA0028.namprd06.prod.outlook.com (2603:10b6:208:23d::33) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.20.3326.19 via Frontend Transport; Tue, 1 Sep 2020 06:32:49 +0000
+Received: from 255.255.255.255 (255.255.255.255) by MN2PR06CA0028.namprd06.prod.outlook.com (2603:10b6:208:23d::33) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.20.3326.19 via Frontend Transport; Tue, 1 Sep 2020 06:32:52 +0000
 X-Mailer: git-send-email 2.25.0
 X-Originating-IP: [157.95.12.33]
 X-MS-PublicTrafficType: Email
 X-MS-Office365-Filtering-HT: Tenant
-X-MS-Office365-Filtering-Correlation-Id: af61b1d3-b035-44fc-cb9b-08d84e40d915
+X-MS-Office365-Filtering-Correlation-Id: c09c09ce-19ee-491b-b737-08d84e40daca
 X-MS-TrafficTypeDiagnostic: BN6PR06MB2867:
 X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <BN6PR06MB2867791263A67A8577E4D54CFB2E0@BN6PR06MB2867.namprd06.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:5516;
+X-Microsoft-Antispam-PRVS: <BN6PR06MB28672E1D47D60790782C5603FB2E0@BN6PR06MB2867.namprd06.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:6108;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: AqHqDmL9vNM/28vvvcUe7xROuKaQEc+4BhH2/R7Bcu5WlIVVCY2imSv4KFwAAQfYHPw600Og2nTNixHjSnaQItk5zpysBi3frhFIwqVQSvzaMupQjSRvLBqaBmxkStJqTcV5sIXkdcVC/TtbPymIIeAqx/eAH8bggVqGjtRuc7eJaSUhlp+zfiaddG5gQeALzvhNj9+11PNAYQSPfZNHHIl7AvUChe5qlDoD6m4CmvECBbsSCWgSYfs0VzVi5cTfRdmkhvqxhHebWKa43fYS4OCg/6+uEQohmDRY0U6eCo4bsorys4IIBoAnMMuNUKly
+X-Microsoft-Antispam-Message-Info: bNGfMQVBKL58VXmvQHycghpGWFIepyruXc2O1806XRq3Ac1bdVudio0l5W/Jy8lhjkYhm/SmEe/NlOda72q7tMwy5woNUSWtjh0x/EK5Z6+SJLMMeIB8LIBquY8oYzGMrmtPnhe+rabxpf0uaVcVUC0sC5E7KMw8UVMh7PbzlilNprxPKdbto2WaPWBys84Kn42u7QrL20xvHZcP+kiSOBZXSq6Ar7IRXsdYWNWASyrgPTlxHXshKFmOKZcP3Jana5X4u/h2vz87XeKcpoGNvlnZ7Ii5mVWO4eRvUDWAQ/xj0pLhpJKW3B2LyH6XbIvMDbr1KvgPtoG9Z53bcIk07Q==
 X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN8PR06MB5889.namprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(39860400002)(366004)(396003)(376002)(136003)(346002)(54906003)(478600001)(5660300002)(66476007)(66946007)(52116002)(26005)(66556008)(107886003)(4326008)(6486002)(16576012)(316002)(186003)(36756003)(86362001)(1076003)(44832011)(6916009)(2906002)(6666004)(8676002)(8936002)(956004)(83380400001)(2616005);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData: Y1BdfyGOC1u4E+XS6p32CwWM6D3fXvI+AmXSpKjdCoQUqJ5lp1fIyBC8/uCvoOARwh8MJXSBF0KgqkG7QDy4+nr6o1jQBLQ6EJlsl1PjrpPs+12WzI6gw13tMGhtLJW5uyQu6jFgqztWTkqVafxu9MJkLki38whFRU2K2HtxQz/+ARC2lEwzcaLntWEsj4tjpAhSGApjcuIHAGFUwwijiEeYSjr3K7RJz0V+3zIul8eFMZelvw1PEWWAOO2wRG4a5K+5gtjU81cvBpkRpFB97zKDjC+PMOJ1CGZRqtNif4DKjCExLEC0atqp7e7BI74J7PpMlHIbbfXaoCnpH3TToDPse3tEB93+VqLHq0qs4Eqancs8BUr1D9s2w7eM0/yLc51V+ruNhNNYt1iq/zSMfU0BRgRObKJjnMCXRoYBJuX+N9ZbUu3CwFm+dU+X2Hi8ynnOpmiwohKthHBmM7qtYT6lmUrGGktJsLscpqRajhPK5rx5OZ4DlfyD6Ifc+4qnOP0rl+ydzFamPLrH8Y4lyB4qFEAxkgCiOkgAaXW4QcH7LHI6BrSCQvKYFbM3Gp6hhB+C+yzTaTzcAZ0YvfGir5ZwejuIZQhUy2gRxzMxO4D5NMls1SwxUSy5z0FGAOboZhX7VoXxysK5uy99l/HTfQ==
+X-MS-Exchange-AntiSpam-MessageData: ZVb0jYU4DreEkgwMa3V2u4yLAZRn9m322FPBR6kAl2aWB5fFgVxYOyrINua+uFvqMEkzpiqgvPG80x0JsMpqG2YWucgKJG0BHmtOr7/6ve3iXfekp0JM3FZbud53oUJRl/dEJIbOihHMaDS+K5DGfjxNVSLDnAxCBzzlPPDVVd555HcFSZzoyFrG3G3FTIF31nN1moKKHFTyEmQ1NSjmZsTHAcR51nrZrR0XSbtjwVvYCLsqZl5Ru2QOGuB07MdPcrJ/6M32xAm4l3+80fWLPFIcm2XfLosyOe2ltWkU/WxEQdUHq6z6dXn8dG7jvIkiicWm77ltxfHVU86vAQgV6k+GKjdUtooahmY7liwBHEqBCTl0wPnrFOjJOdgZ6ZEi+qnC5UtApKPX5tOD5isTG2Tr31eAm/wIDH6OXg9iP+nbjmzrpmYntihdSWTucARs8oEFxtxd8Sc/RYgqlG8BkEokyv+rcE4ARvjLEScZPh3E/kgJ2ZYlC0lIwl6G1ZBQZuOPOvHrQ9P0r621WzT9pJxHaQ3Z1A6Z3NC4XhrjgAaIYytTnk9AtO/hLGbc48zy2fZzk2NnYMIZ+WyWv0WTfC8EY4Mcxf9OeuGXSCLXHWb95WxqFwMu/P/wG4siwNdibYVOJ5nfJc9SEUt4XKaiiA==
 X-OriginatorOrg: cypress.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: af61b1d3-b035-44fc-cb9b-08d84e40d915
+X-MS-Exchange-CrossTenant-Network-Message-Id: c09c09ce-19ee-491b-b737-08d84e40daca
 X-MS-Exchange-CrossTenant-AuthSource: BN8PR06MB5889.namprd06.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Sep 2020 06:32:50.3760
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Sep 2020 06:32:53.3554
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 011addfc-2c09-450d-8938-e0bbc2dd2376
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 66N9F0eP+lIuBxZTj02ZU59daRFuY9z5uNN14itBF3nEMZj/DUXUE240dj1oMG98uBj0AtAVgQlBYzXtpIXIwA==
+X-MS-Exchange-CrossTenant-UserPrincipalName: 9oCKoEVgrL3DVvCZDFmiA5T9RW22CvoqzBSu+VGXz9j/xOOX9aVcMd3EK6Q/HvLj3TYbTyjFjuufc8TvvPsk/w==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN6PR06MB2867
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hostap has a parameter "ap_isolate" which is used to prevent low-level
-bridging of frames between associated stations in the BSS.
-Regarding driver side, we add cfg80211 ops method change_bss to support
-setting AP isolation if firmware has ap_isolate feature.
+From: Ting-Ying Li <tingying.li@cypress.com>
 
-Signed-off-by: Wright Feng <wright.feng@cypress.com>
-Signed-off-by: Chi-hsien Lin <chi-hsien.lin@cypress.com>
+Add a condition to determine whether arp/nd offload enabling
+request is allowed. If there is any interface acts as ap
+mode and is operating, then reject the request of arp oflload
+enabling from cfg80211.
+
+Signed-off-by: Ting-Ying Li <tingying.li@cypress.com>
 ---
- .../broadcom/brcm80211/brcmfmac/cfg80211.c    | 23 +++++++++++++++++++
- .../broadcom/brcm80211/brcmfmac/feature.c     |  1 +
- .../broadcom/brcm80211/brcmfmac/feature.h     |  3 ++-
- 3 files changed, 26 insertions(+), 1 deletion(-)
+ .../broadcom/brcm80211/brcmfmac/cfg80211.c      | 17 ++++++++++++++++-
+ .../broadcom/brcm80211/brcmfmac/cfg80211.h      |  1 +
+ .../wireless/broadcom/brcm80211/brcmfmac/core.c |  5 +++++
+ 3 files changed, 22 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-index 5d99771c3f64..7ef93cd66b2c 100644
+index 7ef93cd66b2c..d6972420d426 100644
 --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
 +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-@@ -5425,6 +5425,26 @@ static int brcmf_cfg80211_del_pmk(struct wiphy *wiphy, struct net_device *dev,
- 	return brcmf_set_pmk(ifp, NULL, 0);
+@@ -766,6 +766,21 @@ void brcmf_set_mpc(struct brcmf_if *ifp, int mpc)
+ 	}
  }
  
-+static int
-+brcmf_cfg80211_change_bss(struct wiphy *wiphy, struct net_device *dev,
-+			  struct bss_parameters *params)
++bool brcmf_is_apmode_operating(struct wiphy *wiphy)
 +{
-+	struct brcmf_if *ifp;
-+	int ret = 0;
-+	u32 ap_isolate;
++	struct brcmf_cfg80211_info *cfg = wiphy_to_cfg(wiphy);
++	struct brcmf_cfg80211_vif *vif;
++	bool ret = false;
 +
-+	brcmf_dbg(TRACE, "Enter\n");
-+	ifp = netdev_priv(dev);
-+	if (params->ap_isolate >= 0) {
-+		ap_isolate = (u32)params->ap_isolate;
-+		ret = brcmf_fil_iovar_int_set(ifp, "ap_isolate", ap_isolate);
-+		if (ret < 0)
-+			brcmf_err("ap_isolate iovar failed: ret=%d\n", ret);
++	list_for_each_entry(vif, &cfg->vif_list, list) {
++		if (brcmf_is_apmode(vif) &&
++		    test_bit(BRCMF_VIF_STATUS_AP_CREATED, &vif->sme_state))
++			ret = true;
 +	}
 +
 +	return ret;
 +}
 +
- static struct cfg80211_ops brcmf_cfg80211_ops = {
- 	.add_virtual_intf = brcmf_cfg80211_add_iface,
- 	.del_virtual_intf = brcmf_cfg80211_del_iface,
-@@ -7492,6 +7512,9 @@ struct brcmf_cfg80211_info *brcmf_cfg80211_attach(struct brcmf_pub *drvr,
- 	if (brcmf_feat_is_enabled(ifp, BRCMF_FEAT_WOWL_GTK))
- 		ops->set_rekey_data = brcmf_cfg80211_set_rekey_data;
- #endif
-+	if (brcmf_feat_is_enabled(ifp, BRCMF_FEAT_AP_ISOLATE))
-+		ops->change_bss = brcmf_cfg80211_change_bss;
+ s32 brcmf_notify_escan_complete(struct brcmf_cfg80211_info *cfg,
+ 				struct brcmf_if *ifp, bool aborted,
+ 				bool fw_abort)
+@@ -4949,8 +4964,8 @@ static int brcmf_cfg80211_stop_ap(struct wiphy *wiphy, struct net_device *ndev)
+ 			bphy_err(drvr, "bss_enable config failed %d\n", err);
+ 	}
+ 	brcmf_set_mpc(ifp, 1);
+-	brcmf_configure_arp_nd_offload(ifp, true);
+ 	clear_bit(BRCMF_VIF_STATUS_AP_CREATED, &ifp->vif->sme_state);
++	brcmf_configure_arp_nd_offload(ifp, true);
+ 	brcmf_net_setcarrier(ifp, false);
+ 
+ 	return err;
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.h b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.h
+index 333fdf394f95..8c14d00c6d0e 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.h
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.h
+@@ -447,5 +447,6 @@ s32 brcmf_notify_escan_complete(struct brcmf_cfg80211_info *cfg,
+ void brcmf_set_mpc(struct brcmf_if *ndev, int mpc);
+ void brcmf_abort_scanning(struct brcmf_cfg80211_info *cfg);
+ void brcmf_cfg80211_free_netdev(struct net_device *ndev);
++bool brcmf_is_apmode_operating(struct wiphy *wiphy);
+ 
+ #endif /* BRCMFMAC_CFG80211_H */
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c
+index f89010a81ffb..20c510dca601 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c
+@@ -96,6 +96,11 @@ void brcmf_configure_arp_nd_offload(struct brcmf_if *ifp, bool enable)
+ 	s32 err;
+ 	u32 mode;
+ 
++	if (enable && brcmf_is_apmode_operating(ifp->drvr->wiphy)) {
++		brcmf_dbg(TRACE, "Skip ARP/ND offload enable when soft AP is running\n");
++		return;
++	}
 +
- 	err = wiphy_register(wiphy);
- 	if (err < 0) {
- 		bphy_err(drvr, "Could not register wiphy device (%d)\n", err);
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/feature.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/feature.c
-index 0dcefbd0c000..1ffa9742612d 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/feature.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/feature.c
-@@ -278,6 +278,7 @@ void brcmf_feat_attach(struct brcmf_pub *drvr)
- 	brcmf_feat_iovar_int_get(ifp, BRCMF_FEAT_RSDB, "rsdb_mode");
- 	brcmf_feat_iovar_int_get(ifp, BRCMF_FEAT_TDLS, "tdls_enable");
- 	brcmf_feat_iovar_int_get(ifp, BRCMF_FEAT_MFP, "mfp");
-+	brcmf_feat_iovar_int_get(ifp, BRCMF_FEAT_AP_ISOLATE, "ap_isolate");
- 
- 	pfn_mac.version = BRCMF_PFN_MACADDR_CFG_VER;
- 	err = brcmf_fil_iovar_data_get(ifp, "pfn_macaddr", &pfn_mac,
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/feature.h b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/feature.h
-index cda3fc1bab7f..243d9afddb8c 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/feature.h
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/feature.h
-@@ -49,7 +49,8 @@
- 	BRCMF_FEAT_DEF(MONITOR_FMT_RADIOTAP) \
- 	BRCMF_FEAT_DEF(MONITOR_FMT_HW_RX_HDR) \
- 	BRCMF_FEAT_DEF(DOT11H) \
--	BRCMF_FEAT_DEF(SAE)
-+	BRCMF_FEAT_DEF(SAE) \
-+	BRCMF_FEAT_DEF(AP_ISOLATE)
- 
- /*
-  * Quirks:
+ 	if (enable)
+ 		mode = BRCMF_ARP_OL_AGENT | BRCMF_ARP_OL_PEER_AUTO_REPLY;
+ 	else
 -- 
 2.25.0
 
