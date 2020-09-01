@@ -2,47 +2,47 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 117DB25971F
-	for <lists+linux-wireless@lfdr.de>; Tue,  1 Sep 2020 18:11:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F40F5259C72
+	for <lists+linux-wireless@lfdr.de>; Tue,  1 Sep 2020 19:15:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731646AbgIAQK4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 1 Sep 2020 12:10:56 -0400
-Received: from mga03.intel.com ([134.134.136.65]:8688 "EHLO mga03.intel.com"
+        id S1729917AbgIARPl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 1 Sep 2020 13:15:41 -0400
+Received: from mga05.intel.com ([192.55.52.43]:37807 "EHLO mga05.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728621AbgIAQKv (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 1 Sep 2020 12:10:51 -0400
-IronPort-SDR: FkqwQP9Lx2Joj4ZKtq+Yu8oMxIEY+EnIbpuLdu/fke2daX6orL2/SnsI1Zk+/btqJduYGvhZys
- TLkuTnNDyBMQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9731"; a="157200131"
+        id S1729106AbgIAPOu (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 1 Sep 2020 11:14:50 -0400
+IronPort-SDR: Dafh1vUxPMUQQpTOe23WNyN6Uokl9Uf1lqveJpvWq4cOSATvZP25xrorQ7Jk2UArQLPCQOmuvO
+ Ddt+20d2sFsw==
+X-IronPort-AV: E=McAfee;i="6000,8403,9730"; a="241998502"
 X-IronPort-AV: E=Sophos;i="5.76,379,1592895600"; 
-   d="gz'50?scan'50,208,50";a="157200131"
+   d="gz'50?scan'50,208,50";a="241998502"
 X-Amp-Result: UNKNOWN
 X-Amp-Original-Verdict: FILE UNKNOWN
 X-Amp-File-Uploaded: False
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2020 09:10:14 -0700
-IronPort-SDR: pqKNHhNdFIKNZCj59Xa0sClKPQ6Lnj/w7Rs7Nku0C9i756sH09gwJPpHlKyWawdcbBLLcVaSVm
- TS8DFj9NQE4Q==
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2020 08:14:45 -0700
+IronPort-SDR: DlvfgyO9gwOkln0ekqvTUiFws4FquiSv9s/8hHKSnbkwgiI77yFJ+tqsFv/tZ4wzE8ATE53nok
+ /sjNFr4K5HZA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.76,379,1592895600"; 
-   d="gz'50?scan'50,208,50";a="341078474"
-Received: from lkp-server02.sh.intel.com (HELO f796b30506bf) ([10.239.97.151])
-  by orsmga007.jf.intel.com with ESMTP; 01 Sep 2020 09:10:12 -0700
-Received: from kbuild by f796b30506bf with local (Exim 4.92)
+   d="gz'50?scan'50,208,50";a="297340880"
+Received: from lkp-server01.sh.intel.com (HELO 6fed54b23e67) ([10.239.97.150])
+  by orsmga003.jf.intel.com with ESMTP; 01 Sep 2020 08:14:42 -0700
+Received: from kbuild by 6fed54b23e67 with local (Exim 4.92)
         (envelope-from <lkp@intel.com>)
-        id 1kD8rL-000015-G7; Tue, 01 Sep 2020 16:10:11 +0000
-Date:   Wed, 2 Sep 2020 00:09:08 +0800
+        id 1kD7zd-0000BI-Vx; Tue, 01 Sep 2020 15:14:42 +0000
+Date:   Tue, 1 Sep 2020 23:14:11 +0800
 From:   kernel test robot <lkp@intel.com>
 To:     Lee Jones <lee.jones@linaro.org>
 Cc:     kbuild-all@lists.01.org, clang-built-linux@googlegroups.com,
         Kalle Valo <kvalo@codeaurora.org>,
         linux-wireless@vger.kernel.org
-Subject: [wireless-drivers-next:master 129/131]
- drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phytbl_lcn.c:108:18:
- warning: unused variable 'dot11lcn_gain_tbl_rev1'
-Message-ID: <202009020057.jxONANsS%lkp@intel.com>
+Subject: [wireless-drivers-next:master 127/131]
+ drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c:361:25:
+ warning: unused variable 'lcnphy_rx_iqcomp_table_rev0'
+Message-ID: <202009012305.vGKHlIAu%lkp@intel.com>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="YiEDa0DAkWCtVeE4"
+Content-Type: multipart/mixed; boundary="x+6KMIRAuhnl3hBn"
 Content-Disposition: inline
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-wireless-owner@vger.kernel.org
@@ -51,13 +51,13 @@ List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 
---YiEDa0DAkWCtVeE4
+--x+6KMIRAuhnl3hBn
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
 tree:   https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git master
 head:   2c92790b12033797474b9ba1b2e56a95360f66cd
-commit: ebcfc66f56a43601eec4a8abab6e82aaeb09dcbf [129/131] brcmsmac: phytbl_lcn: Remove unused array 'dot11lcnphytbl_rx_gain_info_rev1'
+commit: 38c95e0258a067812311e84d2a170fd56f05431d [127/131] brcmsmac: phy_lcn: Remove a bunch of unused variables
 config: arm64-randconfig-r012-20200901 (attached as .config)
 compiler: clang version 12.0.0 (https://github.com/llvm/llvm-project c10e63677f5d20f18010f8f68c631ddc97546f7d)
 reproduce (this is a W=1 build):
@@ -65,7 +65,7 @@ reproduce (this is a W=1 build):
         chmod +x ~/bin/make.cross
         # install arm64 cross compiling tool for clang build
         # apt-get install binutils-aarch64-linux-gnu
-        git checkout ebcfc66f56a43601eec4a8abab6e82aaeb09dcbf
+        git checkout 38c95e0258a067812311e84d2a170fd56f05431d
         # save the attached .config to linux build tree
         COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross ARCH=arm64 
 
@@ -74,119 +74,75 @@ Reported-by: kernel test robot <lkp@intel.com>
 
 All warnings (new ones prefixed by >>):
 
->> drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phytbl_lcn.c:108:18: warning: unused variable 'dot11lcn_gain_tbl_rev1' [-Wunused-const-variable]
-   static const u32 dot11lcn_gain_tbl_rev1[] = {
-                    ^
+>> drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c:361:25: warning: unused variable 'lcnphy_rx_iqcomp_table_rev0' [-Wunused-const-variable]
+   struct lcnphy_rx_iqcomp lcnphy_rx_iqcomp_table_rev0[] = {
+                           ^
    1 warning generated.
 
-# https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git/commit/?id=ebcfc66f56a43601eec4a8abab6e82aaeb09dcbf
+# https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git/commit/?id=38c95e0258a067812311e84d2a170fd56f05431d
 git remote add wireless-drivers-next https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git
 git fetch --no-tags wireless-drivers-next master
-git checkout ebcfc66f56a43601eec4a8abab6e82aaeb09dcbf
-vim +/dot11lcn_gain_tbl_rev1 +108 drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phytbl_lcn.c
+git checkout 38c95e0258a067812311e84d2a170fd56f05431d
+vim +/lcnphy_rx_iqcomp_table_rev0 +361 drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c
 
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  107  
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05 @108  static const u32 dot11lcn_gain_tbl_rev1[] = {
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  109  	0x00000000,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  110  	0x00000000,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  111  	0x00000000,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  112  	0x00000000,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  113  	0x00000000,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  114  	0x00000000,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  115  	0x00000000,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  116  	0x00000000,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  117  	0x00000008,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  118  	0x00000004,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  119  	0x00000008,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  120  	0x00000001,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  121  	0x00000005,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  122  	0x00000009,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  123  	0x0000000D,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  124  	0x00000011,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  125  	0x00000051,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  126  	0x00000091,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  127  	0x00000011,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  128  	0x00000051,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  129  	0x00000091,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  130  	0x000000d1,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  131  	0x00000053,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  132  	0x00000093,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  133  	0x000000d3,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  134  	0x000000d7,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  135  	0x00000117,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  136  	0x00000517,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  137  	0x00000917,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  138  	0x00000957,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  139  	0x00000d57,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  140  	0x00001157,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  141  	0x00001197,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  142  	0x00005197,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  143  	0x00009197,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  144  	0x0000d197,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  145  	0x00011197,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  146  	0x00000000,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  147  	0x00000000,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  148  	0x00000000,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  149  	0x00000000,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  150  	0x00000000,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  151  	0x00000000,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  152  	0x00000008,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  153  	0x00000004,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  154  	0x00000008,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  155  	0x00000001,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  156  	0x00000005,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  157  	0x00000009,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  158  	0x0000000D,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  159  	0x00000011,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  160  	0x00000051,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  161  	0x00000091,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  162  	0x00000011,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  163  	0x00000051,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  164  	0x00000091,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  165  	0x000000d1,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  166  	0x00000053,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  167  	0x00000093,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  168  	0x000000d3,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  169  	0x000000d7,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  170  	0x00000117,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  171  	0x00000517,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  172  	0x00000917,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  173  	0x00000957,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  174  	0x00000d57,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  175  	0x00001157,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  176  	0x00005157,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  177  	0x00009157,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  178  	0x0000d157,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  179  	0x00011157,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  180  	0x00015157,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  181  	0x00019157,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  182  	0x0001d157,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  183  	0x00000000,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  184  	0x00000000,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  185  	0x00000000,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  186  	0x00000000,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  187  	0x00000000,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  188  	0x00000000,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  189  	0x00000000,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  190  	0x00000000,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  191  	0x00000000,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  192  	0x00000000,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  193  	0x00000000,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  194  	0x00000000,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  195  	0x00000000,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  196  	0x00000000,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  197  	0x00000000,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  198  	0x00000000,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  199  	0x00000000,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  200  	0x00000000,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  201  	0x00000000,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  202  	0x00000000,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  203  	0x00000000,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  204  	0x00000000,
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  205  };
-5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phytbl_lcn.c Arend van Spriel 2011-10-05  206  
+5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phy_lcn.c Arend van Spriel 2011-10-05  359  
+5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phy_lcn.c Arend van Spriel 2011-10-05  360  static const
+5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phy_lcn.c Arend van Spriel 2011-10-05 @361  struct lcnphy_rx_iqcomp lcnphy_rx_iqcomp_table_rev0[] = {
+5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phy_lcn.c Arend van Spriel 2011-10-05  362  	{1, 0, 0},
+5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phy_lcn.c Arend van Spriel 2011-10-05  363  	{2, 0, 0},
+5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phy_lcn.c Arend van Spriel 2011-10-05  364  	{3, 0, 0},
+5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phy_lcn.c Arend van Spriel 2011-10-05  365  	{4, 0, 0},
+5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phy_lcn.c Arend van Spriel 2011-10-05  366  	{5, 0, 0},
+5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phy_lcn.c Arend van Spriel 2011-10-05  367  	{6, 0, 0},
+5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phy_lcn.c Arend van Spriel 2011-10-05  368  	{7, 0, 0},
+5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phy_lcn.c Arend van Spriel 2011-10-05  369  	{8, 0, 0},
+5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phy_lcn.c Arend van Spriel 2011-10-05  370  	{9, 0, 0},
+5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phy_lcn.c Arend van Spriel 2011-10-05  371  	{10, 0, 0},
+5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phy_lcn.c Arend van Spriel 2011-10-05  372  	{11, 0, 0},
+5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phy_lcn.c Arend van Spriel 2011-10-05  373  	{12, 0, 0},
+5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phy_lcn.c Arend van Spriel 2011-10-05  374  	{13, 0, 0},
+5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phy_lcn.c Arend van Spriel 2011-10-05  375  	{14, 0, 0},
+5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phy_lcn.c Arend van Spriel 2011-10-05  376  	{34, 0, 0},
+5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phy_lcn.c Arend van Spriel 2011-10-05  377  	{38, 0, 0},
+5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phy_lcn.c Arend van Spriel 2011-10-05  378  	{42, 0, 0},
+5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phy_lcn.c Arend van Spriel 2011-10-05  379  	{46, 0, 0},
+5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phy_lcn.c Arend van Spriel 2011-10-05  380  	{36, 0, 0},
+5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phy_lcn.c Arend van Spriel 2011-10-05  381  	{40, 0, 0},
+5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phy_lcn.c Arend van Spriel 2011-10-05  382  	{44, 0, 0},
+5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phy_lcn.c Arend van Spriel 2011-10-05  383  	{48, 0, 0},
+5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phy_lcn.c Arend van Spriel 2011-10-05  384  	{52, 0, 0},
+5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phy_lcn.c Arend van Spriel 2011-10-05  385  	{56, 0, 0},
+5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phy_lcn.c Arend van Spriel 2011-10-05  386  	{60, 0, 0},
+5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phy_lcn.c Arend van Spriel 2011-10-05  387  	{64, 0, 0},
+5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phy_lcn.c Arend van Spriel 2011-10-05  388  	{100, 0, 0},
+5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phy_lcn.c Arend van Spriel 2011-10-05  389  	{104, 0, 0},
+5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phy_lcn.c Arend van Spriel 2011-10-05  390  	{108, 0, 0},
+5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phy_lcn.c Arend van Spriel 2011-10-05  391  	{112, 0, 0},
+5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phy_lcn.c Arend van Spriel 2011-10-05  392  	{116, 0, 0},
+5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phy_lcn.c Arend van Spriel 2011-10-05  393  	{120, 0, 0},
+5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phy_lcn.c Arend van Spriel 2011-10-05  394  	{124, 0, 0},
+5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phy_lcn.c Arend van Spriel 2011-10-05  395  	{128, 0, 0},
+5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phy_lcn.c Arend van Spriel 2011-10-05  396  	{132, 0, 0},
+5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phy_lcn.c Arend van Spriel 2011-10-05  397  	{136, 0, 0},
+5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phy_lcn.c Arend van Spriel 2011-10-05  398  	{140, 0, 0},
+5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phy_lcn.c Arend van Spriel 2011-10-05  399  	{149, 0, 0},
+5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phy_lcn.c Arend van Spriel 2011-10-05  400  	{153, 0, 0},
+5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phy_lcn.c Arend van Spriel 2011-10-05  401  	{157, 0, 0},
+5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phy_lcn.c Arend van Spriel 2011-10-05  402  	{161, 0, 0},
+5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phy_lcn.c Arend van Spriel 2011-10-05  403  	{165, 0, 0},
+5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phy_lcn.c Arend van Spriel 2011-10-05  404  	{184, 0, 0},
+5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phy_lcn.c Arend van Spriel 2011-10-05  405  	{188, 0, 0},
+5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phy_lcn.c Arend van Spriel 2011-10-05  406  	{192, 0, 0},
+5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phy_lcn.c Arend van Spriel 2011-10-05  407  	{196, 0, 0},
+5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phy_lcn.c Arend van Spriel 2011-10-05  408  	{200, 0, 0},
+5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phy_lcn.c Arend van Spriel 2011-10-05  409  	{204, 0, 0},
+5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phy_lcn.c Arend van Spriel 2011-10-05  410  	{208, 0, 0},
+5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phy_lcn.c Arend van Spriel 2011-10-05  411  	{212, 0, 0},
+5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phy_lcn.c Arend van Spriel 2011-10-05  412  	{216, 0, 0},
+5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phy_lcn.c Arend van Spriel 2011-10-05  413  };
+5b435de0d78686 drivers/net/wireless/brcm80211/brcmsmac/phy/phy_lcn.c Arend van Spriel 2011-10-05  414  
 
-:::::: The code at line 108 was first introduced by commit
+:::::: The code at line 361 was first introduced by commit
 :::::: 5b435de0d786869c95d1962121af0d7df2542009 net: wireless: add brcm80211 drivers
 
 :::::: TO: Arend van Spriel <arend@broadcom.com>
@@ -196,12 +152,12 @@ vim +/dot11lcn_gain_tbl_rev1 +108 drivers/net/wireless/broadcom/brcm80211/brcmsm
 0-DAY CI Kernel Test Service, Intel Corporation
 https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
 
---YiEDa0DAkWCtVeE4
+--x+6KMIRAuhnl3hBn
 Content-Type: application/gzip
 Content-Disposition: attachment; filename=".config.gz"
 Content-Transfer-Encoding: base64
 
-H4sICPZrTl8AAy5jb25maWcAnDxdd+O2ju/9FT7Tl7sPbf0VT2b35IGSKJu1JGpEynbyouMm
+H4sICNZfTl8AAy5jb25maWcAnDxdd+O2ju/9FT7Tl7sPbf0VT2b35IGSKJu1JGpEynbyouMm
 zjR7M8lcJ5l27q9fgPoiKdLO3Tk9nTEBkiAIgAAI6ueffh6Rt9fnr/vXh9v94+OP0ZfD0+G4
 fz3cje4fHg//M4r4KONyRCMmfwXk5OHp7e/f9sevi/no4tdPv45/Od5ORuvD8enwOAqfn+4f
 vrxB94fnp59+/inkWcyWVRhWG1oIxrNK0p28+nD7uH/6Mvp+OL4A3mgy/XX863j0jy8Pr//9
@@ -1020,4 +976,4 @@ cYoG7YECXZw3tCziTS2xWUrbuqqFvJ5Y5dB7T4Xk4jdFXA2uBgfNjP0AaF4dNZ3KVyHRSnGF
 T7JwbNInR1ZijG3ruoqXtsiaAgRj6mJXC8uEx/I6EX/G1etReiVHPbrVacCLBJiwyeUvTRkj
 x6kpJEoAuKi2YfIwD/xt1Wv8/wFZc1cfNNQCAA==
 
---YiEDa0DAkWCtVeE4--
+--x+6KMIRAuhnl3hBn--
