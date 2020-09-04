@@ -2,27 +2,35 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D3DC425D49A
-	for <lists+linux-wireless@lfdr.de>; Fri,  4 Sep 2020 11:21:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1013D25D5C1
+	for <lists+linux-wireless@lfdr.de>; Fri,  4 Sep 2020 12:15:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729959AbgIDJVA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 4 Sep 2020 05:21:00 -0400
-Received: from sitav-80046.hsr.ch ([152.96.80.46]:40582 "EHLO
-        mail.strongswan.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728205AbgIDJVA (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 4 Sep 2020 05:21:00 -0400
-X-Greylist: delayed 494 seconds by postgrey-1.27 at vger.kernel.org; Fri, 04 Sep 2020 05:20:59 EDT
-Received: from think.wlp.is (unknown [185.12.128.225])
-        by mail.strongswan.org (Postfix) with ESMTPSA id D9ED74011D;
-        Fri,  4 Sep 2020 11:12:42 +0200 (CEST)
-From:   Martin Willi <martin@strongswan.org>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org
-Subject: [PATCH] nl80211: Include supported RX/TX frames in split phy dumps only
-Date:   Fri,  4 Sep 2020 11:12:35 +0200
-Message-Id: <20200904091235.11342-1-martin@strongswan.org>
-X-Mailer: git-send-email 2.25.1
+        id S1728636AbgIDKPs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 4 Sep 2020 06:15:48 -0400
+Received: from mail.kernel.org ([198.145.29.99]:44578 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726114AbgIDKPr (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 4 Sep 2020 06:15:47 -0400
+Received: from lore-desk.redhat.com (unknown [151.66.86.87])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 099E4206D4;
+        Fri,  4 Sep 2020 10:15:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1599214547;
+        bh=HNZrp2eIHtaSEEWfmzi8lYkBtGXRPcZ5Efwx6LBTnEg=;
+        h=From:To:Cc:Subject:Date:From;
+        b=Lp7auLFl6GCaIBSrKMRVzMtQF2TFpbU2BxD4X3DS5fWhIApMNiaLMgjv6KGYRggVc
+         iowz4I8JmBTfl2qZjjz0YZQf1GAXuC2/VOFMpfvG2NNpg8PL1/HRzR/s2NUEZLJRj4
+         gSoLIothfOf/bFHK2a5jd29uILTkd7F2vja4F4Qk=
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
+        ryder.lee@mediatek.com, shayne.chen@mediatek.com
+Subject: [PATCH] mt76: mt7622: fix fw hang on mt7622
+Date:   Fri,  4 Sep 2020 12:15:42 +0200
+Message-Id: <ed18061d7e144c00de689c43b050a954d8a55468.1599214363.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
@@ -30,48 +38,31 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-With the recent additions of new features, non-split phy dumps exceed the
-maximum Netlink size of 4096 bytes. Depending on their feature set, not all
-radios are affected, but for example hwsim is.
+Set poll timeout to 3s for mt7622 devices in order to avoid fw hangs.
 
-While userspace dumping phys can request a split dump as a work around,
-legacy tools without split support may get oversized dumps. Much more
-problematic are phy new/del notifications, which are always limited to
-a page size: Generating these messages fails, and Netlink notifications
-are silently dropped. This breaks userspace relying on these events.
-
-There is no single commit that broke these events, as their size highly
-depends on the phy feature set. Finding attributes to strip is challenging:
-The largest attributes are the frequency lists, but they are already
-reduced to the minimum and have rather useful information. HE information
-probably could be stripped, but the saving is about 200 bytes, not enough
-to fix dumps for many cases. The next larger attributes are usually the
-RX/TX frame attributes. Removing these attributes can reduce a hwsim phy
-dump from 4576 to 3288 bytes, and it seems to be the most reasonable
-approach.
-
-This fixes Netlink phy notifications, but obviously removes supported
-RX/TX frames from these events and non-split phy dumps. Userspace is
-required to use split dumps to receive supported RX/TX frame information.
-
-Signed-off-by: Martin Willi <martin@strongswan.org>
+Co-developed-by: Shayne Chen <shayne.chen@mediatek.com>
+Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+Co-developed-by: Ryder Lee <ryder.lee@mediatek.com>
+Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+Fixes: 757b0e7fd6f4 ("mt76: mt7615: avoid polling in fw_own for mt7663")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- net/wireless/nl80211.c | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7615/mcu.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 201d029687cc..9362fa407933 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -2304,7 +2304,7 @@ static int nl80211_send_wiphy(struct cfg80211_registered_device *rdev,
- 		    nla_put_flag(msg, NL80211_ATTR_OFFCHANNEL_TX_OK))
- 			goto nla_put_failure;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+index 074cdefba8aa..77595bc1f1ae 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+@@ -386,7 +386,7 @@ static int mt7615_mcu_fw_pmctrl(struct mt7615_dev *dev)
  
--		if (nl80211_send_mgmt_stypes(msg, mgmt_stypes))
-+		if (state->split && nl80211_send_mgmt_stypes(msg, mgmt_stypes))
- 			goto nla_put_failure;
- 		state->split_start++;
- 		if (state->split)
+ 	if (is_mt7622(&dev->mt76) &&
+ 	    !mt76_poll_msec(dev, addr, MT_CFG_LPCR_HOST_FW_OWN,
+-			    MT_CFG_LPCR_HOST_FW_OWN, 300)) {
++			    MT_CFG_LPCR_HOST_FW_OWN, 3000)) {
+ 		dev_err(dev->mt76.dev, "Timeout for firmware own\n");
+ 		clear_bit(MT76_STATE_PM, &mphy->state);
+ 		err = -EIO;
 -- 
-2.25.1
+2.26.2
 
