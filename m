@@ -2,85 +2,76 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D553E25D100
-	for <lists+linux-wireless@lfdr.de>; Fri,  4 Sep 2020 07:51:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D3DC425D49A
+	for <lists+linux-wireless@lfdr.de>; Fri,  4 Sep 2020 11:21:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726445AbgIDFvK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 4 Sep 2020 01:51:10 -0400
-Received: from mailgw02.mediatek.com ([210.61.82.184]:42992 "EHLO
-        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1725812AbgIDFvJ (ORCPT
+        id S1729959AbgIDJVA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 4 Sep 2020 05:21:00 -0400
+Received: from sitav-80046.hsr.ch ([152.96.80.46]:40582 "EHLO
+        mail.strongswan.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728205AbgIDJVA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 4 Sep 2020 01:51:09 -0400
-X-UUID: 6dd3e289bd8840d19d9b71b25bc22b22-20200904
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Transfer-Encoding:Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=jPwwJyFn/+V/3BD7kswj4A4OC14ihyANbZY+bcDcNig=;
-        b=jOi6ySowdlOa3/dwTxbrW1Wr5jWrpcmDZ4A+QHZ14oEYKgvn5sovrc5+5keTFOaC5OU8mYDeTWSrSGgnDi3KttN29wIl+7yab3nLobMMj8SrIzT0pbPLuON3kunkUgjKHCOMU6Cts6pO5zxdvwXynxBeAvzZW9bnTNLFA/tk9xM=;
-X-UUID: 6dd3e289bd8840d19d9b71b25bc22b22-20200904
-Received: from mtkcas07.mediatek.inc [(172.21.101.84)] by mailgw02.mediatek.com
-        (envelope-from <ryder.lee@mediatek.com>)
-        (Cellopoint E-mail Firewall v4.1.14 Build 0819 with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 1095372783; Fri, 04 Sep 2020 13:51:04 +0800
-Received: from mtkcas08.mediatek.inc (172.21.101.126) by
- mtkmbs08n1.mediatek.inc (172.21.101.55) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Fri, 4 Sep 2020 13:51:02 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas08.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Fri, 4 Sep 2020 13:51:03 +0800
-From:   Ryder Lee <ryder.lee@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-CC:     Shayne Chen <shayne.chen@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>,
-        Chih-Min Chen <chih-min.chen@mediatek.com>,
-        Ryder Lee <ryder.lee@mediatek.com>
-Subject: [PATCH] mt76: mt7915: fix unexpected firmware mode
-Date:   Fri, 4 Sep 2020 13:51:02 +0800
-Message-ID: <1ff9c333497bc23c535028c53e19e9d9724cf4c0.1599099379.git.ryder.lee@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+        Fri, 4 Sep 2020 05:21:00 -0400
+X-Greylist: delayed 494 seconds by postgrey-1.27 at vger.kernel.org; Fri, 04 Sep 2020 05:20:59 EDT
+Received: from think.wlp.is (unknown [185.12.128.225])
+        by mail.strongswan.org (Postfix) with ESMTPSA id D9ED74011D;
+        Fri,  4 Sep 2020 11:12:42 +0200 (CEST)
+From:   Martin Willi <martin@strongswan.org>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless@vger.kernel.org
+Subject: [PATCH] nl80211: Include supported RX/TX frames in split phy dumps only
+Date:   Fri,  4 Sep 2020 11:12:35 +0200
+Message-Id: <20200904091235.11342-1-martin@strongswan.org>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-RnJvbTogQ2hpaC1NaW4gQ2hlbiA8Y2hpaC1taW4uY2hlbkBtZWRpYXRlay5jb20+DQoNCkF2b2lk
-IGZpcm13YXJlIGZhbGxpbmcgaW50byBzcGVjdHJ1bSBtb2RlIHNpbmNlIHRoYXQgd2lsbCBzZXQN
-CnVuZXhwZWN0ZWQgUFNFL1BMRSB0aHJlc2hvbGRzIHdoaWNoIGxlYWQgdG8gVHggaGFuZy4NCg0K
-VGhpcyBtb2RlIHNob3VsZCBiZSBjbGVhbmVkIGJlZm9yZSBmaXJtd2FyZSBkb3dubG9hZCBzdGFn
-ZS4NCg0KU2lnbmVkLW9mZi1ieTogQ2hpaC1NaW4gQ2hlbiA8Y2hpaC1taW4uY2hlbkBtZWRpYXRl
-ay5jb20+DQpTaWduZWQtb2ZmLWJ5OiBSeWRlciBMZWUgPHJ5ZGVyLmxlZUBtZWRpYXRlay5jb20+
-DQotLS0NCiBkcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzkxNS9pbml0LmMg
-fCA2ICsrKysrKw0KIGRyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1L3Jl
-Z3MuaCB8IDcgKysrKysrKw0KIDIgZmlsZXMgY2hhbmdlZCwgMTMgaW5zZXJ0aW9ucygrKQ0KDQpk
-aWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvaW5p
-dC5jIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvaW5pdC5jDQpp
-bmRleCA1MTdmNTI2ZWM4NTIuLjVhMmRiYmQ5YWE1YSAxMDA2NDQNCi0tLSBhL2RyaXZlcnMvbmV0
-L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1L2luaXQuYw0KKysrIGIvZHJpdmVycy9uZXQv
-d2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvaW5pdC5jDQpAQCAtMTM5LDYgKzEzOSwxMiBA
-QCBzdGF0aWMgaW50IG10NzkxNV9pbml0X2hhcmR3YXJlKHN0cnVjdCBtdDc5MTVfZGV2ICpkZXYp
-DQogDQogCXNldF9iaXQoTVQ3Nl9TVEFURV9JTklUSUFMSVpFRCwgJmRldi0+bXBoeS5zdGF0ZSk7
-DQogDQorCS8qDQorCSAqIGZvcmNlIGZpcm13YXJlIG9wZXJhdGlvbiBtb2RlIGludG8gbm9ybWFs
-IHN0YXRlLA0KKwkgKiB3aGljaCBzaG91bGQgYmUgc2V0IGJlZm9yZSBmaXJtd2FyZSBkb3dubG9h
-ZCBzdGFnZS4NCisJICovDQorCW10NzZfd3IoZGV2LCBNVF9TV0RFRl9NT0RFLCBNVF9TV0RFRl9O
-T1JNQUxfTU9ERSk7DQorDQogCXJldCA9IG10NzkxNV9tY3VfaW5pdChkZXYpOw0KIAlpZiAocmV0
-KQ0KIAkJcmV0dXJuIHJldDsNCmRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRp
-YXRlay9tdDc2L210NzkxNS9yZWdzLmggYi9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9t
-dDc2L210NzkxNS9yZWdzLmgNCmluZGV4IGUwNmM0ZDZjZDJmYy4uY2I4NTJhNGJmZDk3IDEwMDY0
-NA0KLS0tIGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvcmVncy5o
-DQorKysgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzkxNS9yZWdzLmgN
-CkBAIC0zNzEsNiArMzcxLDEzIEBAIHN0YXRpYyBpbmxpbmUgdTMyIG10NzkxNV9pbnRfcnhfbWFz
-ayhlbnVtIG10NzZfcnhxX2lkIHEpDQogI2RlZmluZSBNVF9ISUZfUkVNQVBfTDJfQkFTRQkJR0VO
-TUFTSygzMSwgMTIpDQogI2RlZmluZSBNVF9ISUZfUkVNQVBfQkFTRV9MMgkJMHgwMDAwMA0KIA0K
-KyNkZWZpbmUgTVRfU1dERUZfQkFTRQkJCTB4NDFmMjAwDQorI2RlZmluZSBNVF9TV0RFRihvZnMp
-CQkJKE1UX1NXREVGX0JBU0UgKyAob2ZzKSkNCisjZGVmaW5lIE1UX1NXREVGX01PREUJCQlNVF9T
-V0RFRigweDNjKQ0KKyNkZWZpbmUgTVRfU1dERUZfTk9STUFMX01PREUJCTANCisjZGVmaW5lIE1U
-X1NXREVGX0lDQVBfTU9ERQkJMQ0KKyNkZWZpbmUgTVRfU1dERUZfU1BFQ1RSVU1fTU9ERQkJMg0K
-Kw0KICNkZWZpbmUgTVRfVE9QX0JBU0UJCQkweDE4MDYwMDAwDQogI2RlZmluZSBNVF9UT1Aob2Zz
-KQkJCShNVF9UT1BfQkFTRSArIChvZnMpKQ0KIA0KLS0gDQoyLjE4LjANCg==
+With the recent additions of new features, non-split phy dumps exceed the
+maximum Netlink size of 4096 bytes. Depending on their feature set, not all
+radios are affected, but for example hwsim is.
+
+While userspace dumping phys can request a split dump as a work around,
+legacy tools without split support may get oversized dumps. Much more
+problematic are phy new/del notifications, which are always limited to
+a page size: Generating these messages fails, and Netlink notifications
+are silently dropped. This breaks userspace relying on these events.
+
+There is no single commit that broke these events, as their size highly
+depends on the phy feature set. Finding attributes to strip is challenging:
+The largest attributes are the frequency lists, but they are already
+reduced to the minimum and have rather useful information. HE information
+probably could be stripped, but the saving is about 200 bytes, not enough
+to fix dumps for many cases. The next larger attributes are usually the
+RX/TX frame attributes. Removing these attributes can reduce a hwsim phy
+dump from 4576 to 3288 bytes, and it seems to be the most reasonable
+approach.
+
+This fixes Netlink phy notifications, but obviously removes supported
+RX/TX frames from these events and non-split phy dumps. Userspace is
+required to use split dumps to receive supported RX/TX frame information.
+
+Signed-off-by: Martin Willi <martin@strongswan.org>
+---
+ net/wireless/nl80211.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 201d029687cc..9362fa407933 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -2304,7 +2304,7 @@ static int nl80211_send_wiphy(struct cfg80211_registered_device *rdev,
+ 		    nla_put_flag(msg, NL80211_ATTR_OFFCHANNEL_TX_OK))
+ 			goto nla_put_failure;
+ 
+-		if (nl80211_send_mgmt_stypes(msg, mgmt_stypes))
++		if (state->split && nl80211_send_mgmt_stypes(msg, mgmt_stypes))
+ 			goto nla_put_failure;
+ 		state->split_start++;
+ 		if (state->split)
+-- 
+2.25.1
 
