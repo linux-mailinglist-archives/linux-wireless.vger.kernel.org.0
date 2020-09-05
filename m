@@ -2,94 +2,177 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5AE1D25E796
-	for <lists+linux-wireless@lfdr.de>; Sat,  5 Sep 2020 14:50:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3DA0125E9BE
+	for <lists+linux-wireless@lfdr.de>; Sat,  5 Sep 2020 20:38:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728376AbgIEMuW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 5 Sep 2020 08:50:22 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:45710 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726261AbgIEMuV (ORCPT
+        id S1728563AbgIESis (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 5 Sep 2020 14:38:48 -0400
+Received: from mail.adapt-ip.com ([173.164.178.19]:38944 "EHLO
+        web.adapt-ip.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1728393AbgIESir (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 5 Sep 2020 08:50:21 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 085CnJL3046039;
-        Sat, 5 Sep 2020 12:50:08 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=5IK9hoWjNqBk1UoUzZ4OO2Lky+eXMaVBbLFcJ10EuVo=;
- b=BI/JzoUUDKUfeTMI9nUllS/HeERa8sCWhRYMUUkAZhHAfb0XmpZ+9ymUydLj4s2+Yach
- 5Tp7zzlq/CvJDBCZ8WH386a/Csh7tLogSKF4Oe+JmD1gx6ohnl6n/097uz4SHMJTcocK
- TqAcXk8HI+KhtwtkNEvyvsCGR/atXY4C67YlKbxtXm/UZ/MotUQUJA8GRIWQF0ztmFJf
- eQDpjqS7bbbrYN3oB7n03wki/lQmWpXL2D40RhcEF0XHpiY7RoUgl2wbuZm1Jh1fR0ey
- 1vELVfUvUJDvLpLteGecBhI9eku+Sx9L3zu/KlCmbJczdvdc4ld2qrovjoGwYOh6Xxq+ Sg== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by userp2130.oracle.com with ESMTP id 33c23qh77g-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Sat, 05 Sep 2020 12:50:08 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 085CjxcU003387;
-        Sat, 5 Sep 2020 12:48:08 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by userp3030.oracle.com with ESMTP id 33bysqqhe8-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Sat, 05 Sep 2020 12:48:07 +0000
-Received: from abhmp0013.oracle.com (abhmp0013.oracle.com [141.146.116.19])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 085Cm4W5016364;
-        Sat, 5 Sep 2020 12:48:04 GMT
-Received: from mwanda (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Sat, 05 Sep 2020 05:48:04 -0700
-Date:   Sat, 5 Sep 2020 15:47:58 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Qiujun Huang <hqjagain@gmail.com>,
-        Larry Finger <Larry.Finger@lwfinger.net>,
-        linux-wireless@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] rtlwifi: rtl8723ae: Delete a stray tab
-Message-ID: <20200905124758.GB183976@mwanda>
+        Sat, 5 Sep 2020 14:38:47 -0400
+Received: from localhost (localhost [127.0.0.1])
+        by web.adapt-ip.com (Postfix) with ESMTP id A790E4F96E7;
+        Sat,  5 Sep 2020 18:38:46 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at web.adapt-ip.com
+Received: from web.adapt-ip.com ([127.0.0.1])
+        by localhost (web.adapt-ip.com [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id HAwEHy1Rs-Ba; Sat,  5 Sep 2020 18:38:43 +0000 (UTC)
+Received: from mail.ibsgaard.io (c-73-223-60-234.hsd1.ca.comcast.net [73.223.60.234])
+        (Authenticated sender: thomas@adapt-ip.com)
+        by web.adapt-ip.com (Postfix) with ESMTPSA id 6D0FD4F312A;
+        Sat,  5 Sep 2020 18:38:43 +0000 (UTC)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9734 signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 suspectscore=0 mlxscore=0
- bulkscore=0 malwarescore=0 spamscore=0 mlxlogscore=999 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2009050122
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9734 signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 priorityscore=1501
- mlxlogscore=999 mlxscore=0 bulkscore=0 suspectscore=0 spamscore=0
- malwarescore=0 phishscore=0 lowpriorityscore=0 clxscore=1011
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2009050123
+Date:   Sat, 05 Sep 2020 11:38:42 -0700
+From:   Thomas Pedersen <thomas@adapt-ip.com>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH v2 03/22] cfg80211: regulatory: handle S1G channels
+In-Reply-To: <20200831205600.21058-4-thomas@adapt-ip.com>
+References: <20200831205600.21058-1-thomas@adapt-ip.com>
+ <20200831205600.21058-4-thomas@adapt-ip.com>
+User-Agent: Roundcube Webmail/1.4.7
+Message-ID: <44089020f46d6164de74318bddc2bc9e@adapt-ip.com>
+X-Sender: thomas@adapt-ip.com
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This line is indented too far.
+On 2020-08-31 13:55, Thomas Pedersen wrote:
+> S1G channels have a minimum bandwidth of 1Mhz, and there
+> is a 1:1 mapping of allowed bandwidth to channel number.
+> 
+> Signed-off-by: Thomas Pedersen <thomas@adapt-ip.com>
+> 
+> ---
+> 
+> v2:
+>  - drop the freq_reg_info() interface changes and move the
+>    check for S1G band inside. Fixes a driver compile
+>    error.
+>  - fix iterating past bws[] in __freq_reg_info() by
+>    setting initial element to 0.
+>    Reported-by: kernel test robot <lkp@intel.com>
+> ---
+>  net/wireless/reg.c | 70 ++++++++++++++++++++++++++++++++++++++--------
+>  1 file changed, 58 insertions(+), 12 deletions(-)
+> 
+> diff --git a/net/wireless/reg.c b/net/wireless/reg.c
+> index 0ab7808fcec8..be6f54b70ad3 100644
+> --- a/net/wireless/reg.c
+> +++ b/net/wireless/reg.c
+> @@ -1617,9 +1617,11 @@ __freq_reg_info(struct wiphy *wiphy, u32
+> center_freq, u32 min_bw)
+>  {
+>  	const struct ieee80211_regdomain *regd = reg_get_regdomain(wiphy);
+>  	const struct ieee80211_reg_rule *reg_rule = NULL;
+> +	const u32 bws[] = {0, 1, 2, 4, 5, 8, 10, 16, 20};
+> +	int i = sizeof(bws) / sizeof(u32) - 1;
 
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
- drivers/net/wireless/realtek/rtlwifi/rtl8723ae/hal_btc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+This could be 'int i = ARRAY_SIZE(bws) - 1'.
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/hal_btc.c b/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/hal_btc.c
-index 16c6007861ff..53af0d209b11 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/hal_btc.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/hal_btc.c
-@@ -435,7 +435,7 @@ static void rtl8723e_dm_bt_set_fw_tdma_ctrl(struct ieee80211_hw *hw,
- 		if (TDMA_1ANT == ant_num) {
- 			rtl_dbg(rtlpriv, COMP_BT_COEXIST, DBG_TRACE,
- 				"[BTCoex], TDMA_1ANT\n");
--				h2c_parameter[0] |= BIT(1);
-+			h2c_parameter[0] |= BIT(1);
- 		} else if (TDMA_2ANT == ant_num) {
- 			rtl_dbg(rtlpriv, COMP_BT_COEXIST, DBG_TRACE,
- 				"[BTCoex], TDMA_2ANT\n");
+>  	u32 bw;
+> 
+> -	for (bw = MHZ_TO_KHZ(20); bw >= min_bw; bw = bw / 2) {
+> +	for (bw = MHZ_TO_KHZ(bws[i]); bw >= min_bw; bw = 
+> MHZ_TO_KHZ(bws[i--])) {
+>  		reg_rule = freq_reg_info_regd(center_freq, regd, bw);
+>  		if (!IS_ERR(reg_rule))
+>  			return reg_rule;
+> @@ -1631,7 +1633,9 @@ __freq_reg_info(struct wiphy *wiphy, u32
+> center_freq, u32 min_bw)
+>  const struct ieee80211_reg_rule *freq_reg_info(struct wiphy *wiphy,
+>  					       u32 center_freq)
+>  {
+> -	return __freq_reg_info(wiphy, center_freq, MHZ_TO_KHZ(20));
+> +	u32 min_bw = center_freq < MHZ_TO_KHZ(1000) ? 1 : 20;
+> +
+> +	return __freq_reg_info(wiphy, center_freq, MHZ_TO_KHZ(min_bw));
+>  }
+>  EXPORT_SYMBOL(freq_reg_info);
+> 
+> @@ -1659,6 +1663,7 @@ static uint32_t reg_rule_to_chan_bw_flags(const
+> struct ieee80211_regdomain *regd
+>  {
+>  	const struct ieee80211_freq_range *freq_range = NULL;
+>  	u32 max_bandwidth_khz, center_freq_khz, bw_flags = 0;
+> +	bool is_s1g = chan->band == NL80211_BAND_S1GHZ;
+> 
+>  	freq_range = &reg_rule->freq_range;
+> 
+> @@ -1678,16 +1683,57 @@ static uint32_t
+> reg_rule_to_chan_bw_flags(const struct ieee80211_regdomain *regd
+>  					MHZ_TO_KHZ(20)))
+>  		bw_flags |= IEEE80211_CHAN_NO_20MHZ;
+> 
+> -	if (max_bandwidth_khz < MHZ_TO_KHZ(10))
+> -		bw_flags |= IEEE80211_CHAN_NO_10MHZ;
+> -	if (max_bandwidth_khz < MHZ_TO_KHZ(20))
+> -		bw_flags |= IEEE80211_CHAN_NO_20MHZ;
+> -	if (max_bandwidth_khz < MHZ_TO_KHZ(40))
+> -		bw_flags |= IEEE80211_CHAN_NO_HT40;
+> -	if (max_bandwidth_khz < MHZ_TO_KHZ(80))
+> -		bw_flags |= IEEE80211_CHAN_NO_80MHZ;
+> -	if (max_bandwidth_khz < MHZ_TO_KHZ(160))
+> -		bw_flags |= IEEE80211_CHAN_NO_160MHZ;
+> +	if (is_s1g) {
+> +		/* S1G is strict about non overlapping channels. We can
+> +		 * calculate which bandwidth is allowed per channel by finding
+> +		 * the largest bandwidth which cleanly divides the freq_range.
+> +		 */
+> +		int edge_offset;
+> +		int ch_bw = max_bandwidth_khz;
+> +
+> +		while (ch_bw) {
+> +			edge_offset = (center_freq_khz - ch_bw / 2) -
+> +				      freq_range->start_freq_khz;
+> +			if (edge_offset % ch_bw == 0) {
+> +				switch (KHZ_TO_MHZ(ch_bw)) {
+> +				case 1:
+> +					bw_flags |= IEEE80211_CHAN_1MHZ;
+> +					break;
+> +				case 2:
+> +					bw_flags |= IEEE80211_CHAN_2MHZ;
+> +					break;
+> +				case 4:
+> +					bw_flags |= IEEE80211_CHAN_4MHZ;
+> +					break;
+> +				case 8:
+> +					bw_flags |= IEEE80211_CHAN_8MHZ;
+> +					break;
+> +				case 16:
+> +					bw_flags |= IEEE80211_CHAN_16MHZ;
+> +					break;
+> +				default:
+> +					/* If we got here, no bandwidths fit on
+> +					 * this frequency, ie. band edge.
+> +					 */
+> +					bw_flags |= IEEE80211_CHAN_DISABLED;
+> +					break;
+> +				}
+> +				break;
+> +			}
+> +			ch_bw /= 2;
+> +		}
+> +	} else {
+> +		if (max_bandwidth_khz < MHZ_TO_KHZ(10))
+> +			bw_flags |= IEEE80211_CHAN_NO_10MHZ;
+> +		if (max_bandwidth_khz < MHZ_TO_KHZ(20))
+> +			bw_flags |= IEEE80211_CHAN_NO_20MHZ;
+> +		if (max_bandwidth_khz < MHZ_TO_KHZ(40))
+> +			bw_flags |= IEEE80211_CHAN_NO_HT40;
+> +		if (max_bandwidth_khz < MHZ_TO_KHZ(80))
+> +			bw_flags |= IEEE80211_CHAN_NO_80MHZ;
+> +		if (max_bandwidth_khz < MHZ_TO_KHZ(160))
+> +			bw_flags |= IEEE80211_CHAN_NO_160MHZ;
+> +	}
+>  	return bw_flags;
+>  }
+
 -- 
-2.28.0
-
+thomas
