@@ -2,95 +2,119 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F303225FDB5
-	for <lists+linux-wireless@lfdr.de>; Mon,  7 Sep 2020 17:56:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F03C25FDC6
+	for <lists+linux-wireless@lfdr.de>; Mon,  7 Sep 2020 17:57:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729974AbgIGP40 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 7 Sep 2020 11:56:26 -0400
-Received: from a27-186.smtp-out.us-west-2.amazonses.com ([54.240.27.186]:44514
-        "EHLO a27-186.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1730158AbgIGPzw (ORCPT
+        id S1730249AbgIGP5P (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 7 Sep 2020 11:57:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56718 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730060AbgIGP5F (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 7 Sep 2020 11:55:52 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1599494150;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:MIME-Version:Content-Type;
-        bh=QTFjDKmp+YLEAN4/5pw0F1O83VzAybdj5K6uBv0oUF4=;
-        b=l0gtu6dpqU2t7wVVoNKm2QvhoC1eR4JCmkwpnS2rFa1rCHqvMxl7v+WeuNH3MnMD
-        EPN+fs4k2oaRwBXZ/PQanOX9OEb4dQ7OeYxO8lpHVwVuqF5u/iWp3my/Js0bsJ4eqd9
-        eEogQaOGBUVM8RX05FacFaoXgombqOEHKUB2s2cY=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=hsbnp7p3ensaochzwyq5wwmceodymuwv; d=amazonses.com; t=1599494150;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:MIME-Version:Content-Type:Feedback-ID;
-        bh=QTFjDKmp+YLEAN4/5pw0F1O83VzAybdj5K6uBv0oUF4=;
-        b=lIMe1O3PAvZ/UgNffTk8oKYv5xq6m+WBZ7RUU1k+cznO37psdlb1irZ0AUnJL0Br
-        0RwRk0XPSwZZRRuaIapryFmCRo+9vVluFv+vT44LQQkw7GwNbH71GzFnph2qALkbzzz
-        umdTU6/004k5mNz97x9IDJYat4edmaIV5dB19BLw=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
-        autolearn=no autolearn_force=no version=3.4.0
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 5FC0FC55689
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Wen Gong <wgong@codeaurora.org>
-Cc:     linux-wireless@vger.kernel.org, ath10k@lists.infradead.org
-Subject: Re: [PATCH v4 1/2] ath10k: add refcount for ath10k_core_restart
-References: <20200108031957.22308-1-wgong@codeaurora.org>
-        <20200108031957.22308-2-wgong@codeaurora.org>
-        <87imdlkuw8.fsf@codeaurora.org>
-        <725b4377f63c76627e1e68604323cb74@codeaurora.org>
-Date:   Mon, 7 Sep 2020 15:55:50 +0000
-In-Reply-To: <725b4377f63c76627e1e68604323cb74@codeaurora.org> (Wen Gong's
-        message of "Thu, 20 Aug 2020 17:18:26 +0800")
-Message-ID: <010101746947d9a2-1e7623e9-d659-49a2-8001-48779b091dff-000000@us-west-2.amazonses.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        Mon, 7 Sep 2020 11:57:05 -0400
+Received: from mail-ej1-x641.google.com (mail-ej1-x641.google.com [IPv6:2a00:1450:4864:20::641])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4FB1C061573
+        for <linux-wireless@vger.kernel.org>; Mon,  7 Sep 2020 08:57:04 -0700 (PDT)
+Received: by mail-ej1-x641.google.com with SMTP id j11so18875454ejk.0
+        for <linux-wireless@vger.kernel.org>; Mon, 07 Sep 2020 08:57:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google;
+        h=from:to:cc:date:message-id:in-reply-to:references:user-agent
+         :subject:mime-version:content-transfer-encoding;
+        bh=tN/xi/K33hSzLhlnHvwEfSPc0J4JC2agdpMi5R5ulms=;
+        b=XXMr+0KVcfwLVtACV+5XhszZiAr/IlRFuPw0JES53pNrVeJKlDPYEvQRTLp4s6qqg6
+         dlQWQJ1hRfdJG5CBwkJWtc/nPWJ05fA9045fIL9PJp3EC+6jDhVDzr/1idkILEJScMDH
+         wrdw7edgJYvc5dgcmR7qjazoLuHUUZ9KGCldo=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:date:message-id:in-reply-to
+         :references:user-agent:subject:mime-version
+         :content-transfer-encoding;
+        bh=tN/xi/K33hSzLhlnHvwEfSPc0J4JC2agdpMi5R5ulms=;
+        b=uXL/dyhpgA0Rg2pZBzxnu7VAQbA/tTQV6rwkaYdUoCTFQthf0CrekprJZtqfUPQIK+
+         IceBYvnAA+je6+7D2rehHGj1tjo9kTyECs0NzgWxqDCQ9l54kvQLi4eCSOjbdta0Vhz6
+         TIMPUtic143fXJiEy43gT3ybFFn+LvDhyuDdVFutmInvP7tTYBcL+seZUoeM+kLPPzxJ
+         3CF8s8DYeIb0BbEWvkwJLa+xzXVvhWDvdWKIYtPyxtgbmpz/Fcfa2w//XEVMIBRsvDyi
+         pKucsZCtHkB/+E4cL6NGEkxtayjPCdmcQbBVFP2G00QiTpGqgvWoEv05ugCN9oIqP35U
+         7BdA==
+X-Gm-Message-State: AOAM5309snKtqrOkIpbq+9wMr0aEGvSGOmcIVNc456YzWYsuNl27ufdi
+        8opY+4YybQDzdNtS1eZrO0PI0g==
+X-Google-Smtp-Source: ABdhPJxDQ1FJa76uWlaeUs8jSBCU8MRqqE0xLRD4VJfSYDgF65ZfTQVrLYhGXVanfwX7uTp4eDZG6A==
+X-Received: by 2002:a17:906:82d1:: with SMTP id a17mr21255056ejy.385.1599494223163;
+        Mon, 07 Sep 2020 08:57:03 -0700 (PDT)
+Received: from [192.168.178.38] (f140230.upc-f.chello.nl. [80.56.140.230])
+        by smtp.gmail.com with ESMTPSA id d8sm15539782ejm.56.2020.09.07.08.57.02
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 07 Sep 2020 08:57:02 -0700 (PDT)
+From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
+To:     Kalle Valo <kvalo@codeaurora.org>,
+        Wright Feng <Wright.Feng@cypress.com>
+CC:     <linux-wireless@vger.kernel.org>,
+        <brcm80211-dev-list@broadcom.com>,
+        "brcm80211-dev-list" <brcm80211-dev-list@cypress.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        "Chi-Hsien Lin" <Chi-Hsien.Lin@cypress.com>
+Date:   Mon, 07 Sep 2020 17:57:01 +0200
+Message-ID: <1746948ecc8.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+In-Reply-To: <01010174692f7c3f-4b7369b2-0665-4324-b1c8-57bd22ac9ce7-000000@us-west-2.amazonses.com>
+References: <20200901063237.15549-1-wright.feng@cypress.com>
+ <20200901063237.15549-2-wright.feng@cypress.com>
+ <0101017467cf4336-e8ed5107-762a-431d-9ef0-a2631dd090be-000000@us-west-2.amazonses.com>
+ <c90157f5-2c1a-1535-3453-450590857f74@broadcom.com>
+ <0101017467f80c0c-9d33c4e2-53c3-486a-8dec-40e51161feb4-000000@us-west-2.amazonses.com>
+ <9c5de429-ff6f-cad2-39a7-d5812fd3df09@cypress.com>
+ <01010174692f7c3f-4b7369b2-0665-4324-b1c8-57bd22ac9ce7-000000@us-west-2.amazonses.com>
+User-Agent: AquaMail/1.26.0-1689 (build: 102600004)
+Subject: Re: [PATCH 1/4] brcmfmac: add change_bss to support AP isolation
 MIME-Version: 1.0
-Content-Type: text/plain
-X-SES-Outgoing: 2020.09.07-54.240.27.186
-Feedback-ID: 1.us-west-2.CZuq2qbDmUIuT3qdvXlRHZZCpfZqZ4GtG9v3VKgRyF0=:AmazonSES
+Content-Type: text/plain; format=flowed; charset="us-ascii"
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Wen Gong <wgong@codeaurora.org> writes:
+On September 7, 2020 5:29:14 PM Kalle Valo <kvalo@codeaurora.org> wrote:
 
-> On 2020-08-15 01:19, Kalle Valo wrote:
-> ...
->>
->> I have been thinking a different approach for this. I think another
->> option is to have a function like this:
->>
->> ath10k_core_firmware_crashed()
->> {
->>         queue_work(ar->workqueue, &ar->restart_work);
->> }
->>
->> In patch 1 we would convert all existing callers to call that
->> function instead of queue_work() directly.
->>
->> In patch 2 we would add a new flag to enum ath10k_dev_flags, or maybe
->> should actually use existing ATH10K_FLAG_CRASH_FLUSH? Don't know yet
->> which one is better. Now the function would do:
+> Wright Feng <Wright.Feng@cypress.com> writes:
 >
-> I thinks we can use test_and_set_bit for atomic operation athough it
-> is same with restart_count.
+>>>>>> +brcmf_cfg80211_change_bss(struct wiphy *wiphy, struct net_device *dev,
+>>>>>> +  struct bss_parameters *params)
+>>>>>> +{
+>>>>>> + struct brcmf_if *ifp;
+>>>>>> + int ret = 0;
+>>>>>> + u32 ap_isolate;
+>>>>>> +
+>>>>>> + brcmf_dbg(TRACE, "Enter\n");
+>>>>>> + ifp = netdev_priv(dev);
+>>>>>> + if (params->ap_isolate >= 0) {
+>>>>>> + ap_isolate = (u32)params->ap_isolate;
+>>>>>> + ret = brcmf_fil_iovar_int_set(ifp, "ap_isolate", ap_isolate);
+>>>>>
+>>>>> Is the cast to u32 really necessary? Please avoid casts as much as
+>>>>> possible.
+>>>>
+>>>> It seems to me. struct bss_parameters::ap_isolate is typed as int. It
+>>>> is passed to brcmf_fil_iovar_int_set() which requires a u32 (maybe
+>>>> function name is causing the confusion).
+>>>
+>>> What extra value does this explicit type casting bring here? I don't see
+>>> it. Implicit type casting would work the same, no?
+>>
+>> The value will be -1, 0 or 1.
+>> I will submit v2 patch that ignores doing iovar if getting
+>> params->ap_isolate -1 and removes explicit type casting. Thanks for the
+>> comment.
+>
+> Oh, I didn't realise ap_isolate can be -1 as struct bss_parameters
+> didn't document that. Can someone submit a patch to fix that?
+>
+> * @ap_isolate: do not forward packets between connected stations
 
-I didn't quite understand what you mean here, but using
-test_and_set_bit() is the correct methdo.
+Me too. I assumed it was a boolean reading that description.
 
-> and add a new flag, ATH10K_FLAG_CRASH_FLUSH is used for flush, if
-> still use ATH10K_FLAG_CRASH_FLUSH, it should change clear_bit of it
-> from ath10k_core_start to ath10k_reconfig_complete,because
-> ieee80211_reconfig(called by ieee80211_restart_work) of mac80211 do
-> many things and drv_start is 1st thing and drv_reconfig_complete is
-> last thing, drv_reconfig_complete done means the restart finished.
+Regards,
+Arend
 
-Ok, let's discuss about that in v5. I hope you added the analysis to the
-commit log.
 
--- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
