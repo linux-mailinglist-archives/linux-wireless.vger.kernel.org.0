@@ -2,74 +2,119 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 765DF2601E9
-	for <lists+linux-wireless@lfdr.de>; Mon,  7 Sep 2020 19:14:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E8A32601B1
+	for <lists+linux-wireless@lfdr.de>; Mon,  7 Sep 2020 19:11:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729778AbgIGOOZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 7 Sep 2020 10:14:25 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:38474 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1729549AbgIGONW (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 7 Sep 2020 10:13:22 -0400
-Received: from DGGEMS407-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id 936D919DCD516F507D67;
-        Mon,  7 Sep 2020 22:12:44 +0800 (CST)
-Received: from huawei.com (10.175.113.133) by DGGEMS407-HUB.china.huawei.com
- (10.3.19.207) with Microsoft SMTP Server id 14.3.487.0; Mon, 7 Sep 2020
- 22:12:40 +0800
-From:   Wang Hai <wanghai38@huawei.com>
-To:     <nbd@nbd.name>, <lorenzo.bianconi83@gmail.com>,
-        <ryder.lee@mediatek.com>, <kvalo@codeaurora.org>,
-        <davem@davemloft.net>, <kuba@kernel.org>, <matthias.bgg@gmail.com>,
-        <mcoquelin.stm32@gmail.com>, <alexandre.torgue@st.com>
-CC:     <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>
-Subject: [PATCH net-next] mt76: mt7615: Remove set but unused variable 'index'
-Date:   Mon, 7 Sep 2020 22:10:02 +0800
-Message-ID: <20200907141002.10745-1-wanghai38@huawei.com>
-X-Mailer: git-send-email 2.17.1
+        id S1730697AbgIGRKz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 7 Sep 2020 13:10:55 -0400
+Received: from mail.kernel.org ([198.145.29.99]:46524 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730653AbgIGQcp (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 7 Sep 2020 12:32:45 -0400
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id B2B6B2177B;
+        Mon,  7 Sep 2020 16:32:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1599496364;
+        bh=0Szs6Xbj6uEv6yMuq/ROsBND+F0HzpKX80tnhTB6vNI=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=fNtWZDZny9+93MIRQSnqfurOQAW/qjwyEGsELOoB5lXq3zBu1/pjKrG0oOXFUuu0K
+         kZrbgbp1mEnvNFVmO/3G8fhMaiSzWFB5mY/+KX6ZF5QJkul3J9JOZi7/yW5MGF1HbK
+         li9OwwGSPrRxywmwuRgVds1TWlv34C5CgCKmZTbE=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Shay Bar <shay.bar@celeno.com>,
+        Aviad Brikman <aviad.brikman@celeno.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Sasha Levin <sashal@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.8 18/53] wireless: fix wrong 160/80+80 MHz setting
+Date:   Mon,  7 Sep 2020 12:31:44 -0400
+Message-Id: <20200907163220.1280412-18-sashal@kernel.org>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20200907163220.1280412-1-sashal@kernel.org>
+References: <20200907163220.1280412-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+X-stable: review
+X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.175.113.133]
-X-CFilter-Loop: Reflected
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fixes gcc '-Wunused-but-set-variable' warning:
+From: Shay Bar <shay.bar@celeno.com>
 
-drivers/net/wireless/mediatek/mt76/mt7615/testmode.c: In function mt7615_tm_set_tx_power
-drivers/net/wireless/mediatek/mt76/mt7615/testmode.c:83:7: warning: variable ‘index’ set but not used [-Wunused-but-set-variable]=
+[ Upstream commit 3579994476b65cb5e272ff0f720a1fd31322e53f ]
 
-commit 4f0bce1c8888 ("mt76: mt7615: implement testmode support")
-involved this unused variable, remove it.
+Fix cfg80211_chandef_usable():
+consider IEEE80211_VHT_CAP_EXT_NSS_BW when verifying 160/80+80 MHz.
 
-Signed-off-by: Wang Hai <wanghai38@huawei.com>
+Based on:
+"Table 9-272 — Setting of the Supported Channel Width Set subfield and Extended NSS BW
+Support subfield at a STA transmitting the VHT Capabilities Information field"
+From "Draft P802.11REVmd_D3.0.pdf"
+
+Signed-off-by: Aviad Brikman <aviad.brikman@celeno.com>
+Signed-off-by: Shay Bar <shay.bar@celeno.com>
+Link: https://lore.kernel.org/r/20200826143139.25976-1-shay.bar@celeno.com
+[reformat the code a bit and use u32_get_bits()]
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7615/testmode.c | 3 ---
- 1 file changed, 3 deletions(-)
+ net/wireless/chan.c | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/testmode.c b/drivers/net/wireless/mediatek/mt76/mt7615/testmode.c
-index 1730751133aa..de39ea8adb96 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/testmode.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/testmode.c
-@@ -80,13 +80,10 @@ mt7615_tm_set_tx_power(struct mt7615_phy *phy)
+diff --git a/net/wireless/chan.c b/net/wireless/chan.c
+index cddf92c5d09ef..7a7cc4ade2b36 100644
+--- a/net/wireless/chan.c
++++ b/net/wireless/chan.c
+@@ -10,6 +10,7 @@
+  */
  
- 	target_chains = mt7615_ext_pa_enabled(dev, band) ? 1 : n_chains;
- 	for (i = 0; i < target_chains; i++) {
--		int index;
--
- 		ret = mt7615_eeprom_get_target_power_index(dev, chandef->chan, i);
- 		if (ret < 0)
- 			return -EINVAL;
+ #include <linux/export.h>
++#include <linux/bitfield.h>
+ #include <net/cfg80211.h>
+ #include "core.h"
+ #include "rdev-ops.h"
+@@ -892,6 +893,7 @@ bool cfg80211_chandef_usable(struct wiphy *wiphy,
+ 	struct ieee80211_sta_vht_cap *vht_cap;
+ 	struct ieee80211_edmg *edmg_cap;
+ 	u32 width, control_freq, cap;
++	bool support_80_80 = false;
  
--		index = ret - MT_EE_NIC_CONF_0;
- 		if (tx_power && tx_power[i])
- 			data[ret - MT_EE_NIC_CONF_0] = tx_power[i];
- 	}
+ 	if (WARN_ON(!cfg80211_chandef_valid(chandef)))
+ 		return false;
+@@ -944,9 +946,13 @@ bool cfg80211_chandef_usable(struct wiphy *wiphy,
+ 			return false;
+ 		break;
+ 	case NL80211_CHAN_WIDTH_80P80:
+-		cap = vht_cap->cap & IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_MASK;
+-		if (chandef->chan->band != NL80211_BAND_6GHZ &&
+-		    cap != IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160_80PLUS80MHZ)
++		cap = vht_cap->cap;
++		support_80_80 =
++			(cap & IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160_80PLUS80MHZ) ||
++			(cap & IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160MHZ &&
++			 cap & IEEE80211_VHT_CAP_EXT_NSS_BW_MASK) ||
++			u32_get_bits(cap, IEEE80211_VHT_CAP_EXT_NSS_BW_MASK) > 1;
++		if (chandef->chan->band != NL80211_BAND_6GHZ && !support_80_80)
+ 			return false;
+ 		/* fall through */
+ 	case NL80211_CHAN_WIDTH_80:
+@@ -966,7 +972,8 @@ bool cfg80211_chandef_usable(struct wiphy *wiphy,
+ 			return false;
+ 		cap = vht_cap->cap & IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_MASK;
+ 		if (cap != IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160MHZ &&
+-		    cap != IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160_80PLUS80MHZ)
++		    cap != IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160_80PLUS80MHZ &&
++		    !(vht_cap->cap & IEEE80211_VHT_CAP_EXT_NSS_BW_MASK))
+ 			return false;
+ 		break;
+ 	default:
 -- 
-2.17.1
+2.25.1
 
