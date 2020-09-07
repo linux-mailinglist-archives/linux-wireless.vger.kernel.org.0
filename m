@@ -2,127 +2,113 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4328525F6C0
-	for <lists+linux-wireless@lfdr.de>; Mon,  7 Sep 2020 11:41:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EA1AE25F6D5
+	for <lists+linux-wireless@lfdr.de>; Mon,  7 Sep 2020 11:49:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728395AbgIGJlD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 7 Sep 2020 05:41:03 -0400
-Received: from szxga05-in.huawei.com ([45.249.212.191]:10789 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1728079AbgIGJlD (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 7 Sep 2020 05:41:03 -0400
-Received: from DGGEMS408-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id 01C48D58268E14FF66DC;
-        Mon,  7 Sep 2020 17:41:01 +0800 (CST)
-Received: from [127.0.0.1] (10.174.179.108) by DGGEMS408-HUB.china.huawei.com
- (10.3.19.208) with Microsoft SMTP Server id 14.3.487.0; Mon, 7 Sep 2020
- 17:40:57 +0800
-Subject: Re: [PATCH] mwifiex: pcie: Fix -Wunused-const-variable warnings
-To:     Kalle Valo <kvalo@codeaurora.org>
-References: <20200902140933.25852-1-yuehaibing@huawei.com>
- <0101017467b37012-2cad5962-8995-49d0-bf12-37c96107742a-000000@us-west-2.amazonses.com>
-CC:     <amitkarwar@gmail.com>, <ganapathi.bhat@nxp.com>,
-        <huxinming820@gmail.com>, <davem@davemloft.net>, <kuba@kernel.org>,
-        <christophe.jaillet@wanadoo.fr>, <linux-wireless@vger.kernel.org>,
-        <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-From:   Yuehaibing <yuehaibing@huawei.com>
-Message-ID: <ae128bf3-fd9b-ee88-1c61-54a4a604a6cf@huawei.com>
-Date:   Mon, 7 Sep 2020 17:40:55 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101
- Thunderbird/45.8.0
+        id S1728406AbgIGJtF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 7 Sep 2020 05:49:05 -0400
+Received: from a27-55.smtp-out.us-west-2.amazonses.com ([54.240.27.55]:57558
+        "EHLO a27-55.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728243AbgIGJtE (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 7 Sep 2020 05:49:04 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1599472143;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:MIME-Version:Content-Type;
+        bh=h/F9s3TdWmFz2049ZhdD6P3+EixnBqB1Rp0L1wZZZXQ=;
+        b=M+5seYk0WNqoUnkS8Ug9onJyxKnldU1wb0Izqjzwf13QIqV082/1r7iBd0ruPo6N
+        mowPEUfyZWmOm6vAizOL7Um4YMPFqgQrKqpa0rqDpdtbZQxNmP35bprrhepLiJbPHMe
+        vj8jRAL0P8o4CSi3cGJMFl39f/bBsR7C/+yqhvwQ=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+        s=hsbnp7p3ensaochzwyq5wwmceodymuwv; d=amazonses.com; t=1599472143;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:MIME-Version:Content-Type:Feedback-ID;
+        bh=h/F9s3TdWmFz2049ZhdD6P3+EixnBqB1Rp0L1wZZZXQ=;
+        b=ksq56BnV5mOtYAneEOmRxvCGxR1SJGopPQOkYZM+Kwzo27yuT1kP0E/C8RiNyZwV
+        5/rxM/bHMYZhxMHmAdy9KUfOnWbR1xlLwwGt75uoExj7V37YqxAnXLZRM6zbl0+Lm2O
+        aA3jq/PG2Ijtyx5Wi5e8KXio0aBbeJaYjRBOqD5g=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
+        autolearn=no autolearn_force=no version=3.4.0
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 1892AC4346F
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Arend Van Spriel <arend.vanspriel@broadcom.com>
+Cc:     Wright Feng <wright.feng@cypress.com>,
+        linux-wireless@vger.kernel.org, brcm80211-dev-list@broadcom.com,
+        brcm80211-dev-list@cypress.com,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        chi-hsien.lin@cypress.com
+Subject: Re: [PATCH 1/4] brcmfmac: add change_bss to support AP isolation
+References: <20200901063237.15549-1-wright.feng@cypress.com>
+        <20200901063237.15549-2-wright.feng@cypress.com>
+        <0101017467cf4336-e8ed5107-762a-431d-9ef0-a2631dd090be-000000@us-west-2.amazonses.com>
+        <c90157f5-2c1a-1535-3453-450590857f74@broadcom.com>
+Date:   Mon, 7 Sep 2020 09:49:03 +0000
+In-Reply-To: <c90157f5-2c1a-1535-3453-450590857f74@broadcom.com> (Arend Van
+        Spriel's message of "Mon, 7 Sep 2020 11:21:20 +0200")
+Message-ID: <0101017467f80c0c-9d33c4e2-53c3-486a-8dec-40e51161feb4-000000@us-west-2.amazonses.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-In-Reply-To: <0101017467b37012-2cad5962-8995-49d0-bf12-37c96107742a-000000@us-west-2.amazonses.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.174.179.108]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain
+X-SES-Outgoing: 2020.09.07-54.240.27.55
+Feedback-ID: 1.us-west-2.CZuq2qbDmUIuT3qdvXlRHZZCpfZqZ4GtG9v3VKgRyF0=:AmazonSES
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Arend Van Spriel <arend.vanspriel@broadcom.com> writes:
 
-commit 77dacc8fc64c ("mwifiex: pcie: Move tables to the only place they're used")
-
-do the same things.
-
-On 2020/9/7 16:34, Kalle Valo wrote:
-> YueHaibing <yuehaibing@huawei.com> wrote:
-> 
->> These variables only used in pcie.c, move them to .c file
->> can silence these warnings:
+> On 9/7/2020 11:04 AM, Kalle Valo wrote:
+>> Wright Feng <wright.feng@cypress.com> writes:
 >>
->> In file included from drivers/net/wireless/marvell/mwifiex/main.h:57:0,
->>                  from drivers/net/wireless/marvell/mwifiex/init.c:24:
->> drivers/net/wireless/marvell/mwifiex/pcie.h:310:41: warning: mwifiex_pcie8997 defined but not used [-Wunused-const-variable=]
->>  static const struct mwifiex_pcie_device mwifiex_pcie8997 = {
->>                                          ^~~~~~~~~~~~~~~~
->> drivers/net/wireless/marvell/mwifiex/pcie.h:300:41: warning: mwifiex_pcie8897 defined but not used [-Wunused-const-variable=]
->>  static const struct mwifiex_pcie_device mwifiex_pcie8897 = {
->>                                          ^~~~~~~~~~~~~~~~
->> drivers/net/wireless/marvell/mwifiex/pcie.h:292:41: warning: mwifiex_pcie8766 defined but not used [-Wunused-const-variable=]
->>  static const struct mwifiex_pcie_device mwifiex_pcie8766 = {
->>                                          ^~~~~~~~~~~~~~~~
+>>> Hostap has a parameter "ap_isolate" which is used to prevent low-level
+>>> bridging of frames between associated stations in the BSS.
+>>> Regarding driver side, we add cfg80211 ops method change_bss to support
+>>> setting AP isolation if firmware has ap_isolate feature.
+>>>
+>>> Signed-off-by: Wright Feng <wright.feng@cypress.com>
+>>> Signed-off-by: Chi-hsien Lin <chi-hsien.lin@cypress.com>
+>>> ---
+>>>   .../broadcom/brcm80211/brcmfmac/cfg80211.c    | 23 +++++++++++++++++++
+>>>   .../broadcom/brcm80211/brcmfmac/feature.c     |  1 +
+>>>   .../broadcom/brcm80211/brcmfmac/feature.h     |  3 ++-
+>>>   3 files changed, 26 insertions(+), 1 deletion(-)
+>>>
+>>> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+>>> index 5d99771c3f64..7ef93cd66b2c 100644
+>>> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+>>> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+>>> @@ -5425,6 +5425,26 @@ static int brcmf_cfg80211_del_pmk(struct wiphy *wiphy, struct net_device *dev,
+>>>   	return brcmf_set_pmk(ifp, NULL, 0);
+>>>   }
+>>>   +static int
+>>> +brcmf_cfg80211_change_bss(struct wiphy *wiphy, struct net_device *dev,
+>>> +			  struct bss_parameters *params)
+>>> +{
+>>> +	struct brcmf_if *ifp;
+>>> +	int ret = 0;
+>>> +	u32 ap_isolate;
+>>> +
+>>> +	brcmf_dbg(TRACE, "Enter\n");
+>>> +	ifp = netdev_priv(dev);
+>>> +	if (params->ap_isolate >= 0) {
+>>> +		ap_isolate = (u32)params->ap_isolate;
+>>> +		ret = brcmf_fil_iovar_int_set(ifp, "ap_isolate", ap_isolate);
 >>
->> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
-> 
-> Failed to build:
-> 
-> drivers/net/wireless/marvell/mwifiex/pcie.c:191:43: error: redefinition of 'mwifiex_reg_8766'
->   191 | static const struct mwifiex_pcie_card_reg mwifiex_reg_8766 = {
->       |                                           ^~~~~~~~~~~~~~~~
-> drivers/net/wireless/marvell/mwifiex/pcie.c:36:43: note: previous definition of 'mwifiex_reg_8766' was here
->    36 | static const struct mwifiex_pcie_card_reg mwifiex_reg_8766 = {
->       |                                           ^~~~~~~~~~~~~~~~
-> drivers/net/wireless/marvell/mwifiex/pcie.c:223:43: error: redefinition of 'mwifiex_reg_8897'
->   223 | static const struct mwifiex_pcie_card_reg mwifiex_reg_8897 = {
->       |                                           ^~~~~~~~~~~~~~~~
-> drivers/net/wireless/marvell/mwifiex/pcie.c:68:43: note: previous definition of 'mwifiex_reg_8897' was here
->    68 | static const struct mwifiex_pcie_card_reg mwifiex_reg_8897 = {
->       |                                           ^~~~~~~~~~~~~~~~
-> drivers/net/wireless/marvell/mwifiex/pcie.c:260:43: error: redefinition of 'mwifiex_reg_8997'
->   260 | static const struct mwifiex_pcie_card_reg mwifiex_reg_8997 = {
->       |                                           ^~~~~~~~~~~~~~~~
-> drivers/net/wireless/marvell/mwifiex/pcie.c:105:43: note: previous definition of 'mwifiex_reg_8997' was here
->   105 | static const struct mwifiex_pcie_card_reg mwifiex_reg_8997 = {
->       |                                           ^~~~~~~~~~~~~~~~
-> drivers/net/wireless/marvell/mwifiex/pcie.c:297:35: error: redefinition of 'mem_type_mapping_tbl_w8897'
->   297 | static struct memory_type_mapping mem_type_mapping_tbl_w8897[] = {
->       |                                   ^~~~~~~~~~~~~~~~~~~~~~~~~~
-> drivers/net/wireless/marvell/mwifiex/pcie.c:142:35: note: previous definition of 'mem_type_mapping_tbl_w8897' was here
->   142 | static struct memory_type_mapping mem_type_mapping_tbl_w8897[] = {
->       |                                   ^~~~~~~~~~~~~~~~~~~~~~~~~~
-> drivers/net/wireless/marvell/mwifiex/pcie.c:308:35: error: redefinition of 'mem_type_mapping_tbl_w8997'
->   308 | static struct memory_type_mapping mem_type_mapping_tbl_w8997[] = {
->       |                                   ^~~~~~~~~~~~~~~~~~~~~~~~~~
-> drivers/net/wireless/marvell/mwifiex/pcie.c:153:35: note: previous definition of 'mem_type_mapping_tbl_w8997' was here
->   153 | static struct memory_type_mapping mem_type_mapping_tbl_w8997[] = {
->       |                                   ^~~~~~~~~~~~~~~~~~~~~~~~~~
-> drivers/net/wireless/marvell/mwifiex/pcie.c:312:41: error: redefinition of 'mwifiex_pcie8766'
->   312 | static const struct mwifiex_pcie_device mwifiex_pcie8766 = {
->       |                                         ^~~~~~~~~~~~~~~~
-> drivers/net/wireless/marvell/mwifiex/pcie.c:157:41: note: previous definition of 'mwifiex_pcie8766' was here
->   157 | static const struct mwifiex_pcie_device mwifiex_pcie8766 = {
->       |                                         ^~~~~~~~~~~~~~~~
-> drivers/net/wireless/marvell/mwifiex/pcie.c:320:41: error: redefinition of 'mwifiex_pcie8897'
->   320 | static const struct mwifiex_pcie_device mwifiex_pcie8897 = {
->       |                                         ^~~~~~~~~~~~~~~~
-> drivers/net/wireless/marvell/mwifiex/pcie.c:165:41: note: previous definition of 'mwifiex_pcie8897' was here
->   165 | static const struct mwifiex_pcie_device mwifiex_pcie8897 = {
->       |                                         ^~~~~~~~~~~~~~~~
-> drivers/net/wireless/marvell/mwifiex/pcie.c:330:41: error: redefinition of 'mwifiex_pcie8997'
->   330 | static const struct mwifiex_pcie_device mwifiex_pcie8997 = {
->       |                                         ^~~~~~~~~~~~~~~~
-> drivers/net/wireless/marvell/mwifiex/pcie.c:175:41: note: previous definition of 'mwifiex_pcie8997' was here
->   175 | static const struct mwifiex_pcie_device mwifiex_pcie8997 = {
->       |                                         ^~~~~~~~~~~~~~~~
-> make[5]: *** [drivers/net/wireless/marvell/mwifiex/pcie.o] Error 1
-> make[4]: *** [drivers/net/wireless/marvell/mwifiex] Error 2
-> make[3]: *** [drivers/net/wireless/marvell] Error 2
-> make[2]: *** [drivers/net/wireless] Error 2
-> make[1]: *** [drivers/net] Error 2
-> make: *** [drivers] Error 2
-> 
-> Patch set to Changes Requested.
-> 
+>> Is the cast to u32 really necessary? Please avoid casts as much as
+>> possible.
+>
+> It seems to me. struct bss_parameters::ap_isolate is typed as int. It
+> is passed to brcmf_fil_iovar_int_set() which requires a u32 (maybe
+> function name is causing the confusion).
 
+What extra value does this explicit type casting bring here? I don't see
+it. Implicit type casting would work the same, no?
+
+-- 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
