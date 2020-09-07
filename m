@@ -2,44 +2,43 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D0A025F575
-	for <lists+linux-wireless@lfdr.de>; Mon,  7 Sep 2020 10:38:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C806A25F57D
+	for <lists+linux-wireless@lfdr.de>; Mon,  7 Sep 2020 10:40:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728213AbgIGIii (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 7 Sep 2020 04:38:38 -0400
-Received: from a27-56.smtp-out.us-west-2.amazonses.com ([54.240.27.56]:59014
-        "EHLO a27-56.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727897AbgIGIih (ORCPT
+        id S1728194AbgIGIkn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 7 Sep 2020 04:40:43 -0400
+Received: from a27-188.smtp-out.us-west-2.amazonses.com ([54.240.27.188]:48780
+        "EHLO a27-188.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727921AbgIGIkn (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 7 Sep 2020 04:38:37 -0400
+        Mon, 7 Sep 2020 04:40:43 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1599467916;
+        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1599468042;
         h=Content-Type:MIME-Version:Content-Transfer-Encoding:Subject:From:In-Reply-To:References:To:Cc:Message-Id:Date;
-        bh=I8fOqclJWXPRgQ4JVNxpFHrT/lck1MQGbss6hJodofM=;
-        b=eXE2bA8KblDd4HcTyerQmcE6GHmZtqLst1vzNvc6rIAgDClvkr8ihGpU8uroJMqI
-        QUtUQT7XlsabNAW4Apgw0b3lUtqLbUkod/cuZyNuW27jf3ko0z6sPd2mMln6KM2RdUs
-        1G6kuV49qIZyWP2bpDhnV0SSwwbpKsGI0XPMYDWQ=
+        bh=Ml/2jmB0EFi0aE7Td0WZ7ZFNUou8h6WaClJvgd6t29E=;
+        b=OpcdXdS5Eutz9FtRypwrIbCWn10/CoxVwornuHZxSNfYOszCtpm6tApB1DoM97yU
+        dLWZQWdim1gaBKAasSxUIIFYnI8dpziQc21f7ddotQE2Z8kvQT/+QknHZuYSk2WRPVS
+        10+jd+epHujlU2KvdYtbQ0zfreD6l25cwCWFSYwY=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=hsbnp7p3ensaochzwyq5wwmceodymuwv; d=amazonses.com; t=1599467916;
+        s=hsbnp7p3ensaochzwyq5wwmceodymuwv; d=amazonses.com; t=1599468042;
         h=Content-Type:MIME-Version:Content-Transfer-Encoding:Subject:From:In-Reply-To:References:To:Cc:Message-Id:Date:Feedback-ID;
-        bh=I8fOqclJWXPRgQ4JVNxpFHrT/lck1MQGbss6hJodofM=;
-        b=AHb672B5fbYzo1/tl0l1Q7cGof8ddfhCUh7GmiZP9lx9903/R9r6ae/AouB1CHhF
-        g2GDkt1Qf8ata2om95Nwl+6nWLOZtCMMYiVIJB1Vuz+2k0NgyK+S795q2IIYmUGFWmd
-        PMBYVRldSiH/qrUhfd6lvAUEikj/cWh39Cc0EN04=
+        bh=Ml/2jmB0EFi0aE7Td0WZ7ZFNUou8h6WaClJvgd6t29E=;
+        b=FttAKtoI7/VD6EYcl8FaZP2ZCMzoAD09nSj2tI5rjbq6XTmBlvMEfuSvhUYgkhq3
+        DPM6vw3JVQMJv9hNRVxG+8a0TiYAzpgiNVAncVM+PwzWmf8RfFSVCrObUidyqm2Nebp
+        xJvdFg3ypVQ3AhqNgbN7Ze4pEI4+TGfpeqYo3oUU=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
 X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
         MISSING_DATE,MISSING_MID,SPF_FAIL autolearn=no autolearn_force=no
         version=3.4.0
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org B2087C43463
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 9D80DC4344E
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] Revert "wlcore: Adding suppoprt for IGTK key in wlcore
- driver"
+Subject: Re: Revert "wlcore: Adding suppoprt for IGTK key in wlcore driver"
 From:   Kalle Valo <kvalo@codeaurora.org>
 In-Reply-To: <f0a2cb7ea606f1a284d4c23cbf983da2954ce9b6.1598420968.git.mchehab+huawei@kernel.org>
 References: <f0a2cb7ea606f1a284d4c23cbf983da2954ce9b6.1598420968.git.mchehab+huawei@kernel.org>
@@ -59,9 +58,9 @@ Cc:     linuxarm@huawei.com, mauro.chehab@huawei.com,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         linux-kernel@vger.kernel.org
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-ID: <0101017467b78ceb-36db3199-b46c-4a42-890a-a9b236326b25-000000@us-west-2.amazonses.com>
-Date:   Mon, 7 Sep 2020 08:38:36 +0000
-X-SES-Outgoing: 2020.09.07-54.240.27.56
+Message-ID: <0101017467b97900-b9c6ab14-977b-4b49-a731-644163566a19-000000@us-west-2.amazonses.com>
+Date:   Mon, 7 Sep 2020 08:40:42 +0000
+X-SES-Outgoing: 2020.09.07-54.240.27.188
 Feedback-ID: 1.us-west-2.CZuq2qbDmUIuT3qdvXlRHZZCpfZqZ4GtG9v3VKgRyF0=:AmazonSES
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
@@ -139,11 +138,10 @@ Mauro Carvalho Chehab <mchehab+huawei@kernel.org> wrote:
 > This reverts commit 2b7aadd3b9e17e8b81eeb8d9cc46756ae4658265.
 > 
 > Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-> Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-> Signed-off-by: Raz Bouganim <r-bouganim@ti.com>
 
-I'm going to apply this revert now and queue for v5.9. The feature can be added
-again for v5.10 with proper support for older firmware versions.
+Patch applied to wireless-drivers.git, thanks.
+
+1264c1e0cfe5 Revert "wlcore: Adding suppoprt for IGTK key in wlcore driver"
 
 -- 
 https://patchwork.kernel.org/patch/11737193/
