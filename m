@@ -2,98 +2,127 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 83CF225F65B
-	for <lists+linux-wireless@lfdr.de>; Mon,  7 Sep 2020 11:21:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4328525F6C0
+	for <lists+linux-wireless@lfdr.de>; Mon,  7 Sep 2020 11:41:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728317AbgIGJVd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 7 Sep 2020 05:21:33 -0400
-Received: from a27-10.smtp-out.us-west-2.amazonses.com ([54.240.27.10]:49418
-        "EHLO a27-10.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728141AbgIGJVd (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 7 Sep 2020 05:21:33 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1599470492;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:MIME-Version:Content-Type;
-        bh=9b5FrUg1iGXJA/9iw+ulM0boM5F0pty0Vwes5WHWREM=;
-        b=OCJ15qBk+EpBxSJqVpPWgq45o+uyNuaamvCVL7tFGQhP/S792+K0TOgwHm45Cgw8
-        6ooyhAtZi3F07r/Rzr868Sp5gKGlyFPSL7yoEL159A0zIckpRWRRkiFc+8oSFUpH+Ml
-        qUAbS4dMhtiBsru1RiFOFaap6eQwKt+hybNVJJcE=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=hsbnp7p3ensaochzwyq5wwmceodymuwv; d=amazonses.com; t=1599470492;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:MIME-Version:Content-Type:Feedback-ID;
-        bh=9b5FrUg1iGXJA/9iw+ulM0boM5F0pty0Vwes5WHWREM=;
-        b=N5JXDjpde/0IK319bY0jnbobJ8PLeXN+Vk5+VdpIpXu3UAIh4nEt1ZpR0lTBLAI5
-        aQBrnIzdQXNoTfBPgkHtD+FErOZpEdKxZe5NF0ZKcbi6PcjitbzgISuzn43WJJ2MWmr
-        2u+ctpPf/id8s+BW3yMDrNXk7Z+/e+H7qm612QRw=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
-        autolearn=no autolearn_force=no version=3.4.0
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org B6D42C43463
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Wright Feng <wright.feng@cypress.com>
-Cc:     linux-wireless@vger.kernel.org, brcm80211-dev-list@broadcom.com,
-        brcm80211-dev-list@cypress.com,
-        Arend van Spriel <arend.vanspriel@broadcom.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        chi-hsien.lin@cypress.com, Ting-Ying Li <tingying.li@cypress.com>
-Subject: Re: [PATCH 4/4] brcmfmac: add a variable for packet forwarding condition
-References: <20200901063237.15549-1-wright.feng@cypress.com>
-        <20200901063237.15549-5-wright.feng@cypress.com>
-Date:   Mon, 7 Sep 2020 09:21:32 +0000
-In-Reply-To: <20200901063237.15549-5-wright.feng@cypress.com> (Wright Feng's
-        message of "Tue, 1 Sep 2020 01:32:37 -0500")
-Message-ID: <0101017467dedc38-3e3a7b7e-3e16-4eb2-adcf-5b6f502178ac-000000@us-west-2.amazonses.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        id S1728395AbgIGJlD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 7 Sep 2020 05:41:03 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:10789 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1728079AbgIGJlD (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 7 Sep 2020 05:41:03 -0400
+Received: from DGGEMS408-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id 01C48D58268E14FF66DC;
+        Mon,  7 Sep 2020 17:41:01 +0800 (CST)
+Received: from [127.0.0.1] (10.174.179.108) by DGGEMS408-HUB.china.huawei.com
+ (10.3.19.208) with Microsoft SMTP Server id 14.3.487.0; Mon, 7 Sep 2020
+ 17:40:57 +0800
+Subject: Re: [PATCH] mwifiex: pcie: Fix -Wunused-const-variable warnings
+To:     Kalle Valo <kvalo@codeaurora.org>
+References: <20200902140933.25852-1-yuehaibing@huawei.com>
+ <0101017467b37012-2cad5962-8995-49d0-bf12-37c96107742a-000000@us-west-2.amazonses.com>
+CC:     <amitkarwar@gmail.com>, <ganapathi.bhat@nxp.com>,
+        <huxinming820@gmail.com>, <davem@davemloft.net>, <kuba@kernel.org>,
+        <christophe.jaillet@wanadoo.fr>, <linux-wireless@vger.kernel.org>,
+        <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+From:   Yuehaibing <yuehaibing@huawei.com>
+Message-ID: <ae128bf3-fd9b-ee88-1c61-54a4a604a6cf@huawei.com>
+Date:   Mon, 7 Sep 2020 17:40:55 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101
+ Thunderbird/45.8.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-SES-Outgoing: 2020.09.07-54.240.27.10
-Feedback-ID: 1.us-west-2.CZuq2qbDmUIuT3qdvXlRHZZCpfZqZ4GtG9v3VKgRyF0=:AmazonSES
+In-Reply-To: <0101017467b37012-2cad5962-8995-49d0-bf12-37c96107742a-000000@us-west-2.amazonses.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.174.179.108]
+X-CFilter-Loop: Reflected
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Wright Feng <wright.feng@cypress.com> writes:
 
-> From: Ting-Ying Li <tingying.li@cypress.com>
->
-> When the "ap_isolate" function is not set by the host,
-> host-based packet forwarding will be enabled if the packet
-> forwarding mechanism is not offloaded to the lower layer.
->
-> Signed-off-by: Ting-Ying Li <tingying.li@cypress.com>
-> Signed-off-by: Chi-hsien Lin <chi-hsien.lin@cypress.com>
+commit 77dacc8fc64c ("mwifiex: pcie: Move tables to the only place they're used")
 
-[...]
+do the same things.
 
-> +	/* Get ap_isolate value from firmware to detemine whether fmac */
-> +	/* driver supports packet forwarding. */
-> +	if (brcmf_fil_iovar_int_get(ifp, "ap_isolate", &val) == 0) {
-> +		ifp->fmac_pkt_fwd_en =
-> +			((params->ap_isolate == 0) && (val == 1)) ?
-> +			true : false;
-> +	} else {
-> +		brcmf_err("get ap_isolate iovar failed: ret=%d\n", ret);
-> +		ifp->fmac_pkt_fwd_en = false;
-> +	}
+On 2020/9/7 16:34, Kalle Valo wrote:
+> YueHaibing <yuehaibing@huawei.com> wrote:
+> 
+>> These variables only used in pcie.c, move them to .c file
+>> can silence these warnings:
+>>
+>> In file included from drivers/net/wireless/marvell/mwifiex/main.h:57:0,
+>>                  from drivers/net/wireless/marvell/mwifiex/init.c:24:
+>> drivers/net/wireless/marvell/mwifiex/pcie.h:310:41: warning: mwifiex_pcie8997 defined but not used [-Wunused-const-variable=]
+>>  static const struct mwifiex_pcie_device mwifiex_pcie8997 = {
+>>                                          ^~~~~~~~~~~~~~~~
+>> drivers/net/wireless/marvell/mwifiex/pcie.h:300:41: warning: mwifiex_pcie8897 defined but not used [-Wunused-const-variable=]
+>>  static const struct mwifiex_pcie_device mwifiex_pcie8897 = {
+>>                                          ^~~~~~~~~~~~~~~~
+>> drivers/net/wireless/marvell/mwifiex/pcie.h:292:41: warning: mwifiex_pcie8766 defined but not used [-Wunused-const-variable=]
+>>  static const struct mwifiex_pcie_device mwifiex_pcie8766 = {
+>>                                          ^~~~~~~~~~~~~~~~
+>>
+>> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+> 
+> Failed to build:
+> 
+> drivers/net/wireless/marvell/mwifiex/pcie.c:191:43: error: redefinition of 'mwifiex_reg_8766'
+>   191 | static const struct mwifiex_pcie_card_reg mwifiex_reg_8766 = {
+>       |                                           ^~~~~~~~~~~~~~~~
+> drivers/net/wireless/marvell/mwifiex/pcie.c:36:43: note: previous definition of 'mwifiex_reg_8766' was here
+>    36 | static const struct mwifiex_pcie_card_reg mwifiex_reg_8766 = {
+>       |                                           ^~~~~~~~~~~~~~~~
+> drivers/net/wireless/marvell/mwifiex/pcie.c:223:43: error: redefinition of 'mwifiex_reg_8897'
+>   223 | static const struct mwifiex_pcie_card_reg mwifiex_reg_8897 = {
+>       |                                           ^~~~~~~~~~~~~~~~
+> drivers/net/wireless/marvell/mwifiex/pcie.c:68:43: note: previous definition of 'mwifiex_reg_8897' was here
+>    68 | static const struct mwifiex_pcie_card_reg mwifiex_reg_8897 = {
+>       |                                           ^~~~~~~~~~~~~~~~
+> drivers/net/wireless/marvell/mwifiex/pcie.c:260:43: error: redefinition of 'mwifiex_reg_8997'
+>   260 | static const struct mwifiex_pcie_card_reg mwifiex_reg_8997 = {
+>       |                                           ^~~~~~~~~~~~~~~~
+> drivers/net/wireless/marvell/mwifiex/pcie.c:105:43: note: previous definition of 'mwifiex_reg_8997' was here
+>   105 | static const struct mwifiex_pcie_card_reg mwifiex_reg_8997 = {
+>       |                                           ^~~~~~~~~~~~~~~~
+> drivers/net/wireless/marvell/mwifiex/pcie.c:297:35: error: redefinition of 'mem_type_mapping_tbl_w8897'
+>   297 | static struct memory_type_mapping mem_type_mapping_tbl_w8897[] = {
+>       |                                   ^~~~~~~~~~~~~~~~~~~~~~~~~~
+> drivers/net/wireless/marvell/mwifiex/pcie.c:142:35: note: previous definition of 'mem_type_mapping_tbl_w8897' was here
+>   142 | static struct memory_type_mapping mem_type_mapping_tbl_w8897[] = {
+>       |                                   ^~~~~~~~~~~~~~~~~~~~~~~~~~
+> drivers/net/wireless/marvell/mwifiex/pcie.c:308:35: error: redefinition of 'mem_type_mapping_tbl_w8997'
+>   308 | static struct memory_type_mapping mem_type_mapping_tbl_w8997[] = {
+>       |                                   ^~~~~~~~~~~~~~~~~~~~~~~~~~
+> drivers/net/wireless/marvell/mwifiex/pcie.c:153:35: note: previous definition of 'mem_type_mapping_tbl_w8997' was here
+>   153 | static struct memory_type_mapping mem_type_mapping_tbl_w8997[] = {
+>       |                                   ^~~~~~~~~~~~~~~~~~~~~~~~~~
+> drivers/net/wireless/marvell/mwifiex/pcie.c:312:41: error: redefinition of 'mwifiex_pcie8766'
+>   312 | static const struct mwifiex_pcie_device mwifiex_pcie8766 = {
+>       |                                         ^~~~~~~~~~~~~~~~
+> drivers/net/wireless/marvell/mwifiex/pcie.c:157:41: note: previous definition of 'mwifiex_pcie8766' was here
+>   157 | static const struct mwifiex_pcie_device mwifiex_pcie8766 = {
+>       |                                         ^~~~~~~~~~~~~~~~
+> drivers/net/wireless/marvell/mwifiex/pcie.c:320:41: error: redefinition of 'mwifiex_pcie8897'
+>   320 | static const struct mwifiex_pcie_device mwifiex_pcie8897 = {
+>       |                                         ^~~~~~~~~~~~~~~~
+> drivers/net/wireless/marvell/mwifiex/pcie.c:165:41: note: previous definition of 'mwifiex_pcie8897' was here
+>   165 | static const struct mwifiex_pcie_device mwifiex_pcie8897 = {
+>       |                                         ^~~~~~~~~~~~~~~~
+> drivers/net/wireless/marvell/mwifiex/pcie.c:330:41: error: redefinition of 'mwifiex_pcie8997'
+>   330 | static const struct mwifiex_pcie_device mwifiex_pcie8997 = {
+>       |                                         ^~~~~~~~~~~~~~~~
+> drivers/net/wireless/marvell/mwifiex/pcie.c:175:41: note: previous definition of 'mwifiex_pcie8997' was here
+>   175 | static const struct mwifiex_pcie_device mwifiex_pcie8997 = {
+>       |                                         ^~~~~~~~~~~~~~~~
+> make[5]: *** [drivers/net/wireless/marvell/mwifiex/pcie.o] Error 1
+> make[4]: *** [drivers/net/wireless/marvell/mwifiex] Error 2
+> make[3]: *** [drivers/net/wireless/marvell] Error 2
+> make[2]: *** [drivers/net/wireless] Error 2
+> make[1]: *** [drivers/net] Error 2
+> make: *** [drivers] Error 2
+> 
+> Patch set to Changes Requested.
+> 
 
-This is hard to read, you can simplify it to:
-
-if (brcmf_fil_iovar_int_get(ifp, "ap_isolate", &val) == 0 &&
-    params->ap_isolate == 0 &&
-    val == 1) {
-	ifp->fmac_pkt_fwd_en = true;
-} else {
-	brcmf_err("get ap_isolate iovar failed: ret=%d\n", ret);
-	ifp->fmac_pkt_fwd_en = false;
-}
-
-
--- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
