@@ -2,88 +2,104 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 261C225FE80
-	for <lists+linux-wireless@lfdr.de>; Mon,  7 Sep 2020 18:18:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9004B25FECA
+	for <lists+linux-wireless@lfdr.de>; Mon,  7 Sep 2020 18:24:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730470AbgIGQSG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 7 Sep 2020 12:18:06 -0400
-Received: from a27-185.smtp-out.us-west-2.amazonses.com ([54.240.27.185]:58404
-        "EHLO a27-185.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1730394AbgIGQR5 (ORCPT
+        id S1730495AbgIGQXv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 7 Sep 2020 12:23:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60804 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730424AbgIGQXk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 7 Sep 2020 12:17:57 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1599495477;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:MIME-Version:Content-Type;
-        bh=fHmkMsSqCrU8zIQPY0mHmkrXR5chyuKH+CWAaoIweHQ=;
-        b=FQEYfq0gGffYY1Ec74e0ofLEgX0B1+/OhdhLfZ1pOWI0arQqmparOJjzooQFj+MP
-        Cx0yb3XNuMgMg4Tt0xIUAPAilzrxx/2Mdfjdp4tAUtvFO364eKXLA6NffVvaKSzySHd
-        b7sjvbGhQEWZ3HoEDadH9imPa0w4WW2gjTCgq5Bc=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=hsbnp7p3ensaochzwyq5wwmceodymuwv; d=amazonses.com; t=1599495477;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:MIME-Version:Content-Type:Feedback-ID;
-        bh=fHmkMsSqCrU8zIQPY0mHmkrXR5chyuKH+CWAaoIweHQ=;
-        b=WOkohfLwII1vMzCj+g8XljGkk2sP0NCv1ZRQAwswfrzcrH9JyvEY9iJYDKojWqCl
-        gBSDW7nF6JbnxfGsyRHhqkswqrJwnTCTr8qKPNVIDiFrxZ1b2xtSI4E+3BM6qX6yYVQ
-        JAyykVCvPAv1YGPx3qmqCtQwtii7Ie1/+FxkmPNo=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 999ABC38689
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     "Rakesh Pillai" <pillair@codeaurora.org>
-Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        ath10k@lists.infradead.org
-Subject: Re: [PATCH] ath10k: Use bdf calibration variant for snoc targets
-References: <1593193990-30366-1-git-send-email-pillair@codeaurora.org>
-        <87y2ls4lbf.fsf@codeaurora.org>
-        <0101017459fdd62b-791355e4-ea88-4142-96a7-06849bcd7b09-000000@us-west-2.amazonses.com>
-Date:   Mon, 7 Sep 2020 16:17:57 +0000
-In-Reply-To: <0101017459fdd62b-791355e4-ea88-4142-96a7-06849bcd7b09-000000@us-west-2.amazonses.com>
-        (Rakesh Pillai's message of "Fri, 4 Sep 2020 16:40:41 +0000")
-Message-ID: <01010174695c181a-6f8e9efc-bbc9-45ff-8d54-62db5e0163f6-000000@us-west-2.amazonses.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
-MIME-Version: 1.0
-Content-Type: text/plain
-X-SES-Outgoing: 2020.09.07-54.240.27.185
-Feedback-ID: 1.us-west-2.CZuq2qbDmUIuT3qdvXlRHZZCpfZqZ4GtG9v3VKgRyF0=:AmazonSES
+        Mon, 7 Sep 2020 12:23:40 -0400
+Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com [IPv6:2607:f8b0:4864:20::641])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E106C061574
+        for <linux-wireless@vger.kernel.org>; Mon,  7 Sep 2020 09:23:39 -0700 (PDT)
+Received: by mail-pl1-x641.google.com with SMTP id y6so2214761plt.9
+        for <linux-wireless@vger.kernel.org>; Mon, 07 Sep 2020 09:23:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=sslab.ics.keio.ac.jp; s=google;
+        h=from:to:cc:subject:date:message-id;
+        bh=SDxUUQ+8c+YEIDDJur8rYrh3CcLj60cM5IrQcltAbJU=;
+        b=Wy+lY5pi2y0MXKbzHqJ4nxyLK8FkoENJ+OWduamenQCm/MHiU+zeaS9LOSSiSk7TmX
+         OQwBenpNoA2RRwW+bDYWYnuPBVvGkPeIZJXm0ZMBz4gBd2pC5Kw5z5E0N3ZbM34nAw+k
+         OdteM1Ed8drJUGv6ZCa9m6kJPpuG9BZzrYu+w=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=SDxUUQ+8c+YEIDDJur8rYrh3CcLj60cM5IrQcltAbJU=;
+        b=SrAwX5IQpMjpSUWosWDSVPElRgWtRBoKxFbruqRghc58QD8NY05rIjuNdUNUWaYPwq
+         fS+t2X0t09PyZLKYao8LQ7HQiBXzbRaCNLWOq6MYA8xqnV+0lfBqDc5DzP+cpoZ/5zwt
+         2epNz1ACOu3XxS8Oots3cIKFgaETegsYFbllcrNx/nbWdNZFret2VeLsDKQPUY0CTo1V
+         cqZO+AEamesczKRvAXTFaFt3DAORNTsEOHEP35NEKHpXbFK7hDzVduxpA3UcZnMg/pZj
+         NFYdQ7cZh+oSrt/csUapQtKv2VyFMCbr+hYzPvsF6vYVvbfELgVx+CIKizzKdiZLTyul
+         k2cg==
+X-Gm-Message-State: AOAM531CKwLX8ongtQ+LEyzha9cu4LaFDZs39eXitrrSMTYR+LNfHsQL
+        hYByApGRgSte7xp5xl5IqjqO2w==
+X-Google-Smtp-Source: ABdhPJyt1f1puArMGZEw7H7IWnsOdW3BtYIeDECpZMGG2uhioAhtb/hu+XxvwnoXRKkOXMIXD2nqUQ==
+X-Received: by 2002:a17:902:d353:: with SMTP id l19mr9227410plk.220.1599495818901;
+        Mon, 07 Sep 2020 09:23:38 -0700 (PDT)
+Received: from brooklyn.i.sslab.ics.keio.ac.jp (sslab-relay.ics.keio.ac.jp. [131.113.126.173])
+        by smtp.googlemail.com with ESMTPSA id v1sm3229622pjn.1.2020.09.07.09.23.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 07 Sep 2020 09:23:38 -0700 (PDT)
+From:   Keita Suzuki <keitasuzuki.park@sslab.ics.keio.ac.jp>
+Cc:     keitasuzuki.park@sslab.ics.keio.ac.jp,
+        takafumi@sslab.ics.keio.ac.jp,
+        Arend van Spriel <arend.vanspriel@broadcom.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
+        Wright Feng <wright.feng@cypress.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless@vger.kernel.org (open list:BROADCOM BRCM80211
+        IEEE802.11n WIRELESS DRIVER),
+        brcm80211-dev-list.pdl@broadcom.com (open list:BROADCOM BRCM80211
+        IEEE802.11n WIRELESS DRIVER),
+        brcm80211-dev-list@cypress.com (open list:BROADCOM BRCM80211
+        IEEE802.11n WIRELESS DRIVER),
+        netdev@vger.kernel.org (open list:NETWORKING DRIVERS),
+        linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH] brcmsmac: fix potential memory leak in wlc_phy_attach_lcnphy
+Date:   Mon,  7 Sep 2020 16:22:43 +0000
+Message-Id: <20200907162245.17997-1-keitasuzuki.park@sslab.ics.keio.ac.jp>
+X-Mailer: git-send-email 2.17.1
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-"Rakesh Pillai" <pillair@codeaurora.org> writes:
+When wlc_phy_txpwr_srom_read_lcnphy fails in wlc_phy_attach_lcnphy,
+the allocated pi->u.pi_lcnphy is leaked, since struct brcms_phy will be
+freed in the caller function.
 
->> > --- a/drivers/net/wireless/ath/ath10k/qmi.c
->> > +++ b/drivers/net/wireless/ath/ath10k/qmi.c
->> > @@ -576,6 +576,8 @@ static int ath10k_qmi_cap_send_sync_msg(struct
->> ath10k_qmi *qmi)
->> >  	if (resp->chip_info_valid) {
->> >  		qmi->chip_info.chip_id = resp->chip_info.chip_id;
->> >  		qmi->chip_info.chip_family = resp->chip_info.chip_family;
->> > +	} else {
->> > +		qmi->chip_info.chip_id = 0xFF;
->> >  	}
->> 
->> So you hard code chip_id to 0xff if it's not valid. Is it 100%
->> guaranteed that there never will be a chip id with 0xff?
->
-> 0x0 and 0xff are invalid chip id and are are not used.
-> If the chip_id read fails, we fallback to the default board data.
-> 0xff is used to go to the default board data (Also this is in alignment with
-> the current implementation of board_id)
->
-> Does that make sense ?
+Fix this by calling wlc_phy_detach_lcnphy in the error handler of
+wlc_phy_txpwr_srom_read_lcnphy before returning.
 
-I'm a bit hesitant, over the years I have seen cases so many cases where
-"foo is not used anywhere" and later that foo is actually used
-somewhere. 0xff means that there's only 254 different values, but I
-guess there are not that many chip ids? So a chip id is very different
-from a board id, right?
+Signed-off-by: Keita Suzuki <keitasuzuki.park@sslab.ics.keio.ac.jp>
+---
+ .../net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c    | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c
+index 7ef36234a25d..6d70f51b2ddf 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c
+@@ -5065,8 +5065,10 @@ bool wlc_phy_attach_lcnphy(struct brcms_phy *pi)
+ 	pi->pi_fptr.radioloftget = wlc_lcnphy_get_radio_loft;
+ 	pi->pi_fptr.detach = wlc_phy_detach_lcnphy;
+ 
+-	if (!wlc_phy_txpwr_srom_read_lcnphy(pi))
++	if (!wlc_phy_txpwr_srom_read_lcnphy(pi)) {
++		wlc_phy_detach_lcnphy(pi);
+ 		return false;
++	}
+ 
+ 	if (LCNREV_IS(pi->pubpi.phy_rev, 1)) {
+ 		if (pi_lcn->lcnphy_tempsense_option == 3) {
 -- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+2.17.1
+
