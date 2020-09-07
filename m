@@ -2,115 +2,74 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 024452600ED
-	for <lists+linux-wireless@lfdr.de>; Mon,  7 Sep 2020 18:56:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 765DF2601E9
+	for <lists+linux-wireless@lfdr.de>; Mon,  7 Sep 2020 19:14:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731222AbgIGQ4T (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 7 Sep 2020 12:56:19 -0400
-Received: from a27-188.smtp-out.us-west-2.amazonses.com ([54.240.27.188]:40078
-        "EHLO a27-188.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1729862AbgIGQ4L (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 7 Sep 2020 12:56:11 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1599497771;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:MIME-Version:Content-Type;
-        bh=E7t//6wwVe6yoHqHO8AWN7Zj46ePVZw+67TGmdShN74=;
-        b=ADKvl7PXpRWu8VlsVX/yoid2s8Dy7P9E14N2iN23DhNiXQgAKMjy9/1cGS/afafx
-        OQgxGiOH4UlczVodr1r+Xb/WCxRBmnchyJhTMXrRcS5OpH4aSVYkvwW5KOMNfq5PQ8H
-        beWANGvMOrO6HZeupYFa8Cw7ZggHEfYa/Dbamcsg=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=hsbnp7p3ensaochzwyq5wwmceodymuwv; d=amazonses.com; t=1599497771;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:MIME-Version:Content-Type:Feedback-ID;
-        bh=E7t//6wwVe6yoHqHO8AWN7Zj46ePVZw+67TGmdShN74=;
-        b=I9C3pr4hiDDFdD8lrMapzSQBf9H6nWJlfykL5ZWMGssFM4cxW49YMgR1BMhSkrsK
-        zScdkOjCo3DgGtIZaIXuCOtv4U/VS8XYD6nHQZwtvtFdZ9jTcdlHYp6Banf+w0/6XzK
-        qzfGTwBH+0Sg5GQSo4TyObnYnxUFMb8Y49VF5/uo=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
-        autolearn=no autolearn_force=no version=3.4.0
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 12EFBC4B52A
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Karthikeyan Periyasamy <periyasa@codeaurora.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        kernel-janitors@vger.kernel.org, linux-wireless@vger.kernel.org,
-        ath11k@lists.infradead.org
-Subject: Re: [PATCH net-next] ath11k: fix uninitialized return in ath11k_spectral_process_data()
-References: <20200619142922.GA267142@mwanda> <87a70vf923.fsf@codeaurora.org>
-        <20200622171846.GE4151@kadam>
-Date:   Mon, 7 Sep 2020 16:56:11 +0000
-In-Reply-To: <20200622171846.GE4151@kadam> (Dan Carpenter's message of "Mon,
-        22 Jun 2020 20:18:47 +0300")
-Message-ID: <01010174697f1805-c885f217-9729-4089-91bd-4bd79645fec0-000000@us-west-2.amazonses.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        id S1729778AbgIGOOZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 7 Sep 2020 10:14:25 -0400
+Received: from szxga06-in.huawei.com ([45.249.212.32]:38474 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1729549AbgIGONW (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 7 Sep 2020 10:13:22 -0400
+Received: from DGGEMS407-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id 936D919DCD516F507D67;
+        Mon,  7 Sep 2020 22:12:44 +0800 (CST)
+Received: from huawei.com (10.175.113.133) by DGGEMS407-HUB.china.huawei.com
+ (10.3.19.207) with Microsoft SMTP Server id 14.3.487.0; Mon, 7 Sep 2020
+ 22:12:40 +0800
+From:   Wang Hai <wanghai38@huawei.com>
+To:     <nbd@nbd.name>, <lorenzo.bianconi83@gmail.com>,
+        <ryder.lee@mediatek.com>, <kvalo@codeaurora.org>,
+        <davem@davemloft.net>, <kuba@kernel.org>, <matthias.bgg@gmail.com>,
+        <mcoquelin.stm32@gmail.com>, <alexandre.torgue@st.com>
+CC:     <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>
+Subject: [PATCH net-next] mt76: mt7615: Remove set but unused variable 'index'
+Date:   Mon, 7 Sep 2020 22:10:02 +0800
+Message-ID: <20200907141002.10745-1-wanghai38@huawei.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-SES-Outgoing: 2020.09.07-54.240.27.188
-Feedback-ID: 1.us-west-2.CZuq2qbDmUIuT3qdvXlRHZZCpfZqZ4GtG9v3VKgRyF0=:AmazonSES
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.175.113.133]
+X-CFilter-Loop: Reflected
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Dan Carpenter <dan.carpenter@oracle.com> writes:
+Fixes gcc '-Wunused-but-set-variable' warning:
 
-> On Mon, Jun 22, 2020 at 05:51:16PM +0300, Kalle Valo wrote:
->> Dan Carpenter <dan.carpenter@oracle.com> writes:
->> 
->> > There is a success path where "ret" isn't initialized where we never
->> > have a ATH11K_SPECTRAL_TAG_SCAN_SEARCH and then ret isn't initialized.
->> >
->> > Fixes: 9d11b7bff950 ("ath11k: add support for spectral scan")
->> > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
->> > ---
->> >  drivers/net/wireless/ath/ath11k/spectral.c | 2 +-
->> >  1 file changed, 1 insertion(+), 1 deletion(-)
->> >
->> > diff --git a/drivers/net/wireless/ath/ath11k/spectral.c b/drivers/net/wireless/ath/ath11k/spectral.c
->> > index 1c5d65bb411f..bfbf905f7507 100644
->> > --- a/drivers/net/wireless/ath/ath11k/spectral.c
->> > +++ b/drivers/net/wireless/ath/ath11k/spectral.c
->> > @@ -677,7 +677,7 @@ static int ath11k_spectral_process_data(struct ath11k *ar,
->> >  	u32 data_len, i;
->> >  	u8 sign, tag;
->> >  	int tlv_len, sample_sz;
->> > -	int ret;
->> > +	int ret = 0;
->> >  	bool quit = false;
->> 
->> I try to avoid initialising ret variables so I would like find another
->> way. What about doing this (completely untested!) in the end of the
->> function:
->> 
->>         return 0;
->> 
->> err:
->> 	kfree(fft_sample);
->> unlock:
->> 	spin_unlock_bh(&ar->spectral.lock);
->> 	return ret;
->
-> I normally avoid it as well...  If I were to redo this patch, I would
-> probably do:
->
-> 	ret = 0;
-> err:
-> 	kfree(fft_sample);
-> unlock:
-> 	spin_unlock_bh(&ar->spectral.lock);
-> 	return ret;
->
-> Would that be better?
+drivers/net/wireless/mediatek/mt76/mt7615/testmode.c: In function mt7615_tm_set_tx_power
+drivers/net/wireless/mediatek/mt76/mt7615/testmode.c:83:7: warning: variable ‘index’ set but not used [-Wunused-but-set-variable]=
 
-Ah, my proposal was buggy. So yes, this is definitely better :) I
-changed now the patch in the pending branch, please check:
+commit 4f0bce1c8888 ("mt76: mt7615: implement testmode support")
+involved this unused variable, remove it.
 
-https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=586f8e6779fa75ade112cb48606794e034e0ff1d
+Signed-off-by: Wang Hai <wanghai38@huawei.com>
+---
+ drivers/net/wireless/mediatek/mt76/mt7615/testmode.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/testmode.c b/drivers/net/wireless/mediatek/mt76/mt7615/testmode.c
+index 1730751133aa..de39ea8adb96 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/testmode.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/testmode.c
+@@ -80,13 +80,10 @@ mt7615_tm_set_tx_power(struct mt7615_phy *phy)
+ 
+ 	target_chains = mt7615_ext_pa_enabled(dev, band) ? 1 : n_chains;
+ 	for (i = 0; i < target_chains; i++) {
+-		int index;
+-
+ 		ret = mt7615_eeprom_get_target_power_index(dev, chandef->chan, i);
+ 		if (ret < 0)
+ 			return -EINVAL;
+ 
+-		index = ret - MT_EE_NIC_CONF_0;
+ 		if (tx_power && tx_power[i])
+ 			data[ret - MT_EE_NIC_CONF_0] = tx_power[i];
+ 	}
 -- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+2.17.1
+
