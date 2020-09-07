@@ -2,122 +2,98 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E06425F659
-	for <lists+linux-wireless@lfdr.de>; Mon,  7 Sep 2020 11:21:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 83CF225F65B
+	for <lists+linux-wireless@lfdr.de>; Mon,  7 Sep 2020 11:21:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728303AbgIGJV2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 7 Sep 2020 05:21:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51918 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728141AbgIGJV1 (ORCPT
+        id S1728317AbgIGJVd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 7 Sep 2020 05:21:33 -0400
+Received: from a27-10.smtp-out.us-west-2.amazonses.com ([54.240.27.10]:49418
+        "EHLO a27-10.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728141AbgIGJVd (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 7 Sep 2020 05:21:27 -0400
-Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com [IPv6:2607:f8b0:4864:20::542])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19125C061573
-        for <linux-wireless@vger.kernel.org>; Mon,  7 Sep 2020 02:21:26 -0700 (PDT)
-Received: by mail-pg1-x542.google.com with SMTP id 5so7767652pgl.4
-        for <linux-wireless@vger.kernel.org>; Mon, 07 Sep 2020 02:21:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=Ls8dcJi4qtOvCU2D4R5ImDJ/y6J5SG+OLOdy4QraSBc=;
-        b=TILt43kzRglwwZpLkFHLnisaTmsNlo+61rHo1KS/nQri73+96CNUDQZTVwc7rSH+8D
-         YHXds8iQaBrKVH2D7shNhefhNfH6Ai7PEYdiBE61QH7iBAhytr1M8sRIMJWcGuYl7FeK
-         s/MXyaPfk7VVuDo9XOiJsBtFz1/0xaGqJhM/o=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=Ls8dcJi4qtOvCU2D4R5ImDJ/y6J5SG+OLOdy4QraSBc=;
-        b=ARMYA2wO4wpizy7YW3MqfHIDVXLHLl2hpFBSdjavVboi0eGDdNpymAOBwnLel83D72
-         0g61WM2DYXA8CiHDUpLF62S0XQWp9Yr/ZZxHKiOmdaha5psvHF4o/xQwLNvUz5wSXeGq
-         0KZr1i0+mZr/e7nYKfE7RH3O5oHz0gn6Su8UdjJiz/bxDq1kbTdAyiJuvu2AiYtzb1hr
-         GS37Q4W9bglvjYmBvQ+A+3Bitf5WLW9plLVEPs4dOhcpOj54TwHkqgcZBIEAFA+LxcUU
-         Ei0+JCZDjagrZ9lrkN1+lRCr0LhiGfTiPjzOnBvcVn9Sv5zlOhW2hozhUTW1GGPNbkqz
-         1eow==
-X-Gm-Message-State: AOAM532YNyL8uWcYtD8/1/avhUlJHFuMpGu3vE/MhYFEQ7Up+hfUMX3j
-        QOjMRBCd7Uv7Jqd1nf9CIyNXaQ==
-X-Google-Smtp-Source: ABdhPJwCPzhAB3dh4Q9WnGb1ePX3p7XeXSrk5bqrBoCM3WabA7EzZYJaUYdyPBASfjCdLRIN6Enf/w==
-X-Received: by 2002:aa7:8f03:: with SMTP id x3mr19608161pfr.256.1599470484062;
-        Mon, 07 Sep 2020 02:21:24 -0700 (PDT)
-Received: from [10.230.32.194] ([192.19.148.250])
-        by smtp.gmail.com with ESMTPSA id u27sm824337pgm.60.2020.09.07.02.21.21
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 07 Sep 2020 02:21:23 -0700 (PDT)
-Subject: Re: [PATCH 1/4] brcmfmac: add change_bss to support AP isolation
-To:     Kalle Valo <kvalo@codeaurora.org>,
-        Wright Feng <wright.feng@cypress.com>
+        Mon, 7 Sep 2020 05:21:33 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1599470492;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:MIME-Version:Content-Type;
+        bh=9b5FrUg1iGXJA/9iw+ulM0boM5F0pty0Vwes5WHWREM=;
+        b=OCJ15qBk+EpBxSJqVpPWgq45o+uyNuaamvCVL7tFGQhP/S792+K0TOgwHm45Cgw8
+        6ooyhAtZi3F07r/Rzr868Sp5gKGlyFPSL7yoEL159A0zIckpRWRRkiFc+8oSFUpH+Ml
+        qUAbS4dMhtiBsru1RiFOFaap6eQwKt+hybNVJJcE=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+        s=hsbnp7p3ensaochzwyq5wwmceodymuwv; d=amazonses.com; t=1599470492;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:MIME-Version:Content-Type:Feedback-ID;
+        bh=9b5FrUg1iGXJA/9iw+ulM0boM5F0pty0Vwes5WHWREM=;
+        b=N5JXDjpde/0IK319bY0jnbobJ8PLeXN+Vk5+VdpIpXu3UAIh4nEt1ZpR0lTBLAI5
+        aQBrnIzdQXNoTfBPgkHtD+FErOZpEdKxZe5NF0ZKcbi6PcjitbzgISuzn43WJJ2MWmr
+        2u+ctpPf/id8s+BW3yMDrNXk7Z+/e+H7qm612QRw=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
+        autolearn=no autolearn_force=no version=3.4.0
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org B6D42C43463
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Wright Feng <wright.feng@cypress.com>
 Cc:     linux-wireless@vger.kernel.org, brcm80211-dev-list@broadcom.com,
         brcm80211-dev-list@cypress.com,
+        Arend van Spriel <arend.vanspriel@broadcom.com>,
         Franky Lin <franky.lin@broadcom.com>,
         Hante Meuleman <hante.meuleman@broadcom.com>,
-        chi-hsien.lin@cypress.com
+        chi-hsien.lin@cypress.com, Ting-Ying Li <tingying.li@cypress.com>
+Subject: Re: [PATCH 4/4] brcmfmac: add a variable for packet forwarding condition
 References: <20200901063237.15549-1-wright.feng@cypress.com>
- <20200901063237.15549-2-wright.feng@cypress.com>
- <0101017467cf4336-e8ed5107-762a-431d-9ef0-a2631dd090be-000000@us-west-2.amazonses.com>
-From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
-Message-ID: <c90157f5-2c1a-1535-3453-450590857f74@broadcom.com>
-Date:   Mon, 7 Sep 2020 11:21:20 +0200
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.11.0
+        <20200901063237.15549-5-wright.feng@cypress.com>
+Date:   Mon, 7 Sep 2020 09:21:32 +0000
+In-Reply-To: <20200901063237.15549-5-wright.feng@cypress.com> (Wright Feng's
+        message of "Tue, 1 Sep 2020 01:32:37 -0500")
+Message-ID: <0101017467dedc38-3e3a7b7e-3e16-4eb2-adcf-5b6f502178ac-000000@us-west-2.amazonses.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-In-Reply-To: <0101017467cf4336-e8ed5107-762a-431d-9ef0-a2631dd090be-000000@us-west-2.amazonses.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
+X-SES-Outgoing: 2020.09.07-54.240.27.10
+Feedback-ID: 1.us-west-2.CZuq2qbDmUIuT3qdvXlRHZZCpfZqZ4GtG9v3VKgRyF0=:AmazonSES
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Wright Feng <wright.feng@cypress.com> writes:
+
+> From: Ting-Ying Li <tingying.li@cypress.com>
+>
+> When the "ap_isolate" function is not set by the host,
+> host-based packet forwarding will be enabled if the packet
+> forwarding mechanism is not offloaded to the lower layer.
+>
+> Signed-off-by: Ting-Ying Li <tingying.li@cypress.com>
+> Signed-off-by: Chi-hsien Lin <chi-hsien.lin@cypress.com>
+
+[...]
+
+> +	/* Get ap_isolate value from firmware to detemine whether fmac */
+> +	/* driver supports packet forwarding. */
+> +	if (brcmf_fil_iovar_int_get(ifp, "ap_isolate", &val) == 0) {
+> +		ifp->fmac_pkt_fwd_en =
+> +			((params->ap_isolate == 0) && (val == 1)) ?
+> +			true : false;
+> +	} else {
+> +		brcmf_err("get ap_isolate iovar failed: ret=%d\n", ret);
+> +		ifp->fmac_pkt_fwd_en = false;
+> +	}
+
+This is hard to read, you can simplify it to:
+
+if (brcmf_fil_iovar_int_get(ifp, "ap_isolate", &val) == 0 &&
+    params->ap_isolate == 0 &&
+    val == 1) {
+	ifp->fmac_pkt_fwd_en = true;
+} else {
+	brcmf_err("get ap_isolate iovar failed: ret=%d\n", ret);
+	ifp->fmac_pkt_fwd_en = false;
+}
 
 
-On 9/7/2020 11:04 AM, Kalle Valo wrote:
-> Wright Feng <wright.feng@cypress.com> writes:
-> 
->> Hostap has a parameter "ap_isolate" which is used to prevent low-level
->> bridging of frames between associated stations in the BSS.
->> Regarding driver side, we add cfg80211 ops method change_bss to support
->> setting AP isolation if firmware has ap_isolate feature.
->>
->> Signed-off-by: Wright Feng <wright.feng@cypress.com>
->> Signed-off-by: Chi-hsien Lin <chi-hsien.lin@cypress.com>
->> ---
->>   .../broadcom/brcm80211/brcmfmac/cfg80211.c    | 23 +++++++++++++++++++
->>   .../broadcom/brcm80211/brcmfmac/feature.c     |  1 +
->>   .../broadcom/brcm80211/brcmfmac/feature.h     |  3 ++-
->>   3 files changed, 26 insertions(+), 1 deletion(-)
->>
->> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
->> index 5d99771c3f64..7ef93cd66b2c 100644
->> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
->> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
->> @@ -5425,6 +5425,26 @@ static int brcmf_cfg80211_del_pmk(struct wiphy *wiphy, struct net_device *dev,
->>   	return brcmf_set_pmk(ifp, NULL, 0);
->>   }
->>   
->> +static int
->> +brcmf_cfg80211_change_bss(struct wiphy *wiphy, struct net_device *dev,
->> +			  struct bss_parameters *params)
->> +{
->> +	struct brcmf_if *ifp;
->> +	int ret = 0;
->> +	u32 ap_isolate;
->> +
->> +	brcmf_dbg(TRACE, "Enter\n");
->> +	ifp = netdev_priv(dev);
->> +	if (params->ap_isolate >= 0) {
->> +		ap_isolate = (u32)params->ap_isolate;
- >> +		ret = brcmf_fil_iovar_int_set(ifp, "ap_isolate", ap_isolate);
-> 
-> Is the cast to u32 really necessary? Please avoid casts as much as
-> possible.
-
-It seems to me. struct bss_parameters::ap_isolate is typed as int. It is 
-passed to brcmf_fil_iovar_int_set() which requires a u32 (maybe function 
-name is causing the confusion).
-
-Regards,
-Arend
+-- 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
