@@ -2,86 +2,101 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 38CE125F5B6
-	for <lists+linux-wireless@lfdr.de>; Mon,  7 Sep 2020 10:52:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 94DC725F5F5
+	for <lists+linux-wireless@lfdr.de>; Mon,  7 Sep 2020 11:04:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728069AbgIGIwq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 7 Sep 2020 04:52:46 -0400
-Received: from a27-56.smtp-out.us-west-2.amazonses.com ([54.240.27.56]:35842
-        "EHLO a27-56.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727122AbgIGIwp (ORCPT
+        id S1728117AbgIGJEd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 7 Sep 2020 05:04:33 -0400
+Received: from a27-21.smtp-out.us-west-2.amazonses.com ([54.240.27.21]:55116
+        "EHLO a27-21.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727122AbgIGJEb (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 7 Sep 2020 04:52:45 -0400
+        Mon, 7 Sep 2020 05:04:31 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1599468764;
-        h=Content-Type:MIME-Version:Content-Transfer-Encoding:Subject:From:In-Reply-To:References:To:Cc:Message-Id:Date;
-        bh=kiE5N7xdS+rLmJWgRX00IfpwqEON5REUjDKthNcC2KU=;
-        b=g2U8yefQnDuE/1nsrNd1b9L0c/UydYwcUYqE//bjWq2ANJ7eajM46s6OWx+Tg2Us
-        25MyGHyrpCOW+Z+6aqAxzYorc+7JpFINOJlFe/JUUVs4e95SvxAQ0wuGSXe+UrIPyLf
-        LNh/K9GUc+/EHkoWX1MSJ4vv7jR+aobk+iivbsqo=
+        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1599469470;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:MIME-Version:Content-Type;
+        bh=891jM/EV80bPFOKUpizphjfVBSGtHA1/R1BQtx/8XKs=;
+        b=o9VedWIlAWuecekRFgQz5Km4RosltqJ9IRUBeCiQqIWVL3tKtsdckNA4X5hD/7f0
+        6iXsNZJ3qyd5QZu725n74qHa36VEZy7qTtSkV1B7yXG2Nn5KmdVTULlOnzZ0MqB7K5X
+        HQ1MswDR4MOMjTunHrFw6E4JH0vrB9fvxZGsyB9Q=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=hsbnp7p3ensaochzwyq5wwmceodymuwv; d=amazonses.com; t=1599468764;
-        h=Content-Type:MIME-Version:Content-Transfer-Encoding:Subject:From:In-Reply-To:References:To:Cc:Message-Id:Date:Feedback-ID;
-        bh=kiE5N7xdS+rLmJWgRX00IfpwqEON5REUjDKthNcC2KU=;
-        b=bRX4/u4oqoNsL8HDjPGqMJ5twUNf74DvlFoFvEDQ0MfPkSPdiCk+rcSf9pXwOsul
-        Pwx2HIjGGnYuQkgN5EU0yk5p/4bgrfMPj0eG7i2dYVrK/A+gpfz0FXiJpEpUxvNg0JE
-        gqm2LIawawDdk9f7RYrIFPfhe403hnNQqFfyhb+s=
+        s=hsbnp7p3ensaochzwyq5wwmceodymuwv; d=amazonses.com; t=1599469470;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:MIME-Version:Content-Type:Feedback-ID;
+        bh=891jM/EV80bPFOKUpizphjfVBSGtHA1/R1BQtx/8XKs=;
+        b=H8wMoBe3LMDv7TNc+/UvSeN1euh0uGkdY7P6UVInt7h1de2Udewjxs5kQVHj902T
+        vxesPnk1CXunkt8WiSoEFBqZolGdLUZUBOaB1dVvceS5BTyh/6rTRIHzBISWVlSnwhi
+        pNMluXCFPHGkH8wu4sz8BT9vOcvUGatM6yukEt6Q=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        MISSING_DATE,MISSING_MID,SPF_FAIL autolearn=no autolearn_force=no
-        version=3.4.0
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org C5E8AC35A16
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
+        autolearn=no autolearn_force=no version=3.4.0
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org E7D59C433C8
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v3 1/3] brcmfmac: increase F2 watermark for BCM4329
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20200830191439.10017-2-digetx@gmail.com>
-References: <20200830191439.10017-2-digetx@gmail.com>
-To:     Dmitry Osipenko <digetx@gmail.com>
-Cc:     Arend van Spriel <arend.vanspriel@broadcom.com>,
+To:     Wright Feng <wright.feng@cypress.com>
+Cc:     linux-wireless@vger.kernel.org, brcm80211-dev-list@broadcom.com,
+        brcm80211-dev-list@cypress.com,
+        Arend van Spriel <arend.vanspriel@broadcom.com>,
         Franky Lin <franky.lin@broadcom.com>,
         Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
-        Wright Feng <wright.feng@cypress.com>,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        brcm80211-dev-list@cypress.com, netdev@vger.kernel.org,
-        linux-tegra@vger.kernel.org, linux-kernel@vger.kernel.org
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-ID: <0101017467c47c8b-3be0f076-452b-4e42-933f-c40f7c2dc3fb-000000@us-west-2.amazonses.com>
-Date:   Mon, 7 Sep 2020 08:52:44 +0000
-X-SES-Outgoing: 2020.09.07-54.240.27.56
+        Kalle Valo <kvalo@codeaurora.org>, chi-hsien.lin@cypress.com
+Subject: Re: [PATCH 1/4] brcmfmac: add change_bss to support AP isolation
+References: <20200901063237.15549-1-wright.feng@cypress.com>
+        <20200901063237.15549-2-wright.feng@cypress.com>
+Date:   Mon, 7 Sep 2020 09:04:30 +0000
+In-Reply-To: <20200901063237.15549-2-wright.feng@cypress.com> (Wright Feng's
+        message of "Tue, 1 Sep 2020 01:32:34 -0500")
+Message-ID: <0101017467cf4336-e8ed5107-762a-431d-9ef0-a2631dd090be-000000@us-west-2.amazonses.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
+X-SES-Outgoing: 2020.09.07-54.240.27.21
 Feedback-ID: 1.us-west-2.CZuq2qbDmUIuT3qdvXlRHZZCpfZqZ4GtG9v3VKgRyF0=:AmazonSES
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Dmitry Osipenko <digetx@gmail.com> wrote:
+Wright Feng <wright.feng@cypress.com> writes:
 
-> This patch fixes SDHCI CRC errors during of RX throughput testing on
-> BCM4329 chip if SDIO BUS is clocked above 25MHz. In particular the
-> checksum problem is observed on NVIDIA Tegra20 SoCs. The good watermark
-> value is borrowed from downstream BCMDHD driver and it's matching to the
-> value that is already used for the BCM4339 chip, hence let's re-use it
-> for BCM4329.
-> 
-> Reviewed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-> Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
+> Hostap has a parameter "ap_isolate" which is used to prevent low-level
+> bridging of frames between associated stations in the BSS.
+> Regarding driver side, we add cfg80211 ops method change_bss to support
+> setting AP isolation if firmware has ap_isolate feature.
+>
+> Signed-off-by: Wright Feng <wright.feng@cypress.com>
+> Signed-off-by: Chi-hsien Lin <chi-hsien.lin@cypress.com>
+> ---
+>  .../broadcom/brcm80211/brcmfmac/cfg80211.c    | 23 +++++++++++++++++++
+>  .../broadcom/brcm80211/brcmfmac/feature.c     |  1 +
+>  .../broadcom/brcm80211/brcmfmac/feature.h     |  3 ++-
+>  3 files changed, 26 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+> index 5d99771c3f64..7ef93cd66b2c 100644
+> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+> @@ -5425,6 +5425,26 @@ static int brcmf_cfg80211_del_pmk(struct wiphy *wiphy, struct net_device *dev,
+>  	return brcmf_set_pmk(ifp, NULL, 0);
+>  }
+>  
+> +static int
+> +brcmf_cfg80211_change_bss(struct wiphy *wiphy, struct net_device *dev,
+> +			  struct bss_parameters *params)
+> +{
+> +	struct brcmf_if *ifp;
+> +	int ret = 0;
+> +	u32 ap_isolate;
+> +
+> +	brcmf_dbg(TRACE, "Enter\n");
+> +	ifp = netdev_priv(dev);
+> +	if (params->ap_isolate >= 0) {
+> +		ap_isolate = (u32)params->ap_isolate;
 
-3 patches applied to wireless-drivers-next.git, thanks.
-
-317da69d10b0 brcmfmac: increase F2 watermark for BCM4329
-1a867a6230db brcmfmac: drop chip id from debug messages
-cc95fa81524a brcmfmac: set F2 SDIO block size to 128 bytes for BCM4329
+Is the cast to u32 really necessary? Please avoid casts as much as
+possible.
 
 -- 
-https://patchwork.kernel.org/patch/11745283/
-
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
