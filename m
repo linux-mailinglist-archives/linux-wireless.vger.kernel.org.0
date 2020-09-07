@@ -2,53 +2,52 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2278725F8AD
-	for <lists+linux-wireless@lfdr.de>; Mon,  7 Sep 2020 12:43:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CB34925F907
+	for <lists+linux-wireless@lfdr.de>; Mon,  7 Sep 2020 13:09:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728536AbgIGKnm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 7 Sep 2020 06:43:42 -0400
-Received: from a27-187.smtp-out.us-west-2.amazonses.com ([54.240.27.187]:35908
+        id S1728724AbgIGLGO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 7 Sep 2020 07:06:14 -0400
+Received: from a27-187.smtp-out.us-west-2.amazonses.com ([54.240.27.187]:41236
         "EHLO a27-187.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728501AbgIGKnl (ORCPT
+        by vger.kernel.org with ESMTP id S1728833AbgIGK7u (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 7 Sep 2020 06:43:41 -0400
+        Mon, 7 Sep 2020 06:59:50 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1599475418;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:MIME-Version:Content-Type;
-        bh=BmjUyQoq0rw+Yy2ywElfw+Z4XNqZZ009J9ibudq+jxI=;
-        b=AGm4S86+KmyZu7HQvX1D5FFlvnsGz6A6HFmqvhkJYWZdyvpxFuZWxjSbt202N6uR
-        Mr0qJQVZZOGcbsIzULwgKtFraZVJmZEqoVgDP0Ay7gPrXBSm0xC9a7nQkwwYU4vmK72
-        Rc1jV1Y/XkwtU1NFfGfLHHS433rRt8xpeDIOYrvg=
+        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1599476389;
+        h=MIME-Version:Content-Type:Content-Transfer-Encoding:Date:From:To:Cc:Subject:In-Reply-To:References:Message-ID;
+        bh=CZJI5A+Q4qqEWMI7I/Rka4KTe1dm5BFjfmSKsUF2lyE=;
+        b=FJQ/9V9IeYXRQaQzShiC/TrHBRB3Fkgk9HfU940AKgrlXDCXQZothFT+ZCidb3Wq
+        1ePm33NFcWRzeo8OB3Z8XbJBI2eixm6hDaItBeegYKYN5CAQfuQW2HX31jop+xreH86
+        84C9ZRrkxiep9sP7elYixhAxY2Bk/wqQc2EpDxyk=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=hsbnp7p3ensaochzwyq5wwmceodymuwv; d=amazonses.com; t=1599475418;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:MIME-Version:Content-Type:Feedback-ID;
-        bh=BmjUyQoq0rw+Yy2ywElfw+Z4XNqZZ009J9ibudq+jxI=;
-        b=RhdqFmT6gTAxcsgvaMzWhtqZdCK5s7LzyQ4cFT8MnwXesCJ44Et+NVT5TN5HCi/p
-        oo4COz1Rr3nunFBVpmuOkvbeAb+ZRFr5oi2iAYuoTJHM8+M2/+WASJJrY85Ow8HA3Ov
-        JcCdaQs6UGpGpjXg59qMWtFLTEGyphv80AAgVkHk=
+        s=hsbnp7p3ensaochzwyq5wwmceodymuwv; d=amazonses.com; t=1599476389;
+        h=MIME-Version:Content-Type:Content-Transfer-Encoding:Date:From:To:Cc:Subject:In-Reply-To:References:Message-ID:Feedback-ID;
+        bh=CZJI5A+Q4qqEWMI7I/Rka4KTe1dm5BFjfmSKsUF2lyE=;
+        b=nFMLXU5VAr3kTUZgjrrtEWbS4eftABx1H6VBWBuWg672CUj/jd29yZ+mMmyqo5QI
+        gGkO00uayHM0oTnXQrBUHjxBl4LSQjeR2ES5uNwmg7GFrDpSF1dFH6vEiujKMRBcIig
+        W0yP/8NusLi+497Hv30E0lng467mUHqGuir6RL6Q=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
-        autolearn=no autolearn_force=no version=3.4.0
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 53E40C43465
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Venkateswara Naralasetty <vnaralas@codeaurora.org>
-Cc:     ath11k@lists.infradead.org,
-        Manikanta Pubbisetty <mpubbise@codeaurora.org>,
-        linux-wireless@vger.kernel.org
-Subject: Re: [PATCH] ath11k: add raw mode and software crypto support
-References: <1592281555-31556-1-git-send-email-vnaralas@codeaurora.org>
-Date:   Mon, 7 Sep 2020 10:43:38 +0000
-In-Reply-To: <1592281555-31556-1-git-send-email-vnaralas@codeaurora.org>
-        (Venkateswara Naralasetty's message of "Tue, 16 Jun 2020 09:55:55
-        +0530")
-Message-ID: <01010174682a05d3-dfa28960-8a01-4b5c-996c-7af937de2db9-000000@us-west-2.amazonses.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00
+        autolearn=unavailable autolearn_force=no version=3.4.0
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Mon, 7 Sep 2020 10:59:49 +0000
+From:   akolli@codeaurora.org
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     ath11k@lists.infradead.org, devicetree@vger.kernel.org,
+        linux-wireless@vger.kernel.org
+Subject: Re: [PATCH v6 2/3] ath11k: copy ce service configs to hw_params
+In-Reply-To: <87363t52nj.fsf@codeaurora.org>
+References: <1598287470-1871-1-git-send-email-akolli@codeaurora.org>
+ <1598287470-1871-3-git-send-email-akolli@codeaurora.org>
+ <87363t52nj.fsf@codeaurora.org>
+Message-ID: <010101746838d5d2-5deaf2a7-2c2e-440d-b488-c9150e681566-000000@us-west-2.amazonses.com>
+X-Sender: akolli@codeaurora.org
+User-Agent: Roundcube Webmail/1.3.9
 X-SES-Outgoing: 2020.09.07-54.240.27.187
 Feedback-ID: 1.us-west-2.CZuq2qbDmUIuT3qdvXlRHZZCpfZqZ4GtG9v3VKgRyF0=:AmazonSES
 Sender: linux-wireless-owner@vger.kernel.org
@@ -56,69 +55,33 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Venkateswara Naralasetty <vnaralas@codeaurora.org> writes:
+On 2020-09-07 15:28, Kalle Valo wrote:
+> Anilkumar Kolli <akolli@codeaurora.org> writes:
+> 
+>> No functional changes, added target ce service configurations to 
+>> hw_params.
+>> 
+>> Signed-off-by: Anilkumar Kolli <akolli@codeaurora.org>
+> 
+> [...]
+> 
+>> --- a/drivers/net/wireless/ath/ath11k/core.c
+>> +++ b/drivers/net/wireless/ath/ath11k/core.c
+>> @@ -812,12 +812,6 @@ int ath11k_core_init(struct ath11k_base *ab)
+>>  		return ret;
+>>  	}
+>> 
+>> -	ret = ath11k_init_hw_params(ab);
+>> -	if (ret) {
+>> -		ath11k_err(ab, "failed to get hw params %d\n", ret);
+>> -		return ret;
+>> -	}
+> 
+> This is very suspicious.
 
-> From: Manikanta Pubbisetty <mpubbise@codeaurora.org>
->
-> Adding raw mode tx/rx support; also, adding support
-> for software crypto which depends on raw mode.
->
-> To enable raw mode tx/rx:
-> insmod ath11k.ko frame_mode=0
->
-> To enable software crypto:
-> insmod ath11k.ko cryptmode=1
->
-> These modes could be helpful in debugging crypto related issues.
->
-> Tested-on: IPQ8074 WLAN.HK.2.1.0.1-01228-QCAHKSWPL_SILICONZ-1
->
-> Signed-off-by: Manikanta Pubbisetty <mpubbise@codeaurora.org>
-> Signed-off-by: Venkateswara Naralasetty <vnaralas@codeaurora.org>
+ath11k_core_pre_init() is calling ath11k_init_hw_params(), again calling 
+same function in ath11k_core_init()
+is not needed. Will send this as a new patch ?
 
-Adds new warnings:
-
-drivers/net/wireless/ath/ath11k/core.c:23:14: warning: symbol 'cryptmode' was not declared. Should it be static?
-drivers/net/wireless/ath/ath11k/mac.c:46:14: warning: symbol 'ath11k_frame_mode' was not declared. Should it be static?
-
-> --- a/drivers/net/wireless/ath/ath11k/core.c
-> +++ b/drivers/net/wireless/ath/ath11k/core.c
-> @@ -13,10 +13,16 @@
->  #include "debug.h"
->  #include "hif.h"
->  
-> +extern unsigned int ath11k_frame_mode;
-
-Please move this to core.h
-
->  unsigned int ath11k_debug_mask;
->  module_param_named(debug_mask, ath11k_debug_mask, uint, 0644);
->  MODULE_PARM_DESC(debug_mask, "Debugging mask");
->  
-> +unsigned int cryptmode;
-
-static unsigned int ath11k_crypto_mode;
-
-> +module_param_named(cryptmode, cryptmode, uint, 0644);
-
-module_param_named(crypto_mode, ath11k_crypto_mode, uint, 0644);
-
-[...]
-
-> --- a/drivers/net/wireless/ath/ath11k/mac.c
-> +++ b/drivers/net/wireless/ath/ath11k/mac.c
-> @@ -34,7 +34,7 @@
->  }
->  
->  /* frame mode values are mapped as per enum ath11k_hw_txrx_mode */
-> -static unsigned int ath11k_frame_mode = ATH11K_HW_TXRX_NATIVE_WIFI;
-> +unsigned int ath11k_frame_mode = ATH11K_HW_TXRX_NATIVE_WIFI;
->  module_param_named(frame_mode, ath11k_frame_mode, uint, 0644);
->  MODULE_PARM_DESC(frame_mode,
->  		 "Datapath frame mode (0: raw, 1: native wifi (default), 2: ethernet)"
-
-Better to move this to core.c so that all module parameters are in one
-place.
-
--- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Thanks
+Anil
