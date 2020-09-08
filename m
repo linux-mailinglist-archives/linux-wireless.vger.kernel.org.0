@@ -2,63 +2,61 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 90120261A41
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Sep 2020 20:34:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 47580261A57
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Sep 2020 20:34:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731558AbgIHSeV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 8 Sep 2020 14:34:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50248 "EHLO
+        id S1731768AbgIHSey (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 8 Sep 2020 14:34:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50250 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731409AbgIHSdS (ORCPT
+        with ESMTP id S1731688AbgIHScm (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 8 Sep 2020 14:33:18 -0400
+        Tue, 8 Sep 2020 14:32:42 -0400
 Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B030CC0617BE
-        for <linux-wireless@vger.kernel.org>; Tue,  8 Sep 2020 11:24:34 -0700 (PDT)
-Received: by mail-wr1-x442.google.com with SMTP id w5so209131wrp.8
-        for <linux-wireless@vger.kernel.org>; Tue, 08 Sep 2020 11:24:34 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46621C0617BF
+        for <linux-wireless@vger.kernel.org>; Tue,  8 Sep 2020 11:24:43 -0700 (PDT)
+Received: by mail-wr1-x442.google.com with SMTP id g4so229737wrs.5
+        for <linux-wireless@vger.kernel.org>; Tue, 08 Sep 2020 11:24:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=IRlqLg9pl8OW4kRzEvgaiZLGm2xa7Kg6ZD9o++l3c7g=;
-        b=l8+7oeDru28u2/5tvVbKvdcQgatZk1l5v2+keKRJMkc3yev3c9OtYmO+gq4gF3L6RP
-         zcy//DAVaJJ7Zo+Z0YyuS9u7Ds9xAMNQPbQdXHMkPYuiOnO0Jxm9CVkYdS0lU4qBNdYP
-         4wHhB63oHnZfQWitn4s5KA7yPZe3hIs4BG3iY0xHu5H7tsfrZli0qiMcS3DG3UQbW25o
-         d5a9Mpw7r6Lg2k3ipiOoOq2nDovJmYGWpHLngoaAhVPFOIZNiVSa+b6/MppfyZZZYplm
-         F9kXe3uSxR1rCFHhoJjS4iAaz+y5W8dP1RnST4lh6yxixDDbxYOPLZNRsTqm6J+mzlOd
-         5Kuw==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=qmVal2o6VpsWzwKLRZjrXBlSLBI0SBy7tb3BPEz/CLk=;
+        b=ucbxdG9jo8AxIkmpSyk1lJzUMR1qpq377fkvPUy95Z5BY9M43XEk0bDqmkj6hF/ONo
+         Gm2R62JXAd37VC74H5HD7x8VIaWjal5eJ+eSV3u4e8bMn9o+H1uuh4weU94oTXW2F0RE
+         eqf5AkEtgiaS7PwmKd8ISGfGRCiWXfdGLhXFgmpxitYUZhCp/1jYt9fx3epMncYJzFtJ
+         AwZfPVpnhatddsLW4VSQPMk/l6bwxWZeCs9cwUPOvur2KCA4781fw0o7iOFVdZaDnStt
+         yq8q3LXVuCttV/lKYN2/z5TW73o104MqXiRkKnsLDpkZqi0UmTR8IfPXlujnScg1SeoS
+         lEnQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=IRlqLg9pl8OW4kRzEvgaiZLGm2xa7Kg6ZD9o++l3c7g=;
-        b=XUl1oX23Psg9DMqRCeYSbfpf+934Kxw3yr91n775CgXqh8YwQIwypoXFEkxI8tqBMi
-         BEljsuT6Lu96cQ7XnVhZOqqgN9rAF36k3ZMXMQ8muYHlIKcd30duPguCKcthAl5ymCTj
-         /0pxjZDcurTbZWOVLb6XSixK3WkBb3t8kN9kmuZPIEjZ8nydaCLod4NBtn39HTdSsq68
-         +XL5m59FEkjBsVuI+tbCVMNTsXt9TSnyyllRNteD3qxWZ3xDqzfxt6O7JZcKrOXktGUe
-         mY+I2zw5RhgNUyQCEZ1qBjxjgUNHWaQccV4pq4jYAwNQSVr8xDXzU7Ml38V6tx1ChOGB
-         8MEA==
-X-Gm-Message-State: AOAM530rnivnaXDVxu4L3DfbSbw2X0z+v4VpWnAcZuN4jtynUjvmyi/L
-        gALuOTe7L4a+M1088BfPJu2MHHwwDDIfbg==
-X-Google-Smtp-Source: ABdhPJzfUEwaMBYFy74pHISh9NGqprMivrTNbRxLwAq2hDVoRA9JiaDtX4nkYspwQNPaPL80oUe3Qg==
-X-Received: by 2002:adf:ed12:: with SMTP id a18mr989961wro.178.1599589473429;
-        Tue, 08 Sep 2020 11:24:33 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=qmVal2o6VpsWzwKLRZjrXBlSLBI0SBy7tb3BPEz/CLk=;
+        b=mnTKW0i2EqpDQuqNXijBvqhJK+dT3V/JJLjUe+Py5dIXyU3qm2AR/j07AqFcTx5dmY
+         FopVaQ8kafNXv4wKLSNJ8LVEaOC/jmnp5/hzLoTXOdAU994dp0gEAjfQ6DaLKHO9Y5nd
+         moGQD40GoMj22/sXyIUN/WwrmZOxg3QRxE5j6+gJH92QyPxQNhN7XDOEdS/sjV0qB2GY
+         xoUco1avYjYMo4isyJvalgKNDGMV5sZpZpoRGDjOzTytukKFF+tHyVd7WHxzkARuphQH
+         6f1yWZ0BoPeW0iUctlcfX9elCCie11izVKtEAfZe1IrVQNJ0+C5FBgFy9b1//7SCCRg0
+         iBiQ==
+X-Gm-Message-State: AOAM532wkm4SxIH5AIjWFg5hABIiOl82M+0PiXnbgx0EiLqMjTpoFbkB
+        V1V22Y9jk4HFruEtTYaqs8D4nw==
+X-Google-Smtp-Source: ABdhPJxa9L/LsbYhU4fEEieNGVMqiGDuOgtLKlokgTMtjYASkZwSch99zR06gdW0rvdHSnVgdonXiw==
+X-Received: by 2002:adf:e601:: with SMTP id p1mr1011172wrm.172.1599589481964;
+        Tue, 08 Sep 2020 11:24:41 -0700 (PDT)
 Received: from localhost.localdomain ([176.61.57.127])
-        by smtp.gmail.com with ESMTPSA id f14sm352447wrv.72.2020.09.08.11.24.32
+        by smtp.gmail.com with ESMTPSA id b84sm381427wmd.0.2020.09.08.11.24.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Sep 2020 11:24:32 -0700 (PDT)
+        Tue, 08 Sep 2020 11:24:41 -0700 (PDT)
 From:   Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 To:     kvalo@codeaurora.org, wcn36xx@lists.infradead.org,
         linux-wireless@vger.kernel.org
 Cc:     bryan.odonoghue@linaro.org, shawn.guo@linaro.org,
         loic.poulain@linaro.org
-Subject: [PATCH v3 5/5] wcn36xx: Set PHY into correct mode for 80MHz channel width
-Date:   Tue,  8 Sep 2020 19:25:14 +0100
-Message-Id: <20200908182514.2870410-6-bryan.odonoghue@linaro.org>
+Subject: [PATCH v3 0/4] wcn36xx: Update firmware config to support wcn3680
+Date:   Tue,  8 Sep 2020 19:25:25 +0100
+Message-Id: <20200908182529.2870478-1-bryan.odonoghue@linaro.org>
 X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20200908182514.2870410-1-bryan.odonoghue@linaro.org>
-References: <20200908182514.2870410-1-bryan.odonoghue@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
@@ -66,44 +64,59 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-For the 80MHz channel we need to set the PHY mode to one of four PHY modes
-that span the 80MHz range.
+This series is five in a set of seven to add support for wcn3680 at 802.11ac
+data-rates.
 
-This patch latches the hw_value PHY field previously defined for 5GHz
-channels directly to the parameter passed to the firmware.
+This series is about providing a parameters to firmware to get us up onto
+802.11ac data-rates finally.
 
-Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
----
- drivers/net/wireless/ath/wcn36xx/smd.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+Once the firmware config is provided to the chip and VHT parameters are
+populated we are good to go in terms of the higher data-rate for the
+wcn3680.
 
-diff --git a/drivers/net/wireless/ath/wcn36xx/smd.c b/drivers/net/wireless/ath/wcn36xx/smd.c
-index 1496566ecb31..04822edaf631 100644
---- a/drivers/net/wireless/ath/wcn36xx/smd.c
-+++ b/drivers/net/wireless/ath/wcn36xx/smd.c
-@@ -1485,6 +1485,7 @@ static int wcn36xx_smd_config_bss_v1(struct wcn36xx *wcn,
- 	struct wcn36xx_hal_config_bss_params_v1 *bss;
- 	struct wcn36xx_hal_config_bss_params bss_v0;
- 	struct wcn36xx_hal_config_sta_params_v1 *sta;
-+	struct cfg80211_chan_def *chandef;
- 	int ret;
- 
- 	msg_body = kzalloc(sizeof(*msg_body), GFP_KERNEL);
-@@ -1524,7 +1525,13 @@ static int wcn36xx_smd_config_bss_v1(struct wcn36xx *wcn,
- 	bss->dtim_period = bss_v0.dtim_period;
- 	bss->tx_channel_width_set = bss_v0.tx_channel_width_set;
- 	bss->oper_channel = bss_v0.oper_channel;
--	bss->ext_channel = bss_v0.ext_channel;
-+
-+	if (wcn->hw->conf.chandef.width == NL80211_CHAN_WIDTH_80) {
-+		chandef = &wcn->hw->conf.chandef;
-+		bss->ext_channel = HW_VALUE_PHY(chandef->chan->hw_value);
-+	} else {
-+		bss->ext_channel = bss_v0.ext_channel;
-+	}
- 
- 	bss->reserved = bss_v0.reserved;
- 
+I get typical data-rates of:
+
+[ ID] Interval           Transfer     Bitrate         Retr
+[  5]   0.00-320.00 sec  4.93 GBytes   132 Mbits/sec  445     sender
+[  5]   0.00-320.14 sec  4.93 GBytes   132 Mbits/sec          receiver
+
+Downstream 3.10 prima is getting I'm told 180-200 Mbits/sec on the same
+hardware so with time and effort there's certainly some performance gain to
+be squeezed out of this silicon yet.
+
+However as a first pass, I believe this is good enough and useful enough to
+others to submit for upstream inclusion.
+
+An interesting project and a medium term goal would be to have a unified
+configuration for all three supported chipsets.
+
+For now suggesting a separate firmware configuration to make sure the
+existing lower-speed 802.11n and higher-speed 802.11ac chips don't step on
+each other's toes vis-a-vis firmware parameters.
+
+V3:
+No difference between V3 and V2 below
+https://lore.kernel.org/linux-wireless/20200829034002.2167878-1-bryan.odonoghue@linaro.org/T/#t
+
+V2:
+- Sets the default data-rate for wcn3680 to MCS8
+- Zapps a few firmware settings for power-saving
+  Powersave configuration as a specific wcn3680 topic is WIP on my end
+  and I think therefore better left out of an intiial submission.
+
+V1:
+https://lore.kernel.org/linux-wireless/87eensldhi.fsf@codeaurora.org/T/#t
+
+Bryan O'Donoghue (4):
+  wcn36xx: Extend HAL param config list
+  wcn36xx: Define wcn3680 specific firmware parameters
+  wcn36xx: Add ability to download wcn3680 specific firmware parameters
+  wcn36xx: Latch VHT specific BSS parameters to firmware
+
+ drivers/net/wireless/ath/wcn36xx/hal.h | 124 ++++++++++++++++++++++++-
+ drivers/net/wireless/ath/wcn36xx/smd.c | 114 ++++++++++++++++++++++-
+ 2 files changed, 234 insertions(+), 4 deletions(-)
+
 -- 
 2.27.0
 
