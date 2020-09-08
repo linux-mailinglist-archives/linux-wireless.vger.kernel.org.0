@@ -2,135 +2,118 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 896BF261B69
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Sep 2020 21:03:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ED040261B77
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Sep 2020 21:03:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731651AbgIHTCz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 8 Sep 2020 15:02:55 -0400
-Received: from a27-187.smtp-out.us-west-2.amazonses.com ([54.240.27.187]:35394
-        "EHLO a27-187.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1731646AbgIHTCx (ORCPT
+        id S1731690AbgIHTDj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 8 Sep 2020 15:03:39 -0400
+Received: from mail.adapt-ip.com ([173.164.178.19]:52638 "EHLO
+        web.adapt-ip.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1731267AbgIHTDY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 8 Sep 2020 15:02:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1599566566;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding;
-        bh=A0Pg1JJyx96lY6kzESsukz/fsFFg2QJ+mjpfboIMRWc=;
-        b=CasPNC+KAQLq7fbQs/ZX016E5VPiGOgnU5TVmOk/j+oOml3iVfZzlrrRGQNCL5s6
-        Zt56vN2zlw9t3LNw+4h9zWKeNgznCXpYEEb4Y18bGnI7I7HUFZE9g/fNHKOEvMsq5+p
-        LA9GVvP7LhuxaGQrvBo6wCCfCA9EStK1YF3KzOB8=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=hsbnp7p3ensaochzwyq5wwmceodymuwv; d=amazonses.com; t=1599566566;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Feedback-ID;
-        bh=A0Pg1JJyx96lY6kzESsukz/fsFFg2QJ+mjpfboIMRWc=;
-        b=YYzpdjFd4DrmPd7BeZp/TFeYAFS64CzYDs38adPNVsTPlEJoF1WGt/twkFHnsUpW
-        KzOAMQX2IPMZM+HFFzNjdSK1hw2DfdbXaqiRv0MdpJcSsaIDkCxIx9FL4DWZttXwmwW
-        08METUWReBt9Dt3nxeDNIhXDmKAGTfxTLJgYE/Ks=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 8FD10C433CA
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Lee Jones <lee.jones@linaro.org>
-Cc:     davem@davemloft.net, kuba@kernel.org, linux-kernel@vger.kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        Amitkumar Karwar <amitkarwar@gmail.com>,
-        Ganapathi Bhat <ganapathi.bhat@nxp.com>,
-        Xinming Hu <huxinming820@gmail.com>
-Subject: Re: [PATCH 16/28] wireless: marvell: mwifiex: init: Move 'tos_to_tid_inv' to where it's used
-References: <20200819072402.3085022-17-lee.jones@linaro.org>
-        <20200831155151.0DCB5C4339C@smtp.codeaurora.org>
-        <20200908084953.GJ4400@dell>
-Date:   Tue, 8 Sep 2020 12:02:46 +0000
-In-Reply-To: <20200908084953.GJ4400@dell> (Lee Jones's message of "Tue, 8 Sep
-        2020 09:49:53 +0100")
-Message-ID: <010101746d98d281-78bf23c9-db60-486f-ada9-fec0467131a4-000000@us-west-2.amazonses.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        Tue, 8 Sep 2020 15:03:24 -0400
+Received: from localhost (localhost [127.0.0.1])
+        by web.adapt-ip.com (Postfix) with ESMTP id 7A2F64F9B06;
+        Tue,  8 Sep 2020 19:03:23 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at web.adapt-ip.com
+Received: from web.adapt-ip.com ([127.0.0.1])
+        by localhost (web.adapt-ip.com [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id r-iIvpaOykDX; Tue,  8 Sep 2020 19:03:20 +0000 (UTC)
+Received: from atlas.ibsgaard.io (c-73-223-60-234.hsd1.ca.comcast.net [73.223.60.234])
+        (Authenticated sender: thomas@adapt-ip.com)
+        by web.adapt-ip.com (Postfix) with ESMTPSA id 373F14F9ABB;
+        Tue,  8 Sep 2020 19:03:19 +0000 (UTC)
+From:   Thomas Pedersen <thomas@adapt-ip.com>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
+        Thomas Pedersen <thomas@adapt-ip.com>
+Subject: [PATCH v3 00/22] add support for S1G association
+Date:   Tue,  8 Sep 2020 12:03:01 -0700
+Message-Id: <20200908190323.15814-1-thomas@adapt-ip.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-SES-Outgoing: 2020.09.08-54.240.27.187
-Feedback-ID: 1.us-west-2.CZuq2qbDmUIuT3qdvXlRHZZCpfZqZ4GtG9v3VKgRyF0=:AmazonSES
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Lee Jones <lee.jones@linaro.org> writes:
+This is the initial S1G patchset which adds support for:
 
-> On Mon, 31 Aug 2020, Kalle Valo wrote:
->
->> Lee Jones <lee.jones@linaro.org> wrote:
->>=20
->> > 'tos_to_tid_inv' is only used in 2 of 17 files it's current being
->> > included into.
->> >=20
->> > Fixes the following W=3D1 kernel build warning(s):
->> >=20
->> >  In file included from drivers/net/wireless/marvell/mwifiex/main.c:23:
->> >  In file included from drivers/net/wireless/marvell/mwifiex/cmdevt.c:2=
-6:
->> >  In file included from drivers/net/wireless/marvell/mwifiex/util.c:25:
->> >  In file included from drivers/net/wireless/marvell/mwifiex/txrx.c:25:
->> >  In file included from drivers/net/wireless/marvell/mwifiex/11n.c:25:
->> >  In file included from drivers/net/wireless/marvell/mwifiex/wmm.c:25:
->> >  In file included from drivers/net/wireless/marvell/mwifiex/11n_aggr.c=
-:25:
->> >  In file included from drivers/net/wireless/marvell/mwifiex/11n_rxreor=
-der.c:25:
->> >  In file included from drivers/net/wireless/marvell/mwifiex/join.c:25:
->> >  In file included from drivers/net/wireless/marvell/mwifiex/sta_cmd.c:=
-25:
->> >  In file included from drivers/net/wireless/marvell/mwifiex/sta_ioctl.=
-c:25:
->> >  In file included from drivers/net/wireless/marvell/mwifiex/sta_event.=
-c:25:
->> >  In file included from drivers/net/wireless/marvell/mwifiex/uap_txrx.c=
-:23:
->> >  In file included from drivers/net/wireless/marvell/mwifiex/sdio.c:27:
->> >  In file included from drivers/net/wireless/marvell/mwifiex/sta_tx.c:2=
-5:
->> >  drivers/net/wireless/marvell/mwifiex/wmm.h:41:17: warning:
->> > =E2=80=98tos_to_tid_inv=E2=80=99 defined but not used [-Wunused-const-=
-variable=3D]
->> >  41 | static const u8 tos_to_tid_inv[] =3D {
->> >=20
->> >  NB: Snipped for brevity
->> >=20
->> > Cc: Amitkumar Karwar <amitkarwar@gmail.com>
->> > Cc: Ganapathi Bhat <ganapathi.bhat@nxp.com>
->> > Cc: Xinming Hu <huxinming820@gmail.com>
->> > Cc: Kalle Valo <kvalo@codeaurora.org>
->> > Cc: "David S. Miller" <davem@davemloft.net>
->> > Cc: Jakub Kicinski <kuba@kernel.org>
->> > Cc: linux-wireless@vger.kernel.org
->> > Cc: netdev@vger.kernel.org
->> > Signed-off-by: Lee Jones <lee.jones@linaro.org>
->>=20
->> The patch creates two duplicate arrays, this makes it worse than it was
->> before.
->
-> We have a choice (and you don't like either of them). :)
->
-> Either add the variable into the file(s) they are used or tell the
-> compiler that it's okay for other files to declare but not used them
-> (mark as __maybe_unused).
->
-> What is your preferred solution?
+- defining the S1G 900MHz bands in a custom regulatory database
+- setting and receiving S1G beacons (sending short beacons will be
+  supported in a future patch)
+- configuring S1G capabilities in Association Request (setting
+  capabilities along with NL80211_CMD_SET_STATION will be added later).
+- scanning on S1G bands
+- handling S1G Association Response format
+- correctly encoding Listen Interval for S1G
+- associating in mac80211
+- testing S1G in mac80211_hwsim
 
-Yue already sent a patch for this (at least I think so, not 100% sure if
-this is the same case):
+Rate control is still TBD, this patchset simply lops off the rate
+control hooks for S1G so eg. missing sband->bitrates and S1G Basic Rate
+set can't do too much damage.
 
-https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next=
-.git/commit/?id=3Dd56ee19a148edaa9972ca12f817e395ba436078b
+Note the mac80211_hwsim S1G support introduces a regression in a few
+hostap hwsim tests. This is because when processing the reported bands,
+hostap assumes freq < 4000 is 11b, and the actual 11b/g band is
+overwritten by the S1G band info. Though it does count as a userspace
+regression, I'm not sure there is much to do about it besides apply a
+small patch to hostapd which treats freq < 2000 as an unknown band.
 
-But that's the solution I like :) There's only one array and it's shared
-by all the users.
+After the hostap workaround
+(https://lists.infradead.org/pipermail/hostap/2020-August/038748.html),
+these patches continue to pass the hwsim tests as well as HEAD.
 
---=20
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
-hes
+Thomas Pedersen (22):
+  ieee80211: redefine S1G bits with GENMASK
+  nl80211: advertise supported channel width in S1G
+  cfg80211: regulatory: handle S1G channels
+  nl80211: correctly validate S1G beacon head
+  nl80211: support setting S1G channels
+  {cfg,mac}80211: get correct default channel width for S1G
+  mac80211: s1g: choose scanning width based on frequency
+  nl80211: support S1G capabilities
+  mac80211: support S1G STA capabilities
+  cfg80211: convert S1G beacon to scan results
+  cfg80211: parse S1G Operation element for BSS channel
+  mac80211: convert S1G beacon to scan results
+  cfg80211: handle Association Response from S1G STA
+  mac80211: encode listen interval for S1G
+  mac80211: don't calculate duration for S1G
+  mac80211: handle S1G low rates
+  mac80211: avoid rate init for S1G band
+  mac80211: receive and process S1G beacons
+  mac80211: support S1G association
+  nl80211: include frequency offset in survey info
+  mac80211_hwsim: fix TSF timestamp write to S1G beacon
+  mac80211_hwsim: indicate support for S1G
+
+ drivers/net/wireless/mac80211_hwsim.c |  93 +++++++++--
+ include/linux/ieee80211.h             | 223 +++++++++++++++++---------
+ include/net/cfg80211.h                |  28 ++++
+ include/net/mac80211.h                |   3 +
+ include/uapi/linux/nl80211.h          |  26 +++
+ net/mac80211/cfg.c                    |   2 +
+ net/mac80211/chan.c                   |   9 +-
+ net/mac80211/ibss.c                   |   3 +-
+ net/mac80211/ieee80211_i.h            |  20 +++
+ net/mac80211/iface.c                  |   5 +
+ net/mac80211/mlme.c                   | 184 +++++++++++++++++----
+ net/mac80211/rate.c                   |  39 ++++-
+ net/mac80211/rx.c                     |  87 +++++-----
+ net/mac80211/scan.c                   |  37 ++++-
+ net/mac80211/tx.c                     |   4 +
+ net/mac80211/util.c                   | 200 +++++++++++++++++++++++
+ net/wireless/chan.c                   | 140 ++++++++++------
+ net/wireless/mlme.c                   |  20 +++
+ net/wireless/nl80211.c                |  52 +++++-
+ net/wireless/reg.c                    |  70 ++++++--
+ net/wireless/scan.c                   |  80 +++++++--
+ net/wireless/util.c                   |  32 ++++
+ 22 files changed, 1091 insertions(+), 266 deletions(-)
+
+-- 
+2.20.1
+
