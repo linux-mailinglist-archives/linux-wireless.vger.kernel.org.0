@@ -2,61 +2,63 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E684D261A3E
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Sep 2020 20:34:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B1C2A261A3F
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Sep 2020 20:34:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731509AbgIHSeQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        id S1731461AbgIHSeQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
         Tue, 8 Sep 2020 14:34:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50324 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50266 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731695AbgIHSdT (ORCPT
+        with ESMTP id S1731641AbgIHSdT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Tue, 8 Sep 2020 14:33:19 -0400
-Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com [IPv6:2a00:1450:4864:20::441])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0C1CC0613ED
-        for <linux-wireless@vger.kernel.org>; Tue,  8 Sep 2020 11:32:46 -0700 (PDT)
-Received: by mail-wr1-x441.google.com with SMTP id k15so220319wrn.10
-        for <linux-wireless@vger.kernel.org>; Tue, 08 Sep 2020 11:32:46 -0700 (PDT)
+Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7AFA3C061796
+        for <linux-wireless@vger.kernel.org>; Tue,  8 Sep 2020 11:32:47 -0700 (PDT)
+Received: by mail-wr1-x442.google.com with SMTP id a17so241584wrn.6
+        for <linux-wireless@vger.kernel.org>; Tue, 08 Sep 2020 11:32:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=In2FyHUty7S2UAR+sFsA8QF+sOyJldhFJVMmzkKndPg=;
-        b=nEn9SX8/YTTxRifrHt3OvfUh5eoukmDTHmqCvF+KeyCXTtUq6SJU6GYuuFJ/wB5mbh
-         x97ndFA4p6LopMqLThTgC/23PYySHvmNZSbbomUUevWrsYacYgBiBJVXVlKrkTaGrDSq
-         Tahm/N3g/9TRiBOYqJl3lsuVI7Ty4T4s4pTGJf7X9iOCOPXguUsxi4pf9o3QO+YTLJek
-         HjxakLS0sYLF8ocELX0L63ezChqHfCWaQZBJUlPYiGI6K3vdd7SoY/vwM1szIgUjMqpx
-         iG/C+gTmqbQTyVdoTKX1uNa9p8Q9L9gQvWBHc5knb2n6CfNMBYevYVk22wlhnJc9Rlzg
-         TjkA==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=Z6qrCJ1afOzM2JHrlRChudxsJ7Nezg4eE7nOnjz7F2c=;
+        b=IcCMC4zxXnFlX7zX/e8uh5iM/2ZdRiqw7NXIeM/EZveQnoQhIUZeTfFN8/5d/I2NQ7
+         nxRPdTe0moDgnp7WlOQLtW5JDyUxH63dOAR5LWYBj0jRZFhx/x60e493rjhHaVGwpsja
+         JLiZZTvdehBA9y4ymJmA4BGVwYM4riPNG1NkZb+vJmhO3jA7E2c2fxEIfyNalrPDfs7h
+         rQLBpdNPx/Wa+ENKcd4SnDb7milsIuUrTW+XmVLE5ZMET6mrLwAzdcyQWmPFgR6khuMC
+         85vUUwYFHptjl6xj6DjU0gRAPBmDtWfiRMkGEIXhGZJOJz13E74iPVlCPfUDOCoB0qB5
+         WNMg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=In2FyHUty7S2UAR+sFsA8QF+sOyJldhFJVMmzkKndPg=;
-        b=WS1K/MkubUXDKxIqo4eM0bfEEvOnAgPdx9USAT6+a7O9Yf15A4IA4RRYdbpKphvFRz
-         inej5g72BADnsQf0KWvDvklDsZyBNwLgocihN0odgVgevvx8GzLgoIW9odUtHAaqDOK6
-         Y5Ln5PMKLaZ7WnF4cYVIM0DAIlE2Cc2Vd+FfM0NPegigSiX+5e+MP4Dk6ulrWK0GmOIp
-         veraiNeN8cc/qAda8IzgRQ4npKzp4+bSiTM+CCrUHdUNWDr0Zu1QIpplG2MdYOfzLvkh
-         NyX+RNYpAelkdJUmei4s88bQL2SmCUFkCOGkZWAN8ZRnwCqeUIFwqJj1X+cM47ebKWSN
-         IO3w==
-X-Gm-Message-State: AOAM532vDghtTJAUts7ED+uWKkqJTZzovl/RIiO5lw5eMmh+jznhTpeG
-        mUpgocyvsc79XVq9Db0ZEMz0L/cDqqLbyQ==
-X-Google-Smtp-Source: ABdhPJwIzKzssE4KBik5CcLzgWVDDFsov6qcWvGBuILcNH2bWiVHaTon/fRKeW7/a0Z3pFSgjE53/A==
-X-Received: by 2002:adf:edd2:: with SMTP id v18mr937211wro.242.1599589965361;
-        Tue, 08 Sep 2020 11:32:45 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=Z6qrCJ1afOzM2JHrlRChudxsJ7Nezg4eE7nOnjz7F2c=;
+        b=WhhTJTvKX9iqcxRpu8DAZmGT4+OqhDdGxBSvGMRmWG3lesHE/Pv2A35Gy6+nbHPtgO
+         hqeXiD59BmPjsJXdJyIC2h507dmPoUElU9UcrIpTBd7Z5AGmczkJt2pn+/G3jRjKXsCC
+         JX3tTxUXAFltN9XzE+AVVAEJq2S3KSZg5L2AsonDSp5+6xy6+EkpDdsPbMgThpiGblgJ
+         WXA/ezULBS2kdi5hFHu/uQbLBVqKtg6rp7eVNBkOBS3curKLcERJPjM1r0PBtnEs0RLd
+         DUn8/qd+VWe9Qov/QWmv7zXqCxTtkudsZUD7eEOErwU34nvsXW8rryr8q5Kz8i972pV9
+         y1jA==
+X-Gm-Message-State: AOAM530awMSPX1It6eNmlIZ9cTXl4JRbiAmzT+6nBdq6giaFaAZyU8OL
+        0BY+r/SPTlzjtmycSdaXTqS8Ng==
+X-Google-Smtp-Source: ABdhPJwTi6/vc++wYhsYEXQsAFJjREjeNXDnGv+vln06kF6HR1j4wIgGOcJtH+pNrh1w6p1Y0TxLig==
+X-Received: by 2002:a5d:51ce:: with SMTP id n14mr11160wrv.8.1599589966213;
+        Tue, 08 Sep 2020 11:32:46 -0700 (PDT)
 Received: from localhost.localdomain ([176.61.57.127])
-        by smtp.gmail.com with ESMTPSA id f14sm380267wrv.72.2020.09.08.11.32.44
+        by smtp.gmail.com with ESMTPSA id f14sm380267wrv.72.2020.09.08.11.32.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Sep 2020 11:32:44 -0700 (PDT)
+        Tue, 08 Sep 2020 11:32:45 -0700 (PDT)
 From:   Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 To:     kvalo@codeaurora.org, wcn36xx@lists.infradead.org,
         linux-wireless@vger.kernel.org
 Cc:     bryan.odonoghue@linaro.org, shawn.guo@linaro.org,
         loic.poulain@linaro.org
-Subject: [RESEND PATCH v3 0/2] wcn36xx: Enable VHT when supported
-Date:   Tue,  8 Sep 2020 19:33:29 +0100
-Message-Id: <20200908183331.2871016-1-bryan.odonoghue@linaro.org>
+Subject: [PATCH v3 1/2] wcn36xx: Add VHT rates to wcn36xx_update_allowed_rates()
+Date:   Tue,  8 Sep 2020 19:33:30 +0100
+Message-Id: <20200908183331.2871016-2-bryan.odonoghue@linaro.org>
 X-Mailer: git-send-email 2.27.0
+In-Reply-To: <20200908183331.2871016-1-bryan.odonoghue@linaro.org>
+References: <20200908183331.2871016-1-bryan.odonoghue@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
@@ -64,32 +66,34 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This series is six in a set of seven to add support for wcn3680 at 802.11ac
-data-rates.
+This commit adds VHT rates to the wcn36xx_update_allowed_rates() routine.
+Thus allowing the driver to latch the declared rates and transmit them to
+the firmware in the same way as other 80211.n rates are.
 
-These two commits have been moved later in the set of commits so that the
-patches to enable advertisement of VHT capabilities happen after all of the
-supporting code has been comitted.
+Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+---
+ drivers/net/wireless/ath/wcn36xx/main.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-RESEND:
-- Messed up my .git/config resending from my @linaro.org address
-
-Changes from V2:
-
-- Rename "wcn36xx: Add ieee802.11 VHT flags" to "wcn36xx: Advertise
-  ieee802.11 VHT flags"
-
-https://lore.kernel.org/linux-wireless/20200829033908.2167689-5-bryan.odonoghue@linaro.org/T/#u
-https://lore.kernel.org/linux-wireless/20200829033846.2167619-4-bryan.odonoghue@linaro.org/T/#u
-
-
-Bryan O'Donoghue (2):
-  wcn36xx: Add VHT rates to wcn36xx_update_allowed_rates()
-  wcn36xx: Advertise ieee802.11 VHT flags
-
- drivers/net/wireless/ath/wcn36xx/main.c | 40 +++++++++++++++++++++++++
- 1 file changed, 40 insertions(+)
-
+diff --git a/drivers/net/wireless/ath/wcn36xx/main.c b/drivers/net/wireless/ath/wcn36xx/main.c
+index 2c2b6178c8cd..9c283c110e07 100644
+--- a/drivers/net/wireless/ath/wcn36xx/main.c
++++ b/drivers/net/wireless/ath/wcn36xx/main.c
+@@ -766,6 +766,14 @@ static void wcn36xx_update_allowed_rates(struct ieee80211_sta *sta,
+ 		       sta->ht_cap.mcs.rx_mask,
+ 		       sizeof(sta->ht_cap.mcs.rx_mask));
+ 	}
++
++	if (sta->vht_cap.vht_supported) {
++		sta_priv->supported_rates.op_rate_mode = STA_11ac;
++		sta_priv->supported_rates.vht_rx_mcs_map =
++				sta->vht_cap.vht_mcs.rx_mcs_map;
++		sta_priv->supported_rates.vht_tx_mcs_map =
++				sta->vht_cap.vht_mcs.tx_mcs_map;
++	}
+ }
+ void wcn36xx_set_default_rates(struct wcn36xx_hal_supported_rates *rates)
+ {
 -- 
 2.27.0
 
