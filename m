@@ -2,82 +2,107 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1842B260700
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Sep 2020 00:41:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 93840260773
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Sep 2020 02:14:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728020AbgIGWlS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 7 Sep 2020 18:41:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36322 "EHLO
+        id S1728088AbgIHAOQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 7 Sep 2020 20:14:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50388 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728009AbgIGWlQ (ORCPT
+        with ESMTP id S1727927AbgIHAON (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 7 Sep 2020 18:41:16 -0400
-Received: from mail-yb1-xb44.google.com (mail-yb1-xb44.google.com [IPv6:2607:f8b0:4864:20::b44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68F5CC061573
-        for <linux-wireless@vger.kernel.org>; Mon,  7 Sep 2020 15:41:16 -0700 (PDT)
-Received: by mail-yb1-xb44.google.com with SMTP id h126so10116551ybg.4
-        for <linux-wireless@vger.kernel.org>; Mon, 07 Sep 2020 15:41:16 -0700 (PDT)
+        Mon, 7 Sep 2020 20:14:13 -0400
+Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com [IPv6:2607:f8b0:4864:20::1043])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E07E1C061573
+        for <linux-wireless@vger.kernel.org>; Mon,  7 Sep 2020 17:14:10 -0700 (PDT)
+Received: by mail-pj1-x1043.google.com with SMTP id t7so4188718pjd.3
+        for <linux-wireless@vger.kernel.org>; Mon, 07 Sep 2020 17:14:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=aETqfCJrKaXv1F00DmfNA8Zy8/3hFriV3kwMbDL6huc=;
-        b=uwIvcKE/wQKW8tToeonFp4Ak0/rB+vT58qfKY4KbVdLHBbde05HJS9t+x0LLyRbFam
-         cCvB7DjcHdjvibwPgcnKbk79Or9zupyiublqYYr0gAD5B9ZmVVvQ+Ymq7f0mjZxVsmEE
-         tNMtaa/QmW34hTjdfV8tDbZPhnBkIMkTgvY48Cud5eYhB3FdvOgaRQX41JusUpIMdhXQ
-         56BNJU1ZdNB0OOxsbRyPY9SGrXN/NitjOQVueDyxMzi9iRC5x41SNU+foFQ6Wc5d2UEh
-         GcSYaLba7eXnjxuGvgYhuSjnFfUhTT3lHSLy120StNT9pEw9Euhc1Vtv30jQsnAHaVdZ
-         Brew==
+        d=sslab.ics.keio.ac.jp; s=google;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references;
+        bh=XRTGbzGQzZxelHLRMFsoYAaIr8NVu1Ffq0lGmgbn8Bg=;
+        b=IMNx0wtMrdyV3/etrml49CIwu5atFIrDvNOZHDKx5rc53PIZNuEYpCD9N/CFVAoDor
+         1uw1FYlumUufiWBK0YpuvkNR5RmL/MfJ6ZW3UBAJLM1PwVqNWqWnzdGLHTXtFhE7AnVg
+         +qwjqMsBeNyrfgqFcq89LDebeLgaLAGMFvfZg=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=aETqfCJrKaXv1F00DmfNA8Zy8/3hFriV3kwMbDL6huc=;
-        b=EC/U1FLki2gMX0Kcj7BTyio4h2UP1xxtgcYalfODSbfQXqRVvaP3MEIUa/k7eAux7x
-         D63g8GZHabkC2q/nqZ2TwvwNAhJYbwRt74m/4mW8QIBWIjMjyFFSQj8UYjgfb7VWhKIw
-         TulcaeD4B9eNx0EZ8kCY3e/qTRSD6co0HwggfGOctGjD4DT+v+bsD2N4c30JGOr+Yaka
-         u2qGPtEUXb/7AZqB08jOZVV9myp3KMtBhIIOTDdo7CAGUe8GCNsOPe599i3fD+B+LEl6
-         AnnAD4MwgoTkJoiNI6qU2MesAoxNimv3ysScZtK0Ts0iZ5Zbt8Jge75NiOVYlIbKnU77
-         sOEg==
-X-Gm-Message-State: AOAM532raP7Jt5atKrENp1y6WB4igE7qMovXf1pcfDPeVlaxQN4exWXK
-        r5v2dyiXPMjHmImmRdXspiKBu/3KuWw2mjYJLSvCKq1xYs4=
-X-Google-Smtp-Source: ABdhPJyTvp67qWaBSw6Y30DvxfAMI3C0Wd+nwDbOSDiy0mELwcVOBVmrEJkwDRT80LOfPZyN17HynPBUnkyi56CTmAU=
-X-Received: by 2002:a25:2fcc:: with SMTP id v195mr27769393ybv.145.1599518475654;
- Mon, 07 Sep 2020 15:41:15 -0700 (PDT)
-MIME-Version: 1.0
-References: <04HAGQ.ASDIWY4TQH8H3@crapouillou.net> <55e3de67208c2120857102d13a896553fbf223b4.camel@sipsolutions.net>
- <CABPxzYLAYaXDfEewA5XR+y2Z0N1yLbEQwQM4FNytamHeZt3ySg@mail.gmail.com>
- <b7aaab23072e4c06c3cb245a3ea83f11e9ca9e7f.camel@sipsolutions.net>
- <CABPxzYKKayOzCt8VwOuV4uysoMVCZ9Ka01yqJnVZ=nyFHhYjqA@mail.gmail.com> <c14f8dcbff531588afba09d775491dcbf0d88097.camel@sipsolutions.net>
-In-Reply-To: <c14f8dcbff531588afba09d775491dcbf0d88097.camel@sipsolutions.net>
-From:   Krishna Chaitanya <chaitanya.mgit@gmail.com>
-Date:   Tue, 8 Sep 2020 04:11:04 +0530
-Message-ID: <CABPxzY+0ve6GFNr-HQMXb5NTjTQK1UZBwH0=Jxeup4zuxQ3J4g@mail.gmail.com>
-Subject: Re: alternatives to screenscraping iw?
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     Paul Cercueil <paul@crapouillou.net>,
-        linux-wireless <linux-wireless@vger.kernel.org>, od@zcrc.me
-Content-Type: text/plain; charset="UTF-8"
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references;
+        bh=XRTGbzGQzZxelHLRMFsoYAaIr8NVu1Ffq0lGmgbn8Bg=;
+        b=Kz2XUV8siVXfn/mp4GZt2ORa/gthjCnBx9YIS868vxA3snrGi8HLAvu8eO75XppDzm
+         ProW4HVIHEdirwSnemTym14A78bdnzh/stTh5sbAGwc/fUWMBjM8ACLLhTJQKkE06hnL
+         oAYnhzvUIkXAD/EvxDPxq04IVUhpsc0I2OpXIqI41SvXcnbyNT/3LhatwTHsRE008qR/
+         2tbssbHpTgLJdE67d4bMkNXoGrtMBAqfIhf1N2jVYN8ZEuyWY0BXg654gc/9e0MxY/Ch
+         oJFVKFnkH52OQfl/dlPNHPlENfR3cdHbkcK1ZeBZpHJ5FYiazCASALwduhQcYiPFlruw
+         qYtw==
+X-Gm-Message-State: AOAM530atodDbyCZ3zBW/x05w7BdMGFoNVR8o12ryiavlPyGj3Pnh5JP
+        zpjBMAkDBdxgSOV3QIgL98QS4g==
+X-Google-Smtp-Source: ABdhPJxrF04N6GdVqxWymt+vGNud5cGZ0pp4iZxQVFekGQj4k8u8s9ZdiIs7Dxw9q4PtBezxdi0PiQ==
+X-Received: by 2002:a17:90a:eb06:: with SMTP id j6mr1506448pjz.46.1599524048600;
+        Mon, 07 Sep 2020 17:14:08 -0700 (PDT)
+Received: from brooklyn.i.sslab.ics.keio.ac.jp (sslab-relay.ics.keio.ac.jp. [131.113.126.173])
+        by smtp.googlemail.com with ESMTPSA id d8sm4788515pjs.47.2020.09.07.17.14.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 07 Sep 2020 17:14:07 -0700 (PDT)
+From:   Keita Suzuki <keitasuzuki.park@sslab.ics.keio.ac.jp>
+Cc:     keitasuzuki.park@sslab.ics.keio.ac.jp,
+        takafumi@sslab.ics.keio.ac.jp,
+        Arend van Spriel <arend.vanspriel@broadcom.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
+        Wright Feng <wright.feng@cypress.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless@vger.kernel.org (open list:BROADCOM BRCM80211
+        IEEE802.11n WIRELESS DRIVER),
+        brcm80211-dev-list.pdl@broadcom.com (open list:BROADCOM BRCM80211
+        IEEE802.11n WIRELESS DRIVER),
+        brcm80211-dev-list@cypress.com (open list:BROADCOM BRCM80211
+        IEEE802.11n WIRELESS DRIVER),
+        netdev@vger.kernel.org (open list:NETWORKING DRIVERS),
+        linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH] brcmsmac: fix memory leak in wlc_phy_attach_lcnphy
+Date:   Tue,  8 Sep 2020 00:13:21 +0000
+Message-Id: <20200908001324.8215-1-keitasuzuki.park@sslab.ics.keio.ac.jp>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <bad4e33a-af2f-b44f-63e5-56386c312a91@broadcom.com>
+References: <bad4e33a-af2f-b44f-63e5-56386c312a91@broadcom.com>
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Sep 8, 2020 at 2:58 AM Johannes Berg <johannes@sipsolutions.net> wrote:
->
-> On Mon, 2020-09-07 at 22:55 +0530, Krishna Chaitanya wrote:
-> >
-> > > I wonder if the netlink policy export I wrote for the kernel could be
-> > > used to generate attribute descriptions? Even if it means just running a
-> > > tool in a latest kernel VM to do it.
-> > Can you please point me to it? But yes, auto-generating those should be handy.
-> > Probably can pick up the header file from sources in kernel.org
-> > instead of booting
-> > into a VM (depending on how your tools work)?
->
-> No no, I meant at runtime from the *policy* export, not the header file.
->
-> See net/netlink/policy.c and this patch in the userland code:
->
-> https://git.kernel.org/pub/scm/network/iproute2/iproute2-next.git/commit/?id=cc889b82412450dec762551ac867bd2896656ddc
-Ah okay, got it, thanks.
+When wlc_phy_txpwr_srom_read_lcnphy fails in wlc_phy_attach_lcnphy,
+the allocated pi->u.pi_lcnphy is leaked, since struct brcms_phy will be
+freed in the caller function.
+
+Fix this by calling wlc_phy_detach_lcnphy in the error handler of
+wlc_phy_txpwr_srom_read_lcnphy before returning.
+
+Signed-off-by: Keita Suzuki <keitasuzuki.park@sslab.ics.keio.ac.jp>
+---
+ .../net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c    | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c
+index 7ef36234a25d..66797dc5e90d 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c
+@@ -5065,8 +5065,10 @@ bool wlc_phy_attach_lcnphy(struct brcms_phy *pi)
+ 	pi->pi_fptr.radioloftget = wlc_lcnphy_get_radio_loft;
+ 	pi->pi_fptr.detach = wlc_phy_detach_lcnphy;
+ 
+-	if (!wlc_phy_txpwr_srom_read_lcnphy(pi))
++	if (!wlc_phy_txpwr_srom_read_lcnphy(pi)) {
++		kfree(pi->u.pi_lcnphy);
+ 		return false;
++	}
+ 
+ 	if (LCNREV_IS(pi->pubpi.phy_rev, 1)) {
+ 		if (pi_lcn->lcnphy_tempsense_option == 3) {
+-- 
+2.17.1
+
