@@ -2,128 +2,81 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2ED66260E02
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Sep 2020 10:50:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 487B7260F2A
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Sep 2020 12:02:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730193AbgIHIuD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 8 Sep 2020 04:50:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44432 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730187AbgIHIt5 (ORCPT
+        id S1729139AbgIHKCG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 8 Sep 2020 06:02:06 -0400
+Received: from a27-55.smtp-out.us-west-2.amazonses.com ([54.240.27.55]:47662
+        "EHLO a27-55.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1729023AbgIHKCA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 8 Sep 2020 04:49:57 -0400
-Received: from mail-wm1-x344.google.com (mail-wm1-x344.google.com [IPv6:2a00:1450:4864:20::344])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FC19C061756
-        for <linux-wireless@vger.kernel.org>; Tue,  8 Sep 2020 01:49:57 -0700 (PDT)
-Received: by mail-wm1-x344.google.com with SMTP id x23so6526538wmi.3
-        for <linux-wireless@vger.kernel.org>; Tue, 08 Sep 2020 01:49:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=J4HAK0c1l5GwduZQoYMUPrX1mha+AY2sz5+a6cm2mu8=;
-        b=cIHAkh/vQ3/3Rywf5EJthCLuliPcfErIQ6ZTz8bWODvnWB1RAeaUEyTKNyN1I2V0cj
-         u0JvkXrkkclcbMKKkry2aU9NenljEbljjHTObJDUUBiYSiSts0uhgI29E1+04pgEkCqj
-         YonmvKtyIwPmE7cu3iw9V2VH634nxeQfWD6HUama+geStseQ4ydJPjjkaYwoHFdmVJI0
-         4YltIwGtuRIIWbU/QZd7lvnOcq7Rn9XYd0xNUuWAkteMaE9onRo57Dnelrd40yV2xg3E
-         ccxKg67eJJuM59LKkE9y10fpEQ2KSuSZZ+2OJwEbCjZobdbwsj9D8t/Em1n1sisqquMY
-         FTlQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=J4HAK0c1l5GwduZQoYMUPrX1mha+AY2sz5+a6cm2mu8=;
-        b=TcfIdYHcAP5QiRHXsAYSuNS9+NAsEP9FsvaupWZjlg/MzapxB99vlMuNA3g1gWLfNh
-         8ywjETPNRdA+XDoT6NQJZimJ11+bD1V2ulDFamdoLrcd8hx4wQTPpoOHLL6Z7Xpemhj3
-         tWFUNi/pno8pY9xFECWk1wvkbUBCC9m+amgW6Dq/hqgRFmlX1NIROjAOdghpmeP4bo5J
-         ZM07dgHrboenrh+P9xBdO8ZibVGajWDqvlHbAw98K1c0ysyLiUM19rMWUL+kW1/o3OuD
-         5q7fEpJjxIs6oFabzxzzZzE7uTQOGKMjbsjUID3GyiMzVQW3aUt9Yfx6dUyRG10L+Aez
-         RQ7g==
-X-Gm-Message-State: AOAM533ryaDcMGeHDJIuC86j0HQ0j8Csf5DJCzVZ8VAEdgwHRu0wbk3A
-        mUAMDCynSCdmrFEdnJnGR1z5z4Cor1gy7w==
-X-Google-Smtp-Source: ABdhPJz205f6JGKH/S/bJd0DZN1uTPiMjyRhGT0YNOmaVucYJLEfyU3sABk8lrrgOfQhRkGcBDwbvA==
-X-Received: by 2002:a7b:cd93:: with SMTP id y19mr3128266wmj.112.1599554996012;
-        Tue, 08 Sep 2020 01:49:56 -0700 (PDT)
-Received: from dell ([91.110.221.204])
-        by smtp.gmail.com with ESMTPSA id c145sm28910402wmd.7.2020.09.08.01.49.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Sep 2020 01:49:55 -0700 (PDT)
-Date:   Tue, 8 Sep 2020 09:49:53 +0100
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     davem@davemloft.net, kuba@kernel.org, linux-kernel@vger.kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        Amitkumar Karwar <amitkarwar@gmail.com>,
-        Ganapathi Bhat <ganapathi.bhat@nxp.com>,
-        Xinming Hu <huxinming820@gmail.com>
-Subject: Re: [PATCH 16/28] wireless: marvell: mwifiex: init: Move
- 'tos_to_tid_inv' to where it's used
-Message-ID: <20200908084953.GJ4400@dell>
-References: <20200819072402.3085022-17-lee.jones@linaro.org>
- <20200831155151.0DCB5C4339C@smtp.codeaurora.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20200831155151.0DCB5C4339C@smtp.codeaurora.org>
+        Tue, 8 Sep 2020 06:02:00 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1599559319;
+        h=From:To:Cc:Subject:Date:Message-Id;
+        bh=/WnOVNuZqkt/ALmLA1kdouN8QxOnf+7kb/JaqYcKkRk=;
+        b=Rfk2VReX61W2na/feCGJXvkBvs1fTa8iyYqDjTh9Z1qD/TT0frUE80a41kSCG4WC
+        klIt7mWSMqoKWCHpIptP3OfYD1m2yZTPrnhWvXAIJ/zAPUv468e/npsBGQ7SbnuPAjC
+        hiTTin8ZsCuBtyzLc8fxEu+Uzxtb3qItkJtN8z1Q=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+        s=hsbnp7p3ensaochzwyq5wwmceodymuwv; d=amazonses.com; t=1599559319;
+        h=From:To:Cc:Subject:Date:Message-Id:Feedback-ID;
+        bh=/WnOVNuZqkt/ALmLA1kdouN8QxOnf+7kb/JaqYcKkRk=;
+        b=aGP3mS98lCStOIYI/Rasr80tsRe0lPTWkN8IPxgosFV51xAmkojRXr19jhSTYMSX
+        zlNxpFpMsJde7MX2uQgpaCxQsoEUIiMMPyBdjyFqnreTQqhqBLk4pEl5gDXcXKpFQle
+        EjrBXENrwXKyHSiI9guMzlGzA+wkfTzhZ2BvWFZk=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
+        autolearn=no autolearn_force=no version=3.4.0
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org B9DCCC433C8
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=akolli@codeaurora.org
+From:   Anilkumar Kolli <akolli@codeaurora.org>
+To:     ath11k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org,
+        Anilkumar Kolli <akolli@codeaurora.org>
+Subject: [PATCH] ath11k: remove calling ath11k_init_hw_params() second time
+Date:   Tue, 8 Sep 2020 10:01:59 +0000
+Message-ID: <010101746d2a40d3-25cd7dbe-c0dd-4fdf-8735-366d7fb40207-000000@us-west-2.amazonses.com>
+X-Mailer: git-send-email 2.7.4
+X-SES-Outgoing: 2020.09.08-54.240.27.55
+Feedback-ID: 1.us-west-2.CZuq2qbDmUIuT3qdvXlRHZZCpfZqZ4GtG9v3VKgRyF0=:AmazonSES
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 31 Aug 2020, Kalle Valo wrote:
+During probe ath11k_init_hw_params() is called from ath11k_core_pre_init()
+and is not needed agian in ath11k_core_init().
 
-> Lee Jones <lee.jones@linaro.org> wrote:
-> 
-> > 'tos_to_tid_inv' is only used in 2 of 17 files it's current being
-> > included into.
-> > 
-> > Fixes the following W=1 kernel build warning(s):
-> > 
-> >  In file included from drivers/net/wireless/marvell/mwifiex/main.c:23:
-> >  In file included from drivers/net/wireless/marvell/mwifiex/cmdevt.c:26:
-> >  In file included from drivers/net/wireless/marvell/mwifiex/util.c:25:
-> >  In file included from drivers/net/wireless/marvell/mwifiex/txrx.c:25:
-> >  In file included from drivers/net/wireless/marvell/mwifiex/11n.c:25:
-> >  In file included from drivers/net/wireless/marvell/mwifiex/wmm.c:25:
-> >  In file included from drivers/net/wireless/marvell/mwifiex/11n_aggr.c:25:
-> >  In file included from drivers/net/wireless/marvell/mwifiex/11n_rxreorder.c:25:
-> >  In file included from drivers/net/wireless/marvell/mwifiex/join.c:25:
-> >  In file included from drivers/net/wireless/marvell/mwifiex/sta_cmd.c:25:
-> >  In file included from drivers/net/wireless/marvell/mwifiex/sta_ioctl.c:25:
-> >  In file included from drivers/net/wireless/marvell/mwifiex/sta_event.c:25:
-> >  In file included from drivers/net/wireless/marvell/mwifiex/uap_txrx.c:23:
-> >  In file included from drivers/net/wireless/marvell/mwifiex/sdio.c:27:
-> >  In file included from drivers/net/wireless/marvell/mwifiex/sta_tx.c:25:
-> >  drivers/net/wireless/marvell/mwifiex/wmm.h:41:17: warning: ‘tos_to_tid_inv’ defined but not used [-Wunused-const-variable=]
-> >  41 | static const u8 tos_to_tid_inv[] = {
-> > 
-> >  NB: Snipped for brevity
-> > 
-> > Cc: Amitkumar Karwar <amitkarwar@gmail.com>
-> > Cc: Ganapathi Bhat <ganapathi.bhat@nxp.com>
-> > Cc: Xinming Hu <huxinming820@gmail.com>
-> > Cc: Kalle Valo <kvalo@codeaurora.org>
-> > Cc: "David S. Miller" <davem@davemloft.net>
-> > Cc: Jakub Kicinski <kuba@kernel.org>
-> > Cc: linux-wireless@vger.kernel.org
-> > Cc: netdev@vger.kernel.org
-> > Signed-off-by: Lee Jones <lee.jones@linaro.org>
-> 
-> The patch creates two duplicate arrays, this makes it worse than it was
-> before.
+Tested on: IPQ8074 hw2.0 AHB WLAN.HK.2.4.0.1-00009-QCAHKSWPL_SILICONZ-1
 
-We have a choice (and you don't like either of them). :)
+Fixes: 1ff8ed786d5d (ath11k: use remoteproc only with AHB devices)
+Signed-off-by: Anilkumar Kolli <akolli@codeaurora.org>
+---
+ drivers/net/wireless/ath/ath11k/core.c | 6 ------
+ 1 file changed, 6 deletions(-)
 
-Either add the variable into the file(s) they are used or tell the
-compiler that it's okay for other files to declare but not used them
-(mark as __maybe_unused).
-
-What is your preferred solution?
-
+diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
+index 648a697e414a..03e922111cd6 100644
+--- a/drivers/net/wireless/ath/ath11k/core.c
++++ b/drivers/net/wireless/ath/ath11k/core.c
+@@ -849,12 +849,6 @@ int ath11k_core_init(struct ath11k_base *ab)
+ 		return ret;
+ 	}
+ 
+-	ret = ath11k_init_hw_params(ab);
+-	if (ret) {
+-		ath11k_err(ab, "failed to get hw params %d\n", ret);
+-		return ret;
+-	}
+-
+ 	ret = ath11k_core_soc_create(ab);
+ 	if (ret) {
+ 		ath11k_err(ab, "failed to create soc core: %d\n", ret);
 -- 
-Lee Jones [李琼斯]
-Senior Technical Lead - Developer Services
-Linaro.org │ Open source software for Arm SoCs
-Follow Linaro: Facebook | Twitter | Blog
+2.7.4
+
