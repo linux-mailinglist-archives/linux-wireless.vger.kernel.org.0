@@ -2,103 +2,145 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A4B0B261093
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Sep 2020 13:21:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D782261147
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Sep 2020 14:26:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729961AbgIHLUo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 8 Sep 2020 07:20:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39022 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729988AbgIHLSe (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 8 Sep 2020 07:18:34 -0400
-Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com [IPv6:2607:f8b0:4864:20::542])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED9BEC061573
-        for <linux-wireless@vger.kernel.org>; Tue,  8 Sep 2020 04:18:32 -0700 (PDT)
-Received: by mail-pg1-x542.google.com with SMTP id g29so9821601pgl.2
-        for <linux-wireless@vger.kernel.org>; Tue, 08 Sep 2020 04:18:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=DPhVHm5Yrxe2FB2XOtylUDcuz6wqU+n6Rek/Gj8QDMc=;
-        b=DnvdxO7DNfMgF2822srzxO46S7+iUknrOl82Tmyyt7VtUswfPN06weMAagErbpa4LC
-         pRlt+sFlA9u3HiYkl1OEgTbFRoLjATIThTuxJjAjdyMLUYLQ8GBr5zpsKEOYexT62HQt
-         zcrv6Uq3HUlM91lUn+k7tbTW86pprdhqOtPGc=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=DPhVHm5Yrxe2FB2XOtylUDcuz6wqU+n6Rek/Gj8QDMc=;
-        b=Mv6nXxoMvd9I1WqVbx7J/fOmbAuwWqZT+qyWZhJdMEj/bvIPMNOJzPMmpqarm+0t4N
-         XkrgNtXjfdFEHjX7mV0U4SIzCUmeEmmAwR4ObeO0/YhaGgLYetzdZkpeiLx05GLnVhYD
-         +q2vWe5RWqM5iQst560NtbBdM9dCMPV8xFy0OhF8R10wqam1PqSabzhU0t8C90ehhtu8
-         ohiFHCjPipU+KgjVuigisMfi2SVyGAX8u3eMvLyyzSK2c1N5ypK3khVlaD+ewyn0CkA7
-         PpjGbA/AgkIEA0oo5TamTqhI/44lvv3tKHI6D75SkEb34zyz+vOfAwhNT2X03Lu8QPS3
-         j0GA==
-X-Gm-Message-State: AOAM533ud+WWeTHCh4Oby+hYDsz5kuWwheZ6YAuBa2QkQl0baKr0vZ9b
-        AY4bBbmumKpsaxgsIIbeekC9+zmAP/Y2ut5O
-X-Google-Smtp-Source: ABdhPJw2aKs+cbUI2Gr5JM9a3FiERmT6ihTxueHJ3DXph1yki85dd64nvsBzqMCXIcfeyHvIt9GCZQ==
-X-Received: by 2002:aa7:9592:0:b029:13e:d13d:a054 with SMTP id z18-20020aa795920000b029013ed13da054mr657563pfj.26.1599563912366;
-        Tue, 08 Sep 2020 04:18:32 -0700 (PDT)
-Received: from [10.230.32.194] ([192.19.148.250])
-        by smtp.gmail.com with ESMTPSA id a15sm10046542pfi.119.2020.09.08.04.18.29
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 08 Sep 2020 04:18:31 -0700 (PDT)
-Subject: Re: [PATCH] brcmsmac: fix memory leak in wlc_phy_attach_lcnphy
-To:     Keita Suzuki <keitasuzuki.park@sslab.ics.keio.ac.jp>
-Cc:     takafumi@sslab.ics.keio.ac.jp,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
-        Wright Feng <wright.feng@cypress.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        "open list:BROADCOM BRCM80211 IEEE802.11n WIRELESS DRIVER" 
-        <linux-wireless@vger.kernel.org>,
-        "open list:BROADCOM BRCM80211 IEEE802.11n WIRELESS DRIVER" 
-        <brcm80211-dev-list.pdl@broadcom.com>,
-        "open list:BROADCOM BRCM80211 IEEE802.11n WIRELESS DRIVER" 
-        <brcm80211-dev-list@cypress.com>,
-        "open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>
-References: <bad4e33a-af2f-b44f-63e5-56386c312a91@broadcom.com>
- <20200908001324.8215-1-keitasuzuki.park@sslab.ics.keio.ac.jp>
-From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
-Message-ID: <c13ee142-d69d-6d21-6373-acb56507c9ec@broadcom.com>
-Date:   Tue, 8 Sep 2020 13:18:27 +0200
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.11.0
+        id S1730154AbgIHMZQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 8 Sep 2020 08:25:16 -0400
+Received: from mail.kernel.org ([198.145.29.99]:34612 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730193AbgIHLy4 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 8 Sep 2020 07:54:56 -0400
+Received: from lore-desk.redhat.com (unknown [151.66.86.87])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id E76AB206B5;
+        Tue,  8 Sep 2020 11:54:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1599566051;
+        bh=HO7XeQ+j1AMU7+bash//gpa0sxCtmp+N7ND2icgfZ9g=;
+        h=From:To:Cc:Subject:Date:From;
+        b=Eo6I1Wyyqd7Lf5yJBxgztk9ZwCs7kOosR6vx3aF6nXfNcYVAeoCYqDDAiQWVIBSlx
+         8BD96G4BtrTzBw1+OwoBkyrqyeG1s5m0sqh+4+Ve3vQu5/LPdoBY17kr5yNQSKiVJW
+         0mbYey3HYIUQZNrPI7x50Zry89EPbqdHNK5L3rHY=
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
+        sean.wang@mediatek.com, ryder.lee@mediatek.com
+Subject: [PATCH v2] mt76: mt7622: fix fw hang on mt7622
+Date:   Tue,  8 Sep 2020 13:54:03 +0200
+Message-Id: <2a24709602ee0f83f2e275170254942a87ffeea5.1599558634.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-In-Reply-To: <20200908001324.8215-1-keitasuzuki.park@sslab.ics.keio.ac.jp>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 9/8/2020 2:13 AM, Keita Suzuki wrote:
-> When wlc_phy_txpwr_srom_read_lcnphy fails in wlc_phy_attach_lcnphy,
-> the allocated pi->u.pi_lcnphy is leaked, since struct brcms_phy will be
-> freed in the caller function.
-> 
-> Fix this by calling wlc_phy_detach_lcnphy in the error handler of
-> wlc_phy_txpwr_srom_read_lcnphy before returning.
+Set poll timeout to 3s for mt7622 devices in order to avoid fw hangs.
+Swap mt7622_trigger_hif_int and doorbell configuration order in
+mt7615_mcu_drv_pmctrl routine.
+Introduce mt7615_mcu_lp_drv_pmctrl routine to take care of drv_own
+configuration for runtime-pm.
 
-Thanks for resubmitting the patch addressing my comment. For clarity it 
-is recommended to mark the subject with '[PATCH V2]' and add a ...
-
-> Signed-off-by: Keita Suzuki <keitasuzuki.park@sslab.ics.keio.ac.jp>
-> ---
-... changelog here describing difference between previous patch and this 
-version.
-
-Regards,
-Arend
+Fixes: 08523a2a1db5 ("mt76: mt7615: add mt7615_pm_wake utility routine")
+Fixes: 894b7767ec2f ("mt76: mt7615: improve mt7615_driver_own reliability")
+Fixes: 757b0e7fd6f4 ("mt76: mt7615: avoid polling in fw_own for mt7663")
+Co-developed-by: Shayne Chen <shayne.chen@mediatek.com>
+Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+Co-developed-by: Ryder Lee <ryder.lee@mediatek.com>
+Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
->   .../net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c    | 4 +++-
->   1 file changed, 3 insertions(+), 1 deletion(-)
+Changes since v1:
+- introduce mt7615_mcu_lp_drv_pmctrl
+- set mt7615_mcu_drv_pmctrl timeout to 3s
+---
+ .../net/wireless/mediatek/mt76/mt7615/mcu.c   | 46 +++++++++++++------
+ 1 file changed, 32 insertions(+), 14 deletions(-)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+index 074cdefba8aa..8630931a656f 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+@@ -338,28 +338,46 @@ static int mt7615_mcu_drv_pmctrl(struct mt7615_dev *dev)
+ {
+ 	struct mt76_phy *mphy = &dev->mt76.phy;
+ 	struct mt76_dev *mdev = &dev->mt76;
+-	int i;
++	u32 addr;
++	int err;
+ 
+-	if (!test_and_clear_bit(MT76_STATE_PM, &mphy->state))
+-		goto out;
++	addr = is_mt7663(mdev) ? MT_PCIE_DOORBELL_PUSH : MT_CFG_LPCR_HOST;
++	mt76_wr(dev, addr, MT_CFG_LPCR_HOST_DRV_OWN);
+ 
+ 	mt7622_trigger_hif_int(dev, true);
+ 
+-	for (i = 0; i < MT7615_DRV_OWN_RETRY_COUNT; i++) {
+-		u32 addr;
++	addr = is_mt7663(mdev) ? MT_CONN_HIF_ON_LPCTL : MT_CFG_LPCR_HOST;
++	err = !mt76_poll_msec(dev, addr, MT_CFG_LPCR_HOST_FW_OWN, 0, 3000);
+ 
+-		addr = is_mt7663(mdev) ? MT_PCIE_DOORBELL_PUSH : MT_CFG_LPCR_HOST;
+-		mt76_wr(dev, addr, MT_CFG_LPCR_HOST_DRV_OWN);
++	mt7622_trigger_hif_int(dev, false);
+ 
+-		addr = is_mt7663(mdev) ? MT_CONN_HIF_ON_LPCTL : MT_CFG_LPCR_HOST;
+-		if (mt76_poll_msec(dev, addr, MT_CFG_LPCR_HOST_FW_OWN, 0, 50))
+-			break;
++	if (err) {
++		dev_err(mdev->dev, "driver own failed\n");
++		return -ETIMEDOUT;
+ 	}
+ 
+-	mt7622_trigger_hif_int(dev, false);
++	clear_bit(MT76_STATE_PM, &mphy->state);
++
++	return 0;
++}
++
++static int mt7615_mcu_lp_drv_pmctrl(struct mt7615_dev *dev)
++{
++	struct mt76_phy *mphy = &dev->mt76.phy;
++	int i;
++
++	if (!test_and_clear_bit(MT76_STATE_PM, &mphy->state))
++		goto out;
++
++	for (i = 0; i < MT7615_DRV_OWN_RETRY_COUNT; i++) {
++		mt76_wr(dev, MT_PCIE_DOORBELL_PUSH, MT_CFG_LPCR_HOST_DRV_OWN);
++		if (mt76_poll_msec(dev, MT_CONN_HIF_ON_LPCTL,
++				   MT_CFG_LPCR_HOST_FW_OWN, 0, 50))
++			break;
++	}
+ 
+ 	if (i == MT7615_DRV_OWN_RETRY_COUNT) {
+-		dev_err(mdev->dev, "driver own failed\n");
++		dev_err(dev->mt76.dev, "driver own failed\n");
+ 		set_bit(MT76_STATE_PM, &mphy->state);
+ 		return -EIO;
+ 	}
+@@ -386,7 +404,7 @@ static int mt7615_mcu_fw_pmctrl(struct mt7615_dev *dev)
+ 
+ 	if (is_mt7622(&dev->mt76) &&
+ 	    !mt76_poll_msec(dev, addr, MT_CFG_LPCR_HOST_FW_OWN,
+-			    MT_CFG_LPCR_HOST_FW_OWN, 300)) {
++			    MT_CFG_LPCR_HOST_FW_OWN, 3000)) {
+ 		dev_err(dev->mt76.dev, "Timeout for firmware own\n");
+ 		clear_bit(MT76_STATE_PM, &mphy->state);
+ 		err = -EIO;
+@@ -1900,7 +1918,7 @@ static const struct mt7615_mcu_ops uni_update_ops = {
+ 	.add_tx_ba = mt7615_mcu_uni_tx_ba,
+ 	.add_rx_ba = mt7615_mcu_uni_rx_ba,
+ 	.sta_add = mt7615_mcu_uni_add_sta,
+-	.set_drv_ctrl = mt7615_mcu_drv_pmctrl,
++	.set_drv_ctrl = mt7615_mcu_lp_drv_pmctrl,
+ 	.set_fw_ctrl = mt7615_mcu_fw_pmctrl,
+ };
+ 
+-- 
+2.26.2
+
