@@ -2,122 +2,90 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 37CDD260982
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Sep 2020 06:26:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5EDAA26098E
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Sep 2020 06:29:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726002AbgIHE0I (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 8 Sep 2020 00:26:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60492 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725802AbgIHE0F (ORCPT
+        id S1726641AbgIHE3Q (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 8 Sep 2020 00:29:16 -0400
+Received: from a27-185.smtp-out.us-west-2.amazonses.com ([54.240.27.185]:44464
+        "EHLO a27-185.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725802AbgIHE3O (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 8 Sep 2020 00:26:05 -0400
-Received: from mail-qk1-x742.google.com (mail-qk1-x742.google.com [IPv6:2607:f8b0:4864:20::742])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B90D3C061573;
-        Mon,  7 Sep 2020 21:26:04 -0700 (PDT)
-Received: by mail-qk1-x742.google.com with SMTP id o5so14152486qke.12;
-        Mon, 07 Sep 2020 21:26:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=6wIvzc8U9COMkIGKunN+WS3730A3DmsP+jQFwcsoR08=;
-        b=XGIgUmdp/WMDIdcOZhT0JMYaODhrVSDvwHBKJv5L4Jckzwu2Nt0vE3loo0Gg7Pwz/E
-         XNu3yy+0iasK4VDg5yY9pw4jhxu0fQpYhTzPlyrUsybUI8K0/21cUZoBSjLVFCUeJboO
-         cTF1dAOT5YiR6Wr/n3WFUA4PRJGV8t6FVhIYWn7oPsgUowoMz92YSJzXQ9yX8noij2ik
-         zz9mdQgufHBnz7mitvUyHxsioNXQtA7szhQWxkvQ4ZsvCcFOPWwKjsBmrKYGeH1tUZiJ
-         ebAG24j+2Pq5VChtR/j3CZhcqqhG5igvdfcDuf/SC1xZSYeKzDQOytS2hJJ0HZBQp0dH
-         TTfg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=6wIvzc8U9COMkIGKunN+WS3730A3DmsP+jQFwcsoR08=;
-        b=k1vtuhUBCq6WzyROYEjVdpY8yIB8JD7heVOk/T48EQcWi+S6+T+ENwbCI28AaOcA09
-         j/5kFgoICfCL3ysDV32ldqW9lqnjnxkGDJOeNg3E7KswsjkwTsPlG9v11LbKRdB5jvnS
-         OHy3taTEP7ZlGqn1pG74ZJK0xqrPhOqcsApkpvHwXtlPBWp/SkzoGA9sNJTFcHgXKhOb
-         /eJUk2zSo/I/egIpPRS0vTP21F/1QbfbJOLceBW+34SS4eTbeV0FDOQZ/QDalWqiqvPH
-         g2QKIX32DATHSG9B0yRbcYpr3yt9ZkHZGcn8r3uLgzeCG/mOw1Mmk7kAkM/RSP30aVNa
-         DT2w==
-X-Gm-Message-State: AOAM532fuKTixQpbdxMA30rv2ZAOlysFW5hCaKol84DWd4sX3KHo9XHn
-        N1S9/aqWX25GpohFF/WU0Hnm9o7PaEA=
-X-Google-Smtp-Source: ABdhPJxknd7Tzqi8PHGiWn6w9zwv3Wp6f1fXH1+0QYxLjAxL5aSnzlwKisngzsoLVVZzkBWAfRtZ2g==
-X-Received: by 2002:a37:a495:: with SMTP id n143mr21941493qke.394.1599539163498;
-        Mon, 07 Sep 2020 21:26:03 -0700 (PDT)
-Received: from ubuntu-n2-xlarge-x86 ([2604:1380:45d1:2600::1])
-        by smtp.gmail.com with ESMTPSA id p29sm8096819qtu.68.2020.09.07.21.26.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Sep 2020 21:26:02 -0700 (PDT)
-Date:   Mon, 7 Sep 2020 21:26:01 -0700
-From:   Nathan Chancellor <natechancellor@gmail.com>
-To:     trix@redhat.com
-Cc:     kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org,
-        ndesaulniers@google.com, mkenna@codeaurora.org,
-        vnaralas@codeaurora.org, rmanohar@codeaurora.org, john@phrozen.org,
-        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        clang-built-linux@googlegroups.com
-Subject: Re: [PATCH] ath11k: fix a double free and a memory leak
-Message-ID: <20200908042601.GB111690@ubuntu-n2-xlarge-x86>
-References: <20200906212625.17059-1-trix@redhat.com>
+        Tue, 8 Sep 2020 00:29:14 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1599539354;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:MIME-Version:Content-Type;
+        bh=nPyk91QGICe40tqUkwXWorKLPuEnFUtbs9ATHi046o8=;
+        b=b0zvwszXxXEsfzYhI6lwek9iNkhoK3TMdO0f++Bx58tF5lDPgSa7ty2g+AEhdkaC
+        OsEvsWUEEgLwCBEQcJOs3ToRspdP3WRX+jLf1a1G/WjzHGop7eAFeoyPxx7AYgozKdM
+        Zye5m3/xc2QqUTQKd6KjuisAMjg+G4WxpBWH/STg=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+        s=hsbnp7p3ensaochzwyq5wwmceodymuwv; d=amazonses.com; t=1599539354;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:MIME-Version:Content-Type:Feedback-ID;
+        bh=nPyk91QGICe40tqUkwXWorKLPuEnFUtbs9ATHi046o8=;
+        b=nuF+A5Jh2e0qdmOZD2Ru58qZWz6w6uUECV2NseOn6etZg6NlwLTzVVvSIwaQaDYT
+        ZPHzBapjUk7h89WipvxiTxEh4UQpHsnjX/I7FCdfiPPIv4jWGzQSErcs9GkIL9YNjSD
+        jq+kB/BWHlNgEiJFpymT7IY3Wly1X0D9YUJZE27s=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org C0821C433C6
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Wright Feng <Wright.Feng@cypress.com>
+Cc:     Arend Van Spriel <arend.vanspriel@broadcom.com>,
+        "linux-wireless\@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "brcm80211-dev-list\@broadcom.com" <brcm80211-dev-list@broadcom.com>,
+        brcm80211-dev-list <brcm80211-dev-list@cypress.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-Hsien Lin <Chi-Hsien.Lin@cypress.com>
+Subject: Re: [PATCH 1/4] brcmfmac: add change_bss to support AP isolation
+References: <20200901063237.15549-1-wright.feng@cypress.com>
+        <20200901063237.15549-2-wright.feng@cypress.com>
+        <0101017467cf4336-e8ed5107-762a-431d-9ef0-a2631dd090be-000000@us-west-2.amazonses.com>
+        <c90157f5-2c1a-1535-3453-450590857f74@broadcom.com>
+        <0101017467f80c0c-9d33c4e2-53c3-486a-8dec-40e51161feb4-000000@us-west-2.amazonses.com>
+        <9c5de429-ff6f-cad2-39a7-d5812fd3df09@cypress.com>
+        <01010174692f7c3f-4b7369b2-0665-4324-b1c8-57bd22ac9ce7-000000@us-west-2.amazonses.com>
+        <1746948ecc8.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+        <6cc3759f-9dc5-f505-4878-33700e41fb73@cypress.com>
+Date:   Tue, 8 Sep 2020 04:29:13 +0000
+In-Reply-To: <6cc3759f-9dc5-f505-4878-33700e41fb73@cypress.com> (Wright Feng's
+        message of "Tue, 8 Sep 2020 02:13:20 +0000")
+Message-ID: <010101746bf99937-d6a76b8c-7358-4f9e-a8ee-140a8d7627ab-000000@us-west-2.amazonses.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200906212625.17059-1-trix@redhat.com>
+Content-Type: text/plain
+X-SES-Outgoing: 2020.09.08-54.240.27.185
+Feedback-ID: 1.us-west-2.CZuq2qbDmUIuT3qdvXlRHZZCpfZqZ4GtG9v3VKgRyF0=:AmazonSES
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sun, Sep 06, 2020 at 02:26:25PM -0700, trix@redhat.com wrote:
-> From: Tom Rix <trix@redhat.com>
-> 
-> clang static analyzer reports this problem
-> 
-> mac.c:6204:2: warning: Attempt to free released memory
->         kfree(ar->mac.sbands[NL80211_BAND_2GHZ].channels);
->         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> 
-> The channels pointer is allocated in ath11k_mac_setup_channels_rates()
-> When it fails midway, it cleans up the memory it has already allocated.
-> So the error handling needs to skip freeing the memory.
-> 
-> There is a second problem.
-> ath11k_mac_setup_channels_rates(), allocates 3 channels. err_free
-> misses releasing ar->mac.sbands[NL80211_BAND_6GHZ].channels
-> 
-> Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
-> Signed-off-by: Tom Rix <trix@redhat.com>
+Wright Feng <Wright.Feng@cypress.com> writes:
 
-Reviewed-by: Nathan Chancellor <natechancellor@gmail.com>
+>>> Oh, I didn't realise ap_isolate can be -1 as struct bss_parameters
+>>> didn't document that. Can someone submit a patch to fix that?
+>>>
+>>> * @ap_isolate: do not forward packets between connected stations
+>> 
+>> Me too. I assumed it was a boolean reading that description.
+>> 
+>> Regards,
+>> Arend
+>
+> The ap_isolate -1 value in nl80211_set_bss means not to changed.I
+> intend to add a check of "params->ap_isolate >= 0" like
+> ath/wil6210/cfg80211.c does in brcmf_cfg80211_change_bss. And I will
+> submit another patch to revise the comment in cfg80211.h as below. Let
+> me know if you concern about it.
 
-> ---
->  drivers/net/wireless/ath/ath11k/mac.c | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-> index f4a085baff38..f1a964b01a83 100644
-> --- a/drivers/net/wireless/ath/ath11k/mac.c
-> +++ b/drivers/net/wireless/ath/ath11k/mac.c
-> @@ -6089,7 +6089,7 @@ static int __ath11k_mac_register(struct ath11k *ar)
->  	ret = ath11k_mac_setup_channels_rates(ar,
->  					      cap->supported_bands);
->  	if (ret)
-> -		goto err_free;
-> +		goto err;
->  
->  	ath11k_mac_setup_ht_vht_cap(ar, cap, &ht_cap);
->  	ath11k_mac_setup_he_cap(ar, cap);
-> @@ -6203,7 +6203,8 @@ static int __ath11k_mac_register(struct ath11k *ar)
->  err_free:
->  	kfree(ar->mac.sbands[NL80211_BAND_2GHZ].channels);
->  	kfree(ar->mac.sbands[NL80211_BAND_5GHZ].channels);
-> -
-> +	kfree(ar->mac.sbands[NL80211_BAND_6GHZ].channels);
-> +err:
->  	SET_IEEE80211_DEV(ar->hw, NULL);
->  	return ret;
->  }
-> -- 
-> 2.18.1
-> 
+Great, thanks.
+
+-- 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
