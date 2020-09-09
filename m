@@ -2,63 +2,61 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2308A2630B1
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Sep 2020 17:38:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A7B32630B0
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Sep 2020 17:38:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730411AbgIIPij (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 9 Sep 2020 11:38:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48122 "EHLO
+        id S1730277AbgIIPiI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 9 Sep 2020 11:38:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48258 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730359AbgIIPgU (ORCPT
+        with ESMTP id S1730367AbgIIPgb (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 9 Sep 2020 11:36:20 -0400
-Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6C7CC06134E
-        for <linux-wireless@vger.kernel.org>; Wed,  9 Sep 2020 08:36:16 -0700 (PDT)
-Received: by mail-wr1-x442.google.com with SMTP id s12so3438747wrw.11
-        for <linux-wireless@vger.kernel.org>; Wed, 09 Sep 2020 08:36:16 -0700 (PDT)
+        Wed, 9 Sep 2020 11:36:31 -0400
+Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com [IPv6:2a00:1450:4864:20::343])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89716C061360
+        for <linux-wireless@vger.kernel.org>; Wed,  9 Sep 2020 08:36:30 -0700 (PDT)
+Received: by mail-wm1-x343.google.com with SMTP id l9so2829776wme.3
+        for <linux-wireless@vger.kernel.org>; Wed, 09 Sep 2020 08:36:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=mNr+Pfqwu/0aRFo1Po43D8D7g7/h15rV4ULpD0JgPO4=;
-        b=Y2/PyBWdxg1P1jEbkeXKlpmoigQdCKRo87k2Le3pRYeEoxfnA4NvrUfQnpkcmkSMJ9
-         SgRep61lw1lGaYH/GbF+9b41ELuBMcS8XeftkoU8zvRnWIKmIKA4Pb0j3RSQdUx1SZKn
-         5uSzSIdhrKdwIU6aWO4extuXuHSkLpCBdYNmjVvP8OCqYYTOJL0d4Hsj6eu4fDYts4dU
-         TeTLwLskJ6tz+iN72GL2kpUoZicGvsO1kZtP+ffojLjVCZqos1JHGAYgBMPijYbJle8C
-         zi1BOM6+rJXuBPEU21VFEp3v+/q7OzomQwjBzUh0DxCUxnSgbWZmlWvj9v7FJdbpyAiw
-         5h6Q==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=7IHx0+NLyzYUk9ph+s8nLW/OIGwymL67/C9uCLaWptg=;
+        b=UnEC3f/WTaqgalWdFb427NJYrLmEJl5I5GQX3fVdmHt4/0AfRzDfuHNJxmBsQkQ+Vp
+         aw6LMALgp0OAi/2unLLRtKjAynWoQ9EthMAETG8LuFxCBc25BDZmukkh1gw/jtDKg/iF
+         RxrxXzGozejp0ll2/HP3ZQJtJ2wPTzKYBPkbTTeleca8yccCmcwtohjX/yUKpAw6kJLT
+         owN1bpg/XysEEOExeHSizuiS3dR2L1r6y3Yaq1TqHnVd4qoWaLMo7aaPfuIER0nQca4O
+         ndhEXaYSzFjNqAl3BlciznflnVM1x3nVIAqAZxpj9cjteKzXZwFMiMD4w//fLnXGCCdW
+         k9Ug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=mNr+Pfqwu/0aRFo1Po43D8D7g7/h15rV4ULpD0JgPO4=;
-        b=k8UfFVrnr7kVVa06XZUXCLj6JA9C9V4btbpXeKN1/AnK4YgThSpxzybrkwyOv9uUS/
-         IfXo9dAO/kLy+pN5xDbWEohYLdpIc21xpTT8fT5WVj+J3xoCg1ikWhLzdmVTjhai6pw8
-         U3bkY1FQ0RzjmYsuOccOIX7q7w8gzBzWJRmf0cVPdoLrrc9tk4a70hS7P7RNXCm6SVFz
-         mJOANoL4QXh2oJYmbz9G/ldqYb3eLY7haAhWIzeYcGZyP6+sgqCbq2uFrvGDuUJbYlpf
-         MfjTxEKty8Q4hzFV4rSt++OesNeEuWP+BhgjMVRXbz0by3fhjjdHMnB49GNl9rtGVG4h
-         EEqQ==
-X-Gm-Message-State: AOAM530W+/bqM0v0/n+N5wzrkbTVRE9uCOipEuqzj7nbjiCUj998Z0Av
-        8rbtawA+FmpFb2rx6bCrHNx8OQ==
-X-Google-Smtp-Source: ABdhPJwJYAk5aw/RdYlLTmolBuMN2pPC4JFvfCb3/5Pf+V5Eb/UyIUUQau5yUUBgX9XrkHoJWphptg==
-X-Received: by 2002:adf:e4c5:: with SMTP id v5mr4282315wrm.320.1599665775342;
-        Wed, 09 Sep 2020 08:36:15 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=7IHx0+NLyzYUk9ph+s8nLW/OIGwymL67/C9uCLaWptg=;
+        b=aXv7qI8dThcmgBHWy3GRVFf9W+dlaHKtDI6XxS5EiMqE8ez7JOjdEmI0hoj7bP3MH4
+         6vAcUmboSsh0fuuendSwAwHJvTLaqHt+8Vbup3E2Dq6KBOLldEBvupT6VnL6QZW2QuTU
+         A65xbQAlits5wUxnlLbwxWraEF7jgYucfVxp9Q1Aj9lCR+Yi7o+h64HkjtV8ak8g6MQq
+         DJQeV/K5NR7u20WZcsARUVni9jKaGjRt1aslnYzoKXCQ8CvyKDKa1lHuSPecfimSrcru
+         VKV2ASE7tUTlpFDAYBka7RJRz5Kylz0/+mtQQni8lQjucB65fE3i3AwXoO1hQ0YZf5sT
+         +jWg==
+X-Gm-Message-State: AOAM53311oXd7fy/P5DYiCQsMrGc+LtheDNA1IDDoYK9GZonOmr2URRZ
+        oxfxA8/8q/H8KZ663/5fnIHWrw==
+X-Google-Smtp-Source: ABdhPJyvQvTacu/Bd54Tu9hjemw2GnCeMiRKDjzLIogPK+X/6lrajWIVyOJeagziikfly4MazMVkfg==
+X-Received: by 2002:a1c:7f14:: with SMTP id a20mr4175904wmd.95.1599665789242;
+        Wed, 09 Sep 2020 08:36:29 -0700 (PDT)
 Received: from sagittarius-a.chello.ie (188-141-3-169.dynamic.upc.ie. [188.141.3.169])
-        by smtp.gmail.com with ESMTPSA id v204sm4619807wmg.20.2020.09.09.08.36.14
+        by smtp.gmail.com with ESMTPSA id m185sm4605220wmf.5.2020.09.09.08.36.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Sep 2020 08:36:14 -0700 (PDT)
+        Wed, 09 Sep 2020 08:36:28 -0700 (PDT)
 From:   Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 To:     kvalo@codeaurora.org, wcn36xx@lists.infradead.org,
         linux-wireless@vger.kernel.org
 Cc:     bryan.odonoghue@linaro.org, shawn.guo@linaro.org,
         loic.poulain@linaro.org
-Subject: [PATCH v4 4/5] wcn36xx: Encode PHY mode for 80MHz channel in hw_value
-Date:   Wed,  9 Sep 2020 16:36:59 +0100
-Message-Id: <20200909153700.2904977-5-bryan.odonoghue@linaro.org>
+Subject: [PATCH v4 0/4] wcn36xx: Update firmware config to support wcn3680
+Date:   Wed,  9 Sep 2020 16:37:13 +0100
+Message-Id: <20200909153717.2905037-1-bryan.odonoghue@linaro.org>
 X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20200909153700.2904977-1-bryan.odonoghue@linaro.org>
-References: <20200909153700.2904977-1-bryan.odonoghue@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
@@ -66,85 +64,88 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This commit encodes the 802.11ac PHY mode for a given channel in the upper
-bits of the hw_value field. This allows for a neat read-out and application
-of the relevant PHY setting.
+This series is five in a set of seven to add support for wcn3680 at 802.11ac
+data-rates.
 
-Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
----
- drivers/net/wireless/ath/wcn36xx/main.c | 50 ++++++++++++-------------
- 1 file changed, 25 insertions(+), 25 deletions(-)
+This series is about providing a parameters to firmware to get us up onto
+802.11ac data-rates finally.
 
-diff --git a/drivers/net/wireless/ath/wcn36xx/main.c b/drivers/net/wireless/ath/wcn36xx/main.c
-index ab6685dc956b..36cfa7043bc3 100644
---- a/drivers/net/wireless/ath/wcn36xx/main.c
-+++ b/drivers/net/wireless/ath/wcn36xx/main.c
-@@ -39,10 +39,10 @@ MODULE_PARM_DESC(debug_mask, "Debugging mask");
- 	.max_power = 25, \
- }
- 
--#define CHAN5G(_freq, _idx) { \
-+#define CHAN5G(_freq, _idx, _phy_val) { \
- 	.band = NL80211_BAND_5GHZ, \
- 	.center_freq = (_freq), \
--	.hw_value = (_idx), \
-+	.hw_value = (_phy_val) << HW_VALUE_PHY_SHIFT | HW_VALUE_CHANNEL(_idx), \
- 	.max_power = 25, \
- }
- 
-@@ -67,29 +67,29 @@ static struct ieee80211_channel wcn_2ghz_channels[] = {
- };
- 
- static struct ieee80211_channel wcn_5ghz_channels[] = {
--	CHAN5G(5180, 36),
--	CHAN5G(5200, 40),
--	CHAN5G(5220, 44),
--	CHAN5G(5240, 48),
--	CHAN5G(5260, 52),
--	CHAN5G(5280, 56),
--	CHAN5G(5300, 60),
--	CHAN5G(5320, 64),
--	CHAN5G(5500, 100),
--	CHAN5G(5520, 104),
--	CHAN5G(5540, 108),
--	CHAN5G(5560, 112),
--	CHAN5G(5580, 116),
--	CHAN5G(5600, 120),
--	CHAN5G(5620, 124),
--	CHAN5G(5640, 128),
--	CHAN5G(5660, 132),
--	CHAN5G(5700, 140),
--	CHAN5G(5745, 149),
--	CHAN5G(5765, 153),
--	CHAN5G(5785, 157),
--	CHAN5G(5805, 161),
--	CHAN5G(5825, 165)
-+	CHAN5G(5180, 36, PHY_QUADRUPLE_CHANNEL_20MHZ_LOW_40MHZ_LOW),
-+	CHAN5G(5200, 40, PHY_QUADRUPLE_CHANNEL_20MHZ_HIGH_40MHZ_LOW),
-+	CHAN5G(5220, 44, PHY_QUADRUPLE_CHANNEL_20MHZ_LOW_40MHZ_HIGH),
-+	CHAN5G(5240, 48, PHY_QUADRUPLE_CHANNEL_20MHZ_HIGH_40MHZ_HIGH),
-+	CHAN5G(5260, 52, PHY_QUADRUPLE_CHANNEL_20MHZ_LOW_40MHZ_LOW),
-+	CHAN5G(5280, 56, PHY_QUADRUPLE_CHANNEL_20MHZ_HIGH_40MHZ_LOW),
-+	CHAN5G(5300, 60, PHY_QUADRUPLE_CHANNEL_20MHZ_LOW_40MHZ_HIGH),
-+	CHAN5G(5320, 64, PHY_QUADRUPLE_CHANNEL_20MHZ_HIGH_40MHZ_HIGH),
-+	CHAN5G(5500, 100, PHY_QUADRUPLE_CHANNEL_20MHZ_LOW_40MHZ_LOW),
-+	CHAN5G(5520, 104, PHY_QUADRUPLE_CHANNEL_20MHZ_HIGH_40MHZ_LOW),
-+	CHAN5G(5540, 108, PHY_QUADRUPLE_CHANNEL_20MHZ_LOW_40MHZ_HIGH),
-+	CHAN5G(5560, 112, PHY_QUADRUPLE_CHANNEL_20MHZ_HIGH_40MHZ_HIGH),
-+	CHAN5G(5580, 116, PHY_QUADRUPLE_CHANNEL_20MHZ_LOW_40MHZ_LOW),
-+	CHAN5G(5600, 120, PHY_QUADRUPLE_CHANNEL_20MHZ_HIGH_40MHZ_LOW),
-+	CHAN5G(5620, 124, PHY_QUADRUPLE_CHANNEL_20MHZ_LOW_40MHZ_HIGH),
-+	CHAN5G(5640, 128, PHY_QUADRUPLE_CHANNEL_20MHZ_HIGH_40MHZ_HIGH),
-+	CHAN5G(5660, 132, PHY_QUADRUPLE_CHANNEL_20MHZ_LOW_40MHZ_LOW),
-+	CHAN5G(5700, 140, PHY_QUADRUPLE_CHANNEL_20MHZ_LOW_40MHZ_HIGH),
-+	CHAN5G(5745, 149, PHY_QUADRUPLE_CHANNEL_20MHZ_LOW_40MHZ_LOW),
-+	CHAN5G(5765, 153, PHY_QUADRUPLE_CHANNEL_20MHZ_HIGH_40MHZ_LOW),
-+	CHAN5G(5785, 157, PHY_QUADRUPLE_CHANNEL_20MHZ_LOW_40MHZ_HIGH),
-+	CHAN5G(5805, 161, PHY_QUADRUPLE_CHANNEL_20MHZ_HIGH_40MHZ_HIGH),
-+	CHAN5G(5825, 165, 0)
- };
- 
- #define RATE(_bitrate, _hw_rate, _flags) { \
+Once the firmware config is provided to the chip and VHT parameters are
+populated we are good to go in terms of the higher data-rate for the
+wcn3680.
+
+I get typical data-rates of:
+
+[ ID] Interval           Transfer     Bitrate         Retr
+[  5]   0.00-320.00 sec  4.93 GBytes   132 Mbits/sec  445     sender
+[  5]   0.00-320.14 sec  4.93 GBytes   132 Mbits/sec          receiver
+
+Downstream 3.10 prima is getting I'm told 180-200 Mbits/sec on the same
+hardware so with time and effort there's certainly some performance gain to
+be squeezed out of this silicon yet.
+
+However as a first pass, I believe this is good enough and useful enough to
+others to submit for upstream inclusion.
+
+An interesting project and a medium term goal would be to have a unified
+configuration for all three supported chipsets.
+
+For now suggesting a separate firmware configuration to make sure the
+existing lower-speed 802.11n and higher-speed 802.11ac chips don't step on
+each other's toes vis-a-vis firmware parameters.
+
+V4:
+- No functional change.
+  Sending out full set again using --base=ath-202009090652 to aid kernel
+  test robot
+- https://lore.kernel.org/linux-wireless/20200908182529.2870478-1-bryan.odonoghue@linaro.org/T/#t
+
+V3:
+No difference between V3 and V2 below
+https://lore.kernel.org/linux-wireless/20200829034002.2167878-1-bryan.odonoghue@linaro.org/T/#t
+
+V2:
+- Sets the default data-rate for wcn3680 to MCS8
+- Zapps a few firmware settings for power-saving
+  Powersave configuration as a specific wcn3680 topic is WIP on my end
+  and I think therefore better left out of an intiial submission.
+
+V1:
+https://lore.kernel.org/linux-wireless/87eensldhi.fsf@codeaurora.org/T/#t
+
+Bryan O'Donoghue (4):
+  wcn36xx: Extend HAL param config list
+  wcn36xx: Define wcn3680 specific firmware parameters
+  wcn36xx: Add ability to download wcn3680 specific firmware parameters
+  wcn36xx: Latch VHT specific BSS parameters to firmware
+
+ drivers/net/wireless/ath/wcn36xx/hal.h | 124 ++++++++++++++++++++++++-
+ drivers/net/wireless/ath/wcn36xx/smd.c | 114 ++++++++++++++++++++++-
+ 2 files changed, 234 insertions(+), 4 deletions(-)
+
+
+base-commit: 160b351d75cb50a0dd2abf9b63e1891935aa9e4a
+prerequisite-patch-id: 9a4ac7faca179f6594c9b3a115ee69a2da540a69
+prerequisite-patch-id: 183286f9c22d1aaa12f356651224e6b337ef1938
+prerequisite-patch-id: af468d413daaf8d2aad195fcb43c6e66390d8468
+prerequisite-patch-id: 1a7fb93ee5874d2d011409eaed0b4fd764666b9c
+prerequisite-patch-id: 77cc008b21a650fa7a33c4acad2fb632b09634fd
+prerequisite-patch-id: 988ae4802971d6895b03b2752122b2be42baf188
+prerequisite-patch-id: a3ba2a1963e03e23e86c937cd4cfb649e1b819b2
+prerequisite-patch-id: 8a1fe4f63bc80e9a8035aa52356da8c46eab8665
+prerequisite-patch-id: d75c1a60d1ede373c1f3eb684bb15c853c88eedc
+prerequisite-patch-id: 47145acae6e24e8e6580fca1dbddfbec24f7b50b
+prerequisite-patch-id: 8c66bccb923be821cf109a3a0d3a1a028edb4930
+prerequisite-patch-id: f078e5fdfe8c18936469bfb118a964db13ea729f
+prerequisite-patch-id: 746f63cf58fa3bf62736435c81dba2558aba8e81
+prerequisite-patch-id: 36a94e202cbdaee8e06f9a108b1c894bd1159e62
+prerequisite-patch-id: 8a598e22a08b0ec233d0ec56eeb53673eb1b8feb
+prerequisite-patch-id: b0eba574ddc35ecec2d0e39c0d3351d1b260420e
+prerequisite-patch-id: 143a1019813b7e4974a67e9eea1f1d599c0fdfdf
+prerequisite-patch-id: f66d9fe9eb731272b825c9430c15dca89d6c6129
+prerequisite-patch-id: c8c2d2dd1452c357f73fc4c92e5b564d59a05562
+prerequisite-patch-id: 273c13464a69354d32790ed7509472d9c2b11231
+prerequisite-patch-id: adbde1c98b85a16a6500b4210d4f055b9493418c
 -- 
 2.27.0
 
