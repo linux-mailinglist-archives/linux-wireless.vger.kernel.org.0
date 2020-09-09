@@ -2,95 +2,81 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 485FF262CAB
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Sep 2020 11:57:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EA119262D95
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Sep 2020 13:02:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727113AbgIIJ5R (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 9 Sep 2020 05:57:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52270 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726399AbgIIJ5Q (ORCPT
+        id S1729161AbgIILCY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 9 Sep 2020 07:02:24 -0400
+Received: from smtprelay0003.hostedemail.com ([216.40.44.3]:35116 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1729692AbgIILBb (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 9 Sep 2020 05:57:16 -0400
-Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com [IPv6:2a00:1450:4864:20::341])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E177EC061573;
-        Wed,  9 Sep 2020 02:57:15 -0700 (PDT)
-Received: by mail-wm1-x341.google.com with SMTP id q9so1669645wmj.2;
-        Wed, 09 Sep 2020 02:57:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=vzJ2+owmiLfYv0cJPn9WGDrp2m6lL87kIpE3iI2zcfI=;
-        b=UymuNGiU1rRtNtj90xat6K+VNYkIHfxXx0aUubLRLV8Vt+X7JbbSYF7mdrJwurXZUH
-         8G09VZqoOuUHiHg2Gzj1bzgJH5zZKHG/6etP5k9kZ/MZNrxOZm/7H2avBYfRYQZpVpFL
-         Pb2K1VVkQoJ7gODU+yfDEpCo5eUOLllMC+S+9fSyp2EMYvyOYBnzYnwBCU2qNhc0/nQQ
-         gNozl3Jnh/FbxYbRcE4aHUXH9L0DIG6aPM2msSNk2BZ1oriiEdim+nfGGH7OlMKdg+09
-         /d5clbtplgGXCcRDUExBOMNQR2bcvlqVbuBLlhDk2kTxelR/cKvW/u1pCRp3vJ0F0IUR
-         TSwA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=vzJ2+owmiLfYv0cJPn9WGDrp2m6lL87kIpE3iI2zcfI=;
-        b=LQilAuqMUwXWdjIyZMQS8YoALTjHjxzWK0Vw0Tb1LMt1minfthoUEk1eFV2bDloQGp
-         V3rPKigsGn/f62Qt1TwUogHGcdwZk1dt+/Hoc84BbIHsoxmq81ehJ4WTGDH0z/L9bmRF
-         KfXYU8J3sWgCZ2l2uZj7cK+XGpmd2bnozjkhstbBV9JF8o+kkEt/5eUhfMcWzYhsraGW
-         7hXEeEW5Mvy9pC7kLYRl4gVsK+DbkFlJka88DZwmWM6fOqxFsbQhoFQ4Qn+expsaAObH
-         UJR+FtegyiGNMhf4jjQkUA5dHnk4TlfdyMT6XC6NF0poBEi9Dc3P8Z4aD4AW/ud6FAoY
-         Oi1A==
-X-Gm-Message-State: AOAM533PZbGD+9melJAdQ6WPpzzGxqMHr5yorQbvmgvsra961Smy4JcW
-        mL0vPlo8qN/+MUJIEKYhtJNvuLHjT1b3SQ==
-X-Google-Smtp-Source: ABdhPJx0pAEeNLqqBK/0LW0KyVkmWPS/hnK0xBnBcd/aCzJZ0k8zTYt12mQMUj9IICUolv71rfhAHA==
-X-Received: by 2002:a1c:14e:: with SMTP id 75mr2897019wmb.114.1599645434391;
-        Wed, 09 Sep 2020 02:57:14 -0700 (PDT)
-Received: from localhost.localdomain ([85.153.229.216])
-        by smtp.gmail.com with ESMTPSA id l15sm3381621wrt.81.2020.09.09.02.57.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Sep 2020 02:57:13 -0700 (PDT)
-From:   Necip Fazil Yildiran <fazilyildiran@gmail.com>
-To:     johannes@sipsolutions.net, davem@davemloft.net, kuba@kernel.org
-Cc:     ard.biesheuvel@linaro.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        paul@pgazz.com, jeho@cs.utexas.edu,
-        Necip Fazil Yildiran <fazilyildiran@gmail.com>
-Subject: [PATCH] net: wireless: fix unmet direct dependendices config warning when !CRYPTO
-Date:   Wed,  9 Sep 2020 12:54:53 +0300
-Message-Id: <20200909095452.3080-1-fazilyildiran@gmail.com>
-X-Mailer: git-send-email 2.25.1
+        Wed, 9 Sep 2020 07:01:31 -0400
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay01.hostedemail.com (Postfix) with ESMTP id 479AC100E7B45;
+        Wed,  9 Sep 2020 11:00:19 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:968:973:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1540:1593:1594:1711:1730:1747:1777:1792:2194:2199:2393:2559:2562:2828:3138:3139:3140:3141:3142:3352:3622:3865:3867:3868:3871:3872:4225:4321:5007:10004:10400:10848:11026:11232:11657:11658:11914:12043:12048:12297:12740:12760:12895:13069:13311:13357:13439:14659:14721:21080:21627:30046:30054:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:1,LUA_SUMMARY:none
+X-HE-Tag: horn54_50064b2270dc
+X-Filterd-Recvd-Size: 1987
+Received: from XPS-9350.home (unknown [47.151.133.149])
+        (Authenticated sender: joe@perches.com)
+        by omf04.hostedemail.com (Postfix) with ESMTPA;
+        Wed,  9 Sep 2020 11:00:17 +0000 (UTC)
+Message-ID: <e2dfa0e0c279cd39a0b7ab725a634831e1f188cc.camel@perches.com>
+Subject: Re: [PATCH][next] mt7601u: Use fallthrough pseudo-keyword
+From:   Joe Perches <joe@perches.com>
+To:     "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Jakub Kicinski <kubakici@wp.pl>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Matthias Brugger <matthias.bgg@gmail.com>
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org
+Date:   Wed, 09 Sep 2020 04:00:16 -0700
+In-Reply-To: <20200901173603.GA2701@embeddedor>
+References: <20200901173603.GA2701@embeddedor>
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.36.4-0ubuntu1 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-When LIB80211_CRYPT_CCMP is enabled and CRYPTO is disabled, it results in unmet
-direct dependencies config warning. The reason is that LIB80211_CRYPT_CCMP
-selects CRYPTO_AES and CRYPTO_CCM, which are subordinate to CRYPTO. This is
-reproducible with CRYPTO disabled and R8188EU enabled, where R8188EU selects
-LIB80211_CRYPT_CCMP but does not select or depend on CRYPTO.
+On Tue, 2020-09-01 at 12:36 -0500, Gustavo A. R. Silva wrote:
+> Replace the existing /* fall through */ comments and its variants with
+> the new pseudo-keyword macro fallthrough[1]. Also, remove unnecessary
+> fall-through markings when it is the case.
+[]
+> diff --git a/drivers/net/wireless/mediatek/mt7601u/dma.c b/drivers/net/wireless/mediatek/mt7601u/dma.c
+[]
+> @@ -196,7 +196,7 @@ static void mt7601u_complete_rx(struct urb *urb)
+>  	default:
+>  		dev_err_ratelimited(dev->dev, "rx urb failed: %d\n",
+>  				    urb->status);
+> -		/* fall through */
+> +		fallthrough;
+		
+		fallthrough to break is odd.
+		break would probably be better.
 
-Honor the kconfig menu hierarchy to remove kconfig dependency warnings.
+>  	case 0:
+>  		break;
+>  	}
+> @@ -241,7 +241,7 @@ static void mt7601u_complete_tx(struct urb *urb)
+>  	default:
+>  		dev_err_ratelimited(dev->dev, "tx urb failed: %d\n",
+>  				    urb->status);
+> -		/* fall through */
+> +		fallthrough;
 
-Fixes: a11e2f85481c ("lib80211: use crypto API ccm(aes) transform for CCMP processing")
-Signed-off-by: Necip Fazil Yildiran <fazilyildiran@gmail.com>
----
- net/wireless/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+here too...
 
-diff --git a/net/wireless/Kconfig b/net/wireless/Kconfig
-index faf74850a1b5..27026f587fa6 100644
---- a/net/wireless/Kconfig
-+++ b/net/wireless/Kconfig
-@@ -217,6 +217,7 @@ config LIB80211_CRYPT_WEP
- 
- config LIB80211_CRYPT_CCMP
- 	tristate
-+	select CRYPTO
- 	select CRYPTO_AES
- 	select CRYPTO_CCM
- 
--- 
-2.25.1
+>  	case 0:
+>  		break;
+>  	}
+> 
 
