@@ -2,117 +2,102 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8175726301C
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Sep 2020 17:03:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 283952630E7
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Sep 2020 17:48:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730223AbgIIPCW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 9 Sep 2020 11:02:22 -0400
-Received: from a27-56.smtp-out.us-west-2.amazonses.com ([54.240.27.56]:37152
-        "EHLO a27-56.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1729129AbgIIMUR (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 9 Sep 2020 08:20:17 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1599653488;
-        h=Content-Type:MIME-Version:Content-Transfer-Encoding:From:Subject:To:Cc:Message-Id:Date;
-        bh=fJRFmxcz+0+lsv3xVw49rIbLoNivGfL+jKveIPjiMnw=;
-        b=hsj/8mS37TKOb7X6koa+xXjNXBohGSTdJKi2xTBeRR6qOPeCp9SG3rfsIR4SZkz+
-        lC70/qDUqNFLjcrUMBTY4ETD5/4JuKGiArmWDHABt3Z1BCd1XVGEnd3WNoNMJYgxeSC
-        Gcmu56qbLtZ6O4mcvBmulERu/oJavc1hwVSUCgrg=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=hsbnp7p3ensaochzwyq5wwmceodymuwv; d=amazonses.com; t=1599653488;
-        h=Content-Type:MIME-Version:Content-Transfer-Encoding:From:Subject:To:Cc:Message-Id:Date:Feedback-ID;
-        bh=fJRFmxcz+0+lsv3xVw49rIbLoNivGfL+jKveIPjiMnw=;
-        b=UwsavFgniHyzjKDCq5FWamarC1ax03CRUzvdl0RBc4150g4ADLowYMxIqQZGMX1L
-        szxa/ExeYDU3wabYGjz/WPKGjPs16SD0PrjjYaAfCGYitORV1/I1JMoN6NhIzmiQUHi
-        vw+lvnVFbuQK7k61LiepZM8WYvMvhRu979Wq6fKI=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        MISSING_DATE,MISSING_MID,SPF_FAIL autolearn=no autolearn_force=no
-        version=3.4.0
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 34B27C433C6
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        id S1730567AbgIIPss (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 9 Sep 2020 11:48:48 -0400
+Received: from szxga06-in.huawei.com ([45.249.212.32]:40364 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1730460AbgIIPsr (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 9 Sep 2020 11:48:47 -0400
+Received: from DGGEMS414-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id 57B99F08137A5C2B9BFE;
+        Wed,  9 Sep 2020 21:45:42 +0800 (CST)
+Received: from localhost (10.174.179.108) by DGGEMS414-HUB.china.huawei.com
+ (10.3.19.214) with Microsoft SMTP Server id 14.3.487.0; Wed, 9 Sep 2020
+ 21:45:35 +0800
+From:   YueHaibing <yuehaibing@huawei.com>
+To:     <kvalo@codeaurora.org>, <davem@davemloft.net>, <kuba@kernel.org>
+CC:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+        <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        YueHaibing <yuehaibing@huawei.com>
+Subject: [PATCH] ath11k: Remove unused inline function htt_htt_stats_debug_dump()
+Date:   Wed, 9 Sep 2020 21:45:33 +0800
+Message-ID: <20200909134533.19604-1-yuehaibing@huawei.com>
+X-Mailer: git-send-email 2.10.2.windows.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From:   Kalle Valo <kvalo@codeaurora.org>
-Subject: pull-request: wireless-drivers-2020-09-09
-To:     netdev@vger.kernel.org
-Cc:     linux-wireless@vger.kernel.org
-Message-ID: <0101017472c727b0-ba3f66b9-151e-4d64-bc92-2d623035c008-000000@us-west-2.amazonses.com>
-Date:   Wed, 9 Sep 2020 12:11:28 +0000
-X-SES-Outgoing: 2020.09.09-54.240.27.56
-Feedback-ID: 1.us-west-2.CZuq2qbDmUIuT3qdvXlRHZZCpfZqZ4GtG9v3VKgRyF0=:AmazonSES
+Content-Type: text/plain
+X-Originating-IP: [10.174.179.108]
+X-CFilter-Loop: Reflected
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+There is no caller in tree, so can remove it.
 
-here's a pull request to net tree, more info below. Please let me know if there
-are any problems.
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+---
+ .../net/wireless/ath/ath11k/debug_htt_stats.c | 44 -------------------
+ 1 file changed, 44 deletions(-)
 
-Kalle
+diff --git a/drivers/net/wireless/ath/ath11k/debug_htt_stats.c b/drivers/net/wireless/ath/ath11k/debug_htt_stats.c
+index 6b532dc99c98..ad3f08a5b031 100644
+--- a/drivers/net/wireless/ath/ath11k/debug_htt_stats.c
++++ b/drivers/net/wireless/ath/ath11k/debug_htt_stats.c
+@@ -3895,50 +3895,6 @@ static inline void htt_print_backpressure_stats_tlv_v(const u32 *tag_buf,
+ 	}
+ }
+ 
+-static inline void htt_htt_stats_debug_dump(const u32 *tag_buf,
+-					    struct debug_htt_stats_req *stats_req)
+-{
+-	u8 *buf = stats_req->buf;
+-	u32 len = stats_req->buf_len;
+-	u32 buf_len = ATH11K_HTT_STATS_BUF_SIZE;
+-	u32 tlv_len = 0, i = 0, word_len = 0;
+-
+-	tlv_len  = FIELD_GET(HTT_TLV_LEN, *tag_buf) + HTT_TLV_HDR_LEN;
+-	word_len = (tlv_len % 4) == 0 ? (tlv_len / 4) : ((tlv_len / 4) + 1);
+-	len += HTT_DBG_OUT(buf + len, buf_len - len,
+-			   "============================================");
+-	len += HTT_DBG_OUT(buf + len, buf_len - len,
+-			   "HKDBG TLV DUMP: (tag_len=%u bytes, words=%u)",
+-			   tlv_len, word_len);
+-
+-	for (i = 0; i + 3 < word_len; i += 4) {
+-		len += HTT_DBG_OUT(buf + len, buf_len - len,
+-				   "0x%08x 0x%08x 0x%08x 0x%08x",
+-				   tag_buf[i], tag_buf[i + 1],
+-				   tag_buf[i + 2], tag_buf[i + 3]);
+-	}
+-
+-	if (i + 3 == word_len) {
+-		len += HTT_DBG_OUT(buf + len, buf_len - len, "0x%08x 0x%08x 0x%08x ",
+-				tag_buf[i], tag_buf[i + 1], tag_buf[i + 2]);
+-	} else if (i + 2 == word_len) {
+-		len += HTT_DBG_OUT(buf + len, buf_len - len, "0x%08x 0x%08x ",
+-				tag_buf[i], tag_buf[i + 1]);
+-	} else if (i + 1 == word_len) {
+-		len += HTT_DBG_OUT(buf + len, buf_len - len, "0x%08x ",
+-				tag_buf[i]);
+-	}
+-	len += HTT_DBG_OUT(buf + len, buf_len - len,
+-			   "============================================");
+-
+-	if (len >= buf_len)
+-		buf[buf_len - 1] = 0;
+-	else
+-		buf[len] = 0;
+-
+-	stats_req->buf_len = len;
+-}
+-
+ static int ath11k_dbg_htt_ext_stats_parse(struct ath11k_base *ab,
+ 					  u16 tag, u16 len, const void *tag_buf,
+ 					  void *user_data)
+-- 
+2.17.1
 
-The following changes since commit 9123e3a74ec7b934a4a099e98af6a61c2f80bbf5:
 
-  Linux 5.9-rc1 (2020-08-16 13:04:57 -0700)
-
-are available in the git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers.git tags/wireless-drivers-2020-09-09
-
-for you to fetch changes up to 1264c1e0cfe55e2d6c35e869244093195529af37:
-
-  Revert "wlcore: Adding suppoprt for IGTK key in wlcore driver" (2020-09-07 11:39:32 +0300)
-
-----------------------------------------------------------------
-wireless-drivers fixes for v5.9
-
-First set of fixes for v5.9, small but important.
-
-brcmfmac
-
-* fix a throughput regression on bcm4329
-
-mt76
-
-* fix a regression with stations reconnecting on mt7616
-
-* properly free tx skbs, it was working by accident before
-
-mwifiex
-
-* fix a regression with 256 bit encryption keys
-
-wlcore
-
-* revert AES CMAC support as it caused a regression
-
-----------------------------------------------------------------
-Felix Fietkau (2):
-      mt76: mt7615: use v1 MCU API on MT7615 to fix issues with adding/removing stations
-      mt76: mt7915: use ieee80211_free_txskb to free tx skbs
-
-Mauro Carvalho Chehab (1):
-      Revert "wlcore: Adding suppoprt for IGTK key in wlcore driver"
-
-Maximilian Luz (1):
-      mwifiex: Increase AES key storage size to 256 bits
-
-Wright Feng (1):
-      brcmfmac: reserve tx credit only when txctl is ready to send
-
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c | 12 +++++++++---
- drivers/net/wireless/marvell/mwifiex/fw.h               |  2 +-
- drivers/net/wireless/marvell/mwifiex/sta_cmdresp.c      |  4 ++--
- drivers/net/wireless/mediatek/mt76/mt7615/mcu.c         |  3 ++-
- drivers/net/wireless/mediatek/mt76/mt7915/init.c        |  8 ++++++--
- drivers/net/wireless/mediatek/mt76/mt7915/mac.c         |  2 +-
- drivers/net/wireless/ti/wlcore/cmd.h                    |  1 -
- drivers/net/wireless/ti/wlcore/main.c                   |  4 ----
- 8 files changed, 21 insertions(+), 15 deletions(-)
