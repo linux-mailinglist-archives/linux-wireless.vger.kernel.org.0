@@ -2,63 +2,61 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6746C2633BB
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Sep 2020 19:09:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 11F992633B3
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Sep 2020 19:09:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731122AbgIIRJ3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 9 Sep 2020 13:09:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48174 "EHLO
+        id S1730625AbgIIRJD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 9 Sep 2020 13:09:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48204 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730346AbgIIPgD (ORCPT
+        with ESMTP id S1730355AbgIIPgN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 9 Sep 2020 11:36:03 -0400
-Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com [IPv6:2a00:1450:4864:20::341])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DC78C061757
-        for <linux-wireless@vger.kernel.org>; Wed,  9 Sep 2020 08:35:48 -0700 (PDT)
-Received: by mail-wm1-x341.google.com with SMTP id w2so2726676wmi.1
-        for <linux-wireless@vger.kernel.org>; Wed, 09 Sep 2020 08:35:48 -0700 (PDT)
+        Wed, 9 Sep 2020 11:36:13 -0400
+Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2110C0613ED
+        for <linux-wireless@vger.kernel.org>; Wed,  9 Sep 2020 08:36:12 -0700 (PDT)
+Received: by mail-wr1-x442.google.com with SMTP id w5so3439188wrp.8
+        for <linux-wireless@vger.kernel.org>; Wed, 09 Sep 2020 08:36:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=yTFsQ/Thh+oiXlokRzBRhy7fryTyWLYZWgMktev/5uE=;
-        b=bDaDaBH3RlmXba1m2936yTlW0VjhPgcg7KEU3pm5sHzQ8eq4cbIryvBB5LKuF7T9TH
-         HBtoJH/72ZuoWP2/Rp8My9ruBESz+sbp9jfgWMhH3IYHWn0/QqC3H7KuwJZV6SlkIMcA
-         ZUvuYOrqFzV2/vs82kyDwCSGSRJuxTfbWPAxyALgWAHSzBTNJlFYoB63/wyA5mfn8SGQ
-         ubq4vUPcGIY28MTs284xY2vYf8PD5jCyiGsp6S6xNb1dUpDTJSH2arWrwZUfKn0pJDZk
-         OUg0wcCAIydOXK5kM/hXLn1wmDngzKTcmebAvY6xgrX0knTbzKH3mJHiqdfZmP3ZIlW5
-         9Njg==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=FoBWz/HuXCSj34hndE9AQdQ7FOo0tm240K7lkUOWDyE=;
+        b=DDeLUdKfoKys+iVA9ZyaME+/++JXoHB59JIpL9uU6NhtFxZiH46zyk10Jop5H8WY6S
+         fvbDg2kaMUu/r3rdjjAyA7MGWsxlX91AP/0pyG+LValUlR/RU18heR9ClJUDlHhTZ2af
+         3+W1yIEKf047CHFl7bap0pdIPUjRkXAUsNfdKs5olPwjXUhh6WX7xqfebosiaa1nn80i
+         vG9DGNVubMLC93GMi1NetcFZwMJ/pnjx7BvPmB+/AxhyEUQdPLsZNTdVju1A+Y06VpM/
+         NcjbYFbq0JJUvzqVi2iTRn8gi06C0jDE9rNW/ntfeHHwjP1aDPdrX8Y5qNMqmPqSj8Q2
+         mUBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=yTFsQ/Thh+oiXlokRzBRhy7fryTyWLYZWgMktev/5uE=;
-        b=kxJErNjqDFxn1gb1XEjRYw+2LF1sc+E6o74ltLARFh/k7p0e+9k17dw/aQHH0KWH3e
-         pNNhkNKriM2E9LsQIZ8K1WNxsctb4nuTvjSIByVRnm/JHLUga7FoLklUiAVX6hYxcc9k
-         09XJqb6rWenukqexI9BH/J0ZG86yIBqwAJrrfAUneTi0P3eBXOR8wSS0pe2sERazcEQO
-         ILcr2zAwxp3y1GfltAxEYR93HV2kkHP41obdNWZ3pzOcz9wO3wttShyGA1wyBMLuwCyD
-         yBlcd9uxb//yaOtyc9CGI5iggcXIyuklATpilJvnAO3VXRQa+DNpVr9wrgP8DBDZS2J1
-         LnNQ==
-X-Gm-Message-State: AOAM532+YBibS5fXKQf/XajvKitiYk11+7gydqgUh7g+LGeCbnksP0Wg
-        vXYr1FnCl5VXe5HVAGhMKGXmSw==
-X-Google-Smtp-Source: ABdhPJwJBBoWskU3EpRSkqKDHRBKJiRQD+etEYEz5En6jDjNqKfrmUzx+46FSaXziOja6PePxMSN/A==
-X-Received: by 2002:a7b:c24b:: with SMTP id b11mr4339736wmj.134.1599665747147;
-        Wed, 09 Sep 2020 08:35:47 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=FoBWz/HuXCSj34hndE9AQdQ7FOo0tm240K7lkUOWDyE=;
+        b=m/FAFSUem7478UimaCEmvYhcRFFk+zXRuuC5xt0QLPPLGK9X7EAoYw3pNjslZkurSJ
+         NuFofPHUP2JQ+PsXZYqm6H16qPJaiHxuQC9EGueeFw/o40/JnBzvk+q5VAW+DyjuARHc
+         sHUY8yuVE7kKSjW5M/RIdMB1a1d4quV8gwEKyKpEC7rsjfBV7u6YSpu33vv3JLUKbslR
+         4wKZJKKV1ytLaoz3MfZNN4jKvGZB658jGLvzUAXPQiQdgIRy2z0bmS6xWwpK7mUTOnrr
+         b4DSuO0qfQRVB9If+AuMnF/lYcnknJUPf7Mk/2EybsdtY6a0Ettx7vYSnWO0EiDebBkw
+         Spkg==
+X-Gm-Message-State: AOAM532qP5WPNRpebZWFHJlhOe2io8LLcevjVsKrhg4GSxsvTFjUKGm0
+        Tmmqr5aWUDyemjyc9KHXuTr3uQ==
+X-Google-Smtp-Source: ABdhPJxouubP8qX5IJKFVIBHZJud1i8BDphNWpGMbotomve7QUc8obih9XPbUQO4C2Yx340uEvzTIg==
+X-Received: by 2002:adf:912b:: with SMTP id j40mr4602964wrj.42.1599665771357;
+        Wed, 09 Sep 2020 08:36:11 -0700 (PDT)
 Received: from sagittarius-a.chello.ie (188-141-3-169.dynamic.upc.ie. [188.141.3.169])
-        by smtp.gmail.com with ESMTPSA id c18sm4924871wrx.63.2020.09.09.08.35.45
+        by smtp.gmail.com with ESMTPSA id v204sm4619807wmg.20.2020.09.09.08.36.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Sep 2020 08:35:46 -0700 (PDT)
+        Wed, 09 Sep 2020 08:36:10 -0700 (PDT)
 From:   Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 To:     kvalo@codeaurora.org, wcn36xx@lists.infradead.org,
         linux-wireless@vger.kernel.org
 Cc:     bryan.odonoghue@linaro.org, shawn.guo@linaro.org,
         loic.poulain@linaro.org
-Subject: [PATCH v4 7/7] wcn36xx: Remove dead code in wcn36xx_smd_config_bss()
-Date:   Wed,  9 Sep 2020 16:36:28 +0100
-Message-Id: <20200909153628.2904888-8-bryan.odonoghue@linaro.org>
+Subject: [PATCH v4 0/5] wcn36xx: PHY modifications to support 80MHz operation
+Date:   Wed,  9 Sep 2020 16:36:55 +0100
+Message-Id: <20200909153700.2904977-1-bryan.odonoghue@linaro.org>
 X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20200909153628.2904888-1-bryan.odonoghue@linaro.org>
-References: <20200909153628.2904888-1-bryan.odonoghue@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
@@ -66,82 +64,67 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-wcn36xx_smd_config_bss_v0() and wcn36xx_smd_config_bss_v1() have been
-designed to operate in standalone fashion. As a result we can drop the
-dead code now present in wcn36xx_smd_config_bss() and happily remove one
-kzalloc from the BSS config path as we do so.
+This series is four in a set of seven to add support for wcn3680 at 802.11ac
+data-rates.
 
-Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Reviewed-by: Loic Poulain <loic.poulain@linaro.org>
----
- drivers/net/wireless/ath/wcn36xx/smd.c | 39 ++++----------------------
- 1 file changed, 5 insertions(+), 34 deletions(-)
+In this set we add the ability to configure up the wcn3680 PHY to get onto
+80MHz channels. To do that, the upper unused bits of the hw_value field of
+the struct ieee80211_channel are used to encode additional PHY settings.
 
-diff --git a/drivers/net/wireless/ath/wcn36xx/smd.c b/drivers/net/wireless/ath/wcn36xx/smd.c
-index fc922dd9ccde..ce6536a3185c 100644
---- a/drivers/net/wireless/ath/wcn36xx/smd.c
-+++ b/drivers/net/wireless/ath/wcn36xx/smd.c
-@@ -1673,42 +1673,15 @@ int wcn36xx_smd_config_bss(struct wcn36xx *wcn, struct ieee80211_vif *vif,
- 			   struct ieee80211_sta *sta, const u8 *bssid,
- 			   bool update)
- {
--	struct wcn36xx_hal_config_bss_req_msg *msg;
--	struct wcn36xx_hal_config_bss_params *bss;
--	struct wcn36xx_hal_config_sta_params *sta_params;
- 	int ret;
- 
- 	mutex_lock(&wcn->hal_mutex);
--	msg = kzalloc(sizeof(*msg), GFP_KERNEL);
--	if (!msg) {
--		ret = -ENOMEM;
--		goto out;
--	}
--	INIT_HAL_MSG((*msg), WCN36XX_HAL_CONFIG_BSS_REQ);
--
--	bss = &msg->bss_params;
--	sta_params = &bss->sta;
--
--	wcn36xx_smd_set_bss_params(wcn, vif, sta, bssid, update, bss);
--	wcn36xx_smd_set_sta_params(wcn, vif, sta, sta_params);
--
--	wcn36xx_dbg(WCN36XX_DBG_HAL,
--		    "hal config bss bssid %pM self_mac_addr %pM bss_type %d oper_mode %d nw_type %d\n",
--		    bss->bssid, bss->self_mac_addr, bss->bss_type,
--		    bss->oper_mode, bss->nw_type);
- 
--	wcn36xx_dbg(WCN36XX_DBG_HAL,
--		    "- sta bssid %pM action %d sta_index %d bssid_index %d aid %d type %d mac %pM\n",
--		    sta_params->bssid, sta_params->action,
--		    sta_params->sta_index, sta_params->bssid_index,
--		    sta_params->aid, sta_params->type,
--		    sta_params->mac);
--
--	if (!wcn36xx_is_fw_version(wcn, 1, 2, 2, 24)) {
-+	if (!wcn36xx_is_fw_version(wcn, 1, 2, 2, 24))
- 		ret = wcn36xx_smd_config_bss_v1(wcn, vif, sta, bssid, update);
--	} else {
-+	else
- 		ret = wcn36xx_smd_config_bss_v0(wcn, vif, sta, bssid, update);
--	}
-+
- 	if (ret) {
- 		wcn36xx_err("Sending hal_config_bss failed\n");
- 		goto out;
-@@ -1718,12 +1691,10 @@ int wcn36xx_smd_config_bss(struct wcn36xx *wcn, struct ieee80211_vif *vif,
- 					 sta,
- 					 wcn->hal_buf,
- 					 wcn->hal_rsp_len);
--	if (ret) {
-+	if (ret)
- 		wcn36xx_err("hal_config_bss response failed err=%d\n", ret);
--		goto out;
--	}
-+
- out:
--	kfree(msg);
- 	mutex_unlock(&wcn->hal_mutex);
- 	return ret;
- }
+Accessor macros are provided to encode and decode this additional
+information. Depending on which channel we are on, we need to configure the
+PHY into one of four modes representing four potential adjacent 20MHz
+channels.
+
+The modes describe where the primary channel sits in relation to the other
+three channels giving us 20MHz + 20MHz + 20MHz + 20MHz to get 80MHz.
+
+V4:
+- No functional change.
+  Sending out full set again using --base=ath-202009090652 to aid kernel
+  test robot
+- https://lore.kernel.org/linux-wireless/20200908182514.2870410-1-bryan.odonoghue@linaro.org/T/#t
+
+v3:
+- No difference between V3 and V2 below
+https://lore.kernel.org/linux-wireless/20200829033947.2167817-1-bryan.odonoghue@linaro.org/T/#t
+
+V2:
+- No difference between V2 and V1 below
+
+V1:
+https://lore.kernel.org/linux-wireless/87eensldhi.fsf@codeaurora.org/T/#t
+
+Bryan O'Donoghue (5):
+  wcn36xx: Add accessor macro HW_VALUE_CHANNEL for hardware channels
+  wcn36xx: Use HW_VALUE_CHANNEL macro to get channel number
+  wcn36xx: Add accessor macro HW_VALUE_PHY for PHY settings
+  wcn36xx: Encode PHY mode for 80MHz channel in hw_value
+  wcn36xx: Set PHY into correct mode for 80MHz channel width
+
+ drivers/net/wireless/ath/wcn36xx/main.c    | 50 +++++++++++-----------
+ drivers/net/wireless/ath/wcn36xx/smd.c     | 15 +++++--
+ drivers/net/wireless/ath/wcn36xx/wcn36xx.h |  6 ++-
+ 3 files changed, 42 insertions(+), 29 deletions(-)
+
+
+base-commit: 160b351d75cb50a0dd2abf9b63e1891935aa9e4a
+prerequisite-patch-id: 9a4ac7faca179f6594c9b3a115ee69a2da540a69
+prerequisite-patch-id: 183286f9c22d1aaa12f356651224e6b337ef1938
+prerequisite-patch-id: af468d413daaf8d2aad195fcb43c6e66390d8468
+prerequisite-patch-id: 1a7fb93ee5874d2d011409eaed0b4fd764666b9c
+prerequisite-patch-id: 77cc008b21a650fa7a33c4acad2fb632b09634fd
+prerequisite-patch-id: 988ae4802971d6895b03b2752122b2be42baf188
+prerequisite-patch-id: a3ba2a1963e03e23e86c937cd4cfb649e1b819b2
+prerequisite-patch-id: 8a1fe4f63bc80e9a8035aa52356da8c46eab8665
+prerequisite-patch-id: d75c1a60d1ede373c1f3eb684bb15c853c88eedc
+prerequisite-patch-id: 47145acae6e24e8e6580fca1dbddfbec24f7b50b
+prerequisite-patch-id: 8c66bccb923be821cf109a3a0d3a1a028edb4930
+prerequisite-patch-id: f078e5fdfe8c18936469bfb118a964db13ea729f
+prerequisite-patch-id: 746f63cf58fa3bf62736435c81dba2558aba8e81
+prerequisite-patch-id: 36a94e202cbdaee8e06f9a108b1c894bd1159e62
+prerequisite-patch-id: 8a598e22a08b0ec233d0ec56eeb53673eb1b8feb
+prerequisite-patch-id: b0eba574ddc35ecec2d0e39c0d3351d1b260420e
 -- 
 2.27.0
 
