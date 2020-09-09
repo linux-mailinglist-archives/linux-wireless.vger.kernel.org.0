@@ -2,102 +2,113 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1992126342E
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Sep 2020 19:15:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 22F80263397
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Sep 2020 19:07:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730721AbgIIRPc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 9 Sep 2020 13:15:32 -0400
-Received: from a27-187.smtp-out.us-west-2.amazonses.com ([54.240.27.187]:56776
-        "EHLO a27-187.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1729622AbgIIP2z (ORCPT
+        id S1726534AbgIIPha (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 9 Sep 2020 11:37:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48010 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730306AbgIIPfK (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 9 Sep 2020 11:28:55 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1599664195;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:MIME-Version:Content-Type;
-        bh=RaWxuP5tsohwC9FoMMo1zAEbuii/YxqCi15tX+fp874=;
-        b=PETWmYsIOyjWh2lwNu8y6liombLGNqB2Lc++gWvd0s5jXjYIfHwGTyhq/1XLOyNZ
-        Du4EoEDby/S5r8bU7BtAXlpQYC0KL/rF1IvvYs1uXE98b2R5OKpUC/41y8dwsSIA7QH
-        f/Cbts3Zm+Z6SVcH0uyEG/YxD/r64TlL7mjMNVCk=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=hsbnp7p3ensaochzwyq5wwmceodymuwv; d=amazonses.com; t=1599664195;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:MIME-Version:Content-Type:Feedback-ID;
-        bh=RaWxuP5tsohwC9FoMMo1zAEbuii/YxqCi15tX+fp874=;
-        b=IyHkTGKZgVOA/AFeMIcraWj13yUYAtL3410w38Qw5ytgRL/B8Lqiz+ROVUBnYdgG
-        vrd+f0mrAQC1m6DoUWcOaHpvYQ3+3URwIShyOvDgiAUt/j1x0VMzEswjB5S+Ur7xStu
-        wCrueKFJPnyevNAN+pf6yFCyzn8uvz70ONONvfX0=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 9370BC433FE
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Lee Jones <lee.jones@linaro.org>
-Cc:     kernel test robot <lkp@intel.com>, kbuild-all@lists.01.org,
+        Wed, 9 Sep 2020 11:35:10 -0400
+Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com [IPv6:2a00:1450:4864:20::341])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E21FC061757
+        for <linux-wireless@vger.kernel.org>; Wed,  9 Sep 2020 08:35:09 -0700 (PDT)
+Received: by mail-wm1-x341.google.com with SMTP id w2so2724561wmi.1
+        for <linux-wireless@vger.kernel.org>; Wed, 09 Sep 2020 08:35:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=nsBk9ZTmHyUEKaf1VR1wQ9lGXpW7Dr+mR+KO6cJf93k=;
+        b=brDiTtlkjOGzwQMsjhtrpJ7bnVDKB/AsCS0dxyu55LZqdmegTe2R0H5YjYWpS00R97
+         WoWEVgABeLz3c+cmWf2BJ1jXp7h0i0Yg93Nym1h5zB4dXfM06meShNpcVeEGfnKwE1Lh
+         p/vA8S0fpqPJJh7tvsh9MbNeA8nOTDXDJruSFeGcwkm1EkGtc6fDS7opYd1BH3fuLoRO
+         34UmWbq3NFB83xnAKX21t/Lo2mgrFFbwBkskBdkT7NHRjg/HIEwG79SxpPCWXtWy8GW6
+         XuNwId0a02P1W8RkTDq7NiE1cv2Nxc3dsUFuxwQ8cLmrdCRImuEoJmtLWO45QaC8Vxiu
+         LcjQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=nsBk9ZTmHyUEKaf1VR1wQ9lGXpW7Dr+mR+KO6cJf93k=;
+        b=G4A0WM2ImVfMh2i7PfHpvOHUfdLtMEMQ5EInZt+7LgIqvuB0/65pVlDEX3EVeY9fIt
+         ijmrF9K6i4khm2V0K6dLckCpvELzBzGIYlh2tVvsv7toNGZs6AKpn9EQgfFQW0trXI15
+         ZCkbYoKsrjpw0PtGZpmN5xKvNPn+wlZ8WyQOSHvCHfK/unIC3+1roiXbLxDRmTAWyTY1
+         7EQv58MyDTqrTE0Zanuah9VmrLHpAoaCD3SmAxivTUmjxcGgd6XnjHPhb14kyudWqpuf
+         YVylIR+YS5j9k0sSl8LxJ5Z2kuRW/RA76XyOwBHJjNkFug5Bt/jY9cVIYuvXw3XcjJcj
+         iJNw==
+X-Gm-Message-State: AOAM532WyVLTd3ewWEMC92aeSA68oAiPN1JFVYaVhEqD+VqUORAhtZgp
+        hy0OUgZ6xmBKZXglrNIudYmFkPGj4bEE7w==
+X-Google-Smtp-Source: ABdhPJwbpnLsbwq32s0OplogfUOy9wBshk8OXgDQ/SQ+uLr9n2GaU4hUQREdnwSQP6UHUiih1bKRaw==
+X-Received: by 2002:a05:600c:2155:: with SMTP id v21mr4347569wml.118.1599665705990;
+        Wed, 09 Sep 2020 08:35:05 -0700 (PDT)
+Received: from sagittarius-a.chello.ie (188-141-3-169.dynamic.upc.ie. [188.141.3.169])
+        by smtp.gmail.com with ESMTPSA id c4sm4922120wrp.85.2020.09.09.08.35.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 09 Sep 2020 08:35:05 -0700 (PDT)
+From:   Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+To:     kvalo@codeaurora.org, wcn36xx@lists.infradead.org,
         linux-wireless@vger.kernel.org
-Subject: Re: [wireless-drivers-next:pending 90/109] drivers/net/wireless/broadcom/brcm80211/brcmsmac/ampdu.c:1027:20: warning: variable 'scb_ampdu' set but not used
-References: <202009011913.HKFaLG2U%lkp@intel.com>
-        <87ft8166sj.fsf@codeaurora.org> <20200909140859.GC218742@dell>
-Date:   Wed, 9 Sep 2020 15:09:55 +0000
-In-Reply-To: <20200909140859.GC218742@dell> (Lee Jones's message of "Wed, 9
-        Sep 2020 15:08:59 +0100")
-Message-ID: <01010174736a87e9-f907d9d2-791b-4c28-a8bd-a4f7e9a6cdc8-000000@us-west-2.amazonses.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+Cc:     bryan.odonoghue@linaro.org, shawn.guo@linaro.org,
+        loic.poulain@linaro.org
+Subject: [PATCH v4 0/2] wcn36xx: Extend V1 data-structures
+Date:   Wed,  9 Sep 2020 16:35:52 +0100
+Message-Id: <20200909153554.2904762-1-bryan.odonoghue@linaro.org>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-SES-Outgoing: 2020.09.09-54.240.27.187
-Feedback-ID: 1.us-west-2.CZuq2qbDmUIuT3qdvXlRHZZCpfZqZ4GtG9v3VKgRyF0=:AmazonSES
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Lee Jones <lee.jones@linaro.org> writes:
+This series is one in a set of seven to add support for wcn3680 at 802.11ac
+data-rates.
 
-> On Tue, 01 Sep 2020, Kalle Valo wrote:
->
->> kernel test robot <lkp@intel.com> writes:
->> 
->> > tree:   https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git pending
->> > head:   391ddee90739538e99cb73bd26d7a90452d37f30
->> > commit: d7f95d9204ca1a73183fde8c5a017f2060763d05 [90/109] brcmsmac: ampdu: Remove a bunch of unused variables
->> > config: i386-randconfig-r015-20200901 (attached as .config)
->> > compiler: gcc-9 (Debian 9.3.0-15) 9.3.0
->> > reproduce (this is a W=1 build):
->> >         git checkout d7f95d9204ca1a73183fde8c5a017f2060763d05
->> >         # save the attached .config to linux build tree
->> >         make W=1 ARCH=i386 
->> >
->> > If you fix the issue, kindly add following tag as appropriate
->> > Reported-by: kernel test robot <lkp@intel.com>
->> >
->> > All warnings (new ones prefixed by >>):
->> >
->> >    In file included from drivers/net/wireless/broadcom/brcm80211/brcmsmac/rate.h:21,
->> >                     from drivers/net/wireless/broadcom/brcm80211/brcmsmac/ampdu.c:18:
->> >    drivers/net/wireless/broadcom/brcm80211/brcmsmac/d11.h:786:1: warning: alignment 1 of 'struct d11txh' is less than 2 [-Wpacked-not-aligned]
->> >      786 | } __packed;
->> >          | ^
->> >    drivers/net/wireless/broadcom/brcm80211/brcmsmac/ampdu.c: In
->> > function 'brcms_c_ampdu_dotxstatus_complete':
->> >    drivers/net/wireless/broadcom/brcm80211/brcmsmac/ampdu.c:850:7:
->> > warning: variable 'update_rate' set but not used
->> > [-Wunused-but-set-variable]
->> >      850 |  bool update_rate = true, retry = true;
->> >          |       ^~~~~~~~~~~
->> >    drivers/net/wireless/broadcom/brcm80211/brcmsmac/ampdu.c: In function 'brcms_c_ampdu_dotxstatus':
->> >>> drivers/net/wireless/broadcom/brcm80211/brcmsmac/ampdu.c:1027:20: warning: variable 'scb_ampdu' set but not used [-Wunused-but-set-variable]
->> >     1027 |  struct scb_ampdu *scb_ampdu;
->> >          |                    ^~~~~~~~~
->> 
->> Lee, please send a followup patch to fix these issues.
->
-> This is already fixed in your tree.
+V4:
+- No functional change.
+  Sending out full set again using --base=ath-202009090652 to aid kernel
+  test robot
+- https://lore.kernel.org/linux-wireless/20200908182428.2870226-1-bryan.odonoghue@linaro.org/T/#t
 
-Great, thanks for checking.
+V3:
+In order to pass VHT parameters to the firmware, we need to extend the
+parameter data-structure. In the V2 series, this was accomplished in two
+patches.
 
+https://lore.kernel.org/linux-wireless/20200829033908.2167689-13-bryan.odonoghue@linaro.org/T/#u
+https://lore.kernel.org/linux-wireless/20200829033908.2167689-2-bryan.odonoghue@linaro.org/T/#u
+
+However since I was rebasing this series anyway I thought it would be a
+better idea to do the conversion in one go, so that if someone is
+rebasing/bisecting in the future every single patch will still be
+functional and testable on wcn3620. If the data-structure is extended and
+then the code is subsequently updated, then the patches in-between the
+data-structure update and the code update will not be testable on hardware.
+
+As a result I've opted to front-load the conversion. The first patch is
+atomic with respect to ongoing functionality on wcn3620, which I think is a
+better result for not much extra code.
+
+The eventual enabling for wcn3680 comes in a later patch in a later set.
+
+For a similar reason I thought it best to front-load the conversion to
+using the extended V1 data-structure for storing parameters internal to the
+driver.
+
+Bryan O'Donoghue (2):
+  wcn36xx: Add VHT fields to parameter data structures
+  wcn36xx: Use V1 data structure to store supported rates
+
+ drivers/net/wireless/ath/wcn36xx/hal.h     | 14 +++++++++++++-
+ drivers/net/wireless/ath/wcn36xx/smd.c     |  7 +++++--
+ drivers/net/wireless/ath/wcn36xx/wcn36xx.h |  2 +-
+ 3 files changed, 19 insertions(+), 4 deletions(-)
+
+
+base-commit: 160b351d75cb50a0dd2abf9b63e1891935aa9e4a
 -- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+2.27.0
+
