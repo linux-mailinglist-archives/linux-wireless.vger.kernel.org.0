@@ -2,63 +2,63 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EDB7F264FA9
-	for <lists+linux-wireless@lfdr.de>; Thu, 10 Sep 2020 21:48:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F4B7264F99
+	for <lists+linux-wireless@lfdr.de>; Thu, 10 Sep 2020 21:47:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726662AbgIJTrj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 10 Sep 2020 15:47:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33072 "EHLO
+        id S1731281AbgIJPZ0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 10 Sep 2020 11:25:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33030 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731240AbgIJPEu (ORCPT
+        with ESMTP id S1731244AbgIJPFM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 10 Sep 2020 11:04:50 -0400
-Received: from mail-wm1-x342.google.com (mail-wm1-x342.google.com [IPv6:2a00:1450:4864:20::342])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DED95C0617AA
-        for <linux-wireless@vger.kernel.org>; Thu, 10 Sep 2020 08:04:10 -0700 (PDT)
-Received: by mail-wm1-x342.google.com with SMTP id z9so380104wmk.1
-        for <linux-wireless@vger.kernel.org>; Thu, 10 Sep 2020 08:04:10 -0700 (PDT)
+        Thu, 10 Sep 2020 11:05:12 -0400
+Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9B05C061796
+        for <linux-wireless@vger.kernel.org>; Thu, 10 Sep 2020 08:05:07 -0700 (PDT)
+Received: by mail-wr1-x444.google.com with SMTP id c18so7060890wrm.9
+        for <linux-wireless@vger.kernel.org>; Thu, 10 Sep 2020 08:05:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=tfNF9Nm72/GLHvVDln+H8GXexy5WDv58YkhHrtQxFnI=;
-        b=vSDGDst8DcY4fX3LcPTgzEiZyU07n0y66ZY8g3HrAnCmDBT/VdRdCCrdsFh4jhQNzT
-         jf5hndZuiHGe0yQnWKCjYq4+wyEG8I0Fm48uvm/N1ul6WMZzBdZjDAjhUHaKD3spbmRz
-         ZwGaE3FfejvkewLaKKjyZsdeZgiAclreWQwp/dmJwpIV6RnMWRbyH/ykDdB4IjVN0K/h
-         Yx/AWWH5MKPirp2UqUrQH15DH4Uws9RtE3MWlChTtIiQQe1aLCL4S4qZytCYqOmNENL3
-         Ma0ANLF+R3bY9RToAXIR84dGSiMejKpiXsy60V9HSsFqUAIUxem37wmqGvvSeFB3pZnD
-         88HA==
+        bh=SKVnCy4wmdEaKgi/x5VI6aI0MpqpfMkf4mS3vr+tRpY=;
+        b=RZt1wPImechtv562sczfWCXSD198o0wSTi3foTtwCQNCxxO7J5KM49Ya0ww0l8APrc
+         DFBpON3JAiQu/UqyRtDdoa2oCRI6RLoLARvnf+KtCLI5QZWaV5oXA5WsJLfJgp/w+4AX
+         Z1R268xv6FE8Ej6PieBybfz+8UKC/pXXTTb9D8JWTiDevserEsn/FrlOSWoFUt2G64pi
+         0FTTq9FC9sPxVQY2qzjT1Qz6mQsvFMEPHQiWYlcIKdt2nB2GrlDk136TLvVw0j7NYDPQ
+         +Lowx/hmf1jv2VJhYGI7dCG1waJ/GaIHItJI2z/DcphwPIBGONtXeZimSL0NT43gpuI0
+         l1TQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=tfNF9Nm72/GLHvVDln+H8GXexy5WDv58YkhHrtQxFnI=;
-        b=STJ7nOPzSR54EADhRA90ECZ++b08u1QXlVawrEVBOjBSajc6sW2cNYbcfPwgnFbGGu
-         8qDZIRMvFdOeyaTEy+39PxOWR0cnAPWQFKTEU+OOqRazHvRNGvQCCQ2gQkDcPDqSnRFB
-         rfMV6z0DaDYfc5cUjwynWyceSvN3C2ShiSnqFyusBLAOeLL0BJgMN6mfRXW5SQ47vwXc
-         0ZoVN+55eDEy786e6U0Y7xsPz/epANXYMVi1BBb8drsYctTJ6z8GjODtVPeHyHFqKMPc
-         TvOmlrn7VFz2hRKhp4Q00ZMsKXtiAkjdbFZGVhTsslXYVBMdHdTwWHE5AMQ8xtpeDPdd
-         Tzpg==
-X-Gm-Message-State: AOAM533Yko6brcuvPojNsox5aOzQvn9MpjbVcUZa3qBRQv8dE9sGJoat
-        IDFeE/197yFhmThjDad0/PiaVg==
-X-Google-Smtp-Source: ABdhPJxBELC+xFOxC4UazE1oHhzDFO6NqcaITjlLQ1T4zFD7Mj9CLmGAA1URqDVCk+ZyuiubwT89XA==
-X-Received: by 2002:a1c:1f42:: with SMTP id f63mr408880wmf.1.1599750249622;
-        Thu, 10 Sep 2020 08:04:09 -0700 (PDT)
+        bh=SKVnCy4wmdEaKgi/x5VI6aI0MpqpfMkf4mS3vr+tRpY=;
+        b=S3/fkeHaAWujuRn7y4Qmq59kCwQImqA+Eh7SQ9HQrMzfkmHJeJPJpWPYWMa9yInS5n
+         z2Ep9rjR46uJQ9ME5dMzdzbwqAFfeOJQvqamMz1K8enWwbbu2Y7ng+pUvK/cEWC82bcK
+         Art9cPLX23kyBPVEJAlCbygVPCYzNIK+ECzLOtYN5jgm3wJuq8gAvvOHciniE07/x9bp
+         aLc5j7OQzyPmEsAjDb+pypu97x0WJctTX5vyA0EGfcYqGgTuyd09bBkDHqFTVExHQwzA
+         14oSDZezOlW4ISJMfzNQ/J8hn5ai9VVUFUo0JMVyPsoVCEGJSfUNc7jEFOCk0ZAO84HB
+         SY+A==
+X-Gm-Message-State: AOAM531RbjaJgsSl/mnrkipziXysPFxREgqYLy6gdRKDPqfGGfD1kiCs
+        SnsME6i8dH+VhmZuczJR8KBVzQ==
+X-Google-Smtp-Source: ABdhPJxh8hY07XFgWJstn87GOE1ymM+W9EAZT8wucpH2/l3S2bNDAzeqNnNV8KQQ7VDMOEW/yY527Q==
+X-Received: by 2002:a5d:67d2:: with SMTP id n18mr9410811wrw.223.1599750306568;
+        Thu, 10 Sep 2020 08:05:06 -0700 (PDT)
 Received: from sagittarius-a.chello.ie (188-141-3-169.dynamic.upc.ie. [188.141.3.169])
-        by smtp.gmail.com with ESMTPSA id q186sm4075754wma.45.2020.09.10.08.04.08
+        by smtp.gmail.com with ESMTPSA id g8sm3852620wmd.12.2020.09.10.08.05.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Sep 2020 08:04:08 -0700 (PDT)
+        Thu, 10 Sep 2020 08:05:06 -0700 (PDT)
 From:   Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 To:     kvalo@codeaurora.org, wcn36xx@lists.infradead.org,
         linux-wireless@vger.kernel.org
 Cc:     bryan.odonoghue@linaro.org, shawn.guo@linaro.org,
         loic.poulain@linaro.org
-Subject: [PATCH v5 2/2] wcn36xx: Use V1 data structure to store supported rates
-Date:   Thu, 10 Sep 2020 16:04:50 +0100
-Message-Id: <20200910150450.2178784-3-bryan.odonoghue@linaro.org>
+Subject: [PATCH v5 2/7] wcn36xx: Add wcn36xx_smd_set_sta_default_vht_params()
+Date:   Thu, 10 Sep 2020 16:05:47 +0100
+Message-Id: <20200910150552.2178882-3-bryan.odonoghue@linaro.org>
 X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20200910150450.2178784-1-bryan.odonoghue@linaro.org>
-References: <20200910150450.2178784-1-bryan.odonoghue@linaro.org>
+In-Reply-To: <20200910150552.2178882-1-bryan.odonoghue@linaro.org>
+References: <20200910150552.2178882-1-bryan.odonoghue@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
@@ -66,51 +66,43 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This patch converts the internal data structure used to store data-rates
-from version 0 to version 1.
-
-This allows us to extend out the internal storage to represent VHT
-parameters.
-
-Using the extended version 1 data-structure allows us to avoid a whole raft
-of version 1 specific fixup functions.
+This commit adds support for setting default VHT parameters, which are
+exposed by the extended version 1 STA parameter type.
 
 Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 ---
- drivers/net/wireless/ath/wcn36xx/smd.c     | 5 +++--
- drivers/net/wireless/ath/wcn36xx/wcn36xx.h | 2 +-
- 2 files changed, 4 insertions(+), 3 deletions(-)
+ drivers/net/wireless/ath/wcn36xx/smd.c | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
 diff --git a/drivers/net/wireless/ath/wcn36xx/smd.c b/drivers/net/wireless/ath/wcn36xx/smd.c
-index 55aaaeb78b14..d5ca9907af86 100644
+index d5ca9907af86..bf584ac382cb 100644
 --- a/drivers/net/wireless/ath/wcn36xx/smd.c
 +++ b/drivers/net/wireless/ath/wcn36xx/smd.c
-@@ -242,9 +242,10 @@ static void wcn36xx_smd_set_sta_params(struct wcn36xx *wcn,
- 		sta_params->aid = sta_priv->aid;
- 		wcn36xx_smd_set_sta_ht_params(sta, sta_params);
- 		memcpy(&sta_params->supported_rates, &sta_priv->supported_rates,
--			sizeof(sta_priv->supported_rates));
-+			sizeof(struct wcn36xx_hal_supported_rates));
- 	} else {
--		wcn36xx_set_default_rates(&sta_params->supported_rates);
-+		wcn36xx_set_default_rates((struct wcn36xx_hal_supported_rates *)
-+					  &sta_params->supported_rates);
- 		wcn36xx_smd_set_sta_default_ht_params(sta_params);
- 	}
+@@ -190,6 +190,24 @@ static void wcn36xx_smd_set_sta_default_ht_params(
+ 	sta_params->dsss_cck_mode_40mhz = 1;
  }
-diff --git a/drivers/net/wireless/ath/wcn36xx/wcn36xx.h b/drivers/net/wireless/ath/wcn36xx/wcn36xx.h
-index 342ca0ae7e28..d7d349de20e6 100644
---- a/drivers/net/wireless/ath/wcn36xx/wcn36xx.h
-+++ b/drivers/net/wireless/ath/wcn36xx/wcn36xx.h
-@@ -169,7 +169,7 @@ struct wcn36xx_sta {
- 	u8 bss_dpu_desc_index;
- 	bool is_data_encrypted;
- 	/* Rates */
--	struct wcn36xx_hal_supported_rates supported_rates;
-+	struct wcn36xx_hal_supported_rates_v1 supported_rates;
  
- 	spinlock_t ampdu_lock;		/* protects next two fields */
- 	enum wcn36xx_ampdu_state ampdu_state[16];
++void wcn36xx_smd_set_sta_default_vht_params(struct wcn36xx *wcn,
++		struct wcn36xx_hal_config_sta_params_v1 *sta_params);
++void wcn36xx_smd_set_sta_default_vht_params(struct wcn36xx *wcn,
++		struct wcn36xx_hal_config_sta_params_v1 *sta_params)
++{
++	if (wcn->rf_id == RF_IRIS_WCN3680) {
++		sta_params->vht_capable = 1;
++		sta_params->vht_tx_mu_beamformee_capable = 1;
++	} else {
++		sta_params->vht_capable = 0;
++		sta_params->vht_tx_mu_beamformee_capable = 0;
++	}
++
++	sta_params->vht_ldpc_enabled = 0;
++	sta_params->vht_tx_channel_width_set = 0;
++	sta_params->vht_tx_bf_enabled = 0;
++}
++
+ static void wcn36xx_smd_set_sta_params(struct wcn36xx *wcn,
+ 		struct ieee80211_vif *vif,
+ 		struct ieee80211_sta *sta,
 -- 
 2.27.0
 
