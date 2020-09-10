@@ -2,87 +2,131 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B730726436C
-	for <lists+linux-wireless@lfdr.de>; Thu, 10 Sep 2020 12:13:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 30A47264393
+	for <lists+linux-wireless@lfdr.de>; Thu, 10 Sep 2020 12:17:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730315AbgIJKNa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 10 Sep 2020 06:13:30 -0400
-Received: from us-smtp-1.mimecast.com ([207.211.31.81]:37624 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1730556AbgIJKNY (ORCPT
+        id S1730850AbgIJKQ4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 10 Sep 2020 06:16:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44706 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730260AbgIJKQi (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 10 Sep 2020 06:13:24 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1599732802;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=+GdI4nxZ45re4YvFQZdBwKgPlubeZww9U/bSQOsUDPc=;
-        b=cvP50EMRS4wAUyjx2QzaRFCNdIv22jmtAG/faQR2hIKrYj+d92OornbKy0KtKFB1VJuxha
-        DB9J3DIAE/wl5wUi7vLWg8GJt2GRHZU3YvWYTrbtVoMDyoaillpitTkLsrP07W7tEoNMyK
-        ACpDdkrALRAdKjbEpohIl1/aUrH7XmE=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-369-d9Ea8ZTXOyK-lLcXhNuqKQ-1; Thu, 10 Sep 2020 06:13:20 -0400
-X-MC-Unique: d9Ea8ZTXOyK-lLcXhNuqKQ-1
-Received: by mail-wr1-f72.google.com with SMTP id i10so2075357wrq.5
-        for <linux-wireless@vger.kernel.org>; Thu, 10 Sep 2020 03:13:20 -0700 (PDT)
+        Thu, 10 Sep 2020 06:16:38 -0400
+Received: from mail-wm1-x342.google.com (mail-wm1-x342.google.com [IPv6:2a00:1450:4864:20::342])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 656B6C061756;
+        Thu, 10 Sep 2020 03:16:38 -0700 (PDT)
+Received: by mail-wm1-x342.google.com with SMTP id s13so5065195wmh.4;
+        Thu, 10 Sep 2020 03:16:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=DqY3ytm1lW24L4dBr5ZhfVe1Kl4JG7b6aElJixa0DtQ=;
+        b=TyMbFj/CCKS/yEhzmJyx0SXASPCumWs129eaMWwliNPHoe9nGlJZk2Tsw17ABtL/mL
+         mWke72l5dRMmrFg9ieYmDr1jVfXiMwSmIMEMsNuXAYrMDmbRSlu2SEhpSFeukLVe3cg9
+         +5O+wBu+Jx7JfEyF9JNwdrWebHIVozT6N0VTqxSNEjrIsLOZ3R3dejl3APk21PLF2Oj8
+         +Kb8ACZuKGttnfzoDexc2yloyF3/YUcCQzcDsr90PZvO0KOXZEocClY8eSC4NnFPV4xO
+         lvhsU6vpfnm+pvKWrckJN/8r5bLtL/kaV4lfgkeSIGRnLzVQeQ+BBL7u23nOrwhO07G+
+         JHEw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
-         :message-id:mime-version;
-        bh=+GdI4nxZ45re4YvFQZdBwKgPlubeZww9U/bSQOsUDPc=;
-        b=XijFsu6sOG3pq8Cfyt9Ug+BHwJB384owhfUPOS97GwHRPhecis6gYP9OJeY6QX7swt
-         GCSjmXYUfhD1719yHqIK1j53eUkNdcWNvlP1FkZAUVRe82hF27sJ2SD2ghR235+6O6xS
-         NbEB/QNyVnK9kcrxtMrZluz7UKJ2Qb6Agx8yEBZ2BQDnRiUtymeyJGlnKHf/mMYerqTR
-         RcwZLrljk1KDSwTv6UedpHAV9LeASTg34TNcDPwgyg+eF5988Vn65bzyDYiPJ6iTl5TF
-         geeAUkvc+c+r7xkW3zvGMxb4fC4AJEkcQLgqhMkw8ZRsGktjvkLbiLDRtxPZZ+IdiTuq
-         Ja/Q==
-X-Gm-Message-State: AOAM532ruwhGXPEeQSYRr7C5QYaAfOVRGbVlelzIe0LJv9dO5kX/FFlZ
-        em2zWm7aijMWin486X6CMvU8AWANYbP9N+Gyo65Q4xJ8ZpDKz18fWzMcbQpur/+UBgs2PAH2zX9
-        2G2PaAqTbpZLTlFuT6ZhnkYOy2Y4=
-X-Received: by 2002:a05:600c:2f8f:: with SMTP id t15mr8084703wmn.41.1599732799085;
-        Thu, 10 Sep 2020 03:13:19 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJybDuYmosp/8ZNSfvTE4PNzn9wVQmQrgKQXz6mcRfhXRX0d61nhHMDKryhW922y7nQJQUhwIA==
-X-Received: by 2002:a05:600c:2f8f:: with SMTP id t15mr8084665wmn.41.1599732798651;
-        Thu, 10 Sep 2020 03:13:18 -0700 (PDT)
-Received: from alrua-x1.borgediget.toke.dk ([2a0c:4d80:42:443::2])
-        by smtp.gmail.com with ESMTPSA id e18sm8372557wrx.50.2020.09.10.03.13.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Sep 2020 03:13:18 -0700 (PDT)
-Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-        id 7EC941829D4; Thu, 10 Sep 2020 12:13:17 +0200 (CEST)
-From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-To:     Felix Fietkau <nbd@nbd.name>, linux-wireless@vger.kernel.org
-Cc:     johannes@sipsolutions.net
-Subject: Re: [PATCH 5.9 1/2] mac80211: extend AQL aggregation estimation to
- HE and fix unit mismatch
-In-Reply-To: <20200909115602.21783-1-nbd@nbd.name>
-References: <20200909115602.21783-1-nbd@nbd.name>
-X-Clacks-Overhead: GNU Terry Pratchett
-Date:   Thu, 10 Sep 2020 12:13:17 +0200
-Message-ID: <87ft7qaqiq.fsf@toke.dk>
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=DqY3ytm1lW24L4dBr5ZhfVe1Kl4JG7b6aElJixa0DtQ=;
+        b=pmUw8PMCpmIHzSROi++DPz4KjuYgWtg1+Y5TE231Bqiqr8R2N1C3xqoxsiwBj6o1cg
+         uH2BXtjGnMGGoluHj644z5xr7xlqF6U2gftY836V0P2i1eGVJRbd6Kt5NRdxnuMIEUiL
+         l2iyGGPzmqplYZFS9cH521ZnO3ebnALHjbVC/Yy86VDwVom/j1SkB7EzjdV3z887JSV1
+         vBn2sxOKogw/Qr4Wwks6/Tsd6y+ZPpXYP0rtp5M7H0Cz9R+tTExVNwpFLc4afNM8kBHv
+         sPRTlUxnMhVTJVsmuIxtZtgT2oyddp39osiyXrTv8c0GKDU7rTuLb07sCHlL7FBgK0nz
+         qKBw==
+X-Gm-Message-State: AOAM531fehkY9RO3xn+p429hIZbAH2vvrEoH04VI6Oae8Aw4ljanDWzg
+        xuso8Ww0yrtKmBUnjJW0R1g=
+X-Google-Smtp-Source: ABdhPJxz+CTfYBRsr9wPZ8ehDJQEmTq++yYJr4Xo0s0U0R6hQKoUpOmBLcC8LM7TIOPThVoU3WYKbg==
+X-Received: by 2002:a1c:234b:: with SMTP id j72mr7837172wmj.153.1599732997083;
+        Thu, 10 Sep 2020 03:16:37 -0700 (PDT)
+Received: from ziggy.stardust ([213.195.113.201])
+        by smtp.gmail.com with ESMTPSA id a127sm2936155wmh.34.2020.09.10.03.16.34
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 10 Sep 2020 03:16:36 -0700 (PDT)
+Subject: Re: [trivial PATCH] treewide: Convert switch/case fallthrough; to
+ break;
+To:     Joe Perches <joe@perches.com>, LKML <linux-kernel@vger.kernel.org>,
+        Jiri Kosina <trivial@kernel.org>
+Cc:     linux-wireless@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        oss-drivers@netronome.com, nouveau@lists.freedesktop.org,
+        alsa-devel <alsa-devel@alsa-project.org>,
+        dri-devel@lists.freedesktop.org, linux-ide@vger.kernel.org,
+        dm-devel@redhat.com, linux-mtd@lists.infradead.org,
+        linux-i2c@vger.kernel.org, sparclinux@vger.kernel.org,
+        kvmarm@lists.cs.columbia.edu, linux-rtc@vger.kernel.org,
+        linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org,
+        dccp@vger.kernel.org, linux-rdma@vger.kernel.org,
+        linux-atm-general@lists.sourceforge.net,
+        linux-afs@lists.infradead.org, coreteam@netfilter.org,
+        intel-wired-lan@lists.osuosl.org, linux-serial@vger.kernel.org,
+        linux-input@vger.kernel.org, linux-mmc@vger.kernel.org,
+        Kees Cook <kees.cook@canonical.com>,
+        linux-media@vger.kernel.org, linux-pm@vger.kernel.org,
+        intel-gfx@lists.freedesktop.org, linux-sctp@vger.kernel.org,
+        linux-mediatek@lists.infradead.org, linux-nvme@lists.infradead.org,
+        storagedev@microchip.com, ceph-devel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-nfs@vger.kernel.org,
+        linux-parisc@vger.kernel.org, netdev@vger.kernel.org,
+        linux-usb@vger.kernel.org,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        linux-mips@vger.kernel.org, iommu@lists.linux-foundation.org,
+        netfilter-devel@vger.kernel.org, linux-crypto@vger.kernel.org,
+        bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+References: <e6387578c75736d61b2fe70d9783d91329a97eb4.camel@perches.com>
+From:   Matthias Brugger <matthias.bgg@gmail.com>
+Message-ID: <81d852d4-115f-c6c6-ef80-17c47ec4849a@gmail.com>
+Date:   Thu, 10 Sep 2020 12:16:33 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.11.0
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <e6387578c75736d61b2fe70d9783d91329a97eb4.camel@perches.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Felix Fietkau <nbd@nbd.name> writes:
 
-> The unit of the return value of ieee80211_get_rate_duration is nanoseconds, not
-> milliseconds.
 
-s/milli/micro/ here, no?
+On 09/09/2020 22:06, Joe Perches wrote:
+> diff --git a/drivers/net/wireless/mediatek/mt7601u/dma.c b/drivers/net/wireless/mediatek/mt7601u/dma.c
+> index 09f931d4598c..778be26d329f 100644
+> --- a/drivers/net/wireless/mediatek/mt7601u/dma.c
+> +++ b/drivers/net/wireless/mediatek/mt7601u/dma.c
+> @@ -193,11 +193,11 @@ static void mt7601u_complete_rx(struct urb *urb)
+>   	case -ESHUTDOWN:
+>   	case -ENOENT:
+>   		return;
+> +	case 0:
+> +		break;
+>   	default:
+>   		dev_err_ratelimited(dev->dev, "rx urb failed: %d\n",
+>   				    urb->status);
+> -		fallthrough;
+> -	case 0:
+>   		break;
+>   	}
+>   
+> @@ -238,11 +238,11 @@ static void mt7601u_complete_tx(struct urb *urb)
+>   	case -ESHUTDOWN:
+>   	case -ENOENT:
+>   		return;
+> +	case 0:
+> +		break;
+>   	default:
+>   		dev_err_ratelimited(dev->dev, "tx urb failed: %d\n",
+>   				    urb->status);
+> -		fallthrough;
+> -	case 0:
+>   		break;
+>   	}
 
-> Adjust the duration checks to account for that.
-> For higher data rates, allow larger estimated aggregation sizes, and add some
-> values for HE as well, which can use much larger aggregates.
-> Since small packets with high data rates can now lead to duration values too
-> small for info->tx_time_est, return a minimum of 4us.
-
-Fixes: tag?
-
--Toke
-
+Reviewed-by: Matthias Brugger <matthias.bgg@gmail.com>
