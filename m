@@ -2,86 +2,83 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E3F3F2649DE
-	for <lists+linux-wireless@lfdr.de>; Thu, 10 Sep 2020 18:33:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F0C5D264AD8
+	for <lists+linux-wireless@lfdr.de>; Thu, 10 Sep 2020 19:14:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726896AbgIJQdh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 10 Sep 2020 12:33:37 -0400
-Received: from a27-10.smtp-out.us-west-2.amazonses.com ([54.240.27.10]:37226
-        "EHLO a27-10.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725951AbgIJQdY (ORCPT
+        id S1726997AbgIJQgf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 10 Sep 2020 12:36:35 -0400
+Received: from a27-185.smtp-out.us-west-2.amazonses.com ([54.240.27.185]:35516
+        "EHLO a27-185.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726979AbgIJQfw (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 10 Sep 2020 12:33:24 -0400
+        Thu, 10 Sep 2020 12:35:52 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1599755603;
+        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1599755294;
         h=Content-Type:MIME-Version:Content-Transfer-Encoding:Subject:From:In-Reply-To:References:To:Cc:Message-Id:Date;
-        bh=0uMJG9e6h21fAZ3s9X90mzgstSnrwci4MGxsgDvub+s=;
-        b=M20rj6rglcDW/Moh8YOh9A2b2gok/gbDl9SXHzxY6JUFk5jTq85r5yIQ+vR1uz/z
-        0XE0C2z8e315LvQday2iUMpONC/x0NyMGDRoBczP3GvMVw5MxJCKw9ES3ihmK5FIeHZ
-        ixVIERbT9gggdnKLXZ7N0xYd9B7yE4qzlub4Zhe8=
+        bh=QJgTcfrPcTXgRkBOLIEGlx3bhnq3+fZghmrt8poCN5E=;
+        b=Us6DXPIf2G7jAJLQEO5CZLilLEnZiGPZNxK4rH7R4wk9LzzPJ3d+z5KYOKRELW95
+        iKZyTrtNoGZNuKPGjQNPBt4TYuBIXP+zNv6ZPLKQ8gYl6pHad1dzJqhGH3DuOWYSoFG
+        p2mhbAaj+isCuX9lVT/a41JpkJoPFr03I5Hy2v30=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=hsbnp7p3ensaochzwyq5wwmceodymuwv; d=amazonses.com; t=1599755603;
+        s=hsbnp7p3ensaochzwyq5wwmceodymuwv; d=amazonses.com; t=1599755294;
         h=Content-Type:MIME-Version:Content-Transfer-Encoding:Subject:From:In-Reply-To:References:To:Cc:Message-Id:Date:Feedback-ID;
-        bh=0uMJG9e6h21fAZ3s9X90mzgstSnrwci4MGxsgDvub+s=;
-        b=kBtCzZ7UETMz9Xs1Ea+cjP5yDlcPR+5xyg9Sc0MazEehDH7bdiAEoMEdqp7TvJeP
-        auNCjuFrNE0jNaG9thmBh98sgVxrbZh1szoNVgoUsH66nKeF8uxD+2xJ4BS4W1qPxHu
-        oTst8DCSAhlnsWn0Q2yJeL0LJlwRUORH9InE3FEk=
+        bh=QJgTcfrPcTXgRkBOLIEGlx3bhnq3+fZghmrt8poCN5E=;
+        b=N4cugInAChys50fhmqgyv7j1YCCQqc4RV45QeoVyyejMKsp850eeswk0fm2KYK7O
+        4XjTmqWOecbyamoiKxSWloiKJfh+Hwr6jt9rPAG/MpCUnx1ryxGanD+WOqVi5izFrRf
+        Ocv2acfc3D9cDd76zj4fPHzLzEXYcjnLHM7gRtqk=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
 X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
         MISSING_DATE,MISSING_MID,SPF_FAIL,URIBL_BLOCKED autolearn=no
         autolearn_force=no version=3.4.0
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 86204C433CA
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 3BCADC433F0
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH 26/29] ath9k: ar5008_initvals: Remove unused table
- entirely
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH net-next] ath5k: fix 'mode' kernel-doc warning in
+ ath5k_hw_pcu_init()
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20200910065431.657636-27-lee.jones@linaro.org>
-References: <20200910065431.657636-27-lee.jones@linaro.org>
-To:     Lee Jones <lee.jones@linaro.org>
-Cc:     davem@davemloft.net, kuba@kernel.org, linux-kernel@vger.kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        Lee Jones <lee.jones@linaro.org>,
-        QCA ath9k Development <ath9k-devel@qca.qualcomm.com>
+In-Reply-To: <20200909131858.70391-1-wanghai38@huawei.com>
+References: <20200909131858.70391-1-wanghai38@huawei.com>
+To:     Wang Hai <wanghai38@huawei.com>
+Cc:     <jirislaby@kernel.org>, <mickflemm@gmail.com>, <mcgrof@kernel.org>,
+        <davem@davemloft.net>, <kuba@kernel.org>,
+        <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-ID: <0101017478dd4f78-f501b609-2b74-4eb8-9913-7d783adccdb9-000000@us-west-2.amazonses.com>
-Date:   Thu, 10 Sep 2020 16:33:23 +0000
-X-SES-Outgoing: 2020.09.10-54.240.27.10
+Message-ID: <0101017478d89404-f89af71e-5c00-45b7-a8c9-02d98996d92f-000000@us-west-2.amazonses.com>
+Date:   Thu, 10 Sep 2020 16:28:13 +0000
+X-SES-Outgoing: 2020.09.10-54.240.27.185
 Feedback-ID: 1.us-west-2.CZuq2qbDmUIuT3qdvXlRHZZCpfZqZ4GtG9v3VKgRyF0=:AmazonSES
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Lee Jones <lee.jones@linaro.org> wrote:
+Wang Hai <wanghai38@huawei.com> wrote:
 
 > Fixes the following W=1 kernel build warning(s):
 > 
->  drivers/net/wireless/ath/ath9k/ar5008_initvals.h:553:18: warning: ‘ar5416Bank6’ defined but not used [-Wunused-const-variable=]
+> drivers/net/wireless/ath/ath5k/pcu.c:955: warning: Excess function parameter 'mode' description in 'ath5k_hw_pcu_init'
 > 
-> Cc: QCA ath9k Development <ath9k-devel@qca.qualcomm.com>
-> Cc: Kalle Valo <kvalo@codeaurora.org>
-> Cc: "David S. Miller" <davem@davemloft.net>
-> Cc: Jakub Kicinski <kuba@kernel.org>
-> Cc: linux-wireless@vger.kernel.org
-> Cc: netdev@vger.kernel.org
-> Signed-off-by: Lee Jones <lee.jones@linaro.org>
+> This parameter is not in use. Remove it.
+> 
+> Reported-by: Hulk Robot <hulkci@huawei.com>
+> Signed-off-by: Wang Hai <wanghai38@huawei.com>
 
 Already fixed in ath.git.
 
-error: patch failed: drivers/net/wireless/ath/ath9k/ar5008_initvals.h:550
-error: drivers/net/wireless/ath/ath9k/ar5008_initvals.h: patch does not apply
+error: patch failed: drivers/net/wireless/ath/ath5k/pcu.c:945
+error: drivers/net/wireless/ath/ath5k/pcu.c: patch does not apply
 stg import: Diff does not apply cleanly
 
 Patch set to Rejected.
 
 -- 
-https://patchwork.kernel.org/patch/11766807/
+https://patchwork.kernel.org/patch/11765471/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
