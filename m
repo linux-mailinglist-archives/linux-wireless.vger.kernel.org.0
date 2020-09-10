@@ -2,121 +2,130 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C40B5264AA5
-	for <lists+linux-wireless@lfdr.de>; Thu, 10 Sep 2020 19:06:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 951D7264BAB
+	for <lists+linux-wireless@lfdr.de>; Thu, 10 Sep 2020 19:43:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726935AbgIJRFw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 10 Sep 2020 13:05:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50800 "EHLO
+        id S1727819AbgIJRnf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 10 Sep 2020 13:43:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58208 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726919AbgIJQzE (ORCPT
+        with ESMTP id S1727773AbgIJRmh (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 10 Sep 2020 12:55:04 -0400
-Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com [IPv6:2a00:1450:4864:20::441])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DF4DC0617AB
-        for <linux-wireless@vger.kernel.org>; Thu, 10 Sep 2020 09:47:09 -0700 (PDT)
-Received: by mail-wr1-x441.google.com with SMTP id s12so7458963wrw.11
-        for <linux-wireless@vger.kernel.org>; Thu, 10 Sep 2020 09:47:09 -0700 (PDT)
+        Thu, 10 Sep 2020 13:42:37 -0400
+Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com [IPv6:2a00:1450:4864:20::343])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18147C061756
+        for <linux-wireless@vger.kernel.org>; Thu, 10 Sep 2020 08:05:45 -0700 (PDT)
+Received: by mail-wm1-x343.google.com with SMTP id a9so381282wmm.2
+        for <linux-wireless@vger.kernel.org>; Thu, 10 Sep 2020 08:05:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=r1RcJjuq+WDDkjUNNx0Km9/voIY1piTuPNUK42+ZJ10=;
-        b=hhGh/+P+DIvxgxF4b56VE+cZu+xIiQTG23eijHpqAg1XY0vXdBbnkpxrCR/8YHYLKL
-         FYaVLiMDnOMSkqRRGV1dkJe5NsmwrLO9JyvFn6jeDz2fwVIv5oRZyXOcJKxMiUSG3Pg3
-         1pToGHQpt1QygecOnaQz2B5Ua6U8U+OFIwIaHJvrf5zRHXYg/o9o77WcCXMtdEIeMPET
-         C4niO9cAe7m7JT9qaON0lLRNgI1EjfinvANaVFnhuisFOV7YMqYJ/uSuhhC98jy/aNv8
-         gR9RWlizWTVx7ZDRiuTmpiuKdGYBsdX5ZHYJJC4UTcxYLRgzH/n9mwDuQ1wSgkDAgNNJ
-         tuNg==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=KMf9EB5Mu6K6rHazidoIudnwtwroJlrj/VId80zyrmk=;
+        b=D1kkdqvXNUWmZQoz/Tv5BUmeYeMtRaIo+M938Ay8vpnfIJgq2K/RqlgLAyzLVqYClL
+         +gqXzScSK5mWPX/2kbQzHvmpz9dnn/Skee4yjF3pAUVp9KwOY8Nv/fBHrHr26+JLoJrq
+         zd8XT0qKI6k/Xtwsn6rlJwwrXCMfLGM+AlM7pQebQhMOTRreztNFxZNHsIg1wHN8WrPY
+         sSU4W5uXYvsJkj12VG09weGiit+fmzVZIl04uyKSDsbeyoqIpEXvCMD3q5CS0uOux4R9
+         liqaefSo/puMDjcDWYIatXlne0c2EUcI/+myo6Iqay6O+EXe+PnVcu9eBPUsOG0pm5NZ
+         ACwg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=r1RcJjuq+WDDkjUNNx0Km9/voIY1piTuPNUK42+ZJ10=;
-        b=tynRxJqutmw0dnUECl4ORFn7hFuZzBlzgqwd0cC0uRuSqZYPxcD1162Mh2/W/Fud9Z
-         HA/uuVBW0cqUUIwFbqIANGnyi5WQks1N5xQMmOXY1VTrayp4quzJhOxEyPfdanfbxcpC
-         EQ0dHydPRdR1X9NYTbui1VDTZG7RDlh8c/ZvVXXW0/Bu5LBv6aBhhB5v8aluAyY3+wAj
-         i2Jh9H3XSXvNIE8L7+z1lc+lugvhyDvEw1rb6JfpiZXXhNcMcTsWAMgSvQmoZtRLxy9q
-         Ue9oUD8ESyFw6xWHmWKGurrCUHoubNq1063FmOsWxTyRnCuVCk4yW1SglPwa65noPY/7
-         bT/g==
-X-Gm-Message-State: AOAM532geSGem9fCNaYatfihE6xS9wZCowWqapQ+PSQ7q3K4guiesnM3
-        CULe6Be3iUueV6yYvX42JGxTeQ==
-X-Google-Smtp-Source: ABdhPJz2cYBlng2UuRHg5FdXgp1BGkBu4JdjKlSL95jLVVUPGP6aY3oQJGp0YgYlPLTAa65o+jk8cA==
-X-Received: by 2002:adf:eb86:: with SMTP id t6mr9865546wrn.411.1599756428201;
-        Thu, 10 Sep 2020 09:47:08 -0700 (PDT)
-Received: from dell ([91.110.221.246])
-        by smtp.gmail.com with ESMTPSA id v7sm4283096wmj.28.2020.09.10.09.47.07
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=KMf9EB5Mu6K6rHazidoIudnwtwroJlrj/VId80zyrmk=;
+        b=kJBa7O1WnoGUYG2i5wSyNTqxuwU3qOxjpxK1qDHeWOKhcCMSUNRdK/gcQHHF4H/dlv
+         D2HIefyYfpfM390RGhDhWjqFyoIXAGVuplM11fBG9Migi1TQQGDsEmmW3KnLmmHeBxb6
+         DlURZ5kNJfsnjFMzm7QLcnRb39waNMXSITaU8N49k1hcvVEufG9zy5BrWn0drNAnoX8i
+         xotQo7VzlxxVC03cUVxJMqjw/v4ty5MzPNMX5kMlnNykgQTWokQ940hQD1hYecS0kNpv
+         BMnsTFaZQd2SYQQysQzgsSr27N3FHxZxOWY85Tn6gvvaF+8U2X3nqrbjJqMXGAogTofo
+         Wzow==
+X-Gm-Message-State: AOAM533yDqWHjJSX3VcXIz8cvm25RSuVLRINxjEj7Pz/D6wpiD5fE0YV
+        ufEnHUYs+nBiqj3tbo0PGPy2Rw==
+X-Google-Smtp-Source: ABdhPJyGW3SkE1ZtfYqZbpjfLaBNVfvNokPvZl6lI1DTeRwiTQKYcWDtGY68WhFcOSNN7hBuo4GaaA==
+X-Received: by 2002:a7b:cc8f:: with SMTP id p15mr477428wma.18.1599750343684;
+        Thu, 10 Sep 2020 08:05:43 -0700 (PDT)
+Received: from sagittarius-a.chello.ie (188-141-3-169.dynamic.upc.ie. [188.141.3.169])
+        by smtp.gmail.com with ESMTPSA id k24sm3857005wmj.19.2020.09.10.08.05.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Sep 2020 09:47:07 -0700 (PDT)
-Date:   Thu, 10 Sep 2020 17:47:05 +0100
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     davem@davemloft.net, kuba@kernel.org, linux-kernel@vger.kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        QCA ath9k Development <ath9k-devel@qca.qualcomm.com>
-Subject: Re: [PATCH 27/29] ath9k: ar5008_initvals: Move ar5416Bank{0,1,2,3,7}
- to where they are used
-Message-ID: <20200910164705.GE218742@dell>
-References: <20200910065431.657636-28-lee.jones@linaro.org>
- <0101017478dee7a5-d1bf9eb4-8ec4-44d0-bc89-11497cdf681c-000000@us-west-2.amazonses.com>
+        Thu, 10 Sep 2020 08:05:43 -0700 (PDT)
+From:   Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+To:     kvalo@codeaurora.org, wcn36xx@lists.infradead.org,
+        linux-wireless@vger.kernel.org
+Cc:     bryan.odonoghue@linaro.org, shawn.guo@linaro.org,
+        loic.poulain@linaro.org
+Subject: [PATCH v5 0/7] wcn36xx: Tidy up BSS/STA config
+Date:   Thu, 10 Sep 2020 16:06:24 +0100
+Message-Id: <20200910150631.2178970-1-bryan.odonoghue@linaro.org>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <0101017478dee7a5-d1bf9eb4-8ec4-44d0-bc89-11497cdf681c-000000@us-west-2.amazonses.com>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, 10 Sep 2020, Kalle Valo wrote:
+This series is three in a set of seven to add support for wcn3680 at 802.11ac
+data-rates.
 
-> Lee Jones <lee.jones@linaro.org> wrote:
-> 
-> > Fixes the following W=1 kernel build warning(s):
-> > 
-> >  drivers/net/wireless/ath/ath9k/ar5008_initvals.h:627:18: warning: ‘ar5416Bank7’ defined but not used [-Wunused-const-variable=]
-> >  627 | static const u32 ar5416Bank7[][2] = {
-> >  | ^~~~~~~~~~~
-> >  drivers/net/wireless/ath/ath9k/ar5008_initvals.h:548:18: warning: ‘ar5416Bank3’ defined but not used [-Wunused-const-variable=]
-> >  548 | static const u32 ar5416Bank3[][3] = {
-> >  | ^~~~~~~~~~~
-> >  drivers/net/wireless/ath/ath9k/ar5008_initvals.h:542:18: warning: ‘ar5416Bank2’ defined but not used [-Wunused-const-variable=]
-> >  542 | static const u32 ar5416Bank2[][2] = {
-> >  | ^~~~~~~~~~~
-> >  drivers/net/wireless/ath/ath9k/ar5008_initvals.h:536:18: warning: ‘ar5416Bank1’ defined but not used [-Wunused-const-variable=]
-> >  536 | static const u32 ar5416Bank1[][2] = {
-> >  | ^~~~~~~~~~~
-> >  drivers/net/wireless/ath/ath9k/ar5008_initvals.h:462:18: warning: ‘ar5416Bank0’ defined but not used [-Wunused-const-variable=]
-> >  462 | static const u32 ar5416Bank0[][2] = {
-> >  | ^~~~~~~~~~~
-> > 
-> > Cc: QCA ath9k Development <ath9k-devel@qca.qualcomm.com>
-> > Cc: Kalle Valo <kvalo@codeaurora.org>
-> > Cc: "David S. Miller" <davem@davemloft.net>
-> > Cc: Jakub Kicinski <kuba@kernel.org>
-> > Cc: linux-wireless@vger.kernel.org
-> > Cc: netdev@vger.kernel.org
-> > Signed-off-by: Lee Jones <lee.jones@linaro.org>
-> 
-> Already fixed in ath.git.
+Both the BSS and STA config paths have redundant/duplicate code. Before
+adding more code to either it makes sense to reduce/reuse and functionally
+decompose as much as possible.
 
-Ah, this is the repo that takes a while to filter into -next?
+While not strictly necessary to get the wcn3680/80211.ac functioning in
+this driver, it seems like a missed opportunity to leave the code as is.
 
-NP, thanks.
+Lets reduce down before adding more.
 
-> error: patch failed: drivers/net/wireless/ath/ath9k/ar5008_initvals.h:459
-> error: drivers/net/wireless/ath/ath9k/ar5008_initvals.h: patch does not apply
-> error: patch failed: drivers/net/wireless/ath/ath9k/ar5008_phy.c:18
-> error: drivers/net/wireless/ath/ath9k/ar5008_phy.c: patch does not apply
-> stg import: Diff does not apply cleanly
-> 
-> Patch set to Rejected.
-> 
+V5:
+- Fixes -W=1 warning caught in this set by kernel build robot
+  I'm still declaring some functions standalone for the purposes of
+  granularity and bisectability, a later patch makes relevant functions
+  static.
 
+V4:
+- No functional change.
+  Sending out full set again using --base=ath-202009090652 to aid kernel
+  test robot
+- https://lore.kernel.org/linux-wireless/20200908182455.2870345-1-bryan.odonoghue@linaro.org/T/#t
+
+V3:
+- No functional difference to V2
+  https://lore.kernel.org/linux-wireless/CAMZdPi___9yry0icuZVdnyiO7ZT0w=Xt8f8Pn7wkxRejxhXyYw@mail.gmail.com/T/#t
+- Adds Loic's Reviewed-by as indicated
+  https://lore.kernel.org/linux-wireless/CAMZdPi___9yry0icuZVdnyiO7ZT0w=Xt8f8Pn7wkxRejxhXyYw@mail.gmail.com/T/#m2256137b97859c8eac26a2836f96db5e82475d3f
+
+V2:
+- Adds a memset to wcn36xx_smd_config_bss_v1()
+  Since we are doing one less kzalloc() we need to make sure we clear
+  out the bss config.
+
+V1:
+https://lore.kernel.org/linux-wireless/87eensldhi.fsf@codeaurora.org/T/#t
+
+Bryan O'Donoghue (7):
+  wcn36xx: Functionally decompose wcn36xx_smd_config_sta()
+  wcn36xx: Move wcn36xx_smd_set_sta_params() inside
+    wcn36xx_smd_config_bss()
+  wcn36xx: Move BSS parameter setup to wcn36xx_smd_set_bss_params()
+  wcn36xx: Update wcn36xx_smd_config_bss_v1() to operate internally
+  wcn36xx: Add wcn36xx_smd_config_bss_v0
+  wcn36xx: Convert to using wcn36xx_smd_config_bss_v0()
+  wcn36xx: Remove dead code in wcn36xx_smd_config_bss()
+
+ drivers/net/wireless/ath/wcn36xx/smd.c | 422 ++++++++++++++-----------
+ 1 file changed, 234 insertions(+), 188 deletions(-)
+
+
+base-commit: 160b351d75cb50a0dd2abf9b63e1891935aa9e4a
+prerequisite-patch-id: 9a4ac7faca179f6594c9b3a115ee69a2da540a69
+prerequisite-patch-id: 183286f9c22d1aaa12f356651224e6b337ef1938
+prerequisite-patch-id: af468d413daaf8d2aad195fcb43c6e66390d8468
+prerequisite-patch-id: 08122a9557904ce5358f52dd08cc33270fa202c1
+prerequisite-patch-id: 82e0b7c5b2e9fa80baca001cce12577d98e306a9
+prerequisite-patch-id: 8ee7f5bd6cb5b7b7d713947b554ad93bb90d8230
+prerequisite-patch-id: d05c2253e4523b05b2e43491aa13ceeef68fd2f0
+prerequisite-patch-id: 8be29513d3efa64df15297bcf81ec3db55088ee1
+prerequisite-patch-id: d267dcd834afad75a69bcd2adcccfdad6566a7ba
 -- 
-Lee Jones [李琼斯]
-Senior Technical Lead - Developer Services
-Linaro.org │ Open source software for Arm SoCs
-Follow Linaro: Facebook | Twitter | Blog
+2.27.0
+
