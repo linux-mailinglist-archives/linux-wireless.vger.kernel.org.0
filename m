@@ -2,52 +2,52 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CBD3C263DD4
-	for <lists+linux-wireless@lfdr.de>; Thu, 10 Sep 2020 08:59:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B430263E74
+	for <lists+linux-wireless@lfdr.de>; Thu, 10 Sep 2020 09:21:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730022AbgIJG7U (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 10 Sep 2020 02:59:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41766 "EHLO
+        id S1730104AbgIJHVu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 10 Sep 2020 03:21:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41506 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729785AbgIJG5e (ORCPT
+        with ESMTP id S1726847AbgIJGy5 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 10 Sep 2020 02:57:34 -0400
-Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com [IPv6:2a00:1450:4864:20::343])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8102DC061347
-        for <linux-wireless@vger.kernel.org>; Wed,  9 Sep 2020 23:55:12 -0700 (PDT)
-Received: by mail-wm1-x343.google.com with SMTP id k18so4605767wmj.5
-        for <linux-wireless@vger.kernel.org>; Wed, 09 Sep 2020 23:55:12 -0700 (PDT)
+        Thu, 10 Sep 2020 02:54:57 -0400
+Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18B11C061757
+        for <linux-wireless@vger.kernel.org>; Wed,  9 Sep 2020 23:54:55 -0700 (PDT)
+Received: by mail-wr1-x443.google.com with SMTP id k15so5386008wrn.10
+        for <linux-wireless@vger.kernel.org>; Wed, 09 Sep 2020 23:54:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=QBwZYByjjh942d4ggJkaITmm4qS6KFDbT+209YIFm2k=;
-        b=o/wDvUp3hJQejPqXu9BVpd4DAZVvxNEGCvwNBjgtKaCHOvkvK2PixeedyU+euKj3uM
-         6RE7sSsFhFn7II5R/AT4j99dXRYjA64fISNqweLwk21m2ilur2CuKdp/ldA/0ExeQSGq
-         diVFzJGZeH2I02ScPXSS9m+HBcHIDpVwWqSW1r9F9iwqMgVKVdY4b2m6LsXoe2I6Rhrd
-         qtpxpuulD/8hye47v78oTqmg0QNkvrzcxD/6+noLrHjKzcw3SIkL670d75vQivrpQE5q
-         T54i9iRRejeNy+G8gWYcBfd7RPfc2DxpwcbWyOpeX0qNDjoHkUvj6rD+YIlXhopr6css
-         qhTg==
+        bh=kFIC75bauZ6Rpz/avISlwE77tX9e6rPrMyzEdUSYEvc=;
+        b=opyAAeBSR896y84hVzRW6SofLr9HSSArQIQNg4NVZmAylAtOL03MJFXDP56Bh4eWyn
+         UDhyPO/K0xgJ8DoBCtEilkJIVwhnNJZyjusioUI8UPp0ruDyH5qgOhN+bF6OJpcoHfph
+         kxwg2hN6zF4xUj7gdqCTcoqqfGCcv64nbey8y591Wle6cg7hoyW8yoyz5ORBb4FKViZj
+         cSswzXPMQcm2LvJyc/aa2RUYa4ihM1TC216Gt8idJkOez2+KvyGjaMy4+sF/GuTkBoZD
+         W+APFxMoM6aLidvcWJqjFmAlEdpSyQw1WaSHbHuK7s+0+rf4t1RH/Nu/balqzEp4H9vN
+         C1dA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=QBwZYByjjh942d4ggJkaITmm4qS6KFDbT+209YIFm2k=;
-        b=ntfqcP7MVvCycpNKBxNuxzQHGBICwGVHHgTn5IayFHJd7oK6fsb/OC3evbWLxjWZ2o
-         uH5BsiJME82JGIrtkr/67fazruAOGAjBq482McfhQzjLS7uGH9Kdpk8e0u5lazNUsQYQ
-         0mGODE6EOqZOS9pNZZJ/3xAlJLmBq7Uox5LKwtZgjmS0HYiBEUtTo1bKpMKVrzL7IsV7
-         dLLOe/Kf47bnVZa5Q16MEqBS+q4RIC0Jl8tHlNZwZIreFHP6Fs8ObP5GrdH3FNX1HPvD
-         AnNh4tcD5AG9cisml2g9A2BWeOatI+8LM3GjZIDHUTgkqC32ncbdys9J9bc08xF8w0rY
-         uXFQ==
-X-Gm-Message-State: AOAM5308ub4sVHgZnYKQ5scWn8hxfK0MyLiOZhHIa+NGMNjMGFZt9FL4
-        TX2PqnzTtNzKU/10E61t8rQSeA==
-X-Google-Smtp-Source: ABdhPJyzPwfgv9BHfQPFHkUwcAwFvGoFXu5+ZZChSk0rDJAdQiIj3E9ve0VgMnmySY7mUABMHevIVQ==
-X-Received: by 2002:a7b:c5c1:: with SMTP id n1mr6617171wmk.125.1599720910831;
-        Wed, 09 Sep 2020 23:55:10 -0700 (PDT)
+        bh=kFIC75bauZ6Rpz/avISlwE77tX9e6rPrMyzEdUSYEvc=;
+        b=t+hntAPbn2uXutWTFeGmDWdReF1dXexjMvfTAWZHHXXBeXH7K/DR/83Vxh6P5N5hpx
+         MzXKsjPLwlf6pHAPtrC2fSj9u1eNVS2PyWynVbdWViFn7D9xiuPLX038r37kLVklO0nI
+         WudpTLTdMaFuEbdTYPt2uO0mLDP0Ym6JZDCX/yY9Zokh0P3QCjuLp6sszYsoTQ4C05wR
+         79PT4lLtYGmhowymRAaE1NavTVyl3ayrCDotlS9PsElIIBX882csZOUY3kIdCkCj6a54
+         /lZBRxy6yCPQQEfbbhIQF5taIaQUBOUHczzGQbuz+NnDs6CHN47daN3ldoCaGB+lMIXj
+         Z5Mg==
+X-Gm-Message-State: AOAM533A0+DatNsoT5YS36lhFObboNBgakMyOOhzD03dL+ldXEQyjTGV
+        uz9uVd2mxwcBfU/qds0s7z2FRw==
+X-Google-Smtp-Source: ABdhPJx8DeWDe6U8fQ7m/kdq1bE91DUEiWHtZrjxC5GmjapY+vNFcT0KX1Tl4rz0nkHRc3EaNMtaIA==
+X-Received: by 2002:adf:f58b:: with SMTP id f11mr7404003wro.250.1599720894463;
+        Wed, 09 Sep 2020 23:54:54 -0700 (PDT)
 Received: from dell.default ([91.110.221.246])
-        by smtp.gmail.com with ESMTPSA id m3sm2444028wme.31.2020.09.09.23.55.09
+        by smtp.gmail.com with ESMTPSA id m3sm2444028wme.31.2020.09.09.23.54.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Sep 2020 23:55:10 -0700 (PDT)
+        Wed, 09 Sep 2020 23:54:53 -0700 (PDT)
 From:   Lee Jones <lee.jones@linaro.org>
 To:     kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org
 Cc:     linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
@@ -56,9 +56,9 @@ Cc:     linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
         Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
         Luca Coelho <luciano.coelho@intel.com>,
         Intel Linux Wireless <linuxwifi@intel.com>
-Subject: [PATCH 15/29] iwlwifi: iwl-drv: Provide descriptions debugfs dentries
-Date:   Thu, 10 Sep 2020 07:54:17 +0100
-Message-Id: <20200910065431.657636-16-lee.jones@linaro.org>
+Subject: [PATCH 01/29] iwlwifi: dvm: Demote non-compliant kernel-doc headers
+Date:   Thu, 10 Sep 2020 07:54:03 +0100
+Message-Id: <20200910065431.657636-2-lee.jones@linaro.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200910065431.657636-1-lee.jones@linaro.org>
 References: <20200910065431.657636-1-lee.jones@linaro.org>
@@ -69,15 +69,29 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Also demote a non-conforming kernel-doc function header.
+None of these headers attempt to document any function parameters.
 
 Fixes the following W=1 kernel build warning(s):
 
- drivers/net/wireless/intel/iwlwifi/iwl-drv.c:124: warning: Function parameter or member 'dbgfs_drv' not described in 'iwl_drv'
- drivers/net/wireless/intel/iwlwifi/iwl-drv.c:124: warning: Function parameter or member 'dbgfs_trans' not described in 'iwl_drv'
- drivers/net/wireless/intel/iwlwifi/iwl-drv.c:124: warning: Function parameter or member 'dbgfs_op_mode' not described in 'iwl_drv'
- drivers/net/wireless/intel/iwlwifi/iwl-drv.c:1329: warning: Function parameter or member 'ucode_raw' not described in 'iwl_req_fw_callback'
- drivers/net/wireless/intel/iwlwifi/iwl-drv.c:1329: warning: Function parameter or member 'context' not described in 'iwl_req_fw_callback'
+ drivers/net/wireless/intel/iwlwifi/dvm/main.c:388: warning: Function parameter or member 't' not described in 'iwl_bg_statistics_periodic'
+ drivers/net/wireless/intel/iwlwifi/dvm/main.c:545: warning: Function parameter or member 't' not described in 'iwl_bg_ucode_trace'
+ drivers/net/wireless/intel/iwlwifi/dvm/main.c:771: warning: Function parameter or member 'priv' not described in 'iwl_alive_start'
+ drivers/net/wireless/intel/iwlwifi/dvm/main.c:1692: warning: Function parameter or member 'priv' not described in 'iwl_print_event_log'
+ drivers/net/wireless/intel/iwlwifi/dvm/main.c:1692: warning: Function parameter or member 'start_idx' not described in 'iwl_print_event_log'
+ drivers/net/wireless/intel/iwlwifi/dvm/main.c:1692: warning: Function parameter or member 'num_events' not described in 'iwl_print_event_log'
+ drivers/net/wireless/intel/iwlwifi/dvm/main.c:1692: warning: Function parameter or member 'mode' not described in 'iwl_print_event_log'
+ drivers/net/wireless/intel/iwlwifi/dvm/main.c:1692: warning: Function parameter or member 'pos' not described in 'iwl_print_event_log'
+ drivers/net/wireless/intel/iwlwifi/dvm/main.c:1692: warning: Function parameter or member 'buf' not described in 'iwl_print_event_log'
+ drivers/net/wireless/intel/iwlwifi/dvm/main.c:1692: warning: Function parameter or member 'bufsz' not described in 'iwl_print_event_log'
+ drivers/net/wireless/intel/iwlwifi/dvm/main.c:1772: warning: Function parameter or member 'priv' not described in 'iwl_print_last_event_logs'
+ drivers/net/wireless/intel/iwlwifi/dvm/main.c:1772: warning: Function parameter or member 'capacity' not described in 'iwl_print_last_event_logs'
+ drivers/net/wireless/intel/iwlwifi/dvm/main.c:1772: warning: Function parameter or member 'num_wraps' not described in 'iwl_print_last_event_logs'
+ drivers/net/wireless/intel/iwlwifi/dvm/main.c:1772: warning: Function parameter or member 'next_entry' not described in 'iwl_print_last_event_logs'
+ drivers/net/wireless/intel/iwlwifi/dvm/main.c:1772: warning: Function parameter or member 'size' not described in 'iwl_print_last_event_logs'
+ drivers/net/wireless/intel/iwlwifi/dvm/main.c:1772: warning: Function parameter or member 'mode' not described in 'iwl_print_last_event_logs'
+ drivers/net/wireless/intel/iwlwifi/dvm/main.c:1772: warning: Function parameter or member 'pos' not described in 'iwl_print_last_event_logs'
+ drivers/net/wireless/intel/iwlwifi/dvm/main.c:1772: warning: Function parameter or member 'buf' not described in 'iwl_print_last_event_logs'
+ drivers/net/wireless/intel/iwlwifi/dvm/main.c:1772: warning: Function parameter or member 'bufsz' not described in 'iwl_print_last_event_logs'
 
 Cc: Johannes Berg <johannes.berg@intel.com>
 Cc: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
@@ -90,32 +104,60 @@ Cc: linux-wireless@vger.kernel.org
 Cc: netdev@vger.kernel.org
 Signed-off-by: Lee Jones <lee.jones@linaro.org>
 ---
- drivers/net/wireless/intel/iwlwifi/iwl-drv.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/dvm/main.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
-index 04f14bfdd0914..2a9075b1b3747 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
-@@ -102,6 +102,9 @@ static struct dentry *iwl_dbgfs_root;
-  * @fw_index: firmware revision to try loading
-  * @firmware_name: composite filename of ucode file to load
-  * @request_firmware_complete: the firmware has been obtained from user space
-+ * @dbgfs_drv: debugfs root directory entry
-+ * @dbgfs_trans: debugfs transport directory entry
-+ * @dbgfs_op_mode: debugfs op_mode directory entry
-  */
- struct iwl_drv {
- 	struct list_head list;
-@@ -1319,7 +1322,7 @@ static void _iwl_op_mode_stop(struct iwl_drv *drv)
- 	}
+diff --git a/drivers/net/wireless/intel/iwlwifi/dvm/main.c b/drivers/net/wireless/intel/iwlwifi/dvm/main.c
+index b882705ff66df..461af58311561 100644
+--- a/drivers/net/wireless/intel/iwlwifi/dvm/main.c
++++ b/drivers/net/wireless/intel/iwlwifi/dvm/main.c
+@@ -374,7 +374,7 @@ int iwl_send_statistics_request(struct iwl_priv *priv, u8 flags, bool clear)
+ 					&statistics_cmd);
  }
  
 -/**
 +/*
-  * iwl_req_fw_callback - callback when firmware was loaded
+  * iwl_bg_statistics_periodic - Timer callback to queue statistics
   *
-  * If loaded successfully, copies the firmware into buffers
+  * This callback is provided in order to send a statistics request.
+@@ -533,7 +533,7 @@ static void iwl_continuous_event_trace(struct iwl_priv *priv)
+ 	priv->event_log.next_entry = next_entry;
+ }
+ 
+-/**
++/*
+  * iwl_bg_ucode_trace - Timer callback to log ucode event
+  *
+  * The timer is continually set to execute every
+@@ -762,7 +762,7 @@ static void iwl_send_bt_config(struct iwl_priv *priv)
+ 		IWL_ERR(priv, "failed to send BT Coex Config\n");
+ }
+ 
+-/**
++/*
+  * iwl_alive_start - called after REPLY_ALIVE notification received
+  *                   from protocol/runtime uCode (initialization uCode's
+  *                   Alive gets handled by iwl_init_alive_start()).
+@@ -1682,9 +1682,8 @@ static void iwl_dump_nic_error_log(struct iwl_priv *priv)
+ 
+ #define EVENT_START_OFFSET  (4 * sizeof(u32))
+ 
+-/**
++/*
+  * iwl_print_event_log - Dump error event log to syslog
+- *
+  */
+ static int iwl_print_event_log(struct iwl_priv *priv, u32 start_idx,
+ 			       u32 num_events, u32 mode,
+@@ -1762,7 +1761,7 @@ static int iwl_print_event_log(struct iwl_priv *priv, u32 start_idx,
+ 	return pos;
+ }
+ 
+-/**
++/*
+  * iwl_print_last_event_logs - Dump the newest # of event log to syslog
+  */
+ static int iwl_print_last_event_logs(struct iwl_priv *priv, u32 capacity,
 -- 
 2.25.1
 
