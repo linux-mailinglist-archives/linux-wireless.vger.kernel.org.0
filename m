@@ -2,145 +2,79 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 629A4263E0F
-	for <lists+linux-wireless@lfdr.de>; Thu, 10 Sep 2020 09:08:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 98D65263E72
+	for <lists+linux-wireless@lfdr.de>; Thu, 10 Sep 2020 09:21:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730418AbgIJHIq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 10 Sep 2020 03:08:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42528 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730211AbgIJHBP (ORCPT
+        id S1726816AbgIJHVl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 10 Sep 2020 03:21:41 -0400
+Received: from a27-10.smtp-out.us-west-2.amazonses.com ([54.240.27.10]:41502
+        "EHLO a27-10.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728617AbgIJHU7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 10 Sep 2020 03:01:15 -0400
-Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF9CDC061372
-        for <linux-wireless@vger.kernel.org>; Wed,  9 Sep 2020 23:55:27 -0700 (PDT)
-Received: by mail-wr1-x442.google.com with SMTP id a17so5416390wrn.6
-        for <linux-wireless@vger.kernel.org>; Wed, 09 Sep 2020 23:55:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=/zDMT6nbFqbhZHba3WX8w2cu4960tHUb5zkPcYbpeIM=;
-        b=tL6+bIkh8G7HqBgucCbpBctHS9j+I2AJgR6G49WHHWrcfJGS1GWrRY+zOduX5bNnmp
-         XwEMjo52Sr2j5+KKnUGpRdkT17kCz542Em6ZWz+F67g7UjluqnoZCLUtOIQQoUsdZ6yx
-         11//MDz21fLJyAhQRayi5tFo9NdrADRlwjbuMrwLTcoN5ItXF7fox9TKwZFHHGVcxrHK
-         EoCtUSwP7GVeYUAc6r0t/CpQGNqS83EmDot6qao2ORB8J1cDaolslhu2hV5s0HRSt1Te
-         v/symznRHA4ChYd/6CMxuy7KsAM+MwhH7v+BSxZHCpJJcxroS12fStSuVMKNKeN4ltRW
-         e28w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=/zDMT6nbFqbhZHba3WX8w2cu4960tHUb5zkPcYbpeIM=;
-        b=ocvv7IyZd7lWscgoylwHCEJ39hjAMZJzDLmubROKW04wcghmvyr4UmvQB9RDKlAau9
-         iy4sbaW3BdNAc5KjxushrJlsJXSWaIqOqd0QULpbLscupFhjViwjuuHr4WmoX930ZRHs
-         S2VNLa4QxpMqHDDocbyjsLsv45WWmML/KW0/gzviV8HT3+usvb9I2uMPg84Y13O2LY+Q
-         NmBj2rKP28/GxEC4Jlb3gSrkp1/sbbo6uM+RpF15g6bCFFKwyIjArknhhlmagTYwALFD
-         C+PtM8Sws7nnlIbBnHR0BrWltpmg4TZlSot5fKoAH6z7sTVakvKlvcehxXavbSdICkkg
-         YC1Q==
-X-Gm-Message-State: AOAM532t/dCIwTTAnyK9yLd4rTJ+oAu9b0HPMDHoFwdwlwIRY2Q6suJA
-        qIhPQ+kT7GI8HJGlIFqXwBSSiA==
-X-Google-Smtp-Source: ABdhPJyk20V9H1NNPnqtUHlIgQaIzDY7mmVMEIQUDafx1slmQBnfmIizNpGswUF/Rjdi6TlRcOLd7A==
-X-Received: by 2002:a5d:43cb:: with SMTP id v11mr7886927wrr.188.1599720926684;
-        Wed, 09 Sep 2020 23:55:26 -0700 (PDT)
-Received: from dell.default ([91.110.221.246])
-        by smtp.gmail.com with ESMTPSA id m3sm2444028wme.31.2020.09.09.23.55.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Sep 2020 23:55:26 -0700 (PDT)
-From:   Lee Jones <lee.jones@linaro.org>
-To:     kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org
-Cc:     linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, Lee Jones <lee.jones@linaro.org>
-Subject: [PATCH 29/29] brcmsmac: phy_lcn: Remove unused variable 'lcnphy_rx_iqcomp_table_rev0'
-Date:   Thu, 10 Sep 2020 07:54:31 +0100
-Message-Id: <20200910065431.657636-30-lee.jones@linaro.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200910065431.657636-1-lee.jones@linaro.org>
-References: <20200910065431.657636-1-lee.jones@linaro.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        Thu, 10 Sep 2020 03:20:59 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1599722459;
+        h=From:To:Cc:Subject:Date:Message-Id;
+        bh=AD9isEXpGm9GphaBTQ+NXNSJRx6ncGuSPZFftyjcgqw=;
+        b=FOFYO9M26rDo3o7sw94SH4hhCUsKFGpD07N+om5vRBEnfcLLJYB067881bH1vgFe
+        Rlv5dlet39Oz3aY+2GJW07LGt6A0RbuLLHf3zwCiH6V9DNOofzHR5XShF0LDbD19Ixa
+        Ja9cOdVa90OPbkVLftZ0XKmf2dO0g8G7BJ/j7uYw=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+        s=hsbnp7p3ensaochzwyq5wwmceodymuwv; d=amazonses.com; t=1599722459;
+        h=From:To:Cc:Subject:Date:Message-Id:Feedback-ID;
+        bh=AD9isEXpGm9GphaBTQ+NXNSJRx6ncGuSPZFftyjcgqw=;
+        b=gzHXLLGEKARAd1VmkN8bvg5dsCOT02dmlxuJmuZtAjBwvQeV4pdg5F0u0i1k9apm
+        se3HSTUpDSutPDue/f3N9x8ZVHLhWb9RUF2IjXixiN9C+c71hVqFXQW/sjAb3fNo1ZQ
+        4l4Gi7ETwdqv+BHDisuR04y9PMvIw3OnL67imy8E=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 3171CC433C6
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     ath11k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org
+Subject: [PATCH] ath11k: fix link error when CONFIG_REMOTEPROC is disabled
+Date:   Thu, 10 Sep 2020 07:20:59 +0000
+Message-ID: <0101017476e38f40-c4168ac4-c00a-4220-a032-fe17e4a157cb-000000@us-west-2.amazonses.com>
+X-Mailer: git-send-email 2.7.4
+X-SES-Outgoing: 2020.09.10-54.240.27.10
+Feedback-ID: 1.us-west-2.CZuq2qbDmUIuT3qdvXlRHZZCpfZqZ4GtG9v3VKgRyF0=:AmazonSES
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fixes the following W=1 kernel build warning(s):
+If CONFIG_REMOTEPROC was disabled the linking failed with:
 
- drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c:361:25: warning: unused variable 'lcnphy_rx_iqcomp_table_rev0' [-Wunused-const-variable]
- struct lcnphy_rx_iqcomp lcnphy_rx_iqcomp_table_rev0[] = {
-                         ^
-Signed-off-by: Lee Jones <lee.jones@linaro.org>
+ERROR: modpost: "rproc_get_by_phandle" [drivers/net/wireless/ath/ath11k/ath11k.ko] undefined!
+
+Compile tested only.
+
+Reported-by: Randy Dunlap <rdunlap@infradead.org>
+Fixes: 1ff8ed786d5d ("ath11k: use remoteproc only with AHB devices")
+Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 ---
- .../broadcom/brcm80211/brcmsmac/phy/phy_lcn.c | 55 -------------------
- 1 file changed, 55 deletions(-)
+ drivers/net/wireless/ath/ath11k/core.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c
-index b8193c99e8642..7071b63042cd4 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c
-@@ -357,61 +357,6 @@ u16 rxiq_cal_rf_reg[11] = {
- 	RADIO_2064_REG12A,
- };
+diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
+index 437b1123a34f..413811edd083 100644
+--- a/drivers/net/wireless/ath/ath11k/core.c
++++ b/drivers/net/wireless/ath/ath11k/core.c
+@@ -784,6 +784,9 @@ static int ath11k_core_get_rproc(struct ath11k_base *ab)
+ 	struct rproc *prproc;
+ 	phandle rproc_phandle;
  
--static const
--struct lcnphy_rx_iqcomp lcnphy_rx_iqcomp_table_rev0[] = {
--	{1, 0, 0},
--	{2, 0, 0},
--	{3, 0, 0},
--	{4, 0, 0},
--	{5, 0, 0},
--	{6, 0, 0},
--	{7, 0, 0},
--	{8, 0, 0},
--	{9, 0, 0},
--	{10, 0, 0},
--	{11, 0, 0},
--	{12, 0, 0},
--	{13, 0, 0},
--	{14, 0, 0},
--	{34, 0, 0},
--	{38, 0, 0},
--	{42, 0, 0},
--	{46, 0, 0},
--	{36, 0, 0},
--	{40, 0, 0},
--	{44, 0, 0},
--	{48, 0, 0},
--	{52, 0, 0},
--	{56, 0, 0},
--	{60, 0, 0},
--	{64, 0, 0},
--	{100, 0, 0},
--	{104, 0, 0},
--	{108, 0, 0},
--	{112, 0, 0},
--	{116, 0, 0},
--	{120, 0, 0},
--	{124, 0, 0},
--	{128, 0, 0},
--	{132, 0, 0},
--	{136, 0, 0},
--	{140, 0, 0},
--	{149, 0, 0},
--	{153, 0, 0},
--	{157, 0, 0},
--	{161, 0, 0},
--	{165, 0, 0},
--	{184, 0, 0},
--	{188, 0, 0},
--	{192, 0, 0},
--	{196, 0, 0},
--	{200, 0, 0},
--	{204, 0, 0},
--	{208, 0, 0},
--	{212, 0, 0},
--	{216, 0, 0},
--};
--
- static const u32 lcnphy_23bitgaincode_table[] = {
- 	0x200100,
- 	0x200200,
++	if (!IS_ENABLED(CONFIG_REMOTEPROC))
++		return 0;
++
+ 	if (ab->bus_params.mhi_support)
+ 		return 0;
+ 
 -- 
-2.25.1
+2.7.4
 
