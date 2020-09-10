@@ -2,145 +2,140 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F76F26492B
-	for <lists+linux-wireless@lfdr.de>; Thu, 10 Sep 2020 17:57:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E92FC2649BF
+	for <lists+linux-wireless@lfdr.de>; Thu, 10 Sep 2020 18:30:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731490AbgIJP4V (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 10 Sep 2020 11:56:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41192 "EHLO
+        id S1726415AbgIJQai (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 10 Sep 2020 12:30:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46260 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731516AbgIJPzV (ORCPT
+        with ESMTP id S1726816AbgIJQ1h (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 10 Sep 2020 11:55:21 -0400
-Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 090DBC0617A4
-        for <linux-wireless@vger.kernel.org>; Thu, 10 Sep 2020 08:54:41 -0700 (PDT)
-Received: by mail-wr1-x444.google.com with SMTP id s12so7242723wrw.11
-        for <linux-wireless@vger.kernel.org>; Thu, 10 Sep 2020 08:54:40 -0700 (PDT)
+        Thu, 10 Sep 2020 12:27:37 -0400
+Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com [IPv6:2a00:1450:4864:20::343])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D68C2C061573
+        for <linux-wireless@vger.kernel.org>; Thu, 10 Sep 2020 08:05:05 -0700 (PDT)
+Received: by mail-wm1-x343.google.com with SMTP id e17so388325wme.0
+        for <linux-wireless@vger.kernel.org>; Thu, 10 Sep 2020 08:05:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nexus-software-ie.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=AOxwJq+yWUZD+luTWXeI1wH9PdSPOQMP94YFX6uESZc=;
-        b=lK4KQPVcjB2ltKBrmehZzIosd3GpgARTanFz5JTQlQBH6bSfVTI/govAV8LAKLRPKX
-         ExldC1xLzuqOgFvMZNwvZu6YF/dMwzgqUPp7sKU4HeiuduYrZ7N/4/iqKTUZFTE1YG+I
-         D3/e0H46jNZRItsLmqCgEWH165WSU+1wbLj/exR4qPZR8/XGLkS8JhyCr/MNO5iWFPNQ
-         zSx19JcZrr1kzIg6v5axCWfAYsiM2wP8okIEuYbroxwaNlsHFr/iCBd+uQEvE7u+o6aa
-         YsJX1v1eRfMpinyNbv+TlU0IHocOGMUUkuJ5+uZt8pm6XHA8VVyDQZzv/Q0JfS5kzZb6
-         qefg==
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=mL4mzudrzXf2cUTx9eQ/J+GPxyAkKkLNs3IL5Bs2Jrg=;
+        b=FhpAm/mF2S0ktfsReBCbwmNFlAi5VPzeXlMJMmtmVLby9qk8bR0fJkQEL3UY+s1Np3
+         vLce65hZUqyLXnzoSKTWZpQxyMN1VhVUmzvlEweZ8cf2lSI3KN9I1ZpXaO3d4V/lI6wE
+         f+LwN9N41+i1LOJFI3g2mMpeNCNhm+f6+oWCsdIX2VSuUPnHUT7LkYVLHUmMtfJ/t0W2
+         OHIAnJMQUxoxFY3WApy7e7S1CI+PYqxppde+9p6gdoj3IgudYh+feFyVGJRqF0+S+AGs
+         ZEM1KeZjVXGdq4FnZp6m2iTzqIm+itiJ+aBjU6rP9J7wCNNcfmNep9iELlcmAv6ux/yx
+         GVxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=AOxwJq+yWUZD+luTWXeI1wH9PdSPOQMP94YFX6uESZc=;
-        b=kgX7N5zmKQjAsTVQFb720keS4oE75rwAjbXnz2txBmiD2CJTYVDJMaKpvpT2VpsPrX
-         vcPb1zTPlwdDDoK9HrlTQsKwZF6BWxFj/PJy2dSAUU5j+SkMTavngSqeJhTWlC+nMlLK
-         FrKFuWpK2vK3yg6kplmBELFnLcWcAg5hVs9FirircNuan3yp06m1nUTEeOPD3hmBa5HI
-         6Ahkh5AsGdK/mxXzLI7RnP4ecYIl/MiOe9cCbHb3hZSvBrsF3xzpOf2i3sn1Ct9cgjuW
-         zMYc1hQXSjqQlh+GHsMtyFLbACVQS21J4+vZ8kvT1CMEAZhKmfwJX/YUcNbaZv0uRcKT
-         Nbiw==
-X-Gm-Message-State: AOAM533WXYN8Qj+szkkyk0kPexb2LVFQ9ce4A8fYQG4tM/VKuB1AeWUM
-        7e11vHgeHNPsR2qMI8QD3T/kaQ==
-X-Google-Smtp-Source: ABdhPJzVypMay9TKR18542OR+V5e48VLz62uFAcT5o84gnpvqdZiP3aQPCodvv3n82njCxBY3Y6SEw==
-X-Received: by 2002:a5d:4c52:: with SMTP id n18mr9545489wrt.267.1599753279723;
-        Thu, 10 Sep 2020 08:54:39 -0700 (PDT)
-Received: from [192.168.0.162] (188-141-3-169.dynamic.upc.ie. [188.141.3.169])
-        by smtp.gmail.com with ESMTPSA id a85sm4355398wmd.26.2020.09.10.08.54.38
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 10 Sep 2020 08:54:39 -0700 (PDT)
-Subject: Re: [PATCH v5 0/2] wcn36xx: Miscellaneous updates
-To:     Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
-        kvalo@codeaurora.org, wcn36xx@lists.infradead.org,
+        bh=mL4mzudrzXf2cUTx9eQ/J+GPxyAkKkLNs3IL5Bs2Jrg=;
+        b=XQ8DwWOxnOHAB6WkBDKUdlYs6xSVfZ2fsmjsN47fEmyi9BPPzM3Sc0r0RcxtUtJ+f0
+         4xW1xk1R0ks+c/HZ837TmpSI1v8DLJvE6135K8Ahq/8COblv/qPLhtnfoU7iHGMOgs8f
+         fwi9NnJjqBX7CwCPUk9t6gv0Rf6xJEXwBVMHL+0L2JxSFYIUjcFYe5rA+pTn2pN9ECAt
+         r1jZ2AltHXzRbctvFtez9dPn4QbhjfJsCOTfW22jIgM3+7W4+fV2UHlfpTOhsCNaqWCe
+         SUHq1c9WnMdSvRMXzS3/g2YVFnLWwXXAHLMsgCzaLWFJV2BNSqKfkRC1OrVKeo4Pslif
+         X6Yg==
+X-Gm-Message-State: AOAM532muZbuOi0xs36iNNobSH3/eSHoZ83C+BiS1BETOUfTFjofIQE/
+        HPSDKhpOSdb8Shct8sjSvgBurq/m+rnt9g==
+X-Google-Smtp-Source: ABdhPJwuKKuALwNUcm2VKp7y95gpBWlgd+WkWKrGE1fpOQiOUaE2aET0atnB7uesn5YmOnfIl3USww==
+X-Received: by 2002:a7b:c397:: with SMTP id s23mr454417wmj.174.1599750304517;
+        Thu, 10 Sep 2020 08:05:04 -0700 (PDT)
+Received: from sagittarius-a.chello.ie (188-141-3-169.dynamic.upc.ie. [188.141.3.169])
+        by smtp.gmail.com with ESMTPSA id g8sm3852620wmd.12.2020.09.10.08.05.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 10 Sep 2020 08:05:04 -0700 (PDT)
+From:   Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+To:     kvalo@codeaurora.org, wcn36xx@lists.infradead.org,
         linux-wireless@vger.kernel.org
-Cc:     shawn.guo@linaro.org, loic.poulain@linaro.org
-References: <20200910150845.2179320-1-bryan.odonoghue@linaro.org>
-From:   Bryan O'Donoghue <pure.logic@nexus-software.ie>
-Message-ID: <84a86a12-62d2-cc94-95b3-34b360ad4255@nexus-software.ie>
-Date:   Thu, 10 Sep 2020 16:55:28 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+Cc:     bryan.odonoghue@linaro.org, shawn.guo@linaro.org,
+        loic.poulain@linaro.org
+Subject: [PATCH v5 0/7] wcn36xx: Add a set of helpers to enable VHT parameter passing
+Date:   Thu, 10 Sep 2020 16:05:45 +0100
+Message-Id: <20200910150552.2178882-1-bryan.odonoghue@linaro.org>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-In-Reply-To: <20200910150845.2179320-1-bryan.odonoghue@linaro.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 10/09/2020 16:08, Bryan O'Donoghue wrote:
-> This series is seven in a set of seven to add support for wcn3680 at 802.11ac
-> data-rates.
-> 
-> This set marks functions previously declared non-static as static. In order
-> to facilitate granular standalone commits and avoid single patch
-> code-bombs. A series of functions were previously declared non-static.
-> Antecedent changes have made use of those functions so we can now mark them
-> static.
-> 
-> In a similar theme of cleanup, I've added on a fix for some whitespace
-> damage in main.c and smd.c which while not strictly related to wcn3680 I've
-> opted to throw into the bucket under a "miscellaneous update" title.
-> 
-> Hope that's OK.
-> 
-> V5:
-> - No change to V4 but need to send the set again so that
->    prerequisite-patch-id makes sense to the build robot here.
-> 
-> V4:
-> - No functional change.
->    Sending out full set again using --base=ath-202009090652 to aid kernel
->    test robot
-> - https://lore.kernel.org/linux-wireless/20200908183424.2871101-1-bryan.odonoghue@linaro.org/T/#t
-> 
-> V3/RESEND:
-> - Messed up my .git/config resending from my @linaro.org address
-> 
-> Bryan O'Donoghue (2):
->    wcn36xx: Mark internal smd functions static
->    wcn36xx: Ensure spaces between functions
-> 
->   drivers/net/wireless/ath/wcn36xx/main.c |  1 +
->   drivers/net/wireless/ath/wcn36xx/smd.c  | 65 +++++++++----------------
->   2 files changed, 23 insertions(+), 43 deletions(-)
-> 
-> 
-> base-commit: 160b351d75cb50a0dd2abf9b63e1891935aa9e4a
-> prerequisite-patch-id: 9a4ac7faca179f6594c9b3a115ee69a2da540a69
-> prerequisite-patch-id: 183286f9c22d1aaa12f356651224e6b337ef1938
-> prerequisite-patch-id: af468d413daaf8d2aad195fcb43c6e66390d8468
-> prerequisite-patch-id: 08122a9557904ce5358f52dd08cc33270fa202c1
-> prerequisite-patch-id: 82e0b7c5b2e9fa80baca001cce12577d98e306a9
-> prerequisite-patch-id: 8ee7f5bd6cb5b7b7d713947b554ad93bb90d8230
-> prerequisite-patch-id: d05c2253e4523b05b2e43491aa13ceeef68fd2f0
-> prerequisite-patch-id: 8be29513d3efa64df15297bcf81ec3db55088ee1
-> prerequisite-patch-id: d267dcd834afad75a69bcd2adcccfdad6566a7ba
-> prerequisite-patch-id: 47145acae6e24e8e6580fca1dbddfbec24f7b50b
-> prerequisite-patch-id: 8c66bccb923be821cf109a3a0d3a1a028edb4930
-> prerequisite-patch-id: d0f5f3769b2963208fd2348840726fa1d3501b63
-> prerequisite-patch-id: 746f63cf58fa3bf62736435c81dba2558aba8e81
-> prerequisite-patch-id: 375bb7847ae74c63d2eacdbd0d73371aef1546fe
-> prerequisite-patch-id: 8a598e22a08b0ec233d0ec56eeb53673eb1b8feb
-> prerequisite-patch-id: b0eba574ddc35ecec2d0e39c0d3351d1b260420e
-> prerequisite-patch-id: 143a1019813b7e4974a67e9eea1f1d599c0fdfdf
-> prerequisite-patch-id: f66d9fe9eb731272b825c9430c15dca89d6c6129
-> prerequisite-patch-id: c8c2d2dd1452c357f73fc4c92e5b564d59a05562
-> prerequisite-patch-id: 273c13464a69354d32790ed7509472d9c2b11231
-> prerequisite-patch-id: adbde1c98b85a16a6500b4210d4f055b9493418c
-> prerequisite-patch-id: 559b6f9af6b26f860896dea4c7eb385ba9bdf0d5
-> prerequisite-patch-id: 94c091c0c78b754d4c842a097a6db126bf6e770f
-> prerequisite-patch-id: f2e549349c09f4675775b40bf9bb9b1f2bec6db8
-> prerequisite-patch-id: c3a6aa788141f5b8782d28dac264470c8081bb97
-> prerequisite-patch-id: 452450f26295dc4fc48dec07ba85538d78bae4b4
-> prerequisite-patch-id: 8e7850077db9ec00df9be4fe3e0e4a4e8b06fbba
-> prerequisite-patch-id: 233db8337812d9d34f99b41ccebd8758a6ada6d9
-> prerequisite-patch-id: 0bbaaf402d2dd50a50aaa6505e5d10e743cf03e5
-> 
+This series is two in a set of seven to add support for wcn3680 at 802.11ac
+data-rates.
 
-Is there any reason these emails are percolating through this list so 
-slowly ?
+V5:
+- Fixes -W=1 warning caught in later patches by kernel build robot
+  I'm still declaring these functions standalone for the purposes of
+  granularity and bisectability, a later patch makes them static.
 
-http://lists.infradead.org/pipermail/wcn36xx/2020-September/thread.html
+V4:
+- No functional change.
+  Sending out full set again using --base=ath-202009090652 to aid kernel
+  test robot
+- https://lore.kernel.org/linux-wireless/20200908182437.2870281-1-bryan.odonoghue@linaro.org/T/#t
+
+V3:
+- Enables MU-MIMO bits in wcn36xx_smd_set_sta_vht_params()
+- Adds a set of helper functions. In the previous set these unused
+  declarations would cause a warning during compile because they were
+  declared static with the intention to add code later on to use them.
+
+  To resolve that, I do not declare the functions static. Static
+  declaration is done in a later patch after the functions have been used.
+
+- There are two good reasons for this:
+  1. Granularity. I think its important and useful to have a patch per
+     function that clearly sets out what it does and why.
+  2. Patch size. Declaring seven functions at the time of their first
+     use is not good practice.
+
+I think maintaining patch granularity is a good enough reason to not squash
+these commits down. It is pretty trivial to declare the functions static
+later on without generating compile warnings in the interregnum.
+
+V2:
+This set makes a series of modifications to enable passing of an extended
+V1 data-structure to the firmware.
+
+A series of of helper functions are added to facilitate the setup.
+
+The final step in the process is enabling the extended data-structure
+parameter passing for the wcn3680 only.
+
+Only a firmware that is capable of 80211.ac will accept the larger V1
+messages and only after explicitly enabling the DOT11AC firmware feature
+bit.
+
+- No functional difference from V1 for these patches
+  Breaking into smaller chunks to enable easier review/merging
+
+V1:
+
+https://lore.kernel.org/linux-wireless/87eensldhi.fsf@codeaurora.org/T/#t
+
+
+Bryan O'Donoghue (7):
+  wcn36xx: Add wcn36xx_set_default_rates_v1
+  wcn36xx: Add wcn36xx_smd_set_sta_default_vht_params()
+  wcn36xx: Add wcn36xx_smd_set_sta_default_ht_ldpc_params()
+  wcn36xx: Add wcn36xx_smd_set_sta_vht_params()
+  wcn36xx: Add wcn36xx_smd_set_sta_ht_ldpc_params()
+  wcn36xx: Add wcn36xx_smd_set_bss_vht_params()
+  wcn36xx: Add wrapper function wcn36xx_smd_set_sta_params_v1()
+
+ drivers/net/wireless/ath/wcn36xx/main.c    |   8 ++
+ drivers/net/wireless/ath/wcn36xx/smd.c     | 108 +++++++++++++++++++++
+ drivers/net/wireless/ath/wcn36xx/wcn36xx.h |   1 +
+ 3 files changed, 117 insertions(+)
+
+
+base-commit: 160b351d75cb50a0dd2abf9b63e1891935aa9e4a
+prerequisite-patch-id: 9a4ac7faca179f6594c9b3a115ee69a2da540a69
+prerequisite-patch-id: 183286f9c22d1aaa12f356651224e6b337ef1938
+-- 
+2.27.0
+
