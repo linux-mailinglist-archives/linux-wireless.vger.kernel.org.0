@@ -2,60 +2,60 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6784F264F9C
-	for <lists+linux-wireless@lfdr.de>; Thu, 10 Sep 2020 21:47:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D2400264F2D
+	for <lists+linux-wireless@lfdr.de>; Thu, 10 Sep 2020 21:37:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730901AbgIJPZP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 10 Sep 2020 11:25:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33056 "EHLO
+        id S1727070AbgIJTfb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 10 Sep 2020 15:35:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39272 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731246AbgIJPFN (ORCPT
+        with ESMTP id S1731386AbgIJPn1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 10 Sep 2020 11:05:13 -0400
-Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com [IPv6:2a00:1450:4864:20::343])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E935C061799
-        for <linux-wireless@vger.kernel.org>; Thu, 10 Sep 2020 08:05:10 -0700 (PDT)
-Received: by mail-wm1-x343.google.com with SMTP id x23so370602wmi.3
-        for <linux-wireless@vger.kernel.org>; Thu, 10 Sep 2020 08:05:10 -0700 (PDT)
+        Thu, 10 Sep 2020 11:43:27 -0400
+Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20760C06179B
+        for <linux-wireless@vger.kernel.org>; Thu, 10 Sep 2020 08:05:12 -0700 (PDT)
+Received: by mail-wr1-x442.google.com with SMTP id w5so7058063wrp.8
+        for <linux-wireless@vger.kernel.org>; Thu, 10 Sep 2020 08:05:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=f4Wm7zFdeM/PXkNGWzim4XzgHqQTMapz68tBAyod2iU=;
-        b=XhvUAiTcPyQFkGpIWZwHI1zHlr55baPSQMkdq5SfjBQRf7DHDnQDCmA2/Jfpixf3yB
-         ZltpY+FAT1VUZdu4L2strNyyUTYMIjqf0FZCkAZGBdIkCPsvX8Vdk5GgSaSLwPtrgbiO
-         u/By95FDOTAosQAr4tDiLqJboOJvmF+SpWEiWbH6/giFEUKiN9l4FxWfIyRHk3/95mDZ
-         kIwdGoU0AX09KnxNafhm+gs9lXzxBlk2klokLGlVympQZJ9vp98T3sldLMkaCMUycYB4
-         5AAvlUrqR3EGYivk4ymHdeY3qUtWbbH49qlme3fzpqo/Pc1lK0csmcs9JIpH22JbUs/h
-         LcRw==
+        bh=HqHLp1msqI2btcU80XmiahuTU9fQPQhG4xjHOmh9N3E=;
+        b=IZI9RjLPsZtDmR1K6FXBEjSuD+Nn8XBfF2l44tXm0qvaW8Cf+ijXJauAxJgho2bJzI
+         qklqQzKv/SLavr7ry8CIIZ8NUzpOIgzoah8yBgFHfIkFFBAl5FqSESxmZZOvAKvotj9q
+         DiAfgr4fi3MNWc5Socz04euqF0bVEx9+ycSDimrQHbtPr5QUygJZPob2CGmdK42jb/ij
+         kFMw/3RdSNVe/Ou0WMrjwKDDelzkltWR1anyntKVyVbRgksFTzovPWkVM1K5u+HhkMqB
+         ynFJWe0AddxwePCeBeGHeG33/cwbxGWXl+7dG9naBmkfRNB5PgR2XUJ4QxSAvH4tI4dk
+         9d5Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=f4Wm7zFdeM/PXkNGWzim4XzgHqQTMapz68tBAyod2iU=;
-        b=esmTx9odLHe9h7LezO7KDjm1IUdsEyxAWmz6n7ikwkuoT855O49bBJ8scYXXZLBpdt
-         fN4D36r/U68AVJBGS2WTrmuoQOFDKhI0pXCQKgCCDcyEt/OA6Pb7++TRdHDZHg7sB7b1
-         QciCih0QFKogD2nu+VZei1JoEaBWJWTJZW55oeLoeBCF1nObCpbi8mDwn3NVzTjUezPv
-         NBHniIInsUQDj/ZFb1QgyzHodIXuseUw3/uVrsHlSPctLbDygW+PwjGnoiyGuVh4RTel
-         8C198SaNVrQcS+ugWmaZuzg3SOjJZgzQ9v39/f5BAbKi6IF4H8uzgEnTlPLTcqvE+T7v
-         JJOg==
-X-Gm-Message-State: AOAM530RwO+63X6U02U9X8x+bTDqNXjLkkcH+ICemCIvPBIE+W/ytDK2
-        p+/PjQE6cx03Tj/kSD8iQRPnLg==
-X-Google-Smtp-Source: ABdhPJx2RJti/ve4EreyzXH6NxnbtGYtLRaEEQevCzISnCuRTmIkXoBrgREJ5VDpNpe/vKvxbDsLQQ==
-X-Received: by 2002:a1c:24c4:: with SMTP id k187mr444074wmk.148.1599750308810;
-        Thu, 10 Sep 2020 08:05:08 -0700 (PDT)
+        bh=HqHLp1msqI2btcU80XmiahuTU9fQPQhG4xjHOmh9N3E=;
+        b=C+QiLihPlK+r58pQJ7tOPAPwsG5OVhjLgNWWdAsaqgKbuAt3ohx1KIkVYeCt143gHp
+         ds0QEmXM2W+g0NawjmVvgbaFy+twqYEMLd1ag8JGDcOC+uQDftkq9MTUpP7iVUOe9hyw
+         TYcv0BSpwbvxCXP8F153u8rSL5RMn4wSr2Ba+dBBgYdFB+kVAmK4K8cLvC+y2/LzNlUK
+         bFu0xR8JpIi3PVNyUNWD9c+S89s0VkPFKsZPDupvMxTdtXgT6ZkprY/U74BGU3PWjWaG
+         pk7+AKyj/Oc+5H5x8Z99Rjzd8BMglVgl3Tcu56M7nXzkqlbuuee+8agLowDUxWg2JbKs
+         K+jg==
+X-Gm-Message-State: AOAM531RIA7Y0K7FczOeuqs66XW6lVTp+x7n76T+CXpDG8zJZ4nzpBaT
+        bqoUZ3DAxsVtQYJGf3EzNemjrA==
+X-Google-Smtp-Source: ABdhPJyZFhVb9R3SjF9SkGY6h0CvLw8SSbRilNUwd8SBUI/pc1eG7//X129ygYMjaZQA22XT53vWPA==
+X-Received: by 2002:a05:6000:1184:: with SMTP id g4mr9551476wrx.20.1599750310677;
+        Thu, 10 Sep 2020 08:05:10 -0700 (PDT)
 Received: from sagittarius-a.chello.ie (188-141-3-169.dynamic.upc.ie. [188.141.3.169])
-        by smtp.gmail.com with ESMTPSA id g8sm3852620wmd.12.2020.09.10.08.05.07
+        by smtp.gmail.com with ESMTPSA id g8sm3852620wmd.12.2020.09.10.08.05.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Sep 2020 08:05:08 -0700 (PDT)
+        Thu, 10 Sep 2020 08:05:10 -0700 (PDT)
 From:   Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 To:     kvalo@codeaurora.org, wcn36xx@lists.infradead.org,
         linux-wireless@vger.kernel.org
 Cc:     bryan.odonoghue@linaro.org, shawn.guo@linaro.org,
         loic.poulain@linaro.org
-Subject: [PATCH v5 4/7] wcn36xx: Add wcn36xx_smd_set_sta_vht_params()
-Date:   Thu, 10 Sep 2020 16:05:49 +0100
-Message-Id: <20200910150552.2178882-5-bryan.odonoghue@linaro.org>
+Subject: [PATCH v5 6/7] wcn36xx: Add wcn36xx_smd_set_bss_vht_params()
+Date:   Thu, 10 Sep 2020 16:05:51 +0100
+Message-Id: <20200910150552.2178882-7-bryan.odonoghue@linaro.org>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20200910150552.2178882-1-bryan.odonoghue@linaro.org>
 References: <20200910150552.2178882-1-bryan.odonoghue@linaro.org>
@@ -66,50 +66,39 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This commit adds support for setting VHT parameters based on the declared
-VHT capability bits in the VHT capability structure.
+This commit adds wcn36xx_smd_set_bss_vht_params(). The job of this function
+is to decide if the BSS is VHT capable and if so set the appropriate bit
+in the BSS parameter structure for passing to the firmware.
 
-We cannot do 160MHz so VHT Channel width set should be zero.
+VHT Channel width set is not set since we don't support 160MHz.
 
 Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 ---
- drivers/net/wireless/ath/wcn36xx/smd.c | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+ drivers/net/wireless/ath/wcn36xx/smd.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
 diff --git a/drivers/net/wireless/ath/wcn36xx/smd.c b/drivers/net/wireless/ath/wcn36xx/smd.c
-index e926bbaec220..1432f310f758 100644
+index ab9b6116cc75..d5089aa382bd 100644
 --- a/drivers/net/wireless/ath/wcn36xx/smd.c
 +++ b/drivers/net/wireless/ath/wcn36xx/smd.c
-@@ -174,6 +174,31 @@ static void wcn36xx_smd_set_sta_ht_params(struct ieee80211_sta *sta,
+@@ -146,6 +146,19 @@ static void wcn36xx_smd_set_bss_ht_params(struct ieee80211_vif *vif,
  	}
  }
  
-+void wcn36xx_smd_set_sta_vht_params(struct wcn36xx *wcn,
-+		struct ieee80211_sta *sta,
-+		struct wcn36xx_hal_config_sta_params_v1 *sta_params);
-+void wcn36xx_smd_set_sta_vht_params(struct wcn36xx *wcn,
-+		struct ieee80211_sta *sta,
-+		struct wcn36xx_hal_config_sta_params_v1 *sta_params)
++void
++wcn36xx_smd_set_bss_vht_params(struct ieee80211_vif *vif,
++			       struct ieee80211_sta *sta,
++			       struct wcn36xx_hal_config_bss_params_v1 *bss);
++void
++wcn36xx_smd_set_bss_vht_params(struct ieee80211_vif *vif,
++			       struct ieee80211_sta *sta,
++			       struct wcn36xx_hal_config_bss_params_v1 *bss)
 +{
-+	if (sta->vht_cap.vht_supported) {
-+		unsigned long caps = sta->vht_cap.cap;
-+
-+		sta_params->vht_capable = sta->vht_cap.vht_supported;
-+		sta_params->vht_ldpc_enabled =
-+			is_cap_supported(caps, IEEE80211_VHT_CAP_RXLDPC);
-+		if (get_feat_caps(wcn->fw_feat_caps, MU_MIMO)) {
-+			sta_params->vht_tx_mu_beamformee_capable =
-+				is_cap_supported(caps, IEEE80211_VHT_CAP_MU_BEAMFORMER_CAPABLE);
-+			if (sta_params->vht_tx_mu_beamformee_capable)
-+			       sta_params->vht_tx_bf_enabled = 1;
-+		} else {
-+			sta_params->vht_tx_mu_beamformee_capable = 0;
-+		}
-+		sta_params->vht_tx_channel_width_set = 0;
-+	}
++	if (sta && sta->vht_cap.vht_supported)
++		bss->vht_capable = 1;
 +}
 +
- static void wcn36xx_smd_set_sta_default_ht_params(
+ static void wcn36xx_smd_set_sta_ht_params(struct ieee80211_sta *sta,
  		struct wcn36xx_hal_config_sta_params *sta_params)
  {
 -- 
