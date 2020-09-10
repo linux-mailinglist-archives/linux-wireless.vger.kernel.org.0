@@ -2,16 +2,16 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 13BB8263D83
-	for <lists+linux-wireless@lfdr.de>; Thu, 10 Sep 2020 08:41:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 30AF9263D8B
+	for <lists+linux-wireless@lfdr.de>; Thu, 10 Sep 2020 08:46:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726893AbgIJGlI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 10 Sep 2020 02:41:08 -0400
-Received: from a27-18.smtp-out.us-west-2.amazonses.com ([54.240.27.18]:52536
-        "EHLO a27-18.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726792AbgIJGiy (ORCPT
+        id S1727830AbgIJGqi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 10 Sep 2020 02:46:38 -0400
+Received: from a27-56.smtp-out.us-west-2.amazonses.com ([54.240.27.56]:54094
+        "EHLO a27-56.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726228AbgIJGqi (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 10 Sep 2020 02:38:54 -0400
+        Thu, 10 Sep 2020 02:46:38 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
         s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1599719934;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:MIME-Version:Content-Type;
@@ -51,7 +51,7 @@ Message-ID: <0101017476bd075b-b36e0959-994e-4237-a73f-3e014b2abaa7-000000@us-wes
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
-X-SES-Outgoing: 2020.09.10-54.240.27.18
+X-SES-Outgoing: 2020.09.10-54.240.27.56
 Feedback-ID: 1.us-west-2.CZuq2qbDmUIuT3qdvXlRHZZCpfZqZ4GtG9v3VKgRyF0=:AmazonSES
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
