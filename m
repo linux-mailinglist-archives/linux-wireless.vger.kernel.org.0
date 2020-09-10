@@ -2,115 +2,147 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 71C4F263DB1
-	for <lists+linux-wireless@lfdr.de>; Thu, 10 Sep 2020 08:53:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D342263DC2
+	for <lists+linux-wireless@lfdr.de>; Thu, 10 Sep 2020 08:55:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730116AbgIJGxY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 10 Sep 2020 02:53:24 -0400
-Received: from mail.kernel.org ([198.145.29.99]:33088 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726961AbgIJGxQ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 10 Sep 2020 02:53:16 -0400
-Received: from localhost (p5486ceec.dip0.t-ipconnect.de [84.134.206.236])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 93A222078E;
-        Thu, 10 Sep 2020 06:53:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1599720795;
-        bh=/LOePKGDUR83plqAhx1ySvpBeTmOBTt4AYD41Ar10p8=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=e3Jk9M7ZKtsnsBd892ykDqq6ldjJyX23IqJ7DyDWgKOR2vkDHWpTUx3L4W3ZSGRl8
-         gbJ25CK/q4T0DRgLEQdFDMLfOBf9AoSauHV2UkWklXje0SfXK1Ub2yM0Bl5ncgFE73
-         tRqSbJwVN+gRudxLpTtOTt3VxbQSMkA19oVYS08w=
-Date:   Thu, 10 Sep 2020 08:53:12 +0200
-From:   Wolfram Sang <wsa@kernel.org>
-To:     Joe Perches <joe@perches.com>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Jiri Kosina <trivial@kernel.org>,
-        Kees Cook <kees.cook@canonical.com>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        linux-arm-kernel@lists.infradead.org, kvmarm@lists.cs.columbia.edu,
-        linux-mips@vger.kernel.org, linux-s390@vger.kernel.org,
-        linux-crypto@vger.kernel.org, linux-ide@vger.kernel.org,
-        linux-atm-general@lists.sourceforge.net, netdev@vger.kernel.org,
-        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-        nouveau@lists.freedesktop.org, linux-input@vger.kernel.org,
-        linux-i2c@vger.kernel.org, linux-rdma@vger.kernel.org,
-        iommu@lists.linux-foundation.org, dm-devel@redhat.com,
-        linux-media@vger.kernel.org, linux-mmc@vger.kernel.org,
-        linux-mtd@lists.infradead.org, intel-wired-lan@lists.osuosl.org,
-        oss-drivers@netronome.com, linux-usb@vger.kernel.org,
-        linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org,
-        linux-nvme@lists.infradead.org, linux-pm@vger.kernel.org,
-        linux-rtc@vger.kernel.org, linux-scsi@vger.kernel.org,
-        storagedev@microchip.com, sparclinux@vger.kernel.org,
-        linux-serial@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-parisc@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        linux-afs@lists.infradead.org, ceph-devel@vger.kernel.org,
-        linux-nfs@vger.kernel.org, bpf@vger.kernel.org,
-        dccp@vger.kernel.org, netfilter-devel@vger.kernel.org,
-        coreteam@netfilter.org, linux-sctp@vger.kernel.org,
-        alsa-devel <alsa-devel@alsa-project.org>
-Subject: Re: [trivial PATCH] treewide: Convert switch/case fallthrough; to
- break;
-Message-ID: <20200910065312.GH1031@ninjato>
-References: <e6387578c75736d61b2fe70d9783d91329a97eb4.camel@perches.com>
+        id S1729135AbgIJGzm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 10 Sep 2020 02:55:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41504 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726816AbgIJGy5 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 10 Sep 2020 02:54:57 -0400
+Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com [IPv6:2a00:1450:4864:20::341])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F902C061756
+        for <linux-wireless@vger.kernel.org>; Wed,  9 Sep 2020 23:54:54 -0700 (PDT)
+Received: by mail-wm1-x341.google.com with SMTP id e11so1184969wme.0
+        for <linux-wireless@vger.kernel.org>; Wed, 09 Sep 2020 23:54:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=bi75izDeyrgG3F/TUHgVGa9WxHluBHgdlM5VA3X/qaQ=;
+        b=j35D8Vvpq1cFq8gRDB8iHnKpKAKkesp6F/CabMROYXK5a2pB109LC3SbTXHIU5yX2I
+         8+9HNaxkT1wDGrDJCpRdZDI7NHr0+FMVedYZwVOq+k72PSQ6JGowoH0bnQlXXjY2WDOF
+         cB0nwOVILh28WIMkM3kXJb16dvOpqPbh9quxwkERSipfWd+xSgEcnRFlmNTCJli38Mrc
+         +AUtGzcmG9HxVGwiJjSXXXQn97gARV+ab0H9VThJdbBgN0kWf05qZB5uq/KotlYrfZKc
+         29Bb+sNAnl4UjvgoL4lKo3JpDjD7i4G21znVQOxDvyUZ1jPWQEuveWV7Su/o7j+E0du5
+         qenA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=bi75izDeyrgG3F/TUHgVGa9WxHluBHgdlM5VA3X/qaQ=;
+        b=FAZi0MPlh3apBssZHtuq4GkaPkIuvsws5eyhmJF8KtheXRP6gjsNTKqbQqEZP1zXEO
+         QXMh1CJ1hjjTuHvl1G2w5ttGQXDqXBLPXMg2IoYQurZ4giK7catk4I8r/g6ruFdoEfCF
+         i8+AMuU8n90W+egaB/aTMtAbkWOGticG/E7MLZK7RCmAO1ENs7/gl5XUk+Cp7BD75Gjh
+         b3BKASlhqiyg8rmMl9jAhAYH2IqUKgwntGycJdD0DjcBkG8kYRtZ7ENQCe0JfwXuh47f
+         CjIYsBQy549GDL0HV34j3F+eEJ1OB40ZlhTeY7XrFaOPRk5yseydWqLJcLfhbXqTQCGK
+         uLTw==
+X-Gm-Message-State: AOAM5309SJzAFRw2Zsv1Xq/Y2faOAaXNfyFfYsTZGXpYfrpByvgyB4St
+        bVkh7uIMrPMwzePpTgMzl36ehg==
+X-Google-Smtp-Source: ABdhPJy/9ON89FbE0e0aOcoTMj86yFtAMdm0VRETr7obpaN7dxPNNsAkF38nRpB1I3GAiwyo6LWVoQ==
+X-Received: by 2002:a1c:9697:: with SMTP id y145mr6792950wmd.174.1599720893461;
+        Wed, 09 Sep 2020 23:54:53 -0700 (PDT)
+Received: from dell.default ([91.110.221.246])
+        by smtp.gmail.com with ESMTPSA id m3sm2444028wme.31.2020.09.09.23.54.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 09 Sep 2020 23:54:52 -0700 (PDT)
+From:   Lee Jones <lee.jones@linaro.org>
+To:     kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org
+Cc:     linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, Lee Jones <lee.jones@linaro.org>
+Subject: [PATCH v2 00/29] [Set 1,2,3] Rid W=1 warnings in Wireless 
+Date:   Thu, 10 Sep 2020 07:54:02 +0100
+Message-Id: <20200910065431.657636-1-lee.jones@linaro.org>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="OpLPJvDmhXTZE4Lg"
-Content-Disposition: inline
-In-Reply-To: <e6387578c75736d61b2fe70d9783d91329a97eb4.camel@perches.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+This is a rebased/re-worked set of patches which have been
+previously posted to the mailing list(s).
 
---OpLPJvDmhXTZE4Lg
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+This set is part of a larger effort attempting to clean-up W=1
+kernel builds, which are currently overwhelmingly riddled with
+niggly little warnings.
 
+There are quite a few W=1 warnings in the Wireless.  My plan
+is to work through all of them over the next few weeks.
+Hopefully it won't be too long before drivers/net/wireless
+builds clean with W=1 enabled.
 
-> diff --git a/drivers/i2c/busses/i2c-i801.c b/drivers/i2c/busses/i2c-i801.c
-> index e32ef3f01fe8..b13b1cbcac29 100644
-> --- a/drivers/i2c/busses/i2c-i801.c
-> +++ b/drivers/i2c/busses/i2c-i801.c
-> @@ -1785,7 +1785,7 @@ static int i801_probe(struct pci_dev *dev, const struct pci_device_id *id)
->  		fallthrough;
->  	case PCI_DEVICE_ID_INTEL_82801CA_3:
->  		priv->features |= FEATURE_HOST_NOTIFY;
-> -		fallthrough;
-> +		break;
->  	case PCI_DEVICE_ID_INTEL_82801BA_2:
->  	case PCI_DEVICE_ID_INTEL_82801AB_3:
->  	case PCI_DEVICE_ID_INTEL_82801AA_3:
+Lee Jones (29):
+  iwlwifi: dvm: Demote non-compliant kernel-doc headers
+  iwlwifi: rs: Demote non-compliant kernel-doc headers
+  iwlwifi: dvm: tx: Demote non-compliant kernel-doc headers
+  iwlwifi: dvm: lib: Demote non-compliant kernel-doc headers
+  iwlwifi: calib: Demote seemingly unintentional kerneldoc header
+  wil6210: Fix a couple of formatting issues in 'wil6210_debugfs_init'
+  iwlwifi: dvm: sta: Demote a bunch of nonconformant kernel-doc headers
+  iwlwifi: mvm: ops: Remove unused static struct 'iwl_mvm_debug_names'
+  iwlwifi: dvm: Demote a couple of nonconformant kernel-doc headers
+  iwlwifi: mvm: utils: Fix some doc-rot
+  iwlwifi: dvm: scan: Demote a few nonconformant kernel-doc headers
+  iwlwifi: dvm: rxon: Demote non-conformant kernel-doc headers
+  iwlwifi: mvm: tx: Demote misuse of kernel-doc headers
+  iwlwifi: dvm: devices: Fix function documentation formatting issues
+  iwlwifi: iwl-drv: Provide descriptions debugfs dentries
+  wil6210: wmi: Fix formatting and demote non-conforming function
+    headers
+  wil6210: interrupt: Demote comment header which is clearly not
+    kernel-doc
+  wil6210: txrx: Demote obvious abuse of kernel-doc
+  wil6210: txrx_edma: Demote comments which are clearly not kernel-doc
+  wil6210: pmc: Demote a few nonconformant kernel-doc function headers
+  wil6210: wil_platform: Demote kernel-doc header to standard comment
+    block
+  wil6210: wmi: Correct misnamed function parameter 'ptr_'
+  ath6kl: wmi: Remove unused variable 'rate'
+  ath9k: ar9002_initvals: Remove unused array
+    'ar9280PciePhy_clkreq_off_L1_9280'
+  ath9k: ar9001_initvals: Remove unused array 'ar5416Bank6_9100'
+  ath9k: ar5008_initvals: Remove unused table entirely
+  ath9k: ar5008_initvals: Move ar5416Bank{0,1,2,3,7} to where they are
+    used
+  brcmsmac: phytbl_lcn: Remove unused array 'dot11lcn_gain_tbl_rev1'
+  brcmsmac: phy_lcn: Remove unused variable
+    'lcnphy_rx_iqcomp_table_rev0'
 
-I am not the maintainer (Jean is) but I suggest to drop this hunk. The
-code is more complex with multiple 'fallthrough', so this change alone
-actually makes the code inconsistent. A rework would need a seperate
-patch.
+ drivers/net/wireless/ath/ath6kl/wmi.c         | 10 +-
+ .../net/wireless/ath/ath9k/ar5008_initvals.h  | 68 -------------
+ drivers/net/wireless/ath/ath9k/ar5008_phy.c   | 31 +++++-
+ .../net/wireless/ath/ath9k/ar9001_initvals.h  | 37 -------
+ .../net/wireless/ath/ath9k/ar9002_initvals.h  | 14 ---
+ drivers/net/wireless/ath/wil6210/debugfs.c    |  8 +-
+ drivers/net/wireless/ath/wil6210/interrupt.c  |  4 +-
+ drivers/net/wireless/ath/wil6210/pmc.c        | 12 +--
+ drivers/net/wireless/ath/wil6210/txrx.c       | 30 ++----
+ drivers/net/wireless/ath/wil6210/txrx_edma.c  | 10 +-
+ .../net/wireless/ath/wil6210/wil_platform.c   |  3 +-
+ drivers/net/wireless/ath/wil6210/wmi.c        | 36 +++----
+ .../broadcom/brcm80211/brcmsmac/phy/phy_lcn.c | 55 -----------
+ .../brcm80211/brcmsmac/phy/phytbl_lcn.c       | 99 -------------------
+ .../net/wireless/intel/iwlwifi/dvm/calib.c    |  2 +-
+ .../net/wireless/intel/iwlwifi/dvm/devices.c  |  8 +-
+ drivers/net/wireless/intel/iwlwifi/dvm/lib.c  |  4 +-
+ drivers/net/wireless/intel/iwlwifi/dvm/main.c | 11 +--
+ drivers/net/wireless/intel/iwlwifi/dvm/rs.c   | 12 +--
+ drivers/net/wireless/intel/iwlwifi/dvm/rx.c   |  4 +-
+ drivers/net/wireless/intel/iwlwifi/dvm/rxon.c |  6 +-
+ drivers/net/wireless/intel/iwlwifi/dvm/scan.c |  8 +-
+ drivers/net/wireless/intel/iwlwifi/dvm/sta.c  | 22 ++---
+ drivers/net/wireless/intel/iwlwifi/dvm/tx.c   |  4 +-
+ drivers/net/wireless/intel/iwlwifi/iwl-drv.c  |  5 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/ops.c  |  9 --
+ drivers/net/wireless/intel/iwlwifi/mvm/tx.c   |  4 +-
+ .../net/wireless/intel/iwlwifi/mvm/utils.c    |  7 +-
+ 28 files changed, 120 insertions(+), 403 deletions(-)
 
+-- 
+2.25.1
 
---OpLPJvDmhXTZE4Lg
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAl9ZzVQACgkQFA3kzBSg
-KbYNuA//cymFe0KsFqywRHv3eBWJhoqwvWN2Xhwrx5/b6N3kkKGTo61aOo1ZI2gU
-55rQoGusy8OzGXaxlyhNS8Ea9ztPZc/tHEohOHKPYr52ErUMXlbMo3I3q7sZAZEI
-O/bRlnPKUCKqKOpZBin0ri6NE3FNYybTW30HgIk/LFUeCuaup10cUcxCmPfXHlNc
-M/2M2tBVyyBOqlVVsPxIfEZ4jGDaikxt7mBZDj4QMJnivnuMFuuz8U7gYzkXIHfO
-4ahGx+dBLCCInwFNFjEIPr+biq6Bgt/Vl9bbgN/BYbzdgbbJcikEhWHd9FxEoxQ5
-Y4M6/HxLDuCwTLIoFHjVifsFHK4Emk5ECc0xBWjHu3CJDunZSmy6yS5gbD1BrstW
-Djf0Ue1kyqnVPBDKE0EwFmwz1z1V14bhhXVC1fkiJjTpYRA6g3zMwH1oan6XIbGj
-v4OuWFDkQLEfzCCBIASGS849HtQ4rNafKxX3KQ3qxngh7XBrK7X92SLf3qRJurdt
-h5Ozd/zYDzyKQ1nOf/XWAOP5SKZH2ANjTrFKgIZE8MRkTmbzrlZkCnDnFD0pKPlB
-Z9h9uPZ7kifAejwaRPfsTu6/B9XJafMKfLa3hKTg2kgO+p67ItBEQ0W8wrXLE1/1
-c5FW5PqdkjKnx/9yUqosjEsHV2goh1guE4cziLkF1pZXcrElbtk=
-=ZP3J
------END PGP SIGNATURE-----
-
---OpLPJvDmhXTZE4Lg--
