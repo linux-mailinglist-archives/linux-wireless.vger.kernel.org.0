@@ -2,77 +2,128 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6556526566D
-	for <lists+linux-wireless@lfdr.de>; Fri, 11 Sep 2020 03:11:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D5141265804
+	for <lists+linux-wireless@lfdr.de>; Fri, 11 Sep 2020 06:19:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725306AbgIKBLi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 10 Sep 2020 21:11:38 -0400
-Received: from a27-185.smtp-out.us-west-2.amazonses.com ([54.240.27.185]:37864
-        "EHLO a27-185.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725300AbgIKBLf (ORCPT
+        id S1725840AbgIKETy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 11 Sep 2020 00:19:54 -0400
+Received: from smtprelay0064.hostedemail.com ([216.40.44.64]:51536 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1725283AbgIKETs (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 10 Sep 2020 21:11:35 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1599786695;
-        h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Transfer-Encoding;
-        bh=E/AQsDCUpDVP0lmpm4INGF51NRXzmJb7LzqsCDibAaw=;
-        b=bJULnC2vAjiUwza2wv6MtDBfcCx+U2ZmOTA6kQ2xmyMfMM8Zb/yUTG0h43kNNgBy
-        ZQU+l+XIfs3Ta7IoaA9Lo8IbcoBgoOoZXb42XlLIZfBfrK1jFQBCxEKdDh1zKe0Nhvm
-        4WXUh9DjNti2C+NIpv6RhHfj+tXEEa1hdWj2NhN0=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=hsbnp7p3ensaochzwyq5wwmceodymuwv; d=amazonses.com; t=1599786695;
-        h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Transfer-Encoding:Feedback-ID;
-        bh=E/AQsDCUpDVP0lmpm4INGF51NRXzmJb7LzqsCDibAaw=;
-        b=a9gLzAoQP276siDD+fSND55ca/9j6AXEOOAYNuItN2puN1mijHUVr1uJzgVsxQa3
-        y7T2ibcZLwX9KKobf1tc8DStkPRYPlsRPc5mY1pCanDM3S3wFDpHCwVhRaZlvovUj8I
-        jCo2kaGUcrXOiE54y1GKxUwnUA8gmMvSiK6iFOMI=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 2F207C433C6
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=alokad@codeaurora.org
-From:   Aloka Dixit <alokad@codeaurora.org>
-To:     johannes@sipsolutions.net
-Cc:     linux-wireless@vger.kernel.org, Aloka Dixit <alokad@codeaurora.org>
-Subject: [PATCH] mac80211: Fix radiotap header channel flag for 6GHz band
-Date:   Fri, 11 Sep 2020 01:11:35 +0000
-Message-ID: <010101747ab7b703-1d7c9851-1594-43bf-81f7-f79ce7a67cc6-000000@us-west-2.amazonses.com>
-X-Mailer: git-send-email 2.25.0
+        Fri, 11 Sep 2020 00:19:48 -0400
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay03.hostedemail.com (Postfix) with ESMTP id 12942837F24A;
+        Fri, 11 Sep 2020 04:19:43 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:800:960:973:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1542:1593:1594:1711:1730:1747:1777:1792:2198:2199:2393:2559:2562:2828:3138:3139:3140:3141:3142:3354:3622:3865:3866:3867:3868:3870:3871:3872:3874:4321:5007:6742:6743:10004:10400:10848:11026:11232:11473:11657:11658:11914:12043:12297:12438:12555:12740:12760:12895:13153:13161:13228:13229:13439:14096:14097:14181:14659:14721:21080:21433:21627:30054:30070:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:1,LUA_SUMMARY:none
+X-HE-Tag: seat91_4d0f80d270eb
+X-Filterd-Recvd-Size: 4376
+Received: from XPS-9350.home (unknown [47.151.133.149])
+        (Authenticated sender: joe@perches.com)
+        by omf19.hostedemail.com (Postfix) with ESMTPA;
+        Fri, 11 Sep 2020 04:19:36 +0000 (UTC)
+Message-ID: <f4ad706519917d493a0af32ea2da8565227cc74a.camel@perches.com>
+Subject: Re: [trivial PATCH] treewide: Convert switch/case fallthrough; to
+ break;
+From:   Joe Perches <joe@perches.com>
+To:     Robin Murphy <robin.murphy@arm.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Jiri Kosina <trivial@kernel.org>
+Cc:     linux-wireless@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        oss-drivers@netronome.com, nouveau@lists.freedesktop.org,
+        alsa-devel <alsa-devel@alsa-project.org>,
+        dri-devel@lists.freedesktop.org, linux-ide@vger.kernel.org,
+        dm-devel@redhat.com, linux-mtd@lists.infradead.org,
+        linux-i2c@vger.kernel.org, sparclinux@vger.kernel.org,
+        kvmarm@lists.cs.columbia.edu, linux-rtc@vger.kernel.org,
+        linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org,
+        dccp@vger.kernel.org, linux-rdma@vger.kernel.org,
+        linux-atm-general@lists.sourceforge.net,
+        linux-afs@lists.infradead.org, coreteam@netfilter.org,
+        intel-wired-lan@lists.osuosl.org, linux-serial@vger.kernel.org,
+        linux-input@vger.kernel.org, linux-mmc@vger.kernel.org,
+        Kees Cook <kees.cook@canonical.com>,
+        linux-media@vger.kernel.org, linux-pm@vger.kernel.org,
+        intel-gfx@lists.freedesktop.org, linux-sctp@vger.kernel.org,
+        linux-mediatek@lists.infradead.org, linux-nvme@lists.infradead.org,
+        storagedev@microchip.com, ceph-devel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-nfs@vger.kernel.org,
+        linux-parisc@vger.kernel.org, netdev@vger.kernel.org,
+        linux-usb@vger.kernel.org,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        linux-mips@vger.kernel.org, iommu@lists.linux-foundation.org,
+        netfilter-devel@vger.kernel.org, linux-crypto@vger.kernel.org,
+        bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        Will Deacon <will@kernel.org>
+Date:   Thu, 10 Sep 2020 21:19:35 -0700
+In-Reply-To: <9372456a-8dcf-2735-57a4-e126aa5df3a6@arm.com>
+References: <e6387578c75736d61b2fe70d9783d91329a97eb4.camel@perches.com>
+         <9372456a-8dcf-2735-57a4-e126aa5df3a6@arm.com>
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.36.4-0ubuntu1 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SES-Outgoing: 2020.09.11-54.240.27.185
-Feedback-ID: 1.us-west-2.CZuq2qbDmUIuT3qdvXlRHZZCpfZqZ4GtG9v3VKgRyF0=:AmazonSES
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Radiotap header field 'Channel flags' has '2 GHz spectrum' set to
-'true' for 6GHz packet.
-Change it to 5GHz as there isn't a separate option available for 6GHz.
+On Thu, 2020-09-10 at 15:21 +0100, Robin Murphy wrote:
+> On 2020-09-09 21:06, Joe Perches wrote:
+> > fallthrough to a separate case/default label break; isn't very readable.
+> > 
+> > Convert pseudo-keyword fallthrough; statements to a simple break; when
+> > the next label is case or default and the only statement in the next
+> > label block is break;
+> > 
+> > Found using:
+> > 
+> > $ grep-2.5.4 -rP --include=*.[ch] -n "fallthrough;(\s*(case\s+\w+|default)\s*:\s*){1,7}break;" *
+> > 
+> > Miscellanea:
+> > 
+> > o Move or coalesce a couple label blocks above a default: block.
+> > 
+> > Signed-off-by: Joe Perches <joe@perches.com>
+> > ---
+> > 
+> > Compiled allyesconfig x86-64 only.
+> > A few files for other arches were not compiled.
+> > 
+> 
+> [...]
+> > diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
+> > index c192544e874b..743db1abec40 100644
+> > --- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
+> > +++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
+> > @@ -3777,7 +3777,7 @@ static int arm_smmu_device_hw_probe(struct arm_smmu_device *smmu)
+> >   	switch (FIELD_GET(IDR0_TTF, reg)) {
+> >   	case IDR0_TTF_AARCH32_64:
+> >   		smmu->ias = 40;
+> > -		fallthrough;
+> > +		break;
+> >   	case IDR0_TTF_AARCH64:
+> >   		break;
+> >   	default:
+> 
+> I have to say I don't really agree with the readability argument for 
+> this one - a fallthrough is semantically correct here, since the first 
+> case is a superset of the second. It just happens that anything we would 
+> do for the common subset is implicitly assumed (there are other 
+> potential cases we simply haven't added support for at the moment), thus 
+> the second case is currently empty.
+> This change actively obfuscates that distinction.
 
-Signed-off-by: Aloka Dixit <alokad@codeaurora.org>
----
- net/mac80211/rx.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Then perhaps comments should be added to usefully
+describe the mechanisms.
 
-diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-index 836cde516a18..a959ebf56852 100644
---- a/net/mac80211/rx.c
-+++ b/net/mac80211/rx.c
-@@ -451,7 +451,8 @@ ieee80211_add_rx_radiotap_header(struct ieee80211_local *local,
- 	else if (status->bw == RATE_INFO_BW_5)
- 		channel_flags |= IEEE80211_CHAN_QUARTER;
- 
--	if (status->band == NL80211_BAND_5GHZ)
-+	if (status->band == NL80211_BAND_5GHZ ||
-+	    status->band == NL80211_BAND_6GHZ)
- 		channel_flags |= IEEE80211_CHAN_OFDM | IEEE80211_CHAN_5GHZ;
- 	else if (status->encoding != RX_ENC_LEGACY)
- 		channel_flags |= IEEE80211_CHAN_DYN | IEEE80211_CHAN_2GHZ;
--- 
-2.25.0
+	case IDR0_TTF_AARCH32_64:
+		smmu->ias = 40;
+		fallthrough;	/* and still do the 64 bit processing */
+	case IDR0_TTF_AARCH64:
+		/* Nothing specific yet */
+		break;
+
+> Robin.
 
