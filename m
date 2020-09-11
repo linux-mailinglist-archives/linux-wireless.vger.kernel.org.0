@@ -2,79 +2,88 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 344AF265D92
-	for <lists+linux-wireless@lfdr.de>; Fri, 11 Sep 2020 12:15:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 32EC9265DD5
+	for <lists+linux-wireless@lfdr.de>; Fri, 11 Sep 2020 12:29:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725937AbgIKKPi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 11 Sep 2020 06:15:38 -0400
-Received: from a27-10.smtp-out.us-west-2.amazonses.com ([54.240.27.10]:57860
-        "EHLO a27-10.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725930AbgIKKPc (ORCPT
+        id S1725810AbgIKK3G (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 11 Sep 2020 06:29:06 -0400
+Received: from a27-188.smtp-out.us-west-2.amazonses.com ([54.240.27.188]:50794
+        "EHLO a27-188.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725710AbgIKK3D (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 11 Sep 2020 06:15:32 -0400
+        Fri, 11 Sep 2020 06:29:03 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1599819332;
-        h=MIME-Version:Content-Type:Content-Transfer-Encoding:Date:From:To:Cc:Subject:In-Reply-To:References:Message-ID;
-        bh=b4NVQ5krglxj3ZL6TUhhpef5Nz9C4+SgBpsAy475dgU=;
-        b=dQBoWYoOiqoVSlMkwP6FitmZ1Pr7/Bmh4pfqlqaTYT4FHIh4ov8mr9lDyh3D+OEq
-        nXxkSh0eqbLDREHvfTL3b6gFJat1uLJPcYY66eGN7vt00P1fyH7gpQxqTucyvUtBFzJ
-        h8cIWNiMWMK9aXWpprq7YmhYSi16ZieIBDmZK2P4=
+        s=gbvhytky6xpx7itkhb67ktsxbiwpnxix; d=codeaurora.org; t=1599820142;
+        h=From:To:Cc:Subject:Date:Message-Id;
+        bh=E0O4cRkVYea8p/aCJQqVPQUhPH/+iV+SPpANjQ/SNoQ=;
+        b=DNB78KAtvueQ2q5Xr/ddZPrGyhZMxhCgbNR0Ik6kc6mXvobC1/0OGVBqGHjV1RrK
+        EdsyIsE7DtN0SxxBhAgEvXUS478VFcb/dG03hrKW3hl6M2OBxkLiEKEWQbk9Jf+uzpu
+        0DQKwwwbzZjL5GICtCznRGoyd7tO5NXPb3rmJQ9I=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=hsbnp7p3ensaochzwyq5wwmceodymuwv; d=amazonses.com; t=1599819332;
-        h=MIME-Version:Content-Type:Content-Transfer-Encoding:Date:From:To:Cc:Subject:In-Reply-To:References:Message-ID:Feedback-ID;
-        bh=b4NVQ5krglxj3ZL6TUhhpef5Nz9C4+SgBpsAy475dgU=;
-        b=J3QJQPAecR83HURfhBUClTYYp1jdRINbbh7CFnz4iSi9UiO/7Itl0ImjslDC56fN
-        4eyU7IaZDcByZoJ7xWOTkiiINwsWvWdMKaHOG9FOQFQGLJTIQ99FE7yXdeY6pm/aGCi
-        IvO5aM6KI0dyZh5I5XW6ka0i3bY7PYJAq0jbR8rA=
+        s=hsbnp7p3ensaochzwyq5wwmceodymuwv; d=amazonses.com; t=1599820142;
+        h=From:To:Cc:Subject:Date:Message-Id:Feedback-ID;
+        bh=E0O4cRkVYea8p/aCJQqVPQUhPH/+iV+SPpANjQ/SNoQ=;
+        b=D8l5lMyXHTDfMuoQK685Grms2IeON7FD4SYZpOXDKol3wuzVrcIVphGtwM1q/BHJ
+        hjsmpNy0nWW2MmcJl6fK1bAhT/nHn7e4D/9Kmc7wHh7JfDdpgAwQlCpWTqL79YJ2S2c
+        6+qFqqLBPHLfPcju7sMMAJhrs+EYHyJVSnoX937E=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Fri, 11 Sep 2020 10:15:32 +0000
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 727DFC433FE
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=wgong@codeaurora.org
 From:   Wen Gong <wgong@codeaurora.org>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     Ben Greear <greearb@candelatech.com>,
-        linux-wireless@vger.kernel.org, ath10k@lists.infradead.org
-Subject: Re: lockdep splat in kvallo ath tree
-In-Reply-To: <87v9gk4soh.fsf@tynnyri.adurom.net>
-References: <0ef69472-9613-c265-0635-ff2ef0cf274f@candelatech.com>
- <87v9gk4soh.fsf@tynnyri.adurom.net>
-Message-ID: <010101747ca9b9d5-847d1307-081b-4f1d-a78e-5f23833006ea-000000@us-west-2.amazonses.com>
-X-Sender: wgong@codeaurora.org
-User-Agent: Roundcube Webmail/1.3.9
-X-SES-Outgoing: 2020.09.11-54.240.27.10
+To:     ath11k@lists.infradead.org, johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org, wgong@codeaurora.org
+Subject: [PATCH] mac80211: do not set IEEE80211_STA_DISABLE_HE for NL80211_BAND_2GHZ
+Date:   Fri, 11 Sep 2020 10:29:02 +0000
+Message-ID: <010101747cb617f2-593c5410-1648-4a42-97a0-f3646a5a6dd1-000000@us-west-2.amazonses.com>
+X-Mailer: git-send-email 2.7.4
+X-SES-Outgoing: 2020.09.11-54.240.27.188
 Feedback-ID: 1.us-west-2.CZuq2qbDmUIuT3qdvXlRHZZCpfZqZ4GtG9v3VKgRyF0=:AmazonSES
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2020-09-11 16:35, Kalle Valo wrote:
-> + ath10k
-> 
-> Ben Greear <greearb@candelatech.com> writes:
-> 
->> The patch below adds a call to ath10k_debug_fw_stats_request(ar),
->> which expects ar->conf_mutex to be held, but it is *not* held in
->> this code path.  This leads to warnings when lockdep is enabled.
->> 
->> 
->> greearb@bendt7 ath10k]$ git show 4913e675630ec
->> commit 4913e675630ec1a15c92651f426a63755c71b91b
->> Author: Wen Gong <wgong@codeaurora.org>
->> Date:   Thu Apr 23 10:27:58 2020 +0800
->> 
->>     ath10k: enable rx duration report default for wmi tlv
->> 
->>     When run command "iw dev wlan0 station dump", the rx duration is 
->> 0.
->>     When firmware indicate WMI_UPDATE_STATS_EVENTID, extended flag of
->>     statsis not set by default, so firmware do not report rx duration.
-> 
-> Wen, please investigate this.
-Yes, Kalle, I will do that.
+VHT is not support for NL80211_BAND_2GHZ, but HE is support for it, so
+it should not set IEEE80211_STA_DISABLE_HE for NL80211_BAND_2GHZ if it
+does not support VHT.
+
+When connec to AP with NL80211_BAND_2GHZ, it does not support VHT, then
+it failed for HE and connected with HT mode. After this patch, it connected
+with HE mode for NL80211_BAND_2GHZ with a HE mode 11AX AP.
+
+Fixes: 57fa5e85d53ce51 ("mac80211: determine chandef from HE 6 GHz operation")
+
+Signed-off-by: Wen Gong <wgong@codeaurora.org>
+---
+ net/mac80211/mlme.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index b2a9d47cf86d..c85186799d05 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -4853,6 +4853,7 @@ static int ieee80211_prep_channel(struct ieee80211_sub_if_data *sdata,
+ 	struct ieee80211_supported_band *sband;
+ 	struct cfg80211_chan_def chandef;
+ 	bool is_6ghz = cbss->channel->band == NL80211_BAND_6GHZ;
++	bool is_5ghz = cbss->channel->band == NL80211_BAND_5GHZ;
+ 	struct ieee80211_bss *bss = (void *)cbss->priv;
+ 	int ret;
+ 	u32 i;
+@@ -4871,7 +4872,7 @@ static int ieee80211_prep_channel(struct ieee80211_sub_if_data *sdata,
+ 		ifmgd->flags |= IEEE80211_STA_DISABLE_HE;
+ 	}
+ 
+-	if (!sband->vht_cap.vht_supported && !is_6ghz) {
++	if (!sband->vht_cap.vht_supported && is_5ghz) {
+ 		ifmgd->flags |= IEEE80211_STA_DISABLE_VHT;
+ 		ifmgd->flags |= IEEE80211_STA_DISABLE_HE;
+ 	}
+-- 
+2.23.0
+
