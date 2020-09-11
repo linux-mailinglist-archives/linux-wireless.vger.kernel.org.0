@@ -2,139 +2,54 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A2E95265C78
-	for <lists+linux-wireless@lfdr.de>; Fri, 11 Sep 2020 11:30:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E241D265CB2
+	for <lists+linux-wireless@lfdr.de>; Fri, 11 Sep 2020 11:43:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725781AbgIKJaG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 11 Sep 2020 05:30:06 -0400
-Received: from a27-10.smtp-out.us-west-2.amazonses.com ([54.240.27.10]:39166
-        "EHLO a27-10.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725710AbgIKJaA (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 11 Sep 2020 05:30:00 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1599816599;
-        h=MIME-Version:Content-Type:Content-Transfer-Encoding:Date:From:To:Cc:Subject:In-Reply-To:References:Message-ID;
-        bh=Zq8bJjYwHsQZJt6GKnKDYFqvWyWQdWAV4ouwbXypAhQ=;
-        b=H5o2PE8Z5x8AM+PT3EYRLk9TsO1fiDWu4/uo5bVDommvOHZGJ/ZCrwlM4aQnnmub
-        sy0jiNY+kWecyUgp72EhwoHH/4YVjhS5OSGAy2W/FLKSLRI64nkk7CkVT5GMbUvKe4b
-        RdIKmY+ECDshKOFulL1lDFprUv9x9MwXPkW9SF4w=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=hsbnp7p3ensaochzwyq5wwmceodymuwv; d=amazonses.com; t=1599816599;
-        h=MIME-Version:Content-Type:Content-Transfer-Encoding:Date:From:To:Cc:Subject:In-Reply-To:References:Message-ID:Feedback-ID;
-        bh=Zq8bJjYwHsQZJt6GKnKDYFqvWyWQdWAV4ouwbXypAhQ=;
-        b=OA6V39Dei1Uo5v73cxXpXUcdPrF92KKhahnJWwfb1VXhHgfCQWbpFosybAyhzauk
-        LILVxvCQM7dgSjq0UBf6tLq5N71W4CQm6APu9vwm2zyFZ98Cs6x0beOUJiQBoevdRqo
-        LQ8ci//4SYs+ZrsG6U2l53MDSKHJks7F1i6TsfmI=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
+        id S1725789AbgIKJnq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 11 Sep 2020 05:43:46 -0400
+Received: from pop36.abv.bg ([194.153.145.227]:52424 "EHLO pop36.abv.bg"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725730AbgIKJnk (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 11 Sep 2020 05:43:40 -0400
+X-Greylist: delayed 388 seconds by postgrey-1.27 at vger.kernel.org; Fri, 11 Sep 2020 05:43:39 EDT
+Received: from smtp.abv.bg (localhost [127.0.0.1])
+        by pop36.abv.bg (Postfix) with ESMTP id BC7AA1805C62
+        for <linux-wireless@vger.kernel.org>; Fri, 11 Sep 2020 12:37:06 +0300 (EEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=abv.bg; s=smtp-out;
+        t=1599817026; bh=XgQyOCFPANTgT8Fj/KI4kde7ooaeTXQ3GxNklv7xecY=;
+        h=To:From:Subject:Date:From;
+        b=p3gPB2/s5+mbi6VQfMF+3vjHECu4OxPxZHW4rNmdMBNlvY4RjFSS8XfdmxJvNPfZN
+         yTR62vGnLaYB4/3zwcPF1vaK+A3ho8MaZJpzctMKd+oGMsPvs2AP8nLtWTInuUtmA4
+         2t9GVq11EZIzZA/3l6z3U+/dhLB5x/4CIf0pXbyA=
+X-HELO: [192.168.1.110]
+Authentication-Results: smtp.abv.bg; auth=pass (plain) smtp.auth=buboleck@abv.bg
+Received: from 46-249-79-198.net1.bg (HELO [192.168.1.110]) (46.249.79.198)
+ by smtp.abv.bg (qpsmtpd/0.96) with ESMTPSA (ECDHE-RSA-AES256-GCM-SHA384 encrypted); Fri, 11 Sep 2020 12:37:06 +0300
+To:     linux-wireless@vger.kernel.org
+From:   Dimitar Kosev <buboleck@abv.bg>
+Subject: RTW88 does not support rtl8821ce RFE4 cards
+Message-ID: <73964f6f-bf86-4cfa-91ef-0ff03caa5f86@abv.bg>
+Date:   Fri, 11 Sep 2020 12:37:04 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.12.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Date:   Fri, 11 Sep 2020 09:29:59 +0000
-From:   Wen Gong <wgong@codeaurora.org>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org,
-        Rajkumar Manoharan <rmanohar@codeaurora.org>,
-        Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>,
-        Johannes Berg <johannes.berg@intel.com>,
-        linux-wireless-owner@vger.kernel.org, ath11k@lists.infradead.org
-Subject: Re: [PATCH v2 13/24] mac80211: determine chandef from HE 6 GHz
- operation
-In-Reply-To: <20200528213443.25687d2695bc.I3f9747c1147480f65445f13eda5c4a5ed4e86757@changeid>
-References: <20200528213443.993f108e96ca.I0086ae42d672379380d04ac5effb2f3d5135731b@changeid>
- <20200528213443.25687d2695bc.I3f9747c1147480f65445f13eda5c4a5ed4e86757@changeid>
-Message-ID: <010101747c80077b-a00559ae-264a-4140-b662-625e0949a112-000000@us-west-2.amazonses.com>
-X-Sender: wgong@codeaurora.org
-User-Agent: Roundcube Webmail/1.3.9
-X-SES-Outgoing: 2020.09.11-54.240.27.10
-Feedback-ID: 1.us-west-2.CZuq2qbDmUIuT3qdvXlRHZZCpfZqZ4GtG9v3VKgRyF0=:AmazonSES
+Content-Language: en-US
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2020-05-29 03:34, Johannes Berg wrote:
-> From: Johannes Berg <johannes.berg@intel.com>
-> 
-> Support connecting to HE 6 GHz APs and mesh networks on 6 GHz,
-> where the HT/VHT information is missing but instead the HE 6 GHz
-> band capability is present, and the 6 GHz Operation information
-> field is used to encode the channel configuration instead of the
-> HT/VHT operation elements.
-> 
-> Also add some other bits needed to connect to 6 GHz networks.
-> 
-> Link:
-> https://lore.kernel.org/r/1589399105-25472-10-git-send-email-rmanohar@codeaurora.org
-> Co-developed-by: Rajkumar Manoharan <rmanohar@codeaurora.org>
-> Signed-off-by: Rajkumar Manoharan <rmanohar@codeaurora.org>
-> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-> ---
->  net/mac80211/ieee80211_i.h |   3 ++
->  net/mac80211/mesh.c        |   1 +
->  net/mac80211/mlme.c        |  69 +++++++++++++++++-------
->  net/mac80211/util.c        | 106 +++++++++++++++++++++++++++++++++++++
->  4 files changed, 160 insertions(+), 19 deletions(-)
-> 
-[...]
-> @@ -4838,21 +4860,23 @@ static int ieee80211_prep_channel(struct
-> ieee80211_sub_if_data *sdata,
->  			  IEEE80211_STA_DISABLE_160MHZ);
-> 
->  	/* disable HT/VHT/HE if we don't support them */
-> -	if (!sband->ht_cap.ht_supported) {
-> +	if (!sband->ht_cap.ht_supported && !is_6ghz) {
->  		ifmgd->flags |= IEEE80211_STA_DISABLE_HT;
->  		ifmgd->flags |= IEEE80211_STA_DISABLE_VHT;
->  		ifmgd->flags |= IEEE80211_STA_DISABLE_HE;
->  	}
-> 
-> -	if (!sband->vht_cap.vht_supported)
-> +	if (!sband->vht_cap.vht_supported && !is_6ghz) {
->  		ifmgd->flags |= IEEE80211_STA_DISABLE_VHT;
-> +		ifmgd->flags |= IEEE80211_STA_DISABLE_HE;
-> +	}
-when connec to NL80211_BAND_2GHZ, it does not support vht, then it 
-failed for HE and connected with HT mode.
-I tesed with below change, it fix the issue, it connected with HE mode 
-for NL80211_BAND_2GHZ with an HE mode 11AX AP.
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index b2a9d47cf86d..c85186799d05 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -4853,6 +4853,7 @@ static int ieee80211_prep_channel(struct 
-ieee80211_sub_if_data *sdata,
-         struct ieee80211_supported_band *sband;
-         struct cfg80211_chan_def chandef;
-         bool is_6ghz = cbss->channel->band == NL80211_BAND_6GHZ;
-+       bool is_5ghz = cbss->channel->band == NL80211_BAND_5GHZ;
-         struct ieee80211_bss *bss = (void *)cbss->priv;
-         int ret;
-         u32 i;
-@@ -4871,7 +4872,7 @@ static int ieee80211_prep_channel(struct 
-ieee80211_sub_if_data *sdata,
-                 ifmgd->flags |= IEEE80211_STA_DISABLE_HE;
-         }
+Hello,
 
--       if (!sband->vht_cap.vht_supported && !is_6ghz) {
-+       if (!sband->vht_cap.vht_supported && is_5ghz) {
-                 ifmgd->flags |= IEEE80211_STA_DISABLE_VHT;
-                 ifmgd->flags |= IEEE80211_STA_DISABLE_HE;
-         }
-> 
->  	if (!ieee80211_get_he_sta_cap(sband))
->  		ifmgd->flags |= IEEE80211_STA_DISABLE_HE;
-> 
->  	rcu_read_lock();
-> 
-> -	if (!(ifmgd->flags & IEEE80211_STA_DISABLE_HT)) {
-> +	if (!(ifmgd->flags & IEEE80211_STA_DISABLE_HT) && !is_6ghz) {
->  		const u8 *ht_oper_ie, *ht_cap_ie;
-> 
->  		ht_oper_ie = ieee80211_bss_get_ie(cbss, WLAN_EID_HT_OPERATION);
-[...]
+My rtl8821ce card is RFE4 and I see the driver only supports RFE 0 and 1:
+
+[ 2.324824] rtw_8821ce 0000:01:00.0: enabling device (0000 -> 0003)
+[ 2.329142] rtw_8821ce 0000:01:00.0: Firmware version 24.5.0, H2C version 12
+[ 2.350506] rtw_8821ce 0000:01:00.0: rfe 4 isn't supported
+[ 2.350612] rtw_8821ce 0000:01:00.0: failed to setup chip efuse info
+[ 2.350615] rtw_8821ce 0000:01:00.0: failed to setup chip information
+
+Kind regards.
+
