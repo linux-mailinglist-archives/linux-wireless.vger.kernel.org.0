@@ -2,74 +2,98 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CA9AC265D25
-	for <lists+linux-wireless@lfdr.de>; Fri, 11 Sep 2020 11:59:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 08689265D5B
+	for <lists+linux-wireless@lfdr.de>; Fri, 11 Sep 2020 12:06:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725854AbgIKJ7X (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 11 Sep 2020 05:59:23 -0400
-Received: from a27-186.smtp-out.us-west-2.amazonses.com ([54.240.27.186]:47052
-        "EHLO a27-186.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725768AbgIKJ7T (ORCPT
+        id S1725770AbgIKKGQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 11 Sep 2020 06:06:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40494 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725554AbgIKKGO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 11 Sep 2020 05:59:19 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1599818359;
-        h=Content-Type:MIME-Version:Content-Transfer-Encoding:Subject:From:In-Reply-To:References:To:Cc:Message-Id:Date;
-        bh=U0meEUz4aGuUw+kGbyj6MMa66pIP6tpJxlVsPbQ3jvQ=;
-        b=U0RZCo8PH2fWGCET0rglrRu/nrGrud8rNNfjVqY4l7ZDUNBsZ7kJ2DUzFYRVbwJQ
-        GMVk7qdmW84hIzFCl7/MWDdgxLX0RyIJzGs0g86PPgVhoetO/myQJh5s1ocL/dzUBeJ
-        UNpOS0YKRwnnX298DFHh6S0WFyGA/+y0uuX/bzcE=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=hsbnp7p3ensaochzwyq5wwmceodymuwv; d=amazonses.com; t=1599818359;
-        h=Content-Type:MIME-Version:Content-Transfer-Encoding:Subject:From:In-Reply-To:References:To:Cc:Message-Id:Date:Feedback-ID;
-        bh=U0meEUz4aGuUw+kGbyj6MMa66pIP6tpJxlVsPbQ3jvQ=;
-        b=TVTlS3B/xbNZw1CwU8+fsf/P3djUnJkgdxREWK7Tpg7dFwgroPIkGHIEYTFactBr
-        y0mbqACnqJU2N0dxXNm0Y63gRF+op1lLBZslGnpi6QwZ7bdDY/4OMVKRtUUaoSZZpM4
-        utM6WOxd3+EFS6jYTkJa/F/qbh2Pql7jZnb5o40I=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        MISSING_DATE,MISSING_MID,SPF_FAIL,URIBL_BLOCKED autolearn=no
-        autolearn_force=no version=3.4.0
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 5867BC433F0
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        Fri, 11 Sep 2020 06:06:14 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77B12C061573;
+        Fri, 11 Sep 2020 03:06:14 -0700 (PDT)
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.94)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1kGfwZ-0029Kz-Fj; Fri, 11 Sep 2020 12:06:11 +0200
+Message-ID: <e60a8168e11aa69a9778fae9a29b8735c5f737b5.camel@sipsolutions.net>
+Subject: Re: [PATCH v2 13/24] mac80211: determine chandef from HE 6 GHz
+ operation
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Wen Gong <wgong@codeaurora.org>
+Cc:     linux-wireless@vger.kernel.org,
+        Rajkumar Manoharan <rmanohar@codeaurora.org>,
+        Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>,
+        linux-wireless-owner@vger.kernel.org, ath11k@lists.infradead.org
+Date:   Fri, 11 Sep 2020 12:06:09 +0200
+In-Reply-To: <010101747c80076d-8dc8fdae-d89b-497f-81ac-77d2dd7d94b5-000000@us-west-2.amazonses.com>
+References: <20200528213443.993f108e96ca.I0086ae42d672379380d04ac5effb2f3d5135731b@changeid>
+         <20200528213443.25687d2695bc.I3f9747c1147480f65445f13eda5c4a5ed4e86757@changeid>
+         <010101747c80076d-8dc8fdae-d89b-497f-81ac-77d2dd7d94b5-000000@us-west-2.amazonses.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.5 (3.36.5-1.fc32) 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] ath10k: Remove unused macro ATH10K_ROC_TIMEOUT_HZ
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20200909135834.38448-1-yuehaibing@huawei.com>
-References: <20200909135834.38448-1-yuehaibing@huawei.com>
-To:     YueHaibing <yuehaibing@huawei.com>
-Cc:     <davem@davemloft.net>, <kuba@kernel.org>,
-        <ath10k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
-        <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        YueHaibing <yuehaibing@huawei.com>
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-ID: <010101747c9ae0e8-fd3a6153-8f8f-4b94-9368-96729d6a71a6-000000@us-west-2.amazonses.com>
-Date:   Fri, 11 Sep 2020 09:59:19 +0000
-X-SES-Outgoing: 2020.09.11-54.240.27.186
-Feedback-ID: 1.us-west-2.CZuq2qbDmUIuT3qdvXlRHZZCpfZqZ4GtG9v3VKgRyF0=:AmazonSES
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-YueHaibing <yuehaibing@huawei.com> wrote:
+On Fri, 2020-09-11 at 09:29 +0000, Wen Gong wrote:
+> On 2020-05-29 03:34, Johannes Berg wrote:
+> > From: Johannes Berg <johannes.berg@intel.com>
+> > 
+> > Support connecting to HE 6 GHz APs and mesh networks on 6 GHz,
+> > where the HT/VHT information is missing but instead the HE 6 GHz
+> > band capability is present, and the 6 GHz Operation information
+> > field is used to encode the channel configuration instead of the
+> > HT/VHT operation elements.
+> > 
+> > Also add some other bits needed to connect to 6 GHz networks.
+> > 
+> > Link:
+> > https://lore.kernel.org/r/1589399105-25472-10-git-send-email-rmanohar@codeaurora.org
+> > Co-developed-by: Rajkumar Manoharan <rmanohar@codeaurora.org>
+> > Signed-off-by: Rajkumar Manoharan <rmanohar@codeaurora.org>
+> > Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+> > ---
+> >  net/mac80211/ieee80211_i.h |   3 ++
+> >  net/mac80211/mesh.c        |   1 +
+> >  net/mac80211/mlme.c        |  69 +++++++++++++++++-------
+> >  net/mac80211/util.c        | 106 +++++++++++++++++++++++++++++++++++++
+> >  4 files changed, 160 insertions(+), 19 deletions(-)
+> > 
+> [...]
+> > @@ -4838,21 +4860,23 @@ static int ieee80211_prep_channel(struct
+> > ieee80211_sub_if_data *sdata,
+> >  			  IEEE80211_STA_DISABLE_160MHZ);
+> > 
+> >  	/* disable HT/VHT/HE if we don't support them */
+> > -	if (!sband->ht_cap.ht_supported) {
+> > +	if (!sband->ht_cap.ht_supported && !is_6ghz) {
+> >  		ifmgd->flags |= IEEE80211_STA_DISABLE_HT;
+> >  		ifmgd->flags |= IEEE80211_STA_DISABLE_VHT;
+> >  		ifmgd->flags |= IEEE80211_STA_DISABLE_HE;
+> >  	}
+> > 
+> > -	if (!sband->vht_cap.vht_supported)
+> > +	if (!sband->vht_cap.vht_supported && !is_6ghz) {
+> >  		ifmgd->flags |= IEEE80211_STA_DISABLE_VHT;
+> > +		ifmgd->flags |= IEEE80211_STA_DISABLE_HE;
+> > +	}
+> when connec to NL80211_BAND_2GHZ, it does not support vht, then it 
+> failed for HE and connected with HT mode.
+> I tesed with below change, it fix the issue, it connected with HE mode 
+> for NL80211_BAND_2GHZ with an HE mode 11AX AP.
 
-> There is no caller in tree, so can remove it.
-> 
-> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
-> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+Hmm. Yeah, that seems reasonable. I wonder why/how we never saw this,
+hm.
 
-Patch applied to ath-next branch of ath.git, thanks.
+Can you send a real patch?
 
-42a08ff79ff5 ath10k: Remove unused macro ATH10K_ROC_TIMEOUT_HZ
+johannes
 
--- 
-https://patchwork.kernel.org/patch/11765703/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
