@@ -2,192 +2,84 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EB783266595
-	for <lists+linux-wireless@lfdr.de>; Fri, 11 Sep 2020 19:07:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A13AF2665B3
+	for <lists+linux-wireless@lfdr.de>; Fri, 11 Sep 2020 19:11:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725955AbgIKRHn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 11 Sep 2020 13:07:43 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:39513 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1725881AbgIKPCG (ORCPT
+        id S1726177AbgIKRLZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 11 Sep 2020 13:11:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50216 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726351AbgIKRLH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 11 Sep 2020 11:02:06 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1599836494;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=hfz2/7wuGD8Y38djXdRgoUk4t9vywrYM1kI/TWx1ITc=;
-        b=DeKE7xYKvalGqlu/SVMnViFmCU6Cd5QQ4igNYHUc7yh6qOiKpJCE5dVkPQ1iEnl5ejKF9D
-        S5OzFrIbfaLl+0kyp9o/gbza0uI8BhmLojN1c4XioYCdrnch+TSC5N1koYN6/alG7F9YXu
-        7aTxc2iBee4smzsWu526BjE8l5vhHs4=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-29-0qUsD-WoPuOOEnaG2eAYLQ-1; Fri, 11 Sep 2020 10:36:47 -0400
-X-MC-Unique: 0qUsD-WoPuOOEnaG2eAYLQ-1
-Received: by mail-wr1-f72.google.com with SMTP id k13so3592474wrl.4
-        for <linux-wireless@vger.kernel.org>; Fri, 11 Sep 2020 07:36:47 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
-         :message-id:mime-version;
-        bh=hfz2/7wuGD8Y38djXdRgoUk4t9vywrYM1kI/TWx1ITc=;
-        b=ssI+K+NgbU00urQDZISDF9kB/QzbKXrejAWQR78yACaNQqyxILv5PMqzqvDOB+TG6n
-         G2kcM8uoZIDZYT4OHMhOeC8CppxUgMsKaTImF0+AgBKEnij8PA1Ur0EMExO6qtkVt1Og
-         3DK6WC/tZjktYuKWZaEWSQUZCWVMKVDB3GgcCQHKJLHDAvC3Qe+smxEYKHwsF+97usYc
-         SiGhv/rx6hT+KJEXz+yEC9VMPoA3035uzKTcMRpqQ2Ugsiydoh8aRUOYyO/3Lbw23zYN
-         i/vteOgOdvtJQCuVyZVwWdflqvBbrzEsR8XHRfDwFDtQms5Ta5v/akTN9ivknqYQfkIp
-         jr0w==
-X-Gm-Message-State: AOAM531SGgUWzsWcCiGpViDixf6DaBRH0x0h+4gK70UVRDzpyKOY07vU
-        jU4iRNnzNWVqKR+ZiUncx5ws3ufClqqUu/QVMIR7FMg+kcfjbQA8ruAtesH2aAn1K4UJLww5TiB
-        5c3Whmi6WShueW6hV1lew9jaqv5U=
-X-Received: by 2002:a05:600c:230f:: with SMTP id 15mr2551310wmo.186.1599835006036;
-        Fri, 11 Sep 2020 07:36:46 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJxI6BrikLZy71rWmHNHzSrhZH9gf7fYU6Cn05cLB9G07nNv9LxRdHcIEjCuBRxPjElcafqyKg==
-X-Received: by 2002:a05:600c:230f:: with SMTP id 15mr2551273wmo.186.1599835005573;
-        Fri, 11 Sep 2020 07:36:45 -0700 (PDT)
-Received: from alrua-x1.borgediget.toke.dk ([2a0c:4d80:42:443::2])
-        by smtp.gmail.com with ESMTPSA id v6sm4810082wrt.90.2020.09.11.07.36.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 11 Sep 2020 07:36:44 -0700 (PDT)
-Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-        id 396561829D4; Fri, 11 Sep 2020 16:36:44 +0200 (CEST)
-From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-To:     Miguel Catalan Cid <miguel.catalan@i2cat.net>
-Cc:     make-wifi-fast@lists.bufferbloat.net,
-        linux-wireless@vger.kernel.org
-Subject: Re: [Make-wifi-fast] Support for airtime scheduling using ath10k
-In-Reply-To: <CAMHmoos8p7icOfsXT7q+-uThGCd-k04hPT0BWiCzNTPqH3CJUQ@mail.gmail.com>
-References: <CAMHmoovK_m=Yd4uUPhsdHZ588+d1DF-fyS+uGKdRWvd33Q2u+A@mail.gmail.com>
- <87zh8uruou.fsf@toke.dk>
- <CAMHmoouFjdOSBAq00SMeauO2GvEnXMvJG+vEMwhYUD4rdW9rxg@mail.gmail.com>
- <87366ei2x7.fsf@toke.dk>
- <CAMHmoovWrXhMheEPapgEw9b_7S-jOZdJDRvAp-1Cb_i0=pBfEw@mail.gmail.com>
- <87lfk4ftnc.fsf@toke.dk>
- <CAMHmoos8p7icOfsXT7q+-uThGCd-k04hPT0BWiCzNTPqH3CJUQ@mail.gmail.com>
-X-Clacks-Overhead: GNU Terry Pratchett
-Date:   Fri, 11 Sep 2020 16:36:44 +0200
-Message-ID: <87k0x09y83.fsf@toke.dk>
+        Fri, 11 Sep 2020 13:11:07 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D428DC061795
+        for <linux-wireless@vger.kernel.org>; Fri, 11 Sep 2020 10:11:06 -0700 (PDT)
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.94)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1kGmZe-002JnL-KF; Fri, 11 Sep 2020 19:10:58 +0200
+Message-ID: <fd8fafe85f2d75a2563e5be766cce1f45424e2bf.camel@sipsolutions.net>
+Subject: Re: Configuring WiFi6 in hostapd
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Krishna Chaitanya <chaitanya.mgit@gmail.com>,
+        Sugandh Huthanahally Mohan <sugandhgowda@gmail.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        luciano.coelho@intel.com
+Cc:     Cedric Izoard <Cedric.Izoard@ceva-dsp.com>,
+        "Hostap@lists.infradead.org" <Hostap@lists.infradead.org>
+Date:   Fri, 11 Sep 2020 19:10:57 +0200
+In-Reply-To: <CABPxzYKFUN-hyhJnxG_-EcD0L0bsp8rn+b+tyt_ReAf11vzKng@mail.gmail.com> (sfid-20200911_184424_681805_505E3197)
+References: <CAD_iCC8EyWV8bLdJ+VsRdMHOa6ccOOOOUMM6nMwDk16LtMppcg@mail.gmail.com>
+         <PR2PR08MB464983615CFB2AF2B3BCD644D12E0@PR2PR08MB4649.eurprd08.prod.outlook.com>
+         <CAD_iCC-=rvC6mC8pOKNKqrrWQv2wt9BXVMQB2DR1QKcGp_KbiQ@mail.gmail.com>
+         <CABPxzYJ=vJB4pnCC__G6Luhdp_m51Z_nKq80HFxEfN6cdsKQbw@mail.gmail.com>
+         <CAD_iCC-koZwPCew4+n4nk8Ou_jWC2BxxcSDy_rf9KnO4Q=MO=g@mail.gmail.com>
+         <CABPxzY+tfkjKETjdKJE7AjY6ELFfsLw4utVWOfXwxuV4C+RK8w@mail.gmail.com>
+         <CAD_iCC-=9XU-DbfUorUtSRzCOEW=gr83T8ZSMvJn_xFgoMWvew@mail.gmail.com>
+         <CABPxzYJmL7x1Hfx9Yf+4XT6xngWNmYC9ZGGvDYqLo7y2bNtCow@mail.gmail.com>
+         <CAD_iCC9Vu55FG5vHSWF=H8v-ZZKQoyin8B-1zBtaJ+2MeJqCjg@mail.gmail.com>
+         <CABPxzYKVK3OK6nKMrLrBfdy-Yz1v_bbyhHHLCkxnFzWtFBSGaA@mail.gmail.com>
+         <CAD_iCC8XDNXfDmghhXyK8auFg5WinqaACpbpbiZ4g0toaDoeiw@mail.gmail.com>
+         <CABPxzYK-HN-Q3wREn+6qAkiHAnkuyqz-g6m9XpUtaMd8ckHQPg@mail.gmail.com>
+         <CAD_iCC-LMnDeL-e-i2GPYe9fRruWxkKvHEsNGDERv2j8eN1YFw@mail.gmail.com>
+         <CABPxzYJVwjPGrHitstWkgiL+kEB9AeTMy_e5nu7FNXVv4ZNk-A@mail.gmail.com>
+         <CAD_iCC_1TV_wQK+xOWk48eaJhWo82CZgTL-g4jg7tOdVxvqEZw@mail.gmail.com>
+         <CABPxzY+2OO6nptyE+oH+COLe3pVgKhji=H1trP7m_bcpVqEe7Q@mail.gmail.com>
+         <CAD_iCC-x9J4UB5aVR85WNi4OwaXQiU28+4B1AD176zDu8DBhwQ@mail.gmail.com>
+         <CABPxzY+oy=p4QLHfyVMprigHOpTJEJGsJ-Bsti5b9Ly=eDy+cQ@mail.gmail.com>
+         <CAD_iCC-mCo58fs1v+bqyB=NRXkQDTa20R=NGe+SwTP2s7NPfOA@mail.gmail.com>
+         <CABPxzYKckJ94+96YsTY4Y7D7_z-Pk=b+T1tvu5BzaoVjVi0apw@mail.gmail.com>
+         <CAD_iCC8StVW7Yh9f8fm2Da7LcN6LQzR=ssp+1E8-=YYCM-5tOQ@mail.gmail.com>
+         <CABPxzYKFUN-hyhJnxG_-EcD0L0bsp8rn+b+tyt_ReAf11vzKng@mail.gmail.com>
+         (sfid-20200911_184424_681805_505E3197)
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.5 (3.36.5-1.fc32) 
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Miguel Catalan Cid <miguel.catalan@i2cat.net> writes:
+On Fri, 2020-09-11 at 20:37 +0530, Krishna Chaitanya wrote:
 
-> Hi,
->
-> after doing some tests with different ath10k Wi-Fi cards and clients, I
-> found the following behaviour when combining AQL and the airtime
-> scheduler:
+> > [  228.315290] iwlwifi 0000:03:00.0: 0x00002078 | ADVANCED_SYSASSERT
+> > [  228.315294] iwlwifi 0000:03:00.0: 0x00A0A200 | trm_hw_status0
+> > [  228.315297] iwlwifi 0000:03:00.0: 0x00000000 | trm_hw_status1
+> > [  228.315300] iwlwifi 0000:03:00.0: 0x004F8E3C | branchlink2
+> > [  228.315303] iwlwifi 0000:03:00.0: 0x004E4FF4 | interruptlink1
+> > [  228.315307] iwlwifi 0000:03:00.0: 0x004E4FF4 | interruptlink2
+> > [  228.315310] iwlwifi 0000:03:00.0: 0x07000101 | data1
+> > [  228.315313] iwlwifi 0000:03:00.0: 0x48308403 | data2
+> > [  228.315316] iwlwifi 0000:03:00.0: 0x00000005 | data3
 
-Thank you for taking a closer look at this!
+This means that we got an invalid TX rate, notably an HE rate was
+requested/configured on a MAC configuration that didn't have HE.
 
-> - When using the default AQL limits (threshold 24000, limits per AC
-> 5000/12000), the airtime scheduler is not working at all, regardless of the
-> airtime weights of the STAs. Indeed, in some cases, slower stations were
-> able to use a higher amount of airtime, leading to unfairness. I was
-> thinking that maybe the default AQL limits are too high to these slow
-> stations, allowing them to obtain too much pending airtime. I already used
-> the last patches from Felix Fietkau with the same results.
+I think I saw some patches in this area (configuring the MAC to be HE)
+fly by internally recently, but not sure... Luca probably knows.
 
-Hmm, I think I can see what's going on here: The AQL patches changed the
-behaviour of ieee80211_next_txq() so it will keep iterating as long as
-there's at least one station that's eligible for transmission from the
-AQL PoV. Which means all station deficits will keep increasing, erasing
-the fairness throttling...
-
-> - Indeed, I was able to activate the airtime scheduler by fixing lower AQL
-> limits (e.g. threshold of 5000, limits per AC 0/5000). This way, it seems
-> that the STAs start competing again for the airtime, and their behaviour
-> follows the airtime weights. However,  slower STAs lose a bit of
-> performance due to these lower limits.
-
-... and the effect of lowering the AQL parameters is that this situation
-will occur less often, making the fairness scheduler work better.
-
-> - The airtime weights have to be higher (e.g. 10000 vs 20000 to obtain a
-> 33% vs 66% relation); I found the same behaviour using ath9k and 11n cards,
-> so I guess this is due to the aggregation of packets.
-
-This is a bit more puzzling, but I guess it's related to the above.
-Also, for ath9k, the airtime check *always* returns true, which just
-exacerbates the behaviour.
-
-> Looking into the code, it seems that the key airtime check is the one
-> in ieee80211_tx_dequeue. To enable the airtime scheduling, the
-> "ieee80211_txq_airtime_check" function has to return false more usually;
-> maybe it is just a matter of adjusting the AQL limits according to the
-> airtime weights or to modify a bit the "ieee80211_txq_airtime_check"
-> function to consider the airtime weight or the deficit of the
-> stations.
-
-Yup, you're right on point here, it's a bad interaction between those
-two throttling mechanisms. The fairness mechanism relies on not
-reshuffling the RR rotation.
-
-I'll think a bit more about what we can do about this. May need to set
-up a box for testing a few ideas, but I have been meaning to do that
-anyway.
-
-In the meantime, I wonder what happens if we just don't do that? I.e.,
-something like the below (completely untested)?
-
--Toke
-
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index d2136007e2eb..3a2898cbb111 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -3743,8 +3743,7 @@ struct ieee80211_txq *ieee80211_next_txq(struct ieee80211_hw *hw, u8 ac)
- {
- 	struct ieee80211_local *local = hw_to_local(hw);
- 	struct ieee80211_txq *ret = NULL;
--	struct txq_info *txqi = NULL, *head = NULL;
--	bool found_eligible_txq = false;
-+	struct txq_info *txqi = NULL;
- 
- 	spin_lock_bh(&local->active_txq_lock[ac]);
- 
-@@ -3755,34 +3754,22 @@ struct ieee80211_txq *ieee80211_next_txq(struct ieee80211_hw *hw, u8 ac)
- 	if (!txqi)
- 		goto out;
- 
--	if (txqi == head) {
--		if (!found_eligible_txq)
--			goto out;
--		else
--			found_eligible_txq = false;
--	}
--
--	if (!head)
--		head = txqi;
--
- 	if (txqi->txq.sta) {
- 		struct sta_info *sta = container_of(txqi->txq.sta,
- 						    struct sta_info, sta);
--		bool aql_check = ieee80211_txq_airtime_check(hw, &txqi->txq);
- 		s64 deficit = sta->airtime[txqi->txq.ac].deficit;
- 
--		if (aql_check)
--			found_eligible_txq = true;
--
--		if (deficit < 0)
-+		if (deficit < 0) {
- 			sta->airtime[txqi->txq.ac].deficit +=
- 				sta->airtime_weight;
- 
--		if (deficit < 0 || !aql_check) {
- 			list_move_tail(&txqi->schedule_order,
- 				       &local->active_txqs[txqi->txq.ac]);
- 			goto begin;
- 		}
-+
-+		if (ieee80211_txq_airtime_check(hw, &txqi->txq))
-+			goto out;
- 	}
- 
- 
+johannes
 
