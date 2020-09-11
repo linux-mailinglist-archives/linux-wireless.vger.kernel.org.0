@@ -2,822 +2,2119 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 85D5926621F
-	for <lists+linux-wireless@lfdr.de>; Fri, 11 Sep 2020 17:28:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C75B2664B1
+	for <lists+linux-wireless@lfdr.de>; Fri, 11 Sep 2020 18:44:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726474AbgIKP2M (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 11 Sep 2020 11:28:12 -0400
-Received: from a27-11.smtp-out.us-west-2.amazonses.com ([54.240.27.11]:47014
-        "EHLO a27-11.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726318AbgIKP1U (ORCPT
+        id S1726165AbgIKQoT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 11 Sep 2020 12:44:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58716 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726385AbgIKPIW (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 11 Sep 2020 11:27:20 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=gbvhytky6xpx7itkhb67ktsxbiwpnxix; d=codeaurora.org; t=1599838034;
-        h=Content-Type:MIME-Version:Content-Transfer-Encoding:From:Subject:To:Cc:Message-Id:Date;
-        bh=psoPRl1Gm8dqvPxbRcYJNQYJoHbqIujWmJaTfkmN40s=;
-        b=Ar3yZ/cz+4l5BK4qt2mblqItzmU+fmxFfjStkrJzkbZncbbuy1hyQjlk4qGBBu61
-        NAKfJVxG1abY4hJM+QgbmZXw+FQMUQGIQHHxzMLts+xna+nTfAmIMvE/X1dobb0gRIq
-        th1Xo3fELL+gaN8ulQI1TUakPP1DQOQBM/ZoLZBM=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=hsbnp7p3ensaochzwyq5wwmceodymuwv; d=amazonses.com; t=1599838034;
-        h=Content-Type:MIME-Version:Content-Transfer-Encoding:From:Subject:To:Cc:Message-Id:Date:Feedback-ID;
-        bh=psoPRl1Gm8dqvPxbRcYJNQYJoHbqIujWmJaTfkmN40s=;
-        b=QgKoyW26lzPLCyh4t1rA/9I8DPIrHc5exBfJxF/IKXfOYMYN4UgLk3R6eaC3h2FC
-        /ugBFcddCUuC5S+pofh1aejOFXdWob5RWvusw0vbE6SUiAetBqs0g9Qn7t35EmEinTq
-        BZemh/8tOBE7pyU3+g2uZTobh03GpOJs95qx+5mU=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        MISSING_DATE,MISSING_MID,SPF_FAIL autolearn=no autolearn_force=no
-        version=3.4.0
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 75B82C433CA
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        Fri, 11 Sep 2020 11:08:22 -0400
+Received: from mail-yb1-xb2d.google.com (mail-yb1-xb2d.google.com [IPv6:2607:f8b0:4864:20::b2d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7FF3C0617AB
+        for <linux-wireless@vger.kernel.org>; Fri, 11 Sep 2020 08:07:25 -0700 (PDT)
+Received: by mail-yb1-xb2d.google.com with SMTP id h20so6567858ybj.8
+        for <linux-wireless@vger.kernel.org>; Fri, 11 Sep 2020 08:07:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=IrVHvJfj05ef4jdSB6CE9rWQZXSQ95PnLmOBdePEPZA=;
+        b=SBM9b0qr6BoQiuLwNPLu3vty6eP+1TzYpDZ+U0RVMZzVdrjIf9rVXnyfFVdNM8F+MF
+         Dzw5tdLzDdIAZoF1NbCfh0QbyD4BaZ+jB7GlULEAX9ksL4e4rTzZS9LPualV69x9gert
+         x+0Tfj08IfgWq95yhPiAscitRgTRauawMHRHlWhYLH2+1PqVDhccJkC1TFrgC4RF3d8m
+         PbwO6FuYnhxvPHmZrK7AlFML1MEhseYivEEdBu96nDRBPX40WbNniZokh3wGuPjXPHPG
+         8aSJz+emuqf+vheG1JoDzI5OzEnuHZg9K+9EmDN0ooOmSqMm7hedPlMnTodz7cjZiaYG
+         n4PA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=IrVHvJfj05ef4jdSB6CE9rWQZXSQ95PnLmOBdePEPZA=;
+        b=emD0md71gKnmI9jO7P1hMMTVvkdw7OE6KzuzACYqXdNEnY+UWznpCOkIXqQRPgThiJ
+         THQhBz55Qy9ehSjwDMNY9MYYg9wFnaMsFZA3pGT6TOHg1fj3xbl4BBaTwMDEJPcj86FL
+         tuEjgMg83B/SMJpIrbkXm9kD6EcPfYmXGs08tqkc/IZOTlvkJ4bcH6v8SYK4Pkv3VM8I
+         OKLQ5P+FSPLY7C9rannziLtza6oCT4XNWtEigEzgStExC8LKZDnVSEnjl+jEUKCds+LJ
+         F2nhmtasBpa5lLaB1OFFNARddSY9Mvrm+CUzsnhz5HNHfe/liEw477KFhDlFxs5K9Sqa
+         pz7w==
+X-Gm-Message-State: AOAM530tkyg/0Gg4B0/2dUcuukrxAUVhokMjgGRdL789mXQnWBU4067u
+        y8Ibe1qn6Kbf6vMH28GqwMc3ey82ysdfBxrFTwU=
+X-Google-Smtp-Source: ABdhPJzDYlVsJbIzchF7w8uT/GakWDXeaV4M+aCIzvATySOTYLF7ZrCjW+tJ0P41EoBxbAGSC4U1T5epFeTEe1shN/4=
+X-Received: by 2002:a25:317:: with SMTP id 23mr3008768ybd.233.1599836843106;
+ Fri, 11 Sep 2020 08:07:23 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From:   Kalle Valo <kvalo@codeaurora.org>
-Subject: pull-request: wireless-drivers-next-2020-09-11
-To:     netdev@vger.kernel.org
-Cc:     linux-wireless@vger.kernel.org
-Message-ID: <010101747dc71664-6f75120f-bb39-4a59-b278-cf35faef8c2e-000000@us-west-2.amazonses.com>
-Date:   Fri, 11 Sep 2020 15:27:13 +0000
-X-SES-Outgoing: 2020.09.11-54.240.27.11
-Feedback-ID: 1.us-west-2.CZuq2qbDmUIuT3qdvXlRHZZCpfZqZ4GtG9v3VKgRyF0=:AmazonSES
+References: <CAD_iCC8EyWV8bLdJ+VsRdMHOa6ccOOOOUMM6nMwDk16LtMppcg@mail.gmail.com>
+ <PR2PR08MB464983615CFB2AF2B3BCD644D12E0@PR2PR08MB4649.eurprd08.prod.outlook.com>
+ <CAD_iCC-=rvC6mC8pOKNKqrrWQv2wt9BXVMQB2DR1QKcGp_KbiQ@mail.gmail.com>
+ <CABPxzYJ=vJB4pnCC__G6Luhdp_m51Z_nKq80HFxEfN6cdsKQbw@mail.gmail.com>
+ <CAD_iCC-koZwPCew4+n4nk8Ou_jWC2BxxcSDy_rf9KnO4Q=MO=g@mail.gmail.com>
+ <CABPxzY+tfkjKETjdKJE7AjY6ELFfsLw4utVWOfXwxuV4C+RK8w@mail.gmail.com>
+ <CAD_iCC-=9XU-DbfUorUtSRzCOEW=gr83T8ZSMvJn_xFgoMWvew@mail.gmail.com>
+ <CABPxzYJmL7x1Hfx9Yf+4XT6xngWNmYC9ZGGvDYqLo7y2bNtCow@mail.gmail.com>
+ <CAD_iCC9Vu55FG5vHSWF=H8v-ZZKQoyin8B-1zBtaJ+2MeJqCjg@mail.gmail.com>
+ <CABPxzYKVK3OK6nKMrLrBfdy-Yz1v_bbyhHHLCkxnFzWtFBSGaA@mail.gmail.com>
+ <CAD_iCC8XDNXfDmghhXyK8auFg5WinqaACpbpbiZ4g0toaDoeiw@mail.gmail.com>
+ <CABPxzYK-HN-Q3wREn+6qAkiHAnkuyqz-g6m9XpUtaMd8ckHQPg@mail.gmail.com>
+ <CAD_iCC-LMnDeL-e-i2GPYe9fRruWxkKvHEsNGDERv2j8eN1YFw@mail.gmail.com>
+ <CABPxzYJVwjPGrHitstWkgiL+kEB9AeTMy_e5nu7FNXVv4ZNk-A@mail.gmail.com>
+ <CAD_iCC_1TV_wQK+xOWk48eaJhWo82CZgTL-g4jg7tOdVxvqEZw@mail.gmail.com>
+ <CABPxzY+2OO6nptyE+oH+COLe3pVgKhji=H1trP7m_bcpVqEe7Q@mail.gmail.com>
+ <CAD_iCC-x9J4UB5aVR85WNi4OwaXQiU28+4B1AD176zDu8DBhwQ@mail.gmail.com>
+ <CABPxzY+oy=p4QLHfyVMprigHOpTJEJGsJ-Bsti5b9Ly=eDy+cQ@mail.gmail.com>
+ <CAD_iCC-mCo58fs1v+bqyB=NRXkQDTa20R=NGe+SwTP2s7NPfOA@mail.gmail.com>
+ <CABPxzYKckJ94+96YsTY4Y7D7_z-Pk=b+T1tvu5BzaoVjVi0apw@mail.gmail.com> <CAD_iCC8StVW7Yh9f8fm2Da7LcN6LQzR=ssp+1E8-=YYCM-5tOQ@mail.gmail.com>
+In-Reply-To: <CAD_iCC8StVW7Yh9f8fm2Da7LcN6LQzR=ssp+1E8-=YYCM-5tOQ@mail.gmail.com>
+From:   Krishna Chaitanya <chaitanya.mgit@gmail.com>
+Date:   Fri, 11 Sep 2020 20:37:10 +0530
+Message-ID: <CABPxzYKFUN-hyhJnxG_-EcD0L0bsp8rn+b+tyt_ReAf11vzKng@mail.gmail.com>
+Subject: Re: Configuring WiFi6 in hostapd
+To:     Sugandh Huthanahally Mohan <sugandhgowda@gmail.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Cc:     Cedric Izoard <Cedric.Izoard@ceva-dsp.com>,
+        "Hostap@lists.infradead.org" <Hostap@lists.infradead.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
-
-here's a pull request to net-next tree, more info below. Please let me know if
-there are any problems.
-
-Kalle
-
-The following changes since commit 9123e3a74ec7b934a4a099e98af6a61c2f80bbf5:
-
-  Linux 5.9-rc1 (2020-08-16 13:04:57 -0700)
-
-are available in the git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git tags/wireless-drivers-next-2020-09-11
-
-for you to fetch changes up to 5941d003f0a60877a956cc3cae6e3850b46fad0a:
-
-  Merge ath-next from git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git (2020-09-11 18:03:00 +0300)
-
-----------------------------------------------------------------
-wireless-drivers-next patches for v5.10
-
-First set of patches for v5.10. Most noteworthy here is ath11k getting
-initial support for QCA6390 and IPQ6018 devices. But most of the
-patches are cleanup: W=1 warning fixes, fallthrough keywords, DMA API
-changes and tasklet API changes.
-
-Major changes:
-
-ath10k
-
-* support SDIO firmware codedumps
-
-* support station specific TID configurations
-
-ath11k
-
-* add support for IPQ6018
-
-* add support for QCA6390 PCI devices
-
-ath9k
-
-* add support for NL80211_EXT_FEATURE_CAN_REPLACE_PTK0 to improve PTK0
-  rekeying
-
-wcn36xx
-
-* add support for TX ack
-
-----------------------------------------------------------------
-Alex Dewar (1):
-      ath11k: return error if firmware request fails
-
-Alexander A. Klimov (2):
-      ath9k: Replace HTTP links with HTTPS ones
-      ath5k: Replace HTTP links with HTTPS ones
-
-Alexander Wetzel (1):
-      ath9k: add NL80211_EXT_FEATURE_CAN_REPLACE_PTK0 support
-
-Allen Pais (17):
-      ath5k: convert tasklets to use new tasklet_setup() API
-      ath9k: convert tasklets to use new tasklet_setup() API
-      carl9170: convert tasklets to use new tasklet_setup() API
-      atmel: convert tasklets to use new tasklet_setup() API
-      b43legacy: convert tasklets to use new tasklet_setup() API
-      brcmsmac: convert tasklets to use new tasklet_setup() API
-      ipw2x00: convert tasklets to use new tasklet_setup() API
-      iwlegacy: convert tasklets to use new tasklet_setup() API
-      intersil: convert tasklets to use new tasklet_setup() API
-      mwl8k: convert tasklets to use new tasklet_setup() API
-      qtnfmac: convert tasklets to use new tasklet_setup() API
-      rt2x00: convert tasklets to use new tasklet_setup() API
-      rtlwifi/rtw88: convert tasklets to use new tasklet_setup() API
-      zd1211rw: convert tasklets to use new tasklet_setup() API
-      ath11k: convert tasklets to use new tasklet_setup() API
-      zd1211rw: fix build warning
-      rtlwifi: fix build warning
-
-Andy Shevchenko (1):
-      brcmfmac: use %*ph to print small buffer
-
-Anilkumar Kolli (11):
-      ath11k: update firmware files read path
-      ath11k: rename default board file
-      ath11k: ahb: call ath11k_core_init() before irq configuration
-      ath11k: convert ath11k_hw_params to an array
-      ath11k: define max_radios in hw_params
-      ath11k: add hw_ops for pdev id to hw_mac mapping
-      ath11k: Add bdf-addr in hw_params
-      dt: bindings: net: update compatible for ath11k
-      ath11k: move target ce configs to hw_params
-      ath11k: add ipq6018 support
-      ath11k: remove calling ath11k_init_hw_params() second time
-
-Bolarinwa Olayemi Saheed (1):
-      ath9k: Check the return value of pcie_capability_read_*()
-
-Brian Norris (2):
-      rtw88: don't treat NULL pointer as an array
-      rtw88: use read_poll_timeout_atomic() for poll loop
-
-Bryan O'Donoghue (9):
-      wcn36xx: Fix reported 802.11n rx_highest rate wcn3660/wcn3680
-      wcn36xx: Add a chip identifier for WCN3680
-      wcn36xx: Hook and identify RF_IRIS_WCN3680
-      wcn36xx: Add 802.11ac MCS rates
-      wcn36xx: Specify ieee80211_rx_status.nss
-      wcn36xx: Add 802.11ac HAL param bitfields
-      wcn36xx: Add Supported rates V1 structure
-      wcn36xx: Use existing pointers in wcn36xx_smd_config_bss_v1
-      wcn36xx: Set feature DOT11AC for wcn3680
-
-Carl Huang (24):
-      ath11k: do not depend on ARCH_QCOM for ath11k
-      ath11k: add hw_params entry for QCA6390
-      ath11k: allocate smaller chunks of memory for firmware
-      ath11k: fix memory OOB access in qmi_decode
-      ath11k: fix KASAN warning of ath11k_qmi_wlanfw_wlan_cfg_send
-      ath11k: enable internal sleep clock
-      ath11k: hal: create register values dynamically
-      ath11k: ce: support different CE configurations
-      ath11k: hal: assign msi_addr and msi_data to srng
-      ath11k: ce: get msi_addr and msi_data before srng setup
-      ath11k: disable CE interrupt before hif start
-      ath11k: force single pdev only for QCA6390
-      ath11k: initialize wmi config based on hw_params
-      ath11k: wmi: put hardware to DBS mode
-      ath11k: dp: redefine peer_map and peer_unmap
-      ath11k: enable DP interrupt setup for QCA6390
-      ath11k: don't initialize rxdma1 related ring
-      ath11k: setup QCA6390 rings for both rxdmas
-      ath11k: refine the phy_id check in ath11k_reg_chan_list_event
-      ath11k: delay vdev_start for QCA6390
-      ath11k: assign correct search flag and type for QCA6390
-      ath11k: process both lmac rings for QCA6390
-      ath11k: use TCL_DATA_RING_0 for QCA6390
-      ath11k: reset MHI during power down and power up
-
-Chris Chiu (1):
-      rtl8xxxu: prevent potential memory leak
-
-Christophe JAILLET (8):
-      ath10k: Fix the size used in a 'dma_free_coherent()' call in an error handling path
-      adm8211: switch from 'pci_' to 'dma_' API
-      mwifiex: Do not use GFP_KERNEL in atomic context
-      mwifiex: switch from 'pci_' to 'dma_' API
-      mwifiex: Clean up some err and dbg messages
-      rtw88: switch from 'pci_' to 'dma_' API
-      rtl818x_pci: switch from 'pci_' to 'dma_' API
-      rtlwifi: switch from 'pci_' to 'dma_' API
-
-Colin Ian King (5):
-      ath6kl: fix spelling mistake "initilisation" -> "initialization"
-      wl1251, wlcore: fix spelling mistake "buld" -> "build"
-      rtw88: fix spelling mistake: "unsupport" -> "unsupported"
-      ath11k: fix spelling mistake "moniter" -> "monitor"
-      ath11k: fix missing error check on call to ath11k_pci_get_user_msi_assignment
-
-Dan Carpenter (5):
-      ath6kl: prevent potential array overflow in ath6kl_add_new_sta()
-      ath9k: Fix potential out of bounds in ath9k_htc_txcompletion_cb()
-      ath11k: return -ENOMEM on allocation failure
-      ath11k: fix uninitialized return in ath11k_spectral_process_data()
-      rtlwifi: rtl8723ae: Delete a stray tab
-
-Dinghao Liu (2):
-      wilc1000: Fix memleak in wilc_sdio_probe
-      wilc1000: Fix memleak in wilc_bus_probe
-
-Dmitry Osipenko (3):
-      brcmfmac: increase F2 watermark for BCM4329
-      brcmfmac: drop chip id from debug messages
-      brcmfmac: set F2 SDIO block size to 128 bytes for BCM4329
-
-Douglas Anderson (3):
-      ath10k: Wait until copy complete is actually done before completing
-      ath10k: Keep track of which interrupts fired, don't poll them
-      ath10k: Get rid of "per_ce_irq" hw param
-
-Govind Singh (12):
-      ath11k: add simple PCI client driver for QCA6390 chipset
-      ath11k: pci: setup resources
-      ath11k: pci: add MSI config initialisation
-      ath11k: register MHI controller device for QCA6390
-      ath11k: pci: add HAL, CE and core initialisation
-      ath11k: use remoteproc only with AHB devices
-      ath11k: add support for m3 firmware
-      ath11k: add board file support for PCI devices
-      ath11k: fill appropriate QMI service instance id for QCA6390
-      ath11k: pci: add read32() and write32() hif operations
-      ath11k: configure copy engine msi address in CE srng
-      ath11k: setup ce tasklet for control path
-
-Gustavo A. R. Silva (19):
-      ath9k: Use fallthrough pseudo-keyword
-      ath5k: Use fallthrough pseudo-keyword
-      ath6kl: Use fallthrough pseudo-keyword
-      ath10k: Use fallthrough pseudo-keyword
-      ath11k: Use fallthrough pseudo-keyword
-      mwifiex: Use fallthrough pseudo-keyword
-      rtw88: Use fallthrough pseudo-keyword
-      carl9170: Use fallthrough pseudo-keyword
-      rt2x00: Use fallthrough pseudo-keyword
-      prism54: Use fallthrough pseudo-keyword
-      orinoco: Use fallthrough pseudo-keyword
-      brcmfmac: Use fallthrough pseudo-keyword
-      iwlegacy: Use fallthrough pseudo-keyword
-      b43: Use fallthrough pseudo-keyword
-      b43legacy: Use fallthrough pseudo-keyword
-      atmel: Use fallthrough pseudo-keyword
-      ath10k: wmi: Use struct_size() helper in ath10k_wmi_alloc_skb()
-      rtlwifi: Use fallthrough pseudo-keyword
-      mt7601u: Use fallthrough pseudo-keyword
-
-Jia-Ju Bai (1):
-      p54: avoid accessing the data mapped to streaming DMA
-
-Julia Lawall (1):
-      ath: drop unnecessary list_empty
-
-Kalle Valo (17):
-      ath11k: create a common function to request all firmware files
-      ath11k: don't use defines for hw specific firmware directories
-      ath11k: change ath11k_core_fetch_board_data_api_n() to use ath11k_core_create_firmware_path()
-      ath11k: remove useless info messages
-      ath11k: qmi: cleanup info messages
-      ath11k: don't use defines in hw_params
-      ath11k: remove define ATH11K_QMI_DEFAULT_CAL_FILE_NAME
-      ath11k: move ring mask definitions to hw_params
-      ath11k: implement ath11k_core_pre_init()
-      ath11k: hal: create hw_srng_config dynamically
-      ath10k: move enable_pll_clk call to ath10k_core_start()
-      ath11k: hal: cleanup dynamic register macros
-      ath11k: ce: remove host_ce_config_wlan macro
-      ath11k: ce: remove CE_COUNT() macro
-      Merge ath-next from git://git.kernel.org/.../kvalo/ath.git
-      ath11k: fix link error when CONFIG_REMOTEPROC is disabled
-      Merge ath-next from git://git.kernel.org/.../kvalo/ath.git
-
-Keita Suzuki (1):
-      brcmsmac: fix memory leak in wlc_phy_attach_lcnphy
-
-Krzysztof Kozlowski (2):
-      ath9k_htc: Do not select MAC80211_LEDS by default
-      ath9k: Do not select MAC80211_LEDS by default
-
-Larry Finger (15):
-      rtlwifi: Start changing RT_TRACE into rtl_dbg
-      rtlwifi: Replace RT_TRACE with rtl_dbg
-      rtlwifi: btcoexist: Replace RT_TRACE with rtl_dbg
-      rtlwifi: rtl8188ee: Rename RT_TRACE to rtl_dbg
-      rtlwifi: rtl8192-common: Rename RT_TRACE to rtl_dbg
-      rtlwifi: rtl8192ce: Rename RT_TRACE to rtl_dbg
-      rtlwifi: rtl8192cu: Rename RT_TRACE to rtl_dbg
-      rtlwifi: rtl8192de: Rename RT_TRACE to rtl_dbg
-      rtlwifi: rtl8192ee: Rename RT_TRACE to rtl_dbg
-      rtlwifi: rtl8192se Rename RT_TRACE to rtl_dbg
-      rtlwifi: rtl8723ae Rename RT_TRACE to rtl_dbg
-      rtlwifi: rtl8723be Rename RT_TRACE to rtl_dbg
-      rtlwifi: rtl8723-common: Rename RT_TRACE to rtl_dbg
-      rtlwifi: rtl8821ae: Rename RT_TRACE to rtl_dbg
-      rtlwifi: Remove temporary definition of RT_TRACE
-
-Lee Jones (89):
-      ath5k: pcu: Add a description for 'band' remove one for 'mode'
-      wil6210: Demote non-kerneldoc headers to standard comment blocks
-      ath5k: Fix kerneldoc formatting issue
-      ath6kl: wmi: Remove unused variable 'rate'
-      ath9k: ar9002_initvals: Remove unused array 'ar9280PciePhy_clkreq_off_L1_9280'
-      ath9k: ar9001_initvals: Remove unused array 'ar5416Bank6_9100'
-      ath9k: ar5008_initvals: Remove unused table entirely
-      ath9k: ar5008_initvals: Move ar5416Bank{0,1,2,3,7} to where they are used
-      wil6210: debugfs: Fix a couple of formatting issues in 'wil6210_debugfs_init'
-      atmel: Demote non-kerneldoc header to standard comment block
-      b43: main: Add braces around empty statements
-      airo: Place brackets around empty statement
-      airo: Fix a myriad of coding style issues
-      iwlegacy: common: Remove set but not used variable 'len'
-      iwlegacy: common: Demote kerneldoc headers to standard comment blocks
-      ipw2200: Remove set but unused variables 'rc' and 'w'
-      b43legacy: main: Provide braces around empty 'if' body
-      brcmfmac: fweh: Remove set but unused variable 'err'
-      brcmfmac: fweh: Fix docrot related function documentation issues
-      brcmsmac: mac80211_if: Demote a few non-conformant kerneldoc headers
-      ipw2200: Demote lots of nonconformant kerneldoc comments
-      b43: phy_common: Demote non-conformant kerneldoc header
-      b43: phy_n: Add empty braces around empty statements
-      wil6210: wmi: Fix formatting and demote non-conforming function headers
-      wil6210: interrupt: Demote comment header which is clearly not kernel-doc
-      wil6210: txrx: Demote obvious abuse of kernel-doc
-      wil6210: txrx_edma: Demote comments which are clearly not kernel-doc
-      wil6210: pmc: Demote a few nonconformant kernel-doc function headers
-      wil6210: wil_platform: Demote kernel-doc header to standard comment block
-      carl9170: Convert 'ar9170_qmap' to inline function
-      hostap: Mark 'freq_list' as __maybe_unused
-      rsi: Fix some kernel-doc issues
-      rsi: File header should not be kernel-doc
-      libertas_tf: Demote non-conformant kernel-doc headers
-      wlcore: cmd: Fix some parameter description disparities
-      libertas_tf: Fix a bunch of function doc formatting issues
-      iwlegacy: debug: Demote seemingly unintentional kerneldoc header
-      hostap: hostap_ap: Mark 'txt' as __always_unused
-      cw1200: wsm: Remove 'dummy' variables
-      libertas: Fix 'timer_list' stored private data related dot-rot
-      mt7601u: phy: Fix misnaming when documented function parameter 'dac'
-      rsi: Fix misnamed function parameter 'rx_pkt'
-      rsi: Fix a few kerneldoc misdemeanours
-      rsi: Fix a myriad of documentation issues
-      rsi: File header comments should not be kernel-doc
-      iwlegacy: 4965: Demote a bunch of nonconformant kernel-doc headers
-      brcmfmac: p2p: Deal with set but unused variables
-      libertas: Fix misnaming for function param 'device'
-      libertas_tf: Fix function documentation formatting errors
-      hostap: Remove set but unused variable 'hostscan'
-      rsi: Add description for function param 'sta'
-      brcmsmac: ampdu: Remove a bunch of unused variables
-      brcmfmac: p2p: Fix a bunch of function docs
-      rsi: Add descriptions for rsi_set_vap_capabilities()'s parameters
-      brcmsmac: main: Remove a bunch of unused variables
-      rsi: Source file headers do not make good kernel-doc candidates
-      brcmfmac: firmware: Demote seemingly unintentional kernel-doc header
-      rsi: File headers are not suitable for kernel-doc
-      iwlegacy: 4965-mac: Convert function headers to standard comment blocks
-      brcmfmac: btcoex: Update 'brcmf_btcoex_state' and demote others
-      b43: phy_ht: Remove 9 year old TODO
-      rsi: Source file headers are not suitable for kernel-doc
-      iwlegacy: 4965-rs: Demote non kernel-doc headers to standard comment blocks
-      iwlegacy: 4965-calib: Demote seemingly accidental kernel-doc header
-      brcmfmac: fwsignal: Remove unused variable 'brcmf_fws_prio2fifo'
-      rtlwifi: rtl8192c: phy_common: Remove unused variable 'bbvalue'
-      mwifiex: pcie: Move tables to the only place they're used
-      brcmsmac: ampdu: Remove a couple set but unused variables
-      iwlegacy: 3945-mac: Remove all non-conformant kernel-doc headers
-      iwlegacy: 3945-rs: Remove all non-conformant kernel-doc headers
-      iwlegacy: 3945: Remove all non-conformant kernel-doc headers
-      brcmfmac: p2p: Fix a couple of function headers
-      orinoco_usb: Downgrade non-conforming kernel-doc headers
-      brcmsmac: phy_cmn: Remove a unused variables 'vbat' and 'temp'
-      zd1211rw: zd_chip: Fix formatting
-      zd1211rw: zd_mac: Add missing or incorrect function documentation
-      zd1211rw: zd_chip: Correct misspelled function argument
-      brcmfmac: fwsignal: Finish documenting 'brcmf_fws_mac_descriptor'
-      wlcore: debugfs: Remove unused variable 'res'
-      rsi: rsi_91x_sdio: Fix a few kernel-doc related issues
-      hostap: Remove unused variable 'fc'
-      wl3501_cs: Fix a bunch of formatting issues related to function docs
-      rtw88: debug: Remove unused variables 'val'
-      rsi: rsi_91x_sdio_ops: File headers are not good kernel-doc candidates
-      prism54: isl_ioctl: Remove unused variable 'j'
-      brcmsmac: phy_lcn: Remove a bunch of unused variables
-      brcmsmac: phy_n: Remove a bunch of unused variables
-      brcmsmac: phytbl_lcn: Remove unused array 'dot11lcnphytbl_rx_gain_info_rev1'
-      brcmsmac: phytbl_n: Remove a few unused arrays
-
-Loic Poulain (10):
-      wcn36xx: Add ieee80211 rx status rate information
-      wcn36xx: Fix multiple AMPDU sessions support
-      wcn36xx: Add TX ack support
-      wcn36xx: Increase number of TX retries
-      wcn36xx: Fix TX data path
-      wcn36xx: Use sequence number allocated by mac80211
-      wcn36xx: Fix software-driven scan
-      wcn36xx: Setup starting bitrate to MCS-5
-      wcn36xx: Disable bmps when encryption is disabled
-      wcn36xx: Fix warning due to bad rate_idx
-
-Masashi Honma (1):
-      ath9k_htc: Use appropriate rs_datalen type
-
-Nathan Chancellor (1):
-      mwifiex: Remove unnecessary braces from HostCmd_SET_SEQ_NO_BSS_INFO
-
-Pavel Machek (1):
-      ath9k: Fix typo in function name
-
-Rakesh Pillai (4):
-      ath10k: Register shutdown handler
-      ath10k: Add interrupt summary based CE processing
-      dt: bindings: Add new regulator as optional property for WCN3990
-      ath10k: Add support for chain1 regulator supply voting
-
-Sathishkumar Muruganandam (1):
-      ath10k: fix VHT NSS calculation when STBC is enabled
-
-Tamizh Chelvam (5):
-      ath10k: Add wmi command support for station specific TID config
-      ath10k: Move rate mask validation function up in the file
-      ath10k: Add new api to support TID specific configuration
-      ath10k: Add new api to support reset TID config
-      ath11k: Add peer max mpdu parameter in peer assoc command
-
-Tetsuo Handa (1):
-      mwifiex: don't call del_timer_sync() on uninitialized timer
-
-Tom Rix (4):
-      brcmfmac: check ndev pointer
-      rndis_wlan: tighten check of rndis_query_oid return
-      ath11k: fix a double free and a memory leak
-      mwifiex: remove function pointer check
-
-Tzu-En Huang (1):
-      rtw88: fix compile warning: [-Wignored-qualifiers]
-
-Venkateswara Naralasetty (3):
-      ath10k: fix retry packets update in station dump
-      ath10k: provide survey info as accumulated data
-      ath11k: add raw mode and software crypto support
-
-Wang Yufen (2):
-      ath11k: Fix possible memleak in ath11k_qmi_init_service
-      brcm80211: fix possible memleak in brcmf_proto_msgbuf_attach
-
-Wen Gong (7):
-      ath10k: start recovery process when payload length exceeds max htc length for sdio
-      ath10k: add wmi service peer stat info for wmi tlv
-      ath10k: remove return for NL80211_STA_INFO_TX_BITRATE
-      ath10k: enable supports_peer_stats_info for QCA6174 PCI devices
-      ath10k: correct the array index from mcs index for HT mode for QCA6174
-      ath10k: add bus type for each layout of coredump
-      ath10k: sdio: add firmware coredump support
-
-YueHaibing (5):
-      libertas_tf: Remove unused macro QOS_CONTROL_LEN
-      mwifiex: wmm: Fix -Wunused-const-variable warnings
-      mwifiex: sdio: Fix -Wunused-const-variable warnings
-      ath11k: Remove unused inline function htt_htt_stats_debug_dump()
-      ath10k: Remove unused macro ATH10K_ROC_TIMEOUT_HZ
-
-Zekun Shen (2):
-      ath10k: pci: fix memcpy size of bmi response
-      ath10k: check idx validity in __ath10k_htt_rx_ring_fill_n()
-
-Zong-Zhe Yang (1):
-      rtw88: 8822c: update tx power limit tables to RF v20.1
-
- .../bindings/net/wireless/qcom,ath10k.txt          |   4 +-
- .../bindings/net/wireless/qcom,ath11k.yaml         |   4 +-
- drivers/net/wireless/admtek/adm8211.c              |  83 +-
- drivers/net/wireless/ath/ath10k/bmi.c              |  10 +-
- drivers/net/wireless/ath/ath10k/ce.c               |  81 +-
- drivers/net/wireless/ath/ath10k/ce.h               |  15 +-
- drivers/net/wireless/ath/ath10k/core.c             |  37 +-
- drivers/net/wireless/ath/ath10k/core.h             |  20 +
- drivers/net/wireless/ath/ath10k/coredump.c         | 349 +++++++-
- drivers/net/wireless/ath/ath10k/coredump.h         |   1 +
- drivers/net/wireless/ath/ath10k/htt_rx.c           |  26 +-
- drivers/net/wireless/ath/ath10k/htt_tx.c           |   6 +-
- drivers/net/wireless/ath/ath10k/hw.h               |   3 -
- drivers/net/wireless/ath/ath10k/mac.c              | 925 ++++++++++++++++---
- drivers/net/wireless/ath/ath10k/pci.c              |   2 +-
- drivers/net/wireless/ath/ath10k/sdio.c             | 331 ++++++-
- drivers/net/wireless/ath/ath10k/snoc.c             |  29 +-
- drivers/net/wireless/ath/ath10k/snoc.h             |   1 +
- drivers/net/wireless/ath/ath10k/targaddrs.h        |  11 +
- drivers/net/wireless/ath/ath10k/txrx.c             |  11 +-
- drivers/net/wireless/ath/ath10k/wmi-ops.h          |  19 +
- drivers/net/wireless/ath/ath10k/wmi-tlv.h          |   2 +
- drivers/net/wireless/ath/ath10k/wmi.c              |  71 +-
- drivers/net/wireless/ath/ath10k/wmi.h              |  76 ++
- drivers/net/wireless/ath/ath10k/wow.c              |   2 +-
- drivers/net/wireless/ath/ath11k/Kconfig            |  18 +-
- drivers/net/wireless/ath/ath11k/Makefile           |  10 +-
- drivers/net/wireless/ath/ath11k/ahb.c              | 412 ++-------
- drivers/net/wireless/ath/ath11k/ce.c               | 144 ++-
- drivers/net/wireless/ath/ath11k/ce.h               |  12 +-
- drivers/net/wireless/ath/ath11k/core.c             | 268 ++++--
- drivers/net/wireless/ath/ath11k/core.h             |  75 +-
- drivers/net/wireless/ath/ath11k/dbring.c           |   2 +-
- drivers/net/wireless/ath/ath11k/debug.c            |  46 +-
- drivers/net/wireless/ath/ath11k/debug.h            |   3 +
- drivers/net/wireless/ath/ath11k/debug_htt_stats.c  |  44 -
- drivers/net/wireless/ath/ath11k/dp.c               | 216 ++++-
- drivers/net/wireless/ath/ath11k/dp.h               |  13 +-
- drivers/net/wireless/ath/ath11k/dp_rx.c            | 226 +++--
- drivers/net/wireless/ath/ath11k/dp_tx.c            | 104 ++-
- drivers/net/wireless/ath/ath11k/hal.c              | 169 ++--
- drivers/net/wireless/ath/ath11k/hal.h              | 179 ++--
- drivers/net/wireless/ath/ath11k/hal_rx.c           |  10 +-
- drivers/net/wireless/ath/ath11k/hal_tx.c           |   2 +-
- drivers/net/wireless/ath/ath11k/hif.h              |  30 +
- drivers/net/wireless/ath/ath11k/htc.c              |   4 +-
- drivers/net/wireless/ath/ath11k/hw.c               | 890 ++++++++++++++++++
- drivers/net/wireless/ath/ath11k/hw.h               | 146 ++-
- drivers/net/wireless/ath/ath11k/mac.c              | 187 +++-
- drivers/net/wireless/ath/ath11k/mhi.c              | 467 ++++++++++
- drivers/net/wireless/ath/ath11k/mhi.h              |  39 +
- drivers/net/wireless/ath/ath11k/pci.c              | 995 +++++++++++++++++++++
- drivers/net/wireless/ath/ath11k/pci.h              |  65 ++
- drivers/net/wireless/ath/ath11k/peer.c             |   3 -
- drivers/net/wireless/ath/ath11k/qmi.c              | 334 +++++--
- drivers/net/wireless/ath/ath11k/qmi.h              |  27 +-
- drivers/net/wireless/ath/ath11k/reg.c              |   2 +-
- drivers/net/wireless/ath/ath11k/spectral.c         |  10 +-
- drivers/net/wireless/ath/ath11k/wmi.c              | 107 ++-
- drivers/net/wireless/ath/ath5k/ath5k.h             |   2 +-
- drivers/net/wireless/ath/ath5k/base.c              |  26 +-
- drivers/net/wireless/ath/ath5k/eeprom.c            |   4 +-
- drivers/net/wireless/ath/ath5k/pcu.c               |   6 +-
- drivers/net/wireless/ath/ath5k/phy.c               |   6 +-
- drivers/net/wireless/ath/ath5k/reset.c             |   2 +-
- drivers/net/wireless/ath/ath5k/rfbuffer.h          |   2 +-
- drivers/net/wireless/ath/ath5k/rfkill.c            |   7 +-
- drivers/net/wireless/ath/ath6kl/cfg80211.c         |   6 +-
- drivers/net/wireless/ath/ath6kl/init.c             |   2 +-
- drivers/net/wireless/ath/ath6kl/main.c             |   5 +-
- drivers/net/wireless/ath/ath6kl/wmi.c              |  10 +-
- drivers/net/wireless/ath/ath9k/Kconfig             |  12 +-
- drivers/net/wireless/ath/ath9k/ani.c               |   2 +-
- drivers/net/wireless/ath/ath9k/ar5008_initvals.h   |  68 --
- drivers/net/wireless/ath/ath9k/ar5008_phy.c        |  35 +-
- drivers/net/wireless/ath/ath9k/ar9001_initvals.h   |  37 -
- drivers/net/wireless/ath/ath9k/ar9002_initvals.h   |  14 -
- drivers/net/wireless/ath/ath9k/ar9002_mac.c        |   2 +-
- drivers/net/wireless/ath/ath9k/ar9002_phy.c        |   2 +-
- drivers/net/wireless/ath/ath9k/ar9003_mac.c        |   2 +-
- drivers/net/wireless/ath/ath9k/ath9k.h             |   4 +-
- drivers/net/wireless/ath/ath9k/beacon.c            |   4 +-
- drivers/net/wireless/ath/ath9k/channel.c           |   4 +-
- drivers/net/wireless/ath/ath9k/eeprom_def.c        |   2 +-
- drivers/net/wireless/ath/ath9k/hif_usb.c           |   2 +-
- drivers/net/wireless/ath/ath9k/htc.h               |   4 +-
- drivers/net/wireless/ath/ath9k/htc_drv_init.c      |   8 +-
- drivers/net/wireless/ath/ath9k/htc_drv_txrx.c      |  10 +-
- drivers/net/wireless/ath/ath9k/htc_hst.c           |   2 +
- drivers/net/wireless/ath/ath9k/hw.c                |   6 +-
- drivers/net/wireless/ath/ath9k/init.c              |   6 +-
- drivers/net/wireless/ath/ath9k/main.c              |  18 +-
- drivers/net/wireless/ath/ath9k/pci.c               |   5 +-
- drivers/net/wireless/ath/ath9k/wmi.c               |   9 +-
- drivers/net/wireless/ath/ath9k/wmi.h               |   4 +-
- drivers/net/wireless/ath/carl9170/carl9170.h       |   5 +-
- drivers/net/wireless/ath/carl9170/main.c           |   2 +-
- drivers/net/wireless/ath/carl9170/rx.c             |   2 +-
- drivers/net/wireless/ath/carl9170/tx.c             |  12 +-
- drivers/net/wireless/ath/carl9170/usb.c            |   7 +-
- drivers/net/wireless/ath/dfs_pattern_detector.c    |  15 +-
- drivers/net/wireless/ath/wcn36xx/dxe.c             |  57 +-
- drivers/net/wireless/ath/wcn36xx/hal.h             |  84 +-
- drivers/net/wireless/ath/wcn36xx/main.c            | 189 ++--
- drivers/net/wireless/ath/wcn36xx/pmc.c             |   5 +-
- drivers/net/wireless/ath/wcn36xx/smd.c             | 172 ++--
- drivers/net/wireless/ath/wcn36xx/smd.h             |  12 +-
- drivers/net/wireless/ath/wcn36xx/txrx.c            | 279 +++++-
- drivers/net/wireless/ath/wcn36xx/wcn36xx.h         |   9 +-
- drivers/net/wireless/ath/wil6210/cfg80211.c        |   4 +-
- drivers/net/wireless/ath/wil6210/debugfs.c         |   8 +-
- drivers/net/wireless/ath/wil6210/interrupt.c       |   4 +-
- drivers/net/wireless/ath/wil6210/pmc.c             |  12 +-
- drivers/net/wireless/ath/wil6210/txrx.c            |  30 +-
- drivers/net/wireless/ath/wil6210/txrx_edma.c       |  10 +-
- drivers/net/wireless/ath/wil6210/wil_platform.c    |   3 +-
- drivers/net/wireless/ath/wil6210/wmi.c             |  36 +-
- drivers/net/wireless/atmel/at76c50x-usb.c          |  11 +-
- drivers/net/wireless/atmel/atmel.c                 |   4 +-
- drivers/net/wireless/broadcom/b43/dma.c            |   2 +-
- drivers/net/wireless/broadcom/b43/main.c           |  14 +-
- drivers/net/wireless/broadcom/b43/phy_common.c     |   2 +-
- drivers/net/wireless/broadcom/b43/phy_ht.c         |   3 -
- drivers/net/wireless/broadcom/b43/phy_n.c          |  21 +-
- drivers/net/wireless/broadcom/b43/pio.c            |   2 +-
- drivers/net/wireless/broadcom/b43/tables_nphy.c    |   2 +-
- drivers/net/wireless/broadcom/b43legacy/dma.c      |   2 +-
- drivers/net/wireless/broadcom/b43legacy/main.c     |  15 +-
- drivers/net/wireless/broadcom/b43legacy/pio.c      |   7 +-
- .../wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c  |   6 +-
- .../wireless/broadcom/brcm80211/brcmfmac/btcoex.c  |  12 +-
- .../broadcom/brcm80211/brcmfmac/cfg80211.c         |  13 +-
- .../wireless/broadcom/brcm80211/brcmfmac/chip.c    |   2 +-
- .../wireless/broadcom/brcm80211/brcmfmac/core.c    |   2 +-
- .../broadcom/brcm80211/brcmfmac/firmware.c         |   2 +-
- .../wireless/broadcom/brcm80211/brcmfmac/fweh.c    |  13 +-
- .../broadcom/brcm80211/brcmfmac/fwsignal.c         |  20 +-
- .../wireless/broadcom/brcm80211/brcmfmac/msgbuf.c  |   2 +
- .../net/wireless/broadcom/brcm80211/brcmfmac/p2p.c |  31 +-
- .../wireless/broadcom/brcm80211/brcmfmac/sdio.c    |   7 +-
- .../wireless/broadcom/brcm80211/brcmsmac/ampdu.c   |  35 +-
- .../broadcom/brcm80211/brcmsmac/mac80211_if.c      |  17 +-
- .../broadcom/brcm80211/brcmsmac/mac80211_if.h      |   2 +-
- .../wireless/broadcom/brcm80211/brcmsmac/main.c    |  38 +-
- .../broadcom/brcm80211/brcmsmac/phy/phy_cmn.c      |   6 +-
- .../broadcom/brcm80211/brcmsmac/phy/phy_lcn.c      |  44 +-
- .../broadcom/brcm80211/brcmsmac/phy/phy_n.c        |  47 +-
- .../broadcom/brcm80211/brcmsmac/phy/phytbl_lcn.c   |  13 -
- .../broadcom/brcm80211/brcmsmac/phy/phytbl_n.c     | 268 ------
- drivers/net/wireless/cisco/airo.c                  | 898 ++++++++++---------
- drivers/net/wireless/intel/ipw2x00/ipw2100.c       |   9 +-
- drivers/net/wireless/intel/ipw2x00/ipw2200.c       |  52 +-
- drivers/net/wireless/intel/iwlegacy/3945-mac.c     |  34 +-
- drivers/net/wireless/intel/iwlegacy/3945-rs.c      |   8 +-
- drivers/net/wireless/intel/iwlegacy/3945.c         |  46 +-
- drivers/net/wireless/intel/iwlegacy/4965-calib.c   |   2 +-
- drivers/net/wireless/intel/iwlegacy/4965-mac.c     |  67 +-
- drivers/net/wireless/intel/iwlegacy/4965-rs.c      |  10 +-
- drivers/net/wireless/intel/iwlegacy/4965.c         |  25 +-
- drivers/net/wireless/intel/iwlegacy/common.c       |  76 +-
- drivers/net/wireless/intel/iwlegacy/debug.c        |   3 +-
- drivers/net/wireless/intersil/hostap/hostap.h      |   6 +-
- drivers/net/wireless/intersil/hostap/hostap_ap.c   |   2 +-
- drivers/net/wireless/intersil/hostap/hostap_hw.c   |  21 +-
- .../net/wireless/intersil/hostap/hostap_ioctl.c    |   3 +-
- drivers/net/wireless/intersil/orinoco/main.c       |  11 +-
- .../net/wireless/intersil/orinoco/orinoco_usb.c    |  14 +-
- drivers/net/wireless/intersil/p54/p54pci.c         |  12 +-
- drivers/net/wireless/intersil/prism54/isl_38xx.c   |   2 +-
- drivers/net/wireless/intersil/prism54/isl_ioctl.c  |   5 +-
- drivers/net/wireless/intersil/prism54/islpci_dev.c |   2 +-
- drivers/net/wireless/marvell/libertas/firmware.c   |   4 +-
- drivers/net/wireless/marvell/libertas/main.c       |   6 +-
- drivers/net/wireless/marvell/libertas_tf/cmd.c     |  22 +-
- drivers/net/wireless/marvell/libertas_tf/if_usb.c  |  37 +-
- drivers/net/wireless/marvell/libertas_tf/main.c    |   7 +-
- drivers/net/wireless/marvell/mwifiex/cfg80211.c    |   8 +-
- drivers/net/wireless/marvell/mwifiex/cmdevt.c      |   4 +-
- drivers/net/wireless/marvell/mwifiex/fw.h          |   8 +-
- drivers/net/wireless/marvell/mwifiex/ie.c          |   2 +-
- drivers/net/wireless/marvell/mwifiex/init.c        |  14 +-
- drivers/net/wireless/marvell/mwifiex/main.c        |   2 +
- drivers/net/wireless/marvell/mwifiex/pcie.c        | 323 +++++--
- drivers/net/wireless/marvell/mwifiex/pcie.h        | 149 ---
- drivers/net/wireless/marvell/mwifiex/scan.c        |   4 +-
- drivers/net/wireless/marvell/mwifiex/sdio.c        | 427 +++++++++
- drivers/net/wireless/marvell/mwifiex/sdio.h        | 427 ---------
- drivers/net/wireless/marvell/mwifiex/usb.c         |   3 +-
- drivers/net/wireless/marvell/mwifiex/wmm.c         |  15 +
- drivers/net/wireless/marvell/mwifiex/wmm.h         |  18 +-
- drivers/net/wireless/marvell/mwl8k.c               |  16 +-
- drivers/net/wireless/mediatek/mt7601u/dma.c        |   4 +-
- drivers/net/wireless/mediatek/mt7601u/mac.c        |   4 +-
- drivers/net/wireless/mediatek/mt7601u/phy.c        |   4 +-
- drivers/net/wireless/microchip/wilc1000/sdio.c     |   5 +-
- drivers/net/wireless/microchip/wilc1000/spi.c      |   5 +-
- .../wireless/quantenna/qtnfmac/pcie/pearl_pcie.c   |   7 +-
- .../wireless/quantenna/qtnfmac/pcie/topaz_pcie.c   |   7 +-
- drivers/net/wireless/ralink/rt2x00/rt2400pci.c     |  16 +-
- drivers/net/wireless/ralink/rt2x00/rt2500pci.c     |  16 +-
- drivers/net/wireless/ralink/rt2x00/rt2800lib.c     |  42 +-
- drivers/net/wireless/ralink/rt2x00/rt2800mmio.c    |  25 +-
- drivers/net/wireless/ralink/rt2x00/rt2800mmio.h    |  10 +-
- drivers/net/wireless/ralink/rt2x00/rt2800usb.c     |   1 -
- drivers/net/wireless/ralink/rt2x00/rt2x00.h        |  10 +-
- drivers/net/wireless/ralink/rt2x00/rt2x00dev.c     |   5 +-
- drivers/net/wireless/ralink/rt2x00/rt61pci.c       |  23 +-
- drivers/net/wireless/ralink/rt2x00/rt73usb.c       |   1 -
- drivers/net/wireless/realtek/rtl818x/rtl8180/dev.c |  70 +-
- .../net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c  |  10 +-
- drivers/net/wireless/realtek/rtlwifi/base.c        | 146 +--
- .../realtek/rtlwifi/btcoexist/halbtc8192e2ant.c    | 712 +++++++--------
- .../realtek/rtlwifi/btcoexist/halbtc8723b1ant.c    | 354 ++++----
- .../realtek/rtlwifi/btcoexist/halbtc8723b2ant.c    | 720 +++++++--------
- .../realtek/rtlwifi/btcoexist/halbtc8821a1ant.c    | 668 +++++++-------
- .../realtek/rtlwifi/btcoexist/halbtc8821a2ant.c    | 756 ++++++++--------
- .../realtek/rtlwifi/btcoexist/halbtcoutsrc.c       |  28 +-
- .../wireless/realtek/rtlwifi/btcoexist/rtl_btc.c   |   6 +-
- drivers/net/wireless/realtek/rtlwifi/cam.c         |  82 +-
- drivers/net/wireless/realtek/rtlwifi/core.c        | 263 +++---
- drivers/net/wireless/realtek/rtlwifi/debug.c       |  10 +-
- drivers/net/wireless/realtek/rtlwifi/debug.h       |  14 +-
- drivers/net/wireless/realtek/rtlwifi/efuse.c       |  72 +-
- drivers/net/wireless/realtek/rtlwifi/pci.c         | 419 +++++----
- drivers/net/wireless/realtek/rtlwifi/ps.c          |  98 +-
- drivers/net/wireless/realtek/rtlwifi/regd.c        |  18 +-
- .../net/wireless/realtek/rtlwifi/rtl8188ee/dm.c    | 192 ++--
- .../net/wireless/realtek/rtlwifi/rtl8188ee/fw.c    |  90 +-
- .../net/wireless/realtek/rtlwifi/rtl8188ee/hw.c    | 203 +++--
- .../net/wireless/realtek/rtlwifi/rtl8188ee/led.c   |  20 +-
- .../net/wireless/realtek/rtlwifi/rtl8188ee/phy.c   | 385 ++++----
- .../net/wireless/realtek/rtlwifi/rtl8188ee/rf.c    |   6 +-
- .../net/wireless/realtek/rtlwifi/rtl8188ee/trx.c   |  37 +-
- .../wireless/realtek/rtlwifi/rtl8192c/dm_common.c  | 224 ++---
- .../wireless/realtek/rtlwifi/rtl8192c/fw_common.c  |  88 +-
- .../wireless/realtek/rtlwifi/rtl8192c/phy_common.c | 261 +++---
- .../net/wireless/realtek/rtlwifi/rtl8192ce/dm.c    |  40 +-
- .../net/wireless/realtek/rtlwifi/rtl8192ce/hw.c    | 176 ++--
- .../net/wireless/realtek/rtlwifi/rtl8192ce/led.c   |  12 +-
- .../net/wireless/realtek/rtlwifi/rtl8192ce/phy.c   | 121 ++-
- .../net/wireless/realtek/rtlwifi/rtl8192ce/rf.c    |   6 +-
- .../net/wireless/realtek/rtlwifi/rtl8192ce/trx.c   |  28 +-
- .../net/wireless/realtek/rtlwifi/rtl8192cu/dm.c    |  38 +-
- .../net/wireless/realtek/rtlwifi/rtl8192cu/hw.c    | 152 ++--
- .../net/wireless/realtek/rtlwifi/rtl8192cu/led.c   |  10 +-
- .../net/wireless/realtek/rtlwifi/rtl8192cu/mac.c   |  64 +-
- .../net/wireless/realtek/rtlwifi/rtl8192cu/phy.c   | 134 +--
- .../net/wireless/realtek/rtlwifi/rtl8192cu/rf.c    |   6 +-
- .../net/wireless/realtek/rtlwifi/rtl8192cu/trx.c   |  58 +-
- .../net/wireless/realtek/rtlwifi/rtl8192de/dm.c    | 312 +++----
- .../net/wireless/realtek/rtlwifi/rtl8192de/fw.c    | 116 +--
- .../net/wireless/realtek/rtlwifi/rtl8192de/hw.c    | 206 ++---
- .../net/wireless/realtek/rtlwifi/rtl8192de/led.c   |  10 +-
- .../net/wireless/realtek/rtlwifi/rtl8192de/phy.c   | 414 ++++-----
- .../net/wireless/realtek/rtlwifi/rtl8192de/rf.c    |  30 +-
- .../net/wireless/realtek/rtlwifi/rtl8192de/trx.c   |  32 +-
- .../net/wireless/realtek/rtlwifi/rtl8192ee/dm.c    |  66 +-
- .../net/wireless/realtek/rtlwifi/rtl8192ee/fw.c    | 102 +--
- .../net/wireless/realtek/rtlwifi/rtl8192ee/hw.c    | 208 ++---
- .../net/wireless/realtek/rtlwifi/rtl8192ee/led.c   |  18 +-
- .../net/wireless/realtek/rtlwifi/rtl8192ee/phy.c   | 358 ++++----
- .../net/wireless/realtek/rtlwifi/rtl8192ee/rf.c    |   6 +-
- .../net/wireless/realtek/rtlwifi/rtl8192ee/trx.c   |  45 +-
- .../net/wireless/realtek/rtlwifi/rtl8192se/dm.c    |  42 +-
- .../net/wireless/realtek/rtlwifi/rtl8192se/fw.c    |  40 +-
- .../net/wireless/realtek/rtlwifi/rtl8192se/hw.c    | 157 ++--
- .../net/wireless/realtek/rtlwifi/rtl8192se/led.c   |  10 +-
- .../net/wireless/realtek/rtlwifi/rtl8192se/phy.c   | 211 +++--
- .../net/wireless/realtek/rtlwifi/rtl8192se/rf.c    |  70 +-
- .../net/wireless/realtek/rtlwifi/rtl8192se/sw.c    |   4 +-
- .../net/wireless/realtek/rtlwifi/rtl8192se/trx.c   |  22 +-
- .../net/wireless/realtek/rtlwifi/rtl8723ae/dm.c    | 162 ++--
- .../net/wireless/realtek/rtlwifi/rtl8723ae/fw.c    |  64 +-
- .../realtek/rtlwifi/rtl8723ae/hal_bt_coexist.c     | 150 ++--
- .../wireless/realtek/rtlwifi/rtl8723ae/hal_btc.c   | 647 +++++++-------
- .../net/wireless/realtek/rtlwifi/rtl8723ae/hw.c    | 232 ++---
- .../net/wireless/realtek/rtlwifi/rtl8723ae/led.c   |  12 +-
- .../net/wireless/realtek/rtlwifi/rtl8723ae/phy.c   | 357 ++++----
- .../net/wireless/realtek/rtlwifi/rtl8723ae/rf.c    |   6 +-
- .../net/wireless/realtek/rtlwifi/rtl8723ae/trx.c   |  28 +-
- .../net/wireless/realtek/rtlwifi/rtl8723be/dm.c    | 118 +--
- .../net/wireless/realtek/rtlwifi/rtl8723be/fw.c    |  66 +-
- .../net/wireless/realtek/rtlwifi/rtl8723be/hw.c    | 211 +++--
- .../net/wireless/realtek/rtlwifi/rtl8723be/led.c   |  10 +-
- .../net/wireless/realtek/rtlwifi/rtl8723be/phy.c   | 310 +++----
- .../net/wireless/realtek/rtlwifi/rtl8723be/rf.c    |   6 +-
- .../net/wireless/realtek/rtlwifi/rtl8723be/trx.c   |  37 +-
- .../realtek/rtlwifi/rtl8723com/fw_common.c         |  22 +-
- .../realtek/rtlwifi/rtl8723com/phy_common.c        |  36 +-
- .../net/wireless/realtek/rtlwifi/rtl8821ae/dm.c    | 821 +++++++++--------
- .../net/wireless/realtek/rtlwifi/rtl8821ae/fw.c    | 134 +--
- .../net/wireless/realtek/rtlwifi/rtl8821ae/hw.c    | 465 +++++-----
- .../net/wireless/realtek/rtlwifi/rtl8821ae/led.c   |  32 +-
- .../net/wireless/realtek/rtlwifi/rtl8821ae/phy.c   | 529 +++++------
- .../net/wireless/realtek/rtlwifi/rtl8821ae/rf.c    |   6 +-
- .../net/wireless/realtek/rtlwifi/rtl8821ae/trx.c   |  72 +-
- drivers/net/wireless/realtek/rtlwifi/usb.c         |  28 +-
- drivers/net/wireless/realtek/rtw88/debug.c         |   6 +-
- drivers/net/wireless/realtek/rtw88/mac.c           |  13 +-
- drivers/net/wireless/realtek/rtw88/main.c          |   7 +-
- drivers/net/wireless/realtek/rtw88/pci.c           |  33 +-
- drivers/net/wireless/realtek/rtw88/phy.c           |  11 +-
- drivers/net/wireless/realtek/rtw88/rtw8821c.c      |   2 +-
- drivers/net/wireless/realtek/rtw88/rtw8822b.c      |   4 +-
- drivers/net/wireless/realtek/rtw88/rtw8822c.c      |   4 +-
- .../net/wireless/realtek/rtw88/rtw8822c_table.c    |  32 +-
- drivers/net/wireless/realtek/rtw88/tx.c            |   4 +-
- drivers/net/wireless/realtek/rtw88/tx.h            |   2 +-
- drivers/net/wireless/rndis_wlan.c                  |   4 +-
- drivers/net/wireless/rsi/rsi_91x_coex.c            |   2 +-
- drivers/net/wireless/rsi/rsi_91x_core.c            |   2 +-
- drivers/net/wireless/rsi/rsi_91x_debugfs.c         |   2 +-
- drivers/net/wireless/rsi/rsi_91x_hal.c             |   2 +-
- drivers/net/wireless/rsi/rsi_91x_mac80211.c        |   8 +-
- drivers/net/wireless/rsi/rsi_91x_main.c            |   5 +-
- drivers/net/wireless/rsi/rsi_91x_mgmt.c            |  33 +-
- drivers/net/wireless/rsi/rsi_91x_ps.c              |   2 +-
- drivers/net/wireless/rsi/rsi_91x_sdio.c            |   7 +-
- drivers/net/wireless/rsi/rsi_91x_sdio_ops.c        |   2 +-
- drivers/net/wireless/st/cw1200/wsm.c               |   6 +-
- drivers/net/wireless/ti/wl1251/main.c              |   2 +-
- drivers/net/wireless/ti/wlcore/cmd.c               |   7 +-
- drivers/net/wireless/ti/wlcore/debugfs.h           |   6 +-
- drivers/net/wireless/wl3501_cs.c                   |  22 +-
- drivers/net/wireless/zydas/zd1211rw/zd_chip.c      |   4 +-
- drivers/net/wireless/zydas/zd1211rw/zd_mac.c       |  15 +-
- drivers/net/wireless/zydas/zd1211rw/zd_usb.c       |   9 +-
- 327 files changed, 15656 insertions(+), 10768 deletions(-)
- create mode 100644 drivers/net/wireless/ath/ath11k/hw.c
- create mode 100644 drivers/net/wireless/ath/ath11k/mhi.c
- create mode 100644 drivers/net/wireless/ath/ath11k/mhi.h
- create mode 100644 drivers/net/wireless/ath/ath11k/pci.c
- create mode 100644 drivers/net/wireless/ath/ath11k/pci.h
+On Fri, Sep 11, 2020 at 8:25 PM Sugandh Huthanahally Mohan
+<sugandhgowda@gmail.com> wrote:
+>
+> On Fri, Sep 11, 2020 at 7:33 PM Sugandh Huthanahally Mohan
+> <sugandhgowda@gmail.com> wrote:
+> >
+> > On Wed, Sep 9, 2020 at 2:18 AM Sugandh Huthanahally Mohan
+> > <sugandhgowda at gmail.com> wrote:
+> > >
+> > > On Wed, Sep 9, 2020 at 12:27 AM Sugandh Huthanahally Mohan
+> > > <sugandhgowda at gmail.com> wrote:
+> > > > >
+> > > > > I have captured connection between a WiFi6 AP and a WiFi6 STA in =
+wireshark.
+> > > > >I have attached a wireshark pcap file.
+> > > > > I could see HE capabilities exchange in Association request and r=
+esponse.
+> > > > Yes, this looks fine to me except for VHT IEs in the probe and
+> > > > association response in 2.4GHz.
+> > > > Maybe this is what is confusing, can you please disable ieee80211ac=
+=3D0
+> > > > in the hostapd.conf and try?
+> > > I disabled iee80211ac and I am not seeing VHT capabilities in Associa=
+tion
+> > > frames but the data rate remains the same.I am attaching wireshark ca=
+pture.
+> > okay, thanks.
+> > > > The iw phy output is below. I couldn't see HE connection in this ou=
+tput.
+> > > >
+> > > > $iw dev wlp3s0 link
+> > > > Connected to 8c:c6:81:69:86:65 (on wlp3s0)
+> > > >     SSID: WiFi_AX200
+> > > >     freq: 2437
+> > > >     RX: 27838 bytes (199 packets)
+> > > >     TX: 13319 bytes (97 packets)
+> > > >     signal: -34 dBm
+> > > >     rx bitrate: 26.0 MBit/s MCS 3
+> > > >     tx bitrate: 2.0 MBit/s
+> > > >
+> > > >     bss flags:    short-slot-time
+> > > >     dtim period:    2
+> > > >     beacon int:    100
+> > > >
+> > > > > The link doesn't show any specific details related to HE other th=
+an
+> > > > > the MCS which can vary, try running
+> > > > > an iperf to see HE MCSes in a clean channel.
+> > >
+> > > Could you please explain what this means.
+> > > I want to know what clean channel means and where actually I can see =
+HE MCSes.
+> >
+> > > Sure. The link command doesn't printout any in capability information=
+ explicitly
+> > > except for the MCS details. And figuring out the mode of connection (=
+11n/11ax)
+> > > from the MCS is tricky as the MCS varies across depending on the rate
+> > > control algorithm
+> > > (for iwlwifi: hardware). So, I was suggesting to use iperf (the more
+> > > data you pass, more
+> > > chance of the rate control algo to go to higher MCSes) and also by
+> > > "clean channels" I was
+> > > referring to quieter channels where there are no other BSSes or no
+> > > other traffic.
+> > Okay. I tried running iperf for long period of time between AP and STA
+> > (injected incremental traffic ,like running more parallel connections b=
+etween
+> > iperf server and iperf client ) and  I did not see any changes in MCSes=
+.
+> > It remained the same throughout the time I ran the iperf test.
+> > Okay, this was to rule out any rate control issues but as it turned out=
+ to be
+> > a functional issue, we can ignore this for now.
+> Okay
+>
+> >
+> > > >But, before we go into debugging data path, I still don't understand
+> > > >why wpa_supplicant
+> > > >isn't saying it is a HE association?
+> >
+> > > > Ah, After staring at the code and using blame, a crucial fix missed
+> > > > out hostap-2.9 windows,
+> > > > the fix was to properly validate the HE capabilities, I was looking=
+ at
+> > > > the latest cod and
+> > > > everything looked fine, hence took time.
+> >
+> > > > hostap_2_9-> 7th August
+> > > >0497e4148197fb8fdf92b5c901ce06df1bfa548c ->13th August
+> > > >
+> > > > Please use the latest HEAD of hostap.git, you need to compile it
+> > > > manually and try the
+> > > > test and let me know how it goes. (make sure all proper configs are=
+ enabled)
+> > > >
+> > > > Previously I was using hostapd version 2.9 and with this version I =
+could
+> >  > >connect STA's to AP with the hostapd.conf which I had shared earlie=
+r.
+> > >
+> > >  Now I pulled the latest HEAD and compiled it with proper flags enabl=
+ed.
+> > >  When I run hostapd now , the WiFi6 STA's(AX200) are not able to esta=
+blish
+> > >  solid connection to AP. In other words, I could see they are connect=
+ing but
+> > > hostapd is deleting the station. Below are the log pertaining to that
+> > >
+> > >  nl80211: NL80211_CMD_SET_STATION result: -5 (Input/output error)
+> > > wlp3s0: STA 8c:c6:81:69:ac:80 IEEE 802.11: Could not set STA to kerne=
+l driver
+> > >  nl80211: sta_remove -> DEL_STATION wlp3s0 8c:c6:81:69:ac:80 --> 0 (S=
+uccess)
+>
+> > First of all, the original problem is resolved, I can see he_capabs
+> > now, but unfortunately
+> > , the problem moved to the kernel :). There are many reasons why the
+> > mac80211/iwlwifi
+> > might return EIO, Could you please also share the dmesg as well when
+> >this happens?
+>
+> Then, the hostapd version 2.9 may not be establishing a HE connection
+> but the latest HEAD I used is  trying to establish one.
+Yes, that was the hypothesis and it is now confirmed.
+>
+> dmesg is below:
+>
+> $dmesg
+<snip...>
+> [  217.159617] RIP: 0033:0x7f8e708f55b7
+> [  217.159619] Code: 64 89 02 48 c7 c0 ff ff ff ff eb bb 0f 1f 80 00
+> 00 00 00 f3 0f 1e fa 64 8b 04 25 18 00 00 00 85 c0 75 10 b8 2e 00 00
+> 00 0f 05 <48> 3d 00 f0 ff ff 77 51 c3 48 83 ec 28 89 54 24 1c 48 89 74
+> 24 10
+> [  217.159619] RSP: 002b:00007ffffed54048 EFLAGS: 00000246 ORIG_RAX:
+> 000000000000002e
+> [  217.159621] RAX: ffffffffffffffda RBX: 0000557df150a5e0 RCX: 00007f8e7=
+08f55b7
+> [  217.159621] RDX: 0000000000000000 RSI: 00007ffffed54080 RDI: 000000000=
+0000005
+> [  217.159622] RBP: 0000557df1514bd0 R08: 0000000000000004 R09: 000000000=
+0000000
+> [  217.159622] R10: 00007ffffed54164 R11: 0000000000000246 R12: 0000557df=
+1508aa0
+> [  217.159623] R13: 00007ffffed54080 R14: 0000000000000000 R15: 000000000=
+0000000
+> [  217.824610] iwlwifi 0000:03:00.0: Applying debug destination EXTERNAL_=
+DRAM
+> [  217.993230] iwlwifi 0000:03:00.0: FW already configured (0) - re-confi=
+guring
+> [  228.315161] iwlwifi 0000:03:00.0: Microcode SW error detected.
+> Restarting 0x0.
+> [  228.315276] iwlwifi 0000:03:00.0: Start IWL Error Log Dump:
+> [  228.315281] iwlwifi 0000:03:00.0: Status: 0x00000040, count: 6
+> [  228.315285] iwlwifi 0000:03:00.0: Loaded firmware version: 48.4fa0041f=
+.0
+> [  228.315290] iwlwifi 0000:03:00.0: 0x00002078 | ADVANCED_SYSASSERT
+> [  228.315294] iwlwifi 0000:03:00.0: 0x00A0A200 | trm_hw_status0
+> [  228.315297] iwlwifi 0000:03:00.0: 0x00000000 | trm_hw_status1
+> [  228.315300] iwlwifi 0000:03:00.0: 0x004F8E3C | branchlink2
+> [  228.315303] iwlwifi 0000:03:00.0: 0x004E4FF4 | interruptlink1
+> [  228.315307] iwlwifi 0000:03:00.0: 0x004E4FF4 | interruptlink2
+> [  228.315310] iwlwifi 0000:03:00.0: 0x07000101 | data1
+> [  228.315313] iwlwifi 0000:03:00.0: 0x48308403 | data2
+> [  228.315316] iwlwifi 0000:03:00.0: 0x00000005 | data3
+> [  228.315319] iwlwifi 0000:03:00.0: 0x00000000 | beacon time
+> [  228.315322] iwlwifi 0000:03:00.0: 0x009FA807 | tsf low
+> [  228.315326] iwlwifi 0000:03:00.0: 0x00000000 | tsf hi
+> [  228.315329] iwlwifi 0000:03:00.0: 0x00000000 | time gp1
+> [  228.315332] iwlwifi 0000:03:00.0: 0x00A01170 | time gp2
+> [  228.315335] iwlwifi 0000:03:00.0: 0x00000001 | uCode revision type
+> [  228.315338] iwlwifi 0000:03:00.0: 0x00000030 | uCode version major
+> [  228.315342] iwlwifi 0000:03:00.0: 0x4FA0041F | uCode version minor
+> [  228.315345] iwlwifi 0000:03:00.0: 0x00000340 | hw version
+> [  228.315348] iwlwifi 0000:03:00.0: 0x00489000 | board version
+> [  228.315351] iwlwifi 0000:03:00.0: 0x802CFC09 | hcmd
+> [  228.315354] iwlwifi 0000:03:00.0: 0x24020000 | isr0
+> [  228.315357] iwlwifi 0000:03:00.0: 0x61000000 | isr1
+> [  228.315360] iwlwifi 0000:03:00.0: 0x18F00002 | isr2
+> [  228.315363] iwlwifi 0000:03:00.0: 0x00C1FFCC | isr3
+> [  228.315366] iwlwifi 0000:03:00.0: 0x00000000 | isr4
+> [  228.315369] iwlwifi 0000:03:00.0: 0x0405001C | last cmd Id
+> [  228.315372] iwlwifi 0000:03:00.0: 0x00016D22 | wait_event
+> [  228.315375] iwlwifi 0000:03:00.0: 0x00000000 | l2p_control
+> [  228.315379] iwlwifi 0000:03:00.0: 0x00018034 | l2p_duration
+> [  228.315382] iwlwifi 0000:03:00.0: 0x0000003F | l2p_mhvalid
+> [  228.315385] iwlwifi 0000:03:00.0: 0x00CB0000 | l2p_addr_match
+> [  228.315388] iwlwifi 0000:03:00.0: 0x00000009 | lmpm_pmg_sel
+> [  228.315391] iwlwifi 0000:03:00.0: 0x00000000 | timestamp
+> [  228.315394] iwlwifi 0000:03:00.0: 0x00004894 | flow_handler
+> [  228.315452] iwlwifi 0000:03:00.0: Start IWL Error Log Dump:
+> [  228.315455] iwlwifi 0000:03:00.0: Status: 0x00000040, count: 7
+> [  228.315459] iwlwifi 0000:03:00.0: 0x20000070 | NMI_INTERRUPT_LMAC_FATA=
+L
+> [  228.315462] iwlwifi 0000:03:00.0: 0x00000000 | umac branchlink1
+> [  228.315465] iwlwifi 0000:03:00.0: 0xC008CC3C | umac branchlink2
+> [  228.315468] iwlwifi 0000:03:00.0: 0x8048D0E6 | umac interruptlink1
+> [  228.315472] iwlwifi 0000:03:00.0: 0x8048D0E6 | umac interruptlink2
+> [  228.315475] iwlwifi 0000:03:00.0: 0x00000400 | umac data1
+> [  228.315478] iwlwifi 0000:03:00.0: 0x8048D0E6 | umac data2
+> [  228.315481] iwlwifi 0000:03:00.0: 0x00000000 | umac data3
+> [  228.315484] iwlwifi 0000:03:00.0: 0x00000030 | umac major
+> [  228.315487] iwlwifi 0000:03:00.0: 0x4FA0041F | umac minor
+> [  228.315490] iwlwifi 0000:03:00.0: 0x00A01180 | frame pointer
+> [  228.315493] iwlwifi 0000:03:00.0: 0xC0886284 | stack pointer
+> [  228.315496] iwlwifi 0000:03:00.0: 0x003B050F | last host cmd
+> [  228.315499] iwlwifi 0000:03:00.0: 0x00000000 | isr status reg
+> [  228.315530] iwlwifi 0000:03:00.0: Fseq Registers:
+> [  228.315543] iwlwifi 0000:03:00.0: 0xE0000101 | FSEQ_ERROR_CODE
+> [  228.315555] iwlwifi 0000:03:00.0: 0x00290011 | FSEQ_TOP_INIT_VERSION
+> [  228.315568] iwlwifi 0000:03:00.0: 0x80050008 | FSEQ_CNVIO_INIT_VERSION
+> [  228.315581] iwlwifi 0000:03:00.0: 0x0000A503 | FSEQ_OTP_VERSION
+> [  228.315594] iwlwifi 0000:03:00.0: 0x80000003 | FSEQ_TOP_CONTENT_VERSIO=
+N
+> [  228.315606] iwlwifi 0000:03:00.0: 0x4552414E | FSEQ_ALIVE_TOKEN
+> [  228.315619] iwlwifi 0000:03:00.0: 0x00100530 | FSEQ_CNVI_ID
+> [  228.315632] iwlwifi 0000:03:00.0: 0x00000532 | FSEQ_CNVR_ID
+> [  228.315644] iwlwifi 0000:03:00.0: 0x00100530 | CNVI_AUX_MISC_CHIP
+> [  228.315659] iwlwifi 0000:03:00.0: 0x00000532 | CNVR_AUX_MISC_CHIP
+> [  228.315674] iwlwifi 0000:03:00.0: 0x05B0905B |
+> CNVR_SCU_SD_REGS_SD_REG_DIG_DCDC_VTRIM
+> [  228.315689] iwlwifi 0000:03:00.0: 0x0000025B |
+> CNVR_SCU_SD_REGS_SD_REG_ACTIVE_VDIG_MIRROR
+> [  228.315833] iwlwifi 0000:03:00.0: Collecting data: trigger 2 fired.
+> [  228.315842] ieee80211 phy0: Hardware restart was requested
+> [  228.315867] iwlwifi 0000:03:00.0: FW error in SYNC CMD ADD_STA
+> [  228.315877] CPU: 2 PID: 3471 Comm: hostapd Tainted: P           OE
+>    5.4.0-42-generic #46-Ubuntu
+> [  228.315879] Hardware name: LENOVO 20FXS1FA00/20FXS1FA00, BIOS
+> R07ET91W (2.31 ) 12/11/2019
+> [  228.315880] Call Trace:
+> [  228.315893]  dump_stack+0x6d/0x9a
+> [  228.315918]  iwl_trans_pcie_gen2_send_hcmd+0x3de/0x3f0 [iwlwifi]
+> [  228.315924]  ? wait_woken+0x80/0x80
+> [  228.315944]  iwl_trans_send_cmd+0x55/0xc0 [iwlwifi]
+> [  228.315965]  iwl_mvm_send_cmd_status+0x38/0xd0 [iwlmvm]
+> [  228.315983]  iwl_mvm_send_cmd_pdu_status+0x53/0x70 [iwlmvm]
+> [  228.316002]  iwl_mvm_sta_send_to_fw+0x1ca/0x310 [iwlmvm]
+> [  228.316017]  iwl_mvm_mac_sta_state+0x3e1/0x6e0 [iwlmvm]
+> [  228.316023]  ? __switch_to_asm+0x40/0x70
+> [  228.316060]  drv_sta_state+0x96/0x3f0 [mac80211]
+> [  228.316094]  sta_info_move_state+0x276/0x370 [mac80211]
+> [  228.316134]  sta_apply_auth_flags.isra.0+0x73/0x140 [mac80211]
+> [  228.316170]  sta_apply_parameters+0x34c/0x690 [mac80211]
+> [  228.316204]  ieee80211_change_station+0x130/0x340 [mac80211]
+> [  228.316244]  ? nl80211_parse_sta_wme.isra.0+0x50/0xc0 [cfg80211]
+> [  228.316278]  nl80211_set_station+0x365/0x440 [cfg80211]
+> [  228.316286]  genl_family_rcv_msg+0x1b9/0x470
+> [  228.316291]  genl_rcv_msg+0x4c/0xa0
+> [  228.316301]  ? _cond_resched+0x19/0x30
+> [  228.316304]  ? genl_family_rcv_msg+0x470/0x470
+> [  228.316307]  netlink_rcv_skb+0x50/0x120
+> [  228.316311]  genl_rcv+0x29/0x40
+> [  228.316314]  netlink_unicast+0x187/0x220
+> [  228.316317]  netlink_sendmsg+0x222/0x3e0
+> [  228.316323]  sock_sendmsg+0x65/0x70
+> [  228.316326]  ____sys_sendmsg+0x212/0x280
+> [  228.316331]  ___sys_sendmsg+0x88/0xd0
+> [  228.316336]  ? __wake_up_common_lock+0x8a/0xc0
+> [  228.316340]  ? __wake_up+0x13/0x20
+> [  228.316346]  ? tty_write_unlock+0x31/0x40
+> [  228.316352]  ? __cgroup_bpf_run_filter_setsockopt+0xae/0x2c0
+> [  228.316354]  ? _cond_resched+0x19/0x30
+> [  228.316359]  ? aa_sk_perm+0x43/0x170
+> [  228.316364]  __sys_sendmsg+0x5c/0xa0
+> [  228.316369]  __x64_sys_sendmsg+0x1f/0x30
+> [  228.316375]  do_syscall_64+0x57/0x190
+> [  228.316379]  entry_SYSCALL_64_after_hwframe+0x44/0xa9
+> [  228.316383] RIP: 0033:0x7f8e708f55b7
+> [  228.316388] Code: 64 89 02 48 c7 c0 ff ff ff ff eb bb 0f 1f 80 00
+> 00 00 00 f3 0f 1e fa 64 8b 04 25 18 00 00 00 85 c0 75 10 b8 2e 00 00
+> 00 0f 05 <48> 3d 00 f0 ff ff 77 51 c3 48 83 ec 28 89 54 24 1c 48 89 74
+> 24 10
+> [  228.316390] RSP: 002b:00007ffffed54048 EFLAGS: 00000246 ORIG_RAX:
+> 000000000000002e
+> [  228.316394] RAX: ffffffffffffffda RBX: 0000557df150a5e0 RCX: 00007f8e7=
+08f55b7
+> [  228.316396] RDX: 0000000000000000 RSI: 00007ffffed54080 RDI: 000000000=
+0000005
+> [  228.316398] RBP: 0000557df1514bd0 R08: 0000000000000004 R09: 000000000=
+0000000
+> [  228.316399] R10: 00007ffffed54164 R11: 0000000000000246 R12: 0000557df=
+1508aa0
+> [  228.316401] R13: 00007ffffed54080 R14: 0000000000000000 R15: 000000000=
+0000000
+> [  228.966456] iwlwifi 0000:03:00.0: Failed to trigger RX queues sync (-5=
+)
+> [  228.992214] iwlwifi 0000:03:00.0: Applying debug destination EXTERNAL_=
+DRAM
+> [  229.161947] iwlwifi 0000:03:00.0: FW already configured (0) - re-confi=
+guring
+Urgh...a LMAC firmware crash in the sta_add. I will leave this to the
+Intel guys.
++ Linux Wireless
+I am still not sure if this a genuine issue or just an
+incompatibility, I would suggest you to
+switch to iwlwifi-next.git with corresponding latest iwlwifi firmware.
+>
+>
+>
+> >
+> > Also I could see multiple Association requests and responses. On the
+> > other hand I am
+> > able to connect WiFi4(802.11n) STA's to AP. I am attaching the hostapd =
+logs
+> > with debugs enabled and also wireshark captures.
+> This is in line with the logs, as Set-STA is failing association
+> request will not go through.
+>
+> >
+> > > > On Wed, Sep 2, 2020 at 3:39 PM Krishna Chaitanya
+> > > > <chaitanya.mgit at gmail.com> wrote:
+> > > > >
+> > > > > On Wed, Sep 2, 2020 at 6:38 PM Sugandh Huthanahally Mohan
+> > > > > <sugandhgowda at gmail.com> wrote:
+> > > > > >
+> > > > > > On Wed, Sep 2, 2020 at 3:16 PM Sugandh Huthanahally Mohan
+> > > > > > <sugandhgowda at gmail.com> wrote:
+> > > > > > >
+> > > > > > > On Tue, Sep 1, 2020 at 10:09 PM Krishna Chaitanya
+> > > > > > > <chaitanya.mgit at gmail.com> wrote:
+> > > > > > > >
+> > > > > > > >
+> > > > > > > > Well, not necessarily, but hostap side it looks fine, so,
+> > > > > > > > we need to see why the STA isn't responding well, probably =
+a
+> > > > > > > > different draft implementation. At the very least we should=
+ start
+> > > > > > > > with a sniffer capture of the association b/w the stations =
+to check
+> > > > > > > > the IEs.
+> > > > > > >
+> > > > > > > I am using wpa_supplicant in STA to connect  to AP.
+> > > > > > > I am attaching hostapd logs and wpa_supplicant logs.
+> > > > > > > I am observing that the STA is connecting and disconnecting w=
+hen
+> > > > > > > I try to connect STA to AP.
+> > > > > > I guess this is a new STA with wpa_supplicant, right? Is it als=
+o AX200 based
+> > > > > > chipset? In the STA mode, the kernel adds the HE IEs (either ma=
+c80211
+> > > > > > or the driver),
+> > > > > > so, but interestingly in your previous dmesg, I don't see any m=
+ac80211 logs.
+> > > > > >
+> > > > > > So, need dmesg logs that capture the connection (look for mac80=
+211 logs).
+> > > > > > >
+> > > > > > > On Tue, Sep 1, 2020 at 10:09 PM Krishna Chaitanya
+> > > > > > > <chaitanya.mgit at gmail.com> wrote:
+> > > > > > > >
+> > > > > > > > On Wed, Sep 2, 2020 at 1:23 AM Sugandh Huthanahally Mohan
+> > > > > > > > <sugandhgowda at gmail.com> wrote:
+> > > > > > > > >
+> > > > > > > > > Hi Krishna,
+> > > > > > > > >
+> > > > > > > > > Currently I am not running wpa_supplicant.
+> > > > > > > > > Is it necessary for hostapd?
+> > > > > > > >
+> > > > > > > > Well, not necessarily, but hostap side it looks fine, so,
+> > > > > > > > we need to see why the STA isn't responding well, probably =
+a
+> > > > > > > > different draft implementation. At the very least we should=
+ start
+> > > > > > > > with a sniffer capture of the association b/w the stations =
+to check
+> > > > > > > > the IEs.
+> > > > > >
+> > > > > > Yes this is a new STA connecting AP with wpa_supplicant.
+> > > > > > It is also an AX200.
+> > > > > > I don=E2=80=99t see mac80211 logs on the STA dmesg.
+> > > > > > I am attaching dmesg of the station.
+> > > > >
+> > > > > These are from mac80211:
+> > > > > [  152.255545] wlp3s0: authenticate with 8c:c6:81:69:86:65
+> > > > > [  152.258347] wlp3s0: send auth to 8c:c6:81:69:86:65 (try 1/3)
+> > > > > [  152.283971] wlp3s0: authenticated
+> > > > > [  152.286624] wlp3s0: associate with 8c:c6:81:69:86:65 (try 1/3)
+> > > > > [  152.293456] wlp3s0: RX AssocResp from 8c:c6:81:69:86:65
+> > > > > (capab=3D0x411 status=3D0 aid=3D1)
+> > > > > [  152.299672] wlp3s0: associated
+> > > > > [  152.364843] IPv6: ADDRCONF(NETDEV_CHANGE): wlp3s0: link become=
+s ready
+> > > > >
+> > > > > I was hoping to see some prints disabling HE, but looks fine. So,
+> > > > > still, nothing from the logs
+> > > > > to say why HE is disabled in the STA (why it isn't sending HE IEs=
+ in
+> > > > > assoc resp).
+> > > > >
+> > > > > Only Sniffer should tell us without resorting to Whitebox debug.
+> > > > > >
+> > > > > > On Wed, Sep 2, 2020 at 1:26 PM Krishna Chaitanya
+> > > > > > <chaitanya.mgit at gmail.com> wrote:
+> > > > > > >
+> > > > > > > On Wed, Sep 2, 2020 at 3:16 PM Sugandh Huthanahally Mohan
+> > > > > > > <sugandhgowda at gmail.com> wrote:
+> > > > > > > >
+> > > > > > > > On Tue, Sep 1, 2020 at 10:09 PM Krishna Chaitanya
+> > > > > > > > <chaitanya.mgit at gmail.com> wrote:
+> > > > > > > > >
+> > > > > > > > >
+> > > > > > > > > Well, not necessarily, but hostap side it looks fine, so,
+> > > > > > > > > we need to see why the STA isn't responding well, probabl=
+y a
+> > > > > > > > > different draft implementation. At the very least we shou=
+ld start
+> > > > > > > > > with a sniffer capture of the association b/w the station=
+s to check
+> > > > > > > > > the IEs.
+> > > > > > > >
+> > > > > > > > I am using wpa_supplicant in STA to connect  to AP.
+> > > > > > > > I am attaching hostapd logs and wpa_supplicant logs.
+> > > > > > > > I am observing that the STA is connecting and disconnecting=
+ when
+> > > > > > > > I try to connect STA to AP.
+> > > > > > > I guess this is a new STA with wpa_supplicant, right? Is it a=
+lso AX200 based
+> > > > > > > chipset? In the STA mode, the kernel adds the HE IEs (either =
+mac80211
+> > > > > > > or the driver),
+> > > > > > > so, but interestingly in your previous dmesg, I don't see any=
+ mac80211 logs.
+> > > > > > >
+> > > > > > > So, need dmesg logs that capture the connection (look for mac=
+80211 logs).
+> > > > > > > >
+> > > > > > > > On Tue, Sep 1, 2020 at 10:09 PM Krishna Chaitanya
+> > > > > > > > <chaitanya.mgit at gmail.com> wrote:
+> > > > > > > > >
+> > > > > > > > > On Wed, Sep 2, 2020 at 1:23 AM Sugandh Huthanahally Mohan
+> > > > > > > > > <sugandhgowda at gmail.com> wrote:
+> > > > > > > > > >
+> > > > > > > > > > Hi Krishna,
+> > > > > > > > > >
+> > > > > > > > > > Currently I am not running wpa_supplicant.
+> > > > > > > > > > Is it necessary for hostapd?
+> > > > > > > > >
+> > > > > > > > > Well, not necessarily, but hostap side it looks fine, so,
+> > > > > > > > > we need to see why the STA isn't responding well, probabl=
+y a
+> > > > > > > > > different draft implementation. At the very least we shou=
+ld start
+> > > > > > > > > with a sniffer capture of the association b/w the station=
+s to check
+> > > > > > > > > the IEs.
+> > > > > > >
+> > > > > > >
+> > > > > > >
+> > > > > > > --
+> > > > > > > Thanks,
+> > > > > > > Regards,
+> > > > > > > Chaitanya T K.
+> > > > >
+> > > > >
+> > > > >
+> > > > > --
+> > > > > Thanks,
+> > > > > Regards,
+> > > > > Chaitanya T K.
+> > >
+> > >
+> > > On Tue, Sep 8, 2020 at 9:55 PM Krishna Chaitanya
+> > > <chaitanya.mgit at gmail.com> wrote:
+> > > >
+> > > > On Wed, Sep 9, 2020 at 12:27 AM Sugandh Huthanahally Mohan
+> > > > <sugandhgowda at gmail.com> wrote:
+> > > > >
+> > > > > I have captured connection between a WiFi6 AP and a WiFi6 STA in =
+wireshark.
+> > > > > I have attached a wireshark pcap file.
+> > > > > I could see HE capabilities exchange in Association request and r=
+esponse.
+> > > > Yes, this looks fine to me except for VHT IEs in the probe and
+> > > > association response in 2.4GHz.
+> > > > Maybe this is what is confusing, can you please disable ieee80211ac=
+=3D0
+> > > > in the hostapd.conf and try?
+> > > >
+> > > > > The iw phy output is below. I couldn't see HE connection in this =
+output.
+> > > > >
+> > > > > $iw dev wlp3s0 link
+> > > > > Connected to 8c:c6:81:69:86:65 (on wlp3s0)
+> > > > >     SSID: WiFi_AX200
+> > > > >     freq: 2437
+> > > > >     RX: 27838 bytes (199 packets)
+> > > > >     TX: 13319 bytes (97 packets)
+> > > > >     signal: -34 dBm
+> > > > >     rx bitrate: 26.0 MBit/s MCS 3
+> > > > >     tx bitrate: 2.0 MBit/s
+> > > > >
+> > > > >     bss flags:    short-slot-time
+> > > > >     dtim period:    2
+> > > > >     beacon int:    100
+> > > > >
+> > > > The link doesn't show any specific details related to HE other than
+> > > > the MCS which can vary, try running
+> > > > an iperf to see HE MCSes in a clean channel.
+> > > > >
+> > > > > On Wed, Sep 2, 2020 at 3:39 PM Krishna Chaitanya
+> > > > > <chaitanya.mgit at gmail.com> wrote:
+> > > > > >
+> > > > > > On Wed, Sep 2, 2020 at 6:38 PM Sugandh Huthanahally Mohan
+> > > > > > <sugandhgowda at gmail.com> wrote:
+> > > > > > >
+> > > > > > > On Wed, Sep 2, 2020 at 3:16 PM Sugandh Huthanahally Mohan
+> > > > > > > <sugandhgowda at gmail.com> wrote:
+> > > > > > > >
+> > > > > > > > On Tue, Sep 1, 2020 at 10:09 PM Krishna Chaitanya
+> > > > > > > > <chaitanya.mgit at gmail.com> wrote:
+> > > > > > > > >
+> > > > > > > > >
+> > > > > > > > > Well, not necessarily, but hostap side it looks fine, so,
+> > > > > > > > > we need to see why the STA isn't responding well, probabl=
+y a
+> > > > > > > > > different draft implementation. At the very least we shou=
+ld start
+> > > > > > > > > with a sniffer capture of the association b/w the station=
+s to check
+> > > > > > > > > the IEs.
+> > > > > > > >
+> > > > > > > > I am using wpa_supplicant in STA to connect  to AP.
+> > > > > > > > I am attaching hostapd logs and wpa_supplicant logs.
+> > > > > > > > I am observing that the STA is connecting and disconnecting=
+ when
+> > > > > > > > I try to connect STA to AP.
+> > > > > > > I guess this is a new STA with wpa_supplicant, right? Is it a=
+lso AX200 based
+> > > > > > > chipset? In the STA mode, the kernel adds the HE IEs (either =
+mac80211
+> > > > > > > or the driver),
+> > > > > > > so, but interestingly in your previous dmesg, I don't see any=
+ mac80211 logs.
+> > > > > > >
+> > > > > > > So, need dmesg logs that capture the connection (look for mac=
+80211 logs).
+> > > > > > > >
+> > > > > > > > On Tue, Sep 1, 2020 at 10:09 PM Krishna Chaitanya
+> > > > > > > > <chaitanya.mgit at gmail.com> wrote:
+> > > > > > > > >
+> > > > > > > > > On Wed, Sep 2, 2020 at 1:23 AM Sugandh Huthanahally Mohan
+> > > > > > > > > <sugandhgowda at gmail.com> wrote:
+> > > > > > > > > >
+> > > > > > > > > > Hi Krishna,
+> > > > > > > > > >
+> > > > > > > > > > Currently I am not running wpa_supplicant.
+> > > > > > > > > > Is it necessary for hostapd?
+> > > > > > > > >
+> > > > > > > > > Well, not necessarily, but hostap side it looks fine, so,
+> > > > > > > > > we need to see why the STA isn't responding well, probabl=
+y a
+> > > > > > > > > different draft implementation. At the very least we shou=
+ld start
+> > > > > > > > > with a sniffer capture of the association b/w the station=
+s to check
+> > > > > > > > > the IEs.
+> > > > > > >
+> > > > > > > Yes this is a new STA connecting AP with wpa_supplicant.
+> > > > > > > It is also an AX200.
+> > > > > > > I don=E2=80=99t see mac80211 logs on the STA dmesg.
+> > > > > > > I am attaching dmesg of the station.
+> > > > > >
+> > > > > > These are from mac80211:
+> > > > > > [  152.255545] wlp3s0: authenticate with 8c:c6:81:69:86:65
+> > > > > > [  152.258347] wlp3s0: send auth to 8c:c6:81:69:86:65 (try 1/3)
+> > > > > > [  152.283971] wlp3s0: authenticated
+> > > > > > [  152.286624] wlp3s0: associate with 8c:c6:81:69:86:65 (try 1/=
+3)
+> > > > > > [  152.293456] wlp3s0: RX AssocResp from 8c:c6:81:69:86:65
+> > > > > > (capab=3D0x411 status=3D0 aid=3D1)
+> > > > > > [  152.299672] wlp3s0: associated
+> > > > > > [  152.364843] IPv6: ADDRCONF(NETDEV_CHANGE): wlp3s0: link beco=
+mes ready
+> > > > > >
+> > > > > > I was hoping to see some prints disabling HE, but looks fine. S=
+o,
+> > > > > > still, nothing from the logs
+> > > > > > to say why HE is disabled in the STA (why it isn't sending HE I=
+Es in
+> > > > > > assoc resp).
+> > > > > >
+> > > > > > Only Sniffer should tell us without resorting to Whitebox debug=
+.
+> > > > > > >
+> > > > > > > On Wed, Sep 2, 2020 at 1:26 PM Krishna Chaitanya
+> > > > > > > <chaitanya.mgit at gmail.com> wrote:
+> > > > > > > >
+> > > > > > > > On Wed, Sep 2, 2020 at 3:16 PM Sugandh Huthanahally Mohan
+> > > > > > > > <sugandhgowda at gmail.com> wrote:
+> > > > > > > > >
+> > > > > > > > > On Tue, Sep 1, 2020 at 10:09 PM Krishna Chaitanya
+> > > > > > > > > <chaitanya.mgit at gmail.com> wrote:
+> > > > > > > > > >
+> > > > > > > > > >
+> > > > > > > > > > Well, not necessarily, but hostap side it looks fine, s=
+o,
+> > > > > > > > > > we need to see why the STA isn't responding well, proba=
+bly a
+> > > > > > > > > > different draft implementation. At the very least we sh=
+ould start
+> > > > > > > > > > with a sniffer capture of the association b/w the stati=
+ons to check
+> > > > > > > > > > the IEs.
+> > > > > > > > >
+> > > > > > > > > I am using wpa_supplicant in STA to connect  to AP.
+> > > > > > > > > I am attaching hostapd logs and wpa_supplicant logs.
+> > > > > > > > > I am observing that the STA is connecting and disconnecti=
+ng when
+> > > > > > > > > I try to connect STA to AP.
+> > > > > > > > I guess this is a new STA with wpa_supplicant, right? Is it=
+ also AX200 based
+> > > > > > > > chipset? In the STA mode, the kernel adds the HE IEs (eithe=
+r mac80211
+> > > > > > > > or the driver),
+> > > > > > > > so, but interestingly in your previous dmesg, I don't see a=
+ny mac80211 logs.
+> > > > > > > >
+> > > > > > > > So, need dmesg logs that capture the connection (look for m=
+ac80211 logs).
+> > > > > > > > >
+> > > > > > > > > On Tue, Sep 1, 2020 at 10:09 PM Krishna Chaitanya
+> > > > > > > > > <chaitanya.mgit at gmail.com> wrote:
+> > > > > > > > > >
+> > > > > > > > > > On Wed, Sep 2, 2020 at 1:23 AM Sugandh Huthanahally Moh=
+an
+> > > > > > > > > > <sugandhgowda at gmail.com> wrote:
+> > > > > > > > > > >
+> > > > > > > > > > > Hi Krishna,
+> > > > > > > > > > >
+> > > > > > > > > > > Currently I am not running wpa_supplicant.
+> > > > > > > > > > > Is it necessary for hostapd?
+> > > > > > > > > >
+> > > > > > > > > > Well, not necessarily, but hostap side it looks fine, s=
+o,
+> > > > > > > > > > we need to see why the STA isn't responding well, proba=
+bly a
+> > > > > > > > > > different draft implementation. At the very least we sh=
+ould start
+> > > > > > > > > > with a sniffer capture of the association b/w the stati=
+ons to check
+> > > > > > > > > > the IEs.
+> > > > > > > >
+> > > > > > > >
+> > > > > > > >
+> > > > > > > > --
+> > > > > > > > Thanks,
+> > > > > > > > Regards,
+> > > > > > > > Chaitanya T K.
+> > > > > >
+> > > > > >
+> > > > > >
+> > > > > > --
+> > > > > > Thanks,
+> > > > > > Regards,
+> > > > > > Chaitanya T K.
+> >
+> >
+> > On Wed, Sep 9, 2020 at 12:53 AM Krishna Chaitanya
+> > <chaitanya.mgit@gmail.com> wrote:
+> > >
+> > > On Wed, Sep 9, 2020 at 2:18 AM Sugandh Huthanahally Mohan
+> > > <sugandhgowda@gmail.com> wrote:
+> > > >
+> > > > On Wed, Sep 9, 2020 at 12:27 AM Sugandh Huthanahally Mohan
+> > > > <sugandhgowda at gmail.com> wrote:
+> > > > > >
+> > > > > > I have captured connection between a WiFi6 AP and a WiFi6 STA i=
+n wireshark.
+> > > > > >I have attached a wireshark pcap file.
+> > > > > > I could see HE capabilities exchange in Association request and=
+ response.
+> > > > > Yes, this looks fine to me except for VHT IEs in the probe and
+> > > > > association response in 2.4GHz.
+> > > > > Maybe this is what is confusing, can you please disable ieee80211=
+ac=3D0
+> > > > > in the hostapd.conf and try?
+> > > > I disabled iee80211ac and I am not seeing VHT capabilities in Assoc=
+iation
+> > > > frames but the data rate remains the same.I am attaching wireshark =
+capture.
+> > > okay, thanks.
+> > > > > The iw phy output is below. I couldn't see HE connection in this =
+output.
+> > > > >
+> > > > > $iw dev wlp3s0 link
+> > > > > Connected to 8c:c6:81:69:86:65 (on wlp3s0)
+> > > > >     SSID: WiFi_AX200
+> > > > >     freq: 2437
+> > > > >     RX: 27838 bytes (199 packets)
+> > > > >     TX: 13319 bytes (97 packets)
+> > > > >     signal: -34 dBm
+> > > > >     rx bitrate: 26.0 MBit/s MCS 3
+> > > > >     tx bitrate: 2.0 MBit/s
+> > > > >
+> > > > >     bss flags:    short-slot-time
+> > > > >     dtim period:    2
+> > > > >     beacon int:    100
+> > > > >
+> > > > > > The link doesn't show any specific details related to HE other =
+than
+> > > > > > the MCS which can vary, try running
+> > > > > > an iperf to see HE MCSes in a clean channel.
+> > > >
+> > > > Could you please explain what this means.
+> > > > I want to know what clean channel means and where actually I can se=
+e HE MCSes.
+> > >
+> > > Sure. The link command doesn't printout any in capability information=
+ explicitly
+> > >  except for the MCS details. And figuring out the mode of connection =
+(11n/11ax)
+> > > from the MCS is tricky as the MCS varies across depending on the rate
+> > > control algorithm
+> > > (for iwlwifi: hardware). So, I was suggesting to use iperf (the more
+> > > data you pass, more
+> > > chance of the rate control algo to go to higher MCSes) and also by
+> > > "clean channels" I was
+> > > referring to quieter channels where there are no other BSSes or no
+> > > other traffic.
+> > >
+> > > But, before we go into debugging data path, I still don't understand
+> > > why wpa_supplicant
+> > > isn't saying it is a HE association?
+> > >
+> > > Ah, After staring at the code and using blame, a crucial fix missed
+> > > out hostap-2.9 windows,
+> > > the fix was to properly validate the HE capabilities, I was looking a=
+t
+> > > the latest cod and
+> > > everything looked fine, hence took time.
+> > >
+> > > hostap_2_9-> 7th August
+> > > 0497e4148197fb8fdf92b5c901ce06df1bfa548c ->13th August
+> > >
+> > > Please use the latest HEAD of hostap.git, you need to compile it
+> > > manually and try the
+> > > test and let me know how it goes. (make sure all proper configs are e=
+nabled)
+> > >
+> > > > > On Wed, Sep 2, 2020 at 3:39 PM Krishna Chaitanya
+> > > > > <chaitanya.mgit at gmail.com> wrote:
+> > > > > >
+> > > > > > On Wed, Sep 2, 2020 at 6:38 PM Sugandh Huthanahally Mohan
+> > > > > > <sugandhgowda at gmail.com> wrote:
+> > > > > > >
+> > > > > > > On Wed, Sep 2, 2020 at 3:16 PM Sugandh Huthanahally Mohan
+> > > > > > > <sugandhgowda at gmail.com> wrote:
+> > > > > > > >
+> > > > > > > > On Tue, Sep 1, 2020 at 10:09 PM Krishna Chaitanya
+> > > > > > > > <chaitanya.mgit at gmail.com> wrote:
+> > > > > > > > >
+> > > > > > > > >
+> > > > > > > > > Well, not necessarily, but hostap side it looks fine, so,
+> > > > > > > > > we need to see why the STA isn't responding well, probabl=
+y a
+> > > > > > > > > different draft implementation. At the very least we shou=
+ld start
+> > > > > > > > > with a sniffer capture of the association b/w the station=
+s to check
+> > > > > > > > > the IEs.
+> > > > > > > >
+> > > > > > > > I am using wpa_supplicant in STA to connect  to AP.
+> > > > > > > > I am attaching hostapd logs and wpa_supplicant logs.
+> > > > > > > > I am observing that the STA is connecting and disconnecting=
+ when
+> > > > > > > > I try to connect STA to AP.
+> > > > > > > I guess this is a new STA with wpa_supplicant, right? Is it a=
+lso AX200 based
+> > > > > > > chipset? In the STA mode, the kernel adds the HE IEs (either =
+mac80211
+> > > > > > > or the driver),
+> > > > > > > so, but interestingly in your previous dmesg, I don't see any=
+ mac80211 logs.
+> > > > > > >
+> > > > > > > So, need dmesg logs that capture the connection (look for mac=
+80211 logs).
+> > > > > > > >
+> > > > > > > > On Tue, Sep 1, 2020 at 10:09 PM Krishna Chaitanya
+> > > > > > > > <chaitanya.mgit at gmail.com> wrote:
+> > > > > > > > >
+> > > > > > > > > On Wed, Sep 2, 2020 at 1:23 AM Sugandh Huthanahally Mohan
+> > > > > > > > > <sugandhgowda at gmail.com> wrote:
+> > > > > > > > > >
+> > > > > > > > > > Hi Krishna,
+> > > > > > > > > >
+> > > > > > > > > > Currently I am not running wpa_supplicant.
+> > > > > > > > > > Is it necessary for hostapd?
+> > > > > > > > >
+> > > > > > > > > Well, not necessarily, but hostap side it looks fine, so,
+> > > > > > > > > we need to see why the STA isn't responding well, probabl=
+y a
+> > > > > > > > > different draft implementation. At the very least we shou=
+ld start
+> > > > > > > > > with a sniffer capture of the association b/w the station=
+s to check
+> > > > > > > > > the IEs.
+> > > > > > >
+> > > > > > > Yes this is a new STA connecting AP with wpa_supplicant.
+> > > > > > > It is also an AX200.
+> > > > > > > I don=E2=80=99t see mac80211 logs on the STA dmesg.
+> > > > > > > I am attaching dmesg of the station.
+> > > > > >
+> > > > > > These are from mac80211:
+> > > > > > [  152.255545] wlp3s0: authenticate with 8c:c6:81:69:86:65
+> > > > > > [  152.258347] wlp3s0: send auth to 8c:c6:81:69:86:65 (try 1/3)
+> > > > > > [  152.283971] wlp3s0: authenticated
+> > > > > > [  152.286624] wlp3s0: associate with 8c:c6:81:69:86:65 (try 1/=
+3)
+> > > > > > [  152.293456] wlp3s0: RX AssocResp from 8c:c6:81:69:86:65
+> > > > > > (capab=3D0x411 status=3D0 aid=3D1)
+> > > > > > [  152.299672] wlp3s0: associated
+> > > > > > [  152.364843] IPv6: ADDRCONF(NETDEV_CHANGE): wlp3s0: link beco=
+mes ready
+> > > > > >
+> > > > > > I was hoping to see some prints disabling HE, but looks fine. S=
+o,
+> > > > > > still, nothing from the logs
+> > > > > > to say why HE is disabled in the STA (why it isn't sending HE I=
+Es in
+> > > > > > assoc resp).
+> > > > > >
+> > > > > > Only Sniffer should tell us without resorting to Whitebox debug=
+.
+> > > > > > >
+> > > > > > > On Wed, Sep 2, 2020 at 1:26 PM Krishna Chaitanya
+> > > > > > > <chaitanya.mgit at gmail.com> wrote:
+> > > > > > > >
+> > > > > > > > On Wed, Sep 2, 2020 at 3:16 PM Sugandh Huthanahally Mohan
+> > > > > > > > <sugandhgowda at gmail.com> wrote:
+> > > > > > > > >
+> > > > > > > > > On Tue, Sep 1, 2020 at 10:09 PM Krishna Chaitanya
+> > > > > > > > > <chaitanya.mgit at gmail.com> wrote:
+> > > > > > > > > >
+> > > > > > > > > >
+> > > > > > > > > > Well, not necessarily, but hostap side it looks fine, s=
+o,
+> > > > > > > > > > we need to see why the STA isn't responding well, proba=
+bly a
+> > > > > > > > > > different draft implementation. At the very least we sh=
+ould start
+> > > > > > > > > > with a sniffer capture of the association b/w the stati=
+ons to check
+> > > > > > > > > > the IEs.
+> > > > > > > > >
+> > > > > > > > > I am using wpa_supplicant in STA to connect  to AP.
+> > > > > > > > > I am attaching hostapd logs and wpa_supplicant logs.
+> > > > > > > > > I am observing that the STA is connecting and disconnecti=
+ng when
+> > > > > > > > > I try to connect STA to AP.
+> > > > > > > > I guess this is a new STA with wpa_supplicant, right? Is it=
+ also AX200 based
+> > > > > > > > chipset? In the STA mode, the kernel adds the HE IEs (eithe=
+r mac80211
+> > > > > > > > or the driver),
+> > > > > > > > so, but interestingly in your previous dmesg, I don't see a=
+ny mac80211 logs.
+> > > > > > > >
+> > > > > > > > So, need dmesg logs that capture the connection (look for m=
+ac80211 logs).
+> > > > > > > > >
+> > > > > > > > > On Tue, Sep 1, 2020 at 10:09 PM Krishna Chaitanya
+> > > > > > > > > <chaitanya.mgit at gmail.com> wrote:
+> > > > > > > > > >
+> > > > > > > > > > On Wed, Sep 2, 2020 at 1:23 AM Sugandh Huthanahally Moh=
+an
+> > > > > > > > > > <sugandhgowda at gmail.com> wrote:
+> > > > > > > > > > >
+> > > > > > > > > > > Hi Krishna,
+> > > > > > > > > > >
+> > > > > > > > > > > Currently I am not running wpa_supplicant.
+> > > > > > > > > > > Is it necessary for hostapd?
+> > > > > > > > > >
+> > > > > > > > > > Well, not necessarily, but hostap side it looks fine, s=
+o,
+> > > > > > > > > > we need to see why the STA isn't responding well, proba=
+bly a
+> > > > > > > > > > different draft implementation. At the very least we sh=
+ould start
+> > > > > > > > > > with a sniffer capture of the association b/w the stati=
+ons to check
+> > > > > > > > > > the IEs.
+> > > > > > > >
+> > > > > > > >
+> > > > > > > >
+> > > > > > > > --
+> > > > > > > > Thanks,
+> > > > > > > > Regards,
+> > > > > > > > Chaitanya T K.
+> > > > > >
+> > > > > >
+> > > > > >
+> > > > > > --
+> > > > > > Thanks,
+> > > > > > Regards,
+> > > > > > Chaitanya T K.
+> > > >
+> > > >
+> > > > On Tue, Sep 8, 2020 at 9:55 PM Krishna Chaitanya
+> > > > <chaitanya.mgit@gmail.com> wrote:
+> > > > >
+> > > > > On Wed, Sep 9, 2020 at 12:27 AM Sugandh Huthanahally Mohan
+> > > > > <sugandhgowda@gmail.com> wrote:
+> > > > > >
+> > > > > > I have captured connection between a WiFi6 AP and a WiFi6 STA i=
+n wireshark.
+> > > > > > I have attached a wireshark pcap file.
+> > > > > > I could see HE capabilities exchange in Association request and=
+ response.
+> > > > > Yes, this looks fine to me except for VHT IEs in the probe and
+> > > > > association response in 2.4GHz.
+> > > > > Maybe this is what is confusing, can you please disable ieee80211=
+ac=3D0
+> > > > > in the hostapd.conf and try?
+> > > > >
+> > > > > > The iw phy output is below. I couldn't see HE connection in thi=
+s output.
+> > > > > >
+> > > > > > $iw dev wlp3s0 link
+> > > > > > Connected to 8c:c6:81:69:86:65 (on wlp3s0)
+> > > > > >     SSID: WiFi_AX200
+> > > > > >     freq: 2437
+> > > > > >     RX: 27838 bytes (199 packets)
+> > > > > >     TX: 13319 bytes (97 packets)
+> > > > > >     signal: -34 dBm
+> > > > > >     rx bitrate: 26.0 MBit/s MCS 3
+> > > > > >     tx bitrate: 2.0 MBit/s
+> > > > > >
+> > > > > >     bss flags:    short-slot-time
+> > > > > >     dtim period:    2
+> > > > > >     beacon int:    100
+> > > > > >
+> > > > > The link doesn't show any specific details related to HE other th=
+an
+> > > > > the MCS which can vary, try running
+> > > > > an iperf to see HE MCSes in a clean channel.
+> > > > > >
+> > > > > > On Wed, Sep 2, 2020 at 3:39 PM Krishna Chaitanya
+> > > > > > <chaitanya.mgit@gmail.com> wrote:
+> > > > > > >
+> > > > > > > On Wed, Sep 2, 2020 at 6:38 PM Sugandh Huthanahally Mohan
+> > > > > > > <sugandhgowda@gmail.com> wrote:
+> > > > > > > >
+> > > > > > > > On Wed, Sep 2, 2020 at 3:16 PM Sugandh Huthanahally Mohan
+> > > > > > > > <sugandhgowda at gmail.com> wrote:
+> > > > > > > > >
+> > > > > > > > > On Tue, Sep 1, 2020 at 10:09 PM Krishna Chaitanya
+> > > > > > > > > <chaitanya.mgit at gmail.com> wrote:
+> > > > > > > > > >
+> > > > > > > > > >
+> > > > > > > > > > Well, not necessarily, but hostap side it looks fine, s=
+o,
+> > > > > > > > > > we need to see why the STA isn't responding well, proba=
+bly a
+> > > > > > > > > > different draft implementation. At the very least we sh=
+ould start
+> > > > > > > > > > with a sniffer capture of the association b/w the stati=
+ons to check
+> > > > > > > > > > the IEs.
+> > > > > > > > >
+> > > > > > > > > I am using wpa_supplicant in STA to connect  to AP.
+> > > > > > > > > I am attaching hostapd logs and wpa_supplicant logs.
+> > > > > > > > > I am observing that the STA is connecting and disconnecti=
+ng when
+> > > > > > > > > I try to connect STA to AP.
+> > > > > > > > I guess this is a new STA with wpa_supplicant, right? Is it=
+ also AX200 based
+> > > > > > > > chipset? In the STA mode, the kernel adds the HE IEs (eithe=
+r mac80211
+> > > > > > > > or the driver),
+> > > > > > > > so, but interestingly in your previous dmesg, I don't see a=
+ny mac80211 logs.
+> > > > > > > >
+> > > > > > > > So, need dmesg logs that capture the connection (look for m=
+ac80211 logs).
+> > > > > > > > >
+> > > > > > > > > On Tue, Sep 1, 2020 at 10:09 PM Krishna Chaitanya
+> > > > > > > > > <chaitanya.mgit at gmail.com> wrote:
+> > > > > > > > > >
+> > > > > > > > > > On Wed, Sep 2, 2020 at 1:23 AM Sugandh Huthanahally Moh=
+an
+> > > > > > > > > > <sugandhgowda at gmail.com> wrote:
+> > > > > > > > > > >
+> > > > > > > > > > > Hi Krishna,
+> > > > > > > > > > >
+> > > > > > > > > > > Currently I am not running wpa_supplicant.
+> > > > > > > > > > > Is it necessary for hostapd?
+> > > > > > > > > >
+> > > > > > > > > > Well, not necessarily, but hostap side it looks fine, s=
+o,
+> > > > > > > > > > we need to see why the STA isn't responding well, proba=
+bly a
+> > > > > > > > > > different draft implementation. At the very least we sh=
+ould start
+> > > > > > > > > > with a sniffer capture of the association b/w the stati=
+ons to check
+> > > > > > > > > > the IEs.
+> > > > > > > >
+> > > > > > > > Yes this is a new STA connecting AP with wpa_supplicant.
+> > > > > > > > It is also an AX200.
+> > > > > > > > I don=E2=80=99t see mac80211 logs on the STA dmesg.
+> > > > > > > > I am attaching dmesg of the station.
+> > > > > > >
+> > > > > > > These are from mac80211:
+> > > > > > > [  152.255545] wlp3s0: authenticate with 8c:c6:81:69:86:65
+> > > > > > > [  152.258347] wlp3s0: send auth to 8c:c6:81:69:86:65 (try 1/=
+3)
+> > > > > > > [  152.283971] wlp3s0: authenticated
+> > > > > > > [  152.286624] wlp3s0: associate with 8c:c6:81:69:86:65 (try =
+1/3)
+> > > > > > > [  152.293456] wlp3s0: RX AssocResp from 8c:c6:81:69:86:65
+> > > > > > > (capab=3D0x411 status=3D0 aid=3D1)
+> > > > > > > [  152.299672] wlp3s0: associated
+> > > > > > > [  152.364843] IPv6: ADDRCONF(NETDEV_CHANGE): wlp3s0: link be=
+comes ready
+> > > > > > >
+> > > > > > > I was hoping to see some prints disabling HE, but looks fine.=
+ So,
+> > > > > > > still, nothing from the logs
+> > > > > > > to say why HE is disabled in the STA (why it isn't sending HE=
+ IEs in
+> > > > > > > assoc resp).
+> > > > > > >
+> > > > > > > Only Sniffer should tell us without resorting to Whitebox deb=
+ug.
+> > > > > > > >
+> > > > > > > > On Wed, Sep 2, 2020 at 1:26 PM Krishna Chaitanya
+> > > > > > > > <chaitanya.mgit@gmail.com> wrote:
+> > > > > > > > >
+> > > > > > > > > On Wed, Sep 2, 2020 at 3:16 PM Sugandh Huthanahally Mohan
+> > > > > > > > > <sugandhgowda@gmail.com> wrote:
+> > > > > > > > > >
+> > > > > > > > > > On Tue, Sep 1, 2020 at 10:09 PM Krishna Chaitanya
+> > > > > > > > > > <chaitanya.mgit at gmail.com> wrote:
+> > > > > > > > > > >
+> > > > > > > > > > >
+> > > > > > > > > > > Well, not necessarily, but hostap side it looks fine,=
+ so,
+> > > > > > > > > > > we need to see why the STA isn't responding well, pro=
+bably a
+> > > > > > > > > > > different draft implementation. At the very least we =
+should start
+> > > > > > > > > > > with a sniffer capture of the association b/w the sta=
+tions to check
+> > > > > > > > > > > the IEs.
+> > > > > > > > > >
+> > > > > > > > > > I am using wpa_supplicant in STA to connect  to AP.
+> > > > > > > > > > I am attaching hostapd logs and wpa_supplicant logs.
+> > > > > > > > > > I am observing that the STA is connecting and disconnec=
+ting when
+> > > > > > > > > > I try to connect STA to AP.
+> > > > > > > > > I guess this is a new STA with wpa_supplicant, right? Is =
+it also AX200 based
+> > > > > > > > > chipset? In the STA mode, the kernel adds the HE IEs (eit=
+her mac80211
+> > > > > > > > > or the driver),
+> > > > > > > > > so, but interestingly in your previous dmesg, I don't see=
+ any mac80211 logs.
+> > > > > > > > >
+> > > > > > > > > So, need dmesg logs that capture the connection (look for=
+ mac80211 logs).
+> > > > > > > > > >
+> > > > > > > > > > On Tue, Sep 1, 2020 at 10:09 PM Krishna Chaitanya
+> > > > > > > > > > <chaitanya.mgit@gmail.com> wrote:
+> > > > > > > > > > >
+> > > > > > > > > > > On Wed, Sep 2, 2020 at 1:23 AM Sugandh Huthanahally M=
+ohan
+> > > > > > > > > > > <sugandhgowda@gmail.com> wrote:
+> > > > > > > > > > > >
+> > > > > > > > > > > > Hi Krishna,
+> > > > > > > > > > > >
+> > > > > > > > > > > > Currently I am not running wpa_supplicant.
+> > > > > > > > > > > > Is it necessary for hostapd?
+> > > > > > > > > > >
+> > > > > > > > > > > Well, not necessarily, but hostap side it looks fine,=
+ so,
+> > > > > > > > > > > we need to see why the STA isn't responding well, pro=
+bably a
+> > > > > > > > > > > different draft implementation. At the very least we =
+should start
+> > > > > > > > > > > with a sniffer capture of the association b/w the sta=
+tions to check
+> > > > > > > > > > > the IEs.
+> > > > > > > > >
+> > > > > > > > >
+> > > > > > > > >
+> > > > > > > > > --
+> > > > > > > > > Thanks,
+> > > > > > > > > Regards,
+> > > > > > > > > Chaitanya T K.
+> > > > > > >
+> > > > > > >
+> > > > > > >
+> > > > > > > --
+> > > > > > > Thanks,
+> > > > > > > Regards,
+> > > > > > > Chaitanya T K.
+>
+> On Fri, Sep 11, 2020 at 4:36 PM Krishna Chaitanya
+> <chaitanya.mgit@gmail.com> wrote:
+> >
+> > On Fri, Sep 11, 2020 at 7:33 PM Sugandh Huthanahally Mohan
+> > <sugandhgowda@gmail.com> wrote:
+> > >
+> > > On Wed, Sep 9, 2020 at 2:18 AM Sugandh Huthanahally Mohan
+> > > <sugandhgowda at gmail.com> wrote:
+> > > >
+> > > > On Wed, Sep 9, 2020 at 12:27 AM Sugandh Huthanahally Mohan
+> > > > <sugandhgowda at gmail.com> wrote:
+> > > > > >
+> > > > > > I have captured connection between a WiFi6 AP and a WiFi6 STA i=
+n wireshark.
+> > > > > >I have attached a wireshark pcap file.
+> > > > > > I could see HE capabilities exchange in Association request and=
+ response.
+> > > > > Yes, this looks fine to me except for VHT IEs in the probe and
+> > > > > association response in 2.4GHz.
+> > > > > Maybe this is what is confusing, can you please disable ieee80211=
+ac=3D0
+> > > > > in the hostapd.conf and try?
+> > > > I disabled iee80211ac and I am not seeing VHT capabilities in Assoc=
+iation
+> > > > frames but the data rate remains the same.I am attaching wireshark =
+capture.
+> > > okay, thanks.
+> > > > > The iw phy output is below. I couldn't see HE connection in this =
+output.
+> > > > >
+> > > > > $iw dev wlp3s0 link
+> > > > > Connected to 8c:c6:81:69:86:65 (on wlp3s0)
+> > > > >     SSID: WiFi_AX200
+> > > > >     freq: 2437
+> > > > >     RX: 27838 bytes (199 packets)
+> > > > >     TX: 13319 bytes (97 packets)
+> > > > >     signal: -34 dBm
+> > > > >     rx bitrate: 26.0 MBit/s MCS 3
+> > > > >     tx bitrate: 2.0 MBit/s
+> > > > >
+> > > > >     bss flags:    short-slot-time
+> > > > >     dtim period:    2
+> > > > >     beacon int:    100
+> > > > >
+> > > > > > The link doesn't show any specific details related to HE other =
+than
+> > > > > > the MCS which can vary, try running
+> > > > > > an iperf to see HE MCSes in a clean channel.
+> > > >
+> > > > Could you please explain what this means.
+> > > > I want to know what clean channel means and where actually I can se=
+e HE MCSes.
+> > >
+> > > > Sure. The link command doesn't printout any in capability informati=
+on explicitly
+> > > > except for the MCS details. And figuring out the mode of connection=
+ (11n/11ax)
+> > > > from the MCS is tricky as the MCS varies across depending on the ra=
+te
+> > > > control algorithm
+> > > > (for iwlwifi: hardware). So, I was suggesting to use iperf (the mor=
+e
+> > > > data you pass, more
+> > > > chance of the rate control algo to go to higher MCSes) and also by
+> > > > "clean channels" I was
+> > > > referring to quieter channels where there are no other BSSes or no
+> > > > other traffic.
+> > > Okay. I tried running iperf for long period of time between AP and ST=
+A
+> > > (injected incremental traffic ,like running more parallel connections=
+ between
+> > > iperf server and iperf client ) and  I did not see any changes in MCS=
+es.
+> > > It remained the same throughout the time I ran the iperf test.
+> > Okay, this was to rule out any rate control issues but as it turned out=
+ to be
+> > a functional issue, we can ignore this for now.
+> > >
+> > > > But, before we go into debugging data path, I still don't understan=
+d
+> > > > why wpa_supplicant
+> > > > isn't saying it is a HE association?
+> > >
+> > > > Ah, After staring at the code and using blame, a crucial fix missed
+> > > > out hostap-2.9 windows,
+> > > > the fix was to properly validate the HE capabilities, I was looking=
+ at
+> > > > the latest cod and
+> > > > everything looked fine, hence took time.
+> > >
+> > > > hostap_2_9-> 7th August
+> > > > 0497e4148197fb8fdf92b5c901ce06df1bfa548c ->13th August
+> > >
+> > > > Please use the latest HEAD of hostap.git, you need to compile it
+> > > > manually and try the
+> > > > test and let me know how it goes. (make sure all proper configs are=
+ enabled)
+> > >
+> > > Previously I was using hostapd version 2.9 and with this version I co=
+uld
+> > > connect STA's to AP with the hostapd.conf which I had shared earlier.
+> > >
+> > > Now I pulled the latest HEAD and compiled it with proper flags enable=
+d.
+> > > When I run hostapd now , the WiFi6 STA's(AX200) are not able to estab=
+lish
+> > > solid connection to AP. In other words, I could see they are connecti=
+ng but
+> > > hostapd is deleting the station. Below are the log pertaining to that
+> > >
+> > > nl80211: NL80211_CMD_SET_STATION result: -5 (Input/output error)
+> > > wlp3s0: STA 8c:c6:81:69:ac:80 IEEE 802.11: Could not set STA to kerne=
+l driver
+> > > nl80211: sta_remove -> DEL_STATION wlp3s0 8c:c6:81:69:ac:80 --> 0 (Su=
+ccess)
+> > First of all, the original problem is resolved, I can see he_capabs
+> > now, but unfortunately
+> > , the problem moved to the kernel :). There are many reasons why the
+> > mac80211/iwlwifi
+> > might return EIO, Could you please also share the dmesg as well when
+> > this happens?
+> > >
+> > >
+> > > Also I could see multiple Association requests and responses. On the
+> > > other hand I am
+> > > able to connect WiFi4(802.11n) STA's to AP. I am attaching the hostap=
+d logs
+> > > with debugs enabled and also wireshark captures.
+> > This is in line with the logs, as Set-STA is failing association
+> > request will not go through.
+> > >
+> > > > > On Wed, Sep 2, 2020 at 3:39 PM Krishna Chaitanya
+> > > > > <chaitanya.mgit at gmail.com> wrote:
+> > > > > >
+> > > > > > On Wed, Sep 2, 2020 at 6:38 PM Sugandh Huthanahally Mohan
+> > > > > > <sugandhgowda at gmail.com> wrote:
+> > > > > > >
+> > > > > > > On Wed, Sep 2, 2020 at 3:16 PM Sugandh Huthanahally Mohan
+> > > > > > > <sugandhgowda at gmail.com> wrote:
+> > > > > > > >
+> > > > > > > > On Tue, Sep 1, 2020 at 10:09 PM Krishna Chaitanya
+> > > > > > > > <chaitanya.mgit at gmail.com> wrote:
+> > > > > > > > >
+> > > > > > > > >
+> > > > > > > > > Well, not necessarily, but hostap side it looks fine, so,
+> > > > > > > > > we need to see why the STA isn't responding well, probabl=
+y a
+> > > > > > > > > different draft implementation. At the very least we shou=
+ld start
+> > > > > > > > > with a sniffer capture of the association b/w the station=
+s to check
+> > > > > > > > > the IEs.
+> > > > > > > >
+> > > > > > > > I am using wpa_supplicant in STA to connect  to AP.
+> > > > > > > > I am attaching hostapd logs and wpa_supplicant logs.
+> > > > > > > > I am observing that the STA is connecting and disconnecting=
+ when
+> > > > > > > > I try to connect STA to AP.
+> > > > > > > I guess this is a new STA with wpa_supplicant, right? Is it a=
+lso AX200 based
+> > > > > > > chipset? In the STA mode, the kernel adds the HE IEs (either =
+mac80211
+> > > > > > > or the driver),
+> > > > > > > so, but interestingly in your previous dmesg, I don't see any=
+ mac80211 logs.
+> > > > > > >
+> > > > > > > So, need dmesg logs that capture the connection (look for mac=
+80211 logs).
+> > > > > > > >
+> > > > > > > > On Tue, Sep 1, 2020 at 10:09 PM Krishna Chaitanya
+> > > > > > > > <chaitanya.mgit at gmail.com> wrote:
+> > > > > > > > >
+> > > > > > > > > On Wed, Sep 2, 2020 at 1:23 AM Sugandh Huthanahally Mohan
+> > > > > > > > > <sugandhgowda at gmail.com> wrote:
+> > > > > > > > > >
+> > > > > > > > > > Hi Krishna,
+> > > > > > > > > >
+> > > > > > > > > > Currently I am not running wpa_supplicant.
+> > > > > > > > > > Is it necessary for hostapd?
+> > > > > > > > >
+> > > > > > > > > Well, not necessarily, but hostap side it looks fine, so,
+> > > > > > > > > we need to see why the STA isn't responding well, probabl=
+y a
+> > > > > > > > > different draft implementation. At the very least we shou=
+ld start
+> > > > > > > > > with a sniffer capture of the association b/w the station=
+s to check
+> > > > > > > > > the IEs.
+> > > > > > >
+> > > > > > > Yes this is a new STA connecting AP with wpa_supplicant.
+> > > > > > > It is also an AX200.
+> > > > > > > I don=E2=80=99t see mac80211 logs on the STA dmesg.
+> > > > > > > I am attaching dmesg of the station.
+> > > > > >
+> > > > > > These are from mac80211:
+> > > > > > [  152.255545] wlp3s0: authenticate with 8c:c6:81:69:86:65
+> > > > > > [  152.258347] wlp3s0: send auth to 8c:c6:81:69:86:65 (try 1/3)
+> > > > > > [  152.283971] wlp3s0: authenticated
+> > > > > > [  152.286624] wlp3s0: associate with 8c:c6:81:69:86:65 (try 1/=
+3)
+> > > > > > [  152.293456] wlp3s0: RX AssocResp from 8c:c6:81:69:86:65
+> > > > > > (capab=3D0x411 status=3D0 aid=3D1)
+> > > > > > [  152.299672] wlp3s0: associated
+> > > > > > [  152.364843] IPv6: ADDRCONF(NETDEV_CHANGE): wlp3s0: link beco=
+mes ready
+> > > > > >
+> > > > > > I was hoping to see some prints disabling HE, but looks fine. S=
+o,
+> > > > > > still, nothing from the logs
+> > > > > > to say why HE is disabled in the STA (why it isn't sending HE I=
+Es in
+> > > > > > assoc resp).
+> > > > > >
+> > > > > > Only Sniffer should tell us without resorting to Whitebox debug=
+.
+> > > > > > >
+> > > > > > > On Wed, Sep 2, 2020 at 1:26 PM Krishna Chaitanya
+> > > > > > > <chaitanya.mgit at gmail.com> wrote:
+> > > > > > > >
+> > > > > > > > On Wed, Sep 2, 2020 at 3:16 PM Sugandh Huthanahally Mohan
+> > > > > > > > <sugandhgowda at gmail.com> wrote:
+> > > > > > > > >
+> > > > > > > > > On Tue, Sep 1, 2020 at 10:09 PM Krishna Chaitanya
+> > > > > > > > > <chaitanya.mgit at gmail.com> wrote:
+> > > > > > > > > >
+> > > > > > > > > >
+> > > > > > > > > > Well, not necessarily, but hostap side it looks fine, s=
+o,
+> > > > > > > > > > we need to see why the STA isn't responding well, proba=
+bly a
+> > > > > > > > > > different draft implementation. At the very least we sh=
+ould start
+> > > > > > > > > > with a sniffer capture of the association b/w the stati=
+ons to check
+> > > > > > > > > > the IEs.
+> > > > > > > > >
+> > > > > > > > > I am using wpa_supplicant in STA to connect  to AP.
+> > > > > > > > > I am attaching hostapd logs and wpa_supplicant logs.
+> > > > > > > > > I am observing that the STA is connecting and disconnecti=
+ng when
+> > > > > > > > > I try to connect STA to AP.
+> > > > > > > > I guess this is a new STA with wpa_supplicant, right? Is it=
+ also AX200 based
+> > > > > > > > chipset? In the STA mode, the kernel adds the HE IEs (eithe=
+r mac80211
+> > > > > > > > or the driver),
+> > > > > > > > so, but interestingly in your previous dmesg, I don't see a=
+ny mac80211 logs.
+> > > > > > > >
+> > > > > > > > So, need dmesg logs that capture the connection (look for m=
+ac80211 logs).
+> > > > > > > > >
+> > > > > > > > > On Tue, Sep 1, 2020 at 10:09 PM Krishna Chaitanya
+> > > > > > > > > <chaitanya.mgit at gmail.com> wrote:
+> > > > > > > > > >
+> > > > > > > > > > On Wed, Sep 2, 2020 at 1:23 AM Sugandh Huthanahally Moh=
+an
+> > > > > > > > > > <sugandhgowda at gmail.com> wrote:
+> > > > > > > > > > >
+> > > > > > > > > > > Hi Krishna,
+> > > > > > > > > > >
+> > > > > > > > > > > Currently I am not running wpa_supplicant.
+> > > > > > > > > > > Is it necessary for hostapd?
+> > > > > > > > > >
+> > > > > > > > > > Well, not necessarily, but hostap side it looks fine, s=
+o,
+> > > > > > > > > > we need to see why the STA isn't responding well, proba=
+bly a
+> > > > > > > > > > different draft implementation. At the very least we sh=
+ould start
+> > > > > > > > > > with a sniffer capture of the association b/w the stati=
+ons to check
+> > > > > > > > > > the IEs.
+> > > > > > > >
+> > > > > > > >
+> > > > > > > >
+> > > > > > > > --
+> > > > > > > > Thanks,
+> > > > > > > > Regards,
+> > > > > > > > Chaitanya T K.
+> > > > > >
+> > > > > >
+> > > > > >
+> > > > > > --
+> > > > > > Thanks,
+> > > > > > Regards,
+> > > > > > Chaitanya T K.
+> > > >
+> > > >
+> > > > On Tue, Sep 8, 2020 at 9:55 PM Krishna Chaitanya
+> > > > <chaitanya.mgit at gmail.com> wrote:
+> > > > >
+> > > > > On Wed, Sep 9, 2020 at 12:27 AM Sugandh Huthanahally Mohan
+> > > > > <sugandhgowda at gmail.com> wrote:
+> > > > > >
+> > > > > > I have captured connection between a WiFi6 AP and a WiFi6 STA i=
+n wireshark.
+> > > > > > I have attached a wireshark pcap file.
+> > > > > > I could see HE capabilities exchange in Association request and=
+ response.
+> > > > > Yes, this looks fine to me except for VHT IEs in the probe and
+> > > > > association response in 2.4GHz.
+> > > > > Maybe this is what is confusing, can you please disable ieee80211=
+ac=3D0
+> > > > > in the hostapd.conf and try?
+> > > > >
+> > > > > > The iw phy output is below. I couldn't see HE connection in thi=
+s output.
+> > > > > >
+> > > > > > $iw dev wlp3s0 link
+> > > > > > Connected to 8c:c6:81:69:86:65 (on wlp3s0)
+> > > > > >     SSID: WiFi_AX200
+> > > > > >     freq: 2437
+> > > > > >     RX: 27838 bytes (199 packets)
+> > > > > >     TX: 13319 bytes (97 packets)
+> > > > > >     signal: -34 dBm
+> > > > > >     rx bitrate: 26.0 MBit/s MCS 3
+> > > > > >     tx bitrate: 2.0 MBit/s
+> > > > > >
+> > > > > >     bss flags:    short-slot-time
+> > > > > >     dtim period:    2
+> > > > > >     beacon int:    100
+> > > > > >
+> > > > > The link doesn't show any specific details related to HE other th=
+an
+> > > > > the MCS which can vary, try running
+> > > > > an iperf to see HE MCSes in a clean channel.
+> > > > > >
+> > > > > > On Wed, Sep 2, 2020 at 3:39 PM Krishna Chaitanya
+> > > > > > <chaitanya.mgit at gmail.com> wrote:
+> > > > > > >
+> > > > > > > On Wed, Sep 2, 2020 at 6:38 PM Sugandh Huthanahally Mohan
+> > > > > > > <sugandhgowda at gmail.com> wrote:
+> > > > > > > >
+> > > > > > > > On Wed, Sep 2, 2020 at 3:16 PM Sugandh Huthanahally Mohan
+> > > > > > > > <sugandhgowda at gmail.com> wrote:
+> > > > > > > > >
+> > > > > > > > > On Tue, Sep 1, 2020 at 10:09 PM Krishna Chaitanya
+> > > > > > > > > <chaitanya.mgit at gmail.com> wrote:
+> > > > > > > > > >
+> > > > > > > > > >
+> > > > > > > > > > Well, not necessarily, but hostap side it looks fine, s=
+o,
+> > > > > > > > > > we need to see why the STA isn't responding well, proba=
+bly a
+> > > > > > > > > > different draft implementation. At the very least we sh=
+ould start
+> > > > > > > > > > with a sniffer capture of the association b/w the stati=
+ons to check
+> > > > > > > > > > the IEs.
+> > > > > > > > >
+> > > > > > > > > I am using wpa_supplicant in STA to connect  to AP.
+> > > > > > > > > I am attaching hostapd logs and wpa_supplicant logs.
+> > > > > > > > > I am observing that the STA is connecting and disconnecti=
+ng when
+> > > > > > > > > I try to connect STA to AP.
+> > > > > > > > I guess this is a new STA with wpa_supplicant, right? Is it=
+ also AX200 based
+> > > > > > > > chipset? In the STA mode, the kernel adds the HE IEs (eithe=
+r mac80211
+> > > > > > > > or the driver),
+> > > > > > > > so, but interestingly in your previous dmesg, I don't see a=
+ny mac80211 logs.
+> > > > > > > >
+> > > > > > > > So, need dmesg logs that capture the connection (look for m=
+ac80211 logs).
+> > > > > > > > >
+> > > > > > > > > On Tue, Sep 1, 2020 at 10:09 PM Krishna Chaitanya
+> > > > > > > > > <chaitanya.mgit at gmail.com> wrote:
+> > > > > > > > > >
+> > > > > > > > > > On Wed, Sep 2, 2020 at 1:23 AM Sugandh Huthanahally Moh=
+an
+> > > > > > > > > > <sugandhgowda at gmail.com> wrote:
+> > > > > > > > > > >
+> > > > > > > > > > > Hi Krishna,
+> > > > > > > > > > >
+> > > > > > > > > > > Currently I am not running wpa_supplicant.
+> > > > > > > > > > > Is it necessary for hostapd?
+> > > > > > > > > >
+> > > > > > > > > > Well, not necessarily, but hostap side it looks fine, s=
+o,
+> > > > > > > > > > we need to see why the STA isn't responding well, proba=
+bly a
+> > > > > > > > > > different draft implementation. At the very least we sh=
+ould start
+> > > > > > > > > > with a sniffer capture of the association b/w the stati=
+ons to check
+> > > > > > > > > > the IEs.
+> > > > > > > >
+> > > > > > > > Yes this is a new STA connecting AP with wpa_supplicant.
+> > > > > > > > It is also an AX200.
+> > > > > > > > I don=E2=80=99t see mac80211 logs on the STA dmesg.
+> > > > > > > > I am attaching dmesg of the station.
+> > > > > > >
+> > > > > > > These are from mac80211:
+> > > > > > > [  152.255545] wlp3s0: authenticate with 8c:c6:81:69:86:65
+> > > > > > > [  152.258347] wlp3s0: send auth to 8c:c6:81:69:86:65 (try 1/=
+3)
+> > > > > > > [  152.283971] wlp3s0: authenticated
+> > > > > > > [  152.286624] wlp3s0: associate with 8c:c6:81:69:86:65 (try =
+1/3)
+> > > > > > > [  152.293456] wlp3s0: RX AssocResp from 8c:c6:81:69:86:65
+> > > > > > > (capab=3D0x411 status=3D0 aid=3D1)
+> > > > > > > [  152.299672] wlp3s0: associated
+> > > > > > > [  152.364843] IPv6: ADDRCONF(NETDEV_CHANGE): wlp3s0: link be=
+comes ready
+> > > > > > >
+> > > > > > > I was hoping to see some prints disabling HE, but looks fine.=
+ So,
+> > > > > > > still, nothing from the logs
+> > > > > > > to say why HE is disabled in the STA (why it isn't sending HE=
+ IEs in
+> > > > > > > assoc resp).
+> > > > > > >
+> > > > > > > Only Sniffer should tell us without resorting to Whitebox deb=
+ug.
+> > > > > > > >
+> > > > > > > > On Wed, Sep 2, 2020 at 1:26 PM Krishna Chaitanya
+> > > > > > > > <chaitanya.mgit at gmail.com> wrote:
+> > > > > > > > >
+> > > > > > > > > On Wed, Sep 2, 2020 at 3:16 PM Sugandh Huthanahally Mohan
+> > > > > > > > > <sugandhgowda at gmail.com> wrote:
+> > > > > > > > > >
+> > > > > > > > > > On Tue, Sep 1, 2020 at 10:09 PM Krishna Chaitanya
+> > > > > > > > > > <chaitanya.mgit at gmail.com> wrote:
+> > > > > > > > > > >
+> > > > > > > > > > >
+> > > > > > > > > > > Well, not necessarily, but hostap side it looks fine,=
+ so,
+> > > > > > > > > > > we need to see why the STA isn't responding well, pro=
+bably a
+> > > > > > > > > > > different draft implementation. At the very least we =
+should start
+> > > > > > > > > > > with a sniffer capture of the association b/w the sta=
+tions to check
+> > > > > > > > > > > the IEs.
+> > > > > > > > > >
+> > > > > > > > > > I am using wpa_supplicant in STA to connect  to AP.
+> > > > > > > > > > I am attaching hostapd logs and wpa_supplicant logs.
+> > > > > > > > > > I am observing that the STA is connecting and disconnec=
+ting when
+> > > > > > > > > > I try to connect STA to AP.
+> > > > > > > > > I guess this is a new STA with wpa_supplicant, right? Is =
+it also AX200 based
+> > > > > > > > > chipset? In the STA mode, the kernel adds the HE IEs (eit=
+her mac80211
+> > > > > > > > > or the driver),
+> > > > > > > > > so, but interestingly in your previous dmesg, I don't see=
+ any mac80211 logs.
+> > > > > > > > >
+> > > > > > > > > So, need dmesg logs that capture the connection (look for=
+ mac80211 logs).
+> > > > > > > > > >
+> > > > > > > > > > On Tue, Sep 1, 2020 at 10:09 PM Krishna Chaitanya
+> > > > > > > > > > <chaitanya.mgit at gmail.com> wrote:
+> > > > > > > > > > >
+> > > > > > > > > > > On Wed, Sep 2, 2020 at 1:23 AM Sugandh Huthanahally M=
+ohan
+> > > > > > > > > > > <sugandhgowda at gmail.com> wrote:
+> > > > > > > > > > > >
+> > > > > > > > > > > > Hi Krishna,
+> > > > > > > > > > > >
+> > > > > > > > > > > > Currently I am not running wpa_supplicant.
+> > > > > > > > > > > > Is it necessary for hostapd?
+> > > > > > > > > > >
+> > > > > > > > > > > Well, not necessarily, but hostap side it looks fine,=
+ so,
+> > > > > > > > > > > we need to see why the STA isn't responding well, pro=
+bably a
+> > > > > > > > > > > different draft implementation. At the very least we =
+should start
+> > > > > > > > > > > with a sniffer capture of the association b/w the sta=
+tions to check
+> > > > > > > > > > > the IEs.
+> > > > > > > > >
+> > > > > > > > >
+> > > > > > > > >
+> > > > > > > > > --
+> > > > > > > > > Thanks,
+> > > > > > > > > Regards,
+> > > > > > > > > Chaitanya T K.
+> > > > > > >
+> > > > > > >
+> > > > > > >
+> > > > > > > --
+> > > > > > > Thanks,
+> > > > > > > Regards,
+> > > > > > > Chaitanya T K.
+> > >
+> > >
+> > > On Wed, Sep 9, 2020 at 12:53 AM Krishna Chaitanya
+> > > <chaitanya.mgit@gmail.com> wrote:
+> > > >
+> > > > On Wed, Sep 9, 2020 at 2:18 AM Sugandh Huthanahally Mohan
+> > > > <sugandhgowda@gmail.com> wrote:
+> > > > >
+> > > > > On Wed, Sep 9, 2020 at 12:27 AM Sugandh Huthanahally Mohan
+> > > > > <sugandhgowda at gmail.com> wrote:
+> > > > > > >
+> > > > > > > I have captured connection between a WiFi6 AP and a WiFi6 STA=
+ in wireshark.
+> > > > > > >I have attached a wireshark pcap file.
+> > > > > > > I could see HE capabilities exchange in Association request a=
+nd response.
+> > > > > > Yes, this looks fine to me except for VHT IEs in the probe and
+> > > > > > association response in 2.4GHz.
+> > > > > > Maybe this is what is confusing, can you please disable ieee802=
+11ac=3D0
+> > > > > > in the hostapd.conf and try?
+> > > > > I disabled iee80211ac and I am not seeing VHT capabilities in Ass=
+ociation
+> > > > > frames but the data rate remains the same.I am attaching wireshar=
+k capture.
+> > > > okay, thanks.
+> > > > > > The iw phy output is below. I couldn't see HE connection in thi=
+s output.
+> > > > > >
+> > > > > > $iw dev wlp3s0 link
+> > > > > > Connected to 8c:c6:81:69:86:65 (on wlp3s0)
+> > > > > >     SSID: WiFi_AX200
+> > > > > >     freq: 2437
+> > > > > >     RX: 27838 bytes (199 packets)
+> > > > > >     TX: 13319 bytes (97 packets)
+> > > > > >     signal: -34 dBm
+> > > > > >     rx bitrate: 26.0 MBit/s MCS 3
+> > > > > >     tx bitrate: 2.0 MBit/s
+> > > > > >
+> > > > > >     bss flags:    short-slot-time
+> > > > > >     dtim period:    2
+> > > > > >     beacon int:    100
+> > > > > >
+> > > > > > > The link doesn't show any specific details related to HE othe=
+r than
+> > > > > > > the MCS which can vary, try running
+> > > > > > > an iperf to see HE MCSes in a clean channel.
+> > > > >
+> > > > > Could you please explain what this means.
+> > > > > I want to know what clean channel means and where actually I can =
+see HE MCSes.
+> > > >
+> > > > Sure. The link command doesn't printout any in capability informati=
+on explicitly
+> > > >  except for the MCS details. And figuring out the mode of connectio=
+n (11n/11ax)
+> > > > from the MCS is tricky as the MCS varies across depending on the ra=
+te
+> > > > control algorithm
+> > > > (for iwlwifi: hardware). So, I was suggesting to use iperf (the mor=
+e
+> > > > data you pass, more
+> > > > chance of the rate control algo to go to higher MCSes) and also by
+> > > > "clean channels" I was
+> > > > referring to quieter channels where there are no other BSSes or no
+> > > > other traffic.
+> > > >
+> > > > But, before we go into debugging data path, I still don't understan=
+d
+> > > > why wpa_supplicant
+> > > > isn't saying it is a HE association?
+> > > >
+> > > > Ah, After staring at the code and using blame, a crucial fix missed
+> > > > out hostap-2.9 windows,
+> > > > the fix was to properly validate the HE capabilities, I was looking=
+ at
+> > > > the latest cod and
+> > > > everything looked fine, hence took time.
+> > > >
+> > > > hostap_2_9-> 7th August
+> > > > 0497e4148197fb8fdf92b5c901ce06df1bfa548c ->13th August
+> > > >
+> > > > Please use the latest HEAD of hostap.git, you need to compile it
+> > > > manually and try the
+> > > > test and let me know how it goes. (make sure all proper configs are=
+ enabled)
+> > > >
+> > > > > > On Wed, Sep 2, 2020 at 3:39 PM Krishna Chaitanya
+> > > > > > <chaitanya.mgit at gmail.com> wrote:
+> > > > > > >
+> > > > > > > On Wed, Sep 2, 2020 at 6:38 PM Sugandh Huthanahally Mohan
+> > > > > > > <sugandhgowda at gmail.com> wrote:
+> > > > > > > >
+> > > > > > > > On Wed, Sep 2, 2020 at 3:16 PM Sugandh Huthanahally Mohan
+> > > > > > > > <sugandhgowda at gmail.com> wrote:
+> > > > > > > > >
+> > > > > > > > > On Tue, Sep 1, 2020 at 10:09 PM Krishna Chaitanya
+> > > > > > > > > <chaitanya.mgit at gmail.com> wrote:
+> > > > > > > > > >
+> > > > > > > > > >
+> > > > > > > > > > Well, not necessarily, but hostap side it looks fine, s=
+o,
+> > > > > > > > > > we need to see why the STA isn't responding well, proba=
+bly a
+> > > > > > > > > > different draft implementation. At the very least we sh=
+ould start
+> > > > > > > > > > with a sniffer capture of the association b/w the stati=
+ons to check
+> > > > > > > > > > the IEs.
+> > > > > > > > >
+> > > > > > > > > I am using wpa_supplicant in STA to connect  to AP.
+> > > > > > > > > I am attaching hostapd logs and wpa_supplicant logs.
+> > > > > > > > > I am observing that the STA is connecting and disconnecti=
+ng when
+> > > > > > > > > I try to connect STA to AP.
+> > > > > > > > I guess this is a new STA with wpa_supplicant, right? Is it=
+ also AX200 based
+> > > > > > > > chipset? In the STA mode, the kernel adds the HE IEs (eithe=
+r mac80211
+> > > > > > > > or the driver),
+> > > > > > > > so, but interestingly in your previous dmesg, I don't see a=
+ny mac80211 logs.
+> > > > > > > >
+> > > > > > > > So, need dmesg logs that capture the connection (look for m=
+ac80211 logs).
+> > > > > > > > >
+> > > > > > > > > On Tue, Sep 1, 2020 at 10:09 PM Krishna Chaitanya
+> > > > > > > > > <chaitanya.mgit at gmail.com> wrote:
+> > > > > > > > > >
+> > > > > > > > > > On Wed, Sep 2, 2020 at 1:23 AM Sugandh Huthanahally Moh=
+an
+> > > > > > > > > > <sugandhgowda at gmail.com> wrote:
+> > > > > > > > > > >
+> > > > > > > > > > > Hi Krishna,
+> > > > > > > > > > >
+> > > > > > > > > > > Currently I am not running wpa_supplicant.
+> > > > > > > > > > > Is it necessary for hostapd?
+> > > > > > > > > >
+> > > > > > > > > > Well, not necessarily, but hostap side it looks fine, s=
+o,
+> > > > > > > > > > we need to see why the STA isn't responding well, proba=
+bly a
+> > > > > > > > > > different draft implementation. At the very least we sh=
+ould start
+> > > > > > > > > > with a sniffer capture of the association b/w the stati=
+ons to check
+> > > > > > > > > > the IEs.
+> > > > > > > >
+> > > > > > > > Yes this is a new STA connecting AP with wpa_supplicant.
+> > > > > > > > It is also an AX200.
+> > > > > > > > I don=E2=80=99t see mac80211 logs on the STA dmesg.
+> > > > > > > > I am attaching dmesg of the station.
+> > > > > > >
+> > > > > > > These are from mac80211:
+> > > > > > > [  152.255545] wlp3s0: authenticate with 8c:c6:81:69:86:65
+> > > > > > > [  152.258347] wlp3s0: send auth to 8c:c6:81:69:86:65 (try 1/=
+3)
+> > > > > > > [  152.283971] wlp3s0: authenticated
+> > > > > > > [  152.286624] wlp3s0: associate with 8c:c6:81:69:86:65 (try =
+1/3)
+> > > > > > > [  152.293456] wlp3s0: RX AssocResp from 8c:c6:81:69:86:65
+> > > > > > > (capab=3D0x411 status=3D0 aid=3D1)
+> > > > > > > [  152.299672] wlp3s0: associated
+> > > > > > > [  152.364843] IPv6: ADDRCONF(NETDEV_CHANGE): wlp3s0: link be=
+comes ready
+> > > > > > >
+> > > > > > > I was hoping to see some prints disabling HE, but looks fine.=
+ So,
+> > > > > > > still, nothing from the logs
+> > > > > > > to say why HE is disabled in the STA (why it isn't sending HE=
+ IEs in
+> > > > > > > assoc resp).
+> > > > > > >
+> > > > > > > Only Sniffer should tell us without resorting to Whitebox deb=
+ug.
+> > > > > > > >
+> > > > > > > > On Wed, Sep 2, 2020 at 1:26 PM Krishna Chaitanya
+> > > > > > > > <chaitanya.mgit at gmail.com> wrote:
+> > > > > > > > >
+> > > > > > > > > On Wed, Sep 2, 2020 at 3:16 PM Sugandh Huthanahally Mohan
+> > > > > > > > > <sugandhgowda at gmail.com> wrote:
+> > > > > > > > > >
+> > > > > > > > > > On Tue, Sep 1, 2020 at 10:09 PM Krishna Chaitanya
+> > > > > > > > > > <chaitanya.mgit at gmail.com> wrote:
+> > > > > > > > > > >
+> > > > > > > > > > >
+> > > > > > > > > > > Well, not necessarily, but hostap side it looks fine,=
+ so,
+> > > > > > > > > > > we need to see why the STA isn't responding well, pro=
+bably a
+> > > > > > > > > > > different draft implementation. At the very least we =
+should start
+> > > > > > > > > > > with a sniffer capture of the association b/w the sta=
+tions to check
+> > > > > > > > > > > the IEs.
+> > > > > > > > > >
+> > > > > > > > > > I am using wpa_supplicant in STA to connect  to AP.
+> > > > > > > > > > I am attaching hostapd logs and wpa_supplicant logs.
+> > > > > > > > > > I am observing that the STA is connecting and disconnec=
+ting when
+> > > > > > > > > > I try to connect STA to AP.
+> > > > > > > > > I guess this is a new STA with wpa_supplicant, right? Is =
+it also AX200 based
+> > > > > > > > > chipset? In the STA mode, the kernel adds the HE IEs (eit=
+her mac80211
+> > > > > > > > > or the driver),
+> > > > > > > > > so, but interestingly in your previous dmesg, I don't see=
+ any mac80211 logs.
+> > > > > > > > >
+> > > > > > > > > So, need dmesg logs that capture the connection (look for=
+ mac80211 logs).
+> > > > > > > > > >
+> > > > > > > > > > On Tue, Sep 1, 2020 at 10:09 PM Krishna Chaitanya
+> > > > > > > > > > <chaitanya.mgit at gmail.com> wrote:
+> > > > > > > > > > >
+> > > > > > > > > > > On Wed, Sep 2, 2020 at 1:23 AM Sugandh Huthanahally M=
+ohan
+> > > > > > > > > > > <sugandhgowda at gmail.com> wrote:
+> > > > > > > > > > > >
+> > > > > > > > > > > > Hi Krishna,
+> > > > > > > > > > > >
+> > > > > > > > > > > > Currently I am not running wpa_supplicant.
+> > > > > > > > > > > > Is it necessary for hostapd?
+> > > > > > > > > > >
+> > > > > > > > > > > Well, not necessarily, but hostap side it looks fine,=
+ so,
+> > > > > > > > > > > we need to see why the STA isn't responding well, pro=
+bably a
+> > > > > > > > > > > different draft implementation. At the very least we =
+should start
+> > > > > > > > > > > with a sniffer capture of the association b/w the sta=
+tions to check
+> > > > > > > > > > > the IEs.
+> > > > > > > > >
+> > > > > > > > >
+> > > > > > > > >
+> > > > > > > > > --
+> > > > > > > > > Thanks,
+> > > > > > > > > Regards,
+> > > > > > > > > Chaitanya T K.
+> > > > > > >
+> > > > > > >
+> > > > > > >
+> > > > > > > --
+> > > > > > > Thanks,
+> > > > > > > Regards,
+> > > > > > > Chaitanya T K.
+> > > > >
+> > > > >
+> > > > > On Tue, Sep 8, 2020 at 9:55 PM Krishna Chaitanya
+> > > > > <chaitanya.mgit@gmail.com> wrote:
+> > > > > >
+> > > > > > On Wed, Sep 9, 2020 at 12:27 AM Sugandh Huthanahally Mohan
+> > > > > > <sugandhgowda@gmail.com> wrote:
+> > > > > > >
+> > > > > > > I have captured connection between a WiFi6 AP and a WiFi6 STA=
+ in wireshark.
+> > > > > > > I have attached a wireshark pcap file.
+> > > > > > > I could see HE capabilities exchange in Association request a=
+nd response.
+> > > > > > Yes, this looks fine to me except for VHT IEs in the probe and
+> > > > > > association response in 2.4GHz.
+> > > > > > Maybe this is what is confusing, can you please disable ieee802=
+11ac=3D0
+> > > > > > in the hostapd.conf and try?
+> > > > > >
+> > > > > > > The iw phy output is below. I couldn't see HE connection in t=
+his output.
+> > > > > > >
+> > > > > > > $iw dev wlp3s0 link
+> > > > > > > Connected to 8c:c6:81:69:86:65 (on wlp3s0)
+> > > > > > >     SSID: WiFi_AX200
+> > > > > > >     freq: 2437
+> > > > > > >     RX: 27838 bytes (199 packets)
+> > > > > > >     TX: 13319 bytes (97 packets)
+> > > > > > >     signal: -34 dBm
+> > > > > > >     rx bitrate: 26.0 MBit/s MCS 3
+> > > > > > >     tx bitrate: 2.0 MBit/s
+> > > > > > >
+> > > > > > >     bss flags:    short-slot-time
+> > > > > > >     dtim period:    2
+> > > > > > >     beacon int:    100
+> > > > > > >
+> > > > > > The link doesn't show any specific details related to HE other =
+than
+> > > > > > the MCS which can vary, try running
+> > > > > > an iperf to see HE MCSes in a clean channel.
+> > > > > > >
+> > > > > > > On Wed, Sep 2, 2020 at 3:39 PM Krishna Chaitanya
+> > > > > > > <chaitanya.mgit@gmail.com> wrote:
+> > > > > > > >
+> > > > > > > > On Wed, Sep 2, 2020 at 6:38 PM Sugandh Huthanahally Mohan
+> > > > > > > > <sugandhgowda@gmail.com> wrote:
+> > > > > > > > >
+> > > > > > > > > On Wed, Sep 2, 2020 at 3:16 PM Sugandh Huthanahally Mohan
+> > > > > > > > > <sugandhgowda at gmail.com> wrote:
+> > > > > > > > > >
+> > > > > > > > > > On Tue, Sep 1, 2020 at 10:09 PM Krishna Chaitanya
+> > > > > > > > > > <chaitanya.mgit at gmail.com> wrote:
+> > > > > > > > > > >
+> > > > > > > > > > >
+> > > > > > > > > > > Well, not necessarily, but hostap side it looks fine,=
+ so,
+> > > > > > > > > > > we need to see why the STA isn't responding well, pro=
+bably a
+> > > > > > > > > > > different draft implementation. At the very least we =
+should start
+> > > > > > > > > > > with a sniffer capture of the association b/w the sta=
+tions to check
+> > > > > > > > > > > the IEs.
+> > > > > > > > > >
+> > > > > > > > > > I am using wpa_supplicant in STA to connect  to AP.
+> > > > > > > > > > I am attaching hostapd logs and wpa_supplicant logs.
+> > > > > > > > > > I am observing that the STA is connecting and disconnec=
+ting when
+> > > > > > > > > > I try to connect STA to AP.
+> > > > > > > > > I guess this is a new STA with wpa_supplicant, right? Is =
+it also AX200 based
+> > > > > > > > > chipset? In the STA mode, the kernel adds the HE IEs (eit=
+her mac80211
+> > > > > > > > > or the driver),
+> > > > > > > > > so, but interestingly in your previous dmesg, I don't see=
+ any mac80211 logs.
+> > > > > > > > >
+> > > > > > > > > So, need dmesg logs that capture the connection (look for=
+ mac80211 logs).
+> > > > > > > > > >
+> > > > > > > > > > On Tue, Sep 1, 2020 at 10:09 PM Krishna Chaitanya
+> > > > > > > > > > <chaitanya.mgit at gmail.com> wrote:
+> > > > > > > > > > >
+> > > > > > > > > > > On Wed, Sep 2, 2020 at 1:23 AM Sugandh Huthanahally M=
+ohan
+> > > > > > > > > > > <sugandhgowda at gmail.com> wrote:
+> > > > > > > > > > > >
+> > > > > > > > > > > > Hi Krishna,
+> > > > > > > > > > > >
+> > > > > > > > > > > > Currently I am not running wpa_supplicant.
+> > > > > > > > > > > > Is it necessary for hostapd?
+> > > > > > > > > > >
+> > > > > > > > > > > Well, not necessarily, but hostap side it looks fine,=
+ so,
+> > > > > > > > > > > we need to see why the STA isn't responding well, pro=
+bably a
+> > > > > > > > > > > different draft implementation. At the very least we =
+should start
+> > > > > > > > > > > with a sniffer capture of the association b/w the sta=
+tions to check
+> > > > > > > > > > > the IEs.
+> > > > > > > > >
+> > > > > > > > > Yes this is a new STA connecting AP with wpa_supplicant.
+> > > > > > > > > It is also an AX200.
+> > > > > > > > > I don=E2=80=99t see mac80211 logs on the STA dmesg.
+> > > > > > > > > I am attaching dmesg of the station.
+> > > > > > > >
+> > > > > > > > These are from mac80211:
+> > > > > > > > [  152.255545] wlp3s0: authenticate with 8c:c6:81:69:86:65
+> > > > > > > > [  152.258347] wlp3s0: send auth to 8c:c6:81:69:86:65 (try =
+1/3)
+> > > > > > > > [  152.283971] wlp3s0: authenticated
+> > > > > > > > [  152.286624] wlp3s0: associate with 8c:c6:81:69:86:65 (tr=
+y 1/3)
+> > > > > > > > [  152.293456] wlp3s0: RX AssocResp from 8c:c6:81:69:86:65
+> > > > > > > > (capab=3D0x411 status=3D0 aid=3D1)
+> > > > > > > > [  152.299672] wlp3s0: associated
+> > > > > > > > [  152.364843] IPv6: ADDRCONF(NETDEV_CHANGE): wlp3s0: link =
+becomes ready
+> > > > > > > >
+> > > > > > > > I was hoping to see some prints disabling HE, but looks fin=
+e. So,
+> > > > > > > > still, nothing from the logs
+> > > > > > > > to say why HE is disabled in the STA (why it isn't sending =
+HE IEs in
+> > > > > > > > assoc resp).
+> > > > > > > >
+> > > > > > > > Only Sniffer should tell us without resorting to Whitebox d=
+ebug.
+> > > > > > > > >
+> > > > > > > > > On Wed, Sep 2, 2020 at 1:26 PM Krishna Chaitanya
+> > > > > > > > > <chaitanya.mgit@gmail.com> wrote:
+> > > > > > > > > >
+> > > > > > > > > > On Wed, Sep 2, 2020 at 3:16 PM Sugandh Huthanahally Moh=
+an
+> > > > > > > > > > <sugandhgowda@gmail.com> wrote:
+> > > > > > > > > > >
+> > > > > > > > > > > On Tue, Sep 1, 2020 at 10:09 PM Krishna Chaitanya
+> > > > > > > > > > > <chaitanya.mgit at gmail.com> wrote:
+> > > > > > > > > > > >
+> > > > > > > > > > > >
+> > > > > > > > > > > > Well, not necessarily, but hostap side it looks fin=
+e, so,
+> > > > > > > > > > > > we need to see why the STA isn't responding well, p=
+robably a
+> > > > > > > > > > > > different draft implementation. At the very least w=
+e should start
+> > > > > > > > > > > > with a sniffer capture of the association b/w the s=
+tations to check
+> > > > > > > > > > > > the IEs.
+> > > > > > > > > > >
+> > > > > > > > > > > I am using wpa_supplicant in STA to connect  to AP.
+> > > > > > > > > > > I am attaching hostapd logs and wpa_supplicant logs.
+> > > > > > > > > > > I am observing that the STA is connecting and disconn=
+ecting when
+> > > > > > > > > > > I try to connect STA to AP.
+> > > > > > > > > > I guess this is a new STA with wpa_supplicant, right? I=
+s it also AX200 based
+> > > > > > > > > > chipset? In the STA mode, the kernel adds the HE IEs (e=
+ither mac80211
+> > > > > > > > > > or the driver),
+> > > > > > > > > > so, but interestingly in your previous dmesg, I don't s=
+ee any mac80211 logs.
+> > > > > > > > > >
+> > > > > > > > > > So, need dmesg logs that capture the connection (look f=
+or mac80211 logs).
+> > > > > > > > > > >
+> > > > > > > > > > > On Tue, Sep 1, 2020 at 10:09 PM Krishna Chaitanya
+> > > > > > > > > > > <chaitanya.mgit@gmail.com> wrote:
+> > > > > > > > > > > >
+> > > > > > > > > > > > On Wed, Sep 2, 2020 at 1:23 AM Sugandh Huthanahally=
+ Mohan
+> > > > > > > > > > > > <sugandhgowda@gmail.com> wrote:
+> > > > > > > > > > > > >
+> > > > > > > > > > > > > Hi Krishna,
+> > > > > > > > > > > > >
+> > > > > > > > > > > > > Currently I am not running wpa_supplicant.
+> > > > > > > > > > > > > Is it necessary for hostapd?
+> > > > > > > > > > > >
+> > > > > > > > > > > > Well, not necessarily, but hostap side it looks fin=
+e, so,
+> > > > > > > > > > > > we need to see why the STA isn't responding well, p=
+robably a
+> > > > > > > > > > > > different draft implementation. At the very least w=
+e should start
+> > > > > > > > > > > > with a sniffer capture of the association b/w the s=
+tations to check
+> > > > > > > > > > > > the IEs.
+> > > > > > > > > >
+> > > > > > > > > >
+> > > > > > > > > >
+> > > > > > > > > > --
+> > > > > > > > > > Thanks,
+> > > > > > > > > > Regards,
+> > > > > > > > > > Chaitanya T K.
+> > > > > > > >
+> > > > > > > >
+> > > > > > > >
+> > > > > > > > --
+> > > > > > > > Thanks,
+> > > > > > > > Regards,
+> > > > > > > > Chaitanya T K.
