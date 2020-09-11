@@ -2,44 +2,44 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D988265611
-	for <lists+linux-wireless@lfdr.de>; Fri, 11 Sep 2020 02:33:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 59F8F265612
+	for <lists+linux-wireless@lfdr.de>; Fri, 11 Sep 2020 02:33:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725788AbgIKAdF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        id S1725791AbgIKAdF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
         Thu, 10 Sep 2020 20:33:05 -0400
-Received: from a27-18.smtp-out.us-west-2.amazonses.com ([54.240.27.18]:40032
+Received: from a27-18.smtp-out.us-west-2.amazonses.com ([54.240.27.18]:40038
         "EHLO a27-18.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725783AbgIKAdB (ORCPT
+        by vger.kernel.org with ESMTP id S1725784AbgIKAdC (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 10 Sep 2020 20:33:01 -0400
+        Thu, 10 Sep 2020 20:33:02 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1599784380;
+        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1599784381;
         h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-        bh=C7J1TX16AhbK0MBXtvTK6x9x7h5XapwLNjQCHcsN7HI=;
-        b=C84siGVG2H1bgmfQuCfW5h41jFheNDG9nKQeWNDmL9dHGO8S+njCNpQKhJ0oVJ+T
-        2bJmbEc+o8OCCf1yFyjcMp0bZV/WdfXcv61GwAFYLeOtRCYHoM1vRUArDdgtvRq1Vpv
-        GpqQ78xHemjMDpEgpnPLzZGdaxOmqmvIyjnfiBIE=
+        bh=AYhz6TO1Qf+wB0m4h23ua8ggKdpwY9d2kPoH8OPpa34=;
+        b=Q3PQlqIWB0DBD4mBynwnnhJfagdW9VaFlkzg8P48hBD4vQWfVocx0LLiEJ2p69AD
+        R8ZqP4VhwkcafNBD6mDsDmH93PiaN1tJXKOnI2FiRbW9+VovwL/pc2FwxOfu1y+oHNH
+        6dvr2+1yKyPEkSRdf9svmAyYn2+x0vz+CuUZsRhY=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=hsbnp7p3ensaochzwyq5wwmceodymuwv; d=amazonses.com; t=1599784380;
+        s=hsbnp7p3ensaochzwyq5wwmceodymuwv; d=amazonses.com; t=1599784381;
         h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Feedback-ID;
-        bh=C7J1TX16AhbK0MBXtvTK6x9x7h5XapwLNjQCHcsN7HI=;
-        b=mLxKF5M2/yBF04r3cDXvdVodsdUnO2afR5fIJ8gvRzcaPrW7YN8mAmkB10xSqPMK
-        smC61KqlHBa3G2HaRIBvx1y4X9Z6bExdd3YqPBegUNtGLkzx/e/7HYFgxhrgIBdHbjS
-        xp6DVwhsU1X/YN/r3TGoM429Gvf91/YGZzVZS7gw=
+        bh=AYhz6TO1Qf+wB0m4h23ua8ggKdpwY9d2kPoH8OPpa34=;
+        b=Wmg2f9r7x7jgTW12QXXd8HnXnc8/+keEAupvkmucLerUaehGPbQPmyZzC1eX8+vt
+        yv87rQmjRJrO2MuzSeQ5AP1RlFG7yEumQdkXKjkew6RQJwz522RYFS0AWcvlndWZGue
+        bfXNS+vZGrPfTUDTiOQyZzwi1QZ+LlV23vEGvd8k=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
 X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
         URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org F03E9C433CA
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 1F550C433FE
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=alokad@codeaurora.org
 From:   Aloka Dixit <alokad@codeaurora.org>
 To:     johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org, Aloka Dixit <alokad@codeaurora.org>
-Subject: [PATCH v5 1/2] nl80211: Unsolicited broadcast probe response support
-Date:   Fri, 11 Sep 2020 00:33:00 +0000
-Message-ID: <010101747a946698-aac263ae-2ed3-4dab-9590-0bc7131214e1-000000@us-west-2.amazonses.com>
+Subject: [PATCH v5 2/2] mac80211: Unsolicited broadcast probe response support
+Date:   Fri, 11 Sep 2020 00:33:01 +0000
+Message-ID: <010101747a946b35-ad25858a-1f1f-48df-909e-dc7bf26d9169-000000@us-west-2.amazonses.com>
 X-Mailer: git-send-email 2.25.0
 In-Reply-To: <20200911003251.7686-1-alokad@codeaurora.org>
 References: <20200911003251.7686-1-alokad@codeaurora.org>
@@ -52,218 +52,229 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This patch adds new attributes to support unsolicited broadcast
-probe response transmission used for in-band
-discovery in 6GHz band (IEEE P802.11ax/D6.0 26.17.2.3.2, AP behavior for
-fast passive scanning).
-The new attribute, NL80211_ATTR_UNSOL_BCAST_PROBE_RESP, is nested which
-supports following parameters:
-(1) NL80211_UNSOL_BCAST_PROBE_RESP_ATTR_INT - Packet interval
-(2) NL80211_UNSOL_BCAST_PROBE_RESP_ATTR_TMPL - Template data
+This patch adds mac80211 support to configure unsolicited
+broadcast probe response transmission for in-band discovery in 6GHz.
+
+Changes include functions to store and retrieve probe response template,
+and packet interval (0 - 20 TUs).
+Setting interval to 0 disables the unsolicited broadcast probe response
+transmission.
 
 Signed-off-by: Aloka Dixit <alokad@codeaurora.org>
 ---
- include/net/cfg80211.h       | 18 ++++++++++++++
- include/uapi/linux/nl80211.h | 36 +++++++++++++++++++++++++++
- net/wireless/nl80211.c       | 48 ++++++++++++++++++++++++++++++++++++
- 3 files changed, 102 insertions(+)
+ include/net/mac80211.h     | 20 +++++++++++++++++++
+ net/mac80211/cfg.c         | 41 ++++++++++++++++++++++++++++++++++++++
+ net/mac80211/ieee80211_i.h |  7 +++++++
+ net/mac80211/tx.c          | 29 +++++++++++++++++++++++++++
+ 4 files changed, 97 insertions(+)
 
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index 2011b2434baf..e550f91450d0 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -1084,6 +1084,22 @@ struct cfg80211_fils_discovery {
- 	const u8 *tmpl;
- };
- 
-+/**
-+ * struct cfg80211_unsol_bcast_probe_resp - Unsolicited broadcast probe
-+ *	response parameters in 6GHz.
-+ *
-+ * @interval: Packet interval in TUs. Maximum allowed is 20 TU, as mentioned
-+ *	in IEEE P802.11ax/D6.0 26.17.2.3.2 - AP behavior for fast passive
-+ *	scanning
-+ * @tmpl_len: Template length
-+ * @tmpl: Template data for probe response
-+ */
-+struct cfg80211_unsol_bcast_probe_resp {
-+	u32 interval;
-+	size_t tmpl_len;
-+	const u8 *tmpl;
-+};
-+
- /**
-  * enum cfg80211_ap_settings_flags - AP settings flags
+diff --git a/include/net/mac80211.h b/include/net/mac80211.h
+index a8defc2954e2..517528c5f2e5 100644
+--- a/include/net/mac80211.h
++++ b/include/net/mac80211.h
+@@ -318,6 +318,8 @@ struct ieee80211_vif_chanctx_switch {
+  * @BSS_CHANGED_HE_OBSS_PD: OBSS Packet Detection status changed.
+  * @BSS_CHANGED_HE_BSS_COLOR: BSS Color has changed
+  * @BSS_CHANGED_FILS_DISCOVERY: FILS discovery status changed.
++ * @BSS_CHANGED_UNSOL_BCAST_PROBE_RESP: Unsolicited broadcast probe response
++ *	status changed.
   *
-@@ -1132,6 +1148,7 @@ enum cfg80211_ap_settings_flags {
-  * @he_bss_color: BSS Color settings
-  * @he_oper: HE operation IE (or %NULL if HE isn't enabled)
-  * @fils_discovery: FILS discovery transmission parameters
-+ * @unsol_bcast_probe_resp: Unsolicited broadcast probe response parameters
   */
- struct cfg80211_ap_settings {
- 	struct cfg80211_chan_def chandef;
-@@ -1163,6 +1180,7 @@ struct cfg80211_ap_settings {
+ enum ieee80211_bss_change {
+@@ -352,6 +354,7 @@ enum ieee80211_bss_change {
+ 	BSS_CHANGED_HE_OBSS_PD		= 1<<28,
+ 	BSS_CHANGED_HE_BSS_COLOR	= 1<<29,
+ 	BSS_CHANGED_FILS_DISCOVERY      = 1<<30,
++	BSS_CHANGED_UNSOL_BCAST_PROBE_RESP = 1<<31,
+ 
+ 	/* when adding here, make sure to change ieee80211_reconfig */
+ };
+@@ -622,6 +625,8 @@ struct ieee80211_fils_discovery {
+  * @he_obss_pd: OBSS Packet Detection parameters.
+  * @he_bss_color: BSS coloring settings, if BSS supports HE
+  * @fils_discovery: FILS discovery configuration
++ * @unsol_bcast_probe_resp_interval: Unsolicited broadcast probe response
++ *	interval.
+  */
+ struct ieee80211_bss_conf {
+ 	const u8 *bssid;
+@@ -690,6 +695,7 @@ struct ieee80211_bss_conf {
  	struct ieee80211_he_obss_pd he_obss_pd;
  	struct cfg80211_he_bss_color he_bss_color;
- 	struct cfg80211_fils_discovery fils_discovery;
-+	struct cfg80211_unsol_bcast_probe_resp unsol_bcast_probe_resp;
+ 	struct ieee80211_fils_discovery fils_discovery;
++	u32 unsol_bcast_probe_resp_interval;
  };
  
  /**
-diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-index d6b6c5103387..0c7b56eb5ce2 100644
---- a/include/uapi/linux/nl80211.h
-+++ b/include/uapi/linux/nl80211.h
-@@ -2517,6 +2517,10 @@ enum nl80211_commands {
-  *	discovery. It is a nested attribute, see
-  *	&enum nl80211_fils_discovery_attributes.
-  *
-+ * @NL80211_ATTR_UNSOL_BCAST_PROBE_RESP: Optional parameter to configure
-+ *	unsolicited broadcast probe response. It is a nested attribute, see
-+ *	&enum nl80211_unsol_bcast_probe_resp_attributes.
-+ *
-  * @NUM_NL80211_ATTR: total number of nl80211_attrs available
-  * @NL80211_ATTR_MAX: highest attribute number currently defined
-  * @__NL80211_ATTR_AFTER_LAST: internal use
-@@ -3001,6 +3005,8 @@ enum nl80211_attrs {
- 
- 	NL80211_ATTR_FILS_DISCOVERY,
- 
-+	NL80211_ATTR_UNSOL_BCAST_PROBE_RESP,
+@@ -6620,4 +6626,18 @@ bool ieee80211_set_hw_80211_encap(struct ieee80211_vif *vif, bool enable);
+  */
+ struct sk_buff *ieee80211_get_fils_discovery_tmpl(struct ieee80211_hw *hw,
+ 						  struct ieee80211_vif *vif);
 +
- 	/* add attributes here, update the policy in nl80211.c */
- 
- 	__NL80211_ATTR_AFTER_LAST,
-@@ -5861,6 +5867,9 @@ enum nl80211_feature_flags {
-  * @NL80211_EXT_FEATURE_FILS_DISCOVERY: Driver/device supports FILS discovery
-  *	frames transmission
-  *
-+ * @NL80211_EXT_FEATURE_UNSOL_BCAST_PROBE_RESP: Driver/device supports
-+ *	unsolicited broadcast probe response transmission
-+ *
-  * @NUM_NL80211_EXT_FEATURES: number of extended features.
-  * @MAX_NL80211_EXT_FEATURES: highest extended feature index.
-  */
-@@ -5920,6 +5929,7 @@ enum nl80211_ext_feature_index {
- 	NL80211_EXT_FEATURE_4WAY_HANDSHAKE_AP_PSK,
- 	NL80211_EXT_FEATURE_SAE_OFFLOAD_AP,
- 	NL80211_EXT_FEATURE_FILS_DISCOVERY,
-+	NL80211_EXT_FEATURE_UNSOL_BCAST_PROBE_RESP,
- 
- 	/* add new features before the definition below */
- 	NUM_NL80211_EXT_FEATURES,
-@@ -7048,4 +7058,30 @@ enum nl80211_fils_discovery_attributes {
-  */
- #define NL80211_FILS_DISCOVERY_TMPL_MIN_LEN 42
- 
 +/**
-+ * enum nl80211_unsol_bcast_probe_resp_attributes - Unsolicited broadcast probe
-+ *	response configuration. Applicable only in 6GHz.
++ * ieee80211_get_unsol_bcast_probe_resp_tmpl - Get unsolicited broadcast
++ *	probe response template.
++ * @hw: pointer obtained from ieee80211_alloc_hw().
++ * @vif: &struct ieee80211_vif pointer from the add_interface callback.
 + *
-+ * @__NL80211_UNSOL_BCAST_PROBE_RESP_ATTR_INVALID: Invalid
++ * The driver is responsible for freeing the returned skb.
 + *
-+ * @NL80211_UNSOL_BCAST_PROBE_RESP_ATTR_INT: Maximum packet interval (u32, TU).
-+ *	Allowed range: 0..20 (TU = Time Unit). IEEE P802.11ax/D6.0
-+ *	26.17.2.3.2 (AP behavior for fast passive scanning).
-+ * @NL80211_UNSOL_BCAST_PROBE_RESP_ATTR_TMPL: Unsolicited broadcast probe response
-+ *	frame template (binary).
-+ *
-+ * @__NL80211_UNSOL_BCAST_PROBE_RESP_ATTR_LAST: Internal
-+ * @NL80211_UNSOL_BCAST_PROBE_RESP_ATTR_MAX: highest attribute
++ * Return: Unsolicited broadcast probe response template. %NULL on error.
 + */
-+enum nl80211_unsol_bcast_probe_resp_attributes {
-+	__NL80211_UNSOL_BCAST_PROBE_RESP_ATTR_INVALID,
-+
-+	NL80211_UNSOL_BCAST_PROBE_RESP_ATTR_INT,
-+	NL80211_UNSOL_BCAST_PROBE_RESP_ATTR_TMPL,
-+
-+	/* keep last */
-+	__NL80211_UNSOL_BCAST_PROBE_RESP_ATTR_LAST,
-+	NL80211_UNSOL_BCAST_PROBE_RESP_ATTR_MAX =
-+		__NL80211_UNSOL_BCAST_PROBE_RESP_ATTR_LAST - 1
-+};
- #endif /* __LINUX_NL80211_H */
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index c6dcd81fd643..333ba0b6df68 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -376,6 +376,13 @@ nl80211_fils_discovery_policy[NL80211_FILS_DISCOVERY_ATTR_MAX + 1] = {
- 			 IEEE80211_MAX_DATA_LEN),
- };
- 
-+static const struct nla_policy
-+nl80211_unsol_bcast_probe_resp_policy[NL80211_UNSOL_BCAST_PROBE_RESP_ATTR_MAX + 1] = {
-+	[NL80211_UNSOL_BCAST_PROBE_RESP_ATTR_INT] = NLA_POLICY_MAX(NLA_U32, 20),
-+	[NL80211_UNSOL_BCAST_PROBE_RESP_ATTR_TMPL] = { .type = NLA_BINARY,
-+						       .len = IEEE80211_MAX_DATA_LEN }
-+};
-+
- static const struct nla_policy nl80211_policy[NUM_NL80211_ATTR] = {
- 	[0] = { .strict_start_type = NL80211_ATTR_HE_OBSS_PD },
- 	[NL80211_ATTR_WIPHY] = { .type = NLA_U32 },
-@@ -686,6 +693,8 @@ static const struct nla_policy nl80211_policy[NUM_NL80211_ATTR] = {
- 		NLA_POLICY_EXACT_LEN(sizeof(struct ieee80211_he_6ghz_capa)),
- 	[NL80211_ATTR_FILS_DISCOVERY] =
- 		NLA_POLICY_NESTED(nl80211_fils_discovery_policy),
-+	[NL80211_ATTR_UNSOL_BCAST_PROBE_RESP] =
-+		NLA_POLICY_NESTED(nl80211_unsol_bcast_probe_resp_policy),
- };
- 
- /* policy for the key attributes */
-@@ -4892,6 +4901,36 @@ static int nl80211_parse_fils_discovery(struct cfg80211_registered_device *rdev,
++struct sk_buff *
++ieee80211_get_unsol_bcast_probe_resp_tmpl(struct ieee80211_hw *hw,
++					  struct ieee80211_vif *vif);
+ #endif /* MAC80211_H */
+diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+index 5bcaf6b01e7e..6d249cca8010 100644
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -864,6 +864,32 @@ static int ieee80211_set_fils_discovery(struct ieee80211_sub_if_data *sdata,
  	return 0;
  }
  
 +static int
-+nl80211_parse_unsol_bcast_probe_resp(struct cfg80211_registered_device *rdev,
-+				     struct nlattr *attrs,
-+				     struct cfg80211_ap_settings *params)
++ieee80211_set_unsol_bcast_probe_resp(struct ieee80211_sub_if_data *sdata,
++				     struct cfg80211_unsol_bcast_probe_resp *params)
 +{
-+	struct nlattr *tb[NL80211_UNSOL_BCAST_PROBE_RESP_ATTR_MAX + 1];
-+	int ret;
-+	struct cfg80211_unsol_bcast_probe_resp *presp =
-+					&params->unsol_bcast_probe_resp;
++	struct unsol_bcast_probe_resp_data *new, *old = NULL;
 +
-+	if (!wiphy_ext_feature_isset(&rdev->wiphy,
-+				     NL80211_EXT_FEATURE_UNSOL_BCAST_PROBE_RESP)) {
-+		return -EINVAL;
-+	}
-+
-+	ret = nla_parse_nested(tb, NL80211_UNSOL_BCAST_PROBE_RESP_ATTR_MAX,
-+			       attrs, NULL, NULL);
-+	if (ret)
-+		return ret;
-+
-+	if (!tb[NL80211_UNSOL_BCAST_PROBE_RESP_ATTR_INT] ||
-+	    !tb[NL80211_UNSOL_BCAST_PROBE_RESP_ATTR_TMPL])
++	if (!params->tmpl || !params->tmpl_len)
 +		return -EINVAL;
 +
-+	presp->tmpl = nla_data(tb[NL80211_UNSOL_BCAST_PROBE_RESP_ATTR_TMPL]);
-+	presp->tmpl_len = nla_len(tb[NL80211_UNSOL_BCAST_PROBE_RESP_ATTR_TMPL]);
-+	presp->interval = nla_get_u32(tb[NL80211_UNSOL_BCAST_PROBE_RESP_ATTR_INT]);
++	old = sdata_dereference(sdata->u.ap.unsol_bcast_probe_resp, sdata);
++	new = kzalloc(sizeof(*new) + params->tmpl_len, GFP_KERNEL);
++	if (!new)
++		return -ENOMEM;
++	new->len = params->tmpl_len;
++	memcpy(new->data, params->tmpl, params->tmpl_len);
++	rcu_assign_pointer(sdata->u.ap.unsol_bcast_probe_resp, new);
++
++	if (old)
++		kfree_rcu(old, rcu_head);
++
++	sdata->vif.bss_conf.unsol_bcast_probe_resp_interval =
++							params->interval;
++
 +	return 0;
 +}
 +
- static void nl80211_check_ap_rate_selectors(struct cfg80211_ap_settings *params,
- 					    const u8 *rates)
- {
-@@ -5208,6 +5247,15 @@ static int nl80211_start_ap(struct sk_buff *skb, struct genl_info *info)
- 			goto out;
+ static int ieee80211_set_ftm_responder_params(
+ 				struct ieee80211_sub_if_data *sdata,
+ 				const u8 *lci, size_t lci_len,
+@@ -1138,6 +1164,14 @@ static int ieee80211_start_ap(struct wiphy *wiphy, struct net_device *dev,
+ 		changed |= BSS_CHANGED_FILS_DISCOVERY;
  	}
  
-+	if (info->attrs[NL80211_ATTR_UNSOL_BCAST_PROBE_RESP]) {
-+		err = nl80211_parse_unsol_bcast_probe_resp(
-+			rdev,
-+			info->attrs[NL80211_ATTR_UNSOL_BCAST_PROBE_RESP],
-+			&params);
-+		if (err)
-+			return err;
++	if (params->unsol_bcast_probe_resp.interval) {
++		err = ieee80211_set_unsol_bcast_probe_resp(sdata,
++							   &params->unsol_bcast_probe_resp);
++		if (err < 0)
++			goto error;
++		changed |= BSS_CHANGED_UNSOL_BCAST_PROBE_RESP;
 +	}
 +
- 	nl80211_calculate_ap_params(&params);
+ 	err = drv_start_ap(sdata->local, sdata);
+ 	if (err) {
+ 		old = sdata_dereference(sdata->u.ap.beacon, sdata);
+@@ -1197,6 +1231,7 @@ static int ieee80211_stop_ap(struct wiphy *wiphy, struct net_device *dev)
+ 	struct beacon_data *old_beacon;
+ 	struct probe_resp *old_probe_resp;
+ 	struct fils_discovery_data *old_fils_discovery;
++	struct unsol_bcast_probe_resp_data *old_unsol_bcast_probe_resp;
+ 	struct cfg80211_chan_def chandef;
  
- 	if (info->attrs[NL80211_ATTR_EXTERNAL_AUTH_SUPPORT])
+ 	sdata_assert_lock(sdata);
+@@ -1207,6 +1242,9 @@ static int ieee80211_stop_ap(struct wiphy *wiphy, struct net_device *dev)
+ 	old_probe_resp = sdata_dereference(sdata->u.ap.probe_resp, sdata);
+ 	old_fils_discovery = sdata_dereference(sdata->u.ap.fils_discovery,
+ 					       sdata);
++	old_unsol_bcast_probe_resp =
++		sdata_dereference(sdata->u.ap.unsol_bcast_probe_resp,
++				  sdata);
+ 
+ 	/* abort any running channel switch */
+ 	mutex_lock(&local->mtx);
+@@ -1231,11 +1269,14 @@ static int ieee80211_stop_ap(struct wiphy *wiphy, struct net_device *dev)
+ 	RCU_INIT_POINTER(sdata->u.ap.beacon, NULL);
+ 	RCU_INIT_POINTER(sdata->u.ap.probe_resp, NULL);
+ 	RCU_INIT_POINTER(sdata->u.ap.fils_discovery, NULL);
++	RCU_INIT_POINTER(sdata->u.ap.unsol_bcast_probe_resp, NULL);
+ 	kfree_rcu(old_beacon, rcu_head);
+ 	if (old_probe_resp)
+ 		kfree_rcu(old_probe_resp, rcu_head);
+ 	if (old_fils_discovery)
+ 		kfree_rcu(old_fils_discovery, rcu_head);
++	if (old_unsol_bcast_probe_resp)
++		kfree_rcu(old_unsol_bcast_probe_resp, rcu_head);
+ 
+ 	kfree(sdata->vif.bss_conf.ftmr_params);
+ 	sdata->vif.bss_conf.ftmr_params = NULL;
+diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
+index e5b934c9eed3..8016a73159cc 100644
+--- a/net/mac80211/ieee80211_i.h
++++ b/net/mac80211/ieee80211_i.h
+@@ -277,6 +277,12 @@ struct fils_discovery_data {
+ 	u8 data[];
+ };
+ 
++struct unsol_bcast_probe_resp_data {
++	struct rcu_head rcu_head;
++	int len;
++	u8 data[];
++};
++
+ struct ps_data {
+ 	/* yes, this looks ugly, but guarantees that we can later use
+ 	 * bitmap_empty :)
+@@ -293,6 +299,7 @@ struct ieee80211_if_ap {
+ 	struct beacon_data __rcu *beacon;
+ 	struct probe_resp __rcu *probe_resp;
+ 	struct fils_discovery_data __rcu *fils_discovery;
++	struct unsol_bcast_probe_resp_data __rcu *unsol_bcast_probe_resp;
+ 
+ 	/* to be used after channel switch. */
+ 	struct cfg80211_beacon_data *next_beacon;
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index f82caf113b1a..127903742419 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -5028,6 +5028,35 @@ struct sk_buff *ieee80211_get_fils_discovery_tmpl(struct ieee80211_hw *hw,
+ }
+ EXPORT_SYMBOL(ieee80211_get_fils_discovery_tmpl);
+ 
++struct sk_buff *
++ieee80211_get_unsol_bcast_probe_resp_tmpl(struct ieee80211_hw *hw,
++					  struct ieee80211_vif *vif)
++{
++	struct sk_buff *skb = NULL;
++	struct unsol_bcast_probe_resp_data *tmpl = NULL;
++	struct ieee80211_sub_if_data *sdata = vif_to_sdata(vif);
++
++	if (sdata->vif.type != NL80211_IFTYPE_AP)
++		return NULL;
++
++	rcu_read_lock();
++	tmpl = rcu_dereference(sdata->u.ap.unsol_bcast_probe_resp);
++	if (!tmpl) {
++		rcu_read_unlock();
++		return NULL;
++	}
++
++	skb = dev_alloc_skb(sdata->local->hw.extra_tx_headroom + tmpl->len);
++	if (skb) {
++		skb_reserve(skb, sdata->local->hw.extra_tx_headroom);
++		skb_put_data(skb, tmpl->data, tmpl->len);
++	}
++
++	rcu_read_unlock();
++	return skb;
++}
++EXPORT_SYMBOL(ieee80211_get_unsol_bcast_probe_resp_tmpl);
++
+ struct sk_buff *ieee80211_pspoll_get(struct ieee80211_hw *hw,
+ 				     struct ieee80211_vif *vif)
+ {
 -- 
 2.25.0
 
