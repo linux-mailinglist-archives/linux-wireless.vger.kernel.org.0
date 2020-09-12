@@ -2,106 +2,215 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C0DF267842
-	for <lists+linux-wireless@lfdr.de>; Sat, 12 Sep 2020 08:35:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 95F58267845
+	for <lists+linux-wireless@lfdr.de>; Sat, 12 Sep 2020 08:43:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725836AbgILGfC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 12 Sep 2020 02:35:02 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:57156 "EHLO m43-7.mailgun.net"
+        id S1725824AbgILGnk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 12 Sep 2020 02:43:40 -0400
+Received: from mga06.intel.com ([134.134.136.31]:35323 "EHLO mga06.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725824AbgILGe7 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 12 Sep 2020 02:34:59 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1599892499; h=Date: Message-Id: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=TZbeRycGRlE5zMmEDJ3WaYnEdaM+rXIMHX3RcmeDB2w=;
- b=vwKlwZJOw2kVjFD9LWmR7YNsGi5JITJLOpDEn1wefMb2niP7ghucHT81fCmEKTOGXKqN2ryq
- r+Z/wSM9QFFEg8tx8nut3pHyGhaG49VEuUBxpIy1eV3dxNERXv1Zx5GB523EfdTO39qOx/0Y
- nS3/8vkFlbwi3MqoKO6jEyTBkVo=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n04.prod.us-east-1.postgun.com with SMTP id
- 5f5c6c10238e1efa37b2c9c5 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sat, 12 Sep 2020 06:34:56
- GMT
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id C3FA3C433CA; Sat, 12 Sep 2020 06:34:55 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        MISSING_DATE,MISSING_MID,SPF_FAIL,URIBL_BLOCKED autolearn=no
-        autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id D0377C433CA;
-        Sat, 12 Sep 2020 06:34:52 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org D0377C433CA
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        id S1725814AbgILGnk (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 12 Sep 2020 02:43:40 -0400
+IronPort-SDR: JZPMtZ1nNTLmTPPnGPQBaf+x9Bw+9D56DlTgDwY/QYOnmGLmQnHaESIVatP11U6DadcPEGYDA+
+ ExDllGpJeenQ==
+X-IronPort-AV: E=McAfee;i="6000,8403,9741"; a="220451069"
+X-IronPort-AV: E=Sophos;i="5.76,419,1592895600"; 
+   d="scan'208";a="220451069"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2020 23:43:37 -0700
+IronPort-SDR: /r5AULYZZ6ntIosuUGVdsqp06GkUXSmSeSeSilo3QI3LiaKCY3FDZ00PHb1n1tX/GQdPjtCWF/
+ gf4fJKy+nhyg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.76,419,1592895600"; 
+   d="scan'208";a="305506259"
+Received: from lkp-server01.sh.intel.com (HELO a75722977aa5) ([10.239.97.150])
+  by orsmga006.jf.intel.com with ESMTP; 11 Sep 2020 23:43:35 -0700
+Received: from kbuild by a75722977aa5 with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1kGzG3-0000Uw-79; Sat, 12 Sep 2020 06:43:35 +0000
+Date:   Sat, 12 Sep 2020 14:42:50 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     linux-wireless@vger.kernel.org
+Subject: [wireless-drivers-next:master] BUILD SUCCESS WITH WARNING
+ 5941d003f0a60877a956cc3cae6e3850b46fad0a
+Message-ID: <5f5c6dea.3xmWL2C6tMcaE42z%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 06/29] wil6210: Fix a couple of formatting issues in
- 'wil6210_debugfs_init'
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20200910065431.657636-7-lee.jones@linaro.org>
-References: <20200910065431.657636-7-lee.jones@linaro.org>
-To:     Lee Jones <lee.jones@linaro.org>
-Cc:     davem@davemloft.net, kuba@kernel.org, linux-kernel@vger.kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        Lee Jones <lee.jones@linaro.org>, wil6210@qti.qualcomm.com,
-        Maya Erez <merez@codeaurora.org>
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20200912063455.C3FA3C433CA@smtp.codeaurora.org>
-Date:   Sat, 12 Sep 2020 06:34:55 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Lee Jones <lee.jones@linaro.org> wrote:
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git  master
+branch HEAD: 5941d003f0a60877a956cc3cae6e3850b46fad0a  Merge ath-next from git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git
 
-> Kerneldoc expects attributes/parameters to be in '@*.: ' format and
-> gets confused if the variable does not follow the type/attribute
-> definitions.
-> 
-> Fixes the following W=1 kernel build warning(s):
-> 
->  drivers/net/wireless/ath/wil6210/debugfs.c:456: warning: Function parameter or member 'wil' not described in 'wil6210_debugfs_init_offset'
->  drivers/net/wireless/ath/wil6210/debugfs.c:456: warning: Function parameter or member 'dbg' not described in 'wil6210_debugfs_init_offset'
->  drivers/net/wireless/ath/wil6210/debugfs.c:456: warning: Function parameter or member 'base' not described in 'wil6210_debugfs_init_offset'
->  drivers/net/wireless/ath/wil6210/debugfs.c:456: warning: Function parameter or member 'tbl' not described in 'wil6210_debugfs_init_offset'
-> 
-> Cc: Kalle Valo <kvalo@codeaurora.org>
-> Cc: "David S. Miller" <davem@davemloft.net>
-> Cc: Jakub Kicinski <kuba@kernel.org>
-> Cc: linux-wireless@vger.kernel.org
-> Cc: wil6210@qti.qualcomm.com
-> Cc: netdev@vger.kernel.org
-> Reviewed-by: Maya Erez <merez@codeaurora.org>
-> Signed-off-by: Lee Jones <lee.jones@linaro.org>
+Warning in current branch:
 
-Aren't these also applied already? Please don't resend already applied
-patches.
+drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c:361:25: warning: unused variable 'lcnphy_rx_iqcomp_table_rev0' [-Wunused-const-variable]
+drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phytbl_lcn.c:108:18: warning: unused variable 'dot11lcn_gain_tbl_rev1' [-Wunused-const-variable]
 
-8 patches set to Rejected.
+Warning ids grouped by kconfigs:
 
-11766845 [06/29] wil6210: Fix a couple of formatting issues in 'wil6210_debugfs_init'
-11766747 [16/29] wil6210: wmi: Fix formatting and demote non-conforming function headers
-11766827 [17/29] wil6210: interrupt: Demote comment header which is clearly not kernel-doc
-11766825 [18/29] wil6210: txrx: Demote obvious abuse of kernel-doc
-11766823 [19/29] wil6210: txrx_edma: Demote comments which are clearly not kernel-doc
-11766821 [20/29] wil6210: pmc: Demote a few nonconformant kernel-doc function headers
-11766819 [21/29] wil6210: wil_platform: Demote kernel-doc header to standard comment block
-11766817 [22/29] wil6210: wmi: Correct misnamed function parameter 'ptr_'
+clang_recent_errors
+`-- powerpc-randconfig-r015-20200909
+    |-- drivers-net-wireless-broadcom-brcm80211-brcmsmac-phy-phy_lcn.c:warning:unused-variable-lcnphy_rx_iqcomp_table_rev0
+    `-- drivers-net-wireless-broadcom-brcm80211-brcmsmac-phy-phytbl_lcn.c:warning:unused-variable-dot11lcn_gain_tbl_rev1
 
--- 
-https://patchwork.kernel.org/patch/11766845/
+elapsed time: 720m
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+configs tested: 141
+configs skipped: 2
 
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+powerpc                  mpc866_ads_defconfig
+powerpc                      pcm030_defconfig
+arm                          gemini_defconfig
+mips                      malta_kvm_defconfig
+sh                            titan_defconfig
+mips                           ci20_defconfig
+powerpc                 mpc8540_ads_defconfig
+sh                          r7780mp_defconfig
+xtensa                          iss_defconfig
+sh                        sh7757lcr_defconfig
+mips                        nlm_xlp_defconfig
+arm                            qcom_defconfig
+powerpc                    amigaone_defconfig
+arm                            pleb_defconfig
+sparc64                             defconfig
+arm                        mini2440_defconfig
+xtensa                    xip_kc705_defconfig
+mips                         db1xxx_defconfig
+sh                        sh7763rdp_defconfig
+powerpc                      ppc6xx_defconfig
+sh                   sh7770_generic_defconfig
+arm                           efm32_defconfig
+arm                              zx_defconfig
+mips                          malta_defconfig
+arc                             nps_defconfig
+alpha                            allyesconfig
+sh                           se7750_defconfig
+sh                          rsk7203_defconfig
+mips                         tb0219_defconfig
+mips                     decstation_defconfig
+arm                        vexpress_defconfig
+arm                     eseries_pxa_defconfig
+arm                        mvebu_v5_defconfig
+sh                           sh2007_defconfig
+arm                        trizeps4_defconfig
+arc                        vdk_hs38_defconfig
+arc                            hsdk_defconfig
+powerpc                        icon_defconfig
+powerpc                      ppc44x_defconfig
+powerpc                 mpc85xx_cds_defconfig
+powerpc                     mpc5200_defconfig
+sh                         apsh4a3a_defconfig
+ia64                        generic_defconfig
+mips                       rbtx49xx_defconfig
+arm                         socfpga_defconfig
+c6x                        evmc6472_defconfig
+powerpc                      pmac32_defconfig
+sh                           se7722_defconfig
+powerpc                 mpc836x_rdk_defconfig
+m68k                       m5249evb_defconfig
+riscv                          rv32_defconfig
+c6x                        evmc6474_defconfig
+sh                          lboxre2_defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+c6x                              allyesconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+i386                 randconfig-a004-20200911
+i386                 randconfig-a006-20200911
+i386                 randconfig-a001-20200911
+i386                 randconfig-a003-20200911
+i386                 randconfig-a002-20200911
+i386                 randconfig-a005-20200911
+i386                 randconfig-a004-20200912
+i386                 randconfig-a006-20200912
+i386                 randconfig-a003-20200912
+i386                 randconfig-a001-20200912
+i386                 randconfig-a002-20200912
+i386                 randconfig-a005-20200912
+x86_64               randconfig-a014-20200911
+x86_64               randconfig-a011-20200911
+x86_64               randconfig-a012-20200911
+x86_64               randconfig-a016-20200911
+x86_64               randconfig-a015-20200911
+x86_64               randconfig-a013-20200911
+x86_64               randconfig-a006-20200912
+x86_64               randconfig-a004-20200912
+x86_64               randconfig-a003-20200912
+x86_64               randconfig-a002-20200912
+x86_64               randconfig-a005-20200912
+x86_64               randconfig-a001-20200912
+i386                 randconfig-a015-20200911
+i386                 randconfig-a014-20200911
+i386                 randconfig-a011-20200911
+i386                 randconfig-a013-20200911
+i386                 randconfig-a016-20200911
+i386                 randconfig-a012-20200911
+i386                 randconfig-a015-20200912
+i386                 randconfig-a014-20200912
+i386                 randconfig-a011-20200912
+i386                 randconfig-a013-20200912
+i386                 randconfig-a016-20200912
+i386                 randconfig-a012-20200912
+riscv                            allyesconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                            allmodconfig
+x86_64                                   rhel
+x86_64                           allyesconfig
+x86_64                    rhel-7.6-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                                  kexec
+
+clang tested configs:
+x86_64               randconfig-a004-20200911
+x86_64               randconfig-a006-20200911
+x86_64               randconfig-a003-20200911
+x86_64               randconfig-a002-20200911
+x86_64               randconfig-a005-20200911
+x86_64               randconfig-a001-20200911
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
