@@ -2,95 +2,94 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 656332677F8
-	for <lists+linux-wireless@lfdr.de>; Sat, 12 Sep 2020 07:06:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 68A2A267821
+	for <lists+linux-wireless@lfdr.de>; Sat, 12 Sep 2020 08:17:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725805AbgILFGp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 12 Sep 2020 01:06:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47732 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725797AbgILFGo (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 12 Sep 2020 01:06:44 -0400
-Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D873C061573
-        for <linux-wireless@vger.kernel.org>; Fri, 11 Sep 2020 22:06:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-         s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
-        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=bEA8PH8QhQi8OkoE0BDoZ6+6iBHy/JwJCBgkwNfvOT0=; b=YbIO94EO+SQ363+P2vkesoHCVn
-        Nj/3+vAvZzRePBy7TmDLVd7JZ9Vsq6NFr9W7XBVO/XQFjbm2NPHpvFCR05kN9gMZz09u9RziKNseJ
-        eCi2ENE/5x1gWkXApLpNcc3qKN3QEJk2kM54t/6q1MRkPeNY+kSMFsnv0nW0XWu8M9E8=;
-Received: from p4ff13fcb.dip0.t-ipconnect.de ([79.241.63.203] helo=nf.local)
-        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.89)
-        (envelope-from <nbd@nbd.name>)
-        id 1kGxkH-0006UN-QX; Sat, 12 Sep 2020 07:06:41 +0200
-Subject: Re: [PATCH 5.9 1/2] mac80211: extend AQL aggregation estimation to HE
- and fix unit mismatch
-To:     =?UTF-8?Q?Toke_H=c3=b8iland-J=c3=b8rgensen?= <toke@redhat.com>,
+        id S1725813AbgILGQ7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 12 Sep 2020 02:16:59 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:55717 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725799AbgILGQ5 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 12 Sep 2020 02:16:57 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1599891415; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=8cNsweGNzwXC6JGq44ACepZmdsIt6d6D7mF1Rzi6Wec=; b=YOql4YsopLbLqyxA8BYauipEsKpD8kNHW9uLemCnAcsbMm1SF7wvVD5B2T/xD7Zn/mGOCcrb
+ cpe6TK8xNH3BKdn9z1kbksvv9UjsIXuP9iFPeFAWC/0buSU7BN1hy7MATVBdU2CbSxJHFDal
+ qLkQiDB1FOozzXjNAgmIMydznLo=
+X-Mailgun-Sending-Ip: 69.72.43.7
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n07.prod.us-west-2.postgun.com with SMTP id
+ 5f5c67d77f21d51b307f64ec (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sat, 12 Sep 2020 06:16:55
+ GMT
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id CEE36C433CA; Sat, 12 Sep 2020 06:16:54 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+Received: from tynnyri.adurom.net (tynnyri.adurom.net [51.15.11.48])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 3CBC2C433C6;
+        Sat, 12 Sep 2020 06:16:53 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 3CBC2C433C6
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Aloka Dixit <alokad@codeaurora.org>
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
         linux-wireless@vger.kernel.org
-Cc:     johannes@sipsolutions.net
-References: <20200909115602.21783-1-nbd@nbd.name> <87ft7qaqiq.fsf@toke.dk>
-From:   Felix Fietkau <nbd@nbd.name>
-Autocrypt: addr=nbd@nbd.name; prefer-encrypt=mutual; keydata=
- xsDiBEah5CcRBADIY7pu4LIv3jBlyQ/2u87iIZGe6f0f8pyB4UjzfJNXhJb8JylYYRzIOSxh
- ExKsdLCnJqsG1PY1mqTtoG8sONpwsHr2oJ4itjcGHfn5NJSUGTbtbbxLro13tHkGFCoCr4Z5
- Pv+XRgiANSpYlIigiMbOkide6wbggQK32tC20QxUIwCg4k6dtV/4kwEeiOUfErq00TVqIiEE
- AKcUi4taOuh/PQWx/Ujjl/P1LfJXqLKRPa8PwD4j2yjoc9l+7LptSxJThL9KSu6gtXQjcoR2
- vCK0OeYJhgO4kYMI78h1TSaxmtImEAnjFPYJYVsxrhay92jisYc7z5R/76AaELfF6RCjjGeP
- wdalulG+erWju710Bif7E1yjYVWeA/9Wd1lsOmx6uwwYgNqoFtcAunDaMKi9xVQW18FsUusM
- TdRvTZLBpoUAy+MajAL+R73TwLq3LnKpIcCwftyQXK5pEDKq57OhxJVv1Q8XkA9Dn1SBOjNB
- l25vJDFAT9ntp9THeDD2fv15yk4EKpWhu4H00/YX8KkhFsrtUs69+vZQwc0cRmVsaXggRmll
- dGthdSA8bmJkQG5iZC5uYW1lPsJgBBMRAgAgBQJGoeQnAhsjBgsJCAcDAgQVAggDBBYCAwEC
- HgECF4AACgkQ130UHQKnbvXsvgCgjsAIIOsY7xZ8VcSm7NABpi91yTMAniMMmH7FRenEAYMa
- VrwYTIThkTlQzsFNBEah5FQQCACMIep/hTzgPZ9HbCTKm9xN4bZX0JjrqjFem1Nxf3MBM5vN
- CYGBn8F4sGIzPmLhl4xFeq3k5irVg/YvxSDbQN6NJv8o+tP6zsMeWX2JjtV0P4aDIN1pK2/w
- VxcicArw0VYdv2ZCarccFBgH2a6GjswqlCqVM3gNIMI8ikzenKcso8YErGGiKYeMEZLwHaxE
- Y7mTPuOTrWL8uWWRL5mVjhZEVvDez6em/OYvzBwbkhImrryF29e3Po2cfY2n7EKjjr3/141K
- DHBBdgXlPNfDwROnA5ugjjEBjwkwBQqPpDA7AYPvpHh5vLbZnVGu5CwG7NAsrb2isRmjYoqk
- wu++3117AAMFB/9S0Sj7qFFQcD4laADVsabTpNNpaV4wAgVTRHKV/kC9luItzwDnUcsZUPdQ
- f3MueRJ3jIHU0UmRBG3uQftqbZJj3ikhnfvyLmkCNe+/hXhPu9sGvXyi2D4vszICvc1KL4RD
- aLSrOsROx22eZ26KqcW4ny7+va2FnvjsZgI8h4sDmaLzKczVRIiLITiMpLFEU/VoSv0m1F4B
- FtRgoiyjFzigWG0MsTdAN6FJzGh4mWWGIlE7o5JraNhnTd+yTUIPtw3ym6l8P+gbvfoZida0
- TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabwkkE
- GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCfTKx80VvCR/PvsUlrvdOLsIgeRGAAn1ee
- RjMaxwtSdaCKMw3j33ZbsWS4
-Message-ID: <378196df-d302-4a24-b772-30b7243b9358@nbd.name>
-Date:   Sat, 12 Sep 2020 07:06:41 +0200
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:68.0)
- Gecko/20100101 Thunderbird/68.11.0
+Subject: Re: [RFC] mac80211: Add radiotap channel flag option for 6GHz band
+References: <010101747ee4b985-86863ec8-33e2-4f78-9d9b-93110bfa29fc-000000@us-west-2.amazonses.com>
+        <5225561f9f5c104bc84ab6e7f183de0ab5e0ea6d.camel@sipsolutions.net>
+        <010101747eea64fa-83d17384-b161-40d6-8b9d-9dd3bbbe89b4-000000@us-west-2.amazonses.com>
+Date:   Sat, 12 Sep 2020 09:16:47 +0300
+In-Reply-To: <010101747eea64fa-83d17384-b161-40d6-8b9d-9dd3bbbe89b4-000000@us-west-2.amazonses.com>
+        (Aloka Dixit's message of "Fri, 11 Sep 2020 20:45:24 +0000")
+Message-ID: <87zh5v1pv4.fsf@tynnyri.adurom.net>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-In-Reply-To: <87ft7qaqiq.fsf@toke.dk>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2020-09-10 12:13, Toke Høiland-Jørgensen wrote:
-> Felix Fietkau <nbd@nbd.name> writes:
-> 
->> The unit of the return value of ieee80211_get_rate_duration is nanoseconds, not
->> milliseconds.
-> 
-> s/milli/micro/ here, no?
-Right.
+Aloka Dixit <alokad@codeaurora.org> writes:
 
->> Adjust the duration checks to account for that.
->> For higher data rates, allow larger estimated aggregation sizes, and add some
->> values for HE as well, which can use much larger aggregates.
->> Since small packets with high data rates can now lead to duration values too
->> small for info->tx_time_est, return a minimum of 4us.
-> 
-> Fixes: tag?
-Will add it and send v2.
+> On 2020-09-11 13:39, Johannes Berg wrote:
+>> On Fri, 2020-09-11 at 20:39 +0000, Aloka Dixit wrote:
+>>> Radiotap header needs a new channel flag for 6GHz packets.
+>>> This change uses value 0x200 for new enum balue for 6GHz which was
+>>> previously used for passsive scan flag but has since been removed.
+>>
+>> You can't just add to radiotap in a kernel patch ...
+>>
+>> But also, just today I replied elsewhere saying that we don't really
+>> need a flag at all?
+>>
+>> johannes
+>
+> Somehow your reply to other patch didn't show up on the patchwork,
+> don't know why :-)
 
-Thanks,
+Oh, this is making me worry. I do see Johannes' reply on the list:
 
-- Felix
+https://lore.kernel.org/linux-wireless/1cc7242cd00cd5141a56f17a7f5c80700485aa39.camel@sipsolutions.net/
+
+But like you said, there's still nothing on the patchwork (even after 23h):
+
+https://patchwork.kernel.org/patch/11769643/
+
+I hope this is just a temporary glitch, but if this happens again please
+do let me know about any patchwork problems. It will create major
+problems for us if patchwork starts losing mail.
+
+-- 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
