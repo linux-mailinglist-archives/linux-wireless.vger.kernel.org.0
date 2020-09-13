@@ -2,104 +2,112 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2EFF8267FCF
-	for <lists+linux-wireless@lfdr.de>; Sun, 13 Sep 2020 16:36:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 729A8268057
+	for <lists+linux-wireless@lfdr.de>; Sun, 13 Sep 2020 18:56:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725964AbgIMOfr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 13 Sep 2020 10:35:47 -0400
-Received: from us-smtp-2.mimecast.com ([205.139.110.61]:54437 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1725928AbgIMOfo (ORCPT
+        id S1725945AbgIMQ4L (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 13 Sep 2020 12:56:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36980 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725876AbgIMQ4H (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 13 Sep 2020 10:35:44 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1600007742;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc; bh=WRuscXYWCpfZvPAJ7zPpDPsF4gN4h/ULkWzJ4TuL7iU=;
-        b=ijXDm4skF3n94ORYNWspIEoIRv2mO6TMuQz87fCgh/1XhwNykVzA4UdQrAPV8aidbe6WWy
-        1T+C5cw6Zq4SY4gZcJNQ/mmuscRd4YCttDtD7rxDOs/+NHPuvVeVuZCmQG+gYE3+dl23Nr
-        7qCzqgBXbAFLgJ0yA7AAF5RvUWfgZow=
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
- [209.85.222.198]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-344-JDbfMbSlMLCBdNWNpZy-PA-1; Sun, 13 Sep 2020 10:35:40 -0400
-X-MC-Unique: JDbfMbSlMLCBdNWNpZy-PA-1
-Received: by mail-qk1-f198.google.com with SMTP id h191so8922494qke.1
-        for <linux-wireless@vger.kernel.org>; Sun, 13 Sep 2020 07:35:40 -0700 (PDT)
+        Sun, 13 Sep 2020 12:56:07 -0400
+Received: from mail-lj1-x243.google.com (mail-lj1-x243.google.com [IPv6:2a00:1450:4864:20::243])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1383C06174A;
+        Sun, 13 Sep 2020 09:56:06 -0700 (PDT)
+Received: by mail-lj1-x243.google.com with SMTP id u4so16524738ljd.10;
+        Sun, 13 Sep 2020 09:56:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=L0eLqlKO93Q0IXg+okhebgrwXe2Z20iX+sKZ/ZoSewk=;
+        b=S9bBAsVm9Yg8f6RgCk7L0vCuD1Sotan68S1WXkbszzUcrwT9ALGdPhkB3twNnkKLfr
+         g+Lf2n3/bRSMI2Hj0lYCtwYcfA61yqqpLe5CwHjul8xFM8wuYCL0v3pTsCex6XgvRlLD
+         DaknPzEn5EKCMbQOxb0sqNyxvACYXaMZK9m7e8VG5/39kfQ20/YPSfFAuptmzBXdAA5J
+         4LSEjPrDcC596xD/BJRHFn/yPwoVxOUcW0Ptay59b51tikRBtdfR8csE4zqwC3x+9q+C
+         c9c8CX0zHGGRmHfN/Zjjr+OmZ+Jojs4WKf0F+lXnrHDMhOQfD+6P4MIfz7KsH5kCk31p
+         tD7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=WRuscXYWCpfZvPAJ7zPpDPsF4gN4h/ULkWzJ4TuL7iU=;
-        b=bGaE8UdE7j/V4NWJ1fupMQ3Zb0STwX1r/9v3wLUCUT+7cRo1HsTkfNXdRGAa75BI+1
-         w8mF6nYRj+SF1ZSSN/1dSWyelcc8lfSKXL/Q0RYFLhr33UXw6kjdgF9VABIXHNL73fD1
-         7gK9mzGRHxIN52yK2jL8CKeCD+W7dirRT7Vx/5keKpUnXw7byQbH7ZhK038iGBkp9q2R
-         UGXe4r8Gkluvz3DHfJSc2h3dg4NDS4foujCKFD3vpV+eR1Qsh5uFZxOaoLy9hX5spCk/
-         duwihSG/Nn+UQRn8pZ/azOcQCwzo6ddhNj3n8oCy1YZQide/AnhvwjDXTtnRj681YUVY
-         npew==
-X-Gm-Message-State: AOAM532ptZUGWa2qEk6FIEL6qJXFaEWs+HKtUsgDQb81lyCX5DW0q2TE
-        Ww/H+CeTY/NbEqFPoPeaOSQ4FhBAJaCUghKVVA6DkDRrKpvB78S9sBV4x0vynxl1uDeoe+yTBg5
-        1sZYh8/RfZ23LlBpBEY6ErUdXra0=
-X-Received: by 2002:aed:3bdc:: with SMTP id s28mr9897653qte.124.1600007740079;
-        Sun, 13 Sep 2020 07:35:40 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJyMvA5jysJ+TSwYlbcfVkXePyz1hdnoWCTbGAyVUUK/RpfXvZbkCOXXf5PjFJiHJG9PubWNxg==
-X-Received: by 2002:aed:3bdc:: with SMTP id s28mr9897624qte.124.1600007739784;
-        Sun, 13 Sep 2020 07:35:39 -0700 (PDT)
-Received: from trix.remote.csb (075-142-250-213.res.spectrum.com. [75.142.250.213])
-        by smtp.gmail.com with ESMTPSA id q8sm11830911qkq.57.2020.09.13.07.35.36
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=L0eLqlKO93Q0IXg+okhebgrwXe2Z20iX+sKZ/ZoSewk=;
+        b=toQW/eUL091JpZY0BDWGzeC7elOP5f9xiWyI51bCdRrs3YLCIgznXIS4tuuBV206c4
+         K0dAZxwjvlZa6aZ+RsVoH36/Cn27D0pxk0hae0W1hfFkRi14jxI++n/yH7klTj/NpWHO
+         ba1LCigiO7sUkZgW4Yf5lrHCbDBi1BPe8WSFGScuGjvliaK7hULHJpqq1fdL/6HnuSzS
+         skrjF8rPVrtw86p6Bic3Epir//ZzwJSXGtTV1swtyQ1qg6PO+DaREJFB1Mqcq5IAtb+r
+         EJut2MYARsR45fEq6kkf6GkrF6bYDKOH9TYMEZM7RnQdP9Kpz8eFnMcsbb5arw93hO5w
+         XU8g==
+X-Gm-Message-State: AOAM530/m9kTF8zXLY+k0sa6e7XA7mAUUOg8b5f5cpxFkFsZLyMHMz5t
+        iI6VnCIoCUd4kIUqAEvUbc6FalJ/4KI=
+X-Google-Smtp-Source: ABdhPJz8q9e2x2Z6ZaqegYGVuWB5M0wfkwLWL4Set1izjm4v2if6gZcAhAZFSQL/qsgXuINm0tgJXA==
+X-Received: by 2002:a2e:83c9:: with SMTP id s9mr3745106ljh.168.1600016165021;
+        Sun, 13 Sep 2020 09:56:05 -0700 (PDT)
+Received: from alpha (10.177.smarthome.spb.ru. [109.71.177.10])
+        by smtp.gmail.com with ESMTPSA id f2sm2512685lfd.103.2020.09.13.09.56.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 13 Sep 2020 07:35:39 -0700 (PDT)
-From:   trix@redhat.com
-To:     arend.vanspriel@broadcom.com, franky.lin@broadcom.com,
-        hante.meuleman@broadcom.com, chi-hsien.lin@cypress.com,
-        wright.feng@cypress.com, kvalo@codeaurora.org, davem@davemloft.net,
-        kuba@kernel.org, natechancellor@gmail.com, ndesaulniers@google.com,
-        smoch@web.de, dan.carpenter@oracle.com, double.lo@cypress.com,
-        digetx@gmail.com, frank.kao@cypress.com, amsr@cypress.com,
-        stanley.hsu@cypress.com, saravanan.shanmugham@cypress.com,
-        jean-philippe@linaro.org, linville@tuxdriver.com
-Cc:     linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        brcm80211-dev-list@cypress.com, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, clang-built-linux@googlegroups.com,
-        Tom Rix <trix@redhat.com>
-Subject: [PATCH] brcmfmac: initialize variable
-Date:   Sun, 13 Sep 2020 07:35:22 -0700
-Message-Id: <20200913143522.20390-1-trix@redhat.com>
-X-Mailer: git-send-email 2.18.1
+        Sun, 13 Sep 2020 09:56:04 -0700 (PDT)
+Received: (nullmailer pid 419792 invoked by uid 1000);
+        Sun, 13 Sep 2020 17:00:37 -0000
+From:   Ivan Safonov <insafonov@gmail.com>
+To:     Yan-Hsuan Chuang <yhchuang@realtek.com>
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Ivan Safonov <insafonov@gmail.com>
+Subject: [PATCH] wireless: rtw88: rtw8822c: eliminate code duplication, use native swap() function
+Date:   Sun, 13 Sep 2020 19:59:59 +0300
+Message-Id: <20200913165958.419744-1-insafonov@gmail.com>
+X-Mailer: git-send-email 2.26.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Tom Rix <trix@redhat.com>
+swap_u32() duplicate native swap(), so replace swap_u32() with swap().
 
-clang static analysis flags this problem
-sdio.c:3265:13: warning: Branch condition evaluates to
-  a garbage value
-        } else if (pending) {
-                   ^~~~~~~
-
-brcmf_sdio_dcmd_resp_wait() only sets pending to true.
-So pending needs to be initialized to false.
-
-Fixes: 5b435de0d786 ("net: wireless: add brcm80211 drivers")
-Signed-off-by: Tom Rix <trix@redhat.com>
+Signed-off-by: Ivan Safonov <insafonov@gmail.com>
 ---
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtw88/rtw8822c.c | 15 +++------------
+ 1 file changed, 3 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-index d4989e0cd7be..403b123710ec 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-@@ -3233,7 +3233,7 @@ brcmf_sdio_bus_rxctl(struct device *dev, unsigned char *msg, uint msglen)
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822c.c b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
+index 426808413baa..e196d7939025 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8822c.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
+@@ -154,25 +154,16 @@ static void rtw8822c_rf_minmax_cmp(struct rtw_dev *rtwdev, u32 value,
+ 	}
+ }
+ 
+-static void swap_u32(u32 *v1, u32 *v2)
+-{
+-	u32 tmp;
+-
+-	tmp = *v1;
+-	*v1 = *v2;
+-	*v2 = tmp;
+-}
+-
+ static void __rtw8822c_dac_iq_sort(struct rtw_dev *rtwdev, u32 *v1, u32 *v2)
  {
- 	int timeleft;
- 	uint rxlen = 0;
--	bool pending;
-+	bool pending = false;
- 	u8 *buf;
- 	struct brcmf_bus *bus_if = dev_get_drvdata(dev);
- 	struct brcmf_sdio_dev *sdiodev = bus_if->bus_priv.sdio;
+ 	if (*v1 >= 0x200 && *v2 >= 0x200) {
+ 		if (*v1 > *v2)
+-			swap_u32(v1, v2);
++			swap(*v1, *v2);
+ 	} else if (*v1 < 0x200 && *v2 < 0x200) {
+ 		if (*v1 > *v2)
+-			swap_u32(v1, v2);
++			swap(*v1, *v2);
+ 	} else if (*v1 < 0x200 && *v2 >= 0x200) {
+-		swap_u32(v1, v2);
++		swap(*v1, *v2);
+ 	}
+ }
+ 
 -- 
-2.18.1
+2.26.2
 
