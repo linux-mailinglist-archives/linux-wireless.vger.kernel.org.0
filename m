@@ -2,61 +2,104 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D6A5C267D52
-	for <lists+linux-wireless@lfdr.de>; Sun, 13 Sep 2020 04:42:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2EFF8267FCF
+	for <lists+linux-wireless@lfdr.de>; Sun, 13 Sep 2020 16:36:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725913AbgIMCmb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 12 Sep 2020 22:42:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48042 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725910AbgIMCm2 (ORCPT
+        id S1725964AbgIMOfr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 13 Sep 2020 10:35:47 -0400
+Received: from us-smtp-2.mimecast.com ([205.139.110.61]:54437 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1725928AbgIMOfo (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 12 Sep 2020 22:42:28 -0400
-Received: from mail-yb1-xb44.google.com (mail-yb1-xb44.google.com [IPv6:2607:f8b0:4864:20::b44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E7B1C061573
-        for <linux-wireless@vger.kernel.org>; Sat, 12 Sep 2020 19:42:28 -0700 (PDT)
-Received: by mail-yb1-xb44.google.com with SMTP id h126so9204998ybg.4
-        for <linux-wireless@vger.kernel.org>; Sat, 12 Sep 2020 19:42:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=tpH/yyf+Sq5+CARr6jfRtVXIIYd/lhckxqcbq5hM4Ng=;
-        b=nO+kFQpjsH6YZtwZXcWtxOAf6TTZn30Xm9Pfg7GwG5t1VwQBgNOh6Mw1RGzL9mO2wC
-         /nlG6G5lasH4i+5MTqvQQjVcs8tOUgJLYQQKswYVb+fAGCjuchqfwue9RMePq0oPqMpt
-         FRfZ/VwCAhuQnmVQrlzENRHn3NE0zi0xkAYrK99zbxogoEu54dtOsNdR1cvaqXLxqO8g
-         6psVFAhZWRXzXeMoJr7crB8PP0jy1VVAXVjSdNxfEQ+0AkNx145EIAJYnoyT0ZmgD3x+
-         yBtIC0Y01iE1u+x2rKpfmSKt9NPJbTHd8CrVWEpKt08N4m6khv3IR5PdPJE8Oj97BrlV
-         fLVg==
+        Sun, 13 Sep 2020 10:35:44 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1600007742;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc; bh=WRuscXYWCpfZvPAJ7zPpDPsF4gN4h/ULkWzJ4TuL7iU=;
+        b=ijXDm4skF3n94ORYNWspIEoIRv2mO6TMuQz87fCgh/1XhwNykVzA4UdQrAPV8aidbe6WWy
+        1T+C5cw6Zq4SY4gZcJNQ/mmuscRd4YCttDtD7rxDOs/+NHPuvVeVuZCmQG+gYE3+dl23Nr
+        7qCzqgBXbAFLgJ0yA7AAF5RvUWfgZow=
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
+ [209.85.222.198]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-344-JDbfMbSlMLCBdNWNpZy-PA-1; Sun, 13 Sep 2020 10:35:40 -0400
+X-MC-Unique: JDbfMbSlMLCBdNWNpZy-PA-1
+Received: by mail-qk1-f198.google.com with SMTP id h191so8922494qke.1
+        for <linux-wireless@vger.kernel.org>; Sun, 13 Sep 2020 07:35:40 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=tpH/yyf+Sq5+CARr6jfRtVXIIYd/lhckxqcbq5hM4Ng=;
-        b=FSH7i1SG59nsvLyP3xkQZGc0eS1lkOjAPcOIi1J87x4efV9uASQ/g8fdnz6W5/mXYi
-         YqGi0uU3AiOjblesEVOx8DNsu2ARDZsTahHx5haCb1sumYfESFRcUscgdOrbvKi9Q86w
-         /VxqX3+OiosEIkGca8HngXW1CnanFO+r3+fsEfGj/q5d9NGAnajkpQSZxDX5vxf3mI3i
-         0fGVZUrL5gKnLV6OJuDLzFF5ZbHEfOYTsHKvTKLxnFJ4hvS+JadwLLMxTpH9iLlurRxZ
-         FX4jFtythQxvWBFxhNdlkOBZtEpJKur0KdoU1eqFLfaUqqJNRaAwvNMtLdOWUaK83JU7
-         G4Fg==
-X-Gm-Message-State: AOAM531ox680Zlxv5jMsN6y22tmGmGewEwEMxnUiORN1mosanqYSck1U
-        /tc0LyXisR7LyjeboLukOVGZNKLFC1NompurFkI=
-X-Google-Smtp-Source: ABdhPJwcO6MDzSQcptV+HLzsPvf4yJo7nlWpi7KzqiHBmr05SM63cPLTKLgcsIw087aysNgHHdtEMg8qPPE9i0yM5iQ=
-X-Received: by 2002:a25:2649:: with SMTP id m70mr12032551ybm.380.1599964946105;
- Sat, 12 Sep 2020 19:42:26 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 2002:a25:2412:0:0:0:0:0 with HTTP; Sat, 12 Sep 2020 19:42:25
- -0700 (PDT)
-Reply-To: sgtkaylam28@gmail.com
-From:   SgtKayla Manthey <zaramagadaissa222@gmail.com>
-Date:   Sat, 12 Sep 2020 19:42:25 -0700
-Message-ID: <CA+k2h9nFMhBMKTMvkF-MKM4jiSA_yYJ3gApnvd5krKTyPuCvDA@mail.gmail.com>
-Subject: Hello,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=WRuscXYWCpfZvPAJ7zPpDPsF4gN4h/ULkWzJ4TuL7iU=;
+        b=bGaE8UdE7j/V4NWJ1fupMQ3Zb0STwX1r/9v3wLUCUT+7cRo1HsTkfNXdRGAa75BI+1
+         w8mF6nYRj+SF1ZSSN/1dSWyelcc8lfSKXL/Q0RYFLhr33UXw6kjdgF9VABIXHNL73fD1
+         7gK9mzGRHxIN52yK2jL8CKeCD+W7dirRT7Vx/5keKpUnXw7byQbH7ZhK038iGBkp9q2R
+         UGXe4r8Gkluvz3DHfJSc2h3dg4NDS4foujCKFD3vpV+eR1Qsh5uFZxOaoLy9hX5spCk/
+         duwihSG/Nn+UQRn8pZ/azOcQCwzo6ddhNj3n8oCy1YZQide/AnhvwjDXTtnRj681YUVY
+         npew==
+X-Gm-Message-State: AOAM532ptZUGWa2qEk6FIEL6qJXFaEWs+HKtUsgDQb81lyCX5DW0q2TE
+        Ww/H+CeTY/NbEqFPoPeaOSQ4FhBAJaCUghKVVA6DkDRrKpvB78S9sBV4x0vynxl1uDeoe+yTBg5
+        1sZYh8/RfZ23LlBpBEY6ErUdXra0=
+X-Received: by 2002:aed:3bdc:: with SMTP id s28mr9897653qte.124.1600007740079;
+        Sun, 13 Sep 2020 07:35:40 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJyMvA5jysJ+TSwYlbcfVkXePyz1hdnoWCTbGAyVUUK/RpfXvZbkCOXXf5PjFJiHJG9PubWNxg==
+X-Received: by 2002:aed:3bdc:: with SMTP id s28mr9897624qte.124.1600007739784;
+        Sun, 13 Sep 2020 07:35:39 -0700 (PDT)
+Received: from trix.remote.csb (075-142-250-213.res.spectrum.com. [75.142.250.213])
+        by smtp.gmail.com with ESMTPSA id q8sm11830911qkq.57.2020.09.13.07.35.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 13 Sep 2020 07:35:39 -0700 (PDT)
+From:   trix@redhat.com
+To:     arend.vanspriel@broadcom.com, franky.lin@broadcom.com,
+        hante.meuleman@broadcom.com, chi-hsien.lin@cypress.com,
+        wright.feng@cypress.com, kvalo@codeaurora.org, davem@davemloft.net,
+        kuba@kernel.org, natechancellor@gmail.com, ndesaulniers@google.com,
+        smoch@web.de, dan.carpenter@oracle.com, double.lo@cypress.com,
+        digetx@gmail.com, frank.kao@cypress.com, amsr@cypress.com,
+        stanley.hsu@cypress.com, saravanan.shanmugham@cypress.com,
+        jean-philippe@linaro.org, linville@tuxdriver.com
+Cc:     linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        brcm80211-dev-list@cypress.com, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, clang-built-linux@googlegroups.com,
+        Tom Rix <trix@redhat.com>
+Subject: [PATCH] brcmfmac: initialize variable
+Date:   Sun, 13 Sep 2020 07:35:22 -0700
+Message-Id: <20200913143522.20390-1-trix@redhat.com>
+X-Mailer: git-send-email 2.18.1
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Greetings,
-My name is Kayla please did you receive my previous message?write me back.
+From: Tom Rix <trix@redhat.com>
+
+clang static analysis flags this problem
+sdio.c:3265:13: warning: Branch condition evaluates to
+  a garbage value
+        } else if (pending) {
+                   ^~~~~~~
+
+brcmf_sdio_dcmd_resp_wait() only sets pending to true.
+So pending needs to be initialized to false.
+
+Fixes: 5b435de0d786 ("net: wireless: add brcm80211 drivers")
+Signed-off-by: Tom Rix <trix@redhat.com>
+---
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+index d4989e0cd7be..403b123710ec 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+@@ -3233,7 +3233,7 @@ brcmf_sdio_bus_rxctl(struct device *dev, unsigned char *msg, uint msglen)
+ {
+ 	int timeleft;
+ 	uint rxlen = 0;
+-	bool pending;
++	bool pending = false;
+ 	u8 *buf;
+ 	struct brcmf_bus *bus_if = dev_get_drvdata(dev);
+ 	struct brcmf_sdio_dev *sdiodev = bus_if->bus_priv.sdio;
+-- 
+2.18.1
+
