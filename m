@@ -2,131 +2,99 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CDBA2268768
-	for <lists+linux-wireless@lfdr.de>; Mon, 14 Sep 2020 10:42:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D4E6C26880F
+	for <lists+linux-wireless@lfdr.de>; Mon, 14 Sep 2020 11:14:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726183AbgINImH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 14 Sep 2020 04:42:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40408 "EHLO
+        id S1726254AbgINJOn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 14 Sep 2020 05:14:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45430 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726149AbgINImG (ORCPT
+        with ESMTP id S1726233AbgINJOm (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 14 Sep 2020 04:42:06 -0400
-Received: from mail-pj1-x1042.google.com (mail-pj1-x1042.google.com [IPv6:2607:f8b0:4864:20::1042])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83E10C06174A
-        for <linux-wireless@vger.kernel.org>; Mon, 14 Sep 2020 01:42:06 -0700 (PDT)
-Received: by mail-pj1-x1042.google.com with SMTP id u3so4984046pjr.3
-        for <linux-wireless@vger.kernel.org>; Mon, 14 Sep 2020 01:42:06 -0700 (PDT)
+        Mon, 14 Sep 2020 05:14:42 -0400
+Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com [IPv6:2607:f8b0:4864:20::1043])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F138C06174A
+        for <linux-wireless@vger.kernel.org>; Mon, 14 Sep 2020 02:14:42 -0700 (PDT)
+Received: by mail-pj1-x1043.google.com with SMTP id t7so5176694pjd.3
+        for <linux-wireless@vger.kernel.org>; Mon, 14 Sep 2020 02:14:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=broadcom.com; s=google;
         h=subject:to:cc:references:from:message-id:date:user-agent
          :mime-version:in-reply-to;
-        bh=SaAFwZvZgNUtU1KGkhtp5aV75CQaABWgmBzc1H1F2jE=;
-        b=fO10We3y7+W3VdkrRCgpWRh+228tk7UPcrM4EHGSodpW+zX46iGE6c9d058C9EGODK
-         hIE89xRXvDUkSpu9qr+VSgZAX4Q1tTPjFgzoyX7rb+AuwMr2MGbh/5B8eaMZZp27++yJ
-         WHh/6juW3M8ELY4E7qty/FfQilQJqq1J6cfwU=
+        bh=uG+9kOt5eNqnOHERAWtzO3J7H4G0vsf+lG7w+rPF39s=;
+        b=PHfmXgBSr3qR1ijrzpc4NONxPoofMFEAMmz5TdJLRFve1q1mUj/aKzEatFe4yLFdOM
+         YU/KUoWV0C3TtSXt4cXqZvlG+qBiea0UxJA8becvmnUYROm6diWLjumwO3rFA7Np2spa
+         kvJDxwaBTjxCthKxPDS+T0es1F1Nk5/I3sypo=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:subject:to:cc:references:from:message-id:date
          :user-agent:mime-version:in-reply-to;
-        bh=SaAFwZvZgNUtU1KGkhtp5aV75CQaABWgmBzc1H1F2jE=;
-        b=fmFmJspXikW4zAhTyEFLfIwDg/P1Wv2bUAZJiHwGicPEGDnxDNwDgsrs1XsmuMP9n1
-         Va15z9YGDaInMzoFOIxJSoOZP6/sTp/Bm4PyICSpcTnyHeBbof4g8uWHsCn9wgkTLSRX
-         bYa27b4eDLBZgN5lKA1nw8/jQ04Mx4Arf/Zb55N5wlzkMst8keNdStyCfGsMTiuTUTL9
-         zrn880WUIG8NlEL9Lgpa/UvNx04iZjwHihXycPd7zLOVC6txKOtNzzATFf65HxIL6MKd
-         PeSbd39vqk2cJxABz9U1bVe6s762jT/VODvQDrwnkUkL6iF+AXVt3oWZ5mNeTOk4Yzrs
-         K7mg==
-X-Gm-Message-State: AOAM533DWChbBclsZDBgZGqxnTS00XEUxLrYx6F/Lm31pKqPYX/I7a4C
-        31iR1+SN0+cnYVa/tLh6DsUNVg==
-X-Google-Smtp-Source: ABdhPJzfMa1bvVQNqbvmtFHMJVtuwBNdg+QPuOVe1Gna7VIvdC/gjn2BVwn6BdgZGSC3qJRRYtiSUQ==
-X-Received: by 2002:a17:90b:3852:: with SMTP id nl18mr8569369pjb.78.1600072925924;
-        Mon, 14 Sep 2020 01:42:05 -0700 (PDT)
+        bh=uG+9kOt5eNqnOHERAWtzO3J7H4G0vsf+lG7w+rPF39s=;
+        b=gdBOxJvJjulbVAmvgU3mzEY21dgHIY/udRB/vLkOFDyJXvcCy3Ae7eZZrtbXnCgN3t
+         1m6A+zIIZdSwjnNM9AsTyhe1xe1t1fDGqav3NzxrqJpa5HjBONCJDQ789dJyhq1m/wxE
+         tM11LFZ91q0ZuhCp+E4mtNBL6UbpKgfJYNKxs9gCK7CTd9ZDSTWB7bDNJDED+cA6BVUJ
+         eDqO1pbkhJDW5JrRSp7HI/rS9DDK7FxHtF51qY5OwbyTaHQ9/2a7yczdUHy1dA1mGDYU
+         t4t+Aay3gCxpv24yQtPIelvf3x1Mk1LoaHiz1CUkrtOErkLsX3gSUZVFhVRbvgJ9zw9f
+         yqdg==
+X-Gm-Message-State: AOAM530lIaGnfxtDaij1CdynQ57MNh/fq/yB/ehOhTt7hT6QyJdQNiix
+        5GwTOy+LZ6166XBvtEMsd4wysBeakEdedUTq
+X-Google-Smtp-Source: ABdhPJzruvVn4+vqBplS5nz3t+TNIA7l2XjBB0lf+qYZbiIPnMeEjL9B9tZVmbhejW4m7bgkJAJRhA==
+X-Received: by 2002:a17:90b:100f:: with SMTP id gm15mr12746740pjb.235.1600074881877;
+        Mon, 14 Sep 2020 02:14:41 -0700 (PDT)
 Received: from [10.230.32.194] ([192.19.148.250])
-        by smtp.gmail.com with ESMTPSA id x19sm7808641pge.22.2020.09.14.01.42.03
+        by smtp.gmail.com with ESMTPSA id md10sm8843758pjb.45.2020.09.14.02.14.40
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 14 Sep 2020 01:42:05 -0700 (PDT)
-Subject: Re: [PATCH v2 2/3] brcmfmac: set net carrier on via test tool for AP
- mode
-To:     Kalle Valo <kvalo@codeaurora.org>,
-        Wright Feng <wright.feng@cypress.com>
-Cc:     linux-wireless@vger.kernel.org, brcm80211-dev-list@broadcom.com,
-        brcm80211-dev-list@cypress.com,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        chi-hsien.lin@cypress.com, Kurt Lee <kurt.lee@cypress.com>
-References: <20200914031634.190721-1-wright.feng@cypress.com>
- <20200914031634.190721-3-wright.feng@cypress.com>
- <87v9ggojkx.fsf@codeaurora.org>
+        Mon, 14 Sep 2020 02:14:41 -0700 (PDT)
+Subject: Re: [PATCH] mac80211: Fix radiotap header channel flag for 6GHz band
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        Aloka Dixit <alokad@codeaurora.org>
+Cc:     linux-wireless@vger.kernel.org,
+        linux-wireless-owner@vger.kernel.org
+References: <010101747ab7b9c0-45fa1c2a-3bb5-44e8-8e6d-457cad2e9845-000000@us-west-2.amazonses.com>
+ <1cc7242cd00cd5141a56f17a7f5c80700485aa39.camel@sipsolutions.net>
+ <010101747eef4d8b-8b5fdae5-790f-4d19-a2df-fba00350baa3-000000@us-west-2.amazonses.com>
+ <9f992ca7731f966fdc45a38a13c202898e92f2b2.camel@sipsolutions.net>
 From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
-Message-ID: <0813cce5-1833-cad2-ddba-ccdeed8872ab@broadcom.com>
-Date:   Mon, 14 Sep 2020 10:42:01 +0200
+Message-ID: <1cada267-3ebf-0bac-328a-3abe2c16cd25@broadcom.com>
+Date:   Mon, 14 Sep 2020 11:14:38 +0200
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
  Thunderbird/78.2.2
 MIME-Version: 1.0
-In-Reply-To: <87v9ggojkx.fsf@codeaurora.org>
+In-Reply-To: <9f992ca7731f966fdc45a38a13c202898e92f2b2.camel@sipsolutions.net>
 Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="000000000000637e2f05af4202da"
+        boundary="000000000000f74a4b05af427634"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---000000000000637e2f05af4202da
+--000000000000f74a4b05af427634
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 
-On 9/14/2020 10:20 AM, Kalle Valo wrote:
-> Wright Feng <wright.feng@cypress.com> writes:
-> 
->> From: Kurt Lee <kurt.lee@cypress.com>
+On 9/11/2020 10:52 PM, Johannes Berg wrote:
+> On Fri, 2020-09-11 at 20:50 +0000, Aloka Dixit wrote:
 >>
->> In manufacturing line, test tool may be used to enable SoftAP. Such
->> SoftAP can't pass traffic because netif carrier is off by default. To
->> allow such use case, let brcmfmac parse ioctl cmd, and then set iftype
->> to ap mode and report netif_carrier_on to upper layer.
+>>> Not that anything even cares ... so there's no point in adding a 6GHz
+>>> flag to radiotap.
+>>>
+>> Separate flag for 6GHz would have been best option, but I still think
+>> better to set 5GHz as 6GHz frequencies start in 5GHz range.
 > 
-> nl80211 does not use ioctl(), so the commit log is misleading.
-> 
->> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/vendor.c
->> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/vendor.c
->> @@ -64,6 +64,15 @@ static int brcmf_cfg80211_vndr_cmds_dcmd_handler(struct wiphy *wiphy,
->>   		*(char *)(dcmd_buf + len)  = '\0';
->>   	}
->>   
->> +	if (cmdhdr->cmd == BRCMF_C_SET_AP) {
->> +		if (*(int *)(dcmd_buf) == 1) {
->> +			ifp->vif->wdev.iftype = NL80211_IFTYPE_AP;
->> +			brcmf_net_setcarrier(ifp, true);
->> +		} else {
->> +			ifp->vif->wdev.iftype = NL80211_IFTYPE_STATION;
->> +		}
->> +	}
-> 
-> We now have rules for the vendor API:
-> 
-> https://wireless.wiki.kernel.org/en/developers/documentation/nl80211#vendor-specific_api
-> 
-> As the BRCMF_VNDR_CMDS_DCMD just seems to be a simple pipe between the
-> user space and the firmware I'm leaning towards that we should just
-> remove support for that command from brcmfmac.
-> 
-> And besides, for factory tests you should be using NL80211_CMD_TESTMODE.
-> The vendor API is meant for normal mode usage.
+> But why? wireshark probably needs to be adjusted anyway, so it can just
+> look at the frequency instead? And it would pretend that it's now an
+> "11a" frame ... so that clearly never was important, since that hasn't
+> been true since HT.
 
-We talked about this API before. This command used to be a TESTMODE 
-command, but with the introduction of vendor commands in cfg80211 I 
-changed that. My reasons being that 1) it helps me in cfg80211 callback 
-development, and 2) (some of) our customers were not accepting the need 
-for a separate driver (build) for manufacturing. My intent has always 
-been to keep this opaque for the driver so I am opposed to patches like 
-this that are interpreting the opaque blob. The firmware could simply 
-generate a CARRIER event and the driver can act on that.
+It has been couple of month ago that I looked into wireshark about this 
+and I think it is already ignoring the band flags and just looks at the 
+frequency.
 
 Regards,
 Arend
 
---000000000000637e2f05af4202da
+--000000000000f74a4b05af427634
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -197,13 +165,13 @@ WwHVQUbAn+xLMIQpycIQFoJIGJX4MeaTSMfLNP2w7nP2uLNgIeleF284vS0XVkBXSCgIGylP4SN+
 HQYrv7fVCbtp+c7nFvP7MYICbzCCAmsCAQEwbTBdMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xv
 YmFsU2lnbiBudi1zYTEzMDEGA1UEAxMqR2xvYmFsU2lnbiBQZXJzb25hbFNpZ24gMiBDQSAtIFNI
 QTI1NiAtIEczAgxR3m7Pj6LvQiWjJy0wDQYJYIZIAWUDBAIBBQCggdQwLwYJKoZIhvcNAQkEMSIE
-IBMxWmiDnzmlLjyU1hmsHOsx/MV7TSIO4U+v4/wZY16BMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0B
-BwEwHAYJKoZIhvcNAQkFMQ8XDTIwMDkxNDA4NDIwNlowaQYJKoZIhvcNAQkPMVwwWjALBglghkgB
+IBIDPMjk/pDPmTNMXRJqMIzAhZ3niYLRMRD4fkVnuNk3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0B
+BwEwHAYJKoZIhvcNAQkFMQ8XDTIwMDkxNDA5MTQ0MlowaQYJKoZIhvcNAQkPMVwwWjALBglghkgB
 ZQMEASowCwYJYIZIAWUDBAEWMAsGCWCGSAFlAwQBAjAKBggqhkiG9w0DBzALBgkqhkiG9w0BAQow
-CwYJKoZIhvcNAQEHMAsGCWCGSAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQB2YJDJoAelhw48E9Ms
-wkm8/MDuqfeNoiJEH5XSI9Tm0pcCEXM3zZcJZxheYhMv3rOThXOlnB/CpM98sWVb6w7/ay0wD8ZX
-zjfeiD9LIHikzHjjU+CJKRVIusp++0Qj5zQzu7sapgY+5JuGKlf2ihkWD4l0LJ2hS81w9X/6yJ0A
-Ld9VivgEJ92PepOABskkyWzIGrJpPChfAs4n4Nldo1DmXQuFrPTTqu9LXcFoYDnxjTSAbVoWbod/
-xUZ0FghPaEAoaG/rNLXrhS+B6rEgDgTEvFUgT2JnyfYSOGc1iEKSHXMH6PcXy9hDul8J/hFBvs4g
-1m4HaxzvcO+p+HrFSGXt
---000000000000637e2f05af4202da--
+CwYJKoZIhvcNAQEHMAsGCWCGSAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQAd12BQ+5MTMwM4rygZ
+jysZ3do76H4QBe6FhUI5Y5a6bvLff6aV0AJywZXO5GgP5WZAya4XoxL+UAxoaZFXQYep0JpDCMUL
+RXqWaVkLgosZqqGxXqkM7pVoPsYfwrXxgwQMzfrQt8PlBTGo7piD0TGSx2PUqADt5NNsBstsJe4o
+uXDpfl846OF5cjhR7xcyCYkh5eTJsiqhrGejwgIpAMiCRYOjGbFdZrK5p0CaqqHnDxFtmgLceM1C
+ReDGNQEBAzJLl6A54rx4hy7B5X5HQ+/Ms726XYniDJnQVSSNSwGIqA7gAWsAKz0wV5bH0DAbjm2P
+TVjwl3jOUTca5dhV1G6J
+--000000000000f74a4b05af427634--
