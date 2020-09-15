@@ -2,194 +2,116 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E50226A1B3
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Sep 2020 11:09:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3824826A1E9
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Sep 2020 11:17:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726222AbgIOJJf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 15 Sep 2020 05:09:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41126 "EHLO
+        id S1726276AbgIOJRn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 15 Sep 2020 05:17:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42386 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726185AbgIOJJd (ORCPT
+        with ESMTP id S1726155AbgIOJRl (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 15 Sep 2020 05:09:33 -0400
-Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27FEAC06174A
-        for <linux-wireless@vger.kernel.org>; Tue, 15 Sep 2020 02:09:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-         s=20160729; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
-        Message-Id:Date:Subject:To:From:Sender:Reply-To:Cc:Content-Type:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=IPMhSZR9wlsNQYmTbcFsW4451UQNnCoz3IbsUtK9fio=; b=PWLbjpj2M8VMpq2XkT/9WStT+R
-        JSWrQAX2PtN18O/TCICGrlniAGzpCVlW+A98IQI4UvyXiasKRRmA3Cp7EGdwtHaQsEON/H5bd6GzB
-        zc1DpYFstD2XRDJzvkwvEOvscM6tK4xmQK7CrsAtk+A6pJhlZUntACNZBfVKM5WGhmcM=;
-Received: from p4ff134da.dip0.t-ipconnect.de ([79.241.52.218] helo=localhost.localdomain)
-        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_CBC_SHA1:128)
-        (Exim 4.89)
-        (envelope-from <nbd@nbd.name>)
-        id 1kI6xu-0006Ub-Ei
-        for linux-wireless@vger.kernel.org; Tue, 15 Sep 2020 11:09:30 +0200
-From:   Felix Fietkau <nbd@nbd.name>
-To:     linux-wireless@vger.kernel.org
-Subject: [PATCH v2 4/11] mt76: add utility functions for deferring work to a kernel thread
-Date:   Tue, 15 Sep 2020 11:09:29 +0200
-Message-Id: <20200915090929.4111-1-nbd@nbd.name>
-X-Mailer: git-send-email 2.28.0
-In-Reply-To: <20200908211756.15998-4-nbd@nbd.name>
-References: <20200908211756.15998-4-nbd@nbd.name>
+        Tue, 15 Sep 2020 05:17:41 -0400
+Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6BF5C06174A
+        for <linux-wireless@vger.kernel.org>; Tue, 15 Sep 2020 02:17:40 -0700 (PDT)
+Received: by mail-wr1-x442.google.com with SMTP id t10so2525453wrv.1
+        for <linux-wireless@vger.kernel.org>; Tue, 15 Sep 2020 02:17:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=g0wq4OHsivPgwum0m30tDMm3Sc6rVYhxpSv4ZsJufv8=;
+        b=dErZGht+HzEj0U9/qfEKQtaMKHVk5i+ARgVuQZcAf1y9KhpfbKbE3ExreRZyHgcYmX
+         KMYpI3Y1ODYDHRPqc9W7AeEO6lTIykU87K01SpzoIYlEkERbsJIMW4hLvIh15OYxuL2e
+         1qkPt02UWZddIpIuP5CsJyXGIkYFO5FqwZb62XxaOACzwgRUlv0YKUeqrHmlzB8nseGv
+         x1LF6INQseSD6coRriwDJHPkCSk4kLc6qhkkd+ytfqq59hS1HGHp75hKhrInIXCnH4/V
+         Plb5qHTwT7ctG84/fmT6GFcWegtSzxQPn1z+gGtX8W6CoLCkvajTDJ+T1RIZzof66JK+
+         NPvg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=g0wq4OHsivPgwum0m30tDMm3Sc6rVYhxpSv4ZsJufv8=;
+        b=iBsVQyZmNC0sVcz98bvb+5uwq9NKVCeaX54ncKDhowFocZUbWa6kQi128o8rKoWEvH
+         XOhcR0xrKyYi0vSntxRSfPHVNedOlQNEadq8wlPqaDx/m19pz7uXFXEbqhyvZtL0/79w
+         yfguZ80FJseyGS0E68AqL5s+lQI+j4UszO/4awdN51gn1PBqfLh1x3ufSaKyyARVYYjL
+         ZsWH8Mrw8sIRjk70koY/+6zhxofsatXxnC5M/2l+rE1PRKzfFu9UhkBPRTue2KUh+JE4
+         KEBvM3mePnDxP83Dkpr95G9YzMNRSZj3SfmGp7JeprZjI+/SsQ/lrRb+FH5pKti5PxF1
+         WCnA==
+X-Gm-Message-State: AOAM530CRAJjey+i7Lf9OlTEgRwuWCQsurhpPGlnCTwirKpTBcimOYd3
+        iXABXEpwX9R+Iw6zPfc1EZUL0w==
+X-Google-Smtp-Source: ABdhPJyy9VnkjIcFnV/PSTOwOko71sntBrgkcbhdTsqW+bMsdETC13nFxjtIMkVxGcJ2W1gnJx7QnA==
+X-Received: by 2002:a5d:6cb0:: with SMTP id a16mr19556925wra.88.1600161459533;
+        Tue, 15 Sep 2020 02:17:39 -0700 (PDT)
+Received: from dell ([91.110.221.204])
+        by smtp.gmail.com with ESMTPSA id x2sm25233289wrl.13.2020.09.15.02.17.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 15 Sep 2020 02:17:38 -0700 (PDT)
+Date:   Tue, 15 Sep 2020 10:17:37 +0100
+From:   Lee Jones <lee.jones@linaro.org>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     davem@davemloft.net, kuba@kernel.org, linux-kernel@vger.kernel.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        wil6210@qti.qualcomm.com, Maya Erez <merez@codeaurora.org>
+Subject: Re: [PATCH 06/29] wil6210: Fix a couple of formatting issues in
+ 'wil6210_debugfs_init'
+Message-ID: <20200915091737.GC4678@dell>
+References: <20200910065431.657636-7-lee.jones@linaro.org>
+ <20200912063455.C3FA3C433CA@smtp.codeaurora.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20200912063455.C3FA3C433CA@smtp.codeaurora.org>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-In order to avoid keeping work like tx scheduling pinned to the CPU it was
-scheduled from, it makes sense to switch from tasklets to kernel threads.
+On Sat, 12 Sep 2020, Kalle Valo wrote:
 
-Unlike a workqueue, this one only allows one fixed worker function to be
-executed by the worker thread. Because of that, there is less locking
-and less code for scheduling involved.
-This is important because the tx worker is scheduled often in a hot path
+> Lee Jones <lee.jones@linaro.org> wrote:
+> 
+> > Kerneldoc expects attributes/parameters to be in '@*.: ' format and
+> > gets confused if the variable does not follow the type/attribute
+> > definitions.
+> > 
+> > Fixes the following W=1 kernel build warning(s):
+> > 
+> >  drivers/net/wireless/ath/wil6210/debugfs.c:456: warning: Function parameter or member 'wil' not described in 'wil6210_debugfs_init_offset'
+> >  drivers/net/wireless/ath/wil6210/debugfs.c:456: warning: Function parameter or member 'dbg' not described in 'wil6210_debugfs_init_offset'
+> >  drivers/net/wireless/ath/wil6210/debugfs.c:456: warning: Function parameter or member 'base' not described in 'wil6210_debugfs_init_offset'
+> >  drivers/net/wireless/ath/wil6210/debugfs.c:456: warning: Function parameter or member 'tbl' not described in 'wil6210_debugfs_init_offset'
+> > 
+> > Cc: Kalle Valo <kvalo@codeaurora.org>
+> > Cc: "David S. Miller" <davem@davemloft.net>
+> > Cc: Jakub Kicinski <kuba@kernel.org>
+> > Cc: linux-wireless@vger.kernel.org
+> > Cc: wil6210@qti.qualcomm.com
+> > Cc: netdev@vger.kernel.org
+> > Reviewed-by: Maya Erez <merez@codeaurora.org>
+> > Signed-off-by: Lee Jones <lee.jones@linaro.org>
+> 
+> Aren't these also applied already? Please don't resend already applied
+> patches.
 
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
----
-v2: add more information to patch description
+Not at the time I rebased them.
 
- drivers/net/wireless/mediatek/mt76/util.c | 28 +++++++++
- drivers/net/wireless/mediatek/mt76/util.h | 76 +++++++++++++++++++++++
- 2 files changed, 104 insertions(+)
+> 8 patches set to Rejected.
+> 
+> 11766845 [06/29] wil6210: Fix a couple of formatting issues in 'wil6210_debugfs_init'
+> 11766747 [16/29] wil6210: wmi: Fix formatting and demote non-conforming function headers
+> 11766827 [17/29] wil6210: interrupt: Demote comment header which is clearly not kernel-doc
+> 11766825 [18/29] wil6210: txrx: Demote obvious abuse of kernel-doc
+> 11766823 [19/29] wil6210: txrx_edma: Demote comments which are clearly not kernel-doc
+> 11766821 [20/29] wil6210: pmc: Demote a few nonconformant kernel-doc function headers
+> 11766819 [21/29] wil6210: wil_platform: Demote kernel-doc header to standard comment block
+> 11766817 [22/29] wil6210: wmi: Correct misnamed function parameter 'ptr_'
 
-diff --git a/drivers/net/wireless/mediatek/mt76/util.c b/drivers/net/wireless/mediatek/mt76/util.c
-index f53bb4ae5001..581964425468 100644
---- a/drivers/net/wireless/mediatek/mt76/util.c
-+++ b/drivers/net/wireless/mediatek/mt76/util.c
-@@ -110,4 +110,32 @@ int mt76_get_min_avg_rssi(struct mt76_dev *dev, bool ext_phy)
- }
- EXPORT_SYMBOL_GPL(mt76_get_min_avg_rssi);
- 
-+int __mt76_worker_fn(void *ptr)
-+{
-+	struct mt76_worker *w = ptr;
-+
-+	while (!kthread_should_stop()) {
-+		set_current_state(TASK_INTERRUPTIBLE);
-+
-+		if (kthread_should_park()) {
-+			kthread_parkme();
-+			continue;
-+		}
-+
-+		if (!test_and_clear_bit(MT76_WORKER_SCHEDULED, &w->state)) {
-+			schedule();
-+			continue;
-+		}
-+
-+		set_bit(MT76_WORKER_RUNNING, &w->state);
-+		set_current_state(TASK_RUNNING);
-+		w->fn(w);
-+		cond_resched();
-+		clear_bit(MT76_WORKER_RUNNING, &w->state);
-+	}
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(__mt76_worker_fn);
-+
- MODULE_LICENSE("Dual BSD/GPL");
-diff --git a/drivers/net/wireless/mediatek/mt76/util.h b/drivers/net/wireless/mediatek/mt76/util.h
-index fd1a68820e0a..1c363ea9ab9c 100644
---- a/drivers/net/wireless/mediatek/mt76/util.h
-+++ b/drivers/net/wireless/mediatek/mt76/util.h
-@@ -10,6 +10,19 @@
- #include <linux/skbuff.h>
- #include <linux/bitops.h>
- #include <linux/bitfield.h>
-+#include <net/mac80211.h>
-+
-+struct mt76_worker
-+{
-+	struct task_struct *task;
-+	void (*fn)(struct mt76_worker *);
-+	unsigned long state;
-+};
-+
-+enum {
-+	MT76_WORKER_SCHEDULED,
-+	MT76_WORKER_RUNNING,
-+};
- 
- #define MT76_INCR(_var, _size) \
- 	(_var = (((_var) + 1) % (_size)))
-@@ -45,4 +58,67 @@ mt76_skb_set_moredata(struct sk_buff *skb, bool enable)
- 		hdr->frame_control &= ~cpu_to_le16(IEEE80211_FCTL_MOREDATA);
- }
- 
-+int __mt76_worker_fn(void *ptr);
-+
-+static inline int
-+mt76_worker_setup(struct ieee80211_hw *hw, struct mt76_worker *w,
-+		  void (*fn)(struct mt76_worker *),
-+		  const char *name)
-+{
-+	const char *dev_name = wiphy_name(hw->wiphy);
-+	int ret;
-+
-+	if (fn)
-+		w->fn = fn;
-+	w->task = kthread_create(__mt76_worker_fn, w, "mt76-%s %s",
-+				 name, dev_name);
-+
-+	ret = PTR_ERR_OR_ZERO(w->task);
-+	if (ret) {
-+		w->task = NULL;
-+		return ret;
-+	}
-+
-+	wake_up_process(w->task);
-+
-+	return 0;
-+}
-+
-+static inline void mt76_worker_schedule(struct mt76_worker *w)
-+{
-+	if (!w->task)
-+		return;
-+
-+	if (!test_and_set_bit(MT76_WORKER_SCHEDULED, &w->state) &&
-+	    !test_bit(MT76_WORKER_RUNNING, &w->state))
-+		wake_up_process(w->task);
-+}
-+
-+static inline void mt76_worker_disable(struct mt76_worker *w)
-+{
-+	if (!w->task)
-+		return;
-+
-+	kthread_park(w->task);
-+	WRITE_ONCE(w->state, 0);
-+}
-+
-+static inline void mt76_worker_enable(struct mt76_worker *w)
-+{
-+	if (!w->task)
-+		return;
-+
-+	kthread_unpark(w->task);
-+	mt76_worker_schedule(w);
-+}
-+
-+static inline void mt76_worker_teardown(struct mt76_worker *w)
-+{
-+	if (!w->task)
-+		return;
-+
-+	kthread_stop(w->task);
-+	w->task = NULL;
-+}
-+
- #endif
 -- 
-2.28.0
-
+Lee Jones [李琼斯]
+Senior Technical Lead - Developer Services
+Linaro.org │ Open source software for Arm SoCs
+Follow Linaro: Facebook | Twitter | Blog
