@@ -2,93 +2,194 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 24E1726A194
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Sep 2020 11:07:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E50226A1B3
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Sep 2020 11:09:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726448AbgIOJGn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 15 Sep 2020 05:06:43 -0400
-Received: from mga03.intel.com ([134.134.136.65]:35019 "EHLO mga03.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726269AbgIOJGe (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 15 Sep 2020 05:06:34 -0400
-IronPort-SDR: RZD/fFWTjvWyaYIJCtNMDzEdl4brC47SlQmB8DC403Dr6vIA5u/jFu0AFJj/JoHYnbKKWwa4bw
- iw1Jurkpfvfw==
-X-IronPort-AV: E=McAfee;i="6000,8403,9744"; a="159272034"
-X-IronPort-AV: E=Sophos;i="5.76,429,1592895600"; 
-   d="scan'208";a="159272034"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2020 02:06:31 -0700
-IronPort-SDR: JN6muYTQqB3wm3kCXqk1xsORqKL94poqyPOQLwwV9SSOFBG1M/RLedvNq9ruyR1KSefDfAWvPJ
- brvH/uTc728w==
-X-IronPort-AV: E=Sophos;i="5.76,429,1592895600"; 
-   d="scan'208";a="482690707"
-Received: from emoriart-mobl.ger.corp.intel.com (HELO localhost) ([10.252.7.208])
-  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2020 02:06:16 -0700
-From:   Jani Nikula <jani.nikula@linux.intel.com>
-To:     Joe Perches <joe@perches.com>, LKML <linux-kernel@vger.kernel.org>,
-        Jiri Kosina <trivial@kernel.org>
-Cc:     linux-wireless@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        oss-drivers@netronome.com, nouveau@lists.freedesktop.org,
-        alsa-devel <alsa-devel@alsa-project.org>,
-        dri-devel@lists.freedesktop.org, linux-ide@vger.kernel.org,
-        dm-devel@redhat.com, linux-mtd@lists.infradead.org,
-        linux-i2c@vger.kernel.org, sparclinux@vger.kernel.org,
-        kvmarm@lists.cs.columbia.edu, linux-rtc@vger.kernel.org,
-        linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org,
-        dccp@vger.kernel.org, linux-rdma@vger.kernel.org,
-        linux-atm-general@lists.sourceforge.net,
-        linux-afs@lists.infradead.org, coreteam@netfilter.org,
-        intel-wired-lan@lists.osuosl.org, linux-serial@vger.kernel.org,
-        linux-input@vger.kernel.org, linux-mmc@vger.kernel.org,
-        Kees Cook <kees.cook@canonical.com>,
-        linux-media@vger.kernel.org, linux-pm@vger.kernel.org,
-        intel-gfx@lists.freedesktop.org, linux-sctp@vger.kernel.org,
-        linux-mediatek@lists.infradead.org, linux-nvme@lists.infradead.org,
-        storagedev@microchip.com, ceph-devel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-nfs@vger.kernel.org,
-        linux-parisc@vger.kernel.org, netdev@vger.kernel.org,
-        linux-usb@vger.kernel.org,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        linux-mips@vger.kernel.org, iommu@lists.linux-foundation.org,
-        netfilter-devel@vger.kernel.org, linux-crypto@vger.kernel.org,
-        bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [Intel-gfx] [trivial PATCH] treewide: Convert switch/case fallthrough; to break;
-In-Reply-To: <e6387578c75736d61b2fe70d9783d91329a97eb4.camel@perches.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-References: <e6387578c75736d61b2fe70d9783d91329a97eb4.camel@perches.com>
-Date:   Tue, 15 Sep 2020 12:06:21 +0300
-Message-ID: <87d02nxvci.fsf@intel.com>
+        id S1726222AbgIOJJf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 15 Sep 2020 05:09:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41126 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726185AbgIOJJd (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 15 Sep 2020 05:09:33 -0400
+Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27FEAC06174A
+        for <linux-wireless@vger.kernel.org>; Tue, 15 Sep 2020 02:09:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
+        Message-Id:Date:Subject:To:From:Sender:Reply-To:Cc:Content-Type:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=IPMhSZR9wlsNQYmTbcFsW4451UQNnCoz3IbsUtK9fio=; b=PWLbjpj2M8VMpq2XkT/9WStT+R
+        JSWrQAX2PtN18O/TCICGrlniAGzpCVlW+A98IQI4UvyXiasKRRmA3Cp7EGdwtHaQsEON/H5bd6GzB
+        zc1DpYFstD2XRDJzvkwvEOvscM6tK4xmQK7CrsAtk+A6pJhlZUntACNZBfVKM5WGhmcM=;
+Received: from p4ff134da.dip0.t-ipconnect.de ([79.241.52.218] helo=localhost.localdomain)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_CBC_SHA1:128)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1kI6xu-0006Ub-Ei
+        for linux-wireless@vger.kernel.org; Tue, 15 Sep 2020 11:09:30 +0200
+From:   Felix Fietkau <nbd@nbd.name>
+To:     linux-wireless@vger.kernel.org
+Subject: [PATCH v2 4/11] mt76: add utility functions for deferring work to a kernel thread
+Date:   Tue, 15 Sep 2020 11:09:29 +0200
+Message-Id: <20200915090929.4111-1-nbd@nbd.name>
+X-Mailer: git-send-email 2.28.0
+In-Reply-To: <20200908211756.15998-4-nbd@nbd.name>
+References: <20200908211756.15998-4-nbd@nbd.name>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 09 Sep 2020, Joe Perches <joe@perches.com> wrote:
-> diff --git a/drivers/gpu/drm/i915/display/intel_sprite.c b/drivers/gpu/drm/i915/display/intel_sprite.c
-> index 5ac0dbf0e03d..35ac539cc2b1 100644
-> --- a/drivers/gpu/drm/i915/display/intel_sprite.c
-> +++ b/drivers/gpu/drm/i915/display/intel_sprite.c
-> @@ -2861,7 +2861,7 @@ static bool gen12_plane_format_mod_supported(struct drm_plane *_plane,
->  	case I915_FORMAT_MOD_Y_TILED_GEN12_MC_CCS:
->  		if (!gen12_plane_supports_mc_ccs(dev_priv, plane->id))
->  			return false;
-> -		fallthrough;
-> +		break;
->  	case DRM_FORMAT_MOD_LINEAR:
->  	case I915_FORMAT_MOD_X_TILED:
->  	case I915_FORMAT_MOD_Y_TILED:
+In order to avoid keeping work like tx scheduling pinned to the CPU it was
+scheduled from, it makes sense to switch from tasklets to kernel threads.
 
-Acked-by: Jani Nikula <jani.nikula@intel.com>
+Unlike a workqueue, this one only allows one fixed worker function to be
+executed by the worker thread. Because of that, there is less locking
+and less code for scheduling involved.
+This is important because the tx worker is scheduled often in a hot path
 
-for merging via whichever tree seems best.
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+---
+v2: add more information to patch description
 
-BR,
-Jani.
+ drivers/net/wireless/mediatek/mt76/util.c | 28 +++++++++
+ drivers/net/wireless/mediatek/mt76/util.h | 76 +++++++++++++++++++++++
+ 2 files changed, 104 insertions(+)
 
-
+diff --git a/drivers/net/wireless/mediatek/mt76/util.c b/drivers/net/wireless/mediatek/mt76/util.c
+index f53bb4ae5001..581964425468 100644
+--- a/drivers/net/wireless/mediatek/mt76/util.c
++++ b/drivers/net/wireless/mediatek/mt76/util.c
+@@ -110,4 +110,32 @@ int mt76_get_min_avg_rssi(struct mt76_dev *dev, bool ext_phy)
+ }
+ EXPORT_SYMBOL_GPL(mt76_get_min_avg_rssi);
+ 
++int __mt76_worker_fn(void *ptr)
++{
++	struct mt76_worker *w = ptr;
++
++	while (!kthread_should_stop()) {
++		set_current_state(TASK_INTERRUPTIBLE);
++
++		if (kthread_should_park()) {
++			kthread_parkme();
++			continue;
++		}
++
++		if (!test_and_clear_bit(MT76_WORKER_SCHEDULED, &w->state)) {
++			schedule();
++			continue;
++		}
++
++		set_bit(MT76_WORKER_RUNNING, &w->state);
++		set_current_state(TASK_RUNNING);
++		w->fn(w);
++		cond_resched();
++		clear_bit(MT76_WORKER_RUNNING, &w->state);
++	}
++
++	return 0;
++}
++EXPORT_SYMBOL_GPL(__mt76_worker_fn);
++
+ MODULE_LICENSE("Dual BSD/GPL");
+diff --git a/drivers/net/wireless/mediatek/mt76/util.h b/drivers/net/wireless/mediatek/mt76/util.h
+index fd1a68820e0a..1c363ea9ab9c 100644
+--- a/drivers/net/wireless/mediatek/mt76/util.h
++++ b/drivers/net/wireless/mediatek/mt76/util.h
+@@ -10,6 +10,19 @@
+ #include <linux/skbuff.h>
+ #include <linux/bitops.h>
+ #include <linux/bitfield.h>
++#include <net/mac80211.h>
++
++struct mt76_worker
++{
++	struct task_struct *task;
++	void (*fn)(struct mt76_worker *);
++	unsigned long state;
++};
++
++enum {
++	MT76_WORKER_SCHEDULED,
++	MT76_WORKER_RUNNING,
++};
+ 
+ #define MT76_INCR(_var, _size) \
+ 	(_var = (((_var) + 1) % (_size)))
+@@ -45,4 +58,67 @@ mt76_skb_set_moredata(struct sk_buff *skb, bool enable)
+ 		hdr->frame_control &= ~cpu_to_le16(IEEE80211_FCTL_MOREDATA);
+ }
+ 
++int __mt76_worker_fn(void *ptr);
++
++static inline int
++mt76_worker_setup(struct ieee80211_hw *hw, struct mt76_worker *w,
++		  void (*fn)(struct mt76_worker *),
++		  const char *name)
++{
++	const char *dev_name = wiphy_name(hw->wiphy);
++	int ret;
++
++	if (fn)
++		w->fn = fn;
++	w->task = kthread_create(__mt76_worker_fn, w, "mt76-%s %s",
++				 name, dev_name);
++
++	ret = PTR_ERR_OR_ZERO(w->task);
++	if (ret) {
++		w->task = NULL;
++		return ret;
++	}
++
++	wake_up_process(w->task);
++
++	return 0;
++}
++
++static inline void mt76_worker_schedule(struct mt76_worker *w)
++{
++	if (!w->task)
++		return;
++
++	if (!test_and_set_bit(MT76_WORKER_SCHEDULED, &w->state) &&
++	    !test_bit(MT76_WORKER_RUNNING, &w->state))
++		wake_up_process(w->task);
++}
++
++static inline void mt76_worker_disable(struct mt76_worker *w)
++{
++	if (!w->task)
++		return;
++
++	kthread_park(w->task);
++	WRITE_ONCE(w->state, 0);
++}
++
++static inline void mt76_worker_enable(struct mt76_worker *w)
++{
++	if (!w->task)
++		return;
++
++	kthread_unpark(w->task);
++	mt76_worker_schedule(w);
++}
++
++static inline void mt76_worker_teardown(struct mt76_worker *w)
++{
++	if (!w->task)
++		return;
++
++	kthread_stop(w->task);
++	w->task = NULL;
++}
++
+ #endif
 -- 
-Jani Nikula, Intel Open Source Graphics Center
+2.28.0
+
