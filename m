@@ -2,126 +2,175 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1687726C58F
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Sep 2020 19:06:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 74BCB26C5EE
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Sep 2020 19:25:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726788AbgIPRFg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 16 Sep 2020 13:05:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56570 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726736AbgIPRD1 (ORCPT
+        id S1727027AbgIPRZe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 16 Sep 2020 13:25:34 -0400
+Received: from mail29.static.mailgun.info ([104.130.122.29]:30175 "EHLO
+        mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727011AbgIPRZX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 16 Sep 2020 13:03:27 -0400
-Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3AA9C025266;
-        Wed, 16 Sep 2020 09:59:20 -0700 (PDT)
-Received: by mail-wr1-x443.google.com with SMTP id a17so7671605wrn.6;
-        Wed, 16 Sep 2020 09:59:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=zuDfgEoZuBS30U/qqcPskrweiytOsrp9+LzlvUTV6AI=;
-        b=e+KWNj6SHmuBq3BSL+qt3D6fhSFFzr/deE+ZSnbxvXRInB13Yb4CrMYEHuYZEezRLS
-         altf9ECg8xUR5AiWnH8yDPgit6kOXeBV2g7Km5jNq2dJgu6dcp5m3KgkJ0lljJw1UIBN
-         cnV6OYQxN2+vQrsIdLl+aaq747FTCHsTFgvM+OANBr2H9I9jMrdLCjpLOJ2JyyVkqAi8
-         blc0lu/7lE5GredQggAQyw06iTxyDSQqtitb8GLrYZpGdiigHpec7G1zYUXtsUz1H/jV
-         jIZGXv7/4sXgvVwvW7IMrLbk/24eoO8eiPRC5WXjm1EOpYj+2+EDsNRZqEtIdhMGB4z8
-         TpsA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=zuDfgEoZuBS30U/qqcPskrweiytOsrp9+LzlvUTV6AI=;
-        b=lBcM/hqRjnwpMTsTJzGKccG0zaUTwH87t0kjuzi957GdYVxQChVCbw9lYik+7lFPT3
-         z77X6c6/JmLgcNd1JHwwv0FvnQmm1ha+lMayMetT7gk6HeR2lP6syveDpL1XlcxirD0m
-         qOsEsf5+VoIVQB5kLGVJoYU1Wl1QV2W82sQvzzCh3fOinZLEdqsIhGOvsnlO+taOCqAd
-         wzmj9+rdUw4NMiNtNIq0nmxWTtCRc/XN2MY7GKLmS0nTUzBA+kmxbkAsNKezulHV9qyO
-         /m4BX/IKpZ43+ZT9uxwxFh4M3FF2oRN5civumJFOBByGbY64p5vPx5C6YI72QP6qFizK
-         OIIw==
-X-Gm-Message-State: AOAM532YxFGlUtmbKTXcdFW2gNM93YSGg22w20lPF4vWucOB6rpglKpf
-        BfpTMRZHUPmw91T9XELuW4k=
-X-Google-Smtp-Source: ABdhPJw6gOPk33k8iaAOP74REJ4QomG2u3G+8mRYr0/W/BvTPcNtre4cpC/zNon9IAMNdzUQnWz/wQ==
-X-Received: by 2002:a5d:53d1:: with SMTP id a17mr26306527wrw.98.1600275559519;
-        Wed, 16 Sep 2020 09:59:19 -0700 (PDT)
-Received: from localhost.localdomain (cpc83661-brig20-2-0-cust443.3-3.cable.virginm.net. [82.28.105.188])
-        by smtp.gmail.com with ESMTPSA id x24sm33266130wrd.53.2020.09.16.09.59.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Sep 2020 09:59:19 -0700 (PDT)
-From:   Alex Dewar <alex.dewar90@gmail.com>
-Cc:     Alex Dewar <alex.dewar90@gmail.com>,
-        Saeed Mahameed <saeedm@nvidia.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, ath10k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v2] ath10k: sdio: remove redundant check in for loop
-Date:   Wed, 16 Sep 2020 17:57:49 +0100
-Message-Id: <20200916165748.20927-1-alex.dewar90@gmail.com>
-X-Mailer: git-send-email 2.28.0
-In-Reply-To: <c2987351e3bdad16510dd35847991c2412a9db6b.camel@nvidia.com>
-References: <c2987351e3bdad16510dd35847991c2412a9db6b.camel@nvidia.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-To:     unlisted-recipients:; (no To-header on input)
+        Wed, 16 Sep 2020 13:25:23 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1600277120; h=Message-Id: Date: Subject: Cc: To: From:
+ Sender; bh=Dt3b5IHifu947r4yaRMIGq0e33fR/yiyZRkfAs9+Zf0=; b=JVsq2tdtSM90rIe9z4oSgyy1O6IO2TomxdE1wELrBkwfxpKskMWhAiUtfAqJeLTRCprivggc
+ D6irtXY+Js873qers1O3pkX/b1CsLdGObocCwPJNuJVRtqFDumQQUohvecUs0aIlHM8z2l1x
+ DaxgtaHv8rBEMpDE58zyAwAd3gE=
+X-Mailgun-Sending-Ip: 104.130.122.29
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n07.prod.us-east-1.postgun.com with SMTP id
+ 5f6247ea73afa3417e882bcf (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 16 Sep 2020 17:14:18
+ GMT
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 31C44C433F1; Wed, 16 Sep 2020 17:14:18 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+Received: from rmanohar-linux.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: rmanohar)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id DFC7CC433C8;
+        Wed, 16 Sep 2020 17:14:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org DFC7CC433C8
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=rmanohar@codeaurora.org
+From:   Rajkumar Manoharan <rmanohar@codeaurora.org>
+To:     johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org,
+        Rajkumar Manoharan <rmanohar@codeaurora.org>
+Subject: [PATCH] iw: support HE rate configuration in 6 GHz band
+Date:   Wed, 16 Sep 2020 10:14:11 -0700
+Message-Id: <1600276451-3259-1-git-send-email-rmanohar@codeaurora.org>
+X-Mailer: git-send-email 2.7.4
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The for loop checks whether cur_section is NULL on every iteration, but
-we know it can never be NULL as there is another check towards the
-bottom of the loop body. Refactor to avoid this unnecessary check.
+Allow HE-MCS, HE-GI, HE-LTF in 6 GHz band as well and allow only
+MCS rates in 6 GHz.
 
-Also, increment the variable i inline for clarity
-
-Addresses-Coverity: 1496984 ("Null pointer dereferences)
-Suggested-by: Saeed Mahameed <saeedm@nvidia.com>
-Signed-off-by: Alex Dewar <alex.dewar90@gmail.com>
+Signed-off-by: Rajkumar Manoharan <rmanohar@codeaurora.org>
 ---
-v2: refactor in the manner suggested by Saeed
+ bitrate.c | 40 ++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 38 insertions(+), 2 deletions(-)
 
- drivers/net/wireless/ath/ath10k/sdio.c | 12 +++---------
- 1 file changed, 3 insertions(+), 9 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath10k/sdio.c b/drivers/net/wireless/ath/ath10k/sdio.c
-index 81ddaafb6721..486886c74e6a 100644
---- a/drivers/net/wireless/ath/ath10k/sdio.c
-+++ b/drivers/net/wireless/ath/ath10k/sdio.c
-@@ -2307,8 +2307,8 @@ static int ath10k_sdio_dump_memory_section(struct ath10k *ar,
+diff --git a/bitrate.c b/bitrate.c
+index 70a23fb6ac83..460708a1dbea 100644
+--- a/bitrate.c
++++ b/bitrate.c
+@@ -156,22 +156,27 @@ static int handle_bitrates(struct nl80211_state *state,
+ 	bool have_ht_mcs_24 = false, have_ht_mcs_5 = false;
+ 	bool have_vht_mcs_24 = false, have_vht_mcs_5 = false;
+ 	bool have_he_mcs_24 = false, have_he_mcs_5 = false;
++	bool have_he_mcs_6 = false;
+ 	uint8_t ht_mcs_24[77], ht_mcs_5[77];
+ 	int n_ht_mcs_24 = 0, n_ht_mcs_5 = 0;
+ 	struct nl80211_txrate_vht txrate_vht_24 = {};
+ 	struct nl80211_txrate_vht txrate_vht_5 = {};
+ 	struct nl80211_txrate_he txrate_he_24 = {};
+ 	struct nl80211_txrate_he txrate_he_5 = {};
++	struct nl80211_txrate_he txrate_he_6 = {};
+ 	uint8_t *mcs = NULL;
+ 	int *n_mcs = NULL;
+ 	char *vht_argv_5[VHT_ARGC_MAX] = {}; char *vht_argv_24[VHT_ARGC_MAX] = {};
+ 	char *he_argv_5[VHT_ARGC_MAX] = {}; char *he_argv_24[VHT_ARGC_MAX] = {};
++	char *he_argv_6[VHT_ARGC_MAX] = {};
+ 	char **vht_argv = NULL, **he_argv = NULL;
+ 	int vht_argc_5 = 0; int vht_argc_24 = 0;
+ 	int he_argc_5 = 0; int he_argc_24 = 0;
++	int he_argc_6 = 0;
+ 	int *vht_argc = NULL, *he_argc = NULL;
+ 	int sgi_24 = 0, sgi_5 = 0, lgi_24 = 0, lgi_5 = 0;
+ 	int has_he_gi_24 = 0, has_he_gi_5 = 0, has_he_ltf_24 = 0, has_he_ltf_5 = 0;
++	int has_he_gi_6 = 0, has_he_ltf_6 = 0;
+ 	int he_gi = 0, he_ltf = 0;
+ 	char *he_gi_argv = NULL;
+ 
+@@ -248,6 +253,13 @@ static int handle_bitrates(struct nl80211_state *state,
+ 			he_argv = he_argv_5;
+ 			he_argc = &he_argc_5;
+ 			have_he_mcs_5 = true;
++		} else if (strcmp(argv[i], "he-mcs-6") == 0) {
++			if (have_he_mcs_6)
++				return 1;
++			parser_state = S_HE;
++			he_argv = he_argv_6;
++			he_argc = &he_argc_6;
++			have_he_mcs_6 = true;
+ 		} else if (strcmp(argv[i], "sgi-2.4") == 0) {
+ 			sgi_24 = 1;
+ 			parser_state = S_GI;
+@@ -266,12 +278,18 @@ static int handle_bitrates(struct nl80211_state *state,
+ 		} else if (strcmp(argv[i], "he-gi-5") == 0) {
+ 			has_he_gi_5 = 1;
+ 			parser_state = S_HE_GI;
++		} else if (strcmp(argv[i], "he-gi-6") == 0) {
++			has_he_gi_6 = 1;
++			parser_state = S_HE_GI;
+ 		} else if (strcmp(argv[i], "he-ltf-2.4") == 0) {
+ 			has_he_ltf_24 = 1;
+ 			parser_state = S_HE_LTF;
+ 		} else if (strcmp(argv[i], "he-ltf-5") == 0) {
+ 			has_he_ltf_5 = 1;
+ 			parser_state = S_HE_LTF;
++		} else if (strcmp(argv[i], "he-ltf-6") == 0) {
++			has_he_ltf_6 = 1;
++			parser_state = S_HE_LTF;
+ 		} else switch (parser_state) {
+ 		case S_LEGACY:
+ 			tmpd = strtod(argv[i], &end);
+@@ -333,6 +351,10 @@ static int handle_bitrates(struct nl80211_state *state,
+ 		if (!setup_he(&txrate_he_5, he_argc_5, he_argv_5))
+ 			return -EINVAL;
+ 
++	if (have_he_mcs_6)
++		if (!setup_he(&txrate_he_6, he_argc_6, he_argv_6))
++			return -EINVAL;
++
+ 	if (sgi_5 && lgi_5)
+ 		return 1;
+ 
+@@ -399,6 +421,20 @@ static int handle_bitrates(struct nl80211_state *state,
+ 		nla_nest_end(msg, nl_band);
  	}
  
- 	count = 0;
--
--	for (i = 0; cur_section; i++) {
-+	i = 0;
-+	for (; cur_section; cur_section = next_section) {
- 		section_size = cur_section->end - cur_section->start;
++	if (have_he_mcs_6 || has_he_gi_6 || has_he_ltf_6) {
++		nl_band = nla_nest_start(msg, NL80211_BAND_6GHZ);
++		if (!nl_band)
++			goto nla_put_failure;
++		if (have_he_mcs_6)
++			nla_put(msg, NL80211_TXRATE_HE, sizeof(txrate_he_6),
++				&txrate_he_6);
++		if (has_he_gi_6)
++			nla_put_u8(msg, NL80211_TXRATE_HE_GI, he_gi);
++		if (has_he_ltf_6)
++			nla_put_u8(msg, NL80211_TXRATE_HE_LTF, he_ltf);
++		nla_nest_end(msg, nl_band);
++	}
++
+ 	nla_nest_end(msg, nl_rates);
  
- 		if (section_size <= 0) {
-@@ -2318,7 +2318,7 @@ static int ath10k_sdio_dump_memory_section(struct ath10k *ar,
- 			break;
- 		}
+ 	return 0;
+@@ -407,9 +443,9 @@ static int handle_bitrates(struct nl80211_state *state,
+ }
  
--		if ((i + 1) == mem_region->section_table.size) {
-+		if (++i == mem_region->section_table.size) {
- 			/* last section */
- 			next_section = NULL;
- 			skip_size = 0;
-@@ -2361,12 +2361,6 @@ static int ath10k_sdio_dump_memory_section(struct ath10k *ar,
- 		}
+ #define DESCR_LEGACY "[legacy-<2.4|5> <legacy rate in Mbps>*]"
+-#define DESCR DESCR_LEGACY " [ht-mcs-<2.4|5> <MCS index>*] [vht-mcs-<2.4|5>  [he-mcs-<2.4|5> <NSS:MCSx,MCSy... | NSS:MCSx-MCSy>*] [sgi-2.4|lgi-2.4] [sgi-5|lgi-5]"
++#define DESCR DESCR_LEGACY " [ht-mcs-<2.4|5> <MCS index>*] [vht-mcs-<2.4|5>  [he-mcs-<2.4|5|6> <NSS:MCSx,MCSy... | NSS:MCSx-MCSy>*] [sgi-2.4|lgi-2.4] [sgi-5|lgi-5]"
  
- 		count += skip_size;
--
--		if (!next_section)
--			/* this was the last section */
--			break;
--
--		cur_section = next_section;
- 	}
- 
- 	return count;
+-COMMAND(set, bitrates, "[legacy-<2.4|5> <legacy rate in Mbps>*] [ht-mcs-<2.4|5> <MCS index>*] [vht-mcs-<2.4|5> [he-mcs-<2.4|5> <NSS:MCSx,MCSy... | NSS:MCSx-MCSy>*] [sgi-2.4|lgi-2.4] [sgi-5|lgi-5] [he-gi-2.4:0.8/1.6/3.2] [he-gi-5:0.8/1.6/3.2] [he-ltf-2.4:1/2/4] [he-ltf-5:1/2/4]",
++COMMAND(set, bitrates, "[legacy-<2.4|5> <legacy rate in Mbps>*] [ht-mcs-<2.4|5> <MCS index>*] [vht-mcs-<2.4|5> [he-mcs-<2.4|5|6> <NSS:MCSx,MCSy... | NSS:MCSx-MCSy>*] [sgi-2.4|lgi-2.4] [sgi-5|lgi-5] [he-gi-<2.4|5|6> <0.8|1.6|3.2>] [he-ltf-<2.4|5|6> <1|2|4>]",
+ 	NL80211_CMD_SET_TX_BITRATE_MASK, 0, CIB_NETDEV, handle_bitrates,
+ 	"Sets up the specified rate masks.\n"
+ 	"Not passing any arguments would clear the existing mask (if any).");
 -- 
-2.28.0
+2.7.4
 
