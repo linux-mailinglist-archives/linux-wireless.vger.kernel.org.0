@@ -2,115 +2,147 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 373E826CE5B
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Sep 2020 00:08:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 00F2426CEBC
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Sep 2020 00:28:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726458AbgIPWIM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 16 Sep 2020 18:08:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47962 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726311AbgIPWH7 (ORCPT
+        id S1726419AbgIPW2Q (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 16 Sep 2020 18:28:16 -0400
+Received: from mail2.candelatech.com ([208.74.158.173]:39040 "EHLO
+        mail3.candelatech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726187AbgIPW2Q (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 16 Sep 2020 18:07:59 -0400
-Received: from mail-yb1-xb41.google.com (mail-yb1-xb41.google.com [IPv6:2607:f8b0:4864:20::b41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50599C061223
-        for <linux-wireless@vger.kernel.org>; Wed, 16 Sep 2020 14:32:02 -0700 (PDT)
-Received: by mail-yb1-xb41.google.com with SMTP id x20so85474ybs.8
-        for <linux-wireless@vger.kernel.org>; Wed, 16 Sep 2020 14:32:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=761IcqWmFjbjqvUtUTtc0WPwUOML3qXtRAVU21kD73k=;
-        b=a+WENrWJvsrKgUasDIsti54O809lSg0RXGXcMgWt/EC4fm0ut9QnpCnEyJ2bF/jwG2
-         QiVaZAX8qEokkSLZIwxWRUUHHUllFIw7MhAEUDuq5ZYEpK9lUytzCCnJhG74TqRr/yOA
-         UWwgrpO8/+0E9xTUHh9jLDdB9pGNXR7EJaul7UXzmd+DcsWmgN15rdUq08wombL/ZAfG
-         GTEYrXZhRqh5hUO68doxqDBw/Zl54KeQinJHS6hO4rb6NdtFgPnzUWcA+QajqmvBrThm
-         KHxdzQSDi+aIl1wE7tVtJWh4qqFf5WA2/HxX0hNA5eOkD+77qA5JkVhACT24dKB6bDU1
-         z5Ng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=761IcqWmFjbjqvUtUTtc0WPwUOML3qXtRAVU21kD73k=;
-        b=cDunRHu8iVtlKvZOPIZU+mOgNRNvLz9KWDYWeFyvCOhVHbLsFI+zpZ/D18iW6GhSK4
-         ba61xMB+8Z06E6NfLXqBHJl8ZtcM7PqizoNWrncIu37Q845LT1meTuocaCjX4xrXXCOa
-         DNUbcRgOMBPE6EebRPYpA6KbLoq/o6xwUbxoHGXNUaVnLKZ9+nd1338KL1WcJrl/ii2F
-         bvJPzaz8/uWTfyrkcbmC1smLceQ4LJ4/BB2kotJT7BOx/IL25DxGIy4hRXIAlOPgdg7S
-         YRjehVJ5PEIqvAiTZHXJQ4o+VA5DoShaKpFnnxkzQzk8TSzw0sv2jBYBdjgMY3CsjX4w
-         dAaA==
-X-Gm-Message-State: AOAM530vhJeE5kVdesohyfe+AdDVQRmeClPMDg9aCOWt3Kt9nfbpO/7Q
-        w/8Q/PUm7Rqq4JJh02IF6dH9CKr+9tRxOvCJV6UZ7MczmIY=
-X-Google-Smtp-Source: ABdhPJxd7LRUjsrsROEc4jaEFDosBv0f7inWto8U0OkZ3Adgh+KqC7WGVmNBGUHs5fVgysClLgopr7gpvbcfRdOtQ6I=
-X-Received: by 2002:a25:8110:: with SMTP id o16mr36210006ybk.14.1600291921640;
- Wed, 16 Sep 2020 14:32:01 -0700 (PDT)
+        Wed, 16 Sep 2020 18:28:16 -0400
+Received: from [192.168.254.6] (unknown [50.34.202.127])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail3.candelatech.com (Postfix) with ESMTPSA id 2466713C2B0;
+        Wed, 16 Sep 2020 15:28:15 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 2466713C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+        s=default; t=1600295295;
+        bh=TKlFpo4QXqO7jDcnZxjIoNr1Nuv3yHnLSWqA5dCPa2c=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+        b=XtSQ1iS0Vcj11/EFjY7VNsvyOxvjOTPNO1mqfTNcXO8xmJjetj2cFvoV4th0FPgR5
+         mhxTRBu5xSKCWsCF4wZjmdMO1IE/UnKb1W944lnl4hhrfYEX+NcPc2CUKTxzc1n/Kk
+         Ur54/xugjSZjmg3NkdplCQnn51VdSwMGbHbuXz14=
+Subject: Re: [PATCH] mac80211: do not iterate active interfaces when in
+ re-configure
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless@vger.kernel.org
+Cc:     Kalle Valo <kvalo@codeaurora.org>
+References: <20200525165317.2269-1-greearb@candelatech.com>
+ <a3a6a9303eeaf91f83bcbc413ad0782659218966.camel@sipsolutions.net>
+ <c53fd2d0-3ffb-3700-f12e-34c1867dded4@candelatech.com>
+ <7f2722c9d30bb1a4715398b4f29309b1f383593b.camel@sipsolutions.net>
+ <6a0f46b1-54c0-c090-56e6-7cca3b295691@candelatech.com>
+ <2bcd9fbd6d141d6e78f606fd7f96fb99573810d2.camel@sipsolutions.net>
+ <98996ee9-a9cc-521b-05cc-1404d3b9b251@candelatech.com>
+ <cbe230f7270587e14ccee835561c437362e3933d.camel@sipsolutions.net>
+From:   Ben Greear <greearb@candelatech.com>
+Organization: Candela Technologies
+Message-ID: <a38f8f2f-9de6-5e03-4df5-1b5fae584ecd@candelatech.com>
+Date:   Wed, 16 Sep 2020 15:28:14 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.11.0
 MIME-Version: 1.0
-References: <CAD_iCC8EyWV8bLdJ+VsRdMHOa6ccOOOOUMM6nMwDk16LtMppcg@mail.gmail.com>
- <PR2PR08MB464983615CFB2AF2B3BCD644D12E0@PR2PR08MB4649.eurprd08.prod.outlook.com>
- <CAD_iCC-=rvC6mC8pOKNKqrrWQv2wt9BXVMQB2DR1QKcGp_KbiQ@mail.gmail.com>
- <CABPxzYJ=vJB4pnCC__G6Luhdp_m51Z_nKq80HFxEfN6cdsKQbw@mail.gmail.com>
- <CAD_iCC-koZwPCew4+n4nk8Ou_jWC2BxxcSDy_rf9KnO4Q=MO=g@mail.gmail.com>
- <CABPxzY+tfkjKETjdKJE7AjY6ELFfsLw4utVWOfXwxuV4C+RK8w@mail.gmail.com>
- <CAD_iCC-=9XU-DbfUorUtSRzCOEW=gr83T8ZSMvJn_xFgoMWvew@mail.gmail.com>
- <CABPxzYJmL7x1Hfx9Yf+4XT6xngWNmYC9ZGGvDYqLo7y2bNtCow@mail.gmail.com>
- <CAD_iCC9Vu55FG5vHSWF=H8v-ZZKQoyin8B-1zBtaJ+2MeJqCjg@mail.gmail.com>
- <CABPxzYKVK3OK6nKMrLrBfdy-Yz1v_bbyhHHLCkxnFzWtFBSGaA@mail.gmail.com>
- <CAD_iCC8XDNXfDmghhXyK8auFg5WinqaACpbpbiZ4g0toaDoeiw@mail.gmail.com>
- <CABPxzYK-HN-Q3wREn+6qAkiHAnkuyqz-g6m9XpUtaMd8ckHQPg@mail.gmail.com>
- <CAD_iCC-LMnDeL-e-i2GPYe9fRruWxkKvHEsNGDERv2j8eN1YFw@mail.gmail.com>
- <CABPxzYJVwjPGrHitstWkgiL+kEB9AeTMy_e5nu7FNXVv4ZNk-A@mail.gmail.com>
- <CAD_iCC_1TV_wQK+xOWk48eaJhWo82CZgTL-g4jg7tOdVxvqEZw@mail.gmail.com>
- <CABPxzY+2OO6nptyE+oH+COLe3pVgKhji=H1trP7m_bcpVqEe7Q@mail.gmail.com>
- <CAD_iCC-x9J4UB5aVR85WNi4OwaXQiU28+4B1AD176zDu8DBhwQ@mail.gmail.com>
- <CABPxzY+oy=p4QLHfyVMprigHOpTJEJGsJ-Bsti5b9Ly=eDy+cQ@mail.gmail.com>
- <CAD_iCC-mCo58fs1v+bqyB=NRXkQDTa20R=NGe+SwTP2s7NPfOA@mail.gmail.com>
- <CABPxzYKckJ94+96YsTY4Y7D7_z-Pk=b+T1tvu5BzaoVjVi0apw@mail.gmail.com>
- <CAD_iCC8StVW7Yh9f8fm2Da7LcN6LQzR=ssp+1E8-=YYCM-5tOQ@mail.gmail.com>
- <CABPxzYKFUN-hyhJnxG_-EcD0L0bsp8rn+b+tyt_ReAf11vzKng@mail.gmail.com>
- <fd8fafe85f2d75a2563e5be766cce1f45424e2bf.camel@sipsolutions.net> <CABPxzYLEZ5KU5x3w9rex3SQqj+TwGXFOXnC_QXdEu9NLfcRHMQ@mail.gmail.com>
-In-Reply-To: <CABPxzYLEZ5KU5x3w9rex3SQqj+TwGXFOXnC_QXdEu9NLfcRHMQ@mail.gmail.com>
-From:   Krishna Chaitanya <chaitanya.mgit@gmail.com>
-Date:   Thu, 17 Sep 2020 03:01:50 +0530
-Message-ID: <CABPxzYKPHXtJHP4FhdrtJ763ZeHwf4bjyPOr5c7g_88r_pSdLQ@mail.gmail.com>
-Subject: Re: Configuring WiFi6 in hostapd
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     Sugandh Huthanahally Mohan <sugandhgowda@gmail.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Luciano Coelho <luciano.coelho@intel.com>,
-        Cedric Izoard <Cedric.Izoard@ceva-dsp.com>,
-        "Hostap@lists.infradead.org" <Hostap@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <cbe230f7270587e14ccee835561c437362e3933d.camel@sipsolutions.net>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-MW
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sat, Sep 12, 2020 at 12:56 AM Krishna Chaitanya
-<chaitanya.mgit@gmail.com> wrote:
->
-> On Fri, Sep 11, 2020 at 10:41 PM Johannes Berg
-> <johannes@sipsolutions.net> wrote:
-> >
-> > On Fri, 2020-09-11 at 20:37 +0530, Krishna Chaitanya wrote:
-> >
-> > > > [  228.315290] iwlwifi 0000:03:00.0: 0x00002078 | ADVANCED_SYSASSERT
-> > > > [  228.315294] iwlwifi 0000:03:00.0: 0x00A0A200 | trm_hw_status0
-> > > > [  228.315297] iwlwifi 0000:03:00.0: 0x00000000 | trm_hw_status1
-> > > > [  228.315300] iwlwifi 0000:03:00.0: 0x004F8E3C | branchlink2
-> > > > [  228.315303] iwlwifi 0000:03:00.0: 0x004E4FF4 | interruptlink1
-> > > > [  228.315307] iwlwifi 0000:03:00.0: 0x004E4FF4 | interruptlink2
-> > > > [  228.315310] iwlwifi 0000:03:00.0: 0x07000101 | data1
-> > > > [  228.315313] iwlwifi 0000:03:00.0: 0x48308403 | data2
-> > > > [  228.315316] iwlwifi 0000:03:00.0: 0x00000005 | data3
-> >
-> > This means that we got an invalid TX rate, notably an HE rate was
-> > requested/configured on a MAC configuration that didn't have HE.
-> >
-> > I think I saw some patches in this area (configuring the MAC to be HE)
-> > fly by internally recently, but not sure... Luca probably knows.
-> Ah okay. This was reported on 5.4 kernel, do you think is it worth
-> trying on latest iwlwifi-next tree? Or as you are referring to the internal tree
-> the issue is present in the latest as well?
-Hi Luca,
+On 7/30/20 8:03 AM, Johannes Berg wrote:
+> On Thu, 2020-07-30 at 07:52 -0700, Ben Greear wrote:
+> 
+>>> Consider
+>>>
+>>> add interface wlan0
+>>> add interface wlan1
+>>> iterate active interfaces -> wlan0 wlan1
+>>> add interface wlan2
+>>> iterate active interfaces -> wlan0 wlan1 wlan2
+>>>
+>>> If you apply this scenario to a restart, which ought to be functionally
+>>> equivalent to the normal startup, just compressed in time, you're
+>>> basically saying that today you get
+>>>
+>>> add interface wlan0
+>>> add interface wlan1
+>>> iterate active interfaces -> wlan0 wlan1 wlan2 << problem here
+>>> add interface wlan2
+>>> iterate active interfaces -> wlan0 wlan1 wlan2
+>>>
+>>> which yeah, totally seems wrong.
+>>>
+>>> But fixing that to be
+>>>
+>>> add interface wlan0
+>>> add interface wlan1
+>>> iterate active interfaces ->
+>>> <nothing>
+>>> add interface wlan2
+>>> iterate active interfaces -> <nothing>
+>>> (or
+>>> maybe -> wlan0 wlan1 wlan2 if the reconfig already completed)
+>>>
+>>> seems equally wrong?
+>>
+>> So, looks like there is a flags option passed to the iterate logic, and it is indeed called
+>> directly from drivers.  So, I could just add a new flag value, and | it in when calling from ath10k.
+>>
+>> I'm not sure it would really solve the second case, but at least in practice,
+>> that one doesn't seem to be a problem with ath10k, and the first case *was*
+>> a problem.
+>>
+>> If that sounds OK to you, I'll work on the patch as described.
+> 
+> Right, that'd be the option 2. I described earlier. I can live with that
+> even if I'd prefer to fix it as per 1. to "make sense". But I guess
+> there could even be "more legitimate" cases to not want to iterate while
+> restarting, even if I'm not really sure where that'd make sense?
+> 
+> I guess Kalle should comment on whether he'd accept that into the
+> driver.
+> 
+> Kalle, as you can see above mac80211 appears to be broken wrt. iterating
+> "active" interfaces during a restart - the iteration considers all
+> interfaces active that were active before the restart, not just the ones
+> that were already re-added to the driver. Ben says this causes trouble
+> in ath10k.
+> 
+> IMHO the right fix for this would be to fix the iteration to only reach
+> the ones that have been re-added, like I've said above. OTOH, Ben isn't
+> really convinced that that's right, and has experience with a patch that
+> makes mac80211 return *no* interfaces whatsoever in the iteration when
+> done while in restart. Like I say there, it seems wrong to me.
+> 
+> But depending on what ath10k actually _does_ with this list, perhaps
+> it's not an issue. Perhaps it's just transient state that it derives
+> from it, so if it does it again after the reconfig is completed, it
+> would in fact get all the information it needed.
+> 
+> I'm pretty sure this would break iwlwifi, so one option (less preferred)
+> would be to add a flag to say "skip iteration in reconfig".
+> 
+> actually does the driver know it's in reconfig? Perhaps it could even do
+> that completely on its own?
+> 
+> Anyway, the question is what you think about doing such a thing in the
+> driver, if it fixes issues even if it's probably not really correct.
+> 
+> johannes
 
-Can you please take a look? Any help is appreciated.
+So, no response from Kalle on this for some time.  I thought I'd ping one
+more time before I make an effort to create another out-of-tree patch.
+
+Johannes, if you are OK with a new flag in mac80211, then I can patch ath10k-ct
+driver regardless of whether other drivers use it.
+
+Thanks,
+Ben
+
+-- 
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
