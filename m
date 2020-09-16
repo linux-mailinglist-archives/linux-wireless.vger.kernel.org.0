@@ -2,33 +2,33 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B1FF026BC0C
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Sep 2020 07:58:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F6AA26BC0D
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Sep 2020 07:59:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726241AbgIPF6K (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 16 Sep 2020 01:58:10 -0400
+        id S1726250AbgIPF7J (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 16 Sep 2020 01:59:09 -0400
 Received: from mail29.static.mailgun.info ([104.130.122.29]:64394 "EHLO
         mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726129AbgIPF6K (ORCPT
+        by vger.kernel.org with ESMTP id S1726093AbgIPF7G (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 16 Sep 2020 01:58:10 -0400
+        Wed, 16 Sep 2020 01:59:06 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1600235889; h=Date: Message-Id: Cc: To: References:
+ s=smtp; t=1600235945; h=Date: Message-Id: Cc: To: References:
  In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=xc8sLUYV3RCHabsAMS798ojdl3tDguhubfPkXc9X9Qk=;
- b=nFAj/DP/QaygU51FSXesc1Hr/fHjXDBaaMcaa9RYN16oBnI2T20je6tgMTiAH/8qzwRXVUby
- oVxLw/ezDVJj3qOYE2U/GTykNSu7pUDTZoQ1iXWp5iOxZgCHI+MB6jbET252S4ypYtex9+3Q
- SBMgBypwNk36oA1hVIfV2cCfjVg=
+ Content-Type: Sender; bh=C0C37npPCN55+6wEu2tkPUH6VnxnK0eHBljTZq1BIuw=;
+ b=W8Upx5fd9I2OBmiavviceDdtsA0qopXYVzIdp6LtFmpiEDmEEuOCvJuCsoHTK7lwKjGW64ss
+ PeqvXXZrgeP0egr5idYbU7qCQdrzNMiYmqk9WfVjNZsfXZAGetEx8lJxHxHQfbTx2XImoFXD
+ N4sKH0/HHSadV7KWaSAV6GmfjqE=
 X-Mailgun-Sending-Ip: 104.130.122.29
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n04.prod.us-west-2.postgun.com with SMTP id
- 5f61a9711a08b594a9f26b5b (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 16 Sep 2020 05:58:09
+ smtp-out-n07.prod.us-west-2.postgun.com with SMTP id
+ 5f61a994cd8edf15d7afc4c8 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 16 Sep 2020 05:58:44
  GMT
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 03E0EC433FE; Wed, 16 Sep 2020 05:58:09 +0000 (UTC)
+        id CE720C433F0; Wed, 16 Sep 2020 05:58:44 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -39,47 +39,55 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id C19CAC433CA;
-        Wed, 16 Sep 2020 05:58:06 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org C19CAC433CA
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 7B879C433C8;
+        Wed, 16 Sep 2020 05:58:39 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 7B879C433C8
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 28/29] brcmsmac: phytbl_lcn: Remove unused array
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH] brcmsmac: phytbl_lcn: Eliminate defined but not used
  'dot11lcn_gain_tbl_rev1'
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20200910065431.657636-29-lee.jones@linaro.org>
-References: <20200910065431.657636-29-lee.jones@linaro.org>
-To:     Lee Jones <lee.jones@linaro.org>
-Cc:     davem@davemloft.net, kuba@kernel.org, linux-kernel@vger.kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        Lee Jones <lee.jones@linaro.org>
+In-Reply-To: <20200910140505.1168317-1-yanaijie@huawei.com>
+References: <20200910140505.1168317-1-yanaijie@huawei.com>
+To:     Jason Yan <yanaijie@huawei.com>
+Cc:     <arend.vanspriel@broadcom.com>, <franky.lin@broadcom.com>,
+        <hante.meuleman@broadcom.com>, <chi-hsien.lin@cypress.com>,
+        <wright.feng@cypress.com>, <davem@davemloft.net>,
+        <kuba@kernel.org>, <yanaijie@huawei.com>,
+        <linux-wireless@vger.kernel.org>,
+        <brcm80211-dev-list.pdl@broadcom.com>,
+        <brcm80211-dev-list@cypress.com>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, Hulk Robot <hulkci@huawei.com>
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20200916055809.03E0EC433FE@smtp.codeaurora.org>
-Date:   Wed, 16 Sep 2020 05:58:09 +0000 (UTC)
+Message-Id: <20200916055844.CE720C433F0@smtp.codeaurora.org>
+Date:   Wed, 16 Sep 2020 05:58:44 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Lee Jones <lee.jones@linaro.org> wrote:
+Jason Yan <yanaijie@huawei.com> wrote:
 
-> Fixes the following W=1 kernel build warning(s):
+> This addresses the following gcc warning with "make W=1":
 > 
->  drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phytbl_lcn.c:108:18: warning: unused variable 'dot11lcn_gain_tbl_rev1' [-Wunused-const-variable]
->  static const u32 dot11lcn_gain_tbl_rev1[] = {
+> drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phytbl_lcn.c:108:18:
+> warning: ‘dot11lcn_gain_tbl_rev1’ defined but not used
+> [-Wunused-const-variable=]
+>   108 | static const u32 dot11lcn_gain_tbl_rev1[] = {
+>       |                  ^~~~~~~~~~~~~~~~~~~~~~
 > 
-> Signed-off-by: Lee Jones <lee.jones@linaro.org>
+> Reported-by: Hulk Robot <hulkci@huawei.com>
+> Signed-off-by: Jason Yan <yanaijie@huawei.com>
 
-2 patches applied to wireless-drivers-next.git, thanks.
+Patch applied to wireless-drivers-next.git, thanks.
 
-f75738a09f59 brcmsmac: phytbl_lcn: Remove unused array 'dot11lcn_gain_tbl_rev1'
-8f56b86d2ebe brcmsmac: phy_lcn: Remove unused variable 'lcnphy_rx_iqcomp_table_rev0'
+43c1a70bfa04 brcmsmac: phy_lcn: Remove unused variable 'lcnphy_rx_iqcomp_table_rev0'
 
 -- 
-https://patchwork.kernel.org/patch/11766809/
+https://patchwork.kernel.org/patch/11769341/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
