@@ -2,104 +2,142 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1CBF726DF90
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Sep 2020 17:24:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9240026E093
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Sep 2020 18:23:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728174AbgIQPYm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 17 Sep 2020 11:24:42 -0400
-Received: from mail29.static.mailgun.info ([104.130.122.29]:27818 "EHLO
-        mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728145AbgIQPYj (ORCPT
+        id S1728389AbgIQQXO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 17 Sep 2020 12:23:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48580 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728418AbgIQQXA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 17 Sep 2020 11:24:39 -0400
-X-Greylist: delayed 347 seconds by postgrey-1.27 at vger.kernel.org; Thu, 17 Sep 2020 11:24:39 EDT
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1600356261; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=F+SF08fyE7ToxyIPjbHFyQnwT8G/4ga57t/Io9iwz0c=; b=Mn1kOCCIivj3Z6F6pn8X5PwUkFLTgHrB/ObuQX4YQ/gXs5ILxDa658JoQX3goQRT3tF4iJrY
- qY0C0M+v26jCEpsfL+16VkuqQcc/ZEnd0cy6okM1ZjB1cFmmRgQYV9PIvQ7ftElHrY8ml49q
- /ITajXFscSzqNOJm78Ra25TCje0=
-X-Mailgun-Sending-Ip: 104.130.122.29
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n04.prod.us-west-2.postgun.com with SMTP id
- 5f637e434ab73023a73dbc57 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 17 Sep 2020 15:18:27
- GMT
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 3E5BFC433FF; Thu, 17 Sep 2020 15:18:27 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 82442C433F1;
-        Thu, 17 Sep 2020 15:18:25 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 82442C433F1
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Venkateswara Naralasetty <vnaralas@codeaurora.org>
-Cc:     ath11k@lists.infradead.org,
-        Manikanta Pubbisetty <mpubbise@codeaurora.org>,
-        linux-wireless@vger.kernel.org
-Subject: Re: [PATCHv2] ath11k: add raw mode and software crypto support
-References: <010101746c6a54fa-91406158-3f0a-4f10-8328-a7f560dd3feb-000000@us-west-2.amazonses.com>
-Date:   Thu, 17 Sep 2020 18:18:22 +0300
-In-Reply-To: <010101746c6a54fa-91406158-3f0a-4f10-8328-a7f560dd3feb-000000@us-west-2.amazonses.com>
-        (Venkateswara Naralasetty's message of "Tue, 8 Sep 2020 06:32:22
-        +0000")
-Message-ID: <871rj0h1oh.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        Thu, 17 Sep 2020 12:23:00 -0400
+Received: from mail-ot1-x341.google.com (mail-ot1-x341.google.com [IPv6:2607:f8b0:4864:20::341])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B92B4C061788
+        for <linux-wireless@vger.kernel.org>; Thu, 17 Sep 2020 09:05:19 -0700 (PDT)
+Received: by mail-ot1-x341.google.com with SMTP id m12so2418436otr.0
+        for <linux-wireless@vger.kernel.org>; Thu, 17 Sep 2020 09:05:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=pr1+qs169BJdik6aLXHXMXH0H1gPFgPGvLMJONF6cEM=;
+        b=N5soSJzGI2P0TqxBg6k9zuJHKVxrcFJ3lrfwE5KYH3wAMEWUHjR9zkMX5RlssERxlc
+         JJ7wUcfYvE8wqcVBu7/8qvEz1BOzXWkRoWBQ25oUl7qIi0TuRR9su+CI1CBQd514VIXf
+         HJcCuVT69bL3/vxI7mC2sL/u6m+adTV7MUCdEdUZm+a/zKGSqvTz539wEVcaxNKXGIRt
+         N45FBLJXu04R3qZFZAV2DXIkS8i3BgSho/1ijhT8D5pf0PobZvUwlVnE4jnO21vxc/MZ
+         MNXQc3fIRvUgoPL7Qv6+ZIhz1Z6wLqQSVloyWAdFJ22HrWLUjuJy28g3i4AzymSHr+dd
+         Jg7g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=pr1+qs169BJdik6aLXHXMXH0H1gPFgPGvLMJONF6cEM=;
+        b=Uj4jZcQUhftypM4JcP2Ic0mbP4yTF1ZjbatJOHo+4pQVOlnjdqvUf6ZUaOTNJ737Fi
+         hHnQ/8qJ9ooeQUECEcM/w2nlQkISKxGGgL2JXneHvc+PMzT1hMMNI2sA7zOYvpYhpnZX
+         lh8+wfozaJk6T3nJYrN8NTAIl1KIzfhmqIeajgF8On2YsFqSmCuQkrtxceYewEhpA7Di
+         3U89NCuBfUVlUuEQJblg3iIqdroHqC41btpx9W0Yr6yqEPiEcwYePETqzktt2V+vtXFS
+         V/E7cbRgAaIsR98fmaLLfVvcVVZEIcLgq83Do7pK/LUd5cuvQduwBv1tNw+ldmRArBxY
+         7H6g==
+X-Gm-Message-State: AOAM5319RcDTMo0hief/gtmcl3Uldbno98UrfZObZ8IG6rD8ZBKrXeiA
+        b/c/08Xhg9w86a/GLFJOxtO4sw==
+X-Google-Smtp-Source: ABdhPJytIlwv42T4bgYbg4zEeGXT5Vo0QknqPxpyp035i82pDqTmYMRQRKb1oPTJrb+JbY5Fv2Z52g==
+X-Received: by 2002:a9d:7084:: with SMTP id l4mr20954675otj.161.1600358718870;
+        Thu, 17 Sep 2020 09:05:18 -0700 (PDT)
+Received: from yoga ([2605:6000:e5cb:c100:7cad:6eff:fec8:37e4])
+        by smtp.gmail.com with ESMTPSA id h35sm109614otb.81.2020.09.17.09.05.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 17 Sep 2020 09:05:18 -0700 (PDT)
+Date:   Thu, 17 Sep 2020 11:05:13 -0500
+From:   Bjorn Andersson <bjorn.andersson@linaro.org>
+To:     Amit Pundir <amit.pundir@linaro.org>
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        David S Miller <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Jeffrey Hugo <jeffrey.l.hugo@gmail.com>,
+        John Stultz <john.stultz@linaro.org>,
+        Sumit Semwal <sumit.semwal@linaro.org>,
+        Konrad Dybcio <konradybcio@gmail.com>,
+        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, lkml <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] ath10k: qmi: Skip host capability request for Xiaomi
+ Poco F1
+Message-ID: <20200917160513.GO1893@yoga>
+References: <1600328501-8832-1-git-send-email-amit.pundir@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1600328501-8832-1-git-send-email-amit.pundir@linaro.org>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Venkateswara Naralasetty <vnaralas@codeaurora.org> writes:
+On Thu 17 Sep 02:41 CDT 2020, Amit Pundir wrote:
 
-> Adding raw mode tx/rx support. Also, adding support
-> for software crypto which depends on raw mode.
->
-> To enable raw mode tx/rx:
-> insmod ath11k.ko frame_mode=0
->
-> To enable software crypto:
-> insmod ath11k.ko crypto_mode=1
->
-> These modes could be helpful in debugging crypto related issues.
->
-> Tested-on: IPQ8074 WLAN.HK.2.1.0.1-01228-QCAHKSWPL_SILICONZ-1
->
-> Signed-off-by: Manikanta Pubbisetty <mpubbise@codeaurora.org>
-> Signed-off-by: Venkateswara Naralasetty <vnaralas@codeaurora.org>
+> Workaround to get WiFi working on Xiaomi Poco F1 (sdm845)
+> phone. We get a non-fatal QMI_ERR_MALFORMED_MSG_V01 error
+> message in ath10k_qmi_host_cap_send_sync(), but we can still
+> bring up WiFi services successfully on AOSP if we ignore it.
+> 
+> We suspect either the host cap is not implemented or there
+> may be firmware specific issues. Firmware version is
+> QC_IMAGE_VERSION_STRING=WLAN.HL.2.0.c3-00257-QCAHLSWMTPLZ-1
+> 
+> qcom,snoc-host-cap-8bit-quirk didn't help. If I use this
+> quirk, then the host capability request does get accepted,
+> but we run into fatal "msa info req rejected" error and
+> WiFi interface doesn't come up.
+> 
 
-[...]
+What happens if you skip sending the host-cap message? I had one
+firmware version for which I implemented a
+"qcom,snoc-host-cap-skip-quirk".
 
-> --- a/drivers/net/wireless/ath/ath11k/wmi.c
-> +++ b/drivers/net/wireless/ath/ath11k/wmi.c
-> @@ -3366,6 +3366,10 @@ int ath11k_wmi_cmd_init(struct ath11k_base *ab)
->  	config.rx_timeout_pri[2] = TARGET_RX_TIMEOUT_LO_PRI;
->  	config.rx_timeout_pri[3] = TARGET_RX_TIMEOUT_HI_PRI;
->  	config.rx_decap_mode = TARGET_DECAP_MODE_NATIVE_WIFI;
-> +
-> +	if (test_bit(ATH11K_FLAG_RAW_MODE, &ab->dev_flags))
-> +		config.rx_decap_mode = TARGET_DECAP_MODE_RAW;
+But testing showed that the link was pretty unusable - pushing any real
+amount of data would cause it to silently stop working - and I realized
+that I could use the linux-firmware wlanmdsp.mbn instead, which works
+great on all my devices...
 
-Did you test this at all? Because to me it looks like in
-ath11k_init_wmi_config_ipq8074() this is overwritten with:
+> Attempts are being made to debug the failure reasons but no
+> luck so far. Hence this device specific workaround instead
+> of checking for QMI_ERR_MALFORMED_MSG_V01 error message.
+> Tried ath10k/WCN3990/hw1.0/wlanmdsp.mbn from the upstream
+> linux-firmware project but it didn't help and neither did
+> building board-2.bin file from stock bdwlan* files.
+> 
 
-	config->rx_decap_mode = TARGET_DECAP_MODE_NATIVE_WIFI;
+"Didn't work" as in the wlanmdsp.mbn from linux-firmware failed to load
+or some laer problem?
 
-So I can't see how this would even work. I noticed this while I was
-cleaning up ath11k_wmi_cmd_init(). I'll send a patch soon, please test
-that and let me know if it works.
+Regards,
+Bjorn
 
--- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+> This workaround will be removed once we have a viable fix.
+> Thanks to postmarketOS guys for catching this.
+> 
+> Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
+> ---
+> Device-tree for Xiaomi Poco F1(Beryllium) got merged in
+> qcom/arm64-for-5.10 last week
+> https://git.kernel.org/pub/scm/linux/kernel/git/qcom/linux.git/commit/?id=77809cf74a8c
+> 
+>  drivers/net/wireless/ath/ath10k/qmi.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/wireless/ath/ath10k/qmi.c b/drivers/net/wireless/ath/ath10k/qmi.c
+> index 0dee1353d395..37c5350eb8b1 100644
+> --- a/drivers/net/wireless/ath/ath10k/qmi.c
+> +++ b/drivers/net/wireless/ath/ath10k/qmi.c
+> @@ -651,7 +651,8 @@ static int ath10k_qmi_host_cap_send_sync(struct ath10k_qmi *qmi)
+>  
+>  	/* older FW didn't support this request, which is not fatal */
+>  	if (resp.resp.result != QMI_RESULT_SUCCESS_V01 &&
+> -	    resp.resp.error != QMI_ERR_NOT_SUPPORTED_V01) {
+> +	    resp.resp.error != QMI_ERR_NOT_SUPPORTED_V01 &&
+> +	    !of_machine_is_compatible("xiaomi,beryllium")) { /* Xiaomi Poco F1 workaround */
+>  		ath10k_err(ar, "host capability request rejected: %d\n", resp.resp.error);
+>  		ret = -EINVAL;
+>  		goto out;
+> -- 
+> 2.7.4
+> 
