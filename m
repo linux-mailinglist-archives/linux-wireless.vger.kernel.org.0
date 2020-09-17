@@ -2,133 +2,117 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 64A0826D03B
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Sep 2020 02:53:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 671EF26D4EC
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Sep 2020 09:42:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726093AbgIQAxG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 16 Sep 2020 20:53:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45316 "EHLO
+        id S1726217AbgIQHlv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 17 Sep 2020 03:41:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51934 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726043AbgIQAxB (ORCPT
+        with ESMTP id S1726106AbgIQHlt (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 16 Sep 2020 20:53:01 -0400
-Received: from mail-lf1-x144.google.com (mail-lf1-x144.google.com [IPv6:2a00:1450:4864:20::144])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 549ADC061353;
-        Wed, 16 Sep 2020 17:45:46 -0700 (PDT)
-Received: by mail-lf1-x144.google.com with SMTP id b22so203566lfs.13;
-        Wed, 16 Sep 2020 17:45:46 -0700 (PDT)
+        Thu, 17 Sep 2020 03:41:49 -0400
+Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com [IPv6:2607:f8b0:4864:20::441])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9ADBC06174A
+        for <linux-wireless@vger.kernel.org>; Thu, 17 Sep 2020 00:41:48 -0700 (PDT)
+Received: by mail-pf1-x441.google.com with SMTP id w7so684750pfi.4
+        for <linux-wireless@vger.kernel.org>; Thu, 17 Sep 2020 00:41:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=hhwWIdmoDfeRtla5zf1ymCAqzs41GJNhIs9x0pXt6Mw=;
-        b=YHPv0+IzmbaKgKDSdY0AwJQvcUwj9q/bwOqGnIPsOV7qxVwlBrWutMMObuxwnoLueF
-         puEFawK+WyonzflpzIzD8txJ4sW6AfAtS766xUjnVDqRo5OBQxhM3teLushvd7bVzxEm
-         ekfqHuiNiZKW4fQqq6NYljp7OFx5g9PTyE4+JVEnt6fAs0cHjKpDVxFBMY+VPrAHMlZs
-         YweNUXlUFvvEDJQcomlgpzmZrDZgX7/dqIhcMV0ZOxYq/LFA4HwpgrYkofnPPubKg6T/
-         PfDcB9mZKbmWCaW5APy5nP8C0HtWCwDeUk4G8AeBI+WLze0VuHy8LWaHc2ntBTO+I0XV
-         Yx1g==
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:author;
+        bh=FXDiiYkOrBBkVMM60XIvsHKuLK5wSyPpdEYR7aXyVeE=;
+        b=iCw4GwLwH4XXyDXgc0qXrpwDfvZsPiJOvBqE4DHe9rNTw9dyeZdz73ZGAaYeJFhfAc
+         5jBxJXFSncPIyRXCtdeFWzeXnTb9NyZEDSzN0E7DaOPWo5kyl0920tplCBronsYZeneR
+         8jOUfjj5ef671oSxEfy3FiXQZ9FtXWywocHpg8liT1Rl8jvyJZ7NyWmcMGkI9K7NMbRz
+         uKEVG8/DE88glop1q9AdGMTFU5fppJsVLWyZ27UGFTkbp3cS5UNMNcONYteUA/Lz+AVw
+         YQ3JmUkIMUz175TX0Ff6jGGvDv3BsPDDtzRklvJrBKDA8iibWpfjGd/LaOHKQyLD5AkA
+         tFVA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=hhwWIdmoDfeRtla5zf1ymCAqzs41GJNhIs9x0pXt6Mw=;
-        b=ODkpsZq95uKZ13Bdm4oY2BGfft6aKMtfRHbCf7Kd4CnmjI8JlpJ5F84irw9rknVLuT
-         SXMfo4pY7/5j7KvaUwytxCeyR05hd6WU+/1J4cyfdVPAAS0pbS/+mf1Z8KrNrr7GMhxr
-         4aJtX9rbdgorrMrlEe9DM6tICUnN+IENEGWrkBB0nO2MPSFN+3KtKzdBFfSYJbOpFYDI
-         hfEOAgVrRxfJ61fcTgKIZCSB1BoT4YPCX+oSHxIF69hsaGea7yZmJusmsBKbfWlmAiM4
-         BtZyypLK/gOugdEZL1Uc6ElFHQBm/OxiakSYh5T+/3APe5OeN22PwmX7w/xSmMkHYyc7
-         XEZg==
-X-Gm-Message-State: AOAM532yUO4DzXkMpoOZb94T4JUerZC6FtCMauc1znZMYSnDaOY4gBHD
-        KtNSPEd6PvB0kNcVS1iY445RKR/BAsSiNcLUcB8=
-X-Google-Smtp-Source: ABdhPJx/Mkxr1F57JCoOl8++VCiAX4t7jqJtnMR64G6EEPr349WzIUeFGskUi6F4dhMtENrhhPIWdl0iuLfkktuIHAE=
-X-Received: by 2002:ac2:4c07:: with SMTP id t7mr7986166lfq.194.1600303544747;
- Wed, 16 Sep 2020 17:45:44 -0700 (PDT)
-MIME-Version: 1.0
-References: <c2987351e3bdad16510dd35847991c2412a9db6b.camel@nvidia.com> <20200916165748.20927-1-alex.dewar90@gmail.com>
-In-Reply-To: <20200916165748.20927-1-alex.dewar90@gmail.com>
-From:   Julian Calaby <julian.calaby@gmail.com>
-Date:   Thu, 17 Sep 2020 10:45:33 +1000
-Message-ID: <CAGRGNgWoFfCnK9FcWTf_f0b57JNEjsm6ZNQB5X_AMf8L3FyNcQ@mail.gmail.com>
-Subject: Re: [PATCH v2] ath10k: sdio: remove redundant check in for loop
-To:     Alex Dewar <alex.dewar90@gmail.com>
-Cc:     Saeed Mahameed <saeedm@nvidia.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, ath10k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:author;
+        bh=FXDiiYkOrBBkVMM60XIvsHKuLK5wSyPpdEYR7aXyVeE=;
+        b=ETYMYrAbfRpzN2waK7dak4h5Dd9gdTVD3SCl7q/7FJFPuVKVveb7Fc5+CTivBtmDKA
+         Mo7cOcAZWmK3H8uuVT2jowktwOzY8cVl2/4NGNEWjGvxW90cvE9ecc9+4kLZYuyet4yL
+         UtU//ojlubAqaTsdyloVjEKj6P8icXAnM7GULqD/g10XRQKJtOlc7vIXs3oPa3edR6jO
+         2qWVaC8QHNheHJfo3WozuRJ7paXaDH5nJj2eoJIeK5f8s/dg2UQNZykqDXkVDove/Wa1
+         9WDGr6/Bp3Ysn55mpSusEXiKjo2EcG0QNaG+B67GB6elfZeHryJLFA9uj+3kxSdWKQgd
+         ofwQ==
+X-Gm-Message-State: AOAM533KKPhpNfDcuXJDBxmJfIeSvQ2FoKleLc648FfgSJOfKvwB+bRw
+        j21Ob40IEsZZ7R04GsMzS/BZMg==
+X-Google-Smtp-Source: ABdhPJzeq73boIofbBUIov5zoWTDDc1vmS133UThfzm7c+wWboFUL3yGWk8BGO8uBksiOtHwbMmvyA==
+X-Received: by 2002:a63:4c57:: with SMTP id m23mr20910626pgl.77.1600328508312;
+        Thu, 17 Sep 2020 00:41:48 -0700 (PDT)
+Received: from localhost.localdomain ([2405:201:6803:6073:ddd6:7b70:6083:ecc4])
+        by smtp.gmail.com with ESMTPSA id e27sm19365745pfj.62.2020.09.17.00.41.43
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 17 Sep 2020 00:41:47 -0700 (PDT)
+From:   Amit Pundir <amit.pundir@linaro.org>
+To:     Kalle Valo <kvalo@codeaurora.org>,
+        David S Miller <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Jeffrey Hugo <jeffrey.l.hugo@gmail.com>
+Cc:     John Stultz <john.stultz@linaro.org>,
+        Sumit Semwal <sumit.semwal@linaro.org>,
+        Konrad Dybcio <konradybcio@gmail.com>,
+        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, lkml <linux-kernel@vger.kernel.org>
+Subject: [PATCH] ath10k: qmi: Skip host capability request for Xiaomi Poco F1
+Date:   Thu, 17 Sep 2020 13:11:41 +0530
+Message-Id: <1600328501-8832-1-git-send-email-amit.pundir@linaro.org>
+X-Mailer: git-send-email 2.7.4
+Author: Amit Pundir <amit.pundir@linaro.org>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Alex,
+Workaround to get WiFi working on Xiaomi Poco F1 (sdm845)
+phone. We get a non-fatal QMI_ERR_MALFORMED_MSG_V01 error
+message in ath10k_qmi_host_cap_send_sync(), but we can still
+bring up WiFi services successfully on AOSP if we ignore it.
 
-On Thu, Sep 17, 2020 at 3:09 AM Alex Dewar <alex.dewar90@gmail.com> wrote:
->
-> The for loop checks whether cur_section is NULL on every iteration, but
-> we know it can never be NULL as there is another check towards the
-> bottom of the loop body. Refactor to avoid this unnecessary check.
->
-> Also, increment the variable i inline for clarity
+We suspect either the host cap is not implemented or there
+may be firmware specific issues. Firmware version is
+QC_IMAGE_VERSION_STRING=WLAN.HL.2.0.c3-00257-QCAHLSWMTPLZ-1
 
-Comments below.
+qcom,snoc-host-cap-8bit-quirk didn't help. If I use this
+quirk, then the host capability request does get accepted,
+but we run into fatal "msa info req rejected" error and
+WiFi interface doesn't come up.
 
-> Addresses-Coverity: 1496984 ("Null pointer dereferences)
-> Suggested-by: Saeed Mahameed <saeedm@nvidia.com>
-> Signed-off-by: Alex Dewar <alex.dewar90@gmail.com>
-> ---
-> v2: refactor in the manner suggested by Saeed
->
->  drivers/net/wireless/ath/ath10k/sdio.c | 12 +++---------
->  1 file changed, 3 insertions(+), 9 deletions(-)
->
-> diff --git a/drivers/net/wireless/ath/ath10k/sdio.c b/drivers/net/wireless/ath/ath10k/sdio.c
-> index 81ddaafb6721..486886c74e6a 100644
-> --- a/drivers/net/wireless/ath/ath10k/sdio.c
-> +++ b/drivers/net/wireless/ath/ath10k/sdio.c
-> @@ -2307,8 +2307,8 @@ static int ath10k_sdio_dump_memory_section(struct ath10k *ar,
->         }
->
->         count = 0;
-> -
-> -       for (i = 0; cur_section; i++) {
-> +       i = 0;
-> +       for (; cur_section; cur_section = next_section) {
+Attempts are being made to debug the failure reasons but no
+luck so far. Hence this device specific workaround instead
+of checking for QMI_ERR_MALFORMED_MSG_V01 error message.
+Tried ath10k/WCN3990/hw1.0/wlanmdsp.mbn from the upstream
+linux-firmware project but it didn't help and neither did
+building board-2.bin file from stock bdwlan* files.
 
-You can have multiple statements in each section of a for() if you need to, e.g.
+This workaround will be removed once we have a viable fix.
+Thanks to postmarketOS guys for catching this.
 
-for (i = 1; cur_section; cur_section = next_section, i++) {
+Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
+---
+Device-tree for Xiaomi Poco F1(Beryllium) got merged in
+qcom/arm64-for-5.10 last week
+https://git.kernel.org/pub/scm/linux/kernel/git/qcom/linux.git/commit/?id=77809cf74a8c
 
-which means that the increment of i isn't hidden deep in the function body.
+ drivers/net/wireless/ath/ath10k/qmi.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-
-That said, this function is a mess. Something (approximately) like
-this might be more readable:
-
-prev_end = memregion->start;
-for (i = 0; i < mem_region->section_table.size; i++) {
-    cur_section = &mem_region->section_table.sections[i];
-
-    // fail if prev_end is greater than cur_section->start - message
-from line 2329 and 2294
-    // check section size - from line 2315
-
-    skip_size = cur_section->start - prev_end;
-
-    // check buffer size - from line 2339 - needs to account for the
-skip size too.
-    // fill in the skip size amount - from line 2358 and 2304
-    // ath10k_sdio_read_mem - from line 2346
-
-    prev_end = cur_section->end;
-}
-
-Thanks,
-
+diff --git a/drivers/net/wireless/ath/ath10k/qmi.c b/drivers/net/wireless/ath/ath10k/qmi.c
+index 0dee1353d395..37c5350eb8b1 100644
+--- a/drivers/net/wireless/ath/ath10k/qmi.c
++++ b/drivers/net/wireless/ath/ath10k/qmi.c
+@@ -651,7 +651,8 @@ static int ath10k_qmi_host_cap_send_sync(struct ath10k_qmi *qmi)
+ 
+ 	/* older FW didn't support this request, which is not fatal */
+ 	if (resp.resp.result != QMI_RESULT_SUCCESS_V01 &&
+-	    resp.resp.error != QMI_ERR_NOT_SUPPORTED_V01) {
++	    resp.resp.error != QMI_ERR_NOT_SUPPORTED_V01 &&
++	    !of_machine_is_compatible("xiaomi,beryllium")) { /* Xiaomi Poco F1 workaround */
+ 		ath10k_err(ar, "host capability request rejected: %d\n", resp.resp.error);
+ 		ret = -EINVAL;
+ 		goto out;
 -- 
-Julian Calaby
+2.7.4
 
-Email: julian.calaby@gmail.com
-Profile: http://www.google.com/profiles/julian.calaby/
