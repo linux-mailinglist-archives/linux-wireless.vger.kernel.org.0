@@ -2,147 +2,133 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 00F2426CEBC
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Sep 2020 00:28:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 64A0826D03B
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Sep 2020 02:53:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726419AbgIPW2Q (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 16 Sep 2020 18:28:16 -0400
-Received: from mail2.candelatech.com ([208.74.158.173]:39040 "EHLO
-        mail3.candelatech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726187AbgIPW2Q (ORCPT
+        id S1726093AbgIQAxG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 16 Sep 2020 20:53:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45316 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726043AbgIQAxB (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 16 Sep 2020 18:28:16 -0400
-Received: from [192.168.254.6] (unknown [50.34.202.127])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail3.candelatech.com (Postfix) with ESMTPSA id 2466713C2B0;
-        Wed, 16 Sep 2020 15:28:15 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 2466713C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1600295295;
-        bh=TKlFpo4QXqO7jDcnZxjIoNr1Nuv3yHnLSWqA5dCPa2c=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=XtSQ1iS0Vcj11/EFjY7VNsvyOxvjOTPNO1mqfTNcXO8xmJjetj2cFvoV4th0FPgR5
-         mhxTRBu5xSKCWsCF4wZjmdMO1IE/UnKb1W944lnl4hhrfYEX+NcPc2CUKTxzc1n/Kk
-         Ur54/xugjSZjmg3NkdplCQnn51VdSwMGbHbuXz14=
-Subject: Re: [PATCH] mac80211: do not iterate active interfaces when in
- re-configure
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless@vger.kernel.org
-Cc:     Kalle Valo <kvalo@codeaurora.org>
-References: <20200525165317.2269-1-greearb@candelatech.com>
- <a3a6a9303eeaf91f83bcbc413ad0782659218966.camel@sipsolutions.net>
- <c53fd2d0-3ffb-3700-f12e-34c1867dded4@candelatech.com>
- <7f2722c9d30bb1a4715398b4f29309b1f383593b.camel@sipsolutions.net>
- <6a0f46b1-54c0-c090-56e6-7cca3b295691@candelatech.com>
- <2bcd9fbd6d141d6e78f606fd7f96fb99573810d2.camel@sipsolutions.net>
- <98996ee9-a9cc-521b-05cc-1404d3b9b251@candelatech.com>
- <cbe230f7270587e14ccee835561c437362e3933d.camel@sipsolutions.net>
-From:   Ben Greear <greearb@candelatech.com>
-Organization: Candela Technologies
-Message-ID: <a38f8f2f-9de6-5e03-4df5-1b5fae584ecd@candelatech.com>
-Date:   Wed, 16 Sep 2020 15:28:14 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.11.0
+        Wed, 16 Sep 2020 20:53:01 -0400
+Received: from mail-lf1-x144.google.com (mail-lf1-x144.google.com [IPv6:2a00:1450:4864:20::144])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 549ADC061353;
+        Wed, 16 Sep 2020 17:45:46 -0700 (PDT)
+Received: by mail-lf1-x144.google.com with SMTP id b22so203566lfs.13;
+        Wed, 16 Sep 2020 17:45:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=hhwWIdmoDfeRtla5zf1ymCAqzs41GJNhIs9x0pXt6Mw=;
+        b=YHPv0+IzmbaKgKDSdY0AwJQvcUwj9q/bwOqGnIPsOV7qxVwlBrWutMMObuxwnoLueF
+         puEFawK+WyonzflpzIzD8txJ4sW6AfAtS766xUjnVDqRo5OBQxhM3teLushvd7bVzxEm
+         ekfqHuiNiZKW4fQqq6NYljp7OFx5g9PTyE4+JVEnt6fAs0cHjKpDVxFBMY+VPrAHMlZs
+         YweNUXlUFvvEDJQcomlgpzmZrDZgX7/dqIhcMV0ZOxYq/LFA4HwpgrYkofnPPubKg6T/
+         PfDcB9mZKbmWCaW5APy5nP8C0HtWCwDeUk4G8AeBI+WLze0VuHy8LWaHc2ntBTO+I0XV
+         Yx1g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=hhwWIdmoDfeRtla5zf1ymCAqzs41GJNhIs9x0pXt6Mw=;
+        b=ODkpsZq95uKZ13Bdm4oY2BGfft6aKMtfRHbCf7Kd4CnmjI8JlpJ5F84irw9rknVLuT
+         SXMfo4pY7/5j7KvaUwytxCeyR05hd6WU+/1J4cyfdVPAAS0pbS/+mf1Z8KrNrr7GMhxr
+         4aJtX9rbdgorrMrlEe9DM6tICUnN+IENEGWrkBB0nO2MPSFN+3KtKzdBFfSYJbOpFYDI
+         hfEOAgVrRxfJ61fcTgKIZCSB1BoT4YPCX+oSHxIF69hsaGea7yZmJusmsBKbfWlmAiM4
+         BtZyypLK/gOugdEZL1Uc6ElFHQBm/OxiakSYh5T+/3APe5OeN22PwmX7w/xSmMkHYyc7
+         XEZg==
+X-Gm-Message-State: AOAM532yUO4DzXkMpoOZb94T4JUerZC6FtCMauc1znZMYSnDaOY4gBHD
+        KtNSPEd6PvB0kNcVS1iY445RKR/BAsSiNcLUcB8=
+X-Google-Smtp-Source: ABdhPJx/Mkxr1F57JCoOl8++VCiAX4t7jqJtnMR64G6EEPr349WzIUeFGskUi6F4dhMtENrhhPIWdl0iuLfkktuIHAE=
+X-Received: by 2002:ac2:4c07:: with SMTP id t7mr7986166lfq.194.1600303544747;
+ Wed, 16 Sep 2020 17:45:44 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <cbe230f7270587e14ccee835561c437362e3933d.camel@sipsolutions.net>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-MW
-Content-Transfer-Encoding: 7bit
+References: <c2987351e3bdad16510dd35847991c2412a9db6b.camel@nvidia.com> <20200916165748.20927-1-alex.dewar90@gmail.com>
+In-Reply-To: <20200916165748.20927-1-alex.dewar90@gmail.com>
+From:   Julian Calaby <julian.calaby@gmail.com>
+Date:   Thu, 17 Sep 2020 10:45:33 +1000
+Message-ID: <CAGRGNgWoFfCnK9FcWTf_f0b57JNEjsm6ZNQB5X_AMf8L3FyNcQ@mail.gmail.com>
+Subject: Re: [PATCH v2] ath10k: sdio: remove redundant check in for loop
+To:     Alex Dewar <alex.dewar90@gmail.com>
+Cc:     Saeed Mahameed <saeedm@nvidia.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, ath10k@lists.infradead.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 7/30/20 8:03 AM, Johannes Berg wrote:
-> On Thu, 2020-07-30 at 07:52 -0700, Ben Greear wrote:
-> 
->>> Consider
->>>
->>> add interface wlan0
->>> add interface wlan1
->>> iterate active interfaces -> wlan0 wlan1
->>> add interface wlan2
->>> iterate active interfaces -> wlan0 wlan1 wlan2
->>>
->>> If you apply this scenario to a restart, which ought to be functionally
->>> equivalent to the normal startup, just compressed in time, you're
->>> basically saying that today you get
->>>
->>> add interface wlan0
->>> add interface wlan1
->>> iterate active interfaces -> wlan0 wlan1 wlan2 << problem here
->>> add interface wlan2
->>> iterate active interfaces -> wlan0 wlan1 wlan2
->>>
->>> which yeah, totally seems wrong.
->>>
->>> But fixing that to be
->>>
->>> add interface wlan0
->>> add interface wlan1
->>> iterate active interfaces ->
->>> <nothing>
->>> add interface wlan2
->>> iterate active interfaces -> <nothing>
->>> (or
->>> maybe -> wlan0 wlan1 wlan2 if the reconfig already completed)
->>>
->>> seems equally wrong?
->>
->> So, looks like there is a flags option passed to the iterate logic, and it is indeed called
->> directly from drivers.  So, I could just add a new flag value, and | it in when calling from ath10k.
->>
->> I'm not sure it would really solve the second case, but at least in practice,
->> that one doesn't seem to be a problem with ath10k, and the first case *was*
->> a problem.
->>
->> If that sounds OK to you, I'll work on the patch as described.
-> 
-> Right, that'd be the option 2. I described earlier. I can live with that
-> even if I'd prefer to fix it as per 1. to "make sense". But I guess
-> there could even be "more legitimate" cases to not want to iterate while
-> restarting, even if I'm not really sure where that'd make sense?
-> 
-> I guess Kalle should comment on whether he'd accept that into the
-> driver.
-> 
-> Kalle, as you can see above mac80211 appears to be broken wrt. iterating
-> "active" interfaces during a restart - the iteration considers all
-> interfaces active that were active before the restart, not just the ones
-> that were already re-added to the driver. Ben says this causes trouble
-> in ath10k.
-> 
-> IMHO the right fix for this would be to fix the iteration to only reach
-> the ones that have been re-added, like I've said above. OTOH, Ben isn't
-> really convinced that that's right, and has experience with a patch that
-> makes mac80211 return *no* interfaces whatsoever in the iteration when
-> done while in restart. Like I say there, it seems wrong to me.
-> 
-> But depending on what ath10k actually _does_ with this list, perhaps
-> it's not an issue. Perhaps it's just transient state that it derives
-> from it, so if it does it again after the reconfig is completed, it
-> would in fact get all the information it needed.
-> 
-> I'm pretty sure this would break iwlwifi, so one option (less preferred)
-> would be to add a flag to say "skip iteration in reconfig".
-> 
-> actually does the driver know it's in reconfig? Perhaps it could even do
-> that completely on its own?
-> 
-> Anyway, the question is what you think about doing such a thing in the
-> driver, if it fixes issues even if it's probably not really correct.
-> 
-> johannes
+Hi Alex,
 
-So, no response from Kalle on this for some time.  I thought I'd ping one
-more time before I make an effort to create another out-of-tree patch.
+On Thu, Sep 17, 2020 at 3:09 AM Alex Dewar <alex.dewar90@gmail.com> wrote:
+>
+> The for loop checks whether cur_section is NULL on every iteration, but
+> we know it can never be NULL as there is another check towards the
+> bottom of the loop body. Refactor to avoid this unnecessary check.
+>
+> Also, increment the variable i inline for clarity
 
-Johannes, if you are OK with a new flag in mac80211, then I can patch ath10k-ct
-driver regardless of whether other drivers use it.
+Comments below.
+
+> Addresses-Coverity: 1496984 ("Null pointer dereferences)
+> Suggested-by: Saeed Mahameed <saeedm@nvidia.com>
+> Signed-off-by: Alex Dewar <alex.dewar90@gmail.com>
+> ---
+> v2: refactor in the manner suggested by Saeed
+>
+>  drivers/net/wireless/ath/ath10k/sdio.c | 12 +++---------
+>  1 file changed, 3 insertions(+), 9 deletions(-)
+>
+> diff --git a/drivers/net/wireless/ath/ath10k/sdio.c b/drivers/net/wireless/ath/ath10k/sdio.c
+> index 81ddaafb6721..486886c74e6a 100644
+> --- a/drivers/net/wireless/ath/ath10k/sdio.c
+> +++ b/drivers/net/wireless/ath/ath10k/sdio.c
+> @@ -2307,8 +2307,8 @@ static int ath10k_sdio_dump_memory_section(struct ath10k *ar,
+>         }
+>
+>         count = 0;
+> -
+> -       for (i = 0; cur_section; i++) {
+> +       i = 0;
+> +       for (; cur_section; cur_section = next_section) {
+
+You can have multiple statements in each section of a for() if you need to, e.g.
+
+for (i = 1; cur_section; cur_section = next_section, i++) {
+
+which means that the increment of i isn't hidden deep in the function body.
+
+
+That said, this function is a mess. Something (approximately) like
+this might be more readable:
+
+prev_end = memregion->start;
+for (i = 0; i < mem_region->section_table.size; i++) {
+    cur_section = &mem_region->section_table.sections[i];
+
+    // fail if prev_end is greater than cur_section->start - message
+from line 2329 and 2294
+    // check section size - from line 2315
+
+    skip_size = cur_section->start - prev_end;
+
+    // check buffer size - from line 2339 - needs to account for the
+skip size too.
+    // fill in the skip size amount - from line 2358 and 2304
+    // ath10k_sdio_read_mem - from line 2346
+
+    prev_end = cur_section->end;
+}
 
 Thanks,
-Ben
 
 -- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
+Julian Calaby
+
+Email: julian.calaby@gmail.com
+Profile: http://www.google.com/profiles/julian.calaby/
