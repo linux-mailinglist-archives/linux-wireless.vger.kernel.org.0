@@ -2,29 +2,29 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 908DB26D732
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Sep 2020 10:55:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A67126D743
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Sep 2020 10:59:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726171AbgIQIzB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 17 Sep 2020 04:55:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35164 "EHLO
+        id S1726185AbgIQI7p (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 17 Sep 2020 04:59:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35904 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726153AbgIQIzA (ORCPT
+        with ESMTP id S1726169AbgIQI7p (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 17 Sep 2020 04:55:00 -0400
+        Thu, 17 Sep 2020 04:59:45 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10742C06174A
-        for <linux-wireless@vger.kernel.org>; Thu, 17 Sep 2020 01:55:00 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7AE61C06174A
+        for <linux-wireless@vger.kernel.org>; Thu, 17 Sep 2020 01:59:44 -0700 (PDT)
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.94)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1kIpgs-005SMx-UX; Thu, 17 Sep 2020 10:54:55 +0200
+        id 1kIplW-005SUy-Ko; Thu, 17 Sep 2020 10:59:42 +0200
 From:   Johannes Berg <johannes@sipsolutions.net>
 To:     linux-wireless@vger.kernel.org
 Cc:     Tova Mussai <tova.mussai@intel.com>
-Subject: [PATCH v2] nl80211/cfg80211: support 6 GHz scanning
-Date:   Thu, 17 Sep 2020 10:54:50 +0200
-Message-Id: <20200917105449.eb93c5df14ba.Ida22f0212f9122f47094d81659e879a50434a6a2@changeid>
+Subject: [PATCH v4] nl80211/cfg80211: support 6 GHz scanning
+Date:   Thu, 17 Sep 2020 10:59:39 +0200
+Message-Id: <20200917105938.190537ba2295.Ida22f0212f9122f47094d81659e879a50434a6a2@changeid>
 X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -48,20 +48,23 @@ these changes.
 Signed-off-by: Tova Mussai <tova.mussai@intel.com>
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- include/net/cfg80211.h       |  29 ++-
+Sorry, previous one should have been v3, and this adds support
+for indicating no need to listen first.
+---
+ include/net/cfg80211.h       |  32 ++-
  include/uapi/linux/nl80211.h |   3 +
  net/mac80211/scan.c          |   9 +-
  net/wireless/core.c          |   8 +-
  net/wireless/core.h          |   5 +-
  net/wireless/nl80211.c       |  11 +-
- net/wireless/scan.c          | 488 ++++++++++++++++++++++++++++++++++-
- 7 files changed, 536 insertions(+), 17 deletions(-)
+ net/wireless/scan.c          | 498 ++++++++++++++++++++++++++++++++++-
+ 7 files changed, 549 insertions(+), 17 deletions(-)
 
 diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index c9bce9bba511..bb9afe9f9df1 100644
+index c9bce9bba511..e90f4763f61d 100644
 --- a/include/net/cfg80211.h
 +++ b/include/net/cfg80211.h
-@@ -2041,6 +2041,24 @@ struct cfg80211_scan_info {
+@@ -2041,6 +2041,27 @@ struct cfg80211_scan_info {
  	bool aborted;
  };
  
@@ -74,6 +77,8 @@ index c9bce9bba511..bb9afe9f9df1 100644
 + *	 which the above info relvant to
 + * @unsolicited_probe: the AP transmits unsolicited probe response every 20 TU
 + * @short_ssid_valid: short_ssid is valid and can be used
++ * @psc_no_listen: when set, and the channel is a PSC channel, no need to wait
++ *       20 TUs before starting to send probe requests.
 + */
 +struct cfg80211_scan_6ghz_params {
 +	u32 short_ssid;
@@ -81,12 +86,13 @@ index c9bce9bba511..bb9afe9f9df1 100644
 +	u8 bssid[ETH_ALEN];
 +	bool unsolicited_probe;
 +	bool short_ssid_valid;
++	bool psc_no_listen;
 +};
 +
  /**
   * struct cfg80211_scan_request - scan request description
   *
-@@ -2068,6 +2086,10 @@ struct cfg80211_scan_info {
+@@ -2068,6 +2089,10 @@ struct cfg80211_scan_info {
   * @mac_addr_mask: MAC address mask used with randomisation, bits that
   *	are 0 in the mask should be randomised, bits that are 1 should
   *	be taken from the @mac_addr
@@ -97,7 +103,7 @@ index c9bce9bba511..bb9afe9f9df1 100644
   * @bssid: BSSID to scan for (most commonly, the wildcard BSSID)
   */
  struct cfg80211_scan_request {
-@@ -2095,6 +2117,9 @@ struct cfg80211_scan_request {
+@@ -2095,6 +2120,9 @@ struct cfg80211_scan_request {
  	struct cfg80211_scan_info info;
  	bool notified;
  	bool no_cck;
@@ -107,7 +113,7 @@ index c9bce9bba511..bb9afe9f9df1 100644
  
  	/* keep last */
  	struct ieee80211_channel *channels[];
-@@ -4163,6 +4188,8 @@ struct cfg80211_ops {
+@@ -4163,6 +4191,8 @@ struct cfg80211_ops {
  /**
   * enum wiphy_flags - wiphy capability flags
   *
@@ -116,7 +122,7 @@ index c9bce9bba511..bb9afe9f9df1 100644
   * @WIPHY_FLAG_NETNS_OK: if not set, do not allow changing the netns of this
   *	wiphy at all
   * @WIPHY_FLAG_PS_ON_BY_DEFAULT: if set to true, powersave will be enabled
-@@ -4206,7 +4233,7 @@ struct cfg80211_ops {
+@@ -4206,7 +4236,7 @@ struct cfg80211_ops {
  enum wiphy_flags {
  	WIPHY_FLAG_SUPPORTS_EXT_KEK_KCK		= BIT(0),
  	/* use hole at 1 */
@@ -275,7 +281,7 @@ index 52a35e788547..55ff3cfa035c 100644
  
  	return 0;
 diff --git a/net/wireless/scan.c b/net/wireless/scan.c
-index 84fc8ab16dd2..e7ded0a35748 100644
+index 84fc8ab16dd2..31633c09764a 100644
 --- a/net/wireless/scan.c
 +++ b/net/wireless/scan.c
 @@ -5,7 +5,7 @@
@@ -339,7 +345,7 @@ index 84fc8ab16dd2..e7ded0a35748 100644
  static void bss_free(struct cfg80211_internal_bss *bss)
  {
  	struct cfg80211_bss_ies *ies;
-@@ -448,10 +486,421 @@ static bool cfg80211_bss_expire_oldest(struct cfg80211_registered_device *rdev)
+@@ -448,10 +486,431 @@ static bool cfg80211_bss_expire_oldest(struct cfg80211_registered_device *rdev)
  	return ret;
  }
  
@@ -686,6 +692,16 @@ index 84fc8ab16dd2..e7ded0a35748 100644
 +		scan_6ghz_params->short_ssid = ap->short_ssid;
 +		scan_6ghz_params->short_ssid_valid = ap->short_ssid_valid;
 +		scan_6ghz_params->unsolicited_probe = ap->unsolicited_probe;
++
++		/*
++		 * If a PSC channel is added to the scan and 'need_scan_psc' is
++		 * set to false, then all the APs that the scan logic is
++		 * interested with on the channel are collocated and thus there
++		 * is no need to perform the initial PSC channel listen.
++		 */
++		if (cfg80211_is_psc(chan) && !need_scan_psc)
++			scan_6ghz_params->psc_no_listen = true;
++
 +		request->n_6ghz_params++;
 +	}
 +
@@ -762,7 +778,7 @@ index 84fc8ab16dd2..e7ded0a35748 100644
  	struct wireless_dev *wdev;
  	struct sk_buff *msg;
  #ifdef CONFIG_CFG80211_WEXT
-@@ -466,11 +915,18 @@ void ___cfg80211_scan_done(struct cfg80211_registered_device *rdev,
+@@ -466,11 +925,18 @@ void ___cfg80211_scan_done(struct cfg80211_registered_device *rdev,
  		return;
  	}
  
@@ -784,7 +800,7 @@ index 84fc8ab16dd2..e7ded0a35748 100644
  
  	/*
  	 * This must be before sending the other events!
-@@ -501,8 +957,11 @@ void ___cfg80211_scan_done(struct cfg80211_registered_device *rdev,
+@@ -501,8 +967,11 @@ void ___cfg80211_scan_done(struct cfg80211_registered_device *rdev,
  	if (wdev->netdev)
  		dev_put(wdev->netdev);
  
@@ -797,7 +813,7 @@ index 84fc8ab16dd2..e7ded0a35748 100644
  
  	if (!send_message)
  		rdev->scan_msg = msg;
-@@ -525,10 +984,25 @@ void __cfg80211_scan_done(struct work_struct *wk)
+@@ -525,10 +994,25 @@ void __cfg80211_scan_done(struct work_struct *wk)
  void cfg80211_scan_done(struct cfg80211_scan_request *request,
  			struct cfg80211_scan_info *info)
  {
