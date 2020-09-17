@@ -2,69 +2,79 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B8B4F26DB60
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Sep 2020 14:20:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2DE9426DC08
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Sep 2020 14:51:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726908AbgIQMUT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 17 Sep 2020 08:20:19 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:37994 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726952AbgIQMUC (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 17 Sep 2020 08:20:02 -0400
-Received: from DGGEMS411-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id EFCE8EDA883CF9A60A83;
-        Thu, 17 Sep 2020 20:19:57 +0800 (CST)
-Received: from huawei.com (10.175.104.82) by DGGEMS411-HUB.china.huawei.com
- (10.3.19.211) with Microsoft SMTP Server id 14.3.487.0; Thu, 17 Sep 2020
- 20:19:54 +0800
-From:   Huang Guobin <huangguobin4@huawei.com>
-To:     <ajay.kathat@microchip.com>, <claudiu.beznea@microchip.com>,
-        <kvalo@codeaurora.org>, <davem@davemloft.net>, <kuba@kernel.org>,
-        <gregkh@linuxfoundation.org>
-CC:     <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: [PATCH net] net: wilc1000: clean up resource in error path of init mon interface
-Date:   Thu, 17 Sep 2020 08:30:19 -0400
-Message-ID: <20200917123019.206382-1-huangguobin4@huawei.com>
-X-Mailer: git-send-email 2.25.1
+        id S1727004AbgIQMur (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 17 Sep 2020 08:50:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43428 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727049AbgIQMuj (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 17 Sep 2020 08:50:39 -0400
+Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76609C06174A
+        for <linux-wireless@vger.kernel.org>; Thu, 17 Sep 2020 05:50:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject
+        :Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=ZQWmms9IHekLSWdvPYDSutVwV5lVClq29+tMl16AEJM=; b=iQstjQkP+Qqj5XNum9pk324IXo
+        5hBvpSPQWz4JYqvRjKeB2/GZADrZ9vUHr4Is6jiJv5kNxHGGtC/nH7LhQ669FsKowCYN3seLsi1uD
+        6icml9rtg+qd+rlrIwBpExLlBZkVdZkZtlISxLYbXYM4NiP8FZqz51aIbZl7kAvTiGS0=;
+Received: from p4ff134da.dip0.t-ipconnect.de ([79.241.52.218] helo=localhost.localdomain)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_CBC_SHA1:128)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1kItMu-0006KQ-Tw; Thu, 17 Sep 2020 14:50:32 +0200
+From:   Felix Fietkau <nbd@nbd.name>
+To:     linux-wireless@vger.kernel.org
+Cc:     johannes@sipsolutions.net
+Subject: [PATCH] mac80211: do not allow bigger VHT MPDUs than the hardware supports
+Date:   Thu, 17 Sep 2020 14:50:31 +0200
+Message-Id: <20200917125031.45009-1-nbd@nbd.name>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.104.82]
-X-CFilter-Loop: Reflected
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The wilc_wfi_init_mon_int() forgets to clean up resource when
-register_netdevice() failed. Add the missed call to fix it.
-And the return value of netdev_priv can't be NULL, so remove
-the unnecessary error handling.
+Limit maximum VHT MPDU size by local capability
 
-Fixes: 588713006ea4 ("staging: wilc1000: avoid the use of 'wilc_wfi_mon' static variable")
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: Huang Guobin <huangguobin4@huawei.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 ---
- drivers/net/wireless/microchip/wilc1000/mon.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ net/mac80211/vht.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/microchip/wilc1000/mon.c b/drivers/net/wireless/microchip/wilc1000/mon.c
-index 358ac8601333..b5a1b65c087c 100644
---- a/drivers/net/wireless/microchip/wilc1000/mon.c
-+++ b/drivers/net/wireless/microchip/wilc1000/mon.c
-@@ -235,11 +235,10 @@ struct net_device *wilc_wfi_init_mon_interface(struct wilc *wl,
+diff --git a/net/mac80211/vht.c b/net/mac80211/vht.c
+index 7e601d067d53..fb0e3a657d2d 100644
+--- a/net/mac80211/vht.c
++++ b/net/mac80211/vht.c
+@@ -168,10 +168,7 @@ ieee80211_vht_cap_ie_to_sta_vht_cap(struct ieee80211_sub_if_data *sdata,
+ 	/* take some capabilities as-is */
+ 	cap_info = le32_to_cpu(vht_cap_ie->vht_cap_info);
+ 	vht_cap->cap = cap_info;
+-	vht_cap->cap &= IEEE80211_VHT_CAP_MAX_MPDU_LENGTH_3895 |
+-			IEEE80211_VHT_CAP_MAX_MPDU_LENGTH_7991 |
+-			IEEE80211_VHT_CAP_MAX_MPDU_LENGTH_11454 |
+-			IEEE80211_VHT_CAP_RXLDPC |
++	vht_cap->cap &= IEEE80211_VHT_CAP_RXLDPC |
+ 			IEEE80211_VHT_CAP_VHT_TXOP_PS |
+ 			IEEE80211_VHT_CAP_HTC_VHT |
+ 			IEEE80211_VHT_CAP_MAX_A_MPDU_LENGTH_EXPONENT_MASK |
+@@ -180,6 +177,9 @@ ieee80211_vht_cap_ie_to_sta_vht_cap(struct ieee80211_sub_if_data *sdata,
+ 			IEEE80211_VHT_CAP_RX_ANTENNA_PATTERN |
+ 			IEEE80211_VHT_CAP_TX_ANTENNA_PATTERN;
  
- 	if (register_netdevice(wl->monitor_dev)) {
- 		netdev_err(real_dev, "register_netdevice failed\n");
-+		free_netdev(wl->monitor_dev);
- 		return NULL;
- 	}
- 	priv = netdev_priv(wl->monitor_dev);
--	if (!priv)
--		return NULL;
- 
- 	priv->real_ndev = real_dev;
- 
++	vht_cap->cap |= min_t(u32, cap_info & IEEE80211_VHT_CAP_MAX_MPDU_MASK,
++			      own_cap.cap & IEEE80211_VHT_CAP_MAX_MPDU_MASK);
++
+ 	/* and some based on our own capabilities */
+ 	switch (own_cap.cap & IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_MASK) {
+ 	case IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160MHZ:
 -- 
-2.25.1
+2.28.0
 
