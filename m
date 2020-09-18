@@ -2,36 +2,35 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E33B26EAD8
-	for <lists+linux-wireless@lfdr.de>; Fri, 18 Sep 2020 04:01:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8160926EB60
+	for <lists+linux-wireless@lfdr.de>; Fri, 18 Sep 2020 04:06:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726390AbgIRCBa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 17 Sep 2020 22:01:30 -0400
-Received: from mail.kernel.org ([198.145.29.99]:45656 "EHLO mail.kernel.org"
+        id S1727355AbgIRCEi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 17 Sep 2020 22:04:38 -0400
+Received: from mail.kernel.org ([198.145.29.99]:52194 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726361AbgIRCB0 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 17 Sep 2020 22:01:26 -0400
+        id S1727343AbgIRCEg (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 17 Sep 2020 22:04:36 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 52F2D21707;
-        Fri, 18 Sep 2020 02:01:24 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 15F8F2376F;
+        Fri, 18 Sep 2020 02:04:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1600394485;
-        bh=Fm6jXLSpDYVGejFkqBr0le1Cr0+VQzM/yBzIoueAvII=;
+        s=default; t=1600394675;
+        bh=xxpODNml237vmDZDxhlu0H+y5oiY6Ei9aZoj7zrq/sk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Whn9GkInu9XWX5D2p5PhRVuMCsSVdAMSsPl8jSviLSWX26C2YrSEpyTLifhLAKu6o
-         QylfaY0eto928kXUfmpQva/JvyKjwmFJRAtnn4uurEFjPUu/GJkuAnSZXcfPNJbx3L
-         is2aDAv16Ia0h2Y0/41Mi77GRH4rgm9KgQRK645E=
+        b=Y8IPasg4PZKaM3b/PDz7Rd8E+gG2ed+kA3kqok0Xf2zIrbODEujJmCb6cCkM07wR1
+         LyOw0pZfR3xXca2EjuO9jGVfsrSxJozrZcIUHwZZ6X9n3ZOXlGePVVQsFYCfGkgsZE
+         i7FEV4pptP4Lm2y8FhsFWKPKCXwN3axCGmiOBv5A=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Miaoqing Pan <miaoqing@codeaurora.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
+Cc:     Wen Gong <wgong@codeaurora.org>, Kalle Valo <kvalo@codeaurora.org>,
         Sasha Levin <sashal@kernel.org>, ath10k@lists.infradead.org,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 011/330] ath10k: fix array out-of-bounds access
-Date:   Thu, 17 Sep 2020 21:55:51 -0400
-Message-Id: <20200918020110.2063155-11-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 166/330] ath10k: use kzalloc to read for ath10k_sdio_hif_diag_read
+Date:   Thu, 17 Sep 2020 21:58:26 -0400
+Message-Id: <20200918020110.2063155-166-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200918020110.2063155-1-sashal@kernel.org>
 References: <20200918020110.2063155-1-sashal@kernel.org>
@@ -43,161 +42,141 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Miaoqing Pan <miaoqing@codeaurora.org>
+From: Wen Gong <wgong@codeaurora.org>
 
-[ Upstream commit c5329b2d5b8b4e41be14d31ee8505b4f5607bf9b ]
+[ Upstream commit 402f2992b4d62760cce7c689ff216ea3bf4d6e8a ]
 
-If firmware reports rate_max > WMI_TPC_RATE_MAX(WMI_TPC_FINAL_RATE_MAX)
-or num_tx_chain > WMI_TPC_TX_N_CHAIN, it will cause array out-of-bounds
-access, so print a warning and reset to avoid memory corruption.
+When use command to read values, it crashed.
 
-Tested HW: QCA9984
-Tested FW: 10.4-3.9.0.2-00035
+command:
+dd if=/sys/kernel/debug/ieee80211/phy0/ath10k/mem_value count=1 bs=4 skip=$((0x100233))
 
-Signed-off-by: Miaoqing Pan <miaoqing@codeaurora.org>
+It will call to ath10k_sdio_hif_diag_read with address = 0x4008cc and buf_len = 4.
+
+Then system crash:
+[ 1786.013258] Unable to handle kernel paging request at virtual address ffffffc00bd45000
+[ 1786.013273] Mem abort info:
+[ 1786.013281]   ESR = 0x96000045
+[ 1786.013291]   Exception class = DABT (current EL), IL = 32 bits
+[ 1786.013299]   SET = 0, FnV = 0
+[ 1786.013307]   EA = 0, S1PTW = 0
+[ 1786.013314] Data abort info:
+[ 1786.013322]   ISV = 0, ISS = 0x00000045
+[ 1786.013330]   CM = 0, WnR = 1
+[ 1786.013342] swapper pgtable: 4k pages, 39-bit VAs, pgdp = 000000008542a60e
+[ 1786.013350] [ffffffc00bd45000] pgd=0000000000000000, pud=0000000000000000
+[ 1786.013368] Internal error: Oops: 96000045 [#1] PREEMPT SMP
+[ 1786.013609] Process swapper/0 (pid: 0, stack limit = 0x0000000084b153c6)
+[ 1786.013623] CPU: 0 PID: 0 Comm: swapper/0 Not tainted 4.19.86 #137
+[ 1786.013631] Hardware name: MediaTek krane sku176 board (DT)
+[ 1786.013643] pstate: 80000085 (Nzcv daIf -PAN -UAO)
+[ 1786.013662] pc : __memcpy+0x94/0x180
+[ 1786.013678] lr : swiotlb_tbl_unmap_single+0x84/0x150
+[ 1786.013686] sp : ffffff8008003c60
+[ 1786.013694] x29: ffffff8008003c90 x28: ffffffae96411f80
+[ 1786.013708] x27: ffffffae960d2018 x26: ffffff8019a4b9a8
+[ 1786.013721] x25: 0000000000000000 x24: 0000000000000001
+[ 1786.013734] x23: ffffffae96567000 x22: 00000000000051d4
+[ 1786.013747] x21: 0000000000000000 x20: 00000000fe6e9000
+[ 1786.013760] x19: 0000000000000004 x18: 0000000000000020
+[ 1786.013773] x17: 0000000000000001 x16: 0000000000000000
+[ 1786.013787] x15: 00000000ffffffff x14: 00000000000044c0
+[ 1786.013800] x13: 0000000000365ba4 x12: 0000000000000000
+[ 1786.013813] x11: 0000000000000001 x10: 00000037be6e9000
+[ 1786.013826] x9 : ffffffc940000000 x8 : 000000000bd45000
+[ 1786.013839] x7 : 0000000000000000 x6 : ffffffc00bd45000
+[ 1786.013852] x5 : 0000000000000000 x4 : 0000000000000000
+[ 1786.013865] x3 : 0000000000000c00 x2 : 0000000000000004
+[ 1786.013878] x1 : fffffff7be6e9004 x0 : ffffffc00bd45000
+[ 1786.013891] Call trace:
+[ 1786.013903]  __memcpy+0x94/0x180
+[ 1786.013914]  unmap_single+0x6c/0x84
+[ 1786.013925]  swiotlb_unmap_sg_attrs+0x54/0x80
+[ 1786.013938]  __swiotlb_unmap_sg_attrs+0x8c/0xa4
+[ 1786.013952]  msdc_unprepare_data+0x6c/0x84
+[ 1786.013963]  msdc_request_done+0x58/0x84
+[ 1786.013974]  msdc_data_xfer_done+0x1a0/0x1c8
+[ 1786.013985]  msdc_irq+0x12c/0x17c
+[ 1786.013996]  __handle_irq_event_percpu+0xe4/0x250
+[ 1786.014006]  handle_irq_event_percpu+0x28/0x68
+[ 1786.014015]  handle_irq_event+0x48/0x78
+[ 1786.014026]  handle_fasteoi_irq+0xd0/0x1a0
+[ 1786.014039]  __handle_domain_irq+0x84/0xc4
+[ 1786.014050]  gic_handle_irq+0x124/0x1a4
+[ 1786.014059]  el1_irq+0xb0/0x128
+[ 1786.014072]  cpuidle_enter_state+0x298/0x328
+[ 1786.014082]  cpuidle_enter+0x30/0x40
+[ 1786.014094]  do_idle+0x190/0x268
+[ 1786.014104]  cpu_startup_entry+0x24/0x28
+[ 1786.014116]  rest_init+0xd4/0xe0
+[ 1786.014126]  start_kernel+0x30c/0x38c
+[ 1786.014139] Code: f8408423 f80084c3 36100062 b8404423 (b80044c3)
+[ 1786.014150] ---[ end trace 3b02ddb698ea69ee ]---
+[ 1786.015415] Kernel panic - not syncing: Fatal exception in interrupt
+[ 1786.015433] SMP: stopping secondary CPUs
+[ 1786.015447] Kernel Offset: 0x2e8d200000 from 0xffffff8008000000
+[ 1786.015458] CPU features: 0x0,2188200c
+[ 1786.015466] Memory Limit: none
+
+For sdio chip, it need the memory which is kmalloc, if it is
+vmalloc from ath10k_mem_value_read, then it have a memory error.
+kzalloc of ath10k_sdio_hif_diag_read32 is the correct type, so
+add kzalloc in ath10k_sdio_hif_diag_read to replace the buffer
+which is vmalloc from ath10k_mem_value_read.
+
+This patch only effect sdio chip.
+
+Tested with QCA6174 SDIO with firmware WLAN.RMH.4.4.1-00029.
+
+Signed-off-by: Wen Gong <wgong@codeaurora.org>
 Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath10k/debug.c |  2 +-
- drivers/net/wireless/ath/ath10k/wmi.c   | 49 ++++++++++++++++---------
- 2 files changed, 32 insertions(+), 19 deletions(-)
+ drivers/net/wireless/ath/ath10k/sdio.c | 18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath10k/debug.c b/drivers/net/wireless/ath/ath10k/debug.c
-index bd2b5628f850b..40baf25ac99f3 100644
---- a/drivers/net/wireless/ath/ath10k/debug.c
-+++ b/drivers/net/wireless/ath/ath10k/debug.c
-@@ -1516,7 +1516,7 @@ static void ath10k_tpc_stats_print(struct ath10k_tpc_stats *tpc_stats,
- 	*len += scnprintf(buf + *len, buf_len - *len,
- 			  "No.  Preamble Rate_code ");
- 
--	for (i = 0; i < WMI_TPC_TX_N_CHAIN; i++)
-+	for (i = 0; i < tpc_stats->num_tx_chain; i++)
- 		*len += scnprintf(buf + *len, buf_len - *len,
- 				  "tpc_value%d ", i);
- 
-diff --git a/drivers/net/wireless/ath/ath10k/wmi.c b/drivers/net/wireless/ath/ath10k/wmi.c
-index 90f1197a6ad84..2675174cc4fec 100644
---- a/drivers/net/wireless/ath/ath10k/wmi.c
-+++ b/drivers/net/wireless/ath/ath10k/wmi.c
-@@ -4668,16 +4668,13 @@ static void ath10k_tpc_config_disp_tables(struct ath10k *ar,
- 	}
- 
- 	pream_idx = 0;
--	for (i = 0; i < __le32_to_cpu(ev->rate_max); i++) {
-+	for (i = 0; i < tpc_stats->rate_max; i++) {
- 		memset(tpc_value, 0, sizeof(tpc_value));
- 		memset(buff, 0, sizeof(buff));
- 		if (i == pream_table[pream_idx])
- 			pream_idx++;
- 
--		for (j = 0; j < WMI_TPC_TX_N_CHAIN; j++) {
--			if (j >= __le32_to_cpu(ev->num_tx_chain))
--				break;
--
-+		for (j = 0; j < tpc_stats->num_tx_chain; j++) {
- 			tpc[j] = ath10k_tpc_config_get_rate(ar, ev, i, j + 1,
- 							    rate_code[i],
- 							    type);
-@@ -4790,7 +4787,7 @@ void ath10k_wmi_tpc_config_get_rate_code(u8 *rate_code, u16 *pream_table,
- 
- void ath10k_wmi_event_pdev_tpc_config(struct ath10k *ar, struct sk_buff *skb)
+diff --git a/drivers/net/wireless/ath/ath10k/sdio.c b/drivers/net/wireless/ath/ath10k/sdio.c
+index 9870d2d095c87..8fe626deadeb0 100644
+--- a/drivers/net/wireless/ath/ath10k/sdio.c
++++ b/drivers/net/wireless/ath/ath10k/sdio.c
+@@ -1582,23 +1582,33 @@ static int ath10k_sdio_hif_diag_read(struct ath10k *ar, u32 address, void *buf,
+ 				     size_t buf_len)
  {
--	u32 num_tx_chain;
-+	u32 num_tx_chain, rate_max;
- 	u8 rate_code[WMI_TPC_RATE_MAX];
- 	u16 pream_table[WMI_TPC_PREAM_TABLE_MAX];
- 	struct wmi_pdev_tpc_config_event *ev;
-@@ -4806,6 +4803,13 @@ void ath10k_wmi_event_pdev_tpc_config(struct ath10k *ar, struct sk_buff *skb)
- 		return;
+ 	int ret;
++	void *mem;
++
++	mem = kzalloc(buf_len, GFP_KERNEL);
++	if (!mem)
++		return -ENOMEM;
+ 
+ 	/* set window register to start read cycle */
+ 	ret = ath10k_sdio_write32(ar, MBOX_WINDOW_READ_ADDR_ADDRESS, address);
+ 	if (ret) {
+ 		ath10k_warn(ar, "failed to set mbox window read address: %d", ret);
+-		return ret;
++		goto out;
  	}
  
-+	rate_max = __le32_to_cpu(ev->rate_max);
-+	if (rate_max > WMI_TPC_RATE_MAX) {
-+		ath10k_warn(ar, "number of rate is %d greater than TPC configured rate %d\n",
-+			    rate_max, WMI_TPC_RATE_MAX);
-+		rate_max = WMI_TPC_RATE_MAX;
-+	}
-+
- 	tpc_stats = kzalloc(sizeof(*tpc_stats), GFP_ATOMIC);
- 	if (!tpc_stats)
- 		return;
-@@ -4822,8 +4826,8 @@ void ath10k_wmi_event_pdev_tpc_config(struct ath10k *ar, struct sk_buff *skb)
- 		__le32_to_cpu(ev->twice_antenna_reduction);
- 	tpc_stats->power_limit = __le32_to_cpu(ev->power_limit);
- 	tpc_stats->twice_max_rd_power = __le32_to_cpu(ev->twice_max_rd_power);
--	tpc_stats->num_tx_chain = __le32_to_cpu(ev->num_tx_chain);
--	tpc_stats->rate_max = __le32_to_cpu(ev->rate_max);
-+	tpc_stats->num_tx_chain = num_tx_chain;
-+	tpc_stats->rate_max = rate_max;
- 
- 	ath10k_tpc_config_disp_tables(ar, ev, tpc_stats,
- 				      rate_code, pream_table,
-@@ -5018,16 +5022,13 @@ ath10k_wmi_tpc_stats_final_disp_tables(struct ath10k *ar,
+ 	/* read the data */
+-	ret = ath10k_sdio_read(ar, MBOX_WINDOW_DATA_ADDRESS, buf, buf_len);
++	ret = ath10k_sdio_read(ar, MBOX_WINDOW_DATA_ADDRESS, mem, buf_len);
+ 	if (ret) {
+ 		ath10k_warn(ar, "failed to read from mbox window data address: %d\n",
+ 			    ret);
+-		return ret;
++		goto out;
  	}
  
- 	pream_idx = 0;
--	for (i = 0; i < __le32_to_cpu(ev->rate_max); i++) {
-+	for (i = 0; i < tpc_stats->rate_max; i++) {
- 		memset(tpc_value, 0, sizeof(tpc_value));
- 		memset(buff, 0, sizeof(buff));
- 		if (i == pream_table[pream_idx])
- 			pream_idx++;
- 
--		for (j = 0; j < WMI_TPC_TX_N_CHAIN; j++) {
--			if (j >= __le32_to_cpu(ev->num_tx_chain))
--				break;
--
-+		for (j = 0; j < tpc_stats->num_tx_chain; j++) {
- 			tpc[j] = ath10k_wmi_tpc_final_get_rate(ar, ev, i, j + 1,
- 							       rate_code[i],
- 							       type, pream_idx);
-@@ -5043,7 +5044,7 @@ ath10k_wmi_tpc_stats_final_disp_tables(struct ath10k *ar,
- 
- void ath10k_wmi_event_tpc_final_table(struct ath10k *ar, struct sk_buff *skb)
- {
--	u32 num_tx_chain;
-+	u32 num_tx_chain, rate_max;
- 	u8 rate_code[WMI_TPC_FINAL_RATE_MAX];
- 	u16 pream_table[WMI_TPC_PREAM_TABLE_MAX];
- 	struct wmi_pdev_tpc_final_table_event *ev;
-@@ -5051,12 +5052,24 @@ void ath10k_wmi_event_tpc_final_table(struct ath10k *ar, struct sk_buff *skb)
- 
- 	ev = (struct wmi_pdev_tpc_final_table_event *)skb->data;
- 
-+	num_tx_chain = __le32_to_cpu(ev->num_tx_chain);
-+	if (num_tx_chain > WMI_TPC_TX_N_CHAIN) {
-+		ath10k_warn(ar, "number of tx chain is %d greater than TPC final configured tx chain %d\n",
-+			    num_tx_chain, WMI_TPC_TX_N_CHAIN);
-+		return;
-+	}
+-	return 0;
++	memcpy(buf, mem, buf_len);
 +
-+	rate_max = __le32_to_cpu(ev->rate_max);
-+	if (rate_max > WMI_TPC_FINAL_RATE_MAX) {
-+		ath10k_warn(ar, "number of rate is %d greater than TPC final configured rate %d\n",
-+			    rate_max, WMI_TPC_FINAL_RATE_MAX);
-+		rate_max = WMI_TPC_FINAL_RATE_MAX;
-+	}
++out:
++	kfree(mem);
 +
- 	tpc_stats = kzalloc(sizeof(*tpc_stats), GFP_ATOMIC);
- 	if (!tpc_stats)
- 		return;
++	return ret;
+ }
  
--	num_tx_chain = __le32_to_cpu(ev->num_tx_chain);
--
- 	ath10k_wmi_tpc_config_get_rate_code(rate_code, pream_table,
- 					    num_tx_chain);
- 
-@@ -5069,8 +5082,8 @@ void ath10k_wmi_event_tpc_final_table(struct ath10k *ar, struct sk_buff *skb)
- 		__le32_to_cpu(ev->twice_antenna_reduction);
- 	tpc_stats->power_limit = __le32_to_cpu(ev->power_limit);
- 	tpc_stats->twice_max_rd_power = __le32_to_cpu(ev->twice_max_rd_power);
--	tpc_stats->num_tx_chain = __le32_to_cpu(ev->num_tx_chain);
--	tpc_stats->rate_max = __le32_to_cpu(ev->rate_max);
-+	tpc_stats->num_tx_chain = num_tx_chain;
-+	tpc_stats->rate_max = rate_max;
- 
- 	ath10k_wmi_tpc_stats_final_disp_tables(ar, ev, tpc_stats,
- 					       rate_code, pream_table,
+ static int ath10k_sdio_hif_diag_read32(struct ath10k *ar, u32 address,
 -- 
 2.25.1
 
