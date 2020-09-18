@@ -2,97 +2,142 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 260B42702A1
-	for <lists+linux-wireless@lfdr.de>; Fri, 18 Sep 2020 18:53:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 112EA270320
+	for <lists+linux-wireless@lfdr.de>; Fri, 18 Sep 2020 19:20:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726434AbgIRQxj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 18 Sep 2020 12:53:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49980 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726304AbgIRQxi (ORCPT
+        id S1726335AbgIRRU5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 18 Sep 2020 13:20:57 -0400
+Received: from 3.mo174.mail-out.ovh.net ([178.33.253.172]:35897 "EHLO
+        3.mo174.mail-out.ovh.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726126AbgIRRU5 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 18 Sep 2020 12:53:38 -0400
-Received: from mail-ej1-x643.google.com (mail-ej1-x643.google.com [IPv6:2a00:1450:4864:20::643])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57FD2C0613CE;
-        Fri, 18 Sep 2020 09:53:38 -0700 (PDT)
-Received: by mail-ej1-x643.google.com with SMTP id o8so9001639ejb.10;
-        Fri, 18 Sep 2020 09:53:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=t4UNWRw3XtjaYPT1Tohvguum4En79LX5R37iA+oLJ0A=;
-        b=H82+wAJgm2/HJXACILHMrIK39S3n8alrwnjBXhCk+vwg9VSlNsBRp4ICEKf2XNxCSe
-         ut3AV73svZ9T/d97O8LXGNT30NI9iTsFA99zY70cIRgujDlHMve/IBLq2713Oae6OINK
-         WM9z+Qlm9a8/tpfORt9A43LPVER6ejaUv+A/uZbcHZDra0urMSvHjcYNZrVJIMyPKgdR
-         SKuS9lP+45ISXCbrI1ngJoBY72aLQu+m2N9kcw1S/NzXFWX5GFpMSmdvG7bnjV849085
-         82lR9OCUElD4XF3mG+F5xa6haTQZskautC3hFikdWAzw/uNmYEvofVqvYbt11YVYIeVs
-         Uzyg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=t4UNWRw3XtjaYPT1Tohvguum4En79LX5R37iA+oLJ0A=;
-        b=AXFYlNHPNSOYKBw+rP5Ff6R6a7y5s9uO0zPPOxJJ8W5VCR10ImqmGqVr8UyGsPgN5A
-         auhZV9hwpRUyWXIMB+lhjF4vzHxgx/RjXNsMiW+sdjQ7Qe3fhXeIkQFfjeGMKoA68pN+
-         suYXeYXYYCjahA2JNg4k4TyRAVgLl4EjaXUNR5pvxcOwvHa+auFkVJije6gKufLopf8p
-         bCV6CURbAV1vSB7DZnQs+LlFuDbofQ+6UkYZZOO3DEgVBiY3POIH7YQPFEOW+9tA0cVa
-         cLY8Bg7QSSg8crH/EsQGvGeid7Yr4btiPnLbP2nJZRmjWckYXDS3z+Sno86BFdO9u75v
-         W4vA==
-X-Gm-Message-State: AOAM532iLtd62vEDkOIl7h9WicFbpEfXV7opVgbg/TurDEDmNekQHJor
-        Fk2J2euoKtMcMHk1qUDN7Vg=
-X-Google-Smtp-Source: ABdhPJw/qQ1CFM15zpGleITT62o8jtVWAf0d3CugqJMzbgDFfTt7Xf33FX+TUfrq/i/jLiahu8ig6g==
-X-Received: by 2002:a17:907:2506:: with SMTP id y6mr35175644ejl.265.1600448016964;
-        Fri, 18 Sep 2020 09:53:36 -0700 (PDT)
-Received: from debian64.daheim (p5b0d776c.dip0.t-ipconnect.de. [91.13.119.108])
-        by smtp.gmail.com with ESMTPSA id ce14sm2678057edb.25.2020.09.18.09.53.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Sep 2020 09:53:36 -0700 (PDT)
-Received: from localhost.daheim ([127.0.0.1])
-        by debian64.daheim with esmtp (Exim 4.94)
-        (envelope-from <chunkeey@gmail.com>)
-        id 1kJJdb-002nB9-9i; Fri, 18 Sep 2020 18:53:35 +0200
-Subject: Re: [PATCH 2/2] dt: bindings: ath10k: Document qcom,
- ath10k-pre-calibration-data-mtd
-To:     Ansuel Smith <ansuelsmth@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>
-Cc:     devicetree@vger.kernel.org, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        ath10k@lists.infradead.org,
-        "David S. Miller" <davem@davemloft.net>,
-        Rob Herring <robh+dt@kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        linux-mtd@lists.infradead.org,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>
-References: <20200918162928.14335-1-ansuelsmth@gmail.com>
- <20200918162928.14335-2-ansuelsmth@gmail.com>
-From:   Christian Lamparter <chunkeey@gmail.com>
-Message-ID: <8f886e3d-e2ee-cbf8-a676-28ebed4977aa@gmail.com>
-Date:   Fri, 18 Sep 2020 18:53:35 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.12.0
+        Fri, 18 Sep 2020 13:20:57 -0400
+X-Greylist: delayed 360 seconds by postgrey-1.27 at vger.kernel.org; Fri, 18 Sep 2020 13:20:56 EDT
+Received: from mxplan8.mail.ovh.net (unknown [10.108.4.44])
+        by mo174.mail-out.ovh.net (Postfix) with ESMTPS id 4D7144308944;
+        Fri, 18 Sep 2020 19:14:55 +0200 (CEST)
+Received: from awhome.eu (37.59.142.100) by mxplan8.mail.ovh.net (172.16.2.41)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.2044.4; Fri, 18 Sep
+ 2020 19:14:54 +0200
+Authentication-Results: garm.ovh; auth=pass (GARM-100R003305ec58f-3226-4eb2-8efe-03918e07111d,
+                    F9FE146EF93C85F40DBD97615D12AF9DB5AACA18) smtp.auth=postmaster@awhome.eu
+From:   Alexander Wetzel <alexander@wetzel-home.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=wetzel-home.de;
+        s=wetzel-home; t=1600449293;
+        bh=JZrGVAYZb3MLPYqzK8/nuxX8mc7hqOP83kVS/XX+E3I=;
+        h=From:To:Cc:Subject:Date;
+        b=TjR+Ty+In5pwDSvfUPucUMvL4dCiPAzYp6xb34tzRc+5gbcgn0njJCBhH5ZJt5QFq
+         zirsDHVT4BcSgBacMiK2pWGqySVVeVn2knDFXf4MyhcX3Pk+ggSEqDcQnj0Yq+dVLe
+         EabziExgbFkQoue7SnUUbbF2t8cBPgiugK9I/RUQ=
+To:     linux-wireless@vger.kernel.org
+Cc:     luciano.coelho@intel.com, johannes.berg@intel.com,
+        emmanuel.grumbach@intel.com, linuxwifi@intel.com,
+        Alexander Wetzel <alexander@wetzel-home.de>
+Subject: [PATCH] iwlwifi: add NL80211_EXT_FEATURE_CAN_REPLACE_PTK0 support
+Date:   Fri, 18 Sep 2020 19:13:01 +0200
+Message-ID: <20200918171301.6942-1-alexander@wetzel-home.de>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
-In-Reply-To: <20200918162928.14335-2-ansuelsmth@gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: de-DE
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Ovh-Tracer-GUID: d47dce7d-41d5-4682-8820-d713e4cf1746
+X-Ovh-Tracer-Id: 16937756727419083939
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: 0
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedujedrtdeigdduuddvucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucenucfjughrpefhvffufffkofgggfgtsehtkeertdertddtnecuhfhrohhmpeetlhgvgigrnhguvghrucghvghtiigvlhcuoegrlhgvgigrnhguvghrseifvghtiigvlhdqhhhomhgvrdguvgeqnecuggftrfgrthhtvghrnheptdeggefhjeeujeehkeehhffgheevgedvkeffffeuveetfeetjeehgfevveetfedvnecukfhppedtrddtrddtrddtpdefjedrheelrddugedvrddutddtnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmohguvgepshhmthhpqdhouhhtpdhhvghlohepmhigphhlrghnkedrmhgrihhlrdhovhhhrdhnvghtpdhinhgvtheptddrtddrtddrtddpmhgrihhlfhhrohhmpegrlhgvgigrnhguvghrseifvghtiigvlhdqhhhomhgvrdguvgdprhgtphhtthhopehlihhnuhigqdifihhrvghlvghsshesvhhgvghrrdhkvghrnhgvlhdrohhrgh
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2020-09-18 18:29, Ansuel Smith wrote:
-> Document use of qcom,ath10k-pre-calibration-data-mtd bindings used to
-> define from where the driver will load the pre-cal data in the defined
-> mtd partition.
-> 
-> Signed-off-by: Ansuel Smith <ansuelsmth@gmail.com>
+Avoid a not needed warning and queue flush from mac80211 when deleting
+PTK keys.
 
-Q: Doesn't mtd now come with nvmem support from the get go? So
-the MAC-Addresses and pre-caldata could be specified as a
-nvmem-node in the devicetree? I remember seeing that this was
-worked on or was this mtd->nvmem dropped?
+The flush is only needed when queued MPDUs depend on the key table
+instead carrying the needed key material directly in the MPDU info.
 
-Cheers,
-Christian
+Set NL80211_EXT_FEATURE_CAN_REPLACE_PTK0 and flush the queues only when
+needed.
+
+Signed-off-by: Alexander Wetzel <alexander@wetzel-home.de>
+---
+ .../net/wireless/intel/iwlwifi/dvm/mac80211.c  |  1 +
+ .../net/wireless/intel/iwlwifi/mvm/mac80211.c  | 18 ++++++++++++++++++
+ drivers/net/wireless/intel/iwlwifi/mvm/tx.c    |  6 ------
+ 3 files changed, 19 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/net/wireless/intel/iwlwifi/dvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/dvm/mac80211.c
+index 423d3c396b2d..8846203526d2 100644
+--- a/drivers/net/wireless/intel/iwlwifi/dvm/mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/dvm/mac80211.c
+@@ -201,6 +201,7 @@ int iwlagn_mac_setup_register(struct iwl_priv *priv,
+ 
+ 	wiphy_ext_feature_set(hw->wiphy, NL80211_EXT_FEATURE_CQM_RSSI_LIST);
+ 	wiphy_ext_feature_set(hw->wiphy, NL80211_EXT_FEATURE_EXT_KEY_ID);
++	wiphy_ext_feature_set(hw->wiphy, NL80211_EXT_FEATURE_CAN_REPLACE_PTK0);
+ 
+ 	ret = ieee80211_register_hw(priv->hw);
+ 	if (ret) {
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+index 9374c85c5caf..40003de28556 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+@@ -83,6 +83,9 @@
+ #include "iwl-prph.h"
+ #include "iwl-nvm-parse.h"
+ 
++static void iwl_mvm_mac_flush(struct ieee80211_hw *hw,
++			      struct ieee80211_vif *vif, u32 queues, bool drop);
++
+ static const struct ieee80211_iface_limit iwl_mvm_limits[] = {
+ 	{
+ 		.max = 1,
+@@ -543,6 +546,7 @@ int iwl_mvm_mac_setup_register(struct iwl_mvm *mvm)
+ 
+ 	hw->wiphy->flags |= WIPHY_FLAG_IBSS_RSN;
+ 	wiphy_ext_feature_set(hw->wiphy, NL80211_EXT_FEATURE_VHT_IBSS);
++	wiphy_ext_feature_set(hw->wiphy, NL80211_EXT_FEATURE_CAN_REPLACE_PTK0);
+ 
+ 	/* The new Tx API does not allow to pass the key or keyid of a MPDU to
+ 	 * the hw, preventing us to control which key(id) to use per MPDU.
+@@ -3540,6 +3544,20 @@ static int __iwl_mvm_mac_set_key(struct ieee80211_hw *hw,
+ 			break;
+ 		}
+ 
++		/* GCMP and 256 bit CCMP keys the key can't be copied into the
++		 * MPDU struct ieee80211_tx_info. We therefore must flush the
++		 * queues to ensure there are no MPDUs left which are referring
++		 * to the outgoing key.
++		 */
++		if (key->flags & IEEE80211_KEY_FLAG_PAIRWISE &&
++		    (key->cipher == WLAN_CIPHER_SUITE_GCMP ||
++		     key->cipher == WLAN_CIPHER_SUITE_GCMP_256 ||
++		     key->cipher == WLAN_CIPHER_SUITE_CCMP_256)) {
++			ieee80211_stop_queues(hw);
++			iwl_mvm_mac_flush(hw, vif, 0, true);
++			ieee80211_wake_queues(hw);
++		}
++
+ 		if (sta && iwl_mvm_has_new_rx_api(mvm) &&
+ 		    key->flags & IEEE80211_KEY_FLAG_PAIRWISE &&
+ 		    (key->cipher == WLAN_CIPHER_SUITE_CCMP ||
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
+index 2f6484e0d726..9e0c55b75478 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
+@@ -472,12 +472,6 @@ static void iwl_mvm_set_tx_cmd_crypto(struct iwl_mvm *mvm,
+ 		type = TX_CMD_SEC_GCMP;
+ 		/* Fall through */
+ 	case WLAN_CIPHER_SUITE_CCMP_256:
+-		/* TODO: Taking the key from the table might introduce a race
+-		 * when PTK rekeying is done, having an old packets with a PN
+-		 * based on the old key but the message encrypted with a new
+-		 * one.
+-		 * Need to handle this.
+-		 */
+ 		tx_cmd->sec_ctl |= type | TX_CMD_SEC_KEY_FROM_TABLE;
+ 		tx_cmd->key[0] = keyconf->hw_key_idx;
+ 		iwl_mvm_set_tx_cmd_pn(info, crypto_hdr);
+-- 
+2.28.0
+
