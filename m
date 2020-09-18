@@ -2,33 +2,33 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A824F26FABB
-	for <lists+linux-wireless@lfdr.de>; Fri, 18 Sep 2020 12:38:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 675BB26FAC4
+	for <lists+linux-wireless@lfdr.de>; Fri, 18 Sep 2020 12:40:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726299AbgIRKiM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 18 Sep 2020 06:38:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48326 "EHLO
+        id S1726009AbgIRKkx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 18 Sep 2020 06:40:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48736 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726157AbgIRKiM (ORCPT
+        with ESMTP id S1725941AbgIRKkx (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 18 Sep 2020 06:38:12 -0400
+        Fri, 18 Sep 2020 06:40:53 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19F3FC06174A
-        for <linux-wireless@vger.kernel.org>; Fri, 18 Sep 2020 03:38:11 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE187C06174A
+        for <linux-wireless@vger.kernel.org>; Fri, 18 Sep 2020 03:40:52 -0700 (PDT)
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.94)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1kJDmL-006CNL-JC; Fri, 18 Sep 2020 12:38:09 +0200
-Message-ID: <c5b93cd207ce780a56ad2689d7660fee48683fe9.camel@sipsolutions.net>
-Subject: Re: [PATCH v2 06/22] {cfg,mac}80211: get correct default channel
- width for S1G
+        id 1kJDox-006CUC-59; Fri, 18 Sep 2020 12:40:51 +0200
+Message-ID: <43afe1ee1067d77aa6be5765e02f3cf0549c7c8f.camel@sipsolutions.net>
+Subject: Re: [PATCH v2 07/22] mac80211: s1g: choose scanning width based on
+ frequency
 From:   Johannes Berg <johannes@sipsolutions.net>
 To:     Thomas Pedersen <thomas@adapt-ip.com>
 Cc:     linux-wireless <linux-wireless@vger.kernel.org>
-Date:   Fri, 18 Sep 2020 12:38:08 +0200
-In-Reply-To: <20200831205600.21058-7-thomas@adapt-ip.com>
+Date:   Fri, 18 Sep 2020 12:40:49 +0200
+In-Reply-To: <20200831205600.21058-8-thomas@adapt-ip.com>
 References: <20200831205600.21058-1-thomas@adapt-ip.com>
-         <20200831205600.21058-7-thomas@adapt-ip.com>
+         <20200831205600.21058-8-thomas@adapt-ip.com>
 Content-Type: text/plain; charset="UTF-8"
 User-Agent: Evolution 3.36.5 (3.36.5-1.fc32) 
 MIME-Version: 1.0
@@ -38,47 +38,41 @@ List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 On Mon, 2020-08-31 at 13:55 -0700, Thomas Pedersen wrote:
+> An S1G BSS can beacon at either 1 or 2 MHz and the channel
+> width is unique to a given frequency. Ignore scan channel
+> width for now and use the allowed channel width.
 > 
-> +++ b/net/wireless/chan.c
-> @@ -33,6 +33,16 @@ void cfg80211_chandef_create(struct cfg80211_chan_def *chandef,
->  	chandef->edmg.bw_config = 0;
->  	chandef->edmg.channels = 0;
->  
-> +	/* S1G allows a single width per channel, and since chan_type seems to
-> +	 * be for backwards compatibility only, ignore it and return the per
-> +	 * frequency width.
+> Signed-off-by: Thomas Pedersen <thomas@adapt-ip.com>
+> ---
+>  net/mac80211/scan.c | 17 +++++++++++++++++
+>  1 file changed, 17 insertions(+)
+> 
+> diff --git a/net/mac80211/scan.c b/net/mac80211/scan.c
+> index 5ac2785cdc7b..5002791fe165 100644
+> --- a/net/mac80211/scan.c
+> +++ b/net/mac80211/scan.c
+> @@ -905,6 +905,17 @@ static void ieee80211_scan_state_set_channel(struct ieee80211_local *local,
+>  	local->scan_chandef.center_freq1 = chan->center_freq;
+>  	local->scan_chandef.freq1_offset = chan->freq_offset;
+>  	local->scan_chandef.center_freq2 = 0;
+> +
+> +	/* For scanning on the S1G band, ignore scan_width (which is constant
+> +	 * across all channels) for now since channel width is specific to each
+> +	 * channel. Detect the required channel width here and likely revisit
+> +	 * later. Maybe scan_width could be used to build the channel scan list?
 > +	 */
 > +	if (chan->band == NL80211_BAND_S1GHZ) {
-> +		chandef->width = ieee80211_s1g_channel_width(chan);
-> +		chandef->center_freq1 = chan->center_freq;
-> +		return;
+> +		local->scan_chandef.width = ieee80211_s1g_channel_width(chan);
+> +		goto  set_channel;
 > +	}
 
-Hmm. I'm not sure I want to let you get away with this?
+nit: double space after 'goto'
 
-It might be ... convenient, but it's also confusing to see something
-like
+but really I came to say that this probably changes then, if you don't
+convince me about the stuff in the previous patch review? :)
 
-	cfg80211_chandef_create(&out, some_channel, NL80211_CHAN_HT40PLUS);
-
-actually create an S1G channel width?
-
-Yes, this is mostly for backward compatibility, but it's also used in
-few (21 in the stack) places. Many of those aren't relevant, e.g. in
-net/mac80211/ibss.c it would obviously be clearer to handle the new
-NL80211_CHAN_WIDTH_* values with e.g. a cfg80211_get_s1g_chandef()
-function or so that does this derivation, instead of running into the
-
-        default:
-                /* fall back to 20 MHz for unsupported modes */
-                cfg80211_chandef_create(&chandef, cbss->channel,
-                                        NL80211_CHAN_NO_HT);
-
-code.
-
-IOW, it seems to me that this function should actually instead throw a
-warning (and then perhaps configure something sane?), but not be the
-default code path.
+So I'm leaving this patch also for now - have applied 1-5 so far.
 
 johannes
+
 
