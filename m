@@ -2,40 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1291626EFF2
-	for <lists+linux-wireless@lfdr.de>; Fri, 18 Sep 2020 04:39:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 173BE26EF82
+	for <lists+linux-wireless@lfdr.de>; Fri, 18 Sep 2020 04:37:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728697AbgIRCL6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 17 Sep 2020 22:11:58 -0400
-Received: from mail.kernel.org ([198.145.29.99]:37862 "EHLO mail.kernel.org"
+        id S1729030AbgIRCgH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 17 Sep 2020 22:36:07 -0400
+Received: from mail.kernel.org ([198.145.29.99]:39778 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728174AbgIRCLy (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 17 Sep 2020 22:11:54 -0400
+        id S1728861AbgIRCM7 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 17 Sep 2020 22:12:59 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 3035F235F7;
-        Fri, 18 Sep 2020 02:11:53 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id D5BCE208DB;
+        Fri, 18 Sep 2020 02:12:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1600395114;
-        bh=x8otqe658uFEM+ovxAz7zRbLHXxEy6UTkVWx/+qbFLo=;
+        s=default; t=1600395178;
+        bh=SUsGi52iwz/b8+clppZmZarS0BghQQJ738U/7mWT4xg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=z9dMj9qMvX9IiXdxpT3uiVeUqyH4A93SCiTH1k0/N7+GMXGpM2/8Y4xBBCsCvbH/x
-         ZNG0RD9aLPlFJReUf2cTHc6mOEpvTbCdIA+PC9QELFYGszd82C9xdGURHQrFSEMwOR
-         kPUJCBwYmWbn05xFDn2iaOzBT4DsEhSX6gDnpotA=
+        b=PYzf2ZDUjnWqZYxBcqFrurrHDcFslpTT11qXiFqY0IfQ9NTWfPf/2Rufq5hfZgiiT
+         Ny9vW0jxAMKaa7Xp/5ITXxS+E8MZPqPFUmcD1NsQyQDniHu+rGlE7d2XImdvOM/rh0
+         yStQ8Jguha39cYx94bsbhfRusrLtTjFsyUHG+VbA=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Dinghao Liu <dinghao.liu@zju.edu.cn>,
-        Tony Lindgren <tony@atomide.com>,
+Cc:     Mert Dirik <mertdirik@gmail.com>,
         Kalle Valo <kvalo@codeaurora.org>,
         Sasha Levin <sashal@kernel.org>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 187/206] wlcore: fix runtime pm imbalance in wlcore_regdomain_config
-Date:   Thu, 17 Sep 2020 22:07:43 -0400
-Message-Id: <20200918020802.2065198-187-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 034/127] ar5523: Add USB ID of SMCWUSBT-G2 wireless adapter
+Date:   Thu, 17 Sep 2020 22:10:47 -0400
+Message-Id: <20200918021220.2066485-34-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200918020802.2065198-1-sashal@kernel.org>
-References: <20200918020802.2065198-1-sashal@kernel.org>
+In-Reply-To: <20200918021220.2066485-1-sashal@kernel.org>
+References: <20200918021220.2066485-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -44,39 +43,38 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Dinghao Liu <dinghao.liu@zju.edu.cn>
+From: Mert Dirik <mertdirik@gmail.com>
 
-[ Upstream commit 282a04bf1d8029eb98585cb5db3fd70fe8bc91f7 ]
+[ Upstream commit 5b362498a79631f283578b64bf6f4d15ed4cc19a ]
 
-pm_runtime_get_sync() increments the runtime PM usage counter even
-the call returns an error code. Thus a pairing decrement is needed
-on the error handling path to keep the counter balanced.
+Add the required USB ID for running SMCWUSBT-G2 wireless adapter (SMC
+"EZ Connect g").
 
-Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>
-Acked-by: Tony Lindgren <tony@atomide.com>
+This device uses ar5523 chipset and requires firmware to be loaded. Even
+though pid of the device is 4507, this patch adds it as 4506 so that
+AR5523_DEVICE_UG macro can set the AR5523_FLAG_PRE_FIRMWARE flag for pid
+4507.
+
+Signed-off-by: Mert Dirik <mertdirik@gmail.com>
 Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
-Link: https://lore.kernel.org/r/20200520124649.10848-1-dinghao.liu@zju.edu.cn
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ti/wlcore/main.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/wireless/ath/ar5523/ar5523.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/wireless/ti/wlcore/main.c b/drivers/net/wireless/ti/wlcore/main.c
-index 2ca5658bbc2ab..43c7b37dec0c9 100644
---- a/drivers/net/wireless/ti/wlcore/main.c
-+++ b/drivers/net/wireless/ti/wlcore/main.c
-@@ -3671,8 +3671,10 @@ void wlcore_regdomain_config(struct wl1271 *wl)
- 		goto out;
- 
- 	ret = pm_runtime_get_sync(wl->dev);
--	if (ret < 0)
-+	if (ret < 0) {
-+		pm_runtime_put_autosuspend(wl->dev);
- 		goto out;
-+	}
- 
- 	ret = wlcore_cmd_regdomain_config_locked(wl);
- 	if (ret < 0) {
+diff --git a/drivers/net/wireless/ath/ar5523/ar5523.c b/drivers/net/wireless/ath/ar5523/ar5523.c
+index ad4a1efc57c97..e1a1d27427cc9 100644
+--- a/drivers/net/wireless/ath/ar5523/ar5523.c
++++ b/drivers/net/wireless/ath/ar5523/ar5523.c
+@@ -1771,6 +1771,8 @@ static const struct usb_device_id ar5523_id_table[] = {
+ 	AR5523_DEVICE_UX(0x0846, 0x4300),	/* Netgear / WG111U */
+ 	AR5523_DEVICE_UG(0x0846, 0x4250),	/* Netgear / WG111T */
+ 	AR5523_DEVICE_UG(0x0846, 0x5f00),	/* Netgear / WPN111 */
++	AR5523_DEVICE_UG(0x083a, 0x4506),	/* SMC / EZ Connect
++						   SMCWUSBT-G2 */
+ 	AR5523_DEVICE_UG(0x157e, 0x3006),	/* Umedia / AR5523_1 */
+ 	AR5523_DEVICE_UX(0x157e, 0x3205),	/* Umedia / AR5523_2 */
+ 	AR5523_DEVICE_UG(0x157e, 0x3006),	/* Umedia / TEW444UBEU */
 -- 
 2.25.1
 
