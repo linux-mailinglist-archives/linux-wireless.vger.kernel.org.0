@@ -2,106 +2,60 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CA48E27076B
-	for <lists+linux-wireless@lfdr.de>; Fri, 18 Sep 2020 22:50:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 876B92709B0
+	for <lists+linux-wireless@lfdr.de>; Sat, 19 Sep 2020 03:32:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726366AbgIRUtt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 18 Sep 2020 16:49:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58342 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726118AbgIRUtt (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 18 Sep 2020 16:49:49 -0400
-Received: from mail-ot1-x344.google.com (mail-ot1-x344.google.com [IPv6:2607:f8b0:4864:20::344])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C218AC0613CE;
-        Fri, 18 Sep 2020 13:49:48 -0700 (PDT)
-Received: by mail-ot1-x344.google.com with SMTP id y5so6630162otg.5;
-        Fri, 18 Sep 2020 13:49:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=6KkfOlKQIaWtyfOevhupH1s1bYyIC6ABSgltqbmoQw4=;
-        b=lluK4FaljicIdmBLv5XPthHLdZHhXfmeV/Qc234slm/ZfarEuhTN753e4x4KaadLIu
-         YyhwhsI/0/EGYkCmJ6uYlQsCszjY0OU+lBdxeeMz7nPjA1bxCf8HM9nYAmN13MrZkNcU
-         Ez5juY+erebiXtgIbwUqlMalo/0fsbdDfb1G/L1yT8Enh1UXYCN6joQzpDW3uGck5qg8
-         ilgXOScKmJk9yu5wIMbvO7NAq3aHNKwdHfXpXIiz1KLt/pPYW70NRdn6visVo5HfB1PP
-         M4UiYeSiYhstwkV3Be7i1ubE0zrHOQv/3i5qdbE/FNBUCL44E0e8Sd2nt8yzsH+Kxq5s
-         fYWw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
-         :date:user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=6KkfOlKQIaWtyfOevhupH1s1bYyIC6ABSgltqbmoQw4=;
-        b=l1CJV3kr/eP3JGm605qTFQTjIOrAAEV157SYIaMu5de+UrLVYcYfW/4ROWOdmxsodh
-         8bSthUtPwyf5NvqWZEY08Bgh3413qdOzTYXOQJb8cpUwBDofs5RdKxflMD2ARluf1MlY
-         6Vngjqdqo6omktD6yzAMEb0JJ7hdA2WgRCDViZ49raljy1jywGRafkOuQrBPvaLTLK4U
-         rwoaPjSfdZ1Pu1BtFRRhj/ovA+PEhlnM7/4MoGzpSKnB5XTHfMfiv0mWYumBWJd1vILA
-         JK5XQNXkEmwFTfWdGQD5vo/bHXTc+LbUubJaoh05jLCznIA2rl7WTEHjNiLBcjolCxtI
-         NLnA==
-X-Gm-Message-State: AOAM532ln25lbQFDnNRnj2K/kyTTgp3+zyZXXy2+VGP5ElfEOiTcEmP6
-        mU1fQ94CDe2XSu8Wb63UYIA=
-X-Google-Smtp-Source: ABdhPJyrRulMsjoBfIFbzGiOD1bug6oJnhrXMm7Ik8OTUigZ259cK92WVZxrLufHpUW7QZoqOByqoQ==
-X-Received: by 2002:a9d:65d1:: with SMTP id z17mr24610562oth.79.1600462188234;
-        Fri, 18 Sep 2020 13:49:48 -0700 (PDT)
-Received: from localhost.localdomain (cpe-24-31-245-230.kc.res.rr.com. [24.31.245.230])
-        by smtp.gmail.com with ESMTPSA id k16sm3592839oij.56.2020.09.18.13.49.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 18 Sep 2020 13:49:47 -0700 (PDT)
-Sender: Larry Finger <larry.finger@gmail.com>
-Subject: Re: [PATCH -next 9/9] rtlwifi: rtl8723be: fix comparison to bool
- warning in hw.c
-To:     Zheng Bin <zhengbin13@huawei.com>, pkshih@realtek.com,
-        kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     yi.zhang@huawei.com
-References: <20200918102505.16036-1-zhengbin13@huawei.com>
- <20200918102505.16036-10-zhengbin13@huawei.com>
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-Message-ID: <09ee4bfd-d010-a185-7050-702a9e9d8bd7@lwfinger.net>
-Date:   Fri, 18 Sep 2020 15:49:46 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.12.0
+        id S1726129AbgISBcW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 18 Sep 2020 21:32:22 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:13267 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726009AbgISBcW (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 18 Sep 2020 21:32:22 -0400
+Received: from DGGEMS406-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id 4206FC7D97D4CB39568B;
+        Sat, 19 Sep 2020 09:32:21 +0800 (CST)
+Received: from [10.174.179.91] (10.174.179.91) by
+ DGGEMS406-HUB.china.huawei.com (10.3.19.206) with Microsoft SMTP Server id
+ 14.3.487.0; Sat, 19 Sep 2020 09:32:20 +0800
+Subject: Re: [PATCH -next] mt76: Convert to DEFINE_SHOW_ATTRIBUTE
+To:     Felix Fietkau <nbd@nbd.name>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>
+CC:     <linux-wireless@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+References: <20200716085801.11220-1-miaoqinglang@huawei.com>
+ <b522f546-148f-2348-a627-2b19e1013d11@nbd.name>
+From:   miaoqinglang <miaoqinglang@huawei.com>
+Message-ID: <68e17ef2-6749-5ac4-3b84-b338e91e40fa@huawei.com>
+Date:   Sat, 19 Sep 2020 09:32:19 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-In-Reply-To: <20200918102505.16036-10-zhengbin13@huawei.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <b522f546-148f-2348-a627-2b19e1013d11@nbd.name>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.174.179.91]
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 9/18/20 5:25 AM, Zheng Bin wrote:
-> Fixes coccicheck warning:
-> 
-> drivers/net/wireless/realtek/rtlwifi/rtl8723be/hw.c:861:6-35: WARNING: Comparison to bool
-> 
-> Signed-off-by: Zheng Bin <zhengbin13@huawei.com>
-> ---
->   drivers/net/wireless/realtek/rtlwifi/rtl8723be/hw.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
 
-Acked-by: Larry Finger <Larry.Finger@lwfinger.net>
 
-Larry
+在 2020/9/9 5:22, Felix Fietkau 写道:
+> On 2020-07-16 10:58, Qinglang Miao wrote:
+>> Use DEFINE_SHOW_ATTRIBUTE macro to simplify the code.
+>>
+>> Signed-off-by: Qinglang Miao <miaoqinglang@huawei.com>
+> This does not seem to apply to the current tree, please rebase.
+> 
+> Thanks,
+> 
+> - Felix
+> .
+> 
+Hi Felix,
 
-> 
-> diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8723be/hw.c b/drivers/net/wireless/realtek/rtlwifi/rtl8723be/hw.c
-> index 3c7ba8214daf..0748aedce2ad 100644
-> --- a/drivers/net/wireless/realtek/rtlwifi/rtl8723be/hw.c
-> +++ b/drivers/net/wireless/realtek/rtlwifi/rtl8723be/hw.c
-> @@ -858,7 +858,7 @@ static bool _rtl8723be_init_mac(struct ieee80211_hw *hw)
->   	rtl_write_word(rtlpriv, REG_CR, 0x2ff);
-> 
->   	if (!rtlhal->mac_func_enable) {
-> -		if (_rtl8723be_llt_table_init(hw) == false)
-> +		if (!_rtl8723be_llt_table_init(hw))
->   			return false;
->   	}
-> 
-> --
-> 2.26.0.106.g9fadedd
-> 
+I resent a new patch against linux-next(20200917), and it can
+be applied to mainline cleanly now.
 
+Thanks.
