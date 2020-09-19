@@ -2,60 +2,69 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 876B92709B0
-	for <lists+linux-wireless@lfdr.de>; Sat, 19 Sep 2020 03:32:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A9262709F1
+	for <lists+linux-wireless@lfdr.de>; Sat, 19 Sep 2020 04:07:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726129AbgISBcW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 18 Sep 2020 21:32:22 -0400
-Received: from szxga05-in.huawei.com ([45.249.212.191]:13267 "EHLO huawei.com"
+        id S1726281AbgISCHm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 18 Sep 2020 22:07:42 -0400
+Received: from szxga07-in.huawei.com ([45.249.212.35]:54446 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726009AbgISBcW (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 18 Sep 2020 21:32:22 -0400
-Received: from DGGEMS406-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id 4206FC7D97D4CB39568B;
-        Sat, 19 Sep 2020 09:32:21 +0800 (CST)
-Received: from [10.174.179.91] (10.174.179.91) by
- DGGEMS406-HUB.china.huawei.com (10.3.19.206) with Microsoft SMTP Server id
- 14.3.487.0; Sat, 19 Sep 2020 09:32:20 +0800
-Subject: Re: [PATCH -next] mt76: Convert to DEFINE_SHOW_ATTRIBUTE
-To:     Felix Fietkau <nbd@nbd.name>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>
-CC:     <linux-wireless@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-References: <20200716085801.11220-1-miaoqinglang@huawei.com>
- <b522f546-148f-2348-a627-2b19e1013d11@nbd.name>
-From:   miaoqinglang <miaoqinglang@huawei.com>
-Message-ID: <68e17ef2-6749-5ac4-3b84-b338e91e40fa@huawei.com>
-Date:   Sat, 19 Sep 2020 09:32:19 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+        id S1726054AbgISCHl (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 18 Sep 2020 22:07:41 -0400
+Received: from DGGEMS404-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id 66475C1F8229E992EFC4;
+        Sat, 19 Sep 2020 10:07:39 +0800 (CST)
+Received: from localhost.localdomain (10.175.112.70) by
+ DGGEMS404-HUB.china.huawei.com (10.3.19.204) with Microsoft SMTP Server (TLS)
+ id 14.3.487.0; Sat, 19 Sep 2020 10:07:38 +0800
+From:   Zhang Changzhong <zhangchangzhong@huawei.com>
+To:     <kvalo@codeaurora.org>, <davem@davemloft.net>, <kuba@kernel.org>
+CC:     <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: [PATCH v2] brcmfmac: check return value of driver_for_each_device()
+Date:   Sat, 19 Sep 2020 10:06:31 +0800
+Message-ID: <1600481191-14250-1-git-send-email-zhangchangzhong@huawei.com>
+X-Mailer: git-send-email 1.8.3.1
 MIME-Version: 1.0
-In-Reply-To: <b522f546-148f-2348-a627-2b19e1013d11@nbd.name>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.179.91]
+Content-Type: text/plain
+X-Originating-IP: [10.175.112.70]
 X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Fixes the following W=1 kernel build warning(s):
 
+drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c:1576:6: warning:
+ variable 'ret' set but not used [-Wunused-but-set-variable]
+  1576 |  int ret;
+       |      ^~~
 
-在 2020/9/9 5:22, Felix Fietkau 写道:
-> On 2020-07-16 10:58, Qinglang Miao wrote:
->> Use DEFINE_SHOW_ATTRIBUTE macro to simplify the code.
->>
->> Signed-off-by: Qinglang Miao <miaoqinglang@huawei.com>
-> This does not seem to apply to the current tree, please rebase.
-> 
-> Thanks,
-> 
-> - Felix
-> .
-> 
-Hi Felix,
+driver_for_each_device() has been declared with __must_check, so the
+return value should be checked.
 
-I resent a new patch against linux-next(20200917), and it can
-be applied to mainline cleanly now.
+Signed-off-by: Zhang Changzhong <zhangchangzhong@huawei.com>
+---
+v2:
+- cc linux-wireless
+---
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-Thanks.
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c
+index ac54638..6f67fef 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c
+@@ -1578,6 +1578,9 @@ void brcmf_usb_exit(void)
+ 	brcmf_dbg(USB, "Enter\n");
+ 	ret = driver_for_each_device(drv, NULL, NULL,
+ 				     brcmf_usb_reset_device);
++	if (ret)
++		brcmf_err("failed to reset all usb devices %d\n", ret);
++
+ 	usb_deregister(&brcmf_usbdrvr);
+ }
+ 
+-- 
+2.9.5
+
