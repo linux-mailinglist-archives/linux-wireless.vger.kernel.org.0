@@ -2,185 +2,77 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 43F93272159
-	for <lists+linux-wireless@lfdr.de>; Mon, 21 Sep 2020 12:39:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E21DC2724CA
+	for <lists+linux-wireless@lfdr.de>; Mon, 21 Sep 2020 15:11:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726589AbgIUKjD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 21 Sep 2020 06:39:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33794 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726353AbgIUKjC (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 21 Sep 2020 06:39:02 -0400
-Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com [IPv6:2a00:1450:4864:20::343])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42F0FC061755
-        for <linux-wireless@vger.kernel.org>; Mon, 21 Sep 2020 03:39:02 -0700 (PDT)
-Received: by mail-wm1-x343.google.com with SMTP id l9so12084190wme.3
-        for <linux-wireless@vger.kernel.org>; Mon, 21 Sep 2020 03:39:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=815PefS5zvLdQ7D87NKa1eSJ5I4DKxCbFZlXVdIOiew=;
-        b=eQiynjUNa7H0ULRmDBn/a9gnNuhDfWsTWCJzx5pS9vux/WaRo1DEPXu26YMdh4Cx3a
-         CWkOoeocK+6Py8imhk3uoyCHsLib5VjbmE22WZzyrcsJm8/6hgIkHcnGHxRluFy0BdCk
-         GJhz/lbWKod0B9cLnO9CjSWFyVmfV26bD5etc0LWY+YlafqDIkFzRvEslDZzZyWiAkom
-         npHe2tM5x88sTK/MT9C33JCLxtIEOFm/6fCcXemsxaDdI7oqbbMEV60xzQC4z1GUMdjb
-         Pb1nYP94BTsXLGvBaUiEfkU0op8Am1yc4MpJk/+Gfxp5ZgNI800vV0EYZ4aCjoEGSVar
-         vp0Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=815PefS5zvLdQ7D87NKa1eSJ5I4DKxCbFZlXVdIOiew=;
-        b=UVqHZTF0g7+aBwyaHPNtlQlOttaeGsqG7m9vmqSz6h27O9Mv6XTJrEG1YJWPk5oXh3
-         e1fzarLyi+pY0ia3eXawGHspbhFedLuVNcePSa6qcEdz0/jWAHB60n29aUKZEHluAizp
-         0Kc6YP0s/okP4EdOaMBYDXlM2aiwzztN9zTbDLJ6vYbR/MO/c3DSQeht4k+QRSJNGw8R
-         fviJAdhj0BdeYu9UHfz9CYlwTaogKS+4txeaW3oIZUV8W24bMUDFcQTMtAmfno8R65Dd
-         p+t/cgE0+BADAew7O8jDp8yh/wihB1bSJwiVdZ6xkJ/reKDRH5ywt7XDezoCaJ0qOoNm
-         sapQ==
-X-Gm-Message-State: AOAM532FQRYhotsXjZmk3DAbVuq/kYE2E4YjpPbznedQ1y5U+8Bacs2d
-        lV34bggcKEL6uGyf7uwUyIYYIPcuuMXw/8Eil0v8Ow==
-X-Google-Smtp-Source: ABdhPJzGiKn4/m3XDfI6z8LGN97TpSTsbqM0u5nqJgInWKx46kgonkJngPqqxfKd6ZnRUb7KWNJ5cFDusvxlFjTdMWM=
-X-Received: by 2002:a7b:c0c5:: with SMTP id s5mr29004793wmh.152.1600684740821;
- Mon, 21 Sep 2020 03:39:00 -0700 (PDT)
+        id S1727556AbgIUNLb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 21 Sep 2020 09:11:31 -0400
+Received: from m42-4.mailgun.net ([69.72.42.4]:35905 "EHLO m42-4.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727554AbgIUNLX (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 21 Sep 2020 09:11:23 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1600693882; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=RnNXoGJCqQ4mueFmIJRmRFdNcp/CeeC7DGPBkDYuxBU=;
+ b=dB7DSMGsGCpkuc3H9U3LpispRbLlBzyuT3rPsW2KGS08vTsvVsUnv/6SCJGlxYLnJ721jbkh
+ nP4oWq2kmrvvwNYuC0RBfN3xKviYmhytNF0/+wc2aDFk+HQml+r+Qe7YAT2QAOkzqnTT+E9C
+ bowt9L+EB50gtx+pZzkxZuglvWQ=
+X-Mailgun-Sending-Ip: 69.72.42.4
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n03.prod.us-east-1.postgun.com with SMTP id
+ 5f68a440f1e3eb89c70a057f (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 21 Sep 2020 13:01:52
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 6DFE8C433CA; Mon, 21 Sep 2020 13:01:51 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        MISSING_DATE,MISSING_MID,SPF_FAIL autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 94FE4C433C8;
+        Mon, 21 Sep 2020 13:01:49 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 94FE4C433C8
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-References: <1600328501-8832-1-git-send-email-amit.pundir@linaro.org> <20200917160513.GO1893@yoga>
-In-Reply-To: <20200917160513.GO1893@yoga>
-From:   Amit Pundir <amit.pundir@linaro.org>
-Date:   Mon, 21 Sep 2020 16:08:24 +0530
-Message-ID: <CAMi1Hd0S+hOLL0X8=_1KGG0G7u0bt66H6=yN=LuuX+FJb8+-4g@mail.gmail.com>
-Subject: Re: [PATCH] ath10k: qmi: Skip host capability request for Xiaomi Poco F1
-To:     Bjorn Andersson <bjorn.andersson@linaro.org>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        David S Miller <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Jeffrey Hugo <jeffrey.l.hugo@gmail.com>,
-        John Stultz <john.stultz@linaro.org>,
-        Sumit Semwal <sumit.semwal@linaro.org>,
-        Konrad Dybcio <konradybcio@gmail.com>,
-        ath10k <ath10k@lists.infradead.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        lkml <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] ssb: Remove meaningless jump label to simplify the code
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20200915020330.96067-1-jingxiangfeng@huawei.com>
+References: <20200915020330.96067-1-jingxiangfeng@huawei.com>
+To:     Jing Xiangfeng <jingxiangfeng@huawei.com>
+Cc:     <m@bues.ch>, <linux-wireless@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <jingxiangfeng@huawei.com>
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
+Message-Id: <20200921130151.6DFE8C433CA@smtp.codeaurora.org>
+Date:   Mon, 21 Sep 2020 13:01:51 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, 17 Sep 2020 at 21:35, Bjorn Andersson
-<bjorn.andersson@linaro.org> wrote:
->
-> On Thu 17 Sep 02:41 CDT 2020, Amit Pundir wrote:
->
-> > Workaround to get WiFi working on Xiaomi Poco F1 (sdm845)
-> > phone. We get a non-fatal QMI_ERR_MALFORMED_MSG_V01 error
-> > message in ath10k_qmi_host_cap_send_sync(), but we can still
-> > bring up WiFi services successfully on AOSP if we ignore it.
-> >
-> > We suspect either the host cap is not implemented or there
-> > may be firmware specific issues. Firmware version is
-> > QC_IMAGE_VERSION_STRING=WLAN.HL.2.0.c3-00257-QCAHLSWMTPLZ-1
-> >
-> > qcom,snoc-host-cap-8bit-quirk didn't help. If I use this
-> > quirk, then the host capability request does get accepted,
-> > but we run into fatal "msa info req rejected" error and
-> > WiFi interface doesn't come up.
-> >
->
-> What happens if you skip sending the host-cap message? I had one
-> firmware version for which I implemented a
-> "qcom,snoc-host-cap-skip-quirk".
->
-> But testing showed that the link was pretty unusable - pushing any real
-> amount of data would cause it to silently stop working - and I realized
-> that I could use the linux-firmware wlanmdsp.mbn instead, which works
-> great on all my devices...
+Jing Xiangfeng <jingxiangfeng@huawei.com> wrote:
 
-I skipped the ath10k_qmi_host_cap_send_sync block altogether
-(if that is what you meant by qcom,snoc-host-cap-skip-quirk) and
-so far did not run into any issues with youtube auto-playback loop
-(3+ hours and counting). Does that count as a valid use case?
-Otherwise let me know how could I reproduce a reasonable test
-setup?
+> The out jump label has nothing to do. So remove it to simplify the code.
+> 
+> Signed-off-by: Jing Xiangfeng <jingxiangfeng@huawei.com>
 
->
-> > Attempts are being made to debug the failure reasons but no
-> > luck so far. Hence this device specific workaround instead
-> > of checking for QMI_ERR_MALFORMED_MSG_V01 error message.
-> > Tried ath10k/WCN3990/hw1.0/wlanmdsp.mbn from the upstream
-> > linux-firmware project but it didn't help and neither did
-> > building board-2.bin file from stock bdwlan* files.
-> >
->
-> "Didn't work" as in the wlanmdsp.mbn from linux-firmware failed to load
-> or some laer problem?
+Patch applied to wireless-drivers-next.git, thanks.
 
-While using the wlanmdsp.mbn from linux-firmware, I run into
-the following crash 4 times before tqftpserv service gets killed
-eventually:
+41650c45fbd2 ssb: Remove meaningless jump label to simplify the code
 
-[   46.504502] qcom-q6v5-mss 4080000.remoteproc: fatal error received:
-dog_virtual_root.c:89:User-PD grace timer expired for wlan_process
-(ASID: 1)
-[   46.504527] remoteproc remoteproc0: crash detected in
-4080000.remoteproc: type fatal error
-[   46.504558] remoteproc remoteproc0: handling crash #1 in 4080000.remoteproc
-[   46.504563] remoteproc remoteproc0: recovering 4080000.remoteproc
-[   56.542400] 4080000.remoteproc:glink-edge: intent request timed out
-[   56.644617] qcom-q6v5-mss 4080000.remoteproc: port failed halt
-[   56.652321] remoteproc remoteproc0: stopped remote processor
-4080000.remoteproc
-[   59.017963] qcom-q6v5-mss 4080000.remoteproc: MBA booted without
-debug policy, loading mpss
-[   61.514552] remoteproc remoteproc0: remote processor
-4080000.remoteproc is now up
-<.... snip ....>
-[  214.161946] failed to send del client cmd
-[  214.161952] failed while handling packet from 1:16689
-[  214.185826] failed to send del client cmd
-[  214.185832] failed while handling packet from 1:16688
-[  214.201951] failed to send del client cmd
-<.... snip ....>
-[  219.682148] failed to send del client cmd
-[  219.682154] failed while handling packet from 1:16394
-[  219.714707] init: Service 'tqftpserv' (pid 321) received signal 6
-oneshot service took 215.852005 seconds in background
-[  219.714754] init: Sending signal 9 to service 'tqftpserv' (pid 321)
-process group...
+-- 
+https://patchwork.kernel.org/patch/11775319/
 
-Regards,
-Amit Pundir
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
->
-> Regards,
-> Bjorn
->
-> > This workaround will be removed once we have a viable fix.
-> > Thanks to postmarketOS guys for catching this.
-> >
-> > Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
-> > ---
-> > Device-tree for Xiaomi Poco F1(Beryllium) got merged in
-> > qcom/arm64-for-5.10 last week
-> > https://git.kernel.org/pub/scm/linux/kernel/git/qcom/linux.git/commit/?id=77809cf74a8c
-> >
-> >  drivers/net/wireless/ath/ath10k/qmi.c | 3 ++-
-> >  1 file changed, 2 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/net/wireless/ath/ath10k/qmi.c b/drivers/net/wireless/ath/ath10k/qmi.c
-> > index 0dee1353d395..37c5350eb8b1 100644
-> > --- a/drivers/net/wireless/ath/ath10k/qmi.c
-> > +++ b/drivers/net/wireless/ath/ath10k/qmi.c
-> > @@ -651,7 +651,8 @@ static int ath10k_qmi_host_cap_send_sync(struct ath10k_qmi *qmi)
-> >
-> >       /* older FW didn't support this request, which is not fatal */
-> >       if (resp.resp.result != QMI_RESULT_SUCCESS_V01 &&
-> > -         resp.resp.error != QMI_ERR_NOT_SUPPORTED_V01) {
-> > +         resp.resp.error != QMI_ERR_NOT_SUPPORTED_V01 &&
-> > +         !of_machine_is_compatible("xiaomi,beryllium")) { /* Xiaomi Poco F1 workaround */
-> >               ath10k_err(ar, "host capability request rejected: %d\n", resp.resp.error);
-> >               ret = -EINVAL;
-> >               goto out;
-> > --
-> > 2.7.4
-> >
