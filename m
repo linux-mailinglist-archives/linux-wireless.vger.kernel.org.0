@@ -2,33 +2,34 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 390022724F5
-	for <lists+linux-wireless@lfdr.de>; Mon, 21 Sep 2020 15:12:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 77C9D27249D
+	for <lists+linux-wireless@lfdr.de>; Mon, 21 Sep 2020 15:08:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727691AbgIUNMm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 21 Sep 2020 09:12:42 -0400
-Received: from m42-4.mailgun.net ([69.72.42.4]:35905 "EHLO m42-4.mailgun.net"
+        id S1727027AbgIUNIc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 21 Sep 2020 09:08:32 -0400
+Received: from m42-4.mailgun.net ([69.72.42.4]:33294 "EHLO m42-4.mailgun.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727334AbgIUNMk (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 21 Sep 2020 09:12:40 -0400
+        id S1726584AbgIUNIb (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 21 Sep 2020 09:08:31 -0400
+X-Greylist: delayed 349 seconds by postgrey-1.27 at vger.kernel.org; Mon, 21 Sep 2020 09:08:30 EDT
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1600693959; h=Date: Message-Id: Cc: To: References:
+ s=smtp; t=1600693711; h=Date: Message-Id: Cc: To: References:
  In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=jPYut+8RHNZBwsOgqTf/k1AnklrA0DOtviGDY6GteVw=;
- b=m5yGXkG1yR3VQYYHIG7HPIMw230Y9uWHf3Ox+Dgh1N4/dvy/SfgCjsr7WYWQqMkjKryLMqKw
- u177/Fj6vKcGzL5pXduHPewE5GiWt2BMx9mbTYZmAAXj30XUY/wxnzpbBo46zcwGk2vZCYkC
- zSXN52dH423lV/SQFrJcl/NUXHU=
+ Content-Type: Sender; bh=db41zdzYe9Oi5weBkQXr2AXdoiKQCyrCWhDRhZQxaxs=;
+ b=BF1Ob5nhD69lq5VSE8O4+RJria0X12F7U48CxFbQmqD3BDZm8rfFEtvUQkvTe8icqg2yEM0l
+ Evnyp9kBpClGI0yo+v5DDJEzlmw8JDCpD9g8ozZvab42sjlmVTw/t1FPQttfiSdvxqkl3QKz
+ fIXxnSfsQoItFj/ZZ4uFF0NCUHM=
 X-Mailgun-Sending-Ip: 69.72.42.4
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n04.prod.us-east-1.postgun.com with SMTP id
- 5f68a49e6ace44caccfba943 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 21 Sep 2020 13:03:26
+ smtp-out-n07.prod.us-east-1.postgun.com with SMTP id
+ 5f68a537ae7ca421d2cb1339 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 21 Sep 2020 13:05:59
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 86C53C433FF; Mon, 21 Sep 2020 13:03:25 +0000 (UTC)
+        id F092DC43385; Mon, 21 Sep 2020 13:05:58 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -39,54 +40,52 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 8C6E0C433CA;
-        Mon, 21 Sep 2020 13:03:22 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 8C6E0C433CA
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id EBC15C433CA;
+        Mon, 21 Sep 2020 13:05:55 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org EBC15C433CA
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH -next 1/9] rtlwifi: rtl8192ee: fix comparison to bool
- warning
- in hw.c
+Subject: Re: [PATCH] wireless: ath9k: hif_usb: fix race condition between
+ usb_get_urb() and usb_kill_anchored_urbs()
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20200918102505.16036-2-zhengbin13@huawei.com>
-References: <20200918102505.16036-2-zhengbin13@huawei.com>
-To:     Zheng Bin <zhengbin13@huawei.com>
-Cc:     <pkshih@realtek.com>, <davem@davemloft.net>, <kuba@kernel.org>,
-        <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <yi.zhang@huawei.com>,
-        <zhengbin13@huawei.com>
+In-Reply-To: <20200911071427.32354-1-brookebasile@gmail.com>
+References: <20200911071427.32354-1-brookebasile@gmail.com>
+To:     Brooke Basile <brookebasile@gmail.com>
+Cc:     davem@davemloft.net, kuba@kernel.org, gregkh@linuxfoundation.org,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        ath9k-devel@qca.qualcomm.com, syzkaller-bugs@googlegroups.com,
+        Brooke Basile <brookebasile@gmail.com>,
+        syzbot+89bd486af9427a9fc605@syzkaller.appspotmail.com
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20200921130325.86C53C433FF@smtp.codeaurora.org>
-Date:   Mon, 21 Sep 2020 13:03:25 +0000 (UTC)
+Message-Id: <20200921130558.F092DC43385@smtp.codeaurora.org>
+Date:   Mon, 21 Sep 2020 13:05:58 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Zheng Bin <zhengbin13@huawei.com> wrote:
+Brooke Basile <brookebasile@gmail.com> wrote:
 
-> Fixes coccicheck warning:
+> Calls to usb_kill_anchored_urbs() after usb_kill_urb() on multiprocessor
+> systems create a race condition in which usb_kill_anchored_urbs() deallocates
+> the URB before the completer callback is called in usb_kill_urb(), resulting
+> in a use-after-free.
+> To fix this, add proper lock protection to usb_kill_urb() calls that can
+> possibly run concurrently with usb_kill_anchored_urbs().
 > 
-> drivers/net/wireless/realtek/rtlwifi/rtl8192ee/hw.c:797:6-33: WARNING: Comparison to bool
-> 
-> Signed-off-by: Zheng Bin <zhengbin13@huawei.com>
+> Reported-by: syzbot+89bd486af9427a9fc605@syzkaller.appspotmail.com
+> Link: https://syzkaller.appspot.com/bug?id=cabffad18eb74197f84871802fd2c5117b61febf
+> Signed-off-by: Brooke Basile <brookebasile@gmail.com>
+> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 
-9 patches applied to wireless-drivers-next.git, thanks.
+Patch applied to ath-next branch of ath.git, thanks.
 
-027a4c9c305f rtlwifi: rtl8192ee: fix comparison to bool warning in hw.c
-4cff897cb2f8 rtlwifi: rtl8192c: fix comparison to bool warning in phy_common.c
-03ce81593951 rtlwifi: rtl8192cu: fix comparison to bool warning in mac.c
-d87a8d4d5eef rtlwifi: rtl8821ae: fix comparison to bool warning in hw.c
-07cc5f0345ae rtlwifi: rtl8821ae: fix comparison to bool warning in phy.c
-77205bc3db80 rtlwifi: rtl8192cu: fix comparison to bool warning in hw.c
-d544707ae078 rtlwifi: rtl8192ce: fix comparison to bool warning in hw.c
-9dbde387e283 rtlwifi: rtl8192de: fix comparison to bool warning in hw.c
-02686841d58f rtlwifi: rtl8723be: fix comparison to bool warning in hw.c
+03fb92a432ea ath9k: hif_usb: fix race condition between usb_get_urb() and usb_kill_anchored_urbs()
 
 -- 
-https://patchwork.kernel.org/patch/11784543/
+https://patchwork.kernel.org/patch/11769845/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
