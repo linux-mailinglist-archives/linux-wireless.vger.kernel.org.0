@@ -2,72 +2,121 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 85ECF272A97
-	for <lists+linux-wireless@lfdr.de>; Mon, 21 Sep 2020 17:45:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DE51A272C09
+	for <lists+linux-wireless@lfdr.de>; Mon, 21 Sep 2020 18:26:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727949AbgIUPpw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 21 Sep 2020 11:45:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53276 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726749AbgIUPpw (ORCPT
+        id S1728173AbgIUQ0s (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 21 Sep 2020 12:26:48 -0400
+Received: from mail.adapt-ip.com ([173.164.178.19]:52942 "EHLO
+        web.adapt-ip.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726795AbgIUQ0p (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 21 Sep 2020 11:45:52 -0400
-Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CECE4C061755
-        for <linux-wireless@vger.kernel.org>; Mon, 21 Sep 2020 08:45:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-         s=20160729; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject
-        :Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
-        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=S70rH2hZ0k5ktmjPDxH4K3+WfVQ1DMepSPdVd/chVYg=; b=oRyMur1fHOTDdiDY6ll444Ziuy
-        FmyGQCT39nkVatK13eBOBKrHkjRfkXlLL6PzTh+XCvw75Yn2AxfUzFIf/H2/cfQh+FDr6Jwfd0cGX
-        bw6g/YtW6hExv4Nvc9d6003MKDeUeXNH4UzyawQMWQge7NWeVk3L8hZ0EeqdJJcyWntg=;
-Received: from p4ff134da.dip0.t-ipconnect.de ([79.241.52.218] helo=localhost.localdomain)
-        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_CBC_SHA1:128)
-        (Exim 4.89)
-        (envelope-from <nbd@nbd.name>)
-        id 1kKO0g-0007Ef-Qm; Mon, 21 Sep 2020 17:45:46 +0200
-From:   Felix Fietkau <nbd@nbd.name>
-To:     linux-wireless@vger.kernel.org
-Cc:     johannes@sipsolutions.net, Georgi Valkov <gvalkov@abv.bg>
-Subject: [PATCH] mac80211: fix regression in sta connection monitor
-Date:   Mon, 21 Sep 2020 17:45:45 +0200
-Message-Id: <20200921154545.91971-1-nbd@nbd.name>
-X-Mailer: git-send-email 2.28.0
+        Mon, 21 Sep 2020 12:26:45 -0400
+Received: from localhost (localhost [127.0.0.1])
+        by web.adapt-ip.com (Postfix) with ESMTP id 32F904F9DAF;
+        Mon, 21 Sep 2020 16:26:44 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at web.adapt-ip.com
+Received: from web.adapt-ip.com ([127.0.0.1])
+        by localhost (web.adapt-ip.com [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id D3anzeBd18cg; Mon, 21 Sep 2020 16:26:41 +0000 (UTC)
+Received: from mail.ibsgaard.io (c-73-223-60-234.hsd1.ca.comcast.net [73.223.60.234])
+        (Authenticated sender: thomas@adapt-ip.com)
+        by web.adapt-ip.com (Postfix) with ESMTPSA id 2C3344F9DAE;
+        Mon, 21 Sep 2020 16:26:41 +0000 (UTC)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Date:   Mon, 21 Sep 2020 09:26:40 -0700
+From:   Thomas Pedersen <thomas@adapt-ip.com>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH v2 06/22] {cfg,mac}80211: get correct default channel
+ width for S1G
+In-Reply-To: <cb2cf1d923975b0115866b5e92efd91950a1b56d.camel@sipsolutions.net>
+References: <20200831205600.21058-1-thomas@adapt-ip.com>
+ <20200831205600.21058-7-thomas@adapt-ip.com>
+ <c5b93cd207ce780a56ad2689d7660fee48683fe9.camel@sipsolutions.net>
+ <18730e757068a05f6531ea204791eae8@adapt-ip.com>
+ <cb2cf1d923975b0115866b5e92efd91950a1b56d.camel@sipsolutions.net>
+User-Agent: Roundcube Webmail/1.4.7
+Message-ID: <8d24ea208788ac4dbd63f86bd1ee6eab@adapt-ip.com>
+X-Sender: thomas@adapt-ip.com
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-When the nulldata frame was acked, the probe send count needs to be reset,
-otherwise it will keep increasing until the connection is considered dead,
-even though it fine.
+On 2020-09-21 00:01, Johannes Berg wrote:
+> On Sun, 2020-09-20 at 21:59 -0700, Thomas Pedersen wrote:
+>> 
+>> >         default:
+>> >                 /* fall back to 20 MHz for unsupported modes */
+>> >                 cfg80211_chandef_create(&chandef, cbss->channel,
+>> >                                         NL80211_CHAN_NO_HT);
+>> 
+>> Yes, but then what would we pass to cfg80211_chandef_create()?
+> 
+> I'd say we just shouldn't call it if there's a chance that it's an S1G
+> channel?
+> 
+>> We should
+>> probably avoid adding an additional NL80211_CHAN_S1G if enum
+>> nl80211_channel_type is legacy.
+> 
+> Agree.
+> 
+>> It seems like NL80211_CHAN_NO_HT is often used as "give me the default
+>> channel width".  See cfg80211_get_chandef_type() when it throws up its
+>> hands
+>> and returns NL80211_CHAN_NO_HT when encountering an unknown
+>> chandef->width.
+>> Also IBSS passes NL80211_CHAN_NO_HT when the BSS is actually 5 or 
+>> 10MHz.
+> 
+> Yeah, agree it's a bit of a mess, but I'm not really in favour of
+> keeping that mess :)
+> 
+> Also, that's a WARN_ON() there, so the NL80211_CHAN_NO_HT isn't meant 
+> to
+> be anything *valid* in that case, just a value that doesn't cause
+> crashes or other bad behaviour further down the road if we hit that
+> path.
+> 
+>> Maybe (instead of adding a new nl80211_channel_type)
+>> cfg80211_chandef_create() throws a warning if anything but
+>> NL80211_CHAN_NO_HT
+>> is passed with an S1G frequency?
+> 
+> I'd literally just add
+> 
+> 	cfg80211_chandef_create_s1g()
+> 
+> and just not have the argument at all? Or just fill the chandef
+> manually, but of course that's a bit tedious sometimes.
 
-Fixes: 9abf4e49830d ("mac80211: optimize station connection monitor")
-Reported-by: Georgi Valkov <gvalkov@abv.bg>
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
----
- net/mac80211/mlme.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+Then the caller has to make the determination which function to call 
+based on the chan->band, but we've told the function implicitly by 
+passing chan. It doesn't make sense to me to push that complexity onto 
+the caller.
 
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index 50a9b9025725..7c04d8e30482 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -2508,7 +2508,9 @@ void ieee80211_sta_tx_notify(struct ieee80211_sub_if_data *sdata,
- 	    !sdata->u.mgd.probe_send_count)
- 		return;
- 
--	if (!ack)
-+	if (ack)
-+		sdata->u.mgd.probe_send_count = 0;
-+	else
- 		sdata->u.mgd.nullfunc_failed = true;
- 	ieee80211_queue_work(&sdata->local->hw, &sdata->work);
- }
+That said, it actually looks like cfg80211_chandef_create() is only 
+called when a chantype is passed to nl80211 (legacy), in DFS, or HT.
+
+After removing this hunk the S1G tests still pass, so how about we just 
+drop it :)
+
+>> > IOW, it seems to me that this function should actually instead throw a
+>> > warning (and then perhaps configure something sane?), but not be the
+>> > default code path.
+>> 
+>> Yes, but I'd also like to avoid making the caller worry about the 
+>> value
+>> of a parameter which only exists for HT reasons (?).
+> 
+> It mostly isn't even for HT reasons ... for HT, we could perfectly well
+> fill the chandef directly, and do in many cases.
+> 
+> johannes
+
 -- 
-2.28.0
-
+thomas
