@@ -2,132 +2,128 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E81B4274876
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Sep 2020 20:45:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AAFA4274909
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Sep 2020 21:25:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726652AbgIVSph (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 22 Sep 2020 14:45:37 -0400
-Received: from 2.mo174.mail-out.ovh.net ([178.33.110.43]:41491 "EHLO
-        2.mo174.mail-out.ovh.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726573AbgIVSpe (ORCPT
+        id S1726576AbgIVTZN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 22 Sep 2020 15:25:13 -0400
+Received: from mail2.candelatech.com ([208.74.158.173]:44952 "EHLO
+        mail3.candelatech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726566AbgIVTZN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 22 Sep 2020 14:45:34 -0400
-Received: from mxplan8.mail.ovh.net (unknown [10.109.146.129])
-        by mo174.mail-out.ovh.net (Postfix) with ESMTPS id 08C4A44F2B26;
-        Tue, 22 Sep 2020 20:45:30 +0200 (CEST)
-Received: from awhome.eu (37.59.142.105) by mxplan8.mail.ovh.net (172.16.2.21)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.2044.4; Tue, 22 Sep
- 2020 20:45:30 +0200
-Authentication-Results: garm.ovh; auth=pass (GARM-105G00684d37a1e-bfa2-4b27-a5be-75639e02e191,
-                    4C3E3D8FEB463474C42C0B9415162D5E591AC1A3) smtp.auth=postmaster@awhome.eu
-From:   Alexander Wetzel <alexander@wetzel-home.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=wetzel-home.de;
-        s=wetzel-home; t=1600800329;
-        bh=D2O/29a+2Ir93722aA1JuMzU1wFGsj/YUTfeTXhvuoI=;
-        h=From:Subject:To:Cc:References:Date:In-Reply-To;
-        b=XGmuMRFGTt/VOuo86KgZ+2VNhbs3HIm625wkkvHexHB68Yvvt9hIsyTOZhUuuChKA
-         NznDlRrPoFzftBOoDpr6Mbf6NN5LAMk63L8zgfGEfkgpo/2VT/6snV//GJAEmzBXRN
-         5t016tMreNnaV1ms/5phMfoYxggnJA7iIK6Telsw=
-Subject: Re: [PATCH] iwlwifi: add NL80211_EXT_FEATURE_CAN_REPLACE_PTK0 support
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Cc:     "luciano.coelho@intel.com" <luciano.coelho@intel.com>,
-        "emmanuel.grumbach@intel.com" <emmanuel.grumbach@intel.com>,
-        "linuxwifi@intel.com" <linuxwifi@intel.com>
-References: <20200918171301.6942-1-alexander@wetzel-home.de>
- <f6df593556c3f395997dfe42a71a69f4919a5911.camel@sipsolutions.net>
- <c887ae58-983b-0f4b-3b00-8ffbb669f37a@wetzel-home.de>
-Message-ID: <a245ea65-d862-6388-d163-49b99046dc08@wetzel-home.de>
-Date:   Tue, 22 Sep 2020 20:45:26 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.12.0
+        Tue, 22 Sep 2020 15:25:13 -0400
+Received: from ben-dt4.candelatech.com (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
+        by mail3.candelatech.com (Postfix) with ESMTP id 79C9C13C2B0;
+        Tue, 22 Sep 2020 12:20:00 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 79C9C13C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+        s=default; t=1600802400;
+        bh=/hsZNWlMO8q90+AR3z0NSM2bW5UCcwsFE4SclNmOotk=;
+        h=From:To:Cc:Subject:Date:From;
+        b=O0ZX+rnrhSQhPhAaqQadI6/YcIYSC8plVgVYkT7uTPF8pLKg+qLBeRriFE0gv2+g9
+         DelK4zJw4qHI2nrjNOtERUDIM29YZs1WdJTrcYfVlc6fQrnrZ4M4YQST5vWY+g6xND
+         4PhYXVhiMJFo4/k2mt2JJ8ftTP26nUXyfYAa/goM=
+From:   greearb@candelatech.com
+To:     linux-wireless@vger.kernel.org, ath10k@lists.infradead.org
+Cc:     Ben Greear <greearb@candelatech.com>
+Subject: [PATCH 1/2] mac80211:  Support not iterating over not-sdata-in-driver ifaces
+Date:   Tue, 22 Sep 2020 12:19:56 -0700
+Message-Id: <20200922191957.25257-1-greearb@candelatech.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-In-Reply-To: <c887ae58-983b-0f4b-3b00-8ffbb669f37a@wetzel-home.de>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-Ovh-Tracer-GUID: 9f3fffd8-5ab9-49d3-9832-5236c24847a2
-X-Ovh-Tracer-Id: 5064860732984401059
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedujedrudeggdduvdelucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffuvfhfkffffgggjggtgfesthekredttdefjeenucfhrhhomheptehlvgigrghnuggvrhcuhggvthiivghluceorghlvgigrghnuggvrhesfigvthiivghlqdhhohhmvgdruggvqeenucggtffrrghtthgvrhhnpefhueekgfdvieetveehvdelgefgveeufffgvdeuteeufeduieehkefhlefgteegtdenucfkpheptddrtddrtddrtddpfeejrdehledrudegvddruddtheenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhhouggvpehsmhhtphdqohhuthdphhgvlhhopehmgihplhgrnhekrdhmrghilhdrohhvhhdrnhgvthdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomheprghlvgigrghnuggvrhesfigvthiivghlqdhhohhmvgdruggvpdhrtghpthhtoheplhhinhhugidqfihirhgvlhgvshhssehvghgvrhdrkhgvrhhnvghlrdhorhhg
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Am 20.09.20 um 08:37 schrieb Alexander Wetzel:
-> 
->  >>
->  >> +        /* GCMP and 256 bit CCMP keys the key can't be copied into the
->  >> +         * MPDU struct ieee80211_tx_info. We therefore must flush the
->  >> +         * queues to ensure there are no MPDUs left which are 
-> referring
->  >> +         * to the outgoing key.
->  >> +         */
->  >> +        if (key->flags & IEEE80211_KEY_FLAG_PAIRWISE &&
->  >> +            (key->cipher == WLAN_CIPHER_SUITE_GCMP ||
->  >> +             key->cipher == WLAN_CIPHER_SUITE_GCMP_256 ||
->  >> +             key->cipher == WLAN_CIPHER_SUITE_CCMP_256)) {
->  >> +            ieee80211_stop_queues(hw);
->  >> +            iwl_mvm_mac_flush(hw, vif, 0, true);
->  >> +            ieee80211_wake_queues(hw);
->  >> +        }
->  >
->  > Shouldn't the wake be after installing the new key? Otherwise new frames
->  > can race and be there again?
-> 
-> mac80211 is taking care of that and has already stopped queuing new 
-> MPDUs which would use the key by setting KEY_FLAG_TAINTED on it. So for 
-> a PTK0 rekey we are fine, mac80211 won't queue frames with the key under 
-> deletion.
-> 
+From: Ben Greear <greearb@candelatech.com>
 
-Ok, forget this patch, the mvm part is pointless.
-The maximum we have to do is pausing the queues when we delete a key, no 
-flush required at all... I'll look into that again and send an updated 
-version:
+Allow drivers to request that interface-iterator does NOT iterate
+over interfaces that are not sdata-in-driver.  This will allow
+us to fix crashes in ath10k (and possibly other drivers).
 
-The hw_key and the keyid is set (again) when we dequeue. So we either 
-get a valid key or ieee80211_tx_dequeue() drops the MPDU itself.
-Therefore it's irrelevant if we lookup the key from a table or store it 
-in the MPDU info struct. Now we may still have a race within the driver 
-but simply pausing dequeuing during key deletion should do the trick.
+To summarize Johannes' explanation:
 
-> But I think we should start setting KEY_FLAG_TAINTED for *any* PTK 
-> deletion to make sure we are not sending out MPDUs with a zero key or 
-> something like that. This is a special kind of a rekey case we missed so 
-> far but should be trival cover that, too.
-> 
-> That is then basically taking care about the generic Kr00k vulnerability 
->   some months ago.
-> 
-> Now I'm not aware of we have any mitigations in the code for that but 
-> when we set KEY_FLAG_TAINTED for key deletions any driver which is able 
-> to rekey PTK0 correctly can't be affected by Kr00k any longer.
-> 
+Consider
 
-Looked at the current code and turns out we have at least two 
-mitigations for that now:
-1) commit ce2e1ca70307 "(mac80211: Check port authorization in the 
-ieee80211_tx_dequeue() case)" and
+add interface wlan0
+add interface wlan1
+iterate active interfaces -> wlan0 wlan1
+add interface wlan2
+iterate active interfaces -> wlan0 wlan1 wlan2
 
-2) commit a0761a301746 "(mac80211: drop data frames without key on 
-encrypted links)"
+If you apply this scenario to a restart, which ought to be functionally
+equivalent to the normal startup, just compressed in time, you're
+basically saying that today you get
 
-> I'll look into that in the next days and prepare a patch for mac8011 to 
-> discuss that.
+add interface wlan0
+add interface wlan1
+iterate active interfaces -> wlan0 wlan1 wlan2 << problem here
+add interface wlan2
+iterate active interfaces -> wlan0 wlan1 wlan2
 
-I've the patch basically ready, but there are already the two 
-mitigations mentioned above in place.
+which yeah, totally seems wrong.
 
-The only thing the new patch seems to improves is deleting an active PTK 
-key without de-authentication which seems to have no valid use cases.
-And it makes KEY_FLAG_TAINTED more logical by also stopping Tx for an 
-outgoing key and not only when we replace it.
+But fixing that to be
 
-I'll probably still send it as an RFC patch to sort out if we still want 
-that or not.
+add interface wlan0
+add interface wlan1
+iterate active interfaces ->
+<nothing>
+add interface wlan2
+iterate active interfaces -> <nothing>
+(or
+maybe -> wlan0 wlan1 wlan2 if the reconfig already completed)
 
-Alexander
+This is also at least somewhat wrong, but better to not iterate
+over something that exists in the driver than iterate over something
+that does not.  Originally the first issue was causing crashes in
+testing with lots of station vdevs on an ath10k radio, combined
+with firmware crashing.
+
+I ran with a similar patch for years with no obvious bad results,
+including significant testing with ath9k and ath10k.
+
+Signed-off-by: Ben Greear <greearb@candelatech.com>
+---
+ include/net/mac80211.h | 4 ++++
+ net/mac80211/util.c    | 3 +++
+ 2 files changed, 7 insertions(+)
+
+diff --git a/include/net/mac80211.h b/include/net/mac80211.h
+index 66e2bfd165e82..9c4bffcaed404 100644
+--- a/include/net/mac80211.h
++++ b/include/net/mac80211.h
+@@ -5344,11 +5344,15 @@ void ieee80211_sched_scan_stopped(struct ieee80211_hw *hw);
+  * @IEEE80211_IFACE_ITER_RESUME_ALL: During resume, iterate over all
+  *	interfaces, even if they haven't been re-added to the driver yet.
+  * @IEEE80211_IFACE_ITER_ACTIVE: Iterate only active interfaces (netdev is up).
++ * @IEEE80211_IFACE_SKIP_SDATA_NOT_IN_DRIVER: Skip any interfaces where SDATA
++ *	is not in the driver.  This may fix crashes during firmware recovery
++ *	for instance.
+  */
+ enum ieee80211_interface_iteration_flags {
+ 	IEEE80211_IFACE_ITER_NORMAL	= 0,
+ 	IEEE80211_IFACE_ITER_RESUME_ALL	= BIT(0),
+ 	IEEE80211_IFACE_ITER_ACTIVE	= BIT(1),
++	IEEE80211_IFACE_SKIP_SDATA_NOT_IN_DRIVER	= BIT(2),
+ };
+ 
+ /**
+diff --git a/net/mac80211/util.c b/net/mac80211/util.c
+index c8504ffc71a11..f3bc05217f741 100644
+--- a/net/mac80211/util.c
++++ b/net/mac80211/util.c
+@@ -733,6 +733,9 @@ static void __iterate_interfaces(struct ieee80211_local *local,
+ 		if (!(iter_flags & IEEE80211_IFACE_ITER_RESUME_ALL) &&
+ 		    active_only && !(sdata->flags & IEEE80211_SDATA_IN_DRIVER))
+ 			continue;
++		if ((iter_flags & IEEE80211_IFACE_SKIP_SDATA_NOT_IN_DRIVER) &&
++		    !(sdata->flags & IEEE80211_SDATA_IN_DRIVER))
++			continue;
+ 		if (ieee80211_sdata_running(sdata) || !active_only)
+ 			iterator(data, sdata->vif.addr,
+ 				 &sdata->vif);
+-- 
+2.26.2
 
