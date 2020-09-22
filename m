@@ -2,132 +2,78 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DD31C273AEA
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Sep 2020 08:30:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E5565273B89
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Sep 2020 09:15:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729230AbgIVGaB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 22 Sep 2020 02:30:01 -0400
-Received: from mga02.intel.com ([134.134.136.20]:22672 "EHLO mga02.intel.com"
+        id S1729782AbgIVHPJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 22 Sep 2020 03:15:09 -0400
+Received: from m42-4.mailgun.net ([69.72.42.4]:62821 "EHLO m42-4.mailgun.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727237AbgIVGaB (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 22 Sep 2020 02:30:01 -0400
-IronPort-SDR: v7mGy/EuYsDG/5aXeyr+IbErp3k17Idc5vi/3W19H8dr2YfIB3lW1meB4FC/8/3kXXvT+fqKRP
- 7MxaU1upUuQA==
-X-IronPort-AV: E=McAfee;i="6000,8403,9751"; a="148207835"
-X-IronPort-AV: E=Sophos;i="5.77,289,1596524400"; 
-   d="scan'208";a="148207835"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2020 23:30:00 -0700
-IronPort-SDR: a+3AQIWzUtH9YC7Wt+92+oK/BmURLW6IQK9uvTN4GE4vrG4cj4EQpApcWiEXjSZbQVXTDnLnUm
- fpcEA243exxg==
-X-IronPort-AV: E=Sophos;i="5.77,289,1596524400"; 
-   d="scan'208";a="334882644"
-Received: from shao2-debian.sh.intel.com (HELO [10.239.13.3]) ([10.239.13.3])
-  by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2020 23:29:58 -0700
-Subject: Re: [kbuild-all] Re: [PATCH v3] ath11k: cold boot calibration support
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     kernel test robot <lkp@intel.com>, kbuild-all@lists.01.org,
-        Sowmiya Sree Elavalagan <ssreeela@codeaurora.org>,
-        linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
-        Govindaraj Saminathan <gsamin@codeaurora.org>,
-        Arkadiusz Hiler <ahiler@codeweavers.com>
-References: <1600163991-2093-1-git-send-email-ssreeela@codeaurora.org>
- <202009160303.xwD2GbBx%lkp@intel.com> <87v9g7459d.fsf@codeaurora.org>
- <fef872c3-cf44-d89d-3c3a-d305e3a702a5@intel.com>
- <87lfh21hm2.fsf@codeaurora.org>
-From:   Rong Chen <rong.a.chen@intel.com>
-Message-ID: <1bdd758e-4853-680b-f8a7-d5db1d999e5c@intel.com>
-Date:   Tue, 22 Sep 2020 14:29:17 +0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+        id S1728526AbgIVHPG (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 22 Sep 2020 03:15:06 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1600758905; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=YQ/fWdaquh58Ptplm8zLwL0YmL9KIai8upADVMc42FM=;
+ b=nStROMFB+JhNLAm8mJud8zKr+nfn6+KAzjjDKJwJJRYhmfucepYd5kOFbHqpsyyIR3aRtzdC
+ df4by6bBmI0AJwBbX6fueravZD9o/NfJRi9u6OTyFNqbkuLlhn91UyEvvTZMTyUdkIjOYPFx
+ nD2lSjFJ7QAc+q4ljqsQnTpRRSg=
+X-Mailgun-Sending-Ip: 69.72.42.4
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n04.prod.us-west-2.postgun.com with SMTP id
+ 5f69a476aac060135417998b (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 22 Sep 2020 07:15:02
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 8DCAFC433F1; Tue, 22 Sep 2020 07:15:02 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        MISSING_DATE,MISSING_MID,SPF_FAIL,URIBL_BLOCKED autolearn=no
+        autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id B8F54C433C8;
+        Tue, 22 Sep 2020 07:14:59 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org B8F54C433C8
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-In-Reply-To: <87lfh21hm2.fsf@codeaurora.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+Subject: Re: [PATCH 2/5] wlcore: Remove unused function no_write_handler()
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20200918131305.20976-1-yuehaibing@huawei.com>
+References: <20200918131305.20976-1-yuehaibing@huawei.com>
+To:     YueHaibing <yuehaibing@huawei.com>
+Cc:     <davem@davemloft.net>, <kuba@kernel.org>, <yuehaibing@huawei.com>,
+        <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
+Message-Id: <20200922071502.8DCAFC433F1@smtp.codeaurora.org>
+Date:   Tue, 22 Sep 2020 07:15:02 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+YueHaibing <yuehaibing@huawei.com> wrote:
 
+> There is no caller in tree, so can remove it.
+> 
+> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 
-On 9/22/20 1:54 PM, Kalle Valo wrote:
-> Rong Chen <rong.a.chen@intel.com> writes:
->
->> On 9/21/20 9:40 PM, Kalle Valo wrote:
->>> kernel test robot <lkp@intel.com> writes:
->>>
->>>> Thank you for the patch! Yet something to improve:
->>>>
->>>> [auto build test ERROR on ath6kl/ath-next]
->>>> [also build test ERROR on next-20200915]
->>>> [cannot apply to v5.9-rc5]
->>>> [If your patch is applied to the wrong git tree, kindly drop us a note.
->>>> And when submitting patch, we suggest to use '--base' as documented in
->>>> https://git-scm.com/docs/git-format-patch]
->>>>
->>>> url:
->>>> https://github.com/0day-ci/linux/commits/Sowmiya-Sree-Elavalagan/ath11k-cold-boot-calibration-support/20200915-180324
->>>> base:   https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git ath-next
->>>> config: mips-allmodconfig (attached as .config)
->>>> compiler: mips-linux-gcc (GCC) 9.3.0
->>>> reproduce (this is a W=1 build):
->>>>           wget
->>>> https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross
->>>> -O ~/bin/make.cross
->>>>           chmod +x ~/bin/make.cross
->>>>           # save the attached .config to linux build tree
->>>>           COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-9.3.0 make.cross ARCH=mips
->>>>
->>>> If you fix the issue, kindly add following tag as appropriate
->>>> Reported-by: kernel test robot <lkp@intel.com>
->>>>
->>>> All errors (new ones prefixed by >>, old ones prefixed by <<):
->>>>
->>>> ERROR: modpost: "fw_arg3" [drivers/mtd/parsers/bcm63xxpart.ko] undefined!
->>>>>> ERROR: modpost: "ath11k_cold_boot_cal"
->>>> [drivers/net/wireless/ath/ath11k/ath11k_ahb.ko] undefined!
->>> For some reason I don't see the kbuild bot report above in patchwork:
->>>
->>> https://patchwork.kernel.org/patch/11775953/
->>>
->>> This time the message ids seem to be ok:
->>>
->>> Message-Id: <1600163991-2093-1-git-send-email-ssreeela@codeaurora.org>
->>> [...]
->>> In-Reply-To: <1600163991-2093-1-git-send-email-ssreeela@codeaurora.org>
->>> References: <1600163991-2093-1-git-send-email-ssreeela@codeaurora.org>
->>>
->>> If anyone has ideas why patchwork doesn't see the report, please let me
->>> know.
->>>
->> Hi Kalle,
->>
->> We hided the reports for patchwork, please see
->> https://gitlab.freedesktop.org/patchwork-fdo/patchwork-fdo/-/issues/21
-> Didn't we discuss before and concluded that hiding the reports from
-> patchwork is a VERY bad idea? As it should be the opposite, the kbuild
-> reports should be visible in patchwork so that maintainers see them. For
-> example, when I'm about to apply a patch I only check the comments in
-> patchwork (and not from my email folder), so if the report from the bot
-> is not on patchwork I will not see it.
->
-> But having X-Patchwork-Hint set in the automatically created patches
-> sent by kbuild bot is ok, and I believe that's what kbuild bot currently
-> does. The bot should not set X-Patchwork-Hint in report emails.
->   
-> Anyway, I don't think that was the problem in this case as I don't see
-> X-Patchwork-Hint header set in the report above.
->
+Patch applied to wireless-drivers-next.git, thanks.
 
-Hi Kalle,
+d0c8ff7c1e47 wlcore: Remove unused function no_write_handler()
 
-Sorry for the misunderstanding, you reminded me that we do changed to
-only set X-Patchwork-Hint for patches from bot, and I double checked the
-original mail that there's no X-Patchwork-Hint in it, I have no idea why
-patchwork can't see this report now.
+-- 
+https://patchwork.kernel.org/patch/11785047/
 
-Best Regards,
-Rong Chen
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
