@@ -2,86 +2,68 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A723273F89
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Sep 2020 12:24:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4BF792740DA
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Sep 2020 13:31:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726473AbgIVKYh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 22 Sep 2020 06:24:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56464 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726419AbgIVKYh (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 22 Sep 2020 06:24:37 -0400
-Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B8A5C061755
-        for <linux-wireless@vger.kernel.org>; Tue, 22 Sep 2020 03:24:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-         s=20160729; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject
-        :Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
-        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=pQGJtkUrXuMxTVGBKNjPtRwCzVwoiD+gH/7spihF/zQ=; b=gN8OVJdEyaqL8+wn3bcnESfTFK
-        NqZtyCohTcaoS3vhceRKkxo++AhyzuZwoXlKAWsaoaN0pb943QrM7LhbDFsP+w3sD56hYfO+wEj9V
-        oQ424Tac3WVo01KwAUL4xi7UI4V0e077WVY3AKxXuxYB6zHtolvOltnzLku3ie89KXzA=;
-Received: from p4ff134da.dip0.t-ipconnect.de ([79.241.52.218] helo=localhost.localdomain)
-        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_CBC_SHA1:128)
-        (Exim 4.89)
-        (envelope-from <nbd@nbd.name>)
-        id 1kKfTP-0004Kj-R7; Tue, 22 Sep 2020 12:24:35 +0200
-From:   Felix Fietkau <nbd@nbd.name>
-To:     linux-wireless@vger.kernel.org
-Cc:     johannes@sipsolutions.net, Georgi Valkov <gvalkov@abv.bg>
-Subject: [PATCH v2] mac80211: fix regression in sta connection monitor
-Date:   Tue, 22 Sep 2020 12:24:34 +0200
-Message-Id: <20200922102434.42727-1-nbd@nbd.name>
-X-Mailer: git-send-email 2.28.0
+        id S1726603AbgIVLbB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 22 Sep 2020 07:31:01 -0400
+Received: from szxga07-in.huawei.com ([45.249.212.35]:56112 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726454AbgIVLbB (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 22 Sep 2020 07:31:01 -0400
+Received: from DGGEMS410-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id 24B7DA009396B05D645B;
+        Tue, 22 Sep 2020 19:30:56 +0800 (CST)
+Received: from huawei.com (10.175.104.57) by DGGEMS410-HUB.china.huawei.com
+ (10.3.19.210) with Microsoft SMTP Server id 14.3.487.0; Tue, 22 Sep 2020
+ 19:30:52 +0800
+From:   Li Heng <liheng40@huawei.com>
+To:     <ath9k-devel@qca.qualcomm.com>, <kvalo@codeaurora.org>,
+        <davem@davemloft.net>, <kuba@kernel.org>
+CC:     <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: [PATCH -next] ath9k: Remove set but not used variable
+Date:   Tue, 22 Sep 2020 19:30:52 +0800
+Message-ID: <1600774252-48564-1-git-send-email-liheng40@huawei.com>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.175.104.57]
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-When a frame was acked and probe frames were sent, the connection monitoring
-needs to be reset, otherwise it will keep probing until the connection is
-considered dead, even though frames have been acked in the mean time.
+This addresses the following gcc warning with "make W=1":
 
-Fixes: 9abf4e49830d ("mac80211: optimize station connection monitor")
-Reported-by: Georgi Valkov <gvalkov@abv.bg>
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+drivers/net/wireless/ath/ath9k/ar9580_1p0_initvals.h:1338:18: warning:
+‘ar9580_1p0_pcie_phy_clkreq_disable_L1’ defined but not used [-Wunused-const-variable=]
+
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: Li Heng <liheng40@huawei.com>
 ---
-v2: reset connection monitor when a frame was acked (not just for nulldata)
+ drivers/net/wireless/ath/ath9k/ar9580_1p0_initvals.h | 7 -------
+ 1 file changed, 7 deletions(-)
 
- net/mac80211/status.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+diff --git a/drivers/net/wireless/ath/ath9k/ar9580_1p0_initvals.h b/drivers/net/wireless/ath/ath9k/ar9580_1p0_initvals.h
+index f4c9bef..f67f537 100644
+--- a/drivers/net/wireless/ath/ath9k/ar9580_1p0_initvals.h
++++ b/drivers/net/wireless/ath/ath9k/ar9580_1p0_initvals.h
+@@ -1335,13 +1335,6 @@ static const u32 ar9580_1p0_pcie_phy_clkreq_enable_L1[][2] = {
+ 	{0x00004044, 0x00000000},
+ };
 
-diff --git a/net/mac80211/status.c b/net/mac80211/status.c
-index 7fe5bececfd9..cc870d1f7db6 100644
---- a/net/mac80211/status.c
-+++ b/net/mac80211/status.c
-@@ -1120,6 +1120,8 @@ void ieee80211_tx_status_ext(struct ieee80211_hw *hw,
- 	noack_success = !!(info->flags & IEEE80211_TX_STAT_NOACK_TRANSMITTED);
- 
- 	if (pubsta) {
-+		struct ieee80211_sub_if_data *sdata = sta->sdata;
-+
- 		if (!acked && !noack_success)
- 			sta->status_stats.retry_failed++;
- 		sta->status_stats.retry_count += retry_count;
-@@ -1134,6 +1136,13 @@ void ieee80211_tx_status_ext(struct ieee80211_hw *hw,
- 				/* Track when last packet was ACKed */
- 				sta->status_stats.last_pkt_time = jiffies;
- 
-+				/* Reset connection monitor */
-+				if (sdata->vif.type == NL80211_IFTYPE_STATION &&
-+				    unlikely(sdata->u.mgd.probe_send_count > 0)) {
-+					sdata->u.mgd.probe_send_count = 0;
-+					ieee80211_queue_work(&local->hw, &sdata->work);
-+				}
-+
- 				if (info->status.is_valid_ack_signal) {
- 					sta->status_stats.last_ack_signal =
- 							 (s8)info->status.ack_signal;
--- 
-2.28.0
+-static const u32 ar9580_1p0_pcie_phy_clkreq_disable_L1[][2] = {
+-	/* Addr      allmodes  */
+-	{0x00004040, 0x0831365e},
+-	{0x00004040, 0x0008003b},
+-	{0x00004044, 0x00000000},
+-};
+-
+ static const u32 ar9580_1p0_pcie_phy_pll_on_clkreq[][2] = {
+ 	/* Addr      allmodes  */
+ 	{0x00004040, 0x0831265e},
+--
+2.7.4
 
