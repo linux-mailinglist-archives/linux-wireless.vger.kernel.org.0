@@ -2,243 +2,132 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7674D274901
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Sep 2020 21:23:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 91145274A48
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Sep 2020 22:44:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726583AbgIVTXU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 22 Sep 2020 15:23:20 -0400
-Received: from mga06.intel.com ([134.134.136.31]:41034 "EHLO mga06.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726448AbgIVTXU (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 22 Sep 2020 15:23:20 -0400
-IronPort-SDR: 6TpHvGskWC16m7qDsV6OAyKMyBBtW8Eeu5rXhfe2i/blYyymVYQbkfuiLpEf1scl+HGqiwlJ36
- nCx7IpmfZmEQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9752"; a="222286198"
-X-IronPort-AV: E=Sophos;i="5.77,291,1596524400"; 
-   d="scan'208";a="222286198"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2020 12:23:17 -0700
-IronPort-SDR: j13qr0EvUMqz4h8n3+6YMoYBBw9wwLhKSLh81cVpthqZR6EtdEDO72r2vowfBzOlQmc4tlfiaz
- hNLiX8d9enaA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.77,291,1596524400"; 
-   d="scan'208";a="305067186"
-Received: from lkp-server01.sh.intel.com (HELO 928d8e596b58) ([10.239.97.150])
-  by orsmga003.jf.intel.com with ESMTP; 22 Sep 2020 12:23:15 -0700
-Received: from kbuild by 928d8e596b58 with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1kKnsh-0000cW-3g; Tue, 22 Sep 2020 19:23:15 +0000
-Date:   Wed, 23 Sep 2020 03:23:08 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     linux-wireless@vger.kernel.org
-Subject: [wireless-drivers-next:master] BUILD SUCCESS
- dd7a3a331f5dec4f61fa2ba48512125a89401c25
-Message-ID: <5f6a4f1c.2xVKPuo/bf4JEWVM%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S1726576AbgIVUoo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 22 Sep 2020 16:44:44 -0400
+Received: from mail2.candelatech.com ([208.74.158.173]:47826 "EHLO
+        mail3.candelatech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726550AbgIVUoo (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 22 Sep 2020 16:44:44 -0400
+Received: from ben-dt4.candelatech.com (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
+        by mail3.candelatech.com (Postfix) with ESMTP id CEE3F13C2B0;
+        Tue, 22 Sep 2020 13:44:42 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com CEE3F13C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+        s=default; t=1600807482;
+        bh=Y7BEo9tq5oANxsd2ILjh/8oGhdaRNbkq+0SihhCM+sY=;
+        h=From:To:Cc:Subject:Date:From;
+        b=hYBm8kxyhfi2sSstzflNLjwZr4f4PP+VBv5xMwkakoHcv7RHQXdtjMklNIB1MLIjx
+         rUD1nH1ZWChaosj/gHfi3hlfqFBTS7Vft2ObKual6chdWke+CozdG7MVPnO1dDYOeO
+         InK1BwvIDbnTco1WYQnc55FyXn8rXInR3hhccius=
+From:   greearb@candelatech.com
+To:     linux-wireless@vger.kernel.org
+Cc:     Ben Greear <greearb@candelatech.com>
+Subject: [PATCH 1/2] wireless:  Add sysfs file to show if radio is unavailable
+Date:   Tue, 22 Sep 2020 13:44:39 -0700
+Message-Id: <20200922204440.25360-1-greearb@candelatech.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git  master
-branch HEAD: dd7a3a331f5dec4f61fa2ba48512125a89401c25  rtlwifi: rtl8723be: use true,false for bool variable large_cfo_hit
+From: Ben Greear <greearb@candelatech.com>
 
-elapsed time: 722m
+While stress-testing an IPQ4019 based AP, sometimes the firmware and/or
+radio hardware crashes hard enough that it cannot recover.  In this case,
+no wifi can work on that radio again until user-space takes some
+action (such as reboot, or possibly rmmod/modprobe).
 
-configs tested: 179
-configs skipped: 2
+Provide a sysfs file so that watchdog or other tools can check to
+see if radios are in such a state and take appropriate action.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-arm                     eseries_pxa_defconfig
-arm                            xcep_defconfig
-mips                 decstation_r4k_defconfig
-arc                     nsimosci_hs_defconfig
-xtensa                         virt_defconfig
-powerpc                     asp8347_defconfig
-arc                        nsim_700_defconfig
-arm                        vexpress_defconfig
-arm                       spear13xx_defconfig
-arm                  colibri_pxa300_defconfig
-arm                          pxa3xx_defconfig
-um                           x86_64_defconfig
-m68k                         amcore_defconfig
-arm                       versatile_defconfig
-powerpc                     pq2fads_defconfig
-m68k                            q40_defconfig
-arm                      tct_hammer_defconfig
-arc                            hsdk_defconfig
-xtensa                          iss_defconfig
-parisc                           alldefconfig
-powerpc                      mgcoge_defconfig
-arm                         palmz72_defconfig
-arm                          pxa168_defconfig
-powerpc                     kilauea_defconfig
-arm                           sunxi_defconfig
-sh                      rts7751r2d1_defconfig
-sh                          sdk7786_defconfig
-mips                          rb532_defconfig
-arm                         lpc32xx_defconfig
-mips                            e55_defconfig
-um                            kunit_defconfig
-powerpc                  mpc866_ads_defconfig
-arm                        clps711x_defconfig
-x86_64                              defconfig
-ia64                            zx1_defconfig
-powerpc                      tqm8xx_defconfig
-sh                        edosk7760_defconfig
-powerpc                      arches_defconfig
-mips                      bmips_stb_defconfig
-mips                       capcella_defconfig
-powerpc                      makalu_defconfig
-nios2                            alldefconfig
-arm                            lart_defconfig
-arm                         vf610m4_defconfig
-sh                            shmin_defconfig
-mips                        nlm_xlr_defconfig
-arm                            mps2_defconfig
-powerpc                 xes_mpc85xx_defconfig
-arm                      footbridge_defconfig
-m68k                        mvme147_defconfig
-mips                      malta_kvm_defconfig
-mips                            ar7_defconfig
-sh                            hp6xx_defconfig
-mips                  cavium_octeon_defconfig
-arm                         lpc18xx_defconfig
-sh                          rsk7203_defconfig
-arm                         s5pv210_defconfig
-arm                          exynos_defconfig
-sh                           se7343_defconfig
-powerpc                     tqm8540_defconfig
-arm                          pxa910_defconfig
-m68k                             alldefconfig
-arm                            pleb_defconfig
-c6x                        evmc6474_defconfig
-m68k                          atari_defconfig
-powerpc                     ksi8560_defconfig
-arm                          lpd270_defconfig
-powerpc                 mpc837x_rdb_defconfig
-sh                          landisk_defconfig
-mips                     loongson1b_defconfig
-powerpc                      acadia_defconfig
-mips                       bmips_be_defconfig
-powerpc                     tqm8548_defconfig
-sh                            titan_defconfig
-m68k                          multi_defconfig
-arc                          axs103_defconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-c6x                              allyesconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-x86_64               randconfig-a005-20200920
-x86_64               randconfig-a003-20200920
-x86_64               randconfig-a004-20200920
-x86_64               randconfig-a002-20200920
-x86_64               randconfig-a006-20200920
-x86_64               randconfig-a001-20200920
-i386                 randconfig-a002-20200920
-i386                 randconfig-a006-20200920
-i386                 randconfig-a003-20200920
-i386                 randconfig-a004-20200920
-i386                 randconfig-a005-20200920
-i386                 randconfig-a001-20200920
-i386                 randconfig-a002-20200921
-i386                 randconfig-a006-20200921
-i386                 randconfig-a003-20200921
-i386                 randconfig-a004-20200921
-i386                 randconfig-a005-20200921
-i386                 randconfig-a001-20200921
-i386                 randconfig-a002-20200922
-i386                 randconfig-a006-20200922
-i386                 randconfig-a003-20200922
-i386                 randconfig-a004-20200922
-i386                 randconfig-a005-20200922
-i386                 randconfig-a001-20200922
-x86_64               randconfig-a011-20200921
-x86_64               randconfig-a013-20200921
-x86_64               randconfig-a014-20200921
-x86_64               randconfig-a015-20200921
-x86_64               randconfig-a012-20200921
-x86_64               randconfig-a016-20200921
-i386                 randconfig-a012-20200921
-i386                 randconfig-a014-20200921
-i386                 randconfig-a016-20200921
-i386                 randconfig-a013-20200921
-i386                 randconfig-a011-20200921
-i386                 randconfig-a015-20200921
-riscv                    nommu_k210_defconfig
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-x86_64                                   rhel
-x86_64                           allyesconfig
-x86_64                    rhel-7.6-kselftests
-x86_64                               rhel-8.3
-x86_64                                  kexec
-
-clang tested configs:
-x86_64               randconfig-a005-20200921
-x86_64               randconfig-a003-20200921
-x86_64               randconfig-a004-20200921
-x86_64               randconfig-a002-20200921
-x86_64               randconfig-a006-20200921
-x86_64               randconfig-a001-20200921
-x86_64               randconfig-a011-20200922
-x86_64               randconfig-a013-20200922
-x86_64               randconfig-a014-20200922
-x86_64               randconfig-a015-20200922
-x86_64               randconfig-a012-20200922
-x86_64               randconfig-a016-20200922
-x86_64               randconfig-a011-20200920
-x86_64               randconfig-a013-20200920
-x86_64               randconfig-a014-20200920
-x86_64               randconfig-a015-20200920
-x86_64               randconfig-a012-20200920
-x86_64               randconfig-a016-20200920
-
+Signed-off-by: Ben Greear <greearb@candelatech.com>
 ---
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+ include/net/cfg80211.h | 13 +++++++++++++
+ net/wireless/core.c    |  6 ++++++
+ net/wireless/sysfs.c   |  2 ++
+ 3 files changed, 21 insertions(+)
+
+diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+index d9e6b9fbd95ba..926ba62e4b3e2 100644
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -4778,6 +4778,8 @@ struct wiphy_iftype_akm_suites {
+  * @max_data_retry_count: maximum supported per TID retry count for
+  *	configuration through the %NL80211_TID_CONFIG_ATTR_RETRY_SHORT and
+  *	%NL80211_TID_CONFIG_ATTR_RETRY_LONG attributes
++ * @unavailable:  Has this radio become unavailable for some reason.
++ *	0:  It is available, otherwise not.
+  */
+ struct wiphy {
+ 	/* assign these fields before you register the wiphy */
+@@ -4791,6 +4793,7 @@ struct wiphy {
+ 
+ 	const struct ieee80211_iface_combination *iface_combinations;
+ 	int n_iface_combinations;
++	int unavailable;
+ 	u16 software_iftypes;
+ 
+ 	u16 n_addresses;
+@@ -7696,6 +7699,16 @@ void cfg80211_stop_iface(struct wiphy *wiphy, struct wireless_dev *wdev,
+  */
+ void cfg80211_shutdown_all_interfaces(struct wiphy *wiphy);
+ 
++/**
++ * cfg80211_set_unavailable - Set value indicating resources have become
++ * unavailable.
++ *
++ * This can happen if firmware crashes during restart, for instance.  In this
++ * case, probably module rmmod/modprobe or reboot is required to get the system
++ * functional again.
++ */
++void cfg80211_set_unavailable(struct wiphy *wiphy, int value);
++
+ /**
+  * wiphy_ext_feature_set - set the extended feature flag
+  *
+diff --git a/net/wireless/core.c b/net/wireless/core.c
+index 354b0ccbdc240..e1c842acab796 100644
+--- a/net/wireless/core.c
++++ b/net/wireless/core.c
+@@ -259,6 +259,12 @@ void cfg80211_stop_nan(struct cfg80211_registered_device *rdev,
+ 	rdev->opencount--;
+ }
+ 
++void cfg80211_set_unavailable(struct wiphy *wiphy, int value)
++{
++	wiphy->unavailable = value;
++}
++EXPORT_SYMBOL_GPL(cfg80211_set_unavailable);
++
+ void cfg80211_shutdown_all_interfaces(struct wiphy *wiphy)
+ {
+ 	struct cfg80211_registered_device *rdev = wiphy_to_rdev(wiphy);
+diff --git a/net/wireless/sysfs.c b/net/wireless/sysfs.c
+index 3ac1f48195d28..077ec8083b887 100644
+--- a/net/wireless/sysfs.c
++++ b/net/wireless/sysfs.c
+@@ -33,6 +33,7 @@ static ssize_t name ## _show(struct device *dev,			\
+ static DEVICE_ATTR_RO(name)
+ 
+ SHOW_FMT(index, "%d", wiphy_idx);
++SHOW_FMT(unavailable, "%d", wiphy.unavailable);
+ SHOW_FMT(macaddress, "%pM", wiphy.perm_addr);
+ SHOW_FMT(address_mask, "%pM", wiphy.addr_mask);
+ 
+@@ -66,6 +67,7 @@ static DEVICE_ATTR_RO(addresses);
+ 
+ static struct attribute *ieee80211_attrs[] = {
+ 	&dev_attr_index.attr,
++	&dev_attr_unavailable.attr,
+ 	&dev_attr_macaddress.attr,
+ 	&dev_attr_address_mask.attr,
+ 	&dev_attr_addresses.attr,
+-- 
+2.26.2
+
