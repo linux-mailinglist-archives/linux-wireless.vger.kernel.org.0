@@ -2,88 +2,70 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8AC3F274F88
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Sep 2020 05:25:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F411A275041
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Sep 2020 07:25:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726739AbgIWDZi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 22 Sep 2020 23:25:38 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:14263 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726703AbgIWDZi (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 22 Sep 2020 23:25:38 -0400
-Received: from DGGEMS408-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id 68C6DBC5F24D1962E43F;
-        Wed, 23 Sep 2020 11:25:36 +0800 (CST)
-Received: from huawei.com (10.175.104.57) by DGGEMS408-HUB.china.huawei.com
- (10.3.19.208) with Microsoft SMTP Server id 14.3.487.0; Wed, 23 Sep 2020
- 11:25:31 +0800
-From:   Li Heng <liheng40@huawei.com>
-To:     <ath9k-devel@qca.qualcomm.com>, <kvalo@codeaurora.org>,
-        <davem@davemloft.net>, <kuba@kernel.org>
-CC:     <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: [PATCH -next v2] ath9k: Remove set but not used variable
-Date:   Wed, 23 Sep 2020 11:25:31 +0800
-Message-ID: <1600831531-8573-1-git-send-email-liheng40@huawei.com>
-X-Mailer: git-send-email 2.7.4
+        id S1726882AbgIWFYq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 23 Sep 2020 01:24:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34414 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726834AbgIWFYq (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 23 Sep 2020 01:24:46 -0400
+Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89EDCC061755
+        for <linux-wireless@vger.kernel.org>; Tue, 22 Sep 2020 22:24:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject
+        :Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=eZQndTKmWa1+HW0hulSBu7t3uE7Q/NqfAYN9ighJEPI=; b=Xt1Ex9uGlFEnI8CS4OJUPzE/FR
+        ElV0pjUl7zGjrvjPsG1HK10Y5qm+qFg24kLv8sTzaLkbIKlvxQVS2Xe1lEGjb0/JoQOjcMnafU8DA
+        JeEPl9OQh3iMzsEW7JfsIglNZLMe30k8Ul+Jo7LNx2xhj9nHfAbp52L3yUeCfluKOyAQ=;
+Received: from [80.255.7.109] (helo=localhost.localdomain)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_CBC_SHA1:128)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1kKxGl-0006Zz-NV; Wed, 23 Sep 2020 07:24:43 +0200
+From:   Felix Fietkau <nbd@nbd.name>
+To:     linux-wireless@vger.kernel.org
+Cc:     kvalo@codeaurora.org
+Subject: [PATCH 5.9] mt76: mt7615: reduce maximum VHT MPDU length to 7991
+Date:   Wed, 23 Sep 2020 07:24:42 +0200
+Message-Id: <20200923052442.24141-1-nbd@nbd.name>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.175.104.57]
-X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This addresses the following gcc warning with "make W=1":
+After fixing mac80211 to allow larger A-MSDUs in some cases, there have been
+reports of performance regressions and packet loss with some clients.
+It appears that the issue occurs when the hardware is transmitting A-MSDUs
+bigger than 8k. Limit the local VHT MPDU size capability to 7991, matching
+the value used for MT7915 as well.
 
-drivers/net/wireless/ath/ath9k/ar9580_1p0_initvals.h:1331:18: warning:
-‘ar9580_1p0_pcie_phy_clkreq_enable_L1’ defined but not used [-Wunused-const-variable=]
-
-drivers/net/wireless/ath/ath9k/ar9580_1p0_initvals.h:1338:18: warning:
-‘ar9580_1p0_pcie_phy_clkreq_disable_L1’ defined but not used [-Wunused-const-variable=]
-
-drivers/net/wireless/ath/ath9k/ar9580_1p0_initvals.h:1345:18: warning:
-‘ar9580_1p0_pcie_phy_pll_on_clkreq’ defined but not used [-Wunused-const-variable=]
-
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: Li Heng <liheng40@huawei.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 ---
- .../net/wireless/ath/ath9k/ar9580_1p0_initvals.h    | 21 ---------------------
- 1 file changed, 21 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7615/init.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/ar9580_1p0_initvals.h b/drivers/net/wireless/ath/ath9k/ar9580_1p0_initvals.h
-index f4c9bef..fab14e0 100644
---- a/drivers/net/wireless/ath/ath9k/ar9580_1p0_initvals.h
-+++ b/drivers/net/wireless/ath/ath9k/ar9580_1p0_initvals.h
-@@ -1328,27 +1328,6 @@ static const u32 ar9580_1p0_baseband_postamble[][5] = {
- 	{0x0000c284, 0x00000000, 0x00000000, 0x00000150, 0x00000150},
- };
-
--static const u32 ar9580_1p0_pcie_phy_clkreq_enable_L1[][2] = {
--	/* Addr      allmodes  */
--	{0x00004040, 0x0835365e},
--	{0x00004040, 0x0008003b},
--	{0x00004044, 0x00000000},
--};
--
--static const u32 ar9580_1p0_pcie_phy_clkreq_disable_L1[][2] = {
--	/* Addr      allmodes  */
--	{0x00004040, 0x0831365e},
--	{0x00004040, 0x0008003b},
--	{0x00004044, 0x00000000},
--};
--
--static const u32 ar9580_1p0_pcie_phy_pll_on_clkreq[][2] = {
--	/* Addr      allmodes  */
--	{0x00004040, 0x0831265e},
--	{0x00004040, 0x0008003b},
--	{0x00004044, 0x00000000},
--};
--
- static const u32 ar9580_1p0_baseband_postamble_dfs_channel[][3] = {
- 	/* Addr      5G          2G        */
- 	{0x00009814, 0x3400c00f, 0x3400c00f},
---
-2.7.4
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/init.c b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
+index 2a4db46727fb..e194259c84e9 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
+@@ -481,7 +481,7 @@ void mt7615_init_device(struct mt7615_dev *dev)
+ 	dev->mphy.sband_2g.sband.ht_cap.cap |= IEEE80211_HT_CAP_LDPC_CODING;
+ 	dev->mphy.sband_5g.sband.ht_cap.cap |= IEEE80211_HT_CAP_LDPC_CODING;
+ 	dev->mphy.sband_5g.sband.vht_cap.cap |=
+-			IEEE80211_VHT_CAP_MAX_MPDU_LENGTH_11454 |
++			IEEE80211_VHT_CAP_MAX_MPDU_LENGTH_7991 |
+ 			IEEE80211_VHT_CAP_MAX_A_MPDU_LENGTH_EXPONENT_MASK;
+ 	mt7615_cap_dbdc_disable(dev);
+ 	dev->phy.dfs_state = -1;
+-- 
+2.28.0
 
