@@ -2,70 +2,76 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F411A275041
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Sep 2020 07:25:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 859F327507E
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Sep 2020 07:56:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726882AbgIWFYq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 23 Sep 2020 01:24:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34414 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726834AbgIWFYq (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 23 Sep 2020 01:24:46 -0400
-Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89EDCC061755
-        for <linux-wireless@vger.kernel.org>; Tue, 22 Sep 2020 22:24:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-         s=20160729; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject
-        :Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
-        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=eZQndTKmWa1+HW0hulSBu7t3uE7Q/NqfAYN9ighJEPI=; b=Xt1Ex9uGlFEnI8CS4OJUPzE/FR
-        ElV0pjUl7zGjrvjPsG1HK10Y5qm+qFg24kLv8sTzaLkbIKlvxQVS2Xe1lEGjb0/JoQOjcMnafU8DA
-        JeEPl9OQh3iMzsEW7JfsIglNZLMe30k8Ul+Jo7LNx2xhj9nHfAbp52L3yUeCfluKOyAQ=;
-Received: from [80.255.7.109] (helo=localhost.localdomain)
-        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_CBC_SHA1:128)
-        (Exim 4.89)
-        (envelope-from <nbd@nbd.name>)
-        id 1kKxGl-0006Zz-NV; Wed, 23 Sep 2020 07:24:43 +0200
-From:   Felix Fietkau <nbd@nbd.name>
-To:     linux-wireless@vger.kernel.org
-Cc:     kvalo@codeaurora.org
-Subject: [PATCH 5.9] mt76: mt7615: reduce maximum VHT MPDU length to 7991
-Date:   Wed, 23 Sep 2020 07:24:42 +0200
-Message-Id: <20200923052442.24141-1-nbd@nbd.name>
-X-Mailer: git-send-email 2.28.0
+        id S1726557AbgIWF4a (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 23 Sep 2020 01:56:30 -0400
+Received: from m42-4.mailgun.net ([69.72.42.4]:42744 "EHLO m42-4.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726179AbgIWF4a (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 23 Sep 2020 01:56:30 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1600840589; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=8gJeOxpLmK2L3t+U1TnHcEniQWu5rJBKiUI7aOGaKdw=; b=TDN3IeL02PuQxgdF7EPSTL9z0McPMSJB8VKoUttNp6kYOF3TwVLC3YliGfFGELyevbyL4pmE
+ yIev8P7YGcbICvveYwjW1An49tSjep7up8i3iR+Up/kO7oqQhwcIn69MxbGIisrYQ5RxRfUF
+ YMqRbbOk2YdQ3ytJJA5E4qqD8xo=
+X-Mailgun-Sending-Ip: 69.72.42.4
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n05.prod.us-east-1.postgun.com with SMTP id
+ 5f6ae37e722ceb032700eafd (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 23 Sep 2020 05:56:14
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 1F810C433CB; Wed, 23 Sep 2020 05:56:14 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id AA757C433CA;
+        Wed, 23 Sep 2020 05:56:12 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org AA757C433CA
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Felix Fietkau <nbd@nbd.name>
+Cc:     linux-wireless@vger.kernel.org
+Subject: Re: [PATCH 5.9] mt76: mt7615: reduce maximum VHT MPDU length to 7991
+References: <20200923052442.24141-1-nbd@nbd.name>
+Date:   Wed, 23 Sep 2020 08:56:10 +0300
+In-Reply-To: <20200923052442.24141-1-nbd@nbd.name> (Felix Fietkau's message of
+        "Wed, 23 Sep 2020 07:24:42 +0200")
+Message-ID: <87blhxxchx.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-After fixing mac80211 to allow larger A-MSDUs in some cases, there have been
-reports of performance regressions and packet loss with some clients.
-It appears that the issue occurs when the hardware is transmitting A-MSDUs
-bigger than 8k. Limit the local VHT MPDU size capability to 7991, matching
-the value used for MT7915 as well.
+Felix Fietkau <nbd@nbd.name> writes:
 
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
----
- drivers/net/wireless/mediatek/mt76/mt7615/init.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> After fixing mac80211 to allow larger A-MSDUs in some cases, there have been
+> reports of performance regressions and packet loss with some clients.
+> It appears that the issue occurs when the hardware is transmitting A-MSDUs
+> bigger than 8k. Limit the local VHT MPDU size capability to 7991, matching
+> the value used for MT7915 as well.
+>
+> Signed-off-by: Felix Fietkau <nbd@nbd.name>
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/init.c b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
-index 2a4db46727fb..e194259c84e9 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
-@@ -481,7 +481,7 @@ void mt7615_init_device(struct mt7615_dev *dev)
- 	dev->mphy.sband_2g.sband.ht_cap.cap |= IEEE80211_HT_CAP_LDPC_CODING;
- 	dev->mphy.sband_5g.sband.ht_cap.cap |= IEEE80211_HT_CAP_LDPC_CODING;
- 	dev->mphy.sband_5g.sband.vht_cap.cap |=
--			IEEE80211_VHT_CAP_MAX_MPDU_LENGTH_11454 |
-+			IEEE80211_VHT_CAP_MAX_MPDU_LENGTH_7991 |
- 			IEEE80211_VHT_CAP_MAX_A_MPDU_LENGTH_EXPONENT_MASK;
- 	mt7615_cap_dbdc_disable(dev);
- 	dev->phy.dfs_state = -1;
+I'm planning to queue this to v5.9 and I assigned the patch to me in
+patchwork.
+
 -- 
-2.28.0
+https://patchwork.kernel.org/project/linux-wireless/list/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
