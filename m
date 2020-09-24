@@ -2,80 +2,93 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 59E5A2771FC
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Sep 2020 15:15:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C74F277284
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Sep 2020 15:37:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727850AbgIXNPq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 24 Sep 2020 09:15:46 -0400
-Received: from z5.mailgun.us ([104.130.96.5]:40120 "EHLO z5.mailgun.us"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727846AbgIXNPq (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 24 Sep 2020 09:15:46 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1600953346; h=Date: Message-Id: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=G/pobf+eXErdOYtD3b7hJ+MdOcPjBKqHww1ZUz/A+Y0=;
- b=tuBKXzGXbtPe18fkt+CPfbtEhWnkWH3RZCutHKB05/+icVZIzCuVHaKwk6dCHh/IGDCy6oAv
- rYmp6uGnxWaoSpDyrL+mffcfDvl/Rf5eRZOkAZS2GCaeSfwTNyFTj0+9T+usyTwvXIMXE8Pz
- stKdh+8pJ5D6q9ULwVxX5ZpN5j4=
-X-Mailgun-Sending-Ip: 104.130.96.5
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n07.prod.us-west-2.postgun.com with SMTP id
- 5f6c9becefb844e003b2296a (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 24 Sep 2020 13:15:24
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 82290C433C8; Thu, 24 Sep 2020 13:15:24 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        MISSING_DATE,MISSING_MID,SPF_FAIL,URIBL_BLOCKED autolearn=no
-        autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 36986C433CA;
-        Thu, 24 Sep 2020 13:15:22 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 36986C433CA
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 5.9] mt76: mt7615: reduce maximum VHT MPDU length to 7991
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20200923052442.24141-1-nbd@nbd.name>
-References: <20200923052442.24141-1-nbd@nbd.name>
-To:     Felix Fietkau <nbd@nbd.name>
+        id S1728019AbgIXNhU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 24 Sep 2020 09:37:20 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:52088 "EHLO
+        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1727846AbgIXNhU (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 24 Sep 2020 09:37:20 -0400
+Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa.ger.corp.intel.com)
+        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.93)
+        (envelope-from <luca@coelho.fi>)
+        id 1kLRDp-002IGj-Po; Thu, 24 Sep 2020 16:23:42 +0300
+From:   Luca Coelho <luca@coelho.fi>
+To:     kvalo@codeaurora.org
 Cc:     linux-wireless@vger.kernel.org
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20200924131524.82290C433C8@smtp.codeaurora.org>
-Date:   Thu, 24 Sep 2020 13:15:24 +0000 (UTC)
+Date:   Thu, 24 Sep 2020 16:23:32 +0300
+Message-Id: <20200924132339.337310-1-luca@coelho.fi>
+X-Mailer: git-send-email 2.28.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on farmhouse.coelho.fi
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+        TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.4
+Subject: [PATCH 0/7] iwlwifi: updates intended for v5.10 2020-09-24
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Felix Fietkau <nbd@nbd.name> wrote:
+From: Luca Coelho <luciano.coelho@intel.com>
 
-> After fixing mac80211 to allow larger A-MSDUs in some cases, there have been
-> reports of performance regressions and packet loss with some clients.
-> It appears that the issue occurs when the hardware is transmitting A-MSDUs
-> bigger than 8k. Limit the local VHT MPDU size capability to 7991, matching
-> the value used for MT7915 as well.
-> 
-> Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Hi,
 
-Patch applied to wireless-drivers.git, thanks.
+Here's the second set of patches intended for v5.10.  It's the usual
+development, new features, cleanups and bugfixes.
 
-efb1676306f6 mt76: mt7615: reduce maximum VHT MPDU length to 7991
+The changes are:
+
+* Enable TWT by default;
+* Support for some new cards;
+* Support new PPAG FW command version
+* Move some trans code around for better abstraction;
+
+As usual, I'm pushing this to a pending branch, for kbuild bot, and
+will send a pull-request later.
+
+Please review.
+
+Cheers,
+Luca.
+
+
+Gil Adam (1):
+  iwlwifi: acpi: support ppag table command v2
+
+Golan Ben Ami (1):
+  iwlwifi: enable twt by default
+
+Ihab Zhaika (1):
+  iwlwifi: add new cards for MA family
+
+Mordechay Goodstein (4):
+  iwlwifi: iwl-trans: move all txcmd init to trans alloc
+  iwlwifi: move bc_pool to a common trans header
+  iwlwifi: iwl-trans: move tfd to trans layer
+  iwlwifi: move bc_table_dword to a common trans header
+
+ .../net/wireless/intel/iwlwifi/cfg/22000.c    |  51 +++++++--
+ drivers/net/wireless/intel/iwlwifi/fw/acpi.h  |   8 +-
+ .../net/wireless/intel/iwlwifi/fw/api/power.h |  27 +++--
+ .../net/wireless/intel/iwlwifi/fw/api/tx.h    |   7 +-
+ .../net/wireless/intel/iwlwifi/fw/runtime.h   |   3 +-
+ .../net/wireless/intel/iwlwifi/iwl-config.h   |   9 ++
+ .../net/wireless/intel/iwlwifi/iwl-trans.c    |  57 +++++++++-
+ .../net/wireless/intel/iwlwifi/iwl-trans.h    |  23 +++-
+ .../wireless/intel/iwlwifi/mvm/constants.h    |   2 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c   | 103 +++++++++++++-----
+ drivers/net/wireless/intel/iwlwifi/pcie/drv.c |  18 ++-
+ .../wireless/intel/iwlwifi/pcie/internal.h    |  15 +--
+ .../net/wireless/intel/iwlwifi/pcie/trans.c   |  59 ++--------
+ .../net/wireless/intel/iwlwifi/pcie/tx-gen2.c |  38 +++----
+ drivers/net/wireless/intel/iwlwifi/pcie/tx.c  |  28 ++---
+ 15 files changed, 279 insertions(+), 169 deletions(-)
 
 -- 
-https://patchwork.kernel.org/patch/11793855/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+2.28.0
 
