@@ -2,84 +2,87 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C6118277575
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Sep 2020 17:33:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0DF072775C1
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Sep 2020 17:48:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728356AbgIXPde (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 24 Sep 2020 11:33:34 -0400
-Received: from mailgw02.mediatek.com ([210.61.82.184]:39954 "EHLO
-        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1728139AbgIXPde (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 24 Sep 2020 11:33:34 -0400
-X-Greylist: delayed 302 seconds by postgrey-1.27 at vger.kernel.org; Thu, 24 Sep 2020 11:33:34 EDT
-X-UUID: b32ec940a2b24fc38ef2cb1e11ff6c4c-20200924
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Transfer-Encoding:Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=LmgvGuej7fW84C6X2+Aw7a3cm/HXAiGlJjhjzE8CYXs=;
-        b=F1BHQVqCB4ed24ksXq9kknq6dbMu5Y1MSajP+aCOKBDSrgAgX8MTDuiU7pwykgsE1ZZSVEQee4oeBk1SIkJO3iFrDyq59IaRwj+TzJ0ps+SM61QDqajOQFOv5AKfzTXCqwMidvQhYCQ8PR5anwBDRP5ljWBe6GDox/wOKQjwtWA=;
-X-UUID: b32ec940a2b24fc38ef2cb1e11ff6c4c-20200924
-Received: from mtkexhb02.mediatek.inc [(172.21.101.103)] by mailgw02.mediatek.com
-        (envelope-from <ryder.lee@mediatek.com>)
-        (Cellopoint E-mail Firewall v4.1.14 Build 0819 with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 2104916421; Thu, 24 Sep 2020 23:23:19 +0800
-Received: from MTKCAS06.mediatek.inc (172.21.101.30) by
- mtkmbs08n2.mediatek.inc (172.21.101.56) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Thu, 24 Sep 2020 23:23:14 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by MTKCAS06.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Thu, 24 Sep 2020 23:23:14 +0800
-From:   Ryder Lee <ryder.lee@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-CC:     Shayne Chen <shayne.chen@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>,
-        Ryder Lee <ryder.lee@mediatek.com>
-Subject: [PATCH 2/2] mt76: mt7915: fix VHT LDPC capability
-Date:   Thu, 24 Sep 2020 23:23:14 +0800
-Message-ID: <891f34b8f6b9bf16413514ee054e6e6185e0f12c.1600960534.git.ryder.lee@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <670fe8dcb9e1308041047718af241225ff5614bb.1600960534.git.ryder.lee@mediatek.com>
-References: <670fe8dcb9e1308041047718af241225ff5614bb.1600960534.git.ryder.lee@mediatek.com>
+        id S1728550AbgIXPsm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 24 Sep 2020 11:48:42 -0400
+Received: from m42-4.mailgun.net ([69.72.42.4]:39589 "EHLO m42-4.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728139AbgIXPsl (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 24 Sep 2020 11:48:41 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1600962521; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=Sjl9wunnHhbDBefPvYSya2E0YyYkeliUtysS/WiPdH0=;
+ b=WABdGiA5gtYWuTLpwJUc3KSB0mLS+rHJSMnVcHysN2UJuGAJ2btTworaJpMddpx2hlN38A2+
+ zT/WukXWTOr9nrI3ZygoodYRhT/u/V3aHo9kaBE1qxPeEkY3GfaUVV6Ow8e61cCNAtyFfqfW
+ 4/iyFpycqJrWjT+VHMieO9FyIzM=
+X-Mailgun-Sending-Ip: 69.72.42.4
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n04.prod.us-east-1.postgun.com with SMTP id
+ 5f6cbfbe971b64f61b5afd7f (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 24 Sep 2020 15:48:14
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 78757C433FF; Thu, 24 Sep 2020 15:48:13 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        MISSING_DATE,MISSING_MID,SPF_FAIL,URIBL_BLOCKED autolearn=no
+        autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id DFA09C433CA;
+        Thu, 24 Sep 2020 15:48:10 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org DFA09C433CA
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-SNTS-SMTP: EBBF17836A4C1B03E52A209B24B98C02C15AE1D64FD20977D621CF462077636E2000:8
-X-MTK:  N
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v2] brcmfmac: check return value of
+ driver_for_each_device()
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <1600481191-14250-1-git-send-email-zhangchangzhong@huawei.com>
+References: <1600481191-14250-1-git-send-email-zhangchangzhong@huawei.com>
+To:     Zhang Changzhong <zhangchangzhong@huawei.com>
+Cc:     <davem@davemloft.net>, <kuba@kernel.org>,
+        <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
+Message-Id: <20200924154813.78757C433FF@smtp.codeaurora.org>
+Date:   Thu, 24 Sep 2020 15:48:13 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-VGhlIE1DVSBmaWVsZCBzaG91bGQgY29udGFpbiBhIGJvb2xlYW4gMC8xLCBub3QgdGhlIGZsYWcg
-aXRzZWxmLg0KDQpTaWduZWQtb2ZmLWJ5OiBGZWxpeCBGaWV0a2F1IDxuYmRAbmJkLm5hbWU+DQpT
-aWduZWQtb2ZmLWJ5OiBSeWRlciBMZWUgPHJ5ZGVyLmxlZUBtZWRpYXRlay5jb20+DQotLS0NCmh0
-dHBzOi8vZ2l0aHViLmNvbS9vcGVud3J0L210NzYvY29tbWl0L2IxZjQyNTY4NjEyNTE0OWViNTg1
-ZDVjM2UwNWY5NmExZjdkYWIyZGINCi0tLQ0KIGRyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVr
-L210NzYvbXQ3OTE1L21jdS5jIHwgNiArKystLS0NCiAxIGZpbGUgY2hhbmdlZCwgMyBpbnNlcnRp
-b25zKCspLCAzIGRlbGV0aW9ucygtKQ0KDQpkaWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQvd2lyZWxl
-c3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvbWN1LmMgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRp
-YXRlay9tdDc2L210NzkxNS9tY3UuYw0KaW5kZXggZTU0NDU0ZmMwNWI5Li5hNTRlYjgzMWMwYTUg
-MTAwNjQ0DQotLS0gYS9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzkxNS9t
-Y3UuYw0KKysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvbWN1
-LmMNCkBAIC0xNjYyLDcgKzE2NjIsNyBAQCBtdDc5MTVfbWN1X3d0YmxfaHRfdGx2KHN0cnVjdCBz
-a19idWZmICpza2IsIHN0cnVjdCBpZWVlODAyMTFfc3RhICpzdGEsDQogCQl0bHYgPSBtdDc5MTVf
-bWN1X2FkZF9uZXN0ZWRfdGx2KHNrYiwgV1RCTF9IVCwgc2l6ZW9mKCpodCksDQogCQkJCQkJd3Ri
-bF90bHYsIHN0YV93dGJsKTsNCiAJCWh0ID0gKHN0cnVjdCB3dGJsX2h0ICopdGx2Ow0KLQkJaHQt
-PmxkcGMgPSBzdGEtPmh0X2NhcC5jYXAgJiBJRUVFODAyMTFfSFRfQ0FQX0xEUENfQ09ESU5HOw0K
-KwkJaHQtPmxkcGMgPSAhIShzdGEtPmh0X2NhcC5jYXAgJiBJRUVFODAyMTFfSFRfQ0FQX0xEUENf
-Q09ESU5HKTsNCiAJCWh0LT5hZiA9IHN0YS0+aHRfY2FwLmFtcGR1X2ZhY3RvcjsNCiAJCWh0LT5t
-bSA9IHN0YS0+aHRfY2FwLmFtcGR1X2RlbnNpdHk7DQogCQlodC0+aHQgPSB0cnVlOw0KQEAgLTE2
-NzYsNyArMTY3Niw3IEBAIG10NzkxNV9tY3Vfd3RibF9odF90bHYoc3RydWN0IHNrX2J1ZmYgKnNr
-Yiwgc3RydWN0IGllZWU4MDIxMV9zdGEgKnN0YSwNCiAJCXRsdiA9IG10NzkxNV9tY3VfYWRkX25l
-c3RlZF90bHYoc2tiLCBXVEJMX1ZIVCwgc2l6ZW9mKCp2aHQpLA0KIAkJCQkJCXd0YmxfdGx2LCBz
-dGFfd3RibCk7DQogCQl2aHQgPSAoc3RydWN0IHd0Ymxfdmh0ICopdGx2Ow0KLQkJdmh0LT5sZHBj
-ID0gc3RhLT52aHRfY2FwLmNhcCAmIElFRUU4MDIxMV9WSFRfQ0FQX1JYTERQQywNCisJCXZodC0+
-bGRwYyA9ICEhKHN0YS0+dmh0X2NhcC5jYXAgJiBJRUVFODAyMTFfVkhUX0NBUF9SWExEUEMpOw0K
-IAkJdmh0LT52aHQgPSB0cnVlOw0KIA0KIAkJYWYgPSBGSUVMRF9HRVQoSUVFRTgwMjExX1ZIVF9D
-QVBfTUFYX0FfTVBEVV9MRU5HVEhfRVhQT05FTlRfTUFTSywNCkBAIC0yODU4LDcgKzI4NTgsNyBA
-QCBpbnQgbXQ3OTE1X21jdV9pbml0KHN0cnVjdCBtdDc5MTVfZGV2ICpkZXYpDQogCX07DQogCWlu
-dCByZXQ7DQogDQotCWRldi0+bXQ3Ni5tY3Vfb3BzID0gJm10NzkxNV9tY3Vfb3BzLA0KKwlkZXYt
-Pm10NzYubWN1X29wcyA9ICZtdDc5MTVfbWN1X29wczsNCiANCiAJcmV0ID0gbXQ3OTE1X2RyaXZl
-cl9vd24oZGV2KTsNCiAJaWYgKHJldCkNCi0tIA0KMi4xOC4wDQo=
+Zhang Changzhong <zhangchangzhong@huawei.com> wrote:
+
+> Fixes the following W=1 kernel build warning(s):
+> 
+> drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c:1576:6: warning:
+>  variable 'ret' set but not used [-Wunused-but-set-variable]
+>   1576 |  int ret;
+>        |      ^~~
+> 
+> driver_for_each_device() has been declared with __must_check, so the
+> return value should be checked.
+> 
+> Signed-off-by: Zhang Changzhong <zhangchangzhong@huawei.com>
+
+Patch applied to wireless-drivers-next.git, thanks.
+
+72a398a63b88 brcmfmac: check return value of driver_for_each_device()
+
+-- 
+https://patchwork.kernel.org/patch/11786561/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
