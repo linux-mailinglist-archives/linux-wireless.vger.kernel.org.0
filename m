@@ -2,85 +2,136 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1FB4A277666
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Sep 2020 18:16:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6EE8A2776BA
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Sep 2020 18:27:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726919AbgIXQQf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 24 Sep 2020 12:16:35 -0400
-Received: from m42-4.mailgun.net ([69.72.42.4]:60716 "EHLO m42-4.mailgun.net"
+        id S1727136AbgIXQ1p (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 24 Sep 2020 12:27:45 -0400
+Received: from z5.mailgun.us ([104.130.96.5]:38939 "EHLO z5.mailgun.us"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726458AbgIXQQe (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 24 Sep 2020 12:16:34 -0400
+        id S1728580AbgIXQ1o (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 24 Sep 2020 12:27:44 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1600964193; h=Date: Message-Id: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=soH5jJMO5irSI7C7R0xYTOtWc8nQEtt962+fo8q46+8=;
- b=QY44A3cTGSN5/g4HmpYcNexvPn1GbaAOHoqW+zTkY0afg6hqBbkvQMFMC6Rr2AHwKbOa/Tir
- knMtI0EVrZJnLAM7O46WL693p3M7BH9/gnnVPONjrCneUOjOqez694KzWYHuZC803m6lzYpE
- 83wo8RtM30vljvBSqlLJPvZ0Y10=
-X-Mailgun-Sending-Ip: 69.72.42.4
+ s=smtp; t=1600964863; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=H7xOaaB817aiULShu/d8nxmq9YAErkwo2R+VMgY3kb4=; b=oKFAVSI33lHC8MB1kCm9lPNXydrP78baE3OQEHdN9TErdDMR2q+19hrQ4cbbLpcLPEY9/Df4
+ 0tMoUUhhRCFCav6ykjLS50ApAEMCzmbwt7ufEUR0HZ7+5dAfDb+GKsxPPvfEBQMYhj6F5er/
+ uGV7bOU364xkc6Rz2Pf0C4iaCHg=
+X-Mailgun-Sending-Ip: 104.130.96.5
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n01.prod.us-west-2.postgun.com with SMTP id
- 5f6cc657d106659f820147de (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 24 Sep 2020 16:16:23
+ smtp-out-n07.prod.us-east-1.postgun.com with SMTP id
+ 5f6cc8ff89f51cb4f12ab144 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 24 Sep 2020 16:27:43
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id B807FC433F1; Thu, 24 Sep 2020 16:16:23 +0000 (UTC)
+        id 7FAC3C433A0; Thu, 24 Sep 2020 16:27:42 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        MISSING_DATE,MISSING_MID,SPF_FAIL,URIBL_BLOCKED autolearn=no
-        autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
 Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 398F1C433C8;
-        Thu, 24 Sep 2020 16:16:21 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 398F1C433C8
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id F2382C433FF;
+        Thu, 24 Sep 2020 16:27:38 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org F2382C433FF
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] ath11k: removing the ath11k debugfs dir properly
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <1600885519-29535-1-git-send-email-kathirve@codeaurora.org>
-References: <1600885519-29535-1-git-send-email-kathirve@codeaurora.org>
-To:     Karthikeyan Kathirvel <kathirve@codeaurora.org>
-Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        Karthikeyan Kathirvel <kathirve@codeaurora.org>
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20200924161623.B807FC433F1@smtp.codeaurora.org>
-Date:   Thu, 24 Sep 2020 16:16:23 +0000 (UTC)
+To:     Julian Calaby <julian.calaby@gmail.com>
+Cc:     Alex Dewar <alex.dewar90@gmail.com>, netdev@vger.kernel.org,
+        linux-wireless@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>, ath10k@lists.infradead.org,
+        Jakub Kicinski <kuba@kernel.org>,
+        Saeed Mahameed <saeedm@nvidia.com>,
+        "David S. Miller" <davem@davemloft.net>
+Subject: Re: [PATCH v2] ath10k: sdio: remove redundant check in for loop
+References: <c2987351e3bdad16510dd35847991c2412a9db6b.camel@nvidia.com>
+        <20200916165748.20927-1-alex.dewar90@gmail.com>
+        <CAGRGNgWoFfCnK9FcWTf_f0b57JNEjsm6ZNQB5X_AMf8L3FyNcQ@mail.gmail.com>
+Date:   Thu, 24 Sep 2020 19:27:36 +0300
+In-Reply-To: <CAGRGNgWoFfCnK9FcWTf_f0b57JNEjsm6ZNQB5X_AMf8L3FyNcQ@mail.gmail.com>
+        (Julian Calaby's message of "Thu, 17 Sep 2020 10:45:33 +1000")
+Message-ID: <87h7rnnnrb.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Karthikeyan Kathirvel <kathirve@codeaurora.org> wrote:
+Julian Calaby <julian.calaby@gmail.com> writes:
 
-> ath11k_debug_pdev_destroy was not called for proper cleaning of debug
-> files when destroying the pdev, this results in not removing the ath11k
-> directory in debugfs folder even after rmmod of ath11k. So when next
-> time doing insmod of ath11k prevents creating another ath11k directory,
-> hence causing ipq8074_2 to get created in parent dir of debugfs.
-> 
-> Signed-off-by: Karthikeyan Kathirvel <kathirve@codeaurora.org>
+> On Thu, Sep 17, 2020 at 3:09 AM Alex Dewar <alex.dewar90@gmail.com> wrote:
+>>
+>> The for loop checks whether cur_section is NULL on every iteration, but
+>> we know it can never be NULL as there is another check towards the
+>> bottom of the loop body. Refactor to avoid this unnecessary check.
+>>
+>> Also, increment the variable i inline for clarity
+>
+> Comments below.
+>
+>> Addresses-Coverity: 1496984 ("Null pointer dereferences)
+>> Suggested-by: Saeed Mahameed <saeedm@nvidia.com>
+>> Signed-off-by: Alex Dewar <alex.dewar90@gmail.com>
+>> ---
+>> v2: refactor in the manner suggested by Saeed
+>>
+>>  drivers/net/wireless/ath/ath10k/sdio.c | 12 +++---------
+>>  1 file changed, 3 insertions(+), 9 deletions(-)
+>>
+>> diff --git a/drivers/net/wireless/ath/ath10k/sdio.c b/drivers/net/wireless/ath/ath10k/sdio.c
+>> index 81ddaafb6721..486886c74e6a 100644
+>> --- a/drivers/net/wireless/ath/ath10k/sdio.c
+>> +++ b/drivers/net/wireless/ath/ath10k/sdio.c
+>> @@ -2307,8 +2307,8 @@ static int ath10k_sdio_dump_memory_section(struct ath10k *ar,
+>>         }
+>>
+>>         count = 0;
+>> -
+>> -       for (i = 0; cur_section; i++) {
+>> +       i = 0;
+>> +       for (; cur_section; cur_section = next_section) {
+>
+> You can have multiple statements in each section of a for() if you need to, e.g.
+>
+> for (i = 1; cur_section; cur_section = next_section, i++) {
+>
+> which means that the increment of i isn't hidden deep in the function body.
 
-Fails to apply, please rebase. Also Tested-on missing.
+Yeah, I was thinking the same. But I'll apply this patch anyway, it's
+still an improvement.
 
-error: patch failed: drivers/net/wireless/ath/ath11k/debug.c:973
-error: drivers/net/wireless/ath/ath11k/debug.c: patch does not apply
-stg import: Diff does not apply cleanly
+> That said, this function is a mess. Something (approximately) like
+> this might be more readable:
+>
+> prev_end = memregion->start;
+> for (i = 0; i < mem_region->section_table.size; i++) {
+>     cur_section = &mem_region->section_table.sections[i];
+>
+>     // fail if prev_end is greater than cur_section->start - message
+> from line 2329 and 2294
+>     // check section size - from line 2315
+>
+>     skip_size = cur_section->start - prev_end;
+>
+>     // check buffer size - from line 2339 - needs to account for the
+> skip size too.
+>     // fill in the skip size amount - from line 2358 and 2304
+>     // ath10k_sdio_read_mem - from line 2346
+>
+>     prev_end = cur_section->end;
+> }
 
-Patch set to Changes Requested.
+I agree. Anyone can come up with a patch?
 
 -- 
-https://patchwork.kernel.org/patch/11795461/
+https://patchwork.kernel.org/project/linux-wireless/list/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
