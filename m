@@ -2,323 +2,149 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A6FD6277281
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Sep 2020 15:37:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B2E7B277577
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Sep 2020 17:33:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727954AbgIXNhM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 24 Sep 2020 09:37:12 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:52076 "EHLO
-        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1727846AbgIXNhM (ORCPT
+        id S1728509AbgIXPdg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 24 Sep 2020 11:33:36 -0400
+Received: from mailgw02.mediatek.com ([210.61.82.184]:39966 "EHLO
+        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1728333AbgIXPdg (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 24 Sep 2020 09:37:12 -0400
-Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa.ger.corp.intel.com)
-        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.93)
-        (envelope-from <luca@coelho.fi>)
-        id 1kLRDv-002IGj-Qm; Thu, 24 Sep 2020 16:23:48 +0300
-From:   Luca Coelho <luca@coelho.fi>
-To:     kvalo@codeaurora.org
-Cc:     linux-wireless@vger.kernel.org
-Date:   Thu, 24 Sep 2020 16:23:39 +0300
-Message-Id: <iwlwifi.20200924162106.fb29c33d2cb9.I942bfe645e9d47cd1fcf6435506061f8b2cea21a@changeid>
-X-Mailer: git-send-email 2.28.0
-In-Reply-To: <20200924132339.337310-1-luca@coelho.fi>
-References: <20200924132339.337310-1-luca@coelho.fi>
+        Thu, 24 Sep 2020 11:33:36 -0400
+X-UUID: 87b2f657d67645e7a48469864f6354a2-20200924
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+        h=Content-Transfer-Encoding:Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=OTCsfNo99ojtjb1h0R1ye7ZsuTV+XjaLXSyLcJ3cg0E=;
+        b=QCasCKcx9+Q0MxhQuaujX8t7kahuG83drD+kHDEORaNJEGY/Uh9h0AXjX/FEK8AcDBqvHgCrci9kmOJaep+72eaaL6NqZ6QC/S9dmxHZWQlBapyKYGJ1Dj6RlwPKMAL85pMAwPxyp3KzsaD3TIh5eF+N0Zkuwejkl1pT2qxzApM=;
+X-UUID: 87b2f657d67645e7a48469864f6354a2-20200924
+Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw02.mediatek.com
+        (envelope-from <ryder.lee@mediatek.com>)
+        (Cellopoint E-mail Firewall v4.1.14 Build 0819 with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 938191805; Thu, 24 Sep 2020 23:23:19 +0800
+Received: from MTKCAS06.mediatek.inc (172.21.101.30) by
+ mtkmbs02n2.mediatek.inc (172.21.101.101) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Thu, 24 Sep 2020 23:23:13 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by MTKCAS06.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Thu, 24 Sep 2020 23:23:13 +0800
+From:   Ryder Lee <ryder.lee@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+CC:     Shayne Chen <shayne.chen@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>,
+        Ryder Lee <ryder.lee@mediatek.com>
+Subject: [PATCH 1/2] mt76: mt7915: measure channel noise and report it via survey
+Date:   Thu, 24 Sep 2020 23:23:13 +0800
+Message-ID: <670fe8dcb9e1308041047718af241225ff5614bb.1600960534.git.ryder.lee@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on farmhouse.coelho.fi
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
-        TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.4
-Subject: [PATCH 7/7] iwlwifi: acpi: support ppag table command v2
+Content-Type: text/plain
+X-TM-SNTS-SMTP: 7E353855B9F60CF3FD2186DF9C4F0CBE4BA96433650EDF6132C8388890D68BEE2000:8
+X-MTK:  N
+Content-Transfer-Encoding: base64
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Gil Adam <gil.adam@intel.com>
-
-Version 2 of the PPAG table command supports more sub-bands than
-previous. Change relevant command structs and the reading of the ACPI
-tables.
-
-Signed-off-by: Gil Adam <gil.adam@intel.com>
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
----
- drivers/net/wireless/intel/iwlwifi/fw/acpi.h  |   8 +-
- .../net/wireless/intel/iwlwifi/fw/api/power.h |  27 +++--
- .../net/wireless/intel/iwlwifi/fw/runtime.h   |   3 +-
- drivers/net/wireless/intel/iwlwifi/mvm/fw.c   | 103 +++++++++++++-----
- 4 files changed, 100 insertions(+), 41 deletions(-)
-
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/acpi.h b/drivers/net/wireless/intel/iwlwifi/fw/acpi.h
-index bff0260012ec..c01b79736d7c 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/acpi.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/acpi.h
-@@ -107,10 +107,10 @@
- #define ACPI_WGDS_NUM_BANDS		2
- #define ACPI_WGDS_TABLE_SIZE		3
- 
--#define ACPI_PPAG_NUM_CHAINS		2
--#define ACPI_PPAG_NUM_SUB_BANDS		5
--#define ACPI_PPAG_WIFI_DATA_SIZE	((ACPI_PPAG_NUM_CHAINS * \
--					ACPI_PPAG_NUM_SUB_BANDS) + 3)
-+#define ACPI_PPAG_WIFI_DATA_SIZE	((IWL_NUM_CHAIN_LIMITS * \
-+					IWL_NUM_SUB_BANDS) + 3)
-+#define ACPI_PPAG_WIFI_DATA_SIZE_V2	((IWL_NUM_CHAIN_LIMITS * \
-+					IWL_NUM_SUB_BANDS_V2) + 3)
- 
- /* PPAG gain value bounds in 1/8 dBm */
- #define ACPI_PPAG_MIN_LB -16
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/power.h b/drivers/net/wireless/intel/iwlwifi/fw/api/power.h
-index 6e1b9b21904e..45503e78d705 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/api/power.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/api/power.h
-@@ -8,7 +8,7 @@
-  * Copyright(c) 2012 - 2014 Intel Corporation. All rights reserved.
-  * Copyright(c) 2013 - 2014 Intel Mobile Communications GmbH
-  * Copyright(c) 2015 - 2017 Intel Deutschland GmbH
-- * Copyright (C) 2018 - 2019 Intel Corporation
-+ * Copyright (C) 2018 - 2020 Intel Corporation
-  *
-  * This program is free software; you can redistribute it and/or modify
-  * it under the terms of version 2 of the GNU General Public License as
-@@ -31,7 +31,7 @@
-  * Copyright(c) 2012 - 2014 Intel Corporation. All rights reserved.
-  * Copyright(c) 2013 - 2014 Intel Mobile Communications GmbH
-  * Copyright(c) 2015 - 2017 Intel Deutschland GmbH
-- * Copyright (C) 2018 - 2019 Intel Corporation
-+ * Copyright (C) 2018 - 2020 Intel Corporation
-  * All rights reserved.
-  *
-  * Redistribution and use in source and binary forms, with or without
-@@ -331,6 +331,7 @@ enum iwl_dev_tx_power_cmd_mode {
- 
- #define IWL_NUM_CHAIN_LIMITS	2
- #define IWL_NUM_SUB_BANDS	5
-+#define IWL_NUM_SUB_BANDS_V2	11
- 
- /**
-  * struct iwl_dev_tx_power_cmd - TX power reduction command
-@@ -450,16 +451,26 @@ struct iwl_geo_tx_power_profiles_resp {
- } __packed; /* GEO_TX_POWER_LIMIT_RESP */
- 
- /**
-- * struct iwl_ppag_table_cmd - struct for PER_PLATFORM_ANT_GAIN_CMD cmd.
-+ * union iwl_ppag_table_cmd - union for all versions of PPAG command
-+ * @v1: version 1, table revision = 0
-+ * @v2: version 2, table revision = 1
-+ *
-  * @enabled: 1 if PPAG is enabled, 0 otherwise
-  * @gain: table of antenna gain values per chain and sub-band
-  * @reserved: reserved
-  */
--struct iwl_ppag_table_cmd {
--	__le32 enabled;
--	s8 gain[IWL_NUM_CHAIN_LIMITS][IWL_NUM_SUB_BANDS];
--	s8 reserved[2];
--} __packed; /* PER_PLATFORM_ANT_GAIN_CMD */
-+union iwl_ppag_table_cmd {
-+	struct {
-+		__le32 enabled;
-+		s8 gain[IWL_NUM_CHAIN_LIMITS][IWL_NUM_SUB_BANDS];
-+		s8 reserved[2];
-+	} v1;
-+	struct {
-+		__le32 enabled;
-+		s8 gain[IWL_NUM_CHAIN_LIMITS][IWL_NUM_SUB_BANDS_V2];
-+		s8 reserved[2];
-+	} v2;
-+} __packed;
- 
- /**
-  * struct iwl_beacon_filter_cmd
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/runtime.h b/drivers/net/wireless/intel/iwlwifi/fw/runtime.h
-index b5e5e32b6152..cddcb4d9a264 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/runtime.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/runtime.h
-@@ -207,7 +207,8 @@ struct iwl_fw_runtime {
- 	u8 sar_chain_b_profile;
- 	struct iwl_geo_profile geo_profiles[ACPI_NUM_GEO_PROFILES];
- 	u32 geo_rev;
--	struct iwl_ppag_table_cmd ppag_table;
-+	union iwl_ppag_table_cmd ppag_table;
-+	u32 ppag_ver;
- #endif
- };
- 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-index 4467359aaa20..ba7d57b40c79 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-@@ -841,27 +841,53 @@ static int iwl_mvm_sar_geo_init(struct iwl_mvm *mvm)
- static int iwl_mvm_get_ppag_table(struct iwl_mvm *mvm)
- {
- 	union acpi_object *wifi_pkg, *data, *enabled;
--	int i, j, ret, tbl_rev;
-+	union iwl_ppag_table_cmd ppag_table;
-+	int i, j, ret, tbl_rev, num_sub_bands;
- 	int idx = 2;
-+	s8 *gain;
- 
--	mvm->fwrt.ppag_table.enabled = cpu_to_le32(0);
-+	/*
-+	 * The 'enabled' field is the same in v1 and v2 so we can just
-+	 * use v1 to access it.
-+	 */
-+	mvm->fwrt.ppag_table.v1.enabled = cpu_to_le32(0);
- 	data = iwl_acpi_get_object(mvm->dev, ACPI_PPAG_METHOD);
- 	if (IS_ERR(data))
- 		return PTR_ERR(data);
- 
-+	/* try to read ppag table revision 1 */
- 	wifi_pkg = iwl_acpi_get_wifi_pkg(mvm->dev, data,
--					 ACPI_PPAG_WIFI_DATA_SIZE, &tbl_rev);
--
--	if (IS_ERR(wifi_pkg)) {
--		ret = PTR_ERR(wifi_pkg);
--		goto out_free;
-+					 ACPI_PPAG_WIFI_DATA_SIZE_V2, &tbl_rev);
-+	if (!IS_ERR(wifi_pkg)) {
-+		if (tbl_rev != 1) {
-+			ret = -EINVAL;
-+			goto out_free;
-+		}
-+		num_sub_bands = IWL_NUM_SUB_BANDS_V2;
-+		gain = mvm->fwrt.ppag_table.v2.gain[0];
-+		mvm->fwrt.ppag_ver = 2;
-+		IWL_DEBUG_RADIO(mvm, "Reading PPAG table v2 (tbl_rev=1)\n");
-+		goto read_table;
- 	}
- 
--	if (tbl_rev != 0) {
--		ret = -EINVAL;
--		goto out_free;
-+	/* try to read ppag table revision 0 */
-+	wifi_pkg = iwl_acpi_get_wifi_pkg(mvm->dev, data,
-+					 ACPI_PPAG_WIFI_DATA_SIZE, &tbl_rev);
-+	if (!IS_ERR(wifi_pkg)) {
-+		if (tbl_rev != 0) {
-+			ret = -EINVAL;
-+			goto out_free;
-+		}
-+		num_sub_bands = IWL_NUM_SUB_BANDS;
-+		gain = mvm->fwrt.ppag_table.v1.gain[0];
-+		mvm->fwrt.ppag_ver = 1;
-+		IWL_DEBUG_RADIO(mvm, "Reading PPAG table v1 (tbl_rev=0)\n");
-+		goto read_table;
- 	}
-+	ret = PTR_ERR(wifi_pkg);
-+	goto out_free;
- 
-+read_table:
- 	enabled = &wifi_pkg->package.elements[1];
- 	if (enabled->type != ACPI_TYPE_INTEGER ||
- 	    (enabled->integer.value != 0 && enabled->integer.value != 1)) {
-@@ -869,8 +895,8 @@ static int iwl_mvm_get_ppag_table(struct iwl_mvm *mvm)
- 		goto out_free;
- 	}
- 
--	mvm->fwrt.ppag_table.enabled = cpu_to_le32(enabled->integer.value);
--	if (!mvm->fwrt.ppag_table.enabled) {
-+	ppag_table.v1.enabled = cpu_to_le32(enabled->integer.value);
-+	if (!ppag_table.v1.enabled) {
- 		ret = 0;
- 		goto out_free;
- 	}
-@@ -880,8 +906,8 @@ static int iwl_mvm_get_ppag_table(struct iwl_mvm *mvm)
- 	 * first sub-band (j=0) corresponds to Low-Band (2.4GHz), and the
- 	 * following sub-bands to High-Band (5GHz).
- 	 */
--	for (i = 0; i < ACPI_PPAG_NUM_CHAINS; i++) {
--		for (j = 0; j < ACPI_PPAG_NUM_SUB_BANDS; j++) {
-+	for (i = 0; i < IWL_NUM_CHAIN_LIMITS; i++) {
-+		for (j = 0; j < num_sub_bands; j++) {
- 			union acpi_object *ent;
- 
- 			ent = &wifi_pkg->package.elements[idx++];
-@@ -890,11 +916,11 @@ static int iwl_mvm_get_ppag_table(struct iwl_mvm *mvm)
- 			    (j == 0 && ent->integer.value < ACPI_PPAG_MIN_LB) ||
- 			    (j != 0 && ent->integer.value > ACPI_PPAG_MAX_HB) ||
- 			    (j != 0 && ent->integer.value < ACPI_PPAG_MIN_HB)) {
--				mvm->fwrt.ppag_table.enabled = cpu_to_le32(0);
-+				ppag_table.v1.enabled = cpu_to_le32(0);
- 				ret = -EINVAL;
- 				goto out_free;
- 			}
--			mvm->fwrt.ppag_table.gain[i][j] = ent->integer.value;
-+			gain[i * num_sub_bands + j] = ent->integer.value;
- 		}
- 	}
- 	ret = 0;
-@@ -905,34 +931,55 @@ static int iwl_mvm_get_ppag_table(struct iwl_mvm *mvm)
- 
- int iwl_mvm_ppag_send_cmd(struct iwl_mvm *mvm)
- {
--	int i, j, ret;
-+	u8 cmd_ver;
-+	int i, j, ret, num_sub_bands, cmd_size;
-+	union iwl_ppag_table_cmd ppag_table;
-+	s8 *gain;
- 
- 	if (!fw_has_capa(&mvm->fw->ucode_capa, IWL_UCODE_TLV_CAPA_SET_PPAG)) {
- 		IWL_DEBUG_RADIO(mvm,
- 				"PPAG capability not supported by FW, command not sent.\n");
- 		return 0;
- 	}
--
--	if (!mvm->fwrt.ppag_table.enabled) {
--		IWL_DEBUG_RADIO(mvm,
--				"PPAG not enabled, command not sent.\n");
-+	if (!mvm->fwrt.ppag_table.v1.enabled) {
-+		IWL_DEBUG_RADIO(mvm, "PPAG not enabled, command not sent.\n");
- 		return 0;
- 	}
- 
--	IWL_DEBUG_RADIO(mvm, "Sending PER_PLATFORM_ANT_GAIN_CMD\n");
-+	cmd_ver = iwl_fw_lookup_cmd_ver(mvm->fw, PHY_OPS_GROUP,
-+					PER_PLATFORM_ANT_GAIN_CMD);
-+	if (cmd_ver == 1) {
-+		num_sub_bands = IWL_NUM_SUB_BANDS;
-+		gain = mvm->fwrt.ppag_table.v1.gain[0];
-+		cmd_size = sizeof(ppag_table.v1);
-+		if (mvm->fwrt.ppag_ver == 2) {
-+			IWL_DEBUG_RADIO(mvm,
-+					"PPAG table is v2 but FW supports v1, sending truncated table\n");
-+		}
-+	} else if (cmd_ver == 2) {
-+		num_sub_bands = IWL_NUM_SUB_BANDS_V2;
-+		gain = mvm->fwrt.ppag_table.v2.gain[0];
-+		cmd_size = sizeof(ppag_table.v2);
-+		if (mvm->fwrt.ppag_ver == 1) {
-+			IWL_DEBUG_RADIO(mvm,
-+					"PPAG table is v1 but FW supports v2, sending padded table\n");
-+		}
-+	} else {
-+		IWL_DEBUG_RADIO(mvm, "Unsupported PPAG command version\n");
-+		return 0;
-+	}
- 
--	for (i = 0; i < ACPI_PPAG_NUM_CHAINS; i++) {
--		for (j = 0; j < ACPI_PPAG_NUM_SUB_BANDS; j++) {
-+	for (i = 0; i < IWL_NUM_CHAIN_LIMITS; i++) {
-+		for (j = 0; j < num_sub_bands; j++) {
- 			IWL_DEBUG_RADIO(mvm,
- 					"PPAG table: chain[%d] band[%d]: gain = %d\n",
--					i, j, mvm->fwrt.ppag_table.gain[i][j]);
-+					i, j, gain[i * num_sub_bands + j]);
- 		}
- 	}
--
-+	IWL_DEBUG_RADIO(mvm, "Sending PER_PLATFORM_ANT_GAIN_CMD\n");
- 	ret = iwl_mvm_send_cmd_pdu(mvm, WIDE_ID(PHY_OPS_GROUP,
- 						PER_PLATFORM_ANT_GAIN_CMD),
--				   0, sizeof(mvm->fwrt.ppag_table),
--				   &mvm->fwrt.ppag_table);
-+				   0, cmd_size, &ppag_table);
- 	if (ret < 0)
- 		IWL_ERR(mvm, "failed to send PER_PLATFORM_ANT_GAIN_CMD (%d)\n",
- 			ret);
--- 
-2.28.0
+UmVhZCBwZXItc3RyZWFtIG1lYXN1cmVtZW50cyBldmVyeSAxMDAgbXMgYW5kIGJ1aWxkIGEgc2lt
+cGxlIG1vdmluZyBhdmVyYWdlLg0KDQpUZXN0ZWQtYnk6IFNoYXluZSBDaGVuIDxzaGF5bmUuY2hl
+bkBtZWRpYXRlay5jb20+DQpTaWduZWQtb2ZmLWJ5OiBSeWRlciBMZWUgPHJ5ZGVyLmxlZUBtZWRp
+YXRlay5jb20+DQotLS0NCiAuLi4vbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1L21h
+Yy5jICAgfCA1MCArKysrKysrKysrKysrKysrLS0tDQogLi4uL25ldC93aXJlbGVzcy9tZWRpYXRl
+ay9tdDc2L210NzkxNS9tYWluLmMgIHwgIDIgKw0KIC4uLi93aXJlbGVzcy9tZWRpYXRlay9tdDc2
+L210NzkxNS9tdDc5MTUuaCAgICB8ICAxICsNCiAuLi4vbmV0L3dpcmVsZXNzL21lZGlhdGVrL210
+NzYvbXQ3OTE1L3JlZ3MuaCAgfCAgOCArKysNCiA0IGZpbGVzIGNoYW5nZWQsIDU1IGluc2VydGlv
+bnMoKyksIDYgZGVsZXRpb25zKC0pDQoNCmRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC93aXJlbGVz
+cy9tZWRpYXRlay9tdDc2L210NzkxNS9tYWMuYyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlh
+dGVrL210NzYvbXQ3OTE1L21hYy5jDQppbmRleCBiMzUyMjJjMGUyNzEuLjkwODQ5YTAwYzU1MCAx
+MDA2NDQNCi0tLSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1L21h
+Yy5jDQorKysgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzkxNS9tYWMu
+Yw0KQEAgLTEwODUsMTcgKzEwODUsNDkgQEAgdm9pZCBtdDc5MTVfbWFjX3NldF90aW1pbmcoc3Ry
+dWN0IG10NzkxNV9waHkgKnBoeSkNCiAJCSAgIE1UX0FSQl9TQ1JfVFhfRElTQUJMRSB8IE1UX0FS
+Ql9TQ1JfUlhfRElTQUJMRSk7DQogfQ0KIA0KLS8qDQotICogVE9ETzogbWliIGNvdW50ZXJzIGFy
+ZSByZWFkLWNsZWFyIGFuZCB0aGVyZSdyZSBtYW55IEhFIGZ1bmN0aW9uYWxpdGllcyBuZWVkDQot
+ICogc3VjaCBpbmZvLCBoZW5jZSBmaXJtd2FyZSBwcmVwYXJlcyBhIHRhc2sgdG8gcmVhZCB0aGUg
+ZmllbGRzIG91dCB0byBhIHNoYXJlZA0KLSAqIHN0cnVjdHVyZS4gVXNlciBzaG91bGQgc3dpdGNo
+IHRvIHVzZSBldmVudCBmb3JtYXQgdG8gYXZvaWQgcmFjZSBjb25kaXRpb24uDQotICovDQordm9p
+ZCBtdDc5MTVfbWFjX2VuYWJsZV9uZihzdHJ1Y3QgbXQ3OTE1X2RldiAqZGV2LCBib29sIGV4dF9w
+aHkpDQorew0KKwltdDc5MTVfbDJfc2V0KGRldiwgTVRfV0ZfUEhZX1JYVEQxMihleHRfcGh5KSwN
+CisJCSAgICAgIE1UX1dGX1BIWV9SWFREMTJfSVJQSV9TV19DTFJfT05MWSB8DQorCQkgICAgICBN
+VF9XRl9QSFlfUlhURDEyX0lSUElfU1dfQ0xSKTsNCisNCisJbXQ3OTE1X2wyX3NldChkZXYsIE1U
+X1dGX1BIWV9SWF9DVFJMMShleHRfcGh5KSwNCisJCSAgICAgIEZJRUxEX1BSRVAoTVRfV0ZfUEhZ
+X1JYX0NUUkwxX0lQSV9FTiwgMHg1KSk7DQorfQ0KKw0KK3N0YXRpYyB1OA0KK210NzkxNV9waHlf
+Z2V0X25mKHN0cnVjdCBtdDc5MTVfcGh5ICpwaHksIGludCBpZHgpDQorew0KKwlzdGF0aWMgY29u
+c3QgdTggbmZfcG93ZXJbXSA9IHsgOTIsIDg5LCA4NiwgODMsIDgwLCA3NSwgNzAsIDY1LCA2MCwg
+NTUsIDUyIH07DQorCXN0cnVjdCBtdDc5MTVfZGV2ICpkZXYgPSBwaHktPmRldjsNCisJdTMyIHZh
+bCwgc3VtID0gMCwgbiA9IDA7DQorCWludCBuc3MsIGk7DQorDQorCS8qIFRPRE86IERCREM6IDAs
+MSBmb3IgMi40RywgMiwzIGZvciA1RyAqLw0KKwlmb3IgKG5zcyA9IDA7IG5zcyA8IGh3ZWlnaHQ4
+KHBoeS0+Y2hhaW5tYXNrKTsgbnNzKyspIHsNCisJCXUzMiByZWcgPSBNVF9XRl9JUlBJKG5zcyk7
+DQorDQorCQlmb3IgKGkgPSAwOyBpIDwgQVJSQVlfU0laRShuZl9wb3dlcik7IGkrKywgcmVnICs9
+IDQpIHsNCisJCQl2YWwgPSBtdDc5MTVfbDJfcnIoZGV2LCByZWcpOw0KKwkJCXN1bSArPSB2YWwg
+KiBuZl9wb3dlcltpXTsNCisJCQluICs9IHZhbDsNCisJCX0NCisJfQ0KKw0KKwlpZiAoIW4pDQor
+CQlyZXR1cm4gMDsNCisNCisJcmV0dXJuIHN1bSAvIG47DQorfQ0KKw0KIHN0YXRpYyB2b2lkDQog
+bXQ3OTE1X3BoeV91cGRhdGVfY2hhbm5lbChzdHJ1Y3QgbXQ3Nl9waHkgKm1waHksIGludCBpZHgp
+DQogew0KIAlzdHJ1Y3QgbXQ3OTE1X2RldiAqZGV2ID0gY29udGFpbmVyX29mKG1waHktPmRldiwg
+c3RydWN0IG10NzkxNV9kZXYsIG10NzYpOw0KKwlzdHJ1Y3QgbXQ3OTE1X3BoeSAqcGh5ID0gKHN0
+cnVjdCBtdDc5MTVfcGh5ICopbXBoeS0+cHJpdjsNCiAJc3RydWN0IG10NzZfY2hhbm5lbF9zdGF0
+ZSAqc3RhdGU7DQogCXU2NCBidXN5X3RpbWUsIHR4X3RpbWUsIHJ4X3RpbWUsIG9ic3NfdGltZTsN
+CisJaW50IG5mOw0KIA0KIAlidXN5X3RpbWUgPSBtdDc2X2dldF9maWVsZChkZXYsIE1UX01JQl9T
+RFI5KGlkeCksDQogCQkJCSAgIE1UX01JQl9TRFI5X0JVU1lfTUFTSyk7DQpAQCAtMTEwNiwxMiAr
+MTEzOCwxOCBAQCBtdDc5MTVfcGh5X3VwZGF0ZV9jaGFubmVsKHN0cnVjdCBtdDc2X3BoeSAqbXBo
+eSwgaW50IGlkeCkNCiAJb2Jzc190aW1lID0gbXQ3Nl9nZXRfZmllbGQoZGV2LCBNVF9XRl9STUFD
+X01JQl9BSVJUSU1FMTQoaWR4KSwNCiAJCQkJICAgTVRfTUlCX09CU1NUSU1FX01BU0spOw0KIA0K
+LQkvKiBUT0RPOiBzdGF0ZS0+bm9pc2UgKi8NCisJbmYgPSBtdDc5MTVfcGh5X2dldF9uZihwaHks
+IGlkeCk7DQorCWlmICghcGh5LT5ub2lzZSkNCisJCXBoeS0+bm9pc2UgPSBuZiA8PCA0Ow0KKwll
+bHNlIGlmIChuZikNCisJCXBoeS0+bm9pc2UgKz0gbmYgLSAocGh5LT5ub2lzZSA+PiA0KTsNCisN
+CiAJc3RhdGUgPSBtcGh5LT5jaGFuX3N0YXRlOw0KIAlzdGF0ZS0+Y2NfYnVzeSArPSBidXN5X3Rp
+bWU7DQogCXN0YXRlLT5jY190eCArPSB0eF90aW1lOw0KIAlzdGF0ZS0+Y2NfcnggKz0gcnhfdGlt
+ZSArIG9ic3NfdGltZTsNCiAJc3RhdGUtPmNjX2Jzc19yeCArPSByeF90aW1lOw0KKwlzdGF0ZS0+
+bm9pc2UgPSAtKHBoeS0+bm9pc2UgPj4gNCk7DQogfQ0KIA0KIHZvaWQgbXQ3OTE1X3VwZGF0ZV9j
+aGFubmVsKHN0cnVjdCBtdDc2X2RldiAqbWRldikNCmRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC93
+aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzkxNS9tYWluLmMgYi9kcml2ZXJzL25ldC93aXJlbGVz
+cy9tZWRpYXRlay9tdDc2L210NzkxNS9tYWluLmMNCmluZGV4IGM0ODE1ODM5MjA1Ny4uNGNiZWZm
+ZWFiYmUxIDEwMDY0NA0KLS0tIGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9t
+dDc5MTUvbWFpbi5jDQorKysgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210
+NzkxNS9tYWluLmMNCkBAIC0zNCwxMiArMzQsMTQgQEAgc3RhdGljIGludCBtdDc5MTVfc3RhcnQo
+c3RydWN0IGllZWU4MDIxMV9odyAqaHcpDQogCQltdDc5MTVfbWN1X3NldF9wbShkZXYsIDAsIDAp
+Ow0KIAkJbXQ3OTE1X21jdV9zZXRfbWFjKGRldiwgMCwgdHJ1ZSwgZmFsc2UpOw0KIAkJbXQ3OTE1
+X21jdV9zZXRfc2NzKGRldiwgMCwgdHJ1ZSk7DQorCQltdDc5MTVfbWFjX2VuYWJsZV9uZihkZXYs
+IDApOw0KIAl9DQogDQogCWlmIChwaHkgIT0gJmRldi0+cGh5KSB7DQogCQltdDc5MTVfbWN1X3Nl
+dF9wbShkZXYsIDEsIDApOw0KIAkJbXQ3OTE1X21jdV9zZXRfbWFjKGRldiwgMSwgdHJ1ZSwgZmFs
+c2UpOw0KIAkJbXQ3OTE1X21jdV9zZXRfc2NzKGRldiwgMSwgdHJ1ZSk7DQorCQltdDc5MTVfbWFj
+X2VuYWJsZV9uZihkZXYsIDEpOw0KIAl9DQogDQogCW10NzkxNV9tY3Vfc2V0X3NrdV9lbihwaHks
+IHRydWUpOw0KZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYv
+bXQ3OTE1L210NzkxNS5oIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5
+MTUvbXQ3OTE1LmgNCmluZGV4IGJhNzk5ODcyNDcxNi4uYzAxYzI3OGViMjdlIDEwMDY0NA0KLS0t
+IGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvbXQ3OTE1LmgNCisr
+KyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1L210NzkxNS5oDQpA
+QCAtNDI5LDYgKzQyOSw3IEBAIG10NzkxNV9sMl9ybXcoc3RydWN0IG10NzkxNV9kZXYgKmRldiwg
+dTMyIGFkZHIsIHUzMiBtYXNrLCB1MzIgdmFsKQ0KIGJvb2wgbXQ3OTE1X21hY193dGJsX3VwZGF0
+ZShzdHJ1Y3QgbXQ3OTE1X2RldiAqZGV2LCBpbnQgaWR4LCB1MzIgbWFzayk7DQogdm9pZCBtdDc5
+MTVfbWFjX3Jlc2V0X2NvdW50ZXJzKHN0cnVjdCBtdDc5MTVfcGh5ICpwaHkpOw0KIHZvaWQgbXQ3
+OTE1X21hY19jY2Ffc3RhdHNfcmVzZXQoc3RydWN0IG10NzkxNV9waHkgKnBoeSk7DQordm9pZCBt
+dDc5MTVfbWFjX2VuYWJsZV9uZihzdHJ1Y3QgbXQ3OTE1X2RldiAqZGV2LCBib29sIGV4dF9waHkp
+Ow0KIHZvaWQgbXQ3OTE1X21hY193cml0ZV90eHdpKHN0cnVjdCBtdDc5MTVfZGV2ICpkZXYsIF9f
+bGUzMiAqdHh3aSwNCiAJCQkgICBzdHJ1Y3Qgc2tfYnVmZiAqc2tiLCBzdHJ1Y3QgbXQ3Nl93Y2lk
+ICp3Y2lkLA0KIAkJCSAgIHN0cnVjdCBpZWVlODAyMTFfa2V5X2NvbmYgKmtleSwgYm9vbCBiZWFj
+b24pOw0KZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3
+OTE1L3JlZ3MuaCBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1L3Jl
+Z3MuaA0KaW5kZXggNzBlOThhMjc1MTIyLi42ODM3NTk2Y2IyNWYgMTAwNjQ0DQotLS0gYS9kcml2
+ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzkxNS9yZWdzLmgNCisrKyBiL2RyaXZl
+cnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1L3JlZ3MuaA0KQEAgLTM5NiwxMSAr
+Mzk2LDE5IEBAIHN0YXRpYyBpbmxpbmUgdTMyIG10NzkxNV9pbnRfcnhfbWFzayhlbnVtIG10NzZf
+cnhxX2lkIHEpDQogI2RlZmluZSBNVF9QQ0lFX01BQyhvZnMpCQkoTVRfUENJRV9NQUNfQkFTRSAr
+IChvZnMpKQ0KICNkZWZpbmUgTVRfUENJRV9NQUNfSU5UX0VOQUJMRQkJTVRfUENJRV9NQUMoMHgx
+ODgpDQogDQorI2RlZmluZSBNVF9XRl9JUlBJX0JBU0UJCQkweDgzMDA2MDAwDQorI2RlZmluZSBN
+VF9XRl9JUlBJKG9mcykJCQkoTVRfV0ZfSVJQSV9CQVNFICsgKChvZnMpIDw8IDE2KSkNCisNCiAv
+KiBQSFk6IGJhbmQgMCgweDgzMDgwMDAwKSwgYmFuZCAxKDB4ODMwOTAwMDApICovDQogI2RlZmlu
+ZSBNVF9XRl9QSFlfQkFTRQkJCTB4ODMwODAwMDANCiAjZGVmaW5lIE1UX1dGX1BIWShvZnMpCQkJ
+KE1UX1dGX1BIWV9CQVNFICsgKG9mcykpDQogDQogI2RlZmluZSBNVF9XRl9QSFlfUlhfQ1RSTDEo
+X3BoeSkJTVRfV0ZfUEhZKDB4MjAwNCArICgoX3BoeSkgPDwgMTYpKQ0KKyNkZWZpbmUgTVRfV0Zf
+UEhZX1JYX0NUUkwxX0lQSV9FTglHRU5NQVNLKDIsIDApDQogI2RlZmluZSBNVF9XRl9QSFlfUlhf
+Q1RSTDFfU1RTQ05UX0VOCUdFTk1BU0soMTEsIDkpDQogDQorI2RlZmluZSBNVF9XRl9QSFlfUlhU
+RDEyKF9waHkpCQlNVF9XRl9QSFkoMHg4MjMwICsgKChfcGh5KSA8PCAxNikpDQorI2RlZmluZSBN
+VF9XRl9QSFlfUlhURDEyX0lSUElfU1dfQ0xSX09OTFkJQklUKDE4KQ0KKyNkZWZpbmUgTVRfV0Zf
+UEhZX1JYVEQxMl9JUlBJX1NXX0NMUglCSVQoMjkpDQorDQogI2VuZGlmDQotLSANCjIuMTguMA0K
 
