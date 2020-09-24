@@ -2,40 +2,40 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B96D1276D6A
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Sep 2020 11:28:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A93BD276D6C
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Sep 2020 11:28:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726818AbgIXJ2A (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 24 Sep 2020 05:28:00 -0400
-Received: from mail-io1-f78.google.com ([209.85.166.78]:50340 "EHLO
+        id S1727199AbgIXJ2I (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 24 Sep 2020 05:28:08 -0400
+Received: from mail-io1-f78.google.com ([209.85.166.78]:40334 "EHLO
         mail-io1-f78.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727478AbgIXJ00 (ORCPT
+        with ESMTP id S1727368AbgIXJ00 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Thu, 24 Sep 2020 05:26:26 -0400
-Received: by mail-io1-f78.google.com with SMTP id b16so1919789iod.17
-        for <linux-wireless@vger.kernel.org>; Thu, 24 Sep 2020 02:26:26 -0700 (PDT)
+Received: by mail-io1-f78.google.com with SMTP id f8so1939308iow.7
+        for <linux-wireless@vger.kernel.org>; Thu, 24 Sep 2020 02:26:25 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
-        bh=qKeKvc8PeLpRE0zQtT98loABzInNVPW0ksGhbdloQ5Y=;
-        b=M8kfkfItz44FIViKX0y1Z8/SwG6mmwkIkNEKr3KL+wkcjq1H74CJ1JtvhYEMH06CV3
-         sE6SnLjNwVHvjqAF0f2StBqVy/mth31hkC4kVB0sP+vCc+mmhiOqV0Dc2B5SuwKMLOLa
-         84RixKCfU6dPJNAogsiWsAIZ+cjU8lMgb2KFApr5nhSN06JUkF45kyuu8b/Ng88W+B6O
-         +ZeMreb+Fgyfw38+QgCDkSGVmO+h1ZEfq6QVTK1VGe/ejnj9ljJGjGF1HiKJ8vjvKwu5
-         fvNbFBqVvhJCopl/n1Nj3WnwnympA841fg3c/hT5gKe7HJkvxudHoNT3fNAubfz8filw
-         8sPg==
-X-Gm-Message-State: AOAM531V1Qkw170a6tuuW9+Naw77GMCaTk7nrrpNHU/f5j7HuCgwdGQb
-        0/rcwWJ73PwmBirMUUbP33/avXkJdZfaKXZa7tPZZcB43nHF
-X-Google-Smtp-Source: ABdhPJwF1SmQZogqxEupOxdWKdPRSsxP8xsxJcSc2atGzmvlxHkGdGlLRnceVW5qpEac2GEjGuQ5Q6mCxAfPZlwcUqtL4QZum+9x
+        bh=KwtKvUDMcxdYzs6ADf81+0YwKHEm5MaqSDUuSHizkg8=;
+        b=omOMmfIyZ4iqzBr9GptFqLeEe4mytGerWs7QLG69x25L3BfZ7/fX4EhLjMpW/i4dk9
+         /tqo4EMWW69EjXKMuzvqqnKgZ2g174vN+nr1HMe7BzumkvHUCs+edGusTBESbRHitqca
+         +MJbeAZ4thhfKaKikIz97sb7vhdWtRvbTCg5haV5QUSH8nAriRD9JjGxA6Hh2mJr0VSd
+         gxvvV+JoFQo6bywW1nydk/Y+8KvskyVsdlT64JYhSgyog4Iof6YKNyImIwy7NNkZGNYR
+         meKp+heCB36LuW6q0wt6kaZmEOB4XaSPELCUoKKetfLN85nU4WJQgaetxKldc84q8oV9
+         PiGA==
+X-Gm-Message-State: AOAM530hj9OpoUKfk3JDRj1nIQJhBtADqa51qNE1qeXCwDzd1h/O0dEF
+        +WrM3q5H4TQ5PNH+WFJ6jyn+PHB91zHijxIoRE0RRNvmNkcD
+X-Google-Smtp-Source: ABdhPJzTyRPx3cOgeXGYY4+EUXdletyipVJqYGdcV1OlOfs7BzF1u5fWaj52gYsBTpNencNxqd5zgCjjdih5ydOHOydhQAPHGd+n
 MIME-Version: 1.0
-X-Received: by 2002:a6b:2b45:: with SMTP id r66mr2565080ior.159.1600939585741;
+X-Received: by 2002:a02:7fcf:: with SMTP id r198mr2783772jac.24.1600939585536;
  Thu, 24 Sep 2020 02:26:25 -0700 (PDT)
 Date:   Thu, 24 Sep 2020 02:26:25 -0700
 X-Google-Appengine-App-Id: s~syzkaller
 X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <00000000000050a95f05b00bcb79@google.com>
-Subject: UBSAN: array-index-out-of-bounds in ieee80211_del_key
-From:   syzbot <syzbot+b1bb342d1d097516cbda@syzkaller.appspotmail.com>
+Message-ID: <0000000000004d87c705b00bcb0a@google.com>
+Subject: WARNING in sta_info_insert_rcu
+From:   syzbot <syzbot+ef4ca92d9d6f5ba2f880@syzkaller.appspotmail.com>
 To:     davem@davemloft.net, johannes@sipsolutions.net, kuba@kernel.org,
         linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
         netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
@@ -48,58 +48,60 @@ Hello,
 
 syzbot found the following issue on:
 
-HEAD commit:    98477740 Merge branch 'rcu/urgent' of git://git.kernel.org..
+HEAD commit:    eff48dde Merge tag 'trace-v5.9-rc5' of git://git.kernel.or..
 git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=17130875900000
+console output: https://syzkaller.appspot.com/x/log.txt?x=17b4e8e3900000
 kernel config:  https://syzkaller.appspot.com/x/.config?x=5f4c828c9e3cef97
-dashboard link: https://syzkaller.appspot.com/bug?extid=b1bb342d1d097516cbda
+dashboard link: https://syzkaller.appspot.com/bug?extid=ef4ca92d9d6f5ba2f880
 compiler:       gcc (GCC) 10.1.0-syz 20200507
-userspace arch: i386
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=1550bdab900000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=17d783ab900000
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=167e5707900000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1765b19b900000
+
+Bisection is inconclusive: the issue happens on the oldest tested release.
+
+bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=10341dab900000
+final oops:     https://syzkaller.appspot.com/x/report.txt?x=12341dab900000
+console output: https://syzkaller.appspot.com/x/log.txt?x=14341dab900000
 
 IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+b1bb342d1d097516cbda@syzkaller.appspotmail.com
+Reported-by: syzbot+ef4ca92d9d6f5ba2f880@syzkaller.appspotmail.com
 
-================================================================================
-UBSAN: array-index-out-of-bounds in net/mac80211/cfg.c:524:9
-index 255 is out of range for type 'ieee80211_key *[8]'
-CPU: 0 PID: 6850 Comm: syz-executor698 Not tainted 5.9.0-rc6-syzkaller #0
+wlan1: Created IBSS using preconfigured BSSID 50:50:50:50:50:50
+wlan1: Creating new IBSS network, BSSID 50:50:50:50:50:50
+------------[ cut here ]------------
+WARNING: CPU: 0 PID: 72 at net/mac80211/sta_info.c:529 sta_info_insert_check net/mac80211/sta_info.c:529 [inline]
+WARNING: CPU: 0 PID: 72 at net/mac80211/sta_info.c:529 sta_info_insert_rcu+0x27a/0x2ba0 net/mac80211/sta_info.c:707
+Kernel panic - not syncing: panic_on_warn set ...
+CPU: 0 PID: 72 Comm: kworker/u4:3 Not tainted 5.9.0-rc6-syzkaller #0
 Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
+Workqueue: phy4 ieee80211_iface_work
 Call Trace:
  __dump_stack lib/dump_stack.c:77 [inline]
  dump_stack+0x198/0x1fd lib/dump_stack.c:118
- ubsan_epilogue+0xb/0x5a lib/ubsan.c:148
- __ubsan_handle_out_of_bounds.cold+0x62/0x6c lib/ubsan.c:356
- ieee80211_del_key+0x428/0x440 net/mac80211/cfg.c:524
- rdev_del_key net/wireless/rdev-ops.h:107 [inline]
- nl80211_del_key+0x493/0x980 net/wireless/nl80211.c:4201
- genl_family_rcv_msg_doit net/netlink/genetlink.c:669 [inline]
- genl_family_rcv_msg net/netlink/genetlink.c:714 [inline]
- genl_rcv_msg+0x61d/0x980 net/netlink/genetlink.c:731
- netlink_rcv_skb+0x15a/0x430 net/netlink/af_netlink.c:2470
- genl_rcv+0x24/0x40 net/netlink/genetlink.c:742
- netlink_unicast_kernel net/netlink/af_netlink.c:1304 [inline]
- netlink_unicast+0x533/0x7d0 net/netlink/af_netlink.c:1330
- netlink_sendmsg+0x856/0xd90 net/netlink/af_netlink.c:1919
- sock_sendmsg_nosec net/socket.c:651 [inline]
- sock_sendmsg+0xcf/0x120 net/socket.c:671
- ____sys_sendmsg+0x6e8/0x810 net/socket.c:2353
- ___sys_sendmsg+0xf3/0x170 net/socket.c:2407
- __sys_sendmsg+0xe5/0x1b0 net/socket.c:2440
- do_syscall_32_irqs_on arch/x86/entry/common.c:78 [inline]
- __do_fast_syscall_32+0x60/0x90 arch/x86/entry/common.c:137
- do_fast_syscall_32+0x2f/0x70 arch/x86/entry/common.c:160
- entry_SYSENTER_compat_after_hwframe+0x4d/0x5c
-RIP: 0023:0xf7ff9549
-Code: b8 01 10 06 03 74 b4 01 10 07 03 74 b0 01 10 08 03 74 d8 01 00 00 00 00 00 00 00 00 00 00 00 00 00 51 52 55 89 e5 0f 34 cd 80 <5d> 5a 59 c3 90 90 90 90 eb 0d 90 90 90 90 90 90 90 90 90 90 90 90
-RSP: 002b:00000000fff7606c EFLAGS: 00000202 ORIG_RAX: 0000000000000172
-RAX: ffffffffffffffda RBX: 0000000000000003 RCX: 0000000020000240
-RDX: 0000000000000000 RSI: 00000000f7ff928c RDI: 0000000000000004
-RBP: 00000000094f8018 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000000
-R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
-================================================================================
+ panic+0x382/0x7fb kernel/panic.c:231
+ __warn.cold+0x20/0x4b kernel/panic.c:600
+ report_bug+0x1bd/0x210 lib/bug.c:198
+ handle_bug+0x38/0x90 arch/x86/kernel/traps.c:234
+ exc_invalid_op+0x14/0x40 arch/x86/kernel/traps.c:254
+ asm_exc_invalid_op+0x12/0x20 arch/x86/include/asm/idtentry.h:536
+RIP: 0010:sta_info_insert_check net/mac80211/sta_info.c:529 [inline]
+RIP: 0010:sta_info_insert_rcu+0x27a/0x2ba0 net/mac80211/sta_info.c:707
+Code: 24 e8 3a 79 b8 f9 0f b6 85 50 ff ff ff 31 ff 83 e0 01 41 89 c7 89 c6 e8 44 75 b8 f9 45 84 ff 0f 84 c5 00 00 00 e8 16 79 b8 f9 <0f> 0b 41 bd ea ff ff ff e8 09 79 b8 f9 48 8b bd 30 ff ff ff e8 ed
+RSP: 0018:ffffc90001017958 EFLAGS: 00010293
+RAX: 0000000000000000 RBX: ffff888093338c00 RCX: ffffffff87bdc51c
+RDX: ffff8880a9394040 RSI: ffffffff87bdc52a RDI: 0000000000000001
+RBP: ffffc90001017aa0 R08: 0000000000000000 R09: ffff88809333925f
+R10: 0000000000000000 R11: 0000000000000000 R12: 00000000500177e9
+R13: ffff8880a8916048 R14: ffff8880a8916000 R15: 0000000000000001
+ ieee80211_ibss_finish_sta+0x212/0x390 net/mac80211/ibss.c:592
+ ieee80211_ibss_work+0x2c7/0xe80 net/mac80211/ibss.c:1699
+ ieee80211_iface_work+0x7d2/0x8f0 net/mac80211/iface.c:1438
+ process_one_work+0x94c/0x1670 kernel/workqueue.c:2269
+ worker_thread+0x64c/0x1120 kernel/workqueue.c:2415
+ kthread+0x3b5/0x4a0 kernel/kthread.c:292
+ ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:294
+Kernel Offset: disabled
+Rebooting in 86400 seconds..
 
 
 ---
@@ -109,5 +111,6 @@ syzbot engineers can be reached at syzkaller@googlegroups.com.
 
 syzbot will keep track of this issue. See:
 https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+For information about bisection process see: https://goo.gl/tpsmEJ#bisection
 syzbot can test patches for this issue, for details see:
 https://goo.gl/tpsmEJ#testing-patches
