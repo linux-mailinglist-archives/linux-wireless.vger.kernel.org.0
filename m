@@ -2,158 +2,85 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 574732762CF
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Sep 2020 23:04:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E7838276934
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Sep 2020 08:48:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726799AbgIWVE0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 23 Sep 2020 17:04:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38062 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726515AbgIWVEZ (ORCPT
+        id S1726908AbgIXGsT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 24 Sep 2020 02:48:19 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:44936 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726119AbgIXGsS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 23 Sep 2020 17:04:25 -0400
-Received: from mail-wm1-x344.google.com (mail-wm1-x344.google.com [IPv6:2a00:1450:4864:20::344])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49F5EC0613CE;
-        Wed, 23 Sep 2020 14:04:25 -0700 (PDT)
-Received: by mail-wm1-x344.google.com with SMTP id b79so1437136wmb.4;
-        Wed, 23 Sep 2020 14:04:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:references:in-reply-to:subject:date:message-id
-         :mime-version:content-transfer-encoding:content-language
-         :thread-index;
-        bh=Cwsd6her1f525yiWhkcoGWgzKup5DnYJEVjSpYNiosQ=;
-        b=I22w5349tDL/91cg3dlPigSanrcqoe3ZFWDo5dJ8hEheB4GawRg09zou8o/NwpfG3F
-         eWMFwYbZEoCGTffezgkfmngro0y9jfqMvSHg73a7Spb3DssefsXQORUNr1lTPRW0Ysrg
-         q37KVNtYbwlVet1sJBBV7GWs6PgjTnXEnP8pzMggpDDYwFUnj7RLAo8lDTImGgG9Bd9q
-         xwJCg0gzsZLAlOLzQCI35eFJChlNFnkwGJKVwzwFzOJwn1XUgr6MctBJniQj/zvlE1Ym
-         pi2jzPnyCAPhJsVnBwSlPeitDBADceLs8Mo/kn73wsxb1JteavBU6uSEbDhvCQjCLCIN
-         /P4A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:references:in-reply-to:subject:date
-         :message-id:mime-version:content-transfer-encoding:content-language
-         :thread-index;
-        bh=Cwsd6her1f525yiWhkcoGWgzKup5DnYJEVjSpYNiosQ=;
-        b=r/i5lXXoKPErHfTkkuK/UTBqVp4Z35KLvFxAugymrbDxW1AAzbBTC5QV28Uch1Kxjb
-         wOOZ2UoieI+8whW7MdIyuDs5AfKzXIbEd3Glh3xzLD/gUIiZp076ClFMk1TdZwrBMWu+
-         sw8FOPh6TIEgR0g/nMkDDG8TESnHkruLMMalVA/irr3PnuF5q53Mm9Z1Jt0D3ZebJZS4
-         ZIMvVzVQVMHCDoeWG2nOlLPBwxdHxnnHir6pBZT8FV0pH7ZeAs256PGYf2Q2TIz1vf4Q
-         v9schOA/64nszrQf4fC9GD1gJCZIFWzpzbelrd3MFUJZpDIHJt33iS+j/OtQ8NhPw4ic
-         aJdg==
-X-Gm-Message-State: AOAM532Cq4nVghVC5mPvNYhe/4ab5rGqtua5e5RzWZ15lhsnNhreOGs7
-        Q7ciFdz1ocq1bmv/v1NjLqk=
-X-Google-Smtp-Source: ABdhPJynn45TaPmkXDi+yvz8LZCHR31hOdHMKqCvqYWpmPNtjSgxWbcuWxWnrcBjzrZC8KwmPTBOhA==
-X-Received: by 2002:a1c:9a57:: with SMTP id c84mr1377989wme.136.1600895063600;
-        Wed, 23 Sep 2020 14:04:23 -0700 (PDT)
-Received: from AnsuelXPS (93-39-149-95.ip76.fastwebnet.it. [93.39.149.95])
-        by smtp.gmail.com with ESMTPSA id d23sm930906wmb.6.2020.09.23.14.04.21
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 23 Sep 2020 14:04:22 -0700 (PDT)
-From:   <ansuelsmth@gmail.com>
-To:     "'Rob Herring'" <robh@kernel.org>
-Cc:     "'Kalle Valo'" <kvalo@codeaurora.org>,
-        "'David S. Miller'" <davem@davemloft.net>,
-        "'Jakub Kicinski'" <kuba@kernel.org>,
-        <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <ath10k@lists.infradead.org>
-References: <20200918181104.98-1-ansuelsmth@gmail.com> <20200918181104.98-2-ansuelsmth@gmail.com> <20200923205824.GA1290651@bogus>
-In-Reply-To: <20200923205824.GA1290651@bogus>
-Subject: RE: [PATCH v2 2/2] dt: bindings: ath10k: Document qcom,ath10k-pre-calibration-data-mtd
-Date:   Wed, 23 Sep 2020 23:04:20 +0200
-Message-ID: <019801d691ed$1bc26650$534732f0$@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-X-Mailer: Microsoft Outlook 16.0
-Content-Language: it
-Thread-Index: AQMJH5wF5tFRrUdsk5f5BXXZ8/xBtQJaPmHMAl7msnGm69B+EA==
+        Thu, 24 Sep 2020 02:48:18 -0400
+Received: from 61-220-137-37.hinet-ip.hinet.net ([61.220.137.37] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <kai.heng.feng@canonical.com>)
+        id 1kLL31-00029j-H1; Thu, 24 Sep 2020 06:48:08 +0000
+From:   Kai-Heng Feng <kai.heng.feng@canonical.com>
+To:     johannes.berg@intel.com, emmanuel.grumbach@intel.com,
+        luciano.coelho@intel.com
+Cc:     Kai-Heng Feng <kai.heng.feng@canonical.com>,
+        Intel Linux Wireless <linuxwifi@intel.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Ben Greear <greearb@candelatech.com>,
+        Tova Mussai <tova.mussai@intel.com>,
+        Haim Dreyfuss <haim.dreyfuss@intel.com>,
+        Andrei Otcheretianski <andrei.otcheretianski@intel.com>,
+        Shaul Triebitz <shaul.triebitz@intel.com>,
+        Naftali Goldstein <naftali.goldstein@intel.com>,
+        linux-wireless@vger.kernel.org (open list:INTEL WIRELESS WIFI LINK
+        (iwlwifi)), netdev@vger.kernel.org (open list:NETWORKING DRIVERS),
+        linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH] iwlwifi: mvm: Increase session protection duration for association
+Date:   Thu, 24 Sep 2020 14:48:00 +0800
+Message-Id: <20200924064802.3441-1-kai.heng.feng@canonical.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Sometimes Intel AX201 fails to associate with AP:
+[  839.290042] wlp0s20f3: authenticate with xx:xx:xx:xx:xx:xx
+[  839.291737] wlp0s20f3: send auth to xx:xx:xx:xx:xx:xx (try 1/3)
+[  839.350010] wlp0s20f3: send auth to xx:xx:xx:xx:xx:xx (try 2/3)
+[  839.360826] wlp0s20f3: authenticated
+[  839.363205] wlp0s20f3: associate with xx:xx:xx:xx:xx:xx (try 1/3)
+[  839.370342] wlp0s20f3: RX AssocResp from xx:xx:xx:xx:xx:xx (capab=0x431 status=0 aid=12)
+[  839.378925] wlp0s20f3: associated
+[  839.431788] wlp0s20f3: deauthenticated from xx:xx:xx:xx:xx:xx (Reason: 2=PREV_AUTH_NOT_VALID)
 
+It fails because EAPOL hasn't finished. Increase the  session protection
+duration to 1200TU can eliminate the problem.
 
-> -----Original Message-----
-> From: Rob Herring <robh@kernel.org>
-> Sent: Wednesday, September 23, 2020 10:58 PM
-> To: Ansuel Smith <ansuelsmth@gmail.com>
-> Cc: Kalle Valo <kvalo@codeaurora.org>; David S. Miller
-> <davem@davemloft.net>; Jakub Kicinski <kuba@kernel.org>; linux-
-> wireless@vger.kernel.org; netdev@vger.kernel.org;
-> devicetree@vger.kernel.org; linux-kernel@vger.kernel.org;
-> ath10k@lists.infradead.org
-> Subject: Re: [PATCH v2 2/2] dt: bindings: ath10k: Document qcom,ath10k-
-> pre-calibration-data-mtd
-> 
-> On Fri, Sep 18, 2020 at 08:11:03PM +0200, Ansuel Smith wrote:
-> > Document use of qcom,ath10k-pre-calibration-data-mtd bindings used to
-> > define from where the driver will load the pre-cal data in the defined
-> > mtd partition.
-> >
-> > Signed-off-by: Ansuel Smith <ansuelsmth@gmail.com>
-> > ---
-> >  .../devicetree/bindings/net/wireless/qcom,ath10k.txt | 12 +++++++++---
-> >  1 file changed, 9 insertions(+), 3 deletions(-)
-> >
-> > diff --git
-> a/Documentation/devicetree/bindings/net/wireless/qcom,ath10k.txt
-> b/Documentation/devicetree/bindings/net/wireless/qcom,ath10k.txt
-> > index b61c2d5a0..568364243 100644
-> > --- a/Documentation/devicetree/bindings/net/wireless/qcom,ath10k.txt
-> > +++ b/Documentation/devicetree/bindings/net/wireless/qcom,ath10k.txt
-> > @@ -15,9 +15,9 @@ and also uses most of the properties defined in this
-> doc (except
-> >  "qcom,ath10k-calibration-data"). It uses "qcom,ath10k-pre-calibration-
-> data"
-> >  to carry pre calibration data.
-> >
-> > -In general, entry "qcom,ath10k-pre-calibration-data" and
-> > -"qcom,ath10k-calibration-data" conflict with each other and only one
-> > -can be provided per device.
-> > +In general, entry "qcom,ath10k-pre-calibration-data",
-> > +"qcom,ath10k-calibration-data-mtd" and "qcom,ath10k-calibration-
-> data" conflict with
-> > +each other and only one can be provided per device.
-> >
-> >  SNOC based devices (i.e. wcn3990) uses compatible string
-> "qcom,wcn3990-wifi".
-> >
-> > @@ -63,6 +63,12 @@ Optional properties:
-> >  				 hw versions.
-> >  - qcom,ath10k-pre-calibration-data : pre calibration data as an array,
-> >  				     the length can vary between hw
-versions.
-> > +- qcom,ath10k-pre-calibration-data-mtd :
-> 
-> mtd is a Linuxism.
-> 
-> > +	Usage: optional
-> > +	Value type: <phandle offset size>
-> > +	Definition: pre calibration data read from mtd partition. Take 3
-> value, the
-> > +		    mtd to read data from, the offset in the mtd partition
-and
-> the
-> 
-> The phandle is the mtd or partition?
-> 
-> Maybe you should be using nvmem binding here.
-> 
+Bugzilla: https://bugzilla.kernel.org/show_bug.cgi?id=209237
+Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
+---
+ drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-The phandle is to the mtd.
-You are right about nvmem... Problem is that nvmem for mtd is still not
-supported. I already sent a patch to fix this in the mtd mailing list but
-I'm waiting for review...
-If that will be accepted, I can convert this patch to use nvmem api.
-
-> > +		    size of data to read.
-> >  - <supply-name>-supply: handle to the regulator device tree node
-> >  			   optional "supply-name" are "vdd-0.8-cx-mx",
-> >  			   "vdd-1.8-xo", "vdd-1.3-rfa", "vdd-3.3-ch0",
-> > --
-> > 2.27.0
-> >
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+index 9374c85c5caf..54acd9a68955 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+@@ -3297,13 +3297,13 @@ static void iwl_mvm_mac_mgd_prepare_tx(struct ieee80211_hw *hw,
+ 	 * session for a much longer time since the firmware will internally
+ 	 * create two events: a 300TU one with a very high priority that
+ 	 * won't be fragmented which should be enough for 99% of the cases,
+-	 * and another one (which we configure here to be 900TU long) which
++	 * and another one (which we configure here to be 1200TU long) which
+ 	 * will have a slightly lower priority, but more importantly, can be
+ 	 * fragmented so that it'll allow other activities to run.
+ 	 */
+ 	if (fw_has_capa(&mvm->fw->ucode_capa,
+ 			IWL_UCODE_TLV_CAPA_SESSION_PROT_CMD))
+-		iwl_mvm_schedule_session_protection(mvm, vif, 900,
++		iwl_mvm_schedule_session_protection(mvm, vif, 1200,
+ 						    min_duration, false);
+ 	else
+ 		iwl_mvm_protect_session(mvm, vif, duration,
+-- 
+2.17.1
 
