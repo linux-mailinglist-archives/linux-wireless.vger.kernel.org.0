@@ -2,43 +2,44 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A93BD276D6C
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Sep 2020 11:28:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 31DDC276D4F
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Sep 2020 11:27:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727199AbgIXJ2I (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 24 Sep 2020 05:28:08 -0400
-Received: from mail-io1-f78.google.com ([209.85.166.78]:40334 "EHLO
-        mail-io1-f78.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727368AbgIXJ00 (ORCPT
+        id S1727679AbgIXJ1G (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 24 Sep 2020 05:27:06 -0400
+Received: from mail-io1-f77.google.com ([209.85.166.77]:51542 "EHLO
+        mail-io1-f77.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727497AbgIXJ02 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 24 Sep 2020 05:26:26 -0400
-Received: by mail-io1-f78.google.com with SMTP id f8so1939308iow.7
-        for <linux-wireless@vger.kernel.org>; Thu, 24 Sep 2020 02:26:25 -0700 (PDT)
+        Thu, 24 Sep 2020 05:26:28 -0400
+Received: by mail-io1-f77.google.com with SMTP id o7so1898779iof.18
+        for <linux-wireless@vger.kernel.org>; Thu, 24 Sep 2020 02:26:27 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
-        bh=KwtKvUDMcxdYzs6ADf81+0YwKHEm5MaqSDUuSHizkg8=;
-        b=omOMmfIyZ4iqzBr9GptFqLeEe4mytGerWs7QLG69x25L3BfZ7/fX4EhLjMpW/i4dk9
-         /tqo4EMWW69EjXKMuzvqqnKgZ2g174vN+nr1HMe7BzumkvHUCs+edGusTBESbRHitqca
-         +MJbeAZ4thhfKaKikIz97sb7vhdWtRvbTCg5haV5QUSH8nAriRD9JjGxA6Hh2mJr0VSd
-         gxvvV+JoFQo6bywW1nydk/Y+8KvskyVsdlT64JYhSgyog4Iof6YKNyImIwy7NNkZGNYR
-         meKp+heCB36LuW6q0wt6kaZmEOB4XaSPELCUoKKetfLN85nU4WJQgaetxKldc84q8oV9
-         PiGA==
-X-Gm-Message-State: AOAM530hj9OpoUKfk3JDRj1nIQJhBtADqa51qNE1qeXCwDzd1h/O0dEF
-        +WrM3q5H4TQ5PNH+WFJ6jyn+PHB91zHijxIoRE0RRNvmNkcD
-X-Google-Smtp-Source: ABdhPJzTyRPx3cOgeXGYY4+EUXdletyipVJqYGdcV1OlOfs7BzF1u5fWaj52gYsBTpNencNxqd5zgCjjdih5ydOHOydhQAPHGd+n
+        bh=lKlrAGi+eyrd8zC5Zvr/WU9bXgo79OUvMpHFZeKuFmw=;
+        b=UPWAFD5K7S79HSsXudBMaxsxNOWq1qPIivzNKOXgl8YnC2BQ/e6g9UejRxVC3puIu4
+         GEiX2B9SCrWfpF87j/DNZi3X38E+8lVvaakzb+l2BGNtT992NZOHWI4o+5TvhBbdhZVT
+         ALnWqSU0kD7DYon9XUE8NM59eiPIs/Gx9WIVtmxEZi7QDguMUJj3yjHhV0xguhRUpocW
+         G76R3JkMOMkSODZW360GDfx7Vi0BrB+xxlgCFUH/Y3D8hUKlgtPCYDtxnE14bYI4JZXL
+         /aJc8iSU7AJ+FSJh09bkV+NDQQerQnnJMacVgUPWuTPps9CqS0c9e/oYR7PHCzJylIGu
+         I3rw==
+X-Gm-Message-State: AOAM530c0YlJxoWqdk5Q4w7a2SQ/uf+XBz81nCTwu0nxd8l34zePsDHL
+        aEQCWOJHjsKVONptrZfMWsn3mL6zpXMo+BbLoJbTtwZ9AbMk
+X-Google-Smtp-Source: ABdhPJw9jg/gq+1ZA5IdnhW4HLsVV4Cdn6aEtihx4wg6L+dXlAjcGYm79ogPqjFkSH35WhM+zX7Ilecn7xhuEa/czHZyMab1y5OI
 MIME-Version: 1.0
-X-Received: by 2002:a02:7fcf:: with SMTP id r198mr2783772jac.24.1600939585536;
- Thu, 24 Sep 2020 02:26:25 -0700 (PDT)
-Date:   Thu, 24 Sep 2020 02:26:25 -0700
+X-Received: by 2002:a05:6602:2d55:: with SMTP id d21mr2522579iow.134.1600939586782;
+ Thu, 24 Sep 2020 02:26:26 -0700 (PDT)
+Date:   Thu, 24 Sep 2020 02:26:26 -0700
 X-Google-Appengine-App-Id: s~syzkaller
 X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <0000000000004d87c705b00bcb0a@google.com>
-Subject: WARNING in sta_info_insert_rcu
-From:   syzbot <syzbot+ef4ca92d9d6f5ba2f880@syzkaller.appspotmail.com>
-To:     davem@davemloft.net, johannes@sipsolutions.net, kuba@kernel.org,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
+Message-ID: <000000000000608c1705b00bcb89@google.com>
+Subject: KMSAN: uninit-value in ieee80211_skb_resize
+From:   syzbot <syzbot+32fd1a1bfe355e93f1e2@syzkaller.appspotmail.com>
+To:     davem@davemloft.net, glider@google.com, johannes@sipsolutions.net,
+        kuba@kernel.org, linux-kernel@vger.kernel.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        syzkaller-bugs@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
@@ -48,60 +49,84 @@ Hello,
 
 syzbot found the following issue on:
 
-HEAD commit:    eff48dde Merge tag 'trace-v5.9-rc5' of git://git.kernel.or..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=17b4e8e3900000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=5f4c828c9e3cef97
-dashboard link: https://syzkaller.appspot.com/bug?extid=ef4ca92d9d6f5ba2f880
-compiler:       gcc (GCC) 10.1.0-syz 20200507
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=167e5707900000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1765b19b900000
-
-Bisection is inconclusive: the issue happens on the oldest tested release.
-
-bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=10341dab900000
-final oops:     https://syzkaller.appspot.com/x/report.txt?x=12341dab900000
-console output: https://syzkaller.appspot.com/x/log.txt?x=14341dab900000
+HEAD commit:    c5a13b33 kmsan: clang-format core
+git tree:       https://github.com/google/kmsan.git master
+console output: https://syzkaller.appspot.com/x/log.txt?x=1366df53900000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=20f149ad694ba4be
+dashboard link: https://syzkaller.appspot.com/bug?extid=32fd1a1bfe355e93f1e2
+compiler:       clang version 10.0.0 (https://github.com/llvm/llvm-project/ c2443155a0fb245c8f17f2c1c72b6ea391e86e81)
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=14e95cd3900000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=11abf481900000
 
 IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+ef4ca92d9d6f5ba2f880@syzkaller.appspotmail.com
+Reported-by: syzbot+32fd1a1bfe355e93f1e2@syzkaller.appspotmail.com
 
-wlan1: Created IBSS using preconfigured BSSID 50:50:50:50:50:50
-wlan1: Creating new IBSS network, BSSID 50:50:50:50:50:50
-------------[ cut here ]------------
-WARNING: CPU: 0 PID: 72 at net/mac80211/sta_info.c:529 sta_info_insert_check net/mac80211/sta_info.c:529 [inline]
-WARNING: CPU: 0 PID: 72 at net/mac80211/sta_info.c:529 sta_info_insert_rcu+0x27a/0x2ba0 net/mac80211/sta_info.c:707
-Kernel panic - not syncing: panic_on_warn set ...
-CPU: 0 PID: 72 Comm: kworker/u4:3 Not tainted 5.9.0-rc6-syzkaller #0
+=====================================================
+BUG: KMSAN: uninit-value in ieee80211_skb_resize+0x8c0/0x980 net/mac80211/tx.c:1955
+CPU: 0 PID: 8539 Comm: syz-executor053 Not tainted 5.9.0-rc4-syzkaller #0
 Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
-Workqueue: phy4 ieee80211_iface_work
 Call Trace:
  __dump_stack lib/dump_stack.c:77 [inline]
- dump_stack+0x198/0x1fd lib/dump_stack.c:118
- panic+0x382/0x7fb kernel/panic.c:231
- __warn.cold+0x20/0x4b kernel/panic.c:600
- report_bug+0x1bd/0x210 lib/bug.c:198
- handle_bug+0x38/0x90 arch/x86/kernel/traps.c:234
- exc_invalid_op+0x14/0x40 arch/x86/kernel/traps.c:254
- asm_exc_invalid_op+0x12/0x20 arch/x86/include/asm/idtentry.h:536
-RIP: 0010:sta_info_insert_check net/mac80211/sta_info.c:529 [inline]
-RIP: 0010:sta_info_insert_rcu+0x27a/0x2ba0 net/mac80211/sta_info.c:707
-Code: 24 e8 3a 79 b8 f9 0f b6 85 50 ff ff ff 31 ff 83 e0 01 41 89 c7 89 c6 e8 44 75 b8 f9 45 84 ff 0f 84 c5 00 00 00 e8 16 79 b8 f9 <0f> 0b 41 bd ea ff ff ff e8 09 79 b8 f9 48 8b bd 30 ff ff ff e8 ed
-RSP: 0018:ffffc90001017958 EFLAGS: 00010293
-RAX: 0000000000000000 RBX: ffff888093338c00 RCX: ffffffff87bdc51c
-RDX: ffff8880a9394040 RSI: ffffffff87bdc52a RDI: 0000000000000001
-RBP: ffffc90001017aa0 R08: 0000000000000000 R09: ffff88809333925f
-R10: 0000000000000000 R11: 0000000000000000 R12: 00000000500177e9
-R13: ffff8880a8916048 R14: ffff8880a8916000 R15: 0000000000000001
- ieee80211_ibss_finish_sta+0x212/0x390 net/mac80211/ibss.c:592
- ieee80211_ibss_work+0x2c7/0xe80 net/mac80211/ibss.c:1699
- ieee80211_iface_work+0x7d2/0x8f0 net/mac80211/iface.c:1438
- process_one_work+0x94c/0x1670 kernel/workqueue.c:2269
- worker_thread+0x64c/0x1120 kernel/workqueue.c:2415
- kthread+0x3b5/0x4a0 kernel/kthread.c:292
- ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:294
-Kernel Offset: disabled
-Rebooting in 86400 seconds..
+ dump_stack+0x21c/0x280 lib/dump_stack.c:118
+ kmsan_report+0xf7/0x1e0 mm/kmsan/kmsan_report.c:122
+ __msan_warning+0x58/0xa0 mm/kmsan/kmsan_instr.c:219
+ ieee80211_skb_resize+0x8c0/0x980 net/mac80211/tx.c:1955
+ ieee80211_build_hdr+0x2939/0x41f0 net/mac80211/tx.c:2825
+ __ieee80211_subif_start_xmit+0x172a/0x7300 net/mac80211/tx.c:3999
+ ieee80211_subif_start_xmit+0x14b/0x19a0 net/mac80211/tx.c:4144
+ __netdev_start_xmit include/linux/netdevice.h:4634 [inline]
+ netdev_start_xmit include/linux/netdevice.h:4648 [inline]
+ xmit_one+0x3cf/0x750 net/core/dev.c:3561
+ dev_hard_start_xmit+0x196/0x420 net/core/dev.c:3577
+ sch_direct_xmit+0x5d3/0x1a50 net/sched/sch_generic.c:314
+ qdisc_restart net/sched/sch_generic.c:377 [inline]
+ __qdisc_run+0x35b/0x490 net/sched/sch_generic.c:385
+ qdisc_run include/net/pkt_sched.h:134 [inline]
+ __dev_xmit_skb net/core/dev.c:3752 [inline]
+ __dev_queue_xmit+0x2cfa/0x4470 net/core/dev.c:4105
+ dev_queue_xmit+0x4b/0x60 net/core/dev.c:4169
+ packet_snd net/packet/af_packet.c:2989 [inline]
+ packet_sendmsg+0x8542/0x9a80 net/packet/af_packet.c:3014
+ sock_sendmsg_nosec net/socket.c:651 [inline]
+ sock_sendmsg net/socket.c:671 [inline]
+ __sys_sendto+0x9dc/0xc80 net/socket.c:1992
+ __do_sys_sendto net/socket.c:2004 [inline]
+ __se_sys_sendto+0x107/0x130 net/socket.c:2000
+ __x64_sys_sendto+0x6e/0x90 net/socket.c:2000
+ do_syscall_64+0x9f/0x140 arch/x86/entry/common.c:48
+ entry_SYSCALL_64_after_hwframe+0x44/0xa9
+RIP: 0033:0x441ea9
+Code: e8 bc 00 03 00 48 83 c4 18 c3 0f 1f 80 00 00 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 0f 83 7b 07 fc ff c3 66 2e 0f 1f 84 00 00 00 00
+RSP: 002b:00007fffc4414388 EFLAGS: 00000246 ORIG_RAX: 000000000000002c
+RAX: ffffffffffffffda RBX: 0000000000000003 RCX: 0000000000441ea9
+RDX: 000000000000000e RSI: 00000000200000c0 RDI: 0000000000000003
+RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000004800 R11: 0000000000000246 R12: 0000000000000032
+R13: 0000000000000000 R14: 000000000000000c R15: 0000000000000004
+
+Uninit was created at:
+ kmsan_save_stack_with_flags mm/kmsan/kmsan.c:143 [inline]
+ kmsan_internal_poison_shadow+0x66/0xd0 mm/kmsan/kmsan.c:126
+ kmsan_slab_alloc+0x8a/0xe0 mm/kmsan/kmsan_hooks.c:80
+ slab_alloc_node mm/slub.c:2907 [inline]
+ __kmalloc_node_track_caller+0x9aa/0x12f0 mm/slub.c:4511
+ __kmalloc_reserve net/core/skbuff.c:142 [inline]
+ __alloc_skb+0x35f/0xb30 net/core/skbuff.c:210
+ alloc_skb include/linux/skbuff.h:1094 [inline]
+ alloc_skb_with_frags+0x1f2/0xc10 net/core/skbuff.c:5771
+ sock_alloc_send_pskb+0xc83/0xe50 net/core/sock.c:2348
+ packet_alloc_skb net/packet/af_packet.c:2837 [inline]
+ packet_snd net/packet/af_packet.c:2932 [inline]
+ packet_sendmsg+0x6abb/0x9a80 net/packet/af_packet.c:3014
+ sock_sendmsg_nosec net/socket.c:651 [inline]
+ sock_sendmsg net/socket.c:671 [inline]
+ __sys_sendto+0x9dc/0xc80 net/socket.c:1992
+ __do_sys_sendto net/socket.c:2004 [inline]
+ __se_sys_sendto+0x107/0x130 net/socket.c:2000
+ __x64_sys_sendto+0x6e/0x90 net/socket.c:2000
+ do_syscall_64+0x9f/0x140 arch/x86/entry/common.c:48
+ entry_SYSCALL_64_after_hwframe+0x44/0xa9
+=====================================================
 
 
 ---
@@ -111,6 +136,5 @@ syzbot engineers can be reached at syzkaller@googlegroups.com.
 
 syzbot will keep track of this issue. See:
 https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-For information about bisection process see: https://goo.gl/tpsmEJ#bisection
 syzbot can test patches for this issue, for details see:
 https://goo.gl/tpsmEJ#testing-patches
