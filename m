@@ -2,26 +2,26 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 019A7277283
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Sep 2020 15:37:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A6FD6277281
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Sep 2020 15:37:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727973AbgIXNhS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 24 Sep 2020 09:37:18 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:52084 "EHLO
+        id S1727954AbgIXNhM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 24 Sep 2020 09:37:12 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:52076 "EHLO
         farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1727846AbgIXNhS (ORCPT
+        with ESMTP id S1727846AbgIXNhM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 24 Sep 2020 09:37:18 -0400
+        Thu, 24 Sep 2020 09:37:12 -0400
 Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa.ger.corp.intel.com)
         by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
         (Exim 4.93)
         (envelope-from <luca@coelho.fi>)
-        id 1kLRDu-002IGj-Vw; Thu, 24 Sep 2020 16:23:47 +0300
+        id 1kLRDv-002IGj-Qm; Thu, 24 Sep 2020 16:23:48 +0300
 From:   Luca Coelho <luca@coelho.fi>
 To:     kvalo@codeaurora.org
 Cc:     linux-wireless@vger.kernel.org
-Date:   Thu, 24 Sep 2020 16:23:38 +0300
-Message-Id: <iwlwifi.20200924162105.6add94c21abe.I1aa1c5e3c2c12ce82ed30429e0ad92225ece7ce3@changeid>
+Date:   Thu, 24 Sep 2020 16:23:39 +0300
+Message-Id: <iwlwifi.20200924162106.fb29c33d2cb9.I942bfe645e9d47cd1fcf6435506061f8b2cea21a@changeid>
 X-Mailer: git-send-email 2.28.0
 In-Reply-To: <20200924132339.337310-1-luca@coelho.fi>
 References: <20200924132339.337310-1-luca@coelho.fi>
@@ -31,235 +31,294 @@ X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on farmhouse.coelho.fi
 X-Spam-Level: 
 X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
         TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.4
-Subject: [PATCH 6/7] iwlwifi: add new cards for MA family
+Subject: [PATCH 7/7] iwlwifi: acpi: support ppag table command v2
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Ihab Zhaika <ihab.zhaika@intel.com>
+From: Gil Adam <gil.adam@intel.com>
 
-add few PCI ID'S for ma with gf and mr in AX family.
+Version 2 of the PPAG table command supports more sub-bands than
+previous. Change relevant command structs and the reading of the ACPI
+tables.
 
-Signed-off-by: Ihab Zhaika <ihab.zhaika@intel.com>
+Signed-off-by: Gil Adam <gil.adam@intel.com>
 Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 ---
- .../net/wireless/intel/iwlwifi/cfg/22000.c    | 51 ++++++++++++++++---
- .../net/wireless/intel/iwlwifi/iwl-config.h   |  9 ++++
- drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 15 ++++++
- 3 files changed, 67 insertions(+), 8 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/fw/acpi.h  |   8 +-
+ .../net/wireless/intel/iwlwifi/fw/api/power.h |  27 +++--
+ .../net/wireless/intel/iwlwifi/fw/runtime.h   |   3 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c   | 103 +++++++++++++-----
+ 4 files changed, 100 insertions(+), 41 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/22000.c b/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
-index df7346eed14f..d2fb64fd7990 100644
---- a/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
-+++ b/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
-@@ -90,6 +90,8 @@
- #define IWL_SNJ_A_GF4_A_FW_PRE		"iwlwifi-SoSnj-a0-gf4-a0-"
- #define IWL_SNJ_A_GF_A_FW_PRE		"iwlwifi-SoSnj-a0-gf-a0-"
- #define IWL_SNJ_A_HR_B_FW_PRE		"iwlwifi-SoSnj-a0-hr-b0-"
-+#define IWL_MA_A_GF_A_FW_PRE		"iwlwifi-ma-a0-gf-a0-"
-+#define IWL_MA_A_MR_A_FW_PRE		"iwlwifi-ma-a0-mr-a0-"
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/acpi.h b/drivers/net/wireless/intel/iwlwifi/fw/acpi.h
+index bff0260012ec..c01b79736d7c 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/acpi.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/acpi.h
+@@ -107,10 +107,10 @@
+ #define ACPI_WGDS_NUM_BANDS		2
+ #define ACPI_WGDS_TABLE_SIZE		3
  
- #define IWL_QU_B_HR_B_MODULE_FIRMWARE(api) \
- 	IWL_QU_B_HR_B_FW_PRE __stringify(api) ".ucode"
-@@ -121,6 +123,10 @@
- 	IWL_SNJ_A_GF_A_FW_PRE __stringify(api) ".ucode"
- #define IWL_SNJ_A_HR_B_MODULE_FIRMWARE(api) \
- 	IWL_SNJ_A_HR_B_FW_PRE __stringify(api) ".ucode"
-+#define IWL_MA_A_GF_A_FW_MODULE_FIRMWARE(api) \
-+	IWL_MA_A_GF_A_FW_PRE __stringify(api) ".ucode"
-+#define IWL_MA_A_MR_A_FW_MODULE_FIRMWARE(api) \
-+	IWL_MA_A_MR_A_FW_PRE __stringify(api) ".ucode"
+-#define ACPI_PPAG_NUM_CHAINS		2
+-#define ACPI_PPAG_NUM_SUB_BANDS		5
+-#define ACPI_PPAG_WIFI_DATA_SIZE	((ACPI_PPAG_NUM_CHAINS * \
+-					ACPI_PPAG_NUM_SUB_BANDS) + 3)
++#define ACPI_PPAG_WIFI_DATA_SIZE	((IWL_NUM_CHAIN_LIMITS * \
++					IWL_NUM_SUB_BANDS) + 3)
++#define ACPI_PPAG_WIFI_DATA_SIZE_V2	((IWL_NUM_CHAIN_LIMITS * \
++					IWL_NUM_SUB_BANDS_V2) + 3)
  
- static const struct iwl_base_params iwl_22000_base_params = {
- 	.eeprom_size = OTP_LOW_IMAGE_SIZE_32K,
-@@ -338,9 +344,23 @@ const struct iwl_cfg_trans_params iwl_ax200_trans_cfg = {
- 	.bisr_workaround = 1,
+ /* PPAG gain value bounds in 1/8 dBm */
+ #define ACPI_PPAG_MIN_LB -16
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/power.h b/drivers/net/wireless/intel/iwlwifi/fw/api/power.h
+index 6e1b9b21904e..45503e78d705 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/api/power.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/api/power.h
+@@ -8,7 +8,7 @@
+  * Copyright(c) 2012 - 2014 Intel Corporation. All rights reserved.
+  * Copyright(c) 2013 - 2014 Intel Mobile Communications GmbH
+  * Copyright(c) 2015 - 2017 Intel Deutschland GmbH
+- * Copyright (C) 2018 - 2019 Intel Corporation
++ * Copyright (C) 2018 - 2020 Intel Corporation
+  *
+  * This program is free software; you can redistribute it and/or modify
+  * it under the terms of version 2 of the GNU General Public License as
+@@ -31,7 +31,7 @@
+  * Copyright(c) 2012 - 2014 Intel Corporation. All rights reserved.
+  * Copyright(c) 2013 - 2014 Intel Mobile Communications GmbH
+  * Copyright(c) 2015 - 2017 Intel Deutschland GmbH
+- * Copyright (C) 2018 - 2019 Intel Corporation
++ * Copyright (C) 2018 - 2020 Intel Corporation
+  * All rights reserved.
+  *
+  * Redistribution and use in source and binary forms, with or without
+@@ -331,6 +331,7 @@ enum iwl_dev_tx_power_cmd_mode {
+ 
+ #define IWL_NUM_CHAIN_LIMITS	2
+ #define IWL_NUM_SUB_BANDS	5
++#define IWL_NUM_SUB_BANDS_V2	11
+ 
+ /**
+  * struct iwl_dev_tx_power_cmd - TX power reduction command
+@@ -450,16 +451,26 @@ struct iwl_geo_tx_power_profiles_resp {
+ } __packed; /* GEO_TX_POWER_LIMIT_RESP */
+ 
+ /**
+- * struct iwl_ppag_table_cmd - struct for PER_PLATFORM_ANT_GAIN_CMD cmd.
++ * union iwl_ppag_table_cmd - union for all versions of PPAG command
++ * @v1: version 1, table revision = 0
++ * @v2: version 2, table revision = 1
++ *
+  * @enabled: 1 if PPAG is enabled, 0 otherwise
+  * @gain: table of antenna gain values per chain and sub-band
+  * @reserved: reserved
+  */
+-struct iwl_ppag_table_cmd {
+-	__le32 enabled;
+-	s8 gain[IWL_NUM_CHAIN_LIMITS][IWL_NUM_SUB_BANDS];
+-	s8 reserved[2];
+-} __packed; /* PER_PLATFORM_ANT_GAIN_CMD */
++union iwl_ppag_table_cmd {
++	struct {
++		__le32 enabled;
++		s8 gain[IWL_NUM_CHAIN_LIMITS][IWL_NUM_SUB_BANDS];
++		s8 reserved[2];
++	} v1;
++	struct {
++		__le32 enabled;
++		s8 gain[IWL_NUM_CHAIN_LIMITS][IWL_NUM_SUB_BANDS_V2];
++		s8 reserved[2];
++	} v2;
++} __packed;
+ 
+ /**
+  * struct iwl_beacon_filter_cmd
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/runtime.h b/drivers/net/wireless/intel/iwlwifi/fw/runtime.h
+index b5e5e32b6152..cddcb4d9a264 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/runtime.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/runtime.h
+@@ -207,7 +207,8 @@ struct iwl_fw_runtime {
+ 	u8 sar_chain_b_profile;
+ 	struct iwl_geo_profile geo_profiles[ACPI_NUM_GEO_PROFILES];
+ 	u32 geo_rev;
+-	struct iwl_ppag_table_cmd ppag_table;
++	union iwl_ppag_table_cmd ppag_table;
++	u32 ppag_ver;
+ #endif
  };
  
-+const struct iwl_cfg_trans_params iwl_ma_trans_cfg = {
-+	.device_family = IWL_DEVICE_FAMILY_AX210,
-+	.base_params = &iwl_ax210_base_params,
-+	.mq_rx_supported = true,
-+	.use_tfh = true,
-+	.rf_id = true,
-+	.gen2 = true,
-+	.integrated = true,
-+	.umac_prph_offset = 0x300000
-+};
-+
-+const char iwl_ax101_name[] = "Intel(R) Wi-Fi 6 AX101";
- const char iwl_ax200_name[] = "Intel(R) Wi-Fi 6 AX200 160MHz";
- const char iwl_ax201_name[] = "Intel(R) Wi-Fi 6 AX201 160MHz";
--const char iwl_ax101_name[] = "Intel(R) Wi-Fi 6 AX101";
-+const char iwl_ax211_name[] = "Intel(R) Wi-Fi 6 AX211 160MHz";
-+const char iwl_ax411_name[] = "Intel(R) Wi-Fi 6 AX411 160MHz";
-+const char iwl_ma_name[] = "Intel(R) Wi-Fi 6";
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+index 4467359aaa20..ba7d57b40c79 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+@@ -841,27 +841,53 @@ static int iwl_mvm_sar_geo_init(struct iwl_mvm *mvm)
+ static int iwl_mvm_get_ppag_table(struct iwl_mvm *mvm)
+ {
+ 	union acpi_object *wifi_pkg, *data, *enabled;
+-	int i, j, ret, tbl_rev;
++	union iwl_ppag_table_cmd ppag_table;
++	int i, j, ret, tbl_rev, num_sub_bands;
+ 	int idx = 2;
++	s8 *gain;
  
- const char iwl_ax200_killer_1650w_name[] =
- 	"Killer(R) Wi-Fi 6 AX1650w 160MHz Wireless Network Adapter (200D2W)";
-@@ -546,7 +566,7 @@ const struct iwl_cfg iwlax210_2ax_cfg_so_hr_a0 = {
- };
+-	mvm->fwrt.ppag_table.enabled = cpu_to_le32(0);
++	/*
++	 * The 'enabled' field is the same in v1 and v2 so we can just
++	 * use v1 to access it.
++	 */
++	mvm->fwrt.ppag_table.v1.enabled = cpu_to_le32(0);
+ 	data = iwl_acpi_get_object(mvm->dev, ACPI_PPAG_METHOD);
+ 	if (IS_ERR(data))
+ 		return PTR_ERR(data);
  
- const struct iwl_cfg iwlax211_2ax_cfg_so_gf_a0 = {
--	.name = "Intel(R) Wi-Fi 6 AX211 160MHz",
-+	.name = iwl_ax211_name,
- 	.fw_name_pre = IWL_SO_A_GF_A_FW_PRE,
- 	.uhb_supported = true,
- 	IWL_DEVICE_AX210,
-@@ -554,7 +574,7 @@ const struct iwl_cfg iwlax211_2ax_cfg_so_gf_a0 = {
- };
- 
- const struct iwl_cfg iwlax211_2ax_cfg_so_gf_a0_long = {
--	.name = "Intel(R) Wi-Fi 6 AX211 160MHz",
-+	.name = iwl_ax211_name,
- 	.fw_name_pre = IWL_SO_A_GF_A_FW_PRE,
- 	.uhb_supported = true,
- 	IWL_DEVICE_AX210,
-@@ -572,7 +592,7 @@ const struct iwl_cfg iwlax210_2ax_cfg_ty_gf_a0 = {
- };
- 
- const struct iwl_cfg iwlax411_2ax_cfg_so_gf4_a0 = {
--	.name = "Intel(R) Wi-Fi 6 AX411 160MHz",
-+	.name = iwl_ax411_name,
- 	.fw_name_pre = IWL_SO_A_GF4_A_FW_PRE,
- 	.uhb_supported = true,
- 	IWL_DEVICE_AX210,
-@@ -580,7 +600,7 @@ const struct iwl_cfg iwlax411_2ax_cfg_so_gf4_a0 = {
- };
- 
- const struct iwl_cfg iwlax411_2ax_cfg_so_gf4_a0_long = {
--	.name = "Intel(R) Wi-Fi 6 AX411 160MHz",
-+	.name = iwl_ax411_name,
- 	.fw_name_pre = IWL_SO_A_GF4_A_FW_PRE,
- 	.uhb_supported = true,
- 	IWL_DEVICE_AX210,
-@@ -590,7 +610,7 @@ const struct iwl_cfg iwlax411_2ax_cfg_so_gf4_a0_long = {
- };
- 
- const struct iwl_cfg iwlax411_2ax_cfg_sosnj_gf4_a0 = {
--	.name = "Intel(R) Wi-Fi 6 AX411 160MHz",
-+	.name = iwl_ax411_name,
- 	.fw_name_pre = IWL_SNJ_A_GF4_A_FW_PRE,
- 	.uhb_supported = true,
- 	IWL_DEVICE_AX210,
-@@ -598,7 +618,7 @@ const struct iwl_cfg iwlax411_2ax_cfg_sosnj_gf4_a0 = {
- };
- 
- const struct iwl_cfg iwlax211_cfg_snj_gf_a0 = {
--	.name = "Intel(R) Wi-Fi 6 AX211 160MHz",
-+	.name = iwl_ax211_name,
- 	.fw_name_pre = IWL_SNJ_A_GF_A_FW_PRE,
- 	.uhb_supported = true,
- 	IWL_DEVICE_AX210,
-@@ -613,6 +633,20 @@ const struct iwl_cfg iwlax201_cfg_snj_hr_b0 = {
- 	.num_rbds = IWL_NUM_RBDS_AX210_HE,
- };
- 
-+const struct iwl_cfg iwl_cfg_ma_a0_gf_a0 = {
-+	.fw_name_pre = IWL_MA_A_GF_A_FW_PRE,
-+	.uhb_supported = true,
-+	IWL_DEVICE_AX210,
-+	.num_rbds = IWL_NUM_RBDS_AX210_HE,
-+};
-+
-+const struct iwl_cfg iwl_cfg_ma_a0_mr_a0 = {
-+	.fw_name_pre = IWL_MA_A_MR_A_FW_PRE,
-+	.uhb_supported = true,
-+	IWL_DEVICE_AX210,
-+	.num_rbds = IWL_NUM_RBDS_AX210_HE,
-+};
-+
- MODULE_FIRMWARE(IWL_QU_B_HR_B_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
- MODULE_FIRMWARE(IWL_QNJ_B_HR_B_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
- MODULE_FIRMWARE(IWL_QU_C_HR_B_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
-@@ -628,4 +662,5 @@ MODULE_FIRMWARE(IWL_TY_A_GF_A_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
- MODULE_FIRMWARE(IWL_SNJ_A_GF4_A_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
- MODULE_FIRMWARE(IWL_SNJ_A_GF_A_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
- MODULE_FIRMWARE(IWL_SNJ_A_HR_B_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
++	/* try to read ppag table revision 1 */
+ 	wifi_pkg = iwl_acpi_get_wifi_pkg(mvm->dev, data,
+-					 ACPI_PPAG_WIFI_DATA_SIZE, &tbl_rev);
 -
-+MODULE_FIRMWARE(IWL_MA_A_GF_A_FW_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
-+MODULE_FIRMWARE(IWL_MA_A_MR_A_FW_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-config.h b/drivers/net/wireless/intel/iwlwifi/iwl-config.h
-index 64e4ba4d96fc..d03f51bf7dfd 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-config.h
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-config.h
-@@ -472,6 +472,7 @@ struct iwl_cfg {
- #define IWL_CFG_MAC_TYPE_QU		0x33
- #define IWL_CFG_MAC_TYPE_QUZ		0x35
- #define IWL_CFG_MAC_TYPE_QNJ		0x36
-+#define IWL_CFG_MAC_TYPE_MA		0x44
+-	if (IS_ERR(wifi_pkg)) {
+-		ret = PTR_ERR(wifi_pkg);
+-		goto out_free;
++					 ACPI_PPAG_WIFI_DATA_SIZE_V2, &tbl_rev);
++	if (!IS_ERR(wifi_pkg)) {
++		if (tbl_rev != 1) {
++			ret = -EINVAL;
++			goto out_free;
++		}
++		num_sub_bands = IWL_NUM_SUB_BANDS_V2;
++		gain = mvm->fwrt.ppag_table.v2.gain[0];
++		mvm->fwrt.ppag_ver = 2;
++		IWL_DEBUG_RADIO(mvm, "Reading PPAG table v2 (tbl_rev=1)\n");
++		goto read_table;
+ 	}
  
- #define IWL_CFG_RF_TYPE_TH		0x105
- #define IWL_CFG_RF_TYPE_TH1		0x108
-@@ -479,6 +480,8 @@ struct iwl_cfg {
- #define IWL_CFG_RF_TYPE_JF1		0x108
- #define IWL_CFG_RF_TYPE_HR2		0x10A
- #define IWL_CFG_RF_TYPE_HR1		0x10C
-+#define IWL_CFG_RF_TYPE_GF		0x10D
-+#define IWL_CFG_RF_TYPE_MR		0x110
+-	if (tbl_rev != 0) {
+-		ret = -EINVAL;
+-		goto out_free;
++	/* try to read ppag table revision 0 */
++	wifi_pkg = iwl_acpi_get_wifi_pkg(mvm->dev, data,
++					 ACPI_PPAG_WIFI_DATA_SIZE, &tbl_rev);
++	if (!IS_ERR(wifi_pkg)) {
++		if (tbl_rev != 0) {
++			ret = -EINVAL;
++			goto out_free;
++		}
++		num_sub_bands = IWL_NUM_SUB_BANDS;
++		gain = mvm->fwrt.ppag_table.v1.gain[0];
++		mvm->fwrt.ppag_ver = 1;
++		IWL_DEBUG_RADIO(mvm, "Reading PPAG table v1 (tbl_rev=0)\n");
++		goto read_table;
+ 	}
++	ret = PTR_ERR(wifi_pkg);
++	goto out_free;
  
- #define IWL_CFG_RF_ID_TH		0x1
- #define IWL_CFG_RF_ID_TH1		0x1
-@@ -522,6 +525,7 @@ extern const struct iwl_cfg_trans_params iwl_qu_trans_cfg;
- extern const struct iwl_cfg_trans_params iwl_qu_medium_latency_trans_cfg;
- extern const struct iwl_cfg_trans_params iwl_qu_long_latency_trans_cfg;
- extern const struct iwl_cfg_trans_params iwl_ax200_trans_cfg;
-+extern const struct iwl_cfg_trans_params iwl_ma_trans_cfg;
- extern const char iwl9162_name[];
- extern const char iwl9260_name[];
- extern const char iwl9260_1_name[];
-@@ -545,6 +549,9 @@ extern const char iwl_ax200_killer_1650w_name[];
- extern const char iwl_ax200_killer_1650x_name[];
- extern const char iwl_ax201_killer_1650s_name[];
- extern const char iwl_ax201_killer_1650i_name[];
-+extern const char iwl_ma_name[];
-+extern const char iwl_ax211_name[];
-+extern const char iwl_ax411_name[];
- #if IS_ENABLED(CONFIG_IWLDVM)
- extern const struct iwl_cfg iwl5300_agn_cfg;
- extern const struct iwl_cfg iwl5100_agn_cfg;
-@@ -643,6 +650,8 @@ extern const struct iwl_cfg iwlax411_2ax_cfg_so_gf4_a0_long;
- extern const struct iwl_cfg iwlax411_2ax_cfg_sosnj_gf4_a0;
- extern const struct iwl_cfg iwlax211_cfg_snj_gf_a0;
- extern const struct iwl_cfg iwlax201_cfg_snj_hr_b0;
-+extern const struct iwl_cfg iwl_cfg_ma_a0_gf_a0;
-+extern const struct iwl_cfg iwl_cfg_ma_a0_mr_a0;
- #endif /* CONFIG_IWLMVM */
++read_table:
+ 	enabled = &wifi_pkg->package.elements[1];
+ 	if (enabled->type != ACPI_TYPE_INTEGER ||
+ 	    (enabled->integer.value != 0 && enabled->integer.value != 1)) {
+@@ -869,8 +895,8 @@ static int iwl_mvm_get_ppag_table(struct iwl_mvm *mvm)
+ 		goto out_free;
+ 	}
  
- #endif /* __IWL_CONFIG_H__ */
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-index d84afe0013a2..cb70ebf06074 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-@@ -563,6 +563,9 @@ static const struct pci_device_id iwl_hw_card_ids[] = {
- 	{IWL_PCI_DEVICE(0x7AF0, 0x0510, iwlax211_2ax_cfg_so_gf_a0)},
- 	{IWL_PCI_DEVICE(0x7AF0, 0x0A10, iwlax211_2ax_cfg_so_gf_a0)},
+-	mvm->fwrt.ppag_table.enabled = cpu_to_le32(enabled->integer.value);
+-	if (!mvm->fwrt.ppag_table.enabled) {
++	ppag_table.v1.enabled = cpu_to_le32(enabled->integer.value);
++	if (!ppag_table.v1.enabled) {
+ 		ret = 0;
+ 		goto out_free;
+ 	}
+@@ -880,8 +906,8 @@ static int iwl_mvm_get_ppag_table(struct iwl_mvm *mvm)
+ 	 * first sub-band (j=0) corresponds to Low-Band (2.4GHz), and the
+ 	 * following sub-bands to High-Band (5GHz).
+ 	 */
+-	for (i = 0; i < ACPI_PPAG_NUM_CHAINS; i++) {
+-		for (j = 0; j < ACPI_PPAG_NUM_SUB_BANDS; j++) {
++	for (i = 0; i < IWL_NUM_CHAIN_LIMITS; i++) {
++		for (j = 0; j < num_sub_bands; j++) {
+ 			union acpi_object *ent;
  
-+/* Ma devices */
-+	{IWL_PCI_DEVICE(0x2729, PCI_ANY_ID, iwl_ma_trans_cfg)},
-+
- #endif /* CONFIG_IWLMVM */
+ 			ent = &wifi_pkg->package.elements[idx++];
+@@ -890,11 +916,11 @@ static int iwl_mvm_get_ppag_table(struct iwl_mvm *mvm)
+ 			    (j == 0 && ent->integer.value < ACPI_PPAG_MIN_LB) ||
+ 			    (j != 0 && ent->integer.value > ACPI_PPAG_MAX_HB) ||
+ 			    (j != 0 && ent->integer.value < ACPI_PPAG_MIN_HB)) {
+-				mvm->fwrt.ppag_table.enabled = cpu_to_le32(0);
++				ppag_table.v1.enabled = cpu_to_le32(0);
+ 				ret = -EINVAL;
+ 				goto out_free;
+ 			}
+-			mvm->fwrt.ppag_table.gain[i][j] = ent->integer.value;
++			gain[i * num_sub_bands + j] = ent->integer.value;
+ 		}
+ 	}
+ 	ret = 0;
+@@ -905,34 +931,55 @@ static int iwl_mvm_get_ppag_table(struct iwl_mvm *mvm)
  
- 	{0}
-@@ -970,6 +973,18 @@ static const struct iwl_dev_info iwl_dev_info_table[] = {
- 		      IWL_CFG_ANY, IWL_CFG_ANY,
- 		      iwl_quz_a0_hr1_b0, iwl_ax101_name),
+ int iwl_mvm_ppag_send_cmd(struct iwl_mvm *mvm)
+ {
+-	int i, j, ret;
++	u8 cmd_ver;
++	int i, j, ret, num_sub_bands, cmd_size;
++	union iwl_ppag_table_cmd ppag_table;
++	s8 *gain;
  
-+/* Ma */
-+	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
-+		      IWL_CFG_MAC_TYPE_MA, IWL_CFG_ANY,
-+		      IWL_CFG_RF_TYPE_GF, IWL_CFG_ANY,
-+		      IWL_CFG_ANY, IWL_CFG_ANY,
-+		      iwl_cfg_ma_a0_gf_a0, iwl_ax211_name),
-+	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
-+		      IWL_CFG_MAC_TYPE_MA, IWL_CFG_ANY,
-+		      IWL_CFG_RF_TYPE_MR, IWL_CFG_ANY,
-+		      IWL_CFG_ANY, IWL_CFG_ANY,
-+		      iwl_cfg_ma_a0_mr_a0, iwl_ma_name),
-+
- #endif /* CONFIG_IWLMVM */
- };
+ 	if (!fw_has_capa(&mvm->fw->ucode_capa, IWL_UCODE_TLV_CAPA_SET_PPAG)) {
+ 		IWL_DEBUG_RADIO(mvm,
+ 				"PPAG capability not supported by FW, command not sent.\n");
+ 		return 0;
+ 	}
+-
+-	if (!mvm->fwrt.ppag_table.enabled) {
+-		IWL_DEBUG_RADIO(mvm,
+-				"PPAG not enabled, command not sent.\n");
++	if (!mvm->fwrt.ppag_table.v1.enabled) {
++		IWL_DEBUG_RADIO(mvm, "PPAG not enabled, command not sent.\n");
+ 		return 0;
+ 	}
  
+-	IWL_DEBUG_RADIO(mvm, "Sending PER_PLATFORM_ANT_GAIN_CMD\n");
++	cmd_ver = iwl_fw_lookup_cmd_ver(mvm->fw, PHY_OPS_GROUP,
++					PER_PLATFORM_ANT_GAIN_CMD);
++	if (cmd_ver == 1) {
++		num_sub_bands = IWL_NUM_SUB_BANDS;
++		gain = mvm->fwrt.ppag_table.v1.gain[0];
++		cmd_size = sizeof(ppag_table.v1);
++		if (mvm->fwrt.ppag_ver == 2) {
++			IWL_DEBUG_RADIO(mvm,
++					"PPAG table is v2 but FW supports v1, sending truncated table\n");
++		}
++	} else if (cmd_ver == 2) {
++		num_sub_bands = IWL_NUM_SUB_BANDS_V2;
++		gain = mvm->fwrt.ppag_table.v2.gain[0];
++		cmd_size = sizeof(ppag_table.v2);
++		if (mvm->fwrt.ppag_ver == 1) {
++			IWL_DEBUG_RADIO(mvm,
++					"PPAG table is v1 but FW supports v2, sending padded table\n");
++		}
++	} else {
++		IWL_DEBUG_RADIO(mvm, "Unsupported PPAG command version\n");
++		return 0;
++	}
+ 
+-	for (i = 0; i < ACPI_PPAG_NUM_CHAINS; i++) {
+-		for (j = 0; j < ACPI_PPAG_NUM_SUB_BANDS; j++) {
++	for (i = 0; i < IWL_NUM_CHAIN_LIMITS; i++) {
++		for (j = 0; j < num_sub_bands; j++) {
+ 			IWL_DEBUG_RADIO(mvm,
+ 					"PPAG table: chain[%d] band[%d]: gain = %d\n",
+-					i, j, mvm->fwrt.ppag_table.gain[i][j]);
++					i, j, gain[i * num_sub_bands + j]);
+ 		}
+ 	}
+-
++	IWL_DEBUG_RADIO(mvm, "Sending PER_PLATFORM_ANT_GAIN_CMD\n");
+ 	ret = iwl_mvm_send_cmd_pdu(mvm, WIDE_ID(PHY_OPS_GROUP,
+ 						PER_PLATFORM_ANT_GAIN_CMD),
+-				   0, sizeof(mvm->fwrt.ppag_table),
+-				   &mvm->fwrt.ppag_table);
++				   0, cmd_size, &ppag_table);
+ 	if (ret < 0)
+ 		IWL_ERR(mvm, "failed to send PER_PLATFORM_ANT_GAIN_CMD (%d)\n",
+ 			ret);
 -- 
 2.28.0
 
