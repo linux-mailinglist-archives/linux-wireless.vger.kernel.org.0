@@ -2,85 +2,98 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E7838276934
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Sep 2020 08:48:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3305D276CE6
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Sep 2020 11:15:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726908AbgIXGsT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 24 Sep 2020 02:48:19 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:44936 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726119AbgIXGsS (ORCPT
+        id S1727347AbgIXJPD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 24 Sep 2020 05:15:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37452 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727330AbgIXJPB (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 24 Sep 2020 02:48:18 -0400
-Received: from 61-220-137-37.hinet-ip.hinet.net ([61.220.137.37] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <kai.heng.feng@canonical.com>)
-        id 1kLL31-00029j-H1; Thu, 24 Sep 2020 06:48:08 +0000
-From:   Kai-Heng Feng <kai.heng.feng@canonical.com>
-To:     johannes.berg@intel.com, emmanuel.grumbach@intel.com,
-        luciano.coelho@intel.com
-Cc:     Kai-Heng Feng <kai.heng.feng@canonical.com>,
-        Intel Linux Wireless <linuxwifi@intel.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Ben Greear <greearb@candelatech.com>,
-        Tova Mussai <tova.mussai@intel.com>,
-        Haim Dreyfuss <haim.dreyfuss@intel.com>,
-        Andrei Otcheretianski <andrei.otcheretianski@intel.com>,
-        Shaul Triebitz <shaul.triebitz@intel.com>,
-        Naftali Goldstein <naftali.goldstein@intel.com>,
-        linux-wireless@vger.kernel.org (open list:INTEL WIRELESS WIFI LINK
-        (iwlwifi)), netdev@vger.kernel.org (open list:NETWORKING DRIVERS),
-        linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH] iwlwifi: mvm: Increase session protection duration for association
-Date:   Thu, 24 Sep 2020 14:48:00 +0800
-Message-Id: <20200924064802.3441-1-kai.heng.feng@canonical.com>
-X-Mailer: git-send-email 2.17.1
+        Thu, 24 Sep 2020 05:15:01 -0400
+Received: from mail-ed1-x544.google.com (mail-ed1-x544.google.com [IPv6:2a00:1450:4864:20::544])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CA14C0613DE
+        for <linux-wireless@vger.kernel.org>; Thu, 24 Sep 2020 02:15:01 -0700 (PDT)
+Received: by mail-ed1-x544.google.com with SMTP id j2so2611694eds.9
+        for <linux-wireless@vger.kernel.org>; Thu, 24 Sep 2020 02:15:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=zdxUWMWXTEs/zs0LJh1bxLoOHpDg1k5nkLimqXptzik=;
+        b=blIPJEbomAKiMgTEwz666YDx51JxK5KUKkCacV2k5DGrYF1dgoN3TPlbCce3UdPyqn
+         l+sjX0//ZpWoRSpXvagCpGylKqMTkNMo/2HAZJY28dwC1rti3ofKw4Z1RDbjcvxMDnbn
+         DBnAhALu6UdIa4wCDzo7dIv9qp2U03O4u7rDCQdwmjFPbrVpv5bepecSdGtwKnTJB9rH
+         nH/oGusFJ6JM43Xna+7eDdLYcEoJL8AsTmou4kcpDb2UtDY0KPfodc/NGQ4TUEcOm3hs
+         6cMsgEJtG/d3gouoUvTe4+Wy9RSjcJnO5Ygg3P7zVsSedlaT/hDy9teH4tkT8r3LGB8W
+         6cvg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=zdxUWMWXTEs/zs0LJh1bxLoOHpDg1k5nkLimqXptzik=;
+        b=bLfBqPx+bKchc/SHJsgsJxbL4jigrgw+IlalCSikkuslGPr8h6or3RZeEVFnvbTy/d
+         nfF9Y07qwK1U2fYzupAtVYC0LytZvtj/zrdn+ZSI12/wfRUtDarHWZKbmM8QdUfoGXAI
+         VKSGFjxT9uuU6fGElinMVSaCN1Xg9RC7/6Kz6E1vTfykvLVg1zIIn6TDYP1eGyKelAn/
+         27w4eU5BHJ0Q9FE/zC+C69LbmhhZKMHLQZVjlLd/PQv/+LQ/iEcJr5e+a2FEO3VEhUx/
+         ljBAih3XfHudQNy87qqYg389sWF+Hi01wUFBOzUBn+nZuDZ8yTa/6252OzUjimw4yVoF
+         slyQ==
+X-Gm-Message-State: AOAM531wMN81sksOarCptTohEe9/jIh09wygnX7zUjuudVyvKWcY4ITL
+        JNwH15eUx/7h2/YDYBB5BOR9g4WG2YFPhB5QZfE=
+X-Google-Smtp-Source: ABdhPJyTPH8PP/2mieNLbOyLqms9pUviMKvSeTWD9wb8h+Pr7H1ZfKMbyjpiQTFtDXkxINcaJ73NV9FfmSogeqXajbU=
+X-Received: by 2002:a05:6402:c15:: with SMTP id co21mr1946edb.268.1600938899597;
+ Thu, 24 Sep 2020 02:14:59 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 2002:a54:2811:0:0:0:0:0 with HTTP; Thu, 24 Sep 2020 02:14:58
+ -0700 (PDT)
+Reply-To: ayishagddafio@mail.ru
+From:   AISHA GADDAFI <floradarpin.d@gmail.com>
+Date:   Thu, 24 Sep 2020 02:14:58 -0700
+Message-ID: <CAPX4zWxG6--oZzPaoMmta9n5fWHajuiA-wFBP=cbGe-CKGcWaw@mail.gmail.com>
+Subject: Lieber Freund (Assalamu Alaikum),?
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Sometimes Intel AX201 fails to associate with AP:
-[  839.290042] wlp0s20f3: authenticate with xx:xx:xx:xx:xx:xx
-[  839.291737] wlp0s20f3: send auth to xx:xx:xx:xx:xx:xx (try 1/3)
-[  839.350010] wlp0s20f3: send auth to xx:xx:xx:xx:xx:xx (try 2/3)
-[  839.360826] wlp0s20f3: authenticated
-[  839.363205] wlp0s20f3: associate with xx:xx:xx:xx:xx:xx (try 1/3)
-[  839.370342] wlp0s20f3: RX AssocResp from xx:xx:xx:xx:xx:xx (capab=0x431 status=0 aid=12)
-[  839.378925] wlp0s20f3: associated
-[  839.431788] wlp0s20f3: deauthenticated from xx:xx:xx:xx:xx:xx (Reason: 2=PREV_AUTH_NOT_VALID)
+--=20
+Lieber Freund (Assalamu Alaikum),
 
-It fails because EAPOL hasn't finished. Increase the  session protection
-duration to 1200TU can eliminate the problem.
+Ich bin vor einer privaten Suche auf Ihren E-Mail-Kontakt gesto=C3=9Fen
+Ihre Hilfe. Mein Name ist Aisha Al-Qaddafi, eine alleinerziehende
+Mutter und eine Witwe
+mit drei Kindern. Ich bin die einzige leibliche Tochter des Sp=C3=A4tlibysc=
+hen
+Pr=C3=A4sident (verstorbener Oberst Muammar Gaddafi).
 
-Bugzilla: https://bugzilla.kernel.org/show_bug.cgi?id=209237
-Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
----
- drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Ich habe Investmentfonds im Wert von siebenundzwanzig Millionen
+f=C3=BCnfhunderttausend
+United State Dollar ($ 27.500.000.00) und ich brauche eine
+vertrauensw=C3=BCrdige Investition
+Manager / Partner aufgrund meines aktuellen Fl=C3=BCchtlingsstatus bin ich =
+jedoch
+M=C3=B6glicherweise interessieren Sie sich f=C3=BCr die Unterst=C3=BCtzung =
+von
+Investitionsprojekten in Ihrem Land
+Von dort aus k=C3=B6nnen wir in naher Zukunft Gesch=C3=A4ftsbeziehungen auf=
+bauen.
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-index 9374c85c5caf..54acd9a68955 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-@@ -3297,13 +3297,13 @@ static void iwl_mvm_mac_mgd_prepare_tx(struct ieee80211_hw *hw,
- 	 * session for a much longer time since the firmware will internally
- 	 * create two events: a 300TU one with a very high priority that
- 	 * won't be fragmented which should be enough for 99% of the cases,
--	 * and another one (which we configure here to be 900TU long) which
-+	 * and another one (which we configure here to be 1200TU long) which
- 	 * will have a slightly lower priority, but more importantly, can be
- 	 * fragmented so that it'll allow other activities to run.
- 	 */
- 	if (fw_has_capa(&mvm->fw->ucode_capa,
- 			IWL_UCODE_TLV_CAPA_SESSION_PROT_CMD))
--		iwl_mvm_schedule_session_protection(mvm, vif, 900,
-+		iwl_mvm_schedule_session_protection(mvm, vif, 1200,
- 						    min_duration, false);
- 	else
- 		iwl_mvm_protect_session(mvm, vif, duration,
--- 
-2.17.1
+Ich bin bereit, mit Ihnen =C3=BCber das Verh=C3=A4ltnis zwischen Investitio=
+n und
+Unternehmensgewinn zu verhandeln
+Basis f=C3=BCr die zuk=C3=BCnftige Investition Gewinne zu erzielen.
 
+Wenn Sie bereit sind, dieses Projekt in meinem Namen zu bearbeiten,
+antworten Sie bitte dringend
+Damit ich Ihnen mehr Informationen =C3=BCber die Investmentfonds geben kann=
+.
+
+Ihre dringende Antwort wird gesch=C3=A4tzt. schreibe mir an diese email adr=
+esse (
+ayishagddafio@mail.ru ) zur weiteren Diskussion.
+
+Freundliche Gr=C3=BC=C3=9Fe
+Frau Aisha Al-Qaddafi
