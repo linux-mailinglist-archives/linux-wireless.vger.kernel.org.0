@@ -2,26 +2,26 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D477027938D
-	for <lists+linux-wireless@lfdr.de>; Fri, 25 Sep 2020 23:31:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3337927938E
+	for <lists+linux-wireless@lfdr.de>; Fri, 25 Sep 2020 23:31:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728827AbgIYVbD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        id S1728904AbgIYVbD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
         Fri, 25 Sep 2020 17:31:03 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:52302 "EHLO
+Received: from paleale.coelho.fi ([176.9.41.70]:52308 "EHLO
         farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1727183AbgIYVbC (ORCPT
+        with ESMTP id S1728662AbgIYVbD (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 25 Sep 2020 17:31:02 -0400
+        Fri, 25 Sep 2020 17:31:03 -0400
 Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa.ger.corp.intel.com)
         by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
         (Exim 4.93)
         (envelope-from <luca@coelho.fi>)
-        id 1kLvIx-002J1P-2Q; Sat, 26 Sep 2020 00:30:59 +0300
+        id 1kLvIy-002J1P-48; Sat, 26 Sep 2020 00:31:00 +0300
 From:   Luca Coelho <luca@coelho.fi>
 To:     kvalo@codeaurora.org
 Cc:     linux-wireless@vger.kernel.org
-Date:   Sat, 26 Sep 2020 00:30:41 +0300
-Message-Id: <iwlwifi.20200926002540.3d47f4e8ab98.I0fdd2ce23166c18284d2a7a624c40f35ea81cbc2@changeid>
+Date:   Sat, 26 Sep 2020 00:30:42 +0300
+Message-Id: <iwlwifi.20200926002540.83b41765961f.Icd12bfb2a736ccf4cbe080973c746fb70a3c4a50@changeid>
 X-Mailer: git-send-email 2.28.0
 In-Reply-To: <20200925213053.454459-1-luca@coelho.fi>
 References: <20200925213053.454459-1-luca@coelho.fi>
@@ -31,228 +31,218 @@ X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on farmhouse.coelho.fi
 X-Spam-Level: 
 X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
         TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.4
-Subject: [PATCH 03/15] iwlwifi: regulatory: regulatory capabilities api change
+Subject: [PATCH 04/15] iwl-trans: move dev_cmd_offs, page_offs to a common trans header
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Gil Adam <gil.adam@intel.com>
+From: Mordechay Goodstein <mordechay.goodstein@intel.com>
 
-Support v2 of regulatory capability flags parsed from the device
-NVM. New API support is determined by FW lookup of the MCC update
-command resposnse version, where version 6 supports the new API.
+dev_cmd_offs, page_offs field is not directly related to the PCIe
+transport, so move the structures it uses to the common iwl-trans.h header.
 
-Signed-off-by: Gil Adam <gil.adam@intel.com>
+Signed-off-by: Mordechay Goodstein <mordechay.goodstein@intel.com>
 Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 ---
- .../wireless/intel/iwlwifi/iwl-nvm-parse.c    | 98 +++++++++++++++++--
- .../wireless/intel/iwlwifi/iwl-nvm-parse.h    |  2 +-
- .../net/wireless/intel/iwlwifi/mvm/mac80211.c |  6 +-
- 3 files changed, 95 insertions(+), 11 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/iwl-trans.h    |  4 ++++
+ .../net/wireless/intel/iwlwifi/pcie/internal.h    |  4 +---
+ drivers/net/wireless/intel/iwlwifi/pcie/trans.c   |  6 +++---
+ drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c |  9 +++------
+ drivers/net/wireless/intel/iwlwifi/pcie/tx.c      | 15 +++++++--------
+ 5 files changed, 18 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
-index ee410417761d..6d19de3058d2 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
-@@ -254,6 +254,65 @@ enum iwl_reg_capa_flags {
- 	REG_CAPA_11AX_DISABLED		= BIT(10),
- };
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-trans.h b/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
+index 209ec3949679..868e137c51f0 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
+@@ -914,6 +914,8 @@ struct iwl_txq {
+  * struct iwl_trans_txqs - transport tx queues data
+  *
+  * @bc_table_dword: true if the BC table expects DWORD (as opposed to bytes)
++ * @page_offs: offset from skb->cb to mac header page pointer
++ * @dev_cmd_offs: offset from skb->cb to iwl_device_tx_cmd pointer
+  * @queue_used - bit mask of used queues
+  * @queue_stopped - bit mask of stopped queues
+  */
+@@ -924,6 +926,8 @@ struct iwl_trans_txqs {
+ 	struct dma_pool *bc_pool;
+ 	size_t bc_tbl_size;
+ 	bool bc_table_dword;
++	u8 page_offs;
++	u8 dev_cmd_offs;
  
-+/**
-+ * enum iwl_reg_capa_flags_v2 - global flags applied for the whole regulatory
-+ * domain (version 2).
-+ * @REG_CAPA_V2_STRADDLE_DISABLED: Straddle channels (144, 142, 138) are
-+ *	disabled.
-+ * @REG_CAPA_V2_BF_CCD_LOW_BAND: Beam-forming or Cyclic Delay Diversity in the
-+ *	2.4Ghz band is allowed.
-+ * @REG_CAPA_V2_BF_CCD_HIGH_BAND: Beam-forming or Cyclic Delay Diversity in the
-+ *	5Ghz band is allowed.
-+ * @REG_CAPA_V2_160MHZ_ALLOWED: 11ac channel with a width of 160Mhz is allowed
-+ *	for this regulatory domain (valid only in 5Ghz).
-+ * @REG_CAPA_V2_80MHZ_ALLOWED: 11ac channel with a width of 80Mhz is allowed
-+ *	for this regulatory domain (valid only in 5Ghz).
-+ * @REG_CAPA_V2_MCS_8_ALLOWED: 11ac with MCS 8 is allowed.
-+ * @REG_CAPA_V2_MCS_9_ALLOWED: 11ac with MCS 9 is allowed.
-+ * @REG_CAPA_V2_WEATHER_DISABLED: Weather radar channels (120, 124, 128, 118,
-+ *	126, 122) are disabled.
-+ * @REG_CAPA_V2_40MHZ_ALLOWED: 11n channel with a width of 40Mhz is allowed
-+ *	for this regulatory domain (uvalid only in 5Ghz).
-+ * @REG_CAPA_V2_11AX_DISABLED: 11ax is forbidden for this regulatory domain.
-+ */
-+enum iwl_reg_capa_flags_v2 {
-+	REG_CAPA_V2_STRADDLE_DISABLED	= BIT(0),
-+	REG_CAPA_V2_BF_CCD_LOW_BAND	= BIT(1),
-+	REG_CAPA_V2_BF_CCD_HIGH_BAND	= BIT(2),
-+	REG_CAPA_V2_160MHZ_ALLOWED	= BIT(3),
-+	REG_CAPA_V2_80MHZ_ALLOWED	= BIT(4),
-+	REG_CAPA_V2_MCS_8_ALLOWED	= BIT(5),
-+	REG_CAPA_V2_MCS_9_ALLOWED	= BIT(6),
-+	REG_CAPA_V2_WEATHER_DISABLED	= BIT(7),
-+	REG_CAPA_V2_40MHZ_ALLOWED	= BIT(8),
-+	REG_CAPA_V2_11AX_DISABLED	= BIT(13),
-+};
-+
-+/*
-+* API v2 for reg_capa_flags is relevant from version 6 and onwards of the
-+* MCC update command response.
-+*/
-+#define REG_CAPA_V2_RESP_VER	6
-+
-+/**
-+ * struct iwl_reg_capa - struct for global regulatory capabilities, Used for
-+ * handling the different APIs of reg_capa_flags.
-+ *
-+ * @allow_40mhz: 11n channel with a width of 40Mhz is allowed
-+ *	for this regulatory domain (valid only in 5Ghz).
-+ * @allow_80mhz: 11ac channel with a width of 80Mhz is allowed
-+ *	for this regulatory domain (valid only in 5Ghz).
-+ * @allow_160mhz: 11ac channel with a width of 160Mhz is allowed
-+ *	for this regulatory domain (valid only in 5Ghz).
-+ * @disable_11ax: 11ax is forbidden for this regulatory domain.
-+ */
-+struct iwl_reg_capa {
-+	u16 allow_40mhz;
-+	u16 allow_80mhz;
-+	u16 allow_160mhz;
-+	u16 disable_11ax;
-+};
-+
- static inline void iwl_nvm_print_channel_flags(struct device *dev, u32 level,
- 					       int chan, u32 flags)
- {
-@@ -1064,7 +1123,7 @@ IWL_EXPORT_SYMBOL(iwl_parse_nvm_data);
+ 	struct {
+ 		u8 fifo;
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/internal.h b/drivers/net/wireless/intel/iwlwifi/pcie/internal.h
+index d58f8ade3d42..22b4731ef511 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/internal.h
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/internal.h
+@@ -457,8 +457,6 @@ struct iwl_trans_pcie {
+ 	wait_queue_head_t wait_command_queue;
+ 	wait_queue_head_t sx_waitq;
  
- static u32 iwl_nvm_get_regdom_bw_flags(const u16 *nvm_chan,
- 				       int ch_idx, u16 nvm_flags,
--				       u16 cap_flags,
-+				       struct iwl_reg_capa reg_capa,
- 				       const struct iwl_cfg *cfg)
- {
- 	u32 flags = NL80211_RRF_NO_HT40;
-@@ -1104,29 +1163,46 @@ static u32 iwl_nvm_get_regdom_bw_flags(const u16 *nvm_chan,
- 		flags |= NL80211_RRF_GO_CONCURRENT;
- 
- 	/*
--	 * cap_flags is per regulatory domain so apply it for every channel
-+	 * reg_capa is per regulatory domain so apply it for every channel
- 	 */
- 	if (ch_idx >= NUM_2GHZ_CHANNELS) {
--		if (cap_flags & REG_CAPA_40MHZ_FORBIDDEN)
-+		if (!reg_capa.allow_40mhz)
- 			flags |= NL80211_RRF_NO_HT40;
- 
--		if (!(cap_flags & REG_CAPA_80MHZ_ALLOWED))
-+		if (!reg_capa.allow_80mhz)
- 			flags |= NL80211_RRF_NO_80MHZ;
- 
--		if (!(cap_flags & REG_CAPA_160MHZ_ALLOWED))
-+		if (!reg_capa.allow_160mhz)
- 			flags |= NL80211_RRF_NO_160MHZ;
- 	}
+-	u8 page_offs, dev_cmd_offs;
 -
--	if (cap_flags & REG_CAPA_11AX_DISABLED)
-+	if (reg_capa.disable_11ax)
- 		flags |= NL80211_RRF_NO_HE;
+ 	u8 def_rx_queue;
+ 	u8 n_no_reclaim_cmds;
+ 	u8 no_reclaim_cmds[MAX_NO_RECLAIM_CMDS];
+@@ -962,7 +960,7 @@ int iwl_pcie_alloc_dma_ptr(struct iwl_trans *trans,
+ 			   struct iwl_dma_ptr *ptr, size_t size);
+ void iwl_pcie_free_dma_ptr(struct iwl_trans *trans, struct iwl_dma_ptr *ptr);
+ void iwl_pcie_apply_destination(struct iwl_trans *trans);
+-void iwl_pcie_free_tso_page(struct iwl_trans_pcie *trans_pcie,
++void iwl_pcie_free_tso_page(struct iwl_trans *trans,
+ 			    struct sk_buff *skb);
+ #ifdef CONFIG_INET
+ struct iwl_tso_hdr_page *get_page_hdr(struct iwl_trans *trans, size_t len,
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
+index 29c5e71b5495..52e61df6206e 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
+@@ -1911,6 +1911,9 @@ static void iwl_trans_pcie_configure(struct iwl_trans *trans,
+ 	trans->txqs.cmd.q_id = trans_cfg->cmd_queue;
+ 	trans->txqs.cmd.fifo = trans_cfg->cmd_fifo;
+ 	trans->txqs.cmd.wdg_timeout = trans_cfg->cmd_q_wdg_timeout;
++	trans->txqs.page_offs = trans_cfg->cb_data_offs;
++	trans->txqs.dev_cmd_offs = trans_cfg->cb_data_offs + sizeof(void *);
++
+ 	if (WARN_ON(trans_cfg->n_no_reclaim_cmds > MAX_NO_RECLAIM_CMDS))
+ 		trans_pcie->n_no_reclaim_cmds = 0;
+ 	else
+@@ -1932,9 +1935,6 @@ static void iwl_trans_pcie_configure(struct iwl_trans *trans,
+ 	trans_pcie->scd_set_active = trans_cfg->scd_set_active;
+ 	trans_pcie->sw_csum_tx = trans_cfg->sw_csum_tx;
  
- 	return flags;
+-	trans_pcie->page_offs = trans_cfg->cb_data_offs;
+-	trans_pcie->dev_cmd_offs = trans_cfg->cb_data_offs + sizeof(void *);
+-
+ 	trans->command_groups = trans_cfg->command_groups;
+ 	trans->command_groups_size = trans_cfg->command_groups_size;
+ 
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c b/drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c
+index 051bf37b4536..5ed7852289d4 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c
+@@ -253,11 +253,10 @@ static int iwl_pcie_gen2_set_tb(struct iwl_trans *trans,
+ static struct page *get_workaround_page(struct iwl_trans *trans,
+ 					struct sk_buff *skb)
+ {
+-	struct iwl_trans_pcie *trans_pcie = IWL_TRANS_GET_PCIE_TRANS(trans);
+ 	struct page **page_ptr;
+ 	struct page *ret;
+ 
+-	page_ptr = (void *)((u8 *)skb->cb + trans_pcie->page_offs);
++	page_ptr = (void *)((u8 *)skb->cb + trans->txqs.page_offs);
+ 
+ 	ret = alloc_page(GFP_ATOMIC);
+ 	if (!ret)
+@@ -711,7 +710,6 @@ struct iwl_tfh_tfd *iwl_pcie_gen2_build_tfd(struct iwl_trans *trans,
+ int iwl_trans_pcie_gen2_tx(struct iwl_trans *trans, struct sk_buff *skb,
+ 			   struct iwl_device_tx_cmd *dev_cmd, int txq_id)
+ {
+-	struct iwl_trans_pcie *trans_pcie = IWL_TRANS_GET_PCIE_TRANS(trans);
+ 	struct iwl_cmd_meta *out_meta;
+ 	struct iwl_txq *txq = trans->txqs.txq[txq_id];
+ 	u16 cmd_len;
+@@ -741,7 +739,7 @@ int iwl_trans_pcie_gen2_tx(struct iwl_trans *trans, struct sk_buff *skb,
+ 			struct iwl_device_tx_cmd **dev_cmd_ptr;
+ 
+ 			dev_cmd_ptr = (void *)((u8 *)skb->cb +
+-					       trans_pcie->dev_cmd_offs);
++					       trans->txqs.dev_cmd_offs);
+ 
+ 			*dev_cmd_ptr = dev_cmd;
+ 			__skb_queue_tail(&txq->overflow_q, skb);
+@@ -1171,7 +1169,6 @@ int iwl_trans_pcie_gen2_send_hcmd(struct iwl_trans *trans,
+  */
+ void iwl_pcie_gen2_txq_unmap(struct iwl_trans *trans, int txq_id)
+ {
+-	struct iwl_trans_pcie *trans_pcie = IWL_TRANS_GET_PCIE_TRANS(trans);
+ 	struct iwl_txq *txq = trans->txqs.txq[txq_id];
+ 
+ 	spin_lock_bh(&txq->lock);
+@@ -1186,7 +1183,7 @@ void iwl_pcie_gen2_txq_unmap(struct iwl_trans *trans, int txq_id)
+ 			if (WARN_ON_ONCE(!skb))
+ 				continue;
+ 
+-			iwl_pcie_free_tso_page(trans_pcie, skb);
++			iwl_pcie_free_tso_page(trans, skb);
+ 		}
+ 		iwl_pcie_gen2_free_tfd(trans, txq);
+ 		txq->read_ptr = iwl_queue_inc_wrap(trans, txq->read_ptr);
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/tx.c b/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
+index b9308700a2a1..e15939849a23 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
+@@ -614,13 +614,13 @@ int iwl_pcie_txq_init(struct iwl_trans *trans, struct iwl_txq *txq,
+ 	return 0;
  }
  
-+static struct iwl_reg_capa iwl_get_reg_capa(u16 flags, u8 resp_ver)
-+{
-+	struct iwl_reg_capa reg_capa;
-+
-+	if (resp_ver >= REG_CAPA_V2_RESP_VER) {
-+		reg_capa.allow_40mhz = flags & REG_CAPA_V2_40MHZ_ALLOWED;
-+		reg_capa.allow_80mhz = flags & REG_CAPA_V2_80MHZ_ALLOWED;
-+		reg_capa.allow_160mhz = flags & REG_CAPA_V2_160MHZ_ALLOWED;
-+		reg_capa.disable_11ax = flags & REG_CAPA_V2_11AX_DISABLED;
-+	} else {
-+		reg_capa.allow_40mhz = !(flags & REG_CAPA_40MHZ_FORBIDDEN);
-+		reg_capa.allow_80mhz = flags & REG_CAPA_80MHZ_ALLOWED;
-+		reg_capa.allow_160mhz = flags & REG_CAPA_160MHZ_ALLOWED;
-+		reg_capa.disable_11ax = flags & REG_CAPA_11AX_DISABLED;
-+	}
-+	return reg_capa;
-+}
-+
- struct ieee80211_regdomain *
- iwl_parse_nvm_mcc_info(struct device *dev, const struct iwl_cfg *cfg,
- 		       int num_of_ch, __le32 *channels, u16 fw_mcc,
--		       u16 geo_info, u16 cap)
-+		       u16 geo_info, u16 cap, u8 resp_ver)
+-void iwl_pcie_free_tso_page(struct iwl_trans_pcie *trans_pcie,
++void iwl_pcie_free_tso_page(struct iwl_trans *trans,
+ 			    struct sk_buff *skb)
  {
- 	int ch_idx;
- 	u16 ch_flags;
-@@ -1139,6 +1215,7 @@ iwl_parse_nvm_mcc_info(struct device *dev, const struct iwl_cfg *cfg,
- 	int valid_rules = 0;
- 	bool new_rule;
- 	int max_num_ch;
-+	struct iwl_reg_capa reg_capa;
+ 	struct page **page_ptr;
+ 	struct page *next;
  
- 	if (cfg->uhb_supported) {
- 		max_num_ch = IWL_NVM_NUM_CHANNELS_UHB;
-@@ -1169,6 +1246,9 @@ iwl_parse_nvm_mcc_info(struct device *dev, const struct iwl_cfg *cfg,
- 	regd->alpha2[0] = fw_mcc >> 8;
- 	regd->alpha2[1] = fw_mcc & 0xff;
+-	page_ptr = (void *)((u8 *)skb->cb + trans_pcie->page_offs);
++	page_ptr = (void *)((u8 *)skb->cb + trans->txqs.page_offs);
+ 	next = *page_ptr;
+ 	*page_ptr = NULL;
  
-+	/* parse regulatory capability flags */
-+	reg_capa = iwl_get_reg_capa(cap, resp_ver);
-+
- 	for (ch_idx = 0; ch_idx < num_of_ch; ch_idx++) {
- 		ch_flags = (u16)__le32_to_cpup(channels + ch_idx);
- 		band = iwl_nl80211_band_from_channel_idx(ch_idx);
-@@ -1183,7 +1263,7 @@ iwl_parse_nvm_mcc_info(struct device *dev, const struct iwl_cfg *cfg,
+@@ -668,7 +668,7 @@ static void iwl_pcie_txq_unmap(struct iwl_trans *trans, int txq_id)
+ 			if (WARN_ON_ONCE(!skb))
+ 				continue;
+ 
+-			iwl_pcie_free_tso_page(trans_pcie, skb);
++			iwl_pcie_free_tso_page(trans, skb);
  		}
+ 		iwl_pcie_txq_free_tfd(trans, txq);
+ 		txq->read_ptr = iwl_queue_inc_wrap(trans, txq->read_ptr);
+@@ -1107,7 +1107,6 @@ static inline void iwl_pcie_txq_progress(struct iwl_txq *txq)
+ void iwl_trans_pcie_reclaim(struct iwl_trans *trans, int txq_id, int ssn,
+ 			    struct sk_buff_head *skbs)
+ {
+-	struct iwl_trans_pcie *trans_pcie = IWL_TRANS_GET_PCIE_TRANS(trans);
+ 	struct iwl_txq *txq = trans->txqs.txq[txq_id];
+ 	int tfd_num = iwl_pcie_get_cmd_index(txq, ssn);
+ 	int read_ptr = iwl_pcie_get_cmd_index(txq, txq->read_ptr);
+@@ -1156,7 +1155,7 @@ void iwl_trans_pcie_reclaim(struct iwl_trans *trans, int txq_id, int ssn,
+ 		if (WARN_ON_ONCE(!skb))
+ 			continue;
  
- 		reg_rule_flags = iwl_nvm_get_regdom_bw_flags(nvm_chan, ch_idx,
--							     ch_flags, cap,
-+							     ch_flags, reg_capa,
- 							     cfg);
+-		iwl_pcie_free_tso_page(trans_pcie, skb);
++		iwl_pcie_free_tso_page(trans, skb);
  
- 		/* we can't continue the same rule */
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.h b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.h
-index fb0b385d10fd..50bd7fdcf852 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.h
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.h
-@@ -104,7 +104,7 @@ iwl_parse_nvm_data(struct iwl_trans *trans, const struct iwl_cfg *cfg,
- struct ieee80211_regdomain *
- iwl_parse_nvm_mcc_info(struct device *dev, const struct iwl_cfg *cfg,
- 		       int num_of_ch, __le32 *channels, u16 fw_mcc,
--		       u16 geo_info, u16 cap);
-+		       u16 geo_info, u16 cap, u8 resp_ver);
+ 		__skb_queue_tail(skbs, skb);
  
- /**
-  * struct iwl_nvm_section - describes an NVM section in memory.
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-index 12f217f2d7b3..6e8af84f386a 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-@@ -234,6 +234,7 @@ struct ieee80211_regdomain *iwl_mvm_get_regdomain(struct wiphy *wiphy,
- 	struct ieee80211_hw *hw = wiphy_to_ieee80211_hw(wiphy);
- 	struct iwl_mvm *mvm = IWL_MAC80211_GET_MVM(hw);
- 	struct iwl_mcc_update_resp *resp;
-+	u8 resp_ver;
+@@ -1200,7 +1199,7 @@ void iwl_trans_pcie_reclaim(struct iwl_trans *trans, int txq_id, int ssn,
+ 			struct iwl_device_tx_cmd *dev_cmd_ptr;
  
- 	IWL_DEBUG_LAR(mvm, "Getting regdomain data for %s from FW\n", alpha2);
+ 			dev_cmd_ptr = *(void **)((u8 *)skb->cb +
+-						 trans_pcie->dev_cmd_offs);
++						 trans->txqs.dev_cmd_offs);
  
-@@ -252,13 +253,16 @@ struct ieee80211_regdomain *iwl_mvm_get_regdomain(struct wiphy *wiphy,
- 		*changed = (status == MCC_RESP_NEW_CHAN_PROFILE ||
- 			    status == MCC_RESP_ILLEGAL);
- 	}
-+	resp_ver = iwl_fw_lookup_notif_ver(mvm->fw, IWL_ALWAYS_LONG_GROUP,
-+					   MCC_UPDATE_CMD, 0);
-+	IWL_DEBUG_LAR(mvm, "MCC update response version: %d\n", resp_ver);
+ 			/*
+ 			 * Note that we can very well be overflowing again.
+@@ -2058,7 +2057,7 @@ struct iwl_tso_hdr_page *get_page_hdr(struct iwl_trans *trans, size_t len,
+ 	struct iwl_tso_hdr_page *p = this_cpu_ptr(trans_pcie->tso_hdr_page);
+ 	struct page **page_ptr;
  
- 	regd = iwl_parse_nvm_mcc_info(mvm->trans->dev, mvm->cfg,
- 				      __le32_to_cpu(resp->n_channels),
- 				      resp->channels,
- 				      __le16_to_cpu(resp->mcc),
- 				      __le16_to_cpu(resp->geo_info),
--				      __le16_to_cpu(resp->cap));
-+				      __le16_to_cpu(resp->cap), resp_ver);
- 	/* Store the return source id */
- 	src_id = resp->source_id;
- 	kfree(resp);
+-	page_ptr = (void *)((u8 *)skb->cb + trans_pcie->page_offs);
++	page_ptr = (void *)((u8 *)skb->cb + trans->txqs.page_offs);
+ 
+ 	if (WARN_ON(*page_ptr))
+ 		return NULL;
+@@ -2369,7 +2368,7 @@ int iwl_trans_pcie_tx(struct iwl_trans *trans, struct sk_buff *skb,
+ 			struct iwl_device_tx_cmd **dev_cmd_ptr;
+ 
+ 			dev_cmd_ptr = (void *)((u8 *)skb->cb +
+-					       trans_pcie->dev_cmd_offs);
++					       trans->txqs.dev_cmd_offs);
+ 
+ 			*dev_cmd_ptr = dev_cmd;
+ 			__skb_queue_tail(&txq->overflow_q, skb);
 -- 
 2.28.0
 
