@@ -2,90 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9FDD1278A52
-	for <lists+linux-wireless@lfdr.de>; Fri, 25 Sep 2020 16:07:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 57FCD278B1B
+	for <lists+linux-wireless@lfdr.de>; Fri, 25 Sep 2020 16:43:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728874AbgIYOHU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 25 Sep 2020 10:07:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50262 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728806AbgIYOHU (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 25 Sep 2020 10:07:20 -0400
-Received: from mail-wm1-x342.google.com (mail-wm1-x342.google.com [IPv6:2a00:1450:4864:20::342])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 017DBC0613D3
-        for <linux-wireless@vger.kernel.org>; Fri, 25 Sep 2020 07:07:19 -0700 (PDT)
-Received: by mail-wm1-x342.google.com with SMTP id v12so3444629wmh.3
-        for <linux-wireless@vger.kernel.org>; Fri, 25 Sep 2020 07:07:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=SDYuxl6P5MmFVHNoRCXiUclDzzcJxN4Z9cpUKPgKZDY=;
-        b=eoK7LZc7ZwFs8utNOoQ3MKksf8wRFOw7b67PcrbGxFOuJK7AXMFp4LRp8x9/Zn0Yo4
-         mZoCH6GKicFkpLQxeqzWmKo8ODGzErlWlYq5PMqlGbUfA9CVy16vXbcGMCrZGrE0xc4s
-         QbXrbc08BIz/6+gJkQrbAgoUmzy30w1r8mbaS+65cdrAPHE7XgnQgKoVs5tJnkTA6eiS
-         rmmWUIt3+ohZ9rTlCLZw8HpwdlcQQvnost6a01cSN26s7h3ec1Lb0IbSJFYSXoJnslhu
-         7RW+xwrrQAYgf25ImDt5GN39MOqBp2JMnllMfP4tv6GNUjBV/jgKxfVwbjEOmpFcEmQU
-         T3aA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=SDYuxl6P5MmFVHNoRCXiUclDzzcJxN4Z9cpUKPgKZDY=;
-        b=Q38rYoMcED8Ingun8Zt8DhxH5C7LVwg9etXKu+wyokSRWzVP8vH0JEGqZRX/ElgkqX
-         PsEop1ahFgFNQa4Ct2jeA1U/H2R9wGGhb1wD/XpFoj5uqP9PvyYoRC9z1inwFE3JeNDA
-         FmcJzGpgC5CHCldVO0KNkFGYwv5q/gfPhJjhmsy6jiIG2dVtlkjyGV60m8i9ylS+soPz
-         r66jO9ooqBP73qu23eEmXV1u95g7nyF8z0mok4kLQFwGUZlyMyW2mmWkyGv7CZTqIwKs
-         9BuHeowsa/e67JPP8GViVMxjD62JZhdSCbVSIF8R8qyrkuh5OU1ZHJvkaL6hFKKGfIOH
-         cxXQ==
-X-Gm-Message-State: AOAM533Pufo9S0pBpEaCczoQefmFoZLK3M9i3k5r+ZjFEoWwuRpSjeqy
-        4198aaD0QGSMUrm+HTPHTowqitit65fM20er8Zc=
-X-Google-Smtp-Source: ABdhPJwj+emcQlTpFm1+LJSgcM3ee5IVjvWKbhW7O5AP1x1Hk6d474n/qM6acwyn9Jfm5wCra+M/rkm7CAvmPQ5pqPI=
-X-Received: by 2002:a1c:2e17:: with SMTP id u23mr3562128wmu.73.1601042838517;
- Fri, 25 Sep 2020 07:07:18 -0700 (PDT)
+        id S1729041AbgIYOnS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 25 Sep 2020 10:43:18 -0400
+Received: from z5.mailgun.us ([104.130.96.5]:40668 "EHLO z5.mailgun.us"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728148AbgIYOnR (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 25 Sep 2020 10:43:17 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1601044997; h=Date: Message-Id: Cc: To: Subject: From:
+ Content-Transfer-Encoding: MIME-Version: Content-Type: Sender;
+ bh=ISR6+Y5t1rmd7F2tL+mdzWI0qmu/3ZZOcbPmtJ79P2I=; b=eEcQ7RheB8yA///8mTBiykYXRn1+BlztQntjlZgJ/vsE4GEVUbXx0OmJNq7jH+kBoRIUUu5i
+ wr7iaIq1VNswt2L0+H+ibZKID1woJ2qwW6TqdXE1/PMbMsksG5SquCu78b8OtoahxklLeTcM
+ fRIhjjBPeoKYHaRYLz9BykAzNTw=
+X-Mailgun-Sending-Ip: 104.130.96.5
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n02.prod.us-east-1.postgun.com with SMTP id
+ 5f6e0202ebb17452ba8c30f4 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 25 Sep 2020 14:43:14
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 8E1D1C433C8; Fri, 25 Sep 2020 14:43:13 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        MISSING_DATE,MISSING_MID,SPF_FAIL autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 9EC11C433CA;
+        Fri, 25 Sep 2020 14:43:12 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 9EC11C433CA
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Received: by 2002:adf:f990:0:0:0:0:0 with HTTP; Fri, 25 Sep 2020 07:07:18
- -0700 (PDT)
-Reply-To: mrs.esthernicolas@yahoo.com
-From:   "Mrs. Esther Nicolas" <elizabethjohnson184@gmail.com>
-Date:   Fri, 25 Sep 2020 07:07:18 -0700
-Message-ID: <CAFDOM0Zp_zDgocA-zHFOYVUeHOSLWzwssV8Vervyc4wC7Oz5DQ@mail.gmail.com>
-Subject: 
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: 7bit
+From:   Kalle Valo <kvalo@codeaurora.org>
+Subject: pull-request: wireless-drivers-2020-09-25
+To:     netdev@vger.kernel.org
+Cc:     linux-wireless@vger.kernel.org
+Message-Id: <20200925144313.8E1D1C433C8@smtp.codeaurora.org>
+Date:   Fri, 25 Sep 2020 14:43:13 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-TmVqZHJhxb7FocOtIHYgS3Jpc3R1LA0KUyBuw6FsZcW+aXRvdSDDumN0b3UgYSBsaWRza29zdMOt
-IGpzZW0gYnlsIHDFmWludWNlbiB2w6FtIG5hcHNhdCBodW1hbml0w6FybsOtDQpwxa9kdS4gSm1l
-bnVqaSBzZSBwYW7DrSBFc3RoZXIgTmljb2xhcy4gTmFyb2RpbCBqc2VtIHNlIHYgQXJpem9uxJsg
-dmUNClBob2VuaXh1LiBKc2VtIMW+ZW5hdMO9IHMgcGFuZW0gSmFjb2IgTmljb2xhcywgxZllZGl0
-ZWxlbSBKYWNvbiBJbmR1c3RyeQ0KVG9nby4gQnlsaSBqc21lIG1hbsW+ZWzDqSB0xZlpY2V0IMWh
-ZXN0IGxldCBiZXogZMOtdMSbdGUuIFplbcWZZWwgcG8gb3BlcmFjaQ0Kc3JkZcSNbsOtY2ggdGVw
-ZW4uIEEgbmVkw6F2bm8gbWkgZG9rdG9yIMWZZWtsLCDFvmUgbmV2eWRyxb7DrW0gZGFsxaHDrWNo
-IMWhZXN0DQptxJtzw61jxa8ga3bFr2xpIG3DqW11IHByb2Jsw6ltdSBzIHJha292aW5vdSAocmFr
-b3ZpbmEgamF0ZXIgYSBjw6l2bsOtIG1vemtvdsOpDQpwxZnDrWhvZHkpLiBOZcW+IG3Fr2ogbWFu
-xb5lbCBsb25pIHplbcWZZWwsIGplIHR1IMSNw6FzdGthIGR2YSBtaWxpb255IG9zbSBzZXQNCnRp
-c8OtYyBkb2xhcsWvLCBrdGVyw6kgdWxvxb5pbCB2IGJhbmNlIHpkZSB2IFRvZ3UuIFYgc291xI1h
-c27DqSBkb2LEmyBqc291DQp0eXRvIHBlbsOtemUgc3TDoWxlIHYgYmFuY2UuIEtkecW+IGpzZW0g
-dsSbZMSbbCBvIHN2w6ltIHN0YXZ1LCByb3pob2RsIGpzZW0NCnNlIGRhcm92YXQgdGVudG8gZm9u
-ZCBqYWvDqW11a29saSBkb2Jyw6ltdSBicmF0cm92aSBuZWJvIHNlc3TFmWUgdiBvYmF2xJsNCnDF
-mWVkIEJvaGVtLCBrdGVyw70gdGVudG8gZm9uZCB2eXXFvmlqZSB6cMWvc29iZW0sIGt0ZXLDvW0g
-emRlIGJ1ZHUNCmluc3RydW92YXQuIENoY2kgbsSba29obywga2RvIHRlbnRvIGZvbmQgcG91xb5p
-amUgcG9kbGUgcMWZw6Fuw60gbcOpaG8NCnplc251bMOpaG8gTWFuxb5lbGEsIGFieSBwb21vaGwg
-bcOpbsSbIHByaXZpbGVnb3ZhbsO9bSBsaWRlbSwgc2lyb3TEjWluY8WvbSwNCnZkb3bDoW0gYSDF
-ocOtxZlpbCBCb8W+w60gc2xvdm8uIFJvemhvZGwganNlbSBzZSBwcm90bywgxb5lIG5lbcOhbSDF
-vsOhZG7DqSBkw610xJssDQprdGVyw6kgYnkgemTEm2RpbG8gdGVudG8gZm9uZC4gQSBuZWNoY2kg
-enDFr3NvYiwgamFrIGJ1ZG91IHR5dG8gcGVuw616ZQ0KcG91xb5pdHkgYmV6Ym/Fvm7DvW0genDF
-r3NvYmVtLiBQcm90byBwxZlpasOtbcOhbSB0b3RvIHJvemhvZG51dMOtIHDFmWVkYXQgdsOhbQ0K
-dGVudG8gZm9uZC4gTmVib2rDrW0gc2Ugc21ydGksIHByb3RvIHbDrW0sIGthbSBqZHUuIENoY2ks
-IGFieXN0ZSBuYSBtxJsNCnZlIHN2w71jaCBrYcW+ZG9kZW5uw61jaCBtb2RsaXRiw6FjaCB2xb5k
-eSBwYW1hdG92YWxpIGt2xa9saSBtw6kgbmFkY2jDoXplasOtY8OtDQpjaGlydXJnaWNrw6kgbMOp
-xI1ixJsgcmFrb3ZpbnkuIE9kZXBpxaF0ZSBjbyBuZWpkxZnDrXZlIGpha8Opa29saSB6cG/FvmTE
-m27DrSB2ZQ0KdmHFocOtIG9kcG92xJtkaSBtaSBkw6EgcHJvc3RvciBwcm8gesOtc2vDoW7DrSBq
-aW7DqSBvc29ieSBwcm8gc3Rlam7DvSDDusSNZWwgdg0KbmFkxJtqaSwgxb5lIG9kIHbDoXMgYnVk
-dSDEjcOtc3QgY28gbmVqZMWZw612ZS4gQsWvaCB2w6FtIMW+ZWhuZWosIGtkecW+DQpwb3Nsb3Vj
-aMOhdGUgaGxhcyB1dmHFvm92w6Fuw60sIHBhbsOtIEVzdGhlciBOaWNvbGFzLg0K
+Hi,
+
+here's a pull request to net tree, more info below. Please let me know if there
+are any problems.
+
+Kalle
+
+The following changes since commit 1264c1e0cfe55e2d6c35e869244093195529af37:
+
+  Revert "wlcore: Adding suppoprt for IGTK key in wlcore driver" (2020-09-07 11:39:32 +0300)
+
+are available in the git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers.git tags/wireless-drivers-2020-09-25
+
+for you to fetch changes up to efb1676306f664625c0c546dd10d18d33c75e3fc:
+
+  mt76: mt7615: reduce maximum VHT MPDU length to 7991 (2020-09-24 16:12:22 +0300)
+
+----------------------------------------------------------------
+wireless-drivers fixes for v5.9
+
+Second, and last, set of fixes for v5.9. Only one important regression
+fix for mt76.
+
+mt76
+
+* fix a regression in aggregation which appeared after mac80211 changes
+
+----------------------------------------------------------------
+Felix Fietkau (1):
+      mt76: mt7615: reduce maximum VHT MPDU length to 7991
+
+ drivers/net/wireless/mediatek/mt76/mt7615/init.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
