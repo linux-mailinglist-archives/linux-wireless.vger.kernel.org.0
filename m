@@ -2,92 +2,147 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 57FCD278B1B
-	for <lists+linux-wireless@lfdr.de>; Fri, 25 Sep 2020 16:43:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 97B1E278C6F
+	for <lists+linux-wireless@lfdr.de>; Fri, 25 Sep 2020 17:22:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729041AbgIYOnS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 25 Sep 2020 10:43:18 -0400
-Received: from z5.mailgun.us ([104.130.96.5]:40668 "EHLO z5.mailgun.us"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728148AbgIYOnR (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 25 Sep 2020 10:43:17 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1601044997; h=Date: Message-Id: Cc: To: Subject: From:
- Content-Transfer-Encoding: MIME-Version: Content-Type: Sender;
- bh=ISR6+Y5t1rmd7F2tL+mdzWI0qmu/3ZZOcbPmtJ79P2I=; b=eEcQ7RheB8yA///8mTBiykYXRn1+BlztQntjlZgJ/vsE4GEVUbXx0OmJNq7jH+kBoRIUUu5i
- wr7iaIq1VNswt2L0+H+ibZKID1woJ2qwW6TqdXE1/PMbMsksG5SquCu78b8OtoahxklLeTcM
- fRIhjjBPeoKYHaRYLz9BykAzNTw=
-X-Mailgun-Sending-Ip: 104.130.96.5
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n02.prod.us-east-1.postgun.com with SMTP id
- 5f6e0202ebb17452ba8c30f4 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 25 Sep 2020 14:43:14
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 8E1D1C433C8; Fri, 25 Sep 2020 14:43:13 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        MISSING_DATE,MISSING_MID,SPF_FAIL autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 9EC11C433CA;
-        Fri, 25 Sep 2020 14:43:12 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 9EC11C433CA
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        id S1729223AbgIYPWt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 25 Sep 2020 11:22:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33836 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728970AbgIYPWt (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 25 Sep 2020 11:22:49 -0400
+Received: from mail-ot1-x342.google.com (mail-ot1-x342.google.com [IPv6:2607:f8b0:4864:20::342])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3286AC0613D4
+        for <linux-wireless@vger.kernel.org>; Fri, 25 Sep 2020 08:22:49 -0700 (PDT)
+Received: by mail-ot1-x342.google.com with SMTP id 95so2591426ota.13
+        for <linux-wireless@vger.kernel.org>; Fri, 25 Sep 2020 08:22:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=C1cpg7VtXFYuTakWVVQJcANm/dckNApDuzwf2dV+RNU=;
+        b=S2g7DXnYkxEbHPEwOcXG4/BIe4JQHbTKke/+zUJYwRIDAcwYADKSupbg5I+suD/ffK
+         EDkqHHBdJDnR+86nCxCpfg1qSnq5p8v9A5etGGVxtgl/5b3bb/ESM3ZXZE0G7Yx6IxGe
+         wRYVLt88lNov8ynjby/K0Xl0pheGu6rVO7xdw6EmAdtcvDTna4rKeDKEn8f7H9oyeOPE
+         kawhtD+OpdMgc74vTOmEwfkffx6RrEPtgQoASbtC8IeXfuN5noAJl9Pw8VU36BlXLQ3P
+         0tCm1alGdgIdWKEFWySll1up2qptclXAiSHoNRRazb5vQqW9sbNNhX7xN+r2wsG7lmPf
+         gYIA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=C1cpg7VtXFYuTakWVVQJcANm/dckNApDuzwf2dV+RNU=;
+        b=oYjAHjEi9Nz0KBkp1Rt3S0YaEra+LXH5ExnCU/NKpzbPSIit2vb0/qniYycZcZtVd4
+         PeHV2PELZiFJzAqANSuX0IGPeB5zM7S6EqfZ3sreTvstdO6rYvkdB0ATN9OoddDxwia7
+         WPbTQmewXl19yiZPTl++anRdgU+lDYRsUtoGv1R380SRsEqgVTf8EInlwqnxweAgJD6a
+         8H3DFGL/Kzi5D6FC6QpdHz3xZlPF2Qx8NSB3moK0+1TDbkt5pYXRXpiVADL3RGOYblME
+         ut7gml+A4MDTV9JLyc0AZA/1u/1estyxnpW++GkCGRLaHLFuiiloUK+BTHSnuVAHpWuP
+         lsyA==
+X-Gm-Message-State: AOAM530HpoUAbMgLY2IOEgCswm7248JU/X9hgYouWhOtpovxhmO4mmOp
+        on5xcOM4y3nErDiJ73ZPHo+cbg==
+X-Google-Smtp-Source: ABdhPJzuoOf7LZ7BKNc09GOWZI6lnKFQnTCxvdwTb+gXzuaivl2XCBGEMp4Y1sqAgRVz3CSe359PDA==
+X-Received: by 2002:a9d:1:: with SMTP id 1mr662613ota.81.1601047368366;
+        Fri, 25 Sep 2020 08:22:48 -0700 (PDT)
+Received: from yoga (99-135-181-32.lightspeed.austtx.sbcglobal.net. [99.135.181.32])
+        by smtp.gmail.com with ESMTPSA id d1sm692908otb.80.2020.09.25.08.22.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 25 Sep 2020 08:22:47 -0700 (PDT)
+Date:   Fri, 25 Sep 2020 10:22:45 -0500
+From:   Bjorn Andersson <bjorn.andersson@linaro.org>
+To:     Amit Pundir <amit.pundir@linaro.org>
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        David S Miller <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Jeffrey Hugo <jeffrey.l.hugo@gmail.com>,
+        John Stultz <john.stultz@linaro.org>,
+        Sumit Semwal <sumit.semwal@linaro.org>,
+        Konrad Dybcio <konradybcio@gmail.com>,
+        ath10k <ath10k@lists.infradead.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        lkml <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] ath10k: qmi: Skip host capability request for Xiaomi
+ Poco F1
+Message-ID: <20200925152245.GD2510@yoga>
+References: <1600328501-8832-1-git-send-email-amit.pundir@linaro.org>
+ <20200917160513.GO1893@yoga>
+ <CAMi1Hd0S+hOLL0X8=_1KGG0G7u0bt66H6=yN=LuuX+FJb8+-4g@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From:   Kalle Valo <kvalo@codeaurora.org>
-Subject: pull-request: wireless-drivers-2020-09-25
-To:     netdev@vger.kernel.org
-Cc:     linux-wireless@vger.kernel.org
-Message-Id: <20200925144313.8E1D1C433C8@smtp.codeaurora.org>
-Date:   Fri, 25 Sep 2020 14:43:13 +0000 (UTC)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMi1Hd0S+hOLL0X8=_1KGG0G7u0bt66H6=yN=LuuX+FJb8+-4g@mail.gmail.com>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+On Mon 21 Sep 05:38 CDT 2020, Amit Pundir wrote:
 
-here's a pull request to net tree, more info below. Please let me know if there
-are any problems.
+> On Thu, 17 Sep 2020 at 21:35, Bjorn Andersson
+> <bjorn.andersson@linaro.org> wrote:
+> >
+> > On Thu 17 Sep 02:41 CDT 2020, Amit Pundir wrote:
+> >
+> > > Workaround to get WiFi working on Xiaomi Poco F1 (sdm845)
+> > > phone. We get a non-fatal QMI_ERR_MALFORMED_MSG_V01 error
+> > > message in ath10k_qmi_host_cap_send_sync(), but we can still
+> > > bring up WiFi services successfully on AOSP if we ignore it.
+> > >
+> > > We suspect either the host cap is not implemented or there
+> > > may be firmware specific issues. Firmware version is
+> > > QC_IMAGE_VERSION_STRING=WLAN.HL.2.0.c3-00257-QCAHLSWMTPLZ-1
+> > >
+> > > qcom,snoc-host-cap-8bit-quirk didn't help. If I use this
+> > > quirk, then the host capability request does get accepted,
+> > > but we run into fatal "msa info req rejected" error and
+> > > WiFi interface doesn't come up.
+> > >
+> >
+> > What happens if you skip sending the host-cap message? I had one
+> > firmware version for which I implemented a
+> > "qcom,snoc-host-cap-skip-quirk".
+> >
+> > But testing showed that the link was pretty unusable - pushing any real
+> > amount of data would cause it to silently stop working - and I realized
+> > that I could use the linux-firmware wlanmdsp.mbn instead, which works
+> > great on all my devices...
+> 
+> I skipped the ath10k_qmi_host_cap_send_sync block altogether
+> (if that is what you meant by qcom,snoc-host-cap-skip-quirk) and
+> so far did not run into any issues with youtube auto-playback loop
+> (3+ hours and counting). Does that count as a valid use case?
+> Otherwise let me know how could I reproduce a reasonable test
+> setup?
+> 
 
-Kalle
+Iirc I was able to get an IP but browsing the web would be enough
+traffic to stop (without any visible faults from the driver).
 
-The following changes since commit 1264c1e0cfe55e2d6c35e869244093195529af37:
+So your test sounds good I would like to see a host-cap-skip quirk,
+rather than a conditional on the machine compatible.
 
-  Revert "wlcore: Adding suppoprt for IGTK key in wlcore driver" (2020-09-07 11:39:32 +0300)
+> >
+> > > Attempts are being made to debug the failure reasons but no
+> > > luck so far. Hence this device specific workaround instead
+> > > of checking for QMI_ERR_MALFORMED_MSG_V01 error message.
+> > > Tried ath10k/WCN3990/hw1.0/wlanmdsp.mbn from the upstream
+> > > linux-firmware project but it didn't help and neither did
+> > > building board-2.bin file from stock bdwlan* files.
+> > >
+> >
+> > "Didn't work" as in the wlanmdsp.mbn from linux-firmware failed to load
+> > or some laer problem?
+> 
+> While using the wlanmdsp.mbn from linux-firmware, I run into
+> the following crash 4 times before tqftpserv service gets killed
+> eventually:
+> 
+> [   46.504502] qcom-q6v5-mss 4080000.remoteproc: fatal error received:
+> dog_virtual_root.c:89:User-PD grace timer expired for wlan_process
+> (ASID: 1)
 
-are available in the git repository at:
+It loaded, but doesn't seem to come up properly. We can try to debug
+this further, but I think getting the quirk in will be useful - as there
+seems to be a generation of firmware that has this particular behavior.
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers.git tags/wireless-drivers-2020-09-25
-
-for you to fetch changes up to efb1676306f664625c0c546dd10d18d33c75e3fc:
-
-  mt76: mt7615: reduce maximum VHT MPDU length to 7991 (2020-09-24 16:12:22 +0300)
-
-----------------------------------------------------------------
-wireless-drivers fixes for v5.9
-
-Second, and last, set of fixes for v5.9. Only one important regression
-fix for mt76.
-
-mt76
-
-* fix a regression in aggregation which appeared after mac80211 changes
-
-----------------------------------------------------------------
-Felix Fietkau (1):
-      mt76: mt7615: reduce maximum VHT MPDU length to 7991
-
- drivers/net/wireless/mediatek/mt76/mt7615/init.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Regards,
+Bjorn
