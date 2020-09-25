@@ -2,26 +2,26 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E56C27938C
-	for <lists+linux-wireless@lfdr.de>; Fri, 25 Sep 2020 23:31:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D477027938D
+	for <lists+linux-wireless@lfdr.de>; Fri, 25 Sep 2020 23:31:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727511AbgIYVbB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 25 Sep 2020 17:31:01 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:52296 "EHLO
+        id S1728827AbgIYVbD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 25 Sep 2020 17:31:03 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:52302 "EHLO
         farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726744AbgIYVbA (ORCPT
+        with ESMTP id S1727183AbgIYVbC (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 25 Sep 2020 17:31:00 -0400
+        Fri, 25 Sep 2020 17:31:02 -0400
 Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa.ger.corp.intel.com)
         by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
         (Exim 4.93)
         (envelope-from <luca@coelho.fi>)
-        id 1kLvIw-002J1P-A2; Sat, 26 Sep 2020 00:30:58 +0300
+        id 1kLvIx-002J1P-2Q; Sat, 26 Sep 2020 00:30:59 +0300
 From:   Luca Coelho <luca@coelho.fi>
 To:     kvalo@codeaurora.org
 Cc:     linux-wireless@vger.kernel.org
-Date:   Sat, 26 Sep 2020 00:30:40 +0300
-Message-Id: <iwlwifi.20200926002540.88c431fad7da.I282944cbad5aa367735a9f9a5c47cfbd107a5fc0@changeid>
+Date:   Sat, 26 Sep 2020 00:30:41 +0300
+Message-Id: <iwlwifi.20200926002540.3d47f4e8ab98.I0fdd2ce23166c18284d2a7a624c40f35ea81cbc2@changeid>
 X-Mailer: git-send-email 2.28.0
 In-Reply-To: <20200925213053.454459-1-luca@coelho.fi>
 References: <20200925213053.454459-1-luca@coelho.fi>
@@ -31,211 +31,228 @@ X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on farmhouse.coelho.fi
 X-Spam-Level: 
 X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
         TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.4
-Subject: [PATCH 02/15] iwlwifi: dbg: add dumping special device memory
+Subject: [PATCH 03/15] iwlwifi: regulatory: regulatory capabilities api change
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Mordechay Goodstein <mordechay.goodstein@intel.com>
+From: Gil Adam <gil.adam@intel.com>
 
-With the new region we can handle in user space understanding
-the struct type and version and driver doesn't need to be involved
-at all.
+Support v2 of regulatory capability flags parsed from the device
+NVM. New API support is determined by FW lookup of the MCC update
+command resposnse version, where version 6 supports the new API.
 
-Signed-off-by: Mordechay Goodstein <mordechay.goodstein@intel.com>
+Signed-off-by: Gil Adam <gil.adam@intel.com>
 Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 ---
- .../wireless/intel/iwlwifi/fw/api/dbg-tlv.h   | 22 ++++++++
- drivers/net/wireless/intel/iwlwifi/fw/dbg.c   | 56 +++++++++++++++++++
- .../wireless/intel/iwlwifi/fw/error-dump.h    | 14 +++++
- .../net/wireless/intel/iwlwifi/iwl-dbg-tlv.c  |  7 +++
- 4 files changed, 99 insertions(+)
+ .../wireless/intel/iwlwifi/iwl-nvm-parse.c    | 98 +++++++++++++++++--
+ .../wireless/intel/iwlwifi/iwl-nvm-parse.h    |  2 +-
+ .../net/wireless/intel/iwlwifi/mvm/mac80211.c |  6 +-
+ 3 files changed, 95 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/dbg-tlv.h b/drivers/net/wireless/intel/iwlwifi/fw/api/dbg-tlv.h
-index 8e34b509e6cc..cefd833d1968 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/api/dbg-tlv.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/api/dbg-tlv.h
-@@ -134,6 +134,25 @@ struct iwl_fw_ini_region_err_table {
- 	__le32 offset;
- } __packed; /* FW_TLV_DEBUG_REGION_ERROR_TABLE_API_S_VER_1 */
- 
-+/**
-+ * struct iwl_fw_ini_region_special_device_memory - special device memory
-+ *
-+ * Configuration to read a special memory
-+ *
-+ * @type: type of the special memory
-+ * @version: version of the special memory
-+ * @base_addr: base address of the error table
-+ * @size: size of the error table
-+ * @offset: offset to add to &base_addr
-+ */
-+struct iwl_fw_ini_region_special_device_memory {
-+	__le16 type;
-+	__le16 version;
-+	__le32 base_addr;
-+	__le32 size;
-+	__le32 offset;
-+} __packed; /* FW_TLV_DEBUG_REGION_SPECIAL_DEVICE_ADDR_API_S_VER_1 */
-+
- /**
-  * struct iwl_fw_ini_region_internal_buffer - internal buffer region data
-  *
-@@ -185,6 +204,7 @@ struct iwl_fw_ini_region_tlv {
- 		struct iwl_fw_ini_region_fifos fifos;
- 		struct iwl_fw_ini_region_err_table err_table;
- 		struct iwl_fw_ini_region_internal_buffer internal_buffer;
-+		struct iwl_fw_ini_region_special_device_memory special_mem;
- 		__le32 dram_alloc_id;
- 		__le32 tlv_mask;
- 	}; /* FW_TLV_DEBUG_REGION_CONF_PARAMS_API_U_VER_1 */
-@@ -327,6 +347,7 @@ enum iwl_fw_ini_buffer_location {
-  * @IWL_FW_INI_REGION_CSR: CSR registers
-  * @IWL_FW_INI_REGION_DRAM_IMR: IMR memory
-  * @IWL_FW_INI_REGION_PCI_IOSF_CONFIG: PCI/IOSF config
-+ * @IWL_FW_INI_REGION_SPECIAL_DEVICE_MEMORY: special device memroy
-  * @IWL_FW_INI_REGION_NUM: number of region types
-  */
- enum iwl_fw_ini_region_type {
-@@ -347,6 +368,7 @@ enum iwl_fw_ini_region_type {
- 	IWL_FW_INI_REGION_CSR,
- 	IWL_FW_INI_REGION_DRAM_IMR,
- 	IWL_FW_INI_REGION_PCI_IOSF_CONFIG,
-+	IWL_FW_INI_REGION_SPECIAL_DEVICE_MEMORY,
- 	IWL_FW_INI_REGION_NUM
- }; /* FW_TLV_DEBUG_REGION_TYPE_API_E */
- 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-index 7ea55cfdd8a8..ab4a8b942c81 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-@@ -1507,6 +1507,27 @@ iwl_dump_ini_err_table_iter(struct iwl_fw_runtime *fwrt,
- 	return sizeof(*range) + le32_to_cpu(range->range_data_size);
- }
- 
-+static int
-+iwl_dump_ini_special_mem_iter(struct iwl_fw_runtime *fwrt,
-+			      struct iwl_dump_ini_region_data *reg_data,
-+			      void *range_ptr, int idx)
-+{
-+	struct iwl_fw_ini_region_tlv *reg = (void *)reg_data->reg_tlv->data;
-+	struct iwl_fw_ini_region_special_device_memory *special_mem =
-+		&reg->special_mem;
-+
-+	struct iwl_fw_ini_error_dump_range *range = range_ptr;
-+	u32 addr = le32_to_cpu(special_mem->base_addr) +
-+		   le32_to_cpu(special_mem->offset);
-+
-+	range->internal_base_addr = cpu_to_le32(addr);
-+	range->range_data_size = special_mem->size;
-+	iwl_trans_read_mem_bytes(fwrt->trans, addr, range->data,
-+				 le32_to_cpu(special_mem->size));
-+
-+	return sizeof(*range) + le32_to_cpu(range->range_data_size);
-+}
-+
- static int iwl_dump_ini_fw_pkt_iter(struct iwl_fw_runtime *fwrt,
- 				    struct iwl_dump_ini_region_data *reg_data,
- 				    void *range_ptr, int idx)
-@@ -1636,6 +1657,21 @@ iwl_dump_ini_err_table_fill_header(struct iwl_fw_runtime *fwrt,
- 	return dump->ranges;
- }
- 
-+static void *
-+iwl_dump_ini_special_mem_fill_header(struct iwl_fw_runtime *fwrt,
-+				     struct iwl_dump_ini_region_data *reg_data,
-+				     void *data)
-+{
-+	struct iwl_fw_ini_region_tlv *reg = (void *)reg_data->reg_tlv->data;
-+	struct iwl_fw_ini_special_device_memory *dump = data;
-+
-+	dump->header.version = cpu_to_le32(IWL_INI_DUMP_VER);
-+	dump->type = reg->special_mem.type;
-+	dump->version = reg->special_mem.version;
-+
-+	return dump->ranges;
-+}
-+
- static u32 iwl_dump_ini_mem_ranges(struct iwl_fw_runtime *fwrt,
- 				   struct iwl_dump_ini_region_data *reg_data)
- {
-@@ -1826,6 +1862,20 @@ iwl_dump_ini_err_table_get_size(struct iwl_fw_runtime *fwrt,
- 	return size;
- }
- 
-+static u32
-+iwl_dump_ini_special_mem_get_size(struct iwl_fw_runtime *fwrt,
-+				  struct iwl_dump_ini_region_data *reg_data)
-+{
-+	struct iwl_fw_ini_region_tlv *reg = (void *)reg_data->reg_tlv->data;
-+	u32 size = le32_to_cpu(reg->special_mem.size);
-+
-+	if (size)
-+		size += sizeof(struct iwl_fw_ini_special_device_memory) +
-+			sizeof(struct iwl_fw_ini_error_dump_range);
-+
-+	return size;
-+}
-+
- static u32
- iwl_dump_ini_fw_pkt_get_size(struct iwl_fw_runtime *fwrt,
- 			     struct iwl_dump_ini_region_data *reg_data)
-@@ -2125,6 +2175,12 @@ static const struct iwl_dump_ini_mem_ops iwl_dump_ini_region_ops[] = {
- 		.fill_mem_hdr = iwl_dump_ini_mem_fill_header,
- 		.fill_range = iwl_dump_ini_config_iter,
- 	},
-+	[IWL_FW_INI_REGION_SPECIAL_DEVICE_MEMORY] = {
-+		.get_num_of_ranges = iwl_dump_ini_single_range,
-+		.get_size = iwl_dump_ini_special_mem_get_size,
-+		.fill_mem_hdr = iwl_dump_ini_special_mem_fill_header,
-+		.fill_range = iwl_dump_ini_special_mem_iter,
-+	},
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
+index ee410417761d..6d19de3058d2 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
+@@ -254,6 +254,65 @@ enum iwl_reg_capa_flags {
+ 	REG_CAPA_11AX_DISABLED		= BIT(10),
  };
  
- static u32 iwl_dump_ini_trigger(struct iwl_fw_runtime *fwrt,
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/error-dump.h b/drivers/net/wireless/intel/iwlwifi/fw/error-dump.h
-index 72bfc64580ab..cb40f509ab61 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/error-dump.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/error-dump.h
-@@ -494,6 +494,20 @@ struct iwl_fw_ini_monitor_dump {
- 	struct iwl_fw_ini_error_dump_range ranges[];
- } __packed;
- 
 +/**
-+ * struct iwl_fw_ini_special_device_memory - special device memory
-+ * @header: header of the region
-+ * @type: type of special memory
-+ * @version: struct special memory version
-+ * @ranges: the memory ranges of this this region
++ * enum iwl_reg_capa_flags_v2 - global flags applied for the whole regulatory
++ * domain (version 2).
++ * @REG_CAPA_V2_STRADDLE_DISABLED: Straddle channels (144, 142, 138) are
++ *	disabled.
++ * @REG_CAPA_V2_BF_CCD_LOW_BAND: Beam-forming or Cyclic Delay Diversity in the
++ *	2.4Ghz band is allowed.
++ * @REG_CAPA_V2_BF_CCD_HIGH_BAND: Beam-forming or Cyclic Delay Diversity in the
++ *	5Ghz band is allowed.
++ * @REG_CAPA_V2_160MHZ_ALLOWED: 11ac channel with a width of 160Mhz is allowed
++ *	for this regulatory domain (valid only in 5Ghz).
++ * @REG_CAPA_V2_80MHZ_ALLOWED: 11ac channel with a width of 80Mhz is allowed
++ *	for this regulatory domain (valid only in 5Ghz).
++ * @REG_CAPA_V2_MCS_8_ALLOWED: 11ac with MCS 8 is allowed.
++ * @REG_CAPA_V2_MCS_9_ALLOWED: 11ac with MCS 9 is allowed.
++ * @REG_CAPA_V2_WEATHER_DISABLED: Weather radar channels (120, 124, 128, 118,
++ *	126, 122) are disabled.
++ * @REG_CAPA_V2_40MHZ_ALLOWED: 11n channel with a width of 40Mhz is allowed
++ *	for this regulatory domain (uvalid only in 5Ghz).
++ * @REG_CAPA_V2_11AX_DISABLED: 11ax is forbidden for this regulatory domain.
 + */
-+struct iwl_fw_ini_special_device_memory {
-+	struct iwl_fw_ini_error_dump_header header;
-+	__le16 type;
-+	__le16 version;
-+	struct iwl_fw_ini_error_dump_range ranges[];
-+} __packed;
++enum iwl_reg_capa_flags_v2 {
++	REG_CAPA_V2_STRADDLE_DISABLED	= BIT(0),
++	REG_CAPA_V2_BF_CCD_LOW_BAND	= BIT(1),
++	REG_CAPA_V2_BF_CCD_HIGH_BAND	= BIT(2),
++	REG_CAPA_V2_160MHZ_ALLOWED	= BIT(3),
++	REG_CAPA_V2_80MHZ_ALLOWED	= BIT(4),
++	REG_CAPA_V2_MCS_8_ALLOWED	= BIT(5),
++	REG_CAPA_V2_MCS_9_ALLOWED	= BIT(6),
++	REG_CAPA_V2_WEATHER_DISABLED	= BIT(7),
++	REG_CAPA_V2_40MHZ_ALLOWED	= BIT(8),
++	REG_CAPA_V2_11AX_DISABLED	= BIT(13),
++};
 +
- /**
-  * struct iwl_fw_error_dump_paging - content of the UMAC's image page
-  *	block on DRAM
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c b/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c
-index 9ce7207d9ec5..c44e61aa2aca 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c
-@@ -233,6 +233,13 @@ static int iwl_dbg_tlv_alloc_region(struct iwl_trans *trans,
- 	if (le32_to_cpu(tlv->length) < sizeof(*reg))
- 		return -EINVAL;
++/*
++* API v2 for reg_capa_flags is relevant from version 6 and onwards of the
++* MCC update command response.
++*/
++#define REG_CAPA_V2_RESP_VER	6
++
++/**
++ * struct iwl_reg_capa - struct for global regulatory capabilities, Used for
++ * handling the different APIs of reg_capa_flags.
++ *
++ * @allow_40mhz: 11n channel with a width of 40Mhz is allowed
++ *	for this regulatory domain (valid only in 5Ghz).
++ * @allow_80mhz: 11ac channel with a width of 80Mhz is allowed
++ *	for this regulatory domain (valid only in 5Ghz).
++ * @allow_160mhz: 11ac channel with a width of 160Mhz is allowed
++ *	for this regulatory domain (valid only in 5Ghz).
++ * @disable_11ax: 11ax is forbidden for this regulatory domain.
++ */
++struct iwl_reg_capa {
++	u16 allow_40mhz;
++	u16 allow_80mhz;
++	u16 allow_160mhz;
++	u16 disable_11ax;
++};
++
+ static inline void iwl_nvm_print_channel_flags(struct device *dev, u32 level,
+ 					       int chan, u32 flags)
+ {
+@@ -1064,7 +1123,7 @@ IWL_EXPORT_SYMBOL(iwl_parse_nvm_data);
  
-+	/* For safe using a string from FW make sure we have a
-+	 * null terminator
-+	 */
-+	reg->name[IWL_FW_INI_MAX_NAME - 1] = 0;
+ static u32 iwl_nvm_get_regdom_bw_flags(const u16 *nvm_chan,
+ 				       int ch_idx, u16 nvm_flags,
+-				       u16 cap_flags,
++				       struct iwl_reg_capa reg_capa,
+ 				       const struct iwl_cfg *cfg)
+ {
+ 	u32 flags = NL80211_RRF_NO_HT40;
+@@ -1104,29 +1163,46 @@ static u32 iwl_nvm_get_regdom_bw_flags(const u16 *nvm_chan,
+ 		flags |= NL80211_RRF_GO_CONCURRENT;
+ 
+ 	/*
+-	 * cap_flags is per regulatory domain so apply it for every channel
++	 * reg_capa is per regulatory domain so apply it for every channel
+ 	 */
+ 	if (ch_idx >= NUM_2GHZ_CHANNELS) {
+-		if (cap_flags & REG_CAPA_40MHZ_FORBIDDEN)
++		if (!reg_capa.allow_40mhz)
+ 			flags |= NL80211_RRF_NO_HT40;
+ 
+-		if (!(cap_flags & REG_CAPA_80MHZ_ALLOWED))
++		if (!reg_capa.allow_80mhz)
+ 			flags |= NL80211_RRF_NO_80MHZ;
+ 
+-		if (!(cap_flags & REG_CAPA_160MHZ_ALLOWED))
++		if (!reg_capa.allow_160mhz)
+ 			flags |= NL80211_RRF_NO_160MHZ;
+ 	}
+-
+-	if (cap_flags & REG_CAPA_11AX_DISABLED)
++	if (reg_capa.disable_11ax)
+ 		flags |= NL80211_RRF_NO_HE;
+ 
+ 	return flags;
+ }
+ 
++static struct iwl_reg_capa iwl_get_reg_capa(u16 flags, u8 resp_ver)
++{
++	struct iwl_reg_capa reg_capa;
 +
-+	IWL_DEBUG_FW(trans, "WRT: parsing region: %s\n", reg->name);
++	if (resp_ver >= REG_CAPA_V2_RESP_VER) {
++		reg_capa.allow_40mhz = flags & REG_CAPA_V2_40MHZ_ALLOWED;
++		reg_capa.allow_80mhz = flags & REG_CAPA_V2_80MHZ_ALLOWED;
++		reg_capa.allow_160mhz = flags & REG_CAPA_V2_160MHZ_ALLOWED;
++		reg_capa.disable_11ax = flags & REG_CAPA_V2_11AX_DISABLED;
++	} else {
++		reg_capa.allow_40mhz = !(flags & REG_CAPA_40MHZ_FORBIDDEN);
++		reg_capa.allow_80mhz = flags & REG_CAPA_80MHZ_ALLOWED;
++		reg_capa.allow_160mhz = flags & REG_CAPA_160MHZ_ALLOWED;
++		reg_capa.disable_11ax = flags & REG_CAPA_11AX_DISABLED;
++	}
++	return reg_capa;
++}
 +
- 	if (id >= IWL_FW_INI_MAX_REGION_ID) {
- 		IWL_ERR(trans, "WRT: Invalid region id %u\n", id);
- 		return -EINVAL;
+ struct ieee80211_regdomain *
+ iwl_parse_nvm_mcc_info(struct device *dev, const struct iwl_cfg *cfg,
+ 		       int num_of_ch, __le32 *channels, u16 fw_mcc,
+-		       u16 geo_info, u16 cap)
++		       u16 geo_info, u16 cap, u8 resp_ver)
+ {
+ 	int ch_idx;
+ 	u16 ch_flags;
+@@ -1139,6 +1215,7 @@ iwl_parse_nvm_mcc_info(struct device *dev, const struct iwl_cfg *cfg,
+ 	int valid_rules = 0;
+ 	bool new_rule;
+ 	int max_num_ch;
++	struct iwl_reg_capa reg_capa;
+ 
+ 	if (cfg->uhb_supported) {
+ 		max_num_ch = IWL_NVM_NUM_CHANNELS_UHB;
+@@ -1169,6 +1246,9 @@ iwl_parse_nvm_mcc_info(struct device *dev, const struct iwl_cfg *cfg,
+ 	regd->alpha2[0] = fw_mcc >> 8;
+ 	regd->alpha2[1] = fw_mcc & 0xff;
+ 
++	/* parse regulatory capability flags */
++	reg_capa = iwl_get_reg_capa(cap, resp_ver);
++
+ 	for (ch_idx = 0; ch_idx < num_of_ch; ch_idx++) {
+ 		ch_flags = (u16)__le32_to_cpup(channels + ch_idx);
+ 		band = iwl_nl80211_band_from_channel_idx(ch_idx);
+@@ -1183,7 +1263,7 @@ iwl_parse_nvm_mcc_info(struct device *dev, const struct iwl_cfg *cfg,
+ 		}
+ 
+ 		reg_rule_flags = iwl_nvm_get_regdom_bw_flags(nvm_chan, ch_idx,
+-							     ch_flags, cap,
++							     ch_flags, reg_capa,
+ 							     cfg);
+ 
+ 		/* we can't continue the same rule */
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.h b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.h
+index fb0b385d10fd..50bd7fdcf852 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.h
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.h
+@@ -104,7 +104,7 @@ iwl_parse_nvm_data(struct iwl_trans *trans, const struct iwl_cfg *cfg,
+ struct ieee80211_regdomain *
+ iwl_parse_nvm_mcc_info(struct device *dev, const struct iwl_cfg *cfg,
+ 		       int num_of_ch, __le32 *channels, u16 fw_mcc,
+-		       u16 geo_info, u16 cap);
++		       u16 geo_info, u16 cap, u8 resp_ver);
+ 
+ /**
+  * struct iwl_nvm_section - describes an NVM section in memory.
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+index 12f217f2d7b3..6e8af84f386a 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+@@ -234,6 +234,7 @@ struct ieee80211_regdomain *iwl_mvm_get_regdomain(struct wiphy *wiphy,
+ 	struct ieee80211_hw *hw = wiphy_to_ieee80211_hw(wiphy);
+ 	struct iwl_mvm *mvm = IWL_MAC80211_GET_MVM(hw);
+ 	struct iwl_mcc_update_resp *resp;
++	u8 resp_ver;
+ 
+ 	IWL_DEBUG_LAR(mvm, "Getting regdomain data for %s from FW\n", alpha2);
+ 
+@@ -252,13 +253,16 @@ struct ieee80211_regdomain *iwl_mvm_get_regdomain(struct wiphy *wiphy,
+ 		*changed = (status == MCC_RESP_NEW_CHAN_PROFILE ||
+ 			    status == MCC_RESP_ILLEGAL);
+ 	}
++	resp_ver = iwl_fw_lookup_notif_ver(mvm->fw, IWL_ALWAYS_LONG_GROUP,
++					   MCC_UPDATE_CMD, 0);
++	IWL_DEBUG_LAR(mvm, "MCC update response version: %d\n", resp_ver);
+ 
+ 	regd = iwl_parse_nvm_mcc_info(mvm->trans->dev, mvm->cfg,
+ 				      __le32_to_cpu(resp->n_channels),
+ 				      resp->channels,
+ 				      __le16_to_cpu(resp->mcc),
+ 				      __le16_to_cpu(resp->geo_info),
+-				      __le16_to_cpu(resp->cap));
++				      __le16_to_cpu(resp->cap), resp_ver);
+ 	/* Store the return source id */
+ 	src_id = resp->source_id;
+ 	kfree(resp);
 -- 
 2.28.0
 
