@@ -2,172 +2,138 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DFDCF279053
-	for <lists+linux-wireless@lfdr.de>; Fri, 25 Sep 2020 20:29:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 45E12279092
+	for <lists+linux-wireless@lfdr.de>; Fri, 25 Sep 2020 20:33:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729714AbgIYS3v (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 25 Sep 2020 14:29:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34724 "EHLO
+        id S1729988AbgIYSdN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 25 Sep 2020 14:33:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35348 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726368AbgIYS3u (ORCPT
+        with ESMTP id S1729984AbgIYSdL (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 25 Sep 2020 14:29:50 -0400
-Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com [IPv6:2607:f8b0:4864:20::441])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 745DBC0613CE
-        for <linux-wireless@vger.kernel.org>; Fri, 25 Sep 2020 11:29:50 -0700 (PDT)
-Received: by mail-pf1-x441.google.com with SMTP id w7so4008334pfi.4
-        for <linux-wireless@vger.kernel.org>; Fri, 25 Sep 2020 11:29:50 -0700 (PDT)
+        Fri, 25 Sep 2020 14:33:11 -0400
+Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com [IPv6:2a00:1450:4864:20::343])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81E43C0613D3
+        for <linux-wireless@vger.kernel.org>; Fri, 25 Sep 2020 11:33:11 -0700 (PDT)
+Received: by mail-wm1-x343.google.com with SMTP id s13so4037325wmh.4
+        for <linux-wireless@vger.kernel.org>; Fri, 25 Sep 2020 11:33:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:author;
-        bh=Rhv9HZEtrEL141zSMGw1g065/LfSYNOus3HpsgDc4Os=;
-        b=HVUBpvOg+s0a1z2RzoKEIEFlCJWP5rVxDKxRmwxMKnABEXn383FnVD5FLFSLg4M3yY
-         DiJztuPhznDB7e0NReBuNguMYtpthbjZWDgz321egNY6GGLm0jEyz48oTlgao0R0tQDO
-         21XRe3aF8XrGRVp5TH1ENC7Cl346shsAgl/ySE4HlZOISGRz8JWlooVQQBcsRwJzbILi
-         HH7HWhjb1BTRHpFtmSJZ/YBhEQiPHWyV8FSc2DBvNXW5lXG8sMVhBHmAzw1WZAHXK/a2
-         Y0ezbxZxbV5PzAIcLN12G8u+Lc+veBcqtiAJR9ZuPeIyRnnZ1wy7vecPxyT7XU7hkI/p
-         WbFg==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=6wr5b8CFYdqzzo6Xedl1l6pleUPcSYgGVWdKtDphUtU=;
+        b=IHDkMpVxwv/dF8C95VxnNNlR2HFW37aiZNZWFsIwEJEURZGGBHDbEuaG5yMtGs7Sce
+         ZKGVnSDDFZaRvuTicpWkk1reDSLon0PS7d+uwgJuIcfROO482TDn2DixCWyPFCHN/4PX
+         munK4n6yIq0pv7+ouU4T87VyALlYwRm319Ucu3a+XT/bbXEYiG6eJaGHi5BCbHkE5eWy
+         fAwZiF2ecRHcQAJopNydaYIFLByoRdZSMIvmBj1kWYofEmArWiPbhuKsmuLFwZm9GIFp
+         ZGRsbSkTfS1igKgJRB9c71NM4mQ2PO/r994MgJmTUzJCJFFgIF6BHPmzvA7bdlI6jvTY
+         82Cw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:author;
-        bh=Rhv9HZEtrEL141zSMGw1g065/LfSYNOus3HpsgDc4Os=;
-        b=moegBdTP+pd0co78Gxuc/06A6nB2nmbSEV+dfxDjIRj8Tch/BW4+grzaOzt8i/2FHc
-         +QhkxMBhIVGep3RsNoQzKCrRbnT23kxNKI622QjnrQ8jCgR2uy+FXGt7IP5isJzotmRd
-         0/pumlL6h5b0Cim5ZeURMW2V6247jGq2Q85xRW6qxxIUfrOE+NK8gAWr0H3bEaFLVFWI
-         ydsDcPorxv54ROi7Q0WQSWFiSOE9008TnqOttYn5XRhgZkdqLxf+DS88Ls+/T/aZRIgU
-         cgWsJ8cnf3IOAfo2qFY7uDZpsw5MpIMS7rAlDgBT94TvFqF4hldaR5mb1gy4aXSbGELa
-         sNTA==
-X-Gm-Message-State: AOAM533kemgqz8YJxMydw3JO+DMMEwXykWRhlfB/CJJFF2NzKn3mV+6G
-        HLYT1/WAaPVXaKX5AqO+7t1mKw==
-X-Google-Smtp-Source: ABdhPJyT6RQYB9DC4di8a/7z5wXawdsq8FSxpEdIKmdSgymgn9ER5Udfvz37BcVVx/UkrRoJ02vI2g==
-X-Received: by 2002:a17:902:c404:b029:d2:564a:e41d with SMTP id k4-20020a170902c404b02900d2564ae41dmr681548plk.23.1601058589772;
-        Fri, 25 Sep 2020 11:29:49 -0700 (PDT)
-Received: from localhost.localdomain ([2405:201:6803:60dd:c56a:3b96:e0d6:72b4])
-        by smtp.gmail.com with ESMTPSA id f4sm2806762pgk.19.2020.09.25.11.29.44
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 25 Sep 2020 11:29:48 -0700 (PDT)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=6wr5b8CFYdqzzo6Xedl1l6pleUPcSYgGVWdKtDphUtU=;
+        b=OKpU0/sTdwOINKDKbmC0B0UQ+jqwL0sHa/+XXRWuRdgQOhsKjtoEPd2KrBIKFPjy84
+         eHl257POW3dcriuQ6ZEHg6P013k6o23G1fmOmSk3jzyfBlT9vFeYR/QQqJMFCzUM1k4x
+         k2YJ4Sv/Y87ZfZ0dkaFlwibK8KRq44CxBKWagTlTLJtVKBWUZpx7Ke4j9OhUXe1HbO4x
+         CPZ4vodkYYwFfpwlpiKxcrwubIejdlFCcR0XuddLf8DLDxXMQITHnvjs5ssGWGzs731d
+         AscNy18ZD26wS3NvdlWWi4CnrNIBzth81+6TsmLSFBGd/CDkkv+gihEM6x2wRm1Ujw29
+         JmQg==
+X-Gm-Message-State: AOAM533JJ2rkUMTXdHQhseBs7oUgQ7VbVA9M7R0lEpHpk8ks32uYgqWO
+        nNuTK5DEaiMqQC1ITj1LVFoJzx12J+SsJ4NfltbmxQ==
+X-Google-Smtp-Source: ABdhPJw8c61BhX0/8pflJJeMDcnBp4MI+ROLCChhpS0j+CxQAmOUZ8qpXphp1hlcL62YpZDV8sWD/MxOihr2Pj6GLyw=
+X-Received: by 2002:a7b:c38f:: with SMTP id s15mr4603352wmj.16.1601058790123;
+ Fri, 25 Sep 2020 11:33:10 -0700 (PDT)
+MIME-Version: 1.0
+References: <1600328501-8832-1-git-send-email-amit.pundir@linaro.org>
+ <87d02bnnll.fsf@codeaurora.org> <20200925152739.GE2510@yoga>
+In-Reply-To: <20200925152739.GE2510@yoga>
 From:   Amit Pundir <amit.pundir@linaro.org>
-To:     Kalle Valo <kvalo@codeaurora.org>,
+Date:   Sat, 26 Sep 2020 00:02:33 +0530
+Message-ID: <CAMi1Hd06t6xoaZME5nphSgerx7s2UwduUEmxmSe_ss=8Su977Q@mail.gmail.com>
+Subject: Re: [PATCH] ath10k: qmi: Skip host capability request for Xiaomi Poco F1
+To:     Bjorn Andersson <bjorn.andersson@linaro.org>
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
         David S Miller <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Jeffrey Hugo <jeffrey.l.hugo@gmail.com>
-Cc:     John Stultz <john.stultz@linaro.org>,
-        Sumit Semwal <sumit.semwal@linaro.org>,
+        Jeffrey Hugo <jeffrey.l.hugo@gmail.com>,
+        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
         Konrad Dybcio <konradybcio@gmail.com>,
-        ath10k@lists.infradead.org, devicetree@vger.kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        lkml <linux-kernel@vger.kernel.org>
-Subject: [PATCH] ath10k: Introduce a devicetree quirk to skip host cap QMI requests
-Date:   Fri, 25 Sep 2020 23:59:41 +0530
-Message-Id: <1601058581-19461-1-git-send-email-amit.pundir@linaro.org>
-X-Mailer: git-send-email 2.7.4
-Author: Amit Pundir <amit.pundir@linaro.org>
+        ath10k <ath10k@lists.infradead.org>,
+        lkml <linux-kernel@vger.kernel.org>,
+        John Stultz <john.stultz@linaro.org>,
+        Sumit Semwal <sumit.semwal@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-There are firmware versions which do not support host capability
-QMI request. We suspect either the host cap is not implemented or
-there may be firmware specific issues, but apparently there seem
-to be a generation of firmware that has this particular behavior.
+On Fri, 25 Sep 2020 at 20:57, Bjorn Andersson
+<bjorn.andersson@linaro.org> wrote:
+>
+> On Thu 24 Sep 11:31 CDT 2020, Kalle Valo wrote:
+>
+> > Amit Pundir <amit.pundir@linaro.org> writes:
+> >
+> > > Workaround to get WiFi working on Xiaomi Poco F1 (sdm845)
+> > > phone. We get a non-fatal QMI_ERR_MALFORMED_MSG_V01 error
+> > > message in ath10k_qmi_host_cap_send_sync(), but we can still
+> > > bring up WiFi services successfully on AOSP if we ignore it.
+> > >
+> > > We suspect either the host cap is not implemented or there
+> > > may be firmware specific issues. Firmware version is
+> > > QC_IMAGE_VERSION_STRING=WLAN.HL.2.0.c3-00257-QCAHLSWMTPLZ-1
+> > >
+> > > qcom,snoc-host-cap-8bit-quirk didn't help. If I use this
+> > > quirk, then the host capability request does get accepted,
+> > > but we run into fatal "msa info req rejected" error and
+> > > WiFi interface doesn't come up.
+> > >
+> > > Attempts are being made to debug the failure reasons but no
+> > > luck so far. Hence this device specific workaround instead
+> > > of checking for QMI_ERR_MALFORMED_MSG_V01 error message.
+> > > Tried ath10k/WCN3990/hw1.0/wlanmdsp.mbn from the upstream
+> > > linux-firmware project but it didn't help and neither did
+> > > building board-2.bin file from stock bdwlan* files.
+> > >
+> > > This workaround will be removed once we have a viable fix.
+> > > Thanks to postmarketOS guys for catching this.
+> > >
+> > > Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
+> >
+> > Bjorn, is this ok to take?
+> >
+>
+> As I wrote in the answer to Amit I think we should introduce a generic
+> quirk to skip host_cap instead.
+>
+> So if you pick this up (which is an ok short term workaround) I think we
+> should revert it once we have a generic mechanism.
 
-For example, firmware build on Xiaomi Poco F1 (sdm845) phone:
-"QC_IMAGE_VERSION_STRING=WLAN.HL.2.0.c3-00257-QCAHLSWMTPLZ-1"
+Hi Bjorn, just sent out a generic skip quirk for review.
 
-If we do not skip the host cap QMI request on Poco F1, then we
-get a QMI_ERR_MALFORMED_MSG_V01 error message in the
-ath10k_qmi_host_cap_send_sync(). But this error message is not
-fatal to the firmware nor to the ath10k driver and we can still
-bring up the WiFi services successfully if we just ignore it.
+Regards,
+Amit Pundir
 
-Hence introducing this DeviceTree quirk to skip host capability
-QMI request for the firmware versions which do not support this
-feature.
-
-Suggested-by: Bjorn Andersson <bjorn.andersson@linaro.org>
-Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
----
- .../devicetree/bindings/net/wireless/qcom,ath10k.txt        |  5 +++++
- drivers/net/wireless/ath/ath10k/qmi.c                       | 13 ++++++++++---
- drivers/net/wireless/ath/ath10k/snoc.c                      |  3 +++
- drivers/net/wireless/ath/ath10k/snoc.h                      |  1 +
- 4 files changed, 19 insertions(+), 3 deletions(-)
-
-diff --git a/Documentation/devicetree/bindings/net/wireless/qcom,ath10k.txt b/Documentation/devicetree/bindings/net/wireless/qcom,ath10k.txt
-index 65ee68efd574..135c7ecd4487 100644
---- a/Documentation/devicetree/bindings/net/wireless/qcom,ath10k.txt
-+++ b/Documentation/devicetree/bindings/net/wireless/qcom,ath10k.txt
-@@ -86,6 +86,11 @@ Optional properties:
- 	Value type: <empty>
- 	Definition: Quirk specifying that the firmware expects the 8bit version
- 		    of the host capability QMI request
-+- qcom,snoc-host-cap-skip-quirk:
-+	Usage: Optional
-+	Value type: <empty>
-+	Definition: Quirk specifying that the firmware wants to skip the host
-+		    capability QMI request
- - qcom,xo-cal-data: xo cal offset to be configured in xo trim register.
- 
- - qcom,msa-fixed-perm: Boolean context flag to disable SCM call for statically
-diff --git a/drivers/net/wireless/ath/ath10k/qmi.c b/drivers/net/wireless/ath/ath10k/qmi.c
-index 5468a41e928e..5adff7695e18 100644
---- a/drivers/net/wireless/ath/ath10k/qmi.c
-+++ b/drivers/net/wireless/ath/ath10k/qmi.c
-@@ -770,6 +770,7 @@ ath10k_qmi_ind_register_send_sync_msg(struct ath10k_qmi *qmi)
- static void ath10k_qmi_event_server_arrive(struct ath10k_qmi *qmi)
- {
- 	struct ath10k *ar = qmi->ar;
-+	struct ath10k_snoc *ar_snoc = ath10k_snoc_priv(ar);
- 	int ret;
- 
- 	ret = ath10k_qmi_ind_register_send_sync_msg(qmi);
-@@ -781,9 +782,15 @@ static void ath10k_qmi_event_server_arrive(struct ath10k_qmi *qmi)
- 		return;
- 	}
- 
--	ret = ath10k_qmi_host_cap_send_sync(qmi);
--	if (ret)
--		return;
-+	/*
-+	 * Skip the host capability request for the firmware versions which
-+	 * do not support this feature.
-+	 */
-+	if (!test_bit(ATH10K_SNOC_FLAG_SKIP_HOST_CAP_QUIRK, &ar_snoc->flags)) {
-+		ret = ath10k_qmi_host_cap_send_sync(qmi);
-+		if (ret)
-+			return;
-+	}
- 
- 	ret = ath10k_qmi_msa_mem_info_send_sync_msg(qmi);
- 	if (ret)
-diff --git a/drivers/net/wireless/ath/ath10k/snoc.c b/drivers/net/wireless/ath/ath10k/snoc.c
-index 354d49b1cd45..4efbf1339c80 100644
---- a/drivers/net/wireless/ath/ath10k/snoc.c
-+++ b/drivers/net/wireless/ath/ath10k/snoc.c
-@@ -1281,6 +1281,9 @@ static void ath10k_snoc_quirks_init(struct ath10k *ar)
- 
- 	if (of_property_read_bool(dev->of_node, "qcom,snoc-host-cap-8bit-quirk"))
- 		set_bit(ATH10K_SNOC_FLAG_8BIT_HOST_CAP_QUIRK, &ar_snoc->flags);
-+
-+	if (of_property_read_bool(dev->of_node, "qcom,snoc-host-cap-skip-quirk"))
-+		set_bit(ATH10K_SNOC_FLAG_SKIP_HOST_CAP_QUIRK, &ar_snoc->flags);
- }
- 
- int ath10k_snoc_fw_indication(struct ath10k *ar, u64 type)
-diff --git a/drivers/net/wireless/ath/ath10k/snoc.h b/drivers/net/wireless/ath/ath10k/snoc.h
-index a3dd06f6ac62..2a0045f0af7e 100644
---- a/drivers/net/wireless/ath/ath10k/snoc.h
-+++ b/drivers/net/wireless/ath/ath10k/snoc.h
-@@ -47,6 +47,7 @@ enum ath10k_snoc_flags {
- 	ATH10K_SNOC_FLAG_UNREGISTERING,
- 	ATH10K_SNOC_FLAG_RECOVERY,
- 	ATH10K_SNOC_FLAG_8BIT_HOST_CAP_QUIRK,
-+	ATH10K_SNOC_FLAG_SKIP_HOST_CAP_QUIRK,
- };
- 
- struct clk_bulk_data;
--- 
-2.7.4
-
+>
+> Regards,
+> Bjorn
+>
+> > > --- a/drivers/net/wireless/ath/ath10k/qmi.c
+> > > +++ b/drivers/net/wireless/ath/ath10k/qmi.c
+> > > @@ -651,7 +651,8 @@ static int ath10k_qmi_host_cap_send_sync(struct ath10k_qmi *qmi)
+> > >
+> > >     /* older FW didn't support this request, which is not fatal */
+> > >     if (resp.resp.result != QMI_RESULT_SUCCESS_V01 &&
+> > > -       resp.resp.error != QMI_ERR_NOT_SUPPORTED_V01) {
+> > > +       resp.resp.error != QMI_ERR_NOT_SUPPORTED_V01 &&
+> > > +       !of_machine_is_compatible("xiaomi,beryllium")) { /* Xiaomi Poco F1 workaround */
+> > >             ath10k_err(ar, "host capability request rejected: %d\n", resp.resp.error);
+> >
+> > ath10k-check complained about a too long line, so in the pending branch
+> > I moved the comment before the if statement.
+> >
+> > --
+> > https://patchwork.kernel.org/project/linux-wireless/list/
+> >
+> > https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
