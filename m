@@ -2,297 +2,95 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D428279A58
-	for <lists+linux-wireless@lfdr.de>; Sat, 26 Sep 2020 17:22:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4EFF1279B8B
+	for <lists+linux-wireless@lfdr.de>; Sat, 26 Sep 2020 19:46:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729582AbgIZPW2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 26 Sep 2020 11:22:28 -0400
-Received: from mail.kernel.org ([198.145.29.99]:49546 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725208AbgIZPW2 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 26 Sep 2020 11:22:28 -0400
-Received: from localhost.localdomain (unknown [151.66.98.27])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 12EED207D3;
-        Sat, 26 Sep 2020 15:22:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1601133748;
-        bh=8XuBgMMonX/7r4EaCMY+H3hyyjoQe3gMoSZB+ddJLRU=;
-        h=From:To:Cc:Subject:Date:From;
-        b=nS3Rj0/lCya3dwnt1mES1hMQRi9jX8VF1miOfPAmZaZv0kTYgg5oFeu13LI87Ff1x
-         boqcI8QxUsjaOSClRf5sBSaXnNCtZ3ZFffANL+k12RXGu1big9jnv/VaEmE3I04guN
-         53K+AsL9cYPKUyYhqnxFD1bCQNv9650BU3Nk5O80=
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
-        sean.wang@mediatek.com
-Subject: [PATCH] mt76: mt7615: enable beacon filtering by default for offload fw
-Date:   Sat, 26 Sep 2020 17:22:09 +0200
-Message-Id: <bfe45686ca8d8b5db2b27e33859bea7450f7b920.1601133687.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.26.2
+        id S1729889AbgIZRqL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 26 Sep 2020 13:46:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52396 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726316AbgIZRqK (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 26 Sep 2020 13:46:10 -0400
+Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFF16C0613CE;
+        Sat, 26 Sep 2020 10:46:09 -0700 (PDT)
+Received: by mail-wr1-x443.google.com with SMTP id s12so7304414wrw.11;
+        Sat, 26 Sep 2020 10:46:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=9nv/gU1YFk3IEzxVXp+ajt3nGB2j/MGxPydW57eKpfM=;
+        b=NLkmcx5c4XyG/S8wZ2CLwlcTTMyzHSrYy8MNlwbhY19F0eLA+32tVA+WhEpA+4pUIZ
+         xMPomFGEZ+L91ubW3I5riVmEtWSO2BkF6RrRMFq7TPrR2nCTonBuzczX+A7HD6AxfsuE
+         /CfzHeCtBFokXnKPISTkzFe0vyyY2iT2CGKSRX2AxAm4CgBViMpzkf73n+6bEqPVGb7l
+         uiF68D4+aw2StsIhh2JH8sTIzMy7nw55Wy+o65cc13Zt/cJ5HSUCteMpsRzz4q5arQ1C
+         +zcDtXT4csKgPd4f3FH5ZqL26RqYqR/VkcgflosraPio1EOUBpwY7CoKiwchAu1ovSEk
+         tX6w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=9nv/gU1YFk3IEzxVXp+ajt3nGB2j/MGxPydW57eKpfM=;
+        b=tP8gOfwRRMfo/T4ZkF29xSHgcO5yZZBqpsiWk+7Xwb88kyIwOMnQiJhrjf/sfosFVG
+         vlWI7YycgMmQn/rJGDW/oyK7x0RlkqRVpHMwtr/TKCP6zcC6geLEFCTnRTIKBMHBBhYi
+         NX6w3PZCu9pzZHvvwZ3vBflSmKXArc79GKrr1Zv7FwkCVbCY5/8sJX6AnSwgsNAXXlga
+         37NchOIEyhxhTS4TGQ9MMVM6HQtSaAIzP5LiS4ro5+2pVIHqqmsokWBeANPC7Se6/Epg
+         mO1DTlZ2ER8VmCDRiWJ8AuuzsNPepbYuYRIR/5afLueLHURJFqwDsktsMy7j9QZt3hoY
+         yMnA==
+X-Gm-Message-State: AOAM5334mQzqsr4Uh0uFOlkddXRKKGxAJ3B/8eCFQl0Hyctx8CaH2sVB
+        zZegbJzHemTO4BadvnQ3f6s=
+X-Google-Smtp-Source: ABdhPJzGjYA4k797mLZ6hLfD7hQA/MmrvjqyzeuLKlsKpl+/J4fcQz0GQmPAJbPcEfOKH1z6OTEpmw==
+X-Received: by 2002:adf:d845:: with SMTP id k5mr9652147wrl.285.1601142368485;
+        Sat, 26 Sep 2020 10:46:08 -0700 (PDT)
+Received: from localhost.localdomain (cpc83661-brig20-2-0-cust443.3-3.cable.virginm.net. [82.28.105.188])
+        by smtp.gmail.com with ESMTPSA id a5sm7366001wrp.37.2020.09.26.10.46.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 26 Sep 2020 10:46:07 -0700 (PDT)
+From:   Alex Dewar <alex.dewar90@gmail.com>
+Cc:     Alex Dewar <alex.dewar90@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] wl3501_cs: Remove unnecessary NULL check
+Date:   Sat, 26 Sep 2020 18:45:58 +0100
+Message-Id: <20200926174558.9436-1-alex.dewar90@gmail.com>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-In order to reduce cpu cycles, enable hw beacon filter by default if the
-device is running offload fw
+In wl3501_detach(), link->priv is checked for a NULL value before being
+passed to free_netdev(). However, it cannot be NULL at this point as it
+has already been passed to other functions, so just remove the check.
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Addresses-Coverity: CID 710499: Null pointer dereferences (REVERSE_INULL)
+Signed-off-by: Alex Dewar <alex.dewar90@gmail.com>
 ---
- .../wireless/mediatek/mt76/mt7615/debugfs.c   |  9 +++-
- .../net/wireless/mediatek/mt76/mt7615/mac.c   | 43 -------------------
- .../net/wireless/mediatek/mt76/mt7615/main.c  | 26 ++---------
- .../net/wireless/mediatek/mt76/mt7615/mcu.c   | 29 ++++++++++---
- .../wireless/mediatek/mt76/mt7615/mt7615.h    |  3 +-
- 5 files changed, 35 insertions(+), 75 deletions(-)
+ drivers/net/wireless/wl3501_cs.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7615/debugfs.c
-index 00ba550fc48f..2eaf6e4529a8 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/debugfs.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/debugfs.c
-@@ -59,7 +59,14 @@ mt7615_pm_set(void *data, u64 val)
- 	if (!mt7615_wait_for_mcu_init(dev))
- 		return 0;
+diff --git a/drivers/net/wireless/wl3501_cs.c b/drivers/net/wireless/wl3501_cs.c
+index 4e7a2140649b..026e88b80bfc 100644
+--- a/drivers/net/wireless/wl3501_cs.c
++++ b/drivers/net/wireless/wl3501_cs.c
+@@ -1433,9 +1433,7 @@ static void wl3501_detach(struct pcmcia_device *link)
+ 	wl3501_release(link);
  
--	return mt7615_pm_set_enable(dev, val);
-+	if (!mt7615_firmware_offload(dev) || !mt76_is_mmio(&dev->mt76))
-+		return -EOPNOTSUPP;
-+
-+	mt7615_mutex_acquire(dev);
-+	dev->pm.enable = val;
-+	mt7615_mutex_release(dev);
-+
-+	return 0;
+ 	unregister_netdev(dev);
+-
+-	if (link->priv)
+-		free_netdev(link->priv);
++	free_netdev(dev);
  }
  
- static int
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-index 8dc645e398fd..40a34a5126e4 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-@@ -1969,49 +1969,6 @@ void mt7615_pm_power_save_work(struct work_struct *work)
- 	queue_delayed_work(dev->mt76.wq, &dev->pm.ps_work, delta);
- }
- 
--static void
--mt7615_pm_interface_iter(void *priv, u8 *mac, struct ieee80211_vif *vif)
--{
--	struct mt7615_phy *phy = priv;
--	struct mt7615_dev *dev = phy->dev;
--	bool ext_phy = phy != &dev->phy;
--
--	if (mt7615_mcu_set_bss_pm(dev, vif, dev->pm.enable))
--		return;
--
--	if (dev->pm.enable) {
--		vif->driver_flags |= IEEE80211_VIF_BEACON_FILTER;
--		mt76_set(dev, MT_WF_RFCR(ext_phy),
--			 MT_WF_RFCR_DROP_OTHER_BEACON);
--	} else {
--		vif->driver_flags &= ~IEEE80211_VIF_BEACON_FILTER;
--		mt76_clear(dev, MT_WF_RFCR(ext_phy),
--			   MT_WF_RFCR_DROP_OTHER_BEACON);
--	}
--}
--
--int mt7615_pm_set_enable(struct mt7615_dev *dev, bool enable)
--{
--	struct mt76_phy *mphy = dev->phy.mt76;
--
--	if (!mt7615_firmware_offload(dev) || !mt76_is_mmio(&dev->mt76))
--		return -EOPNOTSUPP;
--
--	mt7615_mutex_acquire(dev);
--
--	if (dev->pm.enable == enable)
--		goto out;
--
--	dev->pm.enable = enable;
--	ieee80211_iterate_active_interfaces(mphy->hw,
--					    IEEE80211_IFACE_ITER_RESUME_ALL,
--					    mt7615_pm_interface_iter, mphy->priv);
--out:
--	mt7615_mutex_release(dev);
--
--	return 0;
--}
--
- void mt7615_mac_work(struct work_struct *work)
- {
- 	struct mt7615_phy *phy;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/main.c b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-index 3186b7b2ca48..ab68997b7b43 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-@@ -211,15 +211,7 @@ static int mt7615_add_interface(struct ieee80211_hw *hw,
- 	if (ret)
- 		goto out;
- 
--	if (dev->pm.enable) {
--		ret = mt7615_mcu_set_bss_pm(dev, vif, true);
--		if (ret)
--			goto out;
--
--		vif->driver_flags |= IEEE80211_VIF_BEACON_FILTER;
--		mt76_set(dev, MT_WF_RFCR(ext_phy),
--			 MT_WF_RFCR_DROP_OTHER_BEACON);
--	}
-+	mt7615_mcu_set_bss_pm(phy, vif, true);
- out:
- 	mt7615_mutex_release(dev);
- 
-@@ -245,13 +237,6 @@ static void mt7615_remove_interface(struct ieee80211_hw *hw,
- 
- 	mt7615_free_pending_tx_skbs(dev, msta);
- 
--	if (dev->pm.enable) {
--		bool ext_phy = phy != &dev->phy;
--
--		mt7615_mcu_set_bss_pm(dev, vif, false);
--		mt76_clear(dev, MT_WF_RFCR(ext_phy),
--			   MT_WF_RFCR_DROP_OTHER_BEACON);
--	}
- 	mt7615_mcu_add_dev_info(dev, vif, false);
- 
- 	rcu_assign_pointer(dev->mt76.wcid[idx], NULL);
-@@ -511,7 +496,6 @@ static void mt7615_configure_filter(struct ieee80211_hw *hw,
- 	} while (0)
- 
- 	phy->rxfilter &= ~(MT_WF_RFCR_DROP_OTHER_BSS |
--			   MT_WF_RFCR_DROP_OTHER_BEACON |
- 			   MT_WF_RFCR_DROP_FRAME_REPORT |
- 			   MT_WF_RFCR_DROP_PROBEREQ |
- 			   MT_WF_RFCR_DROP_MCAST_FILTERED |
-@@ -521,6 +505,8 @@ static void mt7615_configure_filter(struct ieee80211_hw *hw,
- 			   MT_WF_RFCR_DROP_A2_BSSID |
- 			   MT_WF_RFCR_DROP_UNWANTED_CTL |
- 			   MT_WF_RFCR_DROP_STBC_MULTI);
-+	if (!mt7615_firmware_offload(dev))
-+		phy->rxfilter &= ~MT_WF_RFCR_DROP_OTHER_BEACON;
- 
- 	MT76_FILTER(OTHER_BSS, MT_WF_RFCR_DROP_OTHER_TIM |
- 			       MT_WF_RFCR_DROP_A3_MAC |
-@@ -1127,7 +1113,6 @@ static int mt7615_suspend(struct ieee80211_hw *hw,
- {
- 	struct mt7615_dev *dev = mt7615_hw_dev(hw);
- 	struct mt7615_phy *phy = mt7615_hw_phy(hw);
--	bool ext_phy = phy != &dev->phy;
- 	int err = 0;
- 
- 	cancel_delayed_work_sync(&dev->pm.ps_work);
-@@ -1139,8 +1124,6 @@ static int mt7615_suspend(struct ieee80211_hw *hw,
- 	cancel_delayed_work_sync(&phy->scan_work);
- 	cancel_delayed_work_sync(&phy->mac_work);
- 
--	mt76_set(dev, MT_WF_RFCR(ext_phy), MT_WF_RFCR_DROP_OTHER_BEACON);
--
- 	set_bit(MT76_STATE_SUSPEND, &phy->mt76->state);
- 	ieee80211_iterate_active_interfaces(hw,
- 					    IEEE80211_IFACE_ITER_RESUME_ALL,
-@@ -1158,7 +1141,7 @@ static int mt7615_resume(struct ieee80211_hw *hw)
- {
- 	struct mt7615_dev *dev = mt7615_hw_dev(hw);
- 	struct mt7615_phy *phy = mt7615_hw_phy(hw);
--	bool running, ext_phy = phy != &dev->phy;
-+	bool running;
- 
- 	mt7615_mutex_acquire(dev);
- 
-@@ -1182,7 +1165,6 @@ static int mt7615_resume(struct ieee80211_hw *hw)
- 
- 	ieee80211_queue_delayed_work(hw, &phy->mac_work,
- 				     MT7615_WATCHDOG_TIME);
--	mt76_clear(dev, MT_WF_RFCR(ext_phy), MT_WF_RFCR_DROP_OTHER_BEACON);
- 
- 	mt7615_mutex_release(dev);
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-index 8de9bba384f4..462299ca85c1 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-@@ -3499,7 +3499,7 @@ int mt7615_mcu_apply_tx_dpd(struct mt7615_phy *phy)
- 	return ret;
- }
- 
--int mt7615_mcu_set_bss_pm(struct mt7615_dev *dev, struct ieee80211_vif *vif,
-+int mt7615_mcu_set_bss_pm(struct mt7615_phy *phy, struct ieee80211_vif *vif,
- 			  bool enable)
- {
- 	struct mt7615_vif *mvif = (struct mt7615_vif *)vif->drv_priv;
-@@ -3525,19 +3525,36 @@ int mt7615_mcu_set_bss_pm(struct mt7615_dev *dev, struct ieee80211_vif *vif,
- 	} req_hdr = {
- 		.bss_idx = mvif->idx,
- 	};
-+	struct mt7615_dev *dev = phy->dev;
-+	bool ext_phy = phy != &dev->phy;
- 	int err;
- 
- 	if (vif->type != NL80211_IFTYPE_STATION ||
- 	    !mt7615_firmware_offload(dev))
--		return -ENOTSUPP;
-+		return -EOPNOTSUPP;
- 
- 	err = __mt76_mcu_send_msg(&dev->mt76, MCU_CMD_SET_BSS_ABORT,
- 				  &req_hdr, sizeof(req_hdr), false);
--	if (err < 0 || !enable)
-+	if (err < 0)
- 		return err;
- 
--	return __mt76_mcu_send_msg(&dev->mt76, MCU_CMD_SET_BSS_CONNECTED,
--				   &req, sizeof(req), false);
-+	if (enable) {
-+		err =  __mt76_mcu_send_msg(&dev->mt76,
-+					   MCU_CMD_SET_BSS_CONNECTED,
-+					   &req, sizeof(req), false);
-+		if (err < 0)
-+			return err;
-+
-+		vif->driver_flags |= IEEE80211_VIF_BEACON_FILTER;
-+		mt76_set(dev, MT_WF_RFCR(ext_phy),
-+			 MT_WF_RFCR_DROP_OTHER_BEACON);
-+	} else {
-+		vif->driver_flags &= ~IEEE80211_VIF_BEACON_FILTER;
-+		mt76_clear(dev, MT_WF_RFCR(ext_phy),
-+			   MT_WF_RFCR_DROP_OTHER_BEACON);
-+	}
-+
-+	return 0;
- }
- 
- #ifdef CONFIG_PM
-@@ -3743,8 +3760,6 @@ void mt7615_mcu_set_suspend_iter(void *priv, u8 *mac,
- 	struct cfg80211_wowlan *wowlan = hw->wiphy->wowlan_config;
- 	int i;
- 
--	mt7615_mcu_set_bss_pm(phy->dev, vif, suspend);
--
- 	mt7615_mcu_set_gtk_rekey(phy->dev, vif, suspend);
- 	mt7615_mcu_set_arp_filter(phy->dev, vif, suspend);
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
-index 716956b58c13..84ae6ee0ef75 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
-@@ -452,7 +452,6 @@ bool mt7615_wait_for_mcu_init(struct mt7615_dev *dev);
- void mt7615_mac_set_rates(struct mt7615_phy *phy, struct mt7615_sta *sta,
- 			  struct ieee80211_tx_rate *probe_rate,
- 			  struct ieee80211_tx_rate *rates);
--int mt7615_pm_set_enable(struct mt7615_dev *dev, bool enable);
- void mt7615_pm_wake_work(struct work_struct *work);
- int mt7615_pm_wake(struct mt7615_dev *dev);
- void mt7615_pm_power_save_sched(struct mt7615_dev *dev);
-@@ -651,7 +650,7 @@ int mt7615_mcu_set_roc(struct mt7615_phy *phy, struct ieee80211_vif *vif,
- int mt7615_init_debugfs(struct mt7615_dev *dev);
- int mt7615_mcu_wait_response(struct mt7615_dev *dev, int cmd, int seq);
- 
--int mt7615_mcu_set_bss_pm(struct mt7615_dev *dev, struct ieee80211_vif *vif,
-+int mt7615_mcu_set_bss_pm(struct mt7615_phy *phy, struct ieee80211_vif *vif,
- 			  bool enable);
- int mt7615_mcu_set_hif_suspend(struct mt7615_dev *dev, bool suspend);
- void mt7615_mcu_set_suspend_iter(void *priv, u8 *mac,
+ static int wl3501_get_name(struct net_device *dev, struct iw_request_info *info,
 -- 
-2.26.2
+2.28.0
 
