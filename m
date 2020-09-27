@@ -2,95 +2,110 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4EFF1279B8B
-	for <lists+linux-wireless@lfdr.de>; Sat, 26 Sep 2020 19:46:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C45E279FC4
+	for <lists+linux-wireless@lfdr.de>; Sun, 27 Sep 2020 10:47:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729889AbgIZRqL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 26 Sep 2020 13:46:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52396 "EHLO
+        id S1726210AbgI0Irw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 27 Sep 2020 04:47:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48578 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726316AbgIZRqK (ORCPT
+        with ESMTP id S1725208AbgI0Irw (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 26 Sep 2020 13:46:10 -0400
-Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFF16C0613CE;
-        Sat, 26 Sep 2020 10:46:09 -0700 (PDT)
-Received: by mail-wr1-x443.google.com with SMTP id s12so7304414wrw.11;
-        Sat, 26 Sep 2020 10:46:09 -0700 (PDT)
+        Sun, 27 Sep 2020 04:47:52 -0400
+Received: from mail-qv1-xf41.google.com (mail-qv1-xf41.google.com [IPv6:2607:f8b0:4864:20::f41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A977C0613CE
+        for <linux-wireless@vger.kernel.org>; Sun, 27 Sep 2020 01:47:52 -0700 (PDT)
+Received: by mail-qv1-xf41.google.com with SMTP id cv8so3854802qvb.12
+        for <linux-wireless@vger.kernel.org>; Sun, 27 Sep 2020 01:47:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=9nv/gU1YFk3IEzxVXp+ajt3nGB2j/MGxPydW57eKpfM=;
-        b=NLkmcx5c4XyG/S8wZ2CLwlcTTMyzHSrYy8MNlwbhY19F0eLA+32tVA+WhEpA+4pUIZ
-         xMPomFGEZ+L91ubW3I5riVmEtWSO2BkF6RrRMFq7TPrR2nCTonBuzczX+A7HD6AxfsuE
-         /CfzHeCtBFokXnKPISTkzFe0vyyY2iT2CGKSRX2AxAm4CgBViMpzkf73n+6bEqPVGb7l
-         uiF68D4+aw2StsIhh2JH8sTIzMy7nw55Wy+o65cc13Zt/cJ5HSUCteMpsRzz4q5arQ1C
-         +zcDtXT4csKgPd4f3FH5ZqL26RqYqR/VkcgflosraPio1EOUBpwY7CoKiwchAu1ovSEk
-         tX6w==
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=ODwlzQWcOfaqDNZSpV1mqnAk6uRjiK8SnzSar44eRbw=;
+        b=LvJAamSv+7BvcBWAMydenJG/DaSx+cw58grRAYkFa6ySCNBMKQrxTz+JLuz0iqeyL/
+         0yVd0d2OBeWJMM2dgxk++Rm53k+7ywqv+XSV3W9TWZoa4MgFlvcVuquXlVgZKFVM5Pt9
+         2PA/INI8zcKAA2Mtg0478T7Yqzd5aqF3goaGfmi49MvTZyeGk7BA9G/MSKSTqZlnFrX8
+         cpod1pqaKLquWpBUjoGXfliynuDys33Lab42TIyh+BX8OPvBkWq4697LzFQYlBXeGXkO
+         OA73oJeUNKNXQNQWWvvuMcCbsJSV5MUuyoA9DWVFYE4Kqip+lN4Oudcw9POrw1fbpzOU
+         kUUA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=9nv/gU1YFk3IEzxVXp+ajt3nGB2j/MGxPydW57eKpfM=;
-        b=tP8gOfwRRMfo/T4ZkF29xSHgcO5yZZBqpsiWk+7Xwb88kyIwOMnQiJhrjf/sfosFVG
-         vlWI7YycgMmQn/rJGDW/oyK7x0RlkqRVpHMwtr/TKCP6zcC6geLEFCTnRTIKBMHBBhYi
-         NX6w3PZCu9pzZHvvwZ3vBflSmKXArc79GKrr1Zv7FwkCVbCY5/8sJX6AnSwgsNAXXlga
-         37NchOIEyhxhTS4TGQ9MMVM6HQtSaAIzP5LiS4ro5+2pVIHqqmsokWBeANPC7Se6/Epg
-         mO1DTlZ2ER8VmCDRiWJ8AuuzsNPepbYuYRIR/5afLueLHURJFqwDsktsMy7j9QZt3hoY
-         yMnA==
-X-Gm-Message-State: AOAM5334mQzqsr4Uh0uFOlkddXRKKGxAJ3B/8eCFQl0Hyctx8CaH2sVB
-        zZegbJzHemTO4BadvnQ3f6s=
-X-Google-Smtp-Source: ABdhPJzGjYA4k797mLZ6hLfD7hQA/MmrvjqyzeuLKlsKpl+/J4fcQz0GQmPAJbPcEfOKH1z6OTEpmw==
-X-Received: by 2002:adf:d845:: with SMTP id k5mr9652147wrl.285.1601142368485;
-        Sat, 26 Sep 2020 10:46:08 -0700 (PDT)
-Received: from localhost.localdomain (cpc83661-brig20-2-0-cust443.3-3.cable.virginm.net. [82.28.105.188])
-        by smtp.gmail.com with ESMTPSA id a5sm7366001wrp.37.2020.09.26.10.46.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 26 Sep 2020 10:46:07 -0700 (PDT)
-From:   Alex Dewar <alex.dewar90@gmail.com>
-Cc:     Alex Dewar <alex.dewar90@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] wl3501_cs: Remove unnecessary NULL check
-Date:   Sat, 26 Sep 2020 18:45:58 +0100
-Message-Id: <20200926174558.9436-1-alex.dewar90@gmail.com>
-X-Mailer: git-send-email 2.28.0
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=ODwlzQWcOfaqDNZSpV1mqnAk6uRjiK8SnzSar44eRbw=;
+        b=nTp5hQasgvGCFT+D9eFfyziIPYjzg3+AKsvHcne4azpu+DicIGecn/KdG1vAxhyJZl
+         xaUm0JHkOOZhgnBVjyTC8/dWKRE26eqD5Lzhx9tMhtB+iai+dnwP0eo7aUQDJvhL0D0r
+         duyonKAmJ/33zagJxxpUlB2Rgbhuo5ZTNWRT/6z7BZOLNmNFXAOZqFc3FH5atr0uBlCc
+         xloRoMFUpqsk1AU71sJKWhFBHC45857tKMOCV2wdPzaxPSQ7vY/6t4Or5004l89SrgT3
+         HRZPw+tYdQUfpK79SVVsDsR4p5Loex7yIm3FlGDtoLHUDN1FtMlY1XOsMysz+Ywn5O35
+         qOFA==
+X-Gm-Message-State: AOAM533wgj377P2g7HGt1Ct48yWvrT9cE74j6DeQt0EHK2oSkqss9dFb
+        y7zm0p4AWmPHiNtHwM2CFkCA/TM/oNn5KkI5CNl5mg==
+X-Google-Smtp-Source: ABdhPJw188JTXwzSAN/+U/mG0jI4jTVdudWEMyvmSDGiYPDH8EF4khjhEXu/Ik4+q9lbQY7nWcOizKPwvcgDYFC/kqM=
+X-Received: by 2002:a05:6214:222:: with SMTP id j2mr6991968qvt.32.1601196470804;
+ Sun, 27 Sep 2020 01:47:50 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-To:     unlisted-recipients:; (no To-header on input)
+References: <000000000000bbdb3b05b0477890@google.com>
+In-Reply-To: <000000000000bbdb3b05b0477890@google.com>
+From:   Dmitry Vyukov <dvyukov@google.com>
+Date:   Sun, 27 Sep 2020 10:47:39 +0200
+Message-ID: <CACT4Y+arc_qxVnb1+FZUzEM32eDBe7zYgZhcSCgyMUMwKkkeDw@mail.gmail.com>
+Subject: Re: WARNING: CPU: 1
+To:     syzbot <syzbot+3640e696903873858f7e@syzkaller.appspotmail.com>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>,
+        syzkaller-bugs <syzkaller-bugs@googlegroups.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless <linux-wireless@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-In wl3501_detach(), link->priv is checked for a NULL value before being
-passed to free_netdev(). However, it cannot be NULL at this point as it
-has already been passed to other functions, so just remove the check.
+On Sun, Sep 27, 2020 at 10:38 AM syzbot
+<syzbot+3640e696903873858f7e@syzkaller.appspotmail.com> wrote:
+>
+> Hello,
+>
+> syzbot found the following issue on:
+>
+> HEAD commit:    748d1c8a Merge branch 'devlink-Use-nla_policy-to-validate-..
+> git tree:       net-next
+> console output: https://syzkaller.appspot.com/x/log.txt?x=13ac3ec3900000
+> kernel config:  https://syzkaller.appspot.com/x/.config?x=51fb40e67d1e3dec
+> dashboard link: https://syzkaller.appspot.com/bug?extid=3640e696903873858f7e
+> compiler:       gcc (GCC) 10.1.0-syz 20200507
+> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=1599be03900000
+> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=149fd44b900000
 
-Addresses-Coverity: CID 710499: Null pointer dereferences (REVERSE_INULL)
-Signed-off-by: Alex Dewar <alex.dewar90@gmail.com>
----
- drivers/net/wireless/wl3501_cs.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+Based on the reproducer, this looks like some wireless bug.
++net/wireless maintainers.
 
-diff --git a/drivers/net/wireless/wl3501_cs.c b/drivers/net/wireless/wl3501_cs.c
-index 4e7a2140649b..026e88b80bfc 100644
---- a/drivers/net/wireless/wl3501_cs.c
-+++ b/drivers/net/wireless/wl3501_cs.c
-@@ -1433,9 +1433,7 @@ static void wl3501_detach(struct pcmcia_device *link)
- 	wl3501_release(link);
- 
- 	unregister_netdev(dev);
--
--	if (link->priv)
--		free_netdev(link->priv);
-+	free_netdev(dev);
- }
- 
- static int wl3501_get_name(struct net_device *dev, struct iw_request_info *info,
--- 
-2.28.0
-
+> Bisection is inconclusive: the issue happens on the oldest tested release.
+>
+> bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=1474aaad900000
+> final oops:     https://syzkaller.appspot.com/x/report.txt?x=1674aaad900000
+> console output: https://syzkaller.appspot.com/x/log.txt?x=1274aaad900000
+>
+> IMPORTANT: if you fix the issue, please add the following tag to the commit:
+> Reported-by: syzbot+3640e696903873858f7e@syzkaller.appspotmail.com
+>
+> ------------[ cut here ]------------
+> WARNING: CPU: 1
+>
+>
+> ---
+> This report is generated by a bot. It may contain errors.
+> See https://goo.gl/tpsmEJ for more information about syzbot.
+> syzbot engineers can be reached at syzkaller@googlegroups.com.
+>
+> syzbot will keep track of this issue. See:
+> https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+> For information about bisection process see: https://goo.gl/tpsmEJ#bisection
+> syzbot can test patches for this issue, for details see:
+> https://goo.gl/tpsmEJ#testing-patches
+>
+> --
+> You received this message because you are subscribed to the Google Groups "syzkaller-bugs" group.
+> To unsubscribe from this group and stop receiving emails from it, send an email to syzkaller-bugs+unsubscribe@googlegroups.com.
+> To view this discussion on the web visit https://groups.google.com/d/msgid/syzkaller-bugs/000000000000bbdb3b05b0477890%40google.com.
