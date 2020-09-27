@@ -2,55 +2,56 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4501227A321
-	for <lists+linux-wireless@lfdr.de>; Sun, 27 Sep 2020 22:00:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F87727A324
+	for <lists+linux-wireless@lfdr.de>; Sun, 27 Sep 2020 22:00:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726923AbgI0T5S (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 27 Sep 2020 15:57:18 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:40678 "EHLO
+        id S1726984AbgI0T5U (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 27 Sep 2020 15:57:20 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:40808 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726869AbgI0T5N (ORCPT
+        with ESMTP id S1726876AbgI0T5Q (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 27 Sep 2020 15:57:13 -0400
-Message-Id: <20200927194920.214592677@linutronix.de>
+        Sun, 27 Sep 2020 15:57:16 -0400
+Message-Id: <20200927194920.437625772@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1601236630;
+        s=2020; t=1601236633;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:  references:references;
-        bh=9orafjgYKDlDKEG62n274dWmcmLVLFnX3OlrGfMTV/Q=;
-        b=vuP6S8UXSfNxWHGc7Yb2QTKmLAxUiHJyEitt9UbeznGeTfFpoA4hIKR0wXAjx9ERlKFh9W
-        B3bju1K9kWHZBkDD4J7eFPdctXUZRyh96hhl3Tx1GvWD8Y/XyJWWryMdeorFYWMQDKrTL5
-        kqEzzHZXGSW+yc33fKh0Hu2PgYS+NeHki6h+C1HvVyfClaaDmUPPyP0mJ9LvLSPNglIAuo
-        ijVHzC9fe4+qCIeoRmB8/Z/YabntsJvY9IgF8P8zl9mXgHpPjJZSKLDCF9g88NWv4FcmbF
-        /sN3MaPfnUFBZt+Ua6vxU4jIFoZjJgzrGe8Wmt35MCdWxPI91VOXLcu/jEI4vQ==
+        bh=Nr+HwxG8LNdSmT94mAamQPUuBl65nafz2ip56wkroJ0=;
+        b=KbehhohWE2i0RJJ/I4NPEnvmzRPqQAwTJ9c795tOfUYyQoKJ1QT3SZdKrdNNY0yFoQZY5H
+        Rriou1lrgdkocgTrlrPnbRpu2IiQc+I5ybI6hf2y7FJRJcxRW5lXQHWE+ZqgBQ4Gx1gEah
+        5saPaD1AeNCkcvophqbUNF8e2L8NxLUVk06WFGvAnnSUjwvOcPQF6o5IFK7xzNa2Zpd2CI
+        1QxIChyN4I5dHa9UKRW1gAOgIToLg11A14tDhL7jtoBH5ee30muaiSywjrjn9wpIOOFvs3
+        EWQvhHRwO8Eh7ZInAnN71OVEM2pAMgf15hno4dnlQd53rMB2TtDg6/qVcLJJDg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1601236630;
+        s=2020e; t=1601236633;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:  references:references;
-        bh=9orafjgYKDlDKEG62n274dWmcmLVLFnX3OlrGfMTV/Q=;
-        b=LxBnZ/3kK2Kn1E01Ma+vj2UE6c25FltAkOE1MjniUMmLf0trqgyT+SHySRxbhxfte+GZQe
-        x6hYcFF/6UZwDWAA==
-Date:   Sun, 27 Sep 2020 21:48:50 +0200
+        bh=Nr+HwxG8LNdSmT94mAamQPUuBl65nafz2ip56wkroJ0=;
+        b=cWc0Cj3hMdO2yBy/o5JKdrFUXDXwIiJqV12pCuzu1xmC2epM8ctXhUBINnzLyDh82L8Iox
+        bnLfDgsDy3FKXbDw==
+Date:   Sun, 27 Sep 2020 21:48:52 +0200
 From:   Thomas Gleixner <tglx@linutronix.de>
 To:     LKML <linux-kernel@vger.kernel.org>
 Cc:     Peter Zijlstra <peterz@infradead.org>,
         Linus Torvalds <torvalds@linuxfoundation.org>,
         Paul McKenney <paulmck@kernel.org>,
         Matthew Wilcox <willy@infradead.org>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Vishal Kulkarni <vishal@chelsio.com>,
         "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Luc Van Oostenryck <luc.vanoostenryck@gmail.com>,
-        netdev@vger.kernel.org, Christian Benvenuti <benve@cisco.com>,
+        Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
+        Christian Benvenuti <benve@cisco.com>,
         Govindarajulu Varadarajan <_govind@gmx.com>,
         Dave Miller <davem@davemloft.net>,
         Jonathan Corbet <corbet@lwn.net>,
         Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        linux-doc@vger.kernel.org, Jay Cliburn <jcliburn@gmail.com>,
+        linux-doc@vger.kernel.org,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Luc Van Oostenryck <luc.vanoostenryck@gmail.com>,
+        Jay Cliburn <jcliburn@gmail.com>,
         Chris Snook <chris.snook@gmail.com>,
-        Vishal Kulkarni <vishal@chelsio.com>,
         Jeff Kirsher <jeffrey.t.kirsher@intel.com>,
         intel-wired-lan@lists.osuosl.org,
         Shannon Nelson <snelson@pensando.io>,
@@ -87,7 +88,7 @@ Cc:     Peter Zijlstra <peterz@infradead.org>,
         libertas-dev@lists.infradead.org,
         Pascal Terjan <pterjan@google.com>,
         Ping-Ke Shih <pkshih@realtek.com>
-Subject: [patch 04/35] net: caif: Use netif_rx_any_context()
+Subject: [patch 06/35] net: cxgb3: Cleanup in_interrupt() usage
 References: <20200927194846.045411263@linutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -96,65 +97,115 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-The usage of in_interrupt() in non-core code is phased out. Ideally the
-information of the calling context should be passed by the callers or the
-functions be split as appropriate.
+t3_sge_stop() is called from task context and from error handlers in
+interrupt context. It relies on in_interrupt() to differentiate the
+contexts.
 
-cfhsi_rx_desc() and cfhsi_rx_pld() use in_interrupt() to distinguish if
-they should use netif_rx() or netif_rx_ni() for receiving packets.
+in_interrupt() is deprecated as it is ill defined and does not provide what
+it suggests.
 
-The attempt to consolidate the code by passing an arguemnt or by
-distangling it failed due lack of knowledge about this driver and because
-the call chains are hard to follow.
+Instead of replacing it with some other construct, simply split the
+function into t3_sge_stop_dma(), which can be called from any context, and
+t3_sge_stop() which can be only called from task context.
 
-As a stop gap use netif_rx_any_context() which invokes the correct code path
-depending on context and confines the in_interrupt() usage to core code.
+This has the advantage that any bogus invocation of t3_sge_stop() from
+wrong contexts can be caught by debug kernels instead of being papered over
+by the conditional.
 
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: Vishal Kulkarni <vishal@chelsio.com>
 Cc: "David S. Miller" <davem@davemloft.net>
 Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Luc Van Oostenryck <luc.vanoostenryck@gmail.com>
 Cc: netdev@vger.kernel.org
----
- drivers/net/caif/caif_hsi.c |   19 ++-----------------
- 1 file changed, 2 insertions(+), 17 deletions(-)
+Cc: linux-kernel@vger.kernel.org
 
---- a/drivers/net/caif/caif_hsi.c
-+++ b/drivers/net/caif/caif_hsi.c
-@@ -458,15 +458,7 @@ static int cfhsi_rx_desc(struct cfhsi_de
- 		skb_reset_mac_header(skb);
- 		skb->dev = cfhsi->ndev;
+---
+ drivers/net/ethernet/chelsio/cxgb3/adapter.h    |    1 
+ drivers/net/ethernet/chelsio/cxgb3/cxgb3_main.c |    2 -
+ drivers/net/ethernet/chelsio/cxgb3/sge.c        |   44 ++++++++++++++----------
+ 3 files changed, 29 insertions(+), 18 deletions(-)
+
+--- a/drivers/net/ethernet/chelsio/cxgb3/adapter.h
++++ b/drivers/net/ethernet/chelsio/cxgb3/adapter.h
+@@ -313,6 +313,7 @@ void t3_os_link_fault(struct adapter *ad
+ void t3_os_link_fault_handler(struct adapter *adapter, int port_id);
  
--		/*
--		 * We are in a callback handler and
--		 * unfortunately we don't know what context we're
--		 * running in.
--		 */
--		if (in_interrupt())
--			netif_rx(skb);
--		else
--			netif_rx_ni(skb);
-+		netif_rx_any_context(skb);
+ void t3_sge_start(struct adapter *adap);
++void t3_sge_stop_dma(struct adapter *adap);
+ void t3_sge_stop(struct adapter *adap);
+ void t3_start_sge_timers(struct adapter *adap);
+ void t3_stop_sge_timers(struct adapter *adap);
+--- a/drivers/net/ethernet/chelsio/cxgb3/cxgb3_main.c
++++ b/drivers/net/ethernet/chelsio/cxgb3/cxgb3_main.c
+@@ -2996,7 +2996,7 @@ void t3_fatal_err(struct adapter *adapte
+ 	unsigned int fw_status[4];
  
- 		/* Update network statistics. */
- 		cfhsi->ndev->stats.rx_packets++;
-@@ -587,14 +579,7 @@ static int cfhsi_rx_pld(struct cfhsi_des
- 		skb_reset_mac_header(skb);
- 		skb->dev = cfhsi->ndev;
+ 	if (adapter->flags & FULL_INIT_DONE) {
+-		t3_sge_stop(adapter);
++		t3_sge_stop_dma(adapter);
+ 		t3_write_reg(adapter, A_XGM_TX_CTRL, 0);
+ 		t3_write_reg(adapter, A_XGM_RX_CTRL, 0);
+ 		t3_write_reg(adapter, XGM_REG(A_XGM_TX_CTRL, 1), 0);
+--- a/drivers/net/ethernet/chelsio/cxgb3/sge.c
++++ b/drivers/net/ethernet/chelsio/cxgb3/sge.c
+@@ -3271,30 +3271,40 @@ void t3_sge_start(struct adapter *adap)
+ }
  
--		/*
--		 * We're called in callback from HSI
--		 * and don't know the context we're running in.
--		 */
--		if (in_interrupt())
--			netif_rx(skb);
--		else
--			netif_rx_ni(skb);
-+		netif_rx_any_context(skb);
+ /**
+- *	t3_sge_stop - disable SGE operation
++ *	t3_sge_stop_dma - Disable SGE DMA engine operation
+  *	@adap: the adapter
+  *
+- *	Disables the DMA engine.  This can be called in emeregencies (e.g.,
+- *	from error interrupts) or from normal process context.  In the latter
+- *	case it also disables any pending queue restart tasklets.  Note that
+- *	if it is called in interrupt context it cannot disable the restart
+- *	tasklets as it cannot wait, however the tasklets will have no effect
+- *	since the doorbells are disabled and the driver will call this again
+- *	later from process context, at which time the tasklets will be stopped
+- *	if they are still running.
++ *	Can be invoked from interrupt context e.g.  error handler.
++ *
++ *	Note that this function cannot disable the restart of tasklets as
++ *	it cannot wait if called from interrupt context, however the
++ *	tasklets will have no effect since the doorbells are disabled. The
++ *	driver will call tg3_sge_stop() later from process context, at
++ *	which time the tasklets will be stopped if they are still running.
+  */
+-void t3_sge_stop(struct adapter *adap)
++void t3_sge_stop_dma(struct adapter *adap)
+ {
+ 	t3_set_reg_field(adap, A_SG_CONTROL, F_GLOBALENABLE, 0);
+-	if (!in_interrupt()) {
+-		int i;
++}
++
++/**
++ *	t3_sge_stop - disable SGE operation completly
++ *	@adap: the adapter
++ *
++ *	Called from process context. Disables the DMA engine and any
++ *	pending queue restart tasklets.
++ */
++void t3_sge_stop(struct adapter *adap)
++{
++	int i;
++
++	t3_sge_stop_dma(adap);
  
- 		/* Update network statistics. */
- 		cfhsi->ndev->stats.rx_packets++;
+-		for (i = 0; i < SGE_QSETS; ++i) {
+-			struct sge_qset *qs = &adap->sge.qs[i];
++	for (i = 0; i < SGE_QSETS; ++i) {
++		struct sge_qset *qs = &adap->sge.qs[i];
+ 
+-			tasklet_kill(&qs->txq[TXQ_OFLD].qresume_tsk);
+-			tasklet_kill(&qs->txq[TXQ_CTRL].qresume_tsk);
+-		}
++		tasklet_kill(&qs->txq[TXQ_OFLD].qresume_tsk);
++		tasklet_kill(&qs->txq[TXQ_CTRL].qresume_tsk);
+ 	}
+ }
+ 
 
