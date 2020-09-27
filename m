@@ -2,110 +2,122 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C45E279FC4
-	for <lists+linux-wireless@lfdr.de>; Sun, 27 Sep 2020 10:47:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A8C2C27A08B
+	for <lists+linux-wireless@lfdr.de>; Sun, 27 Sep 2020 12:56:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726210AbgI0Irw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 27 Sep 2020 04:47:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48578 "EHLO
+        id S1726255AbgI0K4L (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 27 Sep 2020 06:56:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40052 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725208AbgI0Irw (ORCPT
+        with ESMTP id S1726185AbgI0K4L (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 27 Sep 2020 04:47:52 -0400
-Received: from mail-qv1-xf41.google.com (mail-qv1-xf41.google.com [IPv6:2607:f8b0:4864:20::f41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A977C0613CE
-        for <linux-wireless@vger.kernel.org>; Sun, 27 Sep 2020 01:47:52 -0700 (PDT)
-Received: by mail-qv1-xf41.google.com with SMTP id cv8so3854802qvb.12
-        for <linux-wireless@vger.kernel.org>; Sun, 27 Sep 2020 01:47:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=ODwlzQWcOfaqDNZSpV1mqnAk6uRjiK8SnzSar44eRbw=;
-        b=LvJAamSv+7BvcBWAMydenJG/DaSx+cw58grRAYkFa6ySCNBMKQrxTz+JLuz0iqeyL/
-         0yVd0d2OBeWJMM2dgxk++Rm53k+7ywqv+XSV3W9TWZoa4MgFlvcVuquXlVgZKFVM5Pt9
-         2PA/INI8zcKAA2Mtg0478T7Yqzd5aqF3goaGfmi49MvTZyeGk7BA9G/MSKSTqZlnFrX8
-         cpod1pqaKLquWpBUjoGXfliynuDys33Lab42TIyh+BX8OPvBkWq4697LzFQYlBXeGXkO
-         OA73oJeUNKNXQNQWWvvuMcCbsJSV5MUuyoA9DWVFYE4Kqip+lN4Oudcw9POrw1fbpzOU
-         kUUA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=ODwlzQWcOfaqDNZSpV1mqnAk6uRjiK8SnzSar44eRbw=;
-        b=nTp5hQasgvGCFT+D9eFfyziIPYjzg3+AKsvHcne4azpu+DicIGecn/KdG1vAxhyJZl
-         xaUm0JHkOOZhgnBVjyTC8/dWKRE26eqD5Lzhx9tMhtB+iai+dnwP0eo7aUQDJvhL0D0r
-         duyonKAmJ/33zagJxxpUlB2Rgbhuo5ZTNWRT/6z7BZOLNmNFXAOZqFc3FH5atr0uBlCc
-         xloRoMFUpqsk1AU71sJKWhFBHC45857tKMOCV2wdPzaxPSQ7vY/6t4Or5004l89SrgT3
-         HRZPw+tYdQUfpK79SVVsDsR4p5Loex7yIm3FlGDtoLHUDN1FtMlY1XOsMysz+Ywn5O35
-         qOFA==
-X-Gm-Message-State: AOAM533wgj377P2g7HGt1Ct48yWvrT9cE74j6DeQt0EHK2oSkqss9dFb
-        y7zm0p4AWmPHiNtHwM2CFkCA/TM/oNn5KkI5CNl5mg==
-X-Google-Smtp-Source: ABdhPJw188JTXwzSAN/+U/mG0jI4jTVdudWEMyvmSDGiYPDH8EF4khjhEXu/Ik4+q9lbQY7nWcOizKPwvcgDYFC/kqM=
-X-Received: by 2002:a05:6214:222:: with SMTP id j2mr6991968qvt.32.1601196470804;
- Sun, 27 Sep 2020 01:47:50 -0700 (PDT)
+        Sun, 27 Sep 2020 06:56:11 -0400
+Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6315C0613CE
+        for <linux-wireless@vger.kernel.org>; Sun, 27 Sep 2020 03:56:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject
+        :Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=8iDKmD/kp2M4ohOM6k3/iDqtrdLyy3ZbxZcGIscT4E8=; b=nPHJCNNcOap30N5fp+36pJMVIv
+        HgYn8t7JBiEphY8h0ubzAn2b+SXwBFvk+7G+E38HBzFIumgoSrZbiFlv47ln46+5Xyc5HDGY33eBt
+        95Q4oGjWTSMJp4qe0KukstPxX3D6WUVdanT5JRw46LgQIJDxQx74CtlJfuBdWwN5FwEM=;
+Received: from p4ff134da.dip0.t-ipconnect.de ([79.241.52.218] helo=localhost.localdomain)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_CBC_SHA1:128)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1kMULe-0007DK-Rw; Sun, 27 Sep 2020 12:56:06 +0200
+From:   Felix Fietkau <nbd@nbd.name>
+To:     linux-wireless@vger.kernel.org
+Cc:     johannes@sipsolutions.net, Georgi Valkov <gvalkov@abv.bg>
+Subject: [PATCH v3] mac80211: fix regression in sta connection monitor
+Date:   Sun, 27 Sep 2020 12:56:05 +0200
+Message-Id: <20200927105605.97954-1-nbd@nbd.name>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
-References: <000000000000bbdb3b05b0477890@google.com>
-In-Reply-To: <000000000000bbdb3b05b0477890@google.com>
-From:   Dmitry Vyukov <dvyukov@google.com>
-Date:   Sun, 27 Sep 2020 10:47:39 +0200
-Message-ID: <CACT4Y+arc_qxVnb1+FZUzEM32eDBe7zYgZhcSCgyMUMwKkkeDw@mail.gmail.com>
-Subject: Re: WARNING: CPU: 1
-To:     syzbot <syzbot+3640e696903873858f7e@syzkaller.appspotmail.com>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>,
-        syzkaller-bugs <syzkaller-bugs@googlegroups.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless <linux-wireless@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sun, Sep 27, 2020 at 10:38 AM syzbot
-<syzbot+3640e696903873858f7e@syzkaller.appspotmail.com> wrote:
->
-> Hello,
->
-> syzbot found the following issue on:
->
-> HEAD commit:    748d1c8a Merge branch 'devlink-Use-nla_policy-to-validate-..
-> git tree:       net-next
-> console output: https://syzkaller.appspot.com/x/log.txt?x=13ac3ec3900000
-> kernel config:  https://syzkaller.appspot.com/x/.config?x=51fb40e67d1e3dec
-> dashboard link: https://syzkaller.appspot.com/bug?extid=3640e696903873858f7e
-> compiler:       gcc (GCC) 10.1.0-syz 20200507
-> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=1599be03900000
-> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=149fd44b900000
+When a frame was acked and probe frames were sent, the connection monitoring
+needs to be reset, otherwise it will keep probing until the connection is
+considered dead, even though frames have been acked in the mean time.
 
-Based on the reproducer, this looks like some wireless bug.
-+net/wireless maintainers.
+Fixes: 9abf4e49830d ("mac80211: optimize station connection monitor")
+Reported-by: Georgi Valkov <gvalkov@abv.bg>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+---
+v3: only queue work on nullfunc frames status
+v2: reset connection monitor when a frame was acked (not just for nulldata)
 
-> Bisection is inconclusive: the issue happens on the oldest tested release.
->
-> bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=1474aaad900000
-> final oops:     https://syzkaller.appspot.com/x/report.txt?x=1674aaad900000
-> console output: https://syzkaller.appspot.com/x/log.txt?x=1274aaad900000
->
-> IMPORTANT: if you fix the issue, please add the following tag to the commit:
-> Reported-by: syzbot+3640e696903873858f7e@syzkaller.appspotmail.com
->
-> ------------[ cut here ]------------
-> WARNING: CPU: 1
->
->
-> ---
-> This report is generated by a bot. It may contain errors.
-> See https://goo.gl/tpsmEJ for more information about syzbot.
-> syzbot engineers can be reached at syzkaller@googlegroups.com.
->
-> syzbot will keep track of this issue. See:
-> https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-> For information about bisection process see: https://goo.gl/tpsmEJ#bisection
-> syzbot can test patches for this issue, for details see:
-> https://goo.gl/tpsmEJ#testing-patches
->
-> --
-> You received this message because you are subscribed to the Google Groups "syzkaller-bugs" group.
-> To unsubscribe from this group and stop receiving emails from it, send an email to syzkaller-bugs+unsubscribe@googlegroups.com.
-> To view this discussion on the web visit https://groups.google.com/d/msgid/syzkaller-bugs/000000000000bbdb3b05b0477890%40google.com.
+ net/mac80211/mlme.c   |  4 +++-
+ net/mac80211/status.c | 16 ++++++++++++----
+ 2 files changed, 15 insertions(+), 5 deletions(-)
+
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index 50a9b9025725..7c04d8e30482 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -2508,7 +2508,9 @@ void ieee80211_sta_tx_notify(struct ieee80211_sub_if_data *sdata,
+ 	    !sdata->u.mgd.probe_send_count)
+ 		return;
+ 
+-	if (!ack)
++	if (ack)
++		sdata->u.mgd.probe_send_count = 0;
++	else
+ 		sdata->u.mgd.nullfunc_failed = true;
+ 	ieee80211_queue_work(&sdata->local->hw, &sdata->work);
+ }
+diff --git a/net/mac80211/status.c b/net/mac80211/status.c
+index 7fe5bececfd9..88a736f3c413 100644
+--- a/net/mac80211/status.c
++++ b/net/mac80211/status.c
+@@ -982,10 +982,6 @@ static void __ieee80211_tx_status(struct ieee80211_hw *hw,
+ 		if (!(info->flags & IEEE80211_TX_CTL_INJECTED) && acked)
+ 			ieee80211_frame_acked(sta, skb);
+ 
+-		if ((sta->sdata->vif.type == NL80211_IFTYPE_STATION) &&
+-		    ieee80211_hw_check(&local->hw, REPORTS_TX_ACK_STATUS))
+-			ieee80211_sta_tx_notify(sta->sdata, (void *) skb->data,
+-						acked, info->status.tx_time);
+ 	}
+ 
+ 	/* SNMP counters
+@@ -1120,11 +1116,18 @@ void ieee80211_tx_status_ext(struct ieee80211_hw *hw,
+ 	noack_success = !!(info->flags & IEEE80211_TX_STAT_NOACK_TRANSMITTED);
+ 
+ 	if (pubsta) {
++		struct ieee80211_sub_if_data *sdata = sta->sdata;
++
+ 		if (!acked && !noack_success)
+ 			sta->status_stats.retry_failed++;
+ 		sta->status_stats.retry_count += retry_count;
+ 
+ 		if (ieee80211_hw_check(&local->hw, REPORTS_TX_ACK_STATUS)) {
++			if (sdata->vif.type == NL80211_IFTYPE_STATION &&
++			    skb && !(info->flags & IEEE80211_TX_CTL_HW_80211_ENCAP))
++				ieee80211_sta_tx_notify(sdata, (void *) skb->data,
++							acked, info->status.tx_time);
++
+ 			if (acked) {
+ 				sta->status_stats.last_ack = jiffies;
+ 
+@@ -1134,6 +1137,11 @@ void ieee80211_tx_status_ext(struct ieee80211_hw *hw,
+ 				/* Track when last packet was ACKed */
+ 				sta->status_stats.last_pkt_time = jiffies;
+ 
++				/* Reset connection monitor */
++				if (sdata->vif.type == NL80211_IFTYPE_STATION &&
++				    unlikely(sdata->u.mgd.probe_send_count > 0))
++					sdata->u.mgd.probe_send_count = 0;
++
+ 				if (info->status.is_valid_ack_signal) {
+ 					sta->status_stats.last_ack_signal =
+ 							 (s8)info->status.ack_signal;
+-- 
+2.28.0
+
