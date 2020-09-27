@@ -2,198 +2,194 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8148927A291
-	for <lists+linux-wireless@lfdr.de>; Sun, 27 Sep 2020 21:25:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EF70327A310
+	for <lists+linux-wireless@lfdr.de>; Sun, 27 Sep 2020 21:56:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726424AbgI0TZb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 27 Sep 2020 15:25:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33650 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726239AbgI0TZ0 (ORCPT
+        id S1726753AbgI0T4G (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 27 Sep 2020 15:56:06 -0400
+Received: from mail3-relais-sop.national.inria.fr ([192.134.164.104]:10039
+        "EHLO mail3-relais-sop.national.inria.fr" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726369AbgI0TzS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 27 Sep 2020 15:25:26 -0400
-Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com [IPv6:2a00:1450:4864:20::441])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D803C0613CE;
-        Sun, 27 Sep 2020 12:25:26 -0700 (PDT)
-Received: by mail-wr1-x441.google.com with SMTP id k15so9481618wrn.10;
-        Sun, 27 Sep 2020 12:25:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=Fj+MqTYC2iAIS+M4K2lQDTVvuS3lB9CWfLhIHCjPtgo=;
-        b=Y9sVAaoeGa0WsUiyIrpAozyW1HjT50dHQRSgxJ9iEx2LORKlf/MCPTGO5gHwkA9+o2
-         L0Bt3H8F8wCAxqHKLMzeHoOIAnxr/Ka4ueyWwDBS8feKPbG1+/hLXVmURoK3yV5d4rYb
-         AvKTn+9YJbAXNTUzr/bYNykUXeZmpmkXUBPR1Vah7jOLQACS87+169Ow2OeJRyUP0+iE
-         pIYxMbLWWYhkxBUq5xzInjxJh00fcEKa6BwqwAO+qys5hXPx9hAju1behnUWvWQM4MU6
-         g/n/+gkdtQrKvKP09mXC5M3Y4O2C+pwgkJ4oZfHJkQQQybrdpsHBG6Qy35U75104xi6s
-         DvLA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=Fj+MqTYC2iAIS+M4K2lQDTVvuS3lB9CWfLhIHCjPtgo=;
-        b=PB/3TxWTnRKaI3pfeGpEa3IuzagCcYlUqkMciKOTFrxEZf2GdjulSHxcqDbwBHPdQt
-         HrL0q0naLUjNBczhoV9DSyK+NVzcmT4PPsneHgPypd4dUY2jGX2yOl3d5MZPEZKE/wk6
-         yrDggJ2ktbOBPjF5BbHz3Wdib7S7sJQz9FGXvCci0yP3StReoqI9C4D1rq42FIV9oq7s
-         gMuduNuP4KFayvlEHzLK8xd1Dfy9XMlla6sN2yaqlZORemdVvXrI6qDRGl+GGtyj1iDc
-         ZVQ753bl0JLMQv8OoxsP/eRSNb7mfZ2usS1uj/YeKnUYiosPn0aF2SX13T/mizzmBP55
-         NiQA==
-X-Gm-Message-State: AOAM531MIMJEO9b/6QYiJl6AI0cLOH7YE1hBAQ4ROuoYDuwzyRXJoVHl
-        x+cFZvYCaXEB3bFeTLi0vPY=
-X-Google-Smtp-Source: ABdhPJztFmpDvpI3aRkkIdSznkGAV72myWBuX/0vmVtKZgeNuymlmR/GrI/gMu+xnRoky9GFyVMiSQ==
-X-Received: by 2002:a5d:60cc:: with SMTP id x12mr14995784wrt.84.1601234724930;
-        Sun, 27 Sep 2020 12:25:24 -0700 (PDT)
-Received: from Ansuel-XPS.localdomain (93-39-149-95.ip76.fastwebnet.it. [93.39.149.95])
-        by smtp.googlemail.com with ESMTPSA id w21sm6398106wmk.34.2020.09.27.12.25.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 27 Sep 2020 12:25:24 -0700 (PDT)
-From:   Ansuel Smith <ansuelsmth@gmail.com>
-To:     "0001-ath10k-Try-to-get-mac-address-from-dts . patchKalle Valo" 
-        <kvalo@codeaurora.org>
-Cc:     Ansuel Smith <ansuelsmth@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, ath10k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH 2/2] ath10k: Try to download pre-cal using nvmem api
-Date:   Sun, 27 Sep 2020 21:25:14 +0200
-Message-Id: <20200927192515.86-2-ansuelsmth@gmail.com>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20200927192515.86-1-ansuelsmth@gmail.com>
-References: <20200927192515.86-1-ansuelsmth@gmail.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        Sun, 27 Sep 2020 15:55:18 -0400
+X-IronPort-AV: E=Sophos;i="5.77,311,1596492000"; 
+   d="scan'208";a="360169486"
+Received: from palace.rsr.lip6.fr (HELO palace.lip6.fr) ([132.227.105.202])
+  by mail3-relais-sop.national.inria.fr with ESMTP/TLS/AES256-SHA256; 27 Sep 2020 21:55:11 +0200
+From:   Julia Lawall <Julia.Lawall@inria.fr>
+To:     linux-iio@vger.kernel.org
+Cc:     =?UTF-8?q?Valdis=20Kl=C4=93tnieks?= <valdis.kletnieks@vt.edu>,
+        Joe Perches <joe@perches.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        kernel-janitors@vger.kernel.org,
+        David Lechner <david@lechnology.com>,
+        linux-wireless@vger.kernel.org, linux-ide@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        openipmi-developer@lists.sourceforge.net,
+        linux-crypto@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Jerome Brunet <jbrunet@baylibre.com>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        linux-amlogic@lists.infradead.org, linux-acpi@vger.kernel.org,
+        "Rafael J. Wysocki" <rafael@kernel.org>, drbd-dev@lists.linbit.com,
+        linux-block@vger.kernel.org
+Subject: [PATCH 00/18] use semicolons rather than commas to separate statements
+Date:   Sun, 27 Sep 2020 21:12:10 +0200
+Message-Id: <1601233948-11629-1-git-send-email-Julia.Lawall@inria.fr>
+X-Mailer: git-send-email 1.9.1
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Most of routers that have the ath10k wifi chip integrated in the Soc
-have the pre-cal data stored in a dedicated nvmem partition.
-Introduce a new function to directly extract and use it if a nvmem with
-the name 'pre-cal' is defined and available.
-Pre-cal file have still priority to everything else.
+These patches replace commas by semicolons.  This was done using the
+Coccinelle semantic patch (http://coccinelle.lip6.fr/) shown below.
 
-Tested-on: QCA9984 hw1.0 PCI 10.4
+This semantic patch ensures that commas inside for loop headers will not be
+transformed.  It also doesn't touch macro definitions.
 
-Signed-off-by: Ansuel Smith <ansuelsmth@gmail.com>
+Coccinelle ensures that braces are added as needed when a single-statement
+branch turns into a multi-statement one.
+
+This semantic patch has a few false positives, for variable delcarations
+such as:
+
+LIST_HEAD(x), *y;
+
+The semantic patch could be improved to avoid these, but for the moment
+they have been removed manually (2 occurrences).
+
+// <smpl>
+@initialize:ocaml@
+@@
+
+let infunction p =
+  (* avoid macros *)
+  (List.hd p).current_element <> "something_else"
+
+let combined p1 p2 =
+  (List.hd p1).line_end = (List.hd p2).line ||
+  (((List.hd p1).line_end < (List.hd p2).line) &&
+   ((List.hd p1).col < (List.hd p2).col))
+
+@bad@
+statement S;
+declaration d;
+position p;
+@@
+
+S@p
+d
+
+// special cases where newlines are needed (hope for no more than 5)
+@@
+expression e1,e2;
+statement S;
+position p != bad.p;
+position p1;
+position p2 :
+    script:ocaml(p1) { infunction p1 && combined p1 p2 };
+@@
+
+- e1@p1,@S@p e2@p2;
++ e1; e2;
+
+@@
+expression e1,e2;
+statement S;
+position p != bad.p;
+position p1;
+position p2 :
+    script:ocaml(p1) { infunction p1 && combined p1 p2 };
+@@
+
+- e1@p1,@S@p e2@p2;
++ e1; e2;
+
+@@
+expression e1,e2;
+statement S;
+position p != bad.p;
+position p1;
+position p2 :
+    script:ocaml(p1) { infunction p1 && combined p1 p2 };
+@@
+
+- e1@p1,@S@p e2@p2;
++ e1; e2;
+
+@@
+expression e1,e2;
+statement S;
+position p != bad.p;
+position p1;
+position p2 :
+    script:ocaml(p1) { infunction p1 && combined p1 p2 };
+@@
+
+- e1@p1,@S@p e2@p2;
++ e1; e2;
+
+@@
+expression e1,e2;
+statement S;
+position p != bad.p;
+position p1;
+position p2 :
+    script:ocaml(p1) { infunction p1 && combined p1 p2 };
+@@
+
+- e1@p1,@S@p e2@p2;
++ e1; e2;
+
+@r@
+expression e1,e2;
+statement S;
+position p != bad.p;
+@@
+
+e1 ,@S@p e2;
+
+@@
+expression e1,e2;
+position p1;
+position p2 :
+    script:ocaml(p1) { infunction p1 && not(combined p1 p2) };
+statement S;
+position r.p;
+@@
+
+e1@p1
+-,@S@p
++;
+e2@p2
+... when any
+// </smpl>
+
 ---
- drivers/net/wireless/ath/ath10k/core.c | 52 +++++++++++++++++++++++++-
- drivers/net/wireless/ath/ath10k/core.h |  3 ++
- 2 files changed, 53 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath10k/core.c b/drivers/net/wireless/ath/ath10k/core.c
-index 9ed7b9883..dd509a4a8 100644
---- a/drivers/net/wireless/ath/ath10k/core.c
-+++ b/drivers/net/wireless/ath/ath10k/core.c
-@@ -15,6 +15,7 @@
- #include <linux/ctype.h>
- #include <linux/pm_qos.h>
- #include <asm/byteorder.h>
-+#include <linux/nvmem-consumer.h>
- 
- #include "core.h"
- #include "mac.h"
-@@ -920,7 +921,8 @@ static int ath10k_core_get_board_id_from_otp(struct ath10k *ar)
- 	}
- 
- 	if (ar->cal_mode == ATH10K_PRE_CAL_MODE_DT ||
--	    ar->cal_mode == ATH10K_PRE_CAL_MODE_FILE)
-+	    ar->cal_mode == ATH10K_PRE_CAL_MODE_FILE ||
-+	    ar->cal_mode == ATH10K_PRE_CAL_MODE_NVMEM)
- 		bmi_board_id_param = BMI_PARAM_GET_FLASH_BOARD_ID;
- 	else
- 		bmi_board_id_param = BMI_PARAM_GET_EEPROM_BOARD_ID;
-@@ -1682,7 +1684,8 @@ static int ath10k_download_and_run_otp(struct ath10k *ar)
- 
- 	/* As of now pre-cal is valid for 10_4 variants */
- 	if (ar->cal_mode == ATH10K_PRE_CAL_MODE_DT ||
--	    ar->cal_mode == ATH10K_PRE_CAL_MODE_FILE)
-+	    ar->cal_mode == ATH10K_PRE_CAL_MODE_FILE ||
-+	    ar->cal_mode == ATH10K_PRE_CAL_MODE_NVMEM)
- 		bmi_otp_exe_param = BMI_PARAM_FLASH_SECTION_ALL;
- 
- 	ret = ath10k_bmi_execute(ar, address, bmi_otp_exe_param, &result);
-@@ -1703,6 +1706,41 @@ static int ath10k_download_and_run_otp(struct ath10k *ar)
- 	return 0;
- }
- 
-+static int ath10k_download_cal_nvmem(struct ath10k *ar)
-+{
-+	int ret;
-+	size_t len;
-+	const void *file;
-+	struct nvmem_cell *cell;
-+	struct platform_device *pdev = of_find_device_by_node(ar->dev->of_node);
-+
-+	if (!pdev)
-+		return -ENODEV;
-+
-+	cell = nvmem_cell_get(ar->dev, "pre-cal");
-+	if (IS_ERR(cell))
-+		return PTR_ERR(cell);
-+
-+	file = nvmem_cell_read(cell, &len);
-+	nvmem_cell_put(cell);
-+
-+	if (IS_ERR(file))
-+		return PTR_ERR(file);
-+
-+	ret = ath10k_download_board_data(ar, file, len);
-+	if (ret) {
-+		ath10k_err(ar, "failed to download cal_file data: %d\n", ret);
-+		goto err;
-+	}
-+
-+	ath10k_dbg(ar, ATH10K_DBG_BOOT, "boot cal file downloaded\n");
-+
-+	return 0;
-+err:
-+	kfree(file);
-+	return ret;
-+}
-+
- static int ath10k_download_cal_file(struct ath10k *ar,
- 				    const struct firmware *file)
- {
-@@ -2049,6 +2087,16 @@ static int ath10k_core_pre_cal_download(struct ath10k *ar)
- 		goto success;
- 	}
- 
-+	ath10k_dbg(ar, ATH10K_DBG_BOOT,
-+		   "boot did not find a pre calibration file, try NVMEM next: %d\n",
-+		   ret);
-+
-+	ret = ath10k_download_cal_nvmem(ar);
-+	if (ret == 0) {
-+		ar->cal_mode = ATH10K_PRE_CAL_MODE_NVMEM;
-+		goto success;
-+	}
-+
- 	ath10k_dbg(ar, ATH10K_DBG_BOOT,
- 		   "boot did not find a pre calibration file, try DT next: %d\n",
- 		   ret);
-diff --git a/drivers/net/wireless/ath/ath10k/core.h b/drivers/net/wireless/ath/ath10k/core.h
-index 4cf5bd489..186aba73a 100644
---- a/drivers/net/wireless/ath/ath10k/core.h
-+++ b/drivers/net/wireless/ath/ath10k/core.h
-@@ -864,6 +864,7 @@ enum ath10k_cal_mode {
- 	ATH10K_CAL_MODE_OTP,
- 	ATH10K_CAL_MODE_DT,
- 	ATH10K_PRE_CAL_MODE_FILE,
-+	ATH10K_PRE_CAL_MODE_NVMEM,
- 	ATH10K_PRE_CAL_MODE_DT,
- 	ATH10K_CAL_MODE_EEPROM,
- };
-@@ -886,6 +887,8 @@ static inline const char *ath10k_cal_mode_str(enum ath10k_cal_mode mode)
- 		return "dt";
- 	case ATH10K_PRE_CAL_MODE_FILE:
- 		return "pre-cal-file";
-+	case ATH10K_PRE_CAL_MODE_NVMEM:
-+		return "pre-cal-nvmem";
- 	case ATH10K_PRE_CAL_MODE_DT:
- 		return "pre-cal-dt";
- 	case ATH10K_CAL_MODE_EEPROM:
--- 
-2.27.0
-
+ drivers/acpi/processor_idle.c               |    4 +++-
+ drivers/ata/pata_icside.c                   |   21 +++++++++++++--------
+ drivers/base/regmap/regmap-debugfs.c        |    2 +-
+ drivers/bcma/driver_pci_host.c              |    4 ++--
+ drivers/block/drbd/drbd_receiver.c          |    6 ++++--
+ drivers/char/agp/amd-k7-agp.c               |    2 +-
+ drivers/char/agp/nvidia-agp.c               |    2 +-
+ drivers/char/agp/sworks-agp.c               |    2 +-
+ drivers/char/hw_random/iproc-rng200.c       |    8 ++++----
+ drivers/char/hw_random/mxc-rnga.c           |    6 +++---
+ drivers/char/hw_random/stm32-rng.c          |    8 ++++----
+ drivers/char/ipmi/bt-bmc.c                  |    6 +++---
+ drivers/clk/meson/meson-aoclk.c             |    2 +-
+ drivers/clk/mvebu/ap-cpu-clk.c              |    2 +-
+ drivers/clk/uniphier/clk-uniphier-cpugear.c |    2 +-
+ drivers/clk/uniphier/clk-uniphier-mux.c     |    2 +-
+ drivers/clocksource/mps2-timer.c            |    6 +++---
+ drivers/clocksource/timer-armada-370-xp.c   |    8 ++++----
+ drivers/counter/ti-eqep.c                   |    2 +-
+ drivers/crypto/amcc/crypto4xx_alg.c         |    2 +-
+ drivers/crypto/atmel-tdes.c                 |    2 +-
+ drivers/crypto/hifn_795x.c                  |    4 ++--
+ drivers/crypto/talitos.c                    |    8 ++++----
+ 23 files changed, 60 insertions(+), 51 deletions(-)
