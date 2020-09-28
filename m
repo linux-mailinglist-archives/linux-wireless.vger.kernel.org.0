@@ -2,108 +2,101 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D7CBA27A467
-	for <lists+linux-wireless@lfdr.de>; Mon, 28 Sep 2020 01:02:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE39A27A710
+	for <lists+linux-wireless@lfdr.de>; Mon, 28 Sep 2020 07:50:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726420AbgI0XB4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 27 Sep 2020 19:01:56 -0400
-Received: from vps0.lunn.ch ([185.16.172.187]:58492 "EHLO vps0.lunn.ch"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726328AbgI0XB4 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 27 Sep 2020 19:01:56 -0400
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94)
-        (envelope-from <andrew@lunn.ch>)
-        id 1kMff2-00GSDf-Dy; Mon, 28 Sep 2020 01:00:52 +0200
-Date:   Mon, 28 Sep 2020 01:00:52 +0200
-From:   Andrew Lunn <andrew@lunn.ch>
-To:     Thomas Gleixner <tglx@linutronix.de>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Linus Torvalds <torvalds@linuxfoundation.org>,
-        Paul McKenney <paulmck@kernel.org>,
-        Matthew Wilcox <willy@infradead.org>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
-        Christian Benvenuti <benve@cisco.com>,
-        Govindarajulu Varadarajan <_govind@gmx.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        linux-doc@vger.kernel.org,
-        Luc Van Oostenryck <luc.vanoostenryck@gmail.com>,
-        Jay Cliburn <jcliburn@gmail.com>,
-        Chris Snook <chris.snook@gmail.com>,
-        Vishal Kulkarni <vishal@chelsio.com>,
-        Jeff Kirsher <jeffrey.t.kirsher@intel.com>,
-        intel-wired-lan@lists.osuosl.org,
-        Shannon Nelson <snelson@pensando.io>,
-        Pensando Drivers <drivers@pensando.io>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Solarflare linux maintainers <linux-net-drivers@solarflare.com>,
-        Edward Cree <ecree@solarflare.com>,
-        Martin Habets <mhabets@solarflare.com>,
-        Jon Mason <jdmason@kudzu.us>, Daniel Drake <dsd@gentoo.org>,
-        Ulrich Kunitz <kune@deine-taler.de>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        linux-wireless@vger.kernel.org, linux-usb@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        id S1726380AbgI1FuN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 28 Sep 2020 01:50:13 -0400
+Received: from mail-dm6nam10on2116.outbound.protection.outlook.com ([40.107.93.116]:54849
+        "EHLO NAM10-DM6-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725308AbgI1FuN (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 28 Sep 2020 01:50:13 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=kAbaie7/oZZPYDWrsOBzatopY8yLOzS4S/GQvhVIzdDA52cSGgT+jGV2MxD0+HJbcnVrRwnjpDpoZZkIRi79tkbyELPK3Bg4AqQJXTlS5tnLdVqKY2k/EZD1/CtF1HD0eJU/CyHWOZaUJcKuVDlseO+05cIoGBMYsZgDOTqX3SoF/7DvQq5uw7TAKNtXXWYvNfmLPUJ4MvOMki5UUTRqab+nEmBFn6F3svgEXFDhTlhIo9wk8WNLK2kR8T0sJJK/31abNGhJ5qGZ0RWrO9bXtxoghM2kyeBA29NjGENN5Oq/5fX2aiqrgQ91GCvz9kIwtMo7+YlWRLXJqIiEELxaAw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=oftZLVk956h9pyrmcCGWeIBNMKOwy7mBJIQxdFblOvs=;
+ b=iVoMMTqAYTA5rfG/VrKjUADinnyPUkFvxaf8k1rl3RCPM8GdKnb0DYVlatm1EwPQ0pBO0K5jV93aMc7e+L2zvE9zksNgvyW8J5kxByuxR4LCYgKVnm6E9kd+zNjAoyMpXFNFb2FLgdtmgcsrJsianTbk3xLqsmvoy32Z1gIsjLEmannOI7UfjwVrAF1OwfTl6DcZcgZn2W80kNNhZlkwKRl9gFsItL3Mrwv+0dKbCsXb/y0XXZjGJnFql1gf494JsUQ1n82Kb68K803JiOFn1LITGRaIhw/RJ+a9p17A6oydkAnEHNvVjYFo1+i6c/jyM/A0vwsGQPwhe+J10smqFQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=cypress.com; dmarc=pass action=none header.from=cypress.com;
+ dkim=pass header.d=cypress.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cypress.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=oftZLVk956h9pyrmcCGWeIBNMKOwy7mBJIQxdFblOvs=;
+ b=WE5HXg7JQD7GDbLZrXYtrG3XQqhQ0vWx7H35Efrp8I0aXbhosif+sWYb2fc5Ec0axOgfUZQtZDGAUD6HHcyfvSGb/txEfYq83KvJaGHfp7H8MDGuiK8orSgazgnabQq6G1WsvsMFsYE0aT/IQw/ygtV2XKuHNghYw6BErumUqoE=
+Authentication-Results: vger.kernel.org; dkim=none (message not signed)
+ header.d=none;vger.kernel.org; dmarc=none action=none
+ header.from=cypress.com;
+Received: from BN8PR06MB5889.namprd06.prod.outlook.com (2603:10b6:408:c2::25)
+ by BN7PR06MB4097.namprd06.prod.outlook.com (2603:10b6:406:89::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3412.20; Mon, 28 Sep
+ 2020 05:50:10 +0000
+Received: from BN8PR06MB5889.namprd06.prod.outlook.com
+ ([fe80::14ee:f61:60a2:1e48]) by BN8PR06MB5889.namprd06.prod.outlook.com
+ ([fe80::14ee:f61:60a2:1e48%5]) with mapi id 15.20.3412.029; Mon, 28 Sep 2020
+ 05:50:10 +0000
+From:   Wright Feng <wright.feng@cypress.com>
+To:     linux-wireless@vger.kernel.org
+Cc:     wright.feng@cypress.com, brcm80211-dev-list@broadcom.com,
+        brcm80211-dev-list@cypress.com,
         Arend van Spriel <arend.vanspriel@broadcom.com>,
         Franky Lin <franky.lin@broadcom.com>,
         Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
-        Wright Feng <wright.feng@cypress.com>,
-        brcm80211-dev-list.pdl@broadcom.com,
-        brcm80211-dev-list@cypress.com,
-        Stanislav Yakovlev <stas.yakovlev@gmail.com>,
-        Stanislaw Gruszka <stf_xl@wp.pl>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Intel Linux Wireless <linuxwifi@intel.com>,
-        Jouni Malinen <j@w1.fi>,
-        Amitkumar Karwar <amitkarwar@gmail.com>,
-        Ganapathi Bhat <ganapathi.bhat@nxp.com>,
-        Xinming Hu <huxinming820@gmail.com>,
-        libertas-dev@lists.infradead.org,
-        Pascal Terjan <pterjan@google.com>,
-        Ping-Ke Shih <pkshih@realtek.com>
-Subject: Re: [patch 13/35] net: mdiobus: Remove WARN_ON_ONCE(in_interrupt())
-Message-ID: <20200927230052.GG3889809@lunn.ch>
-References: <20200927194846.045411263@linutronix.de>
- <20200927194921.137019811@linutronix.de>
+        Kalle Valo <kvalo@codeaurora.org>, chi-hsien.lin@cypress.com
+Subject: [PATCH 0/2] brcmfmac: Fix warning messages when meeting failed cases
+Date:   Mon, 28 Sep 2020 00:49:20 -0500
+Message-Id: <20200928054922.44580-1-wright.feng@cypress.com>
+X-Mailer: git-send-email 2.25.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [157.95.12.33]
+X-ClientProxiedBy: BL0PR1501CA0023.namprd15.prod.outlook.com
+ (2603:10b6:207:17::36) To BN8PR06MB5889.namprd06.prod.outlook.com
+ (2603:10b6:408:c2::25)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200927194921.137019811@linutronix.de>
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from aremote06.aus.cypress.com (157.95.12.33) by BL0PR1501CA0023.namprd15.prod.outlook.com (2603:10b6:207:17::36) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3412.20 via Frontend Transport; Mon, 28 Sep 2020 05:50:09 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-HT: Tenant
+X-MS-Office365-Filtering-Correlation-Id: 8db3cbfb-cb22-4c2b-fe45-08d863725c82
+X-MS-TrafficTypeDiagnostic: BN7PR06MB4097:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <BN7PR06MB4097FA73CA1602A0C5918B27FB350@BN7PR06MB4097.namprd06.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:80;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: yRkZHcpAaVuJhPDXN4n7o5Z05QkGbUQU4m25xs4zMKfkMtghivSiZ0T8nQCnM42hlRO9C5S0hNKgmMSW8qnwodpUIdw9iAKWcHWSPOjTNrM1SImWntT763tkLKu4CypOWRP664gOiecMVhB6GhzRc68NFlKarN1PPfjdxAWxe5qcyKmNM1I2GnbhZ+YTkVFv+JE6wbEIYs1LHtYul1BhEK4nwiHlY6hc1pJgVFWYZIdrxaKfOmZfVBq5txZ6vGQDF4Y/NAVqcaUQuOlnGylDV8m/dH7UiRKmOtBkPNy8u5NpzLn9l1l89sJVdHlDBh8gt2M1BXb6YdhAuU2cpckJPl03qn3gMexVvplDQgYs0OBRDL+MvRabyFiEoneczrZ7
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN8PR06MB5889.namprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(396003)(376002)(39860400002)(366004)(136003)(346002)(2906002)(7696005)(316002)(36756003)(4326008)(186003)(6486002)(16526019)(6916009)(44832011)(4744005)(83380400001)(2616005)(956004)(66476007)(66556008)(66946007)(54906003)(5660300002)(15650500001)(8676002)(52116002)(107886003)(478600001)(86362001)(26005)(1076003)(8936002)(6666004);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData: 5QuV5efJ1kP+J1in5CQDoNjHmSZ9shHkxMb0UhzSiCewKPwG/RS0xry7IrCMBcJ5xu9UW9XhudPTOiLymn4/l1jKMHPOQSKZo4LeYk3UElpyOiQ+F6EVW/MIZyG0VNwiMMnBzhGy+SvPVUTzlct1o9cDPDeIZecIF8UzSjO+2gSBwIaY+ye5mEN6OVxckCU7zqkIkR5kZmLLr956r2R4EG7bvhetSTaPcnO9Qq3IRHdyopiPulQP3He6KW+vzBKLcOBN48vig9oZHjUVF8sBK9aXMjuWpf5VlSnKkhVrUDMfKoGvfTj5EgIpfct1SKm7xQEC0MiCHQkaOMOuy/lZ6rqnnbH57XBJ2psz5tgmJ6RKx43XWQjBdC+Xoqxt7yXl6+1FhmrHc0XdeLwmPmLaPdOPWh0BTtugTGNBuU5R741e0ydFKJGKCzTFyJnSDROOPAyOStUD15YIyb/zppLPdIYO/Uzk6UMqIL6y0WbVUox0bsBz0s9XeIpXgq6c/TWwTf9eCbM3t7tAxqKi+aukJaP5VUIuSwf8YlXxWNd+nR+QhSag4dTs+5aoRsK47uQhh9sOnrhRU3ou6CfuIhKvcnefX9SrZtyW48JroyH3XNh7fkB2XYYsK06aGM9dGUdRZRcGzyVFCUZ1h8Y2AaQD0w==
+X-OriginatorOrg: cypress.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8db3cbfb-cb22-4c2b-fe45-08d863725c82
+X-MS-Exchange-CrossTenant-AuthSource: BN8PR06MB5889.namprd06.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Sep 2020 05:50:10.7112
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 011addfc-2c09-450d-8938-e0bbc2dd2376
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: kd2m0ieB3rsLVL2YgTtBIb79R5MzCuiXdtj2kkrO0GQPJl0F3AMXbg8z2oMHyqLZW4ChzaO+ktGm1TbLH6t6bw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN7PR06MB4097
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sun, Sep 27, 2020 at 09:48:59PM +0200, Thomas Gleixner wrote:
-> From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-> 
-> in_interrupt() is ill defined and does not provide what the name
-> suggests. The usage especially in driver code is deprecated and a tree wide
-> effort to clean up and consolidate the (ab)usage of in_interrupt() and
-> related checks is happening.
-> 
-> In this case the check covers only parts of the contexts in which these
-> functions cannot be called. It fails to detect preemption or interrupt
-> disabled invocations.
-> 
-> As the functions which contain these warnings invoke mutex_lock() which
-> contains a broad variety of checks (always enabled or debug option
-> dependent) and therefore covers all invalid conditions already, there is no
-> point in having inconsistent warnings in those drivers. The conditional
-> return is not really valuable in practice either.
-> 
-> Just remove them.
-> 
-> Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+This patch series fix warning messages in two of failed cases
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Wright Feng (2):
+  brcmfmac: Fix warning when hitting FW crash with flow control feature
+  brcmfmac: Fix warning message after dongle setup failed
 
-    Andrew
+ .../net/wireless/broadcom/brcm80211/brcmfmac/core.c   | 11 +++++------
+ .../net/wireless/broadcom/brcm80211/brcmfmac/fweh.c   | 10 ++++++----
+ 2 files changed, 11 insertions(+), 10 deletions(-)
+
+-- 
+2.25.0
+
