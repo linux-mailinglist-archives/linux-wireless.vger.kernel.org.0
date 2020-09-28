@@ -2,69 +2,315 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F5D927ADB0
-	for <lists+linux-wireless@lfdr.de>; Mon, 28 Sep 2020 14:25:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0364527ADF0
+	for <lists+linux-wireless@lfdr.de>; Mon, 28 Sep 2020 14:36:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726551AbgI1MZA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 28 Sep 2020 08:25:00 -0400
-Received: from sonic306-20.consmr.mail.ne1.yahoo.com ([66.163.189.82]:46254
-        "EHLO sonic306-20.consmr.mail.ne1.yahoo.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726526AbgI1MZA (ORCPT
+        id S1726615AbgI1Mg1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 28 Sep 2020 08:36:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50794 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726466AbgI1Mg0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 28 Sep 2020 08:25:00 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1601295899; bh=CJfHRA3PAxA/lp6Mz2SeiBBl59bd5y646SzWk6cUNN4=; h=Date:From:Reply-To:Subject:References:From:Subject; b=TOsasdNyhv5GJjimDWwLrZa1sL7tcEQO1yah3JjAR5iyjJ1dfwt0aXRiagM9XjAINI8Exj3MNBbtSuTZT70UWTXmZNMTf+vzNuE5acIn2Gc3oaUwfJpGFyHfmBfw70dzSGLBtYQ1d84VtM488LIMwU6ncCkjtKJFLwe41VZn7jUQSyMIA3UAmTU0VPo4vZdGSyTFlLk30bzM9v4egvMPcZFFGJchwmZGT5iMrq+wYfMB8J/OIWZfYr94vpiKFp/Ut1qL51y/qYLAcSpl/aMllYLDICvebRF/BNKa/nj4bbm/AXt6aX3T02Apcx2C5S4I9p4LUfHmW/MO4OyTlcypmA==
-X-YMail-OSG: Z1Ju0M0VM1kKT_Y8f8D9yhdDDSfXr7Xwe5CmHC.s8AFs5wL6LGxabylazsytwcn
- 1xrfXjmmbbyT0nDDhpOuJ5L2ELIzJx9kcuAAsMXUNuw1ogzsDmuJ800H.9SfKal5isYIl324jE2M
- UeVQ7imL4eOJwRvnQ4CmdoDqfv_kmTfPTHJAjgD_0sMBEhSOHz5rBFgg2ewn8iknxaKoUpIIak5T
- FY1_a..9XDhM_FzZysxx7A91y_qwv1gd3xktDS_zdUqIBkP8bc6hDm1AMVvVW0Pnj_O3qzDJ8XPT
- zPFsDRIi5PTRyTA0S87gsxZ29WeMKl3cqkilhPQrP28293bHHRPNmdm8YPIfkb0Q_wm1K0HjJXbh
- SBSaY6Yhe6RyvqGJeZ_GEJYNL3lwvSHiw70kNkecIBsmGkDsN.arUind1eLV3.sH.aSssI.5i7SL
- rzmBFNdoAlcH1Hc3UjRFSuBnfWtC.EAOscpmyEdoaLhQbPIlpGikd7FgkHDVrm_36kghX.q2USIH
- 4FCfkw0cfF6ZXrzl.oYYXpSfTdKYn8Si5KqF2Z25hhdOjFZJ6oYoGMS3rbmqDRGSTXmAd6Gwrac5
- yS4ntUlHKComqkSTPE9u7zrQfuOGqpj8GoyKSxmaSoRr8DsD7Ij8JvwksLezNmOMQokfT8tiCye7
- rTmsBj8GtfJtRCMcXCs2.l7G22nSm91b9xG.53NsfJhh83vhknyy8OjvgdetU4_uE9rhQXzKieLU
- cvQ3QFotdlfrCAG3M4c4uvVMBMWsd9Ls7Ko.ue1xstAZd6ESwLc1JwiObEFnLx.RcSFIAUgi0zM5
- Jfs96hrxOp7XdPo0UH8lF5Yo4pqmBv_uSk4cxh9tkrXVBoptD3vFjhpLyboHf2YN9d.GPK9EUtpZ
- zWZNeYhkWlHa4JZGH__EzxKdM7SXi5uBV3P7jdFd9nnjaTyS2Hat4SU8JkDmrRFWPVrIMMmdIGBP
- klbYKv.C0KwcK2MrPJHVLdVwSppbbkyW.hegWqgKDfte.0IvzEXbcHAWLGTLWB2P8GRBlDftkOsn
- CQz7Iu2c6uPIwMdJ0IXA600.Na33TTqPTDZhE8ldg8p1t4rBpq7IPc0lrJBlOMtOMxvugVPc1YCs
- MGoQQY9KaOGM8kCqVLduZyVxHptJexGqKr.3RJkdVYai45RX10wUVzMid0c5hUHQb89SAhHJGZQ0
- 77beZHASCjGYpblwStOHkIkbfTnsqkYz1vCqW.9rm7tR5Kxc7x3tDOh_e69TB6.3MM2mf5Q3oCsw
- zsAHTWU62z8JvHnF74S.4UOUNd4ugNizPzHVzTowZPs1mXjDYtJs2JEjnOAgu6udpdMg9wG0.WEM
- 0ro50g3XfM7TjqKE5UWjj5jy1DXRrgEd.Ld.ACsSR4g22_WVWAOnLE8NfQS8MRunHXbnG.5oUVHn
- uU4SWDr9FLNB508tPvXPeO4Wh8JIAzdCgx61AvP1dpxwu_87up9s-
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic306.consmr.mail.ne1.yahoo.com with HTTP; Mon, 28 Sep 2020 12:24:59 +0000
-Date:   Mon, 28 Sep 2020 12:24:54 +0000 (UTC)
-From:   Tapsoba Ahmed <chikabarnabas@gmail.com>
-Reply-To: tapsobaahmed100@gmail.com
-Message-ID: <925251784.1516160.1601295894474@mail.yahoo.com>
-Subject: I NEED YOUR URGENT RESPOND PLEASE
+        Mon, 28 Sep 2020 08:36:26 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE985C061755
+        for <linux-wireless@vger.kernel.org>; Mon, 28 Sep 2020 05:36:26 -0700 (PDT)
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.94)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1kMsOC-00CTuA-Q6; Mon, 28 Sep 2020 14:36:20 +0200
+Message-ID: <6649b0c2ff988c2ae8723ea633f86cc12da43d95.camel@sipsolutions.net>
+Subject: Re: [RFC 1/2] nl80211: add common API to configure SAR power
+ limitations.
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Carl Huang <cjhuang@codeaurora.org>, ath10k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org, briannorris@chromium.org,
+        dianders@chromium.org
+Date:   Mon, 28 Sep 2020 14:36:09 +0200
+In-Reply-To: <1600753775-4745-1-git-send-email-cjhuang@codeaurora.org> (sfid-20200922_074952_776521_0528DF1D)
+References: <1600753775-4745-1-git-send-email-cjhuang@codeaurora.org>
+         (sfid-20200922_074952_776521_0528DF1D)
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.5 (3.36.5-1.fc32) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-References: <925251784.1516160.1601295894474.ref@mail.yahoo.com>
-X-Mailer: WebService/1.1.16674 YMailNodin Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.102 Safari/537.36
-To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello Dear Friend,
+On Tue, 2020-09-22 at 13:49 +0800, Carl Huang wrote:
+> NL80211_CMD_SET_SAR_SPECS is added to configure SAR from
+> user space. NL80211_ATTR_SAR_SPEC is used to pass the SAR
+> power specification when used with NL80211_CMD_SET_SAR_SPECS.
+> 
+> Wireless driver needs to register SAR type, supported frequency
+> ranges to wiphy, so user space can query it. The index in
+> frequency range is used to specify which sub band the power
+> limitation applies to. The SAR type is for compatibility, so later
+> other SAR mechanism can be implemented without breaking the user
+> space SAR applications.
+> 
+> Normal process is user space quries the SAR capability, and
 
-My name is Mr.Tapsoba Ahmed. I have decided to seek a confidential co-operation  with you in the execution of the deal described here-under for our both  mutual benefit and I hope you will keep it a top secret because of the nature  of the transaction, During the course of our bank year auditing, I discovered  an unclaimed/abandoned fund, sum total of {US$19.3 Million United State  Dollars} in the bank account that belongs to a Saudi Arabia businessman Who unfortunately lost his life and entire family in a Motor Accident.
+typo: queries
 
-Now our bank has been waiting for any of the relatives to come-up for the claim but nobody has done that. I personally has been unsuccessful in locating any of the relatives, now, I sincerely seek your consent to present you as the next of kin / Will Beneficiary to the deceased so that the proceeds of this account valued at {US$19.3 Million United State Dollars} can be paid to you, which we will share in these percentages ratio, 60% to me and 40% to you. All I request is your utmost sincere co-operation; trust and maximum confidentiality to achieve this project successfully. I have carefully mapped out the moralities for execution of this transaction under a legitimate arrangement to protect you from any breach of the law both in your country and here in Burkina Faso when the fund is being transferred to your bank account.
+> gets the index of supported frequency ranges and associates the
+> power limitation with this index and sends to kernel.
+> 
+> Here is an example of message send to kernel:
+> 8c 00 00 00 08 00 03 00 15 00 00 00 38 00 26 81
+> 08 00 01 00 00 00 00 00 2c 00 02 80 14 00 01 80
+> 05 00 02 00 00 00 00 00 05 00 01 00 38 00 00 00
+> 14 00 02 80 05 00 02 00 01 00 00 00 05 00 01 00
+> 48 00 00 00
 
-I will have to provide all the relevant document that will be requested to indicate that you are the rightful beneficiary of this legacy and our bank will release the fund to you without any further delay, upon your consideration and acceptance of this offer, please send me the following information as stated below so we can proceed and get this fund transferred to your designated bank account immediately.
+Heh, that's not super useful, though that doesn't matter much I guess :)
 
--Your Full Name:
--Your Contact Address:
--Your direct Mobile telephone Number:
--Your Date of Birth:
--Your occupation:
+> NL80211_CMD_SET_SAR_SPECS:  0x8c
+> NL80211_ATTR_SAR_SPEC:  0x8126 (NLA_NESTED)
+> NL80211_SAR_ATTR_TYPE:  0x00 (NL80211_SAR_TYPE_POWER)
+> NL80211_SAR_ATTR_SPECS: 0x8002 (NLA_NESTED)
+> freq range 0 power: 0x38 in 0.25dbm unit (14dbm)
+> freq range 1 power: 0x48 in 0.25dbm unit (18dbm)
 
-I await your swift response and re-assurance.
+that makes more sense :)
 
-Best regards,
-Mr.Tapsoba Ahmed.
+> +/**
+> + * struct cfg80211_sar_sub_specs - sub specs limit
+> + * @power: value in 0.25dbm
+
+I guess the documentation should state that it's a power limit, or
+something?
+
+> + * @freq_range_index: index the power limitation applies to
+> + */
+> +struct cfg80211_sar_sub_specs {
+> +	u8 power;
+> +	u8 freq_range_index;
+> +};
+> +
+> +/**
+> + * struct cfg80211_sar_specs - sar limit specs
+> + * @type: it's set with power in 0.25dbm or other types
+> + * @num_sub_specs: number of sar sub specs
+> + * @sub_specs: memory to hold the sar sub specs
+> + */
+> +struct cfg80211_sar_specs {
+> +	enum nl80211_sar_type type;
+> +	u16 num_sub_specs;
+> +	struct cfg80211_sar_sub_specs *sub_specs;
+
+Wouldn't it make more sense to just have sub_specs[] and inline? The
+pointers here are bigger than many of the sub-specs I guess...
+
+Also, is num_sub_specs even needed? It seems we could just require that
+userspace sends all of them all the time?
+
+> +struct cfg80211_sar_freq_ranges {
+> +	u8 index;
+
+Does an index here make sense?
+
+> +	u32 start_freq;
+> +	u32 end_freq;
+> +};
+> +
+> +/**
+> + * struct cfg80211_sar_capa - sar limit capability
+> + * @type: it's set via power in 0.25dbm or other types
+> + * @num_freq_ranges: number of frequency ranges
+> + * @chan_ranges: memory to hold the channel ranges.
+> + */
+> +struct cfg80211_sar_capa {
+> +	enum nl80211_sar_type type;
+> +	u8 num_freq_ranges;
+> +	const struct cfg80211_sar_freq_ranges *freq_ranges;
+
+You end up with an array here, so some kind of index is implicit, the
+array index. I don't see why you'd want to have a separate index
+*within* the frequency range, then you just have to check those make
+sense, etc.?
+
+> + * @NL80211_ATTR_SAR_SPEC: SAR power limitation specification when
+> + *	used with %NL80211_CMD_SET_SAR_SPECS. It contains array of
+> + *	%nl80211_sar_specs_attrs.
+
+I think I know what you mean (a nested array where each item has
+attributes from &enum nl80211_sar_specs_attrs), but could state that a
+bit clearer.
+
+> +#define NL80211_SAR_ALL_FREQ_RNAGES	0xff
+
+typo
+
+> +#define NUM_MAX_NL80211_SAR_FREQ_RANGES 0xfe
+
+but I'm not sure what these are used for in the first place, they seem
+more like internal implementation details?
+
+> +/**
+> + * nl80211_sar_specs_attrs - Attributes for SAR power limit specs
+> + *
+> + * @NL80211_SAR_ATTR_SPECS_POWER: Required (u32)value to specify the actual
+> + *	power limit value in units of 0.25 dBm if type is
+> + *	NL80211_SAR_TYPE_POWER. (i.e., a value of 44 represents 11 dBm)
+> + *
+> + * @NL80211_SAR_ATTR_SPECS_FREQ_RANGES_INDEX: optional (u32) value to specify the
+> + *	index of exported freq ranges table. If this attribute is not present, then
+> + *	the power is applied to all freq ranges, i.e, all bands
+
+Especially since this says "[i]f this attribute is not present".
+
+Does that make sense though? It seems possible to just use the nesting
+entry as the index, and just require userspace to set up all indexes if
+it wants to apply to all of them, why bother having to deal with that
+case in the kernel and perhaps even drivers?
+
+> + * @NL80211_SAR_ATTR_SPECS_START_FREQ: Required (u32) value to specify the start
+> + *	frequency of this range to register SAR capability to wihpy and the unit
+
+typo: wiphy
+
+> + *	is kHZ
+
+kHz
+
+> + *
+> + * @NL80211_SAR_ATTR_SPECS_END_FREQ: Required (u32) value to specify the end frequency
+> + *	of this range to register SAR capability to wiphy and the unit is kHZ
+
+kHz
+
+But hm, are you mixing the capability advertisement and the actual
+request into the same attributes? Perhaps that makes sense, but the
+documentation could be a bit clearer IMHO.
+
+> +++ b/net/mac80211/cfg.c
+
+The mac80211 bits could probably be in a separate patch, just for
+clarity.
+
+> +static const struct nla_policy
+> +sar_specs_policy[NL80211_SAR_ATTR_SPECS_MAX + 1] = {
+> +		[NL80211_SAR_ATTR_SPECS_POWER] = { .type = NLA_U8 },
+
+double indentation?
+
+> +		[NL80211_SAR_ATTR_SPECS_FREQ_RANGE_INDEX] =
+> +			NLA_POLICY_MAX(NLA_U8, NUM_MAX_NL80211_SAR_FREQ_RANGES),
+
+I don't see a good reason to limit to 0xfe? The kernel could just use a
+wider datatype internally.
+
+Anyway, I'm not sure the attribute is even needed, see above.
+
+> @@ -1856,6 +1870,8 @@ static int nl80211_add_commands_unsplit(struct cfg80211_registered_device *rdev,
+>  			goto nla_put_failure;
+>  	}
+>  
+> +	CMD(set_sar_specs, SET_SAR_SPECS);
+
+Don't add to _unsplit() please.
+
+> +	specs = nla_nest_start_noflag(msg, NL80211_SAR_ATTR_SPECS);
+
+Don't use _noflag() please, that's just for backward compatibility.
+
+> +	if (!specs)
+> +		goto fail;
+> +
+> +	/* report supported freq_ranges */
+> +	for (i = 0; i < num_freq_ranges; i++) {
+> +		sub_freq_range = nla_nest_start_noflag(msg, i + 1);
+
+Same here.
+
+> @@ -2598,6 +2663,9 @@ static int nl80211_send_wiphy(struct cfg80211_registered_device *rdev,
+>  		if (nl80211_put_tid_config_support(rdev, msg))
+>  			goto nla_put_failure;
+>  
+> +		if (nl80211_put_sar_specs(rdev, msg))
+> +			goto nla_put_failure;
+
+Perhaps better to have a separate message (case entry) since it might
+get fairly big?
+
+> +	sar_spec = kzalloc(sizeof(*sar_spec) +
+> +			   specs * sizeof(struct cfg80211_sar_sub_specs),
+> +			   GFP_KERNEL);
+> +	if (!sar_spec)
+> +		return -ENOMEM;
+> +
+> +	sar_spec->sub_specs = (struct cfg80211_sar_sub_specs *)
+> +			((char *)sar_spec + sizeof(*sar_spec));
+
+If you anyway set the pointer there then you can actually just make it a
+[] array instead of having the pointer in the first place ... would be
+equivalent but save you from these contortions :)
+
+> +	specs = 0;
+> +	sar_spec->type = type;
+> +
+> +	nla_for_each_nested(spec_list, tb[NL80211_SAR_ATTR_SPECS], rem) {
+> +		if (nla_parse(spec,
+> +			      NL80211_SAR_ATTR_SPECS_MAX,
+> +			      nla_data(spec_list),
+> +			      nla_len(spec_list),
+> +			      sar_specs_policy,
+> +			      NULL)) {
+> +			err = -EINVAL;
+> +			goto error;
+> +		}
+> +
+> +		/* for power type, power value must be presented */
+> +		if (!spec[NL80211_SAR_ATTR_SPECS_POWER] &&
+> +		    type == NL80211_SAR_TYPE_POWER) {
+> +			err = -EINVAL;
+> +			goto error;
+> +		}
+
+Somewhere you should probably also check that the type matches the
+advertised type.
+
+> +		power = nla_get_u8(spec[NL80211_SAR_ATTR_SPECS_POWER]);
+> +		sar_spec->sub_specs[specs].power = power;
+> +
+> +		/* if NL80211_SAR_ATTR_SPECS_FREQ_RANGE_INDEX isn't present,
+> +		 * then the power applies to all bands. But it's only valid
+> +		 * for the first entry.
+> +		 */
+> +		if (!spec[NL80211_SAR_ATTR_SPECS_FREQ_RANGE_INDEX]) {
+> +			if (specs) {
+> +				err = -EINVAL;
+> +				goto error;
+> +			} else {
+> +				sar_spec->sub_specs[specs].freq_range_index =
+> +					NL80211_SAR_ALL_FREQ_RNAGES;
+> +				specs++;
+> +				break;
+> +			}
+> +		}
+
+Yeah... not sure I see this as being worth it, vs. userspace just
+filling all the possible entries.
+
+> +		index = nla_get_u8(spec[NL80211_SAR_ATTR_SPECS_FREQ_RANGE_INDEX]);
+> +		sar_spec->sub_specs[specs].freq_range_index = index;
+> +		specs++;
+> +	}
+> +
+> +	sar_spec->num_sub_specs = specs;
+> +
+> +	rdev->cur_cmd_info = info;
+> +	if (rdev->ops->set_sar_specs)
+> +		err = rdev_set_sar_specs(rdev, sar_spec);
+> +	else
+> +		err = -EOPNOTSUPP;
+
+Might be worth checking this early and avoiding the allocation and all?
+
+OTOH, that gives you error checking even if the driver was completely
+confused and advertised sar specs without the method ...
+
+johannes
 
