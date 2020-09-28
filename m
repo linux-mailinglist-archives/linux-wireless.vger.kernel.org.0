@@ -2,151 +2,223 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F96527A8C5
-	for <lists+linux-wireless@lfdr.de>; Mon, 28 Sep 2020 09:37:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7486C27A93F
+	for <lists+linux-wireless@lfdr.de>; Mon, 28 Sep 2020 10:04:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726766AbgI1HhS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 28 Sep 2020 03:37:18 -0400
-Received: from mail-il1-f205.google.com ([209.85.166.205]:34638 "EHLO
-        mail-il1-f205.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726578AbgI1HhS (ORCPT
+        id S1726759AbgI1IDi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 28 Sep 2020 04:03:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36688 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726749AbgI1IDd (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 28 Sep 2020 03:37:18 -0400
-Received: by mail-il1-f205.google.com with SMTP id i18so112835ils.1
-        for <linux-wireless@vger.kernel.org>; Mon, 28 Sep 2020 00:37:17 -0700 (PDT)
+        Mon, 28 Sep 2020 04:03:33 -0400
+Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64801C0613D0
+        for <linux-wireless@vger.kernel.org>; Mon, 28 Sep 2020 01:03:33 -0700 (PDT)
+Received: by mail-ej1-x62f.google.com with SMTP id r7so7172315ejs.11
+        for <linux-wireless@vger.kernel.org>; Mon, 28 Sep 2020 01:03:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google;
+        h=from:to:cc:date:message-id:in-reply-to:references:user-agent
+         :subject:mime-version;
+        bh=ziWUELQ0D/4+E8ivkeX3nFevRYu/YscetAPKuTu6uB4=;
+        b=HIQPVNgCCM49JgTPIUJpkknDhj+JvqLlP58HRg/DMs6calBcynhZEgrJxB2YEKj5n4
+         d+Fl5JnxAEO8P/Jy2vwZbZG+p1+THg+Nt7J/WLPGzY6ZjbhJDj+ynQRJgNNN1bma9Un3
+         5g9hHDcEWu2X1yN2ZNOlXQ5AJEmJXUpbVYfSI=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
-        bh=04SWKSSMPO5wiPUAGW/9pHu3f+KlpomAZBHkybrJOqk=;
-        b=gVTp0NaRuC0Lc4urEpNDZM6hud2szJObJFRYCFrM8cVmc2AB0avciKvG7lS4QfK1Iv
-         AYJ6RQahqenkupq+3t1PfiJsIn26JGC2RcxV4uVWuJdUHDYkbWcb8GEQyCOcLnatBYzK
-         heZwPzfaw3lljmYqnivAqODYeLp7t3rtOKetbr6qoAA76sQgtUl4bhrp7Rh5/LxSNp2l
-         Ng5tM/fKvdbspOqnf5ncccivOtMM0+BKiLV4lkG3K0yRwJN7zBawycpIARA/geza+FYE
-         R1uEabpVkLxxsNAkgvwhyhm+t6B3EoRz1PNp8nALPf5aHBzqg8XRgmgR0JJWtJ4WuR88
-         i2AQ==
-X-Gm-Message-State: AOAM533X2eGTKbpRTpsnsHfZX7KXlCjsR3TGkbVli6PQne7OaEhITzmo
-        CoA2xcM9omevotKGIqpuuzAAVml/zL+XcWr09GM3zv2Fjgdt
-X-Google-Smtp-Source: ABdhPJzvRHP+j1PB4wus3aYitS2UDMRTL51vrngDEalOsgPFVzQBnvE7WncmG+K1fEi6zIPaamYL1i9N0XBWPtaSysf/4DEALoK8
+        h=x-gm-message-state:from:to:cc:date:message-id:in-reply-to
+         :references:user-agent:subject:mime-version;
+        bh=ziWUELQ0D/4+E8ivkeX3nFevRYu/YscetAPKuTu6uB4=;
+        b=lUsUXZnyCZnirkXPMgdP+IsoMaC3cquAMjcSlnqIw5RBGeoj3R/Qr2ZHtR8iEVQcqW
+         ZlyVeynpb98czjUyli7gY3Ycs6CsjD3QJJ0XIOmlD42uk9vupu5Xg+WBqZf7iICtLoIL
+         wlCoWNGJ8+GTBCjKWD4P5QPoNxcrwkpx5pX/8R9BQ9DBk35ZNjxjY1fXh9mJFxOxKdKd
+         3yuH5m+yxYcMr6ymAo+wEUrDQpL76+zRftcuvJY3LLt4KOOebsds7Xq5w+lXcbIvTF9X
+         Kok+PbT/Qfx0voQl9ZwmzRB1mSf94G5sJIH19/T34AlikxEelvCqEJ+SKqVFafgWt+UM
+         xZgQ==
+X-Gm-Message-State: AOAM530s0Nn6vNxRKNqEoqp1x9SgHd9TjDJlMlTbIZFrirojg7wQ2/Gc
+        nbOPupsXF6tO9ptW7ZnIculTIQ==
+X-Google-Smtp-Source: ABdhPJxr0fGyEDRBYLN/uNjPkpmcZqDJXbdicXb4UjzIQb1ia6XjW9lnJK6GCzYxH7dMsAK83DWbfA==
+X-Received: by 2002:a17:906:fb8f:: with SMTP id lr15mr466285ejb.25.1601280210653;
+        Mon, 28 Sep 2020 01:03:30 -0700 (PDT)
+Received: from [100.126.98.202] ([109.37.129.13])
+        by smtp.gmail.com with ESMTPSA id s30sm385235edc.8.2020.09.28.01.03.27
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 28 Sep 2020 01:03:29 -0700 (PDT)
+From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
+To:     Thomas Gleixner <tglx@linutronix.de>,
+        LKML <linux-kernel@vger.kernel.org>
+CC:     Peter Zijlstra <peterz@infradead.org>,
+        Linus Torvalds <torvalds@linuxfoundation.org>,
+        Paul McKenney <paulmck@kernel.org>,
+        Matthew Wilcox <willy@infradead.org>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        <linux-wireless@vger.kernel.org>,
+        <brcm80211-dev-list.pdl@broadcom.com>,
+        <brcm80211-dev-list@cypress.com>, <netdev@vger.kernel.org>,
+        Christian Benvenuti <benve@cisco.com>,
+        Govindarajulu Varadarajan <_govind@gmx.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        <linux-doc@vger.kernel.org>,
+        Luc Van Oostenryck <luc.vanoostenryck@gmail.com>,
+        Jay Cliburn <jcliburn@gmail.com>,
+        Chris Snook <chris.snook@gmail.com>,
+        Vishal Kulkarni <vishal@chelsio.com>,
+        Jeff Kirsher <jeffrey.t.kirsher@intel.com>,
+        <intel-wired-lan@lists.osuosl.org>,
+        Shannon Nelson <snelson@pensando.io>,
+        Pensando Drivers <drivers@pensando.io>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Solarflare linux maintainers <linux-net-drivers@solarflare.com>,
+        Edward Cree <ecree@solarflare.com>,
+        Martin Habets <mhabets@solarflare.com>,
+        Jon Mason <jdmason@kudzu.us>, Daniel Drake <dsd@gentoo.org>,
+        Ulrich Kunitz <kune@deine-taler.de>,
+        <linux-usb@vger.kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
+        Wright Feng <wright.feng@cypress.com>,
+        Stanislav Yakovlev <stas.yakovlev@gmail.com>,
+        Stanislaw Gruszka <stf_xl@wp.pl>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        Intel Linux Wireless <linuxwifi@intel.com>,
+        Jouni Malinen <j@w1.fi>,
+        Amitkumar Karwar <amitkarwar@gmail.com>,
+        Ganapathi Bhat <ganapathi.bhat@nxp.com>,
+        Xinming Hu <huxinming820@gmail.com>,
+        <libertas-dev@lists.infradead.org>,
+        Pascal Terjan <pterjan@google.com>,
+        Ping-Ke Shih <pkshih@realtek.com>
+Date:   Mon, 28 Sep 2020 10:03:25 +0200
+Message-ID: <174d3bce0c8.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+In-Reply-To: <20200927194922.339094192@linutronix.de>
+References: <20200927194846.045411263@linutronix.de>
+ <20200927194922.339094192@linutronix.de>
+User-Agent: AquaMail/1.26.0-1689 (build: 102600004)
+Subject: Re: [patch 25/35] net: brcmfmac: Use netif_rx_any_context().
 MIME-Version: 1.0
-X-Received: by 2002:a92:4a0c:: with SMTP id m12mr122549ilf.238.1601278636781;
- Mon, 28 Sep 2020 00:37:16 -0700 (PDT)
-Date:   Mon, 28 Sep 2020 00:37:16 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <00000000000054f46105b05abcd5@google.com>
-Subject: general protection fault in mac80211_hwsim_tx_frame_no_nl
-From:   syzbot <syzbot+84f7d08012d5c1f0f59e@syzkaller.appspotmail.com>
-To:     davem@davemloft.net, johannes@sipsolutions.net, kuba@kernel.org,
-        kvalo@codeaurora.org, linux-kernel@vger.kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+        boundary="0000000000002a6f7805b05b1a30"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
+--0000000000002a6f7805b05b1a30
+Content-Type: text/plain; format=flowed; charset="us-ascii"
+Content-Transfer-Encoding: 8bit
 
-syzbot found the following issue on:
+On 9/27/2020 9:49 PM, Thomas Gleixner wrote:
+> From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+>
+> The usage of in_interrupt() in non-core code is phased out. Ideally the
+> information of the calling context should be passed by the callers or the
+> functions be split as appropriate.
+>
+> brcmfmac uses in_interupt() to select the netif_rx*() variant which matches
+> the calling context. The attempt to consolidate the code by passing an
+> arguemnt or by distangling it failed due lack of knowledge about this
+> driver and because the call chains are convoluted and hard to follow.
 
-HEAD commit:    171d4ff7 Merge tag 'mmc-v5.9-rc4-2' of git://git.kernel.or..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=15d1a809900000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=240e2ebab67245c7
-dashboard link: https://syzkaller.appspot.com/bug?extid=84f7d08012d5c1f0f59e
-compiler:       gcc (GCC) 10.1.0-syz 20200507
+I think it is only for USB devices that the function can be called in
+"interrupt" context. PCIe devices call it from thread context for sure.
+The function brcmf_netif_rx() is (in)directly called by brcmf_rx_frame(), 
+which is used by SDIO and USB. Anyway, it will be a bit more work, but 
+doable. Let me see what I can come up with.
 
-Unfortunately, I don't have any reproducer for this issue yet.
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+84f7d08012d5c1f0f59e@syzkaller.appspotmail.com
-
-general protection fault, probably for non-canonical address 0xdffffc0000000338: 0000 [#1] PREEMPT SMP KASAN
-KASAN: probably user-memory-access in range [0x00000000000019c0-0x00000000000019c7]
-CPU: 1 PID: 27410 Comm: syz-executor.4 Not tainted 5.9.0-rc6-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
-RIP: 0010:mac80211_hwsim_tx_frame_no_nl.isra.0+0x728/0x12d0 drivers/net/wireless/mac80211_hwsim.c:1408
-Code: 89 b4 24 90 00 00 00 c6 84 24 98 00 00 00 00 74 bb e8 6c 5f 50 fc 48 8d bb c4 19 00 00 48 89 f8 48 89 fa 48 c1 e8 03 83 e2 07 <0f> b6 04 28 38 d0 7f 08 84 c0 0f 85 39 09 00 00 44 0f b6 bb c4 19
-RSP: 0018:ffffc90000da8b68 EFLAGS: 00010202
-RAX: 0000000000000338 RBX: 0000000000000000 RCX: ffffffff8525df4e
-RDX: 0000000000000004 RSI: ffffffff8525ded4 RDI: 00000000000019c4
-RBP: dffffc0000000000 R08: 0000000000000001 R09: ffffffff8d0c0a3f
-R10: 0000000000000000 R11: 0000000000000000 R12: ffff888047738500
-R13: ffff888051ca3120 R14: ffff888051ca3350 R15: 0000000000000077
-FS:  0000000000000000(0000) GS:ffff8880ae500000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 000055783cad52c8 CR3: 000000005a64a000 CR4: 00000000001526e0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <IRQ>
- mac80211_hwsim_tx_frame+0x14f/0x1e0 drivers/net/wireless/mac80211_hwsim.c:1654
- mac80211_hwsim_beacon_tx+0x439/0x810 drivers/net/wireless/mac80211_hwsim.c:1694
- __iterate_interfaces+0x124/0x4d0 net/mac80211/util.c:737
- ieee80211_iterate_active_interfaces_atomic+0x8d/0x170 net/mac80211/util.c:773
- mac80211_hwsim_beacon+0xd5/0x1a0 drivers/net/wireless/mac80211_hwsim.c:1717
- __run_hrtimer kernel/time/hrtimer.c:1524 [inline]
- __hrtimer_run_queues+0x6a9/0xfc0 kernel/time/hrtimer.c:1588
- hrtimer_run_softirq+0x17b/0x360 kernel/time/hrtimer.c:1605
- __do_softirq+0x1f8/0xb23 kernel/softirq.c:298
- asm_call_on_stack+0xf/0x20 arch/x86/entry/entry_64.S:706
- </IRQ>
- __run_on_irqstack arch/x86/include/asm/irq_stack.h:22 [inline]
- run_on_irqstack_cond arch/x86/include/asm/irq_stack.h:48 [inline]
- do_softirq_own_stack+0x9d/0xd0 arch/x86/kernel/irq_64.c:77
- invoke_softirq kernel/softirq.c:393 [inline]
- __irq_exit_rcu kernel/softirq.c:423 [inline]
- irq_exit_rcu+0x235/0x280 kernel/softirq.c:435
- sysvec_apic_timer_interrupt+0x51/0xf0 arch/x86/kernel/apic/apic.c:1091
- asm_sysvec_apic_timer_interrupt+0x12/0x20 arch/x86/include/asm/idtentry.h:581
-RIP: 0010:__raw_write_unlock_irq include/linux/rwlock_api_smp.h:268 [inline]
-RIP: 0010:_raw_write_unlock_irq+0x4b/0x80 kernel/locking/spinlock.c:343
-Code: c0 b8 6b fc 89 48 ba 00 00 00 00 00 fc ff df 48 c1 e8 03 80 3c 10 00 75 31 48 83 3d 56 9f d3 01 00 74 25 fb 66 0f 1f 44 00 00 <bf> 01 00 00 00 e8 6b 28 28 f9 65 8b 05 04 32 d9 77 85 c0 74 02 5d
-RSP: 0018:ffffc900074a7ae8 EFLAGS: 00000282
-RAX: 1ffffffff13f8d77 RBX: ffff888037acc480 RCX: 1ffffffff16b2531
-RDX: dffffc0000000000 RSI: 0000000000000001 RDI: 0000000000000000
-RBP: ffffffff89e09080 R08: 0000000000000001 R09: 0000000000000001
-R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000000
-R13: ffff888048116340 R14: dffffc0000000000 R15: 00000000ffffffff
- release_task+0xc4e/0x14d0 kernel/exit.c:219
- exit_notify kernel/exit.c:681 [inline]
- do_exit+0x14db/0x29f0 kernel/exit.c:826
- do_group_exit+0x125/0x310 kernel/exit.c:903
- get_signal+0x428/0x1f00 kernel/signal.c:2757
- arch_do_signal+0x82/0x2520 arch/x86/kernel/signal.c:811
- exit_to_user_mode_loop kernel/entry/common.c:161 [inline]
- exit_to_user_mode_prepare+0x1ae/0x200 kernel/entry/common.c:192
- syscall_exit_to_user_mode+0x7e/0x2e0 kernel/entry/common.c:267
- entry_SYSCALL_64_after_hwframe+0x44/0xa9
-RIP: 0033:0x45e179
-Code: Bad RIP value.
-RSP: 002b:00007f248bdfacf8 EFLAGS: 00000246 ORIG_RAX: 00000000000000ca
-RAX: fffffffffffffe00 RBX: 000000000118cf48 RCX: 000000000045e179
-RDX: 0000000000000000 RSI: 0000000000000080 RDI: 000000000118cf48
-RBP: 000000000118cf40 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 000000000118cf4c
-R13: 00007ffec4bea0bf R14: 00007f248bdfb9c0 R15: 000000000118cf4c
-Modules linked in:
----[ end trace fba95d8d60d8e645 ]---
-RIP: 0010:mac80211_hwsim_tx_frame_no_nl.isra.0+0x728/0x12d0 drivers/net/wireless/mac80211_hwsim.c:1408
-Code: 89 b4 24 90 00 00 00 c6 84 24 98 00 00 00 00 74 bb e8 6c 5f 50 fc 48 8d bb c4 19 00 00 48 89 f8 48 89 fa 48 c1 e8 03 83 e2 07 <0f> b6 04 28 38 d0 7f 08 84 c0 0f 85 39 09 00 00 44 0f b6 bb c4 19
-RSP: 0018:ffffc90000da8b68 EFLAGS: 00010202
-RAX: 0000000000000338 RBX: 0000000000000000 RCX: ffffffff8525df4e
-RDX: 0000000000000004 RSI: ffffffff8525ded4 RDI: 00000000000019c4
-RBP: dffffc0000000000 R08: 0000000000000001 R09: ffffffff8d0c0a3f
-R10: 0000000000000000 R11: 0000000000000000 R12: ffff888047738500
-R13: ffff888051ca3120 R14: ffff888051ca3350 R15: 0000000000000077
-FS:  0000000000000000(0000) GS:ffff8880ae500000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 000055783cad52c8 CR3: 000000005a64a000 CR4: 00000000001526e0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Regards,
+Arend
 
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+--0000000000002a6f7805b05b1a30
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
+
+MIIQTAYJKoZIhvcNAQcCoIIQPTCCEDkCAQExDzANBglghkgBZQMEAgEFADALBgkqhkiG9w0BBwGg
+gg2hMIIE6DCCA9CgAwIBAgIOSBtqCRO9gCTKXSLwFPMwDQYJKoZIhvcNAQELBQAwTDEgMB4GA1UE
+CxMXR2xvYmFsU2lnbiBSb290IENBIC0gUjMxEzARBgNVBAoTCkdsb2JhbFNpZ24xEzARBgNVBAMT
+Ckdsb2JhbFNpZ24wHhcNMTYwNjE1MDAwMDAwWhcNMjQwNjE1MDAwMDAwWjBdMQswCQYDVQQGEwJC
+RTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1zYTEzMDEGA1UEAxMqR2xvYmFsU2lnbiBQZXJzb25h
+bFNpZ24gMiBDQSAtIFNIQTI1NiAtIEczMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA
+tpZok2X9LAHsYqMNVL+Ly6RDkaKar7GD8rVtb9nw6tzPFnvXGeOEA4X5xh9wjx9sScVpGR5wkTg1
+fgJIXTlrGESmaqXIdPRd9YQ+Yx9xRIIIPu3Jp/bpbiZBKYDJSbr/2Xago7sb9nnfSyjTSnucUcIP
+ZVChn6hKneVGBI2DT9yyyD3PmCEJmEzA8Y96qT83JmVH2GaPSSbCw0C+Zj1s/zqtKUbwE5zh8uuZ
+p4vC019QbaIOb8cGlzgvTqGORwK0gwDYpOO6QQdg5d03WvIHwTunnJdoLrfvqUg2vOlpqJmqR+nH
+9lHS+bEstsVJtZieU1Pa+3LzfA/4cT7XA/pnwwIDAQABo4IBtTCCAbEwDgYDVR0PAQH/BAQDAgEG
+MGoGA1UdJQRjMGEGCCsGAQUFBwMCBggrBgEFBQcDBAYIKwYBBQUHAwkGCisGAQQBgjcUAgIGCisG
+AQQBgjcKAwQGCSsGAQQBgjcVBgYKKwYBBAGCNwoDDAYIKwYBBQUHAwcGCCsGAQUFBwMRMBIGA1Ud
+EwEB/wQIMAYBAf8CAQAwHQYDVR0OBBYEFGlygmIxZ5VEhXeRgMQENkmdewthMB8GA1UdIwQYMBaA
+FI/wS3+oLkUkrk1Q+mOai97i3Ru8MD4GCCsGAQUFBwEBBDIwMDAuBggrBgEFBQcwAYYiaHR0cDov
+L29jc3AyLmdsb2JhbHNpZ24uY29tL3Jvb3RyMzA2BgNVHR8ELzAtMCugKaAnhiVodHRwOi8vY3Js
+Lmdsb2JhbHNpZ24uY29tL3Jvb3QtcjMuY3JsMGcGA1UdIARgMF4wCwYJKwYBBAGgMgEoMAwGCisG
+AQQBoDIBKAowQQYJKwYBBAGgMgFfMDQwMgYIKwYBBQUHAgEWJmh0dHBzOi8vd3d3Lmdsb2JhbHNp
+Z24uY29tL3JlcG9zaXRvcnkvMA0GCSqGSIb3DQEBCwUAA4IBAQConc0yzHxn4gtQ16VccKNm4iXv
+6rS2UzBuhxI3XDPiwihW45O9RZXzWNgVcUzz5IKJFL7+pcxHvesGVII+5r++9eqI9XnEKCILjHr2
+DgvjKq5Jmg6bwifybLYbVUoBthnhaFB0WLwSRRhPrt5eGxMw51UmNICi/hSKBKsHhGFSEaJQALZy
+4HL0EWduE6ILYAjX6BSXRDtHFeUPddb46f5Hf5rzITGLsn9BIpoOVrgS878O4JnfUWQi29yBfn75
+HajifFvPC+uqn+rcVnvrpLgsLOYG/64kWX/FRH8+mhVe+mcSX3xsUpcxK9q9vLTVtroU/yJUmEC4
+OcH5dQsbHBqjMIIDXzCCAkegAwIBAgILBAAAAAABIVhTCKIwDQYJKoZIhvcNAQELBQAwTDEgMB4G
+A1UECxMXR2xvYmFsU2lnbiBSb290IENBIC0gUjMxEzARBgNVBAoTCkdsb2JhbFNpZ24xEzARBgNV
+BAMTCkdsb2JhbFNpZ24wHhcNMDkwMzE4MTAwMDAwWhcNMjkwMzE4MTAwMDAwWjBMMSAwHgYDVQQL
+ExdHbG9iYWxTaWduIFJvb3QgQ0EgLSBSMzETMBEGA1UEChMKR2xvYmFsU2lnbjETMBEGA1UEAxMK
+R2xvYmFsU2lnbjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMwldpB5BngiFvXAg7aE
+yiie/QV2EcWtiHL8RgJDx7KKnQRfJMsuS+FggkbhUqsMgUdwbN1k0ev1LKMPgj0MK66X17YUhhB5
+uzsTgHeMCOFJ0mpiLx9e+pZo34knlTifBtc+ycsmWQ1z3rDI6SYOgxXG71uL0gRgykmmKPZpO/bL
+yCiR5Z2KYVc3rHQU3HTgOu5yLy6c+9C7v/U9AOEGM+iCK65TpjoWc4zdQQ4gOsC0p6Hpsk+QLjJg
+6VfLuQSSaGjlOCZgdbKfd/+RFO+uIEn8rUAVSNECMWEZXriX7613t2Saer9fwRPvm2L7DWzgVGkW
+qQPabumDk3F2xmmFghcCAwEAAaNCMEAwDgYDVR0PAQH/BAQDAgEGMA8GA1UdEwEB/wQFMAMBAf8w
+HQYDVR0OBBYEFI/wS3+oLkUkrk1Q+mOai97i3Ru8MA0GCSqGSIb3DQEBCwUAA4IBAQBLQNvAUKr+
+yAzv95ZURUm7lgAJQayzE4aGKAczymvmdLm6AC2upArT9fHxD4q/c2dKg8dEe3jgr25sbwMpjjM5
+RcOO5LlXbKr8EpbsU8Yt5CRsuZRj+9xTaGdWPoO4zzUhw8lo/s7awlOqzJCK6fBdRoyV3XpYKBov
+Hd7NADdBj+1EbddTKJd+82cEHhXXipa0095MJ6RMG3NzdvQXmcIfeg7jLQitChws/zyrVQ4PkX42
+68NXSb7hLi18YIvDQVETI53O9zJrlAGomecsMx86OyXShkDOOyyGeMlhLxS67ttVb9+E7gUJTb0o
+2HLO02JQZR7rkpeDMdmztcpHWD9fMIIFTjCCBDagAwIBAgIMUd5uz4+i70IloyctMA0GCSqGSIb3
+DQEBCwUAMF0xCzAJBgNVBAYTAkJFMRkwFwYDVQQKExBHbG9iYWxTaWduIG52LXNhMTMwMQYDVQQD
+EypHbG9iYWxTaWduIFBlcnNvbmFsU2lnbiAyIENBIC0gU0hBMjU2IC0gRzMwHhcNMjAwOTA0MDc1
+NDIyWhcNMjIwOTA1MDc1NDIyWjCBlTELMAkGA1UEBhMCSU4xEjAQBgNVBAgTCUthcm5hdGFrYTES
+MBAGA1UEBxMJQmFuZ2Fsb3JlMRYwFAYDVQQKEw1Ccm9hZGNvbSBJbmMuMRkwFwYDVQQDExBBcmVu
+ZCBWYW4gU3ByaWVsMSswKQYJKoZIhvcNAQkBFhxhcmVuZC52YW5zcHJpZWxAYnJvYWRjb20uY29t
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAqJ64ukMVTPoACllUoR4YapHXMtf3JP4e
+MniQLw3G3qPYDcmuupakle+cqBUzxXOu9odSBxw7Ww4qooIVjDOuA1VxtYzieKLPmZ0sgvy1RhVR
+obr58d7/2azKP6wecAiglkT6jZ0by1TbLhuXNFByGxm7iF1Hh/sF3nWKCHMxBtEFrmaKhM1MwCDS
+j5+GBWrrZ/SNgVS+XqjaQyRg/h3WB95FxduXpYq5p0kWPJZhV4QeyMGSIRzqPwLbKdqIlRhkGxds
+pra5sIx/TR6gNtLG9MpND9zQt5j42hInkP81vqu9DG8lovoPMuR0JVpFRbPjHZ07cLqqbFMVS/8z
+53iSewIDAQABo4IB0zCCAc8wDgYDVR0PAQH/BAQDAgWgMIGeBggrBgEFBQcBAQSBkTCBjjBNBggr
+BgEFBQcwAoZBaHR0cDovL3NlY3VyZS5nbG9iYWxzaWduLmNvbS9jYWNlcnQvZ3NwZXJzb25hbHNp
+Z24yc2hhMmczb2NzcC5jcnQwPQYIKwYBBQUHMAGGMWh0dHA6Ly9vY3NwMi5nbG9iYWxzaWduLmNv
+bS9nc3BlcnNvbmFsc2lnbjJzaGEyZzMwTQYDVR0gBEYwRDBCBgorBgEEAaAyASgKMDQwMgYIKwYB
+BQUHAgEWJmh0dHBzOi8vd3d3Lmdsb2JhbHNpZ24uY29tL3JlcG9zaXRvcnkvMAkGA1UdEwQCMAAw
+RAYDVR0fBD0wOzA5oDegNYYzaHR0cDovL2NybC5nbG9iYWxzaWduLmNvbS9nc3BlcnNvbmFsc2ln
+bjJzaGEyZzMuY3JsMCcGA1UdEQQgMB6BHGFyZW5kLnZhbnNwcmllbEBicm9hZGNvbS5jb20wEwYD
+VR0lBAwwCgYIKwYBBQUHAwQwHwYDVR0jBBgwFoAUaXKCYjFnlUSFd5GAxAQ2SZ17C2EwHQYDVR0O
+BBYEFHAaaA+cRo3vYiA6aKVu1bOs4YAYMA0GCSqGSIb3DQEBCwUAA4IBAQCYLdyC8SuyQV6oa5uH
+kGtqz9FCJC/9gSclQLM8dZLHF3FYX8LlcQg/3Ct5I29YLK3T/r35B2zGljtXqVOIeSEz7sDXfGNy
+3dnLIafB1y04e7aR+thVn5Rp1YTF01FUWYbZrixlVuKvjn8vtKC+HhAoDCxvqnqEuA/8Usn7B0/N
+uOA46oQTLe3kjdIgXWJ29JWVqFUavYdcK0+0zyfeMBCTO6heYABeMP3wzYHfcuFDhqldTCpumqhZ
+WwHVQUbAn+xLMIQpycIQFoJIGJX4MeaTSMfLNP2w7nP2uLNgIeleF284vS0XVkBXSCgIGylP4SN+
+HQYrv7fVCbtp+c7nFvP7MYICbzCCAmsCAQEwbTBdMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xv
+YmFsU2lnbiBudi1zYTEzMDEGA1UEAxMqR2xvYmFsU2lnbiBQZXJzb25hbFNpZ24gMiBDQSAtIFNI
+QTI1NiAtIEczAgxR3m7Pj6LvQiWjJy0wDQYJYIZIAWUDBAIBBQCggdQwLwYJKoZIhvcNAQkEMSIE
+IKt51SX3MjMlMOZba/txDVs5Q9vR9gK+hGOoOKuHe9zVMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0B
+BwEwHAYJKoZIhvcNAQkFMQ8XDTIwMDkyODA4MDMzMVowaQYJKoZIhvcNAQkPMVwwWjALBglghkgB
+ZQMEASowCwYJYIZIAWUDBAEWMAsGCWCGSAFlAwQBAjAKBggqhkiG9w0DBzALBgkqhkiG9w0BAQow
+CwYJKoZIhvcNAQEHMAsGCWCGSAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQBbXqSnrNUAxZNJu8Yr
+luOCzO6103dUfnUbFTWqbHggMj4yXzP4CHlfkMfl6eJOY3P79XKyornqveMh+07Z+qMNEClEylxR
+gM6JK+Y0WEgh6CdmIBZhp0pUvjI7xhQout83CXqgzpAK9G9tZsEBfX/hGgV66n+WtHsECI6eUNVz
+YJplwHDfrq2Tuh0ZpRh5bF3TpExlNQQwT5VvVUmZYpOsE/ajBug69H21UqpmY8JXSmkNcFkfnYYg
+Ojbd9l5oUDN9JTK2jKZSgAE77YyBOZM8m+Cj9LTx3RoupV6x+nDvXcU3RezbVG/NTye2jVk3bHDp
+hJOA+cSAQw3PR2dqGOMb
+--0000000000002a6f7805b05b1a30--
