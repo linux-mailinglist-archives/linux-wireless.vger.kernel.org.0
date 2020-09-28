@@ -2,76 +2,86 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7486C27A93F
-	for <lists+linux-wireless@lfdr.de>; Mon, 28 Sep 2020 10:04:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4465227AA8A
+	for <lists+linux-wireless@lfdr.de>; Mon, 28 Sep 2020 11:20:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726759AbgI1IDi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 28 Sep 2020 04:03:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36688 "EHLO
+        id S1726645AbgI1JUC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 28 Sep 2020 05:20:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48590 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726749AbgI1IDd (ORCPT
+        with ESMTP id S1726477AbgI1JUC (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 28 Sep 2020 04:03:33 -0400
-Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64801C0613D0
-        for <linux-wireless@vger.kernel.org>; Mon, 28 Sep 2020 01:03:33 -0700 (PDT)
-Received: by mail-ej1-x62f.google.com with SMTP id r7so7172315ejs.11
-        for <linux-wireless@vger.kernel.org>; Mon, 28 Sep 2020 01:03:33 -0700 (PDT)
+        Mon, 28 Sep 2020 05:20:02 -0400
+Received: from mail-vk1-xa33.google.com (mail-vk1-xa33.google.com [IPv6:2607:f8b0:4864:20::a33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71921C061755
+        for <linux-wireless@vger.kernel.org>; Mon, 28 Sep 2020 02:20:02 -0700 (PDT)
+Received: by mail-vk1-xa33.google.com with SMTP id b4so1388487vkh.9
+        for <linux-wireless@vger.kernel.org>; Mon, 28 Sep 2020 02:20:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google;
-        h=from:to:cc:date:message-id:in-reply-to:references:user-agent
-         :subject:mime-version;
-        bh=ziWUELQ0D/4+E8ivkeX3nFevRYu/YscetAPKuTu6uB4=;
-        b=HIQPVNgCCM49JgTPIUJpkknDhj+JvqLlP58HRg/DMs6calBcynhZEgrJxB2YEKj5n4
-         d+Fl5JnxAEO8P/Jy2vwZbZG+p1+THg+Nt7J/WLPGzY6ZjbhJDj+ynQRJgNNN1bma9Un3
-         5g9hHDcEWu2X1yN2ZNOlXQ5AJEmJXUpbVYfSI=
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=QQu91B+AW3IRpHZjKS2p4lMu3W034IPbEyQrKhHugtA=;
+        b=h0nsKxQ1792AaIhUo13P82vgGVMXclf9CkIZ3KapAzb2X/3tNBKYsSGecwrBlaGlfj
+         Tfj/C9Zv83pHcreLOpATprEGXKgXE7GflMxTk85DdzpRec/t1LnE+wiAfP6b5BIHasHY
+         Ignqf7gF7vwjnL8HCCY3lSkGXTjCE+cuCHlYoEe1V1ud1mcWehNemRROw+dC/JdC1/0c
+         0PedcFoH2tLhd3HHLNfHHJrCV/CVoz/bfJ60yVp2iKXm17ESSv95/LpX2Y/Dg/8GDOjv
+         2ofiMkyoa80M4iYbgDGr8oelbtFwixNkB383I0V8notORYCLMV89a0h5ooLViuYHEZeT
+         ZUiw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:date:message-id:in-reply-to
-         :references:user-agent:subject:mime-version;
-        bh=ziWUELQ0D/4+E8ivkeX3nFevRYu/YscetAPKuTu6uB4=;
-        b=lUsUXZnyCZnirkXPMgdP+IsoMaC3cquAMjcSlnqIw5RBGeoj3R/Qr2ZHtR8iEVQcqW
-         ZlyVeynpb98czjUyli7gY3Ycs6CsjD3QJJ0XIOmlD42uk9vupu5Xg+WBqZf7iICtLoIL
-         wlCoWNGJ8+GTBCjKWD4P5QPoNxcrwkpx5pX/8R9BQ9DBk35ZNjxjY1fXh9mJFxOxKdKd
-         3yuH5m+yxYcMr6ymAo+wEUrDQpL76+zRftcuvJY3LLt4KOOebsds7Xq5w+lXcbIvTF9X
-         Kok+PbT/Qfx0voQl9ZwmzRB1mSf94G5sJIH19/T34AlikxEelvCqEJ+SKqVFafgWt+UM
-         xZgQ==
-X-Gm-Message-State: AOAM530s0Nn6vNxRKNqEoqp1x9SgHd9TjDJlMlTbIZFrirojg7wQ2/Gc
-        nbOPupsXF6tO9ptW7ZnIculTIQ==
-X-Google-Smtp-Source: ABdhPJxr0fGyEDRBYLN/uNjPkpmcZqDJXbdicXb4UjzIQb1ia6XjW9lnJK6GCzYxH7dMsAK83DWbfA==
-X-Received: by 2002:a17:906:fb8f:: with SMTP id lr15mr466285ejb.25.1601280210653;
-        Mon, 28 Sep 2020 01:03:30 -0700 (PDT)
-Received: from [100.126.98.202] ([109.37.129.13])
-        by smtp.gmail.com with ESMTPSA id s30sm385235edc.8.2020.09.28.01.03.27
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 28 Sep 2020 01:03:29 -0700 (PDT)
-From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
-To:     Thomas Gleixner <tglx@linutronix.de>,
-        LKML <linux-kernel@vger.kernel.org>
-CC:     Peter Zijlstra <peterz@infradead.org>,
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=QQu91B+AW3IRpHZjKS2p4lMu3W034IPbEyQrKhHugtA=;
+        b=D+MCFFhRiM0AOnL+JDQcM7NFjLX7d0yFTTFsUEQ1j028vYzHykzNh/GkKCFcE0AC7+
+         9OlujZ7SpFZmwyl8taXkhc2tM2ZzWd0F+LsQsIbXbxZub3HsfODx1NTz6dm18+4SThIQ
+         2y+7vBBh18YGoZmZRQWAuOcWG0F2ktTGm9fOglW/97AUsAu4OTkxwe05oS+Re+fhdY4S
+         AdCsyr6Kd4X8Sbjmini71PTGO6i1kG6Ui78hxFKQwTB4eoTyN3on8U6f/225kTdKHOdr
+         kY3h3qRsDyNfuNZOe38zG0Mfxi6hqUqSgkULhiYWdyl0l/9rEQrDw5sYC2PbMwHcm1kL
+         YStw==
+X-Gm-Message-State: AOAM530crWRUqdETN0OQ4Pe0Eq9pk9RwHvQXYRFyBa7udB5BUlmcdy7l
+        4EBe4UMXr22Lqq/KjZ0MbjdRuPzPP2e6BZk1tkod0g==
+X-Google-Smtp-Source: ABdhPJyIPAnJj5fPmVsL4k9MF4OtxiE77/7ix/Qafm1hzLnqts1eYR1koTMhcOn/iv3ljy6H8r2txH0J3D7/fATe+GY=
+X-Received: by 2002:ac5:c748:: with SMTP id b8mr4530997vkn.6.1601284801206;
+ Mon, 28 Sep 2020 02:20:01 -0700 (PDT)
+MIME-Version: 1.0
+References: <20200927194846.045411263@linutronix.de> <20200927194922.245750969@linutronix.de>
+ <a345ad51-4db7-5e4f-3ff9-f1673c12da99@broadcom.com>
+In-Reply-To: <a345ad51-4db7-5e4f-3ff9-f1673c12da99@broadcom.com>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Mon, 28 Sep 2020 11:19:25 +0200
+Message-ID: <CAPDyKFrC2j5S7NrtTRCBga=rttKBp-OZnsEnAEgnXj8zj11p0w@mail.gmail.com>
+Subject: Re: [patch 24/35] net: brcmfmac: Replace in_interrupt()
+To:     Arend Van Spriel <arend.vanspriel@broadcom.com>
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
         Linus Torvalds <torvalds@linuxfoundation.org>,
         Paul McKenney <paulmck@kernel.org>,
         Matthew Wilcox <willy@infradead.org>,
         Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
         Franky Lin <franky.lin@broadcom.com>,
         Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
+        Wright Feng <wright.feng@cypress.com>,
         Kalle Valo <kvalo@codeaurora.org>,
         "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>,
-        <linux-wireless@vger.kernel.org>,
-        <brcm80211-dev-list.pdl@broadcom.com>,
-        <brcm80211-dev-list@cypress.com>, <netdev@vger.kernel.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        brcm80211-dev-list.pdl@broadcom.com,
+        brcm80211-dev-list <brcm80211-dev-list@cypress.com>,
+        netdev <netdev@vger.kernel.org>,
         Christian Benvenuti <benve@cisco.com>,
         Govindarajulu Varadarajan <_govind@gmx.com>,
         Jonathan Corbet <corbet@lwn.net>,
         Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        <linux-doc@vger.kernel.org>,
+        Linux Documentation <linux-doc@vger.kernel.org>,
         Luc Van Oostenryck <luc.vanoostenryck@gmail.com>,
         Jay Cliburn <jcliburn@gmail.com>,
         Chris Snook <chris.snook@gmail.com>,
         Vishal Kulkarni <vishal@chelsio.com>,
         Jeff Kirsher <jeffrey.t.kirsher@intel.com>,
-        <intel-wired-lan@lists.osuosl.org>,
+        intel-wired-lan@lists.osuosl.org,
         Shannon Nelson <snelson@pensando.io>,
         Pensando Drivers <drivers@pensando.io>,
         Andrew Lunn <andrew@lunn.ch>,
@@ -83,10 +93,8 @@ CC:     Peter Zijlstra <peterz@infradead.org>,
         Martin Habets <mhabets@solarflare.com>,
         Jon Mason <jdmason@kudzu.us>, Daniel Drake <dsd@gentoo.org>,
         Ulrich Kunitz <kune@deine-taler.de>,
-        <linux-usb@vger.kernel.org>,
+        Linux USB List <linux-usb@vger.kernel.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
-        Wright Feng <wright.feng@cypress.com>,
         Stanislav Yakovlev <stas.yakovlev@gmail.com>,
         Stanislaw Gruszka <stf_xl@wp.pl>,
         Johannes Berg <johannes.berg@intel.com>,
@@ -97,128 +105,43 @@ CC:     Peter Zijlstra <peterz@infradead.org>,
         Amitkumar Karwar <amitkarwar@gmail.com>,
         Ganapathi Bhat <ganapathi.bhat@nxp.com>,
         Xinming Hu <huxinming820@gmail.com>,
-        <libertas-dev@lists.infradead.org>,
+        libertas-dev@lists.infradead.org,
         Pascal Terjan <pterjan@google.com>,
         Ping-Ke Shih <pkshih@realtek.com>
-Date:   Mon, 28 Sep 2020 10:03:25 +0200
-Message-ID: <174d3bce0c8.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
-In-Reply-To: <20200927194922.339094192@linutronix.de>
-References: <20200927194846.045411263@linutronix.de>
- <20200927194922.339094192@linutronix.de>
-User-Agent: AquaMail/1.26.0-1689 (build: 102600004)
-Subject: Re: [patch 25/35] net: brcmfmac: Use netif_rx_any_context().
-MIME-Version: 1.0
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="0000000000002a6f7805b05b1a30"
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---0000000000002a6f7805b05b1a30
-Content-Type: text/plain; format=flowed; charset="us-ascii"
-Content-Transfer-Encoding: 8bit
-
-On 9/27/2020 9:49 PM, Thomas Gleixner wrote:
-> From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+On Mon, 28 Sep 2020 at 09:35, Arend Van Spriel
+<arend.vanspriel@broadcom.com> wrote:
 >
-> The usage of in_interrupt() in non-core code is phased out. Ideally the
-> information of the calling context should be passed by the callers or the
-> functions be split as appropriate.
+> + Uffe
 >
-> brcmfmac uses in_interupt() to select the netif_rx*() variant which matches
-> the calling context. The attempt to consolidate the code by passing an
-> arguemnt or by distangling it failed due lack of knowledge about this
-> driver and because the call chains are convoluted and hard to follow.
+> On 9/27/2020 9:49 PM, Thomas Gleixner wrote:
+> > @@ -85,7 +85,7 @@ static void brcmf_sdiod_ib_irqhandler(st
+> >
+> >       brcmf_dbg(INTR, "IB intr triggered\n");
+> >
+> > -     brcmf_sdio_isr(sdiodev->bus);
+> > +     brcmf_sdio_isr(sdiodev->bus, false);
+> >   }
+>
+> Hi Uffe,
+>
+> I assume the above code is okay, but want to confirm. Is the SDIO
+> interrupt guaranteed to be on a worker thread?
 
-I think it is only for USB devices that the function can be called in
-"interrupt" context. PCIe devices call it from thread context for sure.
-The function brcmf_netif_rx() is (in)directly called by brcmf_rx_frame(), 
-which is used by SDIO and USB. Anyway, it will be a bit more work, but 
-doable. Let me see what I can come up with.
+Correct.
 
-Regards,
-Arend
+As a matter of fact, the sdio irqs can be delivered through a couple
+of different paths. The legacy (scheduled for removal), is from a
+dedicated kthread. The more "modern" way is either from the context of
+a threaded IRQ handler or via a workqueue.
 
+However, there are also so-called out of band SDIO irqs, typically
+routed via a separate GPIO line. This isn't managed by the MMC/SDIO
+subsystem, but the SDIO functional driver itself.
 
-
---0000000000002a6f7805b05b1a30
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
-
-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
-pra5sIx/TR6gNtLG9MpND9zQt5j42hInkP81vqu9DG8lovoPMuR0JVpFRbPjHZ07cLqqbFMVS/8z
-53iSewIDAQABo4IB0zCCAc8wDgYDVR0PAQH/BAQDAgWgMIGeBggrBgEFBQcBAQSBkTCBjjBNBggr
-BgEFBQcwAoZBaHR0cDovL3NlY3VyZS5nbG9iYWxzaWduLmNvbS9jYWNlcnQvZ3NwZXJzb25hbHNp
-Z24yc2hhMmczb2NzcC5jcnQwPQYIKwYBBQUHMAGGMWh0dHA6Ly9vY3NwMi5nbG9iYWxzaWduLmNv
-bS9nc3BlcnNvbmFsc2lnbjJzaGEyZzMwTQYDVR0gBEYwRDBCBgorBgEEAaAyASgKMDQwMgYIKwYB
-BQUHAgEWJmh0dHBzOi8vd3d3Lmdsb2JhbHNpZ24uY29tL3JlcG9zaXRvcnkvMAkGA1UdEwQCMAAw
-RAYDVR0fBD0wOzA5oDegNYYzaHR0cDovL2NybC5nbG9iYWxzaWduLmNvbS9nc3BlcnNvbmFsc2ln
-bjJzaGEyZzMuY3JsMCcGA1UdEQQgMB6BHGFyZW5kLnZhbnNwcmllbEBicm9hZGNvbS5jb20wEwYD
-VR0lBAwwCgYIKwYBBQUHAwQwHwYDVR0jBBgwFoAUaXKCYjFnlUSFd5GAxAQ2SZ17C2EwHQYDVR0O
-BBYEFHAaaA+cRo3vYiA6aKVu1bOs4YAYMA0GCSqGSIb3DQEBCwUAA4IBAQCYLdyC8SuyQV6oa5uH
-kGtqz9FCJC/9gSclQLM8dZLHF3FYX8LlcQg/3Ct5I29YLK3T/r35B2zGljtXqVOIeSEz7sDXfGNy
-3dnLIafB1y04e7aR+thVn5Rp1YTF01FUWYbZrixlVuKvjn8vtKC+HhAoDCxvqnqEuA/8Usn7B0/N
-uOA46oQTLe3kjdIgXWJ29JWVqFUavYdcK0+0zyfeMBCTO6heYABeMP3wzYHfcuFDhqldTCpumqhZ
-WwHVQUbAn+xLMIQpycIQFoJIGJX4MeaTSMfLNP2w7nP2uLNgIeleF284vS0XVkBXSCgIGylP4SN+
-HQYrv7fVCbtp+c7nFvP7MYICbzCCAmsCAQEwbTBdMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xv
-YmFsU2lnbiBudi1zYTEzMDEGA1UEAxMqR2xvYmFsU2lnbiBQZXJzb25hbFNpZ24gMiBDQSAtIFNI
-QTI1NiAtIEczAgxR3m7Pj6LvQiWjJy0wDQYJYIZIAWUDBAIBBQCggdQwLwYJKoZIhvcNAQkEMSIE
-IKt51SX3MjMlMOZba/txDVs5Q9vR9gK+hGOoOKuHe9zVMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0B
-BwEwHAYJKoZIhvcNAQkFMQ8XDTIwMDkyODA4MDMzMVowaQYJKoZIhvcNAQkPMVwwWjALBglghkgB
-ZQMEASowCwYJYIZIAWUDBAEWMAsGCWCGSAFlAwQBAjAKBggqhkiG9w0DBzALBgkqhkiG9w0BAQow
-CwYJKoZIhvcNAQEHMAsGCWCGSAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQBbXqSnrNUAxZNJu8Yr
-luOCzO6103dUfnUbFTWqbHggMj4yXzP4CHlfkMfl6eJOY3P79XKyornqveMh+07Z+qMNEClEylxR
-gM6JK+Y0WEgh6CdmIBZhp0pUvjI7xhQout83CXqgzpAK9G9tZsEBfX/hGgV66n+WtHsECI6eUNVz
-YJplwHDfrq2Tuh0ZpRh5bF3TpExlNQQwT5VvVUmZYpOsE/ajBug69H21UqpmY8JXSmkNcFkfnYYg
-Ojbd9l5oUDN9JTK2jKZSgAE77YyBOZM8m+Cj9LTx3RoupV6x+nDvXcU3RezbVG/NTye2jVk3bHDp
-hJOA+cSAQw3PR2dqGOMb
---0000000000002a6f7805b05b1a30--
+Kind regards
+Uffe
