@@ -2,110 +2,152 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2BB7A27AAC3
-	for <lists+linux-wireless@lfdr.de>; Mon, 28 Sep 2020 11:31:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D421027AAD6
+	for <lists+linux-wireless@lfdr.de>; Mon, 28 Sep 2020 11:34:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726420AbgI1JbD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 28 Sep 2020 05:31:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50292 "EHLO
+        id S1726636AbgI1Je2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 28 Sep 2020 05:34:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50816 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726630AbgI1JbA (ORCPT
+        with ESMTP id S1726328AbgI1Je2 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 28 Sep 2020 05:31:00 -0400
-Received: from mail-ej1-x643.google.com (mail-ej1-x643.google.com [IPv6:2a00:1450:4864:20::643])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A0ABC0613CF
-        for <linux-wireless@vger.kernel.org>; Mon, 28 Sep 2020 02:31:00 -0700 (PDT)
-Received: by mail-ej1-x643.google.com with SMTP id lo4so7538329ejb.8
-        for <linux-wireless@vger.kernel.org>; Mon, 28 Sep 2020 02:31:00 -0700 (PDT)
+        Mon, 28 Sep 2020 05:34:28 -0400
+Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com [IPv6:2a00:1450:4864:20::541])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97555C061755
+        for <linux-wireless@vger.kernel.org>; Mon, 28 Sep 2020 02:34:27 -0700 (PDT)
+Received: by mail-ed1-x541.google.com with SMTP id e22so543451edq.6
+        for <linux-wireless@vger.kernel.org>; Mon, 28 Sep 2020 02:34:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=broadcom.com; s=google;
         h=subject:to:cc:references:from:message-id:date:user-agent
          :mime-version:in-reply-to;
-        bh=eZm6HWpr2ChBkaRpPUJgWc+8t0bdi6TuMxj01pbgqCQ=;
-        b=SncEYZoc2H74E/yf8H3OQrkK+AecJRkwm1hLcPvynJNnDBjfzQgdfCpcBe6KKyUxnT
-         pxTowdMwAysVmnLxadtwOYqRurw04PHRLDkpOoG800vCamerPpQ/R3ufPRpPh7qxHRu2
-         ffHwbk0c2EPQj2tlZj8Bo2kMYfAroKf+XtSok=
+        bh=m6fRd024rZ02iq+ftQrwaB59kddn7caIvk4hT3nz2Bg=;
+        b=TVVNs3g6pETJdj+65S45rRz+6JGtB4tY5v69lCQ9YiRKG4KbAb0a47JbmucOixhDc4
+         sXn0NGkjVZYynFQZfT9zdZPWpMXHCKrXZEQkcyS+7VZrFuH/UK0xqQ6NVRo7k4W9QjKi
+         UT+haa4s5W3NqI4QE723XQjZy6mwm2Pug7Oxk=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:subject:to:cc:references:from:message-id:date
          :user-agent:mime-version:in-reply-to;
-        bh=eZm6HWpr2ChBkaRpPUJgWc+8t0bdi6TuMxj01pbgqCQ=;
-        b=WTQiH3cNk8pNaPdndgxOG0S3zqJhLHOrckNGHRI7vQDoWM/E0dPrcr4puqe+aItWgb
-         vhKi4mgK8vo8XgPLHwuvIn9RjPeY4/L00EBOwZssoQF1vHAMDn9zlnJZVMoW9bjFKpBL
-         xNyhpMRyluPdMR74HKrwSuaUnmJfC/RcI8MwJqL8u97+oAOcqD3D+ylJhgk6aoodPz45
-         LC5HGBHwU8KjWpxFyoMsuJPmCWkEFFOKtzuRs6RtzTyzgFIP6x3zSKsiB45ChSw9FvpK
-         Gi64VUaRidFv9jxpT+ffsIIMB+4JTfAGMqEwq+pVryYp3zlA76PRyPSiTzJI6yXk6f9+
-         UHgg==
-X-Gm-Message-State: AOAM530Z81+MQANbJ5z9c+JUYSQPxprLQWdWWSqe8ROeAR21nbju94yA
-        1JWv+u1iLaLCh8/vj1RyHuHkCZLrsDt/Jpd3vR54VxSRmW/GS6A8BrqLUJYlXScM0I705QSLrJQ
-        FqdmCBLLkGVgJZf0cjn/r5Oy/CCwWTxUXd8x4LjHpUBuZiuLmoI6oqXC7gkz0qV1xXgEoXGr8Mw
-        pOj42O5UiPgiirgXs5cGo=
-X-Google-Smtp-Source: ABdhPJxVwAAyNU7y4EgvCj+gmNdoj75X10wpmTi4LMn2FTJbNv8oys5JlUXQi9i4w0+22jzJtBIYNg==
-X-Received: by 2002:a17:906:e918:: with SMTP id ju24mr739253ejb.442.1601285458594;
-        Mon, 28 Sep 2020 02:30:58 -0700 (PDT)
+        bh=m6fRd024rZ02iq+ftQrwaB59kddn7caIvk4hT3nz2Bg=;
+        b=d86sHvfZbCHJ9ke6VkXbAPNnwCWYtnFM3SdXtv3Fs953FVHLeWI6TttKZfEMOa9Asr
+         NrubuGsVns1pd3oMZP1wOJl+W6iUALNKQhUDOr1vNQK5oOU8LiMaF+5vMsiGGIGLnJL7
+         rktM6qG3DDKRyFltx38X6Gpu/0mWTT17w1F/n1b4dsAt1nHDFTA7+OTqoFOQiIW5YciM
+         ojv3N3BIum0k0jp1MfwxRTaW9nL5JuT4L9+p+3WsUBIWw0NAWJbmg4WH0oH2OjfASmIs
+         YRwDGCnzUGqfsz/36UjM6SQGmGggmCA03jq60ZvmG9UPdUgXULvuB7VRlaIDakWJl3N8
+         tlhA==
+X-Gm-Message-State: AOAM531A0oZgK/GhGAtALOeCw7gZMHZBy7910jOgUUgID4SI5JLjzr2u
+        F6B11TYfTPrtV/Xiuvy0Y7Lh6A==
+X-Google-Smtp-Source: ABdhPJwLDeJj4eSk8uCB1OX9YbqIcFxfFwM4PQfEsdndLGRL1iNd0nKdibOIpORZF7Zw/2JGQ65ojA==
+X-Received: by 2002:a50:f199:: with SMTP id x25mr645312edl.347.1601285665899;
+        Mon, 28 Sep 2020 02:34:25 -0700 (PDT)
 Received: from [192.168.178.129] (f140230.upc-f.chello.nl. [80.56.140.230])
-        by smtp.gmail.com with ESMTPSA id a15sm499641ejy.118.2020.09.28.02.30.57
+        by smtp.gmail.com with ESMTPSA id t10sm635029edw.86.2020.09.28.02.34.23
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 28 Sep 2020 02:30:57 -0700 (PDT)
-Subject: Re: WARNING: CPU: 1
-To:     Dmitry Vyukov <dvyukov@google.com>,
-        syzbot <syzbot+3640e696903873858f7e@syzkaller.appspotmail.com>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>,
-        syzkaller-bugs <syzkaller-bugs@googlegroups.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless <linux-wireless@vger.kernel.org>
-References: <000000000000bbdb3b05b0477890@google.com>
- <CACT4Y+arc_qxVnb1+FZUzEM32eDBe7zYgZhcSCgyMUMwKkkeDw@mail.gmail.com>
+        Mon, 28 Sep 2020 02:34:24 -0700 (PDT)
+Subject: Re: [patch 26/35] net: brcmfmac: Convey allocation mode as argument
+To:     Thomas Gleixner <tglx@linutronix.de>,
+        LKML <linux-kernel@vger.kernel.org>
+Cc:     Peter Zijlstra <peterz@infradead.org>,
+        Linus Torvalds <torvalds@linuxfoundation.org>,
+        Paul McKenney <paulmck@kernel.org>,
+        Matthew Wilcox <willy@infradead.org>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
+        Wright Feng <wright.feng@cypress.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        brcm80211-dev-list@cypress.com, netdev@vger.kernel.org,
+        Christian Benvenuti <benve@cisco.com>,
+        Govindarajulu Varadarajan <_govind@gmx.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        linux-doc@vger.kernel.org,
+        Luc Van Oostenryck <luc.vanoostenryck@gmail.com>,
+        Jay Cliburn <jcliburn@gmail.com>,
+        Chris Snook <chris.snook@gmail.com>,
+        Vishal Kulkarni <vishal@chelsio.com>,
+        Jeff Kirsher <jeffrey.t.kirsher@intel.com>,
+        intel-wired-lan@lists.osuosl.org,
+        Shannon Nelson <snelson@pensando.io>,
+        Pensando Drivers <drivers@pensando.io>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Solarflare linux maintainers <linux-net-drivers@solarflare.com>,
+        Edward Cree <ecree@solarflare.com>,
+        Martin Habets <mhabets@solarflare.com>,
+        Jon Mason <jdmason@kudzu.us>, Daniel Drake <dsd@gentoo.org>,
+        Ulrich Kunitz <kune@deine-taler.de>, linux-usb@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Stanislav Yakovlev <stas.yakovlev@gmail.com>,
+        Stanislaw Gruszka <stf_xl@wp.pl>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        Intel Linux Wireless <linuxwifi@intel.com>,
+        Jouni Malinen <j@w1.fi>,
+        Amitkumar Karwar <amitkarwar@gmail.com>,
+        Ganapathi Bhat <ganapathi.bhat@nxp.com>,
+        Xinming Hu <huxinming820@gmail.com>,
+        libertas-dev@lists.infradead.org,
+        Pascal Terjan <pterjan@google.com>,
+        Ping-Ke Shih <pkshih@realtek.com>
+References: <20200927194846.045411263@linutronix.de>
+ <20200927194922.444952084@linutronix.de>
 From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
-Message-ID: <a63808e2-3e76-596c-c0be-64922620820a@broadcom.com>
-Date:   Mon, 28 Sep 2020 11:30:56 +0200
+Message-ID: <aac2b8b3-53f4-9b27-03d0-742bbe3cd81f@broadcom.com>
+Date:   Mon, 28 Sep 2020 11:34:22 +0200
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
  Thunderbird/78.2.2
 MIME-Version: 1.0
-In-Reply-To: <CACT4Y+arc_qxVnb1+FZUzEM32eDBe7zYgZhcSCgyMUMwKkkeDw@mail.gmail.com>
+In-Reply-To: <20200927194922.444952084@linutronix.de>
 Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="000000000000f8756605b05c5260"
+        boundary="000000000000555b7005b05c5f73"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---000000000000f8756605b05c5260
+--000000000000555b7005b05c5f73
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 
-On 9/27/2020 10:47 AM, Dmitry Vyukov wrote:
-> On Sun, Sep 27, 2020 at 10:38 AM syzbot
-> <syzbot+3640e696903873858f7e@syzkaller.appspotmail.com> wrote:
->>
->> Hello,
->>
->> syzbot found the following issue on:
->>
->> HEAD commit:    748d1c8a Merge branch 'devlink-Use-nla_policy-to-validate-..
->> git tree:       net-next
->> console output: https://syzkaller.appspot.com/x/log.txt?x=13ac3ec3900000
->> kernel config:  https://syzkaller.appspot.com/x/.config?x=51fb40e67d1e3dec
->> dashboard link: https://syzkaller.appspot.com/bug?extid=3640e696903873858f7e
->> compiler:       gcc (GCC) 10.1.0-syz 20200507
->> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=1599be03900000
->> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=149fd44b900000
+On 9/27/2020 9:49 PM, Thomas Gleixner wrote:
+> From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 > 
-> Based on the reproducer, this looks like some wireless bug.
-> +net/wireless maintainers.
+> The usage of in_interrupt() in drivers is phased out and Linus clearly
+> requested that code which changes behaviour depending on context should
+> either be seperated or the context be conveyed in an argument passed by the
+> caller, which usually knows the context.
+> 
+> brcmf_fweh_process_event() uses in_interrupt() to select the allocation
+> mode GFP_KERNEL/GFP_ATOMIC. Aside of the above reasons this check is
+> incomplete as it cannot detect contexts which just have preemption or
+> interrupts disabled.
+> 
+> All callchains leading to brcmf_fweh_process_event() can clearly identify
+> the calling context. Convey a 'gfp' argument through the callchains and let
+> the callers hand in the appropriate GFP mode.
+> 
+> This has also the advantage that any change of execution context or
+> preemption/interrupt state in these callchains will be detected by the
+> memory allocator for all GFP_KERNEL allocations.
 
-I don't think so looking at this part of the stacktrace:
-
-[   51.814941]  [<ffffffff8465cc95>] macvlan_common_newlink+0xa15/0x1720
-[   51.833542]  [<ffffffff84662548>] macvtap_newlink+0x128/0x230
-[   51.858008]  [<ffffffff85b68bfe>] rtnl_newlink+0xe5e/0x1780
-[   51.925885]  [<ffffffff85b5d32b>] rtnetlink_rcv_msg+0x22b/0xc20
+Looking at the functions changed I see overlap with patch 25/35 so maybe 
+change to gfp flag to a 'in_isr' bool. The flag can then be used for 
+dealing with netif_rx as well.
 
 Regards,
 Arend
 
---000000000000f8756605b05c5260
+--000000000000555b7005b05c5f73
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -176,13 +218,13 @@ WwHVQUbAn+xLMIQpycIQFoJIGJX4MeaTSMfLNP2w7nP2uLNgIeleF284vS0XVkBXSCgIGylP4SN+
 HQYrv7fVCbtp+c7nFvP7MYICbzCCAmsCAQEwbTBdMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xv
 YmFsU2lnbiBudi1zYTEzMDEGA1UEAxMqR2xvYmFsU2lnbiBQZXJzb25hbFNpZ24gMiBDQSAtIFNI
 QTI1NiAtIEczAgxR3m7Pj6LvQiWjJy0wDQYJYIZIAWUDBAIBBQCggdQwLwYJKoZIhvcNAQkEMSIE
-IOgTnXho2a96hEXdYf7lZspOLv/MgAQdclavABWKNmybMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0B
-BwEwHAYJKoZIhvcNAQkFMQ8XDTIwMDkyODA5MzA1OVowaQYJKoZIhvcNAQkPMVwwWjALBglghkgB
+IN1RyA+PNhsMUy9vEfg99J5e+nf5pMCYAZf+Ujb2PKIPMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0B
+BwEwHAYJKoZIhvcNAQkFMQ8XDTIwMDkyODA5MzQyNlowaQYJKoZIhvcNAQkPMVwwWjALBglghkgB
 ZQMEASowCwYJYIZIAWUDBAEWMAsGCWCGSAFlAwQBAjAKBggqhkiG9w0DBzALBgkqhkiG9w0BAQow
-CwYJKoZIhvcNAQEHMAsGCWCGSAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQBDsePei3mKzJfusBkA
-+zc1T/lK6vFE4jpCZTDJBkUwE4CkrS4uIrLCGKkEsLEdEt64Izt2shbI2ROa35T6PnnoednT/KK9
-+TQzAyBClRLVoqUX9T/9jChKT0VGuA5uiTKbeqT/Jq8GuwihZIVfabE1RhczWY1QfrJf2l1VWdNQ
-eo5/r+JIY+8scLB44aqd3bPqDY6GGvS0fmQQtq5iQEL0wVpiIRq9hPuzB/hsAuF4n2SOzB8BIhrW
-LG0SFHpyebxoVfr+Xp06y+H9rSzKAs7WaQPmBO9s/qHNPJxC3Swh5+8iAY0q8CxoGYaIjbP1GU7R
-622FGOap147uVaESdsa1
---000000000000f8756605b05c5260--
+CwYJKoZIhvcNAQEHMAsGCWCGSAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQBEkEJ6e46frJBcTgPc
+USoRdvYZtn65rDvXH1aeKyTnc5dyOQ8/XpUGYRj7L4tOkUiFGuNoYXGphUTFMsI9cS1JJpx4AVIF
+e4c8mu+BVbbrOJX0JBTVdDVvBvdcN0Mlt/05XSXdy8UIW/aImSQ5oVLFriuDc0kWWH1KceqcNCPf
+sX1+8B6OrbIkkW/8GSpp8yZdeeppraxwby0dw1pyXq2B2Y8uxLcs9Hwzei85PlLg3SDpNihOXxbF
+AaGjyoMCveZuVp2InSLSG2cRrnOU5c7ZqI589TDs2L1fAuLmWa84uusbgKYgvnAl8kq6xHkoFKnB
+TTw2RakqYhyEgHpWmOIN
+--000000000000555b7005b05c5f73--
