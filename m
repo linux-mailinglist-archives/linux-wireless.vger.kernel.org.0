@@ -2,175 +2,140 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 13BE427B323
-	for <lists+linux-wireless@lfdr.de>; Mon, 28 Sep 2020 19:26:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EDCD627B503
+	for <lists+linux-wireless@lfdr.de>; Mon, 28 Sep 2020 21:10:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726734AbgI1R0R (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 28 Sep 2020 13:26:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39222 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726281AbgI1R0Q (ORCPT
+        id S1726409AbgI1TKz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 28 Sep 2020 15:10:55 -0400
+Received: from dispatch1-us1.ppe-hosted.com ([67.231.154.164]:60492 "EHLO
+        dispatch1-us1.ppe-hosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726281AbgI1TKz (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 28 Sep 2020 13:26:16 -0400
-Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com [IPv6:2607:f8b0:4864:20::444])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 238DCC061755
-        for <linux-wireless@vger.kernel.org>; Mon, 28 Sep 2020 10:26:16 -0700 (PDT)
-Received: by mail-pf1-x444.google.com with SMTP id d6so1650635pfn.9
-        for <linux-wireless@vger.kernel.org>; Mon, 28 Sep 2020 10:26:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=pensando.io; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding:content-language;
-        bh=xu75CUkAEe8YKESDX+6RMXTyhfVPWONUsVk2klTLLIw=;
-        b=0/6i+LzwyathOMbvG6oG2ll/0evYhsEXpg9MB8BFBLC+1GFyqK6z7LlJJBxzxFdfbJ
-         05TEF7DdGGpuvCMyi2NZv1Q92KQL0cR+D9CHNZcApVdI271h571JbWXG7v8ceUFtVFtf
-         iwjyPFqYKOGDgEmB8LpvoaUN93/ZIPIYVvLAUawMj6Y4rR+hfMhita75OZvkqLyaAvUf
-         xvE+pK94Tr93FIKvvY4r5qpOHmvw3WITNJyYhNThNqO4q29c3wTZYVBQe7Tq8UTIL6k4
-         0ZHjkrbMpMyKmBmkJEdjYVDtZTHnR2/b6Pa/4fNUCUmKUcc1eo5AP/szp3Nr9ULAH1LL
-         Gszg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding
-         :content-language;
-        bh=xu75CUkAEe8YKESDX+6RMXTyhfVPWONUsVk2klTLLIw=;
-        b=KsFycrn0eQxILF0xG3d7l1yb30OEaNuEreAjHwtnLaAMjoauD0lFdpeeiXuEVFR2w+
-         kqk/taXl4mhjPtb2g8L5Ld2HyQvjI3wGAfHjJIHEzw832kEmcXBF6/o/dJYtatFBVUK/
-         27nuypl0rwSdWqdhKA6yRoYS6s90sPDkti3ZGP5WzS8JBZwSBq+n2ANStcF+6xOrtrpk
-         0RYgBXCU0CQRaLUiuYp9TFsJYNGNbrSVlpz1aoodSJZse0XnE7XplYuCrg2H1k35GrTx
-         acPrFn8as6+9Ws9i6SONX3Pv8VBNDQ6++X5NHmQ7lV/6GRQVJFLgPrPm8FtTUUSfMZw4
-         6XPg==
-X-Gm-Message-State: AOAM530y/Rsl71kc+qBSTefEr3m7g30WV/a4ifYwnekp0Jl9sOpF7RG6
-        88b5rskkWQLUvOxXfSozDuw3Ng==
-X-Google-Smtp-Source: ABdhPJzwfjXkCsxEu3XfK2aVP501w1BXp/1/rfPP3H13WpeMSgLae7v91sNjQ8w4DmdYg1Jo2bc1PA==
-X-Received: by 2002:a63:595a:: with SMTP id j26mr130244pgm.406.1601313975665;
-        Mon, 28 Sep 2020 10:26:15 -0700 (PDT)
-Received: from Shannons-MacBook-Pro.local (static-50-53-47-17.bvtn.or.frontiernet.net. [50.53.47.17])
-        by smtp.gmail.com with ESMTPSA id j18sm1986127pgm.30.2020.09.28.10.26.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 28 Sep 2020 10:26:15 -0700 (PDT)
-Subject: Re: [patch 12/35] net: ionic: Remove WARN_ON(in_interrupt()).
+        Mon, 28 Sep 2020 15:10:55 -0400
+X-Greylist: delayed 419 seconds by postgrey-1.27 at vger.kernel.org; Mon, 28 Sep 2020 15:10:54 EDT
+Received: from dispatch1-us1.ppe-hosted.com (localhost.localdomain [127.0.0.1])
+        by dispatch1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id D1A29211349;
+        Mon, 28 Sep 2020 19:03:55 +0000 (UTC)
+Received: from mx1-us1.ppe-hosted.com (unknown [10.110.50.137])
+        by dispatch1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 49A01200EC;
+        Mon, 28 Sep 2020 19:03:55 +0000 (UTC)
+Received: from us4-mdac16-6.at1.mdlocal (unknown [10.110.49.173])
+        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 459F0600AA;
+        Mon, 28 Sep 2020 19:03:55 +0000 (UTC)
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mx1-us1.ppe-hosted.com (unknown [10.110.49.32])
+        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id BB73C220084;
+        Mon, 28 Sep 2020 19:03:54 +0000 (UTC)
+Received: from webmail.solarflare.com (uk.solarflare.com [193.34.186.16])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id 46E2E28007B;
+        Mon, 28 Sep 2020 19:03:53 +0000 (UTC)
+Received: from [10.17.20.203] (10.17.20.203) by ukex01.SolarFlarecom.com
+ (10.17.10.4) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Mon, 28 Sep
+ 2020 20:03:31 +0100
+Subject: Re: [patch 15/35] net: sfc: Replace in_interrupt() usage.
 To:     Thomas Gleixner <tglx@linutronix.de>,
         LKML <linux-kernel@vger.kernel.org>
-Cc:     Peter Zijlstra <peterz@infradead.org>,
+CC:     Peter Zijlstra <peterz@infradead.org>,
         Linus Torvalds <torvalds@linuxfoundation.org>,
         Paul McKenney <paulmck@kernel.org>,
-        Matthew Wilcox <willy@infradead.org>,
+        "Matthew Wilcox" <willy@infradead.org>,
         Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Pensando Drivers <drivers@pensando.io>,
+        Solarflare linux maintainers <linux-net-drivers@solarflare.com>,
+        Martin Habets <mhabets@solarflare.com>,
         "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
+        Jakub Kicinski <kuba@kernel.org>, <netdev@vger.kernel.org>,
         Christian Benvenuti <benve@cisco.com>,
         Govindarajulu Varadarajan <_govind@gmx.com>,
         Jonathan Corbet <corbet@lwn.net>,
         Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        linux-doc@vger.kernel.org,
+        <linux-doc@vger.kernel.org>,
         Luc Van Oostenryck <luc.vanoostenryck@gmail.com>,
         Jay Cliburn <jcliburn@gmail.com>,
         Chris Snook <chris.snook@gmail.com>,
         Vishal Kulkarni <vishal@chelsio.com>,
         Jeff Kirsher <jeffrey.t.kirsher@intel.com>,
-        intel-wired-lan@lists.osuosl.org, Andrew Lunn <andrew@lunn.ch>,
+        <intel-wired-lan@lists.osuosl.org>,
+        "Shannon Nelson" <snelson@pensando.io>,
+        Pensando Drivers <drivers@pensando.io>,
+        Andrew Lunn <andrew@lunn.ch>,
         Heiner Kallweit <hkallweit1@gmail.com>,
         Russell King <linux@armlinux.org.uk>,
         Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Solarflare linux maintainers <linux-net-drivers@solarflare.com>,
-        Edward Cree <ecree@solarflare.com>,
-        Martin Habets <mhabets@solarflare.com>,
         Jon Mason <jdmason@kudzu.us>, Daniel Drake <dsd@gentoo.org>,
         Ulrich Kunitz <kune@deine-taler.de>,
         Kalle Valo <kvalo@codeaurora.org>,
-        linux-wireless@vger.kernel.org, linux-usb@vger.kernel.org,
+        <linux-wireless@vger.kernel.org>, <linux-usb@vger.kernel.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Arend van Spriel <arend.vanspriel@broadcom.com>,
         Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
+        "Hante Meuleman" <hante.meuleman@broadcom.com>,
         Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
         Wright Feng <wright.feng@cypress.com>,
-        brcm80211-dev-list.pdl@broadcom.com,
-        brcm80211-dev-list@cypress.com,
+        <brcm80211-dev-list.pdl@broadcom.com>,
+        <brcm80211-dev-list@cypress.com>,
         Stanislav Yakovlev <stas.yakovlev@gmail.com>,
         Stanislaw Gruszka <stf_xl@wp.pl>,
         Johannes Berg <johannes.berg@intel.com>,
         Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
         Luca Coelho <luciano.coelho@intel.com>,
-        Intel Linux Wireless <linuxwifi@intel.com>,
+        "Intel Linux Wireless" <linuxwifi@intel.com>,
         Jouni Malinen <j@w1.fi>,
-        Amitkumar Karwar <amitkarwar@gmail.com>,
+        "Amitkumar Karwar" <amitkarwar@gmail.com>,
         Ganapathi Bhat <ganapathi.bhat@nxp.com>,
         Xinming Hu <huxinming820@gmail.com>,
-        libertas-dev@lists.infradead.org,
+        <libertas-dev@lists.infradead.org>,
         Pascal Terjan <pterjan@google.com>,
         Ping-Ke Shih <pkshih@realtek.com>
 References: <20200927194846.045411263@linutronix.de>
- <20200927194921.026798214@linutronix.de>
-From:   Shannon Nelson <snelson@pensando.io>
-Message-ID: <96baeba9-eb5f-1462-2dcc-ecb9793727a1@pensando.io>
-Date:   Mon, 28 Sep 2020 10:26:10 -0700
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:68.0)
- Gecko/20100101 Thunderbird/68.12.0
+ <20200927194921.344476620@linutronix.de>
+From:   Edward Cree <ecree@solarflare.com>
+Message-ID: <168a1f9e-cba4-69a8-9b29-5c121295e960@solarflare.com>
+Date:   Mon, 28 Sep 2020 20:03:26 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.2
 MIME-Version: 1.0
-In-Reply-To: <20200927194921.026798214@linutronix.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+In-Reply-To: <20200927194921.344476620@linutronix.de>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Content-Language: en-GB
+X-Originating-IP: [10.17.20.203]
+X-ClientProxiedBy: ocex03.SolarFlarecom.com (10.20.40.36) To
+ ukex01.SolarFlarecom.com (10.17.10.4)
+X-TM-AS-Product-Ver: SMEX-12.5.0.1300-8.6.1012-25674.003
+X-TM-AS-Result: No-3.392600-8.000000-10
+X-TMASE-MatchedRID: scwq2vQP8OHoSitJVour/fZvT2zYoYOwC/ExpXrHizwZwGrh4y4izL88
+        DvjRvF4AxVy/bbd+rAzlMoALbl7BxnAe/yBs2gz+SJA7ysb1rf4KJM4okvH5XoVCSVIDsC6o8FS
+        rkmy6/FJuCEgimCyJQyMYmr0rrl/pgl5Rdh8uTQGz5GTUpcs/m3Fa/hQHt1A1+S5C/08hWc0UBy
+        nKnmzE5ngVNbMoKNzVH0rosakDCyyvvxILmKK/HIMbH85DUZXyYxU/PH+vZxv6C0ePs7A07Y6HM
+        5rqDwqtN237Af2aNF37I73RKjILsWlTLDIPbPGsLoghHcIpC2/UZWTGDxA33ihvJVwuK5sjeBCY
+        ZbP6cf5T86emsjutggfap7ehBz6Q4vn0zMfSmjYrbLOj1GuP3A+hgLflG6KEo9QjuF9BKnnfMd6
+        s6DDccQ==
+X-TM-AS-User-Approved-Sender: Yes
+X-TM-AS-User-Blocked-Sender: No
+X-TMASE-Result: 10--3.392600-8.000000
+X-TMASE-Version: SMEX-12.5.0.1300-8.6.1012-25674.003
+X-MDID: 1601319835-I9D2g4yYYeDH
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 9/27/20 12:48 PM, Thomas Gleixner wrote:
-> From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
->
-> in_interrupt() is ill defined and does not provide what the name
-> suggests. The usage especially in driver code is deprecated and a tree wide
-> effort to clean up and consolidate the (ab)usage of in_interrupt() and
-> related checks is happening.
->
-> In this case the check covers only parts of the contexts in which these
-> functions cannot be called. It fails to detect preemption or interrupt
-> disabled invocations.
->
-> As the functions which are invoked from ionic_adminq_post() and
-> ionic_dev_cmd_wait() contain a broad variety of checks (always enabled or
-> debug option dependent) which cover all invalid conditions already, there
-> is no point in having inconsistent warnings in those drivers.
->
-> Just remove them.
->
-> Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Shannon Nelson <snelson@pensando.io>
-> Cc: Pensando Drivers <drivers@pensando.io>
-> Cc: "David S. Miller" <davem@davemloft.net>
-> Cc: Jakub Kicinski <kuba@kernel.org>
-> Cc: netdev@vger.kernel.org
-Thanks.
+On 27/09/2020 20:49, Thomas Gleixner wrote:
+> Note, that the fixes tag is empty as it is unclear which of the commits to
+> blame.
+Seems like it should be
+Fixes: f00bf2305cab("sfc: don't update stats on VF when called in atomic context")
+ since that adds the in_interrupt() check and the code concerned
+ doesn't seemto have changed a great deal since.
 
-Acked-by: Shannon Nelson <snelson@pensando.io>
+Anyway, this fix looks correct, and you can have my
+Acked-by: Edward Cree <ecree@solarflare.com>
+ but I thinkit might be cleaner to avoid having to have this unused
+ can_sleep argument on all the NICs that don't need it, by instead
+ adding an update_stats_atomic() member to struct efx_nic_type, which
+ could be set to the same as update_stats() for everything except
+ EF10 VFs which would just do the call to efx_update_sw_stats().
+I'll send an rfc patch embodying the above shortly...
 
-> ---
->   drivers/net/ethernet/pensando/ionic/ionic_main.c |    4 ----
->   1 file changed, 4 deletions(-)
->
-> --- a/drivers/net/ethernet/pensando/ionic/ionic_main.c
-> +++ b/drivers/net/ethernet/pensando/ionic/ionic_main.c
-> @@ -248,8 +248,6 @@ static int ionic_adminq_post(struct ioni
->   	struct ionic_queue *adminq;
->   	int err = 0;
->   
-> -	WARN_ON(in_interrupt());
-> -
->   	if (!lif->adminqcq)
->   		return -EIO;
->   
-> @@ -346,8 +344,6 @@ int ionic_dev_cmd_wait(struct ionic *ion
->   	int done;
->   	int err;
->   
-> -	WARN_ON(in_interrupt());
-> -
->   	/* Wait for dev cmd to complete, retrying if we get EAGAIN,
->   	 * but don't wait any longer than max_seconds.
->   	 */
->
-
+-ed
