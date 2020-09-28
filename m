@@ -2,126 +2,103 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 790A227A7D7
-	for <lists+linux-wireless@lfdr.de>; Mon, 28 Sep 2020 08:50:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5EEFE27A897
+	for <lists+linux-wireless@lfdr.de>; Mon, 28 Sep 2020 09:29:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726552AbgI1GuF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 28 Sep 2020 02:50:05 -0400
-Received: from mail.kernel.org ([198.145.29.99]:40480 "EHLO mail.kernel.org"
+        id S1726500AbgI1H3T (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 28 Sep 2020 03:29:19 -0400
+Received: from m42-4.mailgun.net ([69.72.42.4]:30567 "EHLO m42-4.mailgun.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725308AbgI1GuE (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 28 Sep 2020 02:50:04 -0400
-Received: from localhost (83-86-74-64.cable.dynamic.v4.ziggo.nl [83.86.74.64])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        id S1726458AbgI1H3S (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 28 Sep 2020 03:29:18 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1601278157; h=Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Message-Id: Date: Subject: Cc: To: From: Sender;
+ bh=zwz4Cph5z+HXWZK+fuCxzyir7h4Sc62UaQ48kOHbu3g=; b=pDpiihZdRYqFpYaEj4Wv6ron8WpYMJ4ZGBuJkzJHrEpvjaQIr8Bms1IeUj+sn/XpaNQ3VvGi
+ mddBX6BH6NTLkzFoTCnqyc6+NAtvRjUXTrjfjXCTOn60nhUf6JahM0z1SKZqz2+stgl9pTUh
+ gb0E0q8xgLmcr2SrBCeMncJCBQ8=
+X-Mailgun-Sending-Ip: 69.72.42.4
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n03.prod.us-east-1.postgun.com with SMTP id
+ 5f7190c7ebb17452baf40287 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 28 Sep 2020 07:29:11
+ GMT
+Sender: rmanohar=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 24B46C433F1; Mon, 28 Sep 2020 07:29:11 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+Received: from rmanohar-linux.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B6B5F23119;
-        Mon, 28 Sep 2020 06:50:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1601275803;
-        bh=9RLOX5t9/gxEad4ACFbvcDY/LFaF2xfXrQ+4kIuB910=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=og/c53pjfRJcUKFeQP/+XI4TOYNopKOah3CJmIRZAuZ+nrH0Uy20x6XZnt3Z/X1dh
-         JeK8r/a3UKPHoivUomFM2K1bM9dcKwGFsDHijBQ1CCRza4shtATy1PrMIsKBAhOnw2
-         rdb1pWc6X3HzXQVcC44b8MBTu/96Qe9iId0hF4pE=
-Date:   Mon, 28 Sep 2020 08:50:11 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Thomas Gleixner <tglx@linutronix.de>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Linus Torvalds <torvalds@linuxfoundation.org>,
-        Paul McKenney <paulmck@kernel.org>,
-        Matthew Wilcox <willy@infradead.org>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, linux-usb@vger.kernel.org,
-        netdev@vger.kernel.org, Christian Benvenuti <benve@cisco.com>,
-        Govindarajulu Varadarajan <_govind@gmx.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        linux-doc@vger.kernel.org,
-        Luc Van Oostenryck <luc.vanoostenryck@gmail.com>,
-        Jay Cliburn <jcliburn@gmail.com>,
-        Chris Snook <chris.snook@gmail.com>,
-        Vishal Kulkarni <vishal@chelsio.com>,
-        Jeff Kirsher <jeffrey.t.kirsher@intel.com>,
-        intel-wired-lan@lists.osuosl.org,
-        Shannon Nelson <snelson@pensando.io>,
-        Pensando Drivers <drivers@pensando.io>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Solarflare linux maintainers <linux-net-drivers@solarflare.com>,
-        Edward Cree <ecree@solarflare.com>,
-        Martin Habets <mhabets@solarflare.com>,
-        Jon Mason <jdmason@kudzu.us>, Daniel Drake <dsd@gentoo.org>,
-        Ulrich Kunitz <kune@deine-taler.de>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        linux-wireless@vger.kernel.org,
-        Arend van Spriel <arend.vanspriel@broadcom.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
-        Wright Feng <wright.feng@cypress.com>,
-        brcm80211-dev-list.pdl@broadcom.com,
-        brcm80211-dev-list@cypress.com,
-        Stanislav Yakovlev <stas.yakovlev@gmail.com>,
-        Stanislaw Gruszka <stf_xl@wp.pl>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Intel Linux Wireless <linuxwifi@intel.com>,
-        Jouni Malinen <j@w1.fi>,
-        Amitkumar Karwar <amitkarwar@gmail.com>,
-        Ganapathi Bhat <ganapathi.bhat@nxp.com>,
-        Xinming Hu <huxinming820@gmail.com>,
-        libertas-dev@lists.infradead.org,
-        Pascal Terjan <pterjan@google.com>,
-        Ping-Ke Shih <pkshih@realtek.com>
-Subject: Re: [patch 21/35] net: usb: kaweth: Remove last user of
- kaweth_control()
-Message-ID: <20200928065011.GB381927@kroah.com>
-References: <20200927194846.045411263@linutronix.de>
- <20200927194921.948595516@linutronix.de>
+        (Authenticated sender: rmanohar)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 29B90C433CA;
+        Mon, 28 Sep 2020 07:29:10 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 29B90C433CA
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=rmanohar@codeaurora.org
+From:   Rajkumar Manoharan <rmanohar@codeaurora.org>
+To:     johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org,
+        Rajkumar Manoharan <rmanohar@codeaurora.org>
+Subject: [PATCH 1/2] nl80211: fix OBSS PD min and max offset validation
+Date:   Mon, 28 Sep 2020 00:28:10 -0700
+Message-Id: <1601278091-20313-1-git-send-email-rmanohar@codeaurora.org>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200927194921.948595516@linutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sun, Sep 27, 2020 at 09:49:07PM +0200, Thomas Gleixner wrote:
-> From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-> 
-> kaweth_async_set_rx_mode() invokes kaweth_contol() and has two callers:
-> 
-> - kaweth_open() which is invoked from preemptible context
-> .
-> - kaweth_start_xmit() which holds a spinlock and has bottom halfs disabled.
-> 
-> If called from kaweth_start_xmit() kaweth_async_set_rx_mode() obviously
-> cannot block, which means it can't call kaweth_control(). This is detected
-> with an in_interrupt() check.
-> 
-> Replace the in_interrupt() check in kaweth_async_set_rx_mode() with an
-> argument which is set true by the caller if the context is safe to sleep,
-> otherwise false.
-> 
-> Now kaweth_control() is only called from preemptible context which means
-> there is no need for GFP_ATOMIC allocations anymore. Replace it with
-> usb_control_msg(). Cleanup the code a bit while at it.
-> 
-> Finally remove kaweth_control() since the last user is gone.
-> 
-> Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-> Cc: "David S. Miller" <davem@davemloft.net>
-> Cc: Jakub Kicinski <kuba@kernel.org>
-> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Cc: linux-usb@vger.kernel.org
-> Cc: netdev@vger.kernel.org
+The SRG min and max offset won't present when SRG Information Present of
+SR control field of Spatial Reuse Parameter Set element set to 0. Per
+spec. IEEE802.11ax D7.0, SRG OBSS PD Min Offset ≤ SRG OBSS PD Max
+Offset. Hence fix the constrain check to allow same values in both
+offset and also call appropriate nla_get function to read the values.
 
-Thanks for the cleanup, that driver really needed it!
+Fixes: 796e90f42b7e ("cfg80211: add support for parsing OBBS_PD
+attributes")
+Signed-off-by: Rajkumar Manoharan <rmanohar@codeaurora.org>
+---
+ net/wireless/nl80211.c | 18 ++++++++----------
+ 1 file changed, 8 insertions(+), 10 deletions(-)
 
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 666274f36d63..e7b84e36014c 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -4871,16 +4871,14 @@ static int nl80211_parse_he_obss_pd(struct nlattr *attrs,
+ 	if (err)
+ 		return err;
+ 
+-	if (!tb[NL80211_HE_OBSS_PD_ATTR_MIN_OFFSET] ||
+-	    !tb[NL80211_HE_OBSS_PD_ATTR_MAX_OFFSET])
+-		return -EINVAL;
+-
+-	he_obss_pd->min_offset =
+-		nla_get_u32(tb[NL80211_HE_OBSS_PD_ATTR_MIN_OFFSET]);
+-	he_obss_pd->max_offset =
+-		nla_get_u32(tb[NL80211_HE_OBSS_PD_ATTR_MAX_OFFSET]);
+-
+-	if (he_obss_pd->min_offset >= he_obss_pd->max_offset)
++	if (tb[NL80211_HE_OBSS_PD_ATTR_MIN_OFFSET])
++		he_obss_pd->min_offset =
++			nla_get_u8(tb[NL80211_HE_OBSS_PD_ATTR_MIN_OFFSET]);
++	if (tb[NL80211_HE_OBSS_PD_ATTR_MAX_OFFSET])
++		he_obss_pd->max_offset =
++			nla_get_u8(tb[NL80211_HE_OBSS_PD_ATTR_MAX_OFFSET]);
++
++	if (he_obss_pd->min_offset > he_obss_pd->max_offset)
+ 		return -EINVAL;
+ 
+ 	he_obss_pd->enable = true;
+-- 
+2.7.4
+
