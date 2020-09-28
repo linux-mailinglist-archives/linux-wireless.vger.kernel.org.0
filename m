@@ -2,53 +2,54 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D421027AAD6
-	for <lists+linux-wireless@lfdr.de>; Mon, 28 Sep 2020 11:34:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A4D427AAED
+	for <lists+linux-wireless@lfdr.de>; Mon, 28 Sep 2020 11:38:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726636AbgI1Je2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 28 Sep 2020 05:34:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50816 "EHLO
+        id S1726714AbgI1JiA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 28 Sep 2020 05:38:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51368 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726328AbgI1Je2 (ORCPT
+        with ESMTP id S1726697AbgI1Jh7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 28 Sep 2020 05:34:28 -0400
-Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com [IPv6:2a00:1450:4864:20::541])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97555C061755
-        for <linux-wireless@vger.kernel.org>; Mon, 28 Sep 2020 02:34:27 -0700 (PDT)
-Received: by mail-ed1-x541.google.com with SMTP id e22so543451edq.6
-        for <linux-wireless@vger.kernel.org>; Mon, 28 Sep 2020 02:34:27 -0700 (PDT)
+        Mon, 28 Sep 2020 05:37:59 -0400
+Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com [IPv6:2607:f8b0:4864:20::441])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A1E3C0613D0
+        for <linux-wireless@vger.kernel.org>; Mon, 28 Sep 2020 02:37:59 -0700 (PDT)
+Received: by mail-pf1-x441.google.com with SMTP id k8so477554pfk.2
+        for <linux-wireless@vger.kernel.org>; Mon, 28 Sep 2020 02:37:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=broadcom.com; s=google;
         h=subject:to:cc:references:from:message-id:date:user-agent
          :mime-version:in-reply-to;
-        bh=m6fRd024rZ02iq+ftQrwaB59kddn7caIvk4hT3nz2Bg=;
-        b=TVVNs3g6pETJdj+65S45rRz+6JGtB4tY5v69lCQ9YiRKG4KbAb0a47JbmucOixhDc4
-         sXn0NGkjVZYynFQZfT9zdZPWpMXHCKrXZEQkcyS+7VZrFuH/UK0xqQ6NVRo7k4W9QjKi
-         UT+haa4s5W3NqI4QE723XQjZy6mwm2Pug7Oxk=
+        bh=i0RNzpEjAqMYzoR7WJ9zCkvhfxxPHDpJv5whCu6yuRg=;
+        b=arpkM4QFe8PeKoSCM7yJ9LiliN6AqlJCTlb+LIN7vdD64VYOpYbtDt4X0sAAPZ0XqU
+         musHkmv1bbSF8SOg7LO2f8uAX5/NHgpqHsFR0QPex9ZHwxLlomMKf0aIckDyV9YfOZWN
+         RSHhcry+zY4tTSN3mTJjzP/qLzBL1A9vNvqIk=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:subject:to:cc:references:from:message-id:date
          :user-agent:mime-version:in-reply-to;
-        bh=m6fRd024rZ02iq+ftQrwaB59kddn7caIvk4hT3nz2Bg=;
-        b=d86sHvfZbCHJ9ke6VkXbAPNnwCWYtnFM3SdXtv3Fs953FVHLeWI6TttKZfEMOa9Asr
-         NrubuGsVns1pd3oMZP1wOJl+W6iUALNKQhUDOr1vNQK5oOU8LiMaF+5vMsiGGIGLnJL7
-         rktM6qG3DDKRyFltx38X6Gpu/0mWTT17w1F/n1b4dsAt1nHDFTA7+OTqoFOQiIW5YciM
-         ojv3N3BIum0k0jp1MfwxRTaW9nL5JuT4L9+p+3WsUBIWw0NAWJbmg4WH0oH2OjfASmIs
-         YRwDGCnzUGqfsz/36UjM6SQGmGggmCA03jq60ZvmG9UPdUgXULvuB7VRlaIDakWJl3N8
-         tlhA==
-X-Gm-Message-State: AOAM531A0oZgK/GhGAtALOeCw7gZMHZBy7910jOgUUgID4SI5JLjzr2u
-        F6B11TYfTPrtV/Xiuvy0Y7Lh6A==
-X-Google-Smtp-Source: ABdhPJwLDeJj4eSk8uCB1OX9YbqIcFxfFwM4PQfEsdndLGRL1iNd0nKdibOIpORZF7Zw/2JGQ65ojA==
-X-Received: by 2002:a50:f199:: with SMTP id x25mr645312edl.347.1601285665899;
-        Mon, 28 Sep 2020 02:34:25 -0700 (PDT)
+        bh=i0RNzpEjAqMYzoR7WJ9zCkvhfxxPHDpJv5whCu6yuRg=;
+        b=W7mfzUsHqBoKQwPJTRPhSfcjcyDm852pD8xo9kS8CyWzHirdmftUK4ZVwxx2UbNMcS
+         Un+U8fsgjeGfmIkI8Pg/yQSEM50qN74jKxGQi4WnuFPFwCUPisLXOqBbGfS5ORvB9eE7
+         8vSQyCpYBIveMT8VgFBQ98uoqQwSok2jW8T09pZ9VtRohzGukc01uau3EmzQmPS0UICp
+         wTGOqTw1AG+bIetsp8w8HOxOPDpGfpflJ7PNTU5ARbRd4yUB9awyDEghd+ZriXOn++Hw
+         F3mO1iKyBdtfNVJua4wFMx50IYYVCmTr93sLToQxL/4TT6NsNioeNo8D3QwM23jIql+e
+         gjFw==
+X-Gm-Message-State: AOAM533ZE3ARFCWkBK2xHh61x52QYYs/FLOSe7BXvBjd9hgdEU2pCBDU
+        B0V+P/xE3azLXmg4RsL8U5Ao/Q==
+X-Google-Smtp-Source: ABdhPJyemDFL7r+2PdsUHoTKU7TMLK2rERZ9p6v5icCK3Rxv4Ba0GXXxZ0740QJWtvzp6cnN1OAshQ==
+X-Received: by 2002:a17:902:8c8b:b029:d2:42fe:370a with SMTP id t11-20020a1709028c8bb02900d242fe370amr761183plo.83.1601285878755;
+        Mon, 28 Sep 2020 02:37:58 -0700 (PDT)
 Received: from [192.168.178.129] (f140230.upc-f.chello.nl. [80.56.140.230])
-        by smtp.gmail.com with ESMTPSA id t10sm635029edw.86.2020.09.28.02.34.23
+        by smtp.gmail.com with ESMTPSA id ca6sm599621pjb.53.2020.09.28.02.37.47
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 28 Sep 2020 02:34:24 -0700 (PDT)
-Subject: Re: [patch 26/35] net: brcmfmac: Convey allocation mode as argument
-To:     Thomas Gleixner <tglx@linutronix.de>,
-        LKML <linux-kernel@vger.kernel.org>
-Cc:     Peter Zijlstra <peterz@infradead.org>,
+        Mon, 28 Sep 2020 02:37:57 -0700 (PDT)
+Subject: Re: [patch 24/35] net: brcmfmac: Replace in_interrupt()
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
         Linus Torvalds <torvalds@linuxfoundation.org>,
         Paul McKenney <paulmck@kernel.org>,
         Matthew Wilcox <willy@infradead.org>,
@@ -60,14 +61,15 @@ Cc:     Peter Zijlstra <peterz@infradead.org>,
         Kalle Valo <kvalo@codeaurora.org>,
         "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless@vger.kernel.org,
+        linux-wireless <linux-wireless@vger.kernel.org>,
         brcm80211-dev-list.pdl@broadcom.com,
-        brcm80211-dev-list@cypress.com, netdev@vger.kernel.org,
+        brcm80211-dev-list <brcm80211-dev-list@cypress.com>,
+        netdev <netdev@vger.kernel.org>,
         Christian Benvenuti <benve@cisco.com>,
         Govindarajulu Varadarajan <_govind@gmx.com>,
         Jonathan Corbet <corbet@lwn.net>,
         Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        linux-doc@vger.kernel.org,
+        Linux Documentation <linux-doc@vger.kernel.org>,
         Luc Van Oostenryck <luc.vanoostenryck@gmail.com>,
         Jay Cliburn <jcliburn@gmail.com>,
         Chris Snook <chris.snook@gmail.com>,
@@ -84,7 +86,8 @@ Cc:     Peter Zijlstra <peterz@infradead.org>,
         Edward Cree <ecree@solarflare.com>,
         Martin Habets <mhabets@solarflare.com>,
         Jon Mason <jdmason@kudzu.us>, Daniel Drake <dsd@gentoo.org>,
-        Ulrich Kunitz <kune@deine-taler.de>, linux-usb@vger.kernel.org,
+        Ulrich Kunitz <kune@deine-taler.de>,
+        Linux USB List <linux-usb@vger.kernel.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Stanislav Yakovlev <stas.yakovlev@gmail.com>,
         Stanislaw Gruszka <stf_xl@wp.pl>,
@@ -100,54 +103,65 @@ Cc:     Peter Zijlstra <peterz@infradead.org>,
         Pascal Terjan <pterjan@google.com>,
         Ping-Ke Shih <pkshih@realtek.com>
 References: <20200927194846.045411263@linutronix.de>
- <20200927194922.444952084@linutronix.de>
+ <20200927194922.245750969@linutronix.de>
+ <a345ad51-4db7-5e4f-3ff9-f1673c12da99@broadcom.com>
+ <CAPDyKFrC2j5S7NrtTRCBga=rttKBp-OZnsEnAEgnXj8zj11p0w@mail.gmail.com>
 From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
-Message-ID: <aac2b8b3-53f4-9b27-03d0-742bbe3cd81f@broadcom.com>
-Date:   Mon, 28 Sep 2020 11:34:22 +0200
+Message-ID: <c0e376ac-3261-e413-0fe1-505aaa7cbea9@broadcom.com>
+Date:   Mon, 28 Sep 2020 11:37:43 +0200
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
  Thunderbird/78.2.2
 MIME-Version: 1.0
-In-Reply-To: <20200927194922.444952084@linutronix.de>
+In-Reply-To: <CAPDyKFrC2j5S7NrtTRCBga=rttKBp-OZnsEnAEgnXj8zj11p0w@mail.gmail.com>
 Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="000000000000555b7005b05c5f73"
+        boundary="0000000000000374fc05b05c6cc8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---000000000000555b7005b05c5f73
+--0000000000000374fc05b05c6cc8
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 
-On 9/27/2020 9:49 PM, Thomas Gleixner wrote:
-> From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+On 9/28/2020 11:19 AM, Ulf Hansson wrote:
+> On Mon, 28 Sep 2020 at 09:35, Arend Van Spriel
+> <arend.vanspriel@broadcom.com> wrote:
+>>
+>> + Uffe
+>>
+>> On 9/27/2020 9:49 PM, Thomas Gleixner wrote:
+>>> @@ -85,7 +85,7 @@ static void brcmf_sdiod_ib_irqhandler(st
+>>>
+>>>        brcmf_dbg(INTR, "IB intr triggered\n");
+>>>
+>>> -     brcmf_sdio_isr(sdiodev->bus);
+>>> +     brcmf_sdio_isr(sdiodev->bus, false);
+>>>    }
+>>
+>> Hi Uffe,
+>>
+>> I assume the above code is okay, but want to confirm. Is the SDIO
+>> interrupt guaranteed to be on a worker thread?
 > 
-> The usage of in_interrupt() in drivers is phased out and Linus clearly
-> requested that code which changes behaviour depending on context should
-> either be seperated or the context be conveyed in an argument passed by the
-> caller, which usually knows the context.
+> Correct.
 > 
-> brcmf_fweh_process_event() uses in_interrupt() to select the allocation
-> mode GFP_KERNEL/GFP_ATOMIC. Aside of the above reasons this check is
-> incomplete as it cannot detect contexts which just have preemption or
-> interrupts disabled.
+> As a matter of fact, the sdio irqs can be delivered through a couple
+> of different paths. The legacy (scheduled for removal), is from a
+> dedicated kthread. The more "modern" way is either from the context of
+> a threaded IRQ handler or via a workqueue.
 > 
-> All callchains leading to brcmf_fweh_process_event() can clearly identify
-> the calling context. Convey a 'gfp' argument through the callchains and let
-> the callers hand in the appropriate GFP mode.
-> 
-> This has also the advantage that any change of execution context or
-> preemption/interrupt state in these callchains will be detected by the
-> memory allocator for all GFP_KERNEL allocations.
+> However, there are also so-called out of band SDIO irqs, typically
+> routed via a separate GPIO line. This isn't managed by the MMC/SDIO
+> subsystem, but the SDIO functional driver itself.
 
-Looking at the functions changed I see overlap with patch 25/35 so maybe 
-change to gfp flag to a 'in_isr' bool. The flag can then be used for 
-dealing with netif_rx as well.
+In brcmfmac we indeed support the out-of-band interrupt. That scnenario 
+is also taken care of in this patch. Thanks for the confirmation.
 
 Regards,
 Arend
 
---000000000000555b7005b05c5f73
+--0000000000000374fc05b05c6cc8
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -218,13 +232,13 @@ WwHVQUbAn+xLMIQpycIQFoJIGJX4MeaTSMfLNP2w7nP2uLNgIeleF284vS0XVkBXSCgIGylP4SN+
 HQYrv7fVCbtp+c7nFvP7MYICbzCCAmsCAQEwbTBdMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xv
 YmFsU2lnbiBudi1zYTEzMDEGA1UEAxMqR2xvYmFsU2lnbiBQZXJzb25hbFNpZ24gMiBDQSAtIFNI
 QTI1NiAtIEczAgxR3m7Pj6LvQiWjJy0wDQYJYIZIAWUDBAIBBQCggdQwLwYJKoZIhvcNAQkEMSIE
-IN1RyA+PNhsMUy9vEfg99J5e+nf5pMCYAZf+Ujb2PKIPMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0B
-BwEwHAYJKoZIhvcNAQkFMQ8XDTIwMDkyODA5MzQyNlowaQYJKoZIhvcNAQkPMVwwWjALBglghkgB
+II6F2ZZuAl/iMeY3pjVdC/b3QXE5fLkDbGWx/k63GGTzMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0B
+BwEwHAYJKoZIhvcNAQkFMQ8XDTIwMDkyODA5Mzc1OVowaQYJKoZIhvcNAQkPMVwwWjALBglghkgB
 ZQMEASowCwYJYIZIAWUDBAEWMAsGCWCGSAFlAwQBAjAKBggqhkiG9w0DBzALBgkqhkiG9w0BAQow
-CwYJKoZIhvcNAQEHMAsGCWCGSAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQBEkEJ6e46frJBcTgPc
-USoRdvYZtn65rDvXH1aeKyTnc5dyOQ8/XpUGYRj7L4tOkUiFGuNoYXGphUTFMsI9cS1JJpx4AVIF
-e4c8mu+BVbbrOJX0JBTVdDVvBvdcN0Mlt/05XSXdy8UIW/aImSQ5oVLFriuDc0kWWH1KceqcNCPf
-sX1+8B6OrbIkkW/8GSpp8yZdeeppraxwby0dw1pyXq2B2Y8uxLcs9Hwzei85PlLg3SDpNihOXxbF
-AaGjyoMCveZuVp2InSLSG2cRrnOU5c7ZqI589TDs2L1fAuLmWa84uusbgKYgvnAl8kq6xHkoFKnB
-TTw2RakqYhyEgHpWmOIN
---000000000000555b7005b05c5f73--
+CwYJKoZIhvcNAQEHMAsGCWCGSAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQBVhIE/6keQDRkz+dzL
+7/S30na7g7HHkED4uHtTXDcFJkKXnY0MUWhEF5alkUTvuhHfXvTOtwvLvdR7Y8AqswAKg/qTO2xS
+EW92fMFDCRjsMsbeseH6L85yfzR4vE4VHptmoQwkJcBVwwW/f/uMppcfjQ/nnr6Edf54PxJobkPC
+c8BzRzldU3xkK6fLsH3TKtlUUnnaa0SqUwobHvW5lH3lEO8J1LystLYzDjL9yFegHir3h1JM2PhH
+uUhx2smH6BIqymeI1iSDUzfuTr3KPv6j9YaEBLiqfmAIXtDIFgSblYWSYHr+PQLvvOEv5A48rbcf
+FYK2YJD87ecVEmcnjvz3
+--0000000000000374fc05b05c6cc8--
