@@ -2,54 +2,53 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A4D427AAED
-	for <lists+linux-wireless@lfdr.de>; Mon, 28 Sep 2020 11:38:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D499527AAF7
+	for <lists+linux-wireless@lfdr.de>; Mon, 28 Sep 2020 11:40:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726714AbgI1JiA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 28 Sep 2020 05:38:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51368 "EHLO
+        id S1726504AbgI1JkP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 28 Sep 2020 05:40:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51722 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726697AbgI1Jh7 (ORCPT
+        with ESMTP id S1726597AbgI1JkO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 28 Sep 2020 05:37:59 -0400
-Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com [IPv6:2607:f8b0:4864:20::441])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A1E3C0613D0
-        for <linux-wireless@vger.kernel.org>; Mon, 28 Sep 2020 02:37:59 -0700 (PDT)
-Received: by mail-pf1-x441.google.com with SMTP id k8so477554pfk.2
-        for <linux-wireless@vger.kernel.org>; Mon, 28 Sep 2020 02:37:59 -0700 (PDT)
+        Mon, 28 Sep 2020 05:40:14 -0400
+Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com [IPv6:2607:f8b0:4864:20::1043])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A60A8C0613D3
+        for <linux-wireless@vger.kernel.org>; Mon, 28 Sep 2020 02:40:14 -0700 (PDT)
+Received: by mail-pj1-x1043.google.com with SMTP id jw11so325680pjb.0
+        for <linux-wireless@vger.kernel.org>; Mon, 28 Sep 2020 02:40:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=broadcom.com; s=google;
         h=subject:to:cc:references:from:message-id:date:user-agent
          :mime-version:in-reply-to;
-        bh=i0RNzpEjAqMYzoR7WJ9zCkvhfxxPHDpJv5whCu6yuRg=;
-        b=arpkM4QFe8PeKoSCM7yJ9LiliN6AqlJCTlb+LIN7vdD64VYOpYbtDt4X0sAAPZ0XqU
-         musHkmv1bbSF8SOg7LO2f8uAX5/NHgpqHsFR0QPex9ZHwxLlomMKf0aIckDyV9YfOZWN
-         RSHhcry+zY4tTSN3mTJjzP/qLzBL1A9vNvqIk=
+        bh=Uo0W+Q4kBWD+ZMi5RW3b3qojOYpLA3uf5T5TN/9yevA=;
+        b=grRdvhOFvvq9VPM+6YzZoX7QHbteVsYR4+D1+Wm95cYJ0vonY+4rb3QWHgUH8Dy2fd
+         GZk5pUfgX5y3Lc6O7HcK65/2w1F1fepT19kmPMe2IPRpMB1COGjOlMuBdXF1umTDBdem
+         1z0y8tBK0clNJtJkTiSeAR1CFP74BHPM4T7eI=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:subject:to:cc:references:from:message-id:date
          :user-agent:mime-version:in-reply-to;
-        bh=i0RNzpEjAqMYzoR7WJ9zCkvhfxxPHDpJv5whCu6yuRg=;
-        b=W7mfzUsHqBoKQwPJTRPhSfcjcyDm852pD8xo9kS8CyWzHirdmftUK4ZVwxx2UbNMcS
-         Un+U8fsgjeGfmIkI8Pg/yQSEM50qN74jKxGQi4WnuFPFwCUPisLXOqBbGfS5ORvB9eE7
-         8vSQyCpYBIveMT8VgFBQ98uoqQwSok2jW8T09pZ9VtRohzGukc01uau3EmzQmPS0UICp
-         wTGOqTw1AG+bIetsp8w8HOxOPDpGfpflJ7PNTU5ARbRd4yUB9awyDEghd+ZriXOn++Hw
-         F3mO1iKyBdtfNVJua4wFMx50IYYVCmTr93sLToQxL/4TT6NsNioeNo8D3QwM23jIql+e
-         gjFw==
-X-Gm-Message-State: AOAM533ZE3ARFCWkBK2xHh61x52QYYs/FLOSe7BXvBjd9hgdEU2pCBDU
-        B0V+P/xE3azLXmg4RsL8U5Ao/Q==
-X-Google-Smtp-Source: ABdhPJyemDFL7r+2PdsUHoTKU7TMLK2rERZ9p6v5icCK3Rxv4Ba0GXXxZ0740QJWtvzp6cnN1OAshQ==
-X-Received: by 2002:a17:902:8c8b:b029:d2:42fe:370a with SMTP id t11-20020a1709028c8bb02900d242fe370amr761183plo.83.1601285878755;
-        Mon, 28 Sep 2020 02:37:58 -0700 (PDT)
+        bh=Uo0W+Q4kBWD+ZMi5RW3b3qojOYpLA3uf5T5TN/9yevA=;
+        b=gMx24CVPYAtfstNkl41G3+/+1G7mamWmHrtHkQ1Zj7t7WoRgtvm8eTvCumsETRKtus
+         +rG6Mk1dGdQqD6dwbsR/VlhHM6ybKxoBOfNjwIIMq13I9juVQU2RdrTiUXZ6c2sWLkN6
+         u27OdWPV6MGuooCfQCs3pGW1DW9uoKGM03GurZ1afGuuNZZbBlM4OWpfkLz/6FnLBRFu
+         zzvpSlp+wfDxwG2pFjhLfg+Sp5FTfsfWE9ZVcqbrykTyCOHJRvYY/j7kAv+IuCUYLA7O
+         l94eqEIwENMsS3YeEZI09ws08qSpc9OZerjpKsIYFuP0WWh6i6lmJtpPK22DqIUkRbxx
+         k5jA==
+X-Gm-Message-State: AOAM531B+KM0gv9wHJKDGpxr0CC90NcrINnqiYi8EAXd7idizuxPwkbx
+        oXOo2o00In1gP2uaI4h1jyEP9g==
+X-Google-Smtp-Source: ABdhPJwQnigYgKORvrTW998C2dO8BraWb6ncUuRq25wR94rZnKY+Fob1rUMW2E8tN96ErsgWFy+Ujg==
+X-Received: by 2002:a17:90a:e44b:: with SMTP id jp11mr554233pjb.96.1601286014020;
+        Mon, 28 Sep 2020 02:40:14 -0700 (PDT)
 Received: from [192.168.178.129] (f140230.upc-f.chello.nl. [80.56.140.230])
-        by smtp.gmail.com with ESMTPSA id ca6sm599621pjb.53.2020.09.28.02.37.47
+        by smtp.gmail.com with ESMTPSA id mp3sm671820pjb.33.2020.09.28.02.40.03
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 28 Sep 2020 02:37:57 -0700 (PDT)
+        Mon, 28 Sep 2020 02:40:13 -0700 (PDT)
 Subject: Re: [patch 24/35] net: brcmfmac: Replace in_interrupt()
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
+To:     Thomas Gleixner <tglx@linutronix.de>,
+        LKML <linux-kernel@vger.kernel.org>
+Cc:     Peter Zijlstra <peterz@infradead.org>,
         Linus Torvalds <torvalds@linuxfoundation.org>,
         Paul McKenney <paulmck@kernel.org>,
         Matthew Wilcox <willy@infradead.org>,
@@ -61,15 +60,14 @@ Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Kalle Valo <kvalo@codeaurora.org>,
         "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
+        linux-wireless@vger.kernel.org,
         brcm80211-dev-list.pdl@broadcom.com,
-        brcm80211-dev-list <brcm80211-dev-list@cypress.com>,
-        netdev <netdev@vger.kernel.org>,
+        brcm80211-dev-list@cypress.com, netdev@vger.kernel.org,
         Christian Benvenuti <benve@cisco.com>,
         Govindarajulu Varadarajan <_govind@gmx.com>,
         Jonathan Corbet <corbet@lwn.net>,
         Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        Linux Documentation <linux-doc@vger.kernel.org>,
+        linux-doc@vger.kernel.org,
         Luc Van Oostenryck <luc.vanoostenryck@gmail.com>,
         Jay Cliburn <jcliburn@gmail.com>,
         Chris Snook <chris.snook@gmail.com>,
@@ -86,8 +84,7 @@ Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Edward Cree <ecree@solarflare.com>,
         Martin Habets <mhabets@solarflare.com>,
         Jon Mason <jdmason@kudzu.us>, Daniel Drake <dsd@gentoo.org>,
-        Ulrich Kunitz <kune@deine-taler.de>,
-        Linux USB List <linux-usb@vger.kernel.org>,
+        Ulrich Kunitz <kune@deine-taler.de>, linux-usb@vger.kernel.org,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Stanislav Yakovlev <stas.yakovlev@gmail.com>,
         Stanislaw Gruszka <stf_xl@wp.pl>,
@@ -104,64 +101,58 @@ Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Ping-Ke Shih <pkshih@realtek.com>
 References: <20200927194846.045411263@linutronix.de>
  <20200927194922.245750969@linutronix.de>
- <a345ad51-4db7-5e4f-3ff9-f1673c12da99@broadcom.com>
- <CAPDyKFrC2j5S7NrtTRCBga=rttKBp-OZnsEnAEgnXj8zj11p0w@mail.gmail.com>
 From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
-Message-ID: <c0e376ac-3261-e413-0fe1-505aaa7cbea9@broadcom.com>
-Date:   Mon, 28 Sep 2020 11:37:43 +0200
+Message-ID: <5e0d60a4-418e-434e-e5fa-4d2dd1cf0d23@broadcom.com>
+Date:   Mon, 28 Sep 2020 11:40:01 +0200
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
  Thunderbird/78.2.2
 MIME-Version: 1.0
-In-Reply-To: <CAPDyKFrC2j5S7NrtTRCBga=rttKBp-OZnsEnAEgnXj8zj11p0w@mail.gmail.com>
+In-Reply-To: <20200927194922.245750969@linutronix.de>
 Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="0000000000000374fc05b05c6cc8"
+        boundary="00000000000012cd3105b05c747d"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---0000000000000374fc05b05c6cc8
+--00000000000012cd3105b05c747d
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 
-On 9/28/2020 11:19 AM, Ulf Hansson wrote:
-> On Mon, 28 Sep 2020 at 09:35, Arend Van Spriel
-> <arend.vanspriel@broadcom.com> wrote:
->>
->> + Uffe
->>
->> On 9/27/2020 9:49 PM, Thomas Gleixner wrote:
->>> @@ -85,7 +85,7 @@ static void brcmf_sdiod_ib_irqhandler(st
->>>
->>>        brcmf_dbg(INTR, "IB intr triggered\n");
->>>
->>> -     brcmf_sdio_isr(sdiodev->bus);
->>> +     brcmf_sdio_isr(sdiodev->bus, false);
->>>    }
->>
->> Hi Uffe,
->>
->> I assume the above code is okay, but want to confirm. Is the SDIO
->> interrupt guaranteed to be on a worker thread?
+On 9/27/2020 9:49 PM, Thomas Gleixner wrote:
+> From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 > 
-> Correct.
+> brcmf_sdio_isr() is using in_interrupt() to distinguish if it is called
+> from a interrupt service routine or from a worker thread.
 > 
-> As a matter of fact, the sdio irqs can be delivered through a couple
-> of different paths. The legacy (scheduled for removal), is from a
-> dedicated kthread. The more "modern" way is either from the context of
-> a threaded IRQ handler or via a workqueue.
-> 
-> However, there are also so-called out of band SDIO irqs, typically
-> routed via a separate GPIO line. This isn't managed by the MMC/SDIO
-> subsystem, but the SDIO functional driver itself.
+> Passing such information from the calling context is preferred and
+> requested by Linus, so add an argument `in_isr' to brcmf_sdio_isr() and let
+> the callers pass the information about the calling context.
 
-In brcmfmac we indeed support the out-of-band interrupt. That scnenario 
-is also taken care of in this patch. Thanks for the confirmation.
+After getting confirmation here is my ...
 
-Regards,
-Arend
+Reviewed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+> Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Arend van Spriel <arend.vanspriel@broadcom.com>
+> Cc: Franky Lin <franky.lin@broadcom.com>
+> Cc: Hante Meuleman <hante.meuleman@broadcom.com>
+> Cc: Chi-Hsien Lin <chi-hsien.lin@cypress.com>
+> Cc: Wright Feng <wright.feng@cypress.com>
+> Cc: Kalle Valo <kvalo@codeaurora.org>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: Jakub Kicinski <kuba@kernel.org>
+> Cc: linux-wireless@vger.kernel.org
+> Cc: brcm80211-dev-list.pdl@broadcom.com
+> Cc: brcm80211-dev-list@cypress.com
+> Cc: netdev@vger.kernel.org
+> ---
+>   drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c |    4 ++--
+>   drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c   |    4 ++--
+>   drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.h   |    2 +-
+>   3 files changed, 5 insertions(+), 5 deletions(-)
 
---0000000000000374fc05b05c6cc8
+--00000000000012cd3105b05c747d
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -232,13 +223,13 @@ WwHVQUbAn+xLMIQpycIQFoJIGJX4MeaTSMfLNP2w7nP2uLNgIeleF284vS0XVkBXSCgIGylP4SN+
 HQYrv7fVCbtp+c7nFvP7MYICbzCCAmsCAQEwbTBdMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xv
 YmFsU2lnbiBudi1zYTEzMDEGA1UEAxMqR2xvYmFsU2lnbiBQZXJzb25hbFNpZ24gMiBDQSAtIFNI
 QTI1NiAtIEczAgxR3m7Pj6LvQiWjJy0wDQYJYIZIAWUDBAIBBQCggdQwLwYJKoZIhvcNAQkEMSIE
-II6F2ZZuAl/iMeY3pjVdC/b3QXE5fLkDbGWx/k63GGTzMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0B
-BwEwHAYJKoZIhvcNAQkFMQ8XDTIwMDkyODA5Mzc1OVowaQYJKoZIhvcNAQkPMVwwWjALBglghkgB
+IN8C87abqwrMY385Xfy0XeB+XzR+AMRAvQ9UrrdAWDjOMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0B
+BwEwHAYJKoZIhvcNAQkFMQ8XDTIwMDkyODA5NDAxNFowaQYJKoZIhvcNAQkPMVwwWjALBglghkgB
 ZQMEASowCwYJYIZIAWUDBAEWMAsGCWCGSAFlAwQBAjAKBggqhkiG9w0DBzALBgkqhkiG9w0BAQow
-CwYJKoZIhvcNAQEHMAsGCWCGSAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQBVhIE/6keQDRkz+dzL
-7/S30na7g7HHkED4uHtTXDcFJkKXnY0MUWhEF5alkUTvuhHfXvTOtwvLvdR7Y8AqswAKg/qTO2xS
-EW92fMFDCRjsMsbeseH6L85yfzR4vE4VHptmoQwkJcBVwwW/f/uMppcfjQ/nnr6Edf54PxJobkPC
-c8BzRzldU3xkK6fLsH3TKtlUUnnaa0SqUwobHvW5lH3lEO8J1LystLYzDjL9yFegHir3h1JM2PhH
-uUhx2smH6BIqymeI1iSDUzfuTr3KPv6j9YaEBLiqfmAIXtDIFgSblYWSYHr+PQLvvOEv5A48rbcf
-FYK2YJD87ecVEmcnjvz3
---0000000000000374fc05b05c6cc8--
+CwYJKoZIhvcNAQEHMAsGCWCGSAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQBFE/L4IUc0YfdFma9M
+cdrlU7YuxXP2OTznWZFplO1MkdYZJ5DUpgyIAH8Epan7kxirrlMwrSf06TeDYwXYdGsxqNqZ30BO
+txJlazb8NXmIl1Ywe2LwqNHDxqNselvzP4cppgHALuJSSntqqo0a3H1KGg7hoRlzuS8We8sjpoCE
+Apz/yutqbPT0dLd9H/lkscwyLX+6xWVxkpu1eW0DLd+ijUTD7YoDtpVtodLEmebE2vXtrJi7kqAH
+CfPnQw2vCstOn6XrsE7FHk2tfK0+n2xq2SzfjOMfH8IPpyNZydazZdbuZ8wnd6uzwGJnjZ1znd88
+/u9rzUt2i3YLnVhs1hKv
+--00000000000012cd3105b05c747d--
