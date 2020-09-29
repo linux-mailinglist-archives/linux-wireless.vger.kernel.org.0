@@ -2,39 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4035127B9D6
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Sep 2020 03:34:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A32127B9C2
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Sep 2020 03:33:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727970AbgI2Bd3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 28 Sep 2020 21:33:29 -0400
-Received: from mail.kernel.org ([198.145.29.99]:41812 "EHLO mail.kernel.org"
+        id S1727953AbgI2BdS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 28 Sep 2020 21:33:18 -0400
+Received: from mail.kernel.org ([198.145.29.99]:41830 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727755AbgI2BcH (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        id S1727761AbgI2BcH (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
         Mon, 28 Sep 2020 21:32:07 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id BCA57221F0;
-        Tue, 29 Sep 2020 01:31:53 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id C16BD22574;
+        Tue, 29 Sep 2020 01:32:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1601343114;
-        bh=brp7bKmkwE5VDkgoa+MU6Rrefw8r8r9J3NGC26UiEVE=;
+        s=default; t=1601343124;
+        bh=KIAdlPqGQxBzYeo+gHSe7Aij7Mx4SkWPk5L0TTbEbic=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kbN9kK+ggav4YXXL8AJlwvlZ7EZc9oRCKmhnK9LEuY7nti8EI3RFJCItjbtioG8Gd
-         6ZnS1VpEv8/N1Fy3x7PCpZFUSKWRuxcScbPJrkktFdtPUYSvftkEgaZ1t+j4EnEsOj
-         /kHVhRsqZy+M0x3hMyj8KgG9hBD8iVRlpaAJLs2Y=
+        b=KAA3YzMxTuIgBfPCNUmK1kZ8o2adyVrg+A8CmgOBoI2HxnLmBJWeO5aN5sKjW6gcx
+         jOies6Q5YjbPik3QLpH9ZnT1S5MKlvATJVbykM+z5l/yxAnFM1ssjx1hUXZZJnf8ft
+         D+yG/VItJSIF58Hu3V2XuP+dnLMR2HTD+psi/mdc=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Felix Fietkau <nbd@nbd.name>,
         Johannes Berg <johannes.berg@intel.com>,
         Sasha Levin <sashal@kernel.org>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 7/9] mac80211: do not allow bigger VHT MPDUs than the hardware supports
-Date:   Mon, 28 Sep 2020 21:31:42 -0400
-Message-Id: <20200929013144.2406985-7-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.9 5/5] mac80211: do not allow bigger VHT MPDUs than the hardware supports
+Date:   Mon, 28 Sep 2020 21:31:57 -0400
+Message-Id: <20200929013157.2407108-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200929013144.2406985-1-sashal@kernel.org>
-References: <20200929013144.2406985-1-sashal@kernel.org>
+In-Reply-To: <20200929013157.2407108-1-sashal@kernel.org>
+References: <20200929013157.2407108-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -58,7 +58,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/net/mac80211/vht.c b/net/mac80211/vht.c
-index 19ec2189d3acb..502b3fbb3b0f4 100644
+index 43e45bb660bcd..b1d3fa708e16b 100644
 --- a/net/mac80211/vht.c
 +++ b/net/mac80211/vht.c
 @@ -170,10 +170,7 @@ ieee80211_vht_cap_ie_to_sta_vht_cap(struct ieee80211_sub_if_data *sdata,
