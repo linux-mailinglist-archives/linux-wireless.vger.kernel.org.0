@@ -2,39 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5023527BA11
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Sep 2020 03:35:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AF37627B99A
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Sep 2020 03:32:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727814AbgI2Be5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 28 Sep 2020 21:34:57 -0400
-Received: from mail.kernel.org ([198.145.29.99]:40920 "EHLO mail.kernel.org"
+        id S1727728AbgI2Bb4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 28 Sep 2020 21:31:56 -0400
+Received: from mail.kernel.org ([198.145.29.99]:40922 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727635AbgI2Bba (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 28 Sep 2020 21:31:30 -0400
+        id S1727686AbgI2Bbm (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 28 Sep 2020 21:31:42 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 4BC7521D46;
-        Tue, 29 Sep 2020 01:31:21 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id F3A63239EB;
+        Tue, 29 Sep 2020 01:31:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1601343082;
-        bh=VW7oyLa117MEhwsbhxJr47yJfKkS4dQAVPEAdzhonsk=;
+        s=default; t=1601343101;
+        bh=Ak6GE/liPjRXz6MnM8+Df0zDvcpb/b6eeWLGNki6Xa0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PJUjEO0vHSGCOQRBCxOZIjVLYekni9blVn2cZD/K0TYVXB2rtCX67zUzCH72VcVxI
-         9rbyBsiHINmZbouUG9Oz+gLGj6U+TXZklw+hxhY0md8OVV2Mo2cJ+sAClQ5PoafCQj
-         kfonebJTzbs6mi3QE3f/cODJHiKLnKGYcPoA9miw=
+        b=sM4Y4rxHAGc2bkp6vLVUeIPT0p8bX+Lnag0H8tTUFCBl+qgoiwOpEy22LMeh4kTvA
+         v1i+SUMehrY21ej4pO4hbIcuQdWIKrhZqQEh6fRt+v/ej/V5IAg+45vf/vMfA5n6ne
+         wiJ5i2R2xAELWJxXXPn5T9AarAXhEANWAGoyjCoM=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Felix Fietkau <nbd@nbd.name>,
         Johannes Berg <johannes.berg@intel.com>,
         Sasha Levin <sashal@kernel.org>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 13/18] mac80211: do not allow bigger VHT MPDUs than the hardware supports
-Date:   Mon, 28 Sep 2020 21:30:59 -0400
-Message-Id: <20200929013105.2406634-13-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 09/11] mac80211: do not allow bigger VHT MPDUs than the hardware supports
+Date:   Mon, 28 Sep 2020 21:31:27 -0400
+Message-Id: <20200929013129.2406832-9-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200929013105.2406634-1-sashal@kernel.org>
-References: <20200929013105.2406634-1-sashal@kernel.org>
+In-Reply-To: <20200929013129.2406832-1-sashal@kernel.org>
+References: <20200929013129.2406832-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -58,10 +58,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/net/mac80211/vht.c b/net/mac80211/vht.c
-index ccdcb9ad9ac72..aabc63dadf176 100644
+index 259325cbcc314..4d154efb80c88 100644
 --- a/net/mac80211/vht.c
 +++ b/net/mac80211/vht.c
-@@ -168,10 +168,7 @@ ieee80211_vht_cap_ie_to_sta_vht_cap(struct ieee80211_sub_if_data *sdata,
+@@ -170,10 +170,7 @@ ieee80211_vht_cap_ie_to_sta_vht_cap(struct ieee80211_sub_if_data *sdata,
  	/* take some capabilities as-is */
  	cap_info = le32_to_cpu(vht_cap_ie->vht_cap_info);
  	vht_cap->cap = cap_info;
@@ -73,7 +73,7 @@ index ccdcb9ad9ac72..aabc63dadf176 100644
  			IEEE80211_VHT_CAP_VHT_TXOP_PS |
  			IEEE80211_VHT_CAP_HTC_VHT |
  			IEEE80211_VHT_CAP_MAX_A_MPDU_LENGTH_EXPONENT_MASK |
-@@ -180,6 +177,9 @@ ieee80211_vht_cap_ie_to_sta_vht_cap(struct ieee80211_sub_if_data *sdata,
+@@ -182,6 +179,9 @@ ieee80211_vht_cap_ie_to_sta_vht_cap(struct ieee80211_sub_if_data *sdata,
  			IEEE80211_VHT_CAP_RX_ANTENNA_PATTERN |
  			IEEE80211_VHT_CAP_TX_ANTENNA_PATTERN;
  
