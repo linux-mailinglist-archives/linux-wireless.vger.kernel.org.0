@@ -2,200 +2,102 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D1E2E27B936
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Sep 2020 03:13:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7947C27BA3F
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Sep 2020 03:37:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727264AbgI2BNj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 28 Sep 2020 21:13:39 -0400
-Received: from mga07.intel.com ([134.134.136.100]:5955 "EHLO mga07.intel.com"
+        id S1727293AbgI2Bae (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 28 Sep 2020 21:30:34 -0400
+Received: from mail.kernel.org ([198.145.29.99]:39388 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727246AbgI2BNj (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 28 Sep 2020 21:13:39 -0400
-IronPort-SDR: 77qN2T3DFMPiPqxS+9gJW8k1Z/CL9jHaTC/8TEhsfl2Hw/Wi4IRaZz/rHO7gROP06XdZww2Qqp
- 32UauUl+JT8g==
-X-IronPort-AV: E=McAfee;i="6000,8403,9758"; a="226233913"
-X-IronPort-AV: E=Sophos;i="5.77,316,1596524400"; 
-   d="scan'208";a="226233913"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2020 18:13:38 -0700
-IronPort-SDR: 2K0VejRrIIx9mv9/+fTm5Dogc0p7ZpQAeM/EfhBPjEP2IYaGkw59ROW6c9YtBXkcHLNWpUhKsf
- F2gA+ob2qXhQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.77,316,1596524400"; 
-   d="scan'208";a="294078702"
-Received: from lkp-server01.sh.intel.com (HELO 0e0978ea3297) ([10.239.97.150])
-  by fmsmga008.fm.intel.com with ESMTP; 28 Sep 2020 18:13:37 -0700
-Received: from kbuild by 0e0978ea3297 with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1kN4D2-0000T1-Rp; Tue, 29 Sep 2020 01:13:36 +0000
-Date:   Tue, 29 Sep 2020 09:13:26 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Johannes Berg <johannes.berg@intel.com>
-Cc:     linux-wireless@vger.kernel.org
-Subject: [mac80211-next:master] BUILD SUCCESS
- f5bec330e3010450daeb5cb6a94a4a7c54afa306
-Message-ID: <5f728a36.Q2puGzfI1JjgwsJg%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S1726064AbgI2Bac (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 28 Sep 2020 21:30:32 -0400
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 1749D20678;
+        Tue, 29 Sep 2020 01:30:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1601343032;
+        bh=41COe5x7JjD1OwT5Ov3l1HjeqLrAse49svUyDHzocaU=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=CLhgSvA4xq02Lz8Ei0c/KN2TB6mD3QSsLkPiJJ3ZrL9SCZfGKFb/xstXxaNamrpGH
+         rSJPbmA+504RfW2sSE5sXbzWZ1vJZWJrp8IvE+1yLZ8iV0ax1BaHzCUJBJszvW7ZJF
+         KAxUJw4L3M5WhjBK3LvXSA7pq8COtzOmIZ2TUvmc=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Felix Fietkau <nbd@nbd.name>,
+        =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Sasha Levin <sashal@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org
+Subject: [PATCH AUTOSEL 5.8 03/29] mt76: mt7915: use ieee80211_free_txskb to free tx skbs
+Date:   Mon, 28 Sep 2020 21:30:00 -0400
+Message-Id: <20200929013027.2406344-3-sashal@kernel.org>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20200929013027.2406344-1-sashal@kernel.org>
+References: <20200929013027.2406344-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211-next.git  master
-branch HEAD: f5bec330e3010450daeb5cb6a94a4a7c54afa306  nl80211: extend support to config spatial reuse parameter set
+From: Felix Fietkau <nbd@nbd.name>
 
-elapsed time: 722m
+[ Upstream commit b4be5a53ebf478ffcfb4c98c0ccc4a8d922b9a02 ]
 
-configs tested: 136
-configs skipped: 2
+Using dev_kfree_skb for tx skbs breaks AQL. This worked until now only
+by accident, because a mac80211 issue breaks AQL on drivers with firmware
+rate control that report the rate via ieee80211_tx_status_ext as struct
+rate_info.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-powerpc                      arches_defconfig
-powerpc                      cm5200_defconfig
-sparc                       sparc32_defconfig
-arm                          badge4_defconfig
-powerpc                        cell_defconfig
-arm                       imx_v6_v7_defconfig
-m68k                            mac_defconfig
-sh                              ul2_defconfig
-mips                        vocore2_defconfig
-openrisc                    or1ksim_defconfig
-sh                          rsk7269_defconfig
-powerpc                    adder875_defconfig
-powerpc                 mpc8560_ads_defconfig
-m68k                         amcore_defconfig
-sparc64                          alldefconfig
-powerpc                      acadia_defconfig
-nios2                         3c120_defconfig
-powerpc                     rainier_defconfig
-powerpc                     mpc512x_defconfig
-mips                       lemote2f_defconfig
-riscv                          rv32_defconfig
-sh                        edosk7760_defconfig
-mips                      bmips_stb_defconfig
-sh                        apsh4ad0a_defconfig
-arm                        magician_defconfig
-mips                           ip22_defconfig
-arm                        spear6xx_defconfig
-mips                         db1xxx_defconfig
-mips                     loongson1b_defconfig
-xtensa                    smp_lx200_defconfig
-mips                 decstation_r4k_defconfig
-powerpc                 mpc837x_rdb_defconfig
-powerpc                       ebony_defconfig
-arm                       cns3420vb_defconfig
-powerpc                     pseries_defconfig
-arm                         vf610m4_defconfig
-mips                           gcw0_defconfig
-m68k                             allmodconfig
-mips                       rbtx49xx_defconfig
-nios2                         10m50_defconfig
-mips                     cu1000-neo_defconfig
-sh                           se7619_defconfig
-powerpc                     stx_gp3_defconfig
-powerpc                 mpc8540_ads_defconfig
-sh                            titan_defconfig
-powerpc                   currituck_defconfig
-mips                        bcm47xx_defconfig
-sh                          polaris_defconfig
-powerpc                      walnut_defconfig
-sh                         microdev_defconfig
-arm                           sunxi_defconfig
-microblaze                    nommu_defconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-c6x                              allyesconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-i386                 randconfig-a002-20200927
-i386                 randconfig-a006-20200927
-i386                 randconfig-a003-20200927
-i386                 randconfig-a004-20200927
-i386                 randconfig-a005-20200927
-i386                 randconfig-a001-20200927
-i386                 randconfig-a006-20200928
-i386                 randconfig-a002-20200928
-i386                 randconfig-a003-20200928
-i386                 randconfig-a004-20200928
-i386                 randconfig-a005-20200928
-i386                 randconfig-a001-20200928
-x86_64               randconfig-a005-20200928
-x86_64               randconfig-a003-20200928
-x86_64               randconfig-a004-20200928
-x86_64               randconfig-a002-20200928
-x86_64               randconfig-a006-20200928
-x86_64               randconfig-a001-20200928
-x86_64               randconfig-a011-20200927
-x86_64               randconfig-a013-20200927
-x86_64               randconfig-a014-20200927
-x86_64               randconfig-a015-20200927
-x86_64               randconfig-a012-20200927
-x86_64               randconfig-a016-20200927
-i386                 randconfig-a012-20200928
-i386                 randconfig-a016-20200928
-i386                 randconfig-a014-20200928
-i386                 randconfig-a013-20200928
-i386                 randconfig-a015-20200928
-i386                 randconfig-a011-20200928
-riscv                    nommu_k210_defconfig
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                            allmodconfig
-x86_64                                   rhel
-x86_64                           allyesconfig
-x86_64                    rhel-7.6-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                                  kexec
-
-clang tested configs:
-x86_64               randconfig-a011-20200928
-x86_64               randconfig-a013-20200928
-x86_64               randconfig-a015-20200928
-x86_64               randconfig-a014-20200928
-x86_64               randconfig-a016-20200928
-x86_64               randconfig-a012-20200928
-
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Acked-by: Toke Høiland-Jørgensen <toke@redhat.com>
+Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+Link: https://lore.kernel.org/r/20200812144943.91974-1-nbd@nbd.name
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+ drivers/net/wireless/mediatek/mt76/mt7915/init.c | 8 ++++++--
+ drivers/net/wireless/mediatek/mt76/mt7915/mac.c  | 2 +-
+ 2 files changed, 7 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+index aadf56e80bae8..d7a3b05ab50c3 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+@@ -691,8 +691,12 @@ void mt7915_unregister_device(struct mt7915_dev *dev)
+ 	spin_lock_bh(&dev->token_lock);
+ 	idr_for_each_entry(&dev->token, txwi, id) {
+ 		mt7915_txp_skb_unmap(&dev->mt76, txwi);
+-		if (txwi->skb)
+-			dev_kfree_skb_any(txwi->skb);
++		if (txwi->skb) {
++			struct ieee80211_hw *hw;
++
++			hw = mt76_tx_status_get_hw(&dev->mt76, txwi->skb);
++			ieee80211_free_txskb(hw, txwi->skb);
++		}
+ 		mt76_put_txwi(&dev->mt76, txwi);
+ 	}
+ 	spin_unlock_bh(&dev->token_lock);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+index a264e304a3dfb..5800b2d1fb233 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+@@ -844,7 +844,7 @@ mt7915_tx_complete_status(struct mt76_dev *mdev, struct sk_buff *skb,
+ 	if (sta || !(info->flags & IEEE80211_TX_CTL_NO_ACK))
+ 		mt7915_tx_status(sta, hw, info, NULL);
+ 
+-	dev_kfree_skb(skb);
++	ieee80211_free_txskb(hw, skb);
+ }
+ 
+ void mt7915_txp_skb_unmap(struct mt76_dev *dev,
+-- 
+2.25.1
+
