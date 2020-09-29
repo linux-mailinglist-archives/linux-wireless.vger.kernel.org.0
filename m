@@ -2,101 +2,85 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6FE6D27CCC2
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Sep 2020 14:39:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2EAA727CCE8
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Sep 2020 14:40:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733269AbgI2Mij (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 29 Sep 2020 08:38:39 -0400
-Received: from mail.kernel.org ([198.145.29.99]:49778 "EHLO mail.kernel.org"
+        id S1730775AbgI2MkX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 29 Sep 2020 08:40:23 -0400
+Received: from m42-4.mailgun.net ([69.72.42.4]:22007 "EHLO m42-4.mailgun.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1732771AbgI2Mie (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 29 Sep 2020 08:38:34 -0400
-Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        id S1729212AbgI2Mjw (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 29 Sep 2020 08:39:52 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1601383191; h=Message-ID: References: In-Reply-To: Subject:
+ Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Sender; bh=qnKjfeAqZgS/wv0jK17vPZZQ8cNXoaFEqYT3pTlsR2o=;
+ b=m0URmKYMELsDzNn46tcoxwRlcafXvQzEXO+bKM5/RgKvP2bEG0Dba76Rzuz7pjgy+IapwuBS
+ Z/B1Vj4+47kwR9EdcWa9lveQ9cXoqqX46xfPawx7RsyaRmZDV+8NmACRIz+eutCgPPLAJgbG
+ 7ZeT2K3BePj7ERCBrgge5MSFKzA=
+X-Mailgun-Sending-Ip: 69.72.42.4
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n02.prod.us-east-1.postgun.com with SMTP id
+ 5f732b1370602555f58d14cd (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 29 Sep 2020 12:39:47
+ GMT
+Sender: vnaralas=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 2BF4DC433CB; Tue, 29 Sep 2020 12:39:46 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 74C452075F;
-        Tue, 29 Sep 2020 12:38:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1601383113;
-        bh=1agHRxXJKhB2RD26+gZ4x8RWV4EKhITxeEYpiuBbO3Y=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=DWmjA8UFdsFWnaqLQDJfMWuIbOP31zKYrwaHNjRkhgkkbyol6UJQNOL2g65mEmM7z
-         r3wh0aEAIXzhRSusZ2U0MLVqmtsLu8t/8GK56UP3hceV/6s4ECE+CCU/O8tZzN6Rvf
-         K42OX9LCLHmQUHnGEYx+BhHjmTGzPz+rvHs8rKnU=
-Date:   Tue, 29 Sep 2020 13:37:34 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Julia Lawall <julia.lawall@inria.fr>
-Cc:     Joe Perches <joe@perches.com>, linux-iio@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-crypto@vger.kernel.org,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Jerome Brunet <jbrunet@baylibre.com>,
-        linux-acpi@vger.kernel.org, David Lechner <david@lechnology.com>,
-        Valdis =?utf-8?Q?Kl=C4=93tnieks?= <valdis.kletnieks@vt.edu>,
-        kernel-janitors@vger.kernel.org, drbd-dev@lists.linbit.com,
-        openipmi-developer@lists.sourceforge.net,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        linux-ide@vger.kernel.org, linux-amlogic@lists.infradead.org,
-        linux-clk@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-wireless@vger.kernel.org,
-        Neil Armstrong <narmstrong@baylibre.com>
-Subject: Re: [PATCH 00/18] use semicolons rather than commas to separate
- statements
-Message-ID: <20200929123734.GC4799@sirena.org.uk>
-References: <1601233948-11629-1-git-send-email-Julia.Lawall@inria.fr>
- <160132172369.55460.9237357219623604216.b4-ty@kernel.org>
- <b1174f9be2ce65f6b5ebefcba0b48e792926abbc.camel@perches.com>
- <20200929113745.GB4799@sirena.org.uk>
- <alpine.DEB.2.22.394.2009291344590.2808@hadrien>
+        (Authenticated sender: vnaralas)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id C9798C433A0;
+        Tue, 29 Sep 2020 12:39:44 +0000 (UTC)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="MnLPg7ZWsaic7Fhd"
-Content-Disposition: inline
-In-Reply-To: <alpine.DEB.2.22.394.2009291344590.2808@hadrien>
-X-Cookie: I left my WALLET in the BATHROOM!!
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Tue, 29 Sep 2020 18:09:44 +0530
+From:   vnaralas@codeaurora.org
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
+Subject: Re: [PATCHv2 1/2] nl80211: vendor-cmd: qca: add command for ap power
+ save
+In-Reply-To: <871rilf2th.fsf@codeaurora.org>
+References: <1598257589-19091-1-git-send-email-vnaralas@codeaurora.org>
+ <4b4a0d79a243c1c3b8044730da0493c96ba294bf.camel@sipsolutions.net>
+ <871rilf2th.fsf@codeaurora.org>
+Message-ID: <dbaa655c3f15f800f73b7c19f2b1a054@codeaurora.org>
+X-Sender: vnaralas@codeaurora.org
+User-Agent: Roundcube Webmail/1.3.9
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On 2020-09-29 13:10, Kalle Valo wrote:
+> Johannes Berg <johannes@sipsolutions.net> writes:
+> 
+>> On Mon, 2020-08-24 at 13:56 +0530, Venkateswara Naralasetty wrote:
+>>> AP power save feature is to save power in AP mode, where AP goes
+>>> to power save mode when no stations associate to it and comes out
+>>> of power save when any station associate to AP.
+>> 
+>> Why do you think this requires a vendor command? I mean, that seems 
+>> like
+>> fairly reasonable - even by default - behaviour?
+> 
+> I have not studied the details, but doesn't AP power save break normal
+> functionality? For example, I would guess probe requests from clients
+> would be lost. So there's a major drawback when enabling this, right?
 
---MnLPg7ZWsaic7Fhd
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
-On Tue, Sep 29, 2020 at 01:46:19PM +0200, Julia Lawall wrote:
-> On Tue, 29 Sep 2020, Mark Brown wrote:
-
-> > Feel free to submit patches to b4.  Ideally things like this wouldn't be
-> > being sent as serieses in the first place, there's no dependencies or
-> > interactions between the patches.
-
-> It was suggested (a long time ago, not with respect to this patch in
-> particular) that sending such patches in a series is useful because it
-> allows people who are not interested in the 18 patches to skip over them
-> more easily.  So there are two conflicting needs...
-
-I'm not convinced that there are huge numbers of people reading LKML as
-a list TBH, and if you are sending things as a series then the way
-you're doing it at the minute where you don't CC the cover letter to
-people makes things confusing as it's unclear if there are dependencies
-to worry about.
-
---MnLPg7ZWsaic7Fhd
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEyBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl9zKo0ACgkQJNaLcl1U
-h9BJ9wf4mEIT3UglAONn9EPv4I6DolXuWfJHGs52mxyy1JeuXGyjVMYRuKfw8ZE5
-TbgRR0pAg1aZUsqI/T/PWSVDmUCNzL6QM4RbG8ZUSFw47v509iCABBidbK+PLnwo
-y5A+IrAPTDVviLFNJm2SfFN3XEgpsGmOqhyuhKiGNeLOryaPNvOmiRF6cwND7Vbq
-97kDmafX0KgHVsmK/br50D/XJpOJSR9T2hB5hjQRoVl44a6aV0eZWwDDZyH57kat
-KO59OyGGHDyWrsF9oHWajymCB1kMZZ4YLiwCyjx98g74uRLSiSaGwrsr4IeXGn66
-Mmpn90mfVDnP/Es10vbKsC+JZShG
-=qH7V
------END PGP SIGNATURE-----
-
---MnLPg7ZWsaic7Fhd--
+This AP power save feature will not break any functionality, Since one 
+chain is always active and all other chains will be disabled when this 
+feature is enabled. AP can still be able to beacon and receive probe 
+request from the clients. The only drawback is reduced network range 
+when this feature is enabled. Hence, we don't want to enable it by 
+default.
