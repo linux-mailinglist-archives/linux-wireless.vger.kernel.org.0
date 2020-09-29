@@ -2,69 +2,74 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DFC0327D395
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Sep 2020 18:25:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 83FA227D41F
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Sep 2020 19:07:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728474AbgI2QZx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 29 Sep 2020 12:25:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54998 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728273AbgI2QZx (ORCPT
+        id S1728140AbgI2RHl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 29 Sep 2020 13:07:41 -0400
+Received: from mail.adapt-ip.com ([173.164.178.19]:55552 "EHLO
+        web.adapt-ip.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1725554AbgI2RHl (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 29 Sep 2020 12:25:53 -0400
-Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3161C0613D0
-        for <linux-wireless@vger.kernel.org>; Tue, 29 Sep 2020 09:25:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-         s=20160729; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
-        Message-Id:Date:Subject:To:From:Sender:Reply-To:Cc:Content-Type:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=hcDTuZ/nMSJuBZEQWbnmm6T33RZUD+LjKUJlR8CtP2M=; b=ictJctOjLSKulal/iVSeVUxUz4
-        8MxlWiixnpm3uFFNaCpiZLCWjHC6LtwvSl1AW+o//EVrWcd77suAJzy/txAFpAyHoKXLGqMvAv4jJ
-        1rh4L7Dpp4m10hR/6wMo7OET1ElwJoyYq1W6+NQQkYtXslgnI19C3a4E0oeo8SNVY5o0=;
-Received: from p4ff134da.dip0.t-ipconnect.de ([79.241.52.218] helo=localhost.localdomain)
-        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_CBC_SHA1:128)
-        (Exim 4.89)
-        (envelope-from <nbd@nbd.name>)
-        id 1kNIRr-00028J-8z
-        for linux-wireless@vger.kernel.org; Tue, 29 Sep 2020 18:25:51 +0200
-From:   Felix Fietkau <nbd@nbd.name>
-To:     linux-wireless@vger.kernel.org
-Subject: [PATCH 2/2] mt76: mt7915: disable OFDMA/MU-MIMO UL
-Date:   Tue, 29 Sep 2020 18:25:50 +0200
-Message-Id: <20200929162550.83724-2-nbd@nbd.name>
-X-Mailer: git-send-email 2.28.0
-In-Reply-To: <20200929162550.83724-1-nbd@nbd.name>
-References: <20200929162550.83724-1-nbd@nbd.name>
+        Tue, 29 Sep 2020 13:07:41 -0400
+Received: from localhost (localhost [127.0.0.1])
+        by web.adapt-ip.com (Postfix) with ESMTP id 9E7014F9FEC;
+        Tue, 29 Sep 2020 17:07:40 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at web.adapt-ip.com
+Received: from web.adapt-ip.com ([127.0.0.1])
+        by localhost (web.adapt-ip.com [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id wU9sQIhaMJ01; Tue, 29 Sep 2020 17:07:38 +0000 (UTC)
+Received: from mail.ibsgaard.io (c-73-223-60-234.hsd1.ca.comcast.net [73.223.60.234])
+        (Authenticated sender: thomas@adapt-ip.com)
+        by web.adapt-ip.com (Postfix) with ESMTPSA id 05DE84F9FE9;
+        Tue, 29 Sep 2020 17:07:37 +0000 (UTC)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Date:   Tue, 29 Sep 2020 10:07:37 -0700
+From:   Thomas Pedersen <thomas@adapt-ip.com>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH v4 14/17] mac80211: support S1G association
+In-Reply-To: <1a2ed6b74cf7604c717791bd6cb9e65b49f4a654.camel@sipsolutions.net>
+References: <20200922022818.15855-1-thomas@adapt-ip.com>
+ <20200922022818.15855-15-thomas@adapt-ip.com>
+ <1a2ed6b74cf7604c717791bd6cb9e65b49f4a654.camel@sipsolutions.net>
+User-Agent: Roundcube Webmail/1.4.7
+Message-ID: <cac2b6d591dc49286ab3f811cec61840@adapt-ip.com>
+X-Sender: thomas@adapt-ip.com
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The feature is not ready in firmware yet, and it leads to hangs
+On 2020-09-28 05:17, Johannes Berg wrote:
+>> @@ -176,6 +177,15 @@ ieee80211_determine_chantype(struct 
+>> ieee80211_sub_if_data *sdata,
+>>  	memcpy(&sta_ht_cap, &sband->ht_cap, sizeof(sta_ht_cap));
+>>  	ieee80211_apply_htcap_overrides(sdata, &sta_ht_cap);
+>> 
+>> +	if (s1g_oper && sband->band == NL80211_BAND_S1GHZ) {
+>> +		ieee80211_chandef_s1g_oper(s1g_oper, chandef);
+>> +		ret = IEEE80211_STA_DISABLE_HT | IEEE80211_STA_DISABLE_40MHZ |
+>> +		      IEEE80211_STA_DISABLE_VHT |
+>> +		      IEEE80211_STA_DISABLE_80P80MHZ |
+>> +		      IEEE80211_STA_DISABLE_160MHZ;
+>> +		goto out;
+>> +	}
+> 
+> I've applied this now (and made some changes in a few patches, please
+> check), but this particular thing seems a bit odd, in that it looks for
+> HT/VHT elements even on an S1G channel if the s1g oper element isn't
+> present? That seems like it shouldn't be the case, can you take a look?
 
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
----
- drivers/net/wireless/mediatek/mt76/mt7915/mcu.c | 2 --
- 1 file changed, 2 deletions(-)
+Thanks for the (numerous) fixups.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-index b50f5b058103..f42a54cd8d45 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-@@ -1552,9 +1552,7 @@ mt7915_mcu_sta_muru_tlv(struct sk_buff *skb, struct ieee80211_sta *sta)
- 
- 	muru = (struct sta_rec_muru *)tlv;
- 	muru->cfg.ofdma_dl_en = true;
--	muru->cfg.ofdma_ul_en = true;
- 	muru->cfg.mimo_dl_en = true;
--	muru->cfg.mimo_ul_en = true;
- 
- 	muru->ofdma_dl.punc_pream_rx =
- 		HE_PHY(CAP1_PREAMBLE_PUNC_RX_MASK, elem->phy_cap_info[1]);
+I don't think applying a (NULL) HT cap is a big deal since the same code 
+path
+is already executed for eg. non HT, but it does look strange and I'll 
+send a
+fixup.
+
 -- 
-2.28.0
-
+thomas
