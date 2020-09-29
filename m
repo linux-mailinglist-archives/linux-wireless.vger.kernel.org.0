@@ -2,51 +2,54 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CB62927DB68
-	for <lists+linux-wireless@lfdr.de>; Wed, 30 Sep 2020 00:07:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7CC2627DC77
+	for <lists+linux-wireless@lfdr.de>; Wed, 30 Sep 2020 01:07:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728474AbgI2WHo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 29 Sep 2020 18:07:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51610 "EHLO
+        id S1728943AbgI2XHH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 29 Sep 2020 19:07:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60786 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728287AbgI2WHn (ORCPT
+        with ESMTP id S1728384AbgI2XHH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 29 Sep 2020 18:07:43 -0400
-Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com [IPv6:2607:f8b0:4864:20::544])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD14BC0613D2
-        for <linux-wireless@vger.kernel.org>; Tue, 29 Sep 2020 15:07:43 -0700 (PDT)
-Received: by mail-pg1-x544.google.com with SMTP id 34so5034424pgo.13
-        for <linux-wireless@vger.kernel.org>; Tue, 29 Sep 2020 15:07:43 -0700 (PDT)
+        Tue, 29 Sep 2020 19:07:07 -0400
+Received: from mail-pg1-x531.google.com (mail-pg1-x531.google.com [IPv6:2607:f8b0:4864:20::531])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DCDF2C0613D3
+        for <linux-wireless@vger.kernel.org>; Tue, 29 Sep 2020 16:07:06 -0700 (PDT)
+Received: by mail-pg1-x531.google.com with SMTP id y14so5180761pgf.12
+        for <linux-wireless@vger.kernel.org>; Tue, 29 Sep 2020 16:07:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google;
+        d=pensando.io; s=google;
         h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to;
-        bh=AD0dqEuHQKxDmQX6K6GywPX23qsQeZ1Jtl3xZ5DRV/Y=;
-        b=V8duqHupMh4s+K/1GJ//uz433bXNDb4l0MwHrb2Ot0toOGl9HsGhPbH4WJsRLJ0dLA
-         diVaS1oHwImfgVAeCAJDZEl0RIAuwtUmx1/bFRvcq6qwmgIRIC3GfaAAJElOOku8G6O5
-         qb3Ks8+p6dssv9jYNcDXDsoM8Gm2B8wN6BtYI=
+         :mime-version:in-reply-to:content-transfer-encoding:content-language;
+        bh=T56W4rlwKM3h0w7+QjGBQRIaXGTOjqoGepwvZvifopA=;
+        b=u7ctPNw/bCJlHLZao4KrUwd8YSTNwu0ScSWSkn38YGsAWZv9zrDlzkmqrUrwD5aLem
+         /w0yuGo+dbSRL1jimX9qU98ulfFvQ3MsEB1I1SUz3NFIS6T8xwWTKPBZL8MqMhx4+j7h
+         XOXdJNg0vgO/7B0eq6AL4pBli99xvTVSeVcCfN1sBsU2KCSlQBq1qpQX93SDqNFk8Riz
+         UMysDx5VYIkhLrI4K10saFmbuZ93NW3LS7O2/s/36I97FP0z7gpZghd1APyIc3fO2Hfm
+         YREFwEWNc570IMUD4jhkE36VZ5py8gvbC0AK+KcPo34NQiNUV3BFr8tB5tehXj2wvMoU
+         1G7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to;
-        bh=AD0dqEuHQKxDmQX6K6GywPX23qsQeZ1Jtl3xZ5DRV/Y=;
-        b=sVUchn4OhZov0lT3V6o2zpifA88ez9O8bm+8W567xbvwtK102vwJLIDseJR8GlBPhu
-         zJiSV7+hpFhVnirhB+PQzmXB3DZaKTqeWCaKhZPvjP+pYS1jMAqZFN2YmbJ0fnWROJ+u
-         SogLggvmX28twLjA8yl8BeE2fVqUPnnr1t7N5WLxC8zh2vHulno7iPY/WT55eOlCnzNJ
-         Nsl1fQA0VgNVizziHcv4/Ei4Kw5yrAESf/MsMyFIzUOTGF4JttUbNlf428N1PilLtWT+
-         iYxJIgRcmMGTEb15ogFfk4g7Nqx/nvKmLa3kWgoNZEeHPNHNeoDz5JBhGUHb1JeQYZ9F
-         QJlQ==
-X-Gm-Message-State: AOAM533d7DdEYLq2MtVJgTUG8NPjz7Q2q+8ns3j/zHs3ToA0ZMLa6dcY
-        FI5XZFmIqv1j5010fxyZa32Mgg==
-X-Google-Smtp-Source: ABdhPJxBc5zsDsmSyhashbX/PxCC3L6VtkRhu/YMWfBpT3q96/RllS7cR/QOMPbMCXrcPBLhVgsIhQ==
-X-Received: by 2002:a17:902:fe0b:b029:d1:9bd3:6e20 with SMTP id g11-20020a170902fe0bb02900d19bd36e20mr6663658plj.31.1601417263123;
-        Tue, 29 Sep 2020 15:07:43 -0700 (PDT)
-Received: from [192.168.178.129] (f140230.upc-f.chello.nl. [80.56.140.230])
-        by smtp.gmail.com with ESMTPSA id h12sm6336925pfo.68.2020.09.29.15.07.31
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding
+         :content-language;
+        bh=T56W4rlwKM3h0w7+QjGBQRIaXGTOjqoGepwvZvifopA=;
+        b=TEwithyN2gZPjIyGcRwmVbJjDHObZEUOwoPkk7rdzdY2BGiC117/GhI3+YsRM4v3pM
+         Om7JuUC4b1OdVdME+orMVoOGbv/OUkWimq1G20tuhxJLtEwIcepHez67SVqmWohflpuN
+         JwYYiWn5T676umNUAg8ZbLh4+mBKTtJ+/nIUzQgYW/8p0/KiK58ETJS27cOcRg3fKfWf
+         s7tsyv/NDR4Twyi2ZvZ/oJ9sXDRP715h4UgyorSo1rxM43epcPnI8AQm3nA7KIMmbbMe
+         54ERDsG6jvY3+x3HA+5HVD2RauNoFd/HaYS6G1V60ReUvFWDfDXNoPYxef+gZ9duNYze
+         qJTw==
+X-Gm-Message-State: AOAM532hWnIex4wWN631O1WD+sgVG5SMX3dvWKqSva46OGIj6NUrFUtU
+        07APIVPlDK4stw4JQgB43s5+EA==
+X-Google-Smtp-Source: ABdhPJzpobBeVD0QizR5JNx2IEww3/DSsVZ79uzkw55sMm1JxKZo1kgF0e0ARRsarK31gnzhNU0N1A==
+X-Received: by 2002:a63:df02:: with SMTP id u2mr4908192pgg.270.1601420826006;
+        Tue, 29 Sep 2020 16:07:06 -0700 (PDT)
+Received: from Shannons-MacBook-Pro.local (static-50-53-47-17.bvtn.or.frontiernet.net. [50.53.47.17])
+        by smtp.gmail.com with ESMTPSA id 134sm5798661pgf.55.2020.09.29.16.07.01
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 29 Sep 2020 15:07:42 -0700 (PDT)
-Subject: Re: [patch V2 27/36] net: brcmfmac: Convey allocation mode as
- argument
+        Tue, 29 Sep 2020 16:07:05 -0700 (PDT)
+Subject: Re: [patch V2 11/36] net: ionic: Replace in_interrupt() usage.
 To:     Thomas Gleixner <tglx@linutronix.de>,
         LKML <linux-kernel@vger.kernel.org>
 Cc:     Peter Zijlstra <peterz@infradead.org>,
@@ -66,7 +69,6 @@ Cc:     Peter Zijlstra <peterz@infradead.org>,
         Vishal Kulkarni <vishal@chelsio.com>,
         Jeff Kirsher <jeffrey.t.kirsher@intel.com>,
         intel-wired-lan@lists.osuosl.org,
-        Shannon Nelson <snelson@pensando.io>,
         Pensando Drivers <drivers@pensando.io>,
         Andrew Lunn <andrew@lunn.ch>,
         Heiner Kallweit <hkallweit1@gmail.com>,
@@ -80,6 +82,7 @@ Cc:     Peter Zijlstra <peterz@infradead.org>,
         Kalle Valo <kvalo@codeaurora.org>,
         linux-wireless@vger.kernel.org, linux-usb@vger.kernel.org,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Arend van Spriel <arend.vanspriel@broadcom.com>,
         Franky Lin <franky.lin@broadcom.com>,
         Hante Meuleman <hante.meuleman@broadcom.com>,
         Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
@@ -100,136 +103,297 @@ Cc:     Peter Zijlstra <peterz@infradead.org>,
         Pascal Terjan <pterjan@google.com>,
         Ping-Ke Shih <pkshih@realtek.com>
 References: <20200929202509.673358734@linutronix.de>
- <20200929203502.180883992@linutronix.de>
-From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
-Message-ID: <d64a84f6-2ae6-ab26-e7a7-969f45b8cfb8@broadcom.com>
-Date:   Wed, 30 Sep 2020 00:07:30 +0200
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.2.2
+ <20200929203500.579810110@linutronix.de>
+From:   Shannon Nelson <snelson@pensando.io>
+Message-ID: <04ec3648-9735-b901-6492-606468d47158@pensando.io>
+Date:   Tue, 29 Sep 2020 16:06:59 -0700
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:68.0)
+ Gecko/20100101 Thunderbird/68.12.0
 MIME-Version: 1.0
-In-Reply-To: <20200929203502.180883992@linutronix.de>
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="00000000000021829505b07b03db"
+In-Reply-To: <20200929203500.579810110@linutronix.de>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---00000000000021829505b07b03db
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-
-On 9/29/2020 10:25 PM, Thomas Gleixner wrote:
+On 9/29/20 1:25 PM, Thomas Gleixner wrote:
 > From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-> 
-> The usage of in_interrupt() in drivers is phased out and Linus clearly
-> requested that code which changes behaviour depending on context should
-> either be seperated or the context be conveyed in an argument passed by the
-> caller, which usually knows the context.
-> 
-> brcmf_fweh_process_event() uses in_interrupt() to select the allocation
-> mode GFP_KERNEL/GFP_ATOMIC. Aside of the above reasons this check is
-> incomplete as it cannot detect contexts which just have preemption or
-> interrupts disabled.
-> 
-> All callchains leading to brcmf_fweh_process_event() can clearly identify
-> the calling context. Convey a 'gfp' argument through the callchains and let
-> the callers hand in the appropriate GFP mode.
-> 
-> This has also the advantage that any change of execution context or
-> preemption/interrupt state in these callchains will be detected by the
-> memory allocator for all GFP_KERNEL allocations.
-
-Reviewed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+>
+> The in_interrupt() usage in this driver tries to figure out which context
+> may sleep and which context may not sleep. in_interrupt() is not really
+> suitable as it misses both preemption disabled and interrupt disabled
+> invocations from task context.
+>
+> Conditionals like that in driver code are frowned upon in general because
+> invocations of functions from invalid contexts might not be detected
+> as the conditional papers over it.
+>
+> ionic_lif_addr() and _ionoc_lif_rx_mode() can be called from:
+>
+>   1) ->ndo_set_rx_mode() which is under netif_addr_lock_bh()) so it must not
+>      sleep.
+>
+>   2) Init and setup functions which are in fully preemptible task context.
+>
+> ionic_link_status_check_request() has two call paths:
+>
+>   1) NAPI which obviously cannot sleep
+>
+>   2) Setup which is again fully preemptible task context
+>
+> Add arguments which convey the execution context to the affected functions
+> and let the callers provide the context instead of letting the functions
+> deduce it.
+>
 > Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 > Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 > ---
-> V2: Adopt to the 'inirq' changes
+> V2: Treat _ionoc_lif_rx_mode() correclty (Shannon)
+
+Is it fair to poke at the comments?
+s/ionoc/ionic/
+s/correclty/correctly/
+
 > ---
->   drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c   |   10 ++++++----
->   drivers/net/wireless/broadcom/brcm80211/brcmfmac/fweh.c   |    8 ++------
->   drivers/net/wireless/broadcom/brcm80211/brcmfmac/fweh.h   |    7 ++++---
->   drivers/net/wireless/broadcom/brcm80211/brcmfmac/msgbuf.c |    2 +-
->   4 files changed, 13 insertions(+), 14 deletions(-)
+>   drivers/net/ethernet/pensando/ionic/ionic_dev.c |    2
+>   drivers/net/ethernet/pensando/ionic/ionic_lif.c |   64 ++++++++++++++++--------
+>   drivers/net/ethernet/pensando/ionic/ionic_lif.h |    2
+>   3 files changed, 47 insertions(+), 21 deletions(-)
+>
+> --- a/drivers/net/ethernet/pensando/ionic/ionic_dev.c
+> +++ b/drivers/net/ethernet/pensando/ionic/ionic_dev.c
+> @@ -22,7 +22,7 @@ static void ionic_watchdog_cb(struct tim
+>   	hb = ionic_heartbeat_check(ionic);
+>   
+>   	if (hb >= 0 && ionic->lif)
+> -		ionic_link_status_check_request(ionic->lif);
+> +		ionic_link_status_check_request(ionic->lif, false);
+>   }
+>   
+>   void ionic_init_devinfo(struct ionic *ionic)
+> --- a/drivers/net/ethernet/pensando/ionic/ionic_lif.c
+> +++ b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
+> @@ -151,7 +151,7 @@ static void ionic_link_status_check(stru
+>   	clear_bit(IONIC_LIF_F_LINK_CHECK_REQUESTED, lif->state);
+>   }
+>   
+> -void ionic_link_status_check_request(struct ionic_lif *lif)
+> +void ionic_link_status_check_request(struct ionic_lif *lif, bool can_sleep)
+>   {
+>   	struct ionic_deferred_work *work;
+>   
+> @@ -159,7 +159,7 @@ void ionic_link_status_check_request(str
+>   	if (test_and_set_bit(IONIC_LIF_F_LINK_CHECK_REQUESTED, lif->state))
+>   		return;
+>   
+> -	if (in_interrupt()) {
+> +	if (!can_sleep) {
+>   		work = kzalloc(sizeof(*work), GFP_ATOMIC);
+>   		if (!work)
+>   			return;
+> @@ -798,7 +798,7 @@ static bool ionic_notifyq_service(struct
+>   
+>   	switch (le16_to_cpu(comp->event.ecode)) {
+>   	case IONIC_EVENT_LINK_CHANGE:
+> -		ionic_link_status_check_request(lif);
+> +		ionic_link_status_check_request(lif, false);
+>   		break;
+>   	case IONIC_EVENT_RESET:
+>   		work = kzalloc(sizeof(*work), GFP_ATOMIC);
+> @@ -981,7 +981,8 @@ static int ionic_lif_addr_del(struct ion
+>   	return 0;
+>   }
+>   
+> -static int ionic_lif_addr(struct ionic_lif *lif, const u8 *addr, bool add)
+> +static int ionic_lif_addr(struct ionic_lif *lif, const u8 *addr, bool add,
+> +			  bool can_sleep)
+>   {
+>   	struct ionic *ionic = lif->ionic;
+>   	struct ionic_deferred_work *work;
+> @@ -1010,7 +1011,7 @@ static int ionic_lif_addr(struct ionic_l
+>   			lif->nucast--;
+>   	}
+>   
+> -	if (in_interrupt()) {
+> +	if (!can_sleep) {
+>   		work = kzalloc(sizeof(*work), GFP_ATOMIC);
+>   		if (!work) {
+>   			netdev_err(lif->netdev, "%s OOM\n", __func__);
+> @@ -1036,12 +1037,22 @@ static int ionic_lif_addr(struct ionic_l
+>   
+>   static int ionic_addr_add(struct net_device *netdev, const u8 *addr)
+>   {
+> -	return ionic_lif_addr(netdev_priv(netdev), addr, true);
+> +	return ionic_lif_addr(netdev_priv(netdev), addr, true, true);
+> +}
+> +
+> +static int ionic_ndo_addr_add(struct net_device *netdev, const u8 *addr)
+> +{
+> +	return ionic_lif_addr(netdev_priv(netdev), addr, true, false);
+>   }
+>   
+>   static int ionic_addr_del(struct net_device *netdev, const u8 *addr)
+>   {
+> -	return ionic_lif_addr(netdev_priv(netdev), addr, false);
+> +	return ionic_lif_addr(netdev_priv(netdev), addr, false, true);
+> +}
+> +
+> +static int ionic_ndo_addr_del(struct net_device *netdev, const u8 *addr)
+> +{
+> +	return ionic_lif_addr(netdev_priv(netdev), addr, false, false);
+>   }
 
---00000000000021829505b07b03db
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
+These changes are reasonable, tho' I'm not fond of parameter lists of 
+"true" and "false" with no context.  I'd prefer to have some constants like
+#define can_sleep true
+so the code can be a little more readable.
 
-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
-pra5sIx/TR6gNtLG9MpND9zQt5j42hInkP81vqu9DG8lovoPMuR0JVpFRbPjHZ07cLqqbFMVS/8z
-53iSewIDAQABo4IB0zCCAc8wDgYDVR0PAQH/BAQDAgWgMIGeBggrBgEFBQcBAQSBkTCBjjBNBggr
-BgEFBQcwAoZBaHR0cDovL3NlY3VyZS5nbG9iYWxzaWduLmNvbS9jYWNlcnQvZ3NwZXJzb25hbHNp
-Z24yc2hhMmczb2NzcC5jcnQwPQYIKwYBBQUHMAGGMWh0dHA6Ly9vY3NwMi5nbG9iYWxzaWduLmNv
-bS9nc3BlcnNvbmFsc2lnbjJzaGEyZzMwTQYDVR0gBEYwRDBCBgorBgEEAaAyASgKMDQwMgYIKwYB
-BQUHAgEWJmh0dHBzOi8vd3d3Lmdsb2JhbHNpZ24uY29tL3JlcG9zaXRvcnkvMAkGA1UdEwQCMAAw
-RAYDVR0fBD0wOzA5oDegNYYzaHR0cDovL2NybC5nbG9iYWxzaWduLmNvbS9nc3BlcnNvbmFsc2ln
-bjJzaGEyZzMuY3JsMCcGA1UdEQQgMB6BHGFyZW5kLnZhbnNwcmllbEBicm9hZGNvbS5jb20wEwYD
-VR0lBAwwCgYIKwYBBQUHAwQwHwYDVR0jBBgwFoAUaXKCYjFnlUSFd5GAxAQ2SZ17C2EwHQYDVR0O
-BBYEFHAaaA+cRo3vYiA6aKVu1bOs4YAYMA0GCSqGSIb3DQEBCwUAA4IBAQCYLdyC8SuyQV6oa5uH
-kGtqz9FCJC/9gSclQLM8dZLHF3FYX8LlcQg/3Ct5I29YLK3T/r35B2zGljtXqVOIeSEz7sDXfGNy
-3dnLIafB1y04e7aR+thVn5Rp1YTF01FUWYbZrixlVuKvjn8vtKC+HhAoDCxvqnqEuA/8Usn7B0/N
-uOA46oQTLe3kjdIgXWJ29JWVqFUavYdcK0+0zyfeMBCTO6heYABeMP3wzYHfcuFDhqldTCpumqhZ
-WwHVQUbAn+xLMIQpycIQFoJIGJX4MeaTSMfLNP2w7nP2uLNgIeleF284vS0XVkBXSCgIGylP4SN+
-HQYrv7fVCbtp+c7nFvP7MYICbzCCAmsCAQEwbTBdMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xv
-YmFsU2lnbiBudi1zYTEzMDEGA1UEAxMqR2xvYmFsU2lnbiBQZXJzb25hbFNpZ24gMiBDQSAtIFNI
-QTI1NiAtIEczAgxR3m7Pj6LvQiWjJy0wDQYJYIZIAWUDBAIBBQCggdQwLwYJKoZIhvcNAQkEMSIE
-IIuMKD8R1d3dTMFYq0C8kaH43I3CaH55tKZnji15616RMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0B
-BwEwHAYJKoZIhvcNAQkFMQ8XDTIwMDkyOTIyMDc0M1owaQYJKoZIhvcNAQkPMVwwWjALBglghkgB
-ZQMEASowCwYJYIZIAWUDBAEWMAsGCWCGSAFlAwQBAjAKBggqhkiG9w0DBzALBgkqhkiG9w0BAQow
-CwYJKoZIhvcNAQEHMAsGCWCGSAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQAyFr8g5BAy5xlHh6m0
-pAKb6kfrp9bG+c03cQSNarxjD0bJgEfiCmgtF5Ow4Gwbs7YAqZ77/ykDFMQYBRCwDjjbPfByzhnk
-DuegEaAUUZlknAeY2hOPLls1ybPx/o2kYzs/xjorK1FwYzz7/Bn3c6kLOL9EAXeDqEeZOg53kMd7
-AkBK2Sw2MrlJPnpHK4yTUzKGSWwjvYffYSlyND7qCTWW2S+ZFzCUAedbIMXMSI6ad/IkAFBoJoCe
-CW9UY/f52BaZ23VzKikxq5W1KEdA+WAWD7IM0s5dxsIs5GTyZzjKli6xETCWmCbmIdUmGQBz935A
-Ok2HNqnQ1+StXVWyTXYA
---00000000000021829505b07b03db--
+Yes, I know we have this problem already in the call to 
+ionic_lif_addr(), which I'm annoyed with but haven't addressed yet.
+
+So, if you want to deal with this now, fine, otherwise I'll take care of 
+them both later.
+
+Meanwhile,
+
+Acked-by: Shannon Nelson <snelson@pensando.io>
+
+
+
+
+>   
+>   static void ionic_lif_rx_mode(struct ionic_lif *lif, unsigned int rx_mode)
+> @@ -1081,11 +1092,12 @@ static void ionic_lif_rx_mode(struct ion
+>   		lif->rx_mode = rx_mode;
+>   }
+>   
+> -static void _ionic_lif_rx_mode(struct ionic_lif *lif, unsigned int rx_mode)
+> +static void _ionic_lif_rx_mode(struct ionic_lif *lif, unsigned int rx_mode,
+> +			       bool from_ndo)
+>   {
+>   	struct ionic_deferred_work *work;
+>   
+> -	if (in_interrupt()) {
+> +	if (from_ndo) {
+>   		work = kzalloc(sizeof(*work), GFP_ATOMIC);
+>   		if (!work) {
+>   			netdev_err(lif->netdev, "%s OOM\n", __func__);
+> @@ -1100,7 +1112,16 @@ static void _ionic_lif_rx_mode(struct io
+>   	}
+>   }
+>   
+> -static void ionic_set_rx_mode(struct net_device *netdev)
+> +static void ionic_dev_uc_sync(struct net_device *netdev, bool from_ndo)
+> +{
+> +	if (from_ndo)
+> +		__dev_uc_sync(netdev, ionic_ndo_addr_add, ionic_ndo_addr_del);
+> +	else
+> +		__dev_uc_sync(netdev, ionic_addr_add, ionic_addr_del);
+> +
+> +}
+> +
+> +static void ionic_set_rx_mode(struct net_device *netdev, bool from_ndo)
+>   {
+>   	struct ionic_lif *lif = netdev_priv(netdev);
+>   	struct ionic_identity *ident;
+> @@ -1122,7 +1143,7 @@ static void ionic_set_rx_mode(struct net
+>   	 *       we remove our overflow flag and check the netdev flags
+>   	 *       to see if we can disable NIC PROMISC
+>   	 */
+> -	__dev_uc_sync(netdev, ionic_addr_add, ionic_addr_del);
+> +	ionic_dev_uc_sync(netdev, from_ndo);
+>   	nfilters = le32_to_cpu(ident->lif.eth.max_ucast_filters);
+>   	if (netdev_uc_count(netdev) + 1 > nfilters) {
+>   		rx_mode |= IONIC_RX_MODE_F_PROMISC;
+> @@ -1134,7 +1155,7 @@ static void ionic_set_rx_mode(struct net
+>   	}
+>   
+>   	/* same for multicast */
+> -	__dev_mc_sync(netdev, ionic_addr_add, ionic_addr_del);
+> +	ionic_dev_uc_sync(netdev, from_ndo);
+>   	nfilters = le32_to_cpu(ident->lif.eth.max_mcast_filters);
+>   	if (netdev_mc_count(netdev) > nfilters) {
+>   		rx_mode |= IONIC_RX_MODE_F_ALLMULTI;
+> @@ -1146,7 +1167,12 @@ static void ionic_set_rx_mode(struct net
+>   	}
+>   
+>   	if (lif->rx_mode != rx_mode)
+> -		_ionic_lif_rx_mode(lif, rx_mode);
+> +		_ionic_lif_rx_mode(lif, rx_mode, from_ndo);
+> +}
+> +
+> +static void ionic_ndo_set_rx_mode(struct net_device *netdev)
+> +{
+> +	ionic_set_rx_mode(netdev, true);
+>   }
+>   
+>   static __le64 ionic_netdev_features_to_nic(netdev_features_t features)
+> @@ -1391,7 +1417,7 @@ static int ionic_start_queues_reconfig(s
+>   	 */
+>   	err = ionic_txrx_init(lif);
+>   	mutex_unlock(&lif->queue_lock);
+> -	ionic_link_status_check_request(lif);
+> +	ionic_link_status_check_request(lif, true);
+>   	netif_device_attach(lif->netdev);
+>   
+>   	return err;
+> @@ -1720,7 +1746,7 @@ static int ionic_txrx_init(struct ionic_
+>   	if (lif->netdev->features & NETIF_F_RXHASH)
+>   		ionic_lif_rss_init(lif);
+>   
+> -	ionic_set_rx_mode(lif->netdev);
+> +	ionic_set_rx_mode(lif->netdev, false);
+>   
+>   	return 0;
+>   
+> @@ -2093,7 +2119,7 @@ static const struct net_device_ops ionic
+>   	.ndo_stop               = ionic_stop,
+>   	.ndo_start_xmit		= ionic_start_xmit,
+>   	.ndo_get_stats64	= ionic_get_stats64,
+> -	.ndo_set_rx_mode	= ionic_set_rx_mode,
+> +	.ndo_set_rx_mode	= ionic_ndo_set_rx_mode,
+>   	.ndo_set_features	= ionic_set_features,
+>   	.ndo_set_mac_address	= ionic_set_mac_address,
+>   	.ndo_validate_addr	= eth_validate_addr,
+> @@ -2521,7 +2547,7 @@ static void ionic_lif_handle_fw_up(struc
+>   	}
+>   
+>   	clear_bit(IONIC_LIF_F_FW_RESET, lif->state);
+> -	ionic_link_status_check_request(lif);
+> +	ionic_link_status_check_request(lif, true);
+>   	netif_device_attach(lif->netdev);
+>   	dev_info(ionic->dev, "FW Up: LIFs restarted\n");
+>   
+> @@ -2713,7 +2739,7 @@ static int ionic_station_set(struct ioni
+>   		 */
+>   		if (!ether_addr_equal(ctx.comp.lif_getattr.mac,
+>   				      netdev->dev_addr))
+> -			ionic_lif_addr(lif, netdev->dev_addr, true);
+> +			ionic_lif_addr(lif, netdev->dev_addr, true, true);
+>   	} else {
+>   		/* Update the netdev mac with the device's mac */
+>   		memcpy(addr.sa_data, ctx.comp.lif_getattr.mac, netdev->addr_len);
+> @@ -2730,7 +2756,7 @@ static int ionic_station_set(struct ioni
+>   
+>   	netdev_dbg(lif->netdev, "adding station MAC addr %pM\n",
+>   		   netdev->dev_addr);
+> -	ionic_lif_addr(lif, netdev->dev_addr, true);
+> +	ionic_lif_addr(lif, netdev->dev_addr, true, true);
+>   
+>   	return 0;
+>   }
+> --- a/drivers/net/ethernet/pensando/ionic/ionic_lif.h
+> +++ b/drivers/net/ethernet/pensando/ionic/ionic_lif.h
+> @@ -245,7 +245,7 @@ static inline u32 ionic_coal_usec_to_hw(
+>   
+>   typedef void (*ionic_reset_cb)(struct ionic_lif *lif, void *arg);
+>   
+> -void ionic_link_status_check_request(struct ionic_lif *lif);
+> +void ionic_link_status_check_request(struct ionic_lif *lif, bool can_sleep);
+>   void ionic_get_stats64(struct net_device *netdev,
+>   		       struct rtnl_link_stats64 *ns);
+>   void ionic_lif_deferred_enqueue(struct ionic_deferred *def,
+>
+
