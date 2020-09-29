@@ -2,125 +2,127 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D0EA27CFA6
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Sep 2020 15:43:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F91C27D152
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Sep 2020 16:37:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730902AbgI2Nmx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 29 Sep 2020 09:42:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57968 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728493AbgI2Nmw (ORCPT
+        id S1729872AbgI2OhH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 29 Sep 2020 10:37:07 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:46452 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728630AbgI2OhH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 29 Sep 2020 09:42:52 -0400
-Received: from mail-ot1-x341.google.com (mail-ot1-x341.google.com [IPv6:2607:f8b0:4864:20::341])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C8F6C061755
-        for <linux-wireless@vger.kernel.org>; Tue, 29 Sep 2020 06:42:52 -0700 (PDT)
-Received: by mail-ot1-x341.google.com with SMTP id q21so4446487ota.8
-        for <linux-wireless@vger.kernel.org>; Tue, 29 Sep 2020 06:42:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=7Re7sYUHoP/OO8RJy6m0dCE8FjQyDvN9idLxneZjSGs=;
-        b=Z34rZ/ds72mfUVTwVAO13Bpz4khcxmzLmZRTJ6BeCzZVGwvFQBFtfTqV+Mw0LWRYNM
-         uCrAI5JhrSTo6VZxNGORq4+uDlbuWvNn0BzZwcj+1vO5F++bvuicz0Q+A30JgXV/f7rA
-         Rk9jpCrpw+utP3CvREty99qb9cv8smpJnWoLw=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=7Re7sYUHoP/OO8RJy6m0dCE8FjQyDvN9idLxneZjSGs=;
-        b=nI5Sxy+3dwV6bKdaHyFHw8/iqq1yG+tfXe9AqXRxuq5RwCKSELdGh+G2sU36UwSMu1
-         Pi7/JVgUE/h8b1zRZDG1cFn8aNlczDyejo6z79FtUbiAbvLTXvjobx5ZVlQ8CIFimgml
-         KpcONPLPIehGAB8KZR9L2CY8dsThw0ZXoMcUUKlneSAvodC1hChZZepX/bLtPIZd8wuU
-         /b+IzChdGFikxc+wM/tTEqYhJ0+wraaFHd0QOLNRrcphFq3fLK3wUE6gyrhIpl47q+1n
-         hY5O/JpPbB+lKIpxhb62SelE5l8S8ng1wh/t3cqfCW/arIz9LeitmecLjAo1y/XHyC+t
-         nPDw==
-X-Gm-Message-State: AOAM530xXFuA45Tqw9HiaGLw0icEHfneggvvoIZG/KKAPUpjyvhwV+0s
-        XU/+VTXGCNFJz97MzCsAhYXQlA==
-X-Google-Smtp-Source: ABdhPJxomgEcCkXHcyd2u2LBzXalo3/5KY6BNqNVB1FRlJIPPq8bhwRXFJ9dfNYvva75m6zRbuIoZQ==
-X-Received: by 2002:a05:6830:196:: with SMTP id q22mr2688536ota.221.1601386971432;
-        Tue, 29 Sep 2020 06:42:51 -0700 (PDT)
-Received: from [192.168.1.112] (c-24-9-64-241.hsd1.co.comcast.net. [24.9.64.241])
-        by smtp.gmail.com with ESMTPSA id l4sm993642oie.25.2020.09.29.06.42.49
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 29 Sep 2020 06:42:50 -0700 (PDT)
-Subject: Re: [PATCH 00/18] use semicolons rather than commas to separate
- statements
-To:     Joe Perches <joe@perches.com>,
-        Julia Lawall <julia.lawall@inria.fr>,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        Shuah Khan <shuah@kernel.org>
-Cc:     Ard Biesheuvel <ardb@kernel.org>, linux-iio@vger.kernel.org,
-        drbd-dev@tron.linbit.com,
-        =?UTF-8?Q?Valdis_Kl=c4=93tnieks?= <valdis.kletnieks@vt.edu>,
-        David Lechner <david@lechnology.com>,
-        Neil Armstrong <narmstrong@baylibre.com>,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        linux-wireless@vger.kernel.org,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        kernel-janitors@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-block@vger.kernel.org, linux-ide@vger.kernel.org,
-        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
-        linux-amlogic@lists.infradead.org,
-        Thomas Gleixner <tglx@linutronix.de>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        openipmi-developer@lists.sourceforge.net,
-        linux-clk@vger.kernel.org,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Jerome Brunet <jbrunet@baylibre.com>,
-        Shuah Khan <skhan@linuxfoundation.org>
-References: <1601233948-11629-1-git-send-email-Julia.Lawall@inria.fr>
- <CAMj1kXGh+CzuXkAnqsoMO2A3T1p=D6uFOV347Ym5+VFn5U1gWg@mail.gmail.com>
- <20200929124108.GY4282@kadam>
- <alpine.DEB.2.22.394.2009291445050.2808@hadrien>
- <5f0d2b20f5088281363bb4a35c5652a2c087f159.camel@perches.com>
-From:   Shuah Khan <skhan@linuxfoundation.org>
-Message-ID: <cd75e2d1-9923-b725-78cd-fd5611431584@linuxfoundation.org>
-Date:   Tue, 29 Sep 2020 07:42:49 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        Tue, 29 Sep 2020 10:37:07 -0400
+From:   Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1601390224;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=7VmCiL2ZmrGBEC6BMl9JAzfcplFXUuQxSEoukFP38Qc=;
+        b=V1+jfdupgUDguwQLoSfM1UDKyK97umPBk3RCJPtrXvo3HjkrAv7oZ8d769kr1UDVOiqeTZ
+        dYLZ91gc/sIaO50hcs95TdgAz48RhfBSdsMS4DBcFHFsnovSq6VpdWIndCw/TDoShwfw6K
+        +9gek94Fbm54gtYRDPDw8mmMw1zu7wsXy4XgCJqs+Ou4lV81QykEgsNo9DjLsy3AKB/AQT
+        G576m9HeX1S7jQnyrTObW1HKy1c9vZ/qj50V8IIaFz92XDLpVe1/eK2AHh590q7RBBj8DC
+        CNoJkwrvYs+wq1wIIZrzEBqJCA9sxTEj2C2ebwz12LDtKQOxv8zXpvTIG+C0Uw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1601390224;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=7VmCiL2ZmrGBEC6BMl9JAzfcplFXUuQxSEoukFP38Qc=;
+        b=sPt4IoTcBHRSkKQG9REMY6x9b+3JCLHw6ozsiGzdslM4l4/myrfh7jYnJBRfn53aNiiK7S
+        jsmrp6TrTiHQFoDA==
+To:     Shannon Nelson <snelson@pensando.io>,
+        LKML <linux-kernel@vger.kernel.org>
+Cc:     Peter Zijlstra <peterz@infradead.org>,
+        Linus Torvalds <torvalds@linuxfoundation.org>,
+        Paul McKenney <paulmck@kernel.org>,
+        Matthew Wilcox <willy@infradead.org>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Pensando Drivers <drivers@pensando.io>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
+        Christian Benvenuti <benve@cisco.com>,
+        Govindarajulu Varadarajan <_govind@gmx.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        linux-doc@vger.kernel.org,
+        Luc Van Oostenryck <luc.vanoostenryck@gmail.com>,
+        Jay Cliburn <jcliburn@gmail.com>,
+        Chris Snook <chris.snook@gmail.com>,
+        Vishal Kulkarni <vishal@chelsio.com>,
+        Jeff Kirsher <jeffrey.t.kirsher@intel.com>,
+        intel-wired-lan@lists.osuosl.org, Andrew Lunn <andrew@lunn.ch>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Solarflare linux maintainers <linux-net-drivers@solarflare.com>,
+        Edward Cree <ecree@solarflare.com>,
+        Martin Habets <mhabets@solarflare.com>,
+        Jon Mason <jdmason@kudzu.us>, Daniel Drake <dsd@gentoo.org>,
+        Ulrich Kunitz <kune@deine-taler.de>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        linux-wireless@vger.kernel.org, linux-usb@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Arend van Spriel <arend.vanspriel@broadcom.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
+        Wright Feng <wright.feng@cypress.com>,
+        brcm80211-dev-list.pdl@broadcom.com,
+        brcm80211-dev-list@cypress.com,
+        Stanislav Yakovlev <stas.yakovlev@gmail.com>,
+        Stanislaw Gruszka <stf_xl@wp.pl>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        Intel Linux Wireless <linuxwifi@intel.com>,
+        Jouni Malinen <j@w1.fi>,
+        Amitkumar Karwar <amitkarwar@gmail.com>,
+        Ganapathi Bhat <ganapathi.bhat@nxp.com>,
+        Xinming Hu <huxinming820@gmail.com>,
+        libertas-dev@lists.infradead.org,
+        Pascal Terjan <pterjan@google.com>,
+        Ping-Ke Shih <pkshih@realtek.com>
+Subject: Re: [patch 11/35] net: ionic: Replace in_interrupt() usage.
+In-Reply-To: <1d0950f8-cab4-9ef2-6cf7-73b71b750a8d@pensando.io>
+References: <20200927194846.045411263@linutronix.de> <20200927194920.918550822@linutronix.de> <5e4c3201-9d90-65b1-5c13-e2381445be1d@pensando.io> <1d0950f8-cab4-9ef2-6cf7-73b71b750a8d@pensando.io>
+Date:   Tue, 29 Sep 2020 16:37:04 +0200
+Message-ID: <87h7rgk5tb.fsf@nanos.tec.linutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <5f0d2b20f5088281363bb4a35c5652a2c087f159.camel@perches.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 9/29/20 7:34 AM, Joe Perches wrote:
-> On Tue, 2020-09-29 at 14:47 +0200, Julia Lawall wrote:
->> On Tue, 29 Sep 2020, Dan Carpenter wrote:
->>> The times where commas are used deliberately to replace curly braces are
->>> just evil.  Either way the code is cleaner with semi-colons.
->>
->> I also found exaamples like the following to be particularly unforunate:
->>
->>                                  fprintf(stderr,
->>                                          "page_nr %lu wrong count %Lu %Lu\n",
->>                                         page_nr, count,
->>                                         count_verify[page_nr]), exit(1);
->>
->> The exit is very hard to see, unless you know to look for it.
-> 
-> I sent that patch last month.
-> https://patchwork.kernel.org/patch/11734877/
-> 
+On Mon, Sep 28 2020 at 12:51, Shannon Nelson wrote:
+> On 9/28/20 10:24 AM, Shannon Nelson wrote:
+>>> ionic_lif_addr() can be called from:
+>>>
+>>> =C2=A0 1) ->ndo_set_rx_mode() which is under netif_addr_lock_bh()) so i=
+t=20
+>>> must not
+>>> =C2=A0=C2=A0=C2=A0=C2=A0 sleep.
+>>>
+>>> =C2=A0 2) Init and setup functions which are in fully preemptible task=
+=20
+>>> context.
+>>>
+>>> _ionic_lif_rx_mode() has only one call path with BH disabled.
+>
+> Now that I've had my coffee, let's look at this again - there are=20
+> multiple paths that get us to _ionic_lif_rx_mode():
+>
+> .ndo_set_rx_mode
+>  =C2=A0 ionic_set_rx_mode,
+>  =C2=A0=C2=A0=C2=A0 _ionic_lif_rx_mode
+>
+> { ionic_open, ionic_lif_handle_fw_up, ionic_start_queues_reconfig }
+>  =C2=A0=C2=A0=C2=A0 ionic_txrx_init
+>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ionic_set_rx_mode
+>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 _ionic_lif_rx_mode
 
-I see what happened. This patch touches lib, cpupower, and selftests.
-Guess lost in the limbo of who takes it.
-
-  tools/lib/subcmd/help.c                    |  10 +-
-  tools/power/cpupower/utils/cpufreq-set.c   |  14 +-
-  tools/testing/selftests/vm/gup_benchmark.c |  18 +-
-  tools/testing/selftests/vm/userfaultfd.c   | 296 +++++++++++++--------
-  4 files changed, 210 insertions(+), 128 deletions(-)
-
-I can take it through one of my trees.
-
-thanks,
--- Shuah
+Hrm. Let me stare at it again...
