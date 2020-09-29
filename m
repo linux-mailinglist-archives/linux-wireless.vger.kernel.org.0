@@ -2,31 +2,31 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C44E127BFE8
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Sep 2020 10:46:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E73827C02F
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Sep 2020 10:56:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727522AbgI2Iqk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 29 Sep 2020 04:46:40 -0400
-Received: from m42-4.mailgun.net ([69.72.42.4]:54915 "EHLO m42-4.mailgun.net"
+        id S1727870AbgI2I4r (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 29 Sep 2020 04:56:47 -0400
+Received: from z5.mailgun.us ([104.130.96.5]:54118 "EHLO z5.mailgun.us"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727468AbgI2Iqk (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 29 Sep 2020 04:46:40 -0400
+        id S1727660AbgI2I4r (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 29 Sep 2020 04:56:47 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1601369200; h=Message-Id: Date: Subject: Cc: To: From:
- Sender; bh=OEHpKOuwE85JcU7H2EGpu1qXBfuN5Roji5B3iZ3ZyzE=; b=OJ/uW7U14k+OGd0wCIliN3rKNtlKlYtRwBMPPSfnuyqm/fDT/Rtqh2WYjnMhTTOnwC5t69GT
- EFm30BaZZcODYOmBiGBcg+ZkyVpVagVrJVZMRZ8FkM3y+ioLBL9t94FynkqgYY4DnFZ0XV2Z
- NccjbODPOGRntCAEghFTs89qw2o=
-X-Mailgun-Sending-Ip: 69.72.42.4
+ s=smtp; t=1601369806; h=Message-Id: Date: Subject: Cc: To: From:
+ Sender; bh=KQpZEG0OKWPAvzpKPFBQIJ7O1U66uQTA+gBp9ugCrxg=; b=sVaDi0k7SVMsa0XzaoxSxRPNENwgTnI5/vN1xYH+MoMelu2aUddCLO0tD55goNS/0Haqd94/
+ 3li76nliP1G0KKeVt+EW8XK8jTyBVD9dnZBYq2co/0DxuPMzSxU1yuiYImOj1riXCZqz+hMA
+ Ytiuo5YpH++25lep5NMgT8OYRu0=
+X-Mailgun-Sending-Ip: 104.130.96.5
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n01.prod.us-west-2.postgun.com with SMTP id
- 5f72f44c767da8a9bb579516 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 29 Sep 2020 08:46:04
+ smtp-out-n07.prod.us-east-1.postgun.com with SMTP id
+ 5f72f6cdcc21f6157a7b1e05 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 29 Sep 2020 08:56:45
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id C5632C43382; Tue, 29 Sep 2020 08:46:04 +0000 (UTC)
+        id A06ECC433FF; Tue, 29 Sep 2020 08:56:44 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -36,47 +36,81 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 7A2D5C433CB;
-        Tue, 29 Sep 2020 08:46:03 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 7A2D5C433CB
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id BE92AC433CB;
+        Tue, 29 Sep 2020 08:56:41 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org BE92AC433CB
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
 From:   Kalle Valo <kvalo@codeaurora.org>
 To:     ath11k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org
-Subject: [PATCH] ath11k: mac: fix parenthesis alignment
-Date:   Tue, 29 Sep 2020 11:46:00 +0300
-Message-Id: <1601369160-1252-1-git-send-email-kvalo@codeaurora.org>
+Cc:     linux-wireless@vger.kernel.org, sfr@canb.auug.org.au,
+        govinds@codeaurora.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, manivannan.sadhasivam@linaro.org,
+        davem@davemloft.net
+Subject: [PATCH v2] ath11k: remove auto_start from channel config struct
+Date:   Tue, 29 Sep 2020 11:56:39 +0300
+Message-Id: <1601369799-22328-1-git-send-email-kvalo@codeaurora.org>
 X-Mailer: git-send-email 2.7.4
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Commit 6aea26ce5a4c ("mac80211: rework tx encapsulation offload API")
-introduced a new checkpatch warning:
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-drivers/net/wireless/ath/ath11k/mac.c:4354: Alignment should match open parenthesis
+Recent change in MHI bus removed the option to auto start the channels
+during MHI driver probe. The channel will only be started when the MHI
+client driver like QRTR gets probed. So, remove the option from ath11k
+channel config struct.
 
-Fix that.
-
+Fixes: 1399fb87ea3e ("ath11k: register MHI controller device for QCA6390")
+Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 ---
- drivers/net/wireless/ath/ath11k/mac.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index e0cac9b61af8..2d8994463b18 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -4351,7 +4351,7 @@ static int ath11k_set_he_mu_sounding_mode(struct ath11k *ar,
- }
+v2
+
+* cc also linux-wireless so that this goes to patchwork
+
+ drivers/net/wireless/ath/ath11k/mhi.c | 4 ----
+ 1 file changed, 4 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath11k/mhi.c b/drivers/net/wireless/ath/ath11k/mhi.c
+index aded9a719d51..47a1ce1bee4f 100644
+--- a/drivers/net/wireless/ath/ath11k/mhi.c
++++ b/drivers/net/wireless/ath/ath11k/mhi.c
+@@ -24,7 +24,6 @@ static struct mhi_channel_config ath11k_mhi_channels[] = {
+ 		.offload_channel = false,
+ 		.doorbell_mode_switch = false,
+ 		.auto_queue = false,
+-		.auto_start = false,
+ 	},
+ 	{
+ 		.num = 1,
+@@ -39,7 +38,6 @@ static struct mhi_channel_config ath11k_mhi_channels[] = {
+ 		.offload_channel = false,
+ 		.doorbell_mode_switch = false,
+ 		.auto_queue = false,
+-		.auto_start = false,
+ 	},
+ 	{
+ 		.num = 20,
+@@ -54,7 +52,6 @@ static struct mhi_channel_config ath11k_mhi_channels[] = {
+ 		.offload_channel = false,
+ 		.doorbell_mode_switch = false,
+ 		.auto_queue = false,
+-		.auto_start = true,
+ 	},
+ 	{
+ 		.num = 21,
+@@ -69,7 +66,6 @@ static struct mhi_channel_config ath11k_mhi_channels[] = {
+ 		.offload_channel = false,
+ 		.doorbell_mode_switch = false,
+ 		.auto_queue = true,
+-		.auto_start = true,
+ 	},
+ };
  
- static void ath11k_mac_op_update_vif_offload(struct ieee80211_hw *hw,
--					    struct ieee80211_vif *vif)
-+					     struct ieee80211_vif *vif)
- {
- 	struct ath11k *ar = hw->priv;
- 	struct ath11k_base *ab = ar->ab;
 -- 
 2.7.4
 
