@@ -2,119 +2,228 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2189D27C9BB
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Sep 2020 14:13:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA64327CAAB
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Sep 2020 14:22:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731699AbgI2MNV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 29 Sep 2020 08:13:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43934 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730294AbgI2MNS (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 29 Sep 2020 08:13:18 -0400
-Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3BF9EC0613D0
-        for <linux-wireless@vger.kernel.org>; Tue, 29 Sep 2020 05:13:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-         s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
-        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=WfwgbMH46N0J3skDcV1QxDSC8kRlXgd+kMVmyE/5acU=; b=bM4IJ5gxEXeAoIq1iabC530Ea7
-        seWLa2m7OTMEijBfEti8xRD7mMDEojdDBk5x7pWtAYRF+Oj1SONbfosYw/oZ0KsY/fmgUa9fYJmwM
-        kM2rmOtXrBu4nnkLZo0wbY/c9G5N+RinGCbxqxhqCRkRh6VVyf65xAxbEuJS6vsFTDNU=;
-Received: from p4ff134da.dip0.t-ipconnect.de ([79.241.52.218] helo=nf.local)
-        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.89)
-        (envelope-from <nbd@nbd.name>)
-        id 1kNEVP-0004fY-65; Tue, 29 Sep 2020 14:13:15 +0200
-Subject: Re: [PATCH v3] mac80211: fix regression in sta connection monitor
-To:     Georgi Valkov <gvalkov@abv.bg>
-Cc:     linux-wireless@vger.kernel.org, johannes@sipsolutions.net
-References: <20200927105605.97954-1-nbd@nbd.name>
- <4ED2AADF-092B-424E-A5B5-C2A371C88A92@abv.bg>
- <FC3CA053-0DB9-41B9-AEC6-0AE189AEFE17@abv.bg>
-From:   Felix Fietkau <nbd@nbd.name>
-Message-ID: <98daee02-b277-2850-6bc2-16f4d8971fac@nbd.name>
-Date:   Tue, 29 Sep 2020 14:13:11 +0200
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:78.0)
- Gecko/20100101 Thunderbird/78.2.2
+        id S1731133AbgI2MUj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 29 Sep 2020 08:20:39 -0400
+Received: from mail.kernel.org ([198.145.29.99]:33994 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1732483AbgI2MUO (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 29 Sep 2020 08:20:14 -0400
+Received: from mail-oi1-f176.google.com (mail-oi1-f176.google.com [209.85.167.176])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id A14A621D7F;
+        Tue, 29 Sep 2020 12:20:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1601382012;
+        bh=ov1elNoAqvpAgkFdDCEUFjYQTLHr/ttO0TQvEJAVa9I=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=jvmD222GUH8GXZXMqLgvR5A2+dOAEZWZqu4PegoCrdYQdzBlMInSen1U/TUqJEq8O
+         ceT34IkdoHIcZvgHpI88n6jirXc5UQcpO8Qz6F77lDrlzzwk0iFCge1wnf1OTx3Elx
+         zfbRYdhsjG0Yv1fzcUprrD5yQS1C84H7eKuBhHBY=
+Received: by mail-oi1-f176.google.com with SMTP id a3so5198773oib.4;
+        Tue, 29 Sep 2020 05:20:12 -0700 (PDT)
+X-Gm-Message-State: AOAM532QKK1BHU4WxK1BJVspA7x+C1SlGo5/J3No/cuXOfmtLVklTk/K
+        7Dv8Oy6tO8uo+LlkeIclcQ3DhS0edShwRiXt+ZY=
+X-Google-Smtp-Source: ABdhPJxHjqLRU0igLQr7uKep0t1UD6JefrmIRI4HIWmkx+yCU9/FWYtVU2YD0jwBcbkAVEkIIOoN6IXn5rWs3UBmGUQ=
+X-Received: by 2002:a54:4517:: with SMTP id l23mr2509374oil.174.1601382011805;
+ Tue, 29 Sep 2020 05:20:11 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <FC3CA053-0DB9-41B9-AEC6-0AE189AEFE17@abv.bg>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <1601233948-11629-1-git-send-email-Julia.Lawall@inria.fr>
+In-Reply-To: <1601233948-11629-1-git-send-email-Julia.Lawall@inria.fr>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Tue, 29 Sep 2020 14:20:00 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXGh+CzuXkAnqsoMO2A3T1p=D6uFOV347Ym5+VFn5U1gWg@mail.gmail.com>
+Message-ID: <CAMj1kXGh+CzuXkAnqsoMO2A3T1p=D6uFOV347Ym5+VFn5U1gWg@mail.gmail.com>
+Subject: Re: [PATCH 00/18] use semicolons rather than commas to separate statements
+To:     Julia Lawall <Julia.Lawall@inria.fr>
+Cc:     linux-iio@vger.kernel.org, drbd-dev@lists.linbit.com,
+        =?UTF-8?Q?Valdis_Kl=C4=93tnieks?= <valdis.kletnieks@vt.edu>,
+        David Lechner <david@lechnology.com>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        linux-wireless@vger.kernel.org,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        kernel-janitors@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-block@vger.kernel.org, linux-ide@vger.kernel.org,
+        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
+        Joe Perches <joe@perches.com>,
+        linux-amlogic@lists.infradead.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        openipmi-developer@lists.sourceforge.net,
+        linux-clk@vger.kernel.org,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Jerome Brunet <jbrunet@baylibre.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On Sun, 27 Sep 2020 at 21:56, Julia Lawall <Julia.Lawall@inria.fr> wrote:
+>
+> These patches replace commas by semicolons.
 
-On 2020-09-28 19:09, Georgi Valkov wrote:
-> Hi Felix!
-> 
-> Unfortunately it disconnected again after 21 hours and 44 minutes of uptime, and remained offline for 5 minutes again.
-> I will add some code to ieee80211_sta_work() to trace more info when a disconnect occurs.
-> Do you have any ideas? Why does it remain offline for exactly 5 minutes every time? Do we need to reset probe_send_count in rx.c? Do we have to send probe requests or nullfunc while there is active communication, e.g. acknowledged ICMP traffic?
-> 
-> This is the most common event in the trace, it occurs every 30 seconds, we called ieee80211_sta_tx_notify(ack: true), and ieee80211_is_any_nullfunc() returned true, so probe_send_count is reset:
-> --- ack  probe_send_count: 1  vif.type 2:2
-> 
-> These events are rare, I could not find any pattern. probe_send_count is reset inside status.c
-> reset connection monitor  probe_send_count: 1  nullfunc: 0
-> 
-> These events are rare and appear randomly. The first indicates that we called ieee80211_sta_tx_notify(ack: false), and ieee80211_is_any_nullfunc() returned true, so probe_send_count is not reset, while the second always appears 10ms later with ack = true, and ieee80211_is_any_nullfunc() returned true, so probe_send_count is reset.
-> probe_send_count: 1  vif.type 2:2
-> --- ack  probe_send_count: 2  vif.type 2:2
-So far I don't see any strong indication that these disconnects are
-related to this patch. The debug messages you added seem normal to me.
-More comments on the disconnects below.
 
-> Here are some interesting parts from the trace:
-> 
-> [STA kernel log]
-> [55045.254528] wifi: --- ack  probe_send_count: 1  vif.type 2:2
-> [55075.971445] wifi: reset connection monitor  probe_send_count: 1  nullfunc: 0
-> [55106.699439] wifi: --- ack  probe_send_count: 1  vif.type 2:2
-> ...
-> [57812.177775] wifi: --- ack  probe_send_count: 1  vif.type 2:2
-> [57842.894483] wifi: reset connection monitor  probe_send_count: 1  nullfunc: 0
-> [57873.610852] wifi: --- ack  probe_send_count: 1  vif.type 2:2
-> ...
-> [78172.681502] wifi: --- ack  probe_send_count: 1  vif.type 2:2
-> [78203.398703] wifi: --- ack  probe_send_count: 1  vif.type 2:2
-> [78234.118347] wifi: --- ack  probe_send_count: 1  vif.type 2:2
-> [78264.834126] wifi: --- ack  probe_send_count: 1  vif.type 2:2
-> [78282.530133] wifi: deauthenticated from 60:38:e0:xx:xx:xx (Reason: 16=GROUP_KEY_HANDSHAKE_TIMEOUT)
-This one is definitely not related to the connection monitor.
+Why?
 
-> [78282.539463] br-lan: port 3(wifi) entered disabled state
-> [78282.544987] br-lan: topology change detected, propagating
-> [78283.514078] wifi: authenticate with 60:38:e0:xx:xx:xx
-> [78283.533405] wifi: send auth to 60:38:e0:xx:xx:xx (try 1/3)
-> [78283.577391] wifi: authenticated
-> [78283.583874] wifi: associate with 60:38:e0:xx:xx:xx (try 1/3)
-> [78283.610166] wifi: RX AssocResp from 60:38:e0:xx:xx:xx (capab=0x431 status=0 aid=1)
-> [78283.618322] wifi: associated
-> [78283.628908] br-lan: port 3(wifi) entered blocking state
-> [78283.634358] br-lan: port 3(wifi) entered listening state
-> [78285.663507] br-lan: port 3(wifi) entered learning state
-> [78287.679338] br-lan: port 3(wifi) entered forwarding state
-> [78287.684939] br-lan: topology change detected, sending tcn bpdu
-> [78313.981348] wifi: --- ack  probe_send_count: 1  vif.type 2:2
-> [78316.028959] br-lan: port 3(wifi) neighbor 7fff.60:38:e0:xx:xx:xy lost
-> [78316.035630] br-lan: topology change detected, propagating
-> [78346.746657] wifi: --- ack  probe_send_count: 1  vif.type 2:2
-> [78377.464074] wifi: --- ack  probe_send_count: 1  vif.type 2:2
-> [78408.181527] wifi: --- ack  probe_send_count: 1  vif.type 2:2
-> [78438.898977] wifi: --- ack  probe_send_count: 1  vif.type 2:2
-> [78471.664287] wifi: --- ack  probe_send_count: 1  vif.type 2:2
-> [78502.381794] wifi: --- ack  probe_send_count: 1  vif.type 2:2
-> [78533.099298] wifi: --- ack  probe_send_count: 1  vif.type 2:2
-> [78563.816824] wifi: --- ack  probe_send_count: 1  vif.type 2:2
-> [78583.518337] wifi: disassociated from 60:38:e0:xx:xx:xx (Reason: 4=DISASSOC_DUE_TO_INACTIVITY)
-Are you sure that this one is even related to the connection monitor? It
-seems to me that the client may have been kicked from the AP due to
-inactivity (might be AP probing, not STA probing).
 
-- Felix
+> This was done using the
+> Coccinelle semantic patch (http://coccinelle.lip6.fr/) shown below.
+>
+> This semantic patch ensures that commas inside for loop headers will not be
+> transformed.  It also doesn't touch macro definitions.
+>
+> Coccinelle ensures that braces are added as needed when a single-statement
+> branch turns into a multi-statement one.
+>
+> This semantic patch has a few false positives, for variable delcarations
+> such as:
+>
+> LIST_HEAD(x), *y;
+>
+> The semantic patch could be improved to avoid these, but for the moment
+> they have been removed manually (2 occurrences).
+>
+> // <smpl>
+> @initialize:ocaml@
+> @@
+>
+> let infunction p =
+>   (* avoid macros *)
+>   (List.hd p).current_element <> "something_else"
+>
+> let combined p1 p2 =
+>   (List.hd p1).line_end = (List.hd p2).line ||
+>   (((List.hd p1).line_end < (List.hd p2).line) &&
+>    ((List.hd p1).col < (List.hd p2).col))
+>
+> @bad@
+> statement S;
+> declaration d;
+> position p;
+> @@
+>
+> S@p
+> d
+>
+> // special cases where newlines are needed (hope for no more than 5)
+> @@
+> expression e1,e2;
+> statement S;
+> position p != bad.p;
+> position p1;
+> position p2 :
+>     script:ocaml(p1) { infunction p1 && combined p1 p2 };
+> @@
+>
+> - e1@p1,@S@p e2@p2;
+> + e1; e2;
+>
+> @@
+> expression e1,e2;
+> statement S;
+> position p != bad.p;
+> position p1;
+> position p2 :
+>     script:ocaml(p1) { infunction p1 && combined p1 p2 };
+> @@
+>
+> - e1@p1,@S@p e2@p2;
+> + e1; e2;
+>
+> @@
+> expression e1,e2;
+> statement S;
+> position p != bad.p;
+> position p1;
+> position p2 :
+>     script:ocaml(p1) { infunction p1 && combined p1 p2 };
+> @@
+>
+> - e1@p1,@S@p e2@p2;
+> + e1; e2;
+>
+> @@
+> expression e1,e2;
+> statement S;
+> position p != bad.p;
+> position p1;
+> position p2 :
+>     script:ocaml(p1) { infunction p1 && combined p1 p2 };
+> @@
+>
+> - e1@p1,@S@p e2@p2;
+> + e1; e2;
+>
+> @@
+> expression e1,e2;
+> statement S;
+> position p != bad.p;
+> position p1;
+> position p2 :
+>     script:ocaml(p1) { infunction p1 && combined p1 p2 };
+> @@
+>
+> - e1@p1,@S@p e2@p2;
+> + e1; e2;
+>
+> @r@
+> expression e1,e2;
+> statement S;
+> position p != bad.p;
+> @@
+>
+> e1 ,@S@p e2;
+>
+> @@
+> expression e1,e2;
+> position p1;
+> position p2 :
+>     script:ocaml(p1) { infunction p1 && not(combined p1 p2) };
+> statement S;
+> position r.p;
+> @@
+>
+> e1@p1
+> -,@S@p
+> +;
+> e2@p2
+> ... when any
+> // </smpl>
+>
+> ---
+>
+>  drivers/acpi/processor_idle.c               |    4 +++-
+>  drivers/ata/pata_icside.c                   |   21 +++++++++++++--------
+>  drivers/base/regmap/regmap-debugfs.c        |    2 +-
+>  drivers/bcma/driver_pci_host.c              |    4 ++--
+>  drivers/block/drbd/drbd_receiver.c          |    6 ++++--
+>  drivers/char/agp/amd-k7-agp.c               |    2 +-
+>  drivers/char/agp/nvidia-agp.c               |    2 +-
+>  drivers/char/agp/sworks-agp.c               |    2 +-
+>  drivers/char/hw_random/iproc-rng200.c       |    8 ++++----
+>  drivers/char/hw_random/mxc-rnga.c           |    6 +++---
+>  drivers/char/hw_random/stm32-rng.c          |    8 ++++----
+>  drivers/char/ipmi/bt-bmc.c                  |    6 +++---
+>  drivers/clk/meson/meson-aoclk.c             |    2 +-
+>  drivers/clk/mvebu/ap-cpu-clk.c              |    2 +-
+>  drivers/clk/uniphier/clk-uniphier-cpugear.c |    2 +-
+>  drivers/clk/uniphier/clk-uniphier-mux.c     |    2 +-
+>  drivers/clocksource/mps2-timer.c            |    6 +++---
+>  drivers/clocksource/timer-armada-370-xp.c   |    8 ++++----
+>  drivers/counter/ti-eqep.c                   |    2 +-
+>  drivers/crypto/amcc/crypto4xx_alg.c         |    2 +-
+>  drivers/crypto/atmel-tdes.c                 |    2 +-
+>  drivers/crypto/hifn_795x.c                  |    4 ++--
+>  drivers/crypto/talitos.c                    |    8 ++++----
+>  23 files changed, 60 insertions(+), 51 deletions(-)
+>
+> _______________________________________________
+> linux-arm-kernel mailing list
+> linux-arm-kernel@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
