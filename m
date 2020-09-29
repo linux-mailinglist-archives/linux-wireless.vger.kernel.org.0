@@ -2,115 +2,77 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E73827C02F
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Sep 2020 10:56:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7BC1127C783
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Sep 2020 13:54:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727870AbgI2I4r (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 29 Sep 2020 04:56:47 -0400
-Received: from z5.mailgun.us ([104.130.96.5]:54118 "EHLO z5.mailgun.us"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727660AbgI2I4r (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 29 Sep 2020 04:56:47 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1601369806; h=Message-Id: Date: Subject: Cc: To: From:
- Sender; bh=KQpZEG0OKWPAvzpKPFBQIJ7O1U66uQTA+gBp9ugCrxg=; b=sVaDi0k7SVMsa0XzaoxSxRPNENwgTnI5/vN1xYH+MoMelu2aUddCLO0tD55goNS/0Haqd94/
- 3li76nliP1G0KKeVt+EW8XK8jTyBVD9dnZBYq2co/0DxuPMzSxU1yuiYImOj1riXCZqz+hMA
- Ytiuo5YpH++25lep5NMgT8OYRu0=
-X-Mailgun-Sending-Ip: 104.130.96.5
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n07.prod.us-east-1.postgun.com with SMTP id
- 5f72f6cdcc21f6157a7b1e05 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 29 Sep 2020 08:56:45
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id A06ECC433FF; Tue, 29 Sep 2020 08:56:44 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id BE92AC433CB;
-        Tue, 29 Sep 2020 08:56:41 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org BE92AC433CB
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     ath11k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org, sfr@canb.auug.org.au,
-        govinds@codeaurora.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, manivannan.sadhasivam@linaro.org,
-        davem@davemloft.net
-Subject: [PATCH v2] ath11k: remove auto_start from channel config struct
-Date:   Tue, 29 Sep 2020 11:56:39 +0300
-Message-Id: <1601369799-22328-1-git-send-email-kvalo@codeaurora.org>
-X-Mailer: git-send-email 2.7.4
+        id S1731446AbgI2LyS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 29 Sep 2020 07:54:18 -0400
+Received: from mail2-relais-roc.national.inria.fr ([192.134.164.83]:32180 "EHLO
+        mail2-relais-roc.national.inria.fr" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1730629AbgI2Lq2 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 29 Sep 2020 07:46:28 -0400
+X-IronPort-AV: E=Sophos;i="5.77,318,1596492000"; 
+   d="scan'208";a="470044784"
+Received: from abo-173-121-68.mrs.modulonet.fr (HELO hadrien) ([85.68.121.173])
+  by mail2-relais-roc.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 29 Sep 2020 13:46:20 +0200
+Date:   Tue, 29 Sep 2020 13:46:19 +0200 (CEST)
+From:   Julia Lawall <julia.lawall@inria.fr>
+X-X-Sender: jll@hadrien
+To:     Mark Brown <broonie@kernel.org>
+cc:     Joe Perches <joe@perches.com>, linux-iio@vger.kernel.org,
+        Julia Lawall <Julia.Lawall@inria.fr>,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-crypto@vger.kernel.org,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Jerome Brunet <jbrunet@baylibre.com>,
+        linux-acpi@vger.kernel.org, David Lechner <david@lechnology.com>,
+        =?UTF-8?Q?Valdis_Kl=C4=93tnieks?= <valdis.kletnieks@vt.edu>,
+        kernel-janitors@vger.kernel.org, drbd-dev@lists.linbit.com,
+        openipmi-developer@lists.sourceforge.net,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        linux-ide@vger.kernel.org, linux-amlogic@lists.infradead.org,
+        linux-clk@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-wireless@vger.kernel.org,
+        Neil Armstrong <narmstrong@baylibre.com>
+Subject: Re: [PATCH 00/18] use semicolons rather than commas to separate
+ statements
+In-Reply-To: <20200929113745.GB4799@sirena.org.uk>
+Message-ID: <alpine.DEB.2.22.394.2009291344590.2808@hadrien>
+References: <1601233948-11629-1-git-send-email-Julia.Lawall@inria.fr> <160132172369.55460.9237357219623604216.b4-ty@kernel.org> <b1174f9be2ce65f6b5ebefcba0b48e792926abbc.camel@perches.com> <20200929113745.GB4799@sirena.org.uk>
+User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-Recent change in MHI bus removed the option to auto start the channels
-during MHI driver probe. The channel will only be started when the MHI
-client driver like QRTR gets probed. So, remove the option from ath11k
-channel config struct.
 
-Fixes: 1399fb87ea3e ("ath11k: register MHI controller device for QCA6390")
-Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
----
+On Tue, 29 Sep 2020, Mark Brown wrote:
 
-v2
+> On Mon, Sep 28, 2020 at 05:45:24PM -0700, Joe Perches wrote:
+> > On Mon, 2020-09-28 at 20:35 +0100, Mark Brown wrote:
+>
+> > > [1/1] regmap: debugfs: use semicolons rather than commas to separate statements
+> > >       commit: 7f4a122d0b50b40c64d24a5cf7aafe26dd9487ee
+>
+> > Rather than replying to the 0/n cover letter to a patch
+> > series, can you reply to each of the specific patches in
+> > the patch series you are applying?
+>
+> > Otherwise, it's a bit difficult to figure out which patches
+> > you are applying.
+>
+> Feel free to submit patches to b4.  Ideally things like this wouldn't be
+> being sent as serieses in the first place, there's no dependencies or
+> interactions between the patches.
 
-* cc also linux-wireless so that this goes to patchwork
+It was suggested (a long time ago, not with respect to this patch in
+particular) that sending such patches in a series is useful because it
+allows people who are not interested in the 18 patches to skip over them
+more easily.  So there are two conflicting needs...
 
- drivers/net/wireless/ath/ath11k/mhi.c | 4 ----
- 1 file changed, 4 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath11k/mhi.c b/drivers/net/wireless/ath/ath11k/mhi.c
-index aded9a719d51..47a1ce1bee4f 100644
---- a/drivers/net/wireless/ath/ath11k/mhi.c
-+++ b/drivers/net/wireless/ath/ath11k/mhi.c
-@@ -24,7 +24,6 @@ static struct mhi_channel_config ath11k_mhi_channels[] = {
- 		.offload_channel = false,
- 		.doorbell_mode_switch = false,
- 		.auto_queue = false,
--		.auto_start = false,
- 	},
- 	{
- 		.num = 1,
-@@ -39,7 +38,6 @@ static struct mhi_channel_config ath11k_mhi_channels[] = {
- 		.offload_channel = false,
- 		.doorbell_mode_switch = false,
- 		.auto_queue = false,
--		.auto_start = false,
- 	},
- 	{
- 		.num = 20,
-@@ -54,7 +52,6 @@ static struct mhi_channel_config ath11k_mhi_channels[] = {
- 		.offload_channel = false,
- 		.doorbell_mode_switch = false,
- 		.auto_queue = false,
--		.auto_start = true,
- 	},
- 	{
- 		.num = 21,
-@@ -69,7 +66,6 @@ static struct mhi_channel_config ath11k_mhi_channels[] = {
- 		.offload_channel = false,
- 		.doorbell_mode_switch = false,
- 		.auto_queue = true,
--		.auto_start = true,
- 	},
- };
- 
--- 
-2.7.4
-
+julia
