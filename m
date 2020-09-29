@@ -2,339 +2,226 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9614727D88F
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Sep 2020 22:37:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A7D927D842
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Sep 2020 22:33:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729784AbgI2UhE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 29 Sep 2020 16:37:04 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:49690 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729608AbgI2Ug0 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 29 Sep 2020 16:36:26 -0400
-Message-Id: <20200929203503.060446484@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1601411784;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:  references:references;
-        bh=ac4cwNzHht6pYIOKy4Bk2lKcaDR2ZzIEslLCjCkaC10=;
-        b=QXyn+4+TMc8Egw+tpk9foFOcszDMKM/4SgPlbOwBrN6EnPM38EmOt00P8KkfO64kXa8j56
-        ZgdzopZcnOPSbHQXb7OqzhWI8dkcjBuWitabGMpvAwUUXZTX8EviISqfa258YELzXUMWpr
-        C5Se7Ngz6CNVt+92MYdGzNComqaoDKXc24cKOm+kkqPxKrKOsvuZEm0/KvZMXA14MLfTnr
-        6isCtxPv4j8g1pQe9WBcO/9z2Qmtdi9TtsxA1rls52sA0FiJNsUJiqmI4X2SvSmoUI/jxB
-        6OQFwIX0gA41ohKniP417sKCG0Kitpwd5IuXIxT+59SpjI0Xh7U8mgGD0PtNKA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1601411784;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:  references:references;
-        bh=ac4cwNzHht6pYIOKy4Bk2lKcaDR2ZzIEslLCjCkaC10=;
-        b=UO2fXulwslbNKOLvQl0j4P3zj16bocME8ija8rnDI260wqCbufqeENyBQKmVIQ33T9alhW
-        0biJrZEWlioTrfCg==
-Date:   Tue, 29 Sep 2020 22:25:45 +0200
-From:   Thomas Gleixner <tglx@linutronix.de>
-To:     LKML <linux-kernel@vger.kernel.org>
-Cc:     Peter Zijlstra <peterz@infradead.org>,
-        Paul McKenney <paulmck@kernel.org>,
-        Matthew Wilcox <willy@infradead.org>,
-        Christian Benvenuti <benve@cisco.com>,
-        Govindarajulu Varadarajan <_govind@gmx.com>,
-        Dave Miller <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
-        Jonathan Corbet <corbet@lwn.net>,
-        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        linux-doc@vger.kernel.org,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Luc Van Oostenryck <luc.vanoostenryck@gmail.com>,
-        Jay Cliburn <jcliburn@gmail.com>,
-        Chris Snook <chris.snook@gmail.com>,
-        Vishal Kulkarni <vishal@chelsio.com>,
-        Jeff Kirsher <jeffrey.t.kirsher@intel.com>,
-        intel-wired-lan@lists.osuosl.org,
-        Shannon Nelson <snelson@pensando.io>,
-        Pensando Drivers <drivers@pensando.io>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Solarflare linux maintainers <linux-net-drivers@solarflare.com>,
-        Edward Cree <ecree@solarflare.com>,
-        Martin Habets <mhabets@solarflare.com>,
-        Jon Mason <jdmason@kudzu.us>, Daniel Drake <dsd@gentoo.org>,
-        Ulrich Kunitz <kune@deine-taler.de>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        linux-wireless@vger.kernel.org, linux-usb@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Arend van Spriel <arend.vanspriel@broadcom.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
-        Wright Feng <wright.feng@cypress.com>,
-        brcm80211-dev-list.pdl@broadcom.com,
-        brcm80211-dev-list@cypress.com,
-        Stanislav Yakovlev <stas.yakovlev@gmail.com>,
-        Stanislaw Gruszka <stf_xl@wp.pl>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Intel Linux Wireless <linuxwifi@intel.com>,
-        Jouni Malinen <j@w1.fi>,
-        Amitkumar Karwar <amitkarwar@gmail.com>,
-        Ganapathi Bhat <ganapathi.bhat@nxp.com>,
-        Xinming Hu <huxinming820@gmail.com>,
-        libertas-dev@lists.infradead.org,
-        Pascal Terjan <pterjan@google.com>,
-        Ping-Ke Shih <pkshih@realtek.com>
-Subject: [patch V2 36/36] net: rtlwifi: Replace in_interrupt() for context detection
-References: <20200929202509.673358734@linutronix.de>
+        id S1729127AbgI2Ude (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 29 Sep 2020 16:33:34 -0400
+Received: from mga03.intel.com ([134.134.136.65]:33950 "EHLO mga03.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725372AbgI2Ude (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 29 Sep 2020 16:33:34 -0400
+IronPort-SDR: KEg40mqVJ8qp7o/ugwCQtDT87k9zBvIkfsbxGM8JIMxwnk3Rpeitdob7r8M2dyZWynC5GJW+30
+ kycxCnVHjhBQ==
+X-IronPort-AV: E=McAfee;i="6000,8403,9759"; a="162344760"
+X-IronPort-AV: E=Sophos;i="5.77,319,1596524400"; 
+   d="scan'208";a="162344760"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Sep 2020 13:33:31 -0700
+IronPort-SDR: fuMFn/40D7LW2+AnXcdyjAtxmb4AKOvh1QrP8aMonnLWu/YcB+x3eRsl/DSSUQ8eeR1dp5hSm3
+ rP7Y43YYUfiw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.77,319,1596524400"; 
+   d="scan'208";a="312343463"
+Received: from lkp-server02.sh.intel.com (HELO 10ae44db8633) ([10.239.97.151])
+  by orsmga006.jf.intel.com with ESMTP; 29 Sep 2020 13:33:30 -0700
+Received: from kbuild by 10ae44db8633 with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1kNMJV-0000IA-In; Tue, 29 Sep 2020 20:33:29 +0000
+Date:   Wed, 30 Sep 2020 04:33:23 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     linux-wireless@vger.kernel.org
+Subject: [wireless-drivers-next:master] BUILD SUCCESS
+ 1d2a85382282e7c77cbde5650335c3ffc6073fa1
+Message-ID: <5f739a13.ZpXTbgS3xRYc5TjT%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-transfer-encoding: 8-bit
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git  master
+branch HEAD: 1d2a85382282e7c77cbde5650335c3ffc6073fa1  wl3501_cs: Remove unnecessary NULL check
 
-rtl_lps_enter() and rtl_lps_leave() are using in_interrupt() to detect
-whether it is safe to acquire a mutex or if it is required to defer to a
-workqueue.
+elapsed time: 723m
 
-The usage of in_interrupt() in drivers is phased out and Linus clearly
-requested that code which changes behaviour depending on context should
-either be seperated or the context be conveyed in an argument passed by the
-caller, which usually knows the context.
+configs tested: 162
+configs skipped: 2
 
-in_interrupt() also is only partially correct because it fails to chose the
-correct code path when just preemption or interrupts are disabled.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-Add an argument 'may_block' to both functions and adjust the callers to
-pass the context information.
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+powerpc                 xes_mpc85xx_defconfig
+arc                      axs103_smp_defconfig
+arc                         haps_hs_defconfig
+arm                         orion5x_defconfig
+powerpc                    ge_imp3a_defconfig
+xtensa                           alldefconfig
+mips                          ath79_defconfig
+sh                        sh7757lcr_defconfig
+arm                    vt8500_v6_v7_defconfig
+m68k                        m5407c3_defconfig
+mips                         db1xxx_defconfig
+powerpc                      cm5200_defconfig
+arm                        keystone_defconfig
+arm                        multi_v5_defconfig
+powerpc                 mpc8540_ads_defconfig
+arm                        mvebu_v7_defconfig
+arm                        spear3xx_defconfig
+s390                       zfcpdump_defconfig
+ia64                        generic_defconfig
+mips                      pistachio_defconfig
+ia64                            zx1_defconfig
+arm                           efm32_defconfig
+arm                         cm_x300_defconfig
+powerpc64                           defconfig
+sh                         apsh4a3a_defconfig
+um                             i386_defconfig
+arm                             ezx_defconfig
+powerpc                      pasemi_defconfig
+powerpc                     sequoia_defconfig
+mips                           ip32_defconfig
+powerpc                  mpc866_ads_defconfig
+nios2                         3c120_defconfig
+powerpc                 mpc832x_mds_defconfig
+mips                             allmodconfig
+powerpc                  mpc885_ads_defconfig
+arm                             pxa_defconfig
+sh                           se7722_defconfig
+riscv                    nommu_virt_defconfig
+mips                      loongson3_defconfig
+arm                       spear13xx_defconfig
+powerpc                     tqm8541_defconfig
+m68k                        mvme16x_defconfig
+powerpc                 mpc8560_ads_defconfig
+s390                                defconfig
+powerpc                 mpc837x_rdb_defconfig
+sh                          polaris_defconfig
+sh                          urquell_defconfig
+arm                           sama5_defconfig
+arc                             nps_defconfig
+arm                          exynos_defconfig
+um                            kunit_defconfig
+arm                          gemini_defconfig
+powerpc                 mpc8313_rdb_defconfig
+powerpc                        fsp2_defconfig
+arm                           sunxi_defconfig
+sh                           se7206_defconfig
+powerpc                      katmai_defconfig
+powerpc                     tqm8560_defconfig
+microblaze                    nommu_defconfig
+arc                        vdk_hs38_defconfig
+powerpc                     akebono_defconfig
+c6x                        evmc6457_defconfig
+ia64                      gensparse_defconfig
+powerpc                     ppa8548_defconfig
+powerpc                    socrates_defconfig
+arm                              zx_defconfig
+c6x                         dsk6455_defconfig
+powerpc                      ppc6xx_defconfig
+arm                      pxa255-idp_defconfig
+mips                        nlm_xlr_defconfig
+powerpc                 mpc836x_mds_defconfig
+sh                   sh7770_generic_defconfig
+arm                          ep93xx_defconfig
+arm                           h5000_defconfig
+sh                           se7780_defconfig
+parisc                           alldefconfig
+arm                             mxs_defconfig
+mips                            gpr_defconfig
+c6x                        evmc6474_defconfig
+powerpc                 mpc836x_rdk_defconfig
+arm                       aspeed_g5_defconfig
+sparc                            alldefconfig
+sh                         ecovec24_defconfig
+riscv                          rv32_defconfig
+mips                        bcm63xx_defconfig
+arm                         hackkit_defconfig
+sh                   sh7724_generic_defconfig
+powerpc64                        alldefconfig
+arm                            mps2_defconfig
+mips                       capcella_defconfig
+powerpc                     mpc83xx_defconfig
+openrisc                    or1ksim_defconfig
+nds32                               defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+c6x                              allyesconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+parisc                           allyesconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+mips                             allyesconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+i386                 randconfig-a006-20200929
+i386                 randconfig-a002-20200929
+i386                 randconfig-a003-20200929
+i386                 randconfig-a004-20200929
+i386                 randconfig-a005-20200929
+i386                 randconfig-a001-20200929
+x86_64               randconfig-a011-20200929
+x86_64               randconfig-a013-20200929
+x86_64               randconfig-a015-20200929
+x86_64               randconfig-a014-20200929
+x86_64               randconfig-a016-20200929
+x86_64               randconfig-a012-20200929
+i386                 randconfig-a012-20200929
+i386                 randconfig-a016-20200929
+i386                 randconfig-a014-20200929
+i386                 randconfig-a013-20200929
+i386                 randconfig-a015-20200929
+i386                 randconfig-a011-20200929
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                            allmodconfig
+x86_64                                   rhel
+x86_64                           allyesconfig
+x86_64                    rhel-7.6-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                                  kexec
 
-The following call chains were analyzed to be safe to block:
+clang tested configs:
+x86_64               randconfig-a005-20200929
+x86_64               randconfig-a003-20200929
+x86_64               randconfig-a004-20200929
+x86_64               randconfig-a002-20200929
+x86_64               randconfig-a006-20200929
+x86_64               randconfig-a001-20200929
 
-    rtl_watchdog_wq_callback()
-      rlf_lps_leave/enter()
-
-    rtl_op_suspend()
-      rtl_lps_leave()
-
-    rtl_op_bss_info_changed()
-      rtl_lps_leave()
-
-    rtl_op_sw_scan_start()
-      rtl_lps_leave()
-
-The following call chains were analyzed to be unsafe to block:
-
-    _rtl_pci_interrupt()
-      _rtl_pci_rx_interrupt()
-	  rtl_lps_leave()
-
-    _rtl_pci_interrupt()
-      _rtl_pci_rx_interrupt()
-        rtl_is_special_data()
-	  rtl_lps_leave()
-
-    _rtl_pci_interrupt()
-      _rtl_pci_rx_interrupt()
-        rtl_is_special_data()
-	  setup_special_tx()
-	    rtl_lps_leave()
-
-    _rtl_pci_interrupt()
-      _rtl_pci_tx_isr
-        rtl_lps_leave()
-
-      halbtc_leave_lps()
-        rtl_lps_leave()
-
-This leaves four callers of rtl_lps_enter/leave() where the analyzis
-stopped dead in the maze of several nested pointer based callchains and
-lack of rtlwifi hardware to debug this via tracing:
-
-     halbtc_leave_lps(), halbtc_enter_lps(), halbtc_normal_lps(),
-     halbtc_pre_normal_lps()
-
-These four have been cautionally marked to be unable to block which is the
-safe option, but the rtwifi wizards should be able to clarify that.
-
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Kalle Valo <kvalo@codeaurora.org>
 ---
- drivers/net/wireless/realtek/rtlwifi/base.c                   |    8 +++---
- drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtcoutsrc.c |   12 ++++++----
- drivers/net/wireless/realtek/rtlwifi/core.c                   |    6 ++---
- drivers/net/wireless/realtek/rtlwifi/pci.c                    |    4 +--
- drivers/net/wireless/realtek/rtlwifi/ps.c                     |    8 +++---
- drivers/net/wireless/realtek/rtlwifi/ps.h                     |    4 +--
- 6 files changed, 23 insertions(+), 19 deletions(-)
-
---- a/drivers/net/wireless/realtek/rtlwifi/base.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/base.c
-@@ -1456,7 +1456,7 @@ static void setup_special_tx(struct rtl_
- 	if (rtlpriv->cfg->ops->get_btc_status())
- 		rtlpriv->btcoexist.btc_ops->btc_special_packet_notify(
- 					rtlpriv, type);
--	rtl_lps_leave(hw);
-+	rtl_lps_leave(hw, false);
- 	ppsc->last_delaylps_stamp_jiffies = jiffies;
- }
- 
-@@ -1546,7 +1546,7 @@ u8 rtl_is_special_data(struct ieee80211_
- 
- 		if (is_tx) {
- 			rtlpriv->ra.is_special_data = true;
--			rtl_lps_leave(hw);
-+			rtl_lps_leave(hw, false);
- 			ppsc->last_delaylps_stamp_jiffies = jiffies;
- 
- 			setup_special_tx(rtlpriv, ppsc, PACKET_EAPOL);
-@@ -2147,9 +2147,9 @@ static void rtl_watchdog_wq_callback(str
- 		if (rtlpriv->link_info.num_rx_inperiod +
- 		      rtlpriv->link_info.num_tx_inperiod > 8 ||
- 		    rtlpriv->link_info.num_rx_inperiod > 2)
--			rtl_lps_leave(hw);
-+			rtl_lps_leave(hw, true);
- 		else
--			rtl_lps_enter(hw);
-+			rtl_lps_enter(hw, true);
- 
- label_lps_done:
- 		;
---- a/drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtcoutsrc.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtcoutsrc.c
-@@ -285,7 +285,8 @@ static void halbtc_leave_lps(struct btc_
- 
- 	btcoexist->bt_info.bt_ctrl_lps = true;
- 	btcoexist->bt_info.bt_lps_on = false;
--	rtl_lps_leave(rtlpriv->mac80211.hw);
-+	/* FIXME: Context is unclear. Is it allowed to block? */
-+	rtl_lps_leave(rtlpriv->mac80211.hw, false);
- }
- 
- static void halbtc_enter_lps(struct btc_coexist *btcoexist)
-@@ -306,7 +307,8 @@ static void halbtc_enter_lps(struct btc_
- 
- 	btcoexist->bt_info.bt_ctrl_lps = true;
- 	btcoexist->bt_info.bt_lps_on = true;
--	rtl_lps_enter(rtlpriv->mac80211.hw);
-+	/* FIXME: Context is unclear. Is it allowed to block? */
-+	rtl_lps_enter(rtlpriv->mac80211.hw, false);
- }
- 
- static void halbtc_normal_lps(struct btc_coexist *btcoexist)
-@@ -317,7 +319,8 @@ static void halbtc_normal_lps(struct btc
- 
- 	if (btcoexist->bt_info.bt_ctrl_lps) {
- 		btcoexist->bt_info.bt_lps_on = false;
--		rtl_lps_leave(rtlpriv->mac80211.hw);
-+		/* FIXME: Context is unclear. Is it allowed to block? */
-+		rtl_lps_leave(rtlpriv->mac80211.hw, false);
- 		btcoexist->bt_info.bt_ctrl_lps = false;
- 	}
- }
-@@ -328,7 +331,8 @@ static void halbtc_pre_normal_lps(struct
- 
- 	if (btcoexist->bt_info.bt_ctrl_lps) {
- 		btcoexist->bt_info.bt_lps_on = false;
--		rtl_lps_leave(rtlpriv->mac80211.hw);
-+		/* FIXME: Context is unclear. Is it allowed to block? */
-+		rtl_lps_leave(rtlpriv->mac80211.hw, false);
- 	}
- }
- 
---- a/drivers/net/wireless/realtek/rtlwifi/core.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/core.c
-@@ -544,7 +544,7 @@ static int rtl_op_suspend(struct ieee802
- 	rtlhal->driver_is_goingto_unload = true;
- 	rtlhal->enter_pnp_sleep = true;
- 
--	rtl_lps_leave(hw);
-+	rtl_lps_leave(hw, true);
- 	rtl_op_stop(hw);
- 	device_set_wakeup_enable(wiphy_dev(hw->wiphy), true);
- 	return 0;
-@@ -1151,7 +1151,7 @@ static void rtl_op_bss_info_changed(stru
- 			mstatus = RT_MEDIA_DISCONNECT;
- 
- 			if (mac->link_state == MAC80211_LINKED)
--				rtl_lps_leave(hw);
-+				rtl_lps_leave(hw, true);
- 			if (ppsc->p2p_ps_info.p2p_ps_mode > P2P_PS_NONE)
- 				rtl_p2p_ps_cmd(hw, P2P_PS_DISABLE);
- 			mac->link_state = MAC80211_NOLINK;
-@@ -1448,7 +1448,7 @@ static void rtl_op_sw_scan_start(struct
- 	}
- 
- 	if (mac->link_state == MAC80211_LINKED) {
--		rtl_lps_leave(hw);
-+		rtl_lps_leave(hw, true);
- 		mac->link_state = MAC80211_LINKED_SCANNING;
- 	} else {
- 		rtl_ips_nic_on(hw);
---- a/drivers/net/wireless/realtek/rtlwifi/pci.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/pci.c
-@@ -621,7 +621,7 @@ static void _rtl_pci_tx_isr(struct ieee8
- 	if (((rtlpriv->link_info.num_rx_inperiod +
- 	      rtlpriv->link_info.num_tx_inperiod) > 8) ||
- 	      rtlpriv->link_info.num_rx_inperiod > 2)
--		rtl_lps_leave(hw);
-+		rtl_lps_leave(hw, false);
- }
- 
- static int _rtl_pci_init_one_rxdesc(struct ieee80211_hw *hw,
-@@ -874,7 +874,7 @@ static void _rtl_pci_rx_interrupt(struct
- 		if (((rtlpriv->link_info.num_rx_inperiod +
- 		      rtlpriv->link_info.num_tx_inperiod) > 8) ||
- 		      rtlpriv->link_info.num_rx_inperiod > 2)
--			rtl_lps_leave(hw);
-+			rtl_lps_leave(hw, false);
- 		skb = new_skb;
- no_new:
- 		if (rtlpriv->use_new_trx_flow) {
---- a/drivers/net/wireless/realtek/rtlwifi/ps.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/ps.c
-@@ -653,22 +653,22 @@ void rtl_lps_change_work_callback(struct
- }
- EXPORT_SYMBOL_GPL(rtl_lps_change_work_callback);
- 
--void rtl_lps_enter(struct ieee80211_hw *hw)
-+void rtl_lps_enter(struct ieee80211_hw *hw, bool may_block)
- {
- 	struct rtl_priv *rtlpriv = rtl_priv(hw);
- 
--	if (!in_interrupt())
-+	if (may_block)
- 		return rtl_lps_enter_core(hw);
- 	rtlpriv->enter_ps = true;
- 	schedule_work(&rtlpriv->works.lps_change_work);
- }
- EXPORT_SYMBOL_GPL(rtl_lps_enter);
- 
--void rtl_lps_leave(struct ieee80211_hw *hw)
-+void rtl_lps_leave(struct ieee80211_hw *hw, bool may_block)
- {
- 	struct rtl_priv *rtlpriv = rtl_priv(hw);
- 
--	if (!in_interrupt())
-+	if (may_block)
- 		return rtl_lps_leave_core(hw);
- 	rtlpriv->enter_ps = false;
- 	schedule_work(&rtlpriv->works.lps_change_work);
---- a/drivers/net/wireless/realtek/rtlwifi/ps.h
-+++ b/drivers/net/wireless/realtek/rtlwifi/ps.h
-@@ -11,8 +11,8 @@ bool rtl_ps_disable_nic(struct ieee80211
- void rtl_ips_nic_off(struct ieee80211_hw *hw);
- void rtl_ips_nic_on(struct ieee80211_hw *hw);
- void rtl_ips_nic_off_wq_callback(struct work_struct *work);
--void rtl_lps_enter(struct ieee80211_hw *hw);
--void rtl_lps_leave(struct ieee80211_hw *hw);
-+void rtl_lps_enter(struct ieee80211_hw *hw, bool may_block);
-+void rtl_lps_leave(struct ieee80211_hw *hw, bool may_block);
- 
- void rtl_lps_set_psmode(struct ieee80211_hw *hw, u8 rt_psmode);
- 
-
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
