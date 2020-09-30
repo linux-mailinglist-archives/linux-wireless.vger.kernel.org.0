@@ -2,112 +2,76 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8574527E0F8
-	for <lists+linux-wireless@lfdr.de>; Wed, 30 Sep 2020 08:22:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B7D0A27E2A2
+	for <lists+linux-wireless@lfdr.de>; Wed, 30 Sep 2020 09:31:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727599AbgI3GWz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 30 Sep 2020 02:22:55 -0400
-Received: from mail.kernel.org ([198.145.29.99]:47976 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725320AbgI3GWz (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 30 Sep 2020 02:22:55 -0400
-Received: from localhost (83-86-74-64.cable.dynamic.v4.ziggo.nl [83.86.74.64])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 2E6772075A;
-        Wed, 30 Sep 2020 06:22:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1601446974;
-        bh=EXxvDUn4XGcHD/Ca0uIvwF+PRWacJD69F4bcem0AxSw=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=cehjbcseNzUjHSH9H/NUjRZOIUzHKfq3q9Ty7fj3LwMusdc294CGdNFS7gdzKtiiK
-         WI3Y6zw4SOZB4Y+SdZFlplaofN7HquwtrvQZ+Gb1v7JjPvLnN0MAysxbZB2TYeExGL
-         zOFWw3q77zfFM0MabdV5ksP31I3MmAp6bGMxarjQ=
-Date:   Wed, 30 Sep 2020 08:22:58 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Thomas Gleixner <tglx@linutronix.de>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Paul McKenney <paulmck@kernel.org>,
-        Matthew Wilcox <willy@infradead.org>,
-        Christian Benvenuti <benve@cisco.com>,
-        Govindarajulu Varadarajan <_govind@gmx.com>,
-        Dave Miller <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
-        Jonathan Corbet <corbet@lwn.net>,
-        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        linux-doc@vger.kernel.org,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Luc Van Oostenryck <luc.vanoostenryck@gmail.com>,
-        Jay Cliburn <jcliburn@gmail.com>,
-        Chris Snook <chris.snook@gmail.com>,
-        Vishal Kulkarni <vishal@chelsio.com>,
-        Jeff Kirsher <jeffrey.t.kirsher@intel.com>,
-        intel-wired-lan@lists.osuosl.org,
-        Shannon Nelson <snelson@pensando.io>,
-        Pensando Drivers <drivers@pensando.io>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Solarflare linux maintainers <linux-net-drivers@solarflare.com>,
-        Edward Cree <ecree@solarflare.com>,
-        Martin Habets <mhabets@solarflare.com>,
-        Jon Mason <jdmason@kudzu.us>, Daniel Drake <dsd@gentoo.org>,
-        Ulrich Kunitz <kune@deine-taler.de>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        linux-wireless@vger.kernel.org, linux-usb@vger.kernel.org,
-        Arend van Spriel <arend.vanspriel@broadcom.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
-        Wright Feng <wright.feng@cypress.com>,
-        brcm80211-dev-list.pdl@broadcom.com,
-        brcm80211-dev-list@cypress.com,
-        Stanislav Yakovlev <stas.yakovlev@gmail.com>,
-        Stanislaw Gruszka <stf_xl@wp.pl>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Intel Linux Wireless <linuxwifi@intel.com>,
-        Jouni Malinen <j@w1.fi>,
-        Amitkumar Karwar <amitkarwar@gmail.com>,
-        Ganapathi Bhat <ganapathi.bhat@nxp.com>,
-        Xinming Hu <huxinming820@gmail.com>,
-        libertas-dev@lists.infradead.org,
-        Pascal Terjan <pterjan@google.com>,
-        Ping-Ke Shih <pkshih@realtek.com>
-Subject: Re: [patch V2 21/36] net: usb: kaweth: Replace kaweth_control() with
- usb_control_msg()
-Message-ID: <20200930062258.GA1471881@kroah.com>
-References: <20200929202509.673358734@linutronix.de>
- <20200929203501.588965483@linutronix.de>
+        id S1728376AbgI3Hb2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 30 Sep 2020 03:31:28 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:53220 "EHLO
+        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1725535AbgI3Hb1 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 30 Sep 2020 03:31:27 -0400
+Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa.ger.corp.intel.com)
+        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.93)
+        (envelope-from <luca@coelho.fi>)
+        id 1kNWaA-002M9H-QQ; Wed, 30 Sep 2020 10:31:26 +0300
+From:   Luca Coelho <luca@coelho.fi>
+To:     kvalo@codeaurora.org
+Cc:     linux-wireless@vger.kernel.org
+Date:   Wed, 30 Sep 2020 10:31:20 +0300
+Message-Id: <iwlwifi.20200930102759.58d57c0bdc68.Ib06008665e7bf1199c360aa92691d9c74fb84990@changeid>
+X-Mailer: git-send-email 2.28.0
+In-Reply-To: <iwlwifi.20200926002540.c76108b9c476.Ib06008665e7bf1199c360aa92691d9c74fb84990@changeid>
+References: <iwlwifi.20200926002540.c76108b9c476.Ib06008665e7bf1199c360aa92691d9c74fb84990@changeid>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200929203501.588965483@linutronix.de>
+Content-Transfer-Encoding: 8bit
+X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on farmhouse.coelho.fi
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+        TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.4
+Subject: [PATCH v2 05/15] iwlwifi: mvm: split a print to avoid a WARNING in ROC
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Sep 29, 2020 at 10:25:30PM +0200, Thomas Gleixner wrote:
-> From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-> 
-> kaweth_control() is almost the same as usb_control_msg() except for the
-> memory allocation mode (GFP_ATOMIC vs GFP_NOIO) and the in_interrupt()
-> check.
-> 
-> All the invocations of kaweth_control() are within the probe function in
-> fully preemtible context so there is no reason to use atomic allocations,
-> GFP_NOIO which is used by usb_control_msg() is perfectly fine.
-> 
-> Replace kaweth_control() invocations from probe with usb_control_msg().
-> 
-> Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 
-Note, the usb_control_msg_send/recv() new functions that will show up in
-5.10-rc1 will help a bit with this logic, but for what you have now,
-this is fine, nice cleanups.
+A print in the remain on channel code was too long and caused
+a WARNING, split it.
 
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Fixes: dc28e12f2125 ("iwlwifi: mvm: ROC: Extend the ROC max delay duration & limit ROC duration")
+Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+---
+
+In v2:
+   * Fixed the Fixes tag to point to a real commit in the mainline.
+
+drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+index 6e8af84f386a..73280a2607a5 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+@@ -3703,9 +3703,12 @@ static int iwl_mvm_send_aux_roc_cmd(struct iwl_mvm *mvm,
+ 	tail->apply_time_max_delay = cpu_to_le32(delay);
+ 
+ 	IWL_DEBUG_TE(mvm,
+-		     "ROC: Requesting to remain on channel %u for %ums (requested = %ums, max_delay = %ums, dtim_interval = %ums)\n",
+-		     channel->hw_value, req_dur, duration, delay,
+-		     dtim_interval);
++		     "ROC: Requesting to remain on channel %u for %ums\n",
++		     channel->hw_value, req_dur);
++	IWL_DEBUG_TE(mvm,
++		     "\t(requested = %ums, max_delay = %ums, dtim_interval = %ums)\n",
++		     duration, delay, dtim_interval);
++
+ 	/* Set the node address */
+ 	memcpy(tail->node_addr, vif->addr, ETH_ALEN);
+ 
+-- 
+2.28.0
+
