@@ -2,91 +2,335 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EA4F327E444
-	for <lists+linux-wireless@lfdr.de>; Wed, 30 Sep 2020 10:56:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 556A327E466
+	for <lists+linux-wireless@lfdr.de>; Wed, 30 Sep 2020 10:57:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728931AbgI3Izz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 30 Sep 2020 04:55:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38078 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728149AbgI3Izy (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 30 Sep 2020 04:55:54 -0400
-Received: from mail-ot1-x335.google.com (mail-ot1-x335.google.com [IPv6:2607:f8b0:4864:20::335])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3EC2FC0613D1
-        for <linux-wireless@vger.kernel.org>; Wed, 30 Sep 2020 01:55:54 -0700 (PDT)
-Received: by mail-ot1-x335.google.com with SMTP id m12so1100645otr.0
-        for <linux-wireless@vger.kernel.org>; Wed, 30 Sep 2020 01:55:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=endlessos-org.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=SU/KZorwRWRL3VQ/bnlD6zatox7adu+Yzz6+KkwnCJ4=;
-        b=mIcjvw4QfPXdUpHHnDQd2EAF6em28m/w0TxKUY/pOQ531f69qetZxMfu85C+jGWUx+
-         RsGzSYepT7f8uhBpkZZ1SCTrxtFwTbWIfA9rHPEXull4DiUBLfmy+hWoXW26PKZ9F6PA
-         swu2asF31NZ0HYAUD117T6orWgKSEb3f0NPq4PK/zFCfb4sndcQ4sEsDuEa5Yurqo3ri
-         9z4DCbmtoE4xwFXV+suegEt2nsLs9sSKS3gzKOZElpOPtpuMPseWeATEtL6kaHWdRBy+
-         PVa+1PXyoImzTYl9jYGoUb5qciN9iYEVmYWL3TwBNIb5H8c8vhm6bLBl/Hrm/N3PLdNe
-         L7eg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=SU/KZorwRWRL3VQ/bnlD6zatox7adu+Yzz6+KkwnCJ4=;
-        b=PmG+UgY6guEaG0au4guoeAZQL19jcTFLfqS1tBgK6YvXGc2kkGlMfm9MUE+KS2/mK0
-         YcOlGVGqxfOGcwmIsuTwd8pdLRzvcJbSDRO51ZgRfJkwz3M0v9MJhna6VNvGR/+XobME
-         l7NIrFF2drUjH9j1fHwSrn3eeNntq6iXhBDBL2e2XeevIcxLRsJSQ05ZgE66BsAh9AYA
-         2WrF1JJ9Kyue4f9NiW+wP+qYFGC7/t6JDXoTPp8nl1qkiTzGTE37Voxpf/HSF+jZ9Exx
-         l4s1sLS0q1iBKRBouwJP56gq55M0IMc46iSBn/HIoEN3aiqdjFWJZ16/IKfO7WidBj3R
-         4x5Q==
-X-Gm-Message-State: AOAM531uf4Vg/ALlpcLp4Xxk9OwOO75pFYndtqs+ToXVcscTfhxgZIAP
-        Dh1v+jbxzpJ5C7jnp14vSr2D2Fcf//jrZHXOaSwMKA==
-X-Google-Smtp-Source: ABdhPJyDoZDpk7jo3S5AcUdSP5wfMgSpjwWhzEylMHlaBm+m7Q5JKHnzC4yoydYe5dk8pehl1CiDx7Ygo2Kgzjpi6VM=
-X-Received: by 2002:a9d:1:: with SMTP id 1mr898289ota.81.1601456153412; Wed,
- 30 Sep 2020 01:55:53 -0700 (PDT)
+        id S1728952AbgI3I5a (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 30 Sep 2020 04:57:30 -0400
+Received: from mail.kernel.org ([198.145.29.99]:47808 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728702AbgI3I5a (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 30 Sep 2020 04:57:30 -0400
+Received: from lore-desk.redhat.com (unknown [176.207.245.61])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id D358020659;
+        Wed, 30 Sep 2020 08:57:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1601456248;
+        bh=lXWtHfHJX+9EiJktlM1ZgBDQsgqVP/SFhjZ+EGKnTEw=;
+        h=From:To:Cc:Subject:Date:From;
+        b=Ot0+qxy2JO4n7PPpC/9FgUAztJ31pWNZxb6edY5Nq5k3Es5n3vu3tH6c3BneaLgWE
+         O8g9PgvIyaLIkIcRg447Rgel7pH8gtw8Hxaaa1f3VwSIL5yNApe5ykNopZ4Xnri7Xn
+         eAKlA/MLAwFgo2ZkbAtl4wUezI3P89ac9KfimyYY=
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
+        sean.wang@mediatek.com
+Subject: [PATCH v2] mt76: mt7615: enable beacon filtering by default for offload fw
+Date:   Wed, 30 Sep 2020 10:57:15 +0200
+Message-Id: <b67707fd5dd487d91918acd15051f4a9c8ec6497.1601454375.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-References: <CAPpJ_ecS3LOYUMdrodMoxMRQ_4q4M06uyGzBBf+W8MrjP08-EA@mail.gmail.com>
-In-Reply-To: <CAPpJ_ecS3LOYUMdrodMoxMRQ_4q4M06uyGzBBf+W8MrjP08-EA@mail.gmail.com>
-From:   Jian-Hong Pan <jhp@endlessos.org>
-Date:   Wed, 30 Sep 2020 16:54:16 +0800
-Message-ID: <CAPpJ_ec_Xwf8qwdb1XVDkhwFOQr=oNGOoCevAic5yJVZLKEGjQ@mail.gmail.com>
-Subject: Re: [QUESTION] Enable the wireless module on Pinebook Pro
-To:     Arend van Spriel <arend.vanspriel@broadcom.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
-        Wright Feng <wright.feng@cypress.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Dan Johansen <strit@manjaro.org>
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
-        brcm80211-dev-list.pdl@broadcom.com,
-        brcm80211-dev-list@cypress.com,
-        Linux Netdev List <netdev@vger.kernel.org>,
-        Linux Kernel <linux-kernel@vger.kernel.org>,
-        Linux Upstreaming Team <linux@endlessm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-I forgot to mail to Dan Johansen as well.
+In order to reduce cpu cycles, enable hw beacon filter by default if
+the device is running offload fw with sta only interfaces.
+Disable runtime pm for multi-vif scenario.
 
-Jian-Hong Pan <jhp@endlessos.org> =E6=96=BC 2020=E5=B9=B49=E6=9C=8830=E6=97=
-=A5 =E9=80=B1=E4=B8=89 =E4=B8=8B=E5=8D=884:15=E5=AF=AB=E9=81=93=EF=BC=9A
->
-> Hi,
->
-> According to the preloaded system Manjaro ARM on Pinebook Pro [1], I
-> found the firmware files in ap6256-firmware package [2] enable the
-> wireless module, including WiFi and Bluetooth.
-> If we want to redistribute the firmware files to linux-firmware
-> repository or other distros, which kind of license should follow?
->
-> [1] https://www.pine64.org/pinebook-pro/
-> [2] https://gitlab.manjaro.org/manjaro-arm/packages/community/ap6256-firm=
-ware
->
-> Jian-Hong Pan
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+Changes since v1:
+- disable hw beacon filtering for multi-vif scenario.
+- disable runtime pm for multi-vif scenario.
+---
+ .../wireless/mediatek/mt76/mt7615/debugfs.c   | 17 +++-
+ .../net/wireless/mediatek/mt76/mt7615/mac.c   | 86 +++++++++----------
+ .../net/wireless/mediatek/mt76/mt7615/main.c  | 28 ++----
+ .../net/wireless/mediatek/mt76/mt7615/mcu.c   |  7 +-
+ .../wireless/mediatek/mt76/mt7615/mt7615.h    |  6 +-
+ 5 files changed, 72 insertions(+), 72 deletions(-)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7615/debugfs.c
+index efdc61c812ca..8272a980af8a 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/debugfs.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/debugfs.c
+@@ -55,11 +55,26 @@ static int
+ mt7615_pm_set(void *data, u64 val)
+ {
+ 	struct mt7615_dev *dev = data;
++	int ret = 0;
+ 
+ 	if (!mt7615_wait_for_mcu_init(dev))
+ 		return 0;
+ 
+-	return mt7615_pm_set_enable(dev, val);
++	if (!mt7615_firmware_offload(dev) || !mt76_is_mmio(&dev->mt76))
++		return -EOPNOTSUPP;
++
++	mt7615_mutex_acquire(dev);
++
++	if (dev->phy.n_beacon_vif) {
++		ret = -EBUSY;
++		goto out;
++	}
++
++	dev->pm.enable = val;
++out:
++	mt7615_mutex_release(dev);
++
++	return ret;
+ }
+ 
+ static int
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
+index 8dc645e398fd..abb86a13f241 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
+@@ -1969,49 +1969,6 @@ void mt7615_pm_power_save_work(struct work_struct *work)
+ 	queue_delayed_work(dev->mt76.wq, &dev->pm.ps_work, delta);
+ }
+ 
+-static void
+-mt7615_pm_interface_iter(void *priv, u8 *mac, struct ieee80211_vif *vif)
+-{
+-	struct mt7615_phy *phy = priv;
+-	struct mt7615_dev *dev = phy->dev;
+-	bool ext_phy = phy != &dev->phy;
+-
+-	if (mt7615_mcu_set_bss_pm(dev, vif, dev->pm.enable))
+-		return;
+-
+-	if (dev->pm.enable) {
+-		vif->driver_flags |= IEEE80211_VIF_BEACON_FILTER;
+-		mt76_set(dev, MT_WF_RFCR(ext_phy),
+-			 MT_WF_RFCR_DROP_OTHER_BEACON);
+-	} else {
+-		vif->driver_flags &= ~IEEE80211_VIF_BEACON_FILTER;
+-		mt76_clear(dev, MT_WF_RFCR(ext_phy),
+-			   MT_WF_RFCR_DROP_OTHER_BEACON);
+-	}
+-}
+-
+-int mt7615_pm_set_enable(struct mt7615_dev *dev, bool enable)
+-{
+-	struct mt76_phy *mphy = dev->phy.mt76;
+-
+-	if (!mt7615_firmware_offload(dev) || !mt76_is_mmio(&dev->mt76))
+-		return -EOPNOTSUPP;
+-
+-	mt7615_mutex_acquire(dev);
+-
+-	if (dev->pm.enable == enable)
+-		goto out;
+-
+-	dev->pm.enable = enable;
+-	ieee80211_iterate_active_interfaces(mphy->hw,
+-					    IEEE80211_IFACE_ITER_RESUME_ALL,
+-					    mt7615_pm_interface_iter, mphy->priv);
+-out:
+-	mt7615_mutex_release(dev);
+-
+-	return 0;
+-}
+-
+ void mt7615_mac_work(struct work_struct *work)
+ {
+ 	struct mt7615_phy *phy;
+@@ -2314,3 +2271,46 @@ int mt7615_dfs_init_radar_detector(struct mt7615_phy *phy)
+ 	mt7615_dfs_stop_radar_detector(phy);
+ 	return 0;
+ }
++
++int mt7615_mac_set_beacon_filter(struct mt7615_phy *phy,
++				 struct ieee80211_vif *vif,
++				 bool enable)
++{
++	struct mt7615_dev *dev = phy->dev;
++	bool ext_phy = phy != &dev->phy;
++	int err;
++
++	if (!mt7615_firmware_offload(dev))
++		return -EOPNOTSUPP;
++
++	switch (vif->type) {
++	case NL80211_IFTYPE_MONITOR:
++		return 0;
++	case NL80211_IFTYPE_MESH_POINT:
++	case NL80211_IFTYPE_ADHOC:
++	case NL80211_IFTYPE_AP:
++		if (enable)
++			phy->n_beacon_vif++;
++		else
++			phy->n_beacon_vif--;
++		fallthrough;
++	default:
++		break;
++	}
++
++	err = mt7615_mcu_set_bss_pm(dev, vif, !phy->n_beacon_vif);
++	if (err)
++		return err;
++
++	if (phy->n_beacon_vif) {
++		vif->driver_flags &= ~IEEE80211_VIF_BEACON_FILTER;
++		mt76_clear(dev, MT_WF_RFCR(ext_phy),
++			   MT_WF_RFCR_DROP_OTHER_BEACON);
++	} else {
++		vif->driver_flags |= IEEE80211_VIF_BEACON_FILTER;
++		mt76_set(dev, MT_WF_RFCR(ext_phy),
++			 MT_WF_RFCR_DROP_OTHER_BEACON);
++	}
++
++	return 0;
++}
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/main.c b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
+index 3186b7b2ca48..8b4746691954 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
+@@ -211,15 +211,7 @@ static int mt7615_add_interface(struct ieee80211_hw *hw,
+ 	if (ret)
+ 		goto out;
+ 
+-	if (dev->pm.enable) {
+-		ret = mt7615_mcu_set_bss_pm(dev, vif, true);
+-		if (ret)
+-			goto out;
+-
+-		vif->driver_flags |= IEEE80211_VIF_BEACON_FILTER;
+-		mt76_set(dev, MT_WF_RFCR(ext_phy),
+-			 MT_WF_RFCR_DROP_OTHER_BEACON);
+-	}
++	mt7615_mac_set_beacon_filter(phy, vif, true);
+ out:
+ 	mt7615_mutex_release(dev);
+ 
+@@ -245,13 +237,7 @@ static void mt7615_remove_interface(struct ieee80211_hw *hw,
+ 
+ 	mt7615_free_pending_tx_skbs(dev, msta);
+ 
+-	if (dev->pm.enable) {
+-		bool ext_phy = phy != &dev->phy;
+-
+-		mt7615_mcu_set_bss_pm(dev, vif, false);
+-		mt76_clear(dev, MT_WF_RFCR(ext_phy),
+-			   MT_WF_RFCR_DROP_OTHER_BEACON);
+-	}
++	mt7615_mac_set_beacon_filter(phy, vif, false);
+ 	mt7615_mcu_add_dev_info(dev, vif, false);
+ 
+ 	rcu_assign_pointer(dev->mt76.wcid[idx], NULL);
+@@ -511,7 +497,6 @@ static void mt7615_configure_filter(struct ieee80211_hw *hw,
+ 	} while (0)
+ 
+ 	phy->rxfilter &= ~(MT_WF_RFCR_DROP_OTHER_BSS |
+-			   MT_WF_RFCR_DROP_OTHER_BEACON |
+ 			   MT_WF_RFCR_DROP_FRAME_REPORT |
+ 			   MT_WF_RFCR_DROP_PROBEREQ |
+ 			   MT_WF_RFCR_DROP_MCAST_FILTERED |
+@@ -522,6 +507,9 @@ static void mt7615_configure_filter(struct ieee80211_hw *hw,
+ 			   MT_WF_RFCR_DROP_UNWANTED_CTL |
+ 			   MT_WF_RFCR_DROP_STBC_MULTI);
+ 
++	if (phy->n_beacon_vif || !mt7615_firmware_offload(dev))
++		phy->rxfilter &= ~MT_WF_RFCR_DROP_OTHER_BEACON;
++
+ 	MT76_FILTER(OTHER_BSS, MT_WF_RFCR_DROP_OTHER_TIM |
+ 			       MT_WF_RFCR_DROP_A3_MAC |
+ 			       MT_WF_RFCR_DROP_A3_BSSID);
+@@ -1127,7 +1115,6 @@ static int mt7615_suspend(struct ieee80211_hw *hw,
+ {
+ 	struct mt7615_dev *dev = mt7615_hw_dev(hw);
+ 	struct mt7615_phy *phy = mt7615_hw_phy(hw);
+-	bool ext_phy = phy != &dev->phy;
+ 	int err = 0;
+ 
+ 	cancel_delayed_work_sync(&dev->pm.ps_work);
+@@ -1139,8 +1126,6 @@ static int mt7615_suspend(struct ieee80211_hw *hw,
+ 	cancel_delayed_work_sync(&phy->scan_work);
+ 	cancel_delayed_work_sync(&phy->mac_work);
+ 
+-	mt76_set(dev, MT_WF_RFCR(ext_phy), MT_WF_RFCR_DROP_OTHER_BEACON);
+-
+ 	set_bit(MT76_STATE_SUSPEND, &phy->mt76->state);
+ 	ieee80211_iterate_active_interfaces(hw,
+ 					    IEEE80211_IFACE_ITER_RESUME_ALL,
+@@ -1158,7 +1143,7 @@ static int mt7615_resume(struct ieee80211_hw *hw)
+ {
+ 	struct mt7615_dev *dev = mt7615_hw_dev(hw);
+ 	struct mt7615_phy *phy = mt7615_hw_phy(hw);
+-	bool running, ext_phy = phy != &dev->phy;
++	bool running;
+ 
+ 	mt7615_mutex_acquire(dev);
+ 
+@@ -1182,7 +1167,6 @@ static int mt7615_resume(struct ieee80211_hw *hw)
+ 
+ 	ieee80211_queue_delayed_work(hw, &phy->mac_work,
+ 				     MT7615_WATCHDOG_TIME);
+-	mt76_clear(dev, MT_WF_RFCR(ext_phy), MT_WF_RFCR_DROP_OTHER_BEACON);
+ 
+ 	mt7615_mutex_release(dev);
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+index 31b40fb83f6c..ffd537f49dcb 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+@@ -3528,9 +3528,8 @@ int mt7615_mcu_set_bss_pm(struct mt7615_dev *dev, struct ieee80211_vif *vif,
+ 	};
+ 	int err;
+ 
+-	if (vif->type != NL80211_IFTYPE_STATION ||
+-	    !mt7615_firmware_offload(dev))
+-		return -ENOTSUPP;
++	if (vif->type != NL80211_IFTYPE_STATION)
++		return 0;
+ 
+ 	err = __mt76_mcu_send_msg(&dev->mt76, MCU_CMD_SET_BSS_ABORT,
+ 				  &req_hdr, sizeof(req_hdr), false);
+@@ -3744,8 +3743,6 @@ void mt7615_mcu_set_suspend_iter(void *priv, u8 *mac,
+ 	struct cfg80211_wowlan *wowlan = hw->wiphy->wowlan_config;
+ 	int i;
+ 
+-	mt7615_mcu_set_bss_pm(phy->dev, vif, suspend);
+-
+ 	mt7615_mcu_set_gtk_rekey(phy->dev, vif, suspend);
+ 	mt7615_mcu_set_arp_filter(phy->dev, vif, suspend);
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
+index 43d8256af66a..51f6f8d9733e 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
+@@ -175,6 +175,8 @@ struct mt7615_phy {
+ 
+ 	struct ieee80211_vif *monitor_vif;
+ 
++	u8 n_beacon_vif;
++
+ 	u32 rxfilter;
+ 	u32 omac_mask;
+ 
+@@ -454,7 +456,6 @@ bool mt7615_wait_for_mcu_init(struct mt7615_dev *dev);
+ void mt7615_mac_set_rates(struct mt7615_phy *phy, struct mt7615_sta *sta,
+ 			  struct ieee80211_tx_rate *probe_rate,
+ 			  struct ieee80211_tx_rate *rates);
+-int mt7615_pm_set_enable(struct mt7615_dev *dev, bool enable);
+ void mt7615_pm_wake_work(struct work_struct *work);
+ int mt7615_pm_wake(struct mt7615_dev *dev);
+ void mt7615_pm_power_save_sched(struct mt7615_dev *dev);
+@@ -653,6 +654,9 @@ int mt7615_mcu_set_roc(struct mt7615_phy *phy, struct ieee80211_vif *vif,
+ int mt7615_init_debugfs(struct mt7615_dev *dev);
+ int mt7615_mcu_wait_response(struct mt7615_dev *dev, int cmd, int seq);
+ 
++int mt7615_mac_set_beacon_filter(struct mt7615_phy *phy,
++				 struct ieee80211_vif *vif,
++				 bool enable);
+ int mt7615_mcu_set_bss_pm(struct mt7615_dev *dev, struct ieee80211_vif *vif,
+ 			  bool enable);
+ int mt7615_mcu_set_hif_suspend(struct mt7615_dev *dev, bool suspend);
+-- 
+2.26.2
+
