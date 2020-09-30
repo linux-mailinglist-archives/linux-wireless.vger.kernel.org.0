@@ -2,398 +2,399 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7CC2627DC77
-	for <lists+linux-wireless@lfdr.de>; Wed, 30 Sep 2020 01:07:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AC61727DE3A
+	for <lists+linux-wireless@lfdr.de>; Wed, 30 Sep 2020 04:06:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728943AbgI2XHH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 29 Sep 2020 19:07:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60786 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728384AbgI2XHH (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 29 Sep 2020 19:07:07 -0400
-Received: from mail-pg1-x531.google.com (mail-pg1-x531.google.com [IPv6:2607:f8b0:4864:20::531])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DCDF2C0613D3
-        for <linux-wireless@vger.kernel.org>; Tue, 29 Sep 2020 16:07:06 -0700 (PDT)
-Received: by mail-pg1-x531.google.com with SMTP id y14so5180761pgf.12
-        for <linux-wireless@vger.kernel.org>; Tue, 29 Sep 2020 16:07:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=pensando.io; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding:content-language;
-        bh=T56W4rlwKM3h0w7+QjGBQRIaXGTOjqoGepwvZvifopA=;
-        b=u7ctPNw/bCJlHLZao4KrUwd8YSTNwu0ScSWSkn38YGsAWZv9zrDlzkmqrUrwD5aLem
-         /w0yuGo+dbSRL1jimX9qU98ulfFvQ3MsEB1I1SUz3NFIS6T8xwWTKPBZL8MqMhx4+j7h
-         XOXdJNg0vgO/7B0eq6AL4pBli99xvTVSeVcCfN1sBsU2KCSlQBq1qpQX93SDqNFk8Riz
-         UMysDx5VYIkhLrI4K10saFmbuZ93NW3LS7O2/s/36I97FP0z7gpZghd1APyIc3fO2Hfm
-         YREFwEWNc570IMUD4jhkE36VZ5py8gvbC0AK+KcPo34NQiNUV3BFr8tB5tehXj2wvMoU
-         1G7A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding
-         :content-language;
-        bh=T56W4rlwKM3h0w7+QjGBQRIaXGTOjqoGepwvZvifopA=;
-        b=TEwithyN2gZPjIyGcRwmVbJjDHObZEUOwoPkk7rdzdY2BGiC117/GhI3+YsRM4v3pM
-         Om7JuUC4b1OdVdME+orMVoOGbv/OUkWimq1G20tuhxJLtEwIcepHez67SVqmWohflpuN
-         JwYYiWn5T676umNUAg8ZbLh4+mBKTtJ+/nIUzQgYW/8p0/KiK58ETJS27cOcRg3fKfWf
-         s7tsyv/NDR4Twyi2ZvZ/oJ9sXDRP715h4UgyorSo1rxM43epcPnI8AQm3nA7KIMmbbMe
-         54ERDsG6jvY3+x3HA+5HVD2RauNoFd/HaYS6G1V60ReUvFWDfDXNoPYxef+gZ9duNYze
-         qJTw==
-X-Gm-Message-State: AOAM532hWnIex4wWN631O1WD+sgVG5SMX3dvWKqSva46OGIj6NUrFUtU
-        07APIVPlDK4stw4JQgB43s5+EA==
-X-Google-Smtp-Source: ABdhPJzpobBeVD0QizR5JNx2IEww3/DSsVZ79uzkw55sMm1JxKZo1kgF0e0ARRsarK31gnzhNU0N1A==
-X-Received: by 2002:a63:df02:: with SMTP id u2mr4908192pgg.270.1601420826006;
-        Tue, 29 Sep 2020 16:07:06 -0700 (PDT)
-Received: from Shannons-MacBook-Pro.local (static-50-53-47-17.bvtn.or.frontiernet.net. [50.53.47.17])
-        by smtp.gmail.com with ESMTPSA id 134sm5798661pgf.55.2020.09.29.16.07.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 29 Sep 2020 16:07:05 -0700 (PDT)
-Subject: Re: [patch V2 11/36] net: ionic: Replace in_interrupt() usage.
-To:     Thomas Gleixner <tglx@linutronix.de>,
-        LKML <linux-kernel@vger.kernel.org>
-Cc:     Peter Zijlstra <peterz@infradead.org>,
-        Paul McKenney <paulmck@kernel.org>,
-        Matthew Wilcox <willy@infradead.org>,
-        Christian Benvenuti <benve@cisco.com>,
-        Govindarajulu Varadarajan <_govind@gmx.com>,
-        Dave Miller <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
-        Jonathan Corbet <corbet@lwn.net>,
-        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        linux-doc@vger.kernel.org,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Luc Van Oostenryck <luc.vanoostenryck@gmail.com>,
-        Jay Cliburn <jcliburn@gmail.com>,
-        Chris Snook <chris.snook@gmail.com>,
-        Vishal Kulkarni <vishal@chelsio.com>,
-        Jeff Kirsher <jeffrey.t.kirsher@intel.com>,
-        intel-wired-lan@lists.osuosl.org,
-        Pensando Drivers <drivers@pensando.io>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Solarflare linux maintainers <linux-net-drivers@solarflare.com>,
-        Edward Cree <ecree@solarflare.com>,
-        Martin Habets <mhabets@solarflare.com>,
-        Jon Mason <jdmason@kudzu.us>, Daniel Drake <dsd@gentoo.org>,
-        Ulrich Kunitz <kune@deine-taler.de>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        linux-wireless@vger.kernel.org, linux-usb@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Arend van Spriel <arend.vanspriel@broadcom.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
-        Wright Feng <wright.feng@cypress.com>,
-        brcm80211-dev-list.pdl@broadcom.com,
-        brcm80211-dev-list@cypress.com,
-        Stanislav Yakovlev <stas.yakovlev@gmail.com>,
-        Stanislaw Gruszka <stf_xl@wp.pl>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Intel Linux Wireless <linuxwifi@intel.com>,
-        Jouni Malinen <j@w1.fi>,
-        Amitkumar Karwar <amitkarwar@gmail.com>,
-        Ganapathi Bhat <ganapathi.bhat@nxp.com>,
-        Xinming Hu <huxinming820@gmail.com>,
-        libertas-dev@lists.infradead.org,
-        Pascal Terjan <pterjan@google.com>,
-        Ping-Ke Shih <pkshih@realtek.com>
-References: <20200929202509.673358734@linutronix.de>
- <20200929203500.579810110@linutronix.de>
-From:   Shannon Nelson <snelson@pensando.io>
-Message-ID: <04ec3648-9735-b901-6492-606468d47158@pensando.io>
-Date:   Tue, 29 Sep 2020 16:06:59 -0700
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:68.0)
- Gecko/20100101 Thunderbird/68.12.0
-MIME-Version: 1.0
-In-Reply-To: <20200929203500.579810110@linutronix.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
+        id S1729729AbgI3CGO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 29 Sep 2020 22:06:14 -0400
+Received: from z5.mailgun.us ([104.130.96.5]:58512 "EHLO z5.mailgun.us"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729322AbgI3CGO (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 29 Sep 2020 22:06:14 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1601431573; h=Message-Id: Date: Subject: Cc: To: From:
+ Sender; bh=ZCgHN6FQXNqI0hpKKoSS01FJe53IK3vDY8kPpBf71kE=; b=UKZRktoAC4oPwVqPIYu6KjpZ64XSj9+iRzvjY3MOeeA5KX2kJhjlpy6SlGXEzcsQAEsXMNEy
+ HTDoAKsJLmFg4HFOTuzYYQHxaOy+iKkbLLr/rcZkLs2fDh5Nz7nz9Vl1d9HqQZlmp9f60GI3
+ PsgQzpmVQt6Xvk+Oc6IcjlH0O8U=
+X-Mailgun-Sending-Ip: 104.130.96.5
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n04.prod.us-east-1.postgun.com with SMTP id
+ 5f73e803cc21f6157a8db995 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 30 Sep 2020 02:05:55
+ GMT
+Sender: rmanohar=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 6F881C433FE; Wed, 30 Sep 2020 02:05:54 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+Received: from rmanohar-linux.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: rmanohar)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 5C23DC433C8;
+        Wed, 30 Sep 2020 02:05:52 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 5C23DC433C8
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=rmanohar@codeaurora.org
+From:   Rajkumar Manoharan <rmanohar@codeaurora.org>
+To:     johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org, Miles Hu <milehu@codeaurora.org>
+Subject: [PATCH v2 1/2] iw: add HE rate/gi/ltf support
+Date:   Tue, 29 Sep 2020 19:05:37 -0700
+Message-Id: <1601431538-6621-1-git-send-email-rmanohar@codeaurora.org>
+X-Mailer: git-send-email 2.7.4
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 9/29/20 1:25 PM, Thomas Gleixner wrote:
-> From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
->
-> The in_interrupt() usage in this driver tries to figure out which context
-> may sleep and which context may not sleep. in_interrupt() is not really
-> suitable as it misses both preemption disabled and interrupt disabled
-> invocations from task context.
->
-> Conditionals like that in driver code are frowned upon in general because
-> invocations of functions from invalid contexts might not be detected
-> as the conditional papers over it.
->
-> ionic_lif_addr() and _ionoc_lif_rx_mode() can be called from:
->
->   1) ->ndo_set_rx_mode() which is under netif_addr_lock_bh()) so it must not
->      sleep.
->
->   2) Init and setup functions which are in fully preemptible task context.
->
-> ionic_link_status_check_request() has two call paths:
->
->   1) NAPI which obviously cannot sleep
->
->   2) Setup which is again fully preemptible task context
->
-> Add arguments which convey the execution context to the affected functions
-> and let the callers provide the context instead of letting the functions
-> deduce it.
->
-> Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-> ---
-> V2: Treat _ionoc_lif_rx_mode() correclty (Shannon)
+From: Miles Hu <milehu@codeaurora.org>
 
-Is it fair to poke at the comments?
-s/ionoc/ionic/
-s/correclty/correctly/
+This patch adds support for setting fied HE rates/gi/ltf
 
-> ---
->   drivers/net/ethernet/pensando/ionic/ionic_dev.c |    2
->   drivers/net/ethernet/pensando/ionic/ionic_lif.c |   64 ++++++++++++++++--------
->   drivers/net/ethernet/pensando/ionic/ionic_lif.h |    2
->   3 files changed, 47 insertions(+), 21 deletions(-)
->
-> --- a/drivers/net/ethernet/pensando/ionic/ionic_dev.c
-> +++ b/drivers/net/ethernet/pensando/ionic/ionic_dev.c
-> @@ -22,7 +22,7 @@ static void ionic_watchdog_cb(struct tim
->   	hb = ionic_heartbeat_check(ionic);
->   
->   	if (hb >= 0 && ionic->lif)
-> -		ionic_link_status_check_request(ionic->lif);
-> +		ionic_link_status_check_request(ionic->lif, false);
->   }
->   
->   void ionic_init_devinfo(struct ionic *ionic)
-> --- a/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-> +++ b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-> @@ -151,7 +151,7 @@ static void ionic_link_status_check(stru
->   	clear_bit(IONIC_LIF_F_LINK_CHECK_REQUESTED, lif->state);
->   }
->   
-> -void ionic_link_status_check_request(struct ionic_lif *lif)
-> +void ionic_link_status_check_request(struct ionic_lif *lif, bool can_sleep)
->   {
->   	struct ionic_deferred_work *work;
->   
-> @@ -159,7 +159,7 @@ void ionic_link_status_check_request(str
->   	if (test_and_set_bit(IONIC_LIF_F_LINK_CHECK_REQUESTED, lif->state))
->   		return;
->   
-> -	if (in_interrupt()) {
-> +	if (!can_sleep) {
->   		work = kzalloc(sizeof(*work), GFP_ATOMIC);
->   		if (!work)
->   			return;
-> @@ -798,7 +798,7 @@ static bool ionic_notifyq_service(struct
->   
->   	switch (le16_to_cpu(comp->event.ecode)) {
->   	case IONIC_EVENT_LINK_CHANGE:
-> -		ionic_link_status_check_request(lif);
-> +		ionic_link_status_check_request(lif, false);
->   		break;
->   	case IONIC_EVENT_RESET:
->   		work = kzalloc(sizeof(*work), GFP_ATOMIC);
-> @@ -981,7 +981,8 @@ static int ionic_lif_addr_del(struct ion
->   	return 0;
->   }
->   
-> -static int ionic_lif_addr(struct ionic_lif *lif, const u8 *addr, bool add)
-> +static int ionic_lif_addr(struct ionic_lif *lif, const u8 *addr, bool add,
-> +			  bool can_sleep)
->   {
->   	struct ionic *ionic = lif->ionic;
->   	struct ionic_deferred_work *work;
-> @@ -1010,7 +1011,7 @@ static int ionic_lif_addr(struct ionic_l
->   			lif->nucast--;
->   	}
->   
-> -	if (in_interrupt()) {
-> +	if (!can_sleep) {
->   		work = kzalloc(sizeof(*work), GFP_ATOMIC);
->   		if (!work) {
->   			netdev_err(lif->netdev, "%s OOM\n", __func__);
-> @@ -1036,12 +1037,22 @@ static int ionic_lif_addr(struct ionic_l
->   
->   static int ionic_addr_add(struct net_device *netdev, const u8 *addr)
->   {
-> -	return ionic_lif_addr(netdev_priv(netdev), addr, true);
-> +	return ionic_lif_addr(netdev_priv(netdev), addr, true, true);
-> +}
-> +
-> +static int ionic_ndo_addr_add(struct net_device *netdev, const u8 *addr)
-> +{
-> +	return ionic_lif_addr(netdev_priv(netdev), addr, true, false);
->   }
->   
->   static int ionic_addr_del(struct net_device *netdev, const u8 *addr)
->   {
-> -	return ionic_lif_addr(netdev_priv(netdev), addr, false);
-> +	return ionic_lif_addr(netdev_priv(netdev), addr, false, true);
-> +}
-> +
-> +static int ionic_ndo_addr_del(struct net_device *netdev, const u8 *addr)
-> +{
-> +	return ionic_lif_addr(netdev_priv(netdev), addr, false, false);
->   }
+Tested-by: John Crispin <john@phrozen.org>
+Signed-off-by: Miles Hu <milehu@codeaurora.org>
+---
+v2: Rebased and fixed conflicts
 
-These changes are reasonable, tho' I'm not fond of parameter lists of 
-"true" and "false" with no context.  I'd prefer to have some constants like
-#define can_sleep true
-so the code can be a little more readable.
+ bitrate.c | 178 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++------
+ 1 file changed, 163 insertions(+), 15 deletions(-)
 
-Yes, I know we have this problem already in the call to 
-ionic_lif_addr(), which I'm annoyed with but haven't addressed yet.
-
-So, if you want to deal with this now, fine, otherwise I'll take care of 
-them both later.
-
-Meanwhile,
-
-Acked-by: Shannon Nelson <snelson@pensando.io>
-
-
-
-
->   
->   static void ionic_lif_rx_mode(struct ionic_lif *lif, unsigned int rx_mode)
-> @@ -1081,11 +1092,12 @@ static void ionic_lif_rx_mode(struct ion
->   		lif->rx_mode = rx_mode;
->   }
->   
-> -static void _ionic_lif_rx_mode(struct ionic_lif *lif, unsigned int rx_mode)
-> +static void _ionic_lif_rx_mode(struct ionic_lif *lif, unsigned int rx_mode,
-> +			       bool from_ndo)
->   {
->   	struct ionic_deferred_work *work;
->   
-> -	if (in_interrupt()) {
-> +	if (from_ndo) {
->   		work = kzalloc(sizeof(*work), GFP_ATOMIC);
->   		if (!work) {
->   			netdev_err(lif->netdev, "%s OOM\n", __func__);
-> @@ -1100,7 +1112,16 @@ static void _ionic_lif_rx_mode(struct io
->   	}
->   }
->   
-> -static void ionic_set_rx_mode(struct net_device *netdev)
-> +static void ionic_dev_uc_sync(struct net_device *netdev, bool from_ndo)
-> +{
-> +	if (from_ndo)
-> +		__dev_uc_sync(netdev, ionic_ndo_addr_add, ionic_ndo_addr_del);
-> +	else
-> +		__dev_uc_sync(netdev, ionic_addr_add, ionic_addr_del);
-> +
-> +}
-> +
-> +static void ionic_set_rx_mode(struct net_device *netdev, bool from_ndo)
->   {
->   	struct ionic_lif *lif = netdev_priv(netdev);
->   	struct ionic_identity *ident;
-> @@ -1122,7 +1143,7 @@ static void ionic_set_rx_mode(struct net
->   	 *       we remove our overflow flag and check the netdev flags
->   	 *       to see if we can disable NIC PROMISC
->   	 */
-> -	__dev_uc_sync(netdev, ionic_addr_add, ionic_addr_del);
-> +	ionic_dev_uc_sync(netdev, from_ndo);
->   	nfilters = le32_to_cpu(ident->lif.eth.max_ucast_filters);
->   	if (netdev_uc_count(netdev) + 1 > nfilters) {
->   		rx_mode |= IONIC_RX_MODE_F_PROMISC;
-> @@ -1134,7 +1155,7 @@ static void ionic_set_rx_mode(struct net
->   	}
->   
->   	/* same for multicast */
-> -	__dev_mc_sync(netdev, ionic_addr_add, ionic_addr_del);
-> +	ionic_dev_uc_sync(netdev, from_ndo);
->   	nfilters = le32_to_cpu(ident->lif.eth.max_mcast_filters);
->   	if (netdev_mc_count(netdev) > nfilters) {
->   		rx_mode |= IONIC_RX_MODE_F_ALLMULTI;
-> @@ -1146,7 +1167,12 @@ static void ionic_set_rx_mode(struct net
->   	}
->   
->   	if (lif->rx_mode != rx_mode)
-> -		_ionic_lif_rx_mode(lif, rx_mode);
-> +		_ionic_lif_rx_mode(lif, rx_mode, from_ndo);
-> +}
-> +
-> +static void ionic_ndo_set_rx_mode(struct net_device *netdev)
-> +{
-> +	ionic_set_rx_mode(netdev, true);
->   }
->   
->   static __le64 ionic_netdev_features_to_nic(netdev_features_t features)
-> @@ -1391,7 +1417,7 @@ static int ionic_start_queues_reconfig(s
->   	 */
->   	err = ionic_txrx_init(lif);
->   	mutex_unlock(&lif->queue_lock);
-> -	ionic_link_status_check_request(lif);
-> +	ionic_link_status_check_request(lif, true);
->   	netif_device_attach(lif->netdev);
->   
->   	return err;
-> @@ -1720,7 +1746,7 @@ static int ionic_txrx_init(struct ionic_
->   	if (lif->netdev->features & NETIF_F_RXHASH)
->   		ionic_lif_rss_init(lif);
->   
-> -	ionic_set_rx_mode(lif->netdev);
-> +	ionic_set_rx_mode(lif->netdev, false);
->   
->   	return 0;
->   
-> @@ -2093,7 +2119,7 @@ static const struct net_device_ops ionic
->   	.ndo_stop               = ionic_stop,
->   	.ndo_start_xmit		= ionic_start_xmit,
->   	.ndo_get_stats64	= ionic_get_stats64,
-> -	.ndo_set_rx_mode	= ionic_set_rx_mode,
-> +	.ndo_set_rx_mode	= ionic_ndo_set_rx_mode,
->   	.ndo_set_features	= ionic_set_features,
->   	.ndo_set_mac_address	= ionic_set_mac_address,
->   	.ndo_validate_addr	= eth_validate_addr,
-> @@ -2521,7 +2547,7 @@ static void ionic_lif_handle_fw_up(struc
->   	}
->   
->   	clear_bit(IONIC_LIF_F_FW_RESET, lif->state);
-> -	ionic_link_status_check_request(lif);
-> +	ionic_link_status_check_request(lif, true);
->   	netif_device_attach(lif->netdev);
->   	dev_info(ionic->dev, "FW Up: LIFs restarted\n");
->   
-> @@ -2713,7 +2739,7 @@ static int ionic_station_set(struct ioni
->   		 */
->   		if (!ether_addr_equal(ctx.comp.lif_getattr.mac,
->   				      netdev->dev_addr))
-> -			ionic_lif_addr(lif, netdev->dev_addr, true);
-> +			ionic_lif_addr(lif, netdev->dev_addr, true, true);
->   	} else {
->   		/* Update the netdev mac with the device's mac */
->   		memcpy(addr.sa_data, ctx.comp.lif_getattr.mac, netdev->addr_len);
-> @@ -2730,7 +2756,7 @@ static int ionic_station_set(struct ioni
->   
->   	netdev_dbg(lif->netdev, "adding station MAC addr %pM\n",
->   		   netdev->dev_addr);
-> -	ionic_lif_addr(lif, netdev->dev_addr, true);
-> +	ionic_lif_addr(lif, netdev->dev_addr, true, true);
->   
->   	return 0;
->   }
-> --- a/drivers/net/ethernet/pensando/ionic/ionic_lif.h
-> +++ b/drivers/net/ethernet/pensando/ionic/ionic_lif.h
-> @@ -245,7 +245,7 @@ static inline u32 ionic_coal_usec_to_hw(
->   
->   typedef void (*ionic_reset_cb)(struct ionic_lif *lif, void *arg);
->   
-> -void ionic_link_status_check_request(struct ionic_lif *lif);
-> +void ionic_link_status_check_request(struct ionic_lif *lif, bool can_sleep);
->   void ionic_get_stats64(struct net_device *netdev,
->   		       struct rtnl_link_stats64 *ns);
->   void ionic_lif_deferred_enqueue(struct ionic_deferred *def,
->
+diff --git a/bitrate.c b/bitrate.c
+index 32a23a938914..2cd55d15bfab 100644
+--- a/bitrate.c
++++ b/bitrate.c
+@@ -4,13 +4,22 @@
+ #include "iw.h"
+ 
+ 
+-static int parse_vht_chunk(const char *arg, __u8 *nss, __u16 *mcs)
++static int parse_rate_chunk(const char *arg, __u8 *nss, __u16 *mcs, unsigned int mode)
+ {
+ 	unsigned int count, i;
+-	unsigned int inss, mcs_start, mcs_end, tab[10];
++	unsigned int inss, mcs_start, mcs_end, tab[12];
++	unsigned int max_mcs = 0, max_nss = 0;
+ 
+ 	*nss = 0; *mcs = 0;
+ 
++	if (mode == NL80211_TXRATE_HE) {
++		max_mcs = 11;
++		max_nss = NL80211_HE_NSS_MAX;
++	} else {
++		max_mcs = 9;
++		max_nss = NL80211_VHT_NSS_MAX;
++	}
++
+ 	if (strchr(arg, '-')) {
+ 		/* Format: NSS:MCS_START-MCS_END */
+ 		count = sscanf(arg, "%u:%u-%u", &inss, &mcs_start, &mcs_end);
+@@ -18,13 +27,13 @@ static int parse_vht_chunk(const char *arg, __u8 *nss, __u16 *mcs)
+ 		if (count != 3)
+ 			return 0;
+ 
+-		if (inss < 1 || inss > NL80211_VHT_NSS_MAX)
++		if (inss < 1 || inss > max_nss)
+ 			return 0;
+ 
+ 		if (mcs_start > mcs_end)
+ 			return 0;
+ 
+-		if (mcs_start > 9 || mcs_end > 9)
++		if (mcs_start > max_mcs || mcs_end > max_mcs)
+ 			return 0;
+ 
+ 		*nss = inss;
+@@ -33,19 +42,26 @@ static int parse_vht_chunk(const char *arg, __u8 *nss, __u16 *mcs)
+ 
+ 	} else {
+ 		/* Format: NSS:MCSx,MCSy,... */
+-		count = sscanf(arg, "%u:%u,%u,%u,%u,%u,%u,%u,%u,%u,%u", &inss,
+-			   &tab[0], &tab[1], &tab[2], &tab[3], &tab[4], &tab[5],
+-			   &tab[6], &tab[7], &tab[8], &tab[9]);
++		if (mode == NL80211_TXRATE_HE) {
++			count = sscanf(arg, "%u:%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u",
++				       &inss, &tab[0], &tab[1], &tab[2], &tab[3],
++				       &tab[4], &tab[5], &tab[6], &tab[7], &tab[8],
++				       &tab[9], &tab[10], &tab[11]);
++		} else {
++			count = sscanf(arg, "%u:%u,%u,%u,%u,%u,%u,%u,%u,%u,%u", &inss,
++				       &tab[0], &tab[1], &tab[2], &tab[3], &tab[4],
++				       &tab[5], &tab[6], &tab[7], &tab[8], &tab[9]);
++		}
+ 
+ 		if (count < 2)
+ 			return 0;
+ 
+-		if (inss < 1 || inss > NL80211_VHT_NSS_MAX)
++		if (inss < 1 || inss > max_nss)
+ 			return 0;
+ 
+ 		*nss = inss;
+ 		for (i = 0; i < count - 1; i++) {
+-			if (tab[i] > 9)
++			if (tab[i] > max_mcs)
+ 				return 0;
+ 			*mcs |= 1 << tab[i];
+ 		}
+@@ -54,6 +70,16 @@ static int parse_vht_chunk(const char *arg, __u8 *nss, __u16 *mcs)
+ 	return 1;
+ }
+ 
++static int parse_vht_chunk(const char *arg, __u8 *nss, __u16 *mcs)
++{
++	return parse_rate_chunk(arg, nss, mcs, NL80211_TXRATE_VHT);
++}
++
++static int parse_he_chunk(const char *arg, __u8 *nss, __u16 *mcs)
++{
++	return parse_rate_chunk(arg, nss, mcs, NL80211_TXRATE_HE);
++}
++
+ static int setup_vht(struct nl80211_txrate_vht *txrate_vht,
+ 		     int argc, char **argv)
+ {
+@@ -74,6 +100,45 @@ static int setup_vht(struct nl80211_txrate_vht *txrate_vht,
+ 	return 1;
+ }
+ 
++static int setup_he(struct nl80211_txrate_he *txrate_he,
++		    int argc, char **argv)
++{
++	__u8 nss;
++	__u16 mcs;
++	int i;
++
++	memset(txrate_he, 0, sizeof(*txrate_he));
++
++	for (i = 0; i < argc; i++) {
++		if (!parse_he_chunk(argv[i], &nss, &mcs))
++			return 0;
++
++		nss--;
++		txrate_he->mcs[nss] |= mcs;
++	}
++
++	return 1;
++}
++
++#define HE_GI_STR_MAX	16
++#define HE_GI_08_STR "0.8"
++#define HE_GI_16_STR "1.6"
++#define HE_GI_32_STR "3.2"
++int parse_he_gi(char *he_gi)
++{
++	if (he_gi == NULL)
++		return 0;
++
++	if (!strncmp(he_gi, HE_GI_08_STR, sizeof(HE_GI_08_STR)))
++		return NL80211_RATE_INFO_HE_GI_0_8;
++	if (!strncmp(he_gi, HE_GI_16_STR, sizeof(HE_GI_16_STR)))
++		return NL80211_RATE_INFO_HE_GI_1_6;
++	if (!strncmp(he_gi, HE_GI_32_STR, sizeof(HE_GI_32_STR)))
++		return NL80211_RATE_INFO_HE_GI_3_2;
++
++	return -1;
++}
++
+ #define VHT_ARGC_MAX	100
+ 
+ int set_bitrates(struct nl_msg *msg,
+@@ -89,24 +154,35 @@ int set_bitrates(struct nl_msg *msg,
+ 	int *n_legacy = NULL;
+ 	bool have_ht_mcs_24 = false, have_ht_mcs_5 = false;
+ 	bool have_vht_mcs_24 = false, have_vht_mcs_5 = false;
++	bool have_he_mcs_24 = false, have_he_mcs_5 = false;
+ 	uint8_t ht_mcs_24[77], ht_mcs_5[77];
+ 	int n_ht_mcs_24 = 0, n_ht_mcs_5 = 0;
+ 	struct nl80211_txrate_vht txrate_vht_24 = {};
+ 	struct nl80211_txrate_vht txrate_vht_5 = {};
++	struct nl80211_txrate_he txrate_he_24 = {};
++	struct nl80211_txrate_he txrate_he_5 = {};
+ 	uint8_t *mcs = NULL;
+ 	int *n_mcs = NULL;
+ 	char *vht_argv_5[VHT_ARGC_MAX] = {}; char *vht_argv_24[VHT_ARGC_MAX] = {};
+-	char **vht_argv = NULL;
++	char *he_argv_5[VHT_ARGC_MAX] = {}; char *he_argv_24[VHT_ARGC_MAX] = {};
++	char **vht_argv = NULL, **he_argv = NULL;
+ 	int vht_argc_5 = 0; int vht_argc_24 = 0;
+-	int *vht_argc = NULL;
++	int he_argc_5 = 0; int he_argc_24 = 0;
++	int *vht_argc = NULL, *he_argc = NULL;
+ 	int sgi_24 = 0, sgi_5 = 0, lgi_24 = 0, lgi_5 = 0;
++	int has_he_gi_24 = 0, has_he_gi_5 = 0, has_he_ltf_24 = 0, has_he_ltf_5 = 0;
++	int he_gi = 0, he_ltf = 0;
++	char *he_gi_argv = NULL;
+ 
+ 	enum {
+ 		S_NONE,
+ 		S_LEGACY,
+ 		S_HT,
+ 		S_VHT,
++		S_HE,
+ 		S_GI,
++		S_HE_GI,
++		S_HE_LTF,
+ 	} parser_state = S_NONE;
+ 
+ 	for (i = 0; i < argc; i++) {
+@@ -157,6 +233,20 @@ int set_bitrates(struct nl_msg *msg,
+ 			vht_argv = vht_argv_5;
+ 			vht_argc = &vht_argc_5;
+ 			have_vht_mcs_5 = true;
++		} else if (strcmp(argv[i], "he-mcs-2.4") == 0) {
++			if (have_he_mcs_24)
++				return 1;
++			parser_state = S_HE;
++			he_argv = he_argv_24;
++			he_argc = &he_argc_24;
++			have_he_mcs_24 = true;
++		} else if (strcmp(argv[i], "he-mcs-5") == 0) {
++			if (have_he_mcs_5)
++				return 1;
++			parser_state = S_HE;
++			he_argv = he_argv_5;
++			he_argc = &he_argc_5;
++			have_he_mcs_5 = true;
+ 		} else if (strcmp(argv[i], "sgi-2.4") == 0) {
+ 			sgi_24 = 1;
+ 			parser_state = S_GI;
+@@ -169,6 +259,18 @@ int set_bitrates(struct nl_msg *msg,
+ 		} else if (strcmp(argv[i], "lgi-5") == 0) {
+ 			lgi_5 = 1;
+ 			parser_state = S_GI;
++		} else if (strcmp(argv[i], "he-gi-2.4") == 0) {
++			has_he_gi_24 = 1;
++			parser_state = S_HE_GI;
++		} else if (strcmp(argv[i], "he-gi-5") == 0) {
++			has_he_gi_5 = 1;
++			parser_state = S_HE_GI;
++		} else if (strcmp(argv[i], "he-ltf-2.4") == 0) {
++			has_he_ltf_24 = 1;
++			parser_state = S_HE_LTF;
++		} else if (strcmp(argv[i], "he-ltf-5") == 0) {
++			has_he_ltf_5 = 1;
++			parser_state = S_HE_LTF;
+ 		} else switch (parser_state) {
+ 		case S_LEGACY:
+ 			tmpd = strtod(argv[i], &end);
+@@ -191,8 +293,24 @@ int set_bitrates(struct nl_msg *msg,
+ 				return 1;
+ 			vht_argv[(*vht_argc)++] = argv[i];
+ 			break;
++		case S_HE:
++			if (*he_argc >= VHT_ARGC_MAX)
++				return 1;
++			he_argv[(*he_argc)++] = argv[i];
++			break;
+ 		case S_GI:
+ 			break;
++		case S_HE_GI:
++			he_gi_argv = argv[i];
++			break;
++		case S_HE_LTF:
++			he_ltf = strtol(argv[i], &end, 0);
++			if (*end != '\0')
++				return 1;
++			if (he_ltf < 0 || he_ltf > 4)
++				return 1;
++			he_ltf = he_ltf >> 1;
++			break;
+ 		default:
+ 			if (attr != NL80211_ATTR_TX_RATES)
+ 				goto next;
+@@ -212,17 +330,32 @@ next:
+ 		if (!setup_vht(&txrate_vht_5, vht_argc_5, vht_argv_5))
+ 			return -EINVAL;
+ 
++	if (have_he_mcs_24)
++		if (!setup_he(&txrate_he_24, he_argc_24, he_argv_24))
++			return -EINVAL;
++
++	if (have_he_mcs_5)
++		if (!setup_he(&txrate_he_5, he_argc_5, he_argv_5))
++			return -EINVAL;
++
+ 	if (sgi_5 && lgi_5)
+ 		return 1;
+ 
+ 	if (sgi_24 && lgi_24)
+ 		return 1;
+ 
++	if (he_gi_argv) {
++		he_gi = parse_he_gi(he_gi_argv);
++		if (he_gi < 0)
++			return 1;
++	}
++
+ 	nl_rates = nla_nest_start(msg, attr);
+ 	if (!nl_rates)
+ 		goto nla_put_failure;
+ 
+-	if (have_legacy_24 || have_ht_mcs_24 || have_vht_mcs_24 || sgi_24 || lgi_24) {
++	if (have_legacy_24 || have_ht_mcs_24 || have_vht_mcs_24 || have_he_mcs_24 ||
++	    sgi_24 || lgi_24 || has_he_gi_24 || has_he_ltf_24) {
+ 		nl_band = nla_nest_start(msg, NL80211_BAND_2GHZ);
+ 		if (!nl_band)
+ 			goto nla_put_failure;
+@@ -232,14 +365,22 @@ next:
+ 			nla_put(msg, NL80211_TXRATE_HT, n_ht_mcs_24, ht_mcs_24);
+ 		if (have_vht_mcs_24)
+ 			nla_put(msg, NL80211_TXRATE_VHT, sizeof(txrate_vht_24), &txrate_vht_24);
++		if (have_he_mcs_24)
++			nla_put(msg, NL80211_TXRATE_HE, sizeof(txrate_he_24),
++				&txrate_he_24);
+ 		if (sgi_24)
+ 			nla_put_u8(msg, NL80211_TXRATE_GI, NL80211_TXRATE_FORCE_SGI);
+ 		if (lgi_24)
+ 			nla_put_u8(msg, NL80211_TXRATE_GI, NL80211_TXRATE_FORCE_LGI);
++		if (has_he_gi_24)
++			nla_put_u8(msg, NL80211_TXRATE_HE_GI, he_gi);
++		if (has_he_ltf_24)
++			nla_put_u8(msg, NL80211_TXRATE_HE_LTF, he_ltf);
+ 		nla_nest_end(msg, nl_band);
+ 	}
+ 
+-	if (have_legacy_5 || have_ht_mcs_5 || have_vht_mcs_5 || sgi_5 || lgi_5) {
++	if (have_legacy_5 || have_ht_mcs_5 || have_vht_mcs_5 || have_he_mcs_5 ||
++	    sgi_5 || lgi_5 || has_he_gi_5 || has_he_ltf_5) {
+ 		nl_band = nla_nest_start(msg, NL80211_BAND_5GHZ);
+ 		if (!nl_band)
+ 			goto nla_put_failure;
+@@ -249,10 +390,17 @@ next:
+ 			nla_put(msg, NL80211_TXRATE_HT, n_ht_mcs_5, ht_mcs_5);
+ 		if (have_vht_mcs_5)
+ 			nla_put(msg, NL80211_TXRATE_VHT, sizeof(txrate_vht_5), &txrate_vht_5);
++		if (have_he_mcs_5)
++			nla_put(msg, NL80211_TXRATE_HE, sizeof(txrate_he_5),
++				&txrate_he_5);
+ 		if (sgi_5)
+ 			nla_put_u8(msg, NL80211_TXRATE_GI, NL80211_TXRATE_FORCE_SGI);
+ 		if (lgi_5)
+ 			nla_put_u8(msg, NL80211_TXRATE_GI, NL80211_TXRATE_FORCE_LGI);
++		if (has_he_gi_5)
++			nla_put_u8(msg, NL80211_TXRATE_HE_GI, he_gi);
++		if (has_he_ltf_5)
++			nla_put_u8(msg, NL80211_TXRATE_HE_LTF, he_ltf);
+ 		nla_nest_end(msg, nl_band);
+ 	}
+ 
+@@ -272,9 +420,9 @@ static int handle_bitrates(struct nl80211_state *state,
+ }
+ 
+ #define DESCR_LEGACY "[legacy-<2.4|5> <legacy rate in Mbps>*]"
+-#define DESCR DESCR_LEGACY " [ht-mcs-<2.4|5> <MCS index>*] [vht-mcs-<2.4|5> <NSS:MCSx,MCSy... | NSS:MCSx-MCSy>*] [sgi-2.4|lgi-2.4] [sgi-5|lgi-5]"
++#define DESCR DESCR_LEGACY " [ht-mcs-<2.4|5> <MCS index>*] [vht-mcs-<2.4|5>  [he-mcs-<2.4|5> <NSS:MCSx,MCSy... | NSS:MCSx-MCSy>*] [sgi-2.4|lgi-2.4] [sgi-5|lgi-5]"
+ 
+-COMMAND(set, bitrates, "[legacy-<2.4|5> <legacy rate in Mbps>*] [ht-mcs-<2.4|5> <MCS index>*] [vht-mcs-<2.4|5> <NSS:MCSx,MCSy... | NSS:MCSx-MCSy>*] [sgi-2.4|lgi-2.4] [sgi-5|lgi-5]",
++COMMAND(set, bitrates, "[legacy-<2.4|5> <legacy rate in Mbps>*] [ht-mcs-<2.4|5> <MCS index>*] [vht-mcs-<2.4|5> [he-mcs-<2.4|5> <NSS:MCSx,MCSy... | NSS:MCSx-MCSy>*] [sgi-2.4|lgi-2.4] [sgi-5|lgi-5] [he-gi-2.4:0.8/1.6/3.2] [he-gi-5:0.8/1.6/3.2] [he-ltf-2.4:1/2/4] [he-ltf-5:1/2/4]",
+ 	NL80211_CMD_SET_TX_BITRATE_MASK, 0, CIB_NETDEV, handle_bitrates,
+ 	"Sets up the specified rate masks.\n"
+ 	"Not passing any arguments would clear the existing mask (if any).");
+-- 
+2.7.4
 
