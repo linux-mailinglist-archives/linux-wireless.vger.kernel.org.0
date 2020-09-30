@@ -2,103 +2,112 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A7A0E27E059
-	for <lists+linux-wireless@lfdr.de>; Wed, 30 Sep 2020 07:29:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8574527E0F8
+	for <lists+linux-wireless@lfdr.de>; Wed, 30 Sep 2020 08:22:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727927AbgI3F31 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 30 Sep 2020 01:29:27 -0400
-Received: from mail-eopbgr100120.outbound.protection.outlook.com ([40.107.10.120]:19616
-        "EHLO GBR01-LO2-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725306AbgI3F31 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 30 Sep 2020 01:29:27 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=akQ5W6dkV3OobqAFiJvzWC/Qrb5xanKVy0VZ9KqwwIzbBIsX1BM4zhIGWlQyCqUqxY7Oy4w7A7P2K0qNryGUo1GBhd75msOiq4Zv/MNzL/4Ze8zNKeeaAr3TXVPTcAaJs5O03z7tGWYaBgzs8NEouX9CuhJrBhvBms6XE4Fai5tyTUdHgRLZ5X7EQLKRNNAulw476ToEWisqRKoN1CbzKkEjmHLQcGbWVbCuYRL+jVwPrsClvDBCZCpP3cJR79vm1x8Y2+PI2vjjpQFyaClqfpqx6ooF9jYtbr9Qvl3Ttz9glNjpPpix2i5FGSEHiijMnIflt7Qp5CkC5LjPaf0fow==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=tutr2RCClZVWeMZE6qG7csybtPUs4H2PHeTKVpflSPc=;
- b=oe60aNRgNBAR69H8HV1i2TCVDRdHR8FUi/j5psr/nDXjTTEUPgl+JLMDKLYUsL/2Zq/uQiKJcIlR8XJbXIYRyXN9kraT0Ocxh33ASpM4YLPrfEkxCFCdCgRXw29wKxAc6tV4KO6XVnsyTkiHIMUuT26qB0IwzZDX3Wc7jL+3uhleO4kRVVgVJ6HWZEv1kUYbnRe6Exj9MQw4QHtIdWDa94N4MwsrxaThJow/xOSiMHFCa7JhpuZcbRecrpsnX7HNIv4wVBkeWtuigRO2WWyRslqTfTMP+pKDZso2jk8JVjHmyUi3/CFpJWpY7UotehRN6ocoYOTP/dPLrL/6PeqlTQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=purelifi.com; dmarc=pass action=none header.from=purelifi.com;
- dkim=pass header.d=purelifi.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=purevlc.onmicrosoft.com; s=selector2-purevlc-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=tutr2RCClZVWeMZE6qG7csybtPUs4H2PHeTKVpflSPc=;
- b=jFiXEpoqLqHVN1GKFxd/QcnG/xH+j1CUNXpXkxUNlVo2zzzSurgXSw/LJv7IXAmr/royhKA8hNIkCr+LnTTR7qbpHPoqdC2k0orvztUkNHvJT/jLDjMqU8uzR+22RfYhTThUDhf8Ee3pwa7W3vfPgYWedz6SjxzZkIAyDkelboM=
-Received: from CWLP265MB1972.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:6f::14)
- by CWXP265MB2439.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:4c::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3412.24; Wed, 30 Sep
- 2020 05:29:23 +0000
-Received: from CWLP265MB1972.GBRP265.PROD.OUTLOOK.COM
- ([fe80::e102:fffb:c3b6:780f]) by CWLP265MB1972.GBRP265.PROD.OUTLOOK.COM
- ([fe80::e102:fffb:c3b6:780f%8]) with mapi id 15.20.3433.032; Wed, 30 Sep 2020
- 05:29:23 +0000
-From:   Srinivasan Raju <srini.raju@purelifi.com>
-To:     Leon Romanovsky <leon@kernel.org>
-CC:     Mostafa Afgani <mostafa.afgani@purelifi.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
+        id S1727599AbgI3GWz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 30 Sep 2020 02:22:55 -0400
+Received: from mail.kernel.org ([198.145.29.99]:47976 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725320AbgI3GWz (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 30 Sep 2020 02:22:55 -0400
+Received: from localhost (83-86-74-64.cable.dynamic.v4.ziggo.nl [83.86.74.64])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 2E6772075A;
+        Wed, 30 Sep 2020 06:22:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1601446974;
+        bh=EXxvDUn4XGcHD/Ca0uIvwF+PRWacJD69F4bcem0AxSw=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=cehjbcseNzUjHSH9H/NUjRZOIUzHKfq3q9Ty7fj3LwMusdc294CGdNFS7gdzKtiiK
+         WI3Y6zw4SOZB4Y+SdZFlplaofN7HquwtrvQZ+Gb1v7JjPvLnN0MAysxbZB2TYeExGL
+         zOFWw3q77zfFM0MabdV5ksP31I3MmAp6bGMxarjQ=
+Date:   Wed, 30 Sep 2020 08:22:58 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Thomas Gleixner <tglx@linutronix.de>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Paul McKenney <paulmck@kernel.org>,
+        Matthew Wilcox <willy@infradead.org>,
+        Christian Benvenuti <benve@cisco.com>,
+        Govindarajulu Varadarajan <_govind@gmx.com>,
+        Dave Miller <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
+        Jonathan Corbet <corbet@lwn.net>,
         Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        Rob Herring <robh@kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Subject: Re: [PATCH] [v2] wireless: Initial driver submission for pureLiFi
- devices
-Thread-Topic: [PATCH] [v2] wireless: Initial driver submission for pureLiFi
- devices
-Thread-Index: AQHWlYEQBtpUmlBsIE2OcjRvCcmkD6mAppEAgAADTrc=
-Date:   Wed, 30 Sep 2020 05:29:23 +0000
-Message-ID: <CWLP265MB1972EC8E3D4BDE977F11C8F5E0330@CWLP265MB1972.GBRP265.PROD.OUTLOOK.COM>
-References: <20200924151910.21693-1-srini.raju@purelifi.com>
- <20200928102008.32568-1-srini.raju@purelifi.com>,<20200930051602.GJ3094@unreal>
-In-Reply-To: <20200930051602.GJ3094@unreal>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: kernel.org; dkim=none (message not signed)
- header.d=none;kernel.org; dmarc=none action=none header.from=purelifi.com;
-x-originating-ip: [103.104.125.101]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: daf1552e-969b-4e57-31f5-08d86501ca6c
-x-ms-traffictypediagnostic: CWXP265MB2439:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <CWXP265MB2439195F010B26FAF5A53D7EE0330@CWXP265MB2439.GBRP265.PROD.OUTLOOK.COM>
-x-ms-oob-tlc-oobclassifiers: OLM:5236;
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: 4kLO4p2DE8Uedpx15ElBnFHJ59gBh/bqtL9F/MkUGEtUcvnTkb9B28+XwitfsEyrpDa/Ems5cHK/SniSZt9d0g6jAky4rMOV/v82D8gxQCilZKhF/r1Dkm56bmRRq/gd8PJs/4m5xFIRg8Rl/DwDn07F3ucEmp2R10B7K1hLVkpnbfxsl8DPThYA5HsbWClv3/RK9kKZH+JfzMo2tt8ut20OLs/J15zbIruvi+ykJMH7vXL0MVedJbHWOdtmldS4ihaY3JpD0q0A1IxILUdqPHsj4edmXb3/bRsvgu5XHOBckKz2k+keYxogL2OLNYb8581uC8P4YpfSEYKOqbqsYp5+NB8lKKQ62Hb7jdVvfOCqMEJSRXVSrNpKLMvEqrwu
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CWLP265MB1972.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(6029001)(4636009)(346002)(396003)(136003)(376002)(39830400003)(366004)(9686003)(8936002)(8676002)(2906002)(5660300002)(558084003)(4326008)(6916009)(55016002)(52536014)(6506007)(7696005)(316002)(76116006)(91956017)(54906003)(478600001)(26005)(186003)(33656002)(86362001)(66946007)(71200400001)(66476007)(66556008)(64756008)(66446008);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata: i7+uE7bJmGc+dMWXTtrC+3bzEWI9fyclItmwTb8Zz/cByEpk7e8QnYG7OSWlyYuKhWaEdmKz2alksBDQuhLyl9awc0WJkdf8SQW5NFg3nOUheAutavU/snQnnq6db2QUOrIDotEFe2b6KVqlfz4ulk9y1grLtNeAo02AAG8m1SeDxLu5lW/IvJaFhYKot7A29cMrqyTpgDjao++H3SOst9kxtSITQ/U1WKkLkOZ33YBnR0ITmnmsczyOtPGLK5vYdfpxEVbt9Hpb0vcYWMEKbhhlcrR/P4Gkwz8TTOe1tf7GxvaKMc0TPkUi055OFhKx8xw3QYVKttox5n6hh/lW3LjsLELN43ZRhKYtPmqIz5RmhVELQD07lF+8khYeSWYuvjcY05njYJmYWOAGKMmgzqNMKZgwAvbs3C90FGmpSQrUfiLW8LQN6V+VizRsY2gSVIfQJqYbOXTrW9B6gHjcjpsRlN6CKxrjsx5xeSb1g+WYE9CyCOxUaugdjJvG0Kfed2L0nMwXffjrfAO80OsCUW6t3HVmn8xq20Z52axpvRPUPIV0U1+c7wmyz/5H3FQ41UamHJItAE3rszP1PlDqZ6FqZzCqc6K4Q2il84fw8t8+ApHSA6NNsHw3gokZ0dWWzjZh6ZG7N3SL2wd+AW/ewQ==
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+        linux-doc@vger.kernel.org,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Luc Van Oostenryck <luc.vanoostenryck@gmail.com>,
+        Jay Cliburn <jcliburn@gmail.com>,
+        Chris Snook <chris.snook@gmail.com>,
+        Vishal Kulkarni <vishal@chelsio.com>,
+        Jeff Kirsher <jeffrey.t.kirsher@intel.com>,
+        intel-wired-lan@lists.osuosl.org,
+        Shannon Nelson <snelson@pensando.io>,
+        Pensando Drivers <drivers@pensando.io>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Solarflare linux maintainers <linux-net-drivers@solarflare.com>,
+        Edward Cree <ecree@solarflare.com>,
+        Martin Habets <mhabets@solarflare.com>,
+        Jon Mason <jdmason@kudzu.us>, Daniel Drake <dsd@gentoo.org>,
+        Ulrich Kunitz <kune@deine-taler.de>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        linux-wireless@vger.kernel.org, linux-usb@vger.kernel.org,
+        Arend van Spriel <arend.vanspriel@broadcom.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
+        Wright Feng <wright.feng@cypress.com>,
+        brcm80211-dev-list.pdl@broadcom.com,
+        brcm80211-dev-list@cypress.com,
+        Stanislav Yakovlev <stas.yakovlev@gmail.com>,
+        Stanislaw Gruszka <stf_xl@wp.pl>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        Intel Linux Wireless <linuxwifi@intel.com>,
+        Jouni Malinen <j@w1.fi>,
+        Amitkumar Karwar <amitkarwar@gmail.com>,
+        Ganapathi Bhat <ganapathi.bhat@nxp.com>,
+        Xinming Hu <huxinming820@gmail.com>,
+        libertas-dev@lists.infradead.org,
+        Pascal Terjan <pterjan@google.com>,
+        Ping-Ke Shih <pkshih@realtek.com>
+Subject: Re: [patch V2 21/36] net: usb: kaweth: Replace kaweth_control() with
+ usb_control_msg()
+Message-ID: <20200930062258.GA1471881@kroah.com>
+References: <20200929202509.673358734@linutronix.de>
+ <20200929203501.588965483@linutronix.de>
 MIME-Version: 1.0
-X-OriginatorOrg: purelifi.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: CWLP265MB1972.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: daf1552e-969b-4e57-31f5-08d86501ca6c
-X-MS-Exchange-CrossTenant-originalarrivaltime: 30 Sep 2020 05:29:23.7111
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 5cf4eba2-7b8f-4236-bed4-a2ac41f1a6dc
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: om+wb3mW1Z2+t8fWJzPDFxMQDD+18f+FTtdzuj32tmCZ1uyLXZ+xmU8tPA/MaZg453Ugch1H5c3/FkUcAV3Vxg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWXP265MB2439
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200929203501.588965483@linutronix.de>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-=0A=
-> I stopped here.=0A=
->=0A=
-> Thanks=0A=
-=0A=
-Thanks for your comments Leon, I will resubmit after the changes=0A=
-=0A=
-Thanks=0A=
-Srini=
+On Tue, Sep 29, 2020 at 10:25:30PM +0200, Thomas Gleixner wrote:
+> From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+> 
+> kaweth_control() is almost the same as usb_control_msg() except for the
+> memory allocation mode (GFP_ATOMIC vs GFP_NOIO) and the in_interrupt()
+> check.
+> 
+> All the invocations of kaweth_control() are within the probe function in
+> fully preemtible context so there is no reason to use atomic allocations,
+> GFP_NOIO which is used by usb_control_msg() is perfectly fine.
+> 
+> Replace kaweth_control() invocations from probe with usb_control_msg().
+> 
+> Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+
+Note, the usb_control_msg_send/recv() new functions that will show up in
+5.10-rc1 will help a bit with this logic, but for what you have now,
+this is fine, nice cleanups.
+
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
