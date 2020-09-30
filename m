@@ -2,177 +2,109 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C485027DE3B
-	for <lists+linux-wireless@lfdr.de>; Wed, 30 Sep 2020 04:06:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 51C1927DE6E
+	for <lists+linux-wireless@lfdr.de>; Wed, 30 Sep 2020 04:21:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729742AbgI3CGk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 29 Sep 2020 22:06:40 -0400
-Received: from z5.mailgun.us ([104.130.96.5]:58512 "EHLO z5.mailgun.us"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729322AbgI3CGj (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 29 Sep 2020 22:06:39 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1601431599; h=References: In-Reply-To: Message-Id: Date:
- Subject: Cc: To: From: Sender;
- bh=IU7FaWBjvNQh5q5ONMDEuD++7KDd4lDCHIdDUxqZi2I=; b=SuuARtc9YRWri16L1r1YSmfkAdHL/zgFz5pD6zO+ExhNkfvhO1Pxhl6jwMvg5wsgbkiiaETj
- afUhTdQVeIclKMlP+ANxcgGTGPDLFvu3QRLlpuA2mnMmIhDysqnEckLB45dCDOP9gsC4SfOC
- 16FArkDxymdDChAZePVS4mkXufY=
-X-Mailgun-Sending-Ip: 104.130.96.5
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n05.prod.us-west-2.postgun.com with SMTP id
- 5f73e805bebf546dbbd8a0f9 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 30 Sep 2020 02:05:57
- GMT
-Sender: rmanohar=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id CA63EC433CB; Wed, 30 Sep 2020 02:05:57 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-Received: from rmanohar-linux.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: rmanohar)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id A9746C433C8;
-        Wed, 30 Sep 2020 02:05:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org A9746C433C8
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=rmanohar@codeaurora.org
-From:   Rajkumar Manoharan <rmanohar@codeaurora.org>
-To:     johannes@sipsolutions.net
-Cc:     linux-wireless@vger.kernel.org,
-        Rajkumar Manoharan <rmanohar@codeaurora.org>
-Subject: [PATCH v2 2/2] iw: support HE rate configuration in 6 GHz band
-Date:   Tue, 29 Sep 2020 19:05:38 -0700
-Message-Id: <1601431538-6621-2-git-send-email-rmanohar@codeaurora.org>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1601431538-6621-1-git-send-email-rmanohar@codeaurora.org>
-References: <1601431538-6621-1-git-send-email-rmanohar@codeaurora.org>
+        id S1729761AbgI3CVo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 29 Sep 2020 22:21:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34096 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726689AbgI3CVn (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 29 Sep 2020 22:21:43 -0400
+Received: from mail-lj1-x230.google.com (mail-lj1-x230.google.com [IPv6:2a00:1450:4864:20::230])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98933C061755
+        for <linux-wireless@vger.kernel.org>; Tue, 29 Sep 2020 19:21:43 -0700 (PDT)
+Received: by mail-lj1-x230.google.com with SMTP id n25so230585ljj.4
+        for <linux-wireless@vger.kernel.org>; Tue, 29 Sep 2020 19:21:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=/BCd40YbQgzD9EN03mnmrzEdJ2XYqRBE4b2P+bnn04c=;
+        b=X+T8ij/vznZYSiDvlF9kRVFNTCo5yBKUgQZOg3dr8ZqnCtYNj1K11QDvM6ae09FV3p
+         ghbdy9b1UF+cDVL1JUStnZ2bj0ZW2v8qR/dB5VPRJMYJZxabYKJpnK75Juuev6D6V3Ty
+         nVgs+od6yJvbmlyWzWYZpdqKKQgJQXpPbhZ5FuNCD4TDh2qvNKEo36e0HpY2y5XoKFnp
+         cY6IcweC4k1z9KNCJy7e59mV2ioDrHPoFq8AsnW8dAOFIboN3a9BGZEbn64qAKmGD3th
+         tUD34OAWiHBrzq1KQSYNeke8zoHFm6t5Njwux/NCKA6otYe8oWFu17Q5PlC/KWtANmjT
+         dlOw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=/BCd40YbQgzD9EN03mnmrzEdJ2XYqRBE4b2P+bnn04c=;
+        b=ShFfBtDcdSj462UuH9sQhPWLRggbfPkSzB4JOMdrCnhnH6/KrWQgn1E6zJWFCsrCqc
+         PPPMUUHC47o4JzbmHIWzQLRY1dn0xS/hdJTgxtNEqamSG14Da/StglCMy1Gsjysxi1fH
+         +HBYZXnYD3dJJfHGUq1ZjjvybuVcZkbQkHUnDmSn6GnMqlWOEaEBGlB8OpLTAvK8nGOX
+         I4NoL5kfn2F0aHZAzeRRBmXedKKnD+/2M1d6jUKcwPDOcGfshUJwIkwEkIjZQyhJ8VIe
+         idjGCQfZeE3tGTznz+TXufeV4jcyddIPbqQShlSYfb8Hh3zDWHeu5QDeIrlmdzS92VhG
+         DQJg==
+X-Gm-Message-State: AOAM532n5ydLFFeld7Wu7frwGIlYGBUry+DAT/gMFRXne3apLr8bDo4j
+        jgxvpCxTSkVAR+KnKEpB0Zaph2T694TJaaL3WHfoHAZdxzTEkA==
+X-Google-Smtp-Source: ABdhPJyH169KPH/8xkVlvwPcKmU12LigN1JS8XqW6wGVW7yV3mq6b7M9jmD0VJyy8+ZgKdYFefbx+ti1TI5ssFAriPY=
+X-Received: by 2002:a2e:9042:: with SMTP id n2mr153531ljg.112.1601432501406;
+ Tue, 29 Sep 2020 19:21:41 -0700 (PDT)
+MIME-Version: 1.0
+From:   Ramon Fontes <ramonreisfontes@gmail.com>
+Date:   Tue, 29 Sep 2020 23:21:30 -0300
+Message-ID: <CAK8U23bTXsJrCLbAOMB+qk5ZPrnaTOoncA3Xe=HGNBPwkNkc1g@mail.gmail.com>
+Subject: mac80211_hwsim: wrong tx/rx bitrate when width != 20MHz
+To:     linux-wireless <linux-wireless@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Allow HE-MCS, HE-GI, HE-LTF in 6 GHz band as well and allow only
-MCS rates in 6 GHz.
+I'm running 2 virtual interfaces: one in master mode with hostapd
+(802.11n in 40MHz) and the other one in managed mode.
 
-Signed-off-by: Rajkumar Manoharan <rmanohar@codeaurora.org>
----
- bitrate.c | 40 ++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 38 insertions(+), 2 deletions(-)
+I can confirm that the AP is working on 40MHz:
 
-diff --git a/bitrate.c b/bitrate.c
-index 2cd55d15bfab..8bde850b1d7f 100644
---- a/bitrate.c
-+++ b/bitrate.c
-@@ -155,22 +155,27 @@ int set_bitrates(struct nl_msg *msg,
- 	bool have_ht_mcs_24 = false, have_ht_mcs_5 = false;
- 	bool have_vht_mcs_24 = false, have_vht_mcs_5 = false;
- 	bool have_he_mcs_24 = false, have_he_mcs_5 = false;
-+	bool have_he_mcs_6 = false;
- 	uint8_t ht_mcs_24[77], ht_mcs_5[77];
- 	int n_ht_mcs_24 = 0, n_ht_mcs_5 = 0;
- 	struct nl80211_txrate_vht txrate_vht_24 = {};
- 	struct nl80211_txrate_vht txrate_vht_5 = {};
- 	struct nl80211_txrate_he txrate_he_24 = {};
- 	struct nl80211_txrate_he txrate_he_5 = {};
-+	struct nl80211_txrate_he txrate_he_6 = {};
- 	uint8_t *mcs = NULL;
- 	int *n_mcs = NULL;
- 	char *vht_argv_5[VHT_ARGC_MAX] = {}; char *vht_argv_24[VHT_ARGC_MAX] = {};
- 	char *he_argv_5[VHT_ARGC_MAX] = {}; char *he_argv_24[VHT_ARGC_MAX] = {};
-+	char *he_argv_6[VHT_ARGC_MAX] = {};
- 	char **vht_argv = NULL, **he_argv = NULL;
- 	int vht_argc_5 = 0; int vht_argc_24 = 0;
- 	int he_argc_5 = 0; int he_argc_24 = 0;
-+	int he_argc_6 = 0;
- 	int *vht_argc = NULL, *he_argc = NULL;
- 	int sgi_24 = 0, sgi_5 = 0, lgi_24 = 0, lgi_5 = 0;
- 	int has_he_gi_24 = 0, has_he_gi_5 = 0, has_he_ltf_24 = 0, has_he_ltf_5 = 0;
-+	int has_he_gi_6 = 0, has_he_ltf_6 = 0;
- 	int he_gi = 0, he_ltf = 0;
- 	char *he_gi_argv = NULL;
- 
-@@ -247,6 +252,13 @@ int set_bitrates(struct nl_msg *msg,
- 			he_argv = he_argv_5;
- 			he_argc = &he_argc_5;
- 			have_he_mcs_5 = true;
-+		} else if (strcmp(argv[i], "he-mcs-6") == 0) {
-+			if (have_he_mcs_6)
-+				return 1;
-+			parser_state = S_HE;
-+			he_argv = he_argv_6;
-+			he_argc = &he_argc_6;
-+			have_he_mcs_6 = true;
- 		} else if (strcmp(argv[i], "sgi-2.4") == 0) {
- 			sgi_24 = 1;
- 			parser_state = S_GI;
-@@ -265,12 +277,18 @@ int set_bitrates(struct nl_msg *msg,
- 		} else if (strcmp(argv[i], "he-gi-5") == 0) {
- 			has_he_gi_5 = 1;
- 			parser_state = S_HE_GI;
-+		} else if (strcmp(argv[i], "he-gi-6") == 0) {
-+			has_he_gi_6 = 1;
-+			parser_state = S_HE_GI;
- 		} else if (strcmp(argv[i], "he-ltf-2.4") == 0) {
- 			has_he_ltf_24 = 1;
- 			parser_state = S_HE_LTF;
- 		} else if (strcmp(argv[i], "he-ltf-5") == 0) {
- 			has_he_ltf_5 = 1;
- 			parser_state = S_HE_LTF;
-+		} else if (strcmp(argv[i], "he-ltf-6") == 0) {
-+			has_he_ltf_6 = 1;
-+			parser_state = S_HE_LTF;
- 		} else switch (parser_state) {
- 		case S_LEGACY:
- 			tmpd = strtod(argv[i], &end);
-@@ -338,6 +356,10 @@ next:
- 		if (!setup_he(&txrate_he_5, he_argc_5, he_argv_5))
- 			return -EINVAL;
- 
-+	if (have_he_mcs_6)
-+		if (!setup_he(&txrate_he_6, he_argc_6, he_argv_6))
-+			return -EINVAL;
-+
- 	if (sgi_5 && lgi_5)
- 		return 1;
- 
-@@ -404,6 +426,20 @@ next:
- 		nla_nest_end(msg, nl_band);
- 	}
- 
-+	if (have_he_mcs_6 || has_he_gi_6 || has_he_ltf_6) {
-+		nl_band = nla_nest_start(msg, NL80211_BAND_6GHZ);
-+		if (!nl_band)
-+			goto nla_put_failure;
-+		if (have_he_mcs_6)
-+			nla_put(msg, NL80211_TXRATE_HE, sizeof(txrate_he_6),
-+				&txrate_he_6);
-+		if (has_he_gi_6)
-+			nla_put_u8(msg, NL80211_TXRATE_HE_GI, he_gi);
-+		if (has_he_ltf_6)
-+			nla_put_u8(msg, NL80211_TXRATE_HE_LTF, he_ltf);
-+		nla_nest_end(msg, nl_band);
-+	}
-+
- 	nla_nest_end(msg, nl_rates);
- 
- 	return ret;
-@@ -420,9 +456,9 @@ static int handle_bitrates(struct nl80211_state *state,
- }
- 
- #define DESCR_LEGACY "[legacy-<2.4|5> <legacy rate in Mbps>*]"
--#define DESCR DESCR_LEGACY " [ht-mcs-<2.4|5> <MCS index>*] [vht-mcs-<2.4|5>  [he-mcs-<2.4|5> <NSS:MCSx,MCSy... | NSS:MCSx-MCSy>*] [sgi-2.4|lgi-2.4] [sgi-5|lgi-5]"
-+#define DESCR DESCR_LEGACY " [ht-mcs-<2.4|5> <MCS index>*] [vht-mcs-<2.4|5>  [he-mcs-<2.4|5|6> <NSS:MCSx,MCSy... | NSS:MCSx-MCSy>*] [sgi-2.4|lgi-2.4] [sgi-5|lgi-5]"
- 
--COMMAND(set, bitrates, "[legacy-<2.4|5> <legacy rate in Mbps>*] [ht-mcs-<2.4|5> <MCS index>*] [vht-mcs-<2.4|5> [he-mcs-<2.4|5> <NSS:MCSx,MCSy... | NSS:MCSx-MCSy>*] [sgi-2.4|lgi-2.4] [sgi-5|lgi-5] [he-gi-2.4:0.8/1.6/3.2] [he-gi-5:0.8/1.6/3.2] [he-ltf-2.4:1/2/4] [he-ltf-5:1/2/4]",
-+COMMAND(set, bitrates, "[legacy-<2.4|5> <legacy rate in Mbps>*] [ht-mcs-<2.4|5> <MCS index>*] [vht-mcs-<2.4|5> [he-mcs-<2.4|5|6> <NSS:MCSx,MCSy... | NSS:MCSx-MCSy>*] [sgi-2.4|lgi-2.4] [sgi-5|lgi-5] [he-gi-<2.4|5|6> <0.8|1.6|3.2>] [he-ltf-<2.4|5|6> <1|2|4>]",
- 	NL80211_CMD_SET_TX_BITRATE_MASK, 0, CIB_NETDEV, handle_bitrates,
- 	"Sets up the specified rate masks.\n"
- 	"Not passing any arguments would clear the existing mask (if any).");
--- 
-2.7.4
+ap1 iw dev ap1-wlan1 info
+Interface ap1-wlan1
+ifindex 221
+wdev 0x6c00000001
+addr 02:00:00:00:02:00
+ssid new-ssid
+type AP
+wiphy 108
+channel 3 (2422 MHz), width: 40 MHz, center1: 2432 MHz
+txpower 14.00 dBm
 
+as well as the client:
+
+sta1 iw dev sta1-wlan0 info
+Interface sta1-wlan0
+ifindex 219
+wdev 0x6a00000001
+addr 00:00:00:00:00:02
+ssid new-ssid
+type managed
+wiphy 106
+channel 3 (2422 MHz), width: 40 MHz, center1: 2432 MHz
+txpower 14.00 dBm
+
+However, tx/rx bitrates of the client are not equivalent to the 40 MHz
+channels. Only the MCS index seems to be ok and I can change it via
+iw.
+
+sta1 iw dev sta1-wlan0 link
+Connected to 02:00:00:00:02:00 (on sta1-wlan0)
+SSID: new-ssid
+freq: 2422
+RX: 1199869 bytes (12752 packets)
+TX: 4055 bytes (41 packets)
+signal: -14 dBm
+rx bitrate: 6.0 MBit/s
+tx bitrate: 39.0 MBit/s MCS 4
+bss flags: short-slot-time
+dtim period: 2
+beacon int: 100
+
+For some reason I can see the correct tx/rx bitrate right at the
+beginning of the association (e.g. tx bitrate: 270.0 MBit/s MCS 15
+40MHz), but right after that they change to 20 MHz. I have been trying
+to identify errors in mac80211_hwsim, but I was not successful. Can
+anybody help me? I did tests with/without wmediumd and the results are
+the same.
+
+--
+Ramon Fontes
