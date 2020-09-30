@@ -2,85 +2,294 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DA5DC27F29E
-	for <lists+linux-wireless@lfdr.de>; Wed, 30 Sep 2020 21:33:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BCCC927F3A6
+	for <lists+linux-wireless@lfdr.de>; Wed, 30 Sep 2020 22:56:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729840AbgI3Tds (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 30 Sep 2020 15:33:48 -0400
-Received: from smtprelay0007.hostedemail.com ([216.40.44.7]:56070 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1725799AbgI3Tdr (ORCPT
+        id S1729322AbgI3U42 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 30 Sep 2020 16:56:28 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:53528 "EHLO
+        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1725355AbgI3U42 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 30 Sep 2020 15:33:47 -0400
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay04.hostedemail.com (Postfix) with ESMTP id 97B421801EC3E;
-        Wed, 30 Sep 2020 19:33:45 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:966:973:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1540:1593:1594:1711:1730:1747:1777:1792:2196:2199:2393:2553:2559:2562:2828:3138:3139:3140:3141:3142:3352:3622:3865:3866:3867:3870:3872:3873:4321:4362:4384:4385:4395:4605:5007:6248:6742:6743:7903:10004:10400:10848:11232:11658:11914:12043:12266:12297:12438:12679:12740:12760:12895:13019:13069:13311:13357:13439:14659:14777:21080:21365:21433:21451:21627:30054:30070:30083:30090:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:13,LUA_SUMMARY:none
-X-HE-Tag: bag86_060c7b527195
-X-Filterd-Recvd-Size: 2698
-Received: from XPS-9350.home (unknown [47.151.133.149])
-        (Authenticated sender: joe@perches.com)
-        by omf17.hostedemail.com (Postfix) with ESMTPA;
-        Wed, 30 Sep 2020 19:33:41 +0000 (UTC)
-Message-ID: <db26d49401dc0bd6b9013a603a155f9827f404a4.camel@perches.com>
-Subject: Re: [PATCH 00/18] use semicolons rather than commas to separate
- statements
-From:   Joe Perches <joe@perches.com>
-To:     Mark Brown <broonie@kernel.org>
-Cc:     linux-iio@vger.kernel.org, Julia Lawall <Julia.Lawall@inria.fr>,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-crypto@vger.kernel.org,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Jerome Brunet <jbrunet@baylibre.com>,
-        linux-acpi@vger.kernel.org, David Lechner <david@lechnology.com>,
-        Valdis =?UTF-8?Q?Kl=C4=93tnieks?= <valdis.kletnieks@vt.edu>,
-        kernel-janitors@vger.kernel.org, drbd-dev@lists.linbit.com,
-        openipmi-developer@lists.sourceforge.net,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        linux-ide@vger.kernel.org, linux-amlogic@lists.infradead.org,
-        linux-clk@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-wireless@vger.kernel.org,
-        Neil Armstrong <narmstrong@baylibre.com>
-Date:   Wed, 30 Sep 2020 12:33:39 -0700
-In-Reply-To: <20200929113745.GB4799@sirena.org.uk>
-References: <1601233948-11629-1-git-send-email-Julia.Lawall@inria.fr>
-         <160132172369.55460.9237357219623604216.b4-ty@kernel.org>
-         <b1174f9be2ce65f6b5ebefcba0b48e792926abbc.camel@perches.com>
-         <20200929113745.GB4799@sirena.org.uk>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.36.4-0ubuntu1 
+        Wed, 30 Sep 2020 16:56:28 -0400
+Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=[192.168.100.69])
+        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.93)
+        (envelope-from <luca@coelho.fi>)
+        id 1kNj9E-002MYk-BJ; Wed, 30 Sep 2020 23:56:25 +0300
+Message-ID: <08351c498348047be547a41a49d3384067a20942.camel@coelho.fi>
+From:   Luca Coelho <luca@coelho.fi>
+To:     kvalo@codeaurora.org
+Cc:     linux-wireless@vger.kernel.org
+Date:   Wed, 30 Sep 2020 23:56:23 +0300
+Content-Type: multipart/signed; micalg="pgp-sha512";
+        protocol="application/pgp-signature"; boundary="=-O/P67apMN7KxAKvQFQY7"
+User-Agent: Evolution 3.36.4-2 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on farmhouse.coelho.fi
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+        TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.4
+Subject: pull-request: iwlwifi-next 2020-09-30
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 2020-09-29 at 12:37 +0100, Mark Brown wrote:
-> On Mon, Sep 28, 2020 at 05:45:24PM -0700, Joe Perches wrote:
-> > On Mon, 2020-09-28 at 20:35 +0100, Mark Brown wrote:
-> > > [1/1] regmap: debugfs: use semicolons rather than commas to separate statements
-> > >       commit: 7f4a122d0b50b40c64d24a5cf7aafe26dd9487ee
-> > Rather than replying to the 0/n cover letter to a patch
-> > series, can you reply to each of the specific patches in
-> > the patch series you are applying?
-> > Otherwise, it's a bit difficult to figure out which patches
-> > you are applying.
-> 
-> Feel free to submit patches to b4.
 
-Have you tried the existing option to send
-thank you's on a specific ranges of patches?
+--=-O/P67apMN7KxAKvQFQY7
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-b4 ty
-~~~~~
-usage:
-  b4 ty [-h] [-g GITDIR] [-o OUTDIR] [-l] [-s SEND [SEND ...]] [-d DISCARD [DISCARD ...]] [-a] [-b BRANCH] [--since SINCE]
+Hi Kalle,
 
-[]
- -s SEND, --send SEND  Generate thankyous for specific entries from -l (e.g.: 1,3-5,7-; or "all")
+Here's the first batch of patches intended for v5.8.  This includes all
+the patchsets I sent out for v5.10.  Usual development work.  More
+details about the contents in the tag description.
+
+Please let me know if there are any issues.
+
+Cheers,
+Luca.
 
 
+The following changes since commit 1d2a85382282e7c77cbde5650335c3ffc6073fa1=
+:
+
+  wl3501_cs: Remove unnecessary NULL check (2020-09-29 11:25:30 +0300)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/iwlwifi-next.git ta=
+gs/iwlwifi-next-for-kalle-2020-09-30
+
+for you to fetch changes up to 7ecc1c393f80fcbaa1bbfcfdff05658904cceba6:
+
+  iwlwifi: bump FW API to 57 for AX devices (2020-09-30 23:46:23 +0300)
+
+----------------------------------------------------------------
+iwlwifi patches intended for v5.10
+
+* Protected TWT implementation;
+* Support disabling 5.8GHz channels via ACPI;
+* Support VHT extended NSS capability;
+* A few fixes in the datapath;
+* Enable TWT by default;
+* Support new PPAG FW command version
+* Move some trans code around for better abstraction;
+* Some clean-ups in the ACPI code;
+* A fix for AP mode;
+* Updates in the ACPI code to support new tables and FW versions;
+* FTM updates;
+* A bit of reorganiztion in the queue code;
+* A few debugging infra improvements;
+* Add support for new GTK rekeying;
+* A fix in the scanning code;
+* Support for some new cards;
+* Some updates for new or changed FW APIs;
+* Some new FW API command version implementations;
+* Some other small fixes and clean-ups;
+
+----------------------------------------------------------------
+Andrei Otcheretianski (2):
+      iwlwifi: mvm: Don't install CMAC/GMAC key in AP mode
+      iwlwifi: use correct group for alive notification
+
+Avraham Stern (7):
+      iwlwifi: mvm: add an option to add PASN station
+      iwlwifi: mvm: add support for range request command ver 11
+      iwlwifi: mvm: add support for responder dynamic config command versio=
+n 3
+      iwlwifi: mvm: location: set the HLTK when PASN station is added
+      iwlwifi: mvm: responder: allow to set only the HLTK for an associated=
+ station
+      iwlwifi: mvm: initiator: add option for adding a PASN responder
+      iwlwifi: mvm: ignore the scan duration parameter
+
+Ayala Beker (1):
+      iwlwifi: mvm: clear all scan UIDs
+
+Dan Halperin (2):
+      iwlwifi: mvm: add support for new  version of WOWLAN_TKIP_SETTING_API=
+_S
+      iwlwifi: mvm: add support for new WOWLAN_TSC_RSC_PARAM version
+
+Emmanuel Grumbach (1):
+      iwlwifi: mvm: split a print to avoid a WARNING in ROC
+
+Gil Adam (4):
+      iwlwifi: acpi: evaluate dsm to disable 5.8GHz channels
+      iwlwifi: acpi: support ppag table command v2
+      iwlwifi: regulatory: regulatory capabilities api change
+      iwlwifi: thermal: support new temperature measurement API
+
+Golan Ben Ami (1):
+      iwlwifi: enable twt by default
+
+Ihab Zhaika (2):
+      iwlwifi: add new cards for AX201 family
+      iwlwifi: add new cards for MA family
+
+Ilan Peer (1):
+      iwlwifi: mvm: Add FTM initiator RTT smoothing logic
+
+Johannes Berg (6):
+      iwlwifi: mvm: rs-fw: handle VHT extended NSS capability
+      iwlwifi: mvm: use CHECKSUM_COMPLETE
+      iwlwifi: mvm: d3: support GCMP ciphers
+      iwlwifi: align RX status flags with firmware
+      iwlwifi: mvm: d3: parse wowlan status version 11
+      iwlwifi: api: fix u32 -> __le32
+
+Luca Coelho (12):
+      iwlwifi: dbg: remove IWL_FW_INI_TIME_POINT_WDG_TIMEOUT
+      iwlwifi: don't export acpi functions unnecessarily
+      iwlwifi: remove iwl_validate_sar_geo_profile() export
+      iwlwifi: acpi: remove dummy definition of iwl_sar_set_profile()
+      iwlwifi: add a common struct for all iwl_tx_power_cmd versions
+      iwlwifi: acpi: prepare SAR profile selection code for multiple sizes
+      iwlwifi: support REDUCE_TX_POWER_CMD version 6
+      iwlwifi: acpi: rename geo structs to contain versioning
+      iwlwifi: support version 3 of GEO_TX_POWER_LIMIT
+      iwlwifi: mvm: remove redundant log in iwl_mvm_tvqm_enable_txq()
+      iwlwifi: support version 5 of the alive notification
+      iwlwifi: bump FW API to 57 for AX devices
+
+Mordechay Goodstein (22):
+      iwlwifi: sta: defer ADDBA transmit in case reclaimed SN !=3D next SN
+      iwlwifi: msix: limit max RX queues for 9000 family
+      iwlwifi: wowlan: adapt to wowlan status API version 10
+      iwlwifi: fw: move assert descriptor parser to common code
+      iwlwifi: iwl-trans: move all txcmd init to trans alloc
+      iwlwifi: move bc_pool to a common trans header
+      iwlwifi: iwl-trans: move tfd to trans layer
+      iwlwifi: move bc_table_dword to a common trans header
+      iwlwifi: dbg: add dumping special device memory
+      iwl-trans: move dev_cmd_offs, page_offs to a common trans header
+      iwlwifi: mvm: remove redundant support_umac_log field
+      iwlwifi: rs: set RTS protection for all non legacy rates
+      iwlwifi: acpi: in non acpi compilations remove iwl_sar_geo_init
+      iwlwifi: fw: add default value for iwl_fw_lookup_cmd_ver
+      iwlwifi: remove wide_cmd_header field
+      iwlwifi: move all bus-independent TX functions to common code
+      iwlwifi: dbg: remove no filter condition
+      iwlwifi: dbg: run init_cfg function once per driver load
+      iwlwifi: phy-ctxt: add new API VER 3 for phy context cmd
+      iwlwifi: pcie: make iwl_pcie_txq_update_byte_cnt_tbl bus independent
+      iwlwifi: dbg: add debug host notification (DHN) time point
+      iwlwifi: yoyo: add support for internal buffer allocation in D3
+
+Naftali Goldstein (1):
+      iwlwifi: mvm: process ba-notifications also when sta rcu is invalid
+
+Nathan Errera (2):
+      iwlwifi: mvm: support new KEK KCK api
+      iwlwifi: mvm: support more GTK rekeying algorithms
+
+Roee Goldfiner (1):
+      iwlwifi: add new card for MA family
+
+Sara Sharon (1):
+      iwlwifi: mvm: add d3 prints
+
+Shaul Triebitz (3):
+      iwlwifi: mvm: add PROTECTED_TWT firmware API
+      iwlwifi: mvm: set PROTECTED_TWT in MAC data policy
+      iwlwifi: mvm: set PROTECTED_TWT feature if supported by firmware
+
+ drivers/net/wireless/intel/iwlwifi/Makefile            |    1 +
+ drivers/net/wireless/intel/iwlwifi/cfg/22000.c         |   68 ++++-
+ drivers/net/wireless/intel/iwlwifi/fw/acpi.c           |   72 ++---
+ drivers/net/wireless/intel/iwlwifi/fw/acpi.h           |   58 ++--
+ drivers/net/wireless/intel/iwlwifi/fw/api/alive.h      |   25 +-
+ drivers/net/wireless/intel/iwlwifi/fw/api/commands.h   |   10 +-
+ drivers/net/wireless/intel/iwlwifi/fw/api/d3.h         |   82 ++++-
+ drivers/net/wireless/intel/iwlwifi/fw/api/dbg-tlv.h    |   32 +-
+ drivers/net/wireless/intel/iwlwifi/fw/api/location.h   |  231 ++++++++++++=
++-
+ drivers/net/wireless/intel/iwlwifi/fw/api/mac.h        |   16 +-
+ drivers/net/wireless/intel/iwlwifi/fw/api/phy-ctxt.h   |   32 +-
+ drivers/net/wireless/intel/iwlwifi/fw/api/phy.h        |   13 +-
+ drivers/net/wireless/intel/iwlwifi/fw/api/power.h      |  133 ++++++--
+ drivers/net/wireless/intel/iwlwifi/fw/api/rs.h         |   11 +-
+ drivers/net/wireless/intel/iwlwifi/fw/api/rx.h         |   29 +-
+ drivers/net/wireless/intel/iwlwifi/fw/api/tx.h         |    7 +-
+ drivers/net/wireless/intel/iwlwifi/fw/dbg.c            |   56 ++++
+ drivers/net/wireless/intel/iwlwifi/fw/error-dump.h     |   14 +
+ drivers/net/wireless/intel/iwlwifi/fw/file.h           |    3 +-
+ drivers/net/wireless/intel/iwlwifi/fw/img.c            |   55 +++-
+ drivers/net/wireless/intel/iwlwifi/fw/img.h            |    8 +-
+ drivers/net/wireless/intel/iwlwifi/fw/init.c           |    3 +-
+ drivers/net/wireless/intel/iwlwifi/fw/runtime.h        |    3 +-
+ drivers/net/wireless/intel/iwlwifi/iwl-config.h        |   13 +-
+ drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c       |   26 +-
+ drivers/net/wireless/intel/iwlwifi/iwl-debug.h         |    6 +-
+ drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c     |   98 +++++-
+ drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.h     |    2 +-
+ drivers/net/wireless/intel/iwlwifi/iwl-trans.c         |   78 ++++-
+ drivers/net/wireless/intel/iwlwifi/iwl-trans.h         |   34 ++-
+ drivers/net/wireless/intel/iwlwifi/mvm/constants.h     |    8 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/d3.c            |  273 ++++++++++++=
+-----
+ drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c |  363 ++++++++++++=
+++++++++--
+ drivers/net/wireless/intel/iwlwifi/mvm/ftm-responder.c |  205 ++++++++++++=
+-
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c            |  356 ++++++++++++=
++++-------
+ drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c      |   12 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c      |   64 ++--
+ drivers/net/wireless/intel/iwlwifi/mvm/mvm.h           |   51 +++-
+ drivers/net/wireless/intel/iwlwifi/mvm/ops.c           |   18 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/phy-ctxt.c      |  126 +++++---
+ drivers/net/wireless/intel/iwlwifi/mvm/rs-fw.c         |   24 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/rs.c            |    6 +
+ drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c          |   85 ++++--
+ drivers/net/wireless/intel/iwlwifi/mvm/scan.c          |   70 ++---
+ drivers/net/wireless/intel/iwlwifi/mvm/sta.c           |   53 +++-
+ drivers/net/wireless/intel/iwlwifi/mvm/sta.h           |    3 +
+ drivers/net/wireless/intel/iwlwifi/mvm/tt.c            |   78 ++++-
+ drivers/net/wireless/intel/iwlwifi/mvm/tx.c            |   77 +++--
+ drivers/net/wireless/intel/iwlwifi/mvm/utils.c         |   46 +--
+ drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info.c    |    2 +-
+ drivers/net/wireless/intel/iwlwifi/pcie/drv.c          |   34 ++-
+ drivers/net/wireless/intel/iwlwifi/pcie/internal.h     |  158 +---------
+ drivers/net/wireless/intel/iwlwifi/pcie/rx.c           |    2 +-
+ drivers/net/wireless/intel/iwlwifi/pcie/trans-gen2.c   |    4 +-
+ drivers/net/wireless/intel/iwlwifi/pcie/trans.c        |  132 ++------
+ drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c      | 1089 +-----------=
+-----------------------------------------------------
+ drivers/net/wireless/intel/iwlwifi/pcie/tx.c           |  535 ++++--------=
+--------------------
+ drivers/net/wireless/intel/iwlwifi/queue/tx.c          | 1529 ++++++++++++=
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++=
++++++
+ drivers/net/wireless/intel/iwlwifi/queue/tx.h          |  230 ++++++++++++=
+++
+ 59 files changed, 4358 insertions(+), 2494 deletions(-)
+ create mode 100644 drivers/net/wireless/intel/iwlwifi/queue/tx.c
+ create mode 100644 drivers/net/wireless/intel/iwlwifi/queue/tx.h
+
+--=-O/P67apMN7KxAKvQFQY7
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEF3LNfgb2BPWm68smoUecoho8xfoFAl908PcACgkQoUecoho8
+xfroSRAAnuLUZhZaXCkJ2Sj4FbDZZu6y3EqxOsuEh9oJB0qNvHHxCTD/oaOv6iaI
+N06PMC53DiBX0WDQW1ijuT13uNR6fZEODiDm/2+XJ0ioVxdlfprJ7+UynrhmBW3N
+uDVYPPpkdpuV3YKCqlpKyv5Y5kzvlV33BYG5CBcOlBGVz4Zus6HHbz1049B4GFUx
+gkGBlZOJuKk3spUFZ/sjqRbaIVVZ4KYy+n6yL6KFE4Clax9GpyE20OJfeyvliIvX
+3LN9cQr3H8j4Q3tHBIdnynx7un5KPOrerDHh0yWTUHV46G9AtMP4J7MJoiYEiDZa
+q0Pf4711x2nBKlWg5xWH4X9IxBTeNVJhP4tx2K3mNNuePJ8+sLiwNhNzJquYk/U+
+GBTMNWHmR/jPqk5HwlSR9q/3hWL82DI0Zz4vWC3s6pPH7tuFYHuDE9UQpESgR9tF
+dCx46wkwMa/9gIpcUGdLE4VF4mIw82TCr1h89GGns1X6S2ZbWQ27TXp+CWCitQ79
+4DeW67xthoezfe6wpLIXsar2SCLP/AJag47krU2xKK/2vQwTiYzl6CJUeOf7DozT
+b5mpY4GV+4F3aaUnhsswNGtttRx9Ud9wbEoXJwYq3BkElsCTSTPjj38Pt+1yJpB0
+WMt2IU6MHSxROtiWFuicECywDKmcsOI8ywG9I2kQS0CHiOlKNB8=
+=bH31
+-----END PGP SIGNATURE-----
+
+--=-O/P67apMN7KxAKvQFQY7--
 
