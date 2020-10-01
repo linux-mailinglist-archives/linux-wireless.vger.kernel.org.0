@@ -2,182 +2,141 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BE96B280012
-	for <lists+linux-wireless@lfdr.de>; Thu,  1 Oct 2020 15:25:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 107E7280018
+	for <lists+linux-wireless@lfdr.de>; Thu,  1 Oct 2020 15:26:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732104AbgJANZ3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 1 Oct 2020 09:25:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48046 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732016AbgJANZ3 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 1 Oct 2020 09:25:29 -0400
-Received: from mail-lf1-x142.google.com (mail-lf1-x142.google.com [IPv6:2a00:1450:4864:20::142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA5CAC0613D0
-        for <linux-wireless@vger.kernel.org>; Thu,  1 Oct 2020 06:25:28 -0700 (PDT)
-Received: by mail-lf1-x142.google.com with SMTP id 197so5943151lfo.11
-        for <linux-wireless@vger.kernel.org>; Thu, 01 Oct 2020 06:25:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=3oiprRpcbFisaZiCNrxoDxz0amv5QC/TCgsOOdYJyrk=;
-        b=Ea+DQ5UQWlSGSWL6loN/xzrSVSf/iCDZKIfybH0sbbWDQy6wQFKGbygN9PGV29CHRW
-         CBSmOCO5/LciSAT8txZn1Fm3hStI6spwpfY9jwKPXRcR02x+ETxzlopu4oy6QmH6eaxj
-         E8jPyowGVAG6LtHJnO8/MfF2n0rxPifya67NXa8lCUNyPzCY4ZviLiy1qsFDASQDfcNU
-         9GCZ2orFEvkTl9A7o2UoJVmYMTMWj4xzYt+l3N80ABuO/sKadPt5vJTQ3U9jpYflXJN6
-         HfHN3D+C26GnXQMxOcwZhlRVVSHd33gI6Cb3Nn3u+ITnaC92KhtgqTLIy+aroZTnVxaL
-         W2Pw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=3oiprRpcbFisaZiCNrxoDxz0amv5QC/TCgsOOdYJyrk=;
-        b=Gm61i0kUYmuOru/Zww4l3xZyhkgKt+7bF/FhWVu8DhCmjGTcsCfjNgw4vEf2+Rlg5U
-         aOujs8er+XNifXk3T0rDHDSFKdH0i6yNtNqNKwesOHmdZVD2aBd39kwJztri6v1xDtMU
-         vGmsR5utiuUKS6ZnJRWG2rbCiQywG9MpATf+cp1Imqy4bRhBBjyoRbGtEe23xptwFAUH
-         /dccsMRjBhACtS2Gm2wef1D83ESRGRfwdyBMkjmMvVHo4QaxcjaxRJx/7dtYGygBxmXp
-         BXHJwT1OjaG/unQyh3Avu9a6tvHIAI0aS1hm0NZvcskgyV2tNn9dMMCB96nmHW9j7x40
-         b80w==
-X-Gm-Message-State: AOAM532DN+BjW+R2D+RdC7bdntDLTozhWWXWB1rEbGuEpX+zneXkUS2Z
-        gOxuDfhdhv3GcPb/DUrN6MOClv6DQh1Z4kXFQqjJlEdU
-X-Google-Smtp-Source: ABdhPJzff1NsSayLr2zIMJUZdCGsFSpKq8sMhy/fZRdpZDeFiKI8XthLhf36rV6ncW7JGQue5PjbJtNuV0GJRKOKRQA=
-X-Received: by 2002:a19:ed6:: with SMTP id 205mr2499949lfo.454.1601558727050;
- Thu, 01 Oct 2020 06:25:27 -0700 (PDT)
+        id S1732147AbgJAN0u (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 1 Oct 2020 09:26:50 -0400
+Received: from m42-4.mailgun.net ([69.72.42.4]:10807 "EHLO m42-4.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1732016AbgJAN0s (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 1 Oct 2020 09:26:48 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1601558807; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=E/GVxx0q28mPHE5Uz58HPbVOV06poC1avUaS0raLPCc=;
+ b=eVHRj8+8k2i79BpQRbzqIbBEGJKjAAUtlDg5L0MDuWeXEX0Tcr5dd7cc3CgGQASAMzJWxeTA
+ quSX8gLPeZHEUIXyJcu5uVpFhoAO+knI3W/L809jPC4ofcgiVcD6FAvBqvdkTlz3Rbiwb8iI
+ 62n/isLgyAzI3YkEHW+Kk1Nt6Go=
+X-Mailgun-Sending-Ip: 69.72.42.4
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n06.prod.us-east-1.postgun.com with SMTP id
+ 5f75d9143aed3d14c00f546a (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 01 Oct 2020 13:26:44
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id A6AF1C433FE; Thu,  1 Oct 2020 13:26:43 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        MISSING_DATE,MISSING_MID,SPF_FAIL,URIBL_BLOCKED autolearn=no
+        autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 30687C433CB;
+        Thu,  1 Oct 2020 13:26:40 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 30687C433CB
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-References: <20200820012022.7504-1-connojd@protonmail.com>
-In-Reply-To: <20200820012022.7504-1-connojd@protonmail.com>
-From:   Jason Andryuk <jandryuk@gmail.com>
-Date:   Thu, 1 Oct 2020 09:25:15 -0400
-Message-ID: <CAKf6xpuFbFuLu864OoSHj0gV2Ba0kW-z0FkThmFw4jAV6jGxDQ@mail.gmail.com>
-Subject: Re: [PATCH] iwlwifi: mvm: fix RFH_QUEUE_CONFIG_CMD bug
-To:     Connor Davis <connojd@protonmail.com>
-Cc:     linux-wireless@vger.kernel.org,
-        Johannes Berg <johannes.berg@intel.com>,
-        emmanuel.grumbach@intel.com,
-        Luca Coelho <luciano.coelho@intel.com>, linuxwifi@intel.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH 1/2] brcmfmac: Fix warning when hitting FW crash with flow
+ control feature
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20200928054922.44580-2-wright.feng@cypress.com>
+References: <20200928054922.44580-2-wright.feng@cypress.com>
+To:     Wright Feng <wright.feng@cypress.com>
+Cc:     linux-wireless@vger.kernel.org, wright.feng@cypress.com,
+        brcm80211-dev-list@broadcom.com, brcm80211-dev-list@cypress.com,
+        Arend van Spriel <arend.vanspriel@broadcom.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        chi-hsien.lin@cypress.com
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
+Message-Id: <20201001132643.A6AF1C433FE@smtp.codeaurora.org>
+Date:   Thu,  1 Oct 2020 13:26:43 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Aug 19, 2020 at 9:28 PM Connor Davis <connojd@protonmail.com> wrote:
->
-> If iwl_configure_rxq is called when mvm->trans->num_rx_queues == 1,
-> an RFH_QUEUE_CONFIG_CMD is sent with cmd->num_queues == 0. This results
-> in an error when the interface is brought up:
->
-> [   10.073760] iwlwifi 0000:3b:00.0: Applying debug destination EXTERNAL_DRAM
-> [   10.239723] iwlwifi 0000:3b:00.0: FW already configured (0) - re-configuring
-> [   10.441592] iwlwifi 0000:3b:00.0: Microcode SW error detected.  Restarting 0x2000000.
-> [   10.442812] iwlwifi 0000:3b:00.0: Start IWL Error Log Dump:
-> [   10.442815] iwlwifi 0000:3b:00.0: Status: 0x00000040, count: 6
-> [   10.442817] iwlwifi 0000:3b:00.0: Loaded firmware version: 48.4fa0041f.0 cc-a0-48.ucode
-> [   10.442818] iwlwifi 0000:3b:00.0: 0x00000071 | NMI_INTERRUPT_UMAC_FATAL
-> [   10.442820] iwlwifi 0000:3b:00.0: 0x000022F0 | trm_hw_status0
-> [   10.442821] iwlwifi 0000:3b:00.0: 0x00000000 | trm_hw_status1
-> [   10.442822] iwlwifi 0000:3b:00.0: 0x004F8E3C | branchlink2
-> [   10.442823] iwlwifi 0000:3b:00.0: 0x004E4FF4 | interruptlink1
-> [   10.442825] iwlwifi 0000:3b:00.0: 0x004E4FF4 | interruptlink2
-> [   10.442826] iwlwifi 0000:3b:00.0: 0x00016FF4 | data1
-> [   10.442827] iwlwifi 0000:3b:00.0: 0x00001000 | data2
-> [   10.442828] iwlwifi 0000:3b:00.0: 0xF0000008 | data3
-> [   10.442829] iwlwifi 0000:3b:00.0: 0x00000000 | beacon time
-> [   10.442831] iwlwifi 0000:3b:00.0: 0x00053105 | tsf low
-> [   10.442832] iwlwifi 0000:3b:00.0: 0x00000000 | tsf hi
-> [   10.442833] iwlwifi 0000:3b:00.0: 0x00000000 | time gp1
-> [   10.442834] iwlwifi 0000:3b:00.0: 0x00059A51 | time gp2
-> [   10.442835] iwlwifi 0000:3b:00.0: 0x00000001 | uCode revision type
-> [   10.442836] iwlwifi 0000:3b:00.0: 0x00000030 | uCode version major
-> [   10.442838] iwlwifi 0000:3b:00.0: 0x4FA0041F | uCode version minor
-> [   10.442839] iwlwifi 0000:3b:00.0: 0x00000340 | hw version
-> [   10.442840] iwlwifi 0000:3b:00.0: 0x18C89000 | board version
-> [   10.442841] iwlwifi 0000:3b:00.0: 0x801FF500 | hcmd
-> [   10.442842] iwlwifi 0000:3b:00.0: 0x00020000 | isr0
-> [   10.442843] iwlwifi 0000:3b:00.0: 0x00000000 | isr1
-> [   10.442845] iwlwifi 0000:3b:00.0: 0x08F00002 | isr2
-> [   10.442846] iwlwifi 0000:3b:00.0: 0x00C00008 | isr3
-> [   10.442847] iwlwifi 0000:3b:00.0: 0x00000000 | isr4
-> [   10.442848] iwlwifi 0000:3b:00.0: 0x000301D1 | last cmd Id
-> [   10.442849] iwlwifi 0000:3b:00.0: 0x00016FF4 | wait_event
-> [   10.442850] iwlwifi 0000:3b:00.0: 0x00000000 | l2p_control
-> [   10.442851] iwlwifi 0000:3b:00.0: 0x00000000 | l2p_duration
-> [   10.442852] iwlwifi 0000:3b:00.0: 0x00000000 | l2p_mhvalid
-> [   10.442853] iwlwifi 0000:3b:00.0: 0x00000000 | l2p_addr_match
-> [   10.442855] iwlwifi 0000:3b:00.0: 0x00000009 | lmpm_pmg_sel
-> [   10.442856] iwlwifi 0000:3b:00.0: 0x00000000 | timestamp
-> [   10.442857] iwlwifi 0000:3b:00.0: 0x00000828 | flow_handler
-> [   10.443452] iwlwifi 0000:3b:00.0: Start IWL Error Log Dump:
-> [   10.443453] iwlwifi 0000:3b:00.0: Status: 0x00000040, count: 7
-> [   10.443454] iwlwifi 0000:3b:00.0: 0x20000034 | NMI_INTERRUPT_WDG
-> [   10.443456] iwlwifi 0000:3b:00.0: 0x00000000 | umac branchlink1
-> [   10.443456] iwlwifi 0000:3b:00.0: 0xC008CC3C | umac branchlink2
-> [   10.443458] iwlwifi 0000:3b:00.0: 0x8048E6D8 | umac interruptlink1
-> [   10.443459] iwlwifi 0000:3b:00.0: 0x8048E6D8 | umac interruptlink2
-> [   10.443460] iwlwifi 0000:3b:00.0: 0x00000004 | umac data1
-> [   10.443461] iwlwifi 0000:3b:00.0: 0x8048E6D8 | umac data2
-> [   10.443462] iwlwifi 0000:3b:00.0: 0x00000000 | umac data3
-> [   10.443463] iwlwifi 0000:3b:00.0: 0x00000030 | umac major
-> [   10.443464] iwlwifi 0000:3b:00.0: 0x4FA0041F | umac minor
-> [   10.443465] iwlwifi 0000:3b:00.0: 0x00059A43 | frame pointer
-> [   10.443466] iwlwifi 0000:3b:00.0: 0xC0886A48 | stack pointer
-> [   10.443468] iwlwifi 0000:3b:00.0: 0x000B050D | last host cmd
-> [   10.443469] iwlwifi 0000:3b:00.0: 0x00000000 | isr status reg
-> [   10.443553] iwlwifi 0000:3b:00.0: Fseq Registers:
-> [   10.443605] iwlwifi 0000:3b:00.0: 0xE0000101 | FSEQ_ERROR_CODE
-> [   10.443657] iwlwifi 0000:3b:00.0: 0x00290011 | FSEQ_TOP_INIT_VERSION
-> [   10.443709] iwlwifi 0000:3b:00.0: 0x80050008 | FSEQ_CNVIO_INIT_VERSION
-> [   10.443775] iwlwifi 0000:3b:00.0: 0x0000A503 | FSEQ_OTP_VERSION
-> [   10.443912] iwlwifi 0000:3b:00.0: 0x80000003 | FSEQ_TOP_CONTENT_VERSION
-> [   10.443958] iwlwifi 0000:3b:00.0: 0x4552414E | FSEQ_ALIVE_TOKEN
-> [   10.444011] iwlwifi 0000:3b:00.0: 0x00100530 | FSEQ_CNVI_ID
-> [   10.444062] iwlwifi 0000:3b:00.0: 0x00000532 | FSEQ_CNVR_ID
-> [   10.444113] iwlwifi 0000:3b:00.0: 0x00100530 | CNVI_AUX_MISC_CHIP
-> [   10.444166] iwlwifi 0000:3b:00.0: 0x00000532 | CNVR_AUX_MISC_CHIP
-> [   10.444220] iwlwifi 0000:3b:00.0: 0x05B0905B | CNVR_SCU_SD_REGS_SD_REG_DIG_DCDC_VTRIM
-> [   10.444275] iwlwifi 0000:3b:00.0: 0x0000025B | CNVR_SCU_SD_REGS_SD_REG_ACTIVE_VDIG_MIRROR
-> [   10.445696] iwlwifi 0000:3b:00.0: Collecting data: trigger 2 fired.
-> [   10.445710] iwlwifi 0000:3b:00.0: FW error in SYNC CMD RFH_QUEUE_CONFIG_CMD
-> [   10.445873] iwlwifi 0000:3b:00.0: Failed to configure RX queues: -5
->
-> that has been seen on several AX200/9462 devices running in a Xen HVM domain
-> with PCI passthrough [0][1]. It can also be seen natively with a Killer AX1650x
-> by coaxing the value of num_rx_queues to 1 in iwl_pcie_set_interrupt_capa.
->
-> Fix this by returning early from iwl_configure_rxq whenever num_rx_queues is 1.
->
-> [0] https://github.com/QubesOS/qubes-issues/issues/5616
-> [1] https://lore.kernel.org/linux-wireless/3cab5072-17a2-4d9a-2077-93788971c6c4@invisiblethingslab.com/T/
->
-> Signed-off-by: Connor Davis <connojd@protonmail.com>
+Wright Feng <wright.feng@cypress.com> wrote:
 
-Tested-by: Jason Andryuk <jandryuk@gmail.com>
+> Brcmfmac got warning message when hitting FW crash in TX throughput test
+> with fcmode=2. It's caused by FMAC flushed TXQ in brcmf_sdio_bus_stop
+> but without doing hanger slot cleanup. Therefore, we move
+> brcmf_remove_interface before brcmf_bus_stop to make sure the hanger
+> slot is clean when flushing TXQ.
+> 
+> [ 1891.512234] WARNING: CPU: 1 PID: 2765 at drivers/net/wireless/broadcom/brcm80211/brcmutil/utils.c:49 brcmu_pkt_buf_free_skb+0x21/0x30 [brcmutil]
+> [ 1891.512234] Modules linked in: brcmfmac(OE-) brcmutil(OE)
+> cfg80211(OE) compat(OE) rfkill mmc_block(OE) sdhci_pci(OE) sdhci(OE)
+> mmc_core(OE) ip6table_filter ip6_tables ebtable_nat ebtables
+> dns_resolver fscache e1000e ppdev iTCO_wdt iTCO_vendor_support tpm_tis
+> tpm_tis_core tpm mei_me mei pcspkr lpc_ich i2c_i801 mfd_core ptp
+> pps_core parport_pc parport wmi tcp_bic uinput i915 iosf_mbi
+> i2c_algo_bit drm_kms_helper drm i2c_core video [last unloaded: brcmfmac]
+> [ 1891.512247] CPU: 1 PID: 2765 Comm: rmmod Tainted: G        W  OE
+> 4.12.0 #1
+> [ 1891.512247] Hardware name:                  /DH77EB, BIOS
+> EBH7710H.86A.0100.2013.0312.1351 03/12/2013
+> [ 1891.512248] task: ffff880118f08000 task.stack: ffffc90001180000
+> [ 1891.512249] RIP: 0010:brcmu_pkt_buf_free_skb+0x21/0x30 [brcmutil]
+> [ 1891.512249] RSP: 0018:ffffc90001183cc0 EFLAGS: 00010086
+> [ 1891.512250] RAX: 0000000000000000 RBX: 0000000000000000 RCX:
+> 0000000000000006
+> [ 1891.512251] RDX: 0000000000000000 RSI: 0000000000000086 RDI:
+> ffff880118e3ab00
+> [ 1891.512251] RBP: ffffc90001183cc0 R08: 0000000000000000 R09:
+> 000000000000a050
+> [ 1891.512252] R10: 0000000000000001 R11: 0000000000aaaaaa R12:
+> 00000000000000bc
+> [ 1891.512253] R13: ffff880118b40c78 R14: 0000000000000002 R15:
+> ffff880118e3ab00
+> [ 1891.512253] FS:  00007f2a49760740(0000) GS:ffff88011f280000(0000)
+> knlGS:0000000000000000
+> [ 1891.512254] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> [ 1891.512254] CR2: 00000000012994a8 CR3: 000000011a3c4000 CR4:
+> 00000000001406e0
+> [ 1891.512255] Call Trace:
+> [ 1891.512259]  brcmf_fws_cleanup+0x1ea/0x240 [brcmfmac]
+> [ 1891.512264]  brcmf_fws_detach+0x42/0x60 [brcmfmac]
+> [ 1891.512268]  brcmf_proto_bcdc_detach+0x26/0x40 [brcmfmac]
+> [ 1891.512273]  brcmf_proto_detach+0x57/0x70 [brcmfmac]
+> [ 1891.512277]  brcmf_detach+0x89/0x100 [brcmfmac]
+> [ 1891.512282]  brcmf_sdio_remove+0x76/0x180 [brcmfmac]
+> [ 1891.512286]  brcmf_sdiod_remove+0x25/0xb0 [brcmfmac]
+> [ 1891.512291]  brcmf_ops_sdio_remove+0xbd/0x120 [brcmfmac]
+> [ 1891.512294]  sdio_bus_remove+0x33/0x100 [mmc_core]
+> [ 1891.512295]  device_release_driver_internal+0x141/0x200
+> [ 1891.512297]  driver_detach+0x38/0x70
+> [ 1891.512298]  bus_remove_driver+0x55/0xd0
+> [ 1891.512299]  driver_unregister+0x2c/0x50
+> [ 1891.512303]  sdio_unregister_driver+0x1a/0x20 [mmc_core]
+> [ 1891.512307]  brcmf_sdio_exit+0x2f/0x40 [brcmfmac]
+> [ 1891.512312]  brcmf_core_exit+0x15/0xd7 [brcmfmac]
+> [ 1891.512316]  __exit_compat+0x9/0x2b [brcmfmac]
+> [ 1891.512318]  SyS_delete_module+0x155/0x230
+> [ 1891.512319]  ? exit_to_usermode_loop+0x70/0x99
+> [ 1891.512321]  do_syscall_64+0x54/0xc0
+> [ 1891.512322]  entry_SYSCALL64_slow_path+0x25/0x25
+> 
+> Signed-off-by: Wright Feng <wright.feng@cypress.com>
+> Signed-off-by: Chi-hsien Lin <chi-hsien.lin@cypress.com>
 
-This should be CC Stable as well.
+2 patches applied to wireless-drivers-next.git, thanks.
 
-Thanks for fixing, Connor.
+d0151c2bad0a brcmfmac: Fix warning when hitting FW crash with flow control feature
+6aa5a83a7ed8 brcmfmac: Fix warning message after dongle setup failed
 
--Jason
+-- 
+https://patchwork.kernel.org/patch/11802905/
 
-> ---
->  drivers/net/wireless/intel/iwlwifi/mvm/fw.c | 3 +++
->  1 file changed, 3 insertions(+)
->
-> diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-> index 95a613537047..36066a11f835 100644
-> --- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-> +++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-> @@ -132,6 +132,9 @@ static int iwl_configure_rxq(struct iwl_mvm *mvm)
->                 .dataflags[0] = IWL_HCMD_DFL_NOCOPY,
->         };
->
-> +       if (mvm->trans->num_rx_queues == 1)
-> +               return 0;
-> +
->         /* Do not configure default queue, it is configured via context info */
->         num_queues = mvm->trans->num_rx_queues - 1;
->
-> --
-> 2.25.1
->
->
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
