@@ -2,65 +2,95 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CFC7627FDAC
-	for <lists+linux-wireless@lfdr.de>; Thu,  1 Oct 2020 12:49:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EBBCA27FE06
+	for <lists+linux-wireless@lfdr.de>; Thu,  1 Oct 2020 13:02:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731990AbgJAKtv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 1 Oct 2020 06:49:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52362 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731931AbgJAKtu (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 1 Oct 2020 06:49:50 -0400
-Received: from mail-vk1-xa43.google.com (mail-vk1-xa43.google.com [IPv6:2607:f8b0:4864:20::a43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9670C0613D0
-        for <linux-wireless@vger.kernel.org>; Thu,  1 Oct 2020 03:49:49 -0700 (PDT)
-Received: by mail-vk1-xa43.google.com with SMTP id k78so946455vka.10
-        for <linux-wireless@vger.kernel.org>; Thu, 01 Oct 2020 03:49:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=ujiHBwaaGNuMhzojZ2C69RM25MjRj77aVtoAsKFcXTM=;
-        b=YFeNSYm26o2WTZ5vH+CBIbfYxLEJXG2veYAFNbClI0rTm5X9vXzPsuNpNip/fChxLR
-         +IHLgxVb5D1CihRWDtIvc0nlBKYug+GtcFa/kzba6EPfTbsKSXe/dpKB7jFKjbEqYaGx
-         /M/ZNg8h2lXLFhpOflDuSU0TzWfrerMCKHSVsC9sQuRnkdEqV8j16QDzIfD7xE6RyVWX
-         DygAkCcPsxVeaQQsEOfsQqoW6LAtMGrLkCrw87YjvpNceJPzaebBmQKQ+HjcTsFfSdfN
-         vjIbgviBcZKavLbtKxTT24LpQSj2asgZStrFl9PFST/1sEIosxr1n7inBOul5GYoC8IP
-         Px2Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=ujiHBwaaGNuMhzojZ2C69RM25MjRj77aVtoAsKFcXTM=;
-        b=RY5m8p3JeUlElFgkt0JRfs4Zix54xiWjdBEZJLK46853c5UnP424VM4TqIkc/rSdNa
-         XHeNcYrQS2b1R50au9g4DyBHORnN32RmzFIQRMO0EmWfIbutlaA1lp3HCNYTx03bMsp8
-         ZDpooyS85fQQZmdZwsdiVUh10FGG75uNDHg8a7SenRtkUc2vgdV21RAY6RILLjlj3o4S
-         oLrd9t8Iz3A4yEsacL86dGoSFNmwKaFr81lwv0EW3nlLLmP2WW3ekofdMnvHcKYCFOyX
-         iepkXsZhjWiFuaUa1oYCgs8qEDrMEXv/hSdS2dxUQ8ECiT1EuEh7Z+4A4R3TUnxDvao2
-         Ydjw==
-X-Gm-Message-State: AOAM532stAhu4Su6yPFLlPsSL06dac/gzdIRqTbBr6sWqdAT42wfFjBJ
-        BL4XFUWeIMvFCiLNLfoKkGHzH0r9GpaY1j3jMn8=
-X-Google-Smtp-Source: ABdhPJxs86pD3oWm5DHQSHgF4O7k0UUwyVk3suIgbgEBcnEGntzE6QTKLNfPnCIfqD29xXXQIifTQOemk1dWddlsR08=
-X-Received: by 2002:ac5:c8a7:: with SMTP id o7mr4024331vkl.24.1601549388778;
- Thu, 01 Oct 2020 03:49:48 -0700 (PDT)
+        id S1732018AbgJALCw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 1 Oct 2020 07:02:52 -0400
+Received: from mail.kernel.org ([198.145.29.99]:52772 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1731131AbgJALCv (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 1 Oct 2020 07:02:51 -0400
+Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id D93AE20B1F;
+        Thu,  1 Oct 2020 11:02:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1601550170;
+        bh=xYiMC3INrKF34oEyrsmUUrqjbwI/zSijaQlQHN9HorA=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=KEei53PbBIIkdzQLDb/7K/52YSbflBQYn3bG/m713eKa8/9nV0fPPDI4yq6H+/fvV
+         xVqht4hR38nzz4Qgnh/AAp0mk+5WyFzIOOYfEFPMoUP75ral06RLc43LxHUnNG4hb1
+         tZZP4hijlYOR/icBsCoZV1jH7RB2VuKegMZKFfws=
+Date:   Thu, 1 Oct 2020 12:01:50 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     Joe Perches <joe@perches.com>
+Cc:     linux-iio@vger.kernel.org, Julia Lawall <Julia.Lawall@inria.fr>,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-crypto@vger.kernel.org,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Jerome Brunet <jbrunet@baylibre.com>,
+        linux-acpi@vger.kernel.org, David Lechner <david@lechnology.com>,
+        Valdis =?utf-8?Q?Kl=C4=93tnieks?= <valdis.kletnieks@vt.edu>,
+        kernel-janitors@vger.kernel.org, drbd-dev@lists.linbit.com,
+        openipmi-developer@lists.sourceforge.net,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        linux-ide@vger.kernel.org, linux-amlogic@lists.infradead.org,
+        linux-clk@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-wireless@vger.kernel.org,
+        Neil Armstrong <narmstrong@baylibre.com>
+Subject: Re: [PATCH 00/18] use semicolons rather than commas to separate
+ statements
+Message-ID: <20201001110150.GA6715@sirena.org.uk>
+References: <1601233948-11629-1-git-send-email-Julia.Lawall@inria.fr>
+ <160132172369.55460.9237357219623604216.b4-ty@kernel.org>
+ <b1174f9be2ce65f6b5ebefcba0b48e792926abbc.camel@perches.com>
+ <20200929113745.GB4799@sirena.org.uk>
+ <db26d49401dc0bd6b9013a603a155f9827f404a4.camel@perches.com>
 MIME-Version: 1.0
-Received: by 2002:ab0:681a:0:0:0:0:0 with HTTP; Thu, 1 Oct 2020 03:49:48 -0700 (PDT)
-Reply-To: jessicavail020@gmail.com
-From:   Jessica Vail <lj4621397@gmail.com>
-Date:   Thu, 1 Oct 2020 10:49:48 +0000
-Message-ID: <CAJUt9iuxJ4TcExBq8CRREkEfzHy=pHGS5i2T58V+yFbOxsnjxQ@mail.gmail.com>
-Subject: Hi dear,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="CE+1k2dSO48ffgeK"
+Content-Disposition: inline
+In-Reply-To: <db26d49401dc0bd6b9013a603a155f9827f404a4.camel@perches.com>
+X-Cookie: Stay away from flying saucers today.
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi dear,
 
-I'm Jessica Vail, from the United States,please i wish to have a
-communication with you.
+--CE+1k2dSO48ffgeK
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-I wait for your answer.
+On Wed, Sep 30, 2020 at 12:33:39PM -0700, Joe Perches wrote:
+> On Tue, 2020-09-29 at 12:37 +0100, Mark Brown wrote:
 
-Jessica Vail.
+> > Feel free to submit patches to b4.
+
+> Have you tried the existing option to send
+> thank you's on a specific ranges of patches?
+
+I am relying on b4 to identify which patches that I've downloaded are in
+the pushed branches.  Given that it explicitly lists the patches that
+are applied it appears to be doing an OK job here.
+
+--CE+1k2dSO48ffgeK
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl91tx4ACgkQJNaLcl1U
+h9D1IAf/a6Dh+mjW+LjpuCd+hkWCJa8iJTLmYSy9suf32mX9fM1T/gbOLQ1RJtu4
+ZQP0A5w52htIbRIWtYHrgtZQGXrq2SIm+peRmnKP0DXly+Fj0/G0zxg4lqxKzXtV
++XpQjLbvcjF6JIV1ok5ScRg5HH8bfLJQvbGBbpmL9pvI+WniF4smB5bQRwd3qWEf
+MrBNI79S+kr1Cvjxnya+/TP7O4TtOQzzpB695ejEGvqxlTJQM5GGaZTLNJlBivOz
+ygXvOFlrffOajvN1K7URe41xznaDG4+c8pfziFXllSoEGp3yzANBNTtCGEvny0SY
+Nx0W3O8/sebfFJPHQ89w2atWG/nVEQ==
+=onQ8
+-----END PGP SIGNATURE-----
+
+--CE+1k2dSO48ffgeK--
