@@ -2,33 +2,33 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4EA6A2807C8
-	for <lists+linux-wireless@lfdr.de>; Thu,  1 Oct 2020 21:32:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CFB652807CB
+	for <lists+linux-wireless@lfdr.de>; Thu,  1 Oct 2020 21:34:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730172AbgJATci (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 1 Oct 2020 15:32:38 -0400
-Received: from m42-4.mailgun.net ([69.72.42.4]:18068 "EHLO m42-4.mailgun.net"
+        id S1730045AbgJATeB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 1 Oct 2020 15:34:01 -0400
+Received: from m42-4.mailgun.net ([69.72.42.4]:37916 "EHLO m42-4.mailgun.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730073AbgJATch (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 1 Oct 2020 15:32:37 -0400
+        id S1729993AbgJATeA (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 1 Oct 2020 15:34:00 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1601580757; h=Date: Message-Id: Cc: To: References:
+ s=smtp; t=1601580840; h=Date: Message-Id: Cc: To: References:
  In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=eEmL1s/e/4v2tNXuTLk8qt/lT9Y3JX8FaMgwUdudC5E=;
- b=l1I9xzffkCY233pUvuMZGilpUDfFT3P4hup9xhRf6zmvs5sXScJ6WmPyY0JzvV8m8sa989ig
- zcNEXBmQTtOSuEFRC7wEwYMnBuASQsjQnPOwllJexRMYvkzCvcU+GcozFrL8TM+9Va8j/Amz
- TA7WXNrFnOfZsL+aSshUl7wLziE=
+ Content-Type: Sender; bh=ORfjMZzpT+P9piuZ9Uc6zYh6lbTSeb5/0mT+qFQKj5U=;
+ b=IAwOM2tDGNB65GqvS0PWNV0RypPJmissJ4np822zaJfehRBX73TQm1191J6mSfKW8H/iCF7D
+ bzp/SUhDPLcQTQe4Qo3ph9b534D7Bo5u0SmpZBV5S5n88MyEG7t662E5TglFvZuwuXFk4vGL
+ 2BmfjjBxqLJ5dv7X03Q9TIw/gf4=
 X-Mailgun-Sending-Ip: 69.72.42.4
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n03.prod.us-east-1.postgun.com with SMTP id
- 5f762ed5e89f7b4c7846a960 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 01 Oct 2020 19:32:37
+ smtp-out-n04.prod.us-west-2.postgun.com with SMTP id
+ 5f762f20ce84f363c74b10e6 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 01 Oct 2020 19:33:52
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 6B0F1C433CA; Thu,  1 Oct 2020 19:32:36 +0000 (UTC)
+        id 14D2FC433FE; Thu,  1 Oct 2020 19:33:52 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -39,61 +39,57 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 3500DC433F1;
-        Thu,  1 Oct 2020 19:32:34 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 3500DC433F1
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 11F11C433CA;
+        Thu,  1 Oct 2020 19:33:48 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 11F11C433CA
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 1/5] ath11k: add packet log support for QCA6390
+Subject: Re: [PATCH 1/8] ath11k: read and write registers below unwindowed
+ address
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <1601463073-12106-2-git-send-email-kvalo@codeaurora.org>
-References: <1601463073-12106-2-git-send-email-kvalo@codeaurora.org>
+In-Reply-To: <1601544890-13450-2-git-send-email-kvalo@codeaurora.org>
+References: <1601544890-13450-2-git-send-email-kvalo@codeaurora.org>
 To:     Kalle Valo <kvalo@codeaurora.org>
 Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20201001193236.6B0F1C433CA@smtp.codeaurora.org>
-Date:   Thu,  1 Oct 2020 19:32:36 +0000 (UTC)
+Message-Id: <20201001193352.14D2FC433FE@smtp.codeaurora.org>
+Date:   Thu,  1 Oct 2020 19:33:52 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 Kalle Valo <kvalo@codeaurora.org> wrote:
 
-> Add packet log support for QCA6390, otherwise the data connection will stall
-> within a minute or so.  Enable it via debugfs and use trace-cmd to capture the
-> pktlogs.
+> For QCA6390, host can read and write registers below unwindowed
+> address directly without programming the window register. For
+> registers below bar0 + 4k - 32, host can read and write regardless
+> of the power save state. Shadow registers are located below
+> bar0 + 4K - 32.
 > 
-> echo 0xffff 1 > /sys/kernel/debug/ath11k/qca6390\ hw2.0/mac0/pktlog_filter
-> 
-> The mon status ring doesn't support interrupt so far, so host starts
-> a timer to reap this ring. The timer handler also reaps the
-> rxdma_err_dst_ring in case of monitor mode.
-> 
-> As QCA6390 requires bss created ahead of starting vdev, so check
-> vdev_start_delay for monitor mode.
-> 
-> For QCA6390, it uses wbm_desc_rel_ring to return descriptors.
-> It also uses rx_refill_buf_ring to fill mon buffer instead of
-> rxdma_mon_buf_ring.
+> Before MHI power up, there is no need to wakeup MHI so ini_done is
+> added to indicate it.
 > 
 > Tested-on: QCA6390 hw2.0 PCI WLAN.HST.1.0.1-01740-QCAHSTSWPLZ_V2_TO_X86-1
 > 
 > Signed-off-by: Carl Huang <cjhuang@codeaurora.org>
 > Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 
-5 patches applied to ath-next branch of ath.git, thanks.
+8 patches applied to ath-next branch of ath.git, thanks.
 
-701e48a43e15 ath11k: add packet log support for QCA6390
-6fbd8898b301 ath11k: pci: fix rmmod crash
-7fd85517c359 ath11k: mac: remove unused conf_mutex to solve a deadlock
-2f588660e34a ath11k: fix warning caused by lockdep_assert_held
-089ba909f8d7 ath11k: debugfs: fix crash during rmmod
+a05bd8513335 ath11k: read and write registers below unwindowed address
+e838c14a9ee1 ath11k: enable shadow register configuration and access
+9df6d8399d67 ath11k: set WMI pipe credit to 1 for QCA6390
+8ec5a6ab9c7e ath11k: start a timer to update TCL HP
+506e7e9bbf3f ath11k: start a timer to update REO cmd ring
+9b309970c4ea ath11k: start a timer to update HP for CE pipe 4
+c83c500b55b6 ath11k: enable idle power save mode
+404f5de2f997 ath11k: remove unnecessary casts to u32
 
 -- 
-https://patchwork.kernel.org/patch/11808825/
+https://patchwork.kernel.org/patch/11811243/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
