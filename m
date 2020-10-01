@@ -2,215 +2,112 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 19B972808B3
-	for <lists+linux-wireless@lfdr.de>; Thu,  1 Oct 2020 22:45:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 60B6528096C
+	for <lists+linux-wireless@lfdr.de>; Thu,  1 Oct 2020 23:32:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733183AbgJAUoT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 1 Oct 2020 16:44:19 -0400
-Received: from mga03.intel.com ([134.134.136.65]:24580 "EHLO mga03.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1733266AbgJAUoL (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 1 Oct 2020 16:44:11 -0400
-IronPort-SDR: dfrWQu4I90zZD6YcSjDH9z/oZsOQ76E/5URAu+Ttvirnifnh90YCBgKAOLJh+6uAc/qPE/p986
- e8Bs/sfEPQ3g==
-X-IronPort-AV: E=McAfee;i="6000,8403,9761"; a="162909483"
-X-IronPort-AV: E=Sophos;i="5.77,325,1596524400"; 
-   d="scan'208";a="162909483"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2020 13:44:09 -0700
-IronPort-SDR: brv7iu+IuLq3I/EKR3RT17E/sQn4vMkliYG6cc6GpGPhywK4RyH31q4JQaXtl1ycYTW9bLz2jf
- GcDymKAZ+srA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.77,325,1596524400"; 
-   d="scan'208";a="294569369"
-Received: from lkp-server02.sh.intel.com (HELO de448af6ea1b) ([10.239.97.151])
-  by fmsmga007.fm.intel.com with ESMTP; 01 Oct 2020 13:44:07 -0700
-Received: from kbuild by de448af6ea1b with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1kO5Qt-0000k9-Ci; Thu, 01 Oct 2020 20:44:07 +0000
-Date:   Fri, 02 Oct 2020 04:43:34 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     linux-wireless@vger.kernel.org
-Subject: [wireless-drivers-next:pending] BUILD SUCCESS
- e32f6df7bbb8344f3ca8bb5545a443dd32ba2e1d
-Message-ID: <5f763f76.unYEFEu2Ne5G3FRu%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S1732864AbgJAVcR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 1 Oct 2020 17:32:17 -0400
+Received: from mail-io1-f69.google.com ([209.85.166.69]:46012 "EHLO
+        mail-io1-f69.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726855AbgJAVcQ (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 1 Oct 2020 17:32:16 -0400
+Received: by mail-io1-f69.google.com with SMTP id p65so18462iod.12
+        for <linux-wireless@vger.kernel.org>; Thu, 01 Oct 2020 14:32:16 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:date:in-reply-to:message-id:subject
+         :from:to;
+        bh=ZmmhCPSV2yuVdiNMfX2E/gWsiasW2ZIKGSc1ceHT8IA=;
+        b=VVZDepjTMtBQ+xFoexELUQvFlL5C3TvD3Ct7TI2An4F5zuPjRGY9uEJT9fHpsA9V2g
+         DfxPMuEPP/641wSMAzS7186btenAYxKrsJsWMlxLMBcFgLUWMgPiRIK0KQ0AxWimDJev
+         U459ff8LbWq/sOfYqpaEOMonKHJK81kIhm2XqSmkvyEMLd9t1w6az46ldFTAV6bPy8fS
+         Lb98T8ckbuguVkisLr11Ul22fUaR9RVuvruJZHsj38DwSQiTQ7tUAo8OwbB8mAPgm3b2
+         cSsbXA2lYRJ7uonwynStSI7eLZpZQ+zqMg3OvJo22H0TAYEwgvZbNJnx2F9Wg+5S5LSM
+         Enow==
+X-Gm-Message-State: AOAM531xLSWwBdnhekZcn88UKRajr3ha0j8dBZX8OnqbxCzzYmQUZk2D
+        6LAxSrMKnJSY+ksOxR3VJxAhzYZG3LOjSZ+c82K25ZgZ15ak
+X-Google-Smtp-Source: ABdhPJy/AYl890p55pbZI0m5U9ns3Irtm4NtzihUovqDGpGYM6HicnCoHbnVTOXfYcZeSyBjsb8Mik29hIVzL6YD8wv+svCNCsNJ
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+X-Received: by 2002:a92:849a:: with SMTP id y26mr502397ilk.38.1601587935781;
+ Thu, 01 Oct 2020 14:32:15 -0700 (PDT)
+Date:   Thu, 01 Oct 2020 14:32:15 -0700
+In-Reply-To: <0000000000007b357405b099798f@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <000000000000fd29d205b0a2bf28@google.com>
+Subject: Re: WARNING in cfg80211_connect
+From:   syzbot <syzbot+5f9392825de654244975@syzkaller.appspotmail.com>
+To:     davem@davemloft.net, johannes@sipsolutions.net, kuba@kernel.org,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git  pending
-branch HEAD: e32f6df7bbb8344f3ca8bb5545a443dd32ba2e1d  Merge tag 'iwlwifi-next-for-kalle-2020-09-30' of git://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/iwlwifi-next into pending
+syzbot has found a reproducer for the following issue on:
 
-elapsed time: 724m
+HEAD commit:    87d5034d Merge tag 'mlx5-updates-2020-09-30' of git://git...
+git tree:       net-next
+console output: https://syzkaller.appspot.com/x/log.txt?x=121d2313900000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=7b5cc8ec2218e99d
+dashboard link: https://syzkaller.appspot.com/bug?extid=5f9392825de654244975
+compiler:       gcc (GCC) 10.1.0-syz 20200507
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=1100d333900000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1414c997900000
 
-configs tested: 151
-configs skipped: 2
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+5f9392825de654244975@syzkaller.appspotmail.com
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+------------[ cut here ]------------
+WARNING: CPU: 0 PID: 6914 at net/wireless/sme.c:533 cfg80211_sme_connect net/wireless/sme.c:533 [inline]
+WARNING: CPU: 0 PID: 6914 at net/wireless/sme.c:533 cfg80211_connect+0x1432/0x2010 net/wireless/sme.c:1258
+Kernel panic - not syncing: panic_on_warn set ...
+CPU: 0 PID: 6914 Comm: syz-executor935 Not tainted 5.9.0-rc6-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
+Call Trace:
+ __dump_stack lib/dump_stack.c:77 [inline]
+ dump_stack+0x198/0x1fd lib/dump_stack.c:118
+ panic+0x382/0x7fb kernel/panic.c:231
+ __warn.cold+0x20/0x4b kernel/panic.c:600
+ report_bug+0x1bd/0x210 lib/bug.c:198
+ handle_bug+0x38/0x90 arch/x86/kernel/traps.c:234
+ exc_invalid_op+0x14/0x40 arch/x86/kernel/traps.c:254
+ asm_exc_invalid_op+0x12/0x20 arch/x86/include/asm/idtentry.h:536
+RIP: 0010:cfg80211_sme_connect net/wireless/sme.c:533 [inline]
+RIP: 0010:cfg80211_connect+0x1432/0x2010 net/wireless/sme.c:1258
+Code: 00 00 00 fc ff df 4c 89 f2 48 c1 ea 03 80 3c 02 00 0f 85 a2 0a 00 00 49 83 bd 48 01 00 00 00 0f 84 b6 f7 ff ff e8 7e 1e b5 f9 <0f> 0b e8 77 1e b5 f9 48 8b 54 24 18 48 b8 00 00 00 00 00 fc ff df
+RSP: 0018:ffffc90005667360 EFLAGS: 00010293
+RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000000
+RDX: ffff888093bdc380 RSI: ffffffff87c166d2 RDI: ffffffff896172c0
+RBP: ffff888088cf8d30 R08: 0000000000000001 R09: ffff888088cf8d35
+R10: ffffed101119f1a6 R11: 0000000000000000 R12: ffffc90005667500
+R13: ffff888088cf8c10 R14: ffff888088cf8d58 R15: ffffffff89617180
+ nl80211_connect+0x1646/0x2220 net/wireless/nl80211.c:10615
+ genl_family_rcv_msg_doit net/netlink/genetlink.c:669 [inline]
+ genl_family_rcv_msg net/netlink/genetlink.c:714 [inline]
+ genl_rcv_msg+0x61d/0x980 net/netlink/genetlink.c:731
+ netlink_rcv_skb+0x15a/0x430 net/netlink/af_netlink.c:2470
+ genl_rcv+0x24/0x40 net/netlink/genetlink.c:742
+ netlink_unicast_kernel net/netlink/af_netlink.c:1304 [inline]
+ netlink_unicast+0x533/0x7d0 net/netlink/af_netlink.c:1330
+ netlink_sendmsg+0x856/0xd90 net/netlink/af_netlink.c:1919
+ sock_sendmsg_nosec net/socket.c:651 [inline]
+ sock_sendmsg+0xcf/0x120 net/socket.c:671
+ ____sys_sendmsg+0x6e8/0x810 net/socket.c:2353
+ ___sys_sendmsg+0xf3/0x170 net/socket.c:2407
+ __sys_sendmsg+0xe5/0x1b0 net/socket.c:2440
+ do_syscall_64+0x2d/0x70 arch/x86/entry/common.c:46
+ entry_SYSCALL_64_after_hwframe+0x44/0xa9
+RIP: 0033:0x442139
+Code: e8 ac 00 03 00 48 83 c4 18 c3 0f 1f 80 00 00 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 0f 83 7b 07 fc ff c3 66 2e 0f 1f 84 00 00 00 00
+RSP: 002b:00007fff18327468 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
+RAX: ffffffffffffffda RBX: 0000000000000003 RCX: 0000000000442139
+RDX: 0000000000000000 RSI: 0000000020000340 RDI: 0000000000000003
+RBP: 0000000000000000 R08: 0000002000000000 R09: 0000002000000000
+R10: 0000002000000000 R11: 0000000000000246 R12: 000000000000f7cb
+R13: 0000000000000000 R14: 000000000000000c R15: 0000000000000004
+Kernel Offset: disabled
+Rebooting in 86400 seconds..
 
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-arm                         shannon_defconfig
-arm                  colibri_pxa300_defconfig
-mips                          ath25_defconfig
-sh                        edosk7705_defconfig
-powerpc                 mpc8540_ads_defconfig
-powerpc                 linkstation_defconfig
-c6x                         dsk6455_defconfig
-powerpc64                        alldefconfig
-mips                         tb0287_defconfig
-arm                       cns3420vb_defconfig
-arm                        realview_defconfig
-csky                                defconfig
-arm                         assabet_defconfig
-mips                       rbtx49xx_defconfig
-m68k                          hp300_defconfig
-arm                          gemini_defconfig
-arc                      axs103_smp_defconfig
-csky                             alldefconfig
-sh                            shmin_defconfig
-powerpc                        cell_defconfig
-c6x                        evmc6457_defconfig
-powerpc                     asp8347_defconfig
-arm                         mv78xx0_defconfig
-arm                           tegra_defconfig
-sh                           se7619_defconfig
-mips                        bcm63xx_defconfig
-nds32                            alldefconfig
-nios2                         10m50_defconfig
-powerpc                     rainier_defconfig
-xtensa                       common_defconfig
-sh                           sh2007_defconfig
-powerpc                  iss476-smp_defconfig
-mips                  cavium_octeon_defconfig
-arm                             mxs_defconfig
-mips                             allyesconfig
-microblaze                          defconfig
-sh                                  defconfig
-parisc                              defconfig
-powerpc                 mpc8313_rdb_defconfig
-powerpc                     tqm8540_defconfig
-xtensa                  cadence_csp_defconfig
-sh                          lboxre2_defconfig
-arm                         bcm2835_defconfig
-powerpc                      mgcoge_defconfig
-powerpc                  storcenter_defconfig
-microblaze                      mmu_defconfig
-m68k                             allyesconfig
-s390                       zfcpdump_defconfig
-powerpc                       ppc64_defconfig
-powerpc                      ppc6xx_defconfig
-powerpc                     taishan_defconfig
-arm                           spitz_defconfig
-h8300                               defconfig
-arm                           efm32_defconfig
-arm                   milbeaut_m10v_defconfig
-h8300                            alldefconfig
-arm                           viper_defconfig
-powerpc                      chrp32_defconfig
-arm                           stm32_defconfig
-mips                      loongson3_defconfig
-powerpc                      makalu_defconfig
-x86_64                              defconfig
-arm                       imx_v6_v7_defconfig
-arc                    vdk_hs38_smp_defconfig
-mips                        bcm47xx_defconfig
-m68k                         apollo_defconfig
-arm                              zx_defconfig
-sh                           se7343_defconfig
-arm                            dove_defconfig
-mips                        nlm_xlr_defconfig
-mips                        jmr3927_defconfig
-powerpc                      katmai_defconfig
-powerpc                           allnoconfig
-nios2                               defconfig
-riscv                            alldefconfig
-arm                         palmz72_defconfig
-xtensa                  audio_kc705_defconfig
-powerpc                     ksi8560_defconfig
-sh                        sh7785lcr_defconfig
-sh                          rsk7203_defconfig
-sh                   sh7724_generic_defconfig
-sh                             espt_defconfig
-arm                          iop32x_defconfig
-powerpc                 mpc837x_rdb_defconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-c6x                              allyesconfig
-nds32                               defconfig
-nios2                            allyesconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-s390                             allyesconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                                defconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-i386                 randconfig-a003-20200930
-i386                 randconfig-a002-20200930
-i386                 randconfig-a006-20200930
-i386                 randconfig-a005-20200930
-i386                 randconfig-a004-20200930
-i386                 randconfig-a001-20200930
-x86_64               randconfig-a015-20200930
-x86_64               randconfig-a013-20200930
-x86_64               randconfig-a012-20200930
-x86_64               randconfig-a016-20200930
-x86_64               randconfig-a014-20200930
-x86_64               randconfig-a011-20200930
-i386                 randconfig-a011-20200930
-i386                 randconfig-a015-20200930
-i386                 randconfig-a012-20200930
-i386                 randconfig-a014-20200930
-i386                 randconfig-a016-20200930
-i386                 randconfig-a013-20200930
-riscv                    nommu_k210_defconfig
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-x86_64                                   rhel
-x86_64                           allyesconfig
-x86_64                    rhel-7.6-kselftests
-x86_64                               rhel-8.3
-x86_64                                  kexec
-
-clang tested configs:
-x86_64               randconfig-a001-20200930
-x86_64               randconfig-a005-20200930
-x86_64               randconfig-a003-20200930
-x86_64               randconfig-a004-20200930
-x86_64               randconfig-a002-20200930
-x86_64               randconfig-a006-20200930
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
