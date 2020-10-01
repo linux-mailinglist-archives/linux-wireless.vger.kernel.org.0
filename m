@@ -2,32 +2,32 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 030BB27FC8B
-	for <lists+linux-wireless@lfdr.de>; Thu,  1 Oct 2020 11:35:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9766427FC88
+	for <lists+linux-wireless@lfdr.de>; Thu,  1 Oct 2020 11:35:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731774AbgJAJf3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 1 Oct 2020 05:35:29 -0400
-Received: from m42-4.mailgun.net ([69.72.42.4]:21984 "EHLO m42-4.mailgun.net"
+        id S1731817AbgJAJfI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 1 Oct 2020 05:35:08 -0400
+Received: from z5.mailgun.us ([104.130.96.5]:11882 "EHLO z5.mailgun.us"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731673AbgJAJf3 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 1 Oct 2020 05:35:29 -0400
+        id S1731758AbgJAJfH (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 1 Oct 2020 05:35:07 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1601544928; h=References: In-Reply-To: Message-Id: Date:
+ s=smtp; t=1601544906; h=References: In-Reply-To: Message-Id: Date:
  Subject: Cc: To: From: Sender;
- bh=HRCJZhbbxysgF2SDHvFZHDqVX8al17bZ02odqP07/Ng=; b=xHjEIEqiaRnHBGepWIXzq0Gx3zuu9HNoWzWTqYh2ztGW0/9OUOjU39Yf7HbLDuMK4R7IcIdJ
- TRRDZWdLXz9mLdcSI4SgWLCld7WISZHPmvngohI1EqOCQ9VTO/aTlNM8A+UVGHF2HNDESd0z
- zQCap7KdpkXf7ekOTWf8mnCOVOw=
-X-Mailgun-Sending-Ip: 69.72.42.4
+ bh=UEQIJ4ppgDgvo9nbhrC+wxD04R+pTZq/L60zFMuXzNM=; b=MCiC/FQhf7/HpteGjNpH8HQ4OEVucnpUyGrLA9gx9+yErioDl1RxHfvQnwrPuRNmjl38Rwa8
+ pt8kNgdET/Y5s+uB0UGy2FwFQdFu5AbhZMONekt8Cf0bd71oOtu5G9BEunz0g83LXfJe24Yv
+ 6EK/oSRP+N7vXdSuniVH+cyqh+4=
+X-Mailgun-Sending-Ip: 104.130.96.5
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n01.prod.us-east-1.postgun.com with SMTP id
- 5f75a2c87df1a00ff88cf40a (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 01 Oct 2020 09:35:04
+ smtp-out-n06.prod.us-east-1.postgun.com with SMTP id
+ 5f75a2c9e89f7b4c788f8cf4 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 01 Oct 2020 09:35:05
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id AF313C433CB; Thu,  1 Oct 2020 09:35:03 +0000 (UTC)
+        id 0B32FC433FE; Thu,  1 Oct 2020 09:35:05 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -37,17 +37,17 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 66215C433FE;
-        Thu,  1 Oct 2020 09:35:02 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 66215C433FE
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id C1E77C433C8;
+        Thu,  1 Oct 2020 09:35:03 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org C1E77C433C8
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
 From:   Kalle Valo <kvalo@codeaurora.org>
 To:     ath11k@lists.infradead.org
 Cc:     linux-wireless@vger.kernel.org
-Subject: [PATCH 6/8] ath11k: start a timer to update HP for CE pipe 4
-Date:   Thu,  1 Oct 2020 12:34:48 +0300
-Message-Id: <1601544890-13450-7-git-send-email-kvalo@codeaurora.org>
+Subject: [PATCH 7/8] ath11k: enable idle power save mode
+Date:   Thu,  1 Oct 2020 12:34:49 +0300
+Message-Id: <1601544890-13450-8-git-send-email-kvalo@codeaurora.org>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1601544890-13450-1-git-send-email-kvalo@codeaurora.org>
 References: <1601544890-13450-1-git-send-email-kvalo@codeaurora.org>
@@ -57,104 +57,81 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Carl Huang <cjhuang@codeaurora.org>
 
-For QCA6390, Start a timer to update CE pipe 4 ring HP when shadow
-register is enabled. Its' to avoid that HP isn't updated to target
-register.
+Host sends wmi command to allow hardware enter idle power
+save mode in ath11k_mac_op_start function.
+
+hw parameter idle_ps indicates whether idle power save is supported.
 
 Tested-on: QCA6390 hw2.0 PCI WLAN.HST.1.0.1-01740-QCAHSTSWPLZ_V2_TO_X86-1
 
 Signed-off-by: Carl Huang <cjhuang@codeaurora.org>
 Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 ---
- drivers/net/wireless/ath/ath11k/ce.c | 34 ++++++++++++++++++++++++++++++++++
- drivers/net/wireless/ath/ath11k/ce.h |  1 +
- 2 files changed, 35 insertions(+)
+ drivers/net/wireless/ath/ath11k/core.c | 3 +++
+ drivers/net/wireless/ath/ath11k/hw.h   | 1 +
+ drivers/net/wireless/ath/ath11k/mac.c  | 9 +++++++++
+ 3 files changed, 13 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath11k/ce.c b/drivers/net/wireless/ath/ath11k/ce.c
-index caa356dde880..9d730f8ac816 100644
---- a/drivers/net/wireless/ath/ath11k/ce.c
-+++ b/drivers/net/wireless/ath/ath11k/ce.c
-@@ -187,6 +187,26 @@ const struct ce_attr ath11k_host_ce_config_qca6390[] = {
- 
+diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
+index e94d760b21a0..ebd6886a8c18 100644
+--- a/drivers/net/wireless/ath/ath11k/core.c
++++ b/drivers/net/wireless/ath/ath11k/core.c
+@@ -64,6 +64,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
+ 					BIT(NL80211_IFTYPE_MESH_POINT),
+ 		.supports_monitor = true,
+ 		.supports_shadow_regs = false,
++		.idle_ps = false,
+ 	},
+ 	{
+ 		.hw_rev = ATH11K_HW_IPQ6018_HW10,
+@@ -100,6 +101,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
+ 					BIT(NL80211_IFTYPE_MESH_POINT),
+ 		.supports_monitor = true,
+ 		.supports_shadow_regs = false,
++		.idle_ps = false,
+ 	},
+ 	{
+ 		.name = "qca6390 hw2.0",
+@@ -135,6 +137,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
+ 					BIT(NL80211_IFTYPE_AP),
+ 		.supports_monitor = false,
+ 		.supports_shadow_regs = true,
++		.idle_ps = true,
+ 	},
  };
  
-+static bool ath11k_ce_need_shadow_fix(int ce_id)
-+{
-+	/* only ce4 needs shadow workaroud*/
-+	if (ce_id == 4)
-+		return true;
-+	return false;
-+}
-+
-+static void ath11k_ce_stop_shadow_timers(struct ath11k_base *ab)
-+{
-+	int i;
-+
-+	if (!ab->hw_params.supports_shadow_regs)
-+		return;
-+
-+	for (i = 0; i < ab->hw_params.ce_count; i++)
-+		if (ath11k_ce_need_shadow_fix(i))
-+			ath11k_dp_shadow_stop_timer(ab, &ab->ce.hp_timer[i]);
-+}
-+
- static int ath11k_ce_rx_buf_enqueue_pipe(struct ath11k_ce_pipe *pipe,
- 					 struct sk_buff *skb, dma_addr_t paddr)
- {
-@@ -505,6 +525,12 @@ static int ath11k_ce_init_ring(struct ath11k_base *ab,
+diff --git a/drivers/net/wireless/ath/ath11k/hw.h b/drivers/net/wireless/ath/ath11k/hw.h
+index 8e908bcd491e..1dda4257e6d7 100644
+--- a/drivers/net/wireless/ath/ath11k/hw.h
++++ b/drivers/net/wireless/ath/ath11k/hw.h
+@@ -160,6 +160,7 @@ struct ath11k_hw_params {
+ 	u16 interface_modes;
+ 	bool supports_monitor;
+ 	bool supports_shadow_regs;
++	bool idle_ps;
+ };
  
- 	ce_ring->hal_ring_id = ret;
+ struct ath11k_hw_ops {
+diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
+index 76e218e53fe7..d42858d1a578 100644
+--- a/drivers/net/wireless/ath/ath11k/mac.c
++++ b/drivers/net/wireless/ath/ath11k/mac.c
+@@ -4208,6 +4208,15 @@ static int ath11k_mac_op_start(struct ieee80211_hw *hw)
+ 	rcu_assign_pointer(ab->pdevs_active[ar->pdev_idx],
+ 			   &ab->pdevs[ar->pdev_idx]);
  
-+	if (ab->hw_params.supports_shadow_regs &&
-+	    ath11k_ce_need_shadow_fix(ce_id))
-+		ath11k_dp_shadow_init_timer(ab, &ab->ce.hp_timer[ce_id],
-+					    ATH11K_SHADOW_CTRL_TIMER_INTERVAL,
-+					    ce_ring->hal_ring_id);
-+
++	/* allow device to enter IMPS */
++	if (ab->hw_params.idle_ps) {
++		ret = ath11k_wmi_pdev_set_param(ar, WMI_PDEV_PARAM_IDLE_PS_CONFIG,
++						1, pdev->pdev_id);
++		if (ret) {
++			ath11k_err(ab, "failed to enable idle ps: %d\n", ret);
++			goto err;
++		}
++	}
  	return 0;
- }
  
-@@ -677,6 +703,9 @@ int ath11k_ce_send(struct ath11k_base *ab, struct sk_buff *skb, u8 pipe_id,
- 
- 	ath11k_hal_srng_access_end(ab, srng);
- 
-+	if (ath11k_ce_need_shadow_fix(pipe_id))
-+		ath11k_dp_shadow_start_timer(ab, srng, &ab->ce.hp_timer[pipe_id]);
-+
- 	spin_unlock_bh(&srng->lock);
- 
- 	spin_unlock_bh(&ab->ce.ce_lock);
-@@ -761,6 +790,8 @@ void ath11k_ce_cleanup_pipes(struct ath11k_base *ab)
- 	struct ath11k_ce_pipe *pipe;
- 	int pipe_num;
- 
-+	ath11k_ce_stop_shadow_timers(ab);
-+
- 	for (pipe_num = 0; pipe_num < ab->hw_params.ce_count; pipe_num++) {
- 		pipe = &ab->ce.ce_pipe[pipe_num];
- 		ath11k_ce_rx_pipe_cleanup(pipe);
-@@ -874,6 +905,9 @@ void ath11k_ce_free_pipes(struct ath11k_base *ab)
- 	for (i = 0; i < ab->hw_params.ce_count; i++) {
- 		pipe = &ab->ce.ce_pipe[i];
- 
-+		if (ath11k_ce_need_shadow_fix(i))
-+			ath11k_dp_shadow_stop_timer(ab, &ab->ce.hp_timer[i]);
-+
- 		if (pipe->src_ring) {
- 			desc_sz = ath11k_hal_ce_get_desc_size(HAL_CE_DESC_SRC);
- 			dma_free_coherent(ab->dev,
-diff --git a/drivers/net/wireless/ath/ath11k/ce.h b/drivers/net/wireless/ath/ath11k/ce.h
-index 26ef65e2528e..269b599ac0b0 100644
---- a/drivers/net/wireless/ath/ath11k/ce.h
-+++ b/drivers/net/wireless/ath/ath11k/ce.h
-@@ -168,6 +168,7 @@ struct ath11k_ce {
- 	struct ath11k_ce_pipe ce_pipe[CE_COUNT_MAX];
- 	/* Protects rings of all ce pipes */
- 	spinlock_t ce_lock;
-+	struct ath11k_hp_update_timer hp_timer[CE_COUNT_MAX];
- };
- 
- extern const struct ce_attr ath11k_host_ce_config_ipq8074[];
+ err:
 -- 
 2.7.4
 
