@@ -2,130 +2,79 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 20B51280F6B
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 Oct 2020 11:04:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EAF7B28100B
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 Oct 2020 11:45:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387561AbgJBJD6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 2 Oct 2020 05:03:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60952 "EHLO
+        id S2387677AbgJBJpF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 2 Oct 2020 05:45:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39050 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726443AbgJBJD6 (ORCPT
+        with ESMTP id S1726288AbgJBJpF (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 2 Oct 2020 05:03:58 -0400
-Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com [IPv6:2a00:1450:4864:20::343])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D330BC0613E3
-        for <linux-wireless@vger.kernel.org>; Fri,  2 Oct 2020 02:03:57 -0700 (PDT)
-Received: by mail-wm1-x343.google.com with SMTP id l15so650462wmh.1
-        for <linux-wireless@vger.kernel.org>; Fri, 02 Oct 2020 02:03:57 -0700 (PDT)
+        Fri, 2 Oct 2020 05:45:05 -0400
+Received: from mail-qk1-x744.google.com (mail-qk1-x744.google.com [IPv6:2607:f8b0:4864:20::744])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94370C0613D0
+        for <linux-wireless@vger.kernel.org>; Fri,  2 Oct 2020 02:45:05 -0700 (PDT)
+Received: by mail-qk1-x744.google.com with SMTP id g72so685782qke.8
+        for <linux-wireless@vger.kernel.org>; Fri, 02 Oct 2020 02:45:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=GMl7/j88Iz46F6Y+1lgqEhwx+ihDL4dLgjSpHmIIUds=;
-        b=jzmQ0yzEa0SE3WP4cm6xCn0WqgA8A1gFiJvg8siOK/8IWedstvxznXYW3EVrrk7lV+
-         tzAmBI7SUmo/Q990g6cvSwfpV6+iN/4SukyDDZj1i0AVj2Q06LgDdbQT3ePzYWeR8NrU
-         bux5rT8OH2tP7kNkforH0GzYte4gL5xI4gfMhz34NAtcidGTjA0AeXUZKiM50VRYHjdZ
-         rX2TlOTcW+ZyX50+xFu5lvgjawrCbEFlKQeaUO6ULozadmhBKj2uEhJz8u0AGr/GvPPt
-         /aWc+je5PIT5hh5ceTMmyGWef+nlBUztHFylE03CJ2qaj1sshRvFwuOVB8xkWfrRHXgu
-         ZrlQ==
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=JD3K8CrSwOJ6p7+eZex4hVlpBliIYCNl4QvT495/90U=;
+        b=TmDNxUBBw3IaTAHhXQd2WqlDF5lQWf/KbKTGbILiscP3YEsZokBvaa+94bBjq+i6NU
+         JYCnZH5pkeFn9TZ1xUoIpRKL98bVxhcfCi1UH5h4kWqu+qFN1cV+ghR/v1Pdk8MXoT6J
+         WyoAp5z1BrgarB5xdBo6uPB5HA+O2QqYUh0FJG4pjd3pNSpg+netXucveqet2d3sOfwW
+         Uxi1gMSLHQdtq8M+P8CAwZB3gMOfla41C723lYcv3Fh2A62ks9KEy7zhBmFHYZ+fxo4/
+         nrGOGCO+GnA/puCKUTEF867LzAPooL0s2PlKKMXI4V/TR+Y3HG3jq53aUG4zILbbghvD
+         y90Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=GMl7/j88Iz46F6Y+1lgqEhwx+ihDL4dLgjSpHmIIUds=;
-        b=GLoZKZOmnUI9XSXBZD0JnSZTKSN71+zE/4aXIwck5HzpuRFzGZH7i9LQD9is9SsIqo
-         cRRgxdoO49+3Ow3uUPFEgFGjwuAFFjbOnAG3bvOfeLxan8OtZo0Bu5VtoXPUSSh/Jhs8
-         LYsXCBzAAZz/H7+wkEzRStbhF3dsXL5cMcelwdqqAxG8MrnIOqTny4MR32OPaL9ktorc
-         tudZN58REIpvXMLTwBakgzg/g9TuFdADrJ2Sp4sNNsrBE4as39zeMKeqKoPNgzI5Neke
-         NSl9na0vS9Pwc32ZqHLj6j0/SBiKzBatiGIt8hwaRFjTSktcY9iFhowHY+1fiM/6QjRB
-         vUHg==
-X-Gm-Message-State: AOAM533dMGpD2o+re56NgX4TvhbglUOk4RUVF7UiK8MFl8ooc4EvT+WR
-        H8HUnb4TK/ugAelekWnWrY9jEA==
-X-Google-Smtp-Source: ABdhPJw70LY1kPIFBdESXYlJH3qP4DzeHZ24QPyztH1Z1PJV2Quya6u6e4iMNs8CAmj2Hb0gu07YNw==
-X-Received: by 2002:a1c:b7d7:: with SMTP id h206mr1773289wmf.159.1601629436439;
-        Fri, 02 Oct 2020 02:03:56 -0700 (PDT)
-Received: from dell ([91.110.221.236])
-        by smtp.gmail.com with ESMTPSA id f12sm955863wmf.26.2020.10.02.02.03.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 02 Oct 2020 02:03:55 -0700 (PDT)
-Date:   Fri, 2 Oct 2020 10:03:53 +0100
-From:   Lee Jones <lee.jones@linaro.org>
-To:     kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org
-Cc:     linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org
-Subject: Re: [PATCH v2 00/29] [Set 1,2,3] Rid W=1 warnings in Wireless
-Message-ID: <20201002090353.GS6148@dell>
-References: <20200910065431.657636-1-lee.jones@linaro.org>
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=JD3K8CrSwOJ6p7+eZex4hVlpBliIYCNl4QvT495/90U=;
+        b=Fj6MnKIiId9p2XEwMDHjDD6sPYqldJYGfTxB3wlI8pT9+RhsZY8LGWV0Czlkn0ofn4
+         KhcnmeMpom3GgXTU5f3XMZeW/j41mu6fYDPcnQEcd9mDa7X3ufsC1XCkPNg8sJPE6xv2
+         M7f8oiNSXxgAQbM3DmvdFE+2l5nt/tG+LSiKg17bCp7B3DSCOTlHXysEF2NPk2TfElCa
+         F8vXQnF6r0O+jiXJ398LGP41DPZshSg28IhFOXFVWj3Oj9r/OVTTgmcEpnM389UGzUOC
+         BsSGr0XGFZQ2TeRe1D3NVy3dnpREIEzQ5iYkwHX5Z7Cs21vaeOAc00x/D57AKMJBwqqe
+         F4dw==
+X-Gm-Message-State: AOAM5332lmIQz6Iz2lXcRwCarS+p3Zr511Neu4cvae1i8DDGc5zYoGod
+        jjEdbr9wW7gGSzrwdJbdyvJ7D8brEm2J7+er6N4=
+X-Google-Smtp-Source: ABdhPJz5HzQxvuWTesVYRuui6hH3swTLpxz3j8zL1M8qYM1mkb1yDX7amSwn3l+kAPLMiRF1MiO/QBz2wPUb/OG+bmw=
+X-Received: by 2002:a37:d51:: with SMTP id 78mr1142099qkn.253.1601631904905;
+ Fri, 02 Oct 2020 02:45:04 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20200910065431.657636-1-lee.jones@linaro.org>
+Received: by 2002:ad4:4a6c:0:0:0:0:0 with HTTP; Fri, 2 Oct 2020 02:45:04 -0700 (PDT)
+Reply-To: georgemike7030@gmail.com
+From:   george mike <kagnalex@gmail.com>
+Date:   Fri, 2 Oct 2020 11:45:04 +0200
+Message-ID: <CACemp=5xVo2xTzXymH3_wrJiY-QDJgRNkDRQOXfOr=qO8OtFAQ@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, 10 Sep 2020, Lee Jones wrote:
+dzie=C5=84 dobry
 
-> This is a rebased/re-worked set of patches which have been
-> previously posted to the mailing list(s).
-> 
-> This set is part of a larger effort attempting to clean-up W=1
-> kernel builds, which are currently overwhelmingly riddled with
-> niggly little warnings.
-> 
-> There are quite a few W=1 warnings in the Wireless.  My plan
-> is to work through all of them over the next few weeks.
-> Hopefully it won't be too long before drivers/net/wireless
-> builds clean with W=1 enabled.
-> 
-> Lee Jones (29):
->   iwlwifi: dvm: Demote non-compliant kernel-doc headers
->   iwlwifi: rs: Demote non-compliant kernel-doc headers
->   iwlwifi: dvm: tx: Demote non-compliant kernel-doc headers
->   iwlwifi: dvm: lib: Demote non-compliant kernel-doc headers
->   iwlwifi: calib: Demote seemingly unintentional kerneldoc header
->   wil6210: Fix a couple of formatting issues in 'wil6210_debugfs_init'
->   iwlwifi: dvm: sta: Demote a bunch of nonconformant kernel-doc headers
->   iwlwifi: mvm: ops: Remove unused static struct 'iwl_mvm_debug_names'
->   iwlwifi: dvm: Demote a couple of nonconformant kernel-doc headers
->   iwlwifi: mvm: utils: Fix some doc-rot
->   iwlwifi: dvm: scan: Demote a few nonconformant kernel-doc headers
->   iwlwifi: dvm: rxon: Demote non-conformant kernel-doc headers
->   iwlwifi: mvm: tx: Demote misuse of kernel-doc headers
->   iwlwifi: dvm: devices: Fix function documentation formatting issues
->   iwlwifi: iwl-drv: Provide descriptions debugfs dentries
->   wil6210: wmi: Fix formatting and demote non-conforming function
->     headers
->   wil6210: interrupt: Demote comment header which is clearly not
->     kernel-doc
->   wil6210: txrx: Demote obvious abuse of kernel-doc
->   wil6210: txrx_edma: Demote comments which are clearly not kernel-doc
->   wil6210: pmc: Demote a few nonconformant kernel-doc function headers
->   wil6210: wil_platform: Demote kernel-doc header to standard comment
->     block
->   wil6210: wmi: Correct misnamed function parameter 'ptr_'
->   ath6kl: wmi: Remove unused variable 'rate'
->   ath9k: ar9002_initvals: Remove unused array
->     'ar9280PciePhy_clkreq_off_L1_9280'
->   ath9k: ar9001_initvals: Remove unused array 'ar5416Bank6_9100'
->   ath9k: ar5008_initvals: Remove unused table entirely
->   ath9k: ar5008_initvals: Move ar5416Bank{0,1,2,3,7} to where they are
->     used
->   brcmsmac: phytbl_lcn: Remove unused array 'dot11lcn_gain_tbl_rev1'
->   brcmsmac: phy_lcn: Remove unused variable
->     'lcnphy_rx_iqcomp_table_rev0'
+Nazywam si=C4=99 George Mike, z zawodu jestem prawnikiem. chcia=C5=82bym
+Oferuj=C4=99 Tobie
+najbli=C5=BCszy krewny mojego klienta. Dziedziczysz sum=C4=99 (8.5
+Milion=C3=B3w dolar=C3=B3w)
+Dolary, kt=C3=B3re m=C3=B3j klient zostawi=C5=82 w banku przed =C5=9Bmierci=
+=C4=85.
 
-What's happening with all of these iwlwifi patches?
+M=C3=B3j klient jest obywatelem twojego kraju, kt=C3=B3ry jest z =C5=BCon=
+=C4=85
+zgin=C4=85=C5=82 w wypadku samochodowym
+i jedyny syn. Mam prawo do 50% ca=C5=82kowitego funduszu, 50%
+By=C4=87 dla ciebie.
+Skontaktuj si=C4=99 z moim prywatnym adresem e-mail, aby uzyska=C4=87 wi=C4=
+=99cej
+Informacje:georgemike7030@gmail.com
 
-Looks like they are still not applied.
-
-BTW, there should be another week of development left, as indicated by
-Linus during -rc6.  Looks like there will be an -rc8 after all.
-
--- 
-Lee Jones [李琼斯]
-Senior Technical Lead - Developer Services
-Linaro.org │ Open source software for Arm SoCs
-Follow Linaro: Facebook | Twitter | Blog
+Z g=C3=B3ry dzi=C4=99kuj=C4=99,
+Panie George Mike,
