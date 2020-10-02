@@ -2,79 +2,143 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EAF7B28100B
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 Oct 2020 11:45:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0EC4F28105E
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 Oct 2020 12:11:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387677AbgJBJpF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 2 Oct 2020 05:45:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39050 "EHLO
+        id S1726282AbgJBKLg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 2 Oct 2020 06:11:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43104 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726288AbgJBJpF (ORCPT
+        with ESMTP id S1725993AbgJBKLg (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 2 Oct 2020 05:45:05 -0400
-Received: from mail-qk1-x744.google.com (mail-qk1-x744.google.com [IPv6:2607:f8b0:4864:20::744])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94370C0613D0
-        for <linux-wireless@vger.kernel.org>; Fri,  2 Oct 2020 02:45:05 -0700 (PDT)
-Received: by mail-qk1-x744.google.com with SMTP id g72so685782qke.8
-        for <linux-wireless@vger.kernel.org>; Fri, 02 Oct 2020 02:45:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=JD3K8CrSwOJ6p7+eZex4hVlpBliIYCNl4QvT495/90U=;
-        b=TmDNxUBBw3IaTAHhXQd2WqlDF5lQWf/KbKTGbILiscP3YEsZokBvaa+94bBjq+i6NU
-         JYCnZH5pkeFn9TZ1xUoIpRKL98bVxhcfCi1UH5h4kWqu+qFN1cV+ghR/v1Pdk8MXoT6J
-         WyoAp5z1BrgarB5xdBo6uPB5HA+O2QqYUh0FJG4pjd3pNSpg+netXucveqet2d3sOfwW
-         Uxi1gMSLHQdtq8M+P8CAwZB3gMOfla41C723lYcv3Fh2A62ks9KEy7zhBmFHYZ+fxo4/
-         nrGOGCO+GnA/puCKUTEF867LzAPooL0s2PlKKMXI4V/TR+Y3HG3jq53aUG4zILbbghvD
-         y90Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=JD3K8CrSwOJ6p7+eZex4hVlpBliIYCNl4QvT495/90U=;
-        b=Fj6MnKIiId9p2XEwMDHjDD6sPYqldJYGfTxB3wlI8pT9+RhsZY8LGWV0Czlkn0ofn4
-         KhcnmeMpom3GgXTU5f3XMZeW/j41mu6fYDPcnQEcd9mDa7X3ufsC1XCkPNg8sJPE6xv2
-         M7f8oiNSXxgAQbM3DmvdFE+2l5nt/tG+LSiKg17bCp7B3DSCOTlHXysEF2NPk2TfElCa
-         F8vXQnF6r0O+jiXJ398LGP41DPZshSg28IhFOXFVWj3Oj9r/OVTTgmcEpnM389UGzUOC
-         BsSGr0XGFZQ2TeRe1D3NVy3dnpREIEzQ5iYkwHX5Z7Cs21vaeOAc00x/D57AKMJBwqqe
-         F4dw==
-X-Gm-Message-State: AOAM5332lmIQz6Iz2lXcRwCarS+p3Zr511Neu4cvae1i8DDGc5zYoGod
-        jjEdbr9wW7gGSzrwdJbdyvJ7D8brEm2J7+er6N4=
-X-Google-Smtp-Source: ABdhPJz5HzQxvuWTesVYRuui6hH3swTLpxz3j8zL1M8qYM1mkb1yDX7amSwn3l+kAPLMiRF1MiO/QBz2wPUb/OG+bmw=
-X-Received: by 2002:a37:d51:: with SMTP id 78mr1142099qkn.253.1601631904905;
- Fri, 02 Oct 2020 02:45:04 -0700 (PDT)
+        Fri, 2 Oct 2020 06:11:36 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D3CCC0613D0;
+        Fri,  2 Oct 2020 03:11:36 -0700 (PDT)
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.94)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1kOI2H-00FAum-Tl; Fri, 02 Oct 2020 12:11:34 +0200
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     netdev@vger.kernel.org
+Cc:     linux-wireless@vger.kernel.org
+Subject: pull-request: mac80211-next 2020-10-02
+Date:   Fri,  2 Oct 2020 12:11:25 +0200
+Message-Id: <20201002101126.221601-1-johannes@sipsolutions.net>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-Received: by 2002:ad4:4a6c:0:0:0:0:0 with HTTP; Fri, 2 Oct 2020 02:45:04 -0700 (PDT)
-Reply-To: georgemike7030@gmail.com
-From:   george mike <kagnalex@gmail.com>
-Date:   Fri, 2 Oct 2020 11:45:04 +0200
-Message-ID: <CACemp=5xVo2xTzXymH3_wrJiY-QDJgRNkDRQOXfOr=qO8OtFAQ@mail.gmail.com>
-Subject: 
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-dzie=C5=84 dobry
+Hi Dave,
 
-Nazywam si=C4=99 George Mike, z zawodu jestem prawnikiem. chcia=C5=82bym
-Oferuj=C4=99 Tobie
-najbli=C5=BCszy krewny mojego klienta. Dziedziczysz sum=C4=99 (8.5
-Milion=C3=B3w dolar=C3=B3w)
-Dolary, kt=C3=B3re m=C3=B3j klient zostawi=C5=82 w banku przed =C5=9Bmierci=
-=C4=85.
+Here's a - probably final - set of patches for net-next.
+Really the big thing is more complete S1G support, along
+with a small list of other things, see the tag message.
 
-M=C3=B3j klient jest obywatelem twojego kraju, kt=C3=B3ry jest z =C5=BCon=
-=C4=85
-zgin=C4=85=C5=82 w wypadku samochodowym
-i jedyny syn. Mam prawo do 50% ca=C5=82kowitego funduszu, 50%
-By=C4=87 dla ciebie.
-Skontaktuj si=C4=99 z moim prywatnym adresem e-mail, aby uzyska=C4=87 wi=C4=
-=99cej
-Informacje:georgemike7030@gmail.com
+Please pull and let me know if there's any problem.
 
-Z g=C3=B3ry dzi=C4=99kuj=C4=99,
-Panie George Mike,
+Thanks,
+johannes
+
+
+
+The following changes since commit 0675c285ea65540cccae64c87dfc7a00c7ede03a:
+
+  net: vlan: Fixed signedness in vlan_group_prealloc_vid() (2020-09-28 00:51:39 -0700)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211-next.git tags/mac80211-next-for-net-next-2020-10-02
+
+for you to fetch changes up to 75f87eaeaced820cc776b3147d22ec44fbf5fc17:
+
+  mac80211: avoid processing non-S1G elements on S1G band (2020-10-02 12:07:24 +0200)
+
+----------------------------------------------------------------
+Another set of changes, this time with:
+ * lots more S1G band support
+ * 6 GHz scanning, finally
+ * kernel-doc fixes
+ * non-split wiphy dump fixes in nl80211
+ * various other small cleanups/features
+
+----------------------------------------------------------------
+Ben Greear (1):
+      mac80211: Support not iterating over not-sdata-in-driver ifaces
+
+Dan Carpenter (1):
+      cfg80211: regulatory: remove a bogus initialization
+
+Felix Fietkau (1):
+      mac80211: fix regression in sta connection monitor
+
+Johannes Berg (6):
+      mac80211_hwsim: fix typo in kernel-doc
+      mac80211: fix some missing kernel-doc
+      wireless: radiotap: fix some kernel-doc
+      mac80211: fix some more kernel-doc in mesh
+      nl80211: reduce non-split wiphy dump size
+      nl80211: fix non-split wiphy information
+
+Loic Poulain (1):
+      mac80211: Inform AP when returning operating channel
+
+Rajkumar Manoharan (2):
+      nl80211: fix OBSS PD min and max offset validation
+      nl80211: extend support to config spatial reuse parameter set
+
+Thomas Pedersen (18):
+      mac80211: get correct default channel width for S1G
+      mac80211: s1g: choose scanning width based on frequency
+      nl80211: support S1G capability overrides in assoc
+      mac80211: support S1G STA capabilities
+      cfg80211: convert S1G beacon to scan results
+      cfg80211: parse S1G Operation element for BSS channel
+      mac80211: convert S1G beacon to scan results
+      cfg80211: handle Association Response from S1G STA
+      mac80211: encode listen interval for S1G
+      mac80211: don't calculate duration for S1G
+      mac80211: handle S1G low rates
+      mac80211: avoid rate init for S1G band
+      mac80211: receive and process S1G beacons
+      mac80211: support S1G association
+      nl80211: include frequency offset in survey info
+      mac80211_hwsim: write TSF timestamp correctly to S1G beacon
+      mac80211_hwsim: indicate support for S1G
+      mac80211: avoid processing non-S1G elements on S1G band
+
+Tova Mussai (1):
+      nl80211/cfg80211: support 6 GHz scanning
+
+ drivers/net/wireless/mac80211_hwsim.c | 100 +++++-
+ include/linux/ieee80211.h             |  74 ++++-
+ include/net/cfg80211.h                |  45 ++-
+ include/net/mac80211.h                |   8 +
+ include/uapi/linux/nl80211.h          |  25 ++
+ net/mac80211/cfg.c                    |   2 +
+ net/mac80211/chan.c                   |   9 +-
+ net/mac80211/ibss.c                   |   3 +-
+ net/mac80211/ieee80211_i.h            |  19 +-
+ net/mac80211/iface.c                  |   5 +
+ net/mac80211/mesh_plink.c             |   1 +
+ net/mac80211/mesh_ps.c                |   4 +
+ net/mac80211/mlme.c                   | 179 +++++++++--
+ net/mac80211/offchannel.c             |  38 +--
+ net/mac80211/rate.c                   |  39 ++-
+ net/mac80211/rx.c                     |  87 +++--
+ net/mac80211/scan.c                   |  43 ++-
+ net/mac80211/status.c                 |  16 +-
+ net/mac80211/tx.c                     |   6 +
+ net/mac80211/util.c                   | 193 +++++++++++
+ net/wireless/core.c                   |   8 +-
+ net/wireless/core.h                   |   5 +-
+ net/wireless/mlme.c                   |  14 +-
+ net/wireless/nl80211.c                | 115 +++++--
+ net/wireless/radiotap.c               |   1 +
+ net/wireless/reg.c                    |   2 +-
+ net/wireless/scan.c                   | 581 ++++++++++++++++++++++++++++++++--
+ 27 files changed, 1423 insertions(+), 199 deletions(-)
+
