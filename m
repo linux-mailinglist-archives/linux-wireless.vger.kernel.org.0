@@ -2,143 +2,115 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0EC4F28105E
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 Oct 2020 12:11:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D5AE12810A2
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 Oct 2020 12:35:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726282AbgJBKLg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 2 Oct 2020 06:11:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43104 "EHLO
+        id S2387652AbgJBKfW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 2 Oct 2020 06:35:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46722 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725993AbgJBKLg (ORCPT
+        with ESMTP id S1725993AbgJBKfU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 2 Oct 2020 06:11:36 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D3CCC0613D0;
-        Fri,  2 Oct 2020 03:11:36 -0700 (PDT)
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.94)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1kOI2H-00FAum-Tl; Fri, 02 Oct 2020 12:11:34 +0200
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     netdev@vger.kernel.org
-Cc:     linux-wireless@vger.kernel.org
-Subject: pull-request: mac80211-next 2020-10-02
-Date:   Fri,  2 Oct 2020 12:11:25 +0200
-Message-Id: <20201002101126.221601-1-johannes@sipsolutions.net>
-X-Mailer: git-send-email 2.26.2
+        Fri, 2 Oct 2020 06:35:20 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70E46C0613D0;
+        Fri,  2 Oct 2020 03:35:20 -0700 (PDT)
+Date:   Fri, 2 Oct 2020 12:35:17 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1601634918;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=CeDJ1dXLme679M/bPGlRbCUFKCuFkyI8moFOBFkwQtM=;
+        b=Oiv80LLEtF21HuKEaTpvbjRgw5+l7EOAcB/SOXXKTYcbou07z3rJbr4MB0bYSGcA2WJJNa
+        1Nv0EKGxpPyQiztkzJb9aM2oTAOnevTd1Lz5Qk5YVsEO7Cf2Q2q+LeBBwSepc2f9hOAuH3
+        qp7N66HZyRdoSb/HV+p63t8D7iEOOAa2aZuuzyLEsORPQkKCG3HYL87gJM8ToGDGBjRzFr
+        kCrGGHcsr1L5C+cr7z6bw8OtnZofxSg5cHB6Z9qSs1ijtF+7FyN2SQboPT4yr33mbC2CyD
+        dW0xpXTeouJtrVMFvtYmsIf9x6yykUyy9ichRfpWbc5VOan4pcPYXUu84qK0GA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1601634918;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=CeDJ1dXLme679M/bPGlRbCUFKCuFkyI8moFOBFkwQtM=;
+        b=3//r+E4PAS6xtqgqLaHydxvPAjbLIRQymyWCJwefulBoiGjQ02eQLJ3lMuh0vBAITCfvRA
+        RBMIj5yxxTGKH4Bw==
+From:   Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Thomas Gleixner <tglx@linutronix.de>
+Subject: [RFC] Status of orinoco_usb
+Message-ID: <20201002103517.fhsi5gaepzbzo2s4@linutronix.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Dave,
+I was trying to get rid of the in in_softirq() in ezusb_req_ctx_wait()
+within the orinoco usb driver,
+drivers/net/wireless/intersil/orinoco/orinoco_usb.c. A small snippet:
 
-Here's a - probably final - set of patches for net-next.
-Really the big thing is more complete S1G support, along
-with a small list of other things, see the tag message.
+| static void ezusb_req_ctx_wait(struct ezusb_priv *upriv,
+|                                struct request_context *ctx)
+=E2=80=A6
+|                 if (in_softirq()) {
+|                         /* If we get called from a timer, timeout timers =
+don't
+|                          * get the chance to run themselves. So we make s=
+ure
+|                          * that we don't sleep for ever */
+|                         int msecs =3D DEF_TIMEOUT * (1000 / HZ);
+|=20
+|                         while (!try_wait_for_completion(&ctx->done) && ms=
+ecs--)
+|                                 udelay(1000);
+|                 } else {
+|                         wait_for_completion(&ctx->done);
+=E2=80=A6
+| }
 
-Please pull and let me know if there's any problem.
+This is broken. The EHCI and XHCI HCD will complete the URB in
+BH/tasklet. Should we ever get here in_softirq() then we will spin
+here/wait here until the timeout passes because the tasklet won't be
+able to run. OHCI/UHCI HCDs still complete in hard-IRQ so it would work
+here.
 
-Thanks,
-johannes
+Is it possible to end up here in softirq context or is this a relic?
+Well I have no hardware but I see this:
 
+  orinoco_set_monitor_channel() [I assume that this is fully preemtible]
+  -> orinoco_lock() [this should point to ezusb_lock_irqsave() which
+                     does spin_lock_bh(lock), so from here on
+		     in_softirq() returns true]
+  -> hw->ops->cmd_wait() [-> ezusb_docmd_wait()]
+  -> ezusb_alloc_ctx() [ sets ctx->in_rid to EZUSB_RID_ACK/0x0710 ]
+  -> ezusb_access_ltv()
+     -> if (ctx->in_rid)
+       -> ezusb_req_ctx_wait(upriv, ctx);
+	 -> ctx->state should be EZUSB_CTX_REQ_COMPLETE so we end up in
+	    the while loop above. So we udelay() 3 * 1000 * 1ms =3D 3sec.
+	 -> Then ezusb_access_ltv() should return with an error due to
+	    timeout.
 
+This isn't limited to exotic features like monitor mode. orinoco_open()
+does orinoco_lock() followed by orinoco_hw_program_rids() which in the
+end invokes ezusb_write_ltv(,, EZUSB_RID_ACK) which is non-zero and also
+would block (ezusb_xmit() would use 0 as the last argument so it won't
+block).
 
-The following changes since commit 0675c285ea65540cccae64c87dfc7a00c7ede03a:
+I don't see how this driver can work on EHCI/XHCI HCD as of today.
+The driver is an orphan since commit
+   3a59babbee409 ("orinoco: update status in MAINTAINERS")
 
-  net: vlan: Fixed signedness in vlan_group_prealloc_vid() (2020-09-28 00:51:39 -0700)
+which is ten years ago. If I replace in_softirq() with a `may_sleep'
+argument then it is still broken.
+Should it be removed?
 
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211-next.git tags/mac80211-next-for-net-next-2020-10-02
-
-for you to fetch changes up to 75f87eaeaced820cc776b3147d22ec44fbf5fc17:
-
-  mac80211: avoid processing non-S1G elements on S1G band (2020-10-02 12:07:24 +0200)
-
-----------------------------------------------------------------
-Another set of changes, this time with:
- * lots more S1G band support
- * 6 GHz scanning, finally
- * kernel-doc fixes
- * non-split wiphy dump fixes in nl80211
- * various other small cleanups/features
-
-----------------------------------------------------------------
-Ben Greear (1):
-      mac80211: Support not iterating over not-sdata-in-driver ifaces
-
-Dan Carpenter (1):
-      cfg80211: regulatory: remove a bogus initialization
-
-Felix Fietkau (1):
-      mac80211: fix regression in sta connection monitor
-
-Johannes Berg (6):
-      mac80211_hwsim: fix typo in kernel-doc
-      mac80211: fix some missing kernel-doc
-      wireless: radiotap: fix some kernel-doc
-      mac80211: fix some more kernel-doc in mesh
-      nl80211: reduce non-split wiphy dump size
-      nl80211: fix non-split wiphy information
-
-Loic Poulain (1):
-      mac80211: Inform AP when returning operating channel
-
-Rajkumar Manoharan (2):
-      nl80211: fix OBSS PD min and max offset validation
-      nl80211: extend support to config spatial reuse parameter set
-
-Thomas Pedersen (18):
-      mac80211: get correct default channel width for S1G
-      mac80211: s1g: choose scanning width based on frequency
-      nl80211: support S1G capability overrides in assoc
-      mac80211: support S1G STA capabilities
-      cfg80211: convert S1G beacon to scan results
-      cfg80211: parse S1G Operation element for BSS channel
-      mac80211: convert S1G beacon to scan results
-      cfg80211: handle Association Response from S1G STA
-      mac80211: encode listen interval for S1G
-      mac80211: don't calculate duration for S1G
-      mac80211: handle S1G low rates
-      mac80211: avoid rate init for S1G band
-      mac80211: receive and process S1G beacons
-      mac80211: support S1G association
-      nl80211: include frequency offset in survey info
-      mac80211_hwsim: write TSF timestamp correctly to S1G beacon
-      mac80211_hwsim: indicate support for S1G
-      mac80211: avoid processing non-S1G elements on S1G band
-
-Tova Mussai (1):
-      nl80211/cfg80211: support 6 GHz scanning
-
- drivers/net/wireless/mac80211_hwsim.c | 100 +++++-
- include/linux/ieee80211.h             |  74 ++++-
- include/net/cfg80211.h                |  45 ++-
- include/net/mac80211.h                |   8 +
- include/uapi/linux/nl80211.h          |  25 ++
- net/mac80211/cfg.c                    |   2 +
- net/mac80211/chan.c                   |   9 +-
- net/mac80211/ibss.c                   |   3 +-
- net/mac80211/ieee80211_i.h            |  19 +-
- net/mac80211/iface.c                  |   5 +
- net/mac80211/mesh_plink.c             |   1 +
- net/mac80211/mesh_ps.c                |   4 +
- net/mac80211/mlme.c                   | 179 +++++++++--
- net/mac80211/offchannel.c             |  38 +--
- net/mac80211/rate.c                   |  39 ++-
- net/mac80211/rx.c                     |  87 +++--
- net/mac80211/scan.c                   |  43 ++-
- net/mac80211/status.c                 |  16 +-
- net/mac80211/tx.c                     |   6 +
- net/mac80211/util.c                   | 193 +++++++++++
- net/wireless/core.c                   |   8 +-
- net/wireless/core.h                   |   5 +-
- net/wireless/mlme.c                   |  14 +-
- net/wireless/nl80211.c                | 115 +++++--
- net/wireless/radiotap.c               |   1 +
- net/wireless/reg.c                    |   2 +-
- net/wireless/scan.c                   | 581 ++++++++++++++++++++++++++++++++--
- 27 files changed, 1423 insertions(+), 199 deletions(-)
-
+Sebastian
