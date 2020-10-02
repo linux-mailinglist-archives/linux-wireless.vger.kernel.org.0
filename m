@@ -2,112 +2,72 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 60B6528096C
-	for <lists+linux-wireless@lfdr.de>; Thu,  1 Oct 2020 23:32:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B1CC280CD7
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 Oct 2020 06:31:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732864AbgJAVcR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 1 Oct 2020 17:32:17 -0400
-Received: from mail-io1-f69.google.com ([209.85.166.69]:46012 "EHLO
-        mail-io1-f69.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726855AbgJAVcQ (ORCPT
+        id S1725985AbgJBEbL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 2 Oct 2020 00:31:11 -0400
+Received: from mail-io1-f78.google.com ([209.85.166.78]:39212 "EHLO
+        mail-io1-f78.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725953AbgJBEbL (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 1 Oct 2020 17:32:16 -0400
-Received: by mail-io1-f69.google.com with SMTP id p65so18462iod.12
-        for <linux-wireless@vger.kernel.org>; Thu, 01 Oct 2020 14:32:16 -0700 (PDT)
+        Fri, 2 Oct 2020 00:31:11 -0400
+Received: by mail-io1-f78.google.com with SMTP id y16so198380ioy.6
+        for <linux-wireless@vger.kernel.org>; Thu, 01 Oct 2020 21:31:09 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:date:in-reply-to:message-id:subject
          :from:to;
-        bh=ZmmhCPSV2yuVdiNMfX2E/gWsiasW2ZIKGSc1ceHT8IA=;
-        b=VVZDepjTMtBQ+xFoexELUQvFlL5C3TvD3Ct7TI2An4F5zuPjRGY9uEJT9fHpsA9V2g
-         DfxPMuEPP/641wSMAzS7186btenAYxKrsJsWMlxLMBcFgLUWMgPiRIK0KQ0AxWimDJev
-         U459ff8LbWq/sOfYqpaEOMonKHJK81kIhm2XqSmkvyEMLd9t1w6az46ldFTAV6bPy8fS
-         Lb98T8ckbuguVkisLr11Ul22fUaR9RVuvruJZHsj38DwSQiTQ7tUAo8OwbB8mAPgm3b2
-         cSsbXA2lYRJ7uonwynStSI7eLZpZQ+zqMg3OvJo22H0TAYEwgvZbNJnx2F9Wg+5S5LSM
-         Enow==
-X-Gm-Message-State: AOAM531xLSWwBdnhekZcn88UKRajr3ha0j8dBZX8OnqbxCzzYmQUZk2D
-        6LAxSrMKnJSY+ksOxR3VJxAhzYZG3LOjSZ+c82K25ZgZ15ak
-X-Google-Smtp-Source: ABdhPJy/AYl890p55pbZI0m5U9ns3Irtm4NtzihUovqDGpGYM6HicnCoHbnVTOXfYcZeSyBjsb8Mik29hIVzL6YD8wv+svCNCsNJ
+        bh=2rR7OFCkiGOcbn8yg3FFIizJzk0Y5CDsOwEAe9MFfqY=;
+        b=FFY7AenbEseT0q6IziggL8Y0vrOsB4NHyojv6C+qh3YaiUcSHE0DzRoGBL71nCDkCa
+         D643o+jZzUp4JRI8lZXhEVUSgfrIEiNIDJbNVn5VQjRyRXpd6YQb3+DKur0iOYEVPMq4
+         vapefCGOp6S79U5AbdAh92UC7kpMpgbl2swIPiVhfOCa0kyHKZZ5AxvHzV+gfcL5ZZ47
+         D121OuZxtGCb/HFCOzUYq/dZ/N9xFFqsBHGRAoKT54Azty0KHbRL0s/SIdaTHlRpQdxp
+         3s6zC3jlV5ojXvo6tP+vJXTqi53dGCvxPKXYGA2AZtLIQxxTBg94h9tzjFcMFtPMvTB4
+         VpwA==
+X-Gm-Message-State: AOAM532G/TnCJvsdtno5rYLkgpaExRv+x/ntw2C/vp90VMV0Qt2BiNIG
+        hWDq10Sy6l9qvA3A18E7xzKp2j90sNrpulJzQUUPqRzavkmn
+X-Google-Smtp-Source: ABdhPJwyio9B9RK4QMV+77SSkDUiL2aBMDrXygJtRXJZn8ix0TJV07LbSiIGdgU/ICZl+Xp6JhyjTk1bOjljcqJ5nfrSfAkO2l0T
 MIME-Version: 1.0
-X-Received: by 2002:a92:849a:: with SMTP id y26mr502397ilk.38.1601587935781;
- Thu, 01 Oct 2020 14:32:15 -0700 (PDT)
-Date:   Thu, 01 Oct 2020 14:32:15 -0700
+X-Received: by 2002:a05:6638:24c1:: with SMTP id y1mr616780jat.119.1601613068931;
+ Thu, 01 Oct 2020 21:31:08 -0700 (PDT)
+Date:   Thu, 01 Oct 2020 21:31:08 -0700
 In-Reply-To: <0000000000007b357405b099798f@google.com>
 X-Google-Appengine-App-Id: s~syzkaller
 X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <000000000000fd29d205b0a2bf28@google.com>
+Message-ID: <0000000000000a954d05b0a89a86@google.com>
 Subject: Re: WARNING in cfg80211_connect
 From:   syzbot <syzbot+5f9392825de654244975@syzkaller.appspotmail.com>
-To:     davem@davemloft.net, johannes@sipsolutions.net, kuba@kernel.org,
+To:     a@unstable.cc, b.a.t.m.a.n@lists.open-mesh.org,
+        davem@davemloft.net, david@fromorbit.com, dchinner@redhat.com,
+        hch@lst.de, johannes@sipsolutions.net, kuba@kernel.org,
         linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
+        mareklindner@neomailbox.ch, netdev@vger.kernel.org,
+        sw@simonwunderlich.de, syzkaller-bugs@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-syzbot has found a reproducer for the following issue on:
+syzbot has bisected this issue to:
 
-HEAD commit:    87d5034d Merge tag 'mlx5-updates-2020-09-30' of git://git...
+commit 16d4d43595b4780daac8fcea6d042689124cb094
+Author: Christoph Hellwig <hch@lst.de>
+Date:   Wed Jul 20 01:38:55 2016 +0000
+
+    xfs: split direct I/O and DAX path
+
+bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=14f662b7900000
+start commit:   87d5034d Merge tag 'mlx5-updates-2020-09-30' of git://git...
 git tree:       net-next
-console output: https://syzkaller.appspot.com/x/log.txt?x=121d2313900000
+final oops:     https://syzkaller.appspot.com/x/report.txt?x=16f662b7900000
+console output: https://syzkaller.appspot.com/x/log.txt?x=12f662b7900000
 kernel config:  https://syzkaller.appspot.com/x/.config?x=7b5cc8ec2218e99d
 dashboard link: https://syzkaller.appspot.com/bug?extid=5f9392825de654244975
-compiler:       gcc (GCC) 10.1.0-syz 20200507
 syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=1100d333900000
 C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1414c997900000
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
 Reported-by: syzbot+5f9392825de654244975@syzkaller.appspotmail.com
+Fixes: 16d4d43595b4 ("xfs: split direct I/O and DAX path")
 
-------------[ cut here ]------------
-WARNING: CPU: 0 PID: 6914 at net/wireless/sme.c:533 cfg80211_sme_connect net/wireless/sme.c:533 [inline]
-WARNING: CPU: 0 PID: 6914 at net/wireless/sme.c:533 cfg80211_connect+0x1432/0x2010 net/wireless/sme.c:1258
-Kernel panic - not syncing: panic_on_warn set ...
-CPU: 0 PID: 6914 Comm: syz-executor935 Not tainted 5.9.0-rc6-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
-Call Trace:
- __dump_stack lib/dump_stack.c:77 [inline]
- dump_stack+0x198/0x1fd lib/dump_stack.c:118
- panic+0x382/0x7fb kernel/panic.c:231
- __warn.cold+0x20/0x4b kernel/panic.c:600
- report_bug+0x1bd/0x210 lib/bug.c:198
- handle_bug+0x38/0x90 arch/x86/kernel/traps.c:234
- exc_invalid_op+0x14/0x40 arch/x86/kernel/traps.c:254
- asm_exc_invalid_op+0x12/0x20 arch/x86/include/asm/idtentry.h:536
-RIP: 0010:cfg80211_sme_connect net/wireless/sme.c:533 [inline]
-RIP: 0010:cfg80211_connect+0x1432/0x2010 net/wireless/sme.c:1258
-Code: 00 00 00 fc ff df 4c 89 f2 48 c1 ea 03 80 3c 02 00 0f 85 a2 0a 00 00 49 83 bd 48 01 00 00 00 0f 84 b6 f7 ff ff e8 7e 1e b5 f9 <0f> 0b e8 77 1e b5 f9 48 8b 54 24 18 48 b8 00 00 00 00 00 fc ff df
-RSP: 0018:ffffc90005667360 EFLAGS: 00010293
-RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000000
-RDX: ffff888093bdc380 RSI: ffffffff87c166d2 RDI: ffffffff896172c0
-RBP: ffff888088cf8d30 R08: 0000000000000001 R09: ffff888088cf8d35
-R10: ffffed101119f1a6 R11: 0000000000000000 R12: ffffc90005667500
-R13: ffff888088cf8c10 R14: ffff888088cf8d58 R15: ffffffff89617180
- nl80211_connect+0x1646/0x2220 net/wireless/nl80211.c:10615
- genl_family_rcv_msg_doit net/netlink/genetlink.c:669 [inline]
- genl_family_rcv_msg net/netlink/genetlink.c:714 [inline]
- genl_rcv_msg+0x61d/0x980 net/netlink/genetlink.c:731
- netlink_rcv_skb+0x15a/0x430 net/netlink/af_netlink.c:2470
- genl_rcv+0x24/0x40 net/netlink/genetlink.c:742
- netlink_unicast_kernel net/netlink/af_netlink.c:1304 [inline]
- netlink_unicast+0x533/0x7d0 net/netlink/af_netlink.c:1330
- netlink_sendmsg+0x856/0xd90 net/netlink/af_netlink.c:1919
- sock_sendmsg_nosec net/socket.c:651 [inline]
- sock_sendmsg+0xcf/0x120 net/socket.c:671
- ____sys_sendmsg+0x6e8/0x810 net/socket.c:2353
- ___sys_sendmsg+0xf3/0x170 net/socket.c:2407
- __sys_sendmsg+0xe5/0x1b0 net/socket.c:2440
- do_syscall_64+0x2d/0x70 arch/x86/entry/common.c:46
- entry_SYSCALL_64_after_hwframe+0x44/0xa9
-RIP: 0033:0x442139
-Code: e8 ac 00 03 00 48 83 c4 18 c3 0f 1f 80 00 00 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 0f 83 7b 07 fc ff c3 66 2e 0f 1f 84 00 00 00 00
-RSP: 002b:00007fff18327468 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
-RAX: ffffffffffffffda RBX: 0000000000000003 RCX: 0000000000442139
-RDX: 0000000000000000 RSI: 0000000020000340 RDI: 0000000000000003
-RBP: 0000000000000000 R08: 0000002000000000 R09: 0000002000000000
-R10: 0000002000000000 R11: 0000000000000246 R12: 000000000000f7cb
-R13: 0000000000000000 R14: 000000000000000c R15: 0000000000000004
-Kernel Offset: disabled
-Rebooting in 86400 seconds..
-
+For information about bisection process see: https://goo.gl/tpsmEJ#bisection
