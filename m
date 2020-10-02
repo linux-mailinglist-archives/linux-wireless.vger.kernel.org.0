@@ -2,42 +2,84 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 16BAA281D51
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 Oct 2020 23:05:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C11F281A2C
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 Oct 2020 19:53:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725769AbgJBVFC convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 2 Oct 2020 17:05:02 -0400
-Received: from mail3.lapompeya.com.ar ([190.189.89.7]:22178 "EHLO
-        mail3.lapompeya.com.ar" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1725283AbgJBVFC (ORCPT
+        id S2388139AbgJBRxM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 2 Oct 2020 13:53:12 -0400
+Received: from mail.adapt-ip.com ([173.164.178.19]:53212 "EHLO
+        web.adapt-ip.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726224AbgJBRxM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 2 Oct 2020 17:05:02 -0400
-X-Greylist: delayed 11712 seconds by postgrey-1.27 at vger.kernel.org; Fri, 02 Oct 2020 17:05:01 EDT
-Received: from [192.168.2.241] (80.106.241.112) by mail3.lapompeya.com.ar
- (192.168.11.16) with Microsoft SMTP Server id 14.3.468.0; Fri, 2 Oct 2020
- 14:49:47 -0300
-Content-Type: text/plain; charset="iso-8859-1"
+        Fri, 2 Oct 2020 13:53:12 -0400
+Received: from localhost (localhost [127.0.0.1])
+        by web.adapt-ip.com (Postfix) with ESMTP id 2181B4FA0DF;
+        Fri,  2 Oct 2020 17:53:12 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at web.adapt-ip.com
+Received: from web.adapt-ip.com ([127.0.0.1])
+        by localhost (web.adapt-ip.com [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id 5jBO51pU-6h7; Fri,  2 Oct 2020 17:53:09 +0000 (UTC)
+Received: from atlas.ibsgaard.io (c-73-223-60-234.hsd1.ca.comcast.net [73.223.60.234])
+        (Authenticated sender: thomas@adapt-ip.com)
+        by web.adapt-ip.com (Postfix) with ESMTPSA id 2F1774FA00B;
+        Fri,  2 Oct 2020 17:53:09 +0000 (UTC)
+From:   Thomas Pedersen <thomas@adapt-ip.com>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
+        Thomas Pedersen <thomas@adapt-ip.com>
+Subject: [PATCH 1/2] mac80211: handle lack of sband->bitrates in rates
+Date:   Fri,  2 Oct 2020 10:53:07 -0700
+Message-Id: <20201002175308.16374-1-thomas@adapt-ip.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: Gute Nachrichten !
-To:     Recipients <chi1grant22@gmail.com>
-From:   "Mr. Marvin" <chi1grant22@gmail.com>
-Date:   Fri, 2 Oct 2020 20:49:27 +0300
-Reply-To: <marvinsims00@gmail.com>
-Message-ID: <2dff5760-1c2f-45e4-9899-a8ec68862b24@VMMAIL2010.pompeya.local>
-Received-SPF: SoftFail (vmmail2010.pompeya.local: domain of transitioning
- chi1grant22@gmail.com discourages use of 80.106.241.112 as permitted sender)
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Die letzten Monate waren nicht gut für Unternehmen, Institutionen und Einzelpersonen auf der ganzen Welt. Die globale Epidemie (Covid-19) hat alle finanziell erschöpft und Sie wurden nicht freigestellt. Ihr Hilferuf wurde gehört und wir sind bereit, Ihnen unsere freundliche Geste anzubieten. Sie gehören zu den 3. Chargen, die von unserem Fondsprogramm profitieren, und ich muss aufrichtig sagen, dass die 1. und 2. Charge für die von uns geleistete Hilfe dankbar ist. Sie haben erfolgreich die kumulierte Gesamtsumme von (50.000,00 USD) als Gemeinschaftsspende von Oxfam Aid erhalten. Antworten Sie zurück, um weitere Informationen und Anweisungen zur Beantragung Ihres Zuschusses zu erhalten.
+Even though a driver or mac80211 shouldn't produce a
+legacy bitrate if sband->bitrates doesn't exist, don't
+crash if that is the case either.
 
-Denken Sie daran, immer in Sicherheit zu bleiben und soziale Distanzierung zu üben. Befolgen Sie immer die Anweisungen der örtlichen Behörden.
+This fixes a kernel panic if station dump is run before
+last_rate can be updated with a data frame when
+sband->bitrates is missing (eg. in S1G bands).
 
-Herr Marvin Sims,
+Signed-off-by: Thomas Pedersen <thomas@adapt-ip.com>
+---
+ net/mac80211/cfg.c      | 3 ++-
+ net/mac80211/sta_info.c | 4 ++++
+ 2 files changed, 6 insertions(+), 1 deletion(-)
 
-Supervisor (Oxfam Finanzabteilung)
-Oxfam International Inc
+diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+index da70f174d629..e40160114824 100644
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -709,7 +709,8 @@ void sta_set_rate_info_tx(struct sta_info *sta,
+ 		u16 brate;
+ 
+ 		sband = ieee80211_get_sband(sta->sdata);
+-		if (sband) {
++		WARN_ON(sband && !sband->bitrates);
++		if (sband && sband->bitrates) {
+ 			brate = sband->bitrates[rate->idx].bitrate;
+ 			rinfo->legacy = DIV_ROUND_UP(brate, 1 << shift);
+ 		}
+diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
+index f2840d1d95cf..0efb66b8f185 100644
+--- a/net/mac80211/sta_info.c
++++ b/net/mac80211/sta_info.c
+@@ -2122,6 +2122,10 @@ static void sta_stats_decode_rate(struct ieee80211_local *local, u32 rate,
+ 		int rate_idx = STA_STATS_GET(LEGACY_IDX, rate);
+ 
+ 		sband = local->hw.wiphy->bands[band];
++
++		if (WARN_ON(!sband->bitrates))
++			break;
++
+ 		brate = sband->bitrates[rate_idx].bitrate;
+ 		if (rinfo->bw == RATE_INFO_BW_5)
+ 			shift = 2;
+-- 
+2.20.1
+
