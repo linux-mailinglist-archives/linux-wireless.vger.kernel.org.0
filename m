@@ -2,105 +2,65 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A4953281B35
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 Oct 2020 20:55:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A929281BBB
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 Oct 2020 21:23:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387692AbgJBSzz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 2 Oct 2020 14:55:55 -0400
-Received: from mail2.candelatech.com ([208.74.158.173]:48740 "EHLO
-        mail3.candelatech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725991AbgJBSzz (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 2 Oct 2020 14:55:55 -0400
-Received: from [192.168.254.6] (unknown [50.46.158.169])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail3.candelatech.com (Postfix) with ESMTPSA id 3599F13C2B0;
-        Fri,  2 Oct 2020 11:55:53 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 3599F13C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1601664954;
-        bh=ULTKM6Z1kFbSvXWfaT+WHWyC4lwocS0KQXvuv60vh5E=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=r4XAMTjMT6N8UfUmUJ0IY+SGtsT+ontsqMS6DioygMqUp5DoXxOoW6NFSvGoFklu1
-         Z/q/LSBu2K9RF/frsPIYngEjxjW1gc+QVrgyJMKkBLnmfkcy2LuQLg9Sf/C8D6JrOs
-         aicHMqKxN5/yqgo2r96Xoue1PUy20TUcKI90MRRY=
-Subject: Re: [PATCH 1/2] mac80211: handle lack of sband->bitrates in rates
-To:     Thomas Pedersen <thomas@adapt-ip.com>,
-        Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>
-References: <20201002175308.16374-1-thomas@adapt-ip.com>
-From:   Ben Greear <greearb@candelatech.com>
-Organization: Candela Technologies
-Message-ID: <f8d1c99d-f678-309a-80fb-0f886d1531c8@candelatech.com>
-Date:   Fri, 2 Oct 2020 11:55:52 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.11.0
+        id S2388565AbgJBTWx convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 2 Oct 2020 15:22:53 -0400
+Received: from mx.metalurgs.lv ([81.198.125.103]:65054 "EHLO mx.metalurgs.lv"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2388405AbgJBTWZ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 2 Oct 2020 15:22:25 -0400
+X-Greylist: delayed 486 seconds by postgrey-1.27 at vger.kernel.org; Fri, 02 Oct 2020 15:22:25 EDT
+Received: from mx.metalurgs.lv (localhost [127.0.0.1])
+        by mx.metalurgs.lv (Postfix) with ESMTP id 5210F62AB6
+        for <linux-wireless@vger.kernel.org>; Fri,  2 Oct 2020 22:14:15 +0300 (EEST)
+Received: from kas30pipe.localhost (localhost [127.0.0.1])
+        by mx.metalurgs.lv (Postfix) with ESMTP id 2CA7C62AAD
+        for <linux-wireless@vger.kernel.org>; Fri,  2 Oct 2020 22:14:15 +0300 (EEST)
+Received: by mx.metalurgs.lv (Postfix, from userid 1005)
+        id C865D62A04; Fri,  2 Oct 2020 22:14:13 +0300 (EEST)
+Received: from [100.64.1.74] (unknown [190.15.125.50])
+        (Authenticated sender: admin)
+        by mx.metalurgs.lv (Postfix) with ESMTPA id 60954622E9;
+        Fri,  2 Oct 2020 22:14:07 +0300 (EEST)
 MIME-Version: 1.0
-In-Reply-To: <20201002175308.16374-1-thomas@adapt-ip.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-MW
-Content-Transfer-Encoding: 7bit
+Content-Description: Mail message body
+To:     Recipients <financialcapability6@gmail.com>
+From:   "Mr. Hashim Bin" <financialcapability6@gmail.com>
+Date:   Fri, 02 Oct 2020 16:14:00 -0300
+Reply-To: binmurrah@gmail.com
+X-SpamTest-Envelope-From: financialcapability6@gmail.com
+X-SpamTest-Group-ID: 00000000
+X-SpamTest-Info: Profiles 71303 [Jan 01 2015]
+X-SpamTest-Info: {TO: forged address, i.e. recipient, investors, public, etc.}
+X-SpamTest-Info: {DATE: unreal year}
+X-SpamTest-Method: none
+X-SpamTest-Rate: 55
+X-SpamTest-Status: Not detected
+X-SpamTest-Status-Extended: not_detected
+X-SpamTest-Version: SMTP-Filter Version 3.0.0 [0284], KAS30/Release
+Message-ID: <20201002191413.C865D62A04@mx.metalurgs.lv>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8BIT
+Subject: Low Rate Loan.
+X-Anti-Virus: Kaspersky Anti-Virus for Linux Mail Server 5.6.39/RELEASE,
+         bases: 20140401 #7726142, check: 20201002 notchecked
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 10/2/20 10:53 AM, Thomas Pedersen wrote:
-> Even though a driver or mac80211 shouldn't produce a
-> legacy bitrate if sband->bitrates doesn't exist, don't
-> crash if that is the case either.
-> 
-> This fixes a kernel panic if station dump is run before
-> last_rate can be updated with a data frame when
-> sband->bitrates is missing (eg. in S1G bands).
-> 
-> Signed-off-by: Thomas Pedersen <thomas@adapt-ip.com>
-> ---
->   net/mac80211/cfg.c      | 3 ++-
->   net/mac80211/sta_info.c | 4 ++++
->   2 files changed, 6 insertions(+), 1 deletion(-)
-> 
-> diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-> index da70f174d629..e40160114824 100644
-> --- a/net/mac80211/cfg.c
-> +++ b/net/mac80211/cfg.c
-> @@ -709,7 +709,8 @@ void sta_set_rate_info_tx(struct sta_info *sta,
->   		u16 brate;
->   
->   		sband = ieee80211_get_sband(sta->sdata);
-> -		if (sband) {
-> +		WARN_ON(sband && !sband->bitrates);
+Hello Dear,
 
-Maybe WARN_ON_ONCE to keep the spam down in case this is hit repeatedly
-for some reason?
+We are Investment Company offering Corporate and Personal
+Loan at 3% Interest Rate for a duration of 10Years.
 
-Same below...
+We also pay 1% commission to brokers, who introduce project
+owners for finance or other opportunities.
 
-Thanks,
-Ben
+Please get back to me if you are interested for more
+details.
 
-> +		if (sband && sband->bitrates) {
->   			brate = sband->bitrates[rate->idx].bitrate;
->   			rinfo->legacy = DIV_ROUND_UP(brate, 1 << shift);
->   		}
-> diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
-> index f2840d1d95cf..0efb66b8f185 100644
-> --- a/net/mac80211/sta_info.c
-> +++ b/net/mac80211/sta_info.c
-> @@ -2122,6 +2122,10 @@ static void sta_stats_decode_rate(struct ieee80211_local *local, u32 rate,
->   		int rate_idx = STA_STATS_GET(LEGACY_IDX, rate);
->   
->   		sband = local->hw.wiphy->bands[band];
-> +
-> +		if (WARN_ON(!sband->bitrates))
-> +			break;
-> +
->   		brate = sband->bitrates[rate_idx].bitrate;
->   		if (rinfo->bw == RATE_INFO_BW_5)
->   			shift = 2;
-> 
-
-
--- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
+Yours faithfully,
+Hashim Bin 
