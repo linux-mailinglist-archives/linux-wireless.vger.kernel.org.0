@@ -2,383 +2,90 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0347B2814AC
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 Oct 2020 16:08:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A3E1328160C
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 Oct 2020 17:06:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387990AbgJBOI3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 2 Oct 2020 10:08:29 -0400
-Received: from z5.mailgun.us ([104.130.96.5]:25336 "EHLO z5.mailgun.us"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726017AbgJBOI3 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 2 Oct 2020 10:08:29 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1601647707; h=Date: Message-Id: Cc: To: Subject: From:
- Content-Transfer-Encoding: MIME-Version: Content-Type: Sender;
- bh=NZRbr42kzhPtYFYDN7Dy2G6XWn31adY4t7u2EsUyHgg=; b=uzCCg/mtRVt5FA1/QSqIu2JOGtJhRsRisI6eKMwwAqe3nbJYQ8yDI2KO8RhHWS9j39ShBx22
- M729pK81lR8zcuMTuhu1QDYd3YX0qRpR47Y4qmAgntT9B3NTuLE+Wx4yGjt9lARYSa5La62l
- 8joBSoI2KI/841uxbw8Sj36Xmdw=
-X-Mailgun-Sending-Ip: 104.130.96.5
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n06.prod.us-west-2.postgun.com with SMTP id
- 5f77345b57b88ccb56930df8 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 02 Oct 2020 14:08:27
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id F37A8C433CB; Fri,  2 Oct 2020 14:08:26 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        MISSING_DATE,MISSING_MID,SPF_FAIL autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 364E3C433CA;
-        Fri,  2 Oct 2020 14:08:24 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 364E3C433CA
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        id S2388016AbgJBPG2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 2 Oct 2020 11:06:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60212 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387939AbgJBPG2 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 2 Oct 2020 11:06:28 -0400
+Received: from mail-oi1-x22c.google.com (mail-oi1-x22c.google.com [IPv6:2607:f8b0:4864:20::22c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF94CC0613D0
+        for <linux-wireless@vger.kernel.org>; Fri,  2 Oct 2020 08:06:27 -0700 (PDT)
+Received: by mail-oi1-x22c.google.com with SMTP id j16so98829oij.4
+        for <linux-wireless@vger.kernel.org>; Fri, 02 Oct 2020 08:06:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:references:from:message-id:date:user-agent:mime-version
+         :in-reply-to:content-language:content-transfer-encoding;
+        bh=rsRczXaryCfx7sLjXs2dcAlLbhPtvdFL4s4bTJc5az4=;
+        b=hzkVDmI/9EeO82t7wiFXyFcSAWfqicKQplxGyHomcZavwLBwh2TmNeHUHfGfDqZSfb
+         unEljH85+GUh2ejjabmCU9zUn9LxXkTqlZRQTv6mk/gYB0KX4GCrZOP7nEar5pDt0p6y
+         THzBtoZGGvo0vCWbSKBqDQniRZ5R2Ox7U74YQjnKuGrzsxsNaKNxJM8sKu+T1CpclIFI
+         bdVKjlwie9ihqcZq7tQ3tm9XZLrAKclct13m+r8txlspfRTfpwG4U0Bh1zy6UguRHSUe
+         rVlDNg27sWBvwLVskAMJjFUfsBv8a7MTlpaEgwvj+dnaaVeal3ANy7kP969WV/VJPPj8
+         PbOw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=rsRczXaryCfx7sLjXs2dcAlLbhPtvdFL4s4bTJc5az4=;
+        b=XXPzClTCRtfeJ/idq/h0SM4r9rlAJD4sZICuukr+Ppib5Z41kI/5OQze72oGZJRKqy
+         IiclNAv35samuVwMr6241JK+GdEKSVLNdhzK2iq113+mxhdY770SidjuolQbaCUZTp5r
+         e9aSDNH+tJd+rU9jU3QuMtviyPmKNn2jSWC0nijBjOeXNsfu/slRtLVNacBgzKHr1ihE
+         nnBu5gXy4GPFj7EljxLrbwBcWnT5AO7cuykEGfXOmgRGr3o7y/PbVgUatdtKOlX6NmL0
+         jRPpJVBEdq3QcRdFjpjj3/5BA5OmEYsKj6wfjQVpiE8dtDlxJ3+56c/tszbySnpg8TNo
+         LI0Q==
+X-Gm-Message-State: AOAM533u8Dgs4m3gs3cHjFa7d/pZiIj1OK5mGWFdHr7DugBSmQLRuawe
+        V8lw7O3xbELSpKZ1qKvXvJaOztwOmE8=
+X-Google-Smtp-Source: ABdhPJzoKSCP2X6uEOl1LS6mE93d2sRCWgiPwXIcGEzYNPKa9+T1mczE67ZsJarTb52LkkJxx43V7w==
+X-Received: by 2002:aca:a815:: with SMTP id r21mr1461657oie.79.1601651187027;
+        Fri, 02 Oct 2020 08:06:27 -0700 (PDT)
+Received: from ?IPv6:2605:6000:1025:4ecf::1e3f? ([2605:6000:1025:4ecf::1e3f])
+        by smtp.googlemail.com with ESMTPSA id f2sm298113ots.64.2020.10.02.08.06.25
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 02 Oct 2020 08:06:26 -0700 (PDT)
+Subject: Re: [RFCv3 3/3] nl80211: Send large new_wiphy events
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless@vger.kernel.org
+References: <20190906154303.9303-1-denkenz@gmail.com>
+ <20190906154303.9303-3-denkenz@gmail.com>
+ <127c19b1855302a467a1bdbf2f25f625a0254d9e.camel@sipsolutions.net>
+ <f48bdad3-f9f8-20b7-b6ff-6248368a7ae1@gmail.com>
+ <0b12af1b27954f62a5ce715f95176d1f0ff393a3.camel@sipsolutions.net>
+ <d97f7b4b-6508-4773-b13d-dab052349f47@gmail.com>
+ <bfeef8bd4711a954e2f4c399a09855ad7d97371c.camel@sipsolutions.net>
+From:   Denis Kenzior <denkenz@gmail.com>
+Message-ID: <e35703cc-6e09-e79d-17f1-2fd490edb83b@gmail.com>
+Date:   Fri, 2 Oct 2020 09:54:31 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.1
 MIME-Version: 1.0
+In-Reply-To: <bfeef8bd4711a954e2f4c399a09855ad7d97371c.camel@sipsolutions.net>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-From:   Kalle Valo <kvalo@codeaurora.org>
-Subject: pull-request: wireless-drivers-next-2020-10-02
-To:     netdev@vger.kernel.org
-Cc:     linux-wireless@vger.kernel.org
-Message-Id: <20201002140826.F37A8C433CB@smtp.codeaurora.org>
-Date:   Fri,  2 Oct 2020 14:08:26 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+Hi Johannes,
 
-here's a pull request to net-next tree, more info below. Please let me know if
-there are any problems.
+On 9/28/20 6:14 AM, Johannes Berg wrote:
+> 
+>> Ah, now I see what you want.  Sure I will take care of this in v4.
+> 
+> I just remembered this because of Martin Willi's patch, and see now that
+> I actually just did the first patch of this series again while looking
+> into it ...
+> 
+> Did you ever make a v4 of this?
 
-Kalle
+No. Got distracted by other work and never revisited this.
 
-The following changes since commit 0675c285ea65540cccae64c87dfc7a00c7ede03a:
-
-  net: vlan: Fixed signedness in vlan_group_prealloc_vid() (2020-09-28 00:51:39 -0700)
-
-are available in the git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git tags/wireless-drivers-next-2020-10-02
-
-for you to fetch changes up to 70442ee62d70cac010c6a181c27a90549f58b69a:
-
-  Merge ath-next from git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git (2020-10-01 22:40:44 +0300)
-
-----------------------------------------------------------------
-wireless-drivers-next patches for v5.10
-
-Third set of patches for v5.10. Lots of iwlwifi patches this time, but
-also few patches ath11k and of course smaller changes to other
-drivers.
-
-Major changes:
-
-rtw88
-
-* properly recover from firmware crashes on 8822c
-
-* dump firmware crash log
-
-iwlwifi
-
-* protected Target Wake Time (TWT) implementation
-
-* support disabling 5.8GHz channels via ACPI
-
-* support VHT extended NSS capability
-
-* enable Target Wake Time (TWT) by default
-
-ath11k
-
-* improvements to QCA6390 PCI support to make it more usable
-
-----------------------------------------------------------------
-Alex Dewar (2):
-      wl3501_cs: Remove unnecessary NULL check
-      ath11k: Correctly check errors for calls to debugfs_create_dir()
-
-Andrei Otcheretianski (2):
-      iwlwifi: mvm: Don't install CMAC/GMAC key in AP mode
-      iwlwifi: use correct group for alive notification
-
-Avraham Stern (7):
-      iwlwifi: mvm: add an option to add PASN station
-      iwlwifi: mvm: add support for range request command ver 11
-      iwlwifi: mvm: add support for responder dynamic config command version 3
-      iwlwifi: mvm: location: set the HLTK when PASN station is added
-      iwlwifi: mvm: responder: allow to set only the HLTK for an associated station
-      iwlwifi: mvm: initiator: add option for adding a PASN responder
-      iwlwifi: mvm: ignore the scan duration parameter
-
-Ayala Beker (1):
-      iwlwifi: mvm: clear all scan UIDs
-
-Ben Greear (1):
-      ath11k: support loading ELF board files
-
-Carl Huang (12):
-      ath11k: fix AP mode for QCA6390
-      ath11k: add packet log support for QCA6390
-      ath11k: pci: fix rmmod crash
-      ath11k: fix warning caused by lockdep_assert_held
-      ath11k: debugfs: fix crash during rmmod
-      ath11k: read and write registers below unwindowed address
-      ath11k: enable shadow register configuration and access
-      ath11k: set WMI pipe credit to 1 for QCA6390
-      ath11k: start a timer to update TCL HP
-      ath11k: start a timer to update REO cmd ring
-      ath11k: start a timer to update HP for CE pipe 4
-      ath11k: enable idle power save mode
-
-Colin Ian King (1):
-      qtnfmac: fix resource leaks on unsupported iftype error return path
-
-Dan Halperin (2):
-      iwlwifi: mvm: add support for new version of WOWLAN_TKIP_SETTING_API_S
-      iwlwifi: mvm: add support for new WOWLAN_TSC_RSC_PARAM version
-
-Emmanuel Grumbach (1):
-      iwlwifi: mvm: split a print to avoid a WARNING in ROC
-
-Gil Adam (4):
-      iwlwifi: acpi: evaluate dsm to disable 5.8GHz channels
-      iwlwifi: acpi: support ppag table command v2
-      iwlwifi: regulatory: regulatory capabilities api change
-      iwlwifi: thermal: support new temperature measurement API
-
-Golan Ben Ami (1):
-      iwlwifi: enable twt by default
-
-Govind Singh (2):
-      ath11k: Move non-fatal warn logs to dbg level
-      ath11k: Use GFP_ATOMIC instead of GFP_KERNEL in idr_alloc
-
-Ihab Zhaika (2):
-      iwlwifi: add new cards for AX201 family
-      iwlwifi: add new cards for MA family
-
-Ilan Peer (1):
-      iwlwifi: mvm: Add FTM initiator RTT smoothing logic
-
-Johannes Berg (6):
-      iwlwifi: mvm: rs-fw: handle VHT extended NSS capability
-      iwlwifi: mvm: use CHECKSUM_COMPLETE
-      iwlwifi: mvm: d3: support GCMP ciphers
-      iwlwifi: align RX status flags with firmware
-      iwlwifi: mvm: d3: parse wowlan status version 11
-      iwlwifi: api: fix u32 -> __le32
-
-Julia Lawall (1):
-      bcma: use semicolons rather than commas to separate statements
-
-Kai-Heng Feng (1):
-      rtw88: pci: Power cycle device during shutdown
-
-Kalle Valo (7):
-      Merge tag 'iwlwifi-next-for-kalle-2020-09-30-2' of git://git.kernel.org/.../iwlwifi/iwlwifi-next
-      ath11k: mac: fix parenthesis alignment
-      ath11k: add interface_modes to hw_params
-      ath11k: pci: check TCSR_SOC_HW_VERSION
-      ath11k: disable monitor mode on QCA6390
-      ath11k: remove unnecessary casts to u32
-      Merge ath-next from git://git.kernel.org/.../kvalo/ath.git
-
-Li Heng (1):
-      ath9k: Remove set but not used variable
-
-Loic Poulain (1):
-      wcn36xx: Advertise beacon filtering support in bmps
-
-Luca Coelho (12):
-      iwlwifi: dbg: remove IWL_FW_INI_TIME_POINT_WDG_TIMEOUT
-      iwlwifi: don't export acpi functions unnecessarily
-      iwlwifi: remove iwl_validate_sar_geo_profile() export
-      iwlwifi: acpi: remove dummy definition of iwl_sar_set_profile()
-      iwlwifi: add a common struct for all iwl_tx_power_cmd versions
-      iwlwifi: acpi: prepare SAR profile selection code for multiple sizes
-      iwlwifi: support REDUCE_TX_POWER_CMD version 6
-      iwlwifi: acpi: rename geo structs to contain versioning
-      iwlwifi: support version 3 of GEO_TX_POWER_LIMIT
-      iwlwifi: mvm: remove redundant log in iwl_mvm_tvqm_enable_txq()
-      iwlwifi: support version 5 of the alive notification
-      iwlwifi: bump FW API to 57 for AX devices
-
-Mordechay Goodstein (22):
-      iwlwifi: sta: defer ADDBA transmit in case reclaimed SN != next SN
-      iwlwifi: msix: limit max RX queues for 9000 family
-      iwlwifi: wowlan: adapt to wowlan status API version 10
-      iwlwifi: fw: move assert descriptor parser to common code
-      iwlwifi: iwl-trans: move all txcmd init to trans alloc
-      iwlwifi: move bc_pool to a common trans header
-      iwlwifi: iwl-trans: move tfd to trans layer
-      iwlwifi: move bc_table_dword to a common trans header
-      iwlwifi: dbg: add dumping special device memory
-      iwl-trans: move dev_cmd_offs, page_offs to a common trans header
-      iwlwifi: mvm: remove redundant support_umac_log field
-      iwlwifi: rs: set RTS protection for all non legacy rates
-      iwlwifi: acpi: in non acpi compilations remove iwl_sar_geo_init
-      iwlwifi: fw: add default value for iwl_fw_lookup_cmd_ver
-      iwlwifi: remove wide_cmd_header field
-      iwlwifi: move all bus-independent TX functions to common code
-      iwlwifi: dbg: remove no filter condition
-      iwlwifi: dbg: run init_cfg function once per driver load
-      iwlwifi: phy-ctxt: add new API VER 3 for phy context cmd
-      iwlwifi: pcie: make iwl_pcie_txq_update_byte_cnt_tbl bus independent
-      iwlwifi: dbg: add debug host notification (DHN) time point
-      iwlwifi: yoyo: add support for internal buffer allocation in D3
-
-Naftali Goldstein (1):
-      iwlwifi: mvm: process ba-notifications also when sta rcu is invalid
-
-Nathan Errera (2):
-      iwlwifi: mvm: support new KEK KCK api
-      iwlwifi: mvm: support more GTK rekeying algorithms
-
-Roee Goldfiner (1):
-      iwlwifi: add new card for MA family
-
-Sara Sharon (1):
-      iwlwifi: mvm: add d3 prints
-
-Shaul Triebitz (3):
-      iwlwifi: mvm: add PROTECTED_TWT firmware API
-      iwlwifi: mvm: set PROTECTED_TWT in MAC data policy
-      iwlwifi: mvm: set PROTECTED_TWT feature if supported by firmware
-
-Tzu-En Huang (5):
-      rtw88: increse the size of rx buffer size
-      rtw88: handle and recover when firmware crash
-      rtw88: add dump firmware fifo support
-      rtw88: add dump fw crash log
-      rtw88: show current regulatory in tx power table
-
-Wang Qing (1):
-      wl1251/wl12xx: fix a typo in comments
-
-Wen Gong (3):
-      ath11k: change to disable softirqs for ath11k_regd_update to solve deadlock
-      ath11k: Use GFP_ATOMIC instead of GFP_KERNEL in ath11k_dp_htt_get_ppdu_desc
-      ath11k: mac: remove unused conf_mutex to solve a deadlock
-
-Wright Feng (2):
-      brcmfmac: Fix warning when hitting FW crash with flow control feature
-      brcmfmac: Fix warning message after dongle setup failed
-
- drivers/bcma/driver_pci_host.c                     |    4 +-
- drivers/net/wireless/ath/ath11k/ce.c               |   80 +
- drivers/net/wireless/ath/ath11k/ce.h               |    3 +
- drivers/net/wireless/ath/ath11k/core.c             |   21 +
- drivers/net/wireless/ath/ath11k/core.h             |    3 +
- drivers/net/wireless/ath/ath11k/debugfs.c          |   33 +-
- drivers/net/wireless/ath/ath11k/dp.c               |  102 +-
- drivers/net/wireless/ath/ath11k/dp.h               |   27 +-
- drivers/net/wireless/ath/ath11k/dp_rx.c            |  136 +-
- drivers/net/wireless/ath/ath11k/dp_rx.h            |    6 +-
- drivers/net/wireless/ath/ath11k/dp_tx.c            |   83 +-
- drivers/net/wireless/ath/ath11k/hal.c              |  137 +-
- drivers/net/wireless/ath/ath11k/hal.h              |   19 +-
- drivers/net/wireless/ath/ath11k/hal_rx.c           |    6 +-
- drivers/net/wireless/ath/ath11k/hal_rx.h           |    2 +-
- drivers/net/wireless/ath/ath11k/htc.c              |    6 +
- drivers/net/wireless/ath/ath11k/hw.h               |    5 +
- drivers/net/wireless/ath/ath11k/mac.c              |  159 +-
- drivers/net/wireless/ath/ath11k/pci.c              |   93 +-
- drivers/net/wireless/ath/ath11k/pci.h              |    7 +
- drivers/net/wireless/ath/ath11k/qmi.c              |   25 +-
- drivers/net/wireless/ath/ath11k/qmi.h              |    2 +-
- drivers/net/wireless/ath/ath11k/reg.c              |    6 +-
- drivers/net/wireless/ath/ath11k/wmi.c              |    2 +-
- .../net/wireless/ath/ath9k/ar9580_1p0_initvals.h   |   21 -
- drivers/net/wireless/ath/wcn36xx/pmc.c             |    2 +
- .../wireless/broadcom/brcm80211/brcmfmac/core.c    |   11 +-
- .../wireless/broadcom/brcm80211/brcmfmac/fweh.c    |   10 +-
- drivers/net/wireless/intel/iwlwifi/Makefile        |    1 +
- drivers/net/wireless/intel/iwlwifi/cfg/22000.c     |   68 +-
- drivers/net/wireless/intel/iwlwifi/fw/acpi.c       |   72 +-
- drivers/net/wireless/intel/iwlwifi/fw/acpi.h       |   58 +-
- drivers/net/wireless/intel/iwlwifi/fw/api/alive.h  |   25 +-
- .../net/wireless/intel/iwlwifi/fw/api/commands.h   |   10 +-
- drivers/net/wireless/intel/iwlwifi/fw/api/d3.h     |   82 +-
- .../net/wireless/intel/iwlwifi/fw/api/dbg-tlv.h    |   32 +-
- .../net/wireless/intel/iwlwifi/fw/api/location.h   |  231 ++-
- drivers/net/wireless/intel/iwlwifi/fw/api/mac.h    |   16 +-
- .../net/wireless/intel/iwlwifi/fw/api/phy-ctxt.h   |   32 +-
- drivers/net/wireless/intel/iwlwifi/fw/api/phy.h    |   13 +-
- drivers/net/wireless/intel/iwlwifi/fw/api/power.h  |  133 +-
- drivers/net/wireless/intel/iwlwifi/fw/api/rs.h     |   11 +-
- drivers/net/wireless/intel/iwlwifi/fw/api/rx.h     |   29 +-
- drivers/net/wireless/intel/iwlwifi/fw/api/tx.h     |    7 +-
- drivers/net/wireless/intel/iwlwifi/fw/dbg.c        |   56 +
- drivers/net/wireless/intel/iwlwifi/fw/error-dump.h |   14 +
- drivers/net/wireless/intel/iwlwifi/fw/file.h       |    3 +-
- drivers/net/wireless/intel/iwlwifi/fw/img.c        |   55 +-
- drivers/net/wireless/intel/iwlwifi/fw/img.h        |    8 +-
- drivers/net/wireless/intel/iwlwifi/fw/init.c       |    3 +-
- drivers/net/wireless/intel/iwlwifi/fw/runtime.h    |    3 +-
- drivers/net/wireless/intel/iwlwifi/iwl-config.h    |   13 +-
- drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c   |   26 +-
- drivers/net/wireless/intel/iwlwifi/iwl-debug.h     |    6 +-
- drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c |   98 +-
- drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.h |    2 +-
- drivers/net/wireless/intel/iwlwifi/iwl-trans.c     |   78 +-
- drivers/net/wireless/intel/iwlwifi/iwl-trans.h     |   34 +-
- drivers/net/wireless/intel/iwlwifi/mvm/constants.h |    8 +-
- drivers/net/wireless/intel/iwlwifi/mvm/d3.c        |  273 +++-
- .../net/wireless/intel/iwlwifi/mvm/ftm-initiator.c |  363 ++++-
- .../net/wireless/intel/iwlwifi/mvm/ftm-responder.c |  205 ++-
- drivers/net/wireless/intel/iwlwifi/mvm/fw.c        |  356 +++--
- drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c  |   12 +-
- drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c  |   64 +-
- drivers/net/wireless/intel/iwlwifi/mvm/mvm.h       |   51 +-
- drivers/net/wireless/intel/iwlwifi/mvm/ops.c       |   18 +-
- drivers/net/wireless/intel/iwlwifi/mvm/phy-ctxt.c  |  126 +-
- drivers/net/wireless/intel/iwlwifi/mvm/rs-fw.c     |   24 +-
- drivers/net/wireless/intel/iwlwifi/mvm/rs.c        |    6 +
- drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c      |   85 +-
- drivers/net/wireless/intel/iwlwifi/mvm/scan.c      |   70 +-
- drivers/net/wireless/intel/iwlwifi/mvm/sta.c       |   53 +-
- drivers/net/wireless/intel/iwlwifi/mvm/sta.h       |    3 +
- drivers/net/wireless/intel/iwlwifi/mvm/tt.c        |   78 +-
- drivers/net/wireless/intel/iwlwifi/mvm/tx.c        |   77 +-
- drivers/net/wireless/intel/iwlwifi/mvm/utils.c     |   46 +-
- .../net/wireless/intel/iwlwifi/pcie/ctxt-info.c    |    2 +-
- drivers/net/wireless/intel/iwlwifi/pcie/drv.c      |   34 +-
- drivers/net/wireless/intel/iwlwifi/pcie/internal.h |  158 +-
- drivers/net/wireless/intel/iwlwifi/pcie/rx.c       |    2 +-
- .../net/wireless/intel/iwlwifi/pcie/trans-gen2.c   |    4 +-
- drivers/net/wireless/intel/iwlwifi/pcie/trans.c    |  132 +-
- drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c  | 1089 +-------------
- drivers/net/wireless/intel/iwlwifi/pcie/tx.c       |  535 +------
- drivers/net/wireless/intel/iwlwifi/queue/tx.c      | 1529 ++++++++++++++++++++
- drivers/net/wireless/intel/iwlwifi/queue/tx.h      |  230 +++
- drivers/net/wireless/quantenna/qtnfmac/commands.c  |    2 +
- drivers/net/wireless/realtek/rtw88/debug.c         |   26 +-
- drivers/net/wireless/realtek/rtw88/fw.c            |   86 +-
- drivers/net/wireless/realtek/rtw88/fw.h            |   18 +-
- drivers/net/wireless/realtek/rtw88/mac80211.c      |   81 +-
- drivers/net/wireless/realtek/rtw88/main.c          |  193 +++
- drivers/net/wireless/realtek/rtw88/main.h          |   32 +
- drivers/net/wireless/realtek/rtw88/pci.c           |    5 +
- drivers/net/wireless/realtek/rtw88/pci.h           |    4 +-
- drivers/net/wireless/realtek/rtw88/reg.h           |    5 +
- drivers/net/wireless/realtek/rtw88/rtw8822b.c      |    3 +
- drivers/net/wireless/realtek/rtw88/rtw8822c.c      |    3 +
- drivers/net/wireless/realtek/rtw88/util.h          |    2 +
- drivers/net/wireless/ti/wl1251/reg.h               |    2 +-
- drivers/net/wireless/ti/wl12xx/reg.h               |    2 +-
- drivers/net/wireless/wl3501_cs.c                   |    4 +-
- 103 files changed, 5533 insertions(+), 2798 deletions(-)
- create mode 100644 drivers/net/wireless/intel/iwlwifi/queue/tx.c
- create mode 100644 drivers/net/wireless/intel/iwlwifi/queue/tx.h
+Regards,
+-Denis
