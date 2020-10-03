@@ -2,221 +2,73 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8FF37281EEA
-	for <lists+linux-wireless@lfdr.de>; Sat,  3 Oct 2020 01:10:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F32028208D
+	for <lists+linux-wireless@lfdr.de>; Sat,  3 Oct 2020 04:33:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725446AbgJBXKw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 2 Oct 2020 19:10:52 -0400
-Received: from mga07.intel.com ([134.134.136.100]:25865 "EHLO mga07.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725283AbgJBXKw (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 2 Oct 2020 19:10:52 -0400
-IronPort-SDR: k9iJt66LuW7W0Cp6wDJTVNn9Keczd6WnMf5V9qPCujDPn6zFpEOkvKbQGDTDvWRgNoM2DpPsH4
- QdJpcbyCPSOw==
-X-IronPort-AV: E=McAfee;i="6000,8403,9762"; a="227229992"
-X-IronPort-AV: E=Sophos;i="5.77,329,1596524400"; 
-   d="scan'208";a="227229992"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Oct 2020 16:10:51 -0700
-IronPort-SDR: jXh0pHhtMYe5WgshgDWm7Oqg6pMMSedKwtr2Xq6cDtTnm5NHKZ8xxPIwtfQ9AS9RhQb4VS8WDj
- 21SFEIGPVzzg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.77,329,1596524400"; 
-   d="scan'208";a="313666762"
-Received: from lkp-server02.sh.intel.com (HELO 404f47266ee4) ([10.239.97.151])
-  by orsmga006.jf.intel.com with ESMTP; 02 Oct 2020 16:10:49 -0700
-Received: from kbuild by 404f47266ee4 with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1kOUCP-00009D-4s; Fri, 02 Oct 2020 23:10:49 +0000
-Date:   Sat, 03 Oct 2020 07:10:10 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Johannes Berg <johannes.berg@intel.com>
-Cc:     linux-wireless@vger.kernel.org
-Subject: [mac80211-next:master] BUILD SUCCESS
- 75f87eaeaced820cc776b3147d22ec44fbf5fc17
-Message-ID: <5f77b352.vMVBhrdORd3/6lbG%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S1725861AbgJCCdJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 2 Oct 2020 22:33:09 -0400
+Received: from mail-io1-f79.google.com ([209.85.166.79]:54651 "EHLO
+        mail-io1-f79.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725536AbgJCCdI (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 2 Oct 2020 22:33:08 -0400
+Received: by mail-io1-f79.google.com with SMTP id f6so2247410ion.21
+        for <linux-wireless@vger.kernel.org>; Fri, 02 Oct 2020 19:33:06 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:date:in-reply-to:message-id:subject
+         :from:to;
+        bh=huAQ2XNxNk0+JP0caungu+yrhrmWz2OAWIUz9RtSlI4=;
+        b=tb2uHyGMWU2TFiIYPAn8gPCi6+bpSvtaj9Bb/oJ3VTNs5ftLk38KI578QkavYZvr+h
+         5mgiUWqNzSIDo9VNyJSxtzRiBGbIfs3M2wmUU3OvXY14rj5plES8s8xTmPWnnjEEZe7D
+         1mAgq04Rz6AznP6Ra6GFrFr/R0J7bbsLSxrgLW1JKrL6kkNYG710VMBRI2A4mosF9n0D
+         9maZ9FjUhirRvgPP3hwTD4ONl8zi+6VanX5krJhKQrvT8P3XRJ7F3o0v9s6Gf+oIz1tW
+         N9ucHE/BXiM5duxL2VYBGGJzSgqBt9Hrr3UIW0WrjuMsLzsbutqeRB/zuZtuQOPW57IH
+         ewvA==
+X-Gm-Message-State: AOAM5304n3IkZJeeEZwERhL/PJ5k89fdRvnVRoclp7rfWJAUEiq64pzj
+        ClnFZWG/XTrbF0YBgA1XDSwRAVurIXovnP0YYxn2zxrlVqpg
+X-Google-Smtp-Source: ABdhPJzrlAP5imDWEPKyVGiLnhg0plpe3Pjdz0K8YSADKul87MvIbS1OPbnv7c/HZQJfp1argFlx9wEiLJU/BiWVN/BRncyNJ03n
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+X-Received: by 2002:a02:5d85:: with SMTP id w127mr4693509jaa.76.1601692385603;
+ Fri, 02 Oct 2020 19:33:05 -0700 (PDT)
+Date:   Fri, 02 Oct 2020 19:33:05 -0700
+In-Reply-To: <000000000000ed022605b0b1efaa@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <000000000000aef3fc05b0bb11ce@google.com>
+Subject: Re: WARNING in ieee80211_bss_info_change_notify
+From:   syzbot <syzbot+09d1cd2f71e6dd3bfd2c@syzkaller.appspotmail.com>
+To:     airlied@linux.ie, alexander.deucher@amd.com,
+        amd-gfx@lists.freedesktop.org, christian.koenig@amd.com,
+        davem@davemloft.net, dieter@nuetzel-hh.de,
+        dri-devel@lists.freedesktop.org, johannes@sipsolutions.net,
+        kuba@kernel.org, linux-kernel@vger.kernel.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211-next.git  master
-branch HEAD: 75f87eaeaced820cc776b3147d22ec44fbf5fc17  mac80211: avoid processing non-S1G elements on S1G band
+syzbot has bisected this issue to:
 
-elapsed time: 720m
+commit 135f971181d779c96ff3725c1a350a721785cc66
+Author: Alex Deucher <alexander.deucher@amd.com>
+Date:   Mon Nov 20 22:49:53 2017 +0000
 
-configs tested: 157
-configs skipped: 3
+    drm/amdgpu: don't skip attributes when powerplay is enabled
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=120f55bd900000
+start commit:   fcadab74 Merge tag 'drm-fixes-2020-10-01-1' of git://anong..
+git tree:       upstream
+final oops:     https://syzkaller.appspot.com/x/report.txt?x=110f55bd900000
+console output: https://syzkaller.appspot.com/x/log.txt?x=160f55bd900000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=4e672827d2ffab1f
+dashboard link: https://syzkaller.appspot.com/bug?extid=09d1cd2f71e6dd3bfd2c
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=161112eb900000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=124fc533900000
 
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-powerpc                   motionpro_defconfig
-powerpc                    amigaone_defconfig
-mips                        maltaup_defconfig
-mips                       rbtx49xx_defconfig
-powerpc                          allmodconfig
-powerpc                      makalu_defconfig
-arm                       imx_v4_v5_defconfig
-powerpc                    klondike_defconfig
-mips                          malta_defconfig
-arc                        nsim_700_defconfig
-arm                          badge4_defconfig
-powerpc                  mpc885_ads_defconfig
-powerpc                 mpc834x_itx_defconfig
-powerpc                      ppc6xx_defconfig
-arm                         s3c2410_defconfig
-arm                           viper_defconfig
-um                           x86_64_defconfig
-powerpc                        warp_defconfig
-powerpc                         wii_defconfig
-mips                        nlm_xlr_defconfig
-mips                       lemote2f_defconfig
-arm                         lpc18xx_defconfig
-powerpc                      ep88xc_defconfig
-powerpc                      ppc64e_defconfig
-arm                   milbeaut_m10v_defconfig
-arm                          ep93xx_defconfig
-arm                         palmz72_defconfig
-riscv                    nommu_k210_defconfig
-sh                          rsk7203_defconfig
-arm                          gemini_defconfig
-powerpc                     rainier_defconfig
-m68k                       m5475evb_defconfig
-sh                   secureedge5410_defconfig
-arm                           tegra_defconfig
-sh                           se7619_defconfig
-mips                 decstation_r4k_defconfig
-s390                       zfcpdump_defconfig
-m68k                        m5307c3_defconfig
-sh                           se7724_defconfig
-um                             i386_defconfig
-arm                       multi_v4t_defconfig
-sh                        dreamcast_defconfig
-arm                         axm55xx_defconfig
-powerpc                     tqm5200_defconfig
-mips                     loongson1b_defconfig
-sh                          sdk7786_defconfig
-arm                     am200epdkit_defconfig
-xtensa                generic_kc705_defconfig
-alpha                            alldefconfig
-powerpc                    mvme5100_defconfig
-sh                            titan_defconfig
-powerpc                     mpc512x_defconfig
-riscv                               defconfig
-arm                            lart_defconfig
-mips                           jazz_defconfig
-c6x                         dsk6455_defconfig
-arm                        mini2440_defconfig
-c6x                        evmc6474_defconfig
-arm                          imote2_defconfig
-sh                   sh7770_generic_defconfig
-sparc                       sparc32_defconfig
-mips                          ath25_defconfig
-powerpc                           allnoconfig
-arm                       omap2plus_defconfig
-sh                          rsk7264_defconfig
-mips                        bcm47xx_defconfig
-powerpc                 canyonlands_defconfig
-arm                        multi_v7_defconfig
-powerpc                     tqm8541_defconfig
-m68k                             alldefconfig
-powerpc                 mpc832x_mds_defconfig
-arm                            mmp2_defconfig
-mips                            gpr_defconfig
-powerpc                      ppc44x_defconfig
-arm                        spear6xx_defconfig
-powerpc                          g5_defconfig
-mips                         mpc30x_defconfig
-arm                  colibri_pxa270_defconfig
-m68k                           sun3_defconfig
-sh                          lboxre2_defconfig
-arm                    vt8500_v6_v7_defconfig
-c6x                        evmc6678_defconfig
-mips                  cavium_octeon_defconfig
-s390                          debug_defconfig
-sh                           se7751_defconfig
-arm                        mvebu_v7_defconfig
-arm                        vexpress_defconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-c6x                              allyesconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-x86_64               randconfig-a004-20201002
-x86_64               randconfig-a001-20201002
-x86_64               randconfig-a002-20201002
-x86_64               randconfig-a005-20201002
-x86_64               randconfig-a003-20201002
-x86_64               randconfig-a006-20201002
-i386                 randconfig-a006-20201002
-i386                 randconfig-a005-20201002
-i386                 randconfig-a001-20201002
-i386                 randconfig-a004-20201002
-i386                 randconfig-a003-20201002
-i386                 randconfig-a002-20201002
-i386                 randconfig-a014-20201002
-i386                 randconfig-a013-20201002
-i386                 randconfig-a015-20201002
-i386                 randconfig-a016-20201002
-i386                 randconfig-a011-20201002
-i386                 randconfig-a012-20201002
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-x86_64                                   rhel
-x86_64                           allyesconfig
-x86_64                    rhel-7.6-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                                  kexec
+Reported-by: syzbot+09d1cd2f71e6dd3bfd2c@syzkaller.appspotmail.com
+Fixes: 135f971181d7 ("drm/amdgpu: don't skip attributes when powerplay is enabled")
 
-clang tested configs:
-x86_64               randconfig-a012-20201002
-x86_64               randconfig-a015-20201002
-x86_64               randconfig-a014-20201002
-x86_64               randconfig-a013-20201002
-x86_64               randconfig-a011-20201002
-x86_64               randconfig-a016-20201002
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+For information about bisection process see: https://goo.gl/tpsmEJ#bisection
