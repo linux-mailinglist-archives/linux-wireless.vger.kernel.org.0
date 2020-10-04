@@ -2,104 +2,149 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C728282700
-	for <lists+linux-wireless@lfdr.de>; Sun,  4 Oct 2020 00:04:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 22995282A12
+	for <lists+linux-wireless@lfdr.de>; Sun,  4 Oct 2020 12:02:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725935AbgJCWE1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 3 Oct 2020 18:04:27 -0400
-Received: from z5.mailgun.us ([104.130.96.5]:19685 "EHLO z5.mailgun.us"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725913AbgJCWE1 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 3 Oct 2020 18:04:27 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1601762666; h=Message-Id: Date: Subject: Cc: To: From:
- Sender; bh=OBPZU7QlKpVIpTcfArTWNKBnEUoBdoVFUz3CA7QZuJM=; b=NcgmBxx0Kq/cXI8+JC2HRAK05gkKX6YNiEtDRdIJk8f5a0cnfASjj+ewA/PbtKTN8Q4kOi0n
- waMgfFZruW0PpEdOd0me4J0Zogxy/r/7UjEkXPF2C+JC0cuIilrWeBRVR68hdakx5DYVb7/P
- BhdQIZsugGQZ0Mkj6CHt9acwT80=
-X-Mailgun-Sending-Ip: 104.130.96.5
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n03.prod.us-east-1.postgun.com with SMTP id
- 5f78f56abfed2afaa67efb41 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sat, 03 Oct 2020 22:04:26
- GMT
-Sender: rmanohar=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 2C6CFC433CB; Sat,  3 Oct 2020 22:04:25 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-Received: from rmanohar-linux.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: rmanohar)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 36FF3C433CA;
-        Sat,  3 Oct 2020 22:04:24 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 36FF3C433CA
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=rmanohar@codeaurora.org
-From:   Rajkumar Manoharan <rmanohar@codeaurora.org>
-To:     johannes@sipsolutions.net
-Cc:     linux-wireless@vger.kernel.org,
-        Rajkumar Manoharan <rmanohar@codeaurora.org>
-Subject: [PATCH] mac80211: allow configured beacon tx rate to driver
-Date:   Sat,  3 Oct 2020 15:04:18 -0700
-Message-Id: <1601762658-15627-1-git-send-email-rmanohar@codeaurora.org>
-X-Mailer: git-send-email 2.7.4
+        id S1725916AbgJDKCr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 4 Oct 2020 06:02:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59974 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725825AbgJDKCq (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 4 Oct 2020 06:02:46 -0400
+Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F4B5C0613CE;
+        Sun,  4 Oct 2020 03:02:46 -0700 (PDT)
+Received: by mail-wr1-x443.google.com with SMTP id s12so6343512wrw.11;
+        Sun, 04 Oct 2020 03:02:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=/8rwI5kq36ra1JROFynqhEO5qXOq3K5Mukw9A9ozDaU=;
+        b=T74VMZRo+gOA0DqbMFWPz/hxrJTtv4jciiHZZLZ7ePD1k50ti+jrdYUs3cHCJeRSzu
+         hyAu0hJvDQaqaydH+3M6AsqQHoXuJzf+9cd3nYVGwxo4LkJTQvvAEtxE2WIK6TszA9z1
+         IvsMsv8+wyZ+HjwyS2ItoU1Fj+CXsBjARJ6dmcgrs3LMONwPJnwHpasnteyvjECz3xTq
+         PrAqQMyOv9FkazZhmhngZrGx4sCvBTq1kf42RleIsNFQcVHG6zxHFhLpxEu92o7Gw+B3
+         NQwbxskFev3/7J8wOEpguJvXw4H5fL7IA5mp4RMNdUDKxbSwOI9fQBlKQ3IAa82FyBys
+         APyA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=/8rwI5kq36ra1JROFynqhEO5qXOq3K5Mukw9A9ozDaU=;
+        b=Z/SRyUjfdrzs+axCIQ3tjHBy4qlcju5tlKphQzJ4vouv4ZL20sqEvP0CA2vNHHIKrc
+         ENJnIQsOfLuk6IYVBKr/uly/ASA0MP2ZomWboC6PSliofVi4kg7OryjC2/UJj3vn3wB9
+         RRdn6LdBYOLsrgYfPuCD51uSj9r6zU/2Dc/n1xwO+RSmwUY/Z0MmquoSGctk5R5CPb3u
+         Sr08/L8DkIDOrMgc24g1xukGEQPujwVAqKUlCo+fuQCHR4IA0IXCCpMGMoH23a5gMSH6
+         3mfap8EpVs8T2dugiKfFn6Mc84A93makx+pwDNRAVHwPE0zb+rkorrhodM+dapmUm4FM
+         esIw==
+X-Gm-Message-State: AOAM531zq80K7WiFM4rXE5DMYsKNrTUgD9jnOIRiSh81SW5yU4tP80uM
+        6wzEjXMhWVWKO535xfzkFcA=
+X-Google-Smtp-Source: ABdhPJxC4RsKMVZk0jlDlKFWaZ5szexulTFJhzThUJQKjEw6S+8j3YbUICzSiX02mZspStTq2872YA==
+X-Received: by 2002:adf:ce8e:: with SMTP id r14mr11903160wrn.257.1601805765224;
+        Sun, 04 Oct 2020 03:02:45 -0700 (PDT)
+Received: from localhost.localdomain (cpc83661-brig20-2-0-cust443.3-3.cable.virginm.net. [82.28.105.188])
+        by smtp.gmail.com with ESMTPSA id a10sm8301340wmb.23.2020.10.04.03.02.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 04 Oct 2020 03:02:44 -0700 (PDT)
+From:   Alex Dewar <alex.dewar90@gmail.com>
+Cc:     Alex Dewar <alex.dewar90@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Carl Huang <cjhuang@codeaurora.org>,
+        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH 2/2] ath11k: Handle errors if peer creation fails
+Date:   Sun,  4 Oct 2020 11:02:17 +0100
+Message-Id: <20201004100218.311653-1-alex.dewar90@gmail.com>
+X-Mailer: git-send-email 2.28.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The user is allowed to change beacon tx rate (HT/VHT/HE) from hostapd.
-This information needs to be passed to the driver when the rate control
-is offloaded to the firmware. The driver capability of allowing beacon
-rate is already validated by hostapd, so simply passing the rate
-information to the driver is enough.
+ath11k_peer_create() is called without its return value being checked,
+meaning errors will be unhandled. Add missing check and, as the mutex is
+unconditionally unlocked on leaving this function, simplify the exit
+path.
 
-Signed-off-by: Rajkumar Manoharan <rmanohar@codeaurora.org>
+Addresses-Coverity-ID: 1497531 ("Code maintainability issues")
+Fixes: 701e48a43e15 ("ath11k: add packet log support for QCA6390")
+Signed-off-by: Alex Dewar <alex.dewar90@gmail.com>
 ---
- include/net/mac80211.h | 3 +++
- net/mac80211/cfg.c     | 3 +++
- 2 files changed, 6 insertions(+)
+ drivers/net/wireless/ath/ath11k/mac.c | 21 +++++++++------------
+ 1 file changed, 9 insertions(+), 12 deletions(-)
 
-diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index 4747d446179a..e8e295dae744 100644
---- a/include/net/mac80211.h
-+++ b/include/net/mac80211.h
-@@ -628,6 +628,8 @@ struct ieee80211_fils_discovery {
-  * @unsol_bcast_probe_resp_interval: Unsolicited broadcast probe response
-  *	interval.
-  * @s1g: BSS is S1G BSS (affects Association Request format).
-+ * @beacon_tx_rate: The configured beacon transmit rate that needs to be passed
-+ *	to driver when rate control is offloaded to firmware.
-  */
- struct ieee80211_bss_conf {
- 	const u8 *bssid;
-@@ -698,6 +700,7 @@ struct ieee80211_bss_conf {
- 	struct ieee80211_fils_discovery fils_discovery;
- 	u32 unsol_bcast_probe_resp_interval;
- 	bool s1g;
-+	struct cfg80211_bitrate_mask beacon_tx_rate;
- };
+diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
+index 7f8dd47d2333..58db1b57b941 100644
+--- a/drivers/net/wireless/ath/ath11k/mac.c
++++ b/drivers/net/wireless/ath/ath11k/mac.c
+@@ -5211,7 +5211,7 @@ ath11k_mac_op_assign_vif_chanctx(struct ieee80211_hw *hw,
+ 	struct ath11k *ar = hw->priv;
+ 	struct ath11k_base *ab = ar->ab;
+ 	struct ath11k_vif *arvif = (void *)vif->drv_priv;
+-	int ret;
++	int ret = 0;
+ 	struct peer_create_params param;
  
- /**
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index da70f174d629..e3334afa85b0 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -1153,6 +1153,9 @@ static int ieee80211_start_ap(struct wiphy *wiphy, struct net_device *dev,
- 		}
+ 	mutex_lock(&ar->conf_mutex);
+@@ -5225,13 +5225,12 @@ ath11k_mac_op_assign_vif_chanctx(struct ieee80211_hw *hw,
+ 	    arvif->vdev_type != WMI_VDEV_TYPE_AP &&
+ 	    arvif->vdev_type != WMI_VDEV_TYPE_MONITOR) {
+ 		memcpy(&arvif->chanctx, ctx, sizeof(*ctx));
+-		mutex_unlock(&ar->conf_mutex);
+-		return 0;
++		goto unlock;
  	}
  
-+	if (ieee80211_hw_check(&local->hw, HAS_RATE_CONTROL))
-+		sdata->vif.bss_conf.beacon_tx_rate = params->beacon_rate;
-+
- 	err = ieee80211_assign_beacon(sdata, &params->beacon, NULL);
- 	if (err < 0)
- 		goto error;
+ 	if (WARN_ON(arvif->is_started)) {
+-		mutex_unlock(&ar->conf_mutex);
+-		return -EBUSY;
++		ret = -EBUSY;
++		goto unlock;
+ 	}
+ 
+ 	if (ab->hw_params.vdev_start_delay) {
+@@ -5239,6 +5238,8 @@ ath11k_mac_op_assign_vif_chanctx(struct ieee80211_hw *hw,
+ 		param.peer_type = WMI_PEER_TYPE_DEFAULT;
+ 		param.peer_addr = ar->mac_addr;
+ 		ret = ath11k_peer_create(ar, arvif, NULL, &param);
++		if (ret)
++			goto unlock;
+ 	}
+ 
+ 	ret = ath11k_mac_vdev_start(arvif, &ctx->def);
+@@ -5246,23 +5247,19 @@ ath11k_mac_op_assign_vif_chanctx(struct ieee80211_hw *hw,
+ 		ath11k_warn(ab, "failed to start vdev %i addr %pM on freq %d: %d\n",
+ 			    arvif->vdev_id, vif->addr,
+ 			    ctx->def.chan->center_freq, ret);
+-		goto err;
++		goto unlock;
+ 	}
+ 	if (arvif->vdev_type == WMI_VDEV_TYPE_MONITOR) {
+ 		ret = ath11k_monitor_vdev_up(ar, arvif->vdev_id);
+ 		if (ret)
+-			goto err;
++			goto unlock;
+ 	}
+ 
+ 	arvif->is_started = true;
+ 
+ 	/* TODO: Setup ps and cts/rts protection */
+ 
+-	mutex_unlock(&ar->conf_mutex);
+-
+-	return 0;
+-
+-err:
++unlock:
+ 	mutex_unlock(&ar->conf_mutex);
+ 
+ 	return ret;
 -- 
-2.7.4
+2.28.0
 
