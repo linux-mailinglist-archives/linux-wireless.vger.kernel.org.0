@@ -2,99 +2,104 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8390E282A15
-	for <lists+linux-wireless@lfdr.de>; Sun,  4 Oct 2020 12:03:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B212C282ADF
+	for <lists+linux-wireless@lfdr.de>; Sun,  4 Oct 2020 15:19:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725983AbgJDKCx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 4 Oct 2020 06:02:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59986 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725974AbgJDKCu (ORCPT
+        id S1726166AbgJDNTv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 4 Oct 2020 09:19:51 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:34369 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726145AbgJDNTq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 4 Oct 2020 06:02:50 -0400
-Received: from mail-wm1-x342.google.com (mail-wm1-x342.google.com [IPv6:2a00:1450:4864:20::342])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE5B6C0613CE;
-        Sun,  4 Oct 2020 03:02:48 -0700 (PDT)
-Received: by mail-wm1-x342.google.com with SMTP id p15so1166648wmi.4;
-        Sun, 04 Oct 2020 03:02:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=T3FPFmmNhtSQG0HIl2KOR79xkD0BpnP+y0jXes7tggU=;
-        b=UAC3akdkJpzR4/1Q5jBpbut2UdVNVKoenKR5psolzqCesNaBfvWT++3eZ8IF45FDRv
-         InDpKoSO0ocWiIcEbayM+mlLEJ0Wnqqo3GtZu3LA8/mztZLLhRvR4N9zRASJzG+F7zNq
-         ZUJzDjj5I+9US3CfLnozqktSmE66J8/42940EMvA4v9uckcnXHeaFBM4wewBIqPv2pKO
-         3gHwj/XZ4W1lsuN9BIqOGstL0YJdiO1bt8HV6tRF9medK0ybZDAJIcVezskP7NCPU5jv
-         36FkOWDW3KG3ByVLtuj28SdlHixFVJQFUfIksqpM2HckyACTNbiDON4lI5fz/7DtywI8
-         Y50A==
+        Sun, 4 Oct 2020 09:19:46 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1601817584;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc; bh=rgrRP/YTXU8zDHHZah13pYSFtC6P1oYXhuKtk3thRRw=;
+        b=Tku68ON3/4XF/mCZbZ4dFgaI13UpJODnkP8a6fQ/nQYyt7A+T1qQvX9GL3flOoBgrY1wli
+        m4W6s7YEnGLinSvO9WxHox2U1Y/RASI7zRQk0MOv/f/iAIxT/Mjz1mjwntoH7YJ29aTD7x
+        qajmQaAUzHXO75R5ipiEs/UY026ocsQ=
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
+ [209.85.219.69]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-466-7Hwe5qDMMnKO1Qw_3DrPTw-1; Sun, 04 Oct 2020 09:19:41 -0400
+X-MC-Unique: 7Hwe5qDMMnKO1Qw_3DrPTw-1
+Received: by mail-qv1-f69.google.com with SMTP id z12so4073001qvp.11
+        for <linux-wireless@vger.kernel.org>; Sun, 04 Oct 2020 06:19:41 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=T3FPFmmNhtSQG0HIl2KOR79xkD0BpnP+y0jXes7tggU=;
-        b=nQZElLhhsicAgjSHRKNv7KVEcy0oBTAeSbgAUAb9yR57lTUHlHgP09uaOuveCztUHK
-         gaV7mUiCAbQh0Qo4ML9bkHBxMgJKiZoLgUJFRCXIq/Yg8VE6nI56ffoM/4d3xTtpXGQu
-         6rgvxrZVBWlsbLGvxsp4gaqAHhtmlKrqrTv6BGK8Det6ujCE8p+qPSNLIU1O2GXIcOz7
-         F0lLeNFyTU9wZ8L4ybgvNI44S3SqFZbP73bIpKnAO75ZQ/loK6n0Hvjp8VJ8Mjp6xWpJ
-         vRSkY210gtAh2JZpvB+DTgeK7wlcyaScBNz7rIuuzJh/Eo5kkT6I1VdhXnyEFCa3fWbr
-         Pxjw==
-X-Gm-Message-State: AOAM531vqSl7IQw2lZGF/r9TAMfCHHAz96WsGwiB4c65IlOPxMcR5DBd
-        8zcbyKDZbUizHvqyzy3ivbs=
-X-Google-Smtp-Source: ABdhPJwNB9Xm3iMGrJpowcN+yOueZNbV1GHeQkGkszFbt1cxFPr/MpmMaCkQ04e1c/FYSg4mlVD5Dw==
-X-Received: by 2002:a1c:2186:: with SMTP id h128mr1130889wmh.113.1601805767558;
-        Sun, 04 Oct 2020 03:02:47 -0700 (PDT)
-Received: from localhost.localdomain (cpc83661-brig20-2-0-cust443.3-3.cable.virginm.net. [82.28.105.188])
-        by smtp.gmail.com with ESMTPSA id a10sm8301340wmb.23.2020.10.04.03.02.46
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=rgrRP/YTXU8zDHHZah13pYSFtC6P1oYXhuKtk3thRRw=;
+        b=HLSRr059EDN5IUTx505XPX3bEOs7obMwUiteGuJk2lT4rJdkGJUz9fYUWh+qNqYZVM
+         5XwyhA7waF1x7GM2murho9e+qc95BSQx6V3so/fzGK9V77T7yOh74HfBessLk1wa8DJS
+         IW4qLUm45V+J+mw+XIenIm39gWFnxj+FQkG/sbKy4krxK1YGTQ9uePwwhhh//KN9OwR+
+         5chB6nzbiuSZWQsjLsyUMwnsWQO2Yqff72IGPr321lhNzXLpJzy/KARfoXoWH0t+Zzib
+         SzOwd0GE5tkihv7WHs7LdBCTTJ0qtSTvkRONNJc7v1yqhprCCgSeeYctx1OeYIkWeef1
+         18QQ==
+X-Gm-Message-State: AOAM5319QjtGwNlAUEN+gDoqe9dFh23BRUUdM+ijktAPqQtcsal1njZW
+        AxIiHQd9RT3Nh5dXJNEkcviBL2OE6dhXkxve43n9tZWAtjvpX6EeerxQjCpN//uimSRY/hHyTpM
+        C7TNwx2YxBy0wL8TckLQF93TnlJM=
+X-Received: by 2002:ac8:4410:: with SMTP id j16mr10412013qtn.305.1601817580596;
+        Sun, 04 Oct 2020 06:19:40 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJyPVUB+BQ2zEs0jgpJsnX9LeCehIQzJydegR33P3TJAOehrv+31Xo/3GsZzzf3ZO8JTcvMgCg==
+X-Received: by 2002:ac8:4410:: with SMTP id j16mr10411990qtn.305.1601817580275;
+        Sun, 04 Oct 2020 06:19:40 -0700 (PDT)
+Received: from trix.remote.csb (075-142-250-213.res.spectrum.com. [75.142.250.213])
+        by smtp.gmail.com with ESMTPSA id w4sm2657150qtb.0.2020.10.04.06.19.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 04 Oct 2020 03:02:46 -0700 (PDT)
-From:   Alex Dewar <alex.dewar90@gmail.com>
-Cc:     Alex Dewar <alex.dewar90@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, ath11k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH 1/2] ath11k: Fix memory leak on error path
-Date:   Sun,  4 Oct 2020 11:02:18 +0100
-Message-Id: <20201004100218.311653-2-alex.dewar90@gmail.com>
-X-Mailer: git-send-email 2.28.0
-In-Reply-To: <20201004100218.311653-1-alex.dewar90@gmail.com>
-References: <20201004100218.311653-1-alex.dewar90@gmail.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-To:     unlisted-recipients:; (no To-header on input)
+        Sun, 04 Oct 2020 06:19:39 -0700 (PDT)
+From:   trix@redhat.com
+To:     amitkarwar@gmail.com, ganapathi.bhat@nxp.com,
+        huxinming820@gmail.com, kvalo@codeaurora.org, davem@davemloft.net,
+        kuba@kernel.org, natechancellor@gmail.com, ndesaulniers@google.com,
+        linville@tuxdriver.com, nishants@marvell.com, rramesh@marvell.com,
+        bzhao@marvell.com, frankh@marvell.com
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, clang-built-linux@googlegroups.com,
+        Tom Rix <trix@redhat.com>
+Subject: [PATCH] wireless: mwifiex: fix double free
+Date:   Sun,  4 Oct 2020 06:19:31 -0700
+Message-Id: <20201004131931.29782-1-trix@redhat.com>
+X-Mailer: git-send-email 2.18.1
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-In ath11k_mac_setup_iface_combinations(), if memory cannot be assigned
-for the variable limits, then the memory assigned to combinations will
-be leaked. Fix this.
+From: Tom Rix <trix@redhat.com>
 
-Addresses-Coverity-ID: 1497534 ("Resource leaks")
-Fixes: 2626c269702e ("ath11k: add interface_modes to hw_params")
-Signed-off-by: Alex Dewar <alex.dewar90@gmail.com>
+clang static analysis reports this problem:
+
+sdio.c:2403:3: warning: Attempt to free released memory
+        kfree(card->mpa_rx.buf);
+        ^~~~~~~~~~~~~~~~~~~~~~~
+
+When mwifiex_init_sdio() fails in its first call to
+mwifiex_alloc_sdio_mpa_buffer, it falls back to calling it
+again.  If the second alloc of mpa_tx.buf fails, the error
+handler will try to free the old, previously freed mpa_rx.buf.
+Reviewing the code, it looks like a second double free would
+happen with mwifiex_cleanup_sdio().
+
+So set both pointers to NULL when they are freed.
+
+Fixes: 5e6e3a92b9a4 ("wireless: mwifiex: initial commit for Marvell mwifiex driver")
+Signed-off-by: Tom Rix <trix@redhat.com>
 ---
- drivers/net/wireless/ath/ath11k/mac.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/wireless/marvell/mwifiex/sdio.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index 3f63a7bd6b59..7f8dd47d2333 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -6041,8 +6041,10 @@ static int ath11k_mac_setup_iface_combinations(struct ath11k *ar)
- 	n_limits = 2;
+diff --git a/drivers/net/wireless/marvell/mwifiex/sdio.c b/drivers/net/wireless/marvell/mwifiex/sdio.c
+index 69911c728eb1..bde9e4bbfffe 100644
+--- a/drivers/net/wireless/marvell/mwifiex/sdio.c
++++ b/drivers/net/wireless/marvell/mwifiex/sdio.c
+@@ -2403,6 +2403,8 @@ static int mwifiex_alloc_sdio_mpa_buffers(struct mwifiex_adapter *adapter,
+ 		kfree(card->mpa_rx.buf);
+ 		card->mpa_tx.buf_size = 0;
+ 		card->mpa_rx.buf_size = 0;
++		card->mpa_tx.buf = NULL;
++		card->mpa_rx.buf = NULL;
+ 	}
  
- 	limits = kcalloc(n_limits, sizeof(*limits), GFP_KERNEL);
--	if (!limits)
-+	if (!limits) {
-+		kfree(combinations);
- 		return -ENOMEM;
-+	}
- 
- 	limits[0].max = 1;
- 	limits[0].types |= BIT(NL80211_IFTYPE_STATION);
+ 	return ret;
 -- 
-2.28.0
+2.18.1
 
