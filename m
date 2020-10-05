@@ -2,119 +2,63 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C1C1C2838A5
-	for <lists+linux-wireless@lfdr.de>; Mon,  5 Oct 2020 17:01:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 10EB928396F
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 Oct 2020 17:22:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726654AbgJEPBF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 5 Oct 2020 11:01:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44328 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726530AbgJEPBE (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 5 Oct 2020 11:01:04 -0400
-Received: from mail-pj1-x1041.google.com (mail-pj1-x1041.google.com [IPv6:2607:f8b0:4864:20::1041])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84286C0613A8
-        for <linux-wireless@vger.kernel.org>; Mon,  5 Oct 2020 08:01:04 -0700 (PDT)
-Received: by mail-pj1-x1041.google.com with SMTP id a1so1205381pjd.1
-        for <linux-wireless@vger.kernel.org>; Mon, 05 Oct 2020 08:01:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=endlessos-org.20150623.gappssmtp.com; s=20150623;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=AwQgWzWi8pW4lGFBA/hNXn44tp/wqyyuzS23wCHudYY=;
-        b=hAHwiiCC0apGox5V3MaNpJ6GcRX5A0OUk7i3HfLE+C8KjaKKTVy/P/IA4tDtiRh9Zc
-         3iNvD2PYwpn/c0wO+7CGD0/4hC9S6ND2rPDZJGC3jsABHldNc8aZg+IWATL2qoCYxzcs
-         rfC6rCuQ2jlQEkVNyOR/4VAwpfrTsGq3d0Ox5KgP9pRUI0zaRSvMccqJ+/N9zo6ATpy5
-         3/l2oCcm0rJJ5ZaMwsVgig0mELBi25rEEIwpamTEUP8oS3aeSmOft09sArQhLRUnDGsD
-         kNFDM5LcuL8ePSFZ9NZpMC1TkTnNDDbI51rPy2oOpTaRPOSMpt6M4ZZrs2YWdVJw8adn
-         gGIA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=AwQgWzWi8pW4lGFBA/hNXn44tp/wqyyuzS23wCHudYY=;
-        b=aRJLTCG3rtZC7e4/KdPMWUvHSH61p60Av2CMonIO7G10lLnkvBRv7KnQFa9dylarzA
-         r12S8T1JrdVyjE1PuSWKcpOVIVvX9lIitz70+ocmA5eTIJ0pNiOmyEvoLbogPS5kqCej
-         cIg9B/UurY9BW2NkWbe0yCwJRR/bTKNQ0Fjhno2CDZ3Yxkb7sVKbXOQ++OuwVB7oLm4r
-         fEE02yuDu+wc12EBiLE8h4nd9cqEfiHIO80uAr5i2Rc4y1ZkbeO+zWOXoCBtE048ldJN
-         qaaatzmUYRC/bzWXikRw2O4TIOgv8p3BNmMf12AmEzK2A4AQDwu1n14zQ+NoHFObM/cQ
-         KeIA==
-X-Gm-Message-State: AOAM532U4rPhByM7XfbxmTfNw0Y2Oo/t5oO1Vs0QTgXdfQw3Id8crx0d
-        JVDkwSugzNk6VgtiR75J/j4kGQ==
-X-Google-Smtp-Source: ABdhPJy3LUQ3JCTsBXn9AQU01MEKNSmN2mgdKIpOoBvf8aESLBqoXITrHWbOLTTTIgwaaLejKrcr9g==
-X-Received: by 2002:a17:90a:a81:: with SMTP id 1mr267820pjw.174.1601910063866;
-        Mon, 05 Oct 2020 08:01:03 -0700 (PDT)
-Received: from localhost.localdomain (111-243-25-83.dynamic-ip.hinet.net. [111.243.25.83])
-        by smtp.gmail.com with ESMTPSA id c131sm227485pfc.46.2020.10.05.08.01.01
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 05 Oct 2020 08:01:02 -0700 (PDT)
-From:   Chris Chiu <chiu@endlessos.org>
-X-Google-Original-From: Chris Chiu <chiu@endlessm.com>
-To:     pkshih@realtek.com, kvalo@codeaurora.org, davem@davemloft.net,
-        kuba@kernel.org
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Chris Chiu <chiu@endlessos.org>
-Subject: [PATCH 1/3] rtlwifi: rtl8192se: remove duplicated legacy_httxpowerdiff
-Date:   Mon,  5 Oct 2020 23:00:48 +0800
-Message-Id: <20201005150048.4596-1-chiu@endlessm.com>
-X-Mailer: git-send-email 2.21.1 (Apple Git-122.3)
+        id S1726784AbgJEPWg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 5 Oct 2020 11:22:36 -0400
+Received: from mail.kernel.org ([198.145.29.99]:49080 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725960AbgJEPWg (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 5 Oct 2020 11:22:36 -0400
+Received: from lore-desk.redhat.com (unknown [176.207.245.61])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id A4FFE20774;
+        Mon,  5 Oct 2020 15:22:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1601911355;
+        bh=Y+xmcvLQl8la+bFRA4zZcWjFYNeHbUhN3n2dLq5K2GY=;
+        h=From:To:Cc:Subject:Date:From;
+        b=oBhHLh3KhVzA8tvptAq0tj9Py0XgYwSB3O9+3s6kkeHrenyZAD4VZeJQSSopolQxz
+         IvG8u2gWkzATDe3HRoi1ZA5vigTfSa4Iys/0j5k+zax8rqAoBYABSaAtjluSwKrpb2
+         wqPTSM2PAdcMi/9PPjg1Dzh4CsOhlCUpAYQPK4pk=
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
+        sean.wang@mediatek.com
+Subject: [PATCH] mt76: mt7663s: fix a possible ple quota underflow
+Date:   Mon,  5 Oct 2020 17:22:23 +0200
+Message-Id: <e074d0fbefd983a5283700d5e424f2503403608a.1601911100.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Chris Chiu <chiu@endlessos.org>
+Properly account current consumed ple quota in mt7663s_tx_pick_quota
+routine and avoid possible underflow.
 
-The legacy_httxpowerdiff in rtl8192se is pretty much the same as
-the legacy_ht_txpowerdiff for other chips. Use the same name to
-keep the consistency.
-
-Signed-off-by: Chris Chiu <chiu@endlessos.org>
+Fixes: 6ef2d665f64d ("mt76: mt7663s: split mt7663s_tx_update_sched in mt7663s_tx_{pick,update}_quota")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- drivers/net/wireless/realtek/rtlwifi/rtl8192se/hw.c | 2 +-
- drivers/net/wireless/realtek/rtlwifi/rtl8192se/rf.c | 2 +-
- drivers/net/wireless/realtek/rtlwifi/wifi.h         | 1 -
- 3 files changed, 2 insertions(+), 3 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7615/sdio_txrx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192se/hw.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192se/hw.c
-index 81313e0ca834..0cdcddfebca9 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192se/hw.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192se/hw.c
-@@ -1906,7 +1906,7 @@ static void _rtl92se_read_adapter_info(struct ieee80211_hw *hw)
- 	 * index diff of legacy to HT OFDM rate. */
- 	tempval = hwinfo[EEPROM_RFIND_POWERDIFF] & 0xff;
- 	rtlefuse->eeprom_txpowerdiff = tempval;
--	rtlefuse->legacy_httxpowerdiff =
-+	rtlefuse->legacy_ht_txpowerdiff =
- 		rtlefuse->txpwr_legacyhtdiff[RF90_PATH_A][0];
- 
- 	RTPRINT(rtlpriv, FINIT, INIT_TXPOWER,
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192se/rf.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192se/rf.c
-index a37855f57e76..54576566083c 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192se/rf.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192se/rf.c
-@@ -25,7 +25,7 @@ static void _rtl92s_get_powerbase(struct ieee80211_hw *hw, u8 *p_pwrlevel,
- 
- 	/* We only care about the path A for legacy. */
- 	if (rtlefuse->eeprom_version < 2) {
--		pwrbase0 = pwrlevel[0] + (rtlefuse->legacy_httxpowerdiff & 0xf);
-+		pwrbase0 = pwrlevel[0] + (rtlefuse->legacy_ht_txpowerdiff & 0xf);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/sdio_txrx.c b/drivers/net/wireless/mediatek/mt76/mt7615/sdio_txrx.c
+index a4969380c860..77377c208064 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/sdio_txrx.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/sdio_txrx.c
+@@ -180,7 +180,7 @@ static int mt7663s_tx_pick_quota(struct mt76_sdio *sdio, enum mt76_txq_id qid,
+ 			return -EBUSY;
  	} else {
- 		legacy_pwrdiff = rtlefuse->txpwr_legacyhtdiff
- 						[RF90_PATH_A][chnl - 1];
-diff --git a/drivers/net/wireless/realtek/rtlwifi/wifi.h b/drivers/net/wireless/realtek/rtlwifi/wifi.h
-index 13421cf2d201..0a516c3c7cea 100644
---- a/drivers/net/wireless/realtek/rtlwifi/wifi.h
-+++ b/drivers/net/wireless/realtek/rtlwifi/wifi.h
-@@ -1966,7 +1966,6 @@ struct rtl_efuse {
+ 		if (sdio->sched.pse_data_quota < *pse_size + pse_sz ||
+-		    sdio->sched.ple_data_quota < *ple_size)
++		    sdio->sched.ple_data_quota < *ple_size + 1)
+ 			return -EBUSY;
  
- 	u8 txpwr_safetyflag;			/* Band edge enable flag */
- 	u16 eeprom_txpowerdiff;
--	u8 legacy_httxpowerdiff;	/* Legacy to HT rate power diff */
- 	u8 antenna_txpwdiff[3];
- 
- 	u8 eeprom_regulatory;
+ 		*ple_size = *ple_size + 1;
 -- 
-2.20.1
+2.26.2
 
