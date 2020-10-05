@@ -2,107 +2,119 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 50047283765
-	for <lists+linux-wireless@lfdr.de>; Mon,  5 Oct 2020 16:13:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C1C1C2838A5
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 Oct 2020 17:01:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726323AbgJEONa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 5 Oct 2020 10:13:30 -0400
-Received: from m42-4.mailgun.net ([69.72.42.4]:34585 "EHLO m42-4.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726002AbgJEON3 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 5 Oct 2020 10:13:29 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1601907209; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=ivNqpv3yu7yxdbxdKQrjC25RCIfxdWN76uDFvPf85LU=; b=bp8ajK3FEYYpH83lCn3V8dfVQlqiqQ8CCdhebQpwNE5sGnk7ueMY2GeQkj/sTcq6FgoF7OR3
- zkbHvA1rxjCGa0nig53JIt6cL8QitQiHn/PJ4Xrj+azgG7mLeArQCPWeQWYgVwgR5ikm91mv
- uKHovfgI2mZVkdiNw6ObO+r7k44=
-X-Mailgun-Sending-Ip: 69.72.42.4
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n02.prod.us-east-1.postgun.com with SMTP id
- 5f7b29eb4fce93c117aa342f (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 05 Oct 2020 14:12:59
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 1B977C433FF; Mon,  5 Oct 2020 14:12:59 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 6E27FC433C8;
-        Mon,  5 Oct 2020 14:12:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 6E27FC433C8
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>
-Subject: Re: [RFC] Status of orinoco_usb
-References: <20201002103517.fhsi5gaepzbzo2s4@linutronix.de>
-        <20201002113725.GB3292884@kroah.com>
-        <20201002115358.6aqemcn5vqc5yqtw@linutronix.de>
-        <20201002120625.GA3341753@kroah.com>
-Date:   Mon, 05 Oct 2020 17:12:54 +0300
-In-Reply-To: <20201002120625.GA3341753@kroah.com> (Greg Kroah-Hartman's
-        message of "Fri, 2 Oct 2020 14:06:25 +0200")
-Message-ID: <877ds4damx.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        id S1726654AbgJEPBF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 5 Oct 2020 11:01:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44328 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726530AbgJEPBE (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 5 Oct 2020 11:01:04 -0400
+Received: from mail-pj1-x1041.google.com (mail-pj1-x1041.google.com [IPv6:2607:f8b0:4864:20::1041])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84286C0613A8
+        for <linux-wireless@vger.kernel.org>; Mon,  5 Oct 2020 08:01:04 -0700 (PDT)
+Received: by mail-pj1-x1041.google.com with SMTP id a1so1205381pjd.1
+        for <linux-wireless@vger.kernel.org>; Mon, 05 Oct 2020 08:01:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=endlessos-org.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=AwQgWzWi8pW4lGFBA/hNXn44tp/wqyyuzS23wCHudYY=;
+        b=hAHwiiCC0apGox5V3MaNpJ6GcRX5A0OUk7i3HfLE+C8KjaKKTVy/P/IA4tDtiRh9Zc
+         3iNvD2PYwpn/c0wO+7CGD0/4hC9S6ND2rPDZJGC3jsABHldNc8aZg+IWATL2qoCYxzcs
+         rfC6rCuQ2jlQEkVNyOR/4VAwpfrTsGq3d0Ox5KgP9pRUI0zaRSvMccqJ+/N9zo6ATpy5
+         3/l2oCcm0rJJ5ZaMwsVgig0mELBi25rEEIwpamTEUP8oS3aeSmOft09sArQhLRUnDGsD
+         kNFDM5LcuL8ePSFZ9NZpMC1TkTnNDDbI51rPy2oOpTaRPOSMpt6M4ZZrs2YWdVJw8adn
+         gGIA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=AwQgWzWi8pW4lGFBA/hNXn44tp/wqyyuzS23wCHudYY=;
+        b=aRJLTCG3rtZC7e4/KdPMWUvHSH61p60Av2CMonIO7G10lLnkvBRv7KnQFa9dylarzA
+         r12S8T1JrdVyjE1PuSWKcpOVIVvX9lIitz70+ocmA5eTIJ0pNiOmyEvoLbogPS5kqCej
+         cIg9B/UurY9BW2NkWbe0yCwJRR/bTKNQ0Fjhno2CDZ3Yxkb7sVKbXOQ++OuwVB7oLm4r
+         fEE02yuDu+wc12EBiLE8h4nd9cqEfiHIO80uAr5i2Rc4y1ZkbeO+zWOXoCBtE048ldJN
+         qaaatzmUYRC/bzWXikRw2O4TIOgv8p3BNmMf12AmEzK2A4AQDwu1n14zQ+NoHFObM/cQ
+         KeIA==
+X-Gm-Message-State: AOAM532U4rPhByM7XfbxmTfNw0Y2Oo/t5oO1Vs0QTgXdfQw3Id8crx0d
+        JVDkwSugzNk6VgtiR75J/j4kGQ==
+X-Google-Smtp-Source: ABdhPJy3LUQ3JCTsBXn9AQU01MEKNSmN2mgdKIpOoBvf8aESLBqoXITrHWbOLTTTIgwaaLejKrcr9g==
+X-Received: by 2002:a17:90a:a81:: with SMTP id 1mr267820pjw.174.1601910063866;
+        Mon, 05 Oct 2020 08:01:03 -0700 (PDT)
+Received: from localhost.localdomain (111-243-25-83.dynamic-ip.hinet.net. [111.243.25.83])
+        by smtp.gmail.com with ESMTPSA id c131sm227485pfc.46.2020.10.05.08.01.01
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 05 Oct 2020 08:01:02 -0700 (PDT)
+From:   Chris Chiu <chiu@endlessos.org>
+X-Google-Original-From: Chris Chiu <chiu@endlessm.com>
+To:     pkshih@realtek.com, kvalo@codeaurora.org, davem@davemloft.net,
+        kuba@kernel.org
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Chris Chiu <chiu@endlessos.org>
+Subject: [PATCH 1/3] rtlwifi: rtl8192se: remove duplicated legacy_httxpowerdiff
+Date:   Mon,  5 Oct 2020 23:00:48 +0800
+Message-Id: <20201005150048.4596-1-chiu@endlessm.com>
+X-Mailer: git-send-email 2.21.1 (Apple Git-122.3)
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Greg Kroah-Hartman <gregkh@linuxfoundation.org> writes:
+From: Chris Chiu <chiu@endlessos.org>
 
-> On Fri, Oct 02, 2020 at 01:53:58PM +0200, Sebastian Andrzej Siewior wrote:
->> On 2020-10-02 13:37:25 [+0200], Greg Kroah-Hartman wrote:
->> > > Is it possible to end up here in softirq context or is this a relic?
->> > 
->> > I think it's a relic of where USB host controllers completed their urbs
->> > in hard-irq mode.  The BH/tasklet change is a pretty recent change.
->> 
->> But the BH thingy for HCDs went in v3.12 for EHCI. XHCI was v5.5. My
->> guess would be that people using orinoco USB are on EHCI :)
->
-> USB 3 systems run XHCI, which has a USB 2 controller in it, so these
-> types of things might not have been noticed yet.  Who knows :)
->
->> > > Should it be removed?
->> > 
->> > We can move it out to drivers/staging/ and then drop it to see if anyone
->> > complains that they have the device and is willing to test any changes.
->> 
->> Not sure moving is easy since it depends on other files in that folder.
->> USB is one interface next to PCI for instance. Unless you meant to move
->> the whole driver including all interfaces.
->> I was suggesting to remove the USB bits.
->
-> I forgot this was tied into other code, sorry.  I don't know what to
-> suggest other than maybe try to fix it up the best that you can, and
-> let's see if anyone notices...
+The legacy_httxpowerdiff in rtl8192se is pretty much the same as
+the legacy_ht_txpowerdiff for other chips. Use the same name to
+keep the consistency.
 
-That's what I would suggest as well.
+Signed-off-by: Chris Chiu <chiu@endlessos.org>
+---
+ drivers/net/wireless/realtek/rtlwifi/rtl8192se/hw.c | 2 +-
+ drivers/net/wireless/realtek/rtlwifi/rtl8192se/rf.c | 2 +-
+ drivers/net/wireless/realtek/rtlwifi/wifi.h         | 1 -
+ 3 files changed, 2 insertions(+), 3 deletions(-)
 
-These drivers for ancient hardware are tricky. Even if there doesn't
-seem to be any users on the driver sometimes people pop up reporting
-that it's still usable. We had that recently with one another wireless
-driver (forgot the name already).
-
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192se/hw.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192se/hw.c
+index 81313e0ca834..0cdcddfebca9 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192se/hw.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192se/hw.c
+@@ -1906,7 +1906,7 @@ static void _rtl92se_read_adapter_info(struct ieee80211_hw *hw)
+ 	 * index diff of legacy to HT OFDM rate. */
+ 	tempval = hwinfo[EEPROM_RFIND_POWERDIFF] & 0xff;
+ 	rtlefuse->eeprom_txpowerdiff = tempval;
+-	rtlefuse->legacy_httxpowerdiff =
++	rtlefuse->legacy_ht_txpowerdiff =
+ 		rtlefuse->txpwr_legacyhtdiff[RF90_PATH_A][0];
+ 
+ 	RTPRINT(rtlpriv, FINIT, INIT_TXPOWER,
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192se/rf.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192se/rf.c
+index a37855f57e76..54576566083c 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192se/rf.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192se/rf.c
+@@ -25,7 +25,7 @@ static void _rtl92s_get_powerbase(struct ieee80211_hw *hw, u8 *p_pwrlevel,
+ 
+ 	/* We only care about the path A for legacy. */
+ 	if (rtlefuse->eeprom_version < 2) {
+-		pwrbase0 = pwrlevel[0] + (rtlefuse->legacy_httxpowerdiff & 0xf);
++		pwrbase0 = pwrlevel[0] + (rtlefuse->legacy_ht_txpowerdiff & 0xf);
+ 	} else {
+ 		legacy_pwrdiff = rtlefuse->txpwr_legacyhtdiff
+ 						[RF90_PATH_A][chnl - 1];
+diff --git a/drivers/net/wireless/realtek/rtlwifi/wifi.h b/drivers/net/wireless/realtek/rtlwifi/wifi.h
+index 13421cf2d201..0a516c3c7cea 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/wifi.h
++++ b/drivers/net/wireless/realtek/rtlwifi/wifi.h
+@@ -1966,7 +1966,6 @@ struct rtl_efuse {
+ 
+ 	u8 txpwr_safetyflag;			/* Band edge enable flag */
+ 	u16 eeprom_txpowerdiff;
+-	u8 legacy_httxpowerdiff;	/* Legacy to HT rate power diff */
+ 	u8 antenna_txpwdiff[3];
+ 
+ 	u8 eeprom_regulatory;
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+2.20.1
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
