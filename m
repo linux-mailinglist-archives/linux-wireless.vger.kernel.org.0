@@ -2,173 +2,125 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B4A2284494
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 Oct 2020 06:22:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 30A132845A5
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 Oct 2020 07:49:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725955AbgJFEW0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 6 Oct 2020 00:22:26 -0400
-Received: from mail-41104.protonmail.ch ([185.70.41.104]:55542 "EHLO
-        mail-41104.protonmail.ch" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725874AbgJFEW0 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 6 Oct 2020 00:22:26 -0400
-Received: from mail-02.mail-europe.com (mail-02.mail-europe.com [51.89.119.103])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        id S1726897AbgJFFtM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 6 Oct 2020 01:49:12 -0400
+Received: from m42-4.mailgun.net ([69.72.42.4]:32100 "EHLO m42-4.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726007AbgJFFtL (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 6 Oct 2020 01:49:11 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1601963350; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=LTWF++Bn389zksk4oUPZvJlU0ZGQ50MQBidN3ma2aZo=; b=QGovOaH/7TomBNktjVQRJ80C2a/tVMifi0mVGKxVi10sMlnwfZ46bqmpF7vQ/x0d3wazntZa
+ 1c86UGA3R4xHpeC6QA+NEz0qCv3r4AiIFhAj4ndTM8YY+cDslGVXUENWTUdMCLxgO5UGu2Fl
+ BHI929vLWUZkAJDoGGQziy4D8yo=
+X-Mailgun-Sending-Ip: 69.72.42.4
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n04.prod.us-west-2.postgun.com with SMTP id
+ 5f7c0556d6d00c7a9e0c73a2 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 06 Oct 2020 05:49:10
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 6D335C433FF; Tue,  6 Oct 2020 05:49:10 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail-41104.protonmail.ch (Postfix) with ESMTPS id AC93120021CE
-        for <linux-wireless@vger.kernel.org>; Tue,  6 Oct 2020 04:22:23 +0000 (UTC)
-Authentication-Results: mail-41104.protonmail.ch;
-        dkim=pass (1024-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="IF60/54e"
-Date:   Tue, 06 Oct 2020 04:22:18 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-        s=protonmail; t=1601958140;
-        bh=0uL+oKdZ+kIeGKgDRmsSuusyePnfIt0hi8CQ7e378S0=;
-        h=Date:To:From:Cc:Reply-To:Subject:From;
-        b=IF60/54eovN4JhWjC/GAGNk93iXPz3RrokoXxvGTywJy5ILvTGTPeD/jbznsld95l
-         9o48p9UsgUQ3r/ugkuwhVXaSwkIc/W4sEvpaXncRjWELFUsJ9Fc2Km65RmF8+n8evB
-         Y8KoFm8CMDRnGscI9i2u0Z2SdjfWxPnf0gIiAA3Q=
-To:     "johannes@sipsolutions.net" <johannes@sipsolutions.net>
-From:   Ttttabcd <ttttabcd@protonmail.com>
-Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Reply-To: Ttttabcd <ttttabcd@protonmail.com>
-Subject: [PATCH] iw: Add support for specifying the 160MHz bandwidth when setting the channel/frequency
-Message-ID: <cIf-30s-5axo5iDqyzwY9VTVB_JLKCXbxlXdODMSK61q-yFzR6rtAk8URRAPavRlllrwXr1Q-jtem_upoCNKd_fba8qmM0DpJn0O7MIkq6o=@protonmail.com>
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id C809FC433CA;
+        Tue,  6 Oct 2020 05:49:07 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org C809FC433CA
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Lee Jones <lee.jones@linaro.org>
+Cc:     davem@davemloft.net, kuba@kernel.org, linux-kernel@vger.kernel.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        Luciano Coelho <luca@coelho.fi>
+Subject: Re: [PATCH v2 00/29] [Set 1,2,3] Rid W=1 warnings in Wireless
+References: <20200910065431.657636-1-lee.jones@linaro.org>
+        <20201002090353.GS6148@dell>
+Date:   Tue, 06 Oct 2020 08:49:05 +0300
+In-Reply-To: <20201002090353.GS6148@dell> (Lee Jones's message of "Fri, 2 Oct
+        2020 10:03:53 +0100")
+Message-ID: <87362rdhv2.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.2 required=10.0 tests=ALL_TRUSTED,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,HK_RANDOM_REPLYTO
-        shortcircuit=no autolearn=disabled version=3.4.4
-X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on
-        mailout.protonmail.ch
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The current iw tool only supports the direct setting of
-[NOHT|HT20|HT40+|HT40-|5MHz|10MHz|80MHz] bandwidth
-when setting the channel/frequency.
+Lee Jones <lee.jones@linaro.org> writes:
 
-If we want to set the 160MHz bandwidth,
-we need to calculate the center frequency ourselves,
-which is inconvenient.
+> On Thu, 10 Sep 2020, Lee Jones wrote:
+>
+>> This is a rebased/re-worked set of patches which have been
+>> previously posted to the mailing list(s).
+>> 
+>> This set is part of a larger effort attempting to clean-up W=1
+>> kernel builds, which are currently overwhelmingly riddled with
+>> niggly little warnings.
+>> 
+>> There are quite a few W=1 warnings in the Wireless.  My plan
+>> is to work through all of them over the next few weeks.
+>> Hopefully it won't be too long before drivers/net/wireless
+>> builds clean with W=1 enabled.
+>> 
+>> Lee Jones (29):
+>>   iwlwifi: dvm: Demote non-compliant kernel-doc headers
+>>   iwlwifi: rs: Demote non-compliant kernel-doc headers
+>>   iwlwifi: dvm: tx: Demote non-compliant kernel-doc headers
+>>   iwlwifi: dvm: lib: Demote non-compliant kernel-doc headers
+>>   iwlwifi: calib: Demote seemingly unintentional kerneldoc header
+>>   wil6210: Fix a couple of formatting issues in 'wil6210_debugfs_init'
+>>   iwlwifi: dvm: sta: Demote a bunch of nonconformant kernel-doc headers
+>>   iwlwifi: mvm: ops: Remove unused static struct 'iwl_mvm_debug_names'
+>>   iwlwifi: dvm: Demote a couple of nonconformant kernel-doc headers
+>>   iwlwifi: mvm: utils: Fix some doc-rot
+>>   iwlwifi: dvm: scan: Demote a few nonconformant kernel-doc headers
+>>   iwlwifi: dvm: rxon: Demote non-conformant kernel-doc headers
+>>   iwlwifi: mvm: tx: Demote misuse of kernel-doc headers
+>>   iwlwifi: dvm: devices: Fix function documentation formatting issues
+>>   iwlwifi: iwl-drv: Provide descriptions debugfs dentries
+>>   wil6210: wmi: Fix formatting and demote non-conforming function
+>>     headers
+>>   wil6210: interrupt: Demote comment header which is clearly not
+>>     kernel-doc
+>>   wil6210: txrx: Demote obvious abuse of kernel-doc
+>>   wil6210: txrx_edma: Demote comments which are clearly not kernel-doc
+>>   wil6210: pmc: Demote a few nonconformant kernel-doc function headers
+>>   wil6210: wil_platform: Demote kernel-doc header to standard comment
+>>     block
+>>   wil6210: wmi: Correct misnamed function parameter 'ptr_'
+>>   ath6kl: wmi: Remove unused variable 'rate'
+>>   ath9k: ar9002_initvals: Remove unused array
+>>     'ar9280PciePhy_clkreq_off_L1_9280'
+>>   ath9k: ar9001_initvals: Remove unused array 'ar5416Bank6_9100'
+>>   ath9k: ar5008_initvals: Remove unused table entirely
+>>   ath9k: ar5008_initvals: Move ar5416Bank{0,1,2,3,7} to where they are
+>>     used
+>>   brcmsmac: phytbl_lcn: Remove unused array 'dot11lcn_gain_tbl_rev1'
+>>   brcmsmac: phy_lcn: Remove unused variable
+>>     'lcnphy_rx_iqcomp_table_rev0'
+>
+> What's happening with all of these iwlwifi patches?
+>
+> Looks like they are still not applied.
 
-E.g:
-iw phy phy0 set freq 5220 160 5250
+Luca (CCed) takes iwlwifi patches to his iwlwifi tree.
 
-From now on we can:
-iw phy phy0 set channel 44 160MHz
-iw phy phy0 set freq 5220 160MHz
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-This is much more convenient.
-
-Signed-off-by: AK Deng <ttttabcd@protonmail.com>
----
- phy.c  |  8 ++++----
- util.c | 21 +++++++++++++++++++--
- 2 files changed, 23 insertions(+), 6 deletions(-)
-
-diff --git a/phy.c b/phy.c
-index 716677e..2d489ef 100644
---- a/phy.c
-+++ b/phy.c
-@@ -199,13 +199,13 @@ static int handle_freq(struct nl80211_state *state, s=
-truct nl_msg *msg,
- }
-
- COMMAND(set, freq,
--=09"<freq> [NOHT|HT20|HT40+|HT40-|5MHz|10MHz|80MHz]\n"
-+=09"<freq> [NOHT|HT20|HT40+|HT40-|5MHz|10MHz|80MHz|160MHz]\n"
- =09"<control freq> [5|10|20|40|80|80+80|160] [<center1_freq> [<center2_fre=
-q>]]",
- =09NL80211_CMD_SET_WIPHY, 0, CIB_PHY, handle_freq,
- =09"Set frequency/channel the hardware is using, including HT\n"
- =09"configuration.");
- COMMAND(set, freq,
--=09"<freq> [NOHT|HT20|HT40+|HT40-|5MHz|10MHz|80MHz]\n"
-+=09"<freq> [NOHT|HT20|HT40+|HT40-|5MHz|10MHz|80MHz|160MHz]\n"
- =09"<control freq> [5|10|20|40|80|80+80|160] [<center1_freq> [<center2_fre=
-q>]]",
- =09NL80211_CMD_SET_WIPHY, 0, CIB_NETDEV, handle_freq, NULL);
-
-@@ -222,9 +222,9 @@ static int handle_chan(struct nl80211_state *state, str=
-uct nl_msg *msg,
-
- =09return put_chandef(msg, &chandef);
- }
--COMMAND(set, channel, "<channel> [NOHT|HT20|HT40+|HT40-|5MHz|10MHz|80MHz]"=
-,
-+COMMAND(set, channel, "<channel> [NOHT|HT20|HT40+|HT40-|5MHz|10MHz|80MHz|1=
-60MHz]",
- =09NL80211_CMD_SET_WIPHY, 0, CIB_PHY, handle_chan, NULL);
--COMMAND(set, channel, "<channel> [NOHT|HT20|HT40+|HT40-|5MHz|10MHz|80MHz]"=
-,
-+COMMAND(set, channel, "<channel> [NOHT|HT20|HT40+|HT40-|5MHz|10MHz|80MHz|1=
-60MHz]",
- =09NL80211_CMD_SET_WIPHY, 0, CIB_NETDEV, handle_chan, NULL);
-
-
-diff --git a/util.c b/util.c
-index 186e05b..647e85a 100644
---- a/util.c
-+++ b/util.c
-@@ -576,10 +576,10 @@ static int parse_freqs(struct chandef *chandef, int a=
-rgc, char **argv,
-  * user by giving "NOHT" instead.
-  *
-  * The working specifier if chan is set are:
-- *   <channel> [NOHT|HT20|HT40+|HT40-|5MHz|10MHz|80MHz]
-+ *   <channel> [NOHT|HT20|HT40+|HT40-|5MHz|10MHz|80MHz|160MHz]
-  *
-  * And if frequency is set:
-- *   <freq> [NOHT|HT20|HT40+|HT40-|5MHz|10MHz|80MHz]
-+ *   <freq> [NOHT|HT20|HT40+|HT40-|5MHz|10MHz|80MHz|160MHz]
-  *   <control freq> [5|10|20|40|80|80+80|160] [<center1_freq> [<center2_fr=
-eq>]]
-  *
-  * If the mode/channel width is not given the NOHT is assumed.
-@@ -619,6 +619,10 @@ int parse_freqchan(struct chandef *chandef, bool chan,=
- int argc, char **argv,
- =09=09  .width =3D NL80211_CHAN_WIDTH_80,
- =09=09  .freq1_diff =3D 0,
- =09=09  .chantype =3D -1 },
-+=09=09{ .name =3D "160MHz",
-+=09=09  .width =3D NL80211_CHAN_WIDTH_160,
-+=09=09  .freq1_diff =3D 0,
-+=09=09  .chantype =3D -1 },
- =09};
- =09const struct chanmode *chanmode_selected =3D NULL;
- =09unsigned int freq;
-@@ -1233,6 +1237,7 @@ int get_cf1(const struct chanmode *chanmode, unsigned=
- long freq)
- {
- =09unsigned int cf1 =3D freq, j;
- =09unsigned int vht80[] =3D { 5180, 5260, 5500, 5580, 5660, 5745 };
-+=09unsigned int vht160[] =3D { 5180, 5500 };
-
- =09switch (chanmode->width) {
- =09case NL80211_CHAN_WIDTH_80:
-@@ -1247,6 +1252,18 @@ int get_cf1(const struct chanmode *chanmode, unsigne=
-d long freq)
-
- =09=09cf1 =3D vht80[j] + 30;
- =09=09break;
-+=09case NL80211_CHAN_WIDTH_160:
-+=09=09/* setup center_freq1 */
-+=09=09for (j =3D 0; j < ARRAY_SIZE(vht160); j++) {
-+=09=09=09if (freq >=3D vht160[j] && freq < vht160[j] + 160)
-+=09=09=09=09break;
-+=09=09}
-+
-+=09=09if (j =3D=3D ARRAY_SIZE(vht160))
-+=09=09=09break;
-+
-+=09=09cf1 =3D vht160[j] + 70;
-+=09=09break;
- =09default:
- =09=09cf1 =3D freq + chanmode->freq1_diff;
- =09=09break;
---
-2.28.0
-
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
