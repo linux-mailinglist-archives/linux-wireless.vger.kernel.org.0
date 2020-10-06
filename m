@@ -2,142 +2,95 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B77F284E9A
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 Oct 2020 17:05:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6BE6D284F40
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 Oct 2020 17:51:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726348AbgJFPFi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 6 Oct 2020 11:05:38 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:39209 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726012AbgJFPFi (ORCPT
+        id S1725906AbgJFPvf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 6 Oct 2020 11:51:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48286 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725769AbgJFPve (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 6 Oct 2020 11:05:38 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1601996736;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=2SZb0+sOKzdlQiMWtCf9ytWY4nvBw9Fu6L0oBKKF1hk=;
-        b=hNzZ+tpwpQyqUPzYMZzYYdkKp0cqocfBIP4crxM6wiJcGMiN/mDfdnuT5GAx/cMMxXoN6V
-        S9rfKLIgMpvpiapYn429ip3U3AB6v4u5HSCIbnIePqn+ytNYH3aDKil2SEGtJap+vyrudU
-        OhOGo27VmpA86nmX3bF5d4iCfuLBj3k=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-190-kE9ajDNyM2aksN2lWwbBsA-1; Tue, 06 Oct 2020 11:05:32 -0400
-X-MC-Unique: kE9ajDNyM2aksN2lWwbBsA-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id D322C18A8226;
-        Tue,  6 Oct 2020 15:05:30 +0000 (UTC)
-Received: from localhost.localdomain (unknown [10.10.110.44])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id BBB6A76646;
-        Tue,  6 Oct 2020 15:05:28 +0000 (UTC)
-Message-ID: <344c84c66b39864372fd3eb7231575b0cdb1386c.camel@redhat.com>
-Subject: Re: [RFC] Status of orinoco_usb
-From:   Dan Williams <dcbw@redhat.com>
-To:     Jes Sorensen <jes.sorensen@gmail.com>,
-        Arend Van Spriel <arend.vanspriel@broadcom.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>
-Date:   Tue, 06 Oct 2020 10:05:27 -0500
-In-Reply-To: <7f6e7c37-b7d6-1da4-6a3d-257603afd2ae@gmail.com>
-References: <20201002103517.fhsi5gaepzbzo2s4@linutronix.de>
-         <20201002113725.GB3292884@kroah.com>
-         <20201002115358.6aqemcn5vqc5yqtw@linutronix.de>
-         <20201002120625.GA3341753@kroah.com> <877ds4damx.fsf@codeaurora.org>
-         <0c67580b-1bed-423b-2f00-49eae20046aa@broadcom.com>
-         <7f6e7c37-b7d6-1da4-6a3d-257603afd2ae@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.5 (3.36.5-1.fc32) 
+        Tue, 6 Oct 2020 11:51:34 -0400
+Received: from mail-oi1-x230.google.com (mail-oi1-x230.google.com [IPv6:2607:f8b0:4864:20::230])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF2E1C061755
+        for <linux-wireless@vger.kernel.org>; Tue,  6 Oct 2020 08:51:34 -0700 (PDT)
+Received: by mail-oi1-x230.google.com with SMTP id t77so9576759oie.4
+        for <linux-wireless@vger.kernel.org>; Tue, 06 Oct 2020 08:51:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=S8m7OHHZnmxP0iAk0jZIhLxJ43ZGWVGptOjHwmhvuEE=;
+        b=eCy7h3WwreZpcq+GVzFID7ES11bSXD52sIcCcKaIOP+LVrJRx7si+XVPFLXlLXsGuq
+         iql5l7a/AiPmfHQoaJTMWORPDi7kRKePaLnyhPHCOTxArdWt9/0FwwOalIKGIe66jO9P
+         SMk2ukqAXmtjjq9JC/npiNdGenMwqOWvzrZvYRC9r1yBxKkUYNKPrukeqbVOt7EdEcSa
+         LWt1gFl793mc2VHMKgvvS4OI0Rs3TylGwIn+woSVY8kFln5EMTedjzTKVrg8oAikZWJ+
+         5XZaFkinMChw/A0LWIRprOcpHfTdrFZAvF3qb884Orm71s/kOhMFAXE6pt/9BEgcYso+
+         mRrA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
+         :date:user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=S8m7OHHZnmxP0iAk0jZIhLxJ43ZGWVGptOjHwmhvuEE=;
+        b=umKMfvdGZ2vaUbS6Yg7kHmSVOdsIVs2+sJkd4NTfG6GhwSXAu6PlVgtHT6VzSTP0E6
+         +yS1begoKmvnLf2gZ/sDf4Tr3ouDbIKfqKa2m5JtSn5U7Cf9qUTvhHQXqrCUhVgPdBTe
+         H30WTbfZSs6uOo6+dxGS/G/kWwB9EaZH53H6+5u6buZ5l+p9RX1J8+IN3TfEAFrWuxuj
+         GgpOQjY+MBl/NVD+KlSjSb4BvL26iPMUxNwVAUTw8hhwtJIJAOzNkezYBGFZLVFi18LM
+         qLQMAXIwDoA8X3PX8/yjtCuAbsrEtUx0d1tvX2OfwBTh2ku4UtnZIwWOriw/B6+anWPp
+         lQFQ==
+X-Gm-Message-State: AOAM530/SUiDYSCNezvnyFYGFaSuyzeMwiaCks7owH3tIlGuHBoTX66J
+        J549mfWTP4CpFBGY656XDf6Rso/38h4=
+X-Google-Smtp-Source: ABdhPJwFhudv/03xR57ncR+qEFZXZmXv431JUlZ1JFI1vbF7nr6+sdguTetfDqiW3OAqK2zg7gwrDw==
+X-Received: by 2002:aca:f54e:: with SMTP id t75mr2967200oih.84.1601999493544;
+        Tue, 06 Oct 2020 08:51:33 -0700 (PDT)
+Received: from localhost.localdomain (cpe-24-31-245-230.kc.res.rr.com. [24.31.245.230])
+        by smtp.gmail.com with ESMTPSA id t5sm1063046otl.22.2020.10.06.08.51.32
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 06 Oct 2020 08:51:32 -0700 (PDT)
+Sender: Larry Finger <larry.finger@gmail.com>
+Subject: Re: Error in driver for RTL8821CE
+To:     Cristian Llanos <cristian.llanos@gmail.com>
+Cc:     linux-wireless@vger.kernel.org
+References: <CANBg+yz2az1o9u7RDD6jwXCs=08u7izbmUOnkKJc2tnOQQCdog@mail.gmail.com>
+ <97d78a81-b4fb-be83-5cb9-fa69575758c9@lwfinger.net>
+ <CANBg+yy17Oj+WwvFRnC6PXJ4WWgwVm+O546F1Ju5xYHzu3kdnw@mail.gmail.com>
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+Message-ID: <7b435755-a5e9-4cdb-05e0-c1aeea35bbf1@lwfinger.net>
+Date:   Tue, 6 Oct 2020 10:51:31 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.12.0
 MIME-Version: 1.0
+In-Reply-To: <CANBg+yy17Oj+WwvFRnC6PXJ4WWgwVm+O546F1Ju5xYHzu3kdnw@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 2020-10-06 at 08:40 -0400, Jes Sorensen wrote:
-> On 10/6/20 3:45 AM, Arend Van Spriel wrote:
-> > + Jes
-> > 
-> > On 10/5/2020 4:12 PM, Kalle Valo wrote:
-> > > Greg Kroah-Hartman <gregkh@linuxfoundation.org> writes:
-> > > 
-> > > > On Fri, Oct 02, 2020 at 01:53:58PM +0200, Sebastian Andrzej
-> > > > Siewior
-> > > > wrote:
-> > > > > On 2020-10-02 13:37:25 [+0200], Greg Kroah-Hartman wrote:
-> > > > > > > Is it possible to end up here in softirq context or is
-> > > > > > > this a relic?
-> > > > > > 
-> > > > > > I think it's a relic of where USB host controllers
-> > > > > > completed their
-> > > > > > urbs
-> > > > > > in hard-irq mode.  The BH/tasklet change is a pretty recent
-> > > > > > change.
-> > > > > 
-> > > > > But the BH thingy for HCDs went in v3.12 for EHCI. XHCI was
-> > > > > v5.5. My
-> > > > > guess would be that people using orinoco USB are on EHCI :)
-> > > > 
-> > > > USB 3 systems run XHCI, which has a USB 2 controller in it, so
-> > > > these
-> > > > types of things might not have been noticed yet.  Who knows :)
-> > > > 
-> > > > > > > Should it be removed?
-> > > > > > 
-> > > > > > We can move it out to drivers/staging/ and then drop it to
-> > > > > > see if
-> > > > > > anyone
-> > > > > > complains that they have the device and is willing to test
-> > > > > > any
-> > > > > > changes.
-> > > > > 
-> > > > > Not sure moving is easy since it depends on other files in
-> > > > > that folder.
-> > > > > USB is one interface next to PCI for instance. Unless you
-> > > > > meant to move
-> > > > > the whole driver including all interfaces.
-> > > > > I was suggesting to remove the USB bits.
-> > > > 
-> > > > I forgot this was tied into other code, sorry.  I don't know
-> > > > what to
-> > > > suggest other than maybe try to fix it up the best that you
-> > > > can, and
-> > > > let's see if anyone notices...
-> > > 
-> > > That's what I would suggest as well.
-> > > 
-> > > These drivers for ancient hardware are tricky. Even if there
-> > > doesn't
-> > > seem to be any users on the driver sometimes people pop up
-> > > reporting
-> > > that it's still usable. We had that recently with one another
-> > > wireless
-> > > driver (forgot the name already).
-> > 
-> > Quite a while ago I shipped an orinoco dongle to Jes Sorensen which
-> > he
-> > wanted to use for some intern project if I recall correctly. Guess
-> > that
-> > idea did not fly yet.
+On 10/5/20 4:36 PM, Cristian Llanos wrote:
+> $ lsmod | grep rtw
+> rtw_8821ce 16384 0
+> rtw_8821c 77824 1 rtw_8821ce
+> rtw_pci 24576 1 rtw_8821ce
+> rtw_core 167936 2 rtw_8821c,rtw_pci
+> mac80211 843776 2 rtw_core,rtw_pci
+> cfg80211 704512 2 rtw_core,mac80211
 > 
-> I had an outreachy intern who worked on some of it, so I shipped all
-> my
-> Orinoco hardware to her. We never made as much progress as I had
-> hoped,
-> and I haven't had time to work on it since.
 
-If anyone wants orinoco_usb, I think I still have one or two. I may
-also have original orinoco hardware (PCMCIA) if anyone wants it.
+The drivers look OK.
 
-Dan
+Try the following commands:
+
+iw dev | grep Interface
+sudo iw dev XXXXX scan | egrep "signal|SSID"
+
+Replace the XXXXX with the device name listed on the "Interface" line following 
+the first command. Post the output of the second command and indicate which SSID 
+is from your AP.
+
+Larry
+
 
