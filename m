@@ -2,91 +2,144 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C6552845C2
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 Oct 2020 08:03:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D8F4284661
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 Oct 2020 08:56:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726991AbgJFGDD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 6 Oct 2020 02:03:03 -0400
-Received: from z5.mailgun.us ([104.130.96.5]:23160 "EHLO z5.mailgun.us"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726878AbgJFGDD (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 6 Oct 2020 02:03:03 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1601964182; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=nZzKky66K+LBgKtoq+KUTHglfyK1fxDJQuYKFBYUmKo=; b=XqpUNzFqi/Ju/82SIo3z01isAOu+yfwMnEVZEy8zmc5YHudSrjwHLNrIZQnMEMwliuCzrsc5
- F926UWE/Ru2NNo4UYl8o57f7hQsVJ+hENP5oxjTaIg9K6eltrb0kcrBt6H43GTotU2HNUgkZ
- mVIF3b+S96io/wJAA2bG5oGCWiw=
-X-Mailgun-Sending-Ip: 104.130.96.5
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n07.prod.us-west-2.postgun.com with SMTP id
- 5f7c088242f9861fb15a4d83 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 06 Oct 2020 06:02:42
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 2E814C433F1; Tue,  6 Oct 2020 06:02:42 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id AAB45C433CA;
-        Tue,  6 Oct 2020 06:02:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org AAB45C433CA
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Chris Chiu <chiu@endlessos.org>
-Cc:     Pkshih <pkshih@realtek.com>, David Miller <davem@davemloft.net>,
-        kuba@kernel.org, linux-wireless <linux-wireless@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>,
-        Linux Kernel <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 1/3] rtlwifi: rtl8192se: remove duplicated legacy_httxpowerdiff
-References: <20201005150048.4596-1-chiu@endlessm.com>
-        <CAB4CAwfaaozSbdiB05Mk-WgY1VQTyXtLNVjY+4vax09Qvr_asg@mail.gmail.com>
-Date:   Tue, 06 Oct 2020 09:02:37 +0300
-In-Reply-To: <CAB4CAwfaaozSbdiB05Mk-WgY1VQTyXtLNVjY+4vax09Qvr_asg@mail.gmail.com>
-        (Chris Chiu's message of "Tue, 6 Oct 2020 12:02:12 +0800")
-Message-ID: <87pn5vc2o2.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        id S1727048AbgJFG40 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 6 Oct 2020 02:56:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50436 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726822AbgJFG4W (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 6 Oct 2020 02:56:22 -0400
+Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com [IPv6:2a00:1450:4864:20::341])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 772A8C0613D2
+        for <linux-wireless@vger.kernel.org>; Mon,  5 Oct 2020 23:56:21 -0700 (PDT)
+Received: by mail-wm1-x341.google.com with SMTP id d3so1830349wma.4
+        for <linux-wireless@vger.kernel.org>; Mon, 05 Oct 2020 23:56:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=uefgcZJEjxyEQ9EMRE9mQWtY5FP1/cOBvuhrVucWaL4=;
+        b=mXkwBwV3uHgEOxFz+BrpkbePSh2uIiVsOL4Q8BYDAJDypvyxJYM0atdBu9izyBiklN
+         JUT7Rs3FZZcA7EGJwKM5eeigcUBVvcDfeZm83LFbXnscy1H1lahoLDUs2XAHwSXWered
+         DoiTT0h2TqAf+eoQCa+OKq1yKWTMadlruJk2Jaq03oF84s+8Isc4+roffFBG83sO+pPJ
+         QpcK3Ic1k3+Ao2UnCTjcI5+Xsv99zs8kNZPGGF7AhC+2etryShDW/guLwkZ7bHE/VSa4
+         bxTXQmucpLNCD3efMbFkW6dDT90QxhHowDxNVj2MVVRdHZvtBaYzDalinrAp5ynsnWs1
+         U3kQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=uefgcZJEjxyEQ9EMRE9mQWtY5FP1/cOBvuhrVucWaL4=;
+        b=rps3ahcAInWdcQZVmR18D6YQ+R9yhr19RpHN/t9lKKmsCqrfWBzmqo8i7vX/wo6VNn
+         39/NkcRjdY+g7wmxY3U86z4gL14ILolpzKXUY8Reg7aU2/YTphlvSXsmg8SvOyP1M+4Y
+         t6poRT0HeCaRYmGHzx5B4BUa7f4kjly9XQ6Bc7ZHeoau4q5ac/s//XGSOR5kwfQ8r7yt
+         5LQKUlnPQSGHr7JPlCGMnGGxtr6bRlEySE43w11/ID5wYqzx+Ee07L8lfpi4WMsuqv/I
+         +k/QujluuZTBlebp7KTb/8s5Aw7nlCEScQ76r0BGEVmlu4kZe5Kc5rlT77BvjsGfMc4k
+         Ym5w==
+X-Gm-Message-State: AOAM530ML1jysE9rO1xvnIvci1Zfa9gm5kzSWkgvBVFix0p4AKrW4VGy
+        Cd2bVUyLMRqqmMKPQOW/pZNRQA==
+X-Google-Smtp-Source: ABdhPJwXGqcOK5nEDYkkUxOnDx8BbUTICgzVOqRZG+MR8mEOAOKX5hhn6oiAkfCBUvZAL7QZuAzfFQ==
+X-Received: by 2002:a7b:cb04:: with SMTP id u4mr3091764wmj.130.1601967379940;
+        Mon, 05 Oct 2020 23:56:19 -0700 (PDT)
+Received: from dell ([91.110.221.236])
+        by smtp.gmail.com with ESMTPSA id b8sm2545643wmb.4.2020.10.05.23.56.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 05 Oct 2020 23:56:19 -0700 (PDT)
+Date:   Tue, 6 Oct 2020 07:56:17 +0100
+From:   Lee Jones <lee.jones@linaro.org>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     davem@davemloft.net, kuba@kernel.org, linux-kernel@vger.kernel.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        Luciano Coelho <luca@coelho.fi>
+Subject: Re: [PATCH v2 00/29] [Set 1,2,3] Rid W=1 warnings in Wireless
+Message-ID: <20201006065617.GX6148@dell>
+References: <20200910065431.657636-1-lee.jones@linaro.org>
+ <20201002090353.GS6148@dell>
+ <87362rdhv2.fsf@codeaurora.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <87362rdhv2.fsf@codeaurora.org>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Chris Chiu <chiu@endlessos.org> writes:
+On Tue, 06 Oct 2020, Kalle Valo wrote:
 
-> On Mon, Oct 5, 2020 at 11:01 PM Chris Chiu <chiu@endlessos.org> wrote:
->
->     From: Chris Chiu <chiu@endlessos.org>
->     
->     The legacy_httxpowerdiff in rtl8192se is pretty much the same as
->     the legacy_ht_txpowerdiff for other chips. Use the same name to
->     keep the consistency.
->     
->     Signed-off-by: Chris Chiu <chiu@endlessos.org>
->     ---
->     drivers/net/wireless/realtek/rtlwifi/rtl8192se/hw.c | 2 +-
->     drivers/net/wireless/realtek/rtlwifi/rtl8192se/rf.c | 2 +-
->     drivers/net/wireless/realtek/rtlwifi/wifi.h | 1 -
->     3 files changed, 2 insertions(+), 3 deletions(-)
->     
->
-> Sorry. There's no patch series `PATCH 1/3` for this. I'll resubmit the
-> patch.
+> Lee Jones <lee.jones@linaro.org> writes:
+> 
+> > On Thu, 10 Sep 2020, Lee Jones wrote:
+> >
+> >> This is a rebased/re-worked set of patches which have been
+> >> previously posted to the mailing list(s).
+> >> 
+> >> This set is part of a larger effort attempting to clean-up W=1
+> >> kernel builds, which are currently overwhelmingly riddled with
+> >> niggly little warnings.
+> >> 
+> >> There are quite a few W=1 warnings in the Wireless.  My plan
+> >> is to work through all of them over the next few weeks.
+> >> Hopefully it won't be too long before drivers/net/wireless
+> >> builds clean with W=1 enabled.
+> >> 
+> >> Lee Jones (29):
+> >>   iwlwifi: dvm: Demote non-compliant kernel-doc headers
+> >>   iwlwifi: rs: Demote non-compliant kernel-doc headers
+> >>   iwlwifi: dvm: tx: Demote non-compliant kernel-doc headers
+> >>   iwlwifi: dvm: lib: Demote non-compliant kernel-doc headers
+> >>   iwlwifi: calib: Demote seemingly unintentional kerneldoc header
+> >>   wil6210: Fix a couple of formatting issues in 'wil6210_debugfs_init'
+> >>   iwlwifi: dvm: sta: Demote a bunch of nonconformant kernel-doc headers
+> >>   iwlwifi: mvm: ops: Remove unused static struct 'iwl_mvm_debug_names'
+> >>   iwlwifi: dvm: Demote a couple of nonconformant kernel-doc headers
+> >>   iwlwifi: mvm: utils: Fix some doc-rot
+> >>   iwlwifi: dvm: scan: Demote a few nonconformant kernel-doc headers
+> >>   iwlwifi: dvm: rxon: Demote non-conformant kernel-doc headers
+> >>   iwlwifi: mvm: tx: Demote misuse of kernel-doc headers
+> >>   iwlwifi: dvm: devices: Fix function documentation formatting issues
+> >>   iwlwifi: iwl-drv: Provide descriptions debugfs dentries
+> >>   wil6210: wmi: Fix formatting and demote non-conforming function
+> >>     headers
+> >>   wil6210: interrupt: Demote comment header which is clearly not
+> >>     kernel-doc
+> >>   wil6210: txrx: Demote obvious abuse of kernel-doc
+> >>   wil6210: txrx_edma: Demote comments which are clearly not kernel-doc
+> >>   wil6210: pmc: Demote a few nonconformant kernel-doc function headers
+> >>   wil6210: wil_platform: Demote kernel-doc header to standard comment
+> >>     block
+> >>   wil6210: wmi: Correct misnamed function parameter 'ptr_'
+> >>   ath6kl: wmi: Remove unused variable 'rate'
+> >>   ath9k: ar9002_initvals: Remove unused array
+> >>     'ar9280PciePhy_clkreq_off_L1_9280'
+> >>   ath9k: ar9001_initvals: Remove unused array 'ar5416Bank6_9100'
+> >>   ath9k: ar5008_initvals: Remove unused table entirely
+> >>   ath9k: ar5008_initvals: Move ar5416Bank{0,1,2,3,7} to where they are
+> >>     used
+> >>   brcmsmac: phytbl_lcn: Remove unused array 'dot11lcn_gain_tbl_rev1'
+> >>   brcmsmac: phy_lcn: Remove unused variable
+> >>     'lcnphy_rx_iqcomp_table_rev0'
+> >
+> > What's happening with all of these iwlwifi patches?
+> >
+> > Looks like they are still not applied.
+> 
+> Luca (CCed) takes iwlwifi patches to his iwlwifi tree.
 
-Please don't send HTML mail, they will be dropped by mailing list and
-patchwork.
+Thanks Kalle.
+
+Luca,
+
+  Do you know why these patches have not been applied yet?  Do you
+plan on applying them this week?  -rc1 is not due for release for
+nearly 3 weeks now that Linus tagged an -rc8.
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Lee Jones [李琼斯]
+Senior Technical Lead - Developer Services
+Linaro.org │ Open source software for Arm SoCs
+Follow Linaro: Facebook | Twitter | Blog
