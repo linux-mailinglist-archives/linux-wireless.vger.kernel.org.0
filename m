@@ -2,137 +2,142 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 64F2F284BE7
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 Oct 2020 14:45:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B77F284E9A
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 Oct 2020 17:05:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726624AbgJFMpT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 6 Oct 2020 08:45:19 -0400
-Received: from mail-io1-f80.google.com ([209.85.166.80]:54490 "EHLO
-        mail-io1-f80.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726610AbgJFMpS (ORCPT
+        id S1726348AbgJFPFi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 6 Oct 2020 11:05:38 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:39209 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726012AbgJFPFi (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 6 Oct 2020 08:45:18 -0400
-Received: by mail-io1-f80.google.com with SMTP id f6so7054636ion.21
-        for <linux-wireless@vger.kernel.org>; Tue, 06 Oct 2020 05:45:16 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
-        bh=xntnR31aaoxC+Kj+KTAnTadrx7RgB0OZ9rkVP++SkoE=;
-        b=P+Q7ulQ0wfBynstzvP4u+lBucKQNtQMlOPC0fLnx7v+eRvV8ohyPysJL9QoOvFH7J1
-         iTLur2ndn8KN8nMrDZOjcWq95jeP73oXAnABQCZEfYSksLEMvu8jGhz9vi7ZF7T21URX
-         CJSkwEpBKJg1MZODyDWU3bDIHL1CQvAYsV/wuFB5cRLqXH07Wtdg+89BxVJdt6706hiL
-         1FJSK/6tO1iuPaie8GgwdDL0AJfQNLXH/8Qc8nCI/xoxIkSfcuUOzmCuxbBQcrRsXr7p
-         CdUyOND0ya+d4+G8karSFllMOLZOCQ0xKAP3CQa3V+gWOdgKDtbQUxPAo5g9P1b3OnUE
-         sXow==
-X-Gm-Message-State: AOAM530u1Jfka7PKsx9Fv+6PoAF+x1iwxfPOQRN5+I+USVdyHhpaXsX6
-        emVHv03AlEbac43Yz36jbcVfB171bezBakY/mIDfB05egK+q
-X-Google-Smtp-Source: ABdhPJzEOzv3UBmkNbq7R5E1fzMhLyc4bvw+TdLfJFKpDGJWNljQmz8FfSkSM6PU91hfwjuCplt2FwEsqvI7N7WQqns2Mki40b5G
-MIME-Version: 1.0
-X-Received: by 2002:a05:6638:13c4:: with SMTP id i4mr1059721jaj.85.1601988316238;
- Tue, 06 Oct 2020 05:45:16 -0700 (PDT)
-Date:   Tue, 06 Oct 2020 05:45:16 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <00000000000086205205b0fff8b2@google.com>
-Subject: general protection fault in ieee80211_chanctx_num_assigned
-From:   syzbot <syzbot+00ce7332120071df39b1@syzkaller.appspotmail.com>
-To:     davem@davemloft.net, johannes@sipsolutions.net, kuba@kernel.org,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
+        Tue, 6 Oct 2020 11:05:38 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1601996736;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=2SZb0+sOKzdlQiMWtCf9ytWY4nvBw9Fu6L0oBKKF1hk=;
+        b=hNzZ+tpwpQyqUPzYMZzYYdkKp0cqocfBIP4crxM6wiJcGMiN/mDfdnuT5GAx/cMMxXoN6V
+        S9rfKLIgMpvpiapYn429ip3U3AB6v4u5HSCIbnIePqn+ytNYH3aDKil2SEGtJap+vyrudU
+        OhOGo27VmpA86nmX3bF5d4iCfuLBj3k=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-190-kE9ajDNyM2aksN2lWwbBsA-1; Tue, 06 Oct 2020 11:05:32 -0400
+X-MC-Unique: kE9ajDNyM2aksN2lWwbBsA-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id D322C18A8226;
+        Tue,  6 Oct 2020 15:05:30 +0000 (UTC)
+Received: from localhost.localdomain (unknown [10.10.110.44])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id BBB6A76646;
+        Tue,  6 Oct 2020 15:05:28 +0000 (UTC)
+Message-ID: <344c84c66b39864372fd3eb7231575b0cdb1386c.camel@redhat.com>
+Subject: Re: [RFC] Status of orinoco_usb
+From:   Dan Williams <dcbw@redhat.com>
+To:     Jes Sorensen <jes.sorensen@gmail.com>,
+        Arend Van Spriel <arend.vanspriel@broadcom.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>
+Date:   Tue, 06 Oct 2020 10:05:27 -0500
+In-Reply-To: <7f6e7c37-b7d6-1da4-6a3d-257603afd2ae@gmail.com>
+References: <20201002103517.fhsi5gaepzbzo2s4@linutronix.de>
+         <20201002113725.GB3292884@kroah.com>
+         <20201002115358.6aqemcn5vqc5yqtw@linutronix.de>
+         <20201002120625.GA3341753@kroah.com> <877ds4damx.fsf@codeaurora.org>
+         <0c67580b-1bed-423b-2f00-49eae20046aa@broadcom.com>
+         <7f6e7c37-b7d6-1da4-6a3d-257603afd2ae@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.5 (3.36.5-1.fc32) 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
+On Tue, 2020-10-06 at 08:40 -0400, Jes Sorensen wrote:
+> On 10/6/20 3:45 AM, Arend Van Spriel wrote:
+> > + Jes
+> > 
+> > On 10/5/2020 4:12 PM, Kalle Valo wrote:
+> > > Greg Kroah-Hartman <gregkh@linuxfoundation.org> writes:
+> > > 
+> > > > On Fri, Oct 02, 2020 at 01:53:58PM +0200, Sebastian Andrzej
+> > > > Siewior
+> > > > wrote:
+> > > > > On 2020-10-02 13:37:25 [+0200], Greg Kroah-Hartman wrote:
+> > > > > > > Is it possible to end up here in softirq context or is
+> > > > > > > this a relic?
+> > > > > > 
+> > > > > > I think it's a relic of where USB host controllers
+> > > > > > completed their
+> > > > > > urbs
+> > > > > > in hard-irq mode.  The BH/tasklet change is a pretty recent
+> > > > > > change.
+> > > > > 
+> > > > > But the BH thingy for HCDs went in v3.12 for EHCI. XHCI was
+> > > > > v5.5. My
+> > > > > guess would be that people using orinoco USB are on EHCI :)
+> > > > 
+> > > > USB 3 systems run XHCI, which has a USB 2 controller in it, so
+> > > > these
+> > > > types of things might not have been noticed yet.  Who knows :)
+> > > > 
+> > > > > > > Should it be removed?
+> > > > > > 
+> > > > > > We can move it out to drivers/staging/ and then drop it to
+> > > > > > see if
+> > > > > > anyone
+> > > > > > complains that they have the device and is willing to test
+> > > > > > any
+> > > > > > changes.
+> > > > > 
+> > > > > Not sure moving is easy since it depends on other files in
+> > > > > that folder.
+> > > > > USB is one interface next to PCI for instance. Unless you
+> > > > > meant to move
+> > > > > the whole driver including all interfaces.
+> > > > > I was suggesting to remove the USB bits.
+> > > > 
+> > > > I forgot this was tied into other code, sorry.  I don't know
+> > > > what to
+> > > > suggest other than maybe try to fix it up the best that you
+> > > > can, and
+> > > > let's see if anyone notices...
+> > > 
+> > > That's what I would suggest as well.
+> > > 
+> > > These drivers for ancient hardware are tricky. Even if there
+> > > doesn't
+> > > seem to be any users on the driver sometimes people pop up
+> > > reporting
+> > > that it's still usable. We had that recently with one another
+> > > wireless
+> > > driver (forgot the name already).
+> > 
+> > Quite a while ago I shipped an orinoco dongle to Jes Sorensen which
+> > he
+> > wanted to use for some intern project if I recall correctly. Guess
+> > that
+> > idea did not fly yet.
+> 
+> I had an outreachy intern who worked on some of it, so I shipped all
+> my
+> Orinoco hardware to her. We never made as much progress as I had
+> hoped,
+> and I haven't had time to work on it since.
 
-syzbot found the following issue on:
+If anyone wants orinoco_usb, I think I still have one or two. I may
+also have original orinoco hardware (PCMCIA) if anyone wants it.
 
-HEAD commit:    2172e358 Add linux-next specific files for 20201002
-git tree:       linux-next
-console output: https://syzkaller.appspot.com/x/log.txt?x=176b55c0500000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=70698f530a7e856f
-dashboard link: https://syzkaller.appspot.com/bug?extid=00ce7332120071df39b1
-compiler:       gcc (GCC) 10.1.0-syz 20200507
+Dan
 
-Unfortunately, I don't have any reproducer for this issue yet.
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+00ce7332120071df39b1@syzkaller.appspotmail.com
-
-mac80211_hwsim: wmediumd released netlink socket, switching to perfect channel medium
-general protection fault, probably for non-canonical address 0xfbd59c0000000020: 0000 [#1] PREEMPT SMP KASAN
-KASAN: maybe wild-memory-access in range [0xdead000000000100-0xdead000000000107]
-CPU: 1 PID: 13099 Comm: syz-executor.2 Not tainted 5.9.0-rc7-next-20201002-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
-RIP: 0010:ieee80211_chanctx_num_assigned+0xb1/0x140 net/mac80211/chan.c:21
-Code: a8 f6 ff ff 48 39 c5 74 3b 49 bd 00 00 00 00 00 fc ff df e8 e1 64 b0 f9 48 8d bb 58 09 00 00 41 83 c4 01 48 89 f8 48 c1 e8 03 <42> 80 3c 28 00 75 68 48 8b 83 58 09 00 00 48 8d 98 a8 f6 ff ff 48
-RSP: 0018:ffffc900167873f8 EFLAGS: 00010a02
-RAX: 1bd5a00000000020 RBX: deacfffffffff7a8 RCX: ffffc9000e597000
-RDX: 0000000000040000 RSI: ffffffff87c4e20f RDI: dead000000000100
-RBP: ffff8880a7738020 R08: 0000000000000000 R09: ffffffff8bb59e0f
-R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000002
-R13: dffffc0000000000 R14: ffff8880a7738000 R15: 0000000000000000
-FS:  00007f95513db700(0000) GS:ffff8880ae500000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 000000000050a070 CR3: 00000000a695e000 CR4: 00000000001506e0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000600
-Call Trace:
- ieee80211_assign_vif_chanctx+0x7b8/0x1230 net/mac80211/chan.c:690
- __ieee80211_vif_release_channel+0x236/0x430 net/mac80211/chan.c:1557
- ieee80211_vif_release_channel+0x117/0x220 net/mac80211/chan.c:1771
- ieee80211_ibss_disconnect+0x44e/0x7b0 net/mac80211/ibss.c:735
- ieee80211_ibss_leave+0x12/0xe0 net/mac80211/ibss.c:1871
- rdev_leave_ibss net/wireless/rdev-ops.h:545 [inline]
- __cfg80211_leave_ibss+0x19a/0x4c0 net/wireless/ibss.c:212
- cfg80211_leave_ibss+0x57/0x80 net/wireless/ibss.c:230
- cfg80211_change_iface+0x855/0xef0 net/wireless/util.c:1012
- nl80211_set_interface+0x65c/0x8d0 net/wireless/nl80211.c:3775
- genl_family_rcv_msg_doit net/netlink/genetlink.c:669 [inline]
- genl_family_rcv_msg net/netlink/genetlink.c:714 [inline]
- genl_rcv_msg+0x61d/0x980 net/netlink/genetlink.c:731
- netlink_rcv_skb+0x15a/0x430 net/netlink/af_netlink.c:2489
- genl_rcv+0x24/0x40 net/netlink/genetlink.c:742
- netlink_unicast_kernel net/netlink/af_netlink.c:1304 [inline]
- netlink_unicast+0x533/0x7d0 net/netlink/af_netlink.c:1330
- netlink_sendmsg+0x856/0xd90 net/netlink/af_netlink.c:1919
- sock_sendmsg_nosec net/socket.c:651 [inline]
- sock_sendmsg+0xcf/0x120 net/socket.c:671
- ____sys_sendmsg+0x6e8/0x810 net/socket.c:2362
- ___sys_sendmsg+0xf3/0x170 net/socket.c:2416
- __sys_sendmsg+0xe5/0x1b0 net/socket.c:2449
- do_syscall_64+0x2d/0x70 arch/x86/entry/common.c:46
- entry_SYSCALL_64_after_hwframe+0x44/0xa9
-RIP: 0033:0x45de89
-Code: 0d b4 fb ff c3 66 2e 0f 1f 84 00 00 00 00 00 66 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 0f 83 db b3 fb ff c3 66 2e 0f 1f 84 00 00 00 00
-RSP: 002b:00007f95513dac78 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
-RAX: ffffffffffffffda RBX: 000000000002be80 RCX: 000000000045de89
-RDX: 0000000000000000 RSI: 0000000020000340 RDI: 0000000000000004
-RBP: 000000000118bf60 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 000000000118bf2c
-R13: 00007ffcbfde65cf R14: 00007f95513db9c0 R15: 000000000118bf2c
-Modules linked in:
----[ end trace 05c4a6af3338fd59 ]---
-RIP: 0010:ieee80211_chanctx_num_assigned+0xb1/0x140 net/mac80211/chan.c:21
-Code: a8 f6 ff ff 48 39 c5 74 3b 49 bd 00 00 00 00 00 fc ff df e8 e1 64 b0 f9 48 8d bb 58 09 00 00 41 83 c4 01 48 89 f8 48 c1 e8 03 <42> 80 3c 28 00 75 68 48 8b 83 58 09 00 00 48 8d 98 a8 f6 ff ff 48
-RSP: 0018:ffffc900167873f8 EFLAGS: 00010a02
-RAX: 1bd5a00000000020 RBX: deacfffffffff7a8 RCX: ffffc9000e597000
-RDX: 0000000000040000 RSI: ffffffff87c4e20f RDI: dead000000000100
-RBP: ffff8880a7738020 R08: 0000000000000000 R09: ffffffff8bb59e0f
-R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000002
-R13: dffffc0000000000 R14: ffff8880a7738000 R15: 0000000000000000
-FS:  00007f95513db700(0000) GS:ffff8880ae500000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f1f3130bf60 CR3: 00000000a695e000 CR4: 00000000001506e0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000600
-
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
