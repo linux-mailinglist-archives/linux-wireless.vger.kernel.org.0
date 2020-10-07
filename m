@@ -2,76 +2,83 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C9B4F285DA1
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 Oct 2020 12:54:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CC205285E71
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 Oct 2020 13:48:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727955AbgJGKyc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 7 Oct 2020 06:54:32 -0400
-Received: from mail.kernel.org ([198.145.29.99]:36916 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726637AbgJGKyb (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 7 Oct 2020 06:54:31 -0400
-Received: from localhost (83-86-74-64.cable.dynamic.v4.ziggo.nl [83.86.74.64])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 0DAC4212CC;
-        Wed,  7 Oct 2020 10:54:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1602068069;
-        bh=wOytTXNCU8gtZ+ntCxQtyM7YOuGQFzHEkacmPvyiVVk=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=hBQtrv+04atIlx+6BcY4bd16tOCql3kl/BA+KjY/+fm2rBldCMlR7fAGLcRD4W6vN
-         qhLpvXe5uMerVjjfMWrzrXuwYZzSunvxF+41BlVFnBozqFjp1oIkSx6dfxyqwYPnJP
-         reqxG4DrtcZeO8eYZSwdOq0zCw7YZ6LpwouKpBZ0=
-Date:   Wed, 7 Oct 2020 12:55:13 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Jerome Pouiller <Jerome.Pouiller@silabs.com>
-Cc:     devel@driverdev.osuosl.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>
-Subject: Re: [PATCH 0/7] wfx: move out from the staging area
-Message-ID: <20201007105513.GA1078344@kroah.com>
-References: <20201007101943.749898-1-Jerome.Pouiller@silabs.com>
+        id S1727664AbgJGLsu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 7 Oct 2020 07:48:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34980 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726096AbgJGLst (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 7 Oct 2020 07:48:49 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FFBCC061755;
+        Wed,  7 Oct 2020 04:48:49 -0700 (PDT)
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.94)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1kQ7w5-000t7x-Bn; Wed, 07 Oct 2020 13:48:45 +0200
+Message-ID: <bec6415925c213a2e3eb86e80d6982b82180f019.camel@sipsolutions.net>
+Subject: Re: [PATCH 0/2] net, mac80211: enable KCOV remote coverage
+ collection for 802.11 frame handling
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Aleksandr Nogikh <a.nogikh@gmail.com>, davem@davemloft.net,
+        kuba@kernel.org
+Cc:     edumazet@google.com, andreyknvl@google.com, dvyukov@google.com,
+        elver@google.com, linux-kernel@vger.kernel.org,
+        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+        nogikh@google.com
+Date:   Wed, 07 Oct 2020 13:48:43 +0200
+In-Reply-To: <20201007101726.3149375-1-a.nogikh@gmail.com> (sfid-20201007_121750_390860_16179DAD)
+References: <20201007101726.3149375-1-a.nogikh@gmail.com>
+         (sfid-20201007_121750_390860_16179DAD)
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.5 (3.36.5-1.fc32) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20201007101943.749898-1-Jerome.Pouiller@silabs.com>
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Oct 07, 2020 at 12:19:36PM +0200, Jerome Pouiller wrote:
-> From: Jérôme Pouiller <jerome.pouiller@silabs.com>
+On Wed, 2020-10-07 at 10:17 +0000, Aleksandr Nogikh wrote:
+> From: Aleksandr Nogikh <nogikh@google.com>
 > 
-> I think the wfx driver is now mature enough to be accepted in the
-> drivers/net/wireless directory.
+> This patch series enables remote KCOV coverage collection for the
+> mac80211 code that processes incoming 802.11 frames. These changes
+> make it possible to perform coverage-guided fuzzing in search of
+> remotely triggerable bugs.
 > 
-> There is still one item on the TODO list. It is an idea to improve the rate
-> control in some particular cases[1]. However, the current performances of the
-> driver seem to satisfy everyone. In add, the suggested change is large enough.
-> So, I would prefer to implement it only if it really solves an issue. I think it
-> is not an obstacle to move the driver out of the staging area.
 > 
-> In order to comply with the last rules for the DT bindings, I have converted the
-> documentation to yaml. I am moderately happy with the result. Especially, for
-> the description of the binding. Any comments are welcome.
+> The series consists of two commits.
+> 1. Remember kcov_handle for each sk_buff. This can later be used to
+> enable remote coverage for other network subsystems.
+> 2. Annotate the code that processes incoming 802.11 frames.
 > 
-> The series also update the copyrights dates of the files. I don't know exactly
-> how this kind of changes should be sent. It's a bit weird to change all the
-> copyrights in one commit, but I do not see any better way.
-> 
-> I also include a few fixes I have found these last weeks.
-> 
-> [1] https://lore.kernel.org/lkml/3099559.gv3Q75KnN1@pc-42
+> Aleksandr Nogikh (2):
+>   net: store KCOV remote handle in sk_buff
 
-I'll take the first 6 patches here, the last one you should work with
-the wireless maintainers to get reviewed.
+Can you explain that a bit better? What is a "remote handle"? What does
+it do in the SKB?
 
-Maybe that might want to wait until after 5.10-rc1 is out, with all of
-these changes in it, making it an easier move.
+I guess I'd have to know more about "kcov_common_handle()" to understand
+this bit.
 
-thanks,
+>   mac80211: add KCOV remote annotations to incoming frame processing
 
-greg k-h
+This seems fine, but a bit too limited? You tagged
+only ieee80211_tasklet_handler() which calls ieee80211_rx()
+or ieee80211_tx_status(), but
+
+1) I'm not even sure ieee80211_tx_status() counts (it's processing
+locally generated frames after they round-tripped into the driver
+(although in mesh it could be remote originated but retransmitted
+frames, so I guess it makes some sense?); and
+
+2) there are many other ways that ieee80211_rx() could get called.
+
+It seems to me it'd make more sense to (also) annotate ieee80211_rx()
+itself?
+
+johannes
+
