@@ -2,137 +2,79 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E7480286161
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 Oct 2020 16:41:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E7942863B6
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 Oct 2020 18:23:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728643AbgJGOlG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 7 Oct 2020 10:41:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33458 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728535AbgJGOlG (ORCPT
+        id S1728267AbgJGQXZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 7 Oct 2020 12:23:25 -0400
+Received: from sonic309-14.consmr.mail.bf2.yahoo.com ([74.6.129.124]:40401
+        "EHLO sonic309-14.consmr.mail.bf2.yahoo.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728277AbgJGQXS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 7 Oct 2020 10:41:06 -0400
-Received: from mail-io1-xd44.google.com (mail-io1-xd44.google.com [IPv6:2607:f8b0:4864:20::d44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D993C061755;
-        Wed,  7 Oct 2020 07:41:04 -0700 (PDT)
-Received: by mail-io1-xd44.google.com with SMTP id 67so2578191iob.8;
-        Wed, 07 Oct 2020 07:41:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=4uvuJbqp2TgM0MeuzNLXsDw5kxNnwkNh/n2qJKFZyJ0=;
-        b=vTSniMTORk6JwHUBy61VTgju4ZmeVGFMa9l3ZfczOpus9e/QPtQJBDH7NGPEMVvytS
-         1qJVEGj7w3rPPGVctm4w/cfqV2nu6gSk3Sl8iTumyj6Q9dceDhsqLLD1zUdn3vBSRXF6
-         xMrs0c5T1WqH2hs7ZnAWMDbp953OQuKjabkdQ/gSA1dJmVY8+XIAd7ul1KoO38Gk2UJZ
-         qmcnufdHNAj9ZNFR/Hm6zeyPVJJ9qwv569RyzS/I7uBiUSObGDM2YAQrtOoAAJ8prQaR
-         VqsMuF1Z8mg3gLHwLO/5pbHAk7faP3AbowCDrf95GugjWfBEwlzeatWZEk0hJHrI5pvc
-         TlcA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=4uvuJbqp2TgM0MeuzNLXsDw5kxNnwkNh/n2qJKFZyJ0=;
-        b=XmEfA4eBZQXpekY6FRLN3JvOopR6ZID/l/M598cWfUmIOC8qkoDm713NwmaDUcHDo8
-         Dui+us3X8zmu4cowI6Lsr0J3dZ49LtjcBmjlPyFTtfYIUCvTUii/9id4ZK0K9eZU1q5E
-         e/S+AxgT02iYAbdgw/gkTVWalwqUe8mkjJQcRif6acX0DdBJK2jPCunyDj6WNxjzCmUT
-         Juk2yIBQ81GytnAnOEvA+jt5N4uuqZxC8GO34rg8E7lJxzipXbHKUQgY3Kx19IuOBUVK
-         uF3ZPvvVq31001HePTJupwmzuBQAKZQhfdft7awBQz+m1LYHr+ddQZu+CUuJqT7E6idC
-         UySw==
-X-Gm-Message-State: AOAM530+RHnzCOfJ3buD3jmnjm5txWQNt4x7A00IR2oU5GNZZO4GT6Cf
-        M+Iyi3/Vqsy+QnxQ89TZZYEehv9/5u6nrMQu4VQ=
-X-Google-Smtp-Source: ABdhPJwoP4V8LyLwVxJO/VdSmbnZ/FR0VBsEv3p8ap+jjhfY4/XGQkRYRbmhTipWFjjhlFv92B9hwcZa2/9pRLf6s34=
-X-Received: by 2002:a5d:9b91:: with SMTP id r17mr2542158iom.183.1602081663901;
- Wed, 07 Oct 2020 07:41:03 -0700 (PDT)
+        Wed, 7 Oct 2020 12:23:18 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1602087796; bh=PxMwWzXvs+dqOoH0/FHvFmQpYH2JguaCUHYAVLLmaiw=; h=Date:From:Reply-To:Subject:References:From:Subject; b=OpD6sdWmMpCqHH9mdd6ZvDXA8BMNItdBBEhuwaMT76h/ZLwAekJxmf3sL5Tm7F6u5J5Cwz3tNhOynMD0jOIXwmaFKMMySfkal/fGH8C3frbWm3GjElucUfyWIfoQLs+2Acqjwxi8XBSg7us+PxpuSmwx44NQ14JudcHftB4hVpWbttBe4fAY4BfnjSftQacVGKmJzRyL2FbE8Gaw8zXbhokDV7l5wpcFqxc9SWnIBNYmyCEGgU2Vp9OwY9jVjBgFQU3r4J9VcUICkltohTAWyw647+t6CbThr29420FmwAJctvWmP4r3ngo51sgMI//J7rAYi/YTvjIjEPMgLI9DQw==
+X-YMail-OSG: qdWaPgcVM1nuXamhTbr65jyGHWDsrGkhJB.qfE.Lfo2FpLfQyyasqNkGf1j47_q
+ OJvYA2b6MUUnf9.6qujXe3GeKTTp_MYBehMMmR8oSMUwEkTynKoUjb4klILw5ADfUwW39yqq5xFx
+ eUtvnjHRN807W8dSJpFHCTEbJS5XJqvv7k1KMITaVe6OC1wEqpii_1dz5tz7e51Vk0vIG9_Bd_GK
+ _TULgsBB844J9ZzJrTwXWorQNmL1jETFenupE9YitzsxHMe3ZaXTNTAzgRfWHrD881PEISLj2KhF
+ F0QD3D2DHsEGEg1sV7hoqsJdPm8_tx972v1V.dZk5AfZ6H_rv_W_lKt.nuDTLzkpAaR4qkQHrys4
+ ukGn3NqmJw6sBP.ZK53Xf3Blew.gdsdZDg7INoJWCyvkCkAyk6JAhm07wmK3Q7Q0iEgHHesNYRAz
+ qJIHop5k0MGBVdIgWf1x0yDbLxKSSHNVuHCnaWvghfkPhenBEHKOREuLxjBdI8v.lEFTkoglm_um
+ 6YnVPGTU3r.TR8vW6XgA2sN4UdER_JsYoewZlV78qxupoXIozNaoHbA6ucd.Yef4p2_BVHPNTJ70
+ vG6YE7aL1ILvluIlRv5lxS77YyFnCHwonGpVHXdaOjcv3pHbUCIGiFHLkv.jUHEQTdJ6KpgxQq2L
+ gdBmhuG8T2YkdCB1vv.ZZsQDfGhU50ZzancfNiYVC3i8ca5HGiYOnLmc_4gKN1NGcjFHSwPw_.Rm
+ BXHA9w0si3QMc38ea7m16_N8oTx9IEwq.BQJ_1Wjzp7sEQv4J8BxOHlA1ZrOGozutPTbHXLrGr0E
+ L_ZLjYhAum7Fh1dHObJgzvogElKK4W5kMy8Q2curCohzVy7mwZqpIk3JZuwUiU3j1sacsOly7iPY
+ fJtIz3k11_O1GOYi.wJby7cbFemBwUE82ZDltiNysuKWOhxX0ufGSRjneyt9U6ZVK5a8UxeGHyIX
+ __lElV24E72BlLlcPIsh9fXG5YFkeOv78kOi59kVdOB0shwj4cB9Y1x9OIsnG8H.jWqeNTFjSDch
+ K6.n8yDBoWyc0g9cdWhZZpQKskoUUUlHwwQkg39gsiEg0vmHwVBcMpflUsO3INGl_yIRmLyo_Rc4
+ ivYQ9JVu3YpaNvvCXvdGmLGkGdFlvBYjfgC4zKpNbjojlUB7UvrI7VhiLwxtYRE6NYP1Oa2vDOO5
+ .Hh7KZC1SU9vQzQOFJkr8Cd6.FEeE5Tuj0R_CB1JhQXpvtYbPNIetCm1lO7VULS7bjP11BBjiaZA
+ d95CwwdG1tHb7J.LnPVBB1C3qNPWEN5U7jSeMrkX.UAI2Vsmy7LUUYH16mQRKSg_rg0y6PWI.mom
+ 4rR2SzMtRlOZG6j7U_gn95yzLVSc1mpVtw9qC8qHt4C7KJOTKXzNFvx7C5hVvttFe8Gz3hUNCayX
+ XRTWYNSirxrh7a9DIALhjNDavLEWMzKLo6MmP
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic309.consmr.mail.bf2.yahoo.com with HTTP; Wed, 7 Oct 2020 16:23:16 +0000
+Date:   Wed, 7 Oct 2020 16:23:14 +0000 (UTC)
+From:   Marilyn Robert <fredodinga22@gmail.com>
+Reply-To: marilyobert@gmail.com
+Message-ID: <851832897.153495.1602087794366@mail.yahoo.com>
+Subject: =?UTF-8?B?0J3QsNGY0LzQuNC70LAg0LrQsNGYINCz0L7RgdC/0L7QtNCw0YDQvtGC?=
 MIME-Version: 1.0
-References: <20201007101726.3149375-1-a.nogikh@gmail.com> <bec6415925c213a2e3eb86e80d6982b82180f019.camel@sipsolutions.net>
-In-Reply-To: <bec6415925c213a2e3eb86e80d6982b82180f019.camel@sipsolutions.net>
-From:   Aleksandr Nogikh <a.nogikh@gmail.com>
-Date:   Wed, 7 Oct 2020 17:40:52 +0300
-Message-ID: <CADpXja8oh2nHpNFjQ-+iDUebPx7R_HcOuoakzmKvHp=kuj8rpA@mail.gmail.com>
-Subject: Re: [PATCH 0/2] net, mac80211: enable KCOV remote coverage collection
- for 802.11 frame handling
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     davem@davemloft.net, kuba@kernel.org,
-        Eric Dumazet <edumazet@google.com>,
-        Andrey Konovalov <andreyknvl@google.com>,
-        Dmitry Vyukov <dvyukov@google.com>,
-        Marco Elver <elver@google.com>, linux-kernel@vger.kernel.org,
-        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        nogikh@google.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
+References: <851832897.153495.1602087794366.ref@mail.yahoo.com>
+X-Mailer: WebService/1.1.16795 YMailNodin Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.125 Safari/537.36
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 7 Oct 2020 at 14:48, Johannes Berg <johannes@sipsolutions.net> wrote:
->
-> On Wed, 2020-10-07 at 10:17 +0000, Aleksandr Nogikh wrote:
-[...]
-> > Aleksandr Nogikh (2):
-> >   net: store KCOV remote handle in sk_buff
->
-> Can you explain that a bit better? What is a "remote handle"? What does
-> it do in the SKB?
->
-> I guess I'd have to know more about "kcov_common_handle()" to understand
-> this bit.
-
-Normally, KCOV collects coverage information for the code that is
-executed inside the system call context. It is easy to identify where
-that coverage should go and whether it should be collected at all by
-looking at the current process. If KCOV was enabled on that process,
-coverage will be stored in a buffer specific to that process.
-Howerever, it is not always enough as some handling can happen
-elsewhere (e.g. in separate kernel threads).
-
-That is why remote KOV coverage collection was introduced. When it is
-impossible to infer KCOV-related info just by looking at the currently
-running process, we need to manually pass some information to the code
-that is of interest to us.  The information takes the form of 64 bit
-integers (remote handles). Zero is the special value that corresponds
-to an empty handle. More details on KCOV and remote coverage
-collection can be found here: Documentation/dev-tools/kcov.rst.
-
-In this patch, we obtain the remote handle from KCOV (in this case by
-executing kcov_common_handle()) and attach it to newly allocated
-SKBs. If we're in a system call context, the SKB will be tied to the
-process that issued the syscall (if that process is interested in
-remote coverage collection). So when
-kcov_remote_start_common(skb_get_kcov_handle(skb)) is executed, it is
-possible to determine whether coverage is required and where it should
-be stored.
-
-I have just realized that the default kcov_handle initialization as it
-was implemented in this patch is not really robust. If an skb is
-allocated during a hard IRQ, kcov_common_handle() will return a remote
-handle for the interrupted thread instead of returning 0, and that is
-not desirable since it will occasionally lead to wrong kcov_handles. I
-will fix it in the next version of the patch.
-
-> >   mac80211: add KCOV remote annotations to incoming frame processing
->
-> This seems fine, but a bit too limited? You tagged
-> only ieee80211_tasklet_handler() which calls ieee80211_rx()
-> or ieee80211_tx_status(), but
->
-> 1) I'm not even sure ieee80211_tx_status() counts (it's processing
-> locally generated frames after they round-tripped into the driver
-> (although in mesh it could be remote originated but retransmitted
-> frames, so I guess it makes some sense?); and
->
-> 2) there are many other ways that ieee80211_rx() could get called.
->
-> It seems to me it'd make more sense to (also) annotate ieee80211_rx()
-> itself?
-
-Yes, it definitely makes more sense to annotate ieee80211_rx()
-directly. Collecting coverage for ieee80211_tx_status() does not seem
-to be needed now and can be added later if there's a use case for it.
-
-Thank you for the suggestion. I will implement it in the second
-version of the patch.
-
---
-Best regards,
-Aleksandr
+DQoNCtCd0LDRmNC80LjQu9CwINC60LDRmCDQs9C+0YHQv9C+0LTQsNGA0L7Rgg0KDQrQiNCw0YEg
+0YHRg9C8IDY4LdCz0L7QtNC40YjQvdCwINC20LXQvdCwLCDQutC+0ZjQsCDRgdGC0YDQsNC00LAg
+0L7QtCDQv9GA0L7QtNC+0LvQttC10L0g0LrQsNGA0YbQuNC90L7QvCDQvdCwINC00L7RmNC60LAs
+INC+0LQg0YHQuNGC0LUg0LzQtdC00LjRhtC40L3RgdC60Lgg0LjQvdC00LjQutCw0YbQuNC4LCDQ
+vNC+0ZjQsNGC0LAg0YHQvtGB0YLQvtGY0LHQsCDQvdCw0LLQuNGB0YLQuNC90LAg0YHQtSDQstC7
+0L7RiNC4INC4INC+0YfQuNCz0LvQtdC00L3QviDQtSDQtNC10LrQsCDQvNC+0LbQtdCx0Lgg0L3Q
+tdC80LAg0LTQsCDQttC40LLQtdCw0Lwg0L/QvtCy0LXRnNC1INC+0LQg0YjQtdGB0YIg0LzQtdGB
+0LXRhtC4INC60LDQutC+INGA0LXQt9GD0LvRgtCw0YIg0L3QsCDQsdGA0LfQuNC+0YIg0YDQsNGB
+0YIg0Lgg0LHQvtC70LrQsNGC0LAg0YjRgtC+INGB0LUg0ZjQsNCy0YPQstCwINC60LDRmCDQvdC1
+0LAuINCc0L7RmNC+0YIg0YHQvtC/0YDRg9CzINC/0L7Rh9C40L3QsCDQvdC10LrQvtC70LrRgyDQ
+s9C+0LTQuNC90Lgg0L3QsNC90LDQt9Cw0LQg0Lgg0L3QsNGI0LjRgtC1INC00L7Qu9Cz0Lgg0LPQ
+vtC00LjQvdC4INCx0YDQsNC6INC90LUg0LHQtdCwINCx0LvQsNCz0L7RgdC70L7QstC10L3QuCDR
+gdC+INC90LjRgtGDINC10LTQvdC+INC00LXRgtC1LCDQv9C+INC90LXQs9C+0LLQsNGC0LAg0YHQ
+vNGA0YIg0LPQviDQvdCw0YHQu9C10LTQuNCyINGG0LXQu9C+0YLQviDQvdC10LPQvtCy0L4g0LHQ
+vtCz0LDRgtGB0YLQstC+Lg0KDQrQlNC+0LDRk9Cw0Lwg0LrQsNGYINCy0LDRgSDQvtGC0LrQsNC6
+0L4g0YHQtSDQv9C+0LzQvtC70LjQsiDQt9CwINGC0L7QsCwg0L/QvtC00LPQvtGC0LLQtdC9INGB
+0YPQvCDQtNCwINC00L7QvdC40YDQsNC8INGB0YPQvNCwINC+0LQgMiwgMzAwLCAwMDAg0LXQstGA
+0LAg0LfQsCDQv9C+0LzQvtGIINC90LAg0YHQuNGA0L7QvNCw0YjQvdC40YLQtSwg0YHQuNGA0L7Q
+vNCw0YjQvdC40YLQtSDQuCDQv9C+0LzQsNC70LrRgyDQv9GA0LjQstC40LvQtdCz0LjRgNCw0L3Q
+uNGC0LUg0LzQtdGT0YMg0LLQsNGI0LjRgtC1INGB0L7QsdGA0LDQvdC40ZjQsCAvINC+0L/RiNGC
+0LXRgdGC0LLQvi4g0JfQsNCx0LXQu9C10LbQtdGC0LUg0LTQtdC60LAg0L7QstC+0Zgg0YTQvtC9
+0LQg0LUg0LTQtdC/0L7QvdC40YDQsNC9INCy0L4g0LHQsNC90LrQsCDQutCw0LTQtSDRiNGC0L4g
+0YDQsNCx0L7RgtC10YjQtSDQvNC+0ZjQvtGCINGB0L7Qv9GA0YPQsy4gQXBwcmVjaWF0ZdC1INGG
+0LXQvdCw0Lwg0LDQutC+INC+0LHRgNC90LXRgtC1INCy0L3QuNC80LDQvdC40LUg0L3QsCDQvNC+
+0LXRgtC+INCx0LDRgNCw0ZrQtSDQt9CwINC/0YDQvtC/0LDQs9C40YDQsNGa0LUg0L3QsCDQvNCw
+0YHQsNC20LDRgtCwINC90LAg0LrRgNCw0LvRgdGC0LLQvtGC0L4sINGc0LUg0LLQuCDQtNCw0LTQ
+sNC8INC/0L7QstC10ZzQtSDQtNC10YLQsNC70Lgg0LfQsCDRgtC+0LAg0LrQsNC60L4g0LTQsCDQ
+v9C+0YHRgtCw0L/QuNGC0LUuDQoNCtCR0LvQsNCz0L7QtNCw0YDQsNC8DQrQky3Rk9CwINCc0LXR
+gNC40LvQuNC9INCg0L7QsdC10YDRgg==
