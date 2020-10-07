@@ -2,83 +2,68 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CC205285E71
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 Oct 2020 13:48:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 36F0628609F
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 Oct 2020 15:55:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727664AbgJGLsu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 7 Oct 2020 07:48:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34980 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726096AbgJGLst (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 7 Oct 2020 07:48:49 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FFBCC061755;
-        Wed,  7 Oct 2020 04:48:49 -0700 (PDT)
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.94)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1kQ7w5-000t7x-Bn; Wed, 07 Oct 2020 13:48:45 +0200
-Message-ID: <bec6415925c213a2e3eb86e80d6982b82180f019.camel@sipsolutions.net>
-Subject: Re: [PATCH 0/2] net, mac80211: enable KCOV remote coverage
- collection for 802.11 frame handling
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Aleksandr Nogikh <a.nogikh@gmail.com>, davem@davemloft.net,
-        kuba@kernel.org
-Cc:     edumazet@google.com, andreyknvl@google.com, dvyukov@google.com,
-        elver@google.com, linux-kernel@vger.kernel.org,
-        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        nogikh@google.com
-Date:   Wed, 07 Oct 2020 13:48:43 +0200
-In-Reply-To: <20201007101726.3149375-1-a.nogikh@gmail.com> (sfid-20201007_121750_390860_16179DAD)
-References: <20201007101726.3149375-1-a.nogikh@gmail.com>
-         (sfid-20201007_121750_390860_16179DAD)
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.5 (3.36.5-1.fc32) 
+        id S1728585AbgJGNzK convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 7 Oct 2020 09:55:10 -0400
+Received: from mx.metalurgs.lv ([81.198.125.103]:52988 "EHLO mx.metalurgs.lv"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728591AbgJGNzI (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 7 Oct 2020 09:55:08 -0400
+Received: from mx.metalurgs.lv (localhost [127.0.0.1])
+        by mx.metalurgs.lv (Postfix) with ESMTP id D1D415F703
+        for <linux-wireless@vger.kernel.org>; Wed,  7 Oct 2020 16:55:05 +0300 (EEST)
+Received: from kas30pipe.localhost (localhost [127.0.0.1])
+        by mx.metalurgs.lv (Postfix) with ESMTP id B120B5F675
+        for <linux-wireless@vger.kernel.org>; Wed,  7 Oct 2020 16:55:05 +0300 (EEST)
+Received: by mx.metalurgs.lv (Postfix, from userid 1005)
+        id E0D4B5F2A7; Wed,  7 Oct 2020 16:55:04 +0300 (EEST)
+Received: from [100.64.1.74] (unknown [190.15.125.55])
+        (Authenticated sender: admin)
+        by mx.metalurgs.lv (Postfix) with ESMTPA id 7C86B644DC;
+        Wed,  7 Oct 2020 16:54:58 +0300 (EEST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Description: Mail message body
+To:     Recipients <financialcapability6@gmail.com>
+From:   "Mr. Hashim Bin" <financialcapability6@gmail.com>
+Date:   Wed, 07 Oct 2020 10:54:51 -0300
+Reply-To: hmurrah39@gmail.com
+X-SpamTest-Envelope-From: financialcapability6@gmail.com
+X-SpamTest-Group-ID: 00000000
+X-SpamTest-Info: Profiles 71303 [Jan 01 2015]
+X-SpamTest-Info: {TO: forged address, i.e. recipient, investors, public, etc.}
+X-SpamTest-Info: {DATE: unreal year}
+X-SpamTest-Method: none
+X-SpamTest-Rate: 55
+X-SpamTest-Status: Not detected
+X-SpamTest-Status-Extended: not_detected
+X-SpamTest-Version: SMTP-Filter Version 3.0.0 [0284], KAS30/Release
+Message-ID: <20201007135504.E0D4B5F2A7@mx.metalurgs.lv>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8BIT
+Subject: Low Rate Loan./mmm,
+X-Anti-Virus: Kaspersky Anti-Virus for Linux Mail Server 5.6.39/RELEASE,
+         bases: 20140401 #7726142, check: 20201007 notchecked
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 2020-10-07 at 10:17 +0000, Aleksandr Nogikh wrote:
-> From: Aleksandr Nogikh <nogikh@google.com>
-> 
-> This patch series enables remote KCOV coverage collection for the
-> mac80211 code that processes incoming 802.11 frames. These changes
-> make it possible to perform coverage-guided fuzzing in search of
-> remotely triggerable bugs.
-> 
-> 
-> The series consists of two commits.
-> 1. Remember kcov_handle for each sk_buff. This can later be used to
-> enable remote coverage for other network subsystems.
-> 2. Annotate the code that processes incoming 802.11 frames.
-> 
-> Aleksandr Nogikh (2):
->   net: store KCOV remote handle in sk_buff
+Hello Dear,
 
-Can you explain that a bit better? What is a "remote handle"? What does
-it do in the SKB?
 
-I guess I'd have to know more about "kcov_common_handle()" to understand
-this bit.
+We are Base Investment Company offering Corporate and Personal Loan at 3% Interest Rate for a duration of 10Years.
 
->   mac80211: add KCOV remote annotations to incoming frame processing
 
-This seems fine, but a bit too limited? You tagged
-only ieee80211_tasklet_handler() which calls ieee80211_rx()
-or ieee80211_tx_status(), but
+We also pay 1% commission to brokers, who introduce project owners for finance or other opportunities.
 
-1) I'm not even sure ieee80211_tx_status() counts (it's processing
-locally generated frames after they round-tripped into the driver
-(although in mesh it could be remote originated but retransmitted
-frames, so I guess it makes some sense?); and
 
-2) there are many other ways that ieee80211_rx() could get called.
+Please get back to me if you are interested for more
 
-It seems to me it'd make more sense to (also) annotate ieee80211_rx()
-itself?
+details.
 
-johannes
 
+Yours faithfully,
+
+Hashim Murrah
