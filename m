@@ -2,111 +2,68 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 06E1F285CF0
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 Oct 2020 12:33:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EB85B285D38
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 Oct 2020 12:49:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728044AbgJGKdd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 7 Oct 2020 06:33:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51630 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726219AbgJGKdb (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 7 Oct 2020 06:33:31 -0400
-Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com [IPv6:2607:f8b0:4864:20::542])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1A36C061755;
-        Wed,  7 Oct 2020 03:33:31 -0700 (PDT)
-Received: by mail-pg1-x542.google.com with SMTP id x16so1120813pgj.3;
-        Wed, 07 Oct 2020 03:33:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=HG9ZKAE8Yu52ExRQDDjN81ZIm6yQmKnq3Y0AJ5grKyA=;
-        b=e9hD9Og8ygIqfuCpfy3OgSoXmTi3hRHN1uIsUZEY2oi+kh+bEHV3em+CNt62TmC87J
-         B4Yta4tMlFRyCBc46R9hrTkonZ1bY3VvPR9wRKCI1Vnoe+BYo1CEzgIeJ52BsSzky++W
-         bYAlFMylan/q+9LZzHKbRuiC/vIIAdqkSzODPa3KgBUfK6h+b8zAfZi3qhW/2tZhJyCy
-         w1ZPb6d4uA4Uj3uuK8wYrBEC7xuU388xncC2RktPEOTivF93X4I5tcw5AOdxpV80Pf+s
-         FYo/++Z16AxQtqB1idjslrbaTFWW2ItKXwANFqas2Xq7q68qc+V59YsS023fYOblBYOR
-         Pt3A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=HG9ZKAE8Yu52ExRQDDjN81ZIm6yQmKnq3Y0AJ5grKyA=;
-        b=Z3T/87yWmIejEbcsYKiOvTyawolM0UpM3n8wTIgCUURc3EAQd9Kw/PA3I6eRBHe9ey
-         u+3c8lrcrAgupofR3vUdvJYXL8Up5XiH0o965lHaLBwaSuZHWj52+wolGFBq5sQNLNKp
-         Nh8X+FpfOwcH/Nmy4/iDgsdNCdn4aBNdTaIbV3XnGdZfn+W06Ph9i8kx/T0n2ZzgD/oW
-         sq+wZUEjtwpoWDhU+riyTPYWdCUMQPrC3AYI0J1U0ub0yAnWu4elLvczM8f+7dUPZI4Z
-         xg5zi7BMfCicVRIXGA9XsVu42bJs4dCGPikWCUEu65p4xiMGKwUPY4zO1XneSrTdpnXB
-         shXw==
-X-Gm-Message-State: AOAM5303q6+TmRtwqxtvZvshKkfqwGGYUxJaOE8V0FDZV+RKOUhVf/JI
-        oCumGkRIpyyujtV6+QS2bZI=
-X-Google-Smtp-Source: ABdhPJw2/zeJqETexwSce8Lc2Mbg8nsRB34u08hVBEL7qWLWZ5DIFVo2pnpRv8Khrnnm9nMQAc6xXg==
-X-Received: by 2002:a62:178d:0:b029:13e:d13d:a0f8 with SMTP id 135-20020a62178d0000b029013ed13da0f8mr2301077pfx.20.1602066811396;
-        Wed, 07 Oct 2020 03:33:31 -0700 (PDT)
-Received: from localhost.localdomain ([49.207.204.22])
-        by smtp.gmail.com with ESMTPSA id v129sm2705327pfc.76.2020.10.07.03.33.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 Oct 2020 03:33:30 -0700 (PDT)
-From:   Allen Pais <allen.lkml@gmail.com>
-To:     kvalo@codeaurora.org
-Cc:     davem@davemloft.net, nbd@nbd.name, lorenzo.bianconi83@gmail.com,
-        ryder.lee@mediatek.com, kuba@kernel.org, matthias.bgg@gmail.com,
-        ath11k@lists.infradead.org, linux-mediatek@lists.infradead.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        Allen Pais <apais@linux.microsoft.com>,
-        Romain Perier <romain.perier@gmail.com>
-Subject: [PATCH v2 3/3] ath11k: convert tasklets to use new tasklet_setup() API
-Date:   Wed,  7 Oct 2020 16:03:09 +0530
-Message-Id: <20201007103309.363737-4-allen.lkml@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20201007103309.363737-1-allen.lkml@gmail.com>
-References: <20201007103309.363737-1-allen.lkml@gmail.com>
+        id S1728189AbgJGKtb convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 7 Oct 2020 06:49:31 -0400
+Received: from mx.metalurgs.lv ([81.198.125.103]:55594 "EHLO mx.metalurgs.lv"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728192AbgJGKt3 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 7 Oct 2020 06:49:29 -0400
+Received: from mx.metalurgs.lv (localhost [127.0.0.1])
+        by mx.metalurgs.lv (Postfix) with ESMTP id BE70E63A5B
+        for <linux-wireless@vger.kernel.org>; Wed,  7 Oct 2020 13:49:15 +0300 (EEST)
+Received: from kas30pipe.localhost (localhost [127.0.0.1])
+        by mx.metalurgs.lv (Postfix) with ESMTP id 7E9E3636BD
+        for <linux-wireless@vger.kernel.org>; Wed,  7 Oct 2020 13:49:15 +0300 (EEST)
+Received: by mx.metalurgs.lv (Postfix, from userid 1005)
+        id 93315632FA; Wed,  7 Oct 2020 13:49:11 +0300 (EEST)
+Received: from [100.64.1.74] (unknown [190.15.125.55])
+        (Authenticated sender: admin)
+        by mx.metalurgs.lv (Postfix) with ESMTPA id CDCB05E75C;
+        Wed,  7 Oct 2020 13:49:04 +0300 (EEST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Description: Mail message body
+To:     Recipients <financialcapability6@gmail.com>
+From:   "Mr. Hashim Bin" <financialcapability6@gmail.com>
+Date:   Wed, 07 Oct 2020 07:48:57 -0300
+Reply-To: hmurrah39@gmail.com
+X-SpamTest-Envelope-From: financialcapability6@gmail.com
+X-SpamTest-Group-ID: 00000000
+X-SpamTest-Info: Profiles 71303 [Jan 01 2015]
+X-SpamTest-Info: {TO: forged address, i.e. recipient, investors, public, etc.}
+X-SpamTest-Info: {DATE: unreal year}
+X-SpamTest-Method: none
+X-SpamTest-Rate: 55
+X-SpamTest-Status: Not detected
+X-SpamTest-Status-Extended: not_detected
+X-SpamTest-Version: SMTP-Filter Version 3.0.0 [0284], KAS30/Release
+Message-ID: <20201007104911.93315632FA@mx.metalurgs.lv>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8BIT
+Subject: Low Rate Loan./mmm,
+X-Anti-Virus: Kaspersky Anti-Virus for Linux Mail Server 5.6.39/RELEASE,
+         bases: 20140401 #7726142, check: 20201007 notchecked
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Allen Pais <apais@linux.microsoft.com>
+Hello Dear,
 
-In preparation for unconditionally passing the
-struct tasklet_struct pointer to all tasklet
-callbacks, switch to using the new tasklet_setup()
-and from_tasklet() to pass the tasklet pointer explicitly.
 
-Signed-off-by: Romain Perier <romain.perier@gmail.com>
-Signed-off-by: Allen Pais <apais@linux.microsoft.com>
----
- drivers/net/wireless/ath/ath11k/pci.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+We are Base Investment Company offering Corporate and Personal Loan at 3% Interest Rate for a duration of 10Years.
 
-diff --git a/drivers/net/wireless/ath/ath11k/pci.c b/drivers/net/wireless/ath/ath11k/pci.c
-index d7eb6b716..b75f47dc3 100644
---- a/drivers/net/wireless/ath/ath11k/pci.c
-+++ b/drivers/net/wireless/ath/ath11k/pci.c
-@@ -380,9 +380,9 @@ static void ath11k_pci_sync_ce_irqs(struct ath11k_base *ab)
- 	}
- }
- 
--static void ath11k_pci_ce_tasklet(unsigned long data)
-+static void ath11k_pci_ce_tasklet(struct tasklet_struct *t)
- {
--	struct ath11k_ce_pipe *ce_pipe = (struct ath11k_ce_pipe *)data;
-+	struct ath11k_ce_pipe *ce_pipe = from_tasklet(ce_pipe, t, intr_tq);
- 
- 	ath11k_ce_per_engine_service(ce_pipe->ab, ce_pipe->pipe_num);
- 
-@@ -581,8 +581,7 @@ static int ath11k_pci_config_irq(struct ath11k_base *ab)
- 
- 		irq_idx = ATH11K_PCI_IRQ_CE0_OFFSET + i;
- 
--		tasklet_init(&ce_pipe->intr_tq, ath11k_pci_ce_tasklet,
--			     (unsigned long)ce_pipe);
-+		tasklet_setup(&ce_pipe->intr_tq, ath11k_pci_ce_tasklet);
- 
- 		ret = request_irq(irq, ath11k_pci_ce_interrupt_handler,
- 				  IRQF_SHARED, irq_name[irq_idx],
--- 
-2.25.1
 
+We also pay 1% commission to brokers, who introduce project owners for finance or other opportunities.
+
+
+Please get back to me if you are interested for more
+
+details.
+
+
+Yours faithfully,
+
+Hashim Murrah
