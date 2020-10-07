@@ -2,68 +2,97 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 36F0628609F
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 Oct 2020 15:55:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 17E422860E7
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 Oct 2020 16:05:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728585AbgJGNzK convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 7 Oct 2020 09:55:10 -0400
-Received: from mx.metalurgs.lv ([81.198.125.103]:52988 "EHLO mx.metalurgs.lv"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728591AbgJGNzI (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 7 Oct 2020 09:55:08 -0400
-Received: from mx.metalurgs.lv (localhost [127.0.0.1])
-        by mx.metalurgs.lv (Postfix) with ESMTP id D1D415F703
-        for <linux-wireless@vger.kernel.org>; Wed,  7 Oct 2020 16:55:05 +0300 (EEST)
-Received: from kas30pipe.localhost (localhost [127.0.0.1])
-        by mx.metalurgs.lv (Postfix) with ESMTP id B120B5F675
-        for <linux-wireless@vger.kernel.org>; Wed,  7 Oct 2020 16:55:05 +0300 (EEST)
-Received: by mx.metalurgs.lv (Postfix, from userid 1005)
-        id E0D4B5F2A7; Wed,  7 Oct 2020 16:55:04 +0300 (EEST)
-Received: from [100.64.1.74] (unknown [190.15.125.55])
-        (Authenticated sender: admin)
-        by mx.metalurgs.lv (Postfix) with ESMTPA id 7C86B644DC;
-        Wed,  7 Oct 2020 16:54:58 +0300 (EEST)
+        id S1728583AbgJGOFU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 7 Oct 2020 10:05:20 -0400
+Received: from mail-il1-f198.google.com ([209.85.166.198]:38929 "EHLO
+        mail-il1-f198.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728524AbgJGOFU (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 7 Oct 2020 10:05:20 -0400
+Received: by mail-il1-f198.google.com with SMTP id r10so1643681ilq.6
+        for <linux-wireless@vger.kernel.org>; Wed, 07 Oct 2020 07:05:19 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:date:in-reply-to:message-id:subject
+         :from:to;
+        bh=9N4t1zZ/BgXswdt8rkaONIwjFjMlU8nOCAQhp6K8GdM=;
+        b=NwRVwiJG1rkifXU4C7M/oBsDddSbdN4WfQdUoX1xrkgg5vLBcWB1gwDsYT/RhcxQk/
+         ZGko0TTglMnt20+c0aRSpSdeL5LLNlgpQKgx8h5LAr/fDjy/Pi+biC1nuUAbQfHejWn8
+         6cjsJ+NRQ72JiydxBKdqSoRoSQ9rmhX7Caf7xrS+KiMr33OFPyPEbA5uuO0ORFY/XokY
+         t65N6dRpQ9C4VgktXOKnUEk96jLcEK+YTGbOFqn3sXyZ/cK6+J8pPsbfPNAZ1R8m1nv+
+         pelb5kB8+HpnVUQ74VImm6JWjWxufVWLlZtkN12+RyjpGpmPsAz4wTxw8ZT2Z+pEgzSr
+         i/Yg==
+X-Gm-Message-State: AOAM532h0+zo29w78ivINOJiYJyvoUBGsT8/+cp5FEoZigTAjF/6VQo2
+        rN8gioAkIvH9gDUVCLOmf8MOdv70okPTHgyMEUdXgz6+456T
+X-Google-Smtp-Source: ABdhPJxyxhA2CKhBEp8yYRdtLB4N3yig4Q81IcjCGr6KySsABUKmscx8ep35DXpTIQfOxEWVwcAiuqe8qCjVPM98I2nuTkJjDh5d
 MIME-Version: 1.0
-Content-Description: Mail message body
-To:     Recipients <financialcapability6@gmail.com>
-From:   "Mr. Hashim Bin" <financialcapability6@gmail.com>
-Date:   Wed, 07 Oct 2020 10:54:51 -0300
-Reply-To: hmurrah39@gmail.com
-X-SpamTest-Envelope-From: financialcapability6@gmail.com
-X-SpamTest-Group-ID: 00000000
-X-SpamTest-Info: Profiles 71303 [Jan 01 2015]
-X-SpamTest-Info: {TO: forged address, i.e. recipient, investors, public, etc.}
-X-SpamTest-Info: {DATE: unreal year}
-X-SpamTest-Method: none
-X-SpamTest-Rate: 55
-X-SpamTest-Status: Not detected
-X-SpamTest-Status-Extended: not_detected
-X-SpamTest-Version: SMTP-Filter Version 3.0.0 [0284], KAS30/Release
-Message-ID: <20201007135504.E0D4B5F2A7@mx.metalurgs.lv>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: 8BIT
-Subject: Low Rate Loan./mmm,
-X-Anti-Virus: Kaspersky Anti-Virus for Linux Mail Server 5.6.39/RELEASE,
-         bases: 20140401 #7726142, check: 20201007 notchecked
+X-Received: by 2002:a92:da8e:: with SMTP id u14mr2835314iln.235.1602079518913;
+ Wed, 07 Oct 2020 07:05:18 -0700 (PDT)
+Date:   Wed, 07 Oct 2020 07:05:18 -0700
+In-Reply-To: <0000000000004a0d5e05b1110e86@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <000000000000a07b5405b1153450@google.com>
+Subject: Re: WARNING in ieee80211_free_ack_frame
+From:   syzbot <syzbot+a063bbf0b15737362592@syzkaller.appspotmail.com>
+To:     davem@davemloft.net, johannes@sipsolutions.net, kuba@kernel.org,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello Dear,
+syzbot has found a reproducer for the following issue on:
 
+HEAD commit:    c85fb28b Merge tag 'arm64-fixes' of git://git.kernel.org/p..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=16933627900000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=c06bcf3cc963d91c
+dashboard link: https://syzkaller.appspot.com/bug?extid=a063bbf0b15737362592
+compiler:       gcc (GCC) 10.1.0-syz 20200507
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=157d194f900000
 
-We are Base Investment Company offering Corporate and Personal Loan at 3% Interest Rate for a duration of 10Years.
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+a063bbf0b15737362592@syzkaller.appspotmail.com
 
+------------[ cut here ]------------
+Have pending ack frames!
+WARNING: CPU: 0 PID: 37 at net/mac80211/main.c:1396 ieee80211_free_ack_frame+0x48/0x50 net/mac80211/main.c:1396
+Kernel panic - not syncing: panic_on_warn set ...
+CPU: 0 PID: 37 Comm: kworker/u4:2 Not tainted 5.9.0-rc8-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
+Workqueue: netns cleanup_net
+Call Trace:
+ __dump_stack lib/dump_stack.c:77 [inline]
+ dump_stack+0x198/0x1fd lib/dump_stack.c:118
+ panic+0x382/0x7fb kernel/panic.c:231
+ __warn.cold+0x20/0x4b kernel/panic.c:600
+ report_bug+0x1bd/0x210 lib/bug.c:198
+ handle_bug+0x38/0x90 arch/x86/kernel/traps.c:234
+ exc_invalid_op+0x14/0x40 arch/x86/kernel/traps.c:254
+ asm_exc_invalid_op+0x12/0x20 arch/x86/include/asm/idtentry.h:536
+RIP: 0010:ieee80211_free_ack_frame+0x48/0x50 net/mac80211/main.c:1396
+Code: e8 5d 43 b8 f9 48 89 ef e8 b5 dc a8 fe 31 c0 5b 5d c3 e8 4b 43 b8 f9 48 c7 c7 00 c0 5e 89 c6 05 66 b5 96 03 01 e8 3a 80 88 f9 <0f> 0b eb d2 0f 1f 40 00 41 57 41 56 41 55 49 89 d5 41 54 49 89 f4
+RSP: 0018:ffffc90000ea79c8 EFLAGS: 00010282
+RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000000
+RDX: ffff8880a91b8380 RSI: ffffffff815f5a55 RDI: fffff520001d4f2b
+RBP: ffff888092f26540 R08: 0000000000000001 R09: ffff8880ae4318e7
+R10: 0000000000000000 R11: 0000000000000000 R12: dffffc0000000000
+R13: ffffffff87bdfb90 R14: 0000000000000000 R15: 0000000000000000
+ idr_for_each+0x113/0x220 lib/idr.c:208
+ ieee80211_free_hw+0x9b/0x2a0 net/mac80211/main.c:1412
+ mac80211_hwsim_del_radio drivers/net/wireless/mac80211_hwsim.c:3285 [inline]
+ hwsim_exit_net+0x5bc/0xc90 drivers/net/wireless/mac80211_hwsim.c:4037
+ ops_exit_list+0xb0/0x160 net/core/net_namespace.c:186
+ cleanup_net+0x4ea/0xa00 net/core/net_namespace.c:603
+ process_one_work+0x94c/0x1670 kernel/workqueue.c:2269
+ worker_thread+0x64c/0x1120 kernel/workqueue.c:2415
+ kthread+0x3b5/0x4a0 kernel/kthread.c:292
+ ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:294
+Kernel Offset: disabled
+Rebooting in 86400 seconds..
 
-We also pay 1% commission to brokers, who introduce project owners for finance or other opportunities.
-
-
-Please get back to me if you are interested for more
-
-details.
-
-
-Yours faithfully,
-
-Hashim Murrah
