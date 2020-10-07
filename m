@@ -2,306 +2,491 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 418E9286C5A
-	for <lists+linux-wireless@lfdr.de>; Thu,  8 Oct 2020 03:10:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 47E82286946
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 Oct 2020 22:40:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727454AbgJHBKq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 7 Oct 2020 21:10:46 -0400
-Received: from 6.mo175.mail-out.ovh.net ([46.105.47.107]:58449 "EHLO
-        6.mo175.mail-out.ovh.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726009AbgJHBKq (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 7 Oct 2020 21:10:46 -0400
-X-Greylist: delayed 16799 seconds by postgrey-1.27 at vger.kernel.org; Wed, 07 Oct 2020 21:10:44 EDT
-Received: from mxplan8.mail.ovh.net (unknown [10.109.143.21])
-        by mo175.mail-out.ovh.net (Postfix) with ESMTPS id 8068F3C5C076;
-        Wed,  7 Oct 2020 22:23:39 +0200 (CEST)
-Received: from awhome.eu (37.59.142.99) by mxplan8.mail.ovh.net (172.16.2.1)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.2044.4; Wed, 7 Oct 2020
- 22:23:38 +0200
-Authentication-Results: garm.ovh; auth=pass (GARM-99G00397a64730-54ee-41b6-80d3-c4b321476687,
-                    ACC92CD9FBCBF345917947E6A3A38F7D35137F5D) smtp.auth=postmaster@awhome.eu
-From:   Alexander Wetzel <alexander@wetzel-home.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=wetzel-home.de;
-        s=wetzel-home; t=1602102212;
-        bh=aQmlGPMYy1nUBL/E0J4UjwGdaSrnH2Hwlb1yEPs7tUc=;
-        h=From:Subject:To:Cc:References:Date:In-Reply-To;
-        b=fI5PjDMnTH8zLcFAgsS9AlZTEPiJNEV6jBD057mDh5/Cv/yCglCJGrD3Ck6qrxvkd
-         vPNsvtisnt2CTQ5ij5oJyNz8zJhBfw12icLx04nw1JXS/P92WcvkvjDZncZigkSGoj
-         v2V2VorqoFkhVGAIcNeENAZCFtawu8e6BWf1oVkU=
-Subject: [REGRESSION] Re: [PATCH 10/12] iwlwifi: remove wide_cmd_header field
-To:     Luca Coelho <luca@coelho.fi>, kvalo@codeaurora.org
-Cc:     linux-wireless@vger.kernel.org
-References: <20200928092321.649185-1-luca@coelho.fi>
- <iwlwifi.20200928121852.e6137861d917.I93405604eb503568688b28d3169fea7fbb88ed7e@changeid>
-Message-ID: <f20c67c4-3b9b-acc7-5e8c-998ddaf6b6ec@wetzel-home.de>
-Date:   Wed, 7 Oct 2020 22:23:27 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.3.1
+        id S1727776AbgJGUkt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 7 Oct 2020 16:40:49 -0400
+Received: from m42-4.mailgun.net ([69.72.42.4]:46886 "EHLO m42-4.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726434AbgJGUks (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 7 Oct 2020 16:40:48 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1602103246; h=Content-Transfer-Encoding: MIME-Version:
+ Message-Id: Date: Subject: Cc: To: From: Sender;
+ bh=rviyQ7fZXlqKPjtIpY8yWJH6Py4/CKSKGzMAnUwu59s=; b=cOd9ED9PRqWIE/Lw6LKLNFwUi4+cnm1Ty+fc4fA/X/NeEeBqvOKz6lf3z3+KoEQ9cf25xVRK
+ lKWgVR4jCIUSvvg63TXz10n7l1bz1LWQ8eF3s9Hzjf39KbgR0yl56d3yNHdils9HEKuQ+pD+
+ v89QAOsaOwRShYLq+6ad0BuH8ys=
+X-Mailgun-Sending-Ip: 69.72.42.4
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n04.prod.us-east-1.postgun.com with SMTP id
+ 5f7e27ce588858a30438b1a2 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 07 Oct 2020 20:40:46
+ GMT
+Sender: alokad=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id BF0A9C433C8; Wed,  7 Oct 2020 20:40:45 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+Received: from alokad-linux.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: alokad)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 25ED8C433CA;
+        Wed,  7 Oct 2020 20:40:44 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 25ED8C433CA
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=alokad@codeaurora.org
+From:   Aloka Dixit <alokad@codeaurora.org>
+To:     ath11k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org, Aloka Dixit <alokad@codeaurora.org>
+Subject: [PATCH] ath11k: FILS discovery and unsolicited broadcast probe response support
+Date:   Wed,  7 Oct 2020 13:40:36 -0700
+Message-Id: <20201007204036.19780-1-alokad@codeaurora.org>
+X-Mailer: git-send-email 2.25.0
 MIME-Version: 1.0
-In-Reply-To: <iwlwifi.20200928121852.e6137861d917.I93405604eb503568688b28d3169fea7fbb88ed7e@changeid>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Ovh-Tracer-GUID: c59fa77d-034b-4f70-bd12-41bed3017cc6
-X-Ovh-Tracer-Id: 2579155214157290717
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedujedrgeeigdduheduucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffuvfhfkffffgggjggtgfesthejredttdefjeenucfhrhhomheptehlvgigrghnuggvrhcuhggvthiivghluceorghlvgigrghnuggvrhesfigvthiivghlqdhhohhmvgdruggvqeenucggtffrrghtthgvrhhnpeejtedvhefhheegieeutdeuheetlefhveefleelffffieeuleehieffleefgeeifeenucfkpheptddrtddrtddrtddpfeejrdehledrudegvddrleelnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmohguvgepshhmthhpqdhouhhtpdhhvghlohepmhigphhlrghnkedrmhgrihhlrdhovhhhrdhnvghtpdhinhgvtheptddrtddrtddrtddpmhgrihhlfhhrohhmpegrlhgvgigrnhguvghrseifvghtiigvlhdqhhhomhgvrdguvgdprhgtphhtthhopehlihhnuhigqdifihhrvghlvghsshesvhhgvghrrdhkvghrnhgvlhdrohhrgh
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Am 28.09.20 um 11:23 schrieb Luca Coelho:
-> From: Mordechay Goodstein <mordechay.goodstein@intel.com>
-> 
-> Driver doesn't support fw without wide_cmd
-> so driver always sets it to true.  instead of setting
-> it always to true just remove the field.
-> 
+This patch adds driver support for FILS discovery and unsolicited
+broadcast probe response transmission features which are used for
+in-band discovery in 6GHz band.
+Currently this support is enabled only in 6GHz by setting hardware flags.
 
-I guess that's only true for mvm but not dvm...
+Changes include WMI commands to enable transmission, set packet
+interval, set template, and handle events.
 
-At least this patch kills my wireless using a Ultimate-N 6300.
-Reverting to commit on top of wt-2020-10-06 works.
+Signed-off-by: Aloka Dixit <alokad@codeaurora.org>
+---
+ drivers/net/wireless/ath/ath11k/mac.c |  57 ++++++++
+ drivers/net/wireless/ath/ath11k/wmi.c | 203 ++++++++++++++++++++++++++
+ drivers/net/wireless/ath/ath11k/wmi.h |  47 ++++++
+ 3 files changed, 307 insertions(+)
 
-Here the last error I got during git bisect:
+diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
+index 3f63a7bd6b59..14733c48bdff 100644
+--- a/drivers/net/wireless/ath/ath11k/mac.c
++++ b/drivers/net/wireless/ath/ath11k/mac.c
+@@ -1850,6 +1850,52 @@ static void ath11k_recalculate_mgmt_rate(struct ath11k *ar,
+ 		ath11k_warn(ar->ab, "failed to set beacon tx rate %d\n", ret);
+ }
+ 
++static int ath11k_mac_fils_discovery(struct ath11k_vif *arvif,
++				     struct ieee80211_bss_conf *info)
++{
++	struct ath11k *ar = arvif->ar;
++	struct sk_buff *tmpl;
++	int ret;
++	u32 interval;
++	bool unsol_bcast_probe_resp_enabled = false;
++
++	if (info->fils_discovery.max_interval) {
++		interval = info->fils_discovery.max_interval;
++
++		tmpl = ieee80211_get_fils_discovery_tmpl(ar->hw, arvif->vif);
++		if (tmpl)
++			ret = ath11k_wmi_fils_discovery_tmpl(ar, arvif->vdev_id,
++							     tmpl);
++	} else if (info->unsol_bcast_probe_resp_interval) {
++		unsol_bcast_probe_resp_enabled = 1;
++		interval = info->unsol_bcast_probe_resp_interval;
++
++		tmpl = ieee80211_get_unsol_bcast_probe_resp_tmpl(ar->hw,
++								 arvif->vif);
++		if (tmpl)
++			ret = ath11k_wmi_probe_resp_tmpl(ar, arvif->vdev_id,
++							 tmpl);
++	} else { /* Disable */
++		return ath11k_wmi_fils_discovery(ar, arvif->vdev_id, 0, false);
++	}
++
++	if (!tmpl) {
++		ath11k_warn(ar->ab,
++			    "mac vdev %i failed to retrieve %s template\n",
++			    arvif->vdev_id, (unsol_bcast_probe_resp_enabled ?
++			    "unsolicited broadcast probe response" :
++			    "FILS discovery"));
++		return -EPERM;
++	}
++	kfree_skb(tmpl);
++
++	if (!ret)
++		ret = ath11k_wmi_fils_discovery(ar, arvif->vdev_id, interval,
++						unsol_bcast_probe_resp_enabled);
++
++	return ret;
++}
++
+ static void ath11k_mac_op_bss_info_changed(struct ieee80211_hw *hw,
+ 					   struct ieee80211_vif *vif,
+ 					   struct ieee80211_bss_conf *info,
+@@ -2111,6 +2157,10 @@ static void ath11k_mac_op_bss_info_changed(struct ieee80211_hw *hw,
+ 		}
+ 	}
+ 
++	if (changed & BSS_CHANGED_FILS_DISCOVERY ||
++	    changed & BSS_CHANGED_UNSOL_BCAST_PROBE_RESP)
++		ath11k_mac_fils_discovery(arvif, info);
++
+ 	mutex_unlock(&ar->conf_mutex);
+ }
+ 
+@@ -6256,6 +6306,13 @@ static int __ath11k_mac_register(struct ath11k *ar)
+ 	ar->hw->wiphy->num_iftype_ext_capab =
+ 		ARRAY_SIZE(ath11k_iftypes_ext_capa);
+ 
++	if (ar->supports_6ghz) {
++		wiphy_ext_feature_set(ar->hw->wiphy,
++				      NL80211_EXT_FEATURE_FILS_DISCOVERY);
++		wiphy_ext_feature_set(ar->hw->wiphy,
++				      NL80211_EXT_FEATURE_UNSOL_BCAST_PROBE_RESP);
++	}
++
+ 	ath11k_reg_init(ar);
+ 
+ 	if (!test_bit(ATH11K_FLAG_RAW_MODE, &ab->dev_flags)) {
+diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
+index 8eca92520837..c9e241392de3 100644
+--- a/drivers/net/wireless/ath/ath11k/wmi.c
++++ b/drivers/net/wireless/ath/ath11k/wmi.c
+@@ -122,6 +122,10 @@ static const struct wmi_tlv_policy wmi_tlv_policies[] = {
+ 		= { .min_len = sizeof(struct wmi_stats_event) },
+ 	[WMI_TAG_PDEV_CTL_FAILSAFE_CHECK_EVENT]
+ 		= { .min_len = sizeof(struct wmi_pdev_ctl_failsafe_chk_event) },
++	[WMI_TAG_HOST_SWFDA_EVENT] = {
++		.min_len = sizeof(struct wmi_fils_discovery_event) },
++	[WMI_TAG_OFFLOAD_PRB_RSP_TX_STATUS_EVENT] = {
++		.min_len = sizeof(struct wmi_probe_resp_tx_status_event) },
+ };
+ 
+ #define PRIMAP(_hw_mode_) \
+@@ -3064,6 +3068,137 @@ int ath11k_wmi_send_bss_color_change_enable_cmd(struct ath11k *ar, u32 vdev_id,
+ 	return ret;
+ }
+ 
++int ath11k_wmi_fils_discovery_tmpl(struct ath11k *ar, u32 vdev_id,
++				   struct sk_buff *tmpl)
++{
++	struct wmi_tlv *tlv;
++	struct sk_buff *skb;
++	void *ptr;
++	int ret, len;
++	size_t aligned_len;
++	struct wmi_fils_discovery_tmpl_cmd *cmd;
++
++	aligned_len = roundup(tmpl->len, 4);
++	len = sizeof(*cmd) + TLV_HDR_SIZE + aligned_len;
++
++	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
++		   "WMI vdev %i set FILS discovery template\n", vdev_id);
++
++	skb = ath11k_wmi_alloc_skb(ar->wmi->wmi_ab, len);
++	if (!skb)
++		return -ENOMEM;
++
++	cmd = (struct wmi_fils_discovery_tmpl_cmd *)skb->data;
++	cmd->tlv_header = FIELD_PREP(WMI_TLV_TAG,
++				     WMI_TAG_FILS_DISCOVERY_TMPL_CMD) |
++			  FIELD_PREP(WMI_TLV_LEN, sizeof(*cmd) - TLV_HDR_SIZE);
++	cmd->vdev_id = vdev_id;
++	cmd->buf_len = tmpl->len;
++	ptr = skb->data + sizeof(*cmd);
++
++	tlv = ptr;
++	tlv->header = FIELD_PREP(WMI_TLV_TAG, WMI_TAG_ARRAY_BYTE) |
++		      FIELD_PREP(WMI_TLV_LEN, aligned_len);
++	memcpy(tlv->value, tmpl->data, tmpl->len);
++
++	ret = ath11k_wmi_cmd_send(ar->wmi, skb, WMI_FILS_DISCOVERY_TMPL_CMDID);
++	if (ret) {
++		ath11k_warn(ar->ab,
++			    "WMI vdev %i failed to send FILS discovery template command\n",
++			    vdev_id);
++		dev_kfree_skb(skb);
++	}
++	return ret;
++}
++
++int ath11k_wmi_probe_resp_tmpl(struct ath11k *ar, u32 vdev_id,
++			       struct sk_buff *tmpl)
++{
++	struct wmi_probe_tmpl_cmd *cmd;
++	struct wmi_bcn_prb_info *probe_info;
++	struct wmi_tlv *tlv;
++	struct sk_buff *skb;
++	void *ptr;
++	int ret, len;
++	size_t aligned_len = roundup(tmpl->len, 4);
++
++	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
++		   "WMI vdev %i set probe response template\n", vdev_id);
++
++	len = sizeof(*cmd) + sizeof(*probe_info) + TLV_HDR_SIZE + aligned_len;
++
++	skb = ath11k_wmi_alloc_skb(ar->wmi->wmi_ab, len);
++	if (!skb)
++		return -ENOMEM;
++
++	cmd = (struct wmi_probe_tmpl_cmd *)skb->data;
++	cmd->tlv_header = FIELD_PREP(WMI_TLV_TAG, WMI_TAG_PRB_TMPL_CMD) |
++			  FIELD_PREP(WMI_TLV_LEN, sizeof(*cmd) - TLV_HDR_SIZE);
++	cmd->vdev_id = vdev_id;
++	cmd->buf_len = tmpl->len;
++
++	ptr = skb->data + sizeof(*cmd);
++
++	probe_info = ptr;
++	len = sizeof(*probe_info);
++	probe_info->tlv_header = FIELD_PREP(WMI_TLV_TAG,
++					    WMI_TAG_BCN_PRB_INFO) |
++				 FIELD_PREP(WMI_TLV_LEN, len - TLV_HDR_SIZE);
++	probe_info->caps = 0;
++	probe_info->erp = 0;
++
++	ptr += sizeof(*probe_info);
++
++	tlv = ptr;
++	tlv->header = FIELD_PREP(WMI_TLV_TAG, WMI_TAG_ARRAY_BYTE) |
++		      FIELD_PREP(WMI_TLV_LEN, aligned_len);
++	memcpy(tlv->value, tmpl->data, tmpl->len);
++
++	ret = ath11k_wmi_cmd_send(ar->wmi, skb, WMI_PRB_TMPL_CMDID);
++	if (ret) {
++		ath11k_warn(ar->ab,
++			    "WMI vdev %i failed to send probe response template command\n",
++			    vdev_id);
++		dev_kfree_skb(skb);
++	}
++	return ret;
++}
++
++int ath11k_wmi_fils_discovery(struct ath11k *ar, u32 vdev_id, u32 interval,
++			      bool unsol_bcast_probe_resp_enabled)
++{
++	struct sk_buff *skb;
++	int ret, len;
++	struct wmi_fils_discovery_cmd *cmd;
++
++	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
++		   "WMI vdev %i set %s interval to %u TU\n",
++		   vdev_id, unsol_bcast_probe_resp_enabled ?
++		   "unsolicited broadcast probe response" : "FILS discovery",
++		   interval);
++
++	len = sizeof(*cmd);
++	skb = ath11k_wmi_alloc_skb(ar->wmi->wmi_ab, len);
++	if (!skb)
++		return -ENOMEM;
++
++	cmd = (struct wmi_fils_discovery_cmd *)skb->data;
++	cmd->tlv_header = FIELD_PREP(WMI_TLV_TAG, WMI_TAG_ENABLE_FILS_CMD) |
++			  FIELD_PREP(WMI_TLV_LEN, len - TLV_HDR_SIZE);
++	cmd->vdev_id = vdev_id;
++	cmd->interval = interval;
++	cmd->config = unsol_bcast_probe_resp_enabled;
++
++	ret = ath11k_wmi_cmd_send(ar->wmi, skb, WMI_ENABLE_FILS_CMDID);
++	if (ret) {
++		ath11k_warn(ar->ab,
++			    "WMI vdev %i failed to send FILS discovery enable/disable command\n",
++			    vdev_id);
++		dev_kfree_skb(skb);
++	}
++	return ret;
++}
++
+ static void
+ ath11k_fill_band_to_mac_param(struct ath11k_base  *soc,
+ 			      struct wmi_host_pdev_band_to_mac *band_to_mac)
+@@ -6429,6 +6564,68 @@ ath11k_wmi_pdev_temperature_event(struct ath11k_base *ab,
+ 	ath11k_thermal_event_temperature(ar, ev.temp);
+ }
+ 
++static void ath11k_fils_discovery_event(struct ath11k_base *ab,
++					struct sk_buff *skb)
++{
++	const void **tb;
++	const struct wmi_fils_discovery_event *ev;
++	int ret;
++
++	tb = ath11k_wmi_tlv_parse_alloc(ab, skb->data, skb->len, GFP_ATOMIC);
++	if (IS_ERR(tb)) {
++		ret = PTR_ERR(tb);
++		ath11k_warn(ab,
++			    "failed to parse FILS discovery event tlv %d\n",
++			    ret);
++		return;
++	}
++
++	ev = tb[WMI_TAG_HOST_SWFDA_EVENT];
++	if (!ev) {
++		ath11k_warn(ab, "failed to fetch FILS discovery event\n");
++		kfree(tb);
++		return;
++	}
++
++	ath11k_warn(ab,
++		    "FILS discovery frame expected from host for vdev_id: %u, transmission scheduled at %u, next TBTT: %u\n",
++		    ev->vdev_id, ev->fils_tt, ev->tbtt);
++
++	kfree(tb);
++}
++
++static void ath11k_probe_resp_tx_status_event(struct ath11k_base *ab,
++					      struct sk_buff *skb)
++{
++	const void **tb;
++	const struct wmi_probe_resp_tx_status_event *ev;
++	int ret;
++
++	tb = ath11k_wmi_tlv_parse_alloc(ab, skb->data, skb->len, GFP_ATOMIC);
++	if (IS_ERR(tb)) {
++		ret = PTR_ERR(tb);
++		ath11k_warn(ab,
++			    "failed to parse probe response transmission status event tlv: %d\n",
++			    ret);
++		return;
++	}
++
++	ev = tb[WMI_TAG_OFFLOAD_PRB_RSP_TX_STATUS_EVENT];
++	if (!ev) {
++		ath11k_warn(ab,
++			    "failed to fetch probe response transmission status event");
++		kfree(tb);
++		return;
++	}
++
++	if (ev->tx_status)
++		ath11k_warn(ab,
++			    "Probe response transmission failed for vdev_id %u, status %u\n",
++			    ev->vdev_id, ev->tx_status);
++
++	kfree(tb);
++}
++
+ static void ath11k_wmi_tlv_op_rx(struct ath11k_base *ab, struct sk_buff *skb)
+ {
+ 	struct wmi_cmd_hdr *cmd_hdr;
+@@ -6515,6 +6712,12 @@ static void ath11k_wmi_tlv_op_rx(struct ath11k_base *ab, struct sk_buff *skb)
+ 	case WMI_PDEV_DMA_RING_BUF_RELEASE_EVENTID:
+ 		ath11k_wmi_pdev_dma_ring_buf_release_event(ab, skb);
+ 		break;
++	case WMI_HOST_FILS_DISCOVERY_EVENTID:
++		ath11k_fils_discovery_event(ab, skb);
++		break;
++	case WMI_OFFLOAD_PROB_RESP_TX_STATUS_EVENTID:
++		ath11k_probe_resp_tx_status_event(ab, skb);
++		break;
+ 	/* add Unsupported events here */
+ 	case WMI_TBTTOFFSET_EXT_UPDATE_EVENTID:
+ 	case WMI_VDEV_DELETE_RESP_EVENTID:
+diff --git a/drivers/net/wireless/ath/ath11k/wmi.h b/drivers/net/wireless/ath/ath11k/wmi.h
+index 5a32ba0eb4f5..b722a87144b6 100644
+--- a/drivers/net/wireless/ath/ath11k/wmi.h
++++ b/drivers/net/wireless/ath/ath11k/wmi.h
+@@ -319,6 +319,7 @@ enum wmi_tlv_cmd_id {
+ 	WMI_BCN_OFFLOAD_CTRL_CMDID,
+ 	WMI_BSS_COLOR_CHANGE_ENABLE_CMDID,
+ 	WMI_VDEV_BCN_OFFLOAD_QUIET_CONFIG_CMDID,
++	WMI_FILS_DISCOVERY_TMPL_CMDID,
+ 	WMI_ADDBA_CLEAR_RESP_CMDID = WMI_TLV_CMD(WMI_GRP_BA_NEG),
+ 	WMI_ADDBA_SEND_CMDID,
+ 	WMI_ADDBA_STATUS_CMDID,
+@@ -351,6 +352,8 @@ enum wmi_tlv_cmd_id {
+ 	WMI_ROAM_CONFIGURE_MAWC_CMDID,
+ 	WMI_ROAM_SET_MBO_PARAM_CMDID,
+ 	WMI_ROAM_PER_CONFIG_CMDID,
++	WMI_ROAM_BTM_CONFIG_CMDID,
++	WMI_ENABLE_FILS_CMDID,
+ 	WMI_OFL_SCAN_ADD_AP_PROFILE = WMI_TLV_CMD(WMI_GRP_OFL_SCAN),
+ 	WMI_OFL_SCAN_REMOVE_AP_PROFILE,
+ 	WMI_OFL_SCAN_PERIOD,
+@@ -642,6 +645,8 @@ enum wmi_tlv_event_id {
+ 	WMI_MGMT_TX_COMPLETION_EVENTID,
+ 	WMI_MGMT_TX_BUNDLE_COMPLETION_EVENTID,
+ 	WMI_TBTTOFFSET_EXT_UPDATE_EVENTID,
++	WMI_OFFCHAN_DATA_TX_COMPLETION_EVENTID,
++	WMI_HOST_FILS_DISCOVERY_EVENTID,
+ 	WMI_TX_DELBA_COMPLETE_EVENTID = WMI_TLV_CMD(WMI_GRP_BA_NEG),
+ 	WMI_TX_ADDBA_COMPLETE_EVENTID,
+ 	WMI_BA_RSP_SSN_EVENTID,
+@@ -1810,6 +1815,7 @@ enum wmi_tlv_tag {
+ 	/* TODO add all the missing cmds */
+ 	WMI_TAG_PDEV_PEER_PKTLOG_FILTER_CMD = 0x301,
+ 	WMI_TAG_PDEV_PEER_PKTLOG_FILTER_INFO,
++	WMI_TAG_FILS_DISCOVERY_TMPL_CMD = 0x344,
+ 	WMI_TAG_MAX
+ };
+ 
+@@ -4076,6 +4082,17 @@ struct wmi_peer_assoc_conf_arg {
+ 	const u8 *macaddr;
+ };
+ 
++struct wmi_fils_discovery_event {
++	u32 vdev_id;
++	u32 fils_tt;
++	u32 tbtt;
++} __packed;
++
++struct wmi_probe_resp_tx_status_event {
++	u32 vdev_id;
++	u32 tx_status;
++} __packed;
++
+ /*
+  * PDEV statistics
+  */
+@@ -4908,6 +4925,30 @@ struct wmi_dma_buf_release_meta_data {
+ 	u32 ch_width;
+ } __packed;
+ 
++enum wmi_fils_discovery_cmd_type {
++	WMI_FILS_DISCOVERY_CMD,
++	WMI_UNSOL_BCAST_PROBE_RESP,
++};
++
++struct wmi_fils_discovery_cmd {
++	u32 tlv_header;
++	u32 vdev_id;
++	u32 interval;
++	u32 config; /* enum wmi_fils_discovery_cmd_type */
++} __packed;
++
++struct wmi_fils_discovery_tmpl_cmd {
++	u32 tlv_header;
++	u32 vdev_id;
++	u32 buf_len;
++} __packed;
++
++struct wmi_probe_tmpl_cmd {
++	u32 tlv_header;
++	u32 vdev_id;
++	u32 buf_len;
++} __packed;
++
+ struct target_resource_config {
+ 	u32 num_vdevs;
+ 	u32 num_peers;
+@@ -5121,4 +5162,10 @@ int ath11k_wmi_vdev_spectral_enable(struct ath11k *ar, u32 vdev_id,
+ 				    u32 trigger, u32 enable);
+ int ath11k_wmi_vdev_spectral_conf(struct ath11k *ar,
+ 				  struct ath11k_wmi_vdev_spectral_conf_param *param);
++int ath11k_wmi_fils_discovery_tmpl(struct ath11k *ar, u32 vdev_id,
++				   struct sk_buff *tmpl);
++int ath11k_wmi_fils_discovery(struct ath11k *ar, u32 vdev_id, u32 interval,
++			      bool unsol_bcast_probe_resp_enabled);
++int ath11k_wmi_probe_resp_tmpl(struct ath11k *ar, u32 vdev_id,
++			       struct sk_buff *tmpl);
+ #endif
 
+base-commit: 1c1faf94d06b5d2fb96a8bbc45f643ef78e4a296
+-- 
+2.25.0
 
-[  375.671958] iwlwifi 0000:03:00.0: Radio type=0x0-0x3-0x1
-[  375.739218] iwlwifi 0000:03:00.0: Microcode SW error detected. 
-Restarting 0x82000000.
-[  375.739226] iwlwifi 0000:03:00.0: Loaded firmware version: 9.221.4.1 
-build 25532 6000-4.ucode
-[  375.739349] iwlwifi 0000:03:00.0: Start IWL Error Log Dump:
-[  375.739353] iwlwifi 0000:03:00.0: Status: 0x00000000, count: 5
-[  375.739357] iwlwifi 0000:03:00.0: 0x00000007 | BAD_COMMAND
-[  375.739361] iwlwifi 0000:03:00.0: 0x00000D10 | uPc
-[  375.739365] iwlwifi 0000:03:00.0: 0x00000D0E | branchlink1
-[  375.739368] iwlwifi 0000:03:00.0: 0x00000D0E | branchlink2
-[  375.739372] iwlwifi 0000:03:00.0: 0x000014DE | interruptlink1
-[  375.739376] iwlwifi 0000:03:00.0: 0x00000000 | interruptlink2
-[  375.739380] iwlwifi 0000:03:00.0: 0x00000000 | data1
-[  375.739383] iwlwifi 0000:03:00.0: 0x00000001 | data2
-[  375.739387] iwlwifi 0000:03:00.0: 0x00000463 | line
-[  375.739391] iwlwifi 0000:03:00.0: 0x0000B337 | beacon time
-[  375.739394] iwlwifi 0000:03:00.0: 0x0000DCC9 | tsf low
-[  375.739398] iwlwifi 0000:03:00.0: 0x00000000 | tsf hi
-[  375.739402] iwlwifi 0000:03:00.0: 0x00000000 | time gp1
-[  375.739406] iwlwifi 0000:03:00.0: 0x0000DCCD | time gp2
-[  375.739409] iwlwifi 0000:03:00.0: 0x00000000 | time gp3
-[  375.739413] iwlwifi 0000:03:00.0: 0x000109DD | uCode version
-[  375.739417] iwlwifi 0000:03:00.0: 0x00000074 | hw version
-[  375.739420] iwlwifi 0000:03:00.0: 0x0048D304 | board version
-[  375.739424] iwlwifi 0000:03:00.0: 0x00704001 | hcmd
-[  375.739427] iwlwifi 0000:03:00.0: 0x00122080 | isr0
-[  375.739431] iwlwifi 0000:03:00.0: 0x00000000 | isr1
-[  375.739435] iwlwifi 0000:03:00.0: 0x00000002 | isr2
-[  375.739438] iwlwifi 0000:03:00.0: 0x014400C0 | isr3
-[  375.739442] iwlwifi 0000:03:00.0: 0x00000000 | isr4
-[  375.739446] iwlwifi 0000:03:00.0: 0x01000112 | isr_pref
-[  375.739449] iwlwifi 0000:03:00.0: 0x0001BB08 | wait_event
-[  375.739453] iwlwifi 0000:03:00.0: 0x00000000 | l2p_control
-[  375.739457] iwlwifi 0000:03:00.0: 0x00000000 | l2p_duration
-[  375.739460] iwlwifi 0000:03:00.0: 0x00000000 | l2p_mhvalid
-[  375.739464] iwlwifi 0000:03:00.0: 0x00000000 | l2p_addr_match
-[  375.739468] iwlwifi 0000:03:00.0: 0x00000047 | lmpm_pmg_sel
-[  375.739471] iwlwifi 0000:03:00.0: 0x02061040 | timestamp
-[  375.739475] iwlwifi 0000:03:00.0: 0x00000008 | flow_handler
-[  375.739555] iwlwifi 0000:03:00.0: Log capacity 1024 is bogus, limit 
-to 512 entries
-[  375.739559] iwlwifi 0000:03:00.0: Start IWL Event Log Dump: display 
-last 20 entries
-[  375.739608] iwlwifi 0000:03:00.0: EVT_LOGT:0000056468:0x00000054:1334
-[  375.739646] iwlwifi 0000:03:00.0: EVT_LOGT:0000056469:0x01508c46:1334
-[  375.739680] iwlwifi 0000:03:00.0: EVT_LOGT:0000056470:0x00000017:0484
-[  375.739714] iwlwifi 0000:03:00.0: EVT_LOGT:0000056471:0x00000000:1334
-[  375.739749] iwlwifi 0000:03:00.0: EVT_LOGT:0000056475:0x00000000:1334
-[  375.739782] iwlwifi 0000:03:00.0: EVT_LOGT:0000056479:0x00000046:1334
-[  375.739816] iwlwifi 0000:03:00.0: EVT_LOGT:0000056479:0x00000046:1334
-[  375.739850] iwlwifi 0000:03:00.0: EVT_LOGT:0000056481:0x00000000:1334
-[  375.739883] iwlwifi 0000:03:00.0: EVT_LOGT:0000056485:0x00000000:1334
-[  375.739917] iwlwifi 0000:03:00.0: EVT_LOGT:0000056488:0x00000046:1334
-[  375.739950] iwlwifi 0000:03:00.0: EVT_LOGT:0000056489:0x00008c46:1334
-[  375.739984] iwlwifi 0000:03:00.0: EVT_LOGT:0000056490:0x00000000:1334
-[  375.740017] iwlwifi 0000:03:00.0: EVT_LOGT:0000056494:0x00000000:1334
-[  375.740051] iwlwifi 0000:03:00.0: EVT_LOGT:0000056497:0x00000054:1334
-[  375.740085] iwlwifi 0000:03:00.0: EVT_LOGT:0000056498:0x01508c46:1334
-[  375.740119] iwlwifi 0000:03:00.0: EVT_LOGT:0000056499:0x00000018:0484
-[  375.740152] iwlwifi 0000:03:00.0: EVT_LOGT:0000056506:0x00000019:0484
-[  375.740186] iwlwifi 0000:03:00.0: EVT_LOGT:0000056515:0x00000000:0661
-[  375.740226] iwlwifi 0000:03:00.0: EVT_LOGT:0000056521:0x00704001:0401
-[  375.740259] iwlwifi 0000:03:00.0: EVT_LOGT:0000056542:0x00000100:0125
-[  375.740315] iwlwifi 0000:03:00.0: Error Reply type 0x00000000 cmd 
-REPLY_ERROR (0x01) seq 0x0070 ser 0x00000001
-[  375.740339] iwlwifi 0000:03:00.0: FW error in SYNC CMD UNKNOWN
-[  375.740347] CPU: 6 PID: 354 Comm: wpa_supplicant Tainted: G       T 
-5.9.0-rc6+ #33
-[  375.740351] Hardware name: LENOVO 2438CTO/2438CTO, BIOS G5ETB6WW 
-(2.76 ) 09/09/2019
-[  375.740356] Call Trace:
-[  375.740366]  dump_stack+0x77/0xa0
-[  375.740380]  iwl_trans_pcie_send_hcmd+0x43e/0x450 [iwlwifi]
-[  375.740387]  ? wait_woken+0xb0/0xb0
-[  375.740397]  iwl_trans_send_cmd+0x73/0x160 [iwlwifi]
-[  375.740406]  iwl_send_calib_results+0x79/0xd0 [iwldvm]
-[  375.740414]  iwl_load_ucode_wait_alive+0x184/0x1d0 [iwldvm]
-[  375.740421]  ? iwl_send_calib_cfg+0xc0/0xc0 [iwldvm]
-[  375.740426]  ? __local_bh_enable_ip+0x74/0xb0
-[  375.740433]  iwl_run_init_ucode+0x90/0x130 [iwldvm]
-[  375.740439]  ? iwl_alive_fn+0x80/0x80 [iwldvm]
-[  375.740446]  iwlagn_mac_start+0xd2/0x2a0 [iwldvm]
-[  375.740466]  drv_start+0x79/0x230 [mac80211]
-[  375.740483]  ieee80211_do_open+0x1c4/0xb30 [mac80211]
-[  375.740499]  ? ieee80211_check_concurrent_iface+0x151/0x1c0 [mac80211]
-[  375.740505]  __dev_open+0xed/0x1a0
-[  375.740511]  __dev_change_flags+0x1a0/0x200
-[  375.740515]  ? dev_load+0x69/0x140
-[  375.740520]  dev_change_flags+0x21/0x60
-[  375.740525]  devinet_ioctl+0x701/0x8f0
-[  375.740530]  inet_ioctl+0x194/0x1d0
-[  375.740536]  sock_do_ioctl+0x3e/0x130
-[  375.740542]  sock_ioctl+0x259/0x3e0
-[  375.740548]  __x64_sys_ioctl+0x8d/0xc0
-[  375.740554]  do_syscall_64+0x33/0x80
-[  375.740560]  entry_SYSCALL_64_after_hwframe+0x44/0xa9
-[  375.740565] RIP: 0033:0x7fc781e68fd7
-[  375.740570] Code: 89 d8 48 f7 d8 49 39 c4 72 b9 e8 24 ff ff ff 85 c0 
-78 be 5b 4c 89 e0 5d 41 5c c3 0f 1f 84 00 00 00 00 00 b8 10 00 00 00 0f 
-05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d 61 5e 0c 00 f7 d8 64 89 01 48
-[  375.740575] RSP: 002b:00007fffb94c1828 EFLAGS: 00000246 ORIG_RAX: 
-0000000000000010
-[  375.740580] RAX: ffffffffffffffda RBX: 0000000000000001 RCX: 
-00007fc781e68fd7
-[  375.740584] RDX: 00007fffb94c1830 RSI: 0000000000008914 RDI: 
-0000000000000007
-[  375.740588] RBP: 0000000000000007 R08: 0000000000000007 R09: 
-0000560db64d3010
-[  375.740592] R10: 00007fc781f2fba0 R11: 0000000000000246 R12: 
-0000000000000000
-[  375.740596] R13: 0000560db64e93a0 R14: 00007fffb94c1830 R15: 
-0000000000000000
-[  375.740602] iwlwifi 0000:03:00.0: Error -5 on calib cmd 15
-[  375.740608] iwlwifi 0000:03:00.0: Could not complete ALIVE transition: -5
-[  375.752211] iwlwifi 0000:03:00.0: Failed to run INIT ucode: -5
-[  375.752251] iwlwifi 0000:03:00.0: Unable to initialize device.
-[  375.752305] ieee80211 phy4: Hardware restart was requested
-[  375.766178] iwlwifi 0000:03:00.0: Radio type=0x0-0x3-0x1
-[  375.829450] iwlwifi 0000:03:00.0: Microcode SW error detected. 
-Restarting 0x82000000.
-[  375.829482] iwlwifi 0000:03:00.0: Loaded firmware version: 9.221.4.1 
-build 25532 6000-4.ucode
-[  375.829630] iwlwifi 0000:03:00.0: Start IWL Error Log Dump:
-[  375.829634] iwlwifi 0000:03:00.0: Status: 0x00000000, count: 5
-[  375.829638] iwlwifi 0000:03:00.0: 0x00000007 | BAD_COMMAND
-[  375.829641] iwlwifi 0000:03:00.0: 0x00000D10 | uPc
-[  375.829645] iwlwifi 0000:03:00.0: 0x00000D0E | branchlink1
-[  375.829648] iwlwifi 0000:03:00.0: 0x00000D0E | branchlink2
-[  375.829652] iwlwifi 0000:03:00.0: 0x000014DE | interruptlink1
-[  375.829655] iwlwifi 0000:03:00.0: 0x00000000 | interruptlink2
-[  375.829659] iwlwifi 0000:03:00.0: 0x00000000 | data1
-[  375.829663] iwlwifi 0000:03:00.0: 0x00000001 | data2
-[  375.829666] iwlwifi 0000:03:00.0: 0x00000463 | line
-[  375.829670] iwlwifi 0000:03:00.0: 0x0000C31E | beacon time
-[  375.829673] iwlwifi 0000:03:00.0: 0x0000CCE2 | tsf low
-[  375.829677] iwlwifi 0000:03:00.0: 0x00000000 | tsf hi
-[  375.829680] iwlwifi 0000:03:00.0: 0x00000000 | time gp1
-[  375.829684] iwlwifi 0000:03:00.0: 0x0000CCE7 | time gp2
-[  375.829687] iwlwifi 0000:03:00.0: 0x00000000 | time gp3
-[  375.829691] iwlwifi 0000:03:00.0: 0x000109DD | uCode version
-[  375.829695] iwlwifi 0000:03:00.0: 0x00000074 | hw version
-[  375.829698] iwlwifi 0000:03:00.0: 0x0048D304 | board version
-[  375.829702] iwlwifi 0000:03:00.0: 0x00704001 | hcmd
-[  375.829705] iwlwifi 0000:03:00.0: 0x00122080 | isr0
-[  375.829709] iwlwifi 0000:03:00.0: 0x00000000 | isr1
-[  375.829712] iwlwifi 0000:03:00.0: 0x00000002 | isr2
-[  375.829716] iwlwifi 0000:03:00.0: 0x014000C0 | isr3
-[  375.829719] iwlwifi 0000:03:00.0: 0x00000000 | isr4
-[  375.829723] iwlwifi 0000:03:00.0: 0x01000112 | isr_pref
-[  375.829726] iwlwifi 0000:03:00.0: 0x0001BB08 | wait_event
-[  375.829730] iwlwifi 0000:03:00.0: 0x00000000 | l2p_control
-[  375.829733] iwlwifi 0000:03:00.0: 0x00000000 | l2p_duration
-[  375.829737] iwlwifi 0000:03:00.0: 0x00000000 | l2p_mhvalid
-[  375.829740] iwlwifi 0000:03:00.0: 0x00000000 | l2p_addr_match
-[  375.829744] iwlwifi 0000:03:00.0: 0x00000047 | lmpm_pmg_sel
-[  375.829747] iwlwifi 0000:03:00.0: 0x02061040 | timestamp
-[  375.829751] iwlwifi 0000:03:00.0: 0x00000008 | flow_handler
-[  375.829832] iwlwifi 0000:03:00.0: Log capacity 1024 is bogus, limit 
-to 512 entries
-[  375.829836] iwlwifi 0000:03:00.0: Start IWL Event Log Dump: display 
-last 20 entries
-[  375.829880] iwlwifi 0000:03:00.0: EVT_LOGT:0000052398:0x00000054:1334
-[  375.829918] iwlwifi 0000:03:00.0: EVT_LOGT:0000052399:0x01508c46:1334
-[  375.829951] iwlwifi 0000:03:00.0: EVT_LOGT:0000052400:0x00000017:0484
-[  375.829985] iwlwifi 0000:03:00.0: EVT_LOGT:0000052402:0x00000000:1334
-[  375.830018] iwlwifi 0000:03:00.0: EVT_LOGT:0000052405:0x00000000:1334
-[  375.830052] iwlwifi 0000:03:00.0: EVT_LOGT:0000052409:0x00000046:1334
-[  375.830086] iwlwifi 0000:03:00.0: EVT_LOGT:0000052409:0x00000046:1334
-[  375.830120] iwlwifi 0000:03:00.0: EVT_LOGT:0000052411:0x00000000:1334
-[  375.830153] iwlwifi 0000:03:00.0: EVT_LOGT:0000052415:0x00000000:1334
-[  375.830187] iwlwifi 0000:03:00.0: EVT_LOGT:0000052418:0x00000046:1334
-[  375.830221] iwlwifi 0000:03:00.0: EVT_LOGT:0000052419:0x00008c46:1334
-[  375.830254] iwlwifi 0000:03:00.0: EVT_LOGT:0000052420:0x00000000:1334
-[  375.830288] iwlwifi 0000:03:00.0: EVT_LOGT:0000052424:0x00000000:1334
-[  375.830321] iwlwifi 0000:03:00.0: EVT_LOGT:0000052427:0x00000054:1334
-[  375.830355] iwlwifi 0000:03:00.0: EVT_LOGT:0000052428:0x01508c46:1334
-[  375.830388] iwlwifi 0000:03:00.0: EVT_LOGT:0000052429:0x00000018:0484
-[  375.830422] iwlwifi 0000:03:00.0: EVT_LOGT:0000052436:0x00000019:0484
-[  375.830455] iwlwifi 0000:03:00.0: EVT_LOGT:0000052445:0x00000000:0661
-[  375.830489] iwlwifi 0000:03:00.0: EVT_LOGT:0000052451:0x00704001:0401
-[  375.830522] iwlwifi 0000:03:00.0: EVT_LOGT:0000052471:0x00000100:0125
-[  375.830604] iwlwifi 0000:03:00.0: Error Reply type 0x00000000 cmd 
-REPLY_ERROR (0x01) seq 0x0070 ser 0x00000001
-[  375.830615] iwlwifi 0000:03:00.0: FW error in SYNC CMD UNKNOWN
-[  375.830624] CPU: 6 PID: 354 Comm: wpa_supplicant Tainted: G       T 
-5.9.0-rc6+ #33
-[  375.830629] Hardware name: LENOVO 2438CTO/2438CTO, BIOS G5ETB6WW 
-(2.76 ) 09/09/2019
-[  375.830633] Call Trace:
-[  375.830644]  dump_stack+0x77/0xa0
-[  375.830668]  iwl_trans_pcie_send_hcmd+0x43e/0x450 [iwlwifi]
-[  375.830675]  ? wait_woken+0xb0/0xb0
-[  375.830685]  iwl_trans_send_cmd+0x73/0x160 [iwlwifi]
-[  375.830694]  iwl_send_calib_results+0x79/0xd0 [iwldvm]
-[  375.830701]  iwl_load_ucode_wait_alive+0x184/0x1d0 [iwldvm]
-[  375.830708]  ? iwl_send_calib_cfg+0xc0/0xc0 [iwldvm]
-[  375.830713]  ? __local_bh_enable_ip+0x74/0xb0
-[  375.830720]  iwl_run_init_ucode+0x90/0x130 [iwldvm]
-[  375.830726]  ? iwl_alive_fn+0x80/0x80 [iwldvm]
-[  375.830732]  iwlagn_mac_start+0xd2/0x2a0 [iwldvm]
-[  375.830752]  drv_start+0x79/0x230 [mac80211]
-[  375.830769]  ieee80211_do_open+0x1c4/0xb30 [mac80211]
-[  375.830784]  ? ieee80211_check_concurrent_iface+0x151/0x1c0 [mac80211]
-[  375.830791]  __dev_open+0xed/0x1a0
-[  375.830796]  __dev_change_flags+0x1a0/0x200
-[  375.830801]  ? dev_load+0x69/0x140
-[  375.830806]  dev_change_flags+0x21/0x60
-[  375.830811]  devinet_ioctl+0x701/0x8f0
-[  375.830816]  inet_ioctl+0x194/0x1d0
-[  375.830822]  sock_do_ioctl+0x3e/0x130
-[  375.830827]  sock_ioctl+0x259/0x3e0
-[  375.830833]  __x64_sys_ioctl+0x8d/0xc0
-[  375.830838]  do_syscall_64+0x33/0x80
-[  375.830845]  entry_SYSCALL_64_after_hwframe+0x44/0xa9
-[  375.830850] RIP: 0033:0x7fc781e68fd7
-[  375.830856] Code: 89 d8 48 f7 d8 49 39 c4 72 b9 e8 24 ff ff ff 85 c0 
-78 be 5b 4c 89 e0 5d 41 5c c3 0f 1f 84 00 00 00 00 00 b8 10 00 00 00 0f 
-05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d 61 5e 0c 00 f7 d8 64 89 01 48
-[  375.830860] RSP: 002b:00007fffb94c16c8 EFLAGS: 00000246 ORIG_RAX: 
-0000000000000010
-[  375.830865] RAX: ffffffffffffffda RBX: 0000000000000001 RCX: 
-00007fc781e68fd7
-[  375.830869] RDX: 00007fffb94c16d0 RSI: 0000000000008914 RDI: 
-0000000000000008
-[  375.830873] RBP: 0000000000000008 R08: 0000000000000000 R09: 
-0000000000000007
-[  375.830877] R10: ffffffffffffffc8 R11: 0000000000000246 R12: 
-0000000000000000
-[  375.830881] R13: 0000560db6511e98 R14: 00007fffb94c16d0 R15: 
-00007fffb94c1830
-[  375.830887] iwlwifi 0000:03:00.0: Error -5 on calib cmd 15
-[  375.830893] iwlwifi 0000:03:00.0: Could not complete ALIVE transition: -5
-[  375.842315] iwlwifi 0000:03:00.0: Failed to run INIT ucode: -5
-[  375.842360] iwlwifi 0000:03:00.0: Unable to initialize device.
-[  375.842419] ieee80211 phy4: Hardware restart was requested
