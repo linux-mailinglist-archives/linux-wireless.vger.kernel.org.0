@@ -2,70 +2,125 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C26BE287139
-	for <lists+linux-wireless@lfdr.de>; Thu,  8 Oct 2020 11:09:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 97DDC2871FB
+	for <lists+linux-wireless@lfdr.de>; Thu,  8 Oct 2020 11:51:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728611AbgJHJJY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 8 Oct 2020 05:09:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35524 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725802AbgJHJJW (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 8 Oct 2020 05:09:22 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17318C061755
-        for <linux-wireless@vger.kernel.org>; Thu,  8 Oct 2020 02:09:22 -0700 (PDT)
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.94)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1kQRvM-001VLH-BN; Thu, 08 Oct 2020 11:09:20 +0200
-Message-ID: <7b0080517b301ccd32d03b25b2f16663238959df.camel@sipsolutions.net>
-Subject: Re: [PATCH v2] cfg80211: add support to configure HE MCS for beacon
- rate
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Rajkumar Manoharan <rmanohar@codeaurora.org>
-Cc:     linux-wireless@vger.kernel.org
-Date:   Thu, 08 Oct 2020 11:09:19 +0200
-In-Reply-To: <e5b99d2b7215841b184ddcec5ca8498f27795547.camel@sipsolutions.net> (sfid-20201008_110659_738848_40D7EFF9)
-References: <1601762257-14934-1-git-send-email-rmanohar@codeaurora.org>
-         <e5b99d2b7215841b184ddcec5ca8498f27795547.camel@sipsolutions.net>
-         (sfid-20201008_110659_738848_40D7EFF9)
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.5 (3.36.5-1.fc32) 
+        id S1729356AbgJHJvF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 8 Oct 2020 05:51:05 -0400
+Received: from m42-4.mailgun.net ([69.72.42.4]:56790 "EHLO m42-4.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729231AbgJHJvE (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 8 Oct 2020 05:51:04 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1602150664; h=Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Message-ID: In-Reply-To: Date: References: Subject: Cc:
+ To: From: Sender; bh=nlXSo1WC6dBplvW6l8S+mM5RRz5OBfe21tJnXYaiLbs=; b=dY57ec3Mh1fj9yqbpjCHzOH0jfx0y+HMke9p4BQHa+PajGkJ23Mcs/d1BFhhlylEvsGbyMbJ
+ h+U2lzwCH7BAg/ePxBkaNlAnaU1XevwYoJ5JDJ/l5g5jpB8W2yUlQNpyKtRc06cfzliKNitd
+ HmTMatZuBhTaz6ofBxCOjUY1YSA=
+X-Mailgun-Sending-Ip: 69.72.42.4
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n01.prod.us-east-1.postgun.com with SMTP id
+ 5f7ee107aad2c3cd1caf0156 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 08 Oct 2020 09:51:03
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 465B6C433FE; Thu,  8 Oct 2020 09:51:03 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 9E5BAC433CB;
+        Thu,  8 Oct 2020 09:51:00 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 9E5BAC433CB
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Jerome Pouiller <Jerome.Pouiller@silabs.com>,
+        devel@driverdev.osuosl.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        "David S . Miller" <davem@davemloft.net>
+Subject: Re: [PATCH 0/7] wfx: move out from the staging area
+References: <20201007101943.749898-1-Jerome.Pouiller@silabs.com>
+        <20201007105513.GA1078344@kroah.com> <87ft6p2n0h.fsf@codeaurora.org>
+Date:   Thu, 08 Oct 2020 12:50:58 +0300
+In-Reply-To: <87ft6p2n0h.fsf@codeaurora.org> (Kalle Valo's message of "Thu, 08
+        Oct 2020 10:30:06 +0300")
+Message-ID: <877ds12ghp.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, 2020-10-08 at 11:06 +0200, Johannes Berg wrote:
-> On Sat, 2020-10-03 at 14:57 -0700, Rajkumar Manoharan wrote:
-> > This allows an option to configure a single HE MCS beacon tx rate.
-> > 
-> > Signed-off-by: Rajkumar Manoharan <rmanohar@codeaurora.org>
-> > ---
-> > v2: clear mcs ratemask when beacon tx rate is not set.
-> 
-> I can't believe I didn't realize this before, but ...
+Kalle Valo <kvalo@codeaurora.org> writes:
 
-Never mind that comment ... it wasn't there before, I was confused :)
+> Greg Kroah-Hartman <gregkh@linuxfoundation.org> writes:
+>
+>> On Wed, Oct 07, 2020 at 12:19:36PM +0200, Jerome Pouiller wrote:
+>>> From: J=C3=A9r=C3=B4me Pouiller <jerome.pouiller@silabs.com>
+>>>=20
+>>> I think the wfx driver is now mature enough to be accepted in the
+>>> drivers/net/wireless directory.
+>>>=20
+>>> There is still one item on the TODO list. It is an idea to improve the =
+rate
+>>> control in some particular cases[1]. However, the current performances =
+of the
+>>> driver seem to satisfy everyone. In add, the suggested change is large =
+enough.
+>>> So, I would prefer to implement it only if it really solves an issue. I=
+ think it
+>>> is not an obstacle to move the driver out of the staging area.
+>>>=20
+>>> In order to comply with the last rules for the DT bindings, I have conv=
+erted the
+>>> documentation to yaml. I am moderately happy with the result. Especiall=
+y, for
+>>> the description of the binding. Any comments are welcome.
+>>>=20
+>>> The series also update the copyrights dates of the files. I don't know =
+exactly
+>>> how this kind of changes should be sent. It's a bit weird to change all=
+ the
+>>> copyrights in one commit, but I do not see any better way.
+>>>=20
+>>> I also include a few fixes I have found these last weeks.
+>>>=20
+>>> [1] https://lore.kernel.org/lkml/3099559.gv3Q75KnN1@pc-42
+>>
+>> I'll take the first 6 patches here, the last one you should work with
+>> the wireless maintainers to get reviewed.
+>>
+>> Maybe that might want to wait until after 5.10-rc1 is out, with all of
+>> these changes in it, making it an easier move.
+>
+> Yes, the driver needs to be reviewed in linux-wireless list. I recommend
+> submitting the whole driver in a patchset with one file per patch, which
+> seems to be the easiest way to review a full driver. The final move will
+> be in just one commit moving the driver, just like patch 7 does here. As
+> an example see how wilc1000 review was done.
+>
+> Device tree bindings needs to be reviewed by the DT maintainer so CC
+> devicetree on that patch.
 
-> I mean, why not just skip the
-> 
->         /* Default to all rates enabled */
->         for (i = 0; i < NUM_NL80211_BANDS; i++) {
-> 		[...]
-> 	}
-> 
-> code? Right now you're first setting it, and then clearing it again when
-> is_beacon_tx_rate is set ...
-> 
-> 
-> I'd prefer a "default_all_enabled" parameter, and then call the above
-> loop conditionally on it (perhaps moving it to a separate function to
-> not have all the deep indentation to worry about).
+BTW, I wrote some instructions for new wireless drivers:
 
-And maybe that should be a separate patch.
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
+hes#new_driver
 
-johannes
+--=20
+https://patchwork.kernel.org/project/linux-wireless/list/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
+hes
