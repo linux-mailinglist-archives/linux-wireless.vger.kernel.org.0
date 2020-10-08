@@ -2,121 +2,102 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B1BF6286F6E
-	for <lists+linux-wireless@lfdr.de>; Thu,  8 Oct 2020 09:30:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 84A6B286FAC
+	for <lists+linux-wireless@lfdr.de>; Thu,  8 Oct 2020 09:40:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725979AbgJHHaU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 8 Oct 2020 03:30:20 -0400
-Received: from m42-4.mailgun.net ([69.72.42.4]:11877 "EHLO m42-4.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725915AbgJHHaU (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 8 Oct 2020 03:30:20 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1602142219; h=Content-Transfer-Encoding: Content-Type:
- MIME-Version: Message-ID: In-Reply-To: Date: References: Subject: Cc:
- To: From: Sender; bh=BSHe7bjq6nASZP/I6WI8Us5JI4n8DYQ9onuwRyS8E8Y=; b=t+x4Hw0F4hyrcrgtxMzDGTcXn1DuP8Q6MmjoLqtsKIi7HKrqqIusWm/shKU14C8DoRKaAvIF
- QIHhKtX8CnYgs2CQK43dBQSMGCjKObUhX0nIXLiwQtQAcI69PHIKMmz8aHsG6g8ETXja3R4O
- AVlLchEQnxJsrqDaoVg6fzVBETU=
-X-Mailgun-Sending-Ip: 69.72.42.4
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n04.prod.us-east-1.postgun.com with SMTP id
- 5f7ec004aad2c3cd1c82bee3 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 08 Oct 2020 07:30:12
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 541C2C433FF; Thu,  8 Oct 2020 07:30:11 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 0E4E3C433F1;
-        Thu,  8 Oct 2020 07:30:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 0E4E3C433F1
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Jerome Pouiller <Jerome.Pouiller@silabs.com>,
-        devel@driverdev.osuosl.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        "David S . Miller" <davem@davemloft.net>
-Subject: Re: [PATCH 0/7] wfx: move out from the staging area
-References: <20201007101943.749898-1-Jerome.Pouiller@silabs.com>
-        <20201007105513.GA1078344@kroah.com>
-Date:   Thu, 08 Oct 2020 10:30:06 +0300
-In-Reply-To: <20201007105513.GA1078344@kroah.com> (Greg Kroah-Hartman's
-        message of "Wed, 7 Oct 2020 12:55:13 +0200")
-Message-ID: <87ft6p2n0h.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        id S1727376AbgJHHk0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 8 Oct 2020 03:40:26 -0400
+Received: from mail-io1-f80.google.com ([209.85.166.80]:48712 "EHLO
+        mail-io1-f80.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727820AbgJHHkU (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 8 Oct 2020 03:40:20 -0400
+Received: by mail-io1-f80.google.com with SMTP id u3so3158327iow.15
+        for <linux-wireless@vger.kernel.org>; Thu, 08 Oct 2020 00:40:18 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
+        bh=sY2IwiMHaNHjrlHF4HKmprZAKOkbqITB/BHAQtltvXw=;
+        b=G5uoQ7isRNkVFCZ2EnJLjjyR/gMoRlUTAKJt14pToh/5xul80agAkoY4L7INe9dany
+         AHgcZVGGgXyHmmUBMkdonY0Q8XgdMC4rXCWtgB+JKCbynOinzJ2mJaHoiv30T7iYp4sm
+         xLEn9otdH6Kmyy5WswyuU7qOYTBrqBxgrmXGe/xwoKBIonM0eBeMh8BzpJjPhDgL1n0O
+         OXCl/mvUKy84IZrtz0+l0dUbrDWZw/SNS/B/2uip46yl8goPXVkv9X94uwy5vS4yWs49
+         veG5FmU9xbIhWltkfPzFPx9NCVnovLSgtSWwsqIMNNyyggiijBBXOdpzGnvoq0DSUUvT
+         V73g==
+X-Gm-Message-State: AOAM532OVwixmgjiNQtOE67at45Zh333pxBO3TKLOH0EsdIgBUiI1r66
+        luE2fm9rE/UNHAKtLyZY+VDX4jPQQ1RF4mkZP5e052BR34iO
+X-Google-Smtp-Source: ABdhPJwu338smk3gnI3WmrD/qM6p1msBcGtR1Ta0xpsNG36bwiBcJaaXiNnNP6YdutsZLGdAJD1QSK7cyG98n9+UUaew2TcaV5Gs
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+X-Received: by 2002:a6b:b5c2:: with SMTP id e185mr4988645iof.106.1602142818040;
+ Thu, 08 Oct 2020 00:40:18 -0700 (PDT)
+Date:   Thu, 08 Oct 2020 00:40:18 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <0000000000008c848805b123f174@google.com>
+Subject: WARNING in ieee80211_ibss_csa_beacon
+From:   syzbot <syzbot+b6c9fe29aefe68e4ad34@syzkaller.appspotmail.com>
+To:     davem@davemloft.net, johannes@sipsolutions.net, kuba@kernel.org,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Greg Kroah-Hartman <gregkh@linuxfoundation.org> writes:
+Hello,
 
-> On Wed, Oct 07, 2020 at 12:19:36PM +0200, Jerome Pouiller wrote:
->> From: J=C3=A9r=C3=B4me Pouiller <jerome.pouiller@silabs.com>
->>=20
->> I think the wfx driver is now mature enough to be accepted in the
->> drivers/net/wireless directory.
->>=20
->> There is still one item on the TODO list. It is an idea to improve the r=
-ate
->> control in some particular cases[1]. However, the current performances o=
-f the
->> driver seem to satisfy everyone. In add, the suggested change is large e=
-nough.
->> So, I would prefer to implement it only if it really solves an issue. I =
-think it
->> is not an obstacle to move the driver out of the staging area.
->>=20
->> In order to comply with the last rules for the DT bindings, I have conve=
-rted the
->> documentation to yaml. I am moderately happy with the result. Especially=
-, for
->> the description of the binding. Any comments are welcome.
->>=20
->> The series also update the copyrights dates of the files. I don't know e=
-xactly
->> how this kind of changes should be sent. It's a bit weird to change all =
-the
->> copyrights in one commit, but I do not see any better way.
->>=20
->> I also include a few fixes I have found these last weeks.
->>=20
->> [1] https://lore.kernel.org/lkml/3099559.gv3Q75KnN1@pc-42
->
-> I'll take the first 6 patches here, the last one you should work with
-> the wireless maintainers to get reviewed.
->
-> Maybe that might want to wait until after 5.10-rc1 is out, with all of
-> these changes in it, making it an easier move.
+syzbot found the following issue on:
 
-Yes, the driver needs to be reviewed in linux-wireless list. I recommend
-submitting the whole driver in a patchset with one file per patch, which
-seems to be the easiest way to review a full driver. The final move will
-be in just one commit moving the driver, just like patch 7 does here. As
-an example see how wilc1000 review was done.
+HEAD commit:    c85fb28b Merge tag 'arm64-fixes' of git://git.kernel.org/p..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=15b2b400500000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=de7f697da23057c7
+dashboard link: https://syzkaller.appspot.com/bug?extid=b6c9fe29aefe68e4ad34
+compiler:       clang version 10.0.0 (https://github.com/llvm/llvm-project/ c2443155a0fb245c8f17f2c1c72b6ea391e86e81)
 
-Device tree bindings needs to be reviewed by the DT maintainer so CC
-devicetree on that patch.
+Unfortunately, I don't have any reproducer for this issue yet.
 
-But do note that there's currently one new driver in review queue, so it
-will most likely take some time before wfx is reviewed.
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+b6c9fe29aefe68e4ad34@syzkaller.appspotmail.com
 
---=20
-https://patchwork.kernel.org/project/linux-wireless/list/
+WARNING: CPU: 1 PID: 11321 at net/mac80211/ibss.c:504 ieee80211_ibss_csa_beacon+0x4e9/0x5a0 net/mac80211/ibss.c:504
+Kernel panic - not syncing: panic_on_warn set ...
+CPU: 0 PID: 11321 Comm: kworker/u4:0 Not tainted 5.9.0-rc8-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
+Workqueue: phy10 ieee80211_csa_finalize_work
+Call Trace:
+ __dump_stack lib/dump_stack.c:77 [inline]
+ dump_stack+0x1d6/0x29e lib/dump_stack.c:118
+ panic+0x2c0/0x800 kernel/panic.c:231
+ __warn+0x227/0x250 kernel/panic.c:600
+ report_bug+0x1b1/0x2e0 lib/bug.c:198
+ handle_bug+0x42/0x80 arch/x86/kernel/traps.c:234
+ exc_invalid_op+0x16/0x40 arch/x86/kernel/traps.c:254
+ asm_exc_invalid_op+0x12/0x20 arch/x86/include/asm/idtentry.h:536
+RIP: 0010:ieee80211_ibss_csa_beacon+0x4e9/0x5a0 net/mac80211/ibss.c:504
+Code: e8 fc 29 8b f9 b8 f4 ff ff ff eb 0a e8 f0 29 8b f9 b8 00 01 00 00 48 83 c4 30 5b 41 5c 41 5d 41 5e 41 5f 5d c3 e8 d7 29 8b f9 <0f> 0b b8 ea ff ff ff eb e3 e8 c9 29 8b f9 0f 0b e9 88 fb ff ff 48
+RSP: 0018:ffffc9000ab5fbf8 EFLAGS: 00010293
+RAX: ffffffff87e9d419 RBX: ffff88804cc20580 RCX: ffff888016268280
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
+RBP: ffff88804cc23490 R08: dffffc0000000000 R09: fffffbfff16c82b4
+R10: fffffbfff16c82b4 R11: 0000000000000000 R12: ffff8880a21a18c0
+R13: ffff8880a21a18ba R14: ffff8880a21a0c00 R15: ffff8880a21a18e0
+ ieee80211_set_after_csa_beacon net/mac80211/cfg.c:3043 [inline]
+ __ieee80211_csa_finalize net/mac80211/cfg.c:3099 [inline]
+ ieee80211_csa_finalize+0x46f/0x960 net/mac80211/cfg.c:3122
+ ieee80211_csa_finalize_work+0xfb/0x140 net/mac80211/cfg.c:3147
+ process_one_work+0x789/0xfc0 kernel/workqueue.c:2269
+ worker_thread+0xaa4/0x1460 kernel/workqueue.c:2415
+ kthread+0x37e/0x3a0 drivers/block/aoe/aoecmd.c:1234
+ ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:294
+Kernel Offset: disabled
+Rebooting in 86400 seconds..
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
-hes
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
