@@ -2,103 +2,121 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C586A287308
-	for <lists+linux-wireless@lfdr.de>; Thu,  8 Oct 2020 13:02:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 27D44287363
+	for <lists+linux-wireless@lfdr.de>; Thu,  8 Oct 2020 13:33:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728622AbgJHLCP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 8 Oct 2020 07:02:15 -0400
-Received: from z5.mailgun.us ([104.130.96.5]:29238 "EHLO z5.mailgun.us"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726015AbgJHLCN (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 8 Oct 2020 07:02:13 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1602154933; h=Content-Transfer-Encoding: Content-Type:
- MIME-Version: Message-ID: In-Reply-To: Date: References: Subject: Cc:
- To: From: Sender; bh=eJBexxd8ncXOiQfY+iAAWapiGqaBRPOkeIcaQjW/Sdw=; b=YWrjF8eSkGmjZXbnNp0Q7beglqF3IQsNz+GyWTHUXqiiU/8lJcWxSGTbuoMsBCad4ju96qwW
- qPRl/3jQrDJlCSpt2Cx1IiuZoX6Nx14EO3SUkMxLmkoIUwTWRAE4L7H5Q69f1v+24ZXcZdPU
- aOSrfe3SJPVN99twW13grR0hlYw=
-X-Mailgun-Sending-Ip: 104.130.96.5
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n07.prod.us-west-2.postgun.com with SMTP id
- 5f7ef170856d9308b50ff986 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 08 Oct 2020 11:01:04
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 0C905C433F1; Thu,  8 Oct 2020 11:01:04 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id C6B91C433CA;
-        Thu,  8 Oct 2020 11:01:01 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org C6B91C433CA
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     =?utf-8?B?SsOpcsO0bWU=?= Pouiller <jerome.pouiller@silabs.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        devel@driverdev.osuosl.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        "David S . Miller" <davem@davemloft.net>
-Subject: Re: [PATCH 0/7] wfx: move out from the staging area
-References: <20201007101943.749898-1-Jerome.Pouiller@silabs.com>
-        <20201007105513.GA1078344@kroah.com> <87ft6p2n0h.fsf@codeaurora.org>
-        <16184307.3FagCOgvEJ@pc-42>
-Date:   Thu, 08 Oct 2020 14:00:59 +0300
-In-Reply-To: <16184307.3FagCOgvEJ@pc-42> (=?utf-8?B?IkrDqXLDtG1l?=
- Pouiller"'s message of "Thu,
-        08 Oct 2020 12:10:08 +0200")
-Message-ID: <87tuv50yok.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        id S1729805AbgJHLdW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 8 Oct 2020 07:33:22 -0400
+Received: from mailgw01.mediatek.com ([210.61.82.183]:33957 "EHLO
+        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1729404AbgJHLdW (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 8 Oct 2020 07:33:22 -0400
+X-UUID: 3d919c7cd7c7402ba8355c9eef4544bb-20201008
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+        h=Content-Transfer-Encoding:Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=L9HcqXYh0UIB0ftwAv+ad21m25sYMDZDQwwYxfNdi/c=;
+        b=tZ66Ql7YbQ+vG6JPULSi7ntvJN/FCPN/fwK+ItWjgeE4aHJlesihbEaHjIBmZx06H8lFBPn08DtW0o6CLOKdQ7sjdWxSjbJwluOpD1wQtwAvQV+uwPabqSTrU8E3KsJ6peiRrKsiZnN2EKEwE8MBFGB56ixrFidHD3UzXmGiA8U=;
+X-UUID: 3d919c7cd7c7402ba8355c9eef4544bb-20201008
+Received: from mtkexhb02.mediatek.inc [(172.21.101.103)] by mailgw01.mediatek.com
+        (envelope-from <shayne.chen@mediatek.com>)
+        (Cellopoint E-mail Firewall v4.1.14 Build 0819 with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 45700535; Thu, 08 Oct 2020 19:33:15 +0800
+Received: from mtkcas08.mediatek.inc (172.21.101.126) by
+ mtkmbs08n2.mediatek.inc (172.21.101.56) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Thu, 8 Oct 2020 19:33:12 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas08.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Thu, 8 Oct 2020 19:33:12 +0800
+From:   Shayne Chen <shayne.chen@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>
+CC:     linux-wireless <linux-wireless@vger.kernel.org>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        linux-mediatek <linux-mediatek@lists.infradead.org>,
+        Shayne Chen <shayne.chen@mediatek.com>
+Subject: [PATCH 01/10] mt76: testmode: switch ib and wb rssi to array type for per-antenna report
+Date:   Thu, 8 Oct 2020 19:28:55 +0800
+Message-ID: <20201008112904.10620-1-shayne.chen@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-TM-SNTS-SMTP: CEC5AF2513BDE0641BE4BBC15B8E06AFDAFC97331E636F028CA4989A32A310C22000:8
+X-MTK:  N
+Content-Transfer-Encoding: base64
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-J=C3=A9r=C3=B4me Pouiller <jerome.pouiller@silabs.com> writes:
+Q2hhbmdlIGliX3Jzc2kgYW5kIHdiX3Jzc2kgaW50byBhcnJheSB0eXBlLCBzaW5jZSB0aGV5IGNv
+dWxkIGJlIHJlcG9ydGVkDQpieSBwZXItYW50ZW5uYS4NCg0KU2lnbmVkLW9mZi1ieTogU2hheW5l
+IENoZW4gPHNoYXluZS5jaGVuQG1lZGlhdGVrLmNvbT4NClJldmlld2VkLWJ5OiBSeWRlciBMZWUg
+PHJ5ZGVyLmxlZUBtZWRpYXRlay5jb20+DQotLS0NCiAuLi4vbmV0L3dpcmVsZXNzL21lZGlhdGVr
+L210NzYvbXQ3NjE1L21hYy5jICAgfCAgNCArKy0tDQogLi4uL3dpcmVsZXNzL21lZGlhdGVrL210
+NzYvbXQ3NjE1L210NzYxNS5oICAgIHwgIDQgKystLQ0KIC4uLi93aXJlbGVzcy9tZWRpYXRlay9t
+dDc2L210NzYxNS90ZXN0bW9kZS5jICB8IDI0ICsrKysrKysrKysrKysrKystLS0NCiBkcml2ZXJz
+L25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L3Rlc3Rtb2RlLmggfCAgNCArKy0tDQogNCBmaWxl
+cyBjaGFuZ2VkLCAyNyBpbnNlcnRpb25zKCspLCA5IGRlbGV0aW9ucygtKQ0KDQpkaWZmIC0tZ2l0
+IGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc2MTUvbWFjLmMgYi9kcml2
+ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzYxNS9tYWMuYw0KaW5kZXggOGRjNjQ1
+ZS4uOWFhZDJlZSAxMDA2NDQNCi0tLSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210
+NzYvbXQ3NjE1L21hYy5jDQorKysgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2
+L210NzYxNS9tYWMuYw0KQEAgLTIxNSw4ICsyMTUsOCBAQCBzdGF0aWMgdm9pZCBtdDc2MTVfbWFj
+X2ZpbGxfdG1fcngoc3RydWN0IG10NzYxNV9kZXYgKmRldiwgX19sZTMyICpyeHYpDQogCWRldi0+
+dGVzdC5sYXN0X3JjcGlbMV0gPSBGSUVMRF9HRVQoTVRfUlhWNF9SQ1BJMSwgcnh2NCk7DQogCWRl
+di0+dGVzdC5sYXN0X3JjcGlbMl0gPSBGSUVMRF9HRVQoTVRfUlhWNF9SQ1BJMiwgcnh2NCk7DQog
+CWRldi0+dGVzdC5sYXN0X3JjcGlbM10gPSBGSUVMRF9HRVQoTVRfUlhWNF9SQ1BJMywgcnh2NCk7
+DQotCWRldi0+dGVzdC5sYXN0X2liX3Jzc2kgPSBGSUVMRF9HRVQoTVRfUlhWM19JQl9SU1NJLCBy
+eHYzKTsNCi0JZGV2LT50ZXN0Lmxhc3Rfd2JfcnNzaSA9IEZJRUxEX0dFVChNVF9SWFYzX1dCX1JT
+U0ksIHJ4djMpOw0KKwlkZXYtPnRlc3QubGFzdF9pYl9yc3NpWzBdID0gRklFTERfR0VUKE1UX1JY
+VjNfSUJfUlNTSSwgcnh2Myk7DQorCWRldi0+dGVzdC5sYXN0X3diX3Jzc2lbMF0gPSBGSUVMRF9H
+RVQoTVRfUlhWM19XQl9SU1NJLCByeHYzKTsNCiAjZW5kaWYNCiB9DQogDQpkaWZmIC0tZ2l0IGEv
+ZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc2MTUvbXQ3NjE1LmggYi9kcml2
+ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzYxNS9tdDc2MTUuaA0KaW5kZXggZjcy
+NTA2ZC4uNTBlYTllZiAxMDA2NDQNCi0tLSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVr
+L210NzYvbXQ3NjE1L210NzYxNS5oDQorKysgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRl
+ay9tdDc2L210NzYxNS9tdDc2MTUuaA0KQEAgLTMwMyw4ICszMDMsOCBAQCBzdHJ1Y3QgbXQ3NjE1
+X2RldiB7DQogDQogCQlzMTYgbGFzdF9mcmVxX29mZnNldDsNCiAJCXU4IGxhc3RfcmNwaVs0XTsN
+Ci0JCXM4IGxhc3RfaWJfcnNzaTsNCi0JCXM4IGxhc3Rfd2JfcnNzaTsNCisJCXM4IGxhc3RfaWJf
+cnNzaVs0XTsNCisJCXM4IGxhc3Rfd2JfcnNzaVs0XTsNCiAJfSB0ZXN0Ow0KICNlbmRpZg0KIA0K
+ZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3NjE1L3Rl
+c3Rtb2RlLmMgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzYxNS90ZXN0
+bW9kZS5jDQppbmRleCAxZjMzNjI4Li44ZmM5N2E1IDEwMDY0NA0KLS0tIGEvZHJpdmVycy9uZXQv
+d2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc2MTUvdGVzdG1vZGUuYw0KKysrIGIvZHJpdmVycy9u
+ZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc2MTUvdGVzdG1vZGUuYw0KQEAgLTMzNSw5ICsz
+MzUsNyBAQCBtdDc2MTVfdG1fZHVtcF9zdGF0cyhzdHJ1Y3QgbXQ3Nl9kZXYgKm1kZXYsIHN0cnVj
+dCBza19idWZmICptc2cpDQogCWlmICghcngpDQogCQlyZXR1cm4gLUVOT01FTTsNCiANCi0JaWYg
+KG5sYV9wdXRfczMyKG1zZywgTVQ3Nl9UTV9SWF9BVFRSX0ZSRVFfT0ZGU0VULCBkZXYtPnRlc3Qu
+bGFzdF9mcmVxX29mZnNldCkgfHwNCi0JICAgIG5sYV9wdXRfczMyKG1zZywgTVQ3Nl9UTV9SWF9B
+VFRSX0lCX1JTU0ksIGRldi0+dGVzdC5sYXN0X2liX3Jzc2kpIHx8DQotCSAgICBubGFfcHV0X3Mz
+Mihtc2csIE1UNzZfVE1fUlhfQVRUUl9XQl9SU1NJLCBkZXYtPnRlc3QubGFzdF93Yl9yc3NpKSkN
+CisJaWYgKG5sYV9wdXRfczMyKG1zZywgTVQ3Nl9UTV9SWF9BVFRSX0ZSRVFfT0ZGU0VULCBkZXYt
+PnRlc3QubGFzdF9mcmVxX29mZnNldCkpDQogCQlyZXR1cm4gLUVOT01FTTsNCiANCiAJcnNzaSA9
+IG5sYV9uZXN0X3N0YXJ0KG1zZywgTVQ3Nl9UTV9SWF9BVFRSX1JDUEkpOw0KQEAgLTM1MCw2ICsz
+NDgsMjYgQEAgbXQ3NjE1X3RtX2R1bXBfc3RhdHMoc3RydWN0IG10NzZfZGV2ICptZGV2LCBzdHJ1
+Y3Qgc2tfYnVmZiAqbXNnKQ0KIA0KIAlubGFfbmVzdF9lbmQobXNnLCByc3NpKTsNCiANCisJcnNz
+aSA9IG5sYV9uZXN0X3N0YXJ0KG1zZywgTVQ3Nl9UTV9SWF9BVFRSX0lCX1JTU0kpOw0KKwlpZiAo
+IXJzc2kpDQorCQlyZXR1cm4gLUVOT01FTTsNCisNCisJZm9yIChpID0gMDsgaSA8IEFSUkFZX1NJ
+WkUoZGV2LT50ZXN0Lmxhc3RfaWJfcnNzaSk7IGkrKykNCisJCWlmIChubGFfcHV0X3M4KG1zZywg
+aSwgZGV2LT50ZXN0Lmxhc3RfaWJfcnNzaVtpXSkpDQorCQkJcmV0dXJuIC1FTk9NRU07DQorDQor
+CW5sYV9uZXN0X2VuZChtc2csIHJzc2kpOw0KKw0KKwlyc3NpID0gbmxhX25lc3Rfc3RhcnQobXNn
+LCBNVDc2X1RNX1JYX0FUVFJfV0JfUlNTSSk7DQorCWlmICghcnNzaSkNCisJCXJldHVybiAtRU5P
+TUVNOw0KKw0KKwlmb3IgKGkgPSAwOyBpIDwgQVJSQVlfU0laRShkZXYtPnRlc3QubGFzdF93Yl9y
+c3NpKTsgaSsrKQ0KKwkJaWYgKG5sYV9wdXRfczgobXNnLCBpLCBkZXYtPnRlc3QubGFzdF93Yl9y
+c3NpW2ldKSkNCisJCQlyZXR1cm4gLUVOT01FTTsNCisNCisJbmxhX25lc3RfZW5kKG1zZywgcnNz
+aSk7DQorDQogCW5sYV9uZXN0X2VuZChtc2csIHJ4KTsNCiANCiAJcmV0dXJuIDA7DQpkaWZmIC0t
+Z2l0IGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni90ZXN0bW9kZS5oIGIvZHJp
+dmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni90ZXN0bW9kZS5oDQppbmRleCA2OTFmZTU3
+Li4wMmM5NDk1IDEwMDY0NA0KLS0tIGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3
+Ni90ZXN0bW9kZS5oDQorKysgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L3Rl
+c3Rtb2RlLmgNCkBAIC05OSw4ICs5OSw4IEBAIGVudW0gbXQ3Nl90ZXN0bW9kZV9zdGF0c19hdHRy
+IHsNCiAgKg0KICAqIEBNVDc2X1RNX1JYX0FUVFJfRlJFUV9PRkZTRVQ6IGZyZXF1ZW5jeSBvZmZz
+ZXQgKHMzMikNCiAgKiBATVQ3Nl9UTV9SWF9BVFRSX1JDUEk6IHJlY2VpdmVkIGNoYW5uZWwgcG93
+ZXIgaW5kaWNhdG9yIChhcnJheSwgdTgpDQotICogQE1UNzZfVE1fUlhfQVRUUl9JQl9SU1NJOiBp
+bnRlcm5hbCBpbmJhbmQgUlNTSSAoczgpDQotICogQE1UNzZfVE1fUlhfQVRUUl9XQl9SU1NJOiBp
+bnRlcm5hbCB3aWRlYmFuZCBSU1NJIChzOCkNCisgKiBATVQ3Nl9UTV9SWF9BVFRSX0lCX1JTU0k6
+IGludGVybmFsIGluYmFuZCBSU1NJIChhcnJheSwgczgpDQorICogQE1UNzZfVE1fUlhfQVRUUl9X
+Ql9SU1NJOiBpbnRlcm5hbCB3aWRlYmFuZCBSU1NJIChhcnJheSwgczgpDQogICovDQogZW51bSBt
+dDc2X3Rlc3Rtb2RlX3J4X2F0dHIgew0KIAlNVDc2X1RNX1JYX0FUVFJfVU5TUEVDLA0KLS0gDQoy
+LjE3LjENCg==
 
-> On Thursday 8 October 2020 09:30:06 CEST Kalle Valo wrote:
-> [...]
->> Yes, the driver needs to be reviewed in linux-wireless list. I recommend
->> submitting the whole driver in a patchset with one file per patch, which
->> seems to be the easiest way to review a full driver. The final move will
->> be in just one commit moving the driver, just like patch 7 does here. As
->> an example see how wilc1000 review was done.
->
-> I see. I suppose it is still a bit complicated to review? Maybe I could
-> try to make things easier.
->
-> For my submission to staging/ I had taken time to split the driver in an
-> understandable series of patches[1]. I think it was easier to review than
-> just sending files one by one. I could do the same thing for the
-> submission to linux-wireless. It would ask me a bit of work but, since I
-> already have a template, it is conceivable.
->
-> Do you think it is worth it, or it would be an unnecessary effort?
->
-> [1]
-> https://lore.kernel.org/driverdev-devel/20190919142527.31797-1-Jerome.Pou=
-iller@silabs.com/
->      or commits a7a91ca5a23d^..40115bbc40e2
-
-I don't know how others think, but I prefer to review new drivers "one
-file per patch" style as I get to see the big picture easily. And
-besides, splitting the driver like that would be a huge job for you. I
-don't think it's worth your time in this case. And making changes in the
-driver during review process becomes even more complex.
-
---=20
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
-hes
