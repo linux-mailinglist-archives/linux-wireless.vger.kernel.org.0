@@ -2,32 +2,32 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 917DD286F23
-	for <lists+linux-wireless@lfdr.de>; Thu,  8 Oct 2020 09:20:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B1BF6286F6E
+	for <lists+linux-wireless@lfdr.de>; Thu,  8 Oct 2020 09:30:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726747AbgJHHUS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 8 Oct 2020 03:20:18 -0400
-Received: from z5.mailgun.us ([104.130.96.5]:55475 "EHLO z5.mailgun.us"
+        id S1725979AbgJHHaU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 8 Oct 2020 03:30:20 -0400
+Received: from m42-4.mailgun.net ([69.72.42.4]:11877 "EHLO m42-4.mailgun.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725900AbgJHHUS (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 8 Oct 2020 03:20:18 -0400
+        id S1725915AbgJHHaU (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 8 Oct 2020 03:30:20 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1602141617; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=xcv5dzo+anLNvdgtjCcQMqFVFBWCEf27U/6mqW7B/Po=; b=PvfRLZiYO/Ub5Bp2Mqn2sCX2XW5p0YyDU6UUUtoq98GKaPNPdhV5WCffBYKty0sGKlPz7ndq
- eV8lwYDohFlcc9h9SXLGekkaUYi5WgdDtvlWVx/94/SiRUqvdGdWnKJ5awUpS3ASbD0rLMig
- nVflCaDBIYjMAdrVI3690zJ+6yQ=
-X-Mailgun-Sending-Ip: 104.130.96.5
+ s=smtp; t=1602142219; h=Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Message-ID: In-Reply-To: Date: References: Subject: Cc:
+ To: From: Sender; bh=BSHe7bjq6nASZP/I6WI8Us5JI4n8DYQ9onuwRyS8E8Y=; b=t+x4Hw0F4hyrcrgtxMzDGTcXn1DuP8Q6MmjoLqtsKIi7HKrqqIusWm/shKU14C8DoRKaAvIF
+ QIHhKtX8CnYgs2CQK43dBQSMGCjKObUhX0nIXLiwQtQAcI69PHIKMmz8aHsG6g8ETXja3R4O
+ AVlLchEQnxJsrqDaoVg6fzVBETU=
+X-Mailgun-Sending-Ip: 69.72.42.4
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
  smtp-out-n04.prod.us-east-1.postgun.com with SMTP id
- 5f7ebdb1aad2c3cd1c7df9a6 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 08 Oct 2020 07:20:17
+ 5f7ec004aad2c3cd1c82bee3 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 08 Oct 2020 07:30:12
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id D6CA1C43391; Thu,  8 Oct 2020 07:20:16 +0000 (UTC)
+        id 541C2C433FF; Thu,  8 Oct 2020 07:30:11 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -37,115 +37,86 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 450B5C433FE;
-        Thu,  8 Oct 2020 07:20:14 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 450B5C433FE
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 0E4E3C433F1;
+        Thu,  8 Oct 2020 07:30:08 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 0E4E3C433F1
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
 From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Luca Coelho <luca@coelho.fi>
-Cc:     Lee Jones <lee.jones@linaro.org>, davem@davemloft.net,
-        kuba@kernel.org, linux-kernel@vger.kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH v2 00/29] [Set 1,2,3] Rid W=1 warnings in Wireless
-References: <20200910065431.657636-1-lee.jones@linaro.org>
-        <20201002090353.GS6148@dell> <87362rdhv2.fsf@codeaurora.org>
-        <20201006065617.GX6148@dell> <87lfgjbzin.fsf@codeaurora.org>
-        <27f10117a4f26d6f1f528d8e03fe753614dbef1a.camel@coelho.fi>
-Date:   Thu, 08 Oct 2020 10:20:11 +0300
-In-Reply-To: <27f10117a4f26d6f1f528d8e03fe753614dbef1a.camel@coelho.fi> (Luca
-        Coelho's message of "Wed, 07 Oct 2020 09:01:10 +0300")
-Message-ID: <87k0w12nh0.fsf@codeaurora.org>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Jerome Pouiller <Jerome.Pouiller@silabs.com>,
+        devel@driverdev.osuosl.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        "David S . Miller" <davem@davemloft.net>
+Subject: Re: [PATCH 0/7] wfx: move out from the staging area
+References: <20201007101943.749898-1-Jerome.Pouiller@silabs.com>
+        <20201007105513.GA1078344@kroah.com>
+Date:   Thu, 08 Oct 2020 10:30:06 +0300
+In-Reply-To: <20201007105513.GA1078344@kroah.com> (Greg Kroah-Hartman's
+        message of "Wed, 7 Oct 2020 12:55:13 +0200")
+Message-ID: <87ft6p2n0h.fsf@codeaurora.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Luca Coelho <luca@coelho.fi> writes:
+Greg Kroah-Hartman <gregkh@linuxfoundation.org> writes:
 
-> On Tue, 2020-10-06 at 10:10 +0300, Kalle Valo wrote:
->> Lee Jones <lee.jones@linaro.org> writes:
->> 
->> > On Tue, 06 Oct 2020, Kalle Valo wrote:
->> > 
->> > > Lee Jones <lee.jones@linaro.org> writes:
->> > > 
->> > > > On Thu, 10 Sep 2020, Lee Jones wrote:
->> > > > 
->> > > > > This is a rebased/re-worked set of patches which have been
->> > > > > previously posted to the mailing list(s).
->> > > > > 
->> > > > > This set is part of a larger effort attempting to clean-up W=1
->> > > > > kernel builds, which are currently overwhelmingly riddled with
->> > > > > niggly little warnings.
->> > > > > 
->> > > > > There are quite a few W=1 warnings in the Wireless.  My plan
->> > > > > is to work through all of them over the next few weeks.
->> > > > > Hopefully it won't be too long before drivers/net/wireless
->> > > > > builds clean with W=1 enabled.
->> > > > > 
->> > > > > Lee Jones (29):
->> > > > >   iwlwifi: dvm: Demote non-compliant kernel-doc headers
->> > > > >   iwlwifi: rs: Demote non-compliant kernel-doc headers
->> > > > >   iwlwifi: dvm: tx: Demote non-compliant kernel-doc headers
->> > > > >   iwlwifi: dvm: lib: Demote non-compliant kernel-doc headers
->> > > > >   iwlwifi: calib: Demote seemingly unintentional kerneldoc header
->> > > > >   wil6210: Fix a couple of formatting issues in 'wil6210_debugfs_init'
->> > > > >   iwlwifi: dvm: sta: Demote a bunch of nonconformant kernel-doc headers
->> > > > >   iwlwifi: mvm: ops: Remove unused static struct 'iwl_mvm_debug_names'
->> > > > >   iwlwifi: dvm: Demote a couple of nonconformant kernel-doc headers
->> > > > >   iwlwifi: mvm: utils: Fix some doc-rot
->> > > > >   iwlwifi: dvm: scan: Demote a few nonconformant kernel-doc headers
->> > > > >   iwlwifi: dvm: rxon: Demote non-conformant kernel-doc headers
->> > > > >   iwlwifi: mvm: tx: Demote misuse of kernel-doc headers
->> > > > >   iwlwifi: dvm: devices: Fix function documentation formatting issues
->> > > > >   iwlwifi: iwl-drv: Provide descriptions debugfs dentries
->> > > > >   wil6210: wmi: Fix formatting and demote non-conforming function
->> > > > >     headers
->> > > > >   wil6210: interrupt: Demote comment header which is clearly not
->> > > > >     kernel-doc
->> > > > >   wil6210: txrx: Demote obvious abuse of kernel-doc
->> > > > >   wil6210: txrx_edma: Demote comments which are clearly not kernel-doc
->> > > > >   wil6210: pmc: Demote a few nonconformant kernel-doc function headers
->> > > > >   wil6210: wil_platform: Demote kernel-doc header to standard comment
->> > > > >     block
->> > > > >   wil6210: wmi: Correct misnamed function parameter 'ptr_'
->> > > > >   ath6kl: wmi: Remove unused variable 'rate'
->> > > > >   ath9k: ar9002_initvals: Remove unused array
->> > > > >     'ar9280PciePhy_clkreq_off_L1_9280'
->> > > > >   ath9k: ar9001_initvals: Remove unused array 'ar5416Bank6_9100'
->> > > > >   ath9k: ar5008_initvals: Remove unused table entirely
->> > > > >   ath9k: ar5008_initvals: Move ar5416Bank{0,1,2,3,7} to where they are
->> > > > >     used
->> > > > >   brcmsmac: phytbl_lcn: Remove unused array 'dot11lcn_gain_tbl_rev1'
->> > > > >   brcmsmac: phy_lcn: Remove unused variable
->> > > > >     'lcnphy_rx_iqcomp_table_rev0'
->> > > > 
->> > > > What's happening with all of these iwlwifi patches?
->> > > > 
->> > > > Looks like they are still not applied.
->> > > 
->> > > Luca (CCed) takes iwlwifi patches to his iwlwifi tree.
->> > 
->> > Thanks Kalle.
->> > 
->> > Luca,
->> > 
->> >   Do you know why these patches have not been applied yet?  Do you
->> > plan on applying them this week?  -rc1 is not due for release for
->> > nearly 3 weeks now that Linus tagged an -rc8.
->> 
->> I can also take Lee's patches directly to wireless-drivers-next, if
->> that's easier for Luca.
+> On Wed, Oct 07, 2020 at 12:19:36PM +0200, Jerome Pouiller wrote:
+>> From: J=C3=A9r=C3=B4me Pouiller <jerome.pouiller@silabs.com>
+>>=20
+>> I think the wfx driver is now mature enough to be accepted in the
+>> drivers/net/wireless directory.
+>>=20
+>> There is still one item on the TODO list. It is an idea to improve the r=
+ate
+>> control in some particular cases[1]. However, the current performances o=
+f the
+>> driver seem to satisfy everyone. In add, the suggested change is large e=
+nough.
+>> So, I would prefer to implement it only if it really solves an issue. I =
+think it
+>> is not an obstacle to move the driver out of the staging area.
+>>=20
+>> In order to comply with the last rules for the DT bindings, I have conve=
+rted the
+>> documentation to yaml. I am moderately happy with the result. Especially=
+, for
+>> the description of the binding. Any comments are welcome.
+>>=20
+>> The series also update the copyrights dates of the files. I don't know e=
+xactly
+>> how this kind of changes should be sent. It's a bit weird to change all =
+the
+>> copyrights in one commit, but I do not see any better way.
+>>=20
+>> I also include a few fixes I have found these last weeks.
+>>=20
+>> [1] https://lore.kernel.org/lkml/3099559.gv3Q75KnN1@pc-42
 >
-> Yes, please take these patches directly.  It simplifies things.
+> I'll take the first 6 patches here, the last one you should work with
+> the wireless maintainers to get reviewed.
+>
+> Maybe that might want to wait until after 5.10-rc1 is out, with all of
+> these changes in it, making it an easier move.
 
-Ok, I have assigned all Lee's pending iwlwifi patches to me on
-patchwork.
+Yes, the driver needs to be reviewed in linux-wireless list. I recommend
+submitting the whole driver in a patchset with one file per patch, which
+seems to be the easiest way to review a full driver. The final move will
+be in just one commit moving the driver, just like patch 7 does here. As
+an example see how wilc1000 review was done.
 
--- 
+Device tree bindings needs to be reviewed by the DT maintainer so CC
+devicetree on that patch.
+
+But do note that there's currently one new driver in review queue, so it
+will most likely take some time before wfx is reviewed.
+
+--=20
 https://patchwork.kernel.org/project/linux-wireless/list/
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
+hes
