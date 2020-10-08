@@ -2,113 +2,93 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 80CE9287A6C
-	for <lists+linux-wireless@lfdr.de>; Thu,  8 Oct 2020 18:57:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D0314287AB8
+	for <lists+linux-wireless@lfdr.de>; Thu,  8 Oct 2020 19:12:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731415AbgJHQ5p (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 8 Oct 2020 12:57:45 -0400
-Received: from mailgw01.mediatek.com ([210.61.82.183]:45007 "EHLO
-        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1729402AbgJHQ5p (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 8 Oct 2020 12:57:45 -0400
-X-UUID: 88827db169d945dab300e95322c4a702-20201009
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Transfer-Encoding:Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=vB60bkKivbIghJ/O1u+Kwt4O/FxKdZHQa4QAp7QJNLE=;
-        b=pDNR7rFD08SH81tiLpOS0qHWi68IobGDm9auib+2t86+vPC7DfkPfxbW+Gh/VUbiKE7B5TfRTgbHFin3VQP3dIJSUD4Sw9bYfRzCvazQBgDJOLUd2bOtlMeutKc0x7Nz9ZOShk8Hd9/a91M3lQxtMewASv+jvpJeLF7PhH10P3c=;
-X-UUID: 88827db169d945dab300e95322c4a702-20201009
-Received: from mtkcas06.mediatek.inc [(172.21.101.30)] by mailgw01.mediatek.com
-        (envelope-from <ryder.lee@mediatek.com>)
-        (Cellopoint E-mail Firewall v4.1.14 Build 0819 with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 497383600; Fri, 09 Oct 2020 00:57:39 +0800
-Received: from mtkcas08.mediatek.inc (172.21.101.126) by
- mtkmbs06n1.mediatek.inc (172.21.101.129) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Fri, 9 Oct 2020 00:57:38 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas08.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Fri, 9 Oct 2020 00:57:37 +0800
-From:   Ryder Lee <ryder.lee@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-CC:     Shayne Chen <shayne.chen@mediatek.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>,
-        Ryder Lee <ryder.lee@mediatek.com>
-Subject: [PATCH v2 2/2] mt76: mt7915: rename mt7915_mcu_get_rate_info to mt7915_mcu_get_tx_rate
-Date:   Fri, 9 Oct 2020 00:57:36 +0800
-Message-ID: <6c4f3c9146c3a6b5657780961a5cf78413c017a1.1602175329.git.ryder.lee@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <e1beae5f3177c82fa73635a8a96fa95be609149e.1602175329.git.ryder.lee@mediatek.com>
-References: <e1beae5f3177c82fa73635a8a96fa95be609149e.1602175329.git.ryder.lee@mediatek.com>
+        id S1731227AbgJHRL5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 8 Oct 2020 13:11:57 -0400
+Received: from z5.mailgun.us ([104.130.96.5]:24400 "EHLO z5.mailgun.us"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1731842AbgJHRLz (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 8 Oct 2020 13:11:55 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1602177114; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=eDg1AMsDiju1F4f8kJgLBd5n2RO5yCih+OMkV+2tsI0=;
+ b=FKeH2AcIr8SgBVvC+xUHZGSJelN38lhQpcDalLlQXKRCu3xrsU5Kve7yiNBDdxPKuEXwvUjs
+ zCnteUNIHswilOgSBw99TBylyePzFf/GJHL+zzjBqI6kpo7Dd7jrZnifhBUDkHM92U3ANMcx
+ z5Pf2Kh4l9WT5VG9a9D3KmH4Kv0=
+X-Mailgun-Sending-Ip: 104.130.96.5
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n04.prod.us-east-1.postgun.com with SMTP id
+ 5f7f48284f8cc67c31dba197 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 08 Oct 2020 17:11:04
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 04C87C433F1; Thu,  8 Oct 2020 17:11:04 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        MISSING_DATE,MISSING_MID,SPF_FAIL,URIBL_BLOCKED autolearn=no
+        autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id EB8C2C433CA;
+        Thu,  8 Oct 2020 17:11:02 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org EB8C2C433CA
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH 01/13] iwlwifi: mvm: get number of stations from TLV
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <iwlwifi.20201008180656.863ab470babc.I393223392f36436663c4e66add03fefe77b74e60@changeid>
+References: <iwlwifi.20201008180656.863ab470babc.I393223392f36436663c4e66add03fefe77b74e60@changeid>
+To:     Luca Coelho <luca@coelho.fi>
+Cc:     linux-wireless@vger.kernel.org
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
+Message-Id: <20201008171104.04C87C433F1@smtp.codeaurora.org>
+Date:   Thu,  8 Oct 2020 17:11:04 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-QXZvaWQgY29uZnVzaW9uIHdpdGggcnggcmF0ZSBxdWVyeSBmdW5jdGlvbi4NCg0KU2lnbmVkLW9m
-Zi1ieTogUnlkZXIgTGVlIDxyeWRlci5sZWVAbWVkaWF0ZWsuY29tPg0KU2lnbmVkLW9mZi1ieTog
-U2hheW5lIENoZW4gPHNoYXluZS5jaGVuQG1lZGlhdGVrLmNvbT4NCi0tLQ0KY2hhbmdlIHNpbmNl
-IHYyIC1yZWJhc2Ugb24gdG9wIG9mIGh0dHBzOi8vcGF0Y2h3b3JrLmtlcm5lbC5vcmcvcGF0Y2gv
-MTE4MDg5NjEvDQotLS0NCiBkcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210Nzkx
-NS9tYWMuYyAgICB8ICAyICstDQogZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9t
-dDc5MTUvbWN1LmMgICAgfCAxMCArKysrKy0tLS0tDQogZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVk
-aWF0ZWsvbXQ3Ni9tdDc5MTUvbXQ3OTE1LmggfCAgMiArLQ0KIDMgZmlsZXMgY2hhbmdlZCwgNyBp
-bnNlcnRpb25zKCspLCA3IGRlbGV0aW9ucygtKQ0KDQpkaWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQv
-d2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvbWFjLmMgYi9kcml2ZXJzL25ldC93aXJlbGVz
-cy9tZWRpYXRlay9tdDc2L210NzkxNS9tYWMuYw0KaW5kZXggYTcxMThkZjdiOTNmLi41MjFkMGMy
-ZjZjMjUgMTAwNjQ0DQotLS0gYS9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210
-NzkxNS9tYWMuYw0KKysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5
-MTUvbWFjLmMNCkBAIC0xNDIyLDcgKzE0MjIsNyBAQCBtdDc5MTVfbWFjX3N0YV9zdGF0c193b3Jr
-KHN0cnVjdCBtdDc5MTVfcGh5ICpwaHkpDQogCQlzcGluX3VubG9ja19iaCgmZGV2LT5zdGFfcG9s
-bF9sb2NrKTsNCiANCiAJCS8qIHVzZSBNVF9UWF9GUkVFX1JBVEUgdG8gcmVwb3J0IFR4IHJhdGUg
-Zm9yIGZ1cnRoZXIgZGV2aWNlcyAqLw0KLQkJbXQ3OTE1X21jdV9nZXRfcmF0ZV9pbmZvKGRldiwg
-UkFURV9DVFJMX1JVX0lORk8sIG1zdGEtPndjaWQuaWR4KTsNCisJCW10NzkxNV9tY3VfZ2V0X3R4
-X3JhdGUoZGV2LCBSQVRFX0NUUkxfUlVfSU5GTywgbXN0YS0+d2NpZC5pZHgpOw0KIA0KIAkJc3Bp
-bl9sb2NrX2JoKCZkZXYtPnN0YV9wb2xsX2xvY2spOw0KIAl9DQpkaWZmIC0tZ2l0IGEvZHJpdmVy
-cy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvbWN1LmMgYi9kcml2ZXJzL25ldC93
-aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzkxNS9tY3UuYw0KaW5kZXggZGRlMDUzYTc2MjYxLi5j
-ZTIzNTc1NTAwMTUgMTAwNjQ0DQotLS0gYS9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9t
-dDc2L210NzkxNS9tY3UuYw0KKysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3
-Ni9tdDc5MTUvbWN1LmMNCkBAIC0zNTIsOCArMzUyLDggQEAgbXQ3OTE1X21jdV9yeF9yYWRhcl9k
-ZXRlY3RlZChzdHJ1Y3QgbXQ3OTE1X2RldiAqZGV2LCBzdHJ1Y3Qgc2tfYnVmZiAqc2tiKQ0KIH0N
-CiANCiBzdGF0aWMgdm9pZA0KLW10NzkxNV9tY3VfdHhfcmF0ZV9jYWwoc3RydWN0IG10NzZfcGh5
-ICptcGh5LCBzdHJ1Y3QgbXQ3OTE1X21jdV9yYV9pbmZvICpyYSwNCi0JCSAgICAgICBzdHJ1Y3Qg
-cmF0ZV9pbmZvICpyYXRlLCB1MTYgcikNCittdDc5MTVfbWN1X3R4X3JhdGVfcGFyc2Uoc3RydWN0
-IG10NzZfcGh5ICptcGh5LCBzdHJ1Y3QgbXQ3OTE1X21jdV9yYV9pbmZvICpyYSwNCisJCQkgc3Ry
-dWN0IHJhdGVfaW5mbyAqcmF0ZSwgdTE2IHIpDQogew0KIAlzdHJ1Y3QgaWVlZTgwMjExX3N1cHBv
-cnRlZF9iYW5kICpzYmFuZDsNCiAJdTE2IHJ1X2lkeCA9IGxlMTZfdG9fY3B1KHJhLT5ydV9pZHgp
-Ow0KQEAgLTQ2NSwxMSArNDY1LDExIEBAIG10NzkxNV9tY3VfdHhfcmF0ZV9yZXBvcnQoc3RydWN0
-IG10NzkxNV9kZXYgKmRldiwgc3RydWN0IHNrX2J1ZmYgKnNrYikNCiAJCW1waHkgPSBkZXYtPm10
-NzYucGh5MjsNCiANCiAJLyogY3VycmVudCByYXRlICovDQotCW10NzkxNV9tY3VfdHhfcmF0ZV9j
-YWwobXBoeSwgcmEsICZyYXRlLCBjdXJyKTsNCisJbXQ3OTE1X21jdV90eF9yYXRlX3BhcnNlKG1w
-aHksIHJhLCAmcmF0ZSwgY3Vycik7DQogCXN0YXRzLT50eF9yYXRlID0gcmF0ZTsNCiANCiAJLyog
-cHJvYmluZyByYXRlICovDQotCW10NzkxNV9tY3VfdHhfcmF0ZV9jYWwobXBoeSwgcmEsICZwcm9i
-X3JhdGUsIHByb2JlKTsNCisJbXQ3OTE1X21jdV90eF9yYXRlX3BhcnNlKG1waHksIHJhLCAmcHJv
-Yl9yYXRlLCBwcm9iZSk7DQogCXN0YXRzLT5wcm9iX3JhdGUgPSBwcm9iX3JhdGU7DQogDQogCWlm
-IChhdHRlbXB0cykgew0KQEAgLTMyNjAsNyArMzI2MCw3IEBAIGludCBtdDc5MTVfbWN1X2dldF90
-ZW1wZXJhdHVyZShzdHJ1Y3QgbXQ3OTE1X2RldiAqZGV2LCBpbnQgaW5kZXgpDQogCQkJCSBzaXpl
-b2YocmVxKSwgdHJ1ZSk7DQogfQ0KIA0KLWludCBtdDc5MTVfbWN1X2dldF9yYXRlX2luZm8oc3Ry
-dWN0IG10NzkxNV9kZXYgKmRldiwgdTMyIGNtZCwgdTE2IHdsYW5faWR4KQ0KK2ludCBtdDc5MTVf
-bWN1X2dldF90eF9yYXRlKHN0cnVjdCBtdDc5MTVfZGV2ICpkZXYsIHUzMiBjbWQsIHUxNiB3bGFu
-X2lkeCkNCiB7DQogCXN0cnVjdCB7DQogCQlfX2xlMzIgY21kOw0KZGlmZiAtLWdpdCBhL2RyaXZl
-cnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1L210NzkxNS5oIGIvZHJpdmVycy9u
-ZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvbXQ3OTE1LmgNCmluZGV4IDBlYTM5NjVj
-MjhmNS4uODljYWJkYTY0ZjQxIDEwMDY0NA0KLS0tIGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVk
-aWF0ZWsvbXQ3Ni9tdDc5MTUvbXQ3OTE1LmgNCisrKyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21l
-ZGlhdGVrL210NzYvbXQ3OTE1L210NzkxNS5oDQpAQCAtMzE5LDggKzMxOSw4IEBAIGludCBtdDc5
-MTVfbWN1X3NldF9wdWxzZV90aChzdHJ1Y3QgbXQ3OTE1X2RldiAqZGV2LA0KIAkJCSAgICBjb25z
-dCBzdHJ1Y3QgbXQ3OTE1X2Rmc19wdWxzZSAqcHVsc2UpOw0KIGludCBtdDc5MTVfbWN1X3NldF9y
-YWRhcl90aChzdHJ1Y3QgbXQ3OTE1X2RldiAqZGV2LCBpbnQgaW5kZXgsDQogCQkJICAgIGNvbnN0
-IHN0cnVjdCBtdDc5MTVfZGZzX3BhdHRlcm4gKnBhdHRlcm4pOw0KLWludCBtdDc5MTVfbWN1X2dl
-dF9yYXRlX2luZm8oc3RydWN0IG10NzkxNV9kZXYgKmRldiwgdTMyIGNtZCwgdTE2IHdsYW5faWR4
-KTsNCiBpbnQgbXQ3OTE1X21jdV9nZXRfdGVtcGVyYXR1cmUoc3RydWN0IG10NzkxNV9kZXYgKmRl
-diwgaW50IGluZGV4KTsNCitpbnQgbXQ3OTE1X21jdV9nZXRfdHhfcmF0ZShzdHJ1Y3QgbXQ3OTE1
-X2RldiAqZGV2LCB1MzIgY21kLCB1MTYgd2xhbl9pZHgpOw0KIGludCBtdDc5MTVfbWN1X2dldF9y
-eF9yYXRlKHN0cnVjdCBtdDc5MTVfcGh5ICpwaHksIHN0cnVjdCBpZWVlODAyMTFfdmlmICp2aWYs
-DQogCQkJICAgc3RydWN0IGllZWU4MDIxMV9zdGEgKnN0YSwgc3RydWN0IHJhdGVfaW5mbyAqcmF0
-ZSk7DQogaW50IG10NzkxNV9tY3VfcmRkX2NtZChzdHJ1Y3QgbXQ3OTE1X2RldiAqZGV2LCBlbnVt
-IG10NzkxNV9yZGRfY21kIGNtZCwNCi0tIA0KMi4xOC4wDQo=
+Luca Coelho <luca@coelho.fi> wrote:
+
+> From: Nathan Errera <nathan.errera@intel.com>
+> 
+> FW is changing the max number of supported stations. To adapt to the
+> change we get the max number from the TLV and act according to the new
+> number.
+> 
+> Signed-off-by: Nathan Errera <nathan.errera@intel.com>
+> Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+
+13 patches applied to wireless-drivers-next.git, thanks.
+
+be9ae34ead42 iwlwifi: mvm: get number of stations from TLV
+90824f2f3390 iwlwifi: mvm: read and parse SKU ID if available
+7ef3e2246638 iwlwifi: update prph scratch structure to include PNVM data
+70d3ca86b025 iwlwifi: mvm: ring the doorbell and wait for PNVM load completion
+f0d748ad459e iwlwifi: mvm: stop claiming NL80211_EXT_FEATURE_SET_SCAN_DWELL
+43dc85b5ec54 iwlwifi: support an additional Qu subsystem id
+64f55156f7ad iwlwifi: mvm: don't send RFH_QUEUE_CONFIG_CMD with no queues
+df7203736938 iwlwifi: mvm: re-enable TX after channel switch
+f9084775deb9 iwlwifi: mvm: prepare roc_done_wk to work sync
+aa4936b11c6c iwlwifi: mvm: add a get lmac id function
+2c2c3647cde4 iwlwifi: mvm: support ADD_STA_CMD_API_S ver 12
+bebc14db4eb7 iwlwifi: mvm: avoid possible NULL pointer dereference
+a48d400cc444 iwlwifi: pcie: fix 0x271B and 0x271C trans cfg struct
+
+-- 
+https://patchwork.kernel.org/patch/11823163/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
