@@ -2,111 +2,93 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 432A4287A0E
-	for <lists+linux-wireless@lfdr.de>; Thu,  8 Oct 2020 18:37:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 133F1287A6B
+	for <lists+linux-wireless@lfdr.de>; Thu,  8 Oct 2020 18:57:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730841AbgJHQhj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 8 Oct 2020 12:37:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48532 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726304AbgJHQhj (ORCPT
+        id S1730404AbgJHQ5o (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 8 Oct 2020 12:57:44 -0400
+Received: from mailgw01.mediatek.com ([210.61.82.183]:44999 "EHLO
+        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1729061AbgJHQ5o (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 8 Oct 2020 12:37:39 -0400
-Received: from mail-lj1-x241.google.com (mail-lj1-x241.google.com [IPv6:2a00:1450:4864:20::241])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3D58C061755;
-        Thu,  8 Oct 2020 09:37:38 -0700 (PDT)
-Received: by mail-lj1-x241.google.com with SMTP id i2so6475249ljg.4;
-        Thu, 08 Oct 2020 09:37:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=giqGv4A7bo6j0XttxPzeibyDwSiBktk0geQA99ohYK4=;
-        b=iM1gWibKEFP8B+LrPUiyEHAfEGS7NNqNfXMe0/pZBTTR7OflOL4t5J8P/iepj1huw7
-         ljRqgIPibY4bafQSCzzQv6fDSj4HysTGqpbVmAiMJUisHIQAY9lCT6a+ZFNbPuMmvbBp
-         Z9J/3Dz4HnxaHMoJ4vWqczVFMm1i8FlwIyih+4CIaw2n4GeOGPrp8c822R1emXTrUO4Y
-         B7vpJMEb35ELz3N1fCHPyKUMDyggHLcKpEWWgoKq2t8jJi37ytRs0+/cWG7QkVSZlqij
-         H7tum6Sr2MNy1WXmTesuKUSWljNn+2qz4snuQqlAk+Q3onVGY1q5b9OHtyzKogRQxL0u
-         ccWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=giqGv4A7bo6j0XttxPzeibyDwSiBktk0geQA99ohYK4=;
-        b=KS9xcEdQwhI28PejlPehsKn7G/PZmxEmYgRklsDA4Qgy7goiMThCZcWg1PKc8l2R4k
-         qdyhIunaOZVOz4WwDE6YYDBPnQrzCgu5Je6MyVzx7QgQvedL2qA3HKbJ6TAz2jehbdS2
-         Givl7BnvkknDHocacu0mm7IczaDqBIBtdsQsWq6L4puZoN1t598R5ngADmmiJ3opkD2L
-         IRN0HUTtxt6k3LAQFa0IfLErz/fE1x888hNM423Fehze/xufe1ivnqvZSuqgyTLFeMbJ
-         DJEcTJyyj28cdo+PwBipNFvurD9IBajm9u3hr1cV49z8jjzHjddXoHiH2hIAee1ueDhV
-         dNPQ==
-X-Gm-Message-State: AOAM530g+QXHfiAB9bhymVo3+QShrByGF2TP/5wQSZCIlJyl7Kh0PKOw
-        I4vB4w+j9xbPFbL6Tmg5SQVB5OnDAjvbO9UIr9E=
-X-Google-Smtp-Source: ABdhPJzo407EegFfREoSioHdQB6lxd2A5ppGli7CXvWewWDZI3UXbULi8jSKXEOIaTyEQVyjnwD8H5aw2exMKYEXeZs=
-X-Received: by 2002:a2e:864c:: with SMTP id i12mr3357537ljj.396.1602175057354;
- Thu, 08 Oct 2020 09:37:37 -0700 (PDT)
+        Thu, 8 Oct 2020 12:57:44 -0400
+X-UUID: b7e0c28428484014940fefb1933427a2-20201009
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+        h=Content-Transfer-Encoding:Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=B9S3JQEMt9isWDCJIhLxXkAqVd6tOOBHmeP5jMCSV68=;
+        b=kYHE9qHrAaH6FRLFua3lqJ/WUWllkW0aislJJutKX+61Jw/HrtN0xsRxnRTN1gW7rjgEmhNDU+X6E8qftNROsB3P+Snc1M9apnUhUedFRbuW+ssA9vQoyZZzX5Yh4DHP9arcI7IKZ1pGDpykUvY7rGJ+207u+dtcFQ2Q1J148rg=;
+X-UUID: b7e0c28428484014940fefb1933427a2-20201009
+Received: from mtkexhb01.mediatek.inc [(172.21.101.102)] by mailgw01.mediatek.com
+        (envelope-from <ryder.lee@mediatek.com>)
+        (Cellopoint E-mail Firewall v4.1.14 Build 0819 with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 444471015; Fri, 09 Oct 2020 00:57:39 +0800
+Received: from mtkcas08.mediatek.inc (172.21.101.126) by
+ mtkmbs08n1.mediatek.inc (172.21.101.55) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Fri, 9 Oct 2020 00:57:35 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas08.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Fri, 9 Oct 2020 00:57:36 +0800
+From:   Ryder Lee <ryder.lee@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+CC:     Shayne Chen <shayne.chen@mediatek.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>,
+        Ryder Lee <ryder.lee@mediatek.com>
+Subject: [PATCH v2 1/2] mt76: mt7915: update ppe threshold
+Date:   Fri, 9 Oct 2020 00:57:35 +0800
+Message-ID: <e1beae5f3177c82fa73635a8a96fa95be609149e.1602175329.git.ryder.lee@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-References: <20201008155048.17679-1-ap420073@gmail.com> <1cbb69d83188424e99b2d2482848ae64@AcuMS.aculab.com>
- <62f6c2bd11ed8b25c1cd4462ebc6db870adc4229.camel@sipsolutions.net>
-In-Reply-To: <62f6c2bd11ed8b25c1cd4462ebc6db870adc4229.camel@sipsolutions.net>
-From:   Taehee Yoo <ap420073@gmail.com>
-Date:   Fri, 9 Oct 2020 01:37:26 +0900
-Message-ID: <CAMArcTUkC2MzN9MiTu_Qwouj6rFf0g0ac2uZWfSKWHTW9cR8xA@mail.gmail.com>
-Subject: Re: [PATCH net 000/117] net: avoid to remove module when its debugfs
- is being used
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     David Laight <David.Laight@aculab.com>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "kuba@kernel.org" <kuba@kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        Nicolai Stange <nicstange@gmail.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "wil6210@qti.qualcomm.com" <wil6210@qti.qualcomm.com>,
-        "brcm80211-dev-list@cypress.com" <brcm80211-dev-list@cypress.com>,
-        "b43-dev@lists.infradead.org" <b43-dev@lists.infradead.org>,
-        "linux-bluetooth@vger.kernel.org" <linux-bluetooth@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
+X-MTK:  N
+Content-Transfer-Encoding: base64
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 9 Oct 2020 at 01:14, Johannes Berg <johannes@sipsolutions.net> wrote:
-On Thu, 2020-10-08 at 15:59 +0000, David Laight wrote:
+VXBkYXRlIHBwZV90aHJlc2ggY2FwYWJpbGl0eSB0byBzeW5jIFNESyBzZXR0aW5nLg0KDQpTaWdu
+ZWQtb2ZmLWJ5OiBTaGF5bmUgQ2hlbiA8c2hheW5lLmNoZW5AbWVkaWF0ZWsuY29tPg0KU2lnbmVk
+LW9mZi1ieTogUnlkZXIgTGVlIDxyeWRlci5sZWVAbWVkaWF0ZWsuY29tPg0KLS0tDQogLi4uL25l
+dC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzkxNS9pbml0LmMgIHwgNDMgKysrKysrKy0tLS0t
+LS0tLS0tLQ0KIDEgZmlsZSBjaGFuZ2VkLCAxNiBpbnNlcnRpb25zKCspLCAyNyBkZWxldGlvbnMo
+LSkNCg0KZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3
+OTE1L2luaXQuYyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1L2lu
+aXQuYw0KaW5kZXggNWYyMzhiYzYzYzJhLi43MzhiNGVkOGI3ZTcgMTAwNjQ0DQotLS0gYS9kcml2
+ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzkxNS9pbml0LmMNCisrKyBiL2RyaXZl
+cnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1L2luaXQuYw0KQEAgLTM1NywzNSAr
+MzU3LDI0IEBAIG10NzkxNV9zZXRfc3RyZWFtX2hlX3R4YmZfY2FwcyhzdHJ1Y3QgaWVlZTgwMjEx
+X3N0YV9oZV9jYXAgKmhlX2NhcCwNCiB9DQogDQogc3RhdGljIHZvaWQNCi1tdDc5MTVfZ2VuX3Bw
+ZV90aHJlc2godTggKmhlX3BwZXQpDQorbXQ3OTE1X2dlbl9wcGVfdGhyZXNoKHU4ICpoZV9wcGV0
+LCBpbnQgbnNzKQ0KIHsNCi0JaW50IHJ1LCBuc3MsIG1heF9uc3MgPSAxLCBtYXhfcnUgPSAzOw0K
+LQl1OCBiaXQgPSA3LCBydV9iaXRfbWFzayA9IDB4NzsNCisJdTggaSwgcHBldF9iaXRzLCBwcGV0
+X3NpemUsIHJ1X2JpdF9tYXNrID0gMHg3OyAvKiBIRTgwICovDQogCXU4IHBwZXQxNl9wcGV0OF9y
+dTNfcnUwW10gPSB7MHgxYywgMHhjNywgMHg3MX07DQogDQotCWhlX3BwZXRbMF0gPSBtYXhfbnNz
+ICYgSUVFRTgwMjExX1BQRV9USFJFU19OU1NfTUFTSzsNCi0JaGVfcHBldFswXSB8PSAocnVfYml0
+X21hc2sgPDwNCi0JCSAgICAgICBJRUVFODAyMTFfUFBFX1RIUkVTX1JVX0lOREVYX0JJVE1BU0tf
+UE9TKSAmDQotCQkJSUVFRTgwMjExX1BQRV9USFJFU19SVV9JTkRFWF9CSVRNQVNLX01BU0s7DQot
+DQotCWZvciAobnNzID0gMDsgbnNzIDw9IG1heF9uc3M7IG5zcysrKSB7DQotCQlmb3IgKHJ1ID0g
+MDsgcnUgPCBtYXhfcnU7IHJ1KyspIHsNCi0JCQl1OCB2YWw7DQotCQkJaW50IGk7DQotDQotCQkJ
+aWYgKCEocnVfYml0X21hc2sgJiBCSVQocnUpKSkNCi0JCQkJY29udGludWU7DQotDQotCQkJdmFs
+ID0gKHBwZXQxNl9wcGV0OF9ydTNfcnUwW25zc10gPj4gKHJ1ICogNikpICYNCi0JCQkgICAgICAg
+MHgzZjsNCi0JCQl2YWwgPSAoKHZhbCA+PiAzKSAmIDB4NykgfCAoKHZhbCAmIDB4NykgPDwgMyk7
+DQotCQkJZm9yIChpID0gNTsgaSA+PSAwOyBpLS0pIHsNCi0JCQkJaGVfcHBldFtiaXQgLyA4XSB8
+PQ0KLQkJCQkJKCh2YWwgPj4gaSkgJiAweDEpIDw8ICgoYml0ICUgOCkpOw0KLQkJCQliaXQrKzsN
+Ci0JCQl9DQotCQl9DQotCX0NCisJaGVfcHBldFswXSA9IEZJRUxEX1BSRVAoSUVFRTgwMjExX1BQ
+RV9USFJFU19OU1NfTUFTSywgbnNzIC0gMSkgfA0KKwkJICAgICBGSUVMRF9QUkVQKElFRUU4MDIx
+MV9QUEVfVEhSRVNfUlVfSU5ERVhfQklUTUFTS19NQVNLLA0KKwkJCQlydV9iaXRfbWFzayk7DQor
+DQorCXBwZXRfYml0cyA9IElFRUU4MDIxMV9QUEVfVEhSRVNfSU5GT19QUEVUX1NJWkUgKg0KKwkJ
+ICAgIG5zcyAqIGh3ZWlnaHQ4KHJ1X2JpdF9tYXNrKSAqIDI7DQorCXBwZXRfc2l6ZSA9IERJVl9S
+T1VORF9VUChwcGV0X2JpdHMsIDgpOw0KKw0KKwlmb3IgKGkgPSAwOyBpIDwgcHBldF9zaXplIC0g
+MTsgaSsrKQ0KKwkJaGVfcHBldFtpICsgMV0gPSBwcGV0MTZfcHBldDhfcnUzX3J1MFtpICUgM107
+DQorDQorCWhlX3BwZXRbaSArIDFdID0gcHBldDE2X3BwZXQ4X3J1M19ydTBbaSAlIDNdICYNCisJ
+CQkgKDB4ZmYgPj4gKDggLSAocHBldF9iaXRzIC0gMSkgJSA4KSk7DQogfQ0KIA0KIHN0YXRpYyBp
+bnQNCkBAIC01MTYsNyArNTA1LDcgQEAgbXQ3OTE1X2luaXRfaGVfY2FwcyhzdHJ1Y3QgbXQ3OTE1
+X3BoeSAqcGh5LCBlbnVtIG5sODAyMTFfYmFuZCBiYW5kLA0KIAkJbWVtc2V0KGhlX2NhcC0+cHBl
+X3RocmVzLCAwLCBzaXplb2YoaGVfY2FwLT5wcGVfdGhyZXMpKTsNCiAJCWlmIChoZV9jYXBfZWxl
+bS0+cGh5X2NhcF9pbmZvWzZdICYNCiAJCSAgICBJRUVFODAyMTFfSEVfUEhZX0NBUDZfUFBFX1RI
+UkVTSE9MRF9QUkVTRU5UKSB7DQotCQkJbXQ3OTE1X2dlbl9wcGVfdGhyZXNoKGhlX2NhcC0+cHBl
+X3RocmVzKTsNCisJCQltdDc5MTVfZ2VuX3BwZV90aHJlc2goaGVfY2FwLT5wcGVfdGhyZXMsIG5z
+cyk7DQogCQl9IGVsc2Ugew0KIAkJCWhlX2NhcF9lbGVtLT5waHlfY2FwX2luZm9bOV0gfD0NCiAJ
+CQkJSUVFRTgwMjExX0hFX1BIWV9DQVA5X05PTUlNQUxfUEtUX1BBRERJTkdfMTZVUzsNCi0tIA0K
+Mi4xOC4wDQo=
 
-Hi Johannes and David,
-Thank you for the review!
-
-> From: Taehee Yoo
-> > Sent: 08 October 2020 16:49
-> >
-> > When debugfs file is opened, its module should not be removed until
-> > it's closed.
-> > Because debugfs internally uses the module's data.
-> > So, it could access freed memory.
-> >
-> > In order to avoid panic, it just sets .owner to THIS_MODULE.
-> > So that all modules will be held when its debugfs file is opened.
->
-> Can't you fix it in common code?
-
-> Yeah I was just wondering that too - weren't the proxy_fops even already
-> intended to fix this?
-
-I didn't try to fix this issue in the common code(debugfs).
-Because I thought It's a typical pattern of panic and THIS_MODULE
-can fix it clearly.
-So I couldn't think there is a root reason in the common code.
-
-> The modules _should_ be removing the debugfs files, and then the
-> proxy_fops should kick in, no?
-
-If I understand your mention correctly,
-you mean that when the module is being removed, the opened file
-should be closed automatically by debugfs filesystem.
-Is that right?
-
-> So where's the issue?
-
-> johannes
-
-Thanks a lot!
-Taehee
