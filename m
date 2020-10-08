@@ -2,61 +2,150 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EEAFA286C6F
-	for <lists+linux-wireless@lfdr.de>; Thu,  8 Oct 2020 03:42:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 917DD286F23
+	for <lists+linux-wireless@lfdr.de>; Thu,  8 Oct 2020 09:20:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728000AbgJHBmb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 7 Oct 2020 21:42:31 -0400
-Received: from sonic305-37.consmr.mail.bf2.yahoo.com ([74.6.133.236]:45366
-        "EHLO sonic305-37.consmr.mail.bf2.yahoo.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727977AbgJHBma (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 7 Oct 2020 21:42:30 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1602121349; bh=KhejUjG+aIFEdaJtUCWO7uMjCXcLLdLXH7PJ9JLxOyc=; h=Date:From:Reply-To:Subject:References:From:Subject; b=mxTCY5u8dojIAoEK7dRRm3e8tg6fQX6p/BSFuCqeFD97orLo/FdEqaUL+Vgv68beRODtWE6heUs3t3B+iCrdkPZy28wUTgEdThl6fQfvPy7Cmjj45R2nqHRz4orr0o5lzILlm7SxT8t/JnS3FFGcXXVml/PsbkAU/grwW0DsmgF/+JX4CKAX/MHjB1Z/Fc6+tETC7+C3bkApWT3CWMvzwZzcrEkjnmCXfDaKgyz2MmhjzZJcAmLTLRucb8uOv6LA5ilSkiI59v8EyKxo9ikH1ok/VFF+PwsHy5ZM/ZrKelzlpDNaHUHtAbnAx10XQk94QLBWkHx84PZc/UAfQz4kYg==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1602121349; bh=uqDj2VPrKPT25U9T/+fYHyMjjjh3wcJG6jaJ8gvI7Ws=; h=Date:From:Subject; b=JtBSkhoMJzEvWPM48YC1y17q1Cw6lQAEqD4glqgpMbIQ4lSWeupmtDnE9H7mo3uK2gA9VbTzpNk/F51uZ8j4QC0Y92g4a8xzM261RpFFZIsCRnIkWqNWR+HXXV5uHffTmbSDD1SczHuyG5LuHu8M4uCR6Ot+4k36nK/iQjFKKTdPzvpZNkRjSf9z1izmXmdO9UJbmGsv+vUMSiBjXR2R1k5IDm4pF0cC/f5dU45qJ21lJqE3nnbXftaPdT7xR2/CoMv4tD9mcvFpuHD6hIh6+ifDkEurvBudyLEn29nRThkIYO9Hzc+hEI/GB0EjNZb3WlZpNB3WwXWmoEbzOK7wyw==
-X-YMail-OSG: UTHzd1gVM1kUOprq2E7c7l7h8ZbDBFFCByblZ4goQS9jWtmdXfMcT6U_Ox7H4Ds
- X52X6Hqp.i0BTg0dcEHbfnVwE7EPDJT0shydaqCdNkKCKLcop0J5BEe8W7R1hNrjO6IZBic.Ty0e
- Vi2utWyLe8OW3rwC2BixdqwpybZ0pOGqkfpnO7feQDYlZ.MuzlxL0xKB92uI7d5sI1pcKFanYbJH
- _v_tOo51CKqUQvJkYfdxsJNNSTWN6dfyBkWIVXKLQZN4rxhgVMtUeJMXl2LeWZ2a78uaXLmXL776
- UPo72i7127qvJDkDo5hPtUPPJt_TbspsHmuHddiJwmEqpip1TMfAah2ZfFakY0_rgcW9AFFKrTMl
- QHKytwHq632bmejes29GXqabaTUWEQ99V_K79z3zeBrWXnvGeV3u9KQevsBuL3Ci3g9AwLYvLz7s
- jH1j59q8Y6y5CjsHo2.ylfnaQRqh4E2mJLH4A8EoDMHXlcB8.2RTUj3LnqeYkVGxkHftR2gcMIwk
- mm51HDr4h9z6z8zqSTLK0FwuYhWVU1BVHsOeFTfVR9S.gIW8G..C49x35u6WgBNV6WMYzHKvZqzQ
- 7Supxu4WVexoenT9Es5ae3wMuBwSZchSyWX9TxOlWaooazNNkWTiJnZ4pQGcXpl.ZSEDJ8AwejMv
- g14ZUbqVkHdxAiGBOdFdC51JgqgzwfoodHwWF53UkoBTG_XxedDarMuTfx2b5r3vzlJIPxFx5iMQ
- b7zwi6iRKgNOblRDKdttHGlpZAcayXXC.E55z8Wf0oplY_acn4IgN_oYaYkenNx_iD8e5BlO5FI_
- FHn1KoSfR24.y1JswUl_X8KXzqMKBJ1nQ.HiTli75cqpRbNIbUtCNfTdvbJES4iwVPrLPAyupyFw
- KJGPy00fIyKDyxj_ALsuei1cy7PhEkLOBwK2a5emJw7flzrRqV54WKWX3HaZOJzoerLjVPKLNVuV
- CEwCe86d4FF.pgZI0jPMmOh6v0cK1fD8MoMNdiyDI7rs9W8DFl1yerEi9kDJpuEw1mqIZozZfWfp
- 4BGAfmt29jYZ2bKSpc2gRiZjBQ_3DmvVDRRa1FvM8GKWv4uubkIZpPr9UFnkpJqi3vr0X2E5F7W5
- EFgWkGbuuNNz2REdFabs3IDmlf9f7udTWB0PNgSls8sKxapX01i0HKI3C9vPZbmRT8lYrUToPm9T
- Zzip2GLrebwroSMpXkLZJFtkISpZwgqKa1_nUuP2uxx0Pma_ZNYUnKCBIrxHPgajlakK_m71Cunt
- 2X8xe4ORYjEzj0rJXU2YDyW2jay5hpCwpXGHMoVCR8bwzEcqtVIZ7tmqgnMJG9y1sHSClGF5G1AT
- 8eE.ScH4cCKAKKiTxvJE2RQsGvAm9zpEZTrOOyHtKhni7mWP3AdgANxal6OvRvxL87wVgsstADZ0
- Q6D3TndATmhtW.vJ7nRkjDtyTloWdIW2LGR68ORCtLbk0Ff_N6cWlqPswla8YWDgfP2X3YwfUzGq
- y
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic305.consmr.mail.bf2.yahoo.com with HTTP; Thu, 8 Oct 2020 01:42:29 +0000
-Date:   Thu, 8 Oct 2020 01:40:25 +0000 (UTC)
-From:   "Mrs. Maureen Hinckley" <mau9@fdco.in>
-Reply-To: maurhinck4@gmail.com
-Message-ID: <2103559524.308380.1602121225814@mail.yahoo.com>
-Subject: RE
+        id S1726747AbgJHHUS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 8 Oct 2020 03:20:18 -0400
+Received: from z5.mailgun.us ([104.130.96.5]:55475 "EHLO z5.mailgun.us"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725900AbgJHHUS (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 8 Oct 2020 03:20:18 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1602141617; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=xcv5dzo+anLNvdgtjCcQMqFVFBWCEf27U/6mqW7B/Po=; b=PvfRLZiYO/Ub5Bp2Mqn2sCX2XW5p0YyDU6UUUtoq98GKaPNPdhV5WCffBYKty0sGKlPz7ndq
+ eV8lwYDohFlcc9h9SXLGekkaUYi5WgdDtvlWVx/94/SiRUqvdGdWnKJ5awUpS3ASbD0rLMig
+ nVflCaDBIYjMAdrVI3690zJ+6yQ=
+X-Mailgun-Sending-Ip: 104.130.96.5
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n04.prod.us-east-1.postgun.com with SMTP id
+ 5f7ebdb1aad2c3cd1c7df9a6 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 08 Oct 2020 07:20:17
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id D6CA1C43391; Thu,  8 Oct 2020 07:20:16 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 450B5C433FE;
+        Thu,  8 Oct 2020 07:20:14 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 450B5C433FE
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Luca Coelho <luca@coelho.fi>
+Cc:     Lee Jones <lee.jones@linaro.org>, davem@davemloft.net,
+        kuba@kernel.org, linux-kernel@vger.kernel.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH v2 00/29] [Set 1,2,3] Rid W=1 warnings in Wireless
+References: <20200910065431.657636-1-lee.jones@linaro.org>
+        <20201002090353.GS6148@dell> <87362rdhv2.fsf@codeaurora.org>
+        <20201006065617.GX6148@dell> <87lfgjbzin.fsf@codeaurora.org>
+        <27f10117a4f26d6f1f528d8e03fe753614dbef1a.camel@coelho.fi>
+Date:   Thu, 08 Oct 2020 10:20:11 +0300
+In-Reply-To: <27f10117a4f26d6f1f528d8e03fe753614dbef1a.camel@coelho.fi> (Luca
+        Coelho's message of "Wed, 07 Oct 2020 09:01:10 +0300")
+Message-ID: <87k0w12nh0.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-References: <2103559524.308380.1602121225814.ref@mail.yahoo.com>
-X-Mailer: WebService/1.1.16795 YMailNodin Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36
-To:     unlisted-recipients:; (no To-header on input)
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Luca Coelho <luca@coelho.fi> writes:
 
+> On Tue, 2020-10-06 at 10:10 +0300, Kalle Valo wrote:
+>> Lee Jones <lee.jones@linaro.org> writes:
+>> 
+>> > On Tue, 06 Oct 2020, Kalle Valo wrote:
+>> > 
+>> > > Lee Jones <lee.jones@linaro.org> writes:
+>> > > 
+>> > > > On Thu, 10 Sep 2020, Lee Jones wrote:
+>> > > > 
+>> > > > > This is a rebased/re-worked set of patches which have been
+>> > > > > previously posted to the mailing list(s).
+>> > > > > 
+>> > > > > This set is part of a larger effort attempting to clean-up W=1
+>> > > > > kernel builds, which are currently overwhelmingly riddled with
+>> > > > > niggly little warnings.
+>> > > > > 
+>> > > > > There are quite a few W=1 warnings in the Wireless.  My plan
+>> > > > > is to work through all of them over the next few weeks.
+>> > > > > Hopefully it won't be too long before drivers/net/wireless
+>> > > > > builds clean with W=1 enabled.
+>> > > > > 
+>> > > > > Lee Jones (29):
+>> > > > >   iwlwifi: dvm: Demote non-compliant kernel-doc headers
+>> > > > >   iwlwifi: rs: Demote non-compliant kernel-doc headers
+>> > > > >   iwlwifi: dvm: tx: Demote non-compliant kernel-doc headers
+>> > > > >   iwlwifi: dvm: lib: Demote non-compliant kernel-doc headers
+>> > > > >   iwlwifi: calib: Demote seemingly unintentional kerneldoc header
+>> > > > >   wil6210: Fix a couple of formatting issues in 'wil6210_debugfs_init'
+>> > > > >   iwlwifi: dvm: sta: Demote a bunch of nonconformant kernel-doc headers
+>> > > > >   iwlwifi: mvm: ops: Remove unused static struct 'iwl_mvm_debug_names'
+>> > > > >   iwlwifi: dvm: Demote a couple of nonconformant kernel-doc headers
+>> > > > >   iwlwifi: mvm: utils: Fix some doc-rot
+>> > > > >   iwlwifi: dvm: scan: Demote a few nonconformant kernel-doc headers
+>> > > > >   iwlwifi: dvm: rxon: Demote non-conformant kernel-doc headers
+>> > > > >   iwlwifi: mvm: tx: Demote misuse of kernel-doc headers
+>> > > > >   iwlwifi: dvm: devices: Fix function documentation formatting issues
+>> > > > >   iwlwifi: iwl-drv: Provide descriptions debugfs dentries
+>> > > > >   wil6210: wmi: Fix formatting and demote non-conforming function
+>> > > > >     headers
+>> > > > >   wil6210: interrupt: Demote comment header which is clearly not
+>> > > > >     kernel-doc
+>> > > > >   wil6210: txrx: Demote obvious abuse of kernel-doc
+>> > > > >   wil6210: txrx_edma: Demote comments which are clearly not kernel-doc
+>> > > > >   wil6210: pmc: Demote a few nonconformant kernel-doc function headers
+>> > > > >   wil6210: wil_platform: Demote kernel-doc header to standard comment
+>> > > > >     block
+>> > > > >   wil6210: wmi: Correct misnamed function parameter 'ptr_'
+>> > > > >   ath6kl: wmi: Remove unused variable 'rate'
+>> > > > >   ath9k: ar9002_initvals: Remove unused array
+>> > > > >     'ar9280PciePhy_clkreq_off_L1_9280'
+>> > > > >   ath9k: ar9001_initvals: Remove unused array 'ar5416Bank6_9100'
+>> > > > >   ath9k: ar5008_initvals: Remove unused table entirely
+>> > > > >   ath9k: ar5008_initvals: Move ar5416Bank{0,1,2,3,7} to where they are
+>> > > > >     used
+>> > > > >   brcmsmac: phytbl_lcn: Remove unused array 'dot11lcn_gain_tbl_rev1'
+>> > > > >   brcmsmac: phy_lcn: Remove unused variable
+>> > > > >     'lcnphy_rx_iqcomp_table_rev0'
+>> > > > 
+>> > > > What's happening with all of these iwlwifi patches?
+>> > > > 
+>> > > > Looks like they are still not applied.
+>> > > 
+>> > > Luca (CCed) takes iwlwifi patches to his iwlwifi tree.
+>> > 
+>> > Thanks Kalle.
+>> > 
+>> > Luca,
+>> > 
+>> >   Do you know why these patches have not been applied yet?  Do you
+>> > plan on applying them this week?  -rc1 is not due for release for
+>> > nearly 3 weeks now that Linus tagged an -rc8.
+>> 
+>> I can also take Lee's patches directly to wireless-drivers-next, if
+>> that's easier for Luca.
+>
+> Yes, please take these patches directly.  It simplifies things.
 
-I am Maureen Hinckley and my foundation is donating (Five hundred and fifty=
- thousand USD) to you. Contact us via my email at (maurhinck4@gmail.com) fo=
-r further details.
+Ok, I have assigned all Lee's pending iwlwifi patches to me on
+patchwork.
 
-Best Regards,
-Mrs. Maureen Hinckley,
-Copyright =C2=A92020 The Maureen Hinckley Foundation All Rights Reserved.
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
