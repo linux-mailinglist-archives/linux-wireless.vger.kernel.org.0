@@ -2,88 +2,79 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 15548287952
-	for <lists+linux-wireless@lfdr.de>; Thu,  8 Oct 2020 17:59:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 33F2E28797A
+	for <lists+linux-wireless@lfdr.de>; Thu,  8 Oct 2020 18:01:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729982AbgJHP72 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 8 Oct 2020 11:59:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42484 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730084AbgJHP6Z (ORCPT
+        id S1731195AbgJHQAB convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 8 Oct 2020 12:00:01 -0400
+Received: from eu-smtp-delivery-151.mimecast.com ([207.82.80.151]:35860 "EHLO
+        eu-smtp-delivery-151.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1731418AbgJHP7c (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 8 Oct 2020 11:58:25 -0400
-Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com [IPv6:2607:f8b0:4864:20::542])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D18F7C0613D4;
-        Thu,  8 Oct 2020 08:58:24 -0700 (PDT)
-Received: by mail-pg1-x542.google.com with SMTP id y14so4637788pgf.12;
-        Thu, 08 Oct 2020 08:58:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=MrwV7YboufuzPmRY7YXXjmmxDQMT3fV4x6LdtCZmti8=;
-        b=LP1lH8q6rNJJwGYNet9TqcUgUeLGgdJTUoX2VABqWbb4zfKk/yK0DDzC3Sh+n8Ewt7
-         sglipnDEAJIRMS+rdiTyx24W0oJhjP8C0wxOjmhA4U/myUk+5LH18UD+S28a0vgCfKUG
-         9M9w9pa01efZDnCC2JZNjTPBgkVswRLlLFhcrrHPif7hOrct5Gv2Y5rmHLWa0PK7uo0J
-         gCDGJVR8HFZAJktNr6I5guKNC7EakGN3C7H1Xtx2kcnmvO+5iU83SMRVjGKURkiFFX60
-         dgWb9Pzyez6uUAzrxJ2URBYe1OyCFHmi9gk8/uP/Zj9wS9NiWWEXDsD7KRXVBgZ9kIor
-         ibVg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=MrwV7YboufuzPmRY7YXXjmmxDQMT3fV4x6LdtCZmti8=;
-        b=QvIHC0Kyn3UFkKhiHYTkW7AbPkE0iCj/6VXAN3qUWOljZg5dGFgSkIi4VjfZbTwiCA
-         45bYnn/0KLDD8FNa5UUKY3qTY9XOeqPxSTaHQeQOvXVLdDi88tb7iift2OSS5gfc0cV6
-         3Et+ZrV4fUjAzGg4+JI36z7D27gBUACj7RnF0Psk/g2zgSGBoyRGkcnccvHeC/1E20r5
-         YQgLUH1uBt84U1e2aEyOv9s5ZvqEpkpCYDzxRQUTCh9WIIjAIBYj7USeaU7P13Kdm5CQ
-         bNC08rEamMn/o/0EMnoC8HC9VihzpI1DGGv8bPco39onybqcdePnROid5wx1vROefUg8
-         otaA==
-X-Gm-Message-State: AOAM530u+ebAtj6kQ+r3hWsjANCQhq8R2as59f+Gx7nbTRfMgukb+MjX
-        a8XF+cJGvMIBrNMect9TidQ=
-X-Google-Smtp-Source: ABdhPJx4Vsg3QPFugLVIui6GS8ZvLhvbbBsX2PxlUIGK8zBVxxZTTFUGnUioSlrvyxNd6MDGOY7Xjg==
-X-Received: by 2002:a63:4457:: with SMTP id t23mr7863489pgk.108.1602172704447;
-        Thu, 08 Oct 2020 08:58:24 -0700 (PDT)
-Received: from localhost.localdomain ([180.70.143.152])
-        by smtp.gmail.com with ESMTPSA id f1sm5917929pjh.20.2020.10.08.08.58.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Oct 2020 08:58:23 -0700 (PDT)
-From:   Taehee Yoo <ap420073@gmail.com>
-To:     davem@davemloft.net, kuba@kernel.org, netdev@vger.kernel.org
-Cc:     ap420073@gmail.com, linux-wireless@vger.kernel.org,
-        wil6210@qti.qualcomm.com, b43-dev@lists.infradead.org,
-        linux-bluetooth@vger.kernel.org
-Subject: [PATCH net 117/117] Bluetooth: set test_ecdh_fops.owner to THIS_MODULE
-Date:   Thu,  8 Oct 2020 15:52:09 +0000
-Message-Id: <20201008155209.18025-117-ap420073@gmail.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20201008155209.18025-1-ap420073@gmail.com>
-References: <20201008155209.18025-1-ap420073@gmail.com>
+        Thu, 8 Oct 2020 11:59:32 -0400
+Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
+ TLS) by relay.mimecast.com with ESMTP id
+ uk-mta-238-6KcKqProOHmg7Vl2R1BbrA-1; Thu, 08 Oct 2020 16:59:28 +0100
+X-MC-Unique: 6KcKqProOHmg7Vl2R1BbrA-1
+Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) by
+ AcuMS.aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) with Microsoft SMTP
+ Server (TLS) id 15.0.1347.2; Thu, 8 Oct 2020 16:59:28 +0100
+Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
+ AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000;
+ Thu, 8 Oct 2020 16:59:28 +0100
+From:   David Laight <David.Laight@ACULAB.COM>
+To:     'Taehee Yoo' <ap420073@gmail.com>,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        "kuba@kernel.org" <kuba@kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "wil6210@qti.qualcomm.com" <wil6210@qti.qualcomm.com>,
+        "brcm80211-dev-list@cypress.com" <brcm80211-dev-list@cypress.com>,
+        "b43-dev@lists.infradead.org" <b43-dev@lists.infradead.org>,
+        "linux-bluetooth@vger.kernel.org" <linux-bluetooth@vger.kernel.org>
+Subject: RE: [PATCH net 000/117] net: avoid to remove module when its debugfs
+ is being used
+Thread-Topic: [PATCH net 000/117] net: avoid to remove module when its debugfs
+ is being used
+Thread-Index: AQHWnYreCEbA8QiKJ0qlgP86SUSOo6mN3D7w
+Date:   Thu, 8 Oct 2020 15:59:28 +0000
+Message-ID: <1cbb69d83188424e99b2d2482848ae64@AcuMS.aculab.com>
+References: <20201008155048.17679-1-ap420073@gmail.com>
+In-Reply-To: <20201008155048.17679-1-ap420073@gmail.com>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
+MIME-Version: 1.0
+Authentication-Results: relay.mimecast.com;
+        auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-If THIS_MODULE is not set, the module would be removed while debugfs is
-being used.
-It eventually makes kernel panic.
+From: Taehee Yoo
+> Sent: 08 October 2020 16:49
+> 
+> When debugfs file is opened, its module should not be removed until
+> it's closed.
+> Because debugfs internally uses the module's data.
+> So, it could access freed memory.
+> 
+> In order to avoid panic, it just sets .owner to THIS_MODULE.
+> So that all modules will be held when its debugfs file is opened.
 
-Fixes: 6de50f9fdb60 ("Bluetooth: Export ECDH selftest result in debugfs")
-Signed-off-by: Taehee Yoo <ap420073@gmail.com>
----
- net/bluetooth/selftest.c | 1 +
- 1 file changed, 1 insertion(+)
+Can't you fix it in common code?
 
-diff --git a/net/bluetooth/selftest.c b/net/bluetooth/selftest.c
-index f71c6fa65fb3..445ea247061b 100644
---- a/net/bluetooth/selftest.c
-+++ b/net/bluetooth/selftest.c
-@@ -194,6 +194,7 @@ static const struct file_operations test_ecdh_fops = {
- 	.open		= simple_open,
- 	.read		= test_ecdh_read,
- 	.llseek		= default_llseek,
-+	.owner		= THIS_MODULE,
- };
- 
- static int __init test_ecdh(void)
--- 
-2.17.1
+	David
+
+-
+Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1PT, UK
+Registration No: 1397386 (Wales)
 
