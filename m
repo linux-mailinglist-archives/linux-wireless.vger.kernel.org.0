@@ -2,112 +2,203 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D382928804C
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 Oct 2020 04:18:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0145328810B
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 Oct 2020 06:14:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731053AbgJICSX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 8 Oct 2020 22:18:23 -0400
-Received: from z5.mailgun.us ([104.130.96.5]:62727 "EHLO z5.mailgun.us"
+        id S1727808AbgJIEOR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 9 Oct 2020 00:14:17 -0400
+Received: from mga05.intel.com ([192.55.52.43]:47295 "EHLO mga05.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729724AbgJICSW (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 8 Oct 2020 22:18:22 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1602209902; h=References: In-Reply-To: Message-Id: Date:
- Subject: Cc: To: From: Sender;
- bh=FkOCWwPURdXFHzjnCkMfUjx+hI/JNP6MMQUkAI6Q7pE=; b=mENeNh8TtcBeLnqPn6S7+Z+JZiv/15bD2LrrvftSsM6yZD3xsQ6cMZloDeeTHh4DU2cy5pzo
- RUEiq5S48bMmLl2yduv+iuFe7VpWl0nhmRP6wp/wO8Y53m6AXPyvmg+lYpFROWJiL1VO3QnC
- oLnibflL8h5WLMTFcYDTY0a8Gng=
-X-Mailgun-Sending-Ip: 104.130.96.5
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n02.prod.us-east-1.postgun.com with SMTP id
- 5f7fc86eaad2c3cd1cef5f87 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 09 Oct 2020 02:18:22
- GMT
-Sender: pradeepc=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 9129BC43391; Fri,  9 Oct 2020 02:18:21 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-Received: from pradeepc2-linux.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: pradeepc)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id E092AC433FE;
-        Fri,  9 Oct 2020 02:18:20 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org E092AC433FE
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=pradeepc@codeaurora.org
-From:   Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        ath11k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org,
-        Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>
-Subject: [PATCH 4/4] ath11k: mesh: add support for 256 bitmap in blockack frames in 11ax
-Date:   Thu,  8 Oct 2020 19:18:11 -0700
-Message-Id: <20201009021811.18584-5-pradeepc@codeaurora.org>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20201009021811.18584-1-pradeepc@codeaurora.org>
-References: <20201009021811.18584-1-pradeepc@codeaurora.org>
+        id S1725900AbgJIEOR (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 9 Oct 2020 00:14:17 -0400
+IronPort-SDR: sPHXOo9qJcJIKwXChzAXg86BOdNXpA99yOMcKXo2sLCVT9Qw0UGBMBOn7IxNCWLEe2ePiD8Puk
+ B3VKRArCp2bA==
+X-IronPort-AV: E=McAfee;i="6000,8403,9768"; a="250134823"
+X-IronPort-AV: E=Sophos;i="5.77,353,1596524400"; 
+   d="scan'208";a="250134823"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Oct 2020 21:14:16 -0700
+IronPort-SDR: uEWl0EP78TRV5ZxP0Ba8d9+64jpEFMF6DjYn9cGYQZeDcDXsDnY8MwqSmdaT65KqSwiCb496QO
+ GWI0gAZWqq+w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.77,353,1596524400"; 
+   d="scan'208";a="462050680"
+Received: from lkp-server02.sh.intel.com (HELO 80eb06af76cf) ([10.239.97.151])
+  by orsmga004.jf.intel.com with ESMTP; 08 Oct 2020 21:14:14 -0700
+Received: from kbuild by 80eb06af76cf with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1kQjnK-0000AS-5n; Fri, 09 Oct 2020 04:14:14 +0000
+Date:   Fri, 09 Oct 2020 12:13:22 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     linux-wireless@vger.kernel.org
+Subject: [wireless-drivers-next:pending] BUILD SUCCESS
+ 13b3c64910dbebb8d20a41bc03ea1d4e03876903
+Message-ID: <5f7fe362.+dgiu7dELerJgHbd%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Currently 256 bitmap in blockack frames is being set only for AP mode.
-Fix this to set whenever beacon has changed and has HE capability there
-by supporting mesh as well.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git  pending
+branch HEAD: 13b3c64910dbebb8d20a41bc03ea1d4e03876903  iwlwifi: bump FW API to 59 for AX devices
 
-Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.1.0.1-01228-QCAHKSWPL_SILICONZ-1
+elapsed time: 720m
 
-Signed-off-by: Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>
+configs tested: 139
+configs skipped: 2
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+arm                  colibri_pxa300_defconfig
+m68k                       m5475evb_defconfig
+mips                      fuloong2e_defconfig
+arm                          exynos_defconfig
+powerpc                  mpc885_ads_defconfig
+mips                      bmips_stb_defconfig
+arm                      footbridge_defconfig
+powerpc                         ps3_defconfig
+sh                 kfr2r09-romimage_defconfig
+arm                           h3600_defconfig
+powerpc                     mpc512x_defconfig
+sh                          landisk_defconfig
+mips                     decstation_defconfig
+powerpc                     pseries_defconfig
+arm                       netwinder_defconfig
+arm                          ep93xx_defconfig
+m68k                        m5307c3_defconfig
+m68k                       m5275evb_defconfig
+riscv                             allnoconfig
+powerpc                     ppa8548_defconfig
+openrisc                    or1ksim_defconfig
+sh                          rsk7201_defconfig
+mips                      malta_kvm_defconfig
+sh                           se7721_defconfig
+powerpc                      chrp32_defconfig
+arm                         lpc18xx_defconfig
+powerpc                 mpc8313_rdb_defconfig
+mips                      pic32mzda_defconfig
+arm                         s5pv210_defconfig
+x86_64                              defconfig
+arm                             mxs_defconfig
+powerpc                      ppc6xx_defconfig
+riscv                               defconfig
+arm                    vt8500_v6_v7_defconfig
+mips                        qi_lb60_defconfig
+c6x                        evmc6472_defconfig
+sh                     sh7710voipgw_defconfig
+m68k                          multi_defconfig
+mips                         tb0219_defconfig
+sh                          urquell_defconfig
+ia64                        generic_defconfig
+arm                         bcm2835_defconfig
+sh                             espt_defconfig
+mips                      loongson3_defconfig
+h8300                     edosk2674_defconfig
+arm                     eseries_pxa_defconfig
+m68k                          amiga_defconfig
+mips                           xway_defconfig
+sh                              ul2_defconfig
+sh                          lboxre2_defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+c6x                              allyesconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+x86_64               randconfig-a004-20201008
+x86_64               randconfig-a003-20201008
+x86_64               randconfig-a005-20201008
+x86_64               randconfig-a001-20201008
+x86_64               randconfig-a002-20201008
+x86_64               randconfig-a006-20201008
+i386                 randconfig-a006-20201008
+i386                 randconfig-a005-20201008
+i386                 randconfig-a001-20201008
+i386                 randconfig-a004-20201008
+i386                 randconfig-a002-20201008
+i386                 randconfig-a003-20201008
+x86_64               randconfig-a012-20201009
+x86_64               randconfig-a015-20201009
+x86_64               randconfig-a013-20201009
+x86_64               randconfig-a014-20201009
+x86_64               randconfig-a011-20201009
+x86_64               randconfig-a016-20201009
+i386                 randconfig-a015-20201009
+i386                 randconfig-a013-20201009
+i386                 randconfig-a014-20201009
+i386                 randconfig-a016-20201009
+i386                 randconfig-a011-20201009
+i386                 randconfig-a012-20201009
+i386                 randconfig-a015-20201008
+i386                 randconfig-a013-20201008
+i386                 randconfig-a014-20201008
+i386                 randconfig-a016-20201008
+i386                 randconfig-a011-20201008
+i386                 randconfig-a012-20201008
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+x86_64                                   rhel
+x86_64                           allyesconfig
+x86_64                    rhel-7.6-kselftests
+x86_64                               rhel-8.3
+x86_64                                  kexec
+
+clang tested configs:
+x86_64               randconfig-a012-20201008
+x86_64               randconfig-a015-20201008
+x86_64               randconfig-a013-20201008
+x86_64               randconfig-a014-20201008
+x86_64               randconfig-a011-20201008
+x86_64               randconfig-a016-20201008
+x86_64               randconfig-a004-20201009
+x86_64               randconfig-a003-20201009
+x86_64               randconfig-a005-20201009
+x86_64               randconfig-a001-20201009
+x86_64               randconfig-a002-20201009
+x86_64               randconfig-a006-20201009
+
 ---
- drivers/net/wireless/ath/ath11k/mac.c | 22 ++++++++--------------
- 1 file changed, 8 insertions(+), 14 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index 77d073054ba2..7e8a4dfe49a9 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -1904,20 +1904,6 @@ static void ath11k_mac_op_bss_info_changed(struct ieee80211_hw *hw,
- 		if (ret)
- 			ath11k_warn(ar->ab, "failed to update bcn template: %d\n",
- 				    ret);
--
--		if (vif->bss_conf.he_support) {
--			ret = ath11k_wmi_vdev_set_param_cmd(ar, arvif->vdev_id,
--							    WMI_VDEV_PARAM_BA_MODE,
--							    WMI_BA_MODE_BUFFER_SIZE_256);
--			if (ret)
--				ath11k_warn(ar->ab,
--					    "failed to set BA BUFFER SIZE 256 for vdev: %d\n",
--					    arvif->vdev_id);
--			else
--				ath11k_dbg(ar->ab, ATH11K_DBG_MAC,
--					   "Set BA BUFFER SIZE 256 for VDEV: %d\n",
--					   arvif->vdev_id);
--		}
- 	}
- 
- 	if (changed & (BSS_CHANGED_BEACON_INFO | BSS_CHANGED_BEACON)) {
-@@ -1953,6 +1939,14 @@ static void ath11k_mac_op_bss_info_changed(struct ieee80211_hw *hw,
- 
- 		if (arvif->is_up && vif->bss_conf.he_support &&
- 		    vif->bss_conf.he_oper.params) {
-+			ret = ath11k_wmi_vdev_set_param_cmd(ar, arvif->vdev_id,
-+							    WMI_VDEV_PARAM_BA_MODE,
-+							    WMI_BA_MODE_BUFFER_SIZE_256);
-+			if (ret)
-+				ath11k_warn(ar->ab,
-+					    "failed to set BA BUFFER SIZE 256 for vdev: %d\n",
-+					    arvif->vdev_id);
-+
- 			param_id = WMI_VDEV_PARAM_HEOPS_0_31;
- 			param_value = vif->bss_conf.he_oper.params;
- 			ret = ath11k_wmi_vdev_set_param_cmd(ar, arvif->vdev_id,
--- 
-2.17.1
-
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
