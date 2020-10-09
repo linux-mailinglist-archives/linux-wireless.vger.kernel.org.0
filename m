@@ -2,66 +2,75 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E3CDE288515
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 Oct 2020 10:19:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5CC1828851C
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 Oct 2020 10:21:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732715AbgJIITG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 9 Oct 2020 04:19:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52588 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732337AbgJIITF (ORCPT
+        id S1732620AbgJIIVR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 9 Oct 2020 04:21:17 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:55042 "EHLO
+        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1732337AbgJIIVQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 9 Oct 2020 04:19:05 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F989C0613D2;
-        Fri,  9 Oct 2020 01:19:05 -0700 (PDT)
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.94)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1kQncE-0029Tg-Uc; Fri, 09 Oct 2020 10:19:03 +0200
-Message-ID: <1ec056cf3ec0953d2d1abaa05e37e89b29c7cc63.camel@sipsolutions.net>
-Subject: Re: [CRAZY-RFF] debugfs: track open files and release on remove
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Greg KH <gregkh@linuxfoundation.org>
-Cc:     linux-kernel@vger.kernel.org, nstange@suse.de, ap420073@gmail.com,
-        David.Laight@aculab.com, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org, rafael@kernel.org
-Date:   Fri, 09 Oct 2020 10:19:02 +0200
-In-Reply-To: <20201009081624.GA401030@kroah.com>
-References: <87v9fkgf4i.fsf@suse.de>
-         <20201009095306.0d87c3aa13db.Ib3a7019bff15bb6308f6d259473a1648312a4680@changeid>
-         <20201009080355.GA398994@kroah.com>
-         <be61c6a38d0f6ca1aa0bc3f0cb45bbb216a12982.camel@sipsolutions.net>
-         <20201009081624.GA401030@kroah.com>
+        Fri, 9 Oct 2020 04:21:16 -0400
+Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=[192.168.100.69])
+        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.93)
+        (envelope-from <luca@coelho.fi>)
+        id 1kQneG-002Rhf-5a; Fri, 09 Oct 2020 11:21:08 +0300
+Message-ID: <11996c068501b02797b4cfaeed87953cc9c24dc6.camel@coelho.fi>
+From:   Luca Coelho <luca@coelho.fi>
+To:     Alexander Wetzel <alexander@wetzel-home.de>, kvalo@codeaurora.org,
+        Andy Lavr <andy.lavr@gmail.com>
+Cc:     linux-wireless@vger.kernel.org
+Date:   Fri, 09 Oct 2020 11:21:05 +0300
+In-Reply-To: <f20c67c4-3b9b-acc7-5e8c-998ddaf6b6ec@wetzel-home.de>
+References: <20200928092321.649185-1-luca@coelho.fi>
+         <iwlwifi.20200928121852.e6137861d917.I93405604eb503568688b28d3169fea7fbb88ed7e@changeid>
+         <f20c67c4-3b9b-acc7-5e8c-998ddaf6b6ec@wetzel-home.de>
 Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.5 (3.36.5-1.fc32) 
+User-Agent: Evolution 3.36.4-2 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
+X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on farmhouse.coelho.fi
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+        TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.4
+Subject: Re: [REGRESSION] Re: [PATCH 10/12] iwlwifi: remove wide_cmd_header
+ field
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 2020-10-09 at 10:16 +0200, Greg KH wrote:
-> On Fri, Oct 09, 2020 at 10:06:14AM +0200, Johannes Berg wrote:
-> > We used to say the proxy_fops weren't needed and it wasn't an issue, and
-> > then still implemented it. Dunno. I'm not really too concerned about it
-> > myself, only root can hold the files open and remove modules ...
+On Wed, 2020-10-07 at 22:23 +0200, Alexander Wetzel wrote:
+> Am 28.09.20 um 11:23 schrieb Luca Coelho:
+> > From: Mordechay Goodstein <mordechay.goodstein@intel.com>
+> > 
+> > Driver doesn't support fw without wide_cmd
+> > so driver always sets it to true.  instead of setting
+> > it always to true just remove the field.
+> > 
 > 
-> proxy_fops were needed because devices can be removed from the system at
-> any time, causing their debugfs files to want to also be removed.  It
-> wasn't because of unloading kernel code.
+> I guess that's only true for mvm but not dvm...
+> 
+> At least this patch kills my wireless using a Ultimate-N 6300.
+> Reverting to commit on top of wt-2020-10-06 works.
+> 
+> Here the last error I got during git bisect:
+> 
+> 
+> [  375.671958] iwlwifi 0000:03:00.0: Radio type=0x0-0x3-0x1
+> [  375.739218] iwlwifi 0000:03:00.0: Microcode SW error detected. 
+> Restarting 0x82000000.
+> [  375.739226] iwlwifi 0000:03:00.0: Loaded firmware version: 9.221.4.1 
+> build 25532 6000-4.ucode
+> [  375.739349] iwlwifi 0000:03:00.0: Start IWL Error Log Dump:
+> [  375.739353] iwlwifi 0000:03:00.0: Status: 0x00000000, count: 5
+> [  375.739357] iwlwifi 0000:03:00.0: 0x00000007 | BAD_COMMAND
 
-Indeed, that's true. Still, we lived with it for years.
+Hmmm, this indeed looks wrong.  I'll try to fix it or, in the worst
+case, revert this patch.
 
-Anyway, like I said, I really just did this more to see that it _could_
-be done, not to suggest that it _should_ :-)
-
-I think adding the .owner everywhere would be good, and perhaps we can
-somehow put a check somewhere like
-
-	WARN_ON(is_module_address((unsigned long)fops) && !fops->owner);
-
-to prevent the issue in the future?
-
-johannes
+--
+Cheers,
+Luca.
 
