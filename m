@@ -2,78 +2,96 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DA56A288CC3
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 Oct 2020 17:33:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5517D288CC8
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 Oct 2020 17:34:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389409AbgJIPbr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 9 Oct 2020 11:31:47 -0400
-Received: from m42-4.mailgun.net ([69.72.42.4]:44623 "EHLO m42-4.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2389297AbgJIPbq (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 9 Oct 2020 11:31:46 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1602257506; h=Content-Transfer-Encoding: Content-Type:
- MIME-Version: Message-ID: In-Reply-To: Date: References: Subject: Cc:
- To: From: Sender; bh=AHbdC6xmc5IiqEGFw3agmVXAXsis+pk0Tyk3svmXQFk=; b=EpM5c8im/vhCyh3YgDFASFPeXuwurj9v7NLEMvga257edt+5IcVf+ocs5y4HpcCDOk+As03W
- sui9/BWZqPnuuNLLzssEA7z5snFfUd2AHq/S1MyvorXwmYXi5P3g9mcDqNrlokvHZgyWbmPH
- ZC9RGB/CdjznSVEhu12XPrcBomY=
-X-Mailgun-Sending-Ip: 69.72.42.4
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n04.prod.us-east-1.postgun.com with SMTP id
- 5f80821caad2c3cd1c60180d (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 09 Oct 2020 15:30:36
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id A86F5C433CB; Fri,  9 Oct 2020 15:30:35 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-Received: from tynnyri.adurom.net (tynnyri.adurom.net [51.15.11.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 2B616C433C9;
-        Fri,  9 Oct 2020 15:30:33 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 2B616C433C9
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Rajkumar Manoharan <rmanohar@codeaurora.org>
-Cc:     johannes@sipsolutions.net, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH 1/2] nl80211: fix OBSS PD min and max offset validation
-References: <1601278091-20313-1-git-send-email-rmanohar@codeaurora.org>
-Date:   Fri, 09 Oct 2020 18:30:31 +0300
-In-Reply-To: <1601278091-20313-1-git-send-email-rmanohar@codeaurora.org>
-        (Rajkumar Manoharan's message of "Mon, 28 Sep 2020 00:28:10 -0700")
-Message-ID: <87imbjs9go.fsf@tynnyri.adurom.net>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        id S2389298AbgJIPeU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 9 Oct 2020 11:34:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35198 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388473AbgJIPeT (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 9 Oct 2020 11:34:19 -0400
+Received: from mail-yb1-xb44.google.com (mail-yb1-xb44.google.com [IPv6:2607:f8b0:4864:20::b44])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D9E2C0613D2;
+        Fri,  9 Oct 2020 08:34:18 -0700 (PDT)
+Received: by mail-yb1-xb44.google.com with SMTP id x8so7520895ybe.12;
+        Fri, 09 Oct 2020 08:34:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=dhaC4CfBlF6MI4/GCdyxBEo4B/qjNFnWrs/5fzTSDE8=;
+        b=dKIp27HidNSg+q8q4jGKuxlpggHIUEiozaf/GfFDEx0gBSsS12bWnDqSiBTwTetceK
+         un1S6D8s0NnzONZVNAHg1MXEXmqrwezOAA+FbWywPRTC+QLrheoB0qNfszTjmIPXjst9
+         zW9DypCEeIIFaH+BTF2RYtWEZUHGa+kk8OaRmm4ObZnf5+lRbXKu+1wj8CKcXu3L04iu
+         a4Cc6FqCbp5jyHMjFu+Fy4eNyzKGJQ5fukrM8WyJPc5cU9Q2n4grXKqH3ZG2Wr9OimwC
+         QtGTMJe53SA5+xGaOnqYFgZU/uZb8T3j5iJaUltl+3sUM4VYOhEtaK/vSvxZws8JVjuw
+         uDUg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=dhaC4CfBlF6MI4/GCdyxBEo4B/qjNFnWrs/5fzTSDE8=;
+        b=tYi7P/Bdpt9kP0fh2y+XUbosAULUQM2AaWjViGxyKKaF4fpu3YCwg4D4sFi/UpGhQz
+         bXQUjdwuBkm+a1N2NNEAGCB9v+O5jw+90F06dh4PC73dOHYIsHnZ7A7pfxoraZ0X6Kx0
+         6eqe/ZyGHu3INhkhjswKsKJouU5Y7Q4+vHUenjqjmkizVYnv9Rb70r/vHj0nfl5k5uDC
+         Sfg2IQNjdf806gJdDR9LVAVyOSAGQeMmAYONzyBYbbwm2/bZ1g5VK2y8X53dEVUtWX12
+         4meE+K/IFz7PjHm+lK8rOemHm63tCWjJnVISqA1ZyrUhavfNa7KbUKFc+q5yqlJ25W2N
+         0tEA==
+X-Gm-Message-State: AOAM532aFiDudAnaQEcpq6BXdLLvKzo/Q6pmmTQrxastovW3SDNI27Ab
+        gMzqTB73GEpj91Dvbux98k0Q1GFCPcPkzhubpqo=
+X-Google-Smtp-Source: ABdhPJxdTKC82L3IOwN1ItfamDMCaGgZzWZj6raebF9Fbp0Hxzd9YYx3fdVX3uKw5Ru/rNGKU+1wjtJxIB1ujSmM1Kk=
+X-Received: by 2002:a25:dc09:: with SMTP id y9mr2896321ybe.231.1602257657463;
+ Fri, 09 Oct 2020 08:34:17 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+References: <20201008155048.17679-1-ap420073@gmail.com> <1cbb69d83188424e99b2d2482848ae64@AcuMS.aculab.com>
+ <62f6c2bd11ed8b25c1cd4462ebc6db870adc4229.camel@sipsolutions.net>
+ <87v9fkgf4i.fsf@suse.de> <fd8aaf06b53f32eae7b5bdcec2f3ea9e1f419b1d.camel@sipsolutions.net>
+ <CAMArcTUdGPH5a0RTUiNoLvuQtdnXHOCwStJ+gp_noaNEzgSA1Q@mail.gmail.com> <4a58caee3b6b8975f4ff632bf6d2a6673788157d.camel@sipsolutions.net>
+In-Reply-To: <4a58caee3b6b8975f4ff632bf6d2a6673788157d.camel@sipsolutions.net>
+From:   Steve deRosier <derosier@gmail.com>
+Date:   Fri, 9 Oct 2020 08:33:41 -0700
+Message-ID: <CALLGbRKFOcSDX6yw9W=8fzKJw+GDdL0XSsWYq_kymvDPkz74KQ@mail.gmail.com>
+Subject: Re: [PATCH net 000/117] net: avoid to remove module when its debugfs
+ is being used
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     Taehee Yoo <ap420073@gmail.com>, Nicolai Stange <nstange@suse.de>,
+        David Laight <David.Laight@aculab.com>,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        "kuba@kernel.org" <kuba@kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "wil6210@qti.qualcomm.com" <wil6210@qti.qualcomm.com>,
+        "brcm80211-dev-list@cypress.com" <brcm80211-dev-list@cypress.com>,
+        "b43-dev@lists.infradead.org" <b43-dev@lists.infradead.org>,
+        "linux-bluetooth@vger.kernel.org" <linux-bluetooth@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Rajkumar Manoharan <rmanohar@codeaurora.org> writes:
-
-> The SRG min and max offset won't present when SRG Information Present of
-> SR control field of Spatial Reuse Parameter Set element set to 0. Per
-> spec. IEEE802.11ax D7.0, SRG OBSS PD Min Offset =E2=89=A4 SRG OBSS PD Max
-> Offset. Hence fix the constrain check to allow same values in both
-> offset and also call appropriate nla_get function to read the values.
+On Fri, Oct 9, 2020 at 3:22 AM Johannes Berg <johannes@sipsolutions.net> wrote:
 >
-> Fixes: 796e90f42b7e ("cfg80211: add support for parsing OBBS_PD
-> attributes")
+> On Fri, 2020-10-09 at 19:15 +0900, Taehee Yoo wrote:
+> >
+> > Okay, as you mentioned earlier in 001/117 patch thread,
+> > I will squash patches into per-driver/subsystem then send them as v2.
+>
+> Give me a bit. I think I figured out a less intrusive way that at least
+> means we don't have to do it if the fops doesn't have ->release(), which
+> is the vast majority.
+>
 
-Fixes tag should be in one line.
+While I'm all for a patch that fixes something at a single level
+instead of touching 100s of files, let me ask a loosely related, but
+more basic, question: Should `->owner` be set properly in each driver?
+ Or the flip of that, should we be considering that it isn't a
+semantic error? I don't know the answer myself, I just thought to ask
+the question.
 
---=20
-https://patchwork.kernel.org/project/linux-wireless/list/
+IMHO, if true that `->owner` should be set for "correctness", and even
+if we fix the debugfs problem elsewhere, perhaps this series (squashed
+of course) should be merged.
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
-hes
+- Steve
