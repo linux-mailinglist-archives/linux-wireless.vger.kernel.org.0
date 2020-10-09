@@ -2,49 +2,52 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C78CF288762
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 Oct 2020 12:57:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E3A6C2887A7
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 Oct 2020 13:14:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732196AbgJIK5E (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 9 Oct 2020 06:57:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48712 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732129AbgJIK5D (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 9 Oct 2020 06:57:03 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B683C0613D2;
-        Fri,  9 Oct 2020 03:57:03 -0700 (PDT)
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.94)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1kQq56-002Ddb-Pj; Fri, 09 Oct 2020 12:57:00 +0200
-Message-ID: <793a6ba5b534917018165d38bcb5e2c5704d82c7.camel@sipsolutions.net>
-Subject: Re: [RFC] debugfs: protect against rmmod while files are open
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     David Laight <David.Laight@ACULAB.COM>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Cc:     "nstange@suse.de" <nstange@suse.de>,
+        id S2388000AbgJILOc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 9 Oct 2020 07:14:32 -0400
+Received: from mail.kernel.org ([198.145.29.99]:49174 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2388001AbgJILOb (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 9 Oct 2020 07:14:31 -0400
+Received: from localhost (83-86-74-64.cable.dynamic.v4.ziggo.nl [83.86.74.64])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 9517A22269;
+        Fri,  9 Oct 2020 11:14:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1602242071;
+        bh=G9vzUMWmPTENaCSSrT+4scPL8T/yGBTjMpUFtYd6Vxs=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=bWAlSh8fDVuAw/5bkQmgw6LUbZC3WgWqOAEsSr+hEOg/6L3UCLOk+oEjFHUoUKQ5N
+         /b5CpOf0TXNVPXBk14HcAurw7DUgsBtqMl7s5KaHtfVFoWI8E7lkpVQ+kz1gI0HKT2
+         3eZztaubRPkrx3EnJ2GCchsXLYbEU52sFXG/MScY=
+Date:   Fri, 9 Oct 2020 13:15:17 +0200
+From:   "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>
+To:     David Laight <David.Laight@aculab.com>
+Cc:     'Johannes Berg' <johannes@sipsolutions.net>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "nstange@suse.de" <nstange@suse.de>,
         "ap420073@gmail.com" <ap420073@gmail.com>,
         "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
         "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
         "rafael@kernel.org" <rafael@kernel.org>
-Date:   Fri, 09 Oct 2020 12:56:59 +0200
-In-Reply-To: <8fe62082d9774a1fb21894c27e140318@AcuMS.aculab.com>
+Subject: Re: [RFC] debugfs: protect against rmmod while files are open
+Message-ID: <20201009111517.GA508813@kroah.com>
 References: <4a58caee3b6b8975f4ff632bf6d2a6673788157d.camel@sipsolutions.net>
-         <20201009124113.a723e46a677a.Ib6576679bb8db01eb34d3dce77c4c6899c28ce26@changeid>
-         (sfid-20201009_124139_179083_C8D99C3A) <2a333c2a50c676c461c1e2da5847dd4024099909.camel@sipsolutions.net>
-         <8fe62082d9774a1fb21894c27e140318@AcuMS.aculab.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.5 (3.36.5-1.fc32) 
+ <20201009124113.a723e46a677a.Ib6576679bb8db01eb34d3dce77c4c6899c28ce26@changeid>
+ <2a333c2a50c676c461c1e2da5847dd4024099909.camel@sipsolutions.net>
+ <8fe62082d9774a1fb21894c27e140318@AcuMS.aculab.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8fe62082d9774a1fb21894c27e140318@AcuMS.aculab.com>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 2020-10-09 at 10:56 +0000, David Laight wrote:
+On Fri, Oct 09, 2020 at 10:56:16AM +0000, David Laight wrote:
 > From: Johannes Berg
 > > Sent: 09 October 2020 11:48
 > > 
@@ -68,9 +71,4 @@ On Fri, 2020-10-09 at 10:56 +0000, David Laight wrote:
 > Is there an equivalent problem for normal cdev opens
 > in any modules?
 
-I guess so, but since there's no proxy_fops infrastructure and no
-revoke(), you can't really do anything else other than adding .owner
-properly, afaict.
-
-johannes
-
+What does cdev have to do with debugfs?
