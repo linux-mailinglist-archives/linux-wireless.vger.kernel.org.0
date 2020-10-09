@@ -2,60 +2,97 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4FBDA2889FA
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 Oct 2020 15:46:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C2C02288BC5
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 Oct 2020 16:45:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387411AbgJINp7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 9 Oct 2020 09:45:59 -0400
-Received: from sonic317-26.consmr.mail.bf2.yahoo.com ([74.6.129.81]:40662 "EHLO
-        sonic317-26.consmr.mail.bf2.yahoo.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1732737AbgJINp6 (ORCPT
+        id S2388846AbgJIOpO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 9 Oct 2020 10:45:14 -0400
+Received: from vps-3871858.yjara.com ([162.241.101.217]:46398 "EHLO
+        vps-3871858.yjara.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1732056AbgJIOpO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 9 Oct 2020 09:45:58 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1602251155; bh=vwEPMXxlnKui2A6anShyb2NpJ3D8JWCHQa2USlPuv/A=; h=Date:From:Reply-To:Subject:References:From:Subject; b=cc8FR290OYH3wnyVyTJ2hIUyAZeHznuB47E6UBhpBFCJCylmw2i/CZxcqKJCFNOhepsXy/Rlm+MZudZ6LOIL8xfVTR/y9t04Pum1pPGJrDWn+8J1a/rp4Q7JC3VbjoW5OYFr5iQKsjtagwZd8GowqhrUFzjNiH8TSU0yRwM4oHIzHmGxyKu9x7HSLWzxSrrjD3R6ilpANHTA+pqjbjfQFzaIvkFliVgoCtlgKDS7cbEdwE7sy6JnUvbd14nVPkZ8K+8G20AlpQniwG0MmOFtK52N1sjnnTyWFHfRgDGI3+cuLLVndwz2bqjhfRemfwG+gtKhS2gjbtgMTm6qrYELEg==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1602251155; bh=GwhrInnx3caoAhAKcM0+KPxtak9OKmOMyZAGL6d7eg4=; h=Date:From:Subject; b=tMwYr1ZQ00MOeTIqHRcEaOMlyzIy86rmHrm2fuOGIfjmp+KyBBPpW8IJcdXr64RpUSwtk4Zkjw/dk4O0D9mgH4doKOW880dTHKHdjUKninYOGlNaJm6oY0loiaJF+pgFly/kzVdOwove+spIndT8uDv2RjXSWpavEcsSS10TS/1IR4zhDm7RuvP2R2pxQnVuVv3aCJep3/Zy9kcGdyywBBjABCMFAaHBHBi6Kco+DDcglBD2Pu7+qERzyGf8n+3CLnWOOkT2alQYkOya98JhfVQSmCVR+bdS3NWqbwcZf0sp6qkLDUpMRfOvhEFyXq3zESLBYG1HKTq9jxLG48jrTQ==
-X-YMail-OSG: tFBslsMVM1lklpwzDt5RjIvwdLS2x1f.ly8b_twEvlFC0gsCOHUZ9f2GBtc_EOK
- 1j1djofjmi6oi8F6CJw7O_E85lvtjsiGoAdy5R1uRvYPo28Js.c_6_1EG7hDLcAdJu2EwbpQSh4X
- fA0gVRDqXVj0lMTmFD83rk9XP3D9Elyb6asTT8tSUDRkxrXksy_DN6gg50Mmk.dAyOvNg.Xo_1GP
- vElWwoyCh5vZDCTRfosAhrCqJ6ceyFyQgmsYlbsNx.84wPl_7Rhr0LTDwXwEoY9KfTEFVfpEP3Ga
- PHZX.D42sNSV_lYFTJZoDBJBHnR2q0Bv7YwEPv2KGtIOLFSJKf7ogIWGfHxEVmpYEkEcYAyVP4Jm
- jTeoLunN_33arG_ea3Lw1od.DjO26MtrN9p6u28TyVjL4ieFk2BmYB6L1uM72P8U9AmUFRt5723Z
- HuJ0201w3XWctJlr_oar5GFgb8GDdh.VI0cyQaZQcaL1SaE5adXBjpSGLqP5le3T36XQOBPtuiaS
- XdrGyt.qukgz1c1r9W3iVltiywdTQ2YfTL3FOyG1otRAZ3yL_GnKFO0IY8yfw68F3Uw347NAouip
- fNh9rMVLbWkLMpi2z2pJlhVL0Mzpg1AcIUKoluz2t4r2tKZ6gC8XHlCFNgVRjWhwKTmYNf1cvbKM
- I341xbk9vt2AkytJC4NQvOtPicVx8wCokl3rYNJB.NEudgtxBHXiUGaeexqlMerBYoZBwGZJVIzc
- oQPOuhs16POPpUIT6Fn4wKHIBSrLOebt9Keyi9nQNSsa4Q_4x.8ED84AJ_hKaOL2MpIJ5i4WSzyc
- LIKdWKvRZmFK.ST6HJAKPPymTZdrTQHJG2s7vgECMqjLcqCE7hbngg_moREM.ND9Euopep8ZZk6d
- t3sjhyyvzi5NX84QjFVapBygIZChcq3KDBUgwY0UTFp5Kq6lDaLGz9A_ww6cVhcaMV8TLXOv2Q9B
- ovZNmz0PdI4ohjaDflB7aaCphs1dJSF8LOQ60RykLB4cp5k_E718DtMmsQxZQ8AwrgzcC7U0cIqC
- RKdQrCbk_jAB1NRMtJY6dydr.E7uUrIsXDHA1y4HnkwEvNs5PKilPUofSr18TKHnJl3egRXFPpq.
- KhR5s2fx9reB8Z1EA64i6LEY195rKAjF0GDlsxEQP2uSlAZnAStCE8Jc0JeVjIFkHm.bCI5wZXqw
- TRgA8xTyx2S8qMsnRPDBUhDO3suhVpqfPeRe8lgEY66sfkky56pB8e90ehwi5rlgVF4p5ckRxbRo
- fejn3YZ7JYT8UL06Q_vHWn89bzJJ26IaCIXqcN9s4q7l8E7F0bs.V2RRvRj8s77lxWxnj5cm.Bpa
- 5Lurl5P81SJfIorIB3tb1s98ewVKEWaoKmRiyT_BFWoCfAyizrAj2dxHDQRmgfDyG57_Cgk9M3un
- Jwgp8XsAoir.Cjg7DADngE5kNp5So.RuG.ipYqh0Tsu1idIDOvk8-
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic317.consmr.mail.bf2.yahoo.com with HTTP; Fri, 9 Oct 2020 13:45:55 +0000
-Date:   Fri, 9 Oct 2020 13:45:52 +0000 (UTC)
-From:   Elisabeth John <elisabethj451@gmail.com>
-Reply-To: elisabethj451@gmail.com
-Message-ID: <671309797.719219.1602251152248@mail.yahoo.com>
-Subject: Greetings My Dear,
+        Fri, 9 Oct 2020 10:45:14 -0400
+X-Greylist: delayed 2426 seconds by postgrey-1.27 at vger.kernel.org; Fri, 09 Oct 2020 10:45:13 EDT
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=yjaraviagens.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+        MIME-Version:Message-ID:Date:Subject:To:From:Reply-To:Sender:Cc:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=/CmoeFF19FPVa8MZlM5WialtMzZ26w0dl4CdBRr1ZD8=; b=e+cF0/emecvBWR2r6M6yfKd6B4
+        GRqn7bc9UrMtLmMyCdvFP6YmkCpkvjMqio1+2HeG77ff7aeB+aq+daaXM7MkEmBjW4+r+/jBPJjOx
+        0EjZmH3QHJo5UdWHb1K1Jlk6s5ROnbziYD1ElA7DK8HkDYqF3QVRInrjAzqKlKVTONnyqn4YvQchd
+        2s8EScVX7FV0NzIP7xsYSYuBA5jydjHZ7tcA1NR1i+Pd3V/ENIJ3B5RZ2p8VffxwaF2gwv4Q5Dt+F
+        7x9L/U140W0do8+9NtrzcmsEl2oY08q7JBRA5oM2etusAaThkJVKmpZs5waZFWkmZkGtVxqzxD7oj
+        O/FbD4tg==;
+Received: from [84.38.134.106] (port=50446 helo=progresssoft-clearinghouse.com)
+        by vps-3871858.yjaraviagens.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.93)
+        (envelope-from <raydouglas@progresssoft-clearinghouse.com>)
+        id 1kQt0n-0000Cd-Uq
+        for linux-wireless@vger.kernel.org; Fri, 09 Oct 2020 11:04:46 -0300
+Reply-To: loan@progresssoft-clearinghouse.com
+From:   "PSCH" <raydouglas@progresssoft-clearinghouse.com>
+To:     linux-wireless@vger.kernel.org
+Subject: INVESTMENT LOAN
+Date:   9 Oct 2020 17:04:45 +0300
+Message-ID: <20201009170445.D0F6FC2A2A6BC6DF@progresssoft-clearinghouse.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-References: <671309797.719219.1602251152248.ref@mail.yahoo.com>
-X-Mailer: WebService/1.1.16795 YMailNodin Mozilla/5.0 (Windows NT 6.1; rv:81.0) Gecko/20100101 Firefox/81.0
-To:     unlisted-recipients:; (no To-header on input)
+Content-Type: text/plain;
+        charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - vps-3871858.yjaraviagens.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - progresssoft-clearinghouse.com
+X-Get-Message-Sender-Via: vps-3871858.yjaraviagens.com: authenticated_id: naoresponda@yjaraviagens.com
+X-Authenticated-Sender: vps-3871858.yjaraviagens.com: naoresponda@yjaraviagens.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 
-Greetings My Dear,
+Progresssoft- Clearinghouse
+Aldgate House, 33 Aldgate
+High street, London
+EC3N 1EA
+Tel: + 44 745 127 9845
+Fax: + 44 150 653 7129
 
-I sent this mail praying it will found you in a good condition of health, since I myself are in a very critical health condition in which I sleep every night without knowing if I may be alive to see the next day. I am Mrs.Elisabeth John a widow suffering from long time illness. I have some funds I inherited from my late husband, the sum of ($11,000,000.00, Eleven Million Dollars) my Doctor told me recently that I have serious sickness which is cancer problem. What disturbs me most is my stroke sickness. Having known my condition, I decided to donate this fund to a good person that will utilize it the way i am going to instruct herein. I need a very honest and God.
+Progresssoft-Clearinghouse Express Business Loan!!!
 
-fearing person who can claim this money and use it for Charity works, for orphanages, widows and also build schools for less privileges that will be named after my late husband if possible and to promote the word of God and the effort that the house of God is maintained. I do not want a situation where this money will be used in an ungodly manner. That's why I'm taking this decision. I'm not afraid of death so I know where I'm going. I accept this decision because I do not have any child who will inherit this money after I die. Please I want your sincerely and urgent answer to know if you will be able to execute this project, and I will give you more information on how the fund will be transferred to your bank account. I am waiting for your reply.
 
-May God Bless you,
-Mrs.Elisabeth John.
+Attention: Sir / Madam,
+Good day my names are Mrs. Kate Rolington
+One of the Asian, Middle East and North Agent coordinator for=20
+Progresssoft-Clearinghouse inviting you For Express Business=20
+International Loans
+Business Loan reforms for business expansion.
+Business categories
+1.  Textiles=20
+2.  Investment
+3.  Farmers
+4.  Trading companies
+5.  Contractors
+6.  Mechanic
+7.  for transportation expansion
+8.  Movie producer
+9. Building construction
+10. Real estate
+11. Large scales business project
+12 School industries
+13. Gas & Oil
+Kindly share the International Business Expansion programs to=20
+your family and friends, Apply for your Express business=20
+International loan today.
+Best Regards,
+
+Mr. Ray Douglas
+Transfer Department Dept
+Ext: 021
+Mon =E2=80=93 Fri: 8 am-9 pm ET
+Sat: 8 am-8 pm ET
