@@ -2,116 +2,112 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2CC562885E0
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 Oct 2020 11:21:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3520928868D
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 Oct 2020 12:07:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731420AbgJIJV3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 9 Oct 2020 05:21:29 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:55074 "EHLO
-        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1731262AbgJIJV2 (ORCPT
+        id S2387459AbgJIKHa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 9 Oct 2020 06:07:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40988 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726357AbgJIKH3 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 9 Oct 2020 05:21:28 -0400
-Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa.ger.corp.intel.com)
-        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.93)
-        (envelope-from <luca@coelho.fi>)
-        id 1kQoab-002Rjn-IN; Fri, 09 Oct 2020 12:21:26 +0300
-From:   Luca Coelho <luca@coelho.fi>
-To:     kvalo@codeaurora.org
-Cc:     linux-wireless@vger.kernel.org, alexander@wetzel-home.de,
-        andy.lavr@gmail.com
-Date:   Fri,  9 Oct 2020 12:21:23 +0300
-Message-Id: <iwlwifi.20201009122123.3e4ee0ad7a71.Id6d95ae601f048aeb4d2ed63a1712e469da84369@changeid>
-X-Mailer: git-send-email 2.28.0
+        Fri, 9 Oct 2020 06:07:29 -0400
+Received: from mail-lf1-x144.google.com (mail-lf1-x144.google.com [IPv6:2a00:1450:4864:20::144])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 749DBC0613D2;
+        Fri,  9 Oct 2020 03:07:29 -0700 (PDT)
+Received: by mail-lf1-x144.google.com with SMTP id h6so10112322lfj.3;
+        Fri, 09 Oct 2020 03:07:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=O6ukwqJEWQ6yr/pMd6fbdg+VpvxJvOj62gBipeVPJmI=;
+        b=Mx05QbYiHRbwrS6Z46jd/WgwBRyTQWIOVq0D6MvRfRvQLhzGw9IylnisjNdELXpLVj
+         zFJSTbwbCMGD/a8K7aCK7kqmIbaka35n0K3nXcZp20ztI95ol2lXyz/XrefDml/bW4Fm
+         0U0aV498Am+AJ+W5VJ09OdWOn8Ou56kDkOfpVbrNeExCGGND9IW9yNuCoqQeV5md5ZA1
+         dfSWhxRk2rsp9jofVc0U01/v5sseCMtb1K1B9QKoBYQ+DHhhEze2VKfChPs7Id8HGYAo
+         uOHXWPDCKbTBALAUUXfMJjBVyzl52StLRhkIi4/fujgXIuz7iamVHH+xcWTSFp+flqwT
+         zo5A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=O6ukwqJEWQ6yr/pMd6fbdg+VpvxJvOj62gBipeVPJmI=;
+        b=edXFyd25tem/HJJ/k+GpOAxh/92WsY/ZxZYilJTrkKq0AbS6kOyhA28EKBVCM3MfMv
+         khG0kpgSvBbXoc1pPrrMn64gercp+T67Ag1MbOM3Dy0xy1dbFlDNQNEI3ZxGTRzLYVrQ
+         iUl/IIg9FtIo1+/JODFiBg/qUzk5RgJlqI0AxZuKHo1Dj+ef0UO0jHH/Cc9BBR7DRiVF
+         NrNwvVKqpViqxle+AYfUhEIhevHurD2Fb137v2UqTz79Pvtldzxdv7pdhWWUKYqW7JsZ
+         fhPqAEncG3m3TU3BG2vmdcryNub/Ko1X9ryHBAiHJ6y5d/mZzEmyawMEKQwm9twN1UkE
+         Z7Jg==
+X-Gm-Message-State: AOAM530vDrTn1FEG6yu9cGKNlxXkWY63V2cfJ50i2irZb/esQuLMhZEW
+        r+iKJKrb/MmJy2JUeyu7MdBhrh9BlIPbagbuYdI=
+X-Google-Smtp-Source: ABdhPJyhjAwJPUWrDFg/tvDOHPo4oVGg9qMmLxuELBxFQp2OgX/pQ9sSqfxqsKMaAyItgswPbAXHyS3ixO2RrNsEDGc=
+X-Received: by 2002:ac2:4203:: with SMTP id y3mr3875737lfh.52.1602238047777;
+ Fri, 09 Oct 2020 03:07:27 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on farmhouse.coelho.fi
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
-        TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.4
-Subject: [PATCH] Revert "iwlwifi: remove wide_cmd_header field"
+References: <20201008155048.17679-1-ap420073@gmail.com> <1cbb69d83188424e99b2d2482848ae64@AcuMS.aculab.com>
+ <62f6c2bd11ed8b25c1cd4462ebc6db870adc4229.camel@sipsolutions.net>
+ <CAMArcTUkC2MzN9MiTu_Qwouj6rFf0g0ac2uZWfSKWHTW9cR8xA@mail.gmail.com> <87r1q8gdqk.fsf@suse.de>
+In-Reply-To: <87r1q8gdqk.fsf@suse.de>
+From:   Taehee Yoo <ap420073@gmail.com>
+Date:   Fri, 9 Oct 2020 19:07:16 +0900
+Message-ID: <CAMArcTWBdqRG11XcFPvPTR2YpwfdDMuQ-_7WGow574QftUEGYA@mail.gmail.com>
+Subject: Re: [PATCH net 000/117] net: avoid to remove module when its debugfs
+ is being used
+To:     Nicolai Stange <nstange@suse.de>
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        David Laight <David.Laight@aculab.com>,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        "kuba@kernel.org" <kuba@kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "wil6210@qti.qualcomm.com" <wil6210@qti.qualcomm.com>,
+        "b43-dev@lists.infradead.org" <b43-dev@lists.infradead.org>,
+        "linux-bluetooth@vger.kernel.org" <linux-bluetooth@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Luca Coelho <luciano.coelho@intel.com>
+On Fri, 9 Oct 2020 at 14:39, Nicolai Stange <nstange@suse.de> wrote:
+>
 
-This reverts commit 0a8159cbd11abf586693f1ec5264d0df587b71d8.
+Hi Nicolai,
+Thank you for the review!
 
-It turns out that this flag is used by iwldvm, so we can't get rid of
-it.  This broke iwldvm devices with BAD_COMMAND errors.
+> Taehee Yoo <ap420073@gmail.com> writes:
+>
+> > On Fri, 9 Oct 2020 at 01:14, Johannes Berg <johannes@sipsolutions.net> wrote:
+> > On Thu, 2020-10-08 at 15:59 +0000, David Laight wrote:
+> >
+> >> From: Taehee Yoo
+> >> > Sent: 08 October 2020 16:49
+> >> >
+> >> > When debugfs file is opened, its module should not be removed until
+> >> > it's closed.
+> >> > Because debugfs internally uses the module's data.
+> >> > So, it could access freed memory.
+>
+> Yes, the file_operations' ->release() to be more specific -- that's not
+> covered by debugfs' proxy fops.
+>
+>
+> >> > In order to avoid panic, it just sets .owner to THIS_MODULE.
+> >> > So that all modules will be held when its debugfs file is opened.
+> >>
+> >> Can't you fix it in common code?
+> >
+> >> Yeah I was just wondering that too - weren't the proxy_fops even already
+> >> intended to fix this?
+> >
+> > I didn't try to fix this issue in the common code(debugfs).
+> > Because I thought It's a typical pattern of panic and THIS_MODULE
+> > can fix it clearly.
+> > So I couldn't think there is a root reason in the common code.
+>
+> That's correct, ->owner should get set properly, c.f. my other mail in
+> this thread.
+>
 
-Fixes: 0a8159cbd11a ("iwlwifi: remove wide_cmd_header field")
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
----
- drivers/net/wireless/intel/iwlwifi/iwl-trans.c | 2 +-
- drivers/net/wireless/intel/iwlwifi/iwl-trans.h | 2 ++
- drivers/net/wireless/intel/iwlwifi/mvm/ops.c   | 1 +
- drivers/net/wireless/intel/iwlwifi/pcie/tx.c   | 5 +++++
- 4 files changed, 9 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-trans.c b/drivers/net/wireless/intel/iwlwifi/iwl-trans.c
-index a26da96763dd..becee92a5fd6 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-trans.c
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-trans.c
-@@ -200,7 +200,7 @@ int iwl_trans_send_cmd(struct iwl_trans *trans, struct iwl_host_cmd *cmd)
- 	if (!(cmd->flags & CMD_ASYNC))
- 		lock_map_acquire_read(&trans->sync_cmd_lockdep_map);
- 
--	if (!iwl_cmd_groupid(cmd->id))
-+	if (trans->wide_cmd_header && !iwl_cmd_groupid(cmd->id))
- 		cmd->id = DEF_ID(cmd->id);
- 
- 	ret = trans->ops->send_cmd(trans, cmd);
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-trans.h b/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
-index b70294e9d07b..11a040e75bf3 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
-@@ -968,6 +968,7 @@ struct iwl_trans_txqs {
-  * @hw_id_str: a string with info about HW ID. Set during transport allocation.
-  * @pm_support: set to true in start_hw if link pm is supported
-  * @ltr_enabled: set to true if the LTR is enabled
-+ * @wide_cmd_header: true when ucode supports wide command header format
-  * @num_rx_queues: number of RX queues allocated by the transport;
-  *	the transport must set this before calling iwl_drv_start()
-  * @iml_len: the length of the image loader
-@@ -1009,6 +1010,7 @@ struct iwl_trans {
- 
- 	const struct iwl_hcmd_arr *command_groups;
- 	int command_groups_size;
-+	bool wide_cmd_header;
- 
- 	u8 num_rx_queues;
- 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-index 1e44a176b3d9..f1c5b3a9c26f 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-@@ -761,6 +761,7 @@ iwl_op_mode_mvm_start(struct iwl_trans *trans, const struct iwl_cfg *cfg,
- 		trans_cfg.rx_buf_size = rb_size_default;
- 	}
- 
-+	trans->wide_cmd_header = true;
- 	trans_cfg.bc_table_dword =
- 		mvm->trans->trans_cfg->device_family < IWL_DEVICE_FAMILY_AX210;
- 
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/tx.c b/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
-index 8c89e4a2f7f8..966be5689d63 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
-@@ -1180,6 +1180,11 @@ static int iwl_pcie_enqueue_hcmd(struct iwl_trans *trans,
- 	const u8 *cmddata[IWL_MAX_CMD_TBS_PER_TFD];
- 	u16 cmdlen[IWL_MAX_CMD_TBS_PER_TFD];
- 
-+	if (WARN(!trans->wide_cmd_header &&
-+		 group_id > IWL_ALWAYS_LONG_GROUP,
-+		 "unsupported wide command %#x\n", cmd->id))
-+		return -EINVAL;
-+
- 	if (group_id != 0) {
- 		copy_size = sizeof(struct iwl_cmd_header_wide);
- 		cmd_size = sizeof(struct iwl_cmd_header_wide);
--- 
-2.28.0
-
+Thanks a lot for verifying it!
+Taehee
