@@ -2,106 +2,71 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9FE70289BED
-	for <lists+linux-wireless@lfdr.de>; Sat, 10 Oct 2020 00:50:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E003289C10
+	for <lists+linux-wireless@lfdr.de>; Sat, 10 Oct 2020 01:16:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2392016AbgJIWup (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 9 Oct 2020 18:50:45 -0400
-Received: from m42-4.mailgun.net ([69.72.42.4]:53903 "EHLO m42-4.mailgun.net"
+        id S1726650AbgJIXQi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 9 Oct 2020 19:16:38 -0400
+Received: from mail.kernel.org ([198.145.29.99]:53102 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2389409AbgJIWtx (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 9 Oct 2020 18:49:53 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1602283792; h=References: In-Reply-To: Message-Id: Date:
- Subject: Cc: To: From: Sender;
- bh=VCdwQ+HlKc+a+4p6dF8BcMxPLeF3Xnk+vjVyCWPDJrw=; b=rZPFczjC5+rNttPW0qUqvOREhOTzDAa0S4kLb6Kxclnh9e0udw120DIvgKBLKK/RdSjyvxsD
- v8J/ytAZKHFIvGxRyeC6AyldCW6LgFfhW4SzP2W2/+oL0zoGZPX+yAXA7Clq6SUKQQxI2bqd
- 01E9HLRy2qNSvgxKf5dqWUZSM88=
-X-Mailgun-Sending-Ip: 69.72.42.4
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n03.prod.us-west-2.postgun.com with SMTP id
- 5f80e91057b88ccb5684611d (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 09 Oct 2020 22:49:52
- GMT
-Sender: pradeepc=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 27F2BC433CB; Fri,  9 Oct 2020 22:49:52 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-Received: from pradeepc-linux.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        id S1725802AbgJIXQB (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 9 Oct 2020 19:16:01 -0400
+Received: from kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com (unknown [163.114.132.7])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        (Authenticated sender: pradeepc)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 4FA44C433FE;
-        Fri,  9 Oct 2020 22:49:51 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 4FA44C433FE
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=pradeepc@codeaurora.org
-From:   Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>
-To:     johannes@sipsolutions.net
-Cc:     linux-wireless@vger.kernel.org,
-        Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>
-Subject: [PATCH] iw: enable 80MHz support for 6GHz band 11s mesh
-Date:   Fri,  9 Oct 2020 15:49:30 -0700
-Message-Id: <1602283770-8026-2-git-send-email-pradeepc@codeaurora.org>
-X-Mailer: git-send-email 1.9.1
-In-Reply-To: <1602283770-8026-1-git-send-email-pradeepc@codeaurora.org>
-References: <1602283770-8026-1-git-send-email-pradeepc@codeaurora.org>
+        by mail.kernel.org (Postfix) with ESMTPSA id 5981B222EB;
+        Fri,  9 Oct 2020 23:16:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1602285360;
+        bh=l6taX0FCEWeJUtB5xJSPpOswP3JU4Ua+gVwYeASRj70=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=xIc7ck5uziWAG/SSx/mh88eb3LlScn3+0DzlM9FJUMXbsTFPZK3r57aJ13AibdtEB
+         jPhbQyIZ4yIfHnFBNcrlHeD07F8y7bAnOgX0nBBJez0/1BG9ETEHJrpySjmPDqpld8
+         8TztDhpzEvy67xgveMfrjgvJ4Qi30Cq3EIzm8tLo=
+Date:   Fri, 9 Oct 2020 16:15:58 -0700
+From:   Jakub Kicinski <kuba@kernel.org>
+To:     Aleksandr Nogikh <a.nogikh@gmail.com>
+Cc:     davem@davemloft.net, johannes@sipsolutions.net,
+        edumazet@google.com, andreyknvl@google.com, dvyukov@google.com,
+        elver@google.com, linux-kernel@vger.kernel.org,
+        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+        nogikh@google.com
+Subject: Re: [PATCH 1/2] net: store KCOV remote handle in sk_buff
+Message-ID: <20201009161558.57792e1a@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+In-Reply-To: <20201007101726.3149375-2-a.nogikh@gmail.com>
+References: <20201007101726.3149375-1-a.nogikh@gmail.com>
+        <20201007101726.3149375-2-a.nogikh@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-without this 11s mesh could not be configured with bandwidth 80MHz
-in 6G band using iw. Also, this will be required to set frequency
-for 6GHz band in 80MHz.
+On Wed,  7 Oct 2020 10:17:25 +0000 Aleksandr Nogikh wrote:
+> From: Aleksandr Nogikh <nogikh@google.com>
+> 
+> Remote KCOV coverage collection enables coverage-guided fuzzing of the
+> code that is not reachable during normal system call execution. It is
+> especially helpful for fuzzing networking subsystems, where it is
+> common to perform packet handling in separate work queues even for the
+> packets that originated directly from the user space.
+> 
+> Enable coverage-guided frame injection by adding a kcov_handle
+> parameter to sk_buff structure. Initialization in __alloc_skb ensures
+> that no socket buffer that was generated during a system call will be
+> missed.
+> 
+> Code that is of interest and that performs packet processing should be
+> annotated with kcov_remote_start()/kcov_remote_stop().
+> 
+> An alternative approach is to determine kcov_handle solely on the
+> basis of the device/interface that received the specific socket
+> buffer. However, in this case it would be impossible to distinguish
+> between packets that originated from normal background network
+> processes and those that were intentionally injected from the user
+> space.
+> 
+> Signed-off-by: Aleksandr Nogikh <nogikh@google.com>
 
-example:
-iw <interface> mesh join <meshname> freq 6195 80MHz
-
-Signed-off-by: Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>
----
- util.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
-
-diff --git a/util.c b/util.c
-index 9ca32c5295ae..175470f11a27 100644
---- a/util.c
-+++ b/util.c
-@@ -1241,21 +1241,24 @@ void iw_hexdump(const char *prefix, const __u8 *buf, size_t size)
- int get_cf1(const struct chanmode *chanmode, unsigned long freq)
- {
- 	unsigned int cf1 = freq, j;
--	unsigned int vht80[] = { 5180, 5260, 5500, 5580, 5660, 5745 };
-+	unsigned int bw80[] = { 5180, 5260, 5500, 5580, 5660, 5745,
-+				5955, 6035, 6115, 6195, 6275, 6355,
-+				6435, 6515, 6595, 6675, 6755, 6835,
-+				6195, 6995 };
- 	unsigned int vht160[] = { 5180, 5500 };
- 
- 	switch (chanmode->width) {
- 	case NL80211_CHAN_WIDTH_80:
- 	        /* setup center_freq1 */
--		for (j = 0; j < ARRAY_SIZE(vht80); j++) {
--			if (freq >= vht80[j] && freq < vht80[j] + 80)
-+		for (j = 0; j < ARRAY_SIZE(bw80); j++) {
-+			if (freq >= bw80[j] && freq < bw80[j] + 80)
- 				break;
- 		}
- 
--		if (j == ARRAY_SIZE(vht80))
-+		if (j == ARRAY_SIZE(bw80))
- 			break;
- 
--		cf1 = vht80[j] + 30;
-+		cf1 = bw80[j] + 30;
- 		break;
- 	case NL80211_CHAN_WIDTH_160:
- 		/* setup center_freq1 */
--- 
-1.9.1
-
+Could you use skb_extensions for this?
