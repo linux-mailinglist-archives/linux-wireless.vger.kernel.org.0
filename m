@@ -2,86 +2,105 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 673F92883BE
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 Oct 2020 09:38:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C12C72883D5
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 Oct 2020 09:45:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732215AbgJIHiQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 9 Oct 2020 03:38:16 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:55008 "EHLO
-        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1730797AbgJIHiQ (ORCPT
+        id S1732242AbgJIHpq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 9 Oct 2020 03:45:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47256 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731740AbgJIHpq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 9 Oct 2020 03:38:16 -0400
-Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=[192.168.100.69])
-        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.93)
-        (envelope-from <luca@coelho.fi>)
-        id 1kQmyf-002Rfd-N2; Fri, 09 Oct 2020 10:38:10 +0300
-Message-ID: <71f91655e004edd8a81a4049b0522a443fb2bd25.camel@coelho.fi>
-From:   Luca Coelho <luca@coelho.fi>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     linux-wireless@vger.kernel.org
-Date:   Fri, 09 Oct 2020 10:38:07 +0300
-In-Reply-To: <87lfgf26nr.fsf@codeaurora.org>
-References: <20201008151250.332346-1-luca@coelho.fi>
-         <iwlwifi.20201008181047.d0e2253c282f.Icd2ff00adff52f6c96fb261c34fbf129ce67a00d@changeid>
-         <87pn5s1zyp.fsf@codeaurora.org>
-         <aef56fa157600b45ae8b4b7d1662fde085bf4c74.camel@coelho.fi>
-         <87lfgf26nr.fsf@codeaurora.org>
+        Fri, 9 Oct 2020 03:45:46 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71F86C0613D2;
+        Fri,  9 Oct 2020 00:45:46 -0700 (PDT)
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.94)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1kQn5j-0028Ss-3l; Fri, 09 Oct 2020 09:45:27 +0200
+Message-ID: <fd8aaf06b53f32eae7b5bdcec2f3ea9e1f419b1d.camel@sipsolutions.net>
+Subject: Re: [PATCH net 000/117] net: avoid to remove module when its
+ debugfs is being used
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Nicolai Stange <nstange@suse.de>
+Cc:     David Laight <David.Laight@ACULAB.COM>,
+        'Taehee Yoo' <ap420073@gmail.com>,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        "kuba@kernel.org" <kuba@kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "wil6210@qti.qualcomm.com" <wil6210@qti.qualcomm.com>,
+        "brcm80211-dev-list@cypress.com" <brcm80211-dev-list@cypress.com>,
+        "b43-dev@lists.infradead.org" <b43-dev@lists.infradead.org>,
+        "linux-bluetooth@vger.kernel.org" <linux-bluetooth@vger.kernel.org>
+Date:   Fri, 09 Oct 2020 09:45:20 +0200
+In-Reply-To: <87v9fkgf4i.fsf@suse.de>
+References: <20201008155048.17679-1-ap420073@gmail.com>
+         <1cbb69d83188424e99b2d2482848ae64@AcuMS.aculab.com>
+         <62f6c2bd11ed8b25c1cd4462ebc6db870adc4229.camel@sipsolutions.net>
+         <87v9fkgf4i.fsf@suse.de>
 Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.4-2 
+User-Agent: Evolution 3.36.5 (3.36.5-1.fc32) 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on farmhouse.coelho.fi
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
-        TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.4
-Subject: Re: [PATCH 02/13] iwlwifi: pcie: fix the xtal latency value for a
- few qu devices
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 2020-10-09 at 10:35 +0300, Kalle Valo wrote:
-> Luca Coelho <luca@coelho.fi> writes:
+On Fri, 2020-10-09 at 07:09 +0200, Nicolai Stange wrote:
+> Johannes Berg <johannes@sipsolutions.net> writes:
 > 
-> > On Thu, 2020-10-08 at 18:47 +0300, Kalle Valo wrote:
-> > > Luca Coelho <luca@coelho.fi> writes:
+> > On Thu, 2020-10-08 at 15:59 +0000, David Laight wrote:
+> > > From: Taehee Yoo
+> > > > Sent: 08 October 2020 16:49
+> > > > 
+> > > > When debugfs file is opened, its module should not be removed until
+> > > > it's closed.
+> > > > Because debugfs internally uses the module's data.
+> > > > So, it could access freed memory.
+> > > > 
+> > > > In order to avoid panic, it just sets .owner to THIS_MODULE.
+> > > > So that all modules will be held when its debugfs file is opened.
 > > > 
-> > > > From: Luca Coelho <luciano.coelho@intel.com>
-> > > > 
-> > > > We were using 5 ms for some qu devices, but their xtal stabilizes
-> > > > much faster than that.  Reduce the value to 500 ms.
-> > > > 
-> > > > Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
-> > > > ---
-> > > >  drivers/net/wireless/intel/iwlwifi/cfg/22000.c | 2 +-
-> > > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > > > 
-> > > > diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/22000.c b/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
-> > > > index 60e0640d07dc..8b97c2eb2632 100644
-> > > > --- a/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
-> > > > +++ b/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
-> > > > @@ -253,7 +253,7 @@ const struct iwl_cfg_trans_params iwl_qu_trans_cfg = {
-> > > >  	.device_family = IWL_DEVICE_FAMILY_22000,
-> > > >  	.base_params = &iwl_22000_base_params,
-> > > >  	.integrated = true,
-> > > > -	.xtal_latency = 5000,
-> > > > +	.xtal_latency = 500,
-> > > >  	.ltr_delay = IWL_CFG_TRANS_LTR_DELAY_200US,
-> > > >  };
-> > > 
-> > > The commit log doesn't make sense, I'll do s/5 ms/5 s/ during commit.
-> > 
-> > Hmmm, indeed it doesn't make sense like that.  But I actually think the
-> > 5 ms is correct, but the other one should be 500 microseconds.
+> > > Can't you fix it in common code?
 > 
-> Oh, didn't think of that. And it's too late to fix it now.
+> Probably not: it's the call to ->release() that's faulting in the Oops
+> quoted in the cover letter and that one can't be protected by the
+> core debugfs code, unfortunately.
+> 
+> There's a comment in full_proxy_release(), which reads as
+> 
+> 	/*
+> 	 * We must not protect this against removal races here: the
+> 	 * original releaser should be called unconditionally in order
+> 	 * not to leak any resources. Releasers must not assume that
+> 	 * ->i_private is still being meaningful here.
+> 	 */
 
-Yeah, doesn't really matter.  FWIW, I double-checked and indeed these
-values are in usecs.
+Yeah, found that too now :-)
 
---
-Cheers,
-Luca.
+> > Yeah I was just wondering that too - weren't the proxy_fops even already
+> > intended to fix this?
+> 
+> No, as far as file_operations are concerned, the proxy fops's intent was
+> only to ensure that the memory the file_operations' ->owner resides in
+> is still valid so that try_module_get() won't splat at file open
+> (c.f. [1]).
+
+Right.
+
+> You're right that the default "full" proxy fops do prevent all
+> file_operations but ->release() from getting invoked on removed files,
+> but the motivation had not been to protect the file_operations
+> themselves, but accesses to any stale data associated with removed files
+> ([2]).
+
+:)
+
+I actually got this to work in a crazy way, I'll send something out but
+I'm sure it's a better idea to add the .owner everywhere, but please
+let's do it in fewer than hundreds of patches :-)
+
+johannes
 
