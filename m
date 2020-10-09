@@ -2,73 +2,153 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E3A6C2887A7
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 Oct 2020 13:14:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E2D6D2887C8
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 Oct 2020 13:25:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388000AbgJILOc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 9 Oct 2020 07:14:32 -0400
-Received: from mail.kernel.org ([198.145.29.99]:49174 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2388001AbgJILOb (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 9 Oct 2020 07:14:31 -0400
-Received: from localhost (83-86-74-64.cable.dynamic.v4.ziggo.nl [83.86.74.64])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 9517A22269;
-        Fri,  9 Oct 2020 11:14:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1602242071;
-        bh=G9vzUMWmPTENaCSSrT+4scPL8T/yGBTjMpUFtYd6Vxs=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=bWAlSh8fDVuAw/5bkQmgw6LUbZC3WgWqOAEsSr+hEOg/6L3UCLOk+oEjFHUoUKQ5N
-         /b5CpOf0TXNVPXBk14HcAurw7DUgsBtqMl7s5KaHtfVFoWI8E7lkpVQ+kz1gI0HKT2
-         3eZztaubRPkrx3EnJ2GCchsXLYbEU52sFXG/MScY=
-Date:   Fri, 9 Oct 2020 13:15:17 +0200
-From:   "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>
-To:     David Laight <David.Laight@aculab.com>
-Cc:     'Johannes Berg' <johannes@sipsolutions.net>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "nstange@suse.de" <nstange@suse.de>,
-        "ap420073@gmail.com" <ap420073@gmail.com>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "rafael@kernel.org" <rafael@kernel.org>
-Subject: Re: [RFC] debugfs: protect against rmmod while files are open
-Message-ID: <20201009111517.GA508813@kroah.com>
-References: <4a58caee3b6b8975f4ff632bf6d2a6673788157d.camel@sipsolutions.net>
- <20201009124113.a723e46a677a.Ib6576679bb8db01eb34d3dce77c4c6899c28ce26@changeid>
- <2a333c2a50c676c461c1e2da5847dd4024099909.camel@sipsolutions.net>
- <8fe62082d9774a1fb21894c27e140318@AcuMS.aculab.com>
+        id S2388064AbgJILZ6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 9 Oct 2020 07:25:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53182 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732637AbgJILZ6 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 9 Oct 2020 07:25:58 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A680C0613D2
+        for <linux-wireless@vger.kernel.org>; Fri,  9 Oct 2020 04:25:58 -0700 (PDT)
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.94)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1kQqX2-002EKa-6U; Fri, 09 Oct 2020 13:25:52 +0200
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     linux-wireless@vger.kernel.org
+Cc:     Johannes Berg <johannes.berg@intel.com>,
+        syzbot+32fd1a1bfe355e93f1e2@syzkaller.appspotmail.com
+Subject: [PATCH] mac80211: fix use of skb payload instead of header
+Date:   Fri,  9 Oct 2020 13:25:41 +0200
+Message-Id: <20201009132538.e1fd7f802947.I799b288466ea2815f9d4c84349fae697dca2f189@changeid>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8fe62082d9774a1fb21894c27e140318@AcuMS.aculab.com>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Oct 09, 2020 at 10:56:16AM +0000, David Laight wrote:
-> From: Johannes Berg
-> > Sent: 09 October 2020 11:48
-> > 
-> > On Fri, 2020-10-09 at 12:41 +0200, Johannes Berg wrote:
-> > 
-> > > If the fops doesn't have a release method, we don't even need
-> > > to keep a reference to the real_fops, we can just fops_put()
-> > > them already in debugfs remove, and a later full_proxy_release()
-> > > won't call anything anyway - this just crashed/UAFed because it
-> > > used real_fops, not because there was actually a (now invalid)
-> > > release() method.
-> > 
-> > I actually implemented something a bit better than what I described - we
-> > never need a reference to the real_fops for the release method alone,
-> > and that means if the release method is in the kernel image, rather than
-> > a module, it can still be called.
-> > 
-> > That together should reduce the ~117 places you changed in the large
-> > patchset to around a handful.
-> 
-> Is there an equivalent problem for normal cdev opens
-> in any modules?
+From: Johannes Berg <johannes.berg@intel.com>
 
-What does cdev have to do with debugfs?
+When ieee80211_skb_resize() is called from ieee80211_build_hdr()
+the skb has no 802.11 header yet, in fact it consist only of the
+payload as the ethernet frame is removed. As such, we're using
+the payload data for ieee80211_is_mgmt(), which is of course
+completely wrong. This didn't really hurt us because these are
+always data frames, so we could only have added more tailroom
+than we needed if we determined it was a management frame and
+sdata->crypto_tx_tailroom_needed_cnt was false.
+
+However, syzbot found that of course there need not be any payload,
+so we're using at best uninitialized memory for the check.
+
+Fix this to pass explicitly the kind of frame that we have instead
+of checking there, by replacing the "bool may_encrypt" argument
+with an argument that can carry the three possible states - it's
+not going to be encrypted, it's a management frame, or it's a data
+frame (and then we check sdata->crypto_tx_tailroom_needed_cnt).
+
+Reported-by: syzbot+32fd1a1bfe355e93f1e2@syzkaller.appspotmail.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+---
+#syz test: https://github.com/google/kmsan.git master
+---
+ net/mac80211/tx.c | 37 ++++++++++++++++++++++++-------------
+ 1 file changed, 24 insertions(+), 13 deletions(-)
+
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index dca01d7e6e3e..af9c4a416039 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -1938,19 +1938,24 @@ static bool ieee80211_tx(struct ieee80211_sub_if_data *sdata,
+ 
+ /* device xmit handlers */
+ 
++enum ieee80211_encrypt {
++	ENCRYPT_NO,
++	ENCRYPT_MGMT,
++	ENCRYPT_DATA,
++};
++
+ static int ieee80211_skb_resize(struct ieee80211_sub_if_data *sdata,
+ 				struct sk_buff *skb,
+-				int head_need, bool may_encrypt)
++				int head_need,
++				enum ieee80211_encrypt encrypt)
+ {
+ 	struct ieee80211_local *local = sdata->local;
+-	struct ieee80211_hdr *hdr;
+ 	bool enc_tailroom;
+ 	int tail_need = 0;
+ 
+-	hdr = (struct ieee80211_hdr *) skb->data;
+-	enc_tailroom = may_encrypt &&
+-		       (sdata->crypto_tx_tailroom_needed_cnt ||
+-			ieee80211_is_mgmt(hdr->frame_control));
++	enc_tailroom = encrypt == ENCRYPT_MGMT ||
++		       (encrypt == ENCRYPT_DATA &&
++			sdata->crypto_tx_tailroom_needed_cnt);
+ 
+ 	if (enc_tailroom) {
+ 		tail_need = IEEE80211_ENCRYPT_TAILROOM;
+@@ -1981,23 +1986,29 @@ void ieee80211_xmit(struct ieee80211_sub_if_data *sdata,
+ {
+ 	struct ieee80211_local *local = sdata->local;
+ 	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
+-	struct ieee80211_hdr *hdr;
++	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *) skb->data;
+ 	int headroom;
+-	bool may_encrypt;
++	enum ieee80211_encrypt encrypt;
+ 
+-	may_encrypt = !(info->flags & IEEE80211_TX_INTFL_DONT_ENCRYPT);
++	if (info->flags & IEEE80211_TX_INTFL_DONT_ENCRYPT)
++		encrypt = ENCRYPT_NO;
++	else if (ieee80211_is_mgmt(hdr->frame_control))
++		encrypt = ENCRYPT_MGMT;
++	else
++		encrypt = ENCRYPT_DATA;
+ 
+ 	headroom = local->tx_headroom;
+-	if (may_encrypt)
++	if (encrypt != ENCRYPT_NO)
+ 		headroom += sdata->encrypt_headroom;
+ 	headroom -= skb_headroom(skb);
+ 	headroom = max_t(int, 0, headroom);
+ 
+-	if (ieee80211_skb_resize(sdata, skb, headroom, may_encrypt)) {
++	if (ieee80211_skb_resize(sdata, skb, headroom, encrypt)) {
+ 		ieee80211_free_txskb(&local->hw, skb);
+ 		return;
+ 	}
+ 
++	/* reload after potential resize */
+ 	hdr = (struct ieee80211_hdr *) skb->data;
+ 	info->control.vif = &sdata->vif;
+ 
+@@ -2822,7 +2833,7 @@ static struct sk_buff *ieee80211_build_hdr(struct ieee80211_sub_if_data *sdata,
+ 		head_need += sdata->encrypt_headroom;
+ 		head_need += local->tx_headroom;
+ 		head_need = max_t(int, 0, head_need);
+-		if (ieee80211_skb_resize(sdata, skb, head_need, true)) {
++		if (ieee80211_skb_resize(sdata, skb, head_need, ENCRYPT_DATA)) {
+ 			ieee80211_free_txskb(&local->hw, skb);
+ 			skb = NULL;
+ 			return ERR_PTR(-ENOMEM);
+@@ -3496,7 +3507,7 @@ static bool ieee80211_xmit_fast(struct ieee80211_sub_if_data *sdata,
+ 	if (unlikely(ieee80211_skb_resize(sdata, skb,
+ 					  max_t(int, extra_head + hw_headroom -
+ 						     skb_headroom(skb), 0),
+-					  false))) {
++					  ENCRYPT_NO))) {
+ 		kfree_skb(skb);
+ 		return true;
+ 	}
+-- 
+2.26.2
+
