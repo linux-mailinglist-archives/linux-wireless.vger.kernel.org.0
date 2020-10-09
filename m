@@ -2,63 +2,88 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EFD792888E8
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 Oct 2020 14:37:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7374D288963
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 Oct 2020 14:55:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731833AbgJIMhQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 9 Oct 2020 08:37:16 -0400
-Received: from mail-il1-f200.google.com ([209.85.166.200]:46582 "EHLO
-        mail-il1-f200.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726357AbgJIMhQ (ORCPT
+        id S2387884AbgJIMzq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 9 Oct 2020 08:55:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38904 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387854AbgJIMzp (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 9 Oct 2020 08:37:16 -0400
-Received: by mail-il1-f200.google.com with SMTP id z8so6706302ilh.13
-        for <linux-wireless@vger.kernel.org>; Fri, 09 Oct 2020 05:37:14 -0700 (PDT)
+        Fri, 9 Oct 2020 08:55:45 -0400
+Received: from mail-qk1-x743.google.com (mail-qk1-x743.google.com [IPv6:2607:f8b0:4864:20::743])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5EF4CC0613D5
+        for <linux-wireless@vger.kernel.org>; Fri,  9 Oct 2020 05:55:45 -0700 (PDT)
+Received: by mail-qk1-x743.google.com with SMTP id b69so10384603qkg.8
+        for <linux-wireless@vger.kernel.org>; Fri, 09 Oct 2020 05:55:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=mojatatu-com.20150623.gappssmtp.com; s=20150623;
+        h=from:subject:to:cc:message-id:date:user-agent:mime-version
+         :content-language:content-transfer-encoding;
+        bh=gHpUJmDZonPV5j8bU/1gBGhpCio2vFsUWRF9qpU9vW8=;
+        b=Lv+1KPQkmVCaxhltL1Bptxe2IohBZ8ELxZYbQe/XYjACfOACvHXKhaHyOm8IR0GUew
+         wat8Nj2Kwua/hznueUu76ai46V0xbmWtGqGpay8TEGG3L6pIlpW4gQYKFpBSgfA2vS+z
+         9E68uw+n3AT99JdnfW9e4IN0hpwEPbhb6qmGJF7AY1/4uooFoN8UYUvXXaX5eZ2StaXW
+         jjPAsYOcCPkui18mRBdvgTk/w/ew74rkYLDr+A5UusbAblZBRZ4CENgT5jXB793qRjrl
+         smtWElf1b/JVS6VPvhfcX7WOPh2LvFnmOYbXcdi65lLTWZdbuIXdoHxhBGNEmAIFgp4r
+         OMtw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:date:in-reply-to:message-id:subject
-         :from:to;
-        bh=2O9XejXxpQzqGczDlTdf2je5xfsWl83OvCPbQ6swRMk=;
-        b=H9FxWqX7WQyDDOV1BHeqsG3Ojl/5fDR8+HNfar1+ltF8p8DxNVJGK8u3p5YdfqTOUg
-         0nnM2pF2gz497Rrneud2jOmuhciZYbtZY6pPKLmSdLAP3fknz7wBy5EnzxJ/jLbVJNgd
-         syVKfY5gTr9SqvOwDvfdPc1uFrUDT0mwUFhLTY1P05JHVzZhC+34mUSWsS0XOddkKsA6
-         kEdeqxPi2vmW447v2uHa2mVtbwZ3I52Q/K7jCHbrgglpfhi1789czCY0hyWpR3e6gJur
-         v8Ih7l64ymVTcrf3kr8uMZT+vv6qWxKQjRCwlUp2C5jOxqVeo87wQFC8PfXp8t75C6up
-         yGhQ==
-X-Gm-Message-State: AOAM533QzgCrip4n3uWpjw+SDRCS8CptZRnJO8U8c6odPtus5nlbriVm
-        /FojNtFihjWOcK4Zi59YASEda4ZNPGrHhVPSRcxaP/3FLDQu
-X-Google-Smtp-Source: ABdhPJyxysuw/42zqyT66T0krnzPty4U+MYP6wKgKnEygcexGIX26mxLKZOOt4xQCkXMTY/8mvhwVQqqA+yISTMU0Fx91fJt0sqS
+        h=x-gm-message-state:from:subject:to:cc:message-id:date:user-agent
+         :mime-version:content-language:content-transfer-encoding;
+        bh=gHpUJmDZonPV5j8bU/1gBGhpCio2vFsUWRF9qpU9vW8=;
+        b=brwaoHEtT3sAkDCBrBUwHjVMDmfxJ0hUWZ5yRKip1R7bYUG9fvNsMzPJeVg4yWgzW6
+         ewylKOie+Yfb8uUA0IbOb75hPXgiicWNBMTrt/pJIuHuFrk0MtLbOSW22kFUbuRM+eHO
+         nfC0bATlk/ca+pJgEzHkFp6E/93cOvXU68DUQujN3Bzdp+PydbUkl4Knbu60OhHBFeIa
+         9W6Aow+16Jqcv1rsV6DwsANAXGM6CwywjtRbT82Blf9FRIxsOTy6TtLj4JA1KWS85Cib
+         Xyo4DHE2eQQSNdEok0T3lQYUsUh7P2+15lxr8xYFNfNr+7eP1MbbHDFfr5fJPM1P8Sy3
+         msOw==
+X-Gm-Message-State: AOAM5319MHrXMwVLdKdwMy9VRAUNaVp7fPRpqAXzMERtVJVB9qzLfU2o
+        Fd0942nN2OVvfQoBM3RCAKwYZA==
+X-Google-Smtp-Source: ABdhPJyEXSEu+fLH6EcqCWM/nDKyRAe6bzO6Hgdk8YDlZ9eCtXjIZcw4aQ6Gim1mSBxKZLtFvn/A1w==
+X-Received: by 2002:a37:c51:: with SMTP id 78mr13313885qkm.30.1602248144600;
+        Fri, 09 Oct 2020 05:55:44 -0700 (PDT)
+Received: from [192.168.2.28] (bras-base-kntaon1617w-grc-10-184-147-165-106.dsl.bell.ca. [184.147.165.106])
+        by smtp.googlemail.com with ESMTPSA id d78sm5775681qke.83.2020.10.09.05.55.43
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 09 Oct 2020 05:55:44 -0700 (PDT)
+From:   Jamal Hadi Salim <jhs@mojatatu.com>
+Subject: 0x14: Videos posted
+To:     people <people@netdevconf.info>
+Cc:     speakers-0x14@netdevconf.info, prog-committee-0x14@netdevconf.info,
+        attendees-0x14@netdevconf.info,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>, lwn@lwn.net,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        netfilter-devel@vger.kernel.org,
+        Christie Geldart <christie@ambedia.com>,
+        Kimberley Jeffries <kimberleyjeffries@gmail.com>
+Message-ID: <95981c19-d157-0f13-ed3f-ce82b612e12c@mojatatu.com>
+Date:   Fri, 9 Oct 2020 08:55:43 -0400
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.12.0
 MIME-Version: 1.0
-X-Received: by 2002:a92:ba44:: with SMTP id o65mr10628905ili.255.1602247034075;
- Fri, 09 Oct 2020 05:37:14 -0700 (PDT)
-Date:   Fri, 09 Oct 2020 05:37:14 -0700
-In-Reply-To: <20201009132538.e1fd7f802947.I799b288466ea2815f9d4c84349fae697dca2f189@changeid>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <0000000000004f00d705b13c358b@google.com>
-Subject: Re: KMSAN: uninit-value in ieee80211_skb_resize
-From:   syzbot <syzbot+32fd1a1bfe355e93f1e2@syzkaller.appspotmail.com>
-To:     glider@google.com, johannes.berg@intel.com,
-        johannes@sipsolutions.net, linux-wireless@vger.kernel.org,
-        syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
 
-syzbot has tested the proposed patch and the reproducer did not trigger any issue:
+To everyone (PC, organizing committee, speakers, workshop chairs,
+Tutors, sponsors, and attendees) - thank one more time
+for making the conference the success it was!
 
-Reported-and-tested-by: syzbot+32fd1a1bfe355e93f1e2@syzkaller.appspotmail.com
+The videos are now up.
 
-Tested on:
+The sessions page is at:
+https://netdevconf.info/0x14/accepted-sessions.html
 
-commit:         5edb1df2 kmsan: drop the _nosanitize string functions
-git tree:       https://github.com/google/kmsan.git master
-kernel config:  https://syzkaller.appspot.com/x/.config?x=33941614a34daf96
-dashboard link: https://syzkaller.appspot.com/bug?extid=32fd1a1bfe355e93f1e2
-compiler:       clang version 10.0.0 (https://github.com/llvm/llvm-project/ c2443155a0fb245c8f17f2c1c72b6ea391e86e81)
-patch:          https://syzkaller.appspot.com/x/patch.diff?x=107d7258500000
+The videos can be viewed directly on the 0x14 playlist here:
+https://bit.ly/2SHJWow
 
-Note: testing is done by a robot and is best-effort only.
+cheers,
+jamal
+
+PS: apologies if you receive this multiple times...
