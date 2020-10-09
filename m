@@ -2,82 +2,116 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DA7BE2885B6
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 Oct 2020 11:00:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2CC562885E0
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 Oct 2020 11:21:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733017AbgJIJAq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 9 Oct 2020 05:00:46 -0400
-Received: from eu-smtp-delivery-151.mimecast.com ([207.82.80.151]:52701 "EHLO
-        eu-smtp-delivery-151.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1732968AbgJIJAq (ORCPT
+        id S1731420AbgJIJV3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 9 Oct 2020 05:21:29 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:55074 "EHLO
+        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1731262AbgJIJV2 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 9 Oct 2020 05:00:46 -0400
-Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
- TLS) by relay.mimecast.com with ESMTP id
- uk-mta-236-3p11TCI_Nt6wuFytF7l0RQ-1; Fri, 09 Oct 2020 10:00:42 +0100
-X-MC-Unique: 3p11TCI_Nt6wuFytF7l0RQ-1
-Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) by
- AcuMS.aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) with Microsoft SMTP
- Server (TLS) id 15.0.1347.2; Fri, 9 Oct 2020 10:00:41 +0100
-Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
- AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000;
- Fri, 9 Oct 2020 10:00:41 +0100
-From:   David Laight <David.Laight@ACULAB.COM>
-To:     'Johannes Berg' <johannes@sipsolutions.net>,
-        Greg KH <gregkh@linuxfoundation.org>
-CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "nstange@suse.de" <nstange@suse.de>,
-        "ap420073@gmail.com" <ap420073@gmail.com>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "rafael@kernel.org" <rafael@kernel.org>
-Subject: RE: [CRAZY-RFF] debugfs: track open files and release on remove
-Thread-Topic: [CRAZY-RFF] debugfs: track open files and release on remove
-Thread-Index: AQHWnhTYAkCadt4V/kCnonv0tSsTz6mO7mnQ///1fYCAABMO0A==
-Date:   Fri, 9 Oct 2020 09:00:41 +0000
-Message-ID: <e086db3e422b401d9a4df896696f75b8@AcuMS.aculab.com>
-References: <87v9fkgf4i.fsf@suse.de>
-         <20201009095306.0d87c3aa13db.Ib3a7019bff15bb6308f6d259473a1648312a4680@changeid>
-         <20201009080355.GA398994@kroah.com>
-         <be61c6a38d0f6ca1aa0bc3f0cb45bbb216a12982.camel@sipsolutions.net>
-         <20201009081624.GA401030@kroah.com>
-         <1ec056cf3ec0953d2d1abaa05e37e89b29c7cc63.camel@sipsolutions.net>
-         <03c42bb5f57a4c3d9c782a023add28cd@AcuMS.aculab.com>
- <e3a807b1d5f728c178f43b453f3b495bf53abfce.camel@sipsolutions.net>
-In-Reply-To: <e3a807b1d5f728c178f43b453f3b495bf53abfce.camel@sipsolutions.net>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+        Fri, 9 Oct 2020 05:21:28 -0400
+Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa.ger.corp.intel.com)
+        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.93)
+        (envelope-from <luca@coelho.fi>)
+        id 1kQoab-002Rjn-IN; Fri, 09 Oct 2020 12:21:26 +0300
+From:   Luca Coelho <luca@coelho.fi>
+To:     kvalo@codeaurora.org
+Cc:     linux-wireless@vger.kernel.org, alexander@wetzel-home.de,
+        andy.lavr@gmail.com
+Date:   Fri,  9 Oct 2020 12:21:23 +0300
+Message-Id: <iwlwifi.20201009122123.3e4ee0ad7a71.Id6d95ae601f048aeb4d2ed63a1712e469da84369@changeid>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
-Authentication-Results: relay.mimecast.com;
-        auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: 8bit
+X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on farmhouse.coelho.fi
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+        TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.4
+Subject: [PATCH] Revert "iwlwifi: remove wide_cmd_header field"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-RnJvbTogSm9oYW5uZXMgQmVyZw0KPiBTZW50OiAwOSBPY3RvYmVyIDIwMjAgMDk6NDUNCj4gDQo+
-IE9uIEZyaSwgMjAyMC0xMC0wOSBhdCAwODozNCArMDAwMCwgRGF2aWQgTGFpZ2h0IHdyb3RlOg0K
-PiA+DQouLi4NCj4gPiBEb2VzIGl0IGV2ZXIgbWFrZSBhbnkgc2Vuc2UgdG8gc2V0IC5vd25lciB0
-byBhbnl0aGluZyBvdGhlciB0aGFuDQo+ID4gVEhJU19NT0RVTEU/DQo+IA0KPiBOby4gQnV0IEkg
-YmVsaWV2ZSBUSElTX01PRFVMRSBpcyBOVUxMIGZvciBidWlsdC1pbiBjb2RlLCBzbyB3ZSBjYW4n
-dA0KPiBqdXN0IFdBUk5fT04oIWZvcHMtPm93bmVyKS4NCi4uLg0KPiA+IEkgd2FzIGFsc28gd29u
-ZGVyaW5nIGlmIHRoaXMgYWZmZWN0cyBub3JtYWwgb3BlbnM/DQo+ID4gVGhleSBzaG91bGQgaG9s
-ZCBhIHJlZmVyZW5jZSBvbiB0aGUgbW9kdWxlIHRvIHN0b3AgaXQgYmVpbmcgdW5sb2FkZWQuDQo+
-ID4gRG9lcyB0aGF0IHJlbHkgb24gLm93bmVyIGJlaW5nIHNldD8NCj4gDQo+IFllcy4NCg0KU291
-bmQgbGlrZSB0aGUgbW9kdWxlIGxvYWQgY29kZSBzaG91bGQgYmUgdmVyaWZ5aW5nIGl0IHRoZW4u
-DQoNCkxvb2tpbmcgYXQgb25lIG9mIG15IG1vZHVsZXMgKHdoaWNoIGRvZXMgc2V0IC5vd25lciku
-DQpQZXJoYXBzIGNkZXZfaW5pdCgpIGNvdWxkIGJlIGEgI2RlZmluZSB0aGF0IHBpY2tzIHVwIFRI
-SVNfTU9EVUxFLg0KVGhpcyBjb3VsZCB0aGVuIGJlIGNoZWNrZWQgYWdhaW5zdCB0aGUgb25lIGlu
-IGZvcHMgb3Igc2F2ZWQNCmluIHRoZSAnc3RydWN0IGNkZXYnLg0KDQpJIHByZXN1bWUgZGVidWdm
-cyAod2hpY2ggSSd2ZSBub3QgdXNlZCkgaGFzIHNvbWUgc2ltaWxhciBjYWxscy4NCg0KCURhdmlk
-DQoNCi0NClJlZ2lzdGVyZWQgQWRkcmVzcyBMYWtlc2lkZSwgQnJhbWxleSBSb2FkLCBNb3VudCBG
-YXJtLCBNaWx0b24gS2V5bmVzLCBNSzEgMVBULCBVSw0KUmVnaXN0cmF0aW9uIE5vOiAxMzk3Mzg2
-IChXYWxlcykNCg==
+From: Luca Coelho <luciano.coelho@intel.com>
+
+This reverts commit 0a8159cbd11abf586693f1ec5264d0df587b71d8.
+
+It turns out that this flag is used by iwldvm, so we can't get rid of
+it.  This broke iwldvm devices with BAD_COMMAND errors.
+
+Fixes: 0a8159cbd11a ("iwlwifi: remove wide_cmd_header field")
+Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+---
+ drivers/net/wireless/intel/iwlwifi/iwl-trans.c | 2 +-
+ drivers/net/wireless/intel/iwlwifi/iwl-trans.h | 2 ++
+ drivers/net/wireless/intel/iwlwifi/mvm/ops.c   | 1 +
+ drivers/net/wireless/intel/iwlwifi/pcie/tx.c   | 5 +++++
+ 4 files changed, 9 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-trans.c b/drivers/net/wireless/intel/iwlwifi/iwl-trans.c
+index a26da96763dd..becee92a5fd6 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-trans.c
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-trans.c
+@@ -200,7 +200,7 @@ int iwl_trans_send_cmd(struct iwl_trans *trans, struct iwl_host_cmd *cmd)
+ 	if (!(cmd->flags & CMD_ASYNC))
+ 		lock_map_acquire_read(&trans->sync_cmd_lockdep_map);
+ 
+-	if (!iwl_cmd_groupid(cmd->id))
++	if (trans->wide_cmd_header && !iwl_cmd_groupid(cmd->id))
+ 		cmd->id = DEF_ID(cmd->id);
+ 
+ 	ret = trans->ops->send_cmd(trans, cmd);
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-trans.h b/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
+index b70294e9d07b..11a040e75bf3 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
+@@ -968,6 +968,7 @@ struct iwl_trans_txqs {
+  * @hw_id_str: a string with info about HW ID. Set during transport allocation.
+  * @pm_support: set to true in start_hw if link pm is supported
+  * @ltr_enabled: set to true if the LTR is enabled
++ * @wide_cmd_header: true when ucode supports wide command header format
+  * @num_rx_queues: number of RX queues allocated by the transport;
+  *	the transport must set this before calling iwl_drv_start()
+  * @iml_len: the length of the image loader
+@@ -1009,6 +1010,7 @@ struct iwl_trans {
+ 
+ 	const struct iwl_hcmd_arr *command_groups;
+ 	int command_groups_size;
++	bool wide_cmd_header;
+ 
+ 	u8 num_rx_queues;
+ 
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
+index 1e44a176b3d9..f1c5b3a9c26f 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
+@@ -761,6 +761,7 @@ iwl_op_mode_mvm_start(struct iwl_trans *trans, const struct iwl_cfg *cfg,
+ 		trans_cfg.rx_buf_size = rb_size_default;
+ 	}
+ 
++	trans->wide_cmd_header = true;
+ 	trans_cfg.bc_table_dword =
+ 		mvm->trans->trans_cfg->device_family < IWL_DEVICE_FAMILY_AX210;
+ 
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/tx.c b/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
+index 8c89e4a2f7f8..966be5689d63 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
+@@ -1180,6 +1180,11 @@ static int iwl_pcie_enqueue_hcmd(struct iwl_trans *trans,
+ 	const u8 *cmddata[IWL_MAX_CMD_TBS_PER_TFD];
+ 	u16 cmdlen[IWL_MAX_CMD_TBS_PER_TFD];
+ 
++	if (WARN(!trans->wide_cmd_header &&
++		 group_id > IWL_ALWAYS_LONG_GROUP,
++		 "unsupported wide command %#x\n", cmd->id))
++		return -EINVAL;
++
+ 	if (group_id != 0) {
+ 		copy_size = sizeof(struct iwl_cmd_header_wide);
+ 		cmd_size = sizeof(struct iwl_cmd_header_wide);
+-- 
+2.28.0
 
