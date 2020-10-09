@@ -2,63 +2,63 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D1AD2886B0
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 Oct 2020 12:15:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 558FD2886C7
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 Oct 2020 12:22:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387573AbgJIKPe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 9 Oct 2020 06:15:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42238 "EHLO
+        id S2387591AbgJIKWR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 9 Oct 2020 06:22:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43262 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387569AbgJIKPd (ORCPT
+        with ESMTP id S1725852AbgJIKWQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 9 Oct 2020 06:15:33 -0400
-Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DDFCC0613D4
-        for <linux-wireless@vger.kernel.org>; Fri,  9 Oct 2020 03:15:33 -0700 (PDT)
-Received: from [134.101.218.207] (helo=localhost.localdomain)
-        by ds12 with esmtpa (Exim 4.89)
-        (envelope-from <john@phrozen.org>)
-        id 1kQpQw-0004jy-Vo; Fri, 09 Oct 2020 12:15:31 +0200
-From:   John Crispin <john@phrozen.org>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org, John Crispin <john@phrozen.org>,
-        Aloka Dixit <alokad@codeaurora.org>
-Subject: [PATCH V4 4/4] mac80211: don't allow CSA on non-transmitting interfaces
-Date:   Fri,  9 Oct 2020 12:15:28 +0200
-Message-Id: <20201009101528.4780-5-john@phrozen.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20201009101528.4780-1-john@phrozen.org>
-References: <20201009101528.4780-1-john@phrozen.org>
+        Fri, 9 Oct 2020 06:22:16 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A425C0613D2;
+        Fri,  9 Oct 2020 03:22:16 -0700 (PDT)
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.94)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1kQpX9-002Cl9-OR; Fri, 09 Oct 2020 12:21:55 +0200
+Message-ID: <4a58caee3b6b8975f4ff632bf6d2a6673788157d.camel@sipsolutions.net>
+Subject: Re: [PATCH net 000/117] net: avoid to remove module when its
+ debugfs is being used
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Taehee Yoo <ap420073@gmail.com>
+Cc:     Nicolai Stange <nstange@suse.de>,
+        David Laight <David.Laight@aculab.com>,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        "kuba@kernel.org" <kuba@kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "wil6210@qti.qualcomm.com" <wil6210@qti.qualcomm.com>,
+        "brcm80211-dev-list@cypress.com" <brcm80211-dev-list@cypress.com>,
+        "b43-dev@lists.infradead.org" <b43-dev@lists.infradead.org>,
+        "linux-bluetooth@vger.kernel.org" <linux-bluetooth@vger.kernel.org>
+Date:   Fri, 09 Oct 2020 12:21:54 +0200
+In-Reply-To: <CAMArcTUdGPH5a0RTUiNoLvuQtdnXHOCwStJ+gp_noaNEzgSA1Q@mail.gmail.com> (sfid-20201009_121527_238342_F5A29EF9)
+References: <20201008155048.17679-1-ap420073@gmail.com>
+         <1cbb69d83188424e99b2d2482848ae64@AcuMS.aculab.com>
+         <62f6c2bd11ed8b25c1cd4462ebc6db870adc4229.camel@sipsolutions.net>
+         <87v9fkgf4i.fsf@suse.de>
+         <fd8aaf06b53f32eae7b5bdcec2f3ea9e1f419b1d.camel@sipsolutions.net>
+         <CAMArcTUdGPH5a0RTUiNoLvuQtdnXHOCwStJ+gp_noaNEzgSA1Q@mail.gmail.com>
+         (sfid-20201009_121527_238342_F5A29EF9)
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.5 (3.36.5-1.fc32) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-As a non-transmitting interface does not broadcast a beacon, we do not want
-to allow channel switch announcements. They need to be triggered on the
-transmitting interface.
+On Fri, 2020-10-09 at 19:15 +0900, Taehee Yoo wrote:
+> 
+> Okay, as you mentioned earlier in 001/117 patch thread,
+> I will squash patches into per-driver/subsystem then send them as v2.
 
-Signed-off-by: Aloka Dixit <alokad@codeaurora.org>
-Signed-off-by: John Crispin <john@phrozen.org>
----
- net/mac80211/cfg.c | 3 +++
- 1 file changed, 3 insertions(+)
+Give me a bit. I think I figured out a less intrusive way that at least
+means we don't have to do it if the fops doesn't have ->release(), which
+is the vast majority.
 
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index 11cecb2ed640..7693894c4f84 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -3504,6 +3504,9 @@ __ieee80211_channel_switch(struct wiphy *wiphy, struct net_device *dev,
- 	if (sdata->vif.csa_active)
- 		return -EBUSY;
- 
-+	if (sdata->vif.multiple_bssid.flags & IEEE80211_VIF_MBSS_NON_TRANSMITTING)
-+		return -EINVAL;
-+
- 	mutex_lock(&local->chanctx_mtx);
- 	conf = rcu_dereference_protected(sdata->vif.chanctx_conf,
- 					 lockdep_is_held(&local->chanctx_mtx));
--- 
-2.25.1
+johannes
 
