@@ -2,230 +2,128 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B6E81288DC6
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 Oct 2020 18:08:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E1E4E288F7C
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 Oct 2020 19:03:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389540AbgJIQIS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 9 Oct 2020 12:08:18 -0400
-Received: from z5.mailgun.us ([104.130.96.5]:27742 "EHLO z5.mailgun.us"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2389296AbgJIQIR (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 9 Oct 2020 12:08:17 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1602259696; h=Date: Message-Id: Cc: To: Subject: From:
- Content-Transfer-Encoding: MIME-Version: Content-Type: Sender;
- bh=To+Rv0CRRDAUHp+L0TSexKH6+wTf8SVcJjKCiBhmNCQ=; b=BcZWCksfVwJeq0z1rs0WBAdRycnzKd9hzPFIkEShSL5ogcnF4GpJHyDHQgoe5Xke/URvtnyE
- w6gmU8E4sIpty53WNqy6Sg4DvMpZXeFIHSaf5iGacbqRhpCHq9n1Wqiok2S3UJX1R0A/B8iS
- +aR4eJmZWx0JQp1HhSAKuITS/Zw=
-X-Mailgun-Sending-Ip: 104.130.96.5
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n02.prod.us-west-2.postgun.com with SMTP id
- 5f808adf83370fa1c129e758 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 09 Oct 2020 16:07:59
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id A44E1C433FE; Fri,  9 Oct 2020 16:07:59 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        MISSING_DATE,MISSING_MID,SPF_FAIL autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 6A398C433C9;
-        Fri,  9 Oct 2020 16:07:58 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 6A398C433C9
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        id S2389969AbgJIRCN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 9 Oct 2020 13:02:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49048 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2390077AbgJIRCK (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 9 Oct 2020 13:02:10 -0400
+Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA092C0613D2;
+        Fri,  9 Oct 2020 10:02:09 -0700 (PDT)
+Received: by mail-wr1-x443.google.com with SMTP id g12so11012875wrp.10;
+        Fri, 09 Oct 2020 10:02:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=OQjXtAUBiUt8FZeF7VwlJkEHyrNsrnaij5FiCyQ3fQQ=;
+        b=MecW84xz1Y6hya5EsgYzu/gfNosmgK1IQW0ERxhH6z3tyiZYmvq1BG+OSyvvc48kzJ
+         QJsqiwl8CiVx/EjFoq2LOVQ87riqWUxp8xzwOq31agG5QWZkQyTXaLsf4BjuRSXirElI
+         L76cra59A2J8F0Xj0AAQdYMBuZoe0TMiZuny4Ax33OaWBu4JgfyvAUzjGV7b4Hnu7G39
+         eVC2urRtnaikTDkZZ5qU1n54Ag2iHpF0D6QFQ/gfdTUss+KGEgP3jhRa5y+RE3ymj3dp
+         CPJuJwFwPDDKVGiUMynhBk6UdnmqRMjjs1xNjO1KbftD9UIzFlcnKG/ET5TGAKzCFzLb
+         1xXA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=OQjXtAUBiUt8FZeF7VwlJkEHyrNsrnaij5FiCyQ3fQQ=;
+        b=HJ8AKOg9JnRE5EbL5xHt/i8inIHDzXvCq2mLi8opGyLz9g3e0fnM9bM7l9qpXJ1N1q
+         TMQqzuKIfcende8I3dJg2YQT4ZvTtbzTP/D4tLyVO3f6v6jEUUJAQ5oJdq9oYlf+tHtw
+         qPk9xdZBFojD80DY1NhCbvzp3gwEZ372rkgrNxt/7h2bCpIvtfW6GAkz2v6uLWRXaiLn
+         83D6J4KypuhvIprgNVwp6hM8ZSgKBXFrvRRxK+kb3GUdjBhNHSbRyftaTwk0jNSSh93O
+         iW9iItpAj9WKDc8tXefnT4dSA+unM21KsmUW8Uzj4C/buwSRc6QbWOA0pjG2q+8g32EQ
+         YlTg==
+X-Gm-Message-State: AOAM531EY6oZ2+dRHnGQBO+hMq9nT359NpR9e9t1KlNCToJm2QhxQxLh
+        /7W2UerK540ZoDLYNgJQq14=
+X-Google-Smtp-Source: ABdhPJxOLPMJ/OTwRWLN6JGLl2IHYdtRODFUaAvYApkLJSw1zM761u1IKsAuwVY+wEvRe7p1OEoC9g==
+X-Received: by 2002:a05:6000:c5:: with SMTP id q5mr16999496wrx.175.1602262928645;
+        Fri, 09 Oct 2020 10:02:08 -0700 (PDT)
+Received: from nogikh.c.googlers.com.com (88.140.78.34.bc.googleusercontent.com. [34.78.140.88])
+        by smtp.gmail.com with ESMTPSA id s6sm13211092wrg.92.2020.10.09.10.02.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 09 Oct 2020 10:02:08 -0700 (PDT)
+From:   Aleksandr Nogikh <a.nogikh@gmail.com>
+To:     davem@davemloft.net, kuba@kernel.org, johannes@sipsolutions.net,
+        akpm@linux-foundation.org
+Cc:     edumazet@google.com, andreyknvl@google.com, dvyukov@google.com,
+        elver@google.com, linux-kernel@vger.kernel.org,
+        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+        nogikh@google.com
+Subject: [PATCH v2 0/3] [PATCH v2 0/3] [PATCH v2 0/3] net, mac80211, kernel: enable KCOV remote coverage collection for 802.11 frame handling
+Date:   Fri,  9 Oct 2020 17:01:59 +0000
+Message-Id: <20201009170202.103512-1-a.nogikh@gmail.com>
+X-Mailer: git-send-email 2.28.0.1011.ga647a8990f-goog
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From:   Kalle Valo <kvalo@codeaurora.org>
-Subject: pull-request: wireless-drivers-next-2020-10-09
-To:     netdev@vger.kernel.org
-Cc:     linux-wireless@vger.kernel.org
-Message-Id: <20201009160759.A44E1C433FE@smtp.codeaurora.org>
-Date:   Fri,  9 Oct 2020 16:07:59 +0000 (UTC)
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+From: Aleksandr Nogikh <nogikh@google.com>
 
-here's a pull request to net-next tree, more info below. Please let me know if
-there are any problems.
+This patch series enables remote KCOV coverage collection during
+802.11 frames processing. These changes make it possible to perform
+coverage-guided fuzzing in search of remotely triggerable bugs.
 
-Kalle
+Normally, KCOV collects coverage information for the code that is
+executed inside the system call context. It is easy to identify where
+that coverage should go and whether it should be collected at all by
+looking at the current process. If KCOV was enabled on that process,
+coverage will be stored in a buffer specific to that process.
+Howerever, it is not always enough as handling can happen elsewhere
+(e.g. in separate kernel threads).
 
-The following changes since commit c2568c8c9e636a56abf31da4b28b65d3ded02524:
+When it is impossible to infer KCOV-related info just by looking at
+the currently running process, one needs to manually pass some
+information to the code that should be instrumented. The information
+takes the form of 64 bit integers (KCOV remote handles). Zero is the
+special value that corresponds to an empty handle. More details on
+KCOV and remote coverage collection can be found in
+Documentation/dev-tools/kcov.rst.
 
-  Merge branch 'net-Constify-struct-genl_small_ops' (2020-10-04 21:13:36 -0700)
+The series consists of three commits.
+1. Apply a minor fix to kcov_common_handle() so that it returns a
+valid handle (zero) when called in an interrupt context.
+2. Take the remote handle from KCOV and attach it to newly allocated
+SKBs. If the allocation happens inside a system call context, the SKB
+will be tied to the process that issued the syscall (if that process
+is interested in remote coverage collection).
+3. Annotate the code that processes incoming 802.11 frames with
+kcov_remote_start()/kcov_remote_stop()
 
-are available in the git repository at:
+This patch series conflicts with another proposed patch
+http://lkml.kernel.org/r/223901affc7bd759b2d6995c2dbfbdd0a29bc88a.1602248029.git.andreyknvl@google.com
+One of these patches needs to be rebased once the other one is merged.
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git tags/wireless-drivers-next-2020-10-09
+v2:
+* Moved KCOV annotations from ieee80211_tasklet_handler to
+  ieee80211_rx.
+* Updated kcov_common_handle() to return 0 if it is called in
+  interrupt context.
+* Updated the cover letter.
+ 
+v1: https://lkml.kernel.org/r/20201007101726.3149375-1-a.nogikh@gmail.com
 
-for you to fetch changes up to b7d96bca1f004b5f26ee51ea9c9749a28dac8316:
+Aleksandr Nogikh (3):
+  kernel: make kcov_common_handle consider the current context
+  net: store KCOV remote handle in sk_buff
+  mac80211: add KCOV remote annotations to incoming frame processing
 
-  Revert "iwlwifi: remove wide_cmd_header field" (2020-10-09 18:04:50 +0300)
+ include/linux/skbuff.h | 21 +++++++++++++++++++++
+ include/net/mac80211.h |  2 ++
+ kernel/kcov.c          |  2 ++
+ net/core/skbuff.c      |  1 +
+ net/mac80211/iface.c   |  2 ++
+ 5 files changed, 28 insertions(+)
 
-----------------------------------------------------------------
-wireless-drivers-next patches for v5.10
 
-Fourth and last set of patches for v5.10. Most of these are iwlwifi
-patches, but few small fixes to other drivers as well.
+base-commit: a804ab086e9de200e2e70600996db7fc14c91959
+-- 
+2.28.0.1011.ga647a8990f-goog
 
-Major changes:
-
-iwlwifi
-
-* PNVM support (platform-specific phy config data)
-
-* bump the FW API support to 59
-
-----------------------------------------------------------------
-Alex Dewar (1):
-      ath11k: Fix memory leak on error path
-
-Avraham Stern (1):
-      iwlwifi: mvm: avoid possible NULL pointer dereference
-
-Chris Chiu (1):
-      rtlwifi: rtl8192se: remove duplicated legacy_httxpowerdiff
-
-Emmanuel Grumbach (1):
-      iwlwifi: mvm: don't send a CSA command the firmware doesn't know
-
-Golan Ben Ami (1):
-      iwlwifi: support an additional Qu subsystem id
-
-Johannes Berg (1):
-      iwlwifi: mvm: stop claiming NL80211_EXT_FEATURE_SET_SCAN_DWELL
-
-Lee Jones (14):
-      iwlwifi: dvm: Demote non-compliant kernel-doc headers
-      iwlwifi: rs: Demote non-compliant kernel-doc headers
-      iwlwifi: dvm: tx: Demote non-compliant kernel-doc headers
-      iwlwifi: dvm: lib: Demote non-compliant kernel-doc headers
-      iwlwifi: calib: Demote seemingly unintentional kerneldoc header
-      iwlwifi: dvm: sta: Demote a bunch of nonconformant kernel-doc headers
-      iwlwifi: mvm: ops: Remove unused static struct 'iwl_mvm_debug_names'
-      iwlwifi: dvm: Demote a couple of nonconformant kernel-doc headers
-      iwlwifi: mvm: utils: Fix some doc-rot
-      iwlwifi: dvm: scan: Demote a few nonconformant kernel-doc headers
-      iwlwifi: dvm: rxon: Demote non-conformant kernel-doc headers
-      iwlwifi: mvm: tx: Demote misuse of kernel-doc headers
-      iwlwifi: dvm: devices: Fix function documentation formatting issues
-      iwlwifi: iwl-drv: Provide descriptions debugfs dentries
-
-Luca Coelho (13):
-      iwlwifi: mvm: read and parse SKU ID if available
-      iwlwifi: update prph scratch structure to include PNVM data
-      iwlwifi: mvm: ring the doorbell and wait for PNVM load completion
-      iwlwifi: mvm: don't send RFH_QUEUE_CONFIG_CMD with no queues
-      iwlwifi: pcie: fix 0x271B and 0x271C trans cfg struct
-      iwlwifi: pcie: fix xtal latency for 9560 devices
-      iwlwifi: pcie: fix the xtal latency value for a few qu devices
-      iwlwifi: move PNVM implementation to common code
-      iwlwifi: add trans op to set PNVM
-      iwlwifi: pcie: implement set_pnvm op
-      iwlwifi: read and parse PNVM file
-      iwlwifi: bump FW API to 59 for AX devices
-      Revert "iwlwifi: remove wide_cmd_header field"
-
-Mordechay Goodstein (2):
-      iwlwifi: stats: add new api fields for statistics cmd/ntfy
-      iwlwifi: rs: align to new TLC config command API
-
-Naftali Goldstein (1):
-      iwlwifi: fix sar geo table initialization
-
-Nathan Errera (4):
-      iwlwifi: mvm: get number of stations from TLV
-      iwlwifi: mvm: prepare roc_done_wk to work sync
-      iwlwifi: mvm: add a get lmac id function
-      iwlwifi: mvm: support ADD_STA_CMD_API_S ver 12
-
-Sara Sharon (3):
-      iwlwifi: mvm: re-enable TX after channel switch
-      iwlwifi: mvm: remove memset of kek_kck command
-      iwlwifi: mvm: fix suspicious rcu usage warnings
-
-Tom Rix (1):
-      mwifiex: fix double free
-
- drivers/net/wireless/ath/ath11k/mac.c              |   4 +-
- drivers/net/wireless/intel/iwlwifi/Makefile        |   2 +-
- drivers/net/wireless/intel/iwlwifi/cfg/22000.c     |   4 +-
- drivers/net/wireless/intel/iwlwifi/cfg/9000.c      |  17 +-
- drivers/net/wireless/intel/iwlwifi/dvm/calib.c     |   2 +-
- drivers/net/wireless/intel/iwlwifi/dvm/devices.c   |   8 +-
- drivers/net/wireless/intel/iwlwifi/dvm/lib.c       |   4 +-
- drivers/net/wireless/intel/iwlwifi/dvm/main.c      |  11 +-
- drivers/net/wireless/intel/iwlwifi/dvm/rs.c        |  12 +-
- drivers/net/wireless/intel/iwlwifi/dvm/rx.c        |   4 +-
- drivers/net/wireless/intel/iwlwifi/dvm/rxon.c      |   6 +-
- drivers/net/wireless/intel/iwlwifi/dvm/scan.c      |   8 +-
- drivers/net/wireless/intel/iwlwifi/dvm/sta.c       |  22 +-
- drivers/net/wireless/intel/iwlwifi/dvm/tx.c        |   4 +-
- drivers/net/wireless/intel/iwlwifi/fw/acpi.c       |  20 +-
- drivers/net/wireless/intel/iwlwifi/fw/acpi.h       |   1 -
- .../net/wireless/intel/iwlwifi/fw/api/binding.h    |  16 +-
- .../net/wireless/intel/iwlwifi/fw/api/commands.h   |   6 +-
- drivers/net/wireless/intel/iwlwifi/fw/api/mac.h    |   2 +-
- .../net/wireless/intel/iwlwifi/fw/api/nvm-reg.h    |  13 +
- drivers/net/wireless/intel/iwlwifi/fw/api/rs.h     |   7 +-
- drivers/net/wireless/intel/iwlwifi/fw/api/sta.h    |   2 +-
- drivers/net/wireless/intel/iwlwifi/fw/api/stats.h  | 471 ++++++++++++++++++++-
- drivers/net/wireless/intel/iwlwifi/fw/file.h       |   9 +-
- drivers/net/wireless/intel/iwlwifi/fw/img.h        |   1 +
- drivers/net/wireless/intel/iwlwifi/fw/pnvm.c       | 274 ++++++++++++
- drivers/net/wireless/intel/iwlwifi/fw/pnvm.h       |  18 +
- drivers/net/wireless/intel/iwlwifi/iwl-config.h    |   1 +
- .../wireless/intel/iwlwifi/iwl-context-info-gen3.h |  21 +-
- .../net/wireless/intel/iwlwifi/iwl-context-info.h  |   7 +-
- drivers/net/wireless/intel/iwlwifi/iwl-drv.c       |  20 +-
- drivers/net/wireless/intel/iwlwifi/iwl-prph.h      |   1 +
- drivers/net/wireless/intel/iwlwifi/iwl-trans.c     |   2 +-
- drivers/net/wireless/intel/iwlwifi/iwl-trans.h     |  23 +
- drivers/net/wireless/intel/iwlwifi/mvm/binding.c   |  11 +-
- drivers/net/wireless/intel/iwlwifi/mvm/d3.c        |  21 +-
- drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c   |   4 +-
- .../net/wireless/intel/iwlwifi/mvm/ftm-responder.c |  14 +-
- drivers/net/wireless/intel/iwlwifi/mvm/fw.c        | 123 ++++--
- drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c  |   6 +-
- drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c  |  54 ++-
- drivers/net/wireless/intel/iwlwifi/mvm/mvm.h       |   8 +-
- drivers/net/wireless/intel/iwlwifi/mvm/ops.c       |  17 +-
- drivers/net/wireless/intel/iwlwifi/mvm/phy-ctxt.c  |   7 +-
- drivers/net/wireless/intel/iwlwifi/mvm/rs-fw.c     |   8 +-
- drivers/net/wireless/intel/iwlwifi/mvm/rx.c        | 197 ++++++---
- drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c      |   2 +-
- drivers/net/wireless/intel/iwlwifi/mvm/scan.c      |  37 +-
- drivers/net/wireless/intel/iwlwifi/mvm/sta.c       |  33 +-
- drivers/net/wireless/intel/iwlwifi/mvm/sta.h       |   5 +-
- drivers/net/wireless/intel/iwlwifi/mvm/tdls.c      |  12 +-
- .../net/wireless/intel/iwlwifi/mvm/time-event.c    |  49 ++-
- .../net/wireless/intel/iwlwifi/mvm/time-event.h    |   7 +-
- drivers/net/wireless/intel/iwlwifi/mvm/tt.c        |   4 +-
- drivers/net/wireless/intel/iwlwifi/mvm/tx.c        |  22 +-
- drivers/net/wireless/intel/iwlwifi/mvm/utils.c     |   7 +-
- .../wireless/intel/iwlwifi/pcie/ctxt-info-gen3.c   |  27 ++
- .../net/wireless/intel/iwlwifi/pcie/ctxt-info.c    |  21 +-
- drivers/net/wireless/intel/iwlwifi/pcie/drv.c      |   7 +-
- drivers/net/wireless/intel/iwlwifi/pcie/internal.h |   3 +
- drivers/net/wireless/intel/iwlwifi/pcie/trans.c    |   7 +
- drivers/net/wireless/intel/iwlwifi/pcie/tx.c       |   5 +
- drivers/net/wireless/marvell/mwifiex/sdio.c        |   2 +
- .../net/wireless/realtek/rtlwifi/rtl8192se/hw.c    |   2 +-
- .../net/wireless/realtek/rtlwifi/rtl8192se/rf.c    |   2 +-
- drivers/net/wireless/realtek/rtlwifi/wifi.h        |   1 -
- 66 files changed, 1434 insertions(+), 314 deletions(-)
- create mode 100644 drivers/net/wireless/intel/iwlwifi/fw/pnvm.c
- create mode 100644 drivers/net/wireless/intel/iwlwifi/fw/pnvm.h
