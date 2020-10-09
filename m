@@ -2,89 +2,63 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E7CB288881
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 Oct 2020 14:17:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EFD792888E8
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 Oct 2020 14:37:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732493AbgJIMRV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 9 Oct 2020 08:17:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32896 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730726AbgJIMRV (ORCPT
+        id S1731833AbgJIMhQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 9 Oct 2020 08:37:16 -0400
+Received: from mail-il1-f200.google.com ([209.85.166.200]:46582 "EHLO
+        mail-il1-f200.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726357AbgJIMhQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 9 Oct 2020 08:17:21 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7717C0613D2
-        for <linux-wireless@vger.kernel.org>; Fri,  9 Oct 2020 05:17:20 -0700 (PDT)
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.94)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1kQrKn-002Fmm-BY; Fri, 09 Oct 2020 14:17:17 +0200
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     linux-wireless@vger.kernel.org
-Cc:     Johannes Berg <johannes.berg@intel.com>,
-        syzbot+2e293dbd67de2836ba42@syzkaller.appspotmail.com
-Subject: [PATCH] mac80211: always wind down STA state
-Date:   Fri,  9 Oct 2020 14:17:11 +0200
-Message-Id: <20201009141710.7223b322a955.I95bd08b9ad0e039c034927cce0b75beea38e059b@changeid>
-X-Mailer: git-send-email 2.26.2
+        Fri, 9 Oct 2020 08:37:16 -0400
+Received: by mail-il1-f200.google.com with SMTP id z8so6706302ilh.13
+        for <linux-wireless@vger.kernel.org>; Fri, 09 Oct 2020 05:37:14 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:date:in-reply-to:message-id:subject
+         :from:to;
+        bh=2O9XejXxpQzqGczDlTdf2je5xfsWl83OvCPbQ6swRMk=;
+        b=H9FxWqX7WQyDDOV1BHeqsG3Ojl/5fDR8+HNfar1+ltF8p8DxNVJGK8u3p5YdfqTOUg
+         0nnM2pF2gz497Rrneud2jOmuhciZYbtZY6pPKLmSdLAP3fknz7wBy5EnzxJ/jLbVJNgd
+         syVKfY5gTr9SqvOwDvfdPc1uFrUDT0mwUFhLTY1P05JHVzZhC+34mUSWsS0XOddkKsA6
+         kEdeqxPi2vmW447v2uHa2mVtbwZ3I52Q/K7jCHbrgglpfhi1789czCY0hyWpR3e6gJur
+         v8Ih7l64ymVTcrf3kr8uMZT+vv6qWxKQjRCwlUp2C5jOxqVeo87wQFC8PfXp8t75C6up
+         yGhQ==
+X-Gm-Message-State: AOAM533QzgCrip4n3uWpjw+SDRCS8CptZRnJO8U8c6odPtus5nlbriVm
+        /FojNtFihjWOcK4Zi59YASEda4ZNPGrHhVPSRcxaP/3FLDQu
+X-Google-Smtp-Source: ABdhPJyxysuw/42zqyT66T0krnzPty4U+MYP6wKgKnEygcexGIX26mxLKZOOt4xQCkXMTY/8mvhwVQqqA+yISTMU0Fx91fJt0sqS
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Received: by 2002:a92:ba44:: with SMTP id o65mr10628905ili.255.1602247034075;
+ Fri, 09 Oct 2020 05:37:14 -0700 (PDT)
+Date:   Fri, 09 Oct 2020 05:37:14 -0700
+In-Reply-To: <20201009132538.e1fd7f802947.I799b288466ea2815f9d4c84349fae697dca2f189@changeid>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <0000000000004f00d705b13c358b@google.com>
+Subject: Re: KMSAN: uninit-value in ieee80211_skb_resize
+From:   syzbot <syzbot+32fd1a1bfe355e93f1e2@syzkaller.appspotmail.com>
+To:     glider@google.com, johannes.berg@intel.com,
+        johannes@sipsolutions.net, linux-wireless@vger.kernel.org,
+        syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+Hello,
 
-When (for example) an IBSS station is pre-moved to AUTHORIZED
-before it's inserted, and then the insertion fails, we don't
-clean up the fast RX/TX states that might already have been
-created, since we don't go through all the state transitions
-again on the way down.
+syzbot has tested the proposed patch and the reproducer did not trigger any issue:
 
-Do that, if it hasn't been done already, when the station is
-freed. I considered only freeing the fast TX/RX state there,
-but we might add more state so it's more robust to wind down
-the state properly.
+Reported-and-tested-by: syzbot+32fd1a1bfe355e93f1e2@syzkaller.appspotmail.com
 
-Note that we warn if the station was ever inserted, it should
-have been properly cleaned up in that case, and the driver
-will probably not like things happening out of order.
+Tested on:
 
-Reported-by: syzbot+2e293dbd67de2836ba42@syzkaller.appspotmail.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
----
- net/mac80211/sta_info.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+commit:         5edb1df2 kmsan: drop the _nosanitize string functions
+git tree:       https://github.com/google/kmsan.git master
+kernel config:  https://syzkaller.appspot.com/x/.config?x=33941614a34daf96
+dashboard link: https://syzkaller.appspot.com/bug?extid=32fd1a1bfe355e93f1e2
+compiler:       clang version 10.0.0 (https://github.com/llvm/llvm-project/ c2443155a0fb245c8f17f2c1c72b6ea391e86e81)
+patch:          https://syzkaller.appspot.com/x/patch.diff?x=107d7258500000
 
-diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
-index f2840d1d95cf..117311f6f6b3 100644
---- a/net/mac80211/sta_info.c
-+++ b/net/mac80211/sta_info.c
-@@ -258,6 +258,24 @@ struct sta_info *sta_info_get_by_idx(struct ieee80211_sub_if_data *sdata,
-  */
- void sta_info_free(struct ieee80211_local *local, struct sta_info *sta)
- {
-+	/*
-+	 * If we had used sta_info_pre_move_state() then we might not
-+	 * have gone through the state transitions down again, so do
-+	 * it here now (and warn if it's inserted).
-+	 *
-+	 * This will clear state such as fast TX/RX that may have been
-+	 * allocated during state transitions.
-+	 */
-+	while (sta->sta_state > IEEE80211_STA_NONE) {
-+		WARN_ON_ONCE(test_sta_flag(sta, WLAN_STA_INSERTED));
-+
-+		int ret = sta_info_move_state(sta, sta->sta_state - 1);
-+		if (ret) {
-+			WARN_ON_ONCE(1);
-+			break;
-+		}
-+	}
-+
- 	if (sta->rate_ctrl)
- 		rate_control_free_sta(sta);
- 
--- 
-2.26.2
-
+Note: testing is done by a robot and is best-effort only.
