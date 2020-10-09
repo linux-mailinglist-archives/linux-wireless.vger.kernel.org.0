@@ -2,59 +2,120 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 58E5C288FC0
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 Oct 2020 19:14:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F026D28916F
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 Oct 2020 20:51:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390178AbgJIRNu convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 9 Oct 2020 13:13:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50832 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732874AbgJIRNs (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 9 Oct 2020 13:13:48 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02C3AC0613D2;
-        Fri,  9 Oct 2020 10:13:48 -0700 (PDT)
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128)
-        (Exim 4.94)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1kQvxV-002OkW-Bw; Fri, 09 Oct 2020 19:13:33 +0200
-Date:   Fri, 09 Oct 2020 19:13:31 +0200
-In-Reply-To: <20201009170202.103512-1-a.nogikh@gmail.com> (sfid-20201009_190209_250951_9651A9CD)
-References: <20201009170202.103512-1-a.nogikh@gmail.com> (sfid-20201009_190209_250951_9651A9CD)
+        id S2388036AbgJISve (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 9 Oct 2020 14:51:34 -0400
+Received: from z5.mailgun.us ([104.130.96.5]:29720 "EHLO z5.mailgun.us"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2387794AbgJISve (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 9 Oct 2020 14:51:34 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1602269493; h=Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Message-ID: In-Reply-To: Date: References: Subject: Cc:
+ To: From: Sender; bh=eFkoSUOe1ldRGerTaytVJV+acS/JyrUEN1mPJ4njhYQ=; b=nP/PQ0nzbMP7G3NNxAq1dQHuf28lPpxGJkH9o3MDMJXceZUKZdHAUoRieKRIeF8eMHafY19i
+ 03M7i0PAIKNhxUif1s7GJ+wpP+Kxe+81Qb6UQ7hqP4zDO5t+H6Cmp6B7Ao5j9VDQtOAXvimw
+ nWvSEnWc+WbsA/VPcAD1BQmphXA=
+X-Mailgun-Sending-Ip: 104.130.96.5
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n02.prod.us-east-1.postgun.com with SMTP id
+ 5f80b11bef891f1ee2fe67e8 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 09 Oct 2020 18:51:07
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 5EEE9C43382; Fri,  9 Oct 2020 18:51:06 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id B93F0C433C9;
+        Fri,  9 Oct 2020 18:51:03 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org B93F0C433C9
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Jerome Pouiller <Jerome.Pouiller@silabs.com>
+Cc:     devel@driverdev.osuosl.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Dan Carpenter <dan.carpenter@oracle.com>
+Subject: Re: [PATCH 2/8] staging: wfx: check memory allocation
+References: <20201009171307.864608-1-Jerome.Pouiller@silabs.com>
+        <20201009171307.864608-3-Jerome.Pouiller@silabs.com>
+Date:   Fri, 09 Oct 2020 21:51:01 +0300
+In-Reply-To: <20201009171307.864608-3-Jerome.Pouiller@silabs.com> (Jerome
+        Pouiller's message of "Fri, 9 Oct 2020 19:13:01 +0200")
+Message-ID: <874kn31be2.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 8BIT
-Subject: Re: [PATCH v2 0/3] [PATCH v2 0/3] [PATCH v2 0/3] net, mac80211, kernel: enable KCOV remote coverage collection for 802.11 frame handling
-To:     Aleksandr Nogikh <a.nogikh@gmail.com>, davem@davemloft.net,
-        kuba@kernel.org, akpm@linux-foundation.org
-CC:     edumazet@google.com, andreyknvl@google.com, dvyukov@google.com,
-        elver@google.com, linux-kernel@vger.kernel.org,
-        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        nogikh@google.com
-From:   Johannes Berg <johannes@sipsolutions.net>
-Message-ID: <C4BF5679-74E6-4F2E-839B-A95D88699DBF@sipsolutions.net>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Jerome Pouiller <Jerome.Pouiller@silabs.com> writes:
 
+> From: J=C3=A9r=C3=B4me Pouiller <jerome.pouiller@silabs.com>
+>
+> Smatch complains:
+>
+>    main.c:228 wfx_send_pdata_pds() warn: potential NULL parameter derefer=
+ence 'tmp_buf'
+>    227          tmp_buf =3D kmemdup(pds->data, pds->size, GFP_KERNEL);
+>    228          ret =3D wfx_send_pds(wdev, tmp_buf, pds->size);
+>                                          ^^^^^^^
+>    229          kfree(tmp_buf);
+>
+> Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
+> Signed-off-by: J=C3=A9r=C3=B4me Pouiller <jerome.pouiller@silabs.com>
+> ---
+>  drivers/staging/wfx/main.c | 8 +++++++-
+>  1 file changed, 7 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/staging/wfx/main.c b/drivers/staging/wfx/main.c
+> index df11c091e094..a8dc2c033410 100644
+> --- a/drivers/staging/wfx/main.c
+> +++ b/drivers/staging/wfx/main.c
+> @@ -222,12 +222,18 @@ static int wfx_send_pdata_pds(struct wfx_dev *wdev)
+>  	if (ret) {
+>  		dev_err(wdev->dev, "can't load PDS file %s\n",
+>  			wdev->pdata.file_pds);
+> -		return ret;
+> +		goto err1;
+>  	}
+>  	tmp_buf =3D kmemdup(pds->data, pds->size, GFP_KERNEL);
+> +	if (!tmp_buf) {
+> +		ret =3D -ENOMEM;
+> +		goto err2;
+> +	}
+>  	ret =3D wfx_send_pds(wdev, tmp_buf, pds->size);
+>  	kfree(tmp_buf);
+> +err2:
+>  	release_firmware(pds);
+> +err1:
+>  	return ret;
+>  }
 
-On 9 October 2020 19:01:59 CEST, Aleksandr Nogikh <a.nogikh@gmail.com> wrote:
+A minor style issue but using more descriptive error labels make the
+code more readable and maintainable, especially in a bigger function.
+For example, err2 could be called err_release_firmware.
 
->This patch series conflicts with another proposed patch
->http://lkml.kernel.org/r/223901affc7bd759b2d6995c2dbfbdd0a29bc88a.1602248029.git.andreyknvl@google.com
->One of these patches needs to be rebased once the other one is merged.
+And actually err1 could be removed and the goto replaced with just
+"return ret;". Then err2 could be renamed to a simple err.
 
+--=20
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-Maybe that other patch shouldn't do things that way though, and add new API (which the existing one could call with some kind of "all contexts" argument) instead, so it's only necessary to specify the context (mask?) where its actually needed (the few places in usb or e whatever)? 
-
-Surely that would also look less tedious in the mac80211 code, for example.
-
-And if you ever fix the nesting issue you'd have fewer places to modify again.
-
-johannes
--- 
-Sent from my phone. 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
+hes
