@@ -2,75 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5CC1828851C
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 Oct 2020 10:21:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5834928855F
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 Oct 2020 10:34:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732620AbgJIIVR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 9 Oct 2020 04:21:17 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:55042 "EHLO
-        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1732337AbgJIIVQ (ORCPT
+        id S1732490AbgJIIeU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 9 Oct 2020 04:34:20 -0400
+Received: from eu-smtp-delivery-151.mimecast.com ([185.58.86.151]:32041 "EHLO
+        eu-smtp-delivery-151.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1732404AbgJIIeT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 9 Oct 2020 04:21:16 -0400
-Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=[192.168.100.69])
-        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.93)
-        (envelope-from <luca@coelho.fi>)
-        id 1kQneG-002Rhf-5a; Fri, 09 Oct 2020 11:21:08 +0300
-Message-ID: <11996c068501b02797b4cfaeed87953cc9c24dc6.camel@coelho.fi>
-From:   Luca Coelho <luca@coelho.fi>
-To:     Alexander Wetzel <alexander@wetzel-home.de>, kvalo@codeaurora.org,
-        Andy Lavr <andy.lavr@gmail.com>
-Cc:     linux-wireless@vger.kernel.org
-Date:   Fri, 09 Oct 2020 11:21:05 +0300
-In-Reply-To: <f20c67c4-3b9b-acc7-5e8c-998ddaf6b6ec@wetzel-home.de>
-References: <20200928092321.649185-1-luca@coelho.fi>
-         <iwlwifi.20200928121852.e6137861d917.I93405604eb503568688b28d3169fea7fbb88ed7e@changeid>
-         <f20c67c4-3b9b-acc7-5e8c-998ddaf6b6ec@wetzel-home.de>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.4-2 
+        Fri, 9 Oct 2020 04:34:19 -0400
+Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
+ TLS) by relay.mimecast.com with ESMTP id
+ uk-mta-45-6ee0yc2ZNTSKAf5vApMkGg-1; Fri, 09 Oct 2020 09:34:16 +0100
+X-MC-Unique: 6ee0yc2ZNTSKAf5vApMkGg-1
+Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) by
+ AcuMS.aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) with Microsoft SMTP
+ Server (TLS) id 15.0.1347.2; Fri, 9 Oct 2020 09:34:14 +0100
+Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
+ AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000;
+ Fri, 9 Oct 2020 09:34:14 +0100
+From:   David Laight <David.Laight@ACULAB.COM>
+To:     'Johannes Berg' <johannes@sipsolutions.net>,
+        Greg KH <gregkh@linuxfoundation.org>
+CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "nstange@suse.de" <nstange@suse.de>,
+        "ap420073@gmail.com" <ap420073@gmail.com>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "rafael@kernel.org" <rafael@kernel.org>
+Subject: RE: [CRAZY-RFF] debugfs: track open files and release on remove
+Thread-Topic: [CRAZY-RFF] debugfs: track open files and release on remove
+Thread-Index: AQHWnhTYAkCadt4V/kCnonv0tSsTz6mO7mnQ
+Date:   Fri, 9 Oct 2020 08:34:14 +0000
+Message-ID: <03c42bb5f57a4c3d9c782a023add28cd@AcuMS.aculab.com>
+References: <87v9fkgf4i.fsf@suse.de>
+         <20201009095306.0d87c3aa13db.Ib3a7019bff15bb6308f6d259473a1648312a4680@changeid>
+         <20201009080355.GA398994@kroah.com>
+         <be61c6a38d0f6ca1aa0bc3f0cb45bbb216a12982.camel@sipsolutions.net>
+         <20201009081624.GA401030@kroah.com>
+ <1ec056cf3ec0953d2d1abaa05e37e89b29c7cc63.camel@sipsolutions.net>
+In-Reply-To: <1ec056cf3ec0953d2d1abaa05e37e89b29c7cc63.camel@sipsolutions.net>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on farmhouse.coelho.fi
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
-        TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.4
-Subject: Re: [REGRESSION] Re: [PATCH 10/12] iwlwifi: remove wide_cmd_header
- field
+Authentication-Results: relay.mimecast.com;
+        auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 2020-10-07 at 22:23 +0200, Alexander Wetzel wrote:
-> Am 28.09.20 um 11:23 schrieb Luca Coelho:
-> > From: Mordechay Goodstein <mordechay.goodstein@intel.com>
-> > 
-> > Driver doesn't support fw without wide_cmd
-> > so driver always sets it to true.  instead of setting
-> > it always to true just remove the field.
-> > 
-> 
-> I guess that's only true for mvm but not dvm...
-> 
-> At least this patch kills my wireless using a Ultimate-N 6300.
-> Reverting to commit on top of wt-2020-10-06 works.
-> 
-> Here the last error I got during git bisect:
-> 
-> 
-> [  375.671958] iwlwifi 0000:03:00.0: Radio type=0x0-0x3-0x1
-> [  375.739218] iwlwifi 0000:03:00.0: Microcode SW error detected. 
-> Restarting 0x82000000.
-> [  375.739226] iwlwifi 0000:03:00.0: Loaded firmware version: 9.221.4.1 
-> build 25532 6000-4.ucode
-> [  375.739349] iwlwifi 0000:03:00.0: Start IWL Error Log Dump:
-> [  375.739353] iwlwifi 0000:03:00.0: Status: 0x00000000, count: 5
-> [  375.739357] iwlwifi 0000:03:00.0: 0x00000007 | BAD_COMMAND
-
-Hmmm, this indeed looks wrong.  I'll try to fix it or, in the worst
-case, revert this patch.
-
---
-Cheers,
-Luca.
+RnJvbTogSm9oYW5uZXMgQmVyZw0KPiBTZW50OiAwOSBPY3RvYmVyIDIwMjAgMDk6MTkNCj4gDQo+
+IE9uIEZyaSwgMjAyMC0xMC0wOSBhdCAxMDoxNiArMDIwMCwgR3JlZyBLSCB3cm90ZToNCj4gPiBP
+biBGcmksIE9jdCAwOSwgMjAyMCBhdCAxMDowNjoxNEFNICswMjAwLCBKb2hhbm5lcyBCZXJnIHdy
+b3RlOg0KPiA+ID4gV2UgdXNlZCB0byBzYXkgdGhlIHByb3h5X2ZvcHMgd2VyZW4ndCBuZWVkZWQg
+YW5kIGl0IHdhc24ndCBhbiBpc3N1ZSwgYW5kDQo+ID4gPiB0aGVuIHN0aWxsIGltcGxlbWVudGVk
+IGl0LiBEdW5uby4gSSdtIG5vdCByZWFsbHkgdG9vIGNvbmNlcm5lZCBhYm91dCBpdA0KPiA+ID4g
+bXlzZWxmLCBvbmx5IHJvb3QgY2FuIGhvbGQgdGhlIGZpbGVzIG9wZW4gYW5kIHJlbW92ZSBtb2R1
+bGVzIC4uLg0KPiA+DQo+ID4gcHJveHlfZm9wcyB3ZXJlIG5lZWRlZCBiZWNhdXNlIGRldmljZXMg
+Y2FuIGJlIHJlbW92ZWQgZnJvbSB0aGUgc3lzdGVtIGF0DQo+ID4gYW55IHRpbWUsIGNhdXNpbmcg
+dGhlaXIgZGVidWdmcyBmaWxlcyB0byB3YW50IHRvIGFsc28gYmUgcmVtb3ZlZC4gIEl0DQo+ID4g
+d2Fzbid0IGJlY2F1c2Ugb2YgdW5sb2FkaW5nIGtlcm5lbCBjb2RlLg0KPiANCj4gSW5kZWVkLCB0
+aGF0J3MgdHJ1ZS4gU3RpbGwsIHdlIGxpdmVkIHdpdGggaXQgZm9yIHllYXJzLg0KPiANCj4gQW55
+d2F5LCBsaWtlIEkgc2FpZCwgSSByZWFsbHkganVzdCBkaWQgdGhpcyBtb3JlIHRvIHNlZSB0aGF0
+IGl0IF9jb3VsZF8NCj4gYmUgZG9uZSwgbm90IHRvIHN1Z2dlc3QgdGhhdCBpdCBfc2hvdWxkXyA6
+LSkNCj4gDQo+IEkgdGhpbmsgYWRkaW5nIHRoZSAub3duZXIgZXZlcnl3aGVyZSB3b3VsZCBiZSBn
+b29kLCBhbmQgcGVyaGFwcyB3ZSBjYW4NCj4gc29tZWhvdyBwdXQgYSBjaGVjayBzb21ld2hlcmUg
+bGlrZQ0KPiANCj4gCVdBUk5fT04oaXNfbW9kdWxlX2FkZHJlc3MoKHVuc2lnbmVkIGxvbmcpZm9w
+cykgJiYgIWZvcHMtPm93bmVyKTsNCj4gDQo+IHRvIHByZXZlbnQgdGhlIGlzc3VlIGluIHRoZSBm
+dXR1cmU/DQoNCkRvZXMgaXQgZXZlciBtYWtlIGFueSBzZW5zZSB0byBzZXQgLm93bmVyIHRvIGFu
+eXRoaW5nIG90aGVyIHRoYW4NClRISVNfTU9EVUxFPw0KDQpJZiBub3QgdGhlIGNvZGUgdGhhdCBz
+YXZlcyB0aGUgJ3N0cnVjdCBmaWxlX29wZXJhdGlvbnMnIGFkZHJlc3MNCm91Z2h0IHRvIGJlIGFi
+bGUgdG8gc2F2ZSB0aGUgYXNzb2NpYXRlZCBtb2R1bGUuDQoNCkkgd2FzIGFsc28gd29uZGVyaW5n
+IGlmIHRoaXMgYWZmZWN0cyBub3JtYWwgb3BlbnM/DQpUaGV5IHNob3VsZCBob2xkIGEgcmVmZXJl
+bmNlIG9uIHRoZSBtb2R1bGUgdG8gc3RvcCBpdCBiZWluZyB1bmxvYWRlZC4NCkRvZXMgdGhhdCBy
+ZWx5IG9uIC5vd25lciBiZWluZyBzZXQ/DQoNCkZvciBkZWJ1Z2ZzIHN1cmVseSBpdCBpcyBwb3Nz
+aWJsZSB0byBkZXRlcm1pbmUgYW5kIHNhdmUgVEhJU19NT0RVTEUNCndoZW4gaGUgbm9kZXMgYXJl
+IHJlZ2lzdGVycyBhbmQgZG8gYSB0cnlfbW9kdWxlX2dldCgpIGluIHRoZSBvcGVuPw0KDQoJRGF2
+aWQNCg0KLQ0KUmVnaXN0ZXJlZCBBZGRyZXNzIExha2VzaWRlLCBCcmFtbGV5IFJvYWQsIE1vdW50
+IEZhcm0sIE1pbHRvbiBLZXluZXMsIE1LMSAxUFQsIFVLDQpSZWdpc3RyYXRpb24gTm86IDEzOTcz
+ODYgKFdhbGVzKQ0K
 
