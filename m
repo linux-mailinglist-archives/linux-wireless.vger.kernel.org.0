@@ -2,71 +2,72 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E003289C10
-	for <lists+linux-wireless@lfdr.de>; Sat, 10 Oct 2020 01:16:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CB247289D21
+	for <lists+linux-wireless@lfdr.de>; Sat, 10 Oct 2020 03:38:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726650AbgJIXQi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 9 Oct 2020 19:16:38 -0400
-Received: from mail.kernel.org ([198.145.29.99]:53102 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725802AbgJIXQB (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 9 Oct 2020 19:16:01 -0400
-Received: from kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com (unknown [163.114.132.7])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 5981B222EB;
-        Fri,  9 Oct 2020 23:16:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1602285360;
-        bh=l6taX0FCEWeJUtB5xJSPpOswP3JU4Ua+gVwYeASRj70=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=xIc7ck5uziWAG/SSx/mh88eb3LlScn3+0DzlM9FJUMXbsTFPZK3r57aJ13AibdtEB
-         jPhbQyIZ4yIfHnFBNcrlHeD07F8y7bAnOgX0nBBJez0/1BG9ETEHJrpySjmPDqpld8
-         8TztDhpzEvy67xgveMfrjgvJ4Qi30Cq3EIzm8tLo=
-Date:   Fri, 9 Oct 2020 16:15:58 -0700
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     Aleksandr Nogikh <a.nogikh@gmail.com>
-Cc:     davem@davemloft.net, johannes@sipsolutions.net,
-        edumazet@google.com, andreyknvl@google.com, dvyukov@google.com,
-        elver@google.com, linux-kernel@vger.kernel.org,
-        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        nogikh@google.com
-Subject: Re: [PATCH 1/2] net: store KCOV remote handle in sk_buff
-Message-ID: <20201009161558.57792e1a@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-In-Reply-To: <20201007101726.3149375-2-a.nogikh@gmail.com>
-References: <20201007101726.3149375-1-a.nogikh@gmail.com>
-        <20201007101726.3149375-2-a.nogikh@gmail.com>
+        id S1729610AbgJJBhs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 9 Oct 2020 21:37:48 -0400
+Received: from netrider.rowland.org ([192.131.102.5]:33919 "HELO
+        netrider.rowland.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with SMTP id S1729597AbgJJBQ2 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 9 Oct 2020 21:16:28 -0400
+Received: (qmail 557292 invoked by uid 1000); 9 Oct 2020 20:49:44 -0400
+Date:   Fri, 9 Oct 2020 20:49:44 -0400
+From:   Alan Stern <stern@rowland.harvard.edu>
+To:     syzbot <syzbot+f5378bcf0f0cab45c1c6@syzkaller.appspotmail.com>
+Cc:     andreyknvl@google.com, ath9k-devel@qca.qualcomm.com,
+        eli.billauer@gmail.com, gregkh@linuxfoundation.org,
+        gustavoars@kernel.org, ingrassia@epigenesys.com,
+        linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-wireless@vger.kernel.org, oneukum@suse.com,
+        syzkaller-bugs@googlegroups.com, tiwai@suse.de
+Subject: Re: WARNING in hif_usb_send/usb_submit_urb
+Message-ID: <20201010004944.GB557008@rowland.harvard.edu>
+References: <20201009185548.GA546075@rowland.harvard.edu>
+ <00000000000088939405b1440053@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <00000000000088939405b1440053@google.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed,  7 Oct 2020 10:17:25 +0000 Aleksandr Nogikh wrote:
-> From: Aleksandr Nogikh <nogikh@google.com>
+On Fri, Oct 09, 2020 at 02:55:08PM -0700, syzbot wrote:
+> Hello,
 > 
-> Remote KCOV coverage collection enables coverage-guided fuzzing of the
-> code that is not reachable during normal system call execution. It is
-> especially helpful for fuzzing networking subsystems, where it is
-> common to perform packet handling in separate work queues even for the
-> packets that originated directly from the user space.
+> syzbot tried to test the proposed patch but the build/boot failed:
 > 
-> Enable coverage-guided frame injection by adding a kcov_handle
-> parameter to sk_buff structure. Initialization in __alloc_skb ensures
-> that no socket buffer that was generated during a system call will be
-> missed.
-> 
-> Code that is of interest and that performs packet processing should be
-> annotated with kcov_remote_start()/kcov_remote_stop().
-> 
-> An alternative approach is to determine kcov_handle solely on the
-> basis of the device/interface that received the specific socket
-> buffer. However, in this case it would be impossible to distinguish
-> between packets that originated from normal background network
-> processes and those that were intentionally injected from the user
-> space.
-> 
-> Signed-off-by: Aleksandr Nogikh <nogikh@google.com>
+> drivers/net/wireless/ath/ath9k/hif_usb.c:1319:7: error: implicit declaration of function 'usb_find_bulk_in'; did you mean 'usb_fill_bulk_urb'? [-Werror=implicit-function-declaration]
 
-Could you use skb_extensions for this?
+Let's try again, using a different repository.
+
+#syz test: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git v5.9-rc8
+
+Index: usb-devel/drivers/net/wireless/ath/ath9k/hif_usb.c
+===================================================================
+--- usb-devel.orig/drivers/net/wireless/ath/ath9k/hif_usb.c
++++ usb-devel/drivers/net/wireless/ath/ath9k/hif_usb.c
+@@ -1307,6 +1307,20 @@ static int ath9k_hif_usb_probe(struct us
+ 	struct usb_device *udev = interface_to_usbdev(interface);
+ 	struct hif_device_usb *hif_dev;
+ 	int ret = 0;
++	struct usb_host_interface *alt;
++	struct usb_endpoint_descriptor *epd;
++
++	/* Verify the expected endpoints are present */
++	alt = interface->cur_altsetting;
++	if (!usb_find_int_in_endpoint(alt, &epd) ||
++			usb_endpoint_num(epd) != USB_REG_IN_PIPE ||
++	    !usb_find_int_out_endpoint(alt, &epd) ||
++			usb_endpoint_num(epd) != USB_REG_OUT_PIPE ||
++	    !usb_find_bulk_in(endpoint(alt, &epd) ||
++			usb_endpoint_num(epd) != USB_WLAN_RX_PIPE ||
++	    !usb_find_bulk_out(endpoint(alt, &epd) ||
++			usb_endpoint_num(epd) != USB_WLAN_TX_PIPE)
++		return -ENODEV;
+ 
+ 	if (id->driver_info == STORAGE_DEVICE)
+ 		return send_eject_command(interface);
