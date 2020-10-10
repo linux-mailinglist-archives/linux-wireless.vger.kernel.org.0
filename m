@@ -2,167 +2,169 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 183F728A1F2
-	for <lists+linux-wireless@lfdr.de>; Sun, 11 Oct 2020 00:52:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B64F28A458
+	for <lists+linux-wireless@lfdr.de>; Sun, 11 Oct 2020 01:15:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387645AbgJJWv4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 10 Oct 2020 18:51:56 -0400
-Received: from aserp2130.oracle.com ([141.146.126.79]:38858 "EHLO
-        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731352AbgJJSnm (ORCPT
+        id S2387826AbgJJWw2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 10 Oct 2020 18:52:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36486 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731381AbgJJTQT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 10 Oct 2020 14:43:42 -0400
-Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
-        by aserp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 09ADBttA106263;
-        Sat, 10 Oct 2020 13:18:22 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- content-transfer-encoding : in-reply-to; s=corp-2020-01-29;
- bh=teUTVOba2iGBVDpvjfpiEVZNYULjl/b3B311LmBLjHA=;
- b=fU4ehnUoC/0KczFjZe5afevFBI459x9ARKCtf0XgZuF/nRHZefu8d2mdi+2F7nyK/nUZ
- GpxyzZVdHeazyaXzxPfuBm4y+/SCUJO510/6GU4iYgaubIl6pzp+T9Kx8Tv1IJUD131j
- Y38MjH1FQL6hkihC8TLQ9NrfskZBcVeEdPZ5SyGrQj+8atpx6ksJ6JyY8EvDmjFQym0j
- BtvFvCM6WkTcp8PL6GR0AfdodzhrBds3hAHM07fmT0DuuKSdfoQPwYUzWzwqzhbrSCB+
- qHFi67EYyAv/WsQXrimnTIOOCoWq6OMGHVuuQw0txI2TeQ77l54IsWw2NNSTF6pBeBdj 1w== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by aserp2130.oracle.com with ESMTP id 3432fa8v55-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Sat, 10 Oct 2020 13:18:22 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 09ADFTqJ017203;
-        Sat, 10 Oct 2020 13:18:22 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by aserp3030.oracle.com with ESMTP id 343309jjk4-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Sat, 10 Oct 2020 13:18:22 +0000
-Received: from abhmp0008.oracle.com (abhmp0008.oracle.com [141.146.116.14])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 09ADIIHf030406;
-        Sat, 10 Oct 2020 13:18:20 GMT
-Received: from kadam (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Sat, 10 Oct 2020 06:18:17 -0700
-Date:   Sat, 10 Oct 2020 16:18:11 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     =?iso-8859-1?B?Suly9G1l?= Pouiller <jerome.pouiller@silabs.com>
+        Sat, 10 Oct 2020 15:16:19 -0400
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on20615.outbound.protection.outlook.com [IPv6:2a01:111:f400:fe59::615])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E286C05BD30;
+        Sat, 10 Oct 2020 09:05:25 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=E3+6GzC+SpLLOrcv30yA32/aPTUIAE8u/HMF2SCwr1YMlI1xlHyDuSMfS/+62xcrJkAvxYpepZg/ldDjiZ9jAWeOpo/gs9ky4nvJolxB4NdWu3Br3kObyy2kDeYCpMu+bXW4kK5z8e+jrSgdW8bGtT2f5d5na5DUrtCD3LhWEjCeTuZrcPSO/OqvGAciXcLzlUzfDrF8UXQ0SEvds9LhEVGX5K0HwCJnV7Wj54IbPLhp7SBgo5+LjpL/Eu1Xsz2cjUkhSBv1Zo9vdnL7X3BNWzaeGg/dMLdCvZ4YgnnzFpNO5vTek0BjAdlVKhJ0RDr+fMpS/oGWNuhcg9E4HSnYMA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=YzrqwQ0auDXK6VajWD/ZTbccbQ5c9X65kU51fTepi0o=;
+ b=huBVGB4eTDwVtC7jVVEY+J8liZFknKenkl+zTco1QjsDMeUZX/326e3/fDe+Uf/Xuxp/OBJ/PXk4MHoygMErs2tltWva7Ofn6K2s8BAi+6UjTVCFALXA5dodMYQNBlku4ML5IOubXBf0aIrpN4IsXmFx8ic+QIfVHONjrDdGILGuzLbC75Md6k8IeISrqhC85ald5tBRqaAqQeJEme9c6nayf6y7KoX8ZkZNC5dQG3ut9w3YUJRO3wNsBo58uLj++4cl+iHrrfX5gpQmOYVrRE++9QorxpdPC8/Ub21IHnUsuEUUOoIWtZpNj++MO3UDCKOw4ZQy1iGl1GQu7jN4aA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=silabs.com; dmarc=pass action=none header.from=silabs.com;
+ dkim=pass header.d=silabs.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=silabs.onmicrosoft.com; s=selector2-silabs-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=YzrqwQ0auDXK6VajWD/ZTbccbQ5c9X65kU51fTepi0o=;
+ b=Jw/+Fc3NxAMIInOraaVperKM5BIFGuUW1DaEGrJPcWOLUBrJXLxWTMpcnIpjRjBAx3/BbMPQzhKs2SJRuZTywpUgUA1mxdCQrt1Ln8jtgXwmeLdj4HKY010h7CYQjr2tD1jGCnqtVtIsZD5HdGO/QNKTAiQTT5+YFpKUvuZHAZ4=
+Authentication-Results: linuxfoundation.org; dkim=none (message not signed)
+ header.d=none;linuxfoundation.org; dmarc=none action=none
+ header.from=silabs.com;
+Received: from SN6PR11MB2718.namprd11.prod.outlook.com (2603:10b6:805:63::18)
+ by SA2PR11MB5036.namprd11.prod.outlook.com (2603:10b6:806:114::24) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3455.28; Sat, 10 Oct
+ 2020 13:29:40 +0000
+Received: from SN6PR11MB2718.namprd11.prod.outlook.com
+ ([fe80::4f5:fbe5:44a7:cb8a]) by SN6PR11MB2718.namprd11.prod.outlook.com
+ ([fe80::4f5:fbe5:44a7:cb8a%5]) with mapi id 15.20.3455.028; Sat, 10 Oct 2020
+ 13:29:40 +0000
+From:   =?ISO-8859-1?Q?J=E9r=F4me?= Pouiller <jerome.pouiller@silabs.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc:     Kalle Valo <kvalo@codeaurora.org>, devel@driverdev.osuosl.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
         linux-kernel@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "David S . Miller" <davem@davemloft.net>
-Subject: Re: [PATCH 2/8] staging: wfx: check memory allocation
-Message-ID: <20201010131810.GS18329@kadam>
-References: <20201009171307.864608-1-Jerome.Pouiller@silabs.com>
- <20201009171307.864608-3-Jerome.Pouiller@silabs.com>
- <874kn31be2.fsf@codeaurora.org>
- <2852079.TFTgQsWz4P@pc-42>
+        "David S . Miller" <davem@davemloft.net>,
+        Dan Carpenter <dan.carpenter@oracle.com>
+Subject: Re: [PATCH 3/8] staging: wfx: standardize the error when vif does not exist
+Date:   Sat, 10 Oct 2020 15:29:34 +0200
+Message-ID: <5203347.001cLfkWmS@pc-42>
+Organization: Silicon Labs
+In-Reply-To: <20201010124034.GA1701199@kroah.com>
+References: <20201009171307.864608-1-Jerome.Pouiller@silabs.com> <2632043.z0MBYUB4Ha@pc-42> <20201010124034.GA1701199@kroah.com>
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+X-Originating-IP: [82.67.86.106]
+X-ClientProxiedBy: DM5PR19CA0017.namprd19.prod.outlook.com
+ (2603:10b6:3:151::27) To SN6PR11MB2718.namprd11.prod.outlook.com
+ (2603:10b6:805:63::18)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <2852079.TFTgQsWz4P@pc-42>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9769 signatures=668681
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxscore=0 adultscore=0
- bulkscore=0 mlxlogscore=999 suspectscore=2 malwarescore=0 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2010100125
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9769 signatures=668681
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=2 impostorscore=0
- priorityscore=1501 bulkscore=0 phishscore=0 clxscore=1015 malwarescore=0
- spamscore=0 adultscore=0 mlxscore=0 mlxlogscore=999 lowpriorityscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2010100124
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from pc-42.localnet (82.67.86.106) by DM5PR19CA0017.namprd19.prod.outlook.com (2603:10b6:3:151::27) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3455.21 via Frontend Transport; Sat, 10 Oct 2020 13:29:38 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: d28d021f-a81b-49be-8c53-08d86d208a3f
+X-MS-TrafficTypeDiagnostic: SA2PR11MB5036:
+X-Microsoft-Antispam-PRVS: <SA2PR11MB5036CC8AE76DE53436DBF59C93090@SA2PR11MB5036.namprd11.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:10000;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: e/uRZLVf6hdZANr17a+rMe9w6xhbSIFKmVN9cw4whODZ6up4lNp1lKHoO3bNkAPYsWbmZWGt7jC/ZY8rdqpu3ezq+jeYV7PHPjYOwktNCE6smgxWLRElUNLApe3a+oAVxbyMYhcAg0kEwyVYk9SbZnrqLy+U0lg1n9I1DsmLiVtHilVq+V4z0yuitnEaAPPna5ryZCRyoJRCYDa+OWVaCC5V5xsCC4sNScZ7jsfRbwmf8tYB18L1ySkCzfu11ICapWoz5xWyfSvSVs/age8NhUOQ1wcQJbvo04LVZ76uxju9QcNNA1YqVhdrvj/1kOfD
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR11MB2718.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(396003)(136003)(39850400004)(346002)(366004)(376002)(6486002)(66476007)(66946007)(66556008)(83380400001)(6512007)(54906003)(316002)(66574015)(16526019)(9686003)(4326008)(26005)(36916002)(6506007)(6666004)(5660300002)(186003)(8676002)(6916009)(478600001)(2906002)(86362001)(52116002)(8936002)(956004)(33716001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData: K8g50CzrhmMIPh8VJoZI01G5b0ZTI0A1VMbg9s2gbeCx4TaA1Ssr/92CwbyEBMgOyj1vYueXNgBbUuvAwbsBQZGZNU5E6uoZ5e2L6i5Iv5YKRvfRi64x/I9bnLlvlEuMi9EdUaE/dM8bk/4QZIix9Kh5NUDwfiRGLqtW/VVhqVPa0Qza15Wgdq3LwnOC9OqZgsefklCASV+eX8X69x0+OOCej8jUh64YrTtdoa74g8ezG9IFD45QFsunPshahq8MF7IizBdx+JqIdwivo/NHvZfunCcLD4QmuKg85GyRYItKIbgQln12dsde9DNFYwS5HJOIFK3Mwzrk7YFN/UyltQnvfpYZqgK4MJsXhhGRvKmzX/Evn2bGtkyq75rooMRSPkNUoBQwwGpltPRVFN85wT1Kque55iQuko5kNZJPZZHZPgTA2w3mP1OUpqHSNjm+8eSk+YnN6dpH63KYsM1GzCZtJHAk5J9bS6iW47CpGpzzAljZzs5zT4YzF3NB+5jYP/vSftXiqURd21Tldr5goMXaVIueACNOFNzLTRu5dzaRw8ibEleH//tWYLkdDp96ciIJ0P50ZgpDE1Tg3Dx+BJ6JZwcLnbJUk0Wov4sfZ9iud/diDdjHutnpV/9TA9cvNvjpeTMX/1zLHsEzXJSu2w==
+X-OriginatorOrg: silabs.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d28d021f-a81b-49be-8c53-08d86d208a3f
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR11MB2718.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Oct 2020 13:29:40.1834
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 54dbd822-5231-4b20-944d-6f4abcd541fb
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: XiZVWbjnCOryDnIj0ELGuAIpcbSnURMDzWo36D6oRLZcCY7/lesXBp+h7EKJ1X11H2CgC2EXOuYJdS6+ADpBhg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA2PR11MB5036
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sat, Oct 10, 2020 at 02:07:13PM +0200, Jérôme Pouiller wrote:
-> On Friday 9 October 2020 20:51:01 CEST Kalle Valo wrote:
-> > CAUTION: This email originated from outside of the organization. Do not click links or open attachments unless you recognize the sender and know the content is safe.
-> > 
-> > 
-> > Jerome Pouiller <Jerome.Pouiller@silabs.com> writes:
-> > 
-> > > From: Jérôme Pouiller <jerome.pouiller@silabs.com>
+On Saturday 10 October 2020 14:40:34 CEST Greg Kroah-Hartman wrote:
+> On Sat, Oct 10, 2020 at 02:22:13PM +0200, J=E9r=F4me Pouiller wrote:
+> > On Friday 9 October 2020 20:52:47 CEST Kalle Valo wrote:
+> > > Jerome Pouiller <Jerome.Pouiller@silabs.com> writes:
 > > >
-> > > Smatch complains:
+> > > > From: J=E9r=F4me Pouiller <jerome.pouiller@silabs.com>
+> > > >
+> > > > Smatch complains:
+> > > >
+> > > >    drivers/staging/wfx/hif_rx.c:177 hif_scan_complete_indication() =
+warn: potential NULL parameter dereference 'wvif'
+> > > >    drivers/staging/wfx/data_tx.c:576 wfx_flush() warn: potential NU=
+LL parameter dereference 'wvif'
+> > > >
+> > > > Indeed, if the vif id returned by the device does not exist anymore=
+,
+> > > > wdev_to_wvif() could return NULL.
+> > > >
+> > > > In add, the error is not handled uniformly in the code, sometime a
+> > > > WARN() is displayed but code continue, sometime a dev_warn() is
+> > > > displayed, sometime it is just not tested, ...
+> > > >
+> > > > This patch standardize that.
+> > > >
+> > > > Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
+> > > > Signed-off-by: J=E9r=F4me Pouiller <jerome.pouiller@silabs.com>
+> > > > ---
+> > > >  drivers/staging/wfx/data_tx.c |  5 ++++-
+> > > >  drivers/staging/wfx/hif_rx.c  | 34 ++++++++++++++++++++++++-------=
+---
+> > > >  drivers/staging/wfx/sta.c     |  4 ++++
+> > > >  3 files changed, 32 insertions(+), 11 deletions(-)
+> > > >
+> > > > diff --git a/drivers/staging/wfx/data_tx.c b/drivers/staging/wfx/da=
+ta_tx.c
+> > > > index b4d5dd3d2d23..8db0be08daf8 100644
+> > > > --- a/drivers/staging/wfx/data_tx.c
+> > > > +++ b/drivers/staging/wfx/data_tx.c
+> > > > @@ -431,7 +431,10 @@ static void wfx_skb_dtor(struct wfx_vif *wvif,=
+ struct sk_buff *skb)
+> > > >                             sizeof(struct hif_req_tx) +
+> > > >                             req->fc_offset;
+> > > >
+> > > > -     WARN_ON(!wvif);
+> > > > +     if (!wvif) {
+> > > > +             pr_warn("%s: vif associated with the skb does not exi=
+st anymore\n", __func__);
+> > > > +             return;
+> > > > +     }
 > > >
-> > >    main.c:228 wfx_send_pdata_pds() warn: potential NULL parameter dereference 'tmp_buf'
-> > >    227          tmp_buf = kmemdup(pds->data, pds->size, GFP_KERNEL);
-> > >    228          ret = wfx_send_pds(wdev, tmp_buf, pds->size);
-> > >                                          ^^^^^^^
-> > >    229          kfree(tmp_buf);
-> > >
-> > > Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
-> > > Signed-off-by: Jérôme Pouiller <jerome.pouiller@silabs.com>
-> > > ---
-> > >  drivers/staging/wfx/main.c | 8 +++++++-
-> > >  1 file changed, 7 insertions(+), 1 deletion(-)
-> > >
-> > > diff --git a/drivers/staging/wfx/main.c b/drivers/staging/wfx/main.c
-> > > index df11c091e094..a8dc2c033410 100644
-> > > --- a/drivers/staging/wfx/main.c
-> > > +++ b/drivers/staging/wfx/main.c
-> > > @@ -222,12 +222,18 @@ static int wfx_send_pdata_pds(struct wfx_dev *wdev)
-> > >       if (ret) {
-> > >               dev_err(wdev->dev, "can't load PDS file %s\n",
-> > >                       wdev->pdata.file_pds);
-> > > -             return ret;
-> > > +             goto err1;
-> > >       }
-> > >       tmp_buf = kmemdup(pds->data, pds->size, GFP_KERNEL);
-> > > +     if (!tmp_buf) {
-> > > +             ret = -ENOMEM;
-> > > +             goto err2;
-> > > +     }
-> > >       ret = wfx_send_pds(wdev, tmp_buf, pds->size);
-> > >       kfree(tmp_buf);
-> > > +err2:
-> > >       release_firmware(pds);
-> > > +err1:
-> > >       return ret;
-> > >  }
-> > 
-> > A minor style issue but using more descriptive error labels make the
-> > code more readable and maintainable, especially in a bigger function.
-> > For example, err2 could be called err_release_firmware.
-> > 
-> > And actually err1 could be removed and the goto replaced with just
-> > "return ret;". Then err2 could be renamed to a simple err.
-> 
-> It was the case in the initial code. However, I have preferred to not
-> mix 'return' and 'goto' inside the same function. Probably a matter of
-> taste.
->
+> > > I'm not really a fan of using function names in warning or error
+> > > messages as it clutters the log. In debug messages I think they are o=
+k.
+> >
+> > In the initial code, I used WARN() that far more clutters the log (I
+> > have stated that a backtrace won't provide any useful information, so
+> > pr_warn() was better suited).
+> >
+> > In add, in my mind, these warnings are debug messages. If they appears,
+> > the user should probably report a bug.
+> >
+> > Finally, in this patch, I use the same message several times (ok, not
+> > this particular one). So the function name is a way to differentiate
+> > them.
+>=20
+> You should use dev_*() for these, that way you can properly determine
+> the exact device as well.
 
-Ideally you can read a function from top to bottom and understand with
-out skipping around.  Imagine if novels were written like that "goto
-bottom_of_page;" but then at the bottom it just said "Just kidding".
-"return ret;" is more readable than "goto err;"
+Totally agree. I initially did that. However, the device is a field of
+wvif which is NULL in this case.
 
-These sorts of rules where "there is only one return per function" are
-meant to make people think about cleanup before returning.  But most of
-my work is in error handling code and it doesn't help.  If people don't
-think about cleanup, changing the style won't make them start thinking
-about it.  There was one driver which was written with locked code
-indented one tab and the inventor of that style still introduced a
-locking bug in his code.
+I could have changed the code to get the real pointer to the device. But
+I didn't want to clutter the code just for a debug message (and also
+because I was a bit lazy).
 
-	spin_lock(); {
-		frob();
-		frob();
-		if (ret)
-			return ret;  // <-- forgot to unlock;
-		frob();
-	} spin_unlock();
+--=20
+J=E9r=F4me Pouiller
 
-Btw, I have created a new Smatch check to find unwind bugs.  It's called
-check_unwind.c and it's easy to add new alloc/free pairings to that
-code.  This is the best way to prevent unwind bugs.  The style changes
-don't make a measurable difference in real life and they make the code
-messy.
 
-And GW-BASIC label names are a pox upon the earth.
-
-regards,
-dan carpenter
