@@ -2,90 +2,72 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 76EC128A960
-	for <lists+linux-wireless@lfdr.de>; Sun, 11 Oct 2020 20:34:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7BFD428A97A
+	for <lists+linux-wireless@lfdr.de>; Sun, 11 Oct 2020 20:50:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726646AbgJKSeM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 11 Oct 2020 14:34:12 -0400
-Received: from mail.kernel.org ([198.145.29.99]:57264 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725909AbgJKSeL (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 11 Oct 2020 14:34:11 -0400
-Received: from localhost (unknown [176.207.245.61])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 76A7A2078B;
-        Sun, 11 Oct 2020 18:34:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1602441251;
-        bh=vQ4BUhZu0KplQhMQGxB4KoIroZ4+H8bJccgyqHjVpAk=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=hINV7kfxHnVvJ2zXEssTTtOSGfex/EksgQKeDTPwDnsFPQP4kBMWJFJfZPZjW1BLW
-         hsudETQI5CaUtofKKBAfGIhWcWN/eOhE6UxohgDmhi9llt9EuEjglVPo24mplUGy1L
-         V12/esrQZwaUVY7j9b13EzD0ccCJNkSArWyIEgFA=
-Date:   Sun, 11 Oct 2020 20:34:06 +0200
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     Felix Fietkau <nbd@nbd.name>
-Cc:     linux-wireless@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] mt76: add back the SUPPORTS_REORDERING_BUFFER flag
-Message-ID: <20201011183406.GA3761987@lore-desk>
-References: <20201011162040.63714-1-nbd@nbd.name>
+        id S1728622AbgJKSuT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 11 Oct 2020 14:50:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54860 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727550AbgJKSuT (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 11 Oct 2020 14:50:19 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ECCCFC0613CE;
+        Sun, 11 Oct 2020 11:50:18 -0700 (PDT)
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.94)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1kRgPy-003enP-Cf; Sun, 11 Oct 2020 20:50:02 +0200
+Message-ID: <5d71472dcef4d88786ea6e8f30f0816f8b920bb7.camel@sipsolutions.net>
+Subject: Re: [PATCH v2 0/3] [PATCH v2 0/3] [PATCH v2 0/3] net, mac80211,
+ kernel: enable KCOV remote coverage collection for 802.11 frame handling
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Aleksandr Nogikh <a.nogikh@gmail.com>, davem@davemloft.net,
+        kuba@kernel.org, akpm@linux-foundation.org
+Cc:     edumazet@google.com, andreyknvl@google.com, dvyukov@google.com,
+        elver@google.com, linux-kernel@vger.kernel.org,
+        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+        nogikh@google.com
+Date:   Sun, 11 Oct 2020 20:50:00 +0200
+In-Reply-To: <20201009170202.103512-1-a.nogikh@gmail.com> (sfid-20201009_190209_250951_9651A9CD)
+References: <20201009170202.103512-1-a.nogikh@gmail.com>
+         (sfid-20201009_190209_250951_9651A9CD)
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.5 (3.36.5-1.fc32) 
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="GvXjxJ+pjyke8COw"
-Content-Disposition: inline
-In-Reply-To: <20201011162040.63714-1-nbd@nbd.name>
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On Fri, 2020-10-09 at 17:01 +0000, Aleksandr Nogikh wrote:
+> From: Aleksandr Nogikh <nogikh@google.com>
+> 
+> This patch series enables remote KCOV coverage collection during
+> 802.11 frames processing. These changes make it possible to perform
+> coverage-guided fuzzing in search of remotely triggerable bugs.
 
---GvXjxJ+pjyke8COw
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Btw, it occurred to me that I don't know at all - is this related to
+syzkaller? Or is there some other fuzzing you're working on? Can we get
+the bug reports from it if it's different? :)
 
-> It was accidentally dropped while adding multiple wiphy support
-> Fixes fast-rx support and avoids handling reordering in both mac80211
-> and the driver
->=20
-> Cc: stable@vger.kernel.org
-> Fixes: c89d36254155 ("mt76: add function for allocating an extra wiphy")
-> Signed-off-by: Felix Fietkau <nbd@nbd.name>
 
-Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Also, unrelated to that (but I see Dmitry CC'ed), I started wondering if
+it'd be helpful to have an easier raw 802.11 inject path on top of say
+hwsim0; I noticed some syzbot reports where it created raw sockets, but
+that only gets you into the *data* plane of the wifi stack, not into the
+*management* plane. Theoretically you could add a monitor interface, but
+right now the wifi setup (according to the current docs on github) is
+using two IBSS interfaces.
 
-> ---
->  drivers/net/wireless/mediatek/mt76/mac80211.c | 1 +
->  1 file changed, 1 insertion(+)
->=20
-> diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/=
-wireless/mediatek/mt76/mac80211.c
-> index a778ecc65261..2bc1ef1cbfea 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mac80211.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
-> @@ -305,6 +305,7 @@ mt76_phy_init(struct mt76_dev *dev, struct ieee80211_=
-hw *hw)
->  	ieee80211_hw_set(hw, SUPPORT_FAST_XMIT);
->  	ieee80211_hw_set(hw, SUPPORTS_CLONED_SKBS);
->  	ieee80211_hw_set(hw, SUPPORTS_AMSDU_IN_AMPDU);
-> +	ieee80211_hw_set(hw, SUPPORTS_REORDERING_BUFFER);
-> =20
->  	if (!(dev->drv->drv_flags & MT_DRV_AMSDU_OFFLOAD)) {
->  		ieee80211_hw_set(hw, TX_AMSDU);
-> --=20
-> 2.28.0
->=20
+Perhaps an inject path on the mac80211-hwsim "hwsim0" interface would be
+something to consider? Or simply adding a third radio that's in
+"monitor" mode, so that a raw socket bound to *that* interface can
+inject with a radiotap header followed by an 802.11 frame, getting to
+arbitrary frame handling code, not just data frames.
 
---GvXjxJ+pjyke8COw
-Content-Type: application/pgp-signature; name="signature.asc"
+Any thoughts?
 
------BEGIN PGP SIGNATURE-----
+johannes
 
-iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCX4NQFQAKCRA6cBh0uS2t
-rBp2AP9kRzZ//FyGegdR5g+MLPx/hN1/UiKPPRLYEJ9zvy9dRAEAvpsLSFi5y55s
-fJjB2gQ6UQrtMmiH2uwkQWxlw/CQLwo=
-=TTMs
------END PGP SIGNATURE-----
-
---GvXjxJ+pjyke8COw--
