@@ -2,84 +2,169 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 309C628A456
-	for <lists+linux-wireless@lfdr.de>; Sun, 11 Oct 2020 01:15:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EF9F328A726
+	for <lists+linux-wireless@lfdr.de>; Sun, 11 Oct 2020 13:18:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387922AbgJJWwt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 10 Oct 2020 18:52:49 -0400
-Received: from mail.kernel.org ([198.145.29.99]:52068 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731413AbgJJTWi (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 10 Oct 2020 15:22:38 -0400
-Received: from kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com (unknown [163.114.132.1])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 555EB2240C;
-        Sat, 10 Oct 2020 16:51:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1602348673;
-        bh=O7G/XCcPTVmLB+LfQ658dP8/bq3RxUpJpXT8EjDdMTA=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=u4qTV5kSVp7kUBKH8c/SjkbRQfmUs2QzSqgSymfpt1QlVirFKJq/iU0qqpiwH+4NC
-         0KpT1i2VnRu8Q1HeFm5NKffN3f8efGJWlLi38y/9BdkBWXIiP6GtbVnLht2z3Va9sR
-         2xk8TE1YgDJcaHj8dNu1FWEQbuXVtsUCohz44BrE=
-Date:   Sat, 10 Oct 2020 09:51:11 -0700
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Mordechay Goodstein <mordechay.goodstein@intel.com>
-Subject: Re: pull-request: wireless-drivers-next-2020-10-09
-Message-ID: <20201010095111.655b32ef@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-In-Reply-To: <20201009160759.A44E1C433FE@smtp.codeaurora.org>
-References: <20201009160759.A44E1C433FE@smtp.codeaurora.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+        id S1729909AbgJKLSG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 11 Oct 2020 07:18:06 -0400
+Received: from mail2-relais-roc.national.inria.fr ([192.134.164.83]:24850 "EHLO
+        mail2-relais-roc.national.inria.fr" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1729809AbgJKLSE (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 11 Oct 2020 07:18:04 -0400
+X-IronPort-AV: E=Sophos;i="5.77,362,1596492000"; 
+   d="scan'208";a="471985689"
+Received: from palace.rsr.lip6.fr (HELO palace.lip6.fr) ([132.227.105.202])
+  by mail2-relais-roc.national.inria.fr with ESMTP/TLS/AES256-SHA256; 11 Oct 2020 13:18:00 +0200
+From:   Julia Lawall <Julia.Lawall@inria.fr>
+To:     linux-security-module@vger.kernel.org
+Cc:     =?UTF-8?q?Valdis=20Kl=C4=93tnieks?= <valdis.kletnieks@vt.edu>,
+        Joe Perches <joe@perches.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        kernel-janitors@vger.kernel.org, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, linux-afs@lists.infradead.org
+Subject: [PATCH 0/5] net: use semicolons rather than commas to separate statements
+Date:   Sun, 11 Oct 2020 12:34:53 +0200
+Message-Id: <1602412498-32025-1-git-send-email-Julia.Lawall@inria.fr>
+X-Mailer: git-send-email 1.9.1
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri,  9 Oct 2020 16:07:59 +0000 (UTC) Kalle Valo wrote:
-> Hi,
-> 
-> here's a pull request to net-next tree, more info below. Please let me know if
-> there are any problems.
-> 
-> Kalle
-> 
-> The following changes since commit c2568c8c9e636a56abf31da4b28b65d3ded02524:
-> 
->   Merge branch 'net-Constify-struct-genl_small_ops' (2020-10-04 21:13:36 -0700)
-> 
-> are available in the git repository at:
-> 
->   git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git tags/wireless-drivers-next-2020-10-09
-> 
-> for you to fetch changes up to b7d96bca1f004b5f26ee51ea9c9749a28dac8316:
-> 
->   Revert "iwlwifi: remove wide_cmd_header field" (2020-10-09 18:04:50 +0300)
+These patches replace commas by semicolons.  Commas introduce
+unnecessary variability in the code structure and are hard to see.
+This was done using the Coccinelle semantic patch
+(http://coccinelle.lip6.fr/) shown below.
 
-Pulled, thanks Kalle!
+This semantic patch ensures that commas inside for loop headers will
+not be transformed.  It also doesn't touch macro definitions.
 
-Intel folks - do you really need to pack all your structs? 
-Do they come from the device unaligned or something?
+Coccinelle ensures that braces are added as needed when a
+single-statement branch turns into a multi-statement one.
 
-+/**
-+ * struct iwl_statistics_duration_ntfy
-+ *
-+ * @hdr: general statistics header
-+ * @cont_burst_chk_cnt: number of times continuation or
-+ *      fragmentation or bursting was checked
-+ * @cont_burst_cnt: number of times continuation or fragmentation
-+ *      or bursting was successful
-+ * @wait_for_silence_timeout_cnt: ???
-+ * @reserved: reserved
-+ */
-+struct iwl_statistics_duration_ntfy {
-+       struct iwl_statistics_ntfy_hdr hdr;
-+       __le32 cont_burst_chk_cnt;
-+       __le32 cont_burst_cnt;
-+       __le32 wait_for_silence_timeout_cnt;
-+       __le32 reserved;
-+} __packed; /* STATISTICS_DURATION_NTFY_API_S_VER_1 */
+This semantic patch has a few false positives, for variable
+delcarations such as:
+
+LIST_HEAD(x), *y;
+
+The semantic patch could be improved to avoid these, but for the
+moment they have been removed manually (2 occurrences).
+
+// <smpl>
+@initialize:ocaml@
+@@
+
+let infunction p =
+  (* avoid macros *)
+  (List.hd p).current_element <> "something_else"
+
+let combined p1 p2 =
+  (List.hd p1).line_end = (List.hd p2).line ||
+  (((List.hd p1).line_end < (List.hd p2).line) &&
+   ((List.hd p1).col < (List.hd p2).col))
+
+@bad@
+statement S;
+declaration d;
+position p;
+@@
+
+S@p
+d
+
+// special cases where newlines are needed (hope for no more than 5)
+@@
+expression e1,e2;
+statement S;
+position p != bad.p;
+position p1;
+position p2 :
+    script:ocaml(p1) { infunction p1 && combined p1 p2 };
+@@
+
+- e1@p1,@S@p e2@p2;
++ e1; e2;
+
+@@
+expression e1,e2;
+statement S;
+position p != bad.p;
+position p1;
+position p2 :
+    script:ocaml(p1) { infunction p1 && combined p1 p2 };
+@@
+
+- e1@p1,@S@p e2@p2;
++ e1; e2;
+
+@@
+expression e1,e2;
+statement S;
+position p != bad.p;
+position p1;
+position p2 :
+    script:ocaml(p1) { infunction p1 && combined p1 p2 };
+@@
+
+- e1@p1,@S@p e2@p2;
++ e1; e2;
+
+@@
+expression e1,e2;
+statement S;
+position p != bad.p;
+position p1;
+position p2 :
+    script:ocaml(p1) { infunction p1 && combined p1 p2 };
+@@
+
+- e1@p1,@S@p e2@p2;
++ e1; e2;
+
+@@
+expression e1,e2;
+statement S;
+position p != bad.p;
+position p1;
+position p2 :
+    script:ocaml(p1) { infunction p1 && combined p1 p2 };
+@@
+
+- e1@p1,@S@p e2@p2;
++ e1; e2;
+
+@r@
+expression e1,e2;
+statement S;
+position p != bad.p;
+@@
+
+e1 ,@S@p e2;
+
+@@
+expression e1,e2;
+position p1;
+position p2 :
+    script:ocaml(p1) { infunction p1 && not(combined p1 p2) };
+statement S;
+position r.p;
+@@
+
+e1@p1
+-,@S@p
++;
+e2@p2
+... when any
+// </smpl>
+
+---
+
+ net/ipv4/tcp_input.c       |    3 ++-
+ net/ipv4/tcp_vegas.c       |    8 ++++----
+ net/ipv6/calipso.c         |    2 +-
+ net/mac80211/debugfs_sta.c |    2 +-
+ net/rxrpc/recvmsg.c        |    2 +-
+ net/tls/tls_main.c         |    2 +-
+ 6 files changed, 10 insertions(+), 9 deletions(-)
