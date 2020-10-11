@@ -2,96 +2,68 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B48F428A817
-	for <lists+linux-wireless@lfdr.de>; Sun, 11 Oct 2020 17:55:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 865AD28A835
+	for <lists+linux-wireless@lfdr.de>; Sun, 11 Oct 2020 18:13:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730223AbgJKPzO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 11 Oct 2020 11:55:14 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:33479 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1730138AbgJKPyr (ORCPT
+        id S1729414AbgJKQN1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 11 Oct 2020 12:13:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59088 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726211AbgJKQN0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 11 Oct 2020 11:54:47 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1602431686;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc; bh=pR1M69yxrP9JSOS0Ie5ezAaQo49msGZptm8kNeSlSi4=;
-        b=RnA8Q/+Wp2v9p6Ns6o4gZ+upo/MszJ1ShQDpQK5jFKPyD9YvqAiC+WqQWg9F9n91yq1kIm
-        FNeQU+aDeVSlDMWmVMSKDXZ58Jnk9uKtzj2ze4NUzoMn5ZxETB9iU0kKGcS4mziBhnRADp
-        3Vz5PZ976w6POx5rdDUmVvzPCmkI8RE=
-Received: from mail-oo1-f72.google.com (mail-oo1-f72.google.com
- [209.85.161.72]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-533-8awCT1e3NZynJXEI-oyF5g-1; Sun, 11 Oct 2020 11:54:44 -0400
-X-MC-Unique: 8awCT1e3NZynJXEI-oyF5g-1
-Received: by mail-oo1-f72.google.com with SMTP id s9so4590945oom.15
-        for <linux-wireless@vger.kernel.org>; Sun, 11 Oct 2020 08:54:44 -0700 (PDT)
+        Sun, 11 Oct 2020 12:13:26 -0400
+Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 876C7C0613CE
+        for <linux-wireless@vger.kernel.org>; Sun, 11 Oct 2020 09:13:26 -0700 (PDT)
+Received: by mail-ej1-x62d.google.com with SMTP id ce10so19904321ejc.5
+        for <linux-wireless@vger.kernel.org>; Sun, 11 Oct 2020 09:13:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=g40do8t/7LxpkF2rWDjYsZ9n0f9pwR9vDeQsHsVKyT8=;
+        b=GlKsPiQOX0u1E+RJvY9p2KDqxTX5noYXtV5aadop6qe6pkYf0A7FcQzJ1rdYWV9++i
+         8/Eg3S5/LUt67XTzC0M2s0IUrQd4qv5SPAB+ysYMLTEjmqN0r/cXo8/snJOOx/AG30xw
+         KfvV0DwzZHqtphQNShlX3TIvkijdci5tPCNcIBwH+q1jzkDQDI/JB81jm2fQzyllQ8qD
+         oYsFZp3ARXyXU4VNUkSOsT7SNezxKpLiuaasT4Wvvz//nRo3igzsbgZ+wpplejffeSj5
+         r383OHGUr6Txldr4hcm1mVDKDII9kMmwqe9KqVfTpxPxfKBPQX8wYQIHXYyQVNVh9ADF
+         ZhHg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=pR1M69yxrP9JSOS0Ie5ezAaQo49msGZptm8kNeSlSi4=;
-        b=YcsT9mJxTXb9Mu0+IcJvHM4RRKXtxLT5xiQmc39p/qqwbY8XdPS+tvYhadWT+M/1bZ
-         TY3yORIAN6PXm+jSiuHrUfBjBoe1t4m3ffQcbtW1FyHau7s2IShjjJPVfLCB4jlZTsYL
-         56LhbZbwBLFbR6a4PuJkKmsQLkYP9FUOWxB4gr53xrtYHnmBjiCH+66Um36fKAzq8+tt
-         6BkNkZ3aY6hOC/vTHShw2P3+1NNrMYOG/CKsO5NzgG9p7CPsttP19d/LbTsC8iRc9KHm
-         /XimBwfp5LhV0L2J0vzvJZJisYFRN9cswQnm5Qa2+wlB7ayDjKqYJZZptSLnSsu3FogA
-         M6vA==
-X-Gm-Message-State: AOAM533ceF/Hw8+OqiGyAFA8ib9ZjxF5D+4pkiyZjpb2owoQsdXYoCfj
-        F7RpNAUoWdt9r3DW5joR+s8o/mOhBE05L6PINLPpKciwIBQ390s99E24jNJSBpqNVqA1PhQFFCP
-        7fVoluLTmGSwDRzIjXgSzEGTSga8=
-X-Received: by 2002:a4a:da53:: with SMTP id f19mr15863004oou.38.1602431684163;
-        Sun, 11 Oct 2020 08:54:44 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJyPJ4u/OeZjHz4mlSxVIynu+KwH6mw6NHjvdnFA3ZLQHkWtrDgVgyM85WaG5gdk1n/GnBdINg==
-X-Received: by 2002:a4a:da53:: with SMTP id f19mr15862992oou.38.1602431683974;
-        Sun, 11 Oct 2020 08:54:43 -0700 (PDT)
-Received: from trix.remote.csb (075-142-250-213.res.spectrum.com. [75.142.250.213])
-        by smtp.gmail.com with ESMTPSA id t22sm7969499otk.24.2020.10.11.08.54.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 11 Oct 2020 08:54:43 -0700 (PDT)
-From:   trix@redhat.com
-To:     yhchuang@realtek.com, kvalo@codeaurora.org, davem@davemloft.net,
-        kuba@kernel.org, natechancellor@gmail.com, ndesaulniers@google.com
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, clang-built-linux@googlegroups.com,
-        Tom Rix <trix@redhat.com>
-Subject: [PATCH] rtw88: fix fw_fifo_addr check
-Date:   Sun, 11 Oct 2020 08:54:38 -0700
-Message-Id: <20201011155438.15892-1-trix@redhat.com>
-X-Mailer: git-send-email 2.18.1
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=g40do8t/7LxpkF2rWDjYsZ9n0f9pwR9vDeQsHsVKyT8=;
+        b=DxAdEgj79jjfmNyG6i0Jf/67NlKwHBFa1E17cILvT+/oSz4N92dbIjKKtCYLp9N8Kq
+         oZLA2o+RRw6sSyYkBNRl3PqjP18mOAu2tZp/0Bmt0e9CbM7iQaw9JFzxR4xMJeJ0HPZe
+         dV6G44FhH2oIYJTLFJ80JgFxSbU4YDzuqmQfpAVErBThGJVzWYcLLsQKSFFu+vMXx2ac
+         S/YN/UBtY2QBGEvU7UPlstGw2SUnzQO+4Y3wFlQlZsfFBxXj7lWVaWYeJ9kItYijMLeB
+         n4GuZqPa/H6XbN9vTMRhUuVYfGwsw6tvrRFvwhuMTmW7PI5cBHLvYCqUVG1JXne3ahmy
+         /RhQ==
+X-Gm-Message-State: AOAM533SkFbqe4I7BiNtVLAfyTQPVni+0aFD0cPue3/6eBHepwZJElwR
+        teWRtukznRkRn/7pBGi47EvBE6voWVrS8G7VXxVfzXpETBaqEA==
+X-Google-Smtp-Source: ABdhPJxJ4XtuuMKrbbmOa5Fg6mGD7qGyGJ+fEDgFTLn/oKFo1l/RmHWt9FHmqw/8cYbLEwsjyTFbatpQ8VmT4YwgWU8=
+X-Received: by 2002:a17:906:cb03:: with SMTP id lk3mr23636846ejb.491.1602432805034;
+ Sun, 11 Oct 2020 09:13:25 -0700 (PDT)
+MIME-Version: 1.0
+From:   David Rubio <david.alejandro.rubio@gmail.com>
+Date:   Sun, 11 Oct 2020 13:13:14 -0300
+Message-ID: <CAO6ttSmiXPnA9z_31CV2rS=DO0c48jSJGBAkOgWiD-GOG73Ffw@mail.gmail.com>
+Subject: rtw88 / rtl_8821ce: rfe 2 is not supported
+To:     linux-wireless@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Tom Rix <trix@redhat.com>
+On the kernel 5.9 there's support for the RTL8821CE chipset, but my
+variant seems to not be supported:
 
-The clang build reports this warning
+Oct 11 12:20:39 youmu kernel: rtw_8821ce 0000:02:00.0: rfe 2 isn't supported
+Oct 11 12:20:39 youmu kernel: rtw_8821ce 0000:02:00.0: failed to setup
+chip efuse info
+Oct 11 12:20:39 youmu kernel: rtw_8821ce 0000:02:00.0: failed to setup
+chip information
 
-fw.c:1485:21: warning: address of array 'rtwdev->chip->fw_fifo_addr'
-  will always evaluate to 'true'
-        if (!rtwdev->chip->fw_fifo_addr) {
 
-fw_fifo_addr is an array in rtw_chip_info so it is always
-nonzero.  A better check is if the first element of the array is
-nonzero.  In the cases where fw_fifo_addr is initialized by rtw88b
-and rtw88c, the first array element is 0x780.
+If you need any further information please reply with what steps I should take.
+There's no wifi working at all here, and those are all of the messages I get.
 
-Signed-off-by: Tom Rix <trix@redhat.com>
----
- drivers/net/wireless/realtek/rtw88/fw.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/realtek/rtw88/fw.c b/drivers/net/wireless/realtek/rtw88/fw.c
-index 042015bc8055..b2fd87834f23 100644
---- a/drivers/net/wireless/realtek/rtw88/fw.c
-+++ b/drivers/net/wireless/realtek/rtw88/fw.c
-@@ -1482,7 +1482,7 @@ static bool rtw_fw_dump_check_size(struct rtw_dev *rtwdev,
- int rtw_fw_dump_fifo(struct rtw_dev *rtwdev, u8 fifo_sel, u32 addr, u32 size,
- 		     u32 *buffer)
- {
--	if (!rtwdev->chip->fw_fifo_addr) {
-+	if (!rtwdev->chip->fw_fifo_addr[0]) {
- 		rtw_dbg(rtwdev, RTW_DBG_FW, "chip not support dump fw fifo\n");
- 		return -ENOTSUPP;
- 	}
--- 
-2.18.1
-
+Thanks you!
