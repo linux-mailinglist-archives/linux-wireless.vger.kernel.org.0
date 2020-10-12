@@ -2,87 +2,90 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5142C28B201
-	for <lists+linux-wireless@lfdr.de>; Mon, 12 Oct 2020 12:10:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D188228B217
+	for <lists+linux-wireless@lfdr.de>; Mon, 12 Oct 2020 12:17:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729529AbgJLKKR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 12 Oct 2020 06:10:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55018 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726104AbgJLKKR (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 12 Oct 2020 06:10:17 -0400
-Received: from mail-io1-xd41.google.com (mail-io1-xd41.google.com [IPv6:2607:f8b0:4864:20::d41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48210C0613CE;
-        Mon, 12 Oct 2020 03:10:17 -0700 (PDT)
-Received: by mail-io1-xd41.google.com with SMTP id k6so17087714ior.2;
-        Mon, 12 Oct 2020 03:10:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=tp7HRNglYkSYlHTMwdQ8CqrWv4lkJ3UZ4jPPZbiT0w8=;
-        b=RkV/yrq87KRN+ZdT+fVgaogDRvqI7qxlTKUFPFuz7EAuKxlAwzlXgoW3TGzCyn5wzZ
-         acw8iPUT+GDlYLdTk6IQT9nlCM6+S0jSI5F6+58o1m9UGPxDQA3eX6xB2x9H9QAGZBZO
-         FnvNsi1BTywqqGQ8PeJhoXwkcBtJZofBZWT+p35sZJd0pnxO2ESHjjAP3Nmt0DxiD2EV
-         oY/v/BRjn8MzXOBQ4SRKGD5vj1jWWEZ1smL07IpWgqJm7DQchOJsLYKp+0YRK5zFWkmU
-         3JCSpZYNlPucdEg+mqYoYAhtegjpkoTSGvJz4ks2GT/b8R7FHVc6d4Tn6gGFo3uQ9STw
-         IV5g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=tp7HRNglYkSYlHTMwdQ8CqrWv4lkJ3UZ4jPPZbiT0w8=;
-        b=Mv7s+ePMPNpMeLq0RltxbkXAN1TP8nSsqaF4fyPr/qFtStdihMT5N66gZlLrGa2FwX
-         CU9EryyXLwtabNvtnK0r34fRi2DpQEwEAecZtkBKHhn0v+5c94XOMnXgYUnXB22aX+ZO
-         CD/BL2KdQy60j67zNUgaN/qBh8DA8zYfWxHZ8/yeuurZ241HuppCOqkVMvAf+oS4XCBg
-         jB2SZR8nhVN8XXzAY2eu5Qzquvas7iJN8qDUDLzdmgRWmPpRA+RWYaMHK08/K46D/5Ag
-         P/E3GnBBwUD+OgTxc5B1j5wzQvxLpGGDZl11sSWbs9pPCkobWSEMNaz7LILZ8xxokKIv
-         UpNA==
-X-Gm-Message-State: AOAM530KutlvmrbGOaUmTjfG4LHmOLd0VFVLNHRk8g/ULR10MABJIEkM
-        PQ4Y7JJIv1AAilJfX+jl83sVsDUFVRb8+w8T22cc3LjPYT8V7w==
-X-Google-Smtp-Source: ABdhPJwyXdKy3QD2HduXOgESaOpjgh3eI35re+YqyX6qHYFviec1TXWOxd3MR/xX0wpvdU1JCunTg+kRRYREeIwYlGM=
-X-Received: by 2002:a02:6cd0:: with SMTP id w199mr19024504jab.121.1602497416540;
- Mon, 12 Oct 2020 03:10:16 -0700 (PDT)
+        id S1729366AbgJLKRn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 12 Oct 2020 06:17:43 -0400
+Received: from m42-4.mailgun.net ([69.72.42.4]:64035 "EHLO m42-4.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726104AbgJLKRm (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 12 Oct 2020 06:17:42 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1602497861; h=Content-Transfer-Encoding: MIME-Version:
+ Message-Id: Date: Subject: Cc: To: From: Sender;
+ bh=UPiWIf3a7g6nBgwN1U/mK17E/USuMUjgFV9Ty/FOJLE=; b=aCO3hvCwuXWzbni7UjLX3S7If66plC5KxHzbbIs1TK1k0YBqJxTPiKPiJHiibu7G7ph4Q57S
+ 1enzNLc+y1Ti8W5mDrbGA8MO/TaX/ymOLayO28KhQW9scexAgEwh+3arVreuuf6ir3hRP8+V
+ yo2ukCqrkBmROlQtYuY9uLCvtUo=
+X-Mailgun-Sending-Ip: 69.72.42.4
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n07.prod.us-west-2.postgun.com with SMTP id
+ 5f842d45d6d00c7a9e6a235c (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 12 Oct 2020 10:17:41
+ GMT
+Sender: cjhuang=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 54226C433CB; Mon, 12 Oct 2020 10:17:41 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+Received: from cjhuang-station.qca.qualcomm.com (unknown [180.166.53.21])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: cjhuang)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 4C26AC433C9;
+        Mon, 12 Oct 2020 10:17:40 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 4C26AC433C9
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=cjhuang@codeaurora.org
+From:   Carl Huang <cjhuang@codeaurora.org>
+To:     ath11k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org
+Subject: [PATCH] ath11k: fix ZERO address in probe request
+Date:   Mon, 12 Oct 2020 18:17:33 +0800
+Message-Id: <20201012101733.24137-1-cjhuang@codeaurora.org>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
-References: <20201007101726.3149375-1-a.nogikh@gmail.com> <20201007101726.3149375-2-a.nogikh@gmail.com>
- <c310818ecec06fe34d535bb61f3a50a1cf669f40.camel@sipsolutions.net>
-In-Reply-To: <c310818ecec06fe34d535bb61f3a50a1cf669f40.camel@sipsolutions.net>
-From:   Aleksandr Nogikh <a.nogikh@gmail.com>
-Date:   Mon, 12 Oct 2020 13:10:05 +0300
-Message-ID: <CADpXja_PYfwBcigR-D9m7bsJg-fnPN921YeOrJJzYZTM3PftjQ@mail.gmail.com>
-Subject: Re: [PATCH 1/2] net: store KCOV remote handle in sk_buff
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     davem@davemloft.net, kuba@kernel.org,
-        Eric Dumazet <edumazet@google.com>,
-        Andrey Konovalov <andreyknvl@google.com>,
-        Dmitry Vyukov <dvyukov@google.com>,
-        Marco Elver <elver@google.com>, linux-kernel@vger.kernel.org,
-        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        nogikh@google.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 12 Oct 2020 at 10:12, Johannes Berg <johannes@sipsolutions.net> wrote:
-[...]
-> > @@ -233,6 +233,7 @@ struct sk_buff *__alloc_skb(unsigned int size, gfp_t gfp_mask,
-> >       skb->end = skb->tail + size;
-> >       skb->mac_header = (typeof(skb->mac_header))~0U;
-> >       skb->transport_header = (typeof(skb->transport_header))~0U;
-> > +     skb_set_kcov_handle(skb, kcov_common_handle());
->
-> Btw, you're only setting this here. It seems to me it would make sense
-> to copy it when the skb is copied, rather than then having it set to the
-> kcov handle of the (interrupted) task that was copying the skb?
->
-> johannes
->
+Host needs to pass at least on bssid with all 0xff to firmware in
+WMI_START_SCAN_CMDID, otherwise the bssid and receiver address
+in probe requeste are all ZEROs.
 
-The field is added to the part of sk_buff that is between
-headers_start and headers_end, therefore skb_copy will copy the field
-to the newly created buffer. So in the case of copying it will be
-initialized, and then overwritten. Probably, it's not the most
-efficient way, but it seems to be the same for some other
-fields that are initialized in __alloc_skb.
+This also fixed some hidden AP connection issue because some AP
+doesn't respond to probe request which receiver address are all
+ZEROs.
+
+Tested-on: QCA6390 hw2.0 PCI WLAN.HST.1.0.1-01740-QCAHSTSWPLZ_V2_TO_X86-1
+
+Signed-off-by: Carl Huang <cjhuang@codeaurora.org>
+---
+ drivers/net/wireless/ath/ath11k/wmi.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
+index adde14a390ec..9e56544e2cb9 100644
+--- a/drivers/net/wireless/ath/ath11k/wmi.c
++++ b/drivers/net/wireless/ath/ath11k/wmi.c
+@@ -1946,6 +1946,11 @@ void ath11k_wmi_start_scan_init(struct ath11k *ar,
+ 				  WMI_SCAN_EVENT_DEQUEUED;
+ 	arg->scan_flags |= WMI_SCAN_CHAN_STAT_EVENT;
+ 	arg->num_bssid = 1;
++	/* fill bssid_list[0] with 0xff, otherwise
++	 * bssid and RA will be ZEROs in probe request.
++	 */
++	eth_broadcast_addr(arg->bssid_list[0].addr);
++
+ }
+ 
+ static inline void
+-- 
+2.28.0
+
