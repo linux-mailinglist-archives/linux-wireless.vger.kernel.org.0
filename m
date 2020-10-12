@@ -2,40 +2,40 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F080728B595
-	for <lists+linux-wireless@lfdr.de>; Mon, 12 Oct 2020 15:10:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D23E728B610
+	for <lists+linux-wireless@lfdr.de>; Mon, 12 Oct 2020 15:21:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730365AbgJLNKY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 12 Oct 2020 09:10:24 -0400
-Received: from mail-il1-f200.google.com ([209.85.166.200]:42284 "EHLO
+        id S1729672AbgJLNVZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 12 Oct 2020 09:21:25 -0400
+Received: from mail-il1-f200.google.com ([209.85.166.200]:45690 "EHLO
         mail-il1-f200.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730382AbgJLNKX (ORCPT
+        with ESMTP id S1729373AbgJLNVY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 12 Oct 2020 09:10:23 -0400
-Received: by mail-il1-f200.google.com with SMTP id f12so2192454ilq.9
-        for <linux-wireless@vger.kernel.org>; Mon, 12 Oct 2020 06:10:21 -0700 (PDT)
+        Mon, 12 Oct 2020 09:21:24 -0400
+Received: by mail-il1-f200.google.com with SMTP id b4so4090202ilf.12
+        for <linux-wireless@vger.kernel.org>; Mon, 12 Oct 2020 06:21:24 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
-        bh=ruwn0zWSDaveXQu6Bcr4bLcjDOKEK9RynywhL1QC2Qg=;
-        b=enHbfyn9YrScRo3IBSiAouuXQRtOSGm982R67K7OZtD4QHeSeeNP09vp0qM+p5Md1K
-         lU6y/ihbpmoAFzfmKmApA4d4cRVrhZ6JuSs4N2kAzEDTKzog9BYfpXXRor0Jo8irvr6s
-         /PJZuTh/zVrhEQQcLHMAapkMzL9MXpLSfXBTtPQ51uXJ5MBBwiQ0iagUvbSxcAnJLS9C
-         Z2o9v3gUQsokEknyz3Vkkz01iKwbC56LvsWMGNuUIarfWmVOB88Kwtd6ZvnZ6nhxMo+j
-         0ZVushDUyUrZxPFpTnlz3L0m0blWH1Fra+NsKEWiGpKL5D5GQGuf19YexSHzWz6tvBH9
-         TxHw==
-X-Gm-Message-State: AOAM531zzDeznCUbB7hv6J0pATO5mmL94a3Sh6oOo9SmuZ6Ako85vLqt
-        AbmOmYU6Tprhmu35pBQePE9tIF6xRWkl9rIoLJHW1TMLg9Wk
-X-Google-Smtp-Source: ABdhPJwmKooF3mW5HGZXnz4Rm3mU4ZTSfXWKxE4Poiu/CjP+vqINI5mpk8mKyzMp+MZurJWuwLNoE6X/phPpgu5xmv52HhVIm87x
+        bh=7Z6adHB6iiE50ME5jgXJ1GMZydlGjJsbWFTrhmRv32M=;
+        b=BYBJcjtxiFzAfhnHHRup8+Spcxeo75+IM+BOR+e+hAhzUYKVuJ3sfhjmUZSCXrHmH/
+         n5rFF7Sty6GIZp1/Y2FNxGP+nwyR6kyC8UKPUU3WoQ3POL+elGWHY78mq7eSB92FTmbt
+         ZL+ZnbPYS4wrUjiLitFMmnskicEePcb5lGfT1+xhqxAU6oTI8Wa8WxIMAlE96Xyu1jJ9
+         w2Ob/w+XgWwgYspGZFTvikuwPCWxyxI3U1S8S/5qTp5aFXabcr/72a7eJQFXatuYEPIl
+         7LVKHdMi2mdVP8tJZ+ZgfDz4/2uOjqI7oK0n3pa15zCN6bkkcqkcYhfhyE1VoxdSeCvq
+         s+1Q==
+X-Gm-Message-State: AOAM531YsudcdxcPd2IMV+NIqyh7hWKU8FqB4zOTu3irmboOEhk84TV0
+        wQSWyMNypccALEUUlTkLSVSn9Jib+gfnoux3ZEy3Ux8JWPrj
+X-Google-Smtp-Source: ABdhPJy0c29nx/xk7zaSu9U3AKcDKmqVE2M0FWxALgmOiu88PLU3VvaUx9qSjKfN9cRBh09F0AecfALyD48S6zI7/En8rH85ypkn
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:d45:: with SMTP id h5mr9473108ilj.307.1602508220977;
- Mon, 12 Oct 2020 06:10:20 -0700 (PDT)
-Date:   Mon, 12 Oct 2020 06:10:20 -0700
+X-Received: by 2002:a92:910:: with SMTP id y16mr18572381ilg.254.1602508883752;
+ Mon, 12 Oct 2020 06:21:23 -0700 (PDT)
+Date:   Mon, 12 Oct 2020 06:21:23 -0700
 X-Google-Appengine-App-Id: s~syzkaller
 X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <00000000000042d83305b1790599@google.com>
-Subject: WARNING in ieee80211_get_sband
-From:   syzbot <syzbot+7716dbc401d9a437890d@syzkaller.appspotmail.com>
+Message-ID: <000000000000c3fd7d05b1792ca0@google.com>
+Subject: WARNING in drv_remove_interface
+From:   syzbot <syzbot+2e5c1e55b9e5c28a3da7@syzkaller.appspotmail.com>
 To:     davem@davemloft.net, johannes@sipsolutions.net, kuba@kernel.org,
         linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
         netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
@@ -48,29 +48,29 @@ Hello,
 
 syzbot found the following issue on:
 
-HEAD commit:    036dfd83 selftests: mptcp: interpret \n as a new line
-git tree:       net-next
-console output: https://syzkaller.appspot.com/x/log.txt?x=13d4d817900000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=8ad9ecfafd94317b
-dashboard link: https://syzkaller.appspot.com/bug?extid=7716dbc401d9a437890d
+HEAD commit:    874fb9e2 ipv4: Restore flowi4_oif update before call to xf..
+git tree:       net
+console output: https://syzkaller.appspot.com/x/log.txt?x=137f6078500000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=c06bcf3cc963d91c
+dashboard link: https://syzkaller.appspot.com/bug?extid=2e5c1e55b9e5c28a3da7
 compiler:       gcc (GCC) 10.1.0-syz 20200507
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=16755e58500000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=162b6700500000
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=156cf31b900000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=15e110ab900000
 
 Bisection is inconclusive: the issue happens on the oldest tested release.
 
-bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=113dd700500000
-final oops:     https://syzkaller.appspot.com/x/report.txt?x=133dd700500000
-console output: https://syzkaller.appspot.com/x/log.txt?x=153dd700500000
+bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=17c9459f900000
+final oops:     https://syzkaller.appspot.com/x/report.txt?x=1429459f900000
+console output: https://syzkaller.appspot.com/x/log.txt?x=1029459f900000
 
 IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+7716dbc401d9a437890d@syzkaller.appspotmail.com
+Reported-by: syzbot+2e5c1e55b9e5c28a3da7@syzkaller.appspotmail.com
 
-device wlan0 entered promiscuous mode
 ------------[ cut here ]------------
-WARNING: CPU: 1 PID: 6905 at net/mac80211/ieee80211_i.h:1460 ieee80211_get_sband+0x2e3/0x3e0 net/mac80211/ieee80211_i.h:1460
+wlan0: Failed check-sdata-in-driver check, flags: 0x4
+WARNING: CPU: 1 PID: 12353 at net/mac80211/driver-ops.c:97 drv_remove_interface+0x3b7/0x4b0 net/mac80211/driver-ops.c:97
 Kernel panic - not syncing: panic_on_warn set ...
-CPU: 1 PID: 6905 Comm: syz-executor526 Not tainted 5.9.0-rc8-syzkaller #0
+CPU: 1 PID: 12353 Comm: syz-executor404 Not tainted 5.9.0-rc8-syzkaller #0
 Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
 Call Trace:
  __dump_stack lib/dump_stack.c:77 [inline]
@@ -81,41 +81,39 @@ Call Trace:
  handle_bug+0x38/0x90 arch/x86/kernel/traps.c:234
  exc_invalid_op+0x14/0x40 arch/x86/kernel/traps.c:254
  asm_exc_invalid_op+0x12/0x20 arch/x86/include/asm/idtentry.h:536
-RIP: 0010:ieee80211_get_sband+0x2e3/0x3e0 net/mac80211/ieee80211_i.h:1460
-Code: f9 48 c7 c2 e0 5f 61 89 be 7b 02 00 00 48 c7 c7 40 60 61 89 c6 05 b6 fb 80 03 01 e8 3c a2 85 f9 e9 b8 fd ff ff e8 cd ac 9f f9 <0f> 0b e8 46 75 60 00 31 ff 89 c3 89 c6 e8 1b a9 9f f9 85 db 74 19
-RSP: 0018:ffffc900056573d8 EFLAGS: 00010293
-RAX: 0000000000000000 RBX: 0000000000000001 RCX: ffffffff87d6db35
-RDX: ffff8880a6a2a180 RSI: ffffffff87d6dbb3 RDI: 0000000000000005
-RBP: ffff88809ec40c80 R08: 0000000000000001 R09: ffffffff8d1119e7
-R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000000
-R13: ffff88809ecccc00 R14: ffff88809ec40c80 R15: ffffc9000565751c
- sta_apply_parameters+0x4e/0x1dc0 net/mac80211/cfg.c:1451
- ieee80211_add_station+0x320/0x660 net/mac80211/cfg.c:1678
- rdev_add_station net/wireless/rdev-ops.h:190 [inline]
- nl80211_new_station+0xdce/0x1420 net/wireless/nl80211.c:6571
- genl_family_rcv_msg_doit+0x228/0x320 net/netlink/genetlink.c:739
- genl_family_rcv_msg net/netlink/genetlink.c:783 [inline]
- genl_rcv_msg+0x328/0x580 net/netlink/genetlink.c:800
- netlink_rcv_skb+0x15a/0x430 net/netlink/af_netlink.c:2489
- genl_rcv+0x24/0x40 net/netlink/genetlink.c:811
- netlink_unicast_kernel net/netlink/af_netlink.c:1304 [inline]
- netlink_unicast+0x533/0x7d0 net/netlink/af_netlink.c:1330
- netlink_sendmsg+0x856/0xd90 net/netlink/af_netlink.c:1919
- sock_sendmsg_nosec net/socket.c:651 [inline]
- sock_sendmsg+0xcf/0x120 net/socket.c:671
- ____sys_sendmsg+0x6e8/0x810 net/socket.c:2353
- ___sys_sendmsg+0xf3/0x170 net/socket.c:2407
- __sys_sendmsg+0xe5/0x1b0 net/socket.c:2440
+RIP: 0010:drv_remove_interface+0x3b7/0x4b0 net/mac80211/driver-ops.c:97
+Code: 00 00 48 85 db 0f 84 91 00 00 00 e8 83 08 b7 f9 48 89 dd e8 7b 08 b7 f9 44 89 ea 48 89 ee 48 c7 c7 20 d2 5e 89 e8 6b 45 87 f9 <0f> 0b e9 a8 fd ff ff e8 5d 08 b7 f9 0f 0b e9 d4 fc ff ff e8 51 08
+RSP: 0018:ffffc9000a407770 EFLAGS: 00010286
+RAX: 0000000000000000 RBX: ffff8880945bc000 RCX: 0000000000000000
+RDX: ffff8880a3d28140 RSI: ffffffff815f5a55 RDI: fffff52001480ee0
+RBP: ffff8880945bc000 R08: 0000000000000001 R09: ffff8880ae5318e7
+R10: 0000000000000000 R11: 0000000000000000 R12: ffff8880859e0c80
+R13: 0000000000000004 R14: ffff8880945bd250 R15: 000000000000000f
+ ieee80211_do_stop+0x103c/0x2100 net/mac80211/iface.c:1054
+ ieee80211_stop+0x1a/0x20 net/mac80211/iface.c:1081
+ __dev_close_many+0x1b3/0x2e0 net/core/dev.c:1605
+ __dev_close net/core/dev.c:1617 [inline]
+ __dev_change_flags+0x2cb/0x730 net/core/dev.c:8346
+ dev_change_flags+0x8a/0x160 net/core/dev.c:8419
+ devinet_ioctl+0x14fd/0x1ca0 net/ipv4/devinet.c:1143
+ inet_ioctl+0x1ea/0x330 net/ipv4/af_inet.c:967
+ packet_ioctl+0xad/0x260 net/packet/af_packet.c:4144
+ sock_do_ioctl+0xcb/0x2d0 net/socket.c:1047
+ sock_ioctl+0x3b8/0x730 net/socket.c:1198
+ vfs_ioctl fs/ioctl.c:48 [inline]
+ __do_sys_ioctl fs/ioctl.c:753 [inline]
+ __se_sys_ioctl fs/ioctl.c:739 [inline]
+ __x64_sys_ioctl+0x193/0x200 fs/ioctl.c:739
  do_syscall_64+0x2d/0x70 arch/x86/entry/common.c:46
  entry_SYSCALL_64_after_hwframe+0x44/0xa9
-RIP: 0033:0x446309
-Code: e8 bc b5 02 00 48 83 c4 18 c3 0f 1f 80 00 00 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 0f 83 8b 0f fc ff c3 66 2e 0f 1f 84 00 00 00 00
-RSP: 002b:00007f4a00236d98 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
-RAX: ffffffffffffffda RBX: 00000000006dbc78 RCX: 0000000000446309
-RDX: 0000000000000000 RSI: 0000000020000040 RDI: 000000000000000a
-RBP: 00000000006dbc70 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 00000000006dbc7c
-R13: 0000000000000000 R14: 000000306e616c77 R15: 0000000000660006
+RIP: 0033:0x44cd69
+Code: e8 1c e6 ff ff 48 83 c4 18 c3 0f 1f 80 00 00 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 0f 83 1b 02 fc ff c3 66 2e 0f 1f 84 00 00 00 00
+RSP: 002b:00007fa19e2fbce8 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+RAX: ffffffffffffffda RBX: 00000000006eaa08 RCX: 000000000044cd69
+RDX: 0000000020001000 RSI: 0000000000008914 RDI: 0000000000000003
+RBP: 00000000006eaa00 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 00000000006eaa0c
+R13: 00007fff5b3daaff R14: 00007fa19e2fc9c0 R15: 0000000000000000
 Kernel Offset: disabled
 Rebooting in 86400 seconds..
 
