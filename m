@@ -2,42 +2,54 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DE48E28AEAD
-	for <lists+linux-wireless@lfdr.de>; Mon, 12 Oct 2020 09:01:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BE8B128AECE
+	for <lists+linux-wireless@lfdr.de>; Mon, 12 Oct 2020 09:11:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726615AbgJLHBb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 12 Oct 2020 03:01:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54160 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726413AbgJLHBb (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 12 Oct 2020 03:01:31 -0400
-X-Greylist: delayed 747 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 12 Oct 2020 00:01:30 PDT
-Received: from canardo.mork.no (canardo.mork.no [IPv6:2001:4641::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A68D1C0613CE;
-        Mon, 12 Oct 2020 00:01:30 -0700 (PDT)
-Received: from miraculix.mork.no (miraculix.mork.no [IPv6:2001:4641:0:2:7627:374e:db74:e353])
-        (authenticated bits=0)
-        by canardo.mork.no (8.15.2/8.15.2) with ESMTPSA id 09C6lRMn030659
-        (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-        Mon, 12 Oct 2020 08:47:28 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mork.no; s=b;
-        t=1602485253; bh=EM7SRTw2y1jyItrWLGnDOK3doiCpFc3aZvBKNU44DDM=;
-        h=From:To:Cc:Subject:References:Date:Message-ID:From;
-        b=kS4WJ5liWgVBV/PZX+XguD8kCe6CzMV/SozNJtRSLrEKROlT0lTnXLxcEgUI/lHdQ
-         9tYB5Ub5nfYwmhAFrio3yOnThkWaMB2+jpHWpbr4jiJ7rdoEAKWTMxqcxuu7E30hua
-         P5LK3vjH6VIkjZp2gBCjFgbQ19M2Yxa9QIgJzGaw=
-Received: from bjorn by miraculix.mork.no with local (Exim 4.94)
-        (envelope-from <bjorn@mork.no>)
-        id 1kRrcE-001O96-2I; Mon, 12 Oct 2020 08:47:26 +0200
-From:   =?utf-8?Q?Bj=C3=B8rn_Mork?= <bjorn@mork.no>
+        id S1726831AbgJLHLI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 12 Oct 2020 03:11:08 -0400
+Received: from z5.mailgun.us ([104.130.96.5]:10152 "EHLO z5.mailgun.us"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726334AbgJLHLI (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 12 Oct 2020 03:11:08 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1602486667; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=JAOckvyZSGiRSyfXilzxRRUkdvcueb1oRO7CQ0IBXN0=; b=tNiB5KjxAJGJzknbRc0qrEfHFTpwBU6f/Ako9+ytD4M9kZ3ydtti05gdTeAAttVhKh/q6cLd
+ PWL52HlZpM4nFGjXV3QaL6WHYz/VTT/LZVo4J+7DNAUcTLrQPaGzfnlXKxREyDK2Nur58WE6
+ Ix1mytlHmghMAOnH5Hk1daAK2ws=
+X-Mailgun-Sending-Ip: 104.130.96.5
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n04.prod.us-east-1.postgun.com with SMTP id
+ 5f84017eaad2c3cd1ca5f736 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 12 Oct 2020 07:10:54
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id A3E5DC433AF; Mon, 12 Oct 2020 07:10:52 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
+        autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 44889C433CB;
+        Mon, 12 Oct 2020 07:10:46 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 44889C433CB
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
 To:     Heiner Kallweit <hkallweit1@gmail.com>
 Cc:     David Miller <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>,
+        =?utf-8?Q?Bj=C3=B8rn?= Mork <bjorn@mork.no>,
         Oliver Neukum <oneukum@suse.com>,
         Igor Mitsyanko <imitsyanko@quantenna.com>,
         Sergey Matyukevich <geomatsi@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
         Roopa Prabhu <roopa@nvidia.com>,
         Nikolay Aleksandrov <nikolay@nvidia.com>,
         Andrew Lunn <andrew@lunn.ch>,
@@ -55,20 +67,16 @@ Cc:     David Miller <davem@davemloft.net>,
         Linux USB Mailing List <linux-usb@vger.kernel.org>,
         linux-wireless <linux-wireless@vger.kernel.org>,
         bridge@lists.linux-foundation.org
-Subject: Re: [PATCH net-next 04/12] net: usb: qmi_wwan: use new function dev_fetch_sw_netstats
-Organization: m
+Subject: Re: [PATCH net-next 06/12] qtnfmac: use new function dev_fetch_sw_netstats
 References: <a46f539e-a54d-7e92-0372-cd96bb280729@gmail.com>
-        <9cde03fe-d032-521d-2d34-34429d6d1a1c@gmail.com>
-Date:   Mon, 12 Oct 2020 08:47:25 +0200
-In-Reply-To: <9cde03fe-d032-521d-2d34-34429d6d1a1c@gmail.com> (Heiner
-        Kallweit's message of "Sun, 11 Oct 2020 21:38:44 +0200")
-Message-ID: <87imbgdjpe.fsf@miraculix.mork.no>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.3 (gnu/linux)
+        <a4fa20e9-23bc-4f2f-cbe9-16d801ce3b20@gmail.com>
+Date:   Mon, 12 Oct 2020 10:10:43 +0300
+In-Reply-To: <a4fa20e9-23bc-4f2f-cbe9-16d801ce3b20@gmail.com> (Heiner
+        Kallweit's message of "Sun, 11 Oct 2020 21:40:10 +0200")
+Message-ID: <87sgajzzpo.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Virus-Scanned: clamav-milter 0.102.4 at canardo
-X-Virus-Status: Clean
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -79,4 +87,11 @@ Heiner Kallweit <hkallweit1@gmail.com> writes:
 >
 > Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
 
-Acked-by: Bj=C3=B8rn Mork <bjorn@mork.no>
+I assume this goes via net-next so:
+
+Acked-by: Kalle Valo <kvalo@codeaurora.org>
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
