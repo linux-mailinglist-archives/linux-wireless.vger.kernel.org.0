@@ -2,158 +2,131 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 784FD28B594
+	by mail.lfdr.de (Postfix) with ESMTP id F080728B595
 	for <lists+linux-wireless@lfdr.de>; Mon, 12 Oct 2020 15:10:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730374AbgJLNKX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        id S1730365AbgJLNKY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 12 Oct 2020 09:10:24 -0400
+Received: from mail-il1-f200.google.com ([209.85.166.200]:42284 "EHLO
+        mail-il1-f200.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730382AbgJLNKX (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
         Mon, 12 Oct 2020 09:10:23 -0400
-Received: from mail-eopbgr150054.outbound.protection.outlook.com ([40.107.15.54]:36773
-        "EHLO EUR01-DB5-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1730354AbgJLNKU (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 12 Oct 2020 09:10:20 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=h1c+pw8fHFfGvi6mmXvxt+E4n83EogBSEKYRIJqSXnB48BKbFx8fSPWgbm1ctOIM/gs+kUmmlBWtvUc8XToKmGkzaz6FEvudMKU8mJDiygH8vHcAiE5+R46RKWtxLzkENJY1fPKk8kKnFwPfYO18YYwq+XBpXzuG8N2XeT3pbGjOGR8V8dXFZNHlq6lmzG5RHuX20zfCuBEaSOWonKESnhZsoeNE+w9Jvw3gy4AuzwvMUfQaMsZtPdAipZ5bssROjWxNJ+iOXPzC62yzvkbTSRKFvc1CDYDyb18UzUmr7IDhCWe08KB6I5vk7zndWzP7GMz+rvIUBoyjQAUiEpU2Pw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=TDN5xEixwfIJMW/X5GICquS7elFh6R78stUSUJwVZ+c=;
- b=Dnd2dEmbR5nLxo+xguqrPBHARU9PzExCk9ZkpdpGiu49lknTDeqtGJc6aYJX1UqcrAyKJuIlt3Txa+RICYPvahEM+9AGu47LfOypPGcE4xFKMm6mloqMJO2znMwVSGU9cthmmFtfJ4r++HsmnHgOJSbEn1vTDqWiFvtxf8zY1CtU5SExo5JAXy7qFeCPYZLU17+pV7S7yuzevBUVbLP23RPIUE7qU4KqsnPX6++ncrjIGMYKJeM9nrv7Nv/eOo3FPVfN40lVZ0SIDZK5TJQFQ1Ea+jOnNn+WISuoILvUDQrGtIRxyYYHPfIRLE0ZE8aQe1uA24dYyBdUihDe8opi4g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=celeno.com; dmarc=pass action=none header.from=celeno.com;
- dkim=pass header.d=celeno.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=celeno.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=TDN5xEixwfIJMW/X5GICquS7elFh6R78stUSUJwVZ+c=;
- b=BreRGxGjw86Da6hjn1RGrLMZgDnLK8eBNfZ5YbPfUt66Q3VxdvAVFdlPI8rEcV2vu6w6QRz63BHgzHy93Rkra1BlU0iS3bDBRafI74kDzolHYxjItYF1i1zIc64pn765vOrU0XR4TkZS7AzZ2gxN2krqZP3JqbxlFszuigRHs/c=
-Authentication-Results: celeno.com; dkim=none (message not signed)
- header.d=none;celeno.com; dmarc=none action=none header.from=celeno.com;
-Received: from AM0P192MB0468.EURP192.PROD.OUTLOOK.COM (2603:10a6:208:45::15)
- by AM0P192MB0468.EURP192.PROD.OUTLOOK.COM (2603:10a6:208:45::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3455.26; Mon, 12 Oct
- 2020 13:10:16 +0000
-Received: from AM0P192MB0468.EURP192.PROD.OUTLOOK.COM
- ([fe80::86f:dc24:7a0f:6189]) by AM0P192MB0468.EURP192.PROD.OUTLOOK.COM
- ([fe80::86f:dc24:7a0f:6189%4]) with mapi id 15.20.3455.029; Mon, 12 Oct 2020
- 13:10:16 +0000
-Subject: Re: [PATCH] nl80211: Trigger channel switch from driver
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org, aviad.brikman@celeno.com,
-        eliav.farber@celeno.com
-References: <20200826131709.25530-1-shay.bar@celeno.com>
- <f1117adbcd57f3481c215626cd2120b6aa5dcf02.camel@sipsolutions.net>
-From:   Shay Bar <shay.bar@celeno.com>
-Message-ID: <6ec8e541-0446-f71f-41bc-0106a5a90189@celeno.com>
-Date:   Mon, 12 Oct 2020 16:10:14 +0300
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.3.2
-In-Reply-To: <f1117adbcd57f3481c215626cd2120b6aa5dcf02.camel@sipsolutions.net>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-Originating-IP: [77.124.52.93]
-X-ClientProxiedBy: AM3PR07CA0055.eurprd07.prod.outlook.com
- (2603:10a6:207:4::13) To AM0P192MB0468.EURP192.PROD.OUTLOOK.COM
- (2603:10a6:208:45::15)
+Received: by mail-il1-f200.google.com with SMTP id f12so2192454ilq.9
+        for <linux-wireless@vger.kernel.org>; Mon, 12 Oct 2020 06:10:21 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
+        bh=ruwn0zWSDaveXQu6Bcr4bLcjDOKEK9RynywhL1QC2Qg=;
+        b=enHbfyn9YrScRo3IBSiAouuXQRtOSGm982R67K7OZtD4QHeSeeNP09vp0qM+p5Md1K
+         lU6y/ihbpmoAFzfmKmApA4d4cRVrhZ6JuSs4N2kAzEDTKzog9BYfpXXRor0Jo8irvr6s
+         /PJZuTh/zVrhEQQcLHMAapkMzL9MXpLSfXBTtPQ51uXJ5MBBwiQ0iagUvbSxcAnJLS9C
+         Z2o9v3gUQsokEknyz3Vkkz01iKwbC56LvsWMGNuUIarfWmVOB88Kwtd6ZvnZ6nhxMo+j
+         0ZVushDUyUrZxPFpTnlz3L0m0blWH1Fra+NsKEWiGpKL5D5GQGuf19YexSHzWz6tvBH9
+         TxHw==
+X-Gm-Message-State: AOAM531zzDeznCUbB7hv6J0pATO5mmL94a3Sh6oOo9SmuZ6Ako85vLqt
+        AbmOmYU6Tprhmu35pBQePE9tIF6xRWkl9rIoLJHW1TMLg9Wk
+X-Google-Smtp-Source: ABdhPJwmKooF3mW5HGZXnz4Rm3mU4ZTSfXWKxE4Poiu/CjP+vqINI5mpk8mKyzMp+MZurJWuwLNoE6X/phPpgu5xmv52HhVIm87x
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from [10.0.0.13] (77.124.52.93) by AM3PR07CA0055.eurprd07.prod.outlook.com (2603:10a6:207:4::13) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3477.11 via Frontend Transport; Mon, 12 Oct 2020 13:10:15 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 4c1f3c1c-e568-46aa-aae8-08d86eb02980
-X-MS-TrafficTypeDiagnostic: AM0P192MB0468:
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <AM0P192MB046830867492543393BF8977E7070@AM0P192MB0468.EURP192.PROD.OUTLOOK.COM>
-X-MS-Oob-TLC-OOBClassifiers: OLM:10000;
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: ujJaPkXE5AqD7bRtDV6810JBFBw602jjANIhxJnOxf24iyogdCLUjNI9A0YDK1BKdfAKvZnqwtv9vFdMBgODnQ5xWK3pKxnw944w0oLepgnJOmT/9V1+MnR7Oy8PDdWAiLYTyRRLZ69AuY33IdkBI8oJkbKdS5QbJ8j1WzwXO3+Y7UybdaUix+aAqFIVklUaErjkCfNqmXYaUURw0xCBdpmvxYtf6P0oZVUNPs6mJcPacWq81uKJzkZeO8eL8ykVpNM37LbEVdaK5MYaO7tsbdKlY+I9D/lxYbiL7Sa6pGnAEvr/Y/WbybSwznRA2Gaa5x7AZKo170VnIYSPjB1aDp1m25GRt+yJQOt96MRl+89LQ6urT/BvaBCDUWJoM1bA
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0P192MB0468.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(366004)(346002)(396003)(376002)(136003)(39840400004)(478600001)(2616005)(956004)(8676002)(86362001)(44832011)(8936002)(5660300002)(83380400001)(2906002)(6916009)(316002)(31696002)(16576012)(36756003)(66556008)(16526019)(6486002)(107886003)(52116002)(66476007)(186003)(66946007)(26005)(31686004)(4326008)(43740500002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData: P5Y9+HopSrQyTu8xcJByxPLxXrBGOmWeplFqQ4SL4eCQn0HPMmnig8CIvT9Plr+TSn1GhqL6ASC7cbXZgdOg/2r1jFNGXq3mr1ieXl7IEV+QcReiIWCqYPwDmgDBwfSIvM2qTFFgiMeuqVbcZjiPQwl03IG91bDP11ZO10t9AU1zQSIsa+lNAIVuRUuXuwQj+wrG1wpFwJMecT0hKjl6k9M+smGiOtiGKpvR+g0/eyNYI0Z8jKp2SU6J27hJto7OAKgOjpjfXKl6CwCVBAlh3zdtPxNTtLPOh+KFS8vZ/p22/VIIdcNyYlCDVHWYJYfM3j1FCXzbPEa+iG9kvFpYFv08CDeGgWduF1C0x5IKMuU5MfRPjVKcvlkXIeExDlD0URNa3Z+AUreWf3zUZM2ZbolGwdzq0P9wc3DNscAVWepafMb9sookc1aK/QpkbVWElizk9oQ46nI6sqVLfGbZQ/ePeDYntTer7LXli+P7PjXh7yVHrqUaoIcvliL4yKxt8apSWF/WuNi7eE7dSw3IUIZiNgSkoJM8CHuFlLLO4uO6K3K4QP+TxPyIlcwKriVtNTdG3dAr2qFBAIWnEZ1RdtOOa0Bk3pTbAoPCaREdBSvfIUWgkjzcpch/jc4ARvn+qNJjyUrUC7t2Yi2wcWnJRQ==
-X-OriginatorOrg: celeno.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4c1f3c1c-e568-46aa-aae8-08d86eb02980
-X-MS-Exchange-CrossTenant-AuthSource: AM0P192MB0468.EURP192.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Oct 2020 13:10:16.3952
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: f313103b-4c9f-4fd3-b5cf-b97f91c4afa8
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: PhfrIAGLMeQ9APlDH8UJq20RqSWpd+U5ZcbsexitgUlJMb5tYBj3riCbKnT5iPdlOa6/YPFJuLaixAgcXFIvVw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0P192MB0468
+X-Received: by 2002:a05:6e02:d45:: with SMTP id h5mr9473108ilj.307.1602508220977;
+ Mon, 12 Oct 2020 06:10:20 -0700 (PDT)
+Date:   Mon, 12 Oct 2020 06:10:20 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <00000000000042d83305b1790599@google.com>
+Subject: WARNING in ieee80211_get_sband
+From:   syzbot <syzbot+7716dbc401d9a437890d@syzkaller.appspotmail.com>
+To:     davem@davemloft.net, johannes@sipsolutions.net, kuba@kernel.org,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Hello,
 
-On 28/09/2020 14:30, Johannes Berg wrote
->> using the already existing NL80211_CMD_CHANNEL_SWITCH.
-> I'm a little confused as to how this would work - did the driver just
-> *do* a channel switch? Or does it want to do a channel switch, and then
-> hostapd has to deal with it? Is it able to? What happens if it doesn't
-> do anything when this happens, e.g. an older version?
+syzbot found the following issue on:
 
-The driver "wants" to do channel switch and hostapd, once receiving the 
-above command, will take the same action as if it received a 
-"hostapd_cli chan_switch.
+HEAD commit:    036dfd83 selftests: mptcp: interpret \n as a new line
+git tree:       net-next
+console output: https://syzkaller.appspot.com/x/log.txt?x=13d4d817900000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=8ad9ecfafd94317b
+dashboard link: https://syzkaller.appspot.com/bug?extid=7716dbc401d9a437890d
+compiler:       gcc (GCC) 10.1.0-syz 20200507
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=16755e58500000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=162b6700500000
 
-The driver will not assume channel was switched upon sending this 
-command (it will have to wait until hostapd will handle the entire 
-channel switch "loop").
+Bisection is inconclusive: the issue happens on the oldest tested release.
 
-There are many reasons why kernel driver will want to trigger a channel 
-switch (e.g. dynamic channel selection).
+bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=113dd700500000
+final oops:     https://syzkaller.appspot.com/x/report.txt?x=133dd700500000
+console output: https://syzkaller.appspot.com/x/log.txt?x=153dd700500000
 
-With older version of hostapd, it will not be able to handle this 
-command and nothing will happen.
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+7716dbc401d9a437890d@syzkaller.appspotmail.com
 
->> +/*
->> + * cfg80211_ch_switch - trigger channel switch from driver
->> + * same as is can be triggered from hostapd_cli chan_switch
-> Not sure "same as ... hostapd_cli chan_switch" makes a lot of sense here
-> in the kernel-doc, tbh.
-can remove the "hostapd_cli chan_switch" reference.
-> Also, you say "trigger" here, but ...
->
->> + * @dev: the device which switched channels
-> "switched" here, which didn't help my above question at all.
-Agree "wants to switch" is clearer
->> + * @chandef: the new channel definition
->> + * @csa_count: the number of TBTTs until the channel switch happens
-> though I guess this makes it a bit clearer, unless it can be zero? :)
-csa_count of 0/1 is valid, but it means the channel switch will happen 
-at the current TBTT (see ieee80211_set_csa_beacon())
->> + */
->> +bool cfg80211_ch_switch(struct net_device *dev,
->> +                              struct cfg80211_chan_def *chandef,
->> +                              u8 csa_count);
-> nit: indentation
-will fix
->> +       if (chandef->width == NL80211_CHAN_WIDTH_40) {
->> +               enum nl80211_channel_type chan_type = NL80211_CHAN_HT40MINUS;
->> +
->> +               if (chandef->center_freq1 > chandef->chan->center_freq)
->> +                       chan_type = NL80211_CHAN_HT40PLUS;
->> +
->> +               if (nla_put_u32(msg, NL80211_ATTR_WIPHY_CHANNEL_TYPE,
->> +                               chan_type))
->> +                       goto nla_put_failure;
->> +       }
-> This a bit ties in with the "compatibility" question above - does older
-> hostapd even understand this? I'd suspect not, and then I'm not sure why
-> you'd include these attributes?
-older hostapd will not handle NL80211_CMD_CHANNEL_SWITCH anyway.
->> The information transmitted is intended only for the person or entity
->> to which it is addressed and may contain confidential and/or
->> privileged material. Any retransmission, dissemination, copying or
->> other use of, or taking of any action in reliance upon this
->> information is prohibited. If you received this in error, please
->> contact the sender and delete the material from any computer. Nothing
->> contained herein shall be deemed as a representation, warranty or a
->> commitment by Celeno. No warranties are expressed or implied,
->> including, but not limited to, any implied warranties of non-
->> infringement, merchantability and fitness for a particular purpose.
-> Hm. I guess I'm the "intended [...] person or entity" but I'm still a
-> bit wary about applying patches with that, I guess.
-:) the disclaimer will be removed from now on.
+device wlan0 entered promiscuous mode
+------------[ cut here ]------------
+WARNING: CPU: 1 PID: 6905 at net/mac80211/ieee80211_i.h:1460 ieee80211_get_sband+0x2e3/0x3e0 net/mac80211/ieee80211_i.h:1460
+Kernel panic - not syncing: panic_on_warn set ...
+CPU: 1 PID: 6905 Comm: syz-executor526 Not tainted 5.9.0-rc8-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
+Call Trace:
+ __dump_stack lib/dump_stack.c:77 [inline]
+ dump_stack+0x198/0x1fd lib/dump_stack.c:118
+ panic+0x382/0x7fb kernel/panic.c:231
+ __warn.cold+0x20/0x4b kernel/panic.c:600
+ report_bug+0x1bd/0x210 lib/bug.c:198
+ handle_bug+0x38/0x90 arch/x86/kernel/traps.c:234
+ exc_invalid_op+0x14/0x40 arch/x86/kernel/traps.c:254
+ asm_exc_invalid_op+0x12/0x20 arch/x86/include/asm/idtentry.h:536
+RIP: 0010:ieee80211_get_sband+0x2e3/0x3e0 net/mac80211/ieee80211_i.h:1460
+Code: f9 48 c7 c2 e0 5f 61 89 be 7b 02 00 00 48 c7 c7 40 60 61 89 c6 05 b6 fb 80 03 01 e8 3c a2 85 f9 e9 b8 fd ff ff e8 cd ac 9f f9 <0f> 0b e8 46 75 60 00 31 ff 89 c3 89 c6 e8 1b a9 9f f9 85 db 74 19
+RSP: 0018:ffffc900056573d8 EFLAGS: 00010293
+RAX: 0000000000000000 RBX: 0000000000000001 RCX: ffffffff87d6db35
+RDX: ffff8880a6a2a180 RSI: ffffffff87d6dbb3 RDI: 0000000000000005
+RBP: ffff88809ec40c80 R08: 0000000000000001 R09: ffffffff8d1119e7
+R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000000
+R13: ffff88809ecccc00 R14: ffff88809ec40c80 R15: ffffc9000565751c
+ sta_apply_parameters+0x4e/0x1dc0 net/mac80211/cfg.c:1451
+ ieee80211_add_station+0x320/0x660 net/mac80211/cfg.c:1678
+ rdev_add_station net/wireless/rdev-ops.h:190 [inline]
+ nl80211_new_station+0xdce/0x1420 net/wireless/nl80211.c:6571
+ genl_family_rcv_msg_doit+0x228/0x320 net/netlink/genetlink.c:739
+ genl_family_rcv_msg net/netlink/genetlink.c:783 [inline]
+ genl_rcv_msg+0x328/0x580 net/netlink/genetlink.c:800
+ netlink_rcv_skb+0x15a/0x430 net/netlink/af_netlink.c:2489
+ genl_rcv+0x24/0x40 net/netlink/genetlink.c:811
+ netlink_unicast_kernel net/netlink/af_netlink.c:1304 [inline]
+ netlink_unicast+0x533/0x7d0 net/netlink/af_netlink.c:1330
+ netlink_sendmsg+0x856/0xd90 net/netlink/af_netlink.c:1919
+ sock_sendmsg_nosec net/socket.c:651 [inline]
+ sock_sendmsg+0xcf/0x120 net/socket.c:671
+ ____sys_sendmsg+0x6e8/0x810 net/socket.c:2353
+ ___sys_sendmsg+0xf3/0x170 net/socket.c:2407
+ __sys_sendmsg+0xe5/0x1b0 net/socket.c:2440
+ do_syscall_64+0x2d/0x70 arch/x86/entry/common.c:46
+ entry_SYSCALL_64_after_hwframe+0x44/0xa9
+RIP: 0033:0x446309
+Code: e8 bc b5 02 00 48 83 c4 18 c3 0f 1f 80 00 00 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 0f 83 8b 0f fc ff c3 66 2e 0f 1f 84 00 00 00 00
+RSP: 002b:00007f4a00236d98 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
+RAX: ffffffffffffffda RBX: 00000000006dbc78 RCX: 0000000000446309
+RDX: 0000000000000000 RSI: 0000000020000040 RDI: 000000000000000a
+RBP: 00000000006dbc70 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 00000000006dbc7c
+R13: 0000000000000000 R14: 000000306e616c77 R15: 0000000000660006
+Kernel Offset: disabled
+Rebooting in 86400 seconds..
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+For information about bisection process see: https://goo.gl/tpsmEJ#bisection
+syzbot can test patches for this issue, for details see:
+https://goo.gl/tpsmEJ#testing-patches
