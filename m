@@ -2,171 +2,113 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EE09428B2DB
-	for <lists+linux-wireless@lfdr.de>; Mon, 12 Oct 2020 12:49:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E13D828B39C
+	for <lists+linux-wireless@lfdr.de>; Mon, 12 Oct 2020 13:19:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387769AbgJLKtj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 12 Oct 2020 06:49:39 -0400
-Received: from mail-dm6nam11on2077.outbound.protection.outlook.com ([40.107.223.77]:59904
-        "EHLO NAM11-DM6-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S2388070AbgJLKtW (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 12 Oct 2020 06:49:22 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ARsIc1PD/Kup7vFBtZ0DNzvo9Cpj5gzYGOTxGRL5zwO7AHwEHLxJGCRw1nz7AMGkbz8ayhDoWrMP84Nsei1ZrwfwPzlloCdMclarLvHly0Q5/eLN2BvLOhnQlPtHcwA7+slsSLfT0cJMwkE4FUDoPhWhqjxybk/XQ7FzXrjVzsm8Mz8fgMdTiDLEzTpzbG1cX1a7BuB6iESh8GabqoXSrl84SR4FtdwO/Z10YwJHUJlAloOixgHZkew4jkzir8E5wCepUr3s4bqvCREBfege2zmmnNtcqYELUUROmokoXYpfYnZ3gLK8Qr7vaLETWZhpL3BYoVCS9Okdw7kJZYQj9A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=uBLvox2iXc57mCna1AZj9BmpOZQma4jp92Hg5KojRBg=;
- b=KtBjX586DCYeKZxFtAqqLUo+ltpCKxINY6+NL7mmjeRTWfp3712+RO9QzMLFSgAHwwhfPHsYHpo6LM36WlYkEbAdE8qStK+XxlGUS29qF8L1j4WGdqZtamB/mlfMQfjDEaRemiSg2v4wEEGDr2L95OyMptaXbBCKa7uw+QQZgqEpVQ1+diCbZCdTlBT3THYNVI3z8o4HXsMFBEkPil5i40Ns8Poa4JGXvt/OwnizyiR/HyLSAtTtuAby4HqnoJvKyySRfI5DiJDT4Us76AQQKk7lVnT1W2WtA+r+Wddwq6GQkp0Kq2LoqDNRFBJIb7Qe6rF9PQKmHh+N188Dx4BWcQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=silabs.com; dmarc=pass action=none header.from=silabs.com;
- dkim=pass header.d=silabs.com; arc=none
+        id S2387992AbgJLLS7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 12 Oct 2020 07:18:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37326 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387597AbgJLLS7 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 12 Oct 2020 07:18:59 -0400
+Received: from mail-io1-xd41.google.com (mail-io1-xd41.google.com [IPv6:2607:f8b0:4864:20::d41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 862F8C0613CE;
+        Mon, 12 Oct 2020 04:18:59 -0700 (PDT)
+Received: by mail-io1-xd41.google.com with SMTP id 67so17290987iob.8;
+        Mon, 12 Oct 2020 04:18:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=silabs.onmicrosoft.com; s=selector2-silabs-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=uBLvox2iXc57mCna1AZj9BmpOZQma4jp92Hg5KojRBg=;
- b=i928r0XHkqqxT+CHKo/aMg8XgwG3Nq14VLKO+RPJomrmH0mDEBMOLSjjPhVDHfBlLHmiA13wjoq63OI7acB88afgMsPq7YQw8MdQMlkNumukQkDK4eHiVJe0QGmb/Qf/XKuuh5MeVO1ZM6wLW1K9uRaTS1uFIlsSkVdneq6/i5U=
-Authentication-Results: vger.kernel.org; dkim=none (message not signed)
- header.d=none;vger.kernel.org; dmarc=none action=none header.from=silabs.com;
-Received: from SN6PR11MB2718.namprd11.prod.outlook.com (2603:10b6:805:63::18)
- by SA0PR11MB4734.namprd11.prod.outlook.com (2603:10b6:806:99::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3455.23; Mon, 12 Oct
- 2020 10:47:49 +0000
-Received: from SN6PR11MB2718.namprd11.prod.outlook.com
- ([fe80::4f5:fbe5:44a7:cb8a]) by SN6PR11MB2718.namprd11.prod.outlook.com
- ([fe80::4f5:fbe5:44a7:cb8a%5]) with mapi id 15.20.3455.029; Mon, 12 Oct 2020
- 10:47:49 +0000
-From:   Jerome Pouiller <Jerome.Pouiller@silabs.com>
-To:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Cc:     devel@driverdev.osuosl.org, linux-kernel@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        =?UTF-8?q?J=C3=A9r=C3=B4me=20Pouiller?= 
-        <jerome.pouiller@silabs.com>
-Subject: [PATCH 23/23] wfx: get out from the staging area
-Date:   Mon, 12 Oct 2020 12:46:48 +0200
-Message-Id: <20201012104648.985256-24-Jerome.Pouiller@silabs.com>
-X-Mailer: git-send-email 2.28.0
-In-Reply-To: <20201012104648.985256-1-Jerome.Pouiller@silabs.com>
-References: <20201012104648.985256-1-Jerome.Pouiller@silabs.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: base64
-X-Originating-IP: [82.67.86.106]
-X-ClientProxiedBy: PR3P189CA0005.EURP189.PROD.OUTLOOK.COM
- (2603:10a6:102:52::10) To SN6PR11MB2718.namprd11.prod.outlook.com
- (2603:10b6:805:63::18)
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=0yEH5NGaTBdVWHmTtAwxYSII40my+xheRGVAOZ2FIJ0=;
+        b=s0zYX1Gtb6a7R4xVptYRoP2DcUZbCLyqwpeX8O2s08CM4/OazzTr7bvPHlEA2QVbQR
+         dxlGk1LinaNF6E6X5EOF9IdXI9sFzrEz8wfsTq0OyhLXM9LDXoStJNLaomQLKE93AFpb
+         RZEwoys22kOh+llg+4kVa7E/V1/6jzT4px7RwyoSbq8J0ury5eznjgjnRTd2QkOf9CTW
+         U3oSGVTmjLHw1CkBCbXuLa2nJ7JN7iEAGEdRX8pWMma2hU/Hv+yf0VALmR5yQaOXqCjM
+         NlWoYtPBOFZF52fACDVdx2AfhPNBXS/EgZyuSAbyp5zHQ1Nzm3oXPX8bRnDFl4SDLq/n
+         4YEw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=0yEH5NGaTBdVWHmTtAwxYSII40my+xheRGVAOZ2FIJ0=;
+        b=WyKeDzLfMThrvUsyL5gqmuWlR/W/RUBcqYujxPAdLSIDXalTz96gvjwv5Y85UQAE0q
+         QI+C+vOcHL4vtV7HbADtnvoOqdlhlsUBue9bsazK5aUkK0XiwDlg5eZqAUZtx0pNcSZg
+         05x7eUdSyl4S+c+3OZZ5OpN8TSVS2bz/F3unqGtOBsxW6KpUMjayIHjlqUIcz/KDFGYT
+         FV2CuvHBfc272ebFXQQCwBFYH1EGYqgHivtHXURBFM4rM9j8JLWUqJQLSuOhdTU8X/dd
+         LdNGRLbchzVeWbzZkl42/PKVt97a2rS6W2PZ28hTfA96HMUI7HzEQmxQ0fze7fQPko5J
+         EcDg==
+X-Gm-Message-State: AOAM531xqOfdjDCX3fQ6u+dp10uzIbWMgOP9r8argvM+UZkYI2xHZTPM
+        x4Yf0SgePIOaK0z9tz9myfmTzv+BDHgF9QGM4fY=
+X-Google-Smtp-Source: ABdhPJyT6N7/YaHLwHPytf6aOAnxfOXQHBo/t0K69MA8144BlECWnhlqEQoLWsvX9dX3yxLy17u+z83tcVMaPZ2//LA=
+X-Received: by 2002:a05:6602:224a:: with SMTP id o10mr15968219ioo.168.1602501538870;
+ Mon, 12 Oct 2020 04:18:58 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from pc-42.home (82.67.86.106) by PR3P189CA0005.EURP189.PROD.OUTLOOK.COM (2603:10a6:102:52::10) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3455.21 via Frontend Transport; Mon, 12 Oct 2020 10:47:47 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 93c23425-7e99-4a50-13a9-08d86e9c430d
-X-MS-TrafficTypeDiagnostic: SA0PR11MB4734:
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <SA0PR11MB4734B766568CDE065836A21D93070@SA0PR11MB4734.namprd11.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:6430;
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: phu9cX0wbIbRxoqnhUaOxDBOwdDis5xw0fRoMR41vZYvILAXzLGazuj9GRH+2c7AmkuxSz8jFkFEy28mQgkPVCSNZmg2CTMGUGNYplHP3SRde7alpP0Sn+Z7p60P7+MK5eHE9kqmTlSy5NcC+7TdIqeG3c6kLfbfhuCoawqX30lLVCw45sKBC6iZUGjJXREgNqdDqEvkQI4C/Xa+xmUXmvTPCpAEVNUR1s8CpGeHrKS1VQNmJq7xKV1oq8b3VblIaDASVInZ4Ubk7HbCIlxT9859h6OeIvmZy/Owsh3urwDSUFQfj3ndCXZJE3VxrCWYjKZyHArBl5e7zWuYmWvBSpDRIfx0IuQKNOGLMd1klz35PpppBYK9uyEOTP/4UcXXMHLFkRQehRTOLYXtPrfFLg==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR11MB2718.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(39850400004)(396003)(366004)(136003)(346002)(376002)(66556008)(66476007)(6512007)(26005)(36756003)(66946007)(16526019)(186003)(316002)(4326008)(2616005)(956004)(1076003)(5660300002)(107886003)(6486002)(54906003)(86362001)(966005)(8676002)(83380400001)(83080400001)(8936002)(66574015)(52116002)(2906002)(6506007)(8886007)(478600001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData: 6qXfzDcdYrc+6PYIji1+U18d/YZgtrNXfQJT4MlIy2dKigtJCVrVE7HFxkW/zimTJIWcx/zngA7YPPtKMNNDBeeZElTlbbrb1DI05FWavZpi/9kvnreMcPjeLeix1mZB6i9UTNWSPAnp8CKJn6ExzLg2YujLtJXmLhNttFxYBEmGrFM24E3DoyCTh6y7GhLNhfoj8/HB7Xll3oZeiDK6eHYRqQGqEIlsWQl+oADH2uEWC0unP71lHQiw/xH1ptrUtjy97uxZaaDnf3BioIQ/vW+DOtOSMtoz4rNiOh0cn+K6E3eb69YqeOjw8G5QdcNvU32hyjOx4atbRn/rKG5PXOQg77nAmyMc2L1oBPGoHl4G8gUXkavzkKygWlGz+LTvRVaEEgdt0bi1nVSdsSkwNFqUkm0GNsjErinzf6mslN15Glg9EMCgO2ZuH83ZkcQzEK8NgR44MNC9+9zZTwaO8Lnb0hIXy8yf542GnhzKg3ihcEbZIl+EV/kPEYzjYh2gyPFny2X78uVzoG7BDvbaOUtCmsQFtkDa1dp1d9n66xVwts2bIJh6TGJP8ppyMRfWcfIiNwxHQ0U1stJJ0tqy+JZEPpyc4M30SSVaYd35iQLb+tdgMMK5Fv+QpHqCSSHUUo//lezUfNLgz+VHnirIrA==
-X-OriginatorOrg: silabs.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 93c23425-7e99-4a50-13a9-08d86e9c430d
-X-MS-Exchange-CrossTenant-AuthSource: SN6PR11MB2718.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Oct 2020 10:47:49.3348
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 54dbd822-5231-4b20-944d-6f4abcd541fb
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: uuUHvN2uCeZEE6d05jZGRBG0772BbiTaOeqU0BwnJ1OWcoKNkUWGo1FMVdhhOV7q0rUrp2mrjfrBZTHF++7mRw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR11MB4734
+References: <20201009170202.103512-1-a.nogikh@gmail.com> <5d71472dcef4d88786ea6e8f30f0816f8b920bb7.camel@sipsolutions.net>
+In-Reply-To: <5d71472dcef4d88786ea6e8f30f0816f8b920bb7.camel@sipsolutions.net>
+From:   Aleksandr Nogikh <a.nogikh@gmail.com>
+Date:   Mon, 12 Oct 2020 14:18:47 +0300
+Message-ID: <CADpXja8NZDZ_3AMHUMnj90nbQbW2pA_aP=_Y2w2tSfy8EcRZkw@mail.gmail.com>
+Subject: Re: [PATCH v2 0/3] [PATCH v2 0/3] [PATCH v2 0/3] net, mac80211,
+ kernel: enable KCOV remote coverage collection for 802.11 frame handling
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     davem@davemloft.net, kuba@kernel.org, akpm@linux-foundation.org,
+        Eric Dumazet <edumazet@google.com>,
+        Andrey Konovalov <andreyknvl@google.com>,
+        Dmitry Vyukov <dvyukov@google.com>,
+        Marco Elver <elver@google.com>, linux-kernel@vger.kernel.org,
+        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+        nogikh@google.com
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-RnJvbTogSsOpcsO0bWUgUG91aWxsZXIgPGplcm9tZS5wb3VpbGxlckBzaWxhYnMuY29tPgoKVGhl
-IHdmeCBkcml2ZXIgaXMgbm93IG1hdHVyZSBlbm91Z2ggdG8gbGVhdmUgdGhlIHN0YWdpbmcgYXJl
-YS4KClNpZ25lZC1vZmYtYnk6IErDqXLDtG1lIFBvdWlsbGVyIDxqZXJvbWUucG91aWxsZXJAc2ls
-YWJzLmNvbT4KLS0tCiBNQUlOVEFJTkVSUyAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgMyAr
-Ky0KIGRyaXZlcnMvbmV0L3dpcmVsZXNzL0tjb25maWcgICAgICAgICB8ICAxICsKIGRyaXZlcnMv
-bmV0L3dpcmVsZXNzL01ha2VmaWxlICAgICAgICB8ICAxICsKIGRyaXZlcnMvbmV0L3dpcmVsZXNz
-L3NpbGFicy9LY29uZmlnICB8IDE4ICsrKysrKysrKysrKysrKysrKwogZHJpdmVycy9uZXQvd2ly
-ZWxlc3Mvc2lsYWJzL01ha2VmaWxlIHwgIDMgKysrCiBkcml2ZXJzL3N0YWdpbmcvS2NvbmZpZyAg
-ICAgICAgICAgICAgfCAgMiAtLQogZHJpdmVycy9zdGFnaW5nL01ha2VmaWxlICAgICAgICAgICAg
-IHwgIDEgLQogZHJpdmVycy9zdGFnaW5nL3dmeC9UT0RPICAgICAgICAgICAgIHwgIDYgLS0tLS0t
-CiA4IGZpbGVzIGNoYW5nZWQsIDI1IGluc2VydGlvbnMoKyksIDEwIGRlbGV0aW9ucygtKQogY3Jl
-YXRlIG1vZGUgMTAwNjQ0IGRyaXZlcnMvbmV0L3dpcmVsZXNzL3NpbGFicy9LY29uZmlnCiBjcmVh
-dGUgbW9kZSAxMDA2NDQgZHJpdmVycy9uZXQvd2lyZWxlc3Mvc2lsYWJzL01ha2VmaWxlCiBkZWxl
-dGUgbW9kZSAxMDA2NDQgZHJpdmVycy9zdGFnaW5nL3dmeC9UT0RPCgpkaWZmIC0tZ2l0IGEvTUFJ
-TlRBSU5FUlMgYi9NQUlOVEFJTkVSUwppbmRleCA1ZTEwNzM1YmU2NTQuLmQxNjcxYzU0Yjk2NyAx
-MDA2NDQKLS0tIGEvTUFJTlRBSU5FUlMKKysrIGIvTUFJTlRBSU5FUlMKQEAgLTE1Nzk5LDcgKzE1
-Nzk5LDggQEAgRjoJZHJpdmVycy9wbGF0Zm9ybS94ODYvdG91Y2hzY3JlZW5fZG1pLmMKIFNJTElD
-T04gTEFCUyBXSVJFTEVTUyBEUklWRVJTIChmb3IgV0Z4eHggc2VyaWVzKQogTToJSsOpcsO0bWUg
-UG91aWxsZXIgPGplcm9tZS5wb3VpbGxlckBzaWxhYnMuY29tPgogUzoJU3VwcG9ydGVkCi1GOglk
-cml2ZXJzL3N0YWdpbmcvd2Z4LworRjoJRG9jdW1lbnRhdGlvbi9kZXZpY2V0cmVlL2JpbmRpbmdz
-L25ldC93aXJlbGVzcy9zaWxhYnMsd2Z4LnlhbWwKK0Y6CWRyaXZlcnMvbmV0L3dpcmVsZXNzL3Np
-bGFicy93ZngvCiAKIFNJTElDT04gTU9USU9OIFNNNzEyIEZSQU1FIEJVRkZFUiBEUklWRVIKIE06
-CVN1ZGlwIE11a2hlcmplZSA8c3VkaXBtLm11a2hlcmplZUBnbWFpbC5jb20+CmRpZmYgLS1naXQg
-YS9kcml2ZXJzL25ldC93aXJlbGVzcy9LY29uZmlnIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvS2Nv
-bmZpZwppbmRleCAxNzBhNjRlNjc3MDkuLjY5ZWE4MzI3OTkwNyAxMDA2NDQKLS0tIGEvZHJpdmVy
-cy9uZXQvd2lyZWxlc3MvS2NvbmZpZworKysgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9LY29uZmln
-CkBAIC00NCw2ICs0NCw3IEBAIHNvdXJjZSAiZHJpdmVycy9uZXQvd2lyZWxlc3MvbWljcm9jaGlw
-L0tjb25maWciCiBzb3VyY2UgImRyaXZlcnMvbmV0L3dpcmVsZXNzL3JhbGluay9LY29uZmlnIgog
-c291cmNlICJkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL0tjb25maWciCiBzb3VyY2UgImRy
-aXZlcnMvbmV0L3dpcmVsZXNzL3JzaS9LY29uZmlnIgorc291cmNlICJkcml2ZXJzL25ldC93aXJl
-bGVzcy9zaWxhYnMvS2NvbmZpZyIKIHNvdXJjZSAiZHJpdmVycy9uZXQvd2lyZWxlc3Mvc3QvS2Nv
-bmZpZyIKIHNvdXJjZSAiZHJpdmVycy9uZXQvd2lyZWxlc3MvdGkvS2NvbmZpZyIKIHNvdXJjZSAi
-ZHJpdmVycy9uZXQvd2lyZWxlc3MvenlkYXMvS2NvbmZpZyIKZGlmZiAtLWdpdCBhL2RyaXZlcnMv
-bmV0L3dpcmVsZXNzL01ha2VmaWxlIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvTWFrZWZpbGUKaW5k
-ZXggODBiMzI0NDk5Nzg2Li43Njg4NWU1ZjBlYTcgMTAwNjQ0Ci0tLSBhL2RyaXZlcnMvbmV0L3dp
-cmVsZXNzL01ha2VmaWxlCisrKyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL01ha2VmaWxlCkBAIC0x
-Niw2ICsxNiw3IEBAIG9iai0kKENPTkZJR19XTEFOX1ZFTkRPUl9NSUNST0NISVApICs9IG1pY3Jv
-Y2hpcC8KIG9iai0kKENPTkZJR19XTEFOX1ZFTkRPUl9SQUxJTkspICs9IHJhbGluay8KIG9iai0k
-KENPTkZJR19XTEFOX1ZFTkRPUl9SRUFMVEVLKSArPSByZWFsdGVrLwogb2JqLSQoQ09ORklHX1dM
-QU5fVkVORE9SX1JTSSkgKz0gcnNpLworb2JqLSQoQ09ORklHX1dMQU5fVkVORE9SX1NJTEFCUykg
-Kz0gc2lsYWJzLwogb2JqLSQoQ09ORklHX1dMQU5fVkVORE9SX1NUKSArPSBzdC8KIG9iai0kKENP
-TkZJR19XTEFOX1ZFTkRPUl9USSkgKz0gdGkvCiBvYmotJChDT05GSUdfV0xBTl9WRU5ET1JfWllE
-QVMpICs9IHp5ZGFzLwpkaWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQvd2lyZWxlc3Mvc2lsYWJzL0tj
-b25maWcgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9zaWxhYnMvS2NvbmZpZwpuZXcgZmlsZSBtb2Rl
-IDEwMDY0NAppbmRleCAwMDAwMDAwMDAwMDAuLjYyNjJhNzk5YmYzNgotLS0gL2Rldi9udWxsCisr
-KyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3NpbGFicy9LY29uZmlnCkBAIC0wLDAgKzEsMTggQEAK
-KyMgU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0yLjAKKworY29uZmlnIFdMQU5fVkVORE9S
-X1NJTEFCUworCWJvb2wgIlNpbGljb24gTGFib3JhdG9yaWVzIGRldmljZXMiCisJZGVmYXVsdCB5
-CisJaGVscAorCSAgSWYgeW91IGhhdmUgYSB3aXJlbGVzcyBjYXJkIGJlbG9uZ2luZyB0byB0aGlz
-IGNsYXNzLCBzYXkgWS4KKworCSAgTm90ZSB0aGF0IHRoZSBhbnN3ZXIgdG8gdGhpcyBxdWVzdGlv
-biBkb2Vzbid0IGRpcmVjdGx5IGFmZmVjdCB0aGUKKwkgIGtlcm5lbDogc2F5aW5nIE4gd2lsbCBq
-dXN0IGNhdXNlIHRoZSBjb25maWd1cmF0b3IgdG8gc2tpcCBhbGwgdGhlCisJICBxdWVzdGlvbnMg
-YWJvdXQgdGhlc2UgY2FyZHMuIElmIHlvdSBzYXkgWSwgeW91IHdpbGwgYmUgYXNrZWQgZm9yCisJ
-ICB5b3VyIHNwZWNpZmljIGNhcmQgaW4gdGhlIGZvbGxvd2luZyBxdWVzdGlvbnMuCisKK2lmIFdM
-QU5fVkVORE9SX1NJTEFCUworCitzb3VyY2UgImRyaXZlcnMvbmV0L3dpcmVsZXNzL3NpbGFicy93
-ZngvS2NvbmZpZyIKKworZW5kaWYgIyBXTEFOX1ZFTkRPUl9TSUxBQlMKZGlmZiAtLWdpdCBhL2Ry
-aXZlcnMvbmV0L3dpcmVsZXNzL3NpbGFicy9NYWtlZmlsZSBiL2RyaXZlcnMvbmV0L3dpcmVsZXNz
-L3NpbGFicy9NYWtlZmlsZQpuZXcgZmlsZSBtb2RlIDEwMDY0NAppbmRleCAwMDAwMDAwMDAwMDAu
-LmMyMjYzZWUyMTAwNgotLS0gL2Rldi9udWxsCisrKyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3Np
-bGFicy9NYWtlZmlsZQpAQCAtMCwwICsxLDMgQEAKKyMgU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6
-IEdQTC0yLjAKKworb2JqLSQoQ09ORklHX1dGWCkgICAgICArPSB3ZngvCmRpZmYgLS1naXQgYS9k
-cml2ZXJzL3N0YWdpbmcvS2NvbmZpZyBiL2RyaXZlcnMvc3RhZ2luZy9LY29uZmlnCmluZGV4IDJk
-MDMxMDQ0OGViYS4uMmQzMjZiMTYyNzJlIDEwMDY0NAotLS0gYS9kcml2ZXJzL3N0YWdpbmcvS2Nv
-bmZpZworKysgYi9kcml2ZXJzL3N0YWdpbmcvS2NvbmZpZwpAQCAtMTE0LDggKzExNCw2IEBAIHNv
-dXJjZSAiZHJpdmVycy9zdGFnaW5nL2twYzIwMDAvS2NvbmZpZyIKIAogc291cmNlICJkcml2ZXJz
-L3N0YWdpbmcvcWxnZS9LY29uZmlnIgogCi1zb3VyY2UgImRyaXZlcnMvc3RhZ2luZy93ZngvS2Nv
-bmZpZyIKLQogc291cmNlICJkcml2ZXJzL3N0YWdpbmcvaGlrZXk5eHgvS2NvbmZpZyIKIAogZW5k
-aWYgIyBTVEFHSU5HCmRpZmYgLS1naXQgYS9kcml2ZXJzL3N0YWdpbmcvTWFrZWZpbGUgYi9kcml2
-ZXJzL3N0YWdpbmcvTWFrZWZpbGUKaW5kZXggNzU3YTg5MmFiNWI5Li45ZGUyNjA4MDJkYjUgMTAw
-NjQ0Ci0tLSBhL2RyaXZlcnMvc3RhZ2luZy9NYWtlZmlsZQorKysgYi9kcml2ZXJzL3N0YWdpbmcv
-TWFrZWZpbGUKQEAgLTQ3LDUgKzQ3LDQgQEAgb2JqLSQoQ09ORklHX1hJTF9BWElTX0ZJRk8pCSs9
-IGF4aXMtZmlmby8KIG9iai0kKENPTkZJR19GSUVMREJVU19ERVYpICAgICArPSBmaWVsZGJ1cy8K
-IG9iai0kKENPTkZJR19LUEMyMDAwKQkJKz0ga3BjMjAwMC8KIG9iai0kKENPTkZJR19RTEdFKQkJ
-Kz0gcWxnZS8KLW9iai0kKENPTkZJR19XRlgpCQkrPSB3ZngvCiBvYmoteQkJCQkrPSBoaWtleTl4
-eC8KZGlmZiAtLWdpdCBhL2RyaXZlcnMvc3RhZ2luZy93ZngvVE9ETyBiL2RyaXZlcnMvc3RhZ2lu
-Zy93ZngvVE9ETwpkZWxldGVkIGZpbGUgbW9kZSAxMDA2NDQKaW5kZXggMWI0YmMyYWY5NGI2Li4w
-MDAwMDAwMDAwMDAKLS0tIGEvZHJpdmVycy9zdGFnaW5nL3dmeC9UT0RPCisrKyAvZGV2L251bGwK
-QEAgLTEsNiArMCwwIEBACi1UaGlzIGlzIGEgbGlzdCBvZiB0aGluZ3MgdGhhdCBuZWVkIHRvIGJl
-IGRvbmUgdG8gZ2V0IHRoaXMgZHJpdmVyIG91dCBvZiB0aGUKLXN0YWdpbmcgZGlyZWN0b3J5Lgot
-Ci0gIC0gQXMgc3VnZ2VzdGVkIGJ5IEZlbGl4LCByYXRlIGNvbnRyb2wgY291bGQgYmUgaW1wcm92
-ZWQgZm9sbG93aW5nIHRoaXMgaWRlYToKLSAgICAgICAgaHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcv
-bGttbC8zMDk5NTU5Lmd2M1E3NUtuTjFAcGMtNDIvCi0KLS0gCjIuMjguMAoK
+On Sun, 11 Oct 2020 at 21:50, Johannes Berg <johannes@sipsolutions.net> wrote:
+[...]
+> Also, unrelated to that (but I see Dmitry CC'ed), I started wondering if
+> it'd be helpful to have an easier raw 802.11 inject path on top of say
+> hwsim0; I noticed some syzbot reports where it created raw sockets, but
+> that only gets you into the *data* plane of the wifi stack, not into the
+> *management* plane. Theoretically you could add a monitor interface, but
+> right now the wifi setup (according to the current docs on github) is
+> using two IBSS interfaces.
+>
+> Perhaps an inject path on the mac80211-hwsim "hwsim0" interface would be
+> something to consider? Or simply adding a third radio that's in
+> "monitor" mode, so that a raw socket bound to *that* interface can
+> inject with a radiotap header followed by an 802.11 frame, getting to
+> arbitrary frame handling code, not just data frames.
+>
+> Any thoughts?
+>
+> johannes
+>
+*sending it again as I forgot to include Cc list*
+
+Hi Johannes,
+
+Thank you for sharing these ideas.
+
+Currently we're injecting frames via mac80211_hwsim (by pretenting to
+be wmediumd -
+https://github.com/google/syzkaller/blob/4a77ae0bdc5cd75ebe88ce7c896aae6bbf457a29/executor/common_linux.h#L4922).
+Injecting via RAW sockets would definitely be a much cleaner way, but
+to do that we need to keep a separate monitor interface. That's pretty
+hard as the fuzzer is constantly trying to break things, and direct
+injection via mac80211_hwsim seems to be a much more robust way - it
+will work as long as the virtual device is alive. hwsim0 is
+unfortunately not available as fuzzer processes are run in separate
+network namespaces, while this one is created during mac80211_hwsim
+initialization.
+
+The current approach seems to work fine for management frames - I was
+able to create seed programs that inject valid management frames and
+these frames have the expected effect on the subsystem (e.g. injecting
+AP responses during scan/authentication/authorization forces a station
+to believe that it has successfully connected to an AP).
+
+--
+Best Regards,
+Aleksandr
