@@ -2,102 +2,105 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3575528AB84
-	for <lists+linux-wireless@lfdr.de>; Mon, 12 Oct 2020 03:49:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC80228AC07
+	for <lists+linux-wireless@lfdr.de>; Mon, 12 Oct 2020 04:24:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727459AbgJLBtW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 11 Oct 2020 21:49:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34100 "EHLO
+        id S1726134AbgJLCYc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 11 Oct 2020 22:24:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39476 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726430AbgJLBtV (ORCPT
+        with ESMTP id S1726098AbgJLCYc (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 11 Oct 2020 21:49:21 -0400
-Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com [IPv6:2607:f8b0:4864:20::541])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBDC4C0613CE;
-        Sun, 11 Oct 2020 18:49:21 -0700 (PDT)
-Received: by mail-pg1-x541.google.com with SMTP id q21so1556062pgi.13;
-        Sun, 11 Oct 2020 18:49:21 -0700 (PDT)
+        Sun, 11 Oct 2020 22:24:32 -0400
+Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com [IPv6:2607:f8b0:4864:20::544])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0AFB5C0613CE;
+        Sun, 11 Oct 2020 19:24:32 -0700 (PDT)
+Received: by mail-pg1-x544.google.com with SMTP id j7so2092821pgk.5;
+        Sun, 11 Oct 2020 19:24:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=rIbb0/SViFEAq3N3skmCoQu+YzgDQ+YxSiq/Tk6Jyjs=;
-        b=YatStj6JeisBAbir+YmU7Y5u3EZpGBGxbKaXAmw1CVHxTUc6NcIKpPqjbiRhurBwTi
-         9+/cysSBOniaSGTCjhfXMLOFLQ1wQHQuw0bdIqd4Z92Hmkv4PL0lszVvOvrbEK8jdOkM
-         sA5idgF+CcK58S1mlBzS4oJwDDX/f16/4ock0VZbnFal3wyWoA5qrRNDCgtEhlIsPcBD
-         fksa9vLGqLi7PndXJtXuZSSbdTIf92YYTPLiTcG0/O/6uOE+/2R7TEDcX6qaOK7xBobz
-         /I2Q4ZfZKhD18n2wf2Qb8rrn+HxwwIF7YwWylf6De1dZ0XhJo6DjT1h2S1IhR99CK/au
-         cOpQ==
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=QTY4U4+6Sbw73VZ7+xXUxoGTOblZuC8XJ4f2Cm9gN2M=;
+        b=RUrhrwlvqSDsUPNCIbmcRUckVMfC4Enu9Ygq4L5yDTueMlxkTbAGTdtYm7jOMebNvN
+         IGFDiyl8LSrAOBxcBCv35gZOYRY6vQ8kePJEb1xCCy3gIOVp8bWtZ1BCnYu+0rxzdkUz
+         mrf4Y7fvmeMqmQ1jXkQquPdOeOPTwyH7CftVKKQmBH+i1DRB0cbaZgM5UMquot1I0PH7
+         UqvSV0uD4p7fvQlH8Lrf4dv0BNQxxU0e+fFQGanxh/QxQJ+/2sLOq6cV4pVCcFToPB3b
+         +4GeMQFleabVe1MC9JhEeu/golZWD5SM6X+DwYgtKxV+lhiEUPj6urer9KjKjNx4gT5Y
+         WqgQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=rIbb0/SViFEAq3N3skmCoQu+YzgDQ+YxSiq/Tk6Jyjs=;
-        b=P1khmQyt6XcIK9iZBdVMGA5yyOa0thxfr0siejD7Yk/F41QBbFx87amCp4UtaAJKCb
-         0/aPWtqmtyFcCsFj9w+OwOTkydmXNG0sL79VGnGNbI4RlEFBJzWXztJjqRdmC5bc930i
-         WBC+kYQhbI90l0kShk+DftX11Gtc4DiAyGfUecJQV5wbaSq7w3RSzLAfK7GcfLruGpDg
-         HUl5W7HMYgEMS7qHn99Bp0Wt/RrIUWG3AUEkfQvZvClXNxQJjnAF3KaWfiE7N6JAuMDJ
-         tvk8lUBpiBP+UCBHnGvW3/UtB8dcoW3+DJbew3bxhXyVoB6yqAPZlwj3KlgaDF/6Eelo
-         LaoA==
-X-Gm-Message-State: AOAM530FXK9j0TQduaJmK7YMwrrFpIwAewOsBrWcW/v0IbY+CuZtMyJH
-        YsxTMVo4Rseag1+C4YaZi9A=
-X-Google-Smtp-Source: ABdhPJw4Pe7H9he+gRS6c+vGPBxNBkJ5eYwam9urDtnsK8QiQhWjspuehNW3K1oIiXedZsnV0pVyCw==
-X-Received: by 2002:a62:5bc2:0:b029:13e:d13d:a130 with SMTP id p185-20020a625bc20000b029013ed13da130mr21501632pfb.24.1602467361220;
-        Sun, 11 Oct 2020 18:49:21 -0700 (PDT)
-Received: from [192.168.1.3] (ip68-111-84-250.oc.oc.cox.net. [68.111.84.250])
-        by smtp.gmail.com with ESMTPSA id g3sm21133168pjl.6.2020.10.11.18.49.18
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 11 Oct 2020 18:49:20 -0700 (PDT)
-Subject: Re: [PATCH net-next 08/12] net: dsa: use new function
- dev_fetch_sw_netstats
-To:     Heiner Kallweit <hkallweit1@gmail.com>,
-        David Miller <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        =?UTF-8?Q?Bj=c3=b8rn_Mork?= <bjorn@mork.no>,
-        Oliver Neukum <oneukum@suse.com>,
-        Igor Mitsyanko <imitsyanko@quantenna.com>,
-        Sergey Matyukevich <geomatsi@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Roopa Prabhu <roopa@nvidia.com>,
-        Nikolay Aleksandrov <nikolay@nvidia.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Vivien Didelot <vivien.didelot@gmail.com>,
-        Vladimir Oltean <olteanv@gmail.com>,
-        Alexey Kuznetsov <kuznet@ms2.inr.ac.ru>,
-        Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Pravin B Shelar <pshelar@ovn.org>,
-        Steffen Klassert <steffen.klassert@secunet.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>
-Cc:     "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        linux-rdma@vger.kernel.org,
-        Linux USB Mailing List <linux-usb@vger.kernel.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        bridge@lists.linux-foundation.org
-References: <a46f539e-a54d-7e92-0372-cd96bb280729@gmail.com>
- <4c7b9a8d-caa2-52dd-8973-10f4e2892dd6@gmail.com>
-From:   Florian Fainelli <f.fainelli@gmail.com>
-Message-ID: <44356f33-2191-c5a6-4c38-50c2934d16b0@gmail.com>
-Date:   Sun, 11 Oct 2020 18:49:17 -0700
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Firefox/78.0 Thunderbird/78.3.2
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=QTY4U4+6Sbw73VZ7+xXUxoGTOblZuC8XJ4f2Cm9gN2M=;
+        b=c466/3KdztEFexmPXjTCSvG/hicnxexkXmzJhRaUn8sRBgBOcRvURPhI7Cn0q+sjUL
+         EBrLOAKeRpLbLQ8XAcxx9TyGZJIX9icLT3BMeX4Ic5R59tjNtjdLNr8VT6a6Azmws0Ua
+         TQWoXRhNIPJJTwnvP76FbV4qW2oJLHhrNvAu1DGOfNi3X+4SWzaFwbBoQfi704yTmXnv
+         KLpXXvM05tHTGA52iHU94tfWG1HERrmzkqLfv3OzJkujXI/RzaaUrcglC5/BpAS4oAai
+         XL8XOTwqKzkmQKpu68hTSJgSCpl1CCwRHURIZQ/w0UnLA5c0L+mqPhFcQbRj46mL5r0E
+         SyZQ==
+X-Gm-Message-State: AOAM533NECaVt4/rkjhq4ZepRmA6jjhbo9eX5pXrNblZvqDtlsOc+AMY
+        rMfbf0w6CrLx5zS1CjeZSqlcr6WbJbI=
+X-Google-Smtp-Source: ABdhPJzZjUPvgYWPF02xUtu6ivhmaimfPJKfU7fIKnA+i72lKbKpgN3Pry3uz73SMdubM2fF5E4XxQ==
+X-Received: by 2002:a17:90b:1392:: with SMTP id hr18mr3040539pjb.182.1602469471193;
+        Sun, 11 Oct 2020 19:24:31 -0700 (PDT)
+Received: from ubuntu-m3-large-x86 ([2604:1380:45e1:2200::1])
+        by smtp.gmail.com with ESMTPSA id n67sm17206369pgn.14.2020.10.11.19.24.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 11 Oct 2020 19:24:30 -0700 (PDT)
+Date:   Sun, 11 Oct 2020 19:24:28 -0700
+From:   Nathan Chancellor <natechancellor@gmail.com>
+To:     trix@redhat.com
+Cc:     yhchuang@realtek.com, kvalo@codeaurora.org, davem@davemloft.net,
+        kuba@kernel.org, ndesaulniers@google.com,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, clang-built-linux@googlegroups.com
+Subject: Re: [PATCH] rtw88: fix fw_fifo_addr check
+Message-ID: <20201012022428.GA936980@ubuntu-m3-large-x86>
+References: <20201011155438.15892-1-trix@redhat.com>
 MIME-Version: 1.0
-In-Reply-To: <4c7b9a8d-caa2-52dd-8973-10f4e2892dd6@gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201011155438.15892-1-trix@redhat.com>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-
-
-On 10/11/2020 12:41 PM, Heiner Kallweit wrote:
-> Simplify the code by using new function dev_fetch_sw_netstats().
+On Sun, Oct 11, 2020 at 08:54:38AM -0700, trix@redhat.com wrote:
+> From: Tom Rix <trix@redhat.com>
 > 
-> Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+> The clang build reports this warning
+> 
+> fw.c:1485:21: warning: address of array 'rtwdev->chip->fw_fifo_addr'
+>   will always evaluate to 'true'
+>         if (!rtwdev->chip->fw_fifo_addr) {
+> 
+> fw_fifo_addr is an array in rtw_chip_info so it is always
+> nonzero.  A better check is if the first element of the array is
+> nonzero.  In the cases where fw_fifo_addr is initialized by rtw88b
+> and rtw88c, the first array element is 0x780.
+> 
+> Signed-off-by: Tom Rix <trix@redhat.com>
 
-Reviewed-by: Florian Fainelli <f.fainelli@gmail.com>
--- 
-Florian
+Reviewed-by: Nathan Chancellor <natechancellor@gmail.com>
+
+> ---
+>  drivers/net/wireless/realtek/rtw88/fw.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/wireless/realtek/rtw88/fw.c b/drivers/net/wireless/realtek/rtw88/fw.c
+> index 042015bc8055..b2fd87834f23 100644
+> --- a/drivers/net/wireless/realtek/rtw88/fw.c
+> +++ b/drivers/net/wireless/realtek/rtw88/fw.c
+> @@ -1482,7 +1482,7 @@ static bool rtw_fw_dump_check_size(struct rtw_dev *rtwdev,
+>  int rtw_fw_dump_fifo(struct rtw_dev *rtwdev, u8 fifo_sel, u32 addr, u32 size,
+>  		     u32 *buffer)
+>  {
+> -	if (!rtwdev->chip->fw_fifo_addr) {
+> +	if (!rtwdev->chip->fw_fifo_addr[0]) {
+>  		rtw_dbg(rtwdev, RTW_DBG_FW, "chip not support dump fw fifo\n");
+>  		return -ENOTSUPP;
+>  	}
+> -- 
+> 2.18.1
+> 
