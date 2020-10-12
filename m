@@ -2,77 +2,121 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C671D28B3AA
-	for <lists+linux-wireless@lfdr.de>; Mon, 12 Oct 2020 13:21:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 266B228B538
+	for <lists+linux-wireless@lfdr.de>; Mon, 12 Oct 2020 14:56:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388029AbgJLLVY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 12 Oct 2020 07:21:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37700 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387859AbgJLLVY (ORCPT
+        id S1730224AbgJLM4K (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 12 Oct 2020 08:56:10 -0400
+Received: from mailgw02.mediatek.com ([210.61.82.184]:53376 "EHLO
+        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726769AbgJLM4J (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 12 Oct 2020 07:21:24 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 499A6C0613CE;
-        Mon, 12 Oct 2020 04:21:24 -0700 (PDT)
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.94)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1kRvtA-0046Wq-DO; Mon, 12 Oct 2020 13:21:12 +0200
-Message-ID: <af396e563aa41c4f0cce812afa11667ecab09ab0.camel@sipsolutions.net>
-Subject: Re: [PATCH v2 0/3] [PATCH v2 0/3] [PATCH v2 0/3] net, mac80211,
- kernel: enable KCOV remote coverage collection for 802.11 frame handling
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Aleksandr Nogikh <a.nogikh@gmail.com>
-Cc:     davem@davemloft.net, kuba@kernel.org, akpm@linux-foundation.org,
-        Eric Dumazet <edumazet@google.com>,
-        Andrey Konovalov <andreyknvl@google.com>,
-        Dmitry Vyukov <dvyukov@google.com>,
-        Marco Elver <elver@google.com>, linux-kernel@vger.kernel.org,
-        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        nogikh@google.com
-Date:   Mon, 12 Oct 2020 13:21:11 +0200
-In-Reply-To: <CADpXja8NZDZ_3AMHUMnj90nbQbW2pA_aP=_Y2w2tSfy8EcRZkw@mail.gmail.com> (sfid-20201012_131900_623711_9BAE6766)
-References: <20201009170202.103512-1-a.nogikh@gmail.com>
-         <5d71472dcef4d88786ea6e8f30f0816f8b920bb7.camel@sipsolutions.net>
-         <CADpXja8NZDZ_3AMHUMnj90nbQbW2pA_aP=_Y2w2tSfy8EcRZkw@mail.gmail.com>
-         (sfid-20201012_131900_623711_9BAE6766)
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.5 (3.36.5-1.fc32) 
+        Mon, 12 Oct 2020 08:56:09 -0400
+X-UUID: 9614a937790543708f0625878a6a0dd9-20201012
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+        h=Content-Transfer-Encoding:Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=zY34pkVXqvHFrUkI7Cdx5qzwRfOG6aaDums30Ks561c=;
+        b=Fo5+ZtfDwT4nuJit7a+MMCt3VVCwO3s4gSr1haVT8y75JzGzeiH91usr/wRQs8969pyKQaXATxe6PUHmi+FmhKQ/8hNWfU59Wx+fF0US+udhbRuw56em4vXRFnLwVeMMhXr+ZT3RS6rdPXGPTYXbojrt3mSQARnPhBtyKdDuEZ0=;
+X-UUID: 9614a937790543708f0625878a6a0dd9-20201012
+Received: from mtkcas07.mediatek.inc [(172.21.101.84)] by mailgw02.mediatek.com
+        (envelope-from <shayne.chen@mediatek.com>)
+        (Cellopoint E-mail Firewall v4.1.14 Build 0819 with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 336217629; Mon, 12 Oct 2020 20:55:58 +0800
+Received: from mtkcas08.mediatek.inc (172.21.101.126) by
+ mtkmbs08n2.mediatek.inc (172.21.101.56) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Mon, 12 Oct 2020 20:55:55 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas08.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Mon, 12 Oct 2020 20:55:55 +0800
+From:   Shayne Chen <shayne.chen@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>
+CC:     linux-wireless <linux-wireless@vger.kernel.org>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        linux-mediatek <linux-mediatek@lists.infradead.org>,
+        Shayne Chen <shayne.chen@mediatek.com>
+Subject: [PATCH v3 01/10] mt76: testmode: switch ib and wb rssi to array type for per-antenna report
+Date:   Mon, 12 Oct 2020 20:53:54 +0800
+Message-ID: <20201012125403.8608-1-shayne.chen@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
+X-TM-SNTS-SMTP: 378ADA0831A9C3A396325DD3B430A82D067BF03C513305CCBFFB0905147A65CF2000:8
+X-MTK:  N
+Content-Transfer-Encoding: base64
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 2020-10-12 at 14:18 +0300, Aleksandr Nogikh wrote:
-> 
-> Currently we're injecting frames via mac80211_hwsim (by pretenting to
-> be wmediumd -
-> https://github.com/google/syzkaller/blob/4a77ae0bdc5cd75ebe88ce7c896aae6bbf457a29/executor/common_linux.h#L4922).
-
-Ah, ok, of course that works too :-)
-
-> Injecting via RAW sockets would definitely be a much cleaner way, but
-> to do that we need to keep a separate monitor interface. That's pretty
-> hard as the fuzzer is constantly trying to break things, and direct
-> injection via mac80211_hwsim seems to be a much more robust way - it
-> will work as long as the virtual device is alive. hwsim0 is
-> unfortunately not available as fuzzer processes are run in separate
-> network namespaces, while this one is created during mac80211_hwsim
-> initialization.
-
-Oh, OK. I guess we _could_ move that also to the new namespace or
-something, but if the wmediumd approach works then I think it's not
-worth it.
-
-> The current approach seems to work fine for management frames - I was
-> able to create seed programs that inject valid management frames and
-> these frames have the expected effect on the subsystem (e.g. injecting
-> AP responses during scan/authentication/authorization forces a station
-> to believe that it has successfully connected to an AP).
-
-Great!
-
-johannes
+Q2hhbmdlIGliX3Jzc2kgYW5kIHdiX3Jzc2kgaW50byBhcnJheSB0eXBlLCBzaW5jZSB0aGV5IGNv
+dWxkIGJlIHJlcG9ydGVkDQpieSBwZXItYW50ZW5uYS4NCg0KUmV2aWV3ZWQtYnk6IFJ5ZGVyIExl
+ZSA8cnlkZXIubGVlQG1lZGlhdGVrLmNvbT4NClNpZ25lZC1vZmYtYnk6IFNoYXluZSBDaGVuIDxz
+aGF5bmUuY2hlbkBtZWRpYXRlay5jb20+DQotLS0NCnYyOiBtb3ZlIFJldmlld2VkLWJ5IGJlZm9y
+ZSBzLW8tYg0KDQogLi4uL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzYxNS9tYWMuYyAg
+IHwgIDQgKystLQ0KIC4uLi93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzYxNS9tdDc2MTUuaCAg
+ICB8ICA0ICsrLS0NCiAuLi4vd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc2MTUvdGVzdG1vZGUu
+YyAgfCAyNCArKysrKysrKysrKysrKysrLS0tDQogZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0
+ZWsvbXQ3Ni90ZXN0bW9kZS5oIHwgIDQgKystLQ0KIDQgZmlsZXMgY2hhbmdlZCwgMjcgaW5zZXJ0
+aW9ucygrKSwgOSBkZWxldGlvbnMoLSkNCg0KZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3dpcmVs
+ZXNzL21lZGlhdGVrL210NzYvbXQ3NjE1L21hYy5jIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVk
+aWF0ZWsvbXQ3Ni9tdDc2MTUvbWFjLmMNCmluZGV4IDhkYzY0NWUuLjlhYWQyZWUgMTAwNjQ0DQot
+LS0gYS9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzYxNS9tYWMuYw0KKysr
+IGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc2MTUvbWFjLmMNCkBAIC0y
+MTUsOCArMjE1LDggQEAgc3RhdGljIHZvaWQgbXQ3NjE1X21hY19maWxsX3RtX3J4KHN0cnVjdCBt
+dDc2MTVfZGV2ICpkZXYsIF9fbGUzMiAqcnh2KQ0KIAlkZXYtPnRlc3QubGFzdF9yY3BpWzFdID0g
+RklFTERfR0VUKE1UX1JYVjRfUkNQSTEsIHJ4djQpOw0KIAlkZXYtPnRlc3QubGFzdF9yY3BpWzJd
+ID0gRklFTERfR0VUKE1UX1JYVjRfUkNQSTIsIHJ4djQpOw0KIAlkZXYtPnRlc3QubGFzdF9yY3Bp
+WzNdID0gRklFTERfR0VUKE1UX1JYVjRfUkNQSTMsIHJ4djQpOw0KLQlkZXYtPnRlc3QubGFzdF9p
+Yl9yc3NpID0gRklFTERfR0VUKE1UX1JYVjNfSUJfUlNTSSwgcnh2Myk7DQotCWRldi0+dGVzdC5s
+YXN0X3diX3Jzc2kgPSBGSUVMRF9HRVQoTVRfUlhWM19XQl9SU1NJLCByeHYzKTsNCisJZGV2LT50
+ZXN0Lmxhc3RfaWJfcnNzaVswXSA9IEZJRUxEX0dFVChNVF9SWFYzX0lCX1JTU0ksIHJ4djMpOw0K
+KwlkZXYtPnRlc3QubGFzdF93Yl9yc3NpWzBdID0gRklFTERfR0VUKE1UX1JYVjNfV0JfUlNTSSwg
+cnh2Myk7DQogI2VuZGlmDQogfQ0KIA0KZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3dpcmVsZXNz
+L21lZGlhdGVrL210NzYvbXQ3NjE1L210NzYxNS5oIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVk
+aWF0ZWsvbXQ3Ni9tdDc2MTUvbXQ3NjE1LmgNCmluZGV4IGY3MjUwNmQuLjUwZWE5ZWYgMTAwNjQ0
+DQotLS0gYS9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzYxNS9tdDc2MTUu
+aA0KKysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc2MTUvbXQ3NjE1
+LmgNCkBAIC0zMDMsOCArMzAzLDggQEAgc3RydWN0IG10NzYxNV9kZXYgew0KIA0KIAkJczE2IGxh
+c3RfZnJlcV9vZmZzZXQ7DQogCQl1OCBsYXN0X3JjcGlbNF07DQotCQlzOCBsYXN0X2liX3Jzc2k7
+DQotCQlzOCBsYXN0X3diX3Jzc2k7DQorCQlzOCBsYXN0X2liX3Jzc2lbNF07DQorCQlzOCBsYXN0
+X3diX3Jzc2lbNF07DQogCX0gdGVzdDsNCiAjZW5kaWYNCiANCmRpZmYgLS1naXQgYS9kcml2ZXJz
+L25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzYxNS90ZXN0bW9kZS5jIGIvZHJpdmVycy9u
+ZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc2MTUvdGVzdG1vZGUuYw0KaW5kZXggMWYzMzYy
+OC4uOGZjOTdhNSAxMDA2NDQNCi0tLSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210
+NzYvbXQ3NjE1L3Rlc3Rtb2RlLmMNCisrKyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVr
+L210NzYvbXQ3NjE1L3Rlc3Rtb2RlLmMNCkBAIC0zMzUsOSArMzM1LDcgQEAgbXQ3NjE1X3RtX2R1
+bXBfc3RhdHMoc3RydWN0IG10NzZfZGV2ICptZGV2LCBzdHJ1Y3Qgc2tfYnVmZiAqbXNnKQ0KIAlp
+ZiAoIXJ4KQ0KIAkJcmV0dXJuIC1FTk9NRU07DQogDQotCWlmIChubGFfcHV0X3MzMihtc2csIE1U
+NzZfVE1fUlhfQVRUUl9GUkVRX09GRlNFVCwgZGV2LT50ZXN0Lmxhc3RfZnJlcV9vZmZzZXQpIHx8
+DQotCSAgICBubGFfcHV0X3MzMihtc2csIE1UNzZfVE1fUlhfQVRUUl9JQl9SU1NJLCBkZXYtPnRl
+c3QubGFzdF9pYl9yc3NpKSB8fA0KLQkgICAgbmxhX3B1dF9zMzIobXNnLCBNVDc2X1RNX1JYX0FU
+VFJfV0JfUlNTSSwgZGV2LT50ZXN0Lmxhc3Rfd2JfcnNzaSkpDQorCWlmIChubGFfcHV0X3MzMiht
+c2csIE1UNzZfVE1fUlhfQVRUUl9GUkVRX09GRlNFVCwgZGV2LT50ZXN0Lmxhc3RfZnJlcV9vZmZz
+ZXQpKQ0KIAkJcmV0dXJuIC1FTk9NRU07DQogDQogCXJzc2kgPSBubGFfbmVzdF9zdGFydChtc2cs
+IE1UNzZfVE1fUlhfQVRUUl9SQ1BJKTsNCkBAIC0zNTAsNiArMzQ4LDI2IEBAIG10NzYxNV90bV9k
+dW1wX3N0YXRzKHN0cnVjdCBtdDc2X2RldiAqbWRldiwgc3RydWN0IHNrX2J1ZmYgKm1zZykNCiAN
+CiAJbmxhX25lc3RfZW5kKG1zZywgcnNzaSk7DQogDQorCXJzc2kgPSBubGFfbmVzdF9zdGFydCht
+c2csIE1UNzZfVE1fUlhfQVRUUl9JQl9SU1NJKTsNCisJaWYgKCFyc3NpKQ0KKwkJcmV0dXJuIC1F
+Tk9NRU07DQorDQorCWZvciAoaSA9IDA7IGkgPCBBUlJBWV9TSVpFKGRldi0+dGVzdC5sYXN0X2li
+X3Jzc2kpOyBpKyspDQorCQlpZiAobmxhX3B1dF9zOChtc2csIGksIGRldi0+dGVzdC5sYXN0X2li
+X3Jzc2lbaV0pKQ0KKwkJCXJldHVybiAtRU5PTUVNOw0KKw0KKwlubGFfbmVzdF9lbmQobXNnLCBy
+c3NpKTsNCisNCisJcnNzaSA9IG5sYV9uZXN0X3N0YXJ0KG1zZywgTVQ3Nl9UTV9SWF9BVFRSX1dC
+X1JTU0kpOw0KKwlpZiAoIXJzc2kpDQorCQlyZXR1cm4gLUVOT01FTTsNCisNCisJZm9yIChpID0g
+MDsgaSA8IEFSUkFZX1NJWkUoZGV2LT50ZXN0Lmxhc3Rfd2JfcnNzaSk7IGkrKykNCisJCWlmIChu
+bGFfcHV0X3M4KG1zZywgaSwgZGV2LT50ZXN0Lmxhc3Rfd2JfcnNzaVtpXSkpDQorCQkJcmV0dXJu
+IC1FTk9NRU07DQorDQorCW5sYV9uZXN0X2VuZChtc2csIHJzc2kpOw0KKw0KIAlubGFfbmVzdF9l
+bmQobXNnLCByeCk7DQogDQogCXJldHVybiAwOw0KZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3dp
+cmVsZXNzL21lZGlhdGVrL210NzYvdGVzdG1vZGUuaCBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21l
+ZGlhdGVrL210NzYvdGVzdG1vZGUuaA0KaW5kZXggNjkxZmU1Ny4uMDJjOTQ5NSAxMDA2NDQNCi0t
+LSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvdGVzdG1vZGUuaA0KKysrIGIv
+ZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni90ZXN0bW9kZS5oDQpAQCAtOTksOCAr
+OTksOCBAQCBlbnVtIG10NzZfdGVzdG1vZGVfc3RhdHNfYXR0ciB7DQogICoNCiAgKiBATVQ3Nl9U
+TV9SWF9BVFRSX0ZSRVFfT0ZGU0VUOiBmcmVxdWVuY3kgb2Zmc2V0IChzMzIpDQogICogQE1UNzZf
+VE1fUlhfQVRUUl9SQ1BJOiByZWNlaXZlZCBjaGFubmVsIHBvd2VyIGluZGljYXRvciAoYXJyYXks
+IHU4KQ0KLSAqIEBNVDc2X1RNX1JYX0FUVFJfSUJfUlNTSTogaW50ZXJuYWwgaW5iYW5kIFJTU0kg
+KHM4KQ0KLSAqIEBNVDc2X1RNX1JYX0FUVFJfV0JfUlNTSTogaW50ZXJuYWwgd2lkZWJhbmQgUlNT
+SSAoczgpDQorICogQE1UNzZfVE1fUlhfQVRUUl9JQl9SU1NJOiBpbnRlcm5hbCBpbmJhbmQgUlNT
+SSAoYXJyYXksIHM4KQ0KKyAqIEBNVDc2X1RNX1JYX0FUVFJfV0JfUlNTSTogaW50ZXJuYWwgd2lk
+ZWJhbmQgUlNTSSAoYXJyYXksIHM4KQ0KICAqLw0KIGVudW0gbXQ3Nl90ZXN0bW9kZV9yeF9hdHRy
+IHsNCiAJTVQ3Nl9UTV9SWF9BVFRSX1VOU1BFQywNCi0tIA0KMi4xNy4xDQo=
 
