@@ -2,91 +2,99 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8076528D683
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 Oct 2020 00:43:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0369B28DCB2
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 Oct 2020 11:19:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729076AbgJMWng (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 13 Oct 2020 18:43:36 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:34364 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728931AbgJMWnZ (ORCPT
+        id S1729820AbgJNJTi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 14 Oct 2020 05:19:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39948 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729406AbgJNJTh (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 13 Oct 2020 18:43:25 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 09DMYHRI023311;
-        Tue, 13 Oct 2020 22:43:19 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-type : content-transfer-encoding; s=corp-2020-01-29;
- bh=BPXVhR8Zcz1sWINwPPKI15oRrSSfJmS7Dk7t6k2FBvc=;
- b=X98OMsUEJ6iXi28jlvGzIuUNtCUPCHKr9Y26mlldDvGV1tVg0rW4+z19ERv9nUm05fW2
- 7uLfRfkQC87plb6dqK0JgwDllNVeWHEr4KuohBovrquRB4Wp8Fn55mzzRhERGk86b1R8
- IUAHuFALM9P0nzG0SMad9VRc3S4BqwSCpX9uXbI7E8E4JWNs+M489BfaOy69s9tMy36o
- WsDINZk0QvR9KX7AD1uVtYIm858Ec1rCBrQM2cWhu74pWwQ4sERB2XP+p4QlG2a3ov36
- KsDceZW1Gf6MViMvswmWBcHmPujmAKdJrQLwx9ihpq7sGfN7gk8NuWumGIvUgBivX+8I Nw== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by aserp2120.oracle.com with ESMTP id 3434wkmr7r-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 13 Oct 2020 22:43:19 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 09DMZeSv129581;
-        Tue, 13 Oct 2020 22:43:18 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-        by aserp3030.oracle.com with ESMTP id 343phntsx7-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 13 Oct 2020 22:43:18 +0000
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [127.0.0.1])
-        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 09DMhIGo146795;
-        Tue, 13 Oct 2020 22:43:18 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by aserp3030.oracle.com with ESMTP id 343phntswf-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 13 Oct 2020 22:43:18 +0000
-Received: from abhmp0011.oracle.com (abhmp0011.oracle.com [141.146.116.17])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 09DMhFrt005717;
-        Tue, 13 Oct 2020 22:43:16 GMT
-Received: from ca-mkp.ca.oracle.com (/10.156.108.201)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 13 Oct 2020 15:43:15 -0700
-From:   "Martin K. Petersen" <martin.petersen@oracle.com>
-To:     linux-spi@vger.kernel.org, Julia Lawall <Julia.Lawall@inria.fr>
-Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
-        linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-        dmaengine@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-media@vger.kernel.org, target-devel@vger.kernel.org,
-        linux-rdma@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, Dan Williams <dan.j.williams@intel.com>,
-        linux-serial@vger.kernel.org, linux-nfs@vger.kernel.org,
-        linux-scsi@vger.kernel.org, Yossi Leybovich <sleybo@amazon.com>,
-        linux-block@vger.kernel.org, rds-devel@oss.oracle.com
-Subject: Re: [PATCH 00/14] drop double zeroing
-Date:   Tue, 13 Oct 2020 18:42:52 -0400
-Message-Id: <160262862433.3018.13907233755506910409.b4-ty@oracle.com>
-X-Mailer: git-send-email 2.28.0
-In-Reply-To: <1600601186-7420-1-git-send-email-Julia.Lawall@inria.fr>
-References: <1600601186-7420-1-git-send-email-Julia.Lawall@inria.fr>
+        Wed, 14 Oct 2020 05:19:37 -0400
+Received: from mail.blocktrron.ovh (mars.blocktrron.ovh [IPv6:2001:41d0:401:3000::cbd])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB2A2C08EC6F
+        for <linux-wireless@vger.kernel.org>; Tue, 13 Oct 2020 16:55:48 -0700 (PDT)
+Received: from [IPv6:2003:e5:3f10:8a00:199:967e:17ef:50b5] (p200300e53f108a000199967e17ef50b5.dip0.t-ipconnect.de [IPv6:2003:e5:3f10:8a00:199:967e:17ef:50b5])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.blocktrron.ovh (Postfix) with ESMTPSA id 4FF2026EA5;
+        Wed, 14 Oct 2020 01:55:46 +0200 (CEST)
+Subject: Re: [PATCH] mt76: mt7603: add additional EEPROM chip ID
+To:     Andreas Ziegler <dev@andreas-ziegler.de>
+Cc:     Lorenzo Bianconi <lorenzo@kernel.org>, nbd@nbd.name,
+        lorenzo.bianconi83@gmail.com, ryder.lee@mediatek.com,
+        kvalo@codeaurora.org, linux-wireless@vger.kernel.org,
+        Ron Asimi <ron.asimi@gmail.com>
+References: <20201013142326.8361-1-mail@david-bauer.net>
+ <20201013143219.GA2854@lore-desk>
+ <cbd2ecce-09c8-15ec-e6b3-6e0913d09da4@david-bauer.net>
+ <1dae1d32-8cf5-75f3-8bdc-32ec058faba5@andreas-ziegler.de>
+From:   David Bauer <mail@david-bauer.net>
+Autocrypt: addr=mail@david-bauer.net; prefer-encrypt=mutual; keydata=
+ mQENBFYkGEcBCADbRMHdOXmszxrmE9G/gWUD4/HXklOfn+hyBpEcOul+GKAet0oFxznkchJe
+ hO5MbEFYsnM8TZVxjnEi70c3luF1m4JycjgQ91GJ52+xvLV0dVz+L99JBgVJNRDvvt68rLVq
+ A8/LCdkXctZ+GBfrtTYQ6dOeuQf/qWuwlNTvuG92uWVZjncyWOmQX73gv+1MTRsCmIGNYQu1
+ ZDVyhr3YsTgJIXTHUCxBHQBDglkb3L5lK9WHPf1puQ2grNbUg9VSmo4a9IzUpRauNtCDUFxi
+ 1m1e5VnmU5O5/xZyDzwmpWog9tUfScS7X9pdVNQ+2W3zCRrotFEn6FKdD01mhIsLnczjABEB
+ AAG0IkRhdmlkIEJhdWVyIDxtYWlsQGRhdmlkLWJhdWVyLm5ldD6JAVkEEwEIAEMCGwMHCwkI
+ BwMCAQYVCAIJCgsEFgIDAQIeAQIXgAIZARYhBNcEMml7fEwnOA/No7qzlxS0pLh4BQJe17UP
+ BQkKlNBIAAoJELqzlxS0pLh494UH/irs1e2AucUFddh9bRs6DP7vti3C/wkfg32LpVBeNL7D
+ 0JgGBdEHvCgAZEdorm62rPHZ61oqLnwaFDgqHTZZJO3E843Ax7DfHFY8oZ76eFXQ+Ik4CF4P
+ 2c7JAI1/Q731wwNPRPBucEE6+llaAyLoD5SRpYGkoj2bvgX8Cc7KbH3pyBUx27V5HhscJUAU
+ u6ocDkb58Jx+kH9rMmlKvYFzXZKSmI8roYyTAQCpYJUrM5Z/ecU2UnPTWExJLN1hTGAVrHF6
+ ULG9oD8M7X15y6LQPf4wrTf0L0d7o42NuG1Z1J9yCMnQrAMdJm6K6vcTMEru9Ur6fz6+hALp
+ Xmm1ZolXIqe5AQ0EViQYRwEIALqz1V6kWIvCTVN/6QN9fepVSwSw+5IiiVBGtf2rtdqujCRD
+ bGi96a2ZLYRQzlSQvCZ51skgoZFmIW2YhPP90qiZssSEQxgY1rf+DEYnjWmFSgi3iHqYXRk2
+ cY7OI3ZT8D2tAFu9pIAxZpD5FdQznJmUhljeTJw+lGOoxctf1xjHZcRcU6GUFMpFBc4xaLC0
+ hUN24HT5pDpklxskPFH91VncDaOsLesqszGaUHWx3hogRfogdADvycUp/bQB80kZO/XqexWN
+ GUNJYS4axWM2ND25bWV1h9aFjPpOwFM7FwAyra0VihnnNn7dTL5vBpFztY0IFPlvqyc1Vw8y
+ vgtShA0AEQEAAYkBPAQYAQgAJgIbDBYhBNcEMml7fEwnOA/No7qzlxS0pLh4BQJe17UqBQkK
+ lNBjAAoJELqzlxS0pLh4YrMH/jwiIFJFEr8BFMxCQHiBgyZhmJm1CBJsdneCrVxrTIHdr7uk
+ wCglAio2+/IsB3x2JfzSJjpi0eynkfk7zDF6G1te1CKMfReCDEvMyBZK/X3XWYKJhxDvxuJ7
+ ftf3lwLv6iltQddVEB8/RhG+X89cyBwHirKsZEM7fxYMVRCksqanJwh3TFt+mPP9cUEsg1e8
+ i9SenxZnF11iIbcsmi0C9H8MAW1KJXu61luiS30RXbrH35psA2k4muf8RqE5BgXrJ5wwTxpL
+ MOY7eVfmPmYrr1q1bas8r97ookpcPmavtkk395GtjuCkIfnDx1HtuICczBA8ge41F4tj+Vtx
+ BFwmgiA=
+Message-ID: <4c852fef-b651-a10f-4b46-35df6cddaf9b@david-bauer.net>
+Date:   Wed, 14 Oct 2020 01:55:45 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.12.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9773 signatures=668681
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 lowpriorityscore=0 mlxscore=0
- malwarescore=0 phishscore=0 suspectscore=0 impostorscore=0 clxscore=1011
- spamscore=0 priorityscore=1501 bulkscore=0 adultscore=0 mlxlogscore=999
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2010130158
+In-Reply-To: <1dae1d32-8cf5-75f3-8bdc-32ec058faba5@andreas-ziegler.de>
+Content-Type: text/plain; charset=windows-1252
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sun, 20 Sep 2020 13:26:12 +0200, Julia Lawall wrote:
+Hi Andreas,
 
-> sg_init_table zeroes its first argument, so the allocation of that argument
-> doesn't have to.
+On 10/13/20 6:00 PM, Andreas Ziegler wrote:
+> Hi,
+> 
+> David Bauer wrote on 13.10.20 16:42:
+>>>
+>>> is it a hw bug or does this part-number really exist?
+>>
+>> I assume it's a bug on TP-Links side. However, there's already quite some units with
+>> this chip-id in their EEPROM around.
+> 
+> 
+> to my knowledge, all devices of this specific model (Archer C50 v4) have
+> this chip-id in their EEPROM, not only some.
 
-Applied to 5.10/scsi-queue, thanks!
+The unit I've got back when the v4 first surfaced has the correct chip-id in the
+2.4GHz EEPROM (0x7628). However, some (if not all) newer units use 0x7600 as the
+chip-id for the MT7628 caldata.
 
-[02/14] scsi: target: rd: Drop double zeroing
-        https://git.kernel.org/mkp/scsi/c/4b217e015b75
+Best wishes
+David
 
--- 
-Martin K. Petersen	Oracle Linux Engineering
+
+> 
+> Regards
+> 
+> Andreas
+> 
