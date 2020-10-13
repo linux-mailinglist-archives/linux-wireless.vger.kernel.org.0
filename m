@@ -2,108 +2,113 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C60128D1A7
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Oct 2020 17:59:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C492428D1B7
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Oct 2020 18:06:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731408AbgJMP7k (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 13 Oct 2020 11:59:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50080 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731302AbgJMP7j (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 13 Oct 2020 11:59:39 -0400
-Received: from mail-io1-xd44.google.com (mail-io1-xd44.google.com [IPv6:2607:f8b0:4864:20::d44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92168C0613D0;
-        Tue, 13 Oct 2020 08:59:39 -0700 (PDT)
-Received: by mail-io1-xd44.google.com with SMTP id q25so9170568ioh.4;
-        Tue, 13 Oct 2020 08:59:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=GoK/FN58ddEqFxJb9/v0ALx7V7xXFOJvLkZX3jWieiI=;
-        b=oylhnEaPP6ek6HyznEVGBglU1X4AQm1C3CktWmZqvyVeaMi2GU7Ra/7wM5wnnjNnOl
-         DeW8tV6roR/LEStCUbRSl+eMZwakc0VDzKzo19Tf1mUzRDAdYSpN0RCOsHm4IvyRXor5
-         UcDbV5LR2wMOP0EPvob2ZbW5C3XVrhjqP3o7Wugusaf9+pT6geRMr3XYwn9FXvZJGIfK
-         brnTkNrrg5BhAeLZTvVeWMqZQa0qczKvNC9bXVwnMd6I/VfVCN5NAB23Oq8np8hwaz+N
-         K6qqPJhOiuauqNMmJlcmJ2/pyHFe8jEXI8PdhcF35zd9ggVIx9YciuaPan+8MdE2qnJQ
-         4LnQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=GoK/FN58ddEqFxJb9/v0ALx7V7xXFOJvLkZX3jWieiI=;
-        b=p1/vLZbxfuUk59c3J3EWwW/awMRtO9BoXKQIg4w81G/gD8gzZxYt3SUnSp7qPndk25
-         uLFkkrtNdkdVJEfkxmzVvnIPGismlZJeQ1cUP1iTaeSjBLfSvw0dNlx3sbxIg5cWvyuu
-         1d/d/qy4a63KTmC58J/Gt4jA26BwMUopcNUehXNNaPlRBbbL6SwRiNgMIiZwpAZbngZB
-         K8IoEjc+mJSXRVyHDFQnmGkwZohPJQoMeIOa1lE+9ctH6uvvKMgxmVz6F7V90Lmp1YZW
-         KkoxwmddWrIxzrCOAA+k+7r4XKpwsGCKNUii5I+c/XaJPXJt5UoKJdRLsREWMNwGucYB
-         QKvQ==
-X-Gm-Message-State: AOAM530vR7OppbCGSJ37e6z1kkA7T1J4a5/Nn5OrVlKeMPdjKJuwy23e
-        qGEZaSAZigkfLRH7Gqr7NCu8Hi0juQTqaBAwgKc=
-X-Google-Smtp-Source: ABdhPJzZha795qGjwavS+Zmii1KbnFD70ocwhqgxvRVr9dwy9BI+9WNCFg1FDRdptRVvAg+T8XTI6OVi6tIDsfr3kfE=
-X-Received: by 2002:a05:6638:98:: with SMTP id v24mr524631jao.113.1602604778970;
- Tue, 13 Oct 2020 08:59:38 -0700 (PDT)
+        id S1728896AbgJMQG0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 13 Oct 2020 12:06:26 -0400
+Received: from l5m.de ([84.200.74.160]:60950 "EHLO l5m.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726744AbgJMQG0 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 13 Oct 2020 12:06:26 -0400
+X-Greylist: delayed 370 seconds by postgrey-1.27 at vger.kernel.org; Tue, 13 Oct 2020 12:06:24 EDT
+Received: from localhost (localhost [127.0.0.1])
+        by l5m.de (Postfix) with ESMTP id 68B82104AFA;
+        Tue, 13 Oct 2020 18:00:12 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=
+        andreas-ziegler.de; h=content-transfer-encoding:content-language
+        :content-type:content-type:in-reply-to:mime-version:date:date
+        :message-id:from:from:references:subject:subject:received
+        :received; s=default; t=1602604812; bh=QM+U5rhQpQ9AXtviwxP4YFpof
+        RfivibJe4rCMuhgMHE=; b=OcTbfHh4mwUC8hC34FFKv4UVrEhK8JcriCyQa1jDw
+        qLnB6tUIzD8FjAUq7SEzGXLQ3HWN9Auce/wmh5QNulD6w+9dQcAGjCvbdtEMTzFR
+        96Jlibb0cSbtgN8l/ia2U1UaQAW32LMAnmSGEuH8BeLJLKItOmFjEb8xfEpoJO+t
+        EQ=
+X-Virus-Scanned: Debian amavisd-new at l5m.de
+Received: from l5m.de ([127.0.0.1])
+        by localhost (l5m.de [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
+        id HfiPzgA4cHDG; Tue, 13 Oct 2020 18:00:12 +0200 (CEST)
+Received: from [IPv6:2a01:c23:b823:2400:bd08:591:edf5:a080] (dynamic-2a01-0c23-b823-2400-bd08-0591-edf5-a080.c23.pool.telefonica.de [IPv6:2a01:c23:b823:2400:bd08:591:edf5:a080])
+        by l5m.de (Postfix) with ESMTPSA id 64667104AB7;
+        Tue, 13 Oct 2020 18:00:10 +0200 (CEST)
+Subject: Re: [PATCH] mt76: mt7603: add additional EEPROM chip ID
+To:     David Bauer <mail@david-bauer.net>,
+        Lorenzo Bianconi <lorenzo@kernel.org>
+Cc:     nbd@nbd.name, lorenzo.bianconi83@gmail.com, ryder.lee@mediatek.com,
+        kvalo@codeaurora.org, linux-wireless@vger.kernel.org,
+        Ron Asimi <ron.asimi@gmail.com>
+References: <20201013142326.8361-1-mail@david-bauer.net>
+ <20201013143219.GA2854@lore-desk>
+ <cbd2ecce-09c8-15ec-e6b3-6e0913d09da4@david-bauer.net>
+From:   Andreas Ziegler <dev@andreas-ziegler.de>
+Autocrypt: addr=dev@andreas-ziegler.de; prefer-encrypt=mutual; keydata=
+ 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
+ qIYRjN7uoQ==
+Message-ID: <1dae1d32-8cf5-75f3-8bdc-32ec058faba5@andreas-ziegler.de>
+Date:   Tue, 13 Oct 2020 18:00:09 +0200
 MIME-Version: 1.0
-References: <20201007101726.3149375-1-a.nogikh@gmail.com> <20201007101726.3149375-2-a.nogikh@gmail.com>
- <20201009161558.57792e1a@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
- <CACT4Y+ZF_umjBpyJiCb8YPQOOSofG-M9h0CB=xn3bCgK=Kr=9w@mail.gmail.com>
- <20201010081431.1f2d9d0d@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com> <CACT4Y+aEQoRMO6eA7iQZf4dhOu2cD1ZbbH6TT4Rs_uQwG0PWYg@mail.gmail.com>
-In-Reply-To: <CACT4Y+aEQoRMO6eA7iQZf4dhOu2cD1ZbbH6TT4Rs_uQwG0PWYg@mail.gmail.com>
-From:   Aleksandr Nogikh <a.nogikh@gmail.com>
-Date:   Tue, 13 Oct 2020 18:59:28 +0300
-Message-ID: <CADpXja8i4YPT=vcuCr412RYqRMjTOGuaMW2dyV0j7BtEwNBgFA@mail.gmail.com>
-Subject: Re: [PATCH 1/2] net: store KCOV remote handle in sk_buff
-To:     Dmitry Vyukov <dvyukov@google.com>
-Cc:     Jakub Kicinski <kuba@kernel.org>,
-        David Miller <davem@davemloft.net>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Andrey Konovalov <andreyknvl@google.com>,
-        Marco Elver <elver@google.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Aleksandr Nogikh <nogikh@google.com>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <cbd2ecce-09c8-15ec-e6b3-6e0913d09da4@david-bauer.net>
+Content-Type: text/plain; charset=windows-1252
+Content-Language: de-DE
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 12 Oct 2020 at 09:04, Dmitry Vyukov <dvyukov@google.com> wrote:
->
-> On Sat, Oct 10, 2020 at 5:14 PM Jakub Kicinski <kuba@kernel.org> wrote:
-> >
-> > On Sat, 10 Oct 2020 09:54:57 +0200 Dmitry Vyukov wrote:
-> > > On Sat, Oct 10, 2020 at 1:16 AM Jakub Kicinski <kuba@kernel.org> wrote:
-[...]
-> > > > Could you use skb_extensions for this?
-> > >
-> > > Why? If for space, this is already under a non-production ifdef.
-> >
-> > I understand, but the skb_ext infra is there for uncommon use cases
-> > like this one. Any particular reason you don't want to use it?
-> > The slight LoC increase?
-> >
-> > Is there any precedent for adding the kcov field to other performance
-> > critical structures?
+Hi,
 
-It would be great to come to some conclusion on where exactly to store
-kcov_handle. Technically, it is possible to use skb extensions for the
-purpose, though it will indeed slightly increase the complexity.
+David Bauer wrote on 13.10.20 16:42:
+>>
+>> is it a hw bug or does this part-number really exist?
+> 
+> I assume it's a bug on TP-Links side. However, there's already quite some units with
+> this chip-id in their EEPROM around.
 
-Jakub, you think that kcov_handle should be added as an skb extension,
-right?
 
-Though I do not really object to moving the field, it still seems to
-me that sk_buff itself is a better place. Right now skb extensions
-store values that are local to specific protocols and that are only
-meaningful in the context of these protocols (correct me if I'm
-wrong). Although this patch only adds remote kcov coverage to the wifi
-code, kcov_handle can be meaningful for other protocols as well - just
-like the already existing sk_buff fields. So adding kcov_handle to skb
-extensions will break this logical separation.
+to my knowledge, all devices of this specific model (Archer C50 v4) have
+this chip-id in their EEPROM, not only some.
 
---
-Best regards,
-Aleksandr
+Regards
+
+Andreas
