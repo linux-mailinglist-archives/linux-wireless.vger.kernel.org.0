@@ -2,79 +2,71 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 81C9C28CD19
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Oct 2020 13:56:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8841D28CDB9
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Oct 2020 14:02:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728009AbgJML4a (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 13 Oct 2020 07:56:30 -0400
-Received: from mail.kernel.org ([198.145.29.99]:57516 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727661AbgJMLyt (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 13 Oct 2020 07:54:49 -0400
-Received: from mail.kernel.org (ip5f5ad5b2.dynamic.kabel-deutschland.de [95.90.213.178])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 4BADD224F9;
-        Tue, 13 Oct 2020 11:54:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1602590081;
-        bh=4jUtq2N1mAMGZHT12614phVdDlgelGbPttSeVtkD628=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=S7yruQANg9u2iMYZDtpo9GgHA/iUA6tHEI2+5nMYivGWJu8DhD+aMGh/Ls0I831XN
-         w/D0hB2yNt+S4VK8Dd4K+aeh1sjj1wQzhRw7NefDahP7ThF4vROSK2VVSklFoHOOie
-         8GLCiWmyEDndW50PZo6U81xpKk69Wiv4UZf579GA=
-Received: from mchehab by mail.kernel.org with local (Exim 4.94)
-        (envelope-from <mchehab@kernel.org>)
-        id 1kSIt5-006CWQ-Mq; Tue, 13 Oct 2020 13:54:39 +0200
-From:   Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To:     Linux Doc Mailing List <linux-doc@vger.kernel.org>
-Cc:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        "Jonathan Corbet" <corbet@lwn.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Thomas Pedersen <thomas@adapt-ip.com>,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org
-Subject: [PATCH v6 68/80] nl80211: docs: add a description for s1g_cap parameter
-Date:   Tue, 13 Oct 2020 13:54:23 +0200
-Message-Id: <9633ea7d9b0cb2f997d784df86ba92e67659f29b.1602589096.git.mchehab+huawei@kernel.org>
+        id S1730389AbgJMMCL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 13 Oct 2020 08:02:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41526 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728837AbgJMMCJ (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 13 Oct 2020 08:02:09 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 671D9C0613D0
+        for <linux-wireless@vger.kernel.org>; Tue, 13 Oct 2020 05:02:09 -0700 (PDT)
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.94)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1kSJ0G-004tWW-2R; Tue, 13 Oct 2020 14:02:04 +0200
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     linux-wireless@vger.kernel.org
+Cc:     Wen Gong <wgong@codeaurora.org>,
+        Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH] mac80211: don't require VHT elements for HE on 2.4 GHz
+Date:   Tue, 13 Oct 2020 14:01:57 +0200
+Message-Id: <20201013140156.535a2fc6192f.Id6e5e525a60ac18d245d86f4015f1b271fce6ee6@changeid>
 X-Mailer: git-send-email 2.26.2
-In-Reply-To: <cover.1602589096.git.mchehab+huawei@kernel.org>
-References: <cover.1602589096.git.mchehab+huawei@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Sender: Mauro Carvalho Chehab <mchehab@kernel.org>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Changeset df78a0c0b67d ("nl80211: S1G band and channel definitions")
-added a new parameter, but didn't add the corresponding kernel-doc
-markup, as repoted when doing "make htmldocs":
+From: Johannes Berg <johannes.berg@intel.com>
 
-	./include/net/cfg80211.h:471: warning: Function parameter or member 's1g_cap' not described in 'ieee80211_supported_band'
+After the previous similar bugfix there was another bug here,
+if no VHT elements were found we also disabled HE. Fix this to
+disable HE only on the 5 GHz band; on 6 GHz it was already not
+disabled, and on 2.4 GHz there need (should) not be any VHT.
 
-Add a documentation for it.
-
-Fixes: df78a0c0b67d ("nl80211: S1G band and channel definitions")
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Fixes: 57fa5e85d53c ("mac80211: determine chandef from HE 6 GHz operation")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- include/net/cfg80211.h | 1 +
- 1 file changed, 1 insertion(+)
+ net/mac80211/mlme.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index d9e6b9fbd95b..fb6aece00549 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -449,6 +449,7 @@ struct ieee80211_sta_s1g_cap {
-  * @n_bitrates: Number of bitrates in @bitrates
-  * @ht_cap: HT capabilities in this band
-  * @vht_cap: VHT capabilities in this band
-+ * @s1g_cap: S1G capabilities in this band
-  * @edmg_cap: EDMG capabilities in this band
-  * @n_iftype_data: number of iftype data entries
-  * @iftype_data: interface type data entries.  Note that the bits in
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index 2e400b0ff696..0f30f50c46b1 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -5359,6 +5359,7 @@ int ieee80211_mgd_assoc(struct ieee80211_sub_if_data *sdata,
+ 			struct cfg80211_assoc_request *req)
+ {
+ 	bool is_6ghz = req->bss->channel->band == NL80211_BAND_6GHZ;
++	bool is_5ghz = req->bss->channel->band == NL80211_BAND_5GHZ;
+ 	struct ieee80211_local *local = sdata->local;
+ 	struct ieee80211_if_managed *ifmgd = &sdata->u.mgd;
+ 	struct ieee80211_bss *bss = (void *)req->bss->priv;
+@@ -5507,7 +5508,7 @@ int ieee80211_mgd_assoc(struct ieee80211_sub_if_data *sdata,
+ 	if (vht_ie && vht_ie[1] >= sizeof(struct ieee80211_vht_cap))
+ 		memcpy(&assoc_data->ap_vht_cap, vht_ie + 2,
+ 		       sizeof(struct ieee80211_vht_cap));
+-	else if (!is_6ghz)
++	else if (is_5ghz)
+ 		ifmgd->flags |= IEEE80211_STA_DISABLE_VHT |
+ 				IEEE80211_STA_DISABLE_HE;
+ 	rcu_read_unlock();
 -- 
 2.26.2
 
