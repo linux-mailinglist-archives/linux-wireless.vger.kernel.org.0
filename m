@@ -2,81 +2,96 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E596F28D86E
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 Oct 2020 04:24:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8EF9B28D90A
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 Oct 2020 05:58:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727161AbgJNCYt convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 13 Oct 2020 22:24:49 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:52318 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726830AbgJNCYt (ORCPT
+        id S1729744AbgJND6Y (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 13 Oct 2020 23:58:24 -0400
+Received: from smtprelay0131.hostedemail.com ([216.40.44.131]:53106 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1729395AbgJND6Y (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 13 Oct 2020 22:24:49 -0400
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.69 with qID 09E2OfTqA028248, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexmb06.realtek.com.tw[172.21.6.99])
-        by rtits2.realtek.com.tw (8.15.2/2.66/5.86) with ESMTPS id 09E2OfTqA028248
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Wed, 14 Oct 2020 10:24:41 +0800
-Received: from RTEXMB04.realtek.com.tw (172.21.6.97) by
- RTEXMB06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2044.4; Wed, 14 Oct 2020 10:24:41 +0800
-Received: from RTEXMB04.realtek.com.tw ([fe80::89f7:e6c3:b043:15fa]) by
- RTEXMB04.realtek.com.tw ([fe80::89f7:e6c3:b043:15fa%3]) with mapi id
- 15.01.2044.006; Wed, 14 Oct 2020 10:24:41 +0800
-From:   Andy Huang <tehuang@realtek.com>
-To:     "'Dan Carpenter'" <dan.carpenter@oracle.com>
-CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: RE: [bug report] rtw88: add dump firmware fifo support
-Thread-Topic: [bug report] rtw88: add dump firmware fifo support
-Thread-Index: AQHWoWx0Kgs2XDNhbUWYN/LN0gZwvamWXsoA
-Date:   Wed, 14 Oct 2020 02:24:41 +0000
-Message-ID: <faef9a43454b4aae819244eb5a90571b@realtek.com>
-References: <20201013142330.GA490753@mwanda>
-In-Reply-To: <20201013142330.GA490753@mwanda>
-Accept-Language: zh-TW, en-US
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.231]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        Tue, 13 Oct 2020 23:58:24 -0400
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay02.hostedemail.com (Postfix) with ESMTP id 61EF91730847;
+        Wed, 14 Oct 2020 03:58:22 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:800:960:973:988:989:1260:1277:1311:1313:1314:1345:1437:1515:1516:1518:1534:1542:1593:1594:1711:1730:1747:1777:1792:1801:2393:2553:2559:2562:2828:2904:3138:3139:3140:3141:3142:3352:3865:3867:3870:4321:4605:5007:10004:10400:10848:11026:11233:11473:11657:11658:11914:12043:12262:12296:12297:12438:12555:12679:12740:12760:12895:13439:14096:14097:14181:14659:14721:21080:21324:21365:21451:21627:21990:30029:30030:30054:30055:30064:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:2,LUA_SUMMARY:none
+X-HE-Tag: pail67_620b2a027208
+X-Filterd-Recvd-Size: 3589
+Received: from XPS-9350.home (unknown [47.151.133.149])
+        (Authenticated sender: joe@perches.com)
+        by omf11.hostedemail.com (Postfix) with ESMTPA;
+        Wed, 14 Oct 2020 03:58:20 +0000 (UTC)
+Message-ID: <73e7098a7dacbbc3a3b77065222f488e23e17201.camel@perches.com>
+Subject: iwlwifi: spaces in procfs filenames ?
+From:   Joe Perches <joe@perches.com>
+To:     Sharon Dvir <sharon.dvir@intel.com>,
+        Luca Coelho <luciano.coelho@intel.com>
+Cc:     netdev <netdev@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        Intel Linux Wireless <linuxwifi@intel.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless@vger.kernel.org
+Date:   Tue, 13 Oct 2020 20:58:18 -0700
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.36.4-0ubuntu1 
 MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-> Hello Tzu-En Huang,
-> 
-> The patch 0fbc2f0f34cc: "rtw88: add dump firmware fifo support" from Sep 25,
-> 2020, leads to the following static checker warning:
-> 
-> 	drivers/net/wireless/realtek/rtw88/fw.c:1485 rtw_fw_dump_fifo()
-> 	warn: this array is probably non-NULL. 'rtwdev->chip->fw_fifo_addr'
-> 
-> drivers/net/wireless/realtek/rtw88/fw.c
->   1482  int rtw_fw_dump_fifo(struct rtw_dev *rtwdev, u8 fifo_sel, u32 addr,
-> u32 size,
->   1483                       u32 *buffer)
->   1484  {
->   1485          if (!rtwdev->chip->fw_fifo_addr) {
->                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^ Delete this check?
-> 
->   1486                  rtw_dbg(rtwdev, RTW_DBG_FW, "chip not
-> support dump fw fifo\n");
->   1487                  return -ENOTSUPP;
->   1488          }
->   1489
->   1490          if (size == 0 || !buffer)
->   1491                  return -EINVAL;
-> 
-> regards,
-> dan carpenter
+commit 64fa3aff89785b5a924ce3934f6595c35b4dffee
+Author: Sharon Dvir <sharon.dvir@intel.com>
+Date:   Wed Aug 17 15:35:09 2016 +0300
 
-Thanks for the report, and I saw Tom had sent a patch to fix it. I acked on the patch.
+    iwlwifi: pcie: give a meaningful name to interrupt request
 
-Tzu-En
+perhaps unintentionally for file:
+
+drivers/net/wireless/intel/iwlwifi/pcie/internal.h
+in function static inline const char *queue_name
+
+creates spaces in procfs filenames.
+
+drivers/net/wireless/intel/iwlwifi/pcie/internal.h:static inline const char *queue_name(struct device *dev,
+drivers/net/wireless/intel/iwlwifi/pcie/internal.h-                                  struct iwl_trans_pcie *trans_p, int i)
+drivers/net/wireless/intel/iwlwifi/pcie/internal.h-{
+drivers/net/wireless/intel/iwlwifi/pcie/internal.h-     if (trans_p->shared_vec_mask) {
+drivers/net/wireless/intel/iwlwifi/pcie/internal.h-             int vec = trans_p->shared_vec_mask &
+drivers/net/wireless/intel/iwlwifi/pcie/internal.h-                       IWL_SHARED_IRQ_FIRST_RSS ? 1 : 0;
+drivers/net/wireless/intel/iwlwifi/pcie/internal.h-
+drivers/net/wireless/intel/iwlwifi/pcie/internal.h-             if (i == 0)
+drivers/net/wireless/intel/iwlwifi/pcie/internal.h-                     return DRV_NAME ": shared IRQ";
+drivers/net/wireless/intel/iwlwifi/pcie/internal.h-
+drivers/net/wireless/intel/iwlwifi/pcie/internal.h-             return devm_kasprintf(dev, GFP_KERNEL,
+drivers/net/wireless/intel/iwlwifi/pcie/internal.h-                                   DRV_NAME ": queue %d", i + vec);
+drivers/net/wireless/intel/iwlwifi/pcie/internal.h-     }
+drivers/net/wireless/intel/iwlwifi/pcie/internal.h-     if (i == 0)
+drivers/net/wireless/intel/iwlwifi/pcie/internal.h-             return DRV_NAME ": default queue";
+drivers/net/wireless/intel/iwlwifi/pcie/internal.h-
+drivers/net/wireless/intel/iwlwifi/pcie/internal.h-     if (i == trans_p->alloc_vecs - 1)
+drivers/net/wireless/intel/iwlwifi/pcie/internal.h-             return DRV_NAME ": exception";
+drivers/net/wireless/intel/iwlwifi/pcie/internal.h-
+drivers/net/wireless/intel/iwlwifi/pcie/internal.h-     return devm_kasprintf(dev, GFP_KERNEL,
+drivers/net/wireless/intel/iwlwifi/pcie/internal.h-                           DRV_NAME  ": queue %d", i);
+drivers/net/wireless/intel/iwlwifi/pcie/internal.h-}
+
+# find /proc/ | grep " "
+/proc/irq/130/iwlwifi: default queue
+/proc/irq/131/iwlwifi: queue 1
+/proc/irq/132/iwlwifi: queue 2
+/proc/irq/133/iwlwifi: queue 3
+/proc/irq/134/iwlwifi: queue 4
+/proc/irq/135/iwlwifi: exception
+
+Can these names be changed back or collapsed
+to avoid the space use in procfs?
 
 
