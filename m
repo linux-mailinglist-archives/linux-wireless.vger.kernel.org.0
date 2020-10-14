@@ -2,96 +2,87 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8EF9B28D90A
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 Oct 2020 05:58:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 95F9B28D9A6
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 Oct 2020 07:42:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729744AbgJND6Y (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 13 Oct 2020 23:58:24 -0400
-Received: from smtprelay0131.hostedemail.com ([216.40.44.131]:53106 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1729395AbgJND6Y (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 13 Oct 2020 23:58:24 -0400
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay02.hostedemail.com (Postfix) with ESMTP id 61EF91730847;
-        Wed, 14 Oct 2020 03:58:22 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:800:960:973:988:989:1260:1277:1311:1313:1314:1345:1437:1515:1516:1518:1534:1542:1593:1594:1711:1730:1747:1777:1792:1801:2393:2553:2559:2562:2828:2904:3138:3139:3140:3141:3142:3352:3865:3867:3870:4321:4605:5007:10004:10400:10848:11026:11233:11473:11657:11658:11914:12043:12262:12296:12297:12438:12555:12679:12740:12760:12895:13439:14096:14097:14181:14659:14721:21080:21324:21365:21451:21627:21990:30029:30030:30054:30055:30064:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:2,LUA_SUMMARY:none
-X-HE-Tag: pail67_620b2a027208
-X-Filterd-Recvd-Size: 3589
-Received: from XPS-9350.home (unknown [47.151.133.149])
-        (Authenticated sender: joe@perches.com)
-        by omf11.hostedemail.com (Postfix) with ESMTPA;
-        Wed, 14 Oct 2020 03:58:20 +0000 (UTC)
-Message-ID: <73e7098a7dacbbc3a3b77065222f488e23e17201.camel@perches.com>
-Subject: iwlwifi: spaces in procfs filenames ?
-From:   Joe Perches <joe@perches.com>
-To:     Sharon Dvir <sharon.dvir@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>
-Cc:     netdev <netdev@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Intel Linux Wireless <linuxwifi@intel.com>,
+        id S1726481AbgJNFmz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 14 Oct 2020 01:42:55 -0400
+Received: from mail.kernel.org ([198.145.29.99]:44624 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725983AbgJNFmz (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 14 Oct 2020 01:42:55 -0400
+Received: from localhost (unknown [213.57.247.131])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 936BB2177B;
+        Wed, 14 Oct 2020 05:42:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1602654174;
+        bh=w10HAUvHzI4K2dPPA6eBw0IIFtp11qCCa0wUzKaUmD8=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=cKsoRdZk0/7P9W5KQIcB78oxj7gSK1YWQM+hrVcStVlKqV5euxdawGaIKjsJO+YUU
+         /usInNdGonQCzHNv/4cuzYg3D1kAHdZbtEGHplDqaWK5j6M3yEug5qW6hLhVGcPu6C
+         Ur12VOGAV45LDfAlhlt9kErfzTLPyFZ2XWjKnbEc=
+Date:   Wed, 14 Oct 2020 08:42:50 +0300
+From:   Leon Romanovsky <leon@kernel.org>
+To:     Jakub Kicinski <kuba@kernel.org>
+Cc:     Heiner Kallweit <hkallweit1@gmail.com>,
+        David Miller <davem@davemloft.net>,
+        =?iso-8859-1?Q?Bj=F8rn?= Mork <bjorn@mork.no>,
+        Oliver Neukum <oneukum@suse.com>,
+        Igor Mitsyanko <imitsyanko@quantenna.com>,
+        Sergey Matyukevich <geomatsi@gmail.com>,
         Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless@vger.kernel.org
-Date:   Tue, 13 Oct 2020 20:58:18 -0700
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.36.4-0ubuntu1 
+        Roopa Prabhu <roopa@nvidia.com>,
+        Nikolay Aleksandrov <nikolay@nvidia.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Vivien Didelot <vivien.didelot@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Vladimir Oltean <olteanv@gmail.com>,
+        Alexey Kuznetsov <kuznet@ms2.inr.ac.ru>,
+        Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Pravin B Shelar <pshelar@ovn.org>,
+        Steffen Klassert <steffen.klassert@secunet.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        linux-rdma@vger.kernel.org,
+        Linux USB Mailing List <linux-usb@vger.kernel.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        bridge@lists.linux-foundation.org
+Subject: Re: [PATCH net-next v2 00/12] net: add and use function
+ dev_fetch_sw_netstats for fetching pcpu_sw_netstats
+Message-ID: <20201014054250.GB6305@unreal>
+References: <d77b65de-1793-f808-66b5-aaa4e7c8a8f0@gmail.com>
+ <20201013173951.25677bcc@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201013173951.25677bcc@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-commit 64fa3aff89785b5a924ce3934f6595c35b4dffee
-Author: Sharon Dvir <sharon.dvir@intel.com>
-Date:   Wed Aug 17 15:35:09 2016 +0300
+On Tue, Oct 13, 2020 at 05:39:51PM -0700, Jakub Kicinski wrote:
+> On Mon, 12 Oct 2020 10:00:11 +0200 Heiner Kallweit wrote:
+> > In several places the same code is used to populate rtnl_link_stats64
+> > fields with data from pcpu_sw_netstats. Therefore factor out this code
+> > to a new function dev_fetch_sw_netstats().
+> >
+> > v2:
+> > - constify argument netstats
+> > - don't ignore netstats being NULL or an ERRPTR
+> > - switch to EXPORT_SYMBOL_GPL
+>
+> Applied, thank you!
 
-    iwlwifi: pcie: give a meaningful name to interrupt request
+Jakub,
 
-perhaps unintentionally for file:
+Is it possible to make sure that changelogs are not part of the commit
+messages? We don't store previous revisions in the git repo, so it doesn't
+give too much to anyone who is looking on git log later. The lore link
+to the patch is more than enough.
 
-drivers/net/wireless/intel/iwlwifi/pcie/internal.h
-in function static inline const char *queue_name
+44fa32f008ab ("net: add function dev_fetch_sw_netstats for fetching pcpu_sw_netstats")
 
-creates spaces in procfs filenames.
-
-drivers/net/wireless/intel/iwlwifi/pcie/internal.h:static inline const char *queue_name(struct device *dev,
-drivers/net/wireless/intel/iwlwifi/pcie/internal.h-                                  struct iwl_trans_pcie *trans_p, int i)
-drivers/net/wireless/intel/iwlwifi/pcie/internal.h-{
-drivers/net/wireless/intel/iwlwifi/pcie/internal.h-     if (trans_p->shared_vec_mask) {
-drivers/net/wireless/intel/iwlwifi/pcie/internal.h-             int vec = trans_p->shared_vec_mask &
-drivers/net/wireless/intel/iwlwifi/pcie/internal.h-                       IWL_SHARED_IRQ_FIRST_RSS ? 1 : 0;
-drivers/net/wireless/intel/iwlwifi/pcie/internal.h-
-drivers/net/wireless/intel/iwlwifi/pcie/internal.h-             if (i == 0)
-drivers/net/wireless/intel/iwlwifi/pcie/internal.h-                     return DRV_NAME ": shared IRQ";
-drivers/net/wireless/intel/iwlwifi/pcie/internal.h-
-drivers/net/wireless/intel/iwlwifi/pcie/internal.h-             return devm_kasprintf(dev, GFP_KERNEL,
-drivers/net/wireless/intel/iwlwifi/pcie/internal.h-                                   DRV_NAME ": queue %d", i + vec);
-drivers/net/wireless/intel/iwlwifi/pcie/internal.h-     }
-drivers/net/wireless/intel/iwlwifi/pcie/internal.h-     if (i == 0)
-drivers/net/wireless/intel/iwlwifi/pcie/internal.h-             return DRV_NAME ": default queue";
-drivers/net/wireless/intel/iwlwifi/pcie/internal.h-
-drivers/net/wireless/intel/iwlwifi/pcie/internal.h-     if (i == trans_p->alloc_vecs - 1)
-drivers/net/wireless/intel/iwlwifi/pcie/internal.h-             return DRV_NAME ": exception";
-drivers/net/wireless/intel/iwlwifi/pcie/internal.h-
-drivers/net/wireless/intel/iwlwifi/pcie/internal.h-     return devm_kasprintf(dev, GFP_KERNEL,
-drivers/net/wireless/intel/iwlwifi/pcie/internal.h-                           DRV_NAME  ": queue %d", i);
-drivers/net/wireless/intel/iwlwifi/pcie/internal.h-}
-
-# find /proc/ | grep " "
-/proc/irq/130/iwlwifi: default queue
-/proc/irq/131/iwlwifi: queue 1
-/proc/irq/132/iwlwifi: queue 2
-/proc/irq/133/iwlwifi: queue 3
-/proc/irq/134/iwlwifi: queue 4
-/proc/irq/135/iwlwifi: exception
-
-Can these names be changed back or collapsed
-to avoid the space use in procfs?
-
-
+Thanks
