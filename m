@@ -2,130 +2,162 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 025F928E134
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 Oct 2020 15:23:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6349D28E1A7
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 Oct 2020 15:49:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727717AbgJNNW7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 14 Oct 2020 09:22:59 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:55990 "EHLO
-        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1725944AbgJNNW7 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 14 Oct 2020 09:22:59 -0400
-Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=[192.168.100.69])
-        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.93)
-        (envelope-from <luca@coelho.fi>)
-        id 1kSgjy-002W2n-VZ; Wed, 14 Oct 2020 16:22:51 +0300
-Message-ID: <c26822c0a6d19869d7eeaa6bf07db1f3298a1984.camel@coelho.fi>
-From:   Luca Coelho <luca@coelho.fi>
-To:     "linux-firmware@kernel.org" <linux-firmware@kernel.org>
-Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "kyle@infradead.org" <kyle@infradead.org>,
-        "jwboyer@kernel.org" <jwboyer@kernel.org>,
-        "ben@decadent.org.uk" <ben@decadent.org.uk>,
-        golan.ben.ami@intel.com
-Date:   Wed, 14 Oct 2020 16:22:49 +0300
-Content-Type: multipart/signed; micalg="pgp-sha512";
-        protocol="application/pgp-signature"; boundary="=-JzpqeD+PbrpMeQiIQXgO"
-User-Agent: Evolution 3.36.4-2 
+        id S1731414AbgJNNtX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 14 Oct 2020 09:49:23 -0400
+Received: from mail-mw2nam10on2059.outbound.protection.outlook.com ([40.107.94.59]:61024
+        "EHLO NAM10-MW2-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726680AbgJNNtU (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 14 Oct 2020 09:49:20 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Gy0d8pzoZPA36VqgKxYZ/tkkItq9vvVb4lZb6Iv0jn/EpM90u99z5yv2ZgayVSagMiOpp6CmX/ngXT/yDSzmvzb3VNmzKgOTdvsK1chueUFteJK0AuTz+tkDv6WPL1R9zmP1vTEWI1ar146I5+KSarypjAtGYij1JEO45DKfniU98JINgrnuPF0jn+qbZuVNEdRBvtm/qRAisQ166TIPQs8CIsqLnwW0gchFZHaXr69NvvX5Cu2dTOdlZw3+PAcb5vZq/ZEyXbcZXIViJh6i/PBSbEF8IFOWQpv9/1nxp6rg+pPxvoh4vyO7Ri4RLuJ+fY4kshGSaXAZTJwNJfpv4g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Hpyv1JvntTb93c+qrvdeuKGsflEK1eadGjK9HigqFcA=;
+ b=LBHrXBPw/rdzuzLYjPdNBxBFuVvd89+jsoBrO94iR/RxyPG2io6ZX4Lo6rHYie1lSlR4WpcI90d4vOHnpo8ZkUmiQAeTbteyAgAJzv0kbcMQXAfzNnon/Zgp9z5zPzLGlAxgH9nWCYJKnzxrbDzsrlyeiJfFPQ7JqB6+q+bsEuhujEfdh9jk/0L3pC5vglhOhaFOZLzK+dSw+5fJBHuqemkCjv9wMKkYXr+KAzG6JSW3/jWrv8C5OH/uHqaqx7jLZZElMSqmSqdLc0IHxVNXmTBpuUM2efREbceBRNZISE9HLLw23s7O6Hq45A8XYzyIMwFu9oe8hm7PpSGuIULjDQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=silabs.com; dmarc=pass action=none header.from=silabs.com;
+ dkim=pass header.d=silabs.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=silabs.onmicrosoft.com; s=selector2-silabs-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Hpyv1JvntTb93c+qrvdeuKGsflEK1eadGjK9HigqFcA=;
+ b=eC6cB5tl7DEdsLdX9Jiju+xZpjKRa6Q2FlWWDU3dYc7gW2PW/r/UIXjYY7baiaFXDi/su31Erk+iyGGa0jxJF4PgIu+Y8xmhlcHeG7U7RRJ6ZBfMLs5mnJ2R66MaGWKXr/pxphzYtHvPf/2YhQF6KLFkyi39wgherAVCP1jlOj4=
+Authentication-Results: kernel.org; dkim=none (message not signed)
+ header.d=none;kernel.org; dmarc=none action=none header.from=silabs.com;
+Received: from SN6PR11MB2718.namprd11.prod.outlook.com (2603:10b6:805:63::18)
+ by SN6PR11MB3357.namprd11.prod.outlook.com (2603:10b6:805:c2::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3477.21; Wed, 14 Oct
+ 2020 13:49:17 +0000
+Received: from SN6PR11MB2718.namprd11.prod.outlook.com
+ ([fe80::4f5:fbe5:44a7:cb8a]) by SN6PR11MB2718.namprd11.prod.outlook.com
+ ([fe80::4f5:fbe5:44a7:cb8a%5]) with mapi id 15.20.3455.031; Wed, 14 Oct 2020
+ 13:49:17 +0000
+From:   =?ISO-8859-1?Q?J=E9r=F4me?= Pouiller <jerome.pouiller@silabs.com>
+To:     Rob Herring <robh@kernel.org>
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        devel@driverdev.osuosl.org, linux-kernel@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        devicetree@vger.kernel.org
+Subject: Re: [PATCH 01/23] dt-bindings: introduce silabs,wfx.yaml
+Date:   Wed, 14 Oct 2020 15:49:12 +0200
+Message-ID: <3929101.dIHeVNgAIR@pc-42>
+Organization: Silicon Labs
+In-Reply-To: <20201013164935.GA3646933@bogus>
+References: <20201012104648.985256-1-Jerome.Pouiller@silabs.com> <20201012104648.985256-2-Jerome.Pouiller@silabs.com> <20201013164935.GA3646933@bogus>
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+X-Originating-IP: [82.67.86.106]
+X-ClientProxiedBy: DM6PR11CA0034.namprd11.prod.outlook.com
+ (2603:10b6:5:190::47) To SN6PR11MB2718.namprd11.prod.outlook.com
+ (2603:10b6:805:63::18)
 MIME-Version: 1.0
-X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on farmhouse.coelho.fi
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
-        TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.4
-Subject: pull request: iwlwifi firmware updates 2020-10-14
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from pc-42.localnet (82.67.86.106) by DM6PR11CA0034.namprd11.prod.outlook.com (2603:10b6:5:190::47) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3477.21 via Frontend Transport; Wed, 14 Oct 2020 13:49:15 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: c842df6f-3ce7-461c-a691-08d87047f189
+X-MS-TrafficTypeDiagnostic: SN6PR11MB3357:
+X-Microsoft-Antispam-PRVS: <SN6PR11MB3357B01F04F846FD90383B8893050@SN6PR11MB3357.namprd11.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:10000;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: NoWHYRlSMV6kNiBHbxmJXASGr9QjStsLpSTgoZd8/inB7u8zQl9Q/G45JTMSptZ1wjlaGIT1LWU8Rmmo7z2I1FIfEyzTYBLPRo7BlujmAmVD9ZONE24iulHVLu4EPQ62Mn6O8lNlAjOrwzto8mwOKZFQu127vLsvMihIkwdaK0hfFNAqqbI50IJ6HUiZhm8hN/GXrdoxpEIHhtMyYAwdj+ucdH3MOwza8l2Nuan1nj9JFz/ey+d7IvLe3mbsSQqv1cHufgvuk7rCwx6vF+PVYDV+2DkB7gRO9v3WzcUAhHs6fdIpJesxDn/rtnqNla4T6uKWS1j8zk15uan2w4Ak8g==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR11MB2718.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(366004)(396003)(136003)(376002)(346002)(39850400004)(66556008)(66946007)(66476007)(33716001)(6916009)(83380400001)(52116002)(86362001)(6486002)(8936002)(8676002)(5660300002)(6506007)(36916002)(4326008)(478600001)(956004)(316002)(26005)(6666004)(54906003)(6512007)(9686003)(16526019)(186003)(2906002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData: qjPVWzeJAIz4IzX9zP/L/vNRRWvnL0QVtb3olsTy3tXQ0qpgDcfbhq9aiCgDpQmeMEnx5C18+ogdYIoTrOtV2oJsIFjo7oOBT5GRKUF5fPs/4XwPkuA9H1DoXfRo0Ni3yCryBUOs/ZEOERrd6anedXFdDkdlEVXIhOPEO9wah6AGCjUFXYHR8l3VC8u2gHS38WlW21vSMIa8R4Dx6BYUoJsem7OQX+UvtYzE0zlRKRi2WaMSlgF6uF+FOLfPqT4KK9yQ1N0NrDZEUUc1JyN4i1rBCr22YZQkTVyZsoC9ma3NL16fkT2/pwpTMpTvUeGbl4AHu/jDX97KANn1jfKEa+KlLJPZxqD3lCGa1qL8N/LceFwnW7ag8+5D3jgdM0OnrgG5QWst+4g56V9SI1BNK3ugN59ZNMvMZ+BnjCcqwixlD9msEC/+1tC86Gk2i75anBe5aUFra+HqAp7GT3ayfiUQE4hIpuj+Q+fBNWG6GuuiYFkAJ+VmFqOJsGXommnknl56GEFmB6vnX9ba/l9HeAUWChRP3ES2nkPdGBnMznu28ctvRJ/S7mHdzMFDO+XynALrbLZ8Uic/omagGgSRUVRxmqAbe7onzFJ6rza5i/n+iQfV+3XK3YIQbvgzgX54yHpC/Mu10YtO4TTXQ87gRA==
+X-OriginatorOrg: silabs.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c842df6f-3ce7-461c-a691-08d87047f189
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR11MB2718.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Oct 2020 13:49:17.3982
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 54dbd822-5231-4b20-944d-6f4abcd541fb
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 4vNisfYkgmddN/Oj4dbNb9pijpnb4O6RtZUx4oQkUPpo69T/8DbZZQ7bjz/3gO+d+azLXPSJEDet1OEa1jFPeQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN6PR11MB3357
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On Tuesday 13 October 2020 18:49:35 CEST Rob Herring wrote:
+> On Mon, Oct 12, 2020 at 12:46:26PM +0200, Jerome Pouiller wrote:
+> > From: J=E9r=F4me Pouiller <jerome.pouiller@silabs.com>
+[...]
+> > +  Note that in add of the properties below, the WFx driver also suppor=
+ts
+> > +  `mac-address` and `local-mac-address` as described in
+> > +  Documentation/devicetree/bindings/net/ethernet.txt
+>=20
+> Note what ethernet.txt contains... This should have a $ref to
+> ethernet-controller.yaml to express the above.
+>=20
+> You can add 'mac-address: true' if you want to be explicit about what
+> properties are used.
 
---=-JzpqeD+PbrpMeQiIQXgO
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Here, only mac-address and local-mac-address are supported. So, would the
+code below do the job?
 
-Hi,
+  local-mac-address:
+    $ref: ethernet-controller.yaml#/properties/local-mac-address
 
-This contains some new and updated firmwares for all our currently
-maintained FW binaries.
+  mac-address:
+    $ref: ethernet-controller.yaml#/properties/mac-address
 
-Please pull or let me know if there are any issues.
 
---
-Cheers,
-Luca.
+[...]
+> > +  spi-max-frequency:
+> > +    description: (SPI only) Maximum SPI clocking speed of device in Hz=
+.
+>=20
+> No need to redefine a common property.
 
-The following changes since commit 58d41d0facca2478d3e45f6321224361519aee96=
-:
+When a property is specific to a bus, I would have like to explicitly
+say it. That's why I redefined the description.
 
-  ice: Add comms package file for Intel E800 series driver (2020-10-05 08:0=
-9:03 -0400)
 
-are available in the Git repository at:
+[...]
+> > +  config-file:
+> > +    description: Use an alternative file as PDS. Default is `wf200.pds=
+`. Only
+> > +      necessary for development/debug purpose.
+>=20
+> 'firmware-name' is typically what we'd use here. Though if just for
+> debug/dev, perhaps do a debugfs interface for this instead. As DT should
+> come from the firmware/bootloader, requiring changing the DT for
+> dev/debug is not the easiest workflow compared to doing something from
+> userspace.
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/linux-firmware.git =
-tags/iwlwifi-fw-2020-10-14
+This file is not a firmware. It mainly contains data related to the
+antenna. At the beginning, this property has been added for
+development. With the time, I think it can be used to  have one disk
+image for several devices that differ only in antenna.
 
-for you to fetch changes up to 4f41e9d6437d03e7ce9279076107dd08f46656f3:
+I am going to remove the part about development/debug purpose.
 
-  iwlwifi: update and add new FWs from core56-54 release (2020-10-14 16:07:=
-28 +0300)
 
-----------------------------------------------------------------
-Update iwlwifi firmwares to Core56-54
+[...]
+> Will need additionalProperties or unevaluatedProperties depending on
+> whether you list out properties from ethernet-controller.yaml or not.
 
-----------------------------------------------------------------
-Luca Coelho (2):
-      iwlwifi: update 3168, 7265D, 8000C and 8265 firmwares
-      iwlwifi: update and add new FWs from core56-54 release
+I think I need to specify "additionalProperties: true" since the user can
+also use properties defined for the SPI devices.
 
- WHENCE                            |  36 ++++++++++++++++++++++++++++++----=
---
- iwlwifi-3168-29.ucode             | Bin 1036288 -> 1036288 bytes
- iwlwifi-7265D-29.ucode            | Bin 1036656 -> 1036444 bytes
- iwlwifi-8000C-36.ucode            | Bin 2401100 -> 2428004 bytes
- iwlwifi-8265-36.ucode             | Bin 2409984 -> 2436632 bytes
- iwlwifi-9000-pu-b0-jf-b0-46.ucode | Bin 1481104 -> 1512096 bytes
- iwlwifi-9260-th-b0-jf-b0-46.ucode | Bin 1470272 -> 1483116 bytes
- iwlwifi-Qu-b0-hr-b0-59.ucode      | Bin 0 -> 1300764 bytes
- iwlwifi-Qu-b0-jf-b0-59.ucode      | Bin 0 -> 1226208 bytes
- iwlwifi-Qu-c0-hr-b0-59.ucode      | Bin 0 -> 1300780 bytes
- iwlwifi-Qu-c0-jf-b0-59.ucode      | Bin 0 -> 1226224 bytes
- iwlwifi-QuZ-a0-hr-b0-59.ucode     | Bin 0 -> 1299660 bytes
- iwlwifi-QuZ-a0-jf-b0-59.ucode     | Bin 0 -> 1226064 bytes
- iwlwifi-cc-a0-59.ucode            | Bin 0 -> 1261280 bytes
- iwlwifi-ty-a0-gf-a0-59.ucode      | Bin 0 -> 1413868 bytes
- 15 files changed, 30 insertions(+), 6 deletions(-)
- create mode 100644 iwlwifi-Qu-b0-hr-b0-59.ucode
- create mode 100644 iwlwifi-Qu-b0-jf-b0-59.ucode
- create mode 100644 iwlwifi-Qu-c0-hr-b0-59.ucode
- create mode 100644 iwlwifi-Qu-c0-jf-b0-59.ucode
- create mode 100644 iwlwifi-QuZ-a0-hr-b0-59.ucode
- create mode 100644 iwlwifi-QuZ-a0-jf-b0-59.ucode
- create mode 100644 iwlwifi-cc-a0-59.ucode
- create mode 100644 iwlwifi-ty-a0-gf-a0-59.ucode
+In fact, I would like to write something like:
 
---=-JzpqeD+PbrpMeQiIQXgO
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-Content-Transfer-Encoding: 7bit
+    allOf:
+        $ref: spi-controller.yaml#/patternProperties/^.*@[0-9a-f]+$/propert=
+ies
 
------BEGIN PGP SIGNATURE-----
 
-iQIzBAABCgAdFiEEF3LNfgb2BPWm68smoUecoho8xfoFAl+G+6kACgkQoUecoho8
-xfq1Zw/+KhY4lmrWwoUKZglUvF1fKUntVn5SstQ0gRhcX22UhmEYh92VnPoBMC8V
-3PIva0cJMabE9qrOWulScFXR7hL4KmO6PrenLLDENYQcujJMHxND+95xwXRFxUbg
-eHLWxJDoDTSQv5yk26av9A6Mqxq/EFmWQ/e4X7eGFGiAybv2YQZc07C/Dhbfelt9
-jlt8PIuKj6N6/hcY3NwZbN0E/3DPMAaz8suGLiKK0KyPctVWPK4IYsOOQUi0gOlH
-T/+y+U62mkEcAdDrsFqE5dOYFVHDVgrNo6m2l4dONqNXQVF6WVgwu+ctg+OjAA/S
-dexN1IAdrki18VGhUoJxjTJA/O2RBRfWjo1wv42wxu6TqpfgI1MphX7ehJ0SgczS
-3ApKVKgfT9z+nXWJecne/7ab3x67+ihef4n/I826NqiDeyv6I5HOz5bakQC21Bhq
-sCt2RsVFFTmfl5u8JM4lkCWTJXd0oXSZM0qb8RvWBtmCIveQxvVgHUNKkBabdgY9
-ziU1/DmkNrg47lDNz/tg12z44q856voE56Wz9z+HY1ww0PFVJIuaSZkoKsBb9WXA
-WN7CAHiCTuFZuUEAAcEMwlbKbJzihxZBZ6cKQbYcAe2+IeMSPQusn9HnlZcjyRXG
-zCN1zbHkqmI//Kuk0gSbP8okfX1/3HZLo1wQNvUaU0zygxYiqwQ=
-=5Sx1
------END PGP SIGNATURE-----
 
---=-JzpqeD+PbrpMeQiIQXgO--
+--=20
+J=E9r=F4me Pouiller
+
 
