@@ -2,112 +2,164 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AE7A228F0CD
-	for <lists+linux-wireless@lfdr.de>; Thu, 15 Oct 2020 13:16:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CE77A28F16D
+	for <lists+linux-wireless@lfdr.de>; Thu, 15 Oct 2020 13:38:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727321AbgJOLQp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 15 Oct 2020 07:16:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55476 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725899AbgJOLQp (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 15 Oct 2020 07:16:45 -0400
-Received: from mail-out.m-online.net (mail-out.m-online.net [IPv6:2001:a60:0:28:0:1:25:1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3611C061755;
-        Thu, 15 Oct 2020 04:16:44 -0700 (PDT)
-Received: from frontend01.mail.m-online.net (unknown [192.168.8.182])
-        by mail-out.m-online.net (Postfix) with ESMTP id 4CBmvD5tJkz1sKwV;
-        Thu, 15 Oct 2020 13:16:37 +0200 (CEST)
-Received: from localhost (dynscan1.mnet-online.de [192.168.6.70])
-        by mail.m-online.net (Postfix) with ESMTP id 4CBmv95DK9z1qrg8;
-        Thu, 15 Oct 2020 13:16:37 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at mnet-online.de
-Received: from mail.mnet-online.de ([192.168.8.182])
-        by localhost (dynscan1.mail.m-online.net [192.168.6.70]) (amavisd-new, port 10024)
-        with ESMTP id OLsXCAXsHmhb; Thu, 15 Oct 2020 13:16:35 +0200 (CEST)
-X-Auth-Info: k0ZyYsDVmrX4DrH1M24vgA5atTsx5U5lcEFJ6aD+EcU=
-Received: from localhost.localdomain (ip-89-176-112-137.net.upcbroadband.cz [89.176.112.137])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        id S1726493AbgJOLhb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 15 Oct 2020 07:37:31 -0400
+Received: from z5.mailgun.us ([104.130.96.5]:55978 "EHLO z5.mailgun.us"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726309AbgJOLh0 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 15 Oct 2020 07:37:26 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1602761846; h=Message-ID: References: In-Reply-To: Subject:
+ Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Sender; bh=r1ehb31RQz1ouAHmpJLctQJs4jh51DviwdM1StDNxY8=;
+ b=ueIB1Yv7TYLmSLytN1fiKkwtVA6ikv8mTJp97ZBrCiItymVj5+M3JlPYK2DlN6YMxVGaCJvY
+ HvTA/QSPVjfhOQ61PhJkw0837rU3vLS8pM82ZUIqkZ1eS4xfrggdOVZG84r5X4dCdm4Q9JSb
+ tzfSD8g+nweFsYxQiIyJ4PSPcts=
+X-Mailgun-Sending-Ip: 104.130.96.5
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n07.prod.us-east-1.postgun.com with SMTP id
+ 5f88346c588858a304d95393 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 15 Oct 2020 11:37:16
+ GMT
+Sender: ssreeela=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 4FA6AC433CB; Thu, 15 Oct 2020 11:37:15 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mail.mnet-online.de (Postfix) with ESMTPSA;
-        Thu, 15 Oct 2020 13:16:35 +0200 (CEST)
-From:   Marek Vasut <marex@denx.de>
-To:     netdev@vger.kernel.org
-Cc:     Marek Vasut <marex@denx.de>, Angus Ainslie <angus@akkea.ca>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Martin Kepplinger <martink@posteo.de>,
-        Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>,
-        Siva Rebbagondla <siva8118@gmail.com>,
-        linux-wireless@vger.kernel.org
-Subject: [PATCH] rsi: Fix TX EAPOL packet handling against iwlwifi AP
-Date:   Thu, 15 Oct 2020 13:16:16 +0200
-Message-Id: <20201015111616.429220-1-marex@denx.de>
-X-Mailer: git-send-email 2.28.0
+        (Authenticated sender: ssreeela)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 87F7AC433F1;
+        Thu, 15 Oct 2020 11:37:14 +0000 (UTC)
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
 Content-Transfer-Encoding: 8bit
+Date:   Thu, 15 Oct 2020 17:07:14 +0530
+From:   ssreeela@codeaurora.org
+To:     Peter Oh <peter.oh@eero.com>
+Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        Govindaraj Saminathan <gsamin@codeaurora.org>
+Subject: Re: [PATCH v3] ath11k: cold boot calibration support
+In-Reply-To: <b0d42c5e-8aac-cea2-bc6d-3a6341689d05@eero.com>
+References: <1600163991-2093-1-git-send-email-ssreeela@codeaurora.org>
+ <b0d42c5e-8aac-cea2-bc6d-3a6341689d05@eero.com>
+Message-ID: <66888db2618270660f38a0c89226332f@codeaurora.org>
+X-Sender: ssreeela@codeaurora.org
+User-Agent: Roundcube Webmail/1.3.9
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-In case RSI9116 SDIO WiFi operates in STA mode against Intel 9260 in AP mode,
-the association fails. The former is using wpa_supplicant during association,
-the later is set up using hostapd:
+On 2020-09-18 01:24, Peter Oh wrote:
+> On 9/15/20 2:59 AM, Sowmiya Sree Elavalagan wrote:
+>> From: Govindaraj Saminathan <gsamin@codeaurora.org>
+>> 
+>> cold boot calibration is the process to calibrate all the channels
+>> during the boot-up to avoid the calibration delay during the
+>> channel change.
+>> During the boot-up, firmware started with mode “cold_boot_calibration”
+>> Firmware calibrate all channels and generate CalDb(DDR).
+>> Subsequent WIFI ON will reuse the same CalDb.
+> Can you clarify the definition of "WIFI ON"?
 
-iwl$ cat hostapd.conf
-interface=wlp1s0
-ssid=test
-country_code=DE
-hw_mode=g
-channel=1
-wpa=2
-wpa_passphrase=test
-wpa_key_mgmt=WPA-PSK
-iwl$ hostapd -d hostapd.conf
+WIFI ON here refers to wireless interfaces bring
+up(reinitialised) in normal mode
 
-rsi$ wpa_supplicant -i wlan0 -c <(wpa_passphrase test test)
+>> Firmware restarted with Mission mode to continue the normal operation.
+> 
+> Please change the mission mode to normal according to
+> ATH11K_FIRMWARE_MODE_NORMAL.
 
-The problem is that the TX EAPOL data descriptor RSI_DESC_REQUIRE_CFM_TO_HOST
-flag and extended descriptor EAPOL4_CONFIRM frame type are not set in case the
-AP is iwlwifi, because in that case the TX EAPOL packet is 2 bytes shorter.
+Sure we will change that
+> 
+> Which code it sets back to normal mode from cold boot mode? I don't see 
+> it.
+> 
 
-The downstream vendor driver has this change in place already [1], however
-there is no explanation for it, neither is there any commit history from which
-such explanation could be obtained.
+Please check the function ath11k_qmi_fwreset_from_cold_boot where 
+firmware is reset.
+During restart, firmware mode will be reset to normal.
+>> +static int ath11k_qmi_process_coldboot_calibration(struct ath11k_base 
+>> *ab)
+>> +{
+>> +	int timeout;
+>> +	int ret;
+>> +
+>> +	ret = ath11k_qmi_wlanfw_mode_send(ab, 
+>> ATH11K_FIRMWARE_MODE_COLD_BOOT);
+>> +	if (ret < 0) {
+>> +		ath11k_warn(ab, "qmi failed to send wlan fw mode:%d\n", ret);
+>> +		return ret;
+>> +	}
+>> +
+>> +	ath11k_dbg(ab, ATH11K_DBG_QMI, "Coldboot calibration wait 
+>> started\n");
+>> +
+>> +	timeout = wait_event_timeout(ab->qmi.cold_boot_waitq,
+>> +				     (ab->qmi.cal_done  == 1),
+>> +				     ATH11K_COLD_BOOT_FW_RESET_DELAY);
+>> +	if (timeout <= 0) {
+>> +		ath11k_warn(ab, "Coldboot Calibration timed out\n");
+>> +		return -ETIMEDOUT;
+> 
+> Does it make ath11k firmware stay in cold boot mode when timeout 
+> happens?
+> 
+> If so, is it worthy to have WLAN usuable due to cold boot calibration 
+> failure?
+> 
+> As I understand, initial calibration on current operation channel will
+> be done regardless of cold boot calibration
+> 
 
-[1] https://github.com/SiliconLabs/RS911X-nLink-OSD/blob/master/rsi/rsi_91x_hal.c#L238
+Agreed, these comments will be addressed in the next patch set.
+>> +	}
+>> +
+>> +	ath11k_dbg(ab, ATH11K_DBG_QMI, "Coldboot calibration wait ended\n");
+>> +
+>> +	return 0;
+>> +}
+>> +
+>>   static int
+>>   ath11k_qmi_driver_event_post(struct ath11k_qmi *qmi,
+>>   			     enum ath11k_qmi_event_type type,
+>> @@ -2597,9 +2643,16 @@ static void ath11k_qmi_driver_event_work(struct 
+>> work_struct *work)
+>>   				break;
+>>   			}
+>>   -			ath11k_core_qmi_firmware_ready(ab);
+>> -			ab->qmi.cal_done = 1;
+>> -			set_bit(ATH11K_FLAG_REGISTERED, &ab->dev_flags);
+>> +			if (ath11k_cold_boot_cal && ab->qmi.cal_done == 0 &&
+>> +			    ab->hw_params.cold_boot_calib) {
+>> +				ath11k_qmi_process_coldboot_calibration(ab);
+>> +			} else {
+>> +				clear_bit(ATH11K_FLAG_CRASH_FLUSH,
+>> +					  &ab->dev_flags);
+>> +				clear_bit(ATH11K_FLAG_RECOVERY, &ab->dev_flags);
+> Please split this patch into a separate patch. It's not directly
+> related to cold boot.
 
-Signed-off-by: Marek Vasut <marex@denx.de>
-Cc: Angus Ainslie <angus@akkea.ca>
-Cc: David S. Miller <davem@davemloft.net>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Kalle Valo <kvalo@codeaurora.org>
-Cc: Lee Jones <lee.jones@linaro.org>
-Cc: Martin Kepplinger <martink@posteo.de>
-Cc: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
-Cc: Siva Rebbagondla <siva8118@gmail.com>
-Cc: linux-wireless@vger.kernel.org
-Cc: netdev@vger.kernel.org
----
- drivers/net/wireless/rsi/rsi_91x_hal.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/rsi/rsi_91x_hal.c b/drivers/net/wireless/rsi/rsi_91x_hal.c
-index 3f7e3cfb6f00..ce9892152f4d 100644
---- a/drivers/net/wireless/rsi/rsi_91x_hal.c
-+++ b/drivers/net/wireless/rsi/rsi_91x_hal.c
-@@ -248,7 +248,8 @@ int rsi_prepare_data_desc(struct rsi_common *common, struct sk_buff *skb)
- 			rsi_set_len_qno(&data_desc->len_qno,
- 					(skb->len - FRAME_DESC_SZ),
- 					RSI_WIFI_MGMT_Q);
--		if ((skb->len - header_size) == EAPOL4_PACKET_LEN) {
-+		if (((skb->len - header_size) == EAPOL4_PACKET_LEN) ||
-+		    ((skb->len - header_size) == EAPOL4_PACKET_LEN - 2)) {
- 			data_desc->misc_flags |=
- 				RSI_DESC_REQUIRE_CFM_TO_HOST;
- 			xtend_desc->confirm_frame_type = EAPOL4_CONFIRM;
--- 
-2.28.0
-
+This resets the flag to commence normal operation when firmware switches 
+to normal mode after cold boot calibration.
+Once the firmware is ready we clear this flag so that it will not block 
+any further communication with firmware.
+>> +				ath11k_core_qmi_firmware_ready(ab);
+>> +				set_bit(ATH11K_FLAG_REGISTERED, &ab->dev_flags);
+>> +			}
+>>     			break;
+>>   		case ATH11K_QMI_EVENT_COLD_BOOT_CAL_DONE:
+> 
+> Thanks,
+> 
+> Peter
