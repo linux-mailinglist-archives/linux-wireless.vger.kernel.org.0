@@ -2,52 +2,78 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 80FAD28F3AB
-	for <lists+linux-wireless@lfdr.de>; Thu, 15 Oct 2020 15:51:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E03DD28F322
+	for <lists+linux-wireless@lfdr.de>; Thu, 15 Oct 2020 15:24:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730083AbgJONv0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 15 Oct 2020 09:51:26 -0400
-Received: from edge.kilargo.pl ([77.252.52.110]:24065 "EHLO edge.kilargo.pl"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726925AbgJONv0 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 15 Oct 2020 09:51:26 -0400
-X-Greylist: delayed 421 seconds by postgrey-1.27 at vger.kernel.org; Thu, 15 Oct 2020 09:51:15 EDT
-Received: from mail.kilargo.pl (77.252.52.107) by edge.kilargo.pl
- (77.252.52.109) with Microsoft SMTP Server (TLS) id 8.3.485.1; Thu, 15 Oct
- 2020 15:41:42 +0200
-Received: from User (185.248.12.71) by MAIL.kilargo.pl (172.22.0.36) with
- Microsoft SMTP Server (TLS) id 15.0.1497.2; Thu, 15 Oct 2020 14:54:56 +0200
-Reply-To: <kim.leang2011@yahoo.com>
-From:   Kim Leang <mechanik@kilargo.pl>
-Subject: Greeting! !!
-Date:   Thu, 15 Oct 2020 15:54:59 +0300
+        id S1729138AbgJONYf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 15 Oct 2020 09:24:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47122 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728639AbgJONYf (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 15 Oct 2020 09:24:35 -0400
+X-Greylist: delayed 546 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 15 Oct 2020 06:24:35 PDT
+Received: from dvalin.narfation.org (dvalin.narfation.org [IPv6:2a00:17d8:100::8b1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5EFC8C061755;
+        Thu, 15 Oct 2020 06:24:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
+        s=20121; t=1602767724;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=OtGm/dfhR5/P3i7g9bPbe0G2sAeMsBvVGJxEpCJumWI=;
+        b=i5HXmdWP+XlalAt5YZiibjn6udv7Iws/fYElEkwacu9NI37tUdvpcRARcM2RxnEakZKA61
+        Mds3VWUq/c7kHxaubFcsLdAGdcPD4WETdFW30u9T7KIY9E2VDcKq6ZOqAi+TdZ5EJojVW0
+        reFOPhne7wK4+mJp970TpEj7z2qVI0Q=
+From:   Sven Eckelmann <sven@narfation.org>
+To:     linux-wireless@vger.kernel.org
+Cc:     ath11k@lists.infradead.org, Rob Herring <robh+dt@kernel.org>,
+        Kalle Valo <kvalo@codeaurora.org>, devicetree@vger.kernel.org,
+        Sven Eckelmann <sven@narfation.org>
+Subject: [PATCH 1/2] dt: bindings: add new dt entry for ath11k calibration variant
+Date:   Thu, 15 Oct 2020 15:15:00 +0200
+Message-Id: <20201015131501.1939685-1-sven@narfation.org>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="Windows-1251"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-Message-ID: <4f8e309dade94ae8bac1d709c3e7bb19@mail.kilargo.pl>
-To:     Undisclosed recipients:;
-X-Originating-IP: [185.248.12.71]
-X-ClientProxiedBy: mail.kilargo.pl (172.22.0.36) To MAIL.kilargo.pl
- (172.22.0.36)
-X-EsetResult: clean, is OK
-X-EsetId: 37303A295AAB9B6B647163
+Content-Transfer-Encoding: 8bit
+X-Spam: Yes
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Greeting!
+The bus + qmi-chip-id + qmi-board-id is not enough to identify the correct
+board data file on IPQ6018 based devices. Multiple different boards share
+the same values. Only the original reference designs can currently be
+identified and loaded from the board-2.bin. But these will not result in
+the correct calibration data when combined with the pre-calibration data
+from the device.
 
-I am contacting you to receive and share with me an abandoned fund ( $21,537.000.00 ) left in our bank by a deceased customer. I was going through the Internet search when I found your email address. My name is Mr. Kim Leang.
+An additional "variant" information has to be provided to select the
+correct board data for a design which was modified by an ODM. This follows
+the same approach as ath10k.
 
-I want to utilize this opportunity and make use of this fund if I should present your name to the bank to stand as his business associate/ trustee for the fund to be released to you via Visa card for easy withdrawals in any VISA ATM machine anywhere in the World.
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+---
+ .../devicetree/bindings/net/wireless/qcom,ath11k.yaml       | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-The bank will also give you international online transfer options. With these you can transfer the funds without any risk.
+diff --git a/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml b/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml
+index 4b365c9d9378..6af999191559 100644
+--- a/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml
++++ b/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml
+@@ -144,6 +144,12 @@ properties:
+         * reg
+         * reg-names
+ 
++  qcom,ath11k-calibration-variant:
++    $ref: /schemas/types.yaml#/definitions/string
++    description:
++      string to uniquely identify variant of the calibration data in the
++      board-2.bin for designs with colliding bus and device specific ids
++
+ required:
+   - compatible
+   - reg
+-- 
+2.28.0
 
-Should you be interested in working with me in this project? Please reply back and let's benefit from this golden opportunity.You are my first contact. I shall wait a few days and if I do not hear from you, I shall look for another person.
-
-Thanks and have a nice day,
-Mr. Kim Leang.
