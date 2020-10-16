@@ -2,94 +2,65 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E527028FDF7
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Oct 2020 08:01:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B693290538
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Oct 2020 14:37:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391043AbgJPGB3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 16 Oct 2020 02:01:29 -0400
-Received: from m42-4.mailgun.net ([69.72.42.4]:56164 "EHLO m42-4.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2390983AbgJPGB2 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 16 Oct 2020 02:01:28 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1602828087; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=3RniiqB+zkqxMCvtU+f3tA/AMpl7AoAO184Gvby039w=; b=moNYnS+ZxUPeEZjYA2+1ylvDfw8lDUuSK/ovUU/khJFza9nHfnHER5FJ0D85TfOWXWMkDVhs
- sKJECdIOw9Y8KVur0rroNq0Bg+GZLB1qU1l7C0avbKIYKPQ95xasw+jrxeEPOoM8icpPxrG0
- yiPS0ShGgThDxwtgLymhDCn03PY=
-X-Mailgun-Sending-Ip: 69.72.42.4
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n01.prod.us-west-2.postgun.com with SMTP id
- 5f893722a03b63d67333a024 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 16 Oct 2020 06:01:06
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id E8865C433CB; Fri, 16 Oct 2020 06:01:05 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
-        autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id CCF45C433C9;
-        Fri, 16 Oct 2020 06:01:02 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org CCF45C433C9
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Stephen Rothwell <sfr@canb.auug.org.au>
-Cc:     Wireless <linux-wireless@vger.kernel.org>,
-        David Miller <davem@davemloft.net>,
-        Networking <netdev@vger.kernel.org>,
-        Ido Schimmel <idosch@mellanox.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux Next Mailing List <linux-next@vger.kernel.org>,
-        Michael Jeanson <mjeanson@efficios.com>
-Subject: Re: linux-next: manual merge of the wireless-drivers tree with the net tree
-References: <20201016084419.3c6e048a@canb.auug.org.au>
-Date:   Fri, 16 Oct 2020 09:01:00 +0300
-In-Reply-To: <20201016084419.3c6e048a@canb.auug.org.au> (Stephen Rothwell's
-        message of "Fri, 16 Oct 2020 08:44:19 +1100")
-Message-ID: <87imbazp43.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        id S2407648AbgJPMhe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 16 Oct 2020 08:37:34 -0400
+Received: from cpanel.giganet.cl ([190.96.78.139]:39766 "EHLO
+        cpanel.giganet.cl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2407562AbgJPMhY (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 16 Oct 2020 08:37:24 -0400
+X-Greylist: delayed 20782 seconds by postgrey-1.27 at vger.kernel.org; Fri, 16 Oct 2020 08:37:10 EDT
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=dplgrout.cl
+        ; s=default; h=Content-Transfer-Encoding:Content-Type:Message-ID:Reply-To:
+        Subject:To:From:Date:MIME-Version:Sender:Cc:Content-ID:Content-Description:
+        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=TrgUs68YRs3neP+PfrvGhLoeMXh3YzKv5z9oCWPJ0m4=; b=m/ABHCVvyLYD2QkkwOjuWUgGFG
+        i9BJXsIic9wHOFEzjhXFPbcsR2XTWptcrmKLSqDrJOV7hGJM6za5nSEFhd4CC/+eaHHsgS48/E2jM
+        qvMpEeazlOlIrwSs4xM+Zdf/REorOK5GVU6ZAJUjCzQuCMv9dTVBPKuexZxj1Qoi2hPLiQ576Ik0L
+        XzwzerIXphINfmlVQ0r0UMIuChB1Vcn201QVmD2skB/Nh9D/yp0E95Av9ZMQq7ln6H0uEUnu/2/5Y
+        /CHuMEs39xrrgaYDtG7jTh3PfukIIcCJEs3b52/mZokA1w+tDL1dp0MaV2Z+qYj+Bzs13o0ru0vv/
+        Mq733mMw==;
+Received: from [::1] (port=55048 helo=cpanel.giganet.cl)
+        by cpanel.giganet.cl with esmtpa (Exim 4.93)
+        (envelope-from <info@controlypotencia.com>)
+        id 1kTJ7f-0009vt-N3; Fri, 16 Oct 2020 03:21:51 -0300
 MIME-Version: 1.0
-Content-Type: text/plain
+Date:   Fri, 16 Oct 2020 03:21:50 -0300
+From:   Ying Chongan <info@controlypotencia.com>
+To:     undisclosed-recipients:;
+Subject: Investment opportunity
+Reply-To: yingchongan@zohomail.com
+User-Agent: Roundcube Webmail/1.4.8
+Message-ID: <e70e5a6e462f92c7f06eea146a612430@controlypotencia.com>
+X-Sender: info@controlypotencia.com
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cpanel.giganet.cl
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - controlypotencia.com
+X-Get-Message-Sender-Via: cpanel.giganet.cl: authenticated_id: mariapaz.lopez@dplgrout.cl
+X-Authenticated-Sender: cpanel.giganet.cl: mariapaz.lopez@dplgrout.cl
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Stephen Rothwell <sfr@canb.auug.org.au> writes:
+Greetings,
 
-> Hi all,
->
-> Today's linux-next merge of the wireless-drivers tree got a conflict in:
->
->   tools/testing/selftests/net/Makefile
->
-> between commit:
->
->   1a01727676a8 ("selftests: Add VRF route leaking tests")
->
-> from the net tree and commit:
->
->   b7cc6d3c5c91 ("selftests: net: Add drop monitor test")
->
-> from the wireless-drivers (presumably because it has merged part of the
-> net-next tree) tree.
+This email is for an opportunity to invest in any lucrative business in 
+your country.
 
-Correct, I fast forwarded wireless-drivers from net-next to prepare for
-sending bug fixes in the end of the merge window. But I didn't realise
-that it might break linux-next build, so wireless-drivers should always
-follow net tree and not net-next. Sorry about that.
+We offer a quick loan at low interest rate, if you are interested, 
+please reply to yingchongan@gmail.com for more details.
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Sincerely: Ying Chongan
