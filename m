@@ -2,107 +2,134 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B024228FC2F
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Oct 2020 03:08:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D54E28FC4B
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Oct 2020 03:50:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388756AbgJPBEd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 15 Oct 2020 21:04:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42844 "EHLO
+        id S2390125AbgJPBui (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 15 Oct 2020 21:50:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49884 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727698AbgJPBEd (ORCPT
+        with ESMTP id S2388885AbgJPBui (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 15 Oct 2020 21:04:33 -0400
-Received: from mail-lf1-x141.google.com (mail-lf1-x141.google.com [IPv6:2a00:1450:4864:20::141])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B496C061755
-        for <linux-wireless@vger.kernel.org>; Thu, 15 Oct 2020 18:04:33 -0700 (PDT)
-Received: by mail-lf1-x141.google.com with SMTP id z2so864653lfr.1
-        for <linux-wireless@vger.kernel.org>; Thu, 15 Oct 2020 18:04:32 -0700 (PDT)
+        Thu, 15 Oct 2020 21:50:38 -0400
+Received: from mail-io1-xd43.google.com (mail-io1-xd43.google.com [IPv6:2607:f8b0:4864:20::d43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D0CEC061755;
+        Thu, 15 Oct 2020 18:50:38 -0700 (PDT)
+Received: by mail-io1-xd43.google.com with SMTP id n6so1763391ioc.12;
+        Thu, 15 Oct 2020 18:50:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=cWLcvgRHCQdlC5HKIAZhx48ho8BZ0djIP0nz2utcEXI=;
-        b=d6gs8eEgXnPgKObab+mhRs0FJniuh/EvHC4kcPD8b51kCsBsPDF0nC+P89o3dFvioO
-         iQRmkrwhbm/40lLcsfaQD9Z8Rz+KryRawmwrjekYpYzJdyqpTvpzVd0AtYEzugDSFEGr
-         bERNGtkxeXFEx0n4vEBB5gPVkuYAjrbln87StxEAIlAwP6B3VWWUmtsMbjnmg2DwJgcK
-         FE5LBkjzsKHM2v/B89JIRTxpc202F22HbNRHMh4DFpSo13sLME06Mp2egtJR3yupLFUe
-         Dcd+JZggfMJvdaooE1Vvnd3Um/jPRfUGI4AzZk9Z1hnBBz01P+UN28LeSCnCpf92g8JG
-         64UQ==
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=Lnz+3X498d+Pw84uYesLONlxmmcjlWUIkyxJu0l46jM=;
+        b=rm2viusRTPBp0TJU8pgk7dKrwSZHWURw3hbfsPPeR3W1h1/UsXUEwl1ioBQI2hRXd5
+         c+MohwMXmt+BxSgwzF7ygp+LFqAeVmopFAnrtD2hC99SzOgk93txz/QDDWzixmHAiYex
+         yg0pxm1zvDUy6H+HTvQcDRFnwDWirlfuAUEEUlgCv7BpcO11TnNbcC6MsW6JjiDtQGCe
+         9F70JUoWqvtzUAv6ztft/mNvBHokjZsYMnllOqdn+P6eM9CEMk9sPtrumniDcjOUFVLr
+         qMp1+PMhFjR0XPP17eX3ddc24kmOY/CfbICHLgqVSsWO5CG1oqTDd4O07mx2XeSYKhT5
+         CK4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=cWLcvgRHCQdlC5HKIAZhx48ho8BZ0djIP0nz2utcEXI=;
-        b=ZgY2YrBECn3d1EOdxU9EDbYa33THsB+mDd+fJOBhFUrWrhNm1z8L1wU/63K4uwtB2O
-         am/nvquC6n18Jvohn1M/ryvErY2bzA6qUoWe6CtwALE1RfSLv4lonowqgt3c98OZHwUT
-         Gk1Y5XY33DnIWKP14YJEwjGffV632kOVej8KuIrYWFSHYL8F8Bq+i5fq6j5LZtkAHvny
-         j/ndEFNdHONZBPRj9aMbtqWInFEb6Rwm4pNBSq651WnlzAKHb85vkr7mnfYwoG7jUv3j
-         ZK6IPb3zBQA1HiihkdBJud4QKzggMUDZzVQigQFmdSVLDzxBCi9ADrMKXQMvAhI/96Ww
-         ntKQ==
-X-Gm-Message-State: AOAM532Haqi2VuSP9wpj34JanRdL0iki5T1/p3RznwniwNPXrOxWyJy0
-        raIkk2SCg3XQqwzlEKWl+xu7CeeqnpyhxKE8rrs=
-X-Google-Smtp-Source: ABdhPJwBQsFkTYLlprwQbz6Jw0oLof/P3UXX53ZIdXXx96lqKYOe8dv6TLlKh+jH8237HWNEx2pQk8r8OB+0/3nEE4E=
-X-Received: by 2002:ac2:5325:: with SMTP id f5mr428582lfh.86.1602810271223;
- Thu, 15 Oct 2020 18:04:31 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=Lnz+3X498d+Pw84uYesLONlxmmcjlWUIkyxJu0l46jM=;
+        b=m7kPTSr3yf/IqxzvOpLKMLF8BoNcOW0IDBsLddSj8jHrG0DfJb1cddCvvjYvDDqAWF
+         8uTegt9xwzgWonrnOd0qsaFDt3qIM3X2jatJAoewkxhN2MYQDL9Zg1wve0o2gzb8GFxn
+         t/fQ2233xV8HlDoDzfpcvjR6EAQMnO0uPPwxi+vAkLMcZAIKuzZD3a40p6+i8I1ppsev
+         yEhtoCBpY+VEWBHjeXsVgXFWb6EqZcjjWUoxmoHo9Jp6TAue3ZsqclS1p08SXGGFVwYA
+         ul3rqQZKLrHwz82W4t+SXeWOzqw/LmLtHy0feDJTL5Kuow83xH7AxhYuyvf4S9MvOY80
+         sU4g==
+X-Gm-Message-State: AOAM532sT9gMXZrBibfHzaEURDu3hQjkKrt3yuRwfOqkEgW1/3mpwFP/
+        mp0vlGQkK3hZthbcgza1v0w=
+X-Google-Smtp-Source: ABdhPJw58WzznEotpeyXbMPb7MnVHRD71RKnqhwSc4tdNfgdfsbrRRLZ/GSpcwJWk/nqYlTFXz2iEA==
+X-Received: by 2002:a6b:9243:: with SMTP id u64mr711338iod.197.1602813037247;
+        Thu, 15 Oct 2020 18:50:37 -0700 (PDT)
+Received: from ubuntu-m3-large-x86 ([2604:1380:45d1:2600::3])
+        by smtp.gmail.com with ESMTPSA id s17sm793793ioa.38.2020.10.15.18.50.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 15 Oct 2020 18:50:36 -0700 (PDT)
+Date:   Thu, 15 Oct 2020 18:50:34 -0700
+From:   Nathan Chancellor <natechancellor@gmail.com>
+To:     Jerome Pouiller <Jerome.Pouiller@silabs.com>
+Cc:     devel@driverdev.osuosl.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Dan Carpenter <dan.carpenter@oracle.com>
+Subject: Re: [PATCH 8/8] staging: wfx: improve robustness of wfx_get_hw_rate()
+Message-ID: <20201016015034.GA2122229@ubuntu-m3-large-x86>
+References: <20201009171307.864608-1-Jerome.Pouiller@silabs.com>
+ <20201009171307.864608-9-Jerome.Pouiller@silabs.com>
 MIME-Version: 1.0
-References: <3BFCA289-ADD8-4755-80C5-1889A9AFB41D@libreelec.tv>
-In-Reply-To: <3BFCA289-ADD8-4755-80C5-1889A9AFB41D@libreelec.tv>
-From:   Forest Crossman <cyrozap@gmail.com>
-Date:   Thu, 15 Oct 2020 20:04:19 -0500
-Message-ID: <CAO3ALPytXHdb6svA+_EbmV7+g9+FdyQhBKWHUJwOGQxyJgL=kQ@mail.gmail.com>
-Subject: Re: mt76 support for MT7668 SDIO?
-To:     Christian Hewitt <chewitt@libreelec.tv>
-Cc:     Linux Wireless <linux-wireless@vger.kernel.org>,
-        linux-mediatek@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20201009171307.864608-9-Jerome.Pouiller@silabs.com>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-CC: linux-mediatek
+On Fri, Oct 09, 2020 at 07:13:07PM +0200, Jerome Pouiller wrote:
+> From: Jérôme Pouiller <jerome.pouiller@silabs.com>
+> 
+> Smatch complains:
+> 
+>     data_tx.c:37 wfx_get_hw_rate() warn: constraint '(struct ieee80211_supported_band)->bitrates' overflow 'band->bitrates' 0 <= abs_rl '0-127' user_rl '' required = '(struct ieee80211_supported_band)->n_bitrates'
+>     23          struct ieee80211_supported_band *band;
+>     24
+>     25          if (rate->idx < 0)
+>     26                  return -1;
+>     27          if (rate->flags & IEEE80211_TX_RC_MCS) {
+>     28                  if (rate->idx > 7) {
+>     29                          WARN(1, "wrong rate->idx value: %d", rate->idx);
+>     30                          return -1;
+>     31                  }
+>     32                  return rate->idx + 14;
+>     33          }
+>     34          // WFx only support 2GHz, else band information should be retrieved
+>     35          // from ieee80211_tx_info
+>     36          band = wdev->hw->wiphy->bands[NL80211_BAND_2GHZ];
+>     37          return band->bitrates[rate->idx].hw_value;
+> 
+> Add a simple check to make Smatch happy.
+> 
+> Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
+> Signed-off-by: Jérôme Pouiller <jerome.pouiller@silabs.com>
+> ---
+>  drivers/staging/wfx/data_tx.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+> 
+> diff --git a/drivers/staging/wfx/data_tx.c b/drivers/staging/wfx/data_tx.c
+> index 8db0be08daf8..41f6a604a697 100644
+> --- a/drivers/staging/wfx/data_tx.c
+> +++ b/drivers/staging/wfx/data_tx.c
+> @@ -31,6 +31,10 @@ static int wfx_get_hw_rate(struct wfx_dev *wdev,
+>  		}
+>  		return rate->idx + 14;
+>  	}
+> +	if (rate->idx >= band->n_bitrates) {
+> +		WARN(1, "wrong rate->idx value: %d", rate->idx);
+> +		return -1;
+> +	}
+>  	// WFx only support 2GHz, else band information should be retrieved
+>  	// from ieee80211_tx_info
+>  	band = wdev->hw->wiphy->bands[NL80211_BAND_2GHZ];
+> -- 
+> 2.28.0
+> 
 
-On Sun, Jun 7, 2020 at 11:52 PM Christian Hewitt <chewitt@libreelec.tv> wro=
-te:
->
-> I=E2=80=99m a maintainer for a distro that runs Kodi mediacentre on many =
-popular ARM SBCs and Android STBs (replacing Android).
->
-> Similar to my request on RTL8822CS, I have a number of requests for WiFi =
-support on Amlogic SoC devices using MT7668 chips. The BT side of the modul=
-e is supported in mainline for sometime, but there is no mention of WiFi.
->
-> Is there any plan or timeline for MT7668 SDIO support in mt76? .. I=E2=80=
-=99m struggling to even find vendor drivers for this chip.
+This now causes a clang warning:
 
-I realize it's been about four months since you sent this email, but
-if you're still looking for sources for the downstream driver, I know
-they're included in the source code releases for the Amazon Fire TV
-Stick 4K[1] (latest one here[2]). Inside that tarball, there's a
-"platform.tar" archive. Inside "platform.tar" you'll find the kernel
-sources for the Fire TV Stick 4K, which includes the WiFi driver for
-the MT7668 and several other devices. Specifically, you'll find the
-MT7668 drivers under
-"kernel/mediatek/mt8695/4.4/drivers/misc/mediatek/connectivity/wlan/gen4"
-and "vendor/amazon/wlan/mediatek/driver/mt76x8" (not sure what the
-difference is).
+drivers/staging/wfx/data_tx.c:34:19: warning: variable 'band' is uninitialized when used here [-Wuninitialized]
+        if (rate->idx >= band->n_bitrates) {
+                         ^~~~
+drivers/staging/wfx/data_tx.c:23:39: note: initialize the variable 'band' to silence this warning
+        struct ieee80211_supported_band *band;
+                                             ^
+                                              = NULL
+1 warning generated.
 
-I, too, am interested in upstream support for the MT7668 since I have
-several USB dongles (well, technically they use custom connectors and
-are custom-made to be used inside specific TVs[3], but they enumerate
-fine on a normal PC) with the USB variant of that chip, so if anyone
-has any plans to add that support, I'd also like to know. And if
-someone is interested in doing this and needs hardware, devices that
-use the USB variant of the MT7668 are pretty widely available and can
-easily be found with this eBay search URL[4]. The user manual[3] for
-the devices listed in that search has the pinout for the custom
-connector on the board, so it's relatively straightforward to solder
-up a USB cable to it to get it working with a computer.
-
-[1]: https://www.amazon.com/gp/help/customer/display.html?nodeId=3D20145268=
-0
-[2]: https://fireos-tv-src.s3.amazonaws.com/o5P7dfByxbBhcfQqI8IqUREyUc/Fire=
-TVStick4K-6.2.7.3-20200724.tar.bz2
-[3]: https://fccid.io/BEJLGSBWAC92/User-Manual/User-Manual-3945059.pdf
-[4]: https://www.ebay.com/sch/i.html?_nkw=3D%28eat64454801%2Clgsbwac92%2Ctw=
-cm-k505d%29
+Cheers,
+Nathan
