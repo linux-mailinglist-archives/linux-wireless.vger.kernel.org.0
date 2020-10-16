@@ -2,106 +2,107 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C35BC28FC0D
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Oct 2020 02:26:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B024228FC2F
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Oct 2020 03:08:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731813AbgJPA06 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 15 Oct 2020 20:26:58 -0400
-Received: from mailgw01.mediatek.com ([210.61.82.183]:38567 "EHLO
-        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1731772AbgJPA06 (ORCPT
+        id S2388756AbgJPBEd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 15 Oct 2020 21:04:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42844 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727698AbgJPBEd (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 15 Oct 2020 20:26:58 -0400
-X-UUID: 2761c0ee11e04572a0c7e3eba0ab2612-20201016
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Transfer-Encoding:Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=fbeyHcPr5HXFs3nWVr8l+SD2fzx2BPv1Slq4oYY7jSo=;
-        b=q36OKirF3GRFv3T8lXvnREY0zhLM3Q1ELz9mHYtqnzhvVgGlpqtuUeJB0/FBkg+yzzN+Uh/j3gnBoZT2FouPn82wrQbwJb7AVbWNZYOYbF0KLP1l6XhBBQbxk+KaX+phW6urUNRjiFWbdP+NDo09kuWfMEzlplVPB3LUJe7i4SE=;
-X-UUID: 2761c0ee11e04572a0c7e3eba0ab2612-20201016
-Received: from mtkcas07.mediatek.inc [(172.21.101.84)] by mailgw01.mediatek.com
-        (envelope-from <sean.wang@mediatek.com>)
-        (Cellopoint E-mail Firewall v4.1.14 Build 0819 with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 377058225; Fri, 16 Oct 2020 08:26:51 +0800
-Received: from MTKCAS06.mediatek.inc (172.21.101.30) by
- mtkmbs08n2.mediatek.inc (172.21.101.56) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Fri, 16 Oct 2020 08:26:48 +0800
-Received: from mtkswgap22.mediatek.inc (172.21.77.33) by MTKCAS06.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Fri, 16 Oct 2020 08:26:48 +0800
-From:   <sean.wang@mediatek.com>
-To:     <nbd@nbd.name>, <lorenzo.bianconi@redhat.com>
-CC:     <sean.wang@mediatek.com>, <ryder.lee@mediatek.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>, Sean Wang <objelf@gmail.com>,
-        YN Chen <YN.Chen@mediatek.com>
-Subject: [PATCH 2/2] mt76: mt7663s: introduce WoW support via GPIO
-Date:   Fri, 16 Oct 2020 08:26:42 +0800
-Message-ID: <e83ee8b209124306f3f62e85823d7f0e30721b26.1602807276.git.objelf@gmail.com>
-X-Mailer: git-send-email 1.7.9.5
-In-Reply-To: <267346a9a9c5f71caec03292b6c33b39864b38c5.1602807276.git.objelf@gmail.com>
-References: <267346a9a9c5f71caec03292b6c33b39864b38c5.1602807276.git.objelf@gmail.com>
+        Thu, 15 Oct 2020 21:04:33 -0400
+Received: from mail-lf1-x141.google.com (mail-lf1-x141.google.com [IPv6:2a00:1450:4864:20::141])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B496C061755
+        for <linux-wireless@vger.kernel.org>; Thu, 15 Oct 2020 18:04:33 -0700 (PDT)
+Received: by mail-lf1-x141.google.com with SMTP id z2so864653lfr.1
+        for <linux-wireless@vger.kernel.org>; Thu, 15 Oct 2020 18:04:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=cWLcvgRHCQdlC5HKIAZhx48ho8BZ0djIP0nz2utcEXI=;
+        b=d6gs8eEgXnPgKObab+mhRs0FJniuh/EvHC4kcPD8b51kCsBsPDF0nC+P89o3dFvioO
+         iQRmkrwhbm/40lLcsfaQD9Z8Rz+KryRawmwrjekYpYzJdyqpTvpzVd0AtYEzugDSFEGr
+         bERNGtkxeXFEx0n4vEBB5gPVkuYAjrbln87StxEAIlAwP6B3VWWUmtsMbjnmg2DwJgcK
+         FE5LBkjzsKHM2v/B89JIRTxpc202F22HbNRHMh4DFpSo13sLME06Mp2egtJR3yupLFUe
+         Dcd+JZggfMJvdaooE1Vvnd3Um/jPRfUGI4AzZk9Z1hnBBz01P+UN28LeSCnCpf92g8JG
+         64UQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=cWLcvgRHCQdlC5HKIAZhx48ho8BZ0djIP0nz2utcEXI=;
+        b=ZgY2YrBECn3d1EOdxU9EDbYa33THsB+mDd+fJOBhFUrWrhNm1z8L1wU/63K4uwtB2O
+         am/nvquC6n18Jvohn1M/ryvErY2bzA6qUoWe6CtwALE1RfSLv4lonowqgt3c98OZHwUT
+         Gk1Y5XY33DnIWKP14YJEwjGffV632kOVej8KuIrYWFSHYL8F8Bq+i5fq6j5LZtkAHvny
+         j/ndEFNdHONZBPRj9aMbtqWInFEb6Rwm4pNBSq651WnlzAKHb85vkr7mnfYwoG7jUv3j
+         ZK6IPb3zBQA1HiihkdBJud4QKzggMUDZzVQigQFmdSVLDzxBCi9ADrMKXQMvAhI/96Ww
+         ntKQ==
+X-Gm-Message-State: AOAM532Haqi2VuSP9wpj34JanRdL0iki5T1/p3RznwniwNPXrOxWyJy0
+        raIkk2SCg3XQqwzlEKWl+xu7CeeqnpyhxKE8rrs=
+X-Google-Smtp-Source: ABdhPJwBQsFkTYLlprwQbz6Jw0oLof/P3UXX53ZIdXXx96lqKYOe8dv6TLlKh+jH8237HWNEx2pQk8r8OB+0/3nEE4E=
+X-Received: by 2002:ac2:5325:: with SMTP id f5mr428582lfh.86.1602810271223;
+ Thu, 15 Oct 2020 18:04:31 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-SNTS-SMTP: 48CCB54E6685AF6484C239E9F170579B5A1571F1DB198B59D7F6A4180DD6FDDB2000:8
-X-MTK:  N
-Content-Transfer-Encoding: base64
+References: <3BFCA289-ADD8-4755-80C5-1889A9AFB41D@libreelec.tv>
+In-Reply-To: <3BFCA289-ADD8-4755-80C5-1889A9AFB41D@libreelec.tv>
+From:   Forest Crossman <cyrozap@gmail.com>
+Date:   Thu, 15 Oct 2020 20:04:19 -0500
+Message-ID: <CAO3ALPytXHdb6svA+_EbmV7+g9+FdyQhBKWHUJwOGQxyJgL=kQ@mail.gmail.com>
+Subject: Re: mt76 support for MT7668 SDIO?
+To:     Christian Hewitt <chewitt@libreelec.tv>
+Cc:     Linux Wireless <linux-wireless@vger.kernel.org>,
+        linux-mediatek@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-RnJvbTogU2VhbiBXYW5nIDxvYmplbGZAZ21haWwuY29tPg0KDQpTRElPLWJhc2VkIFdpRmkgd291
-bGQgcmVseSBvbiBhbiBhZGRpdGlvbmFsIEdQSU8gcGluIHRvIHdha2UgdXAgdGhlIGhvc3QuDQoN
-CkNvLWRldmVsb3BlZC1ieTogWU4gQ2hlbiA8WU4uQ2hlbkBtZWRpYXRlay5jb20+DQpTaWduZWQt
-b2ZmLWJ5OiBZTiBDaGVuIDxZTi5DaGVuQG1lZGlhdGVrLmNvbT4NClNpZ25lZC1vZmYtYnk6ICBT
-ZWFuIFdhbmcgPHNlYW4ud2FuZ0BtZWRpYXRlay5jb20+DQotLS0NCiBkcml2ZXJzL25ldC93aXJl
-bGVzcy9tZWRpYXRlay9tdDc2L210NzYxNS9tY3UuYyB8IDE0ICsrKysrKysrKysrKy0tDQogZHJp
-dmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc2MTUvbWN1LmggfCAxNiArKysrKysr
-KysrKysrKysrDQogMiBmaWxlcyBjaGFuZ2VkLCAyOCBpbnNlcnRpb25zKCspLCAyIGRlbGV0aW9u
-cygtKQ0KDQpkaWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9t
-dDc2MTUvbWN1LmMgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzYxNS9t
-Y3UuYw0KaW5kZXggYzk5MGNjZDZmNDcyLi5lY2Y2YzYxNjVlNzIgMTAwNjQ0DQotLS0gYS9kcml2
-ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzYxNS9tY3UuYw0KKysrIGIvZHJpdmVy
-cy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc2MTUvbWN1LmMNCkBAIC0zNTI1LDYgKzM1
-MjUsOCBAQCBpbnQgbXQ3NjE1X21jdV9zZXRfaGlmX3N1c3BlbmQoc3RydWN0IG10NzYxNV9kZXYg
-KmRldiwgYm9vbCBzdXNwZW5kKQ0KIAkJcmVxLmhkci5oaWZfdHlwZSA9IDI7DQogCWVsc2UgaWYg
-KG10NzZfaXNfdXNiKCZkZXYtPm10NzYpKQ0KIAkJcmVxLmhkci5oaWZfdHlwZSA9IDE7DQorCWVs
-c2UgaWYgKG10NzZfaXNfc2RpbygmZGV2LT5tdDc2KSkNCisJCXJlcS5oZHIuaGlmX3R5cGUgPSAw
-Ow0KIA0KIAlyZXR1cm4gbXQ3Nl9tY3Vfc2VuZF9tc2coJmRldi0+bXQ3NiwgTUNVX1VOSV9DTURf
-SElGX0NUUkwsICZyZXEsDQogCQkJCSBzaXplb2YocmVxKSwgdHJ1ZSk7DQpAQCAtMzU0Myw2ICsz
-NTQ1LDcgQEAgbXQ3NjE1X21jdV9zZXRfd293X2N0cmwoc3RydWN0IG10NzYxNV9waHkgKnBoeSwg
-c3RydWN0IGllZWU4MDIxMV92aWYgKnZpZiwNCiAJCQl1OCBwYWRbM107DQogCQl9IF9fcGFja2Vk
-IGhkcjsNCiAJCXN0cnVjdCBtdDc2MTVfd293X2N0cmxfdGx2IHdvd19jdHJsX3RsdjsNCisJCXN0
-cnVjdCBtdDc2MTVfd293X2dwaW9fcGFyYW1fdGx2IGdwaW9fdGx2Ow0KIAl9IHJlcSA9IHsNCiAJ
-CS5oZHIgPSB7DQogCQkJLmJzc19pZHggPSBtdmlmLT5pZHgsDQpAQCAtMzU1Miw2ICszNTU1LDEx
-IEBAIG10NzYxNV9tY3Vfc2V0X3dvd19jdHJsKHN0cnVjdCBtdDc2MTVfcGh5ICpwaHksIHN0cnVj
-dCBpZWVlODAyMTFfdmlmICp2aWYsDQogCQkJLmxlbiA9IGNwdV90b19sZTE2KHNpemVvZihzdHJ1
-Y3QgbXQ3NjE1X3dvd19jdHJsX3RsdikpLA0KIAkJCS5jbWQgPSBzdXNwZW5kID8gMSA6IDIsDQog
-CQl9LA0KKwkJLmdwaW9fdGx2ID0gew0KKwkJCS50YWcgPSBjcHVfdG9fbGUxNihVTklfU1VTUEVO
-RF9XT1dfR1BJT19QQVJBTSksDQorCQkJLmxlbiA9IGNwdV90b19sZTE2KHNpemVvZihzdHJ1Y3Qg
-bXQ3NjE1X3dvd19ncGlvX3BhcmFtX3RsdikpLA0KKwkJCS5ncGlvX3BpbiA9IDB4ZmYsIC8qIGZv
-bGxvdyBmdyBhYm91dCBHUElPIHBpbiAqLw0KKwkJfSwNCiAJfTsNCiANCiAJaWYgKHdvd2xhbi0+
-bWFnaWNfcGt0KQ0KQEAgLTM1NjUsOSArMzU3MywxMSBAQCBtdDc2MTVfbWN1X3NldF93b3dfY3Ry
-bChzdHJ1Y3QgbXQ3NjE1X3BoeSAqcGh5LCBzdHJ1Y3QgaWVlZTgwMjExX3ZpZiAqdmlmLA0KIAl9
-DQogDQogCWlmIChtdDc2X2lzX21taW8oJmRldi0+bXQ3NikpDQotCQlyZXEud293X2N0cmxfdGx2
-Lndha2V1cF9oaWYgPSAyOw0KKwkJcmVxLndvd19jdHJsX3Rsdi53YWtldXBfaGlmID0gV09XX1BD
-SUU7DQogCWVsc2UgaWYgKG10NzZfaXNfdXNiKCZkZXYtPm10NzYpKQ0KLQkJcmVxLndvd19jdHJs
-X3Rsdi53YWtldXBfaGlmID0gMTsNCisJCXJlcS53b3dfY3RybF90bHYud2FrZXVwX2hpZiA9IFdP
-V19VU0I7DQorCWVsc2UgaWYgKG10NzZfaXNfc2RpbygmZGV2LT5tdDc2KSkNCisJCXJlcS53b3df
-Y3RybF90bHYud2FrZXVwX2hpZiA9IFdPV19HUElPOw0KIA0KIAlyZXR1cm4gbXQ3Nl9tY3Vfc2Vu
-ZF9tc2coJmRldi0+bXQ3NiwgTUNVX1VOSV9DTURfU1VTUEVORCwgJnJlcSwNCiAJCQkJIHNpemVv
-ZihyZXEpLCB0cnVlKTsNCmRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRl
-ay9tdDc2L210NzYxNS9tY3UuaCBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYv
-bXQ3NjE1L21jdS5oDQppbmRleCA3Yjg1NmU5ZWVlMWUuLjU5YWQ2YWMxNWU0MSAxMDA2NDQNCi0t
-LSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3NjE1L21jdS5oDQorKysg
-Yi9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzYxNS9tY3UuaA0KQEAgLTQ3
-Nyw2ICs0NzcsMTIgQEAgc3RydWN0IG10NzYxNV9ic3NfcW9zX3RsdiB7DQogCXU4IHBhZFszXTsN
-CiB9IF9fcGFja2VkOw0KIA0KK2VudW0gew0KKwlXT1dfVVNCID0gMSwNCisJV09XX1BDSUUgPSAy
-LA0KKwlXT1dfR1BJTyA9IDMsDQorfTsNCisNCiBzdHJ1Y3QgbXQ3NjE1X3dvd19jdHJsX3RsdiB7
-DQogCV9fbGUxNiB0YWc7DQogCV9fbGUxNiBsZW47DQpAQCAtNTAxLDYgKzUwNywxNiBAQCBzdHJ1
-Y3QgbXQ3NjE1X3dvd19jdHJsX3RsdiB7DQogCXU4IHJzdls0XTsNCiB9IF9fcGFja2VkOw0KIA0K
-K3N0cnVjdCBtdDc2MTVfd293X2dwaW9fcGFyYW1fdGx2IHsNCisJX19sZTE2IHRhZzsNCisJX19s
-ZTE2IGxlbjsNCisJdTggZ3Bpb19waW47DQorCXU4IHRyaWdnZXJfbHZsOw0KKwl1OCBwYWRbMl07
-DQorCV9fbGUzMiBncGlvX2ludGVydmFsOw0KKwl1OCByc3ZbNF07DQorfSBfX3BhY2tlZDsNCisN
-CiAjZGVmaW5lIE1UNzYxNV9XT1dfTUFTS19NQVhfTEVOCQkxNg0KICNkZWZpbmUgTVQ3NjE1X1dP
-V19QQVRURU5fTUFYX0xFTgkxMjgNCiBzdHJ1Y3QgbXQ3NjE1X3dvd19wYXR0ZXJuX3RsdiB7DQot
-LSANCjIuMjUuMQ0K
+CC: linux-mediatek
 
+On Sun, Jun 7, 2020 at 11:52 PM Christian Hewitt <chewitt@libreelec.tv> wro=
+te:
+>
+> I=E2=80=99m a maintainer for a distro that runs Kodi mediacentre on many =
+popular ARM SBCs and Android STBs (replacing Android).
+>
+> Similar to my request on RTL8822CS, I have a number of requests for WiFi =
+support on Amlogic SoC devices using MT7668 chips. The BT side of the modul=
+e is supported in mainline for sometime, but there is no mention of WiFi.
+>
+> Is there any plan or timeline for MT7668 SDIO support in mt76? .. I=E2=80=
+=99m struggling to even find vendor drivers for this chip.
+
+I realize it's been about four months since you sent this email, but
+if you're still looking for sources for the downstream driver, I know
+they're included in the source code releases for the Amazon Fire TV
+Stick 4K[1] (latest one here[2]). Inside that tarball, there's a
+"platform.tar" archive. Inside "platform.tar" you'll find the kernel
+sources for the Fire TV Stick 4K, which includes the WiFi driver for
+the MT7668 and several other devices. Specifically, you'll find the
+MT7668 drivers under
+"kernel/mediatek/mt8695/4.4/drivers/misc/mediatek/connectivity/wlan/gen4"
+and "vendor/amazon/wlan/mediatek/driver/mt76x8" (not sure what the
+difference is).
+
+I, too, am interested in upstream support for the MT7668 since I have
+several USB dongles (well, technically they use custom connectors and
+are custom-made to be used inside specific TVs[3], but they enumerate
+fine on a normal PC) with the USB variant of that chip, so if anyone
+has any plans to add that support, I'd also like to know. And if
+someone is interested in doing this and needs hardware, devices that
+use the USB variant of the MT7668 are pretty widely available and can
+easily be found with this eBay search URL[4]. The user manual[3] for
+the devices listed in that search has the pinout for the custom
+connector on the board, so it's relatively straightforward to solder
+up a USB cable to it to get it working with a computer.
+
+[1]: https://www.amazon.com/gp/help/customer/display.html?nodeId=3D20145268=
+0
+[2]: https://fireos-tv-src.s3.amazonaws.com/o5P7dfByxbBhcfQqI8IqUREyUc/Fire=
+TVStick4K-6.2.7.3-20200724.tar.bz2
+[3]: https://fccid.io/BEJLGSBWAC92/User-Manual/User-Manual-3945059.pdf
+[4]: https://www.ebay.com/sch/i.html?_nkw=3D%28eat64454801%2Clgsbwac92%2Ctw=
+cm-k505d%29
