@@ -2,57 +2,59 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 358DE290407
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Oct 2020 13:31:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CB88D29046E
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Oct 2020 13:55:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2406568AbgJPLbO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 16 Oct 2020 07:31:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54788 "EHLO
+        id S2406835AbgJPLz0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 16 Oct 2020 07:55:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58562 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2406366AbgJPLbL (ORCPT
+        with ESMTP id S2406867AbgJPLz0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 16 Oct 2020 07:31:11 -0400
-Received: from mail-vk1-xa42.google.com (mail-vk1-xa42.google.com [IPv6:2607:f8b0:4864:20::a42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 990D3C0613D5
-        for <linux-wireless@vger.kernel.org>; Fri, 16 Oct 2020 04:31:09 -0700 (PDT)
-Received: by mail-vk1-xa42.google.com with SMTP id d125so539911vkh.10
-        for <linux-wireless@vger.kernel.org>; Fri, 16 Oct 2020 04:31:09 -0700 (PDT)
+        Fri, 16 Oct 2020 07:55:26 -0400
+Received: from mail-vs1-xe41.google.com (mail-vs1-xe41.google.com [IPv6:2607:f8b0:4864:20::e41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C69DC0613D6
+        for <linux-wireless@vger.kernel.org>; Fri, 16 Oct 2020 04:55:26 -0700 (PDT)
+Received: by mail-vs1-xe41.google.com with SMTP id l6so1257388vsr.7
+        for <linux-wireless@vger.kernel.org>; Fri, 16 Oct 2020 04:55:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc:content-transfer-encoding;
-        bh=VfR2k3sQxdqJVPvkLHgRVDpnfd48L/sAbfIZJJQVUGU=;
-        b=U3arh0PpNKrL1ViPiMAT0p2E0sl1OdJBhyvUHT4isXu6+XcRLSALuWaqK3qkJaGkEy
-         t8bLEKQge3lIp5OeEMAmTMP3eHUZOfzzoYTvA+hKG5gzjJ6jBJwXNnuAODzY7/gqLhDg
-         pprH6HvpZvmUmEi3fYOlqSuW8lbgPlNp2+o8TswEl5CIop61UyNKvxY/My5zTTEmkTL7
-         wn7UUyyNWiq7oamyFJrfUF8XrsQme69ZI9KAaHUTjCnMWs6AcYLhu3MzDdEDy0r1G8ki
-         SwesbK5trA8dGyyUxob6ItDYO0XA4TU9d9EUSvSHSmSxKVk3Jb3n/Z9s606yVsheLKJl
-         +YBg==
+        bh=SsBIR3dvaDHQ902c3OEzYsauqWLqJtVfaaprWeq67qQ=;
+        b=ztCGwyttV6ILTkzUSbC/kl0Qoc70NUKpuzd2TtG+zixnssKL5XXWDDBZ6VIu63L7fT
+         KrvtukVMPdL7oSDor6ieoMDilEsOm3qFWHrawKqLLMUqP/5yiB8GRrxBUvUigklgYnaG
+         VONDu89Hp9GWmOePfff/CwpMnWG78JVt9hViaxHWhSMC8ZHzBhnXghk6WKU+kQk9AQeQ
+         m44I8f9EGlwMTML9BFL0UL8xrSLkHQFLQhsq8MRtrT31TgKEQTNDpGleQNzIlDGGlXVs
+         kh1IF5AnIBZ2697Ed+rxRyneYYcZmidVemYQn68F5LJwwYjDz4lS2a7y0x3pPk1bw33J
+         R7pw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc:content-transfer-encoding;
-        bh=VfR2k3sQxdqJVPvkLHgRVDpnfd48L/sAbfIZJJQVUGU=;
-        b=rBr1vxBtQVIpyo9ydDZsQL4tXS5DrUcTQEN2H3iNcVugE9eBjSXyN1GJKAHKnDXK9G
-         EvCZTzOgoBH9ufnF0NaZQf/o7mq2EUOianjF+V3OacocNDW0F8KreCNQ4b8nQIvycKrt
-         UIPqVQu/33jfigYXNllGXCyUYO/QIF6HqR2s1mD15Bo2/5GPNsoEHM6RdClDAsHunxS3
-         XWG9U5+bolvMJfPjceHC9BVpzwFRvLFLdda8kaLwos+HGwEWi2DekSEyUFUrwxI9ZpRT
-         tMm2nR/3YcM3qmQxtP72Yyes6f9co00o8Yrw30BrPXHAnYDd1G300YivEwDiN4UwngmJ
-         QQuw==
-X-Gm-Message-State: AOAM531+zapv96mKlTJ+vSaUxYsdALcgYZYzMztJ1MAj2IKVjK37hU4t
-        r5a9oDQNbANkVcST1xNNNM6ryxOqkxAbDS1sa3VX2w==
-X-Google-Smtp-Source: ABdhPJxYAVqNSgwSx1Eoge43VUADHeCK6li9b/4u8o1NT7/3wN77SDJYFQCZnpPpHiOo14iB/Ng7q8JPB3TjsN9qSbg=
-X-Received: by 2002:a1f:ae85:: with SMTP id x127mr1798903vke.8.1602847868573;
- Fri, 16 Oct 2020 04:31:08 -0700 (PDT)
+        bh=SsBIR3dvaDHQ902c3OEzYsauqWLqJtVfaaprWeq67qQ=;
+        b=iV8pTHikfFhu5ROPD7K2Vj+rSmonVDQH/snbm5MgCIfrCk1yUJOu94zaBkH8d4snZg
+         1Vy36EsRbqhXDdeyZW/F1yITt1efQ0Yh59BDAmOo+Mk903ON9+YXvmOM8Fa8utm0CtYo
+         pyrx01IZiKVo5IzU0reHhwnHuvBxj9rv/Fv9N4pV/KK8FO2gG9wM5iuvh31HvDoK57e3
+         vQcvGn4dscIvpRAPQ4EBV5Y2l7RMlZEil1Qu2QXSY7EkJ/sjcgH440X1vgOn0d/ja36v
+         MGJcsMU3jGcLyPV8YISAV5c4MHnMBTi7XUo2dC+yG3InSb9pOIlEXS8X7BRPPf6TyH8u
+         HPrw==
+X-Gm-Message-State: AOAM530JN090luqC/fZk9RxqOajCajWiUmpX4LQlue75QXpk5HzF8SuV
+        /YhWE7yQcDLYCJMpy35dndmmYNpRvEtzvMuB8gqasA==
+X-Google-Smtp-Source: ABdhPJyeYjE+8eamILtS1pokBl5vFazdX2HSavvELgO98C6wDqKlcBKSz+b4lYCJM39oW1Ee51+NCV37XT3kR1P6R5g=
+X-Received: by 2002:a67:6c86:: with SMTP id h128mr1531354vsc.42.1602849324804;
+ Fri, 16 Oct 2020 04:55:24 -0700 (PDT)
 MIME-Version: 1.0
-References: <20201012104648.985256-1-Jerome.Pouiller@silabs.com> <20201012104648.985256-8-Jerome.Pouiller@silabs.com>
-In-Reply-To: <20201012104648.985256-8-Jerome.Pouiller@silabs.com>
+References: <20201012104648.985256-1-Jerome.Pouiller@silabs.com>
+ <2628294.9EgBEFZmRI@pc-42> <20201014124334.lgx53qvtgkmfkepc@pali> <2444203.ROLCPKctRj@pc-42>
+In-Reply-To: <2444203.ROLCPKctRj@pc-42>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Fri, 16 Oct 2020 13:30:30 +0200
-Message-ID: <CAPDyKFpP6xBru79Xh2oe=J8HWO3uk1VpcMzEiG6X7WX-AOvgkA@mail.gmail.com>
+Date:   Fri, 16 Oct 2020 13:54:48 +0200
+Message-ID: <CAPDyKFqCn386r4ecLDnMQmxrAZCvU9r=-eY71UUNpXWNxKOz2g@mail.gmail.com>
 Subject: Re: [PATCH 07/23] wfx: add bus_sdio.c
-To:     Jerome Pouiller <Jerome.Pouiller@silabs.com>
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
+To:     =?UTF-8?B?SsOpcsO0bWUgUG91aWxsZXI=?= <jerome.pouiller@silabs.com>
+Cc:     =?UTF-8?Q?Pali_Roh=C3=A1r?= <pali@kernel.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
         netdev <netdev@vger.kernel.org>,
         driverdevel <devel@driverdev.osuosl.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
@@ -60,102 +62,150 @@ Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
         Kalle Valo <kvalo@codeaurora.org>,
         "David S . Miller" <davem@davemloft.net>,
         DTML <devicetree@vger.kernel.org>,
-        Rob Herring <robh+dt@kernel.org>
+        Rob Herring <robh+dt@kernel.org>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 12 Oct 2020 at 12:47, Jerome Pouiller
-<Jerome.Pouiller@silabs.com> wrote:
+On Thu, 15 Oct 2020 at 16:03, J=C3=A9r=C3=B4me Pouiller
+<jerome.pouiller@silabs.com> wrote:
 >
-> From: J=C3=A9r=C3=B4me Pouiller <jerome.pouiller@silabs.com>
+> On Wednesday 14 October 2020 14:43:34 CEST Pali Roh=C3=A1r wrote:
+> > On Wednesday 14 October 2020 13:52:15 J=C3=A9r=C3=B4me Pouiller wrote:
+> > > On Tuesday 13 October 2020 22:11:56 CEST Pali Roh=C3=A1r wrote:
+> > > > On Monday 12 October 2020 12:46:32 Jerome Pouiller wrote:
+> > > > > +#define SDIO_VENDOR_ID_SILABS        0x0000
+> > > > > +#define SDIO_DEVICE_ID_SILABS_WF200  0x1000
+> > > > > +static const struct sdio_device_id wfx_sdio_ids[] =3D {
+> > > > > +     { SDIO_DEVICE(SDIO_VENDOR_ID_SILABS, SDIO_DEVICE_ID_SILABS_=
+WF200) },
+> > > >
+> > > > Please move ids into common include file include/linux/mmc/sdio_ids=
+.h
+> > > > where are all SDIO ids. Now all drivers have ids defined in that fi=
+le.
+> > > >
+> > > > > +     // FIXME: ignore VID/PID and only rely on device tree
+> > > > > +     // { SDIO_DEVICE(SDIO_ANY_ID, SDIO_ANY_ID) },
+> > > >
+> > > > What is the reason for ignoring vendor and device ids?
+> > >
+> > > The device has a particularity, its VID/PID is 0000:1000 (as you can =
+see
+> > > above). This value is weird. The risk of collision with another devic=
+e is
+> > > high.
+> >
+> > Those ids looks strange. You are from Silabs, can you check internally
+> > in Silabs if ids are really correct? And which sdio vendor id you in
+> > Silabs got assigned for your products?
+>
+> I confirm these ids are the ones burned in the WF200. We have to deal wit=
+h
+> that :( .
 
-Please fill out this commit message to explain a bit more about the
-patch and the HW it enables support for.
+Yep. Unfortunately this isn't so uncommon when targeting the embedded
+types of devices.
+
+The good thing is, that we already have bindings allowing us to specify thi=
+s.
 
 >
-> Signed-off-by: J=C3=A9r=C3=B4me Pouiller <jerome.pouiller@silabs.com>
-> ---
->  drivers/net/wireless/silabs/wfx/bus_sdio.c | 269 +++++++++++++++++++++
->  1 file changed, 269 insertions(+)
->  create mode 100644 drivers/net/wireless/silabs/wfx/bus_sdio.c
 >
-> diff --git a/drivers/net/wireless/silabs/wfx/bus_sdio.c b/drivers/net/wir=
-eless/silabs/wfx/bus_sdio.c
-> new file mode 100644
-> index 000000000000..e06d7e1ebe9c
+> > I know that sdio devices with multiple functions may have different sdi=
+o
+> > vendor/device id particular function and in common CIS (function 0).
+> >
+> > Could not be a problem that on one place is vendor/device id correct an=
+d
+> > on other place is that strange value?
+> >
+> > I have sent following patch (now part of upstream kernel) which exports
+> > these ids to userspace:
+> > https://lore.kernel.org/linux-mmc/20200527110858.17504-2-pali@kernel.or=
+g/T/#u
+> >
+> > Also for debugging ids and information about sdio cards, I sent another
+> > patch which export additional data:
+> > https://lore.kernel.org/linux-mmc/20200727133837.19086-1-pali@kernel.or=
+g/T/#u
+> >
+> > Could you try them and look at /sys/class/mmc_host/ attribute outputs?
+>
+> Here is:
+>
+>     # cd /sys/class/mmc_host/ && grep -r . mmc1/
+>     mmc1/power/runtime_suspended_time:0
+>     grep: mmc1/power/autosuspend_delay_ms: Input/output error
+>     mmc1/power/runtime_active_time:0
+>     mmc1/power/control:auto
+>     mmc1/power/runtime_status:unsupported
+>     mmc1/mmc1:0001/vendor:0x0000
+>     mmc1/mmc1:0001/rca:0x0001
+>     mmc1/mmc1:0001/device:0x1000
+>     mmc1/mmc1:0001/mmc1:0001:1/vendor:0x0000
+>     mmc1/mmc1:0001/mmc1:0001:1/device:0x1000
+>     grep: mmc1/mmc1:0001/mmc1:0001:1/info4: No data available
+>     mmc1/mmc1:0001/mmc1:0001:1/power/runtime_suspended_time:0
+>     grep: mmc1/mmc1:0001/mmc1:0001:1/power/autosuspend_delay_ms: Input/ou=
+tput error
+>     mmc1/mmc1:0001/mmc1:0001:1/power/runtime_active_time:0
+>     mmc1/mmc1:0001/mmc1:0001:1/power/control:auto
+>     mmc1/mmc1:0001/mmc1:0001:1/power/runtime_status:unsupported
+>     mmc1/mmc1:0001/mmc1:0001:1/class:0x00
+>     grep: mmc1/mmc1:0001/mmc1:0001:1/info2: No data available
+>     mmc1/mmc1:0001/mmc1:0001:1/modalias:sdio:c00v0000d1000
+>     mmc1/mmc1:0001/mmc1:0001:1/revision:0.0
+>     mmc1/mmc1:0001/mmc1:0001:1/uevent:OF_NAME=3Dmmc
+>     mmc1/mmc1:0001/mmc1:0001:1/uevent:OF_FULLNAME=3D/soc/sdhci@7e300000/m=
+mc@1
+>     mmc1/mmc1:0001/mmc1:0001:1/uevent:OF_COMPATIBLE_0=3Dsilabs,wfx-sdio
+>     mmc1/mmc1:0001/mmc1:0001:1/uevent:OF_COMPATIBLE_N=3D1
+>     mmc1/mmc1:0001/mmc1:0001:1/uevent:SDIO_CLASS=3D00
+>     mmc1/mmc1:0001/mmc1:0001:1/uevent:SDIO_ID=3D0000:1000
+>     mmc1/mmc1:0001/mmc1:0001:1/uevent:SDIO_REVISION=3D0.0
+>     mmc1/mmc1:0001/mmc1:0001:1/uevent:MODALIAS=3Dsdio:c00v0000d1000
+>     grep: mmc1/mmc1:0001/mmc1:0001:1/info3: No data available
+>     grep: mmc1/mmc1:0001/mmc1:0001:1/info1: No data available
+>     mmc1/mmc1:0001/ocr:0x00200000
+>     grep: mmc1/mmc1:0001/info4: No data available
+>     mmc1/mmc1:0001/power/runtime_suspended_time:0
+>     grep: mmc1/mmc1:0001/power/autosuspend_delay_ms: Input/output error
+>     mmc1/mmc1:0001/power/runtime_active_time:0
+>     mmc1/mmc1:0001/power/control:auto
+>     mmc1/mmc1:0001/power/runtime_status:unsupported
+>     grep: mmc1/mmc1:0001/info2: No data available
+>     mmc1/mmc1:0001/type:SDIO
+>     mmc1/mmc1:0001/revision:0.0
+>     mmc1/mmc1:0001/uevent:MMC_TYPE=3DSDIO
+>     mmc1/mmc1:0001/uevent:SDIO_ID=3D0000:1000
+>     mmc1/mmc1:0001/uevent:SDIO_REVISION=3D0.0
+>     grep: mmc1/mmc1:0001/info3: No data available
+>     grep: mmc1/mmc1:0001/info1: No data available
+>
+>
 
-[...]
+Please have a look at the
+Documentation/devicetree/bindings/mmc/mmc-controller.yaml, there you
+find that from a child node of the mmc host's node, we can specify an
+embedded SDIO functional device.
 
-> +
-> +static int wfx_sdio_irq_subscribe(void *priv)
-> +{
-> +       struct wfx_sdio_priv *bus =3D priv;
-> +       u32 flags;
-> +       int ret;
-> +       u8 cccr;
-> +
+In sdio_add_func(), which calls sdio_set_of_node() - we assign the
+func->dev.of_node its corresponding child node for the SDIO func.
+Allowing the sdio functional driver to be matched with the SDIO func
+device.
 
-I would appreciate a comment about an out-of-band IRQ line. If it's
-supported, that is the preferred option to use, else the SDIO IRQs.
+Perhaps what is missing, is that we may want to avoid probing an
+in-correct sdio driver, based upon buggy SDIO ids. I don't think we
+take some actions in the mmc core to prevent this, but maybe it's not
+a big problem anyway.
 
-> +       if (!bus->of_irq) {
-> +               sdio_claim_host(bus->func);
-> +               ret =3D sdio_claim_irq(bus->func, wfx_sdio_irq_handler);
-> +               sdio_release_host(bus->func);
-> +               return ret;
-> +       }
-> +
-> +       sdio_claim_host(bus->func);
-> +       cccr =3D sdio_f0_readb(bus->func, SDIO_CCCR_IENx, NULL);
-> +       cccr |=3D BIT(0);
-> +       cccr |=3D BIT(bus->func->num);
-> +       sdio_f0_writeb(bus->func, cccr, SDIO_CCCR_IENx, NULL);
-> +       sdio_release_host(bus->func);
-> +       flags =3D irq_get_trigger_type(bus->of_irq);
-> +       if (!flags)
-> +               flags =3D IRQF_TRIGGER_HIGH;
-> +       flags |=3D IRQF_ONESHOT;
-> +       return devm_request_threaded_irq(&bus->func->dev, bus->of_irq, NU=
-LL,
-> +                                        wfx_sdio_irq_handler_ext, flags,
-> +                                        "wfx", bus);
-> +}
-> +
-
-[...]
-
-> +
-> +#define SDIO_VENDOR_ID_SILABS        0x0000
-> +#define SDIO_DEVICE_ID_SILABS_WF200  0x1000
-> +static const struct sdio_device_id wfx_sdio_ids[] =3D {
-> +       { SDIO_DEVICE(SDIO_VENDOR_ID_SILABS, SDIO_DEVICE_ID_SILABS_WF200)=
- },
-> +       // FIXME: ignore VID/PID and only rely on device tree
-> +       // { SDIO_DEVICE(SDIO_ANY_ID, SDIO_ANY_ID) },
-> +       { },
-> +};
-> +MODULE_DEVICE_TABLE(sdio, wfx_sdio_ids);
-
-I will comment about the sdio IDs separately, replying to the other
-thread between you and Pali.
-
-> +
-> +struct sdio_driver wfx_sdio_driver =3D {
-> +       .name =3D "wfx-sdio",
-> +       .id_table =3D wfx_sdio_ids,
-> +       .probe =3D wfx_sdio_probe,
-> +       .remove =3D wfx_sdio_remove,
-> +       .drv =3D {
-> +               .owner =3D THIS_MODULE,
-> +               .of_match_table =3D wfx_sdio_of_match,
-> +       }
-> +};
-
-I couldn't find where you call sdio_register|unregister_driver(), but
-maybe that's done from another patch in series?
+When it comes to documenting the buggy SDIO ids, please add some
+information about this in the common SDIO headers. It's nice to have a
+that information, if any issue comes up later on.
 
 Kind regards
 Uffe
