@@ -2,145 +2,134 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C83B2904D6
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Oct 2020 14:17:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A8B68290710
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Oct 2020 16:21:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2407308AbgJPMQw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 16 Oct 2020 08:16:52 -0400
-Received: from mail-bn7nam10on2067.outbound.protection.outlook.com ([40.107.92.67]:39961
-        "EHLO NAM10-BN7-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S2404860AbgJPMQw (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 16 Oct 2020 08:16:52 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Ii7Ry/ANrG0cAiMolsZXE5BQj9jgPDY7PqjJeeRXiRMVdiMC1uVDF/cKHbMHb3PtdDFY9eToqYNPaxLWjGwVJWfHye0cvGTD52Au5+8lH1ziUJS2TRs097KJZ9qqM1IUXBwL85FDIc8kWpqyXnh7dqTJBuA+Pk01C+dbB4iZ6RCKyG0Q1cwShLYW48sAFTyTHq6YSYAo15mYS+EiJY3hdQkmKFv65ztnT2l9+/xvCOiO49YuP/4WyNyXJq+VJ1UQNib/HoqVqo3UB5pTNSHuUbq5fmyURyBr5EiFEyFWjSweTRgPivCgs9C5VtCHmJbQ1tEwxOlQ/ylRxvdBiO/huA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=AjLzVHhASSbFURlfnPTPPZoHp5YzonUfkjcaMt+meE4=;
- b=AjzLo1YXVaFIHu2D3pkHMZxeVzileteH4727ySwjrRNEwLKOPE54l1N3WOijBgj8854OtPS+2FiM3OlT227LBeALuSboQHO2knTE7vUw0wixhMVB1L5pdSWLFbip3ubj0Q2gCi96AZGUGzuAe/LkO95ZayXn6A7UdBRHWxrzA/Wb/5lN88NOaRMhH8k30kKuWnMrlpBQ9xfgHTTYL5SOKei9imzPmi46ceoMudRcdyQCEReK5O5eSi+GQTbXZyS5JUR1T/d6ZaAdAQb0xvJtICB1tgfRzw1iauip3qwo7iXI33zMw7nbu+8Dj4Y8hGkTxVvAvW3/p2ot6oPryAAzYA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=silabs.com; dmarc=pass action=none header.from=silabs.com;
- dkim=pass header.d=silabs.com; arc=none
+        id S2408779AbgJPOU4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 16 Oct 2020 10:20:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53054 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2408770AbgJPOUz (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 16 Oct 2020 10:20:55 -0400
+Received: from mail-il1-x144.google.com (mail-il1-x144.google.com [IPv6:2607:f8b0:4864:20::144])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FA7BC0613D3
+        for <linux-wireless@vger.kernel.org>; Fri, 16 Oct 2020 07:20:55 -0700 (PDT)
+Received: by mail-il1-x144.google.com with SMTP id p9so2874576ilr.1
+        for <linux-wireless@vger.kernel.org>; Fri, 16 Oct 2020 07:20:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=silabs.onmicrosoft.com; s=selector2-silabs-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=AjLzVHhASSbFURlfnPTPPZoHp5YzonUfkjcaMt+meE4=;
- b=hrjGP0ouKjaVee872Q/ZqVj/EIhqLSHEJeg0jiq0qomg3MexTOArvL+Z6HQOVdw+u1hEa6CzyJrsDhOVXuImShp6P9VLqTE6Ff3MmYlugN22SZm0r0XnD+BkDpdSe+RmOqQZOiZ15U8oJkVP4cWgEqsgnmUwAWLuvx60zeNDHo0=
-Authentication-Results: linaro.org; dkim=none (message not signed)
- header.d=none;linaro.org; dmarc=none action=none header.from=silabs.com;
-Received: from SN6PR11MB2718.namprd11.prod.outlook.com (2603:10b6:805:63::18)
- by SN6PR11MB2654.namprd11.prod.outlook.com (2603:10b6:805:54::31) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3455.23; Fri, 16 Oct
- 2020 12:16:48 +0000
-Received: from SN6PR11MB2718.namprd11.prod.outlook.com
- ([fe80::4f5:fbe5:44a7:cb8a]) by SN6PR11MB2718.namprd11.prod.outlook.com
- ([fe80::4f5:fbe5:44a7:cb8a%5]) with mapi id 15.20.3455.031; Fri, 16 Oct 2020
- 12:16:48 +0000
-From:   =?ISO-8859-1?Q?J=E9r=F4me?= Pouiller <jerome.pouiller@silabs.com>
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>,
-        driverdevel <devel@driverdev.osuosl.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        DTML <devicetree@vger.kernel.org>,
-        Rob Herring <robh+dt@kernel.org>
-Subject: Re: [PATCH 07/23] wfx: add bus_sdio.c
-Date:   Fri, 16 Oct 2020 14:16:43 +0200
-Message-ID: <2769264.q6GNP55evR@pc-42>
-Organization: Silicon Labs
-In-Reply-To: <CAPDyKFpP6xBru79Xh2oe=J8HWO3uk1VpcMzEiG6X7WX-AOvgkA@mail.gmail.com>
-References: <20201012104648.985256-1-Jerome.Pouiller@silabs.com> <20201012104648.985256-8-Jerome.Pouiller@silabs.com> <CAPDyKFpP6xBru79Xh2oe=J8HWO3uk1VpcMzEiG6X7WX-AOvgkA@mail.gmail.com>
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-X-Originating-IP: [82.67.86.106]
-X-ClientProxiedBy: SN4PR0501CA0008.namprd05.prod.outlook.com
- (2603:10b6:803:40::21) To SN6PR11MB2718.namprd11.prod.outlook.com
- (2603:10b6:805:63::18)
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=ILU1JiiWwmc95Pb/WWnMrCIUzuQZgL65VpWvlyy0uws=;
+        b=HEPkXoSC4+XViOa2NstBZBi5peIDrb80Thy9EpYPPQFO80kSOluTlFVunJ9q7XLi41
+         PPqK2THj7pyPrLghVLfFynw1npRcrsx6jx0Wgrfgyqg2brX8ZvopZSU7YSdH/0LkVpDO
+         JDE22r1UgDghP9r57+WICgOjhnO4KERaBTDhCVUqUaqDquxzefiNcEqHITD9Mjmgv5b5
+         40IbFKVTza9Er2Gz15cRfaJF4YHhV8o59A792eqKJ7sq/2zyOuZ7e5fpSaA3CJyWm7DS
+         7srxW9LYUi2hOcy39d6X4sgQNR4S94gbsuLgztiZqFFOuee8yzBElhn/1AHSiVKSaaxD
+         Ewrg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=ILU1JiiWwmc95Pb/WWnMrCIUzuQZgL65VpWvlyy0uws=;
+        b=PmRuj1rM+hTO8Nz+U/ieiMWHxK/mwscEZpA2aAfzE1oGXID+kNIDpCFWt1HDE3bFcu
+         bKEJ32ivP4vaIKuStE4UZIaovrPprVORcrr7XyXaqCmEPwjubRV71vfEJnYOtGOXRVig
+         LZoP0aXWsQ4pPFMtcswgYYO6WZsjEl+t80irmoY/Q9kFZ2kT7z77sgulDwmpjQ184Hyq
+         nWINGCBh2qVgqkMU9kc59tMugChOzoxtWpEAYr07DCaKwqdjflM4iFTXTsFnSrcq15SB
+         P4AQsNgM8Igp+wMbvc9oCCkKsfcRmvg0Q4/s9zGLyPrmehMNqEVowv95dCyxoALkEiHr
+         dFLw==
+X-Gm-Message-State: AOAM530cIIpdecbvI3jjRtU122wZHyBzjjhnRY6wl3coowf2AzgtfLha
+        lE9q5vEXxwN92CSHP4txSSWQXy7ChdttMU6WGDJJ612RUkDApbEb
+X-Google-Smtp-Source: ABdhPJxubq2fzGL00SIrDkBpOu8eo1lYW9KXkOhd7VAlU2NeWINOP4NjqVxzNovv5CI4q3PGv41TQKCIzUMr+AlwxJ8=
+X-Received: by 2002:a92:8404:: with SMTP id l4mr3069053ild.134.1602858054317;
+ Fri, 16 Oct 2020 07:20:54 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from pc-42.localnet (82.67.86.106) by SN4PR0501CA0008.namprd05.prod.outlook.com (2603:10b6:803:40::21) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3499.7 via Frontend Transport; Fri, 16 Oct 2020 12:16:46 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 51d3f556-4ee2-4f69-f375-08d871cd5ae7
-X-MS-TrafficTypeDiagnostic: SN6PR11MB2654:
-X-Microsoft-Antispam-PRVS: <SN6PR11MB2654D7BB096FE2524E067E0893030@SN6PR11MB2654.namprd11.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:2399;
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: xPYooIvud6uGGXOvIwioHc+ET2KL4+cgbmMdX0L5+5jtWbauBdUodTAWquDMWJT/exELRzBTDXaBkyoAuP1OEJDXX3aU+gq5qd+hXQMPwpunXa8hbwn/CN5ZqiFxh/waXIjbRL4F5AAMq8UzHXc1pE5/K4X12Nx0cTdjtapVTXwfpapFHBxBeawQSBU2Bl3+Oo8v4AxdFXtwVE668conCDpSG/wvVLMtlMQZze9G2HVLM7bG+YRjemu53JoMwDu6WiXkdZXSs0eDavbx+Ot6XaRtxPyzhYnpTU8KcsXLU0MFJ68MyuBvN+rOQNEUfJjiGVWBFzumg27qm3bEn9H7b37ibfWQOabmCOHO0/6aNMYdlqc5+0SQ9JA4GxSFzQLL9T7ytDIlnqBa0DWrkT7pcsyPfVdJw2Vx0ybFnfUhqALA/7x5hqCuDs+kOQt7VgmqinA8CxQCdluekspZ3/ssxg==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR11MB2718.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(366004)(396003)(39850400004)(136003)(346002)(376002)(66574015)(7416002)(66556008)(2906002)(66946007)(66476007)(33716001)(86362001)(6506007)(52116002)(966005)(83380400001)(5660300002)(956004)(6666004)(316002)(54906003)(6512007)(16526019)(6916009)(4326008)(8936002)(6486002)(36916002)(478600001)(9686003)(8676002)(186003)(26005)(39026012);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData: E4VSLrls2NaUo+OUmr/uF+neqKYQk7rQP7A9udPwhXBXM9lI78pRIKhUebgFygN9faby8QP991AlxtKan0dYov1S/nb7+O5xJUbiwdQHt935Ms09c17NehtzfxxuCBhXM+fGaxplCtDiUaNy4oTnUCjQwMdg3Y4iVPtvRitHvGtIRnqXs5s9iJOwGb40fli2UZ0Dgu3zSb2vVQTFPA96OYJYlFi8GB7VfOmEGDmpRayklCfkiZgiVc6O9Fs0OReCKCUpTd98OjzgMFn6hTqtENa23OL1pXlk6UsO7+mFRj9J2zi8SLRPBZD/p2OLhqXj1Zis3mYlArZ9OP5Zhm56tvhy31PiI6aOJTi5BuHXQKblg7sS14Wo8d4uHxWC2iSqVDqvr2rHJjYlRsqmuHHZppUEgRE92Ev1rH9EHFRKDHPX+qPKi+G98ejPJP0GqNuSMrY4S/ZpLvmeuoIanC3rnWi3j6NhEIal1saUnVAp8H9/lwmLDKMmkwEFdaQqS6M6fgVjVgXhT1QpdDVj1jAkaySGv2BoQOfQshmA9xalIASyDB2Ie8iL46dRA9MW/hx1gQkDlUfZXCMUBgY7tqZKtRD8qxZKNVg3H3DMFyHFoOfFhZ8riF3v41kLjqzByHf5jCGf4OGPyLBzXxN0eo6dNg==
-X-OriginatorOrg: silabs.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 51d3f556-4ee2-4f69-f375-08d871cd5ae7
-X-MS-Exchange-CrossTenant-AuthSource: SN6PR11MB2718.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Oct 2020 12:16:48.6266
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 54dbd822-5231-4b20-944d-6f4abcd541fb
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 9XakUjjPyQc2fqU6VtXlE0qIZkuBT5mZBmBFx+QFvv33hDwFtumC55cMTa3mc9jUYIzBjAniHvuskDm2zpo1hA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN6PR11MB2654
+References: <20201007101726.3149375-1-a.nogikh@gmail.com> <20201007101726.3149375-2-a.nogikh@gmail.com>
+ <20201009161558.57792e1a@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+ <CACT4Y+ZF_umjBpyJiCb8YPQOOSofG-M9h0CB=xn3bCgK=Kr=9w@mail.gmail.com>
+ <20201010081431.1f2d9d0d@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+ <CACT4Y+aEQoRMO6eA7iQZf4dhOu2cD1ZbbH6TT4Rs_uQwG0PWYg@mail.gmail.com>
+ <CADpXja8i4YPT=vcuCr412RYqRMjTOGuaMW2dyV0j7BtEwNBgFA@mail.gmail.com>
+ <20201013095038.61ba8f55@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com> <CA+FuTSf2kfvdYydXYJNCCfE62q9DXXOBMh_ZSO5W=L9GK478HA@mail.gmail.com>
+In-Reply-To: <CA+FuTSf2kfvdYydXYJNCCfE62q9DXXOBMh_ZSO5W=L9GK478HA@mail.gmail.com>
+From:   Aleksandr Nogikh <nogikh@google.com>
+Date:   Fri, 16 Oct 2020 17:20:42 +0300
+Message-ID: <CANp29Y69mvAuwdcNk8DyjYSjDMBkQupMh0JHHLkybg+rA2zCLw@mail.gmail.com>
+Subject: Re: [PATCH 1/2] net: store KCOV remote handle in sk_buff
+To:     Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+        Jakub Kicinski <kuba@kernel.org>
+Cc:     Aleksandr Nogikh <a.nogikh@gmail.com>,
+        Dmitry Vyukov <dvyukov@google.com>,
+        David Miller <davem@davemloft.net>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Andrey Konovalov <andreyknvl@google.com>,
+        Marco Elver <elver@google.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Florian Westphal <fw@strlen.de>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello Ulf,
-
-On Friday 16 October 2020 13:30:30 CEST Ulf Hansson wrote:
-> On Mon, 12 Oct 2020 at 12:47, Jerome Pouiller
-> <Jerome.Pouiller@silabs.com> wrote:
+On Thu, Oct 15, 2020 at 10:04 PM Willem de Bruijn
+<willemdebruijn.kernel@gmail.com> wrote:
+>
+> On Tue, Oct 13, 2020 at 12:50 PM Jakub Kicinski <kuba@kernel.org> wrote:
 > >
-> > From: J=E9r=F4me Pouiller <jerome.pouiller@silabs.com>
->=20
-> Please fill out this commit message to explain a bit more about the
-> patch and the HW it enables support for.
-
-This patch belongs to a series[1] that will squashed before to be
-committed (Kalle Valo prefer to process like that for this review). So,
-I didn't bother to write real commit messages. For the v2, I will take
-care to add linux-mmc in copy of the whole series.
-
-[1] https://lore.kernel.org/lkml/20201012104648.985256-1-Jerome.Pouiller@si=
-labs.com/
-
-
-> > Signed-off-by: J=E9r=F4me Pouiller <jerome.pouiller@silabs.com>
-> > ---
-> >  drivers/net/wireless/silabs/wfx/bus_sdio.c | 269 +++++++++++++++++++++
-> >  1 file changed, 269 insertions(+)
-> >  create mode 100644 drivers/net/wireless/silabs/wfx/bus_sdio.c
+> > On Tue, 13 Oct 2020 18:59:28 +0300 Aleksandr Nogikh wrote:
+> > > On Mon, 12 Oct 2020 at 09:04, Dmitry Vyukov <dvyukov@google.com> wrote:
+> > > >
+> > > > On Sat, Oct 10, 2020 at 5:14 PM Jakub Kicinski <kuba@kernel.org> wrote:
+> > > > >
+> > > > > On Sat, 10 Oct 2020 09:54:57 +0200 Dmitry Vyukov wrote:
+> > > > > > On Sat, Oct 10, 2020 at 1:16 AM Jakub Kicinski <kuba@kernel.org> wrote:
+> > > [...]
+> > > > > > > Could you use skb_extensions for this?
+> > > > > >
+> > > > > > Why? If for space, this is already under a non-production ifdef.
+> > > > >
+> > > > > I understand, but the skb_ext infra is there for uncommon use cases
+> > > > > like this one. Any particular reason you don't want to use it?
+> > > > > The slight LoC increase?
+> > > > >
+> > > > > Is there any precedent for adding the kcov field to other performance
+> > > > > critical structures?
+> > >
+> > > It would be great to come to some conclusion on where exactly to store
+> > > kcov_handle. Technically, it is possible to use skb extensions for the
+> > > purpose, though it will indeed slightly increase the complexity.
+> > >
+> > > Jakub, you think that kcov_handle should be added as an skb extension,
+> > > right?
 > >
-> > diff --git a/drivers/net/wireless/silabs/wfx/bus_sdio.c b/drivers/net/w=
-ireless/silabs/wfx/bus_sdio.c
-> > new file mode 100644
-> > index 000000000000..e06d7e1ebe9c
-[...]
-> > +struct sdio_driver wfx_sdio_driver =3D {
-> > +       .name =3D "wfx-sdio",
-> > +       .id_table =3D wfx_sdio_ids,
-> > +       .probe =3D wfx_sdio_probe,
-> > +       .remove =3D wfx_sdio_remove,
-> > +       .drv =3D {
-> > +               .owner =3D THIS_MODULE,
-> > +               .of_match_table =3D wfx_sdio_of_match,
-> > +       }
-> > +};
->=20
-> I couldn't find where you call sdio_register|unregister_driver(), but
-> maybe that's done from another patch in series?
+> > That'd be preferable. I understand with current use cases it doesn't
+> > really matter, but history shows people come up with all sort of
+> > wonderful use cases down the line. And when they do they rarely go back
+> > and fix such fundamental minutiae.
+> >
+> > > Though I do not really object to moving the field, it still seems to
+> > > me that sk_buff itself is a better place. Right now skb extensions
+> > > store values that are local to specific protocols and that are only
+> > > meaningful in the context of these protocols (correct me if I'm
+> > > wrong). Although this patch only adds remote kcov coverage to the wifi
+> > > code, kcov_handle can be meaningful for other protocols as well - just
+> > > like the already existing sk_buff fields. So adding kcov_handle to skb
+> > > extensions will break this logical separation.
+> >
+> > It's not as much protocols as subsystems. The values are meaningful to
+> > a subsystem which inserts them, that doesn't mean single layer of the
+> > stack. If it was about storing layer's context we would just use
+> > skb->cb.
+> >
+> > So I think the kcov use matches pretty well.
+>
+> skb_extensions was the first thing that came to mind when I read this
+> patchset too. It is not specific to protocols.
+>
+> We have long stopped growing sk_buff size.
 
-Indeed, it is here[2].
-
-[2] https://lore.kernel.org/lkml/20201012104648.985256-5-Jerome.Pouiller@si=
-labs.com/
-
-
---=20
-J=E9r=F4me Pouiller
-
-
+Thank you all for your comments. I'll use skb extensions in v3 of the series.
