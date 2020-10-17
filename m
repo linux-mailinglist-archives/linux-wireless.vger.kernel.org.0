@@ -2,101 +2,170 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 53C0529140D
-	for <lists+linux-wireless@lfdr.de>; Sat, 17 Oct 2020 21:08:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A60B29147F
+	for <lists+linux-wireless@lfdr.de>; Sat, 17 Oct 2020 23:01:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2438124AbgJQTI3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 17 Oct 2020 15:08:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36540 "EHLO
+        id S2439260AbgJQVBi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 17 Oct 2020 17:01:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53806 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2437462AbgJQTI2 (ORCPT
+        with ESMTP id S2439241AbgJQVBf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 17 Oct 2020 15:08:28 -0400
-Received: from rhcavuit03.kulnet.kuleuven.be (rhcavuit03.kulnet.kuleuven.be [IPv6:2a02:2c40:0:c0::25:136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB15BC0613CE
-        for <linux-wireless@vger.kernel.org>; Sat, 17 Oct 2020 12:08:27 -0700 (PDT)
-X-KULeuven-Envelope-From: mathy.vanhoef@kuleuven.be
-X-Spam-Status: not spam, SpamAssassin (cached, score=-51, required 5,
-        autolearn=disabled, ALL_TRUSTED -1.00, LOCAL_SMTPS -50.00)
-X-KULeuven-Scanned: Found to be clean
-X-KULeuven-ID: 2B6C2120330.AEA6A
-X-KULeuven-Information: Katholieke Universiteit Leuven
-Received: from icts-p-smtps-1.cc.kuleuven.be (icts-p-smtps-1e.kulnet.kuleuven.be [134.58.240.33])
-        by rhcavuit03.kulnet.kuleuven.be (Postfix) with ESMTP id 2B6C2120330
-        for <linux-wireless@vger.kernel.org>; Sat, 17 Oct 2020 21:08:23 +0200 (CEST)
-Received: from mathy-work.localhost (unknown [31.215.199.82])
-        (using TLSv1.2 with cipher AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by icts-p-smtps-1.cc.kuleuven.be (Postfix) with ESMTPSA id 6924140B2;
-        Sat, 17 Oct 2020 21:08:21 +0200 (CEST)
-Date:   Sat, 17 Oct 2020 23:08:18 +0400
-X-Kuleuven: This mail passed the K.U.Leuven mailcluster
-From:   Mathy Vanhoef <Mathy.Vanhoef@kuleuven.be>
-To:     Thomas Deutschmann <whissi@gentoo.org>
-Cc:     <johannes@sipsolutions.net>,
-        "davem@davemloft.net" <davem@davemloft.net>, <kuba@kernel.org>,
-        <linux-wireless@vger.kernel.org>, netdev <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        <denkenz@gmail.com>
-Subject: Re: [Regression 5.9][Bisected 1df2bdba528b] Wifi GTK rekeying
- fails: Sending of EAPol packages broken
-Message-ID: <20201017230818.04896494@mathy-work.localhost>
-In-Reply-To: <4a7f92dc-13bb-697f-1730-ac288e74b730@gentoo.org>
-References: <4a7f92dc-13bb-697f-1730-ac288e74b730@gentoo.org>
-X-Mailer: Claws Mail 3.17.6 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        Sat, 17 Oct 2020 17:01:35 -0400
+Received: from mail-ej1-x641.google.com (mail-ej1-x641.google.com [IPv6:2a00:1450:4864:20::641])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99809C0613DA
+        for <linux-wireless@vger.kernel.org>; Sat, 17 Oct 2020 14:01:34 -0700 (PDT)
+Received: by mail-ej1-x641.google.com with SMTP id dt13so8420728ejb.12
+        for <linux-wireless@vger.kernel.org>; Sat, 17 Oct 2020 14:01:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=QU5tUnKrk3cCgEOM6DUuSpHohPcIoidzngrqxPrVqlg=;
+        b=ntIAxdfj5B3UZZJPAO3W3zqpuYJdxZe6wmMN+Cg5+tfh5QjsxLbXR5o2amfdJQ2J48
+         +r9G2vZiMs4S/e6t6kNU+/1RisTXP2Yspklt8lksB4PhSQjsUISEYusYJeN2p0XCHoqr
+         5tX/QI+fZe3GQZJaviemAIYQlGxoIFC7s6aX8R5MJQLi2SOYJ/keQbrc62HNUeJ8pCOI
+         7WYztP0OE4axPIRoGDfVK4aq4k9dPY6fZ69Y4fL3/a70qb0GrKtNhloBSbp9yIhwtpgg
+         UECkhdkcAFyI2jUc3qFZfU7NKoc+E1dZJHZxhONiRQFFV//aVnbaYjp+hfJUaNjfh3TU
+         ik3w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=QU5tUnKrk3cCgEOM6DUuSpHohPcIoidzngrqxPrVqlg=;
+        b=c6Ls35wO4ZnnPpSlYVoKcnzfIPMkDAW8vOplgdB4qaEZ5LUKrlJQrE+n5mveALCwYX
+         AwIdpLRM4c7AwsavQj3rSV5Mylq3lGbEyQGmARmCgrPB5HJ73ESwbi/gbTZ5khRn+uHW
+         T0bqyted1PiKcYDjCA0GTdLae4k7IbyEUuHKrl1v9LIdZF99Vk8VAJ4gyTdDsKU2K4L2
+         4zHx85ZzWqpApg4j3mudtCETcNvSlz67pMMxoCdXQuWLhsgI+PWn6bOxgq94Y0VKTArg
+         rf3W37XzQzEqR07h3Jpt3PLXW0fh4MdcgVhmRk3GYeVupEYekavLvSGpvN9kzkwojuWc
+         uhKw==
+X-Gm-Message-State: AOAM533KxJP5y9ZszW4x6b0Bm56RSdWwYhi3B7++6mNtHn+mKaCBSQMn
+        SOMgRZpiuSq+G2uNjL6ykiKUuilhE5kVak2pahuPMQ==
+X-Google-Smtp-Source: ABdhPJzde2s6j/g/ekBLPPrgSH2EJqfd3KSDRuhe3Mnzr9w98lVRa6HniOngGCyhNuV4q/eDk1HFvyy/v8IqyEanGTA=
+X-Received: by 2002:a17:906:1a19:: with SMTP id i25mr9957370ejf.323.1602968492144;
+ Sat, 17 Oct 2020 14:01:32 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20201017160928.12698-1-trix@redhat.com>
+In-Reply-To: <20201017160928.12698-1-trix@redhat.com>
+From:   Dan Williams <dan.j.williams@intel.com>
+Date:   Sat, 17 Oct 2020 14:01:22 -0700
+Message-ID: <CAPcyv4jkSFxMXgMABX7sDbwmq8zJO=rLX2ww3Y9Tc0VAANY8xQ@mail.gmail.com>
+Subject: Re: [RFC] treewide: cleanup unreachable breaks
+To:     trix@redhat.com
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-edac@vger.kernel.org,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        Linux-pm mailing list <linux-pm@vger.kernel.org>,
+        xen-devel <xen-devel@lists.xenproject.org>,
+        linux-block@vger.kernel.org,
+        openipmi-developer@lists.sourceforge.net,
+        linux-crypto <linux-crypto@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-power@fi.rohmeurope.com, linux-gpio@vger.kernel.org,
+        amd-gfx list <amd-gfx@lists.freedesktop.org>,
+        Maling list - DRI developers 
+        <dri-devel@lists.freedesktop.org>, nouveau@lists.freedesktop.org,
+        virtualization@lists.linux-foundation.org,
+        spice-devel@lists.freedesktop.org, linux-iio@vger.kernel.org,
+        linux-amlogic@lists.infradead.org,
+        industrypack-devel@lists.sourceforge.net,
+        "Linux-media@vger.kernel.org" <linux-media@vger.kernel.org>,
+        MPT-FusionLinux.pdl@broadcom.com,
+        linux-scsi <linux-scsi@vger.kernel.org>,
+        linux-mtd@lists.infradead.org, linux-can@vger.kernel.org,
+        Netdev <netdev@vger.kernel.org>,
+        intel-wired-lan@lists.osuosl.org, ath10k@lists.infradead.org,
+        Linux Wireless List <linux-wireless@vger.kernel.org>,
+        linux-stm32@st-md-mailman.stormreply.com, linux-nfc@lists.01.org,
+        linux-nvdimm <linux-nvdimm@lists.01.org>,
+        Linux PCI <linux-pci@vger.kernel.org>,
+        linux-samsung-soc <linux-samsung-soc@vger.kernel.org>,
+        platform-driver-x86@vger.kernel.org, patches@opensource.cirrus.com,
+        storagedev@microchip.com, devel@driverdev.osuosl.org,
+        linux-serial@vger.kernel.org, USB list <linux-usb@vger.kernel.org>,
+        usb-storage@lists.one-eyed-alien.net,
+        linux-watchdog@vger.kernel.org, ocfs2-devel@oss.oracle.com,
+        bpf@vger.kernel.org, linux-integrity@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        "open list:KEYS-TRUSTED" <keyrings@vger.kernel.org>,
+        alsa-devel@alsa-project.org,
+        clang-built-linux <clang-built-linux@googlegroups.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-I've managed to reproduce the issue, or at least a related issue. Can
-you try the draft patch below and see if that fixes it?
+On Sat, Oct 17, 2020 at 9:10 AM <trix@redhat.com> wrote:
+>
+> From: Tom Rix <trix@redhat.com>
+>
+> This is a upcoming change to clean up a new warning treewide.
+> I am wondering if the change could be one mega patch (see below) or
+> normal patch per file about 100 patches or somewhere half way by collecting
+> early acks.
+>
+> clang has a number of useful, new warnings see
+> https://clang.llvm.org/docs/DiagnosticsReference.html
+>
+> This change cleans up -Wunreachable-code-break
+> https://clang.llvm.org/docs/DiagnosticsReference.html#wunreachable-code-break
+> for 266 of 485 warnings in this week's linux-next, allyesconfig on x86_64.
+>
+> The method of fixing was to look for warnings where the preceding statement
+> was a simple statement and by inspection made the subsequent break unneeded.
+> In order of frequency these look like
+>
+> return and break
+>
+>         switch (c->x86_vendor) {
+>         case X86_VENDOR_INTEL:
+>                 intel_p5_mcheck_init(c);
+>                 return 1;
+> -               break;
+>
+> goto and break
+>
+>         default:
+>                 operation = 0; /* make gcc happy */
+>                 goto fail_response;
+> -               break;
+>
+> break and break
+>                 case COLOR_SPACE_SRGB:
+>                         /* by pass */
+>                         REG_SET(OUTPUT_CSC_CONTROL, 0,
+>                                 OUTPUT_CSC_GRPH_MODE, 0);
+>                         break;
+> -                       break;
+>
+> The exception to the simple statement, is a switch case with a block
+> and the end of block is a return
+>
+>                         struct obj_buffer *buff = r->ptr;
+>                         return scnprintf(str, PRIV_STR_SIZE,
+>                                         "size=%u\naddr=0x%X\n", buff->size,
+>                                         buff->addr);
+>                 }
+> -               break;
+>
+> Not considered obvious and excluded, breaks after
+> multi level switches
+> complicated if-else if-else blocks
+> panic() or similar calls
+>
+> And there is an odd addition of a 'fallthrough' in drivers/tty/nozomi.c
+[..]
+> diff --git a/drivers/nvdimm/claim.c b/drivers/nvdimm/claim.c
+> index 5a7c80053c62..2f250874b1a4 100644
+> --- a/drivers/nvdimm/claim.c
+> +++ b/drivers/nvdimm/claim.c
+> @@ -200,11 +200,10 @@ ssize_t nd_namespace_store(struct device *dev,
+>                 }
+>                 break;
+>         default:
+>                 len = -EBUSY;
+>                 goto out_attach;
+> -               break;
+>         }
 
-[PATCH] mac80211: fix regression where EAPOL frames were sent in plaintext
-
-When sending EAPOL frames via NL80211 they are treated as injected
-frames in mac80211. Due to commit 1df2bdba528b ("mac80211: never drop
-injected frames even if normally not allowed") these injected frames
-were not assigned a sta context in the function ieee80211_tx_dequeue,
-causing certain wireless network cards to always send EAPOL frames in
-plaintext. This may cause compatibility issues with some clients or
-APs, which for instance can cause the group key handshake to fail and
-in turn would cause the station to get disconnected.
-
-This commit fixes this regression by assigning a sta context in
-ieee80211_tx_dequeue to injected frames as well.
-
-Note that sending EAPOL frames in plaintext is not a security issue
-since they contain their own encryption and authentication protection.
-
-Fixes: 1df2bdba528b ("mac80211: never drop injected frames even if normally not allowed")
----
- net/mac80211/tx.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
-
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index 8ba10a48d..55b41167a 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -3619,13 +3619,14 @@ struct sk_buff *ieee80211_tx_dequeue(struct ieee80211_hw *hw,
- 	tx.skb = skb;
- 	tx.sdata = vif_to_sdata(info->control.vif);
- 
--	if (txq->sta && !(info->flags & IEEE80211_TX_CTL_INJECTED)) {
-+	if (txq->sta) {
- 		tx.sta = container_of(txq->sta, struct sta_info, sta);
- 		/*
- 		 * Drop unicast frames to unauthorised stations unless they are
--		 * EAPOL frames from the local station.
-+		 * injected frames or EAPOL frames from the local station.
- 		 */
--		if (unlikely(ieee80211_is_data(hdr->frame_control) &&
-+		if (unlikely(!(info->flags & IEEE80211_TX_CTL_INJECTED) &&
-+			     ieee80211_is_data(hdr->frame_control) &&
- 			     !ieee80211_vif_is_mesh(&tx.sdata->vif) &&
- 			     tx.sdata->vif.type != NL80211_IFTYPE_OCB &&
- 			     !is_multicast_ether_addr(hdr->addr1) &&
--- 
-2.28.0
+Acked-by: Dan Williams <dan.j.williams@intel.com>
