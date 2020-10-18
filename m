@@ -2,107 +2,103 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 408A0291B02
-	for <lists+linux-wireless@lfdr.de>; Sun, 18 Oct 2020 21:29:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7837C292085
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 Oct 2020 00:52:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729336AbgJRT2t (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 18 Oct 2020 15:28:49 -0400
-Received: from mail.kernel.org ([198.145.29.99]:44630 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1732248AbgJRT2J (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 18 Oct 2020 15:28:09 -0400
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id BD2C02226B;
-        Sun, 18 Oct 2020 19:28:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1603049288;
-        bh=jIAekVB3MQm0oOvM6jDIOM8yBr6iMSKLVdA9Kkfu914=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OYHcZtgLGtDPZFThdeBKtt6x/3P59QCihMWbHxT9OlSrYkb2slcG18nTw+X2n9/xz
-         5hoUfAIAqILjoepmangx21fkpNZcMIRLPZ6xeTHAdHRKYeftqABgE7BLw8Ar6fB2LP
-         9D0yOOQPAiBegSPj98RInr2w581PSqb3JOtH2AMg=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Zekun Shen <bruceshenzk@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Sasha Levin <sashal@kernel.org>, ath10k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.4 33/33] ath10k: check idx validity in __ath10k_htt_rx_ring_fill_n()
-Date:   Sun, 18 Oct 2020 15:27:28 -0400
-Message-Id: <20201018192728.4056577-33-sashal@kernel.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20201018192728.4056577-1-sashal@kernel.org>
-References: <20201018192728.4056577-1-sashal@kernel.org>
+        id S1729478AbgJRWvz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 18 Oct 2020 18:51:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36930 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726681AbgJRWvz (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 18 Oct 2020 18:51:55 -0400
+Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com [IPv6:2a00:1450:4864:20::542])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E56C2C061755
+        for <linux-wireless@vger.kernel.org>; Sun, 18 Oct 2020 15:51:54 -0700 (PDT)
+Received: by mail-ed1-x542.google.com with SMTP id dn5so8313240edb.10
+        for <linux-wireless@vger.kernel.org>; Sun, 18 Oct 2020 15:51:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=t3ZpM9shERXmWg08MXu80HCVYbgk7EEOL98h1/n7aRQ=;
+        b=oPvPgn4YiaZSmaTEH08C3dnrJ6iOUIHtI/KrHCDEQkKG6557BAMyaurOaiEg9zm2zX
+         nmCILaz0DkoBk0wpnukidptI+IG4xa3t7HJfktLMpkQW8Xcur5VzVyBgHG7IoAR2YB1p
+         Q9FUwBJtwSCi3Zoc16RMHNN+t0hKHVYQjwvHL91ANpYyX0sxjigTnGb6k1yJ0e5AmOC0
+         9uik3bBcxGX8iPf/h6kAYX6xtL+AMc9T/Ybt4icqTpBNaTGNVK357F7x5m9Y9U1dfac2
+         YYvDe/0da8FgRSP+EbZRRvIRAQbYlj3JURZZBwmzEVzrMMUm9mG8Cxgey/gD6fMeEhiU
+         h5xg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=t3ZpM9shERXmWg08MXu80HCVYbgk7EEOL98h1/n7aRQ=;
+        b=PbuyY+V4an+LASB/r+g7nRChGLstOWuzaiUjokYH3ej8xeRXYhMWeJ2e4yv70/HHAI
+         XYO6TY1NLyemw0+OYAGu5iw6WEkLu2HnkpaVWhPAm+zjTmwAOy1EzRobgEXv/TBVtWyl
+         AMGMLeFzoHHtXKk6PVqRHPZTFDny5msCXEy7cADxIaCCMpRmkKXfGnnU4XZxVPXhH5NR
+         E1CiioHEtsS1CcZeOjTDoyTqeEnmNufRZL1ipF4t02HbbQFZXI4VGkqEtceR9l0p68lW
+         0aGsMIl2hoVOe5sMXe7QyvF8sVc3F2n+gVH+ttuF6nDEh3lWff/lMvMZ7bMDimD1JrTX
+         SU/g==
+X-Gm-Message-State: AOAM531wypNlZOV+aRmgbBXUYpICz67Lw6XqeT28DHi0LD2z9nXz9GxF
+        ZFuMyueaQoVLyjffSzmokFSplWdWU+c42AWbpM4=
+X-Google-Smtp-Source: ABdhPJzUM2MmhboocelG+sAzNqsbwx5k9W6ik/Pp6fDlCfW64Nmh5dxzKxKc9ciB/HWzj6l6YiNo6Mw/4QcJ43aTyR4=
+X-Received: by 2002:aa7:d30f:: with SMTP id p15mr14910274edq.256.1603061513596;
+ Sun, 18 Oct 2020 15:51:53 -0700 (PDT)
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+References: <CAO6ttSmiXPnA9z_31CV2rS=DO0c48jSJGBAkOgWiD-GOG73Ffw@mail.gmail.com>
+ <CA+ASDXO75rYv29YvK=0zUkB494DsA_WA+n3UttRiko2awzUkOw@mail.gmail.com>
+ <362f154dff1b4d6f88503af813eae406@realtek.com> <1f33cbf8-ccf9-354e-a0ac-0911c6acded1@lwfinger.net>
+ <CAO6ttS=ABWLQbgRxfbxsqNwr9bkEDJm6dBbvaZAM94GKYP+txw@mail.gmail.com> <87h7qrq4p5.fsf@tynnyri.adurom.net>
+In-Reply-To: <87h7qrq4p5.fsf@tynnyri.adurom.net>
+From:   David Rubio <david.alejandro.rubio@gmail.com>
+Date:   Sun, 18 Oct 2020 19:51:42 -0300
+Message-ID: <CAO6ttSkXSt3UC5P-RDCDUhDC66MRb5UkvCcbT5POzkve9G=GyA@mail.gmail.com>
+Subject: Re: rtw88 / rtl_8821ce: rfe 2 is not supported
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Larry Finger <Larry.Finger@lwfinger.net>,
+        Andy Huang <tehuang@realtek.com>,
+        Brian Norris <briannorris@chromium.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Yan-Hsuan Chuang <tony0620emma@gmail.com>,
+        Kai-Heng Feng <kai.heng.feng@canonical.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Zekun Shen <bruceshenzk@gmail.com>
+There's no possibility of including it on 5.10 changes? Seems like a
+trivial patch
+Or did the merge window pass already? I'm not aware of it by now.
 
-[ Upstream commit bad60b8d1a7194df38fd7fe4b22f3f4dcf775099 ]
+Thanks though. Very much appreciated.
 
-The idx in __ath10k_htt_rx_ring_fill_n function lives in
-consistent dma region writable by the device. Malfunctional
-or malicious device could manipulate such idx to have a OOB
-write. Either by
-    htt->rx_ring.netbufs_ring[idx] = skb;
-or by
-    ath10k_htt_set_paddrs_ring(htt, paddr, idx);
-
-The idx can also be negative as it's signed, giving a large
-memory space to write to.
-
-It's possibly exploitable by corruptting a legit pointer with
-a skb pointer. And then fill skb with payload as rougue object.
-
-Part of the log here. Sometimes it appears as UAF when writing
-to a freed memory by chance.
-
- [   15.594376] BUG: unable to handle page fault for address: ffff887f5c1804f0
- [   15.595483] #PF: supervisor write access in kernel mode
- [   15.596250] #PF: error_code(0x0002) - not-present page
- [   15.597013] PGD 0 P4D 0
- [   15.597395] Oops: 0002 [#1] SMP KASAN PTI
- [   15.597967] CPU: 0 PID: 82 Comm: kworker/u2:2 Not tainted 5.6.0 #69
- [   15.598843] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996),
- BIOS rel-1.12.1-0-ga5cab58e9a3f-prebuilt.qemu.org 04/01/2014
- [   15.600438] Workqueue: ath10k_wq ath10k_core_register_work [ath10k_core]
- [   15.601389] RIP: 0010:__ath10k_htt_rx_ring_fill_n
- (linux/drivers/net/wireless/ath/ath10k/htt_rx.c:173) ath10k_core
-
-Signed-off-by: Zekun Shen <bruceshenzk@gmail.com>
-Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
-Link: https://lore.kernel.org/r/20200623221105.3486-1-bruceshenzk@gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/net/wireless/ath/ath10k/htt_rx.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
-
-diff --git a/drivers/net/wireless/ath/ath10k/htt_rx.c b/drivers/net/wireless/ath/ath10k/htt_rx.c
-index a65b5d7f59f44..1c6c422dbad64 100644
---- a/drivers/net/wireless/ath/ath10k/htt_rx.c
-+++ b/drivers/net/wireless/ath/ath10k/htt_rx.c
-@@ -99,6 +99,14 @@ static int __ath10k_htt_rx_ring_fill_n(struct ath10k_htt *htt, int num)
- 	BUILD_BUG_ON(HTT_RX_RING_FILL_LEVEL >= HTT_RX_RING_SIZE / 2);
- 
- 	idx = __le32_to_cpu(*htt->rx_ring.alloc_idx.vaddr);
-+
-+	if (idx < 0 || idx >= htt->rx_ring.size) {
-+		ath10k_err(htt->ar, "rx ring index is not valid, firmware malfunctioning?\n");
-+		idx &= htt->rx_ring.size_mask;
-+		ret = -ENOMEM;
-+		goto fail;
-+	}
-+
- 	while (num > 0) {
- 		skb = dev_alloc_skb(HTT_RX_BUF_SIZE + HTT_RX_DESC_ALIGN);
- 		if (!skb) {
--- 
-2.25.1
-
+El dom., 18 oct. 2020 a las 6:11, Kalle Valo (<kvalo@codeaurora.org>) escri=
+bi=C3=B3:
+>
+> David Rubio <david.alejandro.rubio@gmail.com> writes:
+>
+> >> https://lore.kernel.org/linux-wireless/c0c336d806584361992d4b52665fbb8=
+2@realtek.com/
+> >
+> > I tested that patch. Works fine for me for wifi, but I can't test BT
+> > to be sure it works 100%. Most people will be fine with just wifi
+> > though, I guess, considering the objections were mostly about BT (I
+> > understood -from the objection- that connecting to a AP when having a
+> > BT device paired breaks?)
+>
+> If the patch helps people to get wifi working we should take it, BT coex
+> issues can be fixed in followup patches. IIRC there has been multiple
+> reports about this so I'm leaning towards taking the patch to v5.11.
+>
+> I changed the patch to New state and my plan is to take it to
+> wireless-drivers-next once the tree opens:
+>
+> https://patchwork.kernel.org/project/linux-wireless/patch/20200805084559.=
+30092-1-kai.heng.feng@canonical.com/
+>
+> --
+> https://patchwork.kernel.org/project/linux-wireless/list/
+>
+> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpa=
+tches
