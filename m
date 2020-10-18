@@ -2,36 +2,37 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3DCAE291AB5
-	for <lists+linux-wireless@lfdr.de>; Sun, 18 Oct 2020 21:26:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DE340291C42
+	for <lists+linux-wireless@lfdr.de>; Sun, 18 Oct 2020 21:37:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731495AbgJRT0A (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 18 Oct 2020 15:26:00 -0400
-Received: from mail.kernel.org ([198.145.29.99]:40926 "EHLO mail.kernel.org"
+        id S1731409AbgJRTgj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 18 Oct 2020 15:36:39 -0400
+Received: from mail.kernel.org ([198.145.29.99]:41198 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731422AbgJRTZ6 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 18 Oct 2020 15:25:58 -0400
+        id S1731583AbgJRT0K (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 18 Oct 2020 15:26:10 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id DF1D4222E9;
-        Sun, 18 Oct 2020 19:25:56 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 5A1C3222E9;
+        Sun, 18 Oct 2020 19:26:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1603049157;
-        bh=CjoBqnIUwU8OsjDiYAN4C8ltkaGbcwBB0IHARfU1d0I=;
+        s=default; t=1603049170;
+        bh=J1/LT1/AKi8I1u0pP++kL0Kx/j8NXcq4ktyZEqhNL98=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bvRl3pH8G0B5UEMGjemDxQoqm2TdUQDZqnZtVXurCWZdbl/T9gaPiQXZNjG3+kt8Q
-         Mr54qdjag/H89YKePMvA7frIJRAQdRQnG2/odn0YF5QFnIFys2ohkmQ54gjJRVexc/
-         dtapMJbbDDkDc7ycfOodC28kf75KOK6AdAn8fNs8=
+        b=RppdkjJyEUQGPkc72VQhSRcvHpoV3XcywmxDmfyZM0VnQsEUZ8be5td5krZRw1lAZ
+         8nqQUaTo2743q9cTzBMzfzfutSUdDrVfr6OS+ru4eWsh2PwQwXvmTeftl6NuqqHhjN
+         QKO0W9+DA4/EAy4/bqHG2zgdeOxqpdrMQuevauik=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Thomas Pedersen <thomas@adapt-ip.com>,
-        Johannes Berg <johannes.berg@intel.com>,
+Cc:     Brooke Basile <brookebasile@gmail.com>,
+        syzbot+89bd486af9427a9fc605@syzkaller.appspotmail.com,
+        Kalle Valo <kvalo@codeaurora.org>,
         Sasha Levin <sashal@kernel.org>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 22/52] mac80211: handle lack of sband->bitrates in rates
-Date:   Sun, 18 Oct 2020 15:24:59 -0400
-Message-Id: <20201018192530.4055730-22-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 33/52] ath9k: hif_usb: fix race condition between usb_get_urb() and usb_kill_anchored_urbs()
+Date:   Sun, 18 Oct 2020 15:25:10 -0400
+Message-Id: <20201018192530.4055730-33-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20201018192530.4055730-1-sashal@kernel.org>
 References: <20201018192530.4055730-1-sashal@kernel.org>
@@ -43,56 +44,89 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Thomas Pedersen <thomas@adapt-ip.com>
+From: Brooke Basile <brookebasile@gmail.com>
 
-[ Upstream commit 8b783d104e7f40684333d2ec155fac39219beb2f ]
+[ Upstream commit 03fb92a432ea5abe5909bca1455b7e44a9380480 ]
 
-Even though a driver or mac80211 shouldn't produce a
-legacy bitrate if sband->bitrates doesn't exist, don't
-crash if that is the case either.
+Calls to usb_kill_anchored_urbs() after usb_kill_urb() on multiprocessor
+systems create a race condition in which usb_kill_anchored_urbs() deallocates
+the URB before the completer callback is called in usb_kill_urb(), resulting
+in a use-after-free.
+To fix this, add proper lock protection to usb_kill_urb() calls that can
+possibly run concurrently with usb_kill_anchored_urbs().
 
-This fixes a kernel panic if station dump is run before
-last_rate can be updated with a data frame when
-sband->bitrates is missing (eg. in S1G bands).
-
-Signed-off-by: Thomas Pedersen <thomas@adapt-ip.com>
-Link: https://lore.kernel.org/r/20201005164522.18069-1-thomas@adapt-ip.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reported-by: syzbot+89bd486af9427a9fc605@syzkaller.appspotmail.com
+Link: https://syzkaller.appspot.com/bug?id=cabffad18eb74197f84871802fd2c5117b61febf
+Signed-off-by: Brooke Basile <brookebasile@gmail.com>
+Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+Link: https://lore.kernel.org/r/20200911071427.32354-1-brookebasile@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/cfg.c      | 3 ++-
- net/mac80211/sta_info.c | 4 ++++
- 2 files changed, 6 insertions(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath9k/hif_usb.c | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index c883cb67b7311..0b82d8da4ab0a 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -661,7 +661,8 @@ void sta_set_rate_info_tx(struct sta_info *sta,
- 		u16 brate;
+diff --git a/drivers/net/wireless/ath/ath9k/hif_usb.c b/drivers/net/wireless/ath/ath9k/hif_usb.c
+index e80d509bc5415..ce3a785212740 100644
+--- a/drivers/net/wireless/ath/ath9k/hif_usb.c
++++ b/drivers/net/wireless/ath/ath9k/hif_usb.c
+@@ -447,10 +447,19 @@ static void hif_usb_stop(void *hif_handle)
+ 	spin_unlock_irqrestore(&hif_dev->tx.tx_lock, flags);
  
- 		sband = ieee80211_get_sband(sta->sdata);
--		if (sband) {
-+		WARN_ON_ONCE(sband && !sband->bitrates);
-+		if (sband && sband->bitrates) {
- 			brate = sband->bitrates[rate->idx].bitrate;
- 			rinfo->legacy = DIV_ROUND_UP(brate, 1 << shift);
- 		}
-diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
-index 6af5fda6461ce..2a18687019003 100644
---- a/net/mac80211/sta_info.c
-+++ b/net/mac80211/sta_info.c
-@@ -2004,6 +2004,10 @@ static void sta_stats_decode_rate(struct ieee80211_local *local, u16 rate,
+ 	/* The pending URBs have to be canceled. */
++	spin_lock_irqsave(&hif_dev->tx.tx_lock, flags);
+ 	list_for_each_entry_safe(tx_buf, tx_buf_tmp,
+ 				 &hif_dev->tx.tx_pending, list) {
++		usb_get_urb(tx_buf->urb);
++		spin_unlock_irqrestore(&hif_dev->tx.tx_lock, flags);
+ 		usb_kill_urb(tx_buf->urb);
++		list_del(&tx_buf->list);
++		usb_free_urb(tx_buf->urb);
++		kfree(tx_buf->buf);
++		kfree(tx_buf);
++		spin_lock_irqsave(&hif_dev->tx.tx_lock, flags);
+ 	}
++	spin_unlock_irqrestore(&hif_dev->tx.tx_lock, flags);
  
- 		rinfo->flags = 0;
- 		sband = local->hw.wiphy->bands[band];
-+
-+		if (WARN_ON_ONCE(!sband->bitrates))
-+			break;
-+
- 		brate = sband->bitrates[rate_idx].bitrate;
- 		if (rinfo->bw == RATE_INFO_BW_5)
- 			shift = 2;
+ 	usb_kill_anchored_urbs(&hif_dev->mgmt_submitted);
+ }
+@@ -760,27 +769,37 @@ static void ath9k_hif_usb_dealloc_tx_urbs(struct hif_device_usb *hif_dev)
+ 	struct tx_buf *tx_buf = NULL, *tx_buf_tmp = NULL;
+ 	unsigned long flags;
+ 
++	spin_lock_irqsave(&hif_dev->tx.tx_lock, flags);
+ 	list_for_each_entry_safe(tx_buf, tx_buf_tmp,
+ 				 &hif_dev->tx.tx_buf, list) {
++		usb_get_urb(tx_buf->urb);
++		spin_unlock_irqrestore(&hif_dev->tx.tx_lock, flags);
+ 		usb_kill_urb(tx_buf->urb);
+ 		list_del(&tx_buf->list);
+ 		usb_free_urb(tx_buf->urb);
+ 		kfree(tx_buf->buf);
+ 		kfree(tx_buf);
++		spin_lock_irqsave(&hif_dev->tx.tx_lock, flags);
+ 	}
++	spin_unlock_irqrestore(&hif_dev->tx.tx_lock, flags);
+ 
+ 	spin_lock_irqsave(&hif_dev->tx.tx_lock, flags);
+ 	hif_dev->tx.flags |= HIF_USB_TX_FLUSH;
+ 	spin_unlock_irqrestore(&hif_dev->tx.tx_lock, flags);
+ 
++	spin_lock_irqsave(&hif_dev->tx.tx_lock, flags);
+ 	list_for_each_entry_safe(tx_buf, tx_buf_tmp,
+ 				 &hif_dev->tx.tx_pending, list) {
++		usb_get_urb(tx_buf->urb);
++		spin_unlock_irqrestore(&hif_dev->tx.tx_lock, flags);
+ 		usb_kill_urb(tx_buf->urb);
+ 		list_del(&tx_buf->list);
+ 		usb_free_urb(tx_buf->urb);
+ 		kfree(tx_buf->buf);
+ 		kfree(tx_buf);
++		spin_lock_irqsave(&hif_dev->tx.tx_lock, flags);
+ 	}
++	spin_unlock_irqrestore(&hif_dev->tx.tx_lock, flags);
+ 
+ 	usb_kill_anchored_urbs(&hif_dev->mgmt_submitted);
+ }
 -- 
 2.25.1
 
