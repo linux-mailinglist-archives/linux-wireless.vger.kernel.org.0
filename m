@@ -2,35 +2,38 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A6087291B60
-	for <lists+linux-wireless@lfdr.de>; Sun, 18 Oct 2020 21:32:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 41355291B6A
+	for <lists+linux-wireless@lfdr.de>; Sun, 18 Oct 2020 21:32:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732009AbgJRT1S (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 18 Oct 2020 15:27:18 -0400
-Received: from mail.kernel.org ([198.145.29.99]:42972 "EHLO mail.kernel.org"
+        id S1731129AbgJRT10 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 18 Oct 2020 15:27:26 -0400
+Received: from mail.kernel.org ([198.145.29.99]:43190 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731997AbgJRT1R (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 18 Oct 2020 15:27:17 -0400
+        id S1732067AbgJRT1Y (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 18 Oct 2020 15:27:24 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 7ADE2222E7;
-        Sun, 18 Oct 2020 19:27:16 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id B20A122272;
+        Sun, 18 Oct 2020 19:27:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1603049237;
-        bh=W4SVHfnlniV+OzCG2/5tioMg3s7Sslnwjj8C4Q635yc=;
+        s=default; t=1603049243;
+        bh=lBErSqNfIc6JjwuNWgC5mTOspePfHS9GbRGVP4n6Slo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vz+CXmEOVvgdGV7hklOlKqsJeVbRhfOPH6+tPO2DUQe+50fH31QhoXJXZ1htCnuOU
-         FU3E12gbp5UjcSbAO6OVyx690G5NQ3Yt2a1ATKdNn8E24t+EfFSKVUl9CDgbZNAE61
-         XF1noV56HWRWiF1WipaEcek1/coDHDCk9rRVolH0=
+        b=ESnRWMrVzONKA5F+Qran1LjOohPmdBjJSY07FFom78vfaQ/vX06Zabrfm0AWRDrNQ
+         eRApLAlDShlV2f/AcNSMu1Y4RTH24EQdgsdn6bPzCxXOhD0aV3ksYNk9u3OMPAn/p6
+         0pw6hkSen53cZEhBkcH8VHPF9W98qKgUkuN+gPmY=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Chris Chiu <chiu@endlessm.com>, Kalle Valo <kvalo@codeaurora.org>,
+Cc:     Wang Yufen <wangyufen@huawei.com>, Hulk Robot <hulkci@huawei.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
         Sasha Levin <sashal@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.9 34/41] rtl8xxxu: prevent potential memory leak
-Date:   Sun, 18 Oct 2020 15:26:28 -0400
-Message-Id: <20201018192635.4056198-34-sashal@kernel.org>
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        brcm80211-dev-list@cypress.com, netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.9 39/41] brcm80211: fix possible memleak in brcmf_proto_msgbuf_attach
+Date:   Sun, 18 Oct 2020 15:26:33 -0400
+Message-Id: <20201018192635.4056198-39-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20201018192635.4056198-1-sashal@kernel.org>
 References: <20201018192635.4056198-1-sashal@kernel.org>
@@ -42,63 +45,35 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Chris Chiu <chiu@endlessm.com>
+From: Wang Yufen <wangyufen@huawei.com>
 
-[ Upstream commit 86279456a4d47782398d3cb8193f78f672e36cac ]
+[ Upstream commit 6c151410d5b57e6bb0d91a735ac511459539a7bf ]
 
-Free the skb if usb_submit_urb fails on rx_urb. And free the urb
-no matter usb_submit_urb succeeds or not in rtl8xxxu_submit_int_urb.
+When brcmf_proto_msgbuf_attach fail and msgbuf->txflow_wq != NULL,
+we should destroy the workqueue.
 
-Signed-off-by: Chris Chiu <chiu@endlessm.com>
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: Wang Yufen <wangyufen@huawei.com>
 Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
-Link: https://lore.kernel.org/r/20200906040424.22022-1-chiu@endlessm.com
+Link: https://lore.kernel.org/r/1595237765-66238-1-git-send-email-wangyufen@huawei.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/msgbuf.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-index 18d5984b78dab..e73613b9f2f59 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-@@ -5422,7 +5422,6 @@ static int rtl8xxxu_submit_int_urb(struct ieee80211_hw *hw)
- 	ret = usb_submit_urb(urb, GFP_KERNEL);
- 	if (ret) {
- 		usb_unanchor_urb(urb);
--		usb_free_urb(urb);
- 		goto error;
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/msgbuf.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/msgbuf.c
+index ab9f136c15937..e306e5a89dd4f 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/msgbuf.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/msgbuf.c
+@@ -1540,6 +1540,8 @@ int brcmf_proto_msgbuf_attach(struct brcmf_pub *drvr)
+ 					  BRCMF_TX_IOCTL_MAX_MSG_SIZE,
+ 					  msgbuf->ioctbuf,
+ 					  msgbuf->ioctbuf_handle);
++		if (msgbuf->txflow_wq)
++			destroy_workqueue(msgbuf->txflow_wq);
+ 		kfree(msgbuf);
  	}
- 
-@@ -5431,6 +5430,7 @@ static int rtl8xxxu_submit_int_urb(struct ieee80211_hw *hw)
- 	rtl8xxxu_write32(priv, REG_USB_HIMR, val32);
- 
- error:
-+	usb_free_urb(urb);
- 	return ret;
- }
- 
-@@ -5756,6 +5756,7 @@ static int rtl8xxxu_start(struct ieee80211_hw *hw)
- 	struct rtl8xxxu_priv *priv = hw->priv;
- 	struct rtl8xxxu_rx_urb *rx_urb;
- 	struct rtl8xxxu_tx_urb *tx_urb;
-+	struct sk_buff *skb;
- 	unsigned long flags;
- 	int ret, i;
- 
-@@ -5806,6 +5807,13 @@ static int rtl8xxxu_start(struct ieee80211_hw *hw)
- 		rx_urb->hw = hw;
- 
- 		ret = rtl8xxxu_submit_rx_urb(priv, rx_urb);
-+		if (ret) {
-+			if (ret != -ENOMEM) {
-+				skb = (struct sk_buff *)rx_urb->urb.context;
-+				dev_kfree_skb(skb);
-+			}
-+			rtl8xxxu_queue_rx_urb(priv, rx_urb);
-+		}
- 	}
- exit:
- 	/*
+ 	return -ENOMEM;
 -- 
 2.25.1
 
