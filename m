@@ -2,170 +2,63 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A60B29147F
-	for <lists+linux-wireless@lfdr.de>; Sat, 17 Oct 2020 23:01:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0CCD0291605
+	for <lists+linux-wireless@lfdr.de>; Sun, 18 Oct 2020 07:26:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2439260AbgJQVBi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 17 Oct 2020 17:01:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53806 "EHLO
+        id S1725837AbgJRF0V (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 18 Oct 2020 01:26:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46238 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2439241AbgJQVBf (ORCPT
+        with ESMTP id S1725308AbgJRF0V (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 17 Oct 2020 17:01:35 -0400
-Received: from mail-ej1-x641.google.com (mail-ej1-x641.google.com [IPv6:2a00:1450:4864:20::641])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99809C0613DA
-        for <linux-wireless@vger.kernel.org>; Sat, 17 Oct 2020 14:01:34 -0700 (PDT)
-Received: by mail-ej1-x641.google.com with SMTP id dt13so8420728ejb.12
-        for <linux-wireless@vger.kernel.org>; Sat, 17 Oct 2020 14:01:34 -0700 (PDT)
+        Sun, 18 Oct 2020 01:26:21 -0400
+Received: from mail-il1-x135.google.com (mail-il1-x135.google.com [IPv6:2607:f8b0:4864:20::135])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10EB2C061755;
+        Sat, 17 Oct 2020 22:26:21 -0700 (PDT)
+Received: by mail-il1-x135.google.com with SMTP id p16so7148789ilq.5;
+        Sat, 17 Oct 2020 22:26:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=QU5tUnKrk3cCgEOM6DUuSpHohPcIoidzngrqxPrVqlg=;
-        b=ntIAxdfj5B3UZZJPAO3W3zqpuYJdxZe6wmMN+Cg5+tfh5QjsxLbXR5o2amfdJQ2J48
-         +r9G2vZiMs4S/e6t6kNU+/1RisTXP2Yspklt8lksB4PhSQjsUISEYusYJeN2p0XCHoqr
-         5tX/QI+fZe3GQZJaviemAIYQlGxoIFC7s6aX8R5MJQLi2SOYJ/keQbrc62HNUeJ8pCOI
-         7WYztP0OE4axPIRoGDfVK4aq4k9dPY6fZ69Y4fL3/a70qb0GrKtNhloBSbp9yIhwtpgg
-         UECkhdkcAFyI2jUc3qFZfU7NKoc+E1dZJHZxhONiRQFFV//aVnbaYjp+hfJUaNjfh3TU
-         ik3w==
+        d=gmail.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=vBVshD4XKNQWVAfYaxqObW20dee4eDOGnAubSKZwmbA=;
+        b=vSyi/sLhcd7rm5+z1h6UxSpNTSDGRuzzBPXSlbC2+WAw/SZiy9lIuitif6pPpTIZ+K
+         T2+bq/4EzaUwhaat/6dbnuZbdNQe8/I3hAP4T5WdoCfBNNj76I1z2vyTRVPeB+vUTOyz
+         qFz6Ez/n0vl6qXpt+zwiBk9N5l/Am7VKfpShA746V3AsuRlqjmcw9QUGaGWtQwuqPiXh
+         ctDIh9dxI/OQtlyfiQaNOmbRWnkHzzUQ3rkeAlPsDrETs6ECkOd4ABQC23IbD8cRci4E
+         BrKu6Fr9VI0BDE6B/adQIYXUQJ3mqctYBpcHjF21e9sjCJMF0Q3zKoIdzQZ/gZiY0fvQ
+         KY6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=QU5tUnKrk3cCgEOM6DUuSpHohPcIoidzngrqxPrVqlg=;
-        b=c6Ls35wO4ZnnPpSlYVoKcnzfIPMkDAW8vOplgdB4qaEZ5LUKrlJQrE+n5mveALCwYX
-         AwIdpLRM4c7AwsavQj3rSV5Mylq3lGbEyQGmARmCgrPB5HJ73ESwbi/gbTZ5khRn+uHW
-         T0bqyted1PiKcYDjCA0GTdLae4k7IbyEUuHKrl1v9LIdZF99Vk8VAJ4gyTdDsKU2K4L2
-         4zHx85ZzWqpApg4j3mudtCETcNvSlz67pMMxoCdXQuWLhsgI+PWn6bOxgq94Y0VKTArg
-         rf3W37XzQzEqR07h3Jpt3PLXW0fh4MdcgVhmRk3GYeVupEYekavLvSGpvN9kzkwojuWc
-         uhKw==
-X-Gm-Message-State: AOAM533KxJP5y9ZszW4x6b0Bm56RSdWwYhi3B7++6mNtHn+mKaCBSQMn
-        SOMgRZpiuSq+G2uNjL6ykiKUuilhE5kVak2pahuPMQ==
-X-Google-Smtp-Source: ABdhPJzde2s6j/g/ekBLPPrgSH2EJqfd3KSDRuhe3Mnzr9w98lVRa6HniOngGCyhNuV4q/eDk1HFvyy/v8IqyEanGTA=
-X-Received: by 2002:a17:906:1a19:: with SMTP id i25mr9957370ejf.323.1602968492144;
- Sat, 17 Oct 2020 14:01:32 -0700 (PDT)
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=vBVshD4XKNQWVAfYaxqObW20dee4eDOGnAubSKZwmbA=;
+        b=Hczs2e4nEHCkhNlRVq3YSEeTmUG6LeW9Q4a6GNxJavvjN7lhq8B29QPsApq9ehyvo+
+         bvMNaCxScFLy5SsFZ0LaIAASROMUOC7KilIzYxdpG6u40TVchRVl6JF9pwAtmN0c/Xso
+         nq8erqJtJVrRo3+UaSBWrjYA11816k0yXyCNiIyyiujOUMpoiT1WRqEEUFAc4XBaUxVY
+         1DQqnMYYUI7DefajLhQ3f6OhQ1RYLUd8vu6Ry/7t6LkJl5GRP/5e01x0jo2mRiHubcCv
+         R1ahUp4mymGrblDIkZ/ZsTiU0b7r53frscpDaFa5fX0qh2uEWL1MDSGrzaLm6hqW8jFV
+         sz6w==
+X-Gm-Message-State: AOAM531OeryFDatb87DqtkjlZhqVwGNId+I5RF8L9PYAEH/FUAjiCzP4
+        5vllZrRabxfDgiZAijyPAxXXG5D285DxLDn+mss9+3Nq
+X-Google-Smtp-Source: ABdhPJyqNdFhHB04BLaKh3XyqXy9mM036KbJ1keST+ef5Zo7I4Z3sjOTCNXgurSc+uvjRBx18j7UJQUnT1jRzI/8dIY=
+X-Received: by 2002:a92:1943:: with SMTP id e3mr7435521ilm.140.1602998780373;
+ Sat, 17 Oct 2020 22:26:20 -0700 (PDT)
 MIME-Version: 1.0
-References: <20201017160928.12698-1-trix@redhat.com>
-In-Reply-To: <20201017160928.12698-1-trix@redhat.com>
-From:   Dan Williams <dan.j.williams@intel.com>
-Date:   Sat, 17 Oct 2020 14:01:22 -0700
-Message-ID: <CAPcyv4jkSFxMXgMABX7sDbwmq8zJO=rLX2ww3Y9Tc0VAANY8xQ@mail.gmail.com>
-Subject: Re: [RFC] treewide: cleanup unreachable breaks
-To:     trix@redhat.com
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-edac@vger.kernel.org,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        Linux-pm mailing list <linux-pm@vger.kernel.org>,
-        xen-devel <xen-devel@lists.xenproject.org>,
-        linux-block@vger.kernel.org,
-        openipmi-developer@lists.sourceforge.net,
-        linux-crypto <linux-crypto@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linux-power@fi.rohmeurope.com, linux-gpio@vger.kernel.org,
-        amd-gfx list <amd-gfx@lists.freedesktop.org>,
-        Maling list - DRI developers 
-        <dri-devel@lists.freedesktop.org>, nouveau@lists.freedesktop.org,
-        virtualization@lists.linux-foundation.org,
-        spice-devel@lists.freedesktop.org, linux-iio@vger.kernel.org,
-        linux-amlogic@lists.infradead.org,
-        industrypack-devel@lists.sourceforge.net,
-        "Linux-media@vger.kernel.org" <linux-media@vger.kernel.org>,
-        MPT-FusionLinux.pdl@broadcom.com,
-        linux-scsi <linux-scsi@vger.kernel.org>,
-        linux-mtd@lists.infradead.org, linux-can@vger.kernel.org,
-        Netdev <netdev@vger.kernel.org>,
-        intel-wired-lan@lists.osuosl.org, ath10k@lists.infradead.org,
-        Linux Wireless List <linux-wireless@vger.kernel.org>,
-        linux-stm32@st-md-mailman.stormreply.com, linux-nfc@lists.01.org,
-        linux-nvdimm <linux-nvdimm@lists.01.org>,
-        Linux PCI <linux-pci@vger.kernel.org>,
-        linux-samsung-soc <linux-samsung-soc@vger.kernel.org>,
-        platform-driver-x86@vger.kernel.org, patches@opensource.cirrus.com,
-        storagedev@microchip.com, devel@driverdev.osuosl.org,
-        linux-serial@vger.kernel.org, USB list <linux-usb@vger.kernel.org>,
-        usb-storage@lists.one-eyed-alien.net,
-        linux-watchdog@vger.kernel.org, ocfs2-devel@oss.oracle.com,
-        bpf@vger.kernel.org, linux-integrity@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        "open list:KEYS-TRUSTED" <keyrings@vger.kernel.org>,
-        alsa-devel@alsa-project.org,
-        clang-built-linux <clang-built-linux@googlegroups.com>
+From:   Alexandr D <alexandrdorosh@gmail.com>
+Date:   Sun, 18 Oct 2020 08:26:09 +0300
+Message-ID: <CAGxHY54m+8vYCfaB-3nnnye_NdrSF1fNoaYMEv6ChiguvBTXtQ@mail.gmail.com>
+Subject: Qualcomm Atheros QCA9377 802.11ac firmware
+To:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sat, Oct 17, 2020 at 9:10 AM <trix@redhat.com> wrote:
->
-> From: Tom Rix <trix@redhat.com>
->
-> This is a upcoming change to clean up a new warning treewide.
-> I am wondering if the change could be one mega patch (see below) or
-> normal patch per file about 100 patches or somewhere half way by collecting
-> early acks.
->
-> clang has a number of useful, new warnings see
-> https://clang.llvm.org/docs/DiagnosticsReference.html
->
-> This change cleans up -Wunreachable-code-break
-> https://clang.llvm.org/docs/DiagnosticsReference.html#wunreachable-code-break
-> for 266 of 485 warnings in this week's linux-next, allyesconfig on x86_64.
->
-> The method of fixing was to look for warnings where the preceding statement
-> was a simple statement and by inspection made the subsequent break unneeded.
-> In order of frequency these look like
->
-> return and break
->
->         switch (c->x86_vendor) {
->         case X86_VENDOR_INTEL:
->                 intel_p5_mcheck_init(c);
->                 return 1;
-> -               break;
->
-> goto and break
->
->         default:
->                 operation = 0; /* make gcc happy */
->                 goto fail_response;
-> -               break;
->
-> break and break
->                 case COLOR_SPACE_SRGB:
->                         /* by pass */
->                         REG_SET(OUTPUT_CSC_CONTROL, 0,
->                                 OUTPUT_CSC_GRPH_MODE, 0);
->                         break;
-> -                       break;
->
-> The exception to the simple statement, is a switch case with a block
-> and the end of block is a return
->
->                         struct obj_buffer *buff = r->ptr;
->                         return scnprintf(str, PRIV_STR_SIZE,
->                                         "size=%u\naddr=0x%X\n", buff->size,
->                                         buff->addr);
->                 }
-> -               break;
->
-> Not considered obvious and excluded, breaks after
-> multi level switches
-> complicated if-else if-else blocks
-> panic() or similar calls
->
-> And there is an odd addition of a 'fallthrough' in drivers/tty/nozomi.c
-[..]
-> diff --git a/drivers/nvdimm/claim.c b/drivers/nvdimm/claim.c
-> index 5a7c80053c62..2f250874b1a4 100644
-> --- a/drivers/nvdimm/claim.c
-> +++ b/drivers/nvdimm/claim.c
-> @@ -200,11 +200,10 @@ ssize_t nd_namespace_store(struct device *dev,
->                 }
->                 break;
->         default:
->                 len = -EBUSY;
->                 goto out_attach;
-> -               break;
->         }
+Hello.
+I found some kind of "degradation" in a driver for adapter
+Qualcomm Atheros QCA9377 802.11ac Wireless Network Adapter
+Generally, "airodump-ng" utility works with firmware-5.bin but doesn't
+work with the latest firmware-6.bin.
+https://forum.aircrack-ng.org/index.php/topic,2545.msg13665.html#msg13665
 
-Acked-by: Dan Williams <dan.j.williams@intel.com>
+Can you have a look?
+B.R., Alex
