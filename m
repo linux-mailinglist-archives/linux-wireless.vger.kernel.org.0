@@ -2,33 +2,43 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 59A81292206
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 Oct 2020 06:55:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 92C61292257
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 Oct 2020 08:06:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728381AbgJSEzk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 19 Oct 2020 00:55:40 -0400
-Received: from smtprelay0054.hostedemail.com ([216.40.44.54]:51006 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726829AbgJSEzk (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 19 Oct 2020 00:55:40 -0400
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay06.hostedemail.com (Postfix) with ESMTP id DC97B1822494D;
-        Mon, 19 Oct 2020 04:55:36 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:960:973:982:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1535:1543:1593:1594:1605:1711:1730:1747:1777:1792:2393:2559:2562:2828:3138:3139:3140:3141:3142:3622:3865:3868:3871:4250:4321:5007:7903:7904:8531:8603:8829:8957:9036:10004:10400:10848:10946:11026:11232:11473:11657:11658:11914:12043:12296:12297:12438:12555:12740:12760:12895:13439:14093:14097:14181:14196:14659:14721:21080:21433:21627:21966:21990:30054:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:2,LUA_SUMMARY:none
-X-HE-Tag: self88_3d141c327234
-X-Filterd-Recvd-Size: 5055
-Received: from XPS-9350.home (unknown [47.151.133.149])
-        (Authenticated sender: joe@perches.com)
-        by omf17.hostedemail.com (Postfix) with ESMTPA;
-        Mon, 19 Oct 2020 04:55:34 +0000 (UTC)
-Message-ID: <e59c0c575f9d9e1af8c6fdf2911cd9d028de257f.camel@perches.com>
-Subject: Re: [PATCH] [v5] wireless: Initial driver submission for pureLiFi
- STA devices
-From:   Joe Perches <joe@perches.com>
-To:     Srinivasan Raju <srini.raju@purelifi.com>
-Cc:     mostafa.afgani@purelifi.com, Kalle Valo <kvalo@codeaurora.org>,
+        id S1726559AbgJSGGB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 19 Oct 2020 02:06:01 -0400
+Received: from mail-eopbgr100092.outbound.protection.outlook.com ([40.107.10.92]:41621
+        "EHLO GBR01-LO2-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725306AbgJSGGB (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 19 Oct 2020 02:06:01 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=fp838OD9WtkVP9eLKA/Iai2EMK1JFLM36ysKNL52X23WbY8Htt9saS43bsJ8rlEjsIFifjufGujwiHom3TBcn4cOHP6rK27fvOJMtSJBnSIjbgQiOj9IlZx7jInxTcNGrHe5xZFnX1yngc+czYSs8wcdTOt5Ql3oPEBZdMwftaw1xEGMW64af/wFwbWQpGGwleEiPHKrebGpNzBFaOzAfY8DG5ZzTPwZt3wIxvYQ46O7tnmxF8IOGDswrasa5xdEBcJMLK3RWkqlTmuz2zWTYNMQH/tSOJPDWgNp7pCJOMGM2WtoTXhiIUjFPY24YApsM5ZHsB5GJez9MKAY4TTt8A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=+qeNcvlhCEwkGBuLD2qp0N/F8HuRUXeYqJ8mf3RwLJM=;
+ b=RMNwiR8QsHJyxlJ2LXqoz87LjyobgPgiGmvgMtIMgNfpHOOfJkdSYo2rUaTzTKGa9pBA213TAHzvLokDj0Jy8ODzAxbYHgzPAoij8aldON3I580WReENl/uCVGDtPyOFn16dJXEoVCWzA7i7n+tO3NPmORisiq6bV241DV+M/mvxv+UxeCRbGe6ecR2sMfZ44SS/VkZGoqGBD3ZRflXKK7GT52orgNG2BaUlL1OFT1zkCCQizgxxVjEMz+C/q7IhgBSTLF8FGTruZ0isS11zGmh4EUj4ugwdzOt22RM16EpTwQwUyO0AKjfIFGu39Z2ShQtseCA/6G13zwm1g+Bwog==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=purelifi.com; dmarc=pass action=none header.from=purelifi.com;
+ dkim=pass header.d=purelifi.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=purevlc.onmicrosoft.com; s=selector2-purevlc-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=+qeNcvlhCEwkGBuLD2qp0N/F8HuRUXeYqJ8mf3RwLJM=;
+ b=qOAddpFqHQeM1MolmRwG/9tfNGC22701NTBP9L1CGVJptQZkbSO10BzzG6TwSBUimfQ4Z9m9BM0PLEPTCPAvNtuqVaUlgIkbyKPi9BbVf9oG0Zd7WFBP6dQOCbVmS94ksEHU5avNAXq3UlRBr4GZAqSR9W4N5A21G0ZjN3j42Uc=
+Received: from LOYP265MB1918.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:ef::9) by
+ LO3P265MB2106.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:10b::7) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.3477.25; Mon, 19 Oct 2020 06:05:57 +0000
+Received: from LOYP265MB1918.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::b8d7:c2a7:cbbd:6c2b]) by LOYP265MB1918.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::b8d7:c2a7:cbbd:6c2b%7]) with mapi id 15.20.3477.028; Mon, 19 Oct 2020
+ 06:05:57 +0000
+From:   Srinivasan Raju <srini.raju@purelifi.com>
+To:     Joe Perches <joe@perches.com>
+CC:     Mostafa Afgani <mostafa.afgani@purelifi.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
         "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>,
         Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
@@ -38,155 +48,53 @@ Cc:     mostafa.afgani@purelifi.com, Kalle Valo <kvalo@codeaurora.org>,
         "open list:NETWORKING DRIVERS (WIRELESS)" 
         <linux-wireless@vger.kernel.org>,
         "open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>
-Date:   Sun, 18 Oct 2020 21:55:33 -0700
-In-Reply-To: <20201019031744.17916-1-srini.raju@purelifi.com>
+Subject: Re: [PATCH] [v5] wireless: Initial driver submission for pureLiFi STA
+ devices
+Thread-Topic: [PATCH] [v5] wireless: Initial driver submission for pureLiFi
+ STA devices
+Thread-Index: AQHWpcZ65mM4/36TpU6KSYXahxubVameXJmAgAATXBw=
+Date:   Mon, 19 Oct 2020 06:05:57 +0000
+Message-ID: <LOYP265MB191823348BB322A96BBF9BA2E01E0@LOYP265MB1918.GBRP265.PROD.OUTLOOK.COM>
 References: <20201016063444.29822-1-srini.raju@purelifi.com>
-         <20201019031744.17916-1-srini.raju@purelifi.com>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.36.4-0ubuntu1 
+         <20201019031744.17916-1-srini.raju@purelifi.com>,<e59c0c575f9d9e1af8c6fdf2911cd9d028de257f.camel@perches.com>
+In-Reply-To: <e59c0c575f9d9e1af8c6fdf2911cd9d028de257f.camel@perches.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: perches.com; dkim=none (message not signed)
+ header.d=none;perches.com; dmarc=none action=none header.from=purelifi.com;
+x-originating-ip: [103.8.116.159]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: b6d96af5-0833-46eb-ae33-08d873f50be0
+x-ms-traffictypediagnostic: LO3P265MB2106:
+x-ms-exchange-transport-forked: True
+x-microsoft-antispam-prvs: <LO3P265MB2106E2C70C50EF09FBA16288E01E0@LO3P265MB2106.GBRP265.PROD.OUTLOOK.COM>
+x-ms-oob-tlc-oobclassifiers: OLM:2887;
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: HLwn0zlTLgWEjyBPm1V+4ERd6edJPB0NHReHuSLMX1nEFdY6f6p0P2TplKpgUdernwoV9UoxXwZX4L9dDrInCvV2iKmqyg4Q87M3bol2xnJvtXMlFZvnsIXFr/nO8tByavwXGNKGka8qwW1LIu1T/9GUS2JSCohT5v5Agf8ku0j4Z5+uolDiysxTCVkmhOok3B9aySzNCZc1YiA8wYTHQGOyX8qYN26SiBKRQY5apb/Mfv6evSpOgYYZDnPqi1uSnRRF0zFR18pniL/A3q9vtnaApOdWY9ZaamBbWT1dPMbxUD8vDyr7poaF3a2pzwjVjAIdKEI/vlzSGlWtI6iwNA==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOYP265MB1918.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(6029001)(4636009)(366004)(39830400003)(396003)(346002)(136003)(376002)(71200400001)(186003)(52536014)(4326008)(9686003)(64756008)(66446008)(91956017)(76116006)(66946007)(558084003)(66476007)(66556008)(8676002)(33656002)(7416002)(55016002)(2906002)(6916009)(5660300002)(26005)(86362001)(54906003)(478600001)(316002)(6506007)(8936002)(7696005);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata: a3GqZKJNGzIbIfRGEseewX7jnSj1hfF+ommNtOL6uZkUGDE8lme3bM5ahjhFhot3os2L2RPk2Klb9+ADtQBqR6OTForChkf2dGjx8dqdXLZlpdt7eURr/dBV4cAQ8K49K1gTg5/7VKNS8+ZHctD7yuBw9ogz8r14Kyke4i+MF61r+wuQCmG0h0lOrymOaj6SZN+x9KKVg/xjF5Y9aS0aaHjwY7KA8AbAtsEt46R5lHUh6uMmjEWKMrDfxRTVGlu1MIusvTjp336ctxxZTSHFWfLCXDz6hvsscis6C3uMLZ9agSpzQw2TYAybUqysKMHE5+8b5j3X5RE+xMLkcPe4+j4wsNKpqx1XEMaES+ch+ztYxDpj5GpLZdoEOsoHhwcQHFjt4RdBp3m4LgaevtIudvtI4rX1kTyNdtQ4hwoa0J3eG0MABOHkjUux6MEUlzOsbaFQJ/hsxH3jTUNS/eSMUz84Rti9EbNnlX64WMnz4ypx6sye0SDhhUSf9nK8bxg3Coh7phjQDLavkoiXrDmcD116huDPc6CBlQo+QYvGuz4xzK8R2FxWBTz8ZSdwuq3jQd0/BJ0EZy9V++RIZJHo7v2BUtf9a1OBQ8c2JXufhEU1hqXd5vSqFtly7uplGSL0cRQiW+UTE9KxioOPXdukRg==
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+X-OriginatorOrg: purelifi.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: LOYP265MB1918.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: b6d96af5-0833-46eb-ae33-08d873f50be0
+X-MS-Exchange-CrossTenant-originalarrivaltime: 19 Oct 2020 06:05:57.5380
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 5cf4eba2-7b8f-4236-bed4-a2ac41f1a6dc
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: FfbG/Kp+qyUP2jM4k4Jc2kNRUu5tuvx80DS9VZcZnb46rtpUN+lLPoSkNK3Lz3cHv714N2zFGYS9fXJwyKVrsQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO3P265MB2106
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 2020-10-19 at 08:47 +0530, Srinivasan Raju wrote:
-> This introduces the pureLiFi LiFi driver for LiFi-X, LiFi-XC
-> and LiFi-XL USB devices.
-
-Mostly trivial comments:
-
-> diff --git a/drivers/net/wireless/purelifi/chip.c b/drivers/net/wireless/purelifi/chip.c
-[]
-> +int purelifi_chip_set_rate(struct purelifi_chip *chip, u8 rate)
-> +{
-> +	int r;
-> +	static struct purelifi_chip *chip_p;
-
-Isn't chip_p pointless?
-
-> +
-> +	if (chip)
-> +		chip_p = chip;
-> +	if (!chip_p)
-> +		return -EINVAL;
-> +
-
-chip_p is otherwise unused.
-
-> diff --git a/drivers/net/wireless/purelifi/mac.c b/drivers/net/wireless/purelifi/mac.c
-[]
-> +int purelifi_mac_init_hw(struct ieee80211_hw *hw)
-> +{
-> +	int r;
-> +	struct purelifi_mac *mac = purelifi_hw_mac(hw);
-> +	struct purelifi_chip *chip = &mac->chip;
-> +
-> +	r = purelifi_chip_init_hw(chip);
-> +	if (r) {
-> +		dev_warn(purelifi_mac_dev(mac), "init hw failed (%d)\n", r);
-> +		goto out;
-> +	}
-> +
-> +	dev_dbg(purelifi_mac_dev(mac), "irq_disabled %d\n", irqs_disabled());
-> +
-> +	r = regulatory_hint(hw->wiphy, "CA");
-> +out:
-> +	return r;
-> +}
-
-Simpler without the out: label and a direct return
-
-	if (r) {
-		dev_warn(...)
-		return r;
-	}
-
-	...
-
-	return regulator_hint(hw->wiphy, "CA");
-}
-
-> +static int download_fpga(struct usb_interface *intf)
-> +{
-[]
-> +	if ((le16_to_cpu(udev->descriptor.idVendor) ==
-> +				PURELIFI_X_VENDOR_ID_0) &&
-> +	    (le16_to_cpu(udev->descriptor.idProduct) ==
-> +				PURELIFI_X_PRODUCT_ID_0)) {
-> +		fw_name = "purelifi/li_fi_x/fpga.bit";
-> +		dev_info(&intf->dev, "bit file for X selected.\n");
-> +
-> +	} else if ((le16_to_cpu(udev->descriptor.idVendor)) ==
-> +					PURELIFI_XC_VENDOR_ID_0 &&
-> +		   (le16_to_cpu(udev->descriptor.idProduct) ==
-> +					PURELIFI_XC_PRODUCT_ID_0)) {
-> +		fw_name = "purelifi/li_fi_x/fpga_xc.bit";
-> +		dev_info(&intf->dev, "bit filefor XC selected.\n");
-
-Inconsistent dev_info spacing: "file for" vs "filefor"
-
-> +	for (fw_data_i = 0; fw_data_i < fw->size;) {
-> +		int tbuf_idx;
-> +
-> +		if ((fw->size - fw_data_i) < blk_tran_len)
-> +			blk_tran_len = fw->size - fw_data_i;
-> +
-> +		fw_data = kmalloc(blk_tran_len, GFP_KERNEL);
-> +
-> +		memcpy(fw_data, &fw->data[fw_data_i], blk_tran_len);
-> +
-> +		for (tbuf_idx = 0; tbuf_idx < blk_tran_len; tbuf_idx++) {
-> +			fw_data[tbuf_idx] =
-> +				((fw_data[tbuf_idx] & 128) >> 7) |
-> +				((fw_data[tbuf_idx] &  64) >> 5) |
-> +				((fw_data[tbuf_idx] &  32) >> 3) |
-> +				((fw_data[tbuf_idx] &  16) >> 1) |
-> +				((fw_data[tbuf_idx] &   8) << 1) |
-> +				((fw_data[tbuf_idx] &   4) << 3) |
-> +				((fw_data[tbuf_idx] &   2) << 5) |
-> +				((fw_data[tbuf_idx] &   1) << 7);
-> +		}
-
-pity there isn't an u8_bit_reverse function/mechanism
-
-> +static void pretty_print_mac(struct usb_interface *intf, char *serial_number,
-> +			     unsigned char *hw_address
-> +			    )
-> +{
-> +	unsigned char i;
-> +
-> +	for (i = 0; i < ETH_ALEN; i++)
-> +		dev_info(&intf->dev, "hw_address[%d]=%x\n", i, hw_address[i]);
-
-I don't think this prettier than %pM
-
-> +}
-> +
-> +static int upload_mac_and_serial_number(struct usb_interface *intf,
-> +					unsigned char *hw_address,
-> +					unsigned char *serial_number)
-> +{
-[]
-> +	do {
-> +		unsigned char buf[8];
-> +
-> +		msleep(200);
-> +
-> +		send_vendor_request(udev, 0x40, buf, sizeof(buf));
-> +		flash.enabled = buf[0] & 0xFF;
-> +
-> +		if (flash.enabled) {
-> +			flash.sectors = ((buf[6] & 255) << 24) |
-
-buf is unsigned char[], rather pointless using & 255
-
-> diff --git a/drivers/net/wireless/purelifi/usb.h b/drivers/net/wireless/purelifi/usb.h
-[]
-> +struct station_t {
-> +   //  7...3    |    2     |     1     |     0     |
-> +   // Reserved  | Hearbeat | FIFO full | Connected |
-
-heartbeat
-
-
+=0A=
+Mostly trivial comments:=0A=
+=0A=
+>> Ok Thanks, I will address them=
