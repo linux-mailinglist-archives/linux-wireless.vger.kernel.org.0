@@ -2,140 +2,96 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E161A292EA9
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 Oct 2020 21:43:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A44B292F6C
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 Oct 2020 22:29:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731314AbgJSTmy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 19 Oct 2020 15:42:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34390 "EHLO
+        id S1731638AbgJSU3V (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 19 Oct 2020 16:29:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41820 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731231AbgJSTm3 (ORCPT
+        with ESMTP id S1726118AbgJSU3U (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 19 Oct 2020 15:42:29 -0400
-Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com [IPv6:2607:f8b0:4864:20::644])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2D29C0613DA
-        for <linux-wireless@vger.kernel.org>; Mon, 19 Oct 2020 12:42:27 -0700 (PDT)
-Received: by mail-pl1-x644.google.com with SMTP id o9so313189plx.10
-        for <linux-wireless@vger.kernel.org>; Mon, 19 Oct 2020 12:42:27 -0700 (PDT)
+        Mon, 19 Oct 2020 16:29:20 -0400
+Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com [IPv6:2607:f8b0:4864:20::641])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D003C0613CE
+        for <linux-wireless@vger.kernel.org>; Mon, 19 Oct 2020 13:29:19 -0700 (PDT)
+Received: by mail-pl1-x641.google.com with SMTP id h2so384302pll.11
+        for <linux-wireless@vger.kernel.org>; Mon, 19 Oct 2020 13:29:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=no6WOfZDuAXhTDfVia9Vunkz4L7BthY0F8m0jo4//vs=;
-        b=vqIoQqfPtCUD7ceHGEmbvFqqUZd/9dE0IpLQQ4p4nyONBXQMSFxBG5OzgCaJfT8eu8
-         Ez0DMwUntzcU9c2WJzs/WqMvxG3bzlj0mstlcz+E4fW0gt02sZNjrL1HdU6SHVwmCE5R
-         WFeHYzJRJuPZspqj8YJ2wlUmUN4Mc8MNrI6kLekCJ8yejCepkvkgEUeb7TbpDze1NnEh
-         TP2SjhqdakZDUedR00qYjd62k5W2m7FgfHIpcuS/rhjqMGxVL3Apppn+UDRO/ftdIfoh
-         duvoKavmXDacw9mysFV+xdp1Tg4QxCPiDxNSeCeZyO+34Y2S1kYSdX61NJzSKhmGsX5T
-         HLpA==
+        d=eero.com; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding:content-language;
+        bh=0BXgwvZ4jMHeZzNiv/wjk3o+W4wXRElRH5oxkY1vnuA=;
+        b=CUjnbXwaMT8ibYDhv8kuaXzN8wHPUqXDF1oEqzBNaZjWeHxGFkAor0dnR4KMd2zLdU
+         NBgyo6C1+6tnJSpgk9abNQj95rbRjpW6ZkDIqRpW0AG8J8/f9imhkSQC23DCDYxBME5d
+         5uLw3YFlR36YgPjWkCNadigt3mdA4Ieo3ca28=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=no6WOfZDuAXhTDfVia9Vunkz4L7BthY0F8m0jo4//vs=;
-        b=e8Zkpj+E5DoWNWlyCpiqoijxuEXZjY+pXwvocX48ON7AlD5j6Sc+DN7z57brW3ggih
-         dm5y+qAE4RuvNOZXbDxu1FRY5n94tr3OPHZNmP8EVk9vdGQlsEj0D6fKsK3Wo6x8MUUA
-         hLU545/rUsUvMkd7B8Pa216l13wR2nhlbm2rJlCysfCYc1AmMdn9QSNrUi1hgFeRq9aK
-         PR2ee4PVb/0PSaH0h5GNT0JQxM6fTBTFJiEd01pUPT4WYSlH4huh6AKKdVAR848aB39i
-         fpAu7cnLEkOJ763HL/EUgFE4zZHM6ipeEHIjrL80ZwomHcrUgCK6j71lmw1KnUePgM94
-         KfLQ==
-X-Gm-Message-State: AOAM532+1ygKHl8P3LOyQEfye9Ni5jg0TkOvOG/CyWKPaZLrf8uKe1Kq
-        HFCk9YTWAYvMk8ntLd61dtubtTsesEjgDRBQ+7znNQ==
-X-Google-Smtp-Source: ABdhPJxy4K+2uRaBuhFTeTSlHPetqrP1uAAP7dKvm6UBZz10SCa23PJUxb54E5JJmlle9J/y892Qp+TTrKvO4GeNXIk=
-X-Received: by 2002:a17:90a:ee87:: with SMTP id i7mr921476pjz.25.1603136546933;
- Mon, 19 Oct 2020 12:42:26 -0700 (PDT)
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding
+         :content-language;
+        bh=0BXgwvZ4jMHeZzNiv/wjk3o+W4wXRElRH5oxkY1vnuA=;
+        b=OgVhs/hwUIQ34Xj9f86FFVUegq2p4u0eghG6ZPMkaJ9B0uc2JjF32jhNLVpIY8sb6O
+         oAQdmnJbzAtP+lqCBFGguoLmfprKZ75QvplcixnrFbQFGuh+6QvLI8JQlchvjwVblXXy
+         TscyIcnYAK1FxX3QTWOINy7v+SP0mNULpdxcWPp73TPAqjPud7Tb6qecon8IEiV7wESD
+         1NQiFTLAfWsmBz+KPH0RAQolbENV+DeK6d6oyOHDXFJUTauYAt/Xlb813IeDiGXiLGih
+         DR5nqL/r4Ku0iA7R6NXGZSHJhG2vbF71cXCgk0HmdoBqPY+GWFETUhQPjtnnm3AwIwoE
+         fXLg==
+X-Gm-Message-State: AOAM530Fmrh8vEVvRM6GHx+cJVYTrp3/lRhzGCleJ7QZD2IahC9x2eWb
+        om2uEYiLzknU9jbpES3VcdiCIkCPCagUXA==
+X-Google-Smtp-Source: ABdhPJxznxOd+w/SV1e0NtHbz0gDUy4zbvVe7TXOjHppmqbLWzKsi4ApFNMXpgLddQlEKaKtMNDrmw==
+X-Received: by 2002:a17:90a:ab92:: with SMTP id n18mr1063752pjq.233.1603139358811;
+        Mon, 19 Oct 2020 13:29:18 -0700 (PDT)
+Received: from [192.168.4.200] (c-76-102-118-9.hsd1.ca.comcast.net. [76.102.118.9])
+        by smtp.gmail.com with ESMTPSA id y10sm595893pff.119.2020.10.19.13.29.16
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 19 Oct 2020 13:29:18 -0700 (PDT)
+Subject: Re: [PATCH 1/4] mac80211: save HE oper info in BSS config for mesh
+To:     Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        ath11k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org
+References: <20201009021811.18584-1-pradeepc@codeaurora.org>
+ <20201009021811.18584-2-pradeepc@codeaurora.org>
+From:   Peter Oh <peter.oh@eero.com>
+Message-ID: <cc254230-5909-b77a-8c13-2c769a618660@eero.com>
+Date:   Mon, 19 Oct 2020 13:29:15 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-References: <20201017160928.12698-1-trix@redhat.com> <20201018054332.GB593954@kroah.com>
-In-Reply-To: <20201018054332.GB593954@kroah.com>
-From:   Nick Desaulniers <ndesaulniers@google.com>
-Date:   Mon, 19 Oct 2020 12:42:15 -0700
-Message-ID: <CAKwvOdkR_Ttfo7_JKUiZFVqr=Uh=4b05KCPCSuzwk=zaWtA2_Q@mail.gmail.com>
-Subject: Re: [RFC] treewide: cleanup unreachable breaks
-To:     Tom Rix <trix@redhat.com>
-Cc:     LKML <linux-kernel@vger.kernel.org>, linux-edac@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org,
-        xen-devel@lists.xenproject.org, linux-block@vger.kernel.org,
-        openipmi-developer@lists.sourceforge.net,
-        "open list:HARDWARE RANDOM NUMBER GENERATOR CORE" 
-        <linux-crypto@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linux-power@fi.rohmeurope.com, linux-gpio@vger.kernel.org,
-        amd-gfx list <amd-gfx@lists.freedesktop.org>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        nouveau@lists.freedesktop.org,
-        virtualization@lists.linux-foundation.org,
-        spice-devel@lists.freedesktop.org, linux-iio@vger.kernel.org,
-        linux-amlogic@lists.infradead.org,
-        industrypack-devel@lists.sourceforge.net,
-        linux-media@vger.kernel.org, MPT-FusionLinux.pdl@broadcom.com,
-        linux-scsi@vger.kernel.org, linux-mtd@lists.infradead.org,
-        linux-can@vger.kernel.org,
-        Network Development <netdev@vger.kernel.org>,
-        intel-wired-lan@lists.osuosl.org, ath10k@lists.infradead.org,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        linux-stm32@st-md-mailman.stormreply.com, linux-nfc@lists.01.org,
-        linux-nvdimm <linux-nvdimm@lists.01.org>,
-        linux-pci@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org, patches@opensource.cirrus.com,
-        storagedev@microchip.com, devel@driverdev.osuosl.org,
-        linux-serial@vger.kernel.org, linux-usb@vger.kernel.org,
-        usb-storage@lists.one-eyed-alien.net,
-        linux-watchdog@vger.kernel.org, ocfs2-devel@oss.oracle.com,
-        bpf <bpf@vger.kernel.org>, linux-integrity@vger.kernel.org,
-        linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
-        alsa-devel@alsa-project.org,
-        clang-built-linux <clang-built-linux@googlegroups.com>,
-        Greg KH <gregkh@linuxfoundation.org>,
-        George Burgess <gbiv@google.com>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20201009021811.18584-2-pradeepc@codeaurora.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sat, Oct 17, 2020 at 10:43 PM Greg KH <gregkh@linuxfoundation.org> wrote:
->
-> On Sat, Oct 17, 2020 at 09:09:28AM -0700, trix@redhat.com wrote:
-> > From: Tom Rix <trix@redhat.com>
-> >
-> > This is a upcoming change to clean up a new warning treewide.
-> > I am wondering if the change could be one mega patch (see below) or
-> > normal patch per file about 100 patches or somewhere half way by collecting
-> > early acks.
->
-> Please break it up into one-patch-per-subsystem, like normal, and get it
-> merged that way.
->
-> Sending us a patch, without even a diffstat to review, isn't going to
-> get you very far...
 
-Tom,
-If you're able to automate this cleanup, I suggest checking in a
-script that can be run on a directory.  Then for each subsystem you
-can say in your commit "I ran scripts/fix_whatever.py on this subdir."
- Then others can help you drive the tree wide cleanup.  Then we can
-enable -Wunreachable-code-break either by default, or W=2 right now
-might be a good idea.
+> +static void
+> +ieee80211_mesh_update_bss_params(struct ieee80211_sub_if_data *sdata,
+> +				 u8 *ie, u8 ie_len)
+> +{
+> +	struct ieee80211_supported_band *sband;
+> +	const u8 *cap;
+> +	const struct ieee80211_he_operation *he_oper = NULL;
+> +
+> +	sband = ieee80211_get_sband(sdata);
+> +	if (!sband)
+> +		return;
+> +
+> +	if (ieee80211_get_he_iftype_cap(sband, NL80211_IFTYPE_MESH_POINT) &&
+> +	    !(sdata->vif.bss_conf.chandef.width == NL80211_CHAN_WIDTH_20_NOHT ||
+> +	    sdata->vif.bss_conf.chandef.width == NL80211_CHAN_WIDTH_5 ||
+> +	    sdata->vif.bss_conf.chandef.width == NL80211_CHAN_WIDTH_10))
+> +		return;
 
-Ah, George (gbiv@, cc'ed), did an analysis recently of
-`-Wunreachable-code-loop-increment`, `-Wunreachable-code-break`, and
-`-Wunreachable-code-return` for Android userspace.  From the review:
-```
-Spoilers: of these, it seems useful to turn on
--Wunreachable-code-loop-increment and -Wunreachable-code-return by
-default for Android
-...
-While these conventions about always having break arguably became
-obsolete when we enabled -Wfallthrough, my sample turned up zero
-potential bugs caught by this warning, and we'd need to put a lot of
-effort into getting a clean tree. So this warning doesn't seem to be
-worth it.
-```
-Looks like there's an order of magnitude of `-Wunreachable-code-break`
-than the other two.
+Are you update BSS only for sub-20Mhz?
 
-We probably should add all 3 to W=2 builds (wrapped in cc-option).
-I've filed https://github.com/ClangBuiltLinux/linux/issues/1180 to
-follow up on.
--- 
+Shouldn't you remove "!" for 20~160Mhz?
+
+
 Thanks,
-~Nick Desaulniers
+
+Peter
+
