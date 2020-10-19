@@ -2,95 +2,62 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8639229259C
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 Oct 2020 12:20:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A8C82926F8
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 Oct 2020 14:07:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726299AbgJSKUz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 19 Oct 2020 06:20:55 -0400
-Received: from m42-4.mailgun.net ([69.72.42.4]:46488 "EHLO m42-4.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726319AbgJSKUz (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 19 Oct 2020 06:20:55 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1603102854; h=Message-Id: Date: Subject: Cc: To: From:
- Sender; bh=pO0FDD57J3zRK84jwOrYtrWoQ4FhQcuNNWfyu+hfw6A=; b=Uq9CyTInRcezxPTNEtKIvBCDSTWGo7k6n7Ceh2/MfRDd4EM9PPEaKxc72oMqmnTWpotHd+0O
- 0BqnNfp4fRlmRfUwM4kUUaAImjGJjZ0+MAk6TKBX8Z+FSRfmxzu1JXxI5dkwIhXeCGv4TBAW
- Xd//l1A7e4rLa+b1LLV9B/GXfJM=
-X-Mailgun-Sending-Ip: 69.72.42.4
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n06.prod.us-west-2.postgun.com with SMTP id
- 5f8d6879856d9308b5931717 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 19 Oct 2020 10:20:41
- GMT
-Sender: kathirve=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 19E03C433FF; Mon, 19 Oct 2020 10:20:41 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-Received: from akalaise-linux.qualcomm.com (blr-c-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.19.19])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kathirve)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 6D47CC433F1;
-        Mon, 19 Oct 2020 10:20:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 6D47CC433F1
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kathirve@codeaurora.org
-From:   Karthikeyan Kathirvel <kathirve@codeaurora.org>
-To:     johannes@sipsolutions.net
-Cc:     linux-wireless@vger.kernel.org,
-        Karthikeyan Kathirvel <kathirve@codeaurora.org>
-Subject: [PATCH] mac80211: choosing first channel from the list
-Date:   Mon, 19 Oct 2020 15:50:30 +0530
-Message-Id: <1603102830-28935-1-git-send-email-kathirve@codeaurora.org>
-X-Mailer: git-send-email 2.7.4
+        id S1726311AbgJSMHH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 19 Oct 2020 08:07:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47546 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725924AbgJSMHH (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 19 Oct 2020 08:07:07 -0400
+Received: from mail-vs1-xe44.google.com (mail-vs1-xe44.google.com [IPv6:2607:f8b0:4864:20::e44])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0114EC0613CE
+        for <linux-wireless@vger.kernel.org>; Mon, 19 Oct 2020 05:07:07 -0700 (PDT)
+Received: by mail-vs1-xe44.google.com with SMTP id u74so5527733vsc.2
+        for <linux-wireless@vger.kernel.org>; Mon, 19 Oct 2020 05:07:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=TyMDrKK1RYWgdlZ3jYnZItWAg1UbJzYK4Hmay2jpDlA=;
+        b=h/TMuA0MOQhzqrbjaq7jFHwq8zaaQzkqZc67FD5vdMxPt69UyePOvRRe6OwENtwOKg
+         S/iAUQw/O54V2KNnlZoGDYJVL5gWwaPnLXuQXHmrhdPTuOj+yskTIrUM2YYoFRtoucx7
+         mMY7e9wrPxWJlcAee1VgmYvoZst2704CYdcqKkDyKSl5vapE9eH2hUlwYVYD8vPH/DmY
+         mCCq8Mgh5ZqErYHiptfT+8VmOqqf9dig5ljB62SlIvWyaQZ17TQAoV8FLKq95NHH9/05
+         b7dwrMBlSu9wO6TBNMv5vH650u76cOFGApgZw/cJoVW10zIhcXPITsXIepf5MXtqxrHv
+         l5DA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=TyMDrKK1RYWgdlZ3jYnZItWAg1UbJzYK4Hmay2jpDlA=;
+        b=QOariCtMzd0faCjuiy70SkJgHFJOwHIGWucwhUZUNN+qzyfgV2RMudk/k8TtelUv7u
+         eShgBCpDOt3RByLyxy+IRvYgiZdnjrvJntq8Fze1/o9BzdqArEXSyunP/blg5mDQIEXU
+         cNbP2niWBHiQcoisoNp1NzhHDGfn7p4RlYqvqhBy6A9KT6s1BLlgNG4CCOn2EIgMvjkj
+         F6mjTMjMMFuaqvRskavU3qMihPReiuzNpUgmpwQVfRZaXdLx2irGONOb9rcoR6HJM/1l
+         CKVRQ0EpSJSf2v20w9ZVkdwrVrjYVQtpShBROtG/UASRYXmM/S5QNSM5b1O6DL7mlmbf
+         3Mlw==
+X-Gm-Message-State: AOAM533Tw0VURY5m3Bs+Az/xgKEysrBIhkU4U09MIBhyqYRKxL0Yw4zX
+        39BYXqFteJ1tDVKYZkBviG8fb3LcVjzngYqLtLsoIIBlwfQ=
+X-Google-Smtp-Source: ABdhPJwGvfYHI5TLp0EsGRS2bWeBOEyI8LIT8mIdBJBLqP7nlO5N6FKCDYcYbXr6bJrPyL1LrLzhFBF70rimfv1SPcA=
+X-Received: by 2002:a67:ef5d:: with SMTP id k29mr7676084vsr.33.1603109225982;
+ Mon, 19 Oct 2020 05:07:05 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 2002:a05:6102:3105:0:0:0:0 with HTTP; Mon, 19 Oct 2020 05:07:05
+ -0700 (PDT)
+Reply-To: michellegoodman035@gmail.com
+From:   MICHELLE GOODMAN <sarahluo125@gmail.com>
+Date:   Mon, 19 Oct 2020 13:07:05 +0100
+Message-ID: <CACxHpbWjakaaLorg8JLWMK1WDAYVKC2D7Fvypn06_j77P4E_zg@mail.gmail.com>
+Subject: From Michelle
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Though the first channel from sband channel list is invalid
-or disabled still mac80211 is choosing this disabled channel
-as a default channel for monitor interface. This will end-up
-in choosing wrong channel.
-
-Fixed by assigning the first available valid or enabled channel
-to the respective radios.
-
-Signed-off-by: Karthikeyan Kathirvel <kathirve@codeaurora.org>
----
-
-v2:
-	rebased
-
- net/mac80211/main.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
-
-diff --git a/net/mac80211/main.c b/net/mac80211/main.c
-index b4a2efe..a4aefd6 100644
---- a/net/mac80211/main.c
-+++ b/net/mac80211/main.c
-@@ -982,8 +982,15 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
- 			continue;
- 
- 		if (!dflt_chandef.chan) {
-+			/*
-+			 * Assigning the first enabled channel to dflt_chandef from the
-+			 * list of channels available specific to country
-+			 */
-+			for (i = 0; i < sband->n_channels; i++)
-+				if (!(sband->channels[i].flags & IEEE80211_CHAN_DISABLED))
-+					break;
- 			cfg80211_chandef_create(&dflt_chandef,
--						&sband->channels[0],
-+						&sband->channels[i == sband->n_channels ? 0 : i],
- 						NL80211_CHAN_NO_HT);
- 			/* init channel we're on */
- 			if (!local->use_chanctx && !local->_oper_chandef.chan) {
--- 
-2.7.4
-
+Hallo Liebes, bitte hoffe du hast meine Nachricht bekommen
+Ich brauche dringend eine Antwort
+Vielen Dank
+Michelle
