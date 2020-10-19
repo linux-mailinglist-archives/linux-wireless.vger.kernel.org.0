@@ -2,103 +2,114 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7837C292085
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 Oct 2020 00:52:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 18575292147
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 Oct 2020 04:54:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729478AbgJRWvz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 18 Oct 2020 18:51:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36930 "EHLO
+        id S1731126AbgJSCy3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 18 Oct 2020 22:54:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45722 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726681AbgJRWvz (ORCPT
+        with ESMTP id S1728538AbgJSCy3 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 18 Oct 2020 18:51:55 -0400
-Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com [IPv6:2a00:1450:4864:20::542])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E56C2C061755
-        for <linux-wireless@vger.kernel.org>; Sun, 18 Oct 2020 15:51:54 -0700 (PDT)
-Received: by mail-ed1-x542.google.com with SMTP id dn5so8313240edb.10
-        for <linux-wireless@vger.kernel.org>; Sun, 18 Oct 2020 15:51:54 -0700 (PDT)
+        Sun, 18 Oct 2020 22:54:29 -0400
+Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com [IPv6:2607:f8b0:4864:20::1043])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 382EEC061755;
+        Sun, 18 Oct 2020 19:54:29 -0700 (PDT)
+Received: by mail-pj1-x1043.google.com with SMTP id gm14so4526164pjb.2;
+        Sun, 18 Oct 2020 19:54:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=t3ZpM9shERXmWg08MXu80HCVYbgk7EEOL98h1/n7aRQ=;
-        b=oPvPgn4YiaZSmaTEH08C3dnrJ6iOUIHtI/KrHCDEQkKG6557BAMyaurOaiEg9zm2zX
-         nmCILaz0DkoBk0wpnukidptI+IG4xa3t7HJfktLMpkQW8Xcur5VzVyBgHG7IoAR2YB1p
-         Q9FUwBJtwSCi3Zoc16RMHNN+t0hKHVYQjwvHL91ANpYyX0sxjigTnGb6k1yJ0e5AmOC0
-         9uik3bBcxGX8iPf/h6kAYX6xtL+AMc9T/Ybt4icqTpBNaTGNVK357F7x5m9Y9U1dfac2
-         YYvDe/0da8FgRSP+EbZRRvIRAQbYlj3JURZZBwmzEVzrMMUm9mG8Cxgey/gD6fMeEhiU
-         h5xg==
+        h=from:to:cc:subject:date:message-id;
+        bh=rMa38J/rDkdAxwNf9rq6wQwYbSWtRvfUhMh1mG4UHRM=;
+        b=LWRKDyuansl7M2rmAC+ZFUiy7fcD1e9ApOzcSn29Uqoh3nepomEzLtI3cGa4Wn1oOa
+         zPZFnpMhXI9C0R2FKzy/3Va3/If/Gojo4S+2RreUvJyrTnpRR5IhGPVZ6ENdnF/2cIb2
+         KNp35Mjr4Wvml5AYvhwJyvS3NEAQlf7I6hcmTxi6AEOosbY58ZVAnFCp0U3WmCOV8d3+
+         b+BLr4dtgb/wdSHYTES6mwXdmka+20v/iefPVkQ0RI31GW6SftppPfY63Mje95fyREMX
+         Qbo7/lvR196xn573UOSWRijQ6p/JoT49m64RgDNv2fcyo7Qvv7Man5YdGnEcM+9L/ZsU
+         LxZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=t3ZpM9shERXmWg08MXu80HCVYbgk7EEOL98h1/n7aRQ=;
-        b=PbuyY+V4an+LASB/r+g7nRChGLstOWuzaiUjokYH3ej8xeRXYhMWeJ2e4yv70/HHAI
-         XYO6TY1NLyemw0+OYAGu5iw6WEkLu2HnkpaVWhPAm+zjTmwAOy1EzRobgEXv/TBVtWyl
-         AMGMLeFzoHHtXKk6PVqRHPZTFDny5msCXEy7cADxIaCCMpRmkKXfGnnU4XZxVPXhH5NR
-         E1CiioHEtsS1CcZeOjTDoyTqeEnmNufRZL1ipF4t02HbbQFZXI4VGkqEtceR9l0p68lW
-         0aGsMIl2hoVOe5sMXe7QyvF8sVc3F2n+gVH+ttuF6nDEh3lWff/lMvMZ7bMDimD1JrTX
-         SU/g==
-X-Gm-Message-State: AOAM531wypNlZOV+aRmgbBXUYpICz67Lw6XqeT28DHi0LD2z9nXz9GxF
-        ZFuMyueaQoVLyjffSzmokFSplWdWU+c42AWbpM4=
-X-Google-Smtp-Source: ABdhPJzUM2MmhboocelG+sAzNqsbwx5k9W6ik/Pp6fDlCfW64Nmh5dxzKxKc9ciB/HWzj6l6YiNo6Mw/4QcJ43aTyR4=
-X-Received: by 2002:aa7:d30f:: with SMTP id p15mr14910274edq.256.1603061513596;
- Sun, 18 Oct 2020 15:51:53 -0700 (PDT)
-MIME-Version: 1.0
-References: <CAO6ttSmiXPnA9z_31CV2rS=DO0c48jSJGBAkOgWiD-GOG73Ffw@mail.gmail.com>
- <CA+ASDXO75rYv29YvK=0zUkB494DsA_WA+n3UttRiko2awzUkOw@mail.gmail.com>
- <362f154dff1b4d6f88503af813eae406@realtek.com> <1f33cbf8-ccf9-354e-a0ac-0911c6acded1@lwfinger.net>
- <CAO6ttS=ABWLQbgRxfbxsqNwr9bkEDJm6dBbvaZAM94GKYP+txw@mail.gmail.com> <87h7qrq4p5.fsf@tynnyri.adurom.net>
-In-Reply-To: <87h7qrq4p5.fsf@tynnyri.adurom.net>
-From:   David Rubio <david.alejandro.rubio@gmail.com>
-Date:   Sun, 18 Oct 2020 19:51:42 -0300
-Message-ID: <CAO6ttSkXSt3UC5P-RDCDUhDC66MRb5UkvCcbT5POzkve9G=GyA@mail.gmail.com>
-Subject: Re: rtw88 / rtl_8821ce: rfe 2 is not supported
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     Larry Finger <Larry.Finger@lwfinger.net>,
-        Andy Huang <tehuang@realtek.com>,
-        Brian Norris <briannorris@chromium.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Yan-Hsuan Chuang <tony0620emma@gmail.com>,
-        Kai-Heng Feng <kai.heng.feng@canonical.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=rMa38J/rDkdAxwNf9rq6wQwYbSWtRvfUhMh1mG4UHRM=;
+        b=FJHvR7Lr3UP0dkm0bA7yPxGHflASkSUN53C5tE09ZAOGf1ZF/+nyGh4FaNYjkdsL+I
+         po442ItVQILE9KBKS31DlM817Lpe+kmikuVCdv3wbJqmGH8MliOm3Zp6UI1l24wIAuu5
+         26v7NX1ezD5Po+k3XW/fmEhH/B+9hG3de/XEPZz0jclTNzwSyIydBe6/rWdR0bvXmt7V
+         bA1HimDhGht2eQB63kWIXxFZZIFfkFhdyj9YOPdUnZ+tYkEEQUdKLFX0kY8danE1SXiR
+         xpcSx9ZIvO9JFsbbL/mnlxxIuRu8A5aRUMk52ZCqnPWEVqru8UArXs3vAMBvOyzfP3f3
+         Ldow==
+X-Gm-Message-State: AOAM530ZuaaO67zWfKOYNklPVrH1Waz0dXZ6KWFRilhfkHomv1kVdF8O
+        //KC2PQNg8QKuKUXaOWLH9E=
+X-Google-Smtp-Source: ABdhPJwg4+/vETt9rhMUCFGb+vyTJmyspNuNk3VpyvR5I8/AZ5+PViHF+kkcQYFvG3KKp2x8Ffntfw==
+X-Received: by 2002:a17:902:8698:b029:d3:b362:7342 with SMTP id g24-20020a1709028698b02900d3b3627342mr15070350plo.50.1603076068663;
+        Sun, 18 Oct 2020 19:54:28 -0700 (PDT)
+Received: from oslab.tsinghua.edu.cn ([166.111.139.137])
+        by smtp.gmail.com with ESMTPSA id c17sm10275529pfj.220.2020.10.18.19.54.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 18 Oct 2020 19:54:27 -0700 (PDT)
+From:   Jia-Ju Bai <baijiaju1990@gmail.com>
+To:     kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org,
+        vaibhavgupta40@gmail.com, christophe.jaillet@wanadoo.fr
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Jia-Ju Bai <baijiaju1990@gmail.com>
+Subject: [PATCH] rtl8180: avoid accessing the data mapped to streaming DMA
+Date:   Mon, 19 Oct 2020 10:54:20 +0800
+Message-Id: <20201019025420.3789-1-baijiaju1990@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-There's no possibility of including it on 5.10 changes? Seems like a
-trivial patch
-Or did the merge window pass already? I'm not aware of it by now.
+In rtl8180_tx(), skb->data is mapped to streaming DMA on line 476:
+  mapping = dma_map_single(..., skb->data, ...);
 
-Thanks though. Very much appreciated.
+On line 459, skb->data is assigned to hdr after cast:
+  struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
 
-El dom., 18 oct. 2020 a las 6:11, Kalle Valo (<kvalo@codeaurora.org>) escri=
-bi=C3=B3:
->
-> David Rubio <david.alejandro.rubio@gmail.com> writes:
->
-> >> https://lore.kernel.org/linux-wireless/c0c336d806584361992d4b52665fbb8=
-2@realtek.com/
-> >
-> > I tested that patch. Works fine for me for wifi, but I can't test BT
-> > to be sure it works 100%. Most people will be fine with just wifi
-> > though, I guess, considering the objections were mostly about BT (I
-> > understood -from the objection- that connecting to a AP when having a
-> > BT device paired breaks?)
->
-> If the patch helps people to get wifi working we should take it, BT coex
-> issues can be fixed in followup patches. IIRC there has been multiple
-> reports about this so I'm leaning towards taking the patch to v5.11.
->
-> I changed the patch to New state and my plan is to take it to
-> wireless-drivers-next once the tree opens:
->
-> https://patchwork.kernel.org/project/linux-wireless/patch/20200805084559.=
-30092-1-kai.heng.feng@canonical.com/
->
-> --
-> https://patchwork.kernel.org/project/linux-wireless/list/
->
-> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpa=
-tches
+Then hdr->seq_ctrl is accessed on lines 540 and 541:
+  hdr->seq_ctrl &= cpu_to_le16(IEEE80211_SCTL_FRAG);
+  hdr->seq_ctrl |= cpu_to_le16(priv->seqno);
+
+These DMA accesses may cause data inconsistency between CPU and hardwre.
+
+To fix this problem, hdr->seq_ctrl is accessed before the DMA mapping.
+
+Signed-off-by: Jia-Ju Bai <baijiaju1990@gmail.com>
+---
+ drivers/net/wireless/realtek/rtl818x/rtl8180/dev.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/net/wireless/realtek/rtl818x/rtl8180/dev.c b/drivers/net/wireless/realtek/rtl818x/rtl8180/dev.c
+index 2477e18c7cae..cc73014aa5f3 100644
+--- a/drivers/net/wireless/realtek/rtl818x/rtl8180/dev.c
++++ b/drivers/net/wireless/realtek/rtl818x/rtl8180/dev.c
+@@ -473,6 +473,13 @@ static void rtl8180_tx(struct ieee80211_hw *dev,
+ 	prio = skb_get_queue_mapping(skb);
+ 	ring = &priv->tx_ring[prio];
+ 
++	if (info->flags & IEEE80211_TX_CTL_ASSIGN_SEQ) {
++		if (info->flags & IEEE80211_TX_CTL_FIRST_FRAGMENT)
++			priv->seqno += 0x10;
++		hdr->seq_ctrl &= cpu_to_le16(IEEE80211_SCTL_FRAG);
++		hdr->seq_ctrl |= cpu_to_le16(priv->seqno);
++	}
++
+ 	mapping = dma_map_single(&priv->pdev->dev, skb->data, skb->len,
+ 				 DMA_TO_DEVICE);
+ 
+@@ -534,13 +541,6 @@ static void rtl8180_tx(struct ieee80211_hw *dev,
+ 
+ 	spin_lock_irqsave(&priv->lock, flags);
+ 
+-	if (info->flags & IEEE80211_TX_CTL_ASSIGN_SEQ) {
+-		if (info->flags & IEEE80211_TX_CTL_FIRST_FRAGMENT)
+-			priv->seqno += 0x10;
+-		hdr->seq_ctrl &= cpu_to_le16(IEEE80211_SCTL_FRAG);
+-		hdr->seq_ctrl |= cpu_to_le16(priv->seqno);
+-	}
+-
+ 	idx = (ring->idx + skb_queue_len(&ring->queue)) % ring->entries;
+ 	entry = &ring->desc[idx];
+ 
+-- 
+2.17.1
+
