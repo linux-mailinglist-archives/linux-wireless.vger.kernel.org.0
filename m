@@ -2,112 +2,111 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 62A54292C4A
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 Oct 2020 19:05:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 97C22292C5C
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 Oct 2020 19:10:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730926AbgJSRFm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 19 Oct 2020 13:05:42 -0400
-Received: from mail-eopbgr100119.outbound.protection.outlook.com ([40.107.10.119]:53248
-        "EHLO GBR01-LO2-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1730635AbgJSRFm (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 19 Oct 2020 13:05:42 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=g/31AFP7StXScjcvG8+66SQ7s3y/TE/S01A+ajIrlxljohFj6IFT7SnfozNDrDvGzt0n2cGwYag+PsQT4ohL7pTU03XzCP5quDoso4oSuTmEEVY/YqvVNP7u4ZtkfjHDGuBZmtdkb+7ZwP017oaFcTWqH5De9gdwxxA8IZRzxNy6/w000tMSY+zWYIy5QboCBCnMhDxOuG4O2W2vkv7eeJhmai3TKbfYOQinxWJKCm+uMp3DrUdX8BVF39gZ1Ec29STXX/u4l0Wk4VfuGCvNueZ5IPWkyAgFTZnI0yhHGaIvJdbSo4aCK5I8pgvzfoivcJywz+VdTY8p/XGIZb7mYg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=HTtUG9eU5ogrq5BAeiKJyErNdUX0Nu8tERjDc40yu/w=;
- b=FIRBFUkl4EX2+WuskeM9eoYeO+zroFbRZ7m1l38cTY5giZbhSYLNuT5PUqU2e1OQiIj4eZ0YI7fEQfnr4+fCcjeafEsu5NDYfq7KOpoiDKrC9+6QCiXO/ggJXB8EZOWhrr6XpXKXHAqnEPNi3VMYLBgQSsAp3Esvriq0gR+aj6YeLWOrAl0QpB0UYjp9GQRVcCwRwtu06npkx5CAIXJRe+7JklhEb2Xp2YOE/b019e5H3c2OUXGCcyUQ+MAZdRB+guLu+uIQMBgLjH4mHFb4ps/iGaCeHS+jv//Ic4CV19Dm/YMb5QHC09XGuLoLgfwu0vqRP1VcdUbmSygm2GM5Mg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=purelifi.com; dmarc=pass action=none header.from=purelifi.com;
- dkim=pass header.d=purelifi.com; arc=none
+        id S1730552AbgJSRKy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 19 Oct 2020 13:10:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38998 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730186AbgJSRKx (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 19 Oct 2020 13:10:53 -0400
+Received: from mail-ot1-x342.google.com (mail-ot1-x342.google.com [IPv6:2607:f8b0:4864:20::342])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5419C0613CE
+        for <linux-wireless@vger.kernel.org>; Mon, 19 Oct 2020 10:10:53 -0700 (PDT)
+Received: by mail-ot1-x342.google.com with SMTP id n11so319594ota.2
+        for <linux-wireless@vger.kernel.org>; Mon, 19 Oct 2020 10:10:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=purevlc.onmicrosoft.com; s=selector2-purevlc-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=HTtUG9eU5ogrq5BAeiKJyErNdUX0Nu8tERjDc40yu/w=;
- b=RoczbaYAL9ZioNi/egnRCFBYJTuutDM8s9QDNcUZGad3I535CYhVDDfvV4vdwfa4XnqCUatWnw4msScIdoV2ZRMhn1PZB+uCsTkpzPEs7tagjXGWddODJWe4jNlL1zBO46y8cmFkItjAtmLM4OUFv7L2Wa6KK3q3pdvi9aI5Sg4=
-Received: from LOYP265MB1918.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:ef::9) by
- LOYP265MB2159.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:117::11) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.3477.21; Mon, 19 Oct 2020 17:05:39 +0000
-Received: from LOYP265MB1918.GBRP265.PROD.OUTLOOK.COM
- ([fe80::b8d7:c2a7:cbbd:6c2b]) by LOYP265MB1918.GBRP265.PROD.OUTLOOK.COM
- ([fe80::b8d7:c2a7:cbbd:6c2b%7]) with mapi id 15.20.3477.028; Mon, 19 Oct 2020
- 17:05:39 +0000
-From:   Srinivasan Raju <srini.raju@purelifi.com>
-To:     Joe Perches <joe@perches.com>,
-        Krishna Chaitanya <chaitanya.mgit@gmail.com>
-CC:     Mostafa Afgani <mostafa.afgani@purelifi.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        Rob Herring <robh@kernel.org>,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-        open list <linux-kernel@vger.kernel.org>,
-        "open list:NETWORKING DRIVERS (WIRELESS)" 
-        <linux-wireless@vger.kernel.org>,
-        "open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>
-Subject: Re: [PATCH] [v6] wireless: Initial driver submission for pureLiFi STA
- devices
-Thread-Topic: [PATCH] [v6] wireless: Initial driver submission for pureLiFi
- STA devices
-Thread-Index: AQHWpfNnC69OUf5kyEqGJu+7PrU+76mfGBIAgAAIROSAAATrgIAAAmDX
-Date:   Mon, 19 Oct 2020 17:05:39 +0000
-Message-ID: <LOYP265MB1918EC2D808645CD0675A209E01E0@LOYP265MB1918.GBRP265.PROD.OUTLOOK.COM>
-References: <20201019031744.17916-1-srini.raju@purelifi.com>
-         <20201019083914.10932-1-srini.raju@purelifi.com>
-        ,<CABPxzYJaB5_zZshs3JCnPDgUZQZc+XRN+DuE3BjGjJKsiJh0uA@mail.gmail.com>
-         <LOYP265MB1918B212C618FF60333BFD85E01E0@LOYP265MB1918.GBRP265.PROD.OUTLOOK.COM>,<b92c72c591e6657ebb7f1984959607b3949ef58a.camel@perches.com>
-In-Reply-To: <b92c72c591e6657ebb7f1984959607b3949ef58a.camel@perches.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: perches.com; dkim=none (message not signed)
- header.d=none;perches.com; dmarc=none action=none header.from=purelifi.com;
-x-originating-ip: [103.8.116.148]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: f490258d-2054-478b-d755-08d874513449
-x-ms-traffictypediagnostic: LOYP265MB2159:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <LOYP265MB215937625505C045DD601B9BE01E0@LOYP265MB2159.GBRP265.PROD.OUTLOOK.COM>
-x-ms-oob-tlc-oobclassifiers: OLM:6108;
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: handP74GqXYClccJKo6D5N3938jG5qJtPFzePUK2VDWk49HFYerS+5yWJ8AMbRlhl2lPWLIAFOG0TbRN1n84WI0NrotAc8e/oqKaXg1RmeHXm4hKlXNUbBW2qUpQFe5kEC37+IIlxZaRw0y5OxZH4IQBqy0jj6J67jdqNllU3Si85BbhtPA6RT8/SH60DO/EbrTVDS/a2O+o8fF293YIeCFlp5j3neqBU+PHIoUYo+yc5cHMVg57jG8VsWNZb6aWMtk6rzAS/sbRn3QcAAQYOBVcUXUIrem+0ZGb/NU/oN5stKp5e3u3JVuHauZSqzqNCzfHy+E+LSz7n7ckweCTrA==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOYP265MB1918.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(6029001)(4636009)(39840400004)(136003)(366004)(396003)(376002)(346002)(4326008)(8936002)(478600001)(558084003)(71200400001)(2906002)(7416002)(86362001)(9686003)(5660300002)(64756008)(316002)(26005)(52536014)(54906003)(110136005)(66946007)(7696005)(55016002)(83380400001)(33656002)(186003)(8676002)(66446008)(91956017)(6506007)(66556008)(76116006)(66476007);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata: pJRU94IbuMBh6KK4ig7cyEAd2FcRKiaVC9uULSZun7j3LYoEBExM/ajAkftFfEMoj6UZTKbmWeJ232JD6rKHKL+hdeFrW/njNH7fwXjLcejy3J/s6MEXQarYkS7JO0EfXKMuxs9xGMtcO+mhRYqYHIuyN1QQ67dNZEEMuyZYGp3NjiItFs0wUCepXw0C1L4SN/oedZwV/FctCcdvmIBfNW03R9Bo5WwMoEe0jQtZ0R5S4iwKXSoWT+ftPvEV1kEKx/riYEjcIXfDvs9y8R7AIDVy8qJjNcXMYfX9E+yypA5uzbGJMrVBlNbxWns2sOky+ZC1DDlsXJqm6mVA9lk+GTS0rCE643AVnx7hnFAdr+A+6ld2h1j4nqmORcgPUVMYYToW2+G2kiquJHUWP10E/DxCtGTY/kDMcvNdhuGbu53ZNKXLv6vUoaMY8XAIRlBK8PTb16LNuOVScpsxYtaPuQaH+hE6TWM71u5PHCtVMx379drckHeDJGvuqEwdBaa8j7QKQG1CxuMGLwbMbvhV+tA7tOA0RAn9+Nj+EZA/GdmkrrKO2XVjGuCbj0I1x9JRaWb36EU36hOjJ/YyP29eAjQZu37y0x7aneHh+xKiguzeGXVTF6jg43mBOFxXczA1SYd53ImuvDeyRnsdJSTYMw==
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+        d=gmail.com; s=20161025;
+        h=sender:subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=XyamGGaXsZDlNB92R9VjYDZIh3yUYpW5Ta4JXSrgQRo=;
+        b=shQzY1A6ZUcyeejubmhSwuLkL8HFD9XVNcLkfRg2d7SQzmDnclpWBJqFs8pZwo7TR0
+         rxi+U7D4tfriemnUbioybR+G/+nNxzm9r7wsdpmC9lwTbURqN1Cm9LFd+/n9VQMJwrFE
+         xAMjHKN7hfjhzn/fVtqk48mphlLAOzcHaTYm+R402IPd4hWfHeVv2n/CbKl0ZFBT2co3
+         YNVksuov502Kbl5Ib1y0p2D22pee6fWgijFQpog3eH8WzitpR2MB/LwSVgry0eKZdrBO
+         MjERZ02t0TCGf4qaHJQjFu/ozZxJMjfMItslBje2etbDh+6LIiuG2BiQi4dAd7nMtTFh
+         cCfw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
+         :date:user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=XyamGGaXsZDlNB92R9VjYDZIh3yUYpW5Ta4JXSrgQRo=;
+        b=BhLEE6niY/JM7JWnI6muOFBMUeZGZThiHkbQl4n62ivh9yveRMI/YPssEWr93w/ZsO
+         7Rcx+RALo5aGaHNr3nYAdq/DNnAbwboiG9Z2spd90cnXacmiSv4IPteWSeaVVYO1s/Mc
+         5Z2eAuwmJEcO71Z5Oq3SjBVWTb+Q9PPHG6oH6SkTuuDF/AUsXfZWemqnabnZVlCcIAHc
+         B1OGPQ/Ua2dTQUfONyGq4CCfZJ/bv2QPCL+p2cqLYQhI8g7RWbcD3UUS8Wg+ull+LMCt
+         +4p+cfdyCf5VryyggLFiXEeX4yJS1A9+o+Lw/AfGJL9lxox6PeBjeFKTHNkHmv/fERHj
+         YmQQ==
+X-Gm-Message-State: AOAM533+3+OkX9DXcrRwNjIv5F92aJ76ylGJBI9kMJFW7xEQgYMiMIhl
+        woDUACdwkCSm6S7RLjfVvOM=
+X-Google-Smtp-Source: ABdhPJzF1uT3IDr1m32V4wco09z081L1IjmUvtbgIh8Vlq9GJ5PXzQyguhZU4zznM4JoMqFbWuGdqg==
+X-Received: by 2002:a05:6830:31a8:: with SMTP id q8mr674077ots.15.1603127453007;
+        Mon, 19 Oct 2020 10:10:53 -0700 (PDT)
+Received: from localhost.localdomain (cpe-24-31-245-230.kc.res.rr.com. [24.31.245.230])
+        by smtp.gmail.com with ESMTPSA id o8sm122135oog.47.2020.10.19.10.10.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 19 Oct 2020 10:10:52 -0700 (PDT)
+Sender: Larry Finger <larry.finger@gmail.com>
+Subject: Re: rtw88 / rtl_8821ce: rfe 2 is not supported
+To:     Kalle Valo <kvalo@codeaurora.org>,
+        David Rubio <david.alejandro.rubio@gmail.com>
+Cc:     Andy Huang <tehuang@realtek.com>,
+        Brian Norris <briannorris@chromium.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Yan-Hsuan Chuang <tony0620emma@gmail.com>,
+        Kai-Heng Feng <kai.heng.feng@canonical.com>
+References: <CAO6ttSmiXPnA9z_31CV2rS=DO0c48jSJGBAkOgWiD-GOG73Ffw@mail.gmail.com>
+ <CA+ASDXO75rYv29YvK=0zUkB494DsA_WA+n3UttRiko2awzUkOw@mail.gmail.com>
+ <362f154dff1b4d6f88503af813eae406@realtek.com>
+ <1f33cbf8-ccf9-354e-a0ac-0911c6acded1@lwfinger.net>
+ <CAO6ttS=ABWLQbgRxfbxsqNwr9bkEDJm6dBbvaZAM94GKYP+txw@mail.gmail.com>
+ <87h7qrq4p5.fsf@tynnyri.adurom.net>
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+Message-ID: <87bc4553-7f17-0c23-50c8-2b413de9f7b8@lwfinger.net>
+Date:   Mon, 19 Oct 2020 12:10:50 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.3.2
 MIME-Version: 1.0
-X-OriginatorOrg: purelifi.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: LOYP265MB1918.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: f490258d-2054-478b-d755-08d874513449
-X-MS-Exchange-CrossTenant-originalarrivaltime: 19 Oct 2020 17:05:39.0118
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 5cf4eba2-7b8f-4236-bed4-a2ac41f1a6dc
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 09hl95Sn1gPXZC2TTua2uUZxI3oPZv04i92VToY2E/Zezd8rYj9Ny5qNwtfxbICJHovffaqSrdGkUevhEwPYjQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LOYP265MB2159
+In-Reply-To: <87h7qrq4p5.fsf@tynnyri.adurom.net>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-=0A=
-> When you do, please start adding=0A=
-> changelog information below the=0A=
-> ---=0A=
-> line to your patches.=0A=
->=0A=
-> It's quite a chore to figure out=0A=
-> what changed between revisions.=0A=
-=0A=
-Ok, will add version logs to future revisions.=0A=
-=0A=
-Thanks=0A=
-Srini=0A=
-=0A=
+On 10/18/20 4:11 AM, Kalle Valo wrote:
+> David Rubio <david.alejandro.rubio@gmail.com> writes:
+> 
+>>> https://lore.kernel.org/linux-wireless/c0c336d806584361992d4b52665fbb82@realtek.com/
+>>
+>> I tested that patch. Works fine for me for wifi, but I can't test BT
+>> to be sure it works 100%. Most people will be fine with just wifi
+>> though, I guess, considering the objections were mostly about BT (I
+>> understood -from the objection- that connecting to a AP when having a
+>> BT device paired breaks?)
+> 
+> If the patch helps people to get wifi working we should take it, BT coex
+> issues can be fixed in followup patches. IIRC there has been multiple
+> reports about this so I'm leaning towards taking the patch to v5.11.
+> 
+> I changed the patch to New state and my plan is to take it to
+> wireless-drivers-next once the tree opens:
+> 
+> https://patchwork.kernel.org/project/linux-wireless/patch/20200805084559.30092-1-kai.heng.feng@canonical.com/
+
+Kalle,
+
+I had generated and applied that trivial patch to my GitHub repo with the rtw88 
+drivers a couple of months ago. Yes, it does get the user past the 
+initialization check; however, wifi performance is abysmal according the the 
+users of the repo. It seems that the antenna selection of rfe 2 models affects 
+wifi as well as BT. Applying this patch will get wifi running; however, the 
+users will need to be within 1 m of the AP for it to work! I do not have an 
+RTL8821CE chip, thus I have not tested myself.
+
+Larry
+
