@@ -2,31 +2,31 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3515C293313
-	for <lists+linux-wireless@lfdr.de>; Tue, 20 Oct 2020 04:29:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F2965293317
+	for <lists+linux-wireless@lfdr.de>; Tue, 20 Oct 2020 04:30:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390598AbgJTC36 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 19 Oct 2020 22:29:58 -0400
-Received: from mail-eopbgr750098.outbound.protection.outlook.com ([40.107.75.98]:53075
+        id S2390608AbgJTCaL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 19 Oct 2020 22:30:11 -0400
+Received: from mail-eopbgr750093.outbound.protection.outlook.com ([40.107.75.93]:23713
         "EHLO NAM02-BL2-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1730463AbgJTC35 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 19 Oct 2020 22:29:57 -0400
+        id S2390606AbgJTCaL (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 19 Oct 2020 22:30:11 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=jKP+T/4pEEHYXX3kROsT+MQYFG/jU7I79Y82g5EVThS7S4SggTwsTnPTixxYHBYPPfFes52O83g/2QEQrKu/pca7kjgOD9OMbKnA2ExA8Bg7ClpNtCQjSGY5MvywDQEAgXXtQGdg7UtdxQEAGRWx0mUlQR2ebjh0SWi1peTCsNK1yfSBycYfEqZIRrhymxvn0POjtc3MXXbB5ZJr4kX6JdtP1n7qMb/pgWsG46ekLEM7UBOdxTzOXH2Qv/Hl1kCvSUggpHv7GJiu7GthgZpuwp0/mCQKcnMezkEFCLA3xPi5ucM6Yk03hw67Qb3abOfrO4LSlJ3b662OdDsSlBXgJQ==
+ b=DJqa/pnSlgHTmyPxZS9pG7CoX7q+TV1hB720shxdR7eVAWe/PAcXCybYI+Rc6qMORHzYOqKEpZ+/c4F7od9vZiJXlDYGv9PMfwLWCBgumRyulDkMBVFn+l+/FjUoMRpSUk7VQnCv1Y77iBHSIwNVV1mMGeTPF9+wCiYeqm8k5hpRBSsDDNizqxxH+InG+p8MWfZZGocobRe3G2SKqhOOcnPfMR8Z8NkAm38Sxnf6xqebjS6Y9sWBWV4gYH3HAQDbRs9woxXV7Xu3QX4uNb0LXuMSvog7hxuCchMjqTKqSQ9APqfporvKyO8r2OZzmmarUelJmuCiVD5DoIy55yjraw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=h1BBtAba9PZjemipg8kZygGw6Pm0+1dzcrra9YM5htU=;
- b=A6n0DAKea8THR0WI2TD6UQgnwgmczoWWZlMO70VMxK4WhwLiVmsO3kZp1lo1WDUSUP8Sh+eaHjX75CX8AjC9ECPPxQwW48eSwomBuJ62MKzCL57JvJBxgbRYJiDqxIw1QXLkJxmYJB0Yl64iwN0NGJF3e1YGD8yB11PJMfRM0lj4kfCsowE+sKKcV+7V/FCzQWadaWRKQcPVRUxpgOh95q9Bc5UbIRiyluEI2ZiJw+P0La5MwMxqdm03+79Ggfme2Ui/nhhu6ZiMpOvtuCDbziM0TsiCVi2mAlxs11xFqk706+y2ySR/2Vm0L16luDaRnAuywjqs77nfPu0+6ncWtQ==
+ bh=tTsXrwW/NYTrBFtyya6O68hbSrBLAx9bJdVZNvE+IP8=;
+ b=Zm4VGgOfey7ZUcCa2QQUZ3di7oO7CoPMz/Gf3UJxGEwQfp8CrRDAvXz3G8z4VWs9F7hZ4wmDmxlrv5QsrUP/3jrUyvicI04LYrTenb77lKCPQMi+t8ho8fDZgpNpcog5ile0J69ga5vuThCjnJyOsTGWUG5Cx335ZprOqFJdpBOs9BhG3pqyvx0KVGdypAWgHJ2QVSuwUn5U9mJG8sJRD3FLndow7x2eRRNbgAcY0vJDE7IJGxMzZM/SifyU4EcRp1aP9oPPd+DJb0D3yMkrEWqZt48/46IT+CJF7tJLUxJc86w1FNSXFh4q4x2Dk1B+XhDx6AWzaUXaSN/Eb+2huw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=cypress.com; dmarc=pass action=none header.from=cypress.com;
  dkim=pass header.d=cypress.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cypress.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=h1BBtAba9PZjemipg8kZygGw6Pm0+1dzcrra9YM5htU=;
- b=D+8xIijhyTqT0tnom7pOjKnYpR5tH/VJrEpGcqBN/t3LQ1Coyt23DbB6TZYaCSTOBA81aNhpCLBtES/epeqzjWj8JAycLjE3CnBZEKAmJ7rLGoKoSexXxI6C7dKCuyMGaAxtoR9vW/BtyTdw8axw336Wet65sfHlGdwz2xhhkpc=
+ bh=tTsXrwW/NYTrBFtyya6O68hbSrBLAx9bJdVZNvE+IP8=;
+ b=oPqUH70o4RMMzqEC+2lQSJFURSiqLBURzFy2aEvysIEdgIl3e8Pgv0KHrLT5o//OVhszfxyM5CYqgMDj2EpRaztVzNefRrBO4gltGSM5AQJdS9RpjS31KMBWYDe3XZUK/STjoZFOlXajEcboRgB9duO89Emu4u7/XshCM0Kmxls=
 Authentication-Results: vger.kernel.org; dkim=none (message not signed)
  header.d=none;vger.kernel.org; dmarc=none action=none
  header.from=cypress.com;
@@ -34,11 +34,11 @@ Received: from BN8PR06MB5889.namprd06.prod.outlook.com (2603:10b6:408:c2::25)
  by BN6PR06MB3251.namprd06.prod.outlook.com (2603:10b6:405:3e::30) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3455.23; Tue, 20 Oct
- 2020 02:29:45 +0000
+ 2020 02:30:01 +0000
 Received: from BN8PR06MB5889.namprd06.prod.outlook.com
  ([fe80::59fc:a93d:7f49:e843]) by BN8PR06MB5889.namprd06.prod.outlook.com
  ([fe80::59fc:a93d:7f49:e843%5]) with mapi id 15.20.3477.028; Tue, 20 Oct 2020
- 02:29:45 +0000
+ 02:30:01 +0000
 From:   Wright Feng <wright.feng@cypress.com>
 To:     linux-wireless@vger.kernel.org,
         Arend van Spriel <arend.vanspriel@broadcom.com>,
@@ -47,11 +47,10 @@ Cc:     wright.feng@cypress.com, brcm80211-dev-list@broadcom.com,
         brcm80211-dev-list@cypress.com,
         Franky Lin <franky.lin@broadcom.com>,
         Hante Meuleman <hante.meuleman@broadcom.com>,
-        Jia-Shyr Chuang <joseph.chuang@cypress.com>,
         Ting-Ying Li <tingying.li@cypress.com>
-Subject: [PATCH v2 3/4] brcmfmac: support the forwarding packet
-Date:   Mon, 19 Oct 2020 21:28:11 -0500
-Message-Id: <20201020022812.37064-4-wright.feng@cypress.com>
+Subject: [PATCH v2 4/4] brcmfmac: add a variable for packet forwarding condition
+Date:   Mon, 19 Oct 2020 21:28:12 -0500
+Message-Id: <20201020022812.37064-5-wright.feng@cypress.com>
 X-Mailer: git-send-email 2.25.0
 In-Reply-To: <20201020022812.37064-1-wright.feng@cypress.com>
 References: <20201020022812.37064-1-wright.feng@cypress.com>
@@ -63,307 +62,112 @@ X-ClientProxiedBy: MN2PR15CA0027.namprd15.prod.outlook.com
  (2603:10b6:408:c2::25)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from aremote06.aus.cypress.com (157.95.12.33) by MN2PR15CA0027.namprd15.prod.outlook.com (2603:10b6:208:1b4::40) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3477.21 via Frontend Transport; Tue, 20 Oct 2020 02:29:43 +0000
+Received: from aremote06.aus.cypress.com (157.95.12.33) by MN2PR15CA0027.namprd15.prod.outlook.com (2603:10b6:208:1b4::40) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3477.21 via Frontend Transport; Tue, 20 Oct 2020 02:29:59 +0000
 X-MS-PublicTrafficType: Email
 X-MS-Office365-Filtering-HT: Tenant
-X-MS-Office365-Filtering-Correlation-Id: 54df91b1-59e2-44a3-3a56-08d874a001b7
+X-MS-Office365-Filtering-Correlation-Id: 502b9895-f0b5-4c51-27d6-08d874a00b20
 X-MS-TrafficTypeDiagnostic: BN6PR06MB3251:
 X-LD-Processed: 011addfc-2c09-450d-8938-e0bbc2dd2376,ExtAddr,ExtFwd
 X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <BN6PR06MB3251669E4C7C30FC741A80D9FB1F0@BN6PR06MB3251.namprd06.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:7691;
+X-Microsoft-Antispam-PRVS: <BN6PR06MB3251FE53758C70EEBDA3A4C5FB1F0@BN6PR06MB3251.namprd06.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:352;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: XsiJPe5Z0SMXeykEXHOz0gUinZbzwK3K8J9H6miCuUFNWh1BDJyO9UhU8l8E+Yl6qyI1b+cFTRQX2d1btkvsdPmAQLysn7zPysiN5MVeIiq5Xl/EGPqIVkFsa0MK8tIu9RPL1COGqTOOp5aJnri/7y3Si2bO9XLc1XvYaEEuM37wXwgOK556f3FEiL1ZK9c2xHsJQognAxi3EAg4+vgL5smwL7emjhTDEhg51Aa7L3mcAu+L4btx/K2lYZ+zYcx8HynVq8Q+89uQ7Ojr3h1gnejRcRe2m9uq2boepjPFNDGsKnXE1emOk/JzuvmGoYKSNuF+st8ixgNHKAAOrCQwoA==
+X-Microsoft-Antispam-Message-Info: OCaBPiy9fg9rYshnnpSuwWM+essvwE3za2u0k1RXv8sHETEkz41TPFFggxCdulVYzR6eNaMrLooRnt6VsSyf9VyJ8XPYy3VtEXSAEM4P/+zpYSmlNyESaLZeqEO1mMjYXecDeucXz+t80m8bQ6TcZm6h/4DH1lO152OeOYNuNKAVLdF5kKmkD/H4hO2d+dJ7UvciRj/sSqQ5mDNCFAqts06/O/vMIQImYHgEEmHMTUyjBFLF3X/ZyJ0J0/7qezf0MR2cVRC/NPdkZWHDQt175jkNlxHHOcC4IgKrwsVCNbi7hBV/iev85dbgNnCHMFU+AHEMrzk9bRDeSgF1uhbboQ==
 X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN8PR06MB5889.namprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(39860400002)(376002)(346002)(136003)(396003)(366004)(66946007)(66556008)(66476007)(7696005)(52116002)(107886003)(6486002)(8676002)(186003)(16526019)(1076003)(316002)(44832011)(6666004)(478600001)(26005)(5660300002)(2906002)(86362001)(6636002)(54906003)(83380400001)(36756003)(8936002)(956004)(110136005)(2616005)(4326008);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData: McKlRWz/OWsUraK76Gq4337hnXXdspc8EZtuiDa+c35e9rAIm8ur+p6PTQEW6pikXknlzfF0hP857/JRxCNyU9UFSc+jxmnkGiq4THV+SBM6IIzrc5xMlI+uvPOVdReXdUY05vihYTDHM55NowGC2FmT4MkdIjXEYxvZKI2L+TB+Haei2W8CxBFYGuiyI9BtZYMZpQahP6k0ItS0nR4vF+uau+RrzDsXgJ6e8FDHjTXKncTw2JVQuwovqKp0cSyo0AzbZkhCOmB2ZtwA8y5hPrznEftx2PmqGQB2tlE9nNT7kW4fEeo7VCGElf5ta6AKB3U8bhiGoCXltb3myXDmWrkZA0BiOPeQPkZUsh3zbIEz+ls4pakm64abxOlHEvH7GYrlGaaCo5Fi9UYFugp0IY9P47c9T1FOBvK662gdV3VwAEF1ryx5OMi4M6b2jkzboVV/wx3D2+pXwj8ZvjO6vv9hAUOs0O02fIo2hTj+wqmTGLkbWVnY1hkq3LxYkuyqbMXUblsYzEZ7akPN0V9JPnm83e6fzoZNdGbbTF7MhgxgIvZQrAocankVndKiq/EPlWVYdczv4qiPmSnpnewYSBVrU5wLXKbmm6vP4psZwgZWERZjRC4JsQfqhhpLmlbON4p01fj/OBI3D/WjYFQxhA==
+X-MS-Exchange-AntiSpam-MessageData: 3xsyAJpo4zaLAoQ++oJy5KrU05cpnFh6l9KZeTKG5eQeBmsaqmfAriyqLFTqqNe4qeYRRF+BLON5YmlrHAj4x9mTJ59FoMXNKP8vXkR+8OdKd+/QBMS7FICEvokNAVpp9IXtBelQmJ9FQA5GMcoLYlZKlmiz1uh2TiPbGHI1wy2XIJM6OxF+t8SHDPjBZvNzfPLmvMOPkxXBjJsib8yYOGIhytYXHFDyqoRfu3Iu2jpJSlXZXaXdRTbY6qsVR5E2XESrt7y26kevQ2ZCbNn5je+KT5lnZeYp03CjYwTsIDkIT28F4Bq5AjQTbHOwX0U+Va6dgu3n8VYlMK+aYY5ghzsbiHmLL/cldjpQwpGR2lbv16W6/Wa/g7jp6Pl+Afd7ph74XyZIcayFegVB8uQfyKcPLQ87RJ286Efq6MXPj6zPdYKCF7BMtFogW0isV+rt1VnAdWEPkc7+yFsXTYsBYF99GWLocxJukYhnvrh30CIubx+DLTIWGGawDy7fOr8J6gpXjFoFiob0wfJwkUg6K3LZmnzPpbAYBtiZgcZ0e4JKOWzV2/dL13rcWZgAFA93xaCjIKj1hxz+QNZsv1K+nEXqMUmfk25dJB69uq92s+NK98PNlBdiF5emvWsbS+d2A3Hw19PxWUnWb2zHH3h9eA==
 X-OriginatorOrg: cypress.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 54df91b1-59e2-44a3-3a56-08d874a001b7
+X-MS-Exchange-CrossTenant-Network-Message-Id: 502b9895-f0b5-4c51-27d6-08d874a00b20
 X-MS-Exchange-CrossTenant-AuthSource: BN8PR06MB5889.namprd06.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Oct 2020 02:29:44.9907
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Oct 2020 02:30:00.9407
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 011addfc-2c09-450d-8938-e0bbc2dd2376
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 8CGs8lRaOKrme6eXZE1mlGrd3OcSQOOXVwsucmHYsqWqWx0gu1sXL63XPvTN/v4gCfN/3MKjdi6Yn34gX86/8g==
+X-MS-Exchange-CrossTenant-UserPrincipalName: NhPoq0Q8tI+d8/8hg52ipKwuoijWpdS1ZjG4Dghu+276B4RNjFC59Hy9kj018mBgyBpfzzV03DvHKhK9UZdM/g==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN6PR06MB3251
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Jia-Shyr Chuang <joseph.chuang@cypress.com>
+From: Ting-Ying Li <tingying.li@cypress.com>
 
-Support packet forwarding mechanism for some special usages on PCIE,
-and observed that packet only send BE when pumping iperf with VI.
-we need to set priority before forwarding packet.
+When the "ap_isolate" function is not set by the host,
+host-based packet forwarding will be enabled if the packet
+forwarding mechanism is not offloaded to the lower layer.
 
-Signed-off-by: Jia-Shyr Chuang <joseph.chuang@cypress.com>
 Signed-off-by: Ting-Ying Li <tingying.li@cypress.com>
 Signed-off-by: Chi-hsien Lin <chi-hsien.lin@cypress.com>
 Signed-off-by: Wright Feng <wright.feng@cypress.com>
 ---
-v2: Fix sparse warning and remove the macro from the patch
+v4: Change conditional statements
 ---
- .../broadcom/brcm80211/brcmfmac/cfg80211.c    |  12 +-
- .../broadcom/brcm80211/brcmfmac/core.c        | 112 +++++++++++++++++-
- .../broadcom/brcm80211/brcmfmac/core.h        |  17 ++-
- .../broadcom/brcm80211/brcmfmac/msgbuf.c      |  31 ++++-
- 4 files changed, 166 insertions(+), 6 deletions(-)
+ .../broadcom/brcm80211/brcmfmac/cfg80211.c      | 17 +++++++++++++++--
+ .../wireless/broadcom/brcm80211/brcmfmac/core.h |  1 +
+ .../broadcom/brcm80211/brcmfmac/msgbuf.c        |  2 +-
+ 3 files changed, 17 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-index 2f24222eb59c..5e49ac3d82b9 100644
+index 5e49ac3d82b9..063cbb09d751 100644
 --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
 +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-@@ -611,7 +611,7 @@ struct wireless_dev *brcmf_ap_add_vif(struct wiphy *wiphy, const char *name,
- 	return ERR_PTR(err);
- }
- 
--static bool brcmf_is_apmode(struct brcmf_cfg80211_vif *vif)
-+bool brcmf_is_apmode(struct brcmf_cfg80211_vif *vif)
+@@ -5484,8 +5484,8 @@ brcmf_cfg80211_change_bss(struct wiphy *wiphy, struct net_device *dev,
+ 			  struct bss_parameters *params)
  {
- 	enum nl80211_iftype iftype;
+ 	struct brcmf_if *ifp;
+-	int ret = 0;
+-	u32 ap_isolate;
++	int ret = 0, result = 0;
++	u32 ap_isolate, val;
  
-@@ -4812,7 +4812,6 @@ brcmf_cfg80211_start_ap(struct wiphy *wiphy, struct net_device *ndev,
- 		err = -EINVAL;
- 		goto exit;
- 	}
--
- 	/* Interface specific setup */
- 	if (dev_role == NL80211_IFTYPE_AP) {
- 		if ((brcmf_feat_is_enabled(ifp, BRCMF_FEAT_MBSS)) && (!mbss))
-@@ -4892,7 +4891,6 @@ brcmf_cfg80211_start_ap(struct wiphy *wiphy, struct net_device *ndev,
- 				 err);
- 			goto exit;
- 		}
--
- 		brcmf_dbg(TRACE, "AP mode configuration complete\n");
- 	} else if (dev_role == NL80211_IFTYPE_P2P_GO) {
- 		err = brcmf_fil_iovar_int_set(ifp, "chanspec", chanspec);
-@@ -6086,6 +6084,14 @@ brcmf_notify_connect_status(struct brcmf_if *ifp,
+ 	brcmf_dbg(TRACE, "Enter\n");
+ 	ifp = netdev_priv(dev);
+@@ -5496,6 +5496,19 @@ brcmf_cfg80211_change_bss(struct wiphy *wiphy, struct net_device *dev,
+ 			brcmf_err("ap_isolate iovar failed: ret=%d\n", ret);
  	}
  
- 	if (brcmf_is_apmode(ifp->vif)) {
-+		if (e->event_code == BRCMF_E_ASSOC_IND ||
-+		    e->event_code == BRCMF_E_REASSOC_IND) {
-+			brcmf_findadd_sta(ifp, e->addr);
-+		} else if ((e->event_code == BRCMF_E_DISASSOC_IND) ||
-+				(e->event_code == BRCMF_E_DEAUTH_IND) ||
-+				(e->event_code == BRCMF_E_DEAUTH)) {
-+			brcmf_del_sta(ifp, e->addr);
-+		}
- 		err = brcmf_notify_connect_status_ap(cfg, ndev, e, data);
- 	} else if (brcmf_is_linkup(ifp->vif, e)) {
- 		brcmf_dbg(CONN, "Linkup\n");
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c
-index 043c9cbc6394..04c505482c5a 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c
-@@ -903,7 +903,9 @@ struct brcmf_if *brcmf_add_if(struct brcmf_pub *drvr, s32 bsscfgidx, s32 ifidx,
- 
- 	init_waitqueue_head(&ifp->pend_8021x_wait);
- 	spin_lock_init(&ifp->netif_stop_lock);
--
-+	spin_lock_init(&(ifp)->sta_list_lock);
-+	 /* Initialize STA info list */
-+	INIT_LIST_HEAD(&ifp->sta_list);
- 	if (mac_addr != NULL)
- 		memcpy(ifp->mac_addr, mac_addr, ETH_ALEN);
- 
-@@ -1560,3 +1562,111 @@ void __exit brcmf_core_exit(void)
- #endif
++	/* Get ap_isolate value from firmware to detemine whether fmac */
++	/* driver enables packet forwarding. */
++	result = brcmf_fil_iovar_int_get(ifp, "ap_isolate", &val);
++	if (result == 0 &&
++	    params->ap_isolate == 0 &&
++	    val == 1) {
++		ifp->fmac_pkt_fwd_en = true;
++	} else {
++		if (result < 0)
++			brcmf_err("get ap_isolate iovar failed: result=%d\n", result);
++		ifp->fmac_pkt_fwd_en = false;
++	}
++
+ 	return ret;
  }
  
-+/**
-+ * brcmf_find_sta() - Find STA with MAC address ea in an interface's STA list
-+ *
-+ * @ifp: interface control information
-+ * @ea:  mac address
-+ */
-+struct brcmf_sta *
-+brcmf_find_sta(struct brcmf_if *ifp, const u8 *ea)
-+{
-+	struct brcmf_sta  *sta;
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&(ifp)->sta_list_lock, (flags));
-+	list_for_each_entry(sta, &ifp->sta_list, list) {
-+		if (!memcmp(sta->ea.octet, ea, ETH_ALEN)) {
-+			brcmf_dbg(INFO, "Found STA: 0x%x 0x%x 0x%x 0x%x 0x%x 0x%x into sta list\n",
-+				  sta->ea.octet[0], sta->ea.octet[1],
-+				  sta->ea.octet[2], sta->ea.octet[3],
-+				  sta->ea.octet[4], sta->ea.octet[5]);
-+			spin_unlock_irqrestore(&(ifp)->sta_list_lock, (flags));
-+			return sta;
-+		}
-+	}
-+	spin_unlock_irqrestore(&(ifp)->sta_list_lock, (flags));
-+
-+	return (struct brcmf_sta *)NULL;
-+}
-+
-+/**
-+ * brcmf_add_sta() - Add STA into the interface's STA list.
-+ *
-+ * @ifp: interface control information
-+ * @ea:  mac address
-+ */
-+static struct brcmf_sta *
-+brcmf_add_sta(struct brcmf_if *ifp, const u8 *ea)
-+{
-+	struct brcmf_sta *sta;
-+	unsigned long flags;
-+
-+	sta =  kzalloc(sizeof(*sta), GFP_KERNEL);
-+	if (sta == (struct brcmf_sta *)NULL) {
-+		brcmf_err("Alloc failed\n");
-+		return (struct brcmf_sta *)NULL;
-+	}
-+	memcpy(sta->ea.octet, ea, ETH_ALEN);
-+	brcmf_dbg(INFO, "Add STA: 0x%x 0x%x 0x%x 0x%x 0x%x 0x%x into sta list\n",
-+		  sta->ea.octet[0], sta->ea.octet[1],
-+		  sta->ea.octet[2], sta->ea.octet[3],
-+		  sta->ea.octet[4], sta->ea.octet[5]);
-+
-+	/* link the sta and the dhd interface */
-+	sta->ifp = ifp;
-+	INIT_LIST_HEAD(&sta->list);
-+
-+	spin_lock_irqsave(&(ifp)->sta_list_lock, (flags));
-+
-+	list_add_tail(&sta->list, &ifp->sta_list);
-+
-+	spin_unlock_irqrestore(&(ifp)->sta_list_lock, (flags));
-+	return sta;
-+}
-+
-+/**
-+ * brcmf_del_sta() - Delete STA from the interface's STA list.
-+ *
-+ * @ifp: interface control information
-+ * @ea:  mac address
-+ */
-+void
-+brcmf_del_sta(struct brcmf_if *ifp, const u8 *ea)
-+{
-+	struct brcmf_sta *sta, *next;
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&(ifp)->sta_list_lock, (flags));
-+	list_for_each_entry_safe(sta, next, &ifp->sta_list, list) {
-+		if (!memcmp(sta->ea.octet, ea, ETH_ALEN)) {
-+			brcmf_dbg(INFO, "del STA: 0x%x 0x%x 0x%x 0x%x 0x%x 0x%x from sta list\n",
-+				  ea[0], ea[1], ea[2], ea[3],
-+				  ea[4], ea[5]);
-+			list_del(&sta->list);
-+			kfree(sta);
-+		}
-+	}
-+
-+	spin_unlock_irqrestore(&(ifp)->sta_list_lock, (flags));
-+}
-+
-+/**
-+ * brcmf_findadd_sta() - Add STA if it doesn't exist. Not reentrant.
-+ *
-+ * @ifp: interface control information
-+ * @ea:  mac address
-+ */
-+struct brcmf_sta*
-+brcmf_findadd_sta(struct brcmf_if *ifp, const u8 *ea)
-+{
-+	struct brcmf_sta *sta = NULL;
-+
-+	sta = brcmf_find_sta(ifp, ea);
-+
-+	if (!sta) {
-+		/* Add entry */
-+		sta = brcmf_add_sta(ifp, ea);
-+	}
-+	return sta;
-+}
 diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.h b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.h
-index 5767d665cee5..9ebafe0b2117 100644
+index 9ebafe0b2117..30b29053d133 100644
 --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.h
 +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.h
-@@ -193,6 +193,18 @@ struct brcmf_if {
- 	struct in6_addr ipv6_addr_tbl[NDOL_MAX_ENTRIES];
- 	u8 ipv6addr_idx;
+@@ -195,6 +195,7 @@ struct brcmf_if {
  	bool fwil_fwerr;
-+	struct list_head sta_list;              /* sll of associated stations */
-+	spinlock_t sta_list_lock;
-+};
-+
-+struct ether_addr {
-+	u8 octet[ETH_ALEN];
-+};
-+
-+struct brcmf_sta {
-+	void *ifp;             /* associated brcm_if */
-+	struct ether_addr ea;   /* stations ethernet mac address */
-+	struct list_head list;  /* link into brcmf_if::sta_list */
+ 	struct list_head sta_list;              /* sll of associated stations */
+ 	spinlock_t sta_list_lock;
++	bool fmac_pkt_fwd_en;
  };
  
- int brcmf_netdev_wait_pend8021x(struct brcmf_if *ifp);
-@@ -215,5 +227,8 @@ int brcmf_net_mon_attach(struct brcmf_if *ifp);
- void brcmf_net_setcarrier(struct brcmf_if *ifp, bool on);
- int __init brcmf_core_init(void);
- void __exit brcmf_core_exit(void);
--
-+void brcmf_del_sta(struct brcmf_if *ifp, const u8 *ea);
-+struct brcmf_sta *brcmf_find_sta(struct brcmf_if *ifp, const u8 *ea);
-+struct brcmf_sta *brcmf_findadd_sta(struct brcmf_if *ifp, const u8 *ea);
-+bool brcmf_is_apmode(struct brcmf_cfg80211_vif *vif);
- #endif /* BRCMFMAC_CORE_H */
+ struct ether_addr {
 diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/msgbuf.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/msgbuf.c
-index 7c8e08ee8f0f..b98cf5e2d0a8 100644
+index b98cf5e2d0a8..2d7e77097209 100644
 --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/msgbuf.c
 +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/msgbuf.c
-@@ -1141,7 +1141,8 @@ brcmf_msgbuf_process_rx_complete(struct brcmf_msgbuf *msgbuf, void *buf)
- {
- 	struct brcmf_pub *drvr = msgbuf->drvr;
- 	struct msgbuf_rx_complete *rx_complete;
--	struct sk_buff *skb;
-+	struct sk_buff *skb, *cpskb = NULL;
-+	struct ethhdr *eh;
- 	u16 data_offset;
- 	u16 buflen;
- 	u16 flags;
-@@ -1190,6 +1191,34 @@ brcmf_msgbuf_process_rx_complete(struct brcmf_msgbuf *msgbuf, void *buf)
- 		return;
+@@ -1192,7 +1192,7 @@ brcmf_msgbuf_process_rx_complete(struct brcmf_msgbuf *msgbuf, void *buf)
  	}
  
-+	eh = (struct ethhdr *)(skb->data);
-+	if (brcmf_is_apmode(ifp->vif)) {
-+		skb_set_network_header(skb, sizeof(struct ethhdr));
-+		skb->protocol = eh->h_proto;
-+		skb->priority = cfg80211_classify8021d(skb, NULL);
-+		if (is_unicast_ether_addr(eh->h_dest)) {
-+			if (brcmf_find_sta(ifp, eh->h_dest)) {
-+				 /* determine the priority */
-+				if (skb->priority == 0 || skb->priority > 7) {
-+					skb->priority =
-+						cfg80211_classify8021d(skb,
-+								       NULL);
-+				}
-+				brcmf_proto_tx_queue_data(ifp->drvr,
-+							  ifp->ifidx, skb);
-+				return;
-+			}
-+		} else {
-+			cpskb = pskb_copy(skb, GFP_ATOMIC);
-+			if (cpskb) {
-+				brcmf_proto_tx_queue_data(ifp->drvr,
-+							  ifp->ifidx,
-+							  cpskb);
-+			} else {
-+				brcmf_err("Unable to do skb copy\n");
-+			}
-+		}
-+	}
- 	skb->protocol = eth_type_trans(skb, ifp->ndev);
- 	brcmf_netif_rx(ifp, skb, false);
- }
+ 	eh = (struct ethhdr *)(skb->data);
+-	if (brcmf_is_apmode(ifp->vif)) {
++	if (brcmf_is_apmode(ifp->vif) && ifp->fmac_pkt_fwd_en) {
+ 		skb_set_network_header(skb, sizeof(struct ethhdr));
+ 		skb->protocol = eh->h_proto;
+ 		skb->priority = cfg80211_classify8021d(skb, NULL);
 -- 
 2.25.0
 
