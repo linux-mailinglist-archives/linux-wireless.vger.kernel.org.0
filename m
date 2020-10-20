@@ -2,91 +2,89 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 765B32941B1
-	for <lists+linux-wireless@lfdr.de>; Tue, 20 Oct 2020 19:47:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C584C294206
+	for <lists+linux-wireless@lfdr.de>; Tue, 20 Oct 2020 20:17:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391924AbgJTRrL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 20 Oct 2020 13:47:11 -0400
-Received: from mout.kundenserver.de ([212.227.17.24]:40211 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2391882AbgJTRrK (ORCPT
+        id S2387835AbgJTSRh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 20 Oct 2020 14:17:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47510 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387783AbgJTSRh (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 20 Oct 2020 13:47:10 -0400
-Received: from localhost.localdomain ([73.69.170.31]) by
- mrelayeu.kundenserver.de (mreue109 [212.227.15.183]) with ESMTPSA (Nemesis)
- id 1M9npT-1kXyen3DGP-005tzh; Tue, 20 Oct 2020 19:47:09 +0200
-From:   Remi Depommier <rde@setrix.com>
-To:     linux-wireless@vger.kernel.org
-Cc:     Remi Depommier <rde@setrix.com>
-Subject: [PATCH] brcmfmac: fix SDIO access for big-endian host
-Date:   Tue, 20 Oct 2020 13:46:39 -0400
-Message-Id: <20201020174639.28892-1-rde@setrix.com>
-X-Mailer: git-send-email 2.17.1
-X-Provags-ID: V03:K1:d5w5pNgT3fivxtAILjlMbDnau8lClpw4gZFM50s7PfsTyTT8sW3
- 9aeHGlQusM4BAxHT3ywE2jv/EPuXWabUb4jC1Ta02GHzVAI/FDcL+AjbOF91FfnCPA/MFut
- CP9nwpoRzu4rKen+CZJ5EuqlaJKgUhkuogWulAE52vbNZIKUIwwxl8si38JWFKQPDXNo1ap
- sFeUm6fbJHLoTRKAZL96A==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:HC75mzGFcNg=:YnedPG/r0cIMK83KUey++G
- WGp2pJaaQjBXhqG71OP4wBCiy1TGH6Kok3th2302PfzJInSP+tQxyRtHM+uNMaaFbNQMkrwHb
- g7PvG1XsICPLr3c19bEMN5536sz92Wsi2v/9nVH/Rm6lZPgavUwGA+PrhucHzDi36n+ppNLT7
- +eAd/Lxy7XJ8oVLtHk1EnZIk+j2Lf+mhdl5Nu+8o6AEITmI3ErJFHZTFFRNynJX36xLjC3FJt
- 4JX1+fUu5Og+3W6yOU+FDjEZ9USaiEgJ70BVUlu/NUbJpELtyF3F6vmrR6KnMrNR90c0pqnXy
- 1Ppke9erXUosviX2w0cBY106wJ+fAig7Zm8VHiLjTyGDRcosLv1nT3Wkd3stJ9SRGV2xau2SV
- AP30ITEWjcQ9SPcHlZSLrrM+16P2A3jtnQwY6koV9SlJy8sOHR1/vbsBDHBos
+        Tue, 20 Oct 2020 14:17:37 -0400
+Received: from mail-ej1-x641.google.com (mail-ej1-x641.google.com [IPv6:2a00:1450:4864:20::641])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3741C0613CE
+        for <linux-wireless@vger.kernel.org>; Tue, 20 Oct 2020 11:17:36 -0700 (PDT)
+Received: by mail-ej1-x641.google.com with SMTP id u8so4163268ejg.1
+        for <linux-wireless@vger.kernel.org>; Tue, 20 Oct 2020 11:17:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:mime-version:content-disposition;
+        bh=2c+ZSN2VXHs/jpHTZppiiq12wLhTe/sAfOHIeT4XN+E=;
+        b=J74FpGnz2az22YWvbeS2fpKIgRoef+7QFUHc2RwtC4Wa86zUs6bhWRvSGTOKf1jKQz
+         kGRJ0aojBHhuPrfpSPhAfQcsASuttccLdskq/30Ye3N5+LoGlow3Q4LdYgkld0jHrzSn
+         VaLJsfIuqkDCGBRPswCi/ALPB3TqEx+E2N36nlFA+f153uc91Asit1iXtOvi2s5WvRnN
+         zgz9lvvbDf4nkucDE3ESXx8AsBefxCzEyU/GL7NAO/Yz136L1lxocQxQUX7Lwy9sKtNe
+         jXmHgurLeiPRwTkqhTLb55YvekQBJKXONMxTmainX8w+FAuQLlKWlxdyNaYDMsuLIXDM
+         koTQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition;
+        bh=2c+ZSN2VXHs/jpHTZppiiq12wLhTe/sAfOHIeT4XN+E=;
+        b=CIJoSsZjwrpOabtpYL/U1M/MeX05Q8xNW0flVF+ZsoWupfEICWgJQoCssoMiSklDFP
+         08gTEjbxcAcY4XL0I+rafpr2ywhHMyuHqdauN5zdn2YJL83xaQCCbjUILBhARbHlyzIT
+         TUf1GVJQoXNGT8rfQ9yr0dmt8boJGqee7aTtZxN7bMF28tX0+iouey3/hP1UsjIhj8rO
+         xXszgrLFzxg0Rmb3tKRbFTyvqymHZ3M20IzjvpJpL0Nnsxp8MWhz7OTA6iVzGlDq5H9S
+         AMP8lRbCbAKJY2TSXziRN5FBlebYD1oau7WgsGSQVruVtA9GNuyq4Qilgu0wqqVdPn6W
+         tg3w==
+X-Gm-Message-State: AOAM5331pFaBF5oIkFKuGsgL5ZxFEr64ExFc1tZeX9N+G8nPvXLWHCNS
+        0StmVP1NZAjqcvuSkpe2K10+BELt1a7G4A==
+X-Google-Smtp-Source: ABdhPJxOnuQ1/hNh53Wk3M3Xknk1BeMbS6vqBpS5fwi5Zl/1fwPAHZlM34Z4sXH9d8XLXRfiSRyQVQ==
+X-Received: by 2002:a17:906:a0cb:: with SMTP id bh11mr4657888ejb.314.1603217855258;
+        Tue, 20 Oct 2020 11:17:35 -0700 (PDT)
+Received: from leagueoflegends ([124.29.208.184])
+        by smtp.gmail.com with ESMTPSA id b13sm3383010edk.22.2020.10.20.11.17.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 20 Oct 2020 11:17:34 -0700 (PDT)
+Date:   Tue, 20 Oct 2020 23:17:31 +0500
+From:   Abdul Rauf <abdulraufmujahid@gmail.com>
+To:     seth.forshee@canonical.com
+Cc:     wireless-regdb@lists.infradead.org, linux-wireless@vger.kernel.org
+Subject: [PATCH] wireless-regdb: Update regulatory rules for Pakistan (PK) on
+ 5GHz
+Message-ID: <20201020181731.GA18865@leagueoflegends>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-These full-mac chips use little-endian byte ordering. This patch
-adds a few missing conversions to/from little-endian so that the
-driver may be used with a big-endian host.
+Update range to 5.725 - 5.875 Ghz
+as mentioned at https://fab.gov.pk/type-approval/
 
-Signed-off-by: Remi Depommier <rde@setrix.com>
+Signed-off-by: Abdul Rauf <abdulraufmujahid@gmail.com>
 ---
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ db.txt | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-index 3c07d1bbe1c6..307f1d70224d 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-@@ -1340,7 +1340,7 @@ static void brcmf_sdio_free_glom(struct brcmf_sdio *bus)
- static inline u8 brcmf_sdio_getdatoffset(u8 *swheader)
- {
- 	u32 hdrvalue;
--	hdrvalue = *(u32 *)swheader;
-+	hdrvalue = le32_to_cpu(*(__le32 *)swheader);
- 	return (u8)((hdrvalue & SDPCM_DOFFSET_MASK) >> SDPCM_DOFFSET_SHIFT);
- }
+diff --git a/db.txt b/db.txt
+index ac32483..ce8449c 100644
+--- a/db.txt
++++ b/db.txt
+@@ -1243,8 +1243,10 @@ country PH: DFS-FCC
+ 	(5735 - 5835 @ 80), (30)
  
-@@ -1349,7 +1349,7 @@ static inline bool brcmf_sdio_fromevntchan(u8 *swheader)
- 	u32 hdrvalue;
- 	u8 ret;
+ country PK: DFS-JP
++	# https://fab.gov.pk/type-approval/
++	# https://pta.gov.pk/media/Pakistan_Table_of_Frequency_Allocations.pdf
+ 	(2402 - 2482 @ 40), (20)
+-	(5735 - 5835 @ 80), (30)
++	(5725 - 5875 @ 80), (30)
  
--	hdrvalue = *(u32 *)swheader;
-+	hdrvalue = le32_to_cpu(*(__le32 *)swheader);
- 	ret = (u8)((hdrvalue & SDPCM_CHANNEL_MASK) >> SDPCM_CHANNEL_SHIFT);
- 
- 	return (ret == SDPCM_EVENT_CHANNEL);
-@@ -3544,7 +3544,7 @@ static int brcmf_sdio_bus_preinit(struct device *dev)
- 		/* otherwise, set txglomalign */
- 		value = sdiodev->settings->bus.sdio.sd_sgentry_align;
- 		/* SDIO ADMA requires at least 32 bit alignment */
--		value = max_t(u32, value, ALIGNMENT);
-+		value = cpu_to_le32(max_t(u32, value, ALIGNMENT));
- 		err = brcmf_iovar_data_set(dev, "bus:txglomalign", &value,
- 					   sizeof(u32));
- 	}
-@@ -3555,7 +3555,7 @@ static int brcmf_sdio_bus_preinit(struct device *dev)
- 	bus->tx_hdrlen = SDPCM_HWHDR_LEN + SDPCM_SWHDR_LEN;
- 	if (sdiodev->sg_support) {
- 		bus->txglom = false;
--		value = 1;
-+		value = cpu_to_le32(1);
- 		err = brcmf_iovar_data_set(bus->sdiodev->dev, "bus:rxglom",
- 					   &value, sizeof(u32));
- 		if (err < 0) {
+ # PL as part of EU/CEPT accepted decisions 2005/513/EC (5GHz RLAN, EN 301 893)
+ # and 2006/771/EC (amended by 2008/432/EC, Short-Range Devices, EN 300 440)
 -- 
-2.17.1
+2.25.1
 
