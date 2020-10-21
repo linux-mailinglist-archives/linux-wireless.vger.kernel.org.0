@@ -2,266 +2,99 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3FA39294365
-	for <lists+linux-wireless@lfdr.de>; Tue, 20 Oct 2020 21:43:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EB3AA29470C
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Oct 2020 05:42:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2409249AbgJTTnQ convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 20 Oct 2020 15:43:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60674 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2405175AbgJTTnQ (ORCPT
+        id S2411821AbgJUDmD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 20 Oct 2020 23:42:03 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:50496 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2411818AbgJUDmD (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 20 Oct 2020 15:43:16 -0400
-X-Greylist: delayed 88583 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 20 Oct 2020 12:43:14 PDT
-Received: from pechkin.mail.miralogic.ru (pechkin.mail.miralogic.ru [IPv6:2a02:17d0:8006:2::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id A52A9C0613CE;
-        Tue, 20 Oct 2020 12:43:14 -0700 (PDT)
-Received: from mail.itmh.ru (unknown [IPv6:2a02:17d0:810a:100::2])
-        by pechkin.mail.miralogic.ru (Postfix) with ESMTP id 95EB044DCC;
-        Wed, 21 Oct 2020 00:43:12 +0500 (YEKT)
-Received: from arden.corp.itmh.ru (2a02:17d0:810a:100::2) by
- arden.corp.itmh.ru (2a02:17d0:810a:100::2) with Microsoft SMTP Server (TLS)
- id 15.0.1497.2; Wed, 21 Oct 2020 00:43:12 +0500
-Received: from arden.corp.itmh.ru ([fe80::a5a9:460a:d0d8:f5cb]) by
- arden.corp.itmh.ru ([fe80::a5a9:460a:d0d8:f5cb%12]) with mapi id
- 15.00.1497.000; Wed, 21 Oct 2020 00:43:12 +0500
-From:   =?koi8-r?B?7cHSy8/XIO3JyMHJzCDhzMXL08HOxNLP18ne?= 
-        <markov.mikhail@itmh.ru>
-To:     Stanislaw Gruszka <stf_xl@wp.pl>
-CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "Helmut Schaa" <helmut.schaa@googlemail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "\"David S. Miller\"" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "illumin@yandex.ru" <illumin@yandex.ru>
-Subject: [PATCH v2] rt2x00: save survey for every channel visited
-Thread-Topic: [PATCH v2] rt2x00: save survey for every channel visited
-Thread-Index: AQHWpxk+BXXDNxt6q0e4vzZbkNLD9Q==
-Date:   Tue, 20 Oct 2020 19:43:12 +0000
-Message-ID: <1603222991841.29674@itmh.ru>
-References: <1603134408870.78805@itmh.ru>,<20201020071243.GA302394@wp.pl>
-In-Reply-To: <20201020071243.GA302394@wp.pl>
-Accept-Language: ru-RU, en-US
-Content-Language: ru-RU
+        Tue, 20 Oct 2020 23:42:03 -0400
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.69 with qID 09L3fddfF003202, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexmb01.realtek.com.tw[172.21.6.94])
+        by rtits2.realtek.com.tw (8.15.2/2.66/5.86) with ESMTPS id 09L3fddfF003202
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Wed, 21 Oct 2020 11:41:39 +0800
+Received: from RTEXMB04.realtek.com.tw (172.21.6.97) by
+ RTEXMB01.realtek.com.tw (172.21.6.94) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2044.4; Wed, 21 Oct 2020 11:41:39 +0800
+Received: from RTEXMB04.realtek.com.tw ([fe80::89f7:e6c3:b043:15fa]) by
+ RTEXMB04.realtek.com.tw ([fe80::89f7:e6c3:b043:15fa%3]) with mapi id
+ 15.01.2044.006; Wed, 21 Oct 2020 11:41:39 +0800
+From:   Andy Huang <tehuang@realtek.com>
+To:     "'David Rubio'" <david.alejandro.rubio@gmail.com>,
+        Larry Finger <Larry.Finger@lwfinger.net>
+CC:     Kalle Valo <kvalo@codeaurora.org>,
+        Brian Norris <briannorris@chromium.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Yan-Hsuan Chuang <tony0620emma@gmail.com>,
+        Kai-Heng Feng <kai.heng.feng@canonical.com>
+Subject: RE: rtw88 / rtl_8821ce: rfe 2 is not supported
+Thread-Topic: rtw88 / rtl_8821ce: rfe 2 is not supported
+Thread-Index: AQHWn+l1M4JR4F24I0SZAkWf/gzk8qmTwKwAgAEJzzD//4MXAIAFxLuAgAMLTxOAAZILAIAACPgAgAK7ZoA=
+Date:   Wed, 21 Oct 2020 03:41:39 +0000
+Message-ID: <50fda979cb584ea898681282926fcfef@realtek.com>
+References: <CAO6ttSmiXPnA9z_31CV2rS=DO0c48jSJGBAkOgWiD-GOG73Ffw@mail.gmail.com>
+ <CA+ASDXO75rYv29YvK=0zUkB494DsA_WA+n3UttRiko2awzUkOw@mail.gmail.com>
+ <362f154dff1b4d6f88503af813eae406@realtek.com>
+ <1f33cbf8-ccf9-354e-a0ac-0911c6acded1@lwfinger.net>
+ <CAO6ttS=ABWLQbgRxfbxsqNwr9bkEDJm6dBbvaZAM94GKYP+txw@mail.gmail.com>
+ <87h7qrq4p5.fsf@tynnyri.adurom.net>
+ <87bc4553-7f17-0c23-50c8-2b413de9f7b8@lwfinger.net>
+ <CAO6ttS=U=UXLEByJVDQgXdBbtgKm=WgGUjOVZCXuOnjyajUTFA@mail.gmail.com>
+In-Reply-To: <CAO6ttS=U=UXLEByJVDQgXdBbtgKm=WgGUjOVZCXuOnjyajUTFA@mail.gmail.com>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [2a02:17d0:8118:10a::2]
-Content-Type: text/plain; charset="koi8-r"
-Content-Transfer-Encoding: 8BIT
+x-originating-ip: [172.21.69.231]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-rt2800 only gives you survey for current channel.
-
-Survey-based ACS algorithms are failing to perform their job when working
-with rt2800.
-
-Make rt2800 save survey for every channel visited and be able to give away
-that information.
-
-There is a bug registered https://dev.archive.openwrt.org/ticket/19081 and
-this patch solves the issue.
-
-Signed-off-by: Markov Mikhail <markov.mikhail@itmh.ru>
-
----
-Changes are now aggregated in rt2800lib.c.
----
- .../net/wireless/ralink/rt2x00/rt2800lib.c    | 61 ++++++++++++++-----
- drivers/net/wireless/ralink/rt2x00/rt2x00.h   | 10 +++
- 2 files changed, 56 insertions(+), 15 deletions(-)
-
-diff --git a/drivers/net/wireless/ralink/rt2x00/rt2800lib.c b/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
-index a779fe771a55..12a709d99e44 100644
---- a/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
-+++ b/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
-@@ -1228,6 +1228,17 @@ static int rt2800_check_hung(struct data_queue *queue)
- 	return queue->wd_count > 16;
- }
- 
-+static void rt2800_update_survey(struct rt2x00_dev *rt2x00dev)
-+{
-+	struct ieee80211_channel *chan = rt2x00dev->hw->conf.chandef.chan;
-+	struct rt2x00_chan_survey *chan_survey =
-+		   &rt2x00dev->chan_survey[chan->hw_value];
-+
-+	chan_survey->time_idle += rt2800_register_read(rt2x00dev, CH_IDLE_STA);
-+	chan_survey->time_busy += rt2800_register_read(rt2x00dev, CH_BUSY_STA);
-+	chan_survey->time_ext_busy += rt2800_register_read(rt2x00dev, CH_BUSY_STA_SEC);
-+}
-+
- void rt2800_watchdog(struct rt2x00_dev *rt2x00dev)
- {
- 	struct data_queue *queue;
-@@ -1237,6 +1248,8 @@ void rt2800_watchdog(struct rt2x00_dev *rt2x00dev)
- 	if (test_bit(DEVICE_STATE_SCANNING, &rt2x00dev->flags))
- 		return;
- 
-+	rt2800_update_survey(rt2x00dev);
-+
- 	queue_for_each(rt2x00dev, queue) {
- 		switch (queue->qid) {
- 		case QID_AC_VO:
-@@ -5553,6 +5566,12 @@ void rt2800_config(struct rt2x00_dev *rt2x00dev,
- 	rt2800_config_lna_gain(rt2x00dev, libconf);
- 
- 	if (flags & IEEE80211_CONF_CHANGE_CHANNEL) {
-+		/*
-+		 * To provide correct survey data for survey-based ACS algorithm
-+		 * we have to save survey data for current channel before switching.
-+		 */
-+		rt2800_update_survey(rt2x00dev);
-+
- 		rt2800_config_channel(rt2x00dev, libconf->conf,
- 				      &libconf->rf, &libconf->channel);
- 		rt2800_config_txpower(rt2x00dev, libconf->conf->chandef.chan,
-@@ -10111,12 +10130,20 @@ static int rt2800_probe_hw_mode(struct rt2x00_dev *rt2x00dev)
- 	}
- 
- 	/*
--	 * Create channel information array
-+	 * Create channel information and survey arrays
- 	 */
- 	info = kcalloc(spec->num_channels, sizeof(*info), GFP_KERNEL);
- 	if (!info)
- 		return -ENOMEM;
- 
-+	rt2x00dev->chan_survey =
-+		kcalloc(spec->num_channels, sizeof(struct rt2x00_chan_survey),
-+			GFP_KERNEL);
-+	if (!rt2x00dev->chan_survey) {
-+		kfree(info);
-+		return -ENOMEM;
-+	}
-+
- 	spec->channels_info = info;
- 
- 	default_power1 = rt2800_eeprom_addr(rt2x00dev, EEPROM_TXPOWER_BG1);
-@@ -10504,26 +10531,30 @@ int rt2800_get_survey(struct ieee80211_hw *hw, int idx,
- {
- 	struct rt2x00_dev *rt2x00dev = hw->priv;
- 	struct ieee80211_conf *conf = &hw->conf;
--	u32 idle, busy, busy_ext;
-+	struct rt2x00_chan_survey *chan_survey =
-+		   &rt2x00dev->chan_survey[idx];
-+	enum nl80211_band band = NL80211_BAND_2GHZ;
- 
--	if (idx != 0)
-+	if (idx >= rt2x00dev->bands[band].n_channels) {
-+		idx -= rt2x00dev->bands[band].n_channels;
-+		band = NL80211_BAND_5GHZ;
-+	}
-+
-+	if (idx >= rt2x00dev->bands[band].n_channels)
- 		return -ENOENT;
- 
--	survey->channel = conf->chandef.chan;
-+	if (idx == 0)
-+		rt2800_update_survey(rt2x00dev);
- 
--	idle = rt2800_register_read(rt2x00dev, CH_IDLE_STA);
--	busy = rt2800_register_read(rt2x00dev, CH_BUSY_STA);
--	busy_ext = rt2800_register_read(rt2x00dev, CH_BUSY_STA_SEC);
-+	survey->channel = &rt2x00dev->bands[band].channels[idx];
- 
--	if (idle || busy) {
--		survey->filled = SURVEY_INFO_TIME |
--				 SURVEY_INFO_TIME_BUSY |
--				 SURVEY_INFO_TIME_EXT_BUSY;
-+	survey->filled = SURVEY_INFO_TIME |
-+			 SURVEY_INFO_TIME_BUSY |
-+			 SURVEY_INFO_TIME_EXT_BUSY;
- 
--		survey->time = (idle + busy) / 1000;
--		survey->time_busy = busy / 1000;
--		survey->time_ext_busy = busy_ext / 1000;
--	}
-+	survey->time = div_u64(chan_survey->time_idle + chan_survey->time_busy, 1000);
-+	survey->time_busy = div_u64(chan_survey->time_busy, 1000);
-+	survey->time_ext_busy = div_u64(chan_survey->time_ext_busy, 1000);
- 
- 	if (!(hw->conf.flags & IEEE80211_CONF_OFFCHANNEL))
- 		survey->filled |= SURVEY_INFO_IN_USE;
-diff --git a/drivers/net/wireless/ralink/rt2x00/rt2x00.h b/drivers/net/wireless/ralink/rt2x00/rt2x00.h
-index ecc60d8cbb01..ae0c76067c4a 100644
---- a/drivers/net/wireless/ralink/rt2x00/rt2x00.h
-+++ b/drivers/net/wireless/ralink/rt2x00/rt2x00.h
-@@ -181,6 +181,15 @@ struct rf_channel {
- 	u32 rf4;
- };
- 
-+/*
-+ * Information structure for channel survey.
-+ */
-+struct rt2x00_chan_survey {
-+	u64 time_idle;
-+	u64 time_busy;
-+	u64 time_ext_busy;
-+};
-+
- /*
-  * Channel information structure
-  */
-@@ -752,6 +761,7 @@ struct rt2x00_dev {
- 	 */
- 	struct ieee80211_hw *hw;
- 	struct ieee80211_supported_band bands[NUM_NL80211_BANDS];
-+	struct rt2x00_chan_survey *chan_survey;
- 	enum nl80211_band curr_band;
- 	int curr_freq;
- 
--- 
-2.17.1
-
-________________________________________
-От: Stanislaw Gruszka <stf_xl@wp.pl>
-Отправлено: 20 октября 2020 г. 12:12
-Кому: Марков Михаил Александрович
-Копия: linux-wireless@vger.kernel.org; Helmut Schaa; Kalle Valo; "David S. Miller"; Jakub Kicinski; netdev@vger.kernel.org; linux-kernel@vger.kernel.org; illumin@yandex.ru
-Тема: Re: [PATCH] rt2x00: save survey for every channel visited
-
-On Mon, Oct 19, 2020 at 07:06:47PM +0000, Марков Михаил Александрович wrote:
-> rt2800 only gives you survey for current channel.
-<snip>
->      .watchdog        = rt2800_watchdog,
-> +    .update_survey        = rt2800_update_survey,
-
-Since this feature is rt2800 specific, I would do not add new generic
-callback. It could be fully done in rt2800* code, i.e ...
-
-> diff --git a/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c b/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
-> index 8c6d3099b19d..8eff57132154 100644
-> --- a/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
-> +++ b/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
-> @@ -1026,6 +1026,12 @@ static int rt2x00lib_probe_hw_modes(struct rt2x00_dev *rt2x00dev,
->      if (!rates)
->          goto exit_free_channels;
->
-> +    rt2x00dev->chan_survey =
-> +        kcalloc(spec->num_channels, sizeof(struct rt2x00_chan_survey),
-> +            GFP_KERNEL);
-> +    if (!rt2x00dev->chan_survey)
-> +        goto exit_free_rates;
-.. this could be placed in rt2800_probe_hw_mode() just after
-channel info array allocation ...
-
-> @@ -316,6 +316,15 @@ int rt2x00mac_config(struct ieee80211_hw *hw, u32 changed)
->      if (!test_bit(DEVICE_STATE_PRESENT, &rt2x00dev->flags))
->          return 0;
->
-> +    /*
-> +     * To provide correct survey data for survey-based ACS algorithm
-> +     * we have to save survey data for current channel before switching.
-> +     */
-> +    if (rt2x00dev->ops->lib->update_survey &&
-> +        (changed & IEEE80211_CONF_CHANGE_CHANNEL)) {
-.. and this in rt2800_config()
-
-Thanks
-Stanislaw
+DQpEYXZpZCBSdWJpbyA8ZGF2aWQuYWxlamFuZHJvLnJ1YmlvQGdtYWlsLmNvbT4gd3JpdGVzLA0K
+PiANCj4gTWFrZXMgc2Vuc2UgSSBndWVzcy4gTXkgcm9vbSBpcyA3bV4yIHNvIGNhbid0IHRlc3Qg
+YmV5b25kIHRoYXQuDQo+IFNtYWxsIHJvb20gaXNzdWVzLCBvciB3ZWxsLCBub3QgaXNzdWVzLCBJ
+IGd1ZXNzLg0KPiANCj4gLSBLb2RlaGF3YQ0KPiANCj4gRWwgbHVuLiwgMTkgb2N0LiAyMDIwIGEg
+bGFzIDE0OjEwLCBMYXJyeSBGaW5nZXINCj4gKDxMYXJyeS5GaW5nZXJAbHdmaW5nZXIubmV0Pikg
+ZXNjcmliacOzOg0KPiA+DQo+ID4gT24gMTAvMTgvMjAgNDoxMSBBTSwgS2FsbGUgVmFsbyB3cm90
+ZToNCj4gPiA+IERhdmlkIFJ1YmlvIDxkYXZpZC5hbGVqYW5kcm8ucnViaW9AZ21haWwuY29tPiB3
+cml0ZXM6DQo+ID4gPg0KPiA+ID4+Pg0KPiBodHRwczovL2xvcmUua2VybmVsLm9yZy9saW51eC13
+aXJlbGVzcy9jMGMzMzZkODA2NTg0MzYxOTkyZDRiNTI2NjVmYmI4MkByDQo+IGVhbHRlay5jb20v
+DQo+ID4gPj4NCj4gPiA+PiBJIHRlc3RlZCB0aGF0IHBhdGNoLiBXb3JrcyBmaW5lIGZvciBtZSBm
+b3Igd2lmaSwgYnV0IEkgY2FuJ3QgdGVzdCBCVA0KPiA+ID4+IHRvIGJlIHN1cmUgaXQgd29ya3Mg
+MTAwJS4gTW9zdCBwZW9wbGUgd2lsbCBiZSBmaW5lIHdpdGgganVzdCB3aWZpDQo+ID4gPj4gdGhv
+dWdoLCBJIGd1ZXNzLCBjb25zaWRlcmluZyB0aGUgb2JqZWN0aW9ucyB3ZXJlIG1vc3RseSBhYm91
+dCBCVCAoSQ0KPiA+ID4+IHVuZGVyc3Rvb2QgLWZyb20gdGhlIG9iamVjdGlvbi0gdGhhdCBjb25u
+ZWN0aW5nIHRvIGEgQVAgd2hlbiBoYXZpbmcgYQ0KPiA+ID4+IEJUIGRldmljZSBwYWlyZWQgYnJl
+YWtzPykNCj4gPiA+DQo+ID4gPiBJZiB0aGUgcGF0Y2ggaGVscHMgcGVvcGxlIHRvIGdldCB3aWZp
+IHdvcmtpbmcgd2Ugc2hvdWxkIHRha2UgaXQsIEJUIGNvZXgNCj4gPiA+IGlzc3VlcyBjYW4gYmUg
+Zml4ZWQgaW4gZm9sbG93dXAgcGF0Y2hlcy4gSUlSQyB0aGVyZSBoYXMgYmVlbiBtdWx0aXBsZQ0K
+PiA+ID4gcmVwb3J0cyBhYm91dCB0aGlzIHNvIEknbSBsZWFuaW5nIHRvd2FyZHMgdGFraW5nIHRo
+ZSBwYXRjaCB0byB2NS4xMS4NCj4gPiA+DQo+ID4gPiBJIGNoYW5nZWQgdGhlIHBhdGNoIHRvIE5l
+dyBzdGF0ZSBhbmQgbXkgcGxhbiBpcyB0byB0YWtlIGl0IHRvDQo+ID4gPiB3aXJlbGVzcy1kcml2
+ZXJzLW5leHQgb25jZSB0aGUgdHJlZSBvcGVuczoNCj4gPiA+DQo+ID4gPg0KPiBodHRwczovL3Bh
+dGNod29yay5rZXJuZWwub3JnL3Byb2plY3QvbGludXgtd2lyZWxlc3MvcGF0Y2gvMjAyMDA4MDUw
+ODQ1NTkuMzANCj4gMDkyLTEta2FpLmhlbmcuZmVuZ0BjYW5vbmljYWwuY29tLw0KPiA+DQo+ID4g
+S2FsbGUsDQo+ID4NCj4gPiBJIGhhZCBnZW5lcmF0ZWQgYW5kIGFwcGxpZWQgdGhhdCB0cml2aWFs
+IHBhdGNoIHRvIG15IEdpdEh1YiByZXBvIHdpdGggdGhlDQo+IHJ0dzg4DQo+ID4gZHJpdmVycyBh
+IGNvdXBsZSBvZiBtb250aHMgYWdvLiBZZXMsIGl0IGRvZXMgZ2V0IHRoZSB1c2VyIHBhc3QgdGhl
+DQo+ID4gaW5pdGlhbGl6YXRpb24gY2hlY2s7IGhvd2V2ZXIsIHdpZmkgcGVyZm9ybWFuY2UgaXMg
+YWJ5c21hbCBhY2NvcmRpbmcgdGhlIHRoZQ0KPiA+IHVzZXJzIG9mIHRoZSByZXBvLiBJdCBzZWVt
+cyB0aGF0IHRoZSBhbnRlbm5hIHNlbGVjdGlvbiBvZiByZmUgMiBtb2RlbHMgYWZmZWN0cw0KPiA+
+IHdpZmkgYXMgd2VsbCBhcyBCVC4gQXBwbHlpbmcgdGhpcyBwYXRjaCB3aWxsIGdldCB3aWZpIHJ1
+bm5pbmc7IGhvd2V2ZXIsIHRoZQ0KPiA+IHVzZXJzIHdpbGwgbmVlZCB0byBiZSB3aXRoaW4gMSBt
+IG9mIHRoZSBBUCBmb3IgaXQgdG8gd29yayEgSSBkbyBub3QgaGF2ZSBhbg0KPiA+IFJUTDg4MjFD
+RSBjaGlwLCB0aHVzIEkgaGF2ZSBub3QgdGVzdGVkIG15c2VsZi4NCj4gPg0KPiA+IExhcnJ5DQo+
+ID4NCj4gDQpEYXZpZCwNCg0KV2hhdCBpcyB0aGUgYmFuZCBmb3IgdGhlIHRlc3QsIDIuNEdIeiBv
+ciA1R0h6Pw0KV2l0aG91dCBzZXR0aW5nIHRvIGEgY29ycmVjdCByZiBtb2R1bGUgZm9yIFJGRSB0
+eXBlIDIsIHlvdSBtaWdodCBlbmNvdW50ZXIgc29tZQ0KcHJvYmxlbXMgb24gMi40R0h6IGJhbmQu
+DQpJbiBteSB0ZXN0LCBvbiAyLjRHSHogYmFuZCwgd2l0aCB0aGUgd3Jvbmcgc2V0dGluZywgaXQg
+Y291bGQgbm90IGNvbm5lY3QgdG8gYW4gQVAuDQoNClR6dS1Fbg0K
