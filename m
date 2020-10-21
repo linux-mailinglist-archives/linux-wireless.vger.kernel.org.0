@@ -2,58 +2,73 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 044952948DE
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Oct 2020 09:27:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8FE35294907
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Oct 2020 09:40:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2440933AbgJUH1E (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 21 Oct 2020 03:27:04 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:42666 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S2440929AbgJUH1D (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 21 Oct 2020 03:27:03 -0400
-Received: from DGGEMS408-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id 68F164B146190227E8A9;
-        Wed, 21 Oct 2020 15:26:58 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS408-HUB.china.huawei.com (10.3.19.208) with Microsoft SMTP Server id
- 14.3.487.0; Wed, 21 Oct 2020 15:26:51 +0800
-From:   Jing Xiangfeng <jingxiangfeng@huawei.com>
-To:     <m@bues.ch>
-CC:     <linux-wireless@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <jingxiangfeng@huawei.com>
-Subject: [PATCH] ssb: Fix error return in ssb_bus_scan()
-Date:   Wed, 21 Oct 2020 15:33:05 +0800
-Message-ID: <20201021073305.4400-1-jingxiangfeng@huawei.com>
-X-Mailer: git-send-email 2.20.1
+        id S2502022AbgJUHkY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 21 Oct 2020 03:40:24 -0400
+Received: from mx4.wp.pl ([212.77.101.12]:46288 "EHLO mx4.wp.pl"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2502014AbgJUHkY (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 21 Oct 2020 03:40:24 -0400
+Received: (wp-smtpd smtp.wp.pl 23640 invoked from network); 21 Oct 2020 09:40:19 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=1024a;
+          t=1603266020; bh=7J4v0YRthy4YkQw5jJP8rQj01iofTsTkYYNFVS9hzQ4=;
+          h=From:To:Cc:Subject;
+          b=S3UC7jybl+UJOXSMxmWwNVNXUQIlAETCu+A8kjm20Cky8TSKWvjo7KkQkLdWcd0+z
+           G6V4gerg3iSaapLDFVV3t7uIKZg2+rxaNZ5BhdWYf3vOnP6Glc0Hlqx565kbpjIQMl
+           Toe1TrBFaARqGRAEi6rA9EpWlH0qe2fRrLFvQ2d8=
+Received: from ip4-46-39-164-203.cust.nbox.cz (HELO localhost) (stf_xl@wp.pl@[46.39.164.203])
+          (envelope-sender <stf_xl@wp.pl>)
+          by smtp.wp.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
+          for <markov.mikhail@itmh.ru>; 21 Oct 2020 09:40:19 +0200
+Date:   Wed, 21 Oct 2020 09:40:18 +0200
+From:   Stanislaw Gruszka <stf_xl@wp.pl>
+To:     =?utf-8?B?0JzQsNGA0LrQvtCyINCc0LjRhdCw0LjQuyDQkNC70LXQutGB0LDQvdC00YA=?=
+         =?utf-8?B?0L7QstC40Yc=?= <markov.mikhail@itmh.ru>
+Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        Helmut Schaa <helmut.schaa@googlemail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "\"David S. Miller\"" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "illumin@yandex.ru" <illumin@yandex.ru>
+Subject: Re: [PATCH v2] rt2x00: save survey for every channel visited
+Message-ID: <20201021074018.GA308308@wp.pl>
+References: <1603134408870.78805@itmh.ru>
+ <20201020071243.GA302394@wp.pl>
+ <1603222991841.29674@itmh.ru>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <1603222991841.29674@itmh.ru>
+X-WP-MailID: d3ddd05d646a03e064a13c2d48fdf2d2
+X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
+X-WP-SPAM: NO 0000000 [wQMR]                               
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fix to return error code -EINVAL from the error handling case instead
-of 0.
+On Tue, Oct 20, 2020 at 07:43:12PM +0000, Марков Михаил Александрович wrote:
+> rt2800 only gives you survey for current channel.
+> 
+> Survey-based ACS algorithms are failing to perform their job when working
+> with rt2800.
+> 
+> Make rt2800 save survey for every channel visited and be able to give away
+> that information.
+> 
+> There is a bug registered https://dev.archive.openwrt.org/ticket/19081 and
+> this patch solves the issue.
+> 
+> Signed-off-by: Markov Mikhail <markov.mikhail@itmh.ru>
+>
+> ---
+> Changes are now aggregated in rt2800lib.c.
 
-Signed-off-by: Jing Xiangfeng <jingxiangfeng@huawei.com>
----
- drivers/ssb/scan.c | 1 +
- 1 file changed, 1 insertion(+)
+Acked-by: Stanislaw Gruszka <stf_xl@wp.pl>
 
-diff --git a/drivers/ssb/scan.c b/drivers/ssb/scan.c
-index f49ab1aa2149..4161e5d1f276 100644
---- a/drivers/ssb/scan.c
-+++ b/drivers/ssb/scan.c
-@@ -325,6 +325,7 @@ int ssb_bus_scan(struct ssb_bus *bus,
- 	if (bus->nr_devices > ARRAY_SIZE(bus->devices)) {
- 		pr_err("More than %d ssb cores found (%d)\n",
- 		       SSB_MAX_NR_CORES, bus->nr_devices);
-+		err = -EINVAL;
- 		goto err_unmap;
- 	}
- 	if (bus->bustype == SSB_BUSTYPE_SSB) {
--- 
-2.17.1
-
+Thanks
+Stanislaw
