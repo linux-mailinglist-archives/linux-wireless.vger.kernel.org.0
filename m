@@ -2,106 +2,77 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 69E8229565B
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 Oct 2020 04:28:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C851295703
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 Oct 2020 05:59:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2895047AbgJVC2q (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 21 Oct 2020 22:28:46 -0400
-Received: from mailgw01.mediatek.com ([210.61.82.183]:53853 "EHLO
-        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S2895045AbgJVC2q (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 21 Oct 2020 22:28:46 -0400
-X-UUID: f80af63315d1490b9343b2a9f0e4d030-20201022
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Transfer-Encoding:Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=Xc9AEzvVsB14dXFTxBdxWUYms3Pt4khR3WyeScYHvVw=;
-        b=jz24tWuQhDkfvxMkjhqrvDRVk+1SXz3k2e24z76TUGQj5AWAEwz85Twdi17XHwJDoRlmhJuuJLVA67uJUr/TC0K6BDatEy8qvsXjR9lFFuQMVDKiGHAtlOlk+Rv5THi1uFYtpAxP44FKxuc+O0bO0QAkKIfda9M42r1GWfafDts=;
-X-UUID: f80af63315d1490b9343b2a9f0e4d030-20201022
-Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw01.mediatek.com
-        (envelope-from <shayne.chen@mediatek.com>)
-        (Cellopoint E-mail Firewall v4.1.14 Build 0819 with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 1957443281; Thu, 22 Oct 2020 10:28:41 +0800
-Received: from mtkcas08.mediatek.inc (172.21.101.126) by
- mtkmbs08n2.mediatek.inc (172.21.101.56) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Thu, 22 Oct 2020 10:28:40 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas08.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Thu, 22 Oct 2020 10:28:40 +0800
-From:   Shayne Chen <shayne.chen@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>
-CC:     linux-wireless <linux-wireless@vger.kernel.org>,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        linux-mediatek <linux-mediatek@lists.infradead.org>,
-        Shayne Chen <shayne.chen@mediatek.com>
-Subject: [PATCH v4 10/10] mt76: mt7915: add support to set tx frequency offset in testmode
-Date:   Thu, 22 Oct 2020 10:28:20 +0800
-Message-ID: <20201022022820.3077-10-shayne.chen@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <20201022022820.3077-1-shayne.chen@mediatek.com>
-References: <20201022022820.3077-1-shayne.chen@mediatek.com>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-SNTS-SMTP: CB4A3D2A80CB3F71F154246CEE489732BE5F3B5B1E04D93793DBBDF147D4C7B02000:8
-X-MTK:  N
-Content-Transfer-Encoding: base64
+        id S2895621AbgJVD7x (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 21 Oct 2020 23:59:53 -0400
+Received: from m42-4.mailgun.net ([69.72.42.4]:44999 "EHLO m42-4.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2895619AbgJVD7x (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 21 Oct 2020 23:59:53 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1603339192; h=Message-Id: Date: Subject: Cc: To: From:
+ Sender; bh=V5Nowh5ES0WneN2KeZjwroeiToLSj7SLhntMCc2Rrtc=; b=pzzWGEL7bxDBs2Opip+ITfRwcS0LNtbRM6EKk+WJjm1WhWJRn6gKTehJZ0hUcla9mvGxWIhr
+ 6vMSvnD1iKQXF8UgMXvyuKVU3QBIfAWBr3f2AqMpgRVWnXe816YeY8n1dTLNuftM7C0Jss0/
+ w9X2uhmze/OiGdG7R8JHcqs6sag=
+X-Mailgun-Sending-Ip: 69.72.42.4
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n06.prod.us-east-1.postgun.com with SMTP id
+ 5f9103b8d63768e57b4593c7 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 22 Oct 2020 03:59:52
+ GMT
+Sender: govinds=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id AFC84C433F0; Thu, 22 Oct 2020 03:59:51 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+Received: from dundi-linux.qualcomm.com (unknown [202.46.22.19])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: govinds)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id E40AFC433C9;
+        Thu, 22 Oct 2020 03:59:49 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org E40AFC433C9
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=govinds@codeaurora.org
+From:   Govind Singh <govinds@codeaurora.org>
+To:     ath11k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org,
+        Govind Singh <govinds@codeaurora.org>
+Subject: [PATCH] ath11k: Remove unused param from wmi_mgmt_params
+Date:   Thu, 22 Oct 2020 09:29:35 +0530
+Message-Id: <1603339175-12706-1-git-send-email-govinds@codeaurora.org>
+X-Mailer: git-send-email 2.7.4
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-U3VwcG9ydCB0byBzZXQgdHggZnJlcXVlbmN5IG9mZnNldCBpbiB0ZXN0bW9kZSwgd2hpY2ggaXMg
-dXNhbGx5IHVzZWQgaW4NCnRoZSBwcmUtY2FsaWJyYXRpb24gc3RhZ2UuDQoNClJldmlld2VkLWJ5
-OiBSeWRlciBMZWUgPHJ5ZGVyLmxlZUBtZWRpYXRlay5jb20+DQpTaWduZWQtb2ZmLWJ5OiBTaGF5
-bmUgQ2hlbiA8c2hheW5lLmNoZW5AbWVkaWF0ZWsuY29tPg0KLS0tDQogLi4uL25ldC93aXJlbGVz
-cy9tZWRpYXRlay9tdDc2L210NzkxNS9tY3UuaCAgIHwgIDEgKw0KIC4uLi93aXJlbGVzcy9tZWRp
-YXRlay9tdDc2L210NzkxNS90ZXN0bW9kZS5jICB8IDIwICsrKysrKysrKysrKysrKysrKysNCiAu
-Li4vd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvdGVzdG1vZGUuaCAgfCAgNiArKysrKysN
-CiAzIGZpbGVzIGNoYW5nZWQsIDI3IGluc2VydGlvbnMoKykNCg0KZGlmZiAtLWdpdCBhL2RyaXZl
-cnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1L21jdS5oIGIvZHJpdmVycy9uZXQv
-d2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvbWN1LmgNCmluZGV4IDBhN2U5ZDIuLmZmNWVk
-MDkgMTAwNjQ0DQotLS0gYS9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210Nzkx
-NS9tY3UuaA0KKysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUv
-bWN1LmgNCkBAIC00OCw2ICs0OCw3IEBAIGVudW0gew0KIA0KIGVudW0gew0KIAlNQ1VfQVRFX1NF
-VF9UUlggPSAweDEsDQorCU1DVV9BVEVfU0VUX0ZSRVFfT0ZGU0VUID0gMHhhLA0KIH07DQogDQog
-c3RydWN0IG10NzkxNV9tY3VfcnhkIHsNCmRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC93aXJlbGVz
-cy9tZWRpYXRlay9tdDc2L210NzkxNS90ZXN0bW9kZS5jIGIvZHJpdmVycy9uZXQvd2lyZWxlc3Mv
-bWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvdGVzdG1vZGUuYw0KaW5kZXggYjM2NDliYy4uOWVlODJlMiAx
-MDA2NDQNCi0tLSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1L3Rl
-c3Rtb2RlLmMNCisrKyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1
-L3Rlc3Rtb2RlLmMNCkBAIC04LDYgKzgsNyBAQA0KIA0KIGVudW0gew0KIAlUTV9DSEFOR0VEX1RY
-UE9XRVIsDQorCVRNX0NIQU5HRURfRlJFUV9PRkZTRVQsDQogDQogCS8qIG11c3QgYmUgbGFzdCAq
-Lw0KIAlOVU1fVE1fQ0hBTkdFRA0KQEAgLTE1LDYgKzE2LDcgQEAgZW51bSB7DQogDQogc3RhdGlj
-IGNvbnN0IHU4IHRtX2NoYW5nZV9tYXBbXSA9IHsNCiAJW1RNX0NIQU5HRURfVFhQT1dFUl0gPSBN
-VDc2X1RNX0FUVFJfVFhfUE9XRVIsDQorCVtUTV9DSEFOR0VEX0ZSRVFfT0ZGU0VUXSA9IE1UNzZf
-VE1fQVRUUl9GUkVRX09GRlNFVCwNCiB9Ow0KIA0KIHN0cnVjdCByZWdfYmFuZCB7DQpAQCAtODIs
-NiArODQsMTkgQEAgbXQ3OTE1X3RtX3NldF90eF9wb3dlcihzdHJ1Y3QgbXQ3OTE1X3BoeSAqcGh5
-KQ0KIAlyZXR1cm4gcmV0Ow0KIH0NCiANCitzdGF0aWMgaW50DQorbXQ3OTE1X3RtX3NldF9mcmVx
-X29mZnNldChzdHJ1Y3QgbXQ3OTE1X2RldiAqZGV2LCBib29sIGVuLCB1MzIgdmFsKQ0KK3sNCisJ
-c3RydWN0IG10NzkxNV90bV9jbWQgcmVxID0gew0KKwkJLnRlc3Rtb2RlX2VuID0gZW4sDQorCQku
-cGFyYW1faWR4ID0gTUNVX0FURV9TRVRfRlJFUV9PRkZTRVQsDQorCQkucGFyYW0uZnJlcS5mcmVx
-X29mZnNldCA9IGNwdV90b19sZTMyKHZhbCksDQorCX07DQorDQorCXJldHVybiBtdDc2X21jdV9z
-ZW5kX21zZygmZGV2LT5tdDc2LCBNQ1VfRVhUX0NNRF9BVEVfQ1RSTCwgJnJlcSwNCisJCQkJIHNp
-emVvZihyZXEpLCBmYWxzZSk7DQorfQ0KKw0KIHN0YXRpYyBpbnQNCiBtdDc5MTVfdG1fbW9kZV9j
-dHJsKHN0cnVjdCBtdDc5MTVfZGV2ICpkZXYsIGJvb2wgZW5hYmxlKQ0KIHsNCkBAIC0yMjYsNiAr
-MjQxLDExIEBAIG10NzkxNV90bV9zZXRfcnhfZnJhbWVzKHN0cnVjdCBtdDc5MTVfZGV2ICpkZXYs
-IGJvb2wgZW4pDQogc3RhdGljIHZvaWQNCiBtdDc5MTVfdG1fdXBkYXRlX3BhcmFtcyhzdHJ1Y3Qg
-bXQ3OTE1X2RldiAqZGV2LCB1MzIgY2hhbmdlZCkNCiB7DQorCXN0cnVjdCBtdDc2X3Rlc3Rtb2Rl
-X2RhdGEgKnRkID0gJmRldi0+bXQ3Ni50ZXN0Ow0KKwlib29sIGVuID0gZGV2LT5tdDc2LnRlc3Qu
-c3RhdGUgIT0gTVQ3Nl9UTV9TVEFURV9PRkY7DQorDQorCWlmIChjaGFuZ2VkICYgQklUKFRNX0NI
-QU5HRURfRlJFUV9PRkZTRVQpKQ0KKwkJbXQ3OTE1X3RtX3NldF9mcmVxX29mZnNldChkZXYsIGVu
-LCBlbiA/IHRkLT5mcmVxX29mZnNldCA6IDApOw0KIAlpZiAoY2hhbmdlZCAmIEJJVChUTV9DSEFO
-R0VEX1RYUE9XRVIpKQ0KIAkJbXQ3OTE1X3RtX3NldF90eF9wb3dlcigmZGV2LT5waHkpOw0KIH0N
-CmRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzkxNS90
-ZXN0bW9kZS5oIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvdGVz
-dG1vZGUuaA0KaW5kZXggMDRmNGEyYy4uOTY0ZjJkNyAxMDA2NDQNCi0tLSBhL2RyaXZlcnMvbmV0
-L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1L3Rlc3Rtb2RlLmgNCisrKyBiL2RyaXZlcnMv
-bmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1L3Rlc3Rtb2RlLmgNCkBAIC0xMSw2ICsx
-MSwxMSBAQCBzdHJ1Y3QgbXQ3OTE1X3RtX3RyeCB7DQogCXU4IHJzdjsNCiB9Ow0KIA0KK3N0cnVj
-dCBtdDc5MTVfdG1fZnJlcV9vZmZzZXQgew0KKwl1OCBiYW5kOw0KKwlfX2xlMzIgZnJlcV9vZmZz
-ZXQ7DQorfTsNCisNCiBzdHJ1Y3QgbXQ3OTE1X3RtX2NtZCB7DQogCXU4IHRlc3Rtb2RlX2VuOw0K
-IAl1OCBwYXJhbV9pZHg7DQpAQCAtMTgsNiArMjMsNyBAQCBzdHJ1Y3QgbXQ3OTE1X3RtX2NtZCB7
-DQogCXVuaW9uIHsNCiAJCV9fbGUzMiBkYXRhOw0KIAkJc3RydWN0IG10NzkxNV90bV90cnggdHJ4
-Ow0KKwkJc3RydWN0IG10NzkxNV90bV9mcmVxX29mZnNldCBmcmVxOw0KIAkJdTggdGVzdFs3Ml07
-DQogCX0gcGFyYW07DQogfSBfX3BhY2tlZDsNCi0tIA0KMi4xNy4xDQo=
+qdf_ctx is not used in wmi_mgmt_params, remove this
+un-used variable.
+
+Signed-off-by: Govind Singh <govinds@codeaurora.org>
+---
+ drivers/net/wireless/ath/ath11k/wmi.h | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/drivers/net/wireless/ath/ath11k/wmi.h b/drivers/net/wireless/ath/ath11k/wmi.h
+index b9f3e559ced7..8256dc73a703 100644
+--- a/drivers/net/wireless/ath/ath11k/wmi.h
++++ b/drivers/net/wireless/ath/ath11k/wmi.h
+@@ -3291,7 +3291,6 @@ struct wmi_mgmt_params {
+ 	void *pdata;
+ 	u16 desc_id;
+ 	u8 *macaddr;
+-	void *qdf_ctx;
+ };
+ 
+ enum wmi_sta_ps_mode {
+-- 
+2.22.0
 
