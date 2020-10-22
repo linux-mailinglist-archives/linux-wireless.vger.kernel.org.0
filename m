@@ -2,94 +2,96 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 84F852958F7
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 Oct 2020 09:21:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D83E295914
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 Oct 2020 09:27:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2506208AbgJVHVJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 22 Oct 2020 03:21:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51792 "EHLO
+        id S2506391AbgJVH15 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 22 Oct 2020 03:27:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52836 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2506202AbgJVHVI (ORCPT
+        with ESMTP id S2440738AbgJVH15 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 22 Oct 2020 03:21:08 -0400
-Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com [IPv6:2607:f8b0:4864:20::442])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF666C0613CE
-        for <linux-wireless@vger.kernel.org>; Thu, 22 Oct 2020 00:21:08 -0700 (PDT)
-Received: by mail-pf1-x442.google.com with SMTP id x13so577649pfa.9
-        for <linux-wireless@vger.kernel.org>; Thu, 22 Oct 2020 00:21:08 -0700 (PDT)
+        Thu, 22 Oct 2020 03:27:57 -0400
+Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com [IPv6:2607:f8b0:4864:20::543])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68A1AC0613CE
+        for <linux-wireless@vger.kernel.org>; Thu, 22 Oct 2020 00:27:57 -0700 (PDT)
+Received: by mail-pg1-x543.google.com with SMTP id s22so416079pga.9
+        for <linux-wireless@vger.kernel.org>; Thu, 22 Oct 2020 00:27:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=broadcom.com; s=google;
         h=subject:to:cc:references:from:message-id:date:user-agent
          :mime-version:in-reply-to;
-        bh=KECTLua0GLNi6FUVg2O8O5g4DSVMEAQaVWk5xVYD8Jg=;
-        b=PbHCpAzHh3buVOvscN3XqR6kL2lQgLqF13zu4pvI+SQYpyRxQlpuUiIleoQ5wDa8ZO
-         3e2qMxEvngPWAjhNgEVcmwl164PqiMAsVNpQjRWjiLmjFrjFuqPRqoLBoqf04WwqpmaI
-         5VXT9DUaym12OKfuanlavwaDNUl0NoIMVnNJ0=
+        bh=dTuCiQpdvLzdOlCNjb4TqHfwyO04bx5KYyYZWxLd2jo=;
+        b=S5Jo1tqqWq98bSK5Q4oIfhqgc40/yrCqjxQ/EIgICxxZromzsVHwOFVuxxBeCyziyA
+         i6+mgi7fRtqX//00591ytm5+TWShwPNVy/0KLeA6dq/C4HtjRRRNx/RVOyaUijeOQmmi
+         r0UAUvPh+Adm+F7CCY6BsVhQOoqpyova8UPaI=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:subject:to:cc:references:from:message-id:date
          :user-agent:mime-version:in-reply-to;
-        bh=KECTLua0GLNi6FUVg2O8O5g4DSVMEAQaVWk5xVYD8Jg=;
-        b=Nya2eDFs98sgv66LdZnR0lbJ/oUKiPpoMhwg1RiOBQ2vj8+DQPHdcWSOP9urPG4R/N
-         lskUadIWpsoKG4WrqYQ1DX+pkrjawp+u76wKgSSU0xYo2ehV7Jev5BTRyne7V/crLEhT
-         wpfUpIRM1CPOUZy2hXKv7dJBOrE2wHeCuP+7akUVCVO3tu7iv1YOOVcxKEGPw//IsPrl
-         hR5ILPWuh2AhotjejaV3XeZVSfFX8dburCwy7PJbzVaLzNHr/QCNvkZZb4pjb0eUApEH
-         r+N17hBnzH48xfNYuUeEHhGmU0aZ1ka4Inbca8jiKUo1/ph2+OK+nCtJhqXNnkovHYNe
-         t35Q==
-X-Gm-Message-State: AOAM5334NZvsPHLAPsMl6zkEODYqmf8BFuNmnxfm35FyeyjHjLacX9Yy
-        vA2/G+1BjWv/k37jrz3j1U0kFA==
-X-Google-Smtp-Source: ABdhPJyrp7ZKs6at2yyEIh1Pfb/0Om8VvzGov5PLH9e4TIZGzWQOG8pOE21s6nqC2mD2NyE1DNFp/w==
-X-Received: by 2002:a62:1d57:0:b029:152:47a7:e04b with SMTP id d84-20020a621d570000b029015247a7e04bmr1393421pfd.48.1603351268185;
-        Thu, 22 Oct 2020 00:21:08 -0700 (PDT)
+        bh=dTuCiQpdvLzdOlCNjb4TqHfwyO04bx5KYyYZWxLd2jo=;
+        b=OxeusCJZlYAN4iG7mFQSbmrcxgmcSGcdd685FOf5IZSTog89CWA/50ziXS+r6TN80h
+         I7h5qhZ48nHDRyHfiWGcwwHIsqvLgxNzLpZ3VL3Od/ZXDJsISDYa5e+OXAUZQQABWnXU
+         dxnoU6sHLcbcAidj6cjXRKCZKeX56O6+A+269VpIITpScf7P9cL549+39k3LovvliXbC
+         hUhCXyyvlEIABIjJAHRYs9gqII9y6+h68cRufWIseC0fHzZKe7Oqdph0f1UOsrdVW4Bz
+         XUAWDYxMvm91HoW6kW50b8JuNrhvPWawIqi/EYYkUX0ANrXYj735dCFsSzwVhlFZ6r5f
+         vvLQ==
+X-Gm-Message-State: AOAM533TVsKpQB3hbMqnnGmjdURCJu/yC7gQ1Oh04LHQqDKgJcQz8gsQ
+        ibVJbYHM32vShx9zmS/YYvyUfA==
+X-Google-Smtp-Source: ABdhPJz5aGTJQsTkEgshfQYELnbOTIuVeFUeZiK/3QTOr/49WXnF6luen1vpqF4gOzlRDUjLU6OOBw==
+X-Received: by 2002:a63:4514:: with SMTP id s20mr1118852pga.298.1603351676802;
+        Thu, 22 Oct 2020 00:27:56 -0700 (PDT)
 Received: from [192.168.178.129] (f140230.upc-f.chello.nl. [80.56.140.230])
-        by smtp.gmail.com with ESMTPSA id t9sm966399pfc.205.2020.10.22.00.21.02
+        by smtp.gmail.com with ESMTPSA id y124sm1011107pfy.28.2020.10.22.00.27.54
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 22 Oct 2020 00:21:07 -0700 (PDT)
-Subject: Re: [PATCH v2 1/4] brcmfmac: add change_bss to support AP isolation
+        Thu, 22 Oct 2020 00:27:56 -0700 (PDT)
+Subject: Re: [PATCH v2 2/4] brcmfmac: don't allow arp/nd offload to be enabled
+ if ap mode exists
 To:     Wright Feng <wright.feng@cypress.com>,
         linux-wireless@vger.kernel.org, Kalle Valo <kvalo@codeaurora.org>,
         chi-hsien.lin@cypress.com
 Cc:     brcm80211-dev-list@broadcom.com, brcm80211-dev-list@cypress.com,
         Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Ting-Ying Li <tingying.li@cypress.com>
 References: <20201020022812.37064-1-wright.feng@cypress.com>
- <20201020022812.37064-2-wright.feng@cypress.com>
+ <20201020022812.37064-3-wright.feng@cypress.com>
 From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
-Message-ID: <2ecc8b9a-65f1-c7aa-f2b1-6f505d74a2ac@broadcom.com>
-Date:   Thu, 22 Oct 2020 09:20:59 +0200
+Message-ID: <c3f67f92-5313-ee47-3a08-8de841a53f1f@broadcom.com>
+Date:   Thu, 22 Oct 2020 09:27:52 +0200
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
  Thunderbird/78.3.2
 MIME-Version: 1.0
-In-Reply-To: <20201020022812.37064-2-wright.feng@cypress.com>
+In-Reply-To: <20201020022812.37064-3-wright.feng@cypress.com>
 Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="000000000000d1504905b23d4e7c"
+        boundary="0000000000002b935805b23d67ec"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---000000000000d1504905b23d4e7c
+--0000000000002b935805b23d67ec
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 
 On 10/20/2020 4:28 AM, Wright Feng wrote:
-> Hostap has a parameter "ap_isolate" which is used to prevent low-level
-> bridging of frames between associated stations in the BSS.
-> Regarding driver side, we add cfg80211 ops method change_bss to support
-> setting AP isolation if firmware has ap_isolate feature.
+> From: Ting-Ying Li <tingying.li@cypress.com>
+> 
+> Add a condition to determine whether arp/nd offload enabling
+> request is allowed. If there is any interface acts as ap
+> mode and is operating, then reject the request of arp oflload
+> enabling from cfg80211.
 
 Reviewed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+> Signed-off-by: Ting-Ying Li <tingying.li@cypress.com>
 > Signed-off-by: Wright Feng <wright.feng@cypress.com>
-> Signed-off-by: Chi-hsien Lin <chi-hsien.lin@cypress.com>
 > ---
-> v2: Remove u32 cast
-> ---
->   .../broadcom/brcm80211/brcmfmac/cfg80211.c    | 23 +++++++++++++++++++
->   .../broadcom/brcm80211/brcmfmac/feature.c     |  1 +
->   .../broadcom/brcm80211/brcmfmac/feature.h     |  3 ++-
->   3 files changed, 26 insertions(+), 1 deletion(-)
+>   .../broadcom/brcm80211/brcmfmac/cfg80211.c      | 17 ++++++++++++++++-
+>   .../broadcom/brcm80211/brcmfmac/cfg80211.h      |  1 +
+>   .../wireless/broadcom/brcm80211/brcmfmac/core.c |  5 +++++
+>   3 files changed, 22 insertions(+), 1 deletion(-)
 
---000000000000d1504905b23d4e7c
+--0000000000002b935805b23d67ec
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -160,13 +162,13 @@ WwHVQUbAn+xLMIQpycIQFoJIGJX4MeaTSMfLNP2w7nP2uLNgIeleF284vS0XVkBXSCgIGylP4SN+
 HQYrv7fVCbtp+c7nFvP7MYICbzCCAmsCAQEwbTBdMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xv
 YmFsU2lnbiBudi1zYTEzMDEGA1UEAxMqR2xvYmFsU2lnbiBQZXJzb25hbFNpZ24gMiBDQSAtIFNI
 QTI1NiAtIEczAgxR3m7Pj6LvQiWjJy0wDQYJYIZIAWUDBAIBBQCggdQwLwYJKoZIhvcNAQkEMSIE
-IL2DwA4WjlmT2rK+a++LScCu5pSjSGahE2b0wvX/lehuMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0B
-BwEwHAYJKoZIhvcNAQkFMQ8XDTIwMTAyMjA3MjEwOFowaQYJKoZIhvcNAQkPMVwwWjALBglghkgB
+IDrhlztLp87zjTo+Zznenqg/nd/jEugg1px5/Ekprg2SMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0B
+BwEwHAYJKoZIhvcNAQkFMQ8XDTIwMTAyMjA3Mjc1N1owaQYJKoZIhvcNAQkPMVwwWjALBglghkgB
 ZQMEASowCwYJYIZIAWUDBAEWMAsGCWCGSAFlAwQBAjAKBggqhkiG9w0DBzALBgkqhkiG9w0BAQow
-CwYJKoZIhvcNAQEHMAsGCWCGSAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQBsX815TrkkUG8pAAoA
-xBvyez5rGFjrIuFtKAcSYu9/JMBZ0y9GZsyVMRXhdeWU9afWHy1WWgseoXJ5BowgbhG0b4FjXq8g
-MDndpHvfKMr/0C3RwBoVxI6acp8uh7CmqbQGGW1ltoH/ZyvwulXMPhmQwVtBLMfp5al7ArXmChib
-CzSY4iqcOjxa8Dy6k3av+I+l1VJ95fVhjxLowkpFTJfxn+wI4n8Bnwfj2TMCypoLgeyb7oGCybkA
-vtYqTtMrpCNB1kphg13LvPMVYt6CzGrZpjCR43wGuNlZQQAKpVku6lttxVmyRvkZ9aeU9t8Ocq/c
-9oq4QR50SlpXYtoiTK+v
---000000000000d1504905b23d4e7c--
+CwYJKoZIhvcNAQEHMAsGCWCGSAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQAU+GctW/no1X/eHiTg
+qKKkBEcMcHbbGXMHBsp1YrPxs3YyZ4FNuCLrZMnXc8oIbTLC2VM3up3IIfeg+4trfxVHjqHf+e6D
+s+fAYTaGgwUAMrqXn9WGID794h2Fk4xDFOqfWS5LcykrX2vsT0DL1jUcAYVjHoJtsAgeXLsEir9v
+wJ9g4gF+70g0l6adVZtubqzexZcQgbv7/M7nJu3B39KL27Yg+Y3XsR+kj9s6rEzZ23HEdEKpUXsP
+Z9wC20rLVBR76M6HL78jIVGS2EFBCWoOJhpsz+69M/aB8ZZ46Sc93ZbDI5UT6DrbXp+9E3JWv4/2
+2QBwNwv6BdTR3OEYBr02
+--0000000000002b935805b23d67ec--
