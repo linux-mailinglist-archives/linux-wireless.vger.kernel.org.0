@@ -2,158 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 90D49296489
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 Oct 2020 20:19:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 828902964A3
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 Oct 2020 20:27:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2902422AbgJVST0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 22 Oct 2020 14:19:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40918 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2902393AbgJVST0 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 22 Oct 2020 14:19:26 -0400
-Received: from mail-oi1-x22e.google.com (mail-oi1-x22e.google.com [IPv6:2607:f8b0:4864:20::22e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92695C0613CE
-        for <linux-wireless@vger.kernel.org>; Thu, 22 Oct 2020 11:19:26 -0700 (PDT)
-Received: by mail-oi1-x22e.google.com with SMTP id h10so2738813oie.5
-        for <linux-wireless@vger.kernel.org>; Thu, 22 Oct 2020 11:19:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=Iul3HKf6GvF8Napjkc1eLX9WQ6qH5CDvr2prxmBwu6c=;
-        b=mcJm9EtL82LNR92TatSfHUdO+2JiVUmlMCfD1Qe+7X6DBAT2sfesZ6SpxQ3HLCQmVO
-         8osAdHOxrn61f0yItjG/zPWR7rsKmoxIATQMSiFwV2QZOi1IwP1XqThkIUqj+OanhCEZ
-         kD3+PO28chjYgjpckSFLIDbLB2PfIWwfOchtLUHtLWbPiHOr6Yg7adGyzQoNjUcolpmW
-         ACWpMWl1MVo+5wEnsYAPBOabj/YC/0F3ypEVza4aogm3Hj5VKxRXmz54JGlVc+Nv+z6e
-         +7Rqq3Vc1jzm5qN7X7rEGAIpTdzM5dV4N0K5T36fmVBEqyHx/jsdjLXsmxXaeZX8QrB/
-         Z+gw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=Iul3HKf6GvF8Napjkc1eLX9WQ6qH5CDvr2prxmBwu6c=;
-        b=iiKOFLrto1saiMu9KwWhYSUlILGOT1Zl5CYAvAEfVUx5KeCUosZT2nI7fUHLDYFSek
-         5QcPLPGz0GiqXT1IVtBLhr/sY0QvTRpfYZSvYrbAE9JYYw9YrXSCUqbA/CPBjXWcwXZ7
-         VVTYf4FFaVa/b4+mIC1pfDaxmAuBUNz7phjqdCE4VcmZC7EiUTwuv9oOxRrQLehNjgcZ
-         s8340aTt8XOVfEd4WJJoZCeSMM7pn8/1x0TSSCDCoIcvNkDqDTdgC+wyZQ830ok4DnzA
-         7CE8b+nIO1uwKhJTdodudePxYzpMZZ6ZuDOfSgbUYxQ0MlnFg4x3Dhp1kcyR0dJtO94v
-         oRQQ==
-X-Gm-Message-State: AOAM532lcfUQILsw5kc+V2+jmAmBKkoMQiaFnsgE9W7PTq1ZXA5EfkcC
-        qOT4AQI9EwI2pG+NtEkaugo7eXwIoTce8aEqnwafLNn5eztNDw==
-X-Google-Smtp-Source: ABdhPJzMOJ1elYAxWuE4dw0wvSvNa8gYtKv7mu0wGH1W4YtoQB9595soXQa1rjUqh2z+bSnE85OHDqro1AU71bPL+Nc=
-X-Received: by 2002:aca:918:: with SMTP id 24mr2490154oij.179.1603390765516;
- Thu, 22 Oct 2020 11:19:25 -0700 (PDT)
+        id S368095AbgJVS1A (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 22 Oct 2020 14:27:00 -0400
+Received: from z5.mailgun.us ([104.130.96.5]:21658 "EHLO z5.mailgun.us"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2900977AbgJVS1A (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 22 Oct 2020 14:27:00 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1603391220; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=Cu7ZTa+xQOns7SwIcrCbeXs+JUnsIByxQOyMwMvN+rU=; b=be+opnskJIouEbHoropSYG/+JUghlJscabuRX/XP92NtpAuR3BAsH1yf80GB/usn7+tdQN0b
+ w9DJDH8Xggv2vmRU4e2sHm4rjbLmqbl0fSwtRlnjyaSAHP9AE11TQTpKynxrsb3XRXUSmt+o
+ aLvv2Z1o39PE/4bIaECL26dIhT8=
+X-Mailgun-Sending-Ip: 104.130.96.5
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n05.prod.us-east-1.postgun.com with SMTP id
+ 5f91ceda4f8cc67c31142f31 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 22 Oct 2020 18:26:34
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id E25D9C433FF; Thu, 22 Oct 2020 18:26:33 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 27381C433C9;
+        Thu, 22 Oct 2020 18:26:31 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 27381C433C9
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     "linux-firmware\@kernel.org" <linux-firmware@kernel.org>
+Cc:     "linux-wireless\@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "ath11k\@lists.infradead.org" <ath11k@lists.infradead.org>,
+        "ath10k\@lists.infradead.org" <ath10k@lists.infradead.org>
+Subject: Re: [PULL] ath10k & ath11k firmware 20201022
+References: <BYAPR02MB4567892AD5957F360C01E73F921D0@BYAPR02MB4567.namprd02.prod.outlook.com>
+Date:   Thu, 22 Oct 2020 21:26:30 +0300
+In-Reply-To: <BYAPR02MB4567892AD5957F360C01E73F921D0@BYAPR02MB4567.namprd02.prod.outlook.com>
+        (Kalle Valo's message of "Thu, 22 Oct 2020 08:23:01 +0000")
+Message-ID: <87sga65d7t.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-From:   Uri Okrent <uokrent@gmail.com>
-Date:   Thu, 22 Oct 2020 14:18:49 -0400
-Message-ID: <CALPkawa4PG_y+mAwQwnZjWKyu+_k18P_WTHvst6+3+Ej7pMbGg@mail.gmail.com>
-Subject: help debugging ath10k latency issue
-To:     linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello all, I've got a ath10k QCA6174 wireless device on my laptop
-which generally runs well, but after a few days of uptime with
-"normal" latency. I suddenly experience very high latency. I am
-measuring latency by pinging my access point. After a reboot it looks
-something like this:
+Kalle Valo <kvalo@qca.qualcomm.com> writes:
 
-[1603195511.647411] 64 bytes from 192.168.0.185: icmp_seq=1 ttl=64 time=5.97 ms
-[1603195512.644271] 64 bytes from 192.168.0.185: icmp_seq=2 ttl=64 time=1.77 ms
-[1603195513.647936] 64 bytes from 192.168.0.185: icmp_seq=3 ttl=64 time=3.29 ms
-[1603195514.648112] 64 bytes from 192.168.0.185: icmp_seq=4 ttl=64 time=1.93 ms
-[1603195515.649151] 64 bytes from 192.168.0.185: icmp_seq=5 ttl=64 time=1.76 ms
-[1603195516.651775] 64 bytes from 192.168.0.185: icmp_seq=6 ttl=64 time=2.85 ms
-[1603195517.651775] 64 bytes from 192.168.0.185: icmp_seq=7 ttl=64 time=1.83 ms
-[1603195518.653779] 64 bytes from 192.168.0.185: icmp_seq=8 ttl=64 time=1.79 ms
-[1603195519.673433] 64 bytes from 192.168.0.185: icmp_seq=9 ttl=64 time=19.4 ms
-[1603195520.657162] 64 bytes from 192.168.0.185: icmp_seq=10 ttl=64 time=1.90 ms
-[1603195521.669162] 64 bytes from 192.168.0.185: icmp_seq=11 ttl=64 time=12.7 ms
-[1603195522.660162] 64 bytes from 192.168.0.185: icmp_seq=12 ttl=64 time=1.81 ms
-[1603195523.662202] 64 bytes from 192.168.0.185: icmp_seq=13 ttl=64 time=1.88 ms
-[1603195524.662584] 64 bytes from 192.168.0.185: icmp_seq=14 ttl=64 time=1.88 ms
-[1603195525.664175] 64 bytes from 192.168.0.185: icmp_seq=15 ttl=64 time=2.39 ms
-[1603195526.666592] 64 bytes from 192.168.0.185: icmp_seq=16 ttl=64 time=3.19 ms
+> Hi linux-firmware maintainers,
+>
+> here's a pull request for ath10k and ath11k drivers. For ath10k there
+> is a firmware for new hardware QCA6174 hw3.0 SDIO. For ath11k there
+> are firmwares for new hardware IPQ8074 hw2.0, IPQ6018 hw1.0 and
+> QCA6390 hw2.0. And also few updates for existing hardware.
+>
+> I did not include QCA9377 SDIO firmware as I saw Christian submitted a
+> patch adding that.
+>
+> Please let me know if there are any problems.
+>
+> Kalle
+>
+> The following changes since commit 58d41d0facca2478d3e45f6321224361519aee96:
+>
+>   ice: Add comms package file for Intel E800 series driver (2020-10-05 08:09:03 -0400)
+>
+> are available in the git repository at:
+>
+>   git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/linux-firmware.git ath10k-20201022
 
-after a few days it will suddenly look like this:
-[1603387794.470254] 64 bytes from 192.168.0.185: icmp_seq=60939 ttl=64
-time=4.33 ms
-[1603387795.487899] 64 bytes from 192.168.0.185: icmp_seq=60940 ttl=64
-time=20.4 ms
-[1603387796.515681] 64 bytes from 192.168.0.185: icmp_seq=60941 ttl=64
-time=46.8 ms
-[1603387797.542636] 64 bytes from 192.168.0.185: icmp_seq=60942 ttl=64
-time=72.6 ms
-[1603387798.563217] 64 bytes from 192.168.0.185: icmp_seq=60943 ttl=64
-time=91.3 ms
-[1603387799.474965] 64 bytes from 192.168.0.185: icmp_seq=60944 ttl=64
-time=2.21 ms
-[1603387800.476286] 64 bytes from 192.168.0.185: icmp_seq=60945 ttl=64
-time=2.08 ms
-[1603387801.613268] 64 bytes from 192.168.0.185: icmp_seq=60946 ttl=64
-time=138 ms
-[1603387802.479966] 64 bytes from 192.168.0.185: icmp_seq=60947 ttl=64
-time=3.19 ms
-[1603387803.479461] 64 bytes from 192.168.0.185: icmp_seq=60948 ttl=64
-time=1.80 ms
-[1603387804.501875] 64 bytes from 192.168.0.185: icmp_seq=60949 ttl=64
-time=22.1 ms
-[1603387805.528428] 64 bytes from 192.168.0.185: icmp_seq=60950 ttl=64
-time=47.3 ms
-[1603387806.550368] 64 bytes from 192.168.0.185: icmp_seq=60951 ttl=64
-time=67.7 ms
-[1603387807.496661] 64 bytes from 192.168.0.185: icmp_seq=60952 ttl=64
-time=12.1 ms
-[1603387808.574657] 64 bytes from 192.168.0.185: icmp_seq=60953 ttl=64
-time=88.7 ms
-[1603387809.616396] 64 bytes from 192.168.0.185: icmp_seq=60954 ttl=64
-time=128 ms
-[1603387810.642946] 64 bytes from 192.168.0.185: icmp_seq=60955 ttl=64
-time=153 ms
-[1603387811.493232] 64 bytes from 192.168.0.185: icmp_seq=60956 ttl=64
-time=2.11 ms
-[1603387812.494298] 64 bytes from 192.168.0.185: icmp_seq=60957 ttl=64
-time=1.84 ms
-[1603387813.512747] 64 bytes from 192.168.0.185: icmp_seq=60958 ttl=64
-time=18.2 ms
-[1603387814.550750] 64 bytes from 192.168.0.185: icmp_seq=60959 ttl=64
-time=54.8 ms
-[1603387815.640003] 64 bytes from 192.168.0.185: icmp_seq=60960 ttl=64
-time=142 ms
-
-It will stay like that until I reboot at which point it will run
-normally again for a few days. I've tried installing various
-firmwares, and disabling power management, but that has not changed
-anything.  I ran ping for a few days to pin point the exact time
-things go crazy and while i found a general timestamp, within a few
-seconds, there doesn't appear to be anything in syslog or kernel
-messages that would explain the abrupt change in behavior.
-
-I'm on kernel 5.4.0-52-generic (ubuntu 20.04.1). Some info about my
-hardware from the kernel:
-[Tue Oct 20 07:54:27 2020] ath10k_pci 0000:02:00.0: qca6174 hw3.2
-target 0x05030000 chip_id 0x00340aff sub 1a56:143a
-[Tue Oct 20 07:54:27 2020] ath10k_pci 0000:02:00.0: kconfig debug 0
-debugfs 1 tracing 1 dfs 0 testmode 0
-[Tue Oct 20 07:54:27 2020] ath10k_pci 0000:02:00.0: firmware ver
-WLAN.RM.4.4.1-00157-QCARMSWPZ-1 api 6 features wowlan,ignore-otp,mfp
-crc32 90eebefb
-[Tue Oct 20 07:54:27 2020] ath10k_pci 0000:02:00.0: board_file api 2
-bmi_id N/A crc32 fe1026b8
-[Tue Oct 20 07:54:27 2020] ath10k_pci 0000:02:00.0: unsupported HTC
-service id: 1536
-[Tue Oct 20 07:54:27 2020] ath10k_pci 0000:02:00.0: htt-ver 3.60
-wmi-op 4 htt-op 3 cal otp max-sta 32 raw 0 hwcrypto 1
-[Tue Oct 20 07:54:27 2020] ath10k_pci 0000:02:00.0 wlp2s0: renamed from wlan0
-
-At this point I'm stumped. Does anyone have any pointers of where I
-might start looking (log files, debugging to enable, etc) in order to
-get to the bottom of this? I should also note that this system was
-previously running ubuntu 18.04 with kernel 5.3 and had no such
-issues.
-
-Thanks
+I noticed that ath11k Notice.txt files are not valid utf-8. Please drop
+this pull request, I'll send a fixed one tomorrow.
 
 -- 
-   Uri
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
