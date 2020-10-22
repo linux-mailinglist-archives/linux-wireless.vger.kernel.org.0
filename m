@@ -2,88 +2,120 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 25B192954D7
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 Oct 2020 00:30:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F09C529565A
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 Oct 2020 04:28:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2506732AbgJUWaZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 21 Oct 2020 18:30:25 -0400
-Received: from mail.kernel.org ([198.145.29.99]:59430 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2506724AbgJUWaY (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 21 Oct 2020 18:30:24 -0400
-Received: from pali.im (pali.im [31.31.79.79])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 4F2AD241A6;
-        Wed, 21 Oct 2020 22:30:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1603319423;
-        bh=cBtXpIIfhVm6w9APhIRH4zZW2n9okENfsHWwVXqkh9E=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=uudD92JS8Rp5LZ+HGLEOwObocJh9sdHq6wjae/U14waD7vjJIC49BnBAMnaYgJ6C2
-         zvYE/ITJsmbOHcWerZyV8CQ9PkiQoedVGgkG3D3pSZ0Od90psxiTWL28Wa3FfX6pi6
-         AzhINpqA4vgAwHRChu3LrC31Tvq3yY5yeoah+WcY=
-Received: by pali.im (Postfix)
-        id 7537BA83; Thu, 22 Oct 2020 00:30:20 +0200 (CEST)
-Date:   Thu, 22 Oct 2020 00:30:20 +0200
-From:   Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
-To:     Jerome Pouiller <Jerome.Pouiller@silabs.com>
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        devel@driverdev.osuosl.org, linux-kernel@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        linux-mmc@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>
-Subject: Re: [PATCH v2 01/24] mmc: sdio: add SDIO IDs for Silabs WF200 chip
-Message-ID: <20201021223020.btkgdo7cgzavxbpk@pali>
-References: <20201020125817.1632995-1-Jerome.Pouiller@silabs.com>
- <20201020125817.1632995-2-Jerome.Pouiller@silabs.com>
+        id S2895043AbgJVC2p (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 21 Oct 2020 22:28:45 -0400
+Received: from mailgw01.mediatek.com ([210.61.82.183]:53862 "EHLO
+        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S2894984AbgJVC2o (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 21 Oct 2020 22:28:44 -0400
+X-UUID: bca0bcd69b9e47059601a3b2b5a4f0bc-20201022
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+        h=Content-Transfer-Encoding:Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=zY34pkVXqvHFrUkI7Cdx5qzwRfOG6aaDums30Ks561c=;
+        b=AYnbKNotQmgZrH4s0YgSIkP7/GQf9rOu8doL5BcTV8QPFu+btsvdZ5OZG0LlUH+6gMnBweWiijJT46wsRXbG9e/mNaw3QHkw5+rmLeb/MiuCEzVgy6L0yK0D+xL114a5GKtCnUQGltLH2ObZl6ByH33RXLxfqgf1xLgUPsj05iU=;
+X-UUID: bca0bcd69b9e47059601a3b2b5a4f0bc-20201022
+Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw01.mediatek.com
+        (envelope-from <shayne.chen@mediatek.com>)
+        (Cellopoint E-mail Firewall v4.1.14 Build 0819 with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 1725977676; Thu, 22 Oct 2020 10:28:39 +0800
+Received: from mtkcas08.mediatek.inc (172.21.101.126) by
+ mtkmbs08n1.mediatek.inc (172.21.101.55) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Thu, 22 Oct 2020 10:28:38 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas08.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Thu, 22 Oct 2020 10:28:38 +0800
+From:   Shayne Chen <shayne.chen@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>
+CC:     linux-wireless <linux-wireless@vger.kernel.org>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        linux-mediatek <linux-mediatek@lists.infradead.org>,
+        Shayne Chen <shayne.chen@mediatek.com>
+Subject: [PATCH v4 01/10] mt76: testmode: switch ib and wb rssi to array type for per-antenna report
+Date:   Thu, 22 Oct 2020 10:28:11 +0800
+Message-ID: <20201022022820.3077-1-shayne.chen@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20201020125817.1632995-2-Jerome.Pouiller@silabs.com>
-User-Agent: NeoMutt/20180716
+Content-Type: text/plain
+X-MTK:  N
+Content-Transfer-Encoding: base64
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tuesday 20 October 2020 14:57:54 Jerome Pouiller wrote:
-> From: Jérôme Pouiller <jerome.pouiller@silabs.com>
-> 
-> Add Silabs SDIO ID to sdio_ids.h.
-> 
-> Note that the values used by Silabs are uncommon. A driver cannot fully
-> rely on the SDIO PnP. It should also check if the device is declared in
-> the DT.
-> 
-> Signed-off-by: Jérôme Pouiller <jerome.pouiller@silabs.com>
+Q2hhbmdlIGliX3Jzc2kgYW5kIHdiX3Jzc2kgaW50byBhcnJheSB0eXBlLCBzaW5jZSB0aGV5IGNv
+dWxkIGJlIHJlcG9ydGVkDQpieSBwZXItYW50ZW5uYS4NCg0KUmV2aWV3ZWQtYnk6IFJ5ZGVyIExl
+ZSA8cnlkZXIubGVlQG1lZGlhdGVrLmNvbT4NClNpZ25lZC1vZmYtYnk6IFNoYXluZSBDaGVuIDxz
+aGF5bmUuY2hlbkBtZWRpYXRlay5jb20+DQotLS0NCnYyOiBtb3ZlIFJldmlld2VkLWJ5IGJlZm9y
+ZSBzLW8tYg0KDQogLi4uL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzYxNS9tYWMuYyAg
+IHwgIDQgKystLQ0KIC4uLi93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzYxNS9tdDc2MTUuaCAg
+ICB8ICA0ICsrLS0NCiAuLi4vd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc2MTUvdGVzdG1vZGUu
+YyAgfCAyNCArKysrKysrKysrKysrKysrLS0tDQogZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0
+ZWsvbXQ3Ni90ZXN0bW9kZS5oIHwgIDQgKystLQ0KIDQgZmlsZXMgY2hhbmdlZCwgMjcgaW5zZXJ0
+aW9ucygrKSwgOSBkZWxldGlvbnMoLSkNCg0KZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3dpcmVs
+ZXNzL21lZGlhdGVrL210NzYvbXQ3NjE1L21hYy5jIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVk
+aWF0ZWsvbXQ3Ni9tdDc2MTUvbWFjLmMNCmluZGV4IDhkYzY0NWUuLjlhYWQyZWUgMTAwNjQ0DQot
+LS0gYS9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzYxNS9tYWMuYw0KKysr
+IGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc2MTUvbWFjLmMNCkBAIC0y
+MTUsOCArMjE1LDggQEAgc3RhdGljIHZvaWQgbXQ3NjE1X21hY19maWxsX3RtX3J4KHN0cnVjdCBt
+dDc2MTVfZGV2ICpkZXYsIF9fbGUzMiAqcnh2KQ0KIAlkZXYtPnRlc3QubGFzdF9yY3BpWzFdID0g
+RklFTERfR0VUKE1UX1JYVjRfUkNQSTEsIHJ4djQpOw0KIAlkZXYtPnRlc3QubGFzdF9yY3BpWzJd
+ID0gRklFTERfR0VUKE1UX1JYVjRfUkNQSTIsIHJ4djQpOw0KIAlkZXYtPnRlc3QubGFzdF9yY3Bp
+WzNdID0gRklFTERfR0VUKE1UX1JYVjRfUkNQSTMsIHJ4djQpOw0KLQlkZXYtPnRlc3QubGFzdF9p
+Yl9yc3NpID0gRklFTERfR0VUKE1UX1JYVjNfSUJfUlNTSSwgcnh2Myk7DQotCWRldi0+dGVzdC5s
+YXN0X3diX3Jzc2kgPSBGSUVMRF9HRVQoTVRfUlhWM19XQl9SU1NJLCByeHYzKTsNCisJZGV2LT50
+ZXN0Lmxhc3RfaWJfcnNzaVswXSA9IEZJRUxEX0dFVChNVF9SWFYzX0lCX1JTU0ksIHJ4djMpOw0K
+KwlkZXYtPnRlc3QubGFzdF93Yl9yc3NpWzBdID0gRklFTERfR0VUKE1UX1JYVjNfV0JfUlNTSSwg
+cnh2Myk7DQogI2VuZGlmDQogfQ0KIA0KZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3dpcmVsZXNz
+L21lZGlhdGVrL210NzYvbXQ3NjE1L210NzYxNS5oIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVk
+aWF0ZWsvbXQ3Ni9tdDc2MTUvbXQ3NjE1LmgNCmluZGV4IGY3MjUwNmQuLjUwZWE5ZWYgMTAwNjQ0
+DQotLS0gYS9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzYxNS9tdDc2MTUu
+aA0KKysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc2MTUvbXQ3NjE1
+LmgNCkBAIC0zMDMsOCArMzAzLDggQEAgc3RydWN0IG10NzYxNV9kZXYgew0KIA0KIAkJczE2IGxh
+c3RfZnJlcV9vZmZzZXQ7DQogCQl1OCBsYXN0X3JjcGlbNF07DQotCQlzOCBsYXN0X2liX3Jzc2k7
+DQotCQlzOCBsYXN0X3diX3Jzc2k7DQorCQlzOCBsYXN0X2liX3Jzc2lbNF07DQorCQlzOCBsYXN0
+X3diX3Jzc2lbNF07DQogCX0gdGVzdDsNCiAjZW5kaWYNCiANCmRpZmYgLS1naXQgYS9kcml2ZXJz
+L25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzYxNS90ZXN0bW9kZS5jIGIvZHJpdmVycy9u
+ZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc2MTUvdGVzdG1vZGUuYw0KaW5kZXggMWYzMzYy
+OC4uOGZjOTdhNSAxMDA2NDQNCi0tLSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210
+NzYvbXQ3NjE1L3Rlc3Rtb2RlLmMNCisrKyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVr
+L210NzYvbXQ3NjE1L3Rlc3Rtb2RlLmMNCkBAIC0zMzUsOSArMzM1LDcgQEAgbXQ3NjE1X3RtX2R1
+bXBfc3RhdHMoc3RydWN0IG10NzZfZGV2ICptZGV2LCBzdHJ1Y3Qgc2tfYnVmZiAqbXNnKQ0KIAlp
+ZiAoIXJ4KQ0KIAkJcmV0dXJuIC1FTk9NRU07DQogDQotCWlmIChubGFfcHV0X3MzMihtc2csIE1U
+NzZfVE1fUlhfQVRUUl9GUkVRX09GRlNFVCwgZGV2LT50ZXN0Lmxhc3RfZnJlcV9vZmZzZXQpIHx8
+DQotCSAgICBubGFfcHV0X3MzMihtc2csIE1UNzZfVE1fUlhfQVRUUl9JQl9SU1NJLCBkZXYtPnRl
+c3QubGFzdF9pYl9yc3NpKSB8fA0KLQkgICAgbmxhX3B1dF9zMzIobXNnLCBNVDc2X1RNX1JYX0FU
+VFJfV0JfUlNTSSwgZGV2LT50ZXN0Lmxhc3Rfd2JfcnNzaSkpDQorCWlmIChubGFfcHV0X3MzMiht
+c2csIE1UNzZfVE1fUlhfQVRUUl9GUkVRX09GRlNFVCwgZGV2LT50ZXN0Lmxhc3RfZnJlcV9vZmZz
+ZXQpKQ0KIAkJcmV0dXJuIC1FTk9NRU07DQogDQogCXJzc2kgPSBubGFfbmVzdF9zdGFydChtc2cs
+IE1UNzZfVE1fUlhfQVRUUl9SQ1BJKTsNCkBAIC0zNTAsNiArMzQ4LDI2IEBAIG10NzYxNV90bV9k
+dW1wX3N0YXRzKHN0cnVjdCBtdDc2X2RldiAqbWRldiwgc3RydWN0IHNrX2J1ZmYgKm1zZykNCiAN
+CiAJbmxhX25lc3RfZW5kKG1zZywgcnNzaSk7DQogDQorCXJzc2kgPSBubGFfbmVzdF9zdGFydCht
+c2csIE1UNzZfVE1fUlhfQVRUUl9JQl9SU1NJKTsNCisJaWYgKCFyc3NpKQ0KKwkJcmV0dXJuIC1F
+Tk9NRU07DQorDQorCWZvciAoaSA9IDA7IGkgPCBBUlJBWV9TSVpFKGRldi0+dGVzdC5sYXN0X2li
+X3Jzc2kpOyBpKyspDQorCQlpZiAobmxhX3B1dF9zOChtc2csIGksIGRldi0+dGVzdC5sYXN0X2li
+X3Jzc2lbaV0pKQ0KKwkJCXJldHVybiAtRU5PTUVNOw0KKw0KKwlubGFfbmVzdF9lbmQobXNnLCBy
+c3NpKTsNCisNCisJcnNzaSA9IG5sYV9uZXN0X3N0YXJ0KG1zZywgTVQ3Nl9UTV9SWF9BVFRSX1dC
+X1JTU0kpOw0KKwlpZiAoIXJzc2kpDQorCQlyZXR1cm4gLUVOT01FTTsNCisNCisJZm9yIChpID0g
+MDsgaSA8IEFSUkFZX1NJWkUoZGV2LT50ZXN0Lmxhc3Rfd2JfcnNzaSk7IGkrKykNCisJCWlmIChu
+bGFfcHV0X3M4KG1zZywgaSwgZGV2LT50ZXN0Lmxhc3Rfd2JfcnNzaVtpXSkpDQorCQkJcmV0dXJu
+IC1FTk9NRU07DQorDQorCW5sYV9uZXN0X2VuZChtc2csIHJzc2kpOw0KKw0KIAlubGFfbmVzdF9l
+bmQobXNnLCByeCk7DQogDQogCXJldHVybiAwOw0KZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3dp
+cmVsZXNzL21lZGlhdGVrL210NzYvdGVzdG1vZGUuaCBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21l
+ZGlhdGVrL210NzYvdGVzdG1vZGUuaA0KaW5kZXggNjkxZmU1Ny4uMDJjOTQ5NSAxMDA2NDQNCi0t
+LSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvdGVzdG1vZGUuaA0KKysrIGIv
+ZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni90ZXN0bW9kZS5oDQpAQCAtOTksOCAr
+OTksOCBAQCBlbnVtIG10NzZfdGVzdG1vZGVfc3RhdHNfYXR0ciB7DQogICoNCiAgKiBATVQ3Nl9U
+TV9SWF9BVFRSX0ZSRVFfT0ZGU0VUOiBmcmVxdWVuY3kgb2Zmc2V0IChzMzIpDQogICogQE1UNzZf
+VE1fUlhfQVRUUl9SQ1BJOiByZWNlaXZlZCBjaGFubmVsIHBvd2VyIGluZGljYXRvciAoYXJyYXks
+IHU4KQ0KLSAqIEBNVDc2X1RNX1JYX0FUVFJfSUJfUlNTSTogaW50ZXJuYWwgaW5iYW5kIFJTU0kg
+KHM4KQ0KLSAqIEBNVDc2X1RNX1JYX0FUVFJfV0JfUlNTSTogaW50ZXJuYWwgd2lkZWJhbmQgUlNT
+SSAoczgpDQorICogQE1UNzZfVE1fUlhfQVRUUl9JQl9SU1NJOiBpbnRlcm5hbCBpbmJhbmQgUlNT
+SSAoYXJyYXksIHM4KQ0KKyAqIEBNVDc2X1RNX1JYX0FUVFJfV0JfUlNTSTogaW50ZXJuYWwgd2lk
+ZWJhbmQgUlNTSSAoYXJyYXksIHM4KQ0KICAqLw0KIGVudW0gbXQ3Nl90ZXN0bW9kZV9yeF9hdHRy
+IHsNCiAJTVQ3Nl9UTV9SWF9BVFRSX1VOU1BFQywNCi0tIA0KMi4xNy4xDQo=
 
-Looks good!
-
-Acked-by: Pali Rohár <pali@kernel.org>
-
-> ---
->  include/linux/mmc/sdio_ids.h | 5 +++++
->  1 file changed, 5 insertions(+)
-> 
-> diff --git a/include/linux/mmc/sdio_ids.h b/include/linux/mmc/sdio_ids.h
-> index 12036619346c..20a48162f7fc 100644
-> --- a/include/linux/mmc/sdio_ids.h
-> +++ b/include/linux/mmc/sdio_ids.h
-> @@ -25,6 +25,11 @@
->   * Vendors and devices.  Sort key: vendor first, device next.
->   */
->  
-> +// Silabs does not use a reliable vendor ID. To avoid conflicts, the driver
-> +// won't probe the device if it is not also declared in the DT.
-> +#define SDIO_VENDOR_ID_SILABS			0x0000
-> +#define SDIO_DEVICE_ID_SILABS_WF200		0x1000
-> +
->  #define SDIO_VENDOR_ID_STE			0x0020
->  #define SDIO_DEVICE_ID_STE_CW1200		0x2280
->  
-> -- 
-> 2.28.0
-> 
