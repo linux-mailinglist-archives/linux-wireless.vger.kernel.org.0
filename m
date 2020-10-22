@@ -2,96 +2,95 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D83E295914
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 Oct 2020 09:27:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C9C5E295957
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 Oct 2020 09:39:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2506391AbgJVH15 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 22 Oct 2020 03:27:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52836 "EHLO
+        id S2508670AbgJVHjH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 22 Oct 2020 03:39:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54552 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2440738AbgJVH15 (ORCPT
+        with ESMTP id S2506709AbgJVHjH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 22 Oct 2020 03:27:57 -0400
-Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com [IPv6:2607:f8b0:4864:20::543])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68A1AC0613CE
-        for <linux-wireless@vger.kernel.org>; Thu, 22 Oct 2020 00:27:57 -0700 (PDT)
-Received: by mail-pg1-x543.google.com with SMTP id s22so416079pga.9
-        for <linux-wireless@vger.kernel.org>; Thu, 22 Oct 2020 00:27:57 -0700 (PDT)
+        Thu, 22 Oct 2020 03:39:07 -0400
+Received: from mail-pj1-x1042.google.com (mail-pj1-x1042.google.com [IPv6:2607:f8b0:4864:20::1042])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DD37C0613CE
+        for <linux-wireless@vger.kernel.org>; Thu, 22 Oct 2020 00:39:07 -0700 (PDT)
+Received: by mail-pj1-x1042.google.com with SMTP id b6so470009pju.1
+        for <linux-wireless@vger.kernel.org>; Thu, 22 Oct 2020 00:39:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=broadcom.com; s=google;
         h=subject:to:cc:references:from:message-id:date:user-agent
          :mime-version:in-reply-to;
-        bh=dTuCiQpdvLzdOlCNjb4TqHfwyO04bx5KYyYZWxLd2jo=;
-        b=S5Jo1tqqWq98bSK5Q4oIfhqgc40/yrCqjxQ/EIgICxxZromzsVHwOFVuxxBeCyziyA
-         i6+mgi7fRtqX//00591ytm5+TWShwPNVy/0KLeA6dq/C4HtjRRRNx/RVOyaUijeOQmmi
-         r0UAUvPh+Adm+F7CCY6BsVhQOoqpyova8UPaI=
+        bh=En0YbDLGV73ahIZfJxApNPUysR3ubQYKTgJAC/q0J48=;
+        b=EFqxTHb9X7feFA2nllpCLlX+gK/4ziIFfyk0cNdHzWKIuObzoCwKPEY/NoQ9B5OEZ/
+         JpLDqYooFBITLPHwf6elbjQ8uCt3MDS3RbqpJeXmLbjtpwEU0pYYl2xLak5G/tc+GQd7
+         1uMFaqnXXH9VosMSsvRDdmsANiBsLS99njPR0=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:subject:to:cc:references:from:message-id:date
          :user-agent:mime-version:in-reply-to;
-        bh=dTuCiQpdvLzdOlCNjb4TqHfwyO04bx5KYyYZWxLd2jo=;
-        b=OxeusCJZlYAN4iG7mFQSbmrcxgmcSGcdd685FOf5IZSTog89CWA/50ziXS+r6TN80h
-         I7h5qhZ48nHDRyHfiWGcwwHIsqvLgxNzLpZ3VL3Od/ZXDJsISDYa5e+OXAUZQQABWnXU
-         dxnoU6sHLcbcAidj6cjXRKCZKeX56O6+A+269VpIITpScf7P9cL549+39k3LovvliXbC
-         hUhCXyyvlEIABIjJAHRYs9gqII9y6+h68cRufWIseC0fHzZKe7Oqdph0f1UOsrdVW4Bz
-         XUAWDYxMvm91HoW6kW50b8JuNrhvPWawIqi/EYYkUX0ANrXYj735dCFsSzwVhlFZ6r5f
-         vvLQ==
-X-Gm-Message-State: AOAM533TVsKpQB3hbMqnnGmjdURCJu/yC7gQ1Oh04LHQqDKgJcQz8gsQ
-        ibVJbYHM32vShx9zmS/YYvyUfA==
-X-Google-Smtp-Source: ABdhPJz5aGTJQsTkEgshfQYELnbOTIuVeFUeZiK/3QTOr/49WXnF6luen1vpqF4gOzlRDUjLU6OOBw==
-X-Received: by 2002:a63:4514:: with SMTP id s20mr1118852pga.298.1603351676802;
-        Thu, 22 Oct 2020 00:27:56 -0700 (PDT)
+        bh=En0YbDLGV73ahIZfJxApNPUysR3ubQYKTgJAC/q0J48=;
+        b=WKuty47h+BRw4cDpC09uyReuS0HMvAXi5MK9MYGgEsSYQuRHiWvhCOjGVA6jjxQn9Y
+         6sOjF7MultTvEUoHOQUSgE/GziczXdQULsEacHnYBKwPtmKQcoQF6FEqFybNVKGp8Kqc
+         l7UJ9AgNY25bGs0ygwyjcvf8xOT4N4ZmjbFaow9LuGXn7mcCPVGWMSAlqDcxjcH3gVPG
+         NPvxUbD05Nd2Z7c+EwFGkyFjhpRf30xQNwYOiB6W3nwBV8TG4iRlM1Ndd2TBW4mfsuIg
+         P5dq5O0L4BvveE3u7iqn+muNz2n8drux4JWpDOv+0cBIZCbePLx437FBKxxc+6WCQvwe
+         aYyA==
+X-Gm-Message-State: AOAM532Vy1BkDM2UDxhxeWiKddnTVbc7BsKY/tBY7Tl4PHibTVodjaV3
+        pdrRA2LYqM3GeEwdAchP0O1IDg==
+X-Google-Smtp-Source: ABdhPJyapEgJhydV58eHwdpoNRAT5BXCemkT9BPmVKjU/VVKb/j1Iw0OBJ37Pj1C7CcdAGny07J7Uw==
+X-Received: by 2002:a17:90a:160f:: with SMTP id n15mr1144026pja.75.1603352346845;
+        Thu, 22 Oct 2020 00:39:06 -0700 (PDT)
 Received: from [192.168.178.129] (f140230.upc-f.chello.nl. [80.56.140.230])
-        by smtp.gmail.com with ESMTPSA id y124sm1011107pfy.28.2020.10.22.00.27.54
+        by smtp.gmail.com with ESMTPSA id s20sm1113887pfc.201.2020.10.22.00.39.00
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 22 Oct 2020 00:27:56 -0700 (PDT)
-Subject: Re: [PATCH v2 2/4] brcmfmac: don't allow arp/nd offload to be enabled
- if ap mode exists
+        Thu, 22 Oct 2020 00:39:06 -0700 (PDT)
+Subject: Re: [PATCH v2 3/4] brcmfmac: support the forwarding packet
 To:     Wright Feng <wright.feng@cypress.com>,
         linux-wireless@vger.kernel.org, Kalle Valo <kvalo@codeaurora.org>,
         chi-hsien.lin@cypress.com
 Cc:     brcm80211-dev-list@broadcom.com, brcm80211-dev-list@cypress.com,
         Franky Lin <franky.lin@broadcom.com>,
         Hante Meuleman <hante.meuleman@broadcom.com>,
+        Jia-Shyr Chuang <joseph.chuang@cypress.com>,
         Ting-Ying Li <tingying.li@cypress.com>
 References: <20201020022812.37064-1-wright.feng@cypress.com>
- <20201020022812.37064-3-wright.feng@cypress.com>
+ <20201020022812.37064-4-wright.feng@cypress.com>
 From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
-Message-ID: <c3f67f92-5313-ee47-3a08-8de841a53f1f@broadcom.com>
-Date:   Thu, 22 Oct 2020 09:27:52 +0200
+Message-ID: <dbcf7a1c-ae6d-de58-c84f-15c89ff131d6@broadcom.com>
+Date:   Thu, 22 Oct 2020 09:38:57 +0200
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
  Thunderbird/78.3.2
 MIME-Version: 1.0
-In-Reply-To: <20201020022812.37064-3-wright.feng@cypress.com>
+In-Reply-To: <20201020022812.37064-4-wright.feng@cypress.com>
 Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="0000000000002b935805b23d67ec"
+        boundary="0000000000001a719405b23d8f31"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---0000000000002b935805b23d67ec
+--0000000000001a719405b23d8f31
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 
 On 10/20/2020 4:28 AM, Wright Feng wrote:
-> From: Ting-Ying Li <tingying.li@cypress.com>
+> From: Jia-Shyr Chuang <joseph.chuang@cypress.com>
 > 
-> Add a condition to determine whether arp/nd offload enabling
-> request is allowed. If there is any interface acts as ap
-> mode and is operating, then reject the request of arp oflload
-> enabling from cfg80211.
+> Support packet forwarding mechanism for some special usages on PCIE,
+> and observed that packet only send BE when pumping iperf with VI.
+> we need to set priority before forwarding packet.
 
-Reviewed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-> Signed-off-by: Ting-Ying Li <tingying.li@cypress.com>
-> Signed-off-by: Wright Feng <wright.feng@cypress.com>
-> ---
->   .../broadcom/brcm80211/brcmfmac/cfg80211.c      | 17 ++++++++++++++++-
->   .../broadcom/brcm80211/brcmfmac/cfg80211.h      |  1 +
->   .../wireless/broadcom/brcm80211/brcmfmac/core.c |  5 +++++
->   3 files changed, 22 insertions(+), 1 deletion(-)
+I commented on this feature in the previous patch set, but did not see 
+any follow up on that.
 
---0000000000002b935805b23d67ec
+https://patchwork.kernel.org/project/linux-wireless/patch/20200901063237.15549-4-wright.feng@cypress.com/
+
+
+Regards,
+Arend
+
+--0000000000001a719405b23d8f31
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -162,13 +161,13 @@ WwHVQUbAn+xLMIQpycIQFoJIGJX4MeaTSMfLNP2w7nP2uLNgIeleF284vS0XVkBXSCgIGylP4SN+
 HQYrv7fVCbtp+c7nFvP7MYICbzCCAmsCAQEwbTBdMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xv
 YmFsU2lnbiBudi1zYTEzMDEGA1UEAxMqR2xvYmFsU2lnbiBQZXJzb25hbFNpZ24gMiBDQSAtIFNI
 QTI1NiAtIEczAgxR3m7Pj6LvQiWjJy0wDQYJYIZIAWUDBAIBBQCggdQwLwYJKoZIhvcNAQkEMSIE
-IDrhlztLp87zjTo+Zznenqg/nd/jEugg1px5/Ekprg2SMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0B
-BwEwHAYJKoZIhvcNAQkFMQ8XDTIwMTAyMjA3Mjc1N1owaQYJKoZIhvcNAQkPMVwwWjALBglghkgB
+ICMkJ8/HSFMkd/fVaqBCM7kaSbF0cDRXXATWAkIM3aDBMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0B
+BwEwHAYJKoZIhvcNAQkFMQ8XDTIwMTAyMjA3MzkwN1owaQYJKoZIhvcNAQkPMVwwWjALBglghkgB
 ZQMEASowCwYJYIZIAWUDBAEWMAsGCWCGSAFlAwQBAjAKBggqhkiG9w0DBzALBgkqhkiG9w0BAQow
-CwYJKoZIhvcNAQEHMAsGCWCGSAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQAU+GctW/no1X/eHiTg
-qKKkBEcMcHbbGXMHBsp1YrPxs3YyZ4FNuCLrZMnXc8oIbTLC2VM3up3IIfeg+4trfxVHjqHf+e6D
-s+fAYTaGgwUAMrqXn9WGID794h2Fk4xDFOqfWS5LcykrX2vsT0DL1jUcAYVjHoJtsAgeXLsEir9v
-wJ9g4gF+70g0l6adVZtubqzexZcQgbv7/M7nJu3B39KL27Yg+Y3XsR+kj9s6rEzZ23HEdEKpUXsP
-Z9wC20rLVBR76M6HL78jIVGS2EFBCWoOJhpsz+69M/aB8ZZ46Sc93ZbDI5UT6DrbXp+9E3JWv4/2
-2QBwNwv6BdTR3OEYBr02
---0000000000002b935805b23d67ec--
+CwYJKoZIhvcNAQEHMAsGCWCGSAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQAJ7VoDgg0IrrYf3MPM
+dohZ9IG+9tNcACk6Tg9W1hfv2CjdpusWGrrv90vrBSsghd/8MDUhtYWJZ/UfCrSdrL2BMX+vVT1S
+N6xd45xfGWvnkNcfj0xG+vsi+J0MofZjgAM0wD2ltvTnQdCOC1GumxGYWaHde5HPMjGLe7izCh4B
+RUv8wAjkInYmvqISrqDg+FoUrlUJHTup/eztJ3W6qCrBMRXeQGur+93PhHKHejfntrAQBRW+gTV1
+RIZ9BehZojjIzSTZj5wy1rskTCE4P33CRy2hANSsHB8AYMFRkE01eOa1NY5gfDRdh0Cw1LRi9HFr
+OJH2mq/PJsBo1EFoctA9
+--0000000000001a719405b23d8f31--
