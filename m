@@ -2,146 +2,132 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 07AAC297166
-	for <lists+linux-wireless@lfdr.de>; Fri, 23 Oct 2020 16:36:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F4D1297238
+	for <lists+linux-wireless@lfdr.de>; Fri, 23 Oct 2020 17:26:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1750611AbgJWOga (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 23 Oct 2020 10:36:30 -0400
-Received: from mx08-0057a101.pphosted.com ([185.183.31.45]:54238 "EHLO
-        mx08-0057a101.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S372730AbgJWOga (ORCPT
+        id S465762AbgJWP0W (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 23 Oct 2020 11:26:22 -0400
+Received: from mail-io1-f71.google.com ([209.85.166.71]:33050 "EHLO
+        mail-io1-f71.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S465752AbgJWP0W (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 23 Oct 2020 10:36:30 -0400
-X-Greylist: delayed 1795 seconds by postgrey-1.27 at vger.kernel.org; Fri, 23 Oct 2020 10:36:29 EDT
-Received: from pps.filterd (m0214196.ppops.net [127.0.0.1])
-        by mx07-0057a101.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 09NE1LGp019836;
-        Fri, 23 Oct 2020 16:06:29 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=westermo.com; h=to : from : subject
- : cc : message-id : date : mime-version : content-type; s=12052020;
- bh=Mec28ZzRek3yuiBOiG8Z1P4qwiFsoIit0oTeiJ2jLzc=;
- b=M0Wh7w2QmwCyCBDuF9hzOnp6Qd1qTJeoYFOC4AzwR1GtMH3wsEBD43lDKKRC3auebQ1o
- pK6eenYVwPtq63cInwFbFoZTwg8QQKW1rj3xOmz+bDL5ez+M5n4pyPmbJeFnOpkTVmGC
- ayCWfwLiZtYRu17R+30VYdAoaLupjpis+yQWl7enA/zIUP94I1Qcbpqw5ceyYRZaAijp
- 1zYmNOtnv+XM/7BYhb7ZsKrgKCB4lD2F/ZXd0g7jLF3zpQwe7cOKGFn/2wSoMHBiLCzF
- MOgITC3DKJfHnH+jiHuKRft2umOifHJxWY+srXCCxdVLdVwwL/NYbtTZuK3Z1Ye0IG7t og== 
-Received: from mail.beijerelectronics.com ([195.67.87.131])
-        by mx07-0057a101.pphosted.com with ESMTP id 34asjahucg-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NOT);
-        Fri, 23 Oct 2020 16:06:29 +0200
-Received: from wsests-s0004.westermo.com (192.168.10.12) by
- EX01GLOBAL.beijerelectronics.com (10.101.10.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P384) id
- 15.1.1847.3; Fri, 23 Oct 2020 16:06:27 +0200
-Received: from [172.29.80.42] (172.29.100.2) by wsests-s0004.westermo.com
- (192.168.10.12) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P384) id 15.1.1847.3; Fri, 23
- Oct 2020 16:06:27 +0200
-To:     <linux-wireless@vger.kernel.org>
-From:   Zefir Kurtisi <zefku@westermo.com>
-Subject: [RFT] ath9k: multi-rate-retry fails at HW level
-CC:     Felix Fietkau <nbd@nbd.name>, <qca-developer-program@qualcomm.com>
-Message-ID: <2a8573d7-6683-3414-a8af-dab460772205@westermo.com>
-Date:   Fri, 23 Oct 2020 16:06:27 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        Fri, 23 Oct 2020 11:26:22 -0400
+Received: by mail-io1-f71.google.com with SMTP id m10so1430350ioq.0
+        for <linux-wireless@vger.kernel.org>; Fri, 23 Oct 2020 08:26:21 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
+        bh=fVF0gABiOKEQfoDST5uccDfvXF8ctJ4vneZIvOOcqcM=;
+        b=WGZo4T60BE5xIAHQM0zhuVNrhaQrfLtK1kG+bByHdCdwhbQkGSH3HV4aLs0AdFlpuX
+         khK/x0FmteT53k/AhsCqP3xPv59BQY+DRmcMpNeRUh9x9YB3EO4kUjxKUIRe3xjbtuZi
+         aPnaBk8S22SvRGROWGFXML/alkrtLlVo0aUIv8LCZIBXjmGZXh0abfvtBy/PdoRRqXzx
+         1yfh3AeUpckYu2cV94MyLAivKzeIlOuZXL9sv6ClXnrN2cBgJb+am1D9j3Do+hJJ310C
+         EOxV7rBjpv3gRCNvmTkm2oaOl2eQXWNaQPp+jBm2xAoGbnT7qYVTVs3fMPDxCTUngPik
+         f4Rg==
+X-Gm-Message-State: AOAM532MEE9zePvaMCmUv+361Ec5v9bS0rbGMghKNYLd9/K/t1luQkO5
+        eNvz84iI2M2I7Dx8DLSWjTBBv+lhOsxNdY82SxSuVO8V/CWC
+X-Google-Smtp-Source: ABdhPJx1GJ3FEApap2mJFzhYOOp0cZktQgnYogiRNJ0zbC3dZOhzXU448rZupVa+jORc+uwTXnnhMWtbbsMZyRcKKsZ1Uj/yxR/8
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
-        boundary="------------B8AD4A121ED763E21333DFEC"
-Content-Language: en-US
-X-Originating-IP: [172.29.100.2]
-X-ClientProxiedBy: wsests-s0004.westermo.com (192.168.10.12) To
- wsests-s0004.westermo.com (192.168.10.12)
+X-Received: by 2002:a92:b503:: with SMTP id f3mr2130770ile.23.1603466781178;
+ Fri, 23 Oct 2020 08:26:21 -0700 (PDT)
+Date:   Fri, 23 Oct 2020 08:26:21 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <000000000000e6c3d405b25833b7@google.com>
+Subject: general protection fault in call_commit_handler
+From:   syzbot <syzbot+444248c79e117bc99f46@syzkaller.appspotmail.com>
+To:     davem@davemloft.net, johannes@sipsolutions.net, kuba@kernel.org,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---------------B8AD4A121ED763E21333DFEC
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Hello,
 
-Hi,
+syzbot found the following issue on:
 
-I am running into a strange issue with the ath9k operating a 9590 device which to
-me seems like a HW issue, but since work on rate controllers is already going for
-decades, I hardly can imagine this never showed up.
+HEAD commit:    9ff9b0d3 Merge tag 'net-next-5.10' of git://git.kernel.org..
+git tree:       bpf-next
+console output: https://syzkaller.appspot.com/x/log.txt?x=12377207900000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=10a98dcaa4fa65a2
+dashboard link: https://syzkaller.appspot.com/bug?extid=444248c79e117bc99f46
+compiler:       gcc (GCC) 10.1.0-syz 20200507
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=105d15a4500000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=11973e78500000
 
-The issue observed is this: the TX status descriptors never report rateindex 1, it
-is always 0, 2, or 3, but never 1.
+Bisection is inconclusive: the issue happens on the oldest tested release.
 
-I noticed this by overwriting the rate configuration provided by minstrel to a
-static setup, e.g. (7,3)(5,3)(3,3)(1,3), all MCS. The device operates as iperf
-client to a connected AP and continuously transmits data. While at that, the
-attenuation between the endpoints is gradually increased, expecting to see a
-gradual shift in the reported TX status rateindex from 0 to 3. But nada, the
-values reported are 0,2, and 3 - never 1.
+bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=10bd270c500000
+final oops:     https://syzkaller.appspot.com/x/report.txt?x=12bd270c500000
+console output: https://syzkaller.appspot.com/x/log.txt?x=14bd270c500000
 
-I double checked that the TX descriptors are correctly set with the rates and
-retry counts - all looking sane.
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+444248c79e117bc99f46@syzkaller.appspotmail.com
 
-More obvious, after changing the rate configuration to (7,3)(1,3)(5,3)(3,3) the
-expectation would be to have either 0 or 1 reported as rateidx, since the
-transmission ought to be successful with the lowest rate or never. Again all rates
-are reported but 1.
+general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] PREEMPT SMP KASAN
+KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
+CPU: 1 PID: 8503 Comm: syz-executor669 Not tainted 5.9.0-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
+RIP: 0010:call_commit_handler+0x8b/0x110 net/wireless/wext-core.c:900
+Code: 00 00 fc ff df 48 89 fa 48 c1 ea 03 80 3c 02 00 75 7d 48 8b 9d e0 01 00 00 48 b8 00 00 00 00 00 fc ff df 48 89 da 48 c1 ea 03 <80> 3c 02 00 75 73 48 b8 00 00 00 00 00 fc ff df 48 8b 1b 48 89 da
+RSP: 0018:ffffc90001927ca8 EFLAGS: 00010246
+RAX: dffffc0000000000 RBX: 0000000000000000 RCX: ffffffff8844a758
+RDX: 0000000000000000 RSI: ffffffff8844a765 RDI: ffff88809b6f81e0
+RBP: ffff88809b6f8000 R08: 0000000000000000 R09: ffff88809b6f8047
+R10: 0000000000000000 R11: 0000000000000001 R12: ffff88809b6f8040
+R13: ffffc90001927db0 R14: ffff88809b6f8000 R15: 0000000000000004
+FS:  0000000000725880(0000) GS:ffff8880b9f00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00000000200000c0 CR3: 00000000aabca000 CR4: 00000000001506e0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ ioctl_standard_call+0x1b8/0x1f0 net/wireless/wext-core.c:1029
+ wireless_process_ioctl+0xc8/0x4c0 net/wireless/wext-core.c:954
+ wext_ioctl_dispatch net/wireless/wext-core.c:987 [inline]
+ wext_ioctl_dispatch net/wireless/wext-core.c:975 [inline]
+ wext_handle_ioctl+0x26b/0x280 net/wireless/wext-core.c:1048
+ sock_ioctl+0x439/0x730 net/socket.c:1119
+ vfs_ioctl fs/ioctl.c:48 [inline]
+ __do_sys_ioctl fs/ioctl.c:753 [inline]
+ __se_sys_ioctl fs/ioctl.c:739 [inline]
+ __x64_sys_ioctl+0x193/0x200 fs/ioctl.c:739
+ do_syscall_64+0x2d/0x70 arch/x86/entry/common.c:46
+ entry_SYSCALL_64_after_hwframe+0x44/0xa9
+RIP: 0033:0x441549
+Code: e8 ec 05 03 00 48 83 c4 18 c3 0f 1f 80 00 00 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 0f 83 7b 0d fc ff c3 66 2e 0f 1f 84 00 00 00 00
+RSP: 002b:00007ffec8be6028 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+RAX: ffffffffffffffda RBX: 00007ffec8be6050 RCX: 0000000000441549
+RDX: 00000000200000c0 RSI: 0000000000008b04 RDI: 0000000000000003
+RBP: 0000000000000003 R08: 0000002000000000 R09: 0000002000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000032
+R13: 0000000000000000 R14: 000000000000000c R15: 0000000000000004
+Modules linked in:
+---[ end trace e41146864548f580 ]---
+RIP: 0010:call_commit_handler+0x8b/0x110 net/wireless/wext-core.c:900
+Code: 00 00 fc ff df 48 89 fa 48 c1 ea 03 80 3c 02 00 75 7d 48 8b 9d e0 01 00 00 48 b8 00 00 00 00 00 fc ff df 48 89 da 48 c1 ea 03 <80> 3c 02 00 75 73 48 b8 00 00 00 00 00 fc ff df 48 8b 1b 48 89 da
+RSP: 0018:ffffc90001927ca8 EFLAGS: 00010246
+RAX: dffffc0000000000 RBX: 0000000000000000 RCX: ffffffff8844a758
+RDX: 0000000000000000 RSI: ffffffff8844a765 RDI: ffff88809b6f81e0
+RBP: ffff88809b6f8000 R08: 0000000000000000 R09: ffff88809b6f8047
+R10: 0000000000000000 R11: 0000000000000001 R12: ffff88809b6f8040
+R13: ffffc90001927db0 R14: ffff88809b6f8000 R15: 0000000000000004
+FS:  0000000000725880(0000) GS:ffff8880b9f00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f952003c058 CR3: 00000000aabca000 CR4: 00000000001506e0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
 
-Now the question for me is: what is the HW exactly doing with such a
-configuration? Is it skipping the second rate, or is it just reporting wrong?
-
-Both possibilities have great impact, since upper layers (like airtime) use the
-returned rateidx to calculate and configure operating parameters at runtime.
-
-
-If this is a know issue, nevermind and thanks for pointing me to it. Otherwise if
-some of you have the named device operational, it would help a lot to get the
-issue confirmed. Just apply the attached patch and perform some TX testing in
-either attenuation adjustable or varying link condition setups. Whenever a frame
-is reported to have been transmitted at a rateidx > 0, the collected stats are
-logged, e.g.
-MRR: 2: [51029, 0, 4741, 6454]
-
-In essence, the failure is confirmed if the counter for 1 is 0 or very low
-compared to higher numbers for 0, 2, or 3.
-
-
-
-Cheers,
-Zefir
-
---------------B8AD4A121ED763E21333DFEC
-Content-Type: text/x-patch; charset="UTF-8";
-	name="0001-ath9k-count-TX-successes-at-rate.patch"
-Content-Transfer-Encoding: 7bit
-Content-Disposition: attachment;
-	filename="0001-ath9k-count-TX-successes-at-rate.patch"
-
-From 1548245968a97592b39abe1867106a22a30250c8 Mon Sep 17 00:00:00 2001
-From: Zefir Kurtisi <zefir.kurtisi@westermo.com>
-Date: Fri, 23 Oct 2020 14:31:54 +0200
-Subject: [PATCH] ath9k: count TX successes at rate
 
 ---
- drivers/net/wireless/ath/ath9k/xmit.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-diff --git a/drivers/net/wireless/ath/ath9k/xmit.c b/drivers/net/wireless/ath/ath9k/xmit.c
-index afb6a2f..de87ce7 100644
---- a/drivers/net/wireless/ath/ath9k/xmit.c
-+++ b/drivers/net/wireless/ath/ath9k/xmit.c
-@@ -3074,6 +3074,13 @@ void ath_tx_edma_tasklet(struct ath_softc *sc)
- 			ath_dbg(common, XMIT, "Error processing tx status\n");
- 			break;
- 		}
-+/* count number of successful TXes at each rateidx, print stats each time rateidx > 0 */
-+static u32 rthist[IEEE80211_TX_MAX_RATES];
-+rthist[ts.ts_rateindex]++;
-+if (ts.ts_rateindex)
-+	printk("MRR: %d: [%d, %d, %d, %d]\n", ts.ts_rateindex,
-+		rthist[0], rthist[1], rthist[2], rthist[3]);
-+
- 
- 		/* Process beacon completions separately */
- 		if (ts.qid == sc->beacon.beaconq) {
--- 
-2.17.1
-
-
---------------B8AD4A121ED763E21333DFEC--
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+For information about bisection process see: https://goo.gl/tpsmEJ#bisection
+syzbot can test patches for this issue, for details see:
+https://goo.gl/tpsmEJ#testing-patches
