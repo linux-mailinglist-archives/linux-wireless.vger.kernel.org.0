@@ -2,70 +2,84 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AC73F2978B8
-	for <lists+linux-wireless@lfdr.de>; Fri, 23 Oct 2020 23:14:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F613298161
+	for <lists+linux-wireless@lfdr.de>; Sun, 25 Oct 2020 11:56:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1755457AbgJWVOi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 23 Oct 2020 17:14:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36302 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1755386AbgJWVOi (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 23 Oct 2020 17:14:38 -0400
-Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com [IPv6:2607:f8b0:4864:20::443])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95615C0613CE
-        for <linux-wireless@vger.kernel.org>; Fri, 23 Oct 2020 14:14:36 -0700 (PDT)
-Received: by mail-pf1-x443.google.com with SMTP id 126so2023724pfu.4
-        for <linux-wireless@vger.kernel.org>; Fri, 23 Oct 2020 14:14:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=P71T+Kpg5MOgFYOFRnTK618HMq/o9mo5YBqH2dbrEgk=;
-        b=BoCnvYihRsvf35k33Ps/dVRA9Y3Dl0jPf3SGgthL3mIWSUqEYByU0UApC7WFMiJWs6
-         DzLcvBB5f04SZ6tUIXJBvNGp/oLDhsKR/2/DdDY9n2KWxclMjN+Qd/Be6c+2lHsjKHe1
-         lSU9/kxdwgYdMrW2+dTjUTiRTGdqwVw9KOlUs=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=P71T+Kpg5MOgFYOFRnTK618HMq/o9mo5YBqH2dbrEgk=;
-        b=r9CfKtpmdD9nOEpqKm6bs4aOfGKfTHK3Y3UVc7QfsmDLE5S1vOj5hDq7DVW3sZsROb
-         cKlvV98QoqCF+yKTGoS2UefaMnmOhv3FdSH/rRxwxwu4JVakv+C8NsNO3WVzC9R9aEIa
-         5rnJAcnbwP4zKnYgaJeBjYRWxCJScdn0vbt9gXSv8ipt1RB0z2d/+ZRx7IWumvbtrpnh
-         blL4E3TEgU3RsLxm4d/kkNxQ3fdzvLd5zqdNeHQ4Nyzs7eur5t2pX+tfziwVhQjA/aHE
-         F7Mxkq2OWWxMxXl4pbwe3K+iGMgXOJS2yJJhAkbnI2UUSYL283TJN7DkeHsnsvlFQ2e2
-         +rYQ==
-X-Gm-Message-State: AOAM533gem5N5s0sBPRrEzFwVb+8qzPUyQ7BFBEaZ6L+kPG7HYT7Aosp
-        gDA12zYyiZYzaoAdAve4JxLLhw==
-X-Google-Smtp-Source: ABdhPJxrOAkGB9aD7alcvtCbkZ2rgme5I/bNKCZ/OLr4HSQXnwm7bkykoEAaG8Pn02QRaHgPU+9j1A==
-X-Received: by 2002:aa7:8681:0:b029:153:7c2e:6ff5 with SMTP id d1-20020aa786810000b02901537c2e6ff5mr863359pfo.57.1603487676178;
-        Fri, 23 Oct 2020 14:14:36 -0700 (PDT)
-Received: from kuabhs-cdev.c.googlers.com.com (56.4.82.34.bc.googleusercontent.com. [34.82.4.56])
-        by smtp.gmail.com with ESMTPSA id bg11sm3578914pjb.49.2020.10.23.14.14.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 23 Oct 2020 14:14:35 -0700 (PDT)
-From:   Abhishek Kumar <kuabhs@chromium.org>
-To:     dianders@chromium.org
-Cc:     ath10k@lists.infradead.org, briannorris@chromium.org,
-        kuabhs@chromium.org, kvalo@codeaurora.org,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        pillair@codeaurora.org
-Subject: Re: [PATCH] ath10k: add option for chip-id based BDF selection
-Date:   Fri, 23 Oct 2020 21:13:50 +0000
-Message-Id: <20201023211350.740528-1-kuabhs@chromium.org>
-X-Mailer: git-send-email 2.29.0.rc1.297.gfa9743e501-goog
-In-Reply-To: <CAD=FV=Xv7Usev=S_ViWPPsa0xL42KDymjEkqJF7S4CzDiuxP3g@mail.gmail.com>
-References: <CAD=FV=Xv7Usev=S_ViWPPsa0xL42KDymjEkqJF7S4CzDiuxP3g@mail.gmail.com>
+        id S1415317AbgJYK4a (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 25 Oct 2020 06:56:30 -0400
+Received: from mail.kernel.org ([198.145.29.99]:34758 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729434AbgJYK43 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 25 Oct 2020 06:56:29 -0400
+Received: from localhost.localdomain (unknown [151.66.125.178])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 6B7D3222D9;
+        Sun, 25 Oct 2020 10:56:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1603623389;
+        bh=nqcfKlngMYbe5CURXz47Q6fr00okgSrEeYnJW/ieuRU=;
+        h=From:To:Cc:Subject:Date:From;
+        b=IKJe/Sx7LEGKNvC0+fFInLhaqzB/DeLaEP9FTmsYfgPQaHPQjUlV5Wp8Urgi8OyMh
+         eN3iCFrXuUGdCYweETCDC/w7MYl1OyTCJJQeeisGS2zM9MUxiWDS2fFUNUnkKrjQsX
+         ws0bQJtxqBcnqhxJQMgR0GQKpFeJfPeeCQHEv1+0=
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
+        ryder.lee@mediatek.com
+Subject: [PATCH] mt76: mt7915: make mt7915_eeprom_read static
+Date:   Sun, 25 Oct 2020 11:56:16 +0100
+Message-Id: <668602a204de889fd6700950538027f50a36475d.1603623178.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Additionally tested on ath10k based non-QMI platform
+Make mt7915_eeprom_read routine static since it is used only in eeprom.c
 
-Tested-on: QCA6174 HW3.2 WLAN.RM.4.4.1-00157-QCARMSWPZ-1
-Tested-by: Abhishek Kumar <kuabhs@chromium.org>
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+ drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c | 9 ++-------
+ drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h | 1 -
+ 2 files changed, 2 insertions(+), 8 deletions(-)
 
--Abhishek
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c b/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c
+index 7deba7ebd68a..cf3caa032038 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c
+@@ -4,16 +4,11 @@
+ #include "mt7915.h"
+ #include "eeprom.h"
+ 
+-static inline bool mt7915_efuse_valid(u8 val)
+-{
+-	return !(val == 0xff);
+-}
+-
+-u32 mt7915_eeprom_read(struct mt7915_dev *dev, u32 offset)
++static u32 mt7915_eeprom_read(struct mt7915_dev *dev, u32 offset)
+ {
+ 	u8 *data = dev->mt76.eeprom.data;
+ 
+-	if (!mt7915_efuse_valid(data[offset]))
++	if (data[offset] == 0xff)
+ 		mt7915_mcu_get_eeprom(dev, offset);
+ 
+ 	return data[offset];
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
+index 89cabda64f41..984fb5f90af9 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
+@@ -261,7 +261,6 @@ void mt7915_unregister_device(struct mt7915_dev *dev);
+ int mt7915_register_ext_phy(struct mt7915_dev *dev);
+ void mt7915_unregister_ext_phy(struct mt7915_dev *dev);
+ int mt7915_eeprom_init(struct mt7915_dev *dev);
+-u32 mt7915_eeprom_read(struct mt7915_dev *dev, u32 offset);
+ int mt7915_eeprom_get_target_power(struct mt7915_dev *dev,
+ 				   struct ieee80211_channel *chan,
+ 				   u8 chain_idx);
+-- 
+2.26.2
+
