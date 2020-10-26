@@ -2,39 +2,38 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B717D299FC4
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Oct 2020 01:25:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4ECB5299F80
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Oct 2020 01:23:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2410220AbgJZXxv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 26 Oct 2020 19:53:51 -0400
-Received: from mail.kernel.org ([198.145.29.99]:58712 "EHLO mail.kernel.org"
+        id S2441353AbgJ0AWv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 26 Oct 2020 20:22:51 -0400
+Received: from mail.kernel.org ([198.145.29.99]:34178 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2410195AbgJZXxt (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 26 Oct 2020 19:53:49 -0400
+        id S2410335AbgJZXzj (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 26 Oct 2020 19:55:39 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 4A99020770;
-        Mon, 26 Oct 2020 23:53:48 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 5DE6D22384;
+        Mon, 26 Oct 2020 23:55:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1603756429;
-        bh=hGuou7LzEiV7Chw+A9QUZwOYpycAQZ55OtpYzWggFHw=;
+        s=default; t=1603756538;
+        bh=0ae7PabnxCOKNlt1cA/HXiMihXNfOWTEJTsGHrkhhTQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PMT4dVheKbnI9frC/SVg4fSouj1tlUfh2CAvORxO1+1XOXBwFujx8l6WrkvYyEhu/
-         dmG4LJTrHTHJqWXdP6G4MNFm7pyO9HCsV3EiiKHlrgw3YndWHGel0IHgTZH+neTMvQ
-         u8FhZwiqJpTvVRRl/CEMuuT1CMqkrvNZcYGHp96Q=
+        b=T4hTpqUyb7LLniV4lsNJtAohwEG5QaMLX1aBRolpUj5qcmVB4z1vAxQCauATqSWxb
+         SX9XfvOFk09Pmjw3tOchHn6KtKnq4UnyU8Np/eqPlzgO57uY7hLDL2s2VSEqUviwjn
+         pLgDRBsbY0GHiZkGLTPcFaGrgPXdRL0iNZEeAZfI=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Carl Huang <cjhuang@codeaurora.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Sasha Levin <sashal@kernel.org>, ath11k@lists.infradead.org,
+Cc:     Wen Gong <wgong@codeaurora.org>, Kalle Valo <kvalo@codeaurora.org>,
+        Sasha Levin <sashal@kernel.org>, ath10k@lists.infradead.org,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.8 084/132] ath11k: fix warning caused by lockdep_assert_held
-Date:   Mon, 26 Oct 2020 19:51:16 -0400
-Message-Id: <20201026235205.1023962-84-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 17/80] ath10k: start recovery process when payload length exceeds max htc length for sdio
+Date:   Mon, 26 Oct 2020 19:54:13 -0400
+Message-Id: <20201026235516.1025100-17-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20201026235205.1023962-1-sashal@kernel.org>
-References: <20201026235205.1023962-1-sashal@kernel.org>
+In-Reply-To: <20201026235516.1025100-1-sashal@kernel.org>
+References: <20201026235516.1025100-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -43,75 +42,82 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Carl Huang <cjhuang@codeaurora.org>
+From: Wen Gong <wgong@codeaurora.org>
 
-[ Upstream commit 2f588660e34a982377109872757f1b99d7748d21 ]
+[ Upstream commit 2fd3c8f34d08af0a6236085f9961866ad92ef9ec ]
 
-Fix warning caused by lockdep_assert_held when CONFIG_LOCKDEP is enabled.
+When simulate random transfer fail for sdio write and read, it happened
+"payload length exceeds max htc length" and recovery later sometimes.
 
-[  271.940647] WARNING: CPU: 6 PID: 0 at drivers/net/wireless/ath/ath11k/hal.c:818 ath11k_hal_srng_access_begin+0x31/0x40 [ath11k]
-[  271.940655] Modules linked in: qrtr_mhi qrtr ns ath11k_pci mhi ath11k qmi_helpers nvme nvme_core
-[  271.940675] CPU: 6 PID: 0 Comm: swapper/6 Kdump: loaded Tainted: G        W         5.9.0-rc5-kalle-bringup-wt-ath+ #4
-[  271.940682] Hardware name: Dell Inc. Inspiron 7590/08717F, BIOS 1.3.0 07/22/2019
-[  271.940698] RIP: 0010:ath11k_hal_srng_access_begin+0x31/0x40 [ath11k]
-[  271.940708] Code: 48 89 f3 85 c0 75 11 48 8b 83 a8 00 00 00 8b 00 89 83 b0 00 00 00 5b c3 48 8d 7e 58 be ff ff ff ff e8 53 24 ec fa 85 c0 75 dd <0f> 0b eb d9 90 66 2e 0f 1f 84 00 00 00 00 00 55 53 48 89 f3 8b 35
-[  271.940718] RSP: 0018:ffffbdf0c0230df8 EFLAGS: 00010246
-[  271.940727] RAX: 0000000000000000 RBX: ffffa12b34e67680 RCX: ffffa12b57a0d800
-[  271.940735] RDX: 0000000000000000 RSI: 00000000ffffffff RDI: ffffa12b34e676d8
-[  271.940742] RBP: ffffa12b34e60000 R08: 0000000000000001 R09: 0000000000000001
-[  271.940753] R10: 0000000000000001 R11: 0000000000000046 R12: 0000000000000000
-[  271.940763] R13: ffffa12b34e60000 R14: ffffa12b34e60000 R15: 0000000000000000
-[  271.940774] FS:  0000000000000000(0000) GS:ffffa12b5a400000(0000) knlGS:0000000000000000
-[  271.940788] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[  271.940798] CR2: 00007f8bef282008 CR3: 00000001f4224004 CR4: 00000000003706e0
-[  271.940805] Call Trace:
-[  271.940813]  <IRQ>
-[  271.940835]  ath11k_dp_tx_completion_handler+0x9e/0x950 [ath11k]
-[  271.940847]  ? lock_acquire+0xba/0x3b0
-[  271.940876]  ath11k_dp_service_srng+0x5a/0x2e0 [ath11k]
-[  271.940893]  ath11k_pci_ext_grp_napi_poll+0x1e/0x80 [ath11k_pci]
-[  271.940908]  net_rx_action+0x283/0x4f0
-[  271.940931]  __do_softirq+0xcb/0x499
-[  271.940950]  asm_call_on_stack+0x12/0x20
-[  271.940963]  </IRQ>
-[  271.940979]  do_softirq_own_stack+0x4d/0x60
-[  271.940991]  irq_exit_rcu+0xb0/0xc0
-[  271.941001]  common_interrupt+0xce/0x190
-[  271.941014]  asm_common_interrupt+0x1e/0x40
-[  271.941026] RIP: 0010:cpuidle_enter_state+0x115/0x500
+Test steps:
+1. Add config and update kernel:
+CONFIG_FAIL_MMC_REQUEST=y
+CONFIG_FAULT_INJECTION=y
+CONFIG_FAULT_INJECTION_DEBUG_FS=y
 
-Tested-on: QCA6390 hw2.0 PCI WLAN.HST.1.0.1-01740-QCAHSTSWPLZ_V2_TO_X86-1
+2. Run simulate fail:
+cd /sys/kernel/debug/mmc1/fail_mmc_request
+echo 10 > probability
+echo 10 > times # repeat until hitting issues
 
-Signed-off-by: Carl Huang <cjhuang@codeaurora.org>
+3. It happened payload length exceeds max htc length.
+[  199.935506] ath10k_sdio mmc1:0001:1: payload length 57005 exceeds max htc length: 4088
+....
+[  264.990191] ath10k_sdio mmc1:0001:1: payload length 57005 exceeds max htc length: 4088
+
+4. after some time, such as 60 seconds, it start recovery which triggered
+by wmi command timeout for periodic scan.
+[  269.229232] ieee80211 phy0: Hardware restart was requested
+[  269.734693] ath10k_sdio mmc1:0001:1: device successfully recovered
+
+The simulate fail of sdio is not a real sdio transter fail, it only
+set an error status in mmc_should_fail_request after the transfer end,
+actually the transfer is success, then sdio_io_rw_ext_helper will
+return error status and stop transfer the left data. For example,
+the really RX len is 286 bytes, then it will split to 2 blocks in
+sdio_io_rw_ext_helper, one is 256 bytes, left is 30 bytes, if the
+first 256 bytes get an error status by mmc_should_fail_request,then
+the left 30 bytes will not read in this RX operation. Then when the
+next RX arrive, the left 30 bytes will be considered as the header
+of the read, the top 4 bytes of the 30 bytes will be considered as
+lookaheads, but actually the 4 bytes is not the lookaheads, so the len
+from this lookaheads is not correct, it exceeds max htc length 4088
+sometimes. When happened exceeds, the buffer chain is not matched between
+firmware and ath10k, then it need to start recovery ASAP. Recently then
+recovery will be started by wmi command timeout, but it will be long time
+later, for example, it is 60+ seconds later from the periodic scan, if
+it does not have periodic scan, it will be longer.
+
+Start recovery when it happened "payload length exceeds max htc length"
+will be reasonable.
+
+This patch only effect sdio chips.
+
+Tested with QCA6174 SDIO with firmware WLAN.RMH.4.4.1-00029.
+
+Signed-off-by: Wen Gong <wgong@codeaurora.org>
 Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
-Link: https://lore.kernel.org/r/1601463073-12106-5-git-send-email-kvalo@codeaurora.org
+Link: https://lore.kernel.org/r/20200108031957.22308-3-wgong@codeaurora.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/dp_tx.c | 4 ++++
+ drivers/net/wireless/ath/ath10k/sdio.c | 4 ++++
  1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath11k/dp_tx.c b/drivers/net/wireless/ath/ath11k/dp_tx.c
-index 41c990aec6b7d..7264bbdf76750 100644
---- a/drivers/net/wireless/ath/ath11k/dp_tx.c
-+++ b/drivers/net/wireless/ath/ath11k/dp_tx.c
-@@ -509,6 +509,8 @@ void ath11k_dp_tx_completion_handler(struct ath11k_base *ab, int ring_id)
- 	u32 msdu_id;
- 	u8 mac_id;
- 
-+	spin_lock_bh(&status_ring->lock);
+diff --git a/drivers/net/wireless/ath/ath10k/sdio.c b/drivers/net/wireless/ath/ath10k/sdio.c
+index 8fe626deadeb0..24b1927a07518 100644
+--- a/drivers/net/wireless/ath/ath10k/sdio.c
++++ b/drivers/net/wireless/ath/ath10k/sdio.c
+@@ -550,6 +550,10 @@ static int ath10k_sdio_mbox_rx_alloc(struct ath10k *ar,
+ 				    le16_to_cpu(htc_hdr->len),
+ 				    ATH10K_HTC_MBOX_MAX_PAYLOAD_LENGTH);
+ 			ret = -ENOMEM;
 +
- 	ath11k_hal_srng_access_begin(ab, status_ring);
- 
- 	while ((ATH11K_TX_COMPL_NEXT(tx_ring->tx_status_head) !=
-@@ -528,6 +530,8 @@ void ath11k_dp_tx_completion_handler(struct ath11k_base *ab, int ring_id)
- 
- 	ath11k_hal_srng_access_end(ab, status_ring);
- 
-+	spin_unlock_bh(&status_ring->lock);
++			queue_work(ar->workqueue, &ar->restart_work);
++			ath10k_warn(ar, "exceeds length, start recovery\n");
 +
- 	while (ATH11K_TX_COMPL_NEXT(tx_ring->tx_status_tail) != tx_ring->tx_status_head) {
- 		struct hal_wbm_release_ring *tx_status;
- 		u32 desc_id;
+ 			goto err;
+ 		}
+ 
 -- 
 2.25.1
 
