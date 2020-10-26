@@ -2,230 +2,128 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E421298F51
-	for <lists+linux-wireless@lfdr.de>; Mon, 26 Oct 2020 15:30:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E7D9C29909B
+	for <lists+linux-wireless@lfdr.de>; Mon, 26 Oct 2020 16:09:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1781498AbgJZOaa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 26 Oct 2020 10:30:30 -0400
-Received: from mail-oo1-f67.google.com ([209.85.161.67]:43465 "EHLO
-        mail-oo1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1781493AbgJZOa2 (ORCPT
+        id S1783222AbgJZPJQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 26 Oct 2020 11:09:16 -0400
+Received: from mail-wm1-f67.google.com ([209.85.128.67]:55843 "EHLO
+        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2404123AbgJZPJP (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 26 Oct 2020 10:30:28 -0400
-Received: by mail-oo1-f67.google.com with SMTP id z14so2134564oom.10;
-        Mon, 26 Oct 2020 07:30:26 -0700 (PDT)
+        Mon, 26 Oct 2020 11:09:15 -0400
+Received: by mail-wm1-f67.google.com with SMTP id a72so12013238wme.5;
+        Mon, 26 Oct 2020 08:09:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=J+x1UhkmqmtmdEr4B0LaEa7qXm4z8dBJtIO4mmb7CBo=;
+        b=ObfSZkZngFEmZWxxEhZfGBELFBwIHk7G8xR3tiYx34nveLIbpidn//YH7s05TuxmRj
+         hdytqV8ozjYzWaFgCooqFToRZqT9aotWMFYarduQ3gJ7K/NOBTTGlbHvlb5F15cYb6CR
+         +vIAcqWqN/Yi5EJTYVFZvOWjIgj41XLkZJJ5VY96a4zu5C4QFR75Sj/50CqyOYI32WYV
+         YpsVK6lNyphBAXoD9EgyIV+A2+LaJIIaFgv6Te1/mFkk9CXMJ9js1i8Pw4nQ/cVpLgng
+         qvJyAARbAbAZ0mN8K/aBxiSnaxaAiolOTHHVPc3Lildb4CETex+DvKX//j4TzQOd8zhQ
+         Ay4g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=EvODWLSlZb9Skc/iTD6aHWqmQrjOtvrwcbltSN0DUow=;
-        b=rWzr6iN68zpk98U3JGzl0S53BZqRTg7pSa0i2uxs6Yqn9nUnGdkqJk1DCfIdOKZYpQ
-         mEFQ7uKSFeaAywz6a6JoydTsZ/h9C17vxrdctJZUBR5xkOTzowlVwYo4PvTj4l25N/Da
-         cLh/3S0//dFZ0bEyUlkycYrCGoDIz1SZmjo25ZmCoz5NdjdHfo8oNV2w+4uR8f4mhlgZ
-         mYk5rnQnMN7oZedOuc06AdV67Xv0KapKiAvQ6XDxWGkYtHsWblTONaJI7A5kDkBYcCx9
-         gEsEfoeyJY6d1rHretYVfJ4eubV2qc59blS0ixf3t+bdT9V1VPNNRj0xotCJ5Q+lBWLZ
-         mIUw==
-X-Gm-Message-State: AOAM530mGykwy1ahxiUTg5SxoWeqOEcpZC+s9+60kDbtEgo6n4ftxNpb
-        DOOO8DGlZ72Oh4bBECCjMg==
-X-Google-Smtp-Source: ABdhPJy5jo0OcqXys+08F5mv4GOWXCDsbF7iHCxIexI76vlCOrGJygolE/VWzKBmZPl/afqlzltoDg==
-X-Received: by 2002:a4a:c98f:: with SMTP id u15mr14230219ooq.78.1603722625676;
-        Mon, 26 Oct 2020 07:30:25 -0700 (PDT)
-Received: from xps15 (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.gmail.com with ESMTPSA id b125sm2162575oii.19.2020.10.26.07.30.24
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=J+x1UhkmqmtmdEr4B0LaEa7qXm4z8dBJtIO4mmb7CBo=;
+        b=pX+qtuz5cS+JoK0PGq7HEHhCJgJjccuovnieANFxC0ITiXGaWpYHZIv8TMXdtt8bi3
+         nPptVSnHCziovaaEWIHk4iF0qe6V+MNFf4CwQGxVy/+UdjH1L2Hh0Kz4wbqLb54kzATh
+         Zu+VBC2vxqG/8V2X2ZSgkwvASLBIRssdJA4IFeNZL4MxHn5kMmhKhp2O61ySDTu/0MRN
+         YHxI6lf6HbJncex1B9TexcPW7t6fqpiSiLb6ypGnvznQfBqV2eEeyfpwnRCnqEmWPRxa
+         FOHg1Q/W/KXaMB1T8003wQ3fmyWA5yR8m74K/steNFukOK7cH/qRRvjwF3npGDmRetWn
+         5Nbg==
+X-Gm-Message-State: AOAM532sT9JlztttyboQirvZJWWQurRIl7fMeQFkoF7N8FpmGAz158AN
+        bMaDBOkK9NtzuBmiZqIOVgw=
+X-Google-Smtp-Source: ABdhPJyWVKUwQ1tM9gAqB0j6VzRdQS6PG4/vx42gAhGgCegC2gOFzs3OyraKXyHK6edxylSL/4dEwA==
+X-Received: by 2002:a1c:9a46:: with SMTP id c67mr15876240wme.115.1603724951892;
+        Mon, 26 Oct 2020 08:09:11 -0700 (PDT)
+Received: from nogikh.c.googlers.com.com (88.140.78.34.bc.googleusercontent.com. [34.78.140.88])
+        by smtp.gmail.com with ESMTPSA id 24sm20043967wmf.44.2020.10.26.08.09.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Oct 2020 07:30:25 -0700 (PDT)
-Received: (nullmailer pid 112408 invoked by uid 1000);
-        Mon, 26 Oct 2020 14:30:24 -0000
-Date:   Mon, 26 Oct 2020 09:30:24 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     Jerome Pouiller <Jerome.Pouiller@silabs.com>
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        devel@driverdev.osuosl.org, linux-kernel@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        devicetree@vger.kernel.org, linux-mmc@vger.kernel.org,
-        Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>
-Subject: Re: [PATCH v2 02/24] dt-bindings: introduce silabs,wfx.yaml
-Message-ID: <20201026143024.GA95610@bogus>
-References: <20201020125817.1632995-1-Jerome.Pouiller@silabs.com>
- <20201020125817.1632995-3-Jerome.Pouiller@silabs.com>
+        Mon, 26 Oct 2020 08:09:11 -0700 (PDT)
+From:   Aleksandr Nogikh <aleksandrnogikh@gmail.com>
+To:     davem@davemloft.net, kuba@kernel.org, johannes@sipsolutions.net
+Cc:     edumazet@google.com, andreyknvl@google.com, dvyukov@google.com,
+        elver@google.com, linux-kernel@vger.kernel.org,
+        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+        willemdebruijn.kernel@gmail.com,
+        Aleksandr Nogikh <nogikh@google.com>
+Subject: [PATCH v3 0/3] net, mac80211, kernel: enable KCOV remote coverage collection for 802.11 frame handling
+Date:   Mon, 26 Oct 2020 15:08:48 +0000
+Message-Id: <20201026150851.528148-1-aleksandrnogikh@gmail.com>
+X-Mailer: git-send-email 2.29.0.rc1.297.gfa9743e501-goog
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20201020125817.1632995-3-Jerome.Pouiller@silabs.com>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Oct 20, 2020 at 02:57:55PM +0200, Jerome Pouiller wrote:
-> From: Jérôme Pouiller <jerome.pouiller@silabs.com>
-> 
-> Signed-off-by: Jérôme Pouiller <jerome.pouiller@silabs.com>
-> ---
->  .../bindings/net/wireless/silabs,wfx.yaml     | 133 ++++++++++++++++++
->  1 file changed, 133 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/net/wireless/silabs,wfx.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/net/wireless/silabs,wfx.yaml b/Documentation/devicetree/bindings/net/wireless/silabs,wfx.yaml
-> new file mode 100644
-> index 000000000000..2605e9fed185
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/net/wireless/silabs,wfx.yaml
-> @@ -0,0 +1,133 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +# Copyright (c) 2020, Silicon Laboratories, Inc.
-> +%YAML 1.2
-> +---
-> +
-> +$id: http://devicetree.org/schemas/net/wireless/silabs,wfx.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Silicon Labs WFxxx devicetree bindings
-> +
-> +maintainers:
-> +  - Jérôme Pouiller <jerome.pouiller@silabs.com>
-> +
-> +description: >
-> +  Support for the Wifi chip WFxxx from Silicon Labs. Currently, the only device
-> +  from the WFxxx series is the WF200 described here:
-> +     https://www.silabs.com/documents/public/data-sheets/wf200-datasheet.pdf
-> +  
-> +  The WF200 can be connected via SPI or via SDIO.
-> +  
-> +  For SDIO:
-> +  
-> +    Declaring the WFxxx chip in device tree is mandatory (usually, the VID/PID is
-> +    sufficient for the SDIO devices).
-> +  
-> +    It is recommended to declare a mmc-pwrseq on SDIO host above WFx. Without
-> +    it, you may encounter issues during reboot. The mmc-pwrseq should be
-> +    compatible with mmc-pwrseq-simple. Please consult
-> +    Documentation/devicetree/bindings/mmc/mmc-pwrseq-simple.txt for more
-> +    information.
-> +  
-> +  For SPI:
-> +  
-> +    In add of the properties below, please consult
-> +    Documentation/devicetree/bindings/spi/spi-controller.yaml for optional SPI
-> +    related properties.
-> +
-> +properties:
-> +  compatible:
-> +    const: silabs,wf200
-> +
-> +  reg:
-> +    description:
-> +      When used on SDIO bus, <reg> must be set to 1. When used on SPI bus, it is
-> +      the chip select address of the device as defined in the SPI devices
-> +      bindings.
-> +    maxItems: 1
-> +
-> +  spi-max-frequency: true
-> +
-> +  interrupts:
-> +    description: The interrupt line. Triggers IRQ_TYPE_LEVEL_HIGH and
-> +      IRQ_TYPE_EDGE_RISING are both supported by the chip and the driver. When
-> +      SPI is used, this property is required. When SDIO is used, the "in-band"
-> +      interrupt provided by the SDIO bus is used unless an interrupt is defined
-> +      in the Device Tree.
-> +    maxItems: 1
-> +
-> +  reset-gpios:
-> +    description: (SPI only) Phandle of gpio that will be used to reset chip
-> +      during probe. Without this property, you may encounter issues with warm
-> +      boot. (For legacy purpose, the gpio in inverted when compatible ==
-> +      "silabs,wfx-spi")
-> +
-> +      For SDIO, the reset gpio should declared using a mmc-pwrseq.
-> +    maxItems: 1
-> +
-> +  wakeup-gpios:
-> +    description: Phandle of gpio that will be used to wake-up chip. Without this
-> +      property, driver will disable most of power saving features.
-> +    maxItems: 1
-> +
-> +  config-file:
+From: Aleksandr Nogikh <nogikh@google.com>
 
-If this is antenna data/config, then make the property name more 
-specific. And it needs a vendor prefix as it is vendor specific.
+This patch series enables remote KCOV coverage collection during
+802.11 frames processing. These changes make it possible to perform
+coverage-guided fuzzing in search of remotely triggerable bugs.
 
-> +    description: Use an alternative file as PDS. Default is `wf200.pds`.
-> +
-> +  local-mac-address:
-> +    $ref: /net/ethernet-controller.yaml#/properties/local-mac-address
-> +
-> +  mac-address:
-> +    $ref: /net/ethernet-controller.yaml#/properties/mac-address
+Normally, KCOV collects coverage information for the code that is
+executed inside the system call context. It is easy to identify where
+that coverage should go and whether it should be collected at all by
+looking at the current process. If KCOV was enabled on that process,
+coverage will be stored in a buffer specific to that process.
+Howerever, it is not always enough as handling can happen elsewhere
+(e.g. in separate kernel threads).
 
-I'd rather see these properties refactored out to their own file. We 
-should probably have a wifi-controller.yaml that has these as well as 
-enforcing the node name 'wifi'.
+When it is impossible to infer KCOV-related info just by looking at
+the currently running process, one needs to manually pass some
+information to the code that should be instrumented. The information
+takes the form of 64 bit integers (KCOV remote handles). Zero is the
+special value that corresponds to an empty handle. More details on
+KCOV and remote coverage collection can be found in
+Documentation/dev-tools/kcov.rst.
 
-> +
-> +additionalProperties: true
+The series consists of three commits.
+1. Apply a minor fix to kcov_common_handle() so that it returns a
+valid handle (zero) when called in an interrupt context.
+2. Take the remote handle from KCOV and attach it to newly allocated
+SKBs as an skb extension. If the allocation happens inside a system
+call context, the SKB will be tied to the process that issued the
+syscall (if that process is interested in remote coverage collection).
+3. Annotate the code that processes incoming 802.11 frames with
+kcov_remote_start()/kcov_remote_stop()
 
-What properties? This shouldn't be true. If you need spi-cpol or 
-spi-cpha, then you should list those. Really, if the SPI mode of the 
-device is fixed, then you should never use those. 
+v3:
+* kcov_handle is now stored in skb extensions instead of sk_buff
+  itself.
+* Updated the cover letter.
 
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/gpio/gpio.h>
-> +    #include <dt-bindings/interrupt-controller/irq.h>
-> +
-> +    spi0 {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +
-> +        wfx@0 {
-> +            compatible = "silabs,wf200";
-> +            pinctrl-names = "default";
-> +            pinctrl-0 = <&wfx_irq &wfx_gpios>;
-> +            reg = <0>;
-> +            interrupts-extended = <&gpio 16 IRQ_TYPE_EDGE_RISING>;
-> +            wakeup-gpios = <&gpio 12 GPIO_ACTIVE_HIGH>;
-> +            reset-gpios = <&gpio 13 GPIO_ACTIVE_LOW>;
-> +            spi-max-frequency = <42000000>;
-> +        };
-> +    };
-> +
-> +  - |
-> +    #include <dt-bindings/gpio/gpio.h>
-> +    #include <dt-bindings/interrupt-controller/irq.h>
-> +
-> +    wfx_pwrseq: wfx_pwrseq {
-> +        compatible = "mmc-pwrseq-simple";
-> +        pinctrl-names = "default";
-> +        pinctrl-0 = <&wfx_reset>;
-> +        reset-gpios = <&gpio 13 GPIO_ACTIVE_LOW>;
-> +    };
-> +
-> +    mmc0 {
-> +        mmc-pwrseq = <&wfx_pwrseq>;
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +
-> +        mmc@1 {
+v2:
+https://lkml.kernel.org/r/20201009170202.103512-1-a.nogikh@gmail.com
+* Moved KCOV annotations from ieee80211_tasklet_handler to
+  ieee80211_rx.
+* Updated kcov_common_handle() to return 0 if it is called in
+  interrupt context.
+* Updated the cover letter.
 
-wifi@1
+v1:
+https://lkml.kernel.org/r/20201007101726.3149375-1-a.nogikh@gmail.com
 
-> +            compatible = "silabs,wf200";
-> +            pinctrl-names = "default";
-> +            pinctrl-0 = <&wfx_wakeup>;
-> +            reg = <1>;
-> +            wakeup-gpios = <&gpio 12 GPIO_ACTIVE_HIGH>;
-> +        };
-> +    };
-> +...
-> -- 
-> 2.28.0
-> 
+Aleksandr Nogikh (3):
+  kernel: make kcov_common_handle consider the current context
+  net: add kcov handle to skb extensions
+  mac80211: add KCOV remote annotations to incoming frame processing
+
+ include/linux/skbuff.h | 31 +++++++++++++++++++++++++++++++
+ include/net/mac80211.h |  2 ++
+ kernel/kcov.c          |  2 ++
+ net/core/skbuff.c      | 11 +++++++++++
+ net/mac80211/iface.c   |  2 ++
+ 5 files changed, 48 insertions(+)
+
+
+base-commit: 2ef991b5fdbe828dc8fb8af473dab160729570ed
+-- 
+2.29.0.rc1.297.gfa9743e501-goog
+
