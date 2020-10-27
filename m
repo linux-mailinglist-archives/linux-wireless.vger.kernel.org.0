@@ -2,71 +2,86 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B771429A312
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Oct 2020 04:16:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5868729A352
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Oct 2020 04:29:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2504462AbgJ0DQ1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 26 Oct 2020 23:16:27 -0400
-Received: from ZXSHCAS1.zhaoxin.com ([203.148.12.81]:13683 "EHLO
-        ZXSHCAS1.zhaoxin.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2504094AbgJ0DQ0 (ORCPT
+        id S2504992AbgJ0D3N (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 26 Oct 2020 23:29:13 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:47487 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2443825AbgJ0D3N (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 26 Oct 2020 23:16:26 -0400
-Received: from zxbjmbx1.zhaoxin.com (10.29.252.163) by ZXSHCAS1.zhaoxin.com
- (10.28.252.161) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1979.3; Tue, 27 Oct
- 2020 11:16:23 +0800
-Received: from localhost.localdomain (124.64.18.151) by zxbjmbx1.zhaoxin.com
- (10.29.252.163) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1979.3; Tue, 27 Oct
- 2020 11:16:21 +0800
-From:   WeitaoWangoc <WeitaoWang-oc@zhaoxin.com>
-To:     <pkshih@realtek.com>, <kvalo@codeaurora.org>,
-        <davem@davemloft.net>, <kuba@kernel.org>,
-        <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-CC:     <tonywwang@zhaoxin.com>, <weitaowang@zhaoxin.com>,
-        <CobeChen@zhaoxin.com>, <TimGuo@zhaoxin.com>, <wwt8723@163.com>
-Subject: [PATCH] rtlwifi: Fix non-canonical address access issues
-Date:   Tue, 27 Oct 2020 11:16:20 +0800
-Message-ID: <1603768580-2798-1-git-send-email-WeitaoWang-oc@zhaoxin.com>
-X-Mailer: git-send-email 2.7.4
+        Mon, 26 Oct 2020 23:29:13 -0400
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 09R3SrI52005632, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexmb03.realtek.com.tw[172.21.6.96])
+        by rtits2.realtek.com.tw (8.15.2/2.70/5.88) with ESMTPS id 09R3SrI52005632
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Tue, 27 Oct 2020 11:28:53 +0800
+Received: from RTEXMBS01.realtek.com.tw (172.21.6.36) by
+ RTEXMB03.realtek.com.tw (172.21.6.96) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2044.4; Tue, 27 Oct 2020 11:28:52 +0800
+Received: from RTEXMB04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS01.realtek.com.tw (172.21.6.36) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2106.2; Tue, 27 Oct 2020 11:28:52 +0800
+Received: from RTEXMB04.realtek.com.tw ([fe80::89f7:e6c3:b043:15fa]) by
+ RTEXMB04.realtek.com.tw ([fe80::89f7:e6c3:b043:15fa%3]) with mapi id
+ 15.01.2044.006; Tue, 27 Oct 2020 11:28:52 +0800
+From:   Pkshih <pkshih@realtek.com>
+To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "WeitaoWang-oc@zhaoxin.com" <WeitaoWang-oc@zhaoxin.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "kuba@kernel.org" <kuba@kernel.org>
+CC:     "CobeChen@zhaoxin.com" <CobeChen@zhaoxin.com>,
+        "tonywwang@zhaoxin.com" <tonywwang@zhaoxin.com>,
+        "weitaowang@zhaoxin.com" <weitaowang@zhaoxin.com>,
+        "TimGuo@zhaoxin.com" <TimGuo@zhaoxin.com>,
+        "wwt8723@163.com" <wwt8723@163.com>
+Subject: Re: [PATCH] rtlwifi: Fix non-canonical address access issues
+Thread-Topic: [PATCH] rtlwifi: Fix non-canonical address access issues
+Thread-Index: AQHWrA+S0JbIDKfd1Ee3HJBnxIpYYKmqRCSA
+Date:   Tue, 27 Oct 2020 03:28:52 +0000
+Message-ID: <1603769287.14269.0.camel@realtek.com>
+References: <1603768580-2798-1-git-send-email-WeitaoWang-oc@zhaoxin.com>
+In-Reply-To: <1603768580-2798-1-git-send-email-WeitaoWang-oc@zhaoxin.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.0.1.1]
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <62F3B27AEA3BDF4FAF41F96C09BE7D5D@realtek.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [124.64.18.151]
-X-ClientProxiedBy: ZXSHCAS1.zhaoxin.com (10.28.252.161) To
- zxbjmbx1.zhaoxin.com (10.29.252.163)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-During realtek USB wireless NIC initialization, it's unexpected
-disconnection will cause urb sumbmit fail. On the one hand,
-_rtl_usb_cleanup_rx will be called to clean up rx stuff, especially for
-rtl_wq. On the other hand, disconnection will cause rtl_usb_disconnect
-and _rtl_usb_cleanup_rx to be called. So, rtl_wq will be flush/destroy
-twice, which will cause non-canonical address 0xdead000000000122 access
-and general protection fault.
-
-Fixed this issue by remove _rtl_usb_cleanup_rx when urb sumbmit fail.
-
-Signed-off-by: WeitaoWangoc <WeitaoWang-oc@zhaoxin.com>
----
- drivers/net/wireless/realtek/rtlwifi/usb.c | 1 -
- 1 file changed, 1 deletion(-)
-
-diff --git a/drivers/net/wireless/realtek/rtlwifi/usb.c b/drivers/net/wireless/realtek/rtlwifi/usb.c
-index 06e073d..d62b87f 100644
---- a/drivers/net/wireless/realtek/rtlwifi/usb.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/usb.c
-@@ -731,7 +731,6 @@ static int _rtl_usb_receive(struct ieee80211_hw *hw)
- 
- err_out:
- 	usb_kill_anchored_urbs(&rtlusb->rx_submitted);
--	_rtl_usb_cleanup_rx(hw);
- 	return err;
- }
- 
--- 
-2.7.4
-
+T24gVHVlLCAyMDIwLTEwLTI3IGF0IDExOjE2ICswODAwLCBXZWl0YW9XYW5nb2Mgd3JvdGU6DQo+
+IER1cmluZyByZWFsdGVrIFVTQiB3aXJlbGVzcyBOSUMgaW5pdGlhbGl6YXRpb24sIGl0J3MgdW5l
+eHBlY3RlZA0KPiBkaXNjb25uZWN0aW9uIHdpbGwgY2F1c2UgdXJiIHN1bWJtaXQgZmFpbC4gT24g
+dGhlIG9uZSBoYW5kLA0KPiBfcnRsX3VzYl9jbGVhbnVwX3J4IHdpbGwgYmUgY2FsbGVkIHRvIGNs
+ZWFuIHVwIHJ4IHN0dWZmLCBlc3BlY2lhbGx5IGZvcg0KPiBydGxfd3EuIE9uIHRoZSBvdGhlciBo
+YW5kLCBkaXNjb25uZWN0aW9uIHdpbGwgY2F1c2UgcnRsX3VzYl9kaXNjb25uZWN0DQo+IGFuZCBf
+cnRsX3VzYl9jbGVhbnVwX3J4IHRvIGJlIGNhbGxlZC4gU28sIHJ0bF93cSB3aWxsIGJlIGZsdXNo
+L2Rlc3Ryb3kNCj4gdHdpY2UsIHdoaWNoIHdpbGwgY2F1c2Ugbm9uLWNhbm9uaWNhbCBhZGRyZXNz
+IDB4ZGVhZDAwMDAwMDAwMDEyMiBhY2Nlc3MNCj4gYW5kIGdlbmVyYWwgcHJvdGVjdGlvbiBmYXVs
+dC4NCj4gDQo+IEZpeGVkIHRoaXMgaXNzdWUgYnkgcmVtb3ZlIF9ydGxfdXNiX2NsZWFudXBfcngg
+d2hlbiB1cmIgc3VtYm1pdCBmYWlsLg0KPiANCj4gU2lnbmVkLW9mZi1ieTogV2VpdGFvV2FuZ29j
+IDxXZWl0YW9XYW5nLW9jQHpoYW94aW4uY29tPg0KDQpUaGFua3MgZm9yIHlvdXIgcGF0Y2guDQoN
+CkFja2VkLWJ5OiBQaW5nLUtlIFNoaWggPHBrc2hpaEByZWFsdGVrLmNvbT4NCg0KPiAtLS0NCj4g
+wqBkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0bHdpZmkvdXNiLmMgfCAxIC0NCj4gwqAx
+IGZpbGUgY2hhbmdlZCwgMSBkZWxldGlvbigtKQ0KPiANCj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMv
+bmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnRsd2lmaS91c2IuYw0KPiBiL2RyaXZlcnMvbmV0L3dpcmVs
+ZXNzL3JlYWx0ZWsvcnRsd2lmaS91c2IuYw0KPiBpbmRleCAwNmUwNzNkLi5kNjJiODdmIDEwMDY0
+NA0KPiAtLS0gYS9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0bHdpZmkvdXNiLmMNCj4g
+KysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydGx3aWZpL3VzYi5jDQo+IEBAIC03
+MzEsNyArNzMxLDYgQEAgc3RhdGljIGludCBfcnRsX3VzYl9yZWNlaXZlKHN0cnVjdCBpZWVlODAy
+MTFfaHcgKmh3KQ0KPiDCoA0KPiDCoGVycl9vdXQ6DQo+IMKgCXVzYl9raWxsX2FuY2hvcmVkX3Vy
+YnMoJnJ0bHVzYi0+cnhfc3VibWl0dGVkKTsNCj4gLQlfcnRsX3VzYl9jbGVhbnVwX3J4KGh3KTsN
+Cj4gwqAJcmV0dXJuIGVycjsNCj4gwqB9DQo+IMKgDQo=
