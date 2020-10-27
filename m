@@ -2,142 +2,155 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 786EC29AC27
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Oct 2020 13:33:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A29E629AC38
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Oct 2020 13:38:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2899860AbgJ0MdW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 27 Oct 2020 08:33:22 -0400
-Received: from mail-io1-f71.google.com ([209.85.166.71]:51288 "EHLO
-        mail-io1-f71.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2899946AbgJ0MdT (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 27 Oct 2020 08:33:19 -0400
-Received: by mail-io1-f71.google.com with SMTP id m25so682537ioh.18
-        for <linux-wireless@vger.kernel.org>; Tue, 27 Oct 2020 05:33:16 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:date:in-reply-to:message-id:subject
-         :from:to;
-        bh=FofA/azUC/4jOvukNRdRU5+c9AoRXjk/SRFBK/2eTD0=;
-        b=g+n/evqPL4g05KvdulSBqCjl4Xvz8oOkIIiVwSwi4h34IBqlcJoz3KLcP3lb4DuSxj
-         82SVXEHtuuAqO+cZjpVbvazusDjsWETMLmqIuTBF1lNK6ClWwqbIE/q8ApyqOh0Wzoc7
-         m52xemzaBDRfgLYng4PgYeyLHwPIG/ScQdX1pAFz3+7k4XMy8gpFLjNIWk5yqMxMa90S
-         0ZBvtAqAYnrxr2GtakyCPYbsSf2QruwKtHGA3rL2bRb6DljNfC6X4oFgz5O5CrRF+JgP
-         AIId1UvceMPCJQCd2EHYeYaqntgI2lZlMo2w1BefELKzWiZmA3HGrF/Pg402uB2K+/3V
-         ZCsA==
-X-Gm-Message-State: AOAM532J6uG4DcRUSiGV0b3VCv8CqTCij5KJt0mWavhlWJ01Uy3te1FL
-        u5lhpfmUXQmGOwFATbgIkO11gDWvxtdylHfJriasEmDSU1FL
-X-Google-Smtp-Source: ABdhPJwSuAcDLBIvSKckcwgm4tsrpSETPpi96K9Rf1JDfHhZ+g87MLAR9Pg4qeWFxwyjgNkKNBjgqPqLoIy4WXDVwqENAIagb47d
-MIME-Version: 1.0
-X-Received: by 2002:a5e:d515:: with SMTP id e21mr1862616iom.9.1603801996145;
- Tue, 27 Oct 2020 05:33:16 -0700 (PDT)
-Date:   Tue, 27 Oct 2020 05:33:16 -0700
-In-Reply-To: <000000000000143a4305aba36803@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <00000000000045390f05b2a640c4@google.com>
-Subject: Re: KASAN: slab-out-of-bounds Read in ath9k_hif_usb_rx_cb (2)
-From:   syzbot <syzbot+6ecc26112e7241c454ef@syzkaller.appspotmail.com>
-To:     andreyknvl@google.com, ath9k-devel@qca.qualcomm.com,
-        davem@davemloft.net, kuba@kernel.org, kvalo@codeaurora.org,
-        linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+        id S2900069AbgJ0MiP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 27 Oct 2020 08:38:15 -0400
+Received: from m42-4.mailgun.net ([69.72.42.4]:24295 "EHLO m42-4.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2900053AbgJ0MiO (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 27 Oct 2020 08:38:14 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1603802293; h=Message-Id: Date: Subject: Cc: To: From:
+ Sender; bh=V3B2/w4nojW/BIyrD+yw3GxeP7TNfmN9cjVnPpHBmfI=; b=RmPX+xjy5fOOlVl930UnoAfymaGCcWRTWLuId0//MFXAXyY5lE/9rzG91Cp1NhvH6APbdvlw
+ Xye72ezrOnr/u7mTUuQHFC1FKhiVhNsDoDKYjU2M2Bw0uy3vj+IfwJAogho0ae4lLGtz6R4W
+ UaYyv83cjwcU58UlhsU57WAkEM4=
+X-Mailgun-Sending-Ip: 69.72.42.4
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n05.prod.us-west-2.postgun.com with SMTP id
+ 5f9814b4856acb9b0944aa0c (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 27 Oct 2020 12:38:12
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 6DEAEC433CB; Tue, 27 Oct 2020 12:38:12 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 097B7C433FE;
+        Tue, 27 Oct 2020 12:38:10 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 097B7C433FE
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     ath10k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org
+Subject: [PATCH 1/2] ath10k: remove repeated words in comments
+Date:   Tue, 27 Oct 2020 14:38:07 +0200
+Message-Id: <1603802288-21158-1-git-send-email-kvalo@codeaurora.org>
+X-Mailer: git-send-email 2.7.4
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-syzbot has found a reproducer for the following issue on:
+Found by latest checkpatch.
 
-HEAD commit:    3650b228 Linux 5.10-rc1
-git tree:       https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb.git usb-testing
-console output: https://syzkaller.appspot.com/x/log.txt?x=14485e50500000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=b1c5bd23a80035ea
-dashboard link: https://syzkaller.appspot.com/bug?extid=6ecc26112e7241c454ef
-compiler:       gcc (GCC) 10.1.0-syz 20200507
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=11d8eff7900000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=15130390500000
+Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+---
+ drivers/net/wireless/ath/ath10k/core.c    | 2 +-
+ drivers/net/wireless/ath/ath10k/debug.c   | 2 +-
+ drivers/net/wireless/ath/ath10k/mac.c     | 2 +-
+ drivers/net/wireless/ath/ath10k/rx_desc.h | 2 +-
+ drivers/net/wireless/ath/ath10k/sdio.c    | 2 +-
+ drivers/net/wireless/ath/ath10k/wmi.h     | 4 ++--
+ 6 files changed, 7 insertions(+), 7 deletions(-)
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+6ecc26112e7241c454ef@syzkaller.appspotmail.com
-
-==================================================================
-BUG: KASAN: slab-out-of-bounds in memcpy include/linux/string.h:399 [inline]
-BUG: KASAN: slab-out-of-bounds in ath9k_hif_usb_rx_stream drivers/net/wireless/ath/ath9k/hif_usb.c:562 [inline]
-BUG: KASAN: slab-out-of-bounds in ath9k_hif_usb_rx_cb+0x3ab/0x1020 drivers/net/wireless/ath/ath9k/hif_usb.c:680
-Read of size 41740 at addr ffff88810bf10000 by task swapper/0/0
-
-CPU: 0 PID: 0 Comm: swapper/0 Not tainted 5.10.0-rc1-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
-Call Trace:
- <IRQ>
- __dump_stack lib/dump_stack.c:77 [inline]
- dump_stack+0x107/0x163 lib/dump_stack.c:118
- print_address_description.constprop.0.cold+0xae/0x4c8 mm/kasan/report.c:385
- __kasan_report mm/kasan/report.c:545 [inline]
- kasan_report.cold+0x1f/0x37 mm/kasan/report.c:562
- check_memory_region_inline mm/kasan/generic.c:186 [inline]
- check_memory_region+0x13d/0x180 mm/kasan/generic.c:192
- memcpy+0x20/0x60 mm/kasan/common.c:105
- memcpy include/linux/string.h:399 [inline]
- ath9k_hif_usb_rx_stream drivers/net/wireless/ath/ath9k/hif_usb.c:562 [inline]
- ath9k_hif_usb_rx_cb+0x3ab/0x1020 drivers/net/wireless/ath/ath9k/hif_usb.c:680
- __usb_hcd_giveback_urb+0x32d/0x560 drivers/usb/core/hcd.c:1650
- usb_hcd_giveback_urb+0x367/0x410 drivers/usb/core/hcd.c:1716
- dummy_timer+0x11f4/0x3280 drivers/usb/gadget/udc/dummy_hcd.c:1967
- call_timer_fn+0x1a5/0x630 kernel/time/timer.c:1415
- expire_timers kernel/time/timer.c:1460 [inline]
- __run_timers.part.0+0x67c/0xa10 kernel/time/timer.c:1752
- __run_timers kernel/time/timer.c:1733 [inline]
- run_timer_softirq+0x80/0x120 kernel/time/timer.c:1765
- __do_softirq+0x1b2/0x945 kernel/softirq.c:298
- asm_call_irq_on_stack+0xf/0x20
- </IRQ>
- __run_on_irqstack arch/x86/include/asm/irq_stack.h:26 [inline]
- run_on_irqstack_cond arch/x86/include/asm/irq_stack.h:77 [inline]
- do_softirq_own_stack+0x80/0xa0 arch/x86/kernel/irq_64.c:77
- invoke_softirq kernel/softirq.c:393 [inline]
- __irq_exit_rcu kernel/softirq.c:423 [inline]
- irq_exit_rcu+0x110/0x1a0 kernel/softirq.c:435
- sysvec_apic_timer_interrupt+0x43/0xa0 arch/x86/kernel/apic/apic.c:1091
- asm_sysvec_apic_timer_interrupt+0x12/0x20 arch/x86/include/asm/idtentry.h:631
-RIP: 0010:native_save_fl arch/x86/include/asm/irqflags.h:29 [inline]
-RIP: 0010:arch_local_save_flags arch/x86/include/asm/irqflags.h:79 [inline]
-RIP: 0010:arch_irqs_disabled arch/x86/include/asm/irqflags.h:169 [inline]
-RIP: 0010:acpi_safe_halt drivers/acpi/processor_idle.c:112 [inline]
-RIP: 0010:acpi_idle_do_entry+0x1c9/0x250 drivers/acpi/processor_idle.c:517
-Code: bd 13 a1 fb 84 db 75 ac e8 64 1b a1 fb e8 8f c1 a6 fb e9 0c 00 00 00 e8 55 1b a1 fb 0f 00 2d 1e be 69 00 e8 49 1b a1 fb fb f4 <9c> 5b 81 e3 00 02 00 00 fa 31 ff 48 89 de e8 e4 13 a1 fb 48 85 db
-RSP: 0018:ffffffff87007d60 EFLAGS: 00000293
-RAX: 0000000000000000 RBX: 0000000000000000 RCX: 1ffffffff1079e01
-RDX: ffffffff87031000 RSI: ffffffff859daf27 RDI: ffffffff859daf11
-RBP: ffff888103980864 R08: 0000000000000001 R09: 0000000000000001
-R10: 0000000000000000 R11: 0000000000000001 R12: 0000000000000001
-R13: ffff888103980800 R14: ffff888103980864 R15: ffff88810545e804
- acpi_idle_enter+0x355/0x4f0 drivers/acpi/processor_idle.c:648
- cpuidle_enter_state+0x1b1/0xc80 drivers/cpuidle/cpuidle.c:237
- cpuidle_enter+0x4a/0xa0 drivers/cpuidle/cpuidle.c:351
- call_cpuidle kernel/sched/idle.c:132 [inline]
- cpuidle_idle_call kernel/sched/idle.c:213 [inline]
- do_idle+0x3d5/0x580 kernel/sched/idle.c:273
- cpu_startup_entry+0x14/0x20 kernel/sched/idle.c:369
- start_kernel+0x472/0x493 init/main.c:1051
- secondary_startup_64_no_verify+0xa6/0xab
-
-The buggy address belongs to the page:
-page:00000000dfda5045 refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x10bf10
-head:00000000dfda5045 order:3 compound_mapcount:0 compound_pincount:0
-flags: 0x200000000010000(head)
-raw: 0200000000010000 dead000000000100 dead000000000122 0000000000000000
-raw: 0000000000000000 0000000000000000 00000001ffffffff 0000000000000000
-page dumped because: kasan: bad access detected
-
-Memory state around the buggy address:
- ffff88810bf18380: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
- ffff88810bf18400: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
->ffff88810bf18480: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 fc
-                                                                ^
- ffff88810bf18500: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc 00
- ffff88810bf18580: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-==================================================================
+diff --git a/drivers/net/wireless/ath/ath10k/core.c b/drivers/net/wireless/ath/ath10k/core.c
+index d73ad60b571c..419b06b974c5 100644
+--- a/drivers/net/wireless/ath/ath10k/core.c
++++ b/drivers/net/wireless/ath/ath10k/core.c
+@@ -2636,7 +2636,7 @@ int ath10k_core_start(struct ath10k *ar, enum ath10k_firmware_mode mode,
+ 		if (status)
+ 			goto err;
+ 
+-		/* Some of of qca988x solutions are having global reset issue
++		/* Some of qca988x solutions are having global reset issue
+ 		 * during target initialization. Bypassing PLL setting before
+ 		 * downloading firmware and letting the SoC run on REF_CLK is
+ 		 * fixing the problem. Corresponding firmware change is also
+diff --git a/drivers/net/wireless/ath/ath10k/debug.c b/drivers/net/wireless/ath/ath10k/debug.c
+index e8250a665433..b72cd81fdc79 100644
+--- a/drivers/net/wireless/ath/ath10k/debug.c
++++ b/drivers/net/wireless/ath/ath10k/debug.c
+@@ -1764,7 +1764,7 @@ static ssize_t ath10k_write_simulate_radar(struct file *file,
+ 	struct ath10k *ar = file->private_data;
+ 	struct ath10k_vif *arvif;
+ 
+-	/* Just check for for the first vif alone, as all the vifs will be
++	/* Just check for the first vif alone, as all the vifs will be
+ 	 * sharing the same channel and if the channel is disabled, all the
+ 	 * vifs will share the same 'is_started' state.
+ 	 */
+diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
+index 2e3eb5bbe49c..c857cf46832d 100644
+--- a/drivers/net/wireless/ath/ath10k/mac.c
++++ b/drivers/net/wireless/ath/ath10k/mac.c
+@@ -5457,7 +5457,7 @@ static int ath10k_add_interface(struct ieee80211_hw *hw,
+ 	/* Some firmware revisions don't wait for beacon tx completion before
+ 	 * sending another SWBA event. This could lead to hardware using old
+ 	 * (freed) beacon data in some cases, e.g. tx credit starvation
+-	 * combined with missed TBTT. This is very very rare.
++	 * combined with missed TBTT. This is very rare.
+ 	 *
+ 	 * On non-IOMMU-enabled hosts this could be a possible security issue
+ 	 * because hw could beacon some random data on the air.  On
+diff --git a/drivers/net/wireless/ath/ath10k/rx_desc.h b/drivers/net/wireless/ath/ath10k/rx_desc.h
+index dec1582005b9..f2b6bf8f0d60 100644
+--- a/drivers/net/wireless/ath/ath10k/rx_desc.h
++++ b/drivers/net/wireless/ath/ath10k/rx_desc.h
+@@ -68,7 +68,7 @@ struct rx_attention {
+  *		first_msdu is set.
+  *
+  * peer_idx_invalid
+- *		Indicates no matching entries within the the max search
++ *		Indicates no matching entries within the max search
+  *		count.  Only set when first_msdu is set.
+  *
+  * peer_idx_timeout
+diff --git a/drivers/net/wireless/ath/ath10k/sdio.c b/drivers/net/wireless/ath/ath10k/sdio.c
+index 81ddaafb6721..59043ec44ca3 100644
+--- a/drivers/net/wireless/ath/ath10k/sdio.c
++++ b/drivers/net/wireless/ath/ath10k/sdio.c
+@@ -1248,7 +1248,7 @@ static int ath10k_sdio_bmi_exchange_msg(struct ath10k *ar,
+ 	 *        Wait for first 4 bytes to be in FIFO
+ 	 *        If CONSERVATIVE_BMI_READ is enabled, also wait for
+ 	 *        a BMI command credit, which indicates that the ENTIRE
+-	 *        response is available in the the FIFO
++	 *        response is available in the FIFO
+ 	 *
+ 	 *  CASE 3: length > 128
+ 	 *        Wait for the first 4 bytes to be in FIFO
+diff --git a/drivers/net/wireless/ath/ath10k/wmi.h b/drivers/net/wireless/ath/ath10k/wmi.h
+index 4898e19b0af6..11300b1320a9 100644
+--- a/drivers/net/wireless/ath/ath10k/wmi.h
++++ b/drivers/net/wireless/ath/ath10k/wmi.h
+@@ -3832,7 +3832,7 @@ enum wmi_pdev_param {
+ 	WMI_PDEV_PARAM_BEACON_TX_MODE,
+ 	/*
+ 	 * Resource manager off chan mode .
+-	 * 0: turn off off chan mode. 1: turn on offchan mode
++	 * 0: turn off offchan mode. 1: turn on offchan mode
+ 	 */
+ 	WMI_PDEV_PARAM_RESMGR_OFFCHAN_MODE,
+ 	/*
+@@ -3936,7 +3936,7 @@ enum wmi_10x_pdev_param {
+ 	WMI_10X_PDEV_PARAM_BEACON_TX_MODE,
+ 	/*
+ 	 * Resource manager off chan mode .
+-	 * 0: turn off off chan mode. 1: turn on offchan mode
++	 * 0: turn off offchan mode. 1: turn on offchan mode
+ 	 */
+ 	WMI_10X_PDEV_PARAM_RESMGR_OFFCHAN_MODE,
+ 	/*
+-- 
+2.7.4
 
