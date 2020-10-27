@@ -2,80 +2,115 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CD74F29A23A
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Oct 2020 02:30:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C6E2229A242
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Oct 2020 02:39:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2437613AbgJ0B3y (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 26 Oct 2020 21:29:54 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:50778 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2410547AbgJ0B3y (ORCPT
+        id S2502154AbgJ0Bjn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 26 Oct 2020 21:39:43 -0400
+Received: from mail-qt1-f196.google.com ([209.85.160.196]:39234 "EHLO
+        mail-qt1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2442707AbgJ0Bjm (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 26 Oct 2020 21:29:54 -0400
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 09R1TJrtC025293, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexmb01.realtek.com.tw[172.21.6.94])
-        by rtits2.realtek.com.tw (8.15.2/2.70/5.88) with ESMTPS id 09R1TJrtC025293
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Tue, 27 Oct 2020 09:29:19 +0800
-Received: from RTEXDAG01.realtek.com.tw (172.21.6.100) by
- RTEXMB01.realtek.com.tw (172.21.6.94) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2044.4; Tue, 27 Oct 2020 09:29:19 +0800
-Received: from RTEXMB04.realtek.com.tw (172.21.6.97) by
- RTEXDAG01.realtek.com.tw (172.21.6.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2044.4; Tue, 27 Oct 2020 09:29:18 +0800
-Received: from RTEXMB04.realtek.com.tw ([fe80::89f7:e6c3:b043:15fa]) by
- RTEXMB04.realtek.com.tw ([fe80::89f7:e6c3:b043:15fa%3]) with mapi id
- 15.01.2044.006; Tue, 27 Oct 2020 09:29:18 +0800
-From:   Pkshih <pkshih@realtek.com>
-To:     "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "kuba@kernel.org" <kuba@kernel.org>,
-        "arnd@kernel.org" <arnd@kernel.org>
-CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "Larry.Finger@lwfinger.net" <Larry.Finger@lwfinger.net>,
-        "saurav.girepunje@gmail.com" <saurav.girepunje@gmail.com>,
-        "zhengbin13@huawei.com" <zhengbin13@huawei.com>,
-        "gustavoars@kernel.org" <gustavoars@kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "arnd@arndb.de" <arnd@arndb.de>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH net-next 06/11] rtlwifi: fix -Wpointer-sign warning
-Thread-Topic: [PATCH net-next 06/11] rtlwifi: fix -Wpointer-sign warning
-Thread-Index: AQHWq9+Tm3vvNpn170mPpXALIlujyamqIxyA
-Date:   Tue, 27 Oct 2020 01:29:18 +0000
-Message-ID: <1603762113.2765.1.camel@realtek.com>
-References: <20201026213040.3889546-1-arnd@kernel.org>
-         <20201026213040.3889546-6-arnd@kernel.org>
-In-Reply-To: <20201026213040.3889546-6-arnd@kernel.org>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.213]
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <E56EB1C0789D88419866E78DD4B37A86@realtek.com>
-Content-Transfer-Encoding: base64
+        Mon, 26 Oct 2020 21:39:42 -0400
+Received: by mail-qt1-f196.google.com with SMTP id i7so7561651qti.6;
+        Mon, 26 Oct 2020 18:39:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=Ruu54colUF/ilFVC8cdTe3XtbysMvPE0jNSVGMkpx/Q=;
+        b=fnPJD1Lj/6EUJMh/Id06hdWbDezrrk8BEmta6rJGQLIdzIJObUzsARJyDNAZfwz+Qe
+         fEx+4Ni9LhjkBIGB6bLB+IVP3Ga3mT93rlCeR+H4yu+7OeMHsqlxEt+DX9XZ+l9FGata
+         yY6OH6m0sdCso59nopAI8YNSjyRtBtEg6aWBuMoNzY6lJchHC4Z47i+yDmyVD++qNtsQ
+         WDYgacFek6KhrcRFdarV+9D0umR1/ecqUQyfvzPDS0yWFBgFUOVVEJ1xGtezrDCnAGwL
+         arSdp5HbcK+SMyhGkUv4IG8lYDRpq1XBfpC7Fx+LQGJijPVSEiCSHTns/282qRUPDJU1
+         +cxQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=Ruu54colUF/ilFVC8cdTe3XtbysMvPE0jNSVGMkpx/Q=;
+        b=U4sUJDjhhknKSYzVKk7bCjOavX6OLjBOwvUrgSeLI9womRkA6/6ThO4svM//AwqAuc
+         CVtgA5ucEsdzR3Tfiz30tlwLOViZh0VUZIqiK8ZgftbWmK8kKWWGiX8VnSkUyNtn123+
+         f9/ruBiJ29/H47z+hJVAPVk7Ah+hPhJIAFDdEXQMYC3YMirOhcaDF0xKYTEaC6TH+rtR
+         5tFYTPnuCBPPHPVs12460uUPli7SDZX17JfFU0zwDqvRaNcGoA64UttXdtaLuoO+8MiW
+         KGqaB7QRAV4mKp0doWhlbfTWB28TJzRmFlGYsPtcVmNTPqx0CPxf018jZI8rJGRG7ZXY
+         lrmQ==
+X-Gm-Message-State: AOAM530g4gNbC02GkM3LFgeFXmUCsSPUTkwKebLicGPP65qFkJQ65K6Y
+        YNKrGPE5GBZxdEXCkTEryg8=
+X-Google-Smtp-Source: ABdhPJy2pTUwMgpLfk1Ilj24AuR+qO/m5HSJHaEy8c/0kFjMjIoLta/h9qB9IEr21Mv4fxi24Q4zaw==
+X-Received: by 2002:ac8:5743:: with SMTP id 3mr21468464qtx.259.1603762781296;
+        Mon, 26 Oct 2020 18:39:41 -0700 (PDT)
+Received: from ubuntu-m3-large-x86 ([2604:1380:45d1:2600::3])
+        by smtp.gmail.com with ESMTPSA id o2sm7758031qkk.121.2020.10.26.18.39.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 26 Oct 2020 18:39:40 -0700 (PDT)
+Date:   Mon, 26 Oct 2020 18:39:39 -0700
+From:   Nathan Chancellor <natechancellor@gmail.com>
+To:     Arnd Bergmann <arnd@kernel.org>
+Cc:     Yan-Hsuan Chuang <yhchuang@realtek.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Tzu-En Huang <tehuang@realtek.com>,
+        Ping-Ke Shih <pkshih@realtek.com>,
+        Chin-Yen Lee <timlee@realtek.com>,
+        Kai-Heng Feng <kai.heng.feng@canonical.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, clang-built-linux@googlegroups.com
+Subject: Re: [PATCH\ net] rtw88: fix fw dump support detection
+Message-ID: <20201027013939.GA4042641@ubuntu-m3-large-x86>
+References: <20201026212323.3888550-1-arnd@kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201026212323.3888550-1-arnd@kernel.org>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-T24gTW9uLCAyMDIwLTEwLTI2IGF0IDIyOjI5ICswMTAwLCBBcm5kIEJlcmdtYW5uIHdyb3RlOg0K
-PiBGcm9tOiBBcm5kIEJlcmdtYW5uIDxhcm5kQGFybmRiLmRlPg0KPiANCj4gVGhlcmUgYXJlIHRo
-b3VzYW5kcyBvZiB3YXJuaW5ncyBpbiBhIFc9MiBidWlsZCBmcm9tIGp1c3Qgb25lIGZpbGU6DQo+
-IA0KPiBkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0bHdpZmkvcnRsODgyMWFlL3RhYmxl
-LmM6Mzc4ODoxNTogd2FybmluZzoNCj4gcG9pbnRlciB0YXJnZXRzIGluIGluaXRpYWxpemF0aW9u
-IG9mICd1OCAqJyB7YWthICd1bnNpZ25lZCBjaGFyIConfSBmcm9tICdjaGFyDQo+IConIGRpZmZl
-ciBpbiBzaWduZWRuZXNzIFstV3BvaW50ZXItc2lnbl0NCj4gDQo+IENoYW5nZSB0aGUgdHlwZXMg
-dG8gY29uc2lzdGVudGx5IHVzZSAnY29uc3QgY2hhciAqJyBmb3IgdGhlDQo+IHN0cmluZ3MuDQo+
-IA0KPiBTaWduZWQtb2ZmLWJ5OiBBcm5kIEJlcmdtYW5uIDxhcm5kQGFybmRiLmRlPg0KDQpBY2tl
-ZC1ieTogUGluZy1LZSBTaGloIDxwa3NoaWhAcmVhbHRlay5jb20+DQoNCj4gLS0tDQo+IMKgLi4u
-L3dpcmVsZXNzL3JlYWx0ZWsvcnRsd2lmaS9ydGw4ODIxYWUvcGh5LmPCoMKgfCA4MSArKysrKysr
-KysrLS0tLS0tLS0tDQo+IMKgLi4uL3JlYWx0ZWsvcnRsd2lmaS9ydGw4ODIxYWUvdGFibGUuY8Kg
-wqDCoMKgwqDCoMKgwqDCoHzCoMKgNCArLQ0KPiDCoC4uLi9yZWFsdGVrL3J0bHdpZmkvcnRsODgy
-MWFlL3RhYmxlLmjCoMKgwqDCoMKgwqDCoMKgwqB8wqDCoDQgKy0NCj4gwqAzIGZpbGVzIGNoYW5n
-ZWQsIDQ1IGluc2VydGlvbnMoKyksIDQ0IGRlbGV0aW9ucygtKQ0KPiANCg0KW3NuaXBdDQoNCg0K
-DQoNCg==
+On Mon, Oct 26, 2020 at 10:22:55PM +0100, Arnd Bergmann wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
+> 
+> clang points out a useless check that was recently added:
+> 
+> drivers/net/wireless/realtek/rtw88/fw.c:1485:21: warning: address of array 'rtwdev->chip->fw_fifo_addr' will always evaluate to 'true' [-Wpointer-bool-conversion]
+>         if (!rtwdev->chip->fw_fifo_addr) {
+>             ~~~~~~~~~~~~~~~^~~~~~~~~~~~
+> 
+> Apparently this was meant to check the contents of the array
+> rather than the address, so check it accordingly.
+> 
+> Fixes: 0fbc2f0f34cc ("rtw88: add dump firmware fifo support")
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> ---
+>  drivers/net/wireless/realtek/rtw88/fw.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/wireless/realtek/rtw88/fw.c b/drivers/net/wireless/realtek/rtw88/fw.c
+> index 042015bc8055..b2fd87834f23 100644
+> --- a/drivers/net/wireless/realtek/rtw88/fw.c
+> +++ b/drivers/net/wireless/realtek/rtw88/fw.c
+> @@ -1482,7 +1482,7 @@ static bool rtw_fw_dump_check_size(struct rtw_dev *rtwdev,
+>  int rtw_fw_dump_fifo(struct rtw_dev *rtwdev, u8 fifo_sel, u32 addr, u32 size,
+>  		     u32 *buffer)
+>  {
+> -	if (!rtwdev->chip->fw_fifo_addr) {
+> +	if (!rtwdev->chip->fw_fifo_addr[0]) {
+>  		rtw_dbg(rtwdev, RTW_DBG_FW, "chip not support dump fw fifo\n");
+>  		return -ENOTSUPP;
+>  	}
+> -- 
+> 2.27.0
+> 
+
+Tom sent an identical patch earlier that it does not look like Kalle has
+picked up:
+
+https://lore.kernel.org/linux-wireless/20201011155438.15892-1-trix@redhat.com/
+
+Not that it particularly matters which one goes in so regardless:
+
+Reviewed-by: Nathan Chancellor <natechancellor@gmail.com>
