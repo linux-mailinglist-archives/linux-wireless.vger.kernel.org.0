@@ -2,68 +2,71 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C75A29A2AE
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Oct 2020 03:23:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B771429A312
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Oct 2020 04:16:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2409000AbgJ0CXJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 26 Oct 2020 22:23:09 -0400
-Received: from ZXSHCAS2.zhaoxin.com ([203.148.12.82]:10970 "EHLO
-        ZXSHCAS2.zhaoxin.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2408685AbgJ0CXJ (ORCPT
+        id S2504462AbgJ0DQ1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 26 Oct 2020 23:16:27 -0400
+Received: from ZXSHCAS1.zhaoxin.com ([203.148.12.81]:13683 "EHLO
+        ZXSHCAS1.zhaoxin.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2504094AbgJ0DQ0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 26 Oct 2020 22:23:09 -0400
-Received: from zxbjmbx2.zhaoxin.com (10.29.252.164) by ZXSHCAS2.zhaoxin.com
- (10.28.252.162) with Microsoft SMTP Server (version=TLS1_2,
+        Mon, 26 Oct 2020 23:16:26 -0400
+Received: from zxbjmbx1.zhaoxin.com (10.29.252.163) by ZXSHCAS1.zhaoxin.com
+ (10.28.252.161) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1979.3; Tue, 27 Oct
- 2020 10:23:05 +0800
-Received: from zxbjmbx1.zhaoxin.com (10.29.252.163) by zxbjmbx2.zhaoxin.com
- (10.29.252.164) with Microsoft SMTP Server (version=TLS1_2,
+ 2020 11:16:23 +0800
+Received: from localhost.localdomain (124.64.18.151) by zxbjmbx1.zhaoxin.com
+ (10.29.252.163) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1979.3; Tue, 27 Oct
- 2020 10:23:05 +0800
-Received: from zxbjmbx1.zhaoxin.com ([fe80::290a:f538:51e7:1416]) by
- zxbjmbx1.zhaoxin.com ([fe80::290a:f538:51e7:1416%16]) with mapi id
- 15.01.1979.003; Tue, 27 Oct 2020 10:23:05 +0800
-From:   WeitaoWang-oc <WeitaoWang-oc@zhaoxin.com>
-To:     Pkshih <pkshih@realtek.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "kuba@kernel.org" <kuba@kernel.org>
-CC:     "Cobe Chen(BJ-RD)" <CobeChen@zhaoxin.com>,
-        "Tony W. Wang(XA-RD)" <TonyWWang@zhaoxin.com>,
-        "Weitao Wang(BJ-RD)" <WeitaoWang@zhaoxin.com>,
-        "Tim Guo(BJ-RD)" <TimGuo@zhaoxin.com>,
-        "wwt8723@163.com" <wwt8723@163.com>
-Subject: =?gb2312?B?tPC4tDogW1BBVENIXSBOZXQvVXNiOkZpeCByZWFsdGVrIHdpcmVsZXNzIE5J?=
- =?gb2312?Q?C_non-canonical_address_access_issues?=
-Thread-Topic: [PATCH] Net/Usb:Fix realtek wireless NIC non-canonical address
- access issues
-Thread-Index: AQHWptWcI93k67JN3065ovtm7Wgr1qmqMs2AgACKYXk=
-Date:   Tue, 27 Oct 2020 02:23:05 +0000
-Message-ID: <c3eb90876bd54831bd845f2952f691d5@zhaoxin.com>
-References: <1603193939-3458-1-git-send-email-WeitaoWang-oc@zhaoxin.com>,<1603763274.2765.5.camel@realtek.com>
-In-Reply-To: <1603763274.2765.5.camel@realtek.com>
-Accept-Language: zh-CN, en-US
-Content-Language: zh-CN
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.29.8.32]
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
+ 2020 11:16:21 +0800
+From:   WeitaoWangoc <WeitaoWang-oc@zhaoxin.com>
+To:     <pkshih@realtek.com>, <kvalo@codeaurora.org>,
+        <davem@davemloft.net>, <kuba@kernel.org>,
+        <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+CC:     <tonywwang@zhaoxin.com>, <weitaowang@zhaoxin.com>,
+        <CobeChen@zhaoxin.com>, <TimGuo@zhaoxin.com>, <wwt8723@163.com>
+Subject: [PATCH] rtlwifi: Fix non-canonical address access issues
+Date:   Tue, 27 Oct 2020 11:16:20 +0800
+Message-ID: <1603768580-2798-1-git-send-email-WeitaoWang-oc@zhaoxin.com>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
+Content-Type: text/plain
+X-Originating-IP: [124.64.18.151]
+X-ClientProxiedBy: ZXSHCAS1.zhaoxin.com (10.28.252.161) To
+ zxbjmbx1.zhaoxin.com (10.29.252.163)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-DQpPbiAgVHVlLCAyMDIwLTEwLTI3IGF0IDA5OjM5ICswODAwLCBQa3NoaWggV3JvdGU6DQo+T24g
-VHVlLCAyMDIwLTEwLTIwIGF0IDE5OjM4ICswODAwLCBXZWl0YW9XYW5nb2Mgd3JvdGU6DQoNCj5G
-b3IgcnRsd2lmaSBkcml2ZXIsIHBsZWFzZSB1c2UgJ3J0bHdpZmk6ICcgYXMgcHJlZml4IG9mIG1h
-aWwgc3ViamVjdCwgbGlrZQ0KPiJydGx3aWZpOiBGaXggbm9uLWNhbm9uaWNhbCBhZGRyZXNzIGFj
-Y2VzcyBpc3N1ZXMiDQoNCj4+IER1cmluZyByZWFsdGVrIFVTQiB3aXJlbGVzcyBOSUMgaW5pdGlh
-bGl6YXRpb24sIGl0J3MgdW5leHBlY3RlZA0KPj4gZGlzY29ubmVjdGlvbiB3aWxsIGNhdXNlIHVy
-YiBzdW1ibWl0IGZhaWwuT24gdGhlIG9uZSBoYW5kLA0KDQo+bml0OiBhZGQgc3BhY2UgcmlnaHQg
-YWZ0ZXIgcGVyaW9kLCBsaWtlICIuLi4gZmFpbC4gT24gdGhlIG9uZSBoYW5kIC4uLiINCg0KVGhh
-bmtzIGZvciBZb3VyIHN1Z2dlc3Rpb24sIEkgd2lsbCByZXNlbmQgdGhpcyBtYWlsLiANCg0KV2Vp
-dGFvd2FuZw0KVGhhbmtzDQoNCg==
+During realtek USB wireless NIC initialization, it's unexpected
+disconnection will cause urb sumbmit fail. On the one hand,
+_rtl_usb_cleanup_rx will be called to clean up rx stuff, especially for
+rtl_wq. On the other hand, disconnection will cause rtl_usb_disconnect
+and _rtl_usb_cleanup_rx to be called. So, rtl_wq will be flush/destroy
+twice, which will cause non-canonical address 0xdead000000000122 access
+and general protection fault.
+
+Fixed this issue by remove _rtl_usb_cleanup_rx when urb sumbmit fail.
+
+Signed-off-by: WeitaoWangoc <WeitaoWang-oc@zhaoxin.com>
+---
+ drivers/net/wireless/realtek/rtlwifi/usb.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/drivers/net/wireless/realtek/rtlwifi/usb.c b/drivers/net/wireless/realtek/rtlwifi/usb.c
+index 06e073d..d62b87f 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/usb.c
++++ b/drivers/net/wireless/realtek/rtlwifi/usb.c
+@@ -731,7 +731,6 @@ static int _rtl_usb_receive(struct ieee80211_hw *hw)
+ 
+ err_out:
+ 	usb_kill_anchored_urbs(&rtlusb->rx_submitted);
+-	_rtl_usb_cleanup_rx(hw);
+ 	return err;
+ }
+ 
+-- 
+2.7.4
+
