@@ -2,279 +2,157 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A1E0629DB41
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Oct 2020 00:47:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D43529DB0B
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Oct 2020 00:42:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389558AbgJ1XrD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 28 Oct 2020 19:47:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40138 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725885AbgJ1Xqh (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 28 Oct 2020 19:46:37 -0400
-Received: from mail-oi1-x230.google.com (mail-oi1-x230.google.com [IPv6:2607:f8b0:4864:20::230])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B613C0613CF;
-        Wed, 28 Oct 2020 16:46:37 -0700 (PDT)
-Received: by mail-oi1-x230.google.com with SMTP id k65so1408973oih.8;
-        Wed, 28 Oct 2020 16:46:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=2GSUDEJbjH2FqhUp9WcP5f/c+uzyd2rZvXRcjYSEPrE=;
-        b=HRMaF3ILDuon2LXXbarGehN0syTyN4OZJCfOPM2S0qL5JbjfzvAe1CO6AX5X4NsOte
-         HRAVdwaqsrJ+YFRrIvxSVyVXpkQt3Czo1hbJYPryFdicWQOzU97zucuYLRvUp2kSSl7V
-         mR/1h7HYOMpSGBn/fho/4Y9PCgKrRegbNBEO7mnHHKMicZLUTY6yo1ZOKGl3kXpvUPMI
-         VGvPXEPhOZpNRA/MP/zmcLkzEPA/c0GTE9sEUhz6PN2RWow8felrIyF2QSVVmLJ74My/
-         lnuAXjLmkOmdKMIyry42XYAJgJvLF3vI5sy1Qat5w2xZm/MPQ9UA3XA+fQeMRKz/ijqr
-         j7tQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=2GSUDEJbjH2FqhUp9WcP5f/c+uzyd2rZvXRcjYSEPrE=;
-        b=qO6urrLfecyn+ZJXAv2eKiIj4OQOhg8u7MzSESvmwso2OHIchffgA67pgfitaZWsCL
-         mPk6IICVPLVYzMFnV4nHyBddEy7NO+7HEvjXw2x/taI9cg+00g9JVFeGG8anPrVA1qSf
-         ralYPmjOCWhCIW9QwfhIAAsWwKLgDPlGFfb2ct5ineQpsubDKl+JxPtjmepN4GagPxL8
-         r9eOXFnk/8cBenMsKMgAgPQ+lBmNvAFVdleP9b1ySxbJL++gv2GU0jZLytQNKzikG/wu
-         2rKvYkUZ8Dcfu8SZikKWAU/iQAM4Id8BGua/nzpiPBwBmQ59rYmbPykbYdlfM1ySECOs
-         bZOg==
-X-Gm-Message-State: AOAM530BcehVwAx4FQluNzu3kI1n/gScdN56WaaeRhQHAn7luOwytFyR
-        cAPDQkc6ifRKvlu2aCApnKkK6PIK8bgvKeSf
-X-Google-Smtp-Source: ABdhPJwnHb6k8SvUlKeJVwM/JO+X8M9DEeIWrrLdJGRPkr+Gi63iuXsWDLjuRZb20UY3uFlxZAADzw==
-X-Received: by 2002:a17:90a:bf05:: with SMTP id c5mr7213513pjs.11.1603895322133;
-        Wed, 28 Oct 2020 07:28:42 -0700 (PDT)
-Received: from k5-sbwpb.flets-east.jp (i60-35-254-237.s41.a020.ap.plala.or.jp. [60.35.254.237])
-        by smtp.gmail.com with ESMTPSA id g67sm6581754pfb.9.2020.10.28.07.28.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Oct 2020 07:28:41 -0700 (PDT)
-From:   Tsuchiya Yuto <kitakar@gmail.com>
-To:     Amitkumar Karwar <amitkarwar@gmail.com>,
-        Ganapathi Bhat <ganapathi.bhat@nxp.com>,
-        Xinming Hu <huxinming820@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Maximilian Luz <luzmaximilian@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@intel.com>, verdre@v0yd.nl,
-        Tsuchiya Yuto <kitakar@gmail.com>
-Subject: [RFC PATCH 3/3] mwifiex: pcie: add reset_wsid quirk for Surface 3
-Date:   Wed, 28 Oct 2020 23:27:53 +0900
-Message-Id: <20201028142753.18855-4-kitakar@gmail.com>
-X-Mailer: git-send-email 2.29.1
-In-Reply-To: <20201028142753.18855-1-kitakar@gmail.com>
-References: <20201028142753.18855-1-kitakar@gmail.com>
+        id S1730798AbgJ1Xmz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 28 Oct 2020 19:42:55 -0400
+Received: from z5.mailgun.us ([104.130.96.5]:30558 "EHLO z5.mailgun.us"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725815AbgJ1Xmy (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 28 Oct 2020 19:42:54 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1603928573; h=Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Message-ID: Date: Subject: In-Reply-To: References: Cc:
+ To: From: Sender; bh=TLNILGHQAl2E5V/J/ptFn/qNwBV4itMmQCkPbQrryS4=; b=T1y+MlOANUyoFCBlPNuXt3MjFhd2V53tXMcPYBlMcheE6wkmz45si607g4yHQEwUoJfdrjGy
+ oOK2xytI+5BfrP8muVSFKVX1JTMtMAP20BkADndTlGxdR4BAeIdHH9sMPTtc2UZKqqdcLwbz
+ F4Fg50yPRmugAnLizXoF/ah+07o=
+X-Mailgun-Sending-Ip: 104.130.96.5
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n05.prod.us-east-1.postgun.com with SMTP id
+ 5f99928e38c6e40045981846 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 28 Oct 2020 15:47:26
+ GMT
+Sender: pillair=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 296D3C433FE; Wed, 28 Oct 2020 15:47:26 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+Received: from Pillair (unknown [49.205.247.166])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: pillair)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 5DAD4C433CB;
+        Wed, 28 Oct 2020 15:47:23 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 5DAD4C433CB
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=pillair@codeaurora.org
+From:   "Rakesh Pillai" <pillair@codeaurora.org>
+To:     "'Doug Anderson'" <dianders@chromium.org>
+Cc:     "'ath10k'" <ath10k@lists.infradead.org>,
+        "'linux-wireless'" <linux-wireless@vger.kernel.org>,
+        "'LKML'" <linux-kernel@vger.kernel.org>,
+        "'Abhishek Kumar'" <kuabhs@chromium.org>,
+        "'Brian Norris'" <briannorris@chromium.org>
+References: <1603811067-23058-1-git-send-email-pillair@codeaurora.org> <CAD=FV=XRyeXcE93nZgOy+x5eWcHcKKwbJccuWFkx+cA8tEXwZQ@mail.gmail.com>
+In-Reply-To: <CAD=FV=XRyeXcE93nZgOy+x5eWcHcKKwbJccuWFkx+cA8tEXwZQ@mail.gmail.com>
+Subject: RE: [PATCH] ath10k: Fix the parsing error in service available event
+Date:   Wed, 28 Oct 2020 21:17:19 +0530
+Message-ID: <003801d6ad41$a1bb8970$e5329c50$@codeaurora.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain;
+        charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Mailer: Microsoft Outlook 16.0
+Thread-Index: AQJiqwpvoy2iSO2kR0YP6ePedJFSmQFbRrV/qIpSBRA=
+Content-Language: en-us
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This commit adds reset_wsid quirk and uses this quirk for Surface 3 on
-card reset.
 
-To reset mwifiex on Surface 3, it seems that calling the _DSM method
-exists in \_SB.WSID [1] device is required.
 
-On Surface 3, calling the _DSM method removes/re-probes the card by
-itself. So, need to place the reset function before performing FLR and
-skip performing any other reset-related works.
+> -----Original Message-----
+> From: Doug Anderson <dianders@chromium.org>
+> Sent: Wednesday, October 28, 2020 8:07 PM
+> To: Rakesh Pillai <pillair@codeaurora.org>
+> Cc: ath10k <ath10k@lists.infradead.org>; linux-wireless <linux-
+> wireless@vger.kernel.org>; LKML <linux-kernel@vger.kernel.org>; =
+Abhishek
+> Kumar <kuabhs@chromium.org>; Brian Norris <briannorris@chromium.org>
+> Subject: Re: [PATCH] ath10k: Fix the parsing error in service =
+available event
+>=20
+> Hi,
+>=20
+> On Tue, Oct 27, 2020 at 8:20 AM Rakesh Pillai <pillair@codeaurora.org>
+> wrote:
+> >
+> > The wmi service available event has been
+> > extended to contain extra 128 bit for new services
+> > to be indicated by firmware.
+> >
+> > Currently the presence of any optional TLVs in
+> > the wmi service available event leads to a parsing
+> > error with the below error message:
+> > ath10k_snoc 18800000.wifi: failed to parse svc_avail tlv: -71
+> >
+> > The wmi service available event parsing should
+> > not return error for the newly added optional TLV.
+> > Fix this parsing for service available event message.
+> >
+> > Tested-on: WCN3990 hw1.0 SNOC
+> >
+> > Signed-off-by: Rakesh Pillai <pillair@codeaurora.org>
+> > ---
+> >  drivers/net/wireless/ath/ath10k/wmi-tlv.c | 3 +++
+> >  1 file changed, 3 insertions(+)
+> >
+> > diff --git a/drivers/net/wireless/ath/ath10k/wmi-tlv.c
+> b/drivers/net/wireless/ath/ath10k/wmi-tlv.c
+> > index 932266d..3b49e29 100644
+> > --- a/drivers/net/wireless/ath/ath10k/wmi-tlv.c
+> > +++ b/drivers/net/wireless/ath/ath10k/wmi-tlv.c
+> > @@ -1404,9 +1404,12 @@ static int =
+ath10k_wmi_tlv_svc_avail_parse(struct
+> ath10k *ar, u16 tag, u16 len,
+> >                 arg->service_map_ext_len =3D *(__le32 *)ptr;
+> >                 arg->service_map_ext =3D ptr + sizeof(__le32);
+> >                 return 0;
+> > +       case WMI_TLV_TAG_FIRST_ARRAY_ENUM:
+> > +               return 0;
+>=20
+> This is at least slightly worrying to me.  If I were calling this
+> function, I'd expect that if I didn't get back an error that at least
+> "arg->service_map_ext_len" was filled in.  Seems like you should do:
+>=20
+> case WMI_TLV_TAG_FIRST_ARRAY_ENUM:
+>   arg->service_map_ext_len =3D 0;
+>   arg->service_map_ext =3D NULL;
+>   return 0;
+>=20
+> ...and maybe add a comment about why you're doing that?
+>=20
+> At the moment things are working OK because
+> ath10k_wmi_event_service_available() happens to init the structure to
+> 0 before calling with:
+>=20
+>   struct wmi_svc_avail_ev_arg arg =3D {};
+>=20
+> ....but it doesn't seem like a great idea to rely on that.
+>=20
+> That all being said, I'm just a drive-by reviewer and if everyone else
+> likes it the way it is, feel free to ignore my comments.
 
-Note that Surface Pro 3 also has the WSID device [2], but it seems to need
-more work. This commit only supports Surface 3 yet.
 
-[1] https://github.com/linux-surface/acpidumps/blob/05cba925f3a515f222acb5b3551a032ddde958fe/surface_3/dsdt.dsl#L11947-L12011
-[2] https://github.com/linux-surface/acpidumps/blob/05cba925f3a515f222acb5b3551a032ddde958fe/surface_pro_3/dsdt.dsl#L12164-L12216
+Hi Doug,
 
-Signed-off-by: Tsuchiya Yuto <kitakar@gmail.com>
----
-Current issues:
-1) After reset with this quirk, ASPM settings don't get restored.
+The TLV TAG " WMI_TLV_TAG_STRUCT_SERVICE_AVAILABLE_EVENT" is the first =
+and a mandatory TLV in the service available event.
+The subsequent TLVs are optional ones and may or may not be present =
+(based on FW versions).
+This patch just fixes the bug, where the presence of any other TLVs are =
+leading to a failure in parsing the service available msg.
+If, in future, we plan to use any other services from firmware, which is =
+exposed in the extended TLVs, we will need to add a new variable (and =
+not service_map_ext) to set the service.
 
-Below is the "sudo lspci -nnvvv" diff before/after fw reset on Surface 3:
 
-    #
-    # root port of wifi:
-    # 00:1c.0 PCI bridge [0604]: Intel Corporation Atom/Celeron/Pentium Processor x5-E8000/J3xxx/N3xxx Series PCI Express Port #1 [8086:22c8] (rev 20) (prog-if 00 [Normal decode])
-    #
-    @@ -103,7 +103,7 @@
-                    DevSta: CorrErr+ NonFatalErr- FatalErr- UnsupReq- AuxPwr+ TransPend-
-                    LnkCap: Port #1, Speed 5GT/s, Width x1, ASPM L0s L1, Exit Latency L0s <512ns, L1 <16us
-                            ClockPM- Surprise- LLActRep+ BwNot+ ASPMOptComp-
-    -               LnkCtl: ASPM L0s L1 Enabled; RCB 64 bytes, Disabled- CommClk+
-    +               LnkCtl: ASPM Disabled; RCB 64 bytes, Disabled- CommClk+
-                            ExtSynch- ClockPM- AutWidDis- BWInt- AutBWInt-
-                    LnkSta: Speed 2.5GT/s (downgraded), Width x1 (ok)
-                            TrErr- Train- SlotClk+ DLActive+ BWMgmt+ ABWMgmt-
-    
-    #
-    # no changes on wifi regarding ASPM
-    #
-
-As you see, the ASPM of wifi root port is disabled after fw reset (thus
-breaks S0ix).
-
-2) Creating a new device driver for the WSID device is better?
-
-then export the reset function, and call it from mwifiex. As the comments
-in code states, on S3, calling the _DSM methods immediately
-remove/re-probe mwifiex. So, resetting the wifi externally is a better
-idea? (Also in this way, hopefully supporting SP3 may become easier.)
-
- drivers/net/wireless/marvell/mwifiex/pcie.c   | 10 +++
- .../wireless/marvell/mwifiex/pcie_quirks.c    | 77 ++++++++++++++++++-
- .../wireless/marvell/mwifiex/pcie_quirks.h    |  5 ++
- 3 files changed, 91 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/marvell/mwifiex/pcie.c b/drivers/net/wireless/marvell/mwifiex/pcie.c
-index c0c4b5a9149ab..b3aacd19cc48f 100644
---- a/drivers/net/wireless/marvell/mwifiex/pcie.c
-+++ b/drivers/net/wireless/marvell/mwifiex/pcie.c
-@@ -2966,6 +2966,16 @@ static void mwifiex_pcie_card_reset_work(struct mwifiex_adapter *adapter)
- {
- 	struct pcie_service_card *card = adapter->card;
- 
-+	/* On Surface 3, reset_wsid method removes then re-probes card by
-+	 * itself. So, need to place it here and skip performing any other
-+	 * reset-related works.
-+	 */
-+	if (card->quirks & QUIRK_FW_RST_WSID_S3) {
-+		mwifiex_pcie_reset_wsid_quirk(card->dev);
-+		/* skip performing any other reset-related works */
-+		return;
-+	}
-+
- 	/* We can't afford to wait here; remove() might be waiting on us. If we
- 	 * can't grab the device lock, maybe we'll get another chance later.
- 	 */
-diff --git a/drivers/net/wireless/marvell/mwifiex/pcie_quirks.c b/drivers/net/wireless/marvell/mwifiex/pcie_quirks.c
-index edc739c542fea..f0a6fa0a7ae5f 100644
---- a/drivers/net/wireless/marvell/mwifiex/pcie_quirks.c
-+++ b/drivers/net/wireless/marvell/mwifiex/pcie_quirks.c
-@@ -9,10 +9,21 @@
-  * down, or causes NULL ptr deref).
-  */
- 
-+#include <linux/acpi.h>
- #include <linux/dmi.h>
- 
- #include "pcie_quirks.h"
- 
-+/* For reset_wsid quirk */
-+#define ACPI_WSID_PATH		"\\_SB.WSID"
-+#define WSID_REV		0x0
-+#define WSID_FUNC_WIFI_PWR_OFF	0x1
-+#define WSID_FUNC_WIFI_PWR_ON	0x2
-+/* WSID _DSM UUID: "534ea3bf-fcc2-4e7a-908f-a13978f0c7ef" */
-+static const guid_t wsid_dsm_guid =
-+	GUID_INIT(0x534ea3bf, 0xfcc2, 0x4e7a,
-+		  0x90, 0x8f, 0xa1, 0x39, 0x78, 0xf0, 0xc7, 0xef);
-+
- /* quirk table based on DMI matching */
- static const struct dmi_system_id mwifiex_quirk_table[] = {
- 	{
-@@ -87,7 +98,7 @@ static const struct dmi_system_id mwifiex_quirk_table[] = {
- 			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Microsoft Corporation"),
- 			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "Surface 3"),
- 		},
--		.driver_data = 0,
-+		.driver_data = (void *)QUIRK_FW_RST_WSID_S3,
- 	},
- 	{
- 		.ident = "Surface Pro 3",
-@@ -113,6 +124,9 @@ void mwifiex_initialize_quirks(struct pcie_service_card *card)
- 		dev_info(&pdev->dev, "no quirks enabled\n");
- 	if (card->quirks & QUIRK_FW_RST_D3COLD)
- 		dev_info(&pdev->dev, "quirk reset_d3cold enabled\n");
-+	if (card->quirks & QUIRK_FW_RST_WSID_S3)
-+		dev_info(&pdev->dev,
-+			 "quirk reset_wsid for Surface 3 enabled\n");
- }
- 
- static void mwifiex_pcie_set_power_d3cold(struct pci_dev *pdev)
-@@ -169,3 +183,64 @@ int mwifiex_pcie_reset_d3cold_quirk(struct pci_dev *pdev)
- 
- 	return 0;
- }
-+
-+int mwifiex_pcie_reset_wsid_quirk(struct pci_dev *pdev)
-+{
-+	acpi_handle handle;
-+	union acpi_object *obj;
-+	acpi_status status;
-+
-+	dev_info(&pdev->dev, "Using reset_wsid quirk to perform FW reset\n");
-+
-+	status = acpi_get_handle(NULL, ACPI_WSID_PATH, &handle);
-+	if (ACPI_FAILURE(status)) {
-+		dev_err(&pdev->dev, "No ACPI handle for path %s\n",
-+			ACPI_WSID_PATH);
-+		return -ENODEV;
-+	}
-+
-+	if (!acpi_has_method(handle, "_DSM")) {
-+		dev_err(&pdev->dev, "_DSM method not found\n");
-+		return -ENODEV;
-+	}
-+
-+	if (!acpi_check_dsm(handle, &wsid_dsm_guid,
-+			    WSID_REV, WSID_FUNC_WIFI_PWR_OFF)) {
-+		dev_err(&pdev->dev,
-+			"_DSM method doesn't support wifi power off func\n");
-+		return -ENODEV;
-+	}
-+
-+	if (!acpi_check_dsm(handle, &wsid_dsm_guid,
-+			    WSID_REV, WSID_FUNC_WIFI_PWR_ON)) {
-+		dev_err(&pdev->dev,
-+			"_DSM method doesn't support wifi power on func\n");
-+		return -ENODEV;
-+	}
-+
-+	/* card will be removed immediately after this call on Surface 3 */
-+	dev_info(&pdev->dev, "turning wifi off...\n");
-+	obj = acpi_evaluate_dsm(handle, &wsid_dsm_guid,
-+				WSID_REV, WSID_FUNC_WIFI_PWR_OFF,
-+				NULL);
-+	if (!obj) {
-+		dev_err(&pdev->dev,
-+			"device _DSM execution failed for turning wifi off\n");
-+		return -EIO;
-+	}
-+	ACPI_FREE(obj);
-+
-+	/* card will be re-probed immediately after this call on Surface 3 */
-+	dev_info(&pdev->dev, "turning wifi on...\n");
-+	obj = acpi_evaluate_dsm(handle, &wsid_dsm_guid,
-+				WSID_REV, WSID_FUNC_WIFI_PWR_ON,
-+				NULL);
-+	if (!obj) {
-+		dev_err(&pdev->dev,
-+			"device _DSM execution failed for turning wifi on\n");
-+		return -EIO;
-+	}
-+	ACPI_FREE(obj);
-+
-+	return 0;
-+}
-diff --git a/drivers/net/wireless/marvell/mwifiex/pcie_quirks.h b/drivers/net/wireless/marvell/mwifiex/pcie_quirks.h
-index 8b9dcb5070d87..3ef7440418e32 100644
---- a/drivers/net/wireless/marvell/mwifiex/pcie_quirks.h
-+++ b/drivers/net/wireless/marvell/mwifiex/pcie_quirks.h
-@@ -7,6 +7,11 @@
- 
- /* quirks */
- #define QUIRK_FW_RST_D3COLD	BIT(0)
-+/* Surface 3 and Surface Pro 3 have the same _DSM method but need to
-+ * be handled differently. Currently, only S3 is supported.
-+ */
-+#define QUIRK_FW_RST_WSID_S3	BIT(1)
- 
- void mwifiex_initialize_quirks(struct pcie_service_card *card);
- int mwifiex_pcie_reset_d3cold_quirk(struct pci_dev *pdev);
-+int mwifiex_pcie_reset_wsid_quirk(struct pci_dev *pdev);
--- 
-2.29.1
+>=20
+> -Doug
 
