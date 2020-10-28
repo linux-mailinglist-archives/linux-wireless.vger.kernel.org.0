@@ -2,277 +2,125 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 73A2229D68A
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Oct 2020 23:16:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C5A1229D6A7
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Oct 2020 23:17:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731293AbgJ1WPR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 28 Oct 2020 18:15:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53112 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730978AbgJ1WPN (ORCPT
+        id S1731471AbgJ1WRG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 28 Oct 2020 18:17:06 -0400
+Received: from mail-pg1-f200.google.com ([209.85.215.200]:39711 "EHLO
+        mail-pg1-f200.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731459AbgJ1WRF (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 28 Oct 2020 18:15:13 -0400
-Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com [IPv6:2607:f8b0:4864:20::443])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE5C9C0613CF;
-        Wed, 28 Oct 2020 15:15:12 -0700 (PDT)
-Received: by mail-pf1-x443.google.com with SMTP id e15so617255pfh.6;
-        Wed, 28 Oct 2020 15:15:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=ocxFtg8A0KwULRID7o8Oiqt9sWxa5tw0cXhwztdaM1U=;
-        b=dZCseKhewWe+HqzTBXdKeyG6gzR5nLhrHD0ZVXG08fhArzeno9/T7b4bkDypo7DR+q
-         zO2mXET29blZu0W6RoNo2a0W0Xhbrfsh0hujyI+zwXETiuQDi+jtKDl9vCxN7SVVbff5
-         c4UTeoqIFmlquJ9zvTDoFG633GoHDvk2/tr20+EF7o3qAxUGoMDV9rFfLuP3TPUXhMp3
-         Vv9Z4DgbC7yMfPIHvHgZ/gsQyMC/b8+nOpJzaFpBlAHLG+dn6mBo4pob33UfrNvg0l7z
-         8Q51J85Ru6wYtq/8ZZGYg6Ztoj1NXHR3WNbpJFAU/YxzY+Fos3mm36KLvC85KHwDYtWT
-         VcJA==
+        Wed, 28 Oct 2020 18:17:05 -0400
+Received: by mail-pg1-f200.google.com with SMTP id j10so548410pgc.6
+        for <linux-wireless@vger.kernel.org>; Wed, 28 Oct 2020 15:17:04 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=ocxFtg8A0KwULRID7o8Oiqt9sWxa5tw0cXhwztdaM1U=;
-        b=syKJKhdt+JNT76Hgj8q4M1ULVZ6ZYuGC708RY03tLBxFe8KW30vhZzC8mIKn6vhWlc
-         GPPC95qgQ7N8zvHRQ/Yw70scnqo+btVpbIjI9Ppx+Tn4nKyQmMOwPDwt2snOZqV7uVkN
-         oygATHtvv3QOhln5FDsScoSIcosPmE1CXkO254l01AOgNZV5KR8tvD6zcGAkqdxQBjiU
-         4Odr/T6ojiqwUUHwbXNkLi1YE3Pqhpxsc8gWTZTt0UYK5bGpO/T9OWbnh6zW8TKvDnZV
-         X3dR4v1OM9TV2n0DhYKNVPtc9NZ0yfev9O5lHJsjGWYShUi4poxp8slF4TrHBjW1hqCT
-         JW3Q==
-X-Gm-Message-State: AOAM532BENJXTC9TBAAZVEqFkhjMWwCCdOFjeDNGzFhRYvQw39YZxsOS
-        HhJfUQMJqg4a5XNEnzjqdqSdzl8IPZKz/BlM
-X-Google-Smtp-Source: ABdhPJxz7zFzCJrzIBjaAaSCT2wNHuc13SjWZYUOLY43sL3EhM+IEahD44ByiPxkMqyy2iYhCYxlqA==
-X-Received: by 2002:a65:47c2:: with SMTP id f2mr6742686pgs.4.1603895307406;
-        Wed, 28 Oct 2020 07:28:27 -0700 (PDT)
-Received: from k5-sbwpb.flets-east.jp (i60-35-254-237.s41.a020.ap.plala.or.jp. [60.35.254.237])
-        by smtp.gmail.com with ESMTPSA id g67sm6581754pfb.9.2020.10.28.07.28.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Oct 2020 07:28:26 -0700 (PDT)
-From:   Tsuchiya Yuto <kitakar@gmail.com>
-To:     Amitkumar Karwar <amitkarwar@gmail.com>,
-        Ganapathi Bhat <ganapathi.bhat@nxp.com>,
-        Xinming Hu <huxinming820@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Maximilian Luz <luzmaximilian@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@intel.com>, verdre@v0yd.nl,
-        Tsuchiya Yuto <kitakar@gmail.com>
-Subject: [RFC PATCH 1/3] mwifiex: pcie: add DMI-based quirk impl for Surface devices
-Date:   Wed, 28 Oct 2020 23:27:51 +0900
-Message-Id: <20201028142753.18855-2-kitakar@gmail.com>
-X-Mailer: git-send-email 2.29.1
-In-Reply-To: <20201028142753.18855-1-kitakar@gmail.com>
-References: <20201028142753.18855-1-kitakar@gmail.com>
+        h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
+        bh=XCSAEIF7yxudBBUUr3qUjTib7D5OltngZoG8wvpMOQI=;
+        b=gEfk7Qg31tFtIam2FzKpdmVRauP5TQ3AnzqNtXcDUBTaPWlMwTwKve1C3z+/68Xxdc
+         5pFOAho7+JBrIGs4xhJCI1drNFHSGisYJZKMLfKyezWqoYF/jM4KSQ/O/1S30WAoXtHC
+         WVOvRQ1428C3TlP6fpshhMsHwBUOIeE0jwA7WxOQP9PRI1GxAb7eXBT5+zTo5d7V+Nve
+         sC/zngYhUTNYbwRe+Z0K4ZP4FaLuoe8LmRh5D8YYGRYzs33rt0R4lLJ4DKTe5d6ESdct
+         O0OaerVaydoxqz3siSL+CA0lVhlSHIMhALPzWZzPVKAln4Brd9imXaoVJAcoMmZxj15W
+         E7zg==
+X-Gm-Message-State: AOAM533vb55JxwZTix6Rd3WwNUIB8tcEW1QFB6a3zmOx6WYcORHenoKJ
+        S1e7mSuP1v1YIMiX2lOc0hXmfeTq+0IOUuUIKcYZdjERgYlL
+X-Google-Smtp-Source: ABdhPJzl37aBwYIDKept4UZfHp9QtamUc+1RORwkGP8e3BHgiENeCyDaGrdCvVxp9qvnK94gNCfZZZnYqc+M4UYPzQ7LeWwLnF2x
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Received: by 2002:a92:98c5:: with SMTP id a66mr6545587ill.50.1603902742690;
+ Wed, 28 Oct 2020 09:32:22 -0700 (PDT)
+Date:   Wed, 28 Oct 2020 09:32:22 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <0000000000003b856d05b2bdb5f7@google.com>
+Subject: general protection fault in wext_handle_ioctl
+From:   syzbot <syzbot+8b2a88a09653d4084179@syzkaller.appspotmail.com>
+To:     davem@davemloft.net, johannes@sipsolutions.net, kuba@kernel.org,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This commit adds quirk implementation based on DMI matching with DMI
-table for Microsoft Surface devices that uses mwifiex chip (currently,
-all the devices that use mwifiex equip PCIe-88W8897 chip).
+Hello,
 
-This implementation can be used for quirks later.
+syzbot found the following issue on:
 
-Signed-off-by: Tsuchiya Yuto <kitakar@gmail.com>
+HEAD commit:    8c2ab803 Merge tag 'orphan-handling-v5.10-rc2' of git://gi..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=12e57870500000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=3140f5be49a06bf9
+dashboard link: https://syzkaller.appspot.com/bug?extid=8b2a88a09653d4084179
+compiler:       clang version 11.0.0 (https://github.com/llvm/llvm-project.git ca2dcbd030eadbf0aa9b660efe864ff08af6e18b)
+
+Unfortunately, I don't have any reproducer for this issue yet.
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+8b2a88a09653d4084179@syzkaller.appspotmail.com
+
+general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] PREEMPT SMP KASAN
+KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
+CPU: 1 PID: 10716 Comm: syz-executor.0 Not tainted 5.10.0-rc1-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
+RIP: 0010:call_commit_handler net/wireless/wext-core.c:900 [inline]
+RIP: 0010:ioctl_standard_call net/wireless/wext-core.c:1029 [inline]
+RIP: 0010:wireless_process_ioctl net/wireless/wext-core.c:954 [inline]
+RIP: 0010:wext_ioctl_dispatch net/wireless/wext-core.c:987 [inline]
+RIP: 0010:wext_handle_ioctl+0x974/0xb20 net/wireless/wext-core.c:1048
+Code: e8 a1 87 a3 f8 eb 6c 48 8b 44 24 18 42 80 3c 20 00 48 8b 5c 24 20 74 08 48 89 df e8 d6 78 e5 f8 48 8b 1b 48 89 d8 48 c1 e8 03 <42> 80 3c 20 00 74 08 48 89 df e8 bd 78 e5 f8 48 8b 1b 48 89 d8 48
+RSP: 0018:ffffc900018afe00 EFLAGS: 00010246
+RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffffffff88d17b88
+RDX: ffff88801a3ccec0 RSI: 0000000000000001 RDI: 0000000000000000
+RBP: ffff88802b398000 R08: ffffffff88d17baf R09: ffffed1005673009
+R10: ffffed1005673009 R11: 0000000000000000 R12: dffffc0000000000
+R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000008b04
+FS:  00007f0710ce1700(0000) GS:ffff8880b9d00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000001b2ce26000 CR3: 000000001efa8000 CR4: 00000000001506e0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ sock_ioctl+0xdc/0x690 net/socket.c:1119
+ vfs_ioctl fs/ioctl.c:48 [inline]
+ __do_sys_ioctl fs/ioctl.c:753 [inline]
+ __se_sys_ioctl+0xfb/0x170 fs/ioctl.c:739
+ do_syscall_64+0x2d/0x70 arch/x86/entry/common.c:46
+ entry_SYSCALL_64_after_hwframe+0x44/0xa9
+RIP: 0033:0x45de49
+Code: 0d b4 fb ff c3 66 2e 0f 1f 84 00 00 00 00 00 66 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 0f 83 db b3 fb ff c3 66 2e 0f 1f 84 00 00 00 00
+RSP: 002b:00007f0710ce0c78 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+RAX: ffffffffffffffda RBX: 0000000000013440 RCX: 000000000045de49
+RDX: 00000000200000c0 RSI: 0000000000008b04 RDI: 0000000000000003
+RBP: 000000000118bf60 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 000000000118bf2c
+R13: 00007fff190b875f R14: 00007f0710ce19c0 R15: 000000000118bf2c
+Modules linked in:
+---[ end trace 82d7ada5671b3a90 ]---
+RIP: 0010:call_commit_handler net/wireless/wext-core.c:900 [inline]
+RIP: 0010:ioctl_standard_call net/wireless/wext-core.c:1029 [inline]
+RIP: 0010:wireless_process_ioctl net/wireless/wext-core.c:954 [inline]
+RIP: 0010:wext_ioctl_dispatch net/wireless/wext-core.c:987 [inline]
+RIP: 0010:wext_handle_ioctl+0x974/0xb20 net/wireless/wext-core.c:1048
+Code: e8 a1 87 a3 f8 eb 6c 48 8b 44 24 18 42 80 3c 20 00 48 8b 5c 24 20 74 08 48 89 df e8 d6 78 e5 f8 48 8b 1b 48 89 d8 48 c1 e8 03 <42> 80 3c 20 00 74 08 48 89 df e8 bd 78 e5 f8 48 8b 1b 48 89 d8 48
+RSP: 0018:ffffc900018afe00 EFLAGS: 00010246
+RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffffffff88d17b88
+RDX: ffff88801a3ccec0 RSI: 0000000000000001 RDI: 0000000000000000
+RBP: ffff88802b398000 R08: ffffffff88d17baf R09: ffffed1005673009
+R10: ffffed1005673009 R11: 0000000000000000 R12: dffffc0000000000
+R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000008b04
+FS:  00007f0710ce1700(0000) GS:ffff8880b9d00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f04025f6000 CR3: 000000001efa8000 CR4: 00000000001506e0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+
+
 ---
- drivers/net/wireless/marvell/mwifiex/Makefile |   1 +
- drivers/net/wireless/marvell/mwifiex/pcie.c   |   4 +
- drivers/net/wireless/marvell/mwifiex/pcie.h   |   2 +
- .../wireless/marvell/mwifiex/pcie_quirks.c    | 114 ++++++++++++++++++
- .../wireless/marvell/mwifiex/pcie_quirks.h    |  11 ++
- 5 files changed, 132 insertions(+)
- create mode 100644 drivers/net/wireless/marvell/mwifiex/pcie_quirks.c
- create mode 100644 drivers/net/wireless/marvell/mwifiex/pcie_quirks.h
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/Makefile b/drivers/net/wireless/marvell/mwifiex/Makefile
-index fdfd9bf15ed46..8a1e7c5b9c6e2 100644
---- a/drivers/net/wireless/marvell/mwifiex/Makefile
-+++ b/drivers/net/wireless/marvell/mwifiex/Makefile
-@@ -49,6 +49,7 @@ mwifiex_sdio-y += sdio.o
- obj-$(CONFIG_MWIFIEX_SDIO) += mwifiex_sdio.o
- 
- mwifiex_pcie-y += pcie.o
-+mwifiex_pcie-y += pcie_quirks.o
- obj-$(CONFIG_MWIFIEX_PCIE) += mwifiex_pcie.o
- 
- mwifiex_usb-y += usb.o
-diff --git a/drivers/net/wireless/marvell/mwifiex/pcie.c b/drivers/net/wireless/marvell/mwifiex/pcie.c
-index 6a10ff0377a24..362cf10debfa0 100644
---- a/drivers/net/wireless/marvell/mwifiex/pcie.c
-+++ b/drivers/net/wireless/marvell/mwifiex/pcie.c
-@@ -27,6 +27,7 @@
- #include "wmm.h"
- #include "11n.h"
- #include "pcie.h"
-+#include "pcie_quirks.h"
- 
- #define PCIE_VERSION	"1.0"
- #define DRV_NAME        "Marvell mwifiex PCIe"
-@@ -410,6 +411,9 @@ static int mwifiex_pcie_probe(struct pci_dev *pdev,
- 			return ret;
- 	}
- 
-+	/* check quirks */
-+	mwifiex_initialize_quirks(card);
-+
- 	if (mwifiex_add_card(card, &card->fw_done, &pcie_ops,
- 			     MWIFIEX_PCIE, &pdev->dev)) {
- 		pr_err("%s failed\n", __func__);
-diff --git a/drivers/net/wireless/marvell/mwifiex/pcie.h b/drivers/net/wireless/marvell/mwifiex/pcie.h
-index 843d57eda8201..09839a3bd1753 100644
---- a/drivers/net/wireless/marvell/mwifiex/pcie.h
-+++ b/drivers/net/wireless/marvell/mwifiex/pcie.h
-@@ -242,6 +242,8 @@ struct pcie_service_card {
- 	struct mwifiex_msix_context share_irq_ctx;
- 	struct work_struct work;
- 	unsigned long work_flags;
-+
-+	unsigned long quirks;
- };
- 
- static inline int
-diff --git a/drivers/net/wireless/marvell/mwifiex/pcie_quirks.c b/drivers/net/wireless/marvell/mwifiex/pcie_quirks.c
-new file mode 100644
-index 0000000000000..929aee2b0a60a
---- /dev/null
-+++ b/drivers/net/wireless/marvell/mwifiex/pcie_quirks.c
-@@ -0,0 +1,114 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * File for PCIe quirks.
-+ */
-+
-+/* The low-level PCI operations will be performed in this file. Therefore,
-+ * let's use dev_*() instead of mwifiex_dbg() here to avoid troubles (e.g.
-+ * to avoid using mwifiex_adapter struct before init or wifi is powered
-+ * down, or causes NULL ptr deref).
-+ */
-+
-+#include <linux/dmi.h>
-+
-+#include "pcie_quirks.h"
-+
-+/* quirk table based on DMI matching */
-+static const struct dmi_system_id mwifiex_quirk_table[] = {
-+	{
-+		.ident = "Surface Pro 4",
-+		.matches = {
-+			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Microsoft Corporation"),
-+			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "Surface Pro 4"),
-+		},
-+		.driver_data = 0,
-+	},
-+	{
-+		.ident = "Surface Pro 5",
-+		.matches = {
-+			/* match for SKU here due to generic product name "Surface Pro" */
-+			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Microsoft Corporation"),
-+			DMI_EXACT_MATCH(DMI_PRODUCT_SKU, "Surface_Pro_1796"),
-+		},
-+		.driver_data = 0,
-+	},
-+	{
-+		.ident = "Surface Pro 5 (LTE)",
-+		.matches = {
-+			/* match for SKU here due to generic product name "Surface Pro" */
-+			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Microsoft Corporation"),
-+			DMI_EXACT_MATCH(DMI_PRODUCT_SKU, "Surface_Pro_1807"),
-+		},
-+		.driver_data = 0,
-+	},
-+	{
-+		.ident = "Surface Pro 6",
-+		.matches = {
-+			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Microsoft Corporation"),
-+			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "Surface Pro 6"),
-+		},
-+		.driver_data = 0,
-+	},
-+	{
-+		.ident = "Surface Book 1",
-+		.matches = {
-+			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Microsoft Corporation"),
-+			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "Surface Book"),
-+		},
-+		.driver_data = 0,
-+	},
-+	{
-+		.ident = "Surface Book 2",
-+		.matches = {
-+			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Microsoft Corporation"),
-+			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "Surface Book 2"),
-+		},
-+		.driver_data = 0,
-+	},
-+	{
-+		.ident = "Surface Laptop 1",
-+		.matches = {
-+			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Microsoft Corporation"),
-+			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "Surface Laptop"),
-+		},
-+		.driver_data = 0,
-+	},
-+	{
-+		.ident = "Surface Laptop 2",
-+		.matches = {
-+			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Microsoft Corporation"),
-+			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "Surface Laptop 2"),
-+		},
-+		.driver_data = 0,
-+	},
-+	{
-+		.ident = "Surface 3",
-+		.matches = {
-+			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Microsoft Corporation"),
-+			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "Surface 3"),
-+		},
-+		.driver_data = 0,
-+	},
-+	{
-+		.ident = "Surface Pro 3",
-+		.matches = {
-+			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Microsoft Corporation"),
-+			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "Surface Pro 3"),
-+		},
-+		.driver_data = 0,
-+	},
-+	{}
-+};
-+
-+void mwifiex_initialize_quirks(struct pcie_service_card *card)
-+{
-+	struct pci_dev *pdev = card->dev;
-+	const struct dmi_system_id *dmi_id;
-+
-+	dmi_id = dmi_first_match(mwifiex_quirk_table);
-+	if (dmi_id)
-+		card->quirks = (uintptr_t)dmi_id->driver_data;
-+
-+	if (!card->quirks)
-+		dev_info(&pdev->dev, "no quirks enabled\n");
-+}
-diff --git a/drivers/net/wireless/marvell/mwifiex/pcie_quirks.h b/drivers/net/wireless/marvell/mwifiex/pcie_quirks.h
-new file mode 100644
-index 0000000000000..5326ae7e56713
---- /dev/null
-+++ b/drivers/net/wireless/marvell/mwifiex/pcie_quirks.h
-@@ -0,0 +1,11 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * Header file for PCIe quirks.
-+ */
-+
-+#include "pcie.h"
-+
-+/* quirks */
-+// quirk flags can be added here
-+
-+void mwifiex_initialize_quirks(struct pcie_service_card *card);
--- 
-2.29.1
-
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
