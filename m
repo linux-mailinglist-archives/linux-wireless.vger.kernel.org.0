@@ -2,92 +2,77 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 04B0129E118
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Oct 2020 02:53:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9117929E20E
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Oct 2020 03:05:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728708AbgJ2BxG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 28 Oct 2020 21:53:06 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:39447 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728387AbgJ1V5l (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 28 Oct 2020 17:57:41 -0400
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 09S4fO121001014, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexmb03.realtek.com.tw[172.21.6.96])
-        by rtits2.realtek.com.tw (8.15.2/2.70/5.88) with ESMTPS id 09S4fO121001014
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Wed, 28 Oct 2020 12:41:24 +0800
-Received: from RTEXMB04.realtek.com.tw (172.21.6.97) by
- RTEXMB03.realtek.com.tw (172.21.6.96) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2044.4; Wed, 28 Oct 2020 12:41:24 +0800
-Received: from RTEXMB04.realtek.com.tw ([fe80::89f7:e6c3:b043:15fa]) by
- RTEXMB04.realtek.com.tw ([fe80::89f7:e6c3:b043:15fa%3]) with mapi id
- 15.01.2044.006; Wed, 28 Oct 2020 12:41:24 +0800
-From:   Pkshih <pkshih@realtek.com>
-To:     "baijiaju1990@gmail.com" <baijiaju1990@gmail.com>,
-        "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "christophe.jaillet@wanadoo.fr" <christophe.jaillet@wanadoo.fr>,
-        "kuba@kernel.org" <kuba@kernel.org>,
-        "straube.linux@gmail.com" <straube.linux@gmail.com>,
-        "Larry.Finger@lwfinger.net" <Larry.Finger@lwfinger.net>
-CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] rtl8192ce: avoid accessing the data mapped to streaming DMA
-Thread-Topic: [PATCH] rtl8192ce: avoid accessing the data mapped to streaming
- DMA
-Thread-Index: AQHWpcVKJ30NZbw/gky3yTJLE0YXfKmr90+A
-Date:   Wed, 28 Oct 2020 04:41:24 +0000
-Message-ID: <1603860037.8609.4.camel@realtek.com>
-References: <20201019030931.4796-1-baijiaju1990@gmail.com>
-In-Reply-To: <20201019030931.4796-1-baijiaju1990@gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.213]
+        id S1729579AbgJ2CFg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 28 Oct 2020 22:05:36 -0400
+Received: from m42-4.mailgun.net ([69.72.42.4]:58426 "EHLO m42-4.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727087AbgJ1ViU (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 28 Oct 2020 17:38:20 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1603921100; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=/kOV9eLx6Jma6oBz8tUemmC4ZI0OlHRbmHAdnE7Ewkg=;
+ b=NhGCS/3bnXD5GHJypR+PcDE5VbYJjFojqcTROK5OmU09i9AHZogh3d/SpzVFTcHesLjdEsGs
+ qOpHLQPyh6T+b21qMdwZ/xoRMtFMpcaGlHyiT8zIvEm6iMPIOmkgCQF5dQnVRwBdMIHQC8/8
+ wCzH+pXIZfxpjn5ybcdf6dcdYFg=
+X-Mailgun-Sending-Ip: 69.72.42.4
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n01.prod.us-west-2.postgun.com with SMTP id
+ 5f99754eaca26e7bb9522abd (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 28 Oct 2020 13:42:38
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id F3AE5C433FF; Wed, 28 Oct 2020 13:42:37 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        MISSING_DATE,MISSING_MID,SPF_FAIL,URIBL_BLOCKED autolearn=no
+        autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id BFC36C433C9;
+        Wed, 28 Oct 2020 13:42:36 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org BFC36C433C9
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
-Content-ID: <1774CA54F780E34FA8A502B26F15290C@realtek.com>
-Content-Transfer-Encoding: base64
 MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH 1/2] ath10k: remove repeated words in comments
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <1603802288-21158-1-git-send-email-kvalo@codeaurora.org>
+References: <1603802288-21158-1-git-send-email-kvalo@codeaurora.org>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
+Message-Id: <20201028134237.F3AE5C433FF@smtp.codeaurora.org>
+Date:   Wed, 28 Oct 2020 13:42:37 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-T24gTW9uLCAyMDIwLTEwLTE5IGF0IDExOjA5ICswODAwLCBKaWEtSnUgQmFpIHdyb3RlOg0KPiBJ
-biBydGw5MmNlX3R4X2ZpbGxfY21kZGVzYygpLCBza2ItPmRhdGEgaXMgbWFwcGVkIHRvIHN0cmVh
-bWluZyBETUEgb24NCj4gbGluZSA1MzA6DQo+IMKgIGRtYV9hZGRyX3QgbWFwcGluZyA9IGRtYV9t
-YXBfc2luZ2xlKC4uLiwgc2tiLT5kYXRhLCAuLi4pOw0KPiANCj4gT24gbGluZSA1MzMsIHNrYi0+
-ZGF0YSBpcyBhc3NpZ25lZCB0byBoZHIgYWZ0ZXIgY2FzdDoNCj4gwqAgc3RydWN0IGllZWU4MDIx
-MV9oZHIgKmhkciA9IChzdHJ1Y3QgaWVlZTgwMjExX2hkciAqKShza2ItPmRhdGEpOw0KPiANCj4g
-VGhlbiBoZHItPmZyYW1lX2NvbnRyb2wgaXMgYWNjZXNzZWQgb24gbGluZSA1MzQ6DQo+IMKgIF9f
-bGUxNiBmYyA9IGhkci0+ZnJhbWVfY29udHJvbDsNCj4gDQo+IFRoaXMgRE1BIGFjY2VzcyBtYXkg
-Y2F1c2UgZGF0YSBpbmNvbnNpc3RlbmN5IGJldHdlZW4gQ1BVIGFuZCBoYXJkd3JlLg0KPiANCj4g
-VG8gZml4IHRoaXMgYnVnLCBoZHItPmZyYW1lX2NvbnRyb2wgaXMgYWNjZXNzZWQgYmVmb3JlIHRo
-ZSBETUEgbWFwcGluZy4NCj4gDQo+IFNpZ25lZC1vZmYtYnk6IEppYS1KdSBCYWkgPGJhaWppYWp1
-MTk5MEBnbWFpbC5jb20+DQo+IC0tLQ0KPiDCoGRyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsv
-cnRsd2lmaS9ydGw4MTkyY2UvdHJ4LmMgfCA2ICsrKy0tLQ0KPiDCoDEgZmlsZSBjaGFuZ2VkLCAz
-IGluc2VydGlvbnMoKyksIDMgZGVsZXRpb25zKC0pDQo+IA0KPiBkaWZmIC0tZ2l0IGEvZHJpdmVy
-cy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydGx3aWZpL3J0bDgxOTJjZS90cnguYw0KPiBiL2RyaXZl
-cnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnRsd2lmaS9ydGw4MTkyY2UvdHJ4LmMNCj4gaW5kZXgg
-YzA2MzUzMDlhOTJkLi40MTY1MTc1Y2Y1YzAgMTAwNjQ0DQo+IC0tLSBhL2RyaXZlcnMvbmV0L3dp
-cmVsZXNzL3JlYWx0ZWsvcnRsd2lmaS9ydGw4MTkyY2UvdHJ4LmMNCj4gKysrIGIvZHJpdmVycy9u
-ZXQvd2lyZWxlc3MvcmVhbHRlay9ydGx3aWZpL3J0bDgxOTJjZS90cnguYw0KPiBAQCAtNTI3LDEy
-ICs1MjcsMTIgQEAgdm9pZCBydGw5MmNlX3R4X2ZpbGxfY21kZGVzYyhzdHJ1Y3QgaWVlZTgwMjEx
-X2h3ICpodywNCj4gwqAJdTggZndfcXVldWUgPSBRU0xUX0JFQUNPTjsNCj4gwqAJX19sZTMyICpw
-ZGVzYyA9IChfX2xlMzIgKilwZGVzYzg7DQo+IMKgDQo+IC0JZG1hX2FkZHJfdCBtYXBwaW5nID0g
-ZG1hX21hcF9zaW5nbGUoJnJ0bHBjaS0+cGRldi0+ZGV2LCBza2ItPmRhdGEsDQo+IC0JCQkJCcKg
-wqDCoMKgc2tiLT5sZW4sIERNQV9UT19ERVZJQ0UpOw0KPiAtDQo+IMKgCXN0cnVjdCBpZWVlODAy
-MTFfaGRyICpoZHIgPSAoc3RydWN0IGllZWU4MDIxMV9oZHIgKikoc2tiLT5kYXRhKTsNCj4gwqAJ
-X19sZTE2IGZjID0gaGRyLT5mcmFtZV9jb250cm9sOw0KPiDCoA0KPiArCWRtYV9hZGRyX3QgbWFw
-cGluZyA9IGRtYV9tYXBfc2luZ2xlKCZydGxwY2ktPnBkZXYtPmRldiwgc2tiLT5kYXRhLA0KPiAr
-CQkJCQnCoMKgwqDCoHNrYi0+bGVuLCBETUFfVE9fREVWSUNFKTsNCj4gKw0KPiDCoAlpZiAoZG1h
-X21hcHBpbmdfZXJyb3IoJnJ0bHBjaS0+cGRldi0+ZGV2LCBtYXBwaW5nKSkgew0KPiDCoAkJcnRs
-X2RiZyhydGxwcml2LCBDT01QX1NFTkQsIERCR19UUkFDRSwNCj4gwqAJCQkiRE1BIG1hcHBpbmcg
-ZXJyb3JcbiIpOw0KDQpUaGUgY2hhbmdlcyBvZiB0aGUgc2VyaWVzIHBhdGNoZXMgYXJlIGdvb2Qg
-dG8gbWUuwqANCkJ1dCwgcGxlYXNlIHVzZSAncnRsd2lmaTogJyBhcyBzdWJqZWN0IHByZWZpeCwg
-bGlrZSAicnRsd2lmaTrCoHJ0bDgxOTJjZTogLi4uIiwNCmFuZCBzZW5kIHRoZW0gYXMgYSBwYXRj
-aHNldCBJIHRoaW5rIHRoaXMgd291bGQgYmUgYmV0dGVyIHRvIG1haW50YWluZXIuDQoNClRoYW5r
-IHlvdQ0KDQotLS0NClBLDQo=
+Kalle Valo <kvalo@codeaurora.org> wrote:
+
+> Found by latest checkpatch.
+> 
+> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+
+2 patches applied to ath-next branch of ath.git, thanks.
+
+762fd1aec588 ath10k: remove repeated words in comments
+d2f3f68864a4 ath10k: ath10k_pci_init_irq(): workaround for checkpatch fallthrough warning
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/1603802288-21158-1-git-send-email-kvalo@codeaurora.org/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
