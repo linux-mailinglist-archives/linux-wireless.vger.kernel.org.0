@@ -2,125 +2,106 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C5A1229D6A7
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Oct 2020 23:17:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 051B929D696
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Oct 2020 23:16:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731471AbgJ1WRG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 28 Oct 2020 18:17:06 -0400
-Received: from mail-pg1-f200.google.com ([209.85.215.200]:39711 "EHLO
-        mail-pg1-f200.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731459AbgJ1WRF (ORCPT
+        id S1731397AbgJ1WQU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 28 Oct 2020 18:16:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53306 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730955AbgJ1WQS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 28 Oct 2020 18:17:05 -0400
-Received: by mail-pg1-f200.google.com with SMTP id j10so548410pgc.6
-        for <linux-wireless@vger.kernel.org>; Wed, 28 Oct 2020 15:17:04 -0700 (PDT)
+        Wed, 28 Oct 2020 18:16:18 -0400
+Received: from mail-ej1-x642.google.com (mail-ej1-x642.google.com [IPv6:2a00:1450:4864:20::642])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6684AC0613CF;
+        Wed, 28 Oct 2020 15:16:18 -0700 (PDT)
+Received: by mail-ej1-x642.google.com with SMTP id s15so1089014ejf.8;
+        Wed, 28 Oct 2020 15:16:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=iwQcabFRrU2vdBHXJKGgczaLWxbb/mobf9EMpVjlwVs=;
+        b=q4gBqgyl5zVnZmWSvnnKZZIJZBciWMboNqlLvxmYb5kZa8bvPbIftieV+ScHhBjPhm
+         ByAXEncuL0uCWZGCidtmsCkx3po0YE/YaMYvR9JKB5DhGuoyEwtnN735wH9U/+NvGRYc
+         kO9yZin0GLhzl6PSgrdiJePNk7uvIF1g1YXAUHNmrdVWXlccVzuV/35sxiPgYzAsWJk2
+         VH+QX+G52kaRNKUI0LGpFnWnKEuc4fy8sYcA+fcngqyHvy7DpHPFlFMNkkk715GFsgCN
+         b9TkGrbvI6iKisjZKI7ESZtQlZ3nAD0QXKtP0It9YKJdkznrGKijH6EuOHk0cERtgn43
+         e9bw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
-        bh=XCSAEIF7yxudBBUUr3qUjTib7D5OltngZoG8wvpMOQI=;
-        b=gEfk7Qg31tFtIam2FzKpdmVRauP5TQ3AnzqNtXcDUBTaPWlMwTwKve1C3z+/68Xxdc
-         5pFOAho7+JBrIGs4xhJCI1drNFHSGisYJZKMLfKyezWqoYF/jM4KSQ/O/1S30WAoXtHC
-         WVOvRQ1428C3TlP6fpshhMsHwBUOIeE0jwA7WxOQP9PRI1GxAb7eXBT5+zTo5d7V+Nve
-         sC/zngYhUTNYbwRe+Z0K4ZP4FaLuoe8LmRh5D8YYGRYzs33rt0R4lLJ4DKTe5d6ESdct
-         O0OaerVaydoxqz3siSL+CA0lVhlSHIMhALPzWZzPVKAln4Brd9imXaoVJAcoMmZxj15W
-         E7zg==
-X-Gm-Message-State: AOAM533vb55JxwZTix6Rd3WwNUIB8tcEW1QFB6a3zmOx6WYcORHenoKJ
-        S1e7mSuP1v1YIMiX2lOc0hXmfeTq+0IOUuUIKcYZdjERgYlL
-X-Google-Smtp-Source: ABdhPJzl37aBwYIDKept4UZfHp9QtamUc+1RORwkGP8e3BHgiENeCyDaGrdCvVxp9qvnK94gNCfZZZnYqc+M4UYPzQ7LeWwLnF2x
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=iwQcabFRrU2vdBHXJKGgczaLWxbb/mobf9EMpVjlwVs=;
+        b=cfqjka4S6GZZ10IYcrub9wZ0rTComV5mW6gOgxWja/FfWRyq2gXEOueyiGuAD5wjMl
+         DjORAkX2epfGlbwNKLoSDxCuEYE8aRlX37MPuqM1DqJgadBDEULqjlTgth6Ir8trhcH5
+         +R/bnXruxFZs8HnZmSDzlqdA4sBwxpwHIQVldoBKDjy+UUkKeHO2rslO0T20KaPmgNy1
+         A5pXXOhoqTR+T1/n1K++xjBtbXLcmpneMXqDrOtnvk8nKyozxVX82v1+1BfWYz64Bf76
+         QUEEC+NjnJLDVe5Mxtvd0yIIz83mQUZ8NwvRVIiVkuSRod2FgEXeAB0/64H5yaZkdN3h
+         pqMQ==
+X-Gm-Message-State: AOAM531N/IU6UtV+xCRiZuW4qJz82JChyN++59cnDt/6PXkNH2t0PxjT
+        whuJT11egEj4dIrZGEXn6wv5zijsrprF9A==
+X-Google-Smtp-Source: ABdhPJyx/Tg3lpa91puNZ1/K/FVLjX3eAERpw3U7g9z2MqebNiUdnJ6XKDNtvID/bAL78uck3RiTLA==
+X-Received: by 2002:a5d:55c8:: with SMTP id i8mr687366wrw.194.1603909263036;
+        Wed, 28 Oct 2020 11:21:03 -0700 (PDT)
+Received: from nogikh.c.googlers.com.com (88.140.78.34.bc.googleusercontent.com. [34.78.140.88])
+        by smtp.gmail.com with ESMTPSA id r28sm531178wrr.81.2020.10.28.11.21.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 28 Oct 2020 11:21:02 -0700 (PDT)
+From:   Aleksandr Nogikh <aleksandrnogikh@gmail.com>
+To:     davem@davemloft.net, kuba@kernel.org, johannes@sipsolutions.net
+Cc:     edumazet@google.com, andreyknvl@google.com, dvyukov@google.com,
+        elver@google.com, linux-kernel@vger.kernel.org,
+        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+        willemdebruijn.kernel@gmail.com,
+        Aleksandr Nogikh <nogikh@google.com>
+Subject: [PATCH v4 1/3] kernel: make kcov_common_handle consider the current context
+Date:   Wed, 28 Oct 2020 18:20:16 +0000
+Message-Id: <20201028182018.1780842-2-aleksandrnogikh@gmail.com>
+X-Mailer: git-send-email 2.29.0.rc2.309.g374f81d7ae-goog
+In-Reply-To: <20201028182018.1780842-1-aleksandrnogikh@gmail.com>
+References: <20201028182018.1780842-1-aleksandrnogikh@gmail.com>
 MIME-Version: 1.0
-X-Received: by 2002:a92:98c5:: with SMTP id a66mr6545587ill.50.1603902742690;
- Wed, 28 Oct 2020 09:32:22 -0700 (PDT)
-Date:   Wed, 28 Oct 2020 09:32:22 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <0000000000003b856d05b2bdb5f7@google.com>
-Subject: general protection fault in wext_handle_ioctl
-From:   syzbot <syzbot+8b2a88a09653d4084179@syzkaller.appspotmail.com>
-To:     davem@davemloft.net, johannes@sipsolutions.net, kuba@kernel.org,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
+From: Aleksandr Nogikh <nogikh@google.com>
 
-syzbot found the following issue on:
+kcov_common_handle is a method that is used to obtain a "default" KCOV
+remote handle of the current process. The handle can later be passed
+to kcov_remote_start in order to collect coverage for the processing
+that is initiated by one process, but done in another. For details see
+Documentation/dev-tools/kcov.rst and comments in kernel/kcov.c.
 
-HEAD commit:    8c2ab803 Merge tag 'orphan-handling-v5.10-rc2' of git://gi..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=12e57870500000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=3140f5be49a06bf9
-dashboard link: https://syzkaller.appspot.com/bug?extid=8b2a88a09653d4084179
-compiler:       clang version 11.0.0 (https://github.com/llvm/llvm-project.git ca2dcbd030eadbf0aa9b660efe864ff08af6e18b)
+Presently, if kcov_common_handle is called in an IRQ context, it will
+return a handle for the interrupted process. This may lead to
+unreliable and incorrect coverage collection.
 
-Unfortunately, I don't have any reproducer for this issue yet.
+Adjust the behavior of kcov_common_handle in the following way. If it
+is called in a task context, return the common handle for the
+currently running task. Otherwise, return 0.
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+8b2a88a09653d4084179@syzkaller.appspotmail.com
-
-general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] PREEMPT SMP KASAN
-KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
-CPU: 1 PID: 10716 Comm: syz-executor.0 Not tainted 5.10.0-rc1-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
-RIP: 0010:call_commit_handler net/wireless/wext-core.c:900 [inline]
-RIP: 0010:ioctl_standard_call net/wireless/wext-core.c:1029 [inline]
-RIP: 0010:wireless_process_ioctl net/wireless/wext-core.c:954 [inline]
-RIP: 0010:wext_ioctl_dispatch net/wireless/wext-core.c:987 [inline]
-RIP: 0010:wext_handle_ioctl+0x974/0xb20 net/wireless/wext-core.c:1048
-Code: e8 a1 87 a3 f8 eb 6c 48 8b 44 24 18 42 80 3c 20 00 48 8b 5c 24 20 74 08 48 89 df e8 d6 78 e5 f8 48 8b 1b 48 89 d8 48 c1 e8 03 <42> 80 3c 20 00 74 08 48 89 df e8 bd 78 e5 f8 48 8b 1b 48 89 d8 48
-RSP: 0018:ffffc900018afe00 EFLAGS: 00010246
-RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffffffff88d17b88
-RDX: ffff88801a3ccec0 RSI: 0000000000000001 RDI: 0000000000000000
-RBP: ffff88802b398000 R08: ffffffff88d17baf R09: ffffed1005673009
-R10: ffffed1005673009 R11: 0000000000000000 R12: dffffc0000000000
-R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000008b04
-FS:  00007f0710ce1700(0000) GS:ffff8880b9d00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000001b2ce26000 CR3: 000000001efa8000 CR4: 00000000001506e0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- sock_ioctl+0xdc/0x690 net/socket.c:1119
- vfs_ioctl fs/ioctl.c:48 [inline]
- __do_sys_ioctl fs/ioctl.c:753 [inline]
- __se_sys_ioctl+0xfb/0x170 fs/ioctl.c:739
- do_syscall_64+0x2d/0x70 arch/x86/entry/common.c:46
- entry_SYSCALL_64_after_hwframe+0x44/0xa9
-RIP: 0033:0x45de49
-Code: 0d b4 fb ff c3 66 2e 0f 1f 84 00 00 00 00 00 66 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 0f 83 db b3 fb ff c3 66 2e 0f 1f 84 00 00 00 00
-RSP: 002b:00007f0710ce0c78 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-RAX: ffffffffffffffda RBX: 0000000000013440 RCX: 000000000045de49
-RDX: 00000000200000c0 RSI: 0000000000008b04 RDI: 0000000000000003
-RBP: 000000000118bf60 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 000000000118bf2c
-R13: 00007fff190b875f R14: 00007f0710ce19c0 R15: 000000000118bf2c
-Modules linked in:
----[ end trace 82d7ada5671b3a90 ]---
-RIP: 0010:call_commit_handler net/wireless/wext-core.c:900 [inline]
-RIP: 0010:ioctl_standard_call net/wireless/wext-core.c:1029 [inline]
-RIP: 0010:wireless_process_ioctl net/wireless/wext-core.c:954 [inline]
-RIP: 0010:wext_ioctl_dispatch net/wireless/wext-core.c:987 [inline]
-RIP: 0010:wext_handle_ioctl+0x974/0xb20 net/wireless/wext-core.c:1048
-Code: e8 a1 87 a3 f8 eb 6c 48 8b 44 24 18 42 80 3c 20 00 48 8b 5c 24 20 74 08 48 89 df e8 d6 78 e5 f8 48 8b 1b 48 89 d8 48 c1 e8 03 <42> 80 3c 20 00 74 08 48 89 df e8 bd 78 e5 f8 48 8b 1b 48 89 d8 48
-RSP: 0018:ffffc900018afe00 EFLAGS: 00010246
-RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffffffff88d17b88
-RDX: ffff88801a3ccec0 RSI: 0000000000000001 RDI: 0000000000000000
-RBP: ffff88802b398000 R08: ffffffff88d17baf R09: ffffed1005673009
-R10: ffffed1005673009 R11: 0000000000000000 R12: dffffc0000000000
-R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000008b04
-FS:  00007f0710ce1700(0000) GS:ffff8880b9d00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f04025f6000 CR3: 000000001efa8000 CR4: 00000000001506e0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-
-
+Signed-off-by: Aleksandr Nogikh <nogikh@google.com>
+Reviewed-by: Andrey Konovalov <andreyknvl@google.com>
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+ kernel/kcov.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+diff --git a/kernel/kcov.c b/kernel/kcov.c
+index 6b8368be89c8..80bfe71bbe13 100644
+--- a/kernel/kcov.c
++++ b/kernel/kcov.c
+@@ -1023,6 +1023,8 @@ EXPORT_SYMBOL(kcov_remote_stop);
+ /* See the comment before kcov_remote_start() for usage details. */
+ u64 kcov_common_handle(void)
+ {
++	if (!in_task())
++		return 0;
+ 	return current->kcov_handle;
+ }
+ EXPORT_SYMBOL(kcov_common_handle);
+-- 
+2.29.0.rc2.309.g374f81d7ae-goog
+
