@@ -2,139 +2,217 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C17D29DFD1
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Oct 2020 02:04:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BE18429E071
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Oct 2020 02:22:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731866AbgJ2BEl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 28 Oct 2020 21:04:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51510 "EHLO
+        id S1729938AbgJ1WEg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 28 Oct 2020 18:04:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51194 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728543AbgJ1WGJ (ORCPT
+        with ESMTP id S1729558AbgJ1WE0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 28 Oct 2020 18:06:09 -0400
-Received: from mail-io1-xd41.google.com (mail-io1-xd41.google.com [IPv6:2607:f8b0:4864:20::d41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46D13C0613CF;
-        Wed, 28 Oct 2020 15:06:08 -0700 (PDT)
-Received: by mail-io1-xd41.google.com with SMTP id p7so1151611ioo.6;
-        Wed, 28 Oct 2020 15:06:08 -0700 (PDT)
+        Wed, 28 Oct 2020 18:04:26 -0400
+Received: from mail-lj1-x241.google.com (mail-lj1-x241.google.com [IPv6:2a00:1450:4864:20::241])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4DBF4C0613CF;
+        Wed, 28 Oct 2020 15:04:26 -0700 (PDT)
+Received: by mail-lj1-x241.google.com with SMTP id k25so888273lji.9;
+        Wed, 28 Oct 2020 15:04:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=AMavcgab6f/G1LUhaSL/VnJNMSO60VRuV52F7ID9Z1w=;
-        b=EEBx/en4jUjbpcytmaGqmQqZoK88eThP+DK9XrxHaN1SQ97f4DrSYomDP9X0SkW/q0
-         0Ber+eFxG+cd5uPhS9kdMvcxwOsNyvUepSmCzF0TsiaP4hVWzXTUgLvgS/dMFSOxyzGk
-         16u+I0XQc8qsTHSPvYyz4rHV/3lQF3ThUC3tsDsCPS7dA5Ch0eGbrwSUZZ0hL3TNeOZG
-         CN+mzBK34uZp1FOpOIHpgudSrBlFlgzn5ZeXE3KM3F4rVihVfxpyLVG39v8DBIYrtkyE
-         jP4hkiJ1Zb4zzHVZo4l6i5dRHdIorBBpHSNi4Xnn8MEx3bY91Z+6rCAstCz6GCl+fxKY
-         ymrg==
+        bh=PJiZ9iAK7kcO+Hxs+q20RNdzcQj6XtdpNW/oWtLmq24=;
+        b=uWXWua8tbEjqUBZjJLOnjBWZRD6qYpRGY59Wchjco/dQrP5K7bLZQk3BDVYiwX2s++
+         ZwUKDeDvb6H3icb3lzcDx6/y4L49XZKiqWiwJb9FPyxe+nHscBiQI/q+1ReABLrxFYCd
+         4bTn7K5NfPz7kkgnzI+iCP+4RQbBVBq2HUqVv0tS/jASsXLlq1yfL1/srz7cuIKLltzP
+         T78ua5CI/olAesPjEDFRTQTF2b5I8WxikYaW15r/A6Ct3BY8bnTB7sGYDk4qQeyYJ98Y
+         q7gnHmaZ962h/u381O5PTLMdVQmr3Ot8YtXrgyy1P4vHUqspUcar3/UELaPsJ56lMAF1
+         dyaQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=AMavcgab6f/G1LUhaSL/VnJNMSO60VRuV52F7ID9Z1w=;
-        b=CKpYiUzKGjXL4CxtU6+GaP15fd6Xsqjtz/dqg2P6v2vodl49iA5RdZr4bSTV2cy3iq
-         dDGX8FUFw7YMQtmDKOSZqmTLmMMc6SbFohuC0uRg8/dPmhHvjf1BcQSlHvjsyQnGjGFm
-         PO/UnaQuUbBrWTzN9BLdxsAKQNQzZ3w7gG3ikuLPaNCy6GuHmgyFhVRSb2Lfmr8qHkKG
-         vyPvBQwGayPlrdRRB4rwyd8/xg4a7ir6gcrv9BOCwY1HddWTFv4js6LL8QMRdQRndrjJ
-         WDjJCvVJohq3qmvoiFy9Qu615C/JZqc39FQ/l8nKsda9eP/sli9WSfkSz2sDPW81acKZ
-         2C9Q==
-X-Gm-Message-State: AOAM530SG7VqaJa7OiXisKna++lsnFpXsOKaIaweltNijmCeZU1ZQYhU
-        nQtB9MEYCrhWfa5sFo05UoYfxYh0LodR5Nde
-X-Google-Smtp-Source: ABdhPJxizRPARCHdEsCXjgrcYCTJx2PzRg4bj6IZWfYbOoEie0tP3vFgu3sgYYebDUS52otqnjvptw==
-X-Received: by 2002:a65:62ca:: with SMTP id m10mr6618468pgv.407.1603894962096;
-        Wed, 28 Oct 2020 07:22:42 -0700 (PDT)
-Received: from k5-sbwpb.flets-east.jp (i60-35-254-237.s41.a020.ap.plala.or.jp. [60.35.254.237])
-        by smtp.gmail.com with ESMTPSA id c12sm6293543pgi.14.2020.10.28.07.22.38
+        bh=PJiZ9iAK7kcO+Hxs+q20RNdzcQj6XtdpNW/oWtLmq24=;
+        b=ah7blkkptTFx/Q+MSGT3/9UwyG4jjhGa5D0lyMmmHrbPhg+U0yR17AKJnejAOuX0jZ
+         0hUUkPArB+i3iZlI0YE22iyt5Zfqd2L0PYEzrcDzCC1t8N6RiPStoQTati6ZZfMcKsTW
+         Vd4Y8ahHWpR7zojMx5Wzzjx/pWPUL6pbwcN6fMZgVMe6gzKqNq8BiLNXgR/v30S5dOOP
+         XedRYZWg/cIKfZrHO0F+PUQs+dIYTshm1zdaqbhqvO0nGoZX7dNmlApIwTR20l3k97YV
+         CV3KfTH4FV27tdbJ3rokM2R1xDK5DLdLBvVPcvlUs4eJRoxcJ3qIW47d50vUcDnWQK0X
+         XYMg==
+X-Gm-Message-State: AOAM533iCzoBd3nTAD58lkAJsHjKHuVl98h7q/aWmDSGybYY24v8kipi
+        V44BtieEclNcXCu9ugEFEou57DrUQU6aaA==
+X-Google-Smtp-Source: ABdhPJwrUA3LwVfLg0JZ7XUbmkvj7UBmZ/R/3mQ8/tdeTXv3WgSDeunVxyrdi6z74AkeWoiAXHE1eQ==
+X-Received: by 2002:a5d:6cc8:: with SMTP id c8mr616045wrc.233.1603909265560;
+        Wed, 28 Oct 2020 11:21:05 -0700 (PDT)
+Received: from nogikh.c.googlers.com.com (88.140.78.34.bc.googleusercontent.com. [34.78.140.88])
+        by smtp.gmail.com with ESMTPSA id r28sm531178wrr.81.2020.10.28.11.21.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Oct 2020 07:22:41 -0700 (PDT)
-From:   Tsuchiya Yuto <kitakar@gmail.com>
-To:     Amitkumar Karwar <amitkarwar@gmail.com>,
-        Ganapathi Bhat <ganapathi.bhat@nxp.com>,
-        Xinming Hu <huxinming820@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Maximilian Luz <luzmaximilian@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@intel.com>, verdre@v0yd.nl,
-        Tsuchiya Yuto <kitakar@gmail.com>
-Subject: [PATCH 1/2] mwifiex: fix mwifiex_shutdown_sw() causing sw reset failure
-Date:   Wed, 28 Oct 2020 23:21:09 +0900
-Message-Id: <20201028142110.18144-2-kitakar@gmail.com>
-X-Mailer: git-send-email 2.29.1
-In-Reply-To: <20201028142110.18144-1-kitakar@gmail.com>
-References: <20201028142110.18144-1-kitakar@gmail.com>
+        Wed, 28 Oct 2020 11:21:05 -0700 (PDT)
+From:   Aleksandr Nogikh <aleksandrnogikh@gmail.com>
+To:     davem@davemloft.net, kuba@kernel.org, johannes@sipsolutions.net
+Cc:     edumazet@google.com, andreyknvl@google.com, dvyukov@google.com,
+        elver@google.com, linux-kernel@vger.kernel.org,
+        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+        willemdebruijn.kernel@gmail.com,
+        Aleksandr Nogikh <nogikh@google.com>
+Subject: [PATCH v4 2/3] net: add kcov handle to skb extensions
+Date:   Wed, 28 Oct 2020 18:20:17 +0000
+Message-Id: <20201028182018.1780842-3-aleksandrnogikh@gmail.com>
+X-Mailer: git-send-email 2.29.0.rc2.309.g374f81d7ae-goog
+In-Reply-To: <20201028182018.1780842-1-aleksandrnogikh@gmail.com>
+References: <20201028182018.1780842-1-aleksandrnogikh@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-When FLR is performed but without fw reset for some reasons (e.g. on
-Surface devices, fw reset requires another quirk), it fails to reset
-properly. You can trigger the issue on such devices via debugfs entry
-for reset:
+From: Aleksandr Nogikh <nogikh@google.com>
 
-    $ echo 1 | sudo tee /sys/kernel/debug/mwifiex/mlan0/reset
+Remote KCOV coverage collection enables coverage-guided fuzzing of the
+code that is not reachable during normal system call execution. It is
+especially helpful for fuzzing networking subsystems, where it is
+common to perform packet handling in separate work queues even for the
+packets that originated directly from the user space.
 
-and the resulting dmesg log:
+Enable coverage-guided frame injection by adding kcov remote handle to
+skb extensions. Default initialization in __alloc_skb and
+__build_skb_around ensures that no socket buffer that was generated
+during a system call will be missed.
 
-    [   45.740508] mwifiex_pcie 0000:03:00.0: Resetting per request
-    [   45.742937] mwifiex_pcie 0000:03:00.0: info: successfully disconnected from [BSSID]: reason code 3
-    [   45.744666] mwifiex_pcie 0000:03:00.0: info: shutdown mwifiex...
-    [   45.751530] mwifiex_pcie 0000:03:00.0: PREP_CMD: card is removed
-    [   45.751539] mwifiex_pcie 0000:03:00.0: PREP_CMD: card is removed
-    [   45.771691] mwifiex_pcie 0000:03:00.0: PREP_CMD: card is removed
-    [   45.771695] mwifiex_pcie 0000:03:00.0: deleting the crypto keys
-    [   45.771697] mwifiex_pcie 0000:03:00.0: PREP_CMD: card is removed
-    [   45.771698] mwifiex_pcie 0000:03:00.0: deleting the crypto keys
-    [   45.771699] mwifiex_pcie 0000:03:00.0: PREP_CMD: card is removed
-    [   45.771701] mwifiex_pcie 0000:03:00.0: deleting the crypto keys
-    [   45.771702] mwifiex_pcie 0000:03:00.0: PREP_CMD: card is removed
-    [   45.771703] mwifiex_pcie 0000:03:00.0: deleting the crypto keys
-    [   45.771704] mwifiex_pcie 0000:03:00.0: PREP_CMD: card is removed
-    [   45.771705] mwifiex_pcie 0000:03:00.0: deleting the crypto keys
-    [   45.771707] mwifiex_pcie 0000:03:00.0: PREP_CMD: card is removed
-    [   45.771708] mwifiex_pcie 0000:03:00.0: deleting the crypto keys
-    [   53.099343] mwifiex_pcie 0000:03:00.0: info: trying to associate to '[SSID]' bssid [BSSID]
-    [   53.241870] mwifiex_pcie 0000:03:00.0: info: associated to bssid [BSSID] successfully
-    [   75.377942] mwifiex_pcie 0000:03:00.0: cmd_wait_q terminated: -110
-    [   85.385491] mwifiex_pcie 0000:03:00.0: info: successfully disconnected from [BSSID]: reason code 15
-    [   87.539408] mwifiex_pcie 0000:03:00.0: cmd_wait_q terminated: -110
-    [   87.539412] mwifiex_pcie 0000:03:00.0: deleting the crypto keys
-    [   99.699917] mwifiex_pcie 0000:03:00.0: cmd_wait_q terminated: -110
-    [   99.699925] mwifiex_pcie 0000:03:00.0: deleting the crypto keys
-    [  111.859802] mwifiex_pcie 0000:03:00.0: cmd_wait_q terminated: -110
-    [  111.859808] mwifiex_pcie 0000:03:00.0: deleting the crypto keys
-    [...]
+Code that is of interest and that performs packet processing should be
+annotated with kcov_remote_start()/kcov_remote_stop().
 
-When comparing mwifiex_shutdown_sw() with mwifiex_pcie_remove(), it
-lacks mwifiex_init_shutdown_fw().
+An alternative approach is to determine kcov_handle solely on the
+basis of the device/interface that received the specific socket
+buffer. However, in this case it would be impossible to distinguish
+between packets that originated during normal background network
+processes or were intentionally injected from the user space.
 
-This commit fixes mwifiex_shutdown_sw() by adding the missing
-mwifiex_init_shutdown_fw().
-
-Fixes: 4c5dae59d2e9 ("mwifiex: add PCIe function level reset support")
-Signed-off-by: Tsuchiya Yuto <kitakar@gmail.com>
+Signed-off-by: Aleksandr Nogikh <nogikh@google.com>
 ---
- drivers/net/wireless/marvell/mwifiex/main.c | 2 ++
- 1 file changed, 2 insertions(+)
+v3 -> v4:
+* CONFIG_SKB_EXTENSIONS is now automatically selected by CONFIG_KCOV.
+* Elaborated on a minor optimization in skb_set_kcov_handle().
+v2 -> v3:
+* Reimplemented this change. Now kcov handle is added to skb
+extensions instead of sk_buff.
+v1 -> v2:
+* Updated the commit message.
+---
+ include/linux/skbuff.h | 36 ++++++++++++++++++++++++++++++++++++
+ lib/Kconfig.debug      |  1 +
+ net/core/skbuff.c      | 11 +++++++++++
+ 3 files changed, 48 insertions(+)
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/main.c b/drivers/net/wireless/marvell/mwifiex/main.c
-index 9ba8a8f64976b..6283df5aaaf8b 100644
---- a/drivers/net/wireless/marvell/mwifiex/main.c
-+++ b/drivers/net/wireless/marvell/mwifiex/main.c
-@@ -1471,6 +1471,8 @@ int mwifiex_shutdown_sw(struct mwifiex_adapter *adapter)
- 	priv = mwifiex_get_priv(adapter, MWIFIEX_BSS_ROLE_ANY);
- 	mwifiex_deauthenticate(priv, NULL);
+diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
+index a828cf99c521..d1cc1597d566 100644
+--- a/include/linux/skbuff.h
++++ b/include/linux/skbuff.h
+@@ -4150,6 +4150,9 @@ enum skb_ext_id {
+ #endif
+ #if IS_ENABLED(CONFIG_MPTCP)
+ 	SKB_EXT_MPTCP,
++#endif
++#if IS_ENABLED(CONFIG_KCOV)
++	SKB_EXT_KCOV_HANDLE,
+ #endif
+ 	SKB_EXT_NUM, /* must be last */
+ };
+@@ -4605,5 +4608,38 @@ static inline void skb_reset_redirect(struct sk_buff *skb)
+ #endif
+ }
  
-+	mwifiex_init_shutdown_fw(priv, MWIFIEX_FUNC_SHUTDOWN);
++#ifdef CONFIG_KCOV
 +
- 	mwifiex_uninit_sw(adapter);
- 	adapter->is_up = false;
++static inline void skb_set_kcov_handle(struct sk_buff *skb, const u64 kcov_handle)
++{
++	/* Do not allocate skb extensions only to set kcov_handle to zero
++	 * (as it is zero by default). However, if the extensions are
++	 * already allocated, update kcov_handle anyway since
++	 * skb_set_kcov_handle can be called to zero a previously set
++	 * value.
++	 */
++	if (skb_has_extensions(skb) || kcov_handle) {
++		u64 *kcov_handle_ptr = skb_ext_add(skb, SKB_EXT_KCOV_HANDLE);
++
++		if (kcov_handle_ptr)
++			*kcov_handle_ptr = kcov_handle;
++	}
++}
++
++static inline u64 skb_get_kcov_handle(struct sk_buff *skb)
++{
++	u64 *kcov_handle = skb_ext_find(skb, SKB_EXT_KCOV_HANDLE);
++
++	return kcov_handle ? *kcov_handle : 0;
++}
++
++#else
++
++static inline void skb_set_kcov_handle(struct sk_buff *skb, const u64 kcov_handle) { }
++
++static inline u64 skb_get_kcov_handle(struct sk_buff *skb) { return 0; }
++
++#endif /* CONFIG_KCOV */
++
+ #endif	/* __KERNEL__ */
+ #endif	/* _LINUX_SKBUFF_H */
+diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
+index 537cf3c2937d..9df33cf81d2b 100644
+--- a/lib/Kconfig.debug
++++ b/lib/Kconfig.debug
+@@ -1873,6 +1873,7 @@ config KCOV
+ 	depends on CC_HAS_SANCOV_TRACE_PC || GCC_PLUGINS
+ 	select DEBUG_FS
+ 	select GCC_PLUGIN_SANCOV if !CC_HAS_SANCOV_TRACE_PC
++	select SKB_EXTENSIONS
+ 	help
+ 	  KCOV exposes kernel code coverage information in a form suitable
+ 	  for coverage-guided fuzzing (randomized testing).
+diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+index 1ba8f0163744..c5e6c0b83a92 100644
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -249,6 +249,9 @@ struct sk_buff *__alloc_skb(unsigned int size, gfp_t gfp_mask,
  
+ 		fclones->skb2.fclone = SKB_FCLONE_CLONE;
+ 	}
++
++	skb_set_kcov_handle(skb, kcov_common_handle());
++
+ out:
+ 	return skb;
+ nodata:
+@@ -282,6 +285,8 @@ static struct sk_buff *__build_skb_around(struct sk_buff *skb,
+ 	memset(shinfo, 0, offsetof(struct skb_shared_info, dataref));
+ 	atomic_set(&shinfo->dataref, 1);
+ 
++	skb_set_kcov_handle(skb, kcov_common_handle());
++
+ 	return skb;
+ }
+ 
+@@ -4203,6 +4208,9 @@ static const u8 skb_ext_type_len[] = {
+ #if IS_ENABLED(CONFIG_MPTCP)
+ 	[SKB_EXT_MPTCP] = SKB_EXT_CHUNKSIZEOF(struct mptcp_ext),
+ #endif
++#if IS_ENABLED(CONFIG_KCOV)
++	[SKB_EXT_KCOV_HANDLE] = SKB_EXT_CHUNKSIZEOF(u64),
++#endif
+ };
+ 
+ static __always_inline unsigned int skb_ext_total_length(void)
+@@ -4219,6 +4227,9 @@ static __always_inline unsigned int skb_ext_total_length(void)
+ #endif
+ #if IS_ENABLED(CONFIG_MPTCP)
+ 		skb_ext_type_len[SKB_EXT_MPTCP] +
++#endif
++#if IS_ENABLED(CONFIG_KCOV)
++		skb_ext_type_len[SKB_EXT_KCOV_HANDLE] +
+ #endif
+ 		0;
+ }
 -- 
-2.29.1
+2.29.0.rc2.309.g374f81d7ae-goog
 
