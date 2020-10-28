@@ -2,121 +2,139 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D2BF29DCD5
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Oct 2020 01:32:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C17D29DFD1
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Oct 2020 02:04:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387525AbgJ1W3L (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 28 Oct 2020 18:29:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55548 "EHLO
+        id S1731866AbgJ2BEl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 28 Oct 2020 21:04:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51510 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387519AbgJ1W3J (ORCPT
+        with ESMTP id S1728543AbgJ1WGJ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 28 Oct 2020 18:29:09 -0400
-Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com [IPv6:2a00:1450:4864:20::343])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86A4FC0613CF;
-        Wed, 28 Oct 2020 15:29:09 -0700 (PDT)
-Received: by mail-wm1-x343.google.com with SMTP id h22so754139wmb.0;
-        Wed, 28 Oct 2020 15:29:09 -0700 (PDT)
+        Wed, 28 Oct 2020 18:06:09 -0400
+Received: from mail-io1-xd41.google.com (mail-io1-xd41.google.com [IPv6:2607:f8b0:4864:20::d41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46D13C0613CF;
+        Wed, 28 Oct 2020 15:06:08 -0700 (PDT)
+Received: by mail-io1-xd41.google.com with SMTP id p7so1151611ioo.6;
+        Wed, 28 Oct 2020 15:06:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=DQuN3G1QJvsPZrMdEIGvp5UTrwD1/Moi8emoV7bj3lU=;
-        b=LC4YHuuaO3S5nUzs7zaNiLYtN3uzYyBPbHmVlyELMjyYQI2K3s5mLTvKZeYQKRBMcq
-         sjORrjlPXAScZvnJSKJ8jtshEw1AYZMyrcZWgtzut8M6MgvPhyNXHh9gFG8nMaYMQlv8
-         w7zxui7LntcCnup3JLTHNAVtq2+d4tyQjUwm9i4mkglptLWMEXCD/0MeW7e/13G6o8zJ
-         qMsdpNv4Pt4d0ZHaeLfukoJoc6YJQxyvV94n6/9IzcOdRoFHPaJUTXXVglbDM7A6iON0
-         UF/JQkV5NVgN9uavRPtlf7UXj7XIiaALHyl6dfFnZmqE7UT7TI52KNfa+BlxgyFb6bX8
-         ixaw==
+        bh=AMavcgab6f/G1LUhaSL/VnJNMSO60VRuV52F7ID9Z1w=;
+        b=EEBx/en4jUjbpcytmaGqmQqZoK88eThP+DK9XrxHaN1SQ97f4DrSYomDP9X0SkW/q0
+         0Ber+eFxG+cd5uPhS9kdMvcxwOsNyvUepSmCzF0TsiaP4hVWzXTUgLvgS/dMFSOxyzGk
+         16u+I0XQc8qsTHSPvYyz4rHV/3lQF3ThUC3tsDsCPS7dA5Ch0eGbrwSUZZ0hL3TNeOZG
+         CN+mzBK34uZp1FOpOIHpgudSrBlFlgzn5ZeXE3KM3F4rVihVfxpyLVG39v8DBIYrtkyE
+         jP4hkiJ1Zb4zzHVZo4l6i5dRHdIorBBpHSNi4Xnn8MEx3bY91Z+6rCAstCz6GCl+fxKY
+         ymrg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=DQuN3G1QJvsPZrMdEIGvp5UTrwD1/Moi8emoV7bj3lU=;
-        b=ZoAKWHN4xrrhF33LxhxhJa+4/x/xR0nFrQgmjd9cg763cSTR2xMeog1ThCi7RInAhf
-         s8Yzk3EsvtRWo6DmHhynsyCWlAyX2ebC7ntsd7EH3XE7RRSmGHpymNWqghF1XnEf2ui+
-         ME14FTBMAkf3wwCNxQyfQYQ7WMLfRun8qZaMxZMpvKIUtLmRTx+rpQIBOXxrrrn24x/Y
-         rz27cDFB5nC0wvJTVBOMudppKEfEzwnaAjQzzOq1Wo037sxSUJ4UXR5I9X/uLfdNq3Q5
-         KUIWJDZgbvwj9a/gV2DJDXXJfqXX7XBWzYrgKuOWRNxHRdBpDRTl7IU+GPxGbapOdMRv
-         XKoA==
-X-Gm-Message-State: AOAM530T95ROvDGRYt3xZ/PyHYuZMSm9ae3/FP4i6epIhd48TczPnKZC
-        PZk3IqZV9g9sKIKRCZ0QqEue68grazVRNw==
-X-Google-Smtp-Source: ABdhPJxeUhBlNyysFLBT7LARqEkmyOal5vA/3C8IvhTxsjlghwyoGttTKXfUBkKui85S/NaXf8eFCw==
-X-Received: by 2002:a1c:7d49:: with SMTP id y70mr40839wmc.103.1603909267772;
-        Wed, 28 Oct 2020 11:21:07 -0700 (PDT)
-Received: from nogikh.c.googlers.com.com (88.140.78.34.bc.googleusercontent.com. [34.78.140.88])
-        by smtp.gmail.com with ESMTPSA id r28sm531178wrr.81.2020.10.28.11.21.07
+        bh=AMavcgab6f/G1LUhaSL/VnJNMSO60VRuV52F7ID9Z1w=;
+        b=CKpYiUzKGjXL4CxtU6+GaP15fd6Xsqjtz/dqg2P6v2vodl49iA5RdZr4bSTV2cy3iq
+         dDGX8FUFw7YMQtmDKOSZqmTLmMMc6SbFohuC0uRg8/dPmhHvjf1BcQSlHvjsyQnGjGFm
+         PO/UnaQuUbBrWTzN9BLdxsAKQNQzZ3w7gG3ikuLPaNCy6GuHmgyFhVRSb2Lfmr8qHkKG
+         vyPvBQwGayPlrdRRB4rwyd8/xg4a7ir6gcrv9BOCwY1HddWTFv4js6LL8QMRdQRndrjJ
+         WDjJCvVJohq3qmvoiFy9Qu615C/JZqc39FQ/l8nKsda9eP/sli9WSfkSz2sDPW81acKZ
+         2C9Q==
+X-Gm-Message-State: AOAM530SG7VqaJa7OiXisKna++lsnFpXsOKaIaweltNijmCeZU1ZQYhU
+        nQtB9MEYCrhWfa5sFo05UoYfxYh0LodR5Nde
+X-Google-Smtp-Source: ABdhPJxizRPARCHdEsCXjgrcYCTJx2PzRg4bj6IZWfYbOoEie0tP3vFgu3sgYYebDUS52otqnjvptw==
+X-Received: by 2002:a65:62ca:: with SMTP id m10mr6618468pgv.407.1603894962096;
+        Wed, 28 Oct 2020 07:22:42 -0700 (PDT)
+Received: from k5-sbwpb.flets-east.jp (i60-35-254-237.s41.a020.ap.plala.or.jp. [60.35.254.237])
+        by smtp.gmail.com with ESMTPSA id c12sm6293543pgi.14.2020.10.28.07.22.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Oct 2020 11:21:07 -0700 (PDT)
-From:   Aleksandr Nogikh <aleksandrnogikh@gmail.com>
-To:     davem@davemloft.net, kuba@kernel.org, johannes@sipsolutions.net
-Cc:     edumazet@google.com, andreyknvl@google.com, dvyukov@google.com,
-        elver@google.com, linux-kernel@vger.kernel.org,
-        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        willemdebruijn.kernel@gmail.com,
-        Aleksandr Nogikh <nogikh@google.com>
-Subject: [PATCH v4 3/3] mac80211: add KCOV remote annotations to incoming frame processing
-Date:   Wed, 28 Oct 2020 18:20:18 +0000
-Message-Id: <20201028182018.1780842-4-aleksandrnogikh@gmail.com>
-X-Mailer: git-send-email 2.29.0.rc2.309.g374f81d7ae-goog
-In-Reply-To: <20201028182018.1780842-1-aleksandrnogikh@gmail.com>
-References: <20201028182018.1780842-1-aleksandrnogikh@gmail.com>
+        Wed, 28 Oct 2020 07:22:41 -0700 (PDT)
+From:   Tsuchiya Yuto <kitakar@gmail.com>
+To:     Amitkumar Karwar <amitkarwar@gmail.com>,
+        Ganapathi Bhat <ganapathi.bhat@nxp.com>,
+        Xinming Hu <huxinming820@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Maximilian Luz <luzmaximilian@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@intel.com>, verdre@v0yd.nl,
+        Tsuchiya Yuto <kitakar@gmail.com>
+Subject: [PATCH 1/2] mwifiex: fix mwifiex_shutdown_sw() causing sw reset failure
+Date:   Wed, 28 Oct 2020 23:21:09 +0900
+Message-Id: <20201028142110.18144-2-kitakar@gmail.com>
+X-Mailer: git-send-email 2.29.1
+In-Reply-To: <20201028142110.18144-1-kitakar@gmail.com>
+References: <20201028142110.18144-1-kitakar@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Aleksandr Nogikh <nogikh@google.com>
+When FLR is performed but without fw reset for some reasons (e.g. on
+Surface devices, fw reset requires another quirk), it fails to reset
+properly. You can trigger the issue on such devices via debugfs entry
+for reset:
 
-Add KCOV remote annotations to ieee80211_iface_work and
-ieee80211_rx. This will enable coverage-guided fuzzing of
-mac80211 code that processes incoming 802.11 frames.
+    $ echo 1 | sudo tee /sys/kernel/debug/mwifiex/mlan0/reset
 
-Signed-off-by: Aleksandr Nogikh <nogikh@google.com>
+and the resulting dmesg log:
+
+    [   45.740508] mwifiex_pcie 0000:03:00.0: Resetting per request
+    [   45.742937] mwifiex_pcie 0000:03:00.0: info: successfully disconnected from [BSSID]: reason code 3
+    [   45.744666] mwifiex_pcie 0000:03:00.0: info: shutdown mwifiex...
+    [   45.751530] mwifiex_pcie 0000:03:00.0: PREP_CMD: card is removed
+    [   45.751539] mwifiex_pcie 0000:03:00.0: PREP_CMD: card is removed
+    [   45.771691] mwifiex_pcie 0000:03:00.0: PREP_CMD: card is removed
+    [   45.771695] mwifiex_pcie 0000:03:00.0: deleting the crypto keys
+    [   45.771697] mwifiex_pcie 0000:03:00.0: PREP_CMD: card is removed
+    [   45.771698] mwifiex_pcie 0000:03:00.0: deleting the crypto keys
+    [   45.771699] mwifiex_pcie 0000:03:00.0: PREP_CMD: card is removed
+    [   45.771701] mwifiex_pcie 0000:03:00.0: deleting the crypto keys
+    [   45.771702] mwifiex_pcie 0000:03:00.0: PREP_CMD: card is removed
+    [   45.771703] mwifiex_pcie 0000:03:00.0: deleting the crypto keys
+    [   45.771704] mwifiex_pcie 0000:03:00.0: PREP_CMD: card is removed
+    [   45.771705] mwifiex_pcie 0000:03:00.0: deleting the crypto keys
+    [   45.771707] mwifiex_pcie 0000:03:00.0: PREP_CMD: card is removed
+    [   45.771708] mwifiex_pcie 0000:03:00.0: deleting the crypto keys
+    [   53.099343] mwifiex_pcie 0000:03:00.0: info: trying to associate to '[SSID]' bssid [BSSID]
+    [   53.241870] mwifiex_pcie 0000:03:00.0: info: associated to bssid [BSSID] successfully
+    [   75.377942] mwifiex_pcie 0000:03:00.0: cmd_wait_q terminated: -110
+    [   85.385491] mwifiex_pcie 0000:03:00.0: info: successfully disconnected from [BSSID]: reason code 15
+    [   87.539408] mwifiex_pcie 0000:03:00.0: cmd_wait_q terminated: -110
+    [   87.539412] mwifiex_pcie 0000:03:00.0: deleting the crypto keys
+    [   99.699917] mwifiex_pcie 0000:03:00.0: cmd_wait_q terminated: -110
+    [   99.699925] mwifiex_pcie 0000:03:00.0: deleting the crypto keys
+    [  111.859802] mwifiex_pcie 0000:03:00.0: cmd_wait_q terminated: -110
+    [  111.859808] mwifiex_pcie 0000:03:00.0: deleting the crypto keys
+    [...]
+
+When comparing mwifiex_shutdown_sw() with mwifiex_pcie_remove(), it
+lacks mwifiex_init_shutdown_fw().
+
+This commit fixes mwifiex_shutdown_sw() by adding the missing
+mwifiex_init_shutdown_fw().
+
+Fixes: 4c5dae59d2e9 ("mwifiex: add PCIe function level reset support")
+Signed-off-by: Tsuchiya Yuto <kitakar@gmail.com>
 ---
-v1 -> v2:
-* The commit now affects ieee80211_rx instead of
-  ieee80211_tasklet_handler.
----
- include/net/mac80211.h | 2 ++
- net/mac80211/iface.c   | 2 ++
- 2 files changed, 4 insertions(+)
+ drivers/net/wireless/marvell/mwifiex/main.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index e8e295dae744..f4c37a1b381e 100644
---- a/include/net/mac80211.h
-+++ b/include/net/mac80211.h
-@@ -4499,7 +4499,9 @@ void ieee80211_rx_napi(struct ieee80211_hw *hw, struct ieee80211_sta *sta,
-  */
- static inline void ieee80211_rx(struct ieee80211_hw *hw, struct sk_buff *skb)
- {
-+	kcov_remote_start_common(skb_get_kcov_handle(skb));
- 	ieee80211_rx_napi(hw, NULL, skb, NULL);
-+	kcov_remote_stop();
- }
+diff --git a/drivers/net/wireless/marvell/mwifiex/main.c b/drivers/net/wireless/marvell/mwifiex/main.c
+index 9ba8a8f64976b..6283df5aaaf8b 100644
+--- a/drivers/net/wireless/marvell/mwifiex/main.c
++++ b/drivers/net/wireless/marvell/mwifiex/main.c
+@@ -1471,6 +1471,8 @@ int mwifiex_shutdown_sw(struct mwifiex_adapter *adapter)
+ 	priv = mwifiex_get_priv(adapter, MWIFIEX_BSS_ROLE_ANY);
+ 	mwifiex_deauthenticate(priv, NULL);
  
- /**
-diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
-index 1be775979132..56a1bcea2c1c 100644
---- a/net/mac80211/iface.c
-+++ b/net/mac80211/iface.c
-@@ -1356,6 +1356,7 @@ static void ieee80211_iface_work(struct work_struct *work)
- 	while ((skb = skb_dequeue(&sdata->skb_queue))) {
- 		struct ieee80211_mgmt *mgmt = (void *)skb->data;
++	mwifiex_init_shutdown_fw(priv, MWIFIEX_FUNC_SHUTDOWN);
++
+ 	mwifiex_uninit_sw(adapter);
+ 	adapter->is_up = false;
  
-+		kcov_remote_start_common(skb_get_kcov_handle(skb));
- 		if (ieee80211_is_action(mgmt->frame_control) &&
- 		    mgmt->u.action.category == WLAN_CATEGORY_BACK) {
- 			int len = skb->len;
-@@ -1465,6 +1466,7 @@ static void ieee80211_iface_work(struct work_struct *work)
- 		}
- 
- 		kfree_skb(skb);
-+		kcov_remote_stop();
- 	}
- 
- 	/* then other type-dependent work */
 -- 
-2.29.0.rc2.309.g374f81d7ae-goog
+2.29.1
 
