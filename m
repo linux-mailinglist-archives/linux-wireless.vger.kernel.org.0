@@ -2,134 +2,121 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CEA6C29DED8
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Oct 2020 01:57:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D2BF29DCD5
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Oct 2020 01:32:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727967AbgJ2A5A (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 28 Oct 2020 20:57:00 -0400
-Received: from m42-4.mailgun.net ([69.72.42.4]:47723 "EHLO m42-4.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727525AbgJ2A4u (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 28 Oct 2020 20:56:50 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1603933010; h=Message-Id: Date: Subject: Cc: To: From:
- Sender; bh=dJXERFtxZ5iCKoFx8EJT57roOLVsp5+AgsjLAdvm4+s=; b=D6VIqZknomb4cSLluvtoc6ulAd/oRJ4gb33gXzDrXcDRgDvn3yW4l3khpVr9W4HoXv34c7Xt
- YPwglMmht0wrWAJaH1D6InTNJWBh+jegXoI5i4MGD/VUl7w3ASLdAnNmQhXxmP/x2RIenSEn
- FxHYdvFz5WkMFquRRxQvqCLcw+w=
-X-Mailgun-Sending-Ip: 69.72.42.4
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n02.prod.us-west-2.postgun.com with SMTP id
- 5f99a3e45fd674d5f0173ac0 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 28 Oct 2020 17:01:24
- GMT
-Sender: pillair=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 68F2CC43385; Wed, 28 Oct 2020 17:01:24 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-Received: from pillair-linux.qualcomm.com (unknown [202.46.22.19])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: pillair)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 6FF0DC433CB;
-        Wed, 28 Oct 2020 17:01:21 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 6FF0DC433CB
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=pillair@codeaurora.org
-From:   Rakesh Pillai <pillair@codeaurora.org>
-To:     ath10k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kuabhs@chromium.org, dianders@chromium.org,
-        briannorris@chromium.org, Rakesh Pillai <pillair@codeaurora.org>
-Subject: [PATCH v2] ath10k: Fix the parsing error in service available event
-Date:   Wed, 28 Oct 2020 22:31:09 +0530
-Message-Id: <1603904469-598-1-git-send-email-pillair@codeaurora.org>
-X-Mailer: git-send-email 2.7.4
+        id S2387525AbgJ1W3L (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 28 Oct 2020 18:29:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55548 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387519AbgJ1W3J (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 28 Oct 2020 18:29:09 -0400
+Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com [IPv6:2a00:1450:4864:20::343])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86A4FC0613CF;
+        Wed, 28 Oct 2020 15:29:09 -0700 (PDT)
+Received: by mail-wm1-x343.google.com with SMTP id h22so754139wmb.0;
+        Wed, 28 Oct 2020 15:29:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=DQuN3G1QJvsPZrMdEIGvp5UTrwD1/Moi8emoV7bj3lU=;
+        b=LC4YHuuaO3S5nUzs7zaNiLYtN3uzYyBPbHmVlyELMjyYQI2K3s5mLTvKZeYQKRBMcq
+         sjORrjlPXAScZvnJSKJ8jtshEw1AYZMyrcZWgtzut8M6MgvPhyNXHh9gFG8nMaYMQlv8
+         w7zxui7LntcCnup3JLTHNAVtq2+d4tyQjUwm9i4mkglptLWMEXCD/0MeW7e/13G6o8zJ
+         qMsdpNv4Pt4d0ZHaeLfukoJoc6YJQxyvV94n6/9IzcOdRoFHPaJUTXXVglbDM7A6iON0
+         UF/JQkV5NVgN9uavRPtlf7UXj7XIiaALHyl6dfFnZmqE7UT7TI52KNfa+BlxgyFb6bX8
+         ixaw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=DQuN3G1QJvsPZrMdEIGvp5UTrwD1/Moi8emoV7bj3lU=;
+        b=ZoAKWHN4xrrhF33LxhxhJa+4/x/xR0nFrQgmjd9cg763cSTR2xMeog1ThCi7RInAhf
+         s8Yzk3EsvtRWo6DmHhynsyCWlAyX2ebC7ntsd7EH3XE7RRSmGHpymNWqghF1XnEf2ui+
+         ME14FTBMAkf3wwCNxQyfQYQ7WMLfRun8qZaMxZMpvKIUtLmRTx+rpQIBOXxrrrn24x/Y
+         rz27cDFB5nC0wvJTVBOMudppKEfEzwnaAjQzzOq1Wo037sxSUJ4UXR5I9X/uLfdNq3Q5
+         KUIWJDZgbvwj9a/gV2DJDXXJfqXX7XBWzYrgKuOWRNxHRdBpDRTl7IU+GPxGbapOdMRv
+         XKoA==
+X-Gm-Message-State: AOAM530T95ROvDGRYt3xZ/PyHYuZMSm9ae3/FP4i6epIhd48TczPnKZC
+        PZk3IqZV9g9sKIKRCZ0QqEue68grazVRNw==
+X-Google-Smtp-Source: ABdhPJxeUhBlNyysFLBT7LARqEkmyOal5vA/3C8IvhTxsjlghwyoGttTKXfUBkKui85S/NaXf8eFCw==
+X-Received: by 2002:a1c:7d49:: with SMTP id y70mr40839wmc.103.1603909267772;
+        Wed, 28 Oct 2020 11:21:07 -0700 (PDT)
+Received: from nogikh.c.googlers.com.com (88.140.78.34.bc.googleusercontent.com. [34.78.140.88])
+        by smtp.gmail.com with ESMTPSA id r28sm531178wrr.81.2020.10.28.11.21.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 28 Oct 2020 11:21:07 -0700 (PDT)
+From:   Aleksandr Nogikh <aleksandrnogikh@gmail.com>
+To:     davem@davemloft.net, kuba@kernel.org, johannes@sipsolutions.net
+Cc:     edumazet@google.com, andreyknvl@google.com, dvyukov@google.com,
+        elver@google.com, linux-kernel@vger.kernel.org,
+        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+        willemdebruijn.kernel@gmail.com,
+        Aleksandr Nogikh <nogikh@google.com>
+Subject: [PATCH v4 3/3] mac80211: add KCOV remote annotations to incoming frame processing
+Date:   Wed, 28 Oct 2020 18:20:18 +0000
+Message-Id: <20201028182018.1780842-4-aleksandrnogikh@gmail.com>
+X-Mailer: git-send-email 2.29.0.rc2.309.g374f81d7ae-goog
+In-Reply-To: <20201028182018.1780842-1-aleksandrnogikh@gmail.com>
+References: <20201028182018.1780842-1-aleksandrnogikh@gmail.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The wmi service available event has been
-extended to contain extra 128 bit for new services
-to be indicated by firmware.
+From: Aleksandr Nogikh <nogikh@google.com>
 
-Currently the presence of any optional TLVs in
-the wmi service available event leads to a parsing
-error with the below error message:
-ath10k_snoc 18800000.wifi: failed to parse svc_avail tlv: -71
+Add KCOV remote annotations to ieee80211_iface_work and
+ieee80211_rx. This will enable coverage-guided fuzzing of
+mac80211 code that processes incoming 802.11 frames.
 
-The wmi service available event parsing should
-not return error for the newly added optional TLV.
-Fix this parsing for service available event message.
-
-Tested-on: WCN3990 hw1.0 SNOC
-
-Fixes: cea19a6ce8bf ("ath10k: add WMI_SERVICE_AVAILABLE_EVENT support")
-Signed-off-by: Rakesh Pillai <pillair@codeaurora.org>
+Signed-off-by: Aleksandr Nogikh <nogikh@google.com>
 ---
-Changes from v1:
-- Access service_map_ext only if this TLV was sent in service
-  available event.
+v1 -> v2:
+* The commit now affects ieee80211_rx instead of
+  ieee80211_tasklet_handler.
 ---
- drivers/net/wireless/ath/ath10k/wmi-tlv.c | 4 +++-
- drivers/net/wireless/ath/ath10k/wmi.c     | 5 +++--
- drivers/net/wireless/ath/ath10k/wmi.h     | 1 +
- 3 files changed, 7 insertions(+), 3 deletions(-)
+ include/net/mac80211.h | 2 ++
+ net/mac80211/iface.c   | 2 ++
+ 2 files changed, 4 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath10k/wmi-tlv.c b/drivers/net/wireless/ath/ath10k/wmi-tlv.c
-index 932266d..7b58341 100644
---- a/drivers/net/wireless/ath/ath10k/wmi-tlv.c
-+++ b/drivers/net/wireless/ath/ath10k/wmi-tlv.c
-@@ -1401,13 +1401,15 @@ static int ath10k_wmi_tlv_svc_avail_parse(struct ath10k *ar, u16 tag, u16 len,
- 
- 	switch (tag) {
- 	case WMI_TLV_TAG_STRUCT_SERVICE_AVAILABLE_EVENT:
-+		arg->service_map_ext_valid = true;
- 		arg->service_map_ext_len = *(__le32 *)ptr;
- 		arg->service_map_ext = ptr + sizeof(__le32);
- 		return 0;
- 	default:
- 		break;
- 	}
--	return -EPROTO;
-+
-+	return 0;
+diff --git a/include/net/mac80211.h b/include/net/mac80211.h
+index e8e295dae744..f4c37a1b381e 100644
+--- a/include/net/mac80211.h
++++ b/include/net/mac80211.h
+@@ -4499,7 +4499,9 @@ void ieee80211_rx_napi(struct ieee80211_hw *hw, struct ieee80211_sta *sta,
+  */
+ static inline void ieee80211_rx(struct ieee80211_hw *hw, struct sk_buff *skb)
+ {
++	kcov_remote_start_common(skb_get_kcov_handle(skb));
+ 	ieee80211_rx_napi(hw, NULL, skb, NULL);
++	kcov_remote_stop();
  }
  
- static int ath10k_wmi_tlv_op_pull_svc_avail(struct ath10k *ar,
-diff --git a/drivers/net/wireless/ath/ath10k/wmi.c b/drivers/net/wireless/ath/ath10k/wmi.c
-index 1fa7107..2e4b561 100644
---- a/drivers/net/wireless/ath/ath10k/wmi.c
-+++ b/drivers/net/wireless/ath/ath10k/wmi.c
-@@ -5751,8 +5751,9 @@ void ath10k_wmi_event_service_available(struct ath10k *ar, struct sk_buff *skb)
- 			    ret);
+ /**
+diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
+index 1be775979132..56a1bcea2c1c 100644
+--- a/net/mac80211/iface.c
++++ b/net/mac80211/iface.c
+@@ -1356,6 +1356,7 @@ static void ieee80211_iface_work(struct work_struct *work)
+ 	while ((skb = skb_dequeue(&sdata->skb_queue))) {
+ 		struct ieee80211_mgmt *mgmt = (void *)skb->data;
+ 
++		kcov_remote_start_common(skb_get_kcov_handle(skb));
+ 		if (ieee80211_is_action(mgmt->frame_control) &&
+ 		    mgmt->u.action.category == WLAN_CATEGORY_BACK) {
+ 			int len = skb->len;
+@@ -1465,6 +1466,7 @@ static void ieee80211_iface_work(struct work_struct *work)
+ 		}
+ 
+ 		kfree_skb(skb);
++		kcov_remote_stop();
  	}
  
--	ath10k_wmi_map_svc_ext(ar, arg.service_map_ext, ar->wmi.svc_map,
--			       __le32_to_cpu(arg.service_map_ext_len));
-+	if (arg.service_map_ext_valid)
-+		ath10k_wmi_map_svc_ext(ar, arg.service_map_ext, ar->wmi.svc_map,
-+				       __le32_to_cpu(arg.service_map_ext_len));
- }
- 
- static int ath10k_wmi_event_temperature(struct ath10k *ar, struct sk_buff *skb)
-diff --git a/drivers/net/wireless/ath/ath10k/wmi.h b/drivers/net/wireless/ath/ath10k/wmi.h
-index 4898e19..66ecf09 100644
---- a/drivers/net/wireless/ath/ath10k/wmi.h
-+++ b/drivers/net/wireless/ath/ath10k/wmi.h
-@@ -6917,6 +6917,7 @@ struct wmi_svc_rdy_ev_arg {
- };
- 
- struct wmi_svc_avail_ev_arg {
-+	bool service_map_ext_valid;
- 	__le32 service_map_ext_len;
- 	const __le32 *service_map_ext;
- };
+ 	/* then other type-dependent work */
 -- 
-2.7.4
+2.29.0.rc2.309.g374f81d7ae-goog
 
