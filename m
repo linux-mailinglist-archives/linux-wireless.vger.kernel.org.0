@@ -2,114 +2,137 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E804229D99E
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Oct 2020 23:58:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E817229D941
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Oct 2020 23:50:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389886AbgJ1W6I (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 28 Oct 2020 18:58:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60186 "EHLO
+        id S2389561AbgJ1WuN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 28 Oct 2020 18:50:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59090 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389674AbgJ1W4g (ORCPT
+        with ESMTP id S2389559AbgJ1WuM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 28 Oct 2020 18:56:36 -0400
-Received: from mail-vs1-xe44.google.com (mail-vs1-xe44.google.com [IPv6:2607:f8b0:4864:20::e44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D04DCC0613CF;
-        Wed, 28 Oct 2020 15:56:35 -0700 (PDT)
-Received: by mail-vs1-xe44.google.com with SMTP id h5so497641vsp.3;
-        Wed, 28 Oct 2020 15:56:35 -0700 (PDT)
+        Wed, 28 Oct 2020 18:50:12 -0400
+Received: from mail-ed1-x544.google.com (mail-ed1-x544.google.com [IPv6:2a00:1450:4864:20::544])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E6C6C0613CF;
+        Wed, 28 Oct 2020 15:50:11 -0700 (PDT)
+Received: by mail-ed1-x544.google.com with SMTP id w1so40790edv.11;
+        Wed, 28 Oct 2020 15:50:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=1W1egpqxhCc2vFNc2hQUMgNWODq/0zt9Ds07G4ofZII=;
-        b=L860scfczkA9wSqGF8yPqs+4WiGw0DM+CJZwafcORwp5SbVMjWFeMq9JVXbLPg2lBV
-         Nid9jh7a/25hDSME6FajktPu2YumoQlg0etsK8T1nAPno57fImnqS1L4uQZFIpa+ugkE
-         2ff83pu/V2XZ6aEtpzTu/k7VuSkqnJh8WxotME6RYiznbtL8ui5SbhYp1+TMhUk+bgrF
-         LXePUR/BJ4RICmjwsgKuQPaZSGhOyBhHVOqKiwoCCt2UdlydAzUTGVNzMXEWNMknsrXG
-         bzuqU3bUiW9g+uzC8D/AFev1KdPzfFRr1REUicJa80+naRpG7POHETI8mAHvA53V6+Y3
-         1B6Q==
+        bh=r8zdq5tnsEjU2mL7IhtYQ9z15emjzzbWyJ8LKOVG7LE=;
+        b=qP+paProEdF2d4saX3R100bJ/TrIY0l8n7dW91ga0p79xT/ZhSInLMrEmTMDZkelqY
+         RnkT/D2btIvexzGFA1jdM5yVobtaxWruyAfhhdHgmQiYXEtd3sfy1clg5UD2ebYGzeX+
+         QHHeUFpmGqKU9U5jnGNI+RBaP0bOoAWYibWR8VDKjxaK7XsGxSgJ7mFx1wP3bIfQZaCf
+         /Ba3Q8qmU4kQOtkPWXdLErd2q5snG888fMjkrystzbr+XDdQ48xD/w0Z+c7ilWsTSqCC
+         lP3ofQve4fWbmpNcCIHx/ykTz4TwtNxbThI3BQABGCdj5hupLK0LydwL+bpTnTl1f87X
+         9HNg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=1W1egpqxhCc2vFNc2hQUMgNWODq/0zt9Ds07G4ofZII=;
-        b=E8kjsypGoE22B4KZ6g4w831gKx8pKHbpS2CzZKQty+49vcviNvdYAPZFBPJNwnTnFH
-         IQp/tXEB/E8mNljTOwZg9gYMIOMEmz8UNmyyF4fL/jaImXlgw/JfTCdLizTkXRhlQJ8k
-         TmXg1g/+06OzOwhhg0GUT4RtCv82WSRZ1eYC7hYNLuLCfs7LggGJsfY/Xw3EJiW8wGO/
-         PDJ87P6LGZFaP1TY35G/LqLqDeqs3zOxHPr7NSXJSCLhJjuKCZeLCK5gvLNjUOUfaHoc
-         ZnRcm4V5wkl0Zuo3hSo2b7yOORjhoLShH9dQ5/qQ6OkAYqjBjR0/lumB4Zcx34yqLQju
-         SbYA==
-X-Gm-Message-State: AOAM532xY4v55JYvamy0ikW7ZDwhxNRwp4F5pViB3Wr0UnkIjtIVOoOw
-        F25dKBbJl/nqljVH2WZ9G9bHTVuxBDYjiPeD
-X-Google-Smtp-Source: ABdhPJwMlV2jZahCPDR0hvozOQvyxC0uu6I4J/KblhnoJWL3KQonuUYAWQkVHMyNCSGBX5ls1W99Ug==
-X-Received: by 2002:aa7:970f:0:b029:161:ee2d:bb9b with SMTP id a15-20020aa7970f0000b0290161ee2dbb9bmr7492181pfg.63.1603895224531;
-        Wed, 28 Oct 2020 07:27:04 -0700 (PDT)
-Received: from k5-sbwpb.flets-east.jp (i60-35-254-237.s41.a020.ap.plala.or.jp. [60.35.254.237])
-        by smtp.gmail.com with ESMTPSA id jy19sm5311663pjb.9.2020.10.28.07.27.01
+        bh=r8zdq5tnsEjU2mL7IhtYQ9z15emjzzbWyJ8LKOVG7LE=;
+        b=VLH5+ZxSiDaEPp0HOobMVY2CmqJ7EmMMGVD4alhuaLJMpl71241zWsaxs3aro8cF/O
+         Kywk0gvvdZ2ZB47WaiQFX/YERglo1MPVFbex6rcm6nC/YdUxG/nZMQTa+X/fx97xnCzG
+         KQC8zS+GzQAP936I4QsN9RK0+ysjRAUqgaO5S2rzWGM37qprQS0RQ7JEDIC7LUAbq0wo
+         NaISEgaBmY02g9p3F09Vm/wD4spceBjm8Cd/JDYJvcw1vQ7aDwZvRxPEYgOOLixVaUIB
+         L5FaixVwmLcoTAAfXAh0CQnjNBIHZpdkWmnfihr81EC0dWk0/zC2Pkon+hPneZ9yQHQr
+         QsXQ==
+X-Gm-Message-State: AOAM530RLh/7B82CoDojSCJ778QetNpXWtZf2Q2EFzR+YpPfXxVHhwLt
+        HbsoJXqDHz2z9+gl6aMR/W7X2eWbbNmHlg==
+X-Google-Smtp-Source: ABdhPJxBA5qMqdLRZUL5Kf6G6HD8gn1XbCDnPnvopPF9XIN7M19KVavJXUT6judWR09BvGo9b0WE4g==
+X-Received: by 2002:a5d:498a:: with SMTP id r10mr729826wrq.106.1603909249969;
+        Wed, 28 Oct 2020 11:20:49 -0700 (PDT)
+Received: from nogikh.c.googlers.com.com (88.140.78.34.bc.googleusercontent.com. [34.78.140.88])
+        by smtp.gmail.com with ESMTPSA id r28sm531178wrr.81.2020.10.28.11.20.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Oct 2020 07:27:04 -0700 (PDT)
-From:   Tsuchiya Yuto <kitakar@gmail.com>
-To:     Amitkumar Karwar <amitkarwar@gmail.com>,
-        Ganapathi Bhat <ganapathi.bhat@nxp.com>,
-        Xinming Hu <huxinming820@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Maximilian Luz <luzmaximilian@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@intel.com>, verdre@v0yd.nl,
-        Tsuchiya Yuto <kitakar@gmail.com>
-Subject: [PATCH] mwifiex: pcie: add enable_device_dump module parameter
-Date:   Wed, 28 Oct 2020 23:26:25 +0900
-Message-Id: <20201028142625.18642-1-kitakar@gmail.com>
-X-Mailer: git-send-email 2.29.1
+        Wed, 28 Oct 2020 11:20:49 -0700 (PDT)
+From:   Aleksandr Nogikh <aleksandrnogikh@gmail.com>
+To:     davem@davemloft.net, kuba@kernel.org, johannes@sipsolutions.net
+Cc:     edumazet@google.com, andreyknvl@google.com, dvyukov@google.com,
+        elver@google.com, linux-kernel@vger.kernel.org,
+        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+        willemdebruijn.kernel@gmail.com,
+        Aleksandr Nogikh <nogikh@google.com>
+Subject: [PATCH v4 0/3] net, mac80211, kernel: enable KCOV remote coverage collection for 802.11 frame handling
+Date:   Wed, 28 Oct 2020 18:20:15 +0000
+Message-Id: <20201028182018.1780842-1-aleksandrnogikh@gmail.com>
+X-Mailer: git-send-email 2.29.0.rc2.309.g374f81d7ae-goog
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The devicve_dump may take a little bit long time and users may want to
-disable the dump for daily usage.
+From: Aleksandr Nogikh <nogikh@google.com>
 
-This commit adds a new module parameter enable_device_dump and disables
-the device_dump by default.
+This patch series enables remote KCOV coverage collection during
+802.11 frames processing. These changes make it possible to perform
+coverage-guided fuzzing in search of remotely triggerable bugs.
 
-Signed-off-by: Tsuchiya Yuto <kitakar@gmail.com>
----
- drivers/net/wireless/marvell/mwifiex/pcie.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+Normally, KCOV collects coverage information for the code that is
+executed inside the system call context. It is easy to identify where
+that coverage should go and whether it should be collected at all by
+looking at the current process. If KCOV was enabled on that process,
+coverage will be stored in a buffer specific to that process.
+Howerever, it is not always enough as handling can happen elsewhere
+(e.g. in separate kernel threads).
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/pcie.c b/drivers/net/wireless/marvell/mwifiex/pcie.c
-index 6a10ff0377a24..8254e06fb22ce 100644
---- a/drivers/net/wireless/marvell/mwifiex/pcie.c
-+++ b/drivers/net/wireless/marvell/mwifiex/pcie.c
-@@ -33,6 +33,11 @@
- 
- static struct mwifiex_if_ops pcie_ops;
- 
-+static bool enable_device_dump;
-+module_param(enable_device_dump, bool, 0644);
-+MODULE_PARM_DESC(enable_device_dump,
-+		 "enable device_dump (default: disabled)");
-+
- static const struct mwifiex_pcie_card_reg mwifiex_reg_8766 = {
- 	.cmd_addr_lo = PCIE_SCRATCH_0_REG,
- 	.cmd_addr_hi = PCIE_SCRATCH_1_REG,
-@@ -2938,6 +2943,12 @@ static void mwifiex_pcie_fw_dump(struct mwifiex_adapter *adapter)
- 
- static void mwifiex_pcie_device_dump_work(struct mwifiex_adapter *adapter)
- {
-+	if (!enable_device_dump) {
-+		mwifiex_dbg(adapter, MSG,
-+			    "device_dump is disabled by module parameter\n");
-+		return;
-+	}
-+
- 	adapter->devdump_data = vzalloc(MWIFIEX_FW_DUMP_SIZE);
- 	if (!adapter->devdump_data) {
- 		mwifiex_dbg(adapter, ERROR,
+When it is impossible to infer KCOV-related info just by looking at
+the currently running process, one needs to manually pass some
+information to the code that should be instrumented. The information
+takes the form of 64 bit integers (KCOV remote handles). Zero is the
+special value that corresponds to an empty handle. More details on
+KCOV and remote coverage collection can be found in
+Documentation/dev-tools/kcov.rst.
+
+The series consists of three commits.
+1. Apply a minor fix to kcov_common_handle() so that it returns a
+valid handle (zero) when called in an interrupt context.
+2. Take the remote handle from KCOV and attach it to newly allocated
+SKBs as an skb extension. If the allocation happens inside a system
+call context, the SKB will be tied to the process that issued the
+syscall (if that process is interested in remote coverage collection).
+3. Annotate the code that processes incoming 802.11 frames with
+kcov_remote_start()/kcov_remote_stop().
+
+v4:
+* CONFIG_SKB_EXTENSIONS is now automatically selected by CONFIG_KCOV.
+* Elaborated on a minor optimization in skb_set_kcov_handle().
+
+v3:
+https://lkml.kernel.org/r/20201026150851.528148-1-aleksandrnogikh@gmail.com
+* kcov_handle is now stored in skb extensions instead of sk_buff
+  itself.
+* Updated the cover letter.
+
+v2:
+https://lkml.kernel.org/r/20201009170202.103512-1-a.nogikh@gmail.com
+* Moved KCOV annotations from ieee80211_tasklet_handler to
+  ieee80211_rx.
+* Updated kcov_common_handle() to return 0 if it is called in
+  interrupt context.
+* Updated the cover letter.
+
+v1:
+https://lkml.kernel.org/r/20201007101726.3149375-1-a.nogikh@gmail.com
+
+Aleksandr Nogikh (3):
+  kernel: make kcov_common_handle consider the current context
+  net: add kcov handle to skb extensions
+  mac80211: add KCOV remote annotations to incoming frame processing
+
+ include/linux/skbuff.h | 36 ++++++++++++++++++++++++++++++++++++
+ include/net/mac80211.h |  2 ++
+ kernel/kcov.c          |  2 ++
+ lib/Kconfig.debug      |  1 +
+ net/core/skbuff.c      | 11 +++++++++++
+ net/mac80211/iface.c   |  2 ++
+ 6 files changed, 54 insertions(+)
+
+
+base-commit: 1c86f90a16d413621918ae1403842b43632f0b3d
 -- 
-2.29.1
+2.29.0.rc2.309.g374f81d7ae-goog
 
