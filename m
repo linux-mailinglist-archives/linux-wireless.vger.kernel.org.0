@@ -2,124 +2,82 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2982829D509
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Oct 2020 22:56:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EF74029D4CE
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Oct 2020 22:54:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728585AbgJ1V4N (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 28 Oct 2020 17:56:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49754 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728579AbgJ1V4M (ORCPT
+        id S1728792AbgJ1Vyj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 28 Oct 2020 17:54:39 -0400
+Received: from s3.sipsolutions.net ([144.76.43.62]:59072 "EHLO
+        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728776AbgJ1Vyi (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 28 Oct 2020 17:56:12 -0400
-Received: from mail-oi1-x244.google.com (mail-oi1-x244.google.com [IPv6:2607:f8b0:4864:20::244])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35D59C0613CF;
-        Wed, 28 Oct 2020 14:56:12 -0700 (PDT)
-Received: by mail-oi1-x244.google.com with SMTP id j7so1120239oie.12;
-        Wed, 28 Oct 2020 14:56:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=zHdXxs/T9mZg7pnTabmXNYI1gYHQQJ61N4sTHUvcPUk=;
-        b=AmUwQcAt1VAGU+7CByHjC1Oes4GGfSweQWXlDbr/CgxxRlilrbYYTenjwbPYHyWEgz
-         LHKkymEHL2DocTPL4lE4s+GQ7MnwLW2fbZ8VVqpdXOb7lw036dXA7nGpYVbCDuH1Drc8
-         mjDgmgjwN2ET48i7VDJG6QiYUGQHvkY1SH2nnqru/vudIvjqa93+hzscx+Nvsh2a9CrY
-         13a7Xjp8UBlCNG7rx9Cjx3h9wI5LXEOHlShiduPrll7YHkterXWu9qvJ04eUO2hO0u1j
-         WpgOuzLuGL0Elokp1fJyngH94yqobI2Te7x3nMzibwjr9jD5Kj2aRA3flo0MUczTmrDn
-         Y11Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=zHdXxs/T9mZg7pnTabmXNYI1gYHQQJ61N4sTHUvcPUk=;
-        b=KTvV7+WpGvbXzWL9absHP6KSMhSNGXtW6DCLg1fGi+7QG5+RN7YCVQr2wN4L1N40xI
-         psj+vHeeJayz6NwfRF9O7laKVtxJg/f+z002BH2WBRLRyscuIRvQyJ8XlZjUBQC7Oo4h
-         i/x4wdG5GY7lHd7eNsRtsXKdJhPTmK6yRFESSuD8iOjXiWVC7DZtv6C7lZdXHVLAAtwR
-         EMRm3/Uowu2mlBoPVh9zxcEVD5uHlvMUbYPwGGNPqqgu9c4PPumrmknfD5gdfMgMtUqX
-         D0MnEAJuNBJzglaTKDdzzriL+XrWSoua0qq6bmdltILYEtAGd3Zj2u3rk37eixsdGc2N
-         q9dw==
-X-Gm-Message-State: AOAM531RV6PY+mE4hT/JWY2WFDyRbM2P3XGsHAJJnkonp4mCJVbqiY8P
-        bEGB6AHtjT7rXhtDa6ddRgoI02VUKCWh5dYb
-X-Google-Smtp-Source: ABdhPJxMerd/WVMTl6OAD0Q/nuNJbG+xVQtf6jhUUfBHNGjpniJCbD9kmKMHF4xtAw9wKqE6f/hbuQ==
-X-Received: by 2002:a17:90a:5303:: with SMTP id x3mr2781024pjh.188.1603895158254;
-        Wed, 28 Oct 2020 07:25:58 -0700 (PDT)
-Received: from k5-sbwpb.flets-east.jp (i60-35-254-237.s41.a020.ap.plala.or.jp. [60.35.254.237])
-        by smtp.gmail.com with ESMTPSA id 194sm6227192pfz.182.2020.10.28.07.25.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Oct 2020 07:25:57 -0700 (PDT)
-From:   Tsuchiya Yuto <kitakar@gmail.com>
-To:     Amitkumar Karwar <amitkarwar@gmail.com>,
-        Ganapathi Bhat <ganapathi.bhat@nxp.com>,
-        Xinming Hu <huxinming820@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Maximilian Luz <luzmaximilian@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@intel.com>, verdre@v0yd.nl,
-        Tsuchiya Yuto <kitakar@gmail.com>
-Subject: [PATCH 2/3] mwifiex: add allow_ps_mode module parameter
-Date:   Wed, 28 Oct 2020 23:24:32 +0900
-Message-Id: <20201028142433.18501-3-kitakar@gmail.com>
-X-Mailer: git-send-email 2.29.1
-In-Reply-To: <20201028142433.18501-1-kitakar@gmail.com>
-References: <20201028142433.18501-1-kitakar@gmail.com>
+        Wed, 28 Oct 2020 17:54:38 -0400
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.94)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1kXr41-00EKXJ-FE; Wed, 28 Oct 2020 20:24:53 +0100
+Message-ID: <5d1e166e32cd8263787764b7c7fe64b24cacb2a6.camel@sipsolutions.net>
+Subject: Re: [PATCH v4 3/3] mac80211: add KCOV remote annotations to
+ incoming frame processing
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Aleksandr Nogikh <aleksandrnogikh@gmail.com>, davem@davemloft.net,
+        kuba@kernel.org
+Cc:     edumazet@google.com, andreyknvl@google.com, dvyukov@google.com,
+        elver@google.com, linux-kernel@vger.kernel.org,
+        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+        willemdebruijn.kernel@gmail.com,
+        Aleksandr Nogikh <nogikh@google.com>
+Date:   Wed, 28 Oct 2020 20:24:36 +0100
+In-Reply-To: <20201028182018.1780842-4-aleksandrnogikh@gmail.com> (sfid-20201028_192108_906083_C36F9C75)
+References: <20201028182018.1780842-1-aleksandrnogikh@gmail.com>
+         <20201028182018.1780842-4-aleksandrnogikh@gmail.com>
+         (sfid-20201028_192108_906083_C36F9C75)
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.5 (3.36.5-1.fc32) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-To make the ps_mode (power_save) control easier, this commit adds a new
-module parameter allow_ps_mode and set it false (disallowed) by default.
+On Wed, 2020-10-28 at 18:20 +0000, Aleksandr Nogikh wrote:
+> From: Aleksandr Nogikh <nogikh@google.com>
+> 
+> Add KCOV remote annotations to ieee80211_iface_work and
+> ieee80211_rx. This will enable coverage-guided fuzzing of
+> mac80211 code that processes incoming 802.11 frames.
+> 
+> Signed-off-by: Aleksandr Nogikh <nogikh@google.com>
+> ---
+> v1 -> v2:
+> * The commit now affects ieee80211_rx instead of
+>   ieee80211_tasklet_handler.
+> ---
+>  include/net/mac80211.h | 2 ++
+>  net/mac80211/iface.c   | 2 ++
+>  2 files changed, 4 insertions(+)
+> 
+> diff --git a/include/net/mac80211.h b/include/net/mac80211.h
+> index e8e295dae744..f4c37a1b381e 100644
+> --- a/include/net/mac80211.h
+> +++ b/include/net/mac80211.h
+> @@ -4499,7 +4499,9 @@ void ieee80211_rx_napi(struct ieee80211_hw *hw, struct ieee80211_sta *sta,
+>   */
+>  static inline void ieee80211_rx(struct ieee80211_hw *hw, struct sk_buff *skb)
+>  {
+> +	kcov_remote_start_common(skb_get_kcov_handle(skb));
+>  	ieee80211_rx_napi(hw, NULL, skb, NULL);
+> +	kcov_remote_stop();
+>  }
 
-When this parameter is set to false, changing the power_save mode will
-be disallowed like the following:
+Wouldn't it make more sense to push that a layer down
+into ieee80211_rx_napi(), or actually now perhaps even
+better ieee80211_rx_list(), so we get it even if the driver called that
+API in the first place?
 
-    $ sudo iw dev mlan0 set power_save on
-    command failed: Operation not permitted (-1)
+You might only care about hwsim at this point, but perhaps hwsim would
+get optimised ..
 
-Signed-off-by: Tsuchiya Yuto <kitakar@gmail.com>
----
- drivers/net/wireless/marvell/mwifiex/cfg80211.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/cfg80211.c b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-index a6b9dc6700b14..943bc1e8ceaee 100644
---- a/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-+++ b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-@@ -25,6 +25,11 @@
- static char *reg_alpha2;
- module_param(reg_alpha2, charp, 0);
- 
-+static bool allow_ps_mode;
-+module_param(allow_ps_mode, bool, 0644);
-+MODULE_PARM_DESC(allow_ps_mode,
-+		 "allow WiFi power management to be enabled. (default: disallowed)");
-+
- static const struct ieee80211_iface_limit mwifiex_ap_sta_limits[] = {
- 	{
- 		.max = MWIFIEX_MAX_BSS_NUM,
-@@ -435,6 +440,17 @@ mwifiex_cfg80211_set_power_mgmt(struct wiphy *wiphy,
- 
- 	ps_mode = enabled;
- 
-+	/* Allow ps_mode to be enabled only when allow_ps_mode is true */
-+	if (ps_mode && !allow_ps_mode) {
-+		mwifiex_dbg(priv->adapter, MSG,
-+			    "Enabling ps_mode disallowed by modparam\n");
-+
-+		/* Return -EPERM to inform userspace tools that setting
-+		 * power_save to be enabled is not permitted.
-+		 */
-+		return -EPERM;
-+	}
-+
- 	return mwifiex_drv_set_power(priv, &ps_mode);
- }
- 
--- 
-2.29.1
+johannes
 
