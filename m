@@ -2,98 +2,141 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 124F029F3B4
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Oct 2020 19:00:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 82C0129F3E0
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Oct 2020 19:12:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725819AbgJ2SAV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 29 Oct 2020 14:00:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41962 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725781AbgJ2SAT (ORCPT
+        id S1725841AbgJ2SMd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 29 Oct 2020 14:12:33 -0400
+Received: from 10.mo177.mail-out.ovh.net ([46.105.73.133]:33227 "EHLO
+        10.mo177.mail-out.ovh.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725747AbgJ2SMc (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 29 Oct 2020 14:00:19 -0400
-Received: from mail-oi1-x242.google.com (mail-oi1-x242.google.com [IPv6:2607:f8b0:4864:20::242])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BEBF8C0613D3
-        for <linux-wireless@vger.kernel.org>; Thu, 29 Oct 2020 11:00:19 -0700 (PDT)
-Received: by mail-oi1-x242.google.com with SMTP id x203so3897909oia.10
-        for <linux-wireless@vger.kernel.org>; Thu, 29 Oct 2020 11:00:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=WxRuOq6f8j/OJClpjygk5Sil7hNP3LLwSpzSQ8AdyIw=;
-        b=YgYWiWE7JZt28JrbecJ3RcV+vUGkrnWCMu2zz09AhOgDPRFoxcxkRzZRZIYZFCmYlU
-         WelfSscahfL8OzNYoWwJRkryvGoSRoiEzEwmbxgzLIlrQsEkw+8cQNZUSeEajoGXUTL2
-         jCF3B2dyfmz+kjVtpp5yyc9Fhe5zKey/CyuysYlk4j/z8ERIfXkVMdl8sJK6PgwvtR2P
-         kH93bhE8ipq6xK3TG8duQC4MaaN5xohyYUk9mYVO2K/X39cmPvAFOhDBT1oL1XXeVqQS
-         3+JrGtYAfp72Z8D22xDfjs9pDfbN+hikJ2F5+sVNIQOvRYxc0QJMzVkp3+mNERSJv5UD
-         alOQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=WxRuOq6f8j/OJClpjygk5Sil7hNP3LLwSpzSQ8AdyIw=;
-        b=lK7IWfapAkdNyUZJRIpxJxOzbjeriDTWoYeBwxFNflz3/z9Yh8oMrQkiHAaROFXDLj
-         Bi91vY0kPl2NV4HCXz7Lv62NvHCNd+fllg/pznNVfrXR7taRNOctR/bQU/TUOvru7KK9
-         bS/IiOz3spK58dAjQQouBLsCHRaxCRifQB89QMPrquO3Cud0kzMp2Y4+h72atxiIjmbd
-         obKq7nsXwAMiqev1giivrZqYLQkOnCKsvbYDxZSaQC3skFWKtE7ksg7u/6ehZ6hAMpGV
-         LsxSgl2A9EoSAKldNykPuIwrvDE9MuS0AjmCclUz9AM19BRjcfRBd2hxqV2dJ9s/side
-         1F6A==
-X-Gm-Message-State: AOAM531bnN1jxrMPqnFsQenVP5PoY4t75rTMpkAamjh0GcUmfndTSQmE
-        e2Tv43VHvzAjVsjH9bdu2AnnkQxWFbSBMXk4fThkNw==
-X-Google-Smtp-Source: ABdhPJz3mnbcHjmN2y7saCgbvDUKaiY9BdLFyShvD8FLDdQTJYtPNBqIEiyaybFQMidaIPMWOeXim/lHrvti0R/5eDc=
-X-Received: by 2002:a54:4812:: with SMTP id j18mr655595oij.70.1603994418860;
- Thu, 29 Oct 2020 11:00:18 -0700 (PDT)
+        Thu, 29 Oct 2020 14:12:32 -0400
+X-Greylist: delayed 2398 seconds by postgrey-1.27 at vger.kernel.org; Thu, 29 Oct 2020 14:12:30 EDT
+Received: from player746.ha.ovh.net (unknown [10.108.42.23])
+        by mo177.mail-out.ovh.net (Postfix) with ESMTP id F13AE14439D
+        for <linux-wireless@vger.kernel.org>; Thu, 29 Oct 2020 17:53:37 +0100 (CET)
+Received: from webmining-systems.com (lfbn-idf1-1-284-37.w86-195.abo.wanadoo.fr [86.195.122.37])
+        (Authenticated sender: info@webmining-systems.com)
+        by player746.ha.ovh.net (Postfix) with ESMTPSA id 9D96B17B9798D
+        for <linux-wireless@vger.kernel.org>; Thu, 29 Oct 2020 16:53:37 +0000 (UTC)
+Authentication-Results: garm.ovh; auth=pass (GARM-97G002cb71d9ba-7a27-4482-8c95-7b8197e55ce7,
+                    C82B0129A97CC3678E441CABB490FEB73E31324D) smtp.auth=info@webmining-systems.com
+From:   Michal TOMA <michaltoma@sicoop.com>
+To:     linux-wireless@vger.kernel.org
+Subject: rtw_8821ce driver in kernel 5.9.1: wifi module inactive
+Date:   Thu, 29 Oct 2020 17:47:28 +0100
+Message-ID: <6173742.tiux6Xeah1@linux-9g0r.site>
+Organization: SICOOP
+User-Agent: KMail/4.10.5 (Linux/3.7.10-1.45-desktop; KDE/4.10.5; x86_64; ; )
 MIME-Version: 1.0
-References: <20201029173620.2121359-1-aleksandrnogikh@gmail.com>
- <20201029173620.2121359-4-aleksandrnogikh@gmail.com> <40e7ef15f3ffd32567c1dd74edae982c53b0fb06.camel@sipsolutions.net>
-In-Reply-To: <40e7ef15f3ffd32567c1dd74edae982c53b0fb06.camel@sipsolutions.net>
-From:   Marco Elver <elver@google.com>
-Date:   Thu, 29 Oct 2020 19:00:07 +0100
-Message-ID: <CANpmjNP3Jadj3r27Y+GhxUD_cboqn_d2BYKiqM4BzktezgjRYw@mail.gmail.com>
-Subject: Re: [PATCH v5 3/3] mac80211: add KCOV remote annotations to incoming
- frame processing
-To:     Dmitry Vyukov <dvyukov@google.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Andrey Konovalov <andreyknvl@google.com>
-Cc:     Aleksandr Nogikh <aleksandrnogikh@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Eric Dumazet <edumazet@google.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Netdev <netdev@vger.kernel.org>, linux-wireless@vger.kernel.org,
-        willemdebruijn.kernel@gmail.com,
-        Aleksandr Nogikh <nogikh@google.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+X-Ovh-Tracer-Id: 17550809226005658052
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: 0
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedujedrleefgdelfecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecunecujfgurhephffvufffkfhofggggfgtsehtufertddtiedvnecuhfhrohhmpefoihgthhgrlhcuvffqofetuceomhhitghhrghlthhomhgrsehsihgtohhophdrtghomheqnecuggftrfgrthhtvghrnhepgeehfeelieekhefhleehkefhteejffejkeeuvddvvdevveffjeeugeefkeffkedvnecukfhppedtrddtrddtrddtpdekiedrudelhedruddvvddrfeejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmohguvgepshhmthhpqdhouhhtpdhhvghlohepphhlrgihvghrjeegiedrhhgrrdhovhhhrdhnvghtpdhinhgvtheptddrtddrtddrtddpmhgrihhlfhhrohhmpehmihgthhgrlhhtohhmrgesshhitghoohhprdgtohhmpdhrtghpthhtoheplhhinhhugidqfihirhgvlhgvshhssehvghgvrhdrkhgvrhhnvghlrdhorhhg
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, 29 Oct 2020 at 18:44, Johannes Berg <johannes@sipsolutions.net> wrote:
-> On Thu, 2020-10-29 at 17:36 +0000, Aleksandr Nogikh wrote:
-> > From: Aleksandr Nogikh <nogikh@google.com>
-> >
-> > Add KCOV remote annotations to ieee80211_iface_work() and
-> > ieee80211_rx_list(). This will enable coverage-guided fuzzing of
-> > mac80211 code that processes incoming 802.11 frames.
->
-> I have no idea how we'll get this merged - Jakub, do you want to take
-> the whole series? Or is somebody else responsible for the core kcov
-> part?
+Hi,
 
-Typically core kcov changes have been going via the -mm tree.
+On OpenSuse Tumbleweed rtw_8821ce driver breaks wifi.
 
-Andrey has been making most changes to KCOV recently, so if there are
-no pending changes that conflict, I don't see it's a problem for this
-whole series to go through networking. I think the other series that
-Andrey had been working on has been changed to only touch
-drivers/usb/, so there should be no conflicts pending.
+-> uname -a
+Linux Host-001 5.9.1-1-default #1 SMP Mon Oct 26 07:02:23 UTC 2020 (435e92d) x86_64 x86_64 x86_64 GNU/Linux
 
-Dmitry, Andrey, is that reasonable?
+/sbin/lspci -nnk | grep -iA3 net
+07:00.0 Network controller [0280]: Realtek Semiconductor Co., Ltd. RTL8821CE 802.11ac PCIe Wireless Network Adapter [10ec:c821]
+        Subsystem: Lenovo Device [17aa:c024]
+        Kernel driver in use: rtw_8821ce
+        Kernel modules: rtw88_8821ce, wl
+08:00.0 Ethernet controller [0200]: Realtek Semiconductor Co., Ltd. RTL8111/8168/8411 PCI Express Gigabit Ethernet Controller [10ec:8168] (rev 10)
+        Subsystem: Lenovo Device [17aa:38cf]
+        Kernel driver in use: r8168
+        Kernel modules: r8169, r8168
 
-> In any case,
->
-> Reviewed-by: Johannes Berg <johannes@sipsolutions.net>
->
-> johannes
->
+
+->cat /proc/net/wireless 
+Inter-| sta-|   Quality        |   Discarded packets               | Missed | WE
+ face | tus | link level noise |  nwid  crypt   frag  retry   misc | beacon | 22
+
+
+->iwconfig wlp7s0
+wlp7s0    IEEE 802.11  ESSID:off/any  
+          Mode:Managed  Access Point: Not-Associated   Tx-Power=20 dBm   
+          Retry short limit:7   RTS thr:off   Fragment thr:off
+          Encryption key:off
+          Power Management:off
+
+->iwlist wlp7s0 scan
+wlp7s0    No scan results
+
+
+->rfkill list 
+0: ideapad_wlan: Wireless LAN
+        Soft blocked: no
+        Hard blocked: no
+1: ideapad_bluetooth: Bluetooth
+        Soft blocked: yes
+        Hard blocked: no
+2: hci0: Bluetooth
+        Soft blocked: yes
+        Hard blocked: no
+3: phy0: Wireless LAN
+        Soft blocked: no
+        Hard blocked: no
+
+
+->dmesg | grep 8821
+[    7.075396] rtw_8821ce 0000:07:00.0: Firmware version 24.5.0, H2C version 12
+[    7.764587] rtw_8821ce 0000:07:00.0 wlp7s0: renamed from wlan0
+[    8.354754] rtw_8821ce 0000:07:00.0: start vif 28:39:26:ab:b4:5d on port 0
+[    8.358871] rtw_8821ce 0000:07:00.0: stop vif 28:39:26:ab:b4:5d on port 0
+[    8.874899] rtw_8821ce 0000:07:00.0: start vif e2:57:07:37:e3:1e on port 0
+[  421.023270] rtw_8821ce 0000:07:00.0: stop vif e2:57:07:37:e3:1e on port 0
+[  421.543601] rtw_8821ce 0000:07:00.0: start vif fe:92:51:d5:45:b5 on port 0
+[  833.018457] rtw_8821ce 0000:07:00.0: stop vif fe:92:51:d5:45:b5 on port 0
+[  833.540507] rtw_8821ce 0000:07:00.0: start vif 0e:7e:da:5f:c3:0d on port 0
+[ 1245.043076] rtw_8821ce 0000:07:00.0: stop vif 0e:7e:da:5f:c3:0d on port 0
+[ 1245.565253] rtw_8821ce 0000:07:00.0: start vif be:74:9e:7b:ed:4b on port 0
+And confinues likes this indefinitely
+
+
+->lshw -C network
+  *-network                 
+       description: Wireless interface
+       product: RTL8821CE 802.11ac PCIe Wireless Network Adapter
+       vendor: Realtek Semiconductor Co., Ltd.
+       physical id: 0
+       bus info: pci@0000:07:00.0
+       logical name: wlp7s0
+       version: 00
+       serial: be:1c:8a:79:49:d6
+       width: 64 bits
+       clock: 33MHz
+       capabilities: pm msi pciexpress bus_master cap_list ethernet physical wireless
+       configuration: broadcast=yes driver=rtw_8821ce driverversion=5.9.1-1-default firmware=N/A latency=0 link=no multicast=yes wireless=IEEE 802.11
+       resources: irq:142 ioport:4000(size=256) memory:a4300000-a430ffff
+  *-network
+       description: Ethernet interface
+       product: RTL8111/8168/8411 PCI Express Gigabit Ethernet Controller
+       vendor: Realtek Semiconductor Co., Ltd.
+       physical id: 0
+       bus info: pci@0000:08:00.0
+       logical name: enp8s0
+       version: 10
+       serial: f8:75:a4:08:eb:06
+       size: 1Gbit/s
+       capacity: 1Gbit/s
+       width: 64 bits
+       clock: 33MHz
+       capabilities: pm msi pciexpress msix vpd bus_master cap_list ethernet physical tp 10bt 10bt-fd 100bt 100bt-fd 1000bt-fd autonegotiation
+       configuration: autonegotiation=on broadcast=yes driver=r8168 driverversion=8.048.03-NAPI duplex=full ip=192.168.1.3 latency=0 link=yes multicast=yes port=twisted pair speed=1Gbit/s
+       resources: irq:140 ioport:3000(size=256) memory:a4204000-a4204fff memory:a4200000-a4203fff
+
+
+Happy to provide more information if needed.
+
+Michal
