@@ -2,92 +2,102 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1936929EDE0
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Oct 2020 15:08:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 871F729EF97
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Oct 2020 16:20:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725782AbgJ2OIK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 29 Oct 2020 10:08:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33608 "EHLO
+        id S1728083AbgJ2PUY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 29 Oct 2020 11:20:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44878 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725300AbgJ2OIJ (ORCPT
+        with ESMTP id S1727839AbgJ2PUY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 29 Oct 2020 10:08:09 -0400
-Received: from mail-ot1-x343.google.com (mail-ot1-x343.google.com [IPv6:2607:f8b0:4864:20::343])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 191ADC0613D3
-        for <linux-wireless@vger.kernel.org>; Thu, 29 Oct 2020 07:08:08 -0700 (PDT)
-Received: by mail-ot1-x343.google.com with SMTP id m26so2309012otk.11
-        for <linux-wireless@vger.kernel.org>; Thu, 29 Oct 2020 07:08:08 -0700 (PDT)
+        Thu, 29 Oct 2020 11:20:24 -0400
+Received: from mail-ej1-x641.google.com (mail-ej1-x641.google.com [IPv6:2a00:1450:4864:20::641])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB65BC0613CF
+        for <linux-wireless@vger.kernel.org>; Thu, 29 Oct 2020 08:20:23 -0700 (PDT)
+Received: by mail-ej1-x641.google.com with SMTP id t25so4282102ejd.13
+        for <linux-wireless@vger.kernel.org>; Thu, 29 Oct 2020 08:20:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=yUiHroil23Ysm/oPYXt1mfZFVtFDWQvOgy/RoBiFB5Y=;
-        b=bMIt3wqbMlw4uJO1/IzHIMWcpaG7mXaVvvxrPZdB5g+X3tD6ucn4g78QuPYRIqO2g9
-         BK3jej1J1Z9Ei3On+wi8HCZTf88yKVVXpchEdfGmAaLQeUhYt9zcbG/HNpR3e9SOcdBs
-         wSrsXrOCr5/I0A08N3CDWpkIN2euxja7c3vPyrspMKbLsiSHaJBkgAR1DfTzp/x0tqKc
-         l+yWrYNe1ofbusvumkOab2sUWa10Ln5yorcvVdpxp68vOp0Q5+KI0w8VkAwF0a5JslgO
-         ZLG6zKf/cQfC1jxFkQJvpyJaJxoK8lu5v6/ZSDUO/QT4tUrtPMNqKUyE+iKNElUblYPP
-         HQ/A==
+        bh=7lZuOiS2573E9zkuh9reAzyg21knB7StcArg0uf2+A0=;
+        b=QKdZbUy5AimkmuWTEr/pvjlE9mh8//NeOfyNHNulncQ553K0AhUcvKxF8iY8M6iP0h
+         sbWZQ8faTJ9XPncgkQEl8vc0j5GHfQo72UwU5+9/sidcuwTxhzMORBBVOdBeWhxs5Q4L
+         G1yDMn2iWWCIsP1Esa5N8wj/z8m/pwD7vORLttQqvu1Zw9KaUNFbefPxykmFFxl09e/T
+         gm5Hg0LydyRSAVp90tVq+c6B7FLIw0gHfDfLS/ZRLWRGJNXfL+07EK/hoB8XnTHVOUrj
+         HVYqudASBvwD7/niXFBFWSAzXPV2284a52eYeQbAm897PQ5WK0IyGsatm4USSQbIdHvb
+         wiJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:reply-to:from:date:message-id
          :subject:to;
-        bh=yUiHroil23Ysm/oPYXt1mfZFVtFDWQvOgy/RoBiFB5Y=;
-        b=P+CsM12mnX4YNHViZGiu8k3xSJPRmmR6tXe9l6DKaXtQLrK5oyAGLZYNB5rMoA3KlH
-         X6BARP2HrnUG+9/sLYkjYHU1W6+pNudQyt4ccmu4ENkVERQJmTZ0tgdOnrv50XAU0Ah8
-         wNANIxgER8psGptLBiv9F4rD6B8y3+frUr7/x/YwZ6f7H/h0+jM3P+qRSf0MNelhv5jN
-         SvDVdhqYllBJGiUvccYXaz+0Bbq4wCGhxCA8iZgUTqnYKMHtnPAvfmsTloJ/Tl7EF7az
-         ExNvuJjN3E8YcsPpsW1iKW2eGzY6nRXdhSi4yyRDiFE0N7b4Sq/tBfhXsfOUSIu9n7ri
-         Ntrw==
-X-Gm-Message-State: AOAM533AGcf3sqJ3Hd9M+at0GZPpTVUdnQUeHugJcQ7V/qz3ebYIf3d9
-        JRyTOAbFhb/6VvlX8oQfo8Q7fRhMf9MdqgCukU8=
-X-Google-Smtp-Source: ABdhPJzkl3OEOng0aK4LeNz9YKqk/GgfmrGLl1ctla3DlSZWe2q69x9GehOSfIgIJ/NlpcpfW0eW+Cdknj0KQuKs3/M=
-X-Received: by 2002:a9d:3606:: with SMTP id w6mr3170550otb.59.1603980487522;
- Thu, 29 Oct 2020 07:08:07 -0700 (PDT)
+        bh=7lZuOiS2573E9zkuh9reAzyg21knB7StcArg0uf2+A0=;
+        b=BM6RAxdX3t8G1kphmrFgSILSwRN3NIqL/sExxXrsmttn255JTJeznHqh2/xGF6xfNh
+         De/ugWQmw3o0I60feOxccVXQbZG2Y4G4fb3fhswyHIsP7b0V4ub5B/dI75pUdvjB7ixU
+         yeBdxSjlXH7dGKCLFNlnUr2HJCQTeRrleQA3LiASDYXziHE3Ka6tdWHIG1MYPL6ekxKy
+         YVC/ZyA0ac28i2do49HKZl6gamSSxc9kFwBzDikPljeEBHkLUbekDnXyG80p+ABE2/be
+         5jVi/LOHlhEaQOxMHOX/00dKax9wGhRjjnKCbrqPkEOquuifX0S7faUqDAUnWfxFch/F
+         oIHA==
+X-Gm-Message-State: AOAM530wyly1QhDPYF3+fWrQdkgorLvhQRCHzr0eDtEnWijqYu+VuJFP
+        QUCvP6ytAPVsMhEbiCKCn148jZ2IY6e0B1/BnMQ=
+X-Google-Smtp-Source: ABdhPJwfs5RuBmwfiwg4ji+lLGAE4l6buC3aClh4Wik56iqsSBd/m48MgEHZpQuZk4yTxcS7192vmux4GgOabsRLjL8=
+X-Received: by 2002:a17:906:cb03:: with SMTP id lk3mr4411391ejb.491.1603984822510;
+ Thu, 29 Oct 2020 08:20:22 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:a05:6838:fe0f:0:0:0:0 with HTTP; Thu, 29 Oct 2020 07:08:07
+Received: by 2002:a17:906:1dd3:0:0:0:0 with HTTP; Thu, 29 Oct 2020 08:20:21
  -0700 (PDT)
-Reply-To: mrjohnsonsmith009@gmail.com
-From:   Johnson smith <alvishilbasin14@gmail.com>
-Date:   Thu, 29 Oct 2020 14:08:07 +0000
-Message-ID: <CAJT5ULLsANMEAHD8uRxN0e3fnybjGxDa8sBY1dgweOY0nbUDPA@mail.gmail.com>
-Subject: hi
+Reply-To: mrs.sophia202@list.ru
+From:   "Mrs. Sophia Robin" <froshwood@gmail.com>
+Date:   Thu, 29 Oct 2020 15:20:21 +0000
+Message-ID: <CALLU5d3X1x2a+SctZexmTj9k5dy1Ceg0jd6a=2+TJUYE5YZjOA@mail.gmail.com>
+Subject: Hello My Dearest
 To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
--- 
+Hello My Dearest
 
-Attention Beneficiary
+Please I appeal to you to exercise a little patience and read through
+my mail carefully, I am contacting you personally for investment
+assistance and a long term business relationship in your Country.
 
-To stop this dubious act, we agreed with the World Bank and the
-Federal Bureau of Investigation (FBI) that we the International
-Monetary Fund (IMF) can manage and monitor this payment to overcome
-the desperate situation of banks and other personnel. Organizations
-involved in the criminal process.
+I am Mrs. Sophia Robin a citizen of the united state of America; I
+work in HSBC Bank in Milan Italy as a Telex Manager charge of wire
+transfer and online banking department.
 
-We have obtained an irrevocable payment guarantee for your payment
-from the World Bank. We would like to inform you that the World Bank
-has decided to send you $ 350,000.00 dollars and transfer it through
-international ATM VISA card, which you can withdraw from any Visa ATM
-MACHINE anywhere in the world. (International Commercial Bank Senegal
-S.A) will issue an international ATM visa card in your name and send
-it to your home address through DHL Delivery Company.
+I am contacting you for an important and  urgent business transaction,
+I  want the bank to transfer the money left by Dr. Cheng Chao,  A
+Chinese  Politicians who  died, March 17th 2020 without any trace of
+his family member,  he used our bank to launder money overseas through
+the help of their Political advisers. And most of the funds which him
+transferred out of the shores of China were gold and oil money that
+was supposed to have been used to develop the continent.
 
-Contact Mr Johnson James to send your (International Commercial Bank
-Senegal S.A) Visa card to your home address immediately.
+Can you invest this money and also help the orphanage, less privileges
+and widows in your country? The amount value at ($15.5million
+Dollars), left in his account still unclaimed, if you know that you
+are capable to invest this fund into any  profitable business in your
+country kindly send me your details information as listed below to
+enable me draft you an application form of claim which you are going
+to fill with your bank account detail necessary and contact the HSBC
+Bank in Italy  for immediate transfer of the Amounted sum into your
+bank account direct  Or open an online banking for you.
 
-Email: mrjohnsonsmith009@gmail.com
+Percentage share will be 50%, for me/ 40%, for you, while 10$ is for
+the orphanage, less privileges and widows in your country.
 
-Website: www.un.org
+(1) Your full name..................................................
+(2) Your address....................................................
+(3) Your Nationality.................................................
+(4) Your Age / Sex.....................................................
+(5) Your Occupation............................................
+(6) Your marital status......................................
+(7) Your direct telephone number..................
+(8) your ID Card.......................................
 
-WhatsApp phone number +22890198522
-
-Phone No:+22890198522
-
-Regards
-
-Mr Johnson James
-
-International Commercial Bank Senegal S.A, Management
+Thanks with my best regards.
+Mrs. Sophia Robin
+Telex / Online Banking Manager
+Milan Italy  (H.S.B.C)
