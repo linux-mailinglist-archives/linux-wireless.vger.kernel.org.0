@@ -2,292 +2,198 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B690B29E2F6
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Oct 2020 03:45:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E41829E413
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Oct 2020 08:30:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726321AbgJ1Vdt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 28 Oct 2020 17:33:49 -0400
-Received: from mail-pf1-f194.google.com ([209.85.210.194]:46794 "EHLO
-        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726287AbgJ1Vdr (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 28 Oct 2020 17:33:47 -0400
-Received: by mail-pf1-f194.google.com with SMTP id y14so510537pfp.13;
-        Wed, 28 Oct 2020 14:33:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=O16ozSgNVeUbZNwvfhn7rD7cA+u7qcU4L0YeQ5QzNhI=;
-        b=jOYQNnY9IfokAO0ZMFdny3vr+8MYjeJt17M9HL/enN+XfZ5GFHdYKdxBOn3lbJnUIv
-         jFQLU3BAla+q4MLprOD6h42sZW0i2YqaYK+FoXD6CV+I+Il4mazbkzfJpIbnI3JFcYge
-         uoFtOgLD6CwiGAnAE8bN32EQkiHaC5Y4d5gD3rFWxTFYUGfDTbqRHNGuKNZot00dTX/6
-         zMpS3roJ7892WDowTxKa16WKk3TUYrCUPeHc/pjE+G5jCI6zCXwRVkujD5O5cis1sfwX
-         bPpn7sn8o+VsbOSDoz7/w22rwF/rR1/AUz1RhQuq24Kgt30cXGst1G4ejvHNgt8RQ16L
-         5/8Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=O16ozSgNVeUbZNwvfhn7rD7cA+u7qcU4L0YeQ5QzNhI=;
-        b=cXqbabA1gleTjpnoXnSgVhMqYOrz5+Sik703VWqTEY0WG5YBn8cBYC3upFpZPNOcSM
-         TNN93yhRZhJ7d8i3GuLPXBfb62Y/lpK6XBs/83Yji5daQRpKE1Elfc0TulGsc2ZTHoqm
-         wD5qcAGFPk8v9iSLdpzlB6FRVNY1uPZ0A9tQQv0OEa8/1hjDwFLIyNh+uaL6jWblGyEG
-         0ldXpei0P1oZusFnUeBe2H4dIEJ7nDMZvEYCl7Eo6NC4n4QJ8s0C+bB4DnWSZN/q/X1C
-         9nuCYPthx4gARLp2Y7uZ9Da9fHfz96sqL/66CwQCKgWmlnoYa0VZ5Y20Hoo1NVHK6WM0
-         UGlQ==
-X-Gm-Message-State: AOAM533ISeN18wJaFdxY6o5bG2bZbWd2qLbrlav4BozYxcgutgRrlwcA
-        5DQD214iBZv/c40tZpn6xHr1fc1GXtnyt9oY
-X-Google-Smtp-Source: ABdhPJyxd0WqzPwiTiazqJqvnqrghz5YeFG+0daHa8O+g7tvBTOBB0Ji13PCAj0J9kgGD6HyIODEYQ==
-X-Received: by 2002:a17:902:bd43:b029:d6:820d:cb85 with SMTP id b3-20020a170902bd43b02900d6820dcb85mr240758plx.37.1603895314671;
-        Wed, 28 Oct 2020 07:28:34 -0700 (PDT)
-Received: from k5-sbwpb.flets-east.jp (i60-35-254-237.s41.a020.ap.plala.or.jp. [60.35.254.237])
-        by smtp.gmail.com with ESMTPSA id g67sm6581754pfb.9.2020.10.28.07.28.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Oct 2020 07:28:34 -0700 (PDT)
-From:   Tsuchiya Yuto <kitakar@gmail.com>
-To:     Amitkumar Karwar <amitkarwar@gmail.com>,
-        Ganapathi Bhat <ganapathi.bhat@nxp.com>,
-        Xinming Hu <huxinming820@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Maximilian Luz <luzmaximilian@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@intel.com>, verdre@v0yd.nl,
-        Tsuchiya Yuto <kitakar@gmail.com>
-Subject: [RFC PATCH 2/3] mwifiex: pcie: add reset_d3cold quirk for Surface gen4+ devices
-Date:   Wed, 28 Oct 2020 23:27:52 +0900
-Message-Id: <20201028142753.18855-3-kitakar@gmail.com>
-X-Mailer: git-send-email 2.29.1
-In-Reply-To: <20201028142753.18855-1-kitakar@gmail.com>
-References: <20201028142753.18855-1-kitakar@gmail.com>
+        id S1728486AbgJ2Hae (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 29 Oct 2020 03:30:34 -0400
+Received: from z5.mailgun.us ([104.130.96.5]:12367 "EHLO z5.mailgun.us"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727762AbgJ2H2o (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 29 Oct 2020 03:28:44 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1603956522; h=Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Message-ID: Date: Subject: In-Reply-To: References: Cc:
+ To: From: Sender; bh=E/cbhf4EC5pSPJmXgqlC0DVMTkquNWZJfezuBzLVb5I=; b=vQzFMYdDgwhcsjWL/HWDYAzC0sG+71VpLzgGu6erf40/DwxcqLkLNhFnzekGNcufnm5cgsWD
+ ag3+gWKOU4zKJlRIBYxbAAVe91uDm12CkvxovqX0w63A1xDFFHQ33w42yPY8V7Iv3mWSMY3N
+ chQsUkwNF/J3qA6sJuV3uR3N7/I=
+X-Mailgun-Sending-Ip: 104.130.96.5
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n02.prod.us-west-2.postgun.com with SMTP id
+ 5f9a533444ab0dcc453c39e3 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 29 Oct 2020 05:29:24
+ GMT
+Sender: pillair=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 662FBC433FF; Thu, 29 Oct 2020 05:29:24 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+Received: from Pillair (unknown [49.205.247.166])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: pillair)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id E26AFC433C9;
+        Thu, 29 Oct 2020 05:29:20 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org E26AFC433C9
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=pillair@codeaurora.org
+From:   "Rakesh Pillai" <pillair@codeaurora.org>
+To:     "'Doug Anderson'" <dianders@chromium.org>
+Cc:     "'ath10k'" <ath10k@lists.infradead.org>,
+        "'linux-wireless'" <linux-wireless@vger.kernel.org>,
+        "'LKML'" <linux-kernel@vger.kernel.org>,
+        "'Abhishek Kumar'" <kuabhs@chromium.org>,
+        "'Brian Norris'" <briannorris@chromium.org>
+References: <1603904469-598-1-git-send-email-pillair@codeaurora.org> <CAD=FV=V0apTHaemMKvRx1HWLaO9ArC2t4ohfZ7-CthFz2NiA2A@mail.gmail.com>
+In-Reply-To: <CAD=FV=V0apTHaemMKvRx1HWLaO9ArC2t4ohfZ7-CthFz2NiA2A@mail.gmail.com>
+Subject: RE: [PATCH v2] ath10k: Fix the parsing error in service available event
+Date:   Thu, 29 Oct 2020 10:59:17 +0530
+Message-ID: <004501d6adb4$754a9930$5fdfcb90$@codeaurora.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain;
+        charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Mailer: Microsoft Outlook 16.0
+Thread-Index: AQFSHT7JIDNVEOf9hYE4s856hE6ZMQI5NlbiqqVieRA=
+Content-Language: en-us
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-To reset mwifiex on Surface gen4+ (Pro 4 or later gen) devices, it
-seems that putting the wifi device into D3cold is required according
-to errata.inf file on Windows installation (Windows/INF/errata.inf).
 
-This patch adds a function that performs power-cycle (put into D3cold
-then D0) and call the function at the end of reset_prepare().
 
-Note: Need to also reset the parent device (bridge) of wifi on SB1;
-it might be because the bridge of wifi always reports it's in D3hot.
-When I tried to reset only the wifi device (not touching parent), it gave
-the following error and the reset failed:
+> -----Original Message-----
+> From: Doug Anderson <dianders@chromium.org>
+> Sent: Thursday, October 29, 2020 12:15 AM
+> To: Rakesh Pillai <pillair@codeaurora.org>
+> Cc: ath10k <ath10k@lists.infradead.org>; linux-wireless <linux-
+> wireless@vger.kernel.org>; LKML <linux-kernel@vger.kernel.org>; =
+Abhishek
+> Kumar <kuabhs@chromium.org>; Brian Norris <briannorris@chromium.org>
+> Subject: Re: [PATCH v2] ath10k: Fix the parsing error in service =
+available
+> event
+>=20
+> Hi,
+>=20
+> On Wed, Oct 28, 2020 at 10:01 AM Rakesh Pillai =
+<pillair@codeaurora.org>
+> wrote:
+> >
+> > The wmi service available event has been
+> > extended to contain extra 128 bit for new services
+> > to be indicated by firmware.
+> >
+> > Currently the presence of any optional TLVs in
+> > the wmi service available event leads to a parsing
+> > error with the below error message:
+> > ath10k_snoc 18800000.wifi: failed to parse svc_avail tlv: -71
+> >
+> > The wmi service available event parsing should
+> > not return error for the newly added optional TLV.
+> > Fix this parsing for service available event message.
+> >
+> > Tested-on: WCN3990 hw1.0 SNOC
+> >
+> > Fixes: cea19a6ce8bf ("ath10k: add WMI_SERVICE_AVAILABLE_EVENT
+> support")
+> > Signed-off-by: Rakesh Pillai <pillair@codeaurora.org>
+> > ---
+> > Changes from v1:
+> > - Access service_map_ext only if this TLV was sent in service
+> >   available event.
+> > ---
+> >  drivers/net/wireless/ath/ath10k/wmi-tlv.c | 4 +++-
+> >  drivers/net/wireless/ath/ath10k/wmi.c     | 5 +++--
+> >  drivers/net/wireless/ath/ath10k/wmi.h     | 1 +
+> >  3 files changed, 7 insertions(+), 3 deletions(-)
+> >
+> > diff --git a/drivers/net/wireless/ath/ath10k/wmi-tlv.c
+> b/drivers/net/wireless/ath/ath10k/wmi-tlv.c
+> > index 932266d..7b58341 100644
+> > --- a/drivers/net/wireless/ath/ath10k/wmi-tlv.c
+> > +++ b/drivers/net/wireless/ath/ath10k/wmi-tlv.c
+> > @@ -1401,13 +1401,15 @@ static int
+> ath10k_wmi_tlv_svc_avail_parse(struct ath10k *ar, u16 tag, u16 len,
+> >
+> >         switch (tag) {
+> >         case WMI_TLV_TAG_STRUCT_SERVICE_AVAILABLE_EVENT:
+> > +               arg->service_map_ext_valid =3D true;
+> >                 arg->service_map_ext_len =3D *(__le32 *)ptr;
+> >                 arg->service_map_ext =3D ptr + sizeof(__le32);
+> >                 return 0;
+> >         default:
+> >                 break;
+> >         }
+> > -       return -EPROTO;
+> > +
+> > +       return 0;
+>=20
+> I notice your v2 now returns 0 for _all_ unknown tags.  v1 just had a
+> special case for "WMI_TLV_TAG_FIRST_ARRAY_ENUM".  I don't have
+> enough
+> experience with this driver to know which is better, but this change
+> wasn't mentioned in the changes from v1.  I guess you had a change of
+> heart and decided this way was better?
 
-    acpi device:4b: Cannot transition to power state D0 for parent in D3hot
-    mwifiex_pcie 0000:03:00.0: can't change power state from D3cold to D0 (config space inaccessible)
+Earlier patchset which added a case for " WMI_TLV_TAG_FIRST_ARRAY_ENUM", =
+still returned error if there is any other TLV except for the two cases =
+handled.
+This leaves the possibility of an error when a new TLV gets added to =
+this service_available message.
 
-Signed-off-by: Tsuchiya Yuto <kitakar@gmail.com>
----
-Current issue:
-* After reset with this quirk, ASPM settings don't get restored.
+Since we are using the "valid" flag to indicate the validity of a =
+particular tag, we need not return failure in any case. This makes it =
+scalable (and maintains backward compatibility), in case extra TLVs are =
+added to this message in future.
 
-Below is the "sudo lspci -nnvvv" diff before/after fw reset on Surface Book 1:
+>=20
+>=20
+> >  }
+> >
+> >  static int ath10k_wmi_tlv_op_pull_svc_avail(struct ath10k *ar,
+> > diff --git a/drivers/net/wireless/ath/ath10k/wmi.c
+> b/drivers/net/wireless/ath/ath10k/wmi.c
+> > index 1fa7107..2e4b561 100644
+> > --- a/drivers/net/wireless/ath/ath10k/wmi.c
+> > +++ b/drivers/net/wireless/ath/ath10k/wmi.c
+> > @@ -5751,8 +5751,9 @@ void ath10k_wmi_event_service_available(struct
+> ath10k *ar, struct sk_buff *skb)
+> >                             ret);
+> >         }
+> >
+> > -       ath10k_wmi_map_svc_ext(ar, arg.service_map_ext, ar-
+> >wmi.svc_map,
+> > -                              =
+__le32_to_cpu(arg.service_map_ext_len));
+> > +       if (arg.service_map_ext_valid)
+> > +               ath10k_wmi_map_svc_ext(ar, arg.service_map_ext, ar-
+> >wmi.svc_map,
+> > +                                      =
+__le32_to_cpu(arg.service_map_ext_len));
+>=20
+> Your new patch still requires the caller to init the
+> "service_map_ext_valid" to false before calling, but I guess there's
+> not a whole lot more we can do because we might be parsing more than
+> one tag.  It does seem nice that at least we now have a validity bit
+> instead of just relying on a non-zero length to be valid.
+>=20
+> It might be nice to have a comment saying that it's up to us to init
+> "arg.service_map_ext_valid" to false before calling
+> ath10k_wmi_pull_svc_avail(), but I won't insist.  Maybe that's obvious
+> to everyone but me...
 
-    #
-    # 03:00.0 Ethernet controller [0200]: Marvell Technology Group Ltd. 88W8897 [AVASTAR] 802.11ac Wireless [11ab:2b38]
-    #
-    @@ -574,9 +574,9 @@
-            Capabilities: [168 v1] L1 PM Substates
-                    L1SubCap: PCI-PM_L1.2+ PCI-PM_L1.1+ ASPM_L1.2+ ASPM_L1.1+ L1_PM_Substates+
-                              PortCommonModeRestoreTime=70us PortTPowerOnTime=10us
-    -               L1SubCtl1: PCI-PM_L1.2+ PCI-PM_L1.1+ ASPM_L1.2+ ASPM_L1.1+
-    -                          T_CommonMode=0us LTR1.2_Threshold=163840ns
-    -               L1SubCtl2: T_PwrOn=44us
-    +               L1SubCtl1: PCI-PM_L1.2- PCI-PM_L1.1- ASPM_L1.2- ASPM_L1.1-
-    +                          T_CommonMode=0us LTR1.2_Threshold=0ns
-    +               L1SubCtl2: T_PwrOn=10us
-            Kernel driver in use: mwifiex_pcie
-            Kernel modules: mwifiex_pcie
-    
-    #
-    # no changes on root port of wifi regarding ASPM
-    #
+I will wait for a couple of days, if there are any other comments, to =
+post a v3 addressing all of them together.
+This approach of having a argument initialized to parse TLVs is used for =
+many other wmi events as well.
 
-As you see, all of the L1 substates are disabled after fw reset. LTR
-value is also changed.
-
- drivers/net/wireless/marvell/mwifiex/pcie.c   |  7 ++
- .../wireless/marvell/mwifiex/pcie_quirks.c    | 73 +++++++++++++++++--
- .../wireless/marvell/mwifiex/pcie_quirks.h    |  3 +-
- 3 files changed, 74 insertions(+), 9 deletions(-)
-
-diff --git a/drivers/net/wireless/marvell/mwifiex/pcie.c b/drivers/net/wireless/marvell/mwifiex/pcie.c
-index 362cf10debfa0..c0c4b5a9149ab 100644
---- a/drivers/net/wireless/marvell/mwifiex/pcie.c
-+++ b/drivers/net/wireless/marvell/mwifiex/pcie.c
-@@ -529,6 +529,13 @@ static void mwifiex_pcie_reset_prepare(struct pci_dev *pdev)
- 	mwifiex_shutdown_sw(adapter);
- 	clear_bit(MWIFIEX_IFACE_WORK_DEVICE_DUMP, &card->work_flags);
- 	clear_bit(MWIFIEX_IFACE_WORK_CARD_RESET, &card->work_flags);
-+
-+	/* For Surface gen4+ devices, we need to put wifi into D3cold right
-+	 * before performing FLR
-+	 */
-+	if (card->quirks & QUIRK_FW_RST_D3COLD)
-+		mwifiex_pcie_reset_d3cold_quirk(pdev);
-+
- 	mwifiex_dbg(adapter, INFO, "%s, successful\n", __func__);
- }
- 
-diff --git a/drivers/net/wireless/marvell/mwifiex/pcie_quirks.c b/drivers/net/wireless/marvell/mwifiex/pcie_quirks.c
-index 929aee2b0a60a..edc739c542fea 100644
---- a/drivers/net/wireless/marvell/mwifiex/pcie_quirks.c
-+++ b/drivers/net/wireless/marvell/mwifiex/pcie_quirks.c
-@@ -21,7 +21,7 @@ static const struct dmi_system_id mwifiex_quirk_table[] = {
- 			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Microsoft Corporation"),
- 			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "Surface Pro 4"),
- 		},
--		.driver_data = 0,
-+		.driver_data = (void *)QUIRK_FW_RST_D3COLD,
- 	},
- 	{
- 		.ident = "Surface Pro 5",
-@@ -30,7 +30,7 @@ static const struct dmi_system_id mwifiex_quirk_table[] = {
- 			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Microsoft Corporation"),
- 			DMI_EXACT_MATCH(DMI_PRODUCT_SKU, "Surface_Pro_1796"),
- 		},
--		.driver_data = 0,
-+		.driver_data = (void *)QUIRK_FW_RST_D3COLD,
- 	},
- 	{
- 		.ident = "Surface Pro 5 (LTE)",
-@@ -39,7 +39,7 @@ static const struct dmi_system_id mwifiex_quirk_table[] = {
- 			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Microsoft Corporation"),
- 			DMI_EXACT_MATCH(DMI_PRODUCT_SKU, "Surface_Pro_1807"),
- 		},
--		.driver_data = 0,
-+		.driver_data = (void *)QUIRK_FW_RST_D3COLD,
- 	},
- 	{
- 		.ident = "Surface Pro 6",
-@@ -47,7 +47,7 @@ static const struct dmi_system_id mwifiex_quirk_table[] = {
- 			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Microsoft Corporation"),
- 			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "Surface Pro 6"),
- 		},
--		.driver_data = 0,
-+		.driver_data = (void *)QUIRK_FW_RST_D3COLD,
- 	},
- 	{
- 		.ident = "Surface Book 1",
-@@ -55,7 +55,7 @@ static const struct dmi_system_id mwifiex_quirk_table[] = {
- 			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Microsoft Corporation"),
- 			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "Surface Book"),
- 		},
--		.driver_data = 0,
-+		.driver_data = (void *)QUIRK_FW_RST_D3COLD,
- 	},
- 	{
- 		.ident = "Surface Book 2",
-@@ -63,7 +63,7 @@ static const struct dmi_system_id mwifiex_quirk_table[] = {
- 			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Microsoft Corporation"),
- 			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "Surface Book 2"),
- 		},
--		.driver_data = 0,
-+		.driver_data = (void *)QUIRK_FW_RST_D3COLD,
- 	},
- 	{
- 		.ident = "Surface Laptop 1",
-@@ -71,7 +71,7 @@ static const struct dmi_system_id mwifiex_quirk_table[] = {
- 			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Microsoft Corporation"),
- 			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "Surface Laptop"),
- 		},
--		.driver_data = 0,
-+		.driver_data = (void *)QUIRK_FW_RST_D3COLD,
- 	},
- 	{
- 		.ident = "Surface Laptop 2",
-@@ -79,7 +79,7 @@ static const struct dmi_system_id mwifiex_quirk_table[] = {
- 			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Microsoft Corporation"),
- 			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "Surface Laptop 2"),
- 		},
--		.driver_data = 0,
-+		.driver_data = (void *)QUIRK_FW_RST_D3COLD,
- 	},
- 	{
- 		.ident = "Surface 3",
-@@ -111,4 +111,61 @@ void mwifiex_initialize_quirks(struct pcie_service_card *card)
- 
- 	if (!card->quirks)
- 		dev_info(&pdev->dev, "no quirks enabled\n");
-+	if (card->quirks & QUIRK_FW_RST_D3COLD)
-+		dev_info(&pdev->dev, "quirk reset_d3cold enabled\n");
-+}
-+
-+static void mwifiex_pcie_set_power_d3cold(struct pci_dev *pdev)
-+{
-+	dev_info(&pdev->dev, "putting into D3cold...\n");
-+
-+	pci_save_state(pdev);
-+	if (pci_is_enabled(pdev))
-+		pci_disable_device(pdev);
-+	pci_set_power_state(pdev, PCI_D3cold);
-+}
-+
-+static int mwifiex_pcie_set_power_d0(struct pci_dev *pdev)
-+{
-+	int ret;
-+
-+	dev_info(&pdev->dev, "putting into D0...\n");
-+
-+	pci_set_power_state(pdev, PCI_D0);
-+	ret = pci_enable_device(pdev);
-+	if (ret) {
-+		dev_err(&pdev->dev, "pci_enable_device failed\n");
-+		return ret;
-+	}
-+	pci_restore_state(pdev);
-+
-+	return 0;
-+}
-+
-+int mwifiex_pcie_reset_d3cold_quirk(struct pci_dev *pdev)
-+{
-+	struct pci_dev *parent_pdev = pci_upstream_bridge(pdev);
-+	int ret;
-+
-+	/* Power-cycle (put into D3cold then D0) */
-+	dev_info(&pdev->dev, "Using reset_d3cold quirk to perform FW reset\n");
-+
-+	/* We need to perform power-cycle also for bridge of wifi because
-+	 * on some devices (e.g. Surface Book 1), the OS for some reasons
-+	 * can't know the real power state of the bridge.
-+	 * When tried to power-cycle only wifi, the reset failed with the
-+	 * following dmesg log:
-+	 * "Cannot transition to power state D0 for parent in D3hot".
-+	 */
-+	mwifiex_pcie_set_power_d3cold(pdev);
-+	mwifiex_pcie_set_power_d3cold(parent_pdev);
-+
-+	ret = mwifiex_pcie_set_power_d0(parent_pdev);
-+	if (ret)
-+		return ret;
-+	ret = mwifiex_pcie_set_power_d0(pdev);
-+	if (ret)
-+		return ret;
-+
-+	return 0;
- }
-diff --git a/drivers/net/wireless/marvell/mwifiex/pcie_quirks.h b/drivers/net/wireless/marvell/mwifiex/pcie_quirks.h
-index 5326ae7e56713..8b9dcb5070d87 100644
---- a/drivers/net/wireless/marvell/mwifiex/pcie_quirks.h
-+++ b/drivers/net/wireless/marvell/mwifiex/pcie_quirks.h
-@@ -6,6 +6,7 @@
- #include "pcie.h"
- 
- /* quirks */
--// quirk flags can be added here
-+#define QUIRK_FW_RST_D3COLD	BIT(0)
- 
- void mwifiex_initialize_quirks(struct pcie_service_card *card);
-+int mwifiex_pcie_reset_d3cold_quirk(struct pci_dev *pdev);
--- 
-2.29.1
+>=20
+>=20
+> -Doug
 
