@@ -2,111 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 853AD29F0A4
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Oct 2020 16:59:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7673629F282
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Oct 2020 18:05:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728229AbgJ2P7Q (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 29 Oct 2020 11:59:16 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:48594 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727290AbgJ2P7Q (ORCPT
+        id S1726709AbgJ2RFQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 29 Oct 2020 13:05:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33244 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725792AbgJ2RFP (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 29 Oct 2020 11:59:16 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1603987154;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=aajVOp/UIuOe1/LuSwzWc3QP2wiYu3hX91vy3AywAnI=;
-        b=iTpgidRlv2foUqMZYTwwnVGm8I1OhQ5Dm3Mf2u4uH7C6TlVN1Ft0+9WftqQBEcrvhEHlr1
-        pICK3M6xEx5VQ/GY7J7QnOYIQghHHpPys82lPrw9MDvFKhTuv+6hRAY1y+93dvWMcU2FfR
-        yi9GlpP73XJYCC0wUZ/NrBy4Kj5UG/0=
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
- [209.85.208.71]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-217-4aWxRbexNb-Mbb8LgkP28g-1; Thu, 29 Oct 2020 11:59:12 -0400
-X-MC-Unique: 4aWxRbexNb-Mbb8LgkP28g-1
-Received: by mail-ed1-f71.google.com with SMTP id b16so1361773edn.6
-        for <linux-wireless@vger.kernel.org>; Thu, 29 Oct 2020 08:59:11 -0700 (PDT)
+        Thu, 29 Oct 2020 13:05:15 -0400
+Received: from mail-vs1-xe43.google.com (mail-vs1-xe43.google.com [IPv6:2607:f8b0:4864:20::e43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C2ACC0613CF
+        for <linux-wireless@vger.kernel.org>; Thu, 29 Oct 2020 10:05:15 -0700 (PDT)
+Received: by mail-vs1-xe43.google.com with SMTP id f4so1917269vsk.7
+        for <linux-wireless@vger.kernel.org>; Thu, 29 Oct 2020 10:05:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=WPCxo8dZVoPntUDqM2K1mljtNcAGM6ErEoqv5xxnH0E=;
+        b=GgNxjbKiB0mMhC0k0NjJxuIk4xp6/uBwunh+BV5axtlic73wSrFYm6DTwllRXhN2fB
+         qp0kLs07xY68okdCMuHAU02Y2Dozue63p6bEo93wqPSHnr+abrKlwbmVKHDGK2jAekkZ
+         DaZ+Jwt/y7jWMNa9bFN1iYTPZzPJv3ELgoMUB7EccDCVV7Ftp3KLpBxxZoG8a2VR8/Rd
+         r0U9EyBT1WZzrLj3Y0VvngbS6rmE7dWLcTDn0PPtLELLWPVhx36XxSj0zxs7LudSm2+l
+         VbmU0/lmAPTj++H/QJdPcP7RjiEG8qXsd+/AngGr/yXddjYIkSC6f7q5NK1cxbEa1IEH
+         R+JA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=aajVOp/UIuOe1/LuSwzWc3QP2wiYu3hX91vy3AywAnI=;
-        b=j2JTpEGBVrNV/SDnXyfWtwEZbZPQr6YAT7x7/7JIalGDE55XpyXpVzQMV+SApiIx0d
-         Ib2cAZaQzsU4avgvL/h3sOx+LynBcPhHgkXVp/CvjrPng9Mah01Qn8C0CxQzreBzj3Cj
-         19F7mAkaiJrbTxhbWgmSxFIgQGvNoApZ7qh0Kagz4lZc3kuJeg7HVSzPfqxQM8Q0y+Zc
-         21BCX80Gzyis9hQQxdNdVeNlh0+TXFhoh3+cRedx0y003LyvnH6NJTxXTUV1THlpb27l
-         gzzVDVMD2WNJqCLTTt7M/PW0luH0lIeXr6CWnT4uaeCCXPbF4VyzzTJpxBCuNHkhziGT
-         ZhiA==
-X-Gm-Message-State: AOAM533mXtMiaQR+FwOQ1krLd+tGpXNLVBX/otfHNm2jCqIrHTLWmAqI
-        vMIpFRTzXMUO0AkrHthKJp9lDWgsulUYRnvGlBSXdQqv6AtAhl2o1NDWwNztDbvoGPea11KBX2P
-        TcsmHJ7Wzk+EEVEQewYtLFYDFKwE=
-X-Received: by 2002:a17:906:1804:: with SMTP id v4mr4806584eje.201.1603987150637;
-        Thu, 29 Oct 2020 08:59:10 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJzjvRjIrXVXU41RIjyQesCFbhP44ypjML0pHq6oeGxLXXZmX7Wxx9y2CWmpZmK+Qwg2036xFg==
-X-Received: by 2002:a17:906:1804:: with SMTP id v4mr4806568eje.201.1603987150483;
-        Thu, 29 Oct 2020 08:59:10 -0700 (PDT)
-Received: from x1.localdomain (2001-1c00-0c0c-fe00-6c10-fbf3-14c4-884c.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:6c10:fbf3:14c4:884c])
-        by smtp.gmail.com with ESMTPSA id sb29sm1720724ejb.76.2020.10.29.08.59.09
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=WPCxo8dZVoPntUDqM2K1mljtNcAGM6ErEoqv5xxnH0E=;
+        b=S3wxhRxIoo/7DnVvP46nW2AYjIBhjiD4GutAiXc4CZmeV2TFcWVyOmj3baMwtHkthh
+         azfVPacMXYq1nxdnKQtORVZJ2rTkrAogpx9StPupNL1Gl/L6r+UrUFAzdCRwJfAcY/AD
+         IAG+2tCyXt7+s1KPpFYi94YWpFvuoAuWynEUpIPv5MyF8BUrkMrWar1PSa1H/j/6oM7d
+         tkf5wQ3pYpaaAdOxJ0YVPYFH7DWEu4+L8jKVSMtoq88olyhmYp6tVxp4J1FGeTL2DXiN
+         Mao36WYwHWFSHRqW08s410J1OLaJeTKLgeqgILBqYhc+JjELYpco8A+sYWfniqsXhy+x
+         4oDw==
+X-Gm-Message-State: AOAM5338z/lTSKKJIplUk18TEj9xk5GHs7wYdjILV09gS+zMdtL6I0bA
+        Pjk3pAXIBFY5UsobZvxL32ELQjoGQio=
+X-Google-Smtp-Source: ABdhPJxCj9ltfo+a8A1cnQKp8AzNg2CosRCFdtk85QyOBpmwJR4LjOpcMgj87Z0hZxcDfF3Tbwg2BQ==
+X-Received: by 2002:a67:2f16:: with SMTP id v22mr4337149vsv.15.1603991113708;
+        Thu, 29 Oct 2020 10:05:13 -0700 (PDT)
+Received: from mail-vs1-f46.google.com (mail-vs1-f46.google.com. [209.85.217.46])
+        by smtp.gmail.com with ESMTPSA id r126sm407904vke.27.2020.10.29.10.05.12
+        for <linux-wireless@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 29 Oct 2020 08:59:09 -0700 (PDT)
-Subject: Re: [PATCH] staging: rtl8723bs: Add 024c:0627 to the list of SDIO
- device-ids
-To:     Brian O'Keefe <bokeefe@alum.wpi.edu>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Larry Finger <Larry.Finger@lwfinger.net>
-Cc:     devel@driverdev.osuosl.org, linux-wireless@vger.kernel.org
-References: <CABtq2xReyqg1wJM7W1d=KWRNTNN0Q6HCgJMWcQ6DH=SmKcxQRg@mail.gmail.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-Message-ID: <c396ef73-a3d0-2e4d-b212-80728dc69dea@redhat.com>
-Date:   Thu, 29 Oct 2020 16:59:08 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.3.1
+        Thu, 29 Oct 2020 10:05:12 -0700 (PDT)
+Received: by mail-vs1-f46.google.com with SMTP id e3so1912116vsr.8
+        for <linux-wireless@vger.kernel.org>; Thu, 29 Oct 2020 10:05:12 -0700 (PDT)
+X-Received: by 2002:a67:f88e:: with SMTP id h14mr3250923vso.22.1603991111738;
+ Thu, 29 Oct 2020 10:05:11 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <CABtq2xReyqg1wJM7W1d=KWRNTNN0Q6HCgJMWcQ6DH=SmKcxQRg@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <20201028142433.18501-1-kitakar@gmail.com> <20201028142433.18501-3-kitakar@gmail.com>
+ <CA+ASDXMXoyOr9oHBjtXZ1w9XxDggv+=XS4nwn0qKWCHQ3kybdw@mail.gmail.com>
+In-Reply-To: <CA+ASDXMXoyOr9oHBjtXZ1w9XxDggv+=XS4nwn0qKWCHQ3kybdw@mail.gmail.com>
+From:   Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Date:   Thu, 29 Oct 2020 13:04:34 -0400
+X-Gmail-Original-Message-ID: <CA+FuTSdayk_YwH2F_k4HYsYPCn_u-k_qdowHpMJUHvLXrvdZ7g@mail.gmail.com>
+Message-ID: <CA+FuTSdayk_YwH2F_k4HYsYPCn_u-k_qdowHpMJUHvLXrvdZ7g@mail.gmail.com>
+Subject: Re: [PATCH 2/3] mwifiex: add allow_ps_mode module parameter
+To:     Brian Norris <briannorris@chromium.org>
+Cc:     Tsuchiya Yuto <kitakar@gmail.com>,
+        Amitkumar Karwar <amitkarwar@gmail.com>,
+        Ganapathi Bhat <ganapathi.bhat@nxp.com>,
+        Xinming Hu <huxinming820@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        "<netdev@vger.kernel.org>" <netdev@vger.kernel.org>,
+        Linux Kernel <linux-kernel@vger.kernel.org>,
+        Maximilian Luz <luzmaximilian@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@intel.com>, verdre@v0yd.nl
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+On Wed, Oct 28, 2020 at 9:13 PM Brian Norris <briannorris@chromium.org> wrote:
+>
+> On Wed, Oct 28, 2020 at 2:56 PM Tsuchiya Yuto <kitakar@gmail.com> wrote:
+> >
+> > To make the ps_mode (power_save) control easier, this commit adds a new
+> > module parameter allow_ps_mode and set it false (disallowed) by default.
 
-On 10/29/20 2:52 PM, Brian O'Keefe wrote:
-> Add 024c:0627 to the list of SDIO device-ids, based on hardware found in
-> the wild. This hardware exists on at least some Acer SW1-011 tablets.
-> 
-> Signed-off-by: Brian O'Keefe <bokeefe@alum.wpi.edu>
+This sounds like some form of access control, not something that makes
+power control "easier"? What exactly is the use case.
 
-Patch looks good to me:
-
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-
-Regards,
-
-Hans
-
-> ---
->  drivers/staging/rtl8723bs/os_dep/sdio_intf.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/drivers/staging/rtl8723bs/os_dep/sdio_intf.c
-> b/drivers/staging/rtl8723bs/os_dep/sdio_intf.c
-> index 5b1392deb0a7..7256d55fcc1b 100644
-> --- a/drivers/staging/rtl8723bs/os_dep/sdio_intf.c
-> +++ b/drivers/staging/rtl8723bs/os_dep/sdio_intf.c
-> @@ -21,6 +21,7 @@ static const struct sdio_device_id sdio_ids[] =
->         { SDIO_DEVICE(0x024c, 0x0525), },
->         { SDIO_DEVICE(0x024c, 0x0623), },
->         { SDIO_DEVICE(0x024c, 0x0626), },
-> +       { SDIO_DEVICE(0x024c, 0x0627), },
->         { SDIO_DEVICE(0x024c, 0xb723), },
->         { /* end: all zeroes */                         },
->  };
-> --
-> 2.25.1
-> 
-
+Also, module params in networking devices are discouraged.
