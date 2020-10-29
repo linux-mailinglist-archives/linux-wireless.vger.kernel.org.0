@@ -2,111 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 80DBF29EDA2
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Oct 2020 14:52:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1936929EDE0
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Oct 2020 15:08:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727524AbgJ2Nwk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 29 Oct 2020 09:52:40 -0400
-Received: from mail-bn7nam10on2080.outbound.protection.outlook.com ([40.107.92.80]:40536
-        "EHLO NAM10-BN7-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726578AbgJ2Nwj (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 29 Oct 2020 09:52:39 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=nKYEfQi3c7SBlWtaDQ2CBiOXymhPbxQPzIBHW7YyXdq0uZbN2M+QxEn4EcrDUWm5VR4DHt/q5YFpOavsA5JTocMTsJsE12qEInWaErSWEF5S3eIXA+ySxdt41g5kMb6sf3aJzL5wPj4ASzOTwYA+I76LOSiTDPvmgTM326PVwTLejup3YqbRB+FYKURwREy3/QHPoH+JNraOABXZohv2LiRXTXXiB3t1/VNpDHPB8lsmQEPmI060U0QPCAo92R3fCkMzgM/TO0jRlwKrxKiCx9zGymsMhE+AmQ+pWzwhRSZYs5ow7G+hoBi9VyKMAuBadH4DL+MLLMkDzNuasJ8AdA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=nXrdRTTPtu0hlZta0KsrFYFsx6zNG3RfVAsyDMv+iMw=;
- b=hcjiivV3AVZ5+LM807t9A1dPLVgtrD+cQDhEI0ptDGUo7fhz6ZPa5SCRr1tUQwemQPRuqvtIb7i2FGDz3b3yUy1ye+jPukLMW3/2pthrt3DFa1uLdQ/EYtHwpovhs5osOTODpD9PRZyyhJBZbOrUtUkAd88oL23JgjsrO3t1XO+WvJrLJYyeC8IbwSJluLDP/hbDplLTr6Cm7D1rvUchzgAxglKQ1pp/MJjuHG4mVT1XEmCForSrHsNvmKobX7N/OiuJIN7RXqmsvRzR/bnFJDbBwScH2mHkujwcfl+O1tcs5KRuRALk42FWFV9Bh6zskHE8gZ7Ypdy4QUx3PQe1kA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=alum.wpi.edu; dmarc=pass action=none header.from=alum.wpi.edu;
- dkim=pass header.d=alum.wpi.edu; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alum.wpi.edu;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=nXrdRTTPtu0hlZta0KsrFYFsx6zNG3RfVAsyDMv+iMw=;
- b=DVr9N2f0rwPSGYpsFjEC6ZE0KWlJ+YnqH+z45zo+cswK+gn5OtDCq0JtXz2uF8rQc3j6AmE1VuwqUSw8ZRP7TdJ3xwgF7flYwyIJaMqywI8gaK4AgFSQrswWoeedHHjc2mNZrbYKU/wE76ncm+OV1HuMkzJOBTODuxJYz1nNoK8=
-Authentication-Results: vger.kernel.org; dkim=none (message not signed)
- header.d=none;vger.kernel.org; dmarc=none action=none
- header.from=alum.wpi.edu;
-Received: from CY4PR22MB0392.namprd22.prod.outlook.com (2603:10b6:903:b7::19)
- by CY4PR2201MB1126.namprd22.prod.outlook.com (2603:10b6:910:48::36) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3499.19; Thu, 29 Oct
- 2020 13:52:32 +0000
-Received: from CY4PR22MB0392.namprd22.prod.outlook.com
- ([fe80::20c0:ced7:76fc:f46d]) by CY4PR22MB0392.namprd22.prod.outlook.com
- ([fe80::20c0:ced7:76fc:f46d%11]) with mapi id 15.20.3499.019; Thu, 29 Oct
- 2020 13:52:31 +0000
-X-Gm-Message-State: AOAM530llpcEs23evZZBhtclOTx4dneDHL24RKilc3KEqSQGeNboRkSg
-        4R06C58fWsqVjy5J/7t2O0PhFj2QeHhM4OyrevM=
-X-Google-Smtp-Source: ABdhPJxS1+nQ8y66RWllXcFX6CpqmyK7l2EbhZtOSMNl2unbaBg48zmMdW8653aM7TdJTlzeWlKOjkguHOz01SQbn4Y=
-X-Received: by 2002:a05:6214:1588:: with SMTP id m8mr4556655qvw.18.1603979549503;
- Thu, 29 Oct 2020 06:52:29 -0700 (PDT)
-From:   "Brian O'Keefe" <bokeefe@alum.wpi.edu>
-Date:   Thu, 29 Oct 2020 09:52:16 -0400
-X-Gmail-Original-Message-ID: <CABtq2xReyqg1wJM7W1d=KWRNTNN0Q6HCgJMWcQ6DH=SmKcxQRg@mail.gmail.com>
-Message-ID: <CABtq2xReyqg1wJM7W1d=KWRNTNN0Q6HCgJMWcQ6DH=SmKcxQRg@mail.gmail.com>
-Subject: [PATCH] staging: rtl8723bs: Add 024c:0627 to the list of SDIO device-ids
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Larry Finger <Larry.Finger@lwfinger.net>
-Cc:     devel@driverdev.osuosl.org, linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Originating-IP: [209.85.219.48]
-X-ClientProxiedBy: MN2PR12CA0016.namprd12.prod.outlook.com
- (2603:10b6:208:a8::29) To CY4PR22MB0392.namprd22.prod.outlook.com
- (2603:10b6:903:b7::19)
+        id S1725782AbgJ2OIK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 29 Oct 2020 10:08:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33608 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725300AbgJ2OIJ (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 29 Oct 2020 10:08:09 -0400
+Received: from mail-ot1-x343.google.com (mail-ot1-x343.google.com [IPv6:2607:f8b0:4864:20::343])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 191ADC0613D3
+        for <linux-wireless@vger.kernel.org>; Thu, 29 Oct 2020 07:08:08 -0700 (PDT)
+Received: by mail-ot1-x343.google.com with SMTP id m26so2309012otk.11
+        for <linux-wireless@vger.kernel.org>; Thu, 29 Oct 2020 07:08:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=yUiHroil23Ysm/oPYXt1mfZFVtFDWQvOgy/RoBiFB5Y=;
+        b=bMIt3wqbMlw4uJO1/IzHIMWcpaG7mXaVvvxrPZdB5g+X3tD6ucn4g78QuPYRIqO2g9
+         BK3jej1J1Z9Ei3On+wi8HCZTf88yKVVXpchEdfGmAaLQeUhYt9zcbG/HNpR3e9SOcdBs
+         wSrsXrOCr5/I0A08N3CDWpkIN2euxja7c3vPyrspMKbLsiSHaJBkgAR1DfTzp/x0tqKc
+         l+yWrYNe1ofbusvumkOab2sUWa10Ln5yorcvVdpxp68vOp0Q5+KI0w8VkAwF0a5JslgO
+         ZLG6zKf/cQfC1jxFkQJvpyJaJxoK8lu5v6/ZSDUO/QT4tUrtPMNqKUyE+iKNElUblYPP
+         HQ/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=yUiHroil23Ysm/oPYXt1mfZFVtFDWQvOgy/RoBiFB5Y=;
+        b=P+CsM12mnX4YNHViZGiu8k3xSJPRmmR6tXe9l6DKaXtQLrK5oyAGLZYNB5rMoA3KlH
+         X6BARP2HrnUG+9/sLYkjYHU1W6+pNudQyt4ccmu4ENkVERQJmTZ0tgdOnrv50XAU0Ah8
+         wNANIxgER8psGptLBiv9F4rD6B8y3+frUr7/x/YwZ6f7H/h0+jM3P+qRSf0MNelhv5jN
+         SvDVdhqYllBJGiUvccYXaz+0Bbq4wCGhxCA8iZgUTqnYKMHtnPAvfmsTloJ/Tl7EF7az
+         ExNvuJjN3E8YcsPpsW1iKW2eGzY6nRXdhSi4yyRDiFE0N7b4Sq/tBfhXsfOUSIu9n7ri
+         Ntrw==
+X-Gm-Message-State: AOAM533AGcf3sqJ3Hd9M+at0GZPpTVUdnQUeHugJcQ7V/qz3ebYIf3d9
+        JRyTOAbFhb/6VvlX8oQfo8Q7fRhMf9MdqgCukU8=
+X-Google-Smtp-Source: ABdhPJzkl3OEOng0aK4LeNz9YKqk/GgfmrGLl1ctla3DlSZWe2q69x9GehOSfIgIJ/NlpcpfW0eW+Cdknj0KQuKs3/M=
+X-Received: by 2002:a9d:3606:: with SMTP id w6mr3170550otb.59.1603980487522;
+ Thu, 29 Oct 2020 07:08:07 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from mail-qv1-f48.google.com (209.85.219.48) by MN2PR12CA0016.namprd12.prod.outlook.com (2603:10b6:208:a8::29) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3499.18 via Frontend Transport; Thu, 29 Oct 2020 13:52:31 +0000
-Received: by mail-qv1-f48.google.com with SMTP id bl9so1328434qvb.10        for <linux-wireless@vger.kernel.org>; Thu, 29 Oct 2020 06:52:31 -0700 (PDT)
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 63ffe6b8-958f-42bb-04ea-08d87c11e174
-X-MS-TrafficTypeDiagnostic: CY4PR2201MB1126:
-X-Microsoft-Antispam-PRVS: <CY4PR2201MB1126D42D87DFB603765DF9AA90140@CY4PR2201MB1126.namprd22.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:6108;
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: p4LBRwtOWDIpT49AKABSAiCP5eiQ8FsJJztpeSpZSAxucaimnPoPXLHTcswlON62tgC2wSK9p1E0qI3EgEl60SoiYDEF46VyOHkup+bFECAFhl4dAC82ALOAfEvJELDRP0On6Z0V0ReTcqAyCqF8P8fNFu93OtF6YqpsBfPNo0ldkt8F/DWIiixK4Vfo9XXrkrsXAHku3uCjIM/R3qCKW0x9vGtZHZEPs/hoxn8jp/3/3JywF+TbMFt2z5Jf9pvEjIV3FnMGZbZ+Yy2+/5gDNLbhC9gQuswhN8gfzKXyHgPFBeVQR++jkhjYL8PRj7pWxezVSEnPX1neCfqbzGRgvQ==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY4PR22MB0392.namprd22.prod.outlook.com;PTR:;CAT:NONE;SFS:(346002)(376002)(39850400004)(366004)(396003)(136003)(5660300002)(316002)(786003)(478600001)(4326008)(52116002)(55236004)(186003)(26005)(110136005)(4744005)(2906002)(55446002)(42186006)(8676002)(9686003)(86362001)(6666004)(66476007)(66556008)(8936002)(75432002)(66946007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData: 6xGR/Bzsu6Z0ytgKO7ZwrV8s/db9QOTqJi4WYCSN5O7y+o1Oa9y0bmBS1Z9IHlCEOyJSfSCcNfGW0EJZ/WO/lgxo9I2sUyJFuXrksqjlia3mdiMRFy8aK77oTA09ON38vLBL33QKt5RQIxXcgpLkvXOstVWXd/75HUcAoDG021ttp/ROuC+01n/rjLtLOZ64KgjIZ+7jzKVv69klt9P2HmYcrPBc+NxY9y5KZuVHsJ4c5z6RjUEatekXYjl3lhVLnuVhATFikchvCCsxBAkRtuELsEihgRxPUKwJEuBe/lgJ7KDO60FG1Z77sRjp8ohlNCpQwDggmrW4Pvc6LMrsTqfsVYm5IjQqxaibrrjI8JB1JpLamsdkAiR2q8XBBD03pVchsgu2ibcqrpuLdXqDA0Ec9Q0r78m0blSyo3GpCgbhh9zvETdmTrIRU0nMg/8NbNn5Wgccd2EenaGCvh4kalLy3cv+qfiJmXHfS3AjeJPHnQ0lnhKqX2hXIqrb0ppjuGvTWGyjcOcq6Fn9fD7gtgXedZz0l1uJuCSTJj7sAbnr0YRpXxLR94vwlVtzyksPxeA4AztiV+NFIRn0jv/9fRw0gmS1WFVnoN1w4S8YyHb7Io5ynl4Mfb5X1E8KhKeILeekQ/Pl2m8jFWd4FTq9OA==
-X-OriginatorOrg: alum.wpi.edu
-X-MS-Exchange-CrossTenant-Network-Message-Id: 63ffe6b8-958f-42bb-04ea-08d87c11e174
-X-MS-Exchange-CrossTenant-AuthSource: CY4PR22MB0392.namprd22.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Oct 2020 13:52:31.6228
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46a737af-4f36-4dda-ae69-041afc96eaef
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: kyIINGnHUhyWZeQ2OtPt3V6BNjPJ5xxA8pB1FcX0brkl35fmCV5g/IfpSGQCgMaFRLA2O7vOEPGQejqr2YjMuQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY4PR2201MB1126
+Received: by 2002:a05:6838:fe0f:0:0:0:0 with HTTP; Thu, 29 Oct 2020 07:08:07
+ -0700 (PDT)
+Reply-To: mrjohnsonsmith009@gmail.com
+From:   Johnson smith <alvishilbasin14@gmail.com>
+Date:   Thu, 29 Oct 2020 14:08:07 +0000
+Message-ID: <CAJT5ULLsANMEAHD8uRxN0e3fnybjGxDa8sBY1dgweOY0nbUDPA@mail.gmail.com>
+Subject: hi
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Add 024c:0627 to the list of SDIO device-ids, based on hardware found in
-the wild. This hardware exists on at least some Acer SW1-011 tablets.
+-- 
 
-Signed-off-by: Brian O'Keefe <bokeefe@alum.wpi.edu>
----
- drivers/staging/rtl8723bs/os_dep/sdio_intf.c | 1 +
- 1 file changed, 1 insertion(+)
+Attention Beneficiary
 
-diff --git a/drivers/staging/rtl8723bs/os_dep/sdio_intf.c
-b/drivers/staging/rtl8723bs/os_dep/sdio_intf.c
-index 5b1392deb0a7..7256d55fcc1b 100644
---- a/drivers/staging/rtl8723bs/os_dep/sdio_intf.c
-+++ b/drivers/staging/rtl8723bs/os_dep/sdio_intf.c
-@@ -21,6 +21,7 @@ static const struct sdio_device_id sdio_ids[] =
-        { SDIO_DEVICE(0x024c, 0x0525), },
-        { SDIO_DEVICE(0x024c, 0x0623), },
-        { SDIO_DEVICE(0x024c, 0x0626), },
-+       { SDIO_DEVICE(0x024c, 0x0627), },
-        { SDIO_DEVICE(0x024c, 0xb723), },
-        { /* end: all zeroes */                         },
- };
---
-2.25.1
+To stop this dubious act, we agreed with the World Bank and the
+Federal Bureau of Investigation (FBI) that we the International
+Monetary Fund (IMF) can manage and monitor this payment to overcome
+the desperate situation of banks and other personnel. Organizations
+involved in the criminal process.
+
+We have obtained an irrevocable payment guarantee for your payment
+from the World Bank. We would like to inform you that the World Bank
+has decided to send you $ 350,000.00 dollars and transfer it through
+international ATM VISA card, which you can withdraw from any Visa ATM
+MACHINE anywhere in the world. (International Commercial Bank Senegal
+S.A) will issue an international ATM visa card in your name and send
+it to your home address through DHL Delivery Company.
+
+Contact Mr Johnson James to send your (International Commercial Bank
+Senegal S.A) Visa card to your home address immediately.
+
+Email: mrjohnsonsmith009@gmail.com
+
+Website: www.un.org
+
+WhatsApp phone number +22890198522
+
+Phone No:+22890198522
+
+Regards
+
+Mr Johnson James
+
+International Commercial Bank Senegal S.A, Management
