@@ -2,211 +2,142 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3655D29F2B5
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Oct 2020 18:11:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2486429F362
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Oct 2020 18:36:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726078AbgJ2RLh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 29 Oct 2020 13:11:37 -0400
-Received: from mailgw01.mediatek.com ([210.61.82.183]:42792 "EHLO
-        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1725730AbgJ2RLg (ORCPT
+        id S1728039AbgJ2Rgu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 29 Oct 2020 13:36:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38274 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726019AbgJ2Rgu (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 29 Oct 2020 13:11:36 -0400
-X-UUID: 5313f09ea88f41c09a7679c339aa6027-20201030
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Transfer-Encoding:Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=c9kvr7J5GGrbTfdtR4sKt3gx4Tp/e01+dtXkSILl2Ao=;
-        b=InjMPgxVtPsJ5MwDi3R3Zn08KHy9LEELXzeMu/vMQ33ScFkMSTcckUlv0l9/UAI6V2rjuvbFHvT0U8a4QoM4Mc+uyG9HR/N/pwUrbskvwpxiyWxAplB7dOXF6Cb5N/sabrJ4qLuxujdnbBi/wblQfiDXRy2lZDmvtPGM1CebePI=;
-X-UUID: 5313f09ea88f41c09a7679c339aa6027-20201030
-Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw01.mediatek.com
-        (envelope-from <ryder.lee@mediatek.com>)
-        (Cellopoint E-mail Firewall v4.1.14 Build 0819 with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 1306548911; Fri, 30 Oct 2020 01:11:27 +0800
-Received: from MTKCAS06.mediatek.inc (172.21.101.30) by
- mtkmbs08n2.mediatek.inc (172.21.101.56) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Fri, 30 Oct 2020 01:11:24 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by MTKCAS06.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Fri, 30 Oct 2020 01:11:18 +0800
-From:   Ryder Lee <ryder.lee@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-CC:     Shayne Chen <shayne.chen@mediatek.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>,
-        Ryder Lee <ryder.lee@mediatek.com>
-Subject: [PATCH 3/3] mt76: mt7615: support 16 interfaces
-Date:   Fri, 30 Oct 2020 01:11:17 +0800
-Message-ID: <a4ad2ad2b3de3ced1ca2a214da598cd0a5fea604.1603988327.git.ryder.lee@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <879705a8af8fa44c711feb3aa0351c1138aeef6c.1603988327.git.ryder.lee@mediatek.com>
-References: <879705a8af8fa44c711feb3aa0351c1138aeef6c.1603988327.git.ryder.lee@mediatek.com>
+        Thu, 29 Oct 2020 13:36:50 -0400
+Received: from mail-wm1-x342.google.com (mail-wm1-x342.google.com [IPv6:2a00:1450:4864:20::342])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27EEFC0613CF;
+        Thu, 29 Oct 2020 10:36:50 -0700 (PDT)
+Received: by mail-wm1-x342.google.com with SMTP id l8so633950wmg.3;
+        Thu, 29 Oct 2020 10:36:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=6OfWgdQ9UOXxPafN1r6hDh95ltyDk2cVMVkOYuDkgCw=;
+        b=V03tMCxXFg+6S4W+MoVKQ5F3W25aYu9jzpVjlzAuCnRngdRKQcS8EpSLxGt5KUkkJA
+         b5ipKgTpz7OQn+DjNvHvqXz92xvcu/weZ/kJMAjmTXdddMC9VB8VvX5/rdQIBrC4lT4m
+         trb1I3bkuU8blvoelXw9fqD0RSC45a9BhcJwi7D47edpryrPAW0Zy3TvYt3s7JdchbKW
+         QasK7mqvT9vVXC0z7CCgqEfo0piApjAIX6YaKV1vaxxcgj6o2gHtzSJxDGWJVa08Co32
+         YOeFfcajzUlofNE4rcL5nBWUypWTaCbRvumphc1+EE4e8vTSQ4/WXpzIx94uNHMV9z99
+         Nm/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=6OfWgdQ9UOXxPafN1r6hDh95ltyDk2cVMVkOYuDkgCw=;
+        b=j7joAxZ+ij7KfB7hZm1N8cZzFU9nGRk5E+E+wibqjU6AQaASU3LIfU9x/GZMH3dvFz
+         SyfG5TLHZnJQE1KdQp3/AmTFMeAzxl8o66TKwm/XJCrFiN8d2M9CHCevMnyfcUQbph9L
+         2FVrMFLGg71Qf0EWxPbQsxHhDrdYgvaOoo9ouVWKzroazIRiXeCrfNaqyeFNYwbJhxcd
+         p8aeNLd9sDnUyMn+v7V+5V8oN6anWBlVMo5U8kxz1cc8W8PhcB+BzquBNgULEc6V6GQt
+         Sk5wqg72Ub8Tb2tZR6+K5t30zqnu+XMBJKDdNOtwXYHHGMLVLeO7njaFEKWAQ+fYdkZ+
+         am0w==
+X-Gm-Message-State: AOAM531QPCfryVHuGtAaVQpNqQ1HibOcl8IFxlkpmZrOre/X/6CSZtDC
+        TynES8rhLIVvdykDr2SDFbQ=
+X-Google-Smtp-Source: ABdhPJyyu6a3xDP2tayLoZwjLJ8vwVEW0NvH96gOtAPVLVVGizCUyuxTFLj11Hg+3XnEfNAuefFOfA==
+X-Received: by 2002:a1c:9a4b:: with SMTP id c72mr194780wme.157.1603993008868;
+        Thu, 29 Oct 2020 10:36:48 -0700 (PDT)
+Received: from nogikh.c.googlers.com.com (88.140.78.34.bc.googleusercontent.com. [34.78.140.88])
+        by smtp.gmail.com with ESMTPSA id t4sm852122wmb.20.2020.10.29.10.36.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 29 Oct 2020 10:36:48 -0700 (PDT)
+From:   Aleksandr Nogikh <aleksandrnogikh@gmail.com>
+To:     davem@davemloft.net, kuba@kernel.org, johannes@sipsolutions.net
+Cc:     edumazet@google.com, andreyknvl@google.com, dvyukov@google.com,
+        elver@google.com, linux-kernel@vger.kernel.org,
+        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+        willemdebruijn.kernel@gmail.com,
+        Aleksandr Nogikh <nogikh@google.com>
+Subject: [PATCH v5 0/3] net, mac80211, kernel: enable KCOV remote coverage collection for 802.11 frame handling
+Date:   Thu, 29 Oct 2020 17:36:17 +0000
+Message-Id: <20201029173620.2121359-1-aleksandrnogikh@gmail.com>
+X-Mailer: git-send-email 2.29.1.341.ge80a0c044ae-goog
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-SNTS-SMTP: DBD24A653B63770ADA85F9FCD574D5FE244CBFA2D3D3201EE2D7A970A4E109652000:8
-X-MTK:  N
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-V2hlbiBsb29raW5nIGZvciBhIE1BQyBhZGRyZXNzIHNsb3QsIHN0YXJ0IGJ5IHVzaW5nIG1haW4g
-QlNTSUQgc2xvdHMgMS0zLA0KYWZ0ZXJ3YXJkcyB1c2UgMTYgcmVwZWF0ZXIgbW9kZSBCU1NJRCBz
-bG90cywgdGhlbiBzdGFydCB1c2luZyB0aGUgc2xvdHMNCnVzdWFsbHkgdXNlZCBmb3IgQVAgbW9k
-ZS4NCg0KVGhpcyBzZWFyY2ggb3JkZXIgc2hvdWxkIHByZXZlbnQgdW5uZWNlc3NhcnkgY29uZmxp
-Y3RzIHdpdGggQVAgbW9kZSBpbnRlcmZhY2VzDQpvbiB0aGUgc2FtZSBQSFkuDQoNCk5vdGUgdGhh
-dCB0d28gUEhZcyBzaGFyZSBnbG9iYWwgMzIgb21hYyBzbG90cyB3aXRoIGVhY2ggb3RoZXIuDQoN
-ClNpZ25lZC1vZmYtYnk6IFJ5ZGVyIExlZSA8cnlkZXIubGVlQG1lZGlhdGVrLmNvbT4NCi0tLQ0K
-IC4uLi9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc2MTUvaW5pdC5jICB8ICA0ICstDQog
-Li4uL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzYxNS9tYWluLmMgIHwgNTUgKysrKysr
-KysrKysrKy0tLS0tLQ0KIC4uLi9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc2MTUvbWN1
-LmMgICB8IDQ5ICsrKysrKysrKysrKysrKystDQogLi4uL25ldC93aXJlbGVzcy9tZWRpYXRlay9t
-dDc2L210NzYxNS9tY3UuaCAgIHwgIDEgKw0KIC4uLi93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210
-NzYxNS9tdDc2MTUuaCAgICB8IDI1ICsrKy0tLS0tLQ0KIDUgZmlsZXMgY2hhbmdlZCwgOTQgaW5z
-ZXJ0aW9ucygrKSwgNDAgZGVsZXRpb25zKC0pDQoNCmRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC93
-aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzYxNS9pbml0LmMgYi9kcml2ZXJzL25ldC93aXJlbGVz
-cy9tZWRpYXRlay9tdDc2L210NzYxNS9pbml0LmMNCmluZGV4IDJhNGRiNDY3MjdmYi4uNjhhN2Vk
-NDc1MjRlIDEwMDY0NA0KLS0tIGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9t
-dDc2MTUvaW5pdC5jDQorKysgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210
-NzYxNS9pbml0LmMNCkBAIC0yMjEsNyArMjIxLDcgQEAgc3RhdGljIGNvbnN0IHN0cnVjdCBpZWVl
-ODAyMTFfaWZhY2VfY29tYmluYXRpb24gaWZfY29tYl9yYWRhcltdID0gew0KIAl7DQogCQkubGlt
-aXRzID0gaWZfbGltaXRzLA0KIAkJLm5fbGltaXRzID0gQVJSQVlfU0laRShpZl9saW1pdHMpLA0K
-LQkJLm1heF9pbnRlcmZhY2VzID0gNCwNCisJCS5tYXhfaW50ZXJmYWNlcyA9IE1UNzYxNV9NQVhf
-SU5URVJGQUNFUywNCiAJCS5udW1fZGlmZmVyZW50X2NoYW5uZWxzID0gMSwNCiAJCS5iZWFjb25f
-aW50X2luZnJhX21hdGNoID0gdHJ1ZSwNCiAJCS5yYWRhcl9kZXRlY3Rfd2lkdGhzID0gQklUKE5M
-ODAyMTFfQ0hBTl9XSURUSF8yMF9OT0hUKSB8DQpAQCAtMjM3LDcgKzIzNyw3IEBAIHN0YXRpYyBj
-b25zdCBzdHJ1Y3QgaWVlZTgwMjExX2lmYWNlX2NvbWJpbmF0aW9uIGlmX2NvbWJbXSA9IHsNCiAJ
-ew0KIAkJLmxpbWl0cyA9IGlmX2xpbWl0cywNCiAJCS5uX2xpbWl0cyA9IEFSUkFZX1NJWkUoaWZf
-bGltaXRzKSwNCi0JCS5tYXhfaW50ZXJmYWNlcyA9IDQsDQorCQkubWF4X2ludGVyZmFjZXMgPSBN
-VDc2MTVfTUFYX0lOVEVSRkFDRVMsDQogCQkubnVtX2RpZmZlcmVudF9jaGFubmVscyA9IDEsDQog
-CQkuYmVhY29uX2ludF9pbmZyYV9tYXRjaCA9IHRydWUsDQogCX0NCmRpZmYgLS1naXQgYS9kcml2
-ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzYxNS9tYWluLmMgYi9kcml2ZXJzL25l
-dC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzYxNS9tYWluLmMNCmluZGV4IDMxODZiN2IyY2E0
-OC4uYWQ2YzcyOTc2NjhkIDEwMDY0NA0KLS0tIGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0
-ZWsvbXQ3Ni9tdDc2MTUvbWFpbi5jDQorKysgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRl
-ay9tdDc2L210NzYxNS9tYWluLmMNCkBAIC0xMTUsMjkgKzExNSw1MCBAQCBzdGF0aWMgdm9pZCBt
-dDc2MTVfc3RvcChzdHJ1Y3QgaWVlZTgwMjExX2h3ICpodykNCiAJbXQ3NjE1X211dGV4X3JlbGVh
-c2UoZGV2KTsNCiB9DQogDQotc3RhdGljIGludCBnZXRfb21hY19pZHgoZW51bSBubDgwMjExX2lm
-dHlwZSB0eXBlLCB1MzIgbWFzaykNCitzdGF0aWMgaW5saW5lIGludCBnZXRfZnJlZV9pZHgodTMy
-IG1hc2ssIHU4IHN0YXJ0LCB1OCBlbmQpDQorew0KKwlyZXR1cm4gZmZzKH5tYXNrICYgR0VOTUFT
-SyhlbmQsIHN0YXJ0KSk7DQorfQ0KKw0KK3N0YXRpYyBpbnQgZ2V0X29tYWNfaWR4KGVudW0gbmw4
-MDIxMV9pZnR5cGUgdHlwZSwgdTY0IG1hc2spDQogew0KIAlpbnQgaTsNCiANCiAJc3dpdGNoICh0
-eXBlKSB7DQotCWNhc2UgTkw4MDIxMV9JRlRZUEVfTU9OSVRPUjoNCi0JY2FzZSBOTDgwMjExX0lG
-VFlQRV9BUDoNCiAJY2FzZSBOTDgwMjExX0lGVFlQRV9NRVNIX1BPSU5UOg0KIAljYXNlIE5MODAy
-MTFfSUZUWVBFX0FESE9DOg0KLQkJLyogYXAgdXNlIGh3IGJzc2lkIDAgYW5kIGV4dCBic3NpZCAq
-Lw0KKwljYXNlIE5MODAyMTFfSUZUWVBFX1NUQVRJT046DQorCQkvKiBwcmVmZXIgaHcgYnNzaWQg
-c2xvdCAxLTMgKi8NCisJCWkgPSBnZXRfZnJlZV9pZHgobWFzaywgSFdfQlNTSURfMSwgSFdfQlNT
-SURfMyk7DQorCQlpZiAoaSkNCisJCQlyZXR1cm4gaSAtIDE7DQorDQorCQlpZiAodHlwZSAhPSBO
-TDgwMjExX0lGVFlQRV9TVEFUSU9OKQ0KKwkJCWJyZWFrOw0KKw0KKwkJLyogbmV4dCwgdHJ5IHRv
-IGZpbmQgYSBmcmVlIHJlcGVhdGVyIGVudHJ5IGZvciB0aGUgc3RhICovDQorCQlpID0gZ2V0X2Zy
-ZWVfaWR4KG1hc2sgPj4gUkVQRUFURVJfQlNTSURfU1RBUlQsIDAsDQorCQkJCSBSRVBFQVRFUl9C
-U1NJRF9NQVggLSBSRVBFQVRFUl9CU1NJRF9TVEFSVCk7DQorCQlpZiAoaSkNCisJCQlyZXR1cm4g
-aSArIDMyIC0gMTsNCisNCisJCWkgPSBnZXRfZnJlZV9pZHgobWFzaywgRVhUX0JTU0lEXzEsIEVY
-VF9CU1NJRF9NQVgpOw0KKwkJaWYgKGkpDQorCQkJcmV0dXJuIGkgLSAxOw0KKw0KIAkJaWYgKH5t
-YXNrICYgQklUKEhXX0JTU0lEXzApKQ0KIAkJCXJldHVybiBIV19CU1NJRF8wOw0KIA0KLQkJZm9y
-IChpID0gRVhUX0JTU0lEXzE7IGkgPCBFWFRfQlNTSURfRU5EOyBpKyspDQotCQkJaWYgKH5tYXNr
-ICYgQklUKGkpKQ0KLQkJCQlyZXR1cm4gaTsNCi0NCiAJCWJyZWFrOw0KLQljYXNlIE5MODAyMTFf
-SUZUWVBFX1NUQVRJT046DQotCQkvKiBzdGEgdXNlIGh3IGJzc2lkIG90aGVyIHRoYW4gMCAqLw0K
-LQkJZm9yIChpID0gSFdfQlNTSURfMTsgaSA8IEhXX0JTU0lEX01BWDsgaSsrKQ0KLQkJCWlmICh+
-bWFzayAmIEJJVChpKSkNCi0JCQkJcmV0dXJuIGk7DQorCWNhc2UgTkw4MDIxMV9JRlRZUEVfTU9O
-SVRPUjoNCisJY2FzZSBOTDgwMjExX0lGVFlQRV9BUDoNCisJCS8qIGFwIHVzZXMgaHcgYnNzaWQg
-MCBhbmQgZXh0IGJzc2lkICovDQorCQlpZiAofm1hc2sgJiBCSVQoSFdfQlNTSURfMCkpDQorCQkJ
-cmV0dXJuIEhXX0JTU0lEXzA7DQorDQorCQlpID0gZ2V0X2ZyZWVfaWR4KG1hc2ssIEVYVF9CU1NJ
-RF8xLCBFWFRfQlNTSURfTUFYKTsNCisJCWlmIChpKQ0KKwkJCXJldHVybiBpIC0gMTsNCiANCiAJ
-CWJyZWFrOw0KIAlkZWZhdWx0Og0KQEAgLTE4Nyw4ICsyMDgsOCBAQCBzdGF0aWMgaW50IG10NzYx
-NV9hZGRfaW50ZXJmYWNlKHN0cnVjdCBpZWVlODAyMTFfaHcgKmh3LA0KIAkJbXZpZi0+d21tX2lk
-eCA9IG12aWYtPmlkeCAlIE1UNzYxNV9NQVhfV01NX1NFVFM7DQogDQogCWRldi0+bXBoeS52aWZf
-bWFzayB8PSBCSVQobXZpZi0+aWR4KTsNCi0JZGV2LT5vbWFjX21hc2sgfD0gQklUKG12aWYtPm9t
-YWNfaWR4KTsNCi0JcGh5LT5vbWFjX21hc2sgfD0gQklUKG12aWYtPm9tYWNfaWR4KTsNCisJZGV2
-LT5vbWFjX21hc2sgfD0gQklUX1VMTChtdmlmLT5vbWFjX2lkeCk7DQorCXBoeS0+b21hY19tYXNr
-IHw9IEJJVF9VTEwobXZpZi0+b21hY19pZHgpOw0KIA0KIAltdDc2MTVfbWN1X3NldF9kYmRjKGRl
-dik7DQogDQpAQCAtMjU3LDggKzI3OCw4IEBAIHN0YXRpYyB2b2lkIG10NzYxNV9yZW1vdmVfaW50
-ZXJmYWNlKHN0cnVjdCBpZWVlODAyMTFfaHcgKmh3LA0KIAlyY3VfYXNzaWduX3BvaW50ZXIoZGV2
-LT5tdDc2LndjaWRbaWR4XSwgTlVMTCk7DQogDQogCWRldi0+bXBoeS52aWZfbWFzayAmPSB+QklU
-KG12aWYtPmlkeCk7DQotCWRldi0+b21hY19tYXNrICY9IH5CSVQobXZpZi0+b21hY19pZHgpOw0K
-LQlwaHktPm9tYWNfbWFzayAmPSB+QklUKG12aWYtPm9tYWNfaWR4KTsNCisJZGV2LT5vbWFjX21h
-c2sgJj0gfkJJVF9VTEwobXZpZi0+b21hY19pZHgpOw0KKwlwaHktPm9tYWNfbWFzayAmPSB+QklU
-X1VMTChtdmlmLT5vbWFjX2lkeCk7DQogDQogCW10NzYxNV9tdXRleF9yZWxlYXNlKGRldik7DQog
-DQpkaWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc2MTUv
-bWN1LmMgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzYxNS9tY3UuYw0K
-aW5kZXggMjg3MzA5NDlkY2U3Li5mZjY0Y2ZiZjZlZTUgMTAwNjQ0DQotLS0gYS9kcml2ZXJzL25l
-dC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzYxNS9tY3UuYw0KKysrIGIvZHJpdmVycy9uZXQv
-d2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc2MTUvbWN1LmMNCkBAIC01OTksNiArNTk5LDQyIEBA
-IHN0YXRpYyBpbnQgbXQ3NjE1X21jdV9pbml0X2Rvd25sb2FkKHN0cnVjdCBtdDc2MTVfZGV2ICpk
-ZXYsIHUzMiBhZGRyLA0KIAkJCQkgJnJlcSwgc2l6ZW9mKHJlcSksIHRydWUpOw0KIH0NCiANCitz
-dGF0aWMgaW50DQorbXQ3NjE1X21jdV9tdWFyX2NvbmZpZyhzdHJ1Y3QgbXQ3NjE1X2RldiAqZGV2
-LCBzdHJ1Y3QgaWVlZTgwMjExX3ZpZiAqdmlmLA0KKwkJICAgICAgIGJvb2wgYnNzaWQsIGJvb2wg
-ZW5hYmxlKQ0KK3sNCisJc3RydWN0IG10NzYxNV92aWYgKm12aWYgPSAoc3RydWN0IG10NzYxNV92
-aWYgKil2aWYtPmRydl9wcml2Ow0KKwl1MzIgaWR4ID0gbXZpZi0+b21hY19pZHggLSBSRVBFQVRF
-Ul9CU1NJRF9TVEFSVDsNCisJdTMyIG1hc2sgPSBkZXYtPm9tYWNfbWFzayA+PiAzMiAmIH5CSVQo
-aWR4KTsNCisJY29uc3QgdTggKmFkZHIgPSB2aWYtPmFkZHI7DQorCXN0cnVjdCB7DQorCQl1OCBt
-b2RlOw0KKwkJdTggZm9yY2VfY2xlYXI7DQorCQl1OCBjbGVhcl9iaXRtYXBbOF07DQorCQl1OCBl
-bnRyeV9jb3VudDsNCisJCXU4IHdyaXRlOw0KKw0KKwkJdTggaW5kZXg7DQorCQl1OCBic3NpZDsN
-CisJCXU4IGFkZHJbRVRIX0FMRU5dOw0KKwl9IF9fcGFja2VkIHJlcSA9IHsNCisJCS5tb2RlID0g
-ISFtYXNrIHx8IGVuYWJsZSwNCisJCS5lbnRyeV9jb3VudCA9IDEsDQorCQkud3JpdGUgPSAxLA0K
-Kw0KKwkJLmluZGV4ID0gaWR4ICogMiArIGJzc2lkLA0KKwl9Ow0KKw0KKwlpZiAoYnNzaWQpDQor
-CQlhZGRyID0gdmlmLT5ic3NfY29uZi5ic3NpZDsNCisNCisJaWYgKGVuYWJsZSkNCisJCWV0aGVy
-X2FkZHJfY29weShyZXEuYWRkciwgYWRkcik7DQorDQorCXJldHVybiBtdDc2X21jdV9zZW5kX21z
-ZygmZGV2LT5tdDc2LCBNQ1VfRVhUX0NNRF9NVUFSX1VQREFURSwgJnJlcSwNCisJCQkJIHNpemVv
-ZihyZXEpLCB0cnVlKTsNCit9DQorDQogc3RhdGljIGludA0KIG10NzYxNV9tY3VfYWRkX2Rldihz
-dHJ1Y3QgbXQ3NjE1X2RldiAqZGV2LCBzdHJ1Y3QgaWVlZTgwMjExX3ZpZiAqdmlmLA0KIAkJICAg
-Ym9vbCBlbmFibGUpDQpAQCAtNjM0LDYgKzY3MCw5IEBAIG10NzYxNV9tY3VfYWRkX2RldihzdHJ1
-Y3QgbXQ3NjE1X2RldiAqZGV2LCBzdHJ1Y3QgaWVlZTgwMjExX3ZpZiAqdmlmLA0KIAkJfSwNCiAJ
-fTsNCiANCisJaWYgKG12aWYtPm9tYWNfaWR4ID49IFJFUEVBVEVSX0JTU0lEX1NUQVJUKQ0KKwkJ
-cmV0dXJuIG10NzYxNV9tY3VfbXVhcl9jb25maWcoZGV2LCB2aWYsIGZhbHNlLCBlbmFibGUpOw0K
-Kw0KIAltZW1jcHkoZGF0YS50bHYub21hY19hZGRyLCB2aWYtPmFkZHIsIEVUSF9BTEVOKTsNCiAJ
-cmV0dXJuIG10NzZfbWN1X3NlbmRfbXNnKCZkZXYtPm10NzYsIE1DVV9FWFRfQ01EX0RFVl9JTkZP
-X1VQREFURSwNCiAJCQkJICZkYXRhLCBzaXplb2YoZGF0YSksIHRydWUpOw0KQEAgLTEyMTYsNiAr
-MTI1NSw5IEBAIG10NzYxNV9tY3VfYWRkX2JzcyhzdHJ1Y3QgbXQ3NjE1X3BoeSAqcGh5LCBzdHJ1
-Y3QgaWVlZTgwMjExX3ZpZiAqdmlmLA0KIAlzdHJ1Y3QgbXQ3NjE1X2RldiAqZGV2ID0gcGh5LT5k
-ZXY7DQogCXN0cnVjdCBza19idWZmICpza2I7DQogDQorCWlmIChtdmlmLT5vbWFjX2lkeCA+PSBS
-RVBFQVRFUl9CU1NJRF9TVEFSVCkNCisJCW10NzYxNV9tY3VfbXVhcl9jb25maWcoZGV2LCB2aWYs
-IHRydWUsIGVuYWJsZSk7DQorDQogCXNrYiA9IG10NzYxNV9tY3VfYWxsb2Nfc3RhX3JlcShkZXYs
-IG12aWYsIE5VTEwpOw0KIAlpZiAoSVNfRVJSKHNrYikpDQogCQlyZXR1cm4gUFRSX0VSUihza2Ip
-Ow0KQEAgLTEyMjUsNyArMTI2Nyw4IEBAIG10NzYxNV9tY3VfYWRkX2JzcyhzdHJ1Y3QgbXQ3NjE1
-X3BoeSAqcGh5LCBzdHJ1Y3QgaWVlZTgwMjExX3ZpZiAqdmlmLA0KIA0KIAltdDc2MTVfbWN1X2Jz
-c19iYXNpY190bHYoc2tiLCB2aWYsIHN0YSwgZW5hYmxlKTsNCiANCi0JaWYgKGVuYWJsZSAmJiBt
-dmlmLT5vbWFjX2lkeCA+IEVYVF9CU1NJRF9TVEFSVCkNCisJaWYgKGVuYWJsZSAmJiBtdmlmLT5v
-bWFjX2lkeCA+PSBFWFRfQlNTSURfU1RBUlQgJiYNCisJICAgIG12aWYtPm9tYWNfaWR4IDwgUkVQ
-RUFURVJfQlNTSURfU1RBUlQpDQogCQltdDc2MTVfbWN1X2Jzc19leHRfdGx2KHNrYiwgbXZpZik7
-DQogDQogCXJldHVybiBtdDc2X21jdV9za2Jfc2VuZF9tc2coJmRldi0+bXQ3Niwgc2tiLA0KQEAg
-LTI2MDMsMTMgKzI2NDYsMTMgQEAgaW50IG10NzYxNV9tY3Vfc2V0X2RiZGMoc3RydWN0IG10NzYx
-NV9kZXYgKmRldikNCiAJfSB3aGlsZSAoMCkNCiANCiAJZm9yIChpID0gMDsgaSA8IDQ7IGkrKykg
-ew0KLQkJYm9vbCBiYW5kID0gISEoZXh0X3BoeS0+b21hY19tYXNrICYgQklUKGkpKTsNCisJCWJv
-b2wgYmFuZCA9ICEhKGV4dF9waHktPm9tYWNfbWFzayAmIEJJVF9VTEwoaSkpOw0KIA0KIAkJQURE
-X0RCRENfRU5UUlkoREJEQ19UWVBFX0JTUywgaSwgYmFuZCk7DQogCX0NCiANCiAJZm9yIChpID0g
-MDsgaSA8IDE0OyBpKyspIHsNCi0JCWJvb2wgYmFuZCA9ICEhKGV4dF9waHktPm9tYWNfbWFzayAm
-IEJJVCgweDExICsgaSkpOw0KKwkJYm9vbCBiYW5kID0gISEoZXh0X3BoeS0+b21hY19tYXNrICYg
-QklUX1VMTCgweDExICsgaSkpOw0KIA0KIAkJQUREX0RCRENfRU5UUlkoREJEQ19UWVBFX01CU1Ms
-IGksIGJhbmQpOw0KIAl9DQpkaWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0
-ZWsvbXQ3Ni9tdDc2MTUvbWN1LmggYi9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2
-L210NzYxNS9tY3UuaA0KaW5kZXggN2I4NTZlOWVlZTFlLi4xN2Y5NWRmOGZkMzAgMTAwNjQ0DQot
-LS0gYS9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzYxNS9tY3UuaA0KKysr
-IGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc2MTUvbWN1LmgNCkBAIC0y
-NzUsNiArMjc1LDcgQEAgZW51bSB7DQogCU1DVV9FWFRfQ01EX1BST1RFQ1RfQ1RSTCA9IDB4M2Us
-DQogCU1DVV9FWFRfQ01EX0RCRENfQ1RSTCA9IDB4NDUsDQogCU1DVV9FWFRfQ01EX01BQ19JTklU
-X0NUUkwgPSAweDQ2LA0KKwlNQ1VfRVhUX0NNRF9NVUFSX1VQREFURSA9IDB4NDgsDQogCU1DVV9F
-WFRfQ01EX0JDTl9PRkZMT0FEID0gMHg0OSwNCiAJTUNVX0VYVF9DTURfU0VUX1JYX1BBVEggPSAw
-eDRlLA0KIAlNQ1VfRVhUX0NNRF9UWF9QT1dFUl9GRUFUVVJFX0NUUkwgPSAweDU4LA0KZGlmZiAt
-LWdpdCBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3NjE1L210NzYxNS5o
-IGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc2MTUvbXQ3NjE1LmgNCmlu
-ZGV4IGY3MjUwNmQ5ZjY0Ni4uNDk2YzQ2ZjEwNzNlIDEwMDY0NA0KLS0tIGEvZHJpdmVycy9uZXQv
-d2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc2MTUvbXQ3NjE1LmgNCisrKyBiL2RyaXZlcnMvbmV0
-L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3NjE1L210NzYxNS5oDQpAQCAtMTEsNyArMTEsNyBA
-QA0KICNpbmNsdWRlICIuLi9tdDc2LmgiDQogI2luY2x1ZGUgInJlZ3MuaCINCiANCi0jZGVmaW5l
-IE1UNzYxNV9NQVhfSU5URVJGQUNFUwkJNA0KKyNkZWZpbmUgTVQ3NjE1X01BWF9JTlRFUkZBQ0VT
-CQkxNg0KICNkZWZpbmUgTVQ3NjE1X01BWF9XTU1fU0VUUwkJNA0KICNkZWZpbmUgTVQ3NjYzX1dU
-QkxfU0laRQkJMzINCiAjZGVmaW5lIE1UNzYxNV9XVEJMX1NJWkUJCTEyOA0KQEAgLTE3Niw3ICsx
-NzYsNyBAQCBzdHJ1Y3QgbXQ3NjE1X3BoeSB7DQogCXN0cnVjdCBpZWVlODAyMTFfdmlmICptb25p
-dG9yX3ZpZjsNCiANCiAJdTMyIHJ4ZmlsdGVyOw0KLQl1MzIgb21hY19tYXNrOw0KKwl1NjQgb21h
-Y19tYXNrOw0KIA0KIAl1MTYgbm9pc2U7DQogDQpAQCAtMzQ2LDI0ICszNDYsMTMgQEAgZW51bSB7
-DQogCUhXX0JTU0lEXzEsDQogCUhXX0JTU0lEXzIsDQogCUhXX0JTU0lEXzMsDQotCUhXX0JTU0lE
-X01BWCwNCisJSFdfQlNTSURfTUFYID0gSFdfQlNTSURfMywNCiAJRVhUX0JTU0lEX1NUQVJUID0g
-MHgxMCwNCiAJRVhUX0JTU0lEXzEsDQotCUVYVF9CU1NJRF8yLA0KLQlFWFRfQlNTSURfMywNCi0J
-RVhUX0JTU0lEXzQsDQotCUVYVF9CU1NJRF81LA0KLQlFWFRfQlNTSURfNiwNCi0JRVhUX0JTU0lE
-XzcsDQotCUVYVF9CU1NJRF84LA0KLQlFWFRfQlNTSURfOSwNCi0JRVhUX0JTU0lEXzEwLA0KLQlF
-WFRfQlNTSURfMTEsDQotCUVYVF9CU1NJRF8xMiwNCi0JRVhUX0JTU0lEXzEzLA0KLQlFWFRfQlNT
-SURfMTQsDQotCUVYVF9CU1NJRF8xNSwNCi0JRVhUX0JTU0lEX0VORA0KKwlFWFRfQlNTSURfMTUg
-PSAweDFmLA0KKwlFWFRfQlNTSURfTUFYID0gRVhUX0JTU0lEXzE1LA0KKwlSRVBFQVRFUl9CU1NJ
-RF9TVEFSVCA9IDB4MjAsDQorCVJFUEVBVEVSX0JTU0lEX01BWCA9IDB4M2YsDQogfTsNCiANCiBl
-bnVtIHsNCi0tIA0KMi4xOC4wDQo=
+From: Aleksandr Nogikh <nogikh@google.com>
+
+This patch series enables remote KCOV coverage collection during
+802.11 frames processing. These changes make it possible to perform
+coverage-guided fuzzing in search of remotely triggerable bugs.
+
+Normally, KCOV collects coverage information for the code that is
+executed inside the system call context. It is easy to identify where
+that coverage should go and whether it should be collected at all by
+looking at the current process. If KCOV was enabled on that process,
+coverage will be stored in a buffer specific to that process.
+Howerever, it is not always enough as handling can happen elsewhere
+(e.g. in separate kernel threads).
+
+When it is impossible to infer KCOV-related info just by looking at
+the currently running process, one needs to manually pass some
+information to the code that should be instrumented. The information
+takes the form of 64 bit integers (KCOV remote handles). Zero is the
+special value that corresponds to an empty handle. More details on
+KCOV and remote coverage collection can be found in
+Documentation/dev-tools/kcov.rst.
+
+The series consists of three commits.
+1. Apply a minor fix to kcov_common_handle() so that it returns a
+valid handle (zero) when called in an interrupt context.
+2. Take the remote handle from KCOV and attach it to newly allocated
+SKBs as an skb extension. If the allocation happens inside a system
+call context, the SKB will be tied to the process that issued the
+syscall (if that process is interested in remote coverage collection).
+3. Annotate the code that processes incoming 802.11 frames with
+kcov_remote_start()/kcov_remote_stop().
+
+v5:
+* Collecting remote coverate at ieee80211_rx_list() instead of
+  ieee80211_rx()
+
+v4:
+https://lkml.kernel.org/r/20201028182018.1780842-1-aleksandrnogikh@gmail.com
+* CONFIG_SKB_EXTENSIONS is now automatically selected by CONFIG_KCOV.
+* Elaborated on a minor optimization in skb_set_kcov_handle().
+
+v3:
+https://lkml.kernel.org/r/20201026150851.528148-1-aleksandrnogikh@gmail.com
+* kcov_handle is now stored in skb extensions instead of sk_buff
+  itself.
+* Updated the cover letter.
+
+v2:
+https://lkml.kernel.org/r/20201009170202.103512-1-a.nogikh@gmail.com
+* Moved KCOV annotations from ieee80211_tasklet_handler to
+  ieee80211_rx.
+* Updated kcov_common_handle() to return 0 if it is called in
+  interrupt context.
+* Updated the cover letter.
+
+v1:
+https://lkml.kernel.org/r/20201007101726.3149375-1-a.nogikh@gmail.com
+
+Aleksandr Nogikh (3):
+  kernel: make kcov_common_handle consider the current context
+  net: add kcov handle to skb extensions
+  mac80211: add KCOV remote annotations to incoming frame processing
+
+ include/linux/skbuff.h | 36 ++++++++++++++++++++++++++++++++++++
+ kernel/kcov.c          |  2 ++
+ lib/Kconfig.debug      |  1 +
+ net/core/skbuff.c      | 11 +++++++++++
+ net/mac80211/iface.c   |  2 ++
+ net/mac80211/rx.c      | 16 +++++++++-------
+ 6 files changed, 61 insertions(+), 7 deletions(-)
+
+
+base-commit: 3f267ec60b922eff2a5c90d532357a39f155b730
+-- 
+2.29.1.341.ge80a0c044ae-goog
 
