@@ -2,102 +2,111 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 871F729EF97
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Oct 2020 16:20:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 853AD29F0A4
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Oct 2020 16:59:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728083AbgJ2PUY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 29 Oct 2020 11:20:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44878 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727839AbgJ2PUY (ORCPT
+        id S1728229AbgJ2P7Q (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 29 Oct 2020 11:59:16 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:48594 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727290AbgJ2P7Q (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 29 Oct 2020 11:20:24 -0400
-Received: from mail-ej1-x641.google.com (mail-ej1-x641.google.com [IPv6:2a00:1450:4864:20::641])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB65BC0613CF
-        for <linux-wireless@vger.kernel.org>; Thu, 29 Oct 2020 08:20:23 -0700 (PDT)
-Received: by mail-ej1-x641.google.com with SMTP id t25so4282102ejd.13
-        for <linux-wireless@vger.kernel.org>; Thu, 29 Oct 2020 08:20:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=7lZuOiS2573E9zkuh9reAzyg21knB7StcArg0uf2+A0=;
-        b=QKdZbUy5AimkmuWTEr/pvjlE9mh8//NeOfyNHNulncQ553K0AhUcvKxF8iY8M6iP0h
-         sbWZQ8faTJ9XPncgkQEl8vc0j5GHfQo72UwU5+9/sidcuwTxhzMORBBVOdBeWhxs5Q4L
-         G1yDMn2iWWCIsP1Esa5N8wj/z8m/pwD7vORLttQqvu1Zw9KaUNFbefPxykmFFxl09e/T
-         gm5Hg0LydyRSAVp90tVq+c6B7FLIw0gHfDfLS/ZRLWRGJNXfL+07EK/hoB8XnTHVOUrj
-         HVYqudASBvwD7/niXFBFWSAzXPV2284a52eYeQbAm897PQ5WK0IyGsatm4USSQbIdHvb
-         wiJg==
+        Thu, 29 Oct 2020 11:59:16 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1603987154;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=aajVOp/UIuOe1/LuSwzWc3QP2wiYu3hX91vy3AywAnI=;
+        b=iTpgidRlv2foUqMZYTwwnVGm8I1OhQ5Dm3Mf2u4uH7C6TlVN1Ft0+9WftqQBEcrvhEHlr1
+        pICK3M6xEx5VQ/GY7J7QnOYIQghHHpPys82lPrw9MDvFKhTuv+6hRAY1y+93dvWMcU2FfR
+        yi9GlpP73XJYCC0wUZ/NrBy4Kj5UG/0=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-217-4aWxRbexNb-Mbb8LgkP28g-1; Thu, 29 Oct 2020 11:59:12 -0400
+X-MC-Unique: 4aWxRbexNb-Mbb8LgkP28g-1
+Received: by mail-ed1-f71.google.com with SMTP id b16so1361773edn.6
+        for <linux-wireless@vger.kernel.org>; Thu, 29 Oct 2020 08:59:11 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=7lZuOiS2573E9zkuh9reAzyg21knB7StcArg0uf2+A0=;
-        b=BM6RAxdX3t8G1kphmrFgSILSwRN3NIqL/sExxXrsmttn255JTJeznHqh2/xGF6xfNh
-         De/ugWQmw3o0I60feOxccVXQbZG2Y4G4fb3fhswyHIsP7b0V4ub5B/dI75pUdvjB7ixU
-         yeBdxSjlXH7dGKCLFNlnUr2HJCQTeRrleQA3LiASDYXziHE3Ka6tdWHIG1MYPL6ekxKy
-         YVC/ZyA0ac28i2do49HKZl6gamSSxc9kFwBzDikPljeEBHkLUbekDnXyG80p+ABE2/be
-         5jVi/LOHlhEaQOxMHOX/00dKax9wGhRjjnKCbrqPkEOquuifX0S7faUqDAUnWfxFch/F
-         oIHA==
-X-Gm-Message-State: AOAM530wyly1QhDPYF3+fWrQdkgorLvhQRCHzr0eDtEnWijqYu+VuJFP
-        QUCvP6ytAPVsMhEbiCKCn148jZ2IY6e0B1/BnMQ=
-X-Google-Smtp-Source: ABdhPJwfs5RuBmwfiwg4ji+lLGAE4l6buC3aClh4Wik56iqsSBd/m48MgEHZpQuZk4yTxcS7192vmux4GgOabsRLjL8=
-X-Received: by 2002:a17:906:cb03:: with SMTP id lk3mr4411391ejb.491.1603984822510;
- Thu, 29 Oct 2020 08:20:22 -0700 (PDT)
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=aajVOp/UIuOe1/LuSwzWc3QP2wiYu3hX91vy3AywAnI=;
+        b=j2JTpEGBVrNV/SDnXyfWtwEZbZPQr6YAT7x7/7JIalGDE55XpyXpVzQMV+SApiIx0d
+         Ib2cAZaQzsU4avgvL/h3sOx+LynBcPhHgkXVp/CvjrPng9Mah01Qn8C0CxQzreBzj3Cj
+         19F7mAkaiJrbTxhbWgmSxFIgQGvNoApZ7qh0Kagz4lZc3kuJeg7HVSzPfqxQM8Q0y+Zc
+         21BCX80Gzyis9hQQxdNdVeNlh0+TXFhoh3+cRedx0y003LyvnH6NJTxXTUV1THlpb27l
+         gzzVDVMD2WNJqCLTTt7M/PW0luH0lIeXr6CWnT4uaeCCXPbF4VyzzTJpxBCuNHkhziGT
+         ZhiA==
+X-Gm-Message-State: AOAM533mXtMiaQR+FwOQ1krLd+tGpXNLVBX/otfHNm2jCqIrHTLWmAqI
+        vMIpFRTzXMUO0AkrHthKJp9lDWgsulUYRnvGlBSXdQqv6AtAhl2o1NDWwNztDbvoGPea11KBX2P
+        TcsmHJ7Wzk+EEVEQewYtLFYDFKwE=
+X-Received: by 2002:a17:906:1804:: with SMTP id v4mr4806584eje.201.1603987150637;
+        Thu, 29 Oct 2020 08:59:10 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJzjvRjIrXVXU41RIjyQesCFbhP44ypjML0pHq6oeGxLXXZmX7Wxx9y2CWmpZmK+Qwg2036xFg==
+X-Received: by 2002:a17:906:1804:: with SMTP id v4mr4806568eje.201.1603987150483;
+        Thu, 29 Oct 2020 08:59:10 -0700 (PDT)
+Received: from x1.localdomain (2001-1c00-0c0c-fe00-6c10-fbf3-14c4-884c.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:6c10:fbf3:14c4:884c])
+        by smtp.gmail.com with ESMTPSA id sb29sm1720724ejb.76.2020.10.29.08.59.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 29 Oct 2020 08:59:09 -0700 (PDT)
+Subject: Re: [PATCH] staging: rtl8723bs: Add 024c:0627 to the list of SDIO
+ device-ids
+To:     Brian O'Keefe <bokeefe@alum.wpi.edu>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Larry Finger <Larry.Finger@lwfinger.net>
+Cc:     devel@driverdev.osuosl.org, linux-wireless@vger.kernel.org
+References: <CABtq2xReyqg1wJM7W1d=KWRNTNN0Q6HCgJMWcQ6DH=SmKcxQRg@mail.gmail.com>
+From:   Hans de Goede <hdegoede@redhat.com>
+Message-ID: <c396ef73-a3d0-2e4d-b212-80728dc69dea@redhat.com>
+Date:   Thu, 29 Oct 2020 16:59:08 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.3.1
 MIME-Version: 1.0
-Received: by 2002:a17:906:1dd3:0:0:0:0 with HTTP; Thu, 29 Oct 2020 08:20:21
- -0700 (PDT)
-Reply-To: mrs.sophia202@list.ru
-From:   "Mrs. Sophia Robin" <froshwood@gmail.com>
-Date:   Thu, 29 Oct 2020 15:20:21 +0000
-Message-ID: <CALLU5d3X1x2a+SctZexmTj9k5dy1Ceg0jd6a=2+TJUYE5YZjOA@mail.gmail.com>
-Subject: Hello My Dearest
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <CABtq2xReyqg1wJM7W1d=KWRNTNN0Q6HCgJMWcQ6DH=SmKcxQRg@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello My Dearest
+Hi,
 
-Please I appeal to you to exercise a little patience and read through
-my mail carefully, I am contacting you personally for investment
-assistance and a long term business relationship in your Country.
+On 10/29/20 2:52 PM, Brian O'Keefe wrote:
+> Add 024c:0627 to the list of SDIO device-ids, based on hardware found in
+> the wild. This hardware exists on at least some Acer SW1-011 tablets.
+> 
+> Signed-off-by: Brian O'Keefe <bokeefe@alum.wpi.edu>
 
-I am Mrs. Sophia Robin a citizen of the united state of America; I
-work in HSBC Bank in Milan Italy as a Telex Manager charge of wire
-transfer and online banking department.
+Patch looks good to me:
 
-I am contacting you for an important and  urgent business transaction,
-I  want the bank to transfer the money left by Dr. Cheng Chao,  A
-Chinese  Politicians who  died, March 17th 2020 without any trace of
-his family member,  he used our bank to launder money overseas through
-the help of their Political advisers. And most of the funds which him
-transferred out of the shores of China were gold and oil money that
-was supposed to have been used to develop the continent.
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
 
-Can you invest this money and also help the orphanage, less privileges
-and widows in your country? The amount value at ($15.5million
-Dollars), left in his account still unclaimed, if you know that you
-are capable to invest this fund into any  profitable business in your
-country kindly send me your details information as listed below to
-enable me draft you an application form of claim which you are going
-to fill with your bank account detail necessary and contact the HSBC
-Bank in Italy  for immediate transfer of the Amounted sum into your
-bank account direct  Or open an online banking for you.
+Regards,
 
-Percentage share will be 50%, for me/ 40%, for you, while 10$ is for
-the orphanage, less privileges and widows in your country.
+Hans
 
-(1) Your full name..................................................
-(2) Your address....................................................
-(3) Your Nationality.................................................
-(4) Your Age / Sex.....................................................
-(5) Your Occupation............................................
-(6) Your marital status......................................
-(7) Your direct telephone number..................
-(8) your ID Card.......................................
+> ---
+>  drivers/staging/rtl8723bs/os_dep/sdio_intf.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/staging/rtl8723bs/os_dep/sdio_intf.c
+> b/drivers/staging/rtl8723bs/os_dep/sdio_intf.c
+> index 5b1392deb0a7..7256d55fcc1b 100644
+> --- a/drivers/staging/rtl8723bs/os_dep/sdio_intf.c
+> +++ b/drivers/staging/rtl8723bs/os_dep/sdio_intf.c
+> @@ -21,6 +21,7 @@ static const struct sdio_device_id sdio_ids[] =
+>         { SDIO_DEVICE(0x024c, 0x0525), },
+>         { SDIO_DEVICE(0x024c, 0x0623), },
+>         { SDIO_DEVICE(0x024c, 0x0626), },
+> +       { SDIO_DEVICE(0x024c, 0x0627), },
+>         { SDIO_DEVICE(0x024c, 0xb723), },
+>         { /* end: all zeroes */                         },
+>  };
+> --
+> 2.25.1
+> 
 
-Thanks with my best regards.
-Mrs. Sophia Robin
-Telex / Online Banking Manager
-Milan Italy  (H.S.B.C)
