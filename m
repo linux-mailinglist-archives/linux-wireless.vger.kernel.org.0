@@ -2,103 +2,129 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 65D7229F412
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Oct 2020 19:26:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DEA7429F430
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Oct 2020 19:38:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726097AbgJ2S0M (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 29 Oct 2020 14:26:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45978 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726078AbgJ2S0K (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 29 Oct 2020 14:26:10 -0400
-Received: from mail-lf1-x143.google.com (mail-lf1-x143.google.com [IPv6:2a00:1450:4864:20::143])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2C95C0613CF
-        for <linux-wireless@vger.kernel.org>; Thu, 29 Oct 2020 11:26:09 -0700 (PDT)
-Received: by mail-lf1-x143.google.com with SMTP id a7so4528844lfk.9
-        for <linux-wireless@vger.kernel.org>; Thu, 29 Oct 2020 11:26:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Qrar9dmRm4zwdoSrcFwY/wHsTikC9FDxVpd6kfA/rMU=;
-        b=nC2+zmQ8BbqhTLDDWr43qkKPAGZIIiM2rE/6dNa6mi0K1d6OQl1UMc7FfPoJwxy6ps
-         x6jtM8eI+8jRP2aq0Xv4xlQhGD5c3KvTJS3AkuzG/MBnjWIK7DrpieObKzkmYp5W8vby
-         DspwpJHFYhIGvSsF6tpHBWFC3HDR93XfkClwk=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Qrar9dmRm4zwdoSrcFwY/wHsTikC9FDxVpd6kfA/rMU=;
-        b=kBAawq+iNAchOkaeHSm55BNgDKQBO1HAdjZqMEc9LKJyQdaaIWRoCS8b905+EWoZx7
-         rmOjTqQiePosxAcdquVAy8CNCMMHGcUYM7vmTmiddqrl04VIV4NIXoqDFNDX3MDnMmsh
-         5SkJyPWTFOIlkkNpKWXmsGWxivSYgf9qPtqRdI+cm0VRkXam4yT7Gmx7KEIwju3eC45s
-         DWGDm1u+dOVds4wjAyUXg+1CNocS/FKdUcSu2w8i3Ksu8edAj0pq215KB97Gy7s9GRy7
-         B+Y7h7EMlp6akMlqxSGmrq2t1yGdi6YQZB+GkwuWPDF8H1Su4IlbGAnD+mJFWBVcROcx
-         VgpQ==
-X-Gm-Message-State: AOAM533vFUIkk+YOZTzgPogebtVhOB1Jf0gBjCSMhKwreugCFgilbPrp
-        We1y9OFTqghsv4bDQexNuUn4f3Rj4LXDSQ==
-X-Google-Smtp-Source: ABdhPJzApXWhkTX+oLLJc8SkbQXAhjv+N+bZmx5/h37cEljHlXFnT3SfiVIcoTqSDb3IEB2ERaCsPw==
-X-Received: by 2002:ac2:4846:: with SMTP id 6mr779073lfy.79.1603995968322;
-        Thu, 29 Oct 2020 11:26:08 -0700 (PDT)
-Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com. [209.85.167.43])
-        by smtp.gmail.com with ESMTPSA id w9sm413094ljh.95.2020.10.29.11.26.08
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 29 Oct 2020 11:26:08 -0700 (PDT)
-Received: by mail-lf1-f43.google.com with SMTP id i6so4587586lfd.1
-        for <linux-wireless@vger.kernel.org>; Thu, 29 Oct 2020 11:26:08 -0700 (PDT)
-X-Received: by 2002:a19:41d7:: with SMTP id o206mr645895lfa.396.1603995967726;
- Thu, 29 Oct 2020 11:26:07 -0700 (PDT)
+        id S1725870AbgJ2SiN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 29 Oct 2020 14:38:13 -0400
+Received: from z5.mailgun.us ([104.130.96.5]:36921 "EHLO z5.mailgun.us"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725807AbgJ2SiM (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 29 Oct 2020 14:38:12 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1603996692; h=Content-Transfer-Encoding: MIME-Version:
+ Message-Id: Date: Subject: Cc: To: From: Sender;
+ bh=XA9dKQuycvf4OlYd9/d2zC/N8Qn1ulTaJHN/DPRyW/8=; b=lhruZ3OSWYPgZpBNo/gofBtTtXdURjiE4RGzWCg66npT2ECbswNbemF9t0/pKgkbrz+nb4mx
+ 5JwUjCnr68P2+ivjq5JwNg7gs/S6EB7b8NkEzL7NvksPpeNV+IH+8LiMfO8aTsK/kHv2KVrB
+ tADzJ9OBtyoLYW7NsaUhlyQY6NY=
+X-Mailgun-Sending-Ip: 104.130.96.5
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n04.prod.us-east-1.postgun.com with SMTP id
+ 5f9b0c13580ed2b2f266389e (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 29 Oct 2020 18:38:11
+ GMT
+Sender: jouni=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 1D1A1C433C9; Thu, 29 Oct 2020 18:38:11 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+Received: from jouni.codeaurora.org (85-76-85-8-nat.elisa-mobile.fi [85.76.85.8])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: jouni)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 61A19C433FF;
+        Thu, 29 Oct 2020 18:38:08 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 61A19C433FF
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=jouni@codeaurora.org
+From:   Jouni Malinen <jouni@codeaurora.org>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless@vger.kernel.org,
+        Vamsi Krishna <vamsin@codeaurora.org>,
+        Jouni Malinen <jouni@codeaurora.org>
+Subject: [PATCH] cfg80211: Add support to calculate and report 4096-QAM HE rates
+Date:   Thu, 29 Oct 2020 20:34:57 +0200
+Message-Id: <20201029183457.7005-1-jouni@codeaurora.org>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-References: <20201028142433.18501-1-kitakar@gmail.com> <20201028142433.18501-2-kitakar@gmail.com>
-In-Reply-To: <20201028142433.18501-2-kitakar@gmail.com>
-From:   Brian Norris <briannorris@chromium.org>
-Date:   Thu, 29 Oct 2020 11:25:54 -0700
-X-Gmail-Original-Message-ID: <CA+ASDXMfuqy=kCECktP_mYm9cAapXukeLhe=1i3uPbTu9wS2Qw@mail.gmail.com>
-Message-ID: <CA+ASDXMfuqy=kCECktP_mYm9cAapXukeLhe=1i3uPbTu9wS2Qw@mail.gmail.com>
-Subject: Re: [PATCH 1/3] mwifiex: disable ps_mode explicitly by default instead
-To:     Tsuchiya Yuto <kitakar@gmail.com>
-Cc:     Amitkumar Karwar <amitkarwar@gmail.com>,
-        Ganapathi Bhat <ganapathi.bhat@nxp.com>,
-        Xinming Hu <huxinming820@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        "<netdev@vger.kernel.org>" <netdev@vger.kernel.org>,
-        Linux Kernel <linux-kernel@vger.kernel.org>,
-        Maximilian Luz <luzmaximilian@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@intel.com>, verdre@v0yd.nl
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Oct 28, 2020 at 7:04 PM Tsuchiya Yuto <kitakar@gmail.com> wrote:
->
-> On Microsoft Surface devices (PCIe-88W8897), the ps_mode causes
-> connection unstable, especially with 5GHz APs. Then, it eventually causes
-> fw crash.
->
-> This commit disables ps_mode by default instead of enabling it.
->
-> Required code is extracted from mwifiex_drv_set_power().
->
-> Signed-off-by: Tsuchiya Yuto <kitakar@gmail.com>
+From: Vamsi Krishna <vamsin@codeaurora.org>
 
-You should read up on WIPHY_FLAG_PS_ON_BY_DEFAULT and
-CONFIG_CFG80211_DEFAULT_PS, and set/respect those appropriately (hint:
-mwifiex sets WIPHY_FLAG_PS_ON_BY_DEFAULT, and your patch makes this a
-lie). Also, this seems like a quirk that you haven't properly worked
-out -- if you're working on a quirk framework in your other series,
-you should just key into that.
+Drivers supporting 4096-QAM rates as a vendor extension in HE mode need
+to update the correct rate info to userspace while using 4096-QAM (MCS12
+and MCS13) in HE mode. Add support to calculate bitrates of HE-MCS12 and
+HE-MCS13 which represent the 4096-QAM modulation schemes. The MCS12 and
+MCS13 bitrates are defined in IEEE P802.11be/D0.1.
 
-For the record, Chrome OS supports plenty of mwifiex systems with 8897
-(SDIO only) and 8997 (PCIe), with PS enabled, and you're hurting
-those. Your problem sounds to be exclusively a problem with the PCIe
-8897 firmware.
+In addition, scale up the bitrates by 3*2048 in order to accommodate
+calculations for the new MCS12 and MCS13 rates without losing fraction
+values.
 
-As-is, NAK.
+Signed-off-by: Vamsi Krishna <vamsin@codeaurora.org>
+Signed-off-by: Jouni Malinen <jouni@codeaurora.org>
+---
+ net/wireless/util.c | 32 +++++++++++++++++---------------
+ 1 file changed, 17 insertions(+), 15 deletions(-)
 
-Brian
+diff --git a/net/wireless/util.c b/net/wireless/util.c
+index f01746894a4e..5b6c80ae564a 100644
+--- a/net/wireless/util.c
++++ b/net/wireless/util.c
+@@ -1276,20 +1276,22 @@ static u32 cfg80211_calculate_bitrate_vht(struct rate_info *rate)
+ 
+ static u32 cfg80211_calculate_bitrate_he(struct rate_info *rate)
+ {
+-#define SCALE 2048
+-	u16 mcs_divisors[12] = {
+-		34133, /* 16.666666... */
+-		17067, /*  8.333333... */
+-		11378, /*  5.555555... */
+-		 8533, /*  4.166666... */
+-		 5689, /*  2.777777... */
+-		 4267, /*  2.083333... */
+-		 3923, /*  1.851851... */
+-		 3413, /*  1.666666... */
+-		 2844, /*  1.388888... */
+-		 2560, /*  1.250000... */
+-		 2276, /*  1.111111... */
+-		 2048, /*  1.000000... */
++#define SCALE 6144
++	u32 mcs_divisors[14] = {
++		102399, /* 16.666666... */
++		 51201, /*  8.333333... */
++		 34134, /*  5.555555... */
++		 25599, /*  4.166666... */
++		 17067, /*  2.777777... */
++		 12801, /*  2.083333... */
++		 11769, /*  1.851851... */
++		 10239, /*  1.666666... */
++		  8532, /*  1.388888... */
++		  7680, /*  1.250000... */
++		  6828, /*  1.111111... */
++		  6144, /*  1.000000... */
++		  5690, /*  0.926106... */
++		  5120, /*  0.833333... */
+ 	};
+ 	u32 rates_160M[3] = { 960777777, 907400000, 816666666 };
+ 	u32 rates_969[3] =  { 480388888, 453700000, 408333333 };
+@@ -1301,7 +1303,7 @@ static u32 cfg80211_calculate_bitrate_he(struct rate_info *rate)
+ 	u64 tmp;
+ 	u32 result;
+ 
+-	if (WARN_ON_ONCE(rate->mcs > 11))
++	if (WARN_ON_ONCE(rate->mcs > 13))
+ 		return 0;
+ 
+ 	if (WARN_ON_ONCE(rate->he_gi > NL80211_RATE_INFO_HE_GI_3_2))
+-- 
+2.20.1
+
