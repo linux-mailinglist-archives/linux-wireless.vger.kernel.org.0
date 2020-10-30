@@ -2,389 +2,126 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 56BD62A01F5
-	for <lists+linux-wireless@lfdr.de>; Fri, 30 Oct 2020 10:58:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F1BDB2A0213
+	for <lists+linux-wireless@lfdr.de>; Fri, 30 Oct 2020 11:04:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726014AbgJ3J6n (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 30 Oct 2020 05:58:43 -0400
-Received: from z5.mailgun.us ([104.130.96.5]:35670 "EHLO z5.mailgun.us"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725808AbgJ3J6m (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 30 Oct 2020 05:58:42 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1604051921; h=Content-Transfer-Encoding: MIME-Version:
- Message-Id: Date: Subject: Cc: To: From: Sender;
- bh=P2gVPnhEAFKdWNmJbpLeKq1UgpJwIoZACI0kC9Yn5Ho=; b=f3cWjERvgRZGricj/2T/T6tJocMUnMugI18e3Y34VVbxF5kPYS69nZ2Ud67c5VsORtZvwj+X
- NNuYdH5u9xCbJ33RL6NMR43mVLvNz/zUv8c4pIOwjYcBsV3ncnxCLfl8uunxsW7dT9KoDT1F
- zpMzScgoV0ta1jZevARqytbfMGg=
-X-Mailgun-Sending-Ip: 104.130.96.5
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n06.prod.us-east-1.postgun.com with SMTP id
- 5f9be3d15dd9f092647f9f88 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 30 Oct 2020 09:58:41
- GMT
-Sender: cjhuang=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 5810EC433C9; Fri, 30 Oct 2020 09:58:40 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-Received: from cjhuang-E5430.qca.qualcomm.com (unknown [180.166.53.21])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: cjhuang)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 01AD6C433F0;
-        Fri, 30 Oct 2020 09:58:38 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 01AD6C433F0
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=cjhuang@codeaurora.org
-From:   Carl Huang <cjhuang@codeaurora.org>
-To:     ath11k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org
-Subject: [RFC] ath11k: enable non-wow suspend and resume
-Date:   Fri, 30 Oct 2020 17:58:32 +0800
-Message-Id: <20201030095832.7447-1-cjhuang@codeaurora.org>
-X-Mailer: git-send-email 2.29.0
+        id S1726210AbgJ3KEU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 30 Oct 2020 06:04:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49618 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725808AbgJ3KET (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 30 Oct 2020 06:04:19 -0400
+Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C5EDC0613D2
+        for <linux-wireless@vger.kernel.org>; Fri, 30 Oct 2020 03:04:17 -0700 (PDT)
+Received: by mail-wr1-x442.google.com with SMTP id w14so5766566wrs.9
+        for <linux-wireless@vger.kernel.org>; Fri, 30 Oct 2020 03:04:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=gQH8tfnS5gABqR+rI2vYNKDqWdjjH0cmP3e9KTBgftU=;
+        b=B9rJTdT06fBjkoaC4E33GsRL6XklEaCtgE6RSNGKr1R6NIN6tshFsvlrm73+qDotTs
+         TgtMR2VLSrECST5bfnSTgKL7Wgi9dLvx0b+wOp98ZwTdU4Ui8lhbwxRwAvAFaXlLlBUv
+         kIF79xh7rAnLeAmFUb7OH8iS2qmajJB6f90j1t67g5Zqi8ZvFcvZqslE0Nw79PSToAvD
+         N9OdQRnS+ec6wQ18zcvo4xYOB+MrwDVlSeHj5ODLObBC4OqIgDsKYG4VpZ7Zwf1s+0XG
+         E8uv8pTzD1YjF2GLDWWylcwx+GDZ++SmMtTJoKDLvlekOLEjOvRKbLbn1NSmNnF0g7r5
+         ocZw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=gQH8tfnS5gABqR+rI2vYNKDqWdjjH0cmP3e9KTBgftU=;
+        b=LjkQbaWdClf4u11wLHb5I+TWQjiSVrEvdCq50SpvP3fwIzkJyY01iHtIs2Us+wHdwK
+         xgJLfwk7WJepSv3gtK2kGJ8/hcN0suDyZ3douLBD4n+TTyLH+sbqrDNb+looVs97Vi8v
+         EjUGIINwRanJg90NpXQ81HbrKIcCdcVqv7XxlURD/Ny0Y58l8mssOniWxF8bg+lGPikO
+         GRmx3fq+jMDm8R7y6Cj1kbAGs70CWbwYgCmdWUYaQsIxNW+N/vlCyrk9QqYoHB4fyrQf
+         uVo0W8Z3kDnd/wwPP8+mG0v/LY91jdSaDYMCB7Oq1Nki0k/7jwIFC5oIqsCt/nfjv3yP
+         sH2A==
+X-Gm-Message-State: AOAM531QWql3Txxfv50SNiliI61cbFLBH8fvZR8g4mpgZw2ijZ6QaeK0
+        yFUgjalelgnCTf2FqsJTKfKsslkQsX6HBA==
+X-Google-Smtp-Source: ABdhPJyiqwsuWF8oCOJ2p5mgrL1UOBEF3qjVNKqZ9hb80Q/uxO4LXY5WvIi3i2M6psl12Cn+2MTVIQ==
+X-Received: by 2002:a5d:40c3:: with SMTP id b3mr2187416wrq.157.1604052256376;
+        Fri, 30 Oct 2020 03:04:16 -0700 (PDT)
+Received: from [192.168.86.34] (cpc86377-aztw32-2-0-cust226.18-1.cable.virginm.net. [92.233.226.227])
+        by smtp.googlemail.com with ESMTPSA id h8sm7699531wro.14.2020.10.30.03.04.14
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 30 Oct 2020 03:04:15 -0700 (PDT)
+Subject: Re: [PATCH v2 19/39] docs: ABI: stable: make files ReST compatible
+To:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        Linux Doc Mailing List <linux-doc@vger.kernel.org>
+Cc:     Jonathan Corbet <corbet@lwn.net>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        Jerry Snitselaar <jsnitsel@redhat.com>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Juergen Gross <jgross@suse.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Oded Gabbay <oded.gabbay@gmail.com>,
+        Paul Mackerras <paulus@samba.org>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        Tom Rix <trix@redhat.com>,
+        Vaibhav Jain <vaibhav@linux.ibm.com>,
+        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+        linux-wireless@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        xen-devel@lists.xenproject.org
+References: <cover.1604042072.git.mchehab+huawei@kernel.org>
+ <467a0dfbcdf00db710a629d3fe4a2563750339d8.1604042072.git.mchehab+huawei@kernel.org>
+From:   Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Message-ID: <bc393307-d7dc-1666-f25c-6d756ebf5993@linaro.org>
+Date:   Fri, 30 Oct 2020 10:04:13 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <467a0dfbcdf00db710a629d3fe4a2563750339d8.1604042072.git.mchehab+huawei@kernel.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-For QCA6390, it needs to power down target when system suspends and
-needs to power up target when system resumes in non-wow scenario.
 
-The power up procedure downloads firmware again.
 
-Tested-on: QCA6390 hw2.0 PCI WLAN.HST.1.0.1-01740-QCAHSTSWPLZ_V2_TO_X86-1
+On 30/10/2020 07:40, Mauro Carvalho Chehab wrote:
+> Several entries at the stable ABI files won't parse if we pass
+> them directly to the ReST output.
+> 
+> Adjust them, in order to allow adding their contents as-is at
+> the stable ABI book.
+> 
+> Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+> ---
+>   Documentation/ABI/stable/firewire-cdev        |  4 +
+>   Documentation/ABI/stable/sysfs-acpi-pmprofile | 22 +++--
+>   Documentation/ABI/stable/sysfs-bus-firewire   |  3 +
+>   Documentation/ABI/stable/sysfs-bus-nvmem      | 19 ++--
 
-Signed-off-by: Carl Huang <cjhuang@codeaurora.org>
----
- drivers/net/wireless/ath/ath11k/core.c | 62 ++++++++++++++++++++++++++++------
- drivers/net/wireless/ath/ath11k/core.h |  8 +++++
- drivers/net/wireless/ath/ath11k/mac.c  | 21 ++++++++++--
- drivers/net/wireless/ath/ath11k/pci.c  | 46 +++++++++++++++++++++++++
- drivers/net/wireless/ath/ath11k/qmi.c  | 21 ++++++++++--
- drivers/net/wireless/ath/ath11k/qmi.h  |  1 +
- 6 files changed, 144 insertions(+), 15 deletions(-)
+for nvmem parts:
 
-diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
-index 6487651..e3d4476 100644
---- a/drivers/net/wireless/ath/ath11k/core.c
-+++ b/drivers/net/wireless/ath/ath11k/core.c
-@@ -411,7 +411,20 @@ int ath11k_core_fetch_bdf(struct ath11k_base *ab, struct ath11k_board_data *bd)
- 	return 0;
- }
- 
--static void ath11k_core_stop(struct ath11k_base *ab)
-+void ath11k_core_cutoff_stop(struct ath11k_base *ab)
-+{
-+	if (!test_bit(ATH11K_FLAG_CRASH_FLUSH, &ab->dev_flags))
-+		ath11k_qmi_firmware_stop(ab);
-+
-+	ath11k_hif_stop(ab);
-+	ath11k_wmi_detach(ab);
-+	ath11k_thermal_unregister(ab);
-+	ath11k_dp_pdev_free(ab);
-+	ath11k_dp_free(ab);
-+	ath11k_dp_pdev_reo_cleanup(ab);
-+}
-+
-+void ath11k_core_stop(struct ath11k_base *ab)
- {
- 	if (!test_bit(ATH11K_FLAG_CRASH_FLUSH, &ab->dev_flags))
- 		ath11k_qmi_firmware_stop(ab);
-@@ -466,16 +479,19 @@ static int ath11k_core_pdev_create(struct ath11k_base *ab)
- {
- 	int ret;
- 
--	ret = ath11k_debugfs_pdev_create(ab);
--	if (ret) {
--		ath11k_err(ab, "failed to create core pdev debugfs: %d\n", ret);
--		return ret;
--	}
-+	if (!test_bit(ATH11K_FLAG_CORE_STARTING, &ab->dev_flags)) {
-+		ret = ath11k_debugfs_pdev_create(ab);
-+		if (ret) {
-+			ath11k_err(ab, "failed to create core pdev debugfs: %d\n", ret);
-+			return ret;
-+		}
- 
--	ret = ath11k_mac_register(ab);
--	if (ret) {
--		ath11k_err(ab, "failed register the radio with mac80211: %d\n", ret);
--		goto err_pdev_debug;
-+		ret = ath11k_mac_register(ab);
-+		if (ret) {
-+			ath11k_err(ab, "failed register the radio with mac80211: %d\n",
-+				   ret);
-+			goto err_pdev_debug;
-+		}
- 	}
- 
- 	ret = ath11k_dp_pdev_alloc(ab);
-@@ -689,6 +705,9 @@ int ath11k_core_qmi_firmware_ready(struct ath11k_base *ab)
- 	ath11k_hif_irq_enable(ab);
- 	mutex_unlock(&ab->core_lock);
- 
-+	if (test_bit(ATH11K_FLAG_CORE_STARTING, &ab->dev_flags))
-+		complete(&ab->fw_mac_restart);
-+
- 	return 0;
- 
- err_core_stop:
-@@ -943,5 +962,28 @@ struct ath11k_base *ath11k_core_alloc(struct device *dev, size_t priv_size,
- }
- EXPORT_SYMBOL(ath11k_core_alloc);
- 
-+int ath11k_core_suspend(struct ath11k_base *ab)
-+{
-+	ath11k_hif_irq_disable(ab);
-+	ath11k_core_cutoff_stop(ab);
-+	ath11k_hif_power_down(ab);
-+	ath11k_qmi_free_resource(ab);
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL(ath11k_core_suspend);
-+
-+int ath11k_core_resume(struct ath11k_base *ab)
-+{
-+	int ret = 0;
-+
-+	set_bit(ATH11K_FLAG_CORE_STARTING, &ab->dev_flags);
-+	init_completion(&ab->fw_mac_restart);
-+	ath11k_hif_power_up(ab);
-+
-+	return ret;
-+}
-+EXPORT_SYMBOL(ath11k_core_resume);
-+
- MODULE_DESCRIPTION("Core module for Qualcomm Atheros 802.11ax wireless LAN cards.");
- MODULE_LICENSE("Dual BSD/GPL");
-diff --git a/drivers/net/wireless/ath/ath11k/core.h b/drivers/net/wireless/ath/ath11k/core.h
-index 031de2b..e38817c 100644
---- a/drivers/net/wireless/ath/ath11k/core.h
-+++ b/drivers/net/wireless/ath/ath11k/core.h
-@@ -168,6 +168,8 @@ enum ath11k_scan_state {
- 	ATH11K_SCAN_ABORTING,
- };
- 
-+#define  ATH11K_MAC_START_TIMEOUT (3 * HZ)
-+
- enum ath11k_dev_flags {
- 	ATH11K_CAC_RUNNING,
- 	ATH11K_FLAG_CORE_REGISTERED,
-@@ -178,6 +180,8 @@ enum ath11k_dev_flags {
- 	ATH11K_FLAG_RECOVERY,
- 	ATH11K_FLAG_UNREGISTERING,
- 	ATH11K_FLAG_REGISTERED,
-+	ATH11K_FLAG_CORE_STOPPED,
-+	ATH11K_FLAG_CORE_STARTING
- };
- 
- enum ath11k_monitor_flags {
-@@ -731,6 +735,8 @@ struct ath11k_base {
- 	u32 num_db_cap;
- 
- 	struct timer_list mon_reap_timer;
-+	struct completion fw_mac_restart;
-+
- 	/* must be last */
- 	u8 drv_priv[0] __aligned(sizeof(void *));
- };
-@@ -889,6 +895,8 @@ void ath11k_core_halt(struct ath11k *ar);
- 
- const struct firmware *ath11k_core_firmware_request(struct ath11k_base *ab,
- 						    const char *filename);
-+int ath11k_core_resume(struct ath11k_base *ab);
-+int ath11k_core_suspend(struct ath11k_base *ab);
- 
- static inline const char *ath11k_scan_state_str(enum ath11k_scan_state state)
- {
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index dfced9c..2a76c19 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -15,6 +15,7 @@
- #include "testmode.h"
- #include "peer.h"
- #include "debugfs_sta.h"
-+#include "hif.h"
- 
- #define CHAN2G(_channel, _freq, _flags) { \
- 	.band                   = NL80211_BAND_2GHZ, \
-@@ -837,12 +838,15 @@ static int ath11k_config_ps(struct ath11k *ar)
- 
- static int ath11k_mac_op_config(struct ieee80211_hw *hw, u32 changed)
- {
-+	struct ath11k *ar = hw->priv;
-+	int ret = 0;
-+
- 	mutex_lock(&ar->conf_mutex);
- 	if (changed & IEEE80211_CONF_CHANGE_PS)
--		ath11k_config_ps(ar);
-+		ret = ath11k_config_ps(ar);
- 	mutex_unlock(&ar->conf_mutex);
- 
--	return 0;
-+	return ret;
- }
- 
- static int ath11k_mac_setup_bcn_tmpl(struct ath11k_vif *arvif)
-@@ -4209,6 +4213,18 @@ static int ath11k_mac_op_start(struct ieee80211_hw *hw)
- 
- 	switch (ar->state) {
- 	case ATH11K_STATE_OFF:
-+		/* mac_op_stop was called before, so here need to wait
-+		 * target powered up and everything is ready.
-+		 */
-+		if (test_bit(ATH11K_FLAG_CORE_STARTING, &ab->dev_flags)) {
-+			if (!wait_for_completion_timeout(&ab->fw_mac_restart,
-+							 ATH11K_MAC_START_TIMEOUT)) {
-+				ath11k_err(ab, "wait mac start timeout\n");
-+				ret = -ETIMEDOUT;
-+			}
-+			clear_bit(ATH11K_FLAG_CORE_STARTING, &ab->dev_flags);
-+			clear_bit(ATH11K_FLAG_CORE_STOPPED, &ab->dev_flags);
-+		}
- 		ar->state = ATH11K_STATE_ON;
- 		break;
- 	case ATH11K_STATE_RESTARTING:
-@@ -4330,6 +4346,7 @@ static void ath11k_mac_op_stop(struct ieee80211_hw *hw)
- 
- 	clear_bit(ATH11K_CAC_RUNNING, &ar->dev_flags);
- 	ar->state = ATH11K_STATE_OFF;
-+	set_bit(ATH11K_FLAG_CORE_STOPPED, &ar->ab->dev_flags);
- 	mutex_unlock(&ar->conf_mutex);
- 
- 	cancel_delayed_work_sync(&ar->scan.timeout);
-diff --git a/drivers/net/wireless/ath/ath11k/pci.c b/drivers/net/wireless/ath/ath11k/pci.c
-index d7eb6b7..7ffb198 100644
---- a/drivers/net/wireless/ath/ath11k/pci.c
-+++ b/drivers/net/wireless/ath/ath11k/pci.c
-@@ -1030,12 +1030,58 @@ static void ath11k_pci_shutdown(struct pci_dev *pdev)
- 	ath11k_pci_power_down(ab);
- }
- 
-+static int ath11k_pci_suspend(struct ath11k_base *ab)
-+{
-+	return ath11k_core_suspend(ab);
-+}
-+
-+static int ath11k_pci_resume(struct ath11k_base *ab)
-+{
-+	struct ath11k_pci *ar_pci = ath11k_pci_priv(ab);
-+
-+	ar_pci->register_window = 0;
-+
-+	return ath11k_core_resume(ab);
-+}
-+
-+static __maybe_unused int ath11k_pci_pm_suspend(struct device *dev)
-+{
-+	struct ath11k_base *ab = dev_get_drvdata(dev);
-+	int ret;
-+
-+	ret = ath11k_pci_suspend(ab);
-+	if (ret)
-+		ath11k_warn(ab, "failed to suspend hif: %d\n", ret);
-+
-+	return ret;
-+}
-+
-+static __maybe_unused int ath11k_pci_pm_resume(struct device *dev)
-+{
-+	struct ath11k_base *ab = dev_get_drvdata(dev);
-+	int ret;
-+
-+	ret = ath11k_pci_resume(ab);
-+	if (ret)
-+		ath11k_warn(ab, "failed to resume hif: %d\n", ret);
-+
-+	return ret;
-+}
-+
-+static SIMPLE_DEV_PM_OPS(ath11k_pci_pm_ops,
-+			 ath11k_pci_pm_suspend,
-+			 ath11k_pci_pm_resume);
-+
- static struct pci_driver ath11k_pci_driver = {
- 	.name = "ath11k_pci",
- 	.id_table = ath11k_pci_id_table,
- 	.probe = ath11k_pci_probe,
- 	.remove = ath11k_pci_remove,
- 	.shutdown = ath11k_pci_shutdown,
-+#ifdef CONFIG_PM
-+	.driver.pm = &ath11k_pci_pm_ops,
-+#endif
-+
- };
- 
- static int ath11k_pci_init(void)
-diff --git a/drivers/net/wireless/ath/ath11k/qmi.c b/drivers/net/wireless/ath/ath11k/qmi.c
-index c2b1651..868ddd1 100644
---- a/drivers/net/wireless/ath/ath11k/qmi.c
-+++ b/drivers/net/wireless/ath/ath11k/qmi.c
-@@ -2612,12 +2612,22 @@ static void ath11k_qmi_driver_event_work(struct work_struct *work)
- 			ath11k_qmi_event_load_bdf(qmi);
- 			break;
- 		case ATH11K_QMI_EVENT_FW_READY:
--			if (test_bit(ATH11K_FLAG_REGISTERED, &ab->dev_flags)) {
-+			if (test_bit(ATH11K_FLAG_REGISTERED, &ab->dev_flags) &&
-+			    !test_bit(ATH11K_FLAG_CORE_STARTING, &ab->dev_flags)) {
- 				ath11k_hal_dump_srng_stats(ab);
- 				queue_work(ab->workqueue, &ab->restart_work);
- 				break;
- 			}
- 
-+			/* mac_op_stop and then mac_op_start on non-wow
-+			 * case, need to clear ATH11K_FLAG_CRASH_FLUSH and
-+			 * ATH11K_FLAG_RECOVERY.
-+			 */
-+			if (test_bit(ATH11K_FLAG_CORE_STARTING, &ab->dev_flags)) {
-+				clear_bit(ATH11K_FLAG_CRASH_FLUSH, &ab->dev_flags);
-+				clear_bit(ATH11K_FLAG_RECOVERY, &ab->dev_flags);
-+			}
-+
- 			ath11k_core_qmi_firmware_ready(ab);
- 			ab->qmi.cal_done = 1;
- 			set_bit(ATH11K_FLAG_REGISTERED, &ab->dev_flags);
-@@ -2674,12 +2684,17 @@ int ath11k_qmi_init_service(struct ath11k_base *ab)
- 	return ret;
- }
- 
-+void ath11k_qmi_free_resource(struct ath11k_base *ab)
-+{
-+	ath11k_qmi_m3_free(ab);
-+	ath11k_qmi_free_target_mem_chunk(ab);
-+}
-+
- void ath11k_qmi_deinit_service(struct ath11k_base *ab)
- {
- 	qmi_handle_release(&ab->qmi.handle);
- 	cancel_work_sync(&ab->qmi.event_work);
- 	destroy_workqueue(ab->qmi.event_wq);
--	ath11k_qmi_m3_free(ab);
--	ath11k_qmi_free_target_mem_chunk(ab);
-+	ath11k_qmi_free_resource(ab);
- }
- 
-diff --git a/drivers/net/wireless/ath/ath11k/qmi.h b/drivers/net/wireless/ath/ath11k/qmi.h
-index b0a818f..3aadc4f 100644
---- a/drivers/net/wireless/ath/ath11k/qmi.h
-+++ b/drivers/net/wireless/ath/ath11k/qmi.h
-@@ -462,5 +462,6 @@ void ath11k_qmi_event_work(struct work_struct *work);
- void ath11k_qmi_msg_recv_work(struct work_struct *work);
- void ath11k_qmi_deinit_service(struct ath11k_base *ab);
- int ath11k_qmi_init_service(struct ath11k_base *ab);
-+void ath11k_qmi_free_resource(struct ath11k_base *ab);
- 
- #endif
--- 
-2.7.4
+Acked-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
 
+--srini
+
+>   Documentation/ABI/stable/sysfs-bus-usb        |  6 +-
+>   .../ABI/stable/sysfs-class-backlight          |  1 +
+>   .../ABI/stable/sysfs-class-infiniband         | 93 +++++++++++++------
+>   Documentation/ABI/stable/sysfs-class-rfkill   | 13 ++-
+>   Documentation/ABI/stable/sysfs-class-tpm      | 90 +++++++++---------
+>   Documentation/ABI/stable/sysfs-devices        |  5 +-
+>   Documentation/ABI/stable/sysfs-driver-ib_srp  |  1 +
+>   .../ABI/stable/sysfs-firmware-efi-vars        |  4 +
+>   .../ABI/stable/sysfs-firmware-opal-dump       |  5 +
+>   .../ABI/stable/sysfs-firmware-opal-elog       |  2 +
+>   Documentation/ABI/stable/sysfs-hypervisor-xen |  3 +
+>   Documentation/ABI/stable/vdso                 |  5 +-
+>   16 files changed, 176 insertions(+), 100 deletions(-)
+> 
