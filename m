@@ -2,275 +2,122 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 92DD52A0054
-	for <lists+linux-wireless@lfdr.de>; Fri, 30 Oct 2020 09:49:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 99A732A0087
+	for <lists+linux-wireless@lfdr.de>; Fri, 30 Oct 2020 09:57:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726067AbgJ3Is6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 30 Oct 2020 04:48:58 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:50448 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725993AbgJ3Isz (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 30 Oct 2020 04:48:55 -0400
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 09U8mlfC7013488, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexmb04.realtek.com.tw[172.21.6.97])
-        by rtits2.realtek.com.tw (8.15.2/2.70/5.88) with ESMTPS id 09U8mlfC7013488
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Fri, 30 Oct 2020 16:48:47 +0800
-Received: from localhost.localdomain (172.21.69.222) by
- RTEXMB04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2044.4; Fri, 30 Oct 2020 16:48:47 +0800
-From:   <tehuang@realtek.com>
-To:     <kvalo@codeaurora.org>, <tony0620emma@gmail.com>
-CC:     <linux-wireless@vger.kernel.org>, <briannorris@chromium.org>
-Subject: [PATCH v2 4/4] rtw88: decide lps deep mode from firmware feature.
-Date:   Fri, 30 Oct 2020 16:48:26 +0800
-Message-ID: <20201030084826.9034-5-tehuang@realtek.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20201030084826.9034-1-tehuang@realtek.com>
-References: <20201030084826.9034-1-tehuang@realtek.com>
-MIME-Version: 1.0
+        id S1725790AbgJ3I5P (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 30 Oct 2020 04:57:15 -0400
+Received: from mail-dm6nam11on2127.outbound.protection.outlook.com ([40.107.223.127]:14679
+        "EHLO NAM11-DM6-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725355AbgJ3I5P (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 30 Oct 2020 04:57:15 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=asrXq3lp4D7nlmIPfutd9Gtbs9Bjkr2TGUytsbWO1aonfLUgbV3ClixkIJPNM/Zhu3FkhveBwgx6JlFO85dbOtQTu6Aw1y50b690Kx7kXat1ANm8hDaF6QgMgrvC7+sqmsmeUC0ROXM5gaL7Qea5g4L3xPUKjmmoihOB2Cx8OBPhNzv62GHO+eq7+wM7rSaQXiOXKAze5pWjuHH29aCAUlmXkekcaQAH/I4wQCRKWmVO6grYUvzghHRn5PhbHF84iS/TS8+6PLdSQU+HgMNhdnEgfOao6V92FxKEZyXDrpzcLf2gFtDEBAIftq7mDvKBB7DInxOwiMeRLQpI3j4f2Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=U8EhKZ409WANx7vv+9CB/N+oTFCc1flxm1/lTmvSLzA=;
+ b=ksJhnYXg3DKw197ONvVtTOMayiAo2Iqp0PIMfunt17KylUfxKLEued220Pj9/zVM65gUyXKDnV/wRE1+TILnIzRIV+TImc8YStEKQxw89X4hV7Dxbv0kKVhEiN9c7zW6nr/ZawhCrNzEAzqhUVBrFRCYDDEBhUwBPW8+HUXhk5fO0ytsEnJ2CmEWQ/my9vV0ri/qHzmplk4JlCm6cCf/iQaqImv6bHNAmrfcdd1rb4qQGXi2eGo6obeJtGOrTmyXFZW6JjMJLcdKXu2PnwEH5apVNtM1DMfshxw/TAyFK2ZR66nr3VxFtxGe/9cB9M8lwYW/VqXTF9d/SUx7Q3Odvw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=cypress.com; dmarc=pass action=none header.from=cypress.com;
+ dkim=pass header.d=cypress.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cypress.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=U8EhKZ409WANx7vv+9CB/N+oTFCc1flxm1/lTmvSLzA=;
+ b=DdQtqSQT9nAJlUKiUlzDVGma/q2+oUTsSTsPZ8BscV8VIsqsI3JFkP/da+eUroiFF36r5gcI8FMNfUBo+VGPgnagZ+XD9mqewAh1ncNSDekwBtjG0I6hEw1Zapbo+REHQdr8EGHE4aw3XEEOfkz7/0MRAIhtcOD/KTBUwCc8eOg=
+Authentication-Results: vger.kernel.org; dkim=none (message not signed)
+ header.d=none;vger.kernel.org; dmarc=none action=none
+ header.from=cypress.com;
+Received: from BYAPR06MB4901.namprd06.prod.outlook.com (2603:10b6:a03:7a::30)
+ by BYAPR06MB6168.namprd06.prod.outlook.com (2603:10b6:a03:f2::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3499.19; Fri, 30 Oct
+ 2020 08:56:43 +0000
+Received: from BYAPR06MB4901.namprd06.prod.outlook.com
+ ([fe80::d54a:4515:ff8c:686c]) by BYAPR06MB4901.namprd06.prod.outlook.com
+ ([fe80::d54a:4515:ff8c:686c%6]) with mapi id 15.20.3477.029; Fri, 30 Oct 2020
+ 08:56:43 +0000
+From:   Chi-Hsien Lin <chi-hsien.lin@cypress.com>
+To:     linux-wireless@vger.kernel.org
+Cc:     brcm80211-dev-list@broadcom.com, brcm80211-dev-list@cypress.com,
+        Arend van Spriel <arend.vanspriel@broadcom.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Wright Feng <wright.feng@cypress.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Chi-Hsien Lin <chi-hsien.lin@cypress.com>
+Subject: [PATCH] MAINTAINERS: update maintainers list for Cypress
+Date:   Fri, 30 Oct 2020 03:56:10 -0500
+Message-Id: <20201030085610.145679-1-chi-hsien.lin@cypress.com>
+X-Mailer: git-send-email 2.25.0
+Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-Originating-IP: [172.21.69.222]
-X-ClientProxiedBy: RTEXMB03.realtek.com.tw (172.21.6.96) To
- RTEXMB04.realtek.com.tw (172.21.6.97)
+X-Originating-IP: [157.95.12.33]
+X-ClientProxiedBy: MN2PR20CA0027.namprd20.prod.outlook.com
+ (2603:10b6:208:e8::40) To BYAPR06MB4901.namprd06.prod.outlook.com
+ (2603:10b6:a03:7a::30)
+MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from aremote02.aus.cypress.com (157.95.12.33) by MN2PR20CA0027.namprd20.prod.outlook.com (2603:10b6:208:e8::40) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3499.18 via Frontend Transport; Fri, 30 Oct 2020 08:56:41 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-HT: Tenant
+X-MS-Office365-Filtering-Correlation-Id: f1839187-8eef-4c3f-4cc1-08d87cb1b8f3
+X-MS-TrafficTypeDiagnostic: BYAPR06MB6168:
+X-LD-Processed: 011addfc-2c09-450d-8938-e0bbc2dd2376,ExtFwd,ExtAddr
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <BYAPR06MB616822F37CB30741C419C0D1BB150@BYAPR06MB6168.namprd06.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:345;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: C8ibwC4r9Y5JxbE5IHxYaatT96za1OXygu3Ek0UBcv9OUb8unP8F9ppyLc8FObg0PCXAvJPBkdFTNbULUcPOzixeCYoy32/XCtQKr09zr59GvOLgSRebgsP1l00KSSAWp0W3PConevG+rE3+NLLGGbvE/opFt+lDbQmHVlPrkWD06gtEd7kqXolQ/z5mHtij8396/QKqut6gE2nTKHIeCyzbyqryVtfDBss/sPnVZg+D4nk4swy5+cT57rEWGXgw3i6qyuyXVUZSeYg9fyQM0xsBvtPxtfoFLb5kLoAaISXY/w1G7ewXpozNJLwWEuQk2DGltfMj6sb8YRO+0y8pfQ==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR06MB4901.namprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(366004)(376002)(346002)(39860400002)(136003)(396003)(107886003)(956004)(86362001)(36756003)(6916009)(83380400001)(186003)(4326008)(16526019)(316002)(52116002)(7696005)(6666004)(6486002)(26005)(2616005)(478600001)(5660300002)(54906003)(15650500001)(2906002)(66946007)(8936002)(66476007)(66556008)(8676002)(1076003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData: +Wb0mrQCRsU1oU/jXjrrvX/Zsmdj5W6OXvv5XRCSjoueeVDo776CJh65d2dpuBbUT93SvUtnOl15iWSxSNuV/Kbf9wLMKmekFd4fq1BNcS+cS7+jSqpmudn0MLE8jRgSkBLmqFDdDRgR7Dmqj7wKhTL51QZaLfgFHbfdQ+wP83pbwWAYAEXVTANe/jQ03Nm7zk07LgzrhaQwCV3PvyVFReRUpHHjoz7ckk6xMPWPQPBWWonE6mUDKuCGMpVq91qGpTdKpwZVKRGvC2k/4tiAtdSKGY/+/Kw/Od2lzfQpbWBBvqjE3N3we0p0308eDKuTe6/GajZuPwCWkITQjO0KV1kxM5cuVQz4TFaF6BioEguMfJLUtOVxj8Fp0TDYBM9RBACm0OfDt6DkMm9OejUSenwvi6rCqfA7v8tStRkS7w54EixvTXZ/CCvwdFXWRscZkk7xTjRRMmj6MPLfl0/TO1nPP7nguA62qqCqgCqyYAsRdqE+6G6FAg0S6D3RkH9rU2zVuVh6Ke5uTrp3Pe4D6MXos0BFDS8ufxplhjAk0IxPqgJ2hb91OEqzFBUu0q95X+ClC7/a4ULp5Tvc0nDvoMWMy5Usbll6e5BvA/serg35oOhzEbJjkRL7w5FDpV5KsJPhXlguqjJuo9Be2sf9zg==
+X-OriginatorOrg: cypress.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f1839187-8eef-4c3f-4cc1-08d87cb1b8f3
+X-MS-Exchange-CrossTenant-AuthSource: BYAPR06MB4901.namprd06.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Oct 2020 08:56:43.1631
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 011addfc-2c09-450d-8938-e0bbc2dd2376
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: PJkq1Aou5SDO96cbrTIfqQMImQEj3q958rhJ1K8XsKrOxPcQ+t1xdfz0DaKlTYnEjBP8jGNKxhfja0lT1QmnNA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR06MB6168
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Chin-Yen Lee <timlee@realtek.com>
+- Update maintainers' email with Infineon hosted email
+- Add Chung-hsien Hsu as a maintainer
 
-This patch checks the supported lps deep mode from firmware feature,
-and allows different firmware have different deep power mode.
-Original module parameter rtw_fw_lps_deep_mode is replaced with
-rtw_disable_lps_deep_mode for user to disable lps deep mode.
-
-Signed-off-by: Chin-Yen Lee <timlee@realtek.com>
-Signed-off-by: Tzu-En Huang <tehuang@realtek.com>
+Signed-off-by: Chi-Hsien Lin <chi-hsien.lin@cypress.com>
+Signed-off-by: Wright Feng <wright.feng@cypress.com>
 ---
- drivers/net/wireless/realtek/rtw88/fw.c       |  3 +-
- drivers/net/wireless/realtek/rtw88/mac80211.c |  2 +-
- drivers/net/wireless/realtek/rtw88/main.c     | 36 ++++++++++++++-----
- drivers/net/wireless/realtek/rtw88/main.h     |  3 +-
- drivers/net/wireless/realtek/rtw88/ps.c       | 14 ++++++--
- drivers/net/wireless/realtek/rtw88/ps.h       |  2 +-
- drivers/net/wireless/realtek/rtw88/wow.c      |  5 +--
- 7 files changed, 48 insertions(+), 17 deletions(-)
+ MAINTAINERS | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/fw.c b/drivers/net/wireless/realtek/rtw88/fw.c
-index 29fffacf4085..3cd46759802c 100644
---- a/drivers/net/wireless/realtek/rtw88/fw.c
-+++ b/drivers/net/wireless/realtek/rtw88/fw.c
-@@ -13,6 +13,7 @@
- #include "debug.h"
- #include "util.h"
- #include "wow.h"
-+#include "ps.h"
+diff --git a/MAINTAINERS b/MAINTAINERS
+index e73636b75f29..61c573b8e567 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -3541,11 +3541,12 @@ BROADCOM BRCM80211 IEEE802.11n WIRELESS DRIVER
+ M:	Arend van Spriel <arend.vanspriel@broadcom.com>
+ M:	Franky Lin <franky.lin@broadcom.com>
+ M:	Hante Meuleman <hante.meuleman@broadcom.com>
+-M:	Chi-Hsien Lin <chi-hsien.lin@cypress.com>
+-M:	Wright Feng <wright.feng@cypress.com>
++M:	Chi-hsien Lin <chi-hsien.lin@infineon.com>
++M:	Wright Feng <wright.feng@infineon.com>
++M:	Chung-hsien Hsu <chung-hsien.hsu@infineon.com>
+ L:	linux-wireless@vger.kernel.org
+ L:	brcm80211-dev-list.pdl@broadcom.com
+-L:	brcm80211-dev-list@cypress.com
++L:	SHA-cyfmac-dev-list@infineon.com
+ S:	Supported
+ F:	drivers/net/wireless/broadcom/brcm80211/
  
- static void rtw_fw_c2h_cmd_handle_ext(struct rtw_dev *rtwdev,
- 				      struct sk_buff *skb)
-@@ -631,7 +632,7 @@ void rtw_fw_set_nlo_info(struct rtw_dev *rtwdev, bool enable)
- 
- 	SET_NLO_FUN_EN(h2c_pkt, enable);
- 	if (enable) {
--		if (rtw_fw_lps_deep_mode)
-+		if (rtw_get_lps_deep_mode(rtwdev) != LPS_DEEP_MODE_NONE)
- 			SET_NLO_PS_32K(h2c_pkt, enable);
- 		SET_NLO_IGNORE_SECURITY(h2c_pkt, enable);
- 		SET_NLO_LOC_NLO_INFO(h2c_pkt, loc_nlo);
-diff --git a/drivers/net/wireless/realtek/rtw88/mac80211.c b/drivers/net/wireless/realtek/rtw88/mac80211.c
-index c92fba2fa480..c69397719fdf 100644
---- a/drivers/net/wireless/realtek/rtw88/mac80211.c
-+++ b/drivers/net/wireless/realtek/rtw88/mac80211.c
-@@ -519,7 +519,7 @@ static int rtw_ops_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
- 	}
- 
- 	/* download new cam settings for PG to backup */
--	if (rtw_fw_lps_deep_mode == LPS_DEEP_MODE_PG)
-+	if (rtw_get_lps_deep_mode(rtwdev) == LPS_DEEP_MODE_PG)
- 		rtw_fw_download_rsvd_page(rtwdev);
- 
- out:
-diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
-index 5c46f5d2e87c..71d90b98d6f1 100644
---- a/drivers/net/wireless/realtek/rtw88/main.c
-+++ b/drivers/net/wireless/realtek/rtw88/main.c
-@@ -16,17 +16,17 @@
- #include "debug.h"
- #include "bf.h"
- 
--unsigned int rtw_fw_lps_deep_mode;
--EXPORT_SYMBOL(rtw_fw_lps_deep_mode);
-+bool rtw_disable_lps_deep_mode;
-+EXPORT_SYMBOL(rtw_disable_lps_deep_mode);
- bool rtw_bf_support = true;
- unsigned int rtw_debug_mask;
- EXPORT_SYMBOL(rtw_debug_mask);
- 
--module_param_named(lps_deep_mode, rtw_fw_lps_deep_mode, uint, 0644);
-+module_param_named(disable_lps_deep, rtw_disable_lps_deep_mode, bool, 0644);
- module_param_named(support_bf, rtw_bf_support, bool, 0644);
- module_param_named(debug_mask, rtw_debug_mask, uint, 0644);
- 
--MODULE_PARM_DESC(lps_deep_mode, "Deeper PS mode. If 0, deep PS is disabled");
-+MODULE_PARM_DESC(disable_lps_deep, "Set Y to disable Deep PS");
- MODULE_PARM_DESC(support_bf, "Set Y to enable beamformee support");
- MODULE_PARM_DESC(debug_mask, "Debugging mask");
- 
-@@ -1023,6 +1023,26 @@ static int rtw_wait_firmware_completion(struct rtw_dev *rtwdev)
- 	return 0;
- }
- 
-+static enum rtw_lps_deep_mode rtw_update_lps_deep_mode(struct rtw_dev *rtwdev,
-+						       struct rtw_fw_state *fw)
-+{
-+	struct rtw_chip_info *chip = rtwdev->chip;
-+
-+	if (rtw_disable_lps_deep_mode || !chip->lps_deep_mode_supported ||
-+	    !fw->feature)
-+		return LPS_DEEP_MODE_NONE;
-+
-+	if ((chip->lps_deep_mode_supported & BIT(LPS_DEEP_MODE_PG)) &&
-+	    (fw->feature & FW_FEATURE_PG))
-+		return LPS_DEEP_MODE_PG;
-+
-+	if ((chip->lps_deep_mode_supported & BIT(LPS_DEEP_MODE_LCLK)) &&
-+	    (fw->feature & FW_FEATURE_LCLK))
-+		return LPS_DEEP_MODE_LCLK;
-+
-+	return LPS_DEEP_MODE_NONE;
-+}
-+
- static int rtw_power_on(struct rtw_dev *rtwdev)
- {
- 	struct rtw_chip_info *chip = rtwdev->chip;
-@@ -1097,6 +1117,9 @@ int rtw_core_start(struct rtw_dev *rtwdev)
- 
- 	rtw_sec_enable_sec_engine(rtwdev);
- 
-+	rtwdev->lps_conf.deep_mode = rtw_update_lps_deep_mode(rtwdev, &rtwdev->fw);
-+	rtwdev->lps_conf.wow_deep_mode = rtw_update_lps_deep_mode(rtwdev, &rtwdev->wow_fw);
-+
- 	/* rcr reset after powered on */
- 	rtw_write32(rtwdev, REG_RCR, rtwdev->hal.rcr);
- 
-@@ -1657,10 +1680,6 @@ int rtw_core_init(struct rtw_dev *rtwdev)
- 	rtwdev->sec.total_cam_num = 32;
- 	rtwdev->hal.current_channel = 1;
- 	set_bit(RTW_BC_MC_MACID, rtwdev->mac_id_map);
--	if (!(BIT(rtw_fw_lps_deep_mode) & chip->lps_deep_mode_supported))
--		rtwdev->lps_conf.deep_mode = LPS_DEEP_MODE_NONE;
--	else
--		rtwdev->lps_conf.deep_mode = rtw_fw_lps_deep_mode;
- 
- 	rtw_stats_init(rtwdev);
- 
-@@ -1685,6 +1704,7 @@ int rtw_core_init(struct rtw_dev *rtwdev)
- 			return ret;
- 		}
- 	}
-+
- 	return 0;
- }
- EXPORT_SYMBOL(rtw_core_init);
-diff --git a/drivers/net/wireless/realtek/rtw88/main.h b/drivers/net/wireless/realtek/rtw88/main.h
-index 53ddd8661c44..bbfc3312eef5 100644
---- a/drivers/net/wireless/realtek/rtw88/main.h
-+++ b/drivers/net/wireless/realtek/rtw88/main.h
-@@ -37,7 +37,7 @@
- #define RTW_TP_SHIFT			18 /* bytes/2s --> Mbps */
- 
- extern bool rtw_bf_support;
--extern unsigned int rtw_fw_lps_deep_mode;
-+extern bool rtw_disable_lps_deep_mode;
- extern unsigned int rtw_debug_mask;
- extern const struct ieee80211_ops rtw_ops;
- 
-@@ -664,6 +664,7 @@ enum rtw_pwr_state {
- struct rtw_lps_conf {
- 	enum rtw_lps_mode mode;
- 	enum rtw_lps_deep_mode deep_mode;
-+	enum rtw_lps_deep_mode wow_deep_mode;
- 	enum rtw_pwr_state state;
- 	u8 awake_interval;
- 	u8 rlbm;
-diff --git a/drivers/net/wireless/realtek/rtw88/ps.c b/drivers/net/wireless/realtek/rtw88/ps.c
-index 233b3df264b3..3bead34c3d10 100644
---- a/drivers/net/wireless/realtek/rtw88/ps.c
-+++ b/drivers/net/wireless/realtek/rtw88/ps.c
-@@ -77,7 +77,7 @@ void rtw_power_mode_change(struct rtw_dev *rtwdev, bool enter)
- 	request ^= request | BIT_RPWM_TOGGLE;
- 	if (enter) {
- 		request |= POWER_MODE_LCLK;
--		if (rtw_fw_lps_deep_mode == LPS_DEEP_MODE_PG)
-+		if (rtw_get_lps_deep_mode(rtwdev) == LPS_DEEP_MODE_PG)
- 			request |= POWER_MODE_PG;
- 	}
- 	/* Each request require an ack from firmware */
-@@ -195,9 +195,17 @@ static void rtw_leave_lps_core(struct rtw_dev *rtwdev)
- 	rtw_coex_lps_notify(rtwdev, COEX_LPS_DISABLE);
- }
- 
-+enum rtw_lps_deep_mode rtw_get_lps_deep_mode(struct rtw_dev *rtwdev)
-+{
-+	if (test_bit(RTW_FLAG_WOWLAN, rtwdev->flags))
-+		return rtwdev->lps_conf.wow_deep_mode;
-+	else
-+		return rtwdev->lps_conf.deep_mode;
-+}
-+
- static void __rtw_enter_lps_deep(struct rtw_dev *rtwdev)
- {
--	if (rtwdev->lps_conf.deep_mode == LPS_DEEP_MODE_NONE)
-+	if (rtw_get_lps_deep_mode(rtwdev) == LPS_DEEP_MODE_NONE)
- 		return;
- 
- 	if (!test_bit(RTW_FLAG_LEISURE_PS, rtwdev->flags)) {
-@@ -206,7 +214,7 @@ static void __rtw_enter_lps_deep(struct rtw_dev *rtwdev)
- 		return;
- 	}
- 
--	if (rtw_fw_lps_deep_mode == LPS_DEEP_MODE_PG)
-+	if (rtw_get_lps_deep_mode(rtwdev) == LPS_DEEP_MODE_PG)
- 		rtw_fw_set_pg_info(rtwdev);
- 
- 	rtw_hci_deep_ps(rtwdev, true);
-diff --git a/drivers/net/wireless/realtek/rtw88/ps.h b/drivers/net/wireless/realtek/rtw88/ps.h
-index 915b200081fc..7819391c8663 100644
---- a/drivers/net/wireless/realtek/rtw88/ps.h
-+++ b/drivers/net/wireless/realtek/rtw88/ps.h
-@@ -21,5 +21,5 @@ void rtw_power_mode_change(struct rtw_dev *rtwdev, bool enter);
- void rtw_enter_lps(struct rtw_dev *rtwdev, u8 port_id);
- void rtw_leave_lps(struct rtw_dev *rtwdev);
- void rtw_leave_lps_deep(struct rtw_dev *rtwdev);
--
-+enum rtw_lps_deep_mode rtw_get_lps_deep_mode(struct rtw_dev *rtwdev);
- #endif
-diff --git a/drivers/net/wireless/realtek/rtw88/wow.c b/drivers/net/wireless/realtek/rtw88/wow.c
-index 2fcdf70a3a77..b419bc28861f 100644
---- a/drivers/net/wireless/realtek/rtw88/wow.c
-+++ b/drivers/net/wireless/realtek/rtw88/wow.c
-@@ -555,7 +555,7 @@ static int rtw_wow_leave_no_link_ps(struct rtw_dev *rtwdev)
- 	int ret = 0;
- 
- 	if (test_bit(RTW_FLAG_WOWLAN, rtwdev->flags)) {
--		if (rtw_fw_lps_deep_mode)
-+		if (rtw_get_lps_deep_mode(rtwdev) != LPS_DEEP_MODE_NONE)
- 			rtw_leave_lps_deep(rtwdev);
- 	} else {
- 		if (test_bit(RTW_FLAG_INACTIVE_PS, rtwdev->flags)) {
-@@ -616,7 +616,8 @@ static int rtw_wow_enter_ps(struct rtw_dev *rtwdev)
- 
- 	if (rtw_wow_mgd_linked(rtwdev))
- 		ret = rtw_wow_enter_linked_ps(rtwdev);
--	else if (rtw_wow_no_link(rtwdev) && rtw_fw_lps_deep_mode)
-+	else if (rtw_wow_no_link(rtwdev) &&
-+		 rtw_get_lps_deep_mode(rtwdev) != LPS_DEEP_MODE_NONE)
- 		ret = rtw_wow_enter_no_link_ps(rtwdev);
- 
- 	return ret;
 -- 
-2.17.1
+2.25.0
 
