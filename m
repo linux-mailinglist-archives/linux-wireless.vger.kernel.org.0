@@ -2,22 +2,22 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 91CEB2A0053
-	for <lists+linux-wireless@lfdr.de>; Fri, 30 Oct 2020 09:48:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B47D72A0050
+	for <lists+linux-wireless@lfdr.de>; Fri, 30 Oct 2020 09:48:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726061AbgJ3Is5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 30 Oct 2020 04:48:57 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:50443 "EHLO
+        id S1726017AbgJ3Isz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 30 Oct 2020 04:48:55 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:50440 "EHLO
         rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725905AbgJ3Is4 (ORCPT
+        with ESMTP id S1725355AbgJ3Isz (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 30 Oct 2020 04:48:56 -0400
+        Fri, 30 Oct 2020 04:48:55 -0400
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 09U8mkDfB013478, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 09U8mlf87013488, This message is accepted by code: ctloc85258
 Received: from mail.realtek.com (rtexmb04.realtek.com.tw[172.21.6.97])
-        by rtits2.realtek.com.tw (8.15.2/2.70/5.88) with ESMTPS id 09U8mkDfB013478
+        by rtits2.realtek.com.tw (8.15.2/2.70/5.88) with ESMTPS id 09U8mlf87013488
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Fri, 30 Oct 2020 16:48:46 +0800
+        Fri, 30 Oct 2020 16:48:47 +0800
 Received: from localhost.localdomain (172.21.69.222) by
  RTEXMB04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
@@ -25,10 +25,12 @@ Received: from localhost.localdomain (172.21.69.222) by
 From:   <tehuang@realtek.com>
 To:     <kvalo@codeaurora.org>, <tony0620emma@gmail.com>
 CC:     <linux-wireless@vger.kernel.org>, <briannorris@chromium.org>
-Subject: [PATCH v2 0/4] rtw88: Update Some Power Saving Feature For the New FW
-Date:   Fri, 30 Oct 2020 16:48:22 +0800
-Message-ID: <20201030084826.9034-1-tehuang@realtek.com>
+Subject: [PATCH v2 1/4] rtw88: sync the power state between driver and firmware
+Date:   Fri, 30 Oct 2020 16:48:23 +0800
+Message-ID: <20201030084826.9034-2-tehuang@realtek.com>
 X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20201030084826.9034-1-tehuang@realtek.com>
+References: <20201030084826.9034-1-tehuang@realtek.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [172.21.69.222]
@@ -38,34 +40,106 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Tzu-En Huang <tehuang@realtek.com>
+From: Chin-Yen Lee <timlee@realtek.com>
 
-These patches update the way of working with the new firmware.
-First, there are new information that driver can get from firmware. The
-infomation are the supported power saving mode of the firmware, and the
-synchronization approach of the firmware(by driver polling registers or
-getting a firmware C2H).
-Second, update the mechanism for synchronizing the state of power saving
-with the firmware.
+In current flow, driver issues power requests to firmware for entering or
+leaving deep power mode. But driver does not wait for an ack from firmware
+via reading CPWM register when driver requests to enter deep power mode.
+The behavior will lead to unsynchronized state between firmware and driver.
+Furthermore, consecutive same power requests may confuse firmware and leads
+to unexpected value of CPWM register. This patch ensures that the power
+request will wait for an ack from firmware and only send one power request
+each time.
 
-v2: add rtw88: prefix in the subject
+Signed-off-by: Chin-Yen Lee <timlee@realtek.com>
+Signed-off-by: Tzu-En Huang <tehuang@realtek.com>
+---
+ drivers/net/wireless/realtek/rtw88/ps.c | 69 +++++++++++--------------
+ 1 file changed, 30 insertions(+), 39 deletions(-)
 
-Chin-Yen Lee (4):
-  rtw88: sync the power state between driver and firmware
-  rtw88: store firmware feature in firmware header
-  rtw88: add C2H response for checking firmware leave lps
-  rtw88: decide lps deep mode from firmware feature.
-
- drivers/net/wireless/realtek/rtw88/fw.c       |   6 +-
- drivers/net/wireless/realtek/rtw88/fw.h       |  11 +-
- drivers/net/wireless/realtek/rtw88/mac80211.c |   2 +-
- drivers/net/wireless/realtek/rtw88/main.c     |  50 +++++--
- drivers/net/wireless/realtek/rtw88/main.h     |   5 +-
- drivers/net/wireless/realtek/rtw88/ps.c       | 135 ++++++++++++------
- drivers/net/wireless/realtek/rtw88/ps.h       |   3 +-
- drivers/net/wireless/realtek/rtw88/wow.c      |   5 +-
- 8 files changed, 155 insertions(+), 62 deletions(-)
-
+diff --git a/drivers/net/wireless/realtek/rtw88/ps.c b/drivers/net/wireless/realtek/rtw88/ps.c
+index 7a189a9926fe..8ed243628dcb 100644
+--- a/drivers/net/wireless/realtek/rtw88/ps.c
++++ b/drivers/net/wireless/realtek/rtw88/ps.c
+@@ -68,48 +68,39 @@ int rtw_leave_ips(struct rtw_dev *rtwdev)
+ void rtw_power_mode_change(struct rtw_dev *rtwdev, bool enter)
+ {
+ 	u8 request, confirm, polling;
+-	u8 polling_cnt;
+-	u8 retry_cnt = 0;
+-
+-	for (retry_cnt = 0; retry_cnt < 3; retry_cnt++) {
+-		request = rtw_read8(rtwdev, rtwdev->hci.rpwm_addr);
+-		confirm = rtw_read8(rtwdev, rtwdev->hci.cpwm_addr);
+-
+-		/* toggle to request power mode, others remain 0 */
+-		request ^= request | BIT_RPWM_TOGGLE;
+-		if (!enter) {
+-			request |= POWER_MODE_ACK;
+-		} else {
+-			request |= POWER_MODE_LCLK;
+-			if (rtw_fw_lps_deep_mode == LPS_DEEP_MODE_PG)
+-				request |= POWER_MODE_PG;
+-		}
+-
+-		rtw_write8(rtwdev, rtwdev->hci.rpwm_addr, request);
+-
+-		if (enter)
+-			return;
++	int ret;
+ 
+-		/* check confirm power mode has left power save state */
+-		for (polling_cnt = 0; polling_cnt < 50; polling_cnt++) {
+-			polling = rtw_read8(rtwdev, rtwdev->hci.cpwm_addr);
+-			if ((polling ^ confirm) & BIT_RPWM_TOGGLE)
+-				return;
+-			udelay(100);
+-		}
+-
+-		/* in case of fw/hw missed the request, retry */
+-		rtw_warn(rtwdev, "failed to leave deep PS, retry=%d\n",
+-			 retry_cnt);
++	request = rtw_read8(rtwdev, rtwdev->hci.rpwm_addr);
++	confirm = rtw_read8(rtwdev, rtwdev->hci.cpwm_addr);
++
++	/* toggle to request power mode, others remain 0 */
++	request ^= request | BIT_RPWM_TOGGLE;
++	if (enter) {
++		request |= POWER_MODE_LCLK;
++		if (rtw_fw_lps_deep_mode == LPS_DEEP_MODE_PG)
++			request |= POWER_MODE_PG;
+ 	}
++	/* Each request require an ack from firmware */
++	request |= POWER_MODE_ACK;
+ 
+-	/* Hit here means that driver failed to change hardware power mode to
+-	 * active state after retry 3 times. If the power state is locked at
+-	 * Deep sleep, most of the hardware circuits is not working, even
+-	 * register read/write. It should be treated as fatal error and
+-	 * requires an entire analysis about the firmware/hardware
+-	 */
+-	WARN(1, "Hardware power state locked\n");
++	rtw_write8(rtwdev, rtwdev->hci.rpwm_addr, request);
++
++	/* Check firmware get the power requset and ack via cpwm register */
++	ret = read_poll_timeout_atomic(rtw_read8, polling,
++				       (polling ^ confirm) & BIT_RPWM_TOGGLE,
++				       100, 15000, true, rtwdev,
++				       rtwdev->hci.cpwm_addr);
++	if (ret) {
++		/* Hit here means that driver failed to get an ack from firmware.
++		 * The reason could be that hardware is locked at Deep sleep,
++		 * so most of the hardware circuits are not working, even
++		 * register read/write; or firmware is locked in some state and
++		 * cannot get the request. It should be treated as fatal error
++		 * and requires an entire analysis about the firmware/hardware.
++		 */
++		WARN(1, "firmware failed to ack driver for %s Deep Power mode\n",
++		     enter ? "entering" : "leaving");
++	}
+ }
+ EXPORT_SYMBOL(rtw_power_mode_change);
+ 
 -- 
 2.17.1
 
