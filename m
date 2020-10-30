@@ -2,227 +2,181 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7FD522A05B2
-	for <lists+linux-wireless@lfdr.de>; Fri, 30 Oct 2020 13:45:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 11F052A0801
+	for <lists+linux-wireless@lfdr.de>; Fri, 30 Oct 2020 15:36:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726325AbgJ3MpM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 30 Oct 2020 08:45:12 -0400
-Received: from dvalin.narfation.org ([213.160.73.56]:40136 "EHLO
-        dvalin.narfation.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725975AbgJ3MpM (ORCPT
+        id S1726348AbgJ3OgE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 30 Oct 2020 10:36:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35560 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725939AbgJ3OgE (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 30 Oct 2020 08:45:12 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-        s=20121; t=1604061908;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type;
-        bh=hcGNXoxVuwEEEyeyR1+KamTg81XMipizN4MgTzx567k=;
-        b=khalIXAeXbJfzaKY4u4eDn28ZsE+X/+9xcya6uhY6c6yojb5qD6g+N9Hl6DP08Mk41KJt5
-        9WAVWy9G4tsgjZU+5Bb1l7mNH3u+J6+b3kNA4rs2Irj8UIzMlGd8Ozat6lzJFFdEqzI6zm
-        q3JwMmXcqy00Ym36psBhOWl9erZQnFQ=
-X-Mailbox-Line: From sven@narfation.org Fri Oct 30 12:34:21 2020
-From:   Sven Eckelmann <sven@narfation.org>
-To:     ath11k@lists.infradead.org
-Cc:     sw@simonwunderlich.de
-Subject: ath11k: Country code setting ignored on bootup
-Date:   Fri, 30 Oct 2020 13:34:21 +0100
-Message-ID: <1829665.1PRlr7bOQj@ripper>
-X-KMail-Identity: 80820071
-X-KMail-Transport: 1618418458
-X-KMail-Fcc: 45
-X-KMail-Identity-Name: Sven Eckelmann
-X-KMail-Transport-Name: narfation.org
+        Fri, 30 Oct 2020 10:36:04 -0400
+Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com [IPv6:2607:f8b0:4864:20::442])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C0AAC0613D2
+        for <linux-wireless@vger.kernel.org>; Fri, 30 Oct 2020 07:25:44 -0700 (PDT)
+Received: by mail-pf1-x442.google.com with SMTP id c20so5426463pfr.8
+        for <linux-wireless@vger.kernel.org>; Fri, 30 Oct 2020 07:25:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to;
+        bh=w/8x7K3UAWKqFtcltLKAwEAwsbXBm+pQP4LvjDwuXaQ=;
+        b=SYJEgfO4WZTTbJsYveDLPlXrBgxevn/HCrOrJpZUR7ngu2/rYH5tESOt0xUeeZQlja
+         mvTAsWY+S1vlD2pp6qKxftqVnW9TCVTfWV3rgyL75Vku7UZTF6iwYcS92rfJvBPSfvdr
+         MmtEDGS/kG8Q1ISvRmkYwYLdCSRZ+Un30LYgI=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to;
+        bh=w/8x7K3UAWKqFtcltLKAwEAwsbXBm+pQP4LvjDwuXaQ=;
+        b=Zs+3cPJG7uya6fYDW2i4F7EwiNAnR+m/4VbooEbmWOzf7ZJLOWTEwTCV+m15EboEfU
+         ymou0H8J5TrVe8RCsinsknw9/8Jr6mSscW/CuAH/GIBsgMZlYg0jZQmYqU0fxz01KAgN
+         oRnjjU4Ejd2iNyisLT/ZETLF8sKLa0VfbJsn3FjNYVf1nwkruccSNntdyqsXxkCpG198
+         Eid+OVTB8oXDLDSmcHbNjYK8lW1jhR2ISnHgd9Rr/TxbitMhYSt4bipPcin8gAv717iJ
+         8J8njwiord5lhcSsc50E+HH11tq6JhBaHOCevwpo26xHSbYciiujz4PeefHLXAlok0AF
+         6LMQ==
+X-Gm-Message-State: AOAM533a9MS9Y+haVuABBbiK0OboPWrkgRkwxvTQwj6uj0OBs99iTqmJ
+        aJp1xQx5cEmjhv9+fx5hYOk9QMcUJSHjYGb9hFSpIbSE/EbpLA18ZM0xQq4mEQOOcOGbESgvVm8
+        bAz6S06VqaY3Y+hDkwOpN61mYuhNeh2XrxOllt+vLOvy9+yzVsF48lcpdtK8yFxzN7oDOkK6gY4
+        /qqn5fVlPGHZ6D4GZj
+X-Google-Smtp-Source: ABdhPJx9QifMb1Dzd1BBFYSzCMivNEZ71S7nz7DmpstQA15zfPfeoODoM3RE7w3y4X53MgyTFuaJiw==
+X-Received: by 2002:a17:90a:5806:: with SMTP id h6mr1888373pji.139.1604067943319;
+        Fri, 30 Oct 2020 07:25:43 -0700 (PDT)
+Received: from [10.230.33.93] ([192.19.148.250])
+        by smtp.gmail.com with ESMTPSA id g7sm3639861pjl.11.2020.10.30.07.25.41
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 30 Oct 2020 07:25:42 -0700 (PDT)
+Subject: Re: [PATCH] staging: rtl8723bs: Add 024c:0627 to the list of SDIO
+ device-ids
+To:     Brian O'Keefe <bokeefe@alum.wpi.edu>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Larry Finger <Larry.Finger@lwfinger.net>
+Cc:     devel@driverdev.osuosl.org, linux-wireless@vger.kernel.org
+References: <CABtq2xReyqg1wJM7W1d=KWRNTNN0Q6HCgJMWcQ6DH=SmKcxQRg@mail.gmail.com>
+From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
+Message-ID: <b0fd8b5a-66f3-871c-fe37-939d814f3f99@broadcom.com>
+Date:   Fri, 30 Oct 2020 15:25:40 +0100
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.3.2
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart1669516.2VI8MhZXb1"; micalg="pgp-sha512"; protocol="application/pgp-signature"
+In-Reply-To: <CABtq2xReyqg1wJM7W1d=KWRNTNN0Q6HCgJMWcQ6DH=SmKcxQRg@mail.gmail.com>
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+        boundary="000000000000fb658505b2e42bce"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---nextPart1669516.2VI8MhZXb1
-Content-Type: multipart/mixed; boundary="nextPart1843920.GhX3yNMNC5"; protected-headers="v1"
-Content-Transfer-Encoding: 7Bit
-From: Sven Eckelmann <sven@narfation.org>
-To: ath11k@lists.infradead.org
-Cc: sw@simonwunderlich.de
-Subject: Country code setting ignored on bootup
-Date: Fri, 30 Oct 2020 13:34:21 +0100
-Message-ID: <1829665.1PRlr7bOQj@ripper>
+--000000000000fb658505b2e42bce
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 
-This is a multi-part message in MIME format.
+On 10/29/2020 2:52 PM, Brian O'Keefe wrote:
+> Add 024c:0627 to the list of SDIO device-ids, based on hardware found in
+> the wild. This hardware exists on at least some Acer SW1-011 tablets.
+> 
+> Signed-off-by: Brian O'Keefe <bokeefe@alum.wpi.edu>
+> ---
+>   drivers/staging/rtl8723bs/os_dep/sdio_intf.c | 1 +
+>   1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/staging/rtl8723bs/os_dep/sdio_intf.c
+> b/drivers/staging/rtl8723bs/os_dep/sdio_intf.c
+> index 5b1392deb0a7..7256d55fcc1b 100644
+> --- a/drivers/staging/rtl8723bs/os_dep/sdio_intf.c
+> +++ b/drivers/staging/rtl8723bs/os_dep/sdio_intf.c
+> @@ -21,6 +21,7 @@ static const struct sdio_device_id sdio_ids[] =
+>          { SDIO_DEVICE(0x024c, 0x0525), },
+>          { SDIO_DEVICE(0x024c, 0x0623), },
+>          { SDIO_DEVICE(0x024c, 0x0626), },
+> +       { SDIO_DEVICE(0x024c, 0x0627), },
+>          { SDIO_DEVICE(0x024c, 0xb723), },
 
---nextPart1843920.GhX3yNMNC5
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+shouldn't these be listed in include/linux/mmc/sdio_ids.h ?
 
-Hi,
+Regards,
+Arend
 
-just tested here with HK01 based board. The firwmare 
-WLAN.HK.2.1.0.1-01228-QCAHKSWPL_SILICONZ-1 doesn't show this problematic 
-behavior all the time but 2.4.0.1.r1-00026-QCAHKSWPL_SILICONZ-2 or WLAN.HK.
-2.4.0.1.r1-00019-QCAHKSWPL_SILICONZ-1 does.
+--000000000000fb658505b2e42bce
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
 
-With 2.1.0.1 I could basically do following:
-
-    iw reg set CA
-    echo "c000000.wifi1" > /sys/bus/platform/drivers/ath11k/unbind
-    echo "c000000.wifi1" > /sys/bus/platform/drivers/ath11k/bind
-
-and the global and self managed country codes were still all CA (in many 
-tests). But with 2.4.0.1, they will end up with CA as global and US as self 
-managed. I can see that the country code change is correctly send by cfg80211 
-when the HW is initializes but the 2.4.0.1 firmware just ignores it.
-
-I can see following send command by ath11k in ath11k_wmi_send_init_country_cmd:
-
-    00000000: 38 00 61 02 00 00 00 00 00 00 00 00 43 41 00 00
-
-and I also receive a CA answer for that. But the response from the firmware comes
-in when the ATH11K_FLAG_REGISTERED bit is still not set. Thus it is rejected by
-ath11k_reg_chan_list_event for the regd_update_work.
-
-This seems to be a race between receiving the 
-"ATH11K_QMI_EVENT_FW_READY" event and the ieee80211_register_hw() in 
-__ath11k_mac_register. The ieee80211_register_hw will make the hw responsible 
-for handling the regd updates but they will not be correctly processed until 
-the ATH11K_QMI_EVENT_FW_READY was handled by the firmware. And if the regd 
-change was processed after ath11k_regd_update was called in 
-__ath11k_mac_register (but before the ATH11K_QMI_EVENT_FW_READY was processed)
-then we will just loose the regd change.
-
-So I am a little bit baffled why ATH11K_FLAG_REGISTERED is bound to something 
-which is not related to the  IEEE802211 registration code. Sounds to me like 
-somebody wanted a FW_READY flag but misused the ATH11K_FLAG_REGISTERED flag 
-for this purpose.
-
-Btw. there are similar problems with the use of ATH11K_FLAG_REGISTERED in context
-of ath11k_debug_pdev_create, ath11k_mac_register and ath11k_mac_allocate.
-
-Maybe something like the attached patch could be used to improve this situation.
-
-Kind regards,
-	Sven
---nextPart1843920.GhX3yNMNC5
-Content-Disposition: attachment; filename="0001-ath11k-Accept-new-regdomain-during-initialization.patch"
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/x-patch; charset="UTF-8"; name="0001-ath11k-Accept-new-regdomain-during-initialization.patch"
-
->From 931e5eb59e64804f3a90598b26c56643c43deb35 Mon Sep 17 00:00:00 2001
-From: Sven Eckelmann <sven@narfation.org>
-Date: Fri, 30 Oct 2020 12:02:21 +0100
-Subject: [RFC PATCH] ath11k: Accept new regdomain during initialization
-
-The driver is registering as iee80211_hw with its OPs and is then able to
-be called by the upper layer. This for example happens early in the phase
-when the correct regulary domain should be set. But the regulary domain
-will only be accepted when the ATH11K_FLAG_REGISTERED flag was set after
-the ATH11K_QMI_EVENT_FW_READY was processed. So it can easily happen that
-the regularly domain is not correctly processed when
-ATH11K_QMI_EVENT_FW_READY isn't handled immediately:
-
-  $ iw reg set CA
-  $ iw reg get|grep country
-  country CA: DFS-FCC
-  country CA: DFS-FCC
-  country CA: DFS-FCC
-
-  $ echo "c000000.wifi1" > /sys/bus/platform/drivers/ath11k/unbind
-  $ echo "c000000.wifi1" > /sys/bus/platform/drivers/ath11k/bind
-  $ iw reg get|grep country
-  country CA: DFS-FCC
-  country US: DFS-FCC
-  country US: DFS-FCC
-
-It is therefore essential to accept the regulatory changes without having
-seen the ATH11K_QMI_EVENT_FW_READY. And since there are also potentially
-more problems in ath11k_debug_pdev_create, ath11k_mac_register and
-ath11k_mac_allocate with their use of ATH11K_FLAG_REGISTERED, it is better
-to move the ATH11K_QMI_EVENT_FW_READY. to a new flag.
-
-Tested with WLAN.HK.2.4.0.1.r1-00019-QCAHKSWPL_SILICONZ-1
-
-Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
----
- drivers/net/wireless/ath/ath11k/core.h | 2 +-
- drivers/net/wireless/ath/ath11k/mac.c  | 2 ++
- drivers/net/wireless/ath/ath11k/qmi.c  | 4 ++--
- 3 files changed, 5 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath11k/core.h b/drivers/net/wireless/ath/ath11k/core.h
-index 18b97420f0d8..1d214eed9ea1 100644
---- a/drivers/net/wireless/ath/ath11k/core.h
-+++ b/drivers/net/wireless/ath/ath11k/core.h
-@@ -170,7 +170,7 @@ enum ath11k_scan_state {
- 
- enum ath11k_dev_flags {
- 	ATH11K_CAC_RUNNING,
--	ATH11K_FLAG_CORE_REGISTERED,
-+	ATH11K_FLAG_FW_READY,
- 	ATH11K_FLAG_CRASH_FLUSH,
- 	ATH11K_FLAG_RAW_MODE,
- 	ATH11K_FLAG_HW_CRYPTO_DISABLED,
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index 7f8dd47d2333..00aca46505a6 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -6280,6 +6280,8 @@ static int __ath11k_mac_register(struct ath11k *ar)
- 		 */
- 		ar->hw->wiphy->interface_modes &= ~BIT(NL80211_IFTYPE_MONITOR);
- 
-+	set_bit(ATH11K_FLAG_REGISTERED, &ab->dev_flags);
-+
- 	/* Apply the regd received during initialization */
- 	ret = ath11k_regd_update(ar, true);
- 	if (ret) {
-diff --git a/drivers/net/wireless/ath/ath11k/qmi.c b/drivers/net/wireless/ath/ath11k/qmi.c
-index c2b165158225..417f63d9fb6d 100644
---- a/drivers/net/wireless/ath/ath11k/qmi.c
-+++ b/drivers/net/wireless/ath/ath11k/qmi.c
-@@ -2612,7 +2612,7 @@ static void ath11k_qmi_driver_event_work(struct work_struct *work)
- 			ath11k_qmi_event_load_bdf(qmi);
- 			break;
- 		case ATH11K_QMI_EVENT_FW_READY:
--			if (test_bit(ATH11K_FLAG_REGISTERED, &ab->dev_flags)) {
-+			if (test_bit(ATH11K_FLAG_FW_READY, &ab->dev_flags)) {
- 				ath11k_hal_dump_srng_stats(ab);
- 				queue_work(ab->workqueue, &ab->restart_work);
- 				break;
-@@ -2620,7 +2620,7 @@ static void ath11k_qmi_driver_event_work(struct work_struct *work)
- 
- 			ath11k_core_qmi_firmware_ready(ab);
- 			ab->qmi.cal_done = 1;
--			set_bit(ATH11K_FLAG_REGISTERED, &ab->dev_flags);
-+			set_bit(ATH11K_FLAG_FW_READY, &ab->dev_flags);
- 
- 			break;
- 		case ATH11K_QMI_EVENT_COLD_BOOT_CAL_DONE:
--- 
-2.28.0
-
-
---nextPart1843920.GhX3yNMNC5--
-
---nextPart1669516.2VI8MhZXb1
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEF10rh2Elc9zjMuACXYcKB8Eme0YFAl+cCE0ACgkQXYcKB8Em
-e0ZbWhAAjZ7OGMvFIYXT5cKo0xE5ubbOAtaLxciVgqeaku0ZK34LxJMU4bQm0dXc
-jgVeo5grN26wGcr0kDslbS4RnZ2C8BBxNsHG+e45wKCRCwymnOcpqW566/KjcA61
-ciIy4FU49F36hbrUuWjEMe7kG7XRZVK2ocY3J8Rp5wd8uXYoK374q1yTuGXeIkVb
-vIdT39YJWSTXVEc/62G/l6vfdHmmqQHonsRg0B6KISeyAyuZ69rLjaJIAazb7vOr
-P1lUUrwrXhhkiQ1j2G0Lmmz5qzx+scqCfp8T2l+bTPa1D67ND3dByT1ntVfSuRiS
-7eLFfmWeAtjXxS2fnE5CHnlp94ri845TLQaOVVz3srKCynSxIBd0r5cfTvmSAgkU
-D5IkQu1KqNKVOJeaUw6JpxdOsiBArdhawwxiKjx8oEHgxiiq+uqWDI+W6nqU+ymg
-qZo957qeYHKaiyySv0D93/ykN26tj8iruX4ORJj2XLs9w8a4ER/hjyt6IBYozNWh
-Bh5TSrqZr0NIO9bC1gVO5GNgCu3NTkBh5PznO/ZKkvJCmDObarz+n8R7awsh3PMN
-Pu8PxNPjLAFztCIEKiMaXmYrDhcGSlUCYgAgyLzF4ZNgONs3CzFPWNFfICj54lhB
-MQo0KKKGsRp8h08lSoO36/KKBG3BAKRkAcMGuwRS6L3FAvBhZbc=
-=EGTx
------END PGP SIGNATURE-----
-
---nextPart1669516.2VI8MhZXb1--
-
+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
+pra5sIx/TR6gNtLG9MpND9zQt5j42hInkP81vqu9DG8lovoPMuR0JVpFRbPjHZ07cLqqbFMVS/8z
+53iSewIDAQABo4IB0zCCAc8wDgYDVR0PAQH/BAQDAgWgMIGeBggrBgEFBQcBAQSBkTCBjjBNBggr
+BgEFBQcwAoZBaHR0cDovL3NlY3VyZS5nbG9iYWxzaWduLmNvbS9jYWNlcnQvZ3NwZXJzb25hbHNp
+Z24yc2hhMmczb2NzcC5jcnQwPQYIKwYBBQUHMAGGMWh0dHA6Ly9vY3NwMi5nbG9iYWxzaWduLmNv
+bS9nc3BlcnNvbmFsc2lnbjJzaGEyZzMwTQYDVR0gBEYwRDBCBgorBgEEAaAyASgKMDQwMgYIKwYB
+BQUHAgEWJmh0dHBzOi8vd3d3Lmdsb2JhbHNpZ24uY29tL3JlcG9zaXRvcnkvMAkGA1UdEwQCMAAw
+RAYDVR0fBD0wOzA5oDegNYYzaHR0cDovL2NybC5nbG9iYWxzaWduLmNvbS9nc3BlcnNvbmFsc2ln
+bjJzaGEyZzMuY3JsMCcGA1UdEQQgMB6BHGFyZW5kLnZhbnNwcmllbEBicm9hZGNvbS5jb20wEwYD
+VR0lBAwwCgYIKwYBBQUHAwQwHwYDVR0jBBgwFoAUaXKCYjFnlUSFd5GAxAQ2SZ17C2EwHQYDVR0O
+BBYEFHAaaA+cRo3vYiA6aKVu1bOs4YAYMA0GCSqGSIb3DQEBCwUAA4IBAQCYLdyC8SuyQV6oa5uH
+kGtqz9FCJC/9gSclQLM8dZLHF3FYX8LlcQg/3Ct5I29YLK3T/r35B2zGljtXqVOIeSEz7sDXfGNy
+3dnLIafB1y04e7aR+thVn5Rp1YTF01FUWYbZrixlVuKvjn8vtKC+HhAoDCxvqnqEuA/8Usn7B0/N
+uOA46oQTLe3kjdIgXWJ29JWVqFUavYdcK0+0zyfeMBCTO6heYABeMP3wzYHfcuFDhqldTCpumqhZ
+WwHVQUbAn+xLMIQpycIQFoJIGJX4MeaTSMfLNP2w7nP2uLNgIeleF284vS0XVkBXSCgIGylP4SN+
+HQYrv7fVCbtp+c7nFvP7MYICbzCCAmsCAQEwbTBdMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xv
+YmFsU2lnbiBudi1zYTEzMDEGA1UEAxMqR2xvYmFsU2lnbiBQZXJzb25hbFNpZ24gMiBDQSAtIFNI
+QTI1NiAtIEczAgxR3m7Pj6LvQiWjJy0wDQYJYIZIAWUDBAIBBQCggdQwLwYJKoZIhvcNAQkEMSIE
+IAHFUgKiEMcu8KxR3xvcbAtLQdiw2gjkhaoLTW5NzIrhMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0B
+BwEwHAYJKoZIhvcNAQkFMQ8XDTIwMTAzMDE0MjU0M1owaQYJKoZIhvcNAQkPMVwwWjALBglghkgB
+ZQMEASowCwYJYIZIAWUDBAEWMAsGCWCGSAFlAwQBAjAKBggqhkiG9w0DBzALBgkqhkiG9w0BAQow
+CwYJKoZIhvcNAQEHMAsGCWCGSAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQCc1bZ6eQmhGbRWYA7f
+EUr/U57xFk2+EJaJugfETeR2Yd5k46OUVHSsPy0h2FBlZQ8zjjB5q2a3a11Z1TsF/5DL7/mLq1+P
+wJO4TkiQ/QC+lkrh/1WPMF/FRZ8buEs5z/px0JMIukEmE2L36+7QMiUNMrihB2rfiEtpn0Fr3+2D
+yYtdO0a/T1XbsD12I8uamK3Ysnj/Vrdq3c6dqH9RSflXLxIlIWru14kyiPKEUc6vqfQmRbOWz6BR
+Xrm/gHEm6LROHI92Zh80YsQCnygjgwsdF0dX4ISn+3XeHfoF0oxrgCG4YhtLuYvMvfqe/qefRexq
+rHIB3s2fnJpSdGhenliZ
+--000000000000fb658505b2e42bce--
