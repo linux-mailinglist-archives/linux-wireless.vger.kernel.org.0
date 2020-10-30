@@ -2,93 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 975912A10BC
-	for <lists+linux-wireless@lfdr.de>; Fri, 30 Oct 2020 23:18:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E6A0E2A10CA
+	for <lists+linux-wireless@lfdr.de>; Fri, 30 Oct 2020 23:23:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725780AbgJ3WSX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 30 Oct 2020 18:18:23 -0400
-Received: from 17.mo3.mail-out.ovh.net ([87.98.178.58]:57422 "EHLO
-        17.mo3.mail-out.ovh.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725803AbgJ3WSX (ORCPT
+        id S1725839AbgJ3WX4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 30 Oct 2020 18:23:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52450 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725780AbgJ3WX4 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 30 Oct 2020 18:18:23 -0400
-X-Greylist: delayed 1182 seconds by postgrey-1.27 at vger.kernel.org; Fri, 30 Oct 2020 18:18:22 EDT
-Received: from player774.ha.ovh.net (unknown [10.108.54.209])
-        by mo3.mail-out.ovh.net (Postfix) with ESMTP id 7966A265C66
-        for <linux-wireless@vger.kernel.org>; Fri, 30 Oct 2020 22:58:38 +0100 (CET)
-Received: from webmining-systems.com (lfbn-idf1-1-284-37.w86-195.abo.wanadoo.fr [86.195.122.37])
-        (Authenticated sender: info@webmining-systems.com)
-        by player774.ha.ovh.net (Postfix) with ESMTPSA id D2FA117C4225E;
-        Fri, 30 Oct 2020 21:58:34 +0000 (UTC)
-Authentication-Results: garm.ovh; auth=pass (GARM-101G0040a5641ed-589e-4abf-ba11-83173663bd7e,
-                    279B89908ABC8F04D5766AA394EABDEDD82A3687) smtp.auth=info@webmining-systems.com
-From:   Michal TOMA <michaltoma@sicoop.com>
-To:     Larry Finger <Larry.Finger@lwfinger.net>
-Cc:     linux-wireless@vger.kernel.org
+        Fri, 30 Oct 2020 18:23:56 -0400
+Received: from mail-oo1-xc35.google.com (mail-oo1-xc35.google.com [IPv6:2607:f8b0:4864:20::c35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 058ADC0613D5
+        for <linux-wireless@vger.kernel.org>; Fri, 30 Oct 2020 15:23:56 -0700 (PDT)
+Received: by mail-oo1-xc35.google.com with SMTP id j41so1949316oof.12
+        for <linux-wireless@vger.kernel.org>; Fri, 30 Oct 2020 15:23:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=SAhoaRRnuOp+mj14rN9iY3PUjge0sZsbVMUob9eUL+M=;
+        b=jHQmUW7EcUyl4mEGA//9kOyyQBC20CZ+EqLaT6RVOWPwXcd/vx+IpjkBuKYPt5eUzA
+         SOLIij11VAfLjIHVD3IdN9DFl6pXOTbeWg4VzKO7zjB/UEPmkd62kj+Yl8vSkx+yiDLc
+         ZuaGiwStDaC+fcRQLXeHc1kdhM5fHLM/o2diL8bo+6o2AftMxpbN6vePYlCFa71aarjs
+         eccV1/u83FyvK+OF7b4qMC2WLmpai3oJ+EYaNr6n8j3f3qG4lSPlmGikgypxgZA4U2ai
+         3U4Qz1NrEpUeUl8FwZVT9IQyVhekPzQUqh5MeXqDwvYDuQCchpVU9U2brJ4OsansMX4h
+         3/1A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
+         :date:user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=SAhoaRRnuOp+mj14rN9iY3PUjge0sZsbVMUob9eUL+M=;
+        b=ilvk8mIns80nyrXEYx1f2p9JEKZ0L2E1hV6bajKrT0rZhAibP0HNriatgXIK7VLFDs
+         ZDGEoTQHUl1DqP6z0nyh45Uf+RN8atpF5kHOPP6gNY77oIi/NAT4l5WeVeYwHna4RiD0
+         Qd6rSPbf5CbWzlDmjIYWqn/NUxu8Eg1djZa7Y77ZS6vO1PF2d5/u9sUEO5RZ1vOzEKtc
+         zOKLW4xxI7PsgTQDZqUxrD/XvkppB4Qqx2n2GK/Tsc+fiZYukH5TFV/FmbYmk8YchQhT
+         ZsD7CVEThX9E1GQT2yRwZflVCn8DPIkGqx51yTvsjwL5pMLjln/lDhvc206WOSI0XAt1
+         zJJw==
+X-Gm-Message-State: AOAM530k+aw4A1GFWKSvwnLZuziE9no+QO6n/IBINAjpZQeUuXfnVJBg
+        fBchvSXuDYX5jaV/Bsl68JZrXICiYII=
+X-Google-Smtp-Source: ABdhPJzOItw6SQwWWRH/LsIZCb+zWtDA+OuS/FIvt7kXTgqcjAkKo8MHs2aactrktoEUZunm2NAdqQ==
+X-Received: by 2002:a4a:9607:: with SMTP id q7mr3556102ooi.3.1604096635048;
+        Fri, 30 Oct 2020 15:23:55 -0700 (PDT)
+Received: from localhost.localdomain (cpe-24-31-245-230.kc.res.rr.com. [24.31.245.230])
+        by smtp.gmail.com with ESMTPSA id d199sm1714701oig.31.2020.10.30.15.23.54
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 30 Oct 2020 15:23:54 -0700 (PDT)
+Sender: Larry Finger <larry.finger@gmail.com>
 Subject: Re: rtw_8821ce driver in kernel 5.9.1: wifi module inactive
-Date:   Fri, 30 Oct 2020 22:52:24 +0100
-Message-ID: <2464818.GXZx34Hohp@linux-9g0r.site>
-Organization: SICOOP
-User-Agent: KMail/4.10.5 (Linux/3.7.10-1.45-desktop; KDE/4.10.5; x86_64; ; )
-In-Reply-To: <3c2baab8-bdcf-0679-b396-b42a05a0ef38@lwfinger.net>
-References: <6173742.tiux6Xeah1@linux-9g0r.site> <3c2baab8-bdcf-0679-b396-b42a05a0ef38@lwfinger.net>
+To:     Michal TOMA <michaltoma@sicoop.com>
+Cc:     linux-wireless@vger.kernel.org
+References: <6173742.tiux6Xeah1@linux-9g0r.site>
+ <3c2baab8-bdcf-0679-b396-b42a05a0ef38@lwfinger.net>
+ <2483828.eKyWTE2oqM@linux-9g0r.site>
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+Message-ID: <5a6155f1-f8ea-b8b4-e38f-0ebf8bf720d0@lwfinger.net>
+Date:   Fri, 30 Oct 2020 17:23:53 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.4.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-X-Ovh-Tracer-Id: 10128032615724890566
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedujedrleehgdduhedtucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvufffkfhofggjfhgggfgtsehtufertddtiedvnecuhfhrohhmpefoihgthhgrlhcuvffqofetuceomhhitghhrghlthhomhgrsehsihgtohhophdrtghomheqnecuggftrfgrthhtvghrnhepgfdvjeeluddtfeefgedvgfevveeigefgfeffjefgffdthfeileduteffveejleefnecukfhppedtrddtrddtrddtpdekiedrudelhedruddvvddrfeejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmohguvgepshhmthhpqdhouhhtpdhhvghlohepphhlrgihvghrjeejgedrhhgrrdhovhhhrdhnvghtpdhinhgvtheptddrtddrtddrtddpmhgrihhlfhhrohhmpehmihgthhgrlhhtohhmrgesshhitghoohhprdgtohhmpdhrtghpthhtoheplhhinhhugidqfihirhgvlhgvshhssehvghgvrhdrkhgvrhhnvghlrdhorhhg
+In-Reply-To: <2483828.eKyWTE2oqM@linux-9g0r.site>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Friday, October 30, 2020 01:35:45 PM Larry Finger wrote:
-> On 10/29/20 11:47 AM, Michal TOMA wrote:
-> > ->rfkill list
-> > 0: ideapad_wlan: Wireless LAN
-> > 
-> >          Soft blocked: no
-> >          Hard blocked: no
-> > 
-> > 1: ideapad_bluetooth: Bluetooth
-> > 
-> >          Soft blocked: yes
-> >          Hard blocked: no
-> > 
-> > 2: hci0: Bluetooth
-> > 
-> >          Soft blocked: yes
-> >          Hard blocked: no
-> > 
-> > 3: phy0: Wireless LAN
-> > 
-> >          Soft blocked: no
-> >          Hard blocked: no
+On 10/30/20 4:21 PM, Michal TOMA wrote:
+
+> iwlist wlp7s0 scan
 > 
-> Those bluetooth soft blocks may stop wifi. Can you clear them?
+> wlp7s0 No scan results
 > 
-> Larry
 
-No change with soft blocks cleared:
+You should move away from those obsolete commands (iwconfig, iwlist, etc.). The 
+new command would be
 
-rfkill unblock 1
-rfkill unblock 2
-rfkill list 
-0: ideapad_wlan: Wireless LAN
-        Soft blocked: no
-        Hard blocked: no
-1: ideapad_bluetooth: Bluetooth
-        Soft blocked: no
-        Hard blocked: no
-2: hci0: Bluetooth
-        Soft blocked: no
-        Hard blocked: no
-3: phy0: Wireless LAN
-        Soft blocked: no
-        Hard blocked: no
+sudo iw dev wlp7s0 scan
 
-iwlist wlp7s0 scan
-wlp7s0    No scan results
+It might not make any difference, but the new ones are better.
 
+Any additional messages between the start and stop vif messages in dmesg?
+
+I do not have an 8821ce for testing' however, I am not aware of any changes in 
+5.9.1 that should stop it from working/
+
+Larry
 
