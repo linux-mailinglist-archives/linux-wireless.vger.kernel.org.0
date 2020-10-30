@@ -2,71 +2,93 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CAE792A0FC8
-	for <lists+linux-wireless@lfdr.de>; Fri, 30 Oct 2020 21:58:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 975912A10BC
+	for <lists+linux-wireless@lfdr.de>; Fri, 30 Oct 2020 23:18:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727045AbgJ3U6q (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 30 Oct 2020 16:58:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39252 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726163AbgJ3U6q (ORCPT
+        id S1725780AbgJ3WSX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 30 Oct 2020 18:18:23 -0400
+Received: from 17.mo3.mail-out.ovh.net ([87.98.178.58]:57422 "EHLO
+        17.mo3.mail-out.ovh.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725803AbgJ3WSX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 30 Oct 2020 16:58:46 -0400
-Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com [IPv6:2607:f8b0:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 154A3C0613CF
-        for <linux-wireless@vger.kernel.org>; Fri, 30 Oct 2020 13:58:46 -0700 (PDT)
-Received: by mail-pg1-x52a.google.com with SMTP id o3so6198991pgr.11
-        for <linux-wireless@vger.kernel.org>; Fri, 30 Oct 2020 13:58:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=FtzmRWV4ZQZSKiqBCzb8jAVLnjSWkLkgJlWnAbiU7G4=;
-        b=ctFWAmzY9pM9V3izeEQFBLP/hN9bvkE6YrEEukZfZVr/fdDY+BNDs49ukrF0meZSYf
-         sO7fP3bf1NeCeRRvJLyfxY9aDJTWqzlYcTvP73ldfpzQcNdj1Okgkm0XbeXpB2LpYttB
-         9LzPzIoAKKAp/Be1SteD6RR+z4LdjFWipLY70=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=FtzmRWV4ZQZSKiqBCzb8jAVLnjSWkLkgJlWnAbiU7G4=;
-        b=CYQu/U2aicmUVIlD4N7SNEF27fznrxdljY4yUxUl8MvfA4s7xaA1Qdo2n1yJ66UTlM
-         R+7d601Xm4GTtW4pQ1ML/ckOJANcsoH44cQdrtPrhTLniekOVVcg4aV5zdRhNFU4VXUi
-         yp5PWRGNBJEFqiHzKKjM7vddCwiPcbxtugDhmHUuq+JqKWixpDo1WOKQb5+bg5458PBc
-         0OW88Lf6wBXy0dMFYh+oedkonYwrfppgD0CWPAZyGKWZUNVFU4EAW8nTqgeliMFtV8Re
-         TYPSr2Q1FMbl9SAKQYteYVIwVvUHth0D/EdvkO1nH7NofL/mduDlYgDyulpRgEanfWTu
-         0WKQ==
-X-Gm-Message-State: AOAM531yUDo3B2b1QkGKWr6lRvegKFpNkUxWZ7wU2pf6Ag/Np6k7b0aM
-        f4+UaVZWGrzQdIXEahjUXITODQ==
-X-Google-Smtp-Source: ABdhPJwSWc5Naotsu1b0Mkix08bNN//qp+bwA1P5gMbcxyWAnP/zldPfhxl/S9ZyHuXhUcA4y8B56A==
-X-Received: by 2002:a62:7b47:0:b029:18a:ab71:7821 with SMTP id w68-20020a627b470000b029018aab717821mr647073pfc.3.1604091525653;
-        Fri, 30 Oct 2020 13:58:45 -0700 (PDT)
-Received: from kuabhs-cdev.c.googlers.com.com (56.4.82.34.bc.googleusercontent.com. [34.82.4.56])
-        by smtp.gmail.com with ESMTPSA id v24sm6152807pgi.91.2020.10.30.13.58.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 30 Oct 2020 13:58:44 -0700 (PDT)
-From:   Abhishek Kumar <kuabhs@chromium.org>
-To:     johannes@sipsolutions.net
-Cc:     ath10k@lists.infradead.org, briannorris@chromium.org,
-        cjhuang@codeaurora.org, dianders@chromium.org,
-        linux-wireless@vger.kernel.org, kuabhs@chromium.org
-Subject: Re: [RFC 1/2] nl80211: add common API to configure SAR power limitations.
-Date:   Fri, 30 Oct 2020 20:56:38 +0000
-Message-Id: <20201030205639.1452712-1-kuabhs@chromium.org>
-X-Mailer: git-send-email 2.29.1.341.ge80a0c044ae-goog
-In-Reply-To: <6649b0c2ff988c2ae8723ea633f86cc12da43d95.camel@sipsolutions.net>
-References: <6649b0c2ff988c2ae8723ea633f86cc12da43d95.camel@sipsolutions.net>
+        Fri, 30 Oct 2020 18:18:23 -0400
+X-Greylist: delayed 1182 seconds by postgrey-1.27 at vger.kernel.org; Fri, 30 Oct 2020 18:18:22 EDT
+Received: from player774.ha.ovh.net (unknown [10.108.54.209])
+        by mo3.mail-out.ovh.net (Postfix) with ESMTP id 7966A265C66
+        for <linux-wireless@vger.kernel.org>; Fri, 30 Oct 2020 22:58:38 +0100 (CET)
+Received: from webmining-systems.com (lfbn-idf1-1-284-37.w86-195.abo.wanadoo.fr [86.195.122.37])
+        (Authenticated sender: info@webmining-systems.com)
+        by player774.ha.ovh.net (Postfix) with ESMTPSA id D2FA117C4225E;
+        Fri, 30 Oct 2020 21:58:34 +0000 (UTC)
+Authentication-Results: garm.ovh; auth=pass (GARM-101G0040a5641ed-589e-4abf-ba11-83173663bd7e,
+                    279B89908ABC8F04D5766AA394EABDEDD82A3687) smtp.auth=info@webmining-systems.com
+From:   Michal TOMA <michaltoma@sicoop.com>
+To:     Larry Finger <Larry.Finger@lwfinger.net>
+Cc:     linux-wireless@vger.kernel.org
+Subject: Re: rtw_8821ce driver in kernel 5.9.1: wifi module inactive
+Date:   Fri, 30 Oct 2020 22:52:24 +0100
+Message-ID: <2464818.GXZx34Hohp@linux-9g0r.site>
+Organization: SICOOP
+User-Agent: KMail/4.10.5 (Linux/3.7.10-1.45-desktop; KDE/4.10.5; x86_64; ; )
+In-Reply-To: <3c2baab8-bdcf-0679-b396-b42a05a0ef38@lwfinger.net>
+References: <6173742.tiux6Xeah1@linux-9g0r.site> <3c2baab8-bdcf-0679-b396-b42a05a0ef38@lwfinger.net>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+X-Ovh-Tracer-Id: 10128032615724890566
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedujedrleehgdduhedtucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvufffkfhofggjfhgggfgtsehtufertddtiedvnecuhfhrohhmpefoihgthhgrlhcuvffqofetuceomhhitghhrghlthhomhgrsehsihgtohhophdrtghomheqnecuggftrfgrthhtvghrnhepgfdvjeeluddtfeefgedvgfevveeigefgfeffjefgffdthfeileduteffveejleefnecukfhppedtrddtrddtrddtpdekiedrudelhedruddvvddrfeejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmohguvgepshhmthhpqdhouhhtpdhhvghlohepphhlrgihvghrjeejgedrhhgrrdhovhhhrdhnvghtpdhinhgvtheptddrtddrtddrtddpmhgrihhlfhhrohhmpehmihgthhgrlhhtohhmrgesshhitghoohhprdgtohhmpdhrtghpthhtoheplhhinhhugidqfihirhgvlhgvshhssehvghgvrhdrkhgvrhhnvghlrdhorhhg
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: kuabhs@chromium.org
+On Friday, October 30, 2020 01:35:45 PM Larry Finger wrote:
+> On 10/29/20 11:47 AM, Michal TOMA wrote:
+> > ->rfkill list
+> > 0: ideapad_wlan: Wireless LAN
+> > 
+> >          Soft blocked: no
+> >          Hard blocked: no
+> > 
+> > 1: ideapad_bluetooth: Bluetooth
+> > 
+> >          Soft blocked: yes
+> >          Hard blocked: no
+> > 
+> > 2: hci0: Bluetooth
+> > 
+> >          Soft blocked: yes
+> >          Hard blocked: no
+> > 
+> > 3: phy0: Wireless LAN
+> > 
+> >          Soft blocked: no
+> >          Hard blocked: no
+> 
+> Those bluetooth soft blocks may stop wifi. Can you clear them?
+> 
+> Larry
 
-These patches do not apply cleanly on kernel 5.4. I fixed the merged conflicts
-and verified. I verified these APIs using power_manager in chromeos, the APIs 
-works fine.
-Tested-by: Abhishek Kumar <kuabhs@chromium.org>
+No change with soft blocks cleared:
 
--Abhishek
+rfkill unblock 1
+rfkill unblock 2
+rfkill list 
+0: ideapad_wlan: Wireless LAN
+        Soft blocked: no
+        Hard blocked: no
+1: ideapad_bluetooth: Bluetooth
+        Soft blocked: no
+        Hard blocked: no
+2: hci0: Bluetooth
+        Soft blocked: no
+        Hard blocked: no
+3: phy0: Wireless LAN
+        Soft blocked: no
+        Hard blocked: no
+
+iwlist wlp7s0 scan
+wlp7s0    No scan results
+
+
