@@ -2,66 +2,79 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 42D0D2A171D
-	for <lists+linux-wireless@lfdr.de>; Sat, 31 Oct 2020 12:52:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B8572A1778
+	for <lists+linux-wireless@lfdr.de>; Sat, 31 Oct 2020 13:47:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727034AbgJaLwQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 31 Oct 2020 07:52:16 -0400
-Received: from 20.mo5.mail-out.ovh.net ([91.121.55.239]:48236 "EHLO
-        20.mo5.mail-out.ovh.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726935AbgJaLwQ (ORCPT
+        id S1727360AbgJaMr1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 31 Oct 2020 08:47:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43114 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727334AbgJaMrZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 31 Oct 2020 07:52:16 -0400
-X-Greylist: delayed 599 seconds by postgrey-1.27 at vger.kernel.org; Sat, 31 Oct 2020 07:52:15 EDT
-Received: from player726.ha.ovh.net (unknown [10.108.4.136])
-        by mo5.mail-out.ovh.net (Postfix) with ESMTP id 85A0D29C5E3
-        for <linux-wireless@vger.kernel.org>; Sat, 31 Oct 2020 12:36:35 +0100 (CET)
-Received: from webmining-systems.com (lfbn-idf1-1-284-37.w86-195.abo.wanadoo.fr [86.195.122.37])
-        (Authenticated sender: info@webmining-systems.com)
-        by player726.ha.ovh.net (Postfix) with ESMTPSA id 3242E17A11318;
-        Sat, 31 Oct 2020 11:36:33 +0000 (UTC)
-Authentication-Results: garm.ovh; auth=pass (GARM-103G0050122403f-530f-4c41-92dc-5b403d13989c,
-                    5A1BA32B9D2D82DFA4D995F9AB56433EB6550EE7) smtp.auth=info@webmining-systems.com
-From:   Michal TOMA <michaltoma@sicoop.com>
-To:     Larry Finger <Larry.Finger@lwfinger.net>
-Cc:     linux-wireless@vger.kernel.org
-Subject: Re: rtw_8821ce driver in kernel 5.9.1: wifi module inactive
-Date:   Sat, 31 Oct 2020 12:30:25 +0100
-Message-ID: <9610201.fqzlqthHOd@linux-9g0r.site>
-Organization: SICOOP
-User-Agent: KMail/4.10.5 (Linux/3.7.10-1.45-desktop; KDE/4.10.5; x86_64; ; )
-In-Reply-To: <5712da17-6f45-247a-e9ea-a13c6b9b683c@lwfinger.net>
-References: <6173742.tiux6Xeah1@linux-9g0r.site> <2483828.eKyWTE2oqM@linux-9g0r.site> <5712da17-6f45-247a-e9ea-a13c6b9b683c@lwfinger.net>
+        Sat, 31 Oct 2020 08:47:25 -0400
+Received: from mail-wm1-x344.google.com (mail-wm1-x344.google.com [IPv6:2a00:1450:4864:20::344])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7EE15C0613D5
+        for <linux-wireless@vger.kernel.org>; Sat, 31 Oct 2020 05:47:24 -0700 (PDT)
+Received: by mail-wm1-x344.google.com with SMTP id 13so5181346wmf.0
+        for <linux-wireless@vger.kernel.org>; Sat, 31 Oct 2020 05:47:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=nexus-software-ie.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=ULHt/HLkEloXEc+vkERr50FTC5butW7FdB3x9XpmiXk=;
+        b=yG5R1n92+epvZvHmA4i9XKZwXJf5jsmaEvMNhz3/pUH7sdwA22293e2zdJUF0E2MPT
+         aXqW2IRNJd8Bq8D0jQ8jtl1u0xfqaRQv+hQP6relAVmMUlhzWBQX0BibCqWLF6TllnrE
+         VRWB0vfPGeLbpXVtVoZvEMfE+xZnO+bm6MALqK1jCr+7os5IJJsL/NvrV46V72FXsfmO
+         1ERdtlH0/y+rqWwfPH6D44GzA9xvfKDt/WjiwQBeH7zPhl1X4KaYTwYkkQkoUOUJaLCq
+         M9Cn9SK34zFzoXUmGcj+eyi0Woa7khDKEa2Rqs2DzzhDsaa7pHA5NnsocJzk5fQ8rFcs
+         Ac0g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=ULHt/HLkEloXEc+vkERr50FTC5butW7FdB3x9XpmiXk=;
+        b=WHQ2kED/V1jCl/3Rv3b9MgTr1rudyMsQELHlUeR4z4uDc4LWsM4t5rQRDVh/8eKUIh
+         37dJr2D5D9LYblVYAiyFKIbWtxInN8+u7eSWyGwZNujeuw1Sa+zB4NKIk3RyzfA+GPCI
+         ZLNjzK8AN5DdzW3PvBNGEPeeW2+gIhj/n366lYd1aIt6vMSDiEvZkJrkZ5CLSM1rybZH
+         87EaJUCwkiuGo+oCfE3YeHlxFZ+lLpgcHlGZenCZahohdABC4HyHxQeSHeV7ShsJGdQE
+         NTgD9B23kl/05UkWyjrdPExvkBsRTkhoNCtUNCTIUt0eequrve3fCmbm3G9exAp0dY9B
+         YKRw==
+X-Gm-Message-State: AOAM533R+6NkXNaGZSOteQhZD0qABWQzX4Fyt0BnQqGOUpFEB3MY1t1s
+        G7xs1QHGbiDIdm+ONxg2Hd3LJw==
+X-Google-Smtp-Source: ABdhPJxaRfS3+ldonZSHIRWiuZnSH9mQQpxTi7u+J7jHLf9XrNRxdtJJdOex7J6TLpzLBcumGLnuFw==
+X-Received: by 2002:a7b:c3d2:: with SMTP id t18mr8338227wmj.112.1604148442904;
+        Sat, 31 Oct 2020 05:47:22 -0700 (PDT)
+Received: from [192.168.0.162] (188-141-3-169.dynamic.upc.ie. [188.141.3.169])
+        by smtp.gmail.com with ESMTPSA id z6sm8004924wmi.1.2020.10.31.05.47.21
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 31 Oct 2020 05:47:22 -0700 (PDT)
+Subject: Re: [PATCH 1/3] wcn36xx: Set LINK_FAIL_TX_CNT non zero on
+ wcn3620/wcn3660
+To:     Loic Poulain <loic.poulain@linaro.org>,
+        Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Cc:     Kalle Valo <kvalo@codeaurora.org>, wcn36xx@lists.infradead.org,
+        linux-wireless@vger.kernel.org, Shawn Guo <shawn.guo@linaro.org>
+References: <20201031022311.1677337-1-bryan.odonoghue@linaro.org>
+ <20201031022311.1677337-2-bryan.odonoghue@linaro.org>
+ <CAMZdPi9cOzGb8ursDU5Y6XbY7gP9-_f+LhAv7bRVLZZQgy6JJg@mail.gmail.com>
+From:   Bryan O'Donoghue <pure.logic@nexus-software.ie>
+Message-ID: <f7ed1146-bbf2-7cd8-6548-8a27218629fe@nexus-software.ie>
+Date:   Sat, 31 Oct 2020 12:48:19 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.12.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-X-Ovh-Tracer-Id: 5495235972320213446
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedujedrleejgdeftdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvffufffkohgfjghfggfgtgesthfuredttdeivdenucfhrhhomhepofhitghhrghlucfvqffotecuoehmihgthhgrlhhtohhmrgesshhitghoohhprdgtohhmqeenucggtffrrghtthgvrhhnpeektddvgfdugfdtteeftdehfeetteetfeevvddvgfeghfefteekhefffeeijefghfenucffohhmrghinhepohhpvghnshhushgvrdhorhhgnecukfhppedtrddtrddtrddtpdekiedrudelhedruddvvddrfeejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmohguvgepshhmthhpqdhouhhtpdhhvghlohepphhlrgihvghrjedviedrhhgrrdhovhhhrdhnvghtpdhinhgvtheptddrtddrtddrtddpmhgrihhlfhhrohhmpehmihgthhgrlhhtohhmrgesshhitghoohhprdgtohhmpdhrtghpthhtoheplhhinhhugidqfihirhgvlhgvshhssehvghgvrhdrkhgvrhhnvghlrdhorhhg
+In-Reply-To: <CAMZdPi9cOzGb8ursDU5Y6XbY7gP9-_f+LhAv7bRVLZZQgy6JJg@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Friday, October 30, 2020 08:30:16 PM Larry Finger wrote:
-> Michal,
-> 
-> My rtl8822ce works fine with 5.10.0-rc1 and 5.9.1 from openSUSE TW.
-> 
-> Larry
+On 31/10/2020 09:33, Loic Poulain wrote:
+> Could you set the value to the minimum value described in the
+> downstream driver (i.e 1000)?
 
-I didn't try 5.10.0-rc1 yet.
-I suspect some kind of deep sleep mode that seems to survive hard reboot.
-I'm on a laptop where I can't remove the battery and I don't have a double 
-boot to Windows to make a test.
-As additionnal context, before kernel 5.9.1, I was using the rtl8821ce driver 
-for openSUSE TW which packages the driver from the tomaspinho github repo: 
-https://build.opensuse.org/package/view_file/home:Sauerland/rtl8821ce/rtl8821ce.spec?expand=0
-
-And my wifi was working perfectly fine.
-
-Since then I tried to blacklist the rtw_8821ce driver and use the rtl8821ce 
-driver compiled for 5.9.1 and the behaviour is exactly the same: no wifi 
-either when the rtl8821ce is loaded by the kernel.
-
-Michal
+Agreed.
+Seems reasonable
