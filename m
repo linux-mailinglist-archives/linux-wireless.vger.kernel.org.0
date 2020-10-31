@@ -2,76 +2,90 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A1C42A12B1
-	for <lists+linux-wireless@lfdr.de>; Sat, 31 Oct 2020 02:30:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D9A12A12D2
+	for <lists+linux-wireless@lfdr.de>; Sat, 31 Oct 2020 03:22:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725786AbgJaBaT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 30 Oct 2020 21:30:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52928 "EHLO
+        id S1726189AbgJaCWW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 30 Oct 2020 22:22:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60832 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725446AbgJaBaT (ORCPT
+        with ESMTP id S1725536AbgJaCWV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 30 Oct 2020 21:30:19 -0400
-Received: from mail-ot1-x32b.google.com (mail-ot1-x32b.google.com [IPv6:2607:f8b0:4864:20::32b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16A80C0613D5
-        for <linux-wireless@vger.kernel.org>; Fri, 30 Oct 2020 18:30:19 -0700 (PDT)
-Received: by mail-ot1-x32b.google.com with SMTP id i18so2558564ots.0
-        for <linux-wireless@vger.kernel.org>; Fri, 30 Oct 2020 18:30:19 -0700 (PDT)
+        Fri, 30 Oct 2020 22:22:21 -0400
+Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com [IPv6:2a00:1450:4864:20::441])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43668C0613D5
+        for <linux-wireless@vger.kernel.org>; Fri, 30 Oct 2020 19:22:20 -0700 (PDT)
+Received: by mail-wr1-x441.google.com with SMTP id w14so8360151wrs.9
+        for <linux-wireless@vger.kernel.org>; Fri, 30 Oct 2020 19:22:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:from:subject:to:cc:references:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=OP7ewtSP6Fctoq4MSF0rcQn3CGYEJO3Ossdg5uQQTjI=;
-        b=VA4tsJb55Q3aZFmQRkDMXau64moTicPdG2/qIROvzcGtNB3FbMiahC1L34mEt7I81h
-         Kc7pAZztZowd+ZbCUJkQhUa0hgoab2+ty7lKGonXz6qnd6jg6x+M6u4PDrwaw/wsFTPA
-         BgBV1HCrHU3oFPj4i/uZS7M/BPOfAjxdkBzqvI6dlQ8IIh9/T/efJd9nWPu9YZ58Vyet
-         7G5WgjPKh4i5QvemrABs5Zhv1t0vqq04CmFM00COEfpHSow4WZ6WdnLcSqPzXwxJWQxq
-         KjfVjg4k0S56BXfpYkUOL7vwftpt+USWiof0bTqyBVAZyKOtAiH2IpafnYDzk7HI5htt
-         dOJw==
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=nID9K6h2pn7mi/8/QxMq+cTpvNlKmug44VkH6P31RKo=;
+        b=e815eacTiNaFcs03FZcT7ZUOCTt5KIu4Z7V0jqLp5Wu/GQ6Kn8GKu2UWjN2Stchy2Z
+         4XF5uNljg4spq4M7VS0D8nygi1joRuXKnIMXJscD4FzGRv6wSbMWXpoqixBxujjDKtR2
+         Z9xdmKZ6wRc79FnyycPFbfpnOlbkxKe4e7j7BQSpbFj5QCyCHEUL7xW4qv/vZMz+VJwv
+         WQoShqkXh/JPi12KcvrhRFfYsrmpMu0850YQlL0N//vztOfeXfqW6WkNWbgMV97gHq5b
+         KJDifBO4iHG67r8DBw41O4XPdbWEO0FT+nmt6RtVSm6YsPguwcIpaj2YmvVwM+5VrxS9
+         l4tg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:from:subject:to:cc:references:message-id
-         :date:user-agent:mime-version:in-reply-to:content-language
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=OP7ewtSP6Fctoq4MSF0rcQn3CGYEJO3Ossdg5uQQTjI=;
-        b=XhvSQnegojxwEzZbTsGsgAENE6+uD9hULGF3KdnIPbFjWEZsYTwsREhJB7oXRH1arR
-         2U7dvke3mQV/Z2OKb42zz1GzLPX2YsSNnhA8v+ns0IbhpNSxXFBmejQ6vcLECURwzYkF
-         CfYVxScuK6nzp8273S8d/kPZQkQaLkaVsalka5WaEd5MiJi58CnhoYVXPU0iMSrkUelo
-         HTjCapNYztb+HHn//oBe8lJ0n1leibRZEPGSio0XY+0PfXQpZ1LYJ/rDmcoQkLw2Jp3O
-         lQfg+vqa0RTspe7rFOhtOjwQMh9wcIF+UntOTgHex4Gx583YIkLG4eNKfuz9+KRTcafc
-         R/dw==
-X-Gm-Message-State: AOAM5315EEA+WWpkDnS8exss2Mue752B2puRJA4XHqs4wKnIudkqpVH7
-        3N1c0qHoVMriUcwMlfykJcZgwz9giHc=
-X-Google-Smtp-Source: ABdhPJxaVxiX5MFcCcWLWbT6ku41daOZuzWZZzz6HB/1UHyDLFy72gv2kDAQLvO0EJjVNG7GqE6f6w==
-X-Received: by 2002:a9d:bec:: with SMTP id 99mr3968618oth.103.1604107818131;
-        Fri, 30 Oct 2020 18:30:18 -0700 (PDT)
-Received: from localhost.localdomain (cpe-24-31-245-230.kc.res.rr.com. [24.31.245.230])
-        by smtp.gmail.com with ESMTPSA id x13sm1762109oot.24.2020.10.30.18.30.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 30 Oct 2020 18:30:17 -0700 (PDT)
-Sender: Larry Finger <larry.finger@gmail.com>
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-Subject: Re: rtw_8821ce driver in kernel 5.9.1: wifi module inactive
-To:     Michal TOMA <michaltoma@sicoop.com>
-Cc:     linux-wireless@vger.kernel.org
-References: <6173742.tiux6Xeah1@linux-9g0r.site>
- <3c2baab8-bdcf-0679-b396-b42a05a0ef38@lwfinger.net>
- <2483828.eKyWTE2oqM@linux-9g0r.site>
-Message-ID: <5712da17-6f45-247a-e9ea-a13c6b9b683c@lwfinger.net>
-Date:   Fri, 30 Oct 2020 20:30:16 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.4.0
+        bh=nID9K6h2pn7mi/8/QxMq+cTpvNlKmug44VkH6P31RKo=;
+        b=EKWknSVxXNCpsfYWT5j1A5jKkLp7P0u615UsMbZQc0CF6o3cnV+1ZzaHO4ZG6ADTdB
+         5wgtvNKsUw90dtTvlJ/NBL7kX6JqpDh76Pu9nfEUuLESSWQ1mzcMxZrT/EW0JG3cbKDA
+         2VeCwkXkjsELlaELGYCGmlqqQTMQb7mLm1z6kvdBz4WqEOudIGwOmhVJXRR50usKFf8Z
+         ItXqiUVkW1VEacEgeVmc1Zct5dZGsuHp2ELTlkuKJarLZ0AnP8TrPYe4ZYKnTL3tXcaC
+         JZNSWCiB9y3i+OG0LMn/IFRPoDdGZ52nH2XHsJpPqO6ldpkhlkhRmD92frScAwn7sZmf
+         9gJg==
+X-Gm-Message-State: AOAM532vfXZmc1YzP+qjyEgvN2U1v2o9niowMCkkgjoYiAOjg19lsbJ2
+        Fkch8YygZAhRQCflvxhe68xpFg==
+X-Google-Smtp-Source: ABdhPJw0rOnlFiJBdsdQYr4NOtV+7dW9keQrDNuTrWV5SYbAhvsbGlo9l8ykaKGFHqhswnfJjCWL+g==
+X-Received: by 2002:adf:ec47:: with SMTP id w7mr6685419wrn.253.1604110939086;
+        Fri, 30 Oct 2020 19:22:19 -0700 (PDT)
+Received: from sagittarius-a.chello.ie (188-141-3-169.dynamic.upc.ie. [188.141.3.169])
+        by smtp.gmail.com with ESMTPSA id g4sm6663817wmh.13.2020.10.30.19.22.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 30 Oct 2020 19:22:18 -0700 (PDT)
+From:   Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+To:     kvalo@codeaurora.org, wcn36xx@lists.infradead.org,
+        linux-wireless@vger.kernel.org
+Cc:     bryan.odonoghue@linaro.org, shawn.guo@linaro.org,
+        loic.poulain@linaro.org
+Subject: [PATCH 0/3] wcn36xx: Firmware link monitor/keepalive offload
+Date:   Sat, 31 Oct 2020 02:23:08 +0000
+Message-Id: <20201031022311.1677337-1-bryan.odonoghue@linaro.org>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
-In-Reply-To: <2483828.eKyWTE2oqM@linux-9g0r.site>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Michal,
+This patchset enables various firmware offload features for
 
-My rtl8822ce works fine with 5.10.0-rc1 and 5.9.1 from openSUSE TW.
+- Link keepalive
+- Link monitoring
 
-Larry
+Keepalive is a necessary precursor for an upcoming series on
+wake on wlan, since we need to inform the firmware to keep the link up in
+suspend.
+
+Testing shows that LINK_FAIL_TX_CNT is a link monitor enable field. Once
+set to non-zero link monitoring becomes active. This series activates
+CONNECTION_MONITOR after enabling LINK_FAIL_TX_CNT thus offloading link
+monitoring to the firmware.
+
+Bryan O'Donoghue (3):
+  wcn36xx: Set LINK_FAIL_TX_CNT non zero on wcn3620/wcn3660
+  wcn36xx: Enable firmware link monitoring
+  wcn36xx: Enable firmware offloaded keepalive
+
+ drivers/net/wireless/ath/wcn36xx/main.c | 3 +++
+ drivers/net/wireless/ath/wcn36xx/smd.c  | 1 +
+ 2 files changed, 4 insertions(+)
+
+-- 
+2.28.0
+
