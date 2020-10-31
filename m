@@ -2,55 +2,55 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DBB792A14CC
-	for <lists+linux-wireless@lfdr.de>; Sat, 31 Oct 2020 10:28:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E8C8F2A14D7
+	for <lists+linux-wireless@lfdr.de>; Sat, 31 Oct 2020 10:33:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726614AbgJaJ2F (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 31 Oct 2020 05:28:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40942 "EHLO
+        id S1726528AbgJaJd5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 31 Oct 2020 05:33:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41838 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726557AbgJaJ2E (ORCPT
+        with ESMTP id S1726424AbgJaJd4 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 31 Oct 2020 05:28:04 -0400
-Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com [IPv6:2a00:1450:4864:20::542])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3107EC0613D5
-        for <linux-wireless@vger.kernel.org>; Sat, 31 Oct 2020 02:28:03 -0700 (PDT)
-Received: by mail-ed1-x542.google.com with SMTP id l16so9167572eds.3
-        for <linux-wireless@vger.kernel.org>; Sat, 31 Oct 2020 02:28:03 -0700 (PDT)
+        Sat, 31 Oct 2020 05:33:56 -0400
+Received: from mail-ej1-x642.google.com (mail-ej1-x642.google.com [IPv6:2a00:1450:4864:20::642])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79D3AC0613D5
+        for <linux-wireless@vger.kernel.org>; Sat, 31 Oct 2020 02:33:56 -0700 (PDT)
+Received: by mail-ej1-x642.google.com with SMTP id o21so4858565ejb.3
+        for <linux-wireless@vger.kernel.org>; Sat, 31 Oct 2020 02:33:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=OvuOPTTNBuzvE6VSgAHKvB9UeM82FwMD7hIlgUB7AEg=;
-        b=XtbtCa+rqz++YljW0lMDjiLiqVjQLC625v1n69pWBOtOqb53H0CdVD+DnsTS4QJCsY
-         6iKiXQ+JiDyJV5UxkTTCpuJhahrkp8EOTAb/c85Y+kEkhUEvISB5UrhuKVcHiCWQlfmf
-         PArpPyZf/nPkjhvMflTFq6BAa4kgKU+5LTnlyCosLPWhJ4kOd2q6EjUubefXC8lHu+Iz
-         6uWUkYnjE+eSmaYCyiTlzpaGwQkyOTgFiK2JSLumFmBtjsYyRHnLc32h+CMhNFuYdzI4
-         NWXDHmWV1Owr/QTvo3+1yBbK+ZJ1c9RdUYPly/2PjLISmM/HvM1ho2LKEi+jiDgkOqHo
-         Q9mQ==
+        bh=vCM2e3iv/W0Mv/aI2ozgygl+TGhRSA93U6OS9gBPIUE=;
+        b=Pb5CwuuH/MVEKL+8pAt+/hzPBkCLISzg9k2lXwqZczOqTxdMLg6wSm5ELjTTwzREeh
+         TyO3PPpOXg/a+Lap/TOo+iQpso8K+7PBaJpF5d4BRMv+wjKJr8cyHj0UrY+hvpIMXGRq
+         hOJ372BDe/YttqbSGKu9CRv/ocRolgRw6Ykd59Yzv3ipE0RxVzydEOpbLYVfgz8NDEId
+         aRqWfJHgPl4BDko1QKBegfFnySW/7+3N3vn98ZH63iyne0OVOTz955uYMGHBaG31hKOi
+         X9K2EokehrPPq6zVSisMmWZO22zOp6rpUiGkfBwq5ruNfse58FMsjDEpXtnS+bK8RXca
+         F6Ew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=OvuOPTTNBuzvE6VSgAHKvB9UeM82FwMD7hIlgUB7AEg=;
-        b=o1swiUzybvv9Orc13rJEmYtUi9DwLS7hrTXnEUqxiWePAsT+t7XqESEn3AnM5pQfEB
-         0LnTRHSC0z7jKW8+OwSIj7IHGAtZpi3z4ZGvtEgsVnd8iaNVtNxcs8TmT4C2GuejE/xU
-         GqB46FKsFU6/L9CFJQE0YkCsYOv9Zi1vm7ilI+K48C6xwdc1l9r2boGpM3hYdI0oaCPl
-         Hwv3XNlMlF02CwJL2EXiXBMLgTr2I2MJxeMXQvGURj4obWnvC1yMjSyKL+Dfi6GkaeXy
-         VieZ6FZzjugGuZiAHHx6fdZ79BmCb8z++Wf7WDMujjykzZXDOSNmB+8gsiwYMUzxID3R
-         1XQA==
-X-Gm-Message-State: AOAM530ii/asw0cgf6GUcfcyJ6j+zjpK8FIY2hwWgXwfQ7ALcZ2b146P
-        itTGWoSv7ppxB0lNBfA8n6rgDS5sQbcAfamQJJGiPw==
-X-Google-Smtp-Source: ABdhPJxo838JK4mBGsW/D3rFk99+F0RuSivVMdR29ub0FVARS89XZmw5716i1+nCDV9pV+Lvb9xPyPI9I2kaBy6+pTE=
-X-Received: by 2002:a05:6402:287:: with SMTP id l7mr6620065edv.212.1604136481893;
- Sat, 31 Oct 2020 02:28:01 -0700 (PDT)
+        bh=vCM2e3iv/W0Mv/aI2ozgygl+TGhRSA93U6OS9gBPIUE=;
+        b=DWIJRD8ZfOPzUOQKPPpvdiS5/41IO0cFPqZCb0OncduZhXonLLve8TsMvOlPgnbGyY
+         rT4sDh9CO/hBxO3TzHbppREzyuO9S7N0gmmTwanpdZtZbXk4FcQ7YIHmYkMmJMI3VsLK
+         YXYzaaIS0wfYTOgRkGmRpr/5VEv4GYukz/M7jO9KOUG12KLmMiIlE+GfIQAOX2bgTMhw
+         3TqdUsUa3/P5dRlsKjOxZ73usjnp+kp2Wu6gACuRFbgXj0teAoOztaM4Wh5zXAQ9Ep2o
+         r3lA+40Yt/Qrqp2BQri1m3b4/IaxTZCFsTt/tVLmSR5oIonfdc+5oagrq7SShnq87x1e
+         sYng==
+X-Gm-Message-State: AOAM531zII2/Jsuys9A3ysAoY01vUCVm4iWjP9SLi0mpo7ZnWt6R7iOl
+        TB8LLbs2rOAVP775ubJPMb2WoXjKYyzYr/Jv5W4ZIA==
+X-Google-Smtp-Source: ABdhPJw0WjrtVfIABYww/bxCZjU7lDIRAB++inHECvmAf90hQuzwyNEFc2cMPckHyfX8Ez+esca7O0RQhqhtZLafeec=
+X-Received: by 2002:a17:906:e88:: with SMTP id p8mr6356717ejf.466.1604136835020;
+ Sat, 31 Oct 2020 02:33:55 -0700 (PDT)
 MIME-Version: 1.0
-References: <20201031022311.1677337-1-bryan.odonoghue@linaro.org> <20201031022311.1677337-2-bryan.odonoghue@linaro.org>
-In-Reply-To: <20201031022311.1677337-2-bryan.odonoghue@linaro.org>
+References: <20201031022311.1677337-1-bryan.odonoghue@linaro.org> <20201031022311.1677337-4-bryan.odonoghue@linaro.org>
+In-Reply-To: <20201031022311.1677337-4-bryan.odonoghue@linaro.org>
 From:   Loic Poulain <loic.poulain@linaro.org>
-Date:   Sat, 31 Oct 2020 10:33:57 +0100
-Message-ID: <CAMZdPi9cOzGb8ursDU5Y6XbY7gP9-_f+LhAv7bRVLZZQgy6JJg@mail.gmail.com>
-Subject: Re: [PATCH 1/3] wcn36xx: Set LINK_FAIL_TX_CNT non zero on wcn3620/wcn3660
+Date:   Sat, 31 Oct 2020 10:39:50 +0100
+Message-ID: <CAMZdPi86jzZ_A6OuBH=0NvdA=YXMjgXb+UaX5gajHffh20MgmQ@mail.gmail.com>
+Subject: Re: [PATCH 3/3] wcn36xx: Enable firmware offloaded keepalive
 To:     "Bryan O'Donoghue" <bryan.odonoghue@linaro.org>
 Cc:     Kalle Valo <kvalo@codeaurora.org>, wcn36xx@lists.infradead.org,
         linux-wireless@vger.kernel.org, Shawn Guo <shawn.guo@linaro.org>
@@ -59,55 +59,38 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-HI Bryan,
-
 On Sat, 31 Oct 2020 at 03:22, Bryan O'Donoghue
 <bryan.odonoghue@linaro.org> wrote:
 >
-> The firmware parameter LINK_FAIL_TX_CNT maps to the prima configuration
-> file parameter gLinkFailTxCnt and is described as:
+> This patch calls wcn36xx_smd_keep_alive_req() on the STA patch immediately
+> after associating with an AP.
 >
-> quote: " If within gLinkFailTimeout period(values is mentioned in msec) if
->          FW doesn't receive acks for gLinkFailTxCnt number of packets, then
->          link will be disconnected."
->
-> The downstream description sets a minimum value of 1000 a maximum value of
-> 60000 and a default value of 6000, however it appears that unless we
-> actually set this value deliberately firmware defaults it to 0.
->
-> Setting this value to non-zero results in the firmware doing link
-> monitoring.
->
-> In conjunction with ieee80211_hw_set(wcn->hw, CONNECTION_MONITOR); this
-> change effects offload of link monitoring to the firmware.
->
-> Tested with:
-> 'CNSS-PR-2-0-1-2-c1-74-130449-3' wcn3620
-> 'CNSS-PR-2-0-1-2-c1-00083'       wcn3680
+> This will cause the firmware to send a NULL packet out to the AP every 30
+> seconds, thus offloading keep-alive processing from the SoC to the
+> firmware.
 >
 > Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 > ---
->  drivers/net/wireless/ath/wcn36xx/smd.c | 1 +
->  1 file changed, 1 insertion(+)
+>  drivers/net/wireless/ath/wcn36xx/main.c | 2 ++
+>  1 file changed, 2 insertions(+)
 >
-> diff --git a/drivers/net/wireless/ath/wcn36xx/smd.c b/drivers/net/wireless/ath/wcn36xx/smd.c
-> index 766400f7b61c..262978371c1f 100644
-> --- a/drivers/net/wireless/ath/wcn36xx/smd.c
-> +++ b/drivers/net/wireless/ath/wcn36xx/smd.c
-> @@ -78,6 +78,7 @@ static struct wcn36xx_cfg_val wcn36xx_cfg_vals[] = {
->         WCN36XX_CFG_VAL(MAX_ASSOC_LIMIT, 10),
->         WCN36XX_CFG_VAL(ENABLE_MCC_ADAPTIVE_SCHEDULER, 0),
->         WCN36XX_CFG_VAL(ENABLE_DYNAMIC_RA_START_RATE, 133), /* MCS 5 */
-> +       WCN36XX_CFG_VAL(LINK_FAIL_TX_CNT, 200),
+> diff --git a/drivers/net/wireless/ath/wcn36xx/main.c b/drivers/net/wireless/ath/wcn36xx/main.c
+> index e924cc4acde0..b514a7b952df 100644
+> --- a/drivers/net/wireless/ath/wcn36xx/main.c
+> +++ b/drivers/net/wireless/ath/wcn36xx/main.c
+> @@ -910,6 +910,8 @@ static void wcn36xx_bss_info_changed(struct ieee80211_hw *hw,
+>                          * place where AID is available.
+>                          */
+>                         wcn36xx_smd_config_sta(wcn, vif, sta);
+> +                       wcn36xx_smd_keep_alive_req(wcn, vif,
+> +                                       WCN36XX_HAL_KEEP_ALIVE_NULL_PKT);
 
-Could you set the value to the minimum value described in the
-downstream driver (i.e 1000)? Not sure a lower value is supported on
-all wcn36xx firmware versions. So better to align with the
-recommendations.
+There is the wcn36xx_enable_keep_alive_null_packet function (from
+pmc.c) that you can use.
 
->  };
->
->  static struct wcn36xx_cfg_val wcn3680_cfg_vals[] = {
+>                 } else {
+>                         wcn36xx_dbg(WCN36XX_DBG_MAC,
+>                                     "disassociated bss %pM vif %pM AID=%d\n",
 > --
 > 2.28.0
 >
