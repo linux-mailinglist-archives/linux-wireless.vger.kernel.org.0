@@ -2,55 +2,55 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E8C8F2A14D7
-	for <lists+linux-wireless@lfdr.de>; Sat, 31 Oct 2020 10:33:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F21F2A14F9
+	for <lists+linux-wireless@lfdr.de>; Sat, 31 Oct 2020 10:51:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726528AbgJaJd5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 31 Oct 2020 05:33:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41838 "EHLO
+        id S1726595AbgJaJvW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 31 Oct 2020 05:51:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44488 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726424AbgJaJd4 (ORCPT
+        with ESMTP id S1726451AbgJaJvV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 31 Oct 2020 05:33:56 -0400
-Received: from mail-ej1-x642.google.com (mail-ej1-x642.google.com [IPv6:2a00:1450:4864:20::642])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79D3AC0613D5
-        for <linux-wireless@vger.kernel.org>; Sat, 31 Oct 2020 02:33:56 -0700 (PDT)
-Received: by mail-ej1-x642.google.com with SMTP id o21so4858565ejb.3
-        for <linux-wireless@vger.kernel.org>; Sat, 31 Oct 2020 02:33:56 -0700 (PDT)
+        Sat, 31 Oct 2020 05:51:21 -0400
+Received: from mail-ej1-x641.google.com (mail-ej1-x641.google.com [IPv6:2a00:1450:4864:20::641])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49904C0613D5
+        for <linux-wireless@vger.kernel.org>; Sat, 31 Oct 2020 02:51:21 -0700 (PDT)
+Received: by mail-ej1-x641.google.com with SMTP id za3so11932445ejb.5
+        for <linux-wireless@vger.kernel.org>; Sat, 31 Oct 2020 02:51:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=vCM2e3iv/W0Mv/aI2ozgygl+TGhRSA93U6OS9gBPIUE=;
-        b=Pb5CwuuH/MVEKL+8pAt+/hzPBkCLISzg9k2lXwqZczOqTxdMLg6wSm5ELjTTwzREeh
-         TyO3PPpOXg/a+Lap/TOo+iQpso8K+7PBaJpF5d4BRMv+wjKJr8cyHj0UrY+hvpIMXGRq
-         hOJ372BDe/YttqbSGKu9CRv/ocRolgRw6Ykd59Yzv3ipE0RxVzydEOpbLYVfgz8NDEId
-         aRqWfJHgPl4BDko1QKBegfFnySW/7+3N3vn98ZH63iyne0OVOTz955uYMGHBaG31hKOi
-         X9K2EokehrPPq6zVSisMmWZO22zOp6rpUiGkfBwq5ruNfse58FMsjDEpXtnS+bK8RXca
-         F6Ew==
+        bh=if9UshB7ng+YH792IkHMX3C1/nztgp+K729G9q9hkRA=;
+        b=ObbksygWRBDrw08gjXw6LNn99sqrUGTfQPgGaDZv9X2UJZqgKtNjL0p5r6WR9EbqMr
+         Pc+yPRDOzOaI2vrvOzvgnM3Hmd1n1IiK1CUjjtWADc3biJ4qpd+iSBkg4bqEO3ES0w4+
+         mCdxAZ6bA4Bcqd/1cW51zrWYJC0SPByHFuAu8mf1KTtcDpoNroSSNeaS+BJzsTLqZRJ/
+         qcZB2XPtl9w+N1A3pFdqalHTYsOdSmKQ+z183VPjrA1itDyDRSkEHu1VhXMOX6+YA0kw
+         UH5BJaIr2oh/uCEVHtIoMFtBIkGeDNwfeqKWB9z665iGtUW784bWNVNTyEQKRD3eOSM3
+         pWtQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=vCM2e3iv/W0Mv/aI2ozgygl+TGhRSA93U6OS9gBPIUE=;
-        b=DWIJRD8ZfOPzUOQKPPpvdiS5/41IO0cFPqZCb0OncduZhXonLLve8TsMvOlPgnbGyY
-         rT4sDh9CO/hBxO3TzHbppREzyuO9S7N0gmmTwanpdZtZbXk4FcQ7YIHmYkMmJMI3VsLK
-         YXYzaaIS0wfYTOgRkGmRpr/5VEv4GYukz/M7jO9KOUG12KLmMiIlE+GfIQAOX2bgTMhw
-         3TqdUsUa3/P5dRlsKjOxZ73usjnp+kp2Wu6gACuRFbgXj0teAoOztaM4Wh5zXAQ9Ep2o
-         r3lA+40Yt/Qrqp2BQri1m3b4/IaxTZCFsTt/tVLmSR5oIonfdc+5oagrq7SShnq87x1e
-         sYng==
-X-Gm-Message-State: AOAM531zII2/Jsuys9A3ysAoY01vUCVm4iWjP9SLi0mpo7ZnWt6R7iOl
-        TB8LLbs2rOAVP775ubJPMb2WoXjKYyzYr/Jv5W4ZIA==
-X-Google-Smtp-Source: ABdhPJw0WjrtVfIABYww/bxCZjU7lDIRAB++inHECvmAf90hQuzwyNEFc2cMPckHyfX8Ez+esca7O0RQhqhtZLafeec=
-X-Received: by 2002:a17:906:e88:: with SMTP id p8mr6356717ejf.466.1604136835020;
- Sat, 31 Oct 2020 02:33:55 -0700 (PDT)
+        bh=if9UshB7ng+YH792IkHMX3C1/nztgp+K729G9q9hkRA=;
+        b=t9VK0f5pACQsn2f6iAzZ9dqPUqg8q73oF252zO3YXvpB1HvTo5fcQHIwQ7Uqz/QNkS
+         51QJEYpTNBCnA2deLJG5pu+q7mmaYEytdp8PTllgcJP/sldr8HIS2QPPC5rbiBW27PUk
+         FaiMSy8HAVcVBZv17Pf2vxQ1wHiCinuugCm0VUc2wW7k8YfGYBQiDNTfthlQr0dZHgmb
+         rR9ZvbwM768tp/jZjXKT45IDxnMWvFxy2r+xh2R6mu9WdvKwMZp6Q97kuLUIHarOXaz1
+         TyA+nt9MC9tBQH7J9Lfph5RTSSOyklPf7LHOz3glh3d24SPd8JTJFiRFv2yB91pgRRyO
+         u+Bw==
+X-Gm-Message-State: AOAM531n1LDLPh357q8F+aTh16s5i4ePcc1GaGq4t/wb7AUdqfflZ5qc
+        2wjto3Zq8qXF9Ie5glnK1GEq3RQe8+3PNNwyxl3qgA==
+X-Google-Smtp-Source: ABdhPJzVDUMI6WeBorryRNb6mEvTnwCa83yAjOyfjDfCbxinprCp6ELB7KUshJDWWZZhQJCGTOrXIj7oabek32qJaF4=
+X-Received: by 2002:a17:906:2cc5:: with SMTP id r5mr6538796ejr.328.1604137879980;
+ Sat, 31 Oct 2020 02:51:19 -0700 (PDT)
 MIME-Version: 1.0
-References: <20201031022311.1677337-1-bryan.odonoghue@linaro.org> <20201031022311.1677337-4-bryan.odonoghue@linaro.org>
-In-Reply-To: <20201031022311.1677337-4-bryan.odonoghue@linaro.org>
+References: <20201031022311.1677337-1-bryan.odonoghue@linaro.org> <20201031022311.1677337-3-bryan.odonoghue@linaro.org>
+In-Reply-To: <20201031022311.1677337-3-bryan.odonoghue@linaro.org>
 From:   Loic Poulain <loic.poulain@linaro.org>
-Date:   Sat, 31 Oct 2020 10:39:50 +0100
-Message-ID: <CAMZdPi86jzZ_A6OuBH=0NvdA=YXMjgXb+UaX5gajHffh20MgmQ@mail.gmail.com>
-Subject: Re: [PATCH 3/3] wcn36xx: Enable firmware offloaded keepalive
+Date:   Sat, 31 Oct 2020 10:57:15 +0100
+Message-ID: <CAMZdPi8+_17YSOK3G+MX3dFb0vejeikBYarRR6EckysZD4G70A@mail.gmail.com>
+Subject: Re: [PATCH 2/3] wcn36xx: Enable firmware link monitoring
 To:     "Bryan O'Donoghue" <bryan.odonoghue@linaro.org>
 Cc:     Kalle Valo <kvalo@codeaurora.org>, wcn36xx@lists.infradead.org,
         linux-wireless@vger.kernel.org, Shawn Guo <shawn.guo@linaro.org>
@@ -62,35 +62,37 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 On Sat, 31 Oct 2020 at 03:22, Bryan O'Donoghue
 <bryan.odonoghue@linaro.org> wrote:
 >
-> This patch calls wcn36xx_smd_keep_alive_req() on the STA patch immediately
-> after associating with an AP.
->
-> This will cause the firmware to send a NULL packet out to the AP every 30
-> seconds, thus offloading keep-alive processing from the SoC to the
-> firmware.
+> This patch switches on CONNECTION_MONITOR. Once done it is up to the
+> firmware to send keep alive and to monitor the link state.
 >
 > Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 > ---
->  drivers/net/wireless/ath/wcn36xx/main.c | 2 ++
->  1 file changed, 2 insertions(+)
+>  drivers/net/wireless/ath/wcn36xx/main.c | 1 +
+>  1 file changed, 1 insertion(+)
 >
 > diff --git a/drivers/net/wireless/ath/wcn36xx/main.c b/drivers/net/wireless/ath/wcn36xx/main.c
-> index e924cc4acde0..b514a7b952df 100644
+> index 706728fba72d..e924cc4acde0 100644
 > --- a/drivers/net/wireless/ath/wcn36xx/main.c
 > +++ b/drivers/net/wireless/ath/wcn36xx/main.c
-> @@ -910,6 +910,8 @@ static void wcn36xx_bss_info_changed(struct ieee80211_hw *hw,
->                          * place where AID is available.
->                          */
->                         wcn36xx_smd_config_sta(wcn, vif, sta);
-> +                       wcn36xx_smd_keep_alive_req(wcn, vif,
-> +                                       WCN36XX_HAL_KEEP_ALIVE_NULL_PKT);
+> @@ -1246,6 +1246,7 @@ static int wcn36xx_init_ieee80211(struct wcn36xx *wcn)
+>         ieee80211_hw_set(wcn->hw, HAS_RATE_CONTROL);
+>         ieee80211_hw_set(wcn->hw, SINGLE_SCAN_ON_ALL_BANDS);
+>         ieee80211_hw_set(wcn->hw, REPORTS_TX_ACK_STATUS);
+> +       ieee80211_hw_set(wcn->hw, CONNECTION_MONITOR);
 
-There is the wcn36xx_enable_keep_alive_null_packet function (from
-pmc.c) that you can use.
+The problem could be that when connection monitor is enabled, mac80211
+stop sending regular null/probe packet to the AP (as expected), but
+also stop monitoring beacon miss:
+https://elixir.bootlin.com/linux/v5.10-rc1/source/net/mac80211/mlme.c#L115
 
->                 } else {
->                         wcn36xx_dbg(WCN36XX_DBG_MAC,
->                                     "disassociated bss %pM vif %pM AID=%d\n",
+That's not a big problem, but that would mean that in active mode
+(power_save disabled, non PS), the mac80211 will not detect if the AP
+has left immediately, and in worst case, only after 30 seconds. Note
+that in PS mode, beacon monitoring is well done by the firmware.
+
+>
+>         wcn->hw->wiphy->interface_modes = BIT(NL80211_IFTYPE_STATION) |
+>                 BIT(NL80211_IFTYPE_AP) |
 > --
 > 2.28.0
 >
