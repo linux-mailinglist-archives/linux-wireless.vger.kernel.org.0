@@ -2,50 +2,47 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 726AF2A21D0
+	by mail.lfdr.de (Postfix) with ESMTP id E11AA2A21D1
 	for <lists+linux-wireless@lfdr.de>; Sun,  1 Nov 2020 22:17:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727365AbgKAVRW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        id S1727367AbgKAVRW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
         Sun, 1 Nov 2020 16:17:22 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59378 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727331AbgKAVRU (ORCPT
+Received: from Galois.linutronix.de ([193.142.43.55]:54860 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727346AbgKAVRV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 1 Nov 2020 16:17:20 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D202C0617A6
-        for <linux-wireless@vger.kernel.org>; Sun,  1 Nov 2020 13:17:20 -0800 (PST)
+        Sun, 1 Nov 2020 16:17:21 -0500
 From:   Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1604265438;
+        s=2020; t=1604265439;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=z7awEtJFUN8Qqezsp1s+wh6Wj0pYybb8lUU0KF9hZZw=;
-        b=eopSm6N8RaPaZvEby91TB84/YQVaezUgNRFKMFt6K5rBgo5eKlOxT8TEMjEvBOSKAFLOVR
-        S29xLG0l0bPltaL9KxoVJBoq56a6BZMPcrtanaAS/WzcykDJLmrGmg5O8Y4B52VTfhpjdD
-        Tg9WJt0pBJ5OwGkKAhXyS7wvmza9jBF8a1PGgApKVwWYe+tdPKh0gUlpD+vDEoEyGOtjZF
-        D6utR70VkW+a2ENlcDMZOyEbICKg88RvB0yg4JTn7Rvi3KvYj8Ud9TcZjtlYi995Fiqswh
-        uoy3QnChCXxaHlyEx/8jFdZu1UsifD1s6y4kBllJFi0iFd6RoyibX4s9zzCdyg==
+        bh=R7dfqGTYtqpcpmGTqy7nqHoH75ex9DbnMN+AG/6sfCw=;
+        b=Tlr4dsNtCmfF2/kuPComNnd5xkzqoe4h9o7h9OCyO2zs4UQdD47qgl1XMiZs2XRWRYICsd
+        gq+rLE/JvAt37sGrXyDNXge3lsSl2rvtZMZGYtQPv4Xiw59IhC/3wQycmK8XU2+JD99ktN
+        wsyXXRwstKeMg+Bxh1FTtwPkcg/dXNA+1GdoSrKYU94a/eFcqJjByXh5IkcaiunMvYuOpO
+        qhQ8XW5EGfrtXoarwC1duRp6xRd0C61bcaI+Mrm8LhNHdP3reiGAj2/1Bq4vm2feDduotU
+        jhb5D4OTiP6VUOj9GAN8A99oTF7/kDk0sFB/1m4kOwV73Rag6Gwo1ZAnmrQk4w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1604265438;
+        s=2020e; t=1604265439;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=z7awEtJFUN8Qqezsp1s+wh6Wj0pYybb8lUU0KF9hZZw=;
-        b=joObuY7HORKKcO1+IYu3r5NA8UNSoimNQTLS7704UQ2MUIyjN/E247z3G3dRXa8VD/MWg1
-        nFaAJBVRYRAP25CA==
+        bh=R7dfqGTYtqpcpmGTqy7nqHoH75ex9DbnMN+AG/6sfCw=;
+        b=I9UKaBvLknzfO/lJc5hpe7amspmzTqgHOuOrgX1e08MRYu/X9EWtdGvw6CuDCrPbLirGtR
+        Wn4Te3rh9l8XoECw==
 To:     linux-wireless@vger.kernel.org
 Cc:     Jouni Malinen <j@w1.fi>, Kalle Valo <kvalo@codeaurora.org>,
         Ping-Ke Shih <pkshih@realtek.com>,
         Ulrich Kunitz <kune@deine-taler.de>,
         Thomas Gleixner <tglx@linutronix.de>,
         Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Subject: [PATCH 7/8] rtlwifi: Remove in_interrupt() usage in is_any_client_connect_to_ap().
-Date:   Sun,  1 Nov 2020 22:15:35 +0100
-Message-Id: <20201101211536.2966644-8-bigeasy@linutronix.de>
+Subject: [PATCH 8/8] rtlwifi: Remove in_interrupt() usage in halbtc_send_bt_mp_operation()
+Date:   Sun,  1 Nov 2020 22:15:36 +0100
+Message-Id: <20201101211536.2966644-9-bigeasy@linutronix.de>
 In-Reply-To: <20201101211536.2966644-1-bigeasy@linutronix.de>
 References: <20201101211536.2966644-1-bigeasy@linutronix.de>
 MIME-Version: 1.0
@@ -54,92 +51,111 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-is_any_client_connect_to_ap() is using in_interrupt() to determine whether
-it should acquire the lock prior accessing the list.
+halbtc_send_bt_mp_operation() uses in_interrupt() to determine if it is
+safe to invoke wait_for_completion().
 
 The usage of in_interrupt() in drivers is phased out and Linus clearly
 requested that code which changes behaviour depending on context should
 either be separated or the context be conveyed in an argument passed by the
 caller, which usually knows the context.
 
-The function is called from:
+Aside of that in_interrupt() is not correct as it does not catch preempt
+disabled regions which neither can sleep.
 
-    - halbtc_get()
+halbtc_send_bt_mp_operation() is called from:
 
-    - halbtc_get()
-        halbtc_get_wifi_link_status()
+ rtl_watchdog_wq_callback()
+   rtl_btc_periodical()
+     halbtc_get()
+       case BTC_GET_U4_BT_PATCH_VER:
+         halbtc_get_bt_patch_version()
 
-    - halbtc_display_dbg_msg()
-	halbtc_display_wifi_status()
-          halbtc_get_wifi_link_status()
+ which is preemtible context.
 
-All top level callers are part of the btc_coexist callback inferface and
-are never invoked from a context which can hold the lock already.
+   rtl_c2h_content_parsing()
+     btc_ops->btc_btinfo_notify()
+       rtl_btc_btinfo_notify()
+         exhalbtc_bt_info_notify()
+           ex_btc8723b1ant_bt_info_notify()
+	   ex_btc8821a1ant_bt_info_notify()
+	   ex_btc8821a2ant_bt_info_notify()
+             btcoexist->btc_set_bt_reg()
+               halbtc_set_bt_reg()
 
-The contexts which hold the lock are either protecting list add/del
-operations or list walks which never call into any of the btc_coexist
-interfaces.
+   rtl_c2h_content_parsing() is in turn called from:
 
-In fact the conditional is outright dangerous because if this function
-would be invoked from a BH disabled context the check would avoid taking
-the lock while on another CPU the list could be manipulated under the lock.
+   rtl_c2hcmd_wq_callback()
+     rtl_c2hcmd_launcher()
 
-Remove the in_interrupt() check and always acquire the lock.
+   which is preemptible context and from:
 
-To simplify the code further use list_empty() instead of walking the list
-and counting the entries just to check the count for > 0 at the end.
+   _rtl_pci_rx_interrupt
+     rtl_c2hcmd_enqueue()
+
+   which is obviously not preemptible but limited to C2H_BT_MP commands
+   which does invoke rtl_c2h_content_parsing().
+
+Aside of that it can be reached from:
+
+     halbtc_get()
+       case BTC_GET_U4_SUPPORTED_FEATURE:
+         halbtc_get_bt_coex_supported_feature()
+       case BTC_GET_U4_BT_FORBIDDEN_SLOT_VAL:
+         halbtc_get_bt_forbidden_slot_val()
+       case BTC_GET_U4_BT_DEVICE_INFO:
+         halbtc_get_bt_device_info()
+       case BTC_GET_U4_SUPPORTED_VERSION:
+         halbtc_get_bt_coex_supported_version()
+       case BTC_GET_U4_SUPPORTED_FEATURE:
+         halbtc_get_bt_coex_supported_feature()
+
+   btcoexist->btc_get_bt_afh_map_from_bt()
+     halbtc_get_bt_afh_map_from_bt()
+
+   btcoexist->btc_get_ble_scan_para_from_bt()
+     halbtc_get_ble_scan_para_from_bt()
+
+   btcoexist->btc_get_ble_scan_type_from_bt()
+     halbtc_get_ble_scan_type_from_bt()
+
+   btcoexist->btc_get_ant_det_val_from_bt()
+     halbtc_get_ant_det_val_from_bt()
+
+   btcoexist->btc_get_bt_coex_supported_version()
+     halbtc_get_bt_coex_supported_version()
+
+   btcoexist->btc_get_bt_coex_supported_feature()
+     halbtc_get_bt_coex_supported_feature()
+
+None of these have a caller. Welcome to the wonderful world of HALs and
+onion layers.
+
+Remove in_interrupt() check.
 
 Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Cc: Ping-Ke Shih <pkshih@realtek.com>
 Cc: Kalle Valo <kvalo@codeaurora.org>
 Cc: linux-wireless@vger.kernel.org
 ---
- .../realtek/rtlwifi/btcoexist/halbtcoutsrc.c  | 25 +++++--------------
- 1 file changed, 6 insertions(+), 19 deletions(-)
+ drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtcoutsrc.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
 diff --git a/drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtcoutsrc.c =
 b/drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtcoutsrc.c
-index 2c05369b79e4d..2155a6699ef8d 100644
+index 2155a6699ef8d..be4c0e60d44d1 100644
 --- a/drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtcoutsrc.c
 +++ b/drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtcoutsrc.c
-@@ -47,30 +47,17 @@ static bool is_any_client_connect_to_ap(struct btc_coex=
-ist *btcoexist)
- {
- 	struct rtl_priv *rtlpriv =3D btcoexist->adapter;
- 	struct rtl_mac *mac =3D rtl_mac(rtlpriv);
--	struct rtl_sta_info *drv_priv;
--	u8 cnt =3D 0;
-+	bool ret =3D false;
+@@ -240,9 +240,6 @@ bool halbtc_send_bt_mp_operation(struct btc_coexist *bt=
+coexist, u8 op_code,
+ 	rtl_dbg(rtlpriv, COMP_BT_COEXIST, DBG_LOUD,
+ 		"btmpinfo wait req_num=3D%d wait=3D%ld\n", req_num, wait_ms);
 =20
- 	if (mac->opmode =3D=3D NL80211_IFTYPE_ADHOC ||
- 	    mac->opmode =3D=3D NL80211_IFTYPE_MESH_POINT ||
- 	    mac->opmode =3D=3D NL80211_IFTYPE_AP) {
--		if (in_interrupt() > 0) {
--			list_for_each_entry(drv_priv, &rtlpriv->entry_list,
--					    list) {
--				cnt++;
--			}
--		} else {
--			spin_lock_bh(&rtlpriv->locks.entry_list_lock);
--			list_for_each_entry(drv_priv, &rtlpriv->entry_list,
--					    list) {
--				cnt++;
--			}
--			spin_unlock_bh(&rtlpriv->locks.entry_list_lock);
--		}
-+		spin_lock_bh(&rtlpriv->locks.entry_list_lock);
-+		if (!list_empty(&rtlpriv->entry_list))
-+			ret =3D true;
-+		spin_unlock_bh(&rtlpriv->locks.entry_list_lock);
- 	}
--	if (cnt > 0)
--		return true;
--	else
+-	if (in_interrupt())
 -		return false;
-+	return ret;
- }
-=20
- static bool halbtc_legacy(struct rtl_priv *adapter)
+-
+ 	if (wait_for_completion_timeout(&btcoexist->bt_mp_comp,
+ 					msecs_to_jiffies(wait_ms)) =3D=3D 0) {
+ 		rtl_dbg(rtlpriv, COMP_BT_COEXIST, DBG_DMESG,
 --=20
 2.29.1
 
