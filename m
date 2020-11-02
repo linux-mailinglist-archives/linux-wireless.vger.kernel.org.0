@@ -2,62 +2,64 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AB7982A295D
-	for <lists+linux-wireless@lfdr.de>; Mon,  2 Nov 2020 12:28:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4FB292A295A
+	for <lists+linux-wireless@lfdr.de>; Mon,  2 Nov 2020 12:28:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728907AbgKBL2O (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 2 Nov 2020 06:28:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47924 "EHLO
+        id S1728695AbgKBLYj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 2 Nov 2020 06:24:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47936 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728680AbgKBLYf (ORCPT
+        with ESMTP id S1728685AbgKBLYg (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 2 Nov 2020 06:24:35 -0500
-Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com [IPv6:2a00:1450:4864:20::341])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4EAEDC061A4B
-        for <linux-wireless@vger.kernel.org>; Mon,  2 Nov 2020 03:24:35 -0800 (PST)
-Received: by mail-wm1-x341.google.com with SMTP id p22so9018823wmg.3
-        for <linux-wireless@vger.kernel.org>; Mon, 02 Nov 2020 03:24:35 -0800 (PST)
+        Mon, 2 Nov 2020 06:24:36 -0500
+Received: from mail-wm1-x344.google.com (mail-wm1-x344.google.com [IPv6:2a00:1450:4864:20::344])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 730D7C061A4F
+        for <linux-wireless@vger.kernel.org>; Mon,  2 Nov 2020 03:24:36 -0800 (PST)
+Received: by mail-wm1-x344.google.com with SMTP id p19so1044401wmg.0
+        for <linux-wireless@vger.kernel.org>; Mon, 02 Nov 2020 03:24:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=64CEfunw0Swc50bQt2+cwn7fqQh5uT3oHRs6EoyWU9E=;
-        b=dtKvQLdkRazg4ZqZJN35vFHJcRcz7KG5R3YrIIrk1BqWZG52ptG3jTXh9dwINAFFaW
-         jHMJxG3L01KDxZGM8DiRvM0pXhW1sifQQUg3+uI/mTs/IheMZhk9XOu3hEmKj6vFuzTJ
-         J9HtYTh6XGVey5//Z1waQ0U8NaqUDbCX3Ens6q/oVSlUeNI78zF7s/c1dtNNf6jXGElV
-         NKUX+Z3SVyP0aQjr4FH8l9Rvkx2lXRhmqV+xpB8LcmMUSr8WF9Q0nOvVq+hO3cNf4uoF
-         69/hIIpY/oLAeAvtyQN68f9iPiFqnxPT11Og6kmJu+ARVbxQvjH44yzYyuJlh5LfUgK3
-         mO9g==
+        bh=TWZsEGtPpD8oYutyQ+ByJgl7e2tHiSuw7AnOdGhaOYA=;
+        b=hFXbZ1f+fWwg8BDaATDVbFNgYfjTpm2jUunOGVTBBDhXImU7Zwj8JQnvdOC2AUg9ZS
+         YmqUwf0ic58JzBEJ/LFibaPpsMy4yfNMxHbWruFczeqOHf57MVJaZOU7V/l0AKdSXqzk
+         niABLQHDofBK96LSXmBQPJhsJvEtLnPtGPZmtmo3xRMnUZE/A5EcpNeMdI9XO3Y4xrgj
+         jpiWQUO96pIezVsQZ8g2DfBIvw/ow++tyske4avK9i8UUxDnbL85bzJh16ElPjUJbe7W
+         X8UcJRBMNNaxzVO+pCaAC8t02qoPC4EWRGQywewqdNlbO5InWl25p/PxEXYyXH1UJy1L
+         sXFw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=64CEfunw0Swc50bQt2+cwn7fqQh5uT3oHRs6EoyWU9E=;
-        b=JhA4yC7oh78V1vgAbioyS5+7iHw4FRbwMk6U8o7dPjoj1jqvEhu44Y1FtcozG6aVfU
-         TFaWa6tNHGsTMRdQn2hjTu1NykNhUq+krVO1OWkR8dgG4FKqGd2LqnNpmKgvo4bc6nBZ
-         Trxx9AK6wClscp0BuIUJai5j7BpVFBiGD7/7o26rZxMMMdeWjIWGJ5WTOWbeWcOe3+yw
-         hQzz+7zwTUQfsnkTZJ1YdjceJH3dQiGBvHVakWvDaxMz76NL0Yc1QHqPd3J1pUADnfE6
-         WQXGyrFa00QRy1f24C5mwKyw8RfGDveiYz2KQjDUZjzQvNFHnTN/2Iy/y1++l6k0QYLZ
-         GU7w==
-X-Gm-Message-State: AOAM533sgJU60obFAA7LkIykgz5aaI/0Nvtt/ppYRVDdR8as6Q5ftQce
-        9LaFTQxhT7ABpC68fddpPNeUSg==
-X-Google-Smtp-Source: ABdhPJydIfAMGSt1CRrgd5Gr42T55jwHJBn2q8i6Ptcgr3b3uPbIhbh0BRsEugQbufM1iD3B5t8XbA==
-X-Received: by 2002:a7b:cd10:: with SMTP id f16mr11032536wmj.69.1604316274037;
-        Mon, 02 Nov 2020 03:24:34 -0800 (PST)
+        bh=TWZsEGtPpD8oYutyQ+ByJgl7e2tHiSuw7AnOdGhaOYA=;
+        b=UdyP+e0qOpe8bvc31MEmpxhzSgg2dEgdGuBkdFeJ+9TZdUwE+KV714VLeYKy7MajVb
+         hI2ICvhcQw6/+4PMJfp5Ml/fjveImy7obLHIcboKSay5vafdiYmLgjLFZb+wYnt3zSQQ
+         dD4gZqeIQgPTeNN364qcwR5mPHNGiHGCI9uVOqxM0cVF900yBsIAQSEsLSco854I4NRi
+         vNVUGFyzgbISWLW6b6CzA6pYCLa2uN85/J0kZlshfpdxkiNMf7d9D5apKIgCkq+f1hdj
+         Dg2aRt0n4X4OnzsesHaO3ZKZ5kxQldUpzI0ldj41FsWYQnFxjV4rUc94P6q63AHKTU2T
+         Ov2Q==
+X-Gm-Message-State: AOAM531fQEfRu6ArO69XOJBmeisRRcETfNaW+lchXZAb3UnvbamNl1V3
+        Kf6b267jK4j38hrSlvjtfcM/IQ==
+X-Google-Smtp-Source: ABdhPJxnMBOyspeV/rBPZ2r4TYoe+sbZEYC71PJjAKrIj7pjBYiPN/3y1BdtLLn8vX/7pFSEGIz2zA==
+X-Received: by 2002:a1c:790b:: with SMTP id l11mr16054124wme.53.1604316275243;
+        Mon, 02 Nov 2020 03:24:35 -0800 (PST)
 Received: from dell.default ([91.110.221.242])
-        by smtp.gmail.com with ESMTPSA id m14sm21867354wro.43.2020.11.02.03.24.32
+        by smtp.gmail.com with ESMTPSA id m14sm21867354wro.43.2020.11.02.03.24.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Nov 2020 03:24:33 -0800 (PST)
+        Mon, 02 Nov 2020 03:24:34 -0800 (PST)
 From:   Lee Jones <lee.jones@linaro.org>
 To:     kvalo@codeaurora.org
 Cc:     linux-kernel@vger.kernel.org, Lee Jones <lee.jones@linaro.org>,
-        QCA ath9k Development <ath9k-devel@qca.qualcomm.com>,
+        Luis Chamberlain <mcgrof@kernel.org>,
         "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>,
+        Aurelien Alleaume <slts@free.fr>, Valerio Riedel <hvr@gnu.org>,
+        "Luis R. Rodriguez" <mcgrof@ruslug.rutgers.edu>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH 13/41] ath9k: ar9003_2p2_initvals: Remove unused const variables
-Date:   Mon,  2 Nov 2020 11:23:42 +0000
-Message-Id: <20201102112410.1049272-14-lee.jones@linaro.org>
+Subject: [PATCH 14/41] prism54: isl_ioctl: Fix one function header and demote another
+Date:   Mon,  2 Nov 2020 11:23:43 +0000
+Message-Id: <20201102112410.1049272-15-lee.jones@linaro.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20201102112410.1049272-1-lee.jones@linaro.org>
 References: <20201102112410.1049272-1-lee.jones@linaro.org>
@@ -70,45 +72,55 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 Fixes the following W=1 kernel build warning(s):
 
- drivers/net/wireless/ath/ath9k/ar9003_2p2_initvals.h:1734:18: warning: ‘ar9300PciePhy_clkreq_disable_L1_2p2’ defined but not used [-Wunused-const-variable=]
- drivers/net/wireless/ath/ath9k/ar9003_2p2_initvals.h:1727:18: warning: ‘ar9300PciePhy_clkreq_enable_L1_2p2’ defined but not used [-Wunused-const-variable=]
+ from drivers/net/wireless/intersil/prism54/isl_ioctl.c:22:
+ inlined from ‘prism54_get_name’ at drivers/net/wireless/intersil/prism54/isl_ioctl.c:283:2:
+ drivers/net/wireless/intersil/prism54/isl_ioctl.c:68: warning: Function parameter or member 'priv' not described in 'prism54_mib_mode_helper'
+ drivers/net/wireless/intersil/prism54/isl_ioctl.c:68: warning: Excess function parameter 'mib' description in 'prism54_mib_mode_helper'
+ drivers/net/wireless/intersil/prism54/isl_ioctl.c:127: warning: Function parameter or member 'priv' not described in 'prism54_mib_init'
 
-Cc: QCA ath9k Development <ath9k-devel@qca.qualcomm.com>
+Cc: Luis Chamberlain <mcgrof@kernel.org>
 Cc: Kalle Valo <kvalo@codeaurora.org>
 Cc: "David S. Miller" <davem@davemloft.net>
 Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Aurelien Alleaume <slts@free.fr>
+Cc: Valerio Riedel <hvr@gnu.org>
+Cc: "Luis R. Rodriguez" <mcgrof@ruslug.rutgers.edu>
 Cc: linux-wireless@vger.kernel.org
 Cc: netdev@vger.kernel.org
 Signed-off-by: Lee Jones <lee.jones@linaro.org>
 ---
- .../net/wireless/ath/ath9k/ar9003_2p2_initvals.h   | 14 --------------
- 1 file changed, 14 deletions(-)
+ drivers/net/wireless/intersil/prism54/isl_ioctl.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/ar9003_2p2_initvals.h b/drivers/net/wireless/ath/ath9k/ar9003_2p2_initvals.h
-index c07866a2fdf96..16d5c0c5e2a8d 100644
---- a/drivers/net/wireless/ath/ath9k/ar9003_2p2_initvals.h
-+++ b/drivers/net/wireless/ath/ath9k/ar9003_2p2_initvals.h
-@@ -1724,20 +1724,6 @@ static const u32 ar9300PciePhy_pll_on_clkreq_disable_L1_2p2[][2] = {
- 	{0x00004044, 0x00000000},
- };
+diff --git a/drivers/net/wireless/intersil/prism54/isl_ioctl.c b/drivers/net/wireless/intersil/prism54/isl_ioctl.c
+index 2076f449b6e25..5e5ceafe098b9 100644
+--- a/drivers/net/wireless/intersil/prism54/isl_ioctl.c
++++ b/drivers/net/wireless/intersil/prism54/isl_ioctl.c
+@@ -54,7 +54,7 @@ static const unsigned char scan_rate_list[] = { 2, 4, 11, 22,
  
--static const u32 ar9300PciePhy_clkreq_enable_L1_2p2[][2] = {
--	/* Addr      allmodes  */
--	{0x00004040, 0x0825365e},
--	{0x00004040, 0x0008003b},
--	{0x00004044, 0x00000000},
--};
+ /**
+  * prism54_mib_mode_helper - MIB change mode helper function
+- * @mib: the &struct islpci_mib object to modify
++ * @priv: the &struct islpci_private object to modify
+  * @iw_mode: new mode (%IW_MODE_*)
+  *
+  *  This is a helper function, hence it does not lock. Make sure
+@@ -114,14 +114,13 @@ prism54_mib_mode_helper(islpci_private *priv, u32 iw_mode)
+ 	return 0;
+ }
+ 
+-/**
++/*
+  * prism54_mib_init - fill MIB cache with defaults
+  *
+  *  this function initializes the struct given as @mib with defaults,
+  *  of which many are retrieved from the global module parameter
+  *  variables.
+  */
 -
--static const u32 ar9300PciePhy_clkreq_disable_L1_2p2[][2] = {
--	/* Addr      allmodes  */
--	{0x00004040, 0x0821365e},
--	{0x00004040, 0x0008003b},
--	{0x00004044, 0x00000000},
--};
--
- static const u32 ar9300_2p2_baseband_core_txfir_coeff_japan_2484[][2] = {
- 	/* Addr      allmodes  */
- 	{0x0000a398, 0x00000000},
+ void
+ prism54_mib_init(islpci_private *priv)
+ {
 -- 
 2.25.1
 
