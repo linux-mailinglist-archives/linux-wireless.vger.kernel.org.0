@@ -2,106 +2,109 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 131B72A2567
-	for <lists+linux-wireless@lfdr.de>; Mon,  2 Nov 2020 08:39:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 907412A26CD
+	for <lists+linux-wireless@lfdr.de>; Mon,  2 Nov 2020 10:18:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728141AbgKBHjb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 2 Nov 2020 02:39:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41458 "EHLO
+        id S1728254AbgKBJSu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 2 Nov 2020 04:18:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56760 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728037AbgKBHja (ORCPT
+        with ESMTP id S1727818AbgKBJSu (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 2 Nov 2020 02:39:30 -0500
-Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com [IPv6:2607:f8b0:4864:20::442])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3C42C061A47
-        for <linux-wireless@vger.kernel.org>; Sun,  1 Nov 2020 23:39:30 -0800 (PST)
-Received: by mail-pf1-x442.google.com with SMTP id x13so10341160pfa.9
-        for <linux-wireless@vger.kernel.org>; Sun, 01 Nov 2020 23:39:30 -0800 (PST)
+        Mon, 2 Nov 2020 04:18:50 -0500
+Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com [IPv6:2607:f8b0:4864:20::542])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 582E2C0617A6;
+        Mon,  2 Nov 2020 01:18:50 -0800 (PST)
+Received: by mail-pg1-x542.google.com with SMTP id r10so10245970pgb.10;
+        Mon, 02 Nov 2020 01:18:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:reply-to:sender:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=BYhYUhRJ3iwbx5RvkgDxhY0ZIfAUwuAVrsbzhkyOflE=;
-        b=XI7Wa3eHfChPIVuj5z8osTFVl0YrTwJaDz8AYhEEqoSwWncscunNdvRDrBxm35nmCU
-         8EnCxvBkJqj+rAt7fB1GK5faRnkXkFdyDj9R0Ir8a5nspF6Jo0CxNJ3vbQwstpXDqnGc
-         tO2JcAt7iFVGFwm7rnFGq3Sc75shz2QnQjA1/BmgN9N8ErQT/9lIPyjrvjveDj64xXer
-         u6vWkSctHPYcFe8SzFuG5rLghmLkVHrDfeqBI1jIOr7wJoZxTQ3QUXZZ8ac5sgfb8qJI
-         VWz/jIuyZNQq1gsZpepcokruMkLAkL2rlRhpERSyZPeIsPSYik33Wi0UJzNarw9UKYMN
-         0DeA==
+        h=message-id:subject:from:to:cc:date:in-reply-to:references
+         :user-agent:mime-version:content-transfer-encoding;
+        bh=C6EWmjCYcjXlVuyLZRKUgfoLilwqmfMB+owPMFBnb9c=;
+        b=lqbbb1CuBH5eNHB+N9qLO4cm8cvi81NiGiv31bIGOb9Z0OAU3l/5nuLwb0vZO5VAnc
+         FEDcOl0s69baIoU66mtPLi4ns3NtJZEeV7tDuQgSWtKg/w6Uy4gsdeKKFNIMegHiwmmY
+         N1X3ePnP/HkuORodQnZZt4m9DBgpWfPfap1fji64okr+4Wr3Xt/gdHEhZX2LFsg6Yb3f
+         6yUIQRr/KxFvD0on0D87mkrrHctXOTUFCbVxIAnkH1Y2Ym+8RP07Ke8Ai/GNOyLnlSe0
+         07a3qX4l36fPErokAgiyKupIL8ICK/Ec6soFM9Kka1GSbGes/buF+kVlYgDlvlrV+j3h
+         EHOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:sender:from:date
-         :message-id:subject:to:content-transfer-encoding;
-        bh=BYhYUhRJ3iwbx5RvkgDxhY0ZIfAUwuAVrsbzhkyOflE=;
-        b=NBsr7dFi5zRw6853YStvMi6sYTuU0Th+4eH+jIuGvGxGSV534o+fzaYRdM041jdGsL
-         arLNHht2CqSUWU/tOxl/WF56p3GdJYHKxZ2xLaWjukAphzJnBEr3/KS4hF9drcYE1M06
-         a9OBwMtJFfLhscUl2dLTkBKoysY5n6aREAdmCLgwtE4e4wF1sOkDB5D9VTH7IGwOrqeb
-         VDtqEYz9fGVStrn1NbGHII4QZlwuPiy5vTTNkEO0BELR0UeLdbvNnrF6TqWBrh0y1hOT
-         UQfACJTPXIu/Obg5TgYHc7T9aZcyai/UpqEzOCJSLQLCT+bfVngXXVNzMDRnLaAYLQew
-         lIRA==
-X-Gm-Message-State: AOAM533t5EMcuxkbCLQZ7w0J/1NhGIjLP2mS7cpsg24FzXh+TZuI7SLd
-        UfMIg74AmLjjzwnvVBBBf5wAGX5VNkhJd9lg+Nk=
-X-Google-Smtp-Source: ABdhPJx0AO8uU0Zfvye4PewD2sA1593Z5ikYN9UnVFtgtWLuOn9euTMqHr5qgrqQXFxPf6OiQgQPxG6vx0A8SZKQW3k=
-X-Received: by 2002:a17:90b:3702:: with SMTP id mg2mr4888736pjb.108.1604302770255;
- Sun, 01 Nov 2020 23:39:30 -0800 (PST)
-MIME-Version: 1.0
-Reply-To: mrsmayaoliver686@gmail.com
-Sender: washburnmonica2@gmail.com
-Received: by 2002:a17:90b:4ad1:0:0:0:0 with HTTP; Sun, 1 Nov 2020 23:39:29
- -0800 (PST)
-From:   "Mrs. Maya Oliver" <mrsmayaoliver686@gmail.com>
-Date:   Sun, 1 Nov 2020 23:39:29 -0800
-X-Google-Sender-Auth: zg8QNnU84WnRU9bjEfGsQTh_0HE
-Message-ID: <CAHic_X+xoWu_XA7eoRMNXBJoknXNv5k-Pebd63uANWUn0RitKg@mail.gmail.com>
-Subject: My Greetings
-To:     undisclosed-recipients:;
+        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
+         :references:user-agent:mime-version:content-transfer-encoding;
+        bh=C6EWmjCYcjXlVuyLZRKUgfoLilwqmfMB+owPMFBnb9c=;
+        b=lz4TM7G424ITt2fH50bbLymL7POe6VcmiOFPkRmhHf5M7/Jz5OG+UzNk/i+lhtGDCn
+         VHZDndhjWIH5qJlL1e5Z3BouBs0SBfA2b9XxKr5GAzBEv5HGGmrQps5tvY/8lcy2z4Ky
+         dvT/4Wd/IpFUgeoV7f3ZDSCNms0AKB/Ha5hKI7KG7+ciA6vEi+3JT1Fwv1hrEFXkIcWh
+         oJ1yMUJffnHRazMO5nAuxm+cfKpItKfkdn4mX7w+oC3NswEIxNAIwzCUFlC4roiHulce
+         A6GlKwpQNVxkO8bl913oZ0CXLlfyIzj7itqeVy44TG9P1vbvz1QobVDRcAnA5kUFQc7z
+         29Vg==
+X-Gm-Message-State: AOAM532FOSiYA9g+lFlmC/HV72uJtfdsqqkI0AZXnXY3UaUWCD1RBfVS
+        /Dv14I/R1px6LeBFNCE2IxM=
+X-Google-Smtp-Source: ABdhPJwzD+VbIsMSXDRvOKgyBYSwbhoC1uwCxcueL1tYtFiAGqBfS4tnG1G/k6VNjo4gFo61zBqJAA==
+X-Received: by 2002:a17:90a:7886:: with SMTP id x6mr16220678pjk.21.1604308729837;
+        Mon, 02 Nov 2020 01:18:49 -0800 (PST)
+Received: from [192.168.1.59] (i60-35-254-237.s41.a020.ap.plala.or.jp. [60.35.254.237])
+        by smtp.gmail.com with ESMTPSA id nh24sm10707447pjb.44.2020.11.02.01.18.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Nov 2020 01:18:49 -0800 (PST)
+Message-ID: <47e149dfbf84e685f8b81e4561b8c9fd375cbcb4.camel@gmail.com>
+Subject: Re: [PATCH 2/3] mwifiex: add allow_ps_mode module parameter
+From:   Tsuchiya Yuto <kitakar@gmail.com>
+To:     Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc:     Brian Norris <briannorris@chromium.org>,
+        Amitkumar Karwar <amitkarwar@gmail.com>,
+        Ganapathi Bhat <ganapathi.bhat@nxp.com>,
+        Xinming Hu <huxinming820@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        "<netdev@vger.kernel.org>" <netdev@vger.kernel.org>,
+        Linux Kernel <linux-kernel@vger.kernel.org>,
+        Maximilian Luz <luzmaximilian@gmail.com>, verdre@v0yd.nl
+Date:   Mon, 02 Nov 2020 18:18:44 +0900
+In-Reply-To: <20201030110246.GM4077@smile.fi.intel.com>
+References: <20201028142433.18501-1-kitakar@gmail.com>
+         <20201028142433.18501-3-kitakar@gmail.com>
+         <CA+ASDXMXoyOr9oHBjtXZ1w9XxDggv+=XS4nwn0qKWCHQ3kybdw@mail.gmail.com>
+         <837d7ecd6f8a810153d219ec0b4995856abbe458.camel@gmail.com>
+         <20201030110246.GM4077@smile.fi.intel.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.38.1 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-My Dear
+On Fri, 2020-10-30 at 13:02 +0200, Andy Shevchenko wrote:
+> On Fri, Oct 30, 2020 at 04:58:33PM +0900, Tsuchiya Yuto wrote:
+> > On Wed, 2020-10-28 at 15:04 -0700, Brian Norris wrote:
+> 
+> ...
+> 
+> > On the other hand, I agree that I don't want to break the existing users.
+> > As you mentioned in the reply to the first patch, I can set the default
+> > value of this parameter depending on the chip id (88W8897) or DMI matching.
+> 
+> Since it's a PCIe device you already have ID table where you may add a
+> driver_data with what ever quirks are needed.
 
-My Name is Mrs. Maya Oliver, from Norway. I know that this message
-will be a surprise to you. Firstly, I am married to Mr. Patrick
-Oliver, A gold merchant who owns a small gold Mine in Burkina Faso; He
-died of Cardiovascular Disease in mid-March 2011. During his life time
-he deposited the sum of =E2=82=AC 8.5 Million Euro) Eight million, Five
-hundred thousand Euros in a bank in Ouagadougou the capital city of
-Burkina Faso. The deposited money was from the sale of the shares,
-death benefits payment and entitlements of my deceased husband by his
-company.
+Sorry that my comment was misleading. I meant using the quirk framework
+(that is based on DMI matching) I sent in another series. This applies
+to the other replies from me.
 
-I am sending this message to you praying that it will reach you in
-good health, since I am not in good health condition in which I sleep
-every night without knowing if I may be alive to see the next day. I
-am suffering from long time cancer and presently i am partially
-suffering from a stroke illness which has become almost impossible for
-me to move around. I am married to my late husband for over 4 years
-before he died and is unfortunately that we don't have a child, my
-doctor confided in me that i have less chance to live. Having known my
-health condition, I decided to contact you to claim the fund since I
-don't have any relation I grew up from the orphanage home,
+However, thanks to your comment, I remembered that currently, the quirk
+framework can be used only within pcie.c file. For example, the quirk
+initialization is currently done in pcie.c file. The mwifiex driver is
+divided into interface-specific modules (PCIe, SDIO, USB) (e.g.,
+mwifiex_pcie module for PCIe interface) + common module (mwifiex module).
 
-I have decided to donate what I have to you for the support of helping
-Motherless babies/Less privileged/Widows' because I am dying and
-diagnosed of cancer for about 2 years ago. I have been touched by God
-Almighty to donate from what I have inherited from my late husband to
-you for good work of God Almighty. I have asked Almighty God to
-forgive me and believe he has, because He is a Merciful God I will be
-going in for an operation surgery soon
+So, I need to extend the quirk framework so that it can be used by the
+mwifiex module globally.
 
-This is the reason i need your services to stand as my next of kin or
-an executor to claim the funds for charity purposes. If this money
-remains unclaimed after my death, the bank executives or the
-government will take the money as unclaimed fund and maybe use it for
-selfish and worthless ventures, I need a very honest person who can
-claim this money and use it for Charity works, for orphanages, widows
-and also build schools for less privilege that will be named after my
-late husband and my name; I need your urgent answer to know if you
-will be able to execute this project, and I will give you more
-Information on how the fund will be transferred to your bank account.
+I'll make a v2 version of this series with using the updated quirk
+framework so that it won't change behaviors for existing users.
 
-Thanks
-Mrs. Maya
+
