@@ -2,111 +2,117 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D1C302A2FC7
-	for <lists+linux-wireless@lfdr.de>; Mon,  2 Nov 2020 17:27:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BBE802A3042
+	for <lists+linux-wireless@lfdr.de>; Mon,  2 Nov 2020 17:51:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727055AbgKBQ10 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 2 Nov 2020 11:27:26 -0500
-Received: from z5.mailgun.us ([104.130.96.5]:29503 "EHLO z5.mailgun.us"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726613AbgKBQ1Z (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 2 Nov 2020 11:27:25 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1604334445; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=9EbglJUVZ4bi/re4PUXJJtXP6+9xKrG6cwTTB0fB9Nw=; b=pefS1y8IpCa9P6ukMjKjTeH0VXuA9l2vCAjx73aFLvfKmaAVZvdkvlkS5HQXAnET/zJcpYPo
- S4lqoZcCVCtLneuTi6v4MCf8d9lpnvWgAcjJP2fdVY88zHTGiZS0mc1K0exTYYn9TM190Gpz
- qSp8t8v3Ixc2JNQGlgZ5DGi9vPg=
-X-Mailgun-Sending-Ip: 104.130.96.5
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n01.prod.us-east-1.postgun.com with SMTP id
- 5fa033518646b0f26839e587 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 02 Nov 2020 16:26:57
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 5145AC433F0; Mon,  2 Nov 2020 16:26:56 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-Received: from x230.qca.qualcomm.com (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 6CF09C433C9;
-        Mon,  2 Nov 2020 16:26:53 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 6CF09C433C9
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Arnd Bergmann <arnd@kernel.org>
-Cc:     QCA ath9k Development <ath9k-devel@qca.qualcomm.com>,
+        id S1727251AbgKBQur (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 2 Nov 2020 11:50:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42778 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727238AbgKBQuq (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 2 Nov 2020 11:50:46 -0500
+Received: from mail-ot1-x342.google.com (mail-ot1-x342.google.com [IPv6:2607:f8b0:4864:20::342])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CDA1C061A04;
+        Mon,  2 Nov 2020 08:50:46 -0800 (PST)
+Received: by mail-ot1-x342.google.com with SMTP id m26so13183325otk.11;
+        Mon, 02 Nov 2020 08:50:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=WeSrGYLmFdGYxbtS+mGUMm9s3GCfZsGCQvg8JHBs8ZU=;
+        b=VGqUmIVdu1XcnXCfFrxWSjh6a+T+wt/Fl8lOf9LQsK94hwG7zo2zCHYRaQGAFxy637
+         +hYVDKCfNPxEbUC8WSwoSgEI4EXdjXwOkGpYJMt3T01jXz/6vTqWLkmIiiYLGax2YWZB
+         p6o1XnOiU7o5MeUmZlDTmpJm4CpQjqg9YNyhUaeTIL0QSigk+4x2P7aMeDHzfLx6ODFz
+         O+FWvlhuVxFVUv6i+Cjp4C4l5l84THFvpLwVceuHbXjiRzgCOdEwa6Du+PMX+1d0WqOe
+         EMiRZYqWgswPOFmJHEQLRxnKgZr5eWHVdxTAT5yqwxWHEPOqdZd0++k8S2C58z58NsTC
+         H9Dw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
+         :date:user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=WeSrGYLmFdGYxbtS+mGUMm9s3GCfZsGCQvg8JHBs8ZU=;
+        b=s/3nI1PbyfvLyLqKvhDY/EyvECx1yZuVlfvsvw2YirqnivjkylMTgMK6scsXL3bHvb
+         ndrv3HeirRGWEO+UrCXgETT2nUho00i6CLolLuqGiuD48osETQc3ROFeg7XhhB7nFixv
+         2gNcRlIuvFJVnj7LWNJFMy7AQfvbiv4A4VCCHvfjWr/ip/4lhYXjk7yK6etIdAicm6nC
+         ZatbY4ijLAybQKDpW/30KnPAU00WdLJncGPQM6CmQ8W92Dx8mI2W+s9hzz9fG/yVi2l6
+         NQ26ULQuAzztleE2/OO1Gbos/o7JhYzgHOI7rghF/L7lXdlOEQZJquUrKyPsoB68KFQF
+         aQ9g==
+X-Gm-Message-State: AOAM532sErZnWKu8JAIS6QA8WPslVwQUrfp9vODhoN5B9LnsQGFNZXvb
+        ISgyaka0hPNMUuaiVdlUmTkf0/F3Pb0=
+X-Google-Smtp-Source: ABdhPJxJgGdm9pPmTHzsJyw72b7iyET2Fz+OTPGgxPmrB+pKhV7INE5MshZ2SNI2NKicCE+bJDT/Aw==
+X-Received: by 2002:a9d:2cc:: with SMTP id 70mr13153645otl.346.1604335845591;
+        Mon, 02 Nov 2020 08:50:45 -0800 (PST)
+Received: from localhost.localdomain (cpe-24-31-245-230.kc.res.rr.com. [24.31.245.230])
+        by smtp.gmail.com with ESMTPSA id r21sm3236526otc.0.2020.11.02.08.50.44
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 02 Nov 2020 08:50:44 -0800 (PST)
+Sender: Larry Finger <larry.finger@gmail.com>
+Subject: Re: [PATCH 05/41] rtl8192cu: trx: Demote clear abuse of kernel-doc
+ format
+To:     Lee Jones <lee.jones@linaro.org>, kvalo@codeaurora.org
+Cc:     linux-kernel@vger.kernel.org, Ping-Ke Shih <pkshih@realtek.com>,
         "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next 08/11] ath9k: work around false-positive gcc warning
-References: <20201026213040.3889546-1-arnd@kernel.org>
-        <20201026213040.3889546-8-arnd@kernel.org>
-Date:   Mon, 02 Nov 2020 18:26:51 +0200
-In-Reply-To: <20201026213040.3889546-8-arnd@kernel.org> (Arnd Bergmann's
-        message of "Mon, 26 Oct 2020 22:29:55 +0100")
-Message-ID: <87tuu7ohbo.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+References: <20201102112410.1049272-1-lee.jones@linaro.org>
+ <20201102112410.1049272-6-lee.jones@linaro.org>
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+Message-ID: <be7ae9a4-a9ec-8670-208b-44f9117e0f04@lwfinger.net>
+Date:   Mon, 2 Nov 2020 10:50:43 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.4.0
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <20201102112410.1049272-6-lee.jones@linaro.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Arnd Bergmann <arnd@kernel.org> writes:
-
-> From: Arnd Bergmann <arnd@arndb.de>
->
-> gcc-10 shows a false-positive warning with CONFIG_KASAN:
->
-> drivers/net/wireless/ath/ath9k/dynack.c: In function 'ath_dynack_sample_tx_ts':
-> include/linux/etherdevice.h:290:14: warning: writing 4 bytes into a region of size 0 [-Wstringop-overflow=]
->   290 |  *(u32 *)dst = *(const u32 *)src;
->       |  ~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~
->
-> Until gcc is fixed, work around this by using memcpy() in place
-> of ether_addr_copy(). Hopefully gcc-11 will not have this problem.
->
-> Link: https://godbolt.org/z/sab1MK
-> Link: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97490
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+On 11/2/20 5:23 AM, Lee Jones wrote:
+> Fixes the following W=1 kernel build warning(s):
+> 
+>   drivers/net/wireless/realtek/rtlwifi/rtl8192cu/trx.c:455: warning: Function parameter or member 'txdesc' not described in '_rtl_tx_desc_checksum'
+> 
+> Cc: Ping-Ke Shih <pkshih@realtek.com>
+> Cc: Kalle Valo <kvalo@codeaurora.org>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: Jakub Kicinski <kuba@kernel.org>
+> Cc: Larry Finger <Larry.Finger@lwfinger.net>
+> Cc: linux-wireless@vger.kernel.org
+> Cc: netdev@vger.kernel.org
+> Signed-off-by: Lee Jones <lee.jones@linaro.org>
 > ---
->  drivers/net/wireless/ath/ath9k/dynack.c | 6 ++++++
->  1 file changed, 6 insertions(+)
->
-> diff --git a/drivers/net/wireless/ath/ath9k/dynack.c b/drivers/net/wireless/ath/ath9k/dynack.c
-> index fbeb4a739d32..e4eb96b26ca4 100644
-> --- a/drivers/net/wireless/ath/ath9k/dynack.c
-> +++ b/drivers/net/wireless/ath/ath9k/dynack.c
-> @@ -247,8 +247,14 @@ void ath_dynack_sample_tx_ts(struct ath_hw *ah, struct sk_buff *skb,
->  	ridx = ts->ts_rateindex;
->  
->  	da->st_rbf.ts[da->st_rbf.t_rb].tstamp = ts->ts_tstamp;
-> +#if defined(CONFIG_KASAN) && (CONFIG_GCC_VERSION >= 100000) && (CONFIG_GCC_VERSION < 110000)
-> +	/* https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97490 */
-> +	memcpy(da->st_rbf.addr[da->st_rbf.t_rb].h_dest, hdr->addr1, ETH_ALEN);
-> +	memcpy(da->st_rbf.addr[da->st_rbf.t_rb].h_src, hdr->addr2, ETH_ALEN);
-> +#else
->  	ether_addr_copy(da->st_rbf.addr[da->st_rbf.t_rb].h_dest, hdr->addr1);
->  	ether_addr_copy(da->st_rbf.addr[da->st_rbf.t_rb].h_src, hdr->addr2);
-> +#endif
+>   drivers/net/wireless/realtek/rtlwifi/rtl8192cu/trx.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/trx.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/trx.c
+> index 1ad0cf37f60bb..87f959d5d861d 100644
+> --- a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/trx.c
+> +++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/trx.c
+> @@ -448,7 +448,7 @@ static void _rtl_fill_usb_tx_desc(__le32 *txdesc)
+>   	set_tx_desc_first_seg(txdesc, 1);
+>   }
+>   
+> -/**
+> +/*
+>    *	For HW recovery information
+>    */
+>   static void _rtl_tx_desc_checksum(__le32 *txdesc)
+> 
 
-Isn't there a better way to handle this? I really would not want
-checking for GCC versions become a common approach in drivers.
+Did you check this patch with checkpatch.pl? I think you substituted one warning 
+for another. The wireless-testing trees previously did not accept a bare "/*", 
+which is why "/**" was present.
 
-I even think that using memcpy() always is better than the ugly ifdef.
+This particular instance should have
+/* For HW recovery information */
+as the comment.
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+Larry
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
