@@ -2,127 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AC7F52A359D
-	for <lists+linux-wireless@lfdr.de>; Mon,  2 Nov 2020 21:58:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BDA0E2A361B
+	for <lists+linux-wireless@lfdr.de>; Mon,  2 Nov 2020 22:41:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726189AbgKBU6C (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 2 Nov 2020 15:58:02 -0500
-Received: from mail.kernel.org ([198.145.29.99]:47586 "EHLO mail.kernel.org"
+        id S1726097AbgKBVlc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 2 Nov 2020 16:41:32 -0500
+Received: from mail.kernel.org ([198.145.29.99]:58436 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726203AbgKBU5y (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 2 Nov 2020 15:57:54 -0500
-Received: from localhost (230.sub-72-107-127.myvzw.com [72.107.127.230])
+        id S1725841AbgKBVlc (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 2 Nov 2020 16:41:32 -0500
+Received: from lt-jalone-7480.mtl.com (c-24-6-56-119.hsd1.ca.comcast.net [24.6.56.119])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id CE8AF206E5;
-        Mon,  2 Nov 2020 20:57:53 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 6EE4921D40;
+        Mon,  2 Nov 2020 21:41:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1604350674;
-        bh=xbZHn8i0jDfuSVEZ0Oksa2dOCGUBfV80Nzny1ZBkJT8=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=km9zzTo5pPmsKfzc8Mq1w+gaXmsX3YfR2RHRQP9ho/Sd03XOtOtlu2Zp0gJjJZSy8
-         DHSlU4qPH9za2kgkK4I/718zibShYPbKnXGvLQz9JBsTWQAZydTChUGo0ZxpG1y34V
-         eM1RFAadDdqM56bwCvGGJcehMt19uC85p2bceyJw=
-Date:   Mon, 2 Nov 2020 14:57:52 -0600
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     Thomas Krause <thomaskrause@posteo.de>, ath11k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, linux-pci@vger.kernel.org,
-        Devin Bayer <dev@doubly.so>,
-        Govind Singh <govinds@codeaurora.org>
-Subject: Re: pci_alloc_irq_vectors fails ENOSPC for XPS 13 9310
-Message-ID: <20201102205752.GA34153@bjorn-Precision-5520>
+        s=default; t=1604353291;
+        bh=CT78URbf8GWUrauRnN7DRJ5X5z820SmGZe8HhrCPyTY=;
+        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+        b=F3ka5x6N19Rp7WtfdR4oM2thWJyW5uF0CpRDHZKTIn7zaFGSn5bBL4vkRh0550qnI
+         lGZrPKMm2fJzhc/aBEQzYjjML/1g3PbMMvddAbtL2uE0wIGZ5ooLgSMaeua6X1a1Pk
+         UF2VWhVZnZ67yk5X5Estw6tnPoHhELfjpb7ZTFk0=
+Message-ID: <5940727ec6361becbac13d5dcbdc995c1fa3353b.camel@kernel.org>
+Subject: Re: [PATCH net-next 04/15] net: mlx5: Replace in_irq() usage.
+From:   Saeed Mahameed <saeed@kernel.org>
+To:     Jakub Kicinski <kuba@kernel.org>, Leon Romanovsky <leon@kernel.org>
+Cc:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        netdev@vger.kernel.org, Aymen Sghaier <aymen.sghaier@nxp.com>,
+        Daniel Drake <dsd@gentoo.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        Horia =?UTF-8?Q?Geant=C4=83?= <horia.geanta@nxp.com>,
+        Jon Mason <jdmason@kudzu.us>, Jouni Malinen <j@w1.fi>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        linux-arm-kernel@lists.infradead.org, linux-crypto@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-rdma@vger.kernel.org,
+        linux-wireless@vger.kernel.org, Li Yang <leoyang.li@nxp.com>,
+        Madalin Bucur <madalin.bucur@nxp.com>,
+        Ping-Ke Shih <pkshih@realtek.com>,
+        Rain River <rain.1986.08.12@gmail.com>,
+        Samuel Chessman <chessman@tux.org>,
+        Ulrich Kunitz <kune@deine-taler.de>,
+        Zhu Yanjun <zyjzyj2000@gmail.com>,
+        Thomas Gleixner <tglx@linutronix.de>
+Date:   Mon, 02 Nov 2020 13:41:29 -0800
+In-Reply-To: <20201031095938.3878412e@kicinski-fedora-PC1C0HJN.hsd1.ca.comcast.net>
+References: <20201027225454.3492351-1-bigeasy@linutronix.de>
+         <20201027225454.3492351-5-bigeasy@linutronix.de>
+         <20201031095938.3878412e@kicinski-fedora-PC1C0HJN.hsd1.ca.comcast.net>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.5 (3.36.5-1.fc32) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <871rhbvbjk.fsf@codeaurora.org>
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-[+cc Govind, author of 5697a564d369 ("ath11k: pci: add MSI config
-initialisation")]
-
-On Mon, Nov 02, 2020 at 08:49:51PM +0200, Kalle Valo wrote:
-> + linux-wireless, linux-pci, devin
+On Sat, 2020-10-31 at 09:59 -0700, Jakub Kicinski wrote:
+> On Tue, 27 Oct 2020 23:54:43 +0100 Sebastian Andrzej Siewior wrote:
+> > mlx5_eq_async_int() uses in_irq() to decide whether eq::lock needs
+> > to be
+> > acquired and released with spin_[un]lock() or the irq
+> > saving/restoring
+> > variants.
+> > 
+> > The usage of in_*() in drivers is phased out and Linus clearly
+> > requested
+> > that code which changes behaviour depending on context should
+> > either be
+> > seperated or the context be conveyed in an argument passed by the
+> > caller,
+> > which usually knows the context.
+> > 
+> > mlx5_eq_async_int() knows the context via the action argument
+> > already so
+> > using it for the lock variant decision is a straight forward
+> > replacement
+> > for in_irq().
+> > 
+> > Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+> > Cc: Saeed Mahameed <saeedm@nvidia.com>
+> > Cc: Leon Romanovsky <leon@kernel.org>
+> > Cc: "David S. Miller" <davem@davemloft.net>
+> > Cc: Jakub Kicinski <kuba@kernel.org>
+> > Cc: linux-rdma@vger.kernel.org
 > 
-> Thomas Krause <thomaskrause@posteo.de> writes:
-> 
-> >> I had the same problem as well back in the days, for me enabling
-> >> CONFIG_IRQ_REMAP helped. If it helps for you also I wonder if we should
-> >> mention that in the ath11k warning above :)
-> >
-> > CONFIG_IRQ_REMAP did not do the trick. I noticed that the Wi-Fi card
-> > is behind a PCI bridge which is also disabled, could this be a
-> > problem?
-> >
-> > 00:1c.0 PCI bridge: Intel Corporation Device a0b8 (rev 20) (prog-if 00
-> > [Normal decode])
-> > 	Flags: bus master, fast devsel, latency 0, IRQ 123
-> > 	Bus: primary=00, secondary=56, subordinate=56, sec-latency=0
-> > 	I/O behind bridge: [disabled]
-> > 	Memory behind bridge: 8c300000-8c3fffff [size=1M]
-> > 	Prefetchable memory behind bridge: [disabled]
-> > 	Capabilities: [40] Express Root Port (Slot+), MSI 00
-> > 	Capabilities: [80] MSI: Enable+ Count=1/1 Maskable- 64bit-
-> > 	Capabilities: [90] Subsystem: Dell Device 0991
-> > 	Capabilities: [a0] Power Management version 3
-> > 	Capabilities: [100] Advanced Error Reporting
-> > 	Capabilities: [220] Access Control Services
-> > 	Capabilities: [150] Precision Time Measurement
-> > 	Capabilities: [200] L1 PM Substates
-> > 	Capabilities: [a00] Downstream Port Containment
-> > 	Kernel driver in use: pcieport
-> 
-> I don't know enough about PCI to say if the bridge is a problem or not.
+> Saeed, please pick this up into your tree.
 
-I don't think the bridge is an issue here.  AFAICT the bridge's I/O
-and prefetchable memory windows are disabled, but the non-prefetchable
-window *is* enabled and contains the space consumed by the ath11k
-device:
+Ack
 
-  00:1c.0 PCI bridge: Intel Corporation Device a0b8 (rev 20)
-	Bus: primary=00, secondary=56, subordinate=56, sec-latency=0
-	Memory behind bridge: 8c300000-8c3fffff [size=1M]
-  56:00.0 Network controller: Qualcomm Device 1101 (rev 01)
-     Region 0: Memory at 8c300000 (64-bit, non-prefetchable) [size=1M]
-
-> To summarise: Thomas is reporting[1] a problem with ath11k on QCA6390
-> PCI device where he is not having enough MSI vectors. ath11k needs 32
-> vectors but pci_alloc_irq_vectors() returns -ENOSPC. PCI support is new
-> for ath11k and introduced in v5.10-rc1. The irq allocation code is in
-> drivers/net/wireless/ath/ath11k/pci.c. [2]
-
-This code is needlessly complicated.  If you absolutely need
-msi_config.total_vectors and can't settle for any less, you can do
-this:
-
-  num_vectors = pci_alloc_irq_vectors(ab_pci->pdev,
-                                      msi_config.total_vectors,
-                                      msi_config.total_vectors,
-                                      PCI_IRQ_MSI);
-
-  if (num_vectors < 0) {
-    ath11k_err(ab, "failed to get %d MSI vectors (%d)\n",
-               msi_config.total_vectors, num_vectors);
-    return num_vectors;
-  }
-
-But it seems a little greedy if the device can't operate at all unless
-it gets 32 vectors.  Are you sure that's a hard requirement?  Most
-devices can work with fewer vectors, even if it reduces performance.
-
-> I would first try with a full distro kernel config, just in case there's
-> some another important kernel config missing.
-> 
-> [1] http://lists.infradead.org/pipermail/ath11k/2020-October/000466.html
-
-Tangent: have you considered getting this list archived on
-https://lore.kernel.org/lists.html?
-
-> [2] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/net/wireless/ath/ath11k/pci.c#n633
-> 
-> -- 
-> https://patchwork.kernel.org/project/linux-wireless/list/
-> 
-> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
