@@ -2,96 +2,58 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E3602A326B
-	for <lists+linux-wireless@lfdr.de>; Mon,  2 Nov 2020 19:00:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E5AD2A3280
+	for <lists+linux-wireless@lfdr.de>; Mon,  2 Nov 2020 19:04:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725791AbgKBSAX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 2 Nov 2020 13:00:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53894 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725768AbgKBSAW (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 2 Nov 2020 13:00:22 -0500
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C388C0617A6;
-        Mon,  2 Nov 2020 10:00:20 -0800 (PST)
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.94)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1kZe7i-00HNsA-H4; Mon, 02 Nov 2020 19:00:06 +0100
-Message-ID: <47b04bd1da38a2356546284eb3576156899965de.camel@sipsolutions.net>
-Subject: Re: [PATCH net-next 08/11] ath9k: work around false-positive gcc
- warning
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Kalle Valo <kvalo@codeaurora.org>, Arnd Bergmann <arnd@kernel.org>
-Cc:     QCA ath9k Development <ath9k-devel@qca.qualcomm.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Date:   Mon, 02 Nov 2020 18:59:49 +0100
-In-Reply-To: <87tuu7ohbo.fsf@codeaurora.org> (sfid-20201102_172730_808878_841241B0)
-References: <20201026213040.3889546-1-arnd@kernel.org>
-         <20201026213040.3889546-8-arnd@kernel.org> <87tuu7ohbo.fsf@codeaurora.org>
-         (sfid-20201102_172730_808878_841241B0)
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.5 (3.36.5-1.fc32) 
+        id S1725809AbgKBSEo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 2 Nov 2020 13:04:44 -0500
+Received: from mail.kernel.org ([198.145.29.99]:39120 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725768AbgKBSEo (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 2 Nov 2020 13:04:44 -0500
+Received: from kicinski-fedora-PC1C0HJN.hsd1.ca.comcast.net (unknown [163.114.132.1])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id C803A21D91;
+        Mon,  2 Nov 2020 18:04:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1604340284;
+        bh=LSqTOlPjQ51qesbj9AETzLIbebgg/6dTER12sVS7/ro=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=jmJL+Dvu28VkI+WWqrYAilxnLHi4Izg0XuuZtG5xd1anMX0a/Rr6z8g+Z2x54nkgU
+         RNr4LZ6hGgMSzpiKpZaZdd+cFeujGDkiS9tra03pky68z+v9cM/AzUCHThuVy2A1NT
+         Tep5PFCD9vZnd6MslHTO4TNOlXh8ZgBgztP+J5lg=
+Date:   Mon, 2 Nov 2020 10:04:42 -0800
+From:   Jakub Kicinski <kuba@kernel.org>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org
+Subject: Re: pull-request: mac80211 2020-10-30
+Message-ID: <20201102100442.3f59981f@kicinski-fedora-PC1C0HJN.hsd1.ca.comcast.net>
+In-Reply-To: <79a1775af358e04083c452729e74dbc8ba20fe63.camel@sipsolutions.net>
+References: <20201030094349.20847-1-johannes@sipsolutions.net>
+        <20201030135237.129a2cfe@kicinski-fedora-PC1C0HJN.hsd1.ca.comcast.net>
+        <79a1775af358e04083c452729e74dbc8ba20fe63.camel@sipsolutions.net>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-malware-bazaar: not-scanned
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 2020-11-02 at 18:26 +0200, Kalle Valo wrote:
-> Arnd Bergmann <arnd@kernel.org> writes:
+On Mon, 02 Nov 2020 13:49:37 +0100 Johannes Berg wrote:
+> On Fri, 2020-10-30 at 13:52 -0700, Jakub Kicinski wrote:
+> > On Fri, 30 Oct 2020 10:43:48 +0100 Johannes Berg wrote:  
+> > > Hi Jakub,
+> > > 
+> > > Here's a first set of fixes, in particular the nl80211 eapol one
+> > > has people waiting for it.
+> > > 
+> > > Please pull and let me know if there's any problem.  
+> > 
+> > Two patches seem to have your signature twice, do you want to respin?
+> > It's not a big deal.  
 > 
-> > From: Arnd Bergmann <arnd@arndb.de>
-> > 
-> > gcc-10 shows a false-positive warning with CONFIG_KASAN:
-> > 
-> > drivers/net/wireless/ath/ath9k/dynack.c: In function 'ath_dynack_sample_tx_ts':
-> > include/linux/etherdevice.h:290:14: warning: writing 4 bytes into a region of size 0 [-Wstringop-overflow=]
-> >   290 |  *(u32 *)dst = *(const u32 *)src;
-> >       |  ~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~
-> > 
-> > Until gcc is fixed, work around this by using memcpy() in place
-> > of ether_addr_copy(). Hopefully gcc-11 will not have this problem.
-> > 
-> > Link: https://godbolt.org/z/sab1MK
-> > Link: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97490
-> > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> > ---
-> >  drivers/net/wireless/ath/ath9k/dynack.c | 6 ++++++
-> >  1 file changed, 6 insertions(+)
-> > 
-> > diff --git a/drivers/net/wireless/ath/ath9k/dynack.c b/drivers/net/wireless/ath/ath9k/dynack.c
-> > index fbeb4a739d32..e4eb96b26ca4 100644
-> > --- a/drivers/net/wireless/ath/ath9k/dynack.c
-> > +++ b/drivers/net/wireless/ath/ath9k/dynack.c
-> > @@ -247,8 +247,14 @@ void ath_dynack_sample_tx_ts(struct ath_hw *ah, struct sk_buff *skb,
-> >  	ridx = ts->ts_rateindex;
-> >  
-> >  	da->st_rbf.ts[da->st_rbf.t_rb].tstamp = ts->ts_tstamp;
-> > +#if defined(CONFIG_KASAN) && (CONFIG_GCC_VERSION >= 100000) && (CONFIG_GCC_VERSION < 110000)
-> > +	/* https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97490 */
-> > +	memcpy(da->st_rbf.addr[da->st_rbf.t_rb].h_dest, hdr->addr1, ETH_ALEN);
-> > +	memcpy(da->st_rbf.addr[da->st_rbf.t_rb].h_src, hdr->addr2, ETH_ALEN);
-> > +#else
-> >  	ether_addr_copy(da->st_rbf.addr[da->st_rbf.t_rb].h_dest, hdr->addr1);
-> >  	ether_addr_copy(da->st_rbf.addr[da->st_rbf.t_rb].h_src, hdr->addr2);
-> > +#endif
-> 
-> Isn't there a better way to handle this? I really would not want
-> checking for GCC versions become a common approach in drivers.
-> 
-> I even think that using memcpy() always is better than the ugly ifdef.
+> That often happens when I pick up my own patches from the list ... let's
+> leave it.
 
-If you put memcpy() always somebody will surely go and clean it up to
-use ether_addr_copy() soon ...
-
-That said, if there's a gcc issue with ether_addr_copy() then how come
-it's specific to this place?
-
-johannes
-
+Fine, pulled.
