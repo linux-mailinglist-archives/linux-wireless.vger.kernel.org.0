@@ -2,109 +2,96 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 38D442A31E4
-	for <lists+linux-wireless@lfdr.de>; Mon,  2 Nov 2020 18:46:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E3602A326B
+	for <lists+linux-wireless@lfdr.de>; Mon,  2 Nov 2020 19:00:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725912AbgKBRqK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 2 Nov 2020 12:46:10 -0500
-Received: from m42-4.mailgun.net ([69.72.42.4]:63558 "EHLO m42-4.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725806AbgKBRqK (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 2 Nov 2020 12:46:10 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1604339169; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=mKqqjTvaORCG3AeoHLDKVzVZE7c/OvrfkPwelnmYgoo=; b=s+Xm4DgCti2sWvhFgSWfcKbrXkv+KY95nxGBOZMgRWSjt1qme4yj7piKVyZbzly07AqS47QS
- P42nJcy0t2ZN24yNJIr+vcJmeXWQtAPrGloqv6FTWvpx8bkyZfmycWAXigZ+3+xphAWXObXS
- cf2WnzLEiaQ0yT6s1QpBg8ft5aM=
-X-Mailgun-Sending-Ip: 69.72.42.4
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n06.prod.us-east-1.postgun.com with SMTP id
- 5fa045e041e7c4fae793125a (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 02 Nov 2020 17:46:08
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 2D11CC433FF; Mon,  2 Nov 2020 17:46:08 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-Received: from x230.qca.qualcomm.com (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 52915C433C9;
-        Mon,  2 Nov 2020 17:46:02 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 52915C433C9
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Arend Van Spriel <arend.vanspriel@broadcom.com>
-Cc:     "Seung-Woo Kim" <sw0312.kim@samsung.com>,
-        <franky.lin@broadcom.com>, <hante.meuleman@broadcom.com>,
-        <chi-hsien.lin@cypress.com>, <wright.feng@cypress.com>,
-        <davem@davemloft.net>, <kuba@kernel.org>,
-        <linux-wireless@vger.kernel.org>,
-        <brcm80211-dev-list.pdl@broadcom.com>,
-        <brcm80211-dev-list@cypress.com>, <smoch@web.de>,
-        <sandals@crustytoothpaste.net>, <rafal@milecki.pl>,
-        <digetx@gmail.com>, <double.lo@cypress.com>, <amsr@cypress.com>,
-        <stanley.hsu@cypress.com>, <saravanan.shanmugham@cypress.com>,
-        <jean-philippe@linaro.org>, <frank.kao@cypress.com>,
-        <netdev@vger.kernel.org>, <jh80.chung@samsung.com>
-Subject: Re: [PATCH v2] brcmfmac: Fix memory leak for unpaired brcmf_{alloc/free}
-References: <CGME20201028015033epcas1p4f3d9b38b037ff6d4432e1a2866544e38@epcas1p4.samsung.com>
-        <1603849967-22817-1-git-send-email-sw0312.kim@samsung.com>
-        <87pn4vof2s.fsf@codeaurora.org>
-        <1758a0b5580.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
-Date:   Mon, 02 Nov 2020 19:46:00 +0200
-In-Reply-To: <1758a0b5580.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
-        (Arend Van Spriel's message of "Mon, 02 Nov 2020 18:40:00 +0100")
-Message-ID: <87h7q7odnr.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        id S1725791AbgKBSAX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 2 Nov 2020 13:00:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53894 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725768AbgKBSAW (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 2 Nov 2020 13:00:22 -0500
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C388C0617A6;
+        Mon,  2 Nov 2020 10:00:20 -0800 (PST)
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.94)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1kZe7i-00HNsA-H4; Mon, 02 Nov 2020 19:00:06 +0100
+Message-ID: <47b04bd1da38a2356546284eb3576156899965de.camel@sipsolutions.net>
+Subject: Re: [PATCH net-next 08/11] ath9k: work around false-positive gcc
+ warning
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Kalle Valo <kvalo@codeaurora.org>, Arnd Bergmann <arnd@kernel.org>
+Cc:     QCA ath9k Development <ath9k-devel@qca.qualcomm.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Date:   Mon, 02 Nov 2020 18:59:49 +0100
+In-Reply-To: <87tuu7ohbo.fsf@codeaurora.org> (sfid-20201102_172730_808878_841241B0)
+References: <20201026213040.3889546-1-arnd@kernel.org>
+         <20201026213040.3889546-8-arnd@kernel.org> <87tuu7ohbo.fsf@codeaurora.org>
+         (sfid-20201102_172730_808878_841241B0)
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.5 (3.36.5-1.fc32) 
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-malware-bazaar: not-scanned
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Arend Van Spriel <arend.vanspriel@broadcom.com> writes:
+On Mon, 2020-11-02 at 18:26 +0200, Kalle Valo wrote:
+> Arnd Bergmann <arnd@kernel.org> writes:
+> 
+> > From: Arnd Bergmann <arnd@arndb.de>
+> > 
+> > gcc-10 shows a false-positive warning with CONFIG_KASAN:
+> > 
+> > drivers/net/wireless/ath/ath9k/dynack.c: In function 'ath_dynack_sample_tx_ts':
+> > include/linux/etherdevice.h:290:14: warning: writing 4 bytes into a region of size 0 [-Wstringop-overflow=]
+> >   290 |  *(u32 *)dst = *(const u32 *)src;
+> >       |  ~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~
+> > 
+> > Until gcc is fixed, work around this by using memcpy() in place
+> > of ether_addr_copy(). Hopefully gcc-11 will not have this problem.
+> > 
+> > Link: https://godbolt.org/z/sab1MK
+> > Link: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97490
+> > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> > ---
+> >  drivers/net/wireless/ath/ath9k/dynack.c | 6 ++++++
+> >  1 file changed, 6 insertions(+)
+> > 
+> > diff --git a/drivers/net/wireless/ath/ath9k/dynack.c b/drivers/net/wireless/ath/ath9k/dynack.c
+> > index fbeb4a739d32..e4eb96b26ca4 100644
+> > --- a/drivers/net/wireless/ath/ath9k/dynack.c
+> > +++ b/drivers/net/wireless/ath/ath9k/dynack.c
+> > @@ -247,8 +247,14 @@ void ath_dynack_sample_tx_ts(struct ath_hw *ah, struct sk_buff *skb,
+> >  	ridx = ts->ts_rateindex;
+> >  
+> >  	da->st_rbf.ts[da->st_rbf.t_rb].tstamp = ts->ts_tstamp;
+> > +#if defined(CONFIG_KASAN) && (CONFIG_GCC_VERSION >= 100000) && (CONFIG_GCC_VERSION < 110000)
+> > +	/* https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97490 */
+> > +	memcpy(da->st_rbf.addr[da->st_rbf.t_rb].h_dest, hdr->addr1, ETH_ALEN);
+> > +	memcpy(da->st_rbf.addr[da->st_rbf.t_rb].h_src, hdr->addr2, ETH_ALEN);
+> > +#else
+> >  	ether_addr_copy(da->st_rbf.addr[da->st_rbf.t_rb].h_dest, hdr->addr1);
+> >  	ether_addr_copy(da->st_rbf.addr[da->st_rbf.t_rb].h_src, hdr->addr2);
+> > +#endif
+> 
+> Isn't there a better way to handle this? I really would not want
+> checking for GCC versions become a common approach in drivers.
+> 
+> I even think that using memcpy() always is better than the ugly ifdef.
 
-> On November 2, 2020 6:15:32 PM Kalle Valo <kvalo@codeaurora.org> wrote:
->
->> Seung-Woo Kim <sw0312.kim@samsung.com> writes:
->>
->>> There are missig brcmf_free() for brcmf_alloc(). Fix memory leak
->>> by adding missed brcmf_free().
->>>
->>> Reported-by: Jaehoon Chung <jh80.chung@samsung.com>
->>> Fixes: commit 450914c39f88 ("brcmfmac: split brcmf_attach() and
->>> brcmf_detach() functions")
->>
->> This should be:
->>
->> Fixes: 450914c39f88 ("brcmfmac: split brcmf_attach() and
->> brcmf_detach() functions")
->>
->> But I can fix that, no need to resend because of this.
->
-> Hi Kalle,
->
-> But this is not the commit that needs fixing as I mentioned before.
-> Instead it should be a1f5aac1765af ("brcmfmac: don't realloc wiphy
-> during PCIe reset") which introduced the actual memory leak.
+If you put memcpy() always somebody will surely go and clean it up to
+use ether_addr_copy() soon ...
 
-I'll then change it to:
+That said, if there's a gcc issue with ether_addr_copy() then how come
+it's specific to this place?
 
-Fixes: a1f5aac1765a ("brcmfmac: don't realloc wiphy during PCIe reset")
+johannes
 
-Is that ok?
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
