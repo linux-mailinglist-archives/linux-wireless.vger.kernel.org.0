@@ -2,92 +2,79 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BDA0E2A361B
-	for <lists+linux-wireless@lfdr.de>; Mon,  2 Nov 2020 22:41:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 162E72A368B
+	for <lists+linux-wireless@lfdr.de>; Mon,  2 Nov 2020 23:29:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726097AbgKBVlc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 2 Nov 2020 16:41:32 -0500
-Received: from mail.kernel.org ([198.145.29.99]:58436 "EHLO mail.kernel.org"
+        id S1726109AbgKBW3d (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 2 Nov 2020 17:29:33 -0500
+Received: from mail.kernel.org ([198.145.29.99]:54048 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725841AbgKBVlc (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 2 Nov 2020 16:41:32 -0500
-Received: from lt-jalone-7480.mtl.com (c-24-6-56-119.hsd1.ca.comcast.net [24.6.56.119])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        id S1725785AbgKBW3d (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 2 Nov 2020 17:29:33 -0500
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 6EE4921D40;
-        Mon,  2 Nov 2020 21:41:30 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id C0B602084C;
+        Mon,  2 Nov 2020 22:29:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1604353291;
-        bh=CT78URbf8GWUrauRnN7DRJ5X5z820SmGZe8HhrCPyTY=;
-        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-        b=F3ka5x6N19Rp7WtfdR4oM2thWJyW5uF0CpRDHZKTIn7zaFGSn5bBL4vkRh0550qnI
-         lGZrPKMm2fJzhc/aBEQzYjjML/1g3PbMMvddAbtL2uE0wIGZ5ooLgSMaeua6X1a1Pk
-         UF2VWhVZnZ67yk5X5Estw6tnPoHhELfjpb7ZTFk0=
-Message-ID: <5940727ec6361becbac13d5dcbdc995c1fa3353b.camel@kernel.org>
-Subject: Re: [PATCH net-next 04/15] net: mlx5: Replace in_irq() usage.
-From:   Saeed Mahameed <saeed@kernel.org>
-To:     Jakub Kicinski <kuba@kernel.org>, Leon Romanovsky <leon@kernel.org>
-Cc:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        netdev@vger.kernel.org, Aymen Sghaier <aymen.sghaier@nxp.com>,
-        Daniel Drake <dsd@gentoo.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Horia =?UTF-8?Q?Geant=C4=83?= <horia.geanta@nxp.com>,
-        Jon Mason <jdmason@kudzu.us>, Jouni Malinen <j@w1.fi>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        linux-arm-kernel@lists.infradead.org, linux-crypto@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-rdma@vger.kernel.org,
-        linux-wireless@vger.kernel.org, Li Yang <leoyang.li@nxp.com>,
-        Madalin Bucur <madalin.bucur@nxp.com>,
-        Ping-Ke Shih <pkshih@realtek.com>,
-        Rain River <rain.1986.08.12@gmail.com>,
-        Samuel Chessman <chessman@tux.org>,
-        Ulrich Kunitz <kune@deine-taler.de>,
-        Zhu Yanjun <zyjzyj2000@gmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>
-Date:   Mon, 02 Nov 2020 13:41:29 -0800
-In-Reply-To: <20201031095938.3878412e@kicinski-fedora-PC1C0HJN.hsd1.ca.comcast.net>
-References: <20201027225454.3492351-1-bigeasy@linutronix.de>
-         <20201027225454.3492351-5-bigeasy@linutronix.de>
-         <20201031095938.3878412e@kicinski-fedora-PC1C0HJN.hsd1.ca.comcast.net>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.5 (3.36.5-1.fc32) 
+        s=default; t=1604356173;
+        bh=vgrwy0iif/zfUH5W0QwiDlRFpUGSrjVFDagmDSNOjTk=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=KhMDkz4Rm+nHJ7kxJJgwy3rM/BDg0xMRZbw+jzPrroi5aLZzXqPofqhUkjAk+26m9
+         wIMOHeZpCsdOVbpt8Zxwiw3DU+rFnqETl8LzDGESn0xtTAJgix6STw1iDsNYjXoeUO
+         sLil+xiyxoGCRRwlye7hMWFCwdMtEwKFeANSK0K0=
+Received: by mail-wr1-f45.google.com with SMTP id s9so16363213wro.8;
+        Mon, 02 Nov 2020 14:29:32 -0800 (PST)
+X-Gm-Message-State: AOAM530elnjKg/a2GnNd1Q5qnX9m7rhyOO0Uj2hh6cqyh8iLu2gI9GYo
+        MUvElyeOAwtaKMTzZGx6tEETntLFoyZdvS4PnS0=
+X-Google-Smtp-Source: ABdhPJzNva6GR+sZYSg7O8WrzaYdrgPHJcMRi6tR4zAYJKbScVeSsRIfBeLJT2A1pExuYy1QE1Ai59H9xNPMMAd7bww=
+X-Received: by 2002:a5d:54c8:: with SMTP id x8mr21719103wrv.286.1604356171388;
+ Mon, 02 Nov 2020 14:29:31 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+References: <20201026213040.3889546-1-arnd@kernel.org> <20201026213040.3889546-8-arnd@kernel.org>
+ <87tuu7ohbo.fsf@codeaurora.org> <47b04bd1da38a2356546284eb3576156899965de.camel@sipsolutions.net>
+In-Reply-To: <47b04bd1da38a2356546284eb3576156899965de.camel@sipsolutions.net>
+From:   Arnd Bergmann <arnd@kernel.org>
+Date:   Mon, 2 Nov 2020 23:29:15 +0100
+X-Gmail-Original-Message-ID: <CAK8P3a0_6zigntTWQs2vhJNwagmYyVHPQE2HggVVTmn+2u8siw@mail.gmail.com>
+Message-ID: <CAK8P3a0_6zigntTWQs2vhJNwagmYyVHPQE2HggVVTmn+2u8siw@mail.gmail.com>
+Subject: Re: [PATCH net-next 08/11] ath9k: work around false-positive gcc warning
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        QCA ath9k Development <ath9k-devel@qca.qualcomm.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Networking <netdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sat, 2020-10-31 at 09:59 -0700, Jakub Kicinski wrote:
-> On Tue, 27 Oct 2020 23:54:43 +0100 Sebastian Andrzej Siewior wrote:
-> > mlx5_eq_async_int() uses in_irq() to decide whether eq::lock needs
-> > to be
-> > acquired and released with spin_[un]lock() or the irq
-> > saving/restoring
-> > variants.
-> > 
-> > The usage of in_*() in drivers is phased out and Linus clearly
-> > requested
-> > that code which changes behaviour depending on context should
-> > either be
-> > seperated or the context be conveyed in an argument passed by the
-> > caller,
-> > which usually knows the context.
-> > 
-> > mlx5_eq_async_int() knows the context via the action argument
-> > already so
-> > using it for the lock variant decision is a straight forward
-> > replacement
-> > for in_irq().
-> > 
-> > Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-> > Cc: Saeed Mahameed <saeedm@nvidia.com>
-> > Cc: Leon Romanovsky <leon@kernel.org>
-> > Cc: "David S. Miller" <davem@davemloft.net>
-> > Cc: Jakub Kicinski <kuba@kernel.org>
-> > Cc: linux-rdma@vger.kernel.org
-> 
-> Saeed, please pick this up into your tree.
+On Mon, Nov 2, 2020 at 7:01 PM Johannes Berg <johannes@sipsolutions.net> wrote:
+> On Mon, 2020-11-02 at 18:26 +0200, Kalle Valo wrote:
+> > Arnd Bergmann <arnd@kernel.org> writes:
+> > > From: Arnd Bergmann <arnd@arndb.de>
+> >
+> > Isn't there a better way to handle this? I really would not want
+> > checking for GCC versions become a common approach in drivers.
+> >
+> > I even think that using memcpy() always is better than the ugly ifdef.
+>
+> If you put memcpy() always somebody will surely go and clean it up to
+> use ether_addr_copy() soon ...
+>
+> That said, if there's a gcc issue with ether_addr_copy() then how come
+> it's specific to this place?
 
-Ack
+I have not been able to figure this out, hopefully some gcc developer
+eventually looks at the bug in more detail.
 
+Presumably it has something to do with the specific way the five levels
+of structures are nested here, and how things get inlined in this driver.
+If the bug happened everywhere, it would likely have been found and
+fixed earlier.
+
+       Arnd
