@@ -2,68 +2,68 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C35112A292B
-	for <lists+linux-wireless@lfdr.de>; Mon,  2 Nov 2020 12:26:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A86B72A292D
+	for <lists+linux-wireless@lfdr.de>; Mon,  2 Nov 2020 12:26:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728980AbgKBL0H (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        id S1728619AbgKBL0H (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
         Mon, 2 Nov 2020 06:26:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48128 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48132 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728483AbgKBLZG (ORCPT
+        with ESMTP id S1728868AbgKBLZH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 2 Nov 2020 06:25:06 -0500
+        Mon, 2 Nov 2020 06:25:07 -0500
 Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com [IPv6:2a00:1450:4864:20::441])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADEBAC061A47
-        for <linux-wireless@vger.kernel.org>; Mon,  2 Nov 2020 03:25:04 -0800 (PST)
-Received: by mail-wr1-x441.google.com with SMTP id 33so3352429wrl.7
-        for <linux-wireless@vger.kernel.org>; Mon, 02 Nov 2020 03:25:04 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCD6EC061A48
+        for <linux-wireless@vger.kernel.org>; Mon,  2 Nov 2020 03:25:05 -0800 (PST)
+Received: by mail-wr1-x441.google.com with SMTP id n15so14182322wrq.2
+        for <linux-wireless@vger.kernel.org>; Mon, 02 Nov 2020 03:25:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=zIn8muh7VBL1fkT+XkKMlktVpytHKFk/n3s4ZGv33nQ=;
-        b=hqE+y6PheG1yrEeNLsS1M6iQUy/d4MhXF8Pr9nPQy+l66qcxrZTOeXOhqwtg8yEvJy
-         Zo9d9j4r8X2Rc5+FzFljtSk9WCnBIu8mfs7jh37qudUIrqBLqrNwIJUQVx7UtEB7oyBB
-         HKRzq7NE1teT5dJIUXsMusD5m2DlCXg5x1GpvwzhW8zI+TnMhj7K/sW6FVu1a4E48+mu
-         wNsPIu5ZEGwtflVsCs2YPQ6Isjgr47+fdYo9+8JV5p9S3kPsf2fIVEyrM+U0gK8jOGSU
-         oRjGMXhpL4sEdTVb+e+uJ9w2x6v9ZJ9e1fEENpJ+N421lhX4UYGVVao8rJgnofhnXxCI
-         bBLQ==
+        bh=CShQQ12PBsg4lhgdWNuYQU+7cmtXNk/NI77thbS/j9M=;
+        b=JlhFoJuMAj9F/e61O3Mhvl/I2ScHj1PNuWyCQK3xSUVNOZxJDsPtA72x9vNeMaNvtV
+         xatTQqTIiNB/CR9h9jS2FMe9ZJflyKbuXb4laQiuFtVx60jyT/Bs30RKUahJeIJyNVFt
+         XrRhLSSEPFI6KVksCWt7K+vt7J5jZTHjffUJoYyYxU0DSfrjgBXpggFwOzwudIq4yK2i
+         +YfH1kV+6gil38pjYtWr4ibLTbFNPVbhAB9B+Gk2dSp0JtueRe1sxE6C2hmrO13Y9OPO
+         ujFzdc0YIP3oJo8Ck3HNP/e6tktwNT8Bn4ZEnRmCghtwB5coRT9Xu8uH15bAEWhHW82s
+         qplQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=zIn8muh7VBL1fkT+XkKMlktVpytHKFk/n3s4ZGv33nQ=;
-        b=m5HXWlc4Ae54dT+tL4/lXOLxYZPA1g2jer18u6ESVs3SDBTXDmudQAgWLL8rW6G6oD
-         D83TIY2HLhQP5JC73ekX69nwf2J4GIDqwcfgRAB+AwYC1xodGX6WT77Zto7eJb5yw3dt
-         Ch60lMzWIgSRUMv+COkcArEiz4yNWAhxxkAjwkf8ztmlQr7I1s4J9e5ieFdALerDeUjs
-         I8J4pw+LK1DPkuYNVHuCRxQYwMv/1V2Qgqwo8TBlqaav0pQDJ07zlcLb8GgLIPKZ0Nly
-         tcZi+ElGsppf6j3u7yFzMUJK21CdgYDNfeZp3DMzJufcA55Ex59PnMJM3IdJQdXbQ//v
-         Lyow==
-X-Gm-Message-State: AOAM532h5CvOHpvj/HpubZITnMgLO1kD8TatcWIx1cfB4xYq7kVG+6L2
-        mnYVo0rYAAgM5UrW1Jd5zqvFBg==
-X-Google-Smtp-Source: ABdhPJx/S5Q2OlmIsIYNzqdzdRxI/T1Zy8Ub1LoErrxHc/2spcetNSSjcmi3GMMHTmpmyVrGguPw4g==
-X-Received: by 2002:adf:fc07:: with SMTP id i7mr14508376wrr.223.1604316303415;
-        Mon, 02 Nov 2020 03:25:03 -0800 (PST)
+        bh=CShQQ12PBsg4lhgdWNuYQU+7cmtXNk/NI77thbS/j9M=;
+        b=W7ZxeHwD0Jm6D25M8L/TCE7KfMJtY+xv1fxvMFwMsceI24wWNWPDRTanC3AYm5qflG
+         qPdv9nxt3Gh/5zhP4J5OU8/cVHnsSd51/cVCyXvKtB5FHlMUy5QRcgBaSZjJOwrBVP32
+         DqSXBk9mMADwP3t+WAaUEM7YTs9DKiWeXo6FksGpkuHm+wC84nfGRzDf+BJPEl94RcGJ
+         Hb5SdSFRc6CRfifu5pD8ckJ7ZgPIl3Y/UzNCxwFKhrXulTTaa1H8haeOO5APe2u2kz9Q
+         b/5s6jWyBLPJNtqlagqChbYFfWnPX7sUK7rQ4NNwoDjbWFyXxIg3WNaKR+DESLf9CPLv
+         UyCQ==
+X-Gm-Message-State: AOAM530O1CQkhjJwlLrGY1YjhJX4atHWaU2FQLRnT/dA8h69OXyz986T
+        Xg2CIY4AMA1OY4M95BSCmx9LYw==
+X-Google-Smtp-Source: ABdhPJxBYj5usmi4qGlUfaqjEb9+wgXLgztUDnuNady/I5Qdqzo4kKXtcfwR2Bj62eeSOzRpXaj8bw==
+X-Received: by 2002:a5d:60c4:: with SMTP id x4mr20763543wrt.175.1604316304609;
+        Mon, 02 Nov 2020 03:25:04 -0800 (PST)
 Received: from dell.default ([91.110.221.242])
-        by smtp.gmail.com with ESMTPSA id m14sm21867354wro.43.2020.11.02.03.25.02
+        by smtp.gmail.com with ESMTPSA id m14sm21867354wro.43.2020.11.02.03.25.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Nov 2020 03:25:02 -0800 (PST)
+        Mon, 02 Nov 2020 03:25:04 -0800 (PST)
 From:   Lee Jones <lee.jones@linaro.org>
 To:     kvalo@codeaurora.org
 Cc:     linux-kernel@vger.kernel.org, Lee Jones <lee.jones@linaro.org>,
-        Ping-Ke Shih <pkshih@realtek.com>,
         "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>,
-        Larry Finger <Larry.Finger@lwfinger.net>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Luciano Coelho <luciano.coelho@nokia.com>,
+        Juuso Oikarinen <juuso.oikarinen@nokia.com>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH 34/41] rtl8821ae: phy: Place braces around empty if() body
-Date:   Mon,  2 Nov 2020 11:24:03 +0000
-Message-Id: <20201102112410.1049272-35-lee.jones@linaro.org>
+Subject: [PATCH 35/41] wlcore: spi: Demote a non-compliant function header, fix another
+Date:   Mon,  2 Nov 2020 11:24:04 +0000
+Message-Id: <20201102112410.1049272-36-lee.jones@linaro.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20201102112410.1049272-1-lee.jones@linaro.org>
 References: <20201102112410.1049272-1-lee.jones@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
@@ -71,36 +71,44 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 Fixes the following W=1 kernel build warning(s):
 
- drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c: In function ‘_rtl8812ae_phy_get_txpower_limit’:
- drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c:2453:3: warning: suggest braces around empty body in an ‘if’ statement [-Wempty-body]
+ drivers/net/wireless/ti/wlcore/spi.c:403: warning: Function parameter or member 'child' not described in 'wl12xx_spi_set_block_size'
+ drivers/net/wireless/ti/wlcore/spi.c:403: warning: Function parameter or member 'blksz' not described in 'wl12xx_spi_set_block_size'
+ drivers/net/wireless/ti/wlcore/spi.c:440: warning: Excess function parameter 'res' description in 'wlcore_probe_of'
 
-Cc: Ping-Ke Shih <pkshih@realtek.com>
 Cc: Kalle Valo <kvalo@codeaurora.org>
 Cc: "David S. Miller" <davem@davemloft.net>
 Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Larry Finger <Larry.Finger@lwfinger.net>
+Cc: Geert Uytterhoeven <geert+renesas@glider.be>
+Cc: Luciano Coelho <luciano.coelho@nokia.com>
+Cc: Juuso Oikarinen <juuso.oikarinen@nokia.com>
 Cc: linux-wireless@vger.kernel.org
 Cc: netdev@vger.kernel.org
 Signed-off-by: Lee Jones <lee.jones@linaro.org>
 ---
- drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/wireless/ti/wlcore/spi.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c
-index 72ee0700a5497..8a1a2277e137b 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c
-@@ -2448,8 +2448,9 @@ static s8 _rtl8812ae_phy_get_txpower_limit(struct ieee80211_hw *hw,
- 	else if (band == BAND_ON_5G)
- 		channel_temp = _rtl8812ae_phy_get_chnl_idx_of_txpwr_lmt(hw,
- 		BAND_ON_5G, channel);
--	else if (band == BAND_ON_BOTH)
-+	else if (band == BAND_ON_BOTH) {
- 		;/* BAND_ON_BOTH don't care temporarily */
-+	}
+diff --git a/drivers/net/wireless/ti/wlcore/spi.c b/drivers/net/wireless/ti/wlcore/spi.c
+index 18c4d998ce4b9..f26fc150ecd01 100644
+--- a/drivers/net/wireless/ti/wlcore/spi.c
++++ b/drivers/net/wireless/ti/wlcore/spi.c
+@@ -391,7 +391,7 @@ static int wl12xx_spi_set_power(struct device *child, bool enable)
+ 	return ret;
+ }
  
- 	if (band_temp == -1 || regulation == -1 || bandwidth_temp == -1 ||
- 		rate_section == -1 || channel_temp == -1) {
+-/**
++/*
+  * wl12xx_spi_set_block_size
+  *
+  * This function is not needed for spi mode, but need to be present.
+@@ -431,7 +431,6 @@ MODULE_DEVICE_TABLE(of, wlcore_spi_of_match_table);
+ /**
+  * wlcore_probe_of - DT node parsing.
+  * @spi: SPI slave device parameters.
+- * @res: resource parameters.
+  * @glue: wl12xx SPI bus to slave device glue parameters.
+  * @pdev_data: wlcore device parameters
+  */
 -- 
 2.25.1
 
