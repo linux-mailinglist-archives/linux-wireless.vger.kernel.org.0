@@ -2,86 +2,115 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5FDAD2A32E3
-	for <lists+linux-wireless@lfdr.de>; Mon,  2 Nov 2020 19:23:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 34B502A334A
+	for <lists+linux-wireless@lfdr.de>; Mon,  2 Nov 2020 19:50:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726157AbgKBSXM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 2 Nov 2020 13:23:12 -0500
-Received: from z5.mailgun.us ([104.130.96.5]:15339 "EHLO z5.mailgun.us"
+        id S1725809AbgKBSt6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 2 Nov 2020 13:49:58 -0500
+Received: from z5.mailgun.us ([104.130.96.5]:58938 "EHLO z5.mailgun.us"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726088AbgKBSXM (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 2 Nov 2020 13:23:12 -0500
+        id S1725789AbgKBSt5 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 2 Nov 2020 13:49:57 -0500
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1604341391; h=Date: Message-Id: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=dqjj5XYPLOsBUZFci9McQXFyjyvLlgH1shqiGfMW2TQ=;
- b=bGtXDREocsPmOBRJqV2huibRTpuCY3dWOJr9u2ZNCPI9suS/6N+f9EJYzrCqij/uOAssuo9P
- TqOBBl/o2XKi/ZcbWZkvrH83facql/iFzOAZmVIeDYJsaev/r2hcZMmV6hKygwdZrnXZ57o0
- eOf3xhdty8kxNvve+bL1lPSk/EM=
+ s=smtp; t=1604342997; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=a9B3E/1xB3mfBJ1HXK0irk6rmapn8q+xYJ8o7dQyaZw=; b=ulb+tEcEflelMX1dzMAWpALeDFHTidjSn0/ONdu1MTQkovBvjZ2LksvelZqEW0/JRhB5wHul
+ 6wh+sDBfTS0HXcNBz6ClnOFeWE2xhyydjrq+zqHNzdJuxhOq1EbMUFVvF8o293BtPgM0Hz7K
+ 1/2qHlxdqo5NthCD3WmcJm10OCY=
 X-Mailgun-Sending-Ip: 104.130.96.5
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n05.prod.us-west-2.postgun.com with SMTP id
- 5fa04e52978460d05b92d27d (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 02 Nov 2020 18:22:10
+ smtp-out-n07.prod.us-east-1.postgun.com with SMTP id
+ 5fa054d475bebe827afe7f62 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 02 Nov 2020 18:49:56
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 37565C433FF; Mon,  2 Nov 2020 18:22:10 +0000 (UTC)
+        id DDC83C433F0; Mon,  2 Nov 2020 18:49:55 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        MISSING_DATE,MISSING_MID,SPF_FAIL autolearn=no autolearn_force=no
-        version=3.4.0
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
 Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 1DE90C433C6;
-        Mon,  2 Nov 2020 18:22:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 1DE90C433C6
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 610B7C433C6;
+        Mon,  2 Nov 2020 18:49:53 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 610B7C433C6
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] ath9k: revert "ath9k: hif_usb: fix race condition between
- usb_get_urb() and usb_kill_anchored_urbs()"
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20201012220809.23225-1-brookebasile@gmail.com>
-References: <20201012220809.23225-1-brookebasile@gmail.com>
-To:     Brooke Basile <brookebasile@gmail.com>
-Cc:     davem@davemloft.net, kuba@kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Brooke Basile <brookebasile@gmail.com>
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20201102182210.37565C433FF@smtp.codeaurora.org>
-Date:   Mon,  2 Nov 2020 18:22:10 +0000 (UTC)
+To:     Thomas Krause <thomaskrause@posteo.de>
+Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        linux-pci@vger.kernel.org, Devin Bayer <dev@doubly.so>
+Subject: Re: pci_alloc_irq_vectors fails ENOSPC for XPS 13 9310
+References: <2849fd39-a7a6-8366-7c78-fc9fec4dffa4@posteo.de>
+        <87tuuqhc1i.fsf@codeaurora.org>
+        <1ce6f735-21ff-db7e-c8dc-d567761964aa@posteo.de>
+Date:   Mon, 02 Nov 2020 20:49:51 +0200
+In-Reply-To: <1ce6f735-21ff-db7e-c8dc-d567761964aa@posteo.de> (Thomas Krause's
+        message of "Tue, 20 Oct 2020 22:46:00 +0200")
+Message-ID: <871rhbvbjk.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Brooke Basile <brookebasile@gmail.com> wrote:
++ linux-wireless, linux-pci, devin
 
-> A bug in USB/IP previously caused all syzkaller USB fuzzing instances to
-> return false positives when testing crash reproducers.
-> This patch reverts changes made in commit 03fb92a432ea which, due to
-> this bug, returned false positives when tested and introduced new
-> regressions.
-> 
-> Fixes: 03fb92a432ea ("ath9k: hif_usb: fix race condition between usb_get_urb() and usb_kill_anchored_urbs()")
-> Signed-off-by: Brooke Basile <brookebasile@gmail.com>
+Thomas Krause <thomaskrause@posteo.de> writes:
 
-More background info is needed so that I'm not reverting the revert soon. What
-were the new regressions? Do you have a pointer to the discussion? All this
-should be in the commit log. But I can add those, just provide them in this
-thread.
+>> I had the same problem as well back in the days, for me enabling
+>> CONFIG_IRQ_REMAP helped. If it helps for you also I wonder if we should
+>> mention that in the ath11k warning above :)
+>
+> CONFIG_IRQ_REMAP did not do the trick. I noticed that the Wi-Fi card
+> is behind a PCI bridge which is also disabled, could this be a
+> problem?
+>
+> 00:1c.0 PCI bridge: Intel Corporation Device a0b8 (rev 20) (prog-if 00
+> [Normal decode])
+> 	Flags: bus master, fast devsel, latency 0, IRQ 123
+> 	Bus: primary=00, secondary=56, subordinate=56, sec-latency=0
+> 	I/O behind bridge: [disabled]
+> 	Memory behind bridge: 8c300000-8c3fffff [size=1M]
+> 	Prefetchable memory behind bridge: [disabled]
+> 	Capabilities: [40] Express Root Port (Slot+), MSI 00
+> 	Capabilities: [80] MSI: Enable+ Count=1/1 Maskable- 64bit-
+> 	Capabilities: [90] Subsystem: Dell Device 0991
+> 	Capabilities: [a0] Power Management version 3
+> 	Capabilities: [100] Advanced Error Reporting
+> 	Capabilities: [220] Access Control Services
+> 	Capabilities: [150] Precision Time Measurement
+> 	Capabilities: [200] L1 PM Substates
+> 	Capabilities: [a00] Downstream Port Containment
+> 	Kernel driver in use: pcieport
+
+I don't know enough about PCI to say if the bridge is a problem or not.
+I'm adding linux-wireless and linux-pci in someone can help. Also Devin
+seems to have a similar problem.
+
+To summarise: Thomas is reporting[1] a problem with ath11k on QCA6390
+PCI device where he is not having enough MSI vectors. ath11k needs 32
+vectors but pci_alloc_irq_vectors() returns -ENOSPC. PCI support is new
+for ath11k and introduced in v5.10-rc1. The irq allocation code is in
+drivers/net/wireless/ath/ath11k/pci.c. [2]
+
+Can PCI folks help, what could cause this and how to debug it further?
+
+I would first try with a full distro kernel config, just in case there's
+some another important kernel config missing.
+
+[1] http://lists.infradead.org/pipermail/ath11k/2020-October/000466.html
+
+[2] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/net/wireless/ath/ath11k/pci.c#n633
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20201012220809.23225-1-brookebasile@gmail.com/
+https://patchwork.kernel.org/project/linux-wireless/list/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
