@@ -2,76 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D5BFA2A4FD5
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Nov 2020 20:17:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A2B042A502A
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Nov 2020 20:31:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727857AbgKCTR3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 3 Nov 2020 14:17:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36230 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727688AbgKCTR3 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 3 Nov 2020 14:17:29 -0500
-Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3EAFC0613D1
-        for <linux-wireless@vger.kernel.org>; Tue,  3 Nov 2020 11:17:28 -0800 (PST)
-Received: by mail-ej1-x62e.google.com with SMTP id gn41so8587054ejc.4
-        for <linux-wireless@vger.kernel.org>; Tue, 03 Nov 2020 11:17:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:mime-version;
-        bh=5kNCjmO9xwLdAkLb/sFX7P25NLxMwYunPPD7wkaIBBM=;
-        b=qqbsRUqTzpkxKS3W6z1wCXxeeC4dnpkClSDLP4+T+WPc34D+yhdwhSUsudGVvnNFIe
-         jnTnDV7yiOK+EBnRnRZwDMYYih8xC3Oif/B9UpIzF+88OYupDxVg2N0HQ/CNMkcSbil6
-         idWG+UuZVKlssgYZhwpVGH169zR0KPpykMIJM53f8S57h5dMtabfRZY6JR4pQyHpqG7Y
-         jyStx1L83iUtexVH6PSrxWjQhcr4waVaSrtNE61uGPjsCNvB4ZEFsZlPKR2+KZPM9uYQ
-         OqWq2p4SNHcsBHmvFKROAQDwVK2S+EMgKlvZJJpF5LWgKwZxpOXo1FIhFI6CpXLC0Mdb
-         8NlQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version;
-        bh=5kNCjmO9xwLdAkLb/sFX7P25NLxMwYunPPD7wkaIBBM=;
-        b=bhDQhPiuFGlgrul3bPii9cmfmWXTGSRtU616aAwIs+WCHAQr6Qdj8QTYpER8O9Z4tl
-         H/bqkBZAb3K+s1/Te14B8M2gQ6DamdB8DkMou0P5QKnKEthf30F49SjyW6lS+uUB3e9N
-         bTVQCPSdXWVysGrupi8lf1lQnK3YBn0AqTpLUzDz9v28KAUVk1EtQOjvjk8UxgeGD6m5
-         GKd/DAzJWU0y2NxxoGLqgXmP7jL8sFiG03IEZyRSddtwFrlFspRRKEoY7UVPFzyt5ub5
-         R0jXW+cyExn8T4MM5yzmF0wwJ9lsFw8+b0YgzoxqGpEOn4j4PixH6N92AUWUevKQ4hh7
-         YMLQ==
-X-Gm-Message-State: AOAM530NHLeQephUrOMkwSO5YxpgNMb8M07sR64k7QWQ4lstFf9gPLL4
-        soX1F4Sk00w2QZQOqUqyaKAOB8eWrwY1jA==
-X-Google-Smtp-Source: ABdhPJzvG7QMx6NWxdWiZ3cMz08gS1b5wTQQo78Jl2G46WQuXbCH4TW2SqVdVLTZTPhe/baBTcxCzQ==
-X-Received: by 2002:a17:906:c0c1:: with SMTP id bn1mr1687499ejb.454.1604431047616;
-        Tue, 03 Nov 2020 11:17:27 -0800 (PST)
-Received: from eeec (host-95-244-250-221.retail.telecomitalia.it. [95.244.250.221])
-        by smtp.gmail.com with ESMTPSA id j3sm12547632edh.25.2020.11.03.11.17.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Nov 2020 11:17:26 -0800 (PST)
-Date:   Tue, 3 Nov 2020 20:17:25 +0100 (CET)
-From:   Enrico Mioso <mrkiko.rs@gmail.com>
-To:     linux-wireless@vger.kernel.org
-cc:     linuxwifi@intel.com
-Subject: WARNING: CPU: 7 PID: 259 at drivers/net/wireless/intel/iwlwifi/mvm/tx.c:1488
- iwl_mvm_rx_tx_cmd+0x42d/0x760 [Linux 5.10-rc1]
-Message-ID: <46f977fb-8a8b-ddc6-b1f6-377e643344f@gmail.com>
+        id S1727852AbgKCTby (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 3 Nov 2020 14:31:54 -0500
+Received: from mail.kernel.org ([198.145.29.99]:59636 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725957AbgKCTby (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 3 Nov 2020 14:31:54 -0500
+Received: from lt-jalone-7480.mtl.com (c-24-6-56-119.hsd1.ca.comcast.net [24.6.56.119])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id C8D632080D;
+        Tue,  3 Nov 2020 19:31:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1604431913;
+        bh=S+XTa/Ddbvh+IsyG31DYZypsQ7ugisv/L9FbS0/2MT0=;
+        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+        b=k04pehKHXgSp1gCBIIxlvyMNlN4PLVoxEtSR7x5/ZEXOffB4o52TItFE+b2KZHrSW
+         SwG4YWmCouheXFGspowoxdbzUcr7oLJZsERO8RhQv1Z0b4p6KyHByvoVgVxn9pD+7V
+         zZfoeuawcOmpYjV+yEzum15EHJsBhYetDi8Izc74=
+Message-ID: <2eeb1f2ccce034455babdef88a275b4e5ebfba81.camel@kernel.org>
+Subject: Re: [PATCH net-next 04/15] net: mlx5: Replace in_irq() usage.
+From:   Saeed Mahameed <saeed@kernel.org>
+To:     Jakub Kicinski <kuba@kernel.org>, Leon Romanovsky <leon@kernel.org>
+Cc:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        netdev@vger.kernel.org, Aymen Sghaier <aymen.sghaier@nxp.com>,
+        Daniel Drake <dsd@gentoo.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        Horia =?UTF-8?Q?Geant=C4=83?= <horia.geanta@nxp.com>,
+        Jon Mason <jdmason@kudzu.us>, Jouni Malinen <j@w1.fi>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        linux-arm-kernel@lists.infradead.org, linux-crypto@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-rdma@vger.kernel.org,
+        linux-wireless@vger.kernel.org, Li Yang <leoyang.li@nxp.com>,
+        Madalin Bucur <madalin.bucur@nxp.com>,
+        Ping-Ke Shih <pkshih@realtek.com>,
+        Rain River <rain.1986.08.12@gmail.com>,
+        Samuel Chessman <chessman@tux.org>,
+        Ulrich Kunitz <kune@deine-taler.de>,
+        Zhu Yanjun <zyjzyj2000@gmail.com>,
+        Thomas Gleixner <tglx@linutronix.de>
+Date:   Tue, 03 Nov 2020 11:31:50 -0800
+In-Reply-To: <20201031095938.3878412e@kicinski-fedora-PC1C0HJN.hsd1.ca.comcast.net>
+References: <20201027225454.3492351-1-bigeasy@linutronix.de>
+         <20201027225454.3492351-5-bigeasy@linutronix.de>
+         <20201031095938.3878412e@kicinski-fedora-PC1C0HJN.hsd1.ca.comcast.net>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.5 (3.36.5-1.fc32) 
 MIME-Version: 1.0
-Content-Type: text/plain; format=flowed; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello!!
-I am experiencing this issue any time I bring down my wi-Fi card. my Wi-Fi card:
-iwlwifi 0000:03:00.0: loaded firmware version 17.3216344376.0 7260-17.ucode op_mode iwlmvm
-iwlwifi 0000:03:00.0: Detected Intel(R) Dual Band Wireless AC 7260, REV=0x144
-The warning is this one:
-WARNING: CPU: 7 PID: 259 at drivers/net/wireless/intel/iwlwifi/mvm/tx.c:1488 iwl_mvm_rx_tx_cmd+0x42d/0x760 [iwlmvm]
+On Sat, 2020-10-31 at 09:59 -0700, Jakub Kicinski wrote:
+> On Tue, 27 Oct 2020 23:54:43 +0100 Sebastian Andrzej Siewior wrote:
+> > mlx5_eq_async_int() uses in_irq() to decide whether eq::lock needs
+> > to be
+> > acquired and released with spin_[un]lock() or the irq
+> > saving/restoring
+> > variants.
+> > 
+> > The usage of in_*() in drivers is phased out and Linus clearly
+> > requested
+> > that code which changes behaviour depending on context should
+> > either be
+> > seperated or the context be conveyed in an argument passed by the
+> > caller,
+> > which usually knows the context.
+> > 
+> > mlx5_eq_async_int() knows the context via the action argument
+> > already so
+> > using it for the lock variant decision is a straight forward
+> > replacement
+> > for in_irq().
+> > 
+> > Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+> > Cc: Saeed Mahameed <saeedm@nvidia.com>
+> > Cc: Leon Romanovsky <leon@kernel.org>
+> > Cc: "David S. Miller" <davem@davemloft.net>
+> > Cc: Jakub Kicinski <kuba@kernel.org>
+> > Cc: linux-rdma@vger.kernel.org
+> 
+> Saeed, please pick this up into your tree.
 
-The macine is:
-DMI: Dell Inc. Precision M6800/0CF0TC, BIOS A14 05/24/2015
-Please keep me in CC as I am not subscribed. Not posting full trace due to the comment in the tx.c file at the specified line.
-The bug is not 100% reproducible, but with some patience, it should be reproducible.
-It happens specifically when I kill hostapd. I also bring down the interface manually later, even knowing it's useless.
+Applied to net-next-mlx5 will submit to net-next shortly.
 
-Thanks!
-
-Enrico
