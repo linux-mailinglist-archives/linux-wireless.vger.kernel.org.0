@@ -2,79 +2,78 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0626E2A3AC4
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Nov 2020 04:00:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 130012A3DC4
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Nov 2020 08:35:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726165AbgKCDAh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 2 Nov 2020 22:00:37 -0500
-Received: from mail.kernel.org ([198.145.29.99]:58596 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725913AbgKCDAh (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 2 Nov 2020 22:00:37 -0500
-Received: from kicinski-fedora-PC1C0HJN.hsd1.ca.comcast.net (unknown [163.114.132.1])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 00B0620731;
-        Tue,  3 Nov 2020 03:00:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1604372436;
-        bh=IrhgMCzPwSmcG8yWpUcKQQEKsZFIxY/jLHPR40BxrqM=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=UnkFZ8bX9G55p6vthKTHDRECJDKpHElDBCPbKMsMoYoi4qJvzWkG3i2ewKHNOpQRA
-         Zfl2zBU9acIppP7/WQXgsspw/iD2Z+3bG4LZfTUv6CeetF2//qUxjoRqeYekWl4xou
-         aYbszuclq90nJCOJnTXkZBWqyaFcY9wfXS3RLlK8=
-Date:   Mon, 2 Nov 2020 19:00:35 -0800
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     Aleksandr Nogikh <aleksandrnogikh@gmail.com>
-Cc:     davem@davemloft.net, johannes@sipsolutions.net,
-        edumazet@google.com, andreyknvl@google.com, dvyukov@google.com,
-        elver@google.com, linux-kernel@vger.kernel.org,
-        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        willemdebruijn.kernel@gmail.com,
-        Aleksandr Nogikh <nogikh@google.com>
-Subject: Re: [PATCH v5 0/3] net, mac80211, kernel: enable KCOV remote
- coverage collection for 802.11 frame handling
-Message-ID: <20201102190035.2c1c65ce@kicinski-fedora-PC1C0HJN.hsd1.ca.comcast.net>
-In-Reply-To: <20201029173620.2121359-1-aleksandrnogikh@gmail.com>
-References: <20201029173620.2121359-1-aleksandrnogikh@gmail.com>
+        id S1727876AbgKCHf3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 3 Nov 2020 02:35:29 -0500
+Received: from linux.microsoft.com ([13.77.154.182]:53752 "EHLO
+        linux.microsoft.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727861AbgKCHf2 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 3 Nov 2020 02:35:28 -0500
+Received: from [192.168.0.114] (unknown [49.207.216.192])
+        by linux.microsoft.com (Postfix) with ESMTPSA id 681AC20B4905;
+        Mon,  2 Nov 2020 23:35:25 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 681AC20B4905
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+        s=default; t=1604388928;
+        bh=ih9ZiV/+m1a4u66NjJRUECF/WudDRLXa9Ud3sqbo1wU=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+        b=fngvWTf5lX/PQrgJi0VtxZ5dfaIhHlQcoxLhWUSksXKq3J0YjeJMvR0wRt1bNwEbS
+         KFSK/hRuuLQ6QGMj0gBvFxSMmNtaXMxfqjv+3wBbAwqC7EQkEkgdbRfhvCBhDoZRy8
+         C/8Iwe6LSz3hZwNFTl+S6ezNQRgzo7ftmvUxBP28=
+Subject: Re: [PATCH v2 0/3] wireless: convert tasklets to use new
+To:     Allen Pais <allen.lkml@gmail.com>, kvalo@codeaurora.org
+Cc:     davem@davemloft.net, nbd@nbd.name, lorenzo.bianconi83@gmail.com,
+        ryder.lee@mediatek.com, kuba@kernel.org, matthias.bgg@gmail.com,
+        ath11k@lists.infradead.org, linux-mediatek@lists.infradead.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+References: <20201007103309.363737-1-allen.lkml@gmail.com>
+From:   Allen Pais <apais@linux.microsoft.com>
+Message-ID: <c3d71677-a428-f215-2ba8-4dd277a69fb6@linux.microsoft.com>
+Date:   Tue, 3 Nov 2020 13:05:23 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+In-Reply-To: <20201007103309.363737-1-allen.lkml@gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, 29 Oct 2020 17:36:17 +0000 Aleksandr Nogikh wrote:
-> From: Aleksandr Nogikh <nogikh@google.com>
-> 
-> This patch series enables remote KCOV coverage collection during
-> 802.11 frames processing. These changes make it possible to perform
-> coverage-guided fuzzing in search of remotely triggerable bugs.
-> 
-> Normally, KCOV collects coverage information for the code that is
-> executed inside the system call context. It is easy to identify where
-> that coverage should go and whether it should be collected at all by
-> looking at the current process. If KCOV was enabled on that process,
-> coverage will be stored in a buffer specific to that process.
-> Howerever, it is not always enough as handling can happen elsewhere
-> (e.g. in separate kernel threads).
-> 
-> When it is impossible to infer KCOV-related info just by looking at
-> the currently running process, one needs to manually pass some
-> information to the code that should be instrumented. The information
-> takes the form of 64 bit integers (KCOV remote handles). Zero is the
-> special value that corresponds to an empty handle. More details on
-> KCOV and remote coverage collection can be found in
-> Documentation/dev-tools/kcov.rst.
-> 
-> The series consists of three commits.
-> 1. Apply a minor fix to kcov_common_handle() so that it returns a
-> valid handle (zero) when called in an interrupt context.
-> 2. Take the remote handle from KCOV and attach it to newly allocated
-> SKBs as an skb extension. If the allocation happens inside a system
-> call context, the SKB will be tied to the process that issued the
-> syscall (if that process is interested in remote coverage collection).
-> 3. Annotate the code that processes incoming 802.11 frames with
-> kcov_remote_start()/kcov_remote_stop().
 
-Applied, thanks.
+
+> 
+> This series converts the remaining drivers to use new
+> tasklet_setup() API.
+> 
+> The patches are based on wireless-drivers-next (c2568c8c9e63)
+
+  Is this series queue? I haven't seen any email. This is the last
+series as part of the tasklet conversion effort.
+
+Thanks.
+
+> 
+> v2:
+>    Split mt76 and mt7601u
+> 
+> Allen Pais (3):
+>    wireless: mt76: convert tasklets to use new tasklet_setup() API
+>    wireless: mt7601u: convert tasklets to use new tasklet_setup() API
+>    ath11k: convert tasklets to use new tasklet_setup() API
+> 
+>   drivers/net/wireless/ath/ath11k/pci.c              |  7 +++----
+>   drivers/net/wireless/mediatek/mt76/mt7603/beacon.c |  4 ++--
+>   drivers/net/wireless/mediatek/mt76/mt7603/init.c   |  3 +--
+>   drivers/net/wireless/mediatek/mt76/mt7603/mt7603.h |  2 +-
+>   drivers/net/wireless/mediatek/mt76/mt7615/mmio.c   |  6 +++---
+>   drivers/net/wireless/mediatek/mt76/mt76x02_dfs.c   | 10 +++++-----
+>   drivers/net/wireless/mediatek/mt76/mt76x02_mmio.c  |  7 +++----
+>   drivers/net/wireless/mediatek/mt76/usb.c           |  6 +++---
+>   drivers/net/wireless/mediatek/mt7601u/dma.c        | 12 ++++++------
+>   9 files changed, 27 insertions(+), 30 deletions(-)
+> 
