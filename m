@@ -2,29 +2,29 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A9D7A2A3FE2
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Nov 2020 10:22:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E19B52A3FE4
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Nov 2020 10:22:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727186AbgKCJWt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 3 Nov 2020 04:22:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55588 "EHLO
+        id S1727328AbgKCJWu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 3 Nov 2020 04:22:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55590 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725993AbgKCJWs (ORCPT
+        with ESMTP id S1726734AbgKCJWs (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Tue, 3 Nov 2020 04:22:48 -0500
 Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1651C0617A6
-        for <linux-wireless@vger.kernel.org>; Tue,  3 Nov 2020 01:22:47 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18A67C0613D1
+        for <linux-wireless@vger.kernel.org>; Tue,  3 Nov 2020 01:22:48 -0800 (PST)
 Received: from [149.224.151.57] (helo=localhost.localdomain)
         by ds12 with esmtpa (Exim 4.89)
         (envelope-from <john@phrozen.org>)
-        id 1kZsWb-0006Q9-L8; Tue, 03 Nov 2020 10:22:45 +0100
+        id 1kZsWb-0006Q9-V5; Tue, 03 Nov 2020 10:22:46 +0100
 From:   John Crispin <john@phrozen.org>
 To:     Johannes Berg <johannes@sipsolutions.net>
 Cc:     linux-wireless@vger.kernel.org, John Crispin <john@phrozen.org>
-Subject: [PATCH V6 1/3] nl80211: add support for BSS coloring
-Date:   Tue,  3 Nov 2020 10:22:42 +0100
-Message-Id: <20201103092244.1925158-2-john@phrozen.org>
+Subject: [PATCH V6 2/3] mac80211: add support for BSS color change
+Date:   Tue,  3 Nov 2020 10:22:43 +0100
+Message-Id: <20201103092244.1925158-3-john@phrozen.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20201103092244.1925158-1-john@phrozen.org>
 References: <20201103092244.1925158-1-john@phrozen.org>
@@ -34,482 +34,550 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This patch adds support for BSS color collisions to the wireless subsystem.
-Add the required functionality to nl80211 that will notify about color
-collisions, triggering the color change and notifying when it is completed.
+The color change announcement is very similar to how CSA works where
+we have an IE that includes a counter. When the counter hits 0, the new
+color is applied via an updated beacon.
+
+This patch makes the CSA counter functionality reusable, rather than
+implementing it again. This also allows for future reuse incase support
+for other counter IEs gets added.
 
 Signed-off-by: John Crispin <john@phrozen.org>
 ---
- include/net/cfg80211.h       |  95 ++++++++++++++++++++++++
- include/uapi/linux/nl80211.h |  46 ++++++++++++
- net/wireless/nl80211.c       | 135 +++++++++++++++++++++++++++++++++++
- net/wireless/rdev-ops.h      |  12 ++++
- net/wireless/trace.h         |  47 ++++++++++++
- 5 files changed, 335 insertions(+)
+ include/net/mac80211.h     |  28 +++++
+ net/mac80211/cfg.c         | 250 +++++++++++++++++++++++++++++++++++--
+ net/mac80211/ieee80211_i.h |  12 ++
+ net/mac80211/iface.c       |   3 +
+ net/mac80211/tx.c          |  24 ++--
+ 5 files changed, 299 insertions(+), 18 deletions(-)
 
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index 0be0c11c95fd..ed4c08e38f70 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -1272,6 +1272,27 @@ struct cfg80211_csa_settings {
- 	u8 count;
+diff --git a/include/net/mac80211.h b/include/net/mac80211.h
+index 051b7cae2516..078dd77f69d2 100644
+--- a/include/net/mac80211.h
++++ b/include/net/mac80211.h
+@@ -1718,6 +1718,10 @@ enum ieee80211_vif_multiple_bssid_flags {
+  * @multiple_bssid.parent: a non-transmitted bssid has a transmitted parent.
+  * @multiple_bssid.flags: multiple bssid flags, see
+  *	&enum ieee80211_vif_multiple_bssid_flags
++ * @color_change_active: marks whether a color change is going on. Internally it is
++ *	write-protected by sdata_lock and local->mtx so holding either is fine
++ *	for read access.
++ * @color_change_color: the color that we will have after the change.
+  */
+ struct ieee80211_vif {
+ 	enum nl80211_iftype type;
+@@ -1750,6 +1754,9 @@ struct ieee80211_vif {
+ 		u32 flags;
+ 	} multiple_bssid;
+ 
++	bool color_change_active;
++	u8 color_change_color;
++
+ 	/* must be last */
+ 	u8 drv_priv[] __aligned(sizeof(void *));
  };
+@@ -5073,6 +5080,16 @@ void ieee80211_csa_finish(struct ieee80211_vif *vif);
+  */
+ bool ieee80211_beacon_cntdwn_is_complete(struct ieee80211_vif *vif);
  
 +/**
-+ * struct cfg80211_color_change_settings - color change settings
++ * ieee80211_color_change_finish - notify mac80211 about color change
++ * @vif: &struct ieee80211_vif pointer from the add_interface callback.
 + *
-+ * Used for color change
-+ *
-+ * @beacon_color_change: beacon data while performing the change
-+ * @counter_offsets_beacon: offsets of the counters within the beacon (tail)
-+ * @counter_offsets_presp: offsets of the counters within the probe response
-+ * @beacon_after: beacon data to be used after the change
-+ * @count: number of beacons until the change
-+ * @color: the color that we will have after the change
++ * After a color change announcement was scheduled and the counter in this
++ * announcement hits 1, this function must be called by the driver to
++ * notify mac80211 that the color can be changed
 + */
-+struct cfg80211_color_change_settings {
-+	struct cfg80211_beacon_data beacon_color_change;
-+	u16 counter_offset_beacon;
-+	u16 counter_offset_presp;
-+	struct cfg80211_beacon_data beacon_after;
-+	u8 count;
-+	u8 color;
-+};
++void ieee80211_color_change_finish(struct ieee80211_vif *vif);
 +
- #define CFG80211_MAX_NUM_DIFFERENT_CHANNELS 10
- 
  /**
-@@ -3954,6 +3975,7 @@ struct mgmt_frame_regs {
-  *	This callback may sleep.
-  * @reset_tid_config: Reset TID specific configuration for the peer, for the
-  *	given TIDs. This callback may sleep.
-+ * @color_change: initiate a color change (with color change).
-  */
- struct cfg80211_ops {
- 	int	(*suspend)(struct wiphy *wiphy, struct cfg80211_wowlan *wow);
-@@ -4282,6 +4304,9 @@ struct cfg80211_ops {
- 				  struct cfg80211_tid_config *tid_conf);
- 	int	(*reset_tid_config)(struct wiphy *wiphy, struct net_device *dev,
- 				    const u8 *peer, u8 tids);
-+	int	(*color_change)(struct wiphy *wiphy,
-+				struct net_device *dev,
-+				struct cfg80211_color_change_settings *params);
- };
- 
- /*
-@@ -8059,4 +8084,74 @@ void cfg80211_update_owe_info_event(struct net_device *netdev,
-  */
- void cfg80211_bss_flush(struct wiphy *wiphy);
- 
-+
-+/*
-+ * cfg80211_bss_color_notify - notify about bss color event
-+ * @dev: network device
-+ * @gfp: allocation flags
-+ * notif: the actual event we want to notify
-+ * @count: the number of TBTTs until the color change happens
-+ * @color_bitmap: representations of the colors that the local BSS is aware of
+  * ieee80211_proberesp_get - retrieve a Probe Response template
+  * @hw: pointer obtained from ieee80211_alloc_hw().
+@@ -6805,4 +6822,15 @@ struct sk_buff *ieee80211_get_fils_discovery_tmpl(struct ieee80211_hw *hw,
+ struct sk_buff *
+ ieee80211_get_unsol_bcast_probe_resp_tmpl(struct ieee80211_hw *hw,
+ 					  struct ieee80211_vif *vif);
++/**
++ * ieeee80211_obss_color_collision_notify notify userland about a BSS color
++ * collision.
++ *
++ * @vif: &struct ieee80211_vif pointer from the add_interface callback.
++ * @color_bitmap: a 64 bit bitmap representing the colors that the local BSS is
++ *	aware of.
 + */
-+void cfg80211_bss_color_notify(struct net_device *dev,
-+			       gfp_t gfp, enum nl80211_commands notify,
-+			       u8 count, u64 color_bitmap);
++void
++ieeee80211_obss_color_collision_notify(struct ieee80211_vif *vif,
++				       u64 color_bitmap);
+ #endif /* MAC80211_H */
+diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+index 457a956bb637..1ace5e20eb6a 100644
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -860,7 +860,8 @@ static int ieee80211_set_monitor_channel(struct wiphy *wiphy,
+ 
+ static int ieee80211_set_probe_resp(struct ieee80211_sub_if_data *sdata,
+ 				    const u8 *resp, size_t resp_len,
+-				    const struct ieee80211_csa_settings *csa)
++				    const struct ieee80211_csa_settings *csa,
++				    const struct ieee80211_color_change_settings *color_change)
+ {
+ 	struct probe_resp *new, *old;
+ 
+@@ -880,6 +881,8 @@ static int ieee80211_set_probe_resp(struct ieee80211_sub_if_data *sdata,
+ 		memcpy(new->cntdwn_counter_offsets, csa->counter_offsets_presp,
+ 		       csa->n_counter_offsets_presp *
+ 		       sizeof(new->cntdwn_counter_offsets[0]));
++	if (color_change)
++		new->cntdwn_counter_offsets[0] = color_change->counter_offset_presp;
+ 
+ 	rcu_assign_pointer(sdata->u.ap.probe_resp, new);
+ 	if (old)
+@@ -1010,7 +1013,8 @@ static u8 *ieee80211_copy_multiple_bssid_beacon(u8 *offset,
+ 
+ static int ieee80211_assign_beacon(struct ieee80211_sub_if_data *sdata,
+ 				   struct cfg80211_beacon_data *params,
+-				   const struct ieee80211_csa_settings *csa)
++				   const struct ieee80211_csa_settings *csa,
++				   const struct ieee80211_color_change_settings *color_change)
+ {
+ 	struct beacon_data *new, *old;
+ 	int new_head_len, new_tail_len, new_multiple_bssid_len;
+@@ -1082,6 +1086,11 @@ static int ieee80211_assign_beacon(struct ieee80211_sub_if_data *sdata,
+ 		       sizeof(new->cntdwn_counter_offsets[0]));
+ 	}
+ 
++	if (color_change) {
++		new->cntdwn_current_counter = color_change->count;
++		new->cntdwn_counter_offsets[0] = color_change->counter_offset_beacon;
++	}
 +
-+/*
-+ * cfg80211_obss_color_collision_notify - notify about bss color collisions
-+ * @dev: network device
-+ * @color_bitmap: representations of the colors that the local BSS is aware of
-+ */
-+static inline void cfg80211_obss_color_collision_notify(struct net_device *dev,
-+							u64 color_bitmap)
+ 	/* copy in head */
+ 	if (params->head)
+ 		memcpy(new->head, params->head, new_head_len);
+@@ -1096,7 +1105,7 @@ static int ieee80211_assign_beacon(struct ieee80211_sub_if_data *sdata,
+ 			memcpy(new->tail, old->tail, new_tail_len);
+ 
+ 	err = ieee80211_set_probe_resp(sdata, params->probe_resp,
+-				       params->probe_resp_len, csa);
++				       params->probe_resp_len, csa, color_change);
+ 	if (err < 0) {
+ 		kfree(new);
+ 		return err;
+@@ -1256,7 +1265,7 @@ static int ieee80211_start_ap(struct wiphy *wiphy, struct net_device *dev,
+ 	if (ieee80211_hw_check(&local->hw, HAS_RATE_CONTROL))
+ 		sdata->vif.bss_conf.beacon_tx_rate = params->beacon_rate;
+ 
+-	err = ieee80211_assign_beacon(sdata, &params->beacon, NULL);
++	err = ieee80211_assign_beacon(sdata, &params->beacon, NULL, NULL);
+ 	if (err < 0)
+ 		goto error;
+ 	changed |= err;
+@@ -1311,17 +1320,17 @@ static int ieee80211_change_beacon(struct wiphy *wiphy, struct net_device *dev,
+ 	sdata = IEEE80211_DEV_TO_SUB_IF(dev);
+ 	sdata_assert_lock(sdata);
+ 
+-	/* don't allow changing the beacon while CSA is in place - offset
++	/* don't allow changing the beacon while a countdown is in place - offset
+ 	 * of channel switch counter may change
+ 	 */
+-	if (sdata->vif.csa_active)
++	if (sdata->vif.csa_active || sdata->vif.color_change_active)
+ 		return -EBUSY;
+ 
+ 	old = sdata_dereference(sdata->u.ap.beacon, sdata);
+ 	if (!old)
+ 		return -ENOENT;
+ 
+-	err = ieee80211_assign_beacon(sdata, params, NULL);
++	err = ieee80211_assign_beacon(sdata, params, NULL, NULL);
+ 	if (err < 0)
+ 		return err;
+ 	ieee80211_bss_info_change_notify(sdata, err);
+@@ -3225,7 +3234,7 @@ static int ieee80211_set_after_csa_beacon(struct ieee80211_sub_if_data *sdata,
+ 	switch (sdata->vif.type) {
+ 	case NL80211_IFTYPE_AP:
+ 		err = ieee80211_assign_beacon(sdata, sdata->u.ap.next_beacon,
+-					      NULL);
++					      NULL, NULL);
+ 		kfree(sdata->u.ap.next_beacon);
+ 		sdata->u.ap.next_beacon = NULL;
+ 
+@@ -3391,7 +3400,7 @@ static int ieee80211_set_csa_beacon(struct ieee80211_sub_if_data *sdata,
+ 		csa.n_counter_offsets_presp = params->n_counter_offsets_presp;
+ 		csa.count = params->count;
+ 
+-		err = ieee80211_assign_beacon(sdata, &params->beacon_csa, &csa);
++		err = ieee80211_assign_beacon(sdata, &params->beacon_csa, &csa, NULL);
+ 		if (err < 0) {
+ 			kfree(sdata->u.ap.next_beacon);
+ 			return err;
+@@ -3479,6 +3488,14 @@ static int ieee80211_set_csa_beacon(struct ieee80211_sub_if_data *sdata,
+ 	return 0;
+ }
+ 
++static void ieee80211_color_change_abort(struct ieee80211_sub_if_data  *sdata)
 +{
-+	cfg80211_bss_color_notify(dev, GFP_KERNEL,
-+				 NL80211_CMD_OBSS_COLOR_COLLISION,
-+				 0, color_bitmap);
++	sdata->vif.color_change_active = false;
++	kfree(sdata->u.ap.next_beacon);
++	sdata->u.ap.next_beacon = NULL;
++	cfg80211_color_change_aborted_notify(sdata->dev);
 +}
 +
-+/*
-+ * cfg80211_color_change_started_notify - notify color change start
-+ * @dev: the device on which the color is switched
-+ * @count: the number of TBTTs until the color change happens
-+ *
-+ * Inform the userspace about the color change that has just
-+ * started.
-+ */
-+static inline void cfg80211_color_change_started_notify(struct net_device *dev,
-+							u8 count)
-+{
-+	cfg80211_bss_color_notify(dev, GFP_KERNEL,
-+				 NL80211_CMD_COLOR_CHANGE_ANNOUNCEMENT_STARTED,
-+				 count, 0);
-+}
-+
-+/*
-+ * cfg80211_color_change_aborted_notify - notify color change abort
-+ * @dev: the device on which the color is switched
-+ *
-+ * Inform the userspace about the color change that has just
-+ * started.
-+ */
-+static inline void cfg80211_color_change_aborted_notify(struct net_device *dev)
-+{
-+	cfg80211_bss_color_notify(dev, GFP_KERNEL,
-+				 NL80211_CMD_COLOR_CHANGE_ANNOUNCEMENT_ABORTED,
-+				 0, 0);
-+}
-+
-+/*
-+ * cfg80211_color_change_notify - notify color change completion
-+ * @dev: the device on which the color was switched
-+ *
-+ * Inform the userspace about the color change that has just
-+ * completed.
-+ */
-+static inline void cfg80211_color_change_notify(struct net_device *dev)
-+{
-+	cfg80211_bss_color_notify(dev, GFP_KERNEL,
-+				 NL80211_CMD_COLOR_CHANGE_ANNOUNCEMENT_COMPLETED,
-+				 0, 0);
-+}
-+
- #endif /* __NET_CFG80211_H */
-diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-index 91b338b0b9cb..2d11e38bb109 100644
---- a/include/uapi/linux/nl80211.h
-+++ b/include/uapi/linux/nl80211.h
-@@ -1177,6 +1177,21 @@
-  *	includes the contents of the frame. %NL80211_ATTR_ACK flag is included
-  *	if the recipient acknowledged the frame.
-  *
-+ * @NL80211_CMD_OBSS_COLOR_COLLISION: This notification is sent out whenever a
-+ *	mac detects a bss color collision.
-+ *
-+ * @NL80211_CMD_COLOR_CHANGE: This command is used to indicate that we want to
-+ *	change the BSS color.
-+ *
-+ * @NL80211_CMD_COLOR_CHANGE_ANNOUNCEMENT_STARTED: Notify userland, that we color change has
-+ *	started
-+ *
-+ * @NL80211_CMD_COLOR_CHANGE_ANNOUNCEMENT_ABORTED: Notify userland, that we color change has
-+ *	been aborted
-+ *
-+ * @NL80211_CMD_COLOR_CHANGE_ANNOUNCEMENT_COMPLETED: Notify userland that ithe color change
-+ *	has completed
-+ *
-  * @NL80211_CMD_MAX: highest used command number
-  * @__NL80211_CMD_AFTER_LAST: internal use
-  */
-@@ -1407,6 +1422,13 @@ enum nl80211_commands {
+ static int
+ __ieee80211_channel_switch(struct wiphy *wiphy, struct net_device *dev,
+ 			   struct cfg80211_csa_settings *params)
+@@ -3550,6 +3567,10 @@ __ieee80211_channel_switch(struct wiphy *wiphy, struct net_device *dev,
+ 		goto out;
+ 	}
  
- 	NL80211_CMD_CONTROL_PORT_FRAME_TX_STATUS,
- 
-+	NL80211_CMD_OBSS_COLOR_COLLISION,
++	/* if there is a color change in progress, abort it */
++	if (sdata->vif.color_change_active)
++		ieee80211_color_change_abort(sdata);
 +
-+	NL80211_CMD_COLOR_CHANGE,
-+	NL80211_CMD_COLOR_CHANGE_ANNOUNCEMENT_STARTED,
-+	NL80211_CMD_COLOR_CHANGE_ANNOUNCEMENT_ABORTED,
-+	NL80211_CMD_COLOR_CHANGE_ANNOUNCEMENT_COMPLETED,
-+
- 	/* add new commands above here */
- 
- 	/* used to define NL80211_CMD_MAX below */
-@@ -2540,6 +2562,20 @@ enum nl80211_commands {
-  *
-  * @NL80211_ATTR_MULTIPLE_BSSID_EMA: Shall the multiple BSS beacons be sent out in EMA mode.
-  *
-+ * @NL80211_ATTR_OBSS_COLOR_BITMAP: bitmap of the u64 BSS colors for the
-+ *	%NL80211_CMD_OBSS_COLOR_COLLISION event.
-+ *
-+ * @NL80211_ATTR_COLOR_CHANGE_ANNOUNCEMENT_COUNT: u8 attribute specifying the number of TBTT's
-+ *	until the color switch event.
-+ * @NL80211_ATTR_COLOR_CHANGE_ANNOUNCEMENT_COLOR: u8 attribute specifying the color that we are
-+ *	switching to
-+ * @NL80211_ATTR_COLOR_CHANGE_ANNOUNCEMENT_IES: Nested set of attributes containing the IE
-+ *	information for the time while performing a color switch.
-+ * @NL80211_ATTR_COLOR_CHANGE_ANNOUNCEMENT_C_OFF_BEACON: An array of offsets (u16) to the color
-+ *	switch counters in the beacons tail (%NL80211_ATTR_BEACON_TAIL).
-+ * @NL80211_ATTR_COLOR_CHANGE_ANNOUNCEMENT_C_OFF_PRESP: An array of offsets (u16) to the color
-+ *	switch counters in the probe response (%NL80211_ATTR_PROBE_RESP).
-+ *
-  * @NUM_NL80211_ATTR: total number of nl80211_attrs available
-  * @NL80211_ATTR_MAX: highest attribute number currently defined
-  * @__NL80211_ATTR_AFTER_LAST: internal use
-@@ -3035,6 +3071,12 @@ enum nl80211_attrs {
- 	NL80211_ATTR_MULTIPLE_BSSID_IES,
- 	NL80211_ATTR_MULTIPLE_BSSID_EMA,
- 
-+	NL80211_ATTR_OBSS_COLOR_BITMAP,
-+
-+	NL80211_ATTR_COLOR_CHANGE_ANNOUNCEMENT_COUNT,
-+	NL80211_ATTR_COLOR_CHANGE_ANNOUNCEMENT_COLOR,
-+	NL80211_ATTR_COLOR_CHANGE_ANNOUNCEMENT_IES,
-+
- 	/* add attributes here, update the policy in nl80211.c */
- 
- 	__NL80211_ATTR_AFTER_LAST,
-@@ -5917,6 +5959,9 @@ enum nl80211_feature_flags {
-  * @NL80211_EXT_FEATURE_UNSOL_BCAST_PROBE_RESP: Driver/device supports
-  *	unsolicited broadcast probe response transmission
-  *
-+ * @NL80211_EXT_FEATURE_BSS_COLOR: The driver supports BSS color collision
-+ *	detection and change announcemnts.
-+ *
-  * @NUM_NL80211_EXT_FEATURES: number of extended features.
-  * @MAX_NL80211_EXT_FEATURES: highest extended feature index.
-  */
-@@ -5977,6 +6022,7 @@ enum nl80211_ext_feature_index {
- 	NL80211_EXT_FEATURE_SAE_OFFLOAD_AP,
- 	NL80211_EXT_FEATURE_FILS_DISCOVERY,
- 	NL80211_EXT_FEATURE_UNSOL_BCAST_PROBE_RESP,
-+	NL80211_EXT_FEATURE_BSS_COLOR,
- 
- 	/* add new features before the definition below */
- 	NUM_NL80211_EXT_FEATURES,
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 45765d033d05..d76c1595b567 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -720,6 +720,10 @@ static const struct nla_policy nl80211_policy[NUM_NL80211_ATTR] = {
- 	[NL80211_ATTR_MULTIPLE_BSSID_COUNT] = NLA_POLICY_RANGE(NLA_U8, 1, 16),
- 	[NL80211_ATTR_MULTIPLE_BSSID_IES] = { .type = NLA_NESTED },
- 	[NL80211_ATTR_MULTIPLE_BSSID_EMA] = { .type = NLA_FLAG },
-+	[NL80211_ATTR_OBSS_COLOR_BITMAP] = { .type = NLA_U64 },
-+	[NL80211_ATTR_COLOR_CHANGE_ANNOUNCEMENT_COUNT] = { .type = NLA_U8 },
-+	[NL80211_ATTR_COLOR_CHANGE_ANNOUNCEMENT_COLOR] = { .type = NLA_U8 },
-+	[NL80211_ATTR_COLOR_CHANGE_ANNOUNCEMENT_IES] = NLA_POLICY_NESTED(nl80211_policy),
- };
- 
- /* policy for the key attributes */
-@@ -14588,6 +14592,82 @@ static int nl80211_set_tid_config(struct sk_buff *skb,
+ 	err = ieee80211_set_csa_beacon(sdata, params, &changed);
+ 	if (err) {
+ 		ieee80211_vif_unreserve_chanctx(sdata);
+@@ -4190,6 +4211,216 @@ static int ieee80211_reset_tid_config(struct wiphy *wiphy,
  	return ret;
  }
  
-+static int nl80211_color_change(struct sk_buff *skb, struct genl_info *info)
++static int ieee80211_set_after_color_change_beacon(struct ieee80211_sub_if_data *sdata,
++						   u32 *changed)
 +{
-+	struct cfg80211_registered_device *rdev = info->user_ptr[0];
-+	struct net_device *dev = info->user_ptr[1];
-+	struct wireless_dev *wdev = dev->ieee80211_ptr;
-+	struct cfg80211_color_change_settings params;
-+	static struct nlattr *color_change_attrs[NL80211_ATTR_MAX + 1];
-+	int err, len;
++	int err;
 +
-+	if (!rdev->ops->color_change ||
-+	    !(wiphy_ext_feature_isset(&rdev->wiphy, NL80211_EXT_FEATURE_BSS_COLOR)))
-+		return -EOPNOTSUPP;
++	switch (sdata->vif.type) {
++	case NL80211_IFTYPE_AP:
++		err = ieee80211_assign_beacon(sdata, sdata->u.ap.next_beacon,
++					      NULL, NULL);
++		kfree(sdata->u.ap.next_beacon);
++		sdata->u.ap.next_beacon = NULL;
 +
-+	if (dev->ieee80211_ptr->iftype != NL80211_IFTYPE_AP)
-+		return -EOPNOTSUPP;
-+
-+	memset(&params, 0, sizeof(params));
-+
-+	if (!info->attrs[NL80211_ATTR_COLOR_CHANGE_ANNOUNCEMENT_COUNT] ||
-+	    !info->attrs[NL80211_ATTR_COLOR_CHANGE_ANNOUNCEMENT_COLOR] ||
-+	    !info->attrs[NL80211_ATTR_COLOR_CHANGE_ANNOUNCEMENT_IES])
++		if (err < 0)
++			return err;
++		*changed |= err;
++		break;
++	default:
++		WARN_ON(1);
 +		return -EINVAL;
-+
-+	params.count = nla_get_u8(info->attrs[NL80211_ATTR_COLOR_CHANGE_ANNOUNCEMENT_COUNT]);
-+	params.color = nla_get_u8(info->attrs[NL80211_ATTR_COLOR_CHANGE_ANNOUNCEMENT_COLOR]);
-+
-+	err = nl80211_parse_beacon(rdev, info->attrs, &params.beacon_after);
-+	if (err)
-+		return err;
-+
-+	err = nla_parse_nested(color_change_attrs, NL80211_ATTR_MAX,
-+			       info->attrs[NL80211_ATTR_COLOR_CHANGE_ANNOUNCEMENT_IES],
-+			       nl80211_policy, NULL);
-+	if (err)
-+		return err;
-+
-+	err = nl80211_parse_beacon(rdev, color_change_attrs, &params.beacon_color_change);
-+	if (err)
-+		return err;
-+
-+	if (!info->attrs[NL80211_ATTR_CNTDWN_OFFS_BEACON])
-+		return -EINVAL;
-+
-+	len = nla_len(info->attrs[NL80211_ATTR_CNTDWN_OFFS_BEACON]);
-+	if (len != sizeof(u16))
-+		return -EINVAL;
-+
-+	memcpy(&params.counter_offset_beacon,
-+	       nla_data(info->attrs[NL80211_ATTR_CNTDWN_OFFS_BEACON]),
-+	       sizeof(u16));
-+
-+	if (params.counter_offset_beacon >= params.beacon_color_change.tail_len)
-+		return -EINVAL;
-+
-+	if (params.beacon_color_change.tail[params.counter_offset_beacon] != params.count)
-+		return -EINVAL;
-+
-+	if (info->attrs[NL80211_ATTR_CNTDWN_OFFS_PRESP]) {
-+		params.counter_offset_presp =
-+			nla_get_u16(info->attrs[NL80211_ATTR_CNTDWN_OFFS_PRESP]);
-+
-+		if (params.counter_offset_presp >= params.beacon_color_change.probe_resp_len)
-+			return -EINVAL;
-+
-+		if (params.beacon_color_change.probe_resp[params.counter_offset_presp] !=
-+		    params.count)
-+			return -EINVAL;
 +	}
 +
-+	wdev_lock(wdev);
-+	err = rdev_color_change(rdev, dev, &params);
-+	wdev_unlock(wdev);
++	return 0;
++}
++
++static int ieee80211_set_color_change_beacon(struct ieee80211_sub_if_data *sdata,
++					     struct cfg80211_color_change_settings *params,
++					     u32 *changed)
++{
++	struct ieee80211_color_change_settings color_change = {};
++	int err;
++
++	switch (sdata->vif.type) {
++	case NL80211_IFTYPE_AP:
++		sdata->u.ap.next_beacon =
++			cfg80211_beacon_dup(&params->beacon_after);
++		if (!sdata->u.ap.next_beacon)
++			return -ENOMEM;
++
++		if (params->count <= 1)
++			break;
++
++		color_change.counter_offset_beacon = params->counter_offset_beacon;
++		color_change.counter_offset_presp = params->counter_offset_presp;
++		color_change.count = params->count;
++
++		err = ieee80211_assign_beacon(sdata, &params->beacon_color_change,
++					      NULL, &color_change);
++		if (err < 0) {
++			kfree(sdata->u.ap.next_beacon);
++			return err;
++		}
++		*changed |= err;
++
++		break;
++	default:
++		return -EOPNOTSUPP;
++	}
++
++	return 0;
++}
++
++static void ieee80211_color_change_bss_config_notify(struct ieee80211_sub_if_data *sdata,
++						     u8 color, int enable, u32 changed)
++{
++	sdata->vif.bss_conf.he_bss_color.color = color;
++	sdata->vif.bss_conf.he_bss_color.enabled = enable;
++	changed |= BSS_CHANGED_HE_BSS_COLOR;
++
++	ieee80211_bss_info_change_notify(sdata, changed);
++
++	if (ieee80211_hw_check(&sdata->local->hw, SUPPORTS_MULTI_BSSID_AP) &&
++	    !sdata->vif.multiple_bssid.parent) {
++		struct ieee80211_sub_if_data *child;
++
++		rcu_read_lock();
++		list_for_each_entry_rcu(child, &sdata->local->interfaces, list) {
++			if (child->vif.multiple_bssid.parent != &sdata->vif)
++				continue;
++			sdata_lock(child);
++			child->vif.bss_conf.he_bss_color.color = color;
++			child->vif.bss_conf.he_bss_color.enabled = enable;
++			ieee80211_bss_info_change_notify(child, BSS_CHANGED_HE_BSS_COLOR);
++			sdata_unlock(child);
++		}
++		rcu_read_unlock();
++	}
++}
++
++static int ieee80211_color_change_finalize(struct ieee80211_sub_if_data *sdata)
++{
++	struct ieee80211_local *local = sdata->local;
++	u32 changed = 0;
++	int err;
++
++	sdata_assert_lock(sdata);
++	lockdep_assert_held(&local->mtx);
++
++	sdata->vif.color_change_active = false;
++
++	err = ieee80211_set_after_color_change_beacon(sdata, &changed);
++	if (err) {
++		cfg80211_color_change_aborted_notify(sdata->dev);
++		return err;
++	}
++
++	ieee80211_color_change_bss_config_notify(sdata, sdata->vif.color_change_color, 1, 0);
++	cfg80211_color_change_notify(sdata->dev);
++
++	return 0;
++}
++
++void ieee80211_color_change_finalize_work(struct work_struct *work)
++{
++	struct ieee80211_sub_if_data *sdata =
++		container_of(work, struct ieee80211_sub_if_data,
++			     color_change_finalize_work);
++	struct ieee80211_local *local = sdata->local;
++
++	sdata_lock(sdata);
++	mutex_lock(&local->mtx);
++
++	/* AP might have been stopped while waiting for the lock. */
++	if (!sdata->vif.color_change_active)
++		goto unlock;
++
++	if (!ieee80211_sdata_running(sdata))
++		goto unlock;
++
++	ieee80211_color_change_finalize(sdata);
++
++unlock:
++	mutex_unlock(&local->mtx);
++	sdata_unlock(sdata);
++}
++
++void ieee80211_color_change_finish(struct ieee80211_vif *vif)
++{
++	struct ieee80211_sub_if_data *sdata = vif_to_sdata(vif);
++
++	ieee80211_queue_work(&sdata->local->hw,
++			     &sdata->color_change_finalize_work);
++}
++EXPORT_SYMBOL_GPL(ieee80211_color_change_finish);
++
++void
++ieeee80211_obss_color_collision_notify(struct ieee80211_vif *vif,
++				       u64 color_bitmap)
++{
++	struct ieee80211_sub_if_data *sdata = vif_to_sdata(vif);
++
++	if (sdata->vif.color_change_active || sdata->vif.csa_active)
++		return;
++
++	cfg80211_obss_color_collision_notify(sdata->dev, color_bitmap);
++}
++EXPORT_SYMBOL_GPL(ieeee80211_obss_color_collision_notify);
++
++static int
++__ieee80211_color_change(struct wiphy *wiphy, struct net_device *dev,
++			 struct cfg80211_color_change_settings *params)
++{
++	struct ieee80211_sub_if_data *sdata = IEEE80211_DEV_TO_SUB_IF(dev);
++	struct ieee80211_local *local = sdata->local;
++	u32 changed = 0;
++	int err;
++
++	sdata_assert_lock(sdata);
++	lockdep_assert_held(&local->mtx);
++
++	/* don't allow another color change if one is already active or if csa
++	 * is active
++	 */
++	if (sdata->vif.color_change_active || sdata->vif.csa_active)
++		return -EBUSY;
++
++	err = ieee80211_set_color_change_beacon(sdata, params, &changed);
++	if (err)
++		return err;
++
++	sdata->vif.color_change_active = true;
++	sdata->vif.color_change_color = params->color;
++
++	cfg80211_color_change_started_notify(sdata->dev, params->count);
++
++	if (changed)
++		ieee80211_color_change_bss_config_notify(sdata, 0, 0, changed);
++	else
++		/* if the beacon didn't change, we can finalize immediately */
++		ieee80211_color_change_finalize(sdata);
++
++	return 0;
++}
++
++static int ieee80211_color_change(struct wiphy *wiphy, struct net_device *dev,
++				  struct cfg80211_color_change_settings *params)
++{
++	struct ieee80211_sub_if_data *sdata = IEEE80211_DEV_TO_SUB_IF(dev);
++	struct ieee80211_local *local = sdata->local;
++	int err;
++
++	if (sdata->vif.multiple_bssid.flags & IEEE80211_VIF_MBSS_NON_TRANSMITTING)
++		return -EINVAL;
++
++	mutex_lock(&local->mtx);
++	err = __ieee80211_color_change(wiphy, dev, params);
++	mutex_unlock(&local->mtx);
 +
 +	return err;
 +}
 +
- #define NL80211_FLAG_NEED_WIPHY		0x01
- #define NL80211_FLAG_NEED_NETDEV	0x02
- #define NL80211_FLAG_NEED_RTNL		0x04
-@@ -15552,6 +15632,14 @@ static const struct genl_small_ops nl80211_small_ops[] = {
- 		.internal_flags = NL80211_FLAG_NEED_NETDEV |
- 				  NL80211_FLAG_NEED_RTNL,
- 	},
-+	{
-+		.cmd = NL80211_CMD_COLOR_CHANGE,
-+		.validate = GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
-+		.doit = nl80211_color_change,
-+		.flags = GENL_UNS_ADMIN_PERM,
-+		.internal_flags = NL80211_FLAG_NEED_NETDEV_UP |
-+				  NL80211_FLAG_NEED_RTNL,
-+	},
+ const struct cfg80211_ops mac80211_config_ops = {
+ 	.add_virtual_intf = ieee80211_add_iface,
+ 	.del_virtual_intf = ieee80211_del_iface,
+@@ -4293,4 +4524,5 @@ const struct cfg80211_ops mac80211_config_ops = {
+ 	.probe_mesh_link = ieee80211_probe_mesh_link,
+ 	.set_tid_config = ieee80211_set_tid_config,
+ 	.reset_tid_config = ieee80211_reset_tid_config,
++	.color_change = ieee80211_color_change,
+ };
+diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
+index e510abc5ace2..2eb96a514dc6 100644
+--- a/net/mac80211/ieee80211_i.h
++++ b/net/mac80211/ieee80211_i.h
+@@ -255,6 +255,13 @@ struct ieee80211_csa_settings {
+ 	u8 count;
  };
  
- static struct genl_family nl80211_fam __ro_after_init = {
-@@ -17170,6 +17258,53 @@ void cfg80211_ch_switch_started_notify(struct net_device *dev,
++struct ieee80211_color_change_settings {
++	u16 counter_offset_beacon;
++	u16 counter_offset_presp;
++
++	u8 count;
++};
++
+ struct beacon_data {
+ 	u8 *head, *tail;
+ 	int head_len, tail_len;
+@@ -941,6 +948,8 @@ struct ieee80211_sub_if_data {
+ 	bool csa_block_tx; /* write-protected by sdata_lock and local->mtx */
+ 	struct cfg80211_chan_def csa_chandef;
+ 
++	struct work_struct color_change_finalize_work;
++
+ 	struct list_head assigned_chanctx_list; /* protected by chanctx_mtx */
+ 	struct list_head reserved_chanctx_list; /* protected by chanctx_mtx */
+ 
+@@ -1758,6 +1767,9 @@ void ieee80211_csa_finalize_work(struct work_struct *work);
+ int ieee80211_channel_switch(struct wiphy *wiphy, struct net_device *dev,
+ 			     struct cfg80211_csa_settings *params);
+ 
++/* color change handling */
++void ieee80211_color_change_finalize_work(struct work_struct *work);
++
+ /* interface handling */
+ #define MAC80211_SUPPORTED_FEATURES_TX	(NETIF_F_IP_CSUM | NETIF_F_IPV6_CSUM | \
+ 					 NETIF_F_HW_CSUM | NETIF_F_SG | \
+diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
+index 63a0391d2b66..f0d317de5833 100644
+--- a/net/mac80211/iface.c
++++ b/net/mac80211/iface.c
+@@ -485,6 +485,8 @@ static void ieee80211_do_stop(struct ieee80211_sub_if_data *sdata,
+ 				   GFP_KERNEL);
+ 	}
+ 
++	cancel_work_sync(&sdata->color_change_finalize_work);
++
+ 	/* APs need special treatment */
+ 	if (sdata->vif.type == NL80211_IFTYPE_AP) {
+ 		struct ieee80211_sub_if_data *vlan, *tmpsdata;
+@@ -1539,6 +1541,7 @@ static void ieee80211_setup_sdata(struct ieee80211_sub_if_data *sdata,
+ 	INIT_WORK(&sdata->work, ieee80211_iface_work);
+ 	INIT_WORK(&sdata->recalc_smps, ieee80211_recalc_smps_work);
+ 	INIT_WORK(&sdata->csa_finalize_work, ieee80211_csa_finalize_work);
++	INIT_WORK(&sdata->color_change_finalize_work, ieee80211_color_change_finalize_work);
+ 	INIT_LIST_HEAD(&sdata->assigned_chanctx_list);
+ 	INIT_LIST_HEAD(&sdata->reserved_chanctx_list);
+ 
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index ca0d49af9a0f..1f69fe4c4356 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -4546,11 +4546,12 @@ static int ieee80211_beacon_add_tim(struct ieee80211_sub_if_data *sdata,
+ static void ieee80211_set_beacon_cntdwn(struct ieee80211_sub_if_data *sdata,
+ 					struct beacon_data *beacon)
+ {
++	u16 *bcn_offsets, *resp_offsets;
+ 	struct probe_resp *resp;
+ 	u8 *beacon_data;
+ 	size_t beacon_data_len;
+ 	int i;
+-	u8 count = beacon->cntdwn_current_counter;
++	u8 count, max_count = 1;
+ 
+ 	switch (sdata->vif.type) {
+ 	case NL80211_IFTYPE_AP:
+@@ -4570,21 +4571,25 @@ static void ieee80211_set_beacon_cntdwn(struct ieee80211_sub_if_data *sdata,
+ 	}
+ 
+ 	rcu_read_lock();
+-	for (i = 0; i < IEEE80211_MAX_CNTDWN_COUNTERS_NUM; ++i) {
+-		resp = rcu_dereference(sdata->u.ap.probe_resp);
++	resp = rcu_dereference(sdata->u.ap.probe_resp);
+ 
+-		if (beacon->cntdwn_counter_offsets[i]) {
+-			if (WARN_ON_ONCE(beacon->cntdwn_counter_offsets[i] >=
+-					 beacon_data_len)) {
++	bcn_offsets = beacon->cntdwn_counter_offsets;
++	resp_offsets = resp->cntdwn_counter_offsets;
++	count = beacon->cntdwn_current_counter;
++	if (sdata->vif.csa_active)
++		max_count = IEEE80211_MAX_CNTDWN_COUNTERS_NUM;
++
++	for (i = 0; i < max_count; ++i) {
++		if (bcn_offsets[i]) {
++			if (WARN_ON_ONCE(bcn_offsets[i] >= beacon_data_len)) {
+ 				rcu_read_unlock();
+ 				return;
+ 			}
+-
+-			beacon_data[beacon->cntdwn_counter_offsets[i]] = count;
++			beacon_data[bcn_offsets[i]] = count;
+ 		}
+ 
+ 		if (sdata->vif.type == NL80211_IFTYPE_AP && resp)
+-			resp->data[resp->cntdwn_counter_offsets[i]] = count;
++			resp->data[resp_offsets[i]] = count;
+ 	}
+ 	rcu_read_unlock();
  }
- EXPORT_SYMBOL(cfg80211_ch_switch_started_notify);
+@@ -4830,6 +4835,7 @@ __ieee80211_beacon_get(struct ieee80211_hw *hw,
+ 			if (offs) {
+ 				offs->tim_offset = beacon->head_len;
+ 				offs->tim_length = skb->len - beacon->head_len;
++				offs->cntdwn_counter_offs[0] = beacon->cntdwn_counter_offsets[0];
  
-+void cfg80211_bss_color_notify(struct net_device *dev,
-+			       gfp_t gfp, enum nl80211_commands cmd,
-+			       u8 count, u64 color_bitmap)
-+{
-+	struct wireless_dev *wdev = dev->ieee80211_ptr;
-+	struct wiphy *wiphy = wdev->wiphy;
-+	struct cfg80211_registered_device *rdev = wiphy_to_rdev(wiphy);
-+	struct sk_buff *msg;
-+	void *hdr;
-+
-+	ASSERT_WDEV_LOCK(wdev);
-+
-+	trace_cfg80211_bss_color_notify(dev, cmd, count, color_bitmap);
-+
-+	msg = nlmsg_new(NLMSG_DEFAULT_SIZE, gfp);
-+	if (!msg)
-+		return;
-+
-+	hdr = nl80211hdr_put(msg, 0, 0, 0, cmd);
-+	if (!hdr) {
-+		nlmsg_free(msg);
-+		return;
-+	}
-+
-+	if (nla_put_u32(msg, NL80211_ATTR_IFINDEX, dev->ifindex))
-+		goto nla_put_failure;
-+
-+	if (cmd == NL80211_CMD_COLOR_CHANGE_ANNOUNCEMENT_STARTED &&
-+	    nla_put_u32(msg, NL80211_ATTR_COLOR_CHANGE_ANNOUNCEMENT_COUNT, count))
-+		goto nla_put_failure;
-+
-+	if (cmd == NL80211_CMD_OBSS_COLOR_COLLISION &&
-+	    nla_put_u64_64bit(msg, NL80211_ATTR_OBSS_COLOR_BITMAP,
-+			      color_bitmap, NL80211_ATTR_PAD))
-+		goto nla_put_failure;
-+
-+	genlmsg_end(msg, hdr);
-+
-+	genlmsg_multicast_netns(&nl80211_fam, wiphy_net(&rdev->wiphy), msg, 0,
-+				NL80211_MCGRP_MLME, gfp);
-+	return;
-+
-+ nla_put_failure:
-+	nlmsg_free(msg);
-+}
-+EXPORT_SYMBOL(cfg80211_bss_color_notify);
-+
- void
- nl80211_radar_notify(struct cfg80211_registered_device *rdev,
- 		     const struct cfg80211_chan_def *chandef,
-diff --git a/net/wireless/rdev-ops.h b/net/wireless/rdev-ops.h
-index 950d57494168..752db69783ab 100644
---- a/net/wireless/rdev-ops.h
-+++ b/net/wireless/rdev-ops.h
-@@ -1356,4 +1356,16 @@ static inline int rdev_reset_tid_config(struct cfg80211_registered_device *rdev,
- 	return ret;
- }
- 
-+static inline int rdev_color_change(struct cfg80211_registered_device *rdev,
-+				    struct net_device *dev,
-+				    struct cfg80211_color_change_settings *params)
-+{
-+	int ret;
-+
-+	trace_rdev_color_change(&rdev->wiphy, dev, params);
-+	ret = rdev->ops->color_change(&rdev->wiphy, dev, params);
-+	trace_rdev_return_int(&rdev->wiphy, ret);
-+	return ret;
-+}
-+
- #endif /* __CFG80211_RDEV_OPS */
-diff --git a/net/wireless/trace.h b/net/wireless/trace.h
-index 6e218a0acd4e..36f9215f07ac 100644
---- a/net/wireless/trace.h
-+++ b/net/wireless/trace.h
-@@ -3547,6 +3547,53 @@ TRACE_EVENT(rdev_reset_tid_config,
- 	TP_printk(WIPHY_PR_FMT ", " NETDEV_PR_FMT ", peer: " MAC_PR_FMT ", tids: 0x%x",
- 		  WIPHY_PR_ARG, NETDEV_PR_ARG, MAC_PR_ARG(peer), __entry->tids)
- );
-+
-+TRACE_EVENT(rdev_color_change,
-+	TP_PROTO(struct wiphy *wiphy, struct net_device *netdev,
-+		 struct cfg80211_color_change_settings *params),
-+	TP_ARGS(wiphy, netdev, params),
-+	TP_STRUCT__entry(
-+		WIPHY_ENTRY
-+		NETDEV_ENTRY
-+		__field(u8, count)
-+		__field(u16, bcn_ofs)
-+		__field(u16, pres_ofs)
-+	),
-+	TP_fast_assign(
-+		WIPHY_ASSIGN;
-+		NETDEV_ASSIGN;
-+		__entry->count = params->count;
-+		__entry->bcn_ofs = params->counter_offset_beacon;
-+		__entry->pres_ofs = params->counter_offset_presp;
-+	),
-+	TP_printk(WIPHY_PR_FMT ", " NETDEV_PR_FMT
-+		  ", count: %u",
-+		  WIPHY_PR_ARG, NETDEV_PR_ARG,
-+		  __entry->count)
-+);
-+
-+TRACE_EVENT(cfg80211_bss_color_notify,
-+	TP_PROTO(struct net_device *netdev,
-+		 enum nl80211_commands cmd,
-+		 u8 count, u64 color_bitmap),
-+	TP_ARGS(netdev, cmd, count, color_bitmap),
-+	TP_STRUCT__entry(
-+		NETDEV_ENTRY
-+		__field(enum nl80211_bss_scan_width, cmd)
-+		__field(u8, count)
-+		__field(u64, color_bitmap)
-+	),
-+	TP_fast_assign(
-+		NETDEV_ASSIGN;
-+		__entry->cmd = cmd;
-+		__entry->count = count;
-+		__entry->color_bitmap = color_bitmap;
-+	),
-+	TP_printk(NETDEV_PR_FMT ", cmd: %x, count: %u, bitmap: %llx",
-+		  NETDEV_PR_ARG, __entry->cmd, __entry->count,
-+		  __entry->color_bitmap)
-+);
-+
- #endif /* !__RDEV_OPS_TRACE || TRACE_HEADER_MULTI_READ */
- 
- #undef TRACE_INCLUDE_PATH
+ 				/* for AP the csa offsets are from tail */
+ 				csa_off_base = skb->len;
 -- 
 2.25.1
 
