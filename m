@@ -2,102 +2,118 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 589572A44E5
+	by mail.lfdr.de (Postfix) with ESMTP id C4F562A44E6
 	for <lists+linux-wireless@lfdr.de>; Tue,  3 Nov 2020 13:16:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729026AbgKCMQl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 3 Nov 2020 07:16:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54850 "EHLO
+        id S1728994AbgKCMQm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 3 Nov 2020 07:16:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54852 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728168AbgKCMQl (ORCPT
+        with ESMTP id S1728520AbgKCMQl (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Tue, 3 Nov 2020 07:16:41 -0500
-Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com [IPv6:2a00:1450:4864:20::329])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0AD9C0613D1
-        for <linux-wireless@vger.kernel.org>; Tue,  3 Nov 2020 04:16:40 -0800 (PST)
-Received: by mail-wm1-x329.google.com with SMTP id c9so10977646wml.5
+Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com [IPv6:2a00:1450:4864:20::341])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08843C0617A6
+        for <linux-wireless@vger.kernel.org>; Tue,  3 Nov 2020 04:16:41 -0800 (PST)
+Received: by mail-wm1-x341.google.com with SMTP id k18so12551011wmj.5
         for <linux-wireless@vger.kernel.org>; Tue, 03 Nov 2020 04:16:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=AShy5CksHbzK69i92p5sYeNn8BBNvAFd0gTiGBC/Zug=;
-        b=l4BFAA8462o32Mgf8sVSRl5Vv1AO/3WXNalvKjz/b/2XB4tiRNC9OfKZE7q9Su3l7n
-         QVTqba4MjV6Glg15ose2Gy+SZCoxmLPD8D5BtM3svuGPiXZrVaWE+BYHjbcrk5GEL+56
-         DBn0hRiy3WISUPweElxC0xOmLWf6RM2YfBwYbq5wAIMMNZehFFPU1LXNMFfRy6Qr7BWm
-         MoF9LyIZ/HpDcHuGs09ozk9w4iChTT1H2qtPTlUn1RBNpjS1NiqrmexGDpTBybAcg9B8
-         6DCdquzx25tfseunExy6tdmy0use6Xtq+XZaOCuE1jK8hpsF09j3VChkdwG7ooR3Kk4O
-         9DUQ==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=KlmuRyRTsccQs11337/cNvBJ75DEr7vPuxm5KWIHi20=;
+        b=HHy0mndQwujeOhiq71ViwLo1ljXcsNpMOf4lVqk7taZR2mz/fYRUPcYcta2AnF9VhT
+         GNCNVZpcor4YukSqyJuRfzX4nadfkOBsfoHIIo35uG91+I0Rl/U75YNq4hup1iatiJdI
+         TTH+XyxgT6oR4QudVLR0TADFXEthmKWyCM2nK4aBhX8U/wy34rIdMdO9FLRGyQ0Jj93e
+         FAWVHpWqYPJFopI+oAhG1b9aOP9GGJI7HH+w8Ub7BOi9QA3VkOqMRwW4w8UdiXCkjTww
+         /RGcsV9C4ScAle3/7Mq8Z7Tb7Wo5BM7EmnEgDBu9e7IIrpZaT5ydVeP9nVO42b5vBZ+7
+         KcYw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=AShy5CksHbzK69i92p5sYeNn8BBNvAFd0gTiGBC/Zug=;
-        b=diWq+3amZg13JJUpRuOwLsndZay8IZEoIHx0/sVO9fUedZJgU3lnQeKI9dUkgjfuDA
-         IGgqISRIfpB9O6P7K9rLXMJ+W1eD9H1qDagbc3WgCTf3qLz2nrZQ2Zy8UyzfxW0XmuAC
-         mFhRYlD67TtEaFsbcDTpC8UW8kqwiBK0cABdYlz0guYRBPuahXbDPF42tDNWeipC4iFr
-         8vXaL9a+V1J5Ym9UHF74Y4ZNS3XkPCXAshKJs2aD6KQFB5JtjBpby/vRlJrp2nXxw8SP
-         euWj/d4oZBcLbXJKRb90OYDoZo702ZzED5sglaZWo8OYBsMGwhtQX3Ict8Pd13+L0MSP
-         bIxg==
-X-Gm-Message-State: AOAM532k2eRxI5IjedQoQq2CQLLFUFXHO2kqtZVS9rN4/wAIUOD6xa1q
-        vTZcHikbXi9xeIRnM3hi1wolxg==
-X-Google-Smtp-Source: ABdhPJySEylTt/qqYu7nBESC+WVXc8qzbpNuFo8iNJEX20kuhC7KpKOjonmSoruOxpE8+NhTuJyZdQ==
-X-Received: by 2002:a7b:c11a:: with SMTP id w26mr3468638wmi.78.1604405798688;
-        Tue, 03 Nov 2020 04:16:38 -0800 (PST)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=KlmuRyRTsccQs11337/cNvBJ75DEr7vPuxm5KWIHi20=;
+        b=aTNi8dI6ITdrAR/Sg2q8IGJZkfS0tvyrSRSEGPyWTDrWvkfdoDApkro9AkTtyAx0M6
+         Qx1uaKdHxieR/jd7exgMlWfxVYdtFU4LLpTQq0AYNvFT1bO3Ep7HFSbGWjIzrex/mdcJ
+         /aT9vRJmzeUqIt4XP5BXi65ZIia94+/Ks3cGpb/jSEc0FFM8QbYm0Mkyd2Y8aGAxEwHu
+         eEdMROuug7tmBkCQw+Y0lk7A1MfycHnkvPClSO1LSkesIa0SA6pC6gb15KAlSQiXqOB3
+         N3qdbYGJSjuHF0ot3b/NC1kY7gN5leOCtJftRDTIQww9RpBXIWtRCj6PK6MXY7+4aM4C
+         JnRg==
+X-Gm-Message-State: AOAM533tbCJfZg3DyGvt5xwi69AuMdcE47UQH3NaSxwdiHpYPEJh7Ebc
+        vRMfrVY2sW1ueVPmdpWt+TkvNA==
+X-Google-Smtp-Source: ABdhPJx6BZp9a/RMWVolQpA1tVInIu+8wj4IVPiMgKjERw9a9I4+DxyTUfc8Bb+GpDEVeeispgzk+Q==
+X-Received: by 2002:a1c:6643:: with SMTP id a64mr3426219wmc.142.1604405799770;
+        Tue, 03 Nov 2020 04:16:39 -0800 (PST)
 Received: from sagittarius-a.chello.ie (188-141-3-169.dynamic.upc.ie. [188.141.3.169])
-        by smtp.gmail.com with ESMTPSA id z6sm2678210wmi.1.2020.11.03.04.16.37
+        by smtp.gmail.com with ESMTPSA id z6sm2678210wmi.1.2020.11.03.04.16.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Nov 2020 04:16:38 -0800 (PST)
+        Tue, 03 Nov 2020 04:16:39 -0800 (PST)
 From:   Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 To:     kvalo@codeaurora.org, wcn36xx@lists.infradead.org,
         linux-wireless@vger.kernel.org
 Cc:     bryan.odonoghue@linaro.org, shawn.guo@linaro.org,
         loic.poulain@linaro.org
-Subject: [PATCH v2 0/3] wcn36xx: Firmware link monitor/keepalive offload
-Date:   Tue,  3 Nov 2020 12:17:32 +0000
-Message-Id: <20201103121735.291324-1-bryan.odonoghue@linaro.org>
+Subject: [PATCH v2 1/3] wcn36xx: Set LINK_FAIL_TX_CNT to 1000 on all wcn36xx
+Date:   Tue,  3 Nov 2020 12:17:33 +0000
+Message-Id: <20201103121735.291324-2-bryan.odonoghue@linaro.org>
 X-Mailer: git-send-email 2.28.0
+In-Reply-To: <20201103121735.291324-1-bryan.odonoghue@linaro.org>
+References: <20201103121735.291324-1-bryan.odonoghue@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-V2:
-- Sets LINK_FAIL_TX_CNT to 1000 for all wcn36xx parts
-- Uses wrapper function wcn36xx_enable_keep_alive_null_packet()
-  around wcn36xx_smd_keep_alive_req()
+The firmware parameter LINK_FAIL_TX_CNT maps to the prima configuration
+file parameter gLinkFailTxCnt and is described as:
+
+quote: " If within gLinkFailTimeout period(values is mentioned in msec) if
+         FW doesn't receive acks for gLinkFailTxCnt number of packets, then
+         link will be disconnected."
+
+The downstream description sets a minimum value of 1000 a maximum value of
+60000 and a default value of 6000, however it appears that unless we
+actually set this value deliberately firmware defaults it to 0.
+
+Setting this value to non-zero results in the firmware doing link
+monitoring. The working example from downstream paradoxically sets the
+value to 200, here we opt to set the value to the minimum stipulated in the
+configuration file 1000.
+
+In conjunction with ieee80211_hw_set(wcn->hw, CONNECTION_MONITOR); this
+change effects offload of link monitoring to the firmware.
 
 Tested with:
 'CNSS-PR-2-0-1-2-c1-74-130449-3' wcn3620
 'CNSS-PR-2-0-1-2-c1-00083'       wcn3680
 
-https://www.spinics.net/lists/linux-wireless/msg204844.html
+Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+---
+ drivers/net/wireless/ath/wcn36xx/smd.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-V1:
-This patchset enables various firmware offload features for
-
-- Link keepalive
-- Link monitoring
-
-Keepalive is a necessary precursor for an upcoming series on
-wake on wlan, since we need to inform the firmware to keep the link up in
-suspend.
-
-Testing shows that LINK_FAIL_TX_CNT is a link monitor enable field. Once
-set to non-zero link monitoring becomes active. This series activates
-CONNECTION_MONITOR after enabling LINK_FAIL_TX_CNT thus offloading link
-monitoring to the firmware.
-
-Bryan O'Donoghue (3):
-  wcn36xx: Set LINK_FAIL_TX_CNT to 1000 on all wcn36xx
-  wcn36xx: Enable firmware link monitoring
-  wcn36xx: Enable firmware offloaded keepalive
-
- drivers/net/wireless/ath/wcn36xx/main.c | 2 ++
- drivers/net/wireless/ath/wcn36xx/smd.c  | 3 ++-
- 2 files changed, 4 insertions(+), 1 deletion(-)
-
+diff --git a/drivers/net/wireless/ath/wcn36xx/smd.c b/drivers/net/wireless/ath/wcn36xx/smd.c
+index 766400f7b61c..8ff1eda8f942 100644
+--- a/drivers/net/wireless/ath/wcn36xx/smd.c
++++ b/drivers/net/wireless/ath/wcn36xx/smd.c
+@@ -78,6 +78,7 @@ static struct wcn36xx_cfg_val wcn36xx_cfg_vals[] = {
+ 	WCN36XX_CFG_VAL(MAX_ASSOC_LIMIT, 10),
+ 	WCN36XX_CFG_VAL(ENABLE_MCC_ADAPTIVE_SCHEDULER, 0),
+ 	WCN36XX_CFG_VAL(ENABLE_DYNAMIC_RA_START_RATE, 133), /* MCS 5 */
++	WCN36XX_CFG_VAL(LINK_FAIL_TX_CNT, 1000),
+ };
+ 
+ static struct wcn36xx_cfg_val wcn3680_cfg_vals[] = {
+@@ -162,7 +163,7 @@ static struct wcn36xx_cfg_val wcn3680_cfg_vals[] = {
+ 	WCN36XX_CFG_VAL(ENABLE_RTSCTS_HTVHT, 0),
+ 	WCN36XX_CFG_VAL(BTC_STATIC_OPP_WLAN_IDLE_WLAN_LEN, 30000),
+ 	WCN36XX_CFG_VAL(BTC_STATIC_OPP_WLAN_IDLE_BT_LEN, 120000),
+-	WCN36XX_CFG_VAL(LINK_FAIL_TX_CNT, 200),
++	WCN36XX_CFG_VAL(LINK_FAIL_TX_CNT, 1000),
+ 	WCN36XX_CFG_VAL(TOGGLE_ARP_BDRATES, 0),
+ 	WCN36XX_CFG_VAL(OPTIMIZE_CA_EVENT, 0),
+ 	WCN36XX_CFG_VAL(EXT_SCAN_CONC_MODE, 0),
 -- 
 2.28.0
 
