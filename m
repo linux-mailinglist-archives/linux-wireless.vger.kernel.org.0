@@ -2,96 +2,105 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 884D02A5A33
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Nov 2020 23:42:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F98B2A5AD0
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Nov 2020 00:56:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730043AbgKCWmu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 3 Nov 2020 17:42:50 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:45200 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729342AbgKCWmt (ORCPT
+        id S1729616AbgKCX4k (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 3 Nov 2020 18:56:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51282 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726709AbgKCX4k (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 3 Nov 2020 17:42:49 -0500
-From:   Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1604443368;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=CxfvdBHnfbE+NLxg4nLzP/fWnawWLL9RQKr5XcFxvrk=;
-        b=Ri0rriNmvG0PQzHx2g59t4aHDxB0PhOg1vuvKteN3D98F4FtA6lEr0WHo2k7HS78TqvaNH
-        HKwqGYCjRpll2pox60moN8yp432lYiP++jXiForlldmrgnkz3W5DMkJHmCcmji5YmLCoqL
-        tIvBCLh4A/1oKlwCKC7Get1oyYSs4C+IoxcuejDhluTvReY8CFcu8itT9PwwTt8vxEqY2+
-        ePRph1BfJSJSicE5PwjGlga3IJllnbIV+NLVd6QqiWVfDq9SvH8h9IBurwwrgDcLe7zcN7
-        OPVtDNuLxcGQ5AbMhEkpjUoLN5MY30JChj1pfFw+nF6aLZ+73Yuf0aPN1bGfqw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1604443368;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=CxfvdBHnfbE+NLxg4nLzP/fWnawWLL9RQKr5XcFxvrk=;
-        b=fj+tmdBqjOOtms5X6X6AE6xyzr/3mldXS+HGczzGVgHu+ze1SwQpK3Jt5eP+WDBJb5DXHe
-        LSjErP9kA8uAl1Bw==
-To:     Bjorn Helgaas <helgaas@kernel.org>,
-        Kalle Valo <kvalo@codeaurora.org>
-Cc:     Govind Singh <govinds@codeaurora.org>, linux-pci@vger.kernel.org,
-        linux-wireless@vger.kernel.org, Devin Bayer <dev@doubly.so>,
-        Thomas Krause <thomaskrause@posteo.de>,
-        ath11k@lists.infradead.org, Christoph Hellwig <hch@lst.de>
-Subject: Re: pci_alloc_irq_vectors fails ENOSPC for XPS 13 9310
-In-Reply-To: <874km61732.fsf@nanos.tec.linutronix.de>
-References: <20201103160838.GA246433@bjorn-Precision-5520> <874km61732.fsf@nanos.tec.linutronix.de>
-Date:   Tue, 03 Nov 2020 23:42:47 +0100
-Message-ID: <87wnz2ysd4.fsf@nanos.tec.linutronix.de>
+        Tue, 3 Nov 2020 18:56:40 -0500
+Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com [IPv6:2607:f8b0:4864:20::444])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8253FC0613D1
+        for <linux-wireless@vger.kernel.org>; Tue,  3 Nov 2020 15:56:38 -0800 (PST)
+Received: by mail-pf1-x444.google.com with SMTP id 10so15763526pfp.5
+        for <linux-wireless@vger.kernel.org>; Tue, 03 Nov 2020 15:56:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=4fxr5iOV0siNTsG5oN0BNXHjzI/D8qC6t7dvQQ4DpYU=;
+        b=WKIpz8l5muA2c+4wtK/e6gl4nowscZvkEeKSGRzafsoagntR+3srQqkSYcypKdpLct
+         TgzEv1D4QKjeFwSbUFHcxBAB4OpCtmuThtWmBHUCMUeyBk+Jb2FuhGu/A0hrNdlBia7n
+         HY8pLth0tAcYX1v9F3jbxWvycZUEjsGP2LNRY=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=4fxr5iOV0siNTsG5oN0BNXHjzI/D8qC6t7dvQQ4DpYU=;
+        b=GJGzhLYXDqN3AKE/MrmYKG5MN0VvD+6dwMawPzC5YfRjQ/B8Q7qt5gcddLXERY2Zvt
+         nM9jUMcP87R/copYe3QAAmZt1AEHacIUgykwoRzo8RHOqplHq9GdXRPetqZBnCZroD9p
+         mf7akX8j8S/njY8QlKOELE5B/FDjoaDA7nJaSnZPW/AobPrxqkf6gCoZJgGQ7X82Fe7l
+         PqIH/nX65n/s312e0YOS4jkbsE/QrZxYBfrzuGbzP8qURKrrxSAmQZ12TkNZmLu4H8ZO
+         bqKHJCtn5QVXaNYynHUleHAkukz/MCdKs/Fj789TFW2hiLurVdvetj5MT0wSETV4lrf1
+         yVtg==
+X-Gm-Message-State: AOAM533vdvSUACr3OB79NtscZRAv0GOHcc89DcLjnFfAOvITX3dXNTi0
+        agcs5YgwQ3VIDKmilYfr6Ny03g==
+X-Google-Smtp-Source: ABdhPJws18euEvCbN6PUrf3c6Nk1M3mZFTKxy6ZxlaySqcAdffwipyqIqKDwuPotsyzyXinB1pkw1A==
+X-Received: by 2002:a62:7e44:0:b029:163:f1c3:3b32 with SMTP id z65-20020a627e440000b0290163f1c33b32mr28859248pfc.62.1604447798104;
+        Tue, 03 Nov 2020 15:56:38 -0800 (PST)
+Received: from smtp.gmail.com ([2620:15c:202:201:8edc:d4ff:fe53:350d])
+        by smtp.gmail.com with ESMTPSA id w127sm218827pfc.172.2020.11.03.15.56.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Nov 2020 15:56:37 -0800 (PST)
+From:   Brian Norris <briannorris@chromium.org>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless@vger.kernel.org,
+        Brian Norris <briannorris@chromium.org>
+Subject: [PATCH] iw: handle positive error codes gracefully
+Date:   Tue,  3 Nov 2020 15:56:31 -0800
+Message-Id: <20201103235631.2936594-1-briannorris@chromium.org>
+X-Mailer: git-send-email 2.29.1.341.ge80a0c044ae-goog
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Nov 03 2020 at 22:08, Thomas Gleixner wrote:
-> On Tue, Nov 03 2020 at 10:08, Bjorn Helgaas wrote:
->>> > But it seems a little greedy if the device can't operate at all unless
->>> > it gets 32 vectors.  Are you sure that's a hard requirement?  Most
->>> > devices can work with fewer vectors, even if it reduces performance.
->
-> Right, even most high end network cards work with one interrupt.
->
->>> This was my first reaction as well when I saw the code for the first
->>> time. And the reply I got is that the firmware needs all 32 vectors, it
->>> won't work with less.
->
-> Great design.
+netlink(7) requires error codes to be negative, but since when does a
+man page stop anyone? At a minimum, we shouldn't allow a non-conforming
+vendor command to put us into an infinite loop in the below snippets
+from __handle_cmd():
 
-Just to put more information to this:
+	err = 1;
 
-Enforcing 32 vectors with MSI is beyond silly. Due to the limitations of
-MSI all of these vectors will be affine to a single CPU unless irq
-remapping is available and enabled.
+	nl_cb_err(cb, NL_CB_CUSTOM, error_handler, &err);
+...
+	while (err > 0)
+		nl_recvmsgs(state->nl_sock, cb);
 
-So if irq remapping is not enabled, then what are the 32 vectors buying?
-Exactly nothing because they just compete to be handled on the very same
-CPU. If the design requires more than one vector, then this should be
-done with MSI-X (which allows individual affinities and individual
-masking).
+Signed-off-by: Brian Norris <briannorris@chromium.org>
+---
+ iw.c | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
-That's known for 20 years and MSI-X exists for exactly that reason. But
-hardware people still insist on implementing MSI (probably because it
-saves 0.002$ per chip).
-
-But there is also the firmware side. Enforcing the availability of 32
-vectors on MSI is silly to begin with as explained above, but it's also
-silly given the constraints of the x86 vector space. It takes just 6
-devices having the same 32 vector requirement to exhaust it. Oh well...
-
-Thanks,
-
-        tglx
-
-
-
-
-
-
-
+diff --git a/iw.c b/iw.c
+index da71617921d8..35308ba3244a 100644
+--- a/iw.c
++++ b/iw.c
+@@ -287,7 +287,19 @@ static int error_handler(struct sockaddr_nl *nla, struct nlmsgerr *err,
+ 	int *ret = arg;
+ 	int ack_len = sizeof(*nlh) + sizeof(int) + sizeof(*nlh);
+ 
+-	*ret = err->error;
++	if (err->error > 0) {
++		/*
++		 * This is illegal, per netlink(7), but not impossible (think
++		 * "vendor commands"). Callers really expect negative error
++		 * codes, so make that happen.
++		 */
++		fprintf(stderr,
++			"ERROR: received positive netlink error code %d\n",
++			err->error);
++		*ret = -EPROTO;
++	} else {
++		*ret = err->error;
++	}
+ 
+ 	if (!(nlh->nlmsg_flags & NLM_F_ACK_TLVS))
+ 		return NL_STOP;
+-- 
+2.29.1.341.ge80a0c044ae-goog
 
