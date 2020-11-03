@@ -2,221 +2,76 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6909F2A4DEC
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Nov 2020 19:10:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D5BFA2A4FD5
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Nov 2020 20:17:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729117AbgKCSKQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 3 Nov 2020 13:10:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53802 "EHLO
+        id S1727857AbgKCTR3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 3 Nov 2020 14:17:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36230 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729002AbgKCSKM (ORCPT
+        with ESMTP id S1727688AbgKCTR3 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 3 Nov 2020 13:10:12 -0500
-Received: from mail-out.m-online.net (mail-out.m-online.net [IPv6:2001:a60:0:28:0:1:25:1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 631F3C0613D1;
-        Tue,  3 Nov 2020 10:10:12 -0800 (PST)
-Received: from frontend01.mail.m-online.net (unknown [192.168.8.182])
-        by mail-out.m-online.net (Postfix) with ESMTP id 4CQd9M5bB2z1rsNT;
-        Tue,  3 Nov 2020 19:09:59 +0100 (CET)
-Received: from localhost (dynscan1.mnet-online.de [192.168.6.70])
-        by mail.m-online.net (Postfix) with ESMTP id 4CQd9M0MkDz1qtZB;
-        Tue,  3 Nov 2020 19:09:59 +0100 (CET)
-X-Virus-Scanned: amavisd-new at mnet-online.de
-Received: from mail.mnet-online.de ([192.168.8.182])
-        by localhost (dynscan1.mail.m-online.net [192.168.6.70]) (amavisd-new, port 10024)
-        with ESMTP id 6pvLRmTPH3AJ; Tue,  3 Nov 2020 19:09:57 +0100 (CET)
-X-Auth-Info: 1U1MDOVSZ0ZB3wc9xWUKX7BNRDPK2UOjjOtadn9h+fs=
-Received: from localhost.localdomain (ip-89-176-112-137.net.upcbroadband.cz [89.176.112.137])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.mnet-online.de (Postfix) with ESMTPSA;
-        Tue,  3 Nov 2020 19:09:57 +0100 (CET)
-From:   Marek Vasut <marex@denx.de>
+        Tue, 3 Nov 2020 14:17:29 -0500
+Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3EAFC0613D1
+        for <linux-wireless@vger.kernel.org>; Tue,  3 Nov 2020 11:17:28 -0800 (PST)
+Received: by mail-ej1-x62e.google.com with SMTP id gn41so8587054ejc.4
+        for <linux-wireless@vger.kernel.org>; Tue, 03 Nov 2020 11:17:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:mime-version;
+        bh=5kNCjmO9xwLdAkLb/sFX7P25NLxMwYunPPD7wkaIBBM=;
+        b=qqbsRUqTzpkxKS3W6z1wCXxeeC4dnpkClSDLP4+T+WPc34D+yhdwhSUsudGVvnNFIe
+         jnTnDV7yiOK+EBnRnRZwDMYYih8xC3Oif/B9UpIzF+88OYupDxVg2N0HQ/CNMkcSbil6
+         idWG+UuZVKlssgYZhwpVGH169zR0KPpykMIJM53f8S57h5dMtabfRZY6JR4pQyHpqG7Y
+         jyStx1L83iUtexVH6PSrxWjQhcr4waVaSrtNE61uGPjsCNvB4ZEFsZlPKR2+KZPM9uYQ
+         OqWq2p4SNHcsBHmvFKROAQDwVK2S+EMgKlvZJJpF5LWgKwZxpOXo1FIhFI6CpXLC0Mdb
+         8NlQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version;
+        bh=5kNCjmO9xwLdAkLb/sFX7P25NLxMwYunPPD7wkaIBBM=;
+        b=bhDQhPiuFGlgrul3bPii9cmfmWXTGSRtU616aAwIs+WCHAQr6Qdj8QTYpER8O9Z4tl
+         H/bqkBZAb3K+s1/Te14B8M2gQ6DamdB8DkMou0P5QKnKEthf30F49SjyW6lS+uUB3e9N
+         bTVQCPSdXWVysGrupi8lf1lQnK3YBn0AqTpLUzDz9v28KAUVk1EtQOjvjk8UxgeGD6m5
+         GKd/DAzJWU0y2NxxoGLqgXmP7jL8sFiG03IEZyRSddtwFrlFspRRKEoY7UVPFzyt5ub5
+         R0jXW+cyExn8T4MM5yzmF0wwJ9lsFw8+b0YgzoxqGpEOn4j4PixH6N92AUWUevKQ4hh7
+         YMLQ==
+X-Gm-Message-State: AOAM530NHLeQephUrOMkwSO5YxpgNMb8M07sR64k7QWQ4lstFf9gPLL4
+        soX1F4Sk00w2QZQOqUqyaKAOB8eWrwY1jA==
+X-Google-Smtp-Source: ABdhPJzvG7QMx6NWxdWiZ3cMz08gS1b5wTQQo78Jl2G46WQuXbCH4TW2SqVdVLTZTPhe/baBTcxCzQ==
+X-Received: by 2002:a17:906:c0c1:: with SMTP id bn1mr1687499ejb.454.1604431047616;
+        Tue, 03 Nov 2020 11:17:27 -0800 (PST)
+Received: from eeec (host-95-244-250-221.retail.telecomitalia.it. [95.244.250.221])
+        by smtp.gmail.com with ESMTPSA id j3sm12547632edh.25.2020.11.03.11.17.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Nov 2020 11:17:26 -0800 (PST)
+Date:   Tue, 3 Nov 2020 20:17:25 +0100 (CET)
+From:   Enrico Mioso <mrkiko.rs@gmail.com>
 To:     linux-wireless@vger.kernel.org
-Cc:     Marek Vasut <marex@denx.de>, Angus Ainslie <angus@akkea.ca>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Martin Kepplinger <martink@posteo.de>,
-        Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>,
-        Siva Rebbagondla <siva8118@gmail.com>, netdev@vger.kernel.org
-Subject: [PATCH 2/2] rsi: Clean up loop in the interrupt handler
-Date:   Tue,  3 Nov 2020 19:09:41 +0100
-Message-Id: <20201103180941.443528-2-marex@denx.de>
-X-Mailer: git-send-email 2.28.0
-In-Reply-To: <20201103180941.443528-1-marex@denx.de>
-References: <20201103180941.443528-1-marex@denx.de>
+cc:     linuxwifi@intel.com
+Subject: WARNING: CPU: 7 PID: 259 at drivers/net/wireless/intel/iwlwifi/mvm/tx.c:1488
+ iwl_mvm_rx_tx_cmd+0x42d/0x760 [Linux 5.10-rc1]
+Message-ID: <46f977fb-8a8b-ddc6-b1f6-377e643344f@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; format=flowed; charset=US-ASCII
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The inner do { ... } while loop is completely useless, all it does
-is iterate over a switch-case statement, one bit at a time. This
-can easily be replaced by simple if (status & bit) { ... } tests
-for each bit. No functional change.
+Hello!!
+I am experiencing this issue any time I bring down my wi-Fi card. my Wi-Fi card:
+iwlwifi 0000:03:00.0: loaded firmware version 17.3216344376.0 7260-17.ucode op_mode iwlmvm
+iwlwifi 0000:03:00.0: Detected Intel(R) Dual Band Wireless AC 7260, REV=0x144
+The warning is this one:
+WARNING: CPU: 7 PID: 259 at drivers/net/wireless/intel/iwlwifi/mvm/tx.c:1488 iwl_mvm_rx_tx_cmd+0x42d/0x760 [iwlmvm]
 
-Signed-off-by: Marek Vasut <marex@denx.de>
-Cc: Angus Ainslie <angus@akkea.ca>
-Cc: David S. Miller <davem@davemloft.net>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Kalle Valo <kvalo@codeaurora.org>
-Cc: Lee Jones <lee.jones@linaro.org>
-Cc: Martin Kepplinger <martink@posteo.de>
-Cc: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
-Cc: Siva Rebbagondla <siva8118@gmail.com>
-Cc: linux-wireless@vger.kernel.org
-Cc: netdev@vger.kernel.org
----
- drivers/net/wireless/rsi/rsi_91x_sdio_ops.c | 121 ++++++++++----------
- 1 file changed, 58 insertions(+), 63 deletions(-)
+The macine is:
+DMI: Dell Inc. Precision M6800/0CF0TC, BIOS A14 05/24/2015
+Please keep me in CC as I am not subscribed. Not posting full trace due to the comment in the tx.c file at the specified line.
+The bug is not 100% reproducible, but with some patience, it should be reproducible.
+It happens specifically when I kill hostapd. I also bring down the interface manually later, even knowing it's useless.
 
-diff --git a/drivers/net/wireless/rsi/rsi_91x_sdio_ops.c b/drivers/net/wireless/rsi/rsi_91x_sdio_ops.c
-index 23e709aabd1f..8ace1874e5cb 100644
---- a/drivers/net/wireless/rsi/rsi_91x_sdio_ops.c
-+++ b/drivers/net/wireless/rsi/rsi_91x_sdio_ops.c
-@@ -236,7 +236,6 @@ static void rsi_rx_handler(struct rsi_hw *adapter)
- 	struct rsi_91x_sdiodev *dev =
- 		(struct rsi_91x_sdiodev *)adapter->rsi_dev;
- 	int status;
--	enum sdio_interrupt_type isr_type;
- 	u8 isr_status = 0;
- 	u8 fw_status = 0;
- 
-@@ -267,73 +266,69 @@ static void rsi_rx_handler(struct rsi_hw *adapter)
- 			__func__, isr_status, (1 << MSDU_PKT_PENDING),
- 			(1 << FW_ASSERT_IND));
- 
--		do {
--			RSI_GET_SDIO_INTERRUPT_TYPE(isr_status, isr_type);
--
--			switch (isr_type) {
--			case BUFFER_AVAILABLE:
--				status = rsi_sdio_check_buffer_status(adapter,
--								      0);
--				if (status < 0)
--					rsi_dbg(ERR_ZONE,
--						"%s: Failed to check buffer status\n",
--						__func__);
--				rsi_sdio_ack_intr(common->priv,
--						  (1 << PKT_BUFF_AVAILABLE));
--				rsi_set_event(&common->tx_thread.event);
--
--				rsi_dbg(ISR_ZONE,
--					"%s: ==> BUFFER_AVAILABLE <==\n",
--					__func__);
--				dev->buff_status_updated = true;
--				break;
--
--			case FIRMWARE_ASSERT_IND:
-+		if (isr_status & BIT(PKT_BUFF_AVAILABLE)) {
-+			status = rsi_sdio_check_buffer_status(adapter, 0);
-+			if (status < 0)
- 				rsi_dbg(ERR_ZONE,
--					"%s: ==> FIRMWARE Assert <==\n",
-+					"%s: Failed to check buffer status\n",
- 					__func__);
--				status = rsi_sdio_read_register(common->priv,
-+			rsi_sdio_ack_intr(common->priv,
-+					  BIT(PKT_BUFF_AVAILABLE));
-+			rsi_set_event(&common->tx_thread.event);
-+
-+			rsi_dbg(ISR_ZONE, "%s: ==> BUFFER_AVAILABLE <==\n",
-+				__func__);
-+			dev->buff_status_updated = true;
-+
-+			isr_status &= ~BIT(PKT_BUFF_AVAILABLE);
-+		}
-+
-+		if (isr_status & BIT(FW_ASSERT_IND)) {
-+			rsi_dbg(ERR_ZONE, "%s: ==> FIRMWARE Assert <==\n",
-+				__func__);
-+			status = rsi_sdio_read_register(common->priv,
- 							SDIO_FW_STATUS_REG,
- 							&fw_status);
--				if (status) {
--					rsi_dbg(ERR_ZONE,
--						"%s: Failed to read f/w reg\n",
--						__func__);
--				} else {
--					rsi_dbg(ERR_ZONE,
--						"%s: Firmware Status is 0x%x\n",
--						__func__ , fw_status);
--					rsi_sdio_ack_intr(common->priv,
--							  (1 << FW_ASSERT_IND));
--				}
--
--				common->fsm_state = FSM_CARD_NOT_READY;
--				break;
--
--			case MSDU_PACKET_PENDING:
--				rsi_dbg(ISR_ZONE, "Pkt pending interrupt\n");
--				dev->rx_info.total_sdio_msdu_pending_intr++;
--
--				status = rsi_process_pkt(common);
--				if (status) {
--					rsi_dbg(ERR_ZONE,
--						"%s: Failed to read pkt\n",
--						__func__);
--					mutex_unlock(&common->rx_lock);
--					return;
--				}
--				break;
--			default:
--				rsi_sdio_ack_intr(common->priv, isr_status);
--				dev->rx_info.total_sdio_unknown_intr++;
--				isr_status = 0;
--				rsi_dbg(ISR_ZONE,
--					"Unknown Interrupt %x\n",
--					isr_status);
--				break;
-+			if (status) {
-+				rsi_dbg(ERR_ZONE,
-+					"%s: Failed to read f/w reg\n",
-+					__func__);
-+			} else {
-+				rsi_dbg(ERR_ZONE,
-+					"%s: Firmware Status is 0x%x\n",
-+					__func__, fw_status);
-+				rsi_sdio_ack_intr(common->priv,
-+						  BIT(FW_ASSERT_IND));
- 			}
--			isr_status ^= BIT(isr_type - 1);
--		} while (isr_status);
-+
-+			common->fsm_state = FSM_CARD_NOT_READY;
-+
-+			isr_status &= ~BIT(FW_ASSERT_IND);
-+		}
-+
-+		if (isr_status & BIT(MSDU_PKT_PENDING)) {
-+			rsi_dbg(ISR_ZONE, "Pkt pending interrupt\n");
-+			dev->rx_info.total_sdio_msdu_pending_intr++;
-+
-+			status = rsi_process_pkt(common);
-+			if (status) {
-+				rsi_dbg(ERR_ZONE, "%s: Failed to read pkt\n",
-+					__func__);
-+				mutex_unlock(&common->rx_lock);
-+				return;
-+			}
-+
-+			isr_status &= ~BIT(MSDU_PKT_PENDING);
-+		}
-+
-+		if (isr_status) {
-+			rsi_sdio_ack_intr(common->priv, isr_status);
-+			dev->rx_info.total_sdio_unknown_intr++;
-+			isr_status = 0;
-+			rsi_dbg(ISR_ZONE, "Unknown Interrupt %x\n",
-+				isr_status);
-+		}
-+
- 		mutex_unlock(&common->rx_lock);
- 	} while (1);
- }
--- 
-2.28.0
+Thanks!
 
+Enrico
