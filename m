@@ -2,33 +2,33 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D6A22A4603
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Nov 2020 14:13:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7CCFF2A4667
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Nov 2020 14:29:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729037AbgKCNNa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 3 Nov 2020 08:13:30 -0500
-Received: from m42-4.mailgun.net ([69.72.42.4]:16113 "EHLO m42-4.mailgun.net"
+        id S1729307AbgKCN3D (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 3 Nov 2020 08:29:03 -0500
+Received: from z5.mailgun.us ([104.130.96.5]:30930 "EHLO z5.mailgun.us"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728721AbgKCNN3 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 3 Nov 2020 08:13:29 -0500
+        id S1729259AbgKCN2n (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 3 Nov 2020 08:28:43 -0500
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1604409209; h=Message-ID: References: In-Reply-To: Subject:
+ s=smtp; t=1604410123; h=Message-ID: References: In-Reply-To: Subject:
  Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
- MIME-Version: Sender; bh=kJE3Itmf+jWbO4yB/RJMz173+NAW4O8iB9/q9jXy720=;
- b=uPYKnWTFhlzv12JJQnN1gh/RrULPRGAfxB4hKhcEzTN+NDETWoqASrT/Cx+40r83KHtU2ocw
- DlwuORKg2Uiv9UGNCvTbvt6X6bWtyoEgztFbi7mjuDBsDfbntk7P+HHFrnIfe9+/LPtOWHsY
- LtPNZ9qI2ckzC4Km7T8fHKeixTg=
-X-Mailgun-Sending-Ip: 69.72.42.4
+ MIME-Version: Sender; bh=KbJ7uf5ba26n7iQKy0xxLg+5Abs5t9kAoaQgbJ0imWA=;
+ b=ZCfxvnc9vO5GZPETS2SAlJOeJLZ6GHX8U86vD6cX/UcM203nuP8kZHMtrgmsMoXTcGNr+UkQ
+ 6BxBAVeQwC4hxDz8kq7JRdjLJ8SSVbHuxzkAVRupolktZhz2BD6VjFB8ZWufl1kB2kisrpwC
+ /N28dtMhuuJwXHSB8kWD6SCcM5g=
+X-Mailgun-Sending-Ip: 104.130.96.5
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n06.prod.us-east-1.postgun.com with SMTP id
- 5fa15770d608b771031723ba (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 03 Nov 2020 13:13:20
+ smtp-out-n05.prod.us-east-1.postgun.com with SMTP id
+ 5fa15af775bebe827a00145c (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 03 Nov 2020 13:28:23
  GMT
 Sender: cjhuang=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id BA179C43395; Tue,  3 Nov 2020 02:34:48 +0000 (UTC)
+        id 18F86C4344A; Tue,  3 Nov 2020 03:01:58 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -38,121 +38,125 @@ Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
         (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: cjhuang)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id D4D49C43382;
-        Tue,  3 Nov 2020 02:34:47 +0000 (UTC)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 6EEF9C433B1;
+        Tue,  3 Nov 2020 03:01:56 +0000 (UTC)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8;
+Content-Type: text/plain; charset=US-ASCII;
  format=flowed
-Content-Transfer-Encoding: 8bit
-Date:   Tue, 03 Nov 2020 10:34:47 +0800
+Content-Transfer-Encoding: 7bit
+Date:   Tue, 03 Nov 2020 11:01:56 +0800
 From:   Carl Huang <cjhuang@codeaurora.org>
-To:     Abhishek Kumar <kuabhs@chromium.org>
-Cc:     briannorris@chromium.org, linux-wireless@vger.kernel.org,
-        dianders@chromium.org, ath10k@lists.infradead.org,
-        johannes@sipsolutions.net
-Subject: Re: [RFC 1/2] nl80211: add common API to configure SAR power
- limitations.
-In-Reply-To: <20201031024631.1528113-1-kuabhs@chromium.org>
-References: <20201030205639.1452712-1-kuabhs@chromium.org>
- <20201031024631.1528113-1-kuabhs@chromium.org>
-Message-ID: <e5302eb0b20339d3f6544652e4034993@codeaurora.org>
+To:     Bjorn Helgaas <helgaas@kernel.org>
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        Govind Singh <govinds@codeaurora.org>,
+        linux-pci@vger.kernel.org, linux-wireless@vger.kernel.org,
+        Devin Bayer <dev@doubly.so>,
+        Thomas Krause <thomaskrause@posteo.de>,
+        ath11k@lists.infradead.org
+Subject: Re: pci_alloc_irq_vectors fails ENOSPC for XPS 13 9310
+In-Reply-To: <20201102205752.GA34153@bjorn-Precision-5520>
+References: <20201102205752.GA34153@bjorn-Precision-5520>
+Message-ID: <ea5a2a1956ffd19ae61c42f895d90961@codeaurora.org>
 X-Sender: cjhuang@codeaurora.org
 User-Agent: Roundcube Webmail/1.3.9
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2020-10-31 10:46, Abhishek Kumar wrote:
-> From: kuabhs@chromium.org
+On 2020-11-03 04:57, Bjorn Helgaas wrote:
+> [+cc Govind, author of 5697a564d369 ("ath11k: pci: add MSI config
+> initialisation")]
 > 
-> There are few more additional comments here.
->> + * @NL80211_CMD_SET_SAR_SPECS: SAR power limitation configuration is
->> + *     passed using %NL80211_ATTR_SAR_SPEC.
->> + *
+> On Mon, Nov 02, 2020 at 08:49:51PM +0200, Kalle Valo wrote:
+>> + linux-wireless, linux-pci, devin
+>> 
+>> Thomas Krause <thomaskrause@posteo.de> writes:
+>> 
+>> >> I had the same problem as well back in the days, for me enabling
+>> >> CONFIG_IRQ_REMAP helped. If it helps for you also I wonder if we should
+>> >> mention that in the ath11k warning above :)
+>> >
+>> > CONFIG_IRQ_REMAP did not do the trick. I noticed that the Wi-Fi card
+>> > is behind a PCI bridge which is also disabled, could this be a
+>> > problem?
+>> >
+>> > 00:1c.0 PCI bridge: Intel Corporation Device a0b8 (rev 20) (prog-if 00
+>> > [Normal decode])
+>> > 	Flags: bus master, fast devsel, latency 0, IRQ 123
+>> > 	Bus: primary=00, secondary=56, subordinate=56, sec-latency=0
+>> > 	I/O behind bridge: [disabled]
+>> > 	Memory behind bridge: 8c300000-8c3fffff [size=1M]
+>> > 	Prefetchable memory behind bridge: [disabled]
+>> > 	Capabilities: [40] Express Root Port (Slot+), MSI 00
+>> > 	Capabilities: [80] MSI: Enable+ Count=1/1 Maskable- 64bit-
+>> > 	Capabilities: [90] Subsystem: Dell Device 0991
+>> > 	Capabilities: [a0] Power Management version 3
+>> > 	Capabilities: [100] Advanced Error Reporting
+>> > 	Capabilities: [220] Access Control Services
+>> > 	Capabilities: [150] Precision Time Measurement
+>> > 	Capabilities: [200] L1 PM Substates
+>> > 	Capabilities: [a00] Downstream Port Containment
+>> > 	Kernel driver in use: pcieport
+>> 
+>> I don't know enough about PCI to say if the bridge is a problem or 
+>> not.
 > 
-> This command requires NL80211_ATTR_IFINDEX, probably should be better 
-> to add
-> this in the comment ?
+> I don't think the bridge is an issue here.  AFAICT the bridge's I/O
+> and prefetchable memory windows are disabled, but the non-prefetchable
+> window *is* enabled and contains the space consumed by the ath11k
+> device:
 > 
-Per Johannes's comments, this explicit index is not required. Are you 
-fine
-with it?
+>   00:1c.0 PCI bridge: Intel Corporation Device a0b8 (rev 20)
+> 	Bus: primary=00, secondary=56, subordinate=56, sec-latency=0
+> 	Memory behind bridge: 8c300000-8c3fffff [size=1M]
+>   56:00.0 Network controller: Qualcomm Device 1101 (rev 01)
+>      Region 0: Memory at 8c300000 (64-bit, non-prefetchable) [size=1M]
+> 
 
-Instead, user-space application records the array index when querying 
-the SAR
-capability. When set, the nested array index will be used to set the 
-power.
-This requires user-space has a strict mapping of index. and 
-NL80211_ATTR_IFINDEX
-is to be removed.
-
-
->> +static int
->> +nl80211_put_sar_specs(struct cfg80211_registered_device *rdev,
->> +                     struct sk_buff *msg)
->> +{
->> +       struct nlattr *sar_capa, *specs, *sub_freq_range;
->> +       u8  num_freq_ranges;
->> +       int i;
->> +
->> +       if (!rdev->wiphy.sar_capa)
->> +               return 0;
->> +
->> +       num_freq_ranges = rdev->wiphy.sar_capa->num_freq_ranges;
->> +
->> +       sar_capa = nla_nest_start(msg, NL80211_ATTR_SAR_SPEC);
->> +       if (!sar_capa)
->> +               return -ENOSPC;
-> 
-> I see some places nla_nest_start_noflag being used and here 
-> nla_nest_start.
-> Whats the specific reason to do that ? In the newer Kernel versions, I 
-> believe
-> nla_nest_start is preferred.
-> 
-This will be addressed in next version.
-
->> +               power = 
->> nla_get_u8(spec[NL80211_SAR_ATTR_SPECS_POWER]);
->> +               sar_spec->sub_specs[specs].power = power;
->> +
->> +               /* if NL80211_SAR_ATTR_SPECS_FREQ_RANGE_INDEX isn't 
->> present,
->> +                * then the power applies to all bands. But it's only 
->> valid
->> +                * for the first entry.
->> +                */
->> +               if (!spec[NL80211_SAR_ATTR_SPECS_FREQ_RANGE_INDEX]) {
->> +                       if (specs) {
->> +                               err = -EINVAL;
->> +                               goto error;
->> +                       } else {
->> +                               
->> sar_spec->sub_specs[specs].freq_range_index =
->> +                                       NL80211_SAR_ALL_FREQ_RNAGES;
->> +                               specs++;
->> +                               break;
->> +                       }
->> +               }
-> 
-> Here I see you are assigning same power to all freq band if for the 
-> first band
-> the freq index is not provided. Is there any specific reason to only
-> check the first
-> here ? Probably this logic should move into specific drivers. Thoughts 
-> ?
-> 
-This logic will be removed per Johannes's comments.
-
-Please read  Johannes's comments. If you agree with him and has no other 
-advices,
-then I will post the second version of it.
+Have you enabled VT-d from BIOS? This is required at least on some old 
+laptops.
 
 
-> -Abhishek
+>> To summarise: Thomas is reporting[1] a problem with ath11k on QCA6390
+>> PCI device where he is not having enough MSI vectors. ath11k needs 32
+>> vectors but pci_alloc_irq_vectors() returns -ENOSPC. PCI support is 
+>> new
+>> for ath11k and introduced in v5.10-rc1. The irq allocation code is in
+>> drivers/net/wireless/ath/ath11k/pci.c. [2]
 > 
+> This code is needlessly complicated.  If you absolutely need
+> msi_config.total_vectors and can't settle for any less, you can do
+> this:
 > 
-> _______________________________________________
-> ath10k mailing list
-> ath10k@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/ath10k
+>   num_vectors = pci_alloc_irq_vectors(ab_pci->pdev,
+>                                       msi_config.total_vectors,
+>                                       msi_config.total_vectors,
+>                                       PCI_IRQ_MSI);
+> 
+>   if (num_vectors < 0) {
+>     ath11k_err(ab, "failed to get %d MSI vectors (%d)\n",
+>                msi_config.total_vectors, num_vectors);
+>     return num_vectors;
+>   }
+> 
+> But it seems a little greedy if the device can't operate at all unless
+> it gets 32 vectors.  Are you sure that's a hard requirement?  Most
+> devices can work with fewer vectors, even if it reduces performance.
+> 
+>> I would first try with a full distro kernel config, just in case 
+>> there's
+>> some another important kernel config missing.
+>> 
+>> [1] 
+>> http://lists.infradead.org/pipermail/ath11k/2020-October/000466.html
+> 
+> Tangent: have you considered getting this list archived on
+> https://lore.kernel.org/lists.html?
+> 
+>> [2] 
+>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/net/wireless/ath/ath11k/pci.c#n633
+>> 
+>> --
+>> https://patchwork.kernel.org/project/linux-wireless/list/
+>> 
+>> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
