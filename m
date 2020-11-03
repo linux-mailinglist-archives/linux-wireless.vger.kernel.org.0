@@ -2,93 +2,135 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D3CAF2A4711
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Nov 2020 14:57:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A168A2A4AC7
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Nov 2020 17:08:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729446AbgKCN5t (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 3 Nov 2020 08:57:49 -0500
-Received: from z5.mailgun.us ([104.130.96.5]:51950 "EHLO z5.mailgun.us"
+        id S1727389AbgKCQIl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 3 Nov 2020 11:08:41 -0500
+Received: from mail.kernel.org ([198.145.29.99]:45382 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729414AbgKCN5P (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 3 Nov 2020 08:57:15 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1604411835; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=C7aq5TQXMg9wY6ovYiL8WXO2rB5LU2IgMJEWeaP4HPk=; b=SkZOcxG8nyPcDGTVmMyoRa8FnMXgdcpXu4zoj3GCw275FNAyyregN/FIWbUZW131vLtX2WeE
- BcOe8eqiNbX841xkqnEz8Tv/9vXk029NE2vCtA1y7tjul6GY8Xg2gYdEqNvblhH23j65bIqh
- D/8zx7w6Xr0gs8eNg2rrA4ppi+E=
-X-Mailgun-Sending-Ip: 104.130.96.5
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n05.prod.us-west-2.postgun.com with SMTP id
- 5fa161af0ce128468b11683c (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 03 Nov 2020 13:57:03
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 814D2C433C9; Tue,  3 Nov 2020 13:57:03 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-Received: from x230.qca.qualcomm.com (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        id S1725993AbgKCQIl (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 3 Nov 2020 11:08:41 -0500
+Received: from localhost (230.sub-72-107-127.myvzw.com [72.107.127.230])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id ED8E0C433C8;
-        Tue,  3 Nov 2020 13:57:00 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org ED8E0C433C8
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Devin Bayer <dev@doubly.so>
-Cc:     linux-wireless@vger.kernel.org, ath11k@lists.infradead.org
-Subject: Re: ath11k with QCA6391
-References: <c9fb5fa6-297e-a595-7670-c9105641bc83@doubly.so>
-        <87wnz3twvo.fsf@codeaurora.org>
-        <5f3ee526-e96f-3c88-a17e-e7ebf9703ed1@doubly.so>
-Date:   Tue, 03 Nov 2020 15:56:58 +0200
-In-Reply-To: <5f3ee526-e96f-3c88-a17e-e7ebf9703ed1@doubly.so> (Devin Bayer's
-        message of "Tue, 3 Nov 2020 11:53:55 +0100")
-Message-ID: <87d00uo85x.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        by mail.kernel.org (Postfix) with ESMTPSA id E646A22264;
+        Tue,  3 Nov 2020 16:08:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1604419720;
+        bh=VkZMVjfVpcYPMKTnjZ8eEMZYotu+OQiXxhM6OZ/MsLA=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=zD+p7cuMy8kwXIjHJGut70lO6j182cj0aJxUk8KLP6idfSGJ5TdYN6IJiw/KuMkGD
+         eiQ3ZUjhPJ7PiUydeKsLCL4cQWxuB7EwFMrRjqBHDA8gzB+wDh/eeFwG4+B8D3UP+C
+         gtf5FLauz9Hp7fYodfEUGKIxqlGrw3ICJbMFQXr0=
+Date:   Tue, 3 Nov 2020 10:08:38 -0600
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Govind Singh <govinds@codeaurora.org>, linux-pci@vger.kernel.org,
+        linux-wireless@vger.kernel.org, Devin Bayer <dev@doubly.so>,
+        Thomas Krause <thomaskrause@posteo.de>,
+        ath11k@lists.infradead.org, Thomas Gleixner <tglx@linutronix.de>,
+        Christoph Hellwig <hch@lst.de>
+Subject: Re: pci_alloc_irq_vectors fails ENOSPC for XPS 13 9310
+Message-ID: <20201103160838.GA246433@bjorn-Precision-5520>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87k0v3szod.fsf@codeaurora.org>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Devin Bayer <dev@doubly.so> writes:
+[+cc Thomas, Christoph for question about not enough MSI IRQ vectors]
 
-> On 02/11/2020 19.51, Kalle Valo wrote:
->> 
->> To my knowledge, from ath11k point of view, QCA6391 should look the same
->> as QCA6390 but most likely the board file for QCA6391 is different.
->> 
->
-> Thanks. If I get to that point, I have been given firmware files from the
-> vendor:
->
-> 4076546464 3602624 amss.bin
-> 1400223385 57936 bdwlan.bin
-> 1400223385 57936 bdwlan.e0102
-> 1400223385 57936 bdwlan.e0104
-> 1400223385 57936 bdwlan.elf
->  691636418 57936 bdwlan01.e01
-> 1400223385 57936 bdwlan01.e02
->  691636418 57936 bdwlan01.e03
-> 3117335203 57936 bdwlan01.e04
-> 1014175487 266684 m3.bin
->
-> They are different than those from your repo, but maybe I can use
-> bdwlan01.e04 as the board file.
+On Tue, Nov 03, 2020 at 08:49:06AM +0200, Kalle Valo wrote:
+> Bjorn Helgaas <helgaas@kernel.org> writes:
+> > On Mon, Nov 02, 2020 at 08:49:51PM +0200, Kalle Valo wrote:
+> >> + linux-wireless, linux-pci, devin
+> >> 
+> >> Thomas Krause <thomaskrause@posteo.de> writes:
+> >> 
+> >> >> I had the same problem as well back in the days, for me enabling
+> >> >> CONFIG_IRQ_REMAP helped. If it helps for you also I wonder if we should
+> >> >> mention that in the ath11k warning above :)
+> >> >
+> >> > CONFIG_IRQ_REMAP did not do the trick. I noticed that the Wi-Fi card
+> >> > is behind a PCI bridge which is also disabled, could this be a
+> >> > problem?
+> >> >
+> >> > 00:1c.0 PCI bridge: Intel Corporation Device a0b8 (rev 20) (prog-if 00
+> >> > [Normal decode])
+> >> > 	Flags: bus master, fast devsel, latency 0, IRQ 123
+> >> > 	Bus: primary=00, secondary=56, subordinate=56, sec-latency=0
+> >> > 	I/O behind bridge: [disabled]
+> >> > 	Memory behind bridge: 8c300000-8c3fffff [size=1M]
+> >> > 	Prefetchable memory behind bridge: [disabled]
+> >> > 	Capabilities: [40] Express Root Port (Slot+), MSI 00
+> >> > 	Capabilities: [80] MSI: Enable+ Count=1/1 Maskable- 64bit-
+> >> > 	Capabilities: [90] Subsystem: Dell Device 0991
+> >> > 	Capabilities: [a0] Power Management version 3
+> >> > 	Capabilities: [100] Advanced Error Reporting
+> >> > 	Capabilities: [220] Access Control Services
+> >> > 	Capabilities: [150] Precision Time Measurement
+> >> > 	Capabilities: [200] L1 PM Substates
+> >> > 	Capabilities: [a00] Downstream Port Containment
+> >> > 	Kernel driver in use: pcieport
+> >> 
+> >> I don't know enough about PCI to say if the bridge is a problem or not.
+> >
+> > I don't think the bridge is an issue here.  AFAICT the bridge's I/O
+> > and prefetchable memory windows are disabled, but the non-prefetchable
+> > window *is* enabled and contains the space consumed by the ath11k
+> > device:
+> >
+> >   00:1c.0 PCI bridge: Intel Corporation Device a0b8 (rev 20)
+> > 	Bus: primary=00, secondary=56, subordinate=56, sec-latency=0
+> > 	Memory behind bridge: 8c300000-8c3fffff [size=1M]
+> >   56:00.0 Network controller: Qualcomm Device 1101 (rev 01)
+> >      Region 0: Memory at 8c300000 (64-bit, non-prefetchable) [size=1M]
+> 
+> Good to know that the bridge shouldn't be the problem. Do you have any
+> ideas how to make more vectors available to ath11k, besides
+> CONFIG_IRQ_REMAP? Because QCA6390 works in Windows I doubt this is a
+> hardware problem.
+> 
+> >> To summarise: Thomas is reporting[1] a problem with ath11k on QCA6390
+> >> PCI device where he is not having enough MSI vectors. ath11k needs 32
+> >> vectors but pci_alloc_irq_vectors() returns -ENOSPC. PCI support is new
+> >> for ath11k and introduced in v5.10-rc1. The irq allocation code is in
+> >> drivers/net/wireless/ath/ath11k/pci.c. [2]
 
-Yes, that's what I would also suggest to test first: take the firmware
-from ath11k-firmware.git and the board file from the vendor.
+> > But it seems a little greedy if the device can't operate at all unless
+> > it gets 32 vectors.  Are you sure that's a hard requirement?  Most
+> > devices can work with fewer vectors, even if it reduces performance.
+> 
+> This was my first reaction as well when I saw the code for the first
+> time. And the reply I got is that the firmware needs all 32 vectors, it
+> won't work with less.
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+I do see a couple other drivers that are completely inflexible (they
+request min==max).  But I don't know the system constraint you're
+hitting.  CC'd Thomas & Christoph in case they have time to give us a
+hint.
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+> >> I would first try with a full distro kernel config, just in case there's
+> >> some another important kernel config missing.
+> >> 
+> >> [1] http://lists.infradead.org/pipermail/ath11k/2020-October/000466.html
+> >
+> > Tangent: have you considered getting this list archived on
+> > https://lore.kernel.org/lists.html?
+> 
+> Good point, actually I have not. I'll add both ath10k and ath11k lists
+> to lore. It's even more important now that lists.infradead.org had a
+> hard drive crash and lost years of archives.
+
+Or you could just add linux-wireless, e.g.,
+
+  L:      ath11k@lists.infradead.org
+  L:      linux-wireless@vger.kernel.org
+
+or even consider moving from ath10k and ath11k to
+linux-wireless@vger.kernel.org.  I think there's some value in
+consolidating low-volume lists.  It looks like ath11k had < 90
+messages for all of October.
