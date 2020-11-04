@@ -2,81 +2,120 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 97C412A679D
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Nov 2020 16:26:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DCE562A67BA
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Nov 2020 16:32:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730117AbgKDP0g (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 4 Nov 2020 10:26:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54656 "EHLO
+        id S1730579AbgKDPcF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 4 Nov 2020 10:32:05 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55538 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726827AbgKDP0g (ORCPT
+        with ESMTP id S1726919AbgKDPcF (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 4 Nov 2020 10:26:36 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 166D1C0613D3;
-        Wed,  4 Nov 2020 07:26:36 -0800 (PST)
-From:   Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1604503594;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=Mya6qnHxG9AXVPmFpoE4wa1heR7bPv0DOYb/oQLjAeo=;
-        b=Ic0bmXoqTr6HTkP4cJAXSzV+J0goXTVrkQ/5tfYNXzl2DyYQUFumUr1ABimRUZwGamCmwg
-        BBtE/evwgolSOA1fZ19uyk6iIf4ofFTZBGSQWq4gy3MKDTpO2ZrQGvTLWoMbm61TkSbF+0
-        fpLjAaUPHpRfYng642E160gp7/BlzZeAGati40fEaq85ZjLBF0aDVnG9nGXumYQ5MiEqCi
-        pibjTckHZnWb/e/XQt3JpXvr4H3r1nN2iDUJNZveKC1olXKKlNMCXEodnB5CW+jqtDUzAC
-        2kCVEh/SsiGgyZUbcZLykpM9zQcWjfQyb3wxkHYb/TdvD4QoGu3g+5HkfMNRog==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1604503594;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=Mya6qnHxG9AXVPmFpoE4wa1heR7bPv0DOYb/oQLjAeo=;
-        b=hweQ57R00/7rF+4i5Iq4qtDckFFjTGC8CD76pnxn5H/D46dP0TdCmBWw5AGbUXvBd82rMl
-        /hdRVyRfYiWpHTBw==
-To:     Thomas Krause <thomaskrause@posteo.de>,
-        Bjorn Helgaas <helgaas@kernel.org>,
-        Kalle Valo <kvalo@codeaurora.org>
-Cc:     Govind Singh <govinds@codeaurora.org>, linux-pci@vger.kernel.org,
-        linux-wireless@vger.kernel.org, Devin Bayer <dev@doubly.so>,
-        ath11k@lists.infradead.org, Christoph Hellwig <hch@lst.de>,
-        David Woodhouse <dwmw@amazon.co.uk>
-Subject: Re: pci_alloc_irq_vectors fails ENOSPC for XPS 13 9310
-In-Reply-To: <fa26ac8b-ed48-7ea3-c21b-b133532716b8@posteo.de>
-References: <20201103160838.GA246433@bjorn-Precision-5520> <874km61732.fsf@nanos.tec.linutronix.de> <fa26ac8b-ed48-7ea3-c21b-b133532716b8@posteo.de>
-Date:   Wed, 04 Nov 2020 16:26:34 +0100
-Message-ID: <87mtzxkus5.fsf@nanos.tec.linutronix.de>
+        Wed, 4 Nov 2020 10:32:05 -0500
+Received: from mail-out.m-online.net (mail-out.m-online.net [IPv6:2001:a60:0:28:0:1:25:1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64BB9C0613D3
+        for <linux-wireless@vger.kernel.org>; Wed,  4 Nov 2020 07:32:02 -0800 (PST)
+Received: from frontend01.mail.m-online.net (unknown [192.168.8.182])
+        by mail-out.m-online.net (Postfix) with ESMTP id 4CR9cD68Y5z1ry9k;
+        Wed,  4 Nov 2020 16:31:40 +0100 (CET)
+Received: from localhost (dynscan1.mnet-online.de [192.168.6.70])
+        by mail.m-online.net (Postfix) with ESMTP id 4CR9cD0WpTz1r56Q;
+        Wed,  4 Nov 2020 16:31:40 +0100 (CET)
+X-Virus-Scanned: amavisd-new at mnet-online.de
+Received: from mail.mnet-online.de ([192.168.8.182])
+        by localhost (dynscan1.mail.m-online.net [192.168.6.70]) (amavisd-new, port 10024)
+        with ESMTP id DvicTuW42m2Z; Wed,  4 Nov 2020 16:31:38 +0100 (CET)
+X-Auth-Info: m2rxJ9ltA/W9AJTEKqdpEQ6k6m9XqFNkOgkGsG6cK8o=
+Received: from [IPv6:::1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.mnet-online.de (Postfix) with ESMTPSA;
+        Wed,  4 Nov 2020 16:31:38 +0100 (CET)
+Subject: Re: [PATCH 1/2] rsi: Move card interrupt handling to RX thread
+To:     Martin Kepplinger <martink@posteo.de>,
+        linux-wireless@vger.kernel.org
+Cc:     Angus Ainslie <angus@akkea.ca>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>,
+        Siva Rebbagondla <siva8118@gmail.com>, netdev@vger.kernel.org
+References: <20201103180941.443528-1-marex@denx.de>
+ <e7e5ad92-de6b-1bd5-18e0-728b8ea454c4@posteo.de>
+From:   Marek Vasut <marex@denx.de>
+Message-ID: <abe131ba-e768-4919-4cbb-44d6e005a98f@denx.de>
+Date:   Wed, 4 Nov 2020 16:31:37 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.4.0
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <e7e5ad92-de6b-1bd5-18e0-728b8ea454c4@posteo.de>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Nov 04 2020 at 14:04, Thomas Krause wrote:
-> config) but CONFIG_INTEL_IOMMU_DEFAULT_ON needed to be set manually. I 
-> hope this helps, if there is more I can do to debug it on my side I'm 
-> happy to do so.
+On 11/4/20 4:21 PM, Martin Kepplinger wrote:
+> On 03.11.20 19:09, Marek Vasut wrote:
+>> The interrupt handling of the RS911x is particularly heavy. For each RX
+>> packet, the card does three SDIO transactions, one to read interrupt
+>> status register, one to RX buffer length, one to read the RX packet(s).
+>> This translates to ~330 uS per one cycle of interrupt handler. In case
+>> there is more incoming traffic, this will be more.
+>>
+>> The drivers/mmc/core/sdio_irq.c has the following comment, quote "Just
+>> like traditional hard IRQ handlers, we expect SDIO IRQ handlers to be
+>> quick and to the point, so that the holding of the host lock does not
+>> cover too much work that doesn't require that lock to be held."
+>>
+>> The RS911x interrupt handler does not fit that. This patch therefore
+>> changes it such that the entire IRQ handler is moved to the RX thread
+>> instead, and the interrupt handler only wakes the RX thread.
+>>
+>> This is OK, because the interrupt handler only does things which can
+>> also be done in the RX thread, that is, it checks for firmware loading
+>> error(s), it checks buffer status, it checks whether a packet arrived
+>> and if so, reads out the packet and passes it to network stack.
+>>
+>> Moreover, this change permits removal of a code which allocated an
+>> skbuff only to get 4-byte-aligned buffer, read up to 8kiB of data
+>> into the skbuff, queue this skbuff into local private queue, then in
+>> RX thread, this buffer is dequeued, the data in the skbuff as passed
+>> to the RSI driver core, and the skbuff is deallocated. All this is
+>> replaced by directly calling the RSI driver core with local buffer.
+>>
+>> Signed-off-by: Marek Vasut <marex@denx.de>
+>> Cc: Angus Ainslie <angus@akkea.ca>
+>> Cc: David S. Miller <davem@davemloft.net>
+>> Cc: Jakub Kicinski <kuba@kernel.org>
+>> Cc: Kalle Valo <kvalo@codeaurora.org>
+>> Cc: Lee Jones <lee.jones@linaro.org>
+>> Cc: Martin Kepplinger <martink@posteo.de>
+>> Cc: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
+>> Cc: Siva Rebbagondla <siva8118@gmail.com>
+>> Cc: linux-wireless@vger.kernel.org
+>> Cc: netdev@vger.kernel.org
+>> ---
+>>   drivers/net/wireless/rsi/rsi_91x_sdio.c     |  6 +--
+>>   drivers/net/wireless/rsi/rsi_91x_sdio_ops.c | 52 ++++++---------------
+>>   drivers/net/wireless/rsi/rsi_sdio.h         |  8 +---
+>>   3 files changed, 15 insertions(+), 51 deletions(-)
+> 
+> 
+> hi Marek,
 
-> [    0.050130] DMAR: [Firmware Bug]: Your BIOS is broken; DMAR reported at address 0!
->                BIOS vendor: Dell Inc.; Ver: 1.1.1; Product Version:
+Hi,
 
-> [    0.103693] DMAR: Host address width 39
-> [    0.103693] DMAR: DRHD base: 0x000000fed90000 flags: 0x0
-> [    0.103697] DMAR: dmar0: reg_base_addr fed90000 ver 4:0 cap 1c0000c40660462 ecap 69e2ff0505e
-> [    0.103698] DMAR: DRHD base: 0x000000fed84000 flags: 0x0
-> [    0.103701] DMAR: dmar1: reg_base_addr fed84000 ver 1:0 cap d2008c40660462 ecap f050da
-> [    0.103702] DMAR: DRHD base: 0x000000fed86000 flags: 0x0
-> [    0.103706] DMAR: dmar2: reg_base_addr fed86000 ver 1:0 cap d2008c40660462 ecap f050da
-> [    0.103707] DMAR: DRHD base: 0x00000000000000 flags: 0x1
-> [    0.103707] DMAR: Parse DMAR table failure.
+> I'm running this without problems, so feel free to add
+> 
+> Tested-by: Martin Kepplinger <martin.kepplinger@puri.sm>
 
-which disables interrupt remapping and therefore the driver gets only
-one MSI which makes it unhappy.
+Thank you.
 
-Not that I'm surprised, it's Dell.... Can you check whether they have a
-BIOS update for that box?
-
-Thanks,
-
-        tglx
+Do you observe better RX performance ? For me, without this patch, 
+iperf3 -R did ~4 Mbit/s on iwlwifi AP running hostap in 802.11n mode 
+(wpa2 tkip), with this patch I see 40 Mbit/s (10x better, yes). However, 
+the poor rx performance did depend on the kernel configuration (HZ, 
+preemption settings) before, now it does not.
