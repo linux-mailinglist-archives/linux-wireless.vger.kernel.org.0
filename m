@@ -2,266 +2,198 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4140F2A702D
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Nov 2020 23:06:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C9B832A70FC
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Nov 2020 00:11:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732101AbgKDWGX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 4 Nov 2020 17:06:23 -0500
-Received: from mga05.intel.com ([192.55.52.43]:56817 "EHLO mga05.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727098AbgKDWGX (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 4 Nov 2020 17:06:23 -0500
-IronPort-SDR: NijfsYVMV+h/6N5L0tyzKA2Xlzz/LsVigFsL5ENkOD92QS9r/aXc81B4CVpbsbNFdkz0DDAXtY
- PD3aVP0xsnXA==
-X-IronPort-AV: E=McAfee;i="6000,8403,9795"; a="254002630"
-X-IronPort-AV: E=Sophos;i="5.77,451,1596524400"; 
-   d="scan'208";a="254002630"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2020 14:06:22 -0800
-IronPort-SDR: IE41H8jPW7A4zokAp/vpWwtamob39i7euNZGiFaW9T2lYNLx2UIeKdRUDoFGjK7xk/SnBsDdKm
- abdU15Ul0OFQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.77,451,1596524400"; 
-   d="scan'208";a="354011001"
-Received: from lkp-server02.sh.intel.com (HELO e61783667810) ([10.239.97.151])
-  by fmsmga004.fm.intel.com with ESMTP; 04 Nov 2020 14:06:20 -0800
-Received: from kbuild by e61783667810 with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1kaQv5-00016c-PU; Wed, 04 Nov 2020 22:06:19 +0000
-Date:   Thu, 05 Nov 2020 06:05:39 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Jakub Kicinski <kuba@kernel.org>
-Cc:     linux-wireless@vger.kernel.org
-Subject: [mac80211:master] BUILD SUCCESS
- fea07a487c6dd422dc8837237c9d2bc7c33119af
-Message-ID: <5fa325b3.6XH7/EExJVqYZUYu%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S1730543AbgKDXLe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 4 Nov 2020 18:11:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42806 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727107AbgKDXLe (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 4 Nov 2020 18:11:34 -0500
+Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com [IPv6:2607:f8b0:4864:20::543])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9FF2C0613CF
+        for <linux-wireless@vger.kernel.org>; Wed,  4 Nov 2020 15:11:32 -0800 (PST)
+Received: by mail-pg1-x543.google.com with SMTP id t14so157446pgg.1
+        for <linux-wireless@vger.kernel.org>; Wed, 04 Nov 2020 15:11:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=+bXLtcNmpGx/o0XJ0M+6MKVfaBexlwpKp4u5QNyYDrw=;
+        b=Ic10O2h8gw72RFZuUGwDiu6cFMJrpgqBrZlFYJGG+wvhJvqaoav/r7X7ZK9OPGqrB0
+         W/5ioMidZERpwRVCe8DR2mjN5XxovsUrNvVyQuiGW/ZUxHer14OGeIO11w8SHLsoQtmj
+         fZeE+4fcgbMB7tNGN5ZoTuqs9c2QpjDLSEIw8=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=+bXLtcNmpGx/o0XJ0M+6MKVfaBexlwpKp4u5QNyYDrw=;
+        b=s3Dg665RPpQmFfFFaqg2b+gcp9Hwy0qCDywtiUnGUDlpjGfP1JgjSiboxXixFmQnuz
+         gbeWoLMQcrUw4992s3WDZ4HS+44708YBZTfCPb72S5zLPW9d55UzjEdoF5KsPc4nHS8A
+         rRiaOoqefpOc3dhJtT1MRq67svW88kFOEbl6ukunDdwIoIEd4iiHZC1Jj42E7maK3pbs
+         IRRolSKJ24856UsvinFEctaPGD0EOVo1+Eizr27oBugW3weY1q/SKeN/7cOKESAAN34s
+         orx4uEt/3b98v8hbWt1++ku82wLLvANVtbjDgiMQg/cpzTJ8mFSGO4aEFO3jQsZOZ0jq
+         M6cw==
+X-Gm-Message-State: AOAM5308JMRM2gfwhCGa+MAU1PjxA13S+BAkPkOt2ouPWJcVRCxH+Ikl
+        GxH/BXBw5M9AYQYdXXhZ4Sk/Pw==
+X-Google-Smtp-Source: ABdhPJzcgg8n5lbLegv3GdMVw3cAnR1QYHGE7qTtKFeikqplJRQ/lTSojORxaYZssPCOwAfx22JkeQ==
+X-Received: by 2002:a63:c64:: with SMTP id 36mr247945pgm.255.1604531492262;
+        Wed, 04 Nov 2020 15:11:32 -0800 (PST)
+Received: from google.com ([2620:15c:202:201:8edc:d4ff:fe53:350d])
+        by smtp.gmail.com with ESMTPSA id 14sm3336671pjn.48.2020.11.04.15.11.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Nov 2020 15:11:31 -0800 (PST)
+Date:   Wed, 4 Nov 2020 15:11:28 -0800
+From:   Brian Norris <briannorris@chromium.org>
+To:     Carl Huang <cjhuang@codeaurora.org>
+Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        dianders@chromium.org, kuabhs@google.com
+Subject: Re: [RFC 2/2] ath10k: allow dynamic SAR power limits via common API
+Message-ID: <20201104231128.GA3212577@google.com>
+References: <1600753775-4745-1-git-send-email-cjhuang@codeaurora.org>
+ <1600753775-4745-2-git-send-email-cjhuang@codeaurora.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+In-Reply-To: <1600753775-4745-2-git-send-email-cjhuang@codeaurora.org>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211.git  master
-branch HEAD: fea07a487c6dd422dc8837237c9d2bc7c33119af  net: openvswitch: silence suspicious RCU usage warning
+Hi,
 
-elapsed time: 1202m
+On Tue, Sep 22, 2020 at 01:49:35PM +0800, Carl Huang wrote:
+> ath10k assigns ath10k_mac_set_sar_specs to ath10k_ops, and
+> this function is called when user space application calls
+> NL80211_CMD_SET_SAR_SPECS. ath10k also registers SAR type,
+> and supported frequency ranges to wiphy so user space can
+> query SAR capabilities.
+> 
+> ath10k_mac_set_sar_specs further sets the power to firmware
+> to limit the TX power.
+> 
+> This feature is controlled by hw parameter: dynamic_sar_support.
+> 
+> Signed-off-by: Carl Huang <cjhuang@codeaurora.org>
+> ---
 
-configs tested: 202
-configs skipped: 2
+> diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
+> index 2e3eb5b..830c61f 100644
+> --- a/drivers/net/wireless/ath/ath10k/mac.c
+> +++ b/drivers/net/wireless/ath/ath10k/mac.c
+> @@ -81,6 +81,17 @@ static struct ieee80211_rate ath10k_rates_rev2[] = {
+>  	{ .bitrate = 540, .hw_value = ATH10K_HW_RATE_OFDM_54M },
+>  };
+>  
+> +static const struct cfg80211_sar_freq_ranges ath10k_sar_freq_ranges[] = {
+> +	{ .index = 0, .start_freq = 2412000, .end_freq = 2484000 },
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+2412 MHz is a center frequency, but other parts of the nl80211 API use
+band edges. For example:
 
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-sh                           se7206_defconfig
-m68k                       bvme6000_defconfig
-m68k                           sun3_defconfig
-h8300                               defconfig
-arm                        shmobile_defconfig
-sh                           se7751_defconfig
-arm                        vexpress_defconfig
-mips                          ath25_defconfig
-arm                            u300_defconfig
-arm                           efm32_defconfig
-arm                     davinci_all_defconfig
-riscv                    nommu_k210_defconfig
-sh                               alldefconfig
-arm                          prima2_defconfig
-powerpc                        fsp2_defconfig
-arc                        vdk_hs38_defconfig
-arm                          moxart_defconfig
-arm                   milbeaut_m10v_defconfig
-arm                        oxnas_v6_defconfig
-sh                           se7705_defconfig
-mips                           ip28_defconfig
-m68k                       m5208evb_defconfig
-sh                           se7712_defconfig
-arm                        multi_v7_defconfig
-sh                          rsk7269_defconfig
-sh                   secureedge5410_defconfig
-mips                        maltaup_defconfig
-arm                      pxa255-idp_defconfig
-arm                          tango4_defconfig
-powerpc                   motionpro_defconfig
-powerpc                    amigaone_defconfig
-sh                           se7724_defconfig
-s390                       zfcpdump_defconfig
-powerpc                 mpc834x_itx_defconfig
-ia64                                defconfig
-m68k                       m5249evb_defconfig
-arm                          pxa910_defconfig
-openrisc                            defconfig
-mips                         tb0226_defconfig
-xtensa                              defconfig
-mips                      malta_kvm_defconfig
-sh                ecovec24-romimage_defconfig
-arm                          pcm027_defconfig
-arm                        mvebu_v5_defconfig
-powerpc                    sam440ep_defconfig
-mips                         db1xxx_defconfig
-arm                            pleb_defconfig
-arm                        mvebu_v7_defconfig
-sh                        sh7785lcr_defconfig
-arm                        spear3xx_defconfig
-sh                           se7722_defconfig
-riscv                            allyesconfig
-powerpc                      katmai_defconfig
-sh                            hp6xx_defconfig
-microblaze                      mmu_defconfig
-mips                        vocore2_defconfig
-powerpc                      cm5200_defconfig
-arc                            hsdk_defconfig
-mips                        jmr3927_defconfig
-powerpc                      ppc6xx_defconfig
-arm                      integrator_defconfig
-powerpc                 mpc837x_rdb_defconfig
-powerpc                      tqm8xx_defconfig
-mips                     cu1000-neo_defconfig
-mips                           xway_defconfig
-arm                          exynos_defconfig
-mips                          ath79_defconfig
-sh                          landisk_defconfig
-m68k                          amiga_defconfig
-arm                            mmp2_defconfig
-powerpc                 canyonlands_defconfig
-arm                        clps711x_defconfig
-sh                        edosk7760_defconfig
-parisc                generic-64bit_defconfig
-powerpc                     tqm8555_defconfig
-mips                malta_qemu_32r6_defconfig
-arm                          ep93xx_defconfig
-i386                             alldefconfig
-powerpc                       holly_defconfig
-mips                        bcm47xx_defconfig
-mips                            gpr_defconfig
-m68k                          hp300_defconfig
-openrisc                         alldefconfig
-mips                          malta_defconfig
-powerpc                  storcenter_defconfig
-arc                          axs103_defconfig
-powerpc                      chrp32_defconfig
-mips                  decstation_64_defconfig
-ia64                      gensparse_defconfig
-powerpc                     kilauea_defconfig
-mips                        nlm_xlp_defconfig
-powerpc                          allyesconfig
-sh                          r7785rp_defconfig
-powerpc                      ppc64e_defconfig
-arm                          iop32x_defconfig
-m68k                            mac_defconfig
-powerpc                     taishan_defconfig
-riscv                    nommu_virt_defconfig
-sh                     sh7710voipgw_defconfig
-arm                         orion5x_defconfig
-mips                  maltasmvp_eva_defconfig
-powerpc                         wii_defconfig
-powerpc                       eiger_defconfig
-ia64                            zx1_defconfig
-arm                              alldefconfig
-mips                            ar7_defconfig
-powerpc                        cell_defconfig
-sh                  sh7785lcr_32bit_defconfig
-powerpc                  iss476-smp_defconfig
-xtensa                generic_kc705_defconfig
-arm                         lubbock_defconfig
-arm                            mps2_defconfig
-powerpc                 mpc85xx_cds_defconfig
-m68k                             allmodconfig
-arc                           tb10x_defconfig
-arm                            zeus_defconfig
-powerpc                     rainier_defconfig
-arm                       cns3420vb_defconfig
-ia64                             alldefconfig
-mips                      maltaaprp_defconfig
-ia64                        generic_defconfig
-arm                         mv78xx0_defconfig
-sh                            shmin_defconfig
-m68k                          multi_defconfig
-arm                     am200epdkit_defconfig
-xtensa                          iss_defconfig
-arm                           viper_defconfig
-arm                           sunxi_defconfig
-ia64                             allmodconfig
-ia64                             allyesconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-c6x                              allyesconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-i386                 randconfig-a004-20201104
-i386                 randconfig-a006-20201104
-i386                 randconfig-a005-20201104
-i386                 randconfig-a001-20201104
-i386                 randconfig-a002-20201104
-i386                 randconfig-a003-20201104
-i386                 randconfig-a004-20201105
-i386                 randconfig-a006-20201105
-i386                 randconfig-a005-20201105
-i386                 randconfig-a001-20201105
-i386                 randconfig-a002-20201105
-i386                 randconfig-a003-20201105
-x86_64               randconfig-a012-20201104
-x86_64               randconfig-a015-20201104
-x86_64               randconfig-a013-20201104
-x86_64               randconfig-a011-20201104
-x86_64               randconfig-a014-20201104
-x86_64               randconfig-a016-20201104
-i386                 randconfig-a015-20201104
-i386                 randconfig-a013-20201104
-i386                 randconfig-a014-20201104
-i386                 randconfig-a016-20201104
-i386                 randconfig-a011-20201104
-i386                 randconfig-a012-20201104
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-x86_64                                   rhel
-x86_64                           allyesconfig
-x86_64                    rhel-7.6-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                                  kexec
+ * @NL80211_ATTR_FREQ_RANGE_START: starting frequencry for the regulatory
+ *      rule in KHz. This is not a center of frequency but an actual regulatory
+ *      band edge.
+ * @NL80211_ATTR_FREQ_RANGE_END: ending frequency for the regulatory rule
+ *      in KHz. This is not a center a frequency but an actual regulatory
+ *      band edge.
 
-clang tested configs:
-x86_64               randconfig-a004-20201104
-x86_64               randconfig-a003-20201104
-x86_64               randconfig-a005-20201104
-x86_64               randconfig-a002-20201104
-x86_64               randconfig-a006-20201104
-x86_64               randconfig-a001-20201104
+Seems like we should improve the nl80211.h docs (patch 1) and make these
+edges (this patch).
 
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+> +	{ .index = 1, .start_freq = 2484000, .end_freq = 5865000 },
+> +};
+> +
+> +static const struct cfg80211_sar_capa ath10k_sar_capa = {
+> +	.type = NL80211_SAR_TYPE_POWER,
+> +	.num_freq_ranges = (ARRAY_SIZE(ath10k_sar_freq_ranges)),
+> +	.freq_ranges = &ath10k_sar_freq_ranges[0],
+> +};
+> +
+>  #define ATH10K_MAC_FIRST_OFDM_RATE_IDX 4
+>  
+>  #define ath10k_a_rates (ath10k_rates + ATH10K_MAC_FIRST_OFDM_RATE_IDX)
+> @@ -2880,6 +2891,95 @@ static int ath10k_mac_vif_recalc_txbf(struct ath10k *ar,
+>  	return 0;
+>  }
+>  
+> +static bool ath10k_mac_is_connected(struct ath10k *ar)
+> +{
+> +	struct ath10k_vif *arvif;
+> +
+> +	list_for_each_entry(arvif, &ar->arvifs, list) {
+> +		if (arvif->is_up && arvif->vdev_type == WMI_VDEV_TYPE_STA)
+> +			return true;
+> +	}
+> +
+> +	return false;
+> +}
+> +
+> +int ath10k_mac_set_sar_power(struct ath10k *ar)
+
+This function should be static.
+
+> +{
+> +	int ret;
+> +
+> +	if (!ar->hw_params.dynamic_sar_support)
+> +		return 0;
+
+return -EOPNOTSUPP ?
+
+> +
+> +	if (ar->tx_power_2g_limit == 0 || ar->tx_power_5g_limit == 0)
+
+ath10k_mac_txpower_recalc() doesn't care about this -- why should you?
+This also seems especially weird, because one of the 2 could be valid
+nonzero values, and yet you're silently rejecting it. Regardless, the
+following seems wrong:
+
+> +		return 0;
+
+This should probably be an error.
+
+> +
+> +	if (!ath10k_mac_is_connected(ar))
+> +		return 0;
+
+Note to self (since this wasn't obvious to me the first read-through):
+you're calling this function from ath10k_bss_assoc() too, so even if you
+weren't connected the first time around, it'll get called later.
+
+> +
+> +	ret = ath10k_wmi_pdev_set_param(ar,
+> +					ar->wmi.pdev_param->txpower_limit2g,
+> +					ar->tx_power_2g_limit);
+> +	if (ret) {
+> +		ath10k_warn(ar, "failed to set 2.4G txpower %d: %d\n",
+> +			    ar->tx_power_2g_limit, ret);
+> +		return ret;
+> +	}
+> +
+> +	ret = ath10k_wmi_pdev_set_param(ar,
+> +					ar->wmi.pdev_param->txpower_limit5g,
+> +					ar->tx_power_5g_limit);
+> +	if (ret) {
+> +		ath10k_warn(ar, "failed to set 5G txpower %d: %d\n",
+> +			    ar->tx_power_5g_limit, ret);
+> +		return ret;
+> +	}
+
+Hmm, so these are the same params configured by
+ath10k_mac_txpower_recalc(), except that we're not taking into account
+the limitations in ath10k_mac_txpower_recalc() (and vice versa) -- isn't
+that bad? Should we be merging the SAR limitation into
+ath10k_mac_txpower_recalc() and calling that instead?
+
+Brian
+
+> +
+> +	ath10k_dbg(ar, ATH10K_DBG_MAC, "set txpower 2G:%d, 5G:%d successfully\n",
+> +		   ar->tx_power_2g_limit, ar->tx_power_5g_limit);
+> +
+> +	return ret;
+> +}
+> +
