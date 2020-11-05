@@ -2,90 +2,93 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E243F2A777C
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 Nov 2020 07:33:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D3A9E2A7887
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Nov 2020 09:04:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730532AbgKEGdZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 5 Nov 2020 01:33:25 -0500
-Received: from z5.mailgun.us ([104.130.96.5]:51115 "EHLO z5.mailgun.us"
+        id S1726626AbgKEIE7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 5 Nov 2020 03:04:59 -0500
+Received: from m42-4.mailgun.net ([69.72.42.4]:16748 "EHLO m42-4.mailgun.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730361AbgKEGdZ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 5 Nov 2020 01:33:25 -0500
+        id S1725827AbgKEIE6 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 5 Nov 2020 03:04:58 -0500
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1604558004; h=Message-Id: Date: Subject: Cc: To: From:
- Sender; bh=4nxJBCC+CMwclD07P+yaOByA7QtxUjtpGNp3zfpDsS0=; b=WXhKo6DWZpSUvt2+rbbUW7qaub4/edZmtZc1wBZEgwNYpmFE/ayZo7ovGjz4kbrOOqPM3TO9
- 2mkg3i9UqcwRWlmQ2DUBuPHu6/7LLc8Bwf/uHWAoKe5l5TUpYF+cB/4fz0HJdelLR7qcqSOR
- IQ2k9AycW+N+eGlfivKWyJF7L74=
-X-Mailgun-Sending-Ip: 104.130.96.5
+ s=smtp; t=1604563498; h=Message-Id: Date: Subject: Cc: To: From:
+ Sender; bh=2n04+8L1w2prXqMee5PbxAMQMSRpCI6DQrDnRNEzo5Y=; b=mVNSr/t0SANb3Qd4hpCaqyw8kMv0TqleHefZnsRDhKpoyOtseVfmqLNA1Q14quu87tal/xk6
+ K7kfGlbHS3bzSKFhMlJ1OlGUEbAz9bI2k4CnRtZvCcLCyTBg5JA21clbNVl95VVuLIcRJpOO
+ H9Atj3pPQPRzWtKaFNeuVmmL/AA=
+X-Mailgun-Sending-Ip: 69.72.42.4
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n04.prod.us-east-1.postgun.com with SMTP id
- 5fa39c948dd4beedee22c97a (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 05 Nov 2020 06:32:52
+ smtp-out-n07.prod.us-west-2.postgun.com with SMTP id
+ 5fa3b2299e7ab790f00caff1 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 05 Nov 2020 08:04:57
  GMT
-Sender: wgong=codeaurora.org@mg.codeaurora.org
+Sender: lavaks=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id E7B47C433C9; Thu,  5 Nov 2020 06:32:51 +0000 (UTC)
+        id E92F7C433C9; Thu,  5 Nov 2020 08:04:56 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
 X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
         URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-Received: from gongwen-ThinkPad-T420.qca.qualcomm.com (unknown [180.166.53.21])
+Received: from lavaks-linux.qualcomm.com (blr-c-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.19.19])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
         (No client certificate requested)
-        (Authenticated sender: wgong)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 5D91EC433C6;
-        Thu,  5 Nov 2020 06:32:49 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 5D91EC433C6
+        (Authenticated sender: lavaks)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id C9505C433C8;
+        Thu,  5 Nov 2020 08:04:54 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org C9505C433C8
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=wgong@codeaurora.org
-From:   Wen Gong <wgong@codeaurora.org>
-To:     ath10k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org, wgong@codeaurora.org
-Subject: [PATCH] ath10k: cancel rx worker in hif_stop for SDIO
-Date:   Thu,  5 Nov 2020 14:33:56 +0800
-Message-Id: <1604558036-4056-1-git-send-email-wgong@codeaurora.org>
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=lavaks@codeaurora.org
+From:   Lavanya Suresh <lavaks@codeaurora.org>
+To:     ath11k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org,
+        Lavanya Suresh <lavaks@codeaurora.org>
+Subject: [PATCH] ath11k: Add new dfs region name for JP
+Date:   Thu,  5 Nov 2020 13:34:35 +0530
+Message-Id: <1604563475-5782-1-git-send-email-lavaks@codeaurora.org>
 X-Mailer: git-send-email 2.7.4
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The rx worker of SDIO should be cancelled after disable interrupt, and
-release rx sk_buff in queue, otherwise the rx worker maybe still run
-after hif_stop. And it should be cancelled before napi_synchronize in
-hif_stop, because the rx worker of SDIO will call napi_schedule, it
-should have no napi_schedule before napi_synchronize, otherwise it
-lead napi_synchronize wait untill napi_complete.
+Japan has new Radar types as per latest regulatory,
+included under MKK_N in FW. So adding new enum in
+ath11k to support it.
 
-Tested-on: QCA6174 hw3.2 SDIO WLAN.RMH.4.4.1-00049
+Tested-on: IPQ8074 hw2.0 PCI WLAN.HK.2.4.0.1-00041-QCAHKSWPL_SILICONZ-1
 
-Signed-off-by: Wen Gong <wgong@codeaurora.org>
+Signed-off-by: Lavanya Suresh <lavaks@codeaurora.org>
 ---
- drivers/net/wireless/ath/ath10k/sdio.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/wireless/ath/ath11k/reg.c | 1 +
+ drivers/net/wireless/ath/ath11k/reg.h | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath10k/sdio.c b/drivers/net/wireless/ath/ath10k/sdio.c
-index 81ddaafb6721..2c619ef8a87c 100644
---- a/drivers/net/wireless/ath/ath10k/sdio.c
-+++ b/drivers/net/wireless/ath/ath10k/sdio.c
-@@ -1962,9 +1962,15 @@ static void ath10k_sdio_hif_stop(struct ath10k *ar)
- {
- 	struct ath10k_sdio_bus_request *req, *tmp_req;
- 	struct ath10k_sdio *ar_sdio = ath10k_sdio_priv(ar);
-+	struct sk_buff *skb;
+diff --git a/drivers/net/wireless/ath/ath11k/reg.c b/drivers/net/wireless/ath/ath11k/reg.c
+index f6a1f03..4f178d8 100644
+--- a/drivers/net/wireless/ath/ath11k/reg.c
++++ b/drivers/net/wireless/ath/ath11k/reg.c
+@@ -277,6 +277,7 @@ ath11k_map_fw_dfs_region(enum ath11k_dfs_region dfs_region)
+ 	case ATH11K_DFS_REG_KR:
+ 		return NL80211_DFS_ETSI;
+ 	case ATH11K_DFS_REG_MKK:
++	case ATH11K_DFS_REG_MKK_N:
+ 		return NL80211_DFS_JP;
+ 	default:
+ 		return NL80211_DFS_UNSET;
+diff --git a/drivers/net/wireless/ath/ath11k/reg.h b/drivers/net/wireless/ath/ath11k/reg.h
+index 39b7fc9..65d56d4 100644
+--- a/drivers/net/wireless/ath/ath11k/reg.h
++++ b/drivers/net/wireless/ath/ath11k/reg.h
+@@ -20,6 +20,7 @@ enum ath11k_dfs_region {
+ 	ATH11K_DFS_REG_MKK,
+ 	ATH11K_DFS_REG_CN,
+ 	ATH11K_DFS_REG_KR,
++	ATH11K_DFS_REG_MKK_N,
+ 	ATH11K_DFS_REG_UNDEF,
+ };
  
- 	ath10k_sdio_irq_disable(ar);
- 
-+	cancel_work_sync(&ar_sdio->async_work_rx);
-+
-+	while (skb = skb_dequeue(&ar_sdio->rx_head))
-+		dev_kfree_skb_any(skb);
-+
- 	cancel_work_sync(&ar_sdio->wr_async_work);
- 
- 	spin_lock_bh(&ar_sdio->wr_async_lock);
 -- 
-2.23.0
+2.7.4
 
