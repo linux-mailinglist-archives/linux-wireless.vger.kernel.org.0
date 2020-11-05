@@ -2,81 +2,102 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B21B2A7F1D
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 Nov 2020 13:55:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 910C92A7F99
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Nov 2020 14:23:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730466AbgKEMzE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 5 Nov 2020 07:55:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57882 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726777AbgKEMzD (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 5 Nov 2020 07:55:03 -0500
-Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C6AFC0613CF;
-        Thu,  5 Nov 2020 04:55:03 -0800 (PST)
-Received: by mail-ej1-x629.google.com with SMTP id w13so2417691eju.13;
-        Thu, 05 Nov 2020 04:55:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=zdb4a75nDYFWhXtJEBTR4K/6mw5ONd63rLzUkBKXiIE=;
-        b=DK2YPwEYBzHKcbuvAewPh2ubypxtnn47SEtlGdzykfkQgnGkJ0glK3T4UFluf2Bd00
-         woQDDU+m9maOfSPy4Eo7NicIKsybrf8ZvEBfkCy0WDnWcmQ71CVgyaZVeo8bmVwBtMRR
-         ICax/jgLnPiKntLS/rnBCLLfrZQ8pCPa5vdpL4QKYZTCRJgXsq/zI5BXAexFyjaa0dXB
-         wwvuYSIXiZsdq43mZhgsROx6lAHwI5FPfEJMU6RoCjmOpB3jzjrWpPyI3QpNH5gsJVf0
-         GYEHwqjD4biBtzVauiuG92fo2P29bUhxV8qcrCAP0t9YbKQnzoz83YMiL69UTSxC9ymM
-         eK8A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=zdb4a75nDYFWhXtJEBTR4K/6mw5ONd63rLzUkBKXiIE=;
-        b=bAXy96rT5X6Gz2LOWQfmQSLbOQoZeSvvAOpgzTOj5DtGVZRV6GubbbyJQUuUlgL7V8
-         BN2XOWwaB0QZLk4YvPffhsE6SxXTo9WKroHUMeF1pRD5tgSdleJ9YEA15kZUc9ZTNEh7
-         vBI9aTFAGxwzudPPmz/Bmj4nor/zw/+vYxC23CevwEPJC/66tdpgWpnlU4brqV3EdvVx
-         8zZa79O/SoleHZHH/lAmQM0qMQy64MwENhJ/vF2vjB3IfMIdmveYzf9MRmUCDejvQrYz
-         x1sUDrTwUxe4HTdi7Fs2qeMWFwDqpKRMrj/Ni78CaNQE4hbz7Sri/dc/AiUXn0GtptuR
-         lcgQ==
-X-Gm-Message-State: AOAM5317ikTmPeCLQRkMP6xTn/VO6y9WFt8ENuzhidyDRYKVXeGazVtl
-        vAZp8dNjDDrw5dAtYvxn1qRWi0Mi9WKtlw==
-X-Google-Smtp-Source: ABdhPJyPS+uIl9TDoSmI2PgxG0jiPd8m3YJVJk/F2cVj9oVZvuwgQLQSTsFyWzMmyqWxz+Y+G0q4JA==
-X-Received: by 2002:a17:906:a149:: with SMTP id bu9mr2064502ejb.115.1604580901961;
-        Thu, 05 Nov 2020 04:55:01 -0800 (PST)
-Received: from ?IPv6:2a02:a44f:d2f0:0:7cde:5457:f7ce:ec3c? (2a02-a44f-d2f0-0-7cde-5457-f7ce-ec3c.fixed6.kpn.net. [2a02:a44f:d2f0:0:7cde:5457:f7ce:ec3c])
-        by smtp.gmail.com with ESMTPSA id d20sm860807edz.14.2020.11.05.04.55.00
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 05 Nov 2020 04:55:01 -0800 (PST)
-Subject: Re: Regression: QCA6390 fails with "mm/page_alloc: place pages to
- tail in __free_pages_core()"
-To:     David Hildenbrand <david@redhat.com>,
-        Vlastimil Babka <vbabka@suse.cz>
-Cc:     Kalle Valo <kvalo@codeaurora.org>, ath11k@lists.infradead.org,
-        linux-mm@kvack.org, akpm@linux-foundation.org,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org
-References: <d6fb1e30-0d19-9af3-337b-69ff11c2fc6c@suse.cz>
- <8ACA82DB-D2FE-4599-8A01-D42218FDE1E5@redhat.com>
-From:   Pavel Procopiuc <pavel.procopiuc@gmail.com>
-Message-ID: <225718f1-c4b0-8683-427a-059148a39350@gmail.com>
-Date:   Thu, 5 Nov 2020 13:55:00 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.4.0
+        id S1730744AbgKENXg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 5 Nov 2020 08:23:36 -0500
+Received: from z5.mailgun.us ([104.130.96.5]:19869 "EHLO z5.mailgun.us"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730511AbgKENXX (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 5 Nov 2020 08:23:23 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1604582602; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=7EmMPNEDAzLO7WSfl6ZOrdJd05moQ6wsVSmuVmFlWCc=; b=gMdxoRDkNoelmErFd0TKAU8u+lfcjFwME0uKg2CRXgwPp55MmXAlE6F3wGWGU0DMtgWRnskt
+ n47EIn2bNhIqllpF+wauvPr6pyqj0yYRhJg9QoT62KHFUJ7LK7fi8KDN5u30ta/aBdWYlIww
+ F4SXPq3hpTrL7ql4GoDxqNYYOk0=
+X-Mailgun-Sending-Ip: 104.130.96.5
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n02.prod.us-west-2.postgun.com with SMTP id
+ 5fa3fcbd3d1b348506d50b71 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 05 Nov 2020 13:23:09
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 6B84BC43385; Thu,  5 Nov 2020 13:23:09 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+Received: from x230.qca.qualcomm.com (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 0CA54C433C6;
+        Thu,  5 Nov 2020 13:23:05 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 0CA54C433C6
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Thomas Gleixner <tglx@linutronix.de>
+Cc:     Thomas Krause <thomaskrause@posteo.de>,
+        Bjorn Helgaas <helgaas@kernel.org>,
+        Govind Singh <govinds@codeaurora.org>,
+        linux-pci@vger.kernel.org, linux-wireless@vger.kernel.org,
+        Devin Bayer <dev@doubly.so>, ath11k@lists.infradead.org,
+        Christoph Hellwig <hch@lst.de>,
+        David Woodhouse <dwmw@amazon.co.uk>
+Subject: Re: pci_alloc_irq_vectors fails ENOSPC for XPS 13 9310
+References: <20201103160838.GA246433@bjorn-Precision-5520>
+        <874km61732.fsf@nanos.tec.linutronix.de>
+        <fa26ac8b-ed48-7ea3-c21b-b133532716b8@posteo.de>
+        <87mtzxkus5.fsf@nanos.tec.linutronix.de>
+Date:   Thu, 05 Nov 2020 15:23:03 +0200
+In-Reply-To: <87mtzxkus5.fsf@nanos.tec.linutronix.de> (Thomas Gleixner's
+        message of "Wed, 04 Nov 2020 16:26:34 +0100")
+Message-ID: <87wnz0hr9k.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-In-Reply-To: <8ACA82DB-D2FE-4599-8A01-D42218FDE1E5@redhat.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Op 05.11.2020 om 12:13 schreef David Hildenbrand:
-> It depends in which order memory is exposed to MM, which might depend on other factors in some configurations.
-> 
-> This smells like it exposes an existing bug. Can you reproduce also with zone shuffling enabled?
+Thomas Gleixner <tglx@linutronix.de> writes:
 
-So just to make sure I understand you correctly, you'd like to see if the problem with ath11k driver on my hardware 
-persists when I boot pristine 5.10-rc2 kernel (without reverting commit 7fef431be9c9ac255838a9578331567b9dba4477) and 
-with page_alloc.shuffle=1, right?
+> On Wed, Nov 04 2020 at 14:04, Thomas Krause wrote:
+>> config) but CONFIG_INTEL_IOMMU_DEFAULT_ON needed to be set manually. I 
+>> hope this helps, if there is more I can do to debug it on my side I'm 
+>> happy to do so.
+>
+>> [    0.050130] DMAR: [Firmware Bug]: Your BIOS is broken; DMAR reported at address 0!
+>>                BIOS vendor: Dell Inc.; Ver: 1.1.1; Product Version:
+>
+>> [    0.103693] DMAR: Host address width 39
+>> [    0.103693] DMAR: DRHD base: 0x000000fed90000 flags: 0x0
+>> [    0.103697] DMAR: dmar0: reg_base_addr fed90000 ver 4:0 cap 1c0000c40660462 ecap 69e2ff0505e
+>> [    0.103698] DMAR: DRHD base: 0x000000fed84000 flags: 0x0
+>> [    0.103701] DMAR: dmar1: reg_base_addr fed84000 ver 1:0 cap d2008c40660462 ecap f050da
+>> [    0.103702] DMAR: DRHD base: 0x000000fed86000 flags: 0x0
+>> [    0.103706] DMAR: dmar2: reg_base_addr fed86000 ver 1:0 cap d2008c40660462 ecap f050da
+>> [    0.103707] DMAR: DRHD base: 0x00000000000000 flags: 0x1
+>> [    0.103707] DMAR: Parse DMAR table failure.
+>
+> which disables interrupt remapping and therefore the driver gets only
+> one MSI which makes it unhappy.
+>
+> Not that I'm surprised, it's Dell.... Can you check whether they have a
+> BIOS update for that box?
+
+I was told that on Dell XPS 15 (with a working QCA6390 setup) there's a
+separate "Virtualisation" setting in BIOS. See if you have that and try
+enabling it.
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
