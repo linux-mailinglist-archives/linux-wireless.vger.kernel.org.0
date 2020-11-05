@@ -2,63 +2,90 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D1852A7618
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 Nov 2020 04:33:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E243F2A777C
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Nov 2020 07:33:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388613AbgKEDdY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 4 Nov 2020 22:33:24 -0500
-Received: from linux.microsoft.com ([13.77.154.182]:47172 "EHLO
-        linux.microsoft.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387643AbgKEDdY (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 4 Nov 2020 22:33:24 -0500
-Received: from [192.168.0.114] (unknown [49.207.198.216])
-        by linux.microsoft.com (Postfix) with ESMTPSA id E10CF20B4905;
-        Wed,  4 Nov 2020 19:33:20 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com E10CF20B4905
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-        s=default; t=1604547204;
-        bh=Oe/MfzqV2v9zkGZtZkogWbchmVLqgIEFJ/RW772EC/c=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=Nu6XJ2VormhUSq9kLwFfSbjzHyC68StGlGoTNgXV+mwIaCsOe5JAOdRQgx3i/5hQ2
-         GgPMRq4avNV/vXNXYCGRoml/CspyCPj033Yz6s3SMvg4XtehZgIKysuxvq6NFFJlri
-         UA8dXYoP3hB+GLehJy4OQovzioUu3lSZFZlHbub0=
-Subject: Re: [PATCH v2 0/3] wireless: convert tasklets to use new
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     Allen Pais <allen.lkml@gmail.com>, ryder.lee@mediatek.com,
-        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        ath11k@lists.infradead.org, matthias.bgg@gmail.com,
-        linux-mediatek@lists.infradead.org, lorenzo.bianconi83@gmail.com,
-        kuba@kernel.org, davem@davemloft.net, nbd@nbd.name
-References: <20201007103309.363737-1-allen.lkml@gmail.com>
- <c3d71677-a428-f215-2ba8-4dd277a69fb6@linux.microsoft.com>
- <87blgdqdpb.fsf@codeaurora.org>
-From:   Allen Pais <apais@linux.microsoft.com>
-Message-ID: <9e9219d9-fab7-404b-0f40-f5721f781a1d@linux.microsoft.com>
-Date:   Thu, 5 Nov 2020 09:03:10 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
-MIME-Version: 1.0
-In-Reply-To: <87blgdqdpb.fsf@codeaurora.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+        id S1730532AbgKEGdZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 5 Nov 2020 01:33:25 -0500
+Received: from z5.mailgun.us ([104.130.96.5]:51115 "EHLO z5.mailgun.us"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730361AbgKEGdZ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 5 Nov 2020 01:33:25 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1604558004; h=Message-Id: Date: Subject: Cc: To: From:
+ Sender; bh=4nxJBCC+CMwclD07P+yaOByA7QtxUjtpGNp3zfpDsS0=; b=WXhKo6DWZpSUvt2+rbbUW7qaub4/edZmtZc1wBZEgwNYpmFE/ayZo7ovGjz4kbrOOqPM3TO9
+ 2mkg3i9UqcwRWlmQ2DUBuPHu6/7LLc8Bwf/uHWAoKe5l5TUpYF+cB/4fz0HJdelLR7qcqSOR
+ IQ2k9AycW+N+eGlfivKWyJF7L74=
+X-Mailgun-Sending-Ip: 104.130.96.5
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n04.prod.us-east-1.postgun.com with SMTP id
+ 5fa39c948dd4beedee22c97a (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 05 Nov 2020 06:32:52
+ GMT
+Sender: wgong=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id E7B47C433C9; Thu,  5 Nov 2020 06:32:51 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+Received: from gongwen-ThinkPad-T420.qca.qualcomm.com (unknown [180.166.53.21])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: wgong)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 5D91EC433C6;
+        Thu,  5 Nov 2020 06:32:49 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 5D91EC433C6
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=wgong@codeaurora.org
+From:   Wen Gong <wgong@codeaurora.org>
+To:     ath10k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org, wgong@codeaurora.org
+Subject: [PATCH] ath10k: cancel rx worker in hif_stop for SDIO
+Date:   Thu,  5 Nov 2020 14:33:56 +0800
+Message-Id: <1604558036-4056-1-git-send-email-wgong@codeaurora.org>
+X-Mailer: git-send-email 2.7.4
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
->>>
->>> This series converts the remaining drivers to use new
->>> tasklet_setup() API.
->>>
->>> The patches are based on wireless-drivers-next (c2568c8c9e63)
->>
->>   Is this series queue? I haven't seen any email. This is the last
->> series as part of the tasklet conversion effort.
-> 
-> They are queued in linux-wireless patchwork, see the link below. I have
-> lots of patches pending but hopefully I'll tackle most of them soon.
-> 
+The rx worker of SDIO should be cancelled after disable interrupt, and
+release rx sk_buff in queue, otherwise the rx worker maybe still run
+after hif_stop. And it should be cancelled before napi_synchronize in
+hif_stop, because the rx worker of SDIO will call napi_schedule, it
+should have no napi_schedule before napi_synchronize, otherwise it
+lead napi_synchronize wait untill napi_complete.
 
-Thank you very much.
+Tested-on: QCA6174 hw3.2 SDIO WLAN.RMH.4.4.1-00049
+
+Signed-off-by: Wen Gong <wgong@codeaurora.org>
+---
+ drivers/net/wireless/ath/ath10k/sdio.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/drivers/net/wireless/ath/ath10k/sdio.c b/drivers/net/wireless/ath/ath10k/sdio.c
+index 81ddaafb6721..2c619ef8a87c 100644
+--- a/drivers/net/wireless/ath/ath10k/sdio.c
++++ b/drivers/net/wireless/ath/ath10k/sdio.c
+@@ -1962,9 +1962,15 @@ static void ath10k_sdio_hif_stop(struct ath10k *ar)
+ {
+ 	struct ath10k_sdio_bus_request *req, *tmp_req;
+ 	struct ath10k_sdio *ar_sdio = ath10k_sdio_priv(ar);
++	struct sk_buff *skb;
+ 
+ 	ath10k_sdio_irq_disable(ar);
+ 
++	cancel_work_sync(&ar_sdio->async_work_rx);
++
++	while (skb = skb_dequeue(&ar_sdio->rx_head))
++		dev_kfree_skb_any(skb);
++
+ 	cancel_work_sync(&ar_sdio->wr_async_work);
+ 
+ 	spin_lock_bh(&ar_sdio->wr_async_lock);
+-- 
+2.23.0
 
