@@ -2,102 +2,150 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 910C92A7F99
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 Nov 2020 14:23:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 056FF2A8339
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Nov 2020 17:14:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730744AbgKENXg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 5 Nov 2020 08:23:36 -0500
-Received: from z5.mailgun.us ([104.130.96.5]:19869 "EHLO z5.mailgun.us"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730511AbgKENXX (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 5 Nov 2020 08:23:23 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1604582602; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=7EmMPNEDAzLO7WSfl6ZOrdJd05moQ6wsVSmuVmFlWCc=; b=gMdxoRDkNoelmErFd0TKAU8u+lfcjFwME0uKg2CRXgwPp55MmXAlE6F3wGWGU0DMtgWRnskt
- n47EIn2bNhIqllpF+wauvPr6pyqj0yYRhJg9QoT62KHFUJ7LK7fi8KDN5u30ta/aBdWYlIww
- F4SXPq3hpTrL7ql4GoDxqNYYOk0=
-X-Mailgun-Sending-Ip: 104.130.96.5
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n02.prod.us-west-2.postgun.com with SMTP id
- 5fa3fcbd3d1b348506d50b71 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 05 Nov 2020 13:23:09
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 6B84BC43385; Thu,  5 Nov 2020 13:23:09 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-Received: from x230.qca.qualcomm.com (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 0CA54C433C6;
-        Thu,  5 Nov 2020 13:23:05 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 0CA54C433C6
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Thomas Gleixner <tglx@linutronix.de>
-Cc:     Thomas Krause <thomaskrause@posteo.de>,
-        Bjorn Helgaas <helgaas@kernel.org>,
-        Govind Singh <govinds@codeaurora.org>,
-        linux-pci@vger.kernel.org, linux-wireless@vger.kernel.org,
-        Devin Bayer <dev@doubly.so>, ath11k@lists.infradead.org,
-        Christoph Hellwig <hch@lst.de>,
-        David Woodhouse <dwmw@amazon.co.uk>
-Subject: Re: pci_alloc_irq_vectors fails ENOSPC for XPS 13 9310
-References: <20201103160838.GA246433@bjorn-Precision-5520>
-        <874km61732.fsf@nanos.tec.linutronix.de>
-        <fa26ac8b-ed48-7ea3-c21b-b133532716b8@posteo.de>
-        <87mtzxkus5.fsf@nanos.tec.linutronix.de>
-Date:   Thu, 05 Nov 2020 15:23:03 +0200
-In-Reply-To: <87mtzxkus5.fsf@nanos.tec.linutronix.de> (Thomas Gleixner's
-        message of "Wed, 04 Nov 2020 16:26:34 +0100")
-Message-ID: <87wnz0hr9k.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        id S1731435AbgKEQOg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 5 Nov 2020 11:14:36 -0500
+Received: from mail-il1-f200.google.com ([209.85.166.200]:52367 "EHLO
+        mail-il1-f200.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728523AbgKEQOS (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 5 Nov 2020 11:14:18 -0500
+Received: by mail-il1-f200.google.com with SMTP id y15so1424812ilp.19
+        for <linux-wireless@vger.kernel.org>; Thu, 05 Nov 2020 08:14:17 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
+        bh=iCE791O+YomKx6jeJuYW72QC2S3jn0tEqUW0wtAGdsU=;
+        b=eajwOrGBRmOd3Laa4XHx4TtN2OkEWCZi7Xb66sYrDKwvKonIMFY47n6XEeEq3reBss
+         WUDIHPOMInRUSLiT6HukWYZcufsrQhnaliXdFVnOwbhYdPlQ7mG7ZqKmxBukPNrKa5ap
+         6mXWh8lXPHpH+iYPh8HKDRdsRagfNJhOOrPf7GJz6z6GnBZK/pf6K1oA/tIakBnJso35
+         skGnaaqeYOxUYRzJ2FEh6EkAAwJtYMrRcTdXHWeq8VDUUejgtq6Ii9dJ4SJ4/nYnbofv
+         LbcnWMseb1KTP5Tedyvgx7Y5nVaG8BDH/9y/buwCQs7vW7TcWkUrFAiUzHSv+mlgSBUP
+         8qlg==
+X-Gm-Message-State: AOAM531dvsgEIcMHjsj2S3VxmFmzY4IRooFeMhwx36elWXrdnvJ8Pajl
+        dgWsZUu+w6IY3FKqb/4mo+0xaomIECg2l/H66/Cf79b5+LWt
+X-Google-Smtp-Source: ABdhPJwyBRqZxGelvCgD9e46F4X9OqBodPAEL6N9MJswi6mJfjBZ+T933YxLTI0nBML3N2kUJ5W1h+T0unz+HSx2YQuxY5ey01Oy
 MIME-Version: 1.0
-Content-Type: text/plain
+X-Received: by 2002:a02:cbde:: with SMTP id u30mr2677796jaq.69.1604592856927;
+ Thu, 05 Nov 2020 08:14:16 -0800 (PST)
+Date:   Thu, 05 Nov 2020 08:14:16 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <0000000000003f135105b35e639d@google.com>
+Subject: net test error: BUG: sleeping function called from invalid context in sta_info_move_state
+From:   syzbot <syzbot+6a7fe9faf0d1d61bc24a@syzkaller.appspotmail.com>
+To:     davem@davemloft.net, johannes@sipsolutions.net, kuba@kernel.org,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Thomas Gleixner <tglx@linutronix.de> writes:
+Hello,
 
-> On Wed, Nov 04 2020 at 14:04, Thomas Krause wrote:
->> config) but CONFIG_INTEL_IOMMU_DEFAULT_ON needed to be set manually. I 
->> hope this helps, if there is more I can do to debug it on my side I'm 
->> happy to do so.
->
->> [    0.050130] DMAR: [Firmware Bug]: Your BIOS is broken; DMAR reported at address 0!
->>                BIOS vendor: Dell Inc.; Ver: 1.1.1; Product Version:
->
->> [    0.103693] DMAR: Host address width 39
->> [    0.103693] DMAR: DRHD base: 0x000000fed90000 flags: 0x0
->> [    0.103697] DMAR: dmar0: reg_base_addr fed90000 ver 4:0 cap 1c0000c40660462 ecap 69e2ff0505e
->> [    0.103698] DMAR: DRHD base: 0x000000fed84000 flags: 0x0
->> [    0.103701] DMAR: dmar1: reg_base_addr fed84000 ver 1:0 cap d2008c40660462 ecap f050da
->> [    0.103702] DMAR: DRHD base: 0x000000fed86000 flags: 0x0
->> [    0.103706] DMAR: dmar2: reg_base_addr fed86000 ver 1:0 cap d2008c40660462 ecap f050da
->> [    0.103707] DMAR: DRHD base: 0x00000000000000 flags: 0x1
->> [    0.103707] DMAR: Parse DMAR table failure.
->
-> which disables interrupt remapping and therefore the driver gets only
-> one MSI which makes it unhappy.
->
-> Not that I'm surprised, it's Dell.... Can you check whether they have a
-> BIOS update for that box?
+syzbot found the following issue on:
 
-I was told that on Dell XPS 15 (with a working QCA6390 setup) there's a
-separate "Virtualisation" setting in BIOS. See if you have that and try
-enabling it.
+HEAD commit:    2aaf09a0 r8169: work around short packet hw bug on RTL8125
+git tree:       net
+console output: https://syzkaller.appspot.com/x/log.txt?x=15c416fc500000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=803dd96a0e492ac1
+dashboard link: https://syzkaller.appspot.com/bug?extid=6a7fe9faf0d1d61bc24a
+compiler:       gcc (GCC) 10.1.0-syz 20200507
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+6a7fe9faf0d1d61bc24a@syzkaller.appspotmail.com
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+wlan1: Created IBSS using preconfigured BSSID 50:50:50:50:50:50
+wlan1: Creating new IBSS network, BSSID 50:50:50:50:50:50
+BUG: sleeping function called from invalid context at net/mac80211/sta_info.c:1962
+in_atomic(): 0, irqs_disabled(): 0, non_block: 0, pid: 536, name: kworker/u4:5
+4 locks held by kworker/u4:5/536:
+ #0: ffff88801b08a938 ((wq_completion)phy3){+.+.}-{0:0}, at: arch_atomic64_set arch/x86/include/asm/atomic64_64.h:34 [inline]
+ #0: ffff88801b08a938 ((wq_completion)phy3){+.+.}-{0:0}, at: atomic64_set include/asm-generic/atomic-instrumented.h:856 [inline]
+ #0: ffff88801b08a938 ((wq_completion)phy3){+.+.}-{0:0}, at: atomic_long_set include/asm-generic/atomic-long.h:41 [inline]
+ #0: ffff88801b08a938 ((wq_completion)phy3){+.+.}-{0:0}, at: set_work_data kernel/workqueue.c:616 [inline]
+ #0: ffff88801b08a938 ((wq_completion)phy3){+.+.}-{0:0}, at: set_work_pool_and_clear_pending kernel/workqueue.c:643 [inline]
+ #0: ffff88801b08a938 ((wq_completion)phy3){+.+.}-{0:0}, at: process_one_work+0x821/0x15a0 kernel/workqueue.c:2243
+ #1: ffffc9000294fda8 ((work_completion)(&sdata->work)){+.+.}-{0:0}, at: process_one_work+0x854/0x15a0 kernel/workqueue.c:2247
+ #2: ffff88801bc98d00 (&wdev->mtx){+.+.}-{3:3}, at: sdata_lock net/mac80211/ieee80211_i.h:1021 [inline]
+ #2: ffff88801bc98d00 (&wdev->mtx){+.+.}-{3:3}, at: ieee80211_ibss_work+0x93/0xe80 net/mac80211/ibss.c:1683
+ #3: ffffffff8b337160 (rcu_read_lock){....}-{1:2}, at: sta_info_insert_finish net/mac80211/sta_info.c:644 [inline]
+ #3: ffffffff8b337160 (rcu_read_lock){....}-{1:2}, at: sta_info_insert_rcu+0x680/0x2ba0 net/mac80211/sta_info.c:732
+Preemption disabled at:
+[<ffffffff88e6168f>] __mutex_lock_common kernel/locking/mutex.c:955 [inline]
+[<ffffffff88e6168f>] __mutex_lock+0x10f/0x10e0 kernel/locking/mutex.c:1103
+CPU: 1 PID: 536 Comm: kworker/u4:5 Not tainted 5.10.0-rc1-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
+Workqueue: phy3 ieee80211_iface_work
+Call Trace:
+ __dump_stack lib/dump_stack.c:77 [inline]
+ dump_stack+0x107/0x163 lib/dump_stack.c:118
+ ___might_sleep.cold+0x1e8/0x22e kernel/sched/core.c:7298
+ sta_info_move_state+0x32/0x8d0 net/mac80211/sta_info.c:1962
+ sta_info_free+0x65/0x3b0 net/mac80211/sta_info.c:274
+ sta_info_insert_rcu+0x303/0x2ba0 net/mac80211/sta_info.c:738
+ ieee80211_ibss_finish_sta+0x212/0x390 net/mac80211/ibss.c:592
+ ieee80211_ibss_work+0x2c7/0xe80 net/mac80211/ibss.c:1700
+ ieee80211_iface_work+0x82e/0x970 net/mac80211/iface.c:1476
+ process_one_work+0x933/0x15a0 kernel/workqueue.c:2272
+ worker_thread+0x64c/0x1120 kernel/workqueue.c:2418
+ kthread+0x3af/0x4a0 kernel/kthread.c:292
+ ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:296
+
+=============================
+[ BUG: Invalid wait context ]
+5.10.0-rc1-syzkaller #0 Tainted: G        W        
+-----------------------------
+kworker/u4:5/536 is trying to lock:
+ffff888019d729d0 (&local->chanctx_mtx){+.+.}-{3:3}, at: ieee80211_recalc_min_chandef+0x49/0x140 net/mac80211/util.c:2740
+other info that might help us debug this:
+context-{4:4}
+4 locks held by kworker/u4:5/536:
+ #0: ffff88801b08a938 ((wq_completion)phy3){+.+.}-{0:0}, at: arch_atomic64_set arch/x86/include/asm/atomic64_64.h:34 [inline]
+ #0: ffff88801b08a938 ((wq_completion)phy3){+.+.}-{0:0}, at: atomic64_set include/asm-generic/atomic-instrumented.h:856 [inline]
+ #0: ffff88801b08a938 ((wq_completion)phy3){+.+.}-{0:0}, at: atomic_long_set include/asm-generic/atomic-long.h:41 [inline]
+ #0: ffff88801b08a938 ((wq_completion)phy3){+.+.}-{0:0}, at: set_work_data kernel/workqueue.c:616 [inline]
+ #0: ffff88801b08a938 ((wq_completion)phy3){+.+.}-{0:0}, at: set_work_pool_and_clear_pending kernel/workqueue.c:643 [inline]
+ #0: ffff88801b08a938 ((wq_completion)phy3){+.+.}-{0:0}, at: process_one_work+0x821/0x15a0 kernel/workqueue.c:2243
+ #1: ffffc9000294fda8 ((work_completion)(&sdata->work)){+.+.}-{0:0}, at: process_one_work+0x854/0x15a0 kernel/workqueue.c:2247
+ #2: ffff88801bc98d00 (&wdev->mtx){+.+.}-{3:3}, at: sdata_lock net/mac80211/ieee80211_i.h:1021 [inline]
+ #2: ffff88801bc98d00 (&wdev->mtx){+.+.}-{3:3}, at: ieee80211_ibss_work+0x93/0xe80 net/mac80211/ibss.c:1683
+ #3: ffffffff8b337160 (rcu_read_lock){....}-{1:2}, at: sta_info_insert_finish net/mac80211/sta_info.c:644 [inline]
+ #3: ffffffff8b337160 (rcu_read_lock){....}-{1:2}, at: sta_info_insert_rcu+0x680/0x2ba0 net/mac80211/sta_info.c:732
+stack backtrace:
+CPU: 1 PID: 536 Comm: kworker/u4:5 Tainted: G        W         5.10.0-rc1-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
+Workqueue: phy3 ieee80211_iface_work
+Call Trace:
+ __dump_stack lib/dump_stack.c:77 [inline]
+ dump_stack+0x107/0x163 lib/dump_stack.c:118
+ print_lock_invalid_wait_context kernel/locking/lockdep.c:4489 [inline]
+ check_wait_context kernel/locking/lockdep.c:4550 [inline]
+ __lock_acquire.cold+0x310/0x3a2 kernel/locking/lockdep.c:4787
+ lock_acquire kernel/locking/lockdep.c:5442 [inline]
+ lock_acquire+0x1af/0x8b0 kernel/locking/lockdep.c:5407
+ __mutex_lock_common kernel/locking/mutex.c:956 [inline]
+ __mutex_lock+0x134/0x10e0 kernel/locking/mutex.c:1103
+ ieee80211_recalc_min_chandef+0x49/0x140 net/mac80211/util.c:2740
+ sta_info_move_state+0x3cf/0x8d0 net/mac80211/sta_info.c:2019
+ sta_info_free+0x65/0x3b0 net/mac80211/sta_info.c:274
+ sta_info_insert_rcu+0x303/0x2ba0 net/mac80211/sta_info.c:738
+ ieee80211_ibss_finish_sta+0x212/0x390 net/mac80211/ibss.c:592
+ ieee80211_ibss_work+0x2c7/0xe80 net/mac80211/ibss.c:1700
+ ieee80211_iface_work+0x82e/0x970 net/mac80211/iface.c:1476
+ process_one_work+0x933/0x15a0 kernel/workqueue.c:2272
+ worker_thread+0x64c/0x1120 kernel/workqueue.c:2418
+ kthread+0x3af/0x4a0 kernel/kthread.c:292
+ ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:296
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
