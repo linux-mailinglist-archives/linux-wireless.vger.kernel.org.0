@@ -2,155 +2,132 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7292C2A97B6
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 Nov 2020 15:35:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9ECDB2A9867
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 Nov 2020 16:17:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726939AbgKFOfI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 6 Nov 2020 09:35:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44808 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726565AbgKFOfI (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 6 Nov 2020 09:35:08 -0500
-Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com [IPv6:2a00:1450:4864:20::343])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2B6DC0613CF
-        for <linux-wireless@vger.kernel.org>; Fri,  6 Nov 2020 06:35:06 -0800 (PST)
-Received: by mail-wm1-x343.google.com with SMTP id h2so1638450wmm.0
-        for <linux-wireless@vger.kernel.org>; Fri, 06 Nov 2020 06:35:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=tOCh5yJFjZpYm41GVEBbdLweCAfd0jNEzcgUGYl00Dc=;
-        b=Y8+KZn7zbFrfa3E7v7qfWM5TZtc1WCYEmGJLeH7On8PXxsKMtKtTf2/aDECqJiyb2Q
-         sMPS7oW0mNc3e3uzwItbuUMNlFPfbBz9sBHY6jQQYecmjRiD3uN57NTAE/LoGete6221
-         wWL4cZcWCN4pHHpU6CDt04JCyV0nt6326swkDcO2DGM0Dqk1/XHBNa3a5tS3VVtXC9vQ
-         bRHLhm6nvq+kn+fK5yW1hRLLIynJ8quveHgBnX6FZleKjEPnmbrOvdZ1ZAMFnOYx+L0e
-         ECEp95jOXeUalK4I2kg3v2v7yAuuSH21jmIQQJTEpwwB9/A9GC0G8+O9vPA+dhHmBagh
-         N6+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=tOCh5yJFjZpYm41GVEBbdLweCAfd0jNEzcgUGYl00Dc=;
-        b=ElgUBmIoGQl/nphtiifhP5zB9NMq2ThkN14l2Vowicz3sv2Ec3Fj1H0oEvvsCkSHUy
-         q0N5OuE+9WXRhfP2KDO8VnBUM2y+8DADHo+nd+/BFCqRcFR9VPx0q9SVB3b8nxnNxsUL
-         XyOzeRLHdAFVN8JVY4CdhFpmkJR2BBLcm9JL1v+otKBOOJEvi7LT4WLfdTOUh5yV+lPx
-         Hq8xRWPtjoCaO8a9y9stAoZUlUIYljp1MaubsNGvZXQm05+Pok0PyNGR+J9wjaTh2eAV
-         cfvCUgYICAqFfz40ugLUx/ESJGc8snixTNRoFUuhEv7UYLyEsorTLy5eii4g06PVnc9/
-         lEcA==
-X-Gm-Message-State: AOAM533nexfy0fvSpnM5AENA+s/w2+Z3ZNVv4AGZVahyN9HZJytpxLMF
-        mxmvflfD7ee1HNNf/Lxh/Vq9Hw==
-X-Google-Smtp-Source: ABdhPJwVsPBv9pqhXt9J0w3mzHUSYxiEvz2mW/ynhm37kZgxuW9YuHCYtH7V7K4k0hyPUxOiaXFgsg==
-X-Received: by 2002:a1c:b487:: with SMTP id d129mr2957244wmf.38.1604673305292;
-        Fri, 06 Nov 2020 06:35:05 -0800 (PST)
-Received: from dell ([91.110.221.242])
-        by smtp.gmail.com with ESMTPSA id r10sm2611848wmg.16.2020.11.06.06.35.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Nov 2020 06:35:04 -0800 (PST)
-Date:   Fri, 6 Nov 2020 14:35:02 +0000
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH 00/41] [Set 4] Rid W=1 warnings in Wireless
-Message-ID: <20201106143502.GL2063125@dell>
-References: <20201102112410.1049272-1-lee.jones@linaro.org>
- <87mtzzpxx9.fsf@codeaurora.org>
- <20201106132807.GH2063125@dell>
- <87y2jefw14.fsf@codeaurora.org>
+        id S1726813AbgKFPRc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 6 Nov 2020 10:17:32 -0500
+Received: from mail-eopbgr700080.outbound.protection.outlook.com ([40.107.70.80]:50686
+        "EHLO NAM04-SN1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726708AbgKFPRc (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 6 Nov 2020 10:17:32 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=F7rvSqZ8ZK87YluJlVWbuWFmJh2od9gf5GCoylYlVSx+jcnQohoioIjpgbzVvMDeTDMKGVokzHDXRiex484Oi41fhwuc+P07Q/IzK+CYcu5/DQdpDPWtHw+JBy0G2sBBwaLiMGcjiILx3y8+fw6P5AnaUr8gmK12ED5rjrH1RT6wFQy//gFXjeiELBhlVyLOhh4yuQEzxTo09Py48F7OBmhg4cWMSRnxyQyPzOPMiuktgjIp2FbVVpD5pXh49UTmUJPUjOrZ49jcJ8oDRasP9uaJfTkyBCpUhRw7a5tWSrxKkOShJLMfKyiULG/EvJaQ9yJ8RIDAYiKEqoON/ef7uw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=PCwwz4xhu2F+Idmu2wIfN9VZjj6Yq2b17WDlRCOiF4I=;
+ b=OA7k1L39irXl13SWZnKwdc1fl7GYga24dkNiny2k1ZXnIxgRTdRoInjSSeEuAvjMn47QxxtdJ3WpsMkaz0P7sSJFWlo22iomak+tSkA/jfy1U+dX73VGB4yfsngM8pctmxmj4o8OvaGAGhQYjgkEkneV1TL+s2vxmAz8V/B+KPT/shCCSvxMZOUhi08b3tfFw3ebJ5MXPHWQGw3/HCxmRzDevZslGpl6VnVS6k3ospSEh1npFb00P5AoDWDpTCJMldB4i/eHiP4rCDIi57P6zOp6SBItDzLBXqrBgVH8LocOC7pG3+C834PS3DNIvCD3lLxqQpUNjIit1pf8SQHz5g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=alum.wpi.edu; dmarc=pass action=none header.from=alum.wpi.edu;
+ dkim=pass header.d=alum.wpi.edu; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alum.wpi.edu;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=PCwwz4xhu2F+Idmu2wIfN9VZjj6Yq2b17WDlRCOiF4I=;
+ b=HIPvhj55ZuOc2CMi3+StrSWz5JWs4iBYCDRGIJToOenGm+E0Vt8FKb/9wypF6KED4SpJ5pSuR31BcxqGyZuhv5dwuQxd1A44CwELjgZMQzb/4GsPpApTI4ZKGUv7m3th3H1T7qGvrECey2H177UA3SX+Cm4+RniNlOMOkR0wpYs=
+Authentication-Results: vger.kernel.org; dkim=none (message not signed)
+ header.d=none;vger.kernel.org; dmarc=none action=none
+ header.from=alum.wpi.edu;
+Received: from CY4PR22MB0392.namprd22.prod.outlook.com (2603:10b6:903:b7::19)
+ by CY4PR22MB0454.namprd22.prod.outlook.com (2603:10b6:903:b4::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3541.21; Fri, 6 Nov
+ 2020 15:17:29 +0000
+Received: from CY4PR22MB0392.namprd22.prod.outlook.com
+ ([fe80::20c0:ced7:76fc:f46d]) by CY4PR22MB0392.namprd22.prod.outlook.com
+ ([fe80::20c0:ced7:76fc:f46d%11]) with mapi id 15.20.3541.022; Fri, 6 Nov 2020
+ 15:17:29 +0000
+X-Gm-Message-State: AOAM530ESy7p9pEOXlXhYDrn/BrlEj1Ndvr1vAepi4d/79oug7ROiieU
+        EJ0CIosU8UDc+cZlEUS0fY+7mN2BplKOx4ds+Xc=
+X-Google-Smtp-Source: ABdhPJyKthLai0TEXe+c0v4ZmXz8BtVj5Cb8Ok4+0YemE6HLJkoYlvKxhVaoc14y3GYzGP6/c4UDKlclTF+QrApgwF4=
+X-Received: by 2002:ae9:e709:: with SMTP id m9mr1852580qka.397.1604675435789;
+ Fri, 06 Nov 2020 07:10:35 -0800 (PST)
+References: <CABtq2xReyqg1wJM7W1d=KWRNTNN0Q6HCgJMWcQ6DH=SmKcxQRg@mail.gmail.com>
+ <20201106101240.GA2770702@kroah.com>
+In-Reply-To: <20201106101240.GA2770702@kroah.com>
+From:   "Brian O'Keefe" <bokeefe@alum.wpi.edu>
+Date:   Fri, 6 Nov 2020 10:10:24 -0500
+X-Gmail-Original-Message-ID: <CABtq2xQJCGvBhU230y41DbOgQ7zeP2tzqoV8WUT5Fe2JJc9hCQ@mail.gmail.com>
+Message-ID: <CABtq2xQJCGvBhU230y41DbOgQ7zeP2tzqoV8WUT5Fe2JJc9hCQ@mail.gmail.com>
+Subject: Re: [PATCH] staging: rtl8723bs: Add 024c:0627 to the list of SDIO device-ids
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Hans de Goede <hdegoede@redhat.com>,
+        Larry Finger <Larry.Finger@lwfinger.net>,
+        devel@driverdev.osuosl.org, linux-wireless@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Originating-IP: [209.85.160.174]
+X-ClientProxiedBy: BL0PR0102CA0015.prod.exchangelabs.com
+ (2603:10b6:207:18::28) To CY4PR22MB0392.namprd22.prod.outlook.com
+ (2603:10b6:903:b7::19)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <87y2jefw14.fsf@codeaurora.org>
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from mail-qt1-f174.google.com (209.85.160.174) by BL0PR0102CA0015.prod.exchangelabs.com (2603:10b6:207:18::28) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3541.21 via Frontend Transport; Fri, 6 Nov 2020 15:17:29 +0000
+Received: by mail-qt1-f174.google.com with SMTP id n63so965693qte.4        for <linux-wireless@vger.kernel.org>; Fri, 06 Nov 2020 07:17:29 -0800 (PST)
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 46e0594a-5e60-4b29-231d-08d882671399
+X-MS-TrafficTypeDiagnostic: CY4PR22MB0454:
+X-Microsoft-Antispam-PRVS: <CY4PR22MB04540147AF723B3BB33B08B290ED0@CY4PR22MB0454.namprd22.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:2733;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: qD+PRYNNThKGYk5qvKBL1Nir9t2J54uRMk/65kCzGi+nAf1Vz9CZM7LvU3Sw/1BHIloG4UWNTno/VucycKeTdymxuWQMv7pQYqO1/seNp/LLVPt5aW83LAUWvK+s1DxFkupg+H1XDgnTf3p+5mL51HttT+c1Ac77amesH3xTay6ISCpBke7iZITZZ71MtcItWl3mnCq9raYHV6dSuVrlvho3WRtI5kkDqZ3zHyISfxl8KHJLT5ae+o63ThzAG7n7YnoHT3rVpVqJmB4nYMJen1gEzpagGCQZndRTfvXfY3/SUz7KQn8GYN0imuxcd1hXVcS4lDlksFxWN/l4ksBW4w==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY4PR22MB0392.namprd22.prod.outlook.com;PTR:;CAT:NONE;SFS:(396003)(376002)(39850400004)(366004)(136003)(346002)(54906003)(2906002)(66556008)(4326008)(786003)(42186006)(316002)(52116002)(53546011)(26005)(86362001)(66946007)(66476007)(8676002)(6666004)(5660300002)(8936002)(478600001)(55446002)(55236004)(186003)(75432002)(9686003)(6862004);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData: 3VMe5jA7j/nLB0vnZpj5EIIeT3g+7W9VxjbGd2MpOIu+S8aD4PCP+NK78v9G32mkyC8JfriED/D5edlgn9uynLa5pv7hQioLoxetUNg6VaGiYcNAmw1JvGNDr9Hol6v6MmjKASob+ppGfQ+k9vaXaPmL7s9aIbEVgZvSoRUhKRtMsQARsU7BDgCQjbrgSNob4O6DmZKBNt3yB5EIrSAgNA3kqVplyrfJZEpG3hjalMjLUG4M+O+k5RlcUWV0MN/RoEeAwckIyvXQUVt8nsfcfWBEOatkEXTxJATxveMb+vCy7icermYwBbfsLYrJ39iHaRgbOex/uHtoryA/73Po2d/sTawZcUSkBc+uEh5t3tWqiOTDViaO12lA01PeaUQxC+rPNnKX6DOdw6EUiNfvQdkfVbuKnUlzrUSnhG3Svn8f45phZ6UjM3EfYlZmh8arONvaO4nkK5hHeu84yyeEd7RKKnffkmROd8j0iK0I9J0qP1Qx46El+Djfijr9qrgUGi73Ee8F8XDS8FgB42bWkTcS2m3i/obfFgo5VU8gRYAHDgXzLI2MmnlWgRmAeq9PX7IRLSwt0YVHDHFuO3dkaLo7ix65OeuUX8o1JQaHutdsw0GwKKTpWQFo8h4LMGbwRzLbqrhLqJFyllxLBWbYKw==
+X-OriginatorOrg: alum.wpi.edu
+X-MS-Exchange-CrossTenant-Network-Message-Id: 46e0594a-5e60-4b29-231d-08d882671399
+X-MS-Exchange-CrossTenant-AuthSource: CY4PR22MB0392.namprd22.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Nov 2020 15:17:29.6659
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46a737af-4f36-4dda-ae69-041afc96eaef
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: +WMAOVcfHcM+d5uRUyXXfscUX1OTgMi7DJVOYHlc0ozqidOTBYUuGzDHXOyJuLEjDaHDHkIe9XHFeVVspYF+cA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY4PR22MB0454
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 06 Nov 2020, Kalle Valo wrote:
-
-> Lee Jones <lee.jones@linaro.org> writes:
-> 
-> > On Mon, 02 Nov 2020, Kalle Valo wrote:
+On Fri, Nov 6, 2020 at 5:11 AM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> On Thu, Oct 29, 2020 at 09:52:16AM -0400, Brian O'Keefe wrote:
+> > Add 024c:0627 to the list of SDIO device-ids, based on hardware found in
+> > the wild. This hardware exists on at least some Acer SW1-011 tablets.
 > >
-> >> Lee Jones <lee.jones@linaro.org> writes:
-> >> 
-> >> >  [Last batch!]
-> >> >
-> >> > This set is part of a larger effort attempting to clean-up W=1
-> >> > kernel builds, which are currently overwhelmingly riddled with
-> >> > niggly little warnings.
-> >> >
-> >> > Lee Jones (41):
-> >> >   wil6210: wmi: Correct misnamed function parameter 'ptr_'
-> >> >   rsi_91x_usb: Fix some basic kernel-doc issues
-> >> >   rtl8192cu: mac: Fix some missing/ill-documented function parameters
-> >> >   rsi_91x_usb_ops: Source file headers are not good candidates for
-> >> >     kernel-doc
-> >> >   rtl8192cu: trx: Demote clear abuse of kernel-doc format
-> >> >   brcmfmac: bcmsdh: Fix description for function parameter 'pktlist'
-> >> >   brcmfmac: pcie: Provide description for missing function parameter
-> >> >     'devinfo'
-> >> >   iwlwifi: mvm: rs: Demote non-conformant function documentation headers
-> >> >   wl1251: cmd: Rename 'len' to 'buf_len' in the documentation
-> >> >   ath9k: ar9330_1p1_initvals: Remove unused const variable
-> >> >     'ar9331_common_tx_gain_offset1_1'
-> >> >   ath9k: ar9340_initvals: Remove unused const variable
-> >> >     'ar9340Modes_ub124_tx_gain_table_1p0'
-> >> >   ath9k: ar9485_initvals: Remove unused const variable
-> >> >     'ar9485_fast_clock_1_1_baseband_postamble'
-> >> >   ath9k: ar9003_2p2_initvals: Remove unused const variables
-> >> >   prism54: isl_ioctl: Fix one function header and demote another
-> >> >   iwlwifi: iwl-eeprom-read: Demote one nonconformant function header
-> >> >   iwlwifi: iwl-eeprom-parse: Fix 'struct iwl_eeprom_enhanced_txpwr's
-> >> >     header
-> >> >   intersil: hostap_hw: Prevent incompatible function type cast
-> >> >   brcm80211: fweh: Add missing description for 'gfp'
-> >> >   ath: regd: Provide description for ath_reg_apply_ir_flags's 'reg'
-> >> >     param
-> >> >   ath9k: ar5008_phy: Demote half completed function headers
-> >> >   ath: dfs_pattern_detector: Fix some function kernel-doc headers
-> >> >   ath: dfs_pri_detector: Demote zero/half completed kernel-doc headers
-> >> >   iwlwifi: iwl-phy-db: Add missing struct member description for 'trans'
-> >> >   wl3501_cs: Fix misspelling and provide missing documentation
-> >> >   rtlwifi: halbtc8723b2ant: Remove a bunch of set but unused variables
-> >> >   rtlwifi: phy: Remove set but unused variable 'bbvalue'
-> >> >   rtlwifi: halbtc8821a1ant: Remove set but unused variable
-> >> >     'wifi_rssi_state'
-> >> >   rtl8723be: phy: Remove set but unused variable 'lc_cal'
-> >> >   rtl8188ee: phy: Remove set but unused variable 'reg_ea4'
-> >> >   rtlwifi: halbtc8821a2ant: Remove a bunch of unused variables
-> >> >   mwifiex: pcie: Remove a couple of unchecked 'ret's
-> >> >   rtl8723be: trx: Remove set but unused variable 'cck_highpwr'
-> >> >   rtlwifi: rtl8821ae: phy: Remove a couple of unused variables
-> >> >   rtl8821ae: phy: Place braces around empty if() body
-> >> >   wlcore: spi: Demote a non-compliant function header, fix another
-> >> >   rtw8822b: Return type is not const
-> >> >   iwlwifi: fw: dbg: Fix misspelling of 'reg_data' in function header
-> >> >   realtek: rtw8822c: Remove unused variable 'corr_val'
-> >> >   ath9k: dynack: Demote non-compliant function header
-> >> >   iwlwifi: fw: acpi: Demote non-conformant function headers
-> >> >   realtek: rtw88: pci: Add prototypes for .probe, .remove and .shutdown
-> >> 
-> >> The cover letter was not CCed to linux-wireless, adding that. But the
-> >> patches itself look ok, I see all 41 of them in pathwork:
-> >> 
-> >> https://patchwork.kernel.org/project/linux-wireless/list/?series=375401&order=date
+> > Signed-off-by: Brian O'Keefe <bokeefe@alum.wpi.edu>
+> > Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+> > ---
+> >  drivers/staging/rtl8723bs/os_dep/sdio_intf.c | 1 +
+> >  1 file changed, 1 insertion(+)
 > >
-> > What's the plan for these Kalle?
-> >
-> > Are you able to take the ones that do not require a respin?
-> 
-> Been busy and I have 200+ patches to dive through. I (or my patchwork
-> script) will always let you know if I drop any patches.
+> > diff --git a/drivers/staging/rtl8723bs/os_dep/sdio_intf.c
+> > b/drivers/staging/rtl8723bs/os_dep/sdio_intf.c
+> > index 5b1392deb0a7..7256d55fcc1b 100644
+> > --- a/drivers/staging/rtl8723bs/os_dep/sdio_intf.c
+> > +++ b/drivers/staging/rtl8723bs/os_dep/sdio_intf.c
+> > @@ -21,6 +21,7 @@ static const struct sdio_device_id sdio_ids[] =
+> >         { SDIO_DEVICE(0x024c, 0x0525), },
+> >         { SDIO_DEVICE(0x024c, 0x0623), },
+> >         { SDIO_DEVICE(0x024c, 0x0626), },
+> > +       { SDIO_DEVICE(0x024c, 0x0627), },
+> >         { SDIO_DEVICE(0x024c, 0xb723), },
+> >         { /* end: all zeroes */                         },
+> >  };
+> > --
+> > 2.25.1
+>
+> All of the tabs are gone in your email and it's only spaces, making this
+> patch impossible to apply :(
+>
+> Can you fix up your email client and resend this and keep Hans's
+> Reviewed-by on it?
+>
+> thanks,
+>
+> greg k-h
 
-Okay, so plan to pluck from that set.
-
-That is ideal.  Thanks for responding.
-
--- 
-Lee Jones [李琼斯]
-Senior Technical Lead - Developer Services
-Linaro.org │ Open source software for Arm SoCs
-Follow Linaro: Facebook | Twitter | Blog
+Sure thing. Sorry about that; I figured out how to get it to send
+properly this time. A corrected patch is on its way.
