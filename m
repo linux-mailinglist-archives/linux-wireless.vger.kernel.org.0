@@ -2,87 +2,80 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4023A2A9387
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 Nov 2020 11:00:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B5A82A93A9
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 Nov 2020 11:07:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726600AbgKFKAX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 6 Nov 2020 05:00:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57970 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726074AbgKFKAX (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 6 Nov 2020 05:00:23 -0500
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CF6AC0613CF
-        for <linux-wireless@vger.kernel.org>; Fri,  6 Nov 2020 02:00:23 -0800 (PST)
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.94)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1kayXd-002DDq-BR; Fri, 06 Nov 2020 11:00:21 +0100
-Message-ID: <b07e4f654a090b6b721f8c474eae58426569cbfa.camel@sipsolutions.net>
-Subject: Re: [PATCH V6 2/3] mac80211: add support for BSS color change
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     John Crispin <john@phrozen.org>
-Cc:     linux-wireless@vger.kernel.org
-Date:   Fri, 06 Nov 2020 11:00:20 +0100
-In-Reply-To: <20201103092244.1925158-3-john@phrozen.org>
-References: <20201103092244.1925158-1-john@phrozen.org>
-         <20201103092244.1925158-3-john@phrozen.org>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.5 (3.36.5-1.fc32) 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-malware-bazaar: not-scanned
+        id S1726740AbgKFKHU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 6 Nov 2020 05:07:20 -0500
+Received: from z5.mailgun.us ([104.130.96.5]:44563 "EHLO z5.mailgun.us"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726139AbgKFKHT (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 6 Nov 2020 05:07:19 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1604657238; h=Message-Id: Date: Subject: Cc: To: From:
+ Sender; bh=u2Ob3VZv+ZbAZQ2aoEo00iPxZZH19i4s3sD/Eoq7Ay0=; b=DSzYAJWe6nW/VKrHw9MbBwzyxaQFLDcAGpGIaQilLPiQA76OUaYI7DFwtVGhXACEXYEwKmSZ
+ FjcU6wmM9v4WGkBlRNkmfCz4T0m7r1HX+Z3ZSE4zE/vAZzVDnRtxoWyu49KDVIYhRao9p9t6
+ FnaifI+sg6XcELz2JOK7c/JiraM=
+X-Mailgun-Sending-Ip: 104.130.96.5
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n07.prod.us-east-1.postgun.com with SMTP id
+ 5fa520551f7506a99717156b (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 06 Nov 2020 10:07:17
+ GMT
+Sender: cjhuang=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id CB69AC433C8; Fri,  6 Nov 2020 10:07:16 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
+        autolearn=no autolearn_force=no version=3.4.0
+Received: from cjhuang-Inspiron-7590.qca.qualcomm.com (unknown [180.166.53.21])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: cjhuang)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id DD39EC433C8;
+        Fri,  6 Nov 2020 10:07:14 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org DD39EC433C8
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=cjhuang@codeaurora.org
+From:   Carl Huang <cjhuang@codeaurora.org>
+To:     ath10k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org, briannorris@chromium.org,
+        dianders@chromium.org, kuabhs@google.com
+Subject: [PATCH 0/3] add common API to configure SAR
+Date:   Fri,  6 Nov 2020 05:07:05 -0500
+Message-Id: <20201106100708.4609-1-cjhuang@codeaurora.org>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 2020-11-03 at 10:22 +0100, John Crispin wrote:
-> 
-> @@ -6805,4 +6822,15 @@ struct sk_buff *ieee80211_get_fils_discovery_tmpl(struct ieee80211_hw *hw,
->  struct sk_buff *
->  ieee80211_get_unsol_bcast_probe_resp_tmpl(struct ieee80211_hw *hw,
->  					  struct ieee80211_vif *vif);
-> +/**
-> + * ieeee80211_obss_color_collision_notify notify userland about a BSS color
-> + * collision.
+This patchset is to add common API to configure SAR.
+The mechanism is wlan driver registers sar capability
+to wiphy and userspace queries it. Userspace then sets
+power limiation to wlan driver.
 
-missing a "-" here
+Carl Huang (3):
+  nl80211: add common API to configure SAR power limitations.
+  mac80211: add ieee80211_set_sar_specs
+  ath10k: allow dynamic SAR power limits via common API
 
-> +static void ieee80211_color_change_bss_config_notify(struct ieee80211_sub_if_data *sdata,
-> +						     u8 color, int enable, u32 changed)
-> +{
-> +	sdata->vif.bss_conf.he_bss_color.color = color;
-> +	sdata->vif.bss_conf.he_bss_color.enabled = enable;
-> +	changed |= BSS_CHANGED_HE_BSS_COLOR;
-> +
-> +	ieee80211_bss_info_change_notify(sdata, changed);
-> +
-> +	if (ieee80211_hw_check(&sdata->local->hw, SUPPORTS_MULTI_BSSID_AP) &&
-> +	    !sdata->vif.multiple_bssid.parent) {
-> +		struct ieee80211_sub_if_data *child;
-> +
-> +		rcu_read_lock();
-> +		list_for_each_entry_rcu(child, &sdata->local->interfaces, list) {
-> +			if (child->vif.multiple_bssid.parent != &sdata->vif)
-> +				continue;
-> +			sdata_lock(child);
+ drivers/net/wireless/ath/ath10k/core.c |  16 +++
+ drivers/net/wireless/ath/ath10k/core.h |   3 +
+ drivers/net/wireless/ath/ath10k/hw.h   |   2 +
+ drivers/net/wireless/ath/ath10k/mac.c  | 221 ++++++++++++++++++++++++---------
+ include/net/cfg80211.h                 |  51 ++++++++
+ include/net/mac80211.h                 |   2 +
+ include/uapi/linux/nl80211.h           | 101 +++++++++++++++
+ net/mac80211/cfg.c                     |  12 ++
+ net/wireless/nl80211.c                 | 150 ++++++++++++++++++++++
+ net/wireless/rdev-ops.h                |  12 ++
+ net/wireless/trace.h                   |  19 +++
+ 11 files changed, 530 insertions(+), 59 deletions(-)
 
-Err, you can't lock a mutex in an atomic context opened by
-rcu_read_lock().
-
-I guess you can just take the iflist_mtx or something, but this
-certainly doesn't seem right.
-
-Also, since it's being called under sdata_lock(parent), it'll need some
-lockdep annotations to be able to do this.
-
-> +			child->vif.bss_conf.he_bss_color.color = color;
-> +			child->vif.bss_conf.he_bss_color.enabled = enable;
-> +			ieee80211_bss_info_change_notify(child, BSS_CHANGED_HE_BSS_COLOR);
-
-And the driver is also allowed to sleep in this IIRC, so you can't call
-it under rcu_read_lock().
-
-johannes
+-- 
+2.7.4
 
