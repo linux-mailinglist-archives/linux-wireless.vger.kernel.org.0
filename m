@@ -2,313 +2,192 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 011042A93D9
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 Nov 2020 11:13:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 66F982A941C
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 Nov 2020 11:25:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726758AbgKFKNC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 6 Nov 2020 05:13:02 -0500
-Received: from mout01.posteo.de ([185.67.36.65]:42249 "EHLO mout01.posteo.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725868AbgKFKNC (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 6 Nov 2020 05:13:02 -0500
-Received: from submission (posteo.de [89.146.220.130]) 
-        by mout01.posteo.de (Postfix) with ESMTPS id 95E4516005F
-        for <linux-wireless@vger.kernel.org>; Fri,  6 Nov 2020 11:12:57 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.de; s=2017;
-        t=1604657577; bh=mrgkDtqe0IdcsrZcdb7dmQmh5URjnJ2bbhAn1rYd5U8=;
-        h=To:From:Subject:Date:From;
-        b=Tpm7kqwYTAiAu+jcfsRPoY21QNN1/pbGK9ImXdL2yr3VKl/8ybi2HWr9iz9vqdHuP
-         5Rx37FJ/8jZ1OdxlqDEM4W4BWg256m+YktjLlGI/80yW7ajCSiitBmM7ifP1Qpsp97
-         HoKqHt2EiLgT08vDCxbkJta3mswF9IPxJdc7paUTlpzjEm9xMqpt0SoVcCabW9KoDL
-         wWNwEcbU7k5aQX6Vo7REq+9bS3z8PBMLwL8xgzBMOPGqRHO3i8Tkjru3sFDfPGscbE
-         wdxW+QEnia0Y8X6Lj1HOkl06ojCFr/ztcAyRIeU3Jp8aioNmRnxIROSRpksbNrQTBI
-         cmEs1VN8Mr6Vg==
-Received: from customer (localhost [127.0.0.1])
-        by submission (posteo.de) with ESMTPSA id 4CSGRV46B8z9rxq;
-        Fri,  6 Nov 2020 11:12:54 +0100 (CET)
-To:     amitkarwar@gmail.com, siva8118@gmail.com, kvalo@codeaurora.org,
-        kuba@kernel.org, linux-wireless@vger.kernel.org, marex@denx.de,
-        kernel@puri.sm, siva.rebbagondla@redpinesignals.com,
-        fariyaf@gmail.com, jahnavi.meher@gmail.com,
-        prameela.j04cs@gmail.com, amit.karwar@redpinesignals.com,
-        karun256@gmail.com
-From:   Martin Kepplinger <martink@posteo.de>
-Subject: rsi: unusably slow / no tx
-Message-ID: <f909c001-e91a-1292-1239-18e41cbc693c@posteo.de>
-Date:   Fri, 6 Nov 2020 11:12:54 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.4.0
+        id S1726830AbgKFKZJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 6 Nov 2020 05:25:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33644 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725868AbgKFKZJ (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 6 Nov 2020 05:25:09 -0500
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A966C0613CF
+        for <linux-wireless@vger.kernel.org>; Fri,  6 Nov 2020 02:25:09 -0800 (PST)
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.94)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1kayvX-002E06-RC; Fri, 06 Nov 2020 11:25:03 +0100
+Message-ID: <64e072a168c12f58847a5ee16bfdb7e47576284f.camel@sipsolutions.net>
+Subject: Re: [PATCH 1/3] nl80211: add common API to configure SAR power
+ limitations.
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Carl Huang <cjhuang@codeaurora.org>, ath10k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org, briannorris@chromium.org,
+        dianders@chromium.org, kuabhs@google.com
+Date:   Fri, 06 Nov 2020 11:25:02 +0100
+In-Reply-To: <20201106100708.4609-2-cjhuang@codeaurora.org> (sfid-20201106_110730_189162_E9D09205)
+References: <20201106100708.4609-1-cjhuang@codeaurora.org>
+         <20201106100708.4609-2-cjhuang@codeaurora.org>
+         (sfid-20201106_110730_189162_E9D09205)
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.5 (3.36.5-1.fc32) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+X-malware-bazaar: not-scanned
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-hi,
+Hi,
 
-I start the driver with options rsi_sdio dev_oper_mode=13 and (try to) 
-connect to a usual wpa2 encrypted network:
-
-The rsi driver is unusably slow for me still. It slowly (sometimes) 
-connects to a network, but even then it's unusable. To me it seems like 
-the drivers sends way too little; tx() that is registered with mac80211 
-is rarely called - just 4 times in the below logs (where other drivers 
-would send data for each received packet afaik).
-
-Thanks a lot Marek for working on the driver! I already use 
-https://lore.kernel.org/netdev/20201015111616.429220-1-marex@denx.de/ here.
-
-Does anyone actually use the driver or at least has seen similar 
-behaviour, or even know what could go wrong?
+Looks pretty good. Some comments, mostly nits, below.
 
 
-So I added messages at a few spots in the rx/tx path and this is while 
-connected to a network (without doing much):
+> +/**
+> + * nl80211_sar_attrs - Attributes for SAR spec
 
-[  124.277947] rsi_91x: RX Packet Type: QOS DATA
-[  124.377107] rsi_91x: rsi_mgmt_pkt_recv: Msg Len: 333, Msg Type:    2
-[  124.377118] rsi_91x: rsi_mgmt_pkt_to_core: rssi=33 channel=5
-[  124.377123] rsi_91x: RX Dot11 Mgmt Pkt Type: BEACON
-[  124.377128] rsi_91x: RX Packet Type: BEACON
-[  124.377915] rsi_91x: RX Packet Type: QOS DATA
-[  124.478435] rsi_91x: rsi_mgmt_pkt_recv: Msg Len: 333, Msg Type:    2
-[  124.478443] rsi_91x: rsi_mgmt_pkt_to_core: rssi=33 channel=5
-[  124.478447] rsi_91x: RX Dot11 Mgmt Pkt Type: BEACON
-[  124.478451] rsi_91x: RX Packet Type: BEACON
-[  124.480417] rsi_91x: RX Packet Type: QOS DATA
-[  124.581890] rsi_91x: rsi_mgmt_pkt_recv: Msg Len: 333, Msg Type:    2
-[  124.581899] rsi_91x: rsi_mgmt_pkt_to_core: rssi=32 channel=5
-[  124.581902] rsi_91x: RX Dot11 Mgmt Pkt Type: BEACON
-[  124.581906] rsi_91x: RX Packet Type: BEACON
-[  124.582812] rsi_91x: RX Packet Type: QOS DATA
-[  124.684240] rsi_91x: rsi_mgmt_pkt_recv: Msg Len: 333, Msg Type:    2
-[  124.684249] rsi_91x: rsi_mgmt_pkt_to_core: rssi=32 channel=5
-[  124.684253] rsi_91x: RX Dot11 Mgmt Pkt Type: BEACON
-[  124.684257] rsi_91x: RX Packet Type: BEACON
-[  124.686162] rsi_91x: RX Packet Type: QOS DATA
-[  124.786681] rsi_91x: rsi_mgmt_pkt_recv: Msg Len: 333, Msg Type:    2
-[  124.786689] rsi_91x: rsi_mgmt_pkt_to_core: rssi=31 channel=5
-[  124.786693] rsi_91x: RX Dot11 Mgmt Pkt Type: BEACON
-[  124.786697] rsi_91x: RX Packet Type: BEACON
-[  124.787938] rsi_91x: RX Packet Type: QOS DATA
-[  124.889066] rsi_91x: rsi_mgmt_pkt_recv: Msg Len: 333, Msg Type:    2
-[  124.889075] rsi_91x: rsi_mgmt_pkt_to_core: rssi=33 channel=5
-[  124.889079] rsi_91x: RX Dot11 Mgmt Pkt Type: BEACON
-[  124.889083] rsi_91x: RX Packet Type: BEACON
-[  124.889653] rsi_91x: RX Packet Type: QOS DATA
-[  124.990968] rsi_91x: rsi_mgmt_pkt_recv: Msg Len: 333, Msg Type:    2
-[  124.990976] rsi_91x: rsi_mgmt_pkt_to_core: rssi=35 channel=5
-[  124.990980] rsi_91x: RX Dot11 Mgmt Pkt Type: BEACON
-[  124.990984] rsi_91x: RX Packet Type: BEACON
-[  124.993480] rsi_91x: RX Packet Type: QOS DATA
-[  125.093930] rsi_91x: rsi_mgmt_pkt_recv: Msg Len: 333, Msg Type:    2
-[  125.093942] rsi_91x: rsi_mgmt_pkt_to_core: rssi=35 channel=5
-[  125.093946] rsi_91x: RX Dot11 Mgmt Pkt Type: BEACON
-[  125.093952] rsi_91x: RX Packet Type: BEACON
-[  125.095727] rsi_91x: RX Packet Type: QOS DATA
-[  125.196263] rsi_91x: rsi_mgmt_pkt_recv: Msg Len: 333, Msg Type:    2
-[  125.196273] rsi_91x: rsi_mgmt_pkt_to_core: rssi=34 channel=5
-[  125.196277] rsi_91x: RX Dot11 Mgmt Pkt Type: BEACON
-[  125.196281] rsi_91x: RX Packet Type: BEACON
-[  125.197271] rsi_91x: RX Packet Type: QOS DATA
-[  125.298640] rsi_91x: rsi_mgmt_pkt_recv: Msg Len: 333, Msg Type:    2
-[  125.298649] rsi_91x: rsi_mgmt_pkt_to_core: rssi=32 channel=5
-[  125.298652] rsi_91x: RX Dot11 Mgmt Pkt Type: BEACON
-[  125.298656] rsi_91x: RX Packet Type: BEACON
-[  125.299643] rsi_91x: RX Packet Type: QOS DATA
-[  125.401058] rsi_91x: rsi_mgmt_pkt_recv: Msg Len: 333, Msg Type:    2
-[  125.401068] rsi_91x: rsi_mgmt_pkt_to_core: rssi=31 channel=5
-[  125.401072] rsi_91x: RX Dot11 Mgmt Pkt Type: BEACON
-[  125.401076] rsi_91x: RX Packet Type: BEACON
-[  125.503021] rsi_91x: rsi_mgmt_pkt_recv: Msg Len: 333, Msg Type:    2
-[  125.503033] rsi_91x: rsi_mgmt_pkt_to_core: rssi=31 channel=5
-[  125.503037] rsi_91x: RX Dot11 Mgmt Pkt Type: BEACON
-[  125.503043] rsi_91x: RX Packet Type: BEACON
-[  125.506415] rsi_91x: RX Packet Type: QOS DATA
-[  125.605841] rsi_91x: rsi_mgmt_pkt_recv: Msg Len: 333, Msg Type:    2
-[  125.605849] rsi_91x: rsi_mgmt_pkt_to_core: rssi=31 channel=5
-[  125.605853] rsi_91x: RX Dot11 Mgmt Pkt Type: BEACON
-[  125.605857] rsi_91x: RX Packet Type: BEACON
-[  125.608029] rsi_91x: RX Packet Type: QOS DATA
-[  125.708252] rsi_91x: rsi_mgmt_pkt_recv: Msg Len: 333, Msg Type:    2
-[  125.708261] rsi_91x: rsi_mgmt_pkt_to_core: rssi=32 channel=5
-[  125.708265] rsi_91x: RX Dot11 Mgmt Pkt Type: BEACON
-[  125.708268] rsi_91x: RX Packet Type: BEACON
-[  125.709203] rsi_91x: RX Packet Type: QOS DATA
-[  125.810602] rsi_91x: rsi_mgmt_pkt_recv: Msg Len: 333, Msg Type:    2
-[  125.810611] rsi_91x: rsi_mgmt_pkt_to_core: rssi=34 channel=5
-[  125.810614] rsi_91x: RX Dot11 Mgmt Pkt Type: BEACON
-[  125.810619] rsi_91x: RX Packet Type: BEACON
-[  125.811462] rsi_91x: RX Packet Type: QOS DATA
-[  125.913060] rsi_91x: rsi_mgmt_pkt_recv: Msg Len: 333, Msg Type:    2
-[  125.913073] rsi_91x: rsi_mgmt_pkt_to_core: rssi=36 channel=5
-[  125.913077] rsi_91x: RX Dot11 Mgmt Pkt Type: BEACON
-[  125.913084] rsi_91x: RX Packet Type: BEACON
-[  126.014441] rsi_91x: rsi_mgmt_pkt_recv: Msg Len: 333, Msg Type:    2
-[  126.014455] rsi_91x: rsi_mgmt_pkt_to_core: rssi=36 channel=5
-[  126.014459] rsi_91x: RX Dot11 Mgmt Pkt Type: BEACON
-[  126.014465] rsi_91x: RX Packet Type: BEACON
-[  126.117810] rsi_91x: rsi_mgmt_pkt_recv: Msg Len: 333, Msg Type:    2
-[  126.117820] rsi_91x: rsi_mgmt_pkt_to_core: rssi=35 channel=5
-[  126.117824] rsi_91x: RX Dot11 Mgmt Pkt Type: BEACON
-[  126.117830] rsi_91x: RX Packet Type: BEACON
-[  126.220184] rsi_91x: rsi_mgmt_pkt_recv: Msg Len: 333, Msg Type:    2
-[  126.220194] rsi_91x: rsi_mgmt_pkt_to_core: rssi=33 channel=5
-[  126.220197] rsi_91x: RX Dot11 Mgmt Pkt Type: BEACON
-[  126.220201] rsi_91x: RX Packet Type: BEACON
-[  126.322626] rsi_91x: rsi_mgmt_pkt_recv: Msg Len: 333, Msg Type:    2
-[  126.322635] rsi_91x: rsi_mgmt_pkt_to_core: rssi=33 channel=5
-[  126.322638] rsi_91x: RX Dot11 Mgmt Pkt Type: BEACON
-[  126.322642] rsi_91x: RX Packet Type: BEACON
-[  126.425004] rsi_91x: rsi_mgmt_pkt_recv: Msg Len: 333, Msg Type:    2
-[  126.425013] rsi_91x: rsi_mgmt_pkt_to_core: rssi=33 channel=5
-[  126.425017] rsi_91x: RX Dot11 Mgmt Pkt Type: BEACON
-[  126.425021] rsi_91x: RX Packet Type: BEACON
-[  126.425784] rsi_91x: RX Packet Type: QOS DATA
-[  126.526894] rsi_91x: rsi_mgmt_pkt_recv: Msg Len: 333, Msg Type:    2
-[  126.526902] rsi_91x: rsi_mgmt_pkt_to_core: rssi=37 channel=5
-[  126.526906] rsi_91x: RX Dot11 Mgmt Pkt Type: BEACON
-[  126.526910] rsi_91x: RX Packet Type: BEACON
-[  126.528278] rsi_91x: RX Packet Type: QOS DATA
-[  126.629794] rsi_91x: rsi_mgmt_pkt_recv: Msg Len: 333, Msg Type:    2
-[  126.629803] rsi_91x: rsi_mgmt_pkt_to_core: rssi=33 channel=5
-[  126.629806] rsi_91x: RX Dot11 Mgmt Pkt Type: BEACON
-[  126.629810] rsi_91x: RX Packet Type: BEACON
-[  126.630853] rsi_91x: RX Packet Type: QOS DATA
-[  126.732207] rsi_91x: rsi_mgmt_pkt_recv: Msg Len: 333, Msg Type:    2
-[  126.732217] rsi_91x: rsi_mgmt_pkt_to_core: rssi=33 channel=5
-[  126.732221] rsi_91x: RX Dot11 Mgmt Pkt Type: BEACON
-[  126.732225] rsi_91x: RX Packet Type: BEACON
-[  126.733031] rsi_91x: RX Packet Type: QOS DATA
-[  126.834587] rsi_91x: rsi_mgmt_pkt_recv: Msg Len: 333, Msg Type:    2
-[  126.834596] rsi_91x: rsi_mgmt_pkt_to_core: rssi=33 channel=5
-[  126.834600] rsi_91x: RX Dot11 Mgmt Pkt Type: BEACON
-[  126.834604] rsi_91x: RX Packet Type: BEACON
-[  126.835484] rsi_91x: RX Packet Type: QOS DATA
-[  126.936996] rsi_91x: rsi_mgmt_pkt_recv: Msg Len: 333, Msg Type:    2
-[  126.937004] rsi_91x: rsi_mgmt_pkt_to_core: rssi=33 channel=5
-[  126.937008] rsi_91x: RX Dot11 Mgmt Pkt Type: BEACON
-[  126.937011] rsi_91x: RX Packet Type: BEACON
-[  126.937771] rsi_91x: RX Packet Type: QOS DATA
-[  127.038852] rsi_91x: rsi_mgmt_pkt_recv: Msg Len: 333, Msg Type:    2
-[  127.038860] rsi_91x: rsi_mgmt_pkt_to_core: rssi=36 channel=5
-[  127.038863] rsi_91x: RX Dot11 Mgmt Pkt Type: BEACON
-[  127.038867] rsi_91x: RX Packet Type: BEACON
-[  127.048340] rsi_91x: RX Packet Type: QOS DATA
-[  127.141785] rsi_91x: rsi_mgmt_pkt_recv: Msg Len: 333, Msg Type:    2
-[  127.141794] rsi_91x: rsi_mgmt_pkt_to_core: rssi=33 channel=5
-[  127.141798] rsi_91x: RX Dot11 Mgmt Pkt Type: BEACON
-[  127.141802] rsi_91x: RX Packet Type: BEACON
-[  127.143494] rsi_91x: RX Packet Type: QOS DATA
-[  127.244166] rsi_91x: rsi_mgmt_pkt_recv: Msg Len: 333, Msg Type:    2
-[  127.244175] rsi_91x: rsi_mgmt_pkt_to_core: rssi=33 channel=5
-[  127.244178] rsi_91x: RX Dot11 Mgmt Pkt Type: BEACON
-[  127.244182] rsi_91x: RX Packet Type: BEACON
-[  127.244930] rsi_91x: RX Packet Type: QOS DATA
-[  127.346544] rsi_91x: rsi_mgmt_pkt_recv: Msg Len: 333, Msg Type:    2
-[  127.346552] rsi_91x: rsi_mgmt_pkt_to_core: rssi=37 channel=5
-[  127.346556] rsi_91x: RX Dot11 Mgmt Pkt Type: BEACON
-[  127.346560] rsi_91x: RX Packet Type: BEACON
-[  127.347466] rsi_91x: RX Packet Type: QOS DATA
-[  127.448957] rsi_91x: rsi_mgmt_pkt_recv: Msg Len: 333, Msg Type:    2
-[  127.448965] rsi_91x: rsi_mgmt_pkt_to_core: rssi=33 channel=5
-[  127.448969] rsi_91x: RX Dot11 Mgmt Pkt Type: BEACON
-[  127.448973] rsi_91x: RX Packet Type: BEACON
-[  127.450759] rsi_91x: RX Packet Type: QOS DATA
-[  127.550883] rsi_91x: rsi_mgmt_pkt_recv: Msg Len: 333, Msg Type:    2
-[  127.550895] rsi_91x: rsi_mgmt_pkt_to_core: rssi=34 channel=5
-[  127.550899] rsi_91x: RX Dot11 Mgmt Pkt Type: BEACON
-[  127.550905] rsi_91x: RX Packet Type: BEACON
-[  127.552690] rsi_91x: RX Packet Type: QOS DATA
-[  127.653746] rsi_91x: rsi_mgmt_pkt_recv: Msg Len: 333, Msg Type:    2
-[  127.653755] rsi_91x: rsi_mgmt_pkt_to_core: rssi=35 channel=5
-[  127.653759] rsi_91x: RX Dot11 Mgmt Pkt Type: BEACON
-[  127.653763] rsi_91x: RX Packet Type: BEACON
-[  127.654704] rsi_91x: RX Packet Type: QOS DATA
-[  127.756126] rsi_91x: rsi_mgmt_pkt_recv: Msg Len: 333, Msg Type:    2
-[  127.756135] rsi_91x: rsi_mgmt_pkt_to_core: rssi=35 channel=5
-[  127.756138] rsi_91x: RX Dot11 Mgmt Pkt Type: BEACON
-[  127.756142] rsi_91x: RX Packet Type: BEACON
-[  127.757035] rsi_91x: RX Packet Type: QOS DATA
-[  127.858537] rsi_91x: rsi_mgmt_pkt_recv: Msg Len: 333, Msg Type:    2
-[  127.858546] rsi_91x: rsi_mgmt_pkt_to_core: rssi=35 channel=5
-[  127.858549] rsi_91x: RX Dot11 Mgmt Pkt Type: BEACON
-[  127.858553] rsi_91x: RX Packet Type: BEACON
-[  127.859516] rsi_91x: RX Packet Type: QOS DATA
-[  127.959937] rsi_91x: rsi_mgmt_pkt_recv: Msg Len: 333, Msg Type:    2
-[  127.959949] rsi_91x: rsi_mgmt_pkt_to_core: rssi=35 channel=5
-[  127.959953] rsi_91x: RX Dot11 Mgmt Pkt Type: BEACON
-[  127.959958] rsi_91x: RX Packet Type: BEACON
-[  127.962037] rsi_91x: RX Packet Type: QOS DATA
-[  128.062817] rsi_91x: rsi_mgmt_pkt_recv: Msg Len: 333, Msg Type:    2
-[  128.062826] rsi_91x: rsi_mgmt_pkt_to_core: rssi=33 channel=5
-[  128.062830] rsi_91x: RX Dot11 Mgmt Pkt Type: BEACON
-[  128.062834] rsi_91x: RX Packet Type: BEACON
-[  128.064199] rsi_91x: RX Packet Type: QOS DATA
-[  128.165737] rsi_91x: rsi_mgmt_pkt_recv: Msg Len: 333, Msg Type:    2
-[  128.165746] rsi_91x: rsi_mgmt_pkt_to_core: rssi=33 channel=5
-[  128.165749] rsi_91x: RX Dot11 Mgmt Pkt Type: BEACON
-[  128.165753] rsi_91x: RX Packet Type: BEACON
-[  128.183085] rsi_91x: RX Packet Type: QOS DATA
-[  128.223550] rsi_91x: rsi_mac80211_tx: calling rsi_core_xmit
-[  128.226344] rsi_91x: RX Packet Type: QOS DATA
-[  128.268116] rsi_91x: rsi_mgmt_pkt_recv: Msg Len: 333, Msg Type:    2
-[  128.268125] rsi_91x: rsi_mgmt_pkt_to_core: rssi=33 channel=5
-[  128.268129] rsi_91x: RX Dot11 Mgmt Pkt Type: BEACON
-[  128.268132] rsi_91x: RX Packet Type: BEACON
-[  128.268793] rsi_91x: RX Packet Type: QOS DATA
-[  128.370578] rsi_91x: rsi_mgmt_pkt_recv: Msg Len: 333, Msg Type:    2
-[  128.370590] rsi_91x: rsi_mgmt_pkt_to_core: rssi=31 channel=5
-[  128.370594] rsi_91x: RX Dot11 Mgmt Pkt Type: BEACON
-[  128.370599] rsi_91x: RX Packet Type: BEACON
-[  128.371840] rsi_91x: RX Packet Type: QOS DATA
-[  128.472939] rsi_91x: rsi_mgmt_pkt_recv: Msg Len: 333, Msg Type:    2
-[  128.472948] rsi_91x: rsi_mgmt_pkt_to_core: rssi=30 channel=5
-[  128.472951] rsi_91x: RX Dot11 Mgmt Pkt Type: BEACON
-[  128.472955] rsi_91x: RX Packet Type: BEACON
-[  128.473766] rsi_91x: RX Packet Type: QOS DATA
-[  128.574799] rsi_91x: rsi_mgmt_pkt_recv: Msg Len: 333, Msg Type:    2
-[  128.574808] rsi_91x: rsi_mgmt_pkt_to_core: rssi=31 channel=5
-[  128.574812] rsi_91x: RX Dot11 Mgmt Pkt Type: BEACON
-[  128.574816] rsi_91x: RX Packet Type: BEACON
-[  128.583857] rsi_91x: RX Packet Type: QOS DATA
-[  128.677698] rsi_91x: rsi_mgmt_pkt_recv: Msg Len: 333, Msg Type:    2
-[  128.677706] rsi_91x: rsi_mgmt_pkt_to_core: rssi=33 channel=5
-[  128.677710] rsi_91x: RX Dot11 Mgmt Pkt Type: BEACON
-[  128.677714] rsi_91x: RX Packet Type: BEACON
-[  128.680048] rsi_91x: RX Packet Type: QOS DATA
-[  128.716215] rsi_91x: rsi_mac80211_tx: calling rsi_core_xmit
-[  128.716252] rsi_91x: rsi_mac80211_tx: calling rsi_core_xmit
-[  128.780108] rsi_91x: rsi_mgmt_pkt_recv: Msg Len: 333, Msg Type:    2
-[  128.780117] rsi_91x: rsi_mgmt_pkt_to_core: rssi=33 channel=5
-[  128.780120] rsi_91x: RX Dot11 Mgmt Pkt Type: BEACON
-[  128.780125] rsi_91x: RX Packet Type: BEACON
-[  128.780938] rsi_91x: RX Packet Type: QOS DATA
-[  128.882489] rsi_91x: rsi_mgmt_pkt_recv: Msg Len: 333, Msg Type:    2
-[  128.882498] rsi_91x: rsi_mgmt_pkt_to_core: rssi=35 channel=5
-[  128.882502] rsi_91x: RX Dot11 Mgmt Pkt Type: BEACON
-[  128.882506] rsi_91x: RX Packet Type: BEACON
-[  128.883508] rsi_91x: RX Packet Type: QOS DATA
-[  128.984899] rsi_91x: rsi_mgmt_pkt_recv: Msg Len: 333, Msg Type:    2
-[  128.984908] rsi_91x: rsi_mgmt_pkt_to_core: rssi=34 channel=5
-[  128.984912] rsi_91x: RX Dot11 Mgmt Pkt Type: BEACON
-[  128.984915] rsi_91x: RX Packet Type: BEACON
-[  128.985848] rsi_91x: RX Packet Type: QOS DATA
-[  129.086567] rsi_91x: rsi_mgmt_pkt_recv: Msg Len: 333, Msg Type:    2
-[  129.086579] rsi_91x: rsi_mgmt_pkt_to_core: rssi=33 channel=5
-[  129.086583] rsi_91x: RX Dot11 Mgmt Pkt Type: BEACON
-[  129.086589] rsi_91x: RX Packet Type: BEACON
-[  129.088048] rsi_91x: RX Packet Type: QOS DATA
-[  129.189696] rsi_91x: rsi_mgmt_pkt_recv: Msg Len: 333, Msg Type:    2
-[  129.189705] rsi_91x: rsi_mgmt_pkt_to_core: rssi=31 channel=5
-[  129.189710] rsi_91x: RX Dot11 Mgmt Pkt Type: BEACON
-[  129.189715] rsi_91x: RX Packet Type: BEACON
-[  129.190978] rsi_91x: RX Packet Type: QOS DATA
-[  129.247548] rsi_91x: rsi_mac80211_tx: calling rsi_core_xmit
+missing enum
+
+> + *
+> + * @NL80211_SAR_ATTR_TYPE: the SAR type and it's defined in %nl80211_sar_type.
+
+better use &enum nl80211_sar_type for a link in docs
+
+> + *
+> + * @NL80211_SAR_ATTR_SPECS: Nested array of SAR power
+> + *	limit specifications. Each specification contains a set
+> + *      of %nl80211_sar_specs_attrs.
+> + *
+> + *      For SET operation, it contains array of NL80211_SAR_ATTR_SPECS_POWER
+
+some odd indent?
+
+Usually we just use a single tab.
+
+> +/**
+> + * nl80211_sar_specs_attrs - Attributes for SAR power limit specs
+
+again, enum missing
+
+> + *
+> + * @NL80211_SAR_ATTR_SPECS_POWER: Required (u32)value to specify the actual
+> + *	power limit value in units of 0.25 dBm if type is
+> + *	NL80211_SAR_TYPE_POWER. (i.e., a value of 44 represents 11 dBm).
+> + *	0 means userspace doesn't have SAR limitation on this associated range.
+> + *
+> + * @NL80211_SAR_ATTR_SPECS_RANGE_INDEX: Required (u32) value to specify the
+> + *	index of exported freq range table and the associated power limitation
+> + *	is applied to this range.
+> + *
+> + *	Userspace isn't required to set all the ranges advertised by WLAN driver,
+> + *	and userspace can skip some certain ranges. These skipped ranges don't
+> + *	have SAR limitations, and these are same as setting the
+> + *	%NL80211_SAR_ATTR_SPECS_POWER to 0. But it's required to set at least one range,
+> + *	no matter the power limiation is 0 or not.
+
+(typo - limitation)
+
+Should "0" really be the magic value? Theoretically, 0 and even negative
+values are valid. Perhaps we should just use something big (0xffffffff)
+to indicate no limit, or just not have such a "no limitation" value
+because userspace can always set it to something very big that means no
+practical limitation anyway?
+
+OK actually you have a U8 now so the high limit is 63.75dBm, but there's
+not really a good reason for that, since U32 takes the same space in
+netlink anyway.
+
+And wait, I thought we agreed to remove the index? Now I'm confused.
+
+And even if we do need the index, then perhaps we should use the
+(otherwise anyway ignored) nla_type() of the container, instead of an
+explicit inner attribute?
+
+> + *
+> + *	Every SET operation overwrites previous SET operation.
+> + *
+> + * @NL80211_SAR_ATTR_SPECS_START_FREQ: Required (u32) value to specify the start
+> + *	frequency of this range edge when registering SAR capability to wiphy. It's
+> + *	not a channel center frequency. The unit is KHz.
+
+"kHz" not "KHz", in a few places other than this too
+
+> +static int
+> +nl80211_put_sar_specs(struct cfg80211_registered_device *rdev,
+> +		      struct sk_buff *msg)
+> +{
+> +	struct nlattr *sar_capa, *specs, *sub_freq_range;
+> +	u8  num_freq_ranges;
+
+extra space?
+
+> +	for (i = 0; i < num_freq_ranges; i++) {
+> +		sub_freq_range = nla_nest_start(msg, i + 1);
+> +
+> +		nla_put_u32(msg, NL80211_SAR_ATTR_SPECS_START_FREQ,
+> +			    rdev->wiphy.sar_capa->freq_ranges[i].start_freq);
+> +
+> +		nla_put_u32(msg, NL80211_SAR_ATTR_SPECS_END_FREQ,
+> +			    rdev->wiphy.sar_capa->freq_ranges[i].end_freq);
 
 
-thanks so much for your time and effort,
+Need to check the return values of these three calls.
 
-                          martin
+
+And an aside, unrelated to this particular code: Should we do some kind
+of validation that the ranges reported actually overlap all supported
+channels (taking 20 MHz bandwidth into account)?
+
+> +	nla_parse_nested(tb, NL80211_SAR_ATTR_MAX, info->attrs[NL80211_ATTR_SAR_SPEC],
+> +			 sar_policy, info->extack);
+
+If you're not checking the return value then no point in passing a
+policy or extack :-)
+
+And yes, it's already validated, so you don't have to do it again.
+
+> +	sar_spec->type = type;
+> +	specs = 0;
+> +	nla_for_each_nested(spec_list, tb[NL80211_SAR_ATTR_SPECS], rem) {
+> +		if (nla_parse(spec,
+> +			      NL80211_SAR_ATTR_SPECS_MAX,
+> +			      nla_data(spec_list),
+> +			      nla_len(spec_list),
+> +			      sar_specs_policy,
+> +			      NULL)) {
+
+Similar here, don't really need to validate it since it's done by the
+policy.
+
+> +			err = -EINVAL;
+> +			goto error;
+> +		}
+> +
+> +		/* for power type, power value and index must be presented */
+> +		if ((!spec[NL80211_SAR_ATTR_SPECS_POWER] ||
+> +		     !spec[NL80211_SAR_ATTR_SPECS_RANGE_INDEX]) &&
+> +		    type == NL80211_SAR_TYPE_POWER) {
+
+maybe "switch (type) {...}" or something and return -EINVAL also if it's
+a type not supported in the code yet, i.e. default case?
+
+Otherwise we might add a type, and forget this pretty easily.
+
+> +			err = -EINVAL;
+> +			goto error;
+> +		}
+> +
+> +		power = nla_get_u8(spec[NL80211_SAR_ATTR_SPECS_POWER]);
+> +		sar_spec->sub_specs[specs].power = power;
+
+and that probably should then be in a sub function or something also
+inside the particular type.
+
+or maybe just all in a separate function? dunno. not really _necessary_,
+but the lines are getting kinda long already, and one more indentation
+level with the switch won't help ...
+
+johannes
+
