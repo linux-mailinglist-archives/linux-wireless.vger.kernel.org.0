@@ -2,33 +2,33 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B6502A8F79
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 Nov 2020 07:36:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DA5182A8F85
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 Nov 2020 07:39:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726225AbgKFGgC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 6 Nov 2020 01:36:02 -0500
-Received: from z5.mailgun.us ([104.130.96.5]:15882 "EHLO z5.mailgun.us"
+        id S1726226AbgKFGjr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 6 Nov 2020 01:39:47 -0500
+Received: from z5.mailgun.us ([104.130.96.5]:48397 "EHLO z5.mailgun.us"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725835AbgKFGgB (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 6 Nov 2020 01:36:01 -0500
+        id S1725830AbgKFGjr (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 6 Nov 2020 01:39:47 -0500
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1604644561; h=Date: Message-Id: Cc: To: References:
+ s=smtp; t=1604644787; h=Date: Message-Id: Cc: To: References:
  In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=tM5oyoSHdl+1J/pOwaOVdO0e2S4mJz91rpdSkgpqyx0=;
- b=CEzqJ08SGG8gGfeykWyQyg5R4EJ9CmNApyk22Pflt4Yxn6EcGg/gMO5zPFYCPgOtigd0j+lW
- 6N/iM0WGWEXTAyzTaD1a4STAwXQj0iBYdnKRlcKeO+FUFSPAxN81PKgnzFoCIQoQVXgiWUBG
- WQXZQRBdUSk2vEBye6/bR1LhGf0=
+ Content-Type: Sender; bh=YDyUDKnBKPucTbwMOo6Fv+r9mejBac+SU6X1QOHgcgY=;
+ b=bu/hgSwSjQZBtHUFqHwJfPMnln6tmRysRZf6KPuOetg2lv6QFF67iJZtfVCfPQ8XyMa8G4VT
+ HPmK9tK7kBoT2lqZtD9lpIb5A3ZLjEEumq8F4I8F0a4BnpTaxOrBp2o1Vv5Qb2W1n8WvN1fG
+ YA87O69HWnrV1t8FWqMWKLOftgg=
 X-Mailgun-Sending-Ip: 104.130.96.5
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n03.prod.us-west-2.postgun.com with SMTP id
- 5fa4eed01baf490ee90e54e7 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 06 Nov 2020 06:36:00
+ smtp-out-n04.prod.us-west-2.postgun.com with SMTP id
+ 5fa4ef6e257b36c43ec1dda6 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 06 Nov 2020 06:38:38
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 91670C433FF; Fri,  6 Nov 2020 06:36:00 +0000 (UTC)
+        id AF7BBC433CB; Fri,  6 Nov 2020 06:38:38 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -39,55 +39,48 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 86CC2C433C8;
-        Fri,  6 Nov 2020 06:35:57 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 86CC2C433C8
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 47952C433C8;
+        Fri,  6 Nov 2020 06:38:36 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 47952C433C8
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2] ath10k: sdio: remove redundant check in for loop
+Subject: Re: [PATCH] ath11k: FILS discovery and unsolicited broadcast probe
+ response support
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20200916165748.20927-1-alex.dewar90@gmail.com>
-References: <20200916165748.20927-1-alex.dewar90@gmail.com>
-To:     Alex Dewar <alex.dewar90@gmail.com>
-Cc:     unlisted-recipients:; (no To-header on input)
-        Alex Dewar <alex.dewar90@gmail.com>,
-        Saeed Mahameed <saeedm@nvidia.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, ath10k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Illegal-Object: Syntax error in Cc: address found on vger.kernel.org:
-        Cc:     unlisted-recipients:; (no To-header on input)Alex Dewar <alex.dewar90@gmail.com>
-                                                                     ^-missing end of address
+In-Reply-To: <20201007204036.19780-1-alokad@codeaurora.org>
+References: <20201007204036.19780-1-alokad@codeaurora.org>
+To:     Aloka Dixit <alokad@codeaurora.org>
+Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        Aloka Dixit <alokad@codeaurora.org>
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20201106063600.91670C433FF@smtp.codeaurora.org>
-Date:   Fri,  6 Nov 2020 06:36:00 +0000 (UTC)
+Message-Id: <20201106063838.AF7BBC433CB@smtp.codeaurora.org>
+Date:   Fri,  6 Nov 2020 06:38:38 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Alex Dewar <alex.dewar90@gmail.com> wrote:
+Aloka Dixit <alokad@codeaurora.org> wrote:
 
-> The for loop checks whether cur_section is NULL on every iteration, but
-> we know it can never be NULL as there is another check towards the
-> bottom of the loop body. Refactor to avoid this unnecessary check.
+> This patch adds driver support for FILS discovery and unsolicited
+> broadcast probe response transmission features which are used for
+> in-band discovery in 6GHz band.
+> Currently this support is enabled only in 6GHz by setting hardware flags.
 > 
-> Also, increment the variable i inline for clarity
+> Changes include WMI commands to enable transmission, set packet
+> interval, set template, and handle events.
 > 
-> Addresses-Coverity: 1496984 ("Null pointer dereferences)
-> Suggested-by: Saeed Mahameed <saeedm@nvidia.com>
-> Signed-off-by: Alex Dewar <alex.dewar90@gmail.com>
+> Signed-off-by: Aloka Dixit <alokad@codeaurora.org>
 > Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 
 Patch applied to ath-next branch of ath.git, thanks.
 
-dbeb101d28eb ath10k: sdio: remove redundant check in for loop
+047679e366b9 ath11k: FILS discovery and unsolicited broadcast probe response support
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20200916165748.20927-1-alex.dewar90@gmail.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/20201007204036.19780-1-alokad@codeaurora.org/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
