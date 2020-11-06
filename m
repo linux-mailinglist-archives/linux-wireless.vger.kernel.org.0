@@ -2,94 +2,118 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C567B2A9006
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 Nov 2020 08:11:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 42F432A9024
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 Nov 2020 08:17:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726050AbgKFHLJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 6 Nov 2020 02:11:09 -0500
-Received: from m42-4.mailgun.net ([69.72.42.4]:19275 "EHLO m42-4.mailgun.net"
+        id S1726415AbgKFHRG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 6 Nov 2020 02:17:06 -0500
+Received: from m42-4.mailgun.net ([69.72.42.4]:55545 "EHLO m42-4.mailgun.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725848AbgKFHLI (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 6 Nov 2020 02:11:08 -0500
+        id S1725848AbgKFHRG (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 6 Nov 2020 02:17:06 -0500
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1604646668; h=Date: Message-Id: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=M7Jbb2/KtYXppLcxnwTJFUrf47vGgmwOSsDkYg4ptJQ=;
- b=SF62lS5RbPPzO/cOgjOiN8DIljpKgIDQqtuLmD/CbxBEi2agC9ZqoIdYpMc11Ou37uZoFhMS
- Lv7A38+FazW5/SQD73c7AAykoMI9Rhxg10BAX6fsDZW90LqZm0r7MqMKT6bUefS7evrMbaAG
- scyXEze5nfjpB6dc8Z296fL1+us=
+ s=smtp; t=1604647025; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=2ceNdW2nIFqcnwPL1hsLy+ofihqtQ74th6wCBVy8fZE=; b=EoE5b+raF/sd0QFnPYD1xV/QsS0Sr1kQ+04XJb0Kx6ZkkKL2Rv6K4Dy+FWta2L2gECHvX71o
+ UrImTuwyVGSM/Q/tK4YRAHqHKdiVe/9vNHWi3LE0/9U5Cb/gZP0FVByZVp3urztC8hlgVSjV
+ J6gVudrerrfCm5NUIaoBv/20JCw=
 X-Mailgun-Sending-Ip: 69.72.42.4
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n06.prod.us-west-2.postgun.com with SMTP id
- 5fa4f70b42c6e77b6539057e (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 06 Nov 2020 07:11:07
+ smtp-out-n02.prod.us-west-2.postgun.com with SMTP id
+ 5fa4f8611baf490ee91b2e2f (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 06 Nov 2020 07:16:49
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id D7CE3C433C6; Fri,  6 Nov 2020 07:11:07 +0000 (UTC)
+        id E39C0C433FE; Fri,  6 Nov 2020 07:16:49 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        MISSING_DATE,MISSING_MID,SPF_FAIL,URIBL_BLOCKED autolearn=no
-        autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
 Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id CF211C433C8;
-        Fri,  6 Nov 2020 07:11:05 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org CF211C433C8
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 4863BC433C6;
+        Fri,  6 Nov 2020 07:16:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 4863BC433C6
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] ath10k: add option for chip-id based BDF selection
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20201020000506.1.Ifbc28707942179f1cefc7491e995814564495270@changeid>
-References: <20201020000506.1.Ifbc28707942179f1cefc7491e995814564495270@changeid>
-To:     Abhishek Kumar <kuabhs@chromium.org>
-Cc:     ath10k@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-wireless@vger.kernel.org, kuabhs@chromium.org
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20201106071107.D7CE3C433C6@smtp.codeaurora.org>
-Date:   Fri,  6 Nov 2020 07:11:07 +0000 (UTC)
+To:     "Rakesh Pillai" <pillair@codeaurora.org>
+Cc:     "'Doug Anderson'" <dianders@chromium.org>,
+        'Abhishek Kumar' <kuabhs@chromium.org>,
+        'Brian Norris' <briannorris@chromium.org>,
+        'linux-wireless' <linux-wireless@vger.kernel.org>,
+        'LKML' <linux-kernel@vger.kernel.org>,
+        'ath10k' <ath10k@lists.infradead.org>
+Subject: Re: [PATCH] ath10k: Fix the parsing error in service available event
+References: <1603811067-23058-1-git-send-email-pillair@codeaurora.org>
+        <CAD=FV=XRyeXcE93nZgOy+x5eWcHcKKwbJccuWFkx+cA8tEXwZQ@mail.gmail.com>
+        <003801d6ad41$a1bb8970$e5329c50$@codeaurora.org>
+Date:   Fri, 06 Nov 2020 09:16:45 +0200
+In-Reply-To: <003801d6ad41$a1bb8970$e5329c50$@codeaurora.org> (Rakesh Pillai's
+        message of "Wed, 28 Oct 2020 21:17:19 +0530")
+Message-ID: <878sbflztu.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Abhishek Kumar <kuabhs@chromium.org> wrote:
+"Rakesh Pillai" <pillair@codeaurora.org> writes:
 
-> In some devices difference in chip-id should be enough to pick
-> the right BDF. Add another support for chip-id based BDF selection.
-> With this new option, ath10k supports 2 fallback options.
-> 
-> The board name with chip-id as option looks as follows
-> board name 'bus=snoc,qmi-board-id=ff,qmi-chip-id=320'
-> 
-> Signed-off-by: Abhishek Kumar <kuabhs@chromium.org>
-> Reviewed-by: Douglas Anderson <dianders@chromium.org>
-> Tested-by: Douglas Anderson <dianders@chromium.org>
-> Tested-by: Abhishek Kumar <kuabhs@chromium.org>
+>> > diff --git a/drivers/net/wireless/ath/ath10k/wmi-tlv.c
+>> b/drivers/net/wireless/ath/ath10k/wmi-tlv.c
+>> > index 932266d..3b49e29 100644
+>> > --- a/drivers/net/wireless/ath/ath10k/wmi-tlv.c
+>> > +++ b/drivers/net/wireless/ath/ath10k/wmi-tlv.c
+>> > @@ -1404,9 +1404,12 @@ static int ath10k_wmi_tlv_svc_avail_parse(struct
+>> ath10k *ar, u16 tag, u16 len,
+>> >                 arg->service_map_ext_len = *(__le32 *)ptr;
+>> >                 arg->service_map_ext = ptr + sizeof(__le32);
+>> >                 return 0;
+>> > +       case WMI_TLV_TAG_FIRST_ARRAY_ENUM:
+>> > +               return 0;
+>> 
+>> This is at least slightly worrying to me.  If I were calling this
+>> function, I'd expect that if I didn't get back an error that at least
+>> "arg->service_map_ext_len" was filled in.  Seems like you should do:
+>> 
+>> case WMI_TLV_TAG_FIRST_ARRAY_ENUM:
+>>   arg->service_map_ext_len = 0;
+>>   arg->service_map_ext = NULL;
+>>   return 0;
+>> 
+>> ...and maybe add a comment about why you're doing that?
+>> 
+>> At the moment things are working OK because
+>> ath10k_wmi_event_service_available() happens to init the structure to
+>> 0 before calling with:
+>> 
+>>   struct wmi_svc_avail_ev_arg arg = {};
+>> 
+>> ....but it doesn't seem like a great idea to rely on that.
+>> 
+>> That all being said, I'm just a drive-by reviewer and if everyone else
+>> likes it the way it is, feel free to ignore my comments.
+>
+>
+> The TLV TAG " WMI_TLV_TAG_STRUCT_SERVICE_AVAILABLE_EVENT" is the first
+> and a mandatory TLV in the service available event. The subsequent
+> TLVs are optional ones and may or may not be present (based on FW
+> versions).
 
-There were few checkpatch warnings which I fixed:
-
-$ ath10k-check
-drivers/net/wireless/ath/ath10k/core.c:1501: Alignment should match open parenthesis
-drivers/net/wireless/ath/ath10k/core.c:1512: line length of 92 exceeds 90 columns
-drivers/net/wireless/ath/ath10k/core.c:1521: line length of 92 exceeds 90 columns
-
-The first one was also what Doug commented. I also added Tested-on tags,
-thanks for those. The updated patch is in pending branch (soon).
-
-But is this patch ok to take now? I didn't quite get the conclusion of the
-discussion.
+From ath10k point of view never trust what the firmware sends you. Even
+if WMI_TLV_TAG_STRUCT_SERVICE_AVAILABLE_EVENT is a mandatory TLV it
+might be missing for whatever reasons. The same is with buffer lengths
+etc and always confirm what you are receiving from the firmware.
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20201020000506.1.Ifbc28707942179f1cefc7491e995814564495270@changeid/
+https://patchwork.kernel.org/project/linux-wireless/list/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
