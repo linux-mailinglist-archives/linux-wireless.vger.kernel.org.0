@@ -2,32 +2,32 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4CE382A9037
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 Nov 2020 08:25:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B58472A9063
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 Nov 2020 08:33:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726174AbgKFHZn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 6 Nov 2020 02:25:43 -0500
-Received: from m42-4.mailgun.net ([69.72.42.4]:14963 "EHLO m42-4.mailgun.net"
+        id S1725842AbgKFHdP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 6 Nov 2020 02:33:15 -0500
+Received: from z5.mailgun.us ([104.130.96.5]:26634 "EHLO z5.mailgun.us"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725828AbgKFHZn (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 6 Nov 2020 02:25:43 -0500
+        id S1726337AbgKFHdP (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 6 Nov 2020 02:33:15 -0500
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1604647542; h=Content-Type: MIME-Version: Message-ID:
+ s=smtp; t=1604647994; h=Content-Type: MIME-Version: Message-ID:
  In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=KSFtXB0fMYrRDLd4eZCZ6m18gRUOPuVsjW4FtBbLZ/Y=; b=wAnlWdhBWqJ3InAzdzJYZFAC3ZY6uQ2O1jD+Hmdih3q8VhHJxD0+4Xov0SJ9LKbxoDOHsb2y
- B5vBO1xeIHYfk2VDQmPxvzVN1pYnsVW9hZ4Afhb46n39P28hb9NbQTREoa20uYBtXMEQY3RY
- SBNn/C1anhTzMgxOfAFA4CfMSXw=
-X-Mailgun-Sending-Ip: 69.72.42.4
+ bh=uTvB8Mor1JbG2jndQGF9TSwWEmumpzwqPV0akWOhJR8=; b=gs+8uh0rBeEydKmHv5Q1K2vfmgwCZw22Fr9eGTfvN+I57zdjrxBsjO0q989tsHzFWvOmVZuy
+ L4PbkhkUlCZvquxKpwttkJgngYut3NIDG29ABdVxFj2brN8kY81zDn44muA/dGHligaeLUGN
+ 62+BAfKPZlGjFlzLJ1/BvPwJRps=
+X-Mailgun-Sending-Ip: 104.130.96.5
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n03.prod.us-west-2.postgun.com with SMTP id
- 5fa4fa76257b36c43ed11ca1 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 06 Nov 2020 07:25:42
+ smtp-out-n07.prod.us-west-2.postgun.com with SMTP id
+ 5fa4fc2e98aeba5841c01f92 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 06 Nov 2020 07:33:02
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 1074BC433F0; Fri,  6 Nov 2020 07:25:42 +0000 (UTC)
+        id 3D97FC433C6; Fri,  6 Nov 2020 07:33:02 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -37,26 +37,20 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 60663C433C8;
-        Fri,  6 Nov 2020 07:25:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 60663C433C8
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 78105C433CB;
+        Fri,  6 Nov 2020 07:33:00 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 78105C433CB
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
 From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Doug Anderson <dianders@chromium.org>
-Cc:     Rakesh Pillai <pillair@codeaurora.org>,
-        Abhishek Kumar <kuabhs@chromium.org>,
-        Brian Norris <briannorris@chromium.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        ath10k <ath10k@lists.infradead.org>
-Subject: Re: [PATCH v2] ath10k: Fix the parsing error in service available event
-References: <1603904469-598-1-git-send-email-pillair@codeaurora.org>
-        <CAD=FV=V0apTHaemMKvRx1HWLaO9ArC2t4ohfZ7-CthFz2NiA2A@mail.gmail.com>
-Date:   Fri, 06 Nov 2020 09:25:37 +0200
-In-Reply-To: <CAD=FV=V0apTHaemMKvRx1HWLaO9ArC2t4ohfZ7-CthFz2NiA2A@mail.gmail.com>
-        (Doug Anderson's message of "Wed, 28 Oct 2020 11:44:48 -0700")
-Message-ID: <87wnyzkkum.fsf@codeaurora.org>
+To:     Wen Gong <wgong@codeaurora.org>
+Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH] ath10k: cancel rx worker in hif_stop for SDIO
+References: <1604558036-4056-1-git-send-email-wgong@codeaurora.org>
+Date:   Fri, 06 Nov 2020 09:32:58 +0200
+In-Reply-To: <1604558036-4056-1-git-send-email-wgong@codeaurora.org> (Wen
+        Gong's message of "Thu, 5 Nov 2020 14:33:56 +0800")
+Message-ID: <87r1p7kkid.fsf@codeaurora.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -64,43 +58,45 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Doug Anderson <dianders@chromium.org> writes:
+Wen Gong <wgong@codeaurora.org> writes:
 
->>  static int ath10k_wmi_tlv_op_pull_svc_avail(struct ath10k *ar,
->> diff --git a/drivers/net/wireless/ath/ath10k/wmi.c b/drivers/net/wireless/ath/ath10k/wmi.c
->> index 1fa7107..2e4b561 100644
->> --- a/drivers/net/wireless/ath/ath10k/wmi.c
->> +++ b/drivers/net/wireless/ath/ath10k/wmi.c
->> @@ -5751,8 +5751,9 @@ void ath10k_wmi_event_service_available(struct ath10k *ar, struct sk_buff *skb)
->>                             ret);
->>         }
->>
->> -       ath10k_wmi_map_svc_ext(ar, arg.service_map_ext, ar->wmi.svc_map,
->> -                              __le32_to_cpu(arg.service_map_ext_len));
->> +       if (arg.service_map_ext_valid)
->> +               ath10k_wmi_map_svc_ext(ar, arg.service_map_ext, ar->wmi.svc_map,
->> +                                      __le32_to_cpu(arg.service_map_ext_len));
+> The rx worker of SDIO should be cancelled after disable interrupt, and
+> release rx sk_buff in queue, otherwise the rx worker maybe still run
+> after hif_stop. And it should be cancelled before napi_synchronize in
+> hif_stop, because the rx worker of SDIO will call napi_schedule, it
+> should have no napi_schedule before napi_synchronize, otherwise it
+> lead napi_synchronize wait untill napi_complete.
 >
-> Your new patch still requires the caller to init the
-> "service_map_ext_valid" to false before calling, but I guess there's
-> not a whole lot more we can do because we might be parsing more than
-> one tag.  It does seem nice that at least we now have a validity bit
-> instead of just relying on a non-zero length to be valid.
+> Tested-on: QCA6174 hw3.2 SDIO WLAN.RMH.4.4.1-00049
 >
-> It might be nice to have a comment saying that it's up to us to init
-> "arg.service_map_ext_valid" to false before calling
-> ath10k_wmi_pull_svc_avail(), but I won't insist.  Maybe that's obvious
-> to everyone but me...
+> Signed-off-by: Wen Gong <wgong@codeaurora.org>
+> ---
+>  drivers/net/wireless/ath/ath10k/sdio.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
+>
+> diff --git a/drivers/net/wireless/ath/ath10k/sdio.c b/drivers/net/wireless/ath/ath10k/sdio.c
+> index 81ddaafb6721..2c619ef8a87c 100644
+> --- a/drivers/net/wireless/ath/ath10k/sdio.c
+> +++ b/drivers/net/wireless/ath/ath10k/sdio.c
+> @@ -1962,9 +1962,15 @@ static void ath10k_sdio_hif_stop(struct ath10k *ar)
+>  {
+>  	struct ath10k_sdio_bus_request *req, *tmp_req;
+>  	struct ath10k_sdio *ar_sdio = ath10k_sdio_priv(ar);
+> +	struct sk_buff *skb;
+>  
+>  	ath10k_sdio_irq_disable(ar);
+>  
+> +	cancel_work_sync(&ar_sdio->async_work_rx);
+> +
+> +	while (skb = skb_dequeue(&ar_sdio->rx_head))
+> +		dev_kfree_skb_any(skb);
 
-It's not obvious to me either. Please add that comment.
+This gives a warning:
 
-BTW, for some reason Doug's response didn't get to patchwork:
+drivers/net/wireless/ath/ath10k/sdio.c: In function 'ath10k_sdio_hif_stop':
+drivers/net/wireless/ath/ath10k/sdio.c:1971:9: warning: suggest parentheses around assignment used as truth value [-Wparentheses]
 
-https://patchwork.kernel.org/project/linux-wireless/patch/1603904469-598-1-git-send-email-pillair@codeaurora.org/
-
-Though I do see it in linux-wireless, so most likely this was a
-temporary glitch in patchwork. But it's just worrisome as nowadays I
-only check the comments in patchwork before I apply the patch.
+Fixed in the pending branch.
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
