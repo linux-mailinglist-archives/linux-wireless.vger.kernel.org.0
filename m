@@ -2,192 +2,126 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 66F982A941C
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 Nov 2020 11:25:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 40FF32A945B
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 Nov 2020 11:29:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726830AbgKFKZJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 6 Nov 2020 05:25:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33644 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725868AbgKFKZJ (ORCPT
+        id S1726963AbgKFK3Q (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 6 Nov 2020 05:29:16 -0500
+Received: from mail-out.m-online.net ([212.18.0.10]:45930 "EHLO
+        mail-out.m-online.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726897AbgKFK3Q (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 6 Nov 2020 05:25:09 -0500
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A966C0613CF
-        for <linux-wireless@vger.kernel.org>; Fri,  6 Nov 2020 02:25:09 -0800 (PST)
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.94)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1kayvX-002E06-RC; Fri, 06 Nov 2020 11:25:03 +0100
-Message-ID: <64e072a168c12f58847a5ee16bfdb7e47576284f.camel@sipsolutions.net>
-Subject: Re: [PATCH 1/3] nl80211: add common API to configure SAR power
- limitations.
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Carl Huang <cjhuang@codeaurora.org>, ath10k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org, briannorris@chromium.org,
-        dianders@chromium.org, kuabhs@google.com
-Date:   Fri, 06 Nov 2020 11:25:02 +0100
-In-Reply-To: <20201106100708.4609-2-cjhuang@codeaurora.org> (sfid-20201106_110730_189162_E9D09205)
-References: <20201106100708.4609-1-cjhuang@codeaurora.org>
-         <20201106100708.4609-2-cjhuang@codeaurora.org>
-         (sfid-20201106_110730_189162_E9D09205)
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.5 (3.36.5-1.fc32) 
+        Fri, 6 Nov 2020 05:29:16 -0500
+X-Greylist: delayed 154636 seconds by postgrey-1.27 at vger.kernel.org; Fri, 06 Nov 2020 05:29:15 EST
+Received: from frontend01.mail.m-online.net (unknown [192.168.8.182])
+        by mail-out.m-online.net (Postfix) with ESMTP id 4CSGpK4hvXz1rx8b;
+        Fri,  6 Nov 2020 11:29:13 +0100 (CET)
+Received: from localhost (dynscan1.mnet-online.de [192.168.6.70])
+        by mail.m-online.net (Postfix) with ESMTP id 4CSGpK078hz1qsXj;
+        Fri,  6 Nov 2020 11:29:13 +0100 (CET)
+X-Virus-Scanned: amavisd-new at mnet-online.de
+Received: from mail.mnet-online.de ([192.168.8.182])
+        by localhost (dynscan1.mail.m-online.net [192.168.6.70]) (amavisd-new, port 10024)
+        with ESMTP id YCy5m4QzT_BY; Fri,  6 Nov 2020 11:29:10 +0100 (CET)
+X-Auth-Info: PVTK2iwMaYBiRFQRuSJPNGNH01LlXD129pXF/yNKc1k=
+Received: from [IPv6:::1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.mnet-online.de (Postfix) with ESMTPSA;
+        Fri,  6 Nov 2020 11:29:10 +0100 (CET)
+Subject: Re: rsi: unusably slow / no tx
+To:     Martin Kepplinger <martink@posteo.de>
+References: <f909c001-e91a-1292-1239-18e41cbc693c@posteo.de>
+Cc:     amitkarwar@gmail.com, siva8118@gmail.com, kvalo@codeaurora.org,
+        kuba@kernel.org, linux-wireless@vger.kernel.org, kernel@puri.sm,
+        siva.rebbagondla@redpinesignals.com, fariyaf@gmail.com,
+        jahnavi.meher@gmail.com, prameela.j04cs@gmail.com,
+        amit.karwar@redpinesignals.com, karun256@gmail.com,
+        Angus Ainslie <angus@akkea.ca>
+From:   Marek Vasut <marex@denx.de>
+Message-ID: <754ee188-263d-a70e-9ac4-fd0d39333804@denx.de>
+Date:   Fri, 6 Nov 2020 11:29:09 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.4.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-malware-bazaar: not-scanned
+In-Reply-To: <f909c001-e91a-1292-1239-18e41cbc693c@posteo.de>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On 11/6/20 11:12 AM, Martin Kepplinger wrote:
+> hi,
+
 Hi,
 
-Looks pretty good. Some comments, mostly nits, below.
+> I start the driver with options rsi_sdio dev_oper_mode=13 and (try to) 
+> connect to a usual wpa2 encrypted network:
+> 
+> The rsi driver is unusably slow for me still. It slowly (sometimes) 
+> connects to a network, but even then it's unusable. To me it seems like 
+> the drivers sends way too little; tx() that is registered with mac80211 
+> is rarely called - just 4 times in the below logs (where other drivers 
+> would send data for each received packet afaik).
+> 
+> Thanks a lot Marek for working on the driver! I already use 
+> https://lore.kernel.org/netdev/20201015111616.429220-1-marex@denx.de/ here.
 
+Make sure to add also:
+https://lore.kernel.org/netdev/20201103180941.443528-1-marex@denx.de/
+that one made a lot of difference on RX performance, not so much on TX 
+though.
 
-> +/**
-> + * nl80211_sar_attrs - Attributes for SAR spec
+I also have this locally (better use the module param than patch the 
+kernel), because it seems wifi/bt coex is broken.
 
-missing enum
+diff --git a/drivers/net/wireless/rsi/rsi_91x_sdio.c 
+b/drivers/net/wireless/rsi/rsi_91x_sdio.c
+index 1bebba4e8527..2b2a9485aae0 100644
+--- a/drivers/net/wireless/rsi/rsi_91x_sdio.c
++++ b/drivers/net/wireless/rsi/rsi_91x_sdio.c
+@@ -22,7 +22,7 @@
+  #include "rsi_hal.h"
 
-> + *
-> + * @NL80211_SAR_ATTR_TYPE: the SAR type and it's defined in %nl80211_sar_type.
+  /* Default operating mode is wlan STA + BT */
+-static u16 dev_oper_mode = DEV_OPMODE_STA_BT_DUAL;
++static u16 dev_oper_mode = DEV_OPMODE_WIFI_ALONE;
+  module_param(dev_oper_mode, ushort, 0444);
+  MODULE_PARM_DESC(dev_oper_mode,
+                  "1[Wi-Fi], 4[BT], 8[BT LE], 5[Wi-Fi STA + BT classic]\n"
 
-better use &enum nl80211_sar_type for a link in docs
+There seem to be a huge amount of issues with those RSI WiFi devices, 
+thanks to Angus for keeping track of them here:
+https://source.puri.sm/Librem5/linux-next/-/issues?scope=all&utf8=%E2%9C%93&state=opened&search=redpine
 
-> + *
-> + * @NL80211_SAR_ATTR_SPECS: Nested array of SAR power
-> + *	limit specifications. Each specification contains a set
-> + *      of %nl80211_sar_specs_attrs.
-> + *
-> + *      For SET operation, it contains array of NL80211_SAR_ATTR_SPECS_POWER
+There is also the downstream driver here:
+git://github.com/SiliconLabs/RS911X-nLink-OSD
+unfortunatelly, there is no changelog nor separate patches, just one 
+huge code-dump. The driver is some sort of derivative of the upstream 
+driver, so you can do a diff, but the diff is some thousands of lines of 
+change.
 
-some odd indent?
+You can however try compiling it and see whether this makes your wifi 
+work, if so, then try to figure out which change is the fix. That's how 
+I came to the TX EAPOL fix, I just spent an insane amount of time trying 
+to figure out what change made the wifi work against iwlwifi AP in the 
+vendor driver, removing parts of the diff until I came to the one line.
 
-Usually we just use a single tab.
+> Does anyone actually use the driver or at least has seen similar 
+> behaviour, or even know what could go wrong?
+> 
+> 
+> So I added messages at a few spots in the rx/tx path and this is while 
+> connected to a network (without doing much):
+> 
+> [  124.277947] rsi_91x: RX Packet Type: QOS DATA
+> [  124.377107] rsi_91x: rsi_mgmt_pkt_recv: Msg Len: 333, Msg Type:    2
+> [  124.377118] rsi_91x: rsi_mgmt_pkt_to_core: rssi=33 channel=5
+> [  124.377123] rsi_91x: RX Dot11 Mgmt Pkt Type: BEACON
+> [  124.377128] rsi_91x: RX Packet Type: BEACON
+> [  124.377915] rsi_91x: RX Packet Type: QOS DATA
 
-> +/**
-> + * nl80211_sar_specs_attrs - Attributes for SAR power limit specs
-
-again, enum missing
-
-> + *
-> + * @NL80211_SAR_ATTR_SPECS_POWER: Required (u32)value to specify the actual
-> + *	power limit value in units of 0.25 dBm if type is
-> + *	NL80211_SAR_TYPE_POWER. (i.e., a value of 44 represents 11 dBm).
-> + *	0 means userspace doesn't have SAR limitation on this associated range.
-> + *
-> + * @NL80211_SAR_ATTR_SPECS_RANGE_INDEX: Required (u32) value to specify the
-> + *	index of exported freq range table and the associated power limitation
-> + *	is applied to this range.
-> + *
-> + *	Userspace isn't required to set all the ranges advertised by WLAN driver,
-> + *	and userspace can skip some certain ranges. These skipped ranges don't
-> + *	have SAR limitations, and these are same as setting the
-> + *	%NL80211_SAR_ATTR_SPECS_POWER to 0. But it's required to set at least one range,
-> + *	no matter the power limiation is 0 or not.
-
-(typo - limitation)
-
-Should "0" really be the magic value? Theoretically, 0 and even negative
-values are valid. Perhaps we should just use something big (0xffffffff)
-to indicate no limit, or just not have such a "no limitation" value
-because userspace can always set it to something very big that means no
-practical limitation anyway?
-
-OK actually you have a U8 now so the high limit is 63.75dBm, but there's
-not really a good reason for that, since U32 takes the same space in
-netlink anyway.
-
-And wait, I thought we agreed to remove the index? Now I'm confused.
-
-And even if we do need the index, then perhaps we should use the
-(otherwise anyway ignored) nla_type() of the container, instead of an
-explicit inner attribute?
-
-> + *
-> + *	Every SET operation overwrites previous SET operation.
-> + *
-> + * @NL80211_SAR_ATTR_SPECS_START_FREQ: Required (u32) value to specify the start
-> + *	frequency of this range edge when registering SAR capability to wiphy. It's
-> + *	not a channel center frequency. The unit is KHz.
-
-"kHz" not "KHz", in a few places other than this too
-
-> +static int
-> +nl80211_put_sar_specs(struct cfg80211_registered_device *rdev,
-> +		      struct sk_buff *msg)
-> +{
-> +	struct nlattr *sar_capa, *specs, *sub_freq_range;
-> +	u8  num_freq_ranges;
-
-extra space?
-
-> +	for (i = 0; i < num_freq_ranges; i++) {
-> +		sub_freq_range = nla_nest_start(msg, i + 1);
-> +
-> +		nla_put_u32(msg, NL80211_SAR_ATTR_SPECS_START_FREQ,
-> +			    rdev->wiphy.sar_capa->freq_ranges[i].start_freq);
-> +
-> +		nla_put_u32(msg, NL80211_SAR_ATTR_SPECS_END_FREQ,
-> +			    rdev->wiphy.sar_capa->freq_ranges[i].end_freq);
-
-
-Need to check the return values of these three calls.
-
-
-And an aside, unrelated to this particular code: Should we do some kind
-of validation that the ranges reported actually overlap all supported
-channels (taking 20 MHz bandwidth into account)?
-
-> +	nla_parse_nested(tb, NL80211_SAR_ATTR_MAX, info->attrs[NL80211_ATTR_SAR_SPEC],
-> +			 sar_policy, info->extack);
-
-If you're not checking the return value then no point in passing a
-policy or extack :-)
-
-And yes, it's already validated, so you don't have to do it again.
-
-> +	sar_spec->type = type;
-> +	specs = 0;
-> +	nla_for_each_nested(spec_list, tb[NL80211_SAR_ATTR_SPECS], rem) {
-> +		if (nla_parse(spec,
-> +			      NL80211_SAR_ATTR_SPECS_MAX,
-> +			      nla_data(spec_list),
-> +			      nla_len(spec_list),
-> +			      sar_specs_policy,
-> +			      NULL)) {
-
-Similar here, don't really need to validate it since it's done by the
-policy.
-
-> +			err = -EINVAL;
-> +			goto error;
-> +		}
-> +
-> +		/* for power type, power value and index must be presented */
-> +		if ((!spec[NL80211_SAR_ATTR_SPECS_POWER] ||
-> +		     !spec[NL80211_SAR_ATTR_SPECS_RANGE_INDEX]) &&
-> +		    type == NL80211_SAR_TYPE_POWER) {
-
-maybe "switch (type) {...}" or something and return -EINVAL also if it's
-a type not supported in the code yet, i.e. default case?
-
-Otherwise we might add a type, and forget this pretty easily.
-
-> +			err = -EINVAL;
-> +			goto error;
-> +		}
-> +
-> +		power = nla_get_u8(spec[NL80211_SAR_ATTR_SPECS_POWER]);
-> +		sar_spec->sub_specs[specs].power = power;
-
-and that probably should then be in a sub function or something also
-inside the particular type.
-
-or maybe just all in a separate function? dunno. not really _necessary_,
-but the lines are getting kinda long already, and one more indentation
-level with the switch won't help ...
-
-johannes
-
+I haven't seen this one, no, sorry. How is your AP configured (which 
+wifi is in it, how is the hostap configured, ...)?
