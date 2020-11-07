@@ -2,74 +2,85 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AFCAA2AA3EC
-	for <lists+linux-wireless@lfdr.de>; Sat,  7 Nov 2020 09:40:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D8C732AA3F7
+	for <lists+linux-wireless@lfdr.de>; Sat,  7 Nov 2020 09:50:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728093AbgKGIky (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 7 Nov 2020 03:40:54 -0500
-Received: from m176115.mail.qiye.163.com ([59.111.176.115]:64177 "EHLO
-        m176115.mail.qiye.163.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727833AbgKGIky (ORCPT
+        id S1728124AbgKGIuP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 7 Nov 2020 03:50:15 -0500
+Received: from paleale.coelho.fi ([176.9.41.70]:58776 "EHLO
+        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1727955AbgKGIuP (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 7 Nov 2020 03:40:54 -0500
-Received: from vivo-HP-ProDesk-680-G4-PCI-MT.vivo.xyz (unknown [58.251.74.231])
-        by m176115.mail.qiye.163.com (Hmail) with ESMTPA id B61B36665F9;
-        Sat,  7 Nov 2020 16:40:49 +0800 (CST)
-From:   Wang Qing <wangqing@vivo.com>
-To:     Ping-Ke Shih <pkshih@realtek.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Larry Finger <Larry.Finger@lwfinger.net>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Joe Perches <joe@perches.com>,
-        Zheng Bin <zhengbin13@huawei.com>,
-        Wang Qing <wangqing@vivo.com>, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] wireless: realtek: fix spelling typo of workaround
-Date:   Sat,  7 Nov 2020 16:40:37 +0800
-Message-Id: <1604738439-24794-1-git-send-email-wangqing@vivo.com>
-X-Mailer: git-send-email 2.7.4
-X-HM-Spam-Status: e1kfGhgUHx5ZQUtXWQgYFAkeWUFZS1VLWVdZKFlBSE83V1ktWUFJV1kPCR
-        oVCBIfWUFZSksYSEMdSk5JThpCVkpNS09MSENPTktJTEtVEwETFhoSFyQUDg9ZV1kWGg8SFR0UWU
-        FZT0tIVUpKS0hKQ1VLWQY+
-X-HM-Sender-Digest: e1kMHhlZQR0aFwgeV1kSHx4VD1lBWUc6OVE6MCo4Fz8oARwyNRc5ITQs
-        LEkaFE9VSlVKTUtPTEhDT05LTUNCVTMWGhIXVQwaFRwKEhUcOw0SDRRVGBQWRVlXWRILWUFZTkNV
-        SU5KVUxPVUlISllXWQgBWUFJTktCNwY+
-X-HM-Tid: 0a75a1dd82e89373kuwsb61b36665f9
+        Sat, 7 Nov 2020 03:50:15 -0500
+Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa.ger.corp.intel.com)
+        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.93)
+        (envelope-from <luca@coelho.fi>)
+        id 1kbJvJ-002on9-0l; Sat, 07 Nov 2020 10:50:13 +0200
+From:   Luca Coelho <luca@coelho.fi>
+To:     kvalo@codeaurora.org
+Cc:     linux-wireless@vger.kernel.org
+Date:   Sat,  7 Nov 2020 10:50:05 +0200
+Message-Id: <20201107085011.57943-1-luca@coelho.fi>
+X-Mailer: git-send-email 2.28.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on farmhouse.coelho.fi
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+        TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.4
+Subject: [PATCH 0/6] iwlwifi: fixes intended for v5.10 2020-11-07
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-workarould -> workaround
+From: Luca Coelho <luciano.coelho@intel.com>
 
-Signed-off-by: Wang Qing <wangqing@vivo.com>
----
- drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Hi,
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c
-index f41a764..b4628b4
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c
-@@ -62,7 +62,7 @@ static void rtl8812ae_fixspur(struct ieee80211_hw *hw,
- 			rtl_set_bbreg(hw, RRFMOD, 0xC00, 0x2);
- 			/* 0x8AC[11:10] = 2'b10*/
- 
--		/* <20120914, Kordan> A workarould to resolve
-+		/* <20120914, Kordan> A workaround to resolve
- 		 * 2480Mhz spur by setting ADC clock as 160M. (Asked by Binson)
- 		 */
- 		if (band_width == HT_CHANNEL_WIDTH_20 &&
-@@ -82,7 +82,7 @@ static void rtl8812ae_fixspur(struct ieee80211_hw *hw,
- 			/*0x8C4[30] = 0*/
- 		}
- 	} else if (rtlhal->hw_type == HARDWARE_TYPE_RTL8812AE) {
--		/* <20120914, Kordan> A workarould to resolve
-+		/* <20120914, Kordan> A workaround to resolve
- 		 * 2480Mhz spur by setting ADC clock as 160M.
- 		 */
- 		if (band_width == HT_CHANNEL_WIDTH_20 &&
+This is my first patchset with fixes for v5.10.
+
+The changes are:
+
+* Fix a kernel panic in CSA when the FW asserts;
+* Fix a command completion timeout by using LTR correctly;
+* Fix HE capabilities;
+* Some fixes in the session protection code;
+* Fix a queue sync vs. async handling.
+
+As usual, I'm pushing this to a pending branch, for kbuild bot.  And
+since these are fixes for the rc series, please take them directly to
+wireless-drivers.git, as we agreed.
+
+Cheers,
+Luca.
+
+
+Avraham Stern (1):
+  iwlwifi: mvm: write queue_sync_state only for sync
+
+Emmanuel Grumbach (2):
+  iwlwifi: mvm: use the HOT_SPOT_CMD to cancel an AUX ROC
+  iwlwifi: mvm: properly cancel a session protection for P2P
+
+Johannes Berg (1):
+  iwlwifi: pcie: set LTR to avoid completion timeout
+
+Mordechay Goodstein (1):
+  iwlwifi: sta: set max HE max A-MPDU according to HE capa
+
+Sara Sharon (1):
+  iwlwifi: mvm: fix kernel panic in case of assert during CSA
+
+ .../net/wireless/intel/iwlwifi/fw/api/sta.h   |  10 +-
+ .../intel/iwlwifi/fw/api/time-event.h         |   8 +-
+ drivers/net/wireless/intel/iwlwifi/iwl-csr.h  |  10 ++
+ .../net/wireless/intel/iwlwifi/mvm/mac80211.c |   5 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/sta.c  |  18 +++
+ .../wireless/intel/iwlwifi/mvm/time-event.c   | 103 ++++++++++++------
+ .../intel/iwlwifi/pcie/ctxt-info-gen3.c       |  20 ++++
+ 7 files changed, 131 insertions(+), 43 deletions(-)
+
 -- 
-2.7.4
+2.28.0
 
