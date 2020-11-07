@@ -2,33 +2,33 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EC5252AA321
-	for <lists+linux-wireless@lfdr.de>; Sat,  7 Nov 2020 08:59:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ADB532AA326
+	for <lists+linux-wireless@lfdr.de>; Sat,  7 Nov 2020 09:02:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727817AbgKGH7s (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 7 Nov 2020 02:59:48 -0500
-Received: from z5.mailgun.us ([104.130.96.5]:11279 "EHLO z5.mailgun.us"
+        id S1727833AbgKGICR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 7 Nov 2020 03:02:17 -0500
+Received: from m42-4.mailgun.net ([69.72.42.4]:41627 "EHLO m42-4.mailgun.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725985AbgKGH7s (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 7 Nov 2020 02:59:48 -0500
+        id S1727786AbgKGICR (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 7 Nov 2020 03:02:17 -0500
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1604735988; h=Date: Message-Id: Cc: To: References:
+ s=smtp; t=1604736136; h=Date: Message-Id: Cc: To: References:
  In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=OXgxh02M+OX+ZL72hOdAV3GhCB+vjgrhSjj1vtF57NE=;
- b=WKaiWEmY2+yejyyLzWr1ud9JBdnZmSq9O6vhxI7PvOaXnJBxh1WmjLaZ08virFBKfXQl4tQI
- N1cXczydvdYNzsXkv8hOj7UiNpIG5I/qvw8RH//GpebqG0AEOHu0+VPb1NV3Z4DMfp4Hx2MU
- 9/0NKOr24OC19abfX2DZRfSy+P8=
-X-Mailgun-Sending-Ip: 104.130.96.5
+ Content-Type: Sender; bh=plywg5V0yX06TOPuyJodo8gnX1VzwIFtl/WJvZY7r5k=;
+ b=nhsGeN1AGuzblMTrHBG6UZLp88BZ3pFVcvtGsvB+17xk638YooaDx2KYNCDT9in+cYTIx3uE
+ IiBoPvtN4FLe0KCB1qI5TLTWK3UFUestUgjByOMNMJ/6m5XW6Bu6n4Gpckl21DUUBgExZZz0
+ uGUITUzVA7TrX4wZ9E8s5BFG+Wg=
+X-Mailgun-Sending-Ip: 69.72.42.4
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n02.prod.us-west-2.postgun.com with SMTP id
- 5fa653e661a7f890a66737b0 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sat, 07 Nov 2020 07:59:34
+ smtp-out-n02.prod.us-east-1.postgun.com with SMTP id
+ 5fa6544de41a481b551a32d9 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sat, 07 Nov 2020 08:01:17
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 97408C433CB; Sat,  7 Nov 2020 07:59:34 +0000 (UTC)
+        id B694AC433CB; Sat,  7 Nov 2020 08:01:16 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -39,45 +39,54 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 46861C433C6;
-        Sat,  7 Nov 2020 07:59:32 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 46861C433C6
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 141DCC433C6;
+        Sat,  7 Nov 2020 08:01:13 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 141DCC433C6
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] ath11k: Remove unnecessary data sync to cpu on monitor
- buffer
+Subject: Re: [PATCH 1/2] dt: bindings: add new dt entry for ath11k calibration
+ variant
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <1602744454-22969-1-git-send-email-vthiagar@codeaurora.org>
-References: <1602744454-22969-1-git-send-email-vthiagar@codeaurora.org>
-To:     Vasanthakumar Thiagarajan <vthiagar@codeaurora.org>
-Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
+In-Reply-To: <20201015131501.1939685-1-sven@narfation.org>
+References: <20201015131501.1939685-1-sven@narfation.org>
+To:     Sven Eckelmann <sven@narfation.org>
+Cc:     linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
+        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
+        Sven Eckelmann <sven@narfation.org>
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20201107075934.97408C433CB@smtp.codeaurora.org>
-Date:   Sat,  7 Nov 2020 07:59:34 +0000 (UTC)
+Message-Id: <20201107080116.B694AC433CB@smtp.codeaurora.org>
+Date:   Sat,  7 Nov 2020 08:01:16 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Vasanthakumar Thiagarajan <vthiagar@codeaurora.org> wrote:
+Sven Eckelmann <sven@narfation.org> wrote:
 
-> Monitor ring Rx buffer is not really modified between dma map
-> and unmap. So remove the unnecssary data sync before dma unmap.
-> This does not fix any visible issue, found in code review.
+> The bus + qmi-chip-id + qmi-board-id is not enough to identify the correct
+> board data file on IPQ6018 based devices. Multiple different boards share
+> the same values. Only the original reference designs can currently be
+> identified and loaded from the board-2.bin. But these will not result in
+> the correct calibration data when combined with the pre-calibration data
+> from the device.
 > 
-> Compile tested only.
+> An additional "variant" information has to be provided to select the
+> correct board data for a design which was modified by an ODM. This follows
+> the same approach as ath10k.
 > 
-> Signed-off-by: Vasanthakumar Thiagarajan <vthiagar@codeaurora.org>
+> Signed-off-by: Sven Eckelmann <sven@narfation.org>
+> Reviewed-by: Rob Herring <robh@kernel.org>
 > Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 
-Patch applied to ath-next branch of ath.git, thanks.
+2 patches applied to ath-next branch of ath.git, thanks.
 
-bafdbd79aae4 ath11k: Remove unnecessary data sync to cpu on monitor buffer
+77581df8639f dt: bindings: add new dt entry for ath11k calibration variant
+14f43c5fca57 ath11k: search DT for qcom,ath11k-calibration-variant
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/1602744454-22969-1-git-send-email-vthiagar@codeaurora.org/
+https://patchwork.kernel.org/project/linux-wireless/patch/20201015131501.1939685-1-sven@narfation.org/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
