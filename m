@@ -2,105 +2,119 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1BAF62AA765
-	for <lists+linux-wireless@lfdr.de>; Sat,  7 Nov 2020 19:16:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 884F22AA774
+	for <lists+linux-wireless@lfdr.de>; Sat,  7 Nov 2020 19:42:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728506AbgKGSQw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 7 Nov 2020 13:16:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48486 "EHLO
+        id S1728489AbgKGSm4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 7 Nov 2020 13:42:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52492 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726614AbgKGSQw (ORCPT
+        with ESMTP id S1726021AbgKGSm4 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 7 Nov 2020 13:16:52 -0500
-Received: from mail-lf1-x143.google.com (mail-lf1-x143.google.com [IPv6:2a00:1450:4864:20::143])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A7CCC0613CF;
-        Sat,  7 Nov 2020 10:16:50 -0800 (PST)
-Received: by mail-lf1-x143.google.com with SMTP id v144so6453809lfa.13;
-        Sat, 07 Nov 2020 10:16:50 -0800 (PST)
+        Sat, 7 Nov 2020 13:42:56 -0500
+Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com [IPv6:2a00:1450:4864:20::343])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD3E6C0613D3
+        for <linux-wireless@vger.kernel.org>; Sat,  7 Nov 2020 10:42:55 -0800 (PST)
+Received: by mail-wm1-x343.google.com with SMTP id h62so4297030wme.3
+        for <linux-wireless@vger.kernel.org>; Sat, 07 Nov 2020 10:42:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=2LwqPjMniJ2bHWhYS+H6mmpx9vI82/bTwD9mpgG2kIc=;
-        b=fme4JUJVSfEiDvUNK1tsOGLhCEr8WIpvvKHZzARmRasGQ8nIFEJARvYZg/MjG/ps1T
-         szb/6Bh86gGgjZkwqnHyCepUCdaC1/ocueYJGfKU4cI1uvgprfWf+pokCMIgschYnn1X
-         pSyMc4yDDI22nfaEM222OXZP3dfbfF7jWJ3bdejbr32LHnX169sY3hm1Tc7E1xIyiHpu
-         8TK4bg7S8iWmrxbvfa/jIUFTLshWKuIFI3h7Wto9pLSsdUKg8udu/2XssE0t2aBy/aOf
-         A2IrsK7y64pXOSPnNCt3KW8LIw/LEPe/pjbPq1gUzhwxJw9DSIU4GJeKKSAAqu+IIZqX
-         8Vuw==
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=yxqmyl67WCvQeMIwKoccf4bZzL/NHq26s0+nbTo7KwE=;
+        b=yHaxWk7OZ/8bNPjGJtgE12wRzGMSUpP0LHHMJmBlM3pINildvwfUf7zKM44Z0+ayxi
+         dYm8U/8Uyn7ZBWJwEZn8LMkK5hmV/VijiEm5y8jq+c+rw/9mBjsB/U3dp30Flk4YTmhd
+         ipj6dPYOMauRXQDPmJ5H9EzlsM1MGxk+6v1Oi1CH/DHrMtCAn8O76sRZ57dmk2cX1lPt
+         gp4hjGVSTNzWejVHXlX/TS6s+k4lu9asrLktFIGPh3Dh0iQ57Ct1YSlNklIiszx71bM0
+         qyCf22qXMDQiNeax1Ez3sSoLRGVZ3+0uSTcgCk5WuoIP5M4LJrvpu39FPLB5IQSo0gYr
+         TNug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=2LwqPjMniJ2bHWhYS+H6mmpx9vI82/bTwD9mpgG2kIc=;
-        b=IkyFvDKRnHJ5o1gMnxiwiBd6hxYeozycAvXYhsvEl9fxQU0f/vBBd7zGQoRIZ7WKjw
-         3kOE2RhgvnaiBGi9hgIUPzpyb6HQLrUcuhY+SgN6BLhIf+gVCqYsN8dHw5dUEsz1FdRk
-         79iERzRxW7WdLZIHDU2UbP7l8qhkoRvCOFuRqBdB6YLJ7ACe8cWiS60uyuzezMB+h3Yr
-         13THtlMN4TsVHHL9ObpClFHAWnxVGev8vXRNA2E8u9Us3jL79CXuLWM+v+/Cdnbu5mFv
-         yMVjJ4ZuQCG3sb85dMIEPbFsLT6Gnae0HBjO0sAOjqq09xvao21bu0Wjalw/AJhdOKqY
-         tC8w==
-X-Gm-Message-State: AOAM530YhZVNowCeLbLmhsFLVKSpwmPXHB08lr7hVK6hUWnBLpm3T9Tz
-        Ahy7Sfydai9JsXVHQznWV3ZCH/dq/W7vR/2E8o8=
-X-Google-Smtp-Source: ABdhPJzpf1N1aAxilU+Bqa1H1z/PRlW8XyEItapPopXnFACuXlVupfppOd7pM0FTTKXb6dkMhNHm/EZncUmY7fFHbNo=
-X-Received: by 2002:ac2:5e23:: with SMTP id o3mr691432lfg.52.1604773008794;
- Sat, 07 Nov 2020 10:16:48 -0800 (PST)
-MIME-Version: 1.0
-References: <20201107172152.828-1-ap420073@gmail.com> <20201107172152.828-18-ap420073@gmail.com>
- <175a3cc2738.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
-In-Reply-To: <175a3cc2738.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
-From:   Taehee Yoo <ap420073@gmail.com>
-Date:   Sun, 8 Nov 2020 03:16:37 +0900
-Message-ID: <CAMArcTVgw3hN=ffb88hYrOy5jD1W+V1XKDtd_Rs2mkoOSGj5Vw@mail.gmail.com>
-Subject: Re: [PATCH net v2 17/21] brcmfmac: set .owner to THIS_MODULE
-To:     Arend Van Spriel <arend.vanspriel@broadcom.com>
-Cc:     David Miller <davem@davemloft.net>,
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=yxqmyl67WCvQeMIwKoccf4bZzL/NHq26s0+nbTo7KwE=;
+        b=JIVh0+hzkPyJBgI3hFB7qNjIptrkTKdtVmOOJAypDL2/CClkY9H6Ni+SlT28Np/JNI
+         cWi08zglS56HQEhf1L9KLcO4QT+92ET5jyhEv/nW2zkfgYh8QO7r9a3qqTt2LjIixMR+
+         /o9EQtpgrtMsBUJLKSc9b6v1ZqaIu6815D/rIF0Nb1IJAAc0OIkAEiG7LHSvvn7h56ao
+         YvOcar7JQngZ400DXUm0+TpXtId2rvaImAvdY270MOhTgUOdPsKmNqVBKVRJdBqZuZAR
+         CbVYepQA+wNbmBBwVFR/0hAG0/nFS2pSFszyeCdCLRD/wQ9U5MmG+ra32uweRCfmHXMo
+         Sv/Q==
+X-Gm-Message-State: AOAM531lAdTW7BcoSDHaIzGgw7Eo4VO8dOGtKa1YGrfjYYMaGoGz1aYi
+        MrY+B50yUrmQ4AJrrdnQMZaa+Q==
+X-Google-Smtp-Source: ABdhPJyTo90E+wkDFc5CnRqPxWZxg0Iab+ECawWBxFPgKSL2swBaR69JoZ5rex4sqhxialZ9QevG6Q==
+X-Received: by 2002:a7b:c846:: with SMTP id c6mr5626026wml.143.1604774574501;
+        Sat, 07 Nov 2020 10:42:54 -0800 (PST)
+Received: from dell ([91.110.221.236])
+        by smtp.gmail.com with ESMTPSA id e6sm7093053wrs.7.2020.11.07.10.42.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 07 Nov 2020 10:42:53 -0800 (PST)
+Date:   Sat, 7 Nov 2020 18:42:52 +0000
+From:   Lee Jones <lee.jones@linaro.org>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Brian Norris <briannorris@chromium.org>,
+        Linux Kernel <linux-kernel@vger.kernel.org>,
+        Yan-Hsuan Chuang <yhchuang@realtek.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>,
-        Netdev <netdev@vger.kernel.org>,
-        David Laight <David.Laight@aculab.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Nicolai Stange <nstange@suse.de>, derosier@gmail.com,
-        Kalle Valo <kvalo@codeaurora.org>,
-        linux-wireless@vger.kernel.org, wil6210@qti.qualcomm.com,
-        b43-dev@lists.infradead.org, linux-bluetooth@vger.kernel.org,
-        michael.hennerich@analog.com, linux-wpan@vger.kernel.org,
-        stefan@datenfreihafen.org, inaky.perez-gonzalez@intel.com,
-        linux-wimax@intel.com, emmanuel.grumbach@intel.com,
-        Luciano Coelho <luciano.coelho@intel.com>, stf_xl@wp.pl,
-        pkshih@realtek.com, ath11k@lists.infradead.org,
-        ath10k@lists.infradead.org, wcn36xx@lists.infradead.org,
-        merez@codeaurora.org, pizza@shaftnet.org,
-        Larry Finger <Larry.Finger@lwfinger.net>, amitkarwar@gmail.com,
-        ganapathi.bhat@nxp.com, huxinming820@gmail.com,
-        marcel@holtmann.org, johan.hedberg@gmail.com, alex.aring@gmail.com,
-        jukka.rissanen@linux.intel.com, franky.lin@broadcom.com,
-        hante.meuleman@broadcom.com, chung-hsien.hsu@infineon.com,
-        wright.feng@infineon.com, chi-hsien.lin@infineon.com
-Content-Type: text/plain; charset="UTF-8"
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        "<netdev@vger.kernel.org>" <netdev@vger.kernel.org>
+Subject: Re: [PATCH 41/41] realtek: rtw88: pci: Add prototypes for .probe,
+ .remove and .shutdown
+Message-ID: <20201107184252.GT2063125@dell>
+References: <20201102112410.1049272-1-lee.jones@linaro.org>
+ <20201102112410.1049272-42-lee.jones@linaro.org>
+ <CA+ASDXOobW1_qL5SCGS86aoGvhKDMoBzjxbAwn+QjHfkqZhukw@mail.gmail.com>
+ <20201103084453.GJ4488@dell>
+ <87y2jd5dyl.fsf@tynnyri.adurom.net>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <87y2jd5dyl.fsf@tynnyri.adurom.net>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sun, 8 Nov 2020 at 02:41, Arend Van Spriel
-<arend.vanspriel@broadcom.com> wrote:
->
+On Sat, 07 Nov 2020, Kalle Valo wrote:
 
-Hi Arend,
-Thank you for the review!
+> Lee Jones <lee.jones@linaro.org> writes:
+> 
+> > On Mon, 02 Nov 2020, Brian Norris wrote:
+> >
+> >> On Mon, Nov 2, 2020 at 3:25 AM Lee Jones <lee.jones@linaro.org> wrote:
+> >> > --- a/drivers/net/wireless/realtek/rtw88/pci.h
+> >> > +++ b/drivers/net/wireless/realtek/rtw88/pci.h
+> >> > @@ -212,6 +212,10 @@ struct rtw_pci {
+> >> >         void __iomem *mmap;
+> >> >  };
+> >> >
+> >> > +int rtw_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id);
+> >> > +void rtw_pci_remove(struct pci_dev *pdev);
+> >> > +void rtw_pci_shutdown(struct pci_dev *pdev);
+> >> > +
+> >> >
+> >> 
+> >> These definitions are already in 4 other header files:
+> >> 
+> >> drivers/net/wireless/realtek/rtw88/rtw8723de.h
+> >> drivers/net/wireless/realtek/rtw88/rtw8821ce.h
+> >> drivers/net/wireless/realtek/rtw88/rtw8822be.h
+> >> drivers/net/wireless/realtek/rtw88/rtw8822ce.h
+> >> 
+> >> Seems like you should be moving them, not just adding yet another duplicate.
+> >
+> > I followed the current convention.
+> >
+> > Happy to optimise if that's what is required.
+> 
+> I agree with Brian, these and rtw_pm_ops should be moved to pci.h to
+> avoid code duplication.
 
-> On November 7, 2020 6:25:15 PM Taehee Yoo <ap420073@gmail.com> wrote:
->
-> > If THIS_MODULE is not set, the module would be removed while debugfs is
-> > being used.
-> > It eventually makes kernel panic.
->
-> Is this really a valid concern in the context of debugs? I tend to say it
-> is not. Whenever I am using debugs to debug my driver I make sure to avoid
-> removing it.
+Will do, thanks.
 
-I think getting rid of every scenario of the kernel panic is the
-first priority thing.
-So I'm sure that trying to avoid kernel panic is always valid even
-in the debugging context.
-
-Thanks a lot!
-Taehee Yoo
+-- 
+Lee Jones [李琼斯]
+Senior Technical Lead - Developer Services
+Linaro.org │ Open source software for Arm SoCs
+Follow Linaro: Facebook | Twitter | Blog
