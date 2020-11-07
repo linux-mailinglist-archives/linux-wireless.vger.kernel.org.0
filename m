@@ -2,63 +2,60 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8DA172AA49B
-	for <lists+linux-wireless@lfdr.de>; Sat,  7 Nov 2020 12:18:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5313C2AA49F
+	for <lists+linux-wireless@lfdr.de>; Sat,  7 Nov 2020 12:23:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727866AbgKGLSS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 7 Nov 2020 06:18:18 -0500
-Received: from z5.mailgun.us ([104.130.96.5]:12212 "EHLO z5.mailgun.us"
+        id S1726242AbgKGLXi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 7 Nov 2020 06:23:38 -0500
+Received: from m42-4.mailgun.net ([69.72.42.4]:46503 "EHLO m42-4.mailgun.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726422AbgKGLSR (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 7 Nov 2020 06:18:17 -0500
+        id S1727084AbgKGLXi (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 7 Nov 2020 06:23:38 -0500
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1604747897; h=Content-Type: MIME-Version: Message-ID:
+ s=smtp; t=1604748217; h=Content-Type: MIME-Version: Message-ID:
  In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=FrKUSxKaLyb3fOP1p83nc7xz/5CYAlq8tbYWJTFpOYM=; b=exuKBVaRcYPMbuyI4TXC41uqh7rqUDZhNKMHtzxZ4pZ9tmLWbr/uY45yo8cfRHEk898LHC9Y
- qkKA6huWqTuylDGTGzLdvTsUfndJKssoacSVUSPqtHsP1aAjGK0FLSF8P/kFyBYKMnFRi17s
- jp4E3P5X9CEnjuG9TdskFrf6kc8=
-X-Mailgun-Sending-Ip: 104.130.96.5
+ bh=zS6LvfRtNdiUkeSXeykO/m6acIjMHUD9ACoUZ1OClsU=; b=lEV7M0v96vUpSesS3ls9jsFDkuQWbMxBJrr2X1yV+CzAAy8X3MSnEFfoOTdWZqTnED3QQKxl
+ OrdLdeJj7PU+KKjADu/N+vR47KTAdVjsTtquwKHFLNshGWP0n5xQSy0pdyiHi4UPlQB1dSyI
+ owM06X8AlLaGoHnm6s0/QxYP/dM=
+X-Mailgun-Sending-Ip: 69.72.42.4
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n04.prod.us-west-2.postgun.com with SMTP id
- 5fa682787d4f16f92fc2edf4 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sat, 07 Nov 2020 11:18:16
+ smtp-out-n07.prod.us-west-2.postgun.com with SMTP id
+ 5fa683b861a7f890a693db05 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sat, 07 Nov 2020 11:23:36
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 3FD93C433F0; Sat,  7 Nov 2020 11:18:16 +0000 (UTC)
+        id D53BAC433F0; Sat,  7 Nov 2020 11:23:35 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
+        autolearn=no autolearn_force=no version=3.4.0
 Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 8C58FC433C6;
-        Sat,  7 Nov 2020 11:18:12 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 8C58FC433C6
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 2A814C433C6;
+        Sat,  7 Nov 2020 11:23:32 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 2A814C433C6
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
 From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     Arnd Bergmann <arnd@kernel.org>,
-        QCA ath9k Development <ath9k-devel@qca.qualcomm.com>,
+To:     Alex Dewar <alex.dewar90@gmail.com>
+Cc:     netdev@vger.kernel.org, Carl Huang <cjhuang@codeaurora.org>,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
         "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next 08/11] ath9k: work around false-positive gcc warning
-References: <20201026213040.3889546-1-arnd@kernel.org>
-        <20201026213040.3889546-8-arnd@kernel.org>
-        <87tuu7ohbo.fsf@codeaurora.org>
-        <47b04bd1da38a2356546284eb3576156899965de.camel@sipsolutions.net>
-Date:   Sat, 07 Nov 2020 13:18:10 +0200
-In-Reply-To: <47b04bd1da38a2356546284eb3576156899965de.camel@sipsolutions.net>
-        (Johannes Berg's message of "Mon, 02 Nov 2020 18:59:49 +0100")
-Message-ID: <87tuu1fma5.fsf@codeaurora.org>
+        ath11k@lists.infradead.org, Jakub Kicinski <kuba@kernel.org>
+Subject: Re: [PATCH 2/2] ath11k: Handle errors if peer creation fails
+References: <20201004100218.311653-1-alex.dewar90@gmail.com>
+        <87blhfbysb.fsf@codeaurora.org>
+        <20201006081321.e2tf5xrdhnk4j3nq@medion>
+Date:   Sat, 07 Nov 2020 13:23:30 +0200
+In-Reply-To: <20201006081321.e2tf5xrdhnk4j3nq@medion> (Alex Dewar's message of
+        "Tue, 6 Oct 2020 09:13:21 +0100")
+Message-ID: <87pn4pfm19.fsf@codeaurora.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -66,61 +63,82 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Johannes Berg <johannes@sipsolutions.net> writes:
+Alex Dewar <alex.dewar90@gmail.com> writes:
 
-> On Mon, 2020-11-02 at 18:26 +0200, Kalle Valo wrote:
->> Arnd Bergmann <arnd@kernel.org> writes:
+> On Tue, Oct 06, 2020 at 10:26:28AM +0300, Kalle Valo wrote:
+>> Alex Dewar <alex.dewar90@gmail.com> writes:
 >> 
->> > From: Arnd Bergmann <arnd@arndb.de>
->> > 
->> > gcc-10 shows a false-positive warning with CONFIG_KASAN:
->> > 
->> > drivers/net/wireless/ath/ath9k/dynack.c: In function 'ath_dynack_sample_tx_ts':
->> > include/linux/etherdevice.h:290:14: warning: writing 4 bytes into a region of size 0 [-Wstringop-overflow=]
->> >   290 |  *(u32 *)dst = *(const u32 *)src;
->> >       |  ~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~
->> > 
->> > Until gcc is fixed, work around this by using memcpy() in place
->> > of ether_addr_copy(). Hopefully gcc-11 will not have this problem.
->> > 
->> > Link: https://godbolt.org/z/sab1MK
->> > Link: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97490
->> > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+>> > ath11k_peer_create() is called without its return value being checked,
+>> > meaning errors will be unhandled. Add missing check and, as the mutex is
+>> > unconditionally unlocked on leaving this function, simplify the exit
+>> > path.
+>> >
+>> > Addresses-Coverity-ID: 1497531 ("Code maintainability issues")
+>> > Fixes: 701e48a43e15 ("ath11k: add packet log support for QCA6390")
+>> > Signed-off-by: Alex Dewar <alex.dewar90@gmail.com>
 >> > ---
->> >  drivers/net/wireless/ath/ath9k/dynack.c | 6 ++++++
->> >  1 file changed, 6 insertions(+)
->> > 
->> > diff --git a/drivers/net/wireless/ath/ath9k/dynack.c b/drivers/net/wireless/ath/ath9k/dynack.c
->> > index fbeb4a739d32..e4eb96b26ca4 100644
->> > --- a/drivers/net/wireless/ath/ath9k/dynack.c
->> > +++ b/drivers/net/wireless/ath/ath9k/dynack.c
->> > @@ -247,8 +247,14 @@ void ath_dynack_sample_tx_ts(struct ath_hw *ah, struct sk_buff *skb,
->> >  	ridx = ts->ts_rateindex;
+>> >  drivers/net/wireless/ath/ath11k/mac.c | 21 +++++++++------------
+>> >  1 file changed, 9 insertions(+), 12 deletions(-)
+>> >
+>> > diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
+>> > index 7f8dd47d2333..58db1b57b941 100644
+>> > --- a/drivers/net/wireless/ath/ath11k/mac.c
+>> > +++ b/drivers/net/wireless/ath/ath11k/mac.c
+>> > @@ -5211,7 +5211,7 @@ ath11k_mac_op_assign_vif_chanctx(struct ieee80211_hw *hw,
+>> >  	struct ath11k *ar = hw->priv;
+>> >  	struct ath11k_base *ab = ar->ab;
+>> >  	struct ath11k_vif *arvif = (void *)vif->drv_priv;
+>> > -	int ret;
+>> > +	int ret = 0;
+>> 
+>> I prefer not to initialise the ret variable.
+>> 
+>> >  	arvif->is_started = true;
 >> >  
->> >  	da->st_rbf.ts[da->st_rbf.t_rb].tstamp = ts->ts_tstamp;
->> > +#if defined(CONFIG_KASAN) && (CONFIG_GCC_VERSION >= 100000) && (CONFIG_GCC_VERSION < 110000)
->> > +	/* https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97490 */
->> > +	memcpy(da->st_rbf.addr[da->st_rbf.t_rb].h_dest, hdr->addr1, ETH_ALEN);
->> > +	memcpy(da->st_rbf.addr[da->st_rbf.t_rb].h_src, hdr->addr2, ETH_ALEN);
->> > +#else
->> >  	ether_addr_copy(da->st_rbf.addr[da->st_rbf.t_rb].h_dest, hdr->addr1);
->> >  	ether_addr_copy(da->st_rbf.addr[da->st_rbf.t_rb].h_src, hdr->addr2);
->> > +#endif
+>> >  	/* TODO: Setup ps and cts/rts protection */
+>> >  
+>> > -	mutex_unlock(&ar->conf_mutex);
+>> > -
+>> > -	return 0;
+>> > -
+>> > -err:
+>> > +unlock:
+>> >  	mutex_unlock(&ar->conf_mutex);
+>> >  
+>> >  	return ret;
 >> 
->> Isn't there a better way to handle this? I really would not want
->> checking for GCC versions become a common approach in drivers.
+>> So in the pending branch I changed this to:
 >> 
->> I even think that using memcpy() always is better than the ugly ifdef.
+>> 	ret = 0;
+>> 
+>> out:
+>> 	mutex_unlock(&ar->conf_mutex);
+>> 
+>> 	return ret;
+>> 
+>> Please check.
 >
-> If you put memcpy() always somebody will surely go and clean it up to
-> use ether_addr_copy() soon ...
+> I'm afraid you've introduced a bug ;). The body of the first if-statement
+> in the function doesn't set ret because no error has occurred. So now
+> it'll jump to the label and the function will return ret uninitialized.
 
-I can always add a comment and hope that the cleanup people read
-comments :) I did that now in the pending branch:
+Ouch, so I did. Good catch! I would have hoped that GCC warns about that
+but it didn't.
 
-https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=25cfc077bd7a798d1aa527ad2aa9932bb3284376
+I fixed the bug and added also a warning messages if peer_create()
+fails:
 
-Does that look ok? I prefer that over the ifdef.
+https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=e3e7b8072fa6bb0928b9066cf76e19e6bd2ec663
+
+Does this look better now? :)
+
+> With the gcc extension, ret will be initialised to zero anyway, so we're
+> not saving anything by explicitly assigning to ret later in the
+> function.
+
+I prefer not to initialise ret in the beginning of the function and I
+try to maintain that style in ath11k. I think it's more readable that
+the error value is assigned just before the goto.
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
