@@ -2,33 +2,33 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 95D672AA32B
-	for <lists+linux-wireless@lfdr.de>; Sat,  7 Nov 2020 09:04:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BD7692AA32A
+	for <lists+linux-wireless@lfdr.de>; Sat,  7 Nov 2020 09:04:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727817AbgKGIEZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 7 Nov 2020 03:04:25 -0500
-Received: from z5.mailgun.us ([104.130.96.5]:40655 "EHLO z5.mailgun.us"
+        id S1727786AbgKGIEW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 7 Nov 2020 03:04:22 -0500
+Received: from z5.mailgun.us ([104.130.96.5]:30691 "EHLO z5.mailgun.us"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727242AbgKGIEY (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 7 Nov 2020 03:04:24 -0500
+        id S1725985AbgKGIEV (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 7 Nov 2020 03:04:21 -0500
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1604736264; h=Date: Message-Id: Cc: To: References:
+ s=smtp; t=1604736261; h=Date: Message-Id: Cc: To: References:
  In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=4bnW9aPUT6dJw+8IsTDjXp4lsbpYRbEg1kaXwCzeWVs=;
- b=JRnPvlRofghk2JucnTs+rZmH8vTD1gWlm57s3KX/sWDbbD/3jJGyr5UPYkwDsxG8gynhc09N
- v/HN5RpQ07SDUg2nqRzRGtEkr6t9RjoZA1kLok0DC7m92dbQk2GnmZ0ENCosgUwUyaW2bpzC
- m+nez/RE8+jnSX+jJS7godwgUqs=
+ Content-Type: Sender; bh=EuFeFI3AGt31RSNekQOXzcqcveJAfe0BlRYnv0X5WgQ=;
+ b=PgVcHZzNOI+0x4zoJJCKfTA1JZK3rmMinzsJhow65njN8DQHCSROVdIsV0c+ITGOXeLHo/eG
+ THhoDZzdG9F0GMZK1DQrF0IaDUUoo1RcZs0Mdnr6Pmm3kIf1KKvbidYl1kS3PZmx1QthJjgh
+ hWP7bjOU3bhUVGcK7SkShDH1LEE=
 X-Mailgun-Sending-Ip: 104.130.96.5
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n04.prod.us-west-2.postgun.com with SMTP id
- 5fa654eb82aad55dcb80b0e6 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sat, 07 Nov 2020 08:03:55
+ smtp-out-n07.prod.us-east-1.postgun.com with SMTP id
+ 5fa65504c1b74298b74e0dbd (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sat, 07 Nov 2020 08:04:20
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 83BE0C433C9; Sat,  7 Nov 2020 08:03:55 +0000 (UTC)
+        id 19CFAC433C9; Sat,  7 Nov 2020 08:04:20 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -39,62 +39,48 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 14E6CC433C8;
-        Sat,  7 Nov 2020 08:03:53 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 14E6CC433C8
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id B432DC433C6;
+        Sat,  7 Nov 2020 08:04:18 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org B432DC433C6
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] ath11k: Fix number of rules in filtered ETSI regdomain
+Subject: Re: [PATCH] ath11k: Fix single phy hw mode
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20201030101940.2387952-1-sven@narfation.org>
-References: <20201030101940.2387952-1-sven@narfation.org>
-To:     Sven Eckelmann <sven@narfation.org>
+In-Reply-To: <1604511331-22477-1-git-send-email-periyasa@codeaurora.org>
+References: <1604511331-22477-1-git-send-email-periyasa@codeaurora.org>
+To:     Karthikeyan Periyasamy <periyasa@codeaurora.org>
 Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        Sven Eckelmann <sven@narfation.org>
+        Karthikeyan Periyasamy <periyasa@codeaurora.org>
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20201107080355.83BE0C433C9@smtp.codeaurora.org>
-Date:   Sat,  7 Nov 2020 08:03:55 +0000 (UTC)
+Message-Id: <20201107080420.19CFAC433C9@smtp.codeaurora.org>
+Date:   Sat,  7 Nov 2020 08:04:20 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Sven Eckelmann <sven@narfation.org> wrote:
+Karthikeyan Periyasamy <periyasa@codeaurora.org> wrote:
 
-> The ath11k code will try to insert wheather rader related limits when the
-> DFS region is set to ETSI. For this reason, it will add two more entries in
-> the array of reg_rules. But the 2.4.0.1 firmware is prefiltering the list
-> of reg rules it returns for 2.4GHz PHYs. They will then not contain the
-> list of 5GHz rules and thus no wheather radar band rules were inserted by
-> this code.
+> driver not able to bootup in the single radio configured board.
+> single phy hw mode is converted to invalid hw mode and sent to FW
+> through wmi init cmd. In that case driver is not receiving wmi
+> ready event which leads to driver bootup fail. single phy hw mode
+> is a valid for single radio configured board. so removed the
+> conversion logic.
 > 
-> But the code didn't fix the n_reg_rules for this regulatory domain and PHY
-> when this happened. This resulted in a rejection by is_valid_rd because it
-> found rules which start and end at 0khz. This resulted in a splat like:
+> Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.1.0.1-01238-QCAHKSWPL_SILICONZ-2
 > 
->   Invalid regulatory domain detected
->   ------------[ cut here ]------------
->   WARNING: at backports-20200628-4.4.60-9a94b73e75/net/wireless/reg.c:3721
->   [...]
->   ath11k c000000.wifi1: failed to perform regd update : -22
-> 
-> The number of rules must therefore be saved after they were converted from
-> the ath11k format to the ieee80211_regdomain format and not before.
-> 
-> Tested with IPQ8074 WLAN.HK.2.4.0.1.r1-00019-QCAHKSWPL_SILICONZ-1
-> 
-> Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
-> Signed-off-by: Sven Eckelmann <sven@narfation.org>
+> Signed-off-by: Karthikeyan Periyasamy <periyasa@codeaurora.org>
 > Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 
 Patch applied to ath-next branch of ath.git, thanks.
 
-6189be7d145c ath11k: Fix number of rules in filtered ETSI regdomain
+9fb13b81e145 ath11k: Fix single phy hw mode
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20201030101940.2387952-1-sven@narfation.org/
+https://patchwork.kernel.org/project/linux-wireless/patch/1604511331-22477-1-git-send-email-periyasa@codeaurora.org/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
