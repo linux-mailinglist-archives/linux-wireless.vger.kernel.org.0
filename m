@@ -2,33 +2,33 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ED0462AA32E
-	for <lists+linux-wireless@lfdr.de>; Sat,  7 Nov 2020 09:06:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BC3172AA333
+	for <lists+linux-wireless@lfdr.de>; Sat,  7 Nov 2020 09:07:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727810AbgKGIG1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 7 Nov 2020 03:06:27 -0500
-Received: from z5.mailgun.us ([104.130.96.5]:30691 "EHLO z5.mailgun.us"
+        id S1727892AbgKGIHr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 7 Nov 2020 03:07:47 -0500
+Received: from z5.mailgun.us ([104.130.96.5]:64836 "EHLO z5.mailgun.us"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725985AbgKGIG1 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 7 Nov 2020 03:06:27 -0500
+        id S1727738AbgKGIHr (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 7 Nov 2020 03:07:47 -0500
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1604736386; h=Date: Message-Id: Cc: To: References:
+ s=smtp; t=1604736466; h=Date: Message-Id: Cc: To: References:
  In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=PdtrQ2HZIjnTZKIvtyhIFZ9AK4/gDNLhceMRQQatfLs=;
- b=XVfXkOUrLKa/kFM1LScuQdjPUPo8Bb/YMDMVVN4edmhRmJJrycOlYJ/kz4Ey08kJt1a5b7DB
- aoHhoFguWjFcu4VhbLW5jGUAQ3M8fq20zSP6LWfbYqTs7o/+fdnZHd5eNRBs1qK0G2D1kuEk
- xVpHx6yegRAWLP/QXv4HO9T93kY=
+ Content-Type: Sender; bh=T1xewMLt1qGyKJOkHAAwUbdE9UigdO+tyozGpC781sE=;
+ b=d5gcujGqM15YpIW4rERokIQHaCgHn1WnDlm8E/by0THLchrk/Fgexa0fuSdDhc0vUcnEBUkU
+ BMILSUXxdhyjvu8CpoOtRldeKrINkmwW6Yw8x3Wi40sklf1swm9hvxr5WZI/tVCzvAQfIhVX
+ B09A7KfD4SMfmWZ1FbDeTEPfKx0=
 X-Mailgun-Sending-Ip: 104.130.96.5
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n07.prod.us-west-2.postgun.com with SMTP id
- 5fa655827e363609007fce9e (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sat, 07 Nov 2020 08:06:26
+ smtp-out-n04.prod.us-west-2.postgun.com with SMTP id
+ 5fa655aa82aad55dcb821611 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sat, 07 Nov 2020 08:07:06
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id EDC02C433C6; Sat,  7 Nov 2020 08:06:25 +0000 (UTC)
+        id 6B146C433C8; Sat,  7 Nov 2020 08:07:06 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -39,45 +39,53 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 8F7D7C433C8;
-        Sat,  7 Nov 2020 08:06:24 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 8F7D7C433C8
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id E9C0EC433C8;
+        Sat,  7 Nov 2020 08:07:03 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org E9C0EC433C8
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] ath11k: Add new dfs region name for JP
+Subject: Re: [PATCH 19/41] ath: regd: Provide description for
+ ath_reg_apply_ir_flags's 'reg' param
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <1604563475-5782-1-git-send-email-lavaks@codeaurora.org>
-References: <1604563475-5782-1-git-send-email-lavaks@codeaurora.org>
-To:     Lavanya Suresh <lavaks@codeaurora.org>
-Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        Lavanya Suresh <lavaks@codeaurora.org>
+In-Reply-To: <20201102112410.1049272-20-lee.jones@linaro.org>
+References: <20201102112410.1049272-20-lee.jones@linaro.org>
+To:     Lee Jones <lee.jones@linaro.org>
+Cc:     linux-kernel@vger.kernel.org, Lee Jones <lee.jones@linaro.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20201107080625.EDC02C433C6@smtp.codeaurora.org>
-Date:   Sat,  7 Nov 2020 08:06:25 +0000 (UTC)
+Message-Id: <20201107080706.6B146C433C8@smtp.codeaurora.org>
+Date:   Sat,  7 Nov 2020 08:07:06 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Lavanya Suresh <lavaks@codeaurora.org> wrote:
+Lee Jones <lee.jones@linaro.org> wrote:
 
-> Japan has new Radar types as per latest regulatory,
-> included under MKK_N in FW. So adding new enum in
-> ath11k to support it.
+> Fixes the following W=1 kernel build warning(s):
 > 
-> Tested-on: IPQ8074 hw2.0 PCI WLAN.HK.2.4.0.1-00041-QCAHKSWPL_SILICONZ-1
+>  drivers/net/wireless/ath/regd.c:378: warning: Function parameter or member 'reg' not described in 'ath_reg_apply_ir_flags'
 > 
-> Signed-off-by: Lavanya Suresh <lavaks@codeaurora.org>
+> Cc: Kalle Valo <kvalo@codeaurora.org>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: Jakub Kicinski <kuba@kernel.org>
+> Cc: linux-wireless@vger.kernel.org
+> Cc: netdev@vger.kernel.org
+> Signed-off-by: Lee Jones <lee.jones@linaro.org>
 > Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 
-Patch applied to ath-next branch of ath.git, thanks.
+3 patches applied to ath-next branch of ath.git, thanks.
 
-47f1a84e2451 ath11k: Add new dfs region name for JP
+aed7ee049a3e ath: regd: Provide description for ath_reg_apply_ir_flags's 'reg' param
+206cd5800d8c ath: dfs_pattern_detector: Fix some function kernel-doc headers
+748d250777e6 ath: dfs_pri_detector: Demote zero/half completed kernel-doc headers
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/1604563475-5782-1-git-send-email-lavaks@codeaurora.org/
+https://patchwork.kernel.org/project/linux-wireless/patch/20201102112410.1049272-20-lee.jones@linaro.org/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
