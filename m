@@ -2,160 +2,78 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DFF312AA58E
-	for <lists+linux-wireless@lfdr.de>; Sat,  7 Nov 2020 14:50:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D98D2AA639
+	for <lists+linux-wireless@lfdr.de>; Sat,  7 Nov 2020 16:28:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728090AbgKGNuA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 7 Nov 2020 08:50:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35552 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727084AbgKGNuA (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 7 Nov 2020 08:50:00 -0500
-Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C877FC0613CF;
-        Sat,  7 Nov 2020 05:49:58 -0800 (PST)
-Received: by mail-wr1-x444.google.com with SMTP id 33so4148382wrl.7;
-        Sat, 07 Nov 2020 05:49:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:date:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=nj2JtUJmFHpe07y5jjEoZy68QUQ8AyUEQF5EdLJkofs=;
-        b=scINATImyjbFT1SRMBhtHASoe4YFJRjQcBST+6yUDQHA36PpkoNUy4b/BDp1peHr/G
-         YjN4m5kJLrFC/y/od3zdzTGF8jZwHFR2L6NAxdTOFE4JKixqX/Sew6lMbiCLy+9cwlXm
-         cSRq/XfZ0miuOY/pCM7/sXx+LYyNaVEYigqVqmGptMvpR3h7cj3arCouluKGGps59laS
-         sn1o0X6/F8eF+haM0AuMiIK4UNuyRTu7PklYhl1WlfzxPG3pNv+72mKY1BbX6obNmo1Y
-         1isF9S3HYDYKTo6g0NBuVs0dZFylLn0inUXR7fGGewaoAvzBKE/Arzt7luOcuRWqGFtk
-         /Jow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:date:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=nj2JtUJmFHpe07y5jjEoZy68QUQ8AyUEQF5EdLJkofs=;
-        b=qLbx6zhIyWWysHqNhIStU+yS5SpuvBUwvS+3Q8gwKs5VpeiCJIOz0QxfHEnDaXSj2F
-         iwzkszCJXLqt/NZvrYhkTi8v1lHPyJtJgDP5Z9N73rralkayWLSISbUqIRQzeGvKrqx3
-         1Zi9MIpOgMueHCyZLmcbEFQMGzMpFdTu4AnQGVkOrnIbFIZN8XRIXMSPOz8WXcdov07T
-         dyGAGCcpZSAJywKRDp9IwUL1G5FWpFn4f4+fOCfLvYheecMUQczutOPHyw2xwqBgNrBH
-         BZiWJ5UIY9EnZOm6g89yfX31aSCGT9xKh3Fx7j1NJfMi4yT5D1pGqmedlN+l3/HCyiGk
-         I8Xw==
-X-Gm-Message-State: AOAM532VhTOivBSkvhXjl2sTQ3kS1VR9ulXlB/UjRAVXwIeUQiqaP9qO
-        8ykseaP4hahOavsA9B7UB5g=
-X-Google-Smtp-Source: ABdhPJyn1291BcADiHwatY9ZFKBKBK4BYU+Oc7aSCNYCiYzWBEjse487TWmXKiPjOsv29aKRZdeh7w==
-X-Received: by 2002:a5d:6cc5:: with SMTP id c5mr6971236wrc.301.1604756997485;
-        Sat, 07 Nov 2020 05:49:57 -0800 (PST)
-Received: from medion (cpc83661-brig20-2-0-cust443.3-3.cable.virginm.net. [82.28.105.188])
-        by smtp.gmail.com with ESMTPSA id k81sm8117722wma.2.2020.11.07.05.49.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 07 Nov 2020 05:49:56 -0800 (PST)
-From:   Alex Dewar <alex.dewar90@gmail.com>
-X-Google-Original-From: Alex Dewar <alex.dewar@gmx.co.uk>
-Date:   Sat, 7 Nov 2020 13:49:08 +0000
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     Alex Dewar <alex.dewar90@gmail.com>, netdev@vger.kernel.org,
-        Carl Huang <cjhuang@codeaurora.org>,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        "David S. Miller" <davem@davemloft.net>,
-        ath11k@lists.infradead.org, Jakub Kicinski <kuba@kernel.org>
-Subject: Re: [PATCH 2/2] ath11k: Handle errors if peer creation fails
-Message-ID: <20201107134908.ncne6nm7yyibp3qt@medion>
-References: <20201004100218.311653-1-alex.dewar90@gmail.com>
- <87blhfbysb.fsf@codeaurora.org>
- <20201006081321.e2tf5xrdhnk4j3nq@medion>
- <87pn4pfm19.fsf@codeaurora.org>
+        id S1726092AbgKGP2Y (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 7 Nov 2020 10:28:24 -0500
+Received: from m42-4.mailgun.net ([69.72.42.4]:26618 "EHLO m42-4.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726043AbgKGP2Y (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 7 Nov 2020 10:28:24 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1604762903; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=oGTmUxpNkSEHneQaGqvTpqgFewrgqa7kPMnZ1gLVBsU=;
+ b=HGJCIE5Uky+4eIlMwqYffj0h5XP3C9e6wvcFV/5A2fjn0pudPhlelQAqb7QcXQEiOY94xBgz
+ Z5w/yP/TZpoFkHFqH539FscweWnEmXwpteTD8hm9yn9V+vx4NjRBAtdjpR/WSCNd9Ig/aKZd
+ 33+HT011vAf8ANfBIncZERubMBA=
+X-Mailgun-Sending-Ip: 69.72.42.4
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n02.prod.us-west-2.postgun.com with SMTP id
+ 5fa6bd1660d94756523a426c (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sat, 07 Nov 2020 15:28:22
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id B16F9C433F0; Sat,  7 Nov 2020 15:28:22 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        MISSING_DATE,MISSING_MID,SPF_FAIL,URIBL_BLOCKED autolearn=no
+        autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id DFC9BC433C8;
+        Sat,  7 Nov 2020 15:28:20 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org DFC9BC433C8
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87pn4pfm19.fsf@codeaurora.org>
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v2 04/11] rtw88: coex: coding style adjustment
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20201027021157.6116-5-pkshih@realtek.com>
+References: <20201027021157.6116-5-pkshih@realtek.com>
+To:     <pkshih@realtek.com>
+Cc:     <tony0620emma@gmail.com>, <linux-wireless@vger.kernel.org>
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
+Message-Id: <20201107152822.B16F9C433F0@smtp.codeaurora.org>
+Date:   Sat,  7 Nov 2020 15:28:22 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sat, Nov 07, 2020 at 01:23:30PM +0200, Kalle Valo wrote:
-> Alex Dewar <alex.dewar90@gmail.com> writes:
-> 
-> > On Tue, Oct 06, 2020 at 10:26:28AM +0300, Kalle Valo wrote:
-> >> Alex Dewar <alex.dewar90@gmail.com> writes:
-> >> 
-> >> > ath11k_peer_create() is called without its return value being checked,
-> >> > meaning errors will be unhandled. Add missing check and, as the mutex is
-> >> > unconditionally unlocked on leaving this function, simplify the exit
-> >> > path.
-> >> >
-> >> > Addresses-Coverity-ID: 1497531 ("Code maintainability issues")
-> >> > Fixes: 701e48a43e15 ("ath11k: add packet log support for QCA6390")
-> >> > Signed-off-by: Alex Dewar <alex.dewar90@gmail.com>
-> >> > ---
-> >> >  drivers/net/wireless/ath/ath11k/mac.c | 21 +++++++++------------
-> >> >  1 file changed, 9 insertions(+), 12 deletions(-)
-> >> >
-> >> > diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-> >> > index 7f8dd47d2333..58db1b57b941 100644
-> >> > --- a/drivers/net/wireless/ath/ath11k/mac.c
-> >> > +++ b/drivers/net/wireless/ath/ath11k/mac.c
-> >> > @@ -5211,7 +5211,7 @@ ath11k_mac_op_assign_vif_chanctx(struct ieee80211_hw *hw,
-> >> >  	struct ath11k *ar = hw->priv;
-> >> >  	struct ath11k_base *ab = ar->ab;
-> >> >  	struct ath11k_vif *arvif = (void *)vif->drv_priv;
-> >> > -	int ret;
-> >> > +	int ret = 0;
-> >> 
-> >> I prefer not to initialise the ret variable.
-> >> 
-> >> >  	arvif->is_started = true;
-> >> >  
-> >> >  	/* TODO: Setup ps and cts/rts protection */
-> >> >  
-> >> > -	mutex_unlock(&ar->conf_mutex);
-> >> > -
-> >> > -	return 0;
-> >> > -
-> >> > -err:
-> >> > +unlock:
-> >> >  	mutex_unlock(&ar->conf_mutex);
-> >> >  
-> >> >  	return ret;
-> >> 
-> >> So in the pending branch I changed this to:
-> >> 
-> >> 	ret = 0;
-> >> 
-> >> out:
-> >> 	mutex_unlock(&ar->conf_mutex);
-> >> 
-> >> 	return ret;
-> >> 
-> >> Please check.
-> >
-> > I'm afraid you've introduced a bug ;). The body of the first if-statement
-> > in the function doesn't set ret because no error has occurred. So now
-> > it'll jump to the label and the function will return ret uninitialized.
-> 
-> Ouch, so I did. Good catch! I would have hoped that GCC warns about that
-> but it didn't.
-> 
-> I fixed the bug and added also a warning messages if peer_create()
-> fails:
-> 
-> https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=e3e7b8072fa6bb0928b9066cf76e19e6bd2ec663
-> 
-> Does this look better now? :)
+<pkshih@realtek.com> wrote:
 
-LGTM!
+> From: Ching-Te Ku <ku920601@realtek.com>
+> 
+> Fix some coding style warning.
+> 
+> Signed-off-by: Ching-Te Ku <ku920601@realtek.com>
+> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 
-> 
-> > With the gcc extension, ret will be initialised to zero anyway, so we're
-> > not saving anything by explicitly assigning to ret later in the
-> > function.
-> 
-> I prefer not to initialise ret in the beginning of the function and I
-> try to maintain that style in ath11k. I think it's more readable that
-> the error value is assigned just before the goto.
+Some warning? Please always include the warning and the tool in the commit log,
+otherwise people have no clue what you are fixing.
 
-Fair enough. I appreciate that it's a style issue.
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/20201027021157.6116-5-pkshih@realtek.com/
 
-> 
-> -- 
-> https://patchwork.kernel.org/project/linux-wireless/list/
-> 
-> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
