@@ -2,95 +2,85 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 755572AA005
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 Nov 2020 23:21:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F2B02AA31A
+	for <lists+linux-wireless@lfdr.de>; Sat,  7 Nov 2020 08:57:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729254AbgKFWTY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 6 Nov 2020 17:19:24 -0500
-Received: from mail.kernel.org ([198.145.29.99]:42816 "EHLO mail.kernel.org"
+        id S1727801AbgKGH53 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 7 Nov 2020 02:57:29 -0500
+Received: from m42-4.mailgun.net ([69.72.42.4]:41382 "EHLO m42-4.mailgun.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729232AbgKFWTP (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 6 Nov 2020 17:19:15 -0500
-Received: from localhost.localdomain (HSI-KBW-46-223-126-90.hsi.kabel-badenwuerttemberg.de [46.223.126.90])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        id S1727242AbgKGH52 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 7 Nov 2020 02:57:28 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1604735848; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=XX2WXRQG/bEFSIQ05Lin7fjFrmnojryzZMmogjJwKjk=;
+ b=dq4aLYzHn+28f3gxk4O/YvKEiR9UA9HHHbmZN5Z9HFdLtox98yemdjxp324Uq2D0naGEvnFk
+ l2mxW19dG8HLaLchfMMYwSyhxGKTD1RWcOWiXEQMY/FBVrM6B5FBiTLBZoCU6dMFBWa31Hf6
+ GR1EOLQrMfsWiGst/kRmCSfEcYc=
+X-Mailgun-Sending-Ip: 69.72.42.4
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n02.prod.us-west-2.postgun.com with SMTP id
+ 5fa6534923a1a2b32d29bf43 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sat, 07 Nov 2020 07:56:57
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 62568C433C9; Sat,  7 Nov 2020 07:56:57 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        MISSING_DATE,MISSING_MID,SPF_FAIL,URIBL_BLOCKED autolearn=no
+        autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 2CC6420882;
-        Fri,  6 Nov 2020 22:19:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1604701154;
-        bh=OjKky2mcuT3PPhvnL2N1n9WJjuGKW1fEUioqpsDSDNw=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=piTqh36/Ayd8rKuc3zcxxLUXwu8coawnGzadmDxmNVwyht5LsFJxbKKpvbei6ZwB5
-         i4Xivr2LHHwHyaH25bXiALK3Cu/8c5VDnYA8drwte5C9rzrbOpBOhdg19zecSP7Ss6
-         iishXpi6LYmi5ZVVAqz5r5CZz+uIbP+0EafwU9MI=
-From:   Arnd Bergmann <arnd@kernel.org>
-To:     netdev@vger.kernel.org
-Cc:     Arnd Bergmann <arnd@arndb.de>, linux-kernel@vger.kernel.org,
-        linux-wireless@vger.kernel.org, bridge@lists.linux-foundation.org,
-        linux-hams@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
-        Christoph Hellwig <hch@lst.de>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Heiner Kallweit <hkallweit1@gmail.com>
-Subject: [RFC net-next 28/28] net: socket: return changed ifreq from SIOCDEVPRIVATE
-Date:   Fri,  6 Nov 2020 23:17:43 +0100
-Message-Id: <20201106221743.3271965-29-arnd@kernel.org>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20201106221743.3271965-1-arnd@kernel.org>
-References: <20201106221743.3271965-1-arnd@kernel.org>
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id DE6E5C433C6;
+        Sat,  7 Nov 2020 07:56:55 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org DE6E5C433C6
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] ath10k: fix compilation warning
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <1604507837-29361-1-git-send-email-tamizhr@codeaurora.org>
+References: <1604507837-29361-1-git-send-email-tamizhr@codeaurora.org>
+To:     Tamizh chelvam <tamizhr@codeaurora.org>
+Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        Tamizh Chelvam <tamizhr@codeaurora.org>
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
+Message-Id: <20201107075657.62568C433C9@smtp.codeaurora.org>
+Date:   Sat,  7 Nov 2020 07:56:57 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Arnd Bergmann <arnd@arndb.de>
+Tamizh chelvam <tamizhr@codeaurora.org> wrote:
 
-Some drivers that use SIOCDEVPRIVATE ioctl commands modify
-the ifreq structure and expect it to be passed back to user
-space, which has never really happened for compat mode
-because the calling these drivers through ndo_do_ioctl
-requires overwriting the ifr_data pointer.
+> This change fixes below compilation warning.
+> 
+> smatch warnings:
+>  drivers/net/wireless/ath/ath10k/mac.c:9125 ath10k_mac_op_set_tid_config() error: uninitialized symbol 'ret'.
+> 
+> No functional changes. Compile tested only.
+> 
+> Reported-by: kernel test robot <lkp@intel.com>
+> Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
+> Signed-off-by: Tamizh Chelvam <tamizhr@codeaurora.org>
+> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 
-Now that all drivers are converted to ndo_siocdevprivate,
-change it to handle this correctly in both compat and
-native mode.
+Patch applied to ath-next branch of ath.git, thanks.
 
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
- net/core/dev_ioctl.c | 4 +---
- net/socket.c         | 2 +-
- 2 files changed, 2 insertions(+), 4 deletions(-)
+b91626451178 ath10k: fix compilation warning
 
-diff --git a/net/core/dev_ioctl.c b/net/core/dev_ioctl.c
-index 99efe8e2e0ce..0c058c3dc89a 100644
---- a/net/core/dev_ioctl.c
-+++ b/net/core/dev_ioctl.c
-@@ -296,9 +296,7 @@ static int dev_siocdevprivate(struct net_device *dev, struct ifreq *ifr,
- 			return -ENODEV;
- 	}
- 
--	/* fall back to do_ioctl for drivers not yet converted */
--	ifr->ifr_data = data;
--	return dev_do_ioctl(dev, ifr, cmd);
-+	return -EOPNOTSUPP;
- }
- 
- /*
-diff --git a/net/socket.c b/net/socket.c
-index 1e077182d0fd..6edf3f4d9dca 100644
---- a/net/socket.c
-+++ b/net/socket.c
-@@ -3206,7 +3206,7 @@ static int compat_sock_ioctl_trans(struct file *file, struct socket *sock,
- 	struct net *net = sock_net(sk);
- 
- 	if (cmd >= SIOCDEVPRIVATE && cmd <= (SIOCDEVPRIVATE + 15))
--		return compat_ifr_data_ioctl(net, cmd, argp);
-+		return sock_ioctl(file, cmd, (unsigned long)argp);
- 
- 	switch (cmd) {
- 	case SIOCSIFBR:
 -- 
-2.27.0
+https://patchwork.kernel.org/project/linux-wireless/patch/1604507837-29361-1-git-send-email-tamizhr@codeaurora.org/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
