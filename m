@@ -2,127 +2,213 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D3792AAA17
-	for <lists+linux-wireless@lfdr.de>; Sun,  8 Nov 2020 09:27:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 264EC2AAA8A
+	for <lists+linux-wireless@lfdr.de>; Sun,  8 Nov 2020 11:29:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727452AbgKHI1a (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 8 Nov 2020 03:27:30 -0500
-Received: from mail.kernel.org ([198.145.29.99]:48336 "EHLO mail.kernel.org"
+        id S1727570AbgKHK1u (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 8 Nov 2020 05:27:50 -0500
+Received: from mail.kernel.org ([198.145.29.99]:45750 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726115AbgKHI1a (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 8 Nov 2020 03:27:30 -0500
-Received: from mail-ot1-f45.google.com (mail-ot1-f45.google.com [209.85.210.45])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        id S1726115AbgKHK1u (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 8 Nov 2020 05:27:50 -0500
+Received: from localhost.localdomain (unknown [151.66.8.153])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 82E612151B;
-        Sun,  8 Nov 2020 08:27:29 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 8EA3D206ED;
+        Sun,  8 Nov 2020 10:27:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1604824049;
-        bh=T9rK7jzM4Uo8lISDVLvutAoFUbM+bhC60Dfzze4KpJ0=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=HjG6ii8k7TFQjX7JNqHv2lOviskc+54D1iF0wnjynFrjUOv74BY09q9iKn9AiZ298
-         OVL3Hn7g6gEiqpY3r32Y3Tf/SG+Z/yEIilaYUVAqwNSzoK28HX/cx5Yl23vSoreGLF
-         ix9qGQ+vvFIMcSktEa4OIhiHn2alhbh3rIC5R02E=
-Received: by mail-ot1-f45.google.com with SMTP id n11so5644966ota.2;
-        Sun, 08 Nov 2020 00:27:29 -0800 (PST)
-X-Gm-Message-State: AOAM531doHEiAfXi0qUAi+8r4uufpQGtV2pK0Mpx15BjTndko+eEYZMv
-        tdKUU5iXc0k9ABQ4D6jtVftBq+LUmmEA3RNK6Ow=
-X-Google-Smtp-Source: ABdhPJwGPcL/jY9Wx83MiEfwJ8vLr/COIt3JPH8IQANmhl0uIxcK1xw4JkTzas8PArDafbyk6I6ykok3k/Z2l+HmWUM=
-X-Received: by 2002:a9d:65d5:: with SMTP id z21mr6116013oth.251.1604824048822;
- Sun, 08 Nov 2020 00:27:28 -0800 (PST)
+        s=default; t=1604831269;
+        bh=6sztFWg0chHTeK9/wSMLhenK2B2WzBJwoIo1GTD4IK4=;
+        h=From:To:Cc:Subject:Date:From;
+        b=06UfAjWmBvidURWesAsUKdNfeP65n0L3z9jqSPgtWg7IJTzDjncIxDB+FnV+IkW+E
+         SwmDyynquQ6sWLRa8gKSlIzofqoTuSm0nBKkEk0dw1ee/KXUZjTwPnHHMcfsV6fEiT
+         Ygs7nnjsuNXFM53mNLrPiXplP3ktuZaIHF/ZBawI=
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org
+Subject: [PATCH] mt76: mt7615: refactor usb/sdio rate code
+Date:   Sun,  8 Nov 2020 11:27:45 +0100
+Message-Id: <874065f46c83a2665891cda6458d938518681b8e.1604831067.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-References: <20201106221743.3271965-1-arnd@kernel.org> <20201107160612.2909063a@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-In-Reply-To: <20201107160612.2909063a@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-From:   Arnd Bergmann <arnd@kernel.org>
-Date:   Sun, 8 Nov 2020 09:27:12 +0100
-X-Gmail-Original-Message-ID: <CAK8P3a3ROYs1FADZw8he0sZwfuM=XCvkOpzK=GHO+URf4opeDQ@mail.gmail.com>
-Message-ID: <CAK8P3a3ROYs1FADZw8he0sZwfuM=XCvkOpzK=GHO+URf4opeDQ@mail.gmail.com>
-Subject: Re: [RFC net-next 00/28] ndo_ioctl rework
-To:     Jakub Kicinski <kuba@kernel.org>
-Cc:     Networking <netdev@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        bridge@lists.linux-foundation.org, linux-hams@vger.kernel.org,
-        Christoph Hellwig <hch@lst.de>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Heiner Kallweit <hkallweit1@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sun, Nov 8, 2020 at 1:06 AM Jakub Kicinski <kuba@kernel.org> wrote:
->
-> On Fri,  6 Nov 2020 23:17:15 +0100 Arnd Bergmann wrote:
-> > Any suggestions on how to proceed? I think the ndo_siocdevprivate
-> > change is the most interesting here, and I would like to get
-> > that merged.
->
-> Splitting out / eliminating ioctl pass-thry in general seems like
-> a nice clean up. How did you get the ndo_eth_ioctl patch done, was
-> it manual work?
+Since wtbl workqueue is used only for rate handling, refactor code to
+make it more clear
 
-I had done a fairly detailed manual search through all drivers
-with a .ndo_do_ioctl function to find the SIOCDEVPRIVATE users,
-based on a simple shell script. After I had converted all of those,
-I realized that 80% of the remaining ndo_do_ioctl users were
-in drivers/net/ethernet, implementing the same five commands,
-so I did a 'git grep -wl ndo_do_ioctl drivers/net/ethernet/ |
-sed -i "s:ndo_do_ioctl:ndo_eth_ioctl"' and converted the rest
-by hand.
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+This patch is based on "mt76: mt7615: run key configuration in mt7615_set_key
+for usb/sdio devices"
+---
+ .../net/wireless/mediatek/mt76/mt7615/mac.c   | 18 ++++-----
+ .../wireless/mediatek/mt76/mt7615/mt7615.h    | 17 ++------
+ .../wireless/mediatek/mt76/mt7615/usb_sdio.c  | 40 ++++++++-----------
+ 3 files changed, 28 insertions(+), 47 deletions(-)
 
-FWIW, this is what remains afterwards:
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
+index 9df28608d6bb..1585d4dfdbbe 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
+@@ -915,22 +915,20 @@ mt7615_mac_queue_rate_update(struct mt7615_phy *phy, struct mt7615_sta *sta,
+ 			     struct ieee80211_tx_rate *rates)
+ {
+ 	struct mt7615_dev *dev = phy->dev;
+-	struct mt7615_wtbl_desc *wd;
++	struct mt7615_wtbl_rate_desc *wrd;
+ 
+-	if (work_pending(&dev->wtbl_work))
++	if (work_pending(&dev->rate_work))
+ 		return -EBUSY;
+ 
+-	wd = kzalloc(sizeof(*wd), GFP_ATOMIC);
+-	if (!wd)
++	wrd = kzalloc(sizeof(*wrd), GFP_ATOMIC);
++	if (!wrd)
+ 		return -ENOMEM;
+ 
+-	wd->type = MT7615_WTBL_RATE_DESC;
+-	wd->sta = sta;
+-
++	wrd->sta = sta;
+ 	mt7615_mac_update_rate_desc(phy, sta, probe_rate, rates,
+-				    &wd->rate);
+-	list_add_tail(&wd->node, &dev->wd_head);
+-	queue_work(dev->mt76.wq, &dev->wtbl_work);
++				    &wrd->rate);
++	list_add_tail(&wrd->node, &dev->wrd_head);
++	queue_work(dev->mt76.wq, &dev->rate_work);
+ 
+ 	return 0;
+ }
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
+index 73000d7f0d84..f86e83d4702e 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
+@@ -106,19 +106,11 @@ struct mt7615_rate_desc {
+ 	u8 bw;
+ };
+ 
+-enum mt7615_wtbl_desc_type {
+-	MT7615_WTBL_RATE_DESC,
+-};
+-
+-struct mt7615_wtbl_desc {
++struct mt7615_wtbl_rate_desc {
+ 	struct list_head node;
+ 
+-	enum mt7615_wtbl_desc_type type;
++	struct mt7615_rate_desc rate;
+ 	struct mt7615_sta *sta;
+-
+-	union {
+-		struct mt7615_rate_desc rate;
+-	};
+ };
+ 
+ struct mt7615_sta {
+@@ -281,8 +273,8 @@ struct mt7615_dev {
+ 
+ 	u8 fw_ver;
+ 
+-	struct work_struct wtbl_work;
+-	struct list_head wd_head;
++	struct work_struct rate_work;
++	struct list_head wrd_head;
+ 
+ 	u32 debugfs_rf_wf;
+ 	u32 debugfs_rf_reg;
+@@ -660,7 +652,6 @@ int mt7663_usb_sdio_tx_prepare_skb(struct mt76_dev *mdev, void *txwi_ptr,
+ bool mt7663_usb_sdio_tx_status_data(struct mt76_dev *mdev, u8 *update);
+ void mt7663_usb_sdio_tx_complete_skb(struct mt76_dev *mdev,
+ 				     struct mt76_queue_entry *e);
+-void mt7663_usb_sdio_wtbl_work(struct work_struct *work);
+ int mt7663_usb_sdio_register_device(struct mt7615_dev *dev);
+ int mt7663u_mcu_init(struct mt7615_dev *dev);
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/usb_sdio.c b/drivers/net/wireless/mediatek/mt76/mt7615/usb_sdio.c
+index eb3a14cb6cc1..203256862dfd 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/usb_sdio.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/usb_sdio.c
+@@ -61,12 +61,11 @@ mt7663_usb_sdio_write_txwi(struct mt7615_dev *dev, struct mt76_wcid *wcid,
+ 	skb_push(skb, MT_USB_TXD_SIZE);
+ }
+ 
+-static int
+-mt7663_usb_sdio_set_rates(struct mt7615_dev *dev,
+-			  struct mt7615_wtbl_desc *wd)
++static int mt7663_usb_sdio_set_rates(struct mt7615_dev *dev,
++				     struct mt7615_wtbl_rate_desc *wrd)
+ {
+-	struct mt7615_rate_desc *rate = &wd->rate;
+-	struct mt7615_sta *sta = wd->sta;
++	struct mt7615_rate_desc *rate = &wrd->rate;
++	struct mt7615_sta *sta = wrd->sta;
+ 	u32 w5, w27, addr, val;
+ 
+ 	lockdep_assert_held(&dev->mt76.mutex);
+@@ -132,37 +131,30 @@ mt7663_usb_sdio_set_rates(struct mt7615_dev *dev,
+ 	return 0;
+ }
+ 
+-void mt7663_usb_sdio_wtbl_work(struct work_struct *work)
++static void mt7663_usb_sdio_rate_work(struct work_struct *work)
+ {
+-	struct mt7615_wtbl_desc *wd, *wd_next;
+-	struct list_head wd_list;
++	struct mt7615_wtbl_rate_desc *wrd, *wrd_next;
++	struct list_head wrd_list;
+ 	struct mt7615_dev *dev;
+ 
+ 	dev = (struct mt7615_dev *)container_of(work, struct mt7615_dev,
+-						wtbl_work);
++						rate_work);
+ 
+-	INIT_LIST_HEAD(&wd_list);
++	INIT_LIST_HEAD(&wrd_list);
+ 	spin_lock_bh(&dev->mt76.lock);
+-	list_splice_init(&dev->wd_head, &wd_list);
++	list_splice_init(&dev->wrd_head, &wrd_list);
+ 	spin_unlock_bh(&dev->mt76.lock);
+ 
+-	list_for_each_entry_safe(wd, wd_next, &wd_list, node) {
+-		list_del(&wd->node);
++	list_for_each_entry_safe(wrd, wrd_next, &wrd_list, node) {
++		list_del(&wrd->node);
+ 
+ 		mt7615_mutex_acquire(dev);
+-
+-		switch (wd->type) {
+-		case MT7615_WTBL_RATE_DESC:
+-			mt7663_usb_sdio_set_rates(dev, wd);
+-			break;
+-		}
+-
++		mt7663_usb_sdio_set_rates(dev, wrd);
+ 		mt7615_mutex_release(dev);
+ 
+-		kfree(wd);
++		kfree(wrd);
+ 	}
+ }
+-EXPORT_SYMBOL_GPL(mt7663_usb_sdio_wtbl_work);
+ 
+ bool mt7663_usb_sdio_tx_status_data(struct mt76_dev *mdev, u8 *update)
+ {
+@@ -308,8 +300,8 @@ int mt7663_usb_sdio_register_device(struct mt7615_dev *dev)
+ 	struct ieee80211_hw *hw = mt76_hw(dev);
+ 	int err;
+ 
+-	INIT_WORK(&dev->wtbl_work, mt7663_usb_sdio_wtbl_work);
+-	INIT_LIST_HEAD(&dev->wd_head);
++	INIT_WORK(&dev->rate_work, mt7663_usb_sdio_rate_work);
++	INIT_LIST_HEAD(&dev->wrd_head);
+ 	mt7615_init_device(dev);
+ 
+ 	err = mt7663_usb_sdio_init_hardware(dev);
+-- 
+2.26.2
 
-$ git grep -w ndo_do_ioctl
-Documentation/networking/netdevices.rst:ndo_do_ioctl:
-drivers/char/pcmcia/synclink_cs.c:      .ndo_do_ioctl   = hdlcdev_ioctl,
-drivers/net/appletalk/cops.c:        .ndo_do_ioctl           = cops_ioctl,
-drivers/net/appletalk/ltpc.c:   .ndo_do_ioctl           = ltpc_ioctl,
-drivers/net/bonding/bond_main.c:        .ndo_do_ioctl           = bond_do_ioctl,
-drivers/net/wan/c101.c: .ndo_do_ioctl   = c101_ioctl,
-drivers/net/wan/cosa.c: .ndo_do_ioctl   = cosa_net_ioctl,
-drivers/net/wan/farsync.c:      .ndo_do_ioctl   = fst_ioctl,
-drivers/net/wan/fsl_ucc_hdlc.c: .ndo_do_ioctl   = uhdlc_ioctl,
-drivers/net/wan/hdlc_fr.c:      .ndo_do_ioctl   = pvc_ioctl,
-drivers/net/wan/hostess_sv11.c: .ndo_do_ioctl   = hostess_ioctl,
-drivers/net/wan/ixp4xx_hss.c:   .ndo_do_ioctl   = hss_hdlc_ioctl,
-drivers/net/wan/lmc/lmc_main.c: .ndo_do_ioctl   = lmc_ioctl,
-drivers/net/wan/n2.c:   .ndo_do_ioctl   = n2_ioctl,
-drivers/net/wan/pc300too.c:     .ndo_do_ioctl   = pc300_ioctl,
-drivers/net/wan/pci200syn.c:    .ndo_do_ioctl   = pci200_ioctl,
-drivers/net/wan/sealevel.c:     .ndo_do_ioctl   = sealevel_ioctl,
-drivers/net/wan/wanxl.c:        .ndo_do_ioctl   = wanxl_ioctl,
-drivers/tty/synclink.c: .ndo_do_ioctl   = hdlcdev_ioctl,
-drivers/tty/synclink_gt.c:      .ndo_do_ioctl   = hdlcdev_ioctl,
-drivers/tty/synclinkmp.c:       .ndo_do_ioctl   = hdlcdev_ioctl,
-include/linux/netdevice.h: * int (*ndo_do_ioctl)(struct net_device
-*dev, struct ifreq *ifr, int cmd);
-include/linux/netdevice.h:      int
-(*ndo_do_ioctl)(struct net_device *dev,
-net/appletalk/aarp.c:   if (!(ops->ndo_do_ioctl(iface->dev, &atreq,
-SIOCSIFADDR))) {
-net/appletalk/aarp.c:           ops->ndo_do_ioctl(iface->dev, &atreq,
-SIOCGIFADDR);
-net/bridge/br_device.c: .ndo_do_ioctl            = br_dev_ioctl,
-net/core/dev_ioctl.c:   if (ops->ndo_do_ioctl) {
-net/core/dev_ioctl.c:                   return ops->ndo_do_ioctl(dev, ifr, cmd);
-net/ieee802154/socket.c:        if (dev->type == ARPHRD_IEEE802154 &&
-dev->netdev_ops->ndo_do_ioctl)
-net/ieee802154/socket.c:                ret =
-dev->netdev_ops->ndo_do_ioctl(dev, &ifr, cmd);
-net/mac802154/iface.c:  .ndo_do_ioctl           = mac802154_wpan_ioctl,
-
-> > For the wireless drivers, removing the old drivers
-> > instead of just the dead code might be an alternative, depending
-> > on whether anyone thinks there might still be users.
->
-> Dunno if you want to dig into removal with a series like this,
-> anything using ioctls will be pretty old (with the exception
-> of what you separated into ndo_eth_ioctl). You may get bogged
-> down.
-
-Ok
-
-      Arnd
