@@ -2,92 +2,172 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 526CD2AC41E
-	for <lists+linux-wireless@lfdr.de>; Mon,  9 Nov 2020 19:48:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 914452AC822
+	for <lists+linux-wireless@lfdr.de>; Mon,  9 Nov 2020 23:14:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730393AbgKISsg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 9 Nov 2020 13:48:36 -0500
-Received: from z5.mailgun.us ([104.130.96.5]:12465 "EHLO z5.mailgun.us"
+        id S1729336AbgKIWOu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 9 Nov 2020 17:14:50 -0500
+Received: from mga02.intel.com ([134.134.136.20]:3075 "EHLO mga02.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729454AbgKISsg (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 9 Nov 2020 13:48:36 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1604947716; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=58Mu0ASC/w5nguEqxIJa+k/Ebz+3T6IKxwh6iickRNk=; b=rDi52KWq4A43QgntTYUJaOzYWLLPrEflCAA5OOA5s9igbYrWcttAiJ/VJDd5Vs5IrybNIhL4
- B+gR5Lq5FR87nG9ysiuZ7d0khj0bQ5+bOe3MZSjaOhJzqY67H2cBAIiOWDCzy2YYp/WHuGZV
- Y68jvTu8LA+nba4W2XwC0mvwDNo=
-X-Mailgun-Sending-Ip: 104.130.96.5
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n06.prod.us-east-1.postgun.com with SMTP id
- 5fa98f030fe4be3f433f1184 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 09 Nov 2020 18:48:35
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id E8797C433AF; Mon,  9 Nov 2020 18:48:34 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id AE83AC43382;
-        Mon,  9 Nov 2020 18:48:30 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org AE83AC43382
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Bjorn Helgaas <helgaas@kernel.org>
-Cc:     Govind Singh <govinds@codeaurora.org>, linux-pci@vger.kernel.org,
-        linux-wireless@vger.kernel.org, Devin Bayer <dev@doubly.so>,
-        Christoph Hellwig <hch@lst.de>,
-        Thomas Krause <thomaskrause@posteo.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        ath11k@lists.infradead.org
-Subject: Re: pci_alloc_irq_vectors fails ENOSPC for XPS 13 9310
-References: <20201103160838.GA246433@bjorn-Precision-5520>
-Date:   Mon, 09 Nov 2020 20:48:28 +0200
-In-Reply-To: <20201103160838.GA246433@bjorn-Precision-5520> (Bjorn Helgaas's
-        message of "Tue, 3 Nov 2020 10:08:38 -0600")
-Message-ID: <87wnyue58j.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        id S1729247AbgKIWOu (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 9 Nov 2020 17:14:50 -0500
+IronPort-SDR: /zkoLd3oeofGY3FIIqRZeFIbvQcglneb1oh/H5/I0XbAWI+KpF2rf9T2fXtlfXITAJ/kQOJjmK
+ jUErlWoYX7Iw==
+X-IronPort-AV: E=McAfee;i="6000,8403,9800"; a="156885756"
+X-IronPort-AV: E=Sophos;i="5.77,464,1596524400"; 
+   d="scan'208";a="156885756"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Nov 2020 14:14:50 -0800
+IronPort-SDR: 9fEqoy/dALdUG3IyX5PxQfdLqZXQ6eBE/YAr/rd/h8CqS+hm0490Irq6HYRI7S8ptWCbkQG60X
+ s/LYYX4IrCPQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.77,464,1596524400"; 
+   d="scan'208";a="529520479"
+Received: from lkp-server01.sh.intel.com (HELO d0be80f1a028) ([10.239.97.150])
+  by fmsmga006.fm.intel.com with ESMTP; 09 Nov 2020 14:14:48 -0800
+Received: from kbuild by d0be80f1a028 with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1kcFR2-0000Rm-Cm; Mon, 09 Nov 2020 22:14:48 +0000
+Date:   Tue, 10 Nov 2020 06:14:14 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Johannes Berg <johannes.berg@intel.com>
+Cc:     linux-wireless@vger.kernel.org
+Subject: [mac80211-next:master] BUILD SUCCESS
+ 70c5e40ca959ad48e932a343116a76dd78859e5e
+Message-ID: <5fa9bf36.r2teKIcFYTIOR8RB%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Bjorn Helgaas <helgaas@kernel.org> writes:
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211-next.git  master
+branch HEAD: 70c5e40ca959ad48e932a343116a76dd78859e5e  mac80211: assure that certain drivers adhere to DONT_REORDER flag
 
->> > Tangent: have you considered getting this list archived on
->> > https://lore.kernel.org/lists.html?
->> 
->> Good point, actually I have not. I'll add both ath10k and ath11k lists
->> to lore. It's even more important now that lists.infradead.org had a
->> hard drive crash and lost years of archives.
->
-> Or you could just add linux-wireless, e.g.,
->
->   L:      ath11k@lists.infradead.org
->   L:      linux-wireless@vger.kernel.org
->
-> or even consider moving from ath10k and ath11k to
-> linux-wireless@vger.kernel.org.  I think there's some value in
-> consolidating low-volume lists.  It looks like ath11k had < 90
-> messages for all of October.
+elapsed time: 953m
 
-The background here is that linux-wireless is quite high volume list and
-not everyone have time to follow that, so having specific ath10k and
-ath11k lists make it easier for those people. So I'm hesitant to
-shutdown driver lists for that reason.
+configs tested: 108
+configs skipped: 2
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+powerpc                    sam440ep_defconfig
+powerpc                     pseries_defconfig
+m68k                         amcore_defconfig
+arm                         s5pv210_defconfig
+xtensa                  audio_kc705_defconfig
+m68k                          hp300_defconfig
+sh                           se7206_defconfig
+arm                          ep93xx_defconfig
+arc                        nsimosci_defconfig
+mips                         tb0219_defconfig
+powerpc                 linkstation_defconfig
+mips                        jmr3927_defconfig
+powerpc                     sbc8548_defconfig
+arm                        oxnas_v6_defconfig
+sh                     magicpanelr2_defconfig
+arc                                 defconfig
+mips                      fuloong2e_defconfig
+sh                         microdev_defconfig
+arm                            mmp2_defconfig
+arm                          collie_defconfig
+sh                        sh7757lcr_defconfig
+m68k                        m5307c3_defconfig
+arm                             rpc_defconfig
+m68k                        m5272c3_defconfig
+c6x                              alldefconfig
+powerpc                      pmac32_defconfig
+arm                          imote2_defconfig
+parisc                           alldefconfig
+arm                        shmobile_defconfig
+arm                   milbeaut_m10v_defconfig
+powerpc                     tqm8540_defconfig
+powerpc                     skiroot_defconfig
+arm                         shannon_defconfig
+nds32                               defconfig
+arm                           corgi_defconfig
+arm                          gemini_defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+c6x                              allyesconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+i386                 randconfig-a004-20201109
+i386                 randconfig-a006-20201109
+i386                 randconfig-a005-20201109
+i386                 randconfig-a001-20201109
+i386                 randconfig-a003-20201109
+i386                 randconfig-a002-20201109
+i386                 randconfig-a014-20201109
+i386                 randconfig-a015-20201109
+i386                 randconfig-a013-20201109
+i386                 randconfig-a016-20201109
+i386                 randconfig-a011-20201109
+i386                 randconfig-a012-20201109
+x86_64               randconfig-a003-20201110
+x86_64               randconfig-a005-20201110
+x86_64               randconfig-a004-20201110
+x86_64               randconfig-a002-20201110
+x86_64               randconfig-a006-20201110
+x86_64               randconfig-a001-20201110
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+x86_64                                   rhel
+x86_64                           allyesconfig
+x86_64                    rhel-7.6-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                                  kexec
+
+clang tested configs:
+x86_64               randconfig-a012-20201109
+x86_64               randconfig-a015-20201109
+x86_64               randconfig-a013-20201109
+x86_64               randconfig-a011-20201109
+x86_64               randconfig-a014-20201109
+x86_64               randconfig-a016-20201109
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
