@@ -2,172 +2,111 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 914452AC822
-	for <lists+linux-wireless@lfdr.de>; Mon,  9 Nov 2020 23:14:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7737B2AC931
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Nov 2020 00:16:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729336AbgKIWOu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 9 Nov 2020 17:14:50 -0500
-Received: from mga02.intel.com ([134.134.136.20]:3075 "EHLO mga02.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729247AbgKIWOu (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 9 Nov 2020 17:14:50 -0500
-IronPort-SDR: /zkoLd3oeofGY3FIIqRZeFIbvQcglneb1oh/H5/I0XbAWI+KpF2rf9T2fXtlfXITAJ/kQOJjmK
- jUErlWoYX7Iw==
-X-IronPort-AV: E=McAfee;i="6000,8403,9800"; a="156885756"
-X-IronPort-AV: E=Sophos;i="5.77,464,1596524400"; 
-   d="scan'208";a="156885756"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Nov 2020 14:14:50 -0800
-IronPort-SDR: 9fEqoy/dALdUG3IyX5PxQfdLqZXQ6eBE/YAr/rd/h8CqS+hm0490Irq6HYRI7S8ptWCbkQG60X
- s/LYYX4IrCPQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.77,464,1596524400"; 
-   d="scan'208";a="529520479"
-Received: from lkp-server01.sh.intel.com (HELO d0be80f1a028) ([10.239.97.150])
-  by fmsmga006.fm.intel.com with ESMTP; 09 Nov 2020 14:14:48 -0800
-Received: from kbuild by d0be80f1a028 with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1kcFR2-0000Rm-Cm; Mon, 09 Nov 2020 22:14:48 +0000
-Date:   Tue, 10 Nov 2020 06:14:14 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Johannes Berg <johannes.berg@intel.com>
-Cc:     linux-wireless@vger.kernel.org
-Subject: [mac80211-next:master] BUILD SUCCESS
- 70c5e40ca959ad48e932a343116a76dd78859e5e
-Message-ID: <5fa9bf36.r2teKIcFYTIOR8RB%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S1730087AbgKIXQz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 9 Nov 2020 18:16:55 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:40250 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727070AbgKIXQz (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 9 Nov 2020 18:16:55 -0500
+Received: from mail-io1-f72.google.com ([209.85.166.72])
+        by youngberry.canonical.com with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <seth.forshee@canonical.com>)
+        id 1kcGP6-0001I2-HU
+        for linux-wireless@vger.kernel.org; Mon, 09 Nov 2020 23:16:52 +0000
+Received: by mail-io1-f72.google.com with SMTP id y17so6886148iot.1
+        for <linux-wireless@vger.kernel.org>; Mon, 09 Nov 2020 15:16:52 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=yWOh058py9Z1yCKFlGUJbeKB5vRPnrW3Yx1obVhiW9c=;
+        b=lPxKHHNHFhrjXIVuDWmJGyEXHkVG5S0mS58bOpMNKW8HuovQeEKOyJBo+KAxdSn1C5
+         CBwDUhIzLNRe6s+/AehbZ+D4x5ADUZd+xH5qj+pMc1/3Tz7sM1aBe1c0qP5frRuQJSc/
+         iRzEJ+gHX94aOCaSg/KdltNlQT0dnovY4WvIiHQ1RcYxbbKqmiKIvTjw2BGCjKtbvc0M
+         a2RMbrllsA7MqLWDDu3+QxrWPpzKDPQSDdMfsyT+IyXAyDfg4z2TpRjboJU/IpXPDqJV
+         /2DsfRfRXCaiZ5ws2SuNL+xKNiIy6XcqkTm6iVT1m5jenrp2O7/tJNOnkudtGfX/SrTE
+         PNsQ==
+X-Gm-Message-State: AOAM5333PdDQYOJOHGJUeBztLp8HRn2miYynum4DflzyMoVeZz/o3XwZ
+        PX0TWSbvT/Cepf3+CS5+Mtot/j7UU+yl4a8W9eoseV+0f6kdvVsur+AVgWAtgtFYhH+ZZo2RHTo
+        gpRomzw7EHR7PsG/sfAbJ0SPg0i3zAgqqv2nWGu4KM5Xf
+X-Received: by 2002:a02:3849:: with SMTP id v9mr12971797jae.23.1604963811431;
+        Mon, 09 Nov 2020 15:16:51 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJxGcZsfRvnr6fhEXkXQImea9heFzhzuJBw81LlBL76xMVghIzqjTfoWTzKH9BelfllHjgXU9Q==
+X-Received: by 2002:a02:3849:: with SMTP id v9mr12971782jae.23.1604963811187;
+        Mon, 09 Nov 2020 15:16:51 -0800 (PST)
+Received: from localhost ([2605:a601:ac0f:820:da74:bc22:6cb3:9db0])
+        by smtp.gmail.com with ESMTPSA id 192sm8178352ilc.31.2020.11.09.15.16.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Nov 2020 15:16:50 -0800 (PST)
+Date:   Mon, 9 Nov 2020 17:16:49 -0600
+From:   Seth Forshee <seth.forshee@canonical.com>
+To:     Robert Marko <robert.marko@sartura.hr>
+Cc:     wireless-regdb@lists.infradead.org, linux-wireless@vger.kernel.org,
+        Luka Perkov <luka.perkov@sartura.hr>
+Subject: Re: [PATCH] wireless-regdb: Update regulatory rules for Croatia (HR)
+Message-ID: <20201109231649.GH6125@ubuntu-x1>
+References: <20200913172140.66439-1-robert.marko@sartura.hr>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+In-Reply-To: <20200913172140.66439-1-robert.marko@sartura.hr>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211-next.git  master
-branch HEAD: 70c5e40ca959ad48e932a343116a76dd78859e5e  mac80211: assure that certain drivers adhere to DONT_REORDER flag
+On Sun, Sep 13, 2020 at 07:21:40PM +0200, Robert Marko wrote:
+> Croatian Regulatory Authority for Network Industries (HAKOM) has
+> updated the general licenses OD-85 and OD-86 with the new OD-85a
+> and OD-86a versions.
+> 
+> These introuduce the following changes:
+> * Outdoor usage for 5150-5250 and 5250-5350 MHz ranges is permitted
+> * 5150-5250 MHz range TPC requirment was dropped and power output raised to 200mW
+> 
+> OD-85a: https://www.hakom.hr/UserDocsImages/op%C4%87e%20dozvole%20prosinac%202009.g/Opca_dozvola_85a.pdf
+> OD-86a: https://www.hakom.hr/UserDocsImages/op%C4%87e%20dozvole%20prosinac%202009.g/Opca_dozvola_86a.pdf
+> 
+> Signed-off-by: Robert Marko <robert.marko@sartura.hr>
+> Cc: Luka Perkov <luka.perkov@sartura.hr>
+> ---
+>  db.txt | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/db.txt b/db.txt
+> index ac32483..52d0fab 100644
+> --- a/db.txt
+> +++ b/db.txt
+> @@ -693,8 +693,8 @@ country HR: DFS-ETSI
+>  # Harmonized CEPT countries (July 2019): https://www.ecodocdb.dk/download/25c41779-cd6e/Rec7003e.pdf
+>  # HR: http://tablice.hakom.hr:8080/vis?lang=en
+>  	(2400 - 2483.5 @ 40), (100 mW)
+> -	(5150 - 5250 @ 80), (200 mW), NO-OUTDOOR, AUTO-BW, wmmrule=ETSI
+> -	(5250 - 5350 @ 80), (100 mW), NO-OUTDOOR, DFS, AUTO-BW, wmmrule=ETSI
+> +	(5150 - 5250 @ 80), (200 mW), AUTO-BW, wmmrule=ETSI
 
-elapsed time: 953m
+Based on the translation I'm reading the 200 mW applied to elevations
+from 5 degrees to 30 degrees, and for elevations above 30 degress the
+limit is 125 mW. I'm not expeienced with regulations that vary with the
+elevation angle. Why should we use 200 mW instead of 125 mW, which is
+allowed for any elevation?
 
-configs tested: 108
-configs skipped: 2
+> +	(5250 - 5350 @ 80), (200 mW), DFS, AUTO-BW, wmmrule=ETSI
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+The translation of OD-86a I'm reading says "use mostly indoors." Is that
+an accurate translation? How does this compare to the language from
+OD-86? I'm a little unsure how to interpret it.
 
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-powerpc                    sam440ep_defconfig
-powerpc                     pseries_defconfig
-m68k                         amcore_defconfig
-arm                         s5pv210_defconfig
-xtensa                  audio_kc705_defconfig
-m68k                          hp300_defconfig
-sh                           se7206_defconfig
-arm                          ep93xx_defconfig
-arc                        nsimosci_defconfig
-mips                         tb0219_defconfig
-powerpc                 linkstation_defconfig
-mips                        jmr3927_defconfig
-powerpc                     sbc8548_defconfig
-arm                        oxnas_v6_defconfig
-sh                     magicpanelr2_defconfig
-arc                                 defconfig
-mips                      fuloong2e_defconfig
-sh                         microdev_defconfig
-arm                            mmp2_defconfig
-arm                          collie_defconfig
-sh                        sh7757lcr_defconfig
-m68k                        m5307c3_defconfig
-arm                             rpc_defconfig
-m68k                        m5272c3_defconfig
-c6x                              alldefconfig
-powerpc                      pmac32_defconfig
-arm                          imote2_defconfig
-parisc                           alldefconfig
-arm                        shmobile_defconfig
-arm                   milbeaut_m10v_defconfig
-powerpc                     tqm8540_defconfig
-powerpc                     skiroot_defconfig
-arm                         shannon_defconfig
-nds32                               defconfig
-arm                           corgi_defconfig
-arm                          gemini_defconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-c6x                              allyesconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-i386                 randconfig-a004-20201109
-i386                 randconfig-a006-20201109
-i386                 randconfig-a005-20201109
-i386                 randconfig-a001-20201109
-i386                 randconfig-a003-20201109
-i386                 randconfig-a002-20201109
-i386                 randconfig-a014-20201109
-i386                 randconfig-a015-20201109
-i386                 randconfig-a013-20201109
-i386                 randconfig-a016-20201109
-i386                 randconfig-a011-20201109
-i386                 randconfig-a012-20201109
-x86_64               randconfig-a003-20201110
-x86_64               randconfig-a005-20201110
-x86_64               randconfig-a004-20201110
-x86_64               randconfig-a002-20201110
-x86_64               randconfig-a006-20201110
-x86_64               randconfig-a001-20201110
-riscv                    nommu_k210_defconfig
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-x86_64                                   rhel
-x86_64                           allyesconfig
-x86_64                    rhel-7.6-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                                  kexec
+Thanks,
+Seth
 
-clang tested configs:
-x86_64               randconfig-a012-20201109
-x86_64               randconfig-a015-20201109
-x86_64               randconfig-a013-20201109
-x86_64               randconfig-a011-20201109
-x86_64               randconfig-a014-20201109
-x86_64               randconfig-a016-20201109
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+>  	(5470 - 5725 @ 160), (500 mW), DFS, wmmrule=ETSI
+>  	# short range devices (ETSI EN 300 440-1)
+>  	(5725 - 5875 @ 80), (25 mW)
+> -- 
+> 2.26.2
+> 
