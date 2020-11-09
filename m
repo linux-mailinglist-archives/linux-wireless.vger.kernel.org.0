@@ -2,99 +2,93 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A5EF2AB739
-	for <lists+linux-wireless@lfdr.de>; Mon,  9 Nov 2020 12:36:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5ED5F2ABADF
+	for <lists+linux-wireless@lfdr.de>; Mon,  9 Nov 2020 14:23:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729769AbgKILgk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 9 Nov 2020 06:36:40 -0500
-Received: from m42-4.mailgun.net ([69.72.42.4]:20472 "EHLO m42-4.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729503AbgKILdI (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 9 Nov 2020 06:33:08 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1604921587; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=YgFwD2NhEFfID7L84oU3VRRTNzxsxISwyjQEu4AV+l4=; b=kMKdpYaYlH7raQDgDZd1Hqf9erBjb7vjJuEEvNfv9oMgPPas51wzS8BEsyv7snenhTZbAaO9
- /6FJI5w9+TjCE8x/9kx3ExwhVT96k5UTD/VvRCWHqSgPJztVtjZa5UhaCRfc4H6aSt+snM9h
- H/1inL0XHbpkHBunf+b2kFiWoAw=
-X-Mailgun-Sending-Ip: 69.72.42.4
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n02.prod.us-west-2.postgun.com with SMTP id
- 5fa928f282aad55dcbd09aa0 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 09 Nov 2020 11:33:06
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 6714CC43385; Mon,  9 Nov 2020 11:33:06 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id C1CCAC43387;
-        Mon,  9 Nov 2020 11:33:04 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org C1CCAC43387
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org
-Subject: Re: [PATCH 8/8] cfg80211: remove WDS code
-References: <20201109095747.113720-1-johannes@sipsolutions.net>
-        <20201109105103.8f5b98e4068d.I5f5129041649ef2862b69683574bb3344743727b@changeid>
-        <87lffa6azd.fsf@tynnyri.adurom.net>
-        <ef27c87e34c173e015ce41242dab3bdf2d312d8d.camel@sipsolutions.net>
-Date:   Mon, 09 Nov 2020 13:33:02 +0200
-In-Reply-To: <ef27c87e34c173e015ce41242dab3bdf2d312d8d.camel@sipsolutions.net>
-        (Johannes Berg's message of "Mon, 09 Nov 2020 12:12:21 +0100")
-Message-ID: <87a6vqg3yp.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        id S2387734AbgKINXV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 9 Nov 2020 08:23:21 -0500
+Received: from mail-il1-f200.google.com ([209.85.166.200]:56862 "EHLO
+        mail-il1-f200.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1733269AbgKINXT (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 9 Nov 2020 08:23:19 -0500
+Received: by mail-il1-f200.google.com with SMTP id g2so6357521ilb.23
+        for <linux-wireless@vger.kernel.org>; Mon, 09 Nov 2020 05:23:18 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
+        bh=CO45gfakMLgnsGNC2zQCKWa4XgBYQMP+NMYJGmT003U=;
+        b=h7MOIUva4QZwph2oTrDWOVZRzp9VDaq22WWz5hsNU1kZK1acQ7EzCwiGGhN2mOgX3W
+         kQTLFwiDpAUVr7d4ERoFEu5+ZPKNDuGYIzL7dpXBnVilT9+0Uq9/BwTUz/H7MIqoaat3
+         YOKAa7HOO80XmxpQ+yAxOxDeszg2PtgeRAWcf5t7Y+ODYeg8RthXnRIPmIgA15ZH6qB/
+         guT6HR2JW4OxBdYLizPyM2d7zOrNXirWblQyv5VFIELFuVO/eMsJXHAudwLc4tvWOEd9
+         FtkX3/xej5VUksyTcNxRrIIj1QVLLDZQ2VIxhrCq3u+V5OX+nRVJuFADGt2Qetw0jZSY
+         AR2g==
+X-Gm-Message-State: AOAM532AUYlfHha53+X7qxX0APShdPP43excknZYmHn1ukiR26M5+vqJ
+        t0NOwJ3biql3DlstdHwAIA2Cgb6WjOoswfkq1+UUVTqeOio1
+X-Google-Smtp-Source: ABdhPJzXwgrjFbwFN8QQPAiQANvB6yFzbI0NeYFOZSKmEJa6uyKIHDxJZIDWoxe5J3JgIcAvs1aySuSGbfdWd7hqCstmcbbs8pKJ
 MIME-Version: 1.0
-Content-Type: text/plain
+X-Received: by 2002:a92:cecf:: with SMTP id z15mr9859936ilq.214.1604928198116;
+ Mon, 09 Nov 2020 05:23:18 -0800 (PST)
+Date:   Mon, 09 Nov 2020 05:23:18 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <000000000000238d9b05b3ac77c5@google.com>
+Subject: BUG: sleeping function called from invalid context in corrupted
+From:   syzbot <syzbot+b7aeb9318541a1c709f1@syzkaller.appspotmail.com>
+To:     davem@davemloft.net, johannes.berg@intel.com,
+        johannes@sipsolutions.net, kuba@kernel.org,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Johannes Berg <johannes@sipsolutions.net> writes:
+Hello,
 
-> On Mon, 2020-11-09 at 13:11 +0200, Kalle Valo wrote:
->> Johannes Berg <johannes@sipsolutions.net> writes:
->> 
->> > From: Johannes Berg <johannes.berg@intel.com>
->> > 
->> > Remove all the code that was there to configure WDS interfaces,
->> > now that there's no way to reach it anymore.
->> > 
->> > Signed-off-by: Johannes Berg <johannes.berg@intel.com>
->> 
->> [...]
->> 
->> > @@ -675,10 +673,8 @@ int wiphy_register(struct wiphy *wiphy)
->> >  		     !(wiphy->nan_supported_bands & BIT(NL80211_BAND_2GHZ)))))
->> >  		return -EINVAL;
->> >  
->> > -#ifndef CONFIG_WIRELESS_WDS
->> >  	if (WARN_ON(wiphy->interface_modes & BIT(NL80211_IFTYPE_WDS)))
->> >  		return -EINVAL;
->> > -#endif
->> 
->> What about out-of-tree drivers? Should we have (or do we already have?)
->> a some kind safe guard if an out of tree driver tries to use WDS?
->
-> That's what happens here, no? We warn and return invalid - now
-> unconditionally, before we allowed it if CONFIG_WIRELESS_WDS was
-> enabled.
+syzbot found the following issue on:
 
-Argh, I'm blind. I read that the whole if block was removed :) Sorry for
-the noise.
+HEAD commit:    bf3e7628 Merge branch 'mtd/fixes' of git://git.kernel.org/..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=16d76e2a500000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=e791ddf0875adf65
+dashboard link: https://syzkaller.appspot.com/bug?extid=b7aeb9318541a1c709f1
+compiler:       clang version 11.0.0 (https://github.com/llvm/llvm-project.git ca2dcbd030eadbf0aa9b660efe864ff08af6e18b)
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=14df611a500000
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+The issue was bisected to:
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+commit dcd479e10a0510522a5d88b29b8f79ea3467d501
+Author: Johannes Berg <johannes.berg@intel.com>
+Date:   Fri Oct 9 12:17:11 2020 +0000
+
+    mac80211: always wind down STA state
+
+bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=1218ff14500000
+final oops:     https://syzkaller.appspot.com/x/report.txt?x=1118ff14500000
+console output: https://syzkaller.appspot.com/x/log.txt?x=1618ff14500000
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+b7aeb9318541a1c709f1@syzkaller.appspotmail.com
+Fixes: dcd479e10a05 ("mac80211: always wind down STA state")
+
+BUG: sleeping function called from invalid context at net/mac80211/sta_info.c:1962
+in_atomic(): 0, irqs_disabled(): 0, non_block: 0, pid: 35, name: kworker/u4:2
+4 locks held by kworker/u4:2/35:
+ #0: ffff88802af11138 ((wq_completion)phy4){+.+.}-{0:0}, at: process_one_work+0x6f4/0xfc0 kernel/workqueue.c:2245
+ #1: ffffc90000e0fd80 ((work_completion)(&sdata->work)){+.+.}-{0:0}, at: process_one_work+0x733/0xfc0 kernel/workqueue.c:2247
+ #2: ffff88802f27cd00 (&wdev->mtx){+.+.}-{3:3}, at: sdata_lock net/mac80211/ieee80211_i.h:1021 [inline]
+ #2: ffff88802f27cd00 (&wdev->mtx){+.+.}-{3:3}, at: ieee80211_ibss_work+0x4e/0x1450 net/mac80211/ibss.c:1683
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+For information about bisection process see: https://goo.gl/tpsmEJ#bisection
+syzbot can test patches for this issue, for details see:
+https://goo.gl/tpsmEJ#testing-patches
