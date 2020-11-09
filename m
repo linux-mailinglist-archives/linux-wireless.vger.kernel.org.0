@@ -2,20 +2,20 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ECEAB2AB304
-	for <lists+linux-wireless@lfdr.de>; Mon,  9 Nov 2020 10:00:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7DA5C2AB305
+	for <lists+linux-wireless@lfdr.de>; Mon,  9 Nov 2020 10:00:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729807AbgKIJAX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 9 Nov 2020 04:00:23 -0500
-Received: from rtits2.realtek.com ([211.75.126.72]:60060 "EHLO
+        id S1729811AbgKIJAZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 9 Nov 2020 04:00:25 -0500
+Received: from rtits2.realtek.com ([211.75.126.72]:60051 "EHLO
         rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728335AbgKIJAU (ORCPT
+        with ESMTP id S1729684AbgKIJAT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 9 Nov 2020 04:00:20 -0500
+        Mon, 9 Nov 2020 04:00:19 -0500
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 0A990APX0021865, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 0A990BmX4021869, This message is accepted by code: ctloc85258
 Received: from mail.realtek.com (rtexmb04.realtek.com.tw[172.21.6.97])
-        by rtits2.realtek.com.tw (8.15.2/2.70/5.88) with ESMTPS id 0A990APX0021865
+        by rtits2.realtek.com.tw (8.15.2/2.70/5.88) with ESMTPS id 0A990BmX4021869
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
         Mon, 9 Nov 2020 17:00:11 +0800
 Received: from localhost.localdomain (172.21.69.213) by
@@ -25,9 +25,9 @@ Received: from localhost.localdomain (172.21.69.213) by
 From:   <pkshih@realtek.com>
 To:     <kvalo@codeaurora.org>, <tony0620emma@gmail.com>
 CC:     <linux-wireless@vger.kernel.org>
-Subject: [PATCH v3 01/11] rtw88: coex: fixed some wrong register definition and setting
-Date:   Mon, 9 Nov 2020 16:58:59 +0800
-Message-ID: <20201109085909.9143-2-pkshih@realtek.com>
+Subject: [PATCH v3 02/11] rtw88: coex: update coex parameter to improve A2DP quality
+Date:   Mon, 9 Nov 2020 16:59:00 +0800
+Message-ID: <20201109085909.9143-3-pkshih@realtek.com>
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20201109085909.9143-1-pkshih@realtek.com>
 References: <20201109085909.9143-1-pkshih@realtek.com>
@@ -43,162 +43,342 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Ching-Te Ku <ku920601@realtek.com>
 
-Some register definition and bit definition were incorrect.
-e.g. REG_BT_COEX_V2 should be word alignment to meet the coding style.
-e.g. set REG_BT_TDMA_TIME[5:0]=0x5,
-But the original is to set REG_BT_TDMA_TIME[7:0]=0x5.
-This will cause unexpected hardware behavior.
+Update COEX parameters and logic to enhance WL/BT performance
+while WL_Busy + A2DP in a less interference environment.
+It can avoid the interference comes cross from each other
+and earned more performance.
 
 Signed-off-by: Ching-Te Ku <ku920601@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw88/reg.h      |  7 ++++---
- drivers/net/wireless/realtek/rtw88/rtw8723d.c |  4 ++--
- drivers/net/wireless/realtek/rtw88/rtw8821c.c |  3 +--
- drivers/net/wireless/realtek/rtw88/rtw8821c.h |  2 --
- drivers/net/wireless/realtek/rtw88/rtw8822b.c |  6 +++---
- drivers/net/wireless/realtek/rtw88/rtw8822c.c | 10 +++++-----
- 6 files changed, 15 insertions(+), 17 deletions(-)
+ drivers/net/wireless/realtek/rtw88/coex.c     |  2 +-
+ drivers/net/wireless/realtek/rtw88/rtw8723d.c | 58 +++++++++----------
+ drivers/net/wireless/realtek/rtw88/rtw8822b.c | 17 +++---
+ drivers/net/wireless/realtek/rtw88/rtw8822c.c | 25 ++++----
+ 4 files changed, 52 insertions(+), 50 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/reg.h b/drivers/net/wireless/realtek/rtw88/reg.h
-index 86b94c008a27..b3df09ff01b3 100644
---- a/drivers/net/wireless/realtek/rtw88/reg.h
-+++ b/drivers/net/wireless/realtek/rtw88/reg.h
-@@ -60,7 +60,7 @@
- #define REG_GPIO_MUXCFG		0x0040
- #define BIT_FSPI_EN		BIT(19)
- #define BIT_EN_SIC		BIT(12)
--#define BIT_BT_AOD_GPIO3	BIT(9)
-+
- #define BIT_PO_BT_PTA_PINS	BIT(9)
- #define BIT_BT_PTA_EN		BIT(5)
- #define BIT_WLRFE_4_5_EN	BIT(2)
-@@ -463,11 +463,12 @@
- #define REG_BT_COEX_TABLE_H3	0x06CF
- #define REG_BBPSF_CTRL		0x06DC
+diff --git a/drivers/net/wireless/realtek/rtw88/coex.c b/drivers/net/wireless/realtek/rtw88/coex.c
+index 51eef8d0a8e5..6dedc38dd5b9 100644
+--- a/drivers/net/wireless/realtek/rtw88/coex.c
++++ b/drivers/net/wireless/realtek/rtw88/coex.c
+@@ -1523,7 +1523,7 @@ static void rtw_coex_action_bt_a2dp(struct rtw_dev *rtwdev)
+ 		slot_type = TDMA_4SLOT;
  
--#define REG_BT_COEX_V2		0x0763
--#define BIT_GNT_BT_POLARITY	BIT(4)
-+#define REG_BT_COEX_V2		0x0762
-+#define BIT_GNT_BT_POLARITY	BIT(12)
- #define BIT_LTE_COEX_EN		BIT(7)
- #define REG_BT_STAT_CTRL	0x0778
- #define REG_BT_TDMA_TIME	0x0790
-+#define BIT_MASK_SAMPLE_RATE	GENMASK(5, 0)
- #define REG_LTR_IDLE_LATENCY	0x0798
- #define REG_LTR_ACTIVE_LATENCY	0x079C
- #define REG_LTR_CTRL_BASIC	0x07A4
+ 		if (coex_stat->wl_gl_busy && coex_stat->wl_noisy_level == 0)
+-			table_case = 10;
++			table_case = 11;
+ 		else
+ 			table_case = 9;
+ 
 diff --git a/drivers/net/wireless/realtek/rtw88/rtw8723d.c b/drivers/net/wireless/realtek/rtw88/rtw8723d.c
-index 832dc8e98bee..84d66b5c2733 100644
+index 84d66b5c2733..4ed38681c97d 100644
 --- a/drivers/net/wireless/realtek/rtw88/rtw8723d.c
 +++ b/drivers/net/wireless/realtek/rtw88/rtw8723d.c
-@@ -1506,14 +1506,14 @@ static void rtw8723d_coex_cfg_init(struct rtw_dev *rtwdev)
+@@ -1949,19 +1949,19 @@ static struct rtw_chip_ops rtw8723d_ops = {
+ static const struct coex_table_para table_sant_8723d[] = {
+ 	{0xffffffff, 0xffffffff}, /* case-0 */
+ 	{0x55555555, 0x55555555},
+-	{0x65555555, 0x65555555},
++	{0x66555555, 0x66555555},
+ 	{0xaaaaaaaa, 0xaaaaaaaa},
+ 	{0x5a5a5a5a, 0x5a5a5a5a},
+ 	{0xfafafafa, 0xfafafafa}, /* case-5 */
+-	{0xa5555555, 0xaaaa5aaa},
+-	{0x6a5a5a5a, 0x5a5a5a5a},
++	{0x6a5a5555, 0xaaaaaaaa},
++	{0x6a5a56aa, 0x6a5a56aa},
+ 	{0x6a5a5a5a, 0x6a5a5a5a},
+ 	{0x66555555, 0x5a5a5a5a},
+-	{0x65555555, 0x6a5a5a5a}, /* case-10 */
+-	{0x65555555, 0xfafafafa},
++	{0x66555555, 0x6a5a5a5a}, /* case-10 */
++	{0x66555555, 0x6a5a5aaa},
+ 	{0x66555555, 0x5a5a5aaa},
+-	{0x65555555, 0x5aaa5aaa},
+-	{0x65555555, 0xaaaa5aaa},
++	{0x66555555, 0x6aaa5aaa},
++	{0x66555555, 0xaaaa5aaa},
+ 	{0x66555555, 0xaaaaaaaa}, /* case-15 */
+ 	{0xffff55ff, 0xfafafafa},
+ 	{0xffff55ff, 0x6afa5afa},
+@@ -1970,13 +1970,13 @@ static const struct coex_table_para table_sant_8723d[] = {
+ 	{0xaa5555aa, 0x6a5a5a5a}, /* case-20 */
+ 	{0xaa5555aa, 0xaaaaaaaa},
+ 	{0xffffffff, 0x5a5a5a5a},
+-	{0xffffffff, 0x6a5a5a5a},
++	{0xffffffff, 0x5a5a5a5a},
+ 	{0xffffffff, 0x55555555},
+-	{0xffffffff, 0x6a5a5aaa}, /* case-25 */
++	{0xffffffff, 0x5a5a5aaa}, /* case-25 */
+ 	{0x55555555, 0x5a5a5a5a},
+ 	{0x55555555, 0xaaaaaaaa},
+-	{0x55555555, 0x6a6a6a6a},
+-	{0x656a656a, 0x656a656a},
++	{0x55555555, 0x6a5a6a5a},
++	{0x66556655, 0x66556655},
+ 	{0x66556aaa, 0x6a5a6aaa}, /* case-30 */
+ 	{0xffffffff, 0x5aaa5aaa},
+ 	{0x56555555, 0x5a5a5aaa},
+@@ -1986,25 +1986,25 @@ static const struct coex_table_para table_sant_8723d[] = {
+ static const struct coex_table_para table_nsant_8723d[] = {
+ 	{0xffffffff, 0xffffffff}, /* case-100 */
+ 	{0x55555555, 0x55555555},
+-	{0x65555555, 0x65555555},
++	{0x66555555, 0x66555555},
+ 	{0xaaaaaaaa, 0xaaaaaaaa},
+ 	{0x5a5a5a5a, 0x5a5a5a5a},
+ 	{0xfafafafa, 0xfafafafa}, /* case-105 */
+ 	{0x5afa5afa, 0x5afa5afa},
+ 	{0x55555555, 0xfafafafa},
+-	{0x65555555, 0xfafafafa},
+-	{0x65555555, 0x5a5a5a5a},
+-	{0x65555555, 0x6a5a5a5a}, /* case-110 */
+-	{0x65555555, 0xaaaaaaaa},
++	{0x66555555, 0xfafafafa},
++	{0x66555555, 0x5a5a5a5a},
++	{0x66555555, 0x6a5a5a5a}, /* case-110 */
++	{0x66555555, 0xaaaaaaaa},
+ 	{0xffff55ff, 0xfafafafa},
+ 	{0xffff55ff, 0x5afa5afa},
+ 	{0xffff55ff, 0xaaaaaaaa},
+-	{0xaaffffaa, 0xfafafafa}, /* case-115 */
++	{0xffff55ff, 0xffff55ff}, /* case-115 */
+ 	{0xaaffffaa, 0x5afa5afa},
+ 	{0xaaffffaa, 0xaaaaaaaa},
+ 	{0xffffffff, 0xfafafafa},
+ 	{0xffffffff, 0x5afa5afa},
+-	{0xffffffff, 0xaaaaaaaa},/* case-120 */
++	{0xffffffff, 0xaaaaaaaa}, /* case-120 */
+ 	{0x55ff55ff, 0x5afa5afa},
+ 	{0x55ff55ff, 0xaaaaaaaa},
+ 	{0x55ff55ff, 0x55ff55ff}
+@@ -2012,31 +2012,31 @@ static const struct coex_table_para table_nsant_8723d[] = {
  
- 	/* BT report packet sample rate	 */
- 	/* 0x790[5:0]=0x5 */
--	rtw_write8_set(rtwdev, REG_BT_TDMA_TIME, 0x05);
-+	rtw_write8_mask(rtwdev, REG_BT_TDMA_TIME, BIT_MASK_SAMPLE_RATE, 0x5);
+ /* Shared-Antenna TDMA */
+ static const struct coex_tdma_para tdma_sant_8723d[] = {
+-	{ {0x08, 0x00, 0x00, 0x00, 0x00} }, /* case-0 */
++	{ {0x00, 0x00, 0x00, 0x00, 0x00} }, /* case-0 */
+ 	{ {0x61, 0x45, 0x03, 0x11, 0x11} }, /* case-1 */
+ 	{ {0x61, 0x3a, 0x03, 0x11, 0x11} },
+-	{ {0x61, 0x20, 0x03, 0x11, 0x11} },
+ 	{ {0x61, 0x30, 0x03, 0x11, 0x11} },
++	{ {0x61, 0x20, 0x03, 0x11, 0x11} },
+ 	{ {0x61, 0x10, 0x03, 0x11, 0x11} }, /* case-5 */
+-	{ {0x61, 0x48, 0x03, 0x11, 0x10} },
++	{ {0x61, 0x45, 0x03, 0x11, 0x10} },
+ 	{ {0x61, 0x3a, 0x03, 0x11, 0x10} },
+ 	{ {0x61, 0x30, 0x03, 0x11, 0x10} },
+ 	{ {0x61, 0x20, 0x03, 0x11, 0x10} },
+ 	{ {0x61, 0x10, 0x03, 0x11, 0x10} }, /* case-10 */
+-	{ {0x61, 0x10, 0x03, 0x11, 0x14} },
++	{ {0x61, 0x08, 0x03, 0x11, 0x14} },
+ 	{ {0x61, 0x08, 0x03, 0x10, 0x14} },
+-	{ {0x51, 0x10, 0x03, 0x10, 0x54} },
+-	{ {0x51, 0x10, 0x03, 0x10, 0x55} },
+-	{ {0x51, 0x10, 0x07, 0x10, 0x54} }, /* case-15 */
++	{ {0x51, 0x08, 0x03, 0x10, 0x54} },
++	{ {0x51, 0x08, 0x03, 0x10, 0x55} },
++	{ {0x51, 0x08, 0x07, 0x10, 0x54} }, /* case-15 */
+ 	{ {0x51, 0x45, 0x03, 0x10, 0x50} },
+ 	{ {0x51, 0x3a, 0x03, 0x10, 0x50} },
+ 	{ {0x51, 0x30, 0x03, 0x10, 0x50} },
+ 	{ {0x51, 0x20, 0x03, 0x10, 0x50} },
+-	{ {0x51, 0x15, 0x03, 0x10, 0x50} }, /* case-20 */
++	{ {0x51, 0x10, 0x03, 0x10, 0x50} }, /* case-20 */
+ 	{ {0x51, 0x4a, 0x03, 0x10, 0x50} },
+ 	{ {0x51, 0x0c, 0x03, 0x10, 0x54} },
+ 	{ {0x55, 0x08, 0x03, 0x10, 0x54} },
+-	{ {0x65, 0x10, 0x03, 0x11, 0x11} },
++	{ {0x65, 0x10, 0x03, 0x11, 0x10} },
+ 	{ {0x51, 0x10, 0x03, 0x10, 0x51} }, /* case-25 */
+ 	{ {0x51, 0x08, 0x03, 0x10, 0x50} },
+ 	{ {0x61, 0x08, 0x03, 0x11, 0x11} }
+@@ -2044,7 +2044,7 @@ static const struct coex_tdma_para tdma_sant_8723d[] = {
  
- 	/* enable BT counter statistics */
- 	rtw_write8(rtwdev, REG_BT_STAT_CTRL, 0x1);
+ /* Non-Shared-Antenna TDMA */
+ static const struct coex_tdma_para tdma_nsant_8723d[] = {
+-	{ {0x00, 0x00, 0x00, 0x40, 0x01} }, /* case-100 */
++	{ {0x00, 0x00, 0x00, 0x00, 0x01} }, /* case-100 */
+ 	{ {0x61, 0x45, 0x03, 0x11, 0x11} }, /* case-101 */
+ 	{ {0x61, 0x3a, 0x03, 0x11, 0x11} },
+ 	{ {0x61, 0x30, 0x03, 0x11, 0x11} },
+@@ -2065,7 +2065,7 @@ static const struct coex_tdma_para tdma_nsant_8723d[] = {
+ 	{ {0x51, 0x30, 0x03, 0x10, 0x50} },
+ 	{ {0x51, 0x20, 0x03, 0x10, 0x50} },
+ 	{ {0x51, 0x10, 0x03, 0x10, 0x50} }, /* case-120 */
+-	{ {0x51, 0x08, 0x03, 0x10, 0x50} },
++	{ {0x51, 0x08, 0x03, 0x10, 0x50} }
+ };
  
- 	/* enable PTA (3-wire function form BT side) */
- 	rtw_write32_set(rtwdev, REG_GPIO_MUXCFG, BIT_BT_PTA_EN);
--	rtw_write32_set(rtwdev, REG_GPIO_MUXCFG, BIT_BT_AOD_GPIO3);
-+	rtw_write32_set(rtwdev, REG_GPIO_MUXCFG, BIT_PO_BT_PTA_PINS);
- 
- 	/* enable PTA (tx/rx signal form WiFi side) */
- 	rtw_write8_set(rtwdev, REG_QUEUE_CTRL, BIT_PTA_WL_TX_EN);
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8821c.c b/drivers/net/wireless/realtek/rtw88/rtw8821c.c
-index da2e7415be8f..64b14f9ea4a9 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8821c.c
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8821c.c
-@@ -656,8 +656,7 @@ static void rtw8821c_coex_cfg_init(struct rtw_dev *rtwdev)
- 	rtw_write8_set(rtwdev, REG_BCN_CTRL, BIT_EN_BCN_FUNCTION);
- 
- 	/* BT report packet sample rate */
--	rtw_write8_mask(rtwdev, REG_BT_TDMA_TIME, SAMPLE_RATE_MASK,
--			SAMPLE_RATE);
-+	rtw_write8_mask(rtwdev, REG_BT_TDMA_TIME, BIT_MASK_SAMPLE_RATE, 0x5);
- 
- 	/* enable BT counter statistics */
- 	rtw_write8(rtwdev, REG_BT_STAT_CTRL, BT_CNT_ENABLE);
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8821c.h b/drivers/net/wireless/realtek/rtw88/rtw8821c.h
-index bd01e82b6bcd..e11e3fc41c95 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8821c.h
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8821c.h
-@@ -231,8 +231,6 @@ _rtw_write32s_mask(struct rtw_dev *rtwdev, u32 addr, u32 mask, u32 data)
- #define REG_IQKFAILMSK	0x1bf0
- #define BIT_MASK_R_RFE_SEL_15	GENMASK(31, 28)
- #define BIT_SDIO_INT BIT(18)
--#define SAMPLE_RATE_MASK GENMASK(5, 0)
--#define SAMPLE_RATE	0x5
- #define BT_CNT_ENABLE	0x1
- #define BIT_BCN_QUEUE	BIT(3)
- #define BCN_PRI_EN	0x1
+ /* rssi in percentage % (dbm = % - 100) */
 diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822b.c b/drivers/net/wireless/realtek/rtw88/rtw8822b.c
-index ffcb580e8dce..d562f7324e6a 100644
+index d562f7324e6a..c1a96c7fe67d 100644
 --- a/drivers/net/wireless/realtek/rtw88/rtw8822b.c
 +++ b/drivers/net/wireless/realtek/rtw88/rtw8822b.c
-@@ -1120,21 +1120,21 @@ static void rtw8822b_coex_cfg_init(struct rtw_dev *rtwdev)
+@@ -2141,14 +2141,14 @@ static const struct coex_table_para table_sant_8822b[] = {
+ 	{0xaaaaaaaa, 0xaaaaaaaa},
+ 	{0x5a5a5a5a, 0x5a5a5a5a},
+ 	{0xfafafafa, 0xfafafafa}, /* case-5 */
+-	{0x6a5a6a5a, 0xaaaaaaaa},
++	{0x6a5a5555, 0xaaaaaaaa},
+ 	{0x6a5a56aa, 0x6a5a56aa},
+ 	{0x6a5a5a5a, 0x6a5a5a5a},
+ 	{0x66555555, 0x5a5a5a5a},
+ 	{0x66555555, 0x6a5a5a5a}, /* case-10 */
+ 	{0x66555555, 0xfafafafa},
+ 	{0x66555555, 0x5a5a5aaa},
+-	{0x66555555, 0x5aaa5aaa},
++	{0x66555555, 0x6aaa5aaa},
+ 	{0x66555555, 0xaaaa5aaa},
+ 	{0x66555555, 0xaaaaaaaa}, /* case-15 */
+ 	{0xffff55ff, 0xfafafafa},
+@@ -2158,7 +2158,7 @@ static const struct coex_table_para table_sant_8822b[] = {
+ 	{0xaa5555aa, 0x6a5a5a5a}, /* case-20 */
+ 	{0xaa5555aa, 0xaaaaaaaa},
+ 	{0xffffffff, 0x5a5a5a5a},
+-	{0xffffffff, 0x6a5a5a5a},
++	{0xffffffff, 0x5a5a5a5a},
+ 	{0xffffffff, 0x55555555},
+ 	{0xffffffff, 0x6a5a5aaa}, /* case-25 */
+ 	{0x55555555, 0x5a5a5a5a},
+@@ -2187,7 +2187,7 @@ static const struct coex_table_para table_nsant_8822b[] = {
+ 	{0xffff55ff, 0xfafafafa},
+ 	{0xffff55ff, 0x5afa5afa},
+ 	{0xffff55ff, 0xaaaaaaaa},
+-	{0xaaffffaa, 0xfafafafa}, /* case-115 */
++	{0xffff55ff, 0xffff55ff}, /* case-115 */
+ 	{0xaaffffaa, 0x5afa5afa},
+ 	{0xaaffffaa, 0xaaaaaaaa},
+ 	{0xffffffff, 0xfafafafa},
+@@ -2216,7 +2216,7 @@ static const struct coex_tdma_para tdma_sant_8822b[] = {
+ 	{ {0x51, 0x08, 0x03, 0x10, 0x54} },
+ 	{ {0x51, 0x08, 0x03, 0x10, 0x55} },
+ 	{ {0x51, 0x08, 0x07, 0x10, 0x54} }, /* case-15 */
+-	{ {0x51, 0x45, 0x03, 0x10, 0x10} },
++	{ {0x51, 0x45, 0x03, 0x10, 0x50} },
+ 	{ {0x51, 0x3a, 0x03, 0x10, 0x50} },
+ 	{ {0x51, 0x30, 0x03, 0x10, 0x50} },
+ 	{ {0x51, 0x20, 0x03, 0x10, 0x50} },
+@@ -2224,7 +2224,7 @@ static const struct coex_tdma_para tdma_sant_8822b[] = {
+ 	{ {0x51, 0x4a, 0x03, 0x10, 0x50} },
+ 	{ {0x51, 0x0c, 0x03, 0x10, 0x54} },
+ 	{ {0x55, 0x08, 0x03, 0x10, 0x54} },
+-	{ {0x65, 0x10, 0x03, 0x11, 0x11} },
++	{ {0x65, 0x10, 0x03, 0x11, 0x10} },
+ 	{ {0x51, 0x10, 0x03, 0x10, 0x51} }, /* case-25 */
+ 	{ {0x51, 0x08, 0x03, 0x10, 0x50} },
+ 	{ {0x61, 0x08, 0x03, 0x11, 0x11} }
+@@ -2233,7 +2233,7 @@ static const struct coex_tdma_para tdma_sant_8822b[] = {
+ /* Non-Shared-Antenna TDMA */
+ static const struct coex_tdma_para tdma_nsant_8822b[] = {
+ 	{ {0x00, 0x00, 0x00, 0x00, 0x00} }, /* case-100 */
+-	{ {0x61, 0x45, 0x03, 0x11, 0x11} },
++	{ {0x61, 0x45, 0x03, 0x11, 0x11} }, /* case-101 */
+ 	{ {0x61, 0x3a, 0x03, 0x11, 0x11} },
+ 	{ {0x61, 0x30, 0x03, 0x11, 0x11} },
+ 	{ {0x61, 0x20, 0x03, 0x11, 0x11} },
+@@ -2252,7 +2252,8 @@ static const struct coex_tdma_para tdma_nsant_8822b[] = {
+ 	{ {0x51, 0x3a, 0x03, 0x10, 0x50} },
+ 	{ {0x51, 0x30, 0x03, 0x10, 0x50} },
+ 	{ {0x51, 0x20, 0x03, 0x10, 0x50} },
+-	{ {0x51, 0x10, 0x03, 0x10, 0x50} }  /* case-120 */
++	{ {0x51, 0x10, 0x03, 0x10, 0x50} }, /* case-120 */
++	{ {0x51, 0x08, 0x03, 0x10, 0x50} }
+ };
  
- 	/* BT report packet sample rate */
- 	/* 0x790[5:0]=0x5 */
--	rtw_write8_set(rtwdev, REG_BT_TDMA_TIME, 0x05);
-+	rtw_write8_mask(rtwdev, REG_BT_TDMA_TIME, BIT_MASK_SAMPLE_RATE, 0x5);
- 
- 	/* enable BT counter statistics */
- 	rtw_write8(rtwdev, REG_BT_STAT_CTRL, 0x1);
- 
- 	/* enable PTA (3-wire function form BT side) */
- 	rtw_write32_set(rtwdev, REG_GPIO_MUXCFG, BIT_BT_PTA_EN);
--	rtw_write32_set(rtwdev, REG_GPIO_MUXCFG, BIT_BT_AOD_GPIO3);
-+	rtw_write32_set(rtwdev, REG_GPIO_MUXCFG, BIT_PO_BT_PTA_PINS);
- 
- 	/* enable PTA (tx/rx signal form WiFi side) */
- 	rtw_write8_set(rtwdev, REG_QUEUE_CTRL, BIT_PTA_WL_TX_EN);
- 	/* wl tx signal to PTA not case EDCCA */
- 	rtw_write8_clr(rtwdev, REG_QUEUE_CTRL, BIT_PTA_EDCCA_EN);
- 	/* GNT_BT=1 while select both */
--	rtw_write8_set(rtwdev, REG_BT_COEX_V2, BIT_GNT_BT_POLARITY);
-+	rtw_write16_set(rtwdev, REG_BT_COEX_V2, BIT_GNT_BT_POLARITY);
- }
- 
- static void rtw8822b_coex_cfg_ant_switch(struct rtw_dev *rtwdev,
+ /* rssi in percentage % (dbm = % - 100) */
 diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822c.c b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-index f58722a49ec6..56c403d628fd 100644
+index 56c403d628fd..db80682b358e 100644
 --- a/drivers/net/wireless/realtek/rtw88/rtw8822c.c
 +++ b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-@@ -2132,24 +2132,24 @@ static void rtw8822c_coex_cfg_init(struct rtw_dev *rtwdev)
- 	/* enable TBTT nterrupt */
- 	rtw_write8_set(rtwdev, REG_BCN_CTRL, BIT_EN_BCN_FUNCTION);
+@@ -3983,14 +3983,14 @@ static const struct coex_table_para table_sant_8822c[] = {
+ 	{0xaaaaaaaa, 0xaaaaaaaa},
+ 	{0x5a5a5a5a, 0x5a5a5a5a},
+ 	{0xfafafafa, 0xfafafafa}, /* case-5 */
+-	{0x6a5a6a5a, 0xaaaaaaaa},
++	{0x6a5a5555, 0xaaaaaaaa},
+ 	{0x6a5a56aa, 0x6a5a56aa},
+ 	{0x6a5a5a5a, 0x6a5a5a5a},
+ 	{0x66555555, 0x5a5a5a5a},
+ 	{0x66555555, 0x6a5a5a5a}, /* case-10 */
+-	{0x66555555, 0xfafafafa},
++	{0x66555555, 0x6a5a5aaa},
+ 	{0x66555555, 0x5a5a5aaa},
+-	{0x66555555, 0x5aaa5aaa},
++	{0x66555555, 0x6aaa5aaa},
+ 	{0x66555555, 0xaaaa5aaa},
+ 	{0x66555555, 0xaaaaaaaa}, /* case-15 */
+ 	{0xffff55ff, 0xfafafafa},
+@@ -4000,14 +4000,14 @@ static const struct coex_table_para table_sant_8822c[] = {
+ 	{0xaa5555aa, 0x6a5a5a5a}, /* case-20 */
+ 	{0xaa5555aa, 0xaaaaaaaa},
+ 	{0xffffffff, 0x5a5a5a5a},
+-	{0xffffffff, 0x6a5a5a5a},
++	{0xffffffff, 0x5a5a5a5a},
+ 	{0xffffffff, 0x55555555},
+-	{0xffffffff, 0x6a5a5aaa}, /* case-25 */
++	{0xffffffff, 0x5a5a5aaa}, /* case-25 */
+ 	{0x55555555, 0x5a5a5a5a},
+ 	{0x55555555, 0xaaaaaaaa},
+ 	{0x55555555, 0x6a5a6a5a},
+ 	{0x66556655, 0x66556655},
+-	{0x66556aaa, 0x6a5a6aaa}, /* case-30 */
++	{0x66556aaa, 0x6a5a6aaa}, /*case-30*/
+ 	{0xffffffff, 0x5aaa5aaa},
+ 	{0x56555555, 0x5a5a5aaa},
+ };
+@@ -4029,12 +4029,12 @@ static const struct coex_table_para table_nsant_8822c[] = {
+ 	{0xffff55ff, 0xfafafafa},
+ 	{0xffff55ff, 0x5afa5afa},
+ 	{0xffff55ff, 0xaaaaaaaa},
+-	{0xaaffffaa, 0xfafafafa}, /* case-115 */
++	{0xffff55ff, 0xffff55ff}, /* case-115 */
+ 	{0xaaffffaa, 0x5afa5afa},
+ 	{0xaaffffaa, 0xaaaaaaaa},
+ 	{0xffffffff, 0xfafafafa},
+ 	{0xffffffff, 0x5afa5afa},
+-	{0xffffffff, 0xaaaaaaaa},/* case-120 */
++	{0xffffffff, 0xaaaaaaaa}, /* case-120 */
+ 	{0x55ff55ff, 0x5afa5afa},
+ 	{0x55ff55ff, 0xaaaaaaaa},
+ 	{0x55ff55ff, 0x55ff55ff}
+@@ -4043,7 +4043,7 @@ static const struct coex_table_para table_nsant_8822c[] = {
+ /* Shared-Antenna TDMA */
+ static const struct coex_tdma_para tdma_sant_8822c[] = {
+ 	{ {0x00, 0x00, 0x00, 0x00, 0x00} }, /* case-0 */
+-	{ {0x61, 0x45, 0x03, 0x11, 0x11} },
++	{ {0x61, 0x45, 0x03, 0x11, 0x11} }, /* case-1 */
+ 	{ {0x61, 0x3a, 0x03, 0x11, 0x11} },
+ 	{ {0x61, 0x30, 0x03, 0x11, 0x11} },
+ 	{ {0x61, 0x20, 0x03, 0x11, 0x11} },
+@@ -4058,7 +4058,7 @@ static const struct coex_tdma_para tdma_sant_8822c[] = {
+ 	{ {0x51, 0x08, 0x03, 0x10, 0x54} },
+ 	{ {0x51, 0x08, 0x03, 0x10, 0x55} },
+ 	{ {0x51, 0x08, 0x07, 0x10, 0x54} }, /* case-15 */
+-	{ {0x51, 0x45, 0x03, 0x10, 0x10} },
++	{ {0x51, 0x45, 0x03, 0x10, 0x50} },
+ 	{ {0x51, 0x3a, 0x03, 0x10, 0x50} },
+ 	{ {0x51, 0x30, 0x03, 0x10, 0x50} },
+ 	{ {0x51, 0x20, 0x03, 0x10, 0x50} },
+@@ -4066,7 +4066,7 @@ static const struct coex_tdma_para tdma_sant_8822c[] = {
+ 	{ {0x51, 0x4a, 0x03, 0x10, 0x50} },
+ 	{ {0x51, 0x0c, 0x03, 0x10, 0x54} },
+ 	{ {0x55, 0x08, 0x03, 0x10, 0x54} },
+-	{ {0x65, 0x10, 0x03, 0x11, 0x11} },
++	{ {0x65, 0x10, 0x03, 0x11, 0x10} },
+ 	{ {0x51, 0x10, 0x03, 0x10, 0x51} }, /* case-25 */
+ 	{ {0x51, 0x08, 0x03, 0x10, 0x50} },
+ 	{ {0x61, 0x08, 0x03, 0x11, 0x11} }
+@@ -4094,7 +4094,8 @@ static const struct coex_tdma_para tdma_nsant_8822c[] = {
+ 	{ {0x51, 0x3a, 0x03, 0x10, 0x50} },
+ 	{ {0x51, 0x30, 0x03, 0x10, 0x50} },
+ 	{ {0x51, 0x20, 0x03, 0x10, 0x50} },
+-	{ {0x51, 0x10, 0x03, 0x10, 0x50} }  /* case-120 */
++	{ {0x51, 0x10, 0x03, 0x10, 0x50} }, /* case-120 */
++	{ {0x51, 0x08, 0x03, 0x10, 0x50} }
+ };
  
--	/* BT report packet sample rate	 */
-+	/* BT report packet sample rate */
- 	/* 0x790[5:0]=0x5 */
--	rtw_write8_set(rtwdev, REG_BT_TDMA_TIME, 0x05);
-+	rtw_write8_mask(rtwdev, REG_BT_TDMA_TIME, BIT_MASK_SAMPLE_RATE, 0x5);
- 
- 	/* enable BT counter statistics */
- 	rtw_write8(rtwdev, REG_BT_STAT_CTRL, 0x1);
- 
- 	/* enable PTA (3-wire function form BT side) */
- 	rtw_write32_set(rtwdev, REG_GPIO_MUXCFG, BIT_BT_PTA_EN);
--	rtw_write32_set(rtwdev, REG_GPIO_MUXCFG, BIT_BT_AOD_GPIO3);
-+	rtw_write32_set(rtwdev, REG_GPIO_MUXCFG, BIT_PO_BT_PTA_PINS);
- 
- 	/* enable PTA (tx/rx signal form WiFi side) */
- 	rtw_write8_set(rtwdev, REG_QUEUE_CTRL, BIT_PTA_WL_TX_EN);
- 	/* wl tx signal to PTA not case EDCCA */
- 	rtw_write8_clr(rtwdev, REG_QUEUE_CTRL, BIT_PTA_EDCCA_EN);
- 	/* GNT_BT=1 while select both */
--	rtw_write8_set(rtwdev, REG_BT_COEX_V2, BIT_GNT_BT_POLARITY);
--	/* BT_CCA = ~GNT_WL_BB, (not or GNT_BT_BB, LTE_Rx */
-+	rtw_write16_set(rtwdev, REG_BT_COEX_V2, BIT_GNT_BT_POLARITY);
-+	/* BT_CCA = ~GNT_WL_BB, not or GNT_BT_BB, LTE_Rx */
- 	rtw_write8_clr(rtwdev, REG_DUMMY_PAGE4_V1, BIT_BTCCA_CTRL);
- 
- 	/* to avoid RF parameter error */
+ /* rssi in percentage % (dbm = % - 100) */
 -- 
 2.21.0
 
