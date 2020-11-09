@@ -2,174 +2,116 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 145672AB30E
-	for <lists+linux-wireless@lfdr.de>; Mon,  9 Nov 2020 10:02:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5CE652AB3C5
+	for <lists+linux-wireless@lfdr.de>; Mon,  9 Nov 2020 10:42:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729765AbgKIJC1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 9 Nov 2020 04:02:27 -0500
-Received: from rtits2.realtek.com ([211.75.126.72]:60587 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726127AbgKIJC0 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 9 Nov 2020 04:02:26 -0500
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 0A992LvoC022868, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexmb04.realtek.com.tw[172.21.6.97])
-        by rtits2.realtek.com.tw (8.15.2/2.70/5.88) with ESMTPS id 0A992LvoC022868
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Mon, 9 Nov 2020 17:02:21 +0800
-Received: from localhost.localdomain (172.21.69.213) by
- RTEXMB04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2044.4; Mon, 9 Nov 2020 17:02:21 +0800
-From:   <pkshih@realtek.com>
-To:     <kvalo@codeaurora.org>, <tony0620emma@gmail.com>
-CC:     <linux-wireless@vger.kernel.org>
-Subject: [PATCH 2/2] rtw88: add CCK_PD debug log
-Date:   Mon, 9 Nov 2020 17:01:23 +0800
-Message-ID: <20201109090123.9254-2-pkshih@realtek.com>
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <20201109090123.9254-1-pkshih@realtek.com>
-References: <20201109090123.9254-1-pkshih@realtek.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [172.21.69.213]
-X-ClientProxiedBy: RTEXMB03.realtek.com.tw (172.21.6.96) To
- RTEXMB04.realtek.com.tw (172.21.6.97)
+        id S1726999AbgKIJmH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 9 Nov 2020 04:42:07 -0500
+Received: from z5.mailgun.us ([104.130.96.5]:56040 "EHLO z5.mailgun.us"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726423AbgKIJmH (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 9 Nov 2020 04:42:07 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1604914926; h=Message-Id: Date: Subject: Cc: To: From:
+ Sender; bh=VAjQDhllXNOlJ2zLAVbJ9DlvJwOUb2Wya7nVD0hZfWA=; b=GuGM3644zBekb/ITo9vlfzN3Xxuu2n0mVnmrrgGUh3n9xWBotMZ2mUFjLnbVZinGkZwYVK1p
+ vYhTp6qGp71FeVRPAs6+myuCDUfS8tP6sHW8Zsv0WNWUc9ntm6qepRjNddoRVqx1X4bdFaOC
+ LGLUReWz1yOxl7tGI5OEtAphQxo=
+X-Mailgun-Sending-Ip: 104.130.96.5
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n05.prod.us-west-2.postgun.com with SMTP id
+ 5fa90eed61a7f890a6adbdad (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 09 Nov 2020 09:42:05
+ GMT
+Sender: ppranees=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 98A0FC433C6; Mon,  9 Nov 2020 09:42:05 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+Received: from ppranees-linux.qualcomm.com (blr-c-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.19.19])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: ppranees)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id D77C9C433C8;
+        Mon,  9 Nov 2020 09:42:03 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org D77C9C433C8
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=ppranees@codeaurora.org
+From:   P Praneesh <ppranees@codeaurora.org>
+To:     ath11k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org,
+        P Praneesh <ppranees@codeaurora.org>
+Subject: [PATCH v3] ath11k: add processor_id based ring_selector logic
+Date:   Mon,  9 Nov 2020 15:11:55 +0530
+Message-Id: <1604914915-12831-1-git-send-email-ppranees@codeaurora.org>
+X-Mailer: git-send-email 2.7.4
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Ping-Ke Shih <pkshih@realtek.com>
+Current ring selector logic follows round-robin scheduling,
+when a process switch from one processor to another each time,
+the data in the cache would have to be invalidated
+and re-loaded from RAM leads to poor cache utilization.
 
-In order to help debugging in field, we add some log messages.
+Therefore smp_processor_id() attempt to keep processes
+on the same processor via processor affinity which improves
+cache utilization. Also, ring selection could be chosen round
+robin when the processor_id based ring selection does not
+have the resources.
 
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Tested-on : IPQ8074 hw2.0 AHB WLAN.HK.2.4.0.1-00874-QCAHKSWPL_SILICONZ-1
+
+Signed-off-by: P Praneesh <ppranees@codeaurora.org>
 ---
- drivers/net/wireless/realtek/rtw88/phy.c      |  6 ++++++
- drivers/net/wireless/realtek/rtw88/reg.h      |  2 ++
- drivers/net/wireless/realtek/rtw88/rtw8723d.c | 12 ++++++++++++
- drivers/net/wireless/realtek/rtw88/rtw8821c.c | 12 ++++++++++++
- drivers/net/wireless/realtek/rtw88/rtw8822c.c |  8 ++++++++
- 5 files changed, 40 insertions(+)
-
-diff --git a/drivers/net/wireless/realtek/rtw88/phy.c b/drivers/net/wireless/realtek/rtw88/phy.c
-index 5cd9cc42648e..d44960cd940c 100644
---- a/drivers/net/wireless/realtek/rtw88/phy.c
-+++ b/drivers/net/wireless/realtek/rtw88/phy.c
-@@ -541,6 +541,12 @@ static void rtw_phy_cck_pd(struct rtw_dev *rtwdev)
- 	else
- 		dm_info->cck_fa_avg = (dm_info->cck_fa_avg * 3 + cck_fa) >> 2;
+ drivers/net/wireless/ath/ath11k/core.h  | 3 ---
+ drivers/net/wireless/ath/ath11k/dp_tx.c | 8 ++++----
+ 2 files changed, 4 insertions(+), 7 deletions(-)
+---
+v3: corrected commit log.
+v2: corrected tested tags.
+---
+diff --git a/drivers/net/wireless/ath/ath11k/core.h b/drivers/net/wireless/ath/ath11k/core.h
+index 1cd9ef3..c2a4a7d 100644
+--- a/drivers/net/wireless/ath/ath11k/core.h
++++ b/drivers/net/wireless/ath/ath11k/core.h
+@@ -714,9 +714,6 @@ struct ath11k_base {
+ 	} stats;
+ 	u32 pktlog_defs_checksum;
  
-+	rtw_dbg(rtwdev, RTW_DBG_PHY, "IGI=0x%x, rssi_min=%d, cck_fa=%d\n",
-+		dm_info->igi_history[0], dm_info->min_rssi,
-+		dm_info->fa_history[0]);
-+	rtw_dbg(rtwdev, RTW_DBG_PHY, "cck_fa_avg=%d, cck_pd_default=%d\n",
-+		dm_info->cck_fa_avg, dm_info->cck_pd_default);
-+
- 	level = rtw_phy_cck_pd_lv(rtwdev);
+-	/* Round robbin based TCL ring selector */
+-	atomic_t tcl_ring_selector;
+-
+ 	struct ath11k_dbring_cap *db_caps;
+ 	u32 num_db_cap;
  
- 	if (level >= CCK_PD_LV_MAX)
-diff --git a/drivers/net/wireless/realtek/rtw88/reg.h b/drivers/net/wireless/realtek/rtw88/reg.h
-index 2a4275f3d851..cf9a3b674d30 100644
---- a/drivers/net/wireless/realtek/rtw88/reg.h
-+++ b/drivers/net/wireless/realtek/rtw88/reg.h
-@@ -489,6 +489,8 @@
- #define REG_2ND_CCA_CTRL	0x0976
+diff --git a/drivers/net/wireless/ath/ath11k/dp_tx.c b/drivers/net/wireless/ath/ath11k/dp_tx.c
+index a9632b7..897c368 100644
+--- a/drivers/net/wireless/ath/ath11k/dp_tx.c
++++ b/drivers/net/wireless/ath/ath11k/dp_tx.c
+@@ -99,14 +99,14 @@ int ath11k_dp_tx(struct ath11k *ar, struct ath11k_vif *arvif,
  
- #define REG_CCK0_FAREPORT	0xa2c
-+#define BIT_CCK0_2RX		BIT(18)
-+#define BIT_CCK0_MRC		BIT(22)
+ 	pool_id = skb_get_queue_mapping(skb) & (ATH11K_HW_MAX_QUEUES - 1);
  
- #define REG_DIS_DPD		0x0a70
- #define DIS_DPD_MASK		GENMASK(9, 0)
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8723d.c b/drivers/net/wireless/realtek/rtw88/rtw8723d.c
-index 1b8447b66cca..9268ea8b6dda 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8723d.c
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8723d.c
-@@ -1503,10 +1503,22 @@ static void rtw8723d_phy_cck_pd_set(struct rtw_dev *rtwdev, u8 new_lvl)
- {
- 	struct rtw_dm_info *dm_info = &rtwdev->dm_info;
- 	u8 pd[CCK_PD_LV_MAX] = {3, 7, 13, 13, 13};
-+	u8 cck_n_rx;
-+
-+	rtw_dbg(rtwdev, RTW_DBG_PHY, "lv: (%d) -> (%d)\n",
-+		dm_info->cck_pd_lv[RTW_CHANNEL_WIDTH_20][RF_PATH_A], new_lvl);
+-	/* Let the default ring selection be based on a round robin
+-	 * fashion where one of the 3 tcl rings are selected based on
+-	 * the tcl_ring_selector counter. In case that ring
++	/* Let the default ring selection be based on current processor
++	 * number, where one of the 3 tcl rings are selected based on
++	 * the smp_processor_id(). In case that ring
+ 	 * is full/busy, we resort to other available rings.
+ 	 * If all rings are full, we drop the packet.
+ 	 * //TODO Add throttling logic when all rings are full
+ 	 */
+-	ring_selector = atomic_inc_return(&ab->tcl_ring_selector);
++	ring_selector = smp_processor_id();
  
- 	if (dm_info->cck_pd_lv[RTW_CHANNEL_WIDTH_20][RF_PATH_A] == new_lvl)
- 		return;
- 
-+	cck_n_rx = (rtw_read8_mask(rtwdev, REG_CCK0_FAREPORT, BIT_CCK0_2RX) &&
-+		    rtw_read8_mask(rtwdev, REG_CCK0_FAREPORT, BIT_CCK0_MRC)) ? 2 : 1;
-+	rtw_dbg(rtwdev, RTW_DBG_PHY,
-+		"is_linked=%d, lv=%d, n_rx=%d, cs_ratio=0x%x, pd_th=0x%x, cck_fa_avg=%d\n",
-+		rtw_is_assoc(rtwdev), new_lvl, cck_n_rx,
-+		dm_info->cck_pd_default + new_lvl * 2,
-+		pd[new_lvl], dm_info->cck_fa_avg);
-+
- 	dm_info->cck_fa_avg = CCK_FA_AVG_RESET;
- 
- 	dm_info->cck_pd_lv[RTW_CHANNEL_WIDTH_20][RF_PATH_A] = new_lvl;
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8821c.c b/drivers/net/wireless/realtek/rtw88/rtw8821c.c
-index ef7da2a9a148..fbfd85439d1f 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8821c.c
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8821c.c
-@@ -1020,6 +1020,7 @@ static void rtw8821c_phy_cck_pd_set(struct rtw_dev *rtwdev, u8 new_lvl)
- {
- 	struct rtw_dm_info *dm_info = &rtwdev->dm_info;
- 	u8 pd[CCK_PD_LV_MAX] = {3, 7, 13, 13, 13};
-+	u8 cck_n_rx;
- 
- 	if (dm_info->min_rssi > 60) {
- 		new_lvl = 4;
-@@ -1027,9 +1028,20 @@ static void rtw8821c_phy_cck_pd_set(struct rtw_dev *rtwdev, u8 new_lvl)
- 		goto set_cck_pd;
- 	}
- 
-+	rtw_dbg(rtwdev, RTW_DBG_PHY, "lv: (%d) -> (%d)\n",
-+		dm_info->cck_pd_lv[RTW_CHANNEL_WIDTH_20][RF_PATH_A], new_lvl);
-+
- 	if (dm_info->cck_pd_lv[RTW_CHANNEL_WIDTH_20][RF_PATH_A] == new_lvl)
- 		return;
- 
-+	cck_n_rx = (rtw_read8_mask(rtwdev, REG_CCK0_FAREPORT, BIT_CCK0_2RX) &&
-+		    rtw_read8_mask(rtwdev, REG_CCK0_FAREPORT, BIT_CCK0_MRC)) ? 2 : 1;
-+	rtw_dbg(rtwdev, RTW_DBG_PHY,
-+		"is_linked=%d, lv=%d, n_rx=%d, cs_ratio=0x%x, pd_th=0x%x, cck_fa_avg=%d\n",
-+		rtw_is_assoc(rtwdev), new_lvl, cck_n_rx,
-+		dm_info->cck_pd_default + new_lvl * 2,
-+		pd[new_lvl], dm_info->cck_fa_avg);
-+
- 	dm_info->cck_fa_avg = CCK_FA_AVG_RESET;
- 
- set_cck_pd:
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822c.c b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-index b91c0e81a2aa..7dd3ccb73793 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-@@ -3454,6 +3454,10 @@ rtw8822c_phy_cck_pd_set_reg(struct rtw_dev *rtwdev,
- 			 rtw8822c_cck_pd_reg[bw][nrx].reg_cs,
- 			 rtw8822c_cck_pd_reg[bw][nrx].mask_cs,
- 			 cs);
-+
-+	rtw_dbg(rtwdev, RTW_DBG_PHY,
-+		"is_linked=%d, bw=%d, nrx=%d, cs_ratio=0x%x, pd_th=0x%x\n",
-+		rtw_is_assoc(rtwdev), bw, nrx, cs, pd);
- }
- 
- static void rtw8822c_phy_cck_pd_set(struct rtw_dev *rtwdev, u8 new_lvl)
-@@ -3467,6 +3471,10 @@ static void rtw8822c_phy_cck_pd_set(struct rtw_dev *rtwdev, u8 new_lvl)
- 	nrx = (u8)rtw_read32_mask(rtwdev, 0x1a2c, 0x60000);
- 	bw = (u8)rtw_read32_mask(rtwdev, 0x9b0, 0xc);
- 
-+	rtw_dbg(rtwdev, RTW_DBG_PHY, "lv: (%d) -> (%d) bw=%d nr=%d cck_fa_avg=%d\n",
-+		dm_info->cck_pd_lv[bw][nrx], new_lvl, bw, nrx,
-+		dm_info->cck_fa_avg);
-+
- 	if (dm_info->cck_pd_lv[bw][nrx] == new_lvl)
- 		return;
- 
+ tcl_ring_sel:
+ 	tcl_ring_retry = false;
 -- 
-2.21.0
+2.7.4
 
