@@ -2,81 +2,76 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ABF162AD1B7
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Nov 2020 09:49:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AE5C62AD1DA
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Nov 2020 09:53:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729518AbgKJItT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 10 Nov 2020 03:49:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35802 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728741AbgKJItT (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 10 Nov 2020 03:49:19 -0500
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00CEFC0613CF
-        for <linux-wireless@vger.kernel.org>; Tue, 10 Nov 2020 00:49:18 -0800 (PST)
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.94)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1kcPL2-004pBx-6Y; Tue, 10 Nov 2020 09:49:16 +0100
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     linux-wireless@vger.kernel.org
-Cc:     Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH] nl80211: fix kernel-doc warning in the new SAE attribute
-Date:   Tue, 10 Nov 2020 09:49:11 +0100
-Message-Id: <20201110094911.bb020e863aa0.I960caf90e2a8cc23f6bf9245d77524df6a4d8f37@changeid>
-X-Mailer: git-send-email 2.26.2
+        id S1726827AbgKJIxW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 10 Nov 2020 03:53:22 -0500
+Received: from z5.mailgun.us ([104.130.96.5]:55517 "EHLO z5.mailgun.us"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726467AbgKJIxV (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 10 Nov 2020 03:53:21 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1604998401; h=Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Message-ID: In-Reply-To: Date: References: Subject: Cc:
+ To: From: Sender; bh=HqmvUu7PFG5dpHnRXtX9zBQ5lc3G1AT+/blm4ih6cto=; b=gK9irwMI5yGMVl7IcYgAFY/wkceDvzGQrEuUtdpN1xYOVLLs5WvaX6joL0srAyAEJVH/EVFP
+ 6JSR4W35hAq3eF6o9IB0oVx9PSJfAM9hnlvBAjt6Ie1LPhNBGLDxya4gBNtRmK+0ZeUZS5pa
+ bQGDFWbINQxVGcDIS9JBgSzojvk=
+X-Mailgun-Sending-Ip: 104.130.96.5
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n02.prod.us-west-2.postgun.com with SMTP id
+ 5faa54fd18b2aa4b1ff025d2 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 10 Nov 2020 08:53:17
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 14F61C433FE; Tue, 10 Nov 2020 08:53:17 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
+        autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id C5B3FC433C8;
+        Tue, 10 Nov 2020 08:53:14 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org C5B3FC433C8
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Yejune Deng <yejune.deng@gmail.com>
+Cc:     pizza@shaftnet.org, davem@davemloft.net, kuba@kernel.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] Replace a set of atomic_add()
+References: <1604991491-27908-1-git-send-email-yejune.deng@gmail.com>
+        <87mtzpeieb.fsf@codeaurora.org>
+        <CABWKuGXdCffiDYqr_TZpkfkMoKRdCMUZ=fDUqkoU=658miQ3AQ@mail.gmail.com>
+Date:   Tue, 10 Nov 2020 10:53:12 +0200
+In-Reply-To: <CABWKuGXdCffiDYqr_TZpkfkMoKRdCMUZ=fDUqkoU=658miQ3AQ@mail.gmail.com>
+        (Yejune Deng's message of "Tue, 10 Nov 2020 16:44:05 +0800")
+Message-ID: <877dqtegp3.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+Yejune Deng <yejune.deng@gmail.com> writes:
 
-Format the items as a definition list, to avoid the warning
-from the rst parsing.
+> Oh=EF=BC=8CI was forgetting. thanks.=20
 
-Fixes: 9f0ffa418483 ("cfg80211: Add support to configure SAE PWE value to drivers")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
----
- include/net/cfg80211.h | 23 +++++++++++++++--------
- 1 file changed, 15 insertions(+), 8 deletions(-)
+And you should also disable HTML in your emails :) See the wiki link
+below for more.
 
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index 4ff804a8bc1d..9678d32dae83 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -1008,14 +1008,21 @@ struct survey_info {
-  * @sae_pwd: password for SAE authentication (for devices supporting SAE
-  *	offload)
-  * @sae_pwd_len: length of SAE password (for devices supporting SAE offload)
-- * @sae_pwe: The mechanisms allowed for SAE PWE derivation
-- *	NL80211_SAE_PWE_UNSPECIFIED: Not-specified, used to indicate userspace
-- *		did not specify any preference. The driver should follow its
-- *		internal policy in such a scenario.
-- *	NL80211_SAE_PWE_HUNT_AND_PECK: Allow hunting-and-pecking loop only
-- *	NL80211_SAE_PWE_HASH_TO_ELEMENT: Allow hash-to-element only
-- *	NL80211_SAE_PWE_BOTH: Allow either hunting-and-pecking loop
-- *		or hash-to-element
-+ * @sae_pwe: The mechanisms allowed for SAE PWE derivation:
-+ *
-+ *	NL80211_SAE_PWE_UNSPECIFIED
-+ *	  Not-specified, used to indicate userspace did not specify any
-+ *	  preference. The driver should follow its internal policy in
-+ *	  such a scenario.
-+ *
-+ *	NL80211_SAE_PWE_HUNT_AND_PECK
-+ *	  Allow hunting-and-pecking loop only
-+ *
-+ *	NL80211_SAE_PWE_HASH_TO_ELEMENT
-+ *	  Allow hash-to-element only
-+ *
-+ *	NL80211_SAE_PWE_BOTH
-+ *	  Allow either hunting-and-pecking loop or hash-to-element
-  */
- struct cfg80211_crypto_settings {
- 	u32 wpa_versions;
--- 
-2.26.2
+--=20
+https://patchwork.kernel.org/project/linux-wireless/list/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
+hes
