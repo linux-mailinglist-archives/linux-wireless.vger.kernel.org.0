@@ -2,88 +2,115 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 345462AD157
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Nov 2020 09:33:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8071F2AD15A
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Nov 2020 09:34:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727691AbgKJIdK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 10 Nov 2020 03:33:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33318 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726462AbgKJIdJ (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 10 Nov 2020 03:33:09 -0500
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92704C0613CF;
-        Tue, 10 Nov 2020 00:33:09 -0800 (PST)
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.94)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1kcP5A-004ok0-0t; Tue, 10 Nov 2020 09:32:52 +0100
-Message-ID: <29adbaa7a7f200589e56566069270c857fcba015.camel@sipsolutions.net>
-Subject: Re: [PATCH net v2 00/21] net: avoid to remove module when its
- debugfs is being used
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Jakub Kicinski <kuba@kernel.org>, Taehee Yoo <ap420073@gmail.com>
-Cc:     davem@davemloft.net, netdev@vger.kernel.org,
-        David.Laight@aculab.com, nstange@suse.de, derosier@gmail.com,
-        kvalo@codeaurora.org, linux-wireless@vger.kernel.org,
-        wil6210@qti.qualcomm.com, b43-dev@lists.infradead.org,
-        linux-bluetooth@vger.kernel.org, michael.hennerich@analog.com,
-        linux-wpan@vger.kernel.org, stefan@datenfreihafen.org,
-        inaky.perez-gonzalez@intel.com, linux-wimax@intel.com,
-        emmanuel.grumbach@intel.com, luciano.coelho@intel.com,
-        stf_xl@wp.pl, pkshih@realtek.com, ath11k@lists.infradead.org,
-        ath10k@lists.infradead.org, wcn36xx@lists.infradead.org,
-        merez@codeaurora.org, pizza@shaftnet.org,
-        Larry.Finger@lwfinger.net, amitkarwar@gmail.com,
-        ganapathi.bhat@nxp.com, huxinming820@gmail.com,
-        marcel@holtmann.org, johan.hedberg@gmail.com, alex.aring@gmail.com,
-        jukka.rissanen@linux.intel.com, arend.vanspriel@broadcom.com,
-        franky.lin@broadcom.com, hante.meuleman@broadcom.com,
-        chung-hsien.hsu@infineon.com, wright.feng@infineon.com,
-        chi-hsien.lin@infineon.com
-Date:   Tue, 10 Nov 2020 09:32:49 +0100
-In-Reply-To: <20201107110522.2a796f1d@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-References: <20201107172152.828-1-ap420073@gmail.com>
-         <20201107110522.2a796f1d@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.5 (3.36.5-1.fc32) 
+        id S1727711AbgKJIeA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 10 Nov 2020 03:34:00 -0500
+Received: from z5.mailgun.us ([104.130.96.5]:15515 "EHLO z5.mailgun.us"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726690AbgKJId7 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 10 Nov 2020 03:33:59 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1604997239; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=/KtfOphhenGMBIiJIV3LHYnjYfNsDqqIOsEd9e7pN4g=; b=dhvn2jBeoXqphji3KaXf23m1vu1Q+WOLnz1vqsvJIddeVwlC1up9j4OlBGfnkh+1Qb2y8uZC
+ ilU75Pc6o9syOIX1fqoa5+WfmguYa8cgPLzdkh6Ca8F80AJV1m5k2Nze6WYHbfqt2Iz4liRX
+ w4InYDxTR8VVowndTjMhraraHjc=
+X-Mailgun-Sending-Ip: 104.130.96.5
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n01.prod.us-west-2.postgun.com with SMTP id
+ 5faa507761a7f890a63323eb (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 10 Nov 2020 08:33:59
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id DE30EC433C9; Tue, 10 Nov 2020 08:33:58 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 50D2EC433C8;
+        Tue, 10 Nov 2020 08:33:55 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 50D2EC433C8
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Thomas Gleixner <tglx@linutronix.de>
+Cc:     Govind Singh <govinds@codeaurora.org>, linux-pci@vger.kernel.org,
+        linux-wireless@vger.kernel.org, Devin Bayer <dev@doubly.so>,
+        Christoph Hellwig <hch@lst.de>,
+        Thomas Krause <thomaskrause@posteo.de>,
+        Bjorn Helgaas <helgaas@kernel.org>, ath11k@lists.infradead.org,
+        David Woodhouse <dwmw@amazon.co.uk>,
+        Stefani Seibold <stefani@seibold.net>
+Subject: Re: pci_alloc_irq_vectors fails ENOSPC for XPS 13 9310
+References: <20201103160838.GA246433@bjorn-Precision-5520>
+        <874km61732.fsf@nanos.tec.linutronix.de>
+        <fa26ac8b-ed48-7ea3-c21b-b133532716b8@posteo.de>
+        <87mtzxkus5.fsf@nanos.tec.linutronix.de>
+        <87wnz0hr9k.fsf@codeaurora.org>
+Date:   Tue, 10 Nov 2020 10:33:52 +0200
+In-Reply-To: <87wnz0hr9k.fsf@codeaurora.org> (Kalle Valo's message of "Thu, 05
+        Nov 2020 15:23:03 +0200")
+Message-ID: <87ft5hehlb.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-malware-bazaar: not-scanned
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sat, 2020-11-07 at 11:05 -0800, Jakub Kicinski wrote:
-> On Sat,  7 Nov 2020 17:21:31 +0000 Taehee Yoo wrote:
-> > When debugfs file is opened, its module should not be removed until
-> > it's closed.
-> > Because debugfs internally uses the module's data.
-> > So, it could access freed memory.
-> > 
-> > In order to avoid panic, it just sets .owner to THIS_MODULE.
-> > So that all modules will be held when its debugfs file is opened.
-> 
-> Hm, looks like some of the patches need to be revised because
-> .owner is already set in the ops, and a warning gets generated.
-> 
-> Also it'd be good to mention why Johannes's approach was abandoned.
+Kalle Valo <kvalo@codeaurora.org> writes:
 
-Well, I had two.
+> Thomas Gleixner <tglx@linutronix.de> writes:
+>
+>> On Wed, Nov 04 2020 at 14:04, Thomas Krause wrote:
+>>> config) but CONFIG_INTEL_IOMMU_DEFAULT_ON needed to be set manually. I 
+>>> hope this helps, if there is more I can do to debug it on my side I'm 
+>>> happy to do so.
+>>
+>>> [ 0.050130] DMAR: [Firmware Bug]: Your BIOS is broken; DMAR
+>>> reported at address 0!
+>>>                BIOS vendor: Dell Inc.; Ver: 1.1.1; Product Version:
+>>
+>>> [    0.103693] DMAR: Host address width 39
+>>> [    0.103693] DMAR: DRHD base: 0x000000fed90000 flags: 0x0
+>>> [ 0.103697] DMAR: dmar0: reg_base_addr fed90000 ver 4:0 cap
+>>> 1c0000c40660462 ecap 69e2ff0505e
+>>> [    0.103698] DMAR: DRHD base: 0x000000fed84000 flags: 0x0
+>>> [ 0.103701] DMAR: dmar1: reg_base_addr fed84000 ver 1:0 cap
+>>> d2008c40660462 ecap f050da
+>>> [    0.103702] DMAR: DRHD base: 0x000000fed86000 flags: 0x0
+>>> [ 0.103706] DMAR: dmar2: reg_base_addr fed86000 ver 1:0 cap
+>>> d2008c40660462 ecap f050da
+>>> [    0.103707] DMAR: DRHD base: 0x00000000000000 flags: 0x1
+>>> [    0.103707] DMAR: Parse DMAR table failure.
+>>
+>> which disables interrupt remapping and therefore the driver gets only
+>> one MSI which makes it unhappy.
+>>
+>> Not that I'm surprised, it's Dell.... Can you check whether they have a
+>> BIOS update for that box?
+>
+> I was told that on Dell XPS 15 (with a working QCA6390 setup) there's a
+> separate "Virtualisation" setting in BIOS. See if you have that and try
+> enabling it.
 
-One was awful, and worked in all cases.
+I was informed about another setting to test: try disabling "Enable
+Secure Boot" in the BIOS. I don't know yet why it would help, but that's
+what few people have recommended.
 
-The other was less awful, and didn't work in all cases.
+Please let me know how it goes.
 
-I think both gave Al Viro hives ;-)
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-> Patch 1 needs to be split in two. Patches 2 and 3 would go via Johannes.
-
-FWIW, I'm happy for you to take patches 2 and 3 as well, but I guess if
-patch 1 needs to be split there's a resend coming anyway, so then I'll
-be happy to take the patches 2/3 from a separate set.
-
-johannes
-
-
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
