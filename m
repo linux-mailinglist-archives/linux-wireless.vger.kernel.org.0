@@ -2,163 +2,91 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 327532AE1EF
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Nov 2020 22:40:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 74A5D2AE1F9
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Nov 2020 22:42:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731780AbgKJVks (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 10 Nov 2020 16:40:48 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:55323 "EHLO
+        id S1731910AbgKJVml (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 10 Nov 2020 16:42:41 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:55331 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731962AbgKJVkY (ORCPT
+        with ESMTP id S1731992AbgKJVlF (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 10 Nov 2020 16:40:24 -0500
-Received: from mail-oo1-f72.google.com ([209.85.161.72])
+        Tue, 10 Nov 2020 16:41:05 -0500
+Received: from mail-oi1-f200.google.com ([209.85.167.200])
         by youngberry.canonical.com with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <seth.forshee@canonical.com>)
-        id 1kcbNF-0003NL-OT
-        for linux-wireless@vger.kernel.org; Tue, 10 Nov 2020 21:40:21 +0000
-Received: by mail-oo1-f72.google.com with SMTP id q80so3407642ooq.18
-        for <linux-wireless@vger.kernel.org>; Tue, 10 Nov 2020 13:40:21 -0800 (PST)
+        id 1kcbNv-0003PD-KX
+        for linux-wireless@vger.kernel.org; Tue, 10 Nov 2020 21:41:03 +0000
+Received: by mail-oi1-f200.google.com with SMTP id u24so43481oiv.0
+        for <linux-wireless@vger.kernel.org>; Tue, 10 Nov 2020 13:41:03 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=fBR9Iz98wiZC0dhRBOUcz6Cdnxtcs7lLwsZxeb9MiCQ=;
-        b=R8VZUofJK53VYlDbHMOYhqtowXtB/y625ge7ymubh8sixnapNZjHddERTv/Fe3aQXJ
-         a8HsqM4Nz4fhJrNozsrFw1EobejDf5/vqI0Csm5oq2pIiskN85Knt/P1L8SuULkOTv+x
-         H8nfabeFcspwJ3SfG90Vq6DTYV3b/UT+6Jl8lOqyH/ZZUzJAtTbynNhhUcRkgr+4Su71
-         EjczuWfpo42bPRKwFdfkILnHV7n329Zu4wXcTZULDPYnCrrExwY1hrYT84/DN5PxDfjD
-         x1AnRAUwalTG0vjqtTldZIqc2PM6MgtnQ2yG5oEn/WfHZhFsRSmNI8F+7FsdhogLGTHD
-         MxAw==
-X-Gm-Message-State: AOAM5334U2qczfr+Gwz3dWXI/NiNGFTZmihg5CeRIUjY6ziebiyIBh+s
-        996sxM8kVmnQ3ox6xMIyAiPtYc6tUDh1kAm5T8lRPUmbURkDuOpM2kdXTvtg1IB72pNLWZF84ri
-        PYWeONjbkDeoRViAktX8BXOPXDs8F+HWoG3cjCOYqyVEG
-X-Received: by 2002:a9d:323:: with SMTP id 32mr15047294otv.352.1605044420356;
-        Tue, 10 Nov 2020 13:40:20 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJwnJ6ZR5R2fUSpee5KJAMxbqXSttQ/6eSscckBLsyF5iiPaqhMWf2kgZJpbA2siQGnMjQcUAA==
-X-Received: by 2002:a9d:323:: with SMTP id 32mr15047279otv.352.1605044420082;
-        Tue, 10 Nov 2020 13:40:20 -0800 (PST)
+         :mime-version:content-disposition:in-reply-to;
+        bh=Gi2qCG7vZVjA2NVWHQOHYg/qHFwRYcU2uHFUPGZGuBU=;
+        b=DEWhfqIoMw+iXX1gx/mz7vtQXrCVJbESG+IWcc5pjmvMAndWhZolle14Ld4cbAjt/q
+         EnIuSxs+O/P43H6ZyOXgk8wXKdt50yo9+5PtFs4xEuI1zzoIjbVi9UhffkD+Uz2NPXLf
+         6z/+62zZiuTgPXcwv4wJ5kWHa90cQWhThEuceyuFCl9/k01ilX4Xq4bh82S6dft8cxg3
+         j5z1zZEaSTUHBRpBowGlsnXQh8TdukTPTQ3kFVH/ctcYJs6UsesLG428HGgylgJD3o3S
+         zvKL9Vb5+d3b62B6ENK0UCf0iBn51mCSnlzL0SoIugi/FzkYp6xvWd4tgybjrIhDAlKH
+         ZWtw==
+X-Gm-Message-State: AOAM5319yOULKAsLj3vr+6wQtn1/QnaQ1iy8b7T6Yr7zl3+HH3z1Rt96
+        rNaS8xhZsNByBmjHyl36EQFK2TromYbUolzy79mJuycPa4zLdPw17h8vXUz4GzuAct7i2WPzY2A
+        jxrLtKfuionm+0EZrP8GxmsNE05BZ+UPu8TPXgqkZKNGF
+X-Received: by 2002:aca:cc01:: with SMTP id c1mr70584oig.147.1605044462595;
+        Tue, 10 Nov 2020 13:41:02 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJzilmdcWJIVPAjZxUAcnW89AOUZoduSV9BDAKrqJqrAsohh/nteHAoaXv/YS9TqSZ2kVHZ5Eg==
+X-Received: by 2002:aca:cc01:: with SMTP id c1mr70573oig.147.1605044462378;
+        Tue, 10 Nov 2020 13:41:02 -0800 (PST)
 Received: from localhost ([2605:a601:ac0f:820:59ea:bfb1:548d:1c70])
-        by smtp.gmail.com with ESMTPSA id v8sm57539ooh.6.2020.11.10.13.40.18
+        by smtp.gmail.com with ESMTPSA id s20sm47903oof.39.2020.11.10.13.41.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Nov 2020 13:40:18 -0800 (PST)
-Date:   Tue, 10 Nov 2020 15:40:18 -0600
+        Tue, 10 Nov 2020 13:41:01 -0800 (PST)
+Date:   Tue, 10 Nov 2020 15:41:00 -0600
 From:   Seth Forshee <seth.forshee@canonical.com>
-To:     Pavel Starosek <starosekpd@gmail.com>
+To:     Abdul Rauf <abdulraufmujahid@gmail.com>
 Cc:     wireless-regdb@lists.infradead.org, linux-wireless@vger.kernel.org
-Subject: Re: wireless-regdb: Update regulatory rules for Kazakhstan (KZ)
-Message-ID: <20201110214018.GM6125@ubuntu-x1>
-References: <CAPgWZqzskMUOnmdBwh6TEh5yfrbdzg+4bZOUMQPkJffWizZweg@mail.gmail.com>
- <CAPgWZqx-bHc5iEn-fWbzarrUNB5kbMnay_Pr5BKROznOAO0nWQ@mail.gmail.com>
+Subject: Re: [PATCH] wireless-regdb: Update regulatory rules for Pakistan
+ (PK) on 5GHz
+Message-ID: <20201110214100.GN6125@ubuntu-x1>
+References: <20201020181731.GA18865@leagueoflegends>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAPgWZqx-bHc5iEn-fWbzarrUNB5kbMnay_Pr5BKROznOAO0nWQ@mail.gmail.com>
+In-Reply-To: <20201020181731.GA18865@leagueoflegends>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Nov 09, 2020 at 03:19:01AM +0600, Pavel Starosek wrote:
-> Updates, based on [1] (search for word "RLAN" to jump to the desired
-> part on the page):
-
-Thanks for the updates. I think there are some questions though be
-answered in the documents you linked to. I find that tables like these
-often have incomplete information. Sometimes they refer to other
-documents, but I'm not seeing any such references here. I've tried to
-find more complete documents, but I haven't had any luck.
-
-Overall these look okay, but if you are able to find any additional
-information to clarify some of these points it would be helpful.
-
-> * Extended range 2400-2483.5
-> * 5150–5250 MHz range may be up to 200 mW
-> * The same is about 5250 - 5350 MHz according to our local
-> regulations, but looks like this is incorrect because of TPC?
-> Therefore, I didn't change this value
-
-It would be nice to know for sure, but without any additional
-information keeping it at 20 dBm is the safe bet. Many countries do
-require TPC in this range.
-
-> * Add 5725-5850 MHz range for indoor usage
-
-Here it would be nice to know if there are any additional restrictions
-on use, e.g. TPC or DFS. That appears to be rare though, so it seems
-unlikely.
-
-> * Add 57-66 GHz range. It must be outdoors only, so we don't specify
-> NO-OUTDOOR at all, right?
-
-That is generally the case for this range. What you suggest looks fine.
-
-> * In 5470-5725 changed the bandwidth from 80 to 160 (typo?)
-
-Probably not a typo, if 160 MHz channels are allowed the entry probably
-just hasn't been updated. But those documents don't really state whether
-or not they are allowed.
-
-> As I understand it, there is no DFS requirement for the 5725-5850
-> range anywhere in the [2] document.
-
-I don't it documenting any DFS requirement at all though, and severaly
-entries in the db have a DFS requirement, so I'm not sure that really
-clears up the question. I'm reading a translation of the document
-though, so maybe I'm just not finding them.
-
-Let me know if you're able to find any more information to clear up
-these questions. Are you able to send the changes as a patch? If you
-don't know how, that's fine, I can create a patch.
-
-Thanks,
-Seth
-
+On Tue, Oct 20, 2020 at 11:17:31PM +0500, Abdul Rauf wrote:
+> Update range to 5.725 - 5.875 Ghz
+> as mentioned at https://fab.gov.pk/type-approval/
 > 
-> I can suggest this change. Please check if everything is correct?
+> Signed-off-by: Abdul Rauf <abdulraufmujahid@gmail.com>
+
+Applied, thanks!
+
 > ---
-> # [1] http://adilet.zan.kz/rus/docs/V1500010730
-> # [2] http://adilet.zan.kz/rus/docs/V1500010375
-> country KZ: DFS-ETSI
->     (2400 - 2483.5 @ 40), (20)
->     (5150 - 5250 @ 80), (23), NO-OUTDOOR, AUTO-BW
->     (5250 - 5350 @ 80), (20), NO-OUTDOOR, DFS, AUTO-BW
->     (5470 - 5725 @ 160), (20), NO-OUTDOOR, DFS
->     (5725 - 5850 @ 80), (20), NO-OUTDOOR
->     (57000 - 66000 @ 2160), (40)
+>  db.txt | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
 > 
-> ---
-> Thanks,
-> Pavel
+> diff --git a/db.txt b/db.txt
+> index ac32483..ce8449c 100644
+> --- a/db.txt
+> +++ b/db.txt
+> @@ -1243,8 +1243,10 @@ country PH: DFS-FCC
+>  	(5735 - 5835 @ 80), (30)
+>  
+>  country PK: DFS-JP
+> +	# https://fab.gov.pk/type-approval/
+> +	# https://pta.gov.pk/media/Pakistan_Table_of_Frequency_Allocations.pdf
+>  	(2402 - 2482 @ 40), (20)
+> -	(5735 - 5835 @ 80), (30)
+> +	(5725 - 5875 @ 80), (30)
+>  
+>  # PL as part of EU/CEPT accepted decisions 2005/513/EC (5GHz RLAN, EN 301 893)
+>  # and 2006/771/EC (amended by 2008/432/EC, Short-Range Devices, EN 300 440)
+> -- 
+> 2.25.1
 > 
-> 
-> On Mon, Nov 9, 2020 at 3:16 AM Pavel Starosek <starosekpd@gmail.com> wrote:
-> >
-> > Updates, based on [1] (search for word "RLAN" to jump to the desired part on the page):
-> >
-> > * Extended range 2400-2483.5
-> > * 5150–5250 MHz range may be up to 200 mW
-> > * The same is about 5250 - 5350 MHz according to our local regulations, but looks like this is incorrect because of TPC? Therefore, I didn't change this value
-> > * Add 5725-5850 MHz range for indoor usage
-> > * Add 57-66 GHz range. It must be outdoors only, so we don't specify NO-OUTDOOR at all, right?
-> > * In 5470-5725 changed the bandwidth from 80 to 160 (typo?)
-> > As I understand it, there is no DFS requirement for the 5725-5850 range anywhere in the [2] document.
-> >
-> > I can suggest this change. Please check if everything is correct?
-> > ---
-> > # [1] http://adilet.zan.kz/rus/docs/V1500010730
-> > # [2] http://adilet.zan.kz/rus/docs/V1500010375
-> > country KZ: DFS-ETSI
-> >     (2400 - 2483.5 @ 40), (20)
-> >     (5150 - 5250 @ 80), (23), NO-OUTDOOR, AUTO-BW
-> >     (5250 - 5350 @ 80), (20), NO-OUTDOOR, DFS, AUTO-BW
-> >     (5470 - 5725 @ 160), (20), NO-OUTDOOR, DFS
-> >     (5725 - 5850 @ 80), (20), NO-OUTDOOR
-> >     (57000 - 66000 @ 2160), (40)
-> >
-> > ---
-> > Thanks,
-> > Pavel
-> >
