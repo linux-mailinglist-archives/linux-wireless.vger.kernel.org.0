@@ -2,79 +2,80 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B7ED72AE142
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Nov 2020 22:00:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BF58B2AE163
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Nov 2020 22:13:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731696AbgKJVAC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 10 Nov 2020 16:00:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37108 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726737AbgKJVAC (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 10 Nov 2020 16:00:02 -0500
-X-Greylist: delayed 52750 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 10 Nov 2020 12:59:59 PST
-Received: from mail.aperture-lab.de (mail.aperture-lab.de [IPv6:2a01:4f8:171:314c::100:a1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2538CC0613D1;
-        Tue, 10 Nov 2020 12:59:58 -0800 (PST)
-Date:   Tue, 10 Nov 2020 21:59:50 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c0d3.blue; s=2018;
-        t=1605041997;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=yygze7HI9YJNXxbkMRM/doJInuQMK3mUGoENwg4pCD8=;
-        b=tTN/JXhv5q2ziwyHU7FS5OpwfUH7Xhn4R97x/Y0VUqXCmtbytUU10Bzivi8/1zUO+FY8b/
-        QDGIws2JEXpH7eJRgAlr0zJzb9VxFRI8dhodV/Fecx2uYoVvR5LOvoCW7QBuu886o2ypbT
-        nGb+poX9GI3jmz7icZG8Fbz/a/i6mo7Kso7mmt7LD4OxhFrOJA/osEi3LywDKseEbdxY2T
-        WLkyFGuf7xSdQbMIo1u9Ui2ruWsWVkgX2XolZLGUHbMRhhakH0anSb0x4Am5N79NJ2k+Ik
-        JKKk4YzXyFgsDYOdjXnBEqSAb+fvhMM7wEWtmUhlvm2q3ieceaCfV2RVBKER+w==
-From:   Linus =?utf-8?Q?L=C3=BCssing?= <linus.luessing@c0d3.blue>
-To:     linux-bluetooth@vger.kernel.org, linux-wireless@vger.kernel.org,
-        Intel Linux Wireless <linuxwifi@intel.com>
-Cc:     Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-        Marcel Holtmann <marcel@holtmann.org>
-Subject: Re: Crash / Null pointer dereference in l2cap_chan_send()
-Message-ID: <20201110205950.GF2423@otheros>
-References: <20201110062039.GC2423@otheros>
+        id S1730618AbgKJVNC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 10 Nov 2020 16:13:02 -0500
+Received: from bilbo.ozlabs.org ([203.11.71.1]:60475 "EHLO ozlabs.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727275AbgKJVNC (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 10 Nov 2020 16:13:02 -0500
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mail.ozlabs.org (Postfix) with ESMTPSA id 4CW0vH3kygz9s0b;
+        Wed, 11 Nov 2020 08:12:59 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
+        s=201702; t=1605042779;
+        bh=sqPUYH7dd9Iyds0ql3EubkQqUtQJ/UtFyeEmU/huRUI=;
+        h=Date:From:To:Cc:Subject:From;
+        b=k+yjf09pMZbFeBpsUA1txnyc9vInR/YdDC5ScmYfy1/ko3N9o3O5Df5wUEkPkkY2r
+         YnGyN0oZ/DTO9LqWCODg/LIBCy1D05dR6XWmYlRaRBIJlfsqxgPAved6btcco0aq67
+         5ziflbdWvdWkIn1h4s5VjmdPQY+2nJLGgQDpjxDjw6tJS/3PedDVELbTfI3SK+Q4rS
+         Z6IHzW02jVrD22+9vSTyThsJjwycp9NauPrAxIKMpCVwv6d+M8o9jaGSemmzXgqLdy
+         ejemE9w7UawXSDFFKHVwNiIHwAD01HtAmHPjIJkdQRvyerJFxthLi3D1+cOX/SNsT/
+         XcvHpVHOJqQOw==
+Date:   Wed, 11 Nov 2020 08:12:57 +1100
+From:   Stephen Rothwell <sfr@canb.auug.org.au>
+To:     Kalle Valo <kvalo@codeaurora.org>,
+        Wireless <linux-wireless@vger.kernel.org>
+Cc:     Avraham Stern <avraham.stern@intel.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux Next Mailing List <linux-next@vger.kernel.org>
+Subject: linux-next: Signed-off-by missing for commit in the
+ wireless-drivers tree
+Message-ID: <20201111081257.30418470@canb.auug.org.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20201110062039.GC2423@otheros>
-Authentication-Results: ORIGINATING;
-        auth=pass smtp.auth=linus.luessing@c0d3.blue smtp.mailfrom=linus.luessing@c0d3.blue
+Content-Type: multipart/signed; boundary="Sig_/vzn4ewVMJ5LxThH.l=Ihuve";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Nov 10, 2020 at 07:20:39AM +0100, Linus Lüssing wrote:
-> [...]
->
-> The issue was introduced with the following commit:
-> 
->     f4bfdc5e571e ("iwlwifi: mvm: stop supporting swcrypto and bt_coex_active module parameters")
->     * first affected tag: v5.8-rc1
-> 
+--Sig_/vzn4ewVMJ5LxThH.l=Ihuve
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-PS: As this commit mentioned bt_coex_active, I retried with a
-vanilla 5.9.6 kernel while leaving bt_coex_active at its
-default value. That is leaving it enabled while all previous tests
-I did had it disabled.
+Hi all,
 
-However I still get the Bluetooth A2DP freeze and subsequent
-kernel panics.
+Commit
 
-Only the warnings in dmesg with
-"iwlmvm doesn't allow to disable BT Coex, check bt_coex_active module parameter"
-seem to have vanished.
+  97cc16943f23 ("iwlwifi: mvm: write queue_sync_state only for sync")
 
+is missing a Signed-off-by from its author.
 
-Also, swcrypto is disabled, as it is by default. So the majority
-of the lines changed shouldn't affect me.
+--=20
+Cheers,
+Stephen Rothwell
 
-The only thing that should affect and trigger the crashes for me
-seems to be that BT_COEX_NW is now always enabled and that the code
-now ignores what I set for the iwlwifi bt_coex_active module parameter.
-While before I had it always disabled via the iwlwifi module parameter.
+--Sig_/vzn4ewVMJ5LxThH.l=Ihuve
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAl+rAlkACgkQAVBC80lX
+0Gz9BAf/U+w1IMbizJotCIWGahTuoqE/J5kzYiFSEXG2qyZZde9rwNVU6c5DZ0uM
+cSf4F8VlT9dPikB9LiRCtov+4NPWplBfPXx8KxJe+7HEbu/tNbdVGEvm2Db1rhDl
+3wQkMGUwrhNlHjJIPL7qq7anH425NS7UQS7+ye6mbN8XOj6yYSfN9jKaSW5hbRIK
+Zj+9KEWPARx3cTZK759Gqfi+MZoalTH1Fd+TV9Pep+JAsYc9tpyAy7RlojpUkSn1
+y43jAKTAz+I7VcaUdst28mBuDOs2S4+cT3E5Ufybedl4gg84xH+saus1H88P/aIH
+L8s8TqUnrolRZ8XP6Cm74rsd75T5OQ==
+=ug87
+-----END PGP SIGNATURE-----
+
+--Sig_/vzn4ewVMJ5LxThH.l=Ihuve--
