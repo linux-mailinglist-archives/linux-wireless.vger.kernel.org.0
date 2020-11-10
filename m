@@ -2,61 +2,93 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3856A2ADCFE
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Nov 2020 18:35:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 013352ADDEC
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Nov 2020 19:14:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730174AbgKJRfh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 10 Nov 2020 12:35:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33336 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728272AbgKJRfg (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 10 Nov 2020 12:35:36 -0500
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 759C7C0613CF;
-        Tue, 10 Nov 2020 09:35:36 -0800 (PST)
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.94)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1kcXYC-0053JM-1H; Tue, 10 Nov 2020 18:35:24 +0100
-Message-ID: <3b851462d9bfd914aeb9f5b432e4c076f6c330f3.camel@sipsolutions.net>
-Subject: Re: [PATCH] rfkill: Fix use-after-free in rfkill_resume()
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Claire Chang <tientzu@chromium.org>, davem@davemloft.net,
-        kuba@kernel.org, hdegoede@redhat.com, marcel@holtmann.org
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Date:   Tue, 10 Nov 2020 18:35:07 +0100
-In-Reply-To: <20201110084908.219088-1-tientzu@chromium.org> (sfid-20201110_094924_445207_CC99576F)
-References: <20201110084908.219088-1-tientzu@chromium.org>
-         (sfid-20201110_094924_445207_CC99576F)
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.5 (3.36.5-1.fc32) 
+        id S1726984AbgKJSOg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 10 Nov 2020 13:14:36 -0500
+Received: from z5.mailgun.us ([104.130.96.5]:55355 "EHLO z5.mailgun.us"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726428AbgKJSOg (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 10 Nov 2020 13:14:36 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1605032076; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=ommY8NbC/6/vCsffz4CKNBy1MT65alpBUD3ahMItC0I=;
+ b=EVdHg3bSNXpO3IvRRRRKAdO7+ujBxDTMNIN0LUx+Soxldw9dLIybXN0nvQdJYHFhztkmz7Gg
+ RGX6Q+uQDFWOO2FNNYdXME6Zr/ebOXT/ftnf+72CLklEOfAuzN6gUOwf8FsB/wHySAwMXhzf
+ naA5n4Ra/QcDDov48eizvfQn3ik=
+X-Mailgun-Sending-Ip: 104.130.96.5
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n03.prod.us-west-2.postgun.com with SMTP id
+ 5faad867e9dd187f53286144 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 10 Nov 2020 18:13:59
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 143D8C43382; Tue, 10 Nov 2020 18:13:59 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        MISSING_DATE,MISSING_MID,SPF_FAIL,URIBL_BLOCKED autolearn=no
+        autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 66C6DC433C6;
+        Tue, 10 Nov 2020 18:13:56 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 66C6DC433C6
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-X-malware-bazaar: not-scanned
+Subject: Re: [PATCH net-next 08/11] ath9k: work around false-positive gcc
+ warning
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20201026213040.3889546-8-arnd@kernel.org>
+References: <20201026213040.3889546-8-arnd@kernel.org>
+To:     Arnd Bergmann <arnd@kernel.org>
+Cc:     QCA ath9k Development <ath9k-devel@qca.qualcomm.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
+Message-Id: <20201110181359.143D8C43382@smtp.codeaurora.org>
+Date:   Tue, 10 Nov 2020 18:13:59 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 2020-11-10 at 16:49 +0800, Claire Chang wrote:
-> If a device is getting removed or reprobed during resume, use-after-free
-> might happen. For example, h5_btrtl_resume()[drivers/bluetooth/hci_h5.c]
-> schedules a work queue for device reprobing. During the reprobing, if
-> rfkill_set_block() in rfkill_resume() is called after the corresponding
-> *_unregister() and kfree() are called, there will be an use-after-free
-> in hci_rfkill_set_block()[net/bluetooth/hci_core.c].
+Arnd Bergmann <arnd@kernel.org> wrote:
 
+> gcc-10 shows a false-positive warning with CONFIG_KASAN:
+> 
+> drivers/net/wireless/ath/ath9k/dynack.c: In function 'ath_dynack_sample_tx_ts':
+> include/linux/etherdevice.h:290:14: warning: writing 4 bytes into a region of size 0 [-Wstringop-overflow=]
+>   290 |  *(u32 *)dst = *(const u32 *)src;
+>       |  ~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~
+> 
+> Until gcc is fixed, work around this by using memcpy() in place
+> of ether_addr_copy(). Hopefully gcc-11 will not have this problem.
+> 
+> Link: https://godbolt.org/z/sab1MK
+> Link: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97490
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> [kvalo@codeaurora.org: remove ifdef and add a comment]
+> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 
-Not sure I understand. So you're saying
+Patch applied to ath-next branch of ath.git, thanks.
 
- * something (h5_btrtl_resume) schedules a worker
- * said worker run, when it runs, calls rfkill_unregister()
- * somehow rfkill_resume() still gets called after this
+b96fab4e3602 ath9k: work around false-positive gcc warning
 
-But that can't really be right, device_del() removes it from the PM
-lists?
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/20201026213040.3889546-8-arnd@kernel.org/
 
-johannes
-
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
