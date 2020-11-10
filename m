@@ -2,111 +2,97 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7737B2AC931
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Nov 2020 00:16:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B2612ACA9A
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Nov 2020 02:42:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730087AbgKIXQz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 9 Nov 2020 18:16:55 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:40250 "EHLO
+        id S1731267AbgKJBmJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 9 Nov 2020 20:42:09 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:42613 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727070AbgKIXQz (ORCPT
+        with ESMTP id S1729452AbgKJBmH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 9 Nov 2020 18:16:55 -0500
-Received: from mail-io1-f72.google.com ([209.85.166.72])
+        Mon, 9 Nov 2020 20:42:07 -0500
+Received: from mail-io1-f70.google.com ([209.85.166.70])
         by youngberry.canonical.com with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <seth.forshee@canonical.com>)
-        id 1kcGP6-0001I2-HU
-        for linux-wireless@vger.kernel.org; Mon, 09 Nov 2020 23:16:52 +0000
-Received: by mail-io1-f72.google.com with SMTP id y17so6886148iot.1
-        for <linux-wireless@vger.kernel.org>; Mon, 09 Nov 2020 15:16:52 -0800 (PST)
+        id 1kcIfc-00010R-UJ
+        for linux-wireless@vger.kernel.org; Tue, 10 Nov 2020 01:42:05 +0000
+Received: by mail-io1-f70.google.com with SMTP id z7so2974928iom.14
+        for <linux-wireless@vger.kernel.org>; Mon, 09 Nov 2020 17:42:04 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=yWOh058py9Z1yCKFlGUJbeKB5vRPnrW3Yx1obVhiW9c=;
-        b=lPxKHHNHFhrjXIVuDWmJGyEXHkVG5S0mS58bOpMNKW8HuovQeEKOyJBo+KAxdSn1C5
-         CBwDUhIzLNRe6s+/AehbZ+D4x5ADUZd+xH5qj+pMc1/3Tz7sM1aBe1c0qP5frRuQJSc/
-         iRzEJ+gHX94aOCaSg/KdltNlQT0dnovY4WvIiHQ1RcYxbbKqmiKIvTjw2BGCjKtbvc0M
-         a2RMbrllsA7MqLWDDu3+QxrWPpzKDPQSDdMfsyT+IyXAyDfg4z2TpRjboJU/IpXPDqJV
-         /2DsfRfRXCaiZ5ws2SuNL+xKNiIy6XcqkTm6iVT1m5jenrp2O7/tJNOnkudtGfX/SrTE
-         PNsQ==
-X-Gm-Message-State: AOAM5333PdDQYOJOHGJUeBztLp8HRn2miYynum4DflzyMoVeZz/o3XwZ
-        PX0TWSbvT/Cepf3+CS5+Mtot/j7UU+yl4a8W9eoseV+0f6kdvVsur+AVgWAtgtFYhH+ZZo2RHTo
-        gpRomzw7EHR7PsG/sfAbJ0SPg0i3zAgqqv2nWGu4KM5Xf
-X-Received: by 2002:a02:3849:: with SMTP id v9mr12971797jae.23.1604963811431;
-        Mon, 09 Nov 2020 15:16:51 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJxGcZsfRvnr6fhEXkXQImea9heFzhzuJBw81LlBL76xMVghIzqjTfoWTzKH9BelfllHjgXU9Q==
-X-Received: by 2002:a02:3849:: with SMTP id v9mr12971782jae.23.1604963811187;
-        Mon, 09 Nov 2020 15:16:51 -0800 (PST)
-Received: from localhost ([2605:a601:ac0f:820:da74:bc22:6cb3:9db0])
-        by smtp.gmail.com with ESMTPSA id 192sm8178352ilc.31.2020.11.09.15.16.50
+        bh=E880HvGjLzSgwj76eQwFny2hAi4BxIyxarhqics3gS4=;
+        b=oK7AvCDCEMT/1ALaDX+F1thd5TgulsM+UkcUgfbg5n2Am4K7kYlQ/94eniAbhzGrcQ
+         90sXbSIxUfnfTplZkNVD282rKsr44lq0dpO+KTui8ao5gvHQGqj0JEu0bK/vm85HinXH
+         DyLsIRurEUAtSZseXa95+GjuRDfh16KogJcIly9IEi8uV9I6BRg31hUEHO6JwrfP5456
+         DU5HS2aJkCYZSkA5gJ0+96RBZFYjb8BaBkHRhDKW6Zbpdg8o6X0tvoMzLQlIGYB3FAt0
+         N2WQ6DvhSRB6jU/oM2wtsBs3fIRFF2cVKw9N8U13eUXjTWIJPaKL+6m/V3CDt/VYS+iU
+         IGQg==
+X-Gm-Message-State: AOAM533O30i1KAIsTgWlO1KaS46mvCnm8cz2SDoKzCdVeZ0ja6wcc+75
+        aYBbj6SPnVVKu4x6ayNVn2tGI5FcSVS4lip7xXoA3Qgpxww/HuTiSebGlqq06vnL+FPGWfQNav+
+        Wov4BwM+nECnF+ni8wXN8XfBe7/VMOYFP2B/EekCMYvyK
+X-Received: by 2002:a92:9a1d:: with SMTP id t29mr12787591ili.85.1604972523653;
+        Mon, 09 Nov 2020 17:42:03 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJx40fA0IVPO0GxSAC87bsI26T5A/GGSoJ2ghk7gQJCDWjTZRZI6Ag8bUOjKdXGiouQglqDKpQ==
+X-Received: by 2002:a92:9a1d:: with SMTP id t29mr12787585ili.85.1604972523469;
+        Mon, 09 Nov 2020 17:42:03 -0800 (PST)
+Received: from localhost ([2605:a601:ac0f:820:89a:1dd3:9ddb:b24d])
+        by smtp.gmail.com with ESMTPSA id k18sm6441811iow.4.2020.11.09.17.42.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Nov 2020 15:16:50 -0800 (PST)
-Date:   Mon, 9 Nov 2020 17:16:49 -0600
+        Mon, 09 Nov 2020 17:42:02 -0800 (PST)
+Date:   Mon, 9 Nov 2020 19:42:02 -0600
 From:   Seth Forshee <seth.forshee@canonical.com>
-To:     Robert Marko <robert.marko@sartura.hr>
-Cc:     wireless-regdb@lists.infradead.org, linux-wireless@vger.kernel.org,
-        Luka Perkov <luka.perkov@sartura.hr>
-Subject: Re: [PATCH] wireless-regdb: Update regulatory rules for Croatia (HR)
-Message-ID: <20201109231649.GH6125@ubuntu-x1>
-References: <20200913172140.66439-1-robert.marko@sartura.hr>
+To:     wireless-regdb@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org,
+        Ahmed Kamal <email.ahmedkamal@googlemail.com>
+Subject: Re: [PATCH] wireless-regdb: update regulatory rules for Egypt (EG)
+Message-ID: <20201110014202.GI6125@ubuntu-x1>
+References: <20200528210607.16154-1-seth.forshee@canonical.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200913172140.66439-1-robert.marko@sartura.hr>
+In-Reply-To: <20200528210607.16154-1-seth.forshee@canonical.com>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sun, Sep 13, 2020 at 07:21:40PM +0200, Robert Marko wrote:
-> Croatian Regulatory Authority for Network Industries (HAKOM) has
-> updated the general licenses OD-85 and OD-86 with the new OD-85a
-> and OD-86a versions.
+On Thu, May 28, 2020 at 04:06:07PM -0500, Seth Forshee wrote:
+> Update the rules to the frequency ranges and power limits
+> documented in [1], and update 5GHz rules to comply with
+> EN 301 893.
 > 
-> These introuduce the following changes:
-> * Outdoor usage for 5150-5250 and 5250-5350 MHz ranges is permitted
-> * 5150-5250 MHz range TPC requirment was dropped and power output raised to 200mW
+> [1] https://www.tra.gov.eg/en/industry/importing-of-equipment/Pages/Regulations-for-use-of-Wireless-Networks-Devices.aspx
 > 
-> OD-85a: https://www.hakom.hr/UserDocsImages/op%C4%87e%20dozvole%20prosinac%202009.g/Opca_dozvola_85a.pdf
-> OD-86a: https://www.hakom.hr/UserDocsImages/op%C4%87e%20dozvole%20prosinac%202009.g/Opca_dozvola_86a.pdf
-> 
-> Signed-off-by: Robert Marko <robert.marko@sartura.hr>
-> Cc: Luka Perkov <luka.perkov@sartura.hr>
+> Signed-off-by: Seth Forshee <seth.forshee@canonical.com>
+
+Applied.
+
 > ---
->  db.txt | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+>  db.txt | 7 ++++---
+>  1 file changed, 4 insertions(+), 3 deletions(-)
 > 
 > diff --git a/db.txt b/db.txt
-> index ac32483..52d0fab 100644
+> index ac3248350956..699bce9fb9d8 100644
 > --- a/db.txt
 > +++ b/db.txt
-> @@ -693,8 +693,8 @@ country HR: DFS-ETSI
->  # Harmonized CEPT countries (July 2019): https://www.ecodocdb.dk/download/25c41779-cd6e/Rec7003e.pdf
->  # HR: http://tablice.hakom.hr:8080/vis?lang=en
->  	(2400 - 2483.5 @ 40), (100 mW)
-> -	(5150 - 5250 @ 80), (200 mW), NO-OUTDOOR, AUTO-BW, wmmrule=ETSI
-> -	(5250 - 5350 @ 80), (100 mW), NO-OUTDOOR, DFS, AUTO-BW, wmmrule=ETSI
-> +	(5150 - 5250 @ 80), (200 mW), AUTO-BW, wmmrule=ETSI
-
-Based on the translation I'm reading the 200 mW applied to elevations
-from 5 degrees to 30 degrees, and for elevations above 30 degress the
-limit is 125 mW. I'm not expeienced with regulations that vary with the
-elevation angle. Why should we use 200 mW instead of 125 mW, which is
-allowed for any elevation?
-
-> +	(5250 - 5350 @ 80), (200 mW), DFS, AUTO-BW, wmmrule=ETSI
-
-The translation of OD-86a I'm reading says "use mostly indoors." Is that
-an accurate translation? How does this compare to the language from
-OD-86? I'm a little unsure how to interpret it.
-
-Thanks,
-Seth
-
->  	(5470 - 5725 @ 160), (500 mW), DFS, wmmrule=ETSI
->  	# short range devices (ETSI EN 300 440-1)
->  	(5725 - 5875 @ 80), (25 mW)
+> @@ -516,10 +516,11 @@ country EE: DFS-ETSI
+>  	# 60 GHz band channels 1-4 (ETSI EN 302 567)
+>  	(57000 - 66000 @ 2160), (40)
+>  
+> +# https://www.tra.gov.eg/en/industry/importing-of-equipment/Pages/Regulations-for-use-of-Wireless-Networks-Devices.aspx
+>  country EG: DFS-ETSI
+> -	(2402 - 2482 @ 40), (20)
+> -	(5170 - 5250 @ 40), (20)
+> -	(5250 - 5330 @ 40), (20), DFS
+> +	(2402 - 2483.5 @ 40), (20)
+> +	(5150 - 5250 @ 80), (23), NO-OUTDOOR, AUTO-BW, wmmrule=ETSI
+> +	(5250 - 5330 @ 80), (20), NO-OUTDOOR, DFS, AUTO-BW, wmmrule=ETSI
+>  
+>  # ES as part of EU/CEPT accepted decisions 2005/513/EC (5GHz RLAN, EN 301 893)
+>  # and 2006/771/EC (amended by 2008/432/EC, Short-Range Devices, EN 300 440)
 > -- 
-> 2.26.2
+> 2.25.1
 > 
