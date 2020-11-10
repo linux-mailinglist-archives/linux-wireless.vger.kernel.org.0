@@ -2,33 +2,33 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 013352ADDEC
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Nov 2020 19:14:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E2F52ADDF3
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Nov 2020 19:15:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726984AbgKJSOg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 10 Nov 2020 13:14:36 -0500
+        id S1731359AbgKJSPa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 10 Nov 2020 13:15:30 -0500
 Received: from z5.mailgun.us ([104.130.96.5]:55355 "EHLO z5.mailgun.us"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726428AbgKJSOg (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 10 Nov 2020 13:14:36 -0500
+        id S1726307AbgKJSP1 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 10 Nov 2020 13:15:27 -0500
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1605032076; h=Date: Message-Id: Cc: To: References:
+ s=smtp; t=1605032127; h=Date: Message-Id: Cc: To: References:
  In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=ommY8NbC/6/vCsffz4CKNBy1MT65alpBUD3ahMItC0I=;
- b=EVdHg3bSNXpO3IvRRRRKAdO7+ujBxDTMNIN0LUx+Soxldw9dLIybXN0nvQdJYHFhztkmz7Gg
- RGX6Q+uQDFWOO2FNNYdXME6Zr/ebOXT/ftnf+72CLklEOfAuzN6gUOwf8FsB/wHySAwMXhzf
- naA5n4Ra/QcDDov48eizvfQn3ik=
+ Content-Type: Sender; bh=oEg0Hd7/VY7sCFTeZI17MEe01h8PywuxZEYKAWEFsZE=;
+ b=eA1dATM2jrA6cQNPoEkdirmN/n1uVJMyMPBn/+aS1F70VLbdmNTLyvaamGRLOD38cFLpSPIp
+ NQpXviVJzv8rjvyaGIs8Wahfd1tz4EEqL8ckvg3B5mFvjOdq2/vRm+WMo+CQdHgBsvShAuzq
+ dhoXAsRkwzUpauZhkAtY0rhbT/w=
 X-Mailgun-Sending-Ip: 104.130.96.5
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n03.prod.us-west-2.postgun.com with SMTP id
- 5faad867e9dd187f53286144 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 10 Nov 2020 18:13:59
+ smtp-out-n05.prod.us-east-1.postgun.com with SMTP id
+ 5faad8a6cecc309dcb142b71 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 10 Nov 2020 18:15:02
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 143D8C43382; Tue, 10 Nov 2020 18:13:59 +0000 (UTC)
+        id 0890CC433C8; Tue, 10 Nov 2020 18:15:02 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -39,56 +39,54 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 66C6DC433C6;
-        Tue, 10 Nov 2020 18:13:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 66C6DC433C6
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 1CE34C433C9;
+        Tue, 10 Nov 2020 18:14:56 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 1CE34C433C9
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH net-next 08/11] ath9k: work around false-positive gcc
- warning
+Subject: Re: [PATCH 2/2] ath11k: Handle errors if peer creation fails
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20201026213040.3889546-8-arnd@kernel.org>
-References: <20201026213040.3889546-8-arnd@kernel.org>
-To:     Arnd Bergmann <arnd@kernel.org>
-Cc:     QCA ath9k Development <ath9k-devel@qca.qualcomm.com>,
+In-Reply-To: <20201004100218.311653-1-alex.dewar90@gmail.com>
+References: <20201004100218.311653-1-alex.dewar90@gmail.com>
+To:     Alex Dewar <alex.dewar90@gmail.com>
+Cc:     unlisted-recipients:; (no To-header on input)
+        Alex Dewar <alex.dewar90@gmail.com>,
         "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>, linux-wireless@vger.kernel.org,
+        Carl Huang <cjhuang@codeaurora.org>,
+        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
         netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Illegal-Object: Syntax error in Cc: address found on vger.kernel.org:
+        Cc:     unlisted-recipients:; (no To-header on input)Alex Dewar <alex.dewar90@gmail.com>
+                                                                     ^-missing end of address
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20201110181359.143D8C43382@smtp.codeaurora.org>
-Date:   Tue, 10 Nov 2020 18:13:59 +0000 (UTC)
+Message-Id: <20201110181502.0890CC433C8@smtp.codeaurora.org>
+Date:   Tue, 10 Nov 2020 18:15:02 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Arnd Bergmann <arnd@kernel.org> wrote:
+Alex Dewar <alex.dewar90@gmail.com> wrote:
 
-> gcc-10 shows a false-positive warning with CONFIG_KASAN:
+> ath11k_peer_create() is called without its return value being checked,
+> meaning errors will be unhandled. Add missing check and, as the mutex is
+> unconditionally unlocked on leaving this function, simplify the exit
+> path.
 > 
-> drivers/net/wireless/ath/ath9k/dynack.c: In function 'ath_dynack_sample_tx_ts':
-> include/linux/etherdevice.h:290:14: warning: writing 4 bytes into a region of size 0 [-Wstringop-overflow=]
->   290 |  *(u32 *)dst = *(const u32 *)src;
->       |  ~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~
-> 
-> Until gcc is fixed, work around this by using memcpy() in place
-> of ether_addr_copy(). Hopefully gcc-11 will not have this problem.
-> 
-> Link: https://godbolt.org/z/sab1MK
-> Link: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97490
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> [kvalo@codeaurora.org: remove ifdef and add a comment]
+> Addresses-Coverity-ID: 1497531 ("Code maintainability issues")
+> Fixes: 701e48a43e15 ("ath11k: add packet log support for QCA6390")
+> Signed-off-by: Alex Dewar <alex.dewar90@gmail.com>
 > Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 
 Patch applied to ath-next branch of ath.git, thanks.
 
-b96fab4e3602 ath9k: work around false-positive gcc warning
+c134d1f8c436 ath11k: Handle errors if peer creation fails
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20201026213040.3889546-8-arnd@kernel.org/
+https://patchwork.kernel.org/project/linux-wireless/patch/20201004100218.311653-1-alex.dewar90@gmail.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
