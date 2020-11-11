@@ -2,108 +2,96 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9058E2AE701
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Nov 2020 04:23:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A54B22AE828
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Nov 2020 06:29:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726038AbgKKDXb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 10 Nov 2020 22:23:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40574 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725882AbgKKDXa (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 10 Nov 2020 22:23:30 -0500
-Received: from mail-il1-x144.google.com (mail-il1-x144.google.com [IPv6:2607:f8b0:4864:20::144])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C7A4C0613D3
-        for <linux-wireless@vger.kernel.org>; Tue, 10 Nov 2020 19:23:30 -0800 (PST)
-Received: by mail-il1-x144.google.com with SMTP id a20so695631ilk.13
-        for <linux-wireless@vger.kernel.org>; Tue, 10 Nov 2020 19:23:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=MtCTLPr/nLLPjkd638N9S+CTPL+nfBQ/x6OWapsdMSc=;
-        b=TL0wdX7NjDApkOvujstE3i4F3uawHe37ZQIrUQ5qhGv0zg7FThLK65TVKp91AjchZv
-         XrKLn3g1Fj3ahN2tmbzTiZmUfL+19TYvGenISURXld2/StkpYsSrBz/Y2Wil19SWN4Jz
-         QMs5R/maEnYYDBUr9W3+r1cXuAGzT9XeMorGQ=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=MtCTLPr/nLLPjkd638N9S+CTPL+nfBQ/x6OWapsdMSc=;
-        b=ALDjufxaBWEmFkdp0V9Vd7cTkjQvvkjXbSvGHU6LSxNZungRmxrQzy1SUIsy+Hxks5
-         IW6EkC9yCSiBvDSTxIZPLp+3BMrBZFW7pcj+fmeelrr3B1HejZPqnOBWyfb0d87EeMja
-         UDF2Jm2tvaDJNOLyw+ImZrZyWJHgsEMUEAE+ilZJs7x/5pjPAraWKCegcBGBsB7Nnw+X
-         iE6ZsePTNXMqN1WIMAU7BOzec/Zt0b9dR7gG/0x3AmNFAveJud+YRCIPgw4OyzVrpa+e
-         v/nGHhkiBTntvradjlJPaA5hdrBtj9rPajoOpxlFPJfelxKf8FsOlK2TKIkIrai9J+IR
-         jung==
-X-Gm-Message-State: AOAM5300ZS9fMmdVunxxkH76uxjrkVUgm9cjmVagrFrL6YKlDs9lIvRd
-        rm54JRgTQCDq5h+DOqk7JAu5usJK18slLg==
-X-Google-Smtp-Source: ABdhPJwUYvAgn7MpvPYo1ZKEmsUYmdBLjJ+s8Us5DdHJdD0RTbtb3AZAqTQfqspdo11ZyDw6QLQpPA==
-X-Received: by 2002:a05:6e02:e4f:: with SMTP id l15mr15699893ilk.190.1605065009509;
-        Tue, 10 Nov 2020 19:23:29 -0800 (PST)
-Received: from mail-io1-f51.google.com (mail-io1-f51.google.com. [209.85.166.51])
-        by smtp.gmail.com with ESMTPSA id i10sm336951ils.35.2020.11.10.19.23.28
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 10 Nov 2020 19:23:28 -0800 (PST)
-Received: by mail-io1-f51.google.com with SMTP id r12so858955iot.4
-        for <linux-wireless@vger.kernel.org>; Tue, 10 Nov 2020 19:23:28 -0800 (PST)
-X-Received: by 2002:a5d:89c6:: with SMTP id a6mr10292848iot.69.1605065008201;
- Tue, 10 Nov 2020 19:23:28 -0800 (PST)
+        id S1725947AbgKKF3k (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 11 Nov 2020 00:29:40 -0500
+Received: from m42-4.mailgun.net ([69.72.42.4]:28250 "EHLO m42-4.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725828AbgKKF3k (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 11 Nov 2020 00:29:40 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1605072579; h=Message-ID: References: In-Reply-To: Subject:
+ Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Sender; bh=cnDR0YphiWKlpCg7dESEcebK4sYiGb7IsL1nhcrG9wA=;
+ b=U6zBSZPdrglGQatGb963k9grEEeNR4mrliRTjEX2Vm+gx3msnL77zEQNZmQcLJamlcrdAw0u
+ XDMIISWB4hhrZDuLvMWlCTIOJk7UQWJs7XHw4m18+ZtYLHuIfjuGdM0kgQ9mOFDyq+tPGA6p
+ V6AhHCkAXDSV09wQhtQiZWXlgvY=
+X-Mailgun-Sending-Ip: 69.72.42.4
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n03.prod.us-west-2.postgun.com with SMTP id
+ 5fab76bde9dd187f53602a55 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 11 Nov 2020 05:29:33
+ GMT
+Sender: mkenna=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id D44ADC433CB; Wed, 11 Nov 2020 05:29:33 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: mkenna)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 2E2F0C433C9;
+        Wed, 11 Nov 2020 05:29:32 +0000 (UTC)
 MIME-Version: 1.0
-References: <20201110084908.219088-1-tientzu@chromium.org> <3b851462d9bfd914aeb9f5b432e4c076f6c330f3.camel@sipsolutions.net>
-In-Reply-To: <3b851462d9bfd914aeb9f5b432e4c076f6c330f3.camel@sipsolutions.net>
-From:   Claire Chang <tientzu@chromium.org>
-Date:   Wed, 11 Nov 2020 11:23:17 +0800
-X-Gmail-Original-Message-ID: <CALiNf29ku1aBiaBEg9ZTe7USSZZiOwnZWW3NKZgSGZ6M+GAX7w@mail.gmail.com>
-Message-ID: <CALiNf29ku1aBiaBEg9ZTe7USSZZiOwnZWW3NKZgSGZ6M+GAX7w@mail.gmail.com>
-Subject: Re: [PATCH] rfkill: Fix use-after-free in rfkill_resume()
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     davem@davemloft.net, kuba@kernel.org, hdegoede@redhat.com,
-        marcel@holtmann.org,
-        "open list:NETWORKING DRIVERS (WIRELESS)" 
-        <linux-wireless@vger.kernel.org>, netdev@vger.kernel.org,
-        lkml <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Wed, 11 Nov 2020 10:59:32 +0530
+From:   Maharaja Kennadyrajan <mkenna@codeaurora.org>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        Ritesh Singh <ritesi@codeaurora.org>
+Subject: Re: [PATCH 1/3] ath11k: vdev delete synchronization with firmware
+In-Reply-To: <20201110182825.3D1C6C433FE@smtp.codeaurora.org>
+References: <1590067829-26109-2-git-send-email-mkenna@codeaurora.org>
+ <20201110182825.3D1C6C433FE@smtp.codeaurora.org>
+Message-ID: <40170802ba4bc4787c126004a42be3e8@codeaurora.org>
+X-Sender: mkenna@codeaurora.org
+User-Agent: Roundcube Webmail/1.3.9
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Nov 11, 2020 at 1:35 AM Johannes Berg <johannes@sipsolutions.net> wrote:
->
-> On Tue, 2020-11-10 at 16:49 +0800, Claire Chang wrote:
-> > If a device is getting removed or reprobed during resume, use-after-free
-> > might happen. For example, h5_btrtl_resume()[drivers/bluetooth/hci_h5.c]
-> > schedules a work queue for device reprobing. During the reprobing, if
-> > rfkill_set_block() in rfkill_resume() is called after the corresponding
-> > *_unregister() and kfree() are called, there will be an use-after-free
-> > in hci_rfkill_set_block()[net/bluetooth/hci_core.c].
->
->
-> Not sure I understand. So you're saying
->
->  * something (h5_btrtl_resume) schedules a worker
->  * said worker run, when it runs, calls rfkill_unregister()
->  * somehow rfkill_resume() still gets called after this
->
-> But that can't really be right, device_del() removes it from the PM
-> lists?
+On 2020-11-10 23:58, Kalle Valo wrote:
+> Maharaja Kennadyrajan <mkenna@codeaurora.org> wrote:
+> 
+>> From: Ritesh Singh <ritesi@codeaurora.org>
+>> 
+>> When the interface is added immediately after removing the
+>> interface, vdev deletion in firmware might not have been
+>> completed.
+>> 
+>> Hence, add vdev_delete_resp_event and wait_event_timeout
+>> to synchronize with firmware.
+>> 
+>> Tested-on: IPQ8074 WLAN.HK.2.4.0.1-00009-QCAHKSWPL_SILICONZ-1
+>> 
+>> Signed-off-by: Ritesh Singh <ritesi@codeaurora.org>
+>> Signed-off-by: Maharaja Kennadyrajan <mkenna@codeaurora.org>
+> 
+> Does not apply anymore, please rebase.
+> 
+> error: patch failed: drivers/net/wireless/ath/ath11k/wmi.c:97
+> error: drivers/net/wireless/ath/ath11k/wmi.c: patch does not apply
+> stg import: Diff does not apply cleanly
+> 
+> 3 patches set to Changes Requested.
 
-If device_del() is called right before the device_lock() in device_resume()[1],
-it's possible the rfkill device is unregistered, but rfkill_resume is
-still called.
-We actually hit this during the suspend/resume stress test, although it's rare.
+[Maha]: Sure, Kalle. I will rebase and send the next version of this 
+patch.
 
-I also have a patch with multiple msleep that can 100% reproduce this
-use-after-free. Happy to share here if needed.
+> 11562969 [1/3] ath11k: vdev delete synchronization with firmware
+> 11562967 [2/3] ath11k: peer delete synchronization with firmware
+> 11562971 [3/3] ath11k: remove "ath11k_mac_get_ar_vdev_stop_status" 
+> references
 
-[1] https://elixir.bootlin.com/linux/v5.10-rc3/source/drivers/base/power/main.c#L919
-
-Thanks,
-Claire
-
->
->
-> johannes
->
->
+Regards,
+Maha
