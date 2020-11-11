@@ -2,61 +2,65 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5BF382AEC96
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Nov 2020 10:04:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D3C672AEC9E
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Nov 2020 10:07:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726126AbgKKJEb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 11 Nov 2020 04:04:31 -0500
-Received: from m42-4.mailgun.net ([69.72.42.4]:47480 "EHLO m42-4.mailgun.net"
+        id S1726301AbgKKJGw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 11 Nov 2020 04:06:52 -0500
+Received: from m42-4.mailgun.net ([69.72.42.4]:49734 "EHLO m42-4.mailgun.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726449AbgKKJEZ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 11 Nov 2020 04:04:25 -0500
+        id S1726265AbgKKJGu (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 11 Nov 2020 04:06:50 -0500
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1605085464; h=Content-Type: MIME-Version: Message-ID:
+ s=smtp; t=1605085609; h=Content-Type: MIME-Version: Message-ID:
  In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=uvpjxQeagsAM0VS4xPDmbit/1jf+GkG6CAKjLKXQE5E=; b=LBqGq78qG4dcAMGHA4nJ9VV0vorsG2Tn/Hs4tVWwMOVVm8rr+njwrhgR0+OXy+jgrgZOvoTh
- RO5Kn9ChV+wvOpPqRr1+2d1v7hUbD/vVRJ4ZNKIE5Nwt2MghSpi//sU1yxAw0ZIlF5Zno5gF
- QNN9+mLHLupH4htbMa2RqRWNckg=
+ bh=aPPJFGoN2SnlxqopD4gZN8rje+MIoQNisIJDTUGH1Oc=; b=krVlX+juS6WweeROy7pUhEaulJyxCeSR41NENXsB2BXG3tDOpXqlyO5Qd32MnoyYzvjhh+g3
+ NRm5WlaFc0kV38c379arc2xZ4hXRzLloHsmdvOMpaK0Lg0nClxCQpzLFg30C/JO1/UFD9upX
+ eGpHfoPIcS59V2GlI7yzZM89oeQ=
 X-Mailgun-Sending-Ip: 69.72.42.4
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n04.prod.us-east-1.postgun.com with SMTP id
- 5faba917b8c6a84a5cfce5e7 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 11 Nov 2020 09:04:23
+ smtp-out-n03.prod.us-west-2.postgun.com with SMTP id
+ 5faba991e9dd187f53a6e79e (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 11 Nov 2020 09:06:25
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 060CAC433C6; Wed, 11 Nov 2020 09:04:23 +0000 (UTC)
+        id 6CA7CC433F0; Wed, 11 Nov 2020 09:06:25 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
+        autolearn=no autolearn_force=no version=3.4.0
 Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 514D2C433C6;
-        Wed, 11 Nov 2020 09:04:21 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 514D2C433C6
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id A9E53C433C6;
+        Wed, 11 Nov 2020 09:06:21 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org A9E53C433C6
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
 From:   Kalle Valo <kvalo@codeaurora.org>
-To:     "linux-wireless\@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Cc:     Igor Mitsyanko <igor.mitsyanko.os@quantenna.com>,
-        Mikhail Karpenko <mkarpenko@quantenna.com>
-Subject: Re: [PATCH 2/2] qtnfmac: add support for the new revision of QSR10g chip
-References: <20191121135324.21715-1-sergey.matyukevich.os@quantenna.com>
-        <20191121135324.21715-3-sergey.matyukevich.os@quantenna.com>
-        <0101016e8f9afb9b-7e5241a3-3145-45dd-a178-8f4c9d5ff83e-000000@us-west-2.amazonses.com>
-        <20191126075150.e2rrz3jqx627l3g2@bars>
-        <20200127083404.jr6k2clfxgv7vxz7@bars>
-        <20200424101707.nbkojo74vaucq55z@bars>
-Date:   Wed, 11 Nov 2020 11:04:19 +0200
-In-Reply-To: <20200424101707.nbkojo74vaucq55z@bars> (Sergey Matyukevich's
-        message of "Fri, 24 Apr 2020 13:17:08 +0300")
-Message-ID: <874klwb6y4.fsf@codeaurora.org>
+To:     Tsuchiya Yuto <kitakar@gmail.com>
+Cc:     Amitkumar Karwar <amitkarwar@gmail.com>,
+        Ganapathi Bhat <ganapathi.bhat@nxp.com>,
+        Xinming Hu <huxinming820@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Maximilian Luz <luzmaximilian@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@intel.com>, verdre@v0yd.nl
+Subject: Re: [PATCH] mwifiex: pcie: skip cancel_work_sync() on reset failure path
+References: <20201028142346.18355-1-kitakar@gmail.com>
+        <20201110185139.A1541C433C9@smtp.codeaurora.org>
+        <bb398a320ba538e92bbe550d877b6f9d1b666cdd.camel@gmail.com>
+Date:   Wed, 11 Nov 2020 11:06:19 +0200
+In-Reply-To: <bb398a320ba538e92bbe550d877b6f9d1b666cdd.camel@gmail.com>
+        (Tsuchiya Yuto's message of "Wed, 11 Nov 2020 17:53:37 +0900")
+Message-ID: <87zh3o9sac.fsf@codeaurora.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -64,66 +68,116 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Sergey Matyukevich <sergey.matyukevich.os@quantenna.com> writes:
+Tsuchiya Yuto <kitakar@gmail.com> writes:
 
->> > > > Add support for the new minor revision of QSR10g chip. Major changes from
->> > > > the driver perspective include PCIe data path modifications. Setup is now
->> > > > more complicated, but finally more things have been offloaded to hardware.
->> > > > As a result, less driver boilerplate operations are needed after Tx/Rx
->> > > > descriptors queues have been configured. Besides, restrictions on
->> > > > descriptors queue lengths have been relaxed.
->> > > >
->> > > > Signed-off-by: Sergey Matyukevich <sergey.matyukevich.os@quantenna.com>
->> > > 
->> > > What about the firmware, is that available for this new revision?
->> > 
->> > Hello Kalle,
->> > 
->> > There are two drivers: pearl_qtnfmac for QSR10G and topaz_qtnfmac for
->> > QSR1000. Firmware for QSR1000 chips has a higher priority since those
->> > devices have been in production for quite a while now and there are
->> > multiple products available. From the engineering perspective we are
->> > ready to release firmware and SDK for QSR1000/QSR2000 devices. Now we
->> > are waiting for the ACK from legal team. This was delayed by the
->> > acquisition of Quantenna by On Semiconductor.  
->> > 
->> > As for the latest QSR10G chips, we are not yet ready to release SDK.
->> > The main reason is that platform is under active development.
+> On Tue, 2020-11-10 at 18:51 +0000, Kalle Valo wrote:
+>> Tsuchiya Yuto <kitakar@gmail.com> wrote:
 >> 
->> Hello Kalle,
+>> > If a reset is performed, but even the reset fails for some reasons (e.g.,
+>> > on Surface devices, the fw reset requires another quirks),
+>> > cancel_work_sync() hangs in mwifiex_cleanup_pcie().
+>> > 
+>> >     # firmware went into a bad state
+>> >     [...]
+>> >     [ 1608.281690] mwifiex_pcie 0000:03:00.0: info: shutdown mwifiex...
+>> >     [ 1608.282724] mwifiex_pcie 0000:03:00.0: rx_pending=0, tx_pending=1,	cmd_pending=0
+>> >     [ 1608.292400] mwifiex_pcie 0000:03:00.0: PREP_CMD: card is removed
+>> >     [ 1608.292405] mwifiex_pcie 0000:03:00.0: PREP_CMD: card is removed
+>> >     # reset performed after firmware went into a bad state
+>> >     [ 1609.394320] mwifiex_pcie 0000:03:00.0: WLAN FW already running! Skip FW dnld
+>> >     [ 1609.394335] mwifiex_pcie 0000:03:00.0: WLAN FW is active
+>> >     # but even the reset failed
+>> >     [ 1619.499049] mwifiex_pcie 0000:03:00.0: mwifiex_cmd_timeout_func: Timeout cmd id = 0xfa, act = 0xe000
+>> >     [ 1619.499094] mwifiex_pcie 0000:03:00.0: num_data_h2c_failure = 0
+>> >     [ 1619.499103] mwifiex_pcie 0000:03:00.0: num_cmd_h2c_failure = 0
+>> >     [ 1619.499110] mwifiex_pcie 0000:03:00.0: is_cmd_timedout = 1
+>> >     [ 1619.499117] mwifiex_pcie 0000:03:00.0: num_tx_timeout = 0
+>> >     [ 1619.499124] mwifiex_pcie 0000:03:00.0: last_cmd_index = 0
+>> >     [ 1619.499133] mwifiex_pcie 0000:03:00.0: last_cmd_id: fa 00 07 01 07 01 07 01 07 01
+>> >     [ 1619.499140] mwifiex_pcie 0000:03:00.0: last_cmd_act: 00 e0 00 00 00 00 00 00 00 00
+>> >     [ 1619.499147] mwifiex_pcie 0000:03:00.0: last_cmd_resp_index = 3
+>> >     [ 1619.499155] mwifiex_pcie 0000:03:00.0: last_cmd_resp_id: 07 81 07 81 07 81 07 81 07 81
+>> >     [ 1619.499162] mwifiex_pcie 0000:03:00.0: last_event_index = 2
+>> >     [ 1619.499169] mwifiex_pcie 0000:03:00.0: last_event: 58 00 58 00 58 00 58 00 58 00
+>> >     [ 1619.499177] mwifiex_pcie 0000:03:00.0: data_sent=0 cmd_sent=1
+>> >     [ 1619.499185] mwifiex_pcie 0000:03:00.0: ps_mode=0 ps_state=0
+>> >     [ 1619.499215] mwifiex_pcie 0000:03:00.0: info: _mwifiex_fw_dpc: unregister device
+>> >     # mwifiex_pcie_work hang happening
+>> >     [ 1823.233923] INFO: task kworker/3:1:44 blocked for more than 122 seconds.
+>> >     [ 1823.233932]       Tainted: G        WC OE     5.10.0-rc1-1-mainline #1
+>> >     [ 1823.233935] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+>> >     [ 1823.233940] task:kworker/3:1     state:D stack:    0 pid:   44 ppid:     2 flags:0x00004000
+>> >     [ 1823.233960] Workqueue: events mwifiex_pcie_work [mwifiex_pcie]
+>> >     [ 1823.233965] Call Trace:
+>> >     [ 1823.233981]  __schedule+0x292/0x820
+>> >     [ 1823.233990]  schedule+0x45/0xe0
+>> >     [ 1823.233995]  schedule_timeout+0x11c/0x160
+>> >     [ 1823.234003]  wait_for_completion+0x9e/0x100
+>> >     [ 1823.234012]  __flush_work.isra.0+0x156/0x210
+>> >     [ 1823.234018]  ? flush_workqueue_prep_pwqs+0x130/0x130
+>> >     [ 1823.234026]  __cancel_work_timer+0x11e/0x1a0
+>> >     [ 1823.234035]  mwifiex_cleanup_pcie+0x28/0xd0 [mwifiex_pcie]
+>> >     [ 1823.234049]  mwifiex_free_adapter+0x24/0xe0 [mwifiex]
+>> >     [ 1823.234060]  _mwifiex_fw_dpc+0x294/0x560 [mwifiex]
+>> >     [ 1823.234074]  mwifiex_reinit_sw+0x15d/0x300 [mwifiex]
+>> >     [ 1823.234080]  mwifiex_pcie_reset_done+0x50/0x80 [mwifiex_pcie]
+>> >     [ 1823.234087]  pci_try_reset_function+0x5c/0x90
+>> >     [ 1823.234094]  process_one_work+0x1d6/0x3a0
+>> >     [ 1823.234100]  worker_thread+0x4d/0x3d0
+>> >     [ 1823.234107]  ? rescuer_thread+0x410/0x410
+>> >     [ 1823.234112]  kthread+0x142/0x160
+>> >     [ 1823.234117]  ? __kthread_bind_mask+0x60/0x60
+>> >     [ 1823.234124]  ret_from_fork+0x22/0x30
+>> >     [...]
+>> > 
+>> > This is a deadlock caused by calling cancel_work_sync() in
+>> > mwifiex_cleanup_pcie():
+>> > 
+>> > - Device resets are done via mwifiex_pcie_card_reset()
+>> > - which schedules card->work to call mwifiex_pcie_card_reset_work()
+>> > - which calls pci_try_reset_function().
+>> > - This leads to mwifiex_pcie_reset_done() be called on the same workqueue,
+>> >   which in turn calls
+>> > - mwifiex_reinit_sw() and that calls
+>> > - _mwifiex_fw_dpc().
+>> > 
+>> > The problem is now that _mwifiex_fw_dpc() calls mwifiex_free_adapter()
+>> > in case firmware initialization fails. That ends up calling
+>> > mwifiex_cleanup_pcie().
+>> > 
+>> > Note that all those calls are still running on the workqueue. So when
+>> > mwifiex_cleanup_pcie() now calls cancel_work_sync(), it's really waiting
+>> > on itself to complete, causing a deadlock.
+>> > 
+>> > This commit fixes the deadlock by skipping cancel_work_sync() on a reset
+>> > failure path.
+>> > 
+>> > After this commit, when reset fails, the following output is
+>> > expected to be shown:
+>> > 
+>> >     kernel: mwifiex_pcie 0000:03:00.0: info: _mwifiex_fw_dpc: unregister device
+>> >     kernel: mwifiex: Failed to bring up adapter: -5
+>> >     kernel: mwifiex_pcie 0000:03:00.0: reinit failed: -5
+>> > 
+>> > To reproduce this issue, for example, try putting the root port of wifi
+>> > into D3 (replace "00:1d.3" with your setup).
+>> > 
+>> >     # put into D3 (root port)
+>> >     sudo setpci -v -s 00:1d.3 CAP_PM+4.b=0b
+>> > 
+>> > Cc: Maximilian Luz <luzmaximilian@gmail.com>
+>> > Signed-off-by: Tsuchiya Yuto <kitakar@gmail.com>
 >> 
->> I noticed that you marked these two patches as deferred in patchwork.
->> Is there anything else I have to do here ?
+>> Patch applied to wireless-drivers-next.git, thanks.
 >> 
->> Regards,
->> Sergey
+>> 4add4d988f95 mwifiex: pcie: skip cancel_work_sync() on reset failure path
+>> 
 >
-> Hello Kalle,
->
-> Could you please clarify your expectations regarding this functionality.
-> Am I correct assuming that you implicitly tie acceptance of these patches
-> with the promised release of firmware and SDK for QSR1000/2000 family ?
+> Sorry, but is it too late to ask you to change my commit message? I'd
+> really appreciate it if it's still possible. If it's difficult, please
+> ignore this.
 
-Sorry for the delay, I wanted to check the qtnfmac firmware status
-before responding. And it didn't look good. The wiki page[1] mentions
-nothing about the firmware, neither does Kconfig and even a quick google
-search didn't make me any wiser. So I have no clue what's the current
-situation with the firmware.
-
-I don't like this at all. All upstream drivers are supposed to be used
-by _anyone_ and the firmware should be publically available, with a very
-strong preference having the firmware in linux-firmware repo. I made an
-exception with qtnfmac and didn't require it to be in linux-firmware,
-IIRC the reason being there were some problems with the firmware license
-(something related to GPL?).
-
-Upstream drivers need to have the firmware available. If Quantenna does
-not want to release the firmware I'm not willing to accept patches to
-new hardware either. I will accept patches for hardware already in
-upstream, but any patches adding new hardware support will be
-automatically rejected until the firmware issue is resolved.
-
-[1] https://wireless.wiki.kernel.org/en/users/drivers/qtnfmac
+Yeah, it's too late. I rebase my trees only in very exceptional cases.
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
