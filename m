@@ -2,70 +2,53 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D48C52AFECD
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Nov 2020 06:40:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 19D2C2AFEB8
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Nov 2020 06:39:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729537AbgKLFi4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 12 Nov 2020 00:38:56 -0500
-Received: from rtits2.realtek.com ([211.75.126.72]:38678 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728202AbgKLDPh (ORCPT
+        id S1729562AbgKLFjB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 12 Nov 2020 00:39:01 -0500
+Received: from mail-proxy101.phy.heteml.jp ([157.7.189.101]:38188 "EHLO
+        mail-proxy101.phy.heteml.jp" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728344AbgKLDkS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 11 Nov 2020 22:15:37 -0500
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 0AC3FWorC025883, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexmb04.realtek.com.tw[172.21.6.97])
-        by rtits2.realtek.com.tw (8.15.2/2.70/5.88) with ESMTPS id 0AC3FWorC025883
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Thu, 12 Nov 2020 11:15:32 +0800
-Received: from localhost.localdomain (172.21.69.213) by
- RTEXMB04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2044.4; Thu, 12 Nov 2020 11:15:31 +0800
-From:   <pkshih@realtek.com>
-To:     <kvalo@codeaurora.org>, <tony0620emma@gmail.com>
-CC:     <linux-wireless@vger.kernel.org>
-Subject: [PATCH v2 11/11] rtw88: coex: change the decode method from firmware
-Date:   Thu, 12 Nov 2020 11:14:30 +0800
-Message-ID: <20201112031430.4846-12-pkshih@realtek.com>
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <20201112031430.4846-1-pkshih@realtek.com>
-References: <20201112031430.4846-1-pkshih@realtek.com>
+        Wed, 11 Nov 2020 22:40:18 -0500
+X-Greylist: delayed 888 seconds by postgrey-1.27 at vger.kernel.org; Wed, 11 Nov 2020 22:40:14 EST
+Received: from mail-proxy101.phy.heteml.jp (localhost [127.0.0.1])
+        by mail-proxy101.phy.heteml.jp (Postfix) with ESMTP id 5D4F41661124;
+        Thu, 12 Nov 2020 12:25:22 +0900 (JST)
+Received: from 127.0.0.1 (127.0.0.1)
+ by mail-proxy101.phy.heteml.jp (HETEML-Fsecure);
+ Thu, 12 Nov 2020 12:25:22 +0900 (JST)
+X-Virus-Status: clean(HETEML-Fsecure)
+Received: from User (unknown [52.231.203.57])
+        (Authenticated sender: form@healingart-n.jp)
+        by mail-proxy101.phy.heteml.jp (Postfix) with ESMTPA;
+        Thu, 12 Nov 2020 12:25:22 +0900 (JST)
+Reply-To: <reemhashimymail@gmail.com>
+From:   "Reem" <form@healingart-n.jp>
+Subject: Hello Friend  12/11/2020
+Date:   Thu, 12 Nov 2020 03:25:24 -0000
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [172.21.69.213]
-X-ClientProxiedBy: RTEXMB03.realtek.com.tw (172.21.6.96) To
- RTEXMB04.realtek.com.tw (172.21.6.97)
+Content-Type: text/plain;
+        charset="Windows-1251"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+Message-Id: <20201112032522.5D4F41661124@mail-proxy101.phy.heteml.jp>
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Ching-Te Ku <ku920601@realtek.com>
-
-Fix sometimes FW information will be parsed as wrong value,
-do a correction of sign bit to show the correct information.
-(Ex, Value should be 20, but it shows 236.)
-
-Signed-off-by: Ching-Te Ku <ku920601@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtw88/coex.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/realtek/rtw88/coex.c b/drivers/net/wireless/realtek/rtw88/coex.c
-index 322b13c9150e..4bb0d373c862 100644
---- a/drivers/net/wireless/realtek/rtw88/coex.c
-+++ b/drivers/net/wireless/realtek/rtw88/coex.c
-@@ -2882,7 +2882,7 @@ void rtw_coex_wl_fwdbginfo_notify(struct rtw_dev *rtwdev, u8 *buf, u8 length)
- 		if (buf[i] >= val)
- 			coex_stat->wl_fw_dbg_info[i] = buf[i] - val;
- 		else
--			coex_stat->wl_fw_dbg_info[i] = val - buf[i];
-+			coex_stat->wl_fw_dbg_info[i] = 255 - val + buf[i];
+My name is Reem Hashimy, the Emirates Minister of State and Managing Director of the United Arab Emirates (Dubai) World Expo 2020 Committee which has been postponed to October 2021 to March 2022 because of the Covid-19 pandemic.
  
- 		coex_stat->wl_fw_dbg_info_pre[i] = buf[i];
- 	}
--- 
-2.21.0
+I am writing to you to manage the funds I received as financial gratification from various foreign companies I assisted to receive a participation approval to the coming event. The amount is $44,762,906.00 United States dollars. But I can not personally manage the fund in my country because of the sensitive nature of my office and the certain restriction on married Muslim women.
 
+For this reason, an agreement was reached with a consulting firm to direct the various financial gifts into an open beneficiary account in my name with a bank where it will be possible for me to instruct the transfer of ownership right to a third party for investment purpose; which is the reason I am contacting you to receive the fund and manage it as my investment partner. Note that the fund is NOT connected to any criminal or terrorist activity.
+ 
+On your indication of interest with your information to include your name, your phone number and contact mailing address; I will instruct the consulting firm to process the fund from the bank to your country for investment purposes.
+
+Regards.
+Reem Hashimy.
