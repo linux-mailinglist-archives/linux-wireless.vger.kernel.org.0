@@ -2,147 +2,129 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 357232B0330
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Nov 2020 11:55:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CBA9F2B0392
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Nov 2020 12:11:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726107AbgKLKzL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 12 Nov 2020 05:55:11 -0500
-Received: from z5.mailgun.us ([104.130.96.5]:21630 "EHLO z5.mailgun.us"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725902AbgKLKzL (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 12 Nov 2020 05:55:11 -0500
-X-Mailgun-Sending-Ip: 104.130.96.5
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n04.prod.us-east-1.postgun.com with SMTP id
- 5fad148ef2d9c8cbca569baf (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 12 Nov 2020 10:55:10
- GMT
-Sender: wgong=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id D7ECDC433F0; Thu, 12 Nov 2020 10:55:09 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: wgong)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id AC67FC433C8;
-        Thu, 12 Nov 2020 10:55:08 +0000 (UTC)
+        id S1727986AbgKLLKs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 12 Nov 2020 06:10:48 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56374 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728041AbgKLLKd (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 12 Nov 2020 06:10:33 -0500
+Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AABC4C0613D1;
+        Thu, 12 Nov 2020 03:10:23 -0800 (PST)
+Received: by mail-wr1-x442.google.com with SMTP id j7so5575736wrp.3;
+        Thu, 12 Nov 2020 03:10:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Tv2bEm0sLbKGDjq3ZdSLJlA91Mcgn0WBp+SI+MmrFWo=;
+        b=qP+ccKushbGl1w9gFlfW/TFVWTruI1fOPPvl5CstaEEpOrfSJzvTbTEZFEfXnKKkcR
+         Xmu4Y282dYXykJ7v8WmgPZ51FXcvoq5/da22NmtfmTvjbdhs0P7z/HQHt7ZVuJjZRKql
+         HMtGjRk6g6LItj/7tZiEFYm0p9XofEAZbqKMwf5Nu7k5PobzYGbPpGdrUA6hXNEYlp9O
+         0KJIFwx2ygIYC98SPkHuFZU6UU0VLkKv8Xz3nzcZZF18ljSs9V7kQNHFJ2I9+4uWlfR6
+         JykDCe667HtNgblqB9UPdLtXkdR0YaKFrja5gvihKBGFL8X+8AjZr8K7QEIgcj4gopEN
+         Nwvw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Tv2bEm0sLbKGDjq3ZdSLJlA91Mcgn0WBp+SI+MmrFWo=;
+        b=pLcoynh8fxS1ZKvFYgv18x25iS/lF0y8XSMgsL24KQlld8FWP9kHQSHZBP3vGDP2H9
+         ichlo60Sar1XafeJjNHyA0U7m2TAjl+J9gy9vD4Txir8iigANvPe1orpgsLRMCfkekCX
+         eZ1ysfVtyiZFK92GBKIhxxr2fXKmq5zkH2FkGncGSUlWxwCVPp86ghCHH3/9Os8oYC6R
+         iv+9IkVFR66MRpAObkWaKyvcW/iJ+ukfU6a1323wTJx/mNbd54/+OjSqWqlIQxVRItn0
+         xUFtmZ8LY4I2vU6RfjalC3e5Xx1Mjtj2jpqZ4CwNUvsbVdeYvQPsVbWeJ0mp/0ob6RVL
+         8F5A==
+X-Gm-Message-State: AOAM533ikHhu9hExoOeun9+Gb7e0E2px4rUtDJqOVTxS5vVhw8HnArvg
+        l7q61dBXQonBmpOTzNRYdqg=
+X-Google-Smtp-Source: ABdhPJxGN6E9FoAvVu/8ZH/CM2S5uZc0sFap77Uit1MN2Yku34dNzb315nGIhPSRi4bW8XbI25hQSw==
+X-Received: by 2002:a5d:514a:: with SMTP id u10mr13153774wrt.312.1605179422360;
+        Thu, 12 Nov 2020 03:10:22 -0800 (PST)
+Received: from ubux1.panoulu.local ([2a00:1d50:3:0:1cd1:d2e:7b13:dc30])
+        by smtp.gmail.com with ESMTPSA id v67sm6505315wma.17.2020.11.12.03.10.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Nov 2020 03:10:21 -0800 (PST)
+From:   Lev Stipakov <lstipakov@gmail.com>
+X-Google-Original-From: Lev Stipakov <lev@openvpn.net>
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     Lev Stipakov <lev@openvpn.net>
+Subject: [PATCH 1/3] net: mac80211: use core API for updating TX stats
+Date:   Thu, 12 Nov 2020 13:09:53 +0200
+Message-Id: <20201112110953.34055-1-lev@openvpn.net>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
 Content-Transfer-Encoding: 8bit
-Date:   Thu, 12 Nov 2020 18:55:08 +0800
-From:   Wen Gong <wgong@codeaurora.org>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org, kirtika@google.com,
-        Johannes Berg <johannes.berg@intel.com>,
-        linux-wireless-owner@vger.kernel.org, ath11k@lists.infradead.org,
-        ath10k@lists.infradead.org
-Subject: Re: [PATCH v2] mac80211: reject/clear user rate mask if not usable
-In-Reply-To: <20170308132022.4216-1-johannes@sipsolutions.net>
- (sfid-20170308_142122_587641_AAD67C42)
-References: <20170308132022.4216-1-johannes@sipsolutions.net>
- (sfid-20170308_142122_587641_AAD67C42)
-Message-ID: <07179008e9369bc81e152009ca85191d@codeaurora.org>
-X-Sender: wgong@codeaurora.org
-User-Agent: Roundcube Webmail/1.3.9
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2017-03-08 21:20, Johannes Berg wrote:
-> From: Johannes Berg <johannes.berg@intel.com>
-> 
-> If the user rate mask results in no (basic) rates being usable,
-> clear it. Also, if we're already operating when it's set, reject
-> it instead.
-> 
-> Technically, selecting basic rates as the criterion is a bit too
-> restrictive, but calculating the usable rates over all stations
-> (e.g. in AP mode) is harder, and all stations must support the
-> basic rates. Similarly, in client mode, the basic rates will be
-> used anyway for control frames.
-> 
-> This fixes the "no supported rates (...) in rate_mask ..." warning
-> that occurs on TX when you've selected a rate mask that's not
-> compatible with the connection (e.g. an AP that enables only the
-> rates 36, 48, 54 and you've selected only 6, 9, 12.)
-> 
-> Reported-by: Kirtika Ruchandani <kirtika@google.com>
-> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-> ---
->  net/mac80211/cfg.c  | 18 +++++++++++++++++-
->  net/mac80211/mlme.c |  2 ++
->  net/mac80211/rate.c | 27 +++++++++++++++++++++++++++
->  net/mac80211/rate.h |  2 ++
->  4 files changed, 48 insertions(+), 1 deletion(-)
-> 
-> diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-> index 9c7490cb2243..8bc3d3669348 100644
-> --- a/net/mac80211/cfg.c
-> +++ b/net/mac80211/cfg.c
-> @@ -3,7 +3,7 @@
->   *
->   * Copyright 2006-2010	Johannes Berg <johannes@sipsolutions.net>
->   * Copyright 2013-2015  Intel Mobile Communications GmbH
-> - * Copyright (C) 2015-2016 Intel Deutschland GmbH
-> + * Copyright (C) 2015-2017 Intel Deutschland GmbH
->   *
->   * This file is GPLv2 as found in COPYING.
->   */
-> @@ -2042,6 +2042,7 @@ static int ieee80211_change_bss(struct wiphy 
-> *wiphy,
->  					 params->basic_rates_len,
->  					 &sdata->vif.bss_conf.basic_rates);
->  		changed |= BSS_CHANGED_BASIC_RATES;
-> +		ieee80211_check_rate_mask(sdata);
->  	}
-> 
->  	if (params->ap_isolate >= 0) {
-> @@ -2685,6 +2686,21 @@ static int ieee80211_set_bitrate_mask(struct
-> wiphy *wiphy,
->  			return ret;
->  	}
-> 
-> +	/*
-> +	 * If active validate the setting and reject it if it doesn't leave
-> +	 * at least one basic rate usable, since we really have to be able
-> +	 * to send something, and if we're an AP we have to be able to do
-> +	 * so at a basic rate so that all clients can receive it.
-> +	 */
-> +	if (rcu_access_pointer(sdata->vif.chanctx_conf) &&
-> +	    sdata->vif.bss_conf.chandef.chan) {
-> +		u32 basic_rates = sdata->vif.bss_conf.basic_rates;
-> +		enum nl80211_band band = sdata->vif.bss_conf.chandef.chan->band;
-> +
-> +		if (!(mask->control[band].legacy & basic_rates))
-> +			return -EINVAL;
-If user want to use “iw wlan0 set bitrates legacy-5 54” to set it to 
-fixed in 54M and 54M is
-not basic rate in AP's becaon as example of below, then the iw command 
-will fail.
+Commit d3fd65484c781 ("net: core: add dev_sw_netstats_tx_add")
+has added function "dev_sw_netstats_tx_add()" to update
+net device per-cpu TX stats.
 
-Tag: Supported Rates 6(B), 9, 12(B), 18, 24(B), 36, 48, 54, [Mbit/sec]
-     Tag Number: Supported Rates (1)
-     Tag length: 8
-     Supported Rates: 6(B) (0x8c)
-     Supported Rates: 9 (0x12)
-     Supported Rates: 12(B) (0x98)
-     Supported Rates: 18 (0x24)
-     Supported Rates: 24(B) (0xb0)
-     Supported Rates: 36 (0x48)
-     Supported Rates: 48 (0x60)
-     Supported Rates: 54 (0x6c)
+Use this function instead of ieee80211_tx_stats().
 
-> +	}
-> +
->  	for (i = 0; i < NUM_NL80211_BANDS; i++) {
->  		struct ieee80211_supported_band *sband = wiphy->bands[i];
->  		int j;
-...
+Signed-off-by: Lev Stipakov <lev@openvpn.net>
+---
+ net/mac80211/tx.c | 16 +++-------------
+ 1 file changed, 3 insertions(+), 13 deletions(-)
+
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index 5f05f4651dd7..7807f8178527 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -38,16 +38,6 @@
+ 
+ /* misc utils */
+ 
+-static inline void ieee80211_tx_stats(struct net_device *dev, u32 len)
+-{
+-	struct pcpu_sw_netstats *tstats = this_cpu_ptr(dev->tstats);
+-
+-	u64_stats_update_begin(&tstats->syncp);
+-	tstats->tx_packets++;
+-	tstats->tx_bytes += len;
+-	u64_stats_update_end(&tstats->syncp);
+-}
+-
+ static __le16 ieee80211_duration(struct ieee80211_tx_data *tx,
+ 				 struct sk_buff *skb, int group_addr,
+ 				 int next_frag_len)
+@@ -3403,7 +3393,7 @@ static void ieee80211_xmit_fast_finish(struct ieee80211_sub_if_data *sdata,
+ 	if (key)
+ 		info->control.hw_key = &key->conf;
+ 
+-	ieee80211_tx_stats(skb->dev, skb->len);
++	dev_sw_netstats_tx_add(skb->dev, 1, skb->len);
+ 
+ 	if (hdr->frame_control & cpu_to_le16(IEEE80211_STYPE_QOS_DATA)) {
+ 		tid = skb->priority & IEEE80211_QOS_CTL_TAG1D_MASK;
+@@ -4021,7 +4011,7 @@ void __ieee80211_subif_start_xmit(struct sk_buff *skb,
+ 			goto out;
+ 		}
+ 
+-		ieee80211_tx_stats(dev, skb->len);
++		dev_sw_netstats_tx_add(dev, 1, skb->len);
+ 
+ 		ieee80211_xmit(sdata, sta, skb);
+ 	}
+@@ -4248,7 +4238,7 @@ static void ieee80211_8023_xmit(struct ieee80211_sub_if_data *sdata,
+ 
+ 	info->hw_queue = sdata->vif.hw_queue[skb_get_queue_mapping(skb)];
+ 
+-	ieee80211_tx_stats(dev, skb->len);
++	dev_sw_netstats_tx_add(dev, 1, skb->len);
+ 
+ 	sta->tx_stats.bytes[skb_get_queue_mapping(skb)] += skb->len;
+ 	sta->tx_stats.packets[skb_get_queue_mapping(skb)]++;
+-- 
+2.25.1
+
