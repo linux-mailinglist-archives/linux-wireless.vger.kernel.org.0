@@ -2,187 +2,220 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 58D182AFEBD
+	by mail.lfdr.de (Postfix) with ESMTP id C7C912AFEBE
 	for <lists+linux-wireless@lfdr.de>; Thu, 12 Nov 2020 06:40:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729096AbgKLFik (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 12 Nov 2020 00:38:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33100 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726459AbgKLCcM (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 11 Nov 2020 21:32:12 -0500
-Received: from mail-ej1-x642.google.com (mail-ej1-x642.google.com [IPv6:2a00:1450:4864:20::642])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1A97C0613D1
-        for <linux-wireless@vger.kernel.org>; Wed, 11 Nov 2020 18:32:10 -0800 (PST)
-Received: by mail-ej1-x642.google.com with SMTP id cw8so5528257ejb.8
-        for <linux-wireless@vger.kernel.org>; Wed, 11 Nov 2020 18:32:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=technolu-st.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=EUzPg8y73vRxlAHH+zIia8Krjs+sYU9K0sC28KymEQY=;
-        b=OFdfsyF59is2mlKKEZpxTJE38bU0jQpXcEKm0WKQv7bmSSLkS09VKmuD1R/V971ynM
-         S3kh+zrHT/CWrjm0Ok6zUt2BiFhf56JU6hrhTQ9DThImfqMzK6eiDFzLaDgD8+6sDkPs
-         dp64eW4FkOefdJbTYHBpvs2vRDNTyd1nvf5mkoRC5ijYPYziFUC2OemDikc/ZdvLPkSw
-         MMuibtWAT4mKpeYRH4Y4nQNRWs3Rn4HB1RTYO8aeZHMV8IzR0uxD1hM5JoFHIjXqNzeB
-         /licFcwyMdkqPLzMsrIyz5cvfcaMNZ0lebxqAla8KGzlHc545aPNvfysBlVFhPDMKTHP
-         JFFw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=EUzPg8y73vRxlAHH+zIia8Krjs+sYU9K0sC28KymEQY=;
-        b=efsO0O94BKQVrLup5f/JXdN/lrP9G8LdyCTqiwnrRgFHYru+I4hLkW6hZ9Iis4LcZe
-         6AKMhjoawnIJQlsvit89Fiz6xJWpnD4D08pR2ONk4JFPsLZw5xqhqgVCV8OwCWFzAQ1n
-         cvC3k5bCvzxFJtpf6/F771HYrDt/7Lc5HEd5URpn3nCv8aim92f829tSkckg1ZFeWATT
-         4HNGdA5LvoFF3ojYY12W01ZTkLJK/NBHlglzRClt790FhfHYblfndV6Uz4xPWwkIJtBa
-         Mi1EtbfUAcQ9u0CULCU9E2ZG5rRynSmvLXZokEYqbKMVImocremTmLMKnkFR5VZCzDhN
-         WCpg==
-X-Gm-Message-State: AOAM530DWwp6f+COjx5d/ah16SxxydMweTkCthVWA0pwFEvI9sgRdlPz
-        lVt6T3/224INCDOrwBif2Uo8c17a5MJKbBqT1HZZ0/EM1YJZPskHVmw=
-X-Google-Smtp-Source: ABdhPJwknRlumIb+H14ad0cYTJI1zbP/rZ/TYVSzcwrQHSiyzy4KNPJ/xC5Llo26hk8i+tHzwh7VpyOhT3s2+ovFnvw=
-X-Received: by 2002:a17:906:4c41:: with SMTP id d1mr29697883ejw.485.1605148329262;
- Wed, 11 Nov 2020 18:32:09 -0800 (PST)
+        id S1729484AbgKLFil (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 12 Nov 2020 00:38:41 -0500
+Received: from mga14.intel.com ([192.55.52.115]:63340 "EHLO mga14.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727969AbgKLCxc (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 11 Nov 2020 21:53:32 -0500
+IronPort-SDR: UIfpmhnSF1PXaToUm5OCGZykC94eYm+nRv76rf766j2ymPfJ99Oh02iYhv3yrCjrH432rGG/WJ
+ N3ED39LVKGYQ==
+X-IronPort-AV: E=McAfee;i="6000,8403,9802"; a="169465442"
+X-IronPort-AV: E=Sophos;i="5.77,471,1596524400"; 
+   d="scan'208";a="169465442"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Nov 2020 18:53:23 -0800
+IronPort-SDR: YjG15ehdppnTOs3zMmaHsFnGi4f4/LBfi6tN4s2Ej1w+pOPflqWW/deHU+XfhpvCQ5HIQgULxO
+ bEauGXXpRdKg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.77,471,1596524400"; 
+   d="scan'208";a="309041558"
+Received: from lkp-server02.sh.intel.com (HELO de5c6a867800) ([10.239.97.151])
+  by fmsmga007.fm.intel.com with ESMTP; 11 Nov 2020 18:53:22 -0800
+Received: from kbuild by de5c6a867800 with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1kd2jh-000034-Uj; Thu, 12 Nov 2020 02:53:21 +0000
+Date:   Thu, 12 Nov 2020 10:53:11 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Johannes Berg <johannes.berg@intel.com>
+Cc:     linux-wireless@vger.kernel.org
+Subject: [mac80211-next:master] BUILD SUCCESS
+ da1e9dd3a11cda85b58dafe64f091734934b2f6c
+Message-ID: <5faca397.iApAB7wLzdciHbDC%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-References: <20201103160838.GA246433@bjorn-Precision-5520> <874km61732.fsf@nanos.tec.linutronix.de>
- <fa26ac8b-ed48-7ea3-c21b-b133532716b8@posteo.de> <87mtzxkus5.fsf@nanos.tec.linutronix.de>
- <87wnz0hr9k.fsf@codeaurora.org> <87ft5hehlb.fsf@codeaurora.org>
- <6b60c8f1-ec37-d601-92c2-97a485b73431@posteo.de> <87v9ec9rk3.fsf@codeaurora.org>
- <87imab4slq.fsf@codeaurora.org> <b2129a70db2b36c5015b4143a839f47dfc3153af.camel@seibold.net>
- <CAHUdJJVp5r55NtE+BNz5XGtnaks6mDKQBFodz63DdULBVhD0Lg@mail.gmail.com>
- <CAHUdJJXRDKs9NRugUAFgNr51DJ=OcssuiV8ST5CaV1CKiNTFfA@mail.gmail.com> <CAHUdJJUkvcShSXw4mkFUDcEh101xNQbOUc0YEv6-TyLdyTs4Og@mail.gmail.com>
-In-Reply-To: <CAHUdJJUkvcShSXw4mkFUDcEh101xNQbOUc0YEv6-TyLdyTs4Og@mail.gmail.com>
-From:   wi nk <wink@technolu.st>
-Date:   Thu, 12 Nov 2020 03:31:57 +0100
-Message-ID: <CAHUdJJWsCo6NJ6qr6kj=SASs+jO+fJFc3HhOO=fyek=OxSQa2Q@mail.gmail.com>
-Subject: Re: pci_alloc_irq_vectors fails ENOSPC for XPS 13 9310
-To:     Stefani Seibold <stefani@seibold.net>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        Thomas Krause <thomaskrause@posteo.de>,
-        Govind Singh <govinds@codeaurora.org>,
-        linux-pci@vger.kernel.org, linux-wireless@vger.kernel.org,
-        Devin Bayer <dev@doubly.so>, Christoph Hellwig <hch@lst.de>,
-        Bjorn Helgaas <helgaas@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        ath11k@lists.infradead.org, David Woodhouse <dwmw@amazon.co.uk>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Nov 12, 2020 at 2:11 AM wi nk <wink@technolu.st> wrote:
->
-> On Thu, Nov 12, 2020 at 2:10 AM wi nk <wink@technolu.st> wrote:
-> >
-> > I've yet to see any instability after 45 minutes of exercising it, I
-> > do see a couple of messages that came out of the driver:
-> >
-> > [    8.963389] ath11k_pci 0000:55:00.0: Unknown eventid: 0x16005
-> > [   11.342317] ath11k_pci 0000:55:00.0: Unknown eventid: 0x1d00a
-> >
-> > then when it associates:
-> >
-> > [   16.718895] wlp85s0: send auth to ec:08:6b:27:01:ea (try 1/3)
-> > [   16.722636] wlp85s0: authenticated
-> > [   16.724150] wlp85s0: associate with ec:08:6b:27:01:ea (try 1/3)
-> > [   16.726486] wlp85s0: RX AssocResp from ec:08:6b:27:01:ea
-> > (capab=0x411 status=0 aid=8)
-> > [   16.738443] wlp85s0: associated
-> > [   16.764966] IPv6: ADDRCONF(NETDEV_CHANGE): wlp85s0: link becomes ready
-> >
-> > The adapter is achieving around 500 mbps on my gigabit connection, my
-> > 2018 mbp sees around 650, so it's doing pretty well so far.
-> >
-> > Stefani - when you applied the patch that Kalle shared, which branch
-> > did you apply it to?  I applied it to ath11k-qca6390-bringup and when
-> > I revert 7fef431be9c9 there is a small merge conflict I needed to
-> > resolve.  I wonder if either the starting branch, or your chosen
-> > resolution are related to the instability you see (or I'm just lucky
-> > so far! :)).
-> >
-> > On Thu, Nov 12, 2020 at 1:24 AM wi nk <wink@technolu.st> wrote:
-> > >
-> > > On Wed, Nov 11, 2020 at 11:02 PM Stefani Seibold <stefani@seibold.net> wrote:
-> > > >
-> > > > On Wed, 2020-11-11 at 21:10 +0200, Kalle Valo wrote:
-> > > > >
-> > > > > The proof of concept patch for v5.10-rc2 is here:
-> > > > >
-> > > > > https://patchwork.kernel.org/project/linux-wireless/patch/1605121102-14352-1-git-send-email-kvalo@codeaurora.org/
-> > > > >
-> > > > > Hopefully it makes it possible to boot the firmware now. But this is
-> > > > > a
-> > > > > quick hack and most likely buggy, so keep your expectations low :)
-> > > > >
-> > > > > In case there are these warnings during firmware initialisation:
-> > > > >
-> > > > > ath11k_pci 0000:05:00.0: qmi failed memory request, err = -110
-> > > > > ath11k_pci 0000:05:00.0: qmi failed to respond fw mem req:-110
-> > > > >
-> > > > > Try reverting this commit:
-> > > > >
-> > > > > 7fef431be9c9 mm/page_alloc: place pages to tail in
-> > > > > __free_pages_core()
-> > > > >
-> > > > > That's another issue which is debugged here:
-> > > > >
-> > > > > http://lists.infradead.org/pipermail/ath11k/2020-November/000550.html
-> > > > >
-> > > >
-> > > > Applying the patch and revert patch 7fef431be9c9 worked on the first
-> > > > glance.
-> > > >
-> > > > After a couple of minutes the connection get broken. The kernel log
-> > > > shows the following error:
-> > > >
-> > > > ath11k_pci 0000:55:00.0: wmi command 16387 timeout
-> > > > ath11k_pci 0000:55:00.0: failed to send WMI_PDEV_SET_PARAM cmd
-> > > > ath11k_pc
-> > > > i 0000:55:00.0: failed to enable PMF QOS: (-11
-> > > >
-> > > > It is also not possible to unload the ath11k_pci, rmmod will hang.
-> > > >
-> > > >
-> > >
-> > > I can confirm the same behavior as Stefani so far.  After applying the
-> > > patch, and reverting commit 7fef431be9c9, I am able to connect to a
-> > > network.  It hasn't disconnected yet (I'm sending this email via that
-> > > connection).  I'll report what I find next.
-> > >
-> > > Thanks again for the help!
->
-> Sigh.... sorry for the top post again.  I'll now get a real email client.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211-next.git  master
+branch HEAD: da1e9dd3a11cda85b58dafe64f091734934b2f6c  nl80211: fix kernel-doc warning in the new SAE attribute
 
-So the connection remained super stable for a while, so I decided to
-tempt fate and suspend the laptop to see what would happen :).
+elapsed time: 957m
 
-[ 5994.143715] PM: suspend exit
-[ 5997.260351] ath11k_pci 0000:55:00.0: wmi command 16387 timeout
-[ 5997.260353] ath11k_pci 0000:55:00.0: failed to send WMI_PDEV_SET_PARAM cmd
-[ 5997.260356] ath11k_pci 0000:55:00.0: failed to enable dynamic bw: -11
-[ 6000.332299] ath11k_pci 0000:55:00.0: wmi command 16387 timeout
-[ 6000.332303] ath11k_pci 0000:55:00.0: failed to send WMI_PDEV_SET_PARAM cmd
-[ 6000.332308] ath11k_pci 0000:55:00.0: failed to enable PMF QOS: (-11
-[ 6003.404365] ath11k_pci 0000:55:00.0: wmi command 16387 timeout
-[ 6003.404368] ath11k_pci 0000:55:00.0: failed to send WMI_PDEV_SET_PARAM cmd
-[ 6003.404373] ath11k_pci 0000:55:00.0: failed to enable PMF QOS: (-11
-[ 6016.204347] ath11k_pci 0000:55:00.0: wmi command 16387 timeout
-[ 6016.204351] ath11k_pci 0000:55:00.0: failed to send WMI_PDEV_SET_PARAM cmd
-[ 6016.204357] ath11k_pci 0000:55:00.0: failed to enable PMF QOS: (-11
-[ 6019.276319] ath11k_pci 0000:55:00.0: wmi command 16387 timeout
-[ 6019.276323] ath11k_pci 0000:55:00.0: failed to send WMI_PDEV_SET_PARAM cmd
-[ 6019.276329] ath11k_pci 0000:55:00.0: failed to enable PMF QOS: (-11
-[ 6031.052272] ath11k_pci 0000:55:00.0: wmi command 16387 timeout
-[ 6031.052275] ath11k_pci 0000:55:00.0: failed to send WMI_PDEV_SET_PARAM cmd
-[ 6031.052279] ath11k_pci 0000:55:00.0: failed to enable PMF QOS: (-11
-[ 6034.128257] ath11k_pci 0000:55:00.0: wmi command 16387 timeout
-[ 6034.128261] ath11k_pci 0000:55:00.0: failed to send WMI_PDEV_SET_PARAM cmd
-[ 6034.128265] ath11k_pci 0000:55:00.0: failed to enable PMF QOS: (-11
-[ 6039.500241] ath11k_pci 0000:55:00.0: qmi failed set mode request,
-mode: 4, err = -110
-[ 6039.500244] ath11k_pci 0000:55:00.0: qmi failed to send wlan mode off
+configs tested: 156
+configs skipped: 2
 
-I was able to remove the ath11k module using rmmod -f , and then
-modprobe ath11k + atk11k_pci and the device was able to reassociate
-and bring the connection back up.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+riscv                            alldefconfig
+ia64                          tiger_defconfig
+m68k                         amcore_defconfig
+arm                     am200epdkit_defconfig
+powerpc                     tqm8548_defconfig
+sh                           se7206_defconfig
+arm                            qcom_defconfig
+sh                            titan_defconfig
+arm                        mini2440_defconfig
+powerpc                     mpc512x_defconfig
+sh                          lboxre2_defconfig
+powerpc                     mpc5200_defconfig
+arm                       aspeed_g4_defconfig
+mips                        workpad_defconfig
+sh                           se7712_defconfig
+um                            kunit_defconfig
+m68k                         apollo_defconfig
+powerpc                    mvme5100_defconfig
+powerpc                   lite5200b_defconfig
+arm                       cns3420vb_defconfig
+arm                        mvebu_v5_defconfig
+csky                             alldefconfig
+um                           x86_64_defconfig
+i386                                defconfig
+powerpc                mpc7448_hpc2_defconfig
+mips                         tb0226_defconfig
+sh                             shx3_defconfig
+powerpc                           allnoconfig
+m68k                        m5307c3_defconfig
+c6x                                 defconfig
+sh                   secureedge5410_defconfig
+mips                      pistachio_defconfig
+ia64                      gensparse_defconfig
+powerpc                     tqm8560_defconfig
+arm                       mainstone_defconfig
+xtensa                    xip_kc705_defconfig
+arm                         at91_dt_defconfig
+arc                 nsimosci_hs_smp_defconfig
+c6x                        evmc6474_defconfig
+powerpc                      makalu_defconfig
+sh                          r7780mp_defconfig
+mips                          rm200_defconfig
+mips                        bcm47xx_defconfig
+riscv                    nommu_k210_defconfig
+powerpc                       ebony_defconfig
+sh                               allmodconfig
+ia64                            zx1_defconfig
+xtensa                  nommu_kc705_defconfig
+sh                             sh03_defconfig
+sh                         microdev_defconfig
+arm                   milbeaut_m10v_defconfig
+arm                         nhk8815_defconfig
+riscv                            allmodconfig
+arm                          moxart_defconfig
+powerpc                     ep8248e_defconfig
+powerpc                   currituck_defconfig
+powerpc                 mpc837x_mds_defconfig
+m68k                           sun3_defconfig
+powerpc                    socrates_defconfig
+sh                           se7751_defconfig
+powerpc                      walnut_defconfig
+sh                        dreamcast_defconfig
+arm                        multi_v7_defconfig
+sh                           se7705_defconfig
+arm                          collie_defconfig
+mips                         cobalt_defconfig
+arm                      tct_hammer_defconfig
+mips                     decstation_defconfig
+arm                          ixp4xx_defconfig
+arm                         ebsa110_defconfig
+powerpc                     redwood_defconfig
+openrisc                            defconfig
+mips                     loongson1c_defconfig
+arm                      footbridge_defconfig
+arc                        vdk_hs38_defconfig
+powerpc                    gamecube_defconfig
+sh                          rsk7201_defconfig
+sh                               j2_defconfig
+mips                malta_qemu_32r6_defconfig
+mips                   sb1250_swarm_defconfig
+m68k                            q40_defconfig
+arc                      axs103_smp_defconfig
+parisc                              defconfig
+x86_64                           alldefconfig
+m68k                          hp300_defconfig
+arm                         socfpga_defconfig
+m68k                          sun3x_defconfig
+m68k                                defconfig
+sh                     magicpanelr2_defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+c6x                              allyesconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+s390                             allyesconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+i386                 randconfig-a006-20201111
+i386                 randconfig-a005-20201111
+i386                 randconfig-a002-20201111
+i386                 randconfig-a001-20201111
+i386                 randconfig-a003-20201111
+i386                 randconfig-a004-20201111
+x86_64               randconfig-a015-20201111
+x86_64               randconfig-a011-20201111
+x86_64               randconfig-a014-20201111
+x86_64               randconfig-a013-20201111
+x86_64               randconfig-a016-20201111
+x86_64               randconfig-a012-20201111
+i386                 randconfig-a012-20201111
+i386                 randconfig-a014-20201111
+i386                 randconfig-a016-20201111
+i386                 randconfig-a011-20201111
+i386                 randconfig-a015-20201111
+i386                 randconfig-a013-20201111
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+x86_64                                   rhel
+x86_64                           allyesconfig
+x86_64                    rhel-7.6-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                                  kexec
+
+clang tested configs:
+x86_64               randconfig-a003-20201111
+x86_64               randconfig-a005-20201111
+x86_64               randconfig-a004-20201111
+x86_64               randconfig-a002-20201111
+x86_64               randconfig-a006-20201111
+x86_64               randconfig-a001-20201111
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
