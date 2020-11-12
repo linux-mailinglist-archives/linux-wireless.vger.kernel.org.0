@@ -2,81 +2,187 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 678DA2AFEBB
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Nov 2020 06:40:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 58D182AFEBD
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Nov 2020 06:40:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727782AbgKLFij convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 12 Nov 2020 00:38:39 -0500
-Received: from rtits2.realtek.com ([211.75.126.72]:58645 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727654AbgKLCZs (ORCPT
+        id S1729096AbgKLFik (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 12 Nov 2020 00:38:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33100 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726459AbgKLCcM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 11 Nov 2020 21:25:48 -0500
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 0AC2PgD72009430, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexmb03.realtek.com.tw[172.21.6.96])
-        by rtits2.realtek.com.tw (8.15.2/2.70/5.88) with ESMTPS id 0AC2PgD72009430
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Thu, 12 Nov 2020 10:25:42 +0800
-Received: from RTEXMB04.realtek.com.tw (172.21.6.97) by
- RTEXMB03.realtek.com.tw (172.21.6.96) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2044.4; Thu, 12 Nov 2020 10:25:41 +0800
-Received: from RTEXMB04.realtek.com.tw ([fe80::89f7:e6c3:b043:15fa]) by
- RTEXMB04.realtek.com.tw ([fe80::89f7:e6c3:b043:15fa%3]) with mapi id
- 15.01.2044.006; Thu, 12 Nov 2020 10:25:41 +0800
-From:   Pkshih <pkshih@realtek.com>
-To:     Kalle Valo <kvalo@codeaurora.org>
-CC:     "tony0620emma@gmail.com" <tony0620emma@gmail.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: RE: [PATCH 02/11] rtw88: coex: remove unnecessary feature/function
-Thread-Topic: [PATCH 02/11] rtw88: coex: remove unnecessary feature/function
-Thread-Index: AQHWt9F/dvsfS7sP9UWmXSCxK8NofanCm7J5gAEqu1A=
-Date:   Thu, 12 Nov 2020 02:25:41 +0000
-Message-ID: <d5daf99862c0411ca21f2b236985c9f8@realtek.com>
-References: <20201111022108.9834-1-pkshih@realtek.com>
-        <20201111022108.9834-3-pkshih@realtek.com>
- <871rh0cmu9.fsf@codeaurora.org>
-In-Reply-To: <871rh0cmu9.fsf@codeaurora.org>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.213]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        Wed, 11 Nov 2020 21:32:12 -0500
+Received: from mail-ej1-x642.google.com (mail-ej1-x642.google.com [IPv6:2a00:1450:4864:20::642])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1A97C0613D1
+        for <linux-wireless@vger.kernel.org>; Wed, 11 Nov 2020 18:32:10 -0800 (PST)
+Received: by mail-ej1-x642.google.com with SMTP id cw8so5528257ejb.8
+        for <linux-wireless@vger.kernel.org>; Wed, 11 Nov 2020 18:32:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=technolu-st.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=EUzPg8y73vRxlAHH+zIia8Krjs+sYU9K0sC28KymEQY=;
+        b=OFdfsyF59is2mlKKEZpxTJE38bU0jQpXcEKm0WKQv7bmSSLkS09VKmuD1R/V971ynM
+         S3kh+zrHT/CWrjm0Ok6zUt2BiFhf56JU6hrhTQ9DThImfqMzK6eiDFzLaDgD8+6sDkPs
+         dp64eW4FkOefdJbTYHBpvs2vRDNTyd1nvf5mkoRC5ijYPYziFUC2OemDikc/ZdvLPkSw
+         MMuibtWAT4mKpeYRH4Y4nQNRWs3Rn4HB1RTYO8aeZHMV8IzR0uxD1hM5JoFHIjXqNzeB
+         /licFcwyMdkqPLzMsrIyz5cvfcaMNZ0lebxqAla8KGzlHc545aPNvfysBlVFhPDMKTHP
+         JFFw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=EUzPg8y73vRxlAHH+zIia8Krjs+sYU9K0sC28KymEQY=;
+        b=efsO0O94BKQVrLup5f/JXdN/lrP9G8LdyCTqiwnrRgFHYru+I4hLkW6hZ9Iis4LcZe
+         6AKMhjoawnIJQlsvit89Fiz6xJWpnD4D08pR2ONk4JFPsLZw5xqhqgVCV8OwCWFzAQ1n
+         cvC3k5bCvzxFJtpf6/F771HYrDt/7Lc5HEd5URpn3nCv8aim92f829tSkckg1ZFeWATT
+         4HNGdA5LvoFF3ojYY12W01ZTkLJK/NBHlglzRClt790FhfHYblfndV6Uz4xPWwkIJtBa
+         Mi1EtbfUAcQ9u0CULCU9E2ZG5rRynSmvLXZokEYqbKMVImocremTmLMKnkFR5VZCzDhN
+         WCpg==
+X-Gm-Message-State: AOAM530DWwp6f+COjx5d/ah16SxxydMweTkCthVWA0pwFEvI9sgRdlPz
+        lVt6T3/224INCDOrwBif2Uo8c17a5MJKbBqT1HZZ0/EM1YJZPskHVmw=
+X-Google-Smtp-Source: ABdhPJwknRlumIb+H14ad0cYTJI1zbP/rZ/TYVSzcwrQHSiyzy4KNPJ/xC5Llo26hk8i+tHzwh7VpyOhT3s2+ovFnvw=
+X-Received: by 2002:a17:906:4c41:: with SMTP id d1mr29697883ejw.485.1605148329262;
+ Wed, 11 Nov 2020 18:32:09 -0800 (PST)
 MIME-Version: 1.0
+References: <20201103160838.GA246433@bjorn-Precision-5520> <874km61732.fsf@nanos.tec.linutronix.de>
+ <fa26ac8b-ed48-7ea3-c21b-b133532716b8@posteo.de> <87mtzxkus5.fsf@nanos.tec.linutronix.de>
+ <87wnz0hr9k.fsf@codeaurora.org> <87ft5hehlb.fsf@codeaurora.org>
+ <6b60c8f1-ec37-d601-92c2-97a485b73431@posteo.de> <87v9ec9rk3.fsf@codeaurora.org>
+ <87imab4slq.fsf@codeaurora.org> <b2129a70db2b36c5015b4143a839f47dfc3153af.camel@seibold.net>
+ <CAHUdJJVp5r55NtE+BNz5XGtnaks6mDKQBFodz63DdULBVhD0Lg@mail.gmail.com>
+ <CAHUdJJXRDKs9NRugUAFgNr51DJ=OcssuiV8ST5CaV1CKiNTFfA@mail.gmail.com> <CAHUdJJUkvcShSXw4mkFUDcEh101xNQbOUc0YEv6-TyLdyTs4Og@mail.gmail.com>
+In-Reply-To: <CAHUdJJUkvcShSXw4mkFUDcEh101xNQbOUc0YEv6-TyLdyTs4Og@mail.gmail.com>
+From:   wi nk <wink@technolu.st>
+Date:   Thu, 12 Nov 2020 03:31:57 +0100
+Message-ID: <CAHUdJJWsCo6NJ6qr6kj=SASs+jO+fJFc3HhOO=fyek=OxSQa2Q@mail.gmail.com>
+Subject: Re: pci_alloc_irq_vectors fails ENOSPC for XPS 13 9310
+To:     Stefani Seibold <stefani@seibold.net>
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        Thomas Krause <thomaskrause@posteo.de>,
+        Govind Singh <govinds@codeaurora.org>,
+        linux-pci@vger.kernel.org, linux-wireless@vger.kernel.org,
+        Devin Bayer <dev@doubly.so>, Christoph Hellwig <hch@lst.de>,
+        Bjorn Helgaas <helgaas@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        ath11k@lists.infradead.org, David Woodhouse <dwmw@amazon.co.uk>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-
-
-> -----Original Message-----
-> From: kvalo=codeaurora.org@mg.codeaurora.org [mailto:kvalo=codeaurora.org@mg.codeaurora.org] On
-> Behalf Of Kalle Valo
-> Sent: Wednesday, November 11, 2020 4:36 PM
-> To: Pkshih
-> Cc: tony0620emma@gmail.com; linux-wireless@vger.kernel.org
-> Subject: Re: [PATCH 02/11] rtw88: coex: remove unnecessary feature/function
-> 
-> <pkshih@realtek.com> writes:
-> 
-> > From: Ching-Te Ku <ku920601@realtek.com>
+On Thu, Nov 12, 2020 at 2:11 AM wi nk <wink@technolu.st> wrote:
+>
+> On Thu, Nov 12, 2020 at 2:10 AM wi nk <wink@technolu.st> wrote:
 > >
-> > It is redundant to update WLAN RSSI, remove the update WLAN RSSI part.
-> > Remove unused function.
-> 
-> Why is it redundant? The "Why?" is the most important part of the commit
-> log.
-> 
+> > I've yet to see any instability after 45 minutes of exercising it, I
+> > do see a couple of messages that came out of the driver:
+> >
+> > [    8.963389] ath11k_pci 0000:55:00.0: Unknown eventid: 0x16005
+> > [   11.342317] ath11k_pci 0000:55:00.0: Unknown eventid: 0x1d00a
+> >
+> > then when it associates:
+> >
+> > [   16.718895] wlp85s0: send auth to ec:08:6b:27:01:ea (try 1/3)
+> > [   16.722636] wlp85s0: authenticated
+> > [   16.724150] wlp85s0: associate with ec:08:6b:27:01:ea (try 1/3)
+> > [   16.726486] wlp85s0: RX AssocResp from ec:08:6b:27:01:ea
+> > (capab=0x411 status=0 aid=8)
+> > [   16.738443] wlp85s0: associated
+> > [   16.764966] IPv6: ADDRCONF(NETDEV_CHANGE): wlp85s0: link becomes ready
+> >
+> > The adapter is achieving around 500 mbps on my gigabit connection, my
+> > 2018 mbp sees around 650, so it's doing pretty well so far.
+> >
+> > Stefani - when you applied the patch that Kalle shared, which branch
+> > did you apply it to?  I applied it to ath11k-qca6390-bringup and when
+> > I revert 7fef431be9c9 there is a small merge conflict I needed to
+> > resolve.  I wonder if either the starting branch, or your chosen
+> > resolution are related to the instability you see (or I'm just lucky
+> > so far! :)).
+> >
+> > On Thu, Nov 12, 2020 at 1:24 AM wi nk <wink@technolu.st> wrote:
+> > >
+> > > On Wed, Nov 11, 2020 at 11:02 PM Stefani Seibold <stefani@seibold.net> wrote:
+> > > >
+> > > > On Wed, 2020-11-11 at 21:10 +0200, Kalle Valo wrote:
+> > > > >
+> > > > > The proof of concept patch for v5.10-rc2 is here:
+> > > > >
+> > > > > https://patchwork.kernel.org/project/linux-wireless/patch/1605121102-14352-1-git-send-email-kvalo@codeaurora.org/
+> > > > >
+> > > > > Hopefully it makes it possible to boot the firmware now. But this is
+> > > > > a
+> > > > > quick hack and most likely buggy, so keep your expectations low :)
+> > > > >
+> > > > > In case there are these warnings during firmware initialisation:
+> > > > >
+> > > > > ath11k_pci 0000:05:00.0: qmi failed memory request, err = -110
+> > > > > ath11k_pci 0000:05:00.0: qmi failed to respond fw mem req:-110
+> > > > >
+> > > > > Try reverting this commit:
+> > > > >
+> > > > > 7fef431be9c9 mm/page_alloc: place pages to tail in
+> > > > > __free_pages_core()
+> > > > >
+> > > > > That's another issue which is debugged here:
+> > > > >
+> > > > > http://lists.infradead.org/pipermail/ath11k/2020-November/000550.html
+> > > > >
+> > > >
+> > > > Applying the patch and revert patch 7fef431be9c9 worked on the first
+> > > > glance.
+> > > >
+> > > > After a couple of minutes the connection get broken. The kernel log
+> > > > shows the following error:
+> > > >
+> > > > ath11k_pci 0000:55:00.0: wmi command 16387 timeout
+> > > > ath11k_pci 0000:55:00.0: failed to send WMI_PDEV_SET_PARAM cmd
+> > > > ath11k_pc
+> > > > i 0000:55:00.0: failed to enable PMF QOS: (-11
+> > > >
+> > > > It is also not possible to unload the ath11k_pci, rmmod will hang.
+> > > >
+> > > >
+> > >
+> > > I can confirm the same behavior as Stefani so far.  After applying the
+> > > patch, and reverting commit 7fef431be9c9, I am able to connect to a
+> > > network.  It hasn't disconnected yet (I'm sending this email via that
+> > > connection).  I'll report what I find next.
+> > >
+> > > Thanks again for the help!
+>
+> Sigh.... sorry for the top post again.  I'll now get a real email client.
 
-Will describe "why' in v2. Thanks.
+So the connection remained super stable for a while, so I decided to
+tempt fate and suspend the laptop to see what would happen :).
 
----
-Ping-Ke
+[ 5994.143715] PM: suspend exit
+[ 5997.260351] ath11k_pci 0000:55:00.0: wmi command 16387 timeout
+[ 5997.260353] ath11k_pci 0000:55:00.0: failed to send WMI_PDEV_SET_PARAM cmd
+[ 5997.260356] ath11k_pci 0000:55:00.0: failed to enable dynamic bw: -11
+[ 6000.332299] ath11k_pci 0000:55:00.0: wmi command 16387 timeout
+[ 6000.332303] ath11k_pci 0000:55:00.0: failed to send WMI_PDEV_SET_PARAM cmd
+[ 6000.332308] ath11k_pci 0000:55:00.0: failed to enable PMF QOS: (-11
+[ 6003.404365] ath11k_pci 0000:55:00.0: wmi command 16387 timeout
+[ 6003.404368] ath11k_pci 0000:55:00.0: failed to send WMI_PDEV_SET_PARAM cmd
+[ 6003.404373] ath11k_pci 0000:55:00.0: failed to enable PMF QOS: (-11
+[ 6016.204347] ath11k_pci 0000:55:00.0: wmi command 16387 timeout
+[ 6016.204351] ath11k_pci 0000:55:00.0: failed to send WMI_PDEV_SET_PARAM cmd
+[ 6016.204357] ath11k_pci 0000:55:00.0: failed to enable PMF QOS: (-11
+[ 6019.276319] ath11k_pci 0000:55:00.0: wmi command 16387 timeout
+[ 6019.276323] ath11k_pci 0000:55:00.0: failed to send WMI_PDEV_SET_PARAM cmd
+[ 6019.276329] ath11k_pci 0000:55:00.0: failed to enable PMF QOS: (-11
+[ 6031.052272] ath11k_pci 0000:55:00.0: wmi command 16387 timeout
+[ 6031.052275] ath11k_pci 0000:55:00.0: failed to send WMI_PDEV_SET_PARAM cmd
+[ 6031.052279] ath11k_pci 0000:55:00.0: failed to enable PMF QOS: (-11
+[ 6034.128257] ath11k_pci 0000:55:00.0: wmi command 16387 timeout
+[ 6034.128261] ath11k_pci 0000:55:00.0: failed to send WMI_PDEV_SET_PARAM cmd
+[ 6034.128265] ath11k_pci 0000:55:00.0: failed to enable PMF QOS: (-11
+[ 6039.500241] ath11k_pci 0000:55:00.0: qmi failed set mode request,
+mode: 4, err = -110
+[ 6039.500244] ath11k_pci 0000:55:00.0: qmi failed to send wlan mode off
 
-
-
-
+I was able to remove the ath11k module using rmmod -f , and then
+modprobe ath11k + atk11k_pci and the device was able to reassociate
+and bring the connection back up.
