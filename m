@@ -2,67 +2,88 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D0192B15D4
-	for <lists+linux-wireless@lfdr.de>; Fri, 13 Nov 2020 07:27:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E5CF2B16AF
+	for <lists+linux-wireless@lfdr.de>; Fri, 13 Nov 2020 08:47:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726092AbgKMG0g (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 13 Nov 2020 01:26:36 -0500
-Received: from szxga06-in.huawei.com ([45.249.212.32]:7495 "EHLO
-        szxga06-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725971AbgKMG0g (ORCPT
+        id S1726291AbgKMHrA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 13 Nov 2020 02:47:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51566 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726112AbgKMHq6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 13 Nov 2020 01:26:36 -0500
-Received: from DGGEMS414-HUB.china.huawei.com (unknown [172.30.72.59])
-        by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4CXT4y1Y3Tzhj8g;
-        Fri, 13 Nov 2020 14:26:26 +0800 (CST)
-Received: from compute.localdomain (10.175.112.70) by
- DGGEMS414-HUB.china.huawei.com (10.3.19.214) with Microsoft SMTP Server (TLS)
- id 14.3.487.0; Fri, 13 Nov 2020 14:26:30 +0800
-From:   Zhang Changzhong <zhangchangzhong@huawei.com>
-To:     <arend.vanspriel@broadcom.com>, <franky.lin@broadcom.com>,
-        <hante.meuleman@broadcom.com>, <chi-hsien.lin@cypress.com>,
-        <wright.feng@cypress.com>, <kvalo@codeaurora.org>,
-        <davem@davemloft.net>, <kuba@kernel.org>, <stanley.hsu@cypress.com>
-CC:     <linux-wireless@vger.kernel.org>,
-        <brcm80211-dev-list.pdl@broadcom.com>,
-        <brcm80211-dev-list@cypress.com>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: [PATCH] brcmfmac: fix error return code in brcmf_cfg80211_connect()
-Date:   Fri, 13 Nov 2020 14:28:16 +0800
-Message-ID: <1605248896-16812-1-git-send-email-zhangchangzhong@huawei.com>
-X-Mailer: git-send-email 1.8.3.1
+        Fri, 13 Nov 2020 02:46:58 -0500
+Received: from mail-ej1-x641.google.com (mail-ej1-x641.google.com [IPv6:2a00:1450:4864:20::641])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 959D4C0613D1;
+        Thu, 12 Nov 2020 23:46:55 -0800 (PST)
+Received: by mail-ej1-x641.google.com with SMTP id oq3so11956319ejb.7;
+        Thu, 12 Nov 2020 23:46:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding;
+        bh=zyH6jySFIoq48BBBi1yvzlVxpEUnMEvJ2blkKXb2ejk=;
+        b=bEl00iZItlntDGZuIkXa6sMVaVGUt41Wyi9S0lSGP5FH2Hsq/DrNvWNNU5mATx0B6D
+         jllI7bcT2JyD/IYA47SnFBRXuhLNZ2eu+ouhd+qB+Y2nTq8Kg692pw4IjOyBvBIOMA82
+         TyvofO83VsbKq70O2ifPjICthFbVGJi43792c2CDPqrKL+i3Rk4pbFYlqzoa0YxAZxNt
+         BXD0iRkqfm1tTKUIFfOHgjNu+RKeconXv869ZyuOgMQnWZasCuwzpko76a/o+uZsJHsN
+         LjZ+BH8S5rSf5/tVHHgu6uPbDa3GoUaw7cc9UD6ua+HgJVCHPnvGiGFx71ZzD+LMCxbH
+         c57Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
+        bh=zyH6jySFIoq48BBBi1yvzlVxpEUnMEvJ2blkKXb2ejk=;
+        b=dB1I4gSUmg/Z9EXCFDR39g3YJhR+wXsESMC5U8q+npaLg7K6tLT5vydDsvd9Xvls6G
+         DtshFt72JSvp669MLc6IHQJuCsOKIH0mcRjROnS9upwoJQyEvzC0YdWPNW9cSTmpfCXi
+         URUpbtog+6wYWK0sKnpqyra2LcUuteBO2xtL+WbuK0R6RwbCivnVkpuK5ZwYbfIZBxxw
+         rIdSrbyOZLRJkImjMMIVEdQRVmLLjShQPM0+Ty3J2lb0FUiLswDyEQA1BFJyyW8KWtvS
+         HJDI3HOrkn31VCN8WwQAhOlXR28BiSs9nwaH7C0nYKjFbUHo49yqS9ZTwEJy6Arf1WQJ
+         oGnQ==
+X-Gm-Message-State: AOAM533GPxInP5vzuOpDW6mUv7VTPS+b1mdCFBZf5T7UMbTGMVN3tZvn
+        xVv8KStqZf8leF9r7T2/Ayo=
+X-Google-Smtp-Source: ABdhPJx007OIBw73gx0ZA0eYIhjdlBIlq90Y2I46cNGiUiZZdvE98WfrkEudmmO7whYgxb9lVudr2w==
+X-Received: by 2002:a17:906:cd0f:: with SMTP id oz15mr793397ejb.228.1605253614306;
+        Thu, 12 Nov 2020 23:46:54 -0800 (PST)
+Received: from ?IPv6:2003:ea:8f23:2800:e113:5d8d:7b96:ca98? (p200300ea8f232800e1135d8d7b96ca98.dip0.t-ipconnect.de. [2003:ea:8f23:2800:e113:5d8d:7b96:ca98])
+        by smtp.googlemail.com with ESMTPSA id s26sm3364319edy.1.2020.11.12.23.46.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 12 Nov 2020 23:46:53 -0800 (PST)
+Subject: Re: [PATCH 1/3] net: mac80211: use core API for updating TX stats
+To:     Jakub Kicinski <kuba@kernel.org>,
+        Lev Stipakov <lstipakov@gmail.com>
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        "David S. Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Lev Stipakov <lev@openvpn.net>
+References: <20201112110953.34055-1-lev@openvpn.net>
+ <20201112153042.23df4eb3@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+From:   Heiner Kallweit <hkallweit1@gmail.com>
+Message-ID: <320aa95d-2954-a69a-007b-177b2b5dac46@gmail.com>
+Date:   Fri, 13 Nov 2020 08:14:45 +0100
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.4.3
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.175.112.70]
-X-CFilter-Loop: Reflected
+In-Reply-To: <20201112153042.23df4eb3@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fix to return a negative error code from the error handling
-case instead of 0, as done elsewhere in this function.
-
-Fixes: 3b1e0a7bdfee ("brcmfmac: add support for SAE authentication offload")
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: Zhang Changzhong <zhangchangzhong@huawei.com>
----
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-index a2dbbb9..0ee421f 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-@@ -2137,7 +2137,8 @@ brcmf_cfg80211_connect(struct wiphy *wiphy, struct net_device *ndev,
- 				    BRCMF_WSEC_MAX_PSK_LEN);
- 	else if (profile->use_fwsup == BRCMF_PROFILE_FWSUP_SAE) {
- 		/* clean up user-space RSNE */
--		if (brcmf_fil_iovar_data_set(ifp, "wpaie", NULL, 0)) {
-+		err = brcmf_fil_iovar_data_set(ifp, "wpaie", NULL, 0);
-+		if (err) {
- 			bphy_err(drvr, "failed to clean up user-space RSNE\n");
- 			goto done;
- 		}
--- 
-2.9.5
-
+Am 13.11.2020 um 00:30 schrieb Jakub Kicinski:
+> On Thu, 12 Nov 2020 13:09:53 +0200 Lev Stipakov wrote:
+>> Commit d3fd65484c781 ("net: core: add dev_sw_netstats_tx_add")
+>> has added function "dev_sw_netstats_tx_add()" to update
+>> net device per-cpu TX stats.
+>>
+>> Use this function instead of ieee80211_tx_stats().
+>>
+>> Signed-off-by: Lev Stipakov <lev@openvpn.net>
+> 
+> Heiner is actively working on this.
+> 
+> Heiner, would you mind looking at these three patches? If you have
+> these changes queued in your tree I'm happy to wait for them.
+> 
+This series is a good follow-up to what I did already.
+I'll have a look at it.
