@@ -2,154 +2,195 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E60722B1799
-	for <lists+linux-wireless@lfdr.de>; Fri, 13 Nov 2020 09:55:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 49CDB2B17A1
+	for <lists+linux-wireless@lfdr.de>; Fri, 13 Nov 2020 09:58:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726172AbgKMIzo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 13 Nov 2020 03:55:44 -0500
-Received: from m42-4.mailgun.net ([69.72.42.4]:38730 "EHLO m42-4.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726160AbgKMIzo (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 13 Nov 2020 03:55:44 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1605257743; h=Message-ID: References: In-Reply-To: Subject:
- Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
- MIME-Version: Sender; bh=C7nQWuK3FlsYgR47fV8JnuCoxHm63yRXNVweW5gdKrk=;
- b=Dl0spEVBqyIW3z0WuUBrHJYDc5jqnvMAQ8WPiqwc6I/CpZM0TYDl5aVRPIFQOaZ/tmEJFY7D
- dX5GdFU3Be21L6c4tM6BzVuYrjOl/K6e41Yq/VIY9TvB2M5hK55aY7DLfQDh1hYFxNCOi7qc
- +aTP41G2u/bbinFVyIyVbOp2C7U=
-X-Mailgun-Sending-Ip: 69.72.42.4
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n05.prod.us-east-1.postgun.com with SMTP id
- 5fae4a00d6e6336a4e42657f (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 13 Nov 2020 08:55:28
- GMT
-Sender: wgong=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 32ED2C433C8; Fri, 13 Nov 2020 08:55:28 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: wgong)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id B0954C433C9;
-        Fri, 13 Nov 2020 08:55:26 +0000 (UTC)
+        id S1726205AbgKMI6a (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 13 Nov 2020 03:58:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34622 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726149AbgKMI6a (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 13 Nov 2020 03:58:30 -0500
+Received: from mail-lf1-x144.google.com (mail-lf1-x144.google.com [IPv6:2a00:1450:4864:20::144])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0980C0613D1;
+        Fri, 13 Nov 2020 00:58:29 -0800 (PST)
+Received: by mail-lf1-x144.google.com with SMTP id d17so12668495lfq.10;
+        Fri, 13 Nov 2020 00:58:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=dE6n68pZBqNt+HCNDaadMxbINtAfMsObNj3MEOOC+jQ=;
+        b=PBqW1E3s4OZ2h7SJm8jjWmn1KNTSX7HlSMBBN3H8HKcR7vCf505vrneKsCpGCmhy0l
+         5kyTl3+cTHQs2KwtRWhz2u1Y8DDIX7Mq3W7E3EAXvFt10RpI/vv6D1UMXBM2asA7Hx3P
+         ez3CXd9DOrW+I8ACqrYwc2m/uVj4a/MfflP00xjUfJK0pZ7ah8IeeqKpxlYSCXatwT6o
+         9ZbfBRnjgk5IHdOWjr5TtUKB50PYtjmj2H75V+oJPwcwpc/8vrOIFR07Pxa2nyF73rsi
+         YzVxs1PbGj5gyPFEbvJJntdIYt4PA+MgaZ7L89wjThjfhjwxpyqh6s3ERfbd9IYVTGg3
+         gaAw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=dE6n68pZBqNt+HCNDaadMxbINtAfMsObNj3MEOOC+jQ=;
+        b=p6yMDhg03Sc6x+9NZ/yTJN1s//jMmrLFGZ3HIc/piHT33+OdSazpqhWpFMRRrLzBYe
+         C0zB/LmjYHA2G40/7nyZnodY3UIIF81FjE0CrgFyDojq5fsQdmrWNa875KjSLSLcACsq
+         kfVvLaFfNNeKNlVJ+YhtXDjo6Zt5EFFOkGBKGrExsiBrZXQMAb3bIm2TWFG3A1mUjsqN
+         6puGBqDbHZ+ONBfps2qC+jpmq576a8IBaWOtgvovqdIcPVZ2MDwpsu2qtxciYk46u/4N
+         NsTcxIi7/C83YLHjzcBS2cQdyWqxaiJlZJzCDgBtF1Lb+B7+T5cyVLWh8zXrVP4hrHFk
+         lqbg==
+X-Gm-Message-State: AOAM532kIO+fa9KLE/xPe5lXIxeOiPU+FMKCHB5h/29L5XjhupqXSJ2m
+        lY8KtTrHBCywUvbU7qD53g4=
+X-Google-Smtp-Source: ABdhPJx3Rj6vyw0vveV1qgM0Zt/wsafsw8dFdRc1x1SLCvsJhb8LmeSbl7hMYYKKGOE8n90I8+sizg==
+X-Received: by 2002:a05:6512:304b:: with SMTP id b11mr439560lfb.546.1605257908110;
+        Fri, 13 Nov 2020 00:58:28 -0800 (PST)
+Received: from localhost.localdomain (dmjt96jhvbz3j2f08hy-4.rev.dnainternet.fi. [2001:14bb:51:e1dd:1cd1:d2e:7b13:dc30])
+        by smtp.gmail.com with ESMTPSA id q13sm295520lfn.15.2020.11.13.00.58.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 13 Nov 2020 00:58:27 -0800 (PST)
+From:   Lev Stipakov <lstipakov@gmail.com>
+X-Google-Original-From: Lev Stipakov <lev@openvpn.net>
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.ke, linux-kernel@vger.kernel.org,
+        Heiner Kallweit <hkallweit1@gmail.com>
+Cc:     Lev Stipakov <lev@openvpn.net>
+Subject: [PATCH v2 1/3] net: mac80211: use core API for updating TX/RX stats
+Date:   Fri, 13 Nov 2020 10:58:04 +0200
+Message-Id: <20201113085804.115806-1-lev@openvpn.net>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <44c8b5ae-3630-9d98-1ab4-5f57bfe0886c@gmail.com>
+References: <44c8b5ae-3630-9d98-1ab4-5f57bfe0886c@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Fri, 13 Nov 2020 16:55:26 +0800
-From:   Wen Gong <wgong@codeaurora.org>
-To:     Simon Wunderlich <simon.wunderlich@s2003.tu-chemnitz.de>,
-        Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org, linville@tuxdriver.com,
-        Simon Wunderlich <siwu@hrz.tu-chemnitz.de>,
-        Mathias Kretschmer <mathias.kretschmer@fokus.fraunhofer.de>,
-        linux-wireless-owner@vger.kernel.org, ath10k@lists.infradead.org,
-        ath11k@lists.infradead.org
-Subject: Re: [PATCHv3 1/2] nl80211: add support for mcs masks
-In-Reply-To: <b7a64b13d38792a97708675dcd8e5f69@codeaurora.org>
-References: <1327767935-16984-1-git-send-email-siwu@hrz.tu-chemnitz.de>
- <1327767935-16984-2-git-send-email-siwu@hrz.tu-chemnitz.de>
- (sfid-20120128_172604_145461_197131DD)
- <b7a64b13d38792a97708675dcd8e5f69@codeaurora.org>
-Message-ID: <621967ef7bc9209efaa027b7e574c586@codeaurora.org>
-X-Sender: wgong@codeaurora.org
-User-Agent: Roundcube Webmail/1.3.9
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2020-11-12 18:38, Wen Gong wrote:
-> On 2012-01-29 00:25, Simon Wunderlich wrote:
->> Allow to set mcs masks through nl80211. We also allow to set MCS
->> rates but no legacy rates (and vice versa).
->> 
->> Signed-off-by: Simon Wunderlich <siwu@hrz.tu-chemnitz.de>
->> Signed-off-by: Mathias Kretschmer 
->> <mathias.kretschmer@fokus.fraunhofer.de>
->> ---
->>  include/linux/nl80211.h |    4 +++
->>  include/net/cfg80211.h  |    3 +-
->>  net/wireless/nl80211.c  |   61 
->> ++++++++++++++++++++++++++++++++++++++++++++++-
->>  3 files changed, 65 insertions(+), 3 deletions(-)
->> 
-> ...
->> @@ -5421,12 +5451,20 @@ static int nl80211_set_tx_bitrate_mask(struct
->> sk_buff *skb,
->>  		sband = rdev->wiphy.bands[i];
->>  		mask.control[i].legacy =
->>  			sband ? (1 << sband->n_bitrates) - 1 : 0;
->> +		if (sband)
->> +			memcpy(mask.control[i].mcs,
->> +			       sband->ht_cap.mcs.rx_mask,
->> +			       sizeof(mask.control[i].mcs));
-> when use command: "iw wlan0 set bitrates legacy-5 6", I want to set it
-> fixed in 6M rate.
-> this copy mcs rate will add the mcs rate here and condition "if
-> (tb[NL80211_TXRATE_MCS])"
-> is false, then mcs rate will not clear and lead a mistake result.
->> +		else
->> +			memset(mask.control[i].mcs, 0,
->> +			       sizeof(mask.control[i].mcs));
->>  	}
->> 
->>  	/*
->>  	 * The nested attribute uses enum nl80211_band as the index. This 
->> maps
->>  	 * directly to the enum ieee80211_band values used in cfg80211.
->>  	 */
->> +	BUILD_BUG_ON(NL80211_MAX_SUPP_HT_RATES > IEEE80211_HT_MCS_MASK_LEN * 
->> 8);
->>  	nla_for_each_nested(tx_rates, info->attrs[NL80211_ATTR_TX_RATES], 
->> rem)
->>  	{
->>  		enum ieee80211_band band = nla_type(tx_rates);
->> @@ -5442,7 +5480,28 @@ static int nl80211_set_tx_bitrate_mask(struct
->> sk_buff *skb,
->>  				sband,
->>  				nla_data(tb[NL80211_TXRATE_LEGACY]),
->>  				nla_len(tb[NL80211_TXRATE_LEGACY]));
->> -			if (mask.control[band].legacy == 0)
->> +		}
->> +		if (tb[NL80211_TXRATE_MCS]) {
-> 
-> false for "iw wlan0 set bitrates legacy-5 6", so ht_rateset_to_mask
-> will not enter and mcs rate will not clear.
-If no tb[NL80211_TXRATE_HT]/tb[NL80211_TXRATE_VHT], it should clear the 
-data like this:
-memset(mcs, 0, IEEE80211_HT_MCS_MASK_LEN) which is in ht_rateset_to_mask 
-and
-memset(mcs, 0, sizeof(u16) * NL80211_VHT_NSS_MAX) which is in 
-vht_set_mcs_mask.
-> 
->> +			if (!ht_rateset_to_mask(
->> +					sband,
->> +					nla_data(tb[NL80211_TXRATE_MCS]),
->> +					nla_len(tb[NL80211_TXRATE_MCS]),
->> +					mask.control[band].mcs))
->> +				return -EINVAL;
->> +		}
->> +
->> +		if (mask.control[band].legacy == 0) {
->> +			/* don't allow empty legacy rates if HT
->> +			 * is not even supported. */
->> +			if (!rdev->wiphy.bands[band]->ht_cap.ht_supported)
->> +				return -EINVAL;
->> +
->> +			for (i = 0; i < IEEE80211_HT_MCS_MASK_LEN; i++)
->> +				if (mask.control[band].mcs[i])
->> +					break;
->> +
->> +			/* legacy and mcs rates may not be both empty */
->> +			if (i == IEEE80211_HT_MCS_MASK_LEN)
->>  				return -EINVAL;
->>  		}
->>  	}
+Commits
+
+  d3fd65484c781 ("net: core: add dev_sw_netstats_tx_add")
+  451b05f413d3f ("net: netdevice.h: sw_netstats_rx_add helper)
+
+have added API to update net device per-cpu TX/RX stats.
+
+Use core API instead of ieee80211_tx/rx_stats().
+
+Signed-off-by: Lev Stipakov <lev@openvpn.net>
+---
+ v2: also replace ieee80211_rx_stats() with dev_sw_netstats_rx_add()
+
+ net/mac80211/rx.c | 18 ++++--------------
+ net/mac80211/tx.c | 16 +++-------------
+ 2 files changed, 7 insertions(+), 27 deletions(-)
+
+diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
+index 09d1c9fb8872..0c1a19a93c79 100644
+--- a/net/mac80211/rx.c
++++ b/net/mac80211/rx.c
+@@ -32,16 +32,6 @@
+ #include "wme.h"
+ #include "rate.h"
+ 
+-static inline void ieee80211_rx_stats(struct net_device *dev, u32 len)
+-{
+-	struct pcpu_sw_netstats *tstats = this_cpu_ptr(dev->tstats);
+-
+-	u64_stats_update_begin(&tstats->syncp);
+-	tstats->rx_packets++;
+-	tstats->rx_bytes += len;
+-	u64_stats_update_end(&tstats->syncp);
+-}
+-
+ /*
+  * monitor mode reception
+  *
+@@ -842,7 +832,7 @@ ieee80211_rx_monitor(struct ieee80211_local *local, struct sk_buff *origskb,
+ 
+ 			if (skb) {
+ 				skb->dev = sdata->dev;
+-				ieee80211_rx_stats(skb->dev, skb->len);
++				dev_sw_netstats_rx_add(skb->dev, skb->len);
+ 				netif_receive_skb(skb);
+ 			}
+ 		}
+@@ -2560,7 +2550,7 @@ ieee80211_deliver_skb(struct ieee80211_rx_data *rx)
+ 	skb = rx->skb;
+ 	xmit_skb = NULL;
+ 
+-	ieee80211_rx_stats(dev, skb->len);
++	dev_sw_netstats_rx_add(dev, skb->len);
+ 
+ 	if (rx->sta) {
+ 		/* The seqno index has the same property as needed
+@@ -3699,7 +3689,7 @@ static void ieee80211_rx_cooked_monitor(struct ieee80211_rx_data *rx,
+ 		}
+ 
+ 		prev_dev = sdata->dev;
+-		ieee80211_rx_stats(sdata->dev, skb->len);
++		dev_sw_netstats_rx_add(sdata->dev, skb->len);
+ 	}
+ 
+ 	if (prev_dev) {
+@@ -4416,7 +4406,7 @@ static bool ieee80211_invoke_fast_rx(struct ieee80211_rx_data *rx,
+ 
+ 	skb->dev = fast_rx->dev;
+ 
+-	ieee80211_rx_stats(fast_rx->dev, skb->len);
++	dev_sw_netstats_rx_add(fast_rx->dev, skb->len);
+ 
+ 	/* The seqno index has the same property as needed
+ 	 * for the rx_msdu field, i.e. it is IEEE80211_NUM_TIDS
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index 5f05f4651dd7..7807f8178527 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -38,16 +38,6 @@
+ 
+ /* misc utils */
+ 
+-static inline void ieee80211_tx_stats(struct net_device *dev, u32 len)
+-{
+-	struct pcpu_sw_netstats *tstats = this_cpu_ptr(dev->tstats);
+-
+-	u64_stats_update_begin(&tstats->syncp);
+-	tstats->tx_packets++;
+-	tstats->tx_bytes += len;
+-	u64_stats_update_end(&tstats->syncp);
+-}
+-
+ static __le16 ieee80211_duration(struct ieee80211_tx_data *tx,
+ 				 struct sk_buff *skb, int group_addr,
+ 				 int next_frag_len)
+@@ -3403,7 +3393,7 @@ static void ieee80211_xmit_fast_finish(struct ieee80211_sub_if_data *sdata,
+ 	if (key)
+ 		info->control.hw_key = &key->conf;
+ 
+-	ieee80211_tx_stats(skb->dev, skb->len);
++	dev_sw_netstats_tx_add(skb->dev, 1, skb->len);
+ 
+ 	if (hdr->frame_control & cpu_to_le16(IEEE80211_STYPE_QOS_DATA)) {
+ 		tid = skb->priority & IEEE80211_QOS_CTL_TAG1D_MASK;
+@@ -4021,7 +4011,7 @@ void __ieee80211_subif_start_xmit(struct sk_buff *skb,
+ 			goto out;
+ 		}
+ 
+-		ieee80211_tx_stats(dev, skb->len);
++		dev_sw_netstats_tx_add(dev, 1, skb->len);
+ 
+ 		ieee80211_xmit(sdata, sta, skb);
+ 	}
+@@ -4248,7 +4238,7 @@ static void ieee80211_8023_xmit(struct ieee80211_sub_if_data *sdata,
+ 
+ 	info->hw_queue = sdata->vif.hw_queue[skb_get_queue_mapping(skb)];
+ 
+-	ieee80211_tx_stats(dev, skb->len);
++	dev_sw_netstats_tx_add(dev, 1, skb->len);
+ 
+ 	sta->tx_stats.bytes[skb_get_queue_mapping(skb)] += skb->len;
+ 	sta->tx_stats.packets[skb_get_queue_mapping(skb)]++;
+-- 
+2.25.1
+
