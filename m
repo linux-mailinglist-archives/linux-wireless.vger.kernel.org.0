@@ -2,148 +2,194 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 56BE32B18CF
-	for <lists+linux-wireless@lfdr.de>; Fri, 13 Nov 2020 11:12:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EC3262B18E5
+	for <lists+linux-wireless@lfdr.de>; Fri, 13 Nov 2020 11:18:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726360AbgKMKL4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 13 Nov 2020 05:11:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46160 "EHLO
+        id S1726260AbgKMKSF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 13 Nov 2020 05:18:05 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47120 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726229AbgKMKL4 (ORCPT
+        with ESMTP id S1726176AbgKMKSE (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 13 Nov 2020 05:11:56 -0500
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E75DEC0613D1;
-        Fri, 13 Nov 2020 02:11:55 -0800 (PST)
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.94)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1kdW3d-006shG-Bc; Fri, 13 Nov 2020 11:11:53 +0100
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     netdev@vger.kernel.org
-Cc:     linux-wireless@vger.kernel.org
-Subject: pull-request: mac80211-next 2020-11-13
-Date:   Fri, 13 Nov 2020 11:11:47 +0100
-Message-Id: <20201113101148.25268-1-johannes@sipsolutions.net>
-X-Mailer: git-send-email 2.26.2
+        Fri, 13 Nov 2020 05:18:04 -0500
+Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 821B7C0613D1
+        for <linux-wireless@vger.kernel.org>; Fri, 13 Nov 2020 02:18:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject
+        :To:From:Sender:Reply-To:Cc:Content-Type:Content-ID:Content-Description:
+        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=6WgvLB8ao87Q/FUPHij8W4BqNwQ5M0gAG/PA4k+puRI=; b=aAf7doSy8ulkuSFInCw4Y4JvJU
+        ipfDMchamJg0nIwZVzFhfL+RStRuGR9vXHgejuVAqlK7KxrWfS19HOUPnj5nzRKs6qDcZ4GkdZO4z
+        dYwEim1V1ITwAS3cghqlnFsW6BgBNdcK/kuxM38tld+EZGaicYXKcU5bvXeQdVh4be6E=;
+Received: from p5b206c33.dip0.t-ipconnect.de ([91.32.108.51] helo=localhost.localdomain)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_CBC_SHA1:128)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1kdW9b-000456-4a
+        for linux-wireless@vger.kernel.org; Fri, 13 Nov 2020 11:18:03 +0100
+From:   Felix Fietkau <nbd@nbd.name>
+To:     linux-wireless@vger.kernel.org
+Subject: [PATCH] mt76: mt7915: fix endian issues
+Date:   Fri, 13 Nov 2020 11:18:02 +0100
+Message-Id: <20201113101802.46339-1-nbd@nbd.name>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Jakub,
+Multiple MCU messages were using u16/u32 fields without endian annotations
+or conversions
 
-And here's another set of patches, this one for -next. Nothing
-much stands out, perhaps apart from the WDS removal, but that
-was old and pretty much dead code when we turned it off, so it
-won't be missed.
+Fixes: e57b7901469f ("mt76: add mac80211 driver for MT7915 PCIe-based chipsets")
+Fixes: 5517f78b0063 ("mt76: mt7915: enable firmware module debug support")
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+---
+ .../net/wireless/mediatek/mt76/mt7915/mcu.c   | 87 +++++++++++++++----
+ 1 file changed, 68 insertions(+), 19 deletions(-)
 
-Please pull and let me know if there's any problem.
-
-Thanks,
-johannes
-
-
-
-The following changes since commit c9448e828d113cd7eafe77c414127e877ca88b20:
-
-  Merge tag 'mlx5-updates-2020-11-03' of git://git.kernel.org/pub/scm/linux/kernel/git/saeed/linux (2020-11-05 18:01:31 -0800)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211-next.git tags/mac80211-next-for-net-next-2020-11-13
-
-for you to fetch changes up to da1e9dd3a11cda85b58dafe64f091734934b2f6c:
-
-  nl80211: fix kernel-doc warning in the new SAE attribute (2020-11-11 08:39:13 +0100)
-
-----------------------------------------------------------------
-Some updates:
- * injection/radiotap updates for new test capabilities
- * remove WDS support - even years ago when we turned
-   it off by default it was already basically unusable
- * support for HE (802.11ax) rates for beacons
- * support for some vendor-specific HE rates
- * many other small features/cleanups
-
-----------------------------------------------------------------
-Colin Ian King (1):
-      nl80211/cfg80211: fix potential infinite loop
-
-Johannes Berg (9):
-      wireless: remove CONFIG_WIRELESS_WDS
-      ath9k: remove WDS code
-      carl9170: remove WDS code
-      b43: remove WDS code
-      b43legacy: remove WDS code
-      rt2x00: remove WDS code
-      mac80211: remove WDS-related code
-      cfg80211: remove WDS code
-      nl80211: fix kernel-doc warning in the new SAE attribute
-
-Julia Lawall (1):
-      mac80211: use semicolons rather than commas to separate statements
-
-Kurt Lee (1):
-      ieee80211: Add definition for WFA DPP
-
-Mathy Vanhoef (4):
-      mac80211: add radiotap flag to assure frames are not reordered
-      mac80211: adhere to Tx control flag that prevents frame reordering
-      mac80211: don't overwrite QoS TID of injected frames
-      mac80211: assure that certain drivers adhere to DONT_REORDER flag
-
-Pradeep Kumar Chitrapu (1):
-      mac80211: save HE oper info in BSS config for mesh
-
-Rajkumar Manoharan (2):
-      nl80211: fix beacon tx rate mask validation
-      cfg80211: add support to configure HE MCS for beacon rate
-
-Rohan Dutta (1):
-      cfg80211: Add support to configure SAE PWE value to drivers
-
-Vamsi Krishna (1):
-      cfg80211: Add support to calculate and report 4096-QAM HE rates
-
- drivers/net/wireless/Kconfig                      | 13 ----
- drivers/net/wireless/ath/ath9k/ath9k.h            |  1 -
- drivers/net/wireless/ath/ath9k/debug.c            |  4 +-
- drivers/net/wireless/ath/ath9k/init.c             | 19 -----
- drivers/net/wireless/ath/ath9k/main.c             |  5 --
- drivers/net/wireless/ath/carl9170/mac.c           |  4 --
- drivers/net/wireless/ath/carl9170/main.c          |  1 -
- drivers/net/wireless/broadcom/b43/main.c          |  6 +-
- drivers/net/wireless/broadcom/b43legacy/main.c    |  6 +-
- drivers/net/wireless/ralink/rt2x00/rt2x00config.c |  1 -
- drivers/net/wireless/ralink/rt2x00/rt2x00dev.c    |  6 +-
- drivers/net/wireless/ralink/rt2x00/rt2x00mac.c    |  3 +-
- include/linux/ieee80211.h                         |  3 +
- include/net/cfg80211.h                            | 21 ++++--
- include/net/ieee80211_radiotap.h                  |  1 +
- include/net/mac80211.h                            |  7 +-
- include/uapi/linux/nl80211.h                      | 38 +++++++++-
- net/mac80211/cfg.c                                | 11 ---
- net/mac80211/chan.c                               |  3 +-
- net/mac80211/debugfs_netdev.c                     | 11 ---
- net/mac80211/debugfs_sta.c                        |  2 +-
- net/mac80211/ieee80211_i.h                        |  6 --
- net/mac80211/iface.c                              | 52 ++------------
- net/mac80211/main.c                               |  8 ---
- net/mac80211/mesh.c                               | 30 ++++++++
- net/mac80211/pm.c                                 | 15 ----
- net/mac80211/rx.c                                 |  5 --
- net/mac80211/tx.c                                 | 39 +++--------
- net/mac80211/util.c                               |  2 +-
- net/mac80211/wme.c                                | 18 +++--
- net/wireless/chan.c                               |  6 +-
- net/wireless/core.c                               |  8 +--
- net/wireless/nl80211.c                            | 85 ++++++++++++-----------
- net/wireless/rdev-ops.h                           | 10 ---
- net/wireless/scan.c                               |  2 +-
- net/wireless/trace.h                              |  5 --
- net/wireless/util.c                               | 37 +++++-----
- net/wireless/wext-compat.c                        | 51 --------------
- 38 files changed, 198 insertions(+), 347 deletions(-)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+index eeb9bd4c3bea..1b2f76250923 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+@@ -2824,7 +2824,7 @@ int mt7915_mcu_fw_dbg_ctrl(struct mt7915_dev *dev, u32 module, u8 level)
+ 	struct {
+ 		u8 ver;
+ 		u8 pad;
+-		u16 len;
++		__le16 len;
+ 		u8 level;
+ 		u8 rsv[3];
+ 		__le32 module_idx;
+@@ -3073,12 +3073,12 @@ int mt7915_mcu_rdd_cmd(struct mt7915_dev *dev,
+ int mt7915_mcu_set_fcc5_lpn(struct mt7915_dev *dev, int val)
+ {
+ 	struct {
+-		u32 tag;
+-		u16 min_lpn;
++		__le32 tag;
++		__le16 min_lpn;
+ 		u8 rsv[2];
+ 	} __packed req = {
+-		.tag = 0x1,
+-		.min_lpn = val,
++		.tag = cpu_to_le32(0x1),
++		.min_lpn = cpu_to_le16(val),
+ 	};
+ 
+ 	return mt76_mcu_send_msg(&dev->mt76, MCU_EXT_CMD_SET_RDD_TH, &req,
+@@ -3089,14 +3089,29 @@ int mt7915_mcu_set_pulse_th(struct mt7915_dev *dev,
+ 			    const struct mt7915_dfs_pulse *pulse)
+ {
+ 	struct {
+-		u32 tag;
+-		struct mt7915_dfs_pulse pulse;
++		__le32 tag;
++
++		__le32 max_width;		/* us */
++		__le32 max_pwr;			/* dbm */
++		__le32 min_pwr;			/* dbm */
++		__le32 min_stgr_pri;		/* us */
++		__le32 max_stgr_pri;		/* us */
++		__le32 min_cr_pri;		/* us */
++		__le32 max_cr_pri;		/* us */
+ 	} __packed req = {
+-		.tag = 0x3,
++		.tag = cpu_to_le32(0x3),
++
++#define __req_field(field) .field = cpu_to_le32(pulse->field)
++		__req_field(max_width),
++		__req_field(max_pwr),
++		__req_field(min_pwr),
++		__req_field(min_stgr_pri),
++		__req_field(max_stgr_pri),
++		__req_field(min_cr_pri),
++		__req_field(max_cr_pri),
++#undef __req_field
+ 	};
+ 
+-	memcpy(&req.pulse, pulse, sizeof(*pulse));
+-
+ 	return mt76_mcu_send_msg(&dev->mt76, MCU_EXT_CMD_SET_RDD_TH, &req,
+ 				 sizeof(req), true);
+ }
+@@ -3105,16 +3120,50 @@ int mt7915_mcu_set_radar_th(struct mt7915_dev *dev, int index,
+ 			    const struct mt7915_dfs_pattern *pattern)
+ {
+ 	struct {
+-		u32 tag;
+-		u16 radar_type;
+-		struct mt7915_dfs_pattern pattern;
++		__le32 tag;
++		__le16 radar_type;
++
++		u8 enb;
++		u8 stgr;
++		u8 min_crpn;
++		u8 max_crpn;
++		u8 min_crpr;
++		u8 min_pw;
++		u32 min_pri;
++		u32 max_pri;
++		u8 max_pw;
++		u8 min_crbn;
++		u8 max_crbn;
++		u8 min_stgpn;
++		u8 max_stgpn;
++		u8 min_stgpr;
++		u8 rsv[2];
++		u32 min_stgpr_diff;
+ 	} __packed req = {
+-		.tag = 0x2,
+-		.radar_type = index,
++		.tag = cpu_to_le32(0x2),
++		.radar_type = cpu_to_le16(index),
++
++#define __req_field_u8(field) .field = pattern->field
++#define __req_field_u32(field) .field = cpu_to_le32(pattern->field)
++		__req_field_u8(enb),
++		__req_field_u8(stgr),
++		__req_field_u8(min_crpn),
++		__req_field_u8(max_crpn),
++		__req_field_u8(min_crpr),
++		__req_field_u8(min_pw),
++		__req_field_u32(min_pri),
++		__req_field_u32(max_pri),
++		__req_field_u8(max_pw),
++		__req_field_u8(min_crbn),
++		__req_field_u8(max_crbn),
++		__req_field_u8(min_stgpn),
++		__req_field_u8(max_stgpn),
++		__req_field_u8(min_stgpr),
++		__req_field_u32(min_stgpr_diff),
++#undef __req_field_u8
++#undef __req_field_u32
+ 	};
+ 
+-	memcpy(&req.pattern, pattern, sizeof(*pattern));
+-
+ 	return mt76_mcu_send_msg(&dev->mt76, MCU_EXT_CMD_SET_RDD_TH, &req,
+ 				 sizeof(req), true);
+ }
+@@ -3389,12 +3438,12 @@ int mt7915_mcu_add_obss_spr(struct mt7915_dev *dev, struct ieee80211_vif *vif,
+ 		u8 drop_tx_idx;
+ 		u8 sta_idx;	/* 256 sta */
+ 		u8 rsv[2];
+-		u32 val;
++		__le32 val;
+ 	} __packed req = {
+ 		.action = MT_SPR_ENABLE,
+ 		.arg_num = 1,
+ 		.band_idx = mvif->band_idx,
+-		.val = enable,
++		.val = cpu_to_le32(enable),
+ 	};
+ 
+ 	return mt76_mcu_send_msg(&dev->mt76, MCU_EXT_CMD_SET_SPR, &req,
+-- 
+2.28.0
 
