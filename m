@@ -2,163 +2,153 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EC5592B1F2A
-	for <lists+linux-wireless@lfdr.de>; Fri, 13 Nov 2020 16:50:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DE6142B241D
+	for <lists+linux-wireless@lfdr.de>; Fri, 13 Nov 2020 19:56:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726754AbgKMPt7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 13 Nov 2020 10:49:59 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43424 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726606AbgKMPt7 (ORCPT
+        id S1726101AbgKMS4U (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 13 Nov 2020 13:56:20 -0500
+Received: from mail1.nippynetworks.com ([91.220.24.129]:56396 "EHLO
+        mail1.nippynetworks.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725866AbgKMS4T (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 13 Nov 2020 10:49:59 -0500
-Received: from mail-ed1-x543.google.com (mail-ed1-x543.google.com [IPv6:2a00:1450:4864:20::543])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D02B7C0613D1
-        for <linux-wireless@vger.kernel.org>; Fri, 13 Nov 2020 07:49:58 -0800 (PST)
-Received: by mail-ed1-x543.google.com with SMTP id y4so5393232edy.5
-        for <linux-wireless@vger.kernel.org>; Fri, 13 Nov 2020 07:49:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=technolu-st.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=NVlWoDydEByYn03GAfLZLkCKYayDuYZvcrvjeh0wrC8=;
-        b=BI/wSOgQ7xqPYwoj7D5cqctKxWKmSkzT23D56soZ3cGIULJh+l6YXXO8EuncNAzoPP
-         WhXRFyDrDFGSbKeS1l6QYfYT7abnlfMfBNPA3Ip1KI8fvNtLyOiMqMn4SAqO9xyP50lr
-         i6sjM/hV2H+I9Xg7/lShhy7JeoB2KroL5vrDIUfesyZzTArR/GBIjgajeo/eb1AMTMg4
-         2f2cGXBQ0OKlnlgg/Bekzd6BJ401HHR8gII9pHnG/+h82WwQuWU4hB56vSH0AtY3GoUp
-         zAzYw9UKVZCXxCs7W79u/7deJdCmuJZPXVE16elyt1yJ4LKSsr/AkJCNPt6FLbK31lFT
-         MgQw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=NVlWoDydEByYn03GAfLZLkCKYayDuYZvcrvjeh0wrC8=;
-        b=IbtviUzVCMfQmqv6PHQrhOA/NP0M/WUzrHH5eK9bRW9lmaUdfw2V2fT9QyFI07ePhF
-         1OrEaP/o9CoopXEemFGumRbuyvpmE7xK3iUO/qDzvNfOfoCQyw90ipenk4GUJ1wOJIDT
-         B7wcdk3CQOqZ4G8imCCW9xfxS8+RGHN17cUfuKTv88D2EA9wMj4We/rE1soHAcBOLHLL
-         5VToIPNBkHflo2mxrM+e4oK4pnFYGJ9wFtxm8brKyeofq1d3jQTIGWyFG3zHHIj4KUmU
-         NwrLDQobZHk/NLWyP672IG1HIGH5gX1kWLJ4M8L9rzjHsMMbbsYfrNMwNltx8tcPuWFk
-         fHtg==
-X-Gm-Message-State: AOAM53158hayu5t6dvlrU5EZ6AVkU0DVTD0MVo3qzyJO0cnY0U3dhBN+
-        A4y4CdQwLVjizBEez+aZ5QYU8cbWdKY9cqFXMW6RyA==
-X-Google-Smtp-Source: ABdhPJxEh+UO+lr3IL2XV2Z0DmJIcTaJ1unFAa7BkNHqyrX3dcU/kV7DWJBl1ZWdTClOD84SzMfKaeUg/x4T0XLldJo=
-X-Received: by 2002:aa7:c4c2:: with SMTP id p2mr3187598edr.371.1605282592615;
- Fri, 13 Nov 2020 07:49:52 -0800 (PST)
+        Fri, 13 Nov 2020 13:56:19 -0500
+X-Greylist: delayed 386 seconds by postgrey-1.27 at vger.kernel.org; Fri, 13 Nov 2020 13:56:18 EST
+Received: from Eds-Mac.local (unknown [94.228.36.46])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature ECDSA (P-256))
+        (No client certificate requested)
+        (Authenticated sender: ed@wildgooses.com)
+        by mail1.nippynetworks.com (Postfix) with ESMTPSA id 4CXnZZ5J2gzTgWR;
+        Fri, 13 Nov 2020 18:49:41 +0000 (GMT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wildgooses.com;
+        s=dkim; t=1605293387;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=FDOxE/QYSIDmquLpxTzlBELSiRSur5tED2eSsbOZwV8=;
+        b=F/CG2iqk0YMEvsevQWsKpPjjO0Us8Qvwjba6lJ4/11APmGjpI/4jThkqeResnb7/Cf5QSL
+        SzNu7xwQnar7utElCtAWYauaCHkukTcuRHnqlKGerIyEKwoqap+/vYuQB+VXGIfgf9b75t
+        YvSGWAkcHZjfRzkFP6I7+v2KQsVQunA=
+Subject: Re: [wireless-regdb] Correction of wireless-regdb for GB
+To:     Seth Forshee <seth.forshee@canonical.com>
+Cc:     wireless-regdb@lists.infradead.org, linux-wireless@vger.kernel.org
+References: <4d07581c-a3be-a3c6-bf32-7007eb45d541@wildgooses.com>
+ <20201106214446.GG6125@ubuntu-x1>
+From:   Ed W <lists@wildgooses.com>
+Message-ID: <2a710032-f2ec-d55b-5da4-d881089fe0cd@wildgooses.com>
+Date:   Fri, 13 Nov 2020 18:49:40 +0000
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:78.0)
+ Gecko/20100101 Thunderbird/78.4.2
 MIME-Version: 1.0
-References: <d6fb1e30-0d19-9af3-337b-69ff11c2fc6c@suse.cz> <8ACA82DB-D2FE-4599-8A01-D42218FDE1E5@redhat.com>
- <87eekz4s04.fsf@codeaurora.org> <9d307c40-5ea1-8938-819d-f1742cb99945@gmail.com>
- <cd8d1b1d-a646-b9b1-ed2a-4aa7070efe00@redhat.com> <dd24598f-7635-c2e2-9c6d-f320770e3b9e@gmail.com>
- <f1f471905ea99ad9b9c8a8eeae616ff9@codeaurora.org> <3e30ac52-6ad4-fa7b-8817-bca35a80d268@gmail.com>
- <CAHUdJJXnSd614ff+GDOAtUQV_vdUnOkVooFAzp_LA6CbbW=NDA@mail.gmail.com> <719c1497-f48e-9f1e-359b-dbc5e4a4c11a@redhat.com>
-In-Reply-To: <719c1497-f48e-9f1e-359b-dbc5e4a4c11a@redhat.com>
-From:   wi nk <wink@technolu.st>
-Date:   Fri, 13 Nov 2020 16:49:41 +0100
-Message-ID: <CAHUdJJVu-r6ubP6ekYnJB82rPvtHCnZfg3_0eG1KY0LsAE943Q@mail.gmail.com>
-Subject: Re: Regression: QCA6390 fails with "mm/page_alloc: place pages to
- tail in __free_pages_core()"
-To:     David Hildenbrand <david@redhat.com>
-Cc:     Pavel Procopiuc <pavel.procopiuc@gmail.com>,
-        Carl Huang <cjhuang@codeaurora.org>,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mm@kvack.org, Vlastimil Babka <vbabka@suse.cz>,
-        akpm@linux-foundation.org, ath11k@lists.infradead.org,
-        Kalle Valo <kvalo@codeaurora.org>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20201106214446.GG6125@ubuntu-x1>
+Content-Type: multipart/mixed;
+ boundary="------------702AFDA4ECAA478A81F0AAB2"
+Content-Language: en-GB
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Nov 13, 2020 at 2:56 PM David Hildenbrand <david@redhat.com> wrote:
->
-> On 13.11.20 14:36, wi nk wrote:
-> > On Fri, Nov 13, 2020 at 1:52 PM Pavel Procopiuc
-> > <pavel.procopiuc@gmail.com> wrote:
-> >>
-> >> Op 13.11.2020 om 12:08 schreef Carl Huang:
-> >>> Checked some logs. Looks when the error happens, the physical address are
-> >>> very small. Its' between 20M - 30M.
-> >>>
-> >>> So could you have a try to reserve the memory starting from 20M?
-> >>> Add "memmap=10M\$20M" to your grub.cfg or edit in kernel parameters. so ath11k
-> >>> can't allocate from these address.
-> >>>
-> >>> Or you can try to reserve even larger memory starting from 20M.
-> >>
-> >> That worked, booting with memmap=12M$20M resulted in the working wifi:
-> >>
-> >> $ journalctl -b | grep -iP '05:00|ath11k|Linux version|memmap'
-> >> Nov 13 13:45:34 razor kernel: Linux version 5.10.0-rc2 (root@razor) (gcc (Gentoo 9.3.0-r1 p3) 9.3.0, GNU ld (Gentoo 2.34
-> >> p6) 2.34.0) #1 SMP Fri Nov 13 13:29:48 CET 2020
-> >> Nov 13 13:45:34 razor kernel: Command line: ro root=/dev/nvme0n1p2 resume=/dev/nvme1n1p1 zram.num_devices=2
-> >> memmap=12M$20M quiet
-> >> Nov 13 13:45:34 razor kernel:   DMA zone: 64 pages used for memmap
-> >> Nov 13 13:45:34 razor kernel:   DMA32 zone: 5165 pages used for memmap
-> >> Nov 13 13:45:34 razor kernel:   Normal zone: 255840 pages used for memmap
-> >> Nov 13 13:45:34 razor kernel: Kernel command line: ro root=/dev/nvme0n1p2 resume=/dev/nvme1n1p1 zram.num_devices=2
-> >> memmap=12M$20M quiet ro root=/dev/nvme0n1p2 resume=/dev/nvme1n1p1 zram.num_devices=2 memmap=12M$20M quiet
-> >> Nov 13 13:45:34 razor kernel: pci 0000:05:00.0: [17cb:1101] type 00 class 0x028000
-> >> Nov 13 13:45:34 razor kernel: pci 0000:05:00.0: reg 0x10: [mem 0xd2100000-0xd21fffff 64bit]
-> >> Nov 13 13:45:34 razor kernel: pci 0000:05:00.0: PME# supported from D0 D3hot D3cold
-> >> Nov 13 13:45:34 razor kernel: pci 0000:05:00.0: 4.000 Gb/s available PCIe bandwidth, limited by 5.0 GT/s PCIe x1 link at
-> >> 0000:00:1c.1 (capable of 7.876 Gb/s with 8.0 GT/s PCIe x1 link)
-> >> Nov 13 13:45:34 razor kernel: pci 0000:05:00.0: Adding to iommu group 21
-> >> Nov 13 13:45:35 razor kernel: ath11k_pci 0000:05:00.0: WARNING: ath11k PCI support is experimental!
-> >> Nov 13 13:45:35 razor kernel: ath11k_pci 0000:05:00.0: BAR 0: assigned [mem 0xd2100000-0xd21fffff 64bit]
-> >> Nov 13 13:45:35 razor kernel: ath11k_pci 0000:05:00.0: enabling device (0000 -> 0002)
-> >> Nov 13 13:45:35 razor kernel: ath11k_pci 0000:05:00.0: MSI vectors: 32
-> >> Nov 13 13:45:35 razor kernel: mhi 0000:05:00.0: Requested to power ON
-> >> Nov 13 13:45:35 razor kernel: mhi 0000:05:00.0: Power on setup success
-> >> Nov 13 13:45:35 razor kernel: ath11k_pci 0000:05:00.0: Respond mem req failed, result: 1, err: 0
-> >> Nov 13 13:45:35 razor kernel: ath11k_pci 0000:05:00.0: qmi failed to respond fw mem req:-22
-> >> Nov 13 13:45:35 razor kernel: ath11k_pci 0000:05:00.0: req mem_seg[0] 0x2100000 524288 1
-> >> Nov 13 13:45:35 razor kernel: ath11k_pci 0000:05:00.0: req mem_seg[1] 0x2180000 524288 1
-> >> Nov 13 13:45:35 razor kernel: ath11k_pci 0000:05:00.0: req mem_seg[2] 0x2200000 524288 1
-> >> Nov 13 13:45:35 razor kernel: ath11k_pci 0000:05:00.0: req mem_seg[3] 0x2280000 294912 1
-> >> Nov 13 13:45:35 razor kernel: ath11k_pci 0000:05:00.0: req mem_seg[4] 0x2300000 524288 1
-> >> Nov 13 13:45:35 razor kernel: ath11k_pci 0000:05:00.0: req mem_seg[5] 0x2380000 524288 1
-> >> Nov 13 13:45:35 razor kernel: ath11k_pci 0000:05:00.0: req mem_seg[6] 0x2400000 458752 1
-> >> Nov 13 13:45:35 razor kernel: ath11k_pci 0000:05:00.0: req mem_seg[7] 0x20c0000 131072 1
-> >> Nov 13 13:45:35 razor kernel: ath11k_pci 0000:05:00.0: req mem_seg[8] 0x2480000 524288 4
-> >> Nov 13 13:45:35 razor kernel: ath11k_pci 0000:05:00.0: req mem_seg[9] 0x2500000 360448 4
-> >> Nov 13 13:45:35 razor kernel: ath11k_pci 0000:05:00.0: req mem_seg[10] 0x20a4000 16384 1
-> >> Nov 13 13:45:35 razor kernel: ath11k_pci 0000:05:00.0: chip_id 0x0 chip_family 0xb board_id 0xff soc_id 0xffffffff
-> >> Nov 13 13:45:35 razor kernel: ath11k_pci 0000:05:00.0: fw_version 0x101c06cc fw_build_timestamp 2020-06-24 19:50
-> >> fw_build_id
-> >> Nov 13 13:45:37 razor NetworkManager[782]: <info>  [1605271537.1168] rfkill1: found Wi-Fi radio killswitch (at
-> >> /sys/devices/pci0000:00/0000:00:1c.1/0000:05:00.0/ieee80211/phy0/rfkill1) (driver ath11k_pci)
-> >> Nov 13 13:45:39 razor ModemManager[722]: <info>  Couldn't check support for device
-> >> '/sys/devices/pci0000:00/0000:00:1c.1/0000:05:00.0': not supported by any plugin
-> >> Nov 13 13:45:45 razor kernel: ath11k_pci 0000:05:00.0: failed to enqueue rx buf: -28
-> >>
-> >> --
-> >> ath11k mailing list
-> >> ath11k@lists.infradead.org
-> >> http://lists.infradead.org/mailman/listinfo/ath11k
-> >
-> > When I attempt to boot my 5.10rc2 kernel with that memmap option, my
-> > machine immediately hangs.  That said, it seems to have done something
-> > bizarre, as immediately afterwards, if I remove that option and let
-> > 5.10 boot normally, it seems to boot and bring up the wifi adapter ok
-> > (which didn't happen before).  Now that I've managed to boot 5.10
-> > twice, the first time after a couple of minutes my video started going
-> > nuts and displaying all sorts of artifacts[1].  This time things seem
-> > to be functioning nominally (wifi is online and the machine is
-> > behaving properly).  I may just never turn it off again :D.
->
-> Honestly, that FW sounds horribly flawed. :)
->
-> Would be interesting what happens when you boot back to 5.9 now ...
->
-> --
-> Thanks,
->
-> David / dhildenb
->
+This is a multi-part message in MIME format.
+--------------702AFDA4ECAA478A81F0AAB2
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Well nothing super interesting....rebooting to 5.9 hard locked the
-machine once the adapter associated, before I could do much.
-Rebooting back to 5.10 and it booted fine (I'm sending this email with
-it).  There's definitely something non deterministic causing the
-driver to work occasionally and fail/panic a bit more often.  Are
-there other memory / device allocation settings I can tweak to see if
-something settles it down?
+Hi Seth
+
+Thanks for patching this. Can I also bring a later patch that I posted to=
+ your attention, the actual
+patch is now out of date, but I'm posting verbatim since I think there is=
+ a 25Mhz discrepancy (?)
+and also my patch is almost certainly wrong, so I'm after your guidance!!=
+ :-)
+
+Essentially there has been a recent result of a consultation in the UK (G=
+B) to expand wifi into 6Ghz
+*AND* to NOT require DFS on high 5Ghz channels.
+
+So in summary, the change you just made (sorry) can now be set to *NOT* n=
+eed DFS in the high
+channels around 5.7Ghz. More details in the links below.
+
+In particular one of the additional frequency ranges (6Ghz) has an intend=
+ed use of indoor where it
+has large power outputs (and encouraged to use larger powers by request o=
+f Intel), but it is *ALSO*
+allowed to be used outdoor with very low power requirements (possibly it =
+will later fall under the
+UK's allowance to use higher output power if you buy a =C2=A350 licence?)=
+=2E I've marked it as INDOOR-ONLY
+since that seems safest - I'm unclear how to mark something for dual use?=
+
+
+These changes significantly expand the available 5Ghz space in the UK, so=
+ would be nice to get
+upstream for general use
+
+
+Notes:
+
+https://www.ofcom.org.uk/__data/assets/pdf_file/0036/198927/6ghz-statemen=
+t.pdf
+
+https://www.ofcom.org.uk/__data/assets/pdf_file/0028/84970/ir-2030.pdf
+
+Thanks if you might make this second change!
+
+Ed W
+
+
+On 06/11/2020 21:44, Seth Forshee wrote:
+> Sorry for not responding sooner. I had started to look into this when
+> you sent the message, but I had to set it aside and then forgot to pick=
+
+> it back up.
+
+
+--------------702AFDA4ECAA478A81F0AAB2
+Content-Type: text/plain; charset=UTF-8;
+ name="0001-Update-regulatory-rules-for-UK-GB.patch"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment;
+ filename="0001-Update-regulatory-rules-for-UK-GB.patch"
+
+RnJvbSBlZTBhYWQ0NTY2YjIwNmYzMTNlOTJhYjRhZTk4Zjc4Njc2Nzg5MmNkIE1vbiBTZXAg
+MTcgMDA6MDA6MDAgMjAwMQpGcm9tOiByb290IDxyb290QHR3b2N1YmVkLm5pcHB5bmV0d29y
+a3MubGFuPgpEYXRlOiBUaHUsIDE3IFNlcCAyMDIwIDEzOjMxOjE4ICswMDAwClN1YmplY3Q6
+IFtQQVRDSF0gVXBkYXRlIHJlZ3VsYXRvcnkgcnVsZXMgZm9yIFVLIChHQikKTUlNRS1WZXJz
+aW9uOiAxLjAKQ29udGVudC1UeXBlOiB0ZXh0L3BsYWluOyBjaGFyc2V0PVVURi04CkNvbnRl
+bnQtVHJhbnNmZXItRW5jb2Rpbmc6IDhiaXQKClRoZSBJUi0yMDMwIGRvY3VtZW50IG9uIHA0
+NyBjbGFyaWZpZXMgYSBkaWZmZXJlbmNlIGZvciB0aGUgVUsgb24KNTcyNS01ODUwTWh6IGZy
+b20gdGhlIHJlc3Qgb2YgdGhlIFVLLiBQb3dlciBsZXZlbHMgYXJlIGhpZ2hlciBhbmQgaXQn
+cwpwb3NzaWJsZSB0byByYWlzZSB0aGVzZSBmdXJ0aGVyIGJ5IHB1cmNoYXNpbmcgYSA1MCBH
+QlAgcmFkaW8gbGljZW5jZS4KClNpbmNlIEphbiAyMDIwIE9mY29tIGhhcyBzb2xpY2l0ZWQg
+Y29tbWVudHMgb24gZnVydGhlciBkZXJlZ3VsYXRpbmcgdGhpcwpiYW5kIHRvIGJyaW5nIGl0
+IGludG8gZ2xvYmFsIGFsaWdubWVudC4gREZTIHJlcXVpcmVtZW50cyBoYXZlIGJlZW4KcmVt
+b3ZlZCBhbmQgYSBuZXcgYmFuZCBpbiB0aGUgNkdoeiBzcGFjZSBoYXMgYmVlbiBtYWRlIGF2
+YWlsYWJsZSB3aXRoCjI1MG1XIHBvd2VyIGxldmVscyAoaW5kb29yLCAyNW1XIG91dGRvb3Ip
+LCBhbHNvIHdpdGggbm8gREZTIHJlcXVpcmVtZW50LgoKU2lnbmVkLW9mZi1ieTogRWQgV2ls
+ZGdvb3NlIDxsaXN0c0B3aWxkZ29vc2VzLmNvbT4KLS0tCiBkYi50eHQgfCA3ICsrKysrLS0K
+IDEgZmlsZSBjaGFuZ2VkLCA1IGluc2VydGlvbnMoKyksIDIgZGVsZXRpb25zKC0pCgpkaWZm
+IC0tZ2l0IGEvZGIudHh0IGIvZGIudHh0CmluZGV4IGFjMzI0ODMuLmNjNWZmZDAgMTAwNjQ0
+Ci0tLSBhL2RiLnR4dAorKysgYi9kYi50eHQKQEAgLTU4OCwxMyArNTg4LDE2IEBAIGNvdW50
+cnkgRlI6IERGUy1FVFNJCiAjIEdCOiBodHRwczovL3d3dy5vZmNvbS5vcmcudWsvX19kYXRh
+L2Fzc2V0cy9wZGZfZmlsZS8wMDE5LzEzNjAwOS9PZmNvbS1JbmZvcm1hdGlvbi1TaGVldC01
+LUdIei1STEFOcy5wZGYKICMgR0I6IGh0dHBzOi8vd3d3Lm9mY29tLm9yZy51ay9fX2RhdGEv
+YXNzZXRzL3BkZl9maWxlLzAwMjgvODQ5NzAvaXItMjAzMC5wZGYKICMgR0I6IGh0dHBzOi8v
+d3d3Lm9mY29tLm9yZy51ay9fX2RhdGEvYXNzZXRzL3BkZl9maWxlLzAwMTMvMTI2MTIxL1N0
+YXRlbWVudF9JbXBsZW1lbnRpbmctT2Zjb21zLWRlY2lzaW9uLW9uLXRoZS01Ny03MUdIei1i
+YW5kLnBkZgorIyBHQjogaHR0cHM6Ly93d3cub2Zjb20ub3JnLnVrL19fZGF0YS9hc3NldHMv
+cGRmX2ZpbGUvMDAzNi8xOTg5MjcvNmdoei1zdGF0ZW1lbnQucGRmCiBjb3VudHJ5IEdCOiBE
+RlMtRVRTSQogCSgyNDAwIC0gMjQ4My41IEAgNDApLCAoMTAwIG1XKQogCSg1MTUwIC0gNTI1
+MCBAIDgwKSwgKDIwMCBtVyksIE5PLU9VVERPT1IsIEFVVE8tQlcsIHdtbXJ1bGU9RVRTSQog
+CSg1MjUwIC0gNTM1MCBAIDgwKSwgKDEwMCBtVyksIE5PLU9VVERPT1IsIERGUywgQVVUTy1C
+Vywgd21tcnVsZT1FVFNJCi0JKDU0NzAgLSA1NzI1IEAgMTYwKSwgKDUwMCBtVyksIERGUywg
+d21tcnVsZT1FVFNJCisJKDU0NzAgLSA1NzMwIEAgMTYwKSwgKDUwMCBtVyksIERGUywgd21t
+cnVsZT1FVFNJCiAJIyBzaG9ydCByYW5nZSBkZXZpY2VzIChFVFNJIEVOIDMwMCA0NDAtMSkK
+LQkoNTcyNSAtIDU4NzUgQCA4MCksICgyNSBtVykKKwkjIFNlZSBVSyBzcGVjaWZpYyBub3Rl
+cyBpbiBpci0yMDMwLnBkZiwgcDQ3CisJKDU3MjUgLSA1ODUwIEAgODApLCAoMjAwIG1XKSwg
+QVVUTy1CVywgd21tcnVsZT1FVFNJCisJKDU5MjUgLSA2NDI1IEAgMTYwKSwgKDI1MCBtVyks
+IE5PLU9VVERPT1IsIEFVVE8tQlcsIHdtbXJ1bGU9RVRTSQogCSMgNjAgR0h6IGJhbmQgY2hh
+bm5lbHMgMS02CiAJKDU3MDAwIC0gNzEwMDAgQCAyMTYwKSwgKDQwKQogCi0tIAoyLjI2LjIK
+Cg==
+--------------702AFDA4ECAA478A81F0AAB2--
