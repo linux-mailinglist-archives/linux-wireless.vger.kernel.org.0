@@ -2,98 +2,181 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 939A12B2DE5
-	for <lists+linux-wireless@lfdr.de>; Sat, 14 Nov 2020 16:24:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 301D72B32F4
+	for <lists+linux-wireless@lfdr.de>; Sun, 15 Nov 2020 09:32:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727028AbgKNPWa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 14 Nov 2020 10:22:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35896 "EHLO
+        id S1726716AbgKOI3O (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 15 Nov 2020 03:29:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51066 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727023AbgKNPWa (ORCPT
+        with ESMTP id S1726483AbgKOI26 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 14 Nov 2020 10:22:30 -0500
-Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com [IPv6:2607:f8b0:4864:20::441])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3264FC0613D1;
-        Sat, 14 Nov 2020 07:22:30 -0800 (PST)
-Received: by mail-pf1-x441.google.com with SMTP id w14so9855774pfd.7;
-        Sat, 14 Nov 2020 07:22:30 -0800 (PST)
+        Sun, 15 Nov 2020 03:28:58 -0500
+Received: from mail-qk1-x743.google.com (mail-qk1-x743.google.com [IPv6:2607:f8b0:4864:20::743])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F8B0C0617A6
+        for <linux-wireless@vger.kernel.org>; Sun, 15 Nov 2020 00:28:58 -0800 (PST)
+Received: by mail-qk1-x743.google.com with SMTP id k4so3889459qko.13
+        for <linux-wireless@vger.kernel.org>; Sun, 15 Nov 2020 00:28:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=UhFoET2r5y9ItO6Xj8vFkSHDcaq4PvtHYEGmUkjIBcU=;
-        b=hM3Ny1BiqS5AtB9tlxxo6LWiFmj8LpUNJZ4h33sD5bl8jsTuN0qB3ArOGOVCeC24Jp
-         VMHOAT2WiM0KJR0Ef7/Y9WREigBJeaEEue9RMMfQf/6G6IqRvu7ZNJs94uRex8XF6yQy
-         XFm8Q5NlSCwk/eRM+TSu0gGY7obrxLz5xFwSJnXxPgKEfBUG83oweaK0tbBINHL/PpfX
-         M80RrucDVGB1dpJDGxFQgSy2ac3nPi7pLFK9eFdDal7hybEG1S/CkT4tGUESZFhrdoBT
-         4POx/j9AA2sUMCAZIbzXJ1vxLQ/cqR78Iz8ssKjHNNmJHKxgBEPEN5epq1vLtk6zFILC
-         P9tg==
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=OCIV90QYh+cSh9MXoA2/IH8XF2Fc4Vxipk6OCQKO1MY=;
+        b=rTXJGk5LqbBqx3UK2IlH+7lNbshagoVs6nibtXVudYoLOxkDfNs23XEsmbcPCH1gzg
+         vQAb8uPCMcL8+YHDhXRiLRo+u4lMOpSJMhPcrRR/2KhP7PaR63VXo9pOoRuSUebvdtm2
+         K7NHVlntGhVBVcz5uVq3Wf1iTaJ2OupMQUh2NsP3hW79ckImX9xnzLuHhGvmQb4dzHi2
+         vxbfTYBFMmf1OG1D3EyhLsTfoxakkMP3qadaQYC8L9ceMjYfH4IQAPL+fh3GiN5q9/42
+         sIQhsBvahKRIz3tl4YZhhM92lIem1lGAKGhntJZqYddeB2p193uCclUmEUF/cnYUwXi6
+         FAng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=UhFoET2r5y9ItO6Xj8vFkSHDcaq4PvtHYEGmUkjIBcU=;
-        b=W1Bt1XKoxsitTn4F83tEGD/DabYFVCeEsU53kHUTo+KMOdPX+GEa8xTEnJOg+7AJIS
-         MMxaWfR4sMNzpOFge38aZq4Rnyh4aKT2WeOdLZV8Lq8UYBqW0JRbtGQEP3WewBp6m7K6
-         Ids2rJ1gpOQx7ReNxYkHhUUOa4v2RwkGBdZDENS/LKOMH5m55JhhysHjxzL8riIAPC7P
-         ObYASgFLSTSEF5SWC8LuUZIdsDPEmfv2ruDVkfCfICgZl4ZznZuyBkIzXvTgc2Htvjcw
-         tWdiLb/QZwIxXLbSZeGNGhgR2rvH2LOVgzdXR8icBjFxlUwwoEwuk9dFZvRjBfhPLcDz
-         mhMw==
-X-Gm-Message-State: AOAM531hsmVYX4d7pLA0f5VG7A8UC2XudmVjwFGikg+EjFNelcRZ1RR1
-        zu8pRyS7UESh6YuuDVSoUw==
-X-Google-Smtp-Source: ABdhPJzNA3CxKhV4znlB7IxELk/Oy3Hm8ZOoLppinb713244TrYooiO8NjXgQXpvh2WCOkkebxJI3Q==
-X-Received: by 2002:aa7:908d:0:b029:15f:d774:584 with SMTP id i13-20020aa7908d0000b029015fd7740584mr6524027pfa.6.1605367349716;
-        Sat, 14 Nov 2020 07:22:29 -0800 (PST)
-Received: from he-cluster.localdomain (67.216.221.250.16clouds.com. [67.216.221.250])
-        by smtp.gmail.com with ESMTPSA id x123sm13126316pfb.212.2020.11.14.07.22.28
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Sat, 14 Nov 2020 07:22:28 -0800 (PST)
-From:   xiakaixu1987@gmail.com
-X-Google-Original-From: kaixuxia@tencent.com
-To:     yhchuang@realtek.com, kvalo@codeaurora.org
-Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Kaixu Xia <kaixuxia@tencent.com>
-Subject: [PATCH] rtw88: coex: remove the unreached code in rtw_coex_set_tdma
-Date:   Sat, 14 Nov 2020 23:22:23 +0800
-Message-Id: <1605367343-11770-1-git-send-email-kaixuxia@tencent.com>
-X-Mailer: git-send-email 1.8.3.1
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=OCIV90QYh+cSh9MXoA2/IH8XF2Fc4Vxipk6OCQKO1MY=;
+        b=k0G8zqQO7oSq/WUnldSaYHSYK69AiiPF9PJGjsUbZVSXig9b6cTajem/uI/blAxniW
+         CZXP/75nFLAGUlhFZvZZpMWJXrSoA1LoGiXm2ri1P0CzN+744Sm7NrdTNVbn0Jk+he0Y
+         nwCOMtMbppTIMtvhrCllfsTFSaOHLbFGAB/5ulwVlyKyIB5LyWUuP3AOuT4D4Ybxe3pm
+         1e4RPScVUlInxjKtKLnTSpeDQJDvAB8BsaJUlFsicTdxNPy4W1yDyZ3wbqDxCCA1P8Kv
+         l7n6yzdlj0619gKgGg5wQdh0XK/3e4eYCrHLx525rX9hifoxVpIIl5CF6DxWOzXU6bhr
+         wh0Q==
+X-Gm-Message-State: AOAM5327DUJ6jsdy73eTzvRKpOldgFCjbAzfBlXi8n7vXCHQoneyskGs
+        X7uF/O0rb4XBt/Wk4wCWYgn++yQ69hMmHfVXELSZBQ==
+X-Google-Smtp-Source: ABdhPJy98BUc5SZvNJ4A+MS54+NCVMJOCN+1VS9jFB6eYTCxJtpBA4RlCcoD0tBykysQg72XR562Akg6uLQrLvzjgc0=
+X-Received: by 2002:a05:620a:15ce:: with SMTP id o14mr9938686qkm.231.1605428937214;
+ Sun, 15 Nov 2020 00:28:57 -0800 (PST)
+MIME-Version: 1.0
+References: <00000000000081bcd205b40d1f44@google.com>
+In-Reply-To: <00000000000081bcd205b40d1f44@google.com>
+From:   Dmitry Vyukov <dvyukov@google.com>
+Date:   Sun, 15 Nov 2020 09:28:45 +0100
+Message-ID: <CACT4Y+a6oXow5XKeKg4sS=a8nbCydtEMAUQpZHFRpr6s-wZRKg@mail.gmail.com>
+Subject: Re: bpf test error: BUG: sleeping function called from invalid
+ context in sta_info_move_state
+To:     syzbot <syzbot+5921b7c1b10a0ddd02bc@syzkaller.appspotmail.com>
+Cc:     Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        David Miller <davem@davemloft.net>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>,
+        syzkaller-bugs <syzkaller-bugs@googlegroups.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Kaixu Xia <kaixuxia@tencent.com>
+On Sat, Nov 14, 2020 at 9:42 AM syzbot
+<syzbot+5921b7c1b10a0ddd02bc@syzkaller.appspotmail.com> wrote:
+>
+> Hello,
+>
+> syzbot found the following issue on:
+>
+> HEAD commit:    96021828 MAINTAINERS/bpf: Update Andrii's entry.
+> git tree:       bpf
+> console output: https://syzkaller.appspot.com/x/log.txt?x=102717be500000
+> kernel config:  https://syzkaller.appspot.com/x/.config?x=61033507391c77ff
+> dashboard link: https://syzkaller.appspot.com/bug?extid=5921b7c1b10a0ddd02bc
+> compiler:       gcc (GCC) 10.1.0-syz 20200507
+>
+> IMPORTANT: if you fix the issue, please add the following tag to the commit:
+> Reported-by: syzbot+5921b7c1b10a0ddd02bc@syzkaller.appspotmail.com
 
-The value of the bool variable ap_enable is always false, so the first
-if branch is unreached code. Remove it.
+#syz fix: mac80211: free sta in sta_info_insert_finish() on errors
 
-Reported-by: Tosk Robot <tencent_os_robot@tencent.com>
-Signed-off-by: Kaixu Xia <kaixuxia@tencent.com>
----
- drivers/net/wireless/realtek/rtw88/coex.c | 12 +-----------
- 1 file changed, 1 insertion(+), 11 deletions(-)
-
-diff --git a/drivers/net/wireless/realtek/rtw88/coex.c b/drivers/net/wireless/realtek/rtw88/coex.c
-index aa08fd7d9fcd..9c7963e45755 100644
---- a/drivers/net/wireless/realtek/rtw88/coex.c
-+++ b/drivers/net/wireless/realtek/rtw88/coex.c
-@@ -863,18 +863,8 @@ static void rtw_coex_set_tdma(struct rtw_dev *rtwdev, u8 byte1, u8 byte2,
- 	struct rtw_coex_dm *coex_dm = &coex->dm;
- 	struct rtw_chip_info *chip = rtwdev->chip;
- 	u8 ps_type = COEX_PS_WIFI_NATIVE;
--	bool ap_enable = false;
--
--	if (ap_enable && (byte1 & BIT(4) && !(byte1 & BIT(5)))) {
--		byte1 &= ~BIT(4);
--		byte1 |= BIT(5);
--
--		byte5 |= BIT(5);
--		byte5 &= ~BIT(6);
- 
--		ps_type = COEX_PS_WIFI_NATIVE;
--		rtw_coex_power_save_state(rtwdev, ps_type, 0x0, 0x0);
--	} else if (byte1 & BIT(4) && !(byte1 & BIT(5))) {
-+	if (byte1 & BIT(4) && !(byte1 & BIT(5))) {
- 		if (chip->pstdma_type == COEX_PSTDMA_FORCE_LPSOFF)
- 			ps_type = COEX_PS_LPS_OFF;
- 		else
--- 
-2.20.0
-
+> BUG: sleeping function called from invalid context at net/mac80211/sta_info.c:1962
+> in_atomic(): 0, irqs_disabled(): 0, non_block: 0, pid: 124, name: kworker/u4:3
+> 4 locks held by kworker/u4:3/124:
+>  #0: ffff888035f48938 ((wq_completion)phy4){+.+.}-{0:0}, at: arch_atomic64_set arch/x86/include/asm/atomic64_64.h:34 [inline]
+>  #0: ffff888035f48938 ((wq_completion)phy4){+.+.}-{0:0}, at: atomic64_set include/asm-generic/atomic-instrumented.h:856 [inline]
+>  #0: ffff888035f48938 ((wq_completion)phy4){+.+.}-{0:0}, at: atomic_long_set include/asm-generic/atomic-long.h:41 [inline]
+>  #0: ffff888035f48938 ((wq_completion)phy4){+.+.}-{0:0}, at: set_work_data kernel/workqueue.c:616 [inline]
+>  #0: ffff888035f48938 ((wq_completion)phy4){+.+.}-{0:0}, at: set_work_pool_and_clear_pending kernel/workqueue.c:643 [inline]
+>  #0: ffff888035f48938 ((wq_completion)phy4){+.+.}-{0:0}, at: process_one_work+0x821/0x15a0 kernel/workqueue.c:2243
+>  #1: ffffc9000132fda8 ((work_completion)(&sdata->work)){+.+.}-{0:0}, at: process_one_work+0x854/0x15a0 kernel/workqueue.c:2247
+>  #2: ffff88801ab98d00 (&wdev->mtx){+.+.}-{3:3}, at: sdata_lock net/mac80211/ieee80211_i.h:1021 [inline]
+>  #2: ffff88801ab98d00 (&wdev->mtx){+.+.}-{3:3}, at: ieee80211_ibss_work+0x93/0xe80 net/mac80211/ibss.c:1683
+>  #3: ffffffff8b337160 (rcu_read_lock){....}-{1:2}, at: sta_info_insert_finish net/mac80211/sta_info.c:644 [inline]
+>  #3: ffffffff8b337160 (rcu_read_lock){....}-{1:2}, at: sta_info_insert_rcu+0x680/0x2ba0 net/mac80211/sta_info.c:732
+> Preemption disabled at:
+> [<ffffffff88e63ecf>] __mutex_lock_common kernel/locking/mutex.c:955 [inline]
+> [<ffffffff88e63ecf>] __mutex_lock+0x10f/0x10e0 kernel/locking/mutex.c:1103
+> CPU: 0 PID: 124 Comm: kworker/u4:3 Not tainted 5.10.0-rc2-syzkaller #0
+> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
+> Workqueue: phy4 ieee80211_iface_work
+> Call Trace:
+>  __dump_stack lib/dump_stack.c:77 [inline]
+>  dump_stack+0x107/0x163 lib/dump_stack.c:118
+>  ___might_sleep.cold+0x1e8/0x22e kernel/sched/core.c:7298
+>  sta_info_move_state+0x32/0x8d0 net/mac80211/sta_info.c:1962
+>  sta_info_free+0x65/0x3b0 net/mac80211/sta_info.c:274
+>  sta_info_insert_rcu+0x303/0x2ba0 net/mac80211/sta_info.c:738
+>  ieee80211_ibss_finish_sta+0x212/0x390 net/mac80211/ibss.c:592
+>  ieee80211_ibss_work+0x2c7/0xe80 net/mac80211/ibss.c:1700
+>  ieee80211_iface_work+0x82e/0x970 net/mac80211/iface.c:1476
+>  process_one_work+0x933/0x15a0 kernel/workqueue.c:2272
+>  worker_thread+0x64c/0x1120 kernel/workqueue.c:2418
+>  kthread+0x3af/0x4a0 kernel/kthread.c:292
+>  ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:296
+>
+> =============================
+> [ BUG: Invalid wait context ]
+> 5.10.0-rc2-syzkaller #0 Tainted: G        W
+> -----------------------------
+> kworker/u4:3/124 is trying to lock:
+> ffff888035f2a9d0 (&local->chanctx_mtx){+.+.}-{3:3}, at: ieee80211_recalc_min_chandef+0x49/0x140 net/mac80211/util.c:2740
+> other info that might help us debug this:
+> context-{4:4}
+> 4 locks held by kworker/u4:3/124:
+>  #0: ffff888035f48938 ((wq_completion)phy4){+.+.}-{0:0}, at: arch_atomic64_set arch/x86/include/asm/atomic64_64.h:34 [inline]
+>  #0: ffff888035f48938 ((wq_completion)phy4){+.+.}-{0:0}, at: atomic64_set include/asm-generic/atomic-instrumented.h:856 [inline]
+>  #0: ffff888035f48938 ((wq_completion)phy4){+.+.}-{0:0}, at: atomic_long_set include/asm-generic/atomic-long.h:41 [inline]
+>  #0: ffff888035f48938 ((wq_completion)phy4){+.+.}-{0:0}, at: set_work_data kernel/workqueue.c:616 [inline]
+>  #0: ffff888035f48938 ((wq_completion)phy4){+.+.}-{0:0}, at: set_work_pool_and_clear_pending kernel/workqueue.c:643 [inline]
+>  #0: ffff888035f48938 ((wq_completion)phy4){+.+.}-{0:0}, at: process_one_work+0x821/0x15a0 kernel/workqueue.c:2243
+>  #1: ffffc9000132fda8 ((work_completion)(&sdata->work)){+.+.}-{0:0}, at: process_one_work+0x854/0x15a0 kernel/workqueue.c:2247
+>  #2: ffff88801ab98d00 (&wdev->mtx){+.+.}-{3:3}, at: sdata_lock net/mac80211/ieee80211_i.h:1021 [inline]
+>  #2: ffff88801ab98d00 (&wdev->mtx){+.+.}-{3:3}, at: ieee80211_ibss_work+0x93/0xe80 net/mac80211/ibss.c:1683
+>  #3: ffffffff8b337160 (rcu_read_lock){....}-{1:2}, at: sta_info_insert_finish net/mac80211/sta_info.c:644 [inline]
+>  #3: ffffffff8b337160 (rcu_read_lock){....}-{1:2}, at: sta_info_insert_rcu+0x680/0x2ba0 net/mac80211/sta_info.c:732
+> stack backtrace:
+> CPU: 0 PID: 124 Comm: kworker/u4:3 Tainted: G        W         5.10.0-rc2-syzkaller #0
+> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
+> Workqueue: phy4 ieee80211_iface_work
+> Call Trace:
+>  __dump_stack lib/dump_stack.c:77 [inline]
+>  dump_stack+0x107/0x163 lib/dump_stack.c:118
+>  print_lock_invalid_wait_context kernel/locking/lockdep.c:4483 [inline]
+>  check_wait_context kernel/locking/lockdep.c:4544 [inline]
+>  __lock_acquire.cold+0x310/0x3a2 kernel/locking/lockdep.c:4781
+>  lock_acquire kernel/locking/lockdep.c:5436 [inline]
+>  lock_acquire+0x2a3/0x8c0 kernel/locking/lockdep.c:5401
+>  __mutex_lock_common kernel/locking/mutex.c:956 [inline]
+>  __mutex_lock+0x134/0x10e0 kernel/locking/mutex.c:1103
+>  ieee80211_recalc_min_chandef+0x49/0x140 net/mac80211/util.c:2740
+>  sta_info_move_state+0x3cf/0x8d0 net/mac80211/sta_info.c:2019
+>  sta_info_free+0x65/0x3b0 net/mac80211/sta_info.c:274
+>  sta_info_insert_rcu+0x303/0x2ba0 net/mac80211/sta_info.c:738
+>  ieee80211_ibss_finish_sta+0x212/0x390 net/mac80211/ibss.c:592
+>  ieee80211_ibss_work+0x2c7/0xe80 net/mac80211/ibss.c:1700
+>  ieee80211_iface_work+0x82e/0x970 net/mac80211/iface.c:1476
+>  process_one_work+0x933/0x15a0 kernel/workqueue.c:2272
+>  worker_thread+0x64c/0x1120 kernel/workqueue.c:2418
+>  kthread+0x3af/0x4a0 kernel/kthread.c:292
+>  ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:296
+>
+>
+> ---
+> This report is generated by a bot. It may contain errors.
+> See https://goo.gl/tpsmEJ for more information about syzbot.
+> syzbot engineers can be reached at syzkaller@googlegroups.com.
+>
+> syzbot will keep track of this issue. See:
+> https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+>
+> --
+> You received this message because you are subscribed to the Google Groups "syzkaller-bugs" group.
+> To unsubscribe from this group and stop receiving emails from it, send an email to syzkaller-bugs+unsubscribe@googlegroups.com.
+> To view this discussion on the web visit https://groups.google.com/d/msgid/syzkaller-bugs/00000000000081bcd205b40d1f44%40google.com.
