@@ -2,249 +2,280 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D249D2B64F0
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Nov 2020 14:51:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4CC002B6910
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Nov 2020 16:52:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387421AbgKQNu7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 17 Nov 2020 08:50:59 -0500
-Received: from mail.kernel.org ([198.145.29.99]:34200 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731050AbgKQNu6 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 17 Nov 2020 08:50:58 -0500
-Received: from embeddedor (187-162-31-110.static.axtel.net [187.162.31.110])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D4D4C24199;
-        Tue, 17 Nov 2020 13:50:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1605621057;
-        bh=C+5bG4KX3/fZGLs0+wIdBpnRG2mZUL+RUp21th58uXs=;
-        h=Date:From:To:Cc:Subject:From;
-        b=WUGfnv6OkDCxe5QIl45uawBGqaWIoCU7WWypvi4DsMvMH1rVJeP3kh7wtD3I2kS1m
-         R+c+E0g61uvM94jeXzXvbH0r0mWRS6kBYEhjQ7laJZV2w0riwil0VcT1ba3bafklcV
-         zWwB9/2AWoXgWqsSus+WNPyl/gKgJn7oOsA27Yow=
-Date:   Tue, 17 Nov 2020 07:50:53 -0600
-From:   "Gustavo A. R. Silva" <gustavoars@kernel.org>
-To:     Johannes Berg <johannes.berg@intel.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Intel Linux Wireless <linuxwifi@intel.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        linux-hardening@vger.kernel.org
-Subject: [PATCH][next] iwlwifi: mvm: Fix fall-through warnings for Clang
-Message-ID: <20201117135053.GA13248@embeddedor>
+        id S1726584AbgKQPtt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 17 Nov 2020 10:49:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54146 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725767AbgKQPtt (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 17 Nov 2020 10:49:49 -0500
+Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37C03C0613CF
+        for <linux-wireless@vger.kernel.org>; Tue, 17 Nov 2020 07:49:47 -0800 (PST)
+Received: by mail-ej1-x62e.google.com with SMTP id f20so30097039ejz.4
+        for <linux-wireless@vger.kernel.org>; Tue, 17 Nov 2020 07:49:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=technolu-st.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=7DPLyMD10PeYkijOwRrJDtclP3Mop2qKv+wAnTfFZv0=;
+        b=wMmatarnIxEyWFb8Hgh7f0sucLVfOpndV5Mi1JqTnM8D4jHW7lpBNfaXANlCTsckey
+         WJMyIxX1aN+EFcO0Pm057R4ri+b2HXnjC4EX81fF8nvQwD9xyGEd3DURC/z1nA+C5jng
+         11rGVdmzbBYb9dsj14yy91/lOrbuDQDohRIM8L7eHEXKolM/L7JU/Ppfg0RksKOSmbNU
+         hM9RryiXno+nfbXsJcuX3S6iTbmBteGjC5/QkLHfEZT43INevs6jzBZrLaNrYrGJ51mN
+         XTZIrdVFSLbNEmhBAeYqzRli/0HUm9sNUmcuUiuvPkTD1fZMav48do19D8KsMrfb5PQ0
+         ve/g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=7DPLyMD10PeYkijOwRrJDtclP3Mop2qKv+wAnTfFZv0=;
+        b=nCy6GpKPEtpwdeKkF82XSaErUPBp3BQUd7FIYi2rp3L5V+3a0i/dDjRL1bFPeiooPx
+         54U1N3il6ObF/TCSkprtZ5spAnuceDEKXVq+hQcDx+wIHa65duRZyUPHVXulRxoAcxdx
+         EpvintJFYilnKY6vzkexiPATomWAeExVu0PtDDm/Jpa5V+wgpoTiJCM37zwoNr9F2im+
+         DNm2czc7/C+VzGGHmAyXagrlRZxnY2JqHUfTccsyzqBCFcNO2k6xGtdPhtkI6FL0KNM1
+         JK1qIB4/3YZhB2dHYnPm4NsiMRguibkQubu9+PpZ/KWPHkqOAfFGJ7wgjSKU6dkt0buU
+         htBQ==
+X-Gm-Message-State: AOAM530XHvq6it6ZveGZivMJA+witWUixoTE6L8fsnylf+ZEyF/yTjvi
+        4tnTXcDw2xqjbWOZ+jrb1DUDHzuP68VqP3nVHR62iA==
+X-Google-Smtp-Source: ABdhPJzxBKBkfRqBPj4jMIyy0nvFm9wGqdlxU84Fw6g3q4w52ESWX1KjbGT+uaXMtKJgygkgPzIlhxKdQ50jQLvAMjY=
+X-Received: by 2002:a17:906:c41:: with SMTP id t1mr19872996ejf.19.1605628185669;
+ Tue, 17 Nov 2020 07:49:45 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.9.4 (2018-02-28)
+References: <20201103160838.GA246433@bjorn-Precision-5520> <874km61732.fsf@nanos.tec.linutronix.de>
+ <fa26ac8b-ed48-7ea3-c21b-b133532716b8@posteo.de> <87mtzxkus5.fsf@nanos.tec.linutronix.de>
+ <87wnz0hr9k.fsf@codeaurora.org> <87ft5hehlb.fsf@codeaurora.org>
+ <6b60c8f1-ec37-d601-92c2-97a485b73431@posteo.de> <87v9ec9rk3.fsf@codeaurora.org>
+ <87imab4slq.fsf@codeaurora.org> <b2129a70db2b36c5015b4143a839f47dfc3153af.camel@seibold.net>
+ <CAHUdJJVp5r55NtE+BNz5XGtnaks6mDKQBFodz63DdULBVhD0Lg@mail.gmail.com>
+ <CAHUdJJXRDKs9NRugUAFgNr51DJ=OcssuiV8ST5CaV1CKiNTFfA@mail.gmail.com>
+ <0b58872b4f27dbf5aad2a39f5ec4a066e080d806.camel@seibold.net>
+ <875z6b3v22.fsf@codeaurora.org> <CAHUdJJVK1vH2_9YkCQ99n5mak3oGN09422gG0APkWwcy=ZDQ-Q@mail.gmail.com>
+ <87pn4j2bna.fsf@codeaurora.org> <CAHUdJJXpfkNikreQ_JdpKDkwjEGN0oY8PyYT=aWsw1armz83Kw@mail.gmail.com>
+ <e4ba4457-bd08-42fe-ade7-32059367701a@posteo.de> <CAHUdJJVoi2_BnubtADpdLQoe1xAuHCvkPF-RMX=dnY3nXoTm5g@mail.gmail.com>
+In-Reply-To: <CAHUdJJVoi2_BnubtADpdLQoe1xAuHCvkPF-RMX=dnY3nXoTm5g@mail.gmail.com>
+From:   wi nk <wink@technolu.st>
+Date:   Tue, 17 Nov 2020 16:49:34 +0100
+Message-ID: <CAHUdJJXy4FvmTeO648QMst9-bm1asqjZz=ktkps3ug4Hw=UweQ@mail.gmail.com>
+Subject: Re: pci_alloc_irq_vectors fails ENOSPC for XPS 13 9310
+To:     Thomas Krause <thomaskrause@posteo.de>
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        Govind Singh <govinds@codeaurora.org>,
+        linux-pci@vger.kernel.org, Stefani Seibold <stefani@seibold.net>,
+        linux-wireless@vger.kernel.org, Devin Bayer <dev@doubly.so>,
+        Christoph Hellwig <hch@lst.de>,
+        Bjorn Helgaas <helgaas@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        ath11k@lists.infradead.org, David Woodhouse <dwmw@amazon.co.uk>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-In preparation to enable -Wimplicit-fallthrough for Clang, fix multiple
-warnings by explicitly using the fallthrough pseudo-keyword as a
-replacement for a number of "fall through" markings.
+On Sun, Nov 15, 2020 at 8:55 PM wi nk <wink@technolu.st> wrote:
+>
+> On Sun, Nov 15, 2020 at 2:30 PM Thomas Krause <thomaskrause@posteo.de> wrote:
+> >
+> >
+> > Am 12.11.20 um 16:44 schrieb wi nk:
+> > > On Thu, Nov 12, 2020 at 10:00 AM Kalle Valo <kvalo@codeaurora.org> wrote:
+> > >> wi nk <wink@technolu.st> writes:
+> > >>
+> > >>> On Thu, Nov 12, 2020 at 8:15 AM Kalle Valo <kvalo@codeaurora.org> wrote:
+> > >>>> Stefani Seibold <stefani@seibold.net> writes:
+> > >>>>
+> > >>>>> Am Donnerstag, den 12.11.2020, 02:10 +0100 schrieb wi nk:
+> > >>>>>> I've yet to see any instability after 45 minutes of exercising it, I
+> > >>>>>> do see a couple of messages that came out of the driver:
+> > >>>>>>
+> > >>>>>> [    8.963389] ath11k_pci 0000:55:00.0: Unknown eventid: 0x16005
+> > >>>>>> [   11.342317] ath11k_pci 0000:55:00.0: Unknown eventid: 0x1d00a
+> > >>>>>>
+> > >>>>>> then when it associates:
+> > >>>>>>
+> > >>>>>> [   16.718895] wlp85s0: send auth to ec:08:6b:27:01:ea (try 1/3)
+> > >>>>>> [   16.722636] wlp85s0: authenticated
+> > >>>>>> [   16.724150] wlp85s0: associate with ec:08:6b:27:01:ea (try 1/3)
+> > >>>>>> [   16.726486] wlp85s0: RX AssocResp from ec:08:6b:27:01:ea
+> > >>>>>> (capab=0x411 status=0 aid=8)
+> > >>>>>> [   16.738443] wlp85s0: associated
+> > >>>>>> [   16.764966] IPv6: ADDRCONF(NETDEV_CHANGE): wlp85s0: link becomes
+> > >>>>>> ready
+> > >>>>>>
+> > >>>>>> The adapter is achieving around 500 mbps on my gigabit connection, my
+> > >>>>>> 2018 mbp sees around 650, so it's doing pretty well so far.
+> > >>>>>>
+> > >>>>>> Stefani - when you applied the patch that Kalle shared, which branch
+> > >>>>>> did you apply it to?  I applied it to ath11k-qca6390-bringup and when
+> > >>>>>> I revert 7fef431be9c9 there is a small merge conflict I needed to
+> > >>>>>> resolve.  I wonder if either the starting branch, or your chosen
+> > >>>>>> resolution are related to the instability you see (or I'm just lucky
+> > >>>>>> so far! :)).
+> > >>>>>>
+> > >>>>> I used the vanilla kernel tree
+> > >>>>> https://git.kernel.org/torvalds/t/linux-5.10-rc2.tar.gz. On top of this
+> > >>>>> i applied the
+> > >>>>>
+> > >>>>> RFT-ath11k-pci-support-platforms-with-one-MSI-vector.patch
+> > >>>>>
+> > >>>>> and reverted the patch 7fef431be9c9
+> > >>>> I did also my testing on v5.10-rc2 and I recommend to use that as the
+> > >>>> baseline when debuggin these ath11k problems. It helps to compare the
+> > >>>> results if everyone have the same baseline.
+> > >>>>
+> > >>>> --
+> > >>>> https://patchwork.kernel.org/project/linux-wireless/list/
+> > >>>>
+> > >>>> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+> > >>> Absolutely, I'll rebuild to 5.10 later today and apply the same series
+> > >>> of patches and report back.
+> > >> Great, thanks.
+> > >>
+> > >>> I'll also test out the patch on both versions from Carl to fix
+> > >>> resuming. It stands to reason that we may be seeing another regression
+> > >>> between Stefani (5.10) and myself (5.9 bringup branch) as I don't see
+> > >>> any disconnections or instability once the interface is online.
+> > >> Yeah, there is something strange happening between v5.9 and v5.10 we
+> > >> have not yet figured out. Most likely it has something to do with memory
+> > >> allocations and DMA transfers failing, but no clear understanding yet.
+> > >>
+> > >> But to keep things simple let's only discuss the MSI problem on this
+> > >> thread, and discuss the timeouts in the another thread:
+> > >>
+> > >> http://lists.infradead.org/pipermail/ath11k/2020-November/000641.html
+> > >>
+> > >> I'll include you and other reporters to that thread.
+> > >>
+> > >> --
+> > >> https://patchwork.kernel.org/project/linux-wireless/list/
+> > >>
+> > >> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+> > > Ok, I've tried a clean checkout of 5.10-rc2 with the one MSI patch
+> > > applied and 7fef431be9c9 reverted.  I can't get my machine to  boot
+> > > into anything usable with that configuration.  I'm running ubuntu so
+> > > its starting right into X and sometime between showing the available
+> > > users and me clicking the icon to login the machine freezes.  I can
+> > > see in the system tray that the wifi adapter is being activated and
+> > > appears to have associated with an AP, I just can't do much beyond
+> > > that as the keyboard backlight wakes up, but the caps lock key doesn't
+> > > work.  I see similar behavior with the 5.9 configuration, but after a
+> > > reboot or two I win whatever race is occuring.  With 5.10, I tried
+> > > maybe 10-15 times with 0 success.
+> >
+> > I can confirm this behavior on my configuration. I managed to login once
+> > and select the Wifi and connect to it. It seemed curiously enough be
+> > stable long enough to enter the Wifi passphrase. After the connection
+> > was established, the system hang and on each attempt to reboot into the
+> > graphical system it would freeze at some point (sometimes even before
+> > showing the login screen).
+> >
+> > Kernel was both based on 5.10-rc2 and 5.10-rc3 (I did see the same
+> > behavior) with the patch applied, 7fef431be9c9 reverted and firmware
+> > downloaded and copied to /lib/firmware/ath11k/QCA6390/hw2.0/.
+> >
+> >
+>
+> I did a bit more digging to see if I could find any new information,
+> I'm not sure I did but here's what I did / found.  I spent the time to
+> get a kdump kernel running and enabled, I was able to SysRq-C (both
+> via keyboard and echo c > /proc/sysrq-trigger) and generate a crash
+> dump.  Actually viewing them at the moment will require reverting a
+> couple of patches to printk to fix the file for the crash utility
+> (https://github.com/crash-utility/crash/issues/67), but right now
+> that's not super important since the mechanism isn't being triggered.
+> As reported here and by Mitchell, the adapter will work occasionally,
+> but more often it will hang the machine (I too tried 5.10-rc3 with no
+> noticable differences).  Whatever is causing the system to hang isn't
+> triggering the kdump kernel to take over and dump the vmcore.  I've
+> set watchdog=1 , nmi_watchdog=1, hung_task_panic=1, softlockup_panic=1
+> trying to convince the kernel to dump it's state during this.  I've
+> not been able to make it write a crash, it just sits 'hung'.  One
+> interesting observation that may be related, is that if the lockup
+> occurs during my login, I can actually see the system grind to a halt
+> over the course of a number of frames (the rendering of the login
+> animations starts to stutter/get really slow, then after a few frames
+> everything is frozen).  If something were spin locking/ed, I'd expect
+> the soft lockup panic to find it, but I don't know these mechanisms
+> well.
+>
+> The only consistent behavior that I managed to create is that if the
+> wifi adapter / machine are in a 'working' state (ie: I can browse the
+> internet, etc) and I issue sysrq-c to crash the kernel and then let
+> the crash dump write and reboot the machine, once booted the adapter
+> is no longer seen by the kernel, and there are zero messages in dmesg
+> that match "ath11k".  The driver shows up in lsmod , but it reports
+> zero messages and it's like the adapter is completely invisible.  A
+> power off and back on of the machine will re-enter it into the
+> freezing/wifi working lottery.
 
-Notice that Clang doesn't recognize "fall through" comments as
-implicit fall-through.
+Good evening all!  Just wanted to follow up as I think I've started to
+uncover some of what's happening with the XPS and this driver.  So
+since I can't get the kdump kernel to dump anything for me, I took a
+bit more of a naive approach.  I blacklisted the modules (ath11k /
+ath11k_pci) from modprobe so I could at least control when it was
+loaded.  I managed to capture a series of crashes (in phone pics, but
+I'll transcribe the relevant bits here) that seem to indicate some
+kind of runaway / spin locked behavior.  In all but one case[*], both
+the crash and the eventual working state, the driver completely
+initialized successfully with messaging like this:
 
-Link: https://github.com/KSPP/linux/issues/115
-Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
----
- drivers/net/wireless/intel/iwlwifi/mvm/led.c      |  2 +-
- drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c |  2 +-
- drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c |  2 +-
- drivers/net/wireless/intel/iwlwifi/mvm/phy-ctxt.c |  2 +-
- drivers/net/wireless/intel/iwlwifi/mvm/rx.c       |  2 +-
- drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c     |  8 ++++----
- drivers/net/wireless/intel/iwlwifi/mvm/scan.c     |  2 +-
- drivers/net/wireless/intel/iwlwifi/mvm/sta.c      | 10 +++++-----
- drivers/net/wireless/intel/iwlwifi/mvm/tx.c       |  4 ++--
- 9 files changed, 17 insertions(+), 17 deletions(-)
+[   23.209335] ath11k_pci 0000:55:00.0: WARNING: ath11k PCI support is
+experimental!
+[   23.209404] ath11k_pci 0000:55:00.0: BAR 0: assigned [mem
+0x8e300000-0x8e3fffff 64bit]
+[   23.209421] ath11k_pci 0000:55:00.0: enabling device (0000 -> 0002)
+[   23.209502] ath11k_pci 0000:55:00.0: MSI vectors: 1
+[   23.454227] ath11k_pci 0000:55:00.0: Respond mem req failed,
+result: 1, err: 0
+[   23.454233] ath11k_pci 0000:55:00.0: qmi failed to respond fw mem req:-22
+[   23.455810] ath11k_pci 0000:55:00.0: req mem_seg[0] 0x27d00000 524288 1
+[   23.455814] ath11k_pci 0000:55:00.0: req mem_seg[1] 0x27d80000 524288 1
+[   23.455816] ath11k_pci 0000:55:00.0: req mem_seg[2] 0x27e00000 524288 1
+[   23.455817] ath11k_pci 0000:55:00.0: req mem_seg[3] 0x27e80000 294912 1
+[   23.455819] ath11k_pci 0000:55:00.0: req mem_seg[4] 0x27f00000 524288 1
+[   23.455820] ath11k_pci 0000:55:00.0: req mem_seg[5] 0x27f80000 524288 1
+[   23.455822] ath11k_pci 0000:55:00.0: req mem_seg[6] 0x27800000 458752 1
+[   23.455824] ath11k_pci 0000:55:00.0: req mem_seg[7] 0x27cc0000 131072 1
+[   23.455825] ath11k_pci 0000:55:00.0: req mem_seg[8] 0x27880000 524288 4
+[   23.455827] ath11k_pci 0000:55:00.0: req mem_seg[9] 0x27900000 360448 4
+[   23.455829] ath11k_pci 0000:55:00.0: req mem_seg[10] 0x27ca4000 16384 1
+[   23.466226] ath11k_pci 0000:55:00.0: chip_id 0x0 chip_family 0xb
+board_id 0xff soc_id 0xffffffff
+[   23.466230] ath11k_pci 0000:55:00.0: fw_version 0x101c06cc
+fw_build_timestamp 2020-06-24 19:50 fw_build_id
+[   23.677675] ath11k_pci 0000:55:00.0 wlp85s0: renamed from wlan0
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/led.c b/drivers/net/wireless/intel/iwlwifi/mvm/led.c
-index 72c4b2b8399d..6c910d681a92 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/led.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/led.c
-@@ -115,7 +115,7 @@ int iwl_mvm_leds_init(struct iwl_mvm *mvm)
- 	switch (mode) {
- 	case IWL_LED_BLINK:
- 		IWL_ERR(mvm, "Blink led mode not supported, used default\n");
--		/* fall through */
-+		fallthrough;
- 	case IWL_LED_DEFAULT:
- 	case IWL_LED_RF_STATE:
- 		mode = IWL_LED_RF_STATE;
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
-index 8698ca4d30de..5fa76ed09c37 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
-@@ -287,7 +287,7 @@ int iwl_mvm_mac_ctxt_init(struct iwl_mvm *mvm, struct ieee80211_vif *vif)
- 	case NL80211_IFTYPE_STATION:
- 		if (!vif->p2p)
- 			break;
--		/* fall through */
-+		fallthrough;
- 	default:
- 		__clear_bit(0, data.available_mac_ids);
- 	}
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-index b627e7da7ac9..77a14a2fc281 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-@@ -4102,7 +4102,7 @@ static int __iwl_mvm_assign_vif_chanctx(struct iwl_mvm *mvm,
- 			mvmvif->ap_ibss_active = true;
- 			break;
- 		}
--		/* fall through */
-+		fallthrough;
- 	case NL80211_IFTYPE_ADHOC:
- 		/*
- 		 * The AP binding flow is handled as part of the start_ap flow
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/phy-ctxt.c b/drivers/net/wireless/intel/iwlwifi/mvm/phy-ctxt.c
-index bf2fc44dcb8d..5bbcc8f082c2 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/phy-ctxt.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/phy-ctxt.c
-@@ -109,7 +109,7 @@ u8 iwl_mvm_get_ctrl_pos(struct cfg80211_chan_def *chandef)
- 		return PHY_VHT_CTRL_POS_4_ABOVE;
- 	default:
- 		WARN(1, "Invalid channel definition");
--		/* fall through */
-+		fallthrough;
- 	case 0:
- 		/*
- 		 * The FW is expected to check the control channel position only
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rx.c b/drivers/net/wireless/intel/iwlwifi/mvm/rx.c
-index 0059c83c2783..15ee8d2feaf7 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/rx.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/rx.c
-@@ -226,7 +226,7 @@ static u32 iwl_mvm_set_mac80211_rx_flag(struct iwl_mvm *mvm,
- 		    !(rx_pkt_status & RX_MPDU_RES_STATUS_TTAK_OK))
- 			return 0;
- 		*crypt_len = IEEE80211_TKIP_IV_LEN;
--		/* fall through */
-+		fallthrough;
- 
- 	case RX_MPDU_RES_STATUS_SEC_WEP_ENC:
- 		if (!(rx_pkt_status & RX_MPDU_RES_STATUS_ICV_OK))
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
-index 838734fec502..05edc02a0063 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
-@@ -379,7 +379,7 @@ static int iwl_mvm_rx_crypto(struct iwl_mvm *mvm, struct ieee80211_hdr *hdr,
- 			stats->flag |= RX_FLAG_MMIC_ERROR;
- 
- 		*crypt_len = IEEE80211_TKIP_IV_LEN;
--		/* fall through */
-+		fallthrough;
- 	case IWL_RX_MPDU_STATUS_SEC_WEP:
- 		if (!(status & IWL_RX_MPDU_STATUS_ICV_OK))
- 			return -1;
-@@ -1314,7 +1314,7 @@ static void iwl_mvm_decode_he_phy_data(struct iwl_mvm *mvm,
- 		he->data4 |= le16_encode_bits(le32_get_bits(phy_data->d2,
- 							    IWL_RX_PHY_DATA2_HE_TB_EXT_SPTL_REUSE4),
- 					      IEEE80211_RADIOTAP_HE_DATA4_TB_SPTL_REUSE4);
--		/* fall through */
-+		fallthrough;
- 	case IWL_RX_PHY_INFO_TYPE_HE_SU:
- 	case IWL_RX_PHY_INFO_TYPE_HE_MU:
- 	case IWL_RX_PHY_INFO_TYPE_HE_MU_EXT:
-@@ -1387,7 +1387,7 @@ static void iwl_mvm_decode_he_phy_data(struct iwl_mvm *mvm,
- 						       IWL_RX_PHY_DATA4_HE_MU_EXT_PREAMBLE_PUNC_TYPE_MASK),
- 					 IEEE80211_RADIOTAP_HE_MU_FLAGS2_PUNC_FROM_SIG_A_BW);
- 		iwl_mvm_decode_he_mu_ext(mvm, phy_data, rate_n_flags, he_mu);
--		/* fall through */
-+		fallthrough;
- 	case IWL_RX_PHY_INFO_TYPE_HE_MU:
- 		he_mu->flags2 |=
- 			le16_encode_bits(le32_get_bits(phy_data->d1,
-@@ -1397,7 +1397,7 @@ static void iwl_mvm_decode_he_phy_data(struct iwl_mvm *mvm,
- 			le16_encode_bits(le32_get_bits(phy_data->d1,
- 						       IWL_RX_PHY_DATA1_HE_MU_SIGB_COMPRESSION),
- 					 IEEE80211_RADIOTAP_HE_MU_FLAGS2_SIG_B_COMP);
--		/* fall through */
-+		fallthrough;
- 	case IWL_RX_PHY_INFO_TYPE_HE_TB:
- 	case IWL_RX_PHY_INFO_TYPE_HE_TB_EXT:
- 		iwl_mvm_decode_he_phy_ru_alloc(phy_data, rate_n_flags,
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-index 875281cf7fc0..4b21f27bd19d 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-@@ -2148,7 +2148,7 @@ static int iwl_mvm_check_running_scans(struct iwl_mvm *mvm, int type)
- 		/* Something is wrong if no scan was running but we
- 		 * ran out of scans.
- 		 */
--		/* fall through */
-+		fallthrough;
- 	default:
- 		WARN_ON(1);
- 		break;
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/sta.c b/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
-index 799d8219463c..d2f2a95a34fe 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
-@@ -144,13 +144,13 @@ int iwl_mvm_sta_send_to_fw(struct iwl_mvm *mvm, struct ieee80211_sta *sta,
- 	switch (sta->bandwidth) {
- 	case IEEE80211_STA_RX_BW_160:
- 		add_sta_cmd.station_flags |= cpu_to_le32(STA_FLG_FAT_EN_160MHZ);
--		/* fall through */
-+		fallthrough;
- 	case IEEE80211_STA_RX_BW_80:
- 		add_sta_cmd.station_flags |= cpu_to_le32(STA_FLG_FAT_EN_80MHZ);
--		/* fall through */
-+		fallthrough;
- 	case IEEE80211_STA_RX_BW_40:
- 		add_sta_cmd.station_flags |= cpu_to_le32(STA_FLG_FAT_EN_40MHZ);
--		/* fall through */
-+		fallthrough;
- 	case IEEE80211_STA_RX_BW_20:
- 		if (sta->ht_cap.ht_supported)
- 			add_sta_cmd.station_flags |=
-@@ -3286,14 +3286,14 @@ static int iwl_mvm_send_sta_key(struct iwl_mvm *mvm,
- 		break;
- 	case WLAN_CIPHER_SUITE_WEP104:
- 		key_flags |= cpu_to_le16(STA_KEY_FLG_WEP_13BYTES);
--		/* fall through */
-+		fallthrough;
- 	case WLAN_CIPHER_SUITE_WEP40:
- 		key_flags |= cpu_to_le16(STA_KEY_FLG_WEP);
- 		memcpy(u.cmd.common.key + 3, key->key, key->keylen);
- 		break;
- 	case WLAN_CIPHER_SUITE_GCMP_256:
- 		key_flags |= cpu_to_le16(STA_KEY_FLG_KEY_32BYTES);
--		/* fall through */
-+		fallthrough;
- 	case WLAN_CIPHER_SUITE_GCMP:
- 		key_flags |= cpu_to_le16(STA_KEY_FLG_GCMP);
- 		memcpy(u.cmd.common.key, key->key, key->keylen);
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-index fe1c538cd718..761e9e25c34b 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-@@ -459,7 +459,7 @@ static void iwl_mvm_set_tx_cmd_crypto(struct iwl_mvm *mvm,
- 
- 	case WLAN_CIPHER_SUITE_WEP104:
- 		tx_cmd->sec_ctl |= TX_CMD_SEC_KEY128;
--		/* fall through */
-+		fallthrough;
- 	case WLAN_CIPHER_SUITE_WEP40:
- 		tx_cmd->sec_ctl |= TX_CMD_SEC_WEP |
- 			((keyconf->keyidx << TX_CMD_SEC_WEP_KEY_IDX_POS) &
-@@ -470,7 +470,7 @@ static void iwl_mvm_set_tx_cmd_crypto(struct iwl_mvm *mvm,
- 	case WLAN_CIPHER_SUITE_GCMP:
- 	case WLAN_CIPHER_SUITE_GCMP_256:
- 		type = TX_CMD_SEC_GCMP;
--		/* Fall through */
-+		fallthrough;
- 	case WLAN_CIPHER_SUITE_CCMP_256:
- 		/* TODO: Taking the key from the table might introduce a race
- 		 * when PTK rekeying is done, having an old packets with a PN
--- 
-2.27.0
+So up until this point, everything is working without issues.
+Everything seems to spiral out of control a couple of seconds later
+when my system attempts to actually bring up the adapter.  In most of
+the crash states I will see this:
 
+[   31.286725] wlp85s0: send auth to ec:08:6b:27:01:ea (try 1/3)
+[   31.390187] wlp85s0: send auth to ec:08:6b:27:01:ea (try 2/3)
+[   31.391928] wlp85s0: authenticated
+[   31.394196] wlp85s0: associate with ec:08:6b:27:01:ea (try 1/3)
+[   31.396513] wlp85s0: RX AssocResp from ec:08:6b:27:01:ea
+(capab=0x411 status=0 aid=6)
+[   31.407730] wlp85s0: associated
+[   31.434354] IPv6: ADDRCONF(NETDEV_CHANGE): wlp85s0: link becomes ready
+
+And then either somewhere in that pile of messages, or a second or two
+after this my machine will start to stutter as I mentioned before, and
+then it either hangs, or I see this message (I'm truncating the
+timestamp):
+
+[   35.xxxx ] sched: RT throttling activated
+
+After that moment, the machine is unresponsive.  Sorry I can't seem to
+extract this data other than screenshots from my phone at the moment,
+you can see the dmesg output from 6 different hangs here:
+https://github.com/w1nk/ath11k-debug
+
+* - In the case where the driver didn't fully initialize successfully
+and hung; during the initialization right after the "MSI vectors: %d"
+printk, I started seeing these:
+
+[ 77.xxx ] alloc_contig_range: [88d8e0, 88d8e9) PFNs busy
