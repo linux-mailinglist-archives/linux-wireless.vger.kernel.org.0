@@ -2,60 +2,111 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CA3942B6A9D
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Nov 2020 17:47:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 37DD72B6B8D
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Nov 2020 18:18:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727800AbgKQQr0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 17 Nov 2020 11:47:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34902 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727392AbgKQQr0 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 17 Nov 2020 11:47:26 -0500
-Received: from mail-yb1-xb2d.google.com (mail-yb1-xb2d.google.com [IPv6:2607:f8b0:4864:20::b2d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42EB9C0613CF
-        for <linux-wireless@vger.kernel.org>; Tue, 17 Nov 2020 08:47:26 -0800 (PST)
-Received: by mail-yb1-xb2d.google.com with SMTP id g15so19564797ybq.6
-        for <linux-wireless@vger.kernel.org>; Tue, 17 Nov 2020 08:47:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:sender:from:date:message-id:subject:to;
-        bh=PXxwCBJdTG5sNp7kazVZnDyiOFVScUSybkI34T0iWR8=;
-        b=sABk0VOcSdWAEQqorOKo89a83GhkrJk5LsMmElly2adXKTnvYYf/pesnhGwJrgN8uu
-         eAVrhJQ+9I789U6dRrd8wAHmhmwKl6Ob8fh3CygkQ04BgBUorK2ZuLXhgFe1RADdpTzJ
-         /IA4hk79Gn+bd2HhqUObsLywDYmoOV3QjzQeWt3CgHC7SBrf5Zh4kjqDAfc0FJ1b639i
-         ay+v2f5VhO+Za33KUwKmmv7ixB7gdZA24h3pjzJ0rWDy+zsJ3yTy9WpX5dNAwSC9YOlH
-         rnpQyUEZUOAcUCFx0RlgqWKKUDM3X1DwHlfrFdoG3wv2PBeifIvjWKP7hMi16hPLY4R3
-         m14Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
-         :to;
-        bh=PXxwCBJdTG5sNp7kazVZnDyiOFVScUSybkI34T0iWR8=;
-        b=XTyQT6YEvQcGV+SjDfmL6cwNVoMwYPfhor7E41D9atdYmp3wc1TFowpoSO+OblyzAO
-         LfzxODivLxaZGlXZ7dYeYzh6bd/uSgsCMw401liM2gyBxxz4ILnIWafbrUVlN4qXR6Pz
-         ngeNS7P83bAZxDUHOerTNhGUMTaJQ2nokoqyCaA9M/7/o6OAfbSifsjpUS5ORwKTvHcZ
-         9nRc0djALG0L8Vzx1nZdmIYreWzYU30K8HLwFBsVKClcGtFPEEcDW0QivN0MkGhIBgiE
-         2QVoXK2sR80jGdSjvPjBWdxv9zGK0Ca4Y6Y8htX/Z3nqpdqGaI5eMTRr21jYKRIjuTS1
-         z8eA==
-X-Gm-Message-State: AOAM5337REq6YCQLNWaYKDfgUX2LfVirWRu/yzFbz3BtmIUU/qTkz8lO
-        4SSuZ3LXtSXjYTAY4SX/LNSM+EKgvCJ4QIxUUU0=
-X-Google-Smtp-Source: ABdhPJwEWhn7WLDedGvuwPCyUtPK9vyhnZ9iiS53fs3EJ5lDpvl2E9qutDeMoae4B2P2EyeC/dUpN+z4IRfJ+afMH9k=
-X-Received: by 2002:a25:aa63:: with SMTP id s90mr586054ybi.340.1605631645591;
- Tue, 17 Nov 2020 08:47:25 -0800 (PST)
+        id S1727245AbgKQRRr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 17 Nov 2020 12:17:47 -0500
+Received: from m42-4.mailgun.net ([69.72.42.4]:56457 "EHLO m42-4.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727645AbgKQRRq (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 17 Nov 2020 12:17:46 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1605633465; h=Message-ID: References: In-Reply-To: Reply-To:
+ Subject: Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Sender; bh=asJBzxf626itj7z5VEyrbr5Efzoc3mFG5fbDkfP/Rgk=;
+ b=cTaB+AcpM9lgDi6ckkhsFbSspEedIxQfti3tMsQp9G+Z3qxCbSiJu4cTebw8ADZFmg2QH3RN
+ LjWRZx8H4SNA1EWXA1Lo4ZTyasEM7EDW7KfwtUEmeA49MXARcgtoEmTRyyj1D9oXP1hezVeJ
+ JN18pHt8nNudxC0e2lPGoyWsR+I=
+X-Mailgun-Sending-Ip: 69.72.42.4
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n05.prod.us-east-1.postgun.com with SMTP id
+ 5fb405a6135ce186e96f5f71 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 17 Nov 2020 17:17:26
+ GMT
+Sender: bbhatt=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 92FF6C43462; Tue, 17 Nov 2020 17:17:25 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: bbhatt)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id E689EC433C6;
+        Tue, 17 Nov 2020 17:17:24 +0000 (UTC)
 MIME-Version: 1.0
-Sender: celestinfadegno@gmail.com
-Received: by 2002:a05:7110:b002:b029:2b:9d0b:6c70 with HTTP; Tue, 17 Nov 2020
- 08:47:25 -0800 (PST)
-From:   helen clark <clark.helen776@gmail.com>
-Date:   Tue, 17 Nov 2020 16:47:25 +0000
-X-Google-Sender-Auth: 9gKmk2TiuihldULxJUOpQbDYzQI
-Message-ID: <CAJWuMGg2xkb34xQuWkwHmm+AuezbqV5C7EqQgcnHKKqzECNv8g@mail.gmail.com>
-Subject: 
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Tue, 17 Nov 2020 09:17:24 -0800
+From:   Bhaumik Bhatt <bbhatt@codeaurora.org>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     manivannan.sadhasivam@linaro.org, linux-arm-msm@vger.kernel.org,
+        hemantk@codeaurora.org, jhugo@codeaurora.org,
+        linux-kernel@vger.kernel.org, ath11k@lists.infradead.org,
+        linux-wireless@vger.kernel.org, kvalo=codeaurora.org@codeaurora.org
+Subject: Re: [PATCH] ath11k: use MHI provided APIs to allocate and free MHI
+ controller
+Organization: Qualcomm Innovation Center, Inc.
+Reply-To: bbhatt@codeaurora.org
+Mail-Reply-To: bbhatt@codeaurora.org
+In-Reply-To: <87tutozc7h.fsf@codeaurora.org>
+References: <1605571300-4438-1-git-send-email-bbhatt@codeaurora.org>
+ <87tutozc7h.fsf@codeaurora.org>
+Message-ID: <d06eae092fcb0c3319ab793c8063a12d@codeaurora.org>
+X-Sender: bbhatt@codeaurora.org
+User-Agent: Roundcube Webmail/1.3.9
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,I have not hear from you,Do you read my message?
+On 2020-11-16 11:14 PM, Kalle Valo wrote:
+> Bhaumik Bhatt <bbhatt@codeaurora.org> writes:
+> 
+>> Use MHI provided APIs to allocate and free MHI controller to
+>> improve MHI host driver handling.
+> 
+> How does it improve the handling?
+> 
+Main reason is we want to ensure the MHI controller is zero-initialized 
+and
+we want to mandate it as it is better to have it under our control in 
+case
+we also want to allocate and track peripheral data/memory related to the 
+MHI
+controller.
+>> This also fixes a memory leak as the MHI controller was allocated but
+>> never freed.
+>> 
+>> Signed-off-by: Bhaumik Bhatt <bbhatt@codeaurora.org>
+>> ---
+>>  drivers/net/wireless/ath/ath11k/mhi.c | 7 ++++---
+>>  1 file changed, 4 insertions(+), 3 deletions(-)
+> 
+> For ath11k patches please CC ath11k and linux-wireless lists so that
+> patchwork sees it. So you need to resend this.
+> 
+> Is this a new API? I need to understand if there are any dependencies
+> between mhi and ath trees, or if I can apply this directly to my 
+> ath.git
+> tree.
+
+This one should be dependent on the patch [1] which exists on mainline 
+and
+should already part of your tree if you're on any 5.10 RC.
+
+[1] 
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/drivers/bus/mhi?h=v5.10-rc4&id=f42dfbe8f712127031e7b9bc938a1c33cec2ff57
+
+Thanks,
+Bhaumik
+---
+The Qualcomm Innovation Center, Inc. is a member of the Code Aurora 
+Forum,
+a Linux Foundation Collaborative Project
