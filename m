@@ -2,118 +2,62 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AAE762B6979
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Nov 2020 17:11:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 757252B69C1
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Nov 2020 17:18:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726995AbgKQQKD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 17 Nov 2020 11:10:03 -0500
-Received: from mail.kernel.org ([198.145.29.99]:41386 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725767AbgKQQKD (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 17 Nov 2020 11:10:03 -0500
-Received: from embeddedor (187-162-31-110.static.axtel.net [187.162.31.110])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 97F7A2463D;
-        Tue, 17 Nov 2020 16:10:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1605629401;
-        bh=8XfGb6kRV71gq8MgGR6Lzjg87391NOSJbLR+3IFAdF8=;
-        h=Date:From:To:Cc:Subject:From;
-        b=pJGR+0lFEfWLYhgiiVD0W6QgMjylRhNdE2GFxxnGP1OjTUMnxhPTEUDFrvtE271Gt
-         qAZCm14hc/bHQWNEIo7uHq25toqWIq6wPMiPA/EDJGegcJ8uAuPkof8iGxQWFEyVG9
-         YVv/wU62F+99XD25gNDH0lcoVUXj3uLPDeqw++Yw=
-Date:   Tue, 17 Nov 2020 10:09:58 -0600
-From:   "Gustavo A. R. Silva" <gustavoars@kernel.org>
-To:     Amitkumar Karwar <amitkarwar@gmail.com>,
+        id S1727657AbgKQQQF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 17 Nov 2020 11:16:05 -0500
+Received: from smtprelay0190.hostedemail.com ([216.40.44.190]:38320 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1727127AbgKQQQE (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 17 Nov 2020 11:16:04 -0500
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay06.hostedemail.com (Postfix) with ESMTP id B98D51822563C;
+        Tue, 17 Nov 2020 16:16:02 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 50,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:967:973:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1538:1567:1593:1594:1711:1714:1730:1747:1777:1792:2393:2525:2560:2563:2682:2685:2828:2859:2933:2937:2939:2942:2945:2947:2951:2954:3022:3138:3139:3140:3141:3142:3622:3865:3866:3867:3870:3871:3934:3936:3938:3941:3944:3947:3950:3953:3956:3959:4321:4362:5007:6119:7903:9025:10004:10400:10848:11232:11658:11914:12043:12048:12297:12555:12698:12737:12740:12760:12895:13069:13311:13357:13439:13845:14181:14659:14721:21080:21627:30012:30054:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:2,LUA_SUMMARY:none
+X-HE-Tag: rake43_3008f7827332
+X-Filterd-Recvd-Size: 1517
+Received: from XPS-9350.home (unknown [47.151.133.149])
+        (Authenticated sender: joe@perches.com)
+        by omf11.hostedemail.com (Postfix) with ESMTPA;
+        Tue, 17 Nov 2020 16:16:00 +0000 (UTC)
+Message-ID: <b9989e7d048765111826d1df549a364485ea546f.camel@perches.com>
+Subject: Re: [PATCH][next] mwifiex: Fix fall-through warnings for Clang
+From:   Joe Perches <joe@perches.com>
+To:     "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Amitkumar Karwar <amitkarwar@gmail.com>,
         Ganapathi Bhat <ganapathi.bhat@nxp.com>,
         Xinming Hu <huxinming820@gmail.com>,
         Kalle Valo <kvalo@codeaurora.org>,
         "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>
 Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        linux-hardening@vger.kernel.org
-Subject: [PATCH][next] mwifiex: Fix fall-through warnings for Clang
-Message-ID: <20201117160958.GA18807@embeddedor>
+        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
+Date:   Tue, 17 Nov 2020 08:15:59 -0800
+In-Reply-To: <20201117160958.GA18807@embeddedor>
+References: <20201117160958.GA18807@embeddedor>
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.38.1-1 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-In preparation to enable -Wimplicit-fallthrough for Clang, fix multiple
-warnings by explicitly adding multiple break statements instead of
-letting the code fall through to the next case.
+On Tue, 2020-11-17 at 10:09 -0600, Gustavo A. R. Silva wrote:
+> In preparation to enable -Wimplicit-fallthrough for Clang, fix multiple
+> warnings by explicitly adding multiple break statements instead of
+> letting the code fall through to the next case.
 
-Link: https://github.com/KSPP/linux/issues/115
-Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
----
- drivers/net/wireless/marvell/mwifiex/sta_cmdresp.c | 2 ++
- drivers/net/wireless/marvell/mwifiex/sta_event.c   | 1 +
- drivers/net/wireless/marvell/mwifiex/uap_cmd.c     | 1 +
- drivers/net/wireless/marvell/mwifiex/wmm.c         | 1 +
- 4 files changed, 5 insertions(+)
+Thanks Gustavo.
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/sta_cmdresp.c b/drivers/net/wireless/marvell/mwifiex/sta_cmdresp.c
-index 119ccacd1fcc..6b5d35d9e69f 100644
---- a/drivers/net/wireless/marvell/mwifiex/sta_cmdresp.c
-+++ b/drivers/net/wireless/marvell/mwifiex/sta_cmdresp.c
-@@ -201,6 +201,7 @@ static int mwifiex_ret_802_11_snmp_mib(struct mwifiex_private *priv,
- 			mwifiex_dbg(priv->adapter, INFO,
- 				    "info: SNMP_RESP: DTIM period=%u\n",
- 				    ul_temp);
-+			break;
- 		default:
- 			break;
- 		}
-@@ -1393,6 +1394,7 @@ int mwifiex_process_sta_cmdresp(struct mwifiex_private *priv, u16 cmdresp_no,
- 		break;
- 	case HostCmd_CMD_TDLS_OPER:
- 		ret = mwifiex_ret_tdls_oper(priv, resp);
-+		break;
- 	case HostCmd_CMD_MC_POLICY:
- 		break;
- 	case HostCmd_CMD_CHAN_REPORT_REQUEST:
-diff --git a/drivers/net/wireless/marvell/mwifiex/sta_event.c b/drivers/net/wireless/marvell/mwifiex/sta_event.c
-index bc79ca4cb803..68c63268e2e6 100644
---- a/drivers/net/wireless/marvell/mwifiex/sta_event.c
-+++ b/drivers/net/wireless/marvell/mwifiex/sta_event.c
-@@ -99,6 +99,7 @@ static int mwifiex_check_ibss_peer_capabilities(struct mwifiex_private *priv,
- 			case IEEE80211_VHT_CAP_MAX_MPDU_LENGTH_3895:
- 				sta_ptr->max_amsdu =
- 					MWIFIEX_TX_DATA_BUF_SIZE_4K;
-+				break;
- 			default:
- 				break;
- 			}
-diff --git a/drivers/net/wireless/marvell/mwifiex/uap_cmd.c b/drivers/net/wireless/marvell/mwifiex/uap_cmd.c
-index b48a85d791f6..18e89777b784 100644
---- a/drivers/net/wireless/marvell/mwifiex/uap_cmd.c
-+++ b/drivers/net/wireless/marvell/mwifiex/uap_cmd.c
-@@ -108,6 +108,7 @@ int mwifiex_set_secure_params(struct mwifiex_private *priv,
- 			if (params->crypto.wpa_versions & NL80211_WPA_VERSION_2)
- 				bss_config->wpa_cfg.pairwise_cipher_wpa2 |=
- 								CIPHER_AES_CCMP;
-+			break;
- 		default:
- 			break;
- 		}
-diff --git a/drivers/net/wireless/marvell/mwifiex/wmm.c b/drivers/net/wireless/marvell/mwifiex/wmm.c
-index b8f19ca73414..0b375608df7d 100644
---- a/drivers/net/wireless/marvell/mwifiex/wmm.c
-+++ b/drivers/net/wireless/marvell/mwifiex/wmm.c
-@@ -1396,6 +1396,7 @@ mwifiex_send_processed_packet(struct mwifiex_private *priv,
- 		break;
- 	case 0:
- 		mwifiex_write_data_complete(adapter, skb, 0, ret);
-+		break;
- 	default:
- 		break;
- 	}
--- 
-2.27.0
+I think this is better style than the gcc allowed
+undescribed fallthrough to break;
+
+gcc developers disagree though:
+
+https://gcc.gnu.org/bugzilla/show_bug.cgi?id=91432
+
 
