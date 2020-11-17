@@ -2,204 +2,78 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 029062B710F
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Nov 2020 22:46:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8DFEC2B7140
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Nov 2020 23:09:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727453AbgKQVo6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 17 Nov 2020 16:44:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53222 "EHLO
+        id S1728802AbgKQWH6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 17 Nov 2020 17:07:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56862 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725730AbgKQVo6 (ORCPT
+        with ESMTP id S1728161AbgKQWH4 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 17 Nov 2020 16:44:58 -0500
-Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com [IPv6:2607:f8b0:4864:20::543])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DE50C0613CF
-        for <linux-wireless@vger.kernel.org>; Tue, 17 Nov 2020 13:44:58 -0800 (PST)
-Received: by mail-pg1-x543.google.com with SMTP id r18so351927pgu.6
-        for <linux-wireless@vger.kernel.org>; Tue, 17 Nov 2020 13:44:58 -0800 (PST)
+        Tue, 17 Nov 2020 17:07:56 -0500
+Received: from mail-vs1-xe43.google.com (mail-vs1-xe43.google.com [IPv6:2607:f8b0:4864:20::e43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BE76C0617A7
+        for <linux-wireless@vger.kernel.org>; Tue, 17 Nov 2020 14:07:55 -0800 (PST)
+Received: by mail-vs1-xe43.google.com with SMTP id m16so11971834vsl.8
+        for <linux-wireless@vger.kernel.org>; Tue, 17 Nov 2020 14:07:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=CcRxAxp3hd+sjzvNxsLSCjK9z5ct0omQ64BmSp2zT00=;
-        b=N+pcT1N4jSOI+Wh+atlsKNV8BTw0ycqtCBZRQlOTTSXFb1zu6IqgXGWZOvrTyGX3gV
-         Vc6bV8wp9akYxl8BZkZrijR9TWBurTWwplJVJKx8goslCiasBGb86oYEtLUXkqvioqmd
-         St5lsGdtKEKrhJq6bexCd7Amp5bZvdSW7joEU=
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=umEa7JuHmTxIADXNGGqKNEHKb3a04RTaswLCVFJxa4M=;
+        b=tI4mA80+Xd+JUJ/JzwWEysBKnaTvgHAU/hR2i1Wqs9FEiBXbaulhbQxwgONQh5AKZk
+         9JQ4pKVTUHba6Ba5Ytj7wdoKe8NLQYcL6W0bKir9B6Qnbtv0atVqDA0X0VacBHNxQDFc
+         ltG2s+9QQ7PnpRfVrsZPaVcgwAWqw+EiOCi4RmC6O3YM2781T5LdZvaitL/10JhqaZE0
+         OYM9rgwZTQ3VNwb7RqVlGg3K7NXXVUTEDT6iT8glzocYQdWjMcXuKb6lyIn66gVC+zQH
+         wo4wTmGsb1H3lf79eje+pGYOANlnYRA6ObW6mqh/7w8dArzIczPEEvgTCxMWKTYqcYaH
+         0L0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=CcRxAxp3hd+sjzvNxsLSCjK9z5ct0omQ64BmSp2zT00=;
-        b=jphdnw/fchVGL6nO9/E34zDfMwgQdx0A4qjM5lSZIsaj0J3uRb1E1iQx+6ALnW2pj0
-         lt9CAsSPeRpBMoYrq8RdS4MZi+YMdwpeAoo05da1PlDWeJtFEouaCq09Trr6SEu8HD5q
-         8XrEA6kPKf7uOErsACe9+T/rwdkJcETapeBZYx0uwxU3edeUcmoW7LeJxEfsmM8bFtn2
-         FULPiRG2WF3xrWpHJK2Cj7YgVzeQUeL9kI1vGSrTajx6rioHHLo5c3ynst2o9+9sVbYv
-         eLFC5+x++USSZjktB2IpR+DhKsprdfCWuboeZow27HO2c/c52LBPDoghi8F8N5Pzk/MP
-         T3jQ==
-X-Gm-Message-State: AOAM533zs5N7I36WF5U2S4K5G+m1uzYpA6U4jbQ9Ulg6+ABFSrU8Ax9V
-        j1eDdiK0HIW2YFjkHSakmM5hQg==
-X-Google-Smtp-Source: ABdhPJybAfAEQ+Y1g6/aNpopnjRBvwkCUJLJhsULugqGRNhJEduijpRmjkjJ7XlKIFY36xSy06/8kw==
-X-Received: by 2002:aa7:8759:0:b029:18e:f030:e7a9 with SMTP id g25-20020aa787590000b029018ef030e7a9mr1394842pfo.60.1605649498057;
-        Tue, 17 Nov 2020 13:44:58 -0800 (PST)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id a24sm22143511pfl.174.2020.11.17.13.44.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Nov 2020 13:44:57 -0800 (PST)
-Date:   Tue, 17 Nov 2020 13:44:56 -0800
-From:   Kees Cook <keescook@chromium.org>
-To:     Sami Tolvanen <samitolvanen@google.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=umEa7JuHmTxIADXNGGqKNEHKb3a04RTaswLCVFJxa4M=;
+        b=VMV4L8jDCYcw6DHuJDu+fK6a/XeZznIYic/NFiKGy/UyLb+/WFhb6pfxaCA68+Qk09
+         Duy+aUVIozfPPcyNJFD4+uthPmCnsqcCe20Hz51T4O81NzvQn7maMSb5/yjCJ5T2U2fq
+         Wv46PCPnAVhu84qawmv9vFFG+T9LqZ9vvF6kBehhUZJGlTIIqRlvG2hPLhqfhwK8du16
+         JlDS38PK0V61EkMqKAjPN3qsGAclM/Dv/tB0fNVbcumhzfQaTViZLoA4zmO1qJNj5yoK
+         fdNY5C2+b/V4Kn8ECIgJ67hB9noHleMsl/nPDQAmuuPGQA0E45cmle53FkmrJ/kTUCip
+         ewKw==
+X-Gm-Message-State: AOAM532JmtbRidSysM5iGc0UIOAK86pmEqZdcDm7CFySbtLh7HhJSwMT
+        rkeZXTGYCBcRZWkprDsjTfx4C9IeSgzHAzkYcokR7w==
+X-Google-Smtp-Source: ABdhPJy1j7yuSAkeHluT8wnz4btQvLYJWOobaaWW1k9hE9h6H7I1udmnoO2ccRadkiR3syWb8ZwHFHLeDEr/GT1JY7A=
+X-Received: by 2002:a05:6102:22da:: with SMTP id a26mr1462614vsh.13.1605650874215;
+ Tue, 17 Nov 2020 14:07:54 -0800 (PST)
+MIME-Version: 1.0
+References: <20201117205902.405316-1-samitolvanen@google.com> <202011171338.BB25DBD1E6@keescook>
+In-Reply-To: <202011171338.BB25DBD1E6@keescook>
+From:   Sami Tolvanen <samitolvanen@google.com>
+Date:   Tue, 17 Nov 2020 14:07:43 -0800
+Message-ID: <CABCJKudJojTh+is8mdMicczgWiTXw+KwCuepmG5gLVmqPWjnHA@mail.gmail.com>
+Subject: Re: [PATCH net] cfg80211: fix callback type mismatches in wext-compat
+To:     Kees Cook <keescook@chromium.org>
 Cc:     Johannes Berg <johannes@sipsolutions.net>,
         "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Sedat Dilek <sedat.dilek@gmail.com>
-Subject: Re: [PATCH net] cfg80211: fix callback type mismatches in wext-compat
-Message-ID: <202011171338.BB25DBD1E6@keescook>
-References: <20201117205902.405316-1-samitolvanen@google.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201117205902.405316-1-samitolvanen@google.com>
+        LKML <linux-kernel@vger.kernel.org>,
+        Sedat Dilek <sedat.dilek@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Nov 17, 2020 at 12:59:02PM -0800, Sami Tolvanen wrote:
-> Instead of casting callback functions to type iw_handler, which trips
-> indirect call checking with Clang's Control-Flow Integrity (CFI), add
-> stub functions with the correct function type for the callbacks.
+On Tue, Nov 17, 2020 at 1:45 PM Kees Cook <keescook@chromium.org> wrote:
+>
+> On Tue, Nov 17, 2020 at 12:59:02PM -0800, Sami Tolvanen wrote:
+> > Instead of casting callback functions to type iw_handler, which trips
+> > indirect call checking with Clang's Control-Flow Integrity (CFI), add
+> > stub functions with the correct function type for the callbacks.
+>
+> Oh, wow. iw_handler with union iwreq_data look like really nasty hacks.
+> Aren't those just totally bypassing type checking? Where do the
+> callbacks actually happen? I couldn't find them...
 
-Oh, wow. iw_handler with union iwreq_data look like really nasty hacks.
-Aren't those just totally bypassing type checking? Where do the
-callbacks actually happen? I couldn't find them...
+The callbacks to these happen in ioctl_standard_call in wext-core.c.
 
-> 
-> Reported-by: Sedat Dilek <sedat.dilek@gmail.com>
-> Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
-> ---
->  net/wireless/wext-compat.c | 103 +++++++++++++++++++++++++------------
->  1 file changed, 71 insertions(+), 32 deletions(-)
-> 
-> diff --git a/net/wireless/wext-compat.c b/net/wireless/wext-compat.c
-> index 78f2927ead7f..cf54c6e5b397 100644
-> --- a/net/wireless/wext-compat.c
-> +++ b/net/wireless/wext-compat.c
-> @@ -1472,39 +1472,78 @@ static int cfg80211_wext_siwpmksa(struct net_device *dev,
->  	}
->  }
->  
-> +#define DEFINE_WEXT_COMPAT_STUB(func, type)			\
-> +	static int __ ## func(struct net_device *dev,		\
-> +			      struct iw_request_info *info,	\
-> +			      union iwreq_data *wrqu,		\
-> +			      char *extra)			\
-> +	{							\
-> +		return func(dev, info, (type *)wrqu, extra);	\
-> +	}
-> +
-> +DEFINE_WEXT_COMPAT_STUB(cfg80211_wext_giwname, char)
-> +DEFINE_WEXT_COMPAT_STUB(cfg80211_wext_siwfreq, struct iw_freq)
-> +DEFINE_WEXT_COMPAT_STUB(cfg80211_wext_giwfreq, struct iw_freq)
-> +DEFINE_WEXT_COMPAT_STUB(cfg80211_wext_siwmode, u32)
-> +DEFINE_WEXT_COMPAT_STUB(cfg80211_wext_giwmode, u32)
-> +DEFINE_WEXT_COMPAT_STUB(cfg80211_wext_giwrange, struct iw_point)
-> +DEFINE_WEXT_COMPAT_STUB(cfg80211_wext_siwap, struct sockaddr)
-> +DEFINE_WEXT_COMPAT_STUB(cfg80211_wext_giwap, struct sockaddr)
-> +DEFINE_WEXT_COMPAT_STUB(cfg80211_wext_siwmlme, struct iw_point)
-> +DEFINE_WEXT_COMPAT_STUB(cfg80211_wext_giwscan, struct iw_point)
-> +DEFINE_WEXT_COMPAT_STUB(cfg80211_wext_siwessid, struct iw_point)
-> +DEFINE_WEXT_COMPAT_STUB(cfg80211_wext_giwessid, struct iw_point)
-> +DEFINE_WEXT_COMPAT_STUB(cfg80211_wext_siwrate, struct iw_param)
-> +DEFINE_WEXT_COMPAT_STUB(cfg80211_wext_giwrate, struct iw_param)
-> +DEFINE_WEXT_COMPAT_STUB(cfg80211_wext_siwrts, struct iw_param)
-> +DEFINE_WEXT_COMPAT_STUB(cfg80211_wext_giwrts, struct iw_param)
-> +DEFINE_WEXT_COMPAT_STUB(cfg80211_wext_siwfrag, struct iw_param)
-> +DEFINE_WEXT_COMPAT_STUB(cfg80211_wext_giwfrag, struct iw_param)
-> +DEFINE_WEXT_COMPAT_STUB(cfg80211_wext_siwretry, struct iw_param)
-> +DEFINE_WEXT_COMPAT_STUB(cfg80211_wext_giwretry, struct iw_param)
-> +DEFINE_WEXT_COMPAT_STUB(cfg80211_wext_siwencode, struct iw_point)
-> +DEFINE_WEXT_COMPAT_STUB(cfg80211_wext_giwencode, struct iw_point)
-> +DEFINE_WEXT_COMPAT_STUB(cfg80211_wext_giwpower, struct iw_param)
-> +DEFINE_WEXT_COMPAT_STUB(cfg80211_wext_siwpower, struct iw_param)
-> +DEFINE_WEXT_COMPAT_STUB(cfg80211_wext_siwgenie, struct iw_point)
-> +DEFINE_WEXT_COMPAT_STUB(cfg80211_wext_giwauth, struct iw_param)
-> +DEFINE_WEXT_COMPAT_STUB(cfg80211_wext_siwauth, struct iw_param)
-> +DEFINE_WEXT_COMPAT_STUB(cfg80211_wext_siwencodeext, struct iw_point)
-> +DEFINE_WEXT_COMPAT_STUB(cfg80211_wext_siwpmksa, struct iw_point)
-> +
->  static const iw_handler cfg80211_handlers[] = {
-> -	[IW_IOCTL_IDX(SIOCGIWNAME)]	= (iw_handler) cfg80211_wext_giwname,
-> -	[IW_IOCTL_IDX(SIOCSIWFREQ)]	= (iw_handler) cfg80211_wext_siwfreq,
-> -	[IW_IOCTL_IDX(SIOCGIWFREQ)]	= (iw_handler) cfg80211_wext_giwfreq,
-> -	[IW_IOCTL_IDX(SIOCSIWMODE)]	= (iw_handler) cfg80211_wext_siwmode,
-> -	[IW_IOCTL_IDX(SIOCGIWMODE)]	= (iw_handler) cfg80211_wext_giwmode,
-> -	[IW_IOCTL_IDX(SIOCGIWRANGE)]	= (iw_handler) cfg80211_wext_giwrange,
-> -	[IW_IOCTL_IDX(SIOCSIWAP)]	= (iw_handler) cfg80211_wext_siwap,
-> -	[IW_IOCTL_IDX(SIOCGIWAP)]	= (iw_handler) cfg80211_wext_giwap,
-> -	[IW_IOCTL_IDX(SIOCSIWMLME)]	= (iw_handler) cfg80211_wext_siwmlme,
-> -	[IW_IOCTL_IDX(SIOCSIWSCAN)]	= (iw_handler) cfg80211_wext_siwscan,
-> -	[IW_IOCTL_IDX(SIOCGIWSCAN)]	= (iw_handler) cfg80211_wext_giwscan,
-> -	[IW_IOCTL_IDX(SIOCSIWESSID)]	= (iw_handler) cfg80211_wext_siwessid,
-> -	[IW_IOCTL_IDX(SIOCGIWESSID)]	= (iw_handler) cfg80211_wext_giwessid,
-> -	[IW_IOCTL_IDX(SIOCSIWRATE)]	= (iw_handler) cfg80211_wext_siwrate,
-> -	[IW_IOCTL_IDX(SIOCGIWRATE)]	= (iw_handler) cfg80211_wext_giwrate,
-> -	[IW_IOCTL_IDX(SIOCSIWRTS)]	= (iw_handler) cfg80211_wext_siwrts,
-> -	[IW_IOCTL_IDX(SIOCGIWRTS)]	= (iw_handler) cfg80211_wext_giwrts,
-> -	[IW_IOCTL_IDX(SIOCSIWFRAG)]	= (iw_handler) cfg80211_wext_siwfrag,
-> -	[IW_IOCTL_IDX(SIOCGIWFRAG)]	= (iw_handler) cfg80211_wext_giwfrag,
-> -	[IW_IOCTL_IDX(SIOCSIWTXPOW)]	= (iw_handler) cfg80211_wext_siwtxpower,
-> -	[IW_IOCTL_IDX(SIOCGIWTXPOW)]	= (iw_handler) cfg80211_wext_giwtxpower,
-> -	[IW_IOCTL_IDX(SIOCSIWRETRY)]	= (iw_handler) cfg80211_wext_siwretry,
-> -	[IW_IOCTL_IDX(SIOCGIWRETRY)]	= (iw_handler) cfg80211_wext_giwretry,
-> -	[IW_IOCTL_IDX(SIOCSIWENCODE)]	= (iw_handler) cfg80211_wext_siwencode,
-> -	[IW_IOCTL_IDX(SIOCGIWENCODE)]	= (iw_handler) cfg80211_wext_giwencode,
-> -	[IW_IOCTL_IDX(SIOCSIWPOWER)]	= (iw_handler) cfg80211_wext_siwpower,
-> -	[IW_IOCTL_IDX(SIOCGIWPOWER)]	= (iw_handler) cfg80211_wext_giwpower,
-> -	[IW_IOCTL_IDX(SIOCSIWGENIE)]	= (iw_handler) cfg80211_wext_siwgenie,
-> -	[IW_IOCTL_IDX(SIOCSIWAUTH)]	= (iw_handler) cfg80211_wext_siwauth,
-> -	[IW_IOCTL_IDX(SIOCGIWAUTH)]	= (iw_handler) cfg80211_wext_giwauth,
-> -	[IW_IOCTL_IDX(SIOCSIWENCODEEXT)]= (iw_handler) cfg80211_wext_siwencodeext,
-> -	[IW_IOCTL_IDX(SIOCSIWPMKSA)]	= (iw_handler) cfg80211_wext_siwpmksa,
-> +	[IW_IOCTL_IDX(SIOCGIWNAME)]	= __cfg80211_wext_giwname,
-> +	[IW_IOCTL_IDX(SIOCSIWFREQ)]	= __cfg80211_wext_siwfreq,
-> +	[IW_IOCTL_IDX(SIOCGIWFREQ)]	= __cfg80211_wext_giwfreq,
-> +	[IW_IOCTL_IDX(SIOCSIWMODE)]	= __cfg80211_wext_siwmode,
-> +	[IW_IOCTL_IDX(SIOCGIWMODE)]	= __cfg80211_wext_giwmode,
-> +	[IW_IOCTL_IDX(SIOCGIWRANGE)]	= __cfg80211_wext_giwrange,
-> +	[IW_IOCTL_IDX(SIOCSIWAP)]	= __cfg80211_wext_siwap,
-> +	[IW_IOCTL_IDX(SIOCGIWAP)]	= __cfg80211_wext_giwap,
-> +	[IW_IOCTL_IDX(SIOCSIWMLME)]	= __cfg80211_wext_siwmlme,
-> +	[IW_IOCTL_IDX(SIOCSIWSCAN)]	= cfg80211_wext_siwscan,
-> +	[IW_IOCTL_IDX(SIOCGIWSCAN)]	= __cfg80211_wext_giwscan,
-> +	[IW_IOCTL_IDX(SIOCSIWESSID)]	= __cfg80211_wext_siwessid,
-> +	[IW_IOCTL_IDX(SIOCGIWESSID)]	= __cfg80211_wext_giwessid,
-> +	[IW_IOCTL_IDX(SIOCSIWRATE)]	= __cfg80211_wext_siwrate,
-> +	[IW_IOCTL_IDX(SIOCGIWRATE)]	= __cfg80211_wext_giwrate,
-> +	[IW_IOCTL_IDX(SIOCSIWRTS)]	= __cfg80211_wext_siwrts,
-> +	[IW_IOCTL_IDX(SIOCGIWRTS)]	= __cfg80211_wext_giwrts,
-> +	[IW_IOCTL_IDX(SIOCSIWFRAG)]	= __cfg80211_wext_siwfrag,
-> +	[IW_IOCTL_IDX(SIOCGIWFRAG)]	= __cfg80211_wext_giwfrag,
-> +	[IW_IOCTL_IDX(SIOCSIWTXPOW)]	= cfg80211_wext_siwtxpower,
-> +	[IW_IOCTL_IDX(SIOCGIWTXPOW)]	= cfg80211_wext_giwtxpower,
-> +	[IW_IOCTL_IDX(SIOCSIWRETRY)]	= __cfg80211_wext_siwretry,
-> +	[IW_IOCTL_IDX(SIOCGIWRETRY)]	= __cfg80211_wext_giwretry,
-> +	[IW_IOCTL_IDX(SIOCSIWENCODE)]	= __cfg80211_wext_siwencode,
-> +	[IW_IOCTL_IDX(SIOCGIWENCODE)]	= __cfg80211_wext_giwencode,
-> +	[IW_IOCTL_IDX(SIOCSIWPOWER)]	= __cfg80211_wext_siwpower,
-> +	[IW_IOCTL_IDX(SIOCGIWPOWER)]	= __cfg80211_wext_giwpower,
-> +	[IW_IOCTL_IDX(SIOCSIWGENIE)]	= __cfg80211_wext_siwgenie,
-> +	[IW_IOCTL_IDX(SIOCSIWAUTH)]	= __cfg80211_wext_siwauth,
-> +	[IW_IOCTL_IDX(SIOCGIWAUTH)]	= __cfg80211_wext_giwauth,
-> +	[IW_IOCTL_IDX(SIOCSIWENCODEEXT)]= __cfg80211_wext_siwencodeext,
-> +	[IW_IOCTL_IDX(SIOCSIWPMKSA)]	= __cfg80211_wext_siwpmksa,
->  };
->  
->  const struct iw_handler_def cfg80211_wext_handler = {
-> 
-> base-commit: 9c87c9f41245baa3fc4716cf39141439cf405b01
-> -- 
-> 2.29.2.299.gdc1121823c-goog
-> 
-
--- 
-Kees Cook
+Sami
