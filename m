@@ -2,93 +2,109 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 796742B5AD0
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Nov 2020 09:16:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 65E1B2B5AE6
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Nov 2020 09:24:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726511AbgKQING (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 17 Nov 2020 03:13:06 -0500
-Received: from rtits2.realtek.com ([211.75.126.72]:46042 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725770AbgKQING (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 17 Nov 2020 03:13:06 -0500
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 0AH8CfjL6015835, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexmb01.realtek.com.tw[172.21.6.94])
-        by rtits2.realtek.com.tw (8.15.2/2.70/5.88) with ESMTPS id 0AH8CfjL6015835
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Tue, 17 Nov 2020 16:12:41 +0800
-Received: from RTEXMBS03.realtek.com.tw (172.21.6.34) by
- RTEXMB01.realtek.com.tw (172.21.6.94) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2044.4; Tue, 17 Nov 2020 16:12:41 +0800
-Received: from RTEXMB04.realtek.com.tw (172.21.6.97) by
- RTEXMBS03.realtek.com.tw (172.21.6.34) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Tue, 17 Nov 2020 16:12:40 +0800
-Received: from RTEXMB04.realtek.com.tw ([fe80::89f7:e6c3:b043:15fa]) by
- RTEXMB04.realtek.com.tw ([fe80::89f7:e6c3:b043:15fa%3]) with mapi id
- 15.01.2044.006; Tue, 17 Nov 2020 16:12:40 +0800
-From:   Pkshih <pkshih@realtek.com>
-To:     Tony Chuang <yhchuang@realtek.com>,
-        "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
-        "xiakaixu1987@gmail.com" <xiakaixu1987@gmail.com>
-CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "kaixuxia@tencent.com" <kaixuxia@tencent.com>
+        id S1727164AbgKQIVy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 17 Nov 2020 03:21:54 -0500
+Received: from m42-4.mailgun.net ([69.72.42.4]:54120 "EHLO m42-4.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726085AbgKQIVy (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 17 Nov 2020 03:21:54 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1605601313; h=Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Message-ID: In-Reply-To: Date: References: Subject: Cc:
+ To: From: Sender; bh=g9weXcI6E3CfpEmO9996TeFQpsnZE7Go1uOkqemh9Bk=; b=ACbggndhWZ6BBGXnL1tXu+CE+9eUfMlwkS80ep6lT6xh6Nz8j3ueGwWFoyqgyMLUnyiYS0xT
+ 8McXwLtaeTQQUfD0vvgaJU0xLsaMHTx5l+vuhlrYyR6Yb6O9uK0J1r249bo9AUG7G/0PiiWM
+ a7+D3e6gPPGeYyn4jo4qbZwvlqI=
+X-Mailgun-Sending-Ip: 69.72.42.4
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n09.prod.us-west-2.postgun.com with SMTP id
+ 5fb388168e090a888610cc6e (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 17 Nov 2020 08:21:42
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id C4813C433ED; Tue, 17 Nov 2020 08:21:42 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 22EABC433C6;
+        Tue, 17 Nov 2020 08:21:39 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 22EABC433C6
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Pkshih <pkshih@realtek.com>
+Cc:     Tony Chuang <yhchuang@realtek.com>,
+        "xiakaixu1987\@gmail.com" <xiakaixu1987@gmail.com>,
+        "linux-wireless\@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "linux-kernel\@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "kaixuxia\@tencent.com" <kaixuxia@tencent.com>
 Subject: Re: [PATCH] rtw88: coex: remove the unreached code in rtw_coex_set_tdma
-Thread-Topic: [PATCH] rtw88: coex: remove the unreached code in
- rtw_coex_set_tdma
-Thread-Index: AQHWupojIOQCHYBFVUSs8qBgiST6ganLdzgA
-Date:   Tue, 17 Nov 2020 08:12:40 +0000
-Message-ID: <1605600696.20048.11.camel@realtek.com>
 References: <1605367343-11770-1-git-send-email-kaixuxia@tencent.com>
-In-Reply-To: <1605367343-11770-1-git-send-email-kaixuxia@tencent.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.213]
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <BA391B2213CAA64BAC339DA5BFC57AA1@realtek.com>
-Content-Transfer-Encoding: base64
+        <1605600696.20048.11.camel@realtek.com>
+Date:   Tue, 17 Nov 2020 10:21:37 +0200
+In-Reply-To: <1605600696.20048.11.camel@realtek.com> (pkshih@realtek.com's
+        message of "Tue, 17 Nov 2020 08:12:40 +0000")
+Message-ID: <87ft58z94e.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-T24gU2F0LCAyMDIwLTExLTE0IGF0IDE1OjIyICswMDAwLCB4aWFrYWl4dTE5ODdAZ21haWwuY29t
-IHdyb3RlOg0KPiBGcm9tOiBLYWl4dSBYaWEgPGthaXh1eGlhQHRlbmNlbnQuY29tPg0KPiANCj4g
-VGhlIHZhbHVlIG9mIHRoZSBib29sIHZhcmlhYmxlIGFwX2VuYWJsZSBpcyBhbHdheXMgZmFsc2Us
-IHNvIHRoZSBmaXJzdA0KPiBpZiBicmFuY2ggaXMgdW5yZWFjaGVkIGNvZGUuIFJlbW92ZSBpdC4N
-Cj4gDQo+IFJlcG9ydGVkLWJ5OiBUb3NrIFJvYm90IDx0ZW5jZW50X29zX3JvYm90QHRlbmNlbnQu
-Y29tPg0KPiBTaWduZWQtb2ZmLWJ5OiBLYWl4dSBYaWEgPGthaXh1eGlhQHRlbmNlbnQuY29tPg0K
-PiAtLS0NCj4gwqBkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L2NvZXguYyB8IDEy
-ICstLS0tLS0tLS0tLQ0KPiDCoDEgZmlsZSBjaGFuZ2VkLCAxIGluc2VydGlvbigrKSwgMTEgZGVs
-ZXRpb25zKC0pDQo+IA0KPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRl
-ay9ydHc4OC9jb2V4LmMNCj4gYi9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L2Nv
-ZXguYw0KPiBpbmRleCBhYTA4ZmQ3ZDlmY2QuLjljNzk2M2U0NTc1NSAxMDA2NDQNCj4gLS0tIGEv
-ZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9jb2V4LmMNCj4gKysrIGIvZHJpdmVy
-cy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9jb2V4LmMNCj4gQEAgLTg2MywxOCArODYzLDgg
-QEAgc3RhdGljIHZvaWQgcnR3X2NvZXhfc2V0X3RkbWEoc3RydWN0IHJ0d19kZXYgKnJ0d2Rldiwg
-dTgNCj4gYnl0ZTEsIHU4IGJ5dGUyLA0KPiDCoAlzdHJ1Y3QgcnR3X2NvZXhfZG0gKmNvZXhfZG0g
-PSAmY29leC0+ZG07DQo+IMKgCXN0cnVjdCBydHdfY2hpcF9pbmZvICpjaGlwID0gcnR3ZGV2LT5j
-aGlwOw0KPiDCoAl1OCBwc190eXBlID0gQ09FWF9QU19XSUZJX05BVElWRTsNCj4gLQlib29sIGFw
-X2VuYWJsZSA9IGZhbHNlOw0KDQpUaGUgdmFyaWFibGUgJ2FwX2VuYWJsZScgaXMgdXNlZCB0byBp
-bmRpY2F0ZSBhIHZpZiBpcyBydW5uaW5nIGluIEFQIG1vZGUuDQpBdCB0aGUgZmlyc3QgY29leCB2
-ZXJzaW9uLCBydHc4OCBkb2Vzbid0IHN1cHBvcnQgQVAgbW9kZSB5ZXQsIHNvIGFwX2VuYWJsZQ0K
-aXMgc2V0IHRvIGZhbHNlLiBGb3Igbm93LCBBUCBtb2RlIGlzIHJlYWR5LCBhbmQgSSBjYW4gc2Vu
-ZCBhIHBhdGNoIHRvIHNldA0KcHJvcGVyIHZhbHVlIGRlcGVuZHMgb24gdmlmIG1vZGUuDQoNClNp
-bmNlIEknbSBzdWJtaXR0aW5nIGNvZXggcGF0Y2hlcyB0byB1cGdyYWRlIHRoZSBjb2RlLiBJbiBv
-cmRlciB0byBhdm9pZA0KY29uZmxpY3RpbmcsIEknbGwgc2VuZCB0aGUgcGF0Y2ggdG8gc2V0IHBy
-b3BlciBhcF9lbmFibGUgYWZ0ZXIgYWxsIG15IHBhdGNoZXMNCmFyZSBtZXJnZWQuDQoNCg0KPiAt
-DQo+IC0JaWYgKGFwX2VuYWJsZSAmJiAoYnl0ZTEgJiBCSVQoNCkgJiYgIShieXRlMSAmIEJJVCg1
-KSkpKSB7DQo+IC0JCWJ5dGUxICY9IH5CSVQoNCk7DQo+IC0JCWJ5dGUxIHw9IEJJVCg1KTsNCj4g
-LQ0KPiAtCQlieXRlNSB8PSBCSVQoNSk7DQo+IC0JCWJ5dGU1ICY9IH5CSVQoNik7DQo+IMKgDQo+
-IC0JCXBzX3R5cGUgPSBDT0VYX1BTX1dJRklfTkFUSVZFOw0KPiAtCQlydHdfY29leF9wb3dlcl9z
-YXZlX3N0YXRlKHJ0d2RldiwgcHNfdHlwZSwgMHgwLCAweDApOw0KPiAtCX0gZWxzZSBpZiAoYnl0
-ZTEgJiBCSVQoNCkgJiYgIShieXRlMSAmIEJJVCg1KSkpIHsNCj4gKwlpZiAoYnl0ZTEgJiBCSVQo
-NCkgJiYgIShieXRlMSAmIEJJVCg1KSkpIHsNCj4gwqAJCWlmIChjaGlwLT5wc3RkbWFfdHlwZSA9
-PSBDT0VYX1BTVERNQV9GT1JDRV9MUFNPRkYpDQo+IMKgCQkJcHNfdHlwZSA9IENPRVhfUFNfTFBT
-X09GRjsNCj4gwqAJCWVsc2UNCj4gLS3CoA0KPiAyLjIwLjANCj4gDQoNCi0tLQ0KUGluZy1LZQ0K
-DQo=
+Pkshih <pkshih@realtek.com> writes:
+
+> On Sat, 2020-11-14 at 15:22 +0000, xiakaixu1987@gmail.com wrote:
+>> From: Kaixu Xia <kaixuxia@tencent.com>
+>>=20
+>> The value of the bool variable ap_enable is always false, so the first
+>> if branch is unreached code. Remove it.
+>>=20
+>> Reported-by: Tosk Robot <tencent_os_robot@tencent.com>
+>> Signed-off-by: Kaixu Xia <kaixuxia@tencent.com>
+>> ---
+>> =C2=A0drivers/net/wireless/realtek/rtw88/coex.c | 12 +-----------
+>> =C2=A01 file changed, 1 insertion(+), 11 deletions(-)
+>>=20
+>> diff --git a/drivers/net/wireless/realtek/rtw88/coex.c
+>> b/drivers/net/wireless/realtek/rtw88/coex.c
+>> index aa08fd7d9fcd..9c7963e45755 100644
+>> --- a/drivers/net/wireless/realtek/rtw88/coex.c
+>> +++ b/drivers/net/wireless/realtek/rtw88/coex.c
+>> @@ -863,18 +863,8 @@ static void rtw_coex_set_tdma(struct rtw_dev *rtwde=
+v, u8
+>> byte1, u8 byte2,
+>> =C2=A0	struct rtw_coex_dm *coex_dm =3D &coex->dm;
+>> =C2=A0	struct rtw_chip_info *chip =3D rtwdev->chip;
+>> =C2=A0	u8 ps_type =3D COEX_PS_WIFI_NATIVE;
+>> -	bool ap_enable =3D false;
+>
+> The variable 'ap_enable' is used to indicate a vif is running in AP mode.
+> At the first coex version, rtw88 doesn't support AP mode yet, so ap_enable
+> is set to false. For now, AP mode is ready, and I can send a patch to set
+> proper value depends on vif mode.
+>
+> Since I'm submitting coex patches to upgrade the code. In order to avoid
+> conflicting, I'll send the patch to set proper ap_enable after all my pat=
+ches
+> are merged.
+
+Ok, I'll then drop this.
+
+--=20
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
+hes
