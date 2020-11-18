@@ -2,72 +2,78 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D8092B8262
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Nov 2020 17:54:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 77DEC2B829F
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Nov 2020 18:07:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728002AbgKRQyA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 18 Nov 2020 11:54:00 -0500
-Received: from mga01.intel.com ([192.55.52.88]:27137 "EHLO mga01.intel.com"
+        id S1728037AbgKRRDw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 18 Nov 2020 12:03:52 -0500
+Received: from m42-4.mailgun.net ([69.72.42.4]:45383 "EHLO m42-4.mailgun.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727926AbgKRQx7 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 18 Nov 2020 11:53:59 -0500
-IronPort-SDR: KrHk7k0abLF1cyTrZG4Cx4NcY4exsfcosg3mg4IYa61HQ6YhZzebceqUYDYlpHqMu5vxQyizee
- 8AvX9fBtkclw==
-X-IronPort-AV: E=McAfee;i="6000,8403,9809"; a="189225105"
-X-IronPort-AV: E=Sophos;i="5.77,488,1596524400"; 
-   d="scan'208";a="189225105"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2020 08:53:59 -0800
-IronPort-SDR: jsxUfAN5DZO4IEOLUgumsySlshtRsfXJkfhQKxxX/cDt8ZHc5WlB6ERFxzx2zU+cenkOdC0ncv
- wtXbOLqwiH9A==
-X-IronPort-AV: E=Sophos;i="5.77,488,1596524400"; 
-   d="scan'208";a="330580086"
-Received: from dlmurray-mobl3.ger.corp.intel.com (HELO localhost) ([10.251.82.13])
-  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2020 08:53:57 -0800
-From:   Jani Nikula <jani.nikula@intel.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     jani.nikula@intel.com, intel-gfx@lists.freedesktop.org,
-        Kalle Valo <kvalo@codeaurora.org>,
+        id S1728035AbgKRRDv (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 18 Nov 2020 12:03:51 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1605719030; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=CgsWrpDUafJXjJonIZiDeISlp/lcC2lCyr+VBDH+BuU=; b=mNEbH5vfEj4vSp0IPxe3tnr0lUeKVjmpZJAIMzqDDhoUufM+1Div2ZGCd3zoxMEFHKba7IjQ
+ 170WF4vecO1JnsYjNuLJ+5H92/56hwGBWLWX+5Uqg6+/l+HFQ6VLl7QNpW7XUJYi0Egy9gOa
+ 93AqI9uw+dg7GAJSo5/ckmDyDPA=
+X-Mailgun-Sending-Ip: 69.72.42.4
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n05.prod.us-east-1.postgun.com with SMTP id
+ 5fb553f5b9b39088ed7e0794 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 18 Nov 2020 17:03:49
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id B6937C43462; Wed, 18 Nov 2020 17:03:48 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 9D181C433C6;
+        Wed, 18 Nov 2020 17:03:46 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 9D181C433C6
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Jani Nikula <jani.nikula@intel.com>
+Cc:     linux-kernel@vger.kernel.org, intel-gfx@lists.freedesktop.org,
         QCA ath9k Development <ath9k-devel@qca.qualcomm.com>,
         linux-wireless@vger.kernel.org
-Subject: [PATCH 5/6] ath9k: make relay callbacks const
-Date:   Wed, 18 Nov 2020 18:53:19 +0200
-Message-Id: <20201118165320.26829-5-jani.nikula@intel.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20201118165320.26829-1-jani.nikula@intel.com>
+Subject: Re: [PATCH 5/6] ath9k: make relay callbacks const
 References: <20201118165320.26829-1-jani.nikula@intel.com>
+        <20201118165320.26829-5-jani.nikula@intel.com>
+Date:   Wed, 18 Nov 2020 19:03:44 +0200
+In-Reply-To: <20201118165320.26829-5-jani.nikula@intel.com> (Jani Nikula's
+        message of "Wed, 18 Nov 2020 18:53:19 +0200")
+Message-ID: <87y2iyvbpr.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Now that relay_open() accepts const callbacks, make relay callbacks
-const.
+Jani Nikula <jani.nikula@intel.com> writes:
 
-Cc: Kalle Valo <kvalo@codeaurora.org>
-Cc: QCA ath9k Development <ath9k-devel@qca.qualcomm.com>
-Cc: linux-wireless@vger.kernel.org
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
----
- drivers/net/wireless/ath/ath9k/common-spectral.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> Now that relay_open() accepts const callbacks, make relay callbacks
+> const.
+>
+> Cc: Kalle Valo <kvalo@codeaurora.org>
+> Cc: QCA ath9k Development <ath9k-devel@qca.qualcomm.com>
+> Cc: linux-wireless@vger.kernel.org
+> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 
-diff --git a/drivers/net/wireless/ath/ath9k/common-spectral.c b/drivers/net/wireless/ath/ath9k/common-spectral.c
-index 21191955a7c1..e055adfb5361 100644
---- a/drivers/net/wireless/ath/ath9k/common-spectral.c
-+++ b/drivers/net/wireless/ath/ath9k/common-spectral.c
-@@ -1053,7 +1053,7 @@ static int remove_buf_file_handler(struct dentry *dentry)
- 	return 0;
- }
- 
--static struct rchan_callbacks rfs_spec_scan_cb = {
-+static const struct rchan_callbacks rfs_spec_scan_cb = {
- 	.create_buf_file = create_buf_file_handler,
- 	.remove_buf_file = remove_buf_file_handler,
- };
+Can I take this to my ath tree or what's the plan?
+
 -- 
-2.20.1
+https://patchwork.kernel.org/project/linux-wireless/list/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
