@@ -2,171 +2,190 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5AC322B74EC
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Nov 2020 04:43:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B9ED72B75F3
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Nov 2020 06:35:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726863AbgKRDmY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 17 Nov 2020 22:42:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52248 "EHLO
+        id S1726044AbgKRFba (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 18 Nov 2020 00:31:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40786 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726342AbgKRDmX (ORCPT
+        with ESMTP id S1725832AbgKRFba (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 17 Nov 2020 22:42:23 -0500
-Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com [IPv6:2607:f8b0:4864:20::642])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67230C0613D4
-        for <linux-wireless@vger.kernel.org>; Tue, 17 Nov 2020 19:42:22 -0800 (PST)
-Received: by mail-pl1-x642.google.com with SMTP id 5so247049plj.8
-        for <linux-wireless@vger.kernel.org>; Tue, 17 Nov 2020 19:42:22 -0800 (PST)
+        Wed, 18 Nov 2020 00:31:30 -0500
+Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com [IPv6:2607:f8b0:4864:20::443])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7F0DC061A4D
+        for <linux-wireless@vger.kernel.org>; Tue, 17 Nov 2020 21:31:28 -0800 (PST)
+Received: by mail-pf1-x443.google.com with SMTP id 10so690329pfp.5
+        for <linux-wireless@vger.kernel.org>; Tue, 17 Nov 2020 21:31:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=0q7uTzWf+NvnLsIKiQv5WVy1jGL93/4S1PO8Gde9U2o=;
-        b=EDWCwX4Liz49xKw5jFNq+kGUw+J4mUiu3Wpwcwn+fykUYBS+zY5nULzCJueB2kfuKL
-         eOodKs+HRtJChUgjfI0kVAcJS7qnNHkl6ZhOT2zVfH8JGABjenfuBfBrAR6N+kDCQ8xx
-         TCSJJHDl3bptVBnUda9JEKzlXAKJR16LK+aII=
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id;
+        bh=PZ0QCIA20El2MRacEHi3Dqx2l9Pt/uOvrOyEb5RrjSo=;
+        b=AaFcyCjTYhbv/RYh1tMspvU5/0QozZMYg1ooVrllJBMTa1+jSZGiznQKhWZ7ys7P3Z
+         Tc+mA2Lfte79zKHM47RyGj2wBfdWGsBJAz+SKSEOt39ii9G39WpTWr/8C2qb/gG6bLl1
+         nHQNITgmxxh6D3eKPeAOitgKCQTkyPlfoFQUXNZ+09yQ5wlBPAllnDDCPqrQoJGoOb/f
+         NjT06Ry3Q6sygRaNGxC4InIdxfx55IAPayvLesc6AyRIgEaO6hGgXJ7JKqzf/czcxUTW
+         bfgMfT6wGW+XgkroENEOmet6YysJtm7a4tFY7I8wVWIkIUk4Y5ZqI85baHKcxC5oQTka
+         aksw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=0q7uTzWf+NvnLsIKiQv5WVy1jGL93/4S1PO8Gde9U2o=;
-        b=osK+9yOWfXVOCDXUfRrUe1G82OypzMOwp8T05ha3tI2LcqA4YFRdhyATXqqQKcsNwN
-         kRveKGyY5bU70VdIPtTFH2CFp5bKFyRlls5SW9ei3v3TAs2nzACRlhS/X8SiyccH8cbg
-         QZ6GTjALxmst6ATaTBCyH3e5swExxiryHUm+EgCz2VTfyUQP2Il1EYTzscqjNgemZrKb
-         xoOMUMReqEZTgIaJndoeIKxg3A9MqYkIEPdIWyiZ+Bkhx7mHWRA62MNI4ZmXt5RqVUia
-         WPRkKDBVmTb+QY/H8OjjNWoUfuQGekREkCaiD1TYchrykccOlckr6hNiyhhcaziitJAI
-         saAg==
-X-Gm-Message-State: AOAM532KTMoTaA+gwdyqbhLbY2JbtwAD+3Wz8JWBT8BmDcaapBYUtGyy
-        vJXdzXRCA5S/rI0YAbGNje2Vgw==
-X-Google-Smtp-Source: ABdhPJxioomSZ3J7VrUGlZB+bKoULpC8AXgrL2qz07+Mw25NmF1SoFdAr0Idwd+fTwj+FQSvNZU+Vw==
-X-Received: by 2002:a17:90a:4093:: with SMTP id l19mr2177198pjg.65.1605670941976;
-        Tue, 17 Nov 2020 19:42:21 -0800 (PST)
-Received: from smtp.gmail.com ([2620:15c:202:201:8edc:d4ff:fe53:350d])
-        by smtp.gmail.com with ESMTPSA id w2sm16097617pfb.104.2020.11.17.19.42.20
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=PZ0QCIA20El2MRacEHi3Dqx2l9Pt/uOvrOyEb5RrjSo=;
+        b=iTQAv//kiHdbxnQmOkvmuos5SY98lhsvqNqF4ckUePJmR64F1mHviGA6H3ua6LY1Fc
+         LX+rIgBg4MgaafcccdqTxn3Po6qiGjOsQfa5hOi0lFJn5CEiVceI29RZfkyKH1yXKK4h
+         Dhgaa48lugkoKudvbVH85Xhek6vGLQyJJ4woxzxrDlQuO/ENIeqQB9yif3slIcJrV7L2
+         k7Mgb4ZxrPjtuQ+LDdUfDUaByFBDukUioDXhSeuhr1FdG/z1BvswCHU9N0c/+xDQQF6l
+         cGD1K/eA65byrAzspcyAzWb/FvEcMZV4Eqrx0Dr1CRnWoClVqjvqSnfBHUzAESrTEGQa
+         hUNA==
+X-Gm-Message-State: AOAM531hLtzlK+sT9BalPK9qxVAR8OWWWL1+pcoKhheGOqo8cdT/EVHn
+        ZgtHkcoAl+4BI1oj5Ma/T05F
+X-Google-Smtp-Source: ABdhPJwIt85VuGYkAYwIONU1QZz0EJr0pWl3K7c3zyf5cYzD/Oemr/56MOALtp48rzS5wxhCQzdrSg==
+X-Received: by 2002:a05:6a00:134d:b029:18b:2cde:d747 with SMTP id k13-20020a056a00134db029018b2cded747mr2736391pfu.60.1605677488054;
+        Tue, 17 Nov 2020 21:31:28 -0800 (PST)
+Received: from localhost.localdomain ([103.59.133.81])
+        by smtp.googlemail.com with ESMTPSA id h11sm23114572pfo.69.2020.11.17.21.31.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Nov 2020 19:42:21 -0800 (PST)
-From:   Brian Norris <briannorris@chromium.org>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org,
-        David Poole <dpoole@cradlepoint.com>,
-        Ben Greear <greearb@candelatech.com>,
-        John Crispin <john@phrozen.org>,
-        Brian Norris <briannorris@chromium.org>
-Subject: [PATCH 4/4] iw: scan: fixup HE caps whitespace
-Date:   Tue, 17 Nov 2020 19:39:36 -0800
-Message-Id: <20201118033936.3667788-5-briannorris@chromium.org>
-X-Mailer: git-send-email 2.29.2.299.gdc1121823c-goog
-In-Reply-To: <20201118033936.3667788-1-briannorris@chromium.org>
-References: <20201118033936.3667788-1-briannorris@chromium.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        Tue, 17 Nov 2020 21:31:27 -0800 (PST)
+From:   Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+To:     linux-arm-msm@vger.kernel.org, kvalo@codeaurora.org
+Cc:     linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
+        netdev@vger.kernel.org, hemantk@codeaurora.org,
+        bbhatt@codeaurora.org, Loic Poulain <loic.poulain@linaro.org>,
+        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Subject: [PATCH] bus: mhi: Remove auto-start option
+Date:   Wed, 18 Nov 2020 11:01:02 +0530
+Message-Id: <20201118053102.13119-1-manivannan.sadhasivam@linaro.org>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-For scans, it's nicer to drop an indentation level, because we don't
-have the "interface type" section that we do in the phy-info version.
+From: Loic Poulain <loic.poulain@linaro.org>
 
-The NSS print also had an extra level of indentation, and a spare
-leading space, which made it a bit inconsistent with other sections.
+There is really no point having an auto-start for channels.
+This is confusing for the device drivers, some have to enable the
+channels, others don't have... and waste resources (e.g. pre allocated
+buffers) that may never be used.
 
-Signed-off-by: Brian Norris <briannorris@chromium.org>
+This is really up to the MHI device(channel) driver to manage the state
+of its channels.
+
+While at it, let's also remove the auto-start option from ath11k mhi
+controller.
+
+Signed-off-by: Loic Poulain <loic.poulain@linaro.org>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+[mani: clubbed ath11k change]
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 ---
- util.c | 23 +++++++++++++----------
- 1 file changed, 13 insertions(+), 10 deletions(-)
+ drivers/bus/mhi/core/init.c           | 9 ---------
+ drivers/bus/mhi/core/internal.h       | 1 -
+ drivers/net/wireless/ath/ath11k/mhi.c | 4 ----
+ include/linux/mhi.h                   | 2 --
+ 4 files changed, 16 deletions(-)
 
-diff --git a/util.c b/util.c
-index b09bcaf743fc..00f3755b1000 100644
---- a/util.c
-+++ b/util.c
-@@ -992,21 +992,23 @@ void print_vht_info(__u32 capa, const __u8 *mcs)
- static void __print_he_capa(const __u16 *mac_cap,
- 			    const __u16 *phy_cap,
- 			    const __u16 *mcs_set, size_t mcs_len,
--			    const __u8 *ppet, int ppet_len)
-+			    const __u8 *ppet, int ppet_len,
-+			    bool indent)
- {
- 	size_t mcs_used;
- 	int i;
-+	const char *pre = indent ? "\t" : "";
+diff --git a/drivers/bus/mhi/core/init.c b/drivers/bus/mhi/core/init.c
+index 0ffdebde8265..381fdea2eb9f 100644
+--- a/drivers/bus/mhi/core/init.c
++++ b/drivers/bus/mhi/core/init.c
+@@ -758,7 +758,6 @@ static int parse_ch_cfg(struct mhi_controller *mhi_cntrl,
+ 		mhi_chan->offload_ch = ch_cfg->offload_channel;
+ 		mhi_chan->db_cfg.reset_req = ch_cfg->doorbell_mode_switch;
+ 		mhi_chan->pre_alloc = ch_cfg->auto_queue;
+-		mhi_chan->auto_start = ch_cfg->auto_start;
  
- 	#define PRINT_HE_CAP(_var, _idx, _bit, _str) \
- 	do { \
- 		if (_var[_idx] & BIT(_bit)) \
--			printf("\t\t\t\t" _str "\n"); \
-+			printf("%s\t\t\t" _str "\n", pre); \
- 	} while (0)
+ 		/*
+ 		 * If MHI host allocates buffers, then the channel direction
+@@ -1160,11 +1159,6 @@ static int mhi_driver_probe(struct device *dev)
+ 			goto exit_probe;
  
- 	#define PRINT_HE_CAP_MASK(_var, _idx, _shift, _mask, _str) \
- 	do { \
- 		if ((_var[_idx] >> _shift) & _mask) \
--			printf("\t\t\t\t" _str ": %d\n", (_var[_idx] >> _shift) & _mask); \
-+			printf("%s\t\t\t" _str ": %d\n", pre, (_var[_idx] >> _shift) & _mask); \
- 	} while (0)
- 
- 	#define PRINT_HE_MAC_CAP(...) PRINT_HE_CAP(mac_cap, __VA_ARGS__)
-@@ -1015,7 +1017,7 @@ static void __print_he_capa(const __u16 *mac_cap,
- 	#define PRINT_HE_PHY_CAP0(_idx, _bit, ...) PRINT_HE_CAP(phy_cap, _idx, _bit + 8, __VA_ARGS__)
- 	#define PRINT_HE_PHY_CAP_MASK(...) PRINT_HE_CAP_MASK(phy_cap, __VA_ARGS__)
- 
--	printf("\t\t\tHE MAC Capabilities (0x");
-+	printf("%s\t\tHE MAC Capabilities (0x", pre);
- 	for (i = 0; i < 3; i++)
- 		printf("%04x", mac_cap[i]);
- 	printf("):\n");
-@@ -1055,7 +1057,7 @@ static void __print_he_capa(const __u16 *mac_cap,
- 	PRINT_HE_MAC_CAP(2, 11, "UL 2x996-Tone RU");
- 	PRINT_HE_MAC_CAP(2, 12, "OM Control UL MU Data Disable RX");
- 
--	printf("\t\t\tHE PHY Capabilities: (0x");
-+	printf("%s\t\tHE PHY Capabilities: (0x", pre);
- 	for (i = 0; i < 11; i++)
- 		printf("%02x", ((__u8 *)phy_cap)[i + 1]);
- 	printf("):\n");
-@@ -1140,12 +1142,12 @@ static void __print_he_capa(const __u16 *mac_cap,
- 
- 		for (j = 0; j < 2; j++) {
- 			int k;
--			printf("\t\t\tHE %s MCS and NSS set %s MHz\n", j ? "TX" : "RX", bw[i]);
-+			printf("%s\t\tHE %s MCS and NSS set %s MHz\n", pre, j ? "TX" : "RX", bw[i]);
- 			for (k = 0; k < 8; k++) {
- 				__u16 mcs = mcs_set[(i * 2) + j];
- 				mcs >>= k * 2;
- 				mcs &= 0x3;
--				printf("\t\t\t\t\t %d streams: ", k + 1);
-+				printf("%s\t\t\t%d streams: ", pre, k + 1);
- 				if (mcs == 3)
- 					printf("not supported\n");
- 				else
-@@ -1166,7 +1168,7 @@ static void __print_he_capa(const __u16 *mac_cap,
+ 		ul_chan->xfer_cb = mhi_drv->ul_xfer_cb;
+-		if (ul_chan->auto_start) {
+-			ret = mhi_prepare_channel(mhi_cntrl, ul_chan);
+-			if (ret)
+-				goto exit_probe;
+-		}
  	}
  
- 	if (ppet_len && (phy_cap[3] & BIT(15))) {
--		printf("\t\t\tPPE Threshold ");
-+		printf("%s\t\tPPE Threshold ", pre);
- 		for (i = 0; i < ppet_len; i++)
- 			if (ppet[i])
- 				printf("0x%02x ", ppet[i]);
-@@ -1245,7 +1247,8 @@ void print_he_info(struct nlattr *nl_iftype)
- 		ppet_len = len;
- 	}
+ 	ret = -EINVAL;
+@@ -1198,9 +1192,6 @@ static int mhi_driver_probe(struct device *dev)
+ 	if (ret)
+ 		goto exit_probe;
  
--	__print_he_capa(mac_cap, phy_cap, mcs_set, mcs_len, ppet, ppet_len);
-+	__print_he_capa(mac_cap, phy_cap, mcs_set, mcs_len, ppet, ppet_len,
-+			true);
- }
+-	if (dl_chan && dl_chan->auto_start)
+-		mhi_prepare_channel(mhi_cntrl, dl_chan);
+-
+ 	mhi_device_put(mhi_dev);
  
- void print_he_capability(const uint8_t *ie, int len)
-@@ -1263,7 +1266,7 @@ void print_he_capability(const uint8_t *ie, int len)
- 	mcs_set = &ie[i];
- 	mcs_len = len - i;
+ 	return ret;
+diff --git a/drivers/bus/mhi/core/internal.h b/drivers/bus/mhi/core/internal.h
+index 7989269ddd96..33c23203c531 100644
+--- a/drivers/bus/mhi/core/internal.h
++++ b/drivers/bus/mhi/core/internal.h
+@@ -563,7 +563,6 @@ struct mhi_chan {
+ 	bool configured;
+ 	bool offload_ch;
+ 	bool pre_alloc;
+-	bool auto_start;
+ 	bool wake_capable;
+ };
  
--	__print_he_capa(mac_cap, phy_cap - 1, mcs_set, mcs_len, NULL, 0);
-+	__print_he_capa(mac_cap, phy_cap - 1, mcs_set, mcs_len, NULL, 0, false);
- }
+diff --git a/drivers/net/wireless/ath/ath11k/mhi.c b/drivers/net/wireless/ath/ath11k/mhi.c
+index aded9a719d51..47a1ce1bee4f 100644
+--- a/drivers/net/wireless/ath/ath11k/mhi.c
++++ b/drivers/net/wireless/ath/ath11k/mhi.c
+@@ -24,7 +24,6 @@ static struct mhi_channel_config ath11k_mhi_channels[] = {
+ 		.offload_channel = false,
+ 		.doorbell_mode_switch = false,
+ 		.auto_queue = false,
+-		.auto_start = false,
+ 	},
+ 	{
+ 		.num = 1,
+@@ -39,7 +38,6 @@ static struct mhi_channel_config ath11k_mhi_channels[] = {
+ 		.offload_channel = false,
+ 		.doorbell_mode_switch = false,
+ 		.auto_queue = false,
+-		.auto_start = false,
+ 	},
+ 	{
+ 		.num = 20,
+@@ -54,7 +52,6 @@ static struct mhi_channel_config ath11k_mhi_channels[] = {
+ 		.offload_channel = false,
+ 		.doorbell_mode_switch = false,
+ 		.auto_queue = false,
+-		.auto_start = true,
+ 	},
+ 	{
+ 		.num = 21,
+@@ -69,7 +66,6 @@ static struct mhi_channel_config ath11k_mhi_channels[] = {
+ 		.offload_channel = false,
+ 		.doorbell_mode_switch = false,
+ 		.auto_queue = true,
+-		.auto_start = true,
+ 	},
+ };
  
- void iw_hexdump(const char *prefix, const __u8 *buf, size_t size)
+diff --git a/include/linux/mhi.h b/include/linux/mhi.h
+index d4841e5a5f45..6522a4adc794 100644
+--- a/include/linux/mhi.h
++++ b/include/linux/mhi.h
+@@ -214,7 +214,6 @@ enum mhi_db_brst_mode {
+  * @offload_channel: The client manages the channel completely
+  * @doorbell_mode_switch: Channel switches to doorbell mode on M0 transition
+  * @auto_queue: Framework will automatically queue buffers for DL traffic
+- * @auto_start: Automatically start (open) this channel
+  * @wake-capable: Channel capable of waking up the system
+  */
+ struct mhi_channel_config {
+@@ -232,7 +231,6 @@ struct mhi_channel_config {
+ 	bool offload_channel;
+ 	bool doorbell_mode_switch;
+ 	bool auto_queue;
+-	bool auto_start;
+ 	bool wake_capable;
+ };
+ 
 -- 
-2.29.2.299.gdc1121823c-goog
+2.17.1
 
