@@ -2,123 +2,130 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 446842B8315
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Nov 2020 18:21:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 91E072B8353
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Nov 2020 18:48:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728370AbgKRRU2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 18 Nov 2020 12:20:28 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37344 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728036AbgKRRU2 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 18 Nov 2020 12:20:28 -0500
-Received: from mail-ot1-x344.google.com (mail-ot1-x344.google.com [IPv6:2607:f8b0:4864:20::344])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0947C0613D4;
-        Wed, 18 Nov 2020 09:20:27 -0800 (PST)
-Received: by mail-ot1-x344.google.com with SMTP id y22so2482477oti.10;
-        Wed, 18 Nov 2020 09:20:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=ATDEuVpLOju9Mm9/RI/1NtWHJeAR+WEeQ1UtKSWTQF4=;
-        b=Fxwa1ziDMqTSUu0AoBlTRf49VSnTzmV+FosWSfG6nxNfcAHwLHWzuf01zy6wSTurFY
-         P7LyUN5JHOzRXXA7QXL/K6DCVvqAGVNZ177gNgRm6wT0ly4Rwp0Mzx2Lh2V0Xv4Y9a+B
-         meNHBUyuFjsyCBpF6TbrFhL2SNGdmQfXeLSI59xyyrtuykj1wSUW5WNfWgtScxn4USwp
-         uRoL0YA0ETX3/ml3SIyTmm/HuGN9aKOO+oo8mUnJoUuNtOjozqpWcONfDDmmNPePKvEx
-         yQzRSSANj9DW5uIffsqrbD/ToCSyOt4zDjRTBbg2l+xhLClBdbhuWyRDyEtzfcih1JeK
-         rzOg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
-         :date:user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=ATDEuVpLOju9Mm9/RI/1NtWHJeAR+WEeQ1UtKSWTQF4=;
-        b=n14maso+//3+sSPgFHuVfv0TaY4dioGMbCMWvafDfbj198kK3Kc7vSoq6VJ32SPOiY
-         UKnNyKm53SG12yyJafqnmxaJC83QnTQOcQp9i4jeoGR5zHAXljrzabs1pIf/c/SvQdgF
-         Wf+KmwjT9qevNgLD5gEIGDlcJBGVbcmx50UEGdR/7CGuxmP+34Tvtjn2/4SinzIfKGI/
-         GmcFtuP4jml1HjqWPvQGFCwTycJem0Rc/6bZ5oPZ345FdgX+0Lfq2RvC6/3FjhB86sQ8
-         aGJeF0aUKiFWZYR9NsAeFycui/A72SO4AYcGLAfOdGFPmkWkVE+yJkQ1PD/Czn5gtVNW
-         0Efw==
-X-Gm-Message-State: AOAM532oZMxOSbgzn6zTZf612feTZNlpFHXmYC0QLzdZaZoqS4zvyVPZ
-        IRUGCJWNMrVKEdSsX6+xBCtY2Q32bSU=
-X-Google-Smtp-Source: ABdhPJyPJRuj21Zpk+C1i8QDS7iilen7A+7XxWs19B7OrEjq8TDxaXYAzQkOaK47WFudtkdaNstAVw==
-X-Received: by 2002:a9d:171a:: with SMTP id i26mr6971266ota.313.1605720026808;
-        Wed, 18 Nov 2020 09:20:26 -0800 (PST)
-Received: from localhost.localdomain (cpe-24-31-245-230.kc.res.rr.com. [24.31.245.230])
-        by smtp.gmail.com with ESMTPSA id z25sm954928ooj.39.2020.11.18.09.20.25
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 18 Nov 2020 09:20:25 -0800 (PST)
-Sender: Larry Finger <larry.finger@gmail.com>
-Subject: Re: [PATCH v2 1/4] rtlwifi: rtl8188ee: avoid accessing the data
- mapped to streaming DMA
-To:     Jia-Ju Bai <baijiaju1990@gmail.com>, pkshih@realtek.com,
-        kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20201118015314.4979-1-baijiaju1990@gmail.com>
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-Message-ID: <d3996305-136a-708b-0dba-e9428f9da5cb@lwfinger.net>
-Date:   Wed, 18 Nov 2020 11:20:24 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.4.0
+        id S1728124AbgKRRqI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 18 Nov 2020 12:46:08 -0500
+Received: from m42-4.mailgun.net ([69.72.42.4]:10476 "EHLO m42-4.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728064AbgKRRqH (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 18 Nov 2020 12:46:07 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1605721567; h=Message-ID: References: In-Reply-To: Reply-To:
+ Subject: Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Sender; bh=CqQUjWS47OeGeZxznxTVUF9IHKIsAQr1JXT3ZOCJz8Y=;
+ b=gX33FjW5pLp9UwBLZmxRQdiCf27MaUJWt/o8Gpr4u2hrtwsJbipPLbirHXx3yBwGybPOLdw8
+ PS3W6Z3o2r4/FO4zWjgpgSgogxtJ1ZTaRQKjRdNgKcjMWSBG+0peeA0KPVFqYUgP8VuO8+Jn
+ BdWMnQCz5vQjKX/ogq+/n+pf1BE=
+X-Mailgun-Sending-Ip: 69.72.42.4
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n03.prod.us-west-2.postgun.com with SMTP id
+ 5fb55ddd1dba509aaebd5e94 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 18 Nov 2020 17:46:05
+ GMT
+Sender: bbhatt=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 8040EC43463; Wed, 18 Nov 2020 17:46:05 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: bbhatt)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id EE012C433ED;
+        Wed, 18 Nov 2020 17:46:04 +0000 (UTC)
 MIME-Version: 1.0
-In-Reply-To: <20201118015314.4979-1-baijiaju1990@gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
 Content-Transfer-Encoding: 7bit
+Date:   Wed, 18 Nov 2020 09:46:04 -0800
+From:   Bhaumik Bhatt <bbhatt@codeaurora.org>
+To:     Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Cc:     Carl Huang <cjhuang@codeaurora.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Loic Poulain <loic.poulain@linaro.org>,
+        linux-arm-msm@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, hemantk@codeaurora.org,
+        ath11k@lists.infradead.org
+Subject: Re: [PATCH] bus: mhi: Remove auto-start option
+Organization: Qualcomm Innovation Center, Inc.
+Reply-To: bbhatt@codeaurora.org
+Mail-Reply-To: bbhatt@codeaurora.org
+In-Reply-To: <20201118115757.GA5680@thinkpad>
+References: <20201118053102.13119-1-manivannan.sadhasivam@linaro.org>
+ <877dqjz0bv.fsf@codeaurora.org> <20201118093107.GC3286@work>
+ <16c430bbd5117a35496f85f4454095b9@codeaurora.org>
+ <20201118115757.GA5680@thinkpad>
+Message-ID: <1b5eb02e78b3b68b88dd3d12e3f8c60c@codeaurora.org>
+X-Sender: bbhatt@codeaurora.org
+User-Agent: Roundcube Webmail/1.3.9
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 11/17/20 7:53 PM, Jia-Ju Bai wrote:
-> In rtl88ee_tx_fill_cmddesc(), skb->data is mapped to streaming DMA on
-> line 677:
->    dma_addr_t mapping = dma_map_single(..., skb->data, ...);
+On 2020-11-18 03:57 AM, Manivannan Sadhasivam wrote:
+> On Wed, Nov 18, 2020 at 07:55:19PM +0800, Carl Huang wrote:
+>> On 2020-11-18 17:31, Manivannan Sadhasivam wrote:
+>> > On Wed, Nov 18, 2020 at 07:43:48AM +0200, Kalle Valo wrote:
+>> > > Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org> writes:
+>> > >
+>> > > > From: Loic Poulain <loic.poulain@linaro.org>
+>> > > >
+>> > > > There is really no point having an auto-start for channels.
+>> > > > This is confusing for the device drivers, some have to enable the
+>> > > > channels, others don't have... and waste resources (e.g. pre allocated
+>> > > > buffers) that may never be used.
+>> > > >
+>> > > > This is really up to the MHI device(channel) driver to manage the state
+>> > > > of its channels.
+>> > > >
+>> > > > While at it, let's also remove the auto-start option from ath11k mhi
+>> > > > controller.
+>> > > >
+>> > > > Signed-off-by: Loic Poulain <loic.poulain@linaro.org>
+>> > > > Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+>> > > > [mani: clubbed ath11k change]
+>> > > > Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+>> > >
+>> > > Thanks and feel free to take this to the immutable branch:
+>> > >
+>> > > Acked-by: Kalle Valo <kvalo@codeaurora.org>
+>> >
+>> > Patch applied to mhi-ath11k-immutable branch and merged into mhi-next.
+>> >
+>> > Thanks,
+>> > Mani
+>> >
+>> Does net/qrtr/mhi.c need changes? I guess now net/qrtr/mhi.c needs to 
+>> call
+>> mhi_prepare_for_transfer() before transfer.
+>> 
 > 
-> On line 680, skb->data is assigned to hdr after cast:
->    struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)(skb->data);
+> Yes and the patch is also applied:
+> https://git.kernel.org/pub/scm/linux/kernel/git/mani/mhi.git/commit/?h=mhi-ath11k-immutable&id=a2e2cc0dbb1121dfa875da1c04f3dff966fec162
 > 
-> Then hdr->frame_control is accessed on line 681:
->    __le16 fc = hdr->frame_control;
+> Thanks,
+> Mani
 > 
-> This DMA access may cause data inconsistency between CPU and hardwre.
-> 
-> To fix this bug, hdr->frame_control is accessed before the DMA mapping.
-> 
-> Signed-off-by: Jia-Ju Bai <baijiaju1990@gmail.com>
-> ---
->   drivers/net/wireless/realtek/rtlwifi/rtl8188ee/trx.c | 6 +++---
->   1 file changed, 3 insertions(+), 3 deletions(-)
+>> > >
+>> > > --
+>> > > https://patchwork.kernel.org/project/linux-wireless/list/
+>> > >
+>> > > https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+It looks we forgot to add the mhi_unprepare_from_transfer() equivalent 
+in the remove().
 
-What changed between v1 and v2?
+Will send a patch for it today.
 
-As outlined in Documentation/process/submitting-patches.rst, you should add a 
-'---' marker and descrive what was changed. I usually summarize the changes, but 
-it is also possible to provide a diffstat of the changes as the above file shows.
-
-Larry
-
-> 
-> diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/trx.c b/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/trx.c
-> index b9775eec4c54..c948dafa0c80 100644
-> --- a/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/trx.c
-> +++ b/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/trx.c
-> @@ -674,12 +674,12 @@ void rtl88ee_tx_fill_cmddesc(struct ieee80211_hw *hw,
->   	u8 fw_queue = QSLT_BEACON;
->   	__le32 *pdesc = (__le32 *)pdesc8;
->   
-> -	dma_addr_t mapping = dma_map_single(&rtlpci->pdev->dev, skb->data,
-> -					    skb->len, DMA_TO_DEVICE);
-> -
->   	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)(skb->data);
->   	__le16 fc = hdr->frame_control;
->   
-> +	dma_addr_t mapping = dma_map_single(&rtlpci->pdev->dev, skb->data,
-> +					    skb->len, DMA_TO_DEVICE);
-> +
->   	if (dma_mapping_error(&rtlpci->pdev->dev, mapping)) {
->   		rtl_dbg(rtlpriv, COMP_SEND, DBG_TRACE,
->   			"DMA mapping error\n");
-> 
-
+Thanks,
+Bhaumik
+---
+The Qualcomm Innovation Center, Inc. is a member of the Code Aurora 
+Forum,
+a Linux Foundation Collaborative Project
