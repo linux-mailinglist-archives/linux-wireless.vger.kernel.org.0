@@ -2,190 +2,90 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B9ED72B75F3
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Nov 2020 06:35:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 44D772B75FD
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Nov 2020 06:44:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726044AbgKRFba (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 18 Nov 2020 00:31:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40786 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725832AbgKRFba (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 18 Nov 2020 00:31:30 -0500
-Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com [IPv6:2607:f8b0:4864:20::443])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7F0DC061A4D
-        for <linux-wireless@vger.kernel.org>; Tue, 17 Nov 2020 21:31:28 -0800 (PST)
-Received: by mail-pf1-x443.google.com with SMTP id 10so690329pfp.5
-        for <linux-wireless@vger.kernel.org>; Tue, 17 Nov 2020 21:31:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id;
-        bh=PZ0QCIA20El2MRacEHi3Dqx2l9Pt/uOvrOyEb5RrjSo=;
-        b=AaFcyCjTYhbv/RYh1tMspvU5/0QozZMYg1ooVrllJBMTa1+jSZGiznQKhWZ7ys7P3Z
-         Tc+mA2Lfte79zKHM47RyGj2wBfdWGsBJAz+SKSEOt39ii9G39WpTWr/8C2qb/gG6bLl1
-         nHQNITgmxxh6D3eKPeAOitgKCQTkyPlfoFQUXNZ+09yQ5wlBPAllnDDCPqrQoJGoOb/f
-         NjT06Ry3Q6sygRaNGxC4InIdxfx55IAPayvLesc6AyRIgEaO6hGgXJ7JKqzf/czcxUTW
-         bfgMfT6wGW+XgkroENEOmet6YysJtm7a4tFY7I8wVWIkIUk4Y5ZqI85baHKcxC5oQTka
-         aksw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=PZ0QCIA20El2MRacEHi3Dqx2l9Pt/uOvrOyEb5RrjSo=;
-        b=iTQAv//kiHdbxnQmOkvmuos5SY98lhsvqNqF4ckUePJmR64F1mHviGA6H3ua6LY1Fc
-         LX+rIgBg4MgaafcccdqTxn3Po6qiGjOsQfa5hOi0lFJn5CEiVceI29RZfkyKH1yXKK4h
-         Dhgaa48lugkoKudvbVH85Xhek6vGLQyJJ4woxzxrDlQuO/ENIeqQB9yif3slIcJrV7L2
-         k7Mgb4ZxrPjtuQ+LDdUfDUaByFBDukUioDXhSeuhr1FdG/z1BvswCHU9N0c/+xDQQF6l
-         cGD1K/eA65byrAzspcyAzWb/FvEcMZV4Eqrx0Dr1CRnWoClVqjvqSnfBHUzAESrTEGQa
-         hUNA==
-X-Gm-Message-State: AOAM531hLtzlK+sT9BalPK9qxVAR8OWWWL1+pcoKhheGOqo8cdT/EVHn
-        ZgtHkcoAl+4BI1oj5Ma/T05F
-X-Google-Smtp-Source: ABdhPJwIt85VuGYkAYwIONU1QZz0EJr0pWl3K7c3zyf5cYzD/Oemr/56MOALtp48rzS5wxhCQzdrSg==
-X-Received: by 2002:a05:6a00:134d:b029:18b:2cde:d747 with SMTP id k13-20020a056a00134db029018b2cded747mr2736391pfu.60.1605677488054;
-        Tue, 17 Nov 2020 21:31:28 -0800 (PST)
-Received: from localhost.localdomain ([103.59.133.81])
-        by smtp.googlemail.com with ESMTPSA id h11sm23114572pfo.69.2020.11.17.21.31.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Nov 2020 21:31:27 -0800 (PST)
-From:   Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To:     linux-arm-msm@vger.kernel.org, kvalo@codeaurora.org
-Cc:     linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
-        netdev@vger.kernel.org, hemantk@codeaurora.org,
-        bbhatt@codeaurora.org, Loic Poulain <loic.poulain@linaro.org>,
-        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Subject: [PATCH] bus: mhi: Remove auto-start option
-Date:   Wed, 18 Nov 2020 11:01:02 +0530
-Message-Id: <20201118053102.13119-1-manivannan.sadhasivam@linaro.org>
-X-Mailer: git-send-email 2.17.1
+        id S1726096AbgKRFn4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 18 Nov 2020 00:43:56 -0500
+Received: from z5.mailgun.us ([104.130.96.5]:16587 "EHLO z5.mailgun.us"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725794AbgKRFnz (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 18 Nov 2020 00:43:55 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1605678235; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=oiBYyN4u0AsOxj8RbLoWgBRf+OoGnfrCBodEqxw5nMk=; b=Gti/k2DRz82dj9TiPzT+L8oGGNYwmLzuu42Vn8rD4e47qdHkeqfe1D7GepnBkEx8igwCrKua
+ NHQgaYAF/Hbcgi263WR3/nTpDM+NAfAwdbpBgjPKGP3/OhXbjjPypMpGOJS5HNHsY/3w4+9E
+ 6FIRplNNhAzufTHlqlGyuEn7kpg=
+X-Mailgun-Sending-Ip: 104.130.96.5
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n09.prod.us-east-1.postgun.com with SMTP id
+ 5fb4b49a309342b914610d39 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 18 Nov 2020 05:43:54
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id D0DF4C433ED; Wed, 18 Nov 2020 05:43:53 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 0E41CC433ED;
+        Wed, 18 Nov 2020 05:43:50 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 0E41CC433ED
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Cc:     linux-arm-msm@vger.kernel.org,
+        Loic Poulain <loic.poulain@linaro.org>, netdev@vger.kernel.org,
+        linux-wireless@vger.kernel.org, bbhatt@codeaurora.org,
+        hemantk@codeaurora.org, ath11k@lists.infradead.org
+Subject: Re: [PATCH] bus: mhi: Remove auto-start option
+References: <20201118053102.13119-1-manivannan.sadhasivam@linaro.org>
+Date:   Wed, 18 Nov 2020 07:43:48 +0200
+In-Reply-To: <20201118053102.13119-1-manivannan.sadhasivam@linaro.org>
+        (Manivannan Sadhasivam's message of "Wed, 18 Nov 2020 11:01:02 +0530")
+Message-ID: <877dqjz0bv.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Loic Poulain <loic.poulain@linaro.org>
+Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org> writes:
 
-There is really no point having an auto-start for channels.
-This is confusing for the device drivers, some have to enable the
-channels, others don't have... and waste resources (e.g. pre allocated
-buffers) that may never be used.
+> From: Loic Poulain <loic.poulain@linaro.org>
+>
+> There is really no point having an auto-start for channels.
+> This is confusing for the device drivers, some have to enable the
+> channels, others don't have... and waste resources (e.g. pre allocated
+> buffers) that may never be used.
+>
+> This is really up to the MHI device(channel) driver to manage the state
+> of its channels.
+>
+> While at it, let's also remove the auto-start option from ath11k mhi
+> controller.
+>
+> Signed-off-by: Loic Poulain <loic.poulain@linaro.org>
+> Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+> [mani: clubbed ath11k change]
+> Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-This is really up to the MHI device(channel) driver to manage the state
-of its channels.
+Thanks and feel free to take this to the immutable branch:
 
-While at it, let's also remove the auto-start option from ath11k mhi
-controller.
+Acked-by: Kalle Valo <kvalo@codeaurora.org>
 
-Signed-off-by: Loic Poulain <loic.poulain@linaro.org>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-[mani: clubbed ath11k change]
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
----
- drivers/bus/mhi/core/init.c           | 9 ---------
- drivers/bus/mhi/core/internal.h       | 1 -
- drivers/net/wireless/ath/ath11k/mhi.c | 4 ----
- include/linux/mhi.h                   | 2 --
- 4 files changed, 16 deletions(-)
-
-diff --git a/drivers/bus/mhi/core/init.c b/drivers/bus/mhi/core/init.c
-index 0ffdebde8265..381fdea2eb9f 100644
---- a/drivers/bus/mhi/core/init.c
-+++ b/drivers/bus/mhi/core/init.c
-@@ -758,7 +758,6 @@ static int parse_ch_cfg(struct mhi_controller *mhi_cntrl,
- 		mhi_chan->offload_ch = ch_cfg->offload_channel;
- 		mhi_chan->db_cfg.reset_req = ch_cfg->doorbell_mode_switch;
- 		mhi_chan->pre_alloc = ch_cfg->auto_queue;
--		mhi_chan->auto_start = ch_cfg->auto_start;
- 
- 		/*
- 		 * If MHI host allocates buffers, then the channel direction
-@@ -1160,11 +1159,6 @@ static int mhi_driver_probe(struct device *dev)
- 			goto exit_probe;
- 
- 		ul_chan->xfer_cb = mhi_drv->ul_xfer_cb;
--		if (ul_chan->auto_start) {
--			ret = mhi_prepare_channel(mhi_cntrl, ul_chan);
--			if (ret)
--				goto exit_probe;
--		}
- 	}
- 
- 	ret = -EINVAL;
-@@ -1198,9 +1192,6 @@ static int mhi_driver_probe(struct device *dev)
- 	if (ret)
- 		goto exit_probe;
- 
--	if (dl_chan && dl_chan->auto_start)
--		mhi_prepare_channel(mhi_cntrl, dl_chan);
--
- 	mhi_device_put(mhi_dev);
- 
- 	return ret;
-diff --git a/drivers/bus/mhi/core/internal.h b/drivers/bus/mhi/core/internal.h
-index 7989269ddd96..33c23203c531 100644
---- a/drivers/bus/mhi/core/internal.h
-+++ b/drivers/bus/mhi/core/internal.h
-@@ -563,7 +563,6 @@ struct mhi_chan {
- 	bool configured;
- 	bool offload_ch;
- 	bool pre_alloc;
--	bool auto_start;
- 	bool wake_capable;
- };
- 
-diff --git a/drivers/net/wireless/ath/ath11k/mhi.c b/drivers/net/wireless/ath/ath11k/mhi.c
-index aded9a719d51..47a1ce1bee4f 100644
---- a/drivers/net/wireless/ath/ath11k/mhi.c
-+++ b/drivers/net/wireless/ath/ath11k/mhi.c
-@@ -24,7 +24,6 @@ static struct mhi_channel_config ath11k_mhi_channels[] = {
- 		.offload_channel = false,
- 		.doorbell_mode_switch = false,
- 		.auto_queue = false,
--		.auto_start = false,
- 	},
- 	{
- 		.num = 1,
-@@ -39,7 +38,6 @@ static struct mhi_channel_config ath11k_mhi_channels[] = {
- 		.offload_channel = false,
- 		.doorbell_mode_switch = false,
- 		.auto_queue = false,
--		.auto_start = false,
- 	},
- 	{
- 		.num = 20,
-@@ -54,7 +52,6 @@ static struct mhi_channel_config ath11k_mhi_channels[] = {
- 		.offload_channel = false,
- 		.doorbell_mode_switch = false,
- 		.auto_queue = false,
--		.auto_start = true,
- 	},
- 	{
- 		.num = 21,
-@@ -69,7 +66,6 @@ static struct mhi_channel_config ath11k_mhi_channels[] = {
- 		.offload_channel = false,
- 		.doorbell_mode_switch = false,
- 		.auto_queue = true,
--		.auto_start = true,
- 	},
- };
- 
-diff --git a/include/linux/mhi.h b/include/linux/mhi.h
-index d4841e5a5f45..6522a4adc794 100644
---- a/include/linux/mhi.h
-+++ b/include/linux/mhi.h
-@@ -214,7 +214,6 @@ enum mhi_db_brst_mode {
-  * @offload_channel: The client manages the channel completely
-  * @doorbell_mode_switch: Channel switches to doorbell mode on M0 transition
-  * @auto_queue: Framework will automatically queue buffers for DL traffic
-- * @auto_start: Automatically start (open) this channel
-  * @wake-capable: Channel capable of waking up the system
-  */
- struct mhi_channel_config {
-@@ -232,7 +231,6 @@ struct mhi_channel_config {
- 	bool offload_channel;
- 	bool doorbell_mode_switch;
- 	bool auto_queue;
--	bool auto_start;
- 	bool wake_capable;
- };
- 
 -- 
-2.17.1
+https://patchwork.kernel.org/project/linux-wireless/list/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
