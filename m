@@ -2,102 +2,91 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E72DE2B7405
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Nov 2020 02:58:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 73CC32B7434
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Nov 2020 03:34:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727008AbgKRB5t (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 17 Nov 2020 20:57:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36054 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725730AbgKRB5s (ORCPT
+        id S1726412AbgKRCeF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 17 Nov 2020 21:34:05 -0500
+Received: from rtits2.realtek.com ([211.75.126.72]:49606 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725771AbgKRCeF (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 17 Nov 2020 20:57:48 -0500
-Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com [IPv6:2607:f8b0:4864:20::644])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99215C061A48;
-        Tue, 17 Nov 2020 17:57:48 -0800 (PST)
-Received: by mail-pl1-x644.google.com with SMTP id d3so138498plo.4;
-        Tue, 17 Nov 2020 17:57:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=4a7zDL5lInqafK1HE5+sC1LmnDT92uD20FAhjTWB/2c=;
-        b=s5xp+g5klPD2WapB/Q7IK1Z0TXAqCLWSgcMGccoj/cwiZX3HzKsIMb3rnXdjbL/8+r
-         bvJCXZ0aH/lQj6Fgj3HCqo67qe3b/ZUEMWVkh9sGwq6S06hVwIY3gS8jlrXfJWKyCcop
-         //lIEZNIXniuq4adWq2IPzDaLGQVnvb11jNu6D0Fr1AJRyWUnNn3Y/d92pycNfkP/XPl
-         xLJltjv78d2xuE5b7q9x5Fk8a4ZP6ZywChYNAKdWw7OgLWluj6SUUWmCituDbv5DZZcA
-         6gJ6ZjTytgQgWLAa0FglUj/nr6yrTkiwEoyY/UtCJF053gBAqFuk4auJUQnCX9Udmb0a
-         Kq8w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=4a7zDL5lInqafK1HE5+sC1LmnDT92uD20FAhjTWB/2c=;
-        b=fJyJfwE6cB7A2l/orPBM5sm+aS3TW3A00lGzy2QaINT9PBGLKcZCbeM9cvxy2UiYJH
-         6091mox8grK8zoNZp6CUHNMJmD+ZYl7Oekq36YGot4TtKvZg47iV8rguM6qKtuOtgKIy
-         jzSu+9JOu1VsaBJXQDg4BXD3eTHNf2fMmXtd2xou5n0peHomuzscXgJepakuEwUKl7c8
-         AplsBeKWoaGPwolL2Ga7J1n1PsWyZ0AnKOKTFLoRWezE+frIc5xwAtcAiu22OB7XG8P0
-         gATZsaMMpF90Tg1Hgj1ipsJyRnuX7LPcnh/YTCbOJC65LNgE+8NkdodFcuSMT+8QvYHB
-         X4Qw==
-X-Gm-Message-State: AOAM5331ySRCv5xqJ/CGyWadwzXWH535IeTcu3xo3F+qSOjAWElcRrBU
-        PLkshSUjtkDXtCsz5RRVwBw=
-X-Google-Smtp-Source: ABdhPJw6aJl7AaGR6mNa5ccupT7DbLlBABl/RTfldgoA3kMAQHzcLZmNZqpt992LoKTSIEWbRGo/lA==
-X-Received: by 2002:a17:90a:e016:: with SMTP id u22mr1935038pjy.54.1605664668234;
-        Tue, 17 Nov 2020 17:57:48 -0800 (PST)
-Received: from oslab.tsinghua.edu.cn ([166.111.139.137])
-        by smtp.gmail.com with ESMTPSA id e201sm22988444pfh.73.2020.11.17.17.57.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Nov 2020 17:57:47 -0800 (PST)
-From:   Jia-Ju Bai <baijiaju1990@gmail.com>
-To:     pkshih@realtek.com, kvalo@codeaurora.org, davem@davemloft.net,
-        kuba@kernel.org
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Jia-Ju Bai <baijiaju1990@gmail.com>
-Subject: [PATCH v2 4/4] rtlwifi: rtl8723ae: avoid accessing the data mapped to streaming DMA
-Date:   Wed, 18 Nov 2020 09:57:08 +0800
-Message-Id: <20201118015708.5445-1-baijiaju1990@gmail.com>
-X-Mailer: git-send-email 2.17.1
+        Tue, 17 Nov 2020 21:34:05 -0500
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 0AI2XngrE029377, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexmb05.realtek.com.tw[172.21.6.98])
+        by rtits2.realtek.com.tw (8.15.2/2.70/5.88) with ESMTPS id 0AI2XngrE029377
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Wed, 18 Nov 2020 10:33:49 +0800
+Received: from RTEXDAG01.realtek.com.tw (172.21.6.100) by
+ RTEXMB05.realtek.com.tw (172.21.6.98) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2044.4; Wed, 18 Nov 2020 10:33:49 +0800
+Received: from RTEXMB04.realtek.com.tw (172.21.6.97) by
+ RTEXDAG01.realtek.com.tw (172.21.6.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2044.4; Wed, 18 Nov 2020 10:33:49 +0800
+Received: from RTEXMB04.realtek.com.tw ([fe80::89f7:e6c3:b043:15fa]) by
+ RTEXMB04.realtek.com.tw ([fe80::89f7:e6c3:b043:15fa%3]) with mapi id
+ 15.01.2044.006; Wed, 18 Nov 2020 10:33:49 +0800
+From:   Pkshih <pkshih@realtek.com>
+To:     "baijiaju1990@gmail.com" <baijiaju1990@gmail.com>,
+        "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        "kuba@kernel.org" <kuba@kernel.org>
+CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 1/4] rtlwifi: rtl8188ee: avoid accessing the data mapped to streaming DMA
+Thread-Topic: [PATCH v2 1/4] rtlwifi: rtl8188ee: avoid accessing the data
+ mapped to streaming DMA
+Thread-Index: AQHWvU2rgo4QMM0k1kuIsMYwqSTPC6nMpXgA
+Date:   Wed, 18 Nov 2020 02:33:48 +0000
+Message-ID: <1605666764.7490.1.camel@realtek.com>
+References: <20201118015314.4979-1-baijiaju1990@gmail.com>
+In-Reply-To: <20201118015314.4979-1-baijiaju1990@gmail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.213]
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <F376166834A78D4BB5D032F1C78958CD@realtek.com>
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-In rtl8723e_tx_fill_cmddesc(), skb->data is mapped to streaming DMA on
-line 531:
-  dma_addr_t mapping = dma_map_single(..., skb->data, ...);
-
-On line 534, skb->data is assigned to hdr after cast:
-  struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)(skb->data);
-
-Then hdr->frame_control is accessed on line 535:
-  __le16 fc = hdr->frame_control;
-
-This DMA access may cause data inconsistency between CPU and hardwre.
-
-To fix this bug, hdr->frame_control is accessed before the DMA mapping.
-
-Signed-off-by: Jia-Ju Bai <baijiaju1990@gmail.com>
----
- drivers/net/wireless/realtek/rtlwifi/rtl8723ae/trx.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/trx.c b/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/trx.c
-index e3ee91b7ea8d..340b3d68a54e 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/trx.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/trx.c
-@@ -528,12 +528,12 @@ void rtl8723e_tx_fill_cmddesc(struct ieee80211_hw *hw,
- 	u8 fw_queue = QSLT_BEACON;
- 	__le32 *pdesc = (__le32 *)pdesc8;
- 
--	dma_addr_t mapping = dma_map_single(&rtlpci->pdev->dev, skb->data,
--					    skb->len, DMA_TO_DEVICE);
--
- 	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)(skb->data);
- 	__le16 fc = hdr->frame_control;
- 
-+	dma_addr_t mapping = dma_map_single(&rtlpci->pdev->dev, skb->data,
-+					    skb->len, DMA_TO_DEVICE);
-+
- 	if (dma_mapping_error(&rtlpci->pdev->dev, mapping)) {
- 		rtl_dbg(rtlpriv, COMP_SEND, DBG_TRACE,
- 			"DMA mapping error\n");
--- 
-2.17.1
-
+T24gV2VkLCAyMDIwLTExLTE4IGF0IDA5OjUzICswODAwLCBKaWEtSnUgQmFpIHdyb3RlOg0KPiBJ
+biBydGw4OGVlX3R4X2ZpbGxfY21kZGVzYygpLCBza2ItPmRhdGEgaXMgbWFwcGVkIHRvIHN0cmVh
+bWluZyBETUEgb24NCj4gbGluZSA2Nzc6DQo+IMKgIGRtYV9hZGRyX3QgbWFwcGluZyA9IGRtYV9t
+YXBfc2luZ2xlKC4uLiwgc2tiLT5kYXRhLCAuLi4pOw0KPiANCj4gT24gbGluZSA2ODAsIHNrYi0+
+ZGF0YSBpcyBhc3NpZ25lZCB0byBoZHIgYWZ0ZXIgY2FzdDoNCj4gwqAgc3RydWN0IGllZWU4MDIx
+MV9oZHIgKmhkciA9IChzdHJ1Y3QgaWVlZTgwMjExX2hkciAqKShza2ItPmRhdGEpOw0KPiANCj4g
+VGhlbiBoZHItPmZyYW1lX2NvbnRyb2wgaXMgYWNjZXNzZWQgb24gbGluZSA2ODE6DQo+IMKgIF9f
+bGUxNiBmYyA9IGhkci0+ZnJhbWVfY29udHJvbDsNCj4gDQo+IFRoaXMgRE1BIGFjY2VzcyBtYXkg
+Y2F1c2UgZGF0YSBpbmNvbnNpc3RlbmN5IGJldHdlZW4gQ1BVIGFuZCBoYXJkd3JlLg0KPiANCj4g
+VG8gZml4IHRoaXMgYnVnLCBoZHItPmZyYW1lX2NvbnRyb2wgaXMgYWNjZXNzZWQgYmVmb3JlIHRo
+ZSBETUEgbWFwcGluZy4NCj4gDQo+IFNpZ25lZC1vZmYtYnk6IEppYS1KdSBCYWkgPGJhaWppYWp1
+MTk5MEBnbWFpbC5jb20+DQoNClRoaXMgcGF0Y2hzZXQgbG9va3MgZ29vZCB0byBtZS4NClRoYW5r
+IHlvdS4NCg0KQWNrZWQtYnk6IFBpbmctS2UgU2hpaCA8cGtzaGloQHJlYWx0ZWsuY29tPg0KDQo+
+IC0tLQ0KPiDCoGRyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnRsd2lmaS9ydGw4MTg4ZWUv
+dHJ4LmMgfCA2ICsrKy0tLQ0KPiDCoDEgZmlsZSBjaGFuZ2VkLCAzIGluc2VydGlvbnMoKyksIDMg
+ZGVsZXRpb25zKC0pDQo+IA0KPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVh
+bHRlay9ydGx3aWZpL3J0bDgxODhlZS90cnguYw0KPiBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3Jl
+YWx0ZWsvcnRsd2lmaS9ydGw4MTg4ZWUvdHJ4LmMNCj4gaW5kZXggYjk3NzVlZWM0YzU0Li5jOTQ4
+ZGFmYTBjODAgMTAwNjQ0DQo+IC0tLSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnRs
+d2lmaS9ydGw4MTg4ZWUvdHJ4LmMNCj4gKysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRl
+ay9ydGx3aWZpL3J0bDgxODhlZS90cnguYw0KPiBAQCAtNjc0LDEyICs2NzQsMTIgQEAgdm9pZCBy
+dGw4OGVlX3R4X2ZpbGxfY21kZGVzYyhzdHJ1Y3QgaWVlZTgwMjExX2h3ICpodywNCj4gwqAJdTgg
+ZndfcXVldWUgPSBRU0xUX0JFQUNPTjsNCj4gwqAJX19sZTMyICpwZGVzYyA9IChfX2xlMzIgKilw
+ZGVzYzg7DQo+IMKgDQo+IC0JZG1hX2FkZHJfdCBtYXBwaW5nID0gZG1hX21hcF9zaW5nbGUoJnJ0
+bHBjaS0+cGRldi0+ZGV2LCBza2ItPmRhdGEsDQo+IC0JCQkJCcKgwqDCoMKgc2tiLT5sZW4sIERN
+QV9UT19ERVZJQ0UpOw0KPiAtDQo+IMKgCXN0cnVjdCBpZWVlODAyMTFfaGRyICpoZHIgPSAoc3Ry
+dWN0IGllZWU4MDIxMV9oZHIgKikoc2tiLT5kYXRhKTsNCj4gwqAJX19sZTE2IGZjID0gaGRyLT5m
+cmFtZV9jb250cm9sOw0KPiDCoA0KPiArCWRtYV9hZGRyX3QgbWFwcGluZyA9IGRtYV9tYXBfc2lu
+Z2xlKCZydGxwY2ktPnBkZXYtPmRldiwgc2tiLT5kYXRhLA0KPiArCQkJCQnCoMKgwqDCoHNrYi0+
+bGVuLCBETUFfVE9fREVWSUNFKTsNCj4gKw0KPiDCoAlpZiAoZG1hX21hcHBpbmdfZXJyb3IoJnJ0
+bHBjaS0+cGRldi0+ZGV2LCBtYXBwaW5nKSkgew0KPiDCoAkJcnRsX2RiZyhydGxwcml2LCBDT01Q
+X1NFTkQsIERCR19UUkFDRSwNCj4gwqAJCQkiRE1BIG1hcHBpbmcgZXJyb3JcbiIpOw0KDQoNCg0K
