@@ -2,177 +2,79 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B24212B9B12
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Nov 2020 20:03:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7EE962B9B6A
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Nov 2020 20:23:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727255AbgKSTCi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 19 Nov 2020 14:02:38 -0500
-Received: from m42-4.mailgun.net ([69.72.42.4]:34039 "EHLO m42-4.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727189AbgKSTCh (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 19 Nov 2020 14:02:37 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1605812557; h=Message-ID: References: In-Reply-To: Reply-To:
- Subject: Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
- MIME-Version: Sender; bh=QM3CLPvjkfi6YERoSbKWzDa4BPjcQSDZ5ZJSSMwwfYw=;
- b=p3bt++XyKz71hb7chrxZ08QOj9dt6dcyJ4t6hhiZUMRSfOTvdxu7KLq98uzpnu4K7LnDPlTw
- PHC4CYTQRMqDpKVp2u4PVEytHvatSsVmdxyFQpor1FfqWf2WNMJqsJ9q9ANI9WTL0lFI1xXt
- 0yDuhOut5ElbmFHYVWXEUkucLIs=
-X-Mailgun-Sending-Ip: 69.72.42.4
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n07.prod.us-east-1.postgun.com with SMTP id
- 5fb6c14cfa67d9becf71a9f3 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 19 Nov 2020 19:02:36
- GMT
-Sender: bbhatt=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 29221C43463; Thu, 19 Nov 2020 19:02:36 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: bbhatt)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 2AC29C433C6;
-        Thu, 19 Nov 2020 19:02:35 +0000 (UTC)
+        id S1728073AbgKSTU5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 19 Nov 2020 14:20:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52528 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727086AbgKSTU5 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 19 Nov 2020 14:20:57 -0500
+Received: from mail-oi1-x244.google.com (mail-oi1-x244.google.com [IPv6:2607:f8b0:4864:20::244])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4100C0613CF
+        for <linux-wireless@vger.kernel.org>; Thu, 19 Nov 2020 11:20:56 -0800 (PST)
+Received: by mail-oi1-x244.google.com with SMTP id m143so7549795oig.7
+        for <linux-wireless@vger.kernel.org>; Thu, 19 Nov 2020 11:20:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=LYiWAA3LgHVsZoxh6C876qDcBmjIQV3sgz0n1BOWoYo=;
+        b=QEoytVRc08esZgrtVj7ByRb1Sg4mzI0VLkGfZcL0Svzs4mr69Ik06aZmbYI2UpSh4S
+         YuVkEQK/H/09nHrIn4HdeTFcmWrET9XW4cw8ae+HPs0QlgFVwDCms4tZr1sWBaZn560N
+         kAE4HorNaz7LjQQ+GPx6MY9aGpneUDWum4LE4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=LYiWAA3LgHVsZoxh6C876qDcBmjIQV3sgz0n1BOWoYo=;
+        b=oAP2Yx97BWTuDHhR7ZM1uJ+wiYnjprp7fFJCUZ8Unhv+rwCDNT27fuOCtPfabFLaBg
+         tSLSU+T5QQpGjrhqP0Szj8SWzqRYFWCPuldcG4SvDjQTacxZv0+I3rcnuyZ/2k2O/HDz
+         gJAAgLWbP+EJa5Hzjxja5dcVRJOm71FScfbPHqRDO6itMjHiFDTkkBZZZBjFzd6rwtZ3
+         /99VBmprjbNkAi33Zfb2DacWVVZ5Y3mUYyZt74FtthQtIQ+p44LkwVG+/K2jsGv8Q+lU
+         8NNggAQr9MdTERGDBFv4Hbg+5o/NVI1uKmPJMu4QR8h15qZGRgZxjDhsiiIrZDKmZUtg
+         Qbzw==
+X-Gm-Message-State: AOAM533ADiVX3SJKrQwNyndD2jljdOHFm+apd85LTZMeiJbM64uu+iUc
+        oiseSPeAPnAZkT8JzzJSMhFqMCi4aYpGng==
+X-Google-Smtp-Source: ABdhPJy/nPHTd1vS4T0cBVL93MPaLI0gPj40Z86xBBN1p4SHb9c1FlfrSp4vU2+FM03R4pVqCOCreA==
+X-Received: by 2002:aca:47c7:: with SMTP id u190mr3946438oia.68.1605813655190;
+        Thu, 19 Nov 2020 11:20:55 -0800 (PST)
+Received: from mail-oi1-f177.google.com (mail-oi1-f177.google.com. [209.85.167.177])
+        by smtp.gmail.com with ESMTPSA id s9sm51228otb.6.2020.11.19.11.20.53
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 19 Nov 2020 11:20:53 -0800 (PST)
+Received: by mail-oi1-f177.google.com with SMTP id c80so7603005oib.2
+        for <linux-wireless@vger.kernel.org>; Thu, 19 Nov 2020 11:20:53 -0800 (PST)
+X-Received: by 2002:aca:750d:: with SMTP id q13mr3986829oic.77.1605813652821;
+ Thu, 19 Nov 2020 11:20:52 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-Date:   Thu, 19 Nov 2020 11:02:35 -0800
-From:   Bhaumik Bhatt <bbhatt@codeaurora.org>
-To:     Jeffrey Hugo <jhugo@codeaurora.org>
-Cc:     Loic Poulain <loic.poulain@linaro.org>, ath11k@lists.infradead.org,
-        cjhuang@codeaurora.org, clew@codeaurora.org,
-        hemantk@codeaurora.org, kvalo@codeaurora.org,
-        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-wireless@vger.kernel.org, manivannan.sadhasivam@linaro.org,
-        netdev@vger.kernel.org, jhugo=codeaurora.org@codeaurora.org
-Subject: Re: [PATCH] net: qrtr: Unprepare MHI channels during remove
-Organization: Qualcomm Innovation Center, Inc.
-Reply-To: bbhatt@codeaurora.org
-Mail-Reply-To: bbhatt@codeaurora.org
-In-Reply-To: <2019fe3c-55c5-61fe-758c-1e9952e1cb33@codeaurora.org>
-References: <1605723625-11206-1-git-send-email-bbhatt@codeaurora.org>
- <5e94c0be-9402-7309-5d65-857a27d1f491@codeaurora.org>
- <CAMZdPi_b0=qFNGi1yUke3Dip2bi-zW4ULTg8W4nbyPyEsE3D4w@mail.gmail.com>
- <2019fe3c-55c5-61fe-758c-1e9952e1cb33@codeaurora.org>
-Message-ID: <647d1520d0bcefa7ff02d2ef5ee81bd1@codeaurora.org>
-X-Sender: bbhatt@codeaurora.org
-User-Agent: Roundcube Webmail/1.3.9
+References: <20201118033936.3667788-1-briannorris@chromium.org> <DM5PR12MB1801E9BD703DB5E6381CF602D9E00@DM5PR12MB1801.namprd12.prod.outlook.com>
+In-Reply-To: <DM5PR12MB1801E9BD703DB5E6381CF602D9E00@DM5PR12MB1801.namprd12.prod.outlook.com>
+From:   Brian Norris <briannorris@chromium.org>
+Date:   Thu, 19 Nov 2020 11:20:39 -0800
+X-Gmail-Original-Message-ID: <CA+ASDXNoVq6JBsoEHHsXT0Aps=SgLw4f0W8EMCbkp78vcNCLxw@mail.gmail.com>
+Message-ID: <CA+ASDXNoVq6JBsoEHHsXT0Aps=SgLw4f0W8EMCbkp78vcNCLxw@mail.gmail.com>
+Subject: Re: [PATCH 0/4] iw: add HE capabilities scan parsing
+To:     David Poole <dpoole@cradlepoint.com>
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        Ben Greear <greearb@candelatech.com>,
+        John Crispin <john@phrozen.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2020-11-18 11:34 AM, Jeffrey Hugo wrote:
-> On 11/18/2020 12:14 PM, Loic Poulain wrote:
->> 
->> 
->> Le mer. 18 nov. 2020 à 19:34, Jeffrey Hugo <jhugo@codeaurora.org 
->> <mailto:jhugo@codeaurora.org>> a écrit :
->> 
->>     On 11/18/2020 11:20 AM, Bhaumik Bhatt wrote:
->>      > Reset MHI device channels when driver remove is called due to
->>      > module unload or any crash scenario. This will make sure that
->>      > MHI channels no longer remain enabled for transfers since the
->>      > MHI stack does not take care of this anymore after the 
->> auto-start
->>      > channels feature was removed.
->>      >
->>      > Signed-off-by: Bhaumik Bhatt <bbhatt@codeaurora.org
->>     <mailto:bbhatt@codeaurora.org>>
->>      > ---
->>      >   net/qrtr/mhi.c | 1 +
->>      >   1 file changed, 1 insertion(+)
->>      >
->>      > diff --git a/net/qrtr/mhi.c b/net/qrtr/mhi.c
->>      > index 7100f0b..2bf2b19 100644
->>      > --- a/net/qrtr/mhi.c
->>      > +++ b/net/qrtr/mhi.c
->>      > @@ -104,6 +104,7 @@ static void qcom_mhi_qrtr_remove(struct
->>     mhi_device *mhi_dev)
->>      >       struct qrtr_mhi_dev *qdev = 
->> dev_get_drvdata(&mhi_dev->dev);
->>      >
->>      >       qrtr_endpoint_unregister(&qdev->ep);
->>      > +     mhi_unprepare_from_transfer(mhi_dev);
->>      >       dev_set_drvdata(&mhi_dev->dev, NULL);
->>      >   }
->>      >
->>      >
->> 
->>     I admit, I didn't pay much attention to the auto-start being 
->> removed,
->>     but this seems odd to me.
->> 
->>     As a client, the MHI device is being removed, likely because of 
->> some
->>     factor outside of my control, but I still need to clean it up?  
->> This
->>     really feels like something MHI should be handling.
->> 
->> 
->> I think this is just about balancing operations, what is done in probe 
->> should be undone in remove, so here channels are started in probe and 
->> stopped/reset in remove.
-> 
-> I understand that perspective, but that doesn't quite match what is
-> going on here.  Regardless of if the channel was started (prepared) in
-> probe, it now needs to be stopped in remove.  That not balanced in all
-> cases
-> 
-> Lets assume, in response to probe(), my client driver goes and creates
-> some other object, maybe a socket.  In response to that socket being
-> opened/activated by the client of my driver, I go and start the mhi
-> channel.  Now, normally, when the socket is closed/deactivated, I stop
-> the MHI channel.  In this case, stopping the MHI channel in remove()
-> is unbalanced with respect to probe(), but is now a requirement.
-> 
-> Now you may argue, I should close the object in response to remove,
-> which will then trigger the stop on the channel.  That doesn't apply
-> to everything.  For example, you cannot close an open file in the
-> kernel. You need to wait for userspace to close it.  By the time that
-> happens, the mhi_dev is long gone I expect.
-> 
-> So if, somehow, the client driver is the one causing the remove to
-> occur, then yes it should probably be the one doing the stop, but
-> that's a narrow set of conditions, and I think having that requirement
-> for all scenarios is limiting.
-It should be the client's responsibility to perform a clean-up though.
+On Thu, Nov 19, 2020 at 7:06 AM David Poole <dpoole@cradlepoint.com> wrote:
+> I'll be happy to help test!
 
-We cannot assume that the remove() call was due to factors outside of 
-the
-client's control at all times. You may not know if the remove() was due 
-to
-device actually crashing or just an unbind/module unload. So, it would 
-be
-better if you call it as the device should ideally not be left with a 
-stale
-channel context.
+You're more than welcome to :) Feel free to reply back here with
+positive or negative feedback. (And if positive, might as well make
+that a "Tested-by: Your Name <your@email.tld>".) I have more HE
+clients than APs, so I only have limited test coverage for the "scan"
+part.
 
-We had an issue where a client was issuing a driver unbind without 
-unpreparing
-the MHI channels and without Loic's patch [1], we would not issue a 
-channel
-RESET to the device resulting in incoming data to the host on those 
-channels
-after host clean-up and an unmapped memory access and kernel panic.
-
-If MHI dev will be gone that NULL/status check must be present in 
-something that
-userspace could potentially use.
-
-[1] 
-https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/commit/drivers/bus/mhi?h=next-20201119&id=a7f422f2f89e7d48aa66e6488444a4c7f01269d5
-
-Thanks,
-Bhaumik
----
-The Qualcomm Innovation Center, Inc. is a member of the Code Aurora 
-Forum,
-a Linux Foundation Collaborative Project
+Brian
