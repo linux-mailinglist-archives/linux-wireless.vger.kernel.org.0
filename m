@@ -2,80 +2,80 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A9D12B8CB1
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Nov 2020 08:58:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F0872B8CE5
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Nov 2020 09:12:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726463AbgKSH5t (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 19 Nov 2020 02:57:49 -0500
-Received: from m42-4.mailgun.net ([69.72.42.4]:29001 "EHLO m42-4.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726466AbgKSH5q (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 19 Nov 2020 02:57:46 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1605772665; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=ubWtRfSgmS3H8djE3SH6JHW3ccCoPv5FcGUzlbWcFhY=; b=aEOgMsVUjylTTBE2HD2atGvSQy+YaTW4cxREP1+l8WDI2rWBRFnw1b9qLo8jxpAs+3G+t30b
- 7p/jr7hRmIobPq9RElVw1MgwM0cF/P+vUSECKeSGDeK7TEpryUCmpegqePrXl6UNf9XzLy1L
- 23WLW8upnAvWe/PCrwCx2NMCcoM=
-X-Mailgun-Sending-Ip: 69.72.42.4
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n05.prod.us-east-1.postgun.com with SMTP id
- 5fb625799e87e16352d229da (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 19 Nov 2020 07:57:45
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 58405C43460; Thu, 19 Nov 2020 07:57:44 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 59941C433ED;
-        Thu, 19 Nov 2020 07:57:41 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 59941C433ED
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Qinglang Miao <miaoqinglang@huawei.com>
-Cc:     Solomon Peachy <pizza@shaftnet.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] net: cw1200: fix missing destroy_workqueue() on error in cw1200_init_common
-References: <20201119070842.1011-1-miaoqinglang@huawei.com>
-Date:   Thu, 19 Nov 2020 09:57:39 +0200
-In-Reply-To: <20201119070842.1011-1-miaoqinglang@huawei.com> (Qinglang Miao's
-        message of "Thu, 19 Nov 2020 15:08:42 +0800")
-Message-ID: <877dqhvkwc.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        id S1725937AbgKSIL0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 19 Nov 2020 03:11:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33698 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725816AbgKSILZ (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 19 Nov 2020 03:11:25 -0500
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9826CC0613CF;
+        Thu, 19 Nov 2020 00:11:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=A8ZpF4d5bM/Bn7Uny5g9ie3oCYKMVaj7Hp1UThvfNmU=; b=rnWZuTFnqtxXLtubdtoPaN5KTU
+        s65+X2NkbURKUzUk9wjsooeN8isTyvd/c06IfTwnKrhj1jyYpa1CeHLVOWF2ETyGTNu4KL2r6UJiM
+        TwG81gaA8GwlyzrunPWiCvSbl9b6eE+bkKq4cvb5OG9Bu6mKdQH/ciLBNeJrtK+Awl7iEHAtIh9fD
+        cxMeIrOPeLnp5Ln29gEzBnBFZ/8KuQfvVf4AucTmqjkxIHW/lXHWGwz3H3uqcISzCjd5ICFih/0Wg
+        ca54KUUD2+L+YdDqda1mnp52W4K/TtYlvF98pEI2HE+r4eWit23rPU6QgffBKX/L8Nq/8x9xyveRu
+        qWF1/HIQ==;
+Received: from hch by casper.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1kff2G-0002Dx-I8; Thu, 19 Nov 2020 08:11:20 +0000
+Date:   Thu, 19 Nov 2020 08:11:20 +0000
+From:   Christoph Hellwig <hch@infradead.org>
+To:     Jani Nikula <jani.nikula@intel.com>
+Cc:     linux-kernel@vger.kernel.org, intel-gfx@lists.freedesktop.org,
+        linux-block@vger.kernel.org, Jens Axboe <axboe@kernel.dk>,
+        ath11k@lists.infradead.org, ath10k@lists.infradead.org,
+        Kalle Valo <kvalo@codeaurora.org>,
+        linux-wireless@vger.kernel.org,
+        QCA ath9k Development <ath9k-devel@qca.qualcomm.com>
+Subject: Re: [PATCH 1/6] relay: allow the use of const callback structs
+Message-ID: <20201119081120.GA6149@infradead.org>
+References: <20201118165320.26829-1-jani.nikula@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201118165320.26829-1-jani.nikula@intel.com>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Qinglang Miao <miaoqinglang@huawei.com> writes:
+> +/*
+> + * rchan_callback wrappers. Call the callbacks if available, otherwise fall back
+> + * to default behaviour.
+> + */
 
-> Add the missing destroy_workqueue() before return from
-> cw1200_init_common in the error handling case.
->
-> Fixes:a910e4a94f69 ("cw1200: add driver for the ST-E CW1100 & CW1200 WLAN chipsets")
+This adds an overly long line.  That being said this behavior is pretty
+normal for kernel APIs, so I'm not even sure we need it at all.
 
-This should be:
+> +
+> +/*
+> + * subbuf_start() callback.
+> + */
 
-Fixes: a910e4a94f69 ("cw1200: add driver for the ST-E CW1100 & CW1200 WLAN chipsets")
+and this one is for sure completley useless.  Same for all the other
+similar ones.
 
-I can fix that.
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+But taking one step back:  All instances implement create_buf_file
+and remove_buf_file, which makes sense as that is the prime aim
+of these methods.  So there is no point in making those optional.
+subbuf_start_callback is overriden by two instances, so making that
+optional totally makes sense.  buf_mapped and buf_unmapped are
+never overriden, so they should be removed entirely.
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+More importantly there is no case that passes a NULL rchan_callbacks,
+which makes complete sense as it wouldn't even create a file.  So
+remove that case as well and just replace it with a sanity check in
+relay_open().
+
+Please also add a patch to mark all rchan_callbacks instances const
+while you're at it.
