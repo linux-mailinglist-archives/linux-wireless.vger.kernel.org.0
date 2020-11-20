@@ -2,251 +2,125 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E132F2BA023
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Nov 2020 03:02:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 391C52BA038
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Nov 2020 03:13:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726192AbgKTCBK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 19 Nov 2020 21:01:10 -0500
-Received: from z5.mailgun.us ([104.130.96.5]:34164 "EHLO z5.mailgun.us"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725887AbgKTCBK (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 19 Nov 2020 21:01:10 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1605837669; h=Content-Transfer-Encoding: MIME-Version:
- Message-Id: Date: Subject: Cc: To: From: Sender;
- bh=r9XryZ5RU1fnuUpbNWQf5uUlzmUELpY5+zv6hzIZGbY=; b=vTpvSC00wCLGFgF3dVE5dptoM0Y0Q+eWBcbWZwZ4NKmjKHlAXgQdeIr+st7uALF4P6i/G3sM
- L+g5xPc6STok06W4wRdaVC7EI7Gg4ILXMw0N3I5E7wJpOTjCHbkX2BxqiZ+EXRoJWSNuHbjh
- r3jw/b1zP5sNSWGVBRVSgex6t6c=
-X-Mailgun-Sending-Ip: 104.130.96.5
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n04.prod.us-east-1.postgun.com with SMTP id
- 5fb7234fa5c560669c46f49b (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 20 Nov 2020 02:00:47
- GMT
-Sender: bqiang=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id F16B5C43462; Fri, 20 Nov 2020 02:00:46 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
-        autolearn=no autolearn_force=no version=3.4.0
-Received: from z203.ap.qualcomm.com (unknown [180.166.53.21])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: bqiang)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 6B06CC433ED;
-        Fri, 20 Nov 2020 02:00:45 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 6B06CC433ED
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=bqiang@codeaurora.org
-From:   Baochen Qiang <bqiang@codeaurora.org>
-To:     ath11k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org
-Subject: [PATCH] ath11k: fix "rmmod ath11k_pci" failure after QMI sequence fails
-Date:   Fri, 20 Nov 2020 10:00:28 +0800
-Message-Id: <20201120020028.12063-1-bqiang@codeaurora.org>
-X-Mailer: git-send-email 2.25.1
+        id S1726118AbgKTCNF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 19 Nov 2020 21:13:05 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59634 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726094AbgKTCNF (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 19 Nov 2020 21:13:05 -0500
+Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA3EDC0613CF
+        for <linux-wireless@vger.kernel.org>; Thu, 19 Nov 2020 18:13:04 -0800 (PST)
+Received: by mail-wr1-x444.google.com with SMTP id l1so8443118wrb.9
+        for <linux-wireless@vger.kernel.org>; Thu, 19 Nov 2020 18:13:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=QTXtYshgBx4QZ9Jmd3XHSEpqTndirQEx843ji2frBOM=;
+        b=VT/LmiGPZg6SfpY7DYUOD7vMYBoXdxmFUFH2LYt/uhtPFpQGJOg7eQbi4KuvKwiYLD
+         4upHxJ6O411pvXxSBYQrHQ6ii8o03rijMpHG5dG/uHf8bXUu28AZmY2wG1su/apphQYa
+         xPxF3YWLwnMUCA46KZosUIADedRe1rDEj0LWsDZbsSnEoKk+nRDEgWvXKqTE2mus/xuz
+         4ZRG0BpupdYGiBUnLAOppayd5/pZgooSLw51oxHCyDgU9ZynOp5xDWI4K/cW6MxsAWVK
+         JsJDqGZbhzBUlzKm+lGS0r4POgZjeiQKY4nu0qHIiUCvwAP+eyxXGl6kNK3NfqJpR1A+
+         CD4Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=QTXtYshgBx4QZ9Jmd3XHSEpqTndirQEx843ji2frBOM=;
+        b=galNFZFS7/FyxfG6hl94hr+0zIoXnPxhT6nIfHOmU/Z6fM9UIWJulp9P9Sbb4MJS+8
+         bfseezNDt5JWhumiPNh0ZvML+fPyC3f9jdefXD/6J5UpnQODCsDTxafBuDmemtS8dUPd
+         e7UrUIu7SeYvSTy6dmTexfQp7MX+O22FjactZ9R7Hr9JZ1vBNmUHfrbkElp+4fz94O2g
+         uTA8V2H9Yod1hxntz9Lfe+Iti+fpa4CiulovW9uht7OsdAKRu1Anshfn7Fon4a4vlRMb
+         Ff/5PeOMmcYYddj04Lax9T68OZpCh5SOaEPdiN/36gQ0WAE9Z2Q0Q/r3K/g+hBd4iOhR
+         Rssw==
+X-Gm-Message-State: AOAM530B06tnolqyDK+671YVRVVsz9lr7R9Usmvs7NtA2Rp1v+rh1pjj
+        RYZgdMafwYPlm0axRQ0OO9NPxQ==
+X-Google-Smtp-Source: ABdhPJwlgxC+MdNtze1PJuL4IA6hBEtufWpP4Qsf9p8A8nMPOIhqSBUlUvidZh+eHIlpUrawaAYgyw==
+X-Received: by 2002:a5d:44d1:: with SMTP id z17mr13893629wrr.423.1605838383568;
+        Thu, 19 Nov 2020 18:13:03 -0800 (PST)
+Received: from sagittarius-a.chello.ie (188-141-3-169.dynamic.upc.ie. [188.141.3.169])
+        by smtp.gmail.com with ESMTPSA id c187sm2918261wmd.23.2020.11.19.18.13.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 19 Nov 2020 18:13:02 -0800 (PST)
+From:   Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+To:     kvalo@codeaurora.org, wcn36xx@lists.infradead.org,
+        linux-wireless@vger.kernel.org
+Cc:     bryan.odonoghue@linaro.org, shawn.guo@linaro.org,
+        loic.poulain@linaro.org, benl@squareup.com
+Subject: [PATCH] wcn36xx: Don't run scan_init multiple times
+Date:   Fri, 20 Nov 2020 02:14:02 +0000
+Message-Id: <20201120021403.2646574-1-bryan.odonoghue@linaro.org>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-If board.bin file is missing, QMI sequence fails,
-which results in failure of "rmmod ath11k_pci".
-This patch fixes this issue.
+Run scan_init only once. There's no need to run this command multiple times
+if it has already been run once.
 
-Tested-on: QCA6390 hw2.0 PCI WLAN.HST.1.0.1-01230-QCAHSTSWPLZ_V2_TO_X86-1
-Signed-off-by: Baochen Qiang <bqiang@codeaurora.org>
+The software scan algorithm can end up repeatedly calling scan_init on each
+loop resulting in between four and eight milliseconds of lost time on each
+callout.
+
+Subtract the overhead now.
+
+Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 ---
- drivers/net/wireless/ath/ath11k/core.h  |  3 ++-
- drivers/net/wireless/ath/ath11k/debug.c |  1 +
- drivers/net/wireless/ath/ath11k/pci.c   |  9 +++++++
- drivers/net/wireless/ath/ath11k/qmi.c   | 35 ++++++++++++++++---------
- 4 files changed, 35 insertions(+), 13 deletions(-)
+ drivers/net/wireless/ath/wcn36xx/smd.c     | 6 ++++++
+ drivers/net/wireless/ath/wcn36xx/wcn36xx.h | 1 +
+ 2 files changed, 7 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath11k/core.h b/drivers/net/wireless/ath/ath11k/core.h
-index 11448755c06d..2ddf690a9d21 100644
---- a/drivers/net/wireless/ath/ath11k/core.h
-+++ b/drivers/net/wireless/ath/ath11k/core.h
-@@ -188,7 +188,8 @@ enum ath11k_dev_flags {
- 	ATH11K_FLAG_REGISTERED,
- 	ATH11K_FLAG_FW_RESTART_FOR_HOST,
- 	ATH11K_FLAG_CORE_STOPPED,
--	ATH11K_FLAG_CORE_STARTING
-+	ATH11K_FLAG_CORE_STARTING,
-+	ATH11K_FLAG_QMI_FAIL,
- };
+diff --git a/drivers/net/wireless/ath/wcn36xx/smd.c b/drivers/net/wireless/ath/wcn36xx/smd.c
+index acf533fae46a..ec082cf3ab09 100644
+--- a/drivers/net/wireless/ath/wcn36xx/smd.c
++++ b/drivers/net/wireless/ath/wcn36xx/smd.c
+@@ -706,6 +706,10 @@ int wcn36xx_smd_init_scan(struct wcn36xx *wcn, enum wcn36xx_hal_sys_mode mode,
+ 	int ret;
  
- enum ath11k_monitor_flags {
-diff --git a/drivers/net/wireless/ath/ath11k/debug.c b/drivers/net/wireless/ath/ath11k/debug.c
-index 51226a4ec50f..ef8b3a88d342 100644
---- a/drivers/net/wireless/ath/ath11k/debug.c
-+++ b/drivers/net/wireless/ath/ath11k/debug.c
-@@ -1072,6 +1072,7 @@ void ath11k_debug_soc_destroy(struct ath11k_base *ab)
- 	debugfs_remove_recursive(ab->debugfs_ath11k);
- 	ab->debugfs_ath11k = NULL;
- }
-+EXPORT_SYMBOL(ath11k_debug_soc_destroy);
- 
- void ath11k_debug_fw_stats_init(struct ath11k *ar)
- {
-diff --git a/drivers/net/wireless/ath/ath11k/pci.c b/drivers/net/wireless/ath/ath11k/pci.c
-index 43a8bffc4ba0..b59741796ac2 100644
---- a/drivers/net/wireless/ath/ath11k/pci.c
-+++ b/drivers/net/wireless/ath/ath11k/pci.c
-@@ -1184,7 +1184,16 @@ static void ath11k_pci_remove(struct pci_dev *pdev)
- 	cancel_work_sync(&ab->update_11d_work);
- 	cancel_work_sync(&ab->rfkill_work);
- 	cancel_work_sync(&ab->reset_work);
-+
-+	if (test_bit(ATH11K_FLAG_QMI_FAIL, &ab->dev_flags)) {
-+		ath11k_hif_power_down(ab);
-+		ath11k_debug_soc_destroy(ab);
-+		ath11k_qmi_deinit_service(ab);
-+		goto qmi_fail;
+ 	mutex_lock(&wcn->hal_mutex);
++	if (wcn->scan_init) {
++		ret = 0;
++		goto out;
 +	}
-+
- 	ath11k_core_deinit(ab);
-+qmi_fail:
- 	ath11k_mhi_unregister(ab_pci);
+ 	INIT_HAL_MSG(msg_body, WCN36XX_HAL_INIT_SCAN_REQ);
  
- 	ath11k_pci_free_irq(ab);
-diff --git a/drivers/net/wireless/ath/ath11k/qmi.c b/drivers/net/wireless/ath/ath11k/qmi.c
-index 83a083a2d097..075fd94d92df 100644
---- a/drivers/net/wireless/ath/ath11k/qmi.c
-+++ b/drivers/net/wireless/ath/ath11k/qmi.c
-@@ -2501,7 +2501,7 @@ ath11k_qmi_driver_event_post(struct ath11k_qmi *qmi,
- 	return 0;
- }
- 
--static void ath11k_qmi_event_server_arrive(struct ath11k_qmi *qmi)
-+static int ath11k_qmi_event_server_arrive(struct ath11k_qmi *qmi)
- {
- 	struct ath11k_base *ab = qmi->ab;
- 	int ret;
-@@ -2509,17 +2509,19 @@ static void ath11k_qmi_event_server_arrive(struct ath11k_qmi *qmi)
- 	ret = ath11k_qmi_fw_ind_register_send(ab);
- 	if (ret < 0) {
- 		ath11k_warn(ab, "qmi failed to send FW indication QMI:%d\n", ret);
--		return;
-+		return ret;
+ 	msg_body.mode = mode;
+@@ -731,6 +735,7 @@ int wcn36xx_smd_init_scan(struct wcn36xx *wcn, enum wcn36xx_hal_sys_mode mode,
+ 		wcn36xx_err("hal_init_scan response failed err=%d\n", ret);
+ 		goto out;
  	}
- 
- 	ret = ath11k_qmi_host_cap_send(ab);
- 	if (ret < 0) {
- 		ath11k_warn(ab, "qmi failed to send host cap QMI:%d\n", ret);
--		return;
-+		return ret;
++	wcn->scan_init = true;
+ out:
+ 	mutex_unlock(&wcn->hal_mutex);
+ 	return ret;
+@@ -761,6 +766,7 @@ int wcn36xx_smd_start_scan(struct wcn36xx *wcn, u8 scan_channel)
+ 		wcn36xx_err("hal_start_scan response failed err=%d\n", ret);
+ 		goto out;
  	}
-+
-+	return 0;
- }
++	wcn->scan_init = false;
+ out:
+ 	mutex_unlock(&wcn->hal_mutex);
+ 	return ret;
+diff --git a/drivers/net/wireless/ath/wcn36xx/wcn36xx.h b/drivers/net/wireless/ath/wcn36xx/wcn36xx.h
+index 71fa9992b118..156df6d184c8 100644
+--- a/drivers/net/wireless/ath/wcn36xx/wcn36xx.h
++++ b/drivers/net/wireless/ath/wcn36xx/wcn36xx.h
+@@ -235,6 +235,7 @@ struct wcn36xx {
+ 	struct ieee80211_vif	*sw_scan_vif;
+ 	struct mutex		scan_lock;
+ 	bool			scan_aborted;
++	bool			scan_init;
  
--static void ath11k_qmi_event_mem_request(struct ath11k_qmi *qmi)
-+static int ath11k_qmi_event_mem_request(struct ath11k_qmi *qmi)
- {
- 	struct ath11k_base *ab = qmi->ab;
- 	int ret;
-@@ -2527,11 +2529,13 @@ static void ath11k_qmi_event_mem_request(struct ath11k_qmi *qmi)
- 	ret = ath11k_qmi_respond_fw_mem_request(ab);
- 	if (ret < 0) {
- 		ath11k_warn(ab, "qmi failed to respond fw mem req:%d\n", ret);
--		return;
-+		return ret;
- 	}
-+
-+	return 0;
- }
- 
--static void ath11k_qmi_event_load_bdf(struct ath11k_qmi *qmi)
-+static int ath11k_qmi_event_load_bdf(struct ath11k_qmi *qmi)
- {
- 	struct ath11k_base *ab = qmi->ab;
- 	int ret;
-@@ -2539,7 +2543,7 @@ static void ath11k_qmi_event_load_bdf(struct ath11k_qmi *qmi)
- 	ret = ath11k_qmi_request_target_cap(ab);
- 	if (ret < 0) {
- 		ath11k_warn(ab, "qmi failed to req target capabilities:%d\n", ret);
--		return;
-+		return ret;
- 	}
- 
- 	if (ab->bus_params.fixed_bdf_addr) {
-@@ -2551,14 +2555,16 @@ static void ath11k_qmi_event_load_bdf(struct ath11k_qmi *qmi)
- 
- 	if (ret < 0) {
- 		ath11k_warn(ab, "qmi failed to load board data file:%d\n", ret);
--		return;
-+		return ret;
- 	}
- 
- 	ret = ath11k_qmi_wlanfw_m3_info_send(ab);
- 	if (ret < 0) {
- 		ath11k_warn(ab, "qmi failed to send m3 info req:%d\n", ret);
--		return;
-+		return ret;
- 	}
-+
-+	return 0;
- }
- 
- static void ath11k_qmi_msg_mem_request_cb(struct qmi_handle *qmi_hdl,
-@@ -2715,6 +2721,7 @@ static void ath11k_qmi_driver_event_work(struct work_struct *work)
- 					      event_work);
- 	struct ath11k_qmi_driver_event *event;
- 	struct ath11k_base *ab = qmi->ab;
-+	int ret = 0;
- 
- 	spin_lock(&qmi->event_lock);
- 	while (!list_empty(&qmi->event_list)) {
-@@ -2730,17 +2737,17 @@ static void ath11k_qmi_driver_event_work(struct work_struct *work)
- 
- 		switch (event->type) {
- 		case ATH11K_QMI_EVENT_SERVER_ARRIVE:
--			ath11k_qmi_event_server_arrive(qmi);
-+			ret = ath11k_qmi_event_server_arrive(qmi);
- 			break;
- 		case ATH11K_QMI_EVENT_SERVER_EXIT:
- 			set_bit(ATH11K_FLAG_CRASH_FLUSH, &ab->dev_flags);
- 			set_bit(ATH11K_FLAG_RECOVERY, &ab->dev_flags);
- 			break;
- 		case ATH11K_QMI_EVENT_REQUEST_MEM:
--			ath11k_qmi_event_mem_request(qmi);
-+			ret = ath11k_qmi_event_mem_request(qmi);
- 			break;
- 		case ATH11K_QMI_EVENT_FW_MEM_READY:
--			ath11k_qmi_event_load_bdf(qmi);
-+			ret = ath11k_qmi_event_load_bdf(qmi);
- 			break;
- 		case ATH11K_QMI_EVENT_FW_READY:
- 			if (test_bit(ATH11K_FLAG_REGISTERED, &ab->dev_flags) &&
-@@ -2762,6 +2769,7 @@ static void ath11k_qmi_driver_event_work(struct work_struct *work)
- 			ath11k_core_qmi_firmware_ready(ab);
- 			ab->qmi.cal_done = 1;
- 			set_bit(ATH11K_FLAG_REGISTERED, &ab->dev_flags);
-+			clear_bit(ATH11K_FLAG_QMI_FAIL, &ab->dev_flags);
- 
- 			break;
- 		case ATH11K_QMI_EVENT_COLD_BOOT_CAL_DONE:
-@@ -2771,6 +2779,8 @@ static void ath11k_qmi_driver_event_work(struct work_struct *work)
- 			break;
- 		}
- 		kfree(event);
-+		if (ret < 0)
-+			set_bit(ATH11K_FLAG_QMI_FAIL, &ab->dev_flags);
- 		spin_lock(&qmi->event_lock);
- 	}
- 	spin_unlock(&qmi->event_lock);
-@@ -2831,4 +2841,5 @@ void ath11k_qmi_deinit_service(struct ath11k_base *ab)
- 	destroy_workqueue(ab->qmi.event_wq);
- 	ath11k_qmi_free_resource(ab);
- }
-+EXPORT_SYMBOL(ath11k_qmi_deinit_service);
- 
+ 	/* DXE channels */
+ 	struct wcn36xx_dxe_ch	dxe_tx_l_ch;	/* TX low */
 -- 
-2.25.1
+2.28.0
 
