@@ -2,55 +2,55 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C94372BA44A
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Nov 2020 09:07:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7AA8C2BA459
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Nov 2020 09:10:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726420AbgKTIGX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 20 Nov 2020 03:06:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57342 "EHLO
+        id S1726677AbgKTIJx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 20 Nov 2020 03:09:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57882 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725809AbgKTIGX (ORCPT
+        with ESMTP id S1726335AbgKTIJw (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 20 Nov 2020 03:06:23 -0500
-Received: from mail-ed1-x543.google.com (mail-ed1-x543.google.com [IPv6:2a00:1450:4864:20::543])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49138C0613CF
-        for <linux-wireless@vger.kernel.org>; Fri, 20 Nov 2020 00:06:21 -0800 (PST)
-Received: by mail-ed1-x543.google.com with SMTP id y4so8578128edy.5
-        for <linux-wireless@vger.kernel.org>; Fri, 20 Nov 2020 00:06:21 -0800 (PST)
+        Fri, 20 Nov 2020 03:09:52 -0500
+Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com [IPv6:2a00:1450:4864:20::541])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8AD13C0613CF
+        for <linux-wireless@vger.kernel.org>; Fri, 20 Nov 2020 00:09:52 -0800 (PST)
+Received: by mail-ed1-x541.google.com with SMTP id cq7so8585054edb.4
+        for <linux-wireless@vger.kernel.org>; Fri, 20 Nov 2020 00:09:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=hpGLXOu+I4pDQAyTvGunXOjKk/E9SQfIEk8giGAWObg=;
-        b=dMhSBg41F7n1vi8e/oRCTOFzgNeX7X2/D2xo13+/xjc4HVeAhvpTRn2X6JLjoMB5vH
-         UrtA9kM2Y7/yg8AfwrLETOx8yxaRIrm3+amXorWPlhRfHOPRqJVpxsxkIirOzJ7jh6L/
-         9Bsd6yAHjkUZ2MNCU5g53t2l9X7rd8jUQDqUgrGZNXfo+rcyaHBiRucQB8VgLHFNUzPR
-         6ZgRgqtI8fO+6Z/h5TqwbkcIwkqwPPc0YYDNk29o8/AVXMh/nYLQaP5kD+Qz3/04pjxB
-         k0u9dHtAoqb+KA0vNdpYFWpphzo1r4MQTotJTBB2dcjIdguVJARF98EiB/SN1UbQ/m/2
-         z10w==
+        bh=KUpgLXXRaJ8k8USLYA9QlAzBHTvl+GDp3TK1eHdH2gc=;
+        b=gV7jKrAgdpPdx7ECB9V5HqgWZBSSNQ20SVZdqFPL4dQxBS4kxnMLfyjrlp4G4yJbqZ
+         Q6nNOqYAj2/EdS38/bl5YQh7o0W2PZsE4j6Jm2NVzYL4B0tJzZSIcYT3j7h333GRAUag
+         z4afklZE/Qbn51ycPK2kr0hasPrW49TqgiU6dYi3SMIZrCXzMVR6yk3dV4pAxmXY2LC9
+         ItfmIbM0ujOj8Cd7nOUHVh82i55VxWkoT5zcg9S5b+IshdCdMsVJI2QpvlnAOuwBKP8S
+         lDlHqc00IAt0QMKVA746Aqal9tJqSM7CLbbwYz4TF+H4Q02lD/AkI1G6gHy0iSQQ3jDj
+         JNTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=hpGLXOu+I4pDQAyTvGunXOjKk/E9SQfIEk8giGAWObg=;
-        b=IWd0wAKvHDK5vIA4Wx5X/3d0figF7DCnBcIgkeKw5aItI4r18RlOAP6/v3jIdDQc9p
-         yQbeUu7vbtJJXMk38qxuPwMIhmGA4ijKj/3t9HjFU+HA2elQrMwh/0tAPfagNAyVSz/O
-         0S+atjQfahMivYOeFcXU3B5DK1TGFTIUiADvOGDqQ8mktSxL8hLmtkqQxYwJsVd099QE
-         JIQu8BW/rQNKtjDFEnXOD0+b9wnvDvdW0sEoG0OV2qgTLdD1gqcYxQhN014LwFfBicj7
-         jl7uvxBcwIeBPddMIqr+DF8KoMG1KShlAMXJfV6CTihBt3brXdHetdrpmbg7KeABqcXh
-         JVfA==
-X-Gm-Message-State: AOAM530D+IyRcHlgBbvG9F5kj7AEO+8nHEwGqW4JtNF0DDONwtsFqMbO
-        FjN5dG/tfCdAw7MaQsH3dNwCTXtUIU8+Qv4RiNpAgQ==
-X-Google-Smtp-Source: ABdhPJxqKDZZBbRRAJeXb0rzeukxh6cdzH11Hyp0rJmZtv+uBKam8QCCvWMENSLgRn441SW/1gchNeYcKbG5u+hLKSs=
-X-Received: by 2002:aa7:d4da:: with SMTP id t26mr6820029edr.134.1605859579942;
- Fri, 20 Nov 2020 00:06:19 -0800 (PST)
+        bh=KUpgLXXRaJ8k8USLYA9QlAzBHTvl+GDp3TK1eHdH2gc=;
+        b=BOLsVApfMBTmFd5oBsUFnqbHrBpzyY2+4LW7WuMtkikxkeWUVnjhd/DSXOvoTy0nL6
+         J+NfnHdzv030iGg0CEssyq47QiqlUrzSYtKFANd6OLjNOue8yxEhIPyupP2KCOU0Y1Hz
+         6jB/kDwUUzsinmIC3SAeg5qrHiJOmBE0+eaU9pboC0wfHQa1y4E17l59xv263X75h9VN
+         +ei8jJ7eShDrGY2GsUgaiJzVBqEgoCFa5Bc2oIxfe/FB+/9CEkmWn4hs0qLoMmthT0S+
+         6Kv4Eak2tZTO6JrQ3cjJaROPj+McB86AHhWSJX0sG8PGxKm4Ywl3WxIihXZtjg4BlrvM
+         4yMA==
+X-Gm-Message-State: AOAM531heU/IWojcRuytv8nAKnF0M3liCWcLSilm3OSc2uNZEzAUeab/
+        sXmiPuPACSJp+qz+A9zULz9yM5YP4H3Msg8q20zZdQ==
+X-Google-Smtp-Source: ABdhPJwHV0W66DpiFTNhgi08eVjccwpmsuFIl8fw9QmjILu5kOaHSjPaK19Oiirxuu4YbiALtK5a9bTXi8dTtP9nIRI=
+X-Received: by 2002:a05:6402:2373:: with SMTP id a19mr5736578eda.212.1605859791240;
+ Fri, 20 Nov 2020 00:09:51 -0800 (PST)
 MIME-Version: 1.0
-References: <20201120021403.2646574-1-bryan.odonoghue@linaro.org>
-In-Reply-To: <20201120021403.2646574-1-bryan.odonoghue@linaro.org>
+References: <20201120021403.2646574-1-bryan.odonoghue@linaro.org> <20201120021403.2646574-2-bryan.odonoghue@linaro.org>
+In-Reply-To: <20201120021403.2646574-2-bryan.odonoghue@linaro.org>
 From:   Loic Poulain <loic.poulain@linaro.org>
-Date:   Fri, 20 Nov 2020 09:12:22 +0100
-Message-ID: <CAMZdPi_tixQ_+uZELCjMh75QtC8RADTCU0ipiS-B6X4OTCbJ5A@mail.gmail.com>
-Subject: Re: [PATCH] wcn36xx: Don't run scan_init multiple times
+Date:   Fri, 20 Nov 2020 09:15:53 +0100
+Message-ID: <CAMZdPi-HeeLauPSLrWnt4ricaP=d55LY960gYpS0FXVi=zsAVw@mail.gmail.com>
+Subject: Re: [PATCH] wcn36xx: Send NULL data packet when exiting BMPS
 To:     "Bryan O'Donoghue" <bryan.odonoghue@linaro.org>
 Cc:     Kalle Valo <kvalo@codeaurora.org>, wcn36xx@lists.infradead.org,
         linux-wireless@vger.kernel.org, Shawn Guo <shawn.guo@linaro.org>,
@@ -63,76 +63,37 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 On Fri, 20 Nov 2020 at 03:13, Bryan O'Donoghue
 <bryan.odonoghue@linaro.org> wrote:
 >
-> Run scan_init only once. There's no need to run this command multiple times
-> if it has already been run once.
+> This commit updates the BMPS exit path to be consistent with downstream in
+> terms of exiting BMPS mode. Downstream sets the flag to send a NULL data
+> frame to the host on exiting BMPS.
 >
-> The software scan algorithm can end up repeatedly calling scan_init on each
-> loop resulting in between four and eight milliseconds of lost time on each
-> callout.
->
-> Subtract the overhead now.
-
-This command defines parameters like the BSSID we want to inform,
-etc... So this can change depending on the scan is done while
-connected or not. Moreover in the connected case, the scans are
-interleaved with normal data listening period, and AFAIU, init/stop
-scan allow to submit a null data packet with PS/non-PS bit when
-mac80211 leaves the operating channel to scanning another one (so that
-AP does no submit packet to it). So at first glance, this patch would
-break that, right?
-
-
-
+> This will tell the AP to send any queued frames to the STA immediately.
+> Verified the relevant bit toggle in wireshark.
 >
 > Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 > ---
->  drivers/net/wireless/ath/wcn36xx/smd.c     | 6 ++++++
->  drivers/net/wireless/ath/wcn36xx/wcn36xx.h | 1 +
->  2 files changed, 7 insertions(+)
+>  drivers/net/wireless/ath/wcn36xx/smd.c | 1 +
+>  1 file changed, 1 insertion(+)
 >
 > diff --git a/drivers/net/wireless/ath/wcn36xx/smd.c b/drivers/net/wireless/ath/wcn36xx/smd.c
-> index acf533fae46a..ec082cf3ab09 100644
+> index 8ff1eda8f942..acf533fae46a 100644
 > --- a/drivers/net/wireless/ath/wcn36xx/smd.c
 > +++ b/drivers/net/wireless/ath/wcn36xx/smd.c
-> @@ -706,6 +706,10 @@ int wcn36xx_smd_init_scan(struct wcn36xx *wcn, enum wcn36xx_hal_sys_mode mode,
->         int ret;
+> @@ -2176,6 +2176,7 @@ int wcn36xx_smd_exit_bmps(struct wcn36xx *wcn, struct ieee80211_vif *vif)
+>         INIT_HAL_MSG(msg_body, WCN36XX_HAL_EXIT_BMPS_REQ);
 >
->         mutex_lock(&wcn->hal_mutex);
-> +       if (wcn->scan_init) {
-> +               ret = 0;
-> +               goto out;
-> +       }
->         INIT_HAL_MSG(msg_body, WCN36XX_HAL_INIT_SCAN_REQ);
+>         msg_body.bss_index = vif_priv->bss_index;
+> +       msg_body.send_data_null = 1;
+
+I'm quite sure I've seen null data packet wakeup (PS=0) when sniffing
+wcn3620, but maybe it was submitted by mac80211, have you then checked
+you do not end with double null packets with that patch (one from
+firmware and one from mac layer)?
+
+
 >
->         msg_body.mode = mode;
-> @@ -731,6 +735,7 @@ int wcn36xx_smd_init_scan(struct wcn36xx *wcn, enum wcn36xx_hal_sys_mode mode,
->                 wcn36xx_err("hal_init_scan response failed err=%d\n", ret);
->                 goto out;
->         }
-> +       wcn->scan_init = true;
->  out:
->         mutex_unlock(&wcn->hal_mutex);
->         return ret;
-> @@ -761,6 +766,7 @@ int wcn36xx_smd_start_scan(struct wcn36xx *wcn, u8 scan_channel)
->                 wcn36xx_err("hal_start_scan response failed err=%d\n", ret);
->                 goto out;
->         }
-> +       wcn->scan_init = false;
->  out:
->         mutex_unlock(&wcn->hal_mutex);
->         return ret;
-> diff --git a/drivers/net/wireless/ath/wcn36xx/wcn36xx.h b/drivers/net/wireless/ath/wcn36xx/wcn36xx.h
-> index 71fa9992b118..156df6d184c8 100644
-> --- a/drivers/net/wireless/ath/wcn36xx/wcn36xx.h
-> +++ b/drivers/net/wireless/ath/wcn36xx/wcn36xx.h
-> @@ -235,6 +235,7 @@ struct wcn36xx {
->         struct ieee80211_vif    *sw_scan_vif;
->         struct mutex            scan_lock;
->         bool                    scan_aborted;
-> +       bool                    scan_init;
+>         PREPARE_HAL_BUF(wcn->hal_buf, msg_body);
 >
->         /* DXE channels */
->         struct wcn36xx_dxe_ch   dxe_tx_l_ch;    /* TX low */
 > --
 > 2.28.0
 >
