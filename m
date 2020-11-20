@@ -2,85 +2,104 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3AC6E2BA538
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Nov 2020 09:57:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3ABF12BA69A
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Nov 2020 10:53:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727061AbgKTIzl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 20 Nov 2020 03:55:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36712 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725789AbgKTIzk (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 20 Nov 2020 03:55:40 -0500
-Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46A36C0613CF;
-        Fri, 20 Nov 2020 00:55:40 -0800 (PST)
-Received: by mail-lf1-x129.google.com with SMTP id u19so12368618lfr.7;
-        Fri, 20 Nov 2020 00:55:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=eCE5S3AtPfjPlYA0YjZN8U5ZXZvn/LY2xX90AL/N/n4=;
-        b=k2cWikdNzhvRX1o1rxZQ/r3PGgWpEY+B7ESKW2u8t1R8t6f9mVujNibnb0xM6ing7A
-         KfwsHX+X6R14I3BFEZYAn2U7cIM6uOP4q9b31bn1BIYmLL7YkACHogP7alLylVznwrXp
-         BPAn6eXWw7S6VzXwesvbnJDVcNih5Yjsbj8bvdMWMFLvdh/L6RTLse/hcRaYliYD7n9b
-         2XaTSQKoJu7iUAzDApDSnX1PIvTJO5bd0jYPXkLkakYkB5bXMdNe+GiPa25QZqpWJJ9Q
-         WrGRsKc/OarUCS+WnMWlQxNUU9Puo5bdGbrV+FrGgFJIseSpXYTdgvJvH7jp82hq3rJ3
-         Vj1A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=eCE5S3AtPfjPlYA0YjZN8U5ZXZvn/LY2xX90AL/N/n4=;
-        b=hiXSAIl6GON8ioS+qTAGDJUkDZCvNkfeuSpruLXsZtf0HF5JrgsPX0KVJIzqQh7JRT
-         eeHCKWF/g8LINcL+7LyQFN3d12mtydouxBgMWR+ijs6jRxe/ST87BIBkeaQNfheH7WCb
-         MPgV6K71pOQGL6gWqo1gXj6xpMy0ItxxXg89fjpY53MM1sy53O/TusG9PemizW/Xv8wa
-         IRso2X7KUEGZDiVXmWScmxuVV0Ol85Kmmlk16WHatSSMnURq5NHccumElC58F0er8nM8
-         vBWHBpgE+S6yluSn7tkChhRziV+J7ZvGm3a3zIugXBZSGCVQsjZyeYTHLwqygH0Iz2O+
-         SnnA==
-X-Gm-Message-State: AOAM533/26bmWBL2NWikCYZnjZE6W89pGNNgVDB2C1F3GBsXPE9hyUtl
-        iFyi9DnJcRuhpJNnldb5zLFhFHunXGHEpa+/mEc=
-X-Google-Smtp-Source: ABdhPJyhgrajddGaPcfQLxvzIx4y0UvcooH+ce7MoDObk9cBX4B6NGc1idbwywPDrlRxQWjGIn5r/eswg6fHVuWIx00=
-X-Received: by 2002:a05:6512:20c:: with SMTP id a12mr7496565lfo.219.1605862538701;
- Fri, 20 Nov 2020 00:55:38 -0800 (PST)
+        id S1727379AbgKTJwr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 20 Nov 2020 04:52:47 -0500
+Received: from mail.kernel.org ([198.145.29.99]:59640 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726426AbgKTJwr (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 20 Nov 2020 04:52:47 -0500
+Received: from ziggy.com (unknown [213.195.126.134])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 748B5204EF;
+        Fri, 20 Nov 2020 09:52:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1605865966;
+        bh=udTHvxcuCpSES0f2tVzcWrSR6BzuIbl1+3bPc1axuBQ=;
+        h=From:To:Cc:Subject:Date:From;
+        b=NAyTdDXfdkzDgGz51roi/laoFCqxWVIiamZD9ajJRQcgl+HNHWwB9RLtk97KcB8ZZ
+         IV54pbFljRsAsX619EJXoOPbqK8OOdZ0u1EMEBfj5Ke7TH80GhZapI/bxXQZ23nEGV
+         3K0k9yg7mnz98iMcsjaNmRTClHnps69KTwImjO1Y=
+From:   matthias.bgg@kernel.org
+To:     Jakub Kicinski <kuba@kernel.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>, hdegoede@redhat.com
+Cc:     =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Chung-Hsien Hsu <stanley.hsu@cypress.com>,
+        Jean-Philippe Brucker <jean-philippe@linaro.org>,
+        Double Lo <double.lo@cypress.com>,
+        Frank Kao <frank.kao@cypress.com>,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        Arend van Spriel <arend.vanspriel@broadcom.com>,
+        "Gustavo A . R . Silva" <gustavo@embeddedor.com>,
+        netdev@vger.kernel.org,
+        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Wright Feng <wright.feng@cypress.com>,
+        Matthias Brugger <mbrugger@suse.com>,
+        Saravanan Shanmugham <saravanan.shanmugham@cypress.com>,
+        brcm80211-dev-list@cypress.com, linux-kernel@vger.kernel.org,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Amar Shankar <amsr@cypress.com>,
+        Dmitry Osipenko <digetx@gmail.com>
+Subject: [PATCH v2] brcmfmac: expose firmware config files through modinfo
+Date:   Fri, 20 Nov 2020 10:52:33 +0100
+Message-Id: <20201120095233.19953-1-matthias.bgg@kernel.org>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-References: <CANL0fFQqsGU01Z8iEhznDLQjw5huayarNoqbJ8Nikujs0r+ecQ@mail.gmail.com>
- <6b71718c405541d681f4d8b045a66a79ade0dd4f.camel@intel.com>
-In-Reply-To: <6b71718c405541d681f4d8b045a66a79ade0dd4f.camel@intel.com>
-From:   Gonsolo <gonsolo@gmail.com>
-Date:   Fri, 20 Nov 2020 09:55:27 +0100
-Message-ID: <CANL0fFQeh0SdUd_v98X-YJewZRAOmiaKaCLO+7FsoZBO=SENvQ@mail.gmail.com>
-Subject: Kernel warning "TX on unused queue" for iwlwifi on 7260 with kernel 5.10-rc2
-To:     "Coelho, Luciano" <luciano.coelho@intel.com>
-Cc:     "Damary, Guy" <guy.damary@intel.com>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "Berg, Johannes" <johannes.berg@intel.com>,
-        "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-        "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
-        "hannes@cmpxchg.org" <hannes@cmpxchg.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "Goodstein, Mordechay" <mordechay.goodstein@intel.com>,
-        "kuba@kernel.org" <kuba@kernel.org>,
-        linuxwifi <linuxwifi@intel.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "Grumbach, Emmanuel" <emmanuel.grumbach@intel.com>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "longman@redhat.com" <longman@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Output of lspci -nn:
+From: Matthias Brugger <mbrugger@suse.com>
 
-02:00.0 Network controller [0280]: Intel Corporation Wireless 7260
-[8086:08b1] (rev 73)
+Apart from a firmware binary the chip needs a config file used by the
+FW. Add the config files to modinfo so that they can be read by
+userspace.
 
-> Guy, can you help with this one? I believe there is a bugzilla issue
-> for this already...
+Signed-off-by: Matthias Brugger <mbrugger@suse.com>
 
-I'd like to know this too.
+---
 
+Changes in v2:
+In comparison to first version [0] we use wildcards to enumerate the
+firmware configuration files. Wildcard support was added to dracut
+recently [1].
+[0] https://lore.kernel.org/linux-wireless/20200701153123.25602-1-matthias.bgg@kernel.org/
+[1] https://github.com/dracutdevs/dracut/pull/860
+
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+index 99987a789e7e..dd6d287b1b00 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+@@ -625,6 +625,15 @@ BRCMF_FW_DEF(4359, "brcmfmac4359-sdio");
+ BRCMF_FW_DEF(4373, "brcmfmac4373-sdio");
+ BRCMF_FW_DEF(43012, "brcmfmac43012-sdio");
+ 
++/* firmware config files */
++MODULE_FIRMWARE(BRCMF_FW_DEFAULT_PATH "brcm/brcmfmac4330-sdio.*.txt");
++MODULE_FIRMWARE(BRCMF_FW_DEFAULT_PATH "brcm/brcmfmac43340-sdio.*.txt");
++MODULE_FIRMWARE(BRCMF_FW_DEFAULT_PATH "brcm/brcmfmac43362-sdio.*.txt");
++MODULE_FIRMWARE(BRCMF_FW_DEFAULT_PATH "brcm/brcmfmac43430a0-sdio.*.txt");
++MODULE_FIRMWARE(BRCMF_FW_DEFAULT_PATH "brcm/brcmfmac43430-sdio.*.txt");
++MODULE_FIRMWARE(BRCMF_FW_DEFAULT_PATH "brcm/brcmfmac43455-sdio.*.txt");
++MODULE_FIRMWARE(BRCMF_FW_DEFAULT_PATH "brcm/brcmfmac4356-pcie.*.txt");
++
+ static const struct brcmf_firmware_mapping brcmf_sdio_fwnames[] = {
+ 	BRCMF_FW_ENTRY(BRCM_CC_43143_CHIP_ID, 0xFFFFFFFF, 43143),
+ 	BRCMF_FW_ENTRY(BRCM_CC_43241_CHIP_ID, 0x0000001F, 43241B0),
 -- 
-g
+2.29.2
+
