@@ -2,75 +2,77 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4AED32BB4DA
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Nov 2020 20:11:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 836462BB514
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Nov 2020 20:19:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730212AbgKTTJV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 20 Nov 2020 14:09:21 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:57799 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728415AbgKTTJV (ORCPT
+        id S1731482AbgKTTSU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 20 Nov 2020 14:18:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48820 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729585AbgKTTSU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 20 Nov 2020 14:09:21 -0500
-Received: from mail-oo1-f72.google.com ([209.85.161.72])
-        by youngberry.canonical.com with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <seth.forshee@canonical.com>)
-        id 1kgBmY-0001Ct-Kf
-        for linux-wireless@vger.kernel.org; Fri, 20 Nov 2020 19:09:18 +0000
-Received: by mail-oo1-f72.google.com with SMTP id 4so4343052ooc.21
-        for <linux-wireless@vger.kernel.org>; Fri, 20 Nov 2020 11:09:18 -0800 (PST)
+        Fri, 20 Nov 2020 14:18:20 -0500
+Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com [IPv6:2607:f8b0:4864:20::544])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4ADC8C0613CF
+        for <linux-wireless@vger.kernel.org>; Fri, 20 Nov 2020 11:18:20 -0800 (PST)
+Received: by mail-pg1-x544.google.com with SMTP id t37so8035238pga.7
+        for <linux-wireless@vger.kernel.org>; Fri, 20 Nov 2020 11:18:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=/i9Wp3NyJ2XAt6V6C9rMEOf56CSMVPqB9lvPKpuPC6o=;
+        b=A6bz8MoKhMEpf6tg+2HvalqvDlw1xmOxSg1SO4BbPffCb035fRyi6HeSG7U7LvQT7l
+         xYU+VK7bi8OvfoYUaobXKHp+XtF4j5Voevd9nX72QgtS+cF68Aox8idwsVnML4uYmsyb
+         SZCSt5TLA33olgVKwrlwIfeZ9z5z8JQ/GSR2I=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=PEveoKuLfLst6ktRz43NnxLZwk4q7ZB78x/yfj+Fi0g=;
-        b=EfKji7pYj9ZxqfWm+5FWdwSa8uve42ZqfnfdGzgA8g2NvPv9IrN2Xejnlj5tg3/iAg
-         7bGOAyfqxLpNZ8Xacumfx+B95Kd7ksa9iVWi2Fn+juG5iWBLHB7KiYRqhqG3QY7dyygY
-         932rPnVkhSAwM/69cai4akyWgVgu2D6Iz6/eRMNBH5K3m7MvjUE2Jw1JopLcOnUAuYtr
-         hVL9cSKml+AOltSjRrQ7Nh8Pl3RVtp51MkFzOAnsAI+YGsonE5/2nvYwaf63CapPb2y0
-         Esm535dPyICB76qskbxGkQo3YUIW7Lx/KvxMhwKNr3Cgiy3aqd6f4q42EoVAbbIpmXj6
-         SeqQ==
-X-Gm-Message-State: AOAM533urlz4OrEM6UcNrC9CM91Pwtgv0vstQjx47s/Gj+sgPes0w4J0
-        mMJKh3wClTPu12Tf4WHDvjDt+iXnDXMVH9gfFKt5jgXEzqIFQdSVgA5S31TgGk9YOFAGumONU2O
-        vyQAzKmelpXjK7bqXtALpCrF0rpMTZ46M1b6onBfQ6DUU
-X-Received: by 2002:a9d:69d2:: with SMTP id v18mr15473432oto.165.1605899357667;
-        Fri, 20 Nov 2020 11:09:17 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJzO+Z1/rftRa2kvpt2KELR7F6jliDKWqHuaM8WoA2xl+56vybPk970gYj8lHsZ5ErEOce/qTA==
-X-Received: by 2002:a9d:69d2:: with SMTP id v18mr15473412oto.165.1605899357430;
-        Fri, 20 Nov 2020 11:09:17 -0800 (PST)
-Received: from localhost ([2605:a601:ac0f:820:1158:e034:1c89:296f])
-        by smtp.gmail.com with ESMTPSA id j9sm1666399oij.44.2020.11.20.11.09.16
+         :mime-version:content-disposition:in-reply-to;
+        bh=/i9Wp3NyJ2XAt6V6C9rMEOf56CSMVPqB9lvPKpuPC6o=;
+        b=JRLGE7x2s3rsFedw7z48WuHpyJiaNBOxnxJ+6AOwtD1aLp1C1xcuVnEKATZ8COi8ur
+         EoiS7EqUhnWbW5P/M+saeur5aJp8bDyjlRva4hlhFqBZFvnZ2A4POaHiNl3WQ5Us8+M9
+         vGKIJdpcSs2Tq0xyXFT2VeBLT8hL/UuV6LnSAlyPijY2p2xcjcU+PG/jJNUvZYkKFl/r
+         +JSk3VlVaAq/B3g3QVxelBoUxI8ss2rcfd/k6A9Hx4xzfUfpOL3Nkmbkfe6OSvs9tdbN
+         tdsUoAppEZyVWzYdaH3sTUi9DckZPNY7MJyurM1NYHjSFYRWscolA7SZm7u7UpOMUtUo
+         7tMQ==
+X-Gm-Message-State: AOAM532vmVGjPr+eHD6ANpUJCRmQ89lrYQQk5dRRimeqkhtKZk0+mudJ
+        BdiiTycs/PFYuI0/D7//J7Adcw==
+X-Google-Smtp-Source: ABdhPJznhQs1XspFf53XI5p/EZOAG/c4T0kD/aTaNNbMtCtrqvJ764hFSBr91h1gUzYPJVGuU5VyXQ==
+X-Received: by 2002:a63:e41:: with SMTP id 1mr17848400pgo.195.1605899899003;
+        Fri, 20 Nov 2020 11:18:19 -0800 (PST)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id f6sm3933626pgi.70.2020.11.20.11.18.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 Nov 2020 11:09:16 -0800 (PST)
-Date:   Fri, 20 Nov 2020 13:09:15 -0600
-From:   Seth Forshee <seth.forshee@canonical.com>
-To:     Pavel Starosek <starosekpd@gmail.com>
-Cc:     wireless-regdb@lists.infradead.org, linux-wireless@vger.kernel.org
-Subject: Re: [wireless-regdb] [PATCH] wireless-regdb: Update regulatory rules
- for Kazakhstan (KZ)
-Message-ID: <20201120190915.GO5439@ubuntu-x1>
-References: <CAPgWZqy_bD7KP_ONv1C7tUVw4TLw3QK_xcyYXpi_WH1=4VJwQw@mail.gmail.com>
+        Fri, 20 Nov 2020 11:18:17 -0800 (PST)
+Date:   Fri, 20 Nov 2020 11:18:17 -0800
+From:   Kees Cook <keescook@chromium.org>
+To:     Sami Tolvanen <samitolvanen@google.com>
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Sedat Dilek <sedat.dilek@gmail.com>
+Subject: Re: [PATCH net] cfg80211: fix callback type mismatches in wext-compat
+Message-ID: <202011201118.8F1A488@keescook>
+References: <20201117205902.405316-1-samitolvanen@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAPgWZqy_bD7KP_ONv1C7tUVw4TLw3QK_xcyYXpi_WH1=4VJwQw@mail.gmail.com>
+In-Reply-To: <20201117205902.405316-1-samitolvanen@google.com>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Nov 12, 2020 at 12:46:34AM +0600, Pavel Starosek wrote:
-> Based on [1]:
-> * Extend 2400-2483.5 MHz range
-> * 5150–5250 MHz range may be up to 200 mW
-> * Add 5725-5850 MHz range for indoor usage
-> * Add 57-66 GHz range.
-> * In 5470-5725 range change the bandwidth from 80 to 160
+On Tue, Nov 17, 2020 at 12:59:02PM -0800, Sami Tolvanen wrote:
+> Instead of casting callback functions to type iw_handler, which trips
+> indirect call checking with Clang's Control-Flow Integrity (CFI), add
+> stub functions with the correct function type for the callbacks.
 > 
-> [1] http://adilet.zan.kz/rus/docs/V1500010730
-> 
-> Signed-off-by: Pavel Starosek <starosekpd at gmail.com>
+> Reported-by: Sedat Dilek <sedat.dilek@gmail.com>
+> Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
 
-Applied, thanks!
+Reviewed-by: Kees Cook <keescook@chromium.org>
+
+-- 
+Kees Cook
