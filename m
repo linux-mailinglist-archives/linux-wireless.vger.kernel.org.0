@@ -2,37 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F3712BB3CE
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Nov 2020 19:39:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 063E72BB3E5
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Nov 2020 19:39:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731328AbgKTSid (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 20 Nov 2020 13:38:33 -0500
-Received: from mail.kernel.org ([198.145.29.99]:56742 "EHLO mail.kernel.org"
+        id S1731366AbgKTSiu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 20 Nov 2020 13:38:50 -0500
+Received: from mail.kernel.org ([198.145.29.99]:56870 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730900AbgKTSic (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 20 Nov 2020 13:38:32 -0500
+        id S1730382AbgKTSir (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 20 Nov 2020 13:38:47 -0500
 Received: from embeddedor (187-162-31-110.static.axtel.net [187.162.31.110])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id EC37021D91;
-        Fri, 20 Nov 2020 18:38:30 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 2AFD021D91;
+        Fri, 20 Nov 2020 18:38:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1605897511;
-        bh=7HSbST/2t31kvMTXGlvPkReRJ1IIMMECQBUSQW1XHTU=;
+        s=default; t=1605897527;
+        bh=P1ptSY1ouxyzCTWuiOpQ/Q3ASw9Fh/CWMBpT5t1VG+4=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=0jCij1SpVqHQleV/9Sh+BuNaF/MK1JoqjkJuWE+UkkzsdY5jfoemT9w1BFOek0iY7
-         xlen4mVrwSaPEaJQKDr90JvhOoaINFDEvAzcHwXvGKsM4l8YoCqfchm8k1GProOguB
-         CtbAGzevmwnSwOEfhP5diQea5ADooSZnbPYJlNww=
-Date:   Fri, 20 Nov 2020 12:38:37 -0600
+        b=PQO3FY1myXuZxR2tj29dPvCGI2yG2TamQRjlvvQQZ2/YZTT/x6a4Kqnoen6yWzTjq
+         oPUNygKm5nTaaJCJPmjW7usuTY4cX15XlhqQq44kZuwGKyaeTx+9W5hAF1DYWf1Auc
+         dFioq8oGi5Hs6v2bkuICu0dkQWWrLfONnuncuYMk=
+Date:   Fri, 20 Nov 2020 12:38:52 -0600
 From:   "Gustavo A. R. Silva" <gustavoars@kernel.org>
-To:     Johannes Berg <johannes@sipsolutions.net>,
+To:     Stanislaw Gruszka <stf_xl@wp.pl>,
+        Helmut Schaa <helmut.schaa@googlemail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
         "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>
 Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org,
         "Gustavo A. R. Silva" <gustavoars@kernel.org>
-Subject: [PATCH 113/141] nl80211: Fix fall-through warnings for Clang
-Message-ID: <fe5afd456a1244751177e53359d3dd149a63a873.1605896060.git.gustavoars@kernel.org>
+Subject: [PATCH 116/141] rt2x00: Fix fall-through warnings for Clang
+Message-ID: <b0d4c50b803bc38ed370521b9b0a44365cae9386.1605896060.git.gustavoars@kernel.org>
 References: <cover.1605896059.git.gustavoars@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -50,21 +52,21 @@ through to the next case.
 Link: https://github.com/KSPP/linux/issues/115
 Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
 ---
- net/wireless/nl80211.c | 1 +
+ drivers/net/wireless/ralink/rt2x00/rt2x00queue.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index a77174b99b07..132540a9ac4a 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -11165,6 +11165,7 @@ static int nl80211_tx_mgmt(struct sk_buff *skb, struct genl_info *info)
- 	case NL80211_IFTYPE_P2P_DEVICE:
- 		if (!info->attrs[NL80211_ATTR_WIPHY_FREQ])
- 			return -EINVAL;
+diff --git a/drivers/net/wireless/ralink/rt2x00/rt2x00queue.c b/drivers/net/wireless/ralink/rt2x00/rt2x00queue.c
+index 3b6100e6c8f6..d4d389e8f1b4 100644
+--- a/drivers/net/wireless/ralink/rt2x00/rt2x00queue.c
++++ b/drivers/net/wireless/ralink/rt2x00/rt2x00queue.c
+@@ -941,6 +941,7 @@ void rt2x00queue_unpause_queue(struct data_queue *queue)
+ 		 * receive frames.
+ 		 */
+ 		queue->rt2x00dev->ops->lib->kick_queue(queue);
 +		break;
- 	case NL80211_IFTYPE_STATION:
- 	case NL80211_IFTYPE_ADHOC:
- 	case NL80211_IFTYPE_P2P_CLIENT:
+ 	default:
+ 		break;
+ 	}
 -- 
 2.27.0
 
