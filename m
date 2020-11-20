@@ -2,102 +2,137 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B7282BA2CE
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Nov 2020 08:03:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C94372BA44A
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Nov 2020 09:07:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726509AbgKTHCQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 20 Nov 2020 02:02:16 -0500
-Received: from m42-4.mailgun.net ([69.72.42.4]:60599 "EHLO m42-4.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726381AbgKTHCQ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 20 Nov 2020 02:02:16 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1605855735; h=Message-ID: References: In-Reply-To: Subject:
- Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
- MIME-Version: Sender; bh=+pnwU6HI584Xc2VX0RecTeCQhWm+0kb3jt1sQFwbk6U=;
- b=MtxFdckY2R7VOIQegLBvti2/IypMPloIS2k/KEEJbGIWWtADw4yOxjJYJkxCajdsaj6BcmOu
- mwJcwcF9YXZV3XZIUkf3f2OCj5if8lptV9rdhsdMs37uysvAoSdvy0iIy3VOI/HRs4Y2KI9e
- mOS+rfTCe8JF+6/6Y6aW0eLER7s=
-X-Mailgun-Sending-Ip: 69.72.42.4
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n10.prod.us-west-2.postgun.com with SMTP id
- 5fb769d97ef0a8d843424fd7 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 20 Nov 2020 07:01:45
- GMT
-Sender: cjhuang=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 3695AC43464; Fri, 20 Nov 2020 07:01:45 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: cjhuang)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 7358CC433ED;
-        Fri, 20 Nov 2020 07:01:44 +0000 (UTC)
+        id S1726420AbgKTIGX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 20 Nov 2020 03:06:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57342 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725809AbgKTIGX (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 20 Nov 2020 03:06:23 -0500
+Received: from mail-ed1-x543.google.com (mail-ed1-x543.google.com [IPv6:2a00:1450:4864:20::543])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49138C0613CF
+        for <linux-wireless@vger.kernel.org>; Fri, 20 Nov 2020 00:06:21 -0800 (PST)
+Received: by mail-ed1-x543.google.com with SMTP id y4so8578128edy.5
+        for <linux-wireless@vger.kernel.org>; Fri, 20 Nov 2020 00:06:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=hpGLXOu+I4pDQAyTvGunXOjKk/E9SQfIEk8giGAWObg=;
+        b=dMhSBg41F7n1vi8e/oRCTOFzgNeX7X2/D2xo13+/xjc4HVeAhvpTRn2X6JLjoMB5vH
+         UrtA9kM2Y7/yg8AfwrLETOx8yxaRIrm3+amXorWPlhRfHOPRqJVpxsxkIirOzJ7jh6L/
+         9Bsd6yAHjkUZ2MNCU5g53t2l9X7rd8jUQDqUgrGZNXfo+rcyaHBiRucQB8VgLHFNUzPR
+         6ZgRgqtI8fO+6Z/h5TqwbkcIwkqwPPc0YYDNk29o8/AVXMh/nYLQaP5kD+Qz3/04pjxB
+         k0u9dHtAoqb+KA0vNdpYFWpphzo1r4MQTotJTBB2dcjIdguVJARF98EiB/SN1UbQ/m/2
+         z10w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=hpGLXOu+I4pDQAyTvGunXOjKk/E9SQfIEk8giGAWObg=;
+        b=IWd0wAKvHDK5vIA4Wx5X/3d0figF7DCnBcIgkeKw5aItI4r18RlOAP6/v3jIdDQc9p
+         yQbeUu7vbtJJXMk38qxuPwMIhmGA4ijKj/3t9HjFU+HA2elQrMwh/0tAPfagNAyVSz/O
+         0S+atjQfahMivYOeFcXU3B5DK1TGFTIUiADvOGDqQ8mktSxL8hLmtkqQxYwJsVd099QE
+         JIQu8BW/rQNKtjDFEnXOD0+b9wnvDvdW0sEoG0OV2qgTLdD1gqcYxQhN014LwFfBicj7
+         jl7uvxBcwIeBPddMIqr+DF8KoMG1KShlAMXJfV6CTihBt3brXdHetdrpmbg7KeABqcXh
+         JVfA==
+X-Gm-Message-State: AOAM530D+IyRcHlgBbvG9F5kj7AEO+8nHEwGqW4JtNF0DDONwtsFqMbO
+        FjN5dG/tfCdAw7MaQsH3dNwCTXtUIU8+Qv4RiNpAgQ==
+X-Google-Smtp-Source: ABdhPJxqKDZZBbRRAJeXb0rzeukxh6cdzH11Hyp0rJmZtv+uBKam8QCCvWMENSLgRn441SW/1gchNeYcKbG5u+hLKSs=
+X-Received: by 2002:aa7:d4da:: with SMTP id t26mr6820029edr.134.1605859579942;
+ Fri, 20 Nov 2020 00:06:19 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Fri, 20 Nov 2020 15:01:44 +0800
-From:   Carl Huang <cjhuang@codeaurora.org>
-To:     Abhishek Kumar <kuabhs@chromium.org>
-Cc:     Brian Norris <briannorris@chromium.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Douglas Anderson <dianders@chromium.org>,
-        ath10k <ath10k@lists.infradead.org>,
-        Johannes Berg <johannes@sipsolutions.net>, kuabhs@google.com
-Subject: Re: [PATCH 1/3] nl80211: add common API to configure SAR power
- limitations.
-In-Reply-To: <CACTWRwtcd2rdE-JQTh0t=Xwu9Vv-2He2M4wVDXbbiV1FOyNq7g@mail.gmail.com>
-References: <20201106100708.4609-1-cjhuang@codeaurora.org>
- <20201106100708.4609-2-cjhuang@codeaurora.org>
- <64e072a168c12f58847a5ee16bfdb7e47576284f.camel@sipsolutions.net>
- <00c810b30b91397e562ca54475940afc@codeaurora.org>
- <CACTWRwtcd2rdE-JQTh0t=Xwu9Vv-2He2M4wVDXbbiV1FOyNq7g@mail.gmail.com>
-Message-ID: <02fee7badc98864c5a51f91604f7a416@codeaurora.org>
-X-Sender: cjhuang@codeaurora.org
-User-Agent: Roundcube Webmail/1.3.9
+References: <20201120021403.2646574-1-bryan.odonoghue@linaro.org>
+In-Reply-To: <20201120021403.2646574-1-bryan.odonoghue@linaro.org>
+From:   Loic Poulain <loic.poulain@linaro.org>
+Date:   Fri, 20 Nov 2020 09:12:22 +0100
+Message-ID: <CAMZdPi_tixQ_+uZELCjMh75QtC8RADTCU0ipiS-B6X4OTCbJ5A@mail.gmail.com>
+Subject: Re: [PATCH] wcn36xx: Don't run scan_init multiple times
+To:     "Bryan O'Donoghue" <bryan.odonoghue@linaro.org>
+Cc:     Kalle Valo <kvalo@codeaurora.org>, wcn36xx@lists.infradead.org,
+        linux-wireless@vger.kernel.org, Shawn Guo <shawn.guo@linaro.org>,
+        Benjamin Li <benl@squareup.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2020-11-20 04:25, Abhishek Kumar wrote:
-> Hi,
-> 
-> Johannes has some good comments, apart for that I have some nits.
->> > And wait, I thought we agreed to remove the index? Now I'm confused.
->> >
->> Using index in SET operation doesn't add burden to userspace and 
->> kernel,
->> but it provides some flexibility so userspace can skip some certain
->> ranges.
-> 
-> I agree with Carl's comment, we do need the frequency index. If the
-> frequency index is provided, then the order is not important which
-> makes the data more clear or the set_sar_spec function needs to parse
-> the frequency ranges (and ofcourse userspace has to populate that as
-> well). If the frequency index is not provided, then the driver has to
-> assume that the userspace is not making any error in mapping of the
-> power and desired frequency.
-> Other reason is, might be a bit unlikely, but if in future there are
-> new subbands, then it gives a flexibility to the userspace to
-> explicitly provide the band for which it needs to set the power for.
-> 
->> + *     used with %NL80211_CMD_SET_SAR_SPECS. The message contains 
->> fileds
->> + *     of %nl80211_sar_attrs which specifies the sar type and related
-> 
-> typo: fileds .. you mean fields
-> 
-I will fix all the spelling errors and send V2.
+On Fri, 20 Nov 2020 at 03:13, Bryan O'Donoghue
+<bryan.odonoghue@linaro.org> wrote:
+>
+> Run scan_init only once. There's no need to run this command multiple times
+> if it has already been run once.
+>
+> The software scan algorithm can end up repeatedly calling scan_init on each
+> loop resulting in between four and eight milliseconds of lost time on each
+> callout.
+>
+> Subtract the overhead now.
 
-> _______________________________________________
-> ath10k mailing list
-> ath10k@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/ath10k
+This command defines parameters like the BSSID we want to inform,
+etc... So this can change depending on the scan is done while
+connected or not. Moreover in the connected case, the scans are
+interleaved with normal data listening period, and AFAIU, init/stop
+scan allow to submit a null data packet with PS/non-PS bit when
+mac80211 leaves the operating channel to scanning another one (so that
+AP does no submit packet to it). So at first glance, this patch would
+break that, right?
+
+
+
+>
+> Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+> ---
+>  drivers/net/wireless/ath/wcn36xx/smd.c     | 6 ++++++
+>  drivers/net/wireless/ath/wcn36xx/wcn36xx.h | 1 +
+>  2 files changed, 7 insertions(+)
+>
+> diff --git a/drivers/net/wireless/ath/wcn36xx/smd.c b/drivers/net/wireless/ath/wcn36xx/smd.c
+> index acf533fae46a..ec082cf3ab09 100644
+> --- a/drivers/net/wireless/ath/wcn36xx/smd.c
+> +++ b/drivers/net/wireless/ath/wcn36xx/smd.c
+> @@ -706,6 +706,10 @@ int wcn36xx_smd_init_scan(struct wcn36xx *wcn, enum wcn36xx_hal_sys_mode mode,
+>         int ret;
+>
+>         mutex_lock(&wcn->hal_mutex);
+> +       if (wcn->scan_init) {
+> +               ret = 0;
+> +               goto out;
+> +       }
+>         INIT_HAL_MSG(msg_body, WCN36XX_HAL_INIT_SCAN_REQ);
+>
+>         msg_body.mode = mode;
+> @@ -731,6 +735,7 @@ int wcn36xx_smd_init_scan(struct wcn36xx *wcn, enum wcn36xx_hal_sys_mode mode,
+>                 wcn36xx_err("hal_init_scan response failed err=%d\n", ret);
+>                 goto out;
+>         }
+> +       wcn->scan_init = true;
+>  out:
+>         mutex_unlock(&wcn->hal_mutex);
+>         return ret;
+> @@ -761,6 +766,7 @@ int wcn36xx_smd_start_scan(struct wcn36xx *wcn, u8 scan_channel)
+>                 wcn36xx_err("hal_start_scan response failed err=%d\n", ret);
+>                 goto out;
+>         }
+> +       wcn->scan_init = false;
+>  out:
+>         mutex_unlock(&wcn->hal_mutex);
+>         return ret;
+> diff --git a/drivers/net/wireless/ath/wcn36xx/wcn36xx.h b/drivers/net/wireless/ath/wcn36xx/wcn36xx.h
+> index 71fa9992b118..156df6d184c8 100644
+> --- a/drivers/net/wireless/ath/wcn36xx/wcn36xx.h
+> +++ b/drivers/net/wireless/ath/wcn36xx/wcn36xx.h
+> @@ -235,6 +235,7 @@ struct wcn36xx {
+>         struct ieee80211_vif    *sw_scan_vif;
+>         struct mutex            scan_lock;
+>         bool                    scan_aborted;
+> +       bool                    scan_init;
+>
+>         /* DXE channels */
+>         struct wcn36xx_dxe_ch   dxe_tx_l_ch;    /* TX low */
+> --
+> 2.28.0
+>
