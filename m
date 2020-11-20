@@ -2,159 +2,107 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ABE262BB7D3
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Nov 2020 21:50:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BE29E2BB7F4
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Nov 2020 21:59:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729666AbgKTUsH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 20 Nov 2020 15:48:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34828 "EHLO
+        id S1729222AbgKTUxk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 20 Nov 2020 15:53:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35710 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729675AbgKTUsG (ORCPT
+        with ESMTP id S1728740AbgKTUxj (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 20 Nov 2020 15:48:06 -0500
-Received: from mail-qv1-xf44.google.com (mail-qv1-xf44.google.com [IPv6:2607:f8b0:4864:20::f44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63ED8C061A47
-        for <linux-wireless@vger.kernel.org>; Fri, 20 Nov 2020 12:48:04 -0800 (PST)
-Received: by mail-qv1-xf44.google.com with SMTP id p12so3137770qvj.13
-        for <linux-wireless@vger.kernel.org>; Fri, 20 Nov 2020 12:48:04 -0800 (PST)
+        Fri, 20 Nov 2020 15:53:39 -0500
+Received: from mail-oi1-x243.google.com (mail-oi1-x243.google.com [IPv6:2607:f8b0:4864:20::243])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D03B9C0613CF
+        for <linux-wireless@vger.kernel.org>; Fri, 20 Nov 2020 12:53:39 -0800 (PST)
+Received: by mail-oi1-x243.google.com with SMTP id q206so11893350oif.13
+        for <linux-wireless@vger.kernel.org>; Fri, 20 Nov 2020 12:53:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=v0uQ3+ZvQ790GJbfbb1ESqfRrqQ38XoL7hho1t1Gb0k=;
-        b=avd4TaFUM+Ab56B8iWTc3giej2JyPXQeNqj8Vqwh4pMfYMm6E7ROZ43KbUMGq3c2kN
-         Y7wgImiWtwhH33QCuhXwX5xfYnbd8ZoAoymaiVLMsflRM4OrtMTi7raBVieCeB5e9/kv
-         qCr4nXKui27aGXF6t1ziK2ispJ9UlbNRnpYGc=
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=Tm5oQGDIWj52Bp56wXe66Os4mWl35FpTbKVQbQHjiA0=;
+        b=Q/ayshPw7MqVSNseI330O4AYlTJ4Xssc3g4VnY0j0IDdzFMEowMylO8koqPB01IYI9
+         t6ZFW87UdnQlfA0XS8AhgxB6uQ4CUOIKV+qklIG+JulBiVk0DopsABcifPjKvwZEFQyd
+         pMDL9hBMf8V10ABQl6nxC7VrDcQcLsUU+xZeM=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=v0uQ3+ZvQ790GJbfbb1ESqfRrqQ38XoL7hho1t1Gb0k=;
-        b=h6lqE3QkORspmrjZ+BryAXFX0+X1LXa6DTaDBfTC1H0kXMRJjCDJYmMf8sSeZKoq3F
-         ucxzvKTlxA0zQeOePcv3NR1xaWL16jchUiuH9t8XKYFtH+O7E5r7RINqW6gP7Tbh9ZLn
-         qocfgq4rKlY3HzUi3Z+prltOpMH6MtO5hnvziz+U9G0qDpzrNrvAoYzk+AkEfejub64u
-         9FfiCdnu+dwm9QVG5oIQ50SY/zqTJdVzryWENzUfbFD8IgukkhlvssYH+CsGJ3BYlHON
-         w/VT0amJdT278T/5PwL5D2HoAFAZoj4vr3hvy0pPzdo+o/RblJr8lVuY+/p/RxuzzUXh
-         UUXg==
-X-Gm-Message-State: AOAM531rkHfo0Wyj1SbKM1dymyF5z2lXdXiLfbMup9TdFGgEpn1STdF2
-        diBGkT+KFvzPsZtSno86r8kNJ/AMROgQ6nDJ
-X-Google-Smtp-Source: ABdhPJzEbaB+IYipfwOUXoCmdplAutZXXBsmC8OBp1xOfb5CPZl7t2eHSBKNbswFZQhoeAMsBYl7Qg==
-X-Received: by 2002:a62:d108:0:b029:163:d3cf:f00e with SMTP id z8-20020a62d1080000b0290163d3cff00emr15313890pfg.43.1605905283088;
-        Fri, 20 Nov 2020 12:48:03 -0800 (PST)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id a67sm3215381pfa.77.2020.11.20.12.48.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 Nov 2020 12:48:02 -0800 (PST)
-Date:   Fri, 20 Nov 2020 12:48:01 -0800
-From:   Kees Cook <keescook@chromium.org>
-To:     Jakub Kicinski <kuba@kernel.org>
-Cc:     "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        linux-kernel@vger.kernel.org, alsa-devel@alsa-project.org,
-        amd-gfx@lists.freedesktop.org, bridge@lists.linux-foundation.org,
-        ceph-devel@vger.kernel.org, cluster-devel@redhat.com,
-        coreteam@netfilter.org, devel@driverdev.osuosl.org,
-        dm-devel@redhat.com, drbd-dev@lists.linbit.com,
-        dri-devel@lists.freedesktop.org, GR-everest-linux-l2@marvell.com,
-        GR-Linux-NIC-Dev@marvell.com, intel-gfx@lists.freedesktop.org,
-        intel-wired-lan@lists.osuosl.org, keyrings@vger.kernel.org,
-        linux1394-devel@lists.sourceforge.net, linux-acpi@vger.kernel.org,
-        linux-afs@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-arm-msm@vger.kernel.org,
-        linux-atm-general@lists.sourceforge.net,
-        linux-block@vger.kernel.org, linux-can@vger.kernel.org,
-        linux-cifs@vger.kernel.org, linux-crypto@vger.kernel.org,
-        linux-decnet-user@lists.sourceforge.net,
-        linux-ext4@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        linux-geode@lists.infradead.org, linux-gpio@vger.kernel.org,
-        linux-hams@vger.kernel.org, linux-hwmon@vger.kernel.org,
-        linux-i3c@lists.infradead.org, linux-ide@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-input@vger.kernel.org,
-        linux-integrity@vger.kernel.org,
-        linux-mediatek@lists.infradead.org, linux-media@vger.kernel.org,
-        linux-mmc@vger.kernel.org, linux-mm@kvack.org,
-        linux-mtd@lists.infradead.org, linux-nfs@vger.kernel.org,
-        linux-rdma@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        linux-scsi@vger.kernel.org, linux-sctp@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-usb@vger.kernel.org, linux-watchdog@vger.kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        netfilter-devel@vger.kernel.org, nouveau@lists.freedesktop.org,
-        op-tee@lists.trustedfirmware.org, oss-drivers@netronome.com,
-        patches@opensource.cirrus.com, rds-devel@oss.oracle.com,
-        reiserfs-devel@vger.kernel.org, samba-technical@lists.samba.org,
-        selinux@vger.kernel.org, target-devel@vger.kernel.org,
-        tipc-discussion@lists.sourceforge.net,
-        usb-storage@lists.one-eyed-alien.net,
-        virtualization@lists.linux-foundation.org,
-        wcn36xx@lists.infradead.org, x86@kernel.org,
-        xen-devel@lists.xenproject.org, linux-hardening@vger.kernel.org,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Nathan Chancellor <natechancellor@gmail.com>,
-        Miguel Ojeda <ojeda@kernel.org>, Joe Perches <joe@perches.com>
-Subject: Re: [PATCH 000/141] Fix fall-through warnings for Clang
-Message-ID: <202011201244.78E002D5@keescook>
-References: <cover.1605896059.git.gustavoars@kernel.org>
- <20201120105344.4345c14e@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
- <202011201129.B13FDB3C@keescook>
- <20201120115142.292999b2@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Tm5oQGDIWj52Bp56wXe66Os4mWl35FpTbKVQbQHjiA0=;
+        b=ijdDWyjyOb3oyxjGKj4EfAJevQUiocnMlggooZFD2cYRXi6H/a4S7kNpLNrPLQ243x
+         M6GWLjC8zMKRwIzvjMx+ujDnl3vfFO5Id85Ygg61gOKTVRVHzbIULPKVdqbnT3JCy3AM
+         I2qpb4JKuHV3ps7VCCfTp5jtVE793detS1kqq5aFmxMdFjMAdr3Nd5A33n5M1pQyDd/h
+         79a2Mq2qtDUCnvRQigcelzrwImOKyewJqKcYAS5LAAU+czUIevLreZ9TO0k2rsU5iEyw
+         5xJTs0kLPki6Oc5CAh7rJ+7YORwPJ4V67rknqIL0tFOWS89/Gba6Zn6HKLJawLDW5PW5
+         uXjQ==
+X-Gm-Message-State: AOAM531rElZ+YNuWXMdYz57ZQofSeO7ZdrQz04X+v2M68Dg0ui7U2PTA
+        Q1PbQ6mAkO4Ma+kOoZLdpN4yWRuXa/6Bxg==
+X-Google-Smtp-Source: ABdhPJxvewt9gDgNfCKamokC2QStADT4vcWhbSKrUr8QQWqIkewoHpKvEJwrHiiYtmR0vdQD6cSHww==
+X-Received: by 2002:aca:df83:: with SMTP id w125mr7233885oig.165.1605905617525;
+        Fri, 20 Nov 2020 12:53:37 -0800 (PST)
+Received: from mail-ot1-f48.google.com (mail-ot1-f48.google.com. [209.85.210.48])
+        by smtp.gmail.com with ESMTPSA id j8sm2278497oif.55.2020.11.20.12.53.35
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 20 Nov 2020 12:53:36 -0800 (PST)
+Received: by mail-ot1-f48.google.com with SMTP id n12so6484979otk.0
+        for <linux-wireless@vger.kernel.org>; Fri, 20 Nov 2020 12:53:35 -0800 (PST)
+X-Received: by 2002:a05:6830:1291:: with SMTP id z17mr15586229otp.229.1605905615285;
+ Fri, 20 Nov 2020 12:53:35 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201120115142.292999b2@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+References: <20201028142625.18642-1-kitakar@gmail.com> <CA+ASDXPX+fadTKLnxNVZQ0CehsHNwvWHXEdLqZVDoQ6hf6Wp8Q@mail.gmail.com>
+ <7db5b6cba1548308a63855ec1dda836b6d6d9757.camel@gmail.com>
+In-Reply-To: <7db5b6cba1548308a63855ec1dda836b6d6d9757.camel@gmail.com>
+From:   Brian Norris <briannorris@chromium.org>
+Date:   Fri, 20 Nov 2020 12:53:23 -0800
+X-Gmail-Original-Message-ID: <CA+ASDXNPcXtTWS8pOjfoxiYOAcRMmsqZwXe3mnxOw388MCEu9g@mail.gmail.com>
+Message-ID: <CA+ASDXNPcXtTWS8pOjfoxiYOAcRMmsqZwXe3mnxOw388MCEu9g@mail.gmail.com>
+Subject: Re: [PATCH] mwifiex: pcie: add enable_device_dump module parameter
+To:     Tsuchiya Yuto <kitakar@gmail.com>
+Cc:     Amitkumar Karwar <amitkarwar@gmail.com>,
+        Ganapathi Bhat <ganapathi.bhat@nxp.com>,
+        Xinming Hu <huxinming820@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        "<netdev@vger.kernel.org>" <netdev@vger.kernel.org>,
+        Linux Kernel <linux-kernel@vger.kernel.org>,
+        Maximilian Luz <luzmaximilian@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@intel.com>, verdre@v0yd.nl
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Nov 20, 2020 at 11:51:42AM -0800, Jakub Kicinski wrote:
-> On Fri, 20 Nov 2020 11:30:40 -0800 Kees Cook wrote:
-> > On Fri, Nov 20, 2020 at 10:53:44AM -0800, Jakub Kicinski wrote:
-> > > On Fri, 20 Nov 2020 12:21:39 -0600 Gustavo A. R. Silva wrote:  
-> > > > This series aims to fix almost all remaining fall-through warnings in
-> > > > order to enable -Wimplicit-fallthrough for Clang.
-> > > > 
-> > > > In preparation to enable -Wimplicit-fallthrough for Clang, explicitly
-> > > > add multiple break/goto/return/fallthrough statements instead of just
-> > > > letting the code fall through to the next case.
-> > > > 
-> > > > Notice that in order to enable -Wimplicit-fallthrough for Clang, this
-> > > > change[1] is meant to be reverted at some point. So, this patch helps
-> > > > to move in that direction.
-> > > > 
-> > > > Something important to mention is that there is currently a discrepancy
-> > > > between GCC and Clang when dealing with switch fall-through to empty case
-> > > > statements or to cases that only contain a break/continue/return
-> > > > statement[2][3][4].  
-> > > 
-> > > Are we sure we want to make this change? Was it discussed before?
-> > > 
-> > > Are there any bugs Clangs puritanical definition of fallthrough helped
-> > > find?
-> > > 
-> > > IMVHO compiler warnings are supposed to warn about issues that could
-> > > be bugs. Falling through to default: break; can hardly be a bug?!  
-> > 
-> > It's certainly a place where the intent is not always clear. I think
-> > this makes all the cases unambiguous, and doesn't impact the machine
-> > code, since the compiler will happily optimize away any behavioral
-> > redundancy.
-> 
-> If none of the 140 patches here fix a real bug, and there is no change
-> to machine code then it sounds to me like a W=2 kind of a warning.
+(Sorry if anything's a bit slow here. I don't really have time to
+write out full proposals myself.)
 
-I'd like to avoid splitting common -W options between default and W=2
-just based on the compiler. Getting -Wimplicit-fallthrough enabled found
-plenty of bugs, so making sure it works correctly for both compilers
-feels justified to me. (This is just a subset of the same C language
-short-coming.)
+On Fri, Oct 30, 2020 at 3:30 AM Tsuchiya Yuto <kitakar@gmail.com> wrote:
+> Let me know if splitting this patch like this works. 1) The first patch
+> is to add this module parameter but don't change the default behavior.
 
-> I think clang is just being annoying here, but if I'm the only one who
-> feels this way chances are I'm wrong :)
+That *could* be OK with me, although it's already been said that there
+are many people who dislike extra module parameters. I also don't see
+why this needs to be a module parameter at all. If you do #2 right,
+you don't really need this, as there are already several standard ways
+of doing this (e.g., via Kconfig, or via nl80211 on a per-device
+basis).
 
-It's being pretty pedantic, but I don't think it's unreasonable to
-explicitly state how every case ends. GCC's silence for the case of
-"fall through to a break" doesn't really seem justified.
+> 2) The second patch is to change the parameter value depending on the
+> DMI matching or something so that it doesn't break the existing users.
 
--- 
-Kees Cook
+Point 2 sounds good, and this is the key point. Note that you can do
+point 2 without making it a module parameter. Just keep a flag in the
+driver-private structures.
+
+> But what I want to say here as well is that, if the firmware can be fixed,
+> we don't need a patch like this.
+
+Sure. That's also where we don't necessarily need more ways to control
+this from user space (e.g., module parameters), but just better
+detection of currently broken systems (in the driver). And if firmware
+ever gets fixed, we can undo the "broken device" detection.
+
+Brian
