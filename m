@@ -2,37 +2,41 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A4C202BB37B
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Nov 2020 19:38:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A0BEF2BB3B6
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Nov 2020 19:39:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730901AbgKTSeq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 20 Nov 2020 13:34:46 -0500
-Received: from mail.kernel.org ([198.145.29.99]:53220 "EHLO mail.kernel.org"
+        id S1731030AbgKTSgb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 20 Nov 2020 13:36:31 -0500
+Received: from mail.kernel.org ([198.145.29.99]:54704 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729325AbgKTSep (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 20 Nov 2020 13:34:45 -0500
+        id S1730741AbgKTSga (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 20 Nov 2020 13:36:30 -0500
 Received: from embeddedor (187-162-31-110.static.axtel.net [187.162.31.110])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 40AA524124;
-        Fri, 20 Nov 2020 18:34:44 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 9623B24181;
+        Fri, 20 Nov 2020 18:36:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1605897285;
-        bh=nz88fsZ1iiyhj5l4g83Cwd3d4ZGW41AGCuBE6uJLGY0=;
+        s=default; t=1605897389;
+        bh=7S93R+eoNCKQZlGjseYylH7acpfwBG3SpW0Kxq4QE48=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=A2FEfeRbuwWYgAexc9zWbjZnLfdqHWknDRKV4Sr/vRN3Mn9OdaBVCdaDJ32+6LqgX
-         n6jDNNxDKL+E+6Wd6UoNIxSQ/N9lnIHxSrwSUcipOVCS4K/DtIVnXTChn/JtqKIXlY
-         HoRtMrl0zD+HQ+w6SECL2isAkYaavZuqWCaTHd/A=
-Date:   Fri, 20 Nov 2020 12:34:50 -0600
+        b=BQsFoDfPt97Hqe4bMx/+nJFBErE3ihpYfstpHH32WMT49PEd4wRxgDpUD34xKhXQE
+         saTC+HYJtwePMgK+VHzkWcy7hHruj3NGoAhcd15x4PD6dQAsW/S8b9Gf6VZD5+3L6V
+         ZCvrFiQE92MpRAglO182rMzltAxj1IX4ZE4MKVpE=
+Date:   Fri, 20 Nov 2020 12:36:35 -0600
 From:   "Gustavo A. R. Silva" <gustavoars@kernel.org>
-To:     Johannes Berg <johannes@sipsolutions.net>,
+To:     Johannes Berg <johannes.berg@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        Intel Linux Wireless <linuxwifi@intel.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
         "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>
 Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org,
         "Gustavo A. R. Silva" <gustavoars@kernel.org>
-Subject: [PATCH 074/141] cfg80211: Fix fall-through warnings for Clang
-Message-ID: <ed94a115106fa9c6df94d09b2a6c5791c618c4f2.1605896059.git.gustavoars@kernel.org>
+Subject: [PATCH 091/141] iwlwifi: iwl-drv: Fix fall-through warnings for Clang
+Message-ID: <edd98d194bfc98b4be93a9bdc303630b719c0e66.1605896060.git.gustavoars@kernel.org>
 References: <cover.1605896059.git.gustavoars@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -43,28 +47,33 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-In preparation to enable -Wimplicit-fallthrough for Clang, fix a warning
-by explicitly adding a break statement instead of letting the code fall
+In preparation to enable -Wimplicit-fallthrough for Clang, fix a
+warning by replacing a /* fall through */ comment with the new
+pseudo-keyword macro fallthrough; instead of letting the code fall
 through to the next case.
+
+Notice that Clang doesn't recognize /* fall through */ comments as
+implicit fall-through markings.
 
 Link: https://github.com/KSPP/linux/issues/115
 Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
 ---
- net/wireless/util.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/intel/iwlwifi/iwl-drv.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/wireless/util.c b/net/wireless/util.c
-index f01746894a4e..623a4dfb9877 100644
---- a/net/wireless/util.c
-+++ b/net/wireless/util.c
-@@ -335,6 +335,7 @@ int cfg80211_validate_key_settings(struct cfg80211_registered_device *rdev,
- 	case WLAN_CIPHER_SUITE_WEP104:
- 		if (key_idx > 3)
- 			return -EINVAL;
-+		break;
- 	default:
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
+index 9dcd2e990c9c..6a9be73d7661 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
+@@ -1579,7 +1579,7 @@ static void iwl_req_fw_callback(const struct firmware *ucode_raw, void *context)
  		break;
- 	}
+ 	default:
+ 		WARN(1, "Invalid fw type %d\n", fw->type);
+-		/* fall through */
++		fallthrough;
+ 	case IWL_FW_MVM:
+ 		op = &iwlwifi_opmode_table[MVM_OP_MODE];
+ 		break;
 -- 
 2.27.0
 
