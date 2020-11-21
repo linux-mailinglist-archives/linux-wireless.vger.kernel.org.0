@@ -2,154 +2,160 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4BC1D2BBF13
-	for <lists+linux-wireless@lfdr.de>; Sat, 21 Nov 2020 13:54:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E7692BC079
+	for <lists+linux-wireless@lfdr.de>; Sat, 21 Nov 2020 17:19:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727799AbgKUMwZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 21 Nov 2020 07:52:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41678 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727726AbgKUMwY (ORCPT
+        id S1726618AbgKUQQc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 21 Nov 2020 11:16:32 -0500
+Received: from wnew2-smtp.messagingengine.com ([64.147.123.27]:48579 "EHLO
+        wnew2-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726335AbgKUQQc (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 21 Nov 2020 07:52:24 -0500
-X-Greylist: delayed 434 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sat, 21 Nov 2020 04:52:24 PST
-Received: from mout-b-105.mailbox.org (mout-b-105.mailbox.org [IPv6:2001:67c:2050:101:465::105])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F2C1C0613CF
-        for <linux-wireless@vger.kernel.org>; Sat, 21 Nov 2020 04:52:24 -0800 (PST)
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [IPv6:2001:67c:2050:105:465:1:2:0])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mout-b-105.mailbox.org (Postfix) with ESMTPS id 4CdY6B4Py0zQlRd;
-        Sat, 21 Nov 2020 13:45:06 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nyantec.com; h=
-        content-language:content-transfer-encoding:content-type
-        :content-type:mime-version:date:date:message-id:subject:subject
-        :from:from:received; s=default; t=1605962703; bh=0QBlA1vZZQcwKLR
-        3QYwJeEpFV77i1d1t/cYxXFzfE8c=; b=f+6veuKyWB3jVxQ0DelKUle0eMwZhMW
-        2BLJBT/f+jCADvrxjLhe35Njv8b5Gca2nyOBT6Bm+CpyQ8SXiQ5B3iIhjzPzZIdx
-        OpqqkHc4bIvK0N3GqdKQIZ2Ne4lyJBmKEmA78FAHqvQPR3djWEt8eFy3ocsTUn2W
-        UpkeXj/v1i14HCtC3p2lDM3pnuEaWm87SYyyoLWDiU+g8V6HdWNeXoOtlFjMhsQo
-        5vR0gBQ7hyMIGLjHT1BVaF1gxkHatiUhXIl4HSH8YWx/8FhLxoTaV+6C6ecGmYpe
-        40vQgGp3hqFfmNnN1jkRoKIUhBH3S9qOrFOE3GyxD5/rwzIOnLcZ7iA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nyantec.com; s=default;
-        t=1605962704;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=0QBlA1vZZQcwKLR3QYwJeEpFV77i1d1t/cYxXFzfE8c=;
-        b=X9cLgxEY6wTzEJUQ7uTrH2DoSAlUgLXkDpkzjIku41eav34agkB1yPpecStHyiawncs4KR
-        UUzqmRYyJDDdSs4PMVai4j0XhtwGYc4k9vDf74M87FlqfgKH4JTw0Ig9AiuaTwy/D6s5oO
-        dEhSKagwMnx9GOQiCAgLY9I8gRPuJ3T9rAIGP/jJ2OXUs3BHiK14QrqXjggI990ZNvSpsc
-        S7Q23KHrQ8IK1AcqQ/SqRy9P+HveisGcHfi6lNvaYOMbBuZzk82VcRL04unvz53qAJKRLT
-        dCCrUpqGnV6qM3STxA5QBpYxbqJRb+VAbyNg1wRgvpWLXBwsgjZuthlVID2uwg==
-X-Virus-Scanned: amavisd-new at heinlein-support.de
-Received: from smtp2.mailbox.org ([80.241.60.241])
-        by spamfilter02.heinlein-hosting.de (spamfilter02.heinlein-hosting.de [80.241.56.116]) (amavisd-new, port 10030)
-        with ESMTP id J-WpkNsBQwxT; Sat, 21 Nov 2020 13:45:03 +0100 (CET)
-From:   Finn Behrens <fin@nyantec.com>
-To:     linux-wireless@vger.kernel.org
-Subject: [PATCH] nl80211: reset regdom when reloading regdb
-Message-ID: <8c3e46ac-331b-0922-5379-0cb1ef61a83b@nyantec.com>
-Date:   Sat, 21 Nov 2020 13:45:03 +0100
+        Sat, 21 Nov 2020 11:16:32 -0500
+X-Greylist: delayed 406 seconds by postgrey-1.27 at vger.kernel.org; Sat, 21 Nov 2020 11:16:32 EST
+Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
+        by mailnew.west.internal (Postfix) with ESMTP id 8B045D73;
+        Sat, 21 Nov 2020 11:09:45 -0500 (EST)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute3.internal (MEProxy); Sat, 21 Nov 2020 11:09:46 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:content-type:date:from:in-reply-to
+        :message-id:mime-version:references:subject:to:x-me-proxy
+        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; bh=huz5Dh
+        VGIoT2g9v8/zblY/2WU9UNWjC3Gk6t7/f3xxM=; b=HjcgaItDtOjMydkE2UkT2C
+        n+C8mjKYwU5H6Q66922FFvagUGKlwx/VjvjEx3+r4/1eFOq4Co6G7c08txulgj/l
+        ZlAlGf7VCt3KxpUDRBj8nOhkax3mS2LIQ/kZ1IxRan0JBuppGlyV4NtFbL/DGa7Z
+        TbC/QXFofb6xPc5+4+vBkLjp17wCdCMSzk7LX7rAD5q+naUn1n2+kNVKiOHIEyXU
+        7rpM6b0jJnd9aK3k/tlsEJsWqIXOe78T6JMfhQXpLH8nJFjOuf1yOSuOBxdN16cC
+        c+KNMx8ya3hmZlUsGSz4N6bmDFI1t/N0jAdp8mx4/4GnuqDwB+wEReCoChMoFcmA
+        ==
+X-ME-Sender: <xms:yDu5X1vJwh_3X-0DsgHfoLAVuftGWgi7VrHVsKWk4pkMifeKHOUwTg>
+    <xme:yDu5X-eZsViXxoNP5Jli79mL_eBihqXI5cR1UQNkv82vO-65XO_F3SUKgt8AfcA2o
+    0nzI0Pv63o5_qs>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedujedrudegvddgkeehucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvffukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefkughoucfu
+    tghhihhmmhgvlhcuoehiughoshgthhesihguohhstghhrdhorhhgqeenucggtffrrghtth
+    gvrhhnpedtffekkeefudffveegueejffejhfetgfeuuefgvedtieehudeuueekhfduheel
+    teenucfkphepkeegrddvvdelrdduheegrddugeejnecuvehluhhsthgvrhfuihiivgeptd
+    enucfrrghrrghmpehmrghilhhfrhhomhepihguohhstghhsehiughoshgthhdrohhrgh
+X-ME-Proxy: <xmx:yDu5X4xpOH7hEl0hO32HiyS6UB6te8zF5fqs4NIB9SWKIts2_Mb7NQ>
+    <xmx:yDu5X8MkzGZTjZPlhXVR6WFmr8VfdaPS1YwL_qqCzGUo2b4pRRG4Ng>
+    <xmx:yDu5X1-d-mcsQVrkV-zeiwNK4u0B4A19243zdEJP7Y-DrzDzYVe5UA>
+    <xmx:yTu5X8WFGlRmAxbfkQUq03Lt-CbrUr0j4eDSm7cFMLv0J4JQHJYJQouZBiQ>
+Received: from localhost (igld-84-229-154-147.inter.net.il [84.229.154.147])
+        by mail.messagingengine.com (Postfix) with ESMTPA id 2F31F3064AAE;
+        Sat, 21 Nov 2020 11:09:44 -0500 (EST)
+Date:   Sat, 21 Nov 2020 18:09:41 +0200
+From:   Ido Schimmel <idosch@idosch.org>
+To:     Aleksandr Nogikh <aleksandrnogikh@gmail.com>, fw@strlen.de
+Cc:     davem@davemloft.net, kuba@kernel.org, johannes@sipsolutions.net,
+        edumazet@google.com, andreyknvl@google.com, dvyukov@google.com,
+        elver@google.com, linux-kernel@vger.kernel.org,
+        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+        willemdebruijn.kernel@gmail.com,
+        Aleksandr Nogikh <nogikh@google.com>,
+        Willem de Bruijn <willemb@google.com>
+Subject: Re: [PATCH v5 2/3] net: add kcov handle to skb extensions
+Message-ID: <20201121160941.GA485907@shredder.lan>
+References: <20201029173620.2121359-1-aleksandrnogikh@gmail.com>
+ <20201029173620.2121359-3-aleksandrnogikh@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Content-Language: en-US
-X-MBO-SPAM-Probability: 
-X-Rspamd-Score: -2.07 / 15.00 / 15.00
-X-Rspamd-Queue-Id: 99A96170D
-X-Rspamd-UID: a1ca09
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201029173620.2121359-3-aleksandrnogikh@gmail.com>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-reset the regdom when NL80211_CMD_RELOAD_REGDB is send
++ Florian
 
-Signed-off-by: Finn Behrens <fin@nyantec.com>
----
-include/net/regulatory.h | 1 +
-net/wireless/reg.c | 31 +++++++++++++++++++++++++++++--
-2 files changed, 30 insertions(+), 2 deletions(-)
+On Thu, Oct 29, 2020 at 05:36:19PM +0000, Aleksandr Nogikh wrote:
+> From: Aleksandr Nogikh <nogikh@google.com>
+> 
+> Remote KCOV coverage collection enables coverage-guided fuzzing of the
+> code that is not reachable during normal system call execution. It is
+> especially helpful for fuzzing networking subsystems, where it is
+> common to perform packet handling in separate work queues even for the
+> packets that originated directly from the user space.
+> 
+> Enable coverage-guided frame injection by adding kcov remote handle to
+> skb extensions. Default initialization in __alloc_skb and
+> __build_skb_around ensures that no socket buffer that was generated
+> during a system call will be missed.
+> 
+> Code that is of interest and that performs packet processing should be
+> annotated with kcov_remote_start()/kcov_remote_stop().
+> 
+> An alternative approach is to determine kcov_handle solely on the
+> basis of the device/interface that received the specific socket
+> buffer. However, in this case it would be impossible to distinguish
+> between packets that originated during normal background network
+> processes or were intentionally injected from the user space.
+> 
+> Signed-off-by: Aleksandr Nogikh <nogikh@google.com>
+> Acked-by: Willem de Bruijn <willemb@google.com>
 
-diff --git a/include/net/regulatory.h b/include/net/regulatory.h
-index 47f06f6f5a67..0cf9335431e0 100644
---- a/include/net/regulatory.h
-+++ b/include/net/regulatory.h
-@@ -83,6 +83,7 @@ struct regulatory_request {
-enum nl80211_dfs_regions dfs_region;
-bool intersect;
-bool processed;
-+ bool reload;
-enum environment_cap country_ie_env;
-struct list_head list;
-};
-diff --git a/net/wireless/reg.c b/net/wireless/reg.c
-index a04fdfb35f07..50314916b020 100644
---- a/net/wireless/reg.c
-+++ b/net/wireless/reg.c
-@@ -199,6 +199,7 @@ static struct regulatory_request *get_last_request(vo=
-id)
-/* Used to queue up regulatory hints */
-static LIST_HEAD(reg_requests_list);
-static spinlock_t reg_requests_lock;
-+static void queue_regulatory_request(struct regulatory_request *request)=
-;
-/* Used to queue up beacon hints for review */
-static LIST_HEAD(reg_pending_beacons);
-@@ -1081,10 +1082,13 @@ int reg_reload_regdb(void)
-int err;
-err =3D request_firmware(&fw, "regulatory.db", &reg_pdev->dev);
-- if (err)
-+ if (err) {
-+ pr_info("failed to load regulatory.db\n");
-return err;
-+ }
-if (!valid_regdb(fw->data, fw->size)) {
-+ pr_info("loaded regulatory.db is malformed or signature is
-missing/invalid\n");
-err =3D -ENODATA;
-goto out;
-}
-@@ -1101,6 +1105,28 @@ int reg_reload_regdb(void)
-regdb =3D db;
-rtnl_unlock();
-+ // reset regulatory
-+ const struct ieee80211_regdomain *current_regdomain =3D NULL;
-+
-+ current_regdomain =3D get_cfg80211_regdom();
-+
-+ struct regulatory_request *request =3D NULL;
-+
-+ request =3D kzalloc(sizeof(*request), GFP_KERNEL);
-+ if (!request) {
-+ err =3D -ENOMEM;
-+ goto out;
-+ }
-+
-+ request->wiphy_idx =3D WIPHY_IDX_INVALID;
-+ request->alpha2[0] =3D current_regdomain->alpha2[0];
-+ request->alpha2[1] =3D current_regdomain->alpha2[1];
-+ request->initiator =3D NL80211_USER_REG_HINT_USER;
-+ request->user_reg_hint_type =3D NL80211_USER_REG_HINT_USER;
-+ request->reload =3D true;
-+
-+ queue_regulatory_request(request);
-+
-out:
-release_firmware(fw);
-return err;
-@@ -2657,7 +2683,8 @@ reg_process_hint_user(struct regulatory_request
-*user_request)
-treatment =3D __reg_process_hint_user(user_request);
-if (treatment =3D=3D REG_REQ_IGNORE ||
-- treatment =3D=3D REG_REQ_ALREADY_SET)
-+ treatment =3D=3D REG_REQ_ALREADY_SET &&
-+ !user_request->reload)
-return REG_REQ_IGNORE;
-user_request->intersect =3D treatment =3D=3D REG_REQ_INTERSECT;
+[...]
 
---=20
-2.29.2
+> @@ -249,6 +249,9 @@ struct sk_buff *__alloc_skb(unsigned int size, gfp_t gfp_mask,
+>  
+>  		fclones->skb2.fclone = SKB_FCLONE_CLONE;
+>  	}
+> +
+> +	skb_set_kcov_handle(skb, kcov_common_handle());
 
+Hi,
 
+This causes skb extensions to be allocated for the allocated skb, but
+there are instances that blindly overwrite 'skb->extensions' by invoking
+skb_copy_header() after __alloc_skb(). For example, skb_copy(),
+__pskb_copy_fclone() and skb_copy_expand(). This results in the skb
+extensions being leaked [1].
+
+One possible solution is to try to patch all these instances with
+skb_ext_put() before skb_copy_header().
+
+Another possible solution is to convert skb_copy_header() to use
+skb_ext_copy() instead of __skb_ext_copy(). It will first drop the
+reference on the skb extensions of the new skb, but it assumes that
+'skb->active_extensions' is valid. This is not the case in the
+skb_clone() path so we should probably zero this field in __skb_clone().
+
+Other suggestions?
+
+Thanks
+
+[1]
+BUG: memory leak
+unreferenced object 0xffff888027f9a490 (size 16):
+  comm "syz-executor.0", pid 1155, jiffies 4295996826 (age 66.927s)
+  hex dump (first 16 bytes):
+    01 00 00 00 01 02 6b 6b 01 00 00 00 00 00 00 00  ......kk........
+  backtrace:
+    [<0000000005a5f2c4>] kmemleak_alloc_recursive include/linux/kmemleak.h:43 [inline]
+    [<0000000005a5f2c4>] slab_post_alloc_hook mm/slab.h:528 [inline]
+    [<0000000005a5f2c4>] slab_alloc_node mm/slub.c:2891 [inline]
+    [<0000000005a5f2c4>] slab_alloc mm/slub.c:2899 [inline]
+    [<0000000005a5f2c4>] kmem_cache_alloc+0x173/0x800 mm/slub.c:2904
+    [<00000000c5e43ea9>] __skb_ext_alloc+0x22/0x90 net/core/skbuff.c:6173
+    [<000000000de35e81>] skb_ext_add+0x230/0x4a0 net/core/skbuff.c:6268
+    [<000000003b7efba4>] skb_set_kcov_handle include/linux/skbuff.h:4622 [inline]
+    [<000000003b7efba4>] skb_set_kcov_handle include/linux/skbuff.h:4612 [inline]
+    [<000000003b7efba4>] __alloc_skb+0x47f/0x6a0 net/core/skbuff.c:253
+    [<000000007f789b23>] skb_copy+0x151/0x310 net/core/skbuff.c:1512
+    [<000000001ce26864>] mlxsw_emad_transmit+0x4e/0x620 drivers/net/ethernet/mellanox/mlxsw/core.c:585
+    [<000000005c732123>] mlxsw_emad_reg_access drivers/net/ethernet/mellanox/mlxsw/core.c:829 [inline]
+    [<000000005c732123>] mlxsw_core_reg_access_emad+0xda8/0x1770 drivers/net/ethernet/mellanox/mlxsw/core.c:2408
+    [<00000000c07840b3>] mlxsw_core_reg_access+0x101/0x7f0 drivers/net/ethernet/mellanox/mlxsw/core.c:2583
+    [<000000007c47f30f>] mlxsw_reg_write+0x30/0x40 drivers/net/ethernet/mellanox/mlxsw/core.c:2603
+    [<00000000675e3fc7>] mlxsw_sp_port_admin_status_set+0x8a7/0x980 drivers/net/ethernet/mellanox/mlxsw/spectrum.c:300
+    [<00000000fefe35a4>] mlxsw_sp_port_stop+0x63/0x70 drivers/net/ethernet/mellanox/mlxsw/spectrum.c:537
+    [<00000000c41390e8>] __dev_close_many+0x1c7/0x300 net/core/dev.c:1607
+    [<00000000628c5987>] __dev_close net/core/dev.c:1619 [inline]
+    [<00000000628c5987>] __dev_change_flags+0x2b9/0x710 net/core/dev.c:8421
+    [<000000008cc810c6>] dev_change_flags+0x97/0x170 net/core/dev.c:8494
+    [<0000000053274a78>] do_setlink+0xa5b/0x3b80 net/core/rtnetlink.c:2706
+    [<00000000e4085785>] rtnl_group_changelink net/core/rtnetlink.c:3225 [inline]
+    [<00000000e4085785>] __rtnl_newlink+0xe06/0x17d0 net/core/rtnetlink.c:3379
