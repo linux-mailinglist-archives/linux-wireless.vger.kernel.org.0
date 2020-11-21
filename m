@@ -2,58 +2,58 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 25FED2BBADC
-	for <lists+linux-wireless@lfdr.de>; Sat, 21 Nov 2020 01:31:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E8A52BBB0B
+	for <lists+linux-wireless@lfdr.de>; Sat, 21 Nov 2020 01:35:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728363AbgKUAaK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 20 Nov 2020 19:30:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40874 "EHLO
+        id S1728730AbgKUAeR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 20 Nov 2020 19:34:17 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41504 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727808AbgKUAaK (ORCPT
+        with ESMTP id S1728186AbgKUAeQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 20 Nov 2020 19:30:10 -0500
-Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com [IPv6:2607:f8b0:4864:20::444])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7496C0613CF
-        for <linux-wireless@vger.kernel.org>; Fri, 20 Nov 2020 16:30:09 -0800 (PST)
-Received: by mail-pf1-x444.google.com with SMTP id w14so9472049pfd.7
-        for <linux-wireless@vger.kernel.org>; Fri, 20 Nov 2020 16:30:09 -0800 (PST)
+        Fri, 20 Nov 2020 19:34:16 -0500
+Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com [IPv6:2607:f8b0:4864:20::643])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C54E0C0613CF
+        for <linux-wireless@vger.kernel.org>; Fri, 20 Nov 2020 16:34:16 -0800 (PST)
+Received: by mail-pl1-x643.google.com with SMTP id s2so5737041plr.9
+        for <linux-wireless@vger.kernel.org>; Fri, 20 Nov 2020 16:34:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
         bh=olvdt7ki5fqHF/H4ohvOZWI03xMh6S5Vc6eypQqd3rQ=;
-        b=gcdftIt3k7j+DWB1YYReGNOxtmve/OrK2EJ+6TpRLPCWofdvlMLDJ2qIhsrxl+F6Bf
-         FXxdl0v/tiQvXTHu7XwVUNcABy1kBjiit05TOJktP7nALErGGXnBXgm0yBctifeBLkGW
-         1O9i/rTbw+43v81kNHuZxoJHLFWJ1Vs5eFDggfKoRH3W5X37iTgZWyWtrO3EFdYusHNc
-         hnthmgGA21CdgLWXMnpJv4XQ4PGtJ+8DdzlZQNhS2ad0jDx9+ksphPYf6y0ZUswkiaht
-         z1ZXF2A18cD8j1rUdsatwIfF4J4Gi+dqcIcT+rHHM+26kll3S7udWi0Knyu3F8eLqtuA
-         iE/w==
+        b=H3imSh4VfouO45PN/i7nkB2699o3zHWfzE0iBa0zNmZUBzZJGHKfA0H2bUgq2xKYIg
+         tH2eWgeGDL5DGfVN0fn160Ul8UaN2U5PXqw/P2iaEeW+BtqU693J7IKHsR2zn7sGLrvn
+         wdXBf0SeExc6aMNlLGJlBcf0o2wAIrnB3LW2m8NUUNXO1yDGt+8IqPBEzMk5VNFlWRzo
+         O8IcQtxouI50lEPWQGmJ+M+xcBef6dwwfZcD+4VLXsYSkXVFt9Eh9ZQxAr5caQ2+FnYs
+         YPeV1yrH5ze0Hrgx8Eqfj2H3nWikHYGMLZO5+coWNRRijNyqwyZryR7eD7sfqyu9mByB
+         47Zg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
         bh=olvdt7ki5fqHF/H4ohvOZWI03xMh6S5Vc6eypQqd3rQ=;
-        b=lGwm/lYVChTscNtHQIowUPIyBKsxNggcoaDlOG513GD2+bpzi6xPasSTVDhpkQsa2l
-         UuXQbas7X+keAWIRdPi9ba5Sfd0dlfQ8nIUHO1FtVhN6VguhJjath7kiVZaLnvQNoQaz
-         abihstrZhm0rSUM+R14NYJ4EHqUynT0gEVvPZvmNCytWZvTJvHK50BpHgQ2wmXSecNct
-         ZJm59rIDw2KLPKLNZ7VdXkVKnnqIvkLP8HtsU8Kzl0lD35PV4dNp7JPDmypcfnXCVYY4
-         vAc978AaZfeCmtBLwCpzPhXAeohloY7fcgtWtoj1PKHbLz6x9UcONrsx/BOM4PYo1mSN
-         cfbw==
-X-Gm-Message-State: AOAM530tEbjUUk9gFuILCS/1k5T51yughfAnEguBwzQDJSRGG+Sd4qOi
-        jI8jkMYoszIJX4VIBdUgclzrvVy/Z8jIhsbU
-X-Google-Smtp-Source: ABdhPJy/pO8xLVEsraXQ/eiAP13+a4QU+UksZv+F5aNTimhffGO6x8bcFb5hi0TgqFXixN6sKIVT2Q==
-X-Received: by 2002:a63:7706:: with SMTP id s6mr6161927pgc.439.1605918608417;
-        Fri, 20 Nov 2020 16:30:08 -0800 (PST)
+        b=aw2RU1vs4pgvlJz0kVBQD33Q4z8FPJYgrzJNVLGAB+FFlBbSnoqgZuvXBxQxeJSBt6
+         bGP66Xbmatnyd9ihD+UzSdB/v73mokYUxyqY/cGRt4j+cSTOD/aQN+fezvw0WaKZErij
+         WiKFytTf7GZBk5khiOlddFM/4IvgvKBbcYnoMloyKKuh9PxyF00UJO5D+B6iYt7Y0q7H
+         yAGQUtUS2P8QEiqq951k7GD51JQZ4HxKizRlP6hjEOy277XE8zDftjYBOrbmaopbJBt+
+         pIKod0fNz5m9EnHqRYcCVzaQ81ygaCJEB/Nn0QS87uDe4KIMKusiMKVmmr2/ZDDW2wmc
+         XNYg==
+X-Gm-Message-State: AOAM531HfIkICqsiVSySkwJuIN98zr2/hHm0kv+Bl16pnEQPY8oerBAd
+        8vb3NCab8jetiu4HCR54Uz8=
+X-Google-Smtp-Source: ABdhPJwANGtEhbLtCNyOsdm57ODvN1Lfk7qoTliL9gZLYq7OQNRwzVmJatGkkreWWZCBVf54mLdtZA==
+X-Received: by 2002:a17:902:c20a:b029:d6:b2d6:8006 with SMTP id 10-20020a170902c20ab02900d6b2d68006mr16238532pll.31.1605918856286;
+        Fri, 20 Nov 2020 16:34:16 -0800 (PST)
 Received: from localhost.localdomain ([240b:10:2720:5510:ec4:b250:6b18:ddbe])
-        by smtp.googlemail.com with ESMTPSA id k17sm5548224pji.50.2020.11.20.16.30.07
+        by smtp.googlemail.com with ESMTPSA id x13sm5226030pfj.54.2020.11.20.16.34.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 Nov 2020 16:30:07 -0800 (PST)
+        Fri, 20 Nov 2020 16:34:15 -0800 (PST)
 From:   Tokunori Ikegami <ikegami.t@gmail.com>
-To:     linux-wireless@vger.kernel.org
-Cc:     Tokunori Ikegami <ikegami.t@gmail.com>
+To:     ikegami.t@gmail.com
+Cc:     linux-wireless@vger.kernel.org
 Subject: [PATCH] Revert "rtl8xxxu: Add Buffalo WI-U3-866D to list of supported devices"
-Date:   Sat, 21 Nov 2020 09:29:55 +0900
-Message-Id: <20201121002955.9007-1-ikegami.t@gmail.com>
+Date:   Sat, 21 Nov 2020 09:34:11 +0900
+Message-Id: <20201121003411.9450-1-ikegami.t@gmail.com>
 X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
