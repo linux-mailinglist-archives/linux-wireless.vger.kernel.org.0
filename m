@@ -2,120 +2,154 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AC6582BBC4D
-	for <lists+linux-wireless@lfdr.de>; Sat, 21 Nov 2020 03:44:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4BC1D2BBF13
+	for <lists+linux-wireless@lfdr.de>; Sat, 21 Nov 2020 13:54:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726304AbgKUCmo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 20 Nov 2020 21:42:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33266 "EHLO
+        id S1727799AbgKUMwZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 21 Nov 2020 07:52:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41678 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725791AbgKUCmo (ORCPT
+        with ESMTP id S1727726AbgKUMwY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 20 Nov 2020 21:42:44 -0500
-Received: from mail-oi1-x243.google.com (mail-oi1-x243.google.com [IPv6:2607:f8b0:4864:20::243])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3576C0613CF
-        for <linux-wireless@vger.kernel.org>; Fri, 20 Nov 2020 18:42:43 -0800 (PST)
-Received: by mail-oi1-x243.google.com with SMTP id k26so12819294oiw.0
-        for <linux-wireless@vger.kernel.org>; Fri, 20 Nov 2020 18:42:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=5yqqwrdQhKQXDBEKtAOCqAG/1CMSBr1y6lPpHeYVMEM=;
-        b=KfLODqSV4PuG0dJ0+3kSnv47luSgI0IYt8W+WWaDuruPwNs2y6FnCoAqh1PQiYN8jC
-         5lrcz6n+srku0z5DEigiN16UYjVYnz8HJ+SgorkSwY9fNiCuhpjh6mgnEdM6zBA0TR3I
-         PiS4dxRrV1YEHxQSMTD+ACTy01MbZQF/9ma8g=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=5yqqwrdQhKQXDBEKtAOCqAG/1CMSBr1y6lPpHeYVMEM=;
-        b=Wi/tQ484tCBo6//Aeawe6ToxOx1arbH0HSgS8Rh/3HqnVgllJnJq/VjFINxFgbXA/R
-         O9RdNJf1dEuhY8stxRszL5/IDCreF7b1VC+XI1EFODm8SDKIolGIXeFG5KcgHdVc9Q0R
-         T9HvpfGfoExZsdkTQIJ9V/VqnDY5SD7vL0aMAPClTmgAslu9uqleBi0Pz5BmH4sNHAGE
-         Apx5mUo9nNfKqHCLU1PKHKrx9wDq/ckpepH+whs8H/7m2sjx9OVdJUSli0bnTpNVG7ef
-         6sEa6+gIVimwCql7J+9SvwbrT/PoCXsq76Hw6Kax9Bf3OGO0ZhfnJoMqLg+XaOM8e1QA
-         3HsA==
-X-Gm-Message-State: AOAM531FXoUhShxUcyJkM7cAWp8NIGmn2YAmELkzbC72VVPmJ+LSUzQW
-        UvbolUIfQpJzH29rJDNg1QgDmIFcrVCdUg==
-X-Google-Smtp-Source: ABdhPJwJECeTlCzwm6xEc4fYH+6FXrwfcTHdBpTfD9K2sxVv9C9LR0KZLmCq0Y+T88MD3f3G5KNijA==
-X-Received: by 2002:aca:4849:: with SMTP id v70mr8837921oia.103.1605926562547;
-        Fri, 20 Nov 2020 18:42:42 -0800 (PST)
-Received: from mail-ot1-f48.google.com (mail-ot1-f48.google.com. [209.85.210.48])
-        by smtp.gmail.com with ESMTPSA id d13sm2439692oth.59.2020.11.20.18.42.41
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 20 Nov 2020 18:42:41 -0800 (PST)
-Received: by mail-ot1-f48.google.com with SMTP id n11so10660398ota.2
-        for <linux-wireless@vger.kernel.org>; Fri, 20 Nov 2020 18:42:41 -0800 (PST)
-X-Received: by 2002:a05:6830:2083:: with SMTP id y3mr17292905otq.203.1605926560878;
- Fri, 20 Nov 2020 18:42:40 -0800 (PST)
+        Sat, 21 Nov 2020 07:52:24 -0500
+X-Greylist: delayed 434 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sat, 21 Nov 2020 04:52:24 PST
+Received: from mout-b-105.mailbox.org (mout-b-105.mailbox.org [IPv6:2001:67c:2050:101:465::105])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F2C1C0613CF
+        for <linux-wireless@vger.kernel.org>; Sat, 21 Nov 2020 04:52:24 -0800 (PST)
+Received: from smtp2.mailbox.org (smtp2.mailbox.org [IPv6:2001:67c:2050:105:465:1:2:0])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mout-b-105.mailbox.org (Postfix) with ESMTPS id 4CdY6B4Py0zQlRd;
+        Sat, 21 Nov 2020 13:45:06 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nyantec.com; h=
+        content-language:content-transfer-encoding:content-type
+        :content-type:mime-version:date:date:message-id:subject:subject
+        :from:from:received; s=default; t=1605962703; bh=0QBlA1vZZQcwKLR
+        3QYwJeEpFV77i1d1t/cYxXFzfE8c=; b=f+6veuKyWB3jVxQ0DelKUle0eMwZhMW
+        2BLJBT/f+jCADvrxjLhe35Njv8b5Gca2nyOBT6Bm+CpyQ8SXiQ5B3iIhjzPzZIdx
+        OpqqkHc4bIvK0N3GqdKQIZ2Ne4lyJBmKEmA78FAHqvQPR3djWEt8eFy3ocsTUn2W
+        UpkeXj/v1i14HCtC3p2lDM3pnuEaWm87SYyyoLWDiU+g8V6HdWNeXoOtlFjMhsQo
+        5vR0gBQ7hyMIGLjHT1BVaF1gxkHatiUhXIl4HSH8YWx/8FhLxoTaV+6C6ecGmYpe
+        40vQgGp3hqFfmNnN1jkRoKIUhBH3S9qOrFOE3GyxD5/rwzIOnLcZ7iA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nyantec.com; s=default;
+        t=1605962704;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=0QBlA1vZZQcwKLR3QYwJeEpFV77i1d1t/cYxXFzfE8c=;
+        b=X9cLgxEY6wTzEJUQ7uTrH2DoSAlUgLXkDpkzjIku41eav34agkB1yPpecStHyiawncs4KR
+        UUzqmRYyJDDdSs4PMVai4j0XhtwGYc4k9vDf74M87FlqfgKH4JTw0Ig9AiuaTwy/D6s5oO
+        dEhSKagwMnx9GOQiCAgLY9I8gRPuJ3T9rAIGP/jJ2OXUs3BHiK14QrqXjggI990ZNvSpsc
+        S7Q23KHrQ8IK1AcqQ/SqRy9P+HveisGcHfi6lNvaYOMbBuZzk82VcRL04unvz53qAJKRLT
+        dCCrUpqGnV6qM3STxA5QBpYxbqJRb+VAbyNg1wRgvpWLXBwsgjZuthlVID2uwg==
+X-Virus-Scanned: amavisd-new at heinlein-support.de
+Received: from smtp2.mailbox.org ([80.241.60.241])
+        by spamfilter02.heinlein-hosting.de (spamfilter02.heinlein-hosting.de [80.241.56.116]) (amavisd-new, port 10030)
+        with ESMTP id J-WpkNsBQwxT; Sat, 21 Nov 2020 13:45:03 +0100 (CET)
+From:   Finn Behrens <fin@nyantec.com>
+To:     linux-wireless@vger.kernel.org
+Subject: [PATCH] nl80211: reset regdom when reloading regdb
+Message-ID: <8c3e46ac-331b-0922-5379-0cb1ef61a83b@nyantec.com>
+Date:   Sat, 21 Nov 2020 13:45:03 +0100
 MIME-Version: 1.0
-References: <20201120085312.4355-1-cjhuang@codeaurora.org> <20201120085312.4355-2-cjhuang@codeaurora.org>
-In-Reply-To: <20201120085312.4355-2-cjhuang@codeaurora.org>
-From:   Brian Norris <briannorris@chromium.org>
-Date:   Fri, 20 Nov 2020 18:42:27 -0800
-X-Gmail-Original-Message-ID: <CA+ASDXMRPRPD0XFJeHTRv3Bc13VFehkyDoYHQfaA0cP-STDOLg@mail.gmail.com>
-Message-ID: <CA+ASDXMRPRPD0XFJeHTRv3Bc13VFehkyDoYHQfaA0cP-STDOLg@mail.gmail.com>
-Subject: Re: [PATCH v2 1/3] nl80211: add common API to configure SAR power limitations.
-To:     Carl Huang <cjhuang@codeaurora.org>
-Cc:     ath10k <ath10k@lists.infradead.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Doug Anderson <dianders@chromium.org>,
-        Abhishek Kumar <kuabhs@google.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Content-Language: en-US
+X-MBO-SPAM-Probability: 
+X-Rspamd-Score: -2.07 / 15.00 / 15.00
+X-Rspamd-Queue-Id: 99A96170D
+X-Rspamd-UID: a1ca09
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Nov 20, 2020 at 12:53 AM Carl Huang <cjhuang@codeaurora.org> wrote:
->
-> NL80211_CMD_SET_SAR_SPECS is added to configure SAR from
-> user space. NL80211_ATTR_SAR_SPEC is used to pass the SAR
-> power specification when used with NL80211_CMD_SET_SAR_SPECS.
->
-> Wireless driver needs to register SAR type, supported frequency
-> ranges to wiphy, so user space can query it. The index in
-> frequency range is used to specify which sub band the power
-> limitation applies to. The SAR type is for compatibility, so later
-> other SAR mechanism can be implemented without breaking the user
-> space SAR applications.
->
-> Normal process is user space quries the SAR capability, and
-> gets the index of supported frequency ranges and associates the
-> power limitation with this index and sends to kernel.
->
-> Here is an example of message send to kernel:
-> 8c 00 00 00 08 00 01 00 00 00 00 00 38 00 2b 81
-> 08 00 01 00 00 00 00 00 2c 00 02 80 14 00 00 80
-> 08 00 02 00 00 00 00 00 08 00 01 00 38 00 00 00
-> 14 00 01 80 08 00 02 00 01 00 00 00 08 00 01 00
-> 48 00 00 00
->
-> NL80211_CMD_SET_SAR_SPECS:  0x8c
-> NL80211_ATTR_WIPHY:     0x01(phy idx is 0)
-> NL80211_ATTR_SAR_SPEC:  0x812b (NLA_NESTED)
-> NL80211_SAR_ATTR_TYPE:  0x00 (NL80211_SAR_TYPE_POWER)
-> NL80211_SAR_ATTR_SPECS: 0x8002 (NLA_NESTED)
-> freq range 0 power: 0x38 in 0.25dbm unit (14dbm)
-> freq range 1 power: 0x48 in 0.25dbm unit (18dbm)
->
-> Signed-off-by: Carl Huang <cjhuang@codeaurora.org>
+reset the regdom when NL80211_CMD_RELOAD_REGDB is send
 
-I think the API is reasonably clear and usable. I'm a little skeptical
-that the complexity related to indexes is absolutely necessary [1],
-but at least you make clear what should happen in the case of missing
-indexes (treated as "max"). But you've addressed my concerns, I think:
+Signed-off-by: Finn Behrens <fin@nyantec.com>
+---
+include/net/regulatory.h | 1 +
+net/wireless/reg.c | 31 +++++++++++++++++++++++++++++--
+2 files changed, 30 insertions(+), 2 deletions(-)
 
-Reviewed-by: Brian Norris <briannorris@chromium.org>
+diff --git a/include/net/regulatory.h b/include/net/regulatory.h
+index 47f06f6f5a67..0cf9335431e0 100644
+--- a/include/net/regulatory.h
++++ b/include/net/regulatory.h
+@@ -83,6 +83,7 @@ struct regulatory_request {
+enum nl80211_dfs_regions dfs_region;
+bool intersect;
+bool processed;
++ bool reload;
+enum environment_cap country_ie_env;
+struct list_head list;
+};
+diff --git a/net/wireless/reg.c b/net/wireless/reg.c
+index a04fdfb35f07..50314916b020 100644
+--- a/net/wireless/reg.c
++++ b/net/wireless/reg.c
+@@ -199,6 +199,7 @@ static struct regulatory_request *get_last_request(vo=
+id)
+/* Used to queue up regulatory hints */
+static LIST_HEAD(reg_requests_list);
+static spinlock_t reg_requests_lock;
++static void queue_regulatory_request(struct regulatory_request *request)=
+;
+/* Used to queue up beacon hints for review */
+static LIST_HEAD(reg_pending_beacons);
+@@ -1081,10 +1082,13 @@ int reg_reload_regdb(void)
+int err;
+err =3D request_firmware(&fw, "regulatory.db", &reg_pdev->dev);
+- if (err)
++ if (err) {
++ pr_info("failed to load regulatory.db\n");
+return err;
++ }
+if (!valid_regdb(fw->data, fw->size)) {
++ pr_info("loaded regulatory.db is malformed or signature is
+missing/invalid\n");
+err =3D -ENODATA;
+goto out;
+}
+@@ -1101,6 +1105,28 @@ int reg_reload_regdb(void)
+regdb =3D db;
+rtnl_unlock();
++ // reset regulatory
++ const struct ieee80211_regdomain *current_regdomain =3D NULL;
++
++ current_regdomain =3D get_cfg80211_regdom();
++
++ struct regulatory_request *request =3D NULL;
++
++ request =3D kzalloc(sizeof(*request), GFP_KERNEL);
++ if (!request) {
++ err =3D -ENOMEM;
++ goto out;
++ }
++
++ request->wiphy_idx =3D WIPHY_IDX_INVALID;
++ request->alpha2[0] =3D current_regdomain->alpha2[0];
++ request->alpha2[1] =3D current_regdomain->alpha2[1];
++ request->initiator =3D NL80211_USER_REG_HINT_USER;
++ request->user_reg_hint_type =3D NL80211_USER_REG_HINT_USER;
++ request->reload =3D true;
++
++ queue_regulatory_request(request);
++
+out:
+release_firmware(fw);
+return err;
+@@ -2657,7 +2683,8 @@ reg_process_hint_user(struct regulatory_request
+*user_request)
+treatment =3D __reg_process_hint_user(user_request);
+if (treatment =3D=3D REG_REQ_IGNORE ||
+- treatment =3D=3D REG_REQ_ALREADY_SET)
++ treatment =3D=3D REG_REQ_ALREADY_SET &&
++ !user_request->reload)
+return REG_REQ_IGNORE;
+user_request->intersect =3D treatment =3D=3D REG_REQ_INTERSECT;
 
-I haven't done the most thorough review on the implementation pieces
-(and ath10k), but I at least wanted to put my thoughts out there.
+--=20
+2.29.2
 
-Thanks,
-Brian
 
-[1] By the way, you aren't checking for duplicates; so users could
-pass the same index many times, and it's not clear from the API
-definition what should happen. It seems the current implementation is
-that you'll just use the last value provided.
