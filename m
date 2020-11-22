@@ -2,73 +2,74 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 23D372BC34E
-	for <lists+linux-wireless@lfdr.de>; Sun, 22 Nov 2020 04:23:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A4FD02BC5A9
+	for <lists+linux-wireless@lfdr.de>; Sun, 22 Nov 2020 13:43:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727141AbgKVDXg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 21 Nov 2020 22:23:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33526 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726544AbgKVDXe (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 21 Nov 2020 22:23:34 -0500
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9E05C0613CF;
-        Sat, 21 Nov 2020 19:23:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=t7P1qjxLtvKyLv5lupmc5Zc5j0L3lqaoBXMlGIL9vWk=; b=BCb+FFzpwYCsAL5/GuZs0qQqU7
-        2wigu715rAloO1MXfHFDjsI/DCCkjrJ0RLz4Myz+wD98+zNWw6243kPWNzvqzMn6Tn8JVpmOuQv+x
-        7EKe3xartwVOhq4ran1ZhW92oaIukRN20h1OI3pPMusUrtae1AY4TqDUCPUPtiDgxz6eQOoVcrvcz
-        Ara6lCihfF7KrYMxKPcv522GOw1XE7kmR9pLBWd69WCJIf1380JdPIessAMMrwuE8sqCmQUL7YEHL
-        BXN0W+EBw/mKx6JrVL7roopk6K2PnHDj+T1EiV35semdke1klNMJQXZf1Gvzraa/TLsC310jvDxAq
-        zJ5cWKdw==;
-Received: from willy by casper.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1kgfxw-0001fc-2G; Sun, 22 Nov 2020 03:23:04 +0000
-Date:   Sun, 22 Nov 2020 03:23:04 +0000
-From:   Matthew Wilcox <willy@infradead.org>
-To:     trix@redhat.com
-Cc:     joe@perches.com, clang-built-linux@googlegroups.com,
-        linux-hyperv@vger.kernel.org, linux-kernel@vger.kernel.org,
-        xen-devel@lists.xenproject.org, tboot-devel@lists.sourceforge.net,
-        kvm@vger.kernel.org, linux-crypto@vger.kernel.org,
-        linux-acpi@vger.kernel.org, devel@acpica.org,
-        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-        intel-gfx@lists.freedesktop.org, netdev@vger.kernel.org,
-        linux-media@vger.kernel.org, MPT-FusionLinux.pdl@broadcom.com,
-        linux-scsi@vger.kernel.org, linux-wireless@vger.kernel.org,
-        ibm-acpi-devel@lists.sourceforge.net,
-        platform-driver-x86@vger.kernel.org, linux-usb@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        ecryptfs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-        cluster-devel@redhat.com, linux-mtd@lists.infradead.org,
-        keyrings@vger.kernel.org, netfilter-devel@vger.kernel.org,
-        coreteam@netfilter.org, alsa-devel@alsa-project.org,
-        bpf@vger.kernel.org, linux-bluetooth@vger.kernel.org,
-        linux-nfs@vger.kernel.org, patches@opensource.cirrus.com
-Subject: Re: [RFC] MAINTAINERS tag for cleanup robot
-Message-ID: <20201122032304.GE4327@casper.infradead.org>
-References: <20201121165058.1644182-1-trix@redhat.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201121165058.1644182-1-trix@redhat.com>
+        id S1727754AbgKVMlV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 22 Nov 2020 07:41:21 -0500
+Received: from m12-15.163.com ([220.181.12.15]:54667 "EHLO m12-15.163.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727634AbgKVMlU (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 22 Nov 2020 07:41:20 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+        s=s110527; h=From:Subject:Date:Message-Id; bh=b8Hav6Ucjm73NF9mhy
+        msARsSWYvA0cFZJwMIjRxo4pY=; b=XVYP6t7VNSCfEs2FJnuoM7FWO4hJTjbamK
+        e0MVzfE0i3+7oPJ9BGGPTgqUMzulGu8aUHS9d9pkezXbm2ru//ExNfsOcUngQlhT
+        GLQog8FW93nA0dIjZXzovyv0tGPFBnVKwdD6RjCQnIT7Efc7/cl/zTJeZY4hzW42
+        hvzcwrEAo=
+Received: from hby-server.localdomain (unknown [27.18.76.181])
+        by smtp11 (Coremail) with SMTP id D8CowADHtCpIOLpfyZICCg--.9687S2;
+        Sun, 22 Nov 2020 18:07:04 +0800 (CST)
+From:   hby <hby2003@163.com>
+To:     kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, hby <hby2003@163.com>
+Subject: [PATCH] drivers: Fix the Raspberry Pi debug version compile
+Date:   Sun, 22 Nov 2020 18:06:06 +0800
+Message-Id: <20201122100606.20289-1-hby2003@163.com>
+X-Mailer: git-send-email 2.17.1
+X-CM-TRANSID: D8CowADHtCpIOLpfyZICCg--.9687S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7CrW3CF18trWDGF4fZry3twb_yoW8Jw1rpa
+        nrJa4qkr1Uu3yak3y0yFsrAFyfKas7WwnFkay8u3y3uF1kAw4Fqr40gFWIkr15uFWxC3y7
+        AFWvq3sxJFsrKa7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+        9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07U6MKNUUUUU=
+X-Originating-IP: [27.18.76.181]
+X-CM-SenderInfo: hke1jiiqt6il2tof0z/1tbiQAjkHFSIhEeThQAAs5
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sat, Nov 21, 2020 at 08:50:58AM -0800, trix@redhat.com wrote:
-> The fixer review is
-> https://reviews.llvm.org/D91789
-> 
-> A run over allyesconfig for x86_64 finds 62 issues, 5 are false positives.
-> The false positives are caused by macros passed to other macros and by
-> some macro expansions that did not have an extra semicolon.
-> 
-> This cleans up about 1,000 of the current 10,000 -Wextra-semi-stmt
-> warnings in linux-next.
+enable the DEBUG in source code, and it will compile fail,
+modify the DEBUG macro, to adapt the compile
 
-Are any of them not false-positives?  It's all very well to enable
-stricter warnings, but if they don't fix any bugs, they're just churn.
+Signed-off-by: hby <hby2003@163.com>
+---
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/debug.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/debug.h b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/debug.h
+index 4146faeed..c2eb3aa67 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/debug.h
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/debug.h
+@@ -60,7 +60,7 @@ void __brcmf_err(struct brcmf_bus *bus, const char *func, const char *fmt, ...);
+ 				  ##__VA_ARGS__);			\
+ 	} while (0)
+ 
+-#if defined(DEBUG) || defined(CONFIG_BRCM_TRACING)
++#if defined(CONFIG_BRCM_TRACING) || defined(CONFIG_BRCMDBG)
+ 
+ /* For debug/tracing purposes treat info messages as errors */
+ #define brcmf_info brcmf_err
+@@ -114,7 +114,7 @@ extern int brcmf_msg_level;
+ 
+ struct brcmf_bus;
+ struct brcmf_pub;
+-#ifdef DEBUG
++#if defined(CONFIG_BRCMDBG)
+ struct dentry *brcmf_debugfs_get_devdir(struct brcmf_pub *drvr);
+ void brcmf_debugfs_add_entry(struct brcmf_pub *drvr, const char *fn,
+ 			     int (*read_fn)(struct seq_file *seq, void *data));
+-- 
+2.17.1
+
+
