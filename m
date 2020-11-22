@@ -2,128 +2,110 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 172962BC5E9
-	for <lists+linux-wireless@lfdr.de>; Sun, 22 Nov 2020 14:59:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DD2A82BC61D
+	for <lists+linux-wireless@lfdr.de>; Sun, 22 Nov 2020 15:47:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727777AbgKVN4S (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 22 Nov 2020 08:56:18 -0500
-Received: from mail-io1-f69.google.com ([209.85.166.69]:37998 "EHLO
-        mail-io1-f69.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727634AbgKVN4Q (ORCPT
+        id S1727921AbgKVOq6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 22 Nov 2020 09:46:58 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:35968 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727424AbgKVOq5 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 22 Nov 2020 08:56:16 -0500
-Received: by mail-io1-f69.google.com with SMTP id e7so10902203iok.5
-        for <linux-wireless@vger.kernel.org>; Sun, 22 Nov 2020 05:56:15 -0800 (PST)
+        Sun, 22 Nov 2020 09:46:57 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1606056416;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=apju6gP6XSpkYwp4WdL57a/nFAvNI/QCKhQkuBxc3S8=;
+        b=XA3Bdia/xK9rtALsHLhdMXNkl5EWPz83+inaq5KZnxbZp/pqE7ot4cuq9wfEbTWVu1jCkd
+        fkI/qAlh4sU3l8dOrlq7C5hNdTdH0le7t+rDrYZ5+jjUTJP5ekv3G25710udgF6Q97joi/
+        ih3DR460gM+B9YwlFm0ND3pgcFfhizQ=
+Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
+ [209.85.160.199]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-336-sifjzfQNPRaWBS9P48YvUw-1; Sun, 22 Nov 2020 09:46:52 -0500
+X-MC-Unique: sifjzfQNPRaWBS9P48YvUw-1
+Received: by mail-qt1-f199.google.com with SMTP id r29so11578914qtu.21
+        for <linux-wireless@vger.kernel.org>; Sun, 22 Nov 2020 06:46:52 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:date:in-reply-to:message-id:subject
-         :from:to;
-        bh=tqgn9H/Q+B+44wovmA82s5k8ZV8xFvENoyPiymoIjZA=;
-        b=E3XS0Y8FY5WGltRWfcEvst0J+5tcJ+jruloZqUtEMYUGEYlXu27OZbMq0XcNCfmR8Q
-         QCyVuGgvLJ3j6WUTqn1J4Wyrx/nQ4Iot4fbWjIoMXYbc7QIo2AIre3bOdR17sW69IRA/
-         2vai82cUvBkvICtsPqAoHjyDELAAzZBIwPIwnj/mQcfCU8PjrYi+POE7RkJt4YdmibFH
-         A24JtqBiUjzrI743bXHYHVVFdEms230cTs6uKiNdWNnqLq7eSGd9SkM9nsmcNNpG812+
-         vqio0yb+vpBSsbpixbaDmb8G2Cv6i1TaiibWp6gkL5ERmq0YztZ5oZc5qVJySCuu8rkX
-         dwnQ==
-X-Gm-Message-State: AOAM530zFvqNyluHzgT/4L6aqGR6Y51nstQmAO+SY9cav17M2r2ppttc
-        +99ygzdzFWKs8ryQts30BrYI/zi8PFWaxhjmkYYColGqviVu
-X-Google-Smtp-Source: ABdhPJzF+SimZnu+MsknGU5cgEPUP9ISd+glkW7gXVcXDGsN0zXacfH8aaScC9rXO0QgvXUu8qkPY6VdFQbhubi3UweI8yA+No7D
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding
+         :content-language;
+        bh=apju6gP6XSpkYwp4WdL57a/nFAvNI/QCKhQkuBxc3S8=;
+        b=ZyU8/tq4rS8PbPRCeSDdxIpNgmvZ+jfKT8oWE22BZcLzGFdsd1KH3xxcDTQ0E2JMo6
+         MHUlDHVZJ91AGqgwzTKz1+CU7MtTglla82awnt+iv9bP7dkhb/F+rVvqpqsG1YZ3tvC3
+         doux6IXKnCXzsnqrj0Jwre/6DHV+Calabtd9dK8JTgwAmj/dAKnnDbPoyrYpgTSFPuKq
+         rBXm6kdrsz7CV+UObVNwtg9i/SGjbU/m/j3Umkb7iJIBgZILwKHk58ERkhv4hX15KQGw
+         GG6ELcYxu6IC9uE7mKmBeHPXwl7Pt4Pd3XDn/CB1/PhBRIHAr0LeBOKX05vUFGkHdFAR
+         mPXg==
+X-Gm-Message-State: AOAM532O3ajqHNY08vfE2N5vwkiAMUlpaqjjWyMKGO53YuFw0mcHSyPb
+        XawKPALbzaq6gk4pFkZ/Jkd4WRhogVFvqdEzUZoVWslK+cofaV5ttxWlSVrcC7iZBOrmgOtwklx
+        VMFRhofKkA4tTftcuGJzwybnGOJ4=
+X-Received: by 2002:ad4:476b:: with SMTP id d11mr26026168qvx.57.1606056412428;
+        Sun, 22 Nov 2020 06:46:52 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJyPQ8vJIBgyJxmgPlUVzOaStXFRaD0Z+d8VDmnR7kdLyNkvwByAGPov006wc7+pJBCcgj+/zw==
+X-Received: by 2002:ad4:476b:: with SMTP id d11mr26026152qvx.57.1606056412222;
+        Sun, 22 Nov 2020 06:46:52 -0800 (PST)
+Received: from trix.remote.csb (075-142-250-213.res.spectrum.com. [75.142.250.213])
+        by smtp.gmail.com with ESMTPSA id x72sm6888242qkb.90.2020.11.22.06.46.47
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 22 Nov 2020 06:46:51 -0800 (PST)
+Subject: Re: [RFC] MAINTAINERS tag for cleanup robot
+To:     Matthew Wilcox <willy@infradead.org>
+Cc:     joe@perches.com, clang-built-linux@googlegroups.com,
+        linux-hyperv@vger.kernel.org, linux-kernel@vger.kernel.org,
+        xen-devel@lists.xenproject.org, tboot-devel@lists.sourceforge.net,
+        kvm@vger.kernel.org, linux-crypto@vger.kernel.org,
+        linux-acpi@vger.kernel.org, devel@acpica.org,
+        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+        intel-gfx@lists.freedesktop.org, netdev@vger.kernel.org,
+        linux-media@vger.kernel.org, MPT-FusionLinux.pdl@broadcom.com,
+        linux-scsi@vger.kernel.org, linux-wireless@vger.kernel.org,
+        ibm-acpi-devel@lists.sourceforge.net,
+        platform-driver-x86@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        ecryptfs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        cluster-devel@redhat.com, linux-mtd@lists.infradead.org,
+        keyrings@vger.kernel.org, netfilter-devel@vger.kernel.org,
+        coreteam@netfilter.org, alsa-devel@alsa-project.org,
+        bpf@vger.kernel.org, linux-bluetooth@vger.kernel.org,
+        linux-nfs@vger.kernel.org, patches@opensource.cirrus.com
+References: <20201121165058.1644182-1-trix@redhat.com>
+ <20201122032304.GE4327@casper.infradead.org>
+From:   Tom Rix <trix@redhat.com>
+Message-ID: <ddb08a27-3ca1-fb2e-d51f-4b471f1a56a3@redhat.com>
+Date:   Sun, 22 Nov 2020 06:46:46 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.12.0
 MIME-Version: 1.0
-X-Received: by 2002:a6b:b24b:: with SMTP id b72mr31049559iof.32.1606053375256;
- Sun, 22 Nov 2020 05:56:15 -0800 (PST)
-Date:   Sun, 22 Nov 2020 05:56:15 -0800
-In-Reply-To: <00000000000086205205b0fff8b2@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <000000000000ec2eb005b4b2704e@google.com>
-Subject: Re: general protection fault in ieee80211_chanctx_num_assigned
-From:   syzbot <syzbot+00ce7332120071df39b1@syzkaller.appspotmail.com>
-To:     davem@davemloft.net, johannes@sipsolutions.net, kuba@kernel.org,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20201122032304.GE4327@casper.infradead.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-syzbot has found a reproducer for the following issue on:
 
-HEAD commit:    a349e4c6 Merge tag 'xfs-5.10-fixes-7' of git://git.kernel...
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=144e1e99500000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=330f3436df12fd44
-dashboard link: https://syzkaller.appspot.com/bug?extid=00ce7332120071df39b1
-compiler:       gcc (GCC) 10.1.0-syz 20200507
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=153140a5500000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=179bf835500000
+On 11/21/20 7:23 PM, Matthew Wilcox wrote:
+> On Sat, Nov 21, 2020 at 08:50:58AM -0800, trix@redhat.com wrote:
+>> The fixer review is
+>> https://reviews.llvm.org/D91789
+>>
+>> A run over allyesconfig for x86_64 finds 62 issues, 5 are false positives.
+>> The false positives are caused by macros passed to other macros and by
+>> some macro expansions that did not have an extra semicolon.
+>>
+>> This cleans up about 1,000 of the current 10,000 -Wextra-semi-stmt
+>> warnings in linux-next.
+> Are any of them not false-positives?  It's all very well to enable
+> stricter warnings, but if they don't fix any bugs, they're just churn.
+>
+While enabling additional warnings may be a side effect of this effort
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+00ce7332120071df39b1@syzkaller.appspotmail.com
+the primary goal is to set up a cleaning robot. After that a refactoring robot.
 
-general protection fault, probably for non-canonical address 0xfbd59c0000000020: 0000 [#1] PREEMPT SMP KASAN
-KASAN: maybe wild-memory-access in range [0xdead000000000100-0xdead000000000107]
-CPU: 1 PID: 8531 Comm: syz-executor169 Not tainted 5.10.0-rc4-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
-RIP: 0010:ieee80211_chanctx_num_assigned+0xb1/0x140 net/mac80211/chan.c:21
-Code: a8 f6 ff ff 48 39 c5 74 3b 49 bd 00 00 00 00 00 fc ff df e8 c1 91 1b f9 48 8d bb 58 09 00 00 41 83 c4 01 48 89 f8 48 c1 e8 03 <42> 80 3c 28 00 75 68 48 8b 83 58 09 00 00 48 8d 98 a8 f6 ff ff 48
-RSP: 0018:ffffc9000169f330 EFLAGS: 00010a02
-RAX: 1bd5a00000000020 RBX: deacfffffffff7a8 RCX: ffffffff88549e6b
-RDX: ffff888011c8b480 RSI: ffffffff88549e0f RDI: dead000000000100
-RBP: ffff8880130ca720 R08: 0000000000000000 R09: ffffffff8cecb9cf
-R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000002
-R13: dffffc0000000000 R14: ffff8880130ca700 R15: 0000000000000000
-FS:  000000000087d940(0000) GS:ffff8880b9f00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00000000006d3090 CR3: 000000001c20a000 CR4: 00000000001506e0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- ieee80211_assign_vif_chanctx+0x7b8/0x1230 net/mac80211/chan.c:690
- __ieee80211_vif_release_channel+0x236/0x430 net/mac80211/chan.c:1557
- ieee80211_vif_release_channel+0x117/0x220 net/mac80211/chan.c:1771
- ieee80211_ibss_disconnect+0x44e/0x7b0 net/mac80211/ibss.c:735
- ieee80211_ibss_leave+0x12/0xe0 net/mac80211/ibss.c:1871
- rdev_leave_ibss net/wireless/rdev-ops.h:545 [inline]
- __cfg80211_leave_ibss+0x19a/0x4c0 net/wireless/ibss.c:212
- cfg80211_leave_ibss+0x57/0x80 net/wireless/ibss.c:230
- cfg80211_change_iface+0x855/0xef0 net/wireless/util.c:1012
- nl80211_set_interface+0x65c/0x8d0 net/wireless/nl80211.c:3789
- genl_family_rcv_msg_doit+0x228/0x320 net/netlink/genetlink.c:739
- genl_family_rcv_msg net/netlink/genetlink.c:783 [inline]
- genl_rcv_msg+0x328/0x580 net/netlink/genetlink.c:800
- netlink_rcv_skb+0x153/0x420 net/netlink/af_netlink.c:2494
- genl_rcv+0x24/0x40 net/netlink/genetlink.c:811
- netlink_unicast_kernel net/netlink/af_netlink.c:1304 [inline]
- netlink_unicast+0x533/0x7d0 net/netlink/af_netlink.c:1330
- netlink_sendmsg+0x856/0xd90 net/netlink/af_netlink.c:1919
- sock_sendmsg_nosec net/socket.c:651 [inline]
- sock_sendmsg+0xcf/0x120 net/socket.c:671
- ____sys_sendmsg+0x6e8/0x810 net/socket.c:2353
- ___sys_sendmsg+0xf3/0x170 net/socket.c:2407
- __sys_sendmsg+0xe5/0x1b0 net/socket.c:2440
- do_syscall_64+0x2d/0x70 arch/x86/entry/common.c:46
- entry_SYSCALL_64_after_hwframe+0x44/0xa9
-RIP: 0033:0x4429b9
-Code: e8 bc fd 02 00 48 83 c4 18 c3 0f 1f 80 00 00 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 0f 83 db 06 fc ff c3 66 2e 0f 1f 84 00 00 00 00
-RSP: 002b:00007ffd820d0a58 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
-RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00000000004429b9
-RDX: 0000000000000000 RSI: 0000000020000340 RDI: 0000000000000004
-RBP: 000000000000fbef R08: 00000000004035b0 R09: 00000000004035b0
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000403520
-R13: 00000000004035b0 R14: 0000000000000000 R15: 0000000000000000
-Modules linked in:
----[ end trace 4cedfcb59a8efe47 ]---
-RIP: 0010:ieee80211_chanctx_num_assigned+0xb1/0x140 net/mac80211/chan.c:21
-Code: a8 f6 ff ff 48 39 c5 74 3b 49 bd 00 00 00 00 00 fc ff df e8 c1 91 1b f9 48 8d bb 58 09 00 00 41 83 c4 01 48 89 f8 48 c1 e8 03 <42> 80 3c 28 00 75 68 48 8b 83 58 09 00 00 48 8d 98 a8 f6 ff ff 48
-RSP: 0018:ffffc9000169f330 EFLAGS: 00010a02
-RAX: 1bd5a00000000020 RBX: deacfffffffff7a8 RCX: ffffffff88549e6b
-RDX: ffff888011c8b480 RSI: ffffffff88549e0f RDI: dead000000000100
-RBP: ffff8880130ca720 R08: 0000000000000000 R09: ffffffff8cecb9cf
-R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000002
-R13: dffffc0000000000 R14: ffff8880130ca700 R15: 0000000000000000
-FS:  000000000087d940(0000) GS:ffff8880b9e00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007efedefa7000 CR3: 000000001c20a000 CR4: 00000000001506f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Tom
 
