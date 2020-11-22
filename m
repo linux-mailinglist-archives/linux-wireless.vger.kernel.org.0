@@ -2,74 +2,128 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A4FD02BC5A9
-	for <lists+linux-wireless@lfdr.de>; Sun, 22 Nov 2020 13:43:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 172962BC5E9
+	for <lists+linux-wireless@lfdr.de>; Sun, 22 Nov 2020 14:59:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727754AbgKVMlV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 22 Nov 2020 07:41:21 -0500
-Received: from m12-15.163.com ([220.181.12.15]:54667 "EHLO m12-15.163.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727634AbgKVMlU (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 22 Nov 2020 07:41:20 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-        s=s110527; h=From:Subject:Date:Message-Id; bh=b8Hav6Ucjm73NF9mhy
-        msARsSWYvA0cFZJwMIjRxo4pY=; b=XVYP6t7VNSCfEs2FJnuoM7FWO4hJTjbamK
-        e0MVzfE0i3+7oPJ9BGGPTgqUMzulGu8aUHS9d9pkezXbm2ru//ExNfsOcUngQlhT
-        GLQog8FW93nA0dIjZXzovyv0tGPFBnVKwdD6RjCQnIT7Efc7/cl/zTJeZY4hzW42
-        hvzcwrEAo=
-Received: from hby-server.localdomain (unknown [27.18.76.181])
-        by smtp11 (Coremail) with SMTP id D8CowADHtCpIOLpfyZICCg--.9687S2;
-        Sun, 22 Nov 2020 18:07:04 +0800 (CST)
-From:   hby <hby2003@163.com>
-To:     kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, hby <hby2003@163.com>
-Subject: [PATCH] drivers: Fix the Raspberry Pi debug version compile
-Date:   Sun, 22 Nov 2020 18:06:06 +0800
-Message-Id: <20201122100606.20289-1-hby2003@163.com>
-X-Mailer: git-send-email 2.17.1
-X-CM-TRANSID: D8CowADHtCpIOLpfyZICCg--.9687S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7CrW3CF18trWDGF4fZry3twb_yoW8Jw1rpa
-        nrJa4qkr1Uu3yak3y0yFsrAFyfKas7WwnFkay8u3y3uF1kAw4Fqr40gFWIkr15uFWxC3y7
-        AFWvq3sxJFsrKa7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07U6MKNUUUUU=
-X-Originating-IP: [27.18.76.181]
-X-CM-SenderInfo: hke1jiiqt6il2tof0z/1tbiQAjkHFSIhEeThQAAs5
+        id S1727777AbgKVN4S (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 22 Nov 2020 08:56:18 -0500
+Received: from mail-io1-f69.google.com ([209.85.166.69]:37998 "EHLO
+        mail-io1-f69.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727634AbgKVN4Q (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 22 Nov 2020 08:56:16 -0500
+Received: by mail-io1-f69.google.com with SMTP id e7so10902203iok.5
+        for <linux-wireless@vger.kernel.org>; Sun, 22 Nov 2020 05:56:15 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:date:in-reply-to:message-id:subject
+         :from:to;
+        bh=tqgn9H/Q+B+44wovmA82s5k8ZV8xFvENoyPiymoIjZA=;
+        b=E3XS0Y8FY5WGltRWfcEvst0J+5tcJ+jruloZqUtEMYUGEYlXu27OZbMq0XcNCfmR8Q
+         QCyVuGgvLJ3j6WUTqn1J4Wyrx/nQ4Iot4fbWjIoMXYbc7QIo2AIre3bOdR17sW69IRA/
+         2vai82cUvBkvICtsPqAoHjyDELAAzZBIwPIwnj/mQcfCU8PjrYi+POE7RkJt4YdmibFH
+         A24JtqBiUjzrI743bXHYHVVFdEms230cTs6uKiNdWNnqLq7eSGd9SkM9nsmcNNpG812+
+         vqio0yb+vpBSsbpixbaDmb8G2Cv6i1TaiibWp6gkL5ERmq0YztZ5oZc5qVJySCuu8rkX
+         dwnQ==
+X-Gm-Message-State: AOAM530zFvqNyluHzgT/4L6aqGR6Y51nstQmAO+SY9cav17M2r2ppttc
+        +99ygzdzFWKs8ryQts30BrYI/zi8PFWaxhjmkYYColGqviVu
+X-Google-Smtp-Source: ABdhPJzF+SimZnu+MsknGU5cgEPUP9ISd+glkW7gXVcXDGsN0zXacfH8aaScC9rXO0QgvXUu8qkPY6VdFQbhubi3UweI8yA+No7D
+MIME-Version: 1.0
+X-Received: by 2002:a6b:b24b:: with SMTP id b72mr31049559iof.32.1606053375256;
+ Sun, 22 Nov 2020 05:56:15 -0800 (PST)
+Date:   Sun, 22 Nov 2020 05:56:15 -0800
+In-Reply-To: <00000000000086205205b0fff8b2@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <000000000000ec2eb005b4b2704e@google.com>
+Subject: Re: general protection fault in ieee80211_chanctx_num_assigned
+From:   syzbot <syzbot+00ce7332120071df39b1@syzkaller.appspotmail.com>
+To:     davem@davemloft.net, johannes@sipsolutions.net, kuba@kernel.org,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-enable the DEBUG in source code, and it will compile fail,
-modify the DEBUG macro, to adapt the compile
+syzbot has found a reproducer for the following issue on:
 
-Signed-off-by: hby <hby2003@163.com>
----
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/debug.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+HEAD commit:    a349e4c6 Merge tag 'xfs-5.10-fixes-7' of git://git.kernel...
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=144e1e99500000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=330f3436df12fd44
+dashboard link: https://syzkaller.appspot.com/bug?extid=00ce7332120071df39b1
+compiler:       gcc (GCC) 10.1.0-syz 20200507
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=153140a5500000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=179bf835500000
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/debug.h b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/debug.h
-index 4146faeed..c2eb3aa67 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/debug.h
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/debug.h
-@@ -60,7 +60,7 @@ void __brcmf_err(struct brcmf_bus *bus, const char *func, const char *fmt, ...);
- 				  ##__VA_ARGS__);			\
- 	} while (0)
- 
--#if defined(DEBUG) || defined(CONFIG_BRCM_TRACING)
-+#if defined(CONFIG_BRCM_TRACING) || defined(CONFIG_BRCMDBG)
- 
- /* For debug/tracing purposes treat info messages as errors */
- #define brcmf_info brcmf_err
-@@ -114,7 +114,7 @@ extern int brcmf_msg_level;
- 
- struct brcmf_bus;
- struct brcmf_pub;
--#ifdef DEBUG
-+#if defined(CONFIG_BRCMDBG)
- struct dentry *brcmf_debugfs_get_devdir(struct brcmf_pub *drvr);
- void brcmf_debugfs_add_entry(struct brcmf_pub *drvr, const char *fn,
- 			     int (*read_fn)(struct seq_file *seq, void *data));
--- 
-2.17.1
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+00ce7332120071df39b1@syzkaller.appspotmail.com
 
+general protection fault, probably for non-canonical address 0xfbd59c0000000020: 0000 [#1] PREEMPT SMP KASAN
+KASAN: maybe wild-memory-access in range [0xdead000000000100-0xdead000000000107]
+CPU: 1 PID: 8531 Comm: syz-executor169 Not tainted 5.10.0-rc4-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
+RIP: 0010:ieee80211_chanctx_num_assigned+0xb1/0x140 net/mac80211/chan.c:21
+Code: a8 f6 ff ff 48 39 c5 74 3b 49 bd 00 00 00 00 00 fc ff df e8 c1 91 1b f9 48 8d bb 58 09 00 00 41 83 c4 01 48 89 f8 48 c1 e8 03 <42> 80 3c 28 00 75 68 48 8b 83 58 09 00 00 48 8d 98 a8 f6 ff ff 48
+RSP: 0018:ffffc9000169f330 EFLAGS: 00010a02
+RAX: 1bd5a00000000020 RBX: deacfffffffff7a8 RCX: ffffffff88549e6b
+RDX: ffff888011c8b480 RSI: ffffffff88549e0f RDI: dead000000000100
+RBP: ffff8880130ca720 R08: 0000000000000000 R09: ffffffff8cecb9cf
+R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000002
+R13: dffffc0000000000 R14: ffff8880130ca700 R15: 0000000000000000
+FS:  000000000087d940(0000) GS:ffff8880b9f00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00000000006d3090 CR3: 000000001c20a000 CR4: 00000000001506e0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ ieee80211_assign_vif_chanctx+0x7b8/0x1230 net/mac80211/chan.c:690
+ __ieee80211_vif_release_channel+0x236/0x430 net/mac80211/chan.c:1557
+ ieee80211_vif_release_channel+0x117/0x220 net/mac80211/chan.c:1771
+ ieee80211_ibss_disconnect+0x44e/0x7b0 net/mac80211/ibss.c:735
+ ieee80211_ibss_leave+0x12/0xe0 net/mac80211/ibss.c:1871
+ rdev_leave_ibss net/wireless/rdev-ops.h:545 [inline]
+ __cfg80211_leave_ibss+0x19a/0x4c0 net/wireless/ibss.c:212
+ cfg80211_leave_ibss+0x57/0x80 net/wireless/ibss.c:230
+ cfg80211_change_iface+0x855/0xef0 net/wireless/util.c:1012
+ nl80211_set_interface+0x65c/0x8d0 net/wireless/nl80211.c:3789
+ genl_family_rcv_msg_doit+0x228/0x320 net/netlink/genetlink.c:739
+ genl_family_rcv_msg net/netlink/genetlink.c:783 [inline]
+ genl_rcv_msg+0x328/0x580 net/netlink/genetlink.c:800
+ netlink_rcv_skb+0x153/0x420 net/netlink/af_netlink.c:2494
+ genl_rcv+0x24/0x40 net/netlink/genetlink.c:811
+ netlink_unicast_kernel net/netlink/af_netlink.c:1304 [inline]
+ netlink_unicast+0x533/0x7d0 net/netlink/af_netlink.c:1330
+ netlink_sendmsg+0x856/0xd90 net/netlink/af_netlink.c:1919
+ sock_sendmsg_nosec net/socket.c:651 [inline]
+ sock_sendmsg+0xcf/0x120 net/socket.c:671
+ ____sys_sendmsg+0x6e8/0x810 net/socket.c:2353
+ ___sys_sendmsg+0xf3/0x170 net/socket.c:2407
+ __sys_sendmsg+0xe5/0x1b0 net/socket.c:2440
+ do_syscall_64+0x2d/0x70 arch/x86/entry/common.c:46
+ entry_SYSCALL_64_after_hwframe+0x44/0xa9
+RIP: 0033:0x4429b9
+Code: e8 bc fd 02 00 48 83 c4 18 c3 0f 1f 80 00 00 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 0f 83 db 06 fc ff c3 66 2e 0f 1f 84 00 00 00 00
+RSP: 002b:00007ffd820d0a58 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
+RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00000000004429b9
+RDX: 0000000000000000 RSI: 0000000020000340 RDI: 0000000000000004
+RBP: 000000000000fbef R08: 00000000004035b0 R09: 00000000004035b0
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000403520
+R13: 00000000004035b0 R14: 0000000000000000 R15: 0000000000000000
+Modules linked in:
+---[ end trace 4cedfcb59a8efe47 ]---
+RIP: 0010:ieee80211_chanctx_num_assigned+0xb1/0x140 net/mac80211/chan.c:21
+Code: a8 f6 ff ff 48 39 c5 74 3b 49 bd 00 00 00 00 00 fc ff df e8 c1 91 1b f9 48 8d bb 58 09 00 00 41 83 c4 01 48 89 f8 48 c1 e8 03 <42> 80 3c 28 00 75 68 48 8b 83 58 09 00 00 48 8d 98 a8 f6 ff ff 48
+RSP: 0018:ffffc9000169f330 EFLAGS: 00010a02
+RAX: 1bd5a00000000020 RBX: deacfffffffff7a8 RCX: ffffffff88549e6b
+RDX: ffff888011c8b480 RSI: ffffffff88549e0f RDI: dead000000000100
+RBP: ffff8880130ca720 R08: 0000000000000000 R09: ffffffff8cecb9cf
+R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000002
+R13: dffffc0000000000 R14: ffff8880130ca700 R15: 0000000000000000
+FS:  000000000087d940(0000) GS:ffff8880b9e00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007efedefa7000 CR3: 000000001c20a000 CR4: 00000000001506f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
 
