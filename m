@@ -2,79 +2,179 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2257E2C01A2
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Nov 2020 09:46:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E01D2C02B8
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Nov 2020 10:57:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726930AbgKWIpN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 23 Nov 2020 03:45:13 -0500
-Received: from z5.mailgun.us ([104.130.96.5]:53027 "EHLO z5.mailgun.us"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725287AbgKWIpN (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 23 Nov 2020 03:45:13 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1606121113; h=Message-Id: Date: Subject: Cc: To: From:
- Sender; bh=picD/oosaJe7dkANl9Ga8X6sohugMNk22SHGnNTU+jk=; b=vR/4vmmw1hLoA4oxM1yDFkumt9AJeTU7QwTELm6TuGgnv7cm5EgbRMdbQZPCsRAvej7u0uQG
- XgfEpCgWeJ1vyaIPbo8YtEmUYYghlt5wqkPjEv/qdlnNFlYVYKZdqFAVXdDwCwrtfGXoS3r4
- uP7PqfB4Me5kD3HNyHWuikO5Rs0=
-X-Mailgun-Sending-Ip: 104.130.96.5
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n06.prod.us-east-1.postgun.com with SMTP id
- 5fbb7695d64ea0b703f032fe (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 23 Nov 2020 08:45:09
- GMT
-Sender: wgong=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 4E8D8C433C6; Mon, 23 Nov 2020 08:45:08 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-Received: from gongwen-ThinkPad-T420.qca.qualcomm.com (unknown [180.166.53.21])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: wgong)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 75A9AC433ED;
-        Mon, 23 Nov 2020 08:45:06 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 75A9AC433ED
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=wgong@codeaurora.org
-From:   Wen Gong <wgong@codeaurora.org>
-To:     ath10k@lists.infradead.org, johannes@sipsolutions.net
-Cc:     linux-wireless@vger.kernel.org, wgong@codeaurora.org
-Subject: [PATCH] mac80211: change back to return true by default of ieee80211_chandef_he_6ghz_oper
-Date:   Mon, 23 Nov 2020 16:45:52 +0800
-Message-Id: <1606121152-3452-1-git-send-email-wgong@codeaurora.org>
-X-Mailer: git-send-email 2.7.4
+        id S1728326AbgKWJzZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 23 Nov 2020 04:55:25 -0500
+Received: from mail-il1-f200.google.com ([209.85.166.200]:33234 "EHLO
+        mail-il1-f200.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728078AbgKWJzR (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 23 Nov 2020 04:55:17 -0500
+Received: by mail-il1-f200.google.com with SMTP id a10so8865793iln.0
+        for <linux-wireless@vger.kernel.org>; Mon, 23 Nov 2020 01:55:16 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
+        bh=zJ12j5pv5Az/S+9kY6tzef+qUz2WbuayYYPs6x7cqx8=;
+        b=DvmmFMeOquyT8hkkkq8mCJnbmTYVCW3kXWxRyF1DWvLfmjwTUhQOlorCElWWrlsn1V
+         OK7wVEwE23VE+T/bJ+sKLx5v3IJy4k3VX8gb8EUb/sH3blskpJSsigDSMCT3EgZ5WDf5
+         +nauMuAkd7oWHpu0WU9W7N/af529mFrOGwpKhIzrfqzAGIKIEOOwjQ31vXLBEhcivEgF
+         w3ApBPs14GyrTrwzFE0cSajtU4yvVIQqfe/jowYc7HSCAvL4bqcDdJzLW0b2Xx7egyHd
+         sNIN/tWmU0YSJpW7eEDs9eDoDUTGYG8Re0LnMNbBsbD16/CNdtsUPVmqYis4l+qyy6id
+         qJZA==
+X-Gm-Message-State: AOAM530MYPxNha9qZxU2kxfIPFW7HCF1C7R2LPD/r+2JfmdWXuQg7mk4
+        qw8KJrUk1xFT8Vozm6IxNsHnLx0AKDTT7EEqoAQUOYtNPvJR
+X-Google-Smtp-Source: ABdhPJzND7DGe3RsHCRfdr6ZoSQhKLO7EnUQe2826jcG7IvxIqnA1/MNVQQbJcRJUfjOj9YEp/s9f+/Vj8OJIEh1cC5SePgOg+Wx
+MIME-Version: 1.0
+X-Received: by 2002:a05:6638:283:: with SMTP id c3mr28349610jaq.134.1606125316419;
+ Mon, 23 Nov 2020 01:55:16 -0800 (PST)
+Date:   Mon, 23 Nov 2020 01:55:16 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <000000000000f3332805b4c330c3@google.com>
+Subject: inconsistent lock state in io_file_data_ref_zero
+From:   syzbot <syzbot+1f4ba1e5520762c523c6@syzkaller.appspotmail.com>
+To:     axboe@kernel.dk, davem@davemloft.net, io-uring@vger.kernel.org,
+        johannes.berg@intel.com, johannes@sipsolutions.net,
+        kuba@kernel.org, linux-fsdevel@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com,
+        viro@zeniv.linux.org.uk
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The default value is true returned by ieee80211_chandef_he_6ghz_oper,
-change it to true same with before.
+Hello,
 
-Fixes: 1d00ce807efa ("mac80211: support S1G association")
+syzbot found the following issue on:
 
-Signed-off-by: Wen Gong <wgong@codeaurora.org>
+HEAD commit:    27bba9c5 Merge tag 'scsi-fixes' of git://git.kernel.org/pu..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=11041f1e500000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=330f3436df12fd44
+dashboard link: https://syzkaller.appspot.com/bug?extid=1f4ba1e5520762c523c6
+compiler:       gcc (GCC) 10.1.0-syz 20200507
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=17d9b775500000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=157e4f75500000
+
+The issue was bisected to:
+
+commit dcd479e10a0510522a5d88b29b8f79ea3467d501
+Author: Johannes Berg <johannes.berg@intel.com>
+Date:   Fri Oct 9 12:17:11 2020 +0000
+
+    mac80211: always wind down STA state
+
+bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=130299a9500000
+final oops:     https://syzkaller.appspot.com/x/report.txt?x=108299a9500000
+console output: https://syzkaller.appspot.com/x/log.txt?x=170299a9500000
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+1f4ba1e5520762c523c6@syzkaller.appspotmail.com
+Fixes: dcd479e10a05 ("mac80211: always wind down STA state")
+
+================================
+WARNING: inconsistent lock state
+5.10.0-rc4-syzkaller #0 Not tainted
+--------------------------------
+inconsistent {SOFTIRQ-ON-W} -> {IN-SOFTIRQ-W} usage.
+swapper/0/0 [HC0[0]:SC1[1]:HE1:SE0] takes:
+ffff8880125202a8 (&file_data->lock){+.?.}-{2:2}, at: spin_lock include/linux/spinlock.h:354 [inline]
+ffff8880125202a8 (&file_data->lock){+.?.}-{2:2}, at: io_file_data_ref_zero+0x75/0x480 fs/io_uring.c:7361
+{SOFTIRQ-ON-W} state was registered at:
+  lock_acquire kernel/locking/lockdep.c:5435 [inline]
+  lock_acquire+0x2a3/0x8c0 kernel/locking/lockdep.c:5400
+  __raw_spin_lock include/linux/spinlock_api_smp.h:142 [inline]
+  _raw_spin_lock+0x2a/0x40 kernel/locking/spinlock.c:151
+  spin_lock include/linux/spinlock.h:354 [inline]
+  io_sqe_files_register fs/io_uring.c:7496 [inline]
+  __io_uring_register fs/io_uring.c:9660 [inline]
+  __do_sys_io_uring_register+0x343a/0x40d0 fs/io_uring.c:9750
+  do_syscall_64+0x2d/0x70 arch/x86/entry/common.c:46
+  entry_SYSCALL_64_after_hwframe+0x44/0xa9
+irq event stamp: 131582
+hardirqs last  enabled at (131582): [<ffffffff88e80d52>] __raw_spin_unlock_irqrestore include/linux/spinlock_api_smp.h:160 [inline]
+hardirqs last  enabled at (131582): [<ffffffff88e80d52>] _raw_spin_unlock_irqrestore+0x42/0x50 kernel/locking/spinlock.c:191
+hardirqs last disabled at (131581): [<ffffffff88e80b1e>] __raw_spin_lock_irqsave include/linux/spinlock_api_smp.h:108 [inline]
+hardirqs last disabled at (131581): [<ffffffff88e80b1e>] _raw_spin_lock_irqsave+0x4e/0x50 kernel/locking/spinlock.c:159
+softirqs last  enabled at (131566): [<ffffffff814279df>] irq_enter_rcu+0xcf/0xf0 kernel/softirq.c:360
+softirqs last disabled at (131567): [<ffffffff89000eaf>] asm_call_irq_on_stack+0xf/0x20
+
+other info that might help us debug this:
+ Possible unsafe locking scenario:
+
+       CPU0
+       ----
+  lock(&file_data->lock);
+  <Interrupt>
+    lock(&file_data->lock);
+
+ *** DEADLOCK ***
+
+2 locks held by swapper/0/0:
+ #0: ffffffff8b337700 (rcu_callback){....}-{0:0}, at: rcu_do_batch kernel/rcu/tree.c:2466 [inline]
+ #0: ffffffff8b337700 (rcu_callback){....}-{0:0}, at: rcu_core+0x576/0xe80 kernel/rcu/tree.c:2711
+ #1: ffffffff8b337820 (rcu_read_lock){....}-{1:2}, at: percpu_ref_put_many.constprop.0+0x0/0x250 net/netfilter/xt_cgroup.c:62
+
+stack backtrace:
+CPU: 0 PID: 0 Comm: swapper/0 Not tainted 5.10.0-rc4-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
+Call Trace:
+ <IRQ>
+ __dump_stack lib/dump_stack.c:77 [inline]
+ dump_stack+0x107/0x163 lib/dump_stack.c:118
+ print_usage_bug kernel/locking/lockdep.c:3738 [inline]
+ valid_state kernel/locking/lockdep.c:3749 [inline]
+ mark_lock_irq kernel/locking/lockdep.c:3952 [inline]
+ mark_lock.cold+0x32/0x74 kernel/locking/lockdep.c:4409
+ mark_usage kernel/locking/lockdep.c:4304 [inline]
+ __lock_acquire+0x11b1/0x5c00 kernel/locking/lockdep.c:4784
+ lock_acquire kernel/locking/lockdep.c:5435 [inline]
+ lock_acquire+0x2a3/0x8c0 kernel/locking/lockdep.c:5400
+ __raw_spin_lock include/linux/spinlock_api_smp.h:142 [inline]
+ _raw_spin_lock+0x2a/0x40 kernel/locking/spinlock.c:151
+ spin_lock include/linux/spinlock.h:354 [inline]
+ io_file_data_ref_zero+0x75/0x480 fs/io_uring.c:7361
+ percpu_ref_put_many.constprop.0+0x217/0x250 include/linux/percpu-refcount.h:322
+ rcu_do_batch kernel/rcu/tree.c:2476 [inline]
+ rcu_core+0x5df/0xe80 kernel/rcu/tree.c:2711
+ __do_softirq+0x2a0/0x9f6 kernel/softirq.c:298
+ asm_call_irq_on_stack+0xf/0x20
+ </IRQ>
+ __run_on_irqstack arch/x86/include/asm/irq_stack.h:26 [inline]
+ run_on_irqstack_cond arch/x86/include/asm/irq_stack.h:77 [inline]
+ do_softirq_own_stack+0xaa/0xd0 arch/x86/kernel/irq_64.c:77
+ invoke_softirq kernel/softirq.c:393 [inline]
+ __irq_exit_rcu kernel/softirq.c:423 [inline]
+ irq_exit_rcu+0x132/0x200 kernel/softirq.c:435
+ sysvec_apic_timer_interrupt+0x4d/0x100 arch/x86/kernel/apic/apic.c:1091
+ asm_sysvec_apic_timer_interrupt+0x12/0x20 arch/x86/include/asm/idtentry.h:631
+RIP: 0010:native_save_fl arch/x86/include/asm/irqflags.h:29 [inline]
+RIP: 0010:arch_local_save_flags arch/x86/include/asm/irqflags.h:79 [inline]
+RIP: 0010:arch_irqs_disabled arch/x86/include/asm/irqflags.h:169 [inline]
+RIP: 0010:acpi_safe_halt drivers/acpi/processor_idle.c:112 [inline]
+RIP: 0010:acpi_idle_do_entry+0x1c9/0x250 drivers/acpi/processor_idle.c:517
+Code: 8d 21 88 f8 84 db 75 ac e8 74 29 88 f8 e8 2f e8 8d f8 e9 0c 00 00 00 e8 65 29 88 f8 0f 00 2d 5e 74 c0 00 e8 59 29 88 f8 fb f4 <9c> 5b 81 e3 00 02 00 00 fa 31 ff 48 89 de e8 b4 21 88 f8 48 85 db
+RSP: 0018:ffffffff8b007d60 EFLAGS: 00000293
+RAX: 0000000000000000 RBX: 0000000000000000 RCX: 1ffffffff19d8ff9
+RDX: ffffffff8b09af80 RSI: ffffffff88e80687 RDI: 0000000000000000
+RBP: ffff88814141d064 R08: 0000000000000001 R09: 0000000000000001
+R10: 0000000000000000 R11: 0000000000000001 R12: 0000000000000001
+R13: ffff88814141d000 R14: ffff88814141d064 R15: ffff888014984004
+ acpi_idle_enter+0x361/0x500 drivers/acpi/processor_idle.c:648
+ cpuid
+
+
 ---
- net/mac80211/util.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-diff --git a/net/mac80211/util.c b/net/mac80211/util.c
-index 49342060490f..94e624e9439b 100644
---- a/net/mac80211/util.c
-+++ b/net/mac80211/util.c
-@@ -3455,7 +3455,7 @@ bool ieee80211_chandef_he_6ghz_oper(struct ieee80211_sub_if_data *sdata,
- 
- 	*chandef = he_chandef;
- 
--	return false;
-+	return true;
- }
- 
- bool ieee80211_chandef_s1g_oper(const struct ieee80211_s1g_oper_ie *oper,
--- 
-2.23.0
-
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+For information about bisection process see: https://goo.gl/tpsmEJ#bisection
+syzbot can test patches for this issue, for details see:
+https://goo.gl/tpsmEJ#testing-patches
