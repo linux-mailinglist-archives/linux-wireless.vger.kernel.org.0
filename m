@@ -2,140 +2,193 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 069A42C0913
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Nov 2020 14:17:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C8B072C0C2F
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Nov 2020 14:57:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388397AbgKWNDw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 23 Nov 2020 08:03:52 -0500
-Received: from mail.kernel.org ([198.145.29.99]:40738 "EHLO mail.kernel.org"
+        id S1729537AbgKWNvv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 23 Nov 2020 08:51:51 -0500
+Received: from mga14.intel.com ([192.55.52.115]:1467 "EHLO mga14.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2388335AbgKWNDp (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 23 Nov 2020 08:03:45 -0500
-Received: from embeddedor (187-162-31-110.static.axtel.net [187.162.31.110])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 191D120758;
-        Mon, 23 Nov 2020 13:03:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1606136621;
-        bh=J/TET3MqSRKQBkZDLmw3offBuTNq8xblR6VPj5c7KTQ=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=huMDpxd34lY8zl81VJt6WrkzA8VbZ3WZKfCc+01YUsnQkEm+dvBfrNL343ZTscxgS
-         4cn7RRAIuR/6lyK6TO0qxACy3TNrSBuTodAx+s4Q2YpvApK9inZpqsbsSdtJmbV9Zx
-         YwwBYqtSxUH9kHvWkiEz2t98c4vnYVnAJ6qqQTEg=
-Date:   Mon, 23 Nov 2020 07:03:48 -0600
-From:   "Gustavo A. R. Silva" <gustavoars@kernel.org>
-To:     James Bottomley <James.Bottomley@HansenPartnership.com>
-Cc:     Joe Perches <joe@perches.com>, Kees Cook <keescook@chromium.org>,
-        Jakub Kicinski <kuba@kernel.org>, alsa-devel@alsa-project.org,
-        linux-atm-general@lists.sourceforge.net,
-        reiserfs-devel@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-wireless@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-        Nathan Chancellor <natechancellor@gmail.com>,
-        linux-ide@vger.kernel.org, dm-devel@redhat.com,
-        keyrings@vger.kernel.org, linux-mtd@lists.infradead.org,
-        GR-everest-linux-l2@marvell.com, wcn36xx@lists.infradead.org,
-        samba-technical@lists.samba.org, linux-i3c@lists.infradead.org,
-        linux1394-devel@lists.sourceforge.net,
-        linux-afs@lists.infradead.org,
-        usb-storage@lists.one-eyed-alien.net, drbd-dev@lists.linbit.com,
-        devel@driverdev.osuosl.org, linux-cifs@vger.kernel.org,
-        rds-devel@oss.oracle.com,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        linux-scsi@vger.kernel.org, linux-rdma@vger.kernel.org,
-        oss-drivers@netronome.com, bridge@lists.linux-foundation.org,
-        linux-security-module@vger.kernel.org,
-        amd-gfx@lists.freedesktop.org,
-        linux-stm32@st-md-mailman.stormreply.com, cluster-devel@redhat.com,
-        linux-acpi@vger.kernel.org, coreteam@netfilter.org,
-        intel-wired-lan@lists.osuosl.org, linux-input@vger.kernel.org,
-        Miguel Ojeda <ojeda@kernel.org>,
-        tipc-discussion@lists.sourceforge.net, linux-ext4@vger.kernel.org,
-        linux-media@vger.kernel.org, linux-watchdog@vger.kernel.org,
-        selinux@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        intel-gfx@lists.freedesktop.org, linux-geode@lists.infradead.org,
-        linux-can@vger.kernel.org, linux-block@vger.kernel.org,
-        linux-gpio@vger.kernel.org, op-tee@lists.trustedfirmware.org,
-        linux-mediatek@lists.infradead.org, xen-devel@lists.xenproject.org,
-        nouveau@lists.freedesktop.org, linux-hams@vger.kernel.org,
-        ceph-devel@vger.kernel.org,
-        virtualization@lists.linux-foundation.org,
-        linux-arm-kernel@lists.infradead.org, linux-hwmon@vger.kernel.org,
-        x86@kernel.org, linux-nfs@vger.kernel.org,
-        GR-Linux-NIC-Dev@marvell.com, linux-mm@kvack.org,
-        netdev@vger.kernel.org, linux-decnet-user@lists.sourceforge.net,
-        linux-mmc@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        linux-sctp@vger.kernel.org, linux-usb@vger.kernel.org,
-        netfilter-devel@vger.kernel.org, linux-crypto@vger.kernel.org,
-        patches@opensource.cirrus.com, linux-integrity@vger.kernel.org,
-        target-devel@vger.kernel.org, linux-hardening@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Greg KH <gregkh@linuxfoundation.org>
-Subject: Re: [Intel-wired-lan] [PATCH 000/141] Fix fall-through warnings for
- Clang
-Message-ID: <20201123130348.GA3119@embeddedor>
-References: <cover.1605896059.git.gustavoars@kernel.org>
- <20201120105344.4345c14e@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
- <202011201129.B13FDB3C@keescook>
- <20201120115142.292999b2@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
- <202011220816.8B6591A@keescook>
- <9b57fd4914b46f38d54087d75e072d6e947cb56d.camel@HansenPartnership.com>
- <ca071decb87cc7e905411423c05a48f9fd2f58d7.camel@perches.com>
- <0147972a72bc13f3629de8a32dee6f1f308994b5.camel@HansenPartnership.com>
- <d8d1e9add08cdd4158405e77762d4946037208f8.camel@perches.com>
- <dbd2cb703ed9eefa7dde9281ea26ab0f7acc8afe.camel@HansenPartnership.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <dbd2cb703ed9eefa7dde9281ea26ab0f7acc8afe.camel@HansenPartnership.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+        id S1729455AbgKWNvu (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 23 Nov 2020 08:51:50 -0500
+IronPort-SDR: Yy5UwHzCTponsSYuDwclmwPtFRGclmIlowsgNaoHrzbyzjcq8Fce0+mn6k65J4sErEhIyHVlFn
+ 6sIQui4g953g==
+X-IronPort-AV: E=McAfee;i="6000,8403,9813"; a="170981395"
+X-IronPort-AV: E=Sophos;i="5.78,363,1599548400"; 
+   d="scan'208";a="170981395"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Nov 2020 05:51:47 -0800
+IronPort-SDR: btlGRgNNLrNmYqFKECYXdkbgieNZHk1m52p6Nv5YfgtPC2+0PT2q2vAUMak6YmwM2fTabnhT9/
+ XMso/5yaZGiA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.78,363,1599548400"; 
+   d="scan'208";a="370035449"
+Received: from bgsxx0031.iind.intel.com ([10.106.222.40])
+  by orsmga007.jf.intel.com with ESMTP; 23 Nov 2020 05:51:45 -0800
+From:   M Chetan Kumar <m.chetan.kumar@intel.com>
+To:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org
+Cc:     johannes@sipsolutions.net, krishna.c.sudi@intel.com,
+        m.chetan.kumar@intel.com
+Subject: [RFC 00/18] net: iosm: PCIe Driver for Intel M.2 Modem
+Date:   Mon, 23 Nov 2020 19:21:05 +0530
+Message-Id: <20201123135123.48892-1-m.chetan.kumar@intel.com>
+X-Mailer: git-send-email 2.12.3
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sun, Nov 22, 2020 at 11:53:55AM -0800, James Bottomley wrote:
-> On Sun, 2020-11-22 at 11:22 -0800, Joe Perches wrote:
-> > On Sun, 2020-11-22 at 11:12 -0800, James Bottomley wrote:
-> > > On Sun, 2020-11-22 at 10:25 -0800, Joe Perches wrote:
-> > > > On Sun, 2020-11-22 at 10:21 -0800, James Bottomley wrote:
-> > > > > Please tell me our reward for all this effort isn't a single
-> > > > > missing error print.
-> > > > 
-> > > > There were quite literally dozens of logical defects found
-> > > > by the fallthrough additions.  Very few were logging only.
-> > > 
-> > > So can you give us the best examples (or indeed all of them if
-> > > someone is keeping score)?  hopefully this isn't a US election
-> > > situation ...
-> > 
-> > Gustavo?  Are you running for congress now?
-> > 
-> > https://lwn.net/Articles/794944/
-> 
-> That's 21 reported fixes of which about 50% seem to produce no change
-> in code behaviour at all, a quarter seem to have no user visible effect
-> with the remaining quarter producing unexpected errors on obscure
-> configuration parameters, which is why no-one really noticed them
-> before.
+The IOSM (IPC over Shared Memory) driver is a PCIe host driver implemented
+for linux or chrome platform for data exchange over PCIe interface between
+Host platform & Intel M.2 Modem. The driver exposes interface conforming to the
+MBIM protocol [1]. Any front end application ( eg: Modem Manager) could easily
+manage the MBIM interface to enable data communication towards WWAN.
 
-The really important point here is the number of bugs this has prevented
-and will prevent in the future. See an example of this, below:
+This is the driver we are still working on & below are the known things that
+need to be addressed by driver.
+1. Usage of completion() inside deinit()
+2. Clean-up wrappers around hr_timer
+3. Usage of net stats inside driver struct
 
-https://lore.kernel.org/linux-iio/20190813135802.GB27392@kroah.com/
+Kindly request to review and give your suggestions.
 
-This work is still relevant, even if the total number of issues/bugs
-we find in the process is zero (which is not the case).
+Below is the technical detail:-
+Intel M.2 modem uses 2 BAR regions. The first region is dedicated to Doorbell
+register for IRQs and the second region is used as scratchpad area for book
+keeping modem execution stage details along with host system shared memory
+region context details. The upper edge of the driver exposes the control and
+data channels for user space application interaction. At lower edge these data
+and control channels are associated to pipes. The pipes are lowest level
+interfaces used over PCIe as a logical channel for message exchange. A single
+channel maps to UL and DL pipe and are initialized on device open.
 
-"The sucky thing about doing hard work to deploy hardening is that the
-result is totally invisible by definition (things not happening) [..]"
-- Dmitry Vyukov
+On UL path, driver copies application sent data to SKBs associate it with
+transfer descriptor and puts it on to ring buffer for DMA transfer. Once
+information has been updated in shared memory region, host gives a Doorbell
+to modem to perform DMA and modem uses MSI to communicate back to host.
+For receiving data in DL path, SKBs are pre-allocated during pipe open and
+transfer descriptors are given to modem for DMA transfer.
 
-Thanks
---
-Gustavo
+The driver exposes two types of ports, namely "wwanctrl", a char device node
+which is used for MBIM control operation and "INMx",(x = 0,1,2..7) network
+interfaces for IP data communication.
+1) MBIM Control Interface:
+This node exposes an interface between modem and application using char device
+exposed by "IOSM" driver to establish and manage the MBIM data communication
+with PCIe based Intel M.2 Modems.
 
+It also support an IOCTL command, apart from read and write methods. The IOCTL
+command, "IOCTL_WDM_MAX_COMMAND" could be used by applications to fetch the
+Maximum Command buffer length supported by the driver which is restricted to
+4096 bytes.
 
+2) MBIM Data Interface:
+The IOSM driver represents the MBIM data channel as a single root network
+device of the "wwan0" type which is mapped as default IP session 0. Several IP
+sessions(INMx) could be multiplexed over the single data channel using
+sub devices of master wwanY devices. The driver models such IP sessions as
+802.1q VLAN devices which are mapped to a unique VLAN ID.
 
+M Chetan Kumar (18):
+  net: iosm: entry point
+  net: iosm: irq handling
+  net: iosm: mmio scratchpad
+  net: iosm: shared memory IPC interface
+  net: iosm: shared memory I/O operations
+  net: iosm: channel configuration
+  net: iosm: char device for FW flash & coredump
+  net: iosm: MBIM control device
+  net: iosm: bottom half
+  net: iosm: multiplex IP sessions
+  net: iosm: encode or decode datagram
+  net: iosm: power management
+  net: iosm: shared memory protocol
+  net: iosm: protocol operations
+  net: iosm: uevent support
+  net: iosm: net driver
+  net: iosm: readme file
+  net: iosm: infrastructure
 
+ MAINTAINERS                                   |    7 +
+ drivers/net/Kconfig                           |    1 +
+ drivers/net/Makefile                          |    1 +
+ drivers/net/wwan/Kconfig                      |   13 +
+ drivers/net/wwan/Makefile                     |    5 +
+ drivers/net/wwan/iosm/Kconfig                 |   10 +
+ drivers/net/wwan/iosm/Makefile                |   27 +
+ drivers/net/wwan/iosm/README                  |  126 +++
+ drivers/net/wwan/iosm/iosm_ipc_chnl_cfg.c     |   87 ++
+ drivers/net/wwan/iosm/iosm_ipc_chnl_cfg.h     |   57 +
+ drivers/net/wwan/iosm/iosm_ipc_imem.c         | 1466 +++++++++++++++++++++++++
+ drivers/net/wwan/iosm/iosm_ipc_imem.h         |  606 ++++++++++
+ drivers/net/wwan/iosm/iosm_ipc_imem_ops.c     |  779 +++++++++++++
+ drivers/net/wwan/iosm/iosm_ipc_imem_ops.h     |  102 ++
+ drivers/net/wwan/iosm/iosm_ipc_irq.c          |   95 ++
+ drivers/net/wwan/iosm/iosm_ipc_irq.h          |   35 +
+ drivers/net/wwan/iosm/iosm_ipc_mbim.c         |  205 ++++
+ drivers/net/wwan/iosm/iosm_ipc_mbim.h         |   24 +
+ drivers/net/wwan/iosm/iosm_ipc_mmio.c         |  222 ++++
+ drivers/net/wwan/iosm/iosm_ipc_mmio.h         |  192 ++++
+ drivers/net/wwan/iosm/iosm_ipc_mux.c          |  455 ++++++++
+ drivers/net/wwan/iosm/iosm_ipc_mux.h          |  344 ++++++
+ drivers/net/wwan/iosm/iosm_ipc_mux_codec.c    |  902 +++++++++++++++
+ drivers/net/wwan/iosm/iosm_ipc_mux_codec.h    |  194 ++++
+ drivers/net/wwan/iosm/iosm_ipc_pcie.c         |  494 +++++++++
+ drivers/net/wwan/iosm/iosm_ipc_pcie.h         |  205 ++++
+ drivers/net/wwan/iosm/iosm_ipc_pm.c           |  334 ++++++
+ drivers/net/wwan/iosm/iosm_ipc_pm.h           |  216 ++++
+ drivers/net/wwan/iosm/iosm_ipc_protocol.c     |  287 +++++
+ drivers/net/wwan/iosm/iosm_ipc_protocol.h     |  219 ++++
+ drivers/net/wwan/iosm/iosm_ipc_protocol_ops.c |  563 ++++++++++
+ drivers/net/wwan/iosm/iosm_ipc_protocol_ops.h |  358 ++++++
+ drivers/net/wwan/iosm/iosm_ipc_sio.c          |  188 ++++
+ drivers/net/wwan/iosm/iosm_ipc_sio.h          |   72 ++
+ drivers/net/wwan/iosm/iosm_ipc_task_queue.c   |  258 +++++
+ drivers/net/wwan/iosm/iosm_ipc_task_queue.h   |   46 +
+ drivers/net/wwan/iosm/iosm_ipc_uevent.c       |   47 +
+ drivers/net/wwan/iosm/iosm_ipc_uevent.h       |   41 +
+ drivers/net/wwan/iosm/iosm_ipc_wwan.c         |  674 ++++++++++++
+ drivers/net/wwan/iosm/iosm_ipc_wwan.h         |   72 ++
+ 40 files changed, 10029 insertions(+)
+ create mode 100644 drivers/net/wwan/Kconfig
+ create mode 100644 drivers/net/wwan/Makefile
+ create mode 100644 drivers/net/wwan/iosm/Kconfig
+ create mode 100644 drivers/net/wwan/iosm/Makefile
+ create mode 100644 drivers/net/wwan/iosm/README
+ create mode 100644 drivers/net/wwan/iosm/iosm_ipc_chnl_cfg.c
+ create mode 100644 drivers/net/wwan/iosm/iosm_ipc_chnl_cfg.h
+ create mode 100644 drivers/net/wwan/iosm/iosm_ipc_imem.c
+ create mode 100644 drivers/net/wwan/iosm/iosm_ipc_imem.h
+ create mode 100644 drivers/net/wwan/iosm/iosm_ipc_imem_ops.c
+ create mode 100644 drivers/net/wwan/iosm/iosm_ipc_imem_ops.h
+ create mode 100644 drivers/net/wwan/iosm/iosm_ipc_irq.c
+ create mode 100644 drivers/net/wwan/iosm/iosm_ipc_irq.h
+ create mode 100644 drivers/net/wwan/iosm/iosm_ipc_mbim.c
+ create mode 100644 drivers/net/wwan/iosm/iosm_ipc_mbim.h
+ create mode 100644 drivers/net/wwan/iosm/iosm_ipc_mmio.c
+ create mode 100644 drivers/net/wwan/iosm/iosm_ipc_mmio.h
+ create mode 100644 drivers/net/wwan/iosm/iosm_ipc_mux.c
+ create mode 100644 drivers/net/wwan/iosm/iosm_ipc_mux.h
+ create mode 100644 drivers/net/wwan/iosm/iosm_ipc_mux_codec.c
+ create mode 100644 drivers/net/wwan/iosm/iosm_ipc_mux_codec.h
+ create mode 100644 drivers/net/wwan/iosm/iosm_ipc_pcie.c
+ create mode 100644 drivers/net/wwan/iosm/iosm_ipc_pcie.h
+ create mode 100644 drivers/net/wwan/iosm/iosm_ipc_pm.c
+ create mode 100644 drivers/net/wwan/iosm/iosm_ipc_pm.h
+ create mode 100644 drivers/net/wwan/iosm/iosm_ipc_protocol.c
+ create mode 100644 drivers/net/wwan/iosm/iosm_ipc_protocol.h
+ create mode 100644 drivers/net/wwan/iosm/iosm_ipc_protocol_ops.c
+ create mode 100644 drivers/net/wwan/iosm/iosm_ipc_protocol_ops.h
+ create mode 100644 drivers/net/wwan/iosm/iosm_ipc_sio.c
+ create mode 100644 drivers/net/wwan/iosm/iosm_ipc_sio.h
+ create mode 100644 drivers/net/wwan/iosm/iosm_ipc_task_queue.c
+ create mode 100644 drivers/net/wwan/iosm/iosm_ipc_task_queue.h
+ create mode 100644 drivers/net/wwan/iosm/iosm_ipc_uevent.c
+ create mode 100644 drivers/net/wwan/iosm/iosm_ipc_uevent.h
+ create mode 100644 drivers/net/wwan/iosm/iosm_ipc_wwan.c
+ create mode 100644 drivers/net/wwan/iosm/iosm_ipc_wwan.h
+
+-- 
+2.12.3
 
