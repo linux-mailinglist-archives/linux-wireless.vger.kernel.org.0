@@ -2,125 +2,101 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 32E632C0F5E
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Nov 2020 16:56:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E2712C0F84
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Nov 2020 17:04:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389467AbgKWPwh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 23 Nov 2020 10:52:37 -0500
-Received: from mga04.intel.com ([192.55.52.120]:3310 "EHLO mga04.intel.com"
+        id S1730285AbgKWP5J (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 23 Nov 2020 10:57:09 -0500
+Received: from m42-4.mailgun.net ([69.72.42.4]:53531 "EHLO m42-4.mailgun.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1732814AbgKWPwg (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 23 Nov 2020 10:52:36 -0500
-IronPort-SDR: wdIVWjG4qt3kkvZFlTfNHJ1qSha0XKAk2CxPFx4fu9uvtz0EoQNlcxjxuegxxUzv7XWLNMv6N9
- dwo6ar0lSANA==
-X-IronPort-AV: E=McAfee;i="6000,8403,9813"; a="169224209"
-X-IronPort-AV: E=Sophos;i="5.78,363,1599548400"; 
-   d="scan'208";a="169224209"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Nov 2020 07:52:35 -0800
-IronPort-SDR: o6LRPZSLFHblJ72nLIxI7QtuEJsSPQd11jVZTPC9b01xjBsR6V5ML2IOh4GsWUUm1pKbyVJ0KQ
- V9qBxJqg/0zw==
-X-IronPort-AV: E=Sophos;i="5.78,363,1599548400"; 
-   d="scan'208";a="546463497"
-Received: from suygunge-mobl.ger.corp.intel.com (HELO localhost) ([10.249.40.108])
-  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Nov 2020 07:52:23 -0800
-From:   Jani Nikula <jani.nikula@linux.intel.com>
-To:     James Bottomley <James.Bottomley@HansenPartnership.com>,
-        trix@redhat.com, joe@perches.com,
-        clang-built-linux@googlegroups.com
-Cc:     linux-hyperv@vger.kernel.org, kvm@vger.kernel.org,
-        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        platform-driver-x86@vger.kernel.org,
-        ibm-acpi-devel@lists.sourceforge.net, keyrings@vger.kernel.org,
-        linux-mtd@lists.infradead.org, linux-scsi@vger.kernel.org,
-        amd-gfx@lists.freedesktop.org, cluster-devel@redhat.com,
-        linux-acpi@vger.kernel.org, tboot-devel@lists.sourceforge.net,
-        coreteam@netfilter.org, xen-devel@lists.xenproject.org,
-        MPT-FusionLinux.pdl@broadcom.com, linux-media@vger.kernel.org,
-        alsa-devel@alsa-project.org, intel-gfx@lists.freedesktop.org,
-        ecryptfs@vger.kernel.org, linux-omap@vger.kernel.org,
-        devel@acpica.org, linux-nfs@vger.kernel.org,
-        netdev@vger.kernel.org, linux-usb@vger.kernel.org,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-bluetooth@vger.kernel.org, netfilter-devel@vger.kernel.org,
-        linux-crypto@vger.kernel.org, patches@opensource.cirrus.com,
-        linux-fsdevel@vger.kernel.org, bpf@vger.kernel.org
-Subject: Re: [RFC] MAINTAINERS tag for cleanup robot
-In-Reply-To: <5843ef910b0e86c00d9c0143dec20f93823b016b.camel@HansenPartnership.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-References: <20201121165058.1644182-1-trix@redhat.com> <5843ef910b0e86c00d9c0143dec20f93823b016b.camel@HansenPartnership.com>
-Date:   Mon, 23 Nov 2020 17:52:20 +0200
-Message-ID: <87y2ism5or.fsf@intel.com>
+        id S1732542AbgKWP4U (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 23 Nov 2020 10:56:20 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1606146980; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=peXIXBUMti9vrUsUY2tlDaUe3oM+23n8MgT8+LCvaAE=; b=V13zddUsn+vfJkxaW4nRUaYXMjbyC/ZLWiWWrKymLLu2mDF4qXVGNnmW7hcKoiFCNtVnOyTE
+ 7cgyZ1d+fC6bvRF3ONAPmGB+R7UDcpEpNZrQs7a6X2vXAV2AcScEJWAGe37Ju5g/MuZpKBsm
+ +vZs/XhRN9jjHlpUOhs35Hb8JMs=
+X-Mailgun-Sending-Ip: 69.72.42.4
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n06.prod.us-west-2.postgun.com with SMTP id
+ 5fbbdba3a5a29b56a1a48143 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 23 Nov 2020 15:56:19
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 5A3C7C433ED; Mon, 23 Nov 2020 15:56:19 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
+        autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 305EFC43460;
+        Mon, 23 Nov 2020 15:56:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 305EFC43460
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     byhoo <hby2003@163.com>
+Cc:     "davem\@davemloft.net" <davem@davemloft.net>,
+        "kuba\@kernel.org" <kuba@kernel.org>,
+        "linux-wireless\@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "netdev\@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel\@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] drivers: Fix the Raspberry Pi debug version compile
+References: <20201122100606.20289-1-hby2003@163.com>
+        <5359213d.1442.175ef72e5b7.Coremail.hby2003@163.com>
+Date:   Mon, 23 Nov 2020 17:56:10 +0200
+In-Reply-To: <5359213d.1442.175ef72e5b7.Coremail.hby2003@163.com> (byhoo's
+        message of "Sun, 22 Nov 2020 18:14:45 +0800 (GMT+08:00)")
+Message-ID: <87v9dwqd7p.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sat, 21 Nov 2020, James Bottomley <James.Bottomley@HansenPartnership.com> wrote:
-> On Sat, 2020-11-21 at 08:50 -0800, trix@redhat.com wrote:
->> A difficult part of automating commits is composing the subsystem
->> preamble in the commit log.  For the ongoing effort of a fixer
->> producing
->> one or two fixes a release the use of 'treewide:' does not seem
->> appropriate.
->> 
->> It would be better if the normal prefix was used.  Unfortunately
->> normal is
->> not consistent across the tree.
->> 
->> 
->> 	D: Commit subsystem prefix
->> 
->> ex/ for FPGA DFL DRIVERS
->> 
->> 	D: fpga: dfl:
->> 
+byhoo <hby2003@163.com> writes:
+
+> The steps:
+> 1. add "#define DEBUG" in
+> drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c line 61.
+> 2. make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- O=../Out_Linux
+> bcm2835_defconfig
+> 3. make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- O=../Out_Linux/
+> zImage modules dtbs -j8
 >
-> I've got to bet this is going to cause more issues than it solves.
+> Then, it will fail, the compile log described below:
+>
+> Kernel: arch/arm/boot/zImage is ready MODPOST Module.symvers ERROR:
+> modpost: "brcmf_debugfs_add_entry"
+> [drivers/net/wireless/broadcom/brcm80211/brcmfmac/brcmfmac.ko]
+> undefined! ERROR: modpost: "brcmf_debugfs_get_devdir"
+> [drivers/net/wireless/broadcom/brcm80211/brcmfmac/brcmfmac.ko]
+> undefined! ERROR: modpost: "__brcmf_dbg"
+> [drivers/net/wireless/broadcom/brcm80211/brcmfmac/brcmfmac.ko]
+> undefined!
+> /home/hby/gitee/linux_origin/Linux/scripts/Makefile.modpost:111:
+> recipe for target 'Module.symvers' failed make[2]: ***
+> [Module.symvers] Error 1 make[2]: *** Deleting file 'Module.symvers'
+> /home/hby/gitee/linux_origin/Linux/Makefile:1390: recipe for target
+> 'modules' failed make[1]: *** [modules] Error 2 make[1]: Leaving
+> directory '/home/hby/gitee/linux_origin/Out_Linux' Makefile:185:
+> recipe for target '__sub-make' failed make: *** [__sub-make] Error 2 
 
-Agreed.
+Please add this info to the commit log.
 
-> SCSI uses scsi: <driver>: for drivers but not every driver has a
-> MAINTAINERS entry.  We use either scsi: or scsi: core: for mid layer
-> things, but we're not consistent.  Block uses blk-<something>: for all
-> of it's stuff but almost no <somtehing>s have a MAINTAINERS entry.  So
-> the next thing you're going to cause is an explosion of suggested
-> MAINTAINERs entries.
-
-On the one hand, adoption of new MAINTAINERS entries has been really
-slow. Look at B, C, or P, for instance. On the other hand, if this were
-to get adopted, you'll potentially get conflicting prefixes for patches
-touching multiple files. Then what?
-
-I'm guessing a script looking at git log could come up with better
-suggestions for prefixes via popularity contest than manually maintained
-MAINTAINERS entries. It might not always get it right, but then human
-outsiders aren't going to always get it right either.
-
-Now you'll only need Someone(tm) to write the script. ;)
-
-Something quick like this:
-
-git log --since={1year} --pretty=format:%s -- <FILES> |\
-	grep -v "^\(Merge\|Revert\)" |\
-        sed 's/:[^:]*$//' |\
-        sort | uniq -c | sort -rn | head -5
-
-already gives me results that really aren't worse than some of the
-prefixes invented by drive-by contributors.
-
-> Has anyone actually complained about treewide:?
-
-As Joe said, I'd feel silly applying patches to drivers with that
-prefix. If it gets applied by someone else higher up, literally
-treewide, then no complaints.
-
-BR,
-Jani.
-
+And please don't submit HTML emails, the lists will drop those
+automatically. See the wiki below for more info.
 
 -- 
-Jani Nikula, Intel Open Source Graphics Center
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
