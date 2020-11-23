@@ -2,61 +2,60 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A93012C0CC2
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Nov 2020 15:14:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C8BBB2C0D5E
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Nov 2020 15:27:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730313AbgKWOFp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 23 Nov 2020 09:05:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42408 "EHLO
+        id S1730804AbgKWOUL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 23 Nov 2020 09:20:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44650 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726508AbgKWOFo (ORCPT
+        with ESMTP id S2388810AbgKWOUI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 23 Nov 2020 09:05:44 -0500
+        Mon, 23 Nov 2020 09:20:08 -0500
 Received: from mail-yb1-xb43.google.com (mail-yb1-xb43.google.com [IPv6:2607:f8b0:4864:20::b43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16E30C061A4D;
-        Mon, 23 Nov 2020 06:05:44 -0800 (PST)
-Received: by mail-yb1-xb43.google.com with SMTP id 2so15993082ybc.12;
-        Mon, 23 Nov 2020 06:05:44 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DCBAC0613CF;
+        Mon, 23 Nov 2020 06:20:06 -0800 (PST)
+Received: by mail-yb1-xb43.google.com with SMTP id t33so16099316ybd.0;
+        Mon, 23 Nov 2020 06:20:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=RhHqKgQbKUW77nc47JuvCnp+w8QNxENxQLSt6AHkTqQ=;
-        b=uc3VE1PZNnY/Z1NgZXLeWe/Nj5hsoBfQkeeHXaE+d0SDr9xNRMPYxU1o6fpuaiqkgi
-         yuFjhawxyOxFbziEfkWs4inb92LCIVTnNTVXAL7657JtY5jUPnHae9XC4JONvfltcDzK
-         9TpDS0ylXwfesoyru6or5tLuj2Wgq4fxc0XGG5evkxw7F5K63x1NbbMukm854FcfQLy0
-         gnTDe+NWIPcxyPxl6ZwlkcZY1OnasK1C98JFaIzSzrlrdcg6icgY2nCNokwGspTvBpMG
-         u0c2fJxhgJsKPBZAzgP85ZG8VhKJUulmNcJ8sZ+phgCZ9U4trQ3IF/NnqsJiuQ1qY+5Q
-         UH8Q==
+        bh=WUYMqcUnfpAQa1YuH9tQ3ze5bp2bxaoGLXc9Sg/470Y=;
+        b=b0LkeT2q71Z3peIccxL7MkU5QadaCN3igdEC89IE4ykmdOxIlhuoo/0+H7pQCoNmlh
+         0UX19Z7soasUpz2fDZHX56luUWrH4GLKAJ9K28HwPu9km7qlcvasqfBffaQW+LtXvh6a
+         fVP4J8wQFxbi1QWFB10Wsq9dLONxRShLcqQtcaktrZCy3tSRV5R4FOw2MSdgwNuCxNwd
+         cKQMyE/jYgmlc9Qm972BZKz9xJaasT5iW6gpZgai8YpCh1sxJNgZFzlfCpv21Fvd7rwb
+         akOsznbnFT4mJT95mXFDUPnplTdAJirWAcm8YfzHFRAfOGn9Vk91PuRcq7JipLelDPMB
+         VWgQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=RhHqKgQbKUW77nc47JuvCnp+w8QNxENxQLSt6AHkTqQ=;
-        b=qfu5ev+a4Mtxb/me5p98S+qpptw/liqOqi/Sn5haXVh4C3iZa/Rr1VO/RdFlRYFmI1
-         s2kn1wvg9ts9EsJlX8g3CJeCSRNYil+yfBHsTdyF3HJfbBmpnlalCpNeq2lfHeR6bkIC
-         eKrnByi3tkSMwXRmTCDJWCc1yW3VnDwUIJOeshN6vpsXBmTvWv5hNWTaYLe/zmGvF4sR
-         UJRQg5pa5sxtsrd+wg7QXtMX9UTOJiqN3Pl9j6wvDxpSpy1iq9oJ7ct126/9lGCJyaQB
-         BqMp0EdLAQ2GVplt03VtpojSiDVmPVA2Hok29c4a+j/zowX4aTcB7WqHooUfgjGoJF5x
-         jtRQ==
-X-Gm-Message-State: AOAM531VlvseIbNS+gH1i5feL/P9VJkSmr3dJPDYO1b4EwQ6YiYGVEFR
-        9sgGinzwDwKiV0L0AJnzQikU/rDGf2kYqM1cPuE=
-X-Google-Smtp-Source: ABdhPJz9DsZ58e7OIIOr/VE9Xtax3PWaLuFuRyVLpjTsCzIYcuPGWJiVUhGusztX9v02ET+47HU3GtURC6oS5LfC9Lw=
-X-Received: by 2002:a5b:40e:: with SMTP id m14mr35121900ybp.33.1606140343388;
- Mon, 23 Nov 2020 06:05:43 -0800 (PST)
+        bh=WUYMqcUnfpAQa1YuH9tQ3ze5bp2bxaoGLXc9Sg/470Y=;
+        b=k/qgZ8Z9bBqeNograULAsVmY6QgH/o27YDc4TQqwadJEFPSHfj8njq8ybzc5p5uAqz
+         G2SF1GHjXgxVX+FODMOQfjlRZXXNW8F8Ux14RKIUmWQY2couN16YR3yqVIzbwT4iX+yY
+         VYevTNouvCvLvx1xngkvK6RPKneGbHmGKG5FWBekf4NZ/3kPDSYqCl0zGT3EJ0yk0X4t
+         kU+csohpniyEyWF3yBeZ4aH/Tq8NjSKFDNPVh4gegMfVdeoJsrqFPE3o5GJQHSG5qjFd
+         /s6X6u/SLjhTMvHx9dFj3eBhExXvELYjltJz7wnCgTa8WRq49qIZaylj2t5HkrN/zQMT
+         LOBg==
+X-Gm-Message-State: AOAM533+WIFD/5i1qM3ecRgslbKC6w7KewwGOZRW9A2m2jL8dzVHgZRd
+        FqTd3sI8v3im//r2zntxY7nbBjfQQlZgP2y43RA=
+X-Google-Smtp-Source: ABdhPJyiJqjBIpEzWlk5pyqpoGG3+KpoWdKnlyza2YA6ODhXnRhATytwh5Bq+iGOzNqc5gs+zuqHC8iB1cjfDTXU/ik=
+X-Received: by 2002:a25:bcc7:: with SMTP id l7mr32380985ybm.115.1606141205830;
+ Mon, 23 Nov 2020 06:20:05 -0800 (PST)
 MIME-Version: 1.0
 References: <cover.1605896059.git.gustavoars@kernel.org> <20201120105344.4345c14e@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
  <202011201129.B13FDB3C@keescook> <20201120115142.292999b2@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
  <202011220816.8B6591A@keescook> <9b57fd4914b46f38d54087d75e072d6e947cb56d.camel@HansenPartnership.com>
- <CANiq72nZrHWTA4_Msg6MP9snTyenC6-eGfD27CyfNSu7QoVZbw@mail.gmail.com> <alpine.LNX.2.23.453.2011230938390.7@nippy.intranet>
-In-Reply-To: <alpine.LNX.2.23.453.2011230938390.7@nippy.intranet>
+ <CANiq72nZrHWTA4_Msg6MP9snTyenC6-eGfD27CyfNSu7QoVZbw@mail.gmail.com> <1c7d7fde126bc0acf825766de64bf2f9b888f216.camel@HansenPartnership.com>
+In-Reply-To: <1c7d7fde126bc0acf825766de64bf2f9b888f216.camel@HansenPartnership.com>
 From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Mon, 23 Nov 2020 15:05:31 +0100
-Message-ID: <CANiq72=z+tmuey9wj3Kk7wX5s0hTHpsQdLhAqcOVNrHon6xn5Q@mail.gmail.com>
+Date:   Mon, 23 Nov 2020 15:19:55 +0100
+Message-ID: <CANiq72m22Jb5_+62NnwX8xds2iUdWDMAqD8PZw9cuxdHd95W0A@mail.gmail.com>
 Subject: Re: [PATCH 000/141] Fix fall-through warnings for Clang
-To:     Finn Thain <fthain@telegraphics.com.au>
-Cc:     James Bottomley <James.Bottomley@hansenpartnership.com>,
-        Kees Cook <keescook@chromium.org>,
+To:     James Bottomley <James.Bottomley@hansenpartnership.com>
+Cc:     Kees Cook <keescook@chromium.org>,
         Jakub Kicinski <kuba@kernel.org>,
         "Gustavo A. R. Silva" <gustavoars@kernel.org>,
         linux-kernel <linux-kernel@vger.kernel.org>,
@@ -113,41 +112,38 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sun, Nov 22, 2020 at 11:54 PM Finn Thain <fthain@telegraphics.com.au> wrote:
+On Sun, Nov 22, 2020 at 11:36 PM James Bottomley
+<James.Bottomley@hansenpartnership.com> wrote:
 >
-> We should also take into account optimisim about future improvements in
-> tooling.
+> Well, it seems to be three years of someone's time plus the maintainer
+> review time and series disruption of nearly a thousand patches.  Let's
+> be conservative and assume the producer worked about 30% on the series
+> and it takes about 5-10 minutes per patch to review, merge and for
+> others to rework existing series.  So let's say it's cost a person year
+> of a relatively junior engineer producing the patches and say 100h of
+> review and application time.  The latter is likely the big ticket item
+> because it's what we have in least supply in the kernel (even though
+> it's 20x vs the producer time).
 
-Not sure what you mean here. There is no reliable way to guess what
-the intention was with a missing fallthrough, even if you parsed
-whitespace and indentation.
+How are you arriving at such numbers? It is a total of ~200 trivial lines.
 
-> It is if you want to spin it that way.
+> It's not about the risk of the changes it's about the cost of
+> implementing them.  Even if you discount the producer time (which
+> someone gets to pay for, and if I were the engineering manager, I'd be
+> unhappy about), the review/merge/rework time is pretty significant in
+> exchange for six minor bug fixes.  Fine, when a new compiler warning
+> comes along it's certainly reasonable to see if we can benefit from it
+> and the fact that the compiler people think it's worthwhile is enough
+> evidence to assume this initially.  But at some point you have to ask
+> whether that assumption is supported by the evidence we've accumulated
+> over the time we've been using it.  And if the evidence doesn't support
+> it perhaps it is time to stop the experiment.
 
-How is that a "spin"? It is a fact that we won't get *implicit*
-fallthrough mistakes anymore (in particular if we make it a hard
-error).
+Maintainers routinely review 1-line trivial patches, not to mention
+internal API changes, etc.
 
-> But what we inevitably get is changes like this:
->
->  case 3:
->         this();
-> +       break;
->  case 4:
->         hmmm();
->
-> Why? Mainly to silence the compiler. Also because the patch author argued
-> successfully that they had found a theoretical bug, often in mature code.
-
-If someone changes control flow, that is on them. Every kernel
-developer knows what `break` does.
-
-> But is anyone keeping score of the regressions? If unreported bugs count,
-> what about unreported regressions?
-
-Introducing `fallthrough` does not change semantics. If you are really
-keen, you can always compare the objects because the generated code
-shouldn't change.
+If some company does not want to pay for that, that's fine, but they
+don't get to be maintainers and claim `Supported`.
 
 Cheers,
 Miguel
