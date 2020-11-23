@@ -2,141 +2,165 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F02E52C10AE
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Nov 2020 17:39:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B4DE2C10C7
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Nov 2020 17:39:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390029AbgKWQdW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 23 Nov 2020 11:33:22 -0500
-Received: from smtprelay0102.hostedemail.com ([216.40.44.102]:57280 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S2387935AbgKWQc6 (ORCPT
+        id S2390092AbgKWQhj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 23 Nov 2020 11:37:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37768 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2389946AbgKWQhi (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 23 Nov 2020 11:32:58 -0500
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay07.hostedemail.com (Postfix) with ESMTP id A722B181D3025;
-        Mon, 23 Nov 2020 16:32:53 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 50,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:960:967:973:988:989:1260:1263:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1535:1541:1593:1594:1711:1730:1747:1777:1792:2393:2525:2565:2682:2685:2740:2828:2859:2912:2933:2937:2939:2942:2945:2947:2951:2954:3022:3138:3139:3140:3141:3142:3353:3622:3653:3865:3866:3867:3868:3870:3871:3872:3873:3874:3934:3936:3938:3941:3944:3947:3950:3953:3956:3959:4321:5007:6119:6742:6743:7903:9025:9388:10004:10400:10848:10946:11026:11232:11658:11914:12043:12049:12297:12438:12663:12740:12760:12895:13069:13161:13172:13229:13311:13357:13439:13972:14096:14097:14181:14659:14721:14764:21080:21451:21627:21781:21788:21809:21990:30034:30041:30054:30060:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:1,LUA_SUMMARY:none
-X-HE-Tag: can43_5c1502d27366
-X-Filterd-Recvd-Size: 5503
-Received: from XPS-9350.home (unknown [47.151.128.180])
-        (Authenticated sender: joe@perches.com)
-        by omf03.hostedemail.com (Postfix) with ESMTPA;
-        Mon, 23 Nov 2020 16:32:42 +0000 (UTC)
-Message-ID: <32dc7423124b51da4e144e931bf099a368ab50a8.camel@perches.com>
-Subject: Re: [PATCH 000/141] Fix fall-through warnings for Clang
-From:   Joe Perches <joe@perches.com>
-To:     James Bottomley <James.Bottomley@HansenPartnership.com>,
-        Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc:     Kees Cook <keescook@chromium.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        alsa-devel@alsa-project.org, amd-gfx@lists.freedesktop.org,
-        bridge@lists.linux-foundation.org, ceph-devel@vger.kernel.org,
-        cluster-devel@redhat.com, coreteam@netfilter.org,
-        devel@driverdev.osuosl.org, dm-devel@redhat.com,
-        drbd-dev@lists.linbit.com, dri-devel@lists.freedesktop.org,
-        GR-everest-linux-l2@marvell.com, GR-Linux-NIC-Dev@marvell.com,
-        intel-gfx@lists.freedesktop.org, intel-wired-lan@lists.osuosl.org,
-        keyrings@vger.kernel.org, linux1394-devel@lists.sourceforge.net,
-        linux-acpi@vger.kernel.org, linux-afs@lists.infradead.org,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linux-arm-msm@vger.kernel.org,
-        linux-atm-general@lists.sourceforge.net,
-        linux-block@vger.kernel.org, linux-can@vger.kernel.org,
-        linux-cifs@vger.kernel.org,
-        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
-        linux-decnet-user@lists.sourceforge.net,
-        Ext4 Developers List <linux-ext4@vger.kernel.org>,
-        linux-fbdev@vger.kernel.org, linux-geode@lists.infradead.org,
-        linux-gpio@vger.kernel.org, linux-hams@vger.kernel.org,
-        linux-hwmon@vger.kernel.org, linux-i3c@lists.infradead.org,
-        linux-ide@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-input <linux-input@vger.kernel.org>,
-        linux-integrity@vger.kernel.org,
-        linux-mediatek@lists.infradead.org,
-        Linux Media Mailing List <linux-media@vger.kernel.org>,
-        linux-mmc@vger.kernel.org, Linux-MM <linux-mm@kvack.org>,
-        linux-mtd@lists.infradead.org, linux-nfs@vger.kernel.org,
-        linux-rdma@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        linux-scsi@vger.kernel.org, linux-sctp@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-usb@vger.kernel.org, linux-watchdog@vger.kernel.org,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Network Development <netdev@vger.kernel.org>,
-        netfilter-devel@vger.kernel.org, nouveau@lists.freedesktop.org,
-        op-tee@lists.trustedfirmware.org, oss-drivers@netronome.com,
-        patches@opensource.cirrus.com, rds-devel@oss.oracle.com,
-        reiserfs-devel@vger.kernel.org, samba-technical@lists.samba.org,
-        selinux@vger.kernel.org, target-devel@vger.kernel.org,
-        tipc-discussion@lists.sourceforge.net,
-        usb-storage@lists.one-eyed-alien.net,
-        virtualization@lists.linux-foundation.org,
-        wcn36xx@lists.infradead.org,
-        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
-        xen-devel@lists.xenproject.org, linux-hardening@vger.kernel.org,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Nathan Chancellor <natechancellor@gmail.com>,
-        Miguel Ojeda <ojeda@kernel.org>
-Date:   Mon, 23 Nov 2020 08:32:41 -0800
-In-Reply-To: <fc45750b6d0277c401015b7aa11e16cd15f32ab2.camel@HansenPartnership.com>
-References: <cover.1605896059.git.gustavoars@kernel.org>
-         <20201120105344.4345c14e@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-         <202011201129.B13FDB3C@keescook>
-         <20201120115142.292999b2@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-         <202011220816.8B6591A@keescook>
-         <9b57fd4914b46f38d54087d75e072d6e947cb56d.camel@HansenPartnership.com>
-         <CANiq72nZrHWTA4_Msg6MP9snTyenC6-eGfD27CyfNSu7QoVZbw@mail.gmail.com>
-         <1c7d7fde126bc0acf825766de64bf2f9b888f216.camel@HansenPartnership.com>
-         <CANiq72m22Jb5_+62NnwX8xds2iUdWDMAqD8PZw9cuxdHd95W0A@mail.gmail.com>
-         <fc45750b6d0277c401015b7aa11e16cd15f32ab2.camel@HansenPartnership.com>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.38.1-1 
+        Mon, 23 Nov 2020 11:37:38 -0500
+Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com [IPv6:2607:f8b0:4864:20::644])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5EA50C061A4E
+        for <linux-wireless@vger.kernel.org>; Mon, 23 Nov 2020 08:37:38 -0800 (PST)
+Received: by mail-pl1-x644.google.com with SMTP id t18so9126836plo.0
+        for <linux-wireless@vger.kernel.org>; Mon, 23 Nov 2020 08:37:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernel-dk.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:references:from:message-id:date:user-agent:mime-version
+         :in-reply-to:content-language:content-transfer-encoding;
+        bh=NPDzcaiioinbI0xutHnN4ITCAksvO7VM/A7YfnKL3t8=;
+        b=IWpb9+t2hLMs3fQI31fe2Fh2XpE6OdjGahRcNeGWK1DgJW8519oFS2F3XMpFF8Ss+b
+         n4hivcJix+7wt7lMfwfQRU23sddw6DmCK5J0ywMiEdvF/tUD+iWYsHWGJeqJRTKoVrUe
+         yRBKbdZLCvj55JXALrX8zd66EdyXLdcFn1h6WGpy+dveqIni2Sk4VAjm6X33y9oV5axh
+         elmG5Ek7a1hP5S/5Bh/aSH7q7z02o/6gKmT3pQWou8EznyZYsQnL/mcFl4TvS5rGsGyp
+         TvEEpVSzA3wp7AyKGqB7bLn2fYjX+q20+hDTOcAM23jti1baTGOqOQ4N7/wrpAyHiE/p
+         pqCA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=NPDzcaiioinbI0xutHnN4ITCAksvO7VM/A7YfnKL3t8=;
+        b=VFHZ2DViOdoNIaWAJMX/d6fM6vL9A1Z5YPHq+Df4MkPNIc6bCwFwzziSu1yhuXBG7X
+         5lqDP0LctsSKFhunrpLw4YfRrnT5KwqwZ7Smb6zzaEZyxTHXl643rJSzvGYO83eTTjCH
+         45WbTfS3fHizvOw6ZPRWaYle+IrNv2IfXHr1T8/OEYmmcTfwWQCVnURvwBTrwtcmhNVU
+         iWShUdN42I0lH86hewq9D/2q0Zcz8BZ23vu4kmJcj2GSgMmfS2wgIVdFRNkWK+r4ECEE
+         /13lWCuri+HTQ37wkiZwdRVVupJhN2bbT/TufizRWFUhZMvgK+SiYymy9z0y9JZiaoOJ
+         /9VQ==
+X-Gm-Message-State: AOAM531OCA9mNhvCtRU6fSEQITHvouiEfon9GIURpSDlHzdWbrrlxtW5
+        jXQpp620TE8Yuomt0r77OXWk2g==
+X-Google-Smtp-Source: ABdhPJx3ImtYlkkbvp/jmFrOIcNG+vTvqV/MgveRUGMO+vUIm16Ij5kjths7BenX7cWWt8ifPFF1QA==
+X-Received: by 2002:a17:902:bc8c:b029:d8:efb7:ae74 with SMTP id bb12-20020a170902bc8cb02900d8efb7ae74mr306721plb.10.1606149457725;
+        Mon, 23 Nov 2020 08:37:37 -0800 (PST)
+Received: from [192.168.1.134] ([66.219.217.173])
+        by smtp.gmail.com with ESMTPSA id u6sm5647015pjn.56.2020.11.23.08.37.36
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 23 Nov 2020 08:37:36 -0800 (PST)
+Subject: Re: inconsistent lock state in io_file_data_ref_zero
+To:     syzbot <syzbot+1f4ba1e5520762c523c6@syzkaller.appspotmail.com>,
+        davem@davemloft.net, io-uring@vger.kernel.org,
+        johannes.berg@intel.com, johannes@sipsolutions.net,
+        kuba@kernel.org, linux-fsdevel@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com,
+        viro@zeniv.linux.org.uk
+References: <000000000000f3332805b4c330c3@google.com>
+From:   Jens Axboe <axboe@kernel.dk>
+Message-ID: <948d2d3b-5f36-034d-28e6-7490343a5b59@kernel.dk>
+Date:   Mon, 23 Nov 2020 09:37:35 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
+In-Reply-To: <000000000000f3332805b4c330c3@google.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 2020-11-23 at 07:58 -0800, James Bottomley wrote:
-> We're also complaining about the inability to recruit maintainers:
+On 11/23/20 2:55 AM, syzbot wrote:
+> Hello,
 > 
-> https://www.theregister.com/2020/06/30/hard_to_find_linux_maintainers_says_torvalds/
+> syzbot found the following issue on:
 > 
-> And burn out:
+> HEAD commit:    27bba9c5 Merge tag 'scsi-fixes' of git://git.kernel.org/pu..
+> git tree:       upstream
+> console output: https://syzkaller.appspot.com/x/log.txt?x=11041f1e500000
+> kernel config:  https://syzkaller.appspot.com/x/.config?x=330f3436df12fd44
+> dashboard link: https://syzkaller.appspot.com/bug?extid=1f4ba1e5520762c523c6
+> compiler:       gcc (GCC) 10.1.0-syz 20200507
+> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=17d9b775500000
+> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=157e4f75500000
 > 
-> http://antirez.com/news/129
+> The issue was bisected to:
+> 
+> commit dcd479e10a0510522a5d88b29b8f79ea3467d501
+> Author: Johannes Berg <johannes.berg@intel.com>
+> Date:   Fri Oct 9 12:17:11 2020 +0000
+> 
+>     mac80211: always wind down STA state
 
-https://www.wired.com/story/open-source-coders-few-tired/
+Not sure what is going on with the syzbot bisects recently, they are way
+off into the weeds...
 
-> What I'm actually trying to articulate is a way of measuring value of
-> the patch vs cost ... it has nothing really to do with who foots the
-> actual bill.
+Anyway, I think the below should fix it.
 
-It's unclear how to measure value in consistency.
 
-But one way that costs can be reduced is by automation and _not_
-involving maintainers when the patch itself is provably correct.
+diff --git a/fs/io_uring.c b/fs/io_uring.c
+index 489ec7272b3e..0f2abbff7eec 100644
+--- a/fs/io_uring.c
++++ b/fs/io_uring.c
+@@ -7194,9 +7181,9 @@ static int io_sqe_files_unregister(struct io_ring_ctx *ctx)
+ 	if (!data)
+ 		return -ENXIO;
+ 
+-	spin_lock(&data->lock);
++	spin_lock_bh(&data->lock);
+ 	ref_node = data->node;
+-	spin_unlock(&data->lock);
++	spin_unlock_bh(&data->lock);
+ 	if (ref_node)
+ 		percpu_ref_kill(&ref_node->refs);
+ 
+@@ -7578,7 +7565,7 @@ static void io_file_data_ref_zero(struct percpu_ref *ref)
+ 	data = ref_node->file_data;
+ 	ctx = data->ctx;
+ 
+-	spin_lock(&data->lock);
++	spin_lock_bh(&data->lock);
+ 	ref_node->done = true;
+ 
+ 	while (!list_empty(&data->ref_list)) {
+@@ -7590,7 +7577,7 @@ static void io_file_data_ref_zero(struct percpu_ref *ref)
+ 		list_del(&ref_node->node);
+ 		first_add |= llist_add(&ref_node->llist, &ctx->file_put_llist);
+ 	}
+-	spin_unlock(&data->lock);
++	spin_unlock_bh(&data->lock);
+ 
+ 	if (percpu_ref_is_dying(&data->refs))
+ 		delay = 0;
+@@ -7713,9 +7700,9 @@ static int io_sqe_files_register(struct io_ring_ctx *ctx, void __user *arg,
+ 	}
+ 
+ 	file_data->node = ref_node;
+-	spin_lock(&file_data->lock);
++	spin_lock_bh(&file_data->lock);
+ 	list_add_tail(&ref_node->node, &file_data->ref_list);
+-	spin_unlock(&file_data->lock);
++	spin_unlock_bh(&file_data->lock);
+ 	percpu_ref_get(&file_data->refs);
+ 	return ret;
+ out_fput:
+@@ -7872,10 +7859,10 @@ static int __io_sqe_files_update(struct io_ring_ctx *ctx,
+ 
+ 	if (needs_switch) {
+ 		percpu_ref_kill(&data->node->refs);
+-		spin_lock(&data->lock);
++		spin_lock_bh(&data->lock);
+ 		list_add_tail(&ref_node->node, &data->ref_list);
+ 		data->node = ref_node;
+-		spin_unlock(&data->lock);
++		spin_unlock_bh(&data->lock);
+ 		percpu_ref_get(&ctx->file_data->refs);
+ 	} else
+ 		destroy_fixed_file_ref_node(ref_node);
 
-> One thesis I'm actually starting to formulate is that this continual
-> devaluing of maintainers is why we have so much difficulty keeping and
-> recruiting them.
 
-The linux kernel has something like 1500 different maintainers listed
-in the MAINTAINERS file.  That's not a trivial number.
-
-$ git grep '^M:' MAINTAINERS | sort | uniq -c | wc -l
-1543
-$ git grep '^M:' MAINTAINERS| cut -f1 -d'<' | sort | uniq -c | wc -l
-1446
-
-I think the question you are asking is about trust and how it
-effects development.
-
-And back to that wired story, the actual number of what you might
-be considering to be maintainers is likely less than 10% of the
-listed numbers above.
-
+-- 
+Jens Axboe
 
