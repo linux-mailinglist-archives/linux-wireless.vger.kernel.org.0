@@ -2,199 +2,123 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C9972C02EB
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Nov 2020 11:05:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 41F052C034B
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Nov 2020 11:31:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725843AbgKWKEV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 23 Nov 2020 05:04:21 -0500
-Received: from mail-il1-f197.google.com ([209.85.166.197]:52824 "EHLO
-        mail-il1-f197.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728142AbgKWKET (ORCPT
+        id S1728576AbgKWK24 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 23 Nov 2020 05:28:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37036 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728153AbgKWK24 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 23 Nov 2020 05:04:19 -0500
-Received: by mail-il1-f197.google.com with SMTP id o18so13352651ilg.19
-        for <linux-wireless@vger.kernel.org>; Mon, 23 Nov 2020 02:04:17 -0800 (PST)
+        Mon, 23 Nov 2020 05:28:56 -0500
+Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com [IPv6:2607:f8b0:4864:20::631])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D1FCC0613CF
+        for <linux-wireless@vger.kernel.org>; Mon, 23 Nov 2020 02:28:56 -0800 (PST)
+Received: by mail-pl1-x631.google.com with SMTP id 18so8619974pli.13
+        for <linux-wireless@vger.kernel.org>; Mon, 23 Nov 2020 02:28:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id;
+        bh=O0ThdxcJNO6zV2BphVWbiZgpVdrlhVR1MlXKPXk6EbI=;
+        b=Ddt6tz3jFBvHqbvtkEjGa7L62ThxISp2m8mvGVC+V1ccsa8/1Ot5o77bK78xEnPc0J
+         MH+t7qj5sfeU+eSLEx/bduYC1u6HCIpk1dzUPdVsFVLBc9GHQbjj6XWxYZNYEBYb8rPB
+         Pn8qhkZviZe2uOs3RGXTL0Qn15Uj/YBzZyn6etVgszZjSwAelMmM5Y9cPXeWQLynyXgo
+         mPeAQ/PyvMXJoMBd88T/Pd5Luhyg75lWegpDVhZuorfXkssRLWqEoYvkE0riB1N9K31U
+         VNJuwlKXFyjWMKcvzzc5dscMTaq2nbpZeZEZAwjz+pQT+C8Gl/p1s528maryBgipn02N
+         p4eA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
-        bh=lSQK3mAUQqWpSVCyehyklfAWXzREsg2z87s+rsm3dyk=;
-        b=Km3pTta45cK5tShu+ELfTlJPwoRuUldpUIuAQTIPZtGgbEBcOooJ4hVxHztFzIFgNM
-         P3tg8GDejFI9paILV4S75FeNTL05htIM3cP7aas/hSPpr+jK5VQ72GlTi/SeyTfKQekI
-         OR3tuK8pPXcAVHiFdqIPIyt6TzApqPfN7x44V5EqorMVg5SeqzHYmoBAKUnmNpXo8fd2
-         Vrt1h9u/kYuzP4VibKCNy3Vnpy7CvLhoul2Xa9e13lj8QmZFB8BEcBN18QwVkWTHanb2
-         E1RVQDi2kio62szQJPqveIdI7pJ2qsczNvT9GtKIKp5FEEVVIsdQn2rrnAnxDkQVvU3S
-         1H8Q==
-X-Gm-Message-State: AOAM531BH6ObOFYWgisyd/Knwc53Qo2eUcIInCO0V3MwnVmE+ACtf4AD
-        pAKskH3vkRSfrS9wynbFNHpUKzL6UdgNMCsXuCYxDT5i46L7
-X-Google-Smtp-Source: ABdhPJyeJkAw0NshxGpN4recZHOtKc3vbHMAB9z3HRor/gZCaX9cDMvqpMIU3b6H+Lgd8NLXLE/k5OHTTv44rHbtvmReVe/a6mkG
-MIME-Version: 1.0
-X-Received: by 2002:a92:dd91:: with SMTP id g17mr30459785iln.12.1606125856837;
- Mon, 23 Nov 2020 02:04:16 -0800 (PST)
-Date:   Mon, 23 Nov 2020 02:04:16 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <0000000000002953ba05b4c351f4@google.com>
-Subject: general protection fault in ieee80211_subif_start_xmit
-From:   syzbot <syzbot+d7a3b15976bf7de2238a@syzkaller.appspotmail.com>
-To:     davem@davemloft.net, johannes@sipsolutions.net, kuba@kernel.org,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=O0ThdxcJNO6zV2BphVWbiZgpVdrlhVR1MlXKPXk6EbI=;
+        b=nGmRYC0c3DAblmpxzDdEsZMJHvgjBBmjd/nGDAYES2TaaA1B19EJWxl0vR3MMWdprk
+         8BQrcJMsG7h5C/frxS6k10Odkb7OToXcHuhU5KqMAIPvRDAlcd4ToykxNHRPbpJq4Yam
+         VWSoQSZcZgyVybUCXyg2f/PdN8LBBbN6lt8+OlVjQFvyTMEyqqW9iDpbS2Maw8un2FUT
+         hmm728isSlB90Vw7Bk7x+bDUdsPFr/MWfvusXbb0KDJMBDbXH/Sd5LOo86si0uxSTS4+
+         nn5/JPFDiwDc0eRfKB0uSgwyHlXEL5s8ATkzCjM24BsYVEe8y5IjgzZF7qVlhELAZIMG
+         I9Xg==
+X-Gm-Message-State: AOAM5306QO3VVT3J6KeyQS2SCE+0+VTAX7ACqknGfqFE+hlpNYd59m7V
+        7RJzDoOWI9rY686PPUiiNvwklg==
+X-Google-Smtp-Source: ABdhPJx5Okx2LQszu8quy1RjI/nmR2bxDLBqR3NRA4lVEd2Xmc3JlWdZObGlJnsZ/N141rt3QbbTLw==
+X-Received: by 2002:a17:902:8ec4:b029:d7:eb0d:84c0 with SMTP id x4-20020a1709028ec4b02900d7eb0d84c0mr22751917plo.23.1606127335664;
+        Mon, 23 Nov 2020 02:28:55 -0800 (PST)
+Received: from localhost.localdomain ([49.207.198.226])
+        by smtp.gmail.com with ESMTPSA id s18sm11907655pfc.5.2020.11.23.02.28.51
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 23 Nov 2020 02:28:55 -0800 (PST)
+From:   Amit Pundir <amit.pundir@linaro.org>
+To:     Kalle Valo <kvalo@codeaurora.org>,
+        David S Miller <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Jeffrey Hugo <jeffrey.l.hugo@gmail.com>
+Cc:     John Stultz <john.stultz@linaro.org>,
+        Sumit Semwal <sumit.semwal@linaro.org>,
+        Konrad Dybcio <konradybcio@gmail.com>, Joel S <jo@jsfamily.in>,
+        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, phone-devel@vger.kernel.org,
+        lkml <linux-kernel@vger.kernel.org>
+Subject: [PATCH v2] ath10k: qmi: Skip host capability request for Xiaomi Poco F1
+Date:   Mon, 23 Nov 2020 15:58:49 +0530
+Message-Id: <1606127329-6942-1-git-send-email-amit.pundir@linaro.org>
+X-Mailer: git-send-email 2.7.4
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
+Workaround to get WiFi working on Xiaomi Poco F1 (sdm845)
+phone. We get a non-fatal QMI_ERR_MALFORMED_MSG_V01 error
+message in ath10k_qmi_host_cap_send_sync(), but we can still
+bring up WiFi services successfully on AOSP if we ignore it.
 
-syzbot found the following issue on:
+We suspect either the host cap is not implemented or there
+may be firmware specific issues. Firmware version is
+QC_IMAGE_VERSION_STRING=WLAN.HL.2.0.c3-00257-QCAHLSWMTPLZ-1
 
-HEAD commit:    a349e4c6 Merge tag 'xfs-5.10-fixes-7' of git://git.kernel...
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=1427b225500000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=330f3436df12fd44
-dashboard link: https://syzkaller.appspot.com/bug?extid=d7a3b15976bf7de2238a
-compiler:       gcc (GCC) 10.1.0-syz 20200507
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=164652f5500000
+qcom,snoc-host-cap-8bit-quirk didn't help. If I use this
+quirk, then the host capability request does get accepted,
+but we run into fatal "msa info req rejected" error and
+WiFi interface doesn't come up.
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+d7a3b15976bf7de2238a@syzkaller.appspotmail.com
+Attempts are being made to debug the failure reasons but no
+luck so far. Hence this device specific workaround instead
+of checking for QMI_ERR_MALFORMED_MSG_V01 error message.
+Tried ath10k/WCN3990/hw1.0/wlanmdsp.mbn from the upstream
+linux-firmware project but it didn't help and neither did
+building board-2.bin file from stock bdwlan* files.
 
-general protection fault, probably for non-canonical address 0xdffffc0000000034: 0000 [#1] PREEMPT SMP KASAN
-KASAN: null-ptr-deref in range [0x00000000000001a0-0x00000000000001a7]
-CPU: 0 PID: 10156 Comm: syz-executor.4 Not tainted 5.10.0-rc4-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
-RIP: 0010:ieee80211_multicast_to_unicast net/mac80211/tx.c:4070 [inline]
-RIP: 0010:ieee80211_subif_start_xmit+0x24e/0xee0 net/mac80211/tx.c:4154
-Code: 03 80 3c 02 00 0f 85 83 0c 00 00 49 8b 9f 50 17 00 00 48 b8 00 00 00 00 00 fc ff df 48 8d bb a4 01 00 00 48 89 fa 48 c1 ea 03 <0f> b6 04 02 48 89 fa 83 e2 07 38 d0 7f 08 84 c0 0f 85 58 0c 00 00
-RSP: 0018:ffffc90000007588 EFLAGS: 00010203
-RAX: dffffc0000000000 RBX: 0000000000000000 RCX: ffffffff8851c61d
-RDX: 0000000000000034 RSI: ffffffff8851c6ad RDI: 00000000000001a4
-RBP: ffff88801b850280 R08: 0000000000000000 R09: ffffffff8cecb9cf
-R10: 0000000000000004 R11: 0000000000000000 R12: ffffffff8a61f1e0
-R13: ffff888012f07042 R14: 000000000000005a R15: ffff8880284b0000
-FS:  00007f1159678700(0000) GS:ffff8880b9e00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00000000016a9e60 CR3: 000000002ca99000 CR4: 00000000001506f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <IRQ>
- __netdev_start_xmit include/linux/netdevice.h:4718 [inline]
- netdev_start_xmit include/linux/netdevice.h:4732 [inline]
- xmit_one net/core/dev.c:3564 [inline]
- dev_hard_start_xmit+0x1eb/0x920 net/core/dev.c:3580
- sch_direct_xmit+0x2e1/0xbd0 net/sched/sch_generic.c:313
- qdisc_restart net/sched/sch_generic.c:376 [inline]
- __qdisc_run+0x4ba/0x15e0 net/sched/sch_generic.c:384
- qdisc_run include/net/pkt_sched.h:131 [inline]
- qdisc_run include/net/pkt_sched.h:123 [inline]
- __dev_xmit_skb net/core/dev.c:3755 [inline]
- __dev_queue_xmit+0x1453/0x2da0 net/core/dev.c:4108
- neigh_hh_output include/net/neighbour.h:499 [inline]
- neigh_output include/net/neighbour.h:508 [inline]
- ip6_finish_output2+0x8db/0x16c0 net/ipv6/ip6_output.c:117
- __ip6_finish_output net/ipv6/ip6_output.c:143 [inline]
- __ip6_finish_output+0x447/0xab0 net/ipv6/ip6_output.c:128
- ip6_finish_output+0x34/0x1f0 net/ipv6/ip6_output.c:153
- NF_HOOK_COND include/linux/netfilter.h:290 [inline]
- ip6_output+0x1db/0x520 net/ipv6/ip6_output.c:176
- dst_output include/net/dst.h:443 [inline]
- NF_HOOK include/linux/netfilter.h:301 [inline]
- NF_HOOK include/linux/netfilter.h:295 [inline]
- mld_sendpack+0x92a/0xdb0 net/ipv6/mcast.c:1679
- mld_send_cr net/ipv6/mcast.c:1975 [inline]
- mld_ifc_timer_expire+0x60a/0xf10 net/ipv6/mcast.c:2474
- call_timer_fn+0x1a5/0x6b0 kernel/time/timer.c:1410
- expire_timers kernel/time/timer.c:1455 [inline]
- __run_timers.part.0+0x67c/0xa50 kernel/time/timer.c:1747
- __run_timers kernel/time/timer.c:1728 [inline]
- run_timer_softirq+0xb3/0x1d0 kernel/time/timer.c:1760
- __do_softirq+0x2a0/0x9f6 kernel/softirq.c:298
- asm_call_irq_on_stack+0xf/0x20
- </IRQ>
- __run_on_irqstack arch/x86/include/asm/irq_stack.h:26 [inline]
- run_on_irqstack_cond arch/x86/include/asm/irq_stack.h:77 [inline]
- do_softirq_own_stack+0xaa/0xd0 arch/x86/kernel/irq_64.c:77
- invoke_softirq kernel/softirq.c:393 [inline]
- __irq_exit_rcu kernel/softirq.c:423 [inline]
- irq_exit_rcu+0x132/0x200 kernel/softirq.c:435
- sysvec_apic_timer_interrupt+0x4d/0x100 arch/x86/kernel/apic/apic.c:1091
- asm_sysvec_apic_timer_interrupt+0x12/0x20 arch/x86/include/asm/idtentry.h:631
-RIP: 0010:arch_local_irq_restore arch/x86/include/asm/irqflags.h:85 [inline]
-RIP: 0010:lock_acquire kernel/locking/lockdep.c:5438 [inline]
-RIP: 0010:lock_acquire+0x2cd/0x8c0 kernel/locking/lockdep.c:5400
-Code: 48 c7 c7 c0 5e 4b 89 48 83 c4 20 e8 dd 68 8f 07 b8 ff ff ff ff 65 0f c1 05 c0 b2 ab 7e 83 f8 01 0f 85 09 04 00 00 ff 34 24 9d <e9> 37 fe ff ff 65 ff 05 67 a1 ab 7e 48 8b 05 a0 ab 82 0b e8 6b 5d
-RSP: 0018:ffffc9000aaf73e0 EFLAGS: 00000246
-RAX: 0000000000000001 RBX: 1ffff9200155ee7e RCX: ffffffff8155f384
-RDX: 1ffff11004e58121 RSI: 0000000000000001 RDI: 0000000000000000
-RBP: 0000000000000001 R08: 0000000000000000 R09: ffffffff8ebb166f
-R10: fffffbfff1d762cd R11: 0000000000000000 R12: 0000000000000000
-R13: ffff88803eff20a8 R14: 0000000000000000 R15: 0000000000000000
- __raw_spin_lock include/linux/spinlock_api_smp.h:142 [inline]
- _raw_spin_lock+0x2a/0x40 kernel/locking/spinlock.c:151
- spin_lock include/linux/spinlock.h:354 [inline]
- lockref_put_or_lock+0x14/0x80 lib/lockref.c:174
- fast_dput fs/dcache.c:747 [inline]
- dput+0x4b9/0xbc0 fs/dcache.c:865
- simple_recursive_removal+0x411/0x6b0 fs/libfs.c:296
- debugfs_remove fs/debugfs/inode.c:725 [inline]
- debugfs_remove+0x59/0x80 fs/debugfs/inode.c:719
- ieee80211_debugfs_remove_netdev+0x43/0xc0 net/mac80211/debugfs_netdev.c:833
- ieee80211_teardown_sdata+0x48/0x2d0 net/mac80211/iface.c:687
- ieee80211_runtime_change_iftype net/mac80211/iface.c:1657 [inline]
- ieee80211_if_change_type+0x2b4/0x620 net/mac80211/iface.c:1691
- ieee80211_change_iface+0x26/0x210 net/mac80211/cfg.c:157
- rdev_change_virtual_intf net/wireless/rdev-ops.h:69 [inline]
- cfg80211_change_iface+0x2eb/0xef0 net/wireless/util.c:1032
- nl80211_set_interface+0x65c/0x8d0 net/wireless/nl80211.c:3789
- genl_family_rcv_msg_doit+0x228/0x320 net/netlink/genetlink.c:739
- genl_family_rcv_msg net/netlink/genetlink.c:783 [inline]
- genl_rcv_msg+0x328/0x580 net/netlink/genetlink.c:800
- netlink_rcv_skb+0x153/0x420 net/netlink/af_netlink.c:2494
- genl_rcv+0x24/0x40 net/netlink/genetlink.c:811
- netlink_unicast_kernel net/netlink/af_netlink.c:1304 [inline]
- netlink_unicast+0x533/0x7d0 net/netlink/af_netlink.c:1330
- netlink_sendmsg+0x856/0xd90 net/netlink/af_netlink.c:1919
- sock_sendmsg_nosec net/socket.c:651 [inline]
- sock_sendmsg+0xcf/0x120 net/socket.c:671
- __sys_sendto+0x21c/0x320 net/socket.c:1992
- __do_sys_sendto net/socket.c:2004 [inline]
- __se_sys_sendto net/socket.c:2000 [inline]
- __x64_sys_sendto+0xdd/0x1b0 net/socket.c:2000
- do_syscall_64+0x2d/0x70 arch/x86/entry/common.c:46
- entry_SYSCALL_64_after_hwframe+0x44/0xa9
-RIP: 0033:0x417937
-Code: 2c 00 00 00 0f 05 48 3d 01 f0 ff ff 0f 83 81 19 00 00 c3 48 83 ec 08 e8 e7 fa ff ff 48 89 04 24 49 89 ca b8 2c 00 00 00 0f 05 <48> 8b 3c 24 48 89 c2 e8 2d fb ff ff 48 89 d0 48 83 c4 08 48 3d 01
-RSP: 002b:00007f1159676a90 EFLAGS: 00000293 ORIG_RAX: 000000000000002c
-RAX: ffffffffffffffda RBX: 00007f1159676be0 RCX: 0000000000417937
-RDX: 0000000000000024 RSI: 00007f1159676c30 RDI: 0000000000000007
-RBP: 0000000000000000 R08: 00007f1159676aa0 R09: 000000000000000c
-R10: 0000000000000000 R11: 0000000000000293 R12: 0000000000000000
-R13: 0000000000000000 R14: 00007f1159676c30 R15: 0000000000000007
-Modules linked in:
----[ end trace 80d935084a37d7a4 ]---
-RIP: 0010:ieee80211_multicast_to_unicast net/mac80211/tx.c:4070 [inline]
-RIP: 0010:ieee80211_subif_start_xmit+0x24e/0xee0 net/mac80211/tx.c:4154
-Code: 03 80 3c 02 00 0f 85 83 0c 00 00 49 8b 9f 50 17 00 00 48 b8 00 00 00 00 00 fc ff df 48 8d bb a4 01 00 00 48 89 fa 48 c1 ea 03 <0f> b6 04 02 48 89 fa 83 e2 07 38 d0 7f 08 84 c0 0f 85 58 0c 00 00
-RSP: 0018:ffffc90000007588 EFLAGS: 00010203
-RAX: dffffc0000000000 RBX: 0000000000000000 RCX: ffffffff8851c61d
-RDX: 0000000000000034 RSI: ffffffff8851c6ad RDI: 00000000000001a4
-RBP: ffff88801b850280 R08: 0000000000000000 R09: ffffffff8cecb9cf
-R10: 0000000000000004 R11: 0000000000000000 R12: ffffffff8a61f1e0
-R13: ffff888012f07042 R14: 000000000000005a R15: ffff8880284b0000
-FS:  00007f1159678700(0000) GS:ffff8880b9e00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00000000016a9e60 CR3: 000000002ca99000 CR4: 00000000001506f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+This workaround will be removed once we have a viable fix.
+Thanks to postmarketOS guys for catching this.
 
-
+Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+We dropped this workaround last time in the favor of
+a generic dts quirk to skip host cap check. But that
+is under under discussion for a while now,
+https://lkml.org/lkml/2020/9/25/1119, so resending
+this short term workaround for the time being.
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-syzbot can test patches for this issue, for details see:
-https://goo.gl/tpsmEJ#testing-patches
+v2: ath10k-check complained about a too long line last
+    time, so moved the comment to a new line.
+    
+ drivers/net/wireless/ath/ath10k/qmi.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/ath/ath10k/qmi.c b/drivers/net/wireless/ath/ath10k/qmi.c
+index ae6b1f402adf..1c58b0ff1d29 100644
+--- a/drivers/net/wireless/ath/ath10k/qmi.c
++++ b/drivers/net/wireless/ath/ath10k/qmi.c
+@@ -653,7 +653,9 @@ static int ath10k_qmi_host_cap_send_sync(struct ath10k_qmi *qmi)
+ 
+ 	/* older FW didn't support this request, which is not fatal */
+ 	if (resp.resp.result != QMI_RESULT_SUCCESS_V01 &&
+-	    resp.resp.error != QMI_ERR_NOT_SUPPORTED_V01) {
++	    resp.resp.error != QMI_ERR_NOT_SUPPORTED_V01 &&
++	    /* Xiaomi Poco F1 workaround */
++	    !of_machine_is_compatible("xiaomi,beryllium")) {
+ 		ath10k_err(ar, "host capability request rejected: %d\n", resp.resp.error);
+ 		ret = -EINVAL;
+ 		goto out;
+-- 
+2.7.4
+
