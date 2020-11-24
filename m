@@ -2,72 +2,118 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F1A382C1EA0
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Nov 2020 08:07:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DCF872C1EB9
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Nov 2020 08:17:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729492AbgKXHFA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 24 Nov 2020 02:05:00 -0500
-Received: from mail.adapt-ip.com ([173.164.178.19]:34212 "EHLO
-        web.adapt-ip.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1729240AbgKXHE7 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 24 Nov 2020 02:04:59 -0500
-Received: from localhost (localhost [127.0.0.1])
-        by web.adapt-ip.com (Postfix) with ESMTP id 5A9A74FA9A3;
-        Tue, 24 Nov 2020 07:04:59 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at web.adapt-ip.com
-Received: from web.adapt-ip.com ([127.0.0.1])
-        by localhost (web.adapt-ip.com [127.0.0.1]) (amavisd-new, port 10026)
-        with LMTP id a_hUqD-UMCw3; Tue, 24 Nov 2020 07:04:56 +0000 (UTC)
-Received: from mail.ibsgaard.io (c-73-223-60-234.hsd1.ca.comcast.net [73.223.60.234])
-        (Authenticated sender: thomas@adapt-ip.com)
-        by web.adapt-ip.com (Postfix) with ESMTPSA id B6E814FA8EF;
-        Tue, 24 Nov 2020 07:04:55 +0000 (UTC)
+        id S1729954AbgKXHQG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 24 Nov 2020 02:16:06 -0500
+Received: from m42-4.mailgun.net ([69.72.42.4]:64831 "EHLO m42-4.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729240AbgKXHQG (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 24 Nov 2020 02:16:06 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1606202165; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=w+M3PJorKwyCBVU1Kq/koy0K88GFFtVnVBJQ9wVlNr8=; b=ggk7v8vw+gTc3JtyJUN6d4wkkhXUIXXojmCx2rn9FQuovn/BvtuEw5XauI53ZfyolaEcxbT1
+ gG3zsA3mfi8I7wO9EWmxx4a71dKHNSnWwnaM2m5HE9pZEpl7gG/f5vQfT1AN5YJFte2ryfoL
+ X2fDYtpn5Jc1ngSPFgWKtisHcig=
+X-Mailgun-Sending-Ip: 69.72.42.4
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n01.prod.us-west-2.postgun.com with SMTP id
+ 5fbcb32577b63cdb341361a6 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 24 Nov 2020 07:15:49
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 29283C43460; Tue, 24 Nov 2020 07:15:49 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 981EBC433C6;
+        Tue, 24 Nov 2020 07:15:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 981EBC433C6
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Jakub Kicinski <kuba@kernel.org>
+Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org
+Subject: Re: pull-request: wireless-drivers-2020-11-23
+References: <20201123161037.C11D1C43460@smtp.codeaurora.org>
+        <20201123153002.2200d6be@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+Date:   Tue, 24 Nov 2020 09:15:45 +0200
+In-Reply-To: <20201123153002.2200d6be@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+        (Jakub Kicinski's message of "Mon, 23 Nov 2020 15:30:02 -0800")
+Message-ID: <87im9vql7i.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-Date:   Mon, 23 Nov 2020 23:04:54 -0800
-From:   Thomas Pedersen <thomas@adapt-ip.com>
-To:     Wen Gong <wgong@codeaurora.org>
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH v4 14/17] mac80211: support S1G association
-In-Reply-To: <5d5df04df5a972d8be0c67c75298b82a@codeaurora.org>
-References: <20200922022818.15855-1-thomas@adapt-ip.com>
- <20200922022818.15855-15-thomas@adapt-ip.com>
- <af51dd8e9dea2961546a502d9090d1a7@codeaurora.org>
- <0a87b577fe443b0d7979f30d24767c4b@adapt-ip.com>
- <5d5df04df5a972d8be0c67c75298b82a@codeaurora.org>
-User-Agent: Roundcube Webmail/1.4.9
-Message-ID: <1361fa0bd41e8807c2f402e0802241e8@adapt-ip.com>
-X-Sender: thomas@adapt-ip.com
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2020-11-23 19:59, Wen Gong wrote:
-> On 2020-11-24 02:40, Thomas Pedersen wrote:
->> On 2020-11-23 00:38, Wen Gong wrote:
->>> On 2020-09-22 10:28, Thomas Pedersen wrote:
->>> ...
->>>> @@ -3446,6 +3453,42 @@ bool ieee80211_chandef_he_6ghz_oper(struct
->>>> ieee80211_sub_if_data *sdata,
->>>> 
->>>>  	*chandef = he_chandef;
->>>> 
->>>> +	return false;
->>>> +}
->>> This change the "return true" to "return false" by default of
->>> ieee80211_chandef_he_6ghz_oper.
->>> It should be typo mistake.
->> 
->> Thanks Wen. This was maybe rebase damage? Will send a fixup.
-> yes, I have sent a patch, 6G connect success with this patch,
-> otherwise fail for 6G connect.
-> https://lore.kernel.org/linux-wireless/1606121152-3452-1-git-send-email-wgong@codeaurora.org/
+Jakub Kicinski <kuba@kernel.org> writes:
 
-Excellent, thank you.
+> On Mon, 23 Nov 2020 16:10:37 +0000 (UTC) Kalle Valo wrote:
+>> wireless-drivers fixes for v5.10
+>> 
+>> First set of fixes for v5.10. One fix for iwlwifi kernel panic, others
+>> less notable.
+>> 
+>> rtw88
+>> 
+>> * fix a bogus test found by clang
+>> 
+>> iwlwifi
+>> 
+>> * fix long memory reads causing soft lockup warnings
+>> 
+>> * fix kernel panic during Channel Switch Announcement (CSA)
+>> 
+>> * other smaller fixes
+>> 
+>> MAINTAINERS
+>> 
+>> * email address updates
+>
+> Pulled, thanks!
+>
+> Please watch out for missing sign-offs.
+
+I assume you refer to commit 97cc16943f23, sorry about that. Currently
+I'm just manually checking sign-offs and missed this patch. My plan is
+to implement proper checks to my patchwork script so I'll notice these
+before I commit the patch (or pull request), just have not yet find the
+time to do that.
+
+commit 97cc16943f23078535fdbce4f6391b948b4ccc08
+Author:     Avraham Stern <avraham.stern@intel.com>
+AuthorDate: Sat Nov 7 10:50:09 2020 +0200
+Commit:     Kalle Valo <kvalo@codeaurora.org>
+CommitDate: Tue Nov 10 20:45:34 2020 +0200
+
+    iwlwifi: mvm: write queue_sync_state only for sync
+    
+    We use mvm->queue_sync_state to wait for synchronous queue sync
+    messages, but if an async one happens inbetween we shouldn't
+    clear mvm->queue_sync_state after sending the async one, that
+    can run concurrently (at least from the CPU POV) with another
+    synchronous queue sync.
+    
+    Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+    Fixes: 3c514bf831ac ("iwlwifi: mvm: add a loose synchronization of the NSSN across Rx queues")
+    Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+    Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+    Link: https://lore.kernel.org/r/iwlwifi.20201107104557.51a3148f2c14.I0772171dbaec87433a11513e9586d98b5d920b5f@changeid
 
 -- 
-thomas
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
