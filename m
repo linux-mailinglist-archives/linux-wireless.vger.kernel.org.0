@@ -2,64 +2,98 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C30712C2B25
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Nov 2020 16:23:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 92EE42C2BAB
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Nov 2020 16:46:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389632AbgKXPWe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 24 Nov 2020 10:22:34 -0500
-Received: from mail.kernel.org ([198.145.29.99]:37182 "EHLO mail.kernel.org"
+        id S2389524AbgKXPpn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 24 Nov 2020 10:45:43 -0500
+Received: from z5.mailgun.us ([104.130.96.5]:18385 "EHLO z5.mailgun.us"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728426AbgKXPWe (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 24 Nov 2020 10:22:34 -0500
-Received: from embeddedor (187-162-31-110.static.axtel.net [187.162.31.110])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        id S2387992AbgKXPpn (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 24 Nov 2020 10:45:43 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1606232743; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=v/Oe4s865T1a+g0gQ1U29DLdij5r77q2OiCX7XZuaoQ=; b=V6ysEwTBZCn8gsYGk2sZhB2aC94RzWIpBhLkOUAHVnT9YF0dAw/wMZq6SRalWw+sl/FHmlLg
+ ykidcnfMTH5dw/WBUkasuGivb1sP38ZdbdLfkV3hS8t1xzLBsqn84F29LaaP5fChwRdhOqR7
+ YFCQDah/Id0WQcUyAMlJGeead+A=
+X-Mailgun-Sending-Ip: 104.130.96.5
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n01.prod.us-west-2.postgun.com with SMTP id
+ 5fbd2aa5a5a29b56a1aed31e (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 24 Nov 2020 15:45:41
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 1CB68C43464; Tue, 24 Nov 2020 15:45:41 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A6C97206D8;
-        Tue, 24 Nov 2020 15:22:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1606231353;
-        bh=2hbCCL7O02WI45ZdHMPX8DD3dn6U9eXNVBGwpDSoMjg=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=pMaSbZ09M4pk5nFkB8zya1HHv4yBAjOA4PKOvGnXE89HldAlIqazbiGeyib2LJYww
-         npa+yzLi2XxikSMYXQETBxz7bP24c3uXAzV8uv6ejMRoNda6E1Juy6w+lgTGGe/t3U
-         0YaIXXb/dy0IdToL5scjhcMpO6QZIryZ4ed4v8f8=
-Date:   Tue, 24 Nov 2020 09:22:48 -0600
-From:   "Gustavo A. R. Silva" <gustavoars@kernel.org>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     Amitkumar Karwar <amitkarwar@gmail.com>,
-        Ganapathi Bhat <ganapathi.bhat@nxp.com>,
-        Xinming Hu <huxinming820@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
-Subject: Re: [PATCH][next] mwifiex: Fix fall-through warnings for Clang
-Message-ID: <20201124152248.GA17735@embeddedor>
-References: <20201117160958.GA18807@embeddedor>
- <20201124150614.68C3EC43461@smtp.codeaurora.org>
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 4F02EC433C6;
+        Tue, 24 Nov 2020 15:45:38 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 4F02EC433C6
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Cc:     Loic Poulain <loic.poulain@linaro.org>,
+        linux-arm-msm@vger.kernel.org, linux-wireless@vger.kernel.org,
+        bbhatt@codeaurora.org, netdev@vger.kernel.org,
+        hemantk@codeaurora.org, ath11k@lists.infradead.org
+Subject: Re: [PATCH] bus: mhi: Remove auto-start option
+References: <20201118053102.13119-1-manivannan.sadhasivam@linaro.org>
+        <877dqjz0bv.fsf@codeaurora.org> <20201118093107.GC3286@work>
+Date:   Tue, 24 Nov 2020 17:45:35 +0200
+In-Reply-To: <20201118093107.GC3286@work> (Manivannan Sadhasivam's message of
+        "Wed, 18 Nov 2020 15:01:07 +0530")
+Message-ID: <87a6v6rc68.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201124150614.68C3EC43461@smtp.codeaurora.org>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Nov 24, 2020 at 03:06:14PM +0000, Kalle Valo wrote:
-> "Gustavo A. R. Silva" <gustavoars@kernel.org> wrote:
-> 
-> > In preparation to enable -Wimplicit-fallthrough for Clang, fix multiple
-> > warnings by explicitly adding multiple break statements instead of
-> > letting the code fall through to the next case.
-> > 
-> > Link: https://github.com/KSPP/linux/issues/115
-> > Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-> 
-> Patch applied to wireless-drivers-next.git, thanks.
-> 
-> 003317581372 mwifiex: Fix fall-through warnings for Clang
+Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org> writes:
 
-Thank you, Kalle.
---
-Gustavo
+> On Wed, Nov 18, 2020 at 07:43:48AM +0200, Kalle Valo wrote:
+>> Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org> writes:
+>> 
+>> > From: Loic Poulain <loic.poulain@linaro.org>
+>> >
+>> > There is really no point having an auto-start for channels.
+>> > This is confusing for the device drivers, some have to enable the
+>> > channels, others don't have... and waste resources (e.g. pre allocated
+>> > buffers) that may never be used.
+>> >
+>> > This is really up to the MHI device(channel) driver to manage the state
+>> > of its channels.
+>> >
+>> > While at it, let's also remove the auto-start option from ath11k mhi
+>> > controller.
+>> >
+>> > Signed-off-by: Loic Poulain <loic.poulain@linaro.org>
+>> > Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+>> > [mani: clubbed ath11k change]
+>> > Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+>> 
+>> Thanks and feel free to take this to the immutable branch:
+>> 
+>> Acked-by: Kalle Valo <kvalo@codeaurora.org>
+>
+> Patch applied to mhi-ath11k-immutable branch and merged into mhi-next.
+
+Tested on QCA6390 hw2.0 and pulled also to ath-next, thanks.
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
