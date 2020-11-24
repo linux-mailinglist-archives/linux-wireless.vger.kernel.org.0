@@ -2,91 +2,119 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 77E342C2981
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Nov 2020 15:27:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D324A2C29F7
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Nov 2020 15:46:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388954AbgKXO0G (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 24 Nov 2020 09:26:06 -0500
-Received: from m12-11.163.com ([220.181.12.11]:60573 "EHLO m12-11.163.com"
+        id S2389178AbgKXOoy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 24 Nov 2020 09:44:54 -0500
+Received: from z5.mailgun.us ([104.130.96.5]:38843 "EHLO z5.mailgun.us"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2388847AbgKXO0E (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 24 Nov 2020 09:26:04 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-        s=s110527; h=From:Subject:Date:Message-Id; bh=Qid/xS3X8ptRmr6qcN
-        tUBWX3+AdSSzykCmHbw+dEXCM=; b=FO94fehuvM6TX50kJVtAuzE9fwftFCWp0Z
-        TRHmjnVnP5GGA1LIDNo6zbAwJ56tdqQ+72yUzyoGazuNSyfglOI+EDam6q/K8epQ
-        qflqWgQd55MJefK4ZQ3NLVCCb5ouJauVdJ+nfXAnYKJgiOgJPScH3NVV4YCZuOCK
-        LN6wCxlB8=
-Received: from hby-server.localdomain (unknown [27.18.76.181])
-        by smtp7 (Coremail) with SMTP id C8CowABHQZnEF71f8BJyAA--.2076S2;
-        Tue, 24 Nov 2020 22:25:09 +0800 (CST)
-From:   hby <hby2003@163.com>
-To:     kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, hby <hby2003@163.com>
-Subject: [PATCH v2] brmcfmac: fix compile when DEBUG is defined
-Date:   Tue, 24 Nov 2020 22:24:40 +0800
-Message-Id: <20201124142440.67554-1-hby2003@163.com>
-X-Mailer: git-send-email 2.17.1
-X-CM-TRANSID: C8CowABHQZnEF71f8BJyAA--.2076S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7CF13CFWftw4xtr1fXw1rXrb_yoW5Jr4fpw
-        srGa4qyr18u3y3Kay8JFZrAF1rKas7G34qk3y8uw13GFykAw1Fqr40gFyrur1jkF4xJ3y7
-        AF10qr9xJFW7K3DanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zRBWlQUUUUU=
-X-Originating-IP: [27.18.76.181]
-X-CM-SenderInfo: hke1jiiqt6il2tof0z/1tbiQAXmHFSIhGHHKAAAsp
+        id S2389010AbgKXOoy (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 24 Nov 2020 09:44:54 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1606229093; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=GJYW42IjQPe76onlnrQnVKos7pxA3IfstGH6J+iXtwQ=;
+ b=FAxETEbLPdDYzbNM6zueQVpnfoJoXgJoYn3ywzQ/OvfSuKNj8VzaQCxGmjUP3OGI6vu65zSv
+ OTn8iXy1b4eiOeT0xTqMmGkt+hXqwO4eIYzIJMar8yOOzSeEeR7YaDbQDh1GSan/DSoi7HOY
+ cdQzTi7PGExCSBPEPwDSM8R75Yo=
+X-Mailgun-Sending-Ip: 104.130.96.5
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n05.prod.us-east-1.postgun.com with SMTP id
+ 5fbd1c61a5c560669c94b93f (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 24 Nov 2020 14:44:49
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 532C5C43461; Tue, 24 Nov 2020 14:44:48 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        MISSING_DATE,MISSING_MID,SPF_FAIL,URIBL_BLOCKED autolearn=no
+        autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id B24EDC43460;
+        Tue, 24 Nov 2020 14:44:44 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org B24EDC43460
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] [v7] wireless: Initial driver submission for pureLiFi STA
+ devices
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20201116092253.1302196-1-srini.raju@purelifi.com>
+References: <20201116092253.1302196-1-srini.raju@purelifi.com>
+To:     Srinivasan Raju <srini.raju@purelifi.com>
+Cc:     unlisted-recipients:; (no To-header on input)
+        mostafa.afgani@purelifi.com,
+        Srinivasan Raju <srini.raju@purelifi.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        Rob Herring <robh@kernel.org>,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+        linux-kernel@vger.kernel.org (open list),
+        linux-wireless@vger.kernel.org (open list:NETWORKING DRIVERS (WIRELESS)),
+        netdev@vger.kernel.org (open list:NETWORKING DRIVERS)
+Illegal-Object: Syntax error in Cc: address found on vger.kernel.org:
+        Cc:     unlisted-recipients:; (no To-header on input)mostafa.afgani@purelifi.com
+                                                                     ^-missing end of address
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
+Message-Id: <20201124144448.532C5C43461@smtp.codeaurora.org>
+Date:   Tue, 24 Nov 2020 14:44:48 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The steps:
-1. add "#define DEBUG" in drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c line 61.
-2. make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- O=../Out_Linux bcm2835_defconfig
-3. make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- O=../Out_Linux/ zImage modules dtbs -j8
+Srinivasan Raju <srini.raju@purelifi.com> wrote:
 
-Then, it will fail, the compile log described below:
+> This introduces the pureLiFi LiFi driver for LiFi-X, LiFi-XC
+> and LiFi-XL USB devices.
+> 
+> This driver implementation has been based on the zd1211rw driver.
+> 
+> Driver is based on 802.11 softMAC Architecture and uses
+> native 802.11 for configuration and management.
+> 
+> The driver is compiled and tested in ARM, x86 architectures and
+> compiled in powerpc architecture.
+> 
+> Signed-off-by: Srinivasan Raju <srini.raju@purelifi.com>
+> 
+> Changes v6->v7:
+> - Magic numbers removed and used IEEE80211 macors
+> - usb.c is split into two files firmware.c and dbgfs.c
+> - Other code style and timer function fixes (mod_timer)
+> Changes v5->v6:
+> - Code style fix patch from Joe Perches
+> Changes v4->v5:
+> - Code refactoring for clarity and redundnacy removal
+> - Fix warnings from kernel test robot
+> Changes v3->v4:
+> - Code refactoring based on kernel code guidelines
+> - Remove multi level macors and use kernel debug macros
+> Changes v2->v3:
+> - Code style fixes kconfig fix
+> Changes v1->v2:
+> - v1 was submitted to staging, v2 submitted to wireless-next
+> - Code style fixes and copyright statement fix
 
-Kernel: arch/arm/boot/zImage is ready
-MODPOST Module.symvers
-ERROR: modpost: "brcmf_debugfs_add_entry" [drivers/net/wireless/broadcom/brcm80211/brcmfmac/brcmfmac.ko] undefined!
-ERROR: modpost: "brcmf_debugfs_get_devdir" [drivers/net/wireless/broadcom/brcm80211/brcmfmac/brcmfmac.ko] undefined!
-ERROR: modpost: "__brcmf_dbg" [drivers/net/wireless/broadcom/brcm80211/brcmfmac/brcmfmac.ko] undefined!
-scripts/Makefile.modpost:111: recipe for target 'Module.symvers' failed
-make[2]: *** [Module.symvers] Error 1
-make[2]: *** Deleting file 'Module.symvers'
-Makefile:1390: recipe for target 'modules' failed
-make[1]: *** [modules] Error 2
-make[1]: Leaving directory '/home/hby/gitee/linux_origin/Out_Linux'
-Makefile:185: recipe for target '__sub-make' failed
-make: *** [__sub-make] Error 2
+I haven't had a chance to review this yet but we have some documentation for new drivers:
 
-Signed-off-by: hby <hby2003@163.com>
----
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/debug.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches#new_driver
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/debug.h b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/debug.h
-index 4146faeed..c2eb3aa67 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/debug.h
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/debug.h
-@@ -60,7 +60,7 @@ void __brcmf_err(struct brcmf_bus *bus, const char *func, const char *fmt, ...);
- 				  ##__VA_ARGS__);			\
- 	} while (0)
- 
--#if defined(DEBUG) || defined(CONFIG_BRCM_TRACING)
-+#if defined(CONFIG_BRCM_TRACING) || defined(CONFIG_BRCMDBG)
- 
- /* For debug/tracing purposes treat info messages as errors */
- #define brcmf_info brcmf_err
-@@ -114,7 +114,7 @@ extern int brcmf_msg_level;
- 
- struct brcmf_bus;
- struct brcmf_pub;
--#ifdef DEBUG
-+#if defined(CONFIG_BRCMDBG)
- struct dentry *brcmf_debugfs_get_devdir(struct brcmf_pub *drvr);
- void brcmf_debugfs_add_entry(struct brcmf_pub *drvr, const char *fn,
- 			     int (*read_fn)(struct seq_file *seq, void *data));
+Is the firmware publically available?
+
 -- 
-2.17.1
+https://patchwork.kernel.org/project/linux-wireless/patch/20201116092253.1302196-1-srini.raju@purelifi.com/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
