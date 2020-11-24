@@ -2,123 +2,187 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C70AE2C1A4C
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Nov 2020 01:59:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 372312C1A6B
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Nov 2020 02:00:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728187AbgKXA4z (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 23 Nov 2020 19:56:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58702 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727943AbgKXA4y (ORCPT
+        id S1729311AbgKXA6t (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 23 Nov 2020 19:58:49 -0500
+Received: from kvm5.telegraphics.com.au ([98.124.60.144]:51159 "EHLO
+        kvm5.telegraphics.com.au" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726803AbgKXA6q (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 23 Nov 2020 19:56:54 -0500
-Received: from mail-ua1-x944.google.com (mail-ua1-x944.google.com [IPv6:2607:f8b0:4864:20::944])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4782BC061A4E
-        for <linux-wireless@vger.kernel.org>; Mon, 23 Nov 2020 16:56:54 -0800 (PST)
-Received: by mail-ua1-x944.google.com with SMTP id 103so2978783uai.9
-        for <linux-wireless@vger.kernel.org>; Mon, 23 Nov 2020 16:56:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=DWyEDzj+7SQMU3zDVzcHpnrchiKEujwuC1f3GM15MDw=;
-        b=SAKUP9Pg2OzAX1K7q7Sj2o0s18AoPzgbz9KZLYXX2E+muvXO2twlU7gr4tlxRFbkpX
-         reTk2LB4spalj0HQwGNDnQBEUwFa9DZgiMDDMhDfxQBP15M8QP3b+wBgO86m4xR3C71I
-         LgbRqCHM2vlCwq1k4l/JygvoR4ic82ppJ+rus=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=DWyEDzj+7SQMU3zDVzcHpnrchiKEujwuC1f3GM15MDw=;
-        b=j0IGgtPCiHjo94qwsdBu4e2igrlkvrQyn/a2Tnqqp3qRo4wJHp1VevKHx5VuIvy4DL
-         4OYaViMO0MvpAIWtIe1Pi6cFWXIBWeqfFk0IUV6Tq1H4irpSoGruLzgJvZTjgWRGq9lM
-         6POuwwHwGf0t2+AX8Rd4Abh+CiwvWZczKqArWpV3tsIyM7/e0ler6TWkmKY+g0pVMHSD
-         zeSOELPa/quu2Ka2ByCL8v14NWbsnR4QVwF8Y1e+EmKmP5u9FKRWdkt8LNuFbRKWJeoG
-         eRmpfcAK1EBFPeWixrPAiPjKfwlOtaLatA5wm8pERR8A5W5CikIHR3WbjNctPvVKd0T0
-         ixEw==
-X-Gm-Message-State: AOAM531hhXORUyBZt3saHX9O7OoRvoPAQKpf53d+pk6megNZRzksiEvt
-        4HVmE+vwr7xjOk9nZwqYzpcj42MYDDcuZw==
-X-Google-Smtp-Source: ABdhPJzvv25PmOp0uxPKlIzBgBJjgednmZrErJ1upokRzjpDXTO8APiEtI/SnpiujwTiegNh2GzMYA==
-X-Received: by 2002:ab0:274e:: with SMTP id c14mr1849167uap.109.1606179412910;
-        Mon, 23 Nov 2020 16:56:52 -0800 (PST)
-Received: from mail-vs1-f49.google.com (mail-vs1-f49.google.com. [209.85.217.49])
-        by smtp.gmail.com with ESMTPSA id a1sm1578616vke.21.2020.11.23.16.56.51
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 23 Nov 2020 16:56:52 -0800 (PST)
-Received: by mail-vs1-f49.google.com with SMTP id v8so9701176vso.2
-        for <linux-wireless@vger.kernel.org>; Mon, 23 Nov 2020 16:56:51 -0800 (PST)
-X-Received: by 2002:a67:4242:: with SMTP id p63mr2306134vsa.34.1606179411382;
- Mon, 23 Nov 2020 16:56:51 -0800 (PST)
-MIME-Version: 1.0
-References: <20201112200906.991086-1-kuabhs@chromium.org> <20201112200856.v2.1.Ia526132a366886e3b5cf72433d0d58bb7bb1be0f@changeid>
-In-Reply-To: <20201112200856.v2.1.Ia526132a366886e3b5cf72433d0d58bb7bb1be0f@changeid>
-From:   Doug Anderson <dianders@chromium.org>
-Date:   Mon, 23 Nov 2020 16:56:38 -0800
-X-Gmail-Original-Message-ID: <CAD=FV=XKCLgL6Bt+3KfqKByyP5fpwXOh6TNHXAoXkaQJRzjKjQ@mail.gmail.com>
-Message-ID: <CAD=FV=XKCLgL6Bt+3KfqKByyP5fpwXOh6TNHXAoXkaQJRzjKjQ@mail.gmail.com>
-Subject: Re: [PATCH v2 1/1] ath10k: add option for chip-id based BDF selection
-To:     Abhishek Kumar <kuabhs@chromium.org>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        Rakesh Pillai <pillair@codeaurora.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        ath10k <ath10k@lists.infradead.org>,
-        Brian Norris <briannorris@chromium.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
+        Mon, 23 Nov 2020 19:58:46 -0500
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by kvm5.telegraphics.com.au (Postfix) with ESMTP id 0EF842A8E0;
+        Mon, 23 Nov 2020 19:58:39 -0500 (EST)
+Date:   Tue, 24 Nov 2020 11:58:37 +1100 (AEDT)
+From:   Finn Thain <fthain@telegraphics.com.au>
+To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+cc:     James Bottomley <James.Bottomley@hansenpartnership.com>,
+        Kees Cook <keescook@chromium.org>,
         Jakub Kicinski <kuba@kernel.org>,
-        netdev <netdev@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        alsa-devel@alsa-project.org, amd-gfx@lists.freedesktop.org,
+        bridge@lists.linux-foundation.org, ceph-devel@vger.kernel.org,
+        cluster-devel@redhat.com, coreteam@netfilter.org,
+        devel@driverdev.osuosl.org, dm-devel@redhat.com,
+        drbd-dev@lists.linbit.com, dri-devel@lists.freedesktop.org,
+        GR-everest-linux-l2@marvell.com, GR-Linux-NIC-Dev@marvell.com,
+        intel-gfx@lists.freedesktop.org, intel-wired-lan@lists.osuosl.org,
+        keyrings@vger.kernel.org, linux1394-devel@lists.sourceforge.net,
+        linux-acpi@vger.kernel.org, linux-afs@lists.infradead.org,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-arm-msm@vger.kernel.org,
+        linux-atm-general@lists.sourceforge.net,
+        linux-block@vger.kernel.org, linux-can@vger.kernel.org,
+        linux-cifs@vger.kernel.org,
+        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
+        linux-decnet-user@lists.sourceforge.net,
+        Ext4 Developers List <linux-ext4@vger.kernel.org>,
+        linux-fbdev@vger.kernel.org, linux-geode@lists.infradead.org,
+        linux-gpio@vger.kernel.org, linux-hams@vger.kernel.org,
+        linux-hwmon@vger.kernel.org, linux-i3c@lists.infradead.org,
+        linux-ide@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-input <linux-input@vger.kernel.org>,
+        linux-integrity@vger.kernel.org,
+        linux-mediatek@lists.infradead.org,
+        Linux Media Mailing List <linux-media@vger.kernel.org>,
+        linux-mmc@vger.kernel.org, Linux-MM <linux-mm@kvack.org>,
+        linux-mtd@lists.infradead.org, linux-nfs@vger.kernel.org,
+        linux-rdma@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        linux-scsi@vger.kernel.org, linux-sctp@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-usb@vger.kernel.org, linux-watchdog@vger.kernel.org,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Network Development <netdev@vger.kernel.org>,
+        netfilter-devel@vger.kernel.org, nouveau@lists.freedesktop.org,
+        op-tee@lists.trustedfirmware.org, oss-drivers@netronome.com,
+        patches@opensource.cirrus.com, rds-devel@oss.oracle.com,
+        reiserfs-devel@vger.kernel.org, samba-technical@lists.samba.org,
+        selinux@vger.kernel.org, target-devel@vger.kernel.org,
+        tipc-discussion@lists.sourceforge.net,
+        usb-storage@lists.one-eyed-alien.net,
+        virtualization@lists.linux-foundation.org,
+        wcn36xx@lists.infradead.org,
+        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
+        xen-devel@lists.xenproject.org, linux-hardening@vger.kernel.org,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Nathan Chancellor <natechancellor@gmail.com>,
+        Miguel Ojeda <ojeda@kernel.org>, Joe Perches <joe@perches.com>
+Subject: Re: [PATCH 000/141] Fix fall-through warnings for Clang
+In-Reply-To: <CANiq72=z+tmuey9wj3Kk7wX5s0hTHpsQdLhAqcOVNrHon6xn5Q@mail.gmail.com>
+Message-ID: <alpine.LNX.2.23.453.2011241036520.7@nippy.intranet>
+References: <cover.1605896059.git.gustavoars@kernel.org> <20201120105344.4345c14e@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com> <202011201129.B13FDB3C@keescook> <20201120115142.292999b2@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com> <202011220816.8B6591A@keescook>
+ <9b57fd4914b46f38d54087d75e072d6e947cb56d.camel@HansenPartnership.com> <CANiq72nZrHWTA4_Msg6MP9snTyenC6-eGfD27CyfNSu7QoVZbw@mail.gmail.com> <alpine.LNX.2.23.453.2011230938390.7@nippy.intranet>
+ <CANiq72=z+tmuey9wj3Kk7wX5s0hTHpsQdLhAqcOVNrHon6xn5Q@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
 
-On Thu, Nov 12, 2020 at 12:09 PM Abhishek Kumar <kuabhs@chromium.org> wrote:
->
-> In some devices difference in chip-id should be enough to pick
-> the right BDF. Add another support for chip-id based BDF selection.
-> With this new option, ath10k supports 2 fallback options.
->
-> The board name with chip-id as option looks as follows
-> board name 'bus=snoc,qmi-board-id=ff,qmi-chip-id=320'
->
-> Tested-on: WCN3990 hw1.0 SNOC WLAN.HL.3.2.2-00696-QCAHLSWMTPL-1
-> Tested-on: QCA6174 HW3.2 WLAN.RM.4.4.1-00157-QCARMSWPZ-1
-> Signed-off-by: Abhishek Kumar <kuabhs@chromium.org>
-> ---
->
-> (no changes since v1)
+On Mon, 23 Nov 2020, Miguel Ojeda wrote:
 
-I think you need to work on the method you're using to generate your
-patches.  There are most definitely changes since v1.  You described
-them in your cover letter (which you don't really need for a singleton
-patch) instead of here.
+> On Mon, 23 Nov 2020, Finn Thain wrote:
+> 
+> > On Sun, 22 Nov 2020, Miguel Ojeda wrote:
+> > 
+> > > 
+> > > It isn't that much effort, isn't it? Plus we need to take into 
+> > > account the future mistakes that it might prevent, too.
+> > 
+> > We should also take into account optimisim about future improvements 
+> > in tooling.
+> > 
+> Not sure what you mean here. There is no reliable way to guess what the 
+> intention was with a missing fallthrough, even if you parsed whitespace 
+> and indentation.
+> 
 
+What I meant was that you've used pessimism as if it was fact.
 
-> @@ -1438,12 +1439,17 @@ static int ath10k_core_create_board_name(struct ath10k *ar, char *name,
->         }
->
->         if (ar->id.qmi_ids_valid) {
-> -               if (with_variant && ar->id.bdf_ext[0] != '\0')
-> +               if (with_additional_params && ar->id.bdf_ext[0] != '\0')
->                         scnprintf(name, name_len,
->                                   "bus=%s,qmi-board-id=%x,qmi-chip-id=%x%s",
->                                   ath10k_bus_str(ar->hif.bus),
->                                   ar->id.qmi_board_id, ar->id.qmi_chip_id,
->                                   variant);
-> +               else if (with_additional_params)
-> +                       scnprintf(name, name_len,
-> +                                 "bus=%s,qmi-board-id=%x,qmi-chip-id=%x",
-> +                                 ath10k_bus_str(ar->hif.bus),
-> +                                 ar->id.qmi_board_id, ar->id.qmi_chip_id);
+For example, "There is no way to guess what the effect would be if the 
+compiler trained programmers to add a knee-jerk 'break' statement to avoid 
+a warning".
 
-I believe this is exactly opposite of what Rakesh was requesting.
-Specifically, he was trying to eliminate the extra scnprintf() but I
-think he still agreed that it was a good idea to generate 3 different
-strings.  I believe the proper diff to apply to v1 is:
+Moreover, what I meant was that preventing programmer mistakes is a 
+problem to be solved by development tools. The idea that retro-fitting new 
+language constructs onto mature code is somehow necessary to "prevent 
+future mistakes" is entirely questionable.
 
-https://crrev.com/c/255643
+> > > So even if there were zero problems found so far, it is still a 
+> > > positive change.
+> > > 
+> > 
+> > It is if you want to spin it that way.
+> > 
+> How is that a "spin"? It is a fact that we won't get *implicit* 
+> fallthrough mistakes anymore (in particular if we make it a hard error).
+> 
 
--Doug
+Perhaps "handwaving" is a better term?
+
+> > > I would agree if these changes were high risk, though; but they are 
+> > > almost trivial.
+> > > 
+> > 
+> > This is trivial:
+> > 
+> >  case 1:
+> >         this();
+> > +       fallthrough;
+> >  case 2:
+> >         that();
+> > 
+> > But what we inevitably get is changes like this:
+> > 
+> >  case 3:
+> >         this();
+> > +       break;
+> >  case 4:
+> >         hmmm();
+> > 
+> > Why? Mainly to silence the compiler. Also because the patch author 
+> > argued successfully that they had found a theoretical bug, often in 
+> > mature code.
+> > 
+> If someone changes control flow, that is on them. Every kernel developer 
+> knows what `break` does.
+> 
+
+Sure. And if you put -Wimplicit-fallthrough into the Makefile and if that 
+leads to well-intentioned patches that cause regressions, it is partly on 
+you.
+
+Have you ever considered the overall cost of the countless 
+-Wpresume-incompetence flags?
+
+Perhaps you pay the power bill for a build farm that produces logs that 
+no-one reads? Perhaps you've run git bisect, knowing that the compiler 
+messages are not interesting? Or compiled software in using a language 
+that generates impenetrable messages? If so, here's a tip:
+
+# grep CFLAGS /etc/portage/make.conf 
+CFLAGS="... -Wno-all -Wno-extra ..."
+CXXFLAGS="${CFLAGS}"
+
+Now allow me some pessimism: the hardware upgrades, gigawatt hours and 
+wait time attributable to obligatory static analyses are a net loss.
+
+> > But is anyone keeping score of the regressions? If unreported bugs 
+> > count, what about unreported regressions?
+> > 
+> Introducing `fallthrough` does not change semantics. If you are really 
+> keen, you can always compare the objects because the generated code 
+> shouldn't change.
+> 
+
+No, it's not for me to prove that such patches don't affect code 
+generation. That's for the patch author and (unfortunately) for reviewers.
+
+> Cheers,
+> Miguel
+> 
