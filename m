@@ -2,109 +2,143 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3CF142C2D15
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Nov 2020 17:40:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 764842C2F35
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Nov 2020 18:51:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390521AbgKXQif (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 24 Nov 2020 11:38:35 -0500
-Received: from z5.mailgun.us ([104.130.96.5]:22779 "EHLO z5.mailgun.us"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2390211AbgKXQif (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 24 Nov 2020 11:38:35 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1606235915; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=/yuutWrK2u+4K08NALiylBdAyr0QJpYhGwtKtmqhAis=; b=uNzKA6lPTjQaDG2q624s+jScVy8yy6MbuAofwl3l3ohM6Ewz+hvkg2tXxJTZsbtejV9NCCWv
- 5mPmgg0fzW+MtkadJBUv6SyZmZseWOkOaxJAgq8Ojw1j/Bf/305mmDXEZOj2QTbeF8VLx9GK
- 7pMFRWOghfgEmU73g/cNl7hVZ9c=
-X-Mailgun-Sending-Ip: 104.130.96.5
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n01.prod.us-east-1.postgun.com with SMTP id
- 5fbd3707b9b39088ed5af70a (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 24 Nov 2020 16:38:31
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 74DE7C433ED; Tue, 24 Nov 2020 16:38:30 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
-        autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 18813C433C6;
-        Tue, 24 Nov 2020 16:38:28 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 18813C433C6
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Jakub Kicinski <kuba@kernel.org>
-Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org
-Subject: Re: pull-request: wireless-drivers-2020-11-23
-References: <20201123161037.C11D1C43460@smtp.codeaurora.org>
-        <20201123153002.2200d6be@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-        <87im9vql7i.fsf@codeaurora.org>
-        <20201124080858.0aa8462b@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-Date:   Tue, 24 Nov 2020 18:38:26 +0200
-In-Reply-To: <20201124080858.0aa8462b@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-        (Jakub Kicinski's message of "Tue, 24 Nov 2020 08:08:58 -0800")
-Message-ID: <875z5ur9q5.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        id S2404061AbgKXRud (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 24 Nov 2020 12:50:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46278 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2404056AbgKXRud (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 24 Nov 2020 12:50:33 -0500
+Received: from mail-ot1-x342.google.com (mail-ot1-x342.google.com [IPv6:2607:f8b0:4864:20::342])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2438C061A4D
+        for <linux-wireless@vger.kernel.org>; Tue, 24 Nov 2020 09:50:32 -0800 (PST)
+Received: by mail-ot1-x342.google.com with SMTP id n11so20147770ota.2
+        for <linux-wireless@vger.kernel.org>; Tue, 24 Nov 2020 09:50:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=CxnIfXHdix7GS8g6GFHW2wnM4FONLsoFnSqqsSh6GHc=;
+        b=CIAKGGvoM96bHX3qTKMq571WXskFxiweMjicyDzm9KHiiheeWHdpTze+EgY18uIFGx
+         TXFUYqijSsUYaxZiQcM7TYGH3z11FfmFvQNv2y3S2sIjM3xz6X9Dv3/H71SwBzYqqehJ
+         HzjZ8sV6azFHmOF4wsalz23pw0MbUDHblBMgZc1G4Mq3HT85EILFV28n0mWxd09wBj18
+         CBTshWNFG/8o2TuKB972+0ln4ohBt/IOIzkYBfbGgUBtgBnE0DZujjGJ3ECGLzzLonFi
+         a9nA/bXdldgtzi2sb+U0j2TAu+sT8TMQJG0Vwb/FZiGMNGbCzD3f292aS5hLoEeyqePk
+         yKYg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=CxnIfXHdix7GS8g6GFHW2wnM4FONLsoFnSqqsSh6GHc=;
+        b=HPcuYpkYQ0vNLtufBkJF93RA2Mh7eeKtH3DcQIUcn/ISNy8mAQ/iz45bbhYHliwOJC
+         NixdujEyuPuHLhkNSQPjO/vd+n2YAG825v0EJB6x8cm537NXWiupv1um1Ec3MIocEgse
+         JZPtH1gymK6rfJSvIvrj0IdgBhGFUVMGYuYy5fpKKjY/Qynr4aHuSTSquGgtH8HGeb80
+         9CeVr1NgIskMK5wTXN5Mj11P7HpfhO5Qv1Be3vorXhvVDXpCkgu40xs6+8W+PB0Wk+Pb
+         l7DPcKeGmpzJJzdQHeO3S8JHDGOJfpGw9/05Iqu5lqoCQKe5L57l0by+a6cYj4FkWWl0
+         hkGQ==
+X-Gm-Message-State: AOAM53327Hxnl53uqRPNfutElIqHWfFrBf0lNpjSsYUCa6FmRDVyP+mL
+        DfyyBef2Slhs+6yEpt1zKzFizA==
+X-Google-Smtp-Source: ABdhPJyZvx5cnvHRa/z/iiGkOzVz/4uQCaX+SxK6/doJ9JNN3u9FKbqfKaLVCF+7bhrzd4wOCRtp/w==
+X-Received: by 2002:a9d:3d06:: with SMTP id a6mr4103420otc.368.1606240232274;
+        Tue, 24 Nov 2020 09:50:32 -0800 (PST)
+Received: from builder.lan (104-57-184-186.lightspeed.austtx.sbcglobal.net. [104.57.184.186])
+        by smtp.gmail.com with ESMTPSA id t126sm9735070oih.51.2020.11.24.09.50.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 24 Nov 2020 09:50:31 -0800 (PST)
+Date:   Tue, 24 Nov 2020 11:50:29 -0600
+From:   Bjorn Andersson <bjorn.andersson@linaro.org>
+To:     Amit Pundir <amit.pundir@linaro.org>
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        David S Miller <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Jeffrey Hugo <jeffrey.l.hugo@gmail.com>,
+        John Stultz <john.stultz@linaro.org>,
+        Sumit Semwal <sumit.semwal@linaro.org>,
+        Konrad Dybcio <konradybcio@gmail.com>, Joel S <jo@jsfamily.in>,
+        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, phone-devel@vger.kernel.org,
+        lkml <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2] ath10k: qmi: Skip host capability request for Xiaomi
+ Poco F1
+Message-ID: <20201124175029.GF185852@builder.lan>
+References: <1606127329-6942-1-git-send-email-amit.pundir@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1606127329-6942-1-git-send-email-amit.pundir@linaro.org>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Jakub Kicinski <kuba@kernel.org> writes:
+On Mon 23 Nov 04:28 CST 2020, Amit Pundir wrote:
 
-> On Tue, 24 Nov 2020 09:15:45 +0200 Kalle Valo wrote:
->> Jakub Kicinski <kuba@kernel.org> writes:
->> 
->> > On Mon, 23 Nov 2020 16:10:37 +0000 (UTC) Kalle Valo wrote:  
->> >> wireless-drivers fixes for v5.10
->> >> 
->> >> First set of fixes for v5.10. One fix for iwlwifi kernel panic, others
->> >> less notable.
->> >> 
->> >> rtw88
->> >> 
->> >> * fix a bogus test found by clang
->> >> 
->> >> iwlwifi
->> >> 
->> >> * fix long memory reads causing soft lockup warnings
->> >> 
->> >> * fix kernel panic during Channel Switch Announcement (CSA)
->> >> 
->> >> * other smaller fixes
->> >> 
->> >> MAINTAINERS
->> >> 
->> >> * email address updates  
->> >
->> > Pulled, thanks!
->> >
->> > Please watch out for missing sign-offs.  
->> 
->> I assume you refer to commit 97cc16943f23, sorry about that. Currently
->> I'm just manually checking sign-offs and missed this patch. My plan is
->> to implement proper checks to my patchwork script so I'll notice these
->> before I commit the patch (or pull request), just have not yet find the
->> time to do that.
->
-> Check out verify_fixes and verify_signoff in Greg's repo:
->
-> https://github.com/gregkh/gregkh-linux/tree/master/work
+> Workaround to get WiFi working on Xiaomi Poco F1 (sdm845)
+> phone. We get a non-fatal QMI_ERR_MALFORMED_MSG_V01 error
+> message in ath10k_qmi_host_cap_send_sync(), but we can still
+> bring up WiFi services successfully on AOSP if we ignore it.
+> 
+> We suspect either the host cap is not implemented or there
+> may be firmware specific issues. Firmware version is
+> QC_IMAGE_VERSION_STRING=WLAN.HL.2.0.c3-00257-QCAHLSWMTPLZ-1
+> 
+> qcom,snoc-host-cap-8bit-quirk didn't help. If I use this
+> quirk, then the host capability request does get accepted,
+> but we run into fatal "msa info req rejected" error and
+> WiFi interface doesn't come up.
+> 
+> Attempts are being made to debug the failure reasons but no
+> luck so far. Hence this device specific workaround instead
+> of checking for QMI_ERR_MALFORMED_MSG_V01 error message.
+> Tried ath10k/WCN3990/hw1.0/wlanmdsp.mbn from the upstream
+> linux-firmware project but it didn't help and neither did
+> building board-2.bin file from stock bdwlan* files.
+> 
+> This workaround will be removed once we have a viable fix.
+> Thanks to postmarketOS guys for catching this.
+> 
+> Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
+> ---
+> We dropped this workaround last time in the favor of
+> a generic dts quirk to skip host cap check. But that
+> is under under discussion for a while now,
+> https://lkml.org/lkml/2020/9/25/1119, so resending
+> this short term workaround for the time being.
+> 
 
-Thanks, I will.
+I still want the quirk, because we have this on other machines as well.
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+> v2: ath10k-check complained about a too long line last
+>     time, so moved the comment to a new line.
+>     
+>  drivers/net/wireless/ath/ath10k/qmi.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/wireless/ath/ath10k/qmi.c b/drivers/net/wireless/ath/ath10k/qmi.c
+> index ae6b1f402adf..1c58b0ff1d29 100644
+> --- a/drivers/net/wireless/ath/ath10k/qmi.c
+> +++ b/drivers/net/wireless/ath/ath10k/qmi.c
+> @@ -653,7 +653,9 @@ static int ath10k_qmi_host_cap_send_sync(struct ath10k_qmi *qmi)
+>  
+>  	/* older FW didn't support this request, which is not fatal */
+>  	if (resp.resp.result != QMI_RESULT_SUCCESS_V01 &&
+> -	    resp.resp.error != QMI_ERR_NOT_SUPPORTED_V01) {
+> +	    resp.resp.error != QMI_ERR_NOT_SUPPORTED_V01 &&
+> +	    /* Xiaomi Poco F1 workaround */
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+If we go with a temporary approach this comment should describe why this
+is here. (And it probably shouldn't be in the middle of the expression
+list in the conditional.
+
+Regards,
+Bjorn
+
+> +	    !of_machine_is_compatible("xiaomi,beryllium")) {
+>  		ath10k_err(ar, "host capability request rejected: %d\n", resp.resp.error);
+>  		ret = -EINVAL;
+>  		goto out;
+> -- 
+> 2.7.4
+> 
