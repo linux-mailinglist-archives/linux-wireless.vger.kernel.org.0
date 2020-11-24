@@ -2,119 +2,129 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D324A2C29F7
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Nov 2020 15:46:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 15AC72C29FC
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Nov 2020 15:46:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389178AbgKXOoy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 24 Nov 2020 09:44:54 -0500
-Received: from z5.mailgun.us ([104.130.96.5]:38843 "EHLO z5.mailgun.us"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2389010AbgKXOoy (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 24 Nov 2020 09:44:54 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1606229093; h=Date: Message-Id: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=GJYW42IjQPe76onlnrQnVKos7pxA3IfstGH6J+iXtwQ=;
- b=FAxETEbLPdDYzbNM6zueQVpnfoJoXgJoYn3ywzQ/OvfSuKNj8VzaQCxGmjUP3OGI6vu65zSv
- OTn8iXy1b4eiOeT0xTqMmGkt+hXqwO4eIYzIJMar8yOOzSeEeR7YaDbQDh1GSan/DSoi7HOY
- cdQzTi7PGExCSBPEPwDSM8R75Yo=
-X-Mailgun-Sending-Ip: 104.130.96.5
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n05.prod.us-east-1.postgun.com with SMTP id
- 5fbd1c61a5c560669c94b93f (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 24 Nov 2020 14:44:49
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 532C5C43461; Tue, 24 Nov 2020 14:44:48 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        MISSING_DATE,MISSING_MID,SPF_FAIL,URIBL_BLOCKED autolearn=no
-        autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id B24EDC43460;
-        Tue, 24 Nov 2020 14:44:44 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org B24EDC43460
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        id S2389255AbgKXOpQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 24 Nov 2020 09:45:16 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:37230 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S2388319AbgKXOpQ (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 24 Nov 2020 09:45:16 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1606229114;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=EZ/jeYBlyZkL5pjYnppCWoaG2cKZhox2o7qCEtKhG0I=;
+        b=RgikeUvzk/7CMwsw5IaHq1wUkpO4EfGyfqpcMswj0u7D0tDMqSpBvZmvRV2GI0UulFxZfU
+        Ludc/N6S8lX3JRE8lfg/030t1FgRfn6m5RN7JsRXYm9RN1pz4b78DtgPerirOKwFz3QSdr
+        koNti5L0MYxI+vpvHDHfEoFP8towZv8=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-112-f1SmNKZwP9uG7AuN7RjfVA-1; Tue, 24 Nov 2020 09:45:11 -0500
+X-MC-Unique: f1SmNKZwP9uG7AuN7RjfVA-1
+Received: by mail-ed1-f70.google.com with SMTP id l24so7997445edt.16
+        for <linux-wireless@vger.kernel.org>; Tue, 24 Nov 2020 06:45:10 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
+         :message-id:mime-version;
+        bh=EZ/jeYBlyZkL5pjYnppCWoaG2cKZhox2o7qCEtKhG0I=;
+        b=G5OemJ5ZyXEqu8ZF3AfujM6X/S7+RNNHkfBYEfHUHXCmjYh2RaNIe9ngFvSxjVn+kw
+         SuPkAzQOHJdMRxIxjR7t4Ex+z0sGCIDjsqbqdAQCItriCrfkn9+oB+cD4MU7Bv1lVfel
+         Wsdtah+ApXcDeafnO4Uh2to+Hm2KfXa2/iqMAJUiJCiMX3G2MT8QmooxfVBQvVSpry47
+         IiBIcacEMF2c92l6NcIX4QyNXIEehh2QCzRkyytLNbYyef8V5c9NHV1bOd5WiuR+rHVJ
+         Fe5aKCx6NMZ5XacFkxQTEzTEE3LwIsYRSQrDyzB/3y7amJPNqpK569wW4S3VFdchclO9
+         VjCQ==
+X-Gm-Message-State: AOAM530JNZzf84qLtnq8881xJKNH9IFB7G5x9DSBy0vQEJgoddUZkKzw
+        r5frnFtoZAc2Hy/pUVNq2BVOilIW17HM9rtRjEkdgzhjwyV8dmA57eqF4epsJm4K0SisHkaJEVh
+        wzWCkv4tftbOtmIHdMoMBkgEf6kE=
+X-Received: by 2002:a17:906:7813:: with SMTP id u19mr4404881ejm.153.1606229109466;
+        Tue, 24 Nov 2020 06:45:09 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJzyEs2sazzmjTn/Q0JkyTkay8/sglK+7l6a0MpfUxY6e5qqLPIuJFgeIP9l/26rRYDuuzToiA==
+X-Received: by 2002:a17:906:7813:: with SMTP id u19mr4404853ejm.153.1606229109179;
+        Tue, 24 Nov 2020 06:45:09 -0800 (PST)
+Received: from alrua-x1.borgediget.toke.dk ([45.145.92.2])
+        by smtp.gmail.com with ESMTPSA id v16sm6934709ejx.57.2020.11.24.06.45.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 24 Nov 2020 06:45:08 -0800 (PST)
+Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
+        id B48D3183065; Tue, 24 Nov 2020 15:45:07 +0100 (CET)
+From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
+To:     Zefir Kurtisi <zefku@westermo.com>, linux-wireless@vger.kernel.org
+Cc:     Felix Fietkau <nbd@nbd.name>, qca-developer-program@qualcomm.com
+Subject: Re: [RFT] ath9k: multi-rate-retry fails at HW level
+In-Reply-To: <2a8573d7-6683-3414-a8af-dab460772205@westermo.com>
+References: <2a8573d7-6683-3414-a8af-dab460772205@westermo.com>
+X-Clacks-Overhead: GNU Terry Pratchett
+Date:   Tue, 24 Nov 2020 15:45:07 +0100
+Message-ID: <878saqlsp8.fsf@toke.dk>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] [v7] wireless: Initial driver submission for pureLiFi STA
- devices
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20201116092253.1302196-1-srini.raju@purelifi.com>
-References: <20201116092253.1302196-1-srini.raju@purelifi.com>
-To:     Srinivasan Raju <srini.raju@purelifi.com>
-Cc:     unlisted-recipients:; (no To-header on input)
-        mostafa.afgani@purelifi.com,
-        Srinivasan Raju <srini.raju@purelifi.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        Rob Herring <robh@kernel.org>,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-        linux-kernel@vger.kernel.org (open list),
-        linux-wireless@vger.kernel.org (open list:NETWORKING DRIVERS (WIRELESS)),
-        netdev@vger.kernel.org (open list:NETWORKING DRIVERS)
-Illegal-Object: Syntax error in Cc: address found on vger.kernel.org:
-        Cc:     unlisted-recipients:; (no To-header on input)mostafa.afgani@purelifi.com
-                                                                     ^-missing end of address
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20201124144448.532C5C43461@smtp.codeaurora.org>
-Date:   Tue, 24 Nov 2020 14:44:48 +0000 (UTC)
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Srinivasan Raju <srini.raju@purelifi.com> wrote:
+Zefir Kurtisi <zefku@westermo.com> writes:
 
-> This introduces the pureLiFi LiFi driver for LiFi-X, LiFi-XC
-> and LiFi-XL USB devices.
-> 
-> This driver implementation has been based on the zd1211rw driver.
-> 
-> Driver is based on 802.11 softMAC Architecture and uses
-> native 802.11 for configuration and management.
-> 
-> The driver is compiled and tested in ARM, x86 architectures and
-> compiled in powerpc architecture.
-> 
-> Signed-off-by: Srinivasan Raju <srini.raju@purelifi.com>
-> 
-> Changes v6->v7:
-> - Magic numbers removed and used IEEE80211 macors
-> - usb.c is split into two files firmware.c and dbgfs.c
-> - Other code style and timer function fixes (mod_timer)
-> Changes v5->v6:
-> - Code style fix patch from Joe Perches
-> Changes v4->v5:
-> - Code refactoring for clarity and redundnacy removal
-> - Fix warnings from kernel test robot
-> Changes v3->v4:
-> - Code refactoring based on kernel code guidelines
-> - Remove multi level macors and use kernel debug macros
-> Changes v2->v3:
-> - Code style fixes kconfig fix
-> Changes v1->v2:
-> - v1 was submitted to staging, v2 submitted to wireless-next
-> - Code style fixes and copyright statement fix
+> Hi,
+>
+> I am running into a strange issue with the ath9k operating a 9590
+> device which to me seems like a HW issue, but since work on rate
+> controllers is already going for decades, I hardly can imagine this
+> never showed up.
+>
+> The issue observed is this: the TX status descriptors never report
+> rateindex 1, it is always 0, 2, or 3, but never 1.
+>
+> I noticed this by overwriting the rate configuration provided by
+> minstrel to a static setup, e.g. (7,3)(5,3)(3,3)(1,3), all MCS. The
+> device operates as iperf client to a connected AP and continuously
+> transmits data. While at that, the attenuation between the endpoints
+> is gradually increased, expecting to see a gradual shift in the
+> reported TX status rateindex from 0 to 3. But nada, the values
+> reported are 0,2, and 3 - never 1.
+>
+> I double checked that the TX descriptors are correctly set with the
+> rates and retry counts - all looking sane.
+>
+> More obvious, after changing the rate configuration to
+> (7,3)(1,3)(5,3)(3,3) the expectation would be to have either 0 or 1
+> reported as rateidx, since the transmission ought to be successful
+> with the lowest rate or never. Again all rates are reported but 1.
+>
+> Now the question for me is: what is the HW exactly doing with such a
+> configuration? Is it skipping the second rate, or is it just reporting
+> wrong?
 
-I haven't had a chance to review this yet but we have some documentation for new drivers:
+You should be able to see this by looking at the rates the frames are
+being sent at, shouldn't you?
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches#new_driver
+> Both possibilities have great impact, since upper layers (like
+> airtime) use the returned rateidx to calculate and configure operating
+> parameters at runtime.
 
-Is the firmware publically available?
+Have you actually observed any issues from this? If it's just skipping a
+rate, minstrel should still be able to make decisions based on the
+actual values returned, no?
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20201116092253.1302196-1-srini.raju@purelifi.com/
+> If this is a know issue, nevermind and thanks for pointing me to it. Otherwise if
+> some of you have the named device operational, it would help a lot to get the
+> issue confirmed. Just apply the attached patch and perform some TX testing in
+> either attenuation adjustable or varying link condition setups. Whenever a frame
+> is reported to have been transmitted at a rateidx > 0, the collected stats are
+> logged, e.g.
+> MRR: 2: [51029, 0, 4741, 6454]
+>
+> In essence, the failure is confirmed if the counter for 1 is 0 or very low
+> compared to higher numbers for 0, 2, or 3.
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Tried your patch and couldn't reproduce. Not the same hardware, though.
+Mine is:
+
+01:00.0 Network controller: Qualcomm Atheros AR9287 Wireless Network Adapter (PCI-Express) (rev 01)
+
+-Toke
 
