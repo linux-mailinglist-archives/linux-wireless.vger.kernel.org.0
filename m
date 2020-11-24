@@ -2,91 +2,85 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C3982C1EC4
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Nov 2020 08:22:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B651C2C20F8
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Nov 2020 10:16:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729987AbgKXHTo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 24 Nov 2020 02:19:44 -0500
-Received: from m42-4.mailgun.net ([69.72.42.4]:38665 "EHLO m42-4.mailgun.net"
+        id S1730959AbgKXJQE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 24 Nov 2020 04:16:04 -0500
+Received: from z5.mailgun.us ([104.130.96.5]:41240 "EHLO z5.mailgun.us"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729985AbgKXHTo (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 24 Nov 2020 02:19:44 -0500
+        id S1727131AbgKXJQE (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 24 Nov 2020 04:16:04 -0500
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1606202383; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=E/zHSJyBKGvYROkUaoI8KWdVr1eUDpBgWWtODvR0Ztk=; b=jKPYT1/wGyZb+HPMjwEKSL+1eKmeg/uZo0wrwYsfIZ9cvzLtcPRBDYC9o5Yqqu0LW+vfqP3N
- y+ZQua5OzyajOM6ye4SSBN6M7TosL/7Yz+dKoj/jERouMgNBmBY3WRIJ3gEX+BqUSbpCFjUR
- xDUtQZcHGBwr7vVtd/TA60n9rFw=
-X-Mailgun-Sending-Ip: 69.72.42.4
+ s=smtp; t=1606209364; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=iCuOj6Xap6XRJQpMNchRLq7lVvkf6SE0kgafKp9gt48=;
+ b=khZQVHgmEMqboJkyN5VRjGmTU9Btzt9iVyZNRTZXQBY6OSdVDyvPBiM8YH8ZMMNvl2Qu+pjj
+ gHNSmc3aj0zKjGVzMLHDjsiia0Pz0F+KWStDC+zquryVsn/a6m5nYQsYF2P5Wt8QKnErp679
+ TLJ+0zXiT34N3/zkfglqQDL3qXA=
+X-Mailgun-Sending-Ip: 104.130.96.5
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n03.prod.us-west-2.postgun.com with SMTP id
- 5fbcb40eeb04c00160751218 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 24 Nov 2020 07:19:42
+ smtp-out-n08.prod.us-west-2.postgun.com with SMTP id
+ 5fbccf470c9500dc7ba265c0 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 24 Nov 2020 09:15:51
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id AF99DC43461; Tue, 24 Nov 2020 07:19:42 +0000 (UTC)
+        id 5C4A4C43460; Tue, 24 Nov 2020 09:15:51 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
-        autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        MISSING_DATE,MISSING_MID,SPF_FAIL,URIBL_BLOCKED autolearn=no
+        autolearn_force=no version=3.4.0
 Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 89F27C433ED;
-        Tue, 24 Nov 2020 07:19:40 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 89F27C433ED
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 88BBEC433ED;
+        Tue, 24 Nov 2020 09:15:49 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 88BBEC433ED
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     hby <hby2003@163.com>
-Cc:     davem@davemloft.net, kuba@kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] brmcfmac: fix compile when DEBUG is defined
-References: <20201122100606.20289-1-hby2003@163.com>
-        <87r1okqd2n.fsf@codeaurora.org>
-        <c3b297cf-268e-6f28-f585-5452dd8696f8@163.com>
-Date:   Tue, 24 Nov 2020 09:19:38 +0200
-In-Reply-To: <c3b297cf-268e-6f28-f585-5452dd8696f8@163.com> (hby's message of
-        "Tue, 24 Nov 2020 09:46:23 +0800")
-Message-ID: <87eekjql11.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH 1/2] rtw88: 8723d: add cck pd seetings
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20201109090123.9254-1-pkshih@realtek.com>
+References: <20201109090123.9254-1-pkshih@realtek.com>
+To:     <pkshih@realtek.com>
+Cc:     <tony0620emma@gmail.com>, <linux-wireless@vger.kernel.org>
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
+Message-Id: <20201124091551.5C4A4C43460@smtp.codeaurora.org>
+Date:   Tue, 24 Nov 2020 09:15:51 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-hby <hby2003@163.com> writes:
+<pkshih@realtek.com> wrote:
 
-> I am sorry for the HTML email, and I change the email client. The
-> patch update.
->
-> From b87d429158b4efc3f6835828f495a261e17d5af4 Mon Sep 17 00:00:00 2001
-> From: hby <hby2003@163.com>
-> Date: Tue, 24 Nov 2020 09:16:24 +0800
-> Subject: [PATCH] brmcfmac: fix compile when DEBUG is defined
->
-> The steps:
-> 1. add "#define DEBUG" in
-> drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c line 61.
-> 2. make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- O=../Out_Linux
-> bcm2835_defconfig
-> 3. make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- O=../Out_Linux/
-> zImage modules dtbs -j8
->
-> Then, it will fail, the compile log described below:
+> From: Ping-Ke Shih <pkshih@realtek.com>
+> 
+> CCK PD can reduce the number of false alarm of the CCK rates.
+> It dynamically adjusts the power threshold and CS ratio.
+> The values are compared to the values of the previous level, if
+> the level is changed, set new values of power threshold and CS
+> ratio.
+> 
+> Implement rtw_chip_ops::cck_pd_set() for 8723d.
+> 
+> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 
-It doesn't work like this, the patch handling is very much automated and
-you can't just reply with a new patch. I strongly recommend to use git
-send-email and read the wiki page below.
+2 patches applied to wireless-drivers-next.git, thanks.
+
+8f0cb24ceefe rtw88: 8723d: add cck pd seetings
+760bb2abfef2 rtw88: add CCK_PD debug log
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+https://patchwork.kernel.org/project/linux-wireless/patch/20201109090123.9254-1-pkshih@realtek.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
