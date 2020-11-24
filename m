@@ -2,161 +2,79 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DA9252C2107
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Nov 2020 10:20:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D13C12C21ED
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Nov 2020 10:45:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731114AbgKXJTK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 24 Nov 2020 04:19:10 -0500
-Received: from z5.mailgun.us ([104.130.96.5]:32626 "EHLO z5.mailgun.us"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731049AbgKXJTJ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 24 Nov 2020 04:19:09 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1606209549; h=Content-Transfer-Encoding: Content-Type:
- MIME-Version: Message-ID: Date: Subject: In-Reply-To: References: Cc:
- To: From: Sender; bh=T/nuXdXFujJ/x3ermaFIfdonlDhhCK1yet+N4iW7bWA=; b=uxTj49rvClN7gLd0N9m+z01uDGL39Utj/OltY+j6g4b0SxO+8HYpX4rQ5CnQqA4pZDajhlkN
- +bbw5WUDzJqij48gOK0o/aZUJYm818a+1g0I5pS9LeVVkYsdLmdY90VW5n/VZM5emk3vyu+T
- YytP5T0Nuw6QjtrmJv6wmpNC0QY=
-X-Mailgun-Sending-Ip: 104.130.96.5
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n05.prod.us-east-1.postgun.com with SMTP id
- 5fbcd005ba50d14f88a5e937 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 24 Nov 2020 09:19:01
- GMT
-Sender: pillair=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id EA8F4C43464; Tue, 24 Nov 2020 09:19:00 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-Received: from Pillair (unknown [49.205.247.166])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: pillair)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 4943AC433ED;
-        Tue, 24 Nov 2020 09:18:55 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 4943AC433ED
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=pillair@codeaurora.org
-From:   "Rakesh Pillai" <pillair@codeaurora.org>
-To:     "'Doug Anderson'" <dianders@chromium.org>,
-        "'Abhishek Kumar'" <kuabhs@chromium.org>
-Cc:     "'Kalle Valo'" <kvalo@codeaurora.org>,
-        "'LKML'" <linux-kernel@vger.kernel.org>,
-        "'ath10k'" <ath10k@lists.infradead.org>,
-        "'Brian Norris'" <briannorris@chromium.org>,
-        "'linux-wireless'" <linux-wireless@vger.kernel.org>,
-        "'David S. Miller'" <davem@davemloft.net>,
-        "'Jakub Kicinski'" <kuba@kernel.org>,
-        "'netdev'" <netdev@vger.kernel.org>
-References: <20201112200906.991086-1-kuabhs@chromium.org> <20201112200856.v2.1.Ia526132a366886e3b5cf72433d0d58bb7bb1be0f@changeid> <CAD=FV=XKCLgL6Bt+3KfqKByyP5fpwXOh6TNHXAoXkaQJRzjKjQ@mail.gmail.com>
-In-Reply-To: <CAD=FV=XKCLgL6Bt+3KfqKByyP5fpwXOh6TNHXAoXkaQJRzjKjQ@mail.gmail.com>
-Subject: RE: [PATCH v2 1/1] ath10k: add option for chip-id based BDF selection
-Date:   Tue, 24 Nov 2020 14:48:52 +0530
-Message-ID: <002401d6c242$d78f2140$86ad63c0$@codeaurora.org>
+        id S1731456AbgKXJmN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 24 Nov 2020 04:42:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54798 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731433AbgKXJmM (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 24 Nov 2020 04:42:12 -0500
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 584DBC0613D6;
+        Tue, 24 Nov 2020 01:42:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=7Z4sCBK7+r3zxiDTPSYcv0Xe629cAkXNqDnpxaka9BI=; b=kiCSZDEgg3lnkgExk/osaqCd9M
+        ULK/cxluf5kC4iJST/I3Ul0DnxDBfU3QAGlbeA8q7avb0PHFcWZVVhSW3iqtM6ihK5yNIA7IOk5Hk
+        DnQZovtZqURQZbw/kpyVF4AxKFpUoBiLJmz7vfxKVTU0dNlPQWNHSDK0UrnwqBTD7Ik2FHtzQ7m2X
+        5N/DIPf9z5ygV9AjUpu+3q+8L2YNu8GP8qMJ8LqQGi+XyG1UeUtqvNWUHjOsqvTSm1ATTc2mQHvLG
+        /OcZGPX86MAHIASoVJVwPqBaOpT/YmN34xAqUeLKmYFOrnh7Rv1E4hV47ZlVS0oUt/eXqBYssoin9
+        lpso3lNg==;
+Received: from hch by casper.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1khUpt-0000OQ-6d; Tue, 24 Nov 2020 09:42:09 +0000
+Date:   Tue, 24 Nov 2020 09:42:09 +0000
+From:   Christoph Hellwig <hch@infradead.org>
+To:     Jani Nikula <jani.nikula@intel.com>
+Cc:     linux-kernel@vger.kernel.org,
+        Christoph Hellwig <hch@infradead.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        intel-gfx@lists.freedesktop.org, linux-block@vger.kernel.org,
+        Jens Axboe <axboe@kernel.dk>, ath11k@lists.infradead.org,
+        ath10k@lists.infradead.org, Kalle Valo <kvalo@codeaurora.org>,
+        linux-wireless@vger.kernel.org,
+        QCA ath9k Development <ath9k-devel@qca.qualcomm.com>
+Subject: Re: [PATCH 4/9] relay: allow the use of const callback structs
+Message-ID: <20201124094209.GD31963@infradead.org>
+References: <cover.1606153547.git.jani.nikula@intel.com>
+ <cc3ff292e4eb4fdc56bee3d690c7b8e39209cd37.1606153547.git.jani.nikula@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Mailer: Microsoft Outlook 16.0
-Thread-Index: AQKxMSkDsdRsNwK99YDuloz1ISNQFAKbjoqbAYQwjuWoASIGoA==
-Content-Language: en-us
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cc3ff292e4eb4fdc56bee3d690c7b8e39209cd37.1606153547.git.jani.nikula@intel.com>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+> +/* subbuf_start callback wrapper */
+> +static int cb_subbuf_start(struct rchan_buf *buf, void *subbuf,
+> +			   void *prev_subbuf, size_t prev_padding)
+
+I don't think the comment adds any information over just looking at the
+function and the two callers.  I'd also name it relay_subbuf_start
+instead of the cb_ prefix not used anywhere else in the file.
 
 
-> -----Original Message-----
-> From: Doug Anderson <dianders@chromium.org>
-> Sent: Tuesday, November 24, 2020 6:27 AM
-> To: Abhishek Kumar <kuabhs@chromium.org>
-> Cc: Kalle Valo <kvalo@codeaurora.org>; Rakesh Pillai
-> <pillair@codeaurora.org>; LKML <linux-kernel@vger.kernel.org>; ath10k
-> <ath10k@lists.infradead.org>; Brian Norris <briannorris@chromium.org>;
-> linux-wireless <linux-wireless@vger.kernel.org>; David S. Miller
-> <davem@davemloft.net>; Jakub Kicinski <kuba@kernel.org>; netdev
-> <netdev@vger.kernel.org>
-> Subject: Re: [PATCH v2 1/1] ath10k: add option for chip-id based BDF
-> selection
->=20
-> Hi,
->=20
-> On Thu, Nov 12, 2020 at 12:09 PM Abhishek Kumar <kuabhs@chromium.org>
-> wrote:
-> >
-> > In some devices difference in chip-id should be enough to pick
-> > the right BDF. Add another support for chip-id based BDF selection.
-> > With this new option, ath10k supports 2 fallback options.
-> >
-> > The board name with chip-id as option looks as follows
-> > board name 'bus=3Dsnoc,qmi-board-id=3Dff,qmi-chip-id=3D320'
-> >
-> > Tested-on: WCN3990 hw1.0 SNOC WLAN.HL.3.2.2-00696-QCAHLSWMTPL-1
-> > Tested-on: QCA6174 HW3.2 WLAN.RM.4.4.1-00157-QCARMSWPZ-1
-> > Signed-off-by: Abhishek Kumar <kuabhs@chromium.org>
-> > ---
-> >
-> > (no changes since v1)
->=20
-> I think you need to work on the method you're using to generate your
-> patches.  There are most definitely changes since v1.  You described
-> them in your cover letter (which you don't really need for a singleton
-> patch) instead of here.
->=20
->=20
-> > @@ -1438,12 +1439,17 @@ static int
-> ath10k_core_create_board_name(struct ath10k *ar, char *name,
-> >         }
-> >
-> >         if (ar->id.qmi_ids_valid) {
-> > -               if (with_variant && ar->id.bdf_ext[0] !=3D '\0')
-> > +               if (with_additional_params && ar->id.bdf_ext[0] !=3D =
-'\0')
-> >                         scnprintf(name, name_len,
-> >                                   =
-"bus=3D%s,qmi-board-id=3D%x,qmi-chip-id=3D%x%s",
-> >                                   ath10k_bus_str(ar->hif.bus),
-> >                                   ar->id.qmi_board_id, =
-ar->id.qmi_chip_id,
-> >                                   variant);
-> > +               else if (with_additional_params)
-> > +                       scnprintf(name, name_len,
-> > +                                 =
-"bus=3D%s,qmi-board-id=3D%x,qmi-chip-id=3D%x",
-> > +                                 ath10k_bus_str(ar->hif.bus),
-> > +                                 ar->id.qmi_board_id, =
-ar->id.qmi_chip_id);
->=20
-> I believe this is exactly opposite of what Rakesh was requesting.
-> Specifically, he was trying to eliminate the extra scnprintf() but I
-> think he still agreed that it was a good idea to generate 3 different
-> strings.  I believe the proper diff to apply to v1 is:
->=20
-> https://crrev.com/c/255643
->=20
-> -Doug
+>  {
+> +	if (buf->chan->cb->subbuf_start)
+> +		return buf->chan->cb->subbuf_start(buf, subbuf,
+> +						   prev_subbuf, prev_padding);
+> +
+>  	if (relay_buf_full(buf))
+>  		return 0;
 
-Hi Abhishek/Doug,
+This could also be simplified a bit more to:
 
-I missed on reviewing this change. Also I agree with Doug that this is =
-not the change I was looking for.
+	if (!buf->chan->cb->subbuf_start)
+		return !relay_buf_full(buf);
+	return buf->chan->cb->subbuf_start(buf, subbuf, prev_subbuf,
+					   prev_padding);
 
-The argument "with_variant" can be renamed to "with_extra_params". There =
-is no need for any new argument to this function.
-Case 1: with_extra_params=3D0,  ar->id.bdf_ext[0] =3D 0             ->   =
-The default name will be used (bus=3Dsnoc,qmi_board_id=3D0xab)
-Case 2: with_extra_params=3D1,  ar->id.bdf_ext[0] =3D 0             ->   =
-bus=3Dsnoc,qmi_board_id=3D0xab,qmi_chip_id=3D0xcd
-Case 3: with_extra_params=3D1,  ar->id.bdf_ext[0] =3D "xyz"      ->   =
-bus=3Dsnoc,qmi_board_id=3D0xab,qmi_chip_id=3D0xcd,variant=3Dxyz
+Otherwise this looks good to me:
 
-ar->id.bdf_ext[0] depends on the DT entry for variant field.
-
-Thanks,
-Rakesh Pillai.
-
+Reviewed-by: Christoph Hellwig <hch@lst.de>
