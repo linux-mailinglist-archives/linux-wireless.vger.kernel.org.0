@@ -2,227 +2,182 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 60F542C46E0
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Nov 2020 18:36:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 82D0D2C472F
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Nov 2020 19:02:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730585AbgKYRev (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 25 Nov 2020 12:34:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40604 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730455AbgKYRev (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 25 Nov 2020 12:34:51 -0500
-Received: from mail-qv1-xf49.google.com (mail-qv1-xf49.google.com [IPv6:2607:f8b0:4864:20::f49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C415C061A51
-        for <linux-wireless@vger.kernel.org>; Wed, 25 Nov 2020 09:34:51 -0800 (PST)
-Received: by mail-qv1-xf49.google.com with SMTP id cu18so2977886qvb.17
-        for <linux-wireless@vger.kernel.org>; Wed, 25 Nov 2020 09:34:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=sender:date:message-id:mime-version:subject:from:to:cc;
-        bh=K7k20R0lnhz68i2HIZxX0s22aPKx+LMM7GFJ9tvlIjc=;
-        b=vdR9GifL3hQTkcfJ1FFE918sa3YXXR6ooyED/fdgmlWBC7ugf8qUyt0myBTMWvtBGH
-         uztf9VdHFsQ0r8V+hTwQ+Kr24RmVCMZvBf2RhpI8NpxUjFXYurG8jDkG4hi5v0TQrw3r
-         kWU197AsXlVUEz+u+9yZqSCJnomy6vOY2iwAdTeQxf5la2wEbw299JckjbMJwOsUf8ZH
-         qKYbwZ+D4j4XjrUR5hvUM6XDqHJPUjSTlwAMIEpTZYaJbwA3h9tE7czB2mOQbs30L3tN
-         rCinW5dYyTTMxgHmxvOH9ikXvIhY3Ryugb4At8R7GVh9DE4KwV06S5Tjv8qQ6haezxdu
-         0JSA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:date:message-id:mime-version:subject:from
-         :to:cc;
-        bh=K7k20R0lnhz68i2HIZxX0s22aPKx+LMM7GFJ9tvlIjc=;
-        b=KnfOHF97tK1avNhflX1EjFv8MSzc9344V0vwfRqmY8xByaZdrufXFp/D+accX6pKRd
-         saYDwQl/Z+Gd9oSUBvFzV15rBQErbIOp7KBlz30Px4kf6dRZjE10PLZR6EZvZLDD0HX+
-         4C6rSvhD3iYMCBlu2rWPeI10hRHuyvB0ziwAy8UDAMMwAaX6U6XdXmqVEk5+OF2fEnqv
-         e/onrB1u3EecqJ6GDBaf798H+iwbzN9cyvTNCELMMF9fAZjPGTFWwh1JbUTixL6DNSSr
-         eCdcI7Xtm/RDK5wA8Ft0oqYZYHbcfExft3Rf9VynZFYVJyw9bQ3yYDCiYZCKgd0xJPgM
-         t5rA==
-X-Gm-Message-State: AOAM531bcERR7lI85fagxvig6Z75r5611y0Mv8ZyfmMoiHQtJS1rJGac
-        HxPDs+cx9OITUmoD/HNl7n9S9ja+Zw==
-X-Google-Smtp-Source: ABdhPJy2FeQNFhtN4W83T3gNPR88Jl1wwy7z0LkxjggKG27FXx85OpSWy+xm1c455Nx/l9V3TW8tktq6tg==
-Sender: "elver via sendgmr" <elver@elver.muc.corp.google.com>
-X-Received: from elver.muc.corp.google.com ([2a00:79e0:15:13:f693:9fff:fef4:2449])
- (user=elver job=sendgmr) by 2002:a0c:fa4f:: with SMTP id k15mr4267615qvo.62.1606325689848;
- Wed, 25 Nov 2020 09:34:49 -0800 (PST)
-Date:   Wed, 25 Nov 2020 18:34:36 +0100
-Message-Id: <20201125173436.1894624-1-elver@google.com>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.29.2.454.gaff20da3a2-goog
-Subject: [PATCH net-next] net: switch to storing KCOV handle directly in sk_buff
-From:   Marco Elver <elver@google.com>
-To:     elver@google.com, kuba@kernel.org, davem@davemloft.net
-Cc:     johannes@sipsolutions.net, a.nogikh@gmail.com,
-        andreyknvl@google.com, dvyukov@google.com,
-        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org, idosch@idosch.org, fw@strlen.de,
-        willemb@google.com
-Content-Type: text/plain; charset="UTF-8"
+        id S1732911AbgKYSBx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 25 Nov 2020 13:01:53 -0500
+Received: from m42-4.mailgun.net ([69.72.42.4]:25674 "EHLO m42-4.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730728AbgKYSBw (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 25 Nov 2020 13:01:52 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1606327311; h=Content-Transfer-Encoding: Content-Type:
+ In-Reply-To: MIME-Version: Date: Message-ID: From: References: Cc: To:
+ Subject: Sender; bh=7LPkOcaw/p1knQ5KtExLHuxB75BuhzPxHs8gh80hyuw=; b=WcmwfmQ0gDoAulzvhYdcbZVYPbsOiRhWCwA0AqDs5UyWp34gTlmC8Ccm3o2tfTXR4m20Pr1q
+ 6X5iYOVzvQZ6vyXKCDpNWpGspprxD1jjnY7uiZ0ZRCbV30smc4PNZUq+X8/klTcaewjZEcLH
+ FtanzVjyUlk/nDDMtsjIT3FLXik=
+X-Mailgun-Sending-Ip: 69.72.42.4
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n01.prod.us-east-1.postgun.com with SMTP id
+ 5fbe9be6e9b7088622a3b234 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 25 Nov 2020 18:01:10
+ GMT
+Sender: jhugo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 38A88C43463; Wed, 25 Nov 2020 18:01:09 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        NICE_REPLY_A,SPF_FAIL,URIBL_BLOCKED autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from [10.226.59.216] (i-global254.qualcomm.com [199.106.103.254])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: jhugo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id EF425C433ED;
+        Wed, 25 Nov 2020 18:01:06 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org EF425C433ED
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=jhugo@codeaurora.org
+Subject: Re: [PATCH] net: qrtr: Unprepare MHI channels during remove
+To:     bbhatt@codeaurora.org
+Cc:     Loic Poulain <loic.poulain@linaro.org>, ath11k@lists.infradead.org,
+        cjhuang@codeaurora.org, clew@codeaurora.org,
+        hemantk@codeaurora.org, kvalo@codeaurora.org,
+        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-wireless@vger.kernel.org, manivannan.sadhasivam@linaro.org,
+        netdev@vger.kernel.org, jhugo=codeaurora.org@codeaurora.org
+References: <1605723625-11206-1-git-send-email-bbhatt@codeaurora.org>
+ <5e94c0be-9402-7309-5d65-857a27d1f491@codeaurora.org>
+ <CAMZdPi_b0=qFNGi1yUke3Dip2bi-zW4ULTg8W4nbyPyEsE3D4w@mail.gmail.com>
+ <2019fe3c-55c5-61fe-758c-1e9952e1cb33@codeaurora.org>
+ <647d1520d0bcefa7ff02d2ef5ee81bd1@codeaurora.org>
+From:   Jeffrey Hugo <jhugo@codeaurora.org>
+Message-ID: <e8eb7b2b-bb25-cba9-f487-1a0889d8cd93@codeaurora.org>
+Date:   Wed, 25 Nov 2020 11:01:06 -0700
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.4.0
+MIME-Version: 1.0
+In-Reply-To: <647d1520d0bcefa7ff02d2ef5ee81bd1@codeaurora.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-It turns out that usage of skb extensions can cause memory leaks. Ido
-Schimmel reported: "[...] there are instances that blindly overwrite
-'skb->extensions' by invoking skb_copy_header() after __alloc_skb()."
+On 11/19/2020 12:02 PM, Bhaumik Bhatt wrote:
+> On 2020-11-18 11:34 AM, Jeffrey Hugo wrote:
+>> On 11/18/2020 12:14 PM, Loic Poulain wrote:
+>>>
+>>>
+>>> Le mer. 18 nov. 2020 à 19:34, Jeffrey Hugo <jhugo@codeaurora.org 
+>>> <mailto:jhugo@codeaurora.org>> a écrit :
+>>>
+>>>     On 11/18/2020 11:20 AM, Bhaumik Bhatt wrote:
+>>>      > Reset MHI device channels when driver remove is called due to
+>>>      > module unload or any crash scenario. This will make sure that
+>>>      > MHI channels no longer remain enabled for transfers since the
+>>>      > MHI stack does not take care of this anymore after the auto-start
+>>>      > channels feature was removed.
+>>>      >
+>>>      > Signed-off-by: Bhaumik Bhatt <bbhatt@codeaurora.org
+>>>     <mailto:bbhatt@codeaurora.org>>
+>>>      > ---
+>>>      >   net/qrtr/mhi.c | 1 +
+>>>      >   1 file changed, 1 insertion(+)
+>>>      >
+>>>      > diff --git a/net/qrtr/mhi.c b/net/qrtr/mhi.c
+>>>      > index 7100f0b..2bf2b19 100644
+>>>      > --- a/net/qrtr/mhi.c
+>>>      > +++ b/net/qrtr/mhi.c
+>>>      > @@ -104,6 +104,7 @@ static void qcom_mhi_qrtr_remove(struct
+>>>     mhi_device *mhi_dev)
+>>>      >       struct qrtr_mhi_dev *qdev = dev_get_drvdata(&mhi_dev->dev);
+>>>      >
+>>>      >       qrtr_endpoint_unregister(&qdev->ep);
+>>>      > +     mhi_unprepare_from_transfer(mhi_dev);
+>>>      >       dev_set_drvdata(&mhi_dev->dev, NULL);
+>>>      >   }
+>>>      >
+>>>      >
+>>>
+>>>     I admit, I didn't pay much attention to the auto-start being 
+>>> removed,
+>>>     but this seems odd to me.
+>>>
+>>>     As a client, the MHI device is being removed, likely because of some
+>>>     factor outside of my control, but I still need to clean it up? This
+>>>     really feels like something MHI should be handling.
+>>>
+>>>
+>>> I think this is just about balancing operations, what is done in 
+>>> probe should be undone in remove, so here channels are started in 
+>>> probe and stopped/reset in remove.
+>>
+>> I understand that perspective, but that doesn't quite match what is
+>> going on here.  Regardless of if the channel was started (prepared) in
+>> probe, it now needs to be stopped in remove.  That not balanced in all
+>> cases
+>>
+>> Lets assume, in response to probe(), my client driver goes and creates
+>> some other object, maybe a socket.  In response to that socket being
+>> opened/activated by the client of my driver, I go and start the mhi
+>> channel.  Now, normally, when the socket is closed/deactivated, I stop
+>> the MHI channel.  In this case, stopping the MHI channel in remove()
+>> is unbalanced with respect to probe(), but is now a requirement.
+>>
+>> Now you may argue, I should close the object in response to remove,
+>> which will then trigger the stop on the channel.  That doesn't apply
+>> to everything.  For example, you cannot close an open file in the
+>> kernel. You need to wait for userspace to close it.  By the time that
+>> happens, the mhi_dev is long gone I expect.
+>>
+>> So if, somehow, the client driver is the one causing the remove to
+>> occur, then yes it should probably be the one doing the stop, but
+>> that's a narrow set of conditions, and I think having that requirement
+>> for all scenarios is limiting.
+> It should be the client's responsibility to perform a clean-up though.
+> 
+> We cannot assume that the remove() call was due to factors outside of the
+> client's control at all times. You may not know if the remove() was due to
+> device actually crashing or just an unbind/module unload. So, it would be
+> better if you call it as the device should ideally not be left with a stale
+> channel context. >
+> We had an issue where a client was issuing a driver unbind without 
+> unpreparing
+> the MHI channels and without Loic's patch [1], we would not issue a channel
+> RESET to the device resulting in incoming data to the host on those 
+> channels
+> after host clean-up and an unmapped memory access and kernel panic.
 
-Therefore, give up on using skb extensions for KCOV handle, and instead
-directly store kcov_handle in sk_buff.
+So the client drivers have to do the right thing, otherwise the kernel 
+could crash?  Sounds like you are choosing to not do defensive coding in 
+MHI and making your problems the client's problems.
 
-Fixes: 6370cc3bbd8a ("net: add kcov handle to skb extensions")
-Fixes: 85ce50d337d1 ("net: kcov: don't select SKB_EXTENSIONS when there is no NET")
-Fixes: 97f53a08cba1 ("net: linux/skbuff.h: combine SKB_EXTENSIONS + KCOV handling")
-Link: https://lore.kernel.org/linux-wireless/20201121160941.GA485907@shredder.lan/
-Reported-by: Ido Schimmel <idosch@idosch.org>
-Signed-off-by: Marco Elver <elver@google.com>
----
- include/linux/skbuff.h | 37 +++++++++++++------------------------
- lib/Kconfig.debug      |  1 -
- net/core/skbuff.c      | 12 +-----------
- 3 files changed, 14 insertions(+), 36 deletions(-)
+Before releasing the resources, why haven't you issued a MHI_RESET of 
+the state machine, and ensured the device has ack'd the reset?
 
-diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
-index 0a1239819fd2..333bcdc39635 100644
---- a/include/linux/skbuff.h
-+++ b/include/linux/skbuff.h
-@@ -701,6 +701,7 @@ typedef unsigned char *sk_buff_data_t;
-  *	@transport_header: Transport layer header
-  *	@network_header: Network layer header
-  *	@mac_header: Link layer header
-+ *	@kcov_handle: KCOV remote handle for remote coverage collection
-  *	@tail: Tail pointer
-  *	@end: End pointer
-  *	@head: Head of buffer
-@@ -904,6 +905,10 @@ struct sk_buff {
- 	__u16			network_header;
- 	__u16			mac_header;
- 
-+#ifdef CONFIG_KCOV
-+	u64			kcov_handle;
-+#endif
-+
- 	/* private: */
- 	__u32			headers_end[0];
- 	/* public: */
-@@ -4150,9 +4155,6 @@ enum skb_ext_id {
- #endif
- #if IS_ENABLED(CONFIG_MPTCP)
- 	SKB_EXT_MPTCP,
--#endif
--#if IS_ENABLED(CONFIG_KCOV)
--	SKB_EXT_KCOV_HANDLE,
- #endif
- 	SKB_EXT_NUM, /* must be last */
- };
-@@ -4608,35 +4610,22 @@ static inline void skb_reset_redirect(struct sk_buff *skb)
- #endif
- }
- 
--#if IS_ENABLED(CONFIG_KCOV) && IS_ENABLED(CONFIG_SKB_EXTENSIONS)
- static inline void skb_set_kcov_handle(struct sk_buff *skb,
- 				       const u64 kcov_handle)
- {
--	/* Do not allocate skb extensions only to set kcov_handle to zero
--	 * (as it is zero by default). However, if the extensions are
--	 * already allocated, update kcov_handle anyway since
--	 * skb_set_kcov_handle can be called to zero a previously set
--	 * value.
--	 */
--	if (skb_has_extensions(skb) || kcov_handle) {
--		u64 *kcov_handle_ptr = skb_ext_add(skb, SKB_EXT_KCOV_HANDLE);
--
--		if (kcov_handle_ptr)
--			*kcov_handle_ptr = kcov_handle;
--	}
-+#ifdef CONFIG_KCOV
-+	skb->kcov_handle = kcov_handle;
-+#endif
- }
- 
- static inline u64 skb_get_kcov_handle(struct sk_buff *skb)
- {
--	u64 *kcov_handle = skb_ext_find(skb, SKB_EXT_KCOV_HANDLE);
--
--	return kcov_handle ? *kcov_handle : 0;
--}
-+#ifdef CONFIG_KCOV
-+	return skb->kcov_handle;
- #else
--static inline void skb_set_kcov_handle(struct sk_buff *skb,
--				       const u64 kcov_handle) { }
--static inline u64 skb_get_kcov_handle(struct sk_buff *skb) { return 0; }
--#endif /* CONFIG_KCOV && CONFIG_SKB_EXTENSIONS */
-+	return 0;
-+#endif
-+}
- 
- #endif	/* __KERNEL__ */
- #endif	/* _LINUX_SKBUFF_H */
-diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
-index 826a205ffd1c..1d15cdaf1b89 100644
---- a/lib/Kconfig.debug
-+++ b/lib/Kconfig.debug
-@@ -1879,7 +1879,6 @@ config KCOV
- 	depends on CC_HAS_SANCOV_TRACE_PC || GCC_PLUGINS
- 	select DEBUG_FS
- 	select GCC_PLUGIN_SANCOV if !CC_HAS_SANCOV_TRACE_PC
--	select SKB_EXTENSIONS if NET
- 	help
- 	  KCOV exposes kernel code coverage information in a form suitable
- 	  for coverage-guided fuzzing (randomized testing).
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index ffe3dcc0ebea..070b1077d976 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -233,6 +233,7 @@ struct sk_buff *__alloc_skb(unsigned int size, gfp_t gfp_mask,
- 	skb->end = skb->tail + size;
- 	skb->mac_header = (typeof(skb->mac_header))~0U;
- 	skb->transport_header = (typeof(skb->transport_header))~0U;
-+	skb_set_kcov_handle(skb, kcov_common_handle());
- 
- 	/* make sure we initialize shinfo sequentially */
- 	shinfo = skb_shinfo(skb);
-@@ -249,9 +250,6 @@ struct sk_buff *__alloc_skb(unsigned int size, gfp_t gfp_mask,
- 
- 		fclones->skb2.fclone = SKB_FCLONE_CLONE;
- 	}
--
--	skb_set_kcov_handle(skb, kcov_common_handle());
--
- out:
- 	return skb;
- nodata:
-@@ -285,8 +283,6 @@ static struct sk_buff *__build_skb_around(struct sk_buff *skb,
- 	memset(shinfo, 0, offsetof(struct skb_shared_info, dataref));
- 	atomic_set(&shinfo->dataref, 1);
- 
--	skb_set_kcov_handle(skb, kcov_common_handle());
--
- 	return skb;
- }
- 
-@@ -4208,9 +4204,6 @@ static const u8 skb_ext_type_len[] = {
- #if IS_ENABLED(CONFIG_MPTCP)
- 	[SKB_EXT_MPTCP] = SKB_EXT_CHUNKSIZEOF(struct mptcp_ext),
- #endif
--#if IS_ENABLED(CONFIG_KCOV)
--	[SKB_EXT_KCOV_HANDLE] = SKB_EXT_CHUNKSIZEOF(u64),
--#endif
- };
- 
- static __always_inline unsigned int skb_ext_total_length(void)
-@@ -4227,9 +4220,6 @@ static __always_inline unsigned int skb_ext_total_length(void)
- #endif
- #if IS_ENABLED(CONFIG_MPTCP)
- 		skb_ext_type_len[SKB_EXT_MPTCP] +
--#endif
--#if IS_ENABLED(CONFIG_KCOV)
--		skb_ext_type_len[SKB_EXT_KCOV_HANDLE] +
- #endif
- 		0;
- }
+> If MHI dev will be gone that NULL/status check must be present in 
+> something that
+> userspace could potentially use.
+> 
+> [1] 
+> https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/commit/drivers/bus/mhi?h=next-20201119&id=a7f422f2f89e7d48aa66e6488444a4c7f01269d5 
+> 
+> 
+> Thanks,
+> Bhaumik
+> ---
+> The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,
+> a Linux Foundation Collaborative Project
 
-base-commit: 470dfd808ac4135f313967f9d3e107b87fc6a0b3
+
 -- 
-2.29.2.454.gaff20da3a2-goog
-
+Jeffrey Hugo
+Qualcomm Technologies, Inc. is a member of the
+Code Aurora Forum, a Linux Foundation Collaborative Project.
