@@ -2,84 +2,86 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 718B02C410B
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Nov 2020 14:22:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AA43F2C41AE
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Nov 2020 15:05:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726721AbgKYNW1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 25 Nov 2020 08:22:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57662 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725848AbgKYNW1 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 25 Nov 2020 08:22:27 -0500
-Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [IPv6:2001:67c:2050::465:202])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58944C0613D4
-        for <linux-wireless@vger.kernel.org>; Wed, 25 Nov 2020 05:22:27 -0800 (PST)
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [80.241.60.241])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        id S1729016AbgKYOD4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 25 Nov 2020 09:03:56 -0500
+Received: from z5.mailgun.us ([104.130.96.5]:51139 "EHLO z5.mailgun.us"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727980AbgKYODz (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 25 Nov 2020 09:03:55 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1606313035; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=AdYaiLbWnIbpHPcrytqIwW8GXgqzM6O7eGeSovv+j/0=; b=tj4ZrV8GNbMueyuERdD3mfnOYj6W7G9rlr1PVS4s2aujBsY4+kTfLaY/B6H9HVa+TA8rADp5
+ SNDtsG+ajS0Nxrj7QIj5eZLG1fcBBCj7a4TIIdaq7AjCDIUYEDZrEVE9M3RzPPBJZlDkSlzZ
+ 6vrimHt8jPacYO8EzIOicBa8Kq8=
+X-Mailgun-Sending-Ip: 104.130.96.5
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n01.prod.us-west-2.postgun.com with SMTP id
+ 5fbe643a77b63cdb3440bb41 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 25 Nov 2020 14:03:38
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id B85B2C433C6; Wed, 25 Nov 2020 14:03:37 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4Ch1lM5mHMzQlS0;
-        Wed, 25 Nov 2020 14:22:23 +0100 (CET)
-X-Virus-Scanned: amavisd-new at heinlein-support.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=doubly.so; s=MBO0001;
-        t=1606310542;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=0+0yV9UWSSfTAHJIFnoA6cRC+hPz6KMs92d5BPOgKmg=;
-        b=woEAkSDh7Vm59uGkGvErbU/rUrDknIwXZNgOqERMHiJ1Eyz/2HUzrI2AjLh03vInujcI5d
-        eiSVNwqZkKQLI8yEASPaxMUYKQMgbGR90ivLqXXilaBXBdTRGTPjuf5hbOhHgptHc8OvEg
-        W2hBhH0ZJTEtML1ELFegw8fac1nXQddC9vUi0GmwMuyjlbtpZ+Q8AEq/XMi57Ha3c73cb0
-        ZnG8h6zMNOHuFbwjf35af4lYZUOskMup7dVo5yIndULoXf2X81/aCH9bBa+VG3DHH2KQAk
-        1s/gp8TMOZVRy6Zeo0R0mvC8dCUTrTVxFj2Z1VoV7qUD5w55lU+j3rRWF/lyYA==
-Received: from smtp2.mailbox.org ([80.241.60.241])
-        by gerste.heinlein-support.de (gerste.heinlein-support.de [91.198.250.173]) (amavisd-new, port 10030)
-        with ESMTP id CzznykU25NaE; Wed, 25 Nov 2020 14:22:20 +0100 (CET)
-Subject: Re: ath11k with QCA6391
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     linux-wireless@vger.kernel.org, ath11k@lists.infradead.org
-References: <c9fb5fa6-297e-a595-7670-c9105641bc83@doubly.so>
- <87wnz3twvo.fsf@codeaurora.org>
- <5f3ee526-e96f-3c88-a17e-e7ebf9703ed1@doubly.so>
- <87d00uo85x.fsf@codeaurora.org>
-From:   Devin Bayer <dev@doubly.so>
-Message-ID: <48f37c07-ca63-7ba9-1518-a31681777b15@doubly.so>
-Date:   Wed, 25 Nov 2020 14:22:19 +0100
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 1123DC43460;
+        Wed, 25 Nov 2020 14:03:35 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 1123DC43460
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Anilkumar Kolli <akolli@codeaurora.org>
+Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH v2] ath11k: fix rmmod failure if qmi sequence fails
+References: <1605076699-21924-1-git-send-email-akolli@codeaurora.org>
+Date:   Wed, 25 Nov 2020 16:03:33 +0200
+In-Reply-To: <1605076699-21924-1-git-send-email-akolli@codeaurora.org>
+        (Anilkumar Kolli's message of "Wed, 11 Nov 2020 12:08:19 +0530")
+Message-ID: <87mtz5pm8a.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-In-Reply-To: <87d00uo85x.fsf@codeaurora.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-MBO-SPAM-Probability: 
-X-Rspamd-Score: -5.09 / 15.00 / 15.00
-X-Rspamd-Queue-Id: BDB1B171A
-X-Rspamd-UID: 11fca3
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 03/11/2020 14.56, Kalle Valo wrote:
-> Devin Bayer <dev@doubly.so> writes:
-> 
->> On 02/11/2020 19.51, Kalle Valo wrote:
->>>
->>> To my knowledge, from ath11k point of view, QCA6391 should look the same
->>> as QCA6390 but most likely the board file for QCA6391 is different.
->>>
->> [snip]
->>
->> They are different than those from your repo, but maybe I can use
->> bdwlan01.e04 as the board file.
-> 
-> Yes, that's what I would also suggest to test first: take the firmware
-> from ath11k-firmware.git and the board file from the vendor.
+Anilkumar Kolli <akolli@codeaurora.org> writes:
 
-I would like to report that with your latest qca6390-bringup branch my QCA6391
-card is working well with just the one MSI vector. I'm using the board file for
-6390 from the linux-firmware repo.
+> QMI sequence fails if caldata file is not available.
+> It is observed that 'rmmod ath11k' fails if qmi message fails.
+> With this patch rmmod/insmod is working.
+>
+> Logs:
+> Direct firmware load for IPQ8074/caldata.bin failed with error -2
+> Falling back to user helper
+> qmi failed to load CAL: IPQ8074/caldata.bin
+> qmi failed to load board data file:-11
+>
+> Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.4.0.1-00009-QCAHKSWPL_SILICONZ-1
+>
+> Signed-off-by: Anilkumar Kolli <akolli@codeaurora.org>
 
-Thanks for the fixes :)
+With this patch reloading ath11k (which has worked fine before) crashes
+the kernel on QCA6390 hw2.0:
 
-~ dev
+Nov 25 16:00:52 nuc1 [  393.188277] BUG: unable to handle page fault for address: ffffffffc05b8e38
+Nov 25 16:00:52 nuc1 [  393.188300] #PF: supervisor read access in kernel mode
+Nov 25 16:00:52 nuc1 [  393.188312] #PF: error_code(0x0000) - not-present page
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
