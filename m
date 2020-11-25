@@ -2,89 +2,147 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 902DF2C366D
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Nov 2020 03:10:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 65D922C36AB
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Nov 2020 03:31:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726298AbgKYB5a (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 24 Nov 2020 20:57:30 -0500
-Received: from forward106o.mail.yandex.net ([37.140.190.187]:56315 "EHLO
-        forward106o.mail.yandex.net" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726155AbgKYB53 (ORCPT
+        id S1726532AbgKYCQY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 24 Nov 2020 21:16:24 -0500
+Received: from mail-io1-f69.google.com ([209.85.166.69]:54862 "EHLO
+        mail-io1-f69.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726609AbgKYCQT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 24 Nov 2020 20:57:29 -0500
-X-Greylist: delayed 348 seconds by postgrey-1.27 at vger.kernel.org; Tue, 24 Nov 2020 20:57:27 EST
-Received: from forward103q.mail.yandex.net (forward103q.mail.yandex.net [IPv6:2a02:6b8:c0e:50:0:640:b21c:d009])
-        by forward106o.mail.yandex.net (Yandex) with ESMTP id 8A7A5506282C;
-        Wed, 25 Nov 2020 04:51:25 +0300 (MSK)
-Received: from mxback8q.mail.yandex.net (mxback8q.mail.yandex.net [IPv6:2a02:6b8:c0e:42:0:640:b38f:32ec])
-        by forward103q.mail.yandex.net (Yandex) with ESMTP id 85F3861E0002;
-        Wed, 25 Nov 2020 04:51:25 +0300 (MSK)
-Received: from vla1-1bc5b51c612f.qloud-c.yandex.net (vla1-1bc5b51c612f.qloud-c.yandex.net [2a02:6b8:c0d:89c:0:640:1bc5:b51c])
-        by mxback8q.mail.yandex.net (mxback/Yandex) with ESMTP id cKG5bOXa5b-pPn4Ea8W;
-        Wed, 25 Nov 2020 04:51:25 +0300
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ratijas.tk; s=mail; t=1606269085;
-        bh=YszRmP2jRZSL10eennb7DsxzQAjLtn1mJIUoR7chxzY=;
-        h=Subject:To:From:Cc:Date:Message-Id;
-        b=lExMeMMEA2/3uf8b4ZvbcRUCHmYdierTcxzrAxdVsVRFPma2knfxRY3lxwYbA/DAl
-         p5Veo60FNTloI5oNIRf1lqwv6/bvKPfzVKv54T7L/MHnB0u4y0eU2dEAagzRffQr5g
-         L7XiHy4J41UNz6sbsZSBfWaR1GAP0UI2ZmaeEyvI=
-Authentication-Results: mxback8q.mail.yandex.net; dkim=pass header.i=@ratijas.tk
-Received: by vla1-1bc5b51c612f.qloud-c.yandex.net (smtp/Yandex) with ESMTPSA id YbWdwsgm07-pOn87NFE;
-        Wed, 25 Nov 2020 04:51:24 +0300
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
-        (Client certificate not present)
-From:   ivan tkachenko <me@ratijas.tk>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     ivan tkachenko <me@ratijas.tk>, linux-wireless@vger.kernel.org
-Subject: [PATCH] man: update wikipage URL, reformat SEE ALSO section
-Date:   Wed, 25 Nov 2020 04:50:48 +0300
-Message-Id: <20201125015048.197683-1-me@ratijas.tk>
-X-Mailer: git-send-email 2.29.2
+        Tue, 24 Nov 2020 21:16:19 -0500
+Received: by mail-io1-f69.google.com with SMTP id m3so490477iok.21
+        for <linux-wireless@vger.kernel.org>; Tue, 24 Nov 2020 18:16:17 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:date:in-reply-to:message-id:subject
+         :from:to;
+        bh=6VIJ5IwnX0ZeqUGt6VG60v0fau25OfzFdCcAMNNzl6M=;
+        b=Tyo0b8XvCc54BhsfMyiyy9ddOe/d3eUZpJlip07mm87wrmcGW/3B51Rjd3+idYHgQQ
+         aD3wompQK2G/s7KOpp5Cj6KcZZa65G5XVA1Sraclen51d6+0L0xwEhCE2TDxc5YkOi41
+         4TtJeSDZqaQ1+WSZy51yq/7bquljEBdvbCL6XXGce2+T5smZsqn6cg6SVQOC0dlLb6iO
+         W1NyPS2NhnivEMbiBJWD9TbCqqoKO3gSiOBtrAXh1MoAX+bOgdPaSOtHpbKFB4pFY096
+         79bFrW2Eod+OaY9Ww9OqMBAC9aWJn8HopYWwTRT1OJRgR8MFpeYXGZMyBBdEvTNOJF0E
+         fliA==
+X-Gm-Message-State: AOAM533tQeX3rQhTG5PKLgDvegsUQcEz1DWJPSvnHaytR+f1H9sFjqQj
+        IMXXW7+Vr+b0PXlwy/hsWmJX9umxGez4zW+tS8rvZv9Ulv8C
+X-Google-Smtp-Source: ABdhPJyf6XtH9g0m9h5hGn2groR7LAeuOpT63CFq6bteIkDj4QL2RhHsa5FvrWjxP9X9kPllsUvmQIV80FTnel40HDAAbRppzVVS
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Received: by 2002:a92:6403:: with SMTP id y3mr1290488ilb.72.1606270576956;
+ Tue, 24 Nov 2020 18:16:16 -0800 (PST)
+Date:   Tue, 24 Nov 2020 18:16:16 -0800
+In-Reply-To: <00000000000064f6cd05b1a04a2c@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <000000000000271c8805b4e5036b@google.com>
+Subject: Re: WARNING in __rate_control_send_low
+From:   syzbot <syzbot+fdc5123366fb9c3fdc6d@syzkaller.appspotmail.com>
+To:     clang-built-linux@googlegroups.com, davem@davemloft.net,
+        johannes@sipsolutions.net, kuba@kernel.org,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        natechancellor@gmail.com, ndesaulniers@google.com,
+        netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-groff_man(7) provides plenty of useful requests/macros, and one of
-them is .UR/.UE for URL formatting.
+syzbot has found a reproducer for the following issue on:
 
-Man pages should be formatted with paragraphs (.P or .PP) requests,
-and source text should not contain empty lines -- use empty request
-instead (literally, single dot on its own line).
+HEAD commit:    80145ac2 Merge tag 's390-5.10-5' of git://git.kernel.org/p..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=130e5a79500000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=b81aff78c272da44
+dashboard link: https://syzkaller.appspot.com/bug?extid=fdc5123366fb9c3fdc6d
+compiler:       gcc (GCC) 10.1.0-syz 20200507
+userspace arch: i386
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=12bf662d500000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=11671c8b500000
 
-Signed-off-by: ivan tkachenko <me@ratijas.tk>
----
- iw.8 | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+fdc5123366fb9c3fdc6d@syzkaller.appspotmail.com
 
-diff --git a/iw.8 b/iw.8
-index d0fcb61..4ae55b8 100644
---- a/iw.8
-+++ b/iw.8
-@@ -1,4 +1,4 @@
--.TH IW 8 "7 June 2012" "iw" "Linux"
-+.TH IW 8 "22 November 2020" "iw" "Linux"
- .SH NAME
- iw \- show / manipulate wireless devices and their configuration
- .SH SYNOPSIS
-@@ -63,9 +63,13 @@ will print all supported commands, while
- will print the help for all matching commands.
- 
- .SH SEE ALSO
-+.P
- .BR ip (8),
- .BR crda (8),
- .BR regdbdump (8),
--.BR regulatory.bin (5)
--
--.BR http://wireless.kernel.org/en/users/Documentation/iw
-+.BR regulatory.bin (5).
-+.
-+.P
-+.UR https://wireless.wiki.kernel.org/en/users/Documentation/iw
-+Documentation at kernel wiki
-+.UE .
--- 
-2.29.2
+------------[ cut here ]------------
+no supported rates for sta (null) (0xffffffff, band 0) in rate_mask 0x0 with flags 0x0
+WARNING: CPU: 1 PID: 8503 at net/mac80211/rate.c:375 __rate_control_send_low+0x4d0/0x6d0 net/mac80211/rate.c:375
+Modules linked in:
+CPU: 1 PID: 8503 Comm: systemd-sysctl Not tainted 5.10.0-rc5-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
+RIP: 0010:__rate_control_send_low+0x4d0/0x6d0 net/mac80211/rate.c:375
+Code: 14 48 89 44 24 08 e8 7f dd 25 f9 44 8b 44 24 24 45 89 e9 44 89 e1 48 8b 74 24 08 44 89 f2 48 c7 c7 a0 f7 61 8a e8 fc 5b 62 00 <0f> 0b e9 1c fe ff ff e8 54 dd 25 f9 48 8b 44 24 10 48 8d 78 7f 48
+RSP: 0018:ffffc90000d90a40 EFLAGS: 00010282
+RAX: 0000000000000000 RBX: ffff888026ce8de8 RCX: 0000000000000000
+RDX: ffff88801e450000 RSI: ffffffff8158d875 RDI: fffff520001b213a
+RBP: ffff888144343148 R08: 0000000000000001 R09: ffff8880b9f30627
+R10: 0000000000000000 R11: 0000000000000001 R12: 0000000000000000
+R13: 0000000000000000 R14: 00000000ffffffff R15: 0000000000000090
+FS:  0000000000000000(0000) GS:ffff8880b9f00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007fde93cedab4 CR3: 0000000012e10000 CR4: 00000000001506e0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <IRQ>
+ rate_control_send_low+0x265/0x730 net/mac80211/rate.c:400
+ rate_control_get_rate+0x1b9/0x5a0 net/mac80211/rate.c:913
+ __ieee80211_beacon_get+0xb06/0x1aa0 net/mac80211/tx.c:4924
+ ieee80211_beacon_get_tim+0x88/0x910 net/mac80211/tx.c:4951
+ ieee80211_beacon_get include/net/mac80211.h:4912 [inline]
+ mac80211_hwsim_beacon_tx+0x111/0x910 drivers/net/wireless/mac80211_hwsim.c:1729
+ __iterate_interfaces+0x1e5/0x520 net/mac80211/util.c:792
+ ieee80211_iterate_active_interfaces_atomic+0x8d/0x170 net/mac80211/util.c:828
+ mac80211_hwsim_beacon+0xd5/0x1a0 drivers/net/wireless/mac80211_hwsim.c:1782
+ __run_hrtimer kernel/time/hrtimer.c:1519 [inline]
+ __hrtimer_run_queues+0x693/0xea0 kernel/time/hrtimer.c:1583
+ hrtimer_run_softirq+0x17b/0x360 kernel/time/hrtimer.c:1600
+ __do_softirq+0x2a0/0x9f6 kernel/softirq.c:298
+ asm_call_irq_on_stack+0xf/0x20
+ </IRQ>
+ __run_on_irqstack arch/x86/include/asm/irq_stack.h:26 [inline]
+ run_on_irqstack_cond arch/x86/include/asm/irq_stack.h:77 [inline]
+ do_softirq_own_stack+0xaa/0xd0 arch/x86/kernel/irq_64.c:77
+ invoke_softirq kernel/softirq.c:393 [inline]
+ __irq_exit_rcu kernel/softirq.c:423 [inline]
+ irq_exit_rcu+0x132/0x200 kernel/softirq.c:435
+ sysvec_apic_timer_interrupt+0x4d/0x100 arch/x86/kernel/apic/apic.c:1091
+ asm_sysvec_apic_timer_interrupt+0x12/0x20 arch/x86/include/asm/idtentry.h:631
+RIP: 0010:__this_cpu_preempt_check+0xd/0x20 lib/smp_processor_id.c:65
+Code: 00 00 48 c7 c6 c0 90 9d 89 48 c7 c7 00 91 9d 89 e9 b8 fe ff ff 0f 1f 84 00 00 00 00 00 55 48 89 fd 0f 1f 44 00 00 48 89 ee 5d <48> c7 c7 40 91 9d 89 e9 97 fe ff ff cc cc cc cc cc cc cc eb 1e 0f
+RSP: 0018:ffffc900016ff918 EFLAGS: 00000283
+RAX: 0000000000000003 RBX: ffff8880101ad800 RCX: ffffffffffffffff
+RDX: fffffffffffffffd RSI: ffffffff8956fa40 RDI: ffffffff8956fa40
+RBP: 0000000000000088 R08: 0000000000000001 R09: ffffea0000c3d9b3
+R10: ffffffffffffffff R11: 0000000000000000 R12: ffff8880101ad890
+R13: fffffffffffffffd R14: 0000000000000020 R15: 0000000000000011
+ __mod_memcg_lruvec_state+0x10e/0x350 mm/memcontrol.c:837
+ __mod_lruvec_page_state include/linux/memcontrol.h:847 [inline]
+ __dec_lruvec_page_state include/linux/memcontrol.h:1346 [inline]
+ page_remove_rmap+0x289/0x1c00 mm/rmap.c:1349
+ zap_pte_range mm/memory.c:1253 [inline]
+ zap_pmd_range mm/memory.c:1357 [inline]
+ zap_pud_range mm/memory.c:1386 [inline]
+ zap_p4d_range mm/memory.c:1407 [inline]
+ unmap_page_range+0xe30/0x2640 mm/memory.c:1428
+ unmap_single_vma+0x198/0x300 mm/memory.c:1473
+ unmap_vmas+0x168/0x2e0 mm/memory.c:1505
+ exit_mmap+0x2b1/0x530 mm/mmap.c:3222
+ __mmput+0x122/0x470 kernel/fork.c:1079
+ mmput+0x53/0x60 kernel/fork.c:1100
+ exit_mm kernel/exit.c:486 [inline]
+ do_exit+0xa72/0x29b0 kernel/exit.c:796
+ do_group_exit+0x125/0x310 kernel/exit.c:906
+ __do_sys_exit_group kernel/exit.c:917 [inline]
+ __se_sys_exit_group kernel/exit.c:915 [inline]
+ __x64_sys_exit_group+0x3a/0x50 kernel/exit.c:915
+ do_syscall_64+0x2d/0x70 arch/x86/entry/common.c:46
+ entry_SYSCALL_64_after_hwframe+0x44/0xa9
+RIP: 0033:0x7fde953c6618
+Code: Unable to access opcode bytes at RIP 0x7fde953c65ee.
+RSP: 002b:00007ffdb9f65758 EFLAGS: 00000246 ORIG_RAX: 00000000000000e7
+RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007fde953c6618
+RDX: 0000000000000000 RSI: 000000000000003c RDI: 0000000000000000
+RBP: 00007fde956a38e0 R08: 00000000000000e7 R09: fffffffffffffee8
+R10: 00007fde93881158 R11: 0000000000000246 R12: 00007fde956a38e0
+R13: 00007fde956a8c20 R14: 0000000000000000 R15: 0000000000000000
 
