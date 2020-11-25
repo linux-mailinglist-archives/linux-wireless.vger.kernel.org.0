@@ -2,238 +2,278 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EB8272C3796
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Nov 2020 04:41:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 622C42C37C1
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Nov 2020 05:02:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726498AbgKYDRb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 24 Nov 2020 22:17:31 -0500
-Received: from mga02.intel.com ([134.134.136.20]:45606 "EHLO mga02.intel.com"
+        id S1727194AbgKYDoh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 24 Nov 2020 22:44:37 -0500
+Received: from m42-4.mailgun.net ([69.72.42.4]:30309 "EHLO m42-4.mailgun.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726165AbgKYDRa (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 24 Nov 2020 22:17:30 -0500
-IronPort-SDR: MxgAEabgqES+SI5YqpeJ2fcD6xPcYNDQHHkZJ0KPjFmY1pLMrcmebldc+yng+5Uf4zZlynj+cO
- AFQT82R5+8Bg==
-X-IronPort-AV: E=McAfee;i="6000,8403,9815"; a="159100836"
-X-IronPort-AV: E=Sophos;i="5.78,367,1599548400"; 
-   d="scan'208";a="159100836"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2020 19:17:28 -0800
-IronPort-SDR: t/S1B+hDHZAkQhZxR2LjcGrKP+KkErEoawVnO7QVwlR9MWaBAoUFF1n6XZXGe1ylGu6kpMIPO6
- 4JP9L3q3ZpRw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.78,367,1599548400"; 
-   d="scan'208";a="327812160"
-Received: from lkp-server01.sh.intel.com (HELO 6cfd01e9568c) ([10.239.97.150])
-  by orsmga003.jf.intel.com with ESMTP; 24 Nov 2020 19:17:27 -0800
-Received: from kbuild by 6cfd01e9568c with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1khlJ8-0000G5-Vg; Wed, 25 Nov 2020 03:17:26 +0000
-Date:   Wed, 25 Nov 2020 11:16:49 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     linux-wireless@vger.kernel.org
-Subject: [wireless-drivers-next:master] BUILD SUCCESS
- 7ec8a926188eb8e7a3cbaca43ec44f2d7146d71b
-Message-ID: <5fbdcca1.ADLvgbvM4KZu8ayo%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S1726709AbgKYDog (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 24 Nov 2020 22:44:36 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1606275875; h=Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Message-ID: Date: Subject: In-Reply-To: References: Cc:
+ To: From: Sender; bh=Ge28rP6SbSH4Lai1lEMWW7z009l0Z3qjpj91J969oSI=; b=CYPNvZhKas1kOHxKzF5r/Ji8XkVhedQleC8yqaS8VpHz/pbiguYvD43JBlJgC152a2ERqv6A
+ APcLHKGOnQYjR7oQXc7GsWutgcJOCnuC3/CKz4UIJ23AmxrFVaCjrOFozDeRqKdCv2hen23Z
+ 9vmAJSyU7fhJRGFPFf9xU4u5KNM=
+X-Mailgun-Sending-Ip: 69.72.42.4
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n02.prod.us-west-2.postgun.com with SMTP id
+ 5fbdd31a7ef0a8d843ef8195 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 25 Nov 2020 03:44:26
+ GMT
+Sender: pillair=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 1D932C43462; Wed, 25 Nov 2020 03:44:26 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+Received: from Pillair (unknown [49.205.247.166])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: pillair)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 7B0A2C433ED;
+        Wed, 25 Nov 2020 03:44:20 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 7B0A2C433ED
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=pillair@codeaurora.org
+From:   "Rakesh Pillai" <pillair@codeaurora.org>
+To:     "'Doug Anderson'" <dianders@chromium.org>
+Cc:     "'Abhishek Kumar'" <kuabhs@chromium.org>,
+        "'Kalle Valo'" <kvalo@codeaurora.org>,
+        "'LKML'" <linux-kernel@vger.kernel.org>,
+        "'ath10k'" <ath10k@lists.infradead.org>,
+        "'Brian Norris'" <briannorris@chromium.org>,
+        "'linux-wireless'" <linux-wireless@vger.kernel.org>,
+        "'David S. Miller'" <davem@davemloft.net>,
+        "'Jakub Kicinski'" <kuba@kernel.org>,
+        "'netdev'" <netdev@vger.kernel.org>
+References: <20201112200906.991086-1-kuabhs@chromium.org> <20201112200856.v2.1.Ia526132a366886e3b5cf72433d0d58bb7bb1be0f@changeid> <CAD=FV=XKCLgL6Bt+3KfqKByyP5fpwXOh6TNHXAoXkaQJRzjKjQ@mail.gmail.com> <002401d6c242$d78f2140$86ad63c0$@codeaurora.org> <CAD=FV=UnecON-M9eZVQePuNpdygN_E9OtLN495Xe1GL_PA94DQ@mail.gmail.com>
+In-Reply-To: <CAD=FV=UnecON-M9eZVQePuNpdygN_E9OtLN495Xe1GL_PA94DQ@mail.gmail.com>
+Subject: RE: [PATCH v2 1/1] ath10k: add option for chip-id based BDF selection
+Date:   Wed, 25 Nov 2020 09:14:16 +0530
+Message-ID: <002d01d6c2dd$4386d880$ca948980$@codeaurora.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain;
+        charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Mailer: Microsoft Outlook 16.0
+Thread-Index: AQKxMSkDsdRsNwK99YDuloz1ISNQFAKbjoqbAYQwjuUA6sHy1gG3Fmuop+1JeFA=
+Content-Language: en-us
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git  master
-branch HEAD: 7ec8a926188eb8e7a3cbaca43ec44f2d7146d71b  cw1200: fix missing destroy_workqueue() on error in cw1200_init_common
 
-elapsed time: 723m
 
-configs tested: 174
-configs skipped: 2
+> -----Original Message-----
+> From: Doug Anderson <dianders@chromium.org>
+> Sent: Tuesday, November 24, 2020 9:56 PM
+> To: Rakesh Pillai <pillair@codeaurora.org>
+> Cc: Abhishek Kumar <kuabhs@chromium.org>; Kalle Valo
+> <kvalo@codeaurora.org>; LKML <linux-kernel@vger.kernel.org>; ath10k
+> <ath10k@lists.infradead.org>; Brian Norris <briannorris@chromium.org>;
+> linux-wireless <linux-wireless@vger.kernel.org>; David S. Miller
+> <davem@davemloft.net>; Jakub Kicinski <kuba@kernel.org>; netdev
+> <netdev@vger.kernel.org>
+> Subject: Re: [PATCH v2 1/1] ath10k: add option for chip-id based BDF
+> selection
+>=20
+> Hi,
+>=20
+> On Tue, Nov 24, 2020 at 1:19 AM Rakesh Pillai <pillair@codeaurora.org>
+> wrote:
+> >
+> > > -----Original Message-----
+> > > From: Doug Anderson <dianders@chromium.org>
+> > > Sent: Tuesday, November 24, 2020 6:27 AM
+> > > To: Abhishek Kumar <kuabhs@chromium.org>
+> > > Cc: Kalle Valo <kvalo@codeaurora.org>; Rakesh Pillai
+> > > <pillair@codeaurora.org>; LKML <linux-kernel@vger.kernel.org>; =
+ath10k
+> > > <ath10k@lists.infradead.org>; Brian Norris =
+<briannorris@chromium.org>;
+> > > linux-wireless <linux-wireless@vger.kernel.org>; David S. Miller
+> > > <davem@davemloft.net>; Jakub Kicinski <kuba@kernel.org>; netdev
+> > > <netdev@vger.kernel.org>
+> > > Subject: Re: [PATCH v2 1/1] ath10k: add option for chip-id based =
+BDF
+> > > selection
+> > >
+> > > Hi,
+> > >
+> > > On Thu, Nov 12, 2020 at 12:09 PM Abhishek Kumar
+> <kuabhs@chromium.org>
+> > > wrote:
+> > > >
+> > > > In some devices difference in chip-id should be enough to pick
+> > > > the right BDF. Add another support for chip-id based BDF =
+selection.
+> > > > With this new option, ath10k supports 2 fallback options.
+> > > >
+> > > > The board name with chip-id as option looks as follows
+> > > > board name 'bus=3Dsnoc,qmi-board-id=3Dff,qmi-chip-id=3D320'
+> > > >
+> > > > Tested-on: WCN3990 hw1.0 SNOC WLAN.HL.3.2.2-00696-
+> QCAHLSWMTPL-1
+> > > > Tested-on: QCA6174 HW3.2 WLAN.RM.4.4.1-00157-QCARMSWPZ-1
+> > > > Signed-off-by: Abhishek Kumar <kuabhs@chromium.org>
+> > > > ---
+> > > >
+> > > > (no changes since v1)
+> > >
+> > > I think you need to work on the method you're using to generate =
+your
+> > > patches.  There are most definitely changes since v1.  You =
+described
+> > > them in your cover letter (which you don't really need for a =
+singleton
+> > > patch) instead of here.
+> > >
+> > >
+> > > > @@ -1438,12 +1439,17 @@ static int
+> > > ath10k_core_create_board_name(struct ath10k *ar, char *name,
+> > > >         }
+> > > >
+> > > >         if (ar->id.qmi_ids_valid) {
+> > > > -               if (with_variant && ar->id.bdf_ext[0] !=3D '\0')
+> > > > +               if (with_additional_params && ar->id.bdf_ext[0] =
+!=3D '\0')
+> > > >                         scnprintf(name, name_len,
+> > > >                                   =
+"bus=3D%s,qmi-board-id=3D%x,qmi-chip-id=3D%x%s",
+> > > >                                   ath10k_bus_str(ar->hif.bus),
+> > > >                                   ar->id.qmi_board_id, =
+ar->id.qmi_chip_id,
+> > > >                                   variant);
+> > > > +               else if (with_additional_params)
+> > > > +                       scnprintf(name, name_len,
+> > > > +                                 =
+"bus=3D%s,qmi-board-id=3D%x,qmi-chip-id=3D%x",
+> > > > +                                 ath10k_bus_str(ar->hif.bus),
+> > > > +                                 ar->id.qmi_board_id, =
+ar->id.qmi_chip_id);
+> > >
+> > > I believe this is exactly opposite of what Rakesh was requesting.
+> > > Specifically, he was trying to eliminate the extra scnprintf() but =
+I
+> > > think he still agreed that it was a good idea to generate 3 =
+different
+> > > strings.  I believe the proper diff to apply to v1 is:
+> > >
+> > > https://crrev.com/c/255643
+>=20
+> Wow, I seem to have deleted the last digit from my URL.  Should have =
+been:
+>=20
+> https://crrev.com/c/2556437
+>=20
+> > >
+> > > -Doug
+> >
+> > Hi Abhishek/Doug,
+> >
+> > I missed on reviewing this change. Also I agree with Doug that this =
+is not
+> the change I was looking for.
+> >
+> > The argument "with_variant" can be renamed to "with_extra_params".
+> There is no need for any new argument to this function.
+> > Case 1: with_extra_params=3D0,  ar->id.bdf_ext[0] =3D 0             =
+->   The default
+> name will be used (bus=3Dsnoc,qmi_board_id=3D0xab)
+> > Case 2: with_extra_params=3D1,  ar->id.bdf_ext[0] =3D 0             =
+->
+> bus=3Dsnoc,qmi_board_id=3D0xab,qmi_chip_id=3D0xcd
+> > Case 3: with_extra_params=3D1,  ar->id.bdf_ext[0] =3D "xyz"      ->
+> bus=3Dsnoc,qmi_board_id=3D0xab,qmi_chip_id=3D0xcd,variant=3Dxyz
+> >
+> > ar->id.bdf_ext[0] depends on the DT entry for variant field.
+>=20
+> I'm confused about your suggestion.  Maybe you can help clarify.  Are
+> you suggesting:
+>=20
+> a) Only two calls to ath10k_core_create_board_name()
+>=20
+> I'm pretty sure this will fail in some cases.  Specifically consider
+> the case where the device tree has a "variant" defined but the BRD
+> file only has one entry for (board-id) and one for (board-id +
+> chip-id) but no entry for (board-id + chip-id + variant).  If you are
+> only making two calls then I don't think you'll pick the right one.
+>=20
+> Said another way...
+>=20
+> If the device tree has a variant:
+> 1. We should prefer a BRD entry that has board-id + chip-id + variant
+> 2. If #1 isn't there, we should prefer a BRD entry that has board-id + =
+chip-id
+> 3. If #1 and #2 aren't there we fall back to a BRD entry that has =
+board-id.
+>=20
+> ...without 3 calls to ath10k_core_create_board_name() we can't handle
+> all 3 cases.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+This can be handled by two calls to ath10k_core_create_board_name
+1) ath10k_core_create_board_name(ar, boardname, sizeof(boardname), true) =
+  :  As per my suggestions, this can result in two possible board names
+    a) If DT have the "variant" node, it outputs the #1 from your =
+suggestion  (1. We should prefer a BRD entry that has board-id + chip-id =
++ variant)
+    b) If DT does not have the "variant" node, it outputs the #2 from =
+your suggestion (2. If #1 isn't there, we should prefer a BRD entry that =
+has board-id + chip-id)
 
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-powerpc                 mpc8540_ads_defconfig
-arm                        spear6xx_defconfig
-powerpc                    mvme5100_defconfig
-parisc                generic-32bit_defconfig
-c6x                        evmc6472_defconfig
-arm                       multi_v4t_defconfig
-m68k                       m5249evb_defconfig
-sparc                            alldefconfig
-arm                  colibri_pxa270_defconfig
-arm                          ixp4xx_defconfig
-arc                     haps_hs_smp_defconfig
-mips                           jazz_defconfig
-mips                            ar7_defconfig
-arm                         lubbock_defconfig
-sh                        sh7757lcr_defconfig
-sh                                  defconfig
-arm                          gemini_defconfig
-csky                             alldefconfig
-arm                          tango4_defconfig
-xtensa                       common_defconfig
-m68k                           sun3_defconfig
-arm                       aspeed_g4_defconfig
-powerpc                    ge_imp3a_defconfig
-mips                           ip27_defconfig
-powerpc                    socrates_defconfig
-arm                    vt8500_v6_v7_defconfig
-powerpc                      ep88xc_defconfig
-parisc                              defconfig
-powerpc                     rainier_defconfig
-powerpc                      acadia_defconfig
-ia64                             alldefconfig
-arc                          axs101_defconfig
-powerpc                      pcm030_defconfig
-mips                      bmips_stb_defconfig
-arm                            xcep_defconfig
-h8300                    h8300h-sim_defconfig
-mips                         cobalt_defconfig
-sh                   sh7724_generic_defconfig
-powerpc                     tqm5200_defconfig
-arm                        mvebu_v5_defconfig
-mips                        qi_lb60_defconfig
-arm                           h5000_defconfig
-sh                           se7343_defconfig
-m68k                        m5307c3_defconfig
-sh                          sdk7780_defconfig
-x86_64                           alldefconfig
-arm                           omap1_defconfig
-m68k                       m5275evb_defconfig
-arm                        shmobile_defconfig
-arm                           h3600_defconfig
-arm                        magician_defconfig
-sh                          rsk7201_defconfig
-arm                            pleb_defconfig
-arm                        neponset_defconfig
-sh                            migor_defconfig
-mips                      maltaaprp_defconfig
-parisc                           alldefconfig
-mips                          rm200_defconfig
-sh                   sh7770_generic_defconfig
-powerpc                    gamecube_defconfig
-arm                        trizeps4_defconfig
-powerpc                 mpc836x_mds_defconfig
-arm                       imx_v4_v5_defconfig
-arm                         ebsa110_defconfig
-powerpc                        fsp2_defconfig
-mips                         tb0287_defconfig
-powerpc                   bluestone_defconfig
-mips                         tb0219_defconfig
-m68k                            q40_defconfig
-arm                             rpc_defconfig
-arm                       omap2plus_defconfig
-um                           x86_64_defconfig
-sh                            hp6xx_defconfig
-sh                               alldefconfig
-m68k                        m5407c3_defconfig
-arm                        cerfcube_defconfig
-powerpc                     kmeter1_defconfig
-sh                          rsk7203_defconfig
-mips                  decstation_64_defconfig
-sh                   rts7751r2dplus_defconfig
-m68k                          multi_defconfig
-sh                               j2_defconfig
-parisc                generic-64bit_defconfig
-ia64                            zx1_defconfig
-sh                              ul2_defconfig
-powerpc                      obs600_defconfig
-arm                         palmz72_defconfig
-powerpc                     mpc83xx_defconfig
-mips                           ci20_defconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-c6x                              allyesconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-s390                             allyesconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-x86_64               randconfig-a006-20201124
-x86_64               randconfig-a003-20201124
-x86_64               randconfig-a004-20201124
-x86_64               randconfig-a005-20201124
-x86_64               randconfig-a001-20201124
-x86_64               randconfig-a002-20201124
-i386                 randconfig-a004-20201124
-i386                 randconfig-a003-20201124
-i386                 randconfig-a002-20201124
-i386                 randconfig-a005-20201124
-i386                 randconfig-a001-20201124
-i386                 randconfig-a006-20201124
-x86_64               randconfig-a015-20201125
-x86_64               randconfig-a011-20201125
-x86_64               randconfig-a014-20201125
-x86_64               randconfig-a016-20201125
-x86_64               randconfig-a012-20201125
-x86_64               randconfig-a013-20201125
-i386                 randconfig-a012-20201124
-i386                 randconfig-a013-20201124
-i386                 randconfig-a011-20201124
-i386                 randconfig-a016-20201124
-i386                 randconfig-a014-20201124
-i386                 randconfig-a015-20201124
-riscv                    nommu_k210_defconfig
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-x86_64                                   rhel
-x86_64                           allyesconfig
-x86_64                    rhel-7.6-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                                  kexec
+2) ath10k_core_create_board_name(ar, boardname, sizeof(boardname), =
+false)    :  This is the second call to this function and outputs the #3 =
+from your suggestion (3. If #1 and #2 aren't there we fall back to a BRD =
+entry that has board-id)
 
-clang tested configs:
-x86_64               randconfig-a006-20201125
-x86_64               randconfig-a003-20201125
-x86_64               randconfig-a004-20201125
-x86_64               randconfig-a005-20201125
-x86_64               randconfig-a002-20201125
-x86_64               randconfig-a001-20201125
-x86_64               randconfig-a015-20201124
-x86_64               randconfig-a011-20201124
-x86_64               randconfig-a014-20201124
-x86_64               randconfig-a016-20201124
-x86_64               randconfig-a012-20201124
-x86_64               randconfig-a013-20201124
 
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+Below is the snippet of code change I am suggesting.=20
+
+ static int ath10k_core_create_board_name(struct ath10k *ar, char *name,
+-                                        size_t name_len, bool =
+with_variant)
++                                        size_t name_len, bool =
+with_extra_params)
+ {
+        /* strlen(',variant=3D') + strlen(ar->id.bdf_ext) */
+        char variant[9 + ATH10K_SMBIOS_BDF_EXT_STR_LENGTH] =3D { 0 };
+
+-       if (with_variant && ar->id.bdf_ext[0] !=3D '\0')
++       if (ar->id.bdf_ext[0] !=3D '\0')
+                scnprintf(variant, sizeof(variant), ",variant=3D%s",
+                          ar->id.bdf_ext);
+
+@@ -1493,7 +1493,7 @@ static int ath10k_core_create_board_name(struct =
+ath10k *ar, char *name,
+        }
+
+        if (ar->id.qmi_ids_valid) {
+-               if (with_variant && ar->id.bdf_ext[0] !=3D '\0')
++               if (with_extra_params)
+                        scnprintf(name, name_len,
+                                  =
+"bus=3D%s,qmi-board-id=3D%x,qmi-chip-id=3D%x%s",
+                                  ath10k_bus_str(ar->hif.bus),
+
+
+Thanks,
+Rakesh Pillai.
+
+>=20
+>=20
+> b) Three calls to ath10k_core_create_board_name() but the caller
+> manually whacks "ar->id.bdf_ext[0]" for one of the calls
+>=20
+> This doesn't look like it's a clean solution, but maybe I'm missing =
+something.
+>=20
+>=20
+> -Doug
+
