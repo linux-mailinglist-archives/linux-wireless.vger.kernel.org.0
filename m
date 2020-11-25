@@ -2,278 +2,195 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 622C42C37C1
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Nov 2020 05:02:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7742E2C383C
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Nov 2020 05:47:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727194AbgKYDoh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 24 Nov 2020 22:44:37 -0500
-Received: from m42-4.mailgun.net ([69.72.42.4]:30309 "EHLO m42-4.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726709AbgKYDog (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 24 Nov 2020 22:44:36 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1606275875; h=Content-Transfer-Encoding: Content-Type:
- MIME-Version: Message-ID: Date: Subject: In-Reply-To: References: Cc:
- To: From: Sender; bh=Ge28rP6SbSH4Lai1lEMWW7z009l0Z3qjpj91J969oSI=; b=CYPNvZhKas1kOHxKzF5r/Ji8XkVhedQleC8yqaS8VpHz/pbiguYvD43JBlJgC152a2ERqv6A
- APcLHKGOnQYjR7oQXc7GsWutgcJOCnuC3/CKz4UIJ23AmxrFVaCjrOFozDeRqKdCv2hen23Z
- 9vmAJSyU7fhJRGFPFf9xU4u5KNM=
-X-Mailgun-Sending-Ip: 69.72.42.4
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n02.prod.us-west-2.postgun.com with SMTP id
- 5fbdd31a7ef0a8d843ef8195 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 25 Nov 2020 03:44:26
- GMT
-Sender: pillair=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 1D932C43462; Wed, 25 Nov 2020 03:44:26 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-Received: from Pillair (unknown [49.205.247.166])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: pillair)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 7B0A2C433ED;
-        Wed, 25 Nov 2020 03:44:20 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 7B0A2C433ED
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=pillair@codeaurora.org
-From:   "Rakesh Pillai" <pillair@codeaurora.org>
-To:     "'Doug Anderson'" <dianders@chromium.org>
-Cc:     "'Abhishek Kumar'" <kuabhs@chromium.org>,
-        "'Kalle Valo'" <kvalo@codeaurora.org>,
-        "'LKML'" <linux-kernel@vger.kernel.org>,
-        "'ath10k'" <ath10k@lists.infradead.org>,
-        "'Brian Norris'" <briannorris@chromium.org>,
-        "'linux-wireless'" <linux-wireless@vger.kernel.org>,
-        "'David S. Miller'" <davem@davemloft.net>,
-        "'Jakub Kicinski'" <kuba@kernel.org>,
-        "'netdev'" <netdev@vger.kernel.org>
-References: <20201112200906.991086-1-kuabhs@chromium.org> <20201112200856.v2.1.Ia526132a366886e3b5cf72433d0d58bb7bb1be0f@changeid> <CAD=FV=XKCLgL6Bt+3KfqKByyP5fpwXOh6TNHXAoXkaQJRzjKjQ@mail.gmail.com> <002401d6c242$d78f2140$86ad63c0$@codeaurora.org> <CAD=FV=UnecON-M9eZVQePuNpdygN_E9OtLN495Xe1GL_PA94DQ@mail.gmail.com>
-In-Reply-To: <CAD=FV=UnecON-M9eZVQePuNpdygN_E9OtLN495Xe1GL_PA94DQ@mail.gmail.com>
-Subject: RE: [PATCH v2 1/1] ath10k: add option for chip-id based BDF selection
-Date:   Wed, 25 Nov 2020 09:14:16 +0530
-Message-ID: <002d01d6c2dd$4386d880$ca948980$@codeaurora.org>
+        id S1727942AbgKYEpR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 24 Nov 2020 23:45:17 -0500
+Received: from mail-il1-f200.google.com ([209.85.166.200]:37006 "EHLO
+        mail-il1-f200.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726858AbgKYEpQ (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 24 Nov 2020 23:45:16 -0500
+Received: by mail-il1-f200.google.com with SMTP id u17so846660ilb.4
+        for <linux-wireless@vger.kernel.org>; Tue, 24 Nov 2020 20:45:15 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:date:in-reply-to:message-id:subject
+         :from:to;
+        bh=u4H8KrNhGepYi7DrBesiMdEtasQuTu9KqqFYY/sbUTo=;
+        b=sGJVtDhqbuO07RKT3yMG9W9RyIZ4I8pqvn/qCSwP+pCWBTafCbRFjNVhpiJTCCXHLb
+         eQwVTO0rAq02ZHQDkY0VYBC36ebNPEGiG1kOrzx2B12PJRBmY42aA0whcClTGci4rQ04
+         ySAM38V2X3Tfh0bADykkPiGhEE+UnzLxD7aODdkkNdXo0KWMgai4NUNepKZf4cSKIORn
+         7ffNOwXjlmpWfEXkS/iY7svzV2TW5pY7S9HUo6Fy5bajrCkvWq+GGlw2yoL3WZ3H3pje
+         RWq6U1MJfsuOxGnFC8ou+SUpvnv7RPzQxHXH4KKfWbv7i12I8iXqIkfYmsFWdBLgLWdz
+         FVcg==
+X-Gm-Message-State: AOAM533tYXPCuts5rDZEzXqFFbUlDQOlxcdSUI1p+JKOUJwJKDtW0kTM
+        24cMcozIlpvpVx4SxP/6D/OiJP5Xau5ENvAgFuCsoGjz6RCE
+X-Google-Smtp-Source: ABdhPJyrq+8vqWDkgDm0jbyXrouQafHGnMmSi82uuECzWxi8Ju+VMPMEk1VZP/Z+vEIv1fUkjiX4/OpwGizLaZqbm2h71Amdo7PJ
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Mailer: Microsoft Outlook 16.0
-Thread-Index: AQKxMSkDsdRsNwK99YDuloz1ISNQFAKbjoqbAYQwjuUA6sHy1gG3Fmuop+1JeFA=
-Content-Language: en-us
+X-Received: by 2002:a92:c941:: with SMTP id i1mr1492714ilq.158.1606279515000;
+ Tue, 24 Nov 2020 20:45:15 -0800 (PST)
+Date:   Tue, 24 Nov 2020 20:45:14 -0800
+In-Reply-To: <0000000000002953ba05b4c351f4@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <000000000000e6da4405b4e717b3@google.com>
+Subject: Re: general protection fault in ieee80211_subif_start_xmit
+From:   syzbot <syzbot+d7a3b15976bf7de2238a@syzkaller.appspotmail.com>
+To:     davem@davemloft.net, johannes@sipsolutions.net, kuba@kernel.org,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+syzbot has found a reproducer for the following issue on:
 
+HEAD commit:    80145ac2 Merge tag 's390-5.10-5' of git://git.kernel.org/p..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=12a8ad43500000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=b81aff78c272da44
+dashboard link: https://syzkaller.appspot.com/bug?extid=d7a3b15976bf7de2238a
+compiler:       gcc (GCC) 10.1.0-syz 20200507
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=1229d0fd500000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=11a963d1500000
 
-> -----Original Message-----
-> From: Doug Anderson <dianders@chromium.org>
-> Sent: Tuesday, November 24, 2020 9:56 PM
-> To: Rakesh Pillai <pillair@codeaurora.org>
-> Cc: Abhishek Kumar <kuabhs@chromium.org>; Kalle Valo
-> <kvalo@codeaurora.org>; LKML <linux-kernel@vger.kernel.org>; ath10k
-> <ath10k@lists.infradead.org>; Brian Norris <briannorris@chromium.org>;
-> linux-wireless <linux-wireless@vger.kernel.org>; David S. Miller
-> <davem@davemloft.net>; Jakub Kicinski <kuba@kernel.org>; netdev
-> <netdev@vger.kernel.org>
-> Subject: Re: [PATCH v2 1/1] ath10k: add option for chip-id based BDF
-> selection
->=20
-> Hi,
->=20
-> On Tue, Nov 24, 2020 at 1:19 AM Rakesh Pillai <pillair@codeaurora.org>
-> wrote:
-> >
-> > > -----Original Message-----
-> > > From: Doug Anderson <dianders@chromium.org>
-> > > Sent: Tuesday, November 24, 2020 6:27 AM
-> > > To: Abhishek Kumar <kuabhs@chromium.org>
-> > > Cc: Kalle Valo <kvalo@codeaurora.org>; Rakesh Pillai
-> > > <pillair@codeaurora.org>; LKML <linux-kernel@vger.kernel.org>; =
-ath10k
-> > > <ath10k@lists.infradead.org>; Brian Norris =
-<briannorris@chromium.org>;
-> > > linux-wireless <linux-wireless@vger.kernel.org>; David S. Miller
-> > > <davem@davemloft.net>; Jakub Kicinski <kuba@kernel.org>; netdev
-> > > <netdev@vger.kernel.org>
-> > > Subject: Re: [PATCH v2 1/1] ath10k: add option for chip-id based =
-BDF
-> > > selection
-> > >
-> > > Hi,
-> > >
-> > > On Thu, Nov 12, 2020 at 12:09 PM Abhishek Kumar
-> <kuabhs@chromium.org>
-> > > wrote:
-> > > >
-> > > > In some devices difference in chip-id should be enough to pick
-> > > > the right BDF. Add another support for chip-id based BDF =
-selection.
-> > > > With this new option, ath10k supports 2 fallback options.
-> > > >
-> > > > The board name with chip-id as option looks as follows
-> > > > board name 'bus=3Dsnoc,qmi-board-id=3Dff,qmi-chip-id=3D320'
-> > > >
-> > > > Tested-on: WCN3990 hw1.0 SNOC WLAN.HL.3.2.2-00696-
-> QCAHLSWMTPL-1
-> > > > Tested-on: QCA6174 HW3.2 WLAN.RM.4.4.1-00157-QCARMSWPZ-1
-> > > > Signed-off-by: Abhishek Kumar <kuabhs@chromium.org>
-> > > > ---
-> > > >
-> > > > (no changes since v1)
-> > >
-> > > I think you need to work on the method you're using to generate =
-your
-> > > patches.  There are most definitely changes since v1.  You =
-described
-> > > them in your cover letter (which you don't really need for a =
-singleton
-> > > patch) instead of here.
-> > >
-> > >
-> > > > @@ -1438,12 +1439,17 @@ static int
-> > > ath10k_core_create_board_name(struct ath10k *ar, char *name,
-> > > >         }
-> > > >
-> > > >         if (ar->id.qmi_ids_valid) {
-> > > > -               if (with_variant && ar->id.bdf_ext[0] !=3D '\0')
-> > > > +               if (with_additional_params && ar->id.bdf_ext[0] =
-!=3D '\0')
-> > > >                         scnprintf(name, name_len,
-> > > >                                   =
-"bus=3D%s,qmi-board-id=3D%x,qmi-chip-id=3D%x%s",
-> > > >                                   ath10k_bus_str(ar->hif.bus),
-> > > >                                   ar->id.qmi_board_id, =
-ar->id.qmi_chip_id,
-> > > >                                   variant);
-> > > > +               else if (with_additional_params)
-> > > > +                       scnprintf(name, name_len,
-> > > > +                                 =
-"bus=3D%s,qmi-board-id=3D%x,qmi-chip-id=3D%x",
-> > > > +                                 ath10k_bus_str(ar->hif.bus),
-> > > > +                                 ar->id.qmi_board_id, =
-ar->id.qmi_chip_id);
-> > >
-> > > I believe this is exactly opposite of what Rakesh was requesting.
-> > > Specifically, he was trying to eliminate the extra scnprintf() but =
-I
-> > > think he still agreed that it was a good idea to generate 3 =
-different
-> > > strings.  I believe the proper diff to apply to v1 is:
-> > >
-> > > https://crrev.com/c/255643
->=20
-> Wow, I seem to have deleted the last digit from my URL.  Should have =
-been:
->=20
-> https://crrev.com/c/2556437
->=20
-> > >
-> > > -Doug
-> >
-> > Hi Abhishek/Doug,
-> >
-> > I missed on reviewing this change. Also I agree with Doug that this =
-is not
-> the change I was looking for.
-> >
-> > The argument "with_variant" can be renamed to "with_extra_params".
-> There is no need for any new argument to this function.
-> > Case 1: with_extra_params=3D0,  ar->id.bdf_ext[0] =3D 0             =
-->   The default
-> name will be used (bus=3Dsnoc,qmi_board_id=3D0xab)
-> > Case 2: with_extra_params=3D1,  ar->id.bdf_ext[0] =3D 0             =
-->
-> bus=3Dsnoc,qmi_board_id=3D0xab,qmi_chip_id=3D0xcd
-> > Case 3: with_extra_params=3D1,  ar->id.bdf_ext[0] =3D "xyz"      ->
-> bus=3Dsnoc,qmi_board_id=3D0xab,qmi_chip_id=3D0xcd,variant=3Dxyz
-> >
-> > ar->id.bdf_ext[0] depends on the DT entry for variant field.
->=20
-> I'm confused about your suggestion.  Maybe you can help clarify.  Are
-> you suggesting:
->=20
-> a) Only two calls to ath10k_core_create_board_name()
->=20
-> I'm pretty sure this will fail in some cases.  Specifically consider
-> the case where the device tree has a "variant" defined but the BRD
-> file only has one entry for (board-id) and one for (board-id +
-> chip-id) but no entry for (board-id + chip-id + variant).  If you are
-> only making two calls then I don't think you'll pick the right one.
->=20
-> Said another way...
->=20
-> If the device tree has a variant:
-> 1. We should prefer a BRD entry that has board-id + chip-id + variant
-> 2. If #1 isn't there, we should prefer a BRD entry that has board-id + =
-chip-id
-> 3. If #1 and #2 aren't there we fall back to a BRD entry that has =
-board-id.
->=20
-> ...without 3 calls to ath10k_core_create_board_name() we can't handle
-> all 3 cases.
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+d7a3b15976bf7de2238a@syzkaller.appspotmail.com
 
-This can be handled by two calls to ath10k_core_create_board_name
-1) ath10k_core_create_board_name(ar, boardname, sizeof(boardname), true) =
-  :  As per my suggestions, this can result in two possible board names
-    a) If DT have the "variant" node, it outputs the #1 from your =
-suggestion  (1. We should prefer a BRD entry that has board-id + chip-id =
-+ variant)
-    b) If DT does not have the "variant" node, it outputs the #2 from =
-your suggestion (2. If #1 isn't there, we should prefer a BRD entry that =
-has board-id + chip-id)
-
-2) ath10k_core_create_board_name(ar, boardname, sizeof(boardname), =
-false)    :  This is the second call to this function and outputs the #3 =
-from your suggestion (3. If #1 and #2 aren't there we fall back to a BRD =
-entry that has board-id)
-
-
-Below is the snippet of code change I am suggesting.=20
-
- static int ath10k_core_create_board_name(struct ath10k *ar, char *name,
--                                        size_t name_len, bool =
-with_variant)
-+                                        size_t name_len, bool =
-with_extra_params)
- {
-        /* strlen(',variant=3D') + strlen(ar->id.bdf_ext) */
-        char variant[9 + ATH10K_SMBIOS_BDF_EXT_STR_LENGTH] =3D { 0 };
-
--       if (with_variant && ar->id.bdf_ext[0] !=3D '\0')
-+       if (ar->id.bdf_ext[0] !=3D '\0')
-                scnprintf(variant, sizeof(variant), ",variant=3D%s",
-                          ar->id.bdf_ext);
-
-@@ -1493,7 +1493,7 @@ static int ath10k_core_create_board_name(struct =
-ath10k *ar, char *name,
-        }
-
-        if (ar->id.qmi_ids_valid) {
--               if (with_variant && ar->id.bdf_ext[0] !=3D '\0')
-+               if (with_extra_params)
-                        scnprintf(name, name_len,
-                                  =
-"bus=3D%s,qmi-board-id=3D%x,qmi-chip-id=3D%x%s",
-                                  ath10k_bus_str(ar->hif.bus),
-
-
-Thanks,
-Rakesh Pillai.
-
->=20
->=20
-> b) Three calls to ath10k_core_create_board_name() but the caller
-> manually whacks "ar->id.bdf_ext[0]" for one of the calls
->=20
-> This doesn't look like it's a clean solution, but maybe I'm missing =
-something.
->=20
->=20
-> -Doug
+general protection fault, probably for non-canonical address 0xdffffc0000000034: 0000 [#1] PREEMPT SMP KASAN
+KASAN: null-ptr-deref in range [0x00000000000001a0-0x00000000000001a7]
+CPU: 0 PID: 10709 Comm: syz-executor918 Not tainted 5.10.0-rc5-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
+RIP: 0010:ieee80211_multicast_to_unicast net/mac80211/tx.c:4070 [inline]
+RIP: 0010:ieee80211_subif_start_xmit+0x24e/0xee0 net/mac80211/tx.c:4154
+Code: 03 80 3c 02 00 0f 85 83 0c 00 00 49 8b 9f 50 17 00 00 48 b8 00 00 00 00 00 fc ff df 48 8d bb a4 01 00 00 48 89 fa 48 c1 ea 03 <0f> b6 04 02 48 89 fa 83 e2 07 38 d0 7f 08 84 c0 0f 85 58 0c 00 00
+RSP: 0018:ffffc90000007588 EFLAGS: 00010203
+RAX: dffffc0000000000 RBX: 0000000000000000 RCX: ffffffff8851c2ad
+RDX: 0000000000000034 RSI: ffffffff8851c33d RDI: 00000000000001a4
+RBP: ffff888018f8fc80 R08: 0000000000000000 R09: ffffffff8cecbd4f
+R10: 0000000000000004 R11: 0000000000000001 R12: ffffffff8a61f520
+R13: ffff88802517a042 R14: 000000000000005a R15: ffff888018314000
+FS:  0000000000ff5940(0000) GS:ffff8880b9e00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 000000000046dde0 CR3: 00000000203d8000 CR4: 00000000001506f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <IRQ>
+ __netdev_start_xmit include/linux/netdevice.h:4718 [inline]
+ netdev_start_xmit include/linux/netdevice.h:4732 [inline]
+ xmit_one net/core/dev.c:3564 [inline]
+ dev_hard_start_xmit+0x1eb/0x920 net/core/dev.c:3580
+ sch_direct_xmit+0x2e1/0xbd0 net/sched/sch_generic.c:313
+ qdisc_restart net/sched/sch_generic.c:376 [inline]
+ __qdisc_run+0x4ba/0x15e0 net/sched/sch_generic.c:384
+ qdisc_run include/net/pkt_sched.h:131 [inline]
+ qdisc_run include/net/pkt_sched.h:123 [inline]
+ __dev_xmit_skb net/core/dev.c:3755 [inline]
+ __dev_queue_xmit+0x1453/0x2da0 net/core/dev.c:4108
+ neigh_hh_output include/net/neighbour.h:499 [inline]
+ neigh_output include/net/neighbour.h:508 [inline]
+ ip6_finish_output2+0x8db/0x16c0 net/ipv6/ip6_output.c:117
+ __ip6_finish_output net/ipv6/ip6_output.c:143 [inline]
+ __ip6_finish_output+0x447/0xab0 net/ipv6/ip6_output.c:128
+ ip6_finish_output+0x34/0x1f0 net/ipv6/ip6_output.c:153
+ NF_HOOK_COND include/linux/netfilter.h:290 [inline]
+ ip6_output+0x1db/0x520 net/ipv6/ip6_output.c:176
+ dst_output include/net/dst.h:443 [inline]
+ NF_HOOK include/linux/netfilter.h:301 [inline]
+ NF_HOOK include/linux/netfilter.h:295 [inline]
+ mld_sendpack+0x92a/0xdb0 net/ipv6/mcast.c:1679
+ mld_send_cr net/ipv6/mcast.c:1975 [inline]
+ mld_ifc_timer_expire+0x60a/0xf10 net/ipv6/mcast.c:2474
+ call_timer_fn+0x1a5/0x6b0 kernel/time/timer.c:1410
+ expire_timers kernel/time/timer.c:1455 [inline]
+ __run_timers.part.0+0x67c/0xa50 kernel/time/timer.c:1747
+ __run_timers kernel/time/timer.c:1728 [inline]
+ run_timer_softirq+0xb3/0x1d0 kernel/time/timer.c:1760
+ __do_softirq+0x2a0/0x9f6 kernel/softirq.c:298
+ asm_call_irq_on_stack+0xf/0x20
+ </IRQ>
+ __run_on_irqstack arch/x86/include/asm/irq_stack.h:26 [inline]
+ run_on_irqstack_cond arch/x86/include/asm/irq_stack.h:77 [inline]
+ do_softirq_own_stack+0xaa/0xd0 arch/x86/kernel/irq_64.c:77
+ invoke_softirq kernel/softirq.c:393 [inline]
+ __irq_exit_rcu kernel/softirq.c:423 [inline]
+ irq_exit_rcu+0x132/0x200 kernel/softirq.c:435
+ sysvec_apic_timer_interrupt+0x4d/0x100 arch/x86/kernel/apic/apic.c:1091
+ asm_sysvec_apic_timer_interrupt+0x12/0x20 arch/x86/include/asm/idtentry.h:631
+RIP: 0010:bytes_is_nonzero mm/kasan/generic.c:91 [inline]
+RIP: 0010:memory_is_nonzero mm/kasan/generic.c:108 [inline]
+RIP: 0010:memory_is_poisoned_n mm/kasan/generic.c:134 [inline]
+RIP: 0010:memory_is_poisoned mm/kasan/generic.c:165 [inline]
+RIP: 0010:check_memory_region_inline mm/kasan/generic.c:183 [inline]
+RIP: 0010:check_memory_region+0xde/0x180 mm/kasan/generic.c:192
+Code: 74 f2 48 89 c2 b8 01 00 00 00 48 85 d2 75 56 5b 5d 41 5c c3 48 85 d2 74 5e 48 01 ea eb 09 48 83 c0 01 48 39 d0 74 50 80 38 00 <74> f2 eb d4 41 bc 08 00 00 00 48 89 ea 45 29 dc 4d 8d 1c 2c eb 0c
+RSP: 0018:ffffc90001a4f478 EFLAGS: 00000246
+RAX: fffff52000013784 RBX: fffff52000013785 RCX: ffffffff81c2295c
+RDX: fffff52000013785 RSI: 0000000000000008 RDI: ffffc9000009bc20
+RBP: fffff52000013784 R08: 0000000000000001 R09: ffffc9000009bc27
+R10: fffff52000013784 R11: 0000000000000000 R12: ffff88802d3305e0
+R13: fffff52000013784 R14: ffff88802d330628 R15: ffff88802d330648
+ instrument_atomic_read_write include/linux/instrumented.h:101 [inline]
+ test_and_set_bit_lock include/asm-generic/bitops/instrumented-lock.h:55 [inline]
+ bit_spin_lock include/linux/bit_spinlock.h:27 [inline]
+ hlist_bl_lock include/linux/list_bl.h:148 [inline]
+ ___d_drop+0xac/0x350 fs/dcache.c:489
+ __d_drop fs/dcache.c:497 [inline]
+ __d_drop fs/dcache.c:494 [inline]
+ d_invalidate+0xa2/0x280 fs/dcache.c:1670
+ simple_recursive_removal+0x347/0x6b0 fs/libfs.c:289
+ debugfs_remove fs/debugfs/inode.c:725 [inline]
+ debugfs_remove+0x59/0x80 fs/debugfs/inode.c:719
+ ieee80211_debugfs_remove_netdev+0x43/0xc0 net/mac80211/debugfs_netdev.c:833
+ ieee80211_teardown_sdata+0x48/0x2d0 net/mac80211/iface.c:687
+ ieee80211_runtime_change_iftype net/mac80211/iface.c:1657 [inline]
+ ieee80211_if_change_type+0x2b4/0x620 net/mac80211/iface.c:1691
+ ieee80211_change_iface+0x26/0x210 net/mac80211/cfg.c:157
+ rdev_change_virtual_intf net/wireless/rdev-ops.h:69 [inline]
+ cfg80211_change_iface+0x2eb/0xef0 net/wireless/util.c:1032
+ nl80211_set_interface+0x65c/0x8d0 net/wireless/nl80211.c:3789
+ genl_family_rcv_msg_doit+0x228/0x320 net/netlink/genetlink.c:739
+ genl_family_rcv_msg net/netlink/genetlink.c:783 [inline]
+ genl_rcv_msg+0x328/0x580 net/netlink/genetlink.c:800
+ netlink_rcv_skb+0x153/0x420 net/netlink/af_netlink.c:2494
+ genl_rcv+0x24/0x40 net/netlink/genetlink.c:811
+ netlink_unicast_kernel net/netlink/af_netlink.c:1304 [inline]
+ netlink_unicast+0x533/0x7d0 net/netlink/af_netlink.c:1330
+ netlink_sendmsg+0x856/0xd90 net/netlink/af_netlink.c:1919
+ sock_sendmsg_nosec net/socket.c:651 [inline]
+ sock_sendmsg+0xcf/0x120 net/socket.c:671
+ __sys_sendto+0x21c/0x320 net/socket.c:1992
+ __do_sys_sendto net/socket.c:2004 [inline]
+ __se_sys_sendto net/socket.c:2000 [inline]
+ __x64_sys_sendto+0xdd/0x1b0 net/socket.c:2000
+ do_syscall_64+0x2d/0x70 arch/x86/entry/common.c:46
+ entry_SYSCALL_64_after_hwframe+0x44/0xa9
+RIP: 0033:0x4026b3
+Code: ff ff ff f7 d8 64 89 02 48 c7 c0 ff ff ff ff eb cd 66 0f 1f 44 00 00 83 3d 5d 80 2d 00 00 75 17 49 89 ca b8 2c 00 00 00 0f 05 <48> 3d 01 f0 ff ff 0f 83 71 0e 00 00 c3 48 83 ec 08 e8 d7 03 00 00
+RSP: 002b:00007ffe154f4a38 EFLAGS: 00000246 ORIG_RAX: 000000000000002c
+RAX: ffffffffffffffda RBX: 00007ffe154f4af0 RCX: 00000000004026b3
+RDX: 0000000000000024 RSI: 00007ffe154f4b40 RDI: 0000000000000007
+RBP: 0000000000000000 R08: 00007ffe154f4a40 R09: 000000000000000c
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 0000000000000000 R14: 00007ffe154f4b40 R15: 0000000000000007
+Modules linked in:
+---[ end trace 16e6f8b07571c99a ]---
+RIP: 0010:ieee80211_multicast_to_unicast net/mac80211/tx.c:4070 [inline]
+RIP: 0010:ieee80211_subif_start_xmit+0x24e/0xee0 net/mac80211/tx.c:4154
+Code: 03 80 3c 02 00 0f 85 83 0c 00 00 49 8b 9f 50 17 00 00 48 b8 00 00 00 00 00 fc ff df 48 8d bb a4 01 00 00 48 89 fa 48 c1 ea 03 <0f> b6 04 02 48 89 fa 83 e2 07 38 d0 7f 08 84 c0 0f 85 58 0c 00 00
+RSP: 0018:ffffc90000007588 EFLAGS: 00010203
+RAX: dffffc0000000000 RBX: 0000000000000000 RCX: ffffffff8851c2ad
+RDX: 0000000000000034 RSI: ffffffff8851c33d RDI: 00000000000001a4
+RBP: ffff888018f8fc80 R08: 0000000000000000 R09: ffffffff8cecbd4f
+R10: 0000000000000004 R11: 0000000000000001 R12: ffffffff8a61f520
+R13: ffff88802517a042 R14: 000000000000005a R15: ffff888018314000
+FS:  0000000000ff5940(0000) GS:ffff8880b9e00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 000000000046dde0 CR3: 00000000203d8000 CR4: 00000000001506f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
 
