@@ -2,182 +2,91 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 82D0D2C472F
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Nov 2020 19:02:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2BE112C477F
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Nov 2020 19:24:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732911AbgKYSBx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 25 Nov 2020 13:01:53 -0500
-Received: from m42-4.mailgun.net ([69.72.42.4]:25674 "EHLO m42-4.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730728AbgKYSBw (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 25 Nov 2020 13:01:52 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1606327311; h=Content-Transfer-Encoding: Content-Type:
- In-Reply-To: MIME-Version: Date: Message-ID: From: References: Cc: To:
- Subject: Sender; bh=7LPkOcaw/p1knQ5KtExLHuxB75BuhzPxHs8gh80hyuw=; b=WcmwfmQ0gDoAulzvhYdcbZVYPbsOiRhWCwA0AqDs5UyWp34gTlmC8Ccm3o2tfTXR4m20Pr1q
- 6X5iYOVzvQZ6vyXKCDpNWpGspprxD1jjnY7uiZ0ZRCbV30smc4PNZUq+X8/klTcaewjZEcLH
- FtanzVjyUlk/nDDMtsjIT3FLXik=
-X-Mailgun-Sending-Ip: 69.72.42.4
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n01.prod.us-east-1.postgun.com with SMTP id
- 5fbe9be6e9b7088622a3b234 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 25 Nov 2020 18:01:10
- GMT
-Sender: jhugo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 38A88C43463; Wed, 25 Nov 2020 18:01:09 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        NICE_REPLY_A,SPF_FAIL,URIBL_BLOCKED autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from [10.226.59.216] (i-global254.qualcomm.com [199.106.103.254])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: jhugo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id EF425C433ED;
-        Wed, 25 Nov 2020 18:01:06 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org EF425C433ED
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=jhugo@codeaurora.org
-Subject: Re: [PATCH] net: qrtr: Unprepare MHI channels during remove
-To:     bbhatt@codeaurora.org
-Cc:     Loic Poulain <loic.poulain@linaro.org>, ath11k@lists.infradead.org,
-        cjhuang@codeaurora.org, clew@codeaurora.org,
-        hemantk@codeaurora.org, kvalo@codeaurora.org,
-        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-wireless@vger.kernel.org, manivannan.sadhasivam@linaro.org,
-        netdev@vger.kernel.org, jhugo=codeaurora.org@codeaurora.org
-References: <1605723625-11206-1-git-send-email-bbhatt@codeaurora.org>
- <5e94c0be-9402-7309-5d65-857a27d1f491@codeaurora.org>
- <CAMZdPi_b0=qFNGi1yUke3Dip2bi-zW4ULTg8W4nbyPyEsE3D4w@mail.gmail.com>
- <2019fe3c-55c5-61fe-758c-1e9952e1cb33@codeaurora.org>
- <647d1520d0bcefa7ff02d2ef5ee81bd1@codeaurora.org>
-From:   Jeffrey Hugo <jhugo@codeaurora.org>
-Message-ID: <e8eb7b2b-bb25-cba9-f487-1a0889d8cd93@codeaurora.org>
-Date:   Wed, 25 Nov 2020 11:01:06 -0700
+        id S1731336AbgKYSXj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 25 Nov 2020 13:23:39 -0500
+Received: from mail-lj1-f170.google.com ([209.85.208.170]:39522 "EHLO
+        mail-lj1-f170.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729153AbgKYSXj (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 25 Nov 2020 13:23:39 -0500
+Received: by mail-lj1-f170.google.com with SMTP id o24so3299097ljj.6;
+        Wed, 25 Nov 2020 10:23:37 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:to:cc:from:subject:message-id:date:user-agent
+         :mime-version:content-language:content-transfer-encoding;
+        bh=cPPQ179EgtW8kXz3cpwoQkCmMXkKDw1elffjhTNhfU4=;
+        b=g3YaGfQrmcI4EH/ByZCmC2c62jdj3ZCr3mEnqo1c7TDGKOBWxLJWk3H2ED4+TtCSWW
+         vE+7BTrzaz40/rQpCaSokWRcorcj9mditcjr86Z/n9Er0hZPHYPL80gYMGuK1V9ONE3O
+         Vei6Yb8Lidze4ioXtILAed0ssSkkSyagvbC/9HwV8crDqbYqLM5AubDl5t1CJ4XjIBTU
+         6/+YeB8I+J2++7n+qFOqxOFeMK+n0olZEC6HVHREZwFgZ1Xwi4cYMXcvthL2STSD66vB
+         2HxKcgA/6LhssthGih1CkX7U5X0gQ98IOkUlr7QgrYaPENysSTW2/RDoLwyYCgDBwS3P
+         vmXg==
+X-Gm-Message-State: AOAM532JBuMGitUBhjyYe2Fbz1pf+K7z5/GWZcIvul7h7dLJ8R+d4JB4
+        4Fjf/sI+LK7kr1s8LbuCRoE=
+X-Google-Smtp-Source: ABdhPJyKlM2u5yPWPouZUr4Cm7f8hO7xnjA92sVBkOEU3ScYpVOWFCvJouSekvXHGuIkYkorve2sng==
+X-Received: by 2002:a2e:2e10:: with SMTP id u16mr1917176lju.405.1606328616800;
+        Wed, 25 Nov 2020 10:23:36 -0800 (PST)
+Received: from [172.16.128.221] ([4.34.229.34])
+        by smtp.gmail.com with ESMTPSA id m202sm7189lfa.208.2020.11.25.10.23.33
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 25 Nov 2020 10:23:35 -0800 (PST)
+To:     Ulf Hansson <ulf.hansson@linaro.org>, linux-mmc@vger.kernel.org
+Cc:     linux-wireless@vger.kernel.org,
+        Arend Van Spriel <arend.vanspriel@broadcom.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Larry Finger <Larry.Finger@lwfinger.net>
+From:   Brian O'Keefe <bokeefe@alum.wpi.edu>
+Subject: [PATCH 1/2] mmc: sdio: Move SDIO IDs from rtl8723bs, driver to common
+ include file
+Message-ID: <16529bfd-0308-5da9-f7ce-4ffa9f77b4d0@alum.wpi.edu>
+Date:   Wed, 25 Nov 2020 13:23:31 -0500
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.4.0
+ Thunderbird/78.4.1
 MIME-Version: 1.0
-In-Reply-To: <647d1520d0bcefa7ff02d2ef5ee81bd1@codeaurora.org>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 11/19/2020 12:02 PM, Bhaumik Bhatt wrote:
-> On 2020-11-18 11:34 AM, Jeffrey Hugo wrote:
->> On 11/18/2020 12:14 PM, Loic Poulain wrote:
->>>
->>>
->>> Le mer. 18 nov. 2020 à 19:34, Jeffrey Hugo <jhugo@codeaurora.org 
->>> <mailto:jhugo@codeaurora.org>> a écrit :
->>>
->>>     On 11/18/2020 11:20 AM, Bhaumik Bhatt wrote:
->>>      > Reset MHI device channels when driver remove is called due to
->>>      > module unload or any crash scenario. This will make sure that
->>>      > MHI channels no longer remain enabled for transfers since the
->>>      > MHI stack does not take care of this anymore after the auto-start
->>>      > channels feature was removed.
->>>      >
->>>      > Signed-off-by: Bhaumik Bhatt <bbhatt@codeaurora.org
->>>     <mailto:bbhatt@codeaurora.org>>
->>>      > ---
->>>      >   net/qrtr/mhi.c | 1 +
->>>      >   1 file changed, 1 insertion(+)
->>>      >
->>>      > diff --git a/net/qrtr/mhi.c b/net/qrtr/mhi.c
->>>      > index 7100f0b..2bf2b19 100644
->>>      > --- a/net/qrtr/mhi.c
->>>      > +++ b/net/qrtr/mhi.c
->>>      > @@ -104,6 +104,7 @@ static void qcom_mhi_qrtr_remove(struct
->>>     mhi_device *mhi_dev)
->>>      >       struct qrtr_mhi_dev *qdev = dev_get_drvdata(&mhi_dev->dev);
->>>      >
->>>      >       qrtr_endpoint_unregister(&qdev->ep);
->>>      > +     mhi_unprepare_from_transfer(mhi_dev);
->>>      >       dev_set_drvdata(&mhi_dev->dev, NULL);
->>>      >   }
->>>      >
->>>      >
->>>
->>>     I admit, I didn't pay much attention to the auto-start being 
->>> removed,
->>>     but this seems odd to me.
->>>
->>>     As a client, the MHI device is being removed, likely because of some
->>>     factor outside of my control, but I still need to clean it up? This
->>>     really feels like something MHI should be handling.
->>>
->>>
->>> I think this is just about balancing operations, what is done in 
->>> probe should be undone in remove, so here channels are started in 
->>> probe and stopped/reset in remove.
->>
->> I understand that perspective, but that doesn't quite match what is
->> going on here.  Regardless of if the channel was started (prepared) in
->> probe, it now needs to be stopped in remove.  That not balanced in all
->> cases
->>
->> Lets assume, in response to probe(), my client driver goes and creates
->> some other object, maybe a socket.  In response to that socket being
->> opened/activated by the client of my driver, I go and start the mhi
->> channel.  Now, normally, when the socket is closed/deactivated, I stop
->> the MHI channel.  In this case, stopping the MHI channel in remove()
->> is unbalanced with respect to probe(), but is now a requirement.
->>
->> Now you may argue, I should close the object in response to remove,
->> which will then trigger the stop on the channel.  That doesn't apply
->> to everything.  For example, you cannot close an open file in the
->> kernel. You need to wait for userspace to close it.  By the time that
->> happens, the mhi_dev is long gone I expect.
->>
->> So if, somehow, the client driver is the one causing the remove to
->> occur, then yes it should probably be the one doing the stop, but
->> that's a narrow set of conditions, and I think having that requirement
->> for all scenarios is limiting.
-> It should be the client's responsibility to perform a clean-up though.
-> 
-> We cannot assume that the remove() call was due to factors outside of the
-> client's control at all times. You may not know if the remove() was due to
-> device actually crashing or just an unbind/module unload. So, it would be
-> better if you call it as the device should ideally not be left with a stale
-> channel context. >
-> We had an issue where a client was issuing a driver unbind without 
-> unpreparing
-> the MHI channels and without Loic's patch [1], we would not issue a channel
-> RESET to the device resulting in incoming data to the host on those 
-> channels
-> after host clean-up and an unmapped memory access and kernel panic.
+Macro names were derived from the Windows driver, as that was the best
+available source.
 
-So the client drivers have to do the right thing, otherwise the kernel 
-could crash?  Sounds like you are choosing to not do defensive coding in 
-MHI and making your problems the client's problems.
+Signed-off-by: Brian O'Keefe <bokeefe@alum.wpi.edu>
+---
+  include/linux/mmc/sdio_ids.h | 14 ++++++++++++++
+  1 file changed, 14 insertions(+)
 
-Before releasing the resources, why haven't you issued a MHI_RESET of 
-the state machine, and ensured the device has ack'd the reset?
+diff --git a/include/linux/mmc/sdio_ids.h b/include/linux/mmc/sdio_ids.h
+index 12036619346c..97ccb0ac5e43 100644
+--- a/include/linux/mmc/sdio_ids.h
++++ b/include/linux/mmc/sdio_ids.h
+@@ -42,6 +42,20 @@
+  #define SDIO_VENDOR_ID_TI                      0x0097
+  #define SDIO_DEVICE_ID_TI_WL1271               0x4076
 
-> If MHI dev will be gone that NULL/status check must be present in 
-> something that
-> userspace could potentially use.
-> 
-> [1] 
-> https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/commit/drivers/bus/mhi?h=next-20201119&id=a7f422f2f89e7d48aa66e6488444a4c7f01269d5 
-> 
-> 
-> Thanks,
-> Bhaumik
-> ---
-> The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,
-> a Linux Foundation Collaborative Project
-
-
--- 
-Jeffrey Hugo
-Qualcomm Technologies, Inc. is a member of the
-Code Aurora Forum, a Linux Foundation Collaborative Project.
++#define SDIO_VENDOR_ID_REALTEK                  0x024c
++#define SDIO_DEVICE_ID_REALTEK_BESTBUY_0        0x0240
++#define SDIO_DEVICE_ID_REALTEK_BESTBUY_1        0x0241
++#define SDIO_DEVICE_ID_REALTEK_HP               0x0523
++#define SDIO_DEVICE_ID_REALTEK_ECS              0x0524
++#define SDIO_DEVICE_ID_REALTEK_TCL              0x0525
++#define SDIO_DEVICE_ID_REALTEK_ACER             0x0623
++#define SDIO_DEVICE_ID_REALTEK_RSVD             0x0624
++#define SDIO_DEVICE_ID_REALTEK_ROCKCHIP         0x0625
++#define SDIO_DEVICE_ID_REALTEK_BRASWELL         0x0626
++#define SDIO_DEVICE_ID_REALTEK_ACER_PWR_LIMIT   0x0627
++#define SDIO_DEVICE_ID_REALTEK_COMMON_01        0x8753
++#define SDIO_DEVICE_ID_REALTEK_COMMON_02        0xb723
++
+  #define SDIO_VENDOR_ID_ATHEROS                 0x0271
+  #define SDIO_DEVICE_ID_ATHEROS_AR6003_00       0x0300
+  #define SDIO_DEVICE_ID_ATHEROS_AR6003_01       0x0301
+--
+2.25.1
