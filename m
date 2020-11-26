@@ -2,54 +2,55 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B4192C5C0E
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Nov 2020 19:32:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6997A2C5CAC
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Nov 2020 20:45:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404878AbgKZSbN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 26 Nov 2020 13:31:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47148 "EHLO
+        id S2405264AbgKZToc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 26 Nov 2020 14:44:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58392 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2404553AbgKZSbN (ORCPT
+        with ESMTP id S2404817AbgKZToc (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 26 Nov 2020 13:31:13 -0500
-Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com [IPv6:2607:f8b0:4864:20::643])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA41EC0613D4;
-        Thu, 26 Nov 2020 10:31:12 -0800 (PST)
-Received: by mail-pl1-x643.google.com with SMTP id u2so1492079pls.10;
-        Thu, 26 Nov 2020 10:31:12 -0800 (PST)
+        Thu, 26 Nov 2020 14:44:32 -0500
+Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com [IPv6:2607:f8b0:4864:20::642])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65EB5C0613D4;
+        Thu, 26 Nov 2020 11:44:32 -0800 (PST)
+Received: by mail-pl1-x642.google.com with SMTP id l1so1585890pld.5;
+        Thu, 26 Nov 2020 11:44:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=message-id:subject:from:to:cc:date:in-reply-to:references
          :user-agent:mime-version:content-transfer-encoding;
-        bh=+v07REWnnzENKrJ+DKBOFO9MF0WIxUweMXdA5GAB/a8=;
-        b=LEfhlCMh9kipTDWJ7p7GpHTqaKo4PWqH7wxrdAB7ZIoaqbLoV4k0PtoPZDF+1R/jlk
-         NWQvVbhaWq+xVN5rDzkVdoT7QD5OadczzSZ0xqJzQBMywlc9awNavJPLjr9hmUAMUIkH
-         LiOVLsTdPfji0zOPh8hqAN3GkkCpGIOfZ7PNQ9ut1m4kvZklp3QPvjguXxVgX/crJhQv
-         XNDE9JzrqqZUHYEJ5vGQ7u4wAx5MlxGphVUSOoUxJIkr9wbDn2+ppQQBYmk4ukSmkIGs
-         1ye1Tb1hk+iAg8phsTG+Yj5dax7KaGyFHvhjjkLKNKdRRBl6Msu86g7ocxBVFSS9xshZ
-         k/vw==
+        bh=Q6+9AIQzu0mTDLScA3MxPbaf0ZqBfnQEsRT0YPfOhCI=;
+        b=qVRgH1mwe7J6UzYQ1wpjkCDsLdQB+YVsBhT3D8L4Q5icrtxvb15LScWNQVxf1OzDaV
+         X3UfMmXevUP3Dvqh6UXhaBg0WN3tAXbGgxJ/GjiupKzhzgG876TYg0s9w3obocRxlbOr
+         XTfRM397m+6wmd1Auky0T3GYJDBvHUei+G2gGyx0v0TVP++Tl4PKiSqYtw3+OEKCFv8U
+         ugr/JmEE3BvLYeub3BZjJqpwo0oCsfACLYaeqaw9TEU6/yzJTqzzCIgzWgazilFnOQly
+         TncW1IOLb81Il5/hSQ7HoLEhfgsr4keCzzfmHvoHVwQxNn5OfNqpXJ/ZuGFfd2pe+dhn
+         QSGQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
          :references:user-agent:mime-version:content-transfer-encoding;
-        bh=+v07REWnnzENKrJ+DKBOFO9MF0WIxUweMXdA5GAB/a8=;
-        b=B4jn4vSeralL5floKhITGBrDMe1RTtl8ku4aq3Wir17bbMaac0YoiuiVViZMIgEusd
-         PsH3+JPjIaqwrfjb2movRRYj5cFdCzNqX64/tgZh+/fAb6ogMfoZJni4cc4oxJSXJ2ov
-         YeTMzt4bai4Vab5KDMv9QL0e3FnKLkhKR2FJE+7SWLjWYpYVB0kgbIM4raN5165wa/YO
-         GwwU9OJ7VgNDt/MgCftUUd/TLl3p+6AgcWAnpt8QGcGXqf+Z7FRXxW+m81D4/9xtAE80
-         6YN2Mk9lDq8JvRLO+vMFJrT9ud5MFlvQLXBJJZCRYz4cUTMOSiKzWatZdel92s64PFw/
-         0yaQ==
-X-Gm-Message-State: AOAM531PTrt+qT9gzHykrymCZ0RWAZNeAy7qKHaMgmKiKhQkFzkfGUkI
-        pNmxd2qgZy19YmseOwcxkD0=
-X-Google-Smtp-Source: ABdhPJyuRi0WDD8c1FJ22qb8BEWNE4PG5SQFCTK7rtVUhl3YMpWMtwzrTvqfKEnKXhsdCR17gJbj1g==
-X-Received: by 2002:a17:902:bf0b:b029:d8:f677:30f2 with SMTP id bi11-20020a170902bf0bb02900d8f67730f2mr3770386plb.25.1606415472382;
-        Thu, 26 Nov 2020 10:31:12 -0800 (PST)
+        bh=Q6+9AIQzu0mTDLScA3MxPbaf0ZqBfnQEsRT0YPfOhCI=;
+        b=Ox8bxgxHnG84rQtXcaMgqBKyXLjuH/0YFIj36vbBltpzqTkPDRifgOYiFqodAtwMUk
+         yzbsCUrV1Cua0oW0qhPoA584FppcbbDuqjO5YZOp5NosqzWHmL5Iaj4cGuPy1nIwgeYa
+         0HsmrQyzWoo79kxngagW34T35L3U7uBxFiGfL+lCwg+X8NF33ngtP/GAFmmv+VvNFKwO
+         g8N4PBc662ElT71fI/L15n7VkoolxFqWUx2Lup1X/zE3EyMj2tHRs453YsynG1hqbusR
+         AAsMeKVWrh1A9PTLOoOBcOBWMZK29lM3ddlafo6fCKNlKEoExyvLymC21aHXO54kzWd9
+         L+Mg==
+X-Gm-Message-State: AOAM531FwYdNmVsArRPgCY4w0qb34vUWLwLHqjRb4/WuR4FmpY7OOWkp
+        M2JhjgtY/dOcpQF3HxFe0Wkj++WA4pL9pA==
+X-Google-Smtp-Source: ABdhPJyZcFztd27CIvTj/jb8ApeL8DTTbBv4qpHudzYYDnxlPBzORfbl0Rof+N0aAHK0TH5O5c5F8A==
+X-Received: by 2002:a17:902:b415:b029:d6:ec35:755b with SMTP id x21-20020a170902b415b02900d6ec35755bmr3887204plr.47.1606419871852;
+        Thu, 26 Nov 2020 11:44:31 -0800 (PST)
 Received: from [192.168.1.155] (i60-35-254-237.s41.a020.ap.plala.or.jp. [60.35.254.237])
-        by smtp.gmail.com with ESMTPSA id x16sm7052116pjh.39.2020.11.26.10.31.07
+        by smtp.gmail.com with ESMTPSA id kb12sm7325265pjb.2.2020.11.26.11.44.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Nov 2020 10:31:11 -0800 (PST)
-Message-ID: <e3962839410ba396a21edf8a6c481ec42ada1bdc.camel@gmail.com>
-Subject: Re: [PATCH] mwifiex: pcie: add enable_device_dump module parameter
+        Thu, 26 Nov 2020 11:44:30 -0800 (PST)
+Message-ID: <4f88f25c78d82e980f5fa7e686b00ad5b20031c5.camel@gmail.com>
+Subject: Re: [PATCH 1/3] mwifiex: disable ps_mode explicitly by default
+ instead
 From:   Tsuchiya Yuto <kitakar@gmail.com>
 To:     Brian Norris <briannorris@chromium.org>
 Cc:     Amitkumar Karwar <amitkarwar@gmail.com>,
@@ -63,124 +64,87 @@ Cc:     Amitkumar Karwar <amitkarwar@gmail.com>,
         Linux Kernel <linux-kernel@vger.kernel.org>,
         Maximilian Luz <luzmaximilian@gmail.com>,
         Andy Shevchenko <andriy.shevchenko@intel.com>, verdre@v0yd.nl
-Date:   Fri, 27 Nov 2020 03:31:05 +0900
-In-Reply-To: <CA+ASDXNPcXtTWS8pOjfoxiYOAcRMmsqZwXe3mnxOw388MCEu9g@mail.gmail.com>
-References: <20201028142625.18642-1-kitakar@gmail.com>
-         <CA+ASDXPX+fadTKLnxNVZQ0CehsHNwvWHXEdLqZVDoQ6hf6Wp8Q@mail.gmail.com>
-         <7db5b6cba1548308a63855ec1dda836b6d6d9757.camel@gmail.com>
-         <CA+ASDXNPcXtTWS8pOjfoxiYOAcRMmsqZwXe3mnxOw388MCEu9g@mail.gmail.com>
+Date:   Fri, 27 Nov 2020 04:44:24 +0900
+In-Reply-To: <CA+ASDXMUdYHTKphxFwcAim79N_DJiQFHFN0gDZsPB4rMHyxxXw@mail.gmail.com>
+References: <20201028142433.18501-1-kitakar@gmail.com>
+         <20201028142433.18501-2-kitakar@gmail.com>
+         <CA+ASDXMfuqy=kCECktP_mYm9cAapXukeLhe=1i3uPbTu9wS2Qw@mail.gmail.com>
+         <8fa12bfff1cc30b655934e303cad78ae75b0fcde.camel@gmail.com>
+         <CA+ASDXMUdYHTKphxFwcAim79N_DJiQFHFN0gDZsPB4rMHyxxXw@mail.gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 User-Agent: Evolution 3.38.2 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 2020-11-20 at 12:53 -0800, Brian Norris wrote:
-> (Sorry if anything's a bit slow here. I don't really have time to
-> write out full proposals myself.)
-
-Don’t worry, I (and other owners) am already glad to hear from upstream
-devs, including you :)
-
-(and I'm also sorry for the late reply from me. It was difficult to find
-spare time these days.)
-
-> On Fri, Oct 30, 2020 at 3:30 AM Tsuchiya Yuto <kitakar@gmail.com> wrote:
-> > Let me know if splitting this patch like this works. 1) The first patch
-> > is to add this module parameter but don't change the default behavior.
+On Fri, 2020-11-20 at 13:04 -0800, Brian Norris wrote:
+> On Fri, Oct 30, 2020 at 1:04 AM Tsuchiya Yuto <kitakar@gmail.com> wrote:
+> > On Thu, 2020-10-29 at 11:25 -0700, Brian Norris wrote:
+> > > For the record, Chrome OS supports plenty of mwifiex systems with 8897
+> > > (SDIO only) and 8997 (PCIe), with PS enabled, and you're hurting
+> > > those. Your problem sounds to be exclusively a problem with the PCIe
+> > > 8897 firmware.
+> > 
+> > Actually, I already know that some Chromebooks use these mwifiex cards
+> > (but not out PCIe-88W8897) because I personally like chromiumos. I'm
+> > always wondering what is the difference. If the difference is firmware,
+> > our PCIe-88W8897 firmware should really be fixed instead of this stupid
+> > series.
 > 
-> That *could* be OK with me, although it's already been said that there
-> are many people who dislike extra module parameters. I also don't see
-> why this needs to be a module parameter at all. If you do #2 right,
-> you don't really need this, as there are already several standard ways
-> of doing this (e.g., via Kconfig, or via nl80211 on a per-device
-> basis).
+> PCIe is a very different beast. (For one, it uses DMA and
+> memory-mapped registers, where SDIO has neither.) It was a very
+> difficult slog to get PCIe/8997 working reliably for the few
+> Chromebooks that shipped it, and lots of that work is in firmware. I
+> would not be surprised if the PCIe-related changes Marvell made for
+> 8997 never fed back into their PCIe-8897 firmware. Or maybe they only
+> ever launched PCIe-8897 for Windows, and the Windows driver included
+> workarounds that were never published to their Linux driver. But now
+> I'm just speculating.
+
+Thanks. Yeah, this is indeed hard work. Actually, I (and maybe also other
+users) am already thankful that there is wifi driver/firmware available
+on Linux :) and it'll be greater if we can fix ps_mode-related issues.
+
+> > Yes, I'm sorry that I know this series is just a stupid one but I have to
+> > send this anyway because this stability issue has not been fixed for a
+> > long time. I should have added this buglink to every commit as well:
+> > 
+> > BugLink: https://bugzilla.kernel.org/show_bug.cgi?id=109681
+> > 
+> > If the firmware can't be fixed, I'm afraid I have to go this way. It makes
+> > no sense to keep enabling power_save for the affected devices if we know
+> > it's broken.
 > 
-> > 2) The second patch is to change the parameter value depending on the
-> > DMI matching or something so that it doesn't break the existing users.
-> 
-> Point 2 sounds good, and this is the key point. Note that you can do
-> point 2 without making it a module parameter. Just keep a flag in the
-> driver-private structures.
+> Condolences and sympathy, seriously. You likely have little chance of
+> getting the firmware fixed, so without new information (e.g,. other
+> workarounds?), this is the probably the right way to go.
 
-I chose to also provide the module parameter because I thought it would
-be a little bit complicated for users to re-enable this dump feature if
-I chose not to provide this parameter.
+Thank you for the pointer!
 
-If I don't provide the parameter but still want to allow users to
-re-enable this dump feature, we can provide a way to change the bit flags
-of quirks (via a new debugfs entry or another module parameter). That
-said, is there a way to easily change the quirk flags only for this dump
-feature?
+There are two issues regarding ps_mode:
+1) fw crashes with "Firmware wakeup failed"
+   (I haven't mentioned in this series, but ps_mode also causes fw crashes)
+2) connection instability (like large ping delay or even ping not reaching)
 
-For example, assume that the following three quirks are enabled by default:
+If anyone is ever interested in dmesg log with debug_mask=0xffffffff and
+device_dump, I posted them to the Bugzilla [1] before.
 
-/* quirks */
-#define QUIRK_FW_RST_D3COLD	BIT(0)
-#define QUIRK_NO_DEVICE_DUMP	BIT(1)
-#define QUIRK_FOO		BIT(2)
+Regarding the #2, although this is even not a workaround but I found
+scanning APs will fix this. So, when I encounter this issue, I keep
+scanning APs like "watch -n10 sudo iw dev ${dev_name} scan". So, it
+seems that scanning APs will somehow wake wifi up? In other words, wifi
+is sleeping when it shouldn't? or wifi somehow failed to wake up when
+it should?
 
-.driver_data = (void *)(QUIRK_FW_RST_D3COLD |
-			QUIRK_NO_DEVICE_DUMP |
-			QUIRK_FOO),
+Regarding #1, we don't have any ideas yet. There is a guess that memory
+leak will occur in the fw every time wifi goes into sleep, but don't know.
 
-card->quirks = (uintptr_t)dmi_id->driver_data;
+We even don't have the exact reproducers for both #1 and #2. What we
+know so far is that, enabling ps_mode causes these issues.
 
-/* and assume that card->quirks can be changed by users by a file named
- * "quirks" under debugfs.
- */
-
-So, the card->quirks will be "7" in decimal by default. Then, if users
-want to re-enable the dump feature, as far as I know, users need to know
-the default value "7", then need to know that device_dump is controlled
-by bit 1. Finally, users can set the new quirk flags "5" in decimal (101
-in binary).
-
-echo 5 > /sys/kernel/debug/mwifiex/mlan0/quirks
-
-I'm glad if there is another nice way to control only the device_dump
-quirk flag, if we only provide a way to change quirk flags.
-
-But at the same time I also think that if someone dare to want to
-re-enable this feature, maybe the person won't feel it's complicated haha.
-So, I'll drop the device_dump module parameter and switch to use the quirk
-framework, adding a way to change the quirk flags value by users.
-
-That said, we may even drop disabling the dump. Take a look at my comment
-I wrote below.
-
-> > But what I want to say here as well is that, if the firmware can be fixed,
-> > we don't need a patch like this.
-> 
-> Sure. That's also where we don't necessarily need more ways to control
-> this from user space (e.g., module parameters), but just better
-> detection of currently broken systems (in the driver). And if firmware
-> ever gets fixed, we can undo the "broken device" detection.
-
-There are two types of firmware crashes we observes:
-1) cmd_timedout (other than ps_mode-related)
-2) Firmware wakeup failed (ps_mode-related)
-
-The #2 is observed when we enabled ps_mode. The #1 is observed for the
-other causes. And hopefully, verdre (in Cc) found a "fix" [1] for the
-#1 fw crash. We are trying the fix now.
-
-The pull req (still WIP) basically addresses fw crashing by using
-"non-posted" register writes and uninterruptible wait queue for PCI
-operations in the kernel driver side.
-
-We still don't have any ideas to "fix" the #2 fw crash, but now we don't
-see the #1 crash anymore so far.
-
-I'd like to see where the attempt goes before I start working on this
-patch here again.
-
-Thank you, everyone.
-
-[1] https://github.com/linux-surface/kernel/pull/70
-    [WIP] Properly fix wifi firmware crashes by jonas2515 · Pull Request #70 · linux-surface/kernel
+[1] https://bugzilla.kernel.org/show_bug.cgi?id=109681#c130
 
 > Brian
 
