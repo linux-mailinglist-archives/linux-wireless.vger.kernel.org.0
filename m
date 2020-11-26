@@ -2,294 +2,111 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 02C9B2C4D2D
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Nov 2020 03:15:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 56DC82C4E24
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Nov 2020 06:02:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733016AbgKZCM2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 25 Nov 2020 21:12:28 -0500
-Received: from rtits2.realtek.com ([211.75.126.72]:60677 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732921AbgKZCM1 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 25 Nov 2020 21:12:27 -0500
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 0AQ2CLO50030358, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexmb04.realtek.com.tw[172.21.6.97])
-        by rtits2.realtek.com.tw (8.15.2/2.70/5.88) with ESMTPS id 0AQ2CLO50030358
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Thu, 26 Nov 2020 10:12:21 +0800
-Received: from localhost.localdomain (172.21.69.213) by
- RTEXMB04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2044.4; Thu, 26 Nov 2020 10:12:21 +0800
-From:   <pkshih@realtek.com>
-To:     <kvalo@codeaurora.org>
-CC:     <tony0620emma@gmail.com>, <ku920601@realtek.com>,
-        <linux-wireless@vger.kernel.org>
-Subject: [PATCH v2 10/10] rtw88: coex: add feature to enhance HID coexistence performance
-Date:   Thu, 26 Nov 2020 10:10:59 +0800
-Message-ID: <20201126021059.11981-11-pkshih@realtek.com>
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <20201126021059.11981-1-pkshih@realtek.com>
-References: <20201126021059.11981-1-pkshih@realtek.com>
+        id S1726877AbgKZFBc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 26 Nov 2020 00:01:32 -0500
+Received: from mail-eopbgr110130.outbound.protection.outlook.com ([40.107.11.130]:17565
+        "EHLO GBR01-CWL-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725846AbgKZFBb (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 26 Nov 2020 00:01:31 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Zg8IlNqjt/qW+NipdHelqjdbWWb3z+H6kbOQuQJFznh1mAUWE/v+VgYWDVnXBLVJXFaPXRN2jwFoDg9R11QJ7yh3g4sV6JW9DwUk3+iwmAW0RcLYi2SlxnN1lhfT+x+M6vkHsDbnXqSrhXgxBC58ru4mq9yKKwQ9umVhHKyh5wZwIWmGunRgOay9Ev1sk1daCgZskU0bZPu/sA0IGMQiFyXOGNB+isq1OhHhS7FzJzyid5oDIyb6gfQh8Q4HFPoH2iZ7qKvxYPyz1ljWv2tZbaK8NUki4IIA8OGh2WGrCClQsofowX0ccII+gAff/gaNXj2oD3YMeuoJDS7eZUi45g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=qHYrsIFQP6xLkBg6mg8RoMXOyIYUJyyshQMi5sz0Bb8=;
+ b=gGrNQ1nm/2Hdq9nXFq0lV+fya5oc9VmdGgn2PtJL2yFz5SiilotYxGyHJnrJBC2UC7ihkFKlLVPHxcT22Znkr8HUHZeZRozwMRU3k1UpQwNUxYSIZsvokvYJexK7Li3qc/S3a8xwGTCj6ungUgXrBDwn3QTSNwlei+l4pudmfwz9Nw3+M0jA0BzYC6RiToMdDraSamVQzVgTGsL2jfD3rMIo6QiJnx5dq071C8lBH/P0+MorNFnDLIGAA/7T+63dD4VWc/38QQcAh60xWIYsoukY4SX3vyt1Gj9p3nSmlG0Mg0fKaHO9u4fo0mh/LClP/bsl/m6Joo93fpwQM1XPZw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=purelifi.com; dmarc=pass action=none header.from=purelifi.com;
+ dkim=pass header.d=purelifi.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=purevlc.onmicrosoft.com; s=selector2-purevlc-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=qHYrsIFQP6xLkBg6mg8RoMXOyIYUJyyshQMi5sz0Bb8=;
+ b=qB0bxE2zBXn69m0UzGj733pYaVbEcTSEkGfUfJbYcNCEbVF4pL9bO0IVDO5U0WwZcEMYfyaLT1zysG3wIEm1i8wvgKYSX756YBhmxaX1WtneYcMB7yNsa9QzZWg5ZdpglRB04okXSKB/2adWFq8qDq++jm93HaPTdnDaAGYScyk=
+Received: from CWXP265MB1799.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:3a::14)
+ by CWLP265MB0435.GBRP265.PROD.OUTLOOK.COM (2603:10a6:401:18::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3589.20; Thu, 26 Nov
+ 2020 05:01:28 +0000
+Received: from CWXP265MB1799.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::f8b6:b3c:d651:2dde]) by CWXP265MB1799.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::f8b6:b3c:d651:2dde%7]) with mapi id 15.20.3611.022; Thu, 26 Nov 2020
+ 05:01:28 +0000
+From:   Srinivasan Raju <srini.raju@purelifi.com>
+To:     Kalle Valo <kvalo@codeaurora.org>
+CC:     Mostafa Afgani <mostafa.afgani@purelifi.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        Rob Herring <robh@kernel.org>,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+        open list <linux-kernel@vger.kernel.org>,
+        "open list:NETWORKING DRIVERS (WIRELESS)" 
+        <linux-wireless@vger.kernel.org>,
+        "open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>
+Subject: Re: [PATCH] [v7] wireless: Initial driver submission for pureLiFi STA
+ devices
+Thread-Topic: [PATCH] [v7] wireless: Initial driver submission for pureLiFi
+ STA devices
+Thread-Index: AQHWu/oh8T+esyecpUerAB1FdPgUnqnXaMIAgAKA/Dg=
+Date:   Thu, 26 Nov 2020 05:01:28 +0000
+Message-ID: <CWXP265MB17998453F1460D55FA667E51E0F90@CWXP265MB1799.GBRP265.PROD.OUTLOOK.COM>
+References: <20201116092253.1302196-1-srini.raju@purelifi.com>,<20201124144448.4E95EC43460@smtp.codeaurora.org>
+In-Reply-To: <20201124144448.4E95EC43460@smtp.codeaurora.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: codeaurora.org; dkim=none (message not signed)
+ header.d=none;codeaurora.org; dmarc=none action=none
+ header.from=purelifi.com;
+x-originating-ip: [106.203.70.227]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 2963f816-652f-4b58-5fe5-08d891c8553f
+x-ms-traffictypediagnostic: CWLP265MB0435:
+x-ms-exchange-transport-forked: True
+x-microsoft-antispam-prvs: <CWLP265MB0435CEE6696F848D39FF200FE0F90@CWLP265MB0435.GBRP265.PROD.OUTLOOK.COM>
+x-ms-oob-tlc-oobclassifiers: OLM:7691;
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: NBJOmsUTv1thfZFUL6qILglOXyFQehkhrhs4gcUwnawbMw77C/egmvZWphDG00URS3NZUzLMEEt5+Gq6YDWSDneGb0q7UI/q7BfUp65muxzg5YKtHxLEgNWimJunJeJbnwkCNB80qX0FJW/Z2SLAQtFWX0yG2tMSZwfUYaYTH98fUBypkxvG659NDCr3g07MbFOnceJJ6fM3kROaJKZmVaDe9s4421tj5VMc0VrtJaZ66ahPzDsuIS5dVvJhoXVmFEDHWECYqHxwGaJEqJplLN6xBdlHkOkwx4HC9Ii3nmVnOVs/TTdeZzOAB4L2uQBZe3X3Id1sllr9nMTA+8iqefpnVQDNfhnY9LyAEsHipmOvlEYDcdtlSwvFkVgykSLAuFbaUvX0oYaMeHWN9IWXfw==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CWXP265MB1799.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(6029001)(4636009)(396003)(366004)(376002)(39830400003)(346002)(136003)(186003)(8936002)(4326008)(71200400001)(83380400001)(26005)(7696005)(76116006)(6916009)(478600001)(33656002)(2906002)(86362001)(9686003)(4744005)(55016002)(966005)(66946007)(52536014)(64756008)(316002)(8676002)(6506007)(66476007)(66446008)(54906003)(5660300002)(66556008)(55236004)(91956017);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata: mbqPLqMYYctQ6WYmhBYEWf0qoHtnbjGeeiI7fGaqsxd7GbXcfH3N49b3jj9WgD1+/pQFGc2JmDHhlELLZofeU2BwapjXR9zlXBdbLuw3WugCFkUs0xS9X8DMFCJfhIoqqzlzy6x9aNHFqzLOB+40zsQ3qlukuV/upRTrZir/KW1UFvBI7tR19t/TPjKR/0uZWnVFxzRL0UbGobx4WYa618JBs3Hjeu6f1d2D8ibklqNZCEYKm2aG1T6OLuAXevR10VXhSdmTepWHn2vjElgTV/QMIP1Gxk41G+sH1wILoA5JtTZ91o3MIm19QBUWgzX9lm7LQuwW62epJpxnfH8rIp53I7k9ECv0L+g5OADjQtLCo6vEdGYLyi6xMyn7OZ0sm9WlmLyhbCJFBpaOgw4l3jqaIhUcjnU32aRY+zz07+F5vTbl4kB3cSXb9ia+tz8DtUjztvU454vokUe/CTWutP3j0xv8sKcgjDq9Ca+N/yzKAl6L1vnbU1k9Fsdzx9g+FTh5elavjo81ei2vaW+kX12ojAkFbIQ3RCtup2P1pRX5pRK84nulc4ABs81wX8rrqiuT71aSxXa63g7e3K3ljnhh7Sfx6D5NATuBtYwr0lS8+N85mpMxMsRq1Nok26hV7XqTZxC88ZqqMa/upS9MRrFG3ysW6m0fGAX8+HYAO+TII4Jr1Z0LctL/dw9Ts2k2lChTlRV/lMBDA3h+2UNJboXHvFsoH469KbEff+EzeK01wvcLklr/3qP+EkDKIW757UV3q3ZOkiQmaV0aJnjaxT7/gENy+yRegC+55U0+fo6lwwH5gfn03VJMDa1c3Tn7/G+h54HD2jed2ioT+sAcNsPwoLPyCJ0h6yimD8YIs1ig2KQ1HfyJlFITsfibwz9ky74o2XmacPL/oPERcCX7HA==
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [172.21.69.213]
-X-ClientProxiedBy: RTEXMB03.realtek.com.tw (172.21.6.96) To
- RTEXMB04.realtek.com.tw (172.21.6.97)
+X-OriginatorOrg: purelifi.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: CWXP265MB1799.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2963f816-652f-4b58-5fe5-08d891c8553f
+X-MS-Exchange-CrossTenant-originalarrivaltime: 26 Nov 2020 05:01:28.1722
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 5cf4eba2-7b8f-4236-bed4-a2ac41f1a6dc
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: +4HFlZNe34CZH+/6dJguqbbvy4UL7JNoEi8J+AgBqN5//dRPNpDbes9Svn561eeLiN19ZhH98RaFZ5fs2SbJNA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB0435
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Ching-Te Ku <ku920601@realtek.com>
-
-Add toggle table related function to enhance WL throughput when WL coexist
-with 4/18 HID.
-The toggle table feature will toggle WL/BT priority table during WL slot,
-it can decrease the impact from HID's frequently packets and prevent HID
-lag.
-
-Signed-off-by: Ching-Te Ku <ku920601@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
-v2:
-  * fix "set but not used" warnings reported by kernel test robot on
-    PATCH 9/10.
-    I move some variables from PATCH 9/10 because they are used in this
-    patch.
----
- drivers/net/wireless/realtek/rtw88/coex.c | 102 ++++++++++++++++++++--
- drivers/net/wireless/realtek/rtw88/coex.h |   3 +
- drivers/net/wireless/realtek/rtw88/main.h |   5 ++
- 3 files changed, 104 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/net/wireless/realtek/rtw88/coex.c b/drivers/net/wireless/realtek/rtw88/coex.c
-index 4d921e9d8956..c704c6885a18 100644
---- a/drivers/net/wireless/realtek/rtw88/coex.c
-+++ b/drivers/net/wireless/realtek/rtw88/coex.c
-@@ -937,6 +937,69 @@ static void rtw_coex_set_gnt_wl(struct rtw_dev *rtwdev, u8 state)
- 	rtw_coex_write_indirect_reg(rtwdev, LTE_COEX_CTRL, 0x0300, state);
- }
- 
-+static void rtw_btc_wltoggle_table_a(struct rtw_dev *rtwdev, bool force,
-+				     u8 table_case)
-+{
-+	struct rtw_chip_info *chip = rtwdev->chip;
-+	struct rtw_efuse *efuse = &rtwdev->efuse;
-+	u8 h2c_para[6] = {0};
-+	u32 table_wl = 0x5a5a5a5a;
-+
-+	h2c_para[0] = COEX_H2C69_TOGGLE_TABLE_A;
-+	/* no definition */
-+	h2c_para[1] = 0x1;
-+
-+	if (efuse->share_ant) {
-+		if (table_case < chip->table_sant_num)
-+			table_wl = chip->table_sant[table_case].wl;
-+	} else {
-+		if (table_case < chip->table_nsant_num)
-+			table_wl = chip->table_nsant[table_case].wl;
-+	}
-+
-+	/* tell WL FW WL slot toggle table-A*/
-+	h2c_para[2] = (u8)u32_get_bits(table_wl, GENMASK(7, 0));
-+	h2c_para[3] = (u8)u32_get_bits(table_wl, GENMASK(15, 8));
-+	h2c_para[4] = (u8)u32_get_bits(table_wl, GENMASK(23, 16));
-+	h2c_para[5] = (u8)u32_get_bits(table_wl, GENMASK(31, 24));
-+
-+	rtw_fw_bt_wifi_control(rtwdev, h2c_para[0], &h2c_para[1]);
-+
-+	rtw_dbg(rtwdev, RTW_DBG_COEX,
-+		"[BTCoex], %s(): H2C = [%02x %02x %02x %02x %02x %02x]\n",
-+		__func__, h2c_para[0], h2c_para[1], h2c_para[2],
-+		h2c_para[3], h2c_para[4], h2c_para[5]);
-+}
-+
-+#define COEX_WL_SLOT_TOGLLE 0x5a5a5aaa
-+static void rtw_btc_wltoggle_table_b(struct rtw_dev *rtwdev, bool force,
-+				     u8 interval, u32 table)
-+{
-+	struct rtw_coex *coex = &rtwdev->coex;
-+	struct rtw_coex_stat *coex_stat = &coex->stat;
-+	u8 cur_h2c_para[6] = {0};
-+	u8 i;
-+
-+	cur_h2c_para[0] = COEX_H2C69_TOGGLE_TABLE_B;
-+	cur_h2c_para[1] = interval;
-+	cur_h2c_para[2] = (u8)u32_get_bits(table, GENMASK(7, 0));
-+	cur_h2c_para[3] = (u8)u32_get_bits(table, GENMASK(15, 8));
-+	cur_h2c_para[4] = (u8)u32_get_bits(table, GENMASK(23, 16));
-+	cur_h2c_para[5] = (u8)u32_get_bits(table, GENMASK(31, 24));
-+
-+	coex_stat->wl_toggle_interval = interval;
-+
-+	for (i = 0; i <= 5; i++)
-+		coex_stat->wl_toggle_para[i] = cur_h2c_para[i];
-+
-+	rtw_fw_bt_wifi_control(rtwdev, cur_h2c_para[0], &cur_h2c_para[1]);
-+
-+	rtw_dbg(rtwdev, RTW_DBG_COEX,
-+		"[BTCoex], %s(): H2C = [%02x %02x %02x %02x %02x %02x]\n",
-+		__func__, cur_h2c_para[0], cur_h2c_para[1], cur_h2c_para[2],
-+		cur_h2c_para[3], cur_h2c_para[4], cur_h2c_para[5]);
-+}
-+
- static void rtw_coex_set_table(struct rtw_dev *rtwdev, bool force, u32 table0,
- 			       u32 table1)
- {
-@@ -965,6 +1028,7 @@ static void rtw_coex_table(struct rtw_dev *rtwdev, bool force, u8 type)
- 	struct rtw_coex_dm *coex_dm = &coex->dm;
- 	struct rtw_chip_info *chip = rtwdev->chip;
- 	struct rtw_efuse *efuse = &rtwdev->efuse;
-+	struct rtw_coex_stat *coex_stat = &coex->stat;
- 
- 	coex_dm->cur_table = type;
- 
-@@ -982,6 +1046,8 @@ static void rtw_coex_table(struct rtw_dev *rtwdev, bool force, u8 type)
- 					   chip->table_nsant[type].bt,
- 					   chip->table_nsant[type].wl);
- 	}
-+	if (coex_stat->wl_slot_toggle_change)
-+		rtw_btc_wltoggle_table_a(rtwdev, true, type);
- }
- 
- static void rtw_coex_ignore_wlan_act(struct rtw_dev *rtwdev, bool enable)
-@@ -1031,6 +1097,7 @@ static void rtw_coex_set_tdma(struct rtw_dev *rtwdev, u8 byte1, u8 byte2,
- 	struct rtw_coex *coex = &rtwdev->coex;
- 	struct rtw_coex_dm *coex_dm = &coex->dm;
- 	struct rtw_chip_info *chip = rtwdev->chip;
-+	struct rtw_coex_stat *coex_stat = &coex->stat;
- 	u8 ps_type = COEX_PS_WIFI_NATIVE;
- 	bool ap_enable = false;
- 
-@@ -1072,6 +1139,14 @@ static void rtw_coex_set_tdma(struct rtw_dev *rtwdev, u8 byte1, u8 byte2,
- 	coex_dm->ps_tdma_para[4] = byte5;
- 
- 	rtw_fw_coex_tdma_type(rtwdev, byte1, byte2, byte3, byte4, byte5);
-+
-+	if (byte1 & BIT(2)) {
-+		coex_stat->wl_slot_toggle = true;
-+		coex_stat->wl_slot_toggle_change = false;
-+	} else {
-+		coex_stat->wl_slot_toggle_change = coex_stat->wl_slot_toggle;
-+		coex_stat->wl_slot_toggle = false;
-+	}
- }
- 
- static void rtw_coex_tdma(struct rtw_dev *rtwdev, bool force, u32 tcase)
-@@ -1776,7 +1851,7 @@ static void rtw_coex_action_bt_hid(struct rtw_dev *rtwdev)
- 	struct rtw_chip_info *chip = rtwdev->chip;
- 	u8 table_case, tdma_case;
- 	u32 slot_type = 0;
--	bool bt_multi_link_remain = false;
-+	bool bt_multi_link_remain = false, is_toggle_table = false;
- 
- 	rtw_dbg(rtwdev, RTW_DBG_COEX, "[BTCoex], %s()\n", __func__);
- 	rtw_coex_set_ant_path(rtwdev, false, COEX_SET_ANT_2G);
-@@ -1809,6 +1884,7 @@ static void rtw_coex_action_bt_hid(struct rtw_dev *rtwdev)
- 				tdma_case = 18;
- 			} else if (coex_stat->bt_418_hid_exist &&
- 				   coex_stat->wl_gl_busy) {
-+				is_toggle_table = true;
- 				slot_type = TDMA_4SLOT;
- 				table_case = 9;
- 				tdma_case = 24;
-@@ -1842,6 +1918,11 @@ static void rtw_coex_action_bt_hid(struct rtw_dev *rtwdev)
- 	}
- 
- 	rtw_coex_table(rtwdev, false, table_case);
-+	if (is_toggle_table) {
-+		rtw_btc_wltoggle_table_a(rtwdev, true, table_case);
-+		rtw_btc_wltoggle_table_b(rtwdev, false, 1, COEX_WL_SLOT_TOGLLE);
-+	}
-+
- 	rtw_coex_tdma(rtwdev, false, tdma_case | slot_type);
- }
- 
-@@ -1970,8 +2051,9 @@ static void rtw_coex_action_bt_a2dp_hid(struct rtw_dev *rtwdev)
- 	struct rtw_coex_dm *coex_dm = &coex->dm;
- 	struct rtw_efuse *efuse = &rtwdev->efuse;
- 	struct rtw_chip_info *chip = rtwdev->chip;
--	u8 table_case, tdma_case;
-+	u8 table_case, tdma_case, interval;
- 	u32 slot_type = 0;
-+	bool is_toggle_table = false;
- 
- 	slot_type = TDMA_4SLOT;
- 
-@@ -1981,15 +2063,19 @@ static void rtw_coex_action_bt_a2dp_hid(struct rtw_dev *rtwdev)
- 
- 	if (efuse->share_ant) {
- 		/* Shared-Ant */
--		if (coex_stat->bt_ble_exist)
-+		if (coex_stat->bt_ble_exist) {
- 			table_case = 26; /* for RCU */
--		else
-+		} else if (coex_stat->bt_418_hid_exist) {
-+			table_case = 9;
-+			interval = 1;
-+		} else {
- 			table_case = 9;
-+		}
- 
- 		if (coex_stat->wl_connecting || !coex_stat->wl_gl_busy) {
- 			tdma_case = 14;
--		} else if (coex_stat->bt_418_hid_exist ||
--			   coex_stat->bt_ble_hid_exist) {
-+		} else if (coex_stat->bt_418_hid_exist) {
-+			is_toggle_table = true;
- 			tdma_case = 23;
- 		} else {
- 			tdma_case = 13;
-@@ -2008,6 +2094,10 @@ static void rtw_coex_action_bt_a2dp_hid(struct rtw_dev *rtwdev)
- 	}
- 
- 	rtw_coex_table(rtwdev, false, table_case);
-+	if (is_toggle_table) {
-+		rtw_btc_wltoggle_table_a(rtwdev, true, table_case);
-+		rtw_btc_wltoggle_table_b(rtwdev, false, interval, COEX_WL_SLOT_TOGLLE);
-+	}
- 	rtw_coex_tdma(rtwdev, false, tdma_case | slot_type);
- }
- 
-diff --git a/drivers/net/wireless/realtek/rtw88/coex.h b/drivers/net/wireless/realtek/rtw88/coex.h
-index c4898132702f..8ab9852ec9ed 100644
---- a/drivers/net/wireless/realtek/rtw88/coex.h
-+++ b/drivers/net/wireless/realtek/rtw88/coex.h
-@@ -25,6 +25,9 @@
- #define PARA1_H2C69_TBTT_TIMES	GENMASK(5, 0)
- #define PARA1_H2C69_TBTT_DIV100	BIT(7)
- 
-+#define COEX_H2C69_TOGGLE_TABLE_A 0xd
-+#define COEX_H2C69_TOGGLE_TABLE_B 0x7
-+
- #define TDMA_4SLOT	BIT(8)
- 
- #define TDMA_TIMER_TYPE_2SLOT 0
-diff --git a/drivers/net/wireless/realtek/rtw88/main.h b/drivers/net/wireless/realtek/rtw88/main.h
-index 4e1369298a82..9a318dfd04f9 100644
---- a/drivers/net/wireless/realtek/rtw88/main.h
-+++ b/drivers/net/wireless/realtek/rtw88/main.h
-@@ -1335,6 +1335,8 @@ struct rtw_coex_stat {
- 	bool wl_cck_lock_pre;
- 	bool wl_cck_lock_ever;
- 	bool wl_connecting;
-+	bool wl_slot_toggle;
-+	bool wl_slot_toggle_change; /* if toggle to no-toggle */
- 
- 	u32 bt_supported_version;
- 	u32 bt_supported_feature;
-@@ -1375,6 +1377,9 @@ struct rtw_coex_stat {
- 	u8 ampdu_max_time;
- 	u8 wl_tput_dir;
- 
-+	u8 wl_toggle_para[6];
-+	u8 wl_toggle_interval;
-+
- 	u16 score_board;
- 	u16 retry_limit;
- 
--- 
-2.21.0
-
+=0A=
+=0A=
+> I haven't had a chance to review this yet but we have some documentation =
+for new drivers:=0A=
+=0A=
+> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpa=
+tches#new_driver=0A=
+=0A=
+> Is the firmware publically available?=0A=
+=0A=
+Thanks Kalle, We will make the firmware available in our website for public=
+ access and share the details.=0A=
+=0A=
+Regards=0A=
+Srini=0A=
+=0A=
