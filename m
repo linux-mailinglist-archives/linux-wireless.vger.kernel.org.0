@@ -2,61 +2,71 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B4FC52C4FFB
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Nov 2020 09:08:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F4C82C50D8
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Nov 2020 10:00:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388631AbgKZIHM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 26 Nov 2020 03:07:12 -0500
-Received: from paleale.coelho.fi ([176.9.41.70]:33138 "EHLO
-        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1731457AbgKZIHM (ORCPT
+        id S1729672AbgKZJAE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 26 Nov 2020 04:00:04 -0500
+Received: from mailgw01.mediatek.com ([210.61.82.183]:55938 "EHLO
+        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726347AbgKZJAD (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 26 Nov 2020 03:07:12 -0500
-Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa.ger.corp.intel.com)
-        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.93)
-        (envelope-from <luca@coelho.fi>)
-        id 1kiCJ2-0033fF-Bv; Thu, 26 Nov 2020 10:07:09 +0200
-From:   Luca Coelho <luca@coelho.fi>
-To:     kvalo@codeaurora.org
-Cc:     linux-wireless@vger.kernel.org, hkallweit1@gmail.com
-Date:   Thu, 26 Nov 2020 10:07:06 +0200
-Message-Id: <iwlwifi.20201126100650.59913739823b.I3763196cd3f7bb36f3dcabf02ec4e7c4fe859c0f@changeid>
-X-Mailer: git-send-email 2.29.2
+        Thu, 26 Nov 2020 04:00:03 -0500
+X-UUID: f86e15ad02114b10b3324c8af0c0d489-20201126
+X-UUID: f86e15ad02114b10b3324c8af0c0d489-20201126
+Received: from mtkcas06.mediatek.inc [(172.21.101.30)] by mailgw01.mediatek.com
+        (envelope-from <shayne.chen@mediatek.com>)
+        (Cellopoint E-mail Firewall v4.1.14 Build 0819 with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 2098577214; Thu, 26 Nov 2020 16:59:59 +0800
+Received: from mtkcas07.mediatek.inc (172.21.101.84) by
+ mtkmbs06n1.mediatek.inc (172.21.101.129) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Thu, 26 Nov 2020 16:59:58 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas07.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Thu, 26 Nov 2020 16:59:58 +0800
+From:   Shayne Chen <shayne.chen@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>
+CC:     linux-wireless <linux-wireless@vger.kernel.org>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        linux-mediatek <linux-mediatek@lists.infradead.org>,
+        Yiwei Chung <yiwei.chung@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>
+Subject: [PATCH] mt76: mt7915: fix ht mcs in mt7915_mcu_get_rx_rate()
+Date:   Thu, 26 Nov 2020 16:59:18 +0800
+Message-ID: <20201126085918.1222-1-shayne.chen@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on farmhouse.coelho.fi
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
-        TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.4
-Subject: [PATCH for v5.10] iwlwifi: pcie: add one missing entry for AX210
+Content-Type: text/plain
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Luca Coelho <luciano.coelho@intel.com>
+The mcs value of HT mode reported by mt7915_mcu_get_rx_rate()
+has already been converted to the expected format.
 
-The 0x0024 subsytem device ID was missing from the list, so some AX210
-devices were not recognized.  Add it.
-
-Reported-by: Heiner Kallweit <hkallweit1@gmail.com>
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+Tested-by: Yiwei Chung <yiwei.chung@mediatek.com>
+Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
 ---
- drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/mediatek/mt76/mt7915/mcu.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-index 129021f26791..466a967da39c 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-@@ -536,6 +536,7 @@ static const struct pci_device_id iwl_hw_card_ids[] = {
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+index 600ab7a..71f9140 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+@@ -3524,7 +3524,9 @@ int mt7915_mcu_get_rx_rate(struct mt7915_phy *phy, struct ieee80211_vif *vif,
+ 		break;
+ 	case MT_PHY_TYPE_HT:
+ 	case MT_PHY_TYPE_HT_GF:
+-		rate->mcs += (rate->nss - 1) * 8;
++		if (rate->mcs > 31)
++			return -EINVAL;
++
+ 		flags |= RATE_INFO_FLAGS_MCS;
  
- 	{IWL_PCI_DEVICE(0x2725, 0x0090, iwlax211_2ax_cfg_so_gf_a0)},
- 	{IWL_PCI_DEVICE(0x2725, 0x0020, iwlax210_2ax_cfg_ty_gf_a0)},
-+	{IWL_PCI_DEVICE(0x2725, 0x0024, iwlax210_2ax_cfg_ty_gf_a0)},
- 	{IWL_PCI_DEVICE(0x2725, 0x0310, iwlax210_2ax_cfg_ty_gf_a0)},
- 	{IWL_PCI_DEVICE(0x2725, 0x0510, iwlax210_2ax_cfg_ty_gf_a0)},
- 	{IWL_PCI_DEVICE(0x2725, 0x0A10, iwlax210_2ax_cfg_ty_gf_a0)},
+ 		if (res->gi)
 -- 
-2.29.2
+2.17.1
 
