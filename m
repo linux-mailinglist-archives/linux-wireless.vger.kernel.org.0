@@ -2,156 +2,94 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8571D2C5235
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Nov 2020 11:41:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 192F62C53F8
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Nov 2020 13:30:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729095AbgKZKkH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 26 Nov 2020 05:40:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58562 "EHLO
+        id S1728995AbgKZMab (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 26 Nov 2020 07:30:31 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47410 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727251AbgKZKkH (ORCPT
+        with ESMTP id S1727633AbgKZMaa (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 26 Nov 2020 05:40:07 -0500
-Received: from mout-b-203.mailbox.org (mout-b-203.mailbox.org [IPv6:2001:67c:2050:101:465::203])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8904C0613D4
-        for <linux-wireless@vger.kernel.org>; Thu, 26 Nov 2020 02:40:06 -0800 (PST)
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:105:465:1:1:0])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mout-b-203.mailbox.org (Postfix) with ESMTPS id 4ChZ5b3fQczQlk6;
-        Thu, 26 Nov 2020 11:40:03 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nyantec.com; h=
-        in-reply-to:content-disposition:content-type:content-type
-        :mime-version:references:message-id:subject:subject:from:from
-        :date:date:received; s=default; t=1606387200; bh=uGltq9Bkfm9AOy4
-        u+CN7L6+lcZhlZ6cQTyqMLNVWgXU=; b=io9aCR6UYJ9OHgKjliH9O0ObsFtKl5p
-        USfnJVq+eiWolRiXkgkiA1SKSr5LqMm+G27czyOFPQ8fKoXuE7nEaPDyXtU7EKnB
-        0netk49Pig0mt9LTQw2whnvm7eM6MY49KkUXW7abKibPsDbNfEr1wbyL+4o9Sumv
-        nBJttHrV+UPtjU6m/kUnua8G7588ZKlMZ5/cbY83uzZvajlN1SZHKXZsx2WApwPg
-        0ofdy4cgBfEo8csZWIh+5/bGkT6/+8cR1EHzZejGfex7BxVT5XBQUyy3/Y3PoEGJ
-        ZUVkNvaoKHvXxE6fS1jIB2u3vK4n3b/IOrX2bES64u19FS3LlJg6CRg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nyantec.com; s=default;
-        t=1606387201;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=7NfHCaEvKkqX/8tamyP6d81SRFx40twmOZtTjoUsiPg=;
-        b=uaCTl0XEGnoaD40GSKSB5oYxRJYs/cNYaSyXXSFqeNvd3tMm/NFZXqZD2HxndH4DKpDRiC
-        F0WrH8KdYWA8IXbVs13bHVw5uo4f7oT4hYb3Hh92XiMKKH+AvO3ssPcuAHYzuTIKBSZ3nF
-        0AZxOtJLWj7W4yWAqz3coiW/HRQeVzAbw5judSa0zWlfmRMJUUGsmP83T+ws8u8/hut4qJ
-        qTZ+Cd/Ir816s27hO97nWiFdvfB2irQa2eP8sPugheLeF9uOW8+dUO48ip3cbq4LHI3zTC
-        hTpRD6hkn3+a18OdwxbyIJQbfxkbwwILBxyHQAdAuGiob7N8osSBBbqJLdU2sw==
-X-Virus-Scanned: amavisd-new at heinlein-support.de
-Received: from smtp1.mailbox.org ([80.241.60.240])
-        by spamfilter06.heinlein-hosting.de (spamfilter06.heinlein-hosting.de [80.241.56.125]) (amavisd-new, port 10030)
-        with ESMTP id GhyChzLa-Q1U; Thu, 26 Nov 2020 11:40:00 +0100 (CET)
-Date:   Thu, 26 Nov 2020 11:39:58 +0100
-From:   Finn Behrens <fin@nyantec.com>
-To:     linux-wireless@vger.kernel.org
-Subject: [PATCH v2] nl80211: reset regdom when reloading regdb
-Message-ID: <X7+F/ht8T7aGiIl7@bombur.kloenk.de>
-References: <8c3e46ac-331b-0922-5379-0cb1ef61a83b@nyantec.com>
+        Thu, 26 Nov 2020 07:30:30 -0500
+Received: from mail-vk1-xa44.google.com (mail-vk1-xa44.google.com [IPv6:2607:f8b0:4864:20::a44])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A64CC0613D4
+        for <linux-wireless@vger.kernel.org>; Thu, 26 Nov 2020 04:30:30 -0800 (PST)
+Received: by mail-vk1-xa44.google.com with SMTP id s135so424619vkh.6
+        for <linux-wireless@vger.kernel.org>; Thu, 26 Nov 2020 04:30:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=dwfSmiW8wC4c8YEqJfMS6xstFSuOyZOshWT4MX1zhGw=;
+        b=fB/eWYANKJ4wxGSbCsSpJCytDe0rDDyixlvaOxzI8MmJqZeJjvt9TGekmN0QbgDcxQ
+         Bgw4wFZ7O3AEOE6/bEH8t2R31ONlQBS4SNeJQ7gUTloTh+A2TBl4SPMyulM/tWkI6BPq
+         B6ZhMrX8yAcV2mjMJqZo3zOFZSdzaS8pGqZ6bD1iWbrxYtVrGWKgc63eBkFPi6C3Bd8m
+         kS97lFU1a1nAU0aYS5qHWelQyXfxD+BXqEOYYORNZ26pyzfXoo1iZd/8I5DNMwI/yLnz
+         RDVW46vJVidOrW/eOewDhOVnh3M9MNWjfrwC4+xxh3fx2QbZYG76juc0Md7VpY7at93a
+         tENA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=dwfSmiW8wC4c8YEqJfMS6xstFSuOyZOshWT4MX1zhGw=;
+        b=bZzu5wL7cemX1TriNpHrPa52xfEqI3h81vPCGhXROUG5hqGWx6waP2Y+yJqnmEbt11
+         y2oJpT09Q/rqhvwPFAbQmOHN4GF2+tCmSdMWLFTQsQHKb5Q7FrjvITmKGq56+QQzezKK
+         WHAuPVVsjtNA8FgmmgKa9p1QV0bHwBjh3jMCAGVEaMD43OAbGbvxuRVvgTGsVG04HyF7
+         dYcMBMiIWXZER/rFzwgyCsS6v86NQUYqbXs22knPbU5vc1tUQuqFJXhl1knQ06YzaHGV
+         Q0P1EEuPm3zEdE2Z1y9ktDYk99qs7xaDujl2QZWJXi/9fH9higKg2ZMFOs47HzOAwuzs
+         lcYQ==
+X-Gm-Message-State: AOAM531IKYcw2Bvx0krq7tjjxZy11LtzAKaHVwc8F6ijhtl2J/DY5VGJ
+        1o9QQtvQytioYlufPggj8zO1ObfcJ5tm5Ip2qdm54w==
+X-Google-Smtp-Source: ABdhPJwZN0eDGbKeVzoN1m8Rus6o4ajev7s0qab4LrVpDTTnfpneHD0T4F6OhdJc5Tzm3h4fXgnjgGfbZ45u9nfA3ZQ=
+X-Received: by 2002:a1f:5e0b:: with SMTP id s11mr1568478vkb.8.1606393829211;
+ Thu, 26 Nov 2020 04:30:29 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8c3e46ac-331b-0922-5379-0cb1ef61a83b@nyantec.com>
-X-MBO-SPAM-Probability: 
-X-Rspamd-Score: -1.95 / 15.00 / 15.00
-X-Rspamd-Queue-Id: 7F5E21833
-X-Rspamd-UID: b9b342
+References: <16529bfd-0308-5da9-f7ce-4ffa9f77b4d0@alum.wpi.edu>
+ <a646a587-25ae-2395-a169-3742ba7f9723@alum.wpi.edu> <X76svnTHv34FJaHI@kroah.com>
+ <1760357a038.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com> <X79ZH+COJbxqd+eJ@kroah.com>
+In-Reply-To: <X79ZH+COJbxqd+eJ@kroah.com>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Thu, 26 Nov 2020 13:29:52 +0100
+Message-ID: <CAPDyKFpnp_JfpxtkM3MTjTi2S7jiDp0QXY_ists7cNAmfAAsUw@mail.gmail.com>
+Subject: Re: [PATCH 1/2] mmc: sdio: Move SDIO IDs from rtl8723bs, driver to
+ common include file
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Arend Van Spriel <arend.vanspriel@broadcom.com>,
+        "Brian O'Keefe" <bokeefe@alum.wpi.edu>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Larry Finger <Larry.Finger@lwfinger.net>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-reset the regdom when NL80211_CMD_RELOAD_REGDB is send
+On Thu, 26 Nov 2020 at 08:27, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> On Thu, Nov 26, 2020 at 07:57:23AM +0100, Arend Van Spriel wrote:
+> > On November 25, 2020 8:13:07 PM Greg Kroah-Hartman
+> > <gregkh@linuxfoundation.org> wrote:
+> >
+> > > On Wed, Nov 25, 2020 at 01:33:00PM -0500, Brian O'Keefe wrote:
+> > > > Macro names were derived from the Windows driver, as that was the best
+> > > > available source.
+> > >
+> > > Why move these?  What does this help with?
+> >
+> > Hi Greg,
+> >
+> > Most if not all SDIO-based (wifi) drivers in mainline have their venid and
+> > devid definitions in that header file. So seems like a good idea to me, but
+> > maybe not so for a staging driver?
+>
+> If the driver ever gets moved out, maybe do it then as part of that
+> effort.  I haven't seen that happening, so I would recommend just
+> leaving this alone for now.
 
-Signed-off-by: Finn Behrens <fin@nyantec.com>
----
-resend, as patchwork showed it malformed.
++1
 
- include/net/regulatory.h |  1 +
- net/wireless/reg.c       | 31 +++++++++++++++++++++++++++++--
- 2 files changed, 30 insertions(+), 2 deletions(-)
-
-diff --git a/include/net/regulatory.h b/include/net/regulatory.h
-index 47f06f6f5a67..0cf9335431e0 100644
---- a/include/net/regulatory.h
-+++ b/include/net/regulatory.h
-@@ -83,6 +83,7 @@ struct regulatory_request {
- 	enum nl80211_dfs_regions dfs_region;
- 	bool intersect;
- 	bool processed;
-+	bool reload;
- 	enum environment_cap country_ie_env;
- 	struct list_head list;
- };
-diff --git a/net/wireless/reg.c b/net/wireless/reg.c
-index a04fdfb35f07..50314916b020 100644
---- a/net/wireless/reg.c
-+++ b/net/wireless/reg.c
-@@ -199,6 +199,7 @@ static struct regulatory_request *get_last_request(void)
- /* Used to queue up regulatory hints */
- static LIST_HEAD(reg_requests_list);
- static spinlock_t reg_requests_lock;
-+static void queue_regulatory_request(struct regulatory_request *request);
- 
- /* Used to queue up beacon hints for review */
- static LIST_HEAD(reg_pending_beacons);
-@@ -1081,10 +1082,13 @@ int reg_reload_regdb(void)
- 	int err;
- 
- 	err = request_firmware(&fw, "regulatory.db", &reg_pdev->dev);
--	if (err)
-+	if (err) {
-+		pr_info("failed to load regulatory.db\n");
- 		return err;
-+	}
- 
- 	if (!valid_regdb(fw->data, fw->size)) {
-+		pr_info("loaded regulatory.db is malformed or signature is missing/invalid\n");
- 		err = -ENODATA;
- 		goto out;
- 	}
-@@ -1101,6 +1105,28 @@ int reg_reload_regdb(void)
- 	regdb = db;
- 	rtnl_unlock();
- 
-+	// reset regulatory
-+	const struct ieee80211_regdomain *current_regdomain = NULL;
-+
-+	current_regdomain = get_cfg80211_regdom();
-+
-+	struct regulatory_request *request = NULL;
-+
-+	request = kzalloc(sizeof(*request), GFP_KERNEL);
-+	if (!request) {
-+		err = -ENOMEM;
-+		goto out;
-+	}
-+
-+	request->wiphy_idx = WIPHY_IDX_INVALID;
-+	request->alpha2[0] = current_regdomain->alpha2[0];
-+	request->alpha2[1] = current_regdomain->alpha2[1];
-+	request->initiator = NL80211_USER_REG_HINT_USER;
-+	request->user_reg_hint_type = NL80211_USER_REG_HINT_USER;
-+	request->reload = true;
-+
-+	queue_regulatory_request(request);
-+
-  out:
- 	release_firmware(fw);
- 	return err;
-@@ -2657,7 +2683,8 @@ reg_process_hint_user(struct regulatory_request *user_request)
- 
- 	treatment = __reg_process_hint_user(user_request);
- 	if (treatment == REG_REQ_IGNORE ||
--	    treatment == REG_REQ_ALREADY_SET)
-+	    treatment == REG_REQ_ALREADY_SET &&
-+			!user_request->reload)
- 		return REG_REQ_IGNORE;
- 
- 	user_request->intersect = treatment == REG_REQ_INTERSECT;
--- 
-2.29.2
-
+Kind regards
+Uffe
