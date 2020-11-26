@@ -2,94 +2,140 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 192F62C53F8
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Nov 2020 13:30:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A08E2C5448
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Nov 2020 13:55:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728995AbgKZMab (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 26 Nov 2020 07:30:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47410 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727633AbgKZMaa (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 26 Nov 2020 07:30:30 -0500
-Received: from mail-vk1-xa44.google.com (mail-vk1-xa44.google.com [IPv6:2607:f8b0:4864:20::a44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A64CC0613D4
-        for <linux-wireless@vger.kernel.org>; Thu, 26 Nov 2020 04:30:30 -0800 (PST)
-Received: by mail-vk1-xa44.google.com with SMTP id s135so424619vkh.6
-        for <linux-wireless@vger.kernel.org>; Thu, 26 Nov 2020 04:30:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=dwfSmiW8wC4c8YEqJfMS6xstFSuOyZOshWT4MX1zhGw=;
-        b=fB/eWYANKJ4wxGSbCsSpJCytDe0rDDyixlvaOxzI8MmJqZeJjvt9TGekmN0QbgDcxQ
-         Bgw4wFZ7O3AEOE6/bEH8t2R31ONlQBS4SNeJQ7gUTloTh+A2TBl4SPMyulM/tWkI6BPq
-         B6ZhMrX8yAcV2mjMJqZo3zOFZSdzaS8pGqZ6bD1iWbrxYtVrGWKgc63eBkFPi6C3Bd8m
-         kS97lFU1a1nAU0aYS5qHWelQyXfxD+BXqEOYYORNZ26pyzfXoo1iZd/8I5DNMwI/yLnz
-         RDVW46vJVidOrW/eOewDhOVnh3M9MNWjfrwC4+xxh3fx2QbZYG76juc0Md7VpY7at93a
-         tENA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=dwfSmiW8wC4c8YEqJfMS6xstFSuOyZOshWT4MX1zhGw=;
-        b=bZzu5wL7cemX1TriNpHrPa52xfEqI3h81vPCGhXROUG5hqGWx6waP2Y+yJqnmEbt11
-         y2oJpT09Q/rqhvwPFAbQmOHN4GF2+tCmSdMWLFTQsQHKb5Q7FrjvITmKGq56+QQzezKK
-         WHAuPVVsjtNA8FgmmgKa9p1QV0bHwBjh3jMCAGVEaMD43OAbGbvxuRVvgTGsVG04HyF7
-         dYcMBMiIWXZER/rFzwgyCsS6v86NQUYqbXs22knPbU5vc1tUQuqFJXhl1knQ06YzaHGV
-         Q0P1EEuPm3zEdE2Z1y9ktDYk99qs7xaDujl2QZWJXi/9fH9higKg2ZMFOs47HzOAwuzs
-         lcYQ==
-X-Gm-Message-State: AOAM531IKYcw2Bvx0krq7tjjxZy11LtzAKaHVwc8F6ijhtl2J/DY5VGJ
-        1o9QQtvQytioYlufPggj8zO1ObfcJ5tm5Ip2qdm54w==
-X-Google-Smtp-Source: ABdhPJwZN0eDGbKeVzoN1m8Rus6o4ajev7s0qab4LrVpDTTnfpneHD0T4F6OhdJc5Tzm3h4fXgnjgGfbZ45u9nfA3ZQ=
-X-Received: by 2002:a1f:5e0b:: with SMTP id s11mr1568478vkb.8.1606393829211;
- Thu, 26 Nov 2020 04:30:29 -0800 (PST)
+        id S2389522AbgKZMz0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 26 Nov 2020 07:55:26 -0500
+Received: from mx3.wp.pl ([212.77.101.10]:45911 "EHLO mx3.wp.pl"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2388892AbgKZMz0 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 26 Nov 2020 07:55:26 -0500
+Received: (wp-smtpd smtp.wp.pl 29100 invoked from network); 26 Nov 2020 13:55:21 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=1024a;
+          t=1606395321; bh=Bcpqgz9nMC2b2yCKgxveFN6YnzZXtZhxC3XIUSSDvEk=;
+          h=From:To:Cc:Subject;
+          b=NyIPWsx+/63rBuc7QnaUYu7BqucKTBx+fYv1c9l+dPQLRX5aKiX5zgAoihSncPq9N
+           BXIS3yl4w2FBjoBzqkWbvXXyeg7oVEXA/eQvgjsQ9fPmhWNL2j6PzV3oBGic91pcq6
+           OEjOgAUX8ONxXAhVHZ6M01+1P6hft5NmEDrflaQ8=
+Received: from ip4-46-39-164-203.cust.nbox.cz (HELO localhost) (stf_xl@wp.pl@[46.39.164.203])
+          (envelope-sender <stf_xl@wp.pl>)
+          by smtp.wp.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
+          for <linux-wireless@vger.kernel.org>; 26 Nov 2020 13:55:21 +0100
+From:   stf_xl@wp.pl
+To:     linux-wireless@vger.kernel.org
+Cc:     Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>
+Subject: [PATCH 5.10] mt76: usb: fix crash on device removal
+Date:   Thu, 26 Nov 2020 13:55:20 +0100
+Message-Id: <20201126125520.72912-1-stf_xl@wp.pl>
+X-Mailer: git-send-email 2.25.4
 MIME-Version: 1.0
-References: <16529bfd-0308-5da9-f7ce-4ffa9f77b4d0@alum.wpi.edu>
- <a646a587-25ae-2395-a169-3742ba7f9723@alum.wpi.edu> <X76svnTHv34FJaHI@kroah.com>
- <1760357a038.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com> <X79ZH+COJbxqd+eJ@kroah.com>
-In-Reply-To: <X79ZH+COJbxqd+eJ@kroah.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Thu, 26 Nov 2020 13:29:52 +0100
-Message-ID: <CAPDyKFpnp_JfpxtkM3MTjTi2S7jiDp0QXY_ists7cNAmfAAsUw@mail.gmail.com>
-Subject: Re: [PATCH 1/2] mmc: sdio: Move SDIO IDs from rtl8723bs, driver to
- common include file
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Arend Van Spriel <arend.vanspriel@broadcom.com>,
-        "Brian O'Keefe" <bokeefe@alum.wpi.edu>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Larry Finger <Larry.Finger@lwfinger.net>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-WP-MailID: a93846a6806ef607c3e3a836b105f205
+X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
+X-WP-SPAM: NO 0000001 [AbKU]                               
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, 26 Nov 2020 at 08:27, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> On Thu, Nov 26, 2020 at 07:57:23AM +0100, Arend Van Spriel wrote:
-> > On November 25, 2020 8:13:07 PM Greg Kroah-Hartman
-> > <gregkh@linuxfoundation.org> wrote:
-> >
-> > > On Wed, Nov 25, 2020 at 01:33:00PM -0500, Brian O'Keefe wrote:
-> > > > Macro names were derived from the Windows driver, as that was the best
-> > > > available source.
-> > >
-> > > Why move these?  What does this help with?
-> >
-> > Hi Greg,
-> >
-> > Most if not all SDIO-based (wifi) drivers in mainline have their venid and
-> > devid definitions in that header file. So seems like a good idea to me, but
-> > maybe not so for a staging driver?
->
-> If the driver ever gets moved out, maybe do it then as part of that
-> effort.  I haven't seen that happening, so I would recommend just
-> leaving this alone for now.
+From: Stanislaw Gruszka <stf_xl@wp.pl>
 
-+1
+Currently 'while (q->queued > 0)' loop was removed from mt76u_stop_tx()
+code. This causes crash on device removal as we try to cleanup empty
+queue:
 
-Kind regards
-Uffe
+[   96.495571] kernel BUG at include/linux/skbuff.h:2297!
+[   96.498983] invalid opcode: 0000 [#1] SMP PTI
+[   96.501162] CPU: 3 PID: 27 Comm: kworker/3:0 Not tainted 5.10.0-rc5+ #11
+[   96.502754] Hardware name: LENOVO 20DGS08H00/20DGS08H00, BIOS J5ET48WW (1.19 ) 08/27/2015
+[   96.504378] Workqueue: usb_hub_wq hub_event
+[   96.505983] RIP: 0010:skb_pull+0x2d/0x30
+[   96.507576] Code: 00 00 8b 47 70 39 c6 77 1e 29 f0 89 47 70 3b 47 74 72 17 48 8b 87 c8 00 00 00 89 f6 48 01 f0 48 89 87 c8 00 00 00 c3 31 c0 c3 <0f> 0b 90 0f 1f 44 00 00 53 48 89 fb 48 8b bf c8 00 00 00 8b 43 70
+[   96.509296] RSP: 0018:ffffb11b801639b8 EFLAGS: 00010287
+[   96.511038] RAX: 000000001c6939ed RBX: ffffb11b801639f8 RCX: 0000000000000000
+[   96.512964] RDX: ffffb11b801639f8 RSI: 0000000000000018 RDI: ffff90c64e4fb800
+[   96.514710] RBP: ffff90c654551ee0 R08: ffff90c652bce7a8 R09: ffffb11b80163728
+[   96.516450] R10: 0000000000000001 R11: 0000000000000001 R12: ffff90c64e4fb800
+[   96.519749] R13: 0000000000000010 R14: 0000000000000020 R15: ffff90c64e352ce8
+[   96.523455] FS:  0000000000000000(0000) GS:ffff90c96eec0000(0000) knlGS:0000000000000000
+[   96.527171] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[   96.530900] CR2: 0000242556f18288 CR3: 0000000146a10002 CR4: 00000000003706e0
+[   96.534678] Call Trace:
+[   96.538418]  mt76x02u_tx_complete_skb+0x1f/0x50 [mt76x02_usb]
+[   96.542231]  mt76_queue_tx_complete+0x23/0x50 [mt76]
+[   96.546028]  mt76u_stop_tx.cold+0x71/0xa2 [mt76_usb]
+[   96.549797]  mt76x0u_stop+0x2f/0x90 [mt76x0u]
+[   96.553638]  drv_stop+0x33/0xd0 [mac80211]
+[   96.557449]  ieee80211_do_stop+0x558/0x860 [mac80211]
+[   96.561262]  ? dev_deactivate_many+0x298/0x2d0
+[   96.565101]  ieee80211_stop+0x16/0x20 [mac80211]
+
+Fix that by adding while loop again. We need loop, not just single
+check, to clean all pending entries.
+
+Additionally move mt76_worker_disable/enable after !mt76_has_tx_pending()
+as we want to tx_worker to run to process tx queues, while we wait for
+exactly that.
+
+I was a bit worried about accessing q->queued without lock, but
+mt76_worker_disable() -> kthread_park() should assure this value will
+be seen updated on other cpus.
+
+Fixes: fe5b5ab52e9d ("mt76: unify queue tx cleanup code")
+Signed-off-by: Stanislaw Gruszka <stf_xl@wp.pl>
+---
+ drivers/net/wireless/mediatek/mt76/usb.c | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/usb.c b/drivers/net/wireless/mediatek/mt76/usb.c
+index 7d3f0a2e5fa0..f1ae9ff835b2 100644
+--- a/drivers/net/wireless/mediatek/mt76/usb.c
++++ b/drivers/net/wireless/mediatek/mt76/usb.c
+@@ -1020,8 +1020,6 @@ void mt76u_stop_tx(struct mt76_dev *dev)
+ {
+ 	int ret;
+ 
+-	mt76_worker_disable(&dev->tx_worker);
+-
+ 	ret = wait_event_timeout(dev->tx_wait, !mt76_has_tx_pending(&dev->phy),
+ 				 HZ / 5);
+ 	if (!ret) {
+@@ -1040,6 +1038,8 @@ void mt76u_stop_tx(struct mt76_dev *dev)
+ 				usb_kill_urb(q->entry[j].urb);
+ 		}
+ 
++		mt76_worker_disable(&dev->tx_worker);
++
+ 		/* On device removal we maight queue skb's, but mt76u_tx_kick()
+ 		 * will fail to submit urb, cleanup those skb's manually.
+ 		 */
+@@ -1048,18 +1048,19 @@ void mt76u_stop_tx(struct mt76_dev *dev)
+ 			if (!q)
+ 				continue;
+ 
+-			entry = q->entry[q->tail];
+-			q->entry[q->tail].done = false;
+-
+-			mt76_queue_tx_complete(dev, q, &entry);
++			while (q->queued > 0) {
++				entry = q->entry[q->tail];
++				q->entry[q->tail].done = false;
++				mt76_queue_tx_complete(dev, q, &entry);
++			}
+ 		}
++
++		mt76_worker_enable(&dev->tx_worker);
+ 	}
+ 
+ 	cancel_work_sync(&dev->usb.stat_work);
+ 	clear_bit(MT76_READING_STATS, &dev->phy.state);
+ 
+-	mt76_worker_enable(&dev->tx_worker);
+-
+ 	mt76_tx_status_check(dev, NULL, true);
+ }
+ EXPORT_SYMBOL_GPL(mt76u_stop_tx);
+-- 
+2.25.4
+
