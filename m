@@ -2,63 +2,71 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A532C2C583D
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Nov 2020 16:29:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 87EBF2C5913
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Nov 2020 17:20:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730672AbgKZP2i (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 26 Nov 2020 10:28:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47072 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2391314AbgKZP2b (ORCPT
+        id S2391506AbgKZQRV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 26 Nov 2020 11:17:21 -0500
+Received: from alexa-out.qualcomm.com ([129.46.98.28]:11290 "EHLO
+        alexa-out.qualcomm.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730181AbgKZQRV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 26 Nov 2020 10:28:31 -0500
-Received: from mail-vk1-xa35.google.com (mail-vk1-xa35.google.com [IPv6:2607:f8b0:4864:20::a35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1212C0613D4
-        for <linux-wireless@vger.kernel.org>; Thu, 26 Nov 2020 07:28:30 -0800 (PST)
-Received: by mail-vk1-xa35.google.com with SMTP id a186so533534vkh.9
-        for <linux-wireless@vger.kernel.org>; Thu, 26 Nov 2020 07:28:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=XGhJba7q+m20A43rJNImcl30G1uJmt4BBQEhPHIZbEc=;
-        b=uRJXavoe4ovgC9VdAlIDYBisyd60DOCr3ndlddCHX00CK9bUEjedd+uJobOpqLSNHy
-         D8OxLgmEPRwG0l78k75wD45vH+7Xd5ELUa4QKmwYqLTueajZrWLvBuf6roopNEALdShL
-         WKuKUbu3k9revtv4Qr1YbcyMTxLqUrZuocsXba5kug5CdK6GvLX6T8c+cAc//LAb9zuh
-         jvQ81+PryFXtmSfCJOZQKeCn4dNkiJEF0KBz3eTUWhV6UjlMn5AKUjeWXTe/QSlumB7w
-         ARnN1DlZrnu3ghKVa/r39YLVFl1ij+4Fcw5lOPUzVF/GDB/FfwWVRhLrnASbs4rBbmLZ
-         NQ7w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=XGhJba7q+m20A43rJNImcl30G1uJmt4BBQEhPHIZbEc=;
-        b=VqlTquCas1DYukrqeSJ6k9Jg5U9Htc/IvActhyb64c/En+SqEKWtBQOO8T6s0C1Ktb
-         9D1k6DI6YTSF2CT64P2xzT6Kz4UtKEBHVGwZVfDCa18B6cGhO0ye2/th1v1em6K2l0yT
-         Wz86mzUSFJ4UILd5k8S7pbkcxovUim+BfjGIc40TPd+QVGhDPfjMtNjoFrnTT1HkwZ9u
-         ieW+qJ42aSq6HF8qJyl2ArIyWPJ1C3K+ivSuBZvS2GFRAAM8MfmT10kMf0aoqF4Bbykk
-         /5AhBSJZHmbkMYLNN5jCCVVoQcI58a8fxYKeYX/Irr/gSwM57w7gv4mB8FUHFvc52wiz
-         IWtw==
-X-Gm-Message-State: AOAM531Ejltd8IGak4wdFT+je8rCzN50TX+CG2t1gSYwwVznpi/fLZku
-        lSoM6iJTO4t0rqoeHw3UAbBJhDAqJypqJuMvbc/uGMc6
-X-Google-Smtp-Source: ABdhPJx5+6R9FNTNJVYVxylY/lbVgomcjqmBUYI4TPDU7eGmQoe2GSHQ1+YbUusnN20imrZg0yLbmOJLfKNUsYAXUV4=
-X-Received: by 2002:a1f:a314:: with SMTP id m20mr2293130vke.2.1606404510105;
- Thu, 26 Nov 2020 07:28:30 -0800 (PST)
+        Thu, 26 Nov 2020 11:17:21 -0500
+Received: from ironmsg-lv-alpha.qualcomm.com ([10.47.202.13])
+  by alexa-out.qualcomm.com with ESMTP; 26 Nov 2020 08:17:21 -0800
+X-QCInternal: smtphost
+Received: from ironmsg01-blr.qualcomm.com ([10.86.208.130])
+  by ironmsg-lv-alpha.qualcomm.com with ESMTP/TLS/AES256-SHA; 26 Nov 2020 08:17:19 -0800
+X-QCInternal: smtphost
+Received: from youghand-linux.qualcomm.com ([10.206.66.115])
+  by ironmsg01-blr.qualcomm.com with ESMTP; 26 Nov 2020 21:47:02 +0530
+Received: by youghand-linux.qualcomm.com (Postfix, from userid 2370257)
+        id 5F17521B5F; Thu, 26 Nov 2020 21:47:01 +0530 (IST)
+From:   Youghandhar Chintala <youghand@codeaurora.org>
+To:     ath10k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        pillair@codeaurora.org, dianders@chromium.org, kuabhs@chromium.org,
+        briannorris@chromium.org,
+        Youghandhar Chintala <youghand@codeaurora.org>
+Subject: [PATCH] ath10k: skip the wait for completion to recovery in shutdown path
+Date:   Thu, 26 Nov 2020 21:46:56 +0530
+Message-Id: <20201126161656.18802-1-youghand@codeaurora.org>
+X-Mailer: git-send-email 2.26.0
 MIME-Version: 1.0
-Received: by 2002:a05:6102:4a8:0:0:0:0 with HTTP; Thu, 26 Nov 2020 07:28:29
- -0800 (PST)
-Reply-To: sgtkaylam28@gmail.com
-From:   SgtKayla Manthey <latifoubatoulim@gmail.com>
-Date:   Thu, 26 Nov 2020 07:28:29 -0800
-Message-ID: <CAMFRtcmoSv+Pq-Wv3DHo40ccYbB2Q6YJkKUed8sx54=Yn6DVOg@mail.gmail.com>
-Subject: Hello,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Pozdrav,
-Zovem se Kayla, molim vas da li ste primili moju prethodnu poruku? Napi=C5=
-=A1i mi.
+Currently in the shutdown callback we wait for recovery to complete
+before freeing up the resources. This can lead to unwanted delay
+during the shutdown and thereby increase the shutdown time.
+
+As an attempt to take less time during shutdown, remove the wait for
+recovery completion in the shutdown callback.
+
+Tested-on: WCN3990 hw1.0 SNOC WLAN.HL.3.1-01040-QCAHLSWMTPLZ-1
+
+Signed-off-by: Youghandhar Chintala <youghand@codeaurora.org>
+Change-Id: I0474ab7dc3730aaacac888bb9a7acc2fa0e8b4f8
+---
+ drivers/net/wireless/ath/ath10k/snoc.c | 3 ---
+ 1 file changed, 3 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath10k/snoc.c b/drivers/net/wireless/ath/ath10k/snoc.c
+index 84666f72bdfa..15580a91fe98 100644
+--- a/drivers/net/wireless/ath/ath10k/snoc.c
++++ b/drivers/net/wireless/ath/ath10k/snoc.c
+@@ -1790,9 +1790,6 @@ static int ath10k_snoc_remove(struct platform_device *pdev)
+ 
+ 	reinit_completion(&ar->driver_recovery);
+ 
+-	if (test_bit(ATH10K_SNOC_FLAG_RECOVERY, &ar_snoc->flags))
+-		wait_for_completion_timeout(&ar->driver_recovery, 3 * HZ);
+-
+ 	set_bit(ATH10K_SNOC_FLAG_UNREGISTERING, &ar_snoc->flags);
+ 
+ 	ath10k_core_unregister(ar);
+-- 
+2.26.0
+
