@@ -2,166 +2,63 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C1E6C2C5839
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Nov 2020 16:29:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A532C2C583D
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Nov 2020 16:29:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391351AbgKZP2d (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 26 Nov 2020 10:28:33 -0500
-Received: from mail-ot1-f65.google.com ([209.85.210.65]:39601 "EHLO
-        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730237AbgKZP21 (ORCPT
+        id S1730672AbgKZP2i (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 26 Nov 2020 10:28:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47072 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2391314AbgKZP2b (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 26 Nov 2020 10:28:27 -0500
-Received: by mail-ot1-f65.google.com with SMTP id z24so2172944oto.6;
-        Thu, 26 Nov 2020 07:28:24 -0800 (PST)
+        Thu, 26 Nov 2020 10:28:31 -0500
+Received: from mail-vk1-xa35.google.com (mail-vk1-xa35.google.com [IPv6:2607:f8b0:4864:20::a35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1212C0613D4
+        for <linux-wireless@vger.kernel.org>; Thu, 26 Nov 2020 07:28:30 -0800 (PST)
+Received: by mail-vk1-xa35.google.com with SMTP id a186so533534vkh.9
+        for <linux-wireless@vger.kernel.org>; Thu, 26 Nov 2020 07:28:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=XGhJba7q+m20A43rJNImcl30G1uJmt4BBQEhPHIZbEc=;
+        b=uRJXavoe4ovgC9VdAlIDYBisyd60DOCr3ndlddCHX00CK9bUEjedd+uJobOpqLSNHy
+         D8OxLgmEPRwG0l78k75wD45vH+7Xd5ELUa4QKmwYqLTueajZrWLvBuf6roopNEALdShL
+         WKuKUbu3k9revtv4Qr1YbcyMTxLqUrZuocsXba5kug5CdK6GvLX6T8c+cAc//LAb9zuh
+         jvQ81+PryFXtmSfCJOZQKeCn4dNkiJEF0KBz3eTUWhV6UjlMn5AKUjeWXTe/QSlumB7w
+         ARnN1DlZrnu3ghKVa/r39YLVFl1ij+4Fcw5lOPUzVF/GDB/FfwWVRhLrnASbs4rBbmLZ
+         NQ7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=kP9MspVOPl/NnVl8oGn1EIC/+F8CcK5+OXo+jY56Nno=;
-        b=O5lB09TE7ZVoxFrz9jEzoB2CxBaKGu4DfPIKinbX7K3Z9YjWsAZuwpmZCb063hbcml
-         dK6VczxxuljyVvzYk+qi2g3J+dUAo/TP5DSIvXSrQzH4ZIWKpyJKV69WKVmUFQWGTk59
-         HyRyiaz1876USvHOZ7GaFoLxWcyv3avFWcLMFaTeGPv7olYKncnMLKuAAt3+0OJxxYPH
-         DQ25HwL4uMCDIv2MjSAHnWl//kshswom5NK5IvDfZJsIj1yf3jRSCD8P5C21dgNs/Nin
-         KmqrQIgPSTec2jqEzDtGzUMRKKqN0dEVt8W9sTXLxApcT9uMeXWDswIixp6PUrfvH6Cm
-         vXZg==
-X-Gm-Message-State: AOAM5330+/EQ2iKUbotH3l4ZJ+wA3zzJimNEYAc6ksGY5yzOLOtVINtM
-        celE5FwFxauIAoq+Eo6qiYHUpEL51OVNGgVS74k=
-X-Google-Smtp-Source: ABdhPJyYtol6dSfaI6WhgTcuunq7fhBuSULViECyA4Z+K27bCejCuaia55DZ/aziu9dD69JTQZlYwW/4z6Mu7Di+rU4=
-X-Received: by 2002:a05:6830:210a:: with SMTP id i10mr2551843otc.145.1606404504116;
- Thu, 26 Nov 2020 07:28:24 -0800 (PST)
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=XGhJba7q+m20A43rJNImcl30G1uJmt4BBQEhPHIZbEc=;
+        b=VqlTquCas1DYukrqeSJ6k9Jg5U9Htc/IvActhyb64c/En+SqEKWtBQOO8T6s0C1Ktb
+         9D1k6DI6YTSF2CT64P2xzT6Kz4UtKEBHVGwZVfDCa18B6cGhO0ye2/th1v1em6K2l0yT
+         Wz86mzUSFJ4UILd5k8S7pbkcxovUim+BfjGIc40TPd+QVGhDPfjMtNjoFrnTT1HkwZ9u
+         ieW+qJ42aSq6HF8qJyl2ArIyWPJ1C3K+ivSuBZvS2GFRAAM8MfmT10kMf0aoqF4Bbykk
+         /5AhBSJZHmbkMYLNN5jCCVVoQcI58a8fxYKeYX/Irr/gSwM57w7gv4mB8FUHFvc52wiz
+         IWtw==
+X-Gm-Message-State: AOAM531Ejltd8IGak4wdFT+je8rCzN50TX+CG2t1gSYwwVznpi/fLZku
+        lSoM6iJTO4t0rqoeHw3UAbBJhDAqJypqJuMvbc/uGMc6
+X-Google-Smtp-Source: ABdhPJx5+6R9FNTNJVYVxylY/lbVgomcjqmBUYI4TPDU7eGmQoe2GSHQ1+YbUusnN20imrZg0yLbmOJLfKNUsYAXUV4=
+X-Received: by 2002:a1f:a314:: with SMTP id m20mr2293130vke.2.1606404510105;
+ Thu, 26 Nov 2020 07:28:30 -0800 (PST)
 MIME-Version: 1.0
-References: <cover.1605896059.git.gustavoars@kernel.org> <20201120105344.4345c14e@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
- <202011201129.B13FDB3C@keescook> <20201120115142.292999b2@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
- <202011220816.8B6591A@keescook> <9b57fd4914b46f38d54087d75e072d6e947cb56d.camel@HansenPartnership.com>
- <CANiq72nZrHWTA4_Msg6MP9snTyenC6-eGfD27CyfNSu7QoVZbw@mail.gmail.com>
- <1c7d7fde126bc0acf825766de64bf2f9b888f216.camel@HansenPartnership.com>
- <CANiq72m22Jb5_+62NnwX8xds2iUdWDMAqD8PZw9cuxdHd95W0A@mail.gmail.com>
- <fc45750b6d0277c401015b7aa11e16cd15f32ab2.camel@HansenPartnership.com>
- <CANiq72k5tpDoDPmJ0ZWc1DGqm+81Gi-uEENAtvEs9v3SZcx6_Q@mail.gmail.com>
- <4993259d01a0064f8bb22770503490f9252f3659.camel@HansenPartnership.com>
- <CANiq72kqO=bYMJnFS2uYRpgWATJ=uXxZuNUsTXT+3aLtrpnzvQ@mail.gmail.com>
- <44005bde-f6d4-5eaa-39b8-1a5efeedb2d3@gmail.com> <CANiq72nobq=ptWK-qWxU91JHqkKhMcRtJNnw2XJd5-vSJWZd8Q@mail.gmail.com>
-In-Reply-To: <CANiq72nobq=ptWK-qWxU91JHqkKhMcRtJNnw2XJd5-vSJWZd8Q@mail.gmail.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Thu, 26 Nov 2020 16:28:12 +0100
-Message-ID: <CAMuHMdV5kOakvZJMWLxbpigFPS+Xuw6DVYsWCWZy7wGsv3idcw@mail.gmail.com>
-Subject: Re: [PATCH 000/141] Fix fall-through warnings for Clang
-To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc:     Edward Cree <ecree.xilinx@gmail.com>,
-        ALSA Development Mailing List <alsa-devel@alsa-project.org>,
-        linux-atm-general@lists.sourceforge.net,
-        reiserfs-devel@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        James Bottomley <James.Bottomley@hansenpartnership.com>,
-        linux-ide@vger.kernel.org, dm-devel@redhat.com,
-        keyrings@vger.kernel.org,
-        MTD Maling List <linux-mtd@lists.infradead.org>,
-        GR-everest-linux-l2@marvell.com, wcn36xx@lists.infradead.org,
-        samba-technical@lists.samba.org, linux-i3c@lists.infradead.org,
-        linux1394-devel@lists.sourceforge.net,
-        linux-afs@lists.infradead.org,
-        usb-storage@lists.one-eyed-alien.net,
-        Lars Ellenberg <drbd-dev@lists.linbit.com>,
-        driverdevel <devel@driverdev.osuosl.org>,
-        linux-cifs@vger.kernel.org, rds-devel@oss.oracle.com,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        scsi <linux-scsi@vger.kernel.org>,
-        Nathan Chancellor <natechancellor@gmail.com>,
-        linux-rdma <linux-rdma@vger.kernel.org>,
-        oss-drivers@netronome.com, bridge@lists.linux-foundation.org,
-        linux-security-module <linux-security-module@vger.kernel.org>,
-        amd-gfx list <amd-gfx@lists.freedesktop.org>,
-        linux-stm32@st-md-mailman.stormreply.com, cluster-devel@redhat.com,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        coreteam@netfilter.org, intel-wired-lan@lists.osuosl.org,
-        linux-input <linux-input@vger.kernel.org>,
-        Miguel Ojeda <ojeda@kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Ext4 Developers List <linux-ext4@vger.kernel.org>,
-        Linux Media Mailing List <linux-media@vger.kernel.org>,
-        Kees Cook <keescook@chromium.org>, selinux@vger.kernel.org,
-        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
-        Intel Graphics Development <intel-gfx@lists.freedesktop.org>,
-        linux-geode@lists.infradead.org, linux-can@vger.kernel.org,
-        linux-block@vger.kernel.org,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        op-tee@lists.trustedfirmware.org,
-        linux-mediatek@lists.infradead.org, xen-devel@lists.xenproject.org,
-        Nouveau Dev <nouveau@lists.freedesktop.org>,
-        linux-hams@vger.kernel.org,
-        ceph-devel <ceph-devel@vger.kernel.org>,
-        virtualization@lists.linux-foundation.org,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linux-hwmon@vger.kernel.org,
-        Linux Watchdog Mailing List <linux-watchdog@vger.kernel.org>,
-        "open list:NFS, SUNRPC, AND..." <linux-nfs@vger.kernel.org>,
-        GR-Linux-NIC-Dev@marvell.com,
-        tipc-discussion@lists.sourceforge.net,
-        Linux-MM <linux-mm@kvack.org>,
-        Network Development <netdev@vger.kernel.org>,
-        linux-decnet-user@lists.sourceforge.net,
-        Linux MMC List <linux-mmc@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        linux-sctp@vger.kernel.org, USB list <linux-usb@vger.kernel.org>,
-        NetFilter <netfilter-devel@vger.kernel.org>,
-        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
-        patches@opensource.cirrus.com, Joe Perches <joe@perches.com>,
-        linux-integrity <linux-integrity@vger.kernel.org>,
-        target-devel <target-devel@vger.kernel.org>,
-        linux-hardening@vger.kernel.org
+Received: by 2002:a05:6102:4a8:0:0:0:0 with HTTP; Thu, 26 Nov 2020 07:28:29
+ -0800 (PST)
+Reply-To: sgtkaylam28@gmail.com
+From:   SgtKayla Manthey <latifoubatoulim@gmail.com>
+Date:   Thu, 26 Nov 2020 07:28:29 -0800
+Message-ID: <CAMFRtcmoSv+Pq-Wv3DHo40ccYbB2Q6YJkKUed8sx54=Yn6DVOg@mail.gmail.com>
+Subject: Hello,
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Miguel,
-
-On Thu, Nov 26, 2020 at 3:54 PM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
-> On Wed, Nov 25, 2020 at 11:44 PM Edward Cree <ecree.xilinx@gmail.com> wrote:
-> > To make the intent clear, you have to first be certain that you
-> >  understand the intent; otherwise by adding either a break or a
-> >  fallthrough to suppress the warning you are just destroying the
-> >  information that "the intent of this code is unknown".
->
-> If you don't know what the intent of your own code is, then you
-> *already* have a problem in your hands.
-
-The maintainer is not necessarily the owner/author of the code, and
-thus may not know the intent of the code.
-
-> > or does it flag up code
-> >  that can be mindlessly "fixed" (in which case the warning is
-> >  worthless)?  Proponents in this thread seem to be trying to
-> >  have it both ways.
->
-> A warning is not worthless just because you can mindlessly fix it.
-> There are many counterexamples, e.g. many
-> checkpatch/lint/lang-format/indentation warnings, functional ones like
-> the `if (a = b)` warning...
-
-BTW, you cannot mindlessly fix the latter, as you cannot know if
-"(a == b)" or "((a = b))" was intended, without understanding the code
-(and the (possibly unavailable) data sheet, and the hardware, ...).
-
-P.S. So far I've stayed out of this thread, as I like it if the compiler
-     flags possible mistakes.  After all I was the one fixing new
-     "may be used uninitialized" warnings thrown up by gcc-4.1, until
-     (a bit later than) support for that compiler was removed...
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Pozdrav,
+Zovem se Kayla, molim vas da li ste primili moju prethodnu poruku? Napi=C5=
+=A1i mi.
