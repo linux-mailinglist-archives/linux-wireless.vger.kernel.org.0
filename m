@@ -2,111 +2,108 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 114982C641F
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Nov 2020 12:55:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 63A8D2C65B7
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Nov 2020 13:29:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726316AbgK0LzO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 27 Nov 2020 06:55:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37672 "EHLO
+        id S1727431AbgK0M0s (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 27 Nov 2020 07:26:48 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42518 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726014AbgK0LzO (ORCPT
+        with ESMTP id S1725865AbgK0M0s (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 27 Nov 2020 06:55:14 -0500
-Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFE4FC0613D1
-        for <linux-wireless@vger.kernel.org>; Fri, 27 Nov 2020 03:55:13 -0800 (PST)
-Received: by mail-ej1-x62f.google.com with SMTP id x16so97197ejj.7
-        for <linux-wireless@vger.kernel.org>; Fri, 27 Nov 2020 03:55:13 -0800 (PST)
+        Fri, 27 Nov 2020 07:26:48 -0500
+Received: from mail-ot1-x344.google.com (mail-ot1-x344.google.com [IPv6:2607:f8b0:4864:20::344])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26A17C0613D4
+        for <linux-wireless@vger.kernel.org>; Fri, 27 Nov 2020 04:26:48 -0800 (PST)
+Received: by mail-ot1-x344.google.com with SMTP id o3so4531028ota.8
+        for <linux-wireless@vger.kernel.org>; Fri, 27 Nov 2020 04:26:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding;
-        bh=FKBTvTDTKQY4yiSQZjm4/5f3Ed4buFyJBrSHw7Dmmcc=;
-        b=l/dqb2bBnqErG10czuFOu4vRDSFVWAQ/+5kkvXnhqxnMI+5sN3J8sSpTC1p535xwxk
-         t8V1xuexvf+uOvMhg1Oze2MFpzpSg6whdrq1ZqPywweRn5auCOrTWeR8ejvatZibTPQ8
-         6wy32MRCZY7eTw9dggYp8JsrnQvOiJbEAMSfcPCblZiwH4ZSTZ2fUbCZVMGMUGeT+DoI
-         YU3xz07WkEqNI47tGBRAiQ95Ozq+87j5TLERfTHBW4nk4W34FVmNF/t3hgqGtHx/f+Ds
-         rg2+StElHY4XIKq9K5fVs6V/oDutYMyTFpA5lCk8NHe0hDBOvJn4VsDXf6YUUfg6VXXJ
-         t9jg==
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=INnUE0sM05L2oreqITOkcAXoqFYcu3Qaos8NOOfhOTQ=;
+        b=RbEhXeDCcLG6KFDkofW6vC2lhXZqLixRKztRPhHHADZRxFmCHKdxew/X6buNWyeQPm
+         SYTCpiakjEpW+R8ggJqq0BhGj1sINRcXMaxNZK9Tk6K2uGLRZup8ZfiiYKo5zWSddhXs
+         ZkaMa3TBB4WEa3vG8H4QlHbg76bimbJQoWPGEYk33YfOdQ1tFIC0mZRG4eyAW1mh6P1T
+         kfYL+YsACuuilf3sSPfHlVGeAWtM+oyTeQkb3wiXYjHLho1D1p33cNvAaGnZapYl8OaB
+         X8jFOlYbYYiWOAx24QFMufWRlk5KCUEDVZhTzFQN0nL0KeuP9RNuurTu6UfQWwl0y9oc
+         hPdA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
-        bh=FKBTvTDTKQY4yiSQZjm4/5f3Ed4buFyJBrSHw7Dmmcc=;
-        b=EzEv616vKrq9vMDgUy/tqDI43Qb0oX8e6vX7zceivBnU0IfpOJxeu8cn8fU5eVGBt9
-         52pXPvQ65GHFV7fQwoZgORtCQ4RvupFMsPHkoynOxZv9UtYXp++0m3WqZ2/b063KFHh/
-         ziMWIwMa1saP5cwCamITIyrNvmlki/Em/dU2PpoeL0XZqIZIrtT6+LpSIdjEzirPA41w
-         WyCn/VjmJA98glyCtkBDpBd/YtpG6Ms8fuxOi/5m4VDRSUALXHwe+gRMdyDFww5pyxCx
-         Ta8cYRgGD/DdzRoooYJnAaYM3zq3PEJohmctWRSsHYD38C5UMs6zDXugcg4ia+RbdJgw
-         j4+Q==
-X-Gm-Message-State: AOAM531/Zdl8kvqz/CVv30IMEtdS9Sax/5/bxVfgo1F09dE31nArgmjZ
-        oDq0McoOqVK28hnKJOizhn2eOys/dv5g7w==
-X-Google-Smtp-Source: ABdhPJy+vFUlQ7aku7+niwDmgzAFLuErxYaDt81S7L5KSrhOcSbnSuMpRgmDSN3gjizwyDTK5DXgYg==
-X-Received: by 2002:a17:907:20dc:: with SMTP id qq28mr5371020ejb.403.1606478111245;
-        Fri, 27 Nov 2020 03:55:11 -0800 (PST)
-Received: from ?IPv6:2003:ea:8f23:2800:a9d0:5753:89c8:13cf? (p200300ea8f232800a9d0575389c813cf.dip0.t-ipconnect.de. [2003:ea:8f23:2800:a9d0:5753:89c8:13cf])
-        by smtp.googlemail.com with ESMTPSA id f13sm4648634ejf.42.2020.11.27.03.55.10
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 27 Nov 2020 03:55:10 -0800 (PST)
-Subject: Re: AX210 version 0024 not detected by iwlwifi
-To:     "Coelho, Luciano" <luciano.coelho@intel.com>,
-        linuxwifi <linuxwifi@intel.com>,
-        "Berg, Johannes" <johannes.berg@intel.com>,
-        "Grumbach, Emmanuel" <emmanuel.grumbach@intel.com>
-Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-References: <03e8284e-4ea8-fe3e-8da7-62a778b1a059@gmail.com>
- <ce7fab1d400a04eb31727546b99af0292a0d30f4.camel@intel.com>
-From:   Heiner Kallweit <hkallweit1@gmail.com>
-Message-ID: <9b5d4919-1c62-7438-3f50-18197a92a9cf@gmail.com>
-Date:   Fri, 27 Nov 2020 12:55:06 +0100
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.5.0
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=INnUE0sM05L2oreqITOkcAXoqFYcu3Qaos8NOOfhOTQ=;
+        b=JoLu9hpjamwaXqS54oXURAkP5pNpG85dzx+WZwHLMGNXKgbKVkw8dX0dFTpvy5SsKL
+         wp7KlE4dn3bmT10v94GcLaWlhIPfsBf31dsCTlYq7m9p79H1em6prt4aeq+FjVCNsuw2
+         R2TMtchkqF1AdU3hwszhQiUkAG9/F0bnbBbzAndJ0R/l9cou2U1BpsJQLX5NxMPGQ7Ll
+         /8kQZmcZUlfmMFIhyXfGlhfc5gc0ww/PhF7/REzbjw0BgqMrfy7ysc4cPjJ94kTpXFGK
+         2t7kqYWK5s1YMhdiask4fl2fRuVqZNZ1ZVihnajsLT3fkdbUPuLE4glwmf1emrVboYBn
+         2kww==
+X-Gm-Message-State: AOAM533KU2jFWv6OyLWbqu3Q+uJoDgCv5inrSMvrArjaUR1w04IhJWAS
+        zGj9vYDhxXaBvbRhAtgjKh6CIO/L2cYWexhOTUF/1A==
+X-Google-Smtp-Source: ABdhPJwdkvpfZpec4AJHnHkvroUWUD22bNL8+btJPZre9LvmpggYaMzTkVMfQJdGNDxedL3NGUqUi0acSmkdra7e+ek=
+X-Received: by 2002:a9d:7d92:: with SMTP id j18mr5921417otn.17.1606480007166;
+ Fri, 27 Nov 2020 04:26:47 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <ce7fab1d400a04eb31727546b99af0292a0d30f4.camel@intel.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
+References: <20201125173436.1894624-1-elver@google.com> <20201125124313.593fc2b5@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+ <CANpmjNP_=Awx0-eZisMXzgXxKqf7hcrZYCYzFXuebPcwZtkoLw@mail.gmail.com> <CAF=yD-JtRUjmy+12kTL=YY8Cfi_c92GVbHZ647smWmasLYiNMg@mail.gmail.com>
+In-Reply-To: <CAF=yD-JtRUjmy+12kTL=YY8Cfi_c92GVbHZ647smWmasLYiNMg@mail.gmail.com>
+From:   Marco Elver <elver@google.com>
+Date:   Fri, 27 Nov 2020 13:26:35 +0100
+Message-ID: <CANpmjNO8H9OJDTcKhg4PRVEV04Gxnb56mJY2cB9j4cH+4nznhQ@mail.gmail.com>
+Subject: Re: [PATCH net-next] net: switch to storing KCOV handle directly in sk_buff
+To:     Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc:     Jakub Kicinski <kuba@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Aleksandr Nogikh <a.nogikh@gmail.com>,
+        Andrey Konovalov <andreyknvl@google.com>,
+        Dmitry Vyukov <dvyukov@google.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Netdev <netdev@vger.kernel.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Ido Schimmel <idosch@idosch.org>,
+        Florian Westphal <fw@strlen.de>,
+        Willem de Bruijn <willemb@google.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Am 23.11.2020 um 09:17 schrieb Coelho, Luciano:
-> Hi Heiner,
-> 
-> On Sun, 2020-11-22 at 22:35 +0100, Heiner Kallweit wrote:
->> I have an AX210 card that isn't detected by iwlwifi.
->>
->> 01:00.0 Network controller: Intel Corporation Device 2725 (rev 1a)
->>         Subsystem: Intel Corporation Device 0024
->>
->> Adding following entry seems to be sufficient.
->>
->>         {IWL_PCI_DEVICE(0x2725, 0x0020, iwlax210_2ax_cfg_ty_gf_a0)},
->> +       {IWL_PCI_DEVICE(0x2725, 0x0024, iwlax210_2ax_cfg_ty_gf_a0)},
->>         {IWL_PCI_DEVICE(0x2725, 0x0310, iwlax210_2ax_cfg_ty_gf_a0)},
->>
->> [  419.473140] iwlwifi 0000:01:00.0: enabling device (0000 -> 0002)
->> [  419.486984] iwlwifi 0000:01:00.0: api flags index 2 larger than supported by driver
->> [  419.487190] iwlwifi 0000:01:00.0: TLV_FW_FSEQ_VERSION: FSEQ Version: 93.8.63.28
->> [  419.488828] iwlwifi 0000:01:00.0: loaded firmware version 59.601f3a66.0 ty-a0-gf-a0-59.ucode op_mode iwlmvm
->> [  419.533136] iwlwifi 0000:01:00.0: Detected Intel(R) Wi-Fi 6 AX210 160MHz, REV=0x420
->>
->> Maybe there are more AX210 subversion id's to be added ..
->>
->> How about the api flags index warning? I saw it in several posts,
->> is there something to be fixed in the driver?
-> 
-> Good catch.  This indeed seems to be missing.  I'll add it and try to
-> send it still for the 5.10-rc series, so it propagates asap.
-> 
-> --
-> Cheers,
-> Luca.
-> 
+On Thu, 26 Nov 2020 at 17:35, Willem de Bruijn
+<willemdebruijn.kernel@gmail.com> wrote:
+> On Thu, Nov 26, 2020 at 3:19 AM Marco Elver <elver@google.com> wrote:
+[...]
+> > Will send v2.
+>
+> Does it make more sense to revert the patch that added the extensions
+> and the follow-on fixes and add a separate new patch instead?
 
-I face another issue I hope you can help me with:
-Frequently on system reboot the PCI device vanishes, it's not listed
-by lspci any longer. This doesn't happen after a power-cycle.
-Not sure whether device is in D3cold or whether it doesn't react
-for another reason.
+That doesn't work, because then we'll end up with a build-broken
+commit in between the reverts and the new version, because mac80211
+uses skb_get_kcov_handle().
 
-Rgds, Heiner
+> If adding a new field to the skb, even if only in debug builds,
+> please check with pahole how it affects struct layout if you
+> haven't yet.
+
+Without KCOV:
+
+        /* size: 224, cachelines: 4, members: 72 */
+        /* sum members: 217, holes: 1, sum holes: 2 */
+        /* sum bitfield members: 36 bits, bit holes: 2, sum bit holes: 4 bits */
+        /* forced alignments: 2 */
+        /* last cacheline: 32 bytes */
+
+With KCOV:
+
+        /* size: 232, cachelines: 4, members: 73 */
+        /* sum members: 225, holes: 1, sum holes: 2 */
+        /* sum bitfield members: 36 bits, bit holes: 2, sum bit holes: 4 bits */
+        /* forced alignments: 2 */
+        /* last cacheline: 40 bytes */
+
+
+> The skb_extensions idea was mine. Apologies for steering
+> this into an apparently unsuccessful direction. Adding new fields
+> to skb is very rare because possibly problematic wrt allocation.
