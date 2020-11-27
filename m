@@ -2,139 +2,100 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7655B2C6A2C
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Nov 2020 17:52:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E05552C6B09
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Nov 2020 18:56:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731924AbgK0QvP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 27 Nov 2020 11:51:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55528 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731443AbgK0QvO (ORCPT
+        id S1732779AbgK0Rxq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 27 Nov 2020 12:53:46 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:43822 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1732515AbgK0Rxq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 27 Nov 2020 11:51:14 -0500
-Received: from mail-vs1-xe41.google.com (mail-vs1-xe41.google.com [IPv6:2607:f8b0:4864:20::e41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2F24C0613D1
-        for <linux-wireless@vger.kernel.org>; Fri, 27 Nov 2020 08:51:14 -0800 (PST)
-Received: by mail-vs1-xe41.google.com with SMTP id w71so1773768vsw.9
-        for <linux-wireless@vger.kernel.org>; Fri, 27 Nov 2020 08:51:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=X7jtzNs0NbYHlVVmlLsP7b2/FUYkvw9tqQfhdc87EyE=;
-        b=r7N5PALFBkMVMurrPrTyIWvenPdAmItRtcw/fq7VdG/Lmay5Gng1oWK0qXANy6S+tt
-         NCHXnAci/9v1VUarKydxLMEOj7yjlJ8X+EdUoZvLCg8bKqjyvrrfbJ3gKdt09gu1LWbf
-         s2O04IakYss1f17gOqG0NgUvL3lhSXMbKSmCd/8nPD82Ue3fvgcUmHiZ9cK9vGgi2LYV
-         Ca68HvMxWcglGqLXp8mCNjVqoxMa4SnJ33UD84nS4AyTlkP8Yp/PW2T+IY6j6Bi1w9R0
-         Zwg/549g3eVRVfL+X+xY1iz2odmNfd6W44KcyMlEWKItU+42UkW1rl0WxlhhcPLfthwt
-         nK3A==
+        Fri, 27 Nov 2020 12:53:46 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1606499624;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc; bh=qO38NSfxZWa4WAPrmeDJabPo497l111qJuCqqB4b5gM=;
+        b=FEMA5U+IHBrEWxieVLOkceABAS48PFNjMxXdvgBOnXvT9lRlhy3cDIlkFt9PAx09goZXjs
+        cOiLrTLJ28j9cAp61HaZgrf6CiobEFGcJTxqGjo6kjwI1vhi0Ey7ayKb8E8FXt7XVI0laB
+        Ga2LRg7YsXLVee8wKx77qeo6jb1eo2E=
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
+ [209.85.160.197]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-254-0FGPidnaNPiOF3CYoAl_FA-1; Fri, 27 Nov 2020 12:53:42 -0500
+X-MC-Unique: 0FGPidnaNPiOF3CYoAl_FA-1
+Received: by mail-qt1-f197.google.com with SMTP id c11so3463401qtw.10
+        for <linux-wireless@vger.kernel.org>; Fri, 27 Nov 2020 09:53:42 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=X7jtzNs0NbYHlVVmlLsP7b2/FUYkvw9tqQfhdc87EyE=;
-        b=C9zQ7zfbJfcidsKrkIe3pmm/a7e2uQQB8HG1MVEC7KYh47r6rbKfB8s2oRd70aeRiE
-         BXfcBXwc0YTufNQVIbmDDXhbZqMsfggyn+BzWrb7wqjyvcZkN+GBg3/vP0G8ESO40+QR
-         y7+TbLWiPHXlHqTHZtMpQOyt41KGmvhIWIBSh5Xd9Mc4d2FM2RdrMeIxttz0YZHSbbWU
-         CbwOzJ3bfsBbK4vbbbIPm+UQa8iJTaKUYvj7qBCxlJ+c90S9i9CcWGxcBy1ioL8opeBa
-         nf1xPmgxJC2I4lndv5GHmWnsfs3rqWme5W4heCsSHQB5AJZd38GeGMaYMUwsGQWZtjre
-         0jnw==
-X-Gm-Message-State: AOAM533R5DxA3XbG1R1v0TAMqXHDWD9JZgwGbv/p9kpv/gsN5cElNGpT
-        y7pyQcPVW1JVoAZbvw5vCR/UAjQBmpM=
-X-Google-Smtp-Source: ABdhPJyw+RjckJzRw0WVloSizVYIBnpPZ+xpP6i9N2Pywxj/Shun8rs2kekbUJC0h0lJhUV8fcF49w==
-X-Received: by 2002:a67:6b83:: with SMTP id g125mr6924464vsc.7.1606495873497;
-        Fri, 27 Nov 2020 08:51:13 -0800 (PST)
-Received: from mail-vs1-f51.google.com (mail-vs1-f51.google.com. [209.85.217.51])
-        by smtp.gmail.com with ESMTPSA id w20sm442993vke.38.2020.11.27.08.51.11
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 27 Nov 2020 08:51:12 -0800 (PST)
-Received: by mail-vs1-f51.google.com with SMTP id y78so2852314vsy.6
-        for <linux-wireless@vger.kernel.org>; Fri, 27 Nov 2020 08:51:11 -0800 (PST)
-X-Received: by 2002:a05:6102:1173:: with SMTP id k19mr6628798vsg.51.1606495871475;
- Fri, 27 Nov 2020 08:51:11 -0800 (PST)
-MIME-Version: 1.0
-References: <20201125173436.1894624-1-elver@google.com> <20201125124313.593fc2b5@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
- <CANpmjNP_=Awx0-eZisMXzgXxKqf7hcrZYCYzFXuebPcwZtkoLw@mail.gmail.com>
- <CAF=yD-JtRUjmy+12kTL=YY8Cfi_c92GVbHZ647smWmasLYiNMg@mail.gmail.com> <CANpmjNO8H9OJDTcKhg4PRVEV04Gxnb56mJY2cB9j4cH+4nznhQ@mail.gmail.com>
-In-Reply-To: <CANpmjNO8H9OJDTcKhg4PRVEV04Gxnb56mJY2cB9j4cH+4nznhQ@mail.gmail.com>
-From:   Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Date:   Fri, 27 Nov 2020 11:50:34 -0500
-X-Gmail-Original-Message-ID: <CA+FuTSfCSZFC2Bz5WpnaoU__jrd8sSwsDqN1TNar3yeGNbVeQQ@mail.gmail.com>
-Message-ID: <CA+FuTSfCSZFC2Bz5WpnaoU__jrd8sSwsDqN1TNar3yeGNbVeQQ@mail.gmail.com>
-Subject: Re: [PATCH net-next] net: switch to storing KCOV handle directly in sk_buff
-To:     Marco Elver <elver@google.com>
-Cc:     Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Aleksandr Nogikh <a.nogikh@gmail.com>,
-        Andrey Konovalov <andreyknvl@google.com>,
-        Dmitry Vyukov <dvyukov@google.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Netdev <netdev@vger.kernel.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Ido Schimmel <idosch@idosch.org>,
-        Florian Westphal <fw@strlen.de>
-Content-Type: text/plain; charset="UTF-8"
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=qO38NSfxZWa4WAPrmeDJabPo497l111qJuCqqB4b5gM=;
+        b=RQX8NsDwbXRNTdXfTa5yIKLd3EjiuB0WVdhcn+I7ge2RQsFKRlDfuPAn71MgvweTdC
+         K2poVJRI4oZ/sj+k0eiTNx1sWhYFq/j7bqjcrotibd1APFwOPpYLABp3GcHXQQKQiHHr
+         4T7znStCfaNfvbbR3ne+udsSdEPf2y1e0bY8zUZOuRPOArvw35NwZvvhQ89HJArWbK82
+         wXvacDzd/VsmzRd35+d6vhMd+xJ+8XNxERP9sq+5iB+1LlQ09YGpVcYv/u9lxlHLoyEy
+         eG16Wxy8OFzO2sluf0LnYdRYSkAb2LG89gBEpo0mvWNtuy2uWCBs8W031HN+taWORnA+
+         9H1A==
+X-Gm-Message-State: AOAM532NEwbpYYOT59QKrpezZ3oqzjLkOlFcsFRxGli2qyCRQe3a66CF
+        Wj3T6cOer7S8Armm+O7/0jFhg2/acfeuh0a3B8K5j1TpoCrTmleB+oN9AtbaXxyM05iLH6QptKJ
+        HSFcsfWeDK48bQK4/NtcSB5j5blE=
+X-Received: by 2002:a05:6214:5cd:: with SMTP id t13mr9508301qvz.56.1606499622094;
+        Fri, 27 Nov 2020 09:53:42 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJwfH2VXvTvUj9haJRf6OI04GWQ+Bz6Iu0NjOaH9CUGPlGii6j/onExY9XycfKuzXq4xhmDsZA==
+X-Received: by 2002:a05:6214:5cd:: with SMTP id t13mr9508283qvz.56.1606499621938;
+        Fri, 27 Nov 2020 09:53:41 -0800 (PST)
+Received: from trix.remote.csb (075-142-250-213.res.spectrum.com. [75.142.250.213])
+        by smtp.gmail.com with ESMTPSA id t126sm6425935qkh.133.2020.11.27.09.53.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 27 Nov 2020 09:53:41 -0800 (PST)
+From:   trix@redhat.com
+To:     ath9k-devel@qca.qualcomm.com, kvalo@codeaurora.org,
+        davem@davemloft.net, kuba@kernel.org
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Tom Rix <trix@redhat.com>
+Subject: [PATCH] net: ath9k: remove trailing semicolon in macro definition
+Date:   Fri, 27 Nov 2020 09:53:36 -0800
+Message-Id: <20201127175336.2752730-1-trix@redhat.com>
+X-Mailer: git-send-email 2.18.4
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Nov 27, 2020 at 7:26 AM Marco Elver <elver@google.com> wrote:
->
-> On Thu, 26 Nov 2020 at 17:35, Willem de Bruijn
-> <willemdebruijn.kernel@gmail.com> wrote:
-> > On Thu, Nov 26, 2020 at 3:19 AM Marco Elver <elver@google.com> wrote:
-> [...]
-> > > Will send v2.
-> >
-> > Does it make more sense to revert the patch that added the extensions
-> > and the follow-on fixes and add a separate new patch instead?
->
-> That doesn't work, because then we'll end up with a build-broken
-> commit in between the reverts and the new version, because mac80211
-> uses skb_get_kcov_handle().
->
-> > If adding a new field to the skb, even if only in debug builds,
-> > please check with pahole how it affects struct layout if you
-> > haven't yet.
->
-> Without KCOV:
->
->         /* size: 224, cachelines: 4, members: 72 */
->         /* sum members: 217, holes: 1, sum holes: 2 */
->         /* sum bitfield members: 36 bits, bit holes: 2, sum bit holes: 4 bits */
->         /* forced alignments: 2 */
->         /* last cacheline: 32 bytes */
->
-> With KCOV:
->
->         /* size: 232, cachelines: 4, members: 73 */
->         /* sum members: 225, holes: 1, sum holes: 2 */
->         /* sum bitfield members: 36 bits, bit holes: 2, sum bit holes: 4 bits */
->         /* forced alignments: 2 */
->         /* last cacheline: 40 bytes */
+From: Tom Rix <trix@redhat.com>
 
-Thanks. defconfig leaves some symbols disabled, but manually enabling
-them just fills a hole, so 232 is indeed the worst case allocation.
+The macro use will already have a semicolon.
 
-I recall a firm edict against growing skb, but I don't know of a
-hard limit at exactly 224.
+Signed-off-by: Tom Rix <trix@redhat.com>
+---
+ drivers/net/wireless/ath/ath9k/common-debug.c | 2 +-
+ drivers/net/wireless/ath/ath9k/dfs_debug.c    | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-There is a limit at 2048 - sizeof(struct skb_shared_data) == 1728B
-when using pages for two ETH_FRAME_LEN (1514) allocations.
+diff --git a/drivers/net/wireless/ath/ath9k/common-debug.c b/drivers/net/wireless/ath/ath9k/common-debug.c
+index 53ca4b063eb9..7aefb79f6bed 100644
+--- a/drivers/net/wireless/ath/ath9k/common-debug.c
++++ b/drivers/net/wireless/ath/ath9k/common-debug.c
+@@ -189,7 +189,7 @@ static ssize_t read_file_phy_err(struct file *file, char __user *user_buf,
+ {
+ #define PHY_ERR(s, p) \
+ 	len += scnprintf(buf + len, size - len, "%22s : %10u\n", s, \
+-			 rxstats->phy_err_stats[p]);
++			 rxstats->phy_err_stats[p])
+ 
+ 	struct ath_rx_stats *rxstats = file->private_data;
+ 	char *buf;
+diff --git a/drivers/net/wireless/ath/ath9k/dfs_debug.c b/drivers/net/wireless/ath/ath9k/dfs_debug.c
+index 3251c9abe270..2a79c2fa8415 100644
+--- a/drivers/net/wireless/ath/ath9k/dfs_debug.c
++++ b/drivers/net/wireless/ath/ath9k/dfs_debug.c
+@@ -26,7 +26,7 @@ static struct ath_dfs_pool_stats dfs_pool_stats = { 0 };
+ 
+ #define ATH9K_DFS_STAT(s, p) \
+ 	len += scnprintf(buf + len, size - len, "%28s : %10u\n", s, \
+-			 sc->debug.stats.dfs_stats.p);
++			 sc->debug.stats.dfs_stats.p)
+ #define ATH9K_DFS_POOL_STAT(s, p) \
+ 	len += scnprintf(buf + len, size - len, "%28s : %10u\n", s, \
+ 			 dfs_pool_stats.p);
+-- 
+2.18.4
 
-This would leave 1728 - 1514 == 214B if also squeezing the skb itself
-in with the same allocation.
-
-But I have no idea if this is used anywhere. Certainly have no example
-ready. And as you show, the previous default already is at 224.
-
-If no one else knows of a hard limit at 224 or below, I suppose the
-next technical limit is just 256 for kmem cache purposes.
-
-My understanding was that skb_extensions was supposed to solve this
-problem of extending the skb without growing the main structure. Not
-for this patch, but I wonder if we can resolve the issues exposed here
-and make usable in more conditions.
