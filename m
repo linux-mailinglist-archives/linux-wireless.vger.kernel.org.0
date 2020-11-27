@@ -2,126 +2,150 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 125FB2C5F07
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Nov 2020 04:36:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A32072C6088
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Nov 2020 08:41:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387461AbgK0DfQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 26 Nov 2020 22:35:16 -0500
-Received: from rtits2.realtek.com ([211.75.126.72]:43973 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727037AbgK0DfQ (ORCPT
+        id S2392725AbgK0HiX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 27 Nov 2020 02:38:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54440 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2392707AbgK0HiW (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 26 Nov 2020 22:35:16 -0500
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 0AR3YxYjA015114, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexmb06.realtek.com.tw[172.21.6.99])
-        by rtits2.realtek.com.tw (8.15.2/2.70/5.88) with ESMTPS id 0AR3YxYjA015114
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Fri, 27 Nov 2020 11:34:59 +0800
-Received: from RTEXMBS03.realtek.com.tw (172.21.6.34) by
- RTEXMB06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2044.4; Fri, 27 Nov 2020 11:34:59 +0800
-Received: from RTEXMB04.realtek.com.tw (172.21.6.97) by
- RTEXMBS03.realtek.com.tw (172.21.6.34) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Fri, 27 Nov 2020 11:34:59 +0800
-Received: from RTEXMB04.realtek.com.tw ([fe80::89f7:e6c3:b043:15fa]) by
- RTEXMB04.realtek.com.tw ([fe80::89f7:e6c3:b043:15fa%3]) with mapi id
- 15.01.2044.006; Fri, 27 Nov 2020 11:34:59 +0800
-From:   Pkshih <pkshih@realtek.com>
-To:     "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
-        "lee.jones@linaro.org" <lee.jones@linaro.org>
-CC:     Tony Chuang <yhchuang@realtek.com>,
+        Fri, 27 Nov 2020 02:38:22 -0500
+Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57BC2C0617A7
+        for <linux-wireless@vger.kernel.org>; Thu, 26 Nov 2020 23:38:21 -0800 (PST)
+Received: by mail-wr1-x442.google.com with SMTP id i2so4522328wrs.4
+        for <linux-wireless@vger.kernel.org>; Thu, 26 Nov 2020 23:38:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=xhN+Y7X7T3hr9xnUPO5BFNWxespYdkDTx9HcEbrzWhM=;
+        b=beIM+9ahTQ1AqkPeAxt48OELKHMEyMjXVA/AEbv7IXZ6g0eF4UO9s/Bq6BFDgVUQcJ
+         LR/f0Zi4OsTSRb75ADfSbIf8pQ4ays4k79cBiW4NCefehZDgvjO54K/l33M59Id1zkW9
+         90vLD3k0V/rnVnKpl1GreKEN5gyVJh6U2b1vVCO38GFDmvAFgi4zIPhaNI8whsbzMEbo
+         Wx5NQSWG7FR2LX0F7hnu2SE4Csc1yGGt2NurIYbRgSe3Bxq4+Vrz3QsBSZAm9Ag4TsYY
+         TyX4//Hksp1MLJYBb7GHpSrDDj7RU2CgX+MnMK5tV3wZyAahvhf6p94P84zzRMnKYqIr
+         le5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=xhN+Y7X7T3hr9xnUPO5BFNWxespYdkDTx9HcEbrzWhM=;
+        b=nWOWIhVfvWICvkURzhQlHPmJAjlVNCXR8RkIRM1IPhYbLYtIu611QChiZ3vETE1Kiy
+         Ke1ifnxer67sImdXeSC0/D0a28ZvZx3FBM0EQRpdMs9smMdtN140qm8mh9g1uRID4Ugk
+         2Sf0z7Lm6Ez48zLlJsH/uQEixSjpSzrxXTeXS04wWjevP7tn9WxNoPhWyhOTQEKWjFyF
+         of2M4RiXQxDglRdJ39MXGkwzVL/gt/a8Pundh/gVb2DsYSMv0UPG3oMR3XNPmoZjOUpY
+         BlSdeBSE9ZwizVrxEe8ikVKvjJJROpCCf2C+w59Z5BVKCCp0KfxNFGAr1b5NV1MuzEF4
+         KUAg==
+X-Gm-Message-State: AOAM532CYj1MGcdzaep+/mcSulGT2AUA7dtfpYSfFaUAsS+kIGIeoX8O
+        RaZoCHcEVXok0kFXXHQm6dPo2g==
+X-Google-Smtp-Source: ABdhPJyZ8f2wwkDP5ycrhe9Hsl8TbK+clrvhynd75HH+ayMXnM9WrqZww3nzZbp3r6Zve8DPd4zS3A==
+X-Received: by 2002:adf:ed11:: with SMTP id a17mr8760413wro.197.1606462699889;
+        Thu, 26 Nov 2020 23:38:19 -0800 (PST)
+Received: from dell ([91.110.221.235])
+        by smtp.gmail.com with ESMTPSA id f18sm12912432wru.42.2020.11.26.23.38.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 26 Nov 2020 23:38:19 -0800 (PST)
+Date:   Fri, 27 Nov 2020 07:38:16 +0000
+From:   Lee Jones <lee.jones@linaro.org>
+To:     Pkshih <pkshih@realtek.com>
+Cc:     "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
+        Tony Chuang <yhchuang@realtek.com>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         "davem@davemloft.net" <davem@davemloft.net>,
         "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
         "kuba@kernel.org" <kuba@kernel.org>,
         "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Subject: Re: [PATCH 17/17] realtek: rtw88: pci: Add prototypes for .probe, .remove and .shutdown
-Thread-Topic: [PATCH 17/17] realtek: rtw88: pci: Add prototypes for .probe,
+Subject: Re: [PATCH 17/17] realtek: rtw88: pci: Add prototypes for .probe,
  .remove and .shutdown
-Thread-Index: AQHWw/kLX1PwJPIhYEea5OlYi0Fw16nazioA
-Date:   Fri, 27 Nov 2020 03:34:59 +0000
-Message-ID: <1606448026.14483.4.camel@realtek.com>
+Message-ID: <20201127073816.GF2455276@dell>
 References: <20201126133152.3211309-1-lee.jones@linaro.org>
-         <20201126133152.3211309-18-lee.jones@linaro.org>
-In-Reply-To: <20201126133152.3211309-18-lee.jones@linaro.org>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.213]
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <49DDB1AC13524F4EB2755A4D8B720B98@realtek.com>
-Content-Transfer-Encoding: base64
+ <20201126133152.3211309-18-lee.jones@linaro.org>
+ <1606448026.14483.4.camel@realtek.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <1606448026.14483.4.camel@realtek.com>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-DQpUaGUgc3ViamVjdCBwcmVmaXggZG9lc24ndCBuZWVkICdyZWFsdGVrOic7IHVzZSAncnR3ODg6
-Jy4NCg0KT24gVGh1LCAyMDIwLTExLTI2IGF0IDEzOjMxICswMDAwLCBMZWUgSm9uZXMgd3JvdGU6
-DQo+IEFsc28gc3RyaXAgb3V0IG90aGVyIGR1cGxpY2F0ZXMgZnJvbSBkcml2ZXIgc3BlY2lmaWMg
-aGVhZGVycy4NCj4gDQo+IEVuc3VyZSAnbWFpbi5oJyBpcyBleHBsaWNpdGx5IGluY2x1ZGVkIGlu
-ICdwY2kuaCcgc2luY2UgdGhlIGxhdHRlcg0KPiB1c2VzIHNvbWUgZGVmaW5lcyBmcm9tIHRoZSBm
-b3JtZXIuwqDCoEl0IGF2b2lkcyBpc3N1ZXMgbGlrZToNCj4gDQo+IMKgZnJvbSBkcml2ZXJzL25l
-dC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L3J0dzg4MjJiZS5jOjU6DQo+IMKgZHJpdmVycy9uZXQv
-d2lyZWxlc3MvcmVhbHRlay9ydHc4OC9wY2kuaDoyMDk6Mjg6IGVycm9yOg0KPiDigJhSVEtfTUFY
-X1RYX1FVRVVFX05VTeKAmSB1bmRlY2xhcmVkIGhlcmUgKG5vdCBpbiBhIGZ1bmN0aW9uKTsgZGlk
-IHlvdSBtZWFuDQo+IOKAmFJUS19NQVhfUlhfREVTQ19OVU3igJk/DQo+IMKgMjA5IHwgREVDTEFS
-RV9CSVRNQVAodHhfcXVldWVkLCBSVEtfTUFYX1RYX1FVRVVFX05VTSk7DQo+IMKgfCBefn5+fn5+
-fn5+fn5+fn5+fn5+fg0KPiANCj4gRml4ZXMgdGhlIGZvbGxvd2luZyBXPTEga2VybmVsIGJ1aWxk
-IHdhcm5pbmcocyk6DQo+IA0KPiDCoGRyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgv
-cGNpLmM6MTQ4ODo1OiB3YXJuaW5nOiBubyBwcmV2aW91cw0KPiBwcm90b3R5cGUgZm9yIOKAmHJ0
-d19wY2lfcHJvYmXigJkgWy1XbWlzc2luZy1wcm90b3R5cGVzXQ0KPiDCoDE0ODggfCBpbnQgcnR3
-X3BjaV9wcm9iZShzdHJ1Y3QgcGNpX2RldiAqcGRldiwNCj4gwqB8IF5+fn5+fn5+fn5+fn4NCj4g
-wqBkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L3BjaS5jOjE1Njg6Njogd2Fybmlu
-Zzogbm8gcHJldmlvdXMNCj4gcHJvdG90eXBlIGZvciDigJhydHdfcGNpX3JlbW92ZeKAmSBbLVdt
-aXNzaW5nLXByb3RvdHlwZXNdDQo+IMKgMTU2OCB8IHZvaWQgcnR3X3BjaV9yZW1vdmUoc3RydWN0
-IHBjaV9kZXYgKnBkZXYpDQo+IMKgfCBefn5+fn5+fn5+fn5+fg0KPiDCoGRyaXZlcnMvbmV0L3dp
-cmVsZXNzL3JlYWx0ZWsvcnR3ODgvcGNpLmM6MTU5MDo2OiB3YXJuaW5nOiBubyBwcmV2aW91cw0K
-PiBwcm90b3R5cGUgZm9yIOKAmHJ0d19wY2lfc2h1dGRvd27igJkgWy1XbWlzc2luZy1wcm90b3R5
-cGVzXQ0KPiDCoDE1OTAgfCB2b2lkIHJ0d19wY2lfc2h1dGRvd24oc3RydWN0IHBjaV9kZXYgKnBk
-ZXYpDQo+IMKgfCBefn5+fn5+fn5+fn5+fn5+DQo+IA0KPiBDYzogWWFuLUhzdWFuIENodWFuZyA8
-eWhjaHVhbmdAcmVhbHRlay5jb20+DQo+IENjOiBLYWxsZSBWYWxvIDxrdmFsb0Bjb2RlYXVyb3Jh
-Lm9yZz4NCj4gQ2M6ICJEYXZpZCBTLiBNaWxsZXIiIDxkYXZlbUBkYXZlbWxvZnQubmV0Pg0KPiBD
-YzogSmFrdWIgS2ljaW5za2kgPGt1YmFAa2VybmVsLm9yZz4NCj4gQ2M6IGxpbnV4LXdpcmVsZXNz
-QHZnZXIua2VybmVsLm9yZw0KPiBDYzogbmV0ZGV2QHZnZXIua2VybmVsLm9yZw0KPiBTaWduZWQt
-b2ZmLWJ5OiBMZWUgSm9uZXMgPGxlZS5qb25lc0BsaW5hcm8ub3JnPg0KPiAtLS0NCj4gwqBkcml2
-ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L3BjaS5owqDCoMKgwqDCoMKgwqB8IDggKysr
-KysrKysNCj4gwqBkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L3J0dzg3MjNkZS5j
-IHwgMSArDQo+IMKgZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9ydHc4NzIzZGUu
-aCB8IDQgLS0tLQ0KPiDCoGRyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgvcnR3ODgy
-MWNlLmMgfCAxICsNCj4gwqBkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L3J0dzg4
-MjFjZS5oIHwgNCAtLS0tDQo+IMKgZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9y
-dHc4ODIyYmUuYyB8IDEgKw0KPiDCoGRyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgv
-cnR3ODgyMmJlLmggfCA0IC0tLS0NCj4gwqBkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0
-dzg4L3J0dzg4MjJjZS5jIHwgMSArDQo+IMKgZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9y
-dHc4OC9ydHc4ODIyY2UuaCB8IDQgLS0tLQ0KPiDCoDkgZmlsZXMgY2hhbmdlZCwgMTIgaW5zZXJ0
-aW9ucygrKSwgMTYgZGVsZXRpb25zKC0pDQo+IA0KPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQv
-d2lyZWxlc3MvcmVhbHRlay9ydHc4OC9wY2kuaA0KPiBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3Jl
-YWx0ZWsvcnR3ODgvcGNpLmgNCj4gaW5kZXggY2ExN2FhOWNmN2RjNy4uY2RhNTY5MTlhNWYwZiAx
-MDA2NDQNCj4gLS0tIGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9wY2kuaA0K
-PiArKysgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L3BjaS5oDQo+IEBAIC01
-LDYgKzUsOCBAQA0KPiDCoCNpZm5kZWYgX19SVEtfUENJX0hfDQo+IMKgI2RlZmluZSBfX1JUS19Q
-Q0lfSF8NCj4gwqANCj4gKyNpbmNsdWRlICJtYWluLmgiDQo+ICsNCg0KUGxlYXNlICNpbmNsdWRl
-ICJtYWluLmgiIGFoZWFkIG9mICJwY2kuaCIgaW4gZWFjaCBvZsKgcnR3OHh4eHhlLmMuDQoNCj4g
-wqAjZGVmaW5lIFJUS19ERUZBVUxUX1RYX0RFU0NfTlVNIDEyOA0KPiDCoCNkZWZpbmUgUlRLX0JF
-UV9UWF9ERVNDX05VTQkyNTYNCj4gwqANCj4gQEAgLTIxMiw2ICsyMTQsMTIgQEAgc3RydWN0IHJ0
-d19wY2kgew0KPiDCoAl2b2lkIF9faW9tZW0gKm1tYXA7DQo+IMKgfTsNCj4gwqANCj4gK2NvbnN0
-IHN0cnVjdCBkZXZfcG1fb3BzIHJ0d19wbV9vcHM7DQo+ICsNCj4gK2ludCBydHdfcGNpX3Byb2Jl
-KHN0cnVjdCBwY2lfZGV2ICpwZGV2LCBjb25zdCBzdHJ1Y3QgcGNpX2RldmljZV9pZCAqaWQpOw0K
-PiArdm9pZCBydHdfcGNpX3JlbW92ZShzdHJ1Y3QgcGNpX2RldiAqcGRldik7DQo+ICt2b2lkIHJ0
-d19wY2lfc2h1dGRvd24oc3RydWN0IHBjaV9kZXYgKnBkZXYpOw0KPiArDQo+IMKgc3RhdGljIGlu
-bGluZSB1MzIgbWF4X251bV9vZl90eF9xdWV1ZSh1OCBxdWV1ZSkNCj4gwqB7DQo+IMKgCXUzMiBt
-YXhfbnVtOw0KPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4
-OC9ydHc4NzIzZGUuYw0KPiBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgvcnR3
-ODcyM2RlLmMNCj4gaW5kZXggYzgxZWI0YzMzNjQyNS4uMmRkNjg5NDQxZThkYyAxMDA2NDQNCj4g
-LS0tIGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9ydHc4NzIzZGUuYw0KPiAr
-KysgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L3J0dzg3MjNkZS5jDQo+IEBA
-IC00LDYgKzQsNyBAQA0KPiDCoA0KPiDCoCNpbmNsdWRlIDxsaW51eC9tb2R1bGUuaD4NCj4gwqAj
-aW5jbHVkZSA8bGludXgvcGNpLmg+DQoNCkkgbWVhbiBoZXJlOg0KI2luY2x1ZGUgIm1haW4uaCIN
-Cg0KPiArI2luY2x1ZGUgInBjaS5oIg0KPiDCoCNpbmNsdWRlICJydHc4NzIzZGUuaCINCj4gwqAN
-Cj4gwqBzdGF0aWMgY29uc3Qgc3RydWN0IHBjaV9kZXZpY2VfaWQgcnR3Xzg3MjNkZV9pZF90YWJs
-ZVtdID0gew0KPiANCg0KW3NuaXBdDQoNCi0tLQ0KUGluZy1LZQ0KDQoNCg==
+On Fri, 27 Nov 2020, Pkshih wrote:
+
+> 
+> The subject prefix doesn't need 'realtek:'; use 'rtw88:'.
+> 
+> On Thu, 2020-11-26 at 13:31 +0000, Lee Jones wrote:
+> > Also strip out other duplicates from driver specific headers.
+> > 
+> > Ensure 'main.h' is explicitly included in 'pci.h' since the latter
+> > uses some defines from the former.  It avoids issues like:
+> > 
+> >  from drivers/net/wireless/realtek/rtw88/rtw8822be.c:5:
+> >  drivers/net/wireless/realtek/rtw88/pci.h:209:28: error:
+> > ‘RTK_MAX_TX_QUEUE_NUM’ undeclared here (not in a function); did you mean
+> > ‘RTK_MAX_RX_DESC_NUM’?
+> >  209 | DECLARE_BITMAP(tx_queued, RTK_MAX_TX_QUEUE_NUM);
+> >  | ^~~~~~~~~~~~~~~~~~~~
+> > 
+> > Fixes the following W=1 kernel build warning(s):
+> > 
+> >  drivers/net/wireless/realtek/rtw88/pci.c:1488:5: warning: no previous
+> > prototype for ‘rtw_pci_probe’ [-Wmissing-prototypes]
+> >  1488 | int rtw_pci_probe(struct pci_dev *pdev,
+> >  | ^~~~~~~~~~~~~
+> >  drivers/net/wireless/realtek/rtw88/pci.c:1568:6: warning: no previous
+> > prototype for ‘rtw_pci_remove’ [-Wmissing-prototypes]
+> >  1568 | void rtw_pci_remove(struct pci_dev *pdev)
+> >  | ^~~~~~~~~~~~~~
+> >  drivers/net/wireless/realtek/rtw88/pci.c:1590:6: warning: no previous
+> > prototype for ‘rtw_pci_shutdown’ [-Wmissing-prototypes]
+> >  1590 | void rtw_pci_shutdown(struct pci_dev *pdev)
+> >  | ^~~~~~~~~~~~~~~~
+> > 
+> > Cc: Yan-Hsuan Chuang <yhchuang@realtek.com>
+> > Cc: Kalle Valo <kvalo@codeaurora.org>
+> > Cc: "David S. Miller" <davem@davemloft.net>
+> > Cc: Jakub Kicinski <kuba@kernel.org>
+> > Cc: linux-wireless@vger.kernel.org
+> > Cc: netdev@vger.kernel.org
+> > Signed-off-by: Lee Jones <lee.jones@linaro.org>
+> > ---
+> >  drivers/net/wireless/realtek/rtw88/pci.h       | 8 ++++++++
+> >  drivers/net/wireless/realtek/rtw88/rtw8723de.c | 1 +
+> >  drivers/net/wireless/realtek/rtw88/rtw8723de.h | 4 ----
+> >  drivers/net/wireless/realtek/rtw88/rtw8821ce.c | 1 +
+> >  drivers/net/wireless/realtek/rtw88/rtw8821ce.h | 4 ----
+> >  drivers/net/wireless/realtek/rtw88/rtw8822be.c | 1 +
+> >  drivers/net/wireless/realtek/rtw88/rtw8822be.h | 4 ----
+> >  drivers/net/wireless/realtek/rtw88/rtw8822ce.c | 1 +
+> >  drivers/net/wireless/realtek/rtw88/rtw8822ce.h | 4 ----
+> >  9 files changed, 12 insertions(+), 16 deletions(-)
+> > 
+> > diff --git a/drivers/net/wireless/realtek/rtw88/pci.h
+> > b/drivers/net/wireless/realtek/rtw88/pci.h
+> > index ca17aa9cf7dc7..cda56919a5f0f 100644
+> > --- a/drivers/net/wireless/realtek/rtw88/pci.h
+> > +++ b/drivers/net/wireless/realtek/rtw88/pci.h
+> > @@ -5,6 +5,8 @@
+> >  #ifndef __RTK_PCI_H_
+> >  #define __RTK_PCI_H_
+> >  
+> > +#include "main.h"
+> > +
+> 
+> Please #include "main.h" ahead of "pci.h" in each of rtw8xxxxe.c.
+
+You mean instead of in pci.h?
+
+Surely that's a hack.
+
+-- 
+Lee Jones [李琼斯]
+Senior Technical Lead - Developer Services
+Linaro.org │ Open source software for Arm SoCs
+Follow Linaro: Facebook | Twitter | Blog
