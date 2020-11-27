@@ -2,59 +2,61 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2189D2C6B0E
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Nov 2020 18:56:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BEF242C6B32
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Nov 2020 18:59:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732548AbgK0Rzl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 27 Nov 2020 12:55:41 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:51436 "EHLO
+        id S1733067AbgK0R6g (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 27 Nov 2020 12:58:36 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:35455 "EHLO
         us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1732462AbgK0Rzk (ORCPT
+        by vger.kernel.org with ESMTP id S1732609AbgK0R6a (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 27 Nov 2020 12:55:40 -0500
+        Fri, 27 Nov 2020 12:58:30 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1606499740;
+        s=mimecast20190719; t=1606499909;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc; bh=Br/IPbdHx/OaYg6xCtsKtihEPu1TMwZ+6MkhSnyxsRs=;
-        b=OlqeNknsyJOgPCiYYSBRTA1H+W8HdCu3r7pnY6q3humVeUUUN0epS5Txaj2k7smHLoJUsU
-        OjDWByJeZc0ecyFyPUVGFzh+EGAOM3cdS/UiFDI6/RcnUHrfMY3HTbxZVQTdmx8M5Xcfsx
-        7os+S7JElacrYsG1hPt69nx4xeRbU78=
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
- [209.85.160.200]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-23-N-mEsRJTNk6yRV84rQ9B-g-1; Fri, 27 Nov 2020 12:55:38 -0500
-X-MC-Unique: N-mEsRJTNk6yRV84rQ9B-g-1
-Received: by mail-qt1-f200.google.com with SMTP id d9so3657352qtr.5
-        for <linux-wireless@vger.kernel.org>; Fri, 27 Nov 2020 09:55:38 -0800 (PST)
+         to:to:cc:cc; bh=4LunoHOSViYokVYuRCQyRja8YCLtsagi9dLGWhl23qk=;
+        b=J+X0KHhY3a9WUY2q47gY3A6Rv1Zgz2tYurLlO7wew49c7pBDzA9cky4OOzOPZobNhYG+f/
+        BLSDsqg1SRc125GAtHDNXGGqJB4lMivGZ8cCfLPwQqWiiAQXCVPRiayfrH4/++shc5/usu
+        UBGxaLrASix8iYIe6zZMdcS8Fb1NGtk=
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
+ [209.85.160.197]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-218-ieBRc8oWO0aZAQ6v2_Uubw-1; Fri, 27 Nov 2020 12:58:28 -0500
+X-MC-Unique: ieBRc8oWO0aZAQ6v2_Uubw-1
+Received: by mail-qt1-f197.google.com with SMTP id o12so3390387qtw.14
+        for <linux-wireless@vger.kernel.org>; Fri, 27 Nov 2020 09:58:27 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=Br/IPbdHx/OaYg6xCtsKtihEPu1TMwZ+6MkhSnyxsRs=;
-        b=JBvtlgUJSn5TqpQyPmg1sgnEws93WIMhhkRax1P/9l6aviN+xdQR3+H2u6G8DcKuhE
-         mgQerJ+PMQ1kdN69g+SjToCYmUmuvkdeoTHpQ/dJPgzGUxzDmhV1lYOiD2cy0Mzf7srm
-         BvYvGtD5tp2nxM/vDqQxASK41b+BmGodVeGuCdCrLlKulOXddt+GXLXiX32WuvEK7w7x
-         a3OE8iXiCamr0kOVfdB+0dBoBtS1Aa1+hEdwfS2CdI5cvhounVeku+fUbjEK80K5NRVA
-         gPyOh0X/0K1HR+NJWnXo5gpcGB5zvzJS6nwYK8At8YD4lnkAcUiiTx9Ygqq+nezjUk9h
-         EfXA==
-X-Gm-Message-State: AOAM530x8QMPnHlEurVlk57KEVKrWlfR+BQvrbwSrKyVl3A7VLpskYkw
-        x990qe0m/yVLNvB5dAyqyklaw1GfQH0JbKwKOkv080weY3J51cqbRVv9ixJq042CtcmLFzYvpow
-        WciwMc829SKGTp8VCJWYjAMkBgB0=
-X-Received: by 2002:a05:620a:a9a:: with SMTP id v26mr9511046qkg.56.1606499737598;
-        Fri, 27 Nov 2020 09:55:37 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJw2L15Xpt+pzKI2tQJ1Mja1bZVxZ9cJq3+yTQqjAUjwGC9JUF+NSrylLZnhZYHe6hp4SZgoPA==
-X-Received: by 2002:a05:620a:a9a:: with SMTP id v26mr9511031qkg.56.1606499737423;
-        Fri, 27 Nov 2020 09:55:37 -0800 (PST)
+        bh=4LunoHOSViYokVYuRCQyRja8YCLtsagi9dLGWhl23qk=;
+        b=N9RcN6uCXiG70sHs6syCaaMNf9Zifr2JLyGH7qepo4OnyuPsUByVH8UtRr3ZURe6QF
+         MtS/KH8Hy96ajVy8kZxINUP07mtOZqyG1ZqXspDwowVJbsJt7tFSo9MO2blBE90AIIA+
+         fYbOSLkLDynD/zuQSL0Ukcm23wBaynG2DKiz3HiMsJECT/HxrVsaN69AFLlkoQxw6LU7
+         8rKp6vRB3J2wfzIDjKHUXrk6oGyLDr74kU5bWnbPBdlkbDersk+kqsA4ZvcHMphilIqX
+         O03KV2bKhHeEp9tK3LmeJg7IEkEaNErDjsoDFY8vEOCTSmeBC0YNvn64LvQ+5Z8WbRjK
+         nzxw==
+X-Gm-Message-State: AOAM5337E6xpQzjwh0oHUQ7jLzFJlC7BQL3hAHuEwEiozs2sivhJLzCA
+        o9zJPpAH+I6x2boglrkRkd6AFNfQwcJjzMDfiqlrOz4V6CbgBm9iG/zYrO9ZnPKV5SRjXKECvvA
+        I5E3dDJW31RN1TqOw3FWkkvh74uE=
+X-Received: by 2002:ac8:6b11:: with SMTP id w17mr9671573qts.150.1606499907467;
+        Fri, 27 Nov 2020 09:58:27 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJyqc/CVfNGFpfgITGO2zbYhtL/kIf2QRQ37Phb2eGz1BpPgYqPvhZRP+ayREWsyzYkbW84qZg==
+X-Received: by 2002:ac8:6b11:: with SMTP id w17mr9671560qts.150.1606499907295;
+        Fri, 27 Nov 2020 09:58:27 -0800 (PST)
 Received: from trix.remote.csb (075-142-250-213.res.spectrum.com. [75.142.250.213])
-        by smtp.gmail.com with ESMTPSA id r48sm6421675qtr.21.2020.11.27.09.55.35
+        by smtp.gmail.com with ESMTPSA id s68sm6416127qkc.43.2020.11.27.09.58.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Nov 2020 09:55:36 -0800 (PST)
+        Fri, 27 Nov 2020 09:58:26 -0800 (PST)
 From:   trix@redhat.com
-To:     chunkeey@googlemail.com, kvalo@codeaurora.org, davem@davemloft.net,
-        kuba@kernel.org
+To:     kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org,
+        bigeasy@linutronix.de, mpe@ellerman.id.au, lee.jones@linaro.org,
+        kieran.bingham+renesas@ideasonboard.com, dan.carpenter@oracle.com,
+        adobriyan@gmail.com
 Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         linux-kernel@vger.kernel.org, Tom Rix <trix@redhat.com>
-Subject: [PATCH] net: carl9170: remove trailing semicolon in macro definition
-Date:   Fri, 27 Nov 2020 09:55:31 -0800
-Message-Id: <20201127175531.2754461-1-trix@redhat.com>
+Subject: [PATCH] net: cisco: remove trailing semicolon in macro definition
+Date:   Fri, 27 Nov 2020 09:58:21 -0800
+Message-Id: <20201127175821.2756988-1-trix@redhat.com>
 X-Mailer: git-send-email 2.18.4
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
@@ -66,31 +68,22 @@ The macro use will already have a semicolon.
 
 Signed-off-by: Tom Rix <trix@redhat.com>
 ---
- drivers/net/wireless/ath/carl9170/debug.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/cisco/airo.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/carl9170/debug.c b/drivers/net/wireless/ath/carl9170/debug.c
-index 19009aafc4e1..bb40889d7c72 100644
---- a/drivers/net/wireless/ath/carl9170/debug.c
-+++ b/drivers/net/wireless/ath/carl9170/debug.c
-@@ -45,7 +45,7 @@
- #include "cmd.h"
+diff --git a/drivers/net/wireless/cisco/airo.c b/drivers/net/wireless/cisco/airo.c
+index 74acf9af2adb..ba62bb2995d9 100644
+--- a/drivers/net/wireless/cisco/airo.c
++++ b/drivers/net/wireless/cisco/airo.c
+@@ -5785,7 +5785,7 @@ static int airo_get_quality (StatusRid *status_rid, CapabilityRid *cap_rid)
+ }
  
- #define ADD(buf, off, max, fmt, args...)				\
--	off += scnprintf(&buf[off], max - off, fmt, ##args);
-+	off += scnprintf(&buf[off], max - off, fmt, ##args)
+ #define airo_get_max_quality(cap_rid) (memcmp((cap_rid)->prodName, "350", 3) ? 0x20 : 0xa0)
+-#define airo_get_avg_quality(cap_rid) (memcmp((cap_rid)->prodName, "350", 3) ? 0x10 : 0x50);
++#define airo_get_avg_quality(cap_rid) (memcmp((cap_rid)->prodName, "350", 3) ? 0x10 : 0x50)
  
- 
- struct carl9170_debugfs_fops {
-@@ -818,7 +818,7 @@ void carl9170_debugfs_register(struct ar9170 *ar)
- #define DEBUGFS_ADD(name)						\
- 	debugfs_create_file(#name, carl_debugfs_##name ##_ops.attr,	\
- 			    ar->debug_dir, ar,				\
--			    &carl_debugfs_##name ## _ops.fops);
-+			    &carl_debugfs_##name ## _ops.fops)
- 
- 	DEBUGFS_ADD(usb_tx_anch_urbs);
- 	DEBUGFS_ADD(usb_rx_pool_urbs);
+ /*------------------------------------------------------------------*/
+ /*
 -- 
 2.18.4
 
