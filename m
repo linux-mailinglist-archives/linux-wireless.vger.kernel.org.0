@@ -2,182 +2,139 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 17C142C68D4
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Nov 2020 16:39:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7655B2C6A2C
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Nov 2020 17:52:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730920AbgK0Pii (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 27 Nov 2020 10:38:38 -0500
-Received: from mx08-0057a101.pphosted.com ([185.183.31.45]:57952 "EHLO
-        mx08-0057a101.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1729872AbgK0Pih (ORCPT
+        id S1731924AbgK0QvP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 27 Nov 2020 11:51:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55528 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731443AbgK0QvO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 27 Nov 2020 10:38:37 -0500
-Received: from pps.filterd (m0214196.ppops.net [127.0.0.1])
-        by mx07-0057a101.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 0ARFV0hd006973;
-        Fri, 27 Nov 2020 16:38:18 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=westermo.com; h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=12052020;
- bh=FnnJEMcJlCYvP6TDgqEdktl3fT1Dw3slorrVObcMjfY=;
- b=J2JY3jcLvqjUwUdR8gk2Dnc4TgPJg0T3F8zAn37eokr/FGscXBHjbLTV6QzEkkc8NeOB
- 7tVDJN2JM85QlNytHJ7qGWvY+s9V15zYtkJtsxNRHYaDU4YT0rchU0Ah7qgk6Ih+BIdc
- s1m4+QtOxAEk+zg6QCMu0tVJ11NS7opU/JNFxzDvyUtMTrWV9tiBkzczQbTFw1pdWrxb
- iu1wRSZmN0dHVFHjtwpMsMnDTTvrNi2lzCNLjpHegdbOn0T2Q9vJ5lfX+Dv3YxO0m1v+
- XUXZ66POBt6KV30amQfeikYdsDBkAksYUYTGIUy2y7GrCWxYUEJbgNXwh6ZHFMrAMMls YQ== 
-Received: from mail.beijerelectronics.com ([195.67.87.131])
-        by mx07-0057a101.pphosted.com with ESMTP id 34xyu25sem-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NOT);
-        Fri, 27 Nov 2020 16:38:18 +0100
-Received: from wsests-s0004.westermo.com (192.168.10.12) by
- EX01GLOBAL.beijerelectronics.com (10.101.10.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P384) id
- 15.1.1847.3; Fri, 27 Nov 2020 16:38:14 +0100
-Received: from [172.29.80.10] (172.29.100.2) by wsests-s0004.westermo.com
- (192.168.10.12) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P384) id 15.1.1847.3; Fri, 27
- Nov 2020 16:38:14 +0100
-Subject: Re: [RFT] ath9k: multi-rate-retry fails at HW level
-To:     =?UTF-8?Q?Toke_H=c3=b8iland-J=c3=b8rgensen?= <toke@redhat.com>,
-        "Zefir Kurtisi" <zefku@westermo.com>,
-        <linux-wireless@vger.kernel.org>
-CC:     Felix Fietkau <nbd@nbd.name>, <qca-developer-program@qualcomm.com>,
-        "Adrian Chadd" <adrian@freebsd.org>
-References: <2a8573d7-6683-3414-a8af-dab460772205@westermo.com>
- <878saqlsp8.fsf@toke.dk>
-From:   Zefir Kurtisi <zefir.kurtisi@westermo.com>
-Message-ID: <d05e928a-c78d-d191-7ae0-6342e05d892a@westermo.com>
-Date:   Fri, 27 Nov 2020 16:38:13 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        Fri, 27 Nov 2020 11:51:14 -0500
+Received: from mail-vs1-xe41.google.com (mail-vs1-xe41.google.com [IPv6:2607:f8b0:4864:20::e41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2F24C0613D1
+        for <linux-wireless@vger.kernel.org>; Fri, 27 Nov 2020 08:51:14 -0800 (PST)
+Received: by mail-vs1-xe41.google.com with SMTP id w71so1773768vsw.9
+        for <linux-wireless@vger.kernel.org>; Fri, 27 Nov 2020 08:51:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=X7jtzNs0NbYHlVVmlLsP7b2/FUYkvw9tqQfhdc87EyE=;
+        b=r7N5PALFBkMVMurrPrTyIWvenPdAmItRtcw/fq7VdG/Lmay5Gng1oWK0qXANy6S+tt
+         NCHXnAci/9v1VUarKydxLMEOj7yjlJ8X+EdUoZvLCg8bKqjyvrrfbJ3gKdt09gu1LWbf
+         s2O04IakYss1f17gOqG0NgUvL3lhSXMbKSmCd/8nPD82Ue3fvgcUmHiZ9cK9vGgi2LYV
+         Ca68HvMxWcglGqLXp8mCNjVqoxMa4SnJ33UD84nS4AyTlkP8Yp/PW2T+IY6j6Bi1w9R0
+         Zwg/549g3eVRVfL+X+xY1iz2odmNfd6W44KcyMlEWKItU+42UkW1rl0WxlhhcPLfthwt
+         nK3A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=X7jtzNs0NbYHlVVmlLsP7b2/FUYkvw9tqQfhdc87EyE=;
+        b=C9zQ7zfbJfcidsKrkIe3pmm/a7e2uQQB8HG1MVEC7KYh47r6rbKfB8s2oRd70aeRiE
+         BXfcBXwc0YTufNQVIbmDDXhbZqMsfggyn+BzWrb7wqjyvcZkN+GBg3/vP0G8ESO40+QR
+         y7+TbLWiPHXlHqTHZtMpQOyt41KGmvhIWIBSh5Xd9Mc4d2FM2RdrMeIxttz0YZHSbbWU
+         CbwOzJ3bfsBbK4vbbbIPm+UQa8iJTaKUYvj7qBCxlJ+c90S9i9CcWGxcBy1ioL8opeBa
+         nf1xPmgxJC2I4lndv5GHmWnsfs3rqWme5W4heCsSHQB5AJZd38GeGMaYMUwsGQWZtjre
+         0jnw==
+X-Gm-Message-State: AOAM533R5DxA3XbG1R1v0TAMqXHDWD9JZgwGbv/p9kpv/gsN5cElNGpT
+        y7pyQcPVW1JVoAZbvw5vCR/UAjQBmpM=
+X-Google-Smtp-Source: ABdhPJyw+RjckJzRw0WVloSizVYIBnpPZ+xpP6i9N2Pywxj/Shun8rs2kekbUJC0h0lJhUV8fcF49w==
+X-Received: by 2002:a67:6b83:: with SMTP id g125mr6924464vsc.7.1606495873497;
+        Fri, 27 Nov 2020 08:51:13 -0800 (PST)
+Received: from mail-vs1-f51.google.com (mail-vs1-f51.google.com. [209.85.217.51])
+        by smtp.gmail.com with ESMTPSA id w20sm442993vke.38.2020.11.27.08.51.11
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 27 Nov 2020 08:51:12 -0800 (PST)
+Received: by mail-vs1-f51.google.com with SMTP id y78so2852314vsy.6
+        for <linux-wireless@vger.kernel.org>; Fri, 27 Nov 2020 08:51:11 -0800 (PST)
+X-Received: by 2002:a05:6102:1173:: with SMTP id k19mr6628798vsg.51.1606495871475;
+ Fri, 27 Nov 2020 08:51:11 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <878saqlsp8.fsf@toke.dk>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [172.29.100.2]
-X-ClientProxiedBy: wsevst-s0023.westermo.com (192.168.130.120) To
- wsests-s0004.westermo.com (192.168.10.12)
+References: <20201125173436.1894624-1-elver@google.com> <20201125124313.593fc2b5@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+ <CANpmjNP_=Awx0-eZisMXzgXxKqf7hcrZYCYzFXuebPcwZtkoLw@mail.gmail.com>
+ <CAF=yD-JtRUjmy+12kTL=YY8Cfi_c92GVbHZ647smWmasLYiNMg@mail.gmail.com> <CANpmjNO8H9OJDTcKhg4PRVEV04Gxnb56mJY2cB9j4cH+4nznhQ@mail.gmail.com>
+In-Reply-To: <CANpmjNO8H9OJDTcKhg4PRVEV04Gxnb56mJY2cB9j4cH+4nznhQ@mail.gmail.com>
+From:   Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Date:   Fri, 27 Nov 2020 11:50:34 -0500
+X-Gmail-Original-Message-ID: <CA+FuTSfCSZFC2Bz5WpnaoU__jrd8sSwsDqN1TNar3yeGNbVeQQ@mail.gmail.com>
+Message-ID: <CA+FuTSfCSZFC2Bz5WpnaoU__jrd8sSwsDqN1TNar3yeGNbVeQQ@mail.gmail.com>
+Subject: Re: [PATCH net-next] net: switch to storing KCOV handle directly in sk_buff
+To:     Marco Elver <elver@google.com>
+Cc:     Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Aleksandr Nogikh <a.nogikh@gmail.com>,
+        Andrey Konovalov <andreyknvl@google.com>,
+        Dmitry Vyukov <dvyukov@google.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Netdev <netdev@vger.kernel.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Ido Schimmel <idosch@idosch.org>,
+        Florian Westphal <fw@strlen.de>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-CC += adrian
+On Fri, Nov 27, 2020 at 7:26 AM Marco Elver <elver@google.com> wrote:
+>
+> On Thu, 26 Nov 2020 at 17:35, Willem de Bruijn
+> <willemdebruijn.kernel@gmail.com> wrote:
+> > On Thu, Nov 26, 2020 at 3:19 AM Marco Elver <elver@google.com> wrote:
+> [...]
+> > > Will send v2.
+> >
+> > Does it make more sense to revert the patch that added the extensions
+> > and the follow-on fixes and add a separate new patch instead?
+>
+> That doesn't work, because then we'll end up with a build-broken
+> commit in between the reverts and the new version, because mac80211
+> uses skb_get_kcov_handle().
+>
+> > If adding a new field to the skb, even if only in debug builds,
+> > please check with pahole how it affects struct layout if you
+> > haven't yet.
+>
+> Without KCOV:
+>
+>         /* size: 224, cachelines: 4, members: 72 */
+>         /* sum members: 217, holes: 1, sum holes: 2 */
+>         /* sum bitfield members: 36 bits, bit holes: 2, sum bit holes: 4 bits */
+>         /* forced alignments: 2 */
+>         /* last cacheline: 32 bytes */
+>
+> With KCOV:
+>
+>         /* size: 232, cachelines: 4, members: 73 */
+>         /* sum members: 225, holes: 1, sum holes: 2 */
+>         /* sum bitfield members: 36 bits, bit holes: 2, sum bit holes: 4 bits */
+>         /* forced alignments: 2 */
+>         /* last cacheline: 40 bytes */
 
-On 24.11.20 15:45, Toke Høiland-Jørgensen wrote:
-> Zefir Kurtisi <zefku@westermo.com> writes:
-> 
->> Hi,
->>
->> I am running into a strange issue with the ath9k operating a 9590
->> device which to me seems like a HW issue, but since work on rate
->> controllers is already going for decades, I hardly can imagine this
->> never showed up.
->>
->> The issue observed is this: the TX status descriptors never report
->> rateindex 1, it is always 0, 2, or 3, but never 1.
->>
->> I noticed this by overwriting the rate configuration provided by
->> minstrel to a static setup, e.g. (7,3)(5,3)(3,3)(1,3), all MCS. The
->> device operates as iperf client to a connected AP and continuously
->> transmits data. While at that, the attenuation between the endpoints
->> is gradually increased, expecting to see a gradual shift in the
->> reported TX status rateindex from 0 to 3. But nada, the values
->> reported are 0,2, and 3 - never 1.
->>
->> I double checked that the TX descriptors are correctly set with the
->> rates and retry counts - all looking sane.
->>
->> More obvious, after changing the rate configuration to
->> (7,3)(1,3)(5,3)(3,3) the expectation would be to have either 0 or 1
->> reported as rateidx, since the transmission ought to be successful
->> with the lowest rate or never. Again all rates are reported but 1.
->>
->> Now the question for me is: what is the HW exactly doing with such a
->> configuration? Is it skipping the second rate, or is it just reporting
->> wrong?
-> 
-> You should be able to see this by looking at the rates the frames are
-> being sent at, shouldn't you?
-> 
-Yes, did that and from there it points to that the second rate is just skipped.
+Thanks. defconfig leaves some symbols disabled, but manually enabling
+them just fills a hole, so 232 is indeed the worst case allocation.
 
-Here are some use cases and their sniffing results. Setup is a 11ng STA connected
-to AP with the attenuation adjusted such that MCS 7 fails, while MCS 5 and below
-succeed. Monitor is sniffing while sending a single ping from AP to STA.
+I recall a firm edict against growing skb, but I don't know of a
+hard limit at exactly 224.
 
-With a rate configuration of (7/2)(3/2)(1/2) we get:
-14:02:42.923880 9481489761us tsft 2412 MHz 11n -68dBm signal 65.0 Mb/s MCS 7 20
-MHz long GI RX-STBC0 -68dBm signal antenna 0 Data IV:  e Pad 20 KeyID 0
-14:02:42.923909 9481490037us tsft 2412 MHz 11n -69dBm signal 65.0 Mb/s MCS 7 20
-MHz long GI RX-STBC0 -69dBm signal antenna 0 Data IV:  e Pad 20 KeyID 0
-14:02:42.925244 9481491044us tsft 2412 MHz 11n -68dBm signal 13.0 Mb/s MCS 1 20
-MHz long GI RX-STBC0 -68dBm signal antenna 0 Data IV:  e Pad 20 KeyID 0
+There is a limit at 2048 - sizeof(struct skb_shared_data) == 1728B
+when using pages for two ETH_FRAME_LEN (1514) allocations.
 
+This would leave 1728 - 1514 == 214B if also squeezing the skb itself
+in with the same allocation.
 
-with (7/2)(1/2)(3/2):
-13:59:37.073147 9295637087us tsft 2412 MHz 11n -69dBm signal 65.0 Mb/s MCS 7 20
-MHz long GI RX-STBC0 -69dBm signal antenna 0 Data IV:  c Pad 20 KeyID 0
-13:59:37.073467 9295637438us tsft 2412 MHz 11n -69dBm signal 65.0 Mb/s MCS 7 20
-MHz long GI RX-STBC0 -69dBm signal antenna 0 Data IV:  c Pad 20 KeyID 0
-13:59:37.074591 9295638498us tsft 2412 MHz 11n -68dBm signal 26.0 Mb/s MCS 3 20
-MHz long GI RX-STBC0 -68dBm signal antenna 0 Data IV:  c Pad 20 KeyID 0
+But I have no idea if this is used anywhere. Certainly have no example
+ready. And as you show, the previous default already is at 224.
 
-and with (7/2)(3/2):
-14:04:27.269806 9585836783us tsft 2412 MHz 11n -69dBm signal 65.0 Mb/s MCS 7 20
-MHz long GI RX-STBC0 -69dBm signal antenna 0 Data IV: 10 Pad 20 KeyID 0
-14:04:27.270342 9585837344us tsft 2412 MHz 11n -68dBm signal 65.0 Mb/s MCS 7 20
-MHz long GI RX-STBC0 -68dBm signal antenna 0 Data IV: 10 Pad 20 KeyID 0
-14:04:27.271368 9585838370us tsft 2412 MHz 11n -68dBm signal 65.0 Mb/s MCS 7 20
-MHz long GI RX-STBC0 -68dBm signal antenna 0 Data IV: 10 Pad 20 KeyID 0
-[..]
+If no one else knows of a hard limit at 224 or below, I suppose the
+next technical limit is just 256 for kmem cache purposes.
 
-a total of 14 attempts at MCS 7 with the ping finally failing.
-
->> Both possibilities have great impact, since upper layers (like
->> airtime) use the returned rateidx to calculate and configure operating
->> parameters at runtime.
-> 
-> Have you actually observed any issues from this? If it's just skipping a
-> rate, minstrel should still be able to make decisions based on the
-> actual values returned, no?
-> 
-The issues arise from the fact that the driver reports a
-(tx-rateindex/tx-attemp-index) per TX descriptor, leaving the driver to calculate
-what was put on air based on these two values. If one had rates set to
-(7/2)(3/7)(1/2) and the TX status reports (tx-rateindex=2/tx-attempt-index=0),
-driver assumes there were 10 attempts in total while in fact they were 3 when the
-second rate is skipped. What direct effect this has on RC I can't grasp, but it
-definitively falsifies statistics.
-
-Same goes for airtime: check how this falsifies its calculation in
-ath_tx_count_airtime().
-
-Also, the above mentioned is an immediate visible issue: if RC provides two rates
-e.g. (7/3)(5/3) of which the first is too high and the second is not even
-attempted, frames don't make it through.
-
->> If this is a know issue, nevermind and thanks for pointing me to it. Otherwise if
->> some of you have the named device operational, it would help a lot to get the
->> issue confirmed. Just apply the attached patch and perform some TX testing in
->> either attenuation adjustable or varying link condition setups. Whenever a frame
->> is reported to have been transmitted at a rateidx > 0, the collected stats are
->> logged, e.g.
->> MRR: 2: [51029, 0, 4741, 6454]
->>
->> In essence, the failure is confirmed if the counter for 1 is 0 or very low
->> compared to higher numbers for 0, 2, or 3.
-> 
-> Tried your patch and couldn't reproduce. Not the same hardware, though.
-> Mine is:
-> 
-> 01:00.0 Network controller: Qualcomm Atheros AR9287 Wireless Network Adapter (PCI-Express) (rev 01)
-> 
-> -Toke
-> 
-
-Thanks a lot for trying, let's see if someone else has the affected variant still
-in use.
-
-
-Cheers,
-Zefir
+My understanding was that skb_extensions was supposed to solve this
+problem of extending the skb without growing the main structure. Not
+for this patch, but I wonder if we can resolve the issues exposed here
+and make usable in more conditions.
