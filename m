@@ -2,175 +2,111 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 23C682C613E
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Nov 2020 09:58:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 114982C641F
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Nov 2020 12:55:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726479AbgK0I5J (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 27 Nov 2020 03:57:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38328 "EHLO
+        id S1726316AbgK0LzO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 27 Nov 2020 06:55:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37672 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725616AbgK0I5J (ORCPT
+        with ESMTP id S1726014AbgK0LzO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 27 Nov 2020 03:57:09 -0500
-Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3BDFC0613D1
-        for <linux-wireless@vger.kernel.org>; Fri, 27 Nov 2020 00:57:08 -0800 (PST)
-Received: by mail-wr1-x444.google.com with SMTP id z7so4742066wrn.3
-        for <linux-wireless@vger.kernel.org>; Fri, 27 Nov 2020 00:57:08 -0800 (PST)
+        Fri, 27 Nov 2020 06:55:14 -0500
+Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFE4FC0613D1
+        for <linux-wireless@vger.kernel.org>; Fri, 27 Nov 2020 03:55:13 -0800 (PST)
+Received: by mail-ej1-x62f.google.com with SMTP id x16so97197ejj.7
+        for <linux-wireless@vger.kernel.org>; Fri, 27 Nov 2020 03:55:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=bbiTgqd4ToQeRiBSJMQhq9hcfqtuv/kYGDy+0sCGicc=;
-        b=i37faw1KnwmHqwkzSqojJ3kC4DCtvnlWMUsRCXMDUyunnBtJ53klG8G1BIf3NbpUbQ
-         vWR2BbA2BbBcsY+jZclvlKUqebnzgXc1tJbhgLp8QQfx5VbACpilcHJbvi/jHa2UiE8p
-         oG8sFRTdJ83G6qbc/eAUm/vpcbYpX9e/NldWFXprgAf6Yk3oYP0F0kdfn/PI3lzUDaHm
-         XXf5TWutd2uxYhRqbxi4HTYk9ZeEXxVriilgESbVeOwpKt9oJCsxqn6xWEneb2nDl+Am
-         jt0zFpys+3V8GgzUwVz5JVuylFwpphqVQ2/rWVmAXyYlT889reszQpn1la+binSX2ZvP
-         dm4A==
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding;
+        bh=FKBTvTDTKQY4yiSQZjm4/5f3Ed4buFyJBrSHw7Dmmcc=;
+        b=l/dqb2bBnqErG10czuFOu4vRDSFVWAQ/+5kkvXnhqxnMI+5sN3J8sSpTC1p535xwxk
+         t8V1xuexvf+uOvMhg1Oze2MFpzpSg6whdrq1ZqPywweRn5auCOrTWeR8ejvatZibTPQ8
+         6wy32MRCZY7eTw9dggYp8JsrnQvOiJbEAMSfcPCblZiwH4ZSTZ2fUbCZVMGMUGeT+DoI
+         YU3xz07WkEqNI47tGBRAiQ95Ozq+87j5TLERfTHBW4nk4W34FVmNF/t3hgqGtHx/f+Ds
+         rg2+StElHY4XIKq9K5fVs6V/oDutYMyTFpA5lCk8NHe0hDBOvJn4VsDXf6YUUfg6VXXJ
+         t9jg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=bbiTgqd4ToQeRiBSJMQhq9hcfqtuv/kYGDy+0sCGicc=;
-        b=CAZ7bNaucDK5B9TcYqcnOWzgahKj+JDTwFFv/OSF3uFczMT4QkCSYSXUKDiP6kYctj
-         U7HcYjRY5Ebk3TDsfvqifa75o3qPPQX7Ug4PFBdey/NdY7l191WoEA5IW8xD1RbAf00U
-         jwkrQtFzeZ6xetdZdsSTIFFDkJnXW8ZN4HNBhNXoeNjiQGmCg2Hwpjd7C4CuMgrD4U1q
-         pyGovHXKPSv0G1PFN3S0dIIkVDAPZUnT+ptz8BHvAO2DU0xDu2EPWtY4FDazId6AgVY3
-         gqs/tzq9zEjYvfhgEg3U6QhK2Pf6RBZDYBlZMqdz9HTg9hs9q9px/MzhNzxKdQeKvsfh
-         UWQg==
-X-Gm-Message-State: AOAM531LGT/n3HLlZy+qyhJ8kLspllhbezcx7LjAA1A5YzkQrXkrnf1p
-        HaM9s5nTLb2GBv/S8VAiPDbf2TInKI4gcGY0
-X-Google-Smtp-Source: ABdhPJzeyxK530smdHXIDeAe/99P7Nxy+EnsnNtNS5FLR4s2zGnUtnuNf+d8Sfr6sUd3hf25pHmIdA==
-X-Received: by 2002:adf:f651:: with SMTP id x17mr8903334wrp.185.1606467427573;
-        Fri, 27 Nov 2020 00:57:07 -0800 (PST)
-Received: from dell ([91.110.221.235])
-        by smtp.gmail.com with ESMTPSA id m20sm13876879wrg.79.2020.11.27.00.57.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Nov 2020 00:57:06 -0800 (PST)
-Date:   Fri, 27 Nov 2020 08:57:05 +0000
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Pkshih <pkshih@realtek.com>
-Cc:     Tony Chuang <yhchuang@realtek.com>,
-        "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "kuba@kernel.org" <kuba@kernel.org>
-Subject: Re: [PATCH 17/17] realtek: rtw88: pci: Add prototypes for .probe,
- .remove and .shutdown
-Message-ID: <20201127085705.GL2455276@dell>
-References: <20201126133152.3211309-1-lee.jones@linaro.org>
- <20201126133152.3211309-18-lee.jones@linaro.org>
- <1606448026.14483.4.camel@realtek.com>
- <20201127073816.GF2455276@dell>
- <1606465839.26661.2.camel@realtek.com>
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
+        bh=FKBTvTDTKQY4yiSQZjm4/5f3Ed4buFyJBrSHw7Dmmcc=;
+        b=EzEv616vKrq9vMDgUy/tqDI43Qb0oX8e6vX7zceivBnU0IfpOJxeu8cn8fU5eVGBt9
+         52pXPvQ65GHFV7fQwoZgORtCQ4RvupFMsPHkoynOxZv9UtYXp++0m3WqZ2/b063KFHh/
+         ziMWIwMa1saP5cwCamITIyrNvmlki/Em/dU2PpoeL0XZqIZIrtT6+LpSIdjEzirPA41w
+         WyCn/VjmJA98glyCtkBDpBd/YtpG6Ms8fuxOi/5m4VDRSUALXHwe+gRMdyDFww5pyxCx
+         Ta8cYRgGD/DdzRoooYJnAaYM3zq3PEJohmctWRSsHYD38C5UMs6zDXugcg4ia+RbdJgw
+         j4+Q==
+X-Gm-Message-State: AOAM531/Zdl8kvqz/CVv30IMEtdS9Sax/5/bxVfgo1F09dE31nArgmjZ
+        oDq0McoOqVK28hnKJOizhn2eOys/dv5g7w==
+X-Google-Smtp-Source: ABdhPJy+vFUlQ7aku7+niwDmgzAFLuErxYaDt81S7L5KSrhOcSbnSuMpRgmDSN3gjizwyDTK5DXgYg==
+X-Received: by 2002:a17:907:20dc:: with SMTP id qq28mr5371020ejb.403.1606478111245;
+        Fri, 27 Nov 2020 03:55:11 -0800 (PST)
+Received: from ?IPv6:2003:ea:8f23:2800:a9d0:5753:89c8:13cf? (p200300ea8f232800a9d0575389c813cf.dip0.t-ipconnect.de. [2003:ea:8f23:2800:a9d0:5753:89c8:13cf])
+        by smtp.googlemail.com with ESMTPSA id f13sm4648634ejf.42.2020.11.27.03.55.10
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 27 Nov 2020 03:55:10 -0800 (PST)
+Subject: Re: AX210 version 0024 not detected by iwlwifi
+To:     "Coelho, Luciano" <luciano.coelho@intel.com>,
+        linuxwifi <linuxwifi@intel.com>,
+        "Berg, Johannes" <johannes.berg@intel.com>,
+        "Grumbach, Emmanuel" <emmanuel.grumbach@intel.com>
+Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+References: <03e8284e-4ea8-fe3e-8da7-62a778b1a059@gmail.com>
+ <ce7fab1d400a04eb31727546b99af0292a0d30f4.camel@intel.com>
+From:   Heiner Kallweit <hkallweit1@gmail.com>
+Message-ID: <9b5d4919-1c62-7438-3f50-18197a92a9cf@gmail.com>
+Date:   Fri, 27 Nov 2020 12:55:06 +0100
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.5.0
 MIME-Version: 1.0
+In-Reply-To: <ce7fab1d400a04eb31727546b99af0292a0d30f4.camel@intel.com>
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1606465839.26661.2.camel@realtek.com>
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 27 Nov 2020, Pkshih wrote:
-
-> On Fri, 2020-11-27 at 07:38 +0000, Lee Jones wrote:
-> > On Fri, 27 Nov 2020, Pkshih wrote:
-> > 
-> > > 
-> > > The subject prefix doesn't need 'realtek:'; use 'rtw88:'.
-> > > 
-> > > On Thu, 2020-11-26 at 13:31 +0000, Lee Jones wrote:
-> > > > Also strip out other duplicates from driver specific headers.
-> > > > 
-> > > > Ensure 'main.h' is explicitly included in 'pci.h' since the latter
-> > > > uses some defines from the former.  It avoids issues like:
-> > > > 
-> > > >  from drivers/net/wireless/realtek/rtw88/rtw8822be.c:5:
-> > > >  drivers/net/wireless/realtek/rtw88/pci.h:209:28: error:
-> > > > ‘RTK_MAX_TX_QUEUE_NUM’ undeclared here (not in a function); did you mean
-> > > > ‘RTK_MAX_RX_DESC_NUM’?
-> > > >  209 | DECLARE_BITMAP(tx_queued, RTK_MAX_TX_QUEUE_NUM);
-> > > >  | ^~~~~~~~~~~~~~~~~~~~
-> > > > 
-> > > > Fixes the following W=1 kernel build warning(s):
-> > > > 
-> > > >  drivers/net/wireless/realtek/rtw88/pci.c:1488:5: warning: no previous
-> > > > prototype for ‘rtw_pci_probe’ [-Wmissing-prototypes]
-> > > >  1488 | int rtw_pci_probe(struct pci_dev *pdev,
-> > > >  | ^~~~~~~~~~~~~
-> > > >  drivers/net/wireless/realtek/rtw88/pci.c:1568:6: warning: no previous
-> > > > prototype for ‘rtw_pci_remove’ [-Wmissing-prototypes]
-> > > >  1568 | void rtw_pci_remove(struct pci_dev *pdev)
-> > > >  | ^~~~~~~~~~~~~~
-> > > >  drivers/net/wireless/realtek/rtw88/pci.c:1590:6: warning: no previous
-> > > > prototype for ‘rtw_pci_shutdown’ [-Wmissing-prototypes]
-> > > >  1590 | void rtw_pci_shutdown(struct pci_dev *pdev)
-> > > >  | ^~~~~~~~~~~~~~~~
-> > > > 
-> > > > Cc: Yan-Hsuan Chuang <yhchuang@realtek.com>
-> > > > Cc: Kalle Valo <kvalo@codeaurora.org>
-> > > > Cc: "David S. Miller" <davem@davemloft.net>
-> > > > Cc: Jakub Kicinski <kuba@kernel.org>
-> > > > Cc: linux-wireless@vger.kernel.org
-> > > > Cc: netdev@vger.kernel.org
-> > > > Signed-off-by: Lee Jones <lee.jones@linaro.org>
-> > > > ---
-> > > >  drivers/net/wireless/realtek/rtw88/pci.h       | 8 ++++++++
-> > > >  drivers/net/wireless/realtek/rtw88/rtw8723de.c | 1 +
-> > > >  drivers/net/wireless/realtek/rtw88/rtw8723de.h | 4 ----
-> > > >  drivers/net/wireless/realtek/rtw88/rtw8821ce.c | 1 +
-> > > >  drivers/net/wireless/realtek/rtw88/rtw8821ce.h | 4 ----
-> > > >  drivers/net/wireless/realtek/rtw88/rtw8822be.c | 1 +
-> > > >  drivers/net/wireless/realtek/rtw88/rtw8822be.h | 4 ----
-> > > >  drivers/net/wireless/realtek/rtw88/rtw8822ce.c | 1 +
-> > > >  drivers/net/wireless/realtek/rtw88/rtw8822ce.h | 4 ----
-> > > >  9 files changed, 12 insertions(+), 16 deletions(-)
-> > > > 
-> > > > diff --git a/drivers/net/wireless/realtek/rtw88/pci.h
-> > > > b/drivers/net/wireless/realtek/rtw88/pci.h
-> > > > index ca17aa9cf7dc7..cda56919a5f0f 100644
-> > > > --- a/drivers/net/wireless/realtek/rtw88/pci.h
-> > > > +++ b/drivers/net/wireless/realtek/rtw88/pci.h
-> > > > @@ -5,6 +5,8 @@
-> > > >  #ifndef __RTK_PCI_H_
-> > > >  #define __RTK_PCI_H_
-> > > >  
-> > > > +#include "main.h"
-> > > > +
-> > > 
-> > > Please #include "main.h" ahead of "pci.h" in each of rtw8xxxxe.c.
-> > 
-> > You mean instead of in pci.h?
-> > 
-> > Surely that's a hack.
-> > 
+Am 23.11.2020 um 09:17 schrieb Coelho, Luciano:
+> Hi Heiner,
 > 
-> I mean don't include main.h in pci.h, but include both of them in each
-> of rtw8xxxxe.c.
+> On Sun, 2020-11-22 at 22:35 +0100, Heiner Kallweit wrote:
+>> I have an AX210 card that isn't detected by iwlwifi.
+>>
+>> 01:00.0 Network controller: Intel Corporation Device 2725 (rev 1a)
+>>         Subsystem: Intel Corporation Device 0024
+>>
+>> Adding following entry seems to be sufficient.
+>>
+>>         {IWL_PCI_DEVICE(0x2725, 0x0020, iwlax210_2ax_cfg_ty_gf_a0)},
+>> +       {IWL_PCI_DEVICE(0x2725, 0x0024, iwlax210_2ax_cfg_ty_gf_a0)},
+>>         {IWL_PCI_DEVICE(0x2725, 0x0310, iwlax210_2ax_cfg_ty_gf_a0)},
+>>
+>> [  419.473140] iwlwifi 0000:01:00.0: enabling device (0000 -> 0002)
+>> [  419.486984] iwlwifi 0000:01:00.0: api flags index 2 larger than supported by driver
+>> [  419.487190] iwlwifi 0000:01:00.0: TLV_FW_FSEQ_VERSION: FSEQ Version: 93.8.63.28
+>> [  419.488828] iwlwifi 0000:01:00.0: loaded firmware version 59.601f3a66.0 ty-a0-gf-a0-59.ucode op_mode iwlmvm
+>> [  419.533136] iwlwifi 0000:01:00.0: Detected Intel(R) Wi-Fi 6 AX210 160MHz, REV=0x420
+>>
+>> Maybe there are more AX210 subversion id's to be added ..
+>>
+>> How about the api flags index warning? I saw it in several posts,
+>> is there something to be fixed in the driver?
 > 
-> +#include "main.h"
-> +#include "pci.h"
+> Good catch.  This indeed seems to be missing.  I'll add it and try to
+> send it still for the 5.10-rc series, so it propagates asap.
+> 
+> --
+> Cheers,
+> Luca.
+> 
 
-Yes, that's what I thought you meant.  I think that's a hack.
+I face another issue I hope you can help me with:
+Frequently on system reboot the PCI device vanishes, it's not listed
+by lspci any longer. This doesn't happen after a power-cycle.
+Not sure whether device is in D3cold or whether it doesn't react
+for another reason.
 
-Source files shouldn't rely on the ordering of include files to
-resolve dependencies.  In fact, a lot of subsystems require includes to
-be in alphabetical order.
-
-If a source or header file references a resource from a specific
-header file (for instance here pci.h uses defines from main.h) then it
-should explicitly include it.
-
-Can you tell me the technical reason as to why these drivers are
-handled differently please?
-
--- 
-Lee Jones [李琼斯]
-Senior Technical Lead - Developer Services
-Linaro.org │ Open source software for Arm SoCs
-Follow Linaro: Facebook | Twitter | Blog
+Rgds, Heiner
