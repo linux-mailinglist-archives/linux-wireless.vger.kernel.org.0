@@ -2,106 +2,144 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D4BC22C7298
-	for <lists+linux-wireless@lfdr.de>; Sat, 28 Nov 2020 23:09:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A535A2C729C
+	for <lists+linux-wireless@lfdr.de>; Sat, 28 Nov 2020 23:09:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389896AbgK1VuL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        id S2389887AbgK1VuL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
         Sat, 28 Nov 2020 16:50:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43164 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732424AbgK1TAU (ORCPT
+Received: from mail-il1-f200.google.com ([209.85.166.200]:52900 "EHLO
+        mail-il1-f200.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730210AbgK1Sif (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 28 Nov 2020 14:00:20 -0500
-Received: from mail-yb1-xb42.google.com (mail-yb1-xb42.google.com [IPv6:2607:f8b0:4864:20::b42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61C08C02B8F9
-        for <linux-wireless@vger.kernel.org>; Sat, 28 Nov 2020 02:37:08 -0800 (PST)
-Received: by mail-yb1-xb42.google.com with SMTP id e81so6774255ybc.1
-        for <linux-wireless@vger.kernel.org>; Sat, 28 Nov 2020 02:37:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:sender:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=BYhYUhRJ3iwbx5RvkgDxhY0ZIfAUwuAVrsbzhkyOflE=;
-        b=pnFZl7nW9k9vF4/Y8CCU5WRqhsbCPQXD33E1X7efuGI5rU5665dy7wfXdV2NGgBvj+
-         YuryFSXFO3J4wfVDv6vxK7cLP0eWOuM7cCcwfLc+S6ISutu78nfqlVkal6FmLRXDXJXw
-         iuvoa7xXQL8xLqMWNFSrs5jJs5Bo7d39Y8pJKEzOvsmV8z5WCjQv99xGv/gFjYvvu7AL
-         oiU3EmNuVV40bC3ONOVA6iy5WxSmkgt9whGKH0pGq7X436pR6yiQ7l7HpiLwDmE1HrFG
-         G7fApEVPzYwdUFyXJtzlj5V8kYx9pl7WzOm/tiQevQi77gs0Zu37mbDGYbYKJ4C33kfX
-         /hpA==
+        Sat, 28 Nov 2020 13:38:35 -0500
+Received: by mail-il1-f200.google.com with SMTP id o18so6403926ilg.19
+        for <linux-wireless@vger.kernel.org>; Sat, 28 Nov 2020 10:38:19 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:sender:from:date
-         :message-id:subject:to:content-transfer-encoding;
-        bh=BYhYUhRJ3iwbx5RvkgDxhY0ZIfAUwuAVrsbzhkyOflE=;
-        b=nYyneYCpTkZHkPnqMhKM/luG0HGBYgJC1/xKTWZeEXmrziUJ0IvlH/3qdQklcHrRtW
-         HCm0RwnoMZqbPLuP1lveqCpbpdcfqwpFeaCAKSyz3kWgiI8g1F6L+0kRVHuiyGVIbJkc
-         2/iPWjjCt5vaXlZs1TI8WXvsBR8VH32/zQJ/xlO4cZAcxNBIrcgcMkyq/NOhOJVngjsM
-         TgGdh8fcYSigTzl1Vi5HlXuXIpLWZYsZrKXcTj7ko346RBumaYGiXm981s8VlZ8JX0HF
-         EDoZ/Ok1R87eMFQ58Wrzqu1q8I6/3dRkGYLw2Ca1CG1jaG0BhVYVXae86TeXlYNk6l2a
-         HrrQ==
-X-Gm-Message-State: AOAM5321ANLb5c2Ju2l+Djb/V91SydBGSeD820vED7cgUDusDJVwNswE
-        SG9KSgRr+xitd+W+Kdp2kGeg5+cP/lDvfjEK99Y=
-X-Google-Smtp-Source: ABdhPJxefWeHOS/PEI+BfMTKMi/ziUHzZByXciV4yDm3pydds8AM29OswgX6kQmgej/Zd3r5mfjKjSnjbQ91k7EFHWs=
-X-Received: by 2002:a25:ce13:: with SMTP id x19mr13331605ybe.390.1606559827172;
- Sat, 28 Nov 2020 02:37:07 -0800 (PST)
+        h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
+        bh=YA1jEZH9DUw8fd/5LkjY5oTcYXBqQ8fvTP8D6li4UzQ=;
+        b=IqwssBisjuMxGdOnpfiTDZaSBi46We4V8NVmHDZugWSPSgLogKWbRVvwIxmFno4cXI
+         vJH84mTb4BMb8DgTpj1IaeIlzcF/mNXbuWCu0zT0smrA2eOjL9wEXwYmv0ZiZtf5LIWK
+         SNNSjolvpYdV//NaDrhTgMW0lnZLKG8QWtE5e6aXQVIBGFnK8Gq8LlPFmxu4WeW82yXb
+         gBfszqKsoabHKmeb3GD9wMBr99oAX6NQQRXwJ567/oYRk2vuSSSSccZu3UBVpX5G0MyT
+         Gn5fU+HnIYP7eH1fbbD+tHUft4s56sFRmwzeJxlJypEolDDNoWN/9AbHNWzk+3szz0ua
+         HMZA==
+X-Gm-Message-State: AOAM530qS0MSRzNHZjyu/QWtcj6BtsK475oIRaQ0HeNup19kdmgYM88u
+        sxRlLsAoQf3k0F+Y5kcxHrDmanhY22iVGPltxFpw+pbPwme5
+X-Google-Smtp-Source: ABdhPJyji2gDC7WtN/ChYTST3Mwi2LaRMQWgD2FMydNRqtUmm2JR0gkHJNwTIteZk+3bc00MYoW0F50xK+J9dY8xnE7Lc3BcfgGg
 MIME-Version: 1.0
-Reply-To: mrsmayaoliver7@gmail.com
-Sender: verygoodboy67@gmail.com
-Received: by 2002:a25:3b05:0:0:0:0:0 with HTTP; Sat, 28 Nov 2020 02:37:06
- -0800 (PST)
-From:   "Mrs. Maya Oliver" <mrsmayaoliver7@gmail.com>
-Date:   Sat, 28 Nov 2020 02:37:06 -0800
-X-Google-Sender-Auth: uIzOhKYsJ0QxTMGyLOIvK6kFlG8
-Message-ID: <CAKHiEWAqeeXfsL3VEzu6rYL+FKCRA7REqHL-U570ztLMUrT+Sg@mail.gmail.com>
-Subject: My Greetings
-To:     undisclosed-recipients:;
+X-Received: by 2002:a92:358a:: with SMTP id c10mr12024363ilf.258.1606577833855;
+ Sat, 28 Nov 2020 07:37:13 -0800 (PST)
+Date:   Sat, 28 Nov 2020 07:37:13 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <0000000000001750e305b52c8d02@google.com>
+Subject: KMSAN: uninit-value in validate_beacon_head
+From:   syzbot <syzbot+72b99dcf4607e8c770f3@syzkaller.appspotmail.com>
+To:     davem@davemloft.net, glider@google.com, johannes@sipsolutions.net,
+        kuba@kernel.org, linux-kernel@vger.kernel.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        syzkaller-bugs@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-My Dear
+Hello,
 
-My Name is Mrs. Maya Oliver, from Norway. I know that this message
-will be a surprise to you. Firstly, I am married to Mr. Patrick
-Oliver, A gold merchant who owns a small gold Mine in Burkina Faso; He
-died of Cardiovascular Disease in mid-March 2011. During his life time
-he deposited the sum of =E2=82=AC 8.5 Million Euro) Eight million, Five
-hundred thousand Euros in a bank in Ouagadougou the capital city of
-Burkina Faso. The deposited money was from the sale of the shares,
-death benefits payment and entitlements of my deceased husband by his
-company.
+syzbot found the following issue on:
 
-I am sending this message to you praying that it will reach you in
-good health, since I am not in good health condition in which I sleep
-every night without knowing if I may be alive to see the next day. I
-am suffering from long time cancer and presently i am partially
-suffering from a stroke illness which has become almost impossible for
-me to move around. I am married to my late husband for over 4 years
-before he died and is unfortunately that we don't have a child, my
-doctor confided in me that i have less chance to live. Having known my
-health condition, I decided to contact you to claim the fund since I
-don't have any relation I grew up from the orphanage home,
+HEAD commit:    73d62e81 kmsan: random: prevent boot-time reports in _mix_..
+git tree:       https://github.com/google/kmsan.git master
+console output: https://syzkaller.appspot.com/x/log.txt?x=164bda95500000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=eef728deea880383
+dashboard link: https://syzkaller.appspot.com/bug?extid=72b99dcf4607e8c770f3
+compiler:       clang version 11.0.0 (https://github.com/llvm/llvm-project.git ca2dcbd030eadbf0aa9b660efe864ff08af6e18b)
+userspace arch: i386
 
-I have decided to donate what I have to you for the support of helping
-Motherless babies/Less privileged/Widows' because I am dying and
-diagnosed of cancer for about 2 years ago. I have been touched by God
-Almighty to donate from what I have inherited from my late husband to
-you for good work of God Almighty. I have asked Almighty God to
-forgive me and believe he has, because He is a Merciful God I will be
-going in for an operation surgery soon
+Unfortunately, I don't have any reproducer for this issue yet.
 
-This is the reason i need your services to stand as my next of kin or
-an executor to claim the funds for charity purposes. If this money
-remains unclaimed after my death, the bank executives or the
-government will take the money as unclaimed fund and maybe use it for
-selfish and worthless ventures, I need a very honest person who can
-claim this money and use it for Charity works, for orphanages, widows
-and also build schools for less privilege that will be named after my
-late husband and my name; I need your urgent answer to know if you
-will be able to execute this project, and I will give you more
-Information on how the fund will be transferred to your bank account.
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+72b99dcf4607e8c770f3@syzkaller.appspotmail.com
 
-Thanks
-Mrs. Maya
+=====================================================
+BUG: KMSAN: uninit-value in validate_beacon_head+0x51e/0x5c0 net/wireless/nl80211.c:225
+CPU: 1 PID: 21060 Comm: syz-executor.4 Not tainted 5.10.0-rc4-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
+Call Trace:
+ __dump_stack lib/dump_stack.c:77 [inline]
+ dump_stack+0x21c/0x280 lib/dump_stack.c:118
+ kmsan_report+0xf7/0x1e0 mm/kmsan/kmsan_report.c:118
+ __msan_warning+0x5f/0xa0 mm/kmsan/kmsan_instr.c:197
+ validate_beacon_head+0x51e/0x5c0 net/wireless/nl80211.c:225
+ validate_nla lib/nlattr.c:544 [inline]
+ __nla_validate_parse+0x241a/0x4e00 lib/nlattr.c:588
+ __nla_parse+0x141/0x150 lib/nlattr.c:685
+ __nlmsg_parse include/net/netlink.h:733 [inline]
+ genl_family_rcv_msg_attrs_parse+0x417/0x5a0 net/netlink/genetlink.c:548
+ genl_family_rcv_msg_doit net/netlink/genetlink.c:717 [inline]
+ genl_family_rcv_msg net/netlink/genetlink.c:783 [inline]
+ genl_rcv_msg+0xbd9/0x1610 net/netlink/genetlink.c:800
+ netlink_rcv_skb+0x70a/0x820 net/netlink/af_netlink.c:2494
+ genl_rcv+0x63/0x80 net/netlink/genetlink.c:811
+ netlink_unicast_kernel net/netlink/af_netlink.c:1304 [inline]
+ netlink_unicast+0x11da/0x14b0 net/netlink/af_netlink.c:1330
+ netlink_sendmsg+0x173c/0x1840 net/netlink/af_netlink.c:1919
+ sock_sendmsg_nosec net/socket.c:651 [inline]
+ sock_sendmsg net/socket.c:671 [inline]
+ ____sys_sendmsg+0xc7a/0x1240 net/socket.c:2353
+ ___sys_sendmsg net/socket.c:2407 [inline]
+ __sys_sendmsg+0x6d5/0x830 net/socket.c:2440
+ __compat_sys_sendmsg net/compat.c:347 [inline]
+ __do_compat_sys_sendmsg net/compat.c:354 [inline]
+ __se_compat_sys_sendmsg+0xa7/0xc0 net/compat.c:351
+ __ia32_compat_sys_sendmsg+0x4a/0x70 net/compat.c:351
+ do_syscall_32_irqs_on arch/x86/entry/common.c:80 [inline]
+ __do_fast_syscall_32+0x102/0x160 arch/x86/entry/common.c:139
+ do_fast_syscall_32+0x6a/0xc0 arch/x86/entry/common.c:162
+ do_SYSENTER_32+0x73/0x90 arch/x86/entry/common.c:205
+ entry_SYSENTER_compat_after_hwframe+0x4d/0x5c
+RIP: 0023:0xf7fa8549
+Code: b8 01 10 06 03 74 b4 01 10 07 03 74 b0 01 10 08 03 74 d8 01 00 00 00 00 00 00 00 00 00 00 00 00 00 51 52 55 89 e5 0f 34 cd 80 <5d> 5a 59 c3 90 90 90 90 eb 0d 90 90 90 90 90 90 90 90 90 90 90 90
+RSP: 002b:00000000f55a20cc EFLAGS: 00000296 ORIG_RAX: 0000000000000172
+RAX: ffffffffffffffda RBX: 0000000000000003 RCX: 0000000020000380
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
+RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000000
+R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
+
+Uninit was created at:
+ kmsan_save_stack_with_flags mm/kmsan/kmsan.c:121 [inline]
+ kmsan_internal_poison_shadow+0x5c/0xf0 mm/kmsan/kmsan.c:104
+ kmsan_slab_alloc+0x8d/0xe0 mm/kmsan/kmsan_hooks.c:76
+ slab_alloc_node mm/slub.c:2906 [inline]
+ __kmalloc_node_track_caller+0xc61/0x15f0 mm/slub.c:4512
+ __kmalloc_reserve net/core/skbuff.c:142 [inline]
+ __alloc_skb+0x309/0xae0 net/core/skbuff.c:210
+ alloc_skb include/linux/skbuff.h:1094 [inline]
+ netlink_alloc_large_skb net/netlink/af_netlink.c:1176 [inline]
+ netlink_sendmsg+0xdb8/0x1840 net/netlink/af_netlink.c:1894
+ sock_sendmsg_nosec net/socket.c:651 [inline]
+ sock_sendmsg net/socket.c:671 [inline]
+ ____sys_sendmsg+0xc7a/0x1240 net/socket.c:2353
+ ___sys_sendmsg net/socket.c:2407 [inline]
+ __sys_sendmsg+0x6d5/0x830 net/socket.c:2440
+ __compat_sys_sendmsg net/compat.c:347 [inline]
+ __do_compat_sys_sendmsg net/compat.c:354 [inline]
+ __se_compat_sys_sendmsg+0xa7/0xc0 net/compat.c:351
+ __ia32_compat_sys_sendmsg+0x4a/0x70 net/compat.c:351
+ do_syscall_32_irqs_on arch/x86/entry/common.c:80 [inline]
+ __do_fast_syscall_32+0x102/0x160 arch/x86/entry/common.c:139
+ do_fast_syscall_32+0x6a/0xc0 arch/x86/entry/common.c:162
+ do_SYSENTER_32+0x73/0x90 arch/x86/entry/common.c:205
+ entry_SYSENTER_compat_after_hwframe+0x4d/0x5c
+=====================================================
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
