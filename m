@@ -2,127 +2,118 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 610592C7289
-	for <lists+linux-wireless@lfdr.de>; Sat, 28 Nov 2020 23:09:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0FDEC2C7295
+	for <lists+linux-wireless@lfdr.de>; Sat, 28 Nov 2020 23:09:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389877AbgK1VuK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 28 Nov 2020 16:50:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36554 "EHLO
+        id S2389909AbgK1VuL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 28 Nov 2020 16:50:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35546 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1733286AbgK1SPo (ORCPT
+        with ESMTP id S2387776AbgK1VM5 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 28 Nov 2020 13:15:44 -0500
-Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com [IPv6:2607:f8b0:4864:20::442])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62D0BC0254A5
-        for <linux-wireless@vger.kernel.org>; Sat, 28 Nov 2020 08:56:46 -0800 (PST)
-Received: by mail-pf1-x442.google.com with SMTP id y7so7138022pfq.11
-        for <linux-wireless@vger.kernel.org>; Sat, 28 Nov 2020 08:56:46 -0800 (PST)
+        Sat, 28 Nov 2020 16:12:57 -0500
+Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0036EC0613D1
+        for <linux-wireless@vger.kernel.org>; Sat, 28 Nov 2020 13:12:16 -0800 (PST)
+Received: by mail-ed1-x52c.google.com with SMTP id y22so1418474edv.1
+        for <linux-wireless@vger.kernel.org>; Sat, 28 Nov 2020 13:12:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:sender:from:date:message-id:subject:to;
-        bh=kVMdRHGtPSL7th8C72LgBEsgwthZhr9Dcro9yWgS+x8=;
-        b=d7Jh8U/vWGSA5DaVoJcP+VWWFs8w+fDbrY8/4BSstr7xKE7ObikwC3KJL32KZFWK4o
-         zv1ymq3IlPrDzWGWKapCFlz+6aY9swYDtwhTsWrx+THyaci2RsG9D5jvITT+ChDl3Tnm
-         gJoMFh9I1VMYfUHkG0bX5oEenJX+k+3MhAdglsEoF+cVAPy/x65A6LMVzYbHs4Hp5SXL
-         BFbbJcB7ws0uGtaDxsFP+vpOJ9Z8sZjtA1yI12nMDBuFUa9IkllwuniKspQ+ehgVLIpA
-         2h3ja5p8ijcYm1LXChMWmoPto7rKYmLxKQsoKXSnSph/QKq0YrmS+KGUpV9+XzjMkbq4
-         Rf8g==
+        h=subject:from:to:cc:references:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding;
+        bh=CAfyngzaFlrMbZLSK3bS+FmvuIvTUaIUWo4EFziQgVk=;
+        b=nmH+qorlm68MHAWWLye3dMLew59g/E34/rAVzpIgnkAx+6+1mbBJX3E4wA07XmjOZN
+         c2H2on8Fmk0iB13UgrhIsGy5Vpqaxt2JmCVSPA9n3Xc/nkEIUZYglYjIGlS4W4eUiGQS
+         hq1zgGEYDvKBucUUQIp4TcQfFawpY5S6KuLszCbRhGKOUZ9dHRHoqdhXtbIsWGLCDGRA
+         HI+it7tbYNMKAXuMGYNruqBkz3RTwAwamDH5KXD1Yp4JyQlZNxYtD0u90nnyk8owLL3v
+         YT26opBLoyV8768yCaw8lKkLDs5XI6eoUpjTcbaLWcgE4yn8bjYzBJ0v09d5WJHFp/uY
+         z0KQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
-         :to;
-        bh=kVMdRHGtPSL7th8C72LgBEsgwthZhr9Dcro9yWgS+x8=;
-        b=alhv1iFlF1oQ9nQfumGwvBAEb83tPWjM5805Mz2tO+t2si7fsxdhV4d3j2TgEJMYDB
-         opbG38MBOx9pGiRAAzXAkdAVux6qjAO4d/Lk1IP1acI3xo11p7bGsHRyn2CJdHyYWAfm
-         Exxma4R1DvGmYKjs8gR8C/qz3p1bpV/nNaOztlBjdGcrH+OTR7w/BU0oPvNTt+fUTmbm
-         K6IviKVmp1pHvKarG4PYBl7akYbP5Di7TCk3a2ixAMSpfpJIR+ox/6sDz7w94fAP0hKu
-         zlIs+7UirRBJmJ/rtzQeN3dUh9Y/fQ9grZ6js/itIry+IGqHIYabZcsVNzXxJ4kF8k2e
-         XIqQ==
-X-Gm-Message-State: AOAM531C7nHGh7kmkuAz1UtDqSuzCqhP6Hf+DdjKN1wBs+PZS/bEjIZT
-        7fbOcSC8+tcThMd2llC6IVQeLnsn6lIztlvO0ao=
-X-Google-Smtp-Source: ABdhPJzE93QBYpPmV3qrnTUd+HperVGSv9tBp9813/F9XMcf5Bl18EBXiiPgRvszkBgptoxqILQLL/hzoKZBYT9Vm2M=
-X-Received: by 2002:a63:3841:: with SMTP id h1mr3760142pgn.380.1606582605799;
- Sat, 28 Nov 2020 08:56:45 -0800 (PST)
+        h=x-gm-message-state:subject:from:to:cc:references:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
+        bh=CAfyngzaFlrMbZLSK3bS+FmvuIvTUaIUWo4EFziQgVk=;
+        b=Gls3QjVo1FMFGmU+K2IB7YpL8vCowlHBFWUxesxK/h1sI05upSuvME5ioP5vSEOo8K
+         7d2hUbpx4ANcbKQT8GXy6w3RxbpQn2hKprr25C3PFH5l5VBlQ1XaMFQtsdkm3d6sP46q
+         HmXZ73emHXC40W+qwv2mkwBUiE2hZGVGo/ZkVgaMNRlZtNE6/E/sbQWjbTMv4lHf9StF
+         d5ei5XmBTVXDksrvtM+1MpKDn2uZDpzLu5eHWrDu+2iQ7hLxKS/Dwm/dKsybKswdLu3r
+         ArsGvPLw0t/AG+gKrnLhhuVyR6LJbFoVmP/vY/vgrza1l7NTeZ35PDDrmXUMXsJTlYZr
+         FaSg==
+X-Gm-Message-State: AOAM533TH2dBnrhn2avYtCBwYSqUO63u2ZZJbH8VWJqfGxdkNo4Da1mV
+        QPNi6lJt9fUiJlCXf22/JmqvVoYcemuxZw==
+X-Google-Smtp-Source: ABdhPJwTF96NxK3G1mpC7Iyt310ziCDHlCy2Lyxye3ofIeKMYstgU9BKJU1UfzmGkFq12GNtob3SmA==
+X-Received: by 2002:a05:6402:312c:: with SMTP id dd12mr7231091edb.327.1606597935405;
+        Sat, 28 Nov 2020 13:12:15 -0800 (PST)
+Received: from ?IPv6:2003:ea:8f23:2800:3447:4395:d25a:ba4a? (p200300ea8f23280034474395d25aba4a.dip0.t-ipconnect.de. [2003:ea:8f23:2800:3447:4395:d25a:ba4a])
+        by smtp.googlemail.com with ESMTPSA id i21sm7035845edt.92.2020.11.28.13.12.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 28 Nov 2020 13:12:14 -0800 (PST)
+Subject: Re: AX210 version 0024 not detected by iwlwifi
+From:   Heiner Kallweit <hkallweit1@gmail.com>
+To:     "Coelho, Luciano" <luciano.coelho@intel.com>,
+        linuxwifi <linuxwifi@intel.com>,
+        "Berg, Johannes" <johannes.berg@intel.com>,
+        "Grumbach, Emmanuel" <emmanuel.grumbach@intel.com>
+Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+References: <03e8284e-4ea8-fe3e-8da7-62a778b1a059@gmail.com>
+ <ce7fab1d400a04eb31727546b99af0292a0d30f4.camel@intel.com>
+ <9b5d4919-1c62-7438-3f50-18197a92a9cf@gmail.com>
+Message-ID: <07e8663a-cafe-a2b7-0628-9c3643768d50@gmail.com>
+Date:   Sat, 28 Nov 2020 22:12:10 +0100
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.5.0
 MIME-Version: 1.0
-Sender: zandnasout@gmail.com
-Received: by 2002:a05:6a10:fd99:0:0:0:0 with HTTP; Sat, 28 Nov 2020 08:56:45
- -0800 (PST)
-From:   abdul karim <abdui.kar778@gmail.com>
-Date:   Sat, 28 Nov 2020 16:56:45 +0000
-X-Google-Sender-Auth: pvDH0CGyLD5elHRDJCMND-pWYEM
-Message-ID: <CAC-6UDU-v-WyP9f6-=j=9L_jsk352rNzAg9dCK-BRNVADfVU1A@mail.gmail.com>
-Subject: TREAT AND REPLY URGENTLY.
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <9b5d4919-1c62-7438-3f50-18197a92a9cf@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-FROM MR. ABDUL KARIM
-AUDIT & ACCOUNT MANAGER
-BANK OF AFRICA (B.O.A)
-OUAGADOUGOU BURKINA FASO
-WEST AFRICA.
+Am 27.11.2020 um 12:55 schrieb Heiner Kallweit:
+> Am 23.11.2020 um 09:17 schrieb Coelho, Luciano:
+>> Hi Heiner,
+>>
+>> On Sun, 2020-11-22 at 22:35 +0100, Heiner Kallweit wrote:
+>>> I have an AX210 card that isn't detected by iwlwifi.
+>>>
+>>> 01:00.0 Network controller: Intel Corporation Device 2725 (rev 1a)
+>>>         Subsystem: Intel Corporation Device 0024
+>>>
+>>> Adding following entry seems to be sufficient.
+>>>
+>>>         {IWL_PCI_DEVICE(0x2725, 0x0020, iwlax210_2ax_cfg_ty_gf_a0)},
+>>> +       {IWL_PCI_DEVICE(0x2725, 0x0024, iwlax210_2ax_cfg_ty_gf_a0)},
+>>>         {IWL_PCI_DEVICE(0x2725, 0x0310, iwlax210_2ax_cfg_ty_gf_a0)},
+>>>
+>>> [  419.473140] iwlwifi 0000:01:00.0: enabling device (0000 -> 0002)
+>>> [  419.486984] iwlwifi 0000:01:00.0: api flags index 2 larger than supported by driver
+>>> [  419.487190] iwlwifi 0000:01:00.0: TLV_FW_FSEQ_VERSION: FSEQ Version: 93.8.63.28
+>>> [  419.488828] iwlwifi 0000:01:00.0: loaded firmware version 59.601f3a66.0 ty-a0-gf-a0-59.ucode op_mode iwlmvm
+>>> [  419.533136] iwlwifi 0000:01:00.0: Detected Intel(R) Wi-Fi 6 AX210 160MHz, REV=0x420
+>>>
+>>> Maybe there are more AX210 subversion id's to be added ..
+>>>
+>>> How about the api flags index warning? I saw it in several posts,
+>>> is there something to be fixed in the driver?
+>>
+>> Good catch.  This indeed seems to be missing.  I'll add it and try to
+>> send it still for the 5.10-rc series, so it propagates asap.
+>>
+>> --
+>> Cheers,
+>> Luca.
+>>
+> 
+> I face another issue I hope you can help me with:
+> Frequently on system reboot the PCI device vanishes, it's not listed
+> by lspci any longer. This doesn't happen after a power-cycle.
+> Not sure whether device is in D3cold or whether it doesn't react
+> for another reason.
+> 
+Setting kernel parameter reboot=pci fixes the issue.
+However I have no clue whom to blame for the issue: card or BIOS
 
-Greeting My Dear Friend,
+> Rgds, Heiner
+> 
 
-With due respect, I have decided to contact you on a business
-transaction that will be beneficial to both of us. At the bank last
-account and auditing evaluation, my staffs came across an old account
-which was being maintained by a foreign client who we learn was among
-the deceased passengers of motor accident on November.2003, the
-deceased was unable to run this account since his death. The account
-has remained dormant without the knowledge of his family since it was
-put in a safe deposit account in the bank for future investment by the
-client.
-
-Since his demise, even the members of his family haven't applied for
-claims over this fund and it has been in the safe deposit account
-until I discovered that it cannot be claimed since our client is a
-foreign national and we are sure that he has no next of kin here to
-file claims over the money. As the director of the department, this
-discovery was brought to my office so as to decide what is to be done.
-I decided to seek ways through which to transfer this money out of the
-bank and out of the country too.
-
-The total amount in the account is $10.5 millions with my positions as
-staffs of the bank, I am handicapped because I cannot operate foreign
-accounts and cannot lay bonafide claim over this money. The client was
-a foreign national and you will only be asked to act as his next of
-kin and I will supply you with all the necessary information and bank
-data to assist you in being able to transfer this money to any bank of
-your choice where this money could be transferred into.
-
-The total sum will be shared as follows: 50% for me, 40% for you,
-while 10% will map aside for any expenses incidental occur during the
-transfering of this fund into your bank account. and the expenses
-should be the first thing to be remove before sharing of this fund
-according to our percentages . The transfer is risk free on both sides
-hence you are going to follow my instruction till the fund transfer to
-your account. Since I work in this bank that is why you should be
-confident in the success of this transaction because you will be
-updated with information as at when desired.
-
-I will wish you to keep this transaction secret and confidential as I
-am hoping to retire with my share of this money at the end of
-transaction which will be when this money is safety in your account. I
-will then come over to your country for sharing according to the
-previously agreed percentages. You might even have to advise me on
-possibilities of investment in your country or elsewhere of our
-choice. May God help you to help me to a restive retirement, Amen,
-
-Please for further information and inquires feel free to contact me
-back immediately for more explanation and better understanding I want
-you to assure me your capability of handling this project with trust
-by providing me your following information details such as:
-
-(1)NAME..............
-(2)AGE:................
-(3)SEX:.....................
-(4)PHONE NUMBER:.................
-(5)OCCUPATION:................ .....
-(6)YOUR COUNTRY:.....................
-
-Yours sincerely,
-
-Mr. Abdul Karim.
