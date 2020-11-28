@@ -2,145 +2,106 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C4522C728C
-	for <lists+linux-wireless@lfdr.de>; Sat, 28 Nov 2020 23:09:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D4BC22C7298
+	for <lists+linux-wireless@lfdr.de>; Sat, 28 Nov 2020 23:09:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389867AbgK1VuK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 28 Nov 2020 16:50:10 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:33949 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727427AbgK0Tpr (ORCPT
+        id S2389896AbgK1VuL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 28 Nov 2020 16:50:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43164 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732424AbgK1TAU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 27 Nov 2020 14:45:47 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1606506301;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc; bh=31NOEUXtFUEIoIEb6DlkLDhejAmEOpd+ygD8P/D1wQM=;
-        b=Uih4f8lLdRqqPFfjpjGNRoe0L0WH4G3S3iNiu5WMf2ImlTkrPhSpFSu38Sq50NKIYWnEGc
-        8/5zAfpa3+1C6RFUj4Zt6EBqBXKQsU7btqHMuSNvZXyxUdDW+n/+jFrmfXMl422lWSANSY
-        Diw9NIDXgdWnvxWxA9ELm1OcnFVAL5o=
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
- [209.85.219.69]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-306-xjvlDl-BMTKlS8C85CwJog-1; Fri, 27 Nov 2020 14:38:49 -0500
-X-MC-Unique: xjvlDl-BMTKlS8C85CwJog-1
-Received: by mail-qv1-f69.google.com with SMTP id q6so3564375qvr.21
-        for <linux-wireless@vger.kernel.org>; Fri, 27 Nov 2020 11:38:48 -0800 (PST)
+        Sat, 28 Nov 2020 14:00:20 -0500
+Received: from mail-yb1-xb42.google.com (mail-yb1-xb42.google.com [IPv6:2607:f8b0:4864:20::b42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61C08C02B8F9
+        for <linux-wireless@vger.kernel.org>; Sat, 28 Nov 2020 02:37:08 -0800 (PST)
+Received: by mail-yb1-xb42.google.com with SMTP id e81so6774255ybc.1
+        for <linux-wireless@vger.kernel.org>; Sat, 28 Nov 2020 02:37:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:sender:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=BYhYUhRJ3iwbx5RvkgDxhY0ZIfAUwuAVrsbzhkyOflE=;
+        b=pnFZl7nW9k9vF4/Y8CCU5WRqhsbCPQXD33E1X7efuGI5rU5665dy7wfXdV2NGgBvj+
+         YuryFSXFO3J4wfVDv6vxK7cLP0eWOuM7cCcwfLc+S6ISutu78nfqlVkal6FmLRXDXJXw
+         iuvoa7xXQL8xLqMWNFSrs5jJs5Bo7d39Y8pJKEzOvsmV8z5WCjQv99xGv/gFjYvvu7AL
+         oiU3EmNuVV40bC3ONOVA6iy5WxSmkgt9whGKH0pGq7X436pR6yiQ7l7HpiLwDmE1HrFG
+         G7fApEVPzYwdUFyXJtzlj5V8kYx9pl7WzOm/tiQevQi77gs0Zu37mbDGYbYKJ4C33kfX
+         /hpA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=31NOEUXtFUEIoIEb6DlkLDhejAmEOpd+ygD8P/D1wQM=;
-        b=gXh0ZjbHogMgqvwNgVJiu9jmNMp/1qiacXLgjmy4nC2Si7kgYbS/nCQcytHMWViHdN
-         Hf3IJ6e2BgFTO82GedFmRos9ZNhQ7BrI2iF1LtiGF0Q/6AmNdOKftkrBTFcSGVwOog+f
-         5HJr+rl7f39GUYMNTeOTOXeEqyUIQ9n112yrqlQ2D2igqJl7HUHc5nQgxDwrA2N9QFKS
-         Ln2+9nKX7JxBffNaWFpK7DLbUZFNVDew5up1QJxep8mHya+TscTzb3DiMQKhvwTt5w9b
-         ZVfhq4p7IYSQqcxF15BnMsmRZhCdgL9RojJQZHrv0nx8bUZfKQv4QtIUDphBOajELBy2
-         eoQQ==
-X-Gm-Message-State: AOAM530jQ5cD5o+k/VklrfVG+UbeTTpDWdTscwGSFBfpT6+34AMCrF47
-        aE4M57ZoEJzF5VO9UEe5RYNPve1eRVcCu7fr0nCxzEUS+n3gjvA9apYUGv7zE3GqrmnFiPOMyUG
-        AwIg4XXhU0I8LIQQ85YDWGg0xYDg=
-X-Received: by 2002:a37:951:: with SMTP id 78mr10345095qkj.47.1606505928154;
-        Fri, 27 Nov 2020 11:38:48 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJyNdAzcStuIXMbmSP+HLLVyItdCLz8IAxD+7vIdJYPeS0NmSpe1Cx1gjQIUHKU6nd921G5yKw==
-X-Received: by 2002:a37:951:: with SMTP id 78mr10345076qkj.47.1606505927966;
-        Fri, 27 Nov 2020 11:38:47 -0800 (PST)
-Received: from trix.remote.csb (075-142-250-213.res.spectrum.com. [75.142.250.213])
-        by smtp.gmail.com with ESMTPSA id v31sm3444876qtd.29.2020.11.27.11.38.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Nov 2020 11:38:47 -0800 (PST)
-From:   trix@redhat.com
-To:     johannes@sipsolutions.net, davem@davemloft.net, kuba@kernel.org
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Tom Rix <trix@redhat.com>
-Subject: [PATCH] mac80211: remove trailing semicolon in macro definition
-Date:   Fri, 27 Nov 2020 11:38:42 -0800
-Message-Id: <20201127193842.2876355-1-trix@redhat.com>
-X-Mailer: git-send-email 2.18.4
+        h=x-gm-message-state:mime-version:reply-to:sender:from:date
+         :message-id:subject:to:content-transfer-encoding;
+        bh=BYhYUhRJ3iwbx5RvkgDxhY0ZIfAUwuAVrsbzhkyOflE=;
+        b=nYyneYCpTkZHkPnqMhKM/luG0HGBYgJC1/xKTWZeEXmrziUJ0IvlH/3qdQklcHrRtW
+         HCm0RwnoMZqbPLuP1lveqCpbpdcfqwpFeaCAKSyz3kWgiI8g1F6L+0kRVHuiyGVIbJkc
+         2/iPWjjCt5vaXlZs1TI8WXvsBR8VH32/zQJ/xlO4cZAcxNBIrcgcMkyq/NOhOJVngjsM
+         TgGdh8fcYSigTzl1Vi5HlXuXIpLWZYsZrKXcTj7ko346RBumaYGiXm981s8VlZ8JX0HF
+         EDoZ/Ok1R87eMFQ58Wrzqu1q8I6/3dRkGYLw2Ca1CG1jaG0BhVYVXae86TeXlYNk6l2a
+         HrrQ==
+X-Gm-Message-State: AOAM5321ANLb5c2Ju2l+Djb/V91SydBGSeD820vED7cgUDusDJVwNswE
+        SG9KSgRr+xitd+W+Kdp2kGeg5+cP/lDvfjEK99Y=
+X-Google-Smtp-Source: ABdhPJxefWeHOS/PEI+BfMTKMi/ziUHzZByXciV4yDm3pydds8AM29OswgX6kQmgej/Zd3r5mfjKjSnjbQ91k7EFHWs=
+X-Received: by 2002:a25:ce13:: with SMTP id x19mr13331605ybe.390.1606559827172;
+ Sat, 28 Nov 2020 02:37:07 -0800 (PST)
+MIME-Version: 1.0
+Reply-To: mrsmayaoliver7@gmail.com
+Sender: verygoodboy67@gmail.com
+Received: by 2002:a25:3b05:0:0:0:0:0 with HTTP; Sat, 28 Nov 2020 02:37:06
+ -0800 (PST)
+From:   "Mrs. Maya Oliver" <mrsmayaoliver7@gmail.com>
+Date:   Sat, 28 Nov 2020 02:37:06 -0800
+X-Google-Sender-Auth: uIzOhKYsJ0QxTMGyLOIvK6kFlG8
+Message-ID: <CAKHiEWAqeeXfsL3VEzu6rYL+FKCRA7REqHL-U570ztLMUrT+Sg@mail.gmail.com>
+Subject: My Greetings
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Tom Rix <trix@redhat.com>
+My Dear
 
-The macro use will already have a semicolon.
+My Name is Mrs. Maya Oliver, from Norway. I know that this message
+will be a surprise to you. Firstly, I am married to Mr. Patrick
+Oliver, A gold merchant who owns a small gold Mine in Burkina Faso; He
+died of Cardiovascular Disease in mid-March 2011. During his life time
+he deposited the sum of =E2=82=AC 8.5 Million Euro) Eight million, Five
+hundred thousand Euros in a bank in Ouagadougou the capital city of
+Burkina Faso. The deposited money was from the sale of the shares,
+death benefits payment and entitlements of my deceased husband by his
+company.
 
-Signed-off-by: Tom Rix <trix@redhat.com>
----
- net/mac80211/debugfs.c        | 2 +-
- net/mac80211/debugfs_key.c    | 2 +-
- net/mac80211/debugfs_netdev.c | 6 +++---
- net/mac80211/debugfs_sta.c    | 2 +-
- 4 files changed, 6 insertions(+), 6 deletions(-)
+I am sending this message to you praying that it will reach you in
+good health, since I am not in good health condition in which I sleep
+every night without knowing if I may be alive to see the next day. I
+am suffering from long time cancer and presently i am partially
+suffering from a stroke illness which has become almost impossible for
+me to move around. I am married to my late husband for over 4 years
+before he died and is unfortunately that we don't have a child, my
+doctor confided in me that i have less chance to live. Having known my
+health condition, I decided to contact you to claim the fund since I
+don't have any relation I grew up from the orphanage home,
 
-diff --git a/net/mac80211/debugfs.c b/net/mac80211/debugfs.c
-index 90470392fdaa..48f144f107d5 100644
---- a/net/mac80211/debugfs.c
-+++ b/net/mac80211/debugfs.c
-@@ -53,7 +53,7 @@ static const struct file_operations name## _ops = {			\
- 	DEBUGFS_READONLY_FILE_OPS(name)
- 
- #define DEBUGFS_ADD(name)						\
--	debugfs_create_file(#name, 0400, phyd, local, &name## _ops);
-+	debugfs_create_file(#name, 0400, phyd, local, &name## _ops)
- 
- #define DEBUGFS_ADD_MODE(name, mode)					\
- 	debugfs_create_file(#name, mode, phyd, local, &name## _ops);
-diff --git a/net/mac80211/debugfs_key.c b/net/mac80211/debugfs_key.c
-index 98a713475e0f..f53dec8a3d5c 100644
---- a/net/mac80211/debugfs_key.c
-+++ b/net/mac80211/debugfs_key.c
-@@ -319,7 +319,7 @@ KEY_OPS(key);
- 
- #define DEBUGFS_ADD(name) \
- 	debugfs_create_file(#name, 0400, key->debugfs.dir, \
--			    key, &key_##name##_ops);
-+			    key, &key_##name##_ops)
- #define DEBUGFS_ADD_W(name) \
- 	debugfs_create_file(#name, 0600, key->debugfs.dir, \
- 			    key, &key_##name##_ops);
-diff --git a/net/mac80211/debugfs_netdev.c b/net/mac80211/debugfs_netdev.c
-index 9fc8ce214322..0ad3860852ff 100644
---- a/net/mac80211/debugfs_netdev.c
-+++ b/net/mac80211/debugfs_netdev.c
-@@ -642,7 +642,7 @@ IEEE80211_IF_FILE(dot11MeshConnectedToAuthServer,
- 
- #define DEBUGFS_ADD_MODE(name, mode) \
- 	debugfs_create_file(#name, mode, sdata->vif.debugfs_dir, \
--			    sdata, &name##_ops);
-+			    sdata, &name##_ops)
- 
- #define DEBUGFS_ADD(name) DEBUGFS_ADD_MODE(name, 0400)
- 
-@@ -711,7 +711,7 @@ static void add_mesh_stats(struct ieee80211_sub_if_data *sdata)
- 	struct dentry *dir = debugfs_create_dir("mesh_stats",
- 						sdata->vif.debugfs_dir);
- #define MESHSTATS_ADD(name)\
--	debugfs_create_file(#name, 0400, dir, sdata, &name##_ops);
-+	debugfs_create_file(#name, 0400, dir, sdata, &name##_ops)
- 
- 	MESHSTATS_ADD(fwded_mcast);
- 	MESHSTATS_ADD(fwded_unicast);
-@@ -728,7 +728,7 @@ static void add_mesh_config(struct ieee80211_sub_if_data *sdata)
- 						sdata->vif.debugfs_dir);
- 
- #define MESHPARAMS_ADD(name) \
--	debugfs_create_file(#name, 0600, dir, sdata, &name##_ops);
-+	debugfs_create_file(#name, 0600, dir, sdata, &name##_ops)
- 
- 	MESHPARAMS_ADD(dot11MeshMaxRetries);
- 	MESHPARAMS_ADD(dot11MeshRetryTimeout);
-diff --git a/net/mac80211/debugfs_sta.c b/net/mac80211/debugfs_sta.c
-index 6a51b8b58f9e..eb4bb79d936a 100644
---- a/net/mac80211/debugfs_sta.c
-+++ b/net/mac80211/debugfs_sta.c
-@@ -985,7 +985,7 @@ STA_OPS(he_capa);
- 
- #define DEBUGFS_ADD(name) \
- 	debugfs_create_file(#name, 0400, \
--		sta->debugfs_dir, sta, &sta_ ##name## _ops);
-+		sta->debugfs_dir, sta, &sta_ ##name## _ops)
- 
- #define DEBUGFS_ADD_COUNTER(name, field)				\
- 	debugfs_create_ulong(#name, 0400, sta->debugfs_dir, &sta->field);
--- 
-2.18.4
+I have decided to donate what I have to you for the support of helping
+Motherless babies/Less privileged/Widows' because I am dying and
+diagnosed of cancer for about 2 years ago. I have been touched by God
+Almighty to donate from what I have inherited from my late husband to
+you for good work of God Almighty. I have asked Almighty God to
+forgive me and believe he has, because He is a Merciful God I will be
+going in for an operation surgery soon
 
+This is the reason i need your services to stand as my next of kin or
+an executor to claim the funds for charity purposes. If this money
+remains unclaimed after my death, the bank executives or the
+government will take the money as unclaimed fund and maybe use it for
+selfish and worthless ventures, I need a very honest person who can
+claim this money and use it for Charity works, for orphanages, widows
+and also build schools for less privilege that will be named after my
+late husband and my name; I need your urgent answer to know if you
+will be able to execute this project, and I will give you more
+Information on how the fund will be transferred to your bank account.
+
+Thanks
+Mrs. Maya
