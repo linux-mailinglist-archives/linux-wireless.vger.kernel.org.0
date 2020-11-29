@@ -2,172 +2,318 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C92A2C79C2
-	for <lists+linux-wireless@lfdr.de>; Sun, 29 Nov 2020 16:32:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 387EA2C7B5D
+	for <lists+linux-wireless@lfdr.de>; Sun, 29 Nov 2020 22:22:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387408AbgK2Pbz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 29 Nov 2020 10:31:55 -0500
-Received: from paleale.coelho.fi ([176.9.41.70]:33570 "EHLO
-        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1728008AbgK2Pby (ORCPT
+        id S1728440AbgK2VTX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 29 Nov 2020 16:19:23 -0500
+Received: from smtp04.smtpout.orange.fr ([80.12.242.126]:51044 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727256AbgK2VTW (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 29 Nov 2020 10:31:54 -0500
-Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa.ger.corp.intel.com)
-        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.93)
-        (envelope-from <luca@coelho.fi>)
-        id 1kjOfK-0035ld-Ax; Sun, 29 Nov 2020 17:31:06 +0200
-From:   Luca Coelho <luca@coelho.fi>
-To:     johannes@sipsolutions.net
-Cc:     linux-wireless@vger.kernel.org
-Date:   Sun, 29 Nov 2020 17:30:55 +0200
-Message-Id: <iwlwifi.20201129172929.8953ef22cc64.Ifee9cab337a4369938545920ba5590559e91327a@changeid>
-X-Mailer: git-send-email 2.29.2
-In-Reply-To: <20201129153055.1971298-1-luca@coelho.fi>
-References: <20201129153055.1971298-1-luca@coelho.fi>
+        Sun, 29 Nov 2020 16:19:22 -0500
+Received: from localhost.localdomain ([81.185.174.0])
+        by mwinf5d27 with ME
+        id yMHZ2300B00t0l503MHa4m; Sun, 29 Nov 2020 22:17:37 +0100
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Sun, 29 Nov 2020 22:17:37 +0100
+X-ME-IP: 81.185.174.0
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     jiri@nvidia.com, idosch@nvidia.com, davem@davemloft.net,
+        kuba@kernel.org
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] mlxsw: switch from 'pci_' to 'dma_' API
+Date:   Sun, 29 Nov 2020 22:17:33 +0100
+Message-Id: <20201129211733.2913-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on farmhouse.coelho.fi
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
-        TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.4
-Subject: [PATCH 13/13] cfg80211: include block-tx flag in channel switch started event
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+he wrappers in include/linux/pci-dma-compat.h should go away.
 
-In the NL80211_CMD_CH_SWITCH_STARTED_NOTIFY event, include the
-NL80211_ATTR_CH_SWITCH_BLOCK_TX flag attribute if block-tx was
-requested by the AP.
+The patch has been generated with the coccinelle script below and has been
+hand modified to replace GFP_ with a correct flag.
+It has been compile tested.
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+When memory is allocated in 'mlxsw_pci_queue_init()' and
+'mlxsw_pci_fw_area_init()' GFP_KERNEL can be used because this flag is
+already used in the same function.
+
+When memory is allocated in 'mlxsw_pci_mbox_alloc()' GFP_KERNEL can be
+used because it is only called from a probe function. The call chain is:
+  --> mlxsw_pci_probe
+    --> mlxsw_pci_cmd_init
+      --> mlxsw_pci_mbox_alloc
+
+@@
+@@
+-    PCI_DMA_BIDIRECTIONAL
++    DMA_BIDIRECTIONAL
+
+@@
+@@
+-    PCI_DMA_TODEVICE
++    DMA_TO_DEVICE
+
+@@
+@@
+-    PCI_DMA_FROMDEVICE
++    DMA_FROM_DEVICE
+
+@@
+@@
+-    PCI_DMA_NONE
++    DMA_NONE
+
+@@
+expression e1, e2, e3;
+@@
+-    pci_alloc_consistent(e1, e2, e3)
++    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
+
+@@
+expression e1, e2, e3;
+@@
+-    pci_zalloc_consistent(e1, e2, e3)
++    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_free_consistent(e1, e2, e3, e4)
++    dma_free_coherent(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_map_single(e1, e2, e3, e4)
++    dma_map_single(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_unmap_single(e1, e2, e3, e4)
++    dma_unmap_single(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4, e5;
+@@
+-    pci_map_page(e1, e2, e3, e4, e5)
++    dma_map_page(&e1->dev, e2, e3, e4, e5)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_unmap_page(e1, e2, e3, e4)
++    dma_unmap_page(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_map_sg(e1, e2, e3, e4)
++    dma_map_sg(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_unmap_sg(e1, e2, e3, e4)
++    dma_unmap_sg(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_single_for_cpu(e1, e2, e3, e4)
++    dma_sync_single_for_cpu(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_single_for_device(e1, e2, e3, e4)
++    dma_sync_single_for_device(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_sg_for_cpu(e1, e2, e3, e4)
++    dma_sync_sg_for_cpu(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_sg_for_device(e1, e2, e3, e4)
++    dma_sync_sg_for_device(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2;
+@@
+-    pci_dma_mapping_error(e1, e2)
++    dma_mapping_error(&e1->dev, e2)
+
+@@
+expression e1, e2;
+@@
+-    pci_set_dma_mask(e1, e2)
++    dma_set_mask(&e1->dev, e2)
+
+@@
+expression e1, e2;
+@@
+-    pci_set_consistent_dma_mask(e1, e2)
++    dma_set_coherent_mask(&e1->dev, e2)
+
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
- include/net/cfg80211.h       |  3 ++-
- include/uapi/linux/nl80211.h |  3 ++-
- net/mac80211/cfg.c           |  2 +-
- net/mac80211/mlme.c          |  2 +-
- net/wireless/nl80211.c       | 17 +++++++++++------
- 5 files changed, 17 insertions(+), 10 deletions(-)
+If needed, see post from Christoph Hellwig on the kernel-janitors ML:
+   https://marc.info/?l=kernel-janitors&m=158745678307186&w=4
+---
+ drivers/net/ethernet/mellanox/mlxsw/pci.c | 52 +++++++++++------------
+ 1 file changed, 26 insertions(+), 26 deletions(-)
 
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index 4a5ae7fb7d59..23bc74d2523f 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -7531,6 +7531,7 @@ void cfg80211_ch_switch_notify(struct net_device *dev,
-  * @dev: the device on which the channel switch started
-  * @chandef: the future channel definition
-  * @count: the number of TBTTs until the channel switch happens
-+ * @quiet: whether or not immediate quiet was requested by the AP
-  *
-  * Inform the userspace about the channel switch that has just
-  * started, so that it can take appropriate actions (eg. starting
-@@ -7538,7 +7539,7 @@ void cfg80211_ch_switch_notify(struct net_device *dev,
-  */
- void cfg80211_ch_switch_started_notify(struct net_device *dev,
- 				       struct cfg80211_chan_def *chandef,
--				       u8 count);
-+				       u8 count, bool quiet);
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/pci.c b/drivers/net/ethernet/mellanox/mlxsw/pci.c
+index 641cdd81882b..7519d3b6934e 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/pci.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/pci.c
+@@ -323,8 +323,8 @@ static int mlxsw_pci_wqe_frag_map(struct mlxsw_pci *mlxsw_pci, char *wqe,
+ 	struct pci_dev *pdev = mlxsw_pci->pdev;
+ 	dma_addr_t mapaddr;
  
- /**
-  * ieee80211_operating_class_to_band - convert operating class to band
-diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-index 3e0d4a038ab6..83c860395dd6 100644
---- a/include/uapi/linux/nl80211.h
-+++ b/include/uapi/linux/nl80211.h
-@@ -2079,7 +2079,8 @@ enum nl80211_commands {
-  *	until the channel switch event.
-  * @NL80211_ATTR_CH_SWITCH_BLOCK_TX: flag attribute specifying that transmission
-  *	must be blocked on the current channel (before the channel switch
-- *	operation).
-+ *	operation). Also included in the channel switch started event if quiet
-+ *	was requested by the AP.
-  * @NL80211_ATTR_CSA_IES: Nested set of attributes containing the IE information
-  *	for the time while performing a channel switch.
-  * @NL80211_ATTR_CNTDWN_OFFS_BEACON: An array of offsets (u16) to the channel
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index 454432ced0c9..f9d8ebf96e92 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -3448,7 +3448,7 @@ __ieee80211_channel_switch(struct wiphy *wiphy, struct net_device *dev,
- 					  IEEE80211_QUEUE_STOP_REASON_CSA);
+-	mapaddr = pci_map_single(pdev, frag_data, frag_len, direction);
+-	if (unlikely(pci_dma_mapping_error(pdev, mapaddr))) {
++	mapaddr = dma_map_single(&pdev->dev, frag_data, frag_len, direction);
++	if (unlikely(dma_mapping_error(&pdev->dev, mapaddr))) {
+ 		dev_err_ratelimited(&pdev->dev, "failed to dma map tx frag\n");
+ 		return -EIO;
+ 	}
+@@ -342,7 +342,7 @@ static void mlxsw_pci_wqe_frag_unmap(struct mlxsw_pci *mlxsw_pci, char *wqe,
  
- 	cfg80211_ch_switch_started_notify(sdata->dev, &sdata->csa_chandef,
--					  params->count);
-+					  params->count, params->block_tx);
- 
- 	if (changed) {
- 		ieee80211_bss_info_change_notify(sdata, changed);
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index 67829667d394..d4da9822a111 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -1509,7 +1509,7 @@ ieee80211_sta_process_chanswitch(struct ieee80211_sub_if_data *sdata,
- 	mutex_unlock(&local->mtx);
- 
- 	cfg80211_ch_switch_started_notify(sdata->dev, &csa_ie.chandef,
--					  csa_ie.count);
-+					  csa_ie.count, csa_ie.mode);
- 
- 	if (local->ops->channel_switch) {
- 		/* use driver's channel switch callback */
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 67c52f4b45fa..ff9b162259fb 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -17061,7 +17061,7 @@ static void nl80211_ch_switch_notify(struct cfg80211_registered_device *rdev,
- 				     struct cfg80211_chan_def *chandef,
- 				     gfp_t gfp,
- 				     enum nl80211_commands notif,
--				     u8 count)
-+				     u8 count, bool quiet)
- {
- 	struct sk_buff *msg;
- 	void *hdr;
-@@ -17082,9 +17082,13 @@ static void nl80211_ch_switch_notify(struct cfg80211_registered_device *rdev,
- 	if (nl80211_send_chandef(msg, chandef))
- 		goto nla_put_failure;
- 
--	if ((notif == NL80211_CMD_CH_SWITCH_STARTED_NOTIFY) &&
--	    (nla_put_u32(msg, NL80211_ATTR_CH_SWITCH_COUNT, count)))
-+	if (notif == NL80211_CMD_CH_SWITCH_STARTED_NOTIFY) {
-+		if (nla_put_u32(msg, NL80211_ATTR_CH_SWITCH_COUNT, count))
- 			goto nla_put_failure;
-+		if (quiet &&
-+		    nla_put_flag(msg, NL80211_ATTR_CH_SWITCH_BLOCK_TX))
-+			goto nla_put_failure;
-+	}
- 
- 	genlmsg_end(msg, hdr);
- 
-@@ -17117,13 +17121,13 @@ void cfg80211_ch_switch_notify(struct net_device *dev,
- 	cfg80211_sched_dfs_chan_update(rdev);
- 
- 	nl80211_ch_switch_notify(rdev, dev, chandef, GFP_KERNEL,
--				 NL80211_CMD_CH_SWITCH_NOTIFY, 0);
-+				 NL80211_CMD_CH_SWITCH_NOTIFY, 0, false);
+ 	if (!frag_len)
+ 		return;
+-	pci_unmap_single(pdev, mapaddr, frag_len, direction);
++	dma_unmap_single(&pdev->dev, mapaddr, frag_len, direction);
  }
- EXPORT_SYMBOL(cfg80211_ch_switch_notify);
  
- void cfg80211_ch_switch_started_notify(struct net_device *dev,
- 				       struct cfg80211_chan_def *chandef,
--				       u8 count)
-+				       u8 count, bool quiet)
- {
- 	struct wireless_dev *wdev = dev->ieee80211_ptr;
- 	struct wiphy *wiphy = wdev->wiphy;
-@@ -17132,7 +17136,8 @@ void cfg80211_ch_switch_started_notify(struct net_device *dev,
- 	trace_cfg80211_ch_switch_started_notify(dev, chandef);
+ static int mlxsw_pci_rdq_skb_alloc(struct mlxsw_pci *mlxsw_pci,
+@@ -858,9 +858,9 @@ static int mlxsw_pci_queue_init(struct mlxsw_pci *mlxsw_pci, char *mbox,
+ 		tasklet_setup(&q->tasklet, q_ops->tasklet);
  
- 	nl80211_ch_switch_notify(rdev, dev, chandef, GFP_KERNEL,
--				 NL80211_CMD_CH_SWITCH_STARTED_NOTIFY, count);
-+				 NL80211_CMD_CH_SWITCH_STARTED_NOTIFY,
-+				 count, quiet);
+ 	mem_item->size = MLXSW_PCI_AQ_SIZE;
+-	mem_item->buf = pci_alloc_consistent(mlxsw_pci->pdev,
+-					     mem_item->size,
+-					     &mem_item->mapaddr);
++	mem_item->buf = dma_alloc_coherent(&mlxsw_pci->pdev->dev,
++					   mem_item->size, &mem_item->mapaddr,
++					   GFP_KERNEL);
+ 	if (!mem_item->buf)
+ 		return -ENOMEM;
+ 
+@@ -890,8 +890,8 @@ static int mlxsw_pci_queue_init(struct mlxsw_pci *mlxsw_pci, char *mbox,
+ err_q_ops_init:
+ 	kfree(q->elem_info);
+ err_elem_info_alloc:
+-	pci_free_consistent(mlxsw_pci->pdev, mem_item->size,
+-			    mem_item->buf, mem_item->mapaddr);
++	dma_free_coherent(&mlxsw_pci->pdev->dev, mem_item->size,
++			  mem_item->buf, mem_item->mapaddr);
+ 	return err;
  }
- EXPORT_SYMBOL(cfg80211_ch_switch_started_notify);
  
+@@ -903,8 +903,8 @@ static void mlxsw_pci_queue_fini(struct mlxsw_pci *mlxsw_pci,
+ 
+ 	q_ops->fini(mlxsw_pci, q);
+ 	kfree(q->elem_info);
+-	pci_free_consistent(mlxsw_pci->pdev, mem_item->size,
+-			    mem_item->buf, mem_item->mapaddr);
++	dma_free_coherent(&mlxsw_pci->pdev->dev, mem_item->size,
++			  mem_item->buf, mem_item->mapaddr);
+ }
+ 
+ static int mlxsw_pci_queue_group_init(struct mlxsw_pci *mlxsw_pci, char *mbox,
+@@ -1242,9 +1242,9 @@ static int mlxsw_pci_fw_area_init(struct mlxsw_pci *mlxsw_pci, char *mbox,
+ 		mem_item = &mlxsw_pci->fw_area.items[i];
+ 
+ 		mem_item->size = MLXSW_PCI_PAGE_SIZE;
+-		mem_item->buf = pci_alloc_consistent(mlxsw_pci->pdev,
+-						     mem_item->size,
+-						     &mem_item->mapaddr);
++		mem_item->buf = dma_alloc_coherent(&mlxsw_pci->pdev->dev,
++						   mem_item->size,
++						   &mem_item->mapaddr, GFP_KERNEL);
+ 		if (!mem_item->buf) {
+ 			err = -ENOMEM;
+ 			goto err_alloc;
+@@ -1273,8 +1273,8 @@ static int mlxsw_pci_fw_area_init(struct mlxsw_pci *mlxsw_pci, char *mbox,
+ 	for (i--; i >= 0; i--) {
+ 		mem_item = &mlxsw_pci->fw_area.items[i];
+ 
+-		pci_free_consistent(mlxsw_pci->pdev, mem_item->size,
+-				    mem_item->buf, mem_item->mapaddr);
++		dma_free_coherent(&mlxsw_pci->pdev->dev, mem_item->size,
++				  mem_item->buf, mem_item->mapaddr);
+ 	}
+ 	kfree(mlxsw_pci->fw_area.items);
+ 	return err;
+@@ -1290,8 +1290,8 @@ static void mlxsw_pci_fw_area_fini(struct mlxsw_pci *mlxsw_pci)
+ 	for (i = 0; i < mlxsw_pci->fw_area.count; i++) {
+ 		mem_item = &mlxsw_pci->fw_area.items[i];
+ 
+-		pci_free_consistent(mlxsw_pci->pdev, mem_item->size,
+-				    mem_item->buf, mem_item->mapaddr);
++		dma_free_coherent(&mlxsw_pci->pdev->dev, mem_item->size,
++				  mem_item->buf, mem_item->mapaddr);
+ 	}
+ 	kfree(mlxsw_pci->fw_area.items);
+ }
+@@ -1316,8 +1316,8 @@ static int mlxsw_pci_mbox_alloc(struct mlxsw_pci *mlxsw_pci,
+ 	int err = 0;
+ 
+ 	mbox->size = MLXSW_CMD_MBOX_SIZE;
+-	mbox->buf = pci_alloc_consistent(pdev, MLXSW_CMD_MBOX_SIZE,
+-					 &mbox->mapaddr);
++	mbox->buf = dma_alloc_coherent(&pdev->dev, MLXSW_CMD_MBOX_SIZE,
++				       &mbox->mapaddr, GFP_KERNEL);
+ 	if (!mbox->buf) {
+ 		dev_err(&pdev->dev, "Failed allocating memory for mailbox\n");
+ 		err = -ENOMEM;
+@@ -1331,8 +1331,8 @@ static void mlxsw_pci_mbox_free(struct mlxsw_pci *mlxsw_pci,
+ {
+ 	struct pci_dev *pdev = mlxsw_pci->pdev;
+ 
+-	pci_free_consistent(pdev, MLXSW_CMD_MBOX_SIZE, mbox->buf,
+-			    mbox->mapaddr);
++	dma_free_coherent(&pdev->dev, MLXSW_CMD_MBOX_SIZE, mbox->buf,
++			  mbox->mapaddr);
+ }
+ 
+ static int mlxsw_pci_sys_ready_wait(struct mlxsw_pci *mlxsw_pci,
+@@ -1817,17 +1817,17 @@ static int mlxsw_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 		goto err_pci_request_regions;
+ 	}
+ 
+-	err = pci_set_dma_mask(pdev, DMA_BIT_MASK(64));
++	err = dma_set_mask(&pdev->dev, DMA_BIT_MASK(64));
+ 	if (!err) {
+-		err = pci_set_consistent_dma_mask(pdev, DMA_BIT_MASK(64));
++		err = dma_set_coherent_mask(&pdev->dev, DMA_BIT_MASK(64));
+ 		if (err) {
+-			dev_err(&pdev->dev, "pci_set_consistent_dma_mask failed\n");
++			dev_err(&pdev->dev, "dma_set_coherent_mask failed\n");
+ 			goto err_pci_set_dma_mask;
+ 		}
+ 	} else {
+-		err = pci_set_dma_mask(pdev, DMA_BIT_MASK(32));
++		err = dma_set_mask(&pdev->dev, DMA_BIT_MASK(32));
+ 		if (err) {
+-			dev_err(&pdev->dev, "pci_set_dma_mask failed\n");
++			dev_err(&pdev->dev, "dma_set_mask failed\n");
+ 			goto err_pci_set_dma_mask;
+ 		}
+ 	}
 -- 
-2.29.2
+2.27.0
 
