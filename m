@@ -2,104 +2,75 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 126792C897A
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Nov 2020 17:29:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B52A22C8C96
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 Nov 2020 19:21:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728834AbgK3Q2K (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 30 Nov 2020 11:28:10 -0500
-Received: from m42-4.mailgun.net ([69.72.42.4]:32236 "EHLO m42-4.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728263AbgK3Q2K (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 30 Nov 2020 11:28:10 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1606753669; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=bHViouyBscQ2dCsxF/KylKF2/Zi6HjqkgDP3KxuO8ds=; b=jjAC7uqx+3ktNigIKgVna1WDK8bQcIMH/TaMJldHNKM93LxwqCILC30nlY0MZuzR7YLkOnSI
- oDyYWvs0Ouo+JvPIeHeYS9eBlpn6pAZZHLuPdew0RruwQxQvQ18qnQEzlw19gyWDsqm5ysPg
- 1rS0C6IAr8pRGAKSCNOggyBMbgs=
-X-Mailgun-Sending-Ip: 69.72.42.4
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n08.prod.us-west-2.postgun.com with SMTP id
- 5fc51d610b1f6587dd09d046 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 30 Nov 2020 16:27:13
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id B563FC433ED; Mon, 30 Nov 2020 16:27:13 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id F2CA1C43460;
-        Mon, 30 Nov 2020 16:27:10 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org F2CA1C43460
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     akolli@codeaurora.org
-Cc:     linux-wireless@vger.kernel.org, ath11k@lists.infradead.org
-Subject: Re: [PATCH v2] ath11k: fix rmmod failure if qmi sequence fails
-References: <1605076699-21924-1-git-send-email-akolli@codeaurora.org>
-        <87mtz5pm8a.fsf@codeaurora.org>
-        <013d9ee1c0f88863013f2672b6b2197a@codeaurora.org>
-Date:   Mon, 30 Nov 2020 18:27:08 +0200
-In-Reply-To: <013d9ee1c0f88863013f2672b6b2197a@codeaurora.org>
-        (akolli@codeaurora.org's message of "Mon, 30 Nov 2020 19:25:21 +0530")
-Message-ID: <878saikdyb.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        id S1729654AbgK3SUz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 30 Nov 2020 13:20:55 -0500
+Received: from smtp13.smtpout.orange.fr ([80.12.242.135]:27092 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1727182AbgK3SUz (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 30 Nov 2020 13:20:55 -0500
+Received: from [192.168.42.210] ([81.185.173.102])
+        by mwinf5d73 with ME
+        id yiK82300D2CvH0103iK8vB; Mon, 30 Nov 2020 19:19:10 +0100
+X-ME-Helo: [192.168.42.210]
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Mon, 30 Nov 2020 19:19:10 +0100
+X-ME-IP: 81.185.173.102
+Subject: Re: [PATCH] mlxsw: switch from 'pci_' to 'dma_' API
+To:     Heiner Kallweit <hkallweit1@gmail.com>, jiri@nvidia.com,
+        idosch@nvidia.com, davem@davemloft.net, kuba@kernel.org
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Newsgroups: gmane.linux.kernel.janitors,gmane.linux.kernel.wireless.general,gmane.linux.network,gmane.linux.kernel
+References: <20201129211733.2913-1-christophe.jaillet@wanadoo.fr>
+ <a4fde87f-ea73-8ba4-e6cd-689f0f649eb4@gmail.com>
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Message-ID: <35052891-4d32-19f0-e991-2aad009917e9@wanadoo.fr>
+Date:   Mon, 30 Nov 2020 19:19:09 +0100
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.5.0
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <a4fde87f-ea73-8ba4-e6cd-689f0f649eb4@gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-akolli@codeaurora.org writes:
+Le 29/11/2020 à 22:46, Heiner Kallweit a écrit :
+> Am 29.11.2020 um 22:17 schrieb Christophe JAILLET:
+>> @@ -1817,17 +1817,17 @@ static int mlxsw_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+>>   		goto err_pci_request_regions;
+>>   	}
+>>   
+>> -	err = pci_set_dma_mask(pdev, DMA_BIT_MASK(64));
+>> +	err = dma_set_mask(&pdev->dev, DMA_BIT_MASK(64));
+> 
+> Using dma_set_mask_and_coherent() would be better here.
+> 
+>>   	if (!err) {
+>> -		err = pci_set_consistent_dma_mask(pdev, DMA_BIT_MASK(64));
+>> +		err = dma_set_coherent_mask(&pdev->dev, DMA_BIT_MASK(64));
+>>   		if (err) {
+> 
+> This check isn't needed, see comment at definition of
+> dma_set_mask_and_coherent().
+> 
 
-> On 2020-11-25 19:33, Kalle Valo wrote:
->> Anilkumar Kolli <akolli@codeaurora.org> writes:
->>
->>> QMI sequence fails if caldata file is not available.
->>> It is observed that 'rmmod ath11k' fails if qmi message fails.
->>> With this patch rmmod/insmod is working.
->>>
->>> Logs:
->>> Direct firmware load for IPQ8074/caldata.bin failed with error -2
->>> Falling back to user helper
->>> qmi failed to load CAL: IPQ8074/caldata.bin
->>> qmi failed to load board data file:-11
->>>
->>> Tested-on: IPQ8074 hw2.0 AHB
->>> WLAN.HK.2.4.0.1-00009-QCAHKSWPL_SILICONZ-1
->>>
->>> Signed-off-by: Anilkumar Kolli <akolli@codeaurora.org>
->>
->> With this patch reloading ath11k (which has worked fine before) crashes
->> the kernel on QCA6390 hw2.0:
->>
->> Nov 25 16:00:52 nuc1 [  393.188277] BUG: unable to handle page fault
->> for address: ffffffffc05b8e38
->> Nov 25 16:00:52 nuc1 [  393.188300] #PF: supervisor read access in
->> kernel mode
->> Nov 25 16:00:52 nuc1 [  393.188312] #PF: error_code(0x0000) - 
->> not-present page
->
-> I will test this in QCA6390 and update.
-> Which branch should I use for testing. master or
-> ath11k-qca6390-bringup ?
+Hi,
 
-Please use master branch.
+Correct, but I didn't want to mix several things in the same commit.
+This one is dedicated to automatically generated changes done with 
+coccinelle.
 
-ath11k-qca6390-bringup is just a temporary branch for collecting all
-important QCA6390 patches in one place.
+I plan to have another set of such clean-ups once "wrappers in 
+include/linux/pci-dma-compat.h are gone"
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+However, if it is prefered to have only one patch, I can resubmit.
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+CJ
+
