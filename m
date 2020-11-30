@@ -2,202 +2,121 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 668202C805C
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Nov 2020 09:55:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 928392C81D4
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 Nov 2020 11:12:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727767AbgK3Iyp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 30 Nov 2020 03:54:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51750 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726390AbgK3Iyp (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 30 Nov 2020 03:54:45 -0500
-Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com [IPv6:2a00:1450:4864:20::343])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24F5BC0617A7
-        for <linux-wireless@vger.kernel.org>; Mon, 30 Nov 2020 00:53:58 -0800 (PST)
-Received: by mail-wm1-x343.google.com with SMTP id 3so19918384wmg.4
-        for <linux-wireless@vger.kernel.org>; Mon, 30 Nov 2020 00:53:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=FRggsmJEJBZrm6qC3AK/y0P+qJy2/Ul08/OGbBmv0AM=;
-        b=FYeBMEmssZ5UHXSFDpPVop6jg0svPPuiKlDGY6NcN3unsoPFwerGs4wBWvOWmBf2LH
-         SvGNp3uGt7sDCf9Qehe2rBjegjEfEG0voxHq4TL48utsbQIn1T5vkOPnb9ojYxFQGYZL
-         jPpJr6TSmxn0wYYQTQiMwqP8fl3uKwAFiRvSjb7e9FW5XUd5GcbWZ9HvvTkRZ/9tjDIL
-         +M6csFZ64VrrhPX86p74qLTJ/TAFugOUq6CcxSrumlnY6X5QcTc0li6UP9pBlQphwyEN
-         BUYa7lDmQff5J5iXTl2uO+DHO/NKBZEO8rSA2z4cXth4pz5sRe+9LteRh2o8xqOphJIl
-         uZJA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=FRggsmJEJBZrm6qC3AK/y0P+qJy2/Ul08/OGbBmv0AM=;
-        b=QCn1LXiSrYhrKqMXxtdpGNUpFQ8Rn/bdPOCQK4xXD04RE3ZO42mgmvCQ7sV2k2pvks
-         HW2ZHzitmvoLoZ9UmvLousNVcBQsaiGJm1bi4UrGPDgPRUCy8th9OiW61WD1V/xO2zXp
-         8fs4zkFZzF0a31CIvGsK8aPO1L0caOUBIc49AV3sWwmnDD4X4dmWWqh2p/NRgIcntr44
-         7IwDLu5Ou7ujqEYx9ejklNAsf6PEQ8MXgxPFDS83VdI1/RZSLnzTEbd1NwBk06tAYZy1
-         K8AA8Lr/5JeIkujq3BUo/ZfxhcW2oLUU+AzXmdhfw76/9eLGWpsVwAujOExH602o8pNC
-         It0w==
-X-Gm-Message-State: AOAM531JjFPIGepTNJqF9A6/UB/Aq804Nv/lm+rJyKd8RYz2UFcpDw81
-        vY74Z6S/xKTDyalPJJuhIeE0jA==
-X-Google-Smtp-Source: ABdhPJz+rgB4g/X5ZhcmmUS1RWJXefYKmauDXBpoHuszC+uYgFdGpS9GRw6ux1TE/Sykl8FRc5PNXw==
-X-Received: by 2002:a1c:7f81:: with SMTP id a123mr22302995wmd.6.1606726436830;
-        Mon, 30 Nov 2020 00:53:56 -0800 (PST)
-Received: from dell ([91.110.221.235])
-        by smtp.gmail.com with ESMTPSA id g78sm3347493wme.33.2020.11.30.00.53.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Nov 2020 00:53:56 -0800 (PST)
-Date:   Mon, 30 Nov 2020 08:53:54 +0000
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Pkshih <pkshih@realtek.com>
-Cc:     Tony Chuang <yhchuang@realtek.com>,
-        "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "kuba@kernel.org" <kuba@kernel.org>
-Subject: Re: [PATCH 17/17] realtek: rtw88: pci: Add prototypes for .probe,
- .remove and .shutdown
-Message-ID: <20201130085354.GA4801@dell>
-References: <20201126133152.3211309-1-lee.jones@linaro.org>
- <20201126133152.3211309-18-lee.jones@linaro.org>
- <1606448026.14483.4.camel@realtek.com>
- <20201127073816.GF2455276@dell>
- <1606465839.26661.2.camel@realtek.com>
- <20201127085705.GL2455276@dell>
- <0f8e7ac5a30a4f63a0a6aa923fa6d100@realtek.com>
+        id S1728349AbgK3KKk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 30 Nov 2020 05:10:40 -0500
+Received: from m42-4.mailgun.net ([69.72.42.4]:39158 "EHLO m42-4.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726828AbgK3KKk (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 30 Nov 2020 05:10:40 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1606731016; h=Message-ID: References: In-Reply-To: Subject:
+ Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Sender; bh=f8diyhYWMT8oV24q8V9jTUA4JjCXjEO832RX6yX0Se4=;
+ b=MsJCt3JyX1E7wGU/idkfkKw/roGXKWVLVJeqwLKBDbMHTyoZm89lrVeWb5fGT+ypqJhrA/dW
+ hfJbaUaXvQmBYBu2w9GX8p1bOlDvEDmkyxASXj29Y1ukEOxfNgw4ulPe7MtXk2kTIG+e3lQg
+ ZviVawJXAV5ahqjAX5QpSkTCP/c=
+X-Mailgun-Sending-Ip: 69.72.42.4
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n10.prod.us-west-2.postgun.com with SMTP id
+ 5fc4c502a5a29b56a1260893 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 30 Nov 2020 10:10:10
+ GMT
+Sender: cjhuang=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id C6E3FC43461; Mon, 30 Nov 2020 10:10:10 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: cjhuang)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 332EDC433ED;
+        Mon, 30 Nov 2020 10:10:10 +0000 (UTC)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <0f8e7ac5a30a4f63a0a6aa923fa6d100@realtek.com>
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Mon, 30 Nov 2020 18:10:10 +0800
+From:   Carl Huang <cjhuang@codeaurora.org>
+To:     Brian Norris <briannorris@chromium.org>
+Cc:     ath10k <ath10k@lists.infradead.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Doug Anderson <dianders@chromium.org>,
+        Abhishek Kumar <kuabhs@google.com>
+Subject: Re: [PATCH v2 1/3] nl80211: add common API to configure SAR power
+ limitations.
+In-Reply-To: <CA+ASDXMRPRPD0XFJeHTRv3Bc13VFehkyDoYHQfaA0cP-STDOLg@mail.gmail.com>
+References: <20201120085312.4355-1-cjhuang@codeaurora.org>
+ <20201120085312.4355-2-cjhuang@codeaurora.org>
+ <CA+ASDXMRPRPD0XFJeHTRv3Bc13VFehkyDoYHQfaA0cP-STDOLg@mail.gmail.com>
+Message-ID: <8f0121e9996bad2266a928279e7eb26a@codeaurora.org>
+X-Sender: cjhuang@codeaurora.org
+User-Agent: Roundcube Webmail/1.3.9
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 30 Nov 2020, Pkshih wrote:
-
+On 2020-11-21 10:42, Brian Norris wrote:
+> On Fri, Nov 20, 2020 at 12:53 AM Carl Huang <cjhuang@codeaurora.org> 
+> wrote:
+>> 
+>> NL80211_CMD_SET_SAR_SPECS is added to configure SAR from
+>> user space. NL80211_ATTR_SAR_SPEC is used to pass the SAR
+>> power specification when used with NL80211_CMD_SET_SAR_SPECS.
+>> 
+>> Wireless driver needs to register SAR type, supported frequency
+>> ranges to wiphy, so user space can query it. The index in
+>> frequency range is used to specify which sub band the power
+>> limitation applies to. The SAR type is for compatibility, so later
+>> other SAR mechanism can be implemented without breaking the user
+>> space SAR applications.
+>> 
+>> Normal process is user space quries the SAR capability, and
+>> gets the index of supported frequency ranges and associates the
+>> power limitation with this index and sends to kernel.
+>> 
+>> Here is an example of message send to kernel:
+>> 8c 00 00 00 08 00 01 00 00 00 00 00 38 00 2b 81
+>> 08 00 01 00 00 00 00 00 2c 00 02 80 14 00 00 80
+>> 08 00 02 00 00 00 00 00 08 00 01 00 38 00 00 00
+>> 14 00 01 80 08 00 02 00 01 00 00 00 08 00 01 00
+>> 48 00 00 00
+>> 
+>> NL80211_CMD_SET_SAR_SPECS:  0x8c
+>> NL80211_ATTR_WIPHY:     0x01(phy idx is 0)
+>> NL80211_ATTR_SAR_SPEC:  0x812b (NLA_NESTED)
+>> NL80211_SAR_ATTR_TYPE:  0x00 (NL80211_SAR_TYPE_POWER)
+>> NL80211_SAR_ATTR_SPECS: 0x8002 (NLA_NESTED)
+>> freq range 0 power: 0x38 in 0.25dbm unit (14dbm)
+>> freq range 1 power: 0x48 in 0.25dbm unit (18dbm)
+>> 
+>> Signed-off-by: Carl Huang <cjhuang@codeaurora.org>
 > 
+> I think the API is reasonably clear and usable. I'm a little skeptical
+> that the complexity related to indexes is absolutely necessary [1],
+> but at least you make clear what should happen in the case of missing
+> indexes (treated as "max"). But you've addressed my concerns, I think:
 > 
-> > -----Original Message-----
-> > From: Lee Jones [mailto:lee.jones@linaro.org]
-> > Sent: Friday, November 27, 2020 4:57 PM
-> > To: Pkshih
-> > Cc: Tony Chuang; kvalo@codeaurora.org; linux-kernel@vger.kernel.org; linux-wireless@vger.kernel.org;
-> > davem@davemloft.net; netdev@vger.kernel.org; kuba@kernel.org
-> > Subject: Re: [PATCH 17/17] realtek: rtw88: pci: Add prototypes for .probe, .remove and .shutdown
-> > 
-> > On Fri, 27 Nov 2020, Pkshih wrote:
-> > 
-> > > On Fri, 2020-11-27 at 07:38 +0000, Lee Jones wrote:
-> > > > On Fri, 27 Nov 2020, Pkshih wrote:
-> > > >
-> > > > >
-> > > > > The subject prefix doesn't need 'realtek:'; use 'rtw88:'.
-> > > > >
-> > > > > On Thu, 2020-11-26 at 13:31 +0000, Lee Jones wrote:
-> > > > > > Also strip out other duplicates from driver specific headers.
-> > > > > >
-> > > > > > Ensure 'main.h' is explicitly included in 'pci.h' since the latter
-> > > > > > uses some defines from the former.  It avoids issues like:
-> > > > > >
-> > > > > >  from drivers/net/wireless/realtek/rtw88/rtw8822be.c:5:
-> > > > > >  drivers/net/wireless/realtek/rtw88/pci.h:209:28: error:
-> > > > > > ‘RTK_MAX_TX_QUEUE_NUM’ undeclared here (not in a function); did you mean
-> > > > > > ‘RTK_MAX_RX_DESC_NUM’?
-> > > > > >  209 | DECLARE_BITMAP(tx_queued, RTK_MAX_TX_QUEUE_NUM);
-> > > > > >  | ^~~~~~~~~~~~~~~~~~~~
-> > > > > >
-> > > > > > Fixes the following W=1 kernel build warning(s):
-> > > > > >
-> > > > > >  drivers/net/wireless/realtek/rtw88/pci.c:1488:5: warning: no previous
-> > > > > > prototype for ‘rtw_pci_probe’ [-Wmissing-prototypes]
-> > > > > >  1488 | int rtw_pci_probe(struct pci_dev *pdev,
-> > > > > >  | ^~~~~~~~~~~~~
-> > > > > >  drivers/net/wireless/realtek/rtw88/pci.c:1568:6: warning: no previous
-> > > > > > prototype for ‘rtw_pci_remove’ [-Wmissing-prototypes]
-> > > > > >  1568 | void rtw_pci_remove(struct pci_dev *pdev)
-> > > > > >  | ^~~~~~~~~~~~~~
-> > > > > >  drivers/net/wireless/realtek/rtw88/pci.c:1590:6: warning: no previous
-> > > > > > prototype for ‘rtw_pci_shutdown’ [-Wmissing-prototypes]
-> > > > > >  1590 | void rtw_pci_shutdown(struct pci_dev *pdev)
-> > > > > >  | ^~~~~~~~~~~~~~~~
-> > > > > >
-> > > > > > Cc: Yan-Hsuan Chuang <yhchuang@realtek.com>
-> > > > > > Cc: Kalle Valo <kvalo@codeaurora.org>
-> > > > > > Cc: "David S. Miller" <davem@davemloft.net>
-> > > > > > Cc: Jakub Kicinski <kuba@kernel.org>
-> > > > > > Cc: linux-wireless@vger.kernel.org
-> > > > > > Cc: netdev@vger.kernel.org
-> > > > > > Signed-off-by: Lee Jones <lee.jones@linaro.org>
-> > > > > > ---
-> > > > > >  drivers/net/wireless/realtek/rtw88/pci.h       | 8 ++++++++
-> > > > > >  drivers/net/wireless/realtek/rtw88/rtw8723de.c | 1 +
-> > > > > >  drivers/net/wireless/realtek/rtw88/rtw8723de.h | 4 ----
-> > > > > >  drivers/net/wireless/realtek/rtw88/rtw8821ce.c | 1 +
-> > > > > >  drivers/net/wireless/realtek/rtw88/rtw8821ce.h | 4 ----
-> > > > > >  drivers/net/wireless/realtek/rtw88/rtw8822be.c | 1 +
-> > > > > >  drivers/net/wireless/realtek/rtw88/rtw8822be.h | 4 ----
-> > > > > >  drivers/net/wireless/realtek/rtw88/rtw8822ce.c | 1 +
-> > > > > >  drivers/net/wireless/realtek/rtw88/rtw8822ce.h | 4 ----
-> > > > > >  9 files changed, 12 insertions(+), 16 deletions(-)
-> > > > > >
-> > > > > > diff --git a/drivers/net/wireless/realtek/rtw88/pci.h
-> > > > > > b/drivers/net/wireless/realtek/rtw88/pci.h
-> > > > > > index ca17aa9cf7dc7..cda56919a5f0f 100644
-> > > > > > --- a/drivers/net/wireless/realtek/rtw88/pci.h
-> > > > > > +++ b/drivers/net/wireless/realtek/rtw88/pci.h
-> > > > > > @@ -5,6 +5,8 @@
-> > > > > >  #ifndef __RTK_PCI_H_
-> > > > > >  #define __RTK_PCI_H_
-> > > > > >
-> > > > > > +#include "main.h"
-> > > > > > +
-> > > > >
-> > > > > Please #include "main.h" ahead of "pci.h" in each of rtw8xxxxe.c.
-> > > >
-> > > > You mean instead of in pci.h?
-> > > >
-> > > > Surely that's a hack.
-> > > >
-> > >
-> > > I mean don't include main.h in pci.h, but include both of them in each
-> > > of rtw8xxxxe.c.
-> > >
-> > > +#include "main.h"
-> > > +#include "pci.h"
-> > 
-> > Yes, that's what I thought you meant.  I think that's a hack.
-> > 
-> > Source files shouldn't rely on the ordering of include files to
-> > resolve dependencies.  In fact, a lot of subsystems require includes to
-> > be in alphabetical order.
-> > 
-> > If a source or header file references a resource from a specific
-> > header file (for instance here pci.h uses defines from main.h) then it
-> > should explicitly include it.
-> > 
-> > Can you tell me the technical reason as to why these drivers are
-> > handled differently please?
-> > 
+> Reviewed-by: Brian Norris <briannorris@chromium.org>
 > 
-> No technical reason, but that's our coding convention that needs some
-> changes now.
-> Could you point out where kernel or subsystem describes the rules?
-> Or, point out the subsystem you mentioned above.
-> Then, I can study and follow the rules for further development.
-
-I don't think any subsystem explicitly lists this as a rule.  At least
-not to my knowledge.  However you can see the many patches enforcing
-the rule by doing something like:
-
- $ git log -p --all-match --grep=include --grep=alphabetical
-
--- 
-Lee Jones [李琼斯]
-Senior Technical Lead - Developer Services
-Linaro.org │ Open source software for Arm SoCs
-Follow Linaro: Facebook | Twitter | Blog
+> I haven't done the most thorough review on the implementation pieces
+> (and ath10k), but I at least wanted to put my thoughts out there.
+> 
+> Thanks,
+> Brian
+> 
+> [1] By the way, you aren't checking for duplicates; so users could
+> pass the same index many times, and it's not clear from the API
+> definition what should happen. It seems the current implementation is
+> that you'll just use the last value provided.
+Thanks for the comments.
+It's right the last value is used.
+I can describe it more clearly if V3 is needed.
