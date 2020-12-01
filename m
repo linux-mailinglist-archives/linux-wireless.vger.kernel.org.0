@@ -2,129 +2,63 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BB43A2CADBB
-	for <lists+linux-wireless@lfdr.de>; Tue,  1 Dec 2020 21:51:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D022B2CADF3
+	for <lists+linux-wireless@lfdr.de>; Tue,  1 Dec 2020 22:01:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728474AbgLAUt2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 1 Dec 2020 15:49:28 -0500
-Received: from a2.mail.mailgun.net ([198.61.254.61]:56583 "EHLO
-        a2.mail.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727906AbgLAUt0 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 1 Dec 2020 15:49:26 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1606855745; h=Content-Transfer-Encoding: Content-Type:
- In-Reply-To: MIME-Version: Date: Message-ID: From: References: Cc: To:
- Subject: Sender; bh=Yo42yaq/01Dx0rVkGb727su6dur/zrnh3T7p2hY8vMQ=; b=jAXiL/7VeHoHor5AYsMVhP5ApsY2UtPRlV3RPDn4ePC5gToB7a7ZG481Q/plKcshNQJYITL0
- Nke1wIX4TK3juyX8LuYcdqXE/oF7c03Mwh8tC9lSuhkWAXf4AF+MzFY8DxXAR+QhM9AKCvdS
- bGXfKPwQ0atUf6AdHs6mQVNimMY=
-X-Mailgun-Sending-Ip: 198.61.254.61
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n08.prod.us-east-1.postgun.com with SMTP id
- 5fc6ac28f4482b01c4fbdf7f (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 01 Dec 2020 20:48:40
- GMT
-Sender: jhugo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 3DC4CC43462; Tue,  1 Dec 2020 20:48:39 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        NICE_REPLY_A,SPF_FAIL autolearn=no autolearn_force=no version=3.4.0
-Received: from [10.226.59.216] (i-global254.qualcomm.com [199.106.103.254])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: jhugo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 91A89C433ED;
-        Tue,  1 Dec 2020 20:48:37 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 91A89C433ED
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=jhugo@codeaurora.org
-Subject: Re: [PATCH v13 0/4] userspace MHI client interface driver
-To:     Jakub Kicinski <kuba@kernel.org>
-Cc:     Hemant Kumar <hemantk@codeaurora.org>,
-        manivannan.sadhasivam@linaro.org, gregkh@linuxfoundation.org,
-        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        bbhatt@codeaurora.org, loic.poulain@linaro.org,
-        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        Kalle Valo <kvalo@codeaurora.org>
-References: <1606533966-22821-1-git-send-email-hemantk@codeaurora.org>
- <20201201112901.7f13e26c@kicinski-fedora-pc1c0hjn.DHCP.thefacebook.com>
- <c6359962-a378-ed03-0fab-c2f6c8a1b8eb@codeaurora.org>
- <20201201120302.474d4c9b@kicinski-fedora-pc1c0hjn.DHCP.thefacebook.com>
-From:   Jeffrey Hugo <jhugo@codeaurora.org>
-Message-ID: <817a4346-efb7-cfe5-0678-d1b60d06627d@codeaurora.org>
-Date:   Tue, 1 Dec 2020 13:48:36 -0700
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.4.0
+        id S1729933AbgLAVAr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 1 Dec 2020 16:00:47 -0500
+Received: from mail.kernel.org ([198.145.29.99]:41312 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725971AbgLAVAr (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 1 Dec 2020 16:00:47 -0500
+Content-Type: text/plain; charset="utf-8"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1606856406;
+        bh=JCNmLBukEQuTPP2zu3Hc10F1Mx2+RY0jq117k3+PGzo=;
+        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+        b=iIr8Ka4JWMJ2foudr5Xb+S1vO+O8RJdL9VRKXUO0y9PexDqUze9mThYug63l6X4V3
+         YqnPyT5+rL4acagaIbG9GMDtZip+oAVP1N5/n6RbG0hE6DHxb9kH4yVByJVebWLTbu
+         Z4/jeCrAqyD7R+UIt3LjKATCPnKNDuEeqqTOF1Go=
 MIME-Version: 1.0
-In-Reply-To: <20201201120302.474d4c9b@kicinski-fedora-pc1c0hjn.DHCP.thefacebook.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next v2] net: switch to storing KCOV handle directly in
+ sk_buff
+From:   patchwork-bot+netdevbpf@kernel.org
+Message-Id: <160685640656.20133.13714799531747994094.git-patchwork-notify@kernel.org>
+Date:   Tue, 01 Dec 2020 21:00:06 +0000
+References: <20201125224840.2014773-1-elver@google.com>
+In-Reply-To: <20201125224840.2014773-1-elver@google.com>
+To:     Marco Elver <elver@google.com>
+Cc:     kuba@kernel.org, davem@davemloft.net, johannes@sipsolutions.net,
+        a.nogikh@gmail.com, andreyknvl@google.com, dvyukov@google.com,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        linux-wireless@vger.kernel.org, idosch@idosch.org, fw@strlen.de,
+        willemb@google.com
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 12/1/2020 1:03 PM, Jakub Kicinski wrote:
-> On Tue, 1 Dec 2020 12:40:50 -0700 Jeffrey Hugo wrote:
->> On 12/1/2020 12:29 PM, Jakub Kicinski wrote:
->>> On Fri, 27 Nov 2020 19:26:02 -0800 Hemant Kumar wrote:
->>>> This patch series adds support for UCI driver. UCI driver enables userspace
->>>> clients to communicate to external MHI devices like modem and WLAN. UCI driver
->>>> probe creates standard character device file nodes for userspace clients to
->>>> perform open, read, write, poll and release file operations. These file
->>>> operations call MHI core layer APIs to perform data transfer using MHI bus
->>>> to communicate with MHI device. Patch is tested using arm64 based platform.
->>>
->>> Wait, I thought this was for modems.
->>>
->>> Why do WLAN devices need to communicate with user space?
->>>    
->>
->> Why does it matter what type of device it is?  Are modems somehow unique
->> in that they are the only type of device that userspace is allowed to
->> interact with?
-> 
-> Yes modems are traditionally highly weird and require some serial
-> device dance I don't even know about.
-> 
-> We have proper interfaces in Linux for configuring WiFi which work
-> across vendors. Having char device access to WiFi would be a step
-> back.
+Hello:
 
-So a WLAN device is only ever allowed to do Wi-Fi?  It can't also have 
-GPS functionality for example?
+This patch was applied to netdev/net-next.git (refs/heads/master):
 
+On Wed, 25 Nov 2020 23:48:40 +0100 you wrote:
+> It turns out that usage of skb extensions can cause memory leaks. Ido
+> Schimmel reported: "[...] there are instances that blindly overwrite
+> 'skb->extensions' by invoking skb_copy_header() after __alloc_skb()."
 > 
->> However, I'll bite.  Once such usecase would be QMI.  QMI is a generic
->> messaging protocol, and is not strictly limited to the unique operations
->> of a modem.
->>
->> Another usecase would be Sahara - a custom file transfer protocol used
->> for uploading firmware images, and downloading crashdumps.
+> Therefore, give up on using skb extensions for KCOV handle, and instead
+> directly store kcov_handle in sk_buff.
 > 
-> Thanks, I was asking for use cases, not which proprietary vendor
-> protocol you can implement over it.
-> 
-> None of the use cases you mention here should require a direct FW -
-> user space backdoor for WLAN.
+> [...]
 
-Uploading runtime firmware, with variations based on the runtime mode. 
-Flashing the onboard flash based on cryptographic keys.  Accessing 
-configuration data.  Accessing device logs.  Configuring device logs. 
-Synchronizing the device time reference to Linux local or remote time 
-sources.  Enabling debugging/performance hardware.  Getting software 
-diagnostic events.  Configuring redundancy hardware per workload. 
-Uploading new cryptographic keys.  Invalidating cryptographic keys. 
-Uploading factory test data and running factory tests.
+Here is the summary with links:
+  - [net-next,v2] net: switch to storing KCOV handle directly in sk_buff
+    https://git.kernel.org/netdev/net-next/c/fa69ee5aa48b
 
-Need more?
+You are awesome, thank you!
+--
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
--- 
-Jeffrey Hugo
-Qualcomm Technologies, Inc. is a member of the
-Code Aurora Forum, a Linux Foundation Collaborative Project.
+
