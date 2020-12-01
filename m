@@ -2,101 +2,99 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 548BC2CAC7B
-	for <lists+linux-wireless@lfdr.de>; Tue,  1 Dec 2020 20:37:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EDD832CAC9A
+	for <lists+linux-wireless@lfdr.de>; Tue,  1 Dec 2020 20:42:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387432AbgLATgl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 1 Dec 2020 14:36:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37442 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727977AbgLATgk (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 1 Dec 2020 14:36:40 -0500
-Received: from mail-oo1-xc43.google.com (mail-oo1-xc43.google.com [IPv6:2607:f8b0:4864:20::c43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96364C0613D6
-        for <linux-wireless@vger.kernel.org>; Tue,  1 Dec 2020 11:36:00 -0800 (PST)
-Received: by mail-oo1-xc43.google.com with SMTP id y3so691494ooq.2
-        for <linux-wireless@vger.kernel.org>; Tue, 01 Dec 2020 11:36:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=UKsu26Ei1Ztq2Et7FDKCZoO2+MwWkWzcYFWc7u1thjs=;
-        b=TzYx/y8d9otKKUrRpEWdlv2NN/GJsX5LiAF2My919rOqrTKIQ0NpHOaJmGOsaXfwxr
-         21QPFORVReSfhLYJ34UjXDDyTNwJygJCN6vNQ/oQ3fzlnsFWoocu/opUKbqFKh4qBx+5
-         1wFcVhkMNCgz5KkFgH//GRe4faOH3Gw/ITBQo=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=UKsu26Ei1Ztq2Et7FDKCZoO2+MwWkWzcYFWc7u1thjs=;
-        b=FPLE1bQH/72zBQ7e+LujUVHu362mleqJZE1R3sWkXQiKUCIlLQAcb6JNv1+biT8ZLi
-         VFQeHp2DYr3q1Q4Yods1dYzGKr/AFkfg073blmgZvhAmY0z3yb7zd/NfqdaFyn6WbzGR
-         98EipJ4mTSNgCnhykS2VsK78soOAPZ4K+7824WbwynmOSdnmYfSZ1sZHTdCvdxt2VTF+
-         j/StdCI5bgWRb3e/j94cKk2mbk4+EvNxWJ6ZoQu8KyWIdRLfSHnF/ZkUs5dY1JOh3ktZ
-         BzZiXUj4QjG9BfGTL4qMYP2TlUeS/22AYj+Q2H2HWQZnc8frbN3ofo1vBcCru0lZ86Tb
-         GURg==
-X-Gm-Message-State: AOAM531NdKK9zbBIdWA5BKn4U6D8NRYhck0xfAaYhs76DDBJNAIGza4J
-        LxZTMaDVubYxDbqUHklpTy0kPhtcCojPUg==
-X-Google-Smtp-Source: ABdhPJxTc6kDhcgIUZR/i90teHQ2ZgOvY4gmCngd6xj60qeeBcxvK+kY6GQxbTKG5CaS8UomvtIvyA==
-X-Received: by 2002:a4a:9563:: with SMTP id n32mr2997289ooi.53.1606851359156;
-        Tue, 01 Dec 2020 11:35:59 -0800 (PST)
-Received: from mail-oo1-f46.google.com (mail-oo1-f46.google.com. [209.85.161.46])
-        by smtp.gmail.com with ESMTPSA id l1sm157548ooi.48.2020.12.01.11.35.57
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 01 Dec 2020 11:35:57 -0800 (PST)
-Received: by mail-oo1-f46.google.com with SMTP id i7so687982oot.8
-        for <linux-wireless@vger.kernel.org>; Tue, 01 Dec 2020 11:35:57 -0800 (PST)
-X-Received: by 2002:a4a:c884:: with SMTP id t4mr3058694ooq.52.1606851356706;
- Tue, 01 Dec 2020 11:35:56 -0800 (PST)
+        id S2389256AbgLATl4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 1 Dec 2020 14:41:56 -0500
+Received: from m42-5.mailgun.net ([69.72.42.5]:45791 "EHLO m42-5.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726213AbgLATlz (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 1 Dec 2020 14:41:55 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1606851690; h=Content-Transfer-Encoding: Content-Type:
+ In-Reply-To: MIME-Version: Date: Message-ID: From: References: Cc: To:
+ Subject: Sender; bh=u0ASTfvQ8ODEFBCvRqnSAJ/D/bJXHlTvFNQagCu11Rw=; b=pynKYabwQyCMCsjVLQB9N5wb8X/X5HkmjNMV7fLkpA3IUZIQTmV1/vppx+h64GrM0uK9j0pW
+ gAZAkVgMiduneMU4dkGC4ccn0n1VtP0lNxVptuC9qskx+Q3rE1e+cKtuDKJv9EH8EeNoNiQ1
+ yOTOdJgKNqBqiJcw3jHdQkNMtIA=
+X-Mailgun-Sending-Ip: 69.72.42.5
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n09.prod.us-east-1.postgun.com with SMTP id
+ 5fc69c46f4482b01c4cc0b35 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 01 Dec 2020 19:40:54
+ GMT
+Sender: jhugo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 49BF6C433C6; Tue,  1 Dec 2020 19:40:53 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        NICE_REPLY_A,SPF_FAIL autolearn=no autolearn_force=no version=3.4.0
+Received: from [10.226.59.216] (i-global254.qualcomm.com [199.106.103.254])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: jhugo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id AFD3AC433ED;
+        Tue,  1 Dec 2020 19:40:51 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org AFD3AC433ED
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=jhugo@codeaurora.org
+Subject: Re: [PATCH v13 0/4] userspace MHI client interface driver
+To:     Jakub Kicinski <kuba@kernel.org>,
+        Hemant Kumar <hemantk@codeaurora.org>
+Cc:     manivannan.sadhasivam@linaro.org, gregkh@linuxfoundation.org,
+        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        bbhatt@codeaurora.org, loic.poulain@linaro.org,
+        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+        Kalle Valo <kvalo@codeaurora.org>
+References: <1606533966-22821-1-git-send-email-hemantk@codeaurora.org>
+ <20201201112901.7f13e26c@kicinski-fedora-pc1c0hjn.DHCP.thefacebook.com>
+From:   Jeffrey Hugo <jhugo@codeaurora.org>
+Message-ID: <c6359962-a378-ed03-0fab-c2f6c8a1b8eb@codeaurora.org>
+Date:   Tue, 1 Dec 2020 12:40:50 -0700
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.4.0
 MIME-Version: 1.0
-References: <20201126171553.2097-1-youghand@codeaurora.org>
-In-Reply-To: <20201126171553.2097-1-youghand@codeaurora.org>
-From:   Brian Norris <briannorris@chromium.org>
-Date:   Tue, 1 Dec 2020 11:35:44 -0800
-X-Gmail-Original-Message-ID: <CA+ASDXOvnfETrKs2ZbayZsRkUEpUbaeMGRkZNRCXa=M28HHE-w@mail.gmail.com>
-Message-ID: <CA+ASDXOvnfETrKs2ZbayZsRkUEpUbaeMGRkZNRCXa=M28HHE-w@mail.gmail.com>
-Subject: Re: [PATCH v2] ath10k: skip the wait for completion to recovery in
- shutdown path
-To:     Youghandhar Chintala <youghand@codeaurora.org>
-Cc:     ath10k <ath10k@lists.infradead.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Linux Kernel <linux-kernel@vger.kernel.org>,
-        Rakesh Pillai <pillair@codeaurora.org>,
-        Doug Anderson <dianders@chromium.org>, kuabhs@chromium.org
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20201201112901.7f13e26c@kicinski-fedora-pc1c0hjn.DHCP.thefacebook.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Nov 26, 2020 at 9:16 AM Youghandhar Chintala
-<youghand@codeaurora.org> wrote:
-> --- a/drivers/net/wireless/ath/ath10k/snoc.c
-> +++ b/drivers/net/wireless/ath/ath10k/snoc.c
-> @@ -1790,9 +1790,6 @@ static int ath10k_snoc_remove(struct platform_device *pdev)
->
->         reinit_completion(&ar->driver_recovery);
->
-> -       if (test_bit(ATH10K_SNOC_FLAG_RECOVERY, &ar_snoc->flags))
-> -               wait_for_completion_timeout(&ar->driver_recovery, 3 * HZ);
+On 12/1/2020 12:29 PM, Jakub Kicinski wrote:
+> On Fri, 27 Nov 2020 19:26:02 -0800 Hemant Kumar wrote:
+>> This patch series adds support for UCI driver. UCI driver enables userspace
+>> clients to communicate to external MHI devices like modem and WLAN. UCI driver
+>> probe creates standard character device file nodes for userspace clients to
+>> perform open, read, write, poll and release file operations. These file
+>> operations call MHI core layer APIs to perform data transfer using MHI bus
+>> to communicate with MHI device. Patch is tested using arm64 based platform.
+> 
+> Wait, I thought this was for modems.
+> 
+> Why do WLAN devices need to communicate with user space?
+> 
 
-Hmm, this is the only instance of waiting for this completion, which
-means that after this patch, 'ar->driver_recovery' is doing exactly
-nothing. Should you instead just remove it completely?
+Why does it matter what type of device it is?  Are modems somehow unique 
+in that they are the only type of device that userspace is allowed to 
+interact with?
 
-Also, if your patch is correct, it seems like the completion was never
-needed in the first place. You should probably address such a claim in
-the commit message; is there truly no need to wait here? Or was there
-some purpose here, but that purpose was accomplished some other way?
-Or was there a purpose, and that purpose was misguided? It feels to me
-like it is indeed correct to remove this (shutdown should be performed
-promptly; we don't need to delay it just to try to "finish
-recovering"), but it's your job to convince the reader.
+However, I'll bite.  Once such usecase would be QMI.  QMI is a generic 
+messaging protocol, and is not strictly limited to the unique operations 
+of a modem.
 
-Brian
+Another usecase would be Sahara - a custom file transfer protocol used 
+for uploading firmware images, and downloading crashdumps.
 
-> -
->         set_bit(ATH10K_SNOC_FLAG_UNREGISTERING, &ar_snoc->flags);
->
->         ath10k_core_unregister(ar);
+Off the top of my head, this driver is useful for modems, wlan, and AI 
+accelerators.
+
+-- 
+Jeffrey Hugo
+Qualcomm Technologies, Inc. is a member of the
+Code Aurora Forum, a Linux Foundation Collaborative Project.
