@@ -2,200 +2,170 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D6182CA3EE
-	for <lists+linux-wireless@lfdr.de>; Tue,  1 Dec 2020 14:36:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 66A182CA50F
+	for <lists+linux-wireless@lfdr.de>; Tue,  1 Dec 2020 15:11:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388974AbgLANfK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 1 Dec 2020 08:35:10 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:30917 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S2387723AbgLANfK (ORCPT
+        id S2391593AbgLAOHw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 1 Dec 2020 09:07:52 -0500
+Received: from aserp2120.oracle.com ([141.146.126.78]:33762 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387669AbgLAOHu (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 1 Dec 2020 08:35:10 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1606829623;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=uEOuZ03//h7eOIaNTSqraBUKB6vXrZdDDrDyqrtS2XQ=;
-        b=hrowUvlTAXkYIJ+qtHt37KfGOG9xfNeReHeN0IjOdzvtqOxozC4YCQF0LsIw2RtdSbKwfq
-        sZrBTIIGunxFZkXYa1gg4mrjanFOXaY9f9LPsmme972wy6mVDhJeKnvfSNAoXLzDRT5O3A
-        eKWromqqEr28ttqCRoHA2eqKAjYiziU=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-561-S2QdU4QBMiGU8j2FJsTDkA-1; Tue, 01 Dec 2020 08:33:41 -0500
-X-MC-Unique: S2QdU4QBMiGU8j2FJsTDkA-1
-Received: by mail-ej1-f69.google.com with SMTP id dv25so149214ejb.15
-        for <linux-wireless@vger.kernel.org>; Tue, 01 Dec 2020 05:33:41 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
-         :message-id:mime-version:content-transfer-encoding;
-        bh=uEOuZ03//h7eOIaNTSqraBUKB6vXrZdDDrDyqrtS2XQ=;
-        b=c/cRgCT+isNsGWyzwzJNvT6+gaiU+tuGUgiNq7PRvF0QCJoKPfHCCYjUKwPaq09i0G
-         TE7LXrIr5PsjgU8UxRuf48EvCCb7GqKHu0Gwzs21XIz/+OnRDJaHS6hR7uLGDQcZcVB5
-         VBnmT/UF+HT911yIsLhjP/tj+495vm2hd1mu5vIzgg/qD0HsoUB5+lm5EzJl2uqbTBac
-         A+ioHCG3hdyBOdB3Y933FAAQwwCaC4g+z0yd5vpFWIQGAjBBI5G8sSie8U3riKoGPbM0
-         Sal3fFWCO45SsUPCXFZCqK6Q5lMDJAireDiDdZ/nrPNdhXee1Tm8/aSC35wv7RGSljxt
-         r1IQ==
-X-Gm-Message-State: AOAM531GiYR5fq00eg4g7HY23nX2/BQ0AmgW7hy8H81nxrHeZtxVqFBi
-        YnxIp8W/eeb4a0gTkHDjTgawJNJiSrYjI2EM3pzLtbpONZdN8RM0tt7129Yij2aUEzpkC2HSsQt
-        /JYzkg9DrGp1LAI+xsnLV4WdLlX4=
-X-Received: by 2002:a50:d09b:: with SMTP id v27mr3009104edd.181.1606829618853;
-        Tue, 01 Dec 2020 05:33:38 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJx3kw0tc0VLaGxn5otWQ8TRnnkKF0QwSd6/z74SboVLIocAzNVUGnp7Qo0UGun4WIUQ+pow/g==
-X-Received: by 2002:a50:d09b:: with SMTP id v27mr3009064edd.181.1606829618300;
-        Tue, 01 Dec 2020 05:33:38 -0800 (PST)
-Received: from alrua-x1.borgediget.toke.dk ([2a0c:4d80:42:443::2])
-        by smtp.gmail.com with ESMTPSA id i21sm843226edt.92.2020.12.01.05.33.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Dec 2020 05:33:37 -0800 (PST)
-Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-        id 26804182EF0; Tue,  1 Dec 2020 14:33:37 +0100 (CET)
-From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-To:     Zefir Kurtisi <zefir.kurtisi@westermo.com>,
-        Zefir Kurtisi <zefku@westermo.com>,
-        linux-wireless@vger.kernel.org
-Cc:     Felix Fietkau <nbd@nbd.name>, qca-developer-program@qualcomm.com,
-        Adrian Chadd <adrian@freebsd.org>
-Subject: Re: [RFT] ath9k: multi-rate-retry fails at HW level
-In-Reply-To: <d05e928a-c78d-d191-7ae0-6342e05d892a@westermo.com>
-References: <2a8573d7-6683-3414-a8af-dab460772205@westermo.com>
- <878saqlsp8.fsf@toke.dk>
- <d05e928a-c78d-d191-7ae0-6342e05d892a@westermo.com>
-X-Clacks-Overhead: GNU Terry Pratchett
-Date:   Tue, 01 Dec 2020 14:33:37 +0100
-Message-ID: <87r1o91wi6.fsf@toke.dk>
+        Tue, 1 Dec 2020 09:07:50 -0500
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0B1DstBi119028;
+        Tue, 1 Dec 2020 14:05:43 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2020-01-29;
+ bh=pTmh0fAx41hLIvYDyOekZfZD8/4rzzXxS/TqqdPExwg=;
+ b=vLWTsjjic+1p3i9uxybiHNVi42dcBKcTvA6AfpFTEr0sUNmVqp9yRxLgg7kIK5qGUN0J
+ oofgNIgToJJBxsPbFd+Am4pBxk6JPpjzRqo19VpEwymshbhsnRALOcfpiO21XOp3kmxr
+ lgOLJrUqyUshUH+0ojxyxXIg1LFHdnj2t2Bklh5y68LsxqqiRxoSPtOWNIoWynIJF754
+ 5bVkuWqCYCEFs8tq7LyeOV+zI3/vr+tI5ZKBss7pqjTfnpXNJRaPwJeD8R6AGcywA+BA
+ lerBH0PS/hUi55aURtflNdJ2juhGcYo6ht8r8gtlOn38U9XkoMGDxbASv62fD9VykISM Rg== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by aserp2120.oracle.com with ESMTP id 353egkjkku-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 01 Dec 2020 14:05:42 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0B1Du5XW003807;
+        Tue, 1 Dec 2020 14:05:42 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+        by aserp3020.oracle.com with ESMTP id 3540ey0hqs-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 01 Dec 2020 14:05:42 +0000
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [127.0.0.1])
+        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 0B1E1twO021849;
+        Tue, 1 Dec 2020 14:05:41 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by aserp3020.oracle.com with ESMTP id 3540ey0hp9-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 01 Dec 2020 14:05:40 +0000
+Received: from abhmp0010.oracle.com (abhmp0010.oracle.com [141.146.116.16])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 0B1E5MSD015816;
+        Tue, 1 Dec 2020 14:05:23 GMT
+Received: from kadam (/102.36.221.92)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 01 Dec 2020 06:05:21 -0800
+Date:   Tue, 1 Dec 2020 17:04:49 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Kees Cook <keescook@chromium.org>
+Cc:     Jakub Kicinski <kuba@kernel.org>, alsa-devel@alsa-project.org,
+        linux-atm-general@lists.sourceforge.net,
+        reiserfs-devel@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-wireless@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+        Nathan Chancellor <natechancellor@gmail.com>,
+        linux-ide@vger.kernel.org, dm-devel@redhat.com,
+        keyrings@vger.kernel.org, linux-mtd@lists.infradead.org,
+        GR-everest-linux-l2@marvell.com, wcn36xx@lists.infradead.org,
+        samba-technical@lists.samba.org, linux-i3c@lists.infradead.org,
+        linux1394-devel@lists.sourceforge.net,
+        linux-afs@lists.infradead.org,
+        usb-storage@lists.one-eyed-alien.net, drbd-dev@tron.linbit.com,
+        devel@driverdev.osuosl.org, linux-cifs@vger.kernel.org,
+        rds-devel@oss.oracle.com,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        linux-scsi@vger.kernel.org, linux-rdma@vger.kernel.org,
+        oss-drivers@netronome.com, bridge@lists.linux-foundation.org,
+        linux-security-module@vger.kernel.org,
+        amd-gfx@lists.freedesktop.org,
+        linux-stm32@st-md-mailman.stormreply.com, cluster-devel@redhat.com,
+        linux-acpi@vger.kernel.org, coreteam@netfilter.org,
+        intel-wired-lan@lists.osuosl.org, linux-input@vger.kernel.org,
+        Miguel Ojeda <ojeda@kernel.org>,
+        tipc-discussion@lists.sourceforge.net, linux-ext4@vger.kernel.org,
+        linux-media@vger.kernel.org, linux-watchdog@vger.kernel.org,
+        selinux@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        intel-gfx@lists.freedesktop.org, linux-geode@lists.infradead.org,
+        linux-can@vger.kernel.org, linux-block@vger.kernel.org,
+        linux-gpio@vger.kernel.org, op-tee@lists.trustedfirmware.org,
+        linux-mediatek@lists.infradead.org, xen-devel@lists.xenproject.org,
+        nouveau@lists.freedesktop.org, linux-hams@vger.kernel.org,
+        ceph-devel@vger.kernel.org,
+        virtualization@lists.linux-foundation.org,
+        linux-arm-kernel@lists.infradead.org, linux-hwmon@vger.kernel.org,
+        x86@kernel.org, linux-nfs@vger.kernel.org,
+        GR-Linux-NIC-Dev@marvell.com, linux-mm@kvack.org,
+        netdev@vger.kernel.org, linux-decnet-user@lists.sourceforge.net,
+        linux-mmc@vger.kernel.org,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        linux-renesas-soc@vger.kernel.org, linux-sctp@vger.kernel.org,
+        linux-usb@vger.kernel.org, netfilter-devel@vger.kernel.org,
+        linux-crypto@vger.kernel.org, patches@opensource.cirrus.com,
+        Joe Perches <joe@perches.com>, linux-integrity@vger.kernel.org,
+        target-devel@vger.kernel.org, linux-hardening@vger.kernel.org
+Subject: Re: [PATCH 000/141] Fix fall-through warnings for Clang
+Message-ID: <20201201140449.GG2767@kadam>
+References: <cover.1605896059.git.gustavoars@kernel.org>
+ <20201120105344.4345c14e@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+ <202011201129.B13FDB3C@keescook>
+ <20201120115142.292999b2@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+ <202011220816.8B6591A@keescook>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <202011220816.8B6591A@keescook>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9821 signatures=668682
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 bulkscore=0 suspectscore=0
+ phishscore=0 mlxlogscore=944 lowpriorityscore=0 malwarescore=0
+ priorityscore=1501 spamscore=0 impostorscore=0 clxscore=1011 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2012010090
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Zefir Kurtisi <zefir.kurtisi@westermo.com> writes:
+On Sun, Nov 22, 2020 at 08:17:03AM -0800, Kees Cook wrote:
+> On Fri, Nov 20, 2020 at 11:51:42AM -0800, Jakub Kicinski wrote:
+> > On Fri, 20 Nov 2020 11:30:40 -0800 Kees Cook wrote:
+> > > On Fri, Nov 20, 2020 at 10:53:44AM -0800, Jakub Kicinski wrote:
+> > > > On Fri, 20 Nov 2020 12:21:39 -0600 Gustavo A. R. Silva wrote:  
+> > > > > This series aims to fix almost all remaining fall-through warnings in
+> > > > > order to enable -Wimplicit-fallthrough for Clang.
+> > > > > 
+> > > > > In preparation to enable -Wimplicit-fallthrough for Clang, explicitly
+> > > > > add multiple break/goto/return/fallthrough statements instead of just
+> > > > > letting the code fall through to the next case.
+> > > > > 
+> > > > > Notice that in order to enable -Wimplicit-fallthrough for Clang, this
+> > > > > change[1] is meant to be reverted at some point. So, this patch helps
+> > > > > to move in that direction.
+> > > > > 
+> > > > > Something important to mention is that there is currently a discrepancy
+> > > > > between GCC and Clang when dealing with switch fall-through to empty case
+> > > > > statements or to cases that only contain a break/continue/return
+> > > > > statement[2][3][4].  
+> > > > 
+> > > > Are we sure we want to make this change? Was it discussed before?
+> > > > 
+> > > > Are there any bugs Clangs puritanical definition of fallthrough helped
+> > > > find?
+> > > > 
+> > > > IMVHO compiler warnings are supposed to warn about issues that could
+> > > > be bugs. Falling through to default: break; can hardly be a bug?!  
+> > > 
+> > > It's certainly a place where the intent is not always clear. I think
+> > > this makes all the cases unambiguous, and doesn't impact the machine
+> > > code, since the compiler will happily optimize away any behavioral
+> > > redundancy.
+> > 
+> > If none of the 140 patches here fix a real bug, and there is no change
+> > to machine code then it sounds to me like a W=2 kind of a warning.
+> 
+> FWIW, this series has found at least one bug so far:
+> https://lore.kernel.org/lkml/CAFCwf11izHF=g1mGry1fE5kvFFFrxzhPSM6qKAO8gxSp=Kr_CQ@mail.gmail.com/
 
-> CC +=3D adrian
->
-> On 24.11.20 15:45, Toke H=C3=B8iland-J=C3=B8rgensen wrote:
->> Zefir Kurtisi <zefku@westermo.com> writes:
->>=20
->>> Hi,
->>>
->>> I am running into a strange issue with the ath9k operating a 9590
->>> device which to me seems like a HW issue, but since work on rate
->>> controllers is already going for decades, I hardly can imagine this
->>> never showed up.
->>>
->>> The issue observed is this: the TX status descriptors never report
->>> rateindex 1, it is always 0, 2, or 3, but never 1.
->>>
->>> I noticed this by overwriting the rate configuration provided by
->>> minstrel to a static setup, e.g. (7,3)(5,3)(3,3)(1,3), all MCS. The
->>> device operates as iperf client to a connected AP and continuously
->>> transmits data. While at that, the attenuation between the endpoints
->>> is gradually increased, expecting to see a gradual shift in the
->>> reported TX status rateindex from 0 to 3. But nada, the values
->>> reported are 0,2, and 3 - never 1.
->>>
->>> I double checked that the TX descriptors are correctly set with the
->>> rates and retry counts - all looking sane.
->>>
->>> More obvious, after changing the rate configuration to
->>> (7,3)(1,3)(5,3)(3,3) the expectation would be to have either 0 or 1
->>> reported as rateidx, since the transmission ought to be successful
->>> with the lowest rate or never. Again all rates are reported but 1.
->>>
->>> Now the question for me is: what is the HW exactly doing with such a
->>> configuration? Is it skipping the second rate, or is it just reporting
->>> wrong?
->>=20
->> You should be able to see this by looking at the rates the frames are
->> being sent at, shouldn't you?
->>=20
-> Yes, did that and from there it points to that the second rate is just sk=
-ipped.
->
-> Here are some use cases and their sniffing results. Setup is a 11ng STA c=
-onnected
-> to AP with the attenuation adjusted such that MCS 7 fails, while MCS 5 an=
-d below
-> succeed. Monitor is sniffing while sending a single ping from AP to STA.
->
-> With a rate configuration of (7/2)(3/2)(1/2) we get:
-> 14:02:42.923880 9481489761us tsft 2412 MHz 11n -68dBm signal 65.0 Mb/s MC=
-S 7 20
-> MHz long GI RX-STBC0 -68dBm signal antenna 0 Data IV:  e Pad 20 KeyID 0
-> 14:02:42.923909 9481490037us tsft 2412 MHz 11n -69dBm signal 65.0 Mb/s MC=
-S 7 20
-> MHz long GI RX-STBC0 -69dBm signal antenna 0 Data IV:  e Pad 20 KeyID 0
-> 14:02:42.925244 9481491044us tsft 2412 MHz 11n -68dBm signal 13.0 Mb/s MC=
-S 1 20
-> MHz long GI RX-STBC0 -68dBm signal antenna 0 Data IV:  e Pad 20 KeyID 0
->
->
-> with (7/2)(1/2)(3/2):
-> 13:59:37.073147 9295637087us tsft 2412 MHz 11n -69dBm signal 65.0 Mb/s MC=
-S 7 20
-> MHz long GI RX-STBC0 -69dBm signal antenna 0 Data IV:  c Pad 20 KeyID 0
-> 13:59:37.073467 9295637438us tsft 2412 MHz 11n -69dBm signal 65.0 Mb/s MC=
-S 7 20
-> MHz long GI RX-STBC0 -69dBm signal antenna 0 Data IV:  c Pad 20 KeyID 0
-> 13:59:37.074591 9295638498us tsft 2412 MHz 11n -68dBm signal 26.0 Mb/s MC=
-S 3 20
-> MHz long GI RX-STBC0 -68dBm signal antenna 0 Data IV:  c Pad 20 KeyID 0
->
-> and with (7/2)(3/2):
-> 14:04:27.269806 9585836783us tsft 2412 MHz 11n -69dBm signal 65.0 Mb/s MC=
-S 7 20
-> MHz long GI RX-STBC0 -69dBm signal antenna 0 Data IV: 10 Pad 20 KeyID 0
-> 14:04:27.270342 9585837344us tsft 2412 MHz 11n -68dBm signal 65.0 Mb/s MC=
-S 7 20
-> MHz long GI RX-STBC0 -68dBm signal antenna 0 Data IV: 10 Pad 20 KeyID 0
-> 14:04:27.271368 9585838370us tsft 2412 MHz 11n -68dBm signal 65.0 Mb/s MC=
-S 7 20
-> MHz long GI RX-STBC0 -68dBm signal antenna 0 Data IV: 10 Pad 20 KeyID 0
-> [..]
->
-> a total of 14 attempts at MCS 7 with the ping finally failing.
->
->>> Both possibilities have great impact, since upper layers (like
->>> airtime) use the returned rateidx to calculate and configure operating
->>> parameters at runtime.
->>=20
->> Have you actually observed any issues from this? If it's just skipping a
->> rate, minstrel should still be able to make decisions based on the
->> actual values returned, no?
->>=20
-> The issues arise from the fact that the driver reports a
-> (tx-rateindex/tx-attemp-index) per TX descriptor, leaving the driver to c=
-alculate
-> what was put on air based on these two values. If one had rates set to
-> (7/2)(3/7)(1/2) and the TX status reports (tx-rateindex=3D2/tx-attempt-in=
-dex=3D0),
-> driver assumes there were 10 attempts in total while in fact they were 3 =
-when the
-> second rate is skipped. What direct effect this has on RC I can't grasp, =
-but it
-> definitively falsifies statistics.
->
-> Same goes for airtime: check how this falsifies its calculation in
-> ath_tx_count_airtime().
+This is a fallthrough to a return and not to a break.  That should
+trigger a warning.  The fallthrough to a break should not generate a
+warning.
 
-Ah, right, I was assuming that rates[1].count would be reset to zero
-somehow. Have you confirmed that the attempts actually go up on in the
-Minstrel stats for the skipped rate?
+The bug we're trying to fix is "missing break statement" but if the
+result of the bug is "we hit a break statement" then now we're just
+talking about style.  GCC should limit itself to warning about
+potentially buggy code.
 
-> Also, the above mentioned is an immediate visible issue: if RC
-> provides two rates e.g. (7/3)(5/3) of which the first is too high and
-> the second is not even attempted, frames don't make it through.
-
-Yeah, rate control would likely take longer to converge to the right
-rate. I suppose if this is a hardware model-specific issue that a quirks
-bit could be added to instruct Minstrel to disregard the second index.
-But it does sound a bit odd; have you verified that it's consistent on
-different units of the same model (and not just a busted device)?
-
--Toke
-
+regards,
+dan carpenter
