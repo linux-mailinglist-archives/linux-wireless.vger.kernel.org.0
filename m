@@ -2,81 +2,129 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 667782CAD23
-	for <lists+linux-wireless@lfdr.de>; Tue,  1 Dec 2020 21:17:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BB43A2CADBB
+	for <lists+linux-wireless@lfdr.de>; Tue,  1 Dec 2020 21:51:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730400AbgLAUQe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 1 Dec 2020 15:16:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43620 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730375AbgLAUQd (ORCPT
+        id S1728474AbgLAUt2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 1 Dec 2020 15:49:28 -0500
+Received: from a2.mail.mailgun.net ([198.61.254.61]:56583 "EHLO
+        a2.mail.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727906AbgLAUt0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 1 Dec 2020 15:16:33 -0500
-Received: from mail-qt1-x829.google.com (mail-qt1-x829.google.com [IPv6:2607:f8b0:4864:20::829])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD2F3C0613CF
-        for <linux-wireless@vger.kernel.org>; Tue,  1 Dec 2020 12:15:53 -0800 (PST)
-Received: by mail-qt1-x829.google.com with SMTP id f27so2150967qtv.6
-        for <linux-wireless@vger.kernel.org>; Tue, 01 Dec 2020 12:15:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=message-id:subject:from:to:date:user-agent:mime-version
-         :content-transfer-encoding;
-        bh=u31VnClsYjFhKHogqGu3NwIuN8MkGrZ/TDr1Bs6Vaew=;
-        b=M5IDm6lGv0WdU8j9x7/sYlz4WtDNrWrKxv3pj6Gym3vCiLXM/m8G2Wu0SoVSl2AIJC
-         12REpJSBLyPUuZpX5CupJkKtPnPWFXLugJ41ofAx++007V4X+5/7AsV0Gx1xjtbsoNrB
-         99MaRpi9aSNuhDCFESl7fusno4DP2RMWSUeRjiOtYPp5PafSGEJdvFENvU0kQBBm59m2
-         lCb80PyMz9O9vc/UZKgFcnpkkYRcYVeDquupM3w8/GZGUjc3VgveUh4C8kosLmbdHwZ2
-         H11/yCqIFBJWqMUmylPxM6hJVv+LgG4gGgXiFjoq/2IxZdAumVy15h1LZUa+DKU8ePNI
-         OxvA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:message-id:subject:from:to:date:user-agent
-         :mime-version:content-transfer-encoding;
-        bh=u31VnClsYjFhKHogqGu3NwIuN8MkGrZ/TDr1Bs6Vaew=;
-        b=GrGtqy+ebrYkwCiJEC9DA3xC7h1jXql6R6LVb72kSaMjaAmde6AFiMRY61ecGWGw3/
-         SH2LyHIp3cqvVx8vAYivsn6Mqfj1jNwyqH37+eS0JxFMWIvCxpJXi5cKxyyPeo3wwcLu
-         ZXO1mq6VP3lm4jR51XpdW7MkTOpwxCNvwjENfvyiVYmJS6LOo2TkXCU6gcP8+RG4kY9t
-         2DlhEX/WnfOteTJsTQ3j1YfjVLsWWX3bB1mQmfOEUURIcIt5tcDLsGPOkyXNMbNBbw2U
-         ubp/WDmGwI0ZUEsox3Q73rvZwEEIIblNzHIUO3rmegSgXTPa3HqznYTQEzsYXYPQGFps
-         ULdQ==
-X-Gm-Message-State: AOAM53051oLq6lpSmDMLJ6g7oElZbEDbgVT7Wd5gP8JdAJ+Go/oDunZU
-        QHlJuDdV2iBb2vVV+/R6bYF9J8G5yyftTw==
-X-Google-Smtp-Source: ABdhPJy4jqT/VyF5C8/a7aLgvE/AncGF4RqoR2KFCPMKGr24l3WvdNb0YgAaXcKf+WP8cJaOkBoMkg==
-X-Received: by 2002:ac8:7494:: with SMTP id v20mr4859378qtq.12.1606853752773;
-        Tue, 01 Dec 2020 12:15:52 -0800 (PST)
-Received: from [192.168.1.7] ([190.239.192.217])
-        by smtp.gmail.com with ESMTPSA id g18sm694918qtv.79.2020.12.01.12.15.51
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Dec 2020 12:15:51 -0800 (PST)
-Message-ID: <db18a90633e0c7149f25f591251df55f0f292a4a.camel@gmail.com>
-Subject: RFE4 support for rtw88_8821ce
-From:   Luis Ortega Pinillos <lupaorpi22@gmail.com>
-To:     linux-wireless@vger.kernel.org
-Date:   Tue, 01 Dec 2020 15:15:49 -0500
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.38.1 (3.38.1-1.fc33) 
+        Tue, 1 Dec 2020 15:49:26 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1606855745; h=Content-Transfer-Encoding: Content-Type:
+ In-Reply-To: MIME-Version: Date: Message-ID: From: References: Cc: To:
+ Subject: Sender; bh=Yo42yaq/01Dx0rVkGb727su6dur/zrnh3T7p2hY8vMQ=; b=jAXiL/7VeHoHor5AYsMVhP5ApsY2UtPRlV3RPDn4ePC5gToB7a7ZG481Q/plKcshNQJYITL0
+ Nke1wIX4TK3juyX8LuYcdqXE/oF7c03Mwh8tC9lSuhkWAXf4AF+MzFY8DxXAR+QhM9AKCvdS
+ bGXfKPwQ0atUf6AdHs6mQVNimMY=
+X-Mailgun-Sending-Ip: 198.61.254.61
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n08.prod.us-east-1.postgun.com with SMTP id
+ 5fc6ac28f4482b01c4fbdf7f (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 01 Dec 2020 20:48:40
+ GMT
+Sender: jhugo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 3DC4CC43462; Tue,  1 Dec 2020 20:48:39 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        NICE_REPLY_A,SPF_FAIL autolearn=no autolearn_force=no version=3.4.0
+Received: from [10.226.59.216] (i-global254.qualcomm.com [199.106.103.254])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: jhugo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 91A89C433ED;
+        Tue,  1 Dec 2020 20:48:37 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 91A89C433ED
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=jhugo@codeaurora.org
+Subject: Re: [PATCH v13 0/4] userspace MHI client interface driver
+To:     Jakub Kicinski <kuba@kernel.org>
+Cc:     Hemant Kumar <hemantk@codeaurora.org>,
+        manivannan.sadhasivam@linaro.org, gregkh@linuxfoundation.org,
+        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        bbhatt@codeaurora.org, loic.poulain@linaro.org,
+        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+        Kalle Valo <kvalo@codeaurora.org>
+References: <1606533966-22821-1-git-send-email-hemantk@codeaurora.org>
+ <20201201112901.7f13e26c@kicinski-fedora-pc1c0hjn.DHCP.thefacebook.com>
+ <c6359962-a378-ed03-0fab-c2f6c8a1b8eb@codeaurora.org>
+ <20201201120302.474d4c9b@kicinski-fedora-pc1c0hjn.DHCP.thefacebook.com>
+From:   Jeffrey Hugo <jhugo@codeaurora.org>
+Message-ID: <817a4346-efb7-cfe5-0678-d1b60d06627d@codeaurora.org>
+Date:   Tue, 1 Dec 2020 13:48:36 -0700
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.4.0
 MIME-Version: 1.0
+In-Reply-To: <20201201120302.474d4c9b@kicinski-fedora-pc1c0hjn.DHCP.thefacebook.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello!
-The rtw88_8821ce driver doesn't support the rfe4 variant of this wifi
-chip.
+On 12/1/2020 1:03 PM, Jakub Kicinski wrote:
+> On Tue, 1 Dec 2020 12:40:50 -0700 Jeffrey Hugo wrote:
+>> On 12/1/2020 12:29 PM, Jakub Kicinski wrote:
+>>> On Fri, 27 Nov 2020 19:26:02 -0800 Hemant Kumar wrote:
+>>>> This patch series adds support for UCI driver. UCI driver enables userspace
+>>>> clients to communicate to external MHI devices like modem and WLAN. UCI driver
+>>>> probe creates standard character device file nodes for userspace clients to
+>>>> perform open, read, write, poll and release file operations. These file
+>>>> operations call MHI core layer APIs to perform data transfer using MHI bus
+>>>> to communicate with MHI device. Patch is tested using arm64 based platform.
+>>>
+>>> Wait, I thought this was for modems.
+>>>
+>>> Why do WLAN devices need to communicate with user space?
+>>>    
+>>
+>> Why does it matter what type of device it is?  Are modems somehow unique
+>> in that they are the only type of device that userspace is allowed to
+>> interact with?
+> 
+> Yes modems are traditionally highly weird and require some serial
+> device dance I don't even know about.
+> 
+> We have proper interfaces in Linux for configuring WiFi which work
+> across vendors. Having char device access to WiFi would be a step
+> back.
 
-[   29.951453] rtw_8821ce 0000:01:00.0: enabling device (0000 -> 0003)
-[   30.131013] rtw_8821ce 0000:01:00.0: Firmware version 24.5.0, H2C
-version 12
-[   30.149773] rtw_8821ce 0000:01:00.0: rfe 4 isn't supported
-[   30.149872] rtw_8821ce 0000:01:00.0: failed to setup chip efuse info
-[   30.149873] rtw_8821ce 0000:01:00.0: failed to setup chip
-information
+So a WLAN device is only ever allowed to do Wi-Fi?  It can't also have 
+GPS functionality for example?
 
-My laptop is an Asus M509DA. 
+> 
+>> However, I'll bite.  Once such usecase would be QMI.  QMI is a generic
+>> messaging protocol, and is not strictly limited to the unique operations
+>> of a modem.
+>>
+>> Another usecase would be Sahara - a custom file transfer protocol used
+>> for uploading firmware images, and downloading crashdumps.
+> 
+> Thanks, I was asking for use cases, not which proprietary vendor
+> protocol you can implement over it.
+> 
+> None of the use cases you mention here should require a direct FW -
+> user space backdoor for WLAN.
 
-Thanks!
+Uploading runtime firmware, with variations based on the runtime mode. 
+Flashing the onboard flash based on cryptographic keys.  Accessing 
+configuration data.  Accessing device logs.  Configuring device logs. 
+Synchronizing the device time reference to Linux local or remote time 
+sources.  Enabling debugging/performance hardware.  Getting software 
+diagnostic events.  Configuring redundancy hardware per workload. 
+Uploading new cryptographic keys.  Invalidating cryptographic keys. 
+Uploading factory test data and running factory tests.
 
-Luis Ortega
+Need more?
 
+-- 
+Jeffrey Hugo
+Qualcomm Technologies, Inc. is a member of the
+Code Aurora Forum, a Linux Foundation Collaborative Project.
