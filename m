@@ -2,105 +2,203 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EF0EF2CB3F2
-	for <lists+linux-wireless@lfdr.de>; Wed,  2 Dec 2020 05:41:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 568242CB422
+	for <lists+linux-wireless@lfdr.de>; Wed,  2 Dec 2020 06:00:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728142AbgLBEj3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 1 Dec 2020 23:39:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36272 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726316AbgLBEj2 (ORCPT
+        id S1728458AbgLBE4P (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 1 Dec 2020 23:56:15 -0500
+Received: from a2.mail.mailgun.net ([198.61.254.61]:49601 "EHLO
+        a2.mail.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725902AbgLBE4P (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 1 Dec 2020 23:39:28 -0500
-Received: from mail-oo1-xc43.google.com (mail-oo1-xc43.google.com [IPv6:2607:f8b0:4864:20::c43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADE2FC0613D6
-        for <linux-wireless@vger.kernel.org>; Tue,  1 Dec 2020 20:38:42 -0800 (PST)
-Received: by mail-oo1-xc43.google.com with SMTP id l10so75147ooh.1
-        for <linux-wireless@vger.kernel.org>; Tue, 01 Dec 2020 20:38:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=x1J3oNmVed248Yr9F5ZYzVm9O5TAhAVtwD5WiYXieTM=;
-        b=F+AKOO9pCQYn+/ifh4mIPLaNGJeZOmCjEmugX5tFpb9lYUHnjS2it5tO/q/+wG1ydu
-         lFRspQVR9vHZESpQp704H+GmCG6Y2dZNpC1V7geaJ6Sfias1JxAVnZZ3nwM+nVKiHdFO
-         jUJwHca8YVoRdcIbitwfD4fXb0kyD/4fFBouah6Qm8FkQF/3HrfJZiiOjyFvybA/KTh3
-         iRTj4CoX9so9c979DLUpbErKqUIzfmFPW5oALfrik8Ff3DIukUryeeQH7C8NOPQW+PN9
-         Gm6mhb/OT63IgVcQdbaUJIrPMqzAtxn3Lx72SKmAq2Kq/OUlrmqpwRnikidNZsieZTfU
-         lusg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=x1J3oNmVed248Yr9F5ZYzVm9O5TAhAVtwD5WiYXieTM=;
-        b=Lh86YYwn5hST3tnDbI1I+ILfx41jFJ0irT0RaHLkHbdvrc5zxCGYrEXNOTntVbHrQS
-         rGb4zQ5eblK218yA4nalQZxaaNxA/P4djuXLoNbGYd/eMFBdiJ24OUmb4kIYBvGOlEos
-         WDbcwDE/ch4Pqo+cMwM7CTrdQG0LVc/aI342r2U8yE3kbw2IwHO9uwtIK/HaAeZQUBjx
-         v+bSbf7OsPbomFQaY7h6SToRzT1X9ta6eznKmsXCzYCZBJcU3aIEBeKXb9D9Fi/ZYdDD
-         KvQ80lkN2gXmmsh4ev0wtwC3YmOZAOa8sKwVfVvhwNUFKwdccXeUSrGS/PJ4kuaS8xR0
-         eW/Q==
-X-Gm-Message-State: AOAM532UmgeRuAIr6RktKK1nvLAx0Wnnq9aiSVy2YAWuD/kSmDNYpFxO
-        Uw8vLVs4AVzmknlLl1kCheHTqg==
-X-Google-Smtp-Source: ABdhPJx3n5GPkA/PmFkRvvmtFHgXXxzuijf/+FpB+95yB2JyUbQkL9apmio7/pw3Zua14/43WG0sig==
-X-Received: by 2002:a05:6820:351:: with SMTP id m17mr405037ooe.36.1606883921962;
-        Tue, 01 Dec 2020 20:38:41 -0800 (PST)
-Received: from yoga (104-57-184-186.lightspeed.austtx.sbcglobal.net. [104.57.184.186])
-        by smtp.gmail.com with ESMTPSA id y18sm122944ooj.20.2020.12.01.20.38.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Dec 2020 20:38:41 -0800 (PST)
-Date:   Tue, 1 Dec 2020 22:38:39 -0600
-From:   Bjorn Andersson <bjorn.andersson@linaro.org>
-To:     Jakub Kicinski <kuba@kernel.org>
-Cc:     Hemant Kumar <hemantk@codeaurora.org>,
-        manivannan.sadhasivam@linaro.org, gregkh@linuxfoundation.org,
-        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        jhugo@codeaurora.org, bbhatt@codeaurora.org,
-        loic.poulain@linaro.org, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org, Kalle Valo <kvalo@codeaurora.org>
-Subject: Re: [PATCH v13 0/4] userspace MHI client interface driver
-Message-ID: <20201202043839.GL807@yoga>
-References: <1606533966-22821-1-git-send-email-hemantk@codeaurora.org>
- <20201201112901.7f13e26c@kicinski-fedora-pc1c0hjn.DHCP.thefacebook.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201201112901.7f13e26c@kicinski-fedora-pc1c0hjn.DHCP.thefacebook.com>
+        Tue, 1 Dec 2020 23:56:15 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1606884950; h=Message-Id: Date: Subject: Cc: To: From:
+ Sender; bh=Y0sxRJNJS5B+mb9efI/4KZVV1ub/u03t9Fe872TfCb8=; b=glK9qkSt8khbsvX48nF4TbMewFMJzsrpML73RMnpNuRVKk8GnokTX/5MXZayZckWx8VAvE+N
+ IuunjoKrg1Htkf0JJxBptr1J5FSpSmnCHS0f1mpnpvQO7QZD88urBPKJAnzCwnk4zcDxxUwT
+ Z94K8F98cGBytTE4U/Ar0dtfWr4=
+X-Mailgun-Sending-Ip: 198.61.254.61
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n01.prod.us-west-2.postgun.com with SMTP id
+ 5fc71e3bf653ea0cd851deb0 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 02 Dec 2020 04:55:23
+ GMT
+Sender: tmariyap=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 4CDA0C433ED; Wed,  2 Dec 2020 04:55:23 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
+        autolearn=no autolearn_force=no version=3.4.0
+Received: from cdchalpyex0390930-lin.qualcomm.com (blr-c-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.19.19])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: tmariyap)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 11EFDC433C6;
+        Wed,  2 Dec 2020 04:55:20 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 11EFDC433C6
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=tmariyap@codeaurora.org
+From:   Thiraviyam Mariyappan <tmariyap@codeaurora.org>
+To:     ath11k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org,
+        Thiraviyam Mariyappan <tmariyap@codeaurora.org>
+Subject: [PATCH] mac80211: fix rx byte values not updated on mesh link
+Date:   Wed,  2 Dec 2020 10:25:12 +0530
+Message-Id: <1606884912-10987-1-git-send-email-tmariyap@codeaurora.org>
+X-Mailer: git-send-email 2.7.4
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue 01 Dec 13:29 CST 2020, Jakub Kicinski wrote:
+In mesh link, rx byte values were not updating though rx packets keep
+increasing in the station dump. This is because of rx_stats were updated
+regardless of USES_RSS flag is enabled/disabled. Solved the issue by
+updating the rx_stats from percpu pointers according to the USES_RSS flag
 
-> On Fri, 27 Nov 2020 19:26:02 -0800 Hemant Kumar wrote:
-> > This patch series adds support for UCI driver. UCI driver enables userspace
-> > clients to communicate to external MHI devices like modem and WLAN. UCI driver
-> > probe creates standard character device file nodes for userspace clients to
-> > perform open, read, write, poll and release file operations. These file
-> > operations call MHI core layer APIs to perform data transfer using MHI bus
-> > to communicate with MHI device. Patch is tested using arm64 based platform.
-> 
-> Wait, I thought this was for modems.
-> 
+Signed-off-by: Thiraviyam Mariyappan <tmariyap@codeaurora.org>
+---
+ net/mac80211/mesh_plink.c |  6 +++++-
+ net/mac80211/rx.c         | 44 ++++++++++++++++++++++++++++++++++----------
+ 2 files changed, 39 insertions(+), 11 deletions(-)
 
-No, this allows exposing particular channels from any type of MHI
-devices.
+diff --git a/net/mac80211/mesh_plink.c b/net/mac80211/mesh_plink.c
+index aca26df..e840277 100644
+--- a/net/mac80211/mesh_plink.c
++++ b/net/mac80211/mesh_plink.c
+@@ -416,6 +416,7 @@ static void mesh_sta_info_init(struct ieee80211_sub_if_data *sdata,
+ 	struct ieee80211_supported_band *sband;
+ 	u32 rates, basic_rates = 0, changed = 0;
+ 	enum ieee80211_sta_rx_bandwidth bw = sta->sta.bandwidth;
++	struct ieee80211_sta_rx_stats *stats;
+ 
+ 	sband = ieee80211_get_sband(sdata);
+ 	if (!sband)
+@@ -425,7 +426,10 @@ static void mesh_sta_info_init(struct ieee80211_sub_if_data *sdata,
+ 					&basic_rates);
+ 
+ 	spin_lock_bh(&sta->mesh->plink_lock);
+-	sta->rx_stats.last_rx = jiffies;
++	stats = &sta->rx_stats;
++	if (ieee80211_hw_check(&local->hw, USES_RSS))
++		stats = this_cpu_ptr(sta->pcpu_rx_stats);
++	stats->last_rx = jiffies;
+ 
+ 	/* rates and capabilities don't change during peering */
+ 	if (sta->mesh->plink_state == NL80211_PLINK_ESTAB &&
+diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
+index 062c2b4..1e8851d 100644
+--- a/net/mac80211/rx.c
++++ b/net/mac80211/rx.c
+@@ -2212,6 +2212,7 @@ ieee80211_rx_h_defragment(struct ieee80211_rx_data *rx)
+ 	unsigned int frag, seq;
+ 	struct ieee80211_fragment_entry *entry;
+ 	struct sk_buff *skb;
++	struct ieee80211_sta_rx_stats *stats;
+ 
+ 	hdr = (struct ieee80211_hdr *)rx->skb->data;
+ 	fc = hdr->frame_control;
+@@ -2340,8 +2341,12 @@ ieee80211_rx_h_defragment(struct ieee80211_rx_data *rx)
+  out:
+ 	ieee80211_led_rx(rx->local);
+  out_no_led:
+-	if (rx->sta)
+-		rx->sta->rx_stats.packets++;
++	if (rx->sta) {
++		stats = &rx->sta->rx_stats;
++		if (ieee80211_hw_check(&rx->sdata->local->hw, USES_RSS))
++			stats = this_cpu_ptr(rx->sta->pcpu_rx_stats);
++		stats->packets++;
++	}
+ 	return RX_CONTINUE;
+ }
+ 
+@@ -3134,6 +3139,7 @@ ieee80211_rx_h_action(struct ieee80211_rx_data *rx)
+ 	struct ieee80211_mgmt *mgmt = (struct ieee80211_mgmt *) rx->skb->data;
+ 	struct ieee80211_rx_status *status = IEEE80211_SKB_RXCB(rx->skb);
+ 	int len = rx->skb->len;
++	struct ieee80211_sta_rx_stats *stats;
+ 
+ 	if (!ieee80211_is_action(mgmt->frame_control))
+ 		return RX_CONTINUE;
+@@ -3415,16 +3421,24 @@ ieee80211_rx_h_action(struct ieee80211_rx_data *rx)
+ 	return RX_CONTINUE;
+ 
+  handled:
+-	if (rx->sta)
+-		rx->sta->rx_stats.packets++;
++	if (rx->sta) {
++		stats = &rx->sta->rx_stats;
++		if (ieee80211_hw_check(&local->hw, USES_RSS))
++			stats = this_cpu_ptr(rx->sta->pcpu_rx_stats);
++		stats->packets++;
++	}
+ 	dev_kfree_skb(rx->skb);
+ 	return RX_QUEUED;
+ 
+  queue:
+ 	skb_queue_tail(&sdata->skb_queue, rx->skb);
+ 	ieee80211_queue_work(&local->hw, &sdata->work);
+-	if (rx->sta)
+-		rx->sta->rx_stats.packets++;
++	if (rx->sta) {
++		stats = &rx->sta->rx_stats;
++		if (ieee80211_hw_check(&local->hw, USES_RSS))
++			stats = this_cpu_ptr(rx->sta->pcpu_rx_stats);
++		stats->packets++;
++	}
+ 	return RX_QUEUED;
+ }
+ 
+@@ -3467,6 +3481,7 @@ ieee80211_rx_h_action_post_userspace(struct ieee80211_rx_data *rx)
+ 	struct ieee80211_sub_if_data *sdata = rx->sdata;
+ 	struct ieee80211_mgmt *mgmt = (struct ieee80211_mgmt *) rx->skb->data;
+ 	int len = rx->skb->len;
++	struct ieee80211_sta_rx_stats *stats;
+ 
+ 	if (!ieee80211_is_action(mgmt->frame_control))
+ 		return RX_CONTINUE;
+@@ -3490,8 +3505,12 @@ ieee80211_rx_h_action_post_userspace(struct ieee80211_rx_data *rx)
+ 	return RX_CONTINUE;
+ 
+  handled:
+-	if (rx->sta)
+-		rx->sta->rx_stats.packets++;
++	if (rx->sta) {
++		stats = &rx->sta->rx_stats;
++		if (ieee80211_hw_check(&rx->sdata->local->hw, USES_RSS))
++			stats = this_cpu_ptr(rx->sta->pcpu_rx_stats);
++		stats->packets++;
++	}
+ 	dev_kfree_skb(rx->skb);
+ 	return RX_QUEUED;
+ }
+@@ -3585,6 +3604,7 @@ ieee80211_rx_h_mgmt(struct ieee80211_rx_data *rx)
+ {
+ 	struct ieee80211_sub_if_data *sdata = rx->sdata;
+ 	struct ieee80211_mgmt *mgmt = (void *)rx->skb->data;
++	struct ieee80211_sta_rx_stats *stats;
+ 	__le16 stype;
+ 
+ 	stype = mgmt->frame_control & cpu_to_le16(IEEE80211_FCTL_STYPE);
+@@ -3635,8 +3655,12 @@ ieee80211_rx_h_mgmt(struct ieee80211_rx_data *rx)
+ 	/* queue up frame and kick off work to process it */
+ 	skb_queue_tail(&sdata->skb_queue, rx->skb);
+ 	ieee80211_queue_work(&rx->local->hw, &sdata->work);
+-	if (rx->sta)
+-		rx->sta->rx_stats.packets++;
++	if (rx->sta) {
++		stats = &rx->sta->rx_stats;
++		if (ieee80211_hw_check(&rx->sdata->local->hw, USES_RSS))
++			stats = this_cpu_ptr(rx->sta->pcpu_rx_stats);
++		stats->packets++;
++	}
+ 
+ 	return RX_QUEUED;
+ }
+-- 
+2.7.4
 
-For modems there is a legacy control path that uses UCI. But data
-traffic, (non-legacy) modem control signals and e.g the bearer of GPS
-data uses in-kernel drivers that are already in place.
-
-> Why do WLAN devices need to communicate with user space?
-
-They normally don't, all WLAN operations are dealt with within the
-kernel. The use case that comes to mind for UCI when it comes to WiFi
-products is to avoid implementing the Qualcomm debug (diag) protocol in
-the kernel.
-
-
-As such I think saying that it can be used to communicate with modem or
-WLAN devices is misleading. Because while it could be done, it is only
-used for dealing with optional side-band services on such products - not
-the actual WiFi and modem functionality.
-
-Regards,
-Bjorn
