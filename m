@@ -2,131 +2,68 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D41F2CBA1A
-	for <lists+linux-wireless@lfdr.de>; Wed,  2 Dec 2020 11:06:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C92002CBD33
+	for <lists+linux-wireless@lfdr.de>; Wed,  2 Dec 2020 13:44:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729339AbgLBKGF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 2 Dec 2020 05:06:05 -0500
-Received: from mail-il1-f199.google.com ([209.85.166.199]:48979 "EHLO
-        mail-il1-f199.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728657AbgLBKGD (ORCPT
+        id S1727521AbgLBMml (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 2 Dec 2020 07:42:41 -0500
+Received: from paleale.coelho.fi ([176.9.41.70]:33950 "EHLO
+        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726631AbgLBMml (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 2 Dec 2020 05:06:03 -0500
-Received: by mail-il1-f199.google.com with SMTP id j7so921139ils.15
-        for <linux-wireless@vger.kernel.org>; Wed, 02 Dec 2020 02:05:47 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:date:in-reply-to:message-id:subject
-         :from:to;
-        bh=O8RtAbzcSSTDxjcEMF5CfzqbJfEiDGNZZoY0KVn/1T0=;
-        b=Psi1uSQZ3S+K6+s0qg0XcDzZklVX+Vb+XSFjoU18Hg7G7bicbsTN9SGJjb6sxoqCWR
-         rp9x61+5/Iur76ey/3BHPF3WUoBMuPsMH1wfK/REtcjnx6oRULWGR0xXDDF0YdIb2Ce9
-         4HvyaC2W4RtAVgSKvvpHHEE6rxCnVfayFdnHQOQAAZ48uFkkcf0J92JCdD5C8Ap8nxGe
-         h2T8OMGAAA9V9uFx9C7Dsd+HRwEsWQzh+7qv+GJwvcKXYmqk8YzJoWg0cn8xejVeXEHR
-         aOGoRI53QCkuaNeOc7aELriR2m7YBLWKfIJlP0G6sHyvmpWgXeDLZ17YXK2DY7aEanA0
-         nyuA==
-X-Gm-Message-State: AOAM532YHyejWw9yG1AI8IPeXQ24ADRL367RZ2K43oevG019/40tmMhu
-        /UdU/zG+prgOPuCI2NFNxvawvKfuFJHlwnglp9xbBfOH0fR5
-X-Google-Smtp-Source: ABdhPJwX5bfGqmJZJTx1CKf+Gj31Bf/rg1E9WhEp/D+oWJghr5aG1ZL6Pl6B1FZ5CgJGK+qf0MlV8c9EiDso7/oaDVeh6yPB3i6k
+        Wed, 2 Dec 2020 07:42:41 -0500
+Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa.ger.corp.intel.com)
+        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.93)
+        (envelope-from <luca@coelho.fi>)
+        id 1kkRSD-0037gb-Lo; Wed, 02 Dec 2020 14:41:54 +0200
+From:   Luca Coelho <luca@coelho.fi>
+To:     kvalo@codeaurora.org
+Cc:     linux-wireless@vger.kernel.org
+Date:   Wed,  2 Dec 2020 14:41:48 +0200
+Message-Id: <20201202124151.55050-1-luca@coelho.fi>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:f88:: with SMTP id v8mr1662162ilo.270.1606903522038;
- Wed, 02 Dec 2020 02:05:22 -0800 (PST)
-Date:   Wed, 02 Dec 2020 02:05:22 -0800
-In-Reply-To: <0000000000001750e305b52c8d02@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <0000000000009e9aee05b5786171@google.com>
-Subject: Re: KMSAN: uninit-value in validate_beacon_head
-From:   syzbot <syzbot+72b99dcf4607e8c770f3@syzkaller.appspotmail.com>
-To:     davem@davemloft.net, glider@google.com, johannes@sipsolutions.net,
-        kuba@kernel.org, linux-kernel@vger.kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on farmhouse.coelho.fi
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+        TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.4
+Subject: [PATCH 0/3] iwlwifi: fixes intended for v5.10 2020-12-02
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-syzbot has found a reproducer for the following issue on:
+From: Luca Coelho <luciano.coelho@intel.com>
 
-HEAD commit:    73d62e81 kmsan: random: prevent boot-time reports in _mix_..
-git tree:       https://github.com/google/kmsan.git master
-console output: https://syzkaller.appspot.com/x/log.txt?x=153d4607500000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=eef728deea880383
-dashboard link: https://syzkaller.appspot.com/bug?extid=72b99dcf4607e8c770f3
-compiler:       clang version 11.0.0 (https://github.com/llvm/llvm-project.git ca2dcbd030eadbf0aa9b660efe864ff08af6e18b)
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=14c1cec3500000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=160b6cd3500000
+Hi,
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+72b99dcf4607e8c770f3@syzkaller.appspotmail.com
+This is the second patchset with fixes for v5.10.
 
-=====================================================
-BUG: KMSAN: uninit-value in validate_beacon_head+0x51e/0x5c0 net/wireless/nl80211.c:225
-CPU: 0 PID: 8275 Comm: syz-executor237 Not tainted 5.10.0-rc4-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
-Call Trace:
- __dump_stack lib/dump_stack.c:77 [inline]
- dump_stack+0x21c/0x280 lib/dump_stack.c:118
- kmsan_report+0xf7/0x1e0 mm/kmsan/kmsan_report.c:118
- __msan_warning+0x5f/0xa0 mm/kmsan/kmsan_instr.c:197
- validate_beacon_head+0x51e/0x5c0 net/wireless/nl80211.c:225
- validate_nla lib/nlattr.c:544 [inline]
- __nla_validate_parse+0x241a/0x4e00 lib/nlattr.c:588
- __nla_parse+0x141/0x150 lib/nlattr.c:685
- __nlmsg_parse include/net/netlink.h:733 [inline]
- nlmsg_parse_deprecated include/net/netlink.h:772 [inline]
- nl80211_prepare_wdev_dump+0x6fd/0xbb0 net/wireless/nl80211.c:891
- nl80211_dump_station+0x143/0x740 net/wireless/nl80211.c:5810
- netlink_dump+0xb92/0x1670 net/netlink/af_netlink.c:2268
- __netlink_dump_start+0xcf1/0xea0 net/netlink/af_netlink.c:2373
- genl_family_rcv_msg_dumpit net/netlink/genetlink.c:697 [inline]
- genl_family_rcv_msg net/netlink/genetlink.c:780 [inline]
- genl_rcv_msg+0xff0/0x1610 net/netlink/genetlink.c:800
- netlink_rcv_skb+0x70a/0x820 net/netlink/af_netlink.c:2494
- genl_rcv+0x63/0x80 net/netlink/genetlink.c:811
- netlink_unicast_kernel net/netlink/af_netlink.c:1304 [inline]
- netlink_unicast+0x11da/0x14b0 net/netlink/af_netlink.c:1330
- netlink_sendmsg+0x173c/0x1840 net/netlink/af_netlink.c:1919
- sock_sendmsg_nosec net/socket.c:651 [inline]
- sock_sendmsg net/socket.c:671 [inline]
- ____sys_sendmsg+0xc7a/0x1240 net/socket.c:2353
- ___sys_sendmsg net/socket.c:2407 [inline]
- __sys_sendmsg+0x6d5/0x830 net/socket.c:2440
- __do_sys_sendmsg net/socket.c:2449 [inline]
- __se_sys_sendmsg+0x97/0xb0 net/socket.c:2447
- __x64_sys_sendmsg+0x4a/0x70 net/socket.c:2447
- do_syscall_64+0x9f/0x140 arch/x86/entry/common.c:48
- entry_SYSCALL_64_after_hwframe+0x44/0xa9
-RIP: 0033:0x4418a9
-Code: e8 fc a9 02 00 48 83 c4 18 c3 0f 1f 80 00 00 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 0f 83 fb 06 fc ff c3 66 2e 0f 1f 84 00 00 00 00
-RSP: 002b:00007ffe906479e8 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
-RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00000000004418a9
-RDX: 0000000000000000 RSI: 00000000200000c0 RDI: 0000000000000003
-RBP: 00000000006cc018 R08: 0000000000000000 R09: 00000000004002c8
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000402430
-R13: 00000000004024c0 R14: 0000000000000000 R15: 0000000000000000
+The changes are:
 
-Uninit was created at:
- kmsan_save_stack_with_flags mm/kmsan/kmsan.c:121 [inline]
- kmsan_internal_poison_shadow+0x5c/0xf0 mm/kmsan/kmsan.c:104
- kmsan_slab_alloc+0x8d/0xe0 mm/kmsan/kmsan_hooks.c:76
- slab_alloc_node mm/slub.c:2906 [inline]
- __kmalloc_node_track_caller+0xc61/0x15f0 mm/slub.c:4512
- __kmalloc_reserve net/core/skbuff.c:142 [inline]
- __alloc_skb+0x309/0xae0 net/core/skbuff.c:210
- alloc_skb include/linux/skbuff.h:1094 [inline]
- netlink_alloc_large_skb net/netlink/af_netlink.c:1176 [inline]
- netlink_sendmsg+0xdb8/0x1840 net/netlink/af_netlink.c:1894
- sock_sendmsg_nosec net/socket.c:651 [inline]
- sock_sendmsg net/socket.c:671 [inline]
- ____sys_sendmsg+0xc7a/0x1240 net/socket.c:2353
- ___sys_sendmsg net/socket.c:2407 [inline]
- __sys_sendmsg+0x6d5/0x830 net/socket.c:2440
- __do_sys_sendmsg net/socket.c:2449 [inline]
- __se_sys_sendmsg+0x97/0xb0 net/socket.c:2447
- __x64_sys_sendmsg+0x4a/0x70 net/socket.c:2447
- do_syscall_64+0x9f/0x140 arch/x86/entry/common.c:48
- entry_SYSCALL_64_after_hwframe+0x44/0xa9
-=====================================================
+* Add a few PCI IDs for some new devices;
+* Fix 160 vs. non-160 MHz device detection.
+
+As usual, I'm pushing this to a pending branch, for kbuild bot.  And
+since these are fixes for the rc series, please take them directly to
+wireless-drivers.git, as we agreed.
+
+Cheers,
+Luca.
+
+
+Golan Ben Ami (1):
+  iwlwifi: pcie: add some missing entries for AX210
+
+Luca Coelho (2):
+  iwlwifi: pcie: add one missing entry for AX210
+  iwlwifi: pcie: invert values of NO_160 device config entries
+
+ drivers/net/wireless/intel/iwlwifi/iwl-config.h | 4 ++--
+ drivers/net/wireless/intel/iwlwifi/pcie/drv.c   | 6 ++++++
+ 2 files changed, 8 insertions(+), 2 deletions(-)
+
+-- 
+2.29.2
 
