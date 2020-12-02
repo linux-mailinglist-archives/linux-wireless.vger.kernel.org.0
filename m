@@ -2,86 +2,97 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0CED92CC50B
-	for <lists+linux-wireless@lfdr.de>; Wed,  2 Dec 2020 19:31:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 72F6A2CC527
+	for <lists+linux-wireless@lfdr.de>; Wed,  2 Dec 2020 19:31:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729099AbgLBS1y (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 2 Dec 2020 13:27:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51592 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727041AbgLBS1y (ORCPT
+        id S2389491AbgLBS3O (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 2 Dec 2020 13:29:14 -0500
+Received: from a2.mail.mailgun.net ([198.61.254.61]:49292 "EHLO
+        a2.mail.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2389487AbgLBS3N (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 2 Dec 2020 13:27:54 -0500
-Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [IPv6:2001:67c:2050::465:201])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36E92C0613CF
-        for <linux-wireless@vger.kernel.org>; Wed,  2 Dec 2020 10:27:14 -0800 (PST)
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [80.241.60.241])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        Wed, 2 Dec 2020 13:29:13 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1606933729; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=0Yojjsqx1Zc13osDLIGhsE8pvvq8XrNhxySyf/S6H98=;
+ b=k0htDf9Qz+mSB+XvsddATEMEjdDJe4FWwd5tLiJL0zQ9agjHlCkcvvrL9s/RJsKm+pk/7EP3
+ QT+Xy+kcyp8GCzA7B2rPzTCE0UIZOFgwcBk2Jvrz24ewMKqwSkZHrl+eeY5dQYORvggpXcHN
+ mkGeJKVpaJTm+rPqIMrG0K2N9VQ=
+X-Mailgun-Sending-Ip: 198.61.254.61
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n06.prod.us-west-2.postgun.com with SMTP id
+ 5fc7dcc62ef3e1355ff9e667 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 02 Dec 2020 18:28:22
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 37D46C43464; Wed,  2 Dec 2020 18:28:22 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        MISSING_DATE,MISSING_MID,SPF_FAIL,URIBL_BLOCKED autolearn=no
+        autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4CmS9p0qZQzQlB2;
-        Wed,  2 Dec 2020 19:27:10 +0100 (CET)
-X-Virus-Scanned: amavisd-new at heinlein-support.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=doubly.so; s=MBO0001;
-        t=1606933628;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type;
-        bh=UrOz2iwa/1LXpX+O00deRP3QCKCc3Veuj6NSg5Vfstk=;
-        b=yTuhaxfKlpLrtMeyDG3VOoodIN04xx6sJ72Vb+5tjiVi99lhucnEqsI+8lYSkPf56y9HnY
-        JaHpRrGyNOGzlfj4bY+IJPb20i3wAQyUacm1tBoD0keYt/mNGmVaBAL3xNxZPld5o9oOTe
-        CRi0wgLYciW/9eJHgYyItAQe/Ng9viiFVZbBEL0W5McGP8gl0eRrfe59fRAUCE6QRnf895
-        vsn5wrePXFT4fcbLp8+nTWwxOON2uL+QWHQIkvjxZccvgGT/rbWphhbkXFHSCw3kNfHvmT
-        8Mey5w+cE2w0kIfhmTuYcfMj0dRoonfBbc3tH8/VxiuQ5H9TvCJvwzBTaGX63Q==
-Received: from smtp2.mailbox.org ([80.241.60.241])
-        by spamfilter03.heinlein-hosting.de (spamfilter03.heinlein-hosting.de [80.241.56.117]) (amavisd-new, port 10030)
-        with ESMTP id 5L_hoJTkQuk9; Wed,  2 Dec 2020 19:27:06 +0100 (CET)
-Date:   Wed, 2 Dec 2020 19:27:05 +0100
-From:   Devin Bayer <dev@doubly.so>
-To:     ath11k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org, kvalo@codeaurora.org
-Subject: [PATCH] add ath11k MODULE_FIRMWARE macros
-Message-ID: <20201202182705.dhkml4nb4rf2vwav@orac>
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id D0205C43460;
+        Wed,  2 Dec 2020 18:28:19 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org D0205C43460
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-MBO-SPAM-Probability: 
-X-Rspamd-Score: -4.68 / 15.00 / 15.00
-X-Rspamd-Queue-Id: 0D3EB16FE
-X-Rspamd-UID: c90786
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v3] ath10k: Fix the parsing error in service available
+ event
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <1605501291-23040-1-git-send-email-pillair@codeaurora.org>
+References: <1605501291-23040-1-git-send-email-pillair@codeaurora.org>
+To:     Rakesh Pillai <pillair@codeaurora.org>
+Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kuabhs@chromium.org,
+        dianders@chromium.org, briannorris@chromium.org,
+        Rakesh Pillai <pillair@codeaurora.org>
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
+Message-Id: <20201202182822.37D46C43464@smtp.codeaurora.org>
+Date:   Wed,  2 Dec 2020 18:28:22 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
+Rakesh Pillai <pillair@codeaurora.org> wrote:
 
-I am trying to get the ath11k driver to work with VyOS and during the
-build it tries to discover the firmware blobs which drivers require.
+> The wmi service available event has been
+> extended to contain extra 128 bit for new services
+> to be indicated by firmware.
+> 
+> Currently the presence of any optional TLVs in
+> the wmi service available event leads to a parsing
+> error with the below error message:
+> ath10k_snoc 18800000.wifi: failed to parse svc_avail tlv: -71
+> 
+> The wmi service available event parsing should
+> not return error for the newly added optional TLV.
+> Fix this parsing for service available event message.
+> 
+> Tested-on: WCN3990 hw1.0 SNOC WLAN.HL.3.2.2-00720-QCAHLSWMTPL-1
+> 
+> Fixes: cea19a6ce8bf ("ath10k: add WMI_SERVICE_AVAILABLE_EVENT support")
+> Signed-off-by: Rakesh Pillai <pillair@codeaurora.org>
+> Reviewed-by: Douglas Anderson <dianders@chromium.org>
+> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 
-This doesn't work with ath11k because it doesn't use the MODULE_FIRMWARE
-macro. This patch fixes that.
+Patch applied to ath-next branch of ath.git, thanks.
 
-Thanks,
-Devin
+c7cee9c0f499 ath10k: Fix the parsing error in service available event
 
-Signed-off-by: Devin Bayer <dev@doubly.so>
----
- drivers/net/wireless/ath/ath11k/core.c | 6 ++++++
- 1 file changed, 6 insertions(+)
-
-diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
-index af59c23fea56..2add42ce729b 100644
---- a/drivers/net/wireless/ath/ath11k/core.c
-+++ b/drivers/net/wireless/ath/ath11k/core.c
-@@ -991,3 +991,9 @@ EXPORT_SYMBOL(ath11k_core_resume);
- 
- MODULE_DESCRIPTION("Core module for Qualcomm Atheros 802.11ax wireless LAN cards.");
- MODULE_LICENSE("Dual BSD/GPL");
-+
-+/* QCA639x 2.0 firmware files */
-+MODULE_FIRMWARE(ATH11K_FW_DIR "/QCA6390/hw2.0/" ATH11K_BOARD_API2_FILE);
-+MODULE_FIRMWARE(ATH11K_FW_DIR "/QCA6390/hw2.0/" ATH11K_AMSS_FILE);
-+MODULE_FIRMWARE(ATH11K_FW_DIR "/QCA6390/hw2.0/" ATH11K_M3_FILE);
-+
 -- 
-2.25.1
+https://patchwork.kernel.org/project/linux-wireless/patch/1605501291-23040-1-git-send-email-pillair@codeaurora.org/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
