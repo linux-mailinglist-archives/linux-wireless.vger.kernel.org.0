@@ -2,133 +2,82 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A863F2CD22D
-	for <lists+linux-wireless@lfdr.de>; Thu,  3 Dec 2020 10:12:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7194B2CD272
+	for <lists+linux-wireless@lfdr.de>; Thu,  3 Dec 2020 10:23:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388583AbgLCJJU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 3 Dec 2020 04:09:20 -0500
-Received: from aserp2120.oracle.com ([141.146.126.78]:46442 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388304AbgLCJJT (ORCPT
+        id S1728345AbgLCJXL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 3 Dec 2020 04:23:11 -0500
+Received: from so254-31.mailgun.net ([198.61.254.31]:15105 "EHLO
+        so254-31.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728033AbgLCJXL (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 3 Dec 2020 04:09:19 -0500
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0B3951RQ166947;
-        Thu, 3 Dec 2020 09:08:37 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=SrA+odAgtquR/b/EWd2rjq/Px0ixDA0I4TC7Et9m7zE=;
- b=XbtUWIcyg3TAkM0GjGjghS8ihZnh8zgP2Cgr2W7ctNqr3qwZYX8LLrD6cBktRCZZ8QXb
- fbwBxu4e30ar+VHa7WgOH3KrxFD6P8Fk4ps1mKQxQ5dG2oDSiYNkxlOhJIzjwehy9hnG
- G6i4MOax2PNoeftvcJlgM8UJYRJYs6XvcCS7ffce/8f2zAYTBBF4MIWS40USH6xLFFpc
- BZWYz3qEVSlpfbHQJRxopRHIW2Xq2SCT5DWd3pjR1YPRdEZa53YiPaYdzHmdZujw2u2Q
- T38KLtp1Ypb+6U2gilCzdj807xiozP/oNOL0fYa3qqe752H3wBDomsKry7lfUOoVP/jt 2g== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by aserp2120.oracle.com with ESMTP id 353egkvn9d-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 03 Dec 2020 09:08:37 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0B396TSJ016369;
-        Thu, 3 Dec 2020 09:08:36 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by aserp3030.oracle.com with ESMTP id 35404qgw73-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 03 Dec 2020 09:08:36 +0000
-Received: from abhmp0019.oracle.com (abhmp0019.oracle.com [141.146.116.25])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 0B398abs015414;
-        Thu, 3 Dec 2020 09:08:36 GMT
-Received: from mwanda (/102.36.221.92)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Thu, 03 Dec 2020 01:08:35 -0800
-Date:   Thu, 3 Dec 2020 12:08:27 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     luciano.coelho@intel.com
-Cc:     linux-wireless@vger.kernel.org
-Subject: [bug report] iwlwifi: support REDUCE_TX_POWER_CMD version 6
-Message-ID: <X8irC3FP0QDE9QFe@mwanda>
+        Thu, 3 Dec 2020 04:23:11 -0500
+X-Greylist: delayed 351 seconds by postgrey-1.27 at vger.kernel.org; Thu, 03 Dec 2020 04:23:10 EST
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1606987365; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=OVTCNbyf8qxmCUM1RVhWGLCfrDA7Yx1fdOR/OounDA4=; b=laLdgNLkPw5eJyXU2jqYlqyVv378vQ0zc6eAnpv0npqaIGsuGlqGxpm2cF6O/dxehi4nORFl
+ ZhiljnNVceFJEUmr3JWTbQQVhr9ZDfPf8iP0JVJOE5CwFNlIg/A6u4FtZvycoTBr1vKzsG9u
+ 7J805g8N+zz+B0baUNK4We8lwuI=
+X-Mailgun-Sending-Ip: 198.61.254.31
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n06.prod.us-west-2.postgun.com with SMTP id
+ 5fc8acf226ae63a2b4197fc7 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 03 Dec 2020 09:16:34
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 0BDE8C433C6; Thu,  3 Dec 2020 09:16:34 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
+        autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id C0033C43460;
+        Thu,  3 Dec 2020 09:16:31 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org C0033C43460
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Yan-Hsuan Chuang <tony0620emma@gmail.com>,
+        Stanislaw Gruszka <sgruszka@redhat.com>,
+        Brian Norris <briannorris@chromium.org>,
+        linux-wireless@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH net] rtw88: debug: Fix uninitialized memory in debugfs code
+References: <X8ilOfVz3pf0T5ec@mwanda>
+Date:   Thu, 03 Dec 2020 11:16:29 +0200
+In-Reply-To: <X8ilOfVz3pf0T5ec@mwanda> (Dan Carpenter's message of "Thu, 3 Dec
+        2020 11:43:37 +0300")
+Message-ID: <87pn3rgsgi.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9823 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=3 bulkscore=0
- malwarescore=0 mlxscore=0 mlxlogscore=767 phishscore=0 spamscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2012030056
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9823 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 bulkscore=0 suspectscore=3
- phishscore=0 mlxlogscore=781 lowpriorityscore=0 malwarescore=0
- priorityscore=1501 spamscore=0 impostorscore=0 clxscore=1011 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2012030056
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello Luca Coelho,
+Dan Carpenter <dan.carpenter@oracle.com> writes:
 
-The patch fbb7957d28ac: "iwlwifi: support REDUCE_TX_POWER_CMD version
-6" from Sep 28, 2020, leads to the following static checker warning:
+> This code does not ensure that the whole buffer is initialized and none
+> of the callers check for errors so potentially none of the buffer is
+> initialized.  Add a memset to eliminate this bug.
+>
+> Fixes: e3037485c68e ("rtw88: new Realtek 802.11ac driver")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+>  drivers/net/wireless/realtek/rtw88/debug.c | 2 ++
+>  1 file changed, 2 insertions(+)
 
-	drivers/net/wireless/intel/iwlwifi/fw/acpi.c:462 iwl_sar_fill_table()
-	error: buffer overflow 'prof->table' 10 <= 15
+I'll take this to wireless-drivers, this shouldn't go to net.
 
-drivers/net/wireless/intel/iwlwifi/fw/acpi.c
-   422  static int iwl_sar_fill_table(struct iwl_fw_runtime *fwrt,
-   423                                __le16 *per_chain, u32 n_subbands,
-   424                                int prof_a, int prof_b)
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-Original n_subbands was ACPI_SAR_NUM_SUB_BANDS (5) but now it can be
-IWL_NUM_SUB_BANDS_V2 (11) as well.
-
-   425  {
-   426          int profs[ACPI_SAR_NUM_CHAIN_LIMITS] = { prof_a, prof_b };
-   427          int i, j, idx;
-   428  
-   429          for (i = 0; i < ACPI_SAR_NUM_CHAIN_LIMITS; i++) {
-   430                  struct iwl_sar_profile *prof;
-   431  
-   432                  /* don't allow SAR to be disabled (profile 0 means disable) */
-   433                  if (profs[i] == 0)
-   434                          return -EPERM;
-   435  
-   436                  /* we are off by one, so allow up to ACPI_SAR_PROFILE_NUM */
-   437                  if (profs[i] > ACPI_SAR_PROFILE_NUM)
-   438                          return -EINVAL;
-   439  
-   440                  /* profiles go from 1 to 4, so decrement to access the array */
-   441                  prof = &fwrt->sar_profiles[profs[i] - 1];
-   442  
-   443                  /* if the profile is disabled, do nothing */
-   444                  if (!prof->enabled) {
-   445                          IWL_DEBUG_RADIO(fwrt, "SAR profile %d is disabled.\n",
-   446                                          profs[i]);
-   447                          /*
-   448                           * if one of the profiles is disabled, we
-   449                           * ignore all of them and return 1 to
-   450                           * differentiate disabled from other failures.
-   451                           */
-   452                          return 1;
-   453                  }
-   454  
-   455                  IWL_DEBUG_INFO(fwrt,
-   456                                 "SAR EWRD: chain %d profile index %d\n",
-   457                                 i, profs[i]);
-   458                  IWL_DEBUG_RADIO(fwrt, "  Chain[%d]:\n", i);
-   459                  for (j = 0; j < n_subbands; j++) {
-   460                          idx = i * ACPI_SAR_NUM_SUB_BANDS + j;
-   461                          per_chain[i * n_subbands + j] =
-   462                                  cpu_to_le16(prof->table[idx]);
-                                                    ^^^^^^^^^^^^^^^^
-But this table size wasn't increased so potentially we're reading beyond
-the end of the array?
-
-   463                          IWL_DEBUG_RADIO(fwrt, "    Band[%d] = %d * .125dBm\n",
-   464                                          j, prof->table[idx]);
-                                                   ^^^^^^^^^^^^^^^^
-   465                  }
-   466          }
-   468          return 0;
-   469  }
-
-regards,
-dan carpenter
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
