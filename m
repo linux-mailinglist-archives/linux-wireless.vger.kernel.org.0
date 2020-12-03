@@ -2,109 +2,86 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C4C62CDA2B
-	for <lists+linux-wireless@lfdr.de>; Thu,  3 Dec 2020 16:36:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 133CE2CDA8B
+	for <lists+linux-wireless@lfdr.de>; Thu,  3 Dec 2020 16:59:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730706AbgLCPey (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 3 Dec 2020 10:34:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50164 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726610AbgLCPey (ORCPT
+        id S1730115AbgLCP7g (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 3 Dec 2020 10:59:36 -0500
+Received: from m43-15.mailgun.net ([69.72.43.15]:17881 "EHLO
+        m43-15.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727395AbgLCP7f (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 3 Dec 2020 10:34:54 -0500
-Received: from mail-vk1-xa44.google.com (mail-vk1-xa44.google.com [IPv6:2607:f8b0:4864:20::a44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FF99C061A4F
-        for <linux-wireless@vger.kernel.org>; Thu,  3 Dec 2020 07:34:08 -0800 (PST)
-Received: by mail-vk1-xa44.google.com with SMTP id a129so488937vki.5
-        for <linux-wireless@vger.kernel.org>; Thu, 03 Dec 2020 07:34:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=h6bUmmhNs5Vo0iuri/gifDqZRZWxy1kGAo1J9lB1K5k=;
-        b=D0ie8/h3FBLr6GsJocONE1JbQgocKTLMtMzcvLZ4m0y7cnANQLWYb2PicTVkU3CHWU
-         0xhY3CUtX4DW0z+8e0aqlOnA0qQynUINmANChrlAvRpPTKilDW7S8pl1Ya7o5kR9BFVg
-         gJdorF74HsyAZkpPn12nGzaqdkO24ic6ate64=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=h6bUmmhNs5Vo0iuri/gifDqZRZWxy1kGAo1J9lB1K5k=;
-        b=VtZcofZqKiAj3I3BKlbDqfqDaUwQIRI0L8fXkRISrYSgogHOMNv0mFCJqfW1YzT6nZ
-         Z038H2W6vBjL3KdqSqJRvV+GwqXzsel+P8Ntxs8ViVVymzqnMYfQKq0I7/QFkMnQ63Pl
-         w8VmWxABtBLwj3OCOomI88uzx0lRjlKHgXXWld/1bPYujQevQatdf6uBUZlzFmZfDzct
-         NQAWjXnssLopJuWpbdUxuiefPmZcnINS3jPdvLzJ3PmC6fbjRGFAbvoahaLJUG5EzKl5
-         PCqeGjamBhjNYw6TApjt57rHKeZdVwp9+XltsYRMskreMYDJ9mNPOeNGwtFvwq1ygGiJ
-         mmcw==
-X-Gm-Message-State: AOAM5331gDHUIhojLXyTDe4b2Hr+t1/ddMahpwyFp9l2vhUmZI9WLRgb
-        Waml8MOiF3PAD/LDGWmCpE37Q9dST4iIng==
-X-Google-Smtp-Source: ABdhPJzFLRbFd4lw7DxYO61UanDc38phuIkqUDMvS8gtBO3uJT/0cJIAFl5Nn1ouUb9VU4BHKkw93Q==
-X-Received: by 2002:a1f:2d90:: with SMTP id t138mr2249921vkt.23.1607009646859;
-        Thu, 03 Dec 2020 07:34:06 -0800 (PST)
-Received: from mail-vs1-f54.google.com (mail-vs1-f54.google.com. [209.85.217.54])
-        by smtp.gmail.com with ESMTPSA id b66sm189024vke.8.2020.12.03.07.34.05
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 03 Dec 2020 07:34:05 -0800 (PST)
-Received: by mail-vs1-f54.google.com with SMTP id x4so1450454vsp.7
-        for <linux-wireless@vger.kernel.org>; Thu, 03 Dec 2020 07:34:05 -0800 (PST)
-X-Received: by 2002:a67:8c41:: with SMTP id o62mr2741810vsd.49.1607009645158;
- Thu, 03 Dec 2020 07:34:05 -0800 (PST)
-MIME-Version: 1.0
-References: <20201112200906.991086-1-kuabhs@chromium.org> <20201112200856.v2.1.Ia526132a366886e3b5cf72433d0d58bb7bb1be0f@changeid>
- <CAD=FV=XKCLgL6Bt+3KfqKByyP5fpwXOh6TNHXAoXkaQJRzjKjQ@mail.gmail.com>
- <002401d6c242$d78f2140$86ad63c0$@codeaurora.org> <CAD=FV=UnecON-M9eZVQePuNpdygN_E9OtLN495Xe1GL_PA94DQ@mail.gmail.com>
- <002d01d6c2dd$4386d880$ca948980$@codeaurora.org> <CAD=FV=WQPMnor3oTefDHd6JP6UmpyBo7UsOJ1Sg4Ly1otxr6hw@mail.gmail.com>
- <004301d6c968$12ef1b10$38cd5130$@codeaurora.org>
-In-Reply-To: <004301d6c968$12ef1b10$38cd5130$@codeaurora.org>
-From:   Doug Anderson <dianders@chromium.org>
-Date:   Thu, 3 Dec 2020 07:33:52 -0800
-X-Gmail-Original-Message-ID: <CAD=FV=VCbjRUxUsmyk=64FLDGU=W41EXh5tdfQr1Lg83T8jiEA@mail.gmail.com>
-Message-ID: <CAD=FV=VCbjRUxUsmyk=64FLDGU=W41EXh5tdfQr1Lg83T8jiEA@mail.gmail.com>
-Subject: Re: [PATCH v2 1/1] ath10k: add option for chip-id based BDF selection
-To:     Rakesh Pillai <pillair@codeaurora.org>
-Cc:     Abhishek Kumar <kuabhs@chromium.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        ath10k <ath10k@lists.infradead.org>,
-        Brian Norris <briannorris@chromium.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
+        Thu, 3 Dec 2020 10:59:35 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1607011150; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=cdvGZQjxy9e6wl42BhTU4hW30soCXTbLj1f9vFO1CQk=; b=bup7jRdyZF2vGbVDXL8s28j+b57ATsm6rXsouEGX4z67uHxD6czofqG5gy1KK+CmqO4O0ldq
+ tf+lUb25/CWwBsqehyUXXYBwdc1e12YJE/s80+kJbNxxfFazDoSjDhRE+EnfOP5FmAq3SRrp
+ EXK0ixLE5sr+N9fpwtMlQSRU6Fk=
+X-Mailgun-Sending-Ip: 69.72.43.15
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n09.prod.us-east-1.postgun.com with SMTP id
+ 5fc90b2d0b3fb596c8809fc2 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 03 Dec 2020 15:58:37
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 61742C433ED; Thu,  3 Dec 2020 15:58:36 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 2EB66C433C6;
+        Thu,  3 Dec 2020 15:58:32 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 2EB66C433C6
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Srinivasan Raju <srini.raju@purelifi.com>
+Cc:     Mostafa Afgani <mostafa.afgani@purelifi.com>,
         "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>,
-        netdev <netdev@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        Rob Herring <robh@kernel.org>,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+        open list <linux-kernel@vger.kernel.org>,
+        "open list\:NETWORKING DRIVERS \(WIRELESS\)" 
+        <linux-wireless@vger.kernel.org>,
+        "open list\:NETWORKING DRIVERS" <netdev@vger.kernel.org>
+Subject: Re: [PATCH] [v7] wireless: Initial driver submission for pureLiFi STA devices
+References: <20201116092253.1302196-1-srini.raju@purelifi.com>
+        <20201124144448.4E95EC43460@smtp.codeaurora.org>
+        <CWXP265MB17998453F1460D55FA667E51E0F90@CWXP265MB1799.GBRP265.PROD.OUTLOOK.COM>
+        <CWXP265MB17995D2233C32796091FFEE4E0F20@CWXP265MB1799.GBRP265.PROD.OUTLOOK.COM>
+Date:   Thu, 03 Dec 2020 17:58:30 +0200
+In-Reply-To: <CWXP265MB17995D2233C32796091FFEE4E0F20@CWXP265MB1799.GBRP265.PROD.OUTLOOK.COM>
+        (Srinivasan Raju's message of "Thu, 3 Dec 2020 04:43:30 +0000")
+Message-ID: <87h7p2hoex.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+Srinivasan Raju <srini.raju@purelifi.com> writes:
 
-On Thu, Dec 3, 2020 at 3:33 AM Rakesh Pillai <pillair@codeaurora.org> wrote:
->
-> > What I'm trying to say is this.  Imagine that:
-> >
-> > a) the device tree has the "variant" property.
-> >
-> > b) the BRD file has two entries, one for "board-id" (1) and one for
-> > "board-id + chip-id" (2).  It doesn't have one for "board-id + chip-id
-> > + variant" (3).
-> >
-> > With your suggestion we'll see the "variant" property in the device
-> > tree.  That means we'll search for (1) and (3).  (3) isn't there, so
-> > we'll pick (1).  ...but we really should have picked (2), right?
->
-> Do we expect board-2.bin to not be populated with the bdf with variant field (if its necessary ?)
+> we will be submitting to linux-firmware repository @
+> https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git
+> I will share the link once it is accpeted, we have sent another
+> version of the patch v8 , please review and provide your comments
 
-The whole fact that there is a fallback to begin with implies that
-there can be a mismatch between the board-2.bin and the device tree
-file.  Once we accept that there can be a mismatch, it seems good to
-try all 3 fallbacks in order.
+What will be the directory structure in linux-firmware? It should be
+unique so that it's not possible to mix with other drivers.
 
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-> Seems fine for me, if we have 2 fallback names if that is needed.
-
-OK, sounds good.  So hopefully Abhishek can post a v3 based on what's
-in <https://crrev.com/c/2556437> and you can confirm you're good with
-it there?
-
--Doug
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
