@@ -2,214 +2,161 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 599AB2CD0A1
+	by mail.lfdr.de (Postfix) with ESMTP id C09AF2CD0A2
 	for <lists+linux-wireless@lfdr.de>; Thu,  3 Dec 2020 08:55:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728661AbgLCHyr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 3 Dec 2020 02:54:47 -0500
-Received: from mga07.intel.com ([134.134.136.100]:22635 "EHLO mga07.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725912AbgLCHyr (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 3 Dec 2020 02:54:47 -0500
-IronPort-SDR: f7NMR6tBtSvBcIoWh+/TIDPEEd1XI8U7unutFicCT20S0CKI8JBjK2aj/UtVaijUyvepzV/LwM
- vHkoRB1jY9UQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9823"; a="237271262"
-X-IronPort-AV: E=Sophos;i="5.78,389,1599548400"; 
-   d="scan'208";a="237271262"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Dec 2020 23:54:05 -0800
-IronPort-SDR: i/lm8vqnM2c530yZryCaLZcizAF0BERI6+Z9jDcve7VdfNMFWBht6bO6tgDqNpwvsWwwk54bVn
- odIIPCBm9Gkg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.78,389,1599548400"; 
-   d="scan'208";a="538263954"
-Received: from lkp-server01.sh.intel.com (HELO c4fb854e61c6) ([10.239.97.150])
-  by fmsmga006.fm.intel.com with ESMTP; 02 Dec 2020 23:54:04 -0800
-Received: from kbuild by c4fb854e61c6 with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1kkjRD-00007c-PB; Thu, 03 Dec 2020 07:54:03 +0000
-Date:   Thu, 03 Dec 2020 15:53:46 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     linux-wireless@vger.kernel.org
-Subject: [wireless-drivers-next:master] BUILD SUCCESS
- 9eb597c74483ad5c230a884449069adfb68285ea
-Message-ID: <5fc8998a.TKAQr4trcYl0QEmL%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S1727849AbgLCHyd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 3 Dec 2020 02:54:33 -0500
+Received: from smtprelay0022.hostedemail.com ([216.40.44.22]:38368 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1725912AbgLCHyd (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 3 Dec 2020 02:54:33 -0500
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay06.hostedemail.com (Postfix) with ESMTP id 6DE7D18225636;
+        Thu,  3 Dec 2020 07:53:51 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:960:973:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1542:1593:1594:1711:1730:1747:1777:1792:2393:2559:2562:2828:3138:3139:3140:3141:3142:3355:3622:3865:3867:3868:3871:4321:5007:7903:8957:10004:10400:10848:11026:11232:11473:11657:11658:11914:12043:12295:12296:12297:12438:12679:12740:12760:12895:13019:13161:13229:13439:14659:14721:21080:21627:21990:30054:30062:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:3,LUA_SUMMARY:none
+X-HE-Tag: scent11_41037c3273ba
+X-Filterd-Recvd-Size: 4243
+Received: from XPS-9350.home (unknown [47.151.128.180])
+        (Authenticated sender: joe@perches.com)
+        by omf10.hostedemail.com (Postfix) with ESMTPA;
+        Thu,  3 Dec 2020 07:53:49 +0000 (UTC)
+Message-ID: <ffbf22c4a043f73548157c6620781b8f9a00dd40.camel@perches.com>
+Subject: Re: [PATCH] [v9] wireless: Initial driver submission for pureLiFi
+ STA devices
+From:   Joe Perches <joe@perches.com>
+To:     Srinivasan Raju <srini.raju@purelifi.com>
+Cc:     mostafa.afgani@purelifi.com, Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        Rob Herring <robh@kernel.org>,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+        open list <linux-kernel@vger.kernel.org>,
+        "open list:NETWORKING DRIVERS (WIRELESS)" 
+        <linux-wireless@vger.kernel.org>,
+        "open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>
+Date:   Wed, 02 Dec 2020 23:53:48 -0800
+In-Reply-To: <20201203050947.156241-1-srini.raju@purelifi.com>
+References: <20200928102008.32568-1-srini.raju@purelifi.com>
+         <20201203050947.156241-1-srini.raju@purelifi.com>
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.38.1-1 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git  master
-branch HEAD: 9eb597c74483ad5c230a884449069adfb68285ea  Merge ath-next from git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git
+On Thu, 2020-12-03 at 10:39 +0530, Srinivasan Raju wrote:
+> This introduces the pureLiFi LiFi driver for LiFi-X, LiFi-XC
+> and LiFi-XL USB devices.
 
-elapsed time: 725m
+The below is a trivial readability possible enhancement and should not
+hinder this patch being applied.
 
-configs tested: 150
-configs skipped: 2
+> diff --git a/drivers/net/wireless/purelifi/dbgfs.c b/drivers/net/wireless/purelifi/dbgfs.c
+[]
+> +ssize_t purelifi_store_frequency(struct device *dev,
+> +				 struct device_attribute *attr,
+> +				 const char *buf,
+> +				 size_t len)
+> +{
+> +	int i, r, row, col, predivider, feedback_divider, output_div_0;
+> +	int output_div_1, output_div_2, clkout3_phase;
+> +	char values[6][4] = {{0}, {0} };
+> +	char usr_input[8] = {0};
+> +	bool valid = false;
+> +	int rv = 0;
+> +
+> +	row = 0; col = 0;
+> +	for (i = 0; i < min(len, sizeof(values)); i++) {
+> +		values[row][col] = buf[i];
+> +		col++;
+> +		if (buf[i] == 0x20) {
+> +			row++;
+> +			col = 0;
+> +		} else if (buf[i] == 0x0A) {
+> +			if (row == 5 && col > 0) {
+> +				rv = sscanf((char *)&values[0][0],
+> +					    "%d", &predivider);
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Aren't the casts to (char *) redundant ?
 
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-mips                      fuloong2e_defconfig
-arm                        spear6xx_defconfig
-m68k                        m5407c3_defconfig
-powerpc                      ppc64e_defconfig
-arm                   milbeaut_m10v_defconfig
-powerpc                     tqm8541_defconfig
-nios2                         3c120_defconfig
-powerpc                     pseries_defconfig
-sparc                       sparc64_defconfig
-mips                           ip22_defconfig
-m68k                          multi_defconfig
-sh                           se7705_defconfig
-c6x                        evmc6457_defconfig
-mips                      malta_kvm_defconfig
-arm                           sama5_defconfig
-arm                         mv78xx0_defconfig
-powerpc                     ksi8560_defconfig
-powerpc                 mpc8560_ads_defconfig
-sparc                            alldefconfig
-powerpc                        fsp2_defconfig
-arc                          axs103_defconfig
-sh                          rsk7264_defconfig
-sh                             shx3_defconfig
-sh                        sh7785lcr_defconfig
-sh                           se7724_defconfig
-sh                            titan_defconfig
-csky                             alldefconfig
-m68k                          sun3x_defconfig
-arm                          ep93xx_defconfig
-powerpc                     powernv_defconfig
-powerpc                      walnut_defconfig
-arm                         s3c6400_defconfig
-arm                       aspeed_g5_defconfig
-sparc                       sparc32_defconfig
-mips                         tb0287_defconfig
-m68k                          hp300_defconfig
-mips                     cu1830-neo_defconfig
-sh                           se7343_defconfig
-arm                            u300_defconfig
-arm                       versatile_defconfig
-sh                            hp6xx_defconfig
-arm                           sunxi_defconfig
-arm                       mainstone_defconfig
-m68k                            q40_defconfig
-powerpc               mpc834x_itxgp_defconfig
-sh                ecovec24-romimage_defconfig
-mips                        nlm_xlr_defconfig
-arc                     nsimosci_hs_defconfig
-arm                            mmp2_defconfig
-arm                        mvebu_v5_defconfig
-xtensa                  audio_kc705_defconfig
-sh                           sh2007_defconfig
-sh                     sh7710voipgw_defconfig
-powerpc                 mpc8272_ads_defconfig
-mips                         bigsur_defconfig
-arm                          prima2_defconfig
-arc                           tb10x_defconfig
-m68k                                defconfig
-arm                        keystone_defconfig
-xtensa                              defconfig
-powerpc                     stx_gp3_defconfig
-arm                       cns3420vb_defconfig
-mips                         mpc30x_defconfig
-mips                       rbtx49xx_defconfig
-arm                         s3c2410_defconfig
-arm                         nhk8815_defconfig
-mips                        maltaup_defconfig
-arm                           omap1_defconfig
-mips                           ip32_defconfig
-h8300                    h8300h-sim_defconfig
-arm                           corgi_defconfig
-powerpc                     ep8248e_defconfig
-sh                   sh7770_generic_defconfig
-powerpc                 mpc85xx_cds_defconfig
-sh                          landisk_defconfig
-mips                     cu1000-neo_defconfig
-m68k                       m5275evb_defconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-c6x                              allyesconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-x86_64               randconfig-a004-20201202
-x86_64               randconfig-a006-20201202
-x86_64               randconfig-a001-20201202
-x86_64               randconfig-a002-20201202
-x86_64               randconfig-a005-20201202
-x86_64               randconfig-a003-20201202
-i386                 randconfig-a004-20201202
-i386                 randconfig-a005-20201202
-i386                 randconfig-a001-20201202
-i386                 randconfig-a002-20201202
-i386                 randconfig-a006-20201202
-i386                 randconfig-a003-20201202
-i386                 randconfig-a014-20201202
-i386                 randconfig-a013-20201202
-i386                 randconfig-a011-20201202
-i386                 randconfig-a015-20201202
-i386                 randconfig-a012-20201202
-i386                 randconfig-a016-20201202
-riscv                    nommu_k210_defconfig
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-x86_64                                   rhel
-x86_64                           allyesconfig
-x86_64                    rhel-7.6-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                                  kexec
+> +				if (rv != 1)
+> +					valid = false;
+> +				rv = sscanf((char *)&values[1][0],
+> +					    "%d", &feedback_divider);
+> +				if (rv != 1)
+> +					valid = false;
+> +				rv = sscanf((char *)&values[2][0],
+> +					    "%d", &output_div_0);
+> +				if (rv != 1)
+> +					valid = false;
+> +				rv = sscanf((char *)&values[3][0],
+> +					    "%d", &output_div_1);
+> +				if (rv != 1)
+> +					valid = false;
+> +				rv = sscanf((char *)&values[4][0],
+> +					    "%d", &output_div_2);
+> +				if (rv != 1)
+> +					valid = false;
+> +				rv = sscanf((char *)&values[5][0],
+> +					    "%d", &clkout3_phase);
+> +				if (rv != 1)
+> +					valid = false;
+> +				valid = true;
 
-clang tested configs:
-x86_64               randconfig-a016-20201202
-x86_64               randconfig-a012-20201202
-x86_64               randconfig-a014-20201202
-x86_64               randconfig-a013-20201202
-x86_64               randconfig-a015-20201202
-x86_64               randconfig-a011-20201202
+trivia: this might be more intelligible with an array and a loop
 
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+	int *index[] = {
+		&predivider,
+		&feedback_divider,
+		&output_div_0,
+		&output_div_1,
+		&output_div_2,
+		&clkout3_phase
+	};
+
+	valid = true;
+	i = 0;
+	while (valid && i < ARRAY_SIZE(index)) {
+		if (sscanf(&values[i][0], "%d", index[i]) != 1)
+			valid = false;
+		i++;
+	}
+		
+> +
+> +				break;
+> +			}
+> +		}
+> +	}
+> +
+> +	if (valid) {
+> +		usr_input[0] = (char)predivider;
+> +		usr_input[1] = (char)feedback_divider;
+> +		usr_input[2] = (char)output_div_0;
+> +		usr_input[3] = (char)output_div_1;
+> +		usr_input[4] = (char)output_div_2;
+> +		usr_input[5] = (char)clkout3_phase;
+> +
+> +		dev_info(dev, "options IP_DIV: %d VCO_MULT: %d OP_DIV_PHY: %d",
+> +			 usr_input[0], usr_input[1], usr_input[2]);
+> +		dev_info(dev, "OP_DIV_CPU: %d OP_DIV_USB: %d CLK3_PH: %d\n",
+> +			 usr_input[3], usr_input[4], usr_input[5]);
+> +
+> +		r = usb_write_req((const u8 *)&usr_input[0],
+> +				  sizeof(usr_input), USB_REQ_SET_FREQ);
+> +		if (r < 0)
+> +			dev_err(dev, "SET_FREQ failed (%d)\n", r);
+> +	} else {
+> +		dev_err(dev, "Your options are invalid\n");
+> +	}
+> +
+> +	return len;
+> +}
+
+
+
