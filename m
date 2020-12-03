@@ -2,160 +2,182 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B4B32CD4A3
-	for <lists+linux-wireless@lfdr.de>; Thu,  3 Dec 2020 12:33:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AF7CE2CD4A7
+	for <lists+linux-wireless@lfdr.de>; Thu,  3 Dec 2020 12:35:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729162AbgLCLdF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 3 Dec 2020 06:33:05 -0500
-Received: from mailgw02.mediatek.com ([210.61.82.184]:54762 "EHLO
-        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726061AbgLCLdF (ORCPT
+        id S1728811AbgLCLd7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 3 Dec 2020 06:33:59 -0500
+Received: from m43-15.mailgun.net ([69.72.43.15]:51046 "EHLO
+        m43-15.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726061AbgLCLd6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 3 Dec 2020 06:33:05 -0500
-X-UUID: f504ff3665d7482b807e00ce5fd13013-20201203
-X-UUID: f504ff3665d7482b807e00ce5fd13013-20201203
-Received: from mtkcas11.mediatek.inc [(172.21.101.40)] by mailgw02.mediatek.com
-        (envelope-from <shayne.chen@mediatek.com>)
-        (Cellopoint E-mail Firewall v4.1.14 Build 0819 with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 1947520699; Thu, 03 Dec 2020 19:32:17 +0800
-Received: from mtkcas10.mediatek.inc (172.21.101.39) by
- mtkmbs08n1.mediatek.inc (172.21.101.55) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Thu, 3 Dec 2020 19:32:15 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas10.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Thu, 3 Dec 2020 19:32:15 +0800
-From:   Shayne Chen <shayne.chen@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>
-CC:     linux-wireless <linux-wireless@vger.kernel.org>,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        linux-mediatek <linux-mediatek@lists.infradead.org>,
-        Shayne Chen <shayne.chen@mediatek.com>
-Subject: [PATCH] mt76: mt7915: fix "defined but not used" compiler warning
-Date:   Thu, 3 Dec 2020 19:32:10 +0800
-Message-ID: <20201203113210.16354-1-shayne.chen@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+        Thu, 3 Dec 2020 06:33:58 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1606995218; h=Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Message-ID: Date: Subject: In-Reply-To: References: Cc:
+ To: From: Sender; bh=3lEeiYfIabUWjKykhFZltcpohpjJIHJVg3falMmo2a8=; b=LDhJjt11eV4sG/wbrJKa0i6TKaEupBQahM7YQO2Ujs0FNczDebutXqUmn7zgF1W+XRdL7oeT
+ v3krTAvnsL1E96POlzEk/dv1FyAcuG8yXXOI/wCkxYSXsxuEVNf5bzkR2wBQWw4zPm5sVlkK
+ 9+8YPCk3DdLxj0eSaGMWEVqbbrA=
+X-Mailgun-Sending-Ip: 69.72.43.15
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n06.prod.us-east-1.postgun.com with SMTP id
+ 5fc8ccf789b9bc6268d3bc15 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 03 Dec 2020 11:33:11
+ GMT
+Sender: pillair=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 4727AC43462; Thu,  3 Dec 2020 11:33:10 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+Received: from Pillair (unknown [49.205.247.166])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: pillair)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 88C49C433ED;
+        Thu,  3 Dec 2020 11:33:05 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 88C49C433ED
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=pillair@codeaurora.org
+From:   "Rakesh Pillai" <pillair@codeaurora.org>
+To:     "'Doug Anderson'" <dianders@chromium.org>
+Cc:     "'Abhishek Kumar'" <kuabhs@chromium.org>,
+        "'Kalle Valo'" <kvalo@codeaurora.org>,
+        "'LKML'" <linux-kernel@vger.kernel.org>,
+        "'ath10k'" <ath10k@lists.infradead.org>,
+        "'Brian Norris'" <briannorris@chromium.org>,
+        "'linux-wireless'" <linux-wireless@vger.kernel.org>,
+        "'David S. Miller'" <davem@davemloft.net>,
+        "'Jakub Kicinski'" <kuba@kernel.org>,
+        "'netdev'" <netdev@vger.kernel.org>
+References: <20201112200906.991086-1-kuabhs@chromium.org> <20201112200856.v2.1.Ia526132a366886e3b5cf72433d0d58bb7bb1be0f@changeid> <CAD=FV=XKCLgL6Bt+3KfqKByyP5fpwXOh6TNHXAoXkaQJRzjKjQ@mail.gmail.com> <002401d6c242$d78f2140$86ad63c0$@codeaurora.org> <CAD=FV=UnecON-M9eZVQePuNpdygN_E9OtLN495Xe1GL_PA94DQ@mail.gmail.com> <002d01d6c2dd$4386d880$ca948980$@codeaurora.org> <CAD=FV=WQPMnor3oTefDHd6JP6UmpyBo7UsOJ1Sg4Ly1otxr6hw@mail.gmail.com>
+In-Reply-To: <CAD=FV=WQPMnor3oTefDHd6JP6UmpyBo7UsOJ1Sg4Ly1otxr6hw@mail.gmail.com>
+Subject: RE: [PATCH v2 1/1] ath10k: add option for chip-id based BDF selection
+Date:   Thu, 3 Dec 2020 17:03:02 +0530
+Message-ID: <004301d6c968$12ef1b10$38cd5130$@codeaurora.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
+Content-Type: text/plain;
+        charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Mailer: Microsoft Outlook 16.0
+Thread-Index: AQKxMSkDsdRsNwK99YDuloz1ISNQFAKbjoqbAYQwjuUA6sHy1gG3FmuoAayVhWkBiF+H7qfguODA
+Content-Language: en-us
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-If CONFIG_NL80211_TESTMODE is not set, the following compiler warning
-appears:
 
-warning: 'mt7915_mac_tx_rate_val' defined but not used [-Wunused-function]
 
-Since mt7915_mac_tx_rate_val() is only used by
-mt7915_mac_write_txwi_tm(), merge them to get rid of this warning.
+> -----Original Message-----
+> From: Doug Anderson <dianders@chromium.org>
+> Sent: Tuesday, December 1, 2020 12:49 AM
+> To: Rakesh Pillai <pillair@codeaurora.org>
+> Cc: Abhishek Kumar <kuabhs@chromium.org>; Kalle Valo
+> <kvalo@codeaurora.org>; LKML <linux-kernel@vger.kernel.org>; ath10k
+> <ath10k@lists.infradead.org>; Brian Norris <briannorris@chromium.org>;
+> linux-wireless <linux-wireless@vger.kernel.org>; David S. Miller
+> <davem@davemloft.net>; Jakub Kicinski <kuba@kernel.org>; netdev
+> <netdev@vger.kernel.org>
+> Subject: Re: [PATCH v2 1/1] ath10k: add option for chip-id based BDF
+> selection
+>=20
+> Hi,
+>=20
+> On Tue, Nov 24, 2020 at 7:44 PM Rakesh Pillai <pillair@codeaurora.org>
+> wrote:
+> >
+> > > > I missed on reviewing this change. Also I agree with Doug that =
+this is not
+> > > the change I was looking for.
+> > > >
+> > > > The argument "with_variant" can be renamed to =
+"with_extra_params".
+> > > There is no need for any new argument to this function.
+> > > > Case 1: with_extra_params=3D0,  ar->id.bdf_ext[0] =3D 0          =
+   ->   The
+> default
+> > > name will be used (bus=3Dsnoc,qmi_board_id=3D0xab)
+> > > > Case 2: with_extra_params=3D1,  ar->id.bdf_ext[0] =3D 0          =
+   ->
+> > > bus=3Dsnoc,qmi_board_id=3D0xab,qmi_chip_id=3D0xcd
+> > > > Case 3: with_extra_params=3D1,  ar->id.bdf_ext[0] =3D "xyz"      =
+->
+> > > bus=3Dsnoc,qmi_board_id=3D0xab,qmi_chip_id=3D0xcd,variant=3Dxyz
+> > > >
+> > > > ar->id.bdf_ext[0] depends on the DT entry for variant field.
+> > >
+> > > I'm confused about your suggestion.  Maybe you can help clarify.  =
+Are
+> > > you suggesting:
+> > >
+> > > a) Only two calls to ath10k_core_create_board_name()
+> > >
+> > > I'm pretty sure this will fail in some cases.  Specifically =
+consider
+> > > the case where the device tree has a "variant" defined but the BRD
+> > > file only has one entry for (board-id) and one for (board-id +
+> > > chip-id) but no entry for (board-id + chip-id + variant).  If you =
+are
+> > > only making two calls then I don't think you'll pick the right =
+one.
+> > >
+> > > Said another way...
+> > >
+> > > If the device tree has a variant:
+> > > 1. We should prefer a BRD entry that has board-id + chip-id + =
+variant
+> > > 2. If #1 isn't there, we should prefer a BRD entry that has =
+board-id + chip-
+> id
+> > > 3. If #1 and #2 aren't there we fall back to a BRD entry that has =
+board-id.
+> > >
+> > > ...without 3 calls to ath10k_core_create_board_name() we can't =
+handle
+> > > all 3 cases.
+> >
+> > This can be handled by two calls to ath10k_core_create_board_name
+> > 1) ath10k_core_create_board_name(ar, boardname, sizeof(boardname),
+> true)   :  As per my suggestions, this can result in two possible =
+board names
+> >     a) If DT have the "variant" node, it outputs the #1 from your =
+suggestion
+> (1. We should prefer a BRD entry that has board-id + chip-id + =
+variant)
+> >     b) If DT does not have the "variant" node, it outputs the #2 =
+from your
+> suggestion (2. If #1 isn't there, we should prefer a BRD entry that =
+has board-
+> id + chip-id)
+> >
+> > 2) ath10k_core_create_board_name(ar, boardname, sizeof(boardname),
+> false)    :  This is the second call to this function and outputs the =
+#3 from your
+> suggestion (3. If #1 and #2 aren't there we fall back to a BRD entry =
+that has
+> board-id)
+>=20
+> What I'm trying to say is this.  Imagine that:
+>=20
+> a) the device tree has the "variant" property.
+>=20
+> b) the BRD file has two entries, one for "board-id" (1) and one for
+> "board-id + chip-id" (2).  It doesn't have one for "board-id + chip-id
+> + variant" (3).
+>=20
+> With your suggestion we'll see the "variant" property in the device
+> tree.  That means we'll search for (1) and (3).  (3) isn't there, so
+> we'll pick (1).  ...but we really should have picked (2), right?
 
-Fixes: 3ac860a ("mt76: mt7915: implement testmode tx support")
-Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
----
- .../net/wireless/mediatek/mt76/mt7915/mac.c   | 68 ++++++++-----------
- 1 file changed, 28 insertions(+), 40 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-index d93d5ba..21005be 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-@@ -600,51 +600,16 @@ void mt7915_mac_fill_rx_vector(struct mt7915_dev *dev, struct sk_buff *skb)
- }
- #endif
- 
--static u16
--mt7915_mac_tx_rate_val(struct mt76_phy *mphy, u8 mode, u8 rate_idx,
--		       u8 nss, u8 stbc, u8 *bw)
--{
--	u16 rateval = 0;
--
--	switch (mphy->chandef.width) {
--	case NL80211_CHAN_WIDTH_40:
--		*bw = 1;
--		break;
--	case NL80211_CHAN_WIDTH_80:
--		*bw = 2;
--		break;
--	case NL80211_CHAN_WIDTH_80P80:
--	case NL80211_CHAN_WIDTH_160:
--		*bw = 3;
--		break;
--	default:
--		*bw = 0;
--		break;
--	}
--
--	if (mode == MT_PHY_TYPE_HT || mode == MT_PHY_TYPE_HT_GF)
--		nss = 1 + (rate_idx >> 3);
--
--	if (stbc && nss == 1) {
--		nss++;
--		rateval |= MT_TX_RATE_STBC;
--	}
--
--	rateval |= FIELD_PREP(MT_TX_RATE_IDX, rate_idx) |
--		   FIELD_PREP(MT_TX_RATE_MODE, mode) |
--		   FIELD_PREP(MT_TX_RATE_NSS, nss - 1);
--
--	return rateval;
--}
--
- static void
- mt7915_mac_write_txwi_tm(struct mt7915_dev *dev, struct mt76_phy *mphy,
- 			 __le32 *txwi, struct sk_buff *skb)
- {
- #ifdef CONFIG_NL80211_TESTMODE
- 	struct mt76_testmode_data *td = &dev->mt76.test;
-+	u8 rate_idx = td->tx_rate_idx;
-+	u8 nss = td->tx_rate_nss;
- 	u8 bw, mode;
--	u16 rateval;
-+	u16 rateval = 0;
- 	u32 val;
- 
- 	if (skb != dev->mt76.test.tx_skb)
-@@ -655,6 +620,7 @@ mt7915_mac_write_txwi_tm(struct mt7915_dev *dev, struct mt76_phy *mphy,
- 		mode = MT_PHY_TYPE_CCK;
- 		break;
- 	case MT76_TM_TX_MODE_HT:
-+		nss = 1 + (rate_idx >> 3);
- 		mode = MT_PHY_TYPE_HT;
- 		break;
- 	case MT76_TM_TX_MODE_VHT:
-@@ -678,8 +644,30 @@ mt7915_mac_write_txwi_tm(struct mt7915_dev *dev, struct mt76_phy *mphy,
- 		break;
- 	}
- 
--	rateval = mt7915_mac_tx_rate_val(mphy, mode, td->tx_rate_idx,
--					 td->tx_rate_nss, td->tx_rate_stbc, &bw);
-+	switch (mphy->chandef.width) {
-+	case NL80211_CHAN_WIDTH_40:
-+		bw = 1;
-+		break;
-+	case NL80211_CHAN_WIDTH_80:
-+		bw = 2;
-+		break;
-+	case NL80211_CHAN_WIDTH_80P80:
-+	case NL80211_CHAN_WIDTH_160:
-+		bw = 3;
-+		break;
-+	default:
-+		bw = 0;
-+		break;
-+	}
-+
-+	if (td->tx_rate_stbc && nss == 1) {
-+		nss++;
-+		rateval |= MT_TX_RATE_STBC;
-+	}
-+
-+	rateval |= FIELD_PREP(MT_TX_RATE_IDX, rate_idx) |
-+		   FIELD_PREP(MT_TX_RATE_MODE, mode) |
-+		   FIELD_PREP(MT_TX_RATE_NSS, nss - 1);
- 
- 	txwi[2] |= cpu_to_le32(MT_TXD2_FIX_RATE);
- 
--- 
-2.17.1
+Do we expect board-2.bin to not be populated with the bdf with variant =
+field (if its necessary ?)
+Seems fine for me, if we have 2 fallback names if that is needed.
+
+>=20
+> -Doug
 
