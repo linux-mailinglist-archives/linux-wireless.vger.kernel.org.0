@@ -2,122 +2,66 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9537D2CD727
-	for <lists+linux-wireless@lfdr.de>; Thu,  3 Dec 2020 14:35:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 34AAF2CD98A
+	for <lists+linux-wireless@lfdr.de>; Thu,  3 Dec 2020 15:47:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2437036AbgLCNb5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 3 Dec 2020 08:31:57 -0500
-Received: from mail.kernel.org ([198.145.29.99]:49052 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2436943AbgLCNbU (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 3 Dec 2020 08:31:20 -0500
-From:   Sasha Levin <sashal@kernel.org>
-Authentication-Results: mail.kernel.org; dkim=permerror (bad message/signature format)
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Johannes Berg <johannes.berg@intel.com>,
-        Mordechay Goodstein <mordechay.goodstein@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Sasha Levin <sashal@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.9 1/5] iwlwifi: pcie: limit memory read spin time
-Date:   Thu,  3 Dec 2020 08:30:43 -0500
-Message-Id: <20201203133047.931886-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.27.0
+        id S1726385AbgLCOqq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 3 Dec 2020 09:46:46 -0500
+Received: from mail-m963.mail.126.com ([123.126.96.3]:42048 "EHLO
+        mail-m963.mail.126.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726056AbgLCOqq (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 3 Dec 2020 09:46:46 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
+        s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=bdpg5
+        ptMCOQSO9IP2u3k3DCfs5LhwbZD+ct4VFOn97k=; b=dubJOdokMSUxby+mOeaqg
+        NZyeDoM4mtsUv/sJBvVN71Nuo5veRHbp7XtRFnnXSZZISIxHYfIR0QA0EWFi/JVQ
+        oKHdO9M6rxPvG7Xm3rSJQfqTcRyRnFc2VakNWB1uFWXcZAk2g3FmslmGyt1bse6R
+        SEU1c8c3mRVy52zJmsHpMc=
+Received: from localhost.localdomain (unknown [140.207.81.18])
+        by smtp8 (Coremail) with SMTP id NORpCgBX1mZ7XchfRfkdOQ--.19890S3;
+        Thu, 03 Dec 2020 11:37:38 +0800 (CST)
+From:   zhouliangya@126.com
+To:     ath10k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org, lzhou <zhouliangya@126.com>
+Subject: [PATCH 1/1] ath10k_pci_wait_for_target_init() should relax cpu for other task instead of calling medelay() so that cpu can run other tasks. Signed-off-by: lzhou <lzhou@sonicwall.com> ---
+Date:   Thu,  3 Dec 2020 11:37:29 +0800
+Message-Id: <20201203033729.382088-2-zhouliangya@126.com>
+X-Mailer: git-send-email 2.26.2
+In-Reply-To: <20201203033729.382088-1-zhouliangya@126.com>
+References: <20201203033729.382088-1-zhouliangya@126.com>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: NORpCgBX1mZ7XchfRfkdOQ--.19890S3
+X-Coremail-Antispam: 1Uf129KBjvdXoW7GF4kWry8ury3Zw1rKr1kGrg_yoW3XFc_WF
+        4fXFs3urW7uwnxtr42ka1FyFyIk3ZxWF1kAa1IqrWfJw47A398Cr90v3W7uryUGry8AFy3
+        ur9FqF18AwnIgjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+        9fnUUvcSsGvfC2KfnxnUUI43ZEXa7xRitku3UUUUU==
+X-Originating-IP: [140.207.81.18]
+X-CM-SenderInfo: p2kr3z5ldqw5bd6rjloofrz/1tbicgLvsVpEBpvZVwAAsj
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: lzhou <zhouliangya@126.com>
 
-[ Upstream commit 04516706bb99889986ddfa3a769ed50d2dc7ac13 ]
-
-When we read device memory, we lock a spinlock, write the address we
-want to read from the device and then spin in a loop reading the data
-in 32-bit quantities from another register.
-
-As the description makes clear, this is rather inefficient, incurring
-a PCIe bus transaction for every read. In a typical device today, we
-want to read 786k SMEM if it crashes, leading to 192k register reads.
-Occasionally, we've seen the whole loop take over 20 seconds and then
-triggering the soft lockup detector.
-
-Clearly, it is unreasonable to spin here for such extended periods of
-time.
-
-To fix this, break the loop down into an outer and an inner loop, and
-break out of the inner loop if more than half a second elapsed. To
-avoid too much overhead, check for that only every 128 reads, though
-there's no particular reason for that number. Then, unlock and relock
-to obtain NIC access again, reprogram the start address and continue.
-
-This will keep (interrupt) latencies on the CPU down to a reasonable
-time.
-
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Mordechay Goodstein <mordechay.goodstein@intel.com>
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
-Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
-Link: https://lore.kernel.org/r/iwlwifi.20201022165103.45878a7e49aa.I3b9b9c5a10002915072312ce75b68ed5b3dc6e14@changeid
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/wireless/intel/iwlwifi/pcie/trans.c   | 36 ++++++++++++++-----
- 1 file changed, 27 insertions(+), 9 deletions(-)
+ drivers/net/wireless/ath/ath10k/pci.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-index e7b873018dca6..e1287c3421165 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-@@ -1904,18 +1904,36 @@ static int iwl_trans_pcie_read_mem(struct iwl_trans *trans, u32 addr,
- 				   void *buf, int dwords)
- {
- 	unsigned long flags;
--	int offs, ret = 0;
-+	int offs = 0;
- 	u32 *vals = buf;
+diff --git a/drivers/net/wireless/ath/ath10k/pci.c b/drivers/net/wireless/ath/ath10k/pci.c
+index 8ab262931dce..2941fbb6a412 100644
+--- a/drivers/net/wireless/ath/ath10k/pci.c
++++ b/drivers/net/wireless/ath/ath10k/pci.c
+@@ -3309,7 +3309,7 @@ int ath10k_pci_wait_for_target_init(struct ath10k *ar)
+ 			/* Fix potential race by repeating CORE_BASE writes */
+ 			ath10k_pci_enable_legacy_irq(ar);
  
--	if (iwl_trans_grab_nic_access(trans, &flags)) {
--		iwl_write32(trans, HBUS_TARG_MEM_RADDR, addr);
--		for (offs = 0; offs < dwords; offs++)
--			vals[offs] = iwl_read32(trans, HBUS_TARG_MEM_RDAT);
--		iwl_trans_release_nic_access(trans, &flags);
--	} else {
--		ret = -EBUSY;
-+	while (offs < dwords) {
-+		/* limit the time we spin here under lock to 1/2s */
-+		ktime_t timeout = ktime_add_us(ktime_get(), 500 * USEC_PER_MSEC);
-+
-+		if (iwl_trans_grab_nic_access(trans, &flags)) {
-+			iwl_write32(trans, HBUS_TARG_MEM_RADDR,
-+				    addr + 4 * offs);
-+
-+			while (offs < dwords) {
-+				vals[offs] = iwl_read32(trans,
-+							HBUS_TARG_MEM_RDAT);
-+				offs++;
-+
-+				/* calling ktime_get is expensive so
-+				 * do it once in 128 reads
-+				 */
-+				if (offs % 128 == 0 && ktime_after(ktime_get(),
-+								   timeout))
-+					break;
-+			}
-+			iwl_trans_release_nic_access(trans, &flags);
-+		} else {
-+			return -EBUSY;
-+		}
- 	}
--	return ret;
-+
-+	return 0;
- }
+-		mdelay(10);
++		schedule_timeout_interruptible(msecs_to_jiffies(10));
+ 	} while (time_before(jiffies, timeout));
  
- static int iwl_trans_pcie_write_mem(struct iwl_trans *trans, u32 addr,
+ 	ath10k_pci_disable_and_clear_legacy_irq(ar);
 -- 
-2.27.0
+2.17.1
 
