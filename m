@@ -2,174 +2,133 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D78692CD1FC
-	for <lists+linux-wireless@lfdr.de>; Thu,  3 Dec 2020 10:02:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A863F2CD22D
+	for <lists+linux-wireless@lfdr.de>; Thu,  3 Dec 2020 10:12:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729871AbgLCJCF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 3 Dec 2020 04:02:05 -0500
-Received: from aserp2120.oracle.com ([141.146.126.78]:40672 "EHLO
+        id S2388583AbgLCJJU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 3 Dec 2020 04:09:20 -0500
+Received: from aserp2120.oracle.com ([141.146.126.78]:46442 "EHLO
         aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726627AbgLCJCE (ORCPT
+        with ESMTP id S2388304AbgLCJJT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 3 Dec 2020 04:02:04 -0500
+        Thu, 3 Dec 2020 04:09:19 -0500
 Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0B38xVod146077;
-        Thu, 3 Dec 2020 09:01:18 GMT
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0B3951RQ166947;
+        Thu, 3 Dec 2020 09:08:37 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=bRqUzkQwqugyqk/6XDRFOSP862Hmo1kn42iyW5F3VB4=;
- b=ikOQVoCSMIKWZB/5WsQyyGRVxGuwlHTVBD7hKEAEovxXcl//rjh9iDUmC6TcGb3TlGuP
- PyNuyt5LRHyx/410S9Ll7D4smlBZDFkpMiJgkBmiN+ZVDkL2GeMQgFckulowo/NDQDJr
- 5ZdM0kEKzh+exiIPFzYWJdt1jeTlQJEbFWE0gN00TKu6ABkIfRXNaJHkmdSqN7XmVb+M
- FOpfLc7CjkYoeWGY14LbzoyHhj53HOu6FgJOnOAO76L/YUScQwqO8MGn8ztaJkaCQISX
- OxwTwprL0Ng9OMCaqCvP1vuZYGdYy+/0uSRnGuwT+iAND10fdWtoln/W2Bi0vv5aDz+K IA== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by aserp2120.oracle.com with ESMTP id 353egkvmby-1
+ bh=SrA+odAgtquR/b/EWd2rjq/Px0ixDA0I4TC7Et9m7zE=;
+ b=XbtUWIcyg3TAkM0GjGjghS8ihZnh8zgP2Cgr2W7ctNqr3qwZYX8LLrD6cBktRCZZ8QXb
+ fbwBxu4e30ar+VHa7WgOH3KrxFD6P8Fk4ps1mKQxQ5dG2oDSiYNkxlOhJIzjwehy9hnG
+ G6i4MOax2PNoeftvcJlgM8UJYRJYs6XvcCS7ffce/8f2zAYTBBF4MIWS40USH6xLFFpc
+ BZWYz3qEVSlpfbHQJRxopRHIW2Xq2SCT5DWd3pjR1YPRdEZa53YiPaYdzHmdZujw2u2Q
+ T38KLtp1Ypb+6U2gilCzdj807xiozP/oNOL0fYa3qqe752H3wBDomsKry7lfUOoVP/jt 2g== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by aserp2120.oracle.com with ESMTP id 353egkvn9d-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 03 Dec 2020 09:01:18 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0B38oN65158684;
-        Thu, 3 Dec 2020 08:59:17 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by userp3020.oracle.com with ESMTP id 3540avqdh8-1
+        Thu, 03 Dec 2020 09:08:37 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0B396TSJ016369;
+        Thu, 3 Dec 2020 09:08:36 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by aserp3030.oracle.com with ESMTP id 35404qgw73-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 03 Dec 2020 08:59:17 +0000
-Received: from abhmp0018.oracle.com (abhmp0018.oracle.com [141.146.116.24])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 0B38xGgf029392;
-        Thu, 3 Dec 2020 08:59:16 GMT
+        Thu, 03 Dec 2020 09:08:36 +0000
+Received: from abhmp0019.oracle.com (abhmp0019.oracle.com [141.146.116.25])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 0B398abs015414;
+        Thu, 3 Dec 2020 09:08:36 GMT
 Received: from mwanda (/102.36.221.92)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Thu, 03 Dec 2020 00:59:15 -0800
-Date:   Thu, 3 Dec 2020 11:59:05 +0300
+        with ESMTP ; Thu, 03 Dec 2020 01:08:35 -0800
+Date:   Thu, 3 Dec 2020 12:08:27 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     pkshih@realtek.com
+To:     luciano.coelho@intel.com
 Cc:     linux-wireless@vger.kernel.org
-Subject: [bug report] rtlwifi: 8192de: Reduce indentation and fix coding style
-Message-ID: <X8io2e+H+Y7j8IxH@mwanda>
+Subject: [bug report] iwlwifi: support REDUCE_TX_POWER_CMD version 6
+Message-ID: <X8irC3FP0QDE9QFe@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9823 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 bulkscore=0
- phishscore=0 mlxscore=0 adultscore=0 malwarescore=0 suspectscore=3
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2012030054
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=3 bulkscore=0
+ malwarescore=0 mlxscore=0 mlxlogscore=767 phishscore=0 spamscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2012030056
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9823 signatures=668682
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 bulkscore=0 suspectscore=3
- phishscore=0 mlxlogscore=999 lowpriorityscore=0 malwarescore=0
+ phishscore=0 mlxlogscore=781 lowpriorityscore=0 malwarescore=0
  priorityscore=1501 spamscore=0 impostorscore=0 clxscore=1011 adultscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2012030055
+ definitions=main-2012030056
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-[ This code is predates your patch which just cleaned up the code. - dan ]
+Hello Luca Coelho,
 
-Hello Ping-Ke Shih,
+The patch fbb7957d28ac: "iwlwifi: support REDUCE_TX_POWER_CMD version
+6" from Sep 28, 2020, leads to the following static checker warning:
 
-The patch 3bde4ed3da38: "rtlwifi: 8192de: Reduce indentation and fix
-coding style" from May 10, 2019, leads to the following static
-checker warning:
+	drivers/net/wireless/intel/iwlwifi/fw/acpi.c:462 iwl_sar_fill_table()
+	error: buffer overflow 'prof->table' 10 <= 15
 
-	drivers/net/wireless/realtek/rtlwifi/rtl8192de/dm.c:999 rtl92d_dm_txpower_tracking_callback_thermalmeter()
-	error: buffer overflow 'ofdm_index' 2 <= 2 (assuming for loop doesn't break)
+drivers/net/wireless/intel/iwlwifi/fw/acpi.c
+   422  static int iwl_sar_fill_table(struct iwl_fw_runtime *fwrt,
+   423                                __le16 *per_chain, u32 n_subbands,
+   424                                int prof_a, int prof_b)
 
-drivers/net/wireless/realtek/rtlwifi/rtl8192de/dm.c
-   769  static void rtl92d_dm_txpower_tracking_callback_thermalmeter(
-   770                          struct ieee80211_hw *hw)
-   771  {
-   772          struct rtl_priv *rtlpriv = rtl_priv(hw);
-   773          struct rtl_hal *rtlhal = rtl_hal(rtl_priv(hw));
-   774          struct rtl_phy *rtlphy = &(rtlpriv->phy);
-   775          struct rtl_efuse *rtlefuse = rtl_efuse(rtl_priv(hw));
-   776          u8 thermalvalue, delta, delta_lck, delta_iqk, delta_rxgain;
-   777          u8 offset, thermalvalue_avg_count = 0;
-   778          u32 thermalvalue_avg = 0;
-   779          bool internal_pa = false;
-   780          long ele_a = 0, ele_d, temp_cck, val_x, value32;
-   781          long val_y, ele_c = 0;
-   782          u8 ofdm_index[2];
-                ^^^^^^^^^^^^^^^^
-ofdm_index[] has two elements.
+Original n_subbands was ACPI_SAR_NUM_SUB_BANDS (5) but now it can be
+IWL_NUM_SUB_BANDS_V2 (11) as well.
 
-   783          s8 cck_index = 0;
-   784          u8 ofdm_index_old[2] = {0, 0};
-   785          s8 cck_index_old = 0;
-   786          u8 index;
-   787          int i;
-   788          bool is2t = IS_92D_SINGLEPHY(rtlhal->version);
-                ^^^^^^^^^^^
-is2t is set here.
+   425  {
+   426          int profs[ACPI_SAR_NUM_CHAIN_LIMITS] = { prof_a, prof_b };
+   427          int i, j, idx;
+   428  
+   429          for (i = 0; i < ACPI_SAR_NUM_CHAIN_LIMITS; i++) {
+   430                  struct iwl_sar_profile *prof;
+   431  
+   432                  /* don't allow SAR to be disabled (profile 0 means disable) */
+   433                  if (profs[i] == 0)
+   434                          return -EPERM;
+   435  
+   436                  /* we are off by one, so allow up to ACPI_SAR_PROFILE_NUM */
+   437                  if (profs[i] > ACPI_SAR_PROFILE_NUM)
+   438                          return -EINVAL;
+   439  
+   440                  /* profiles go from 1 to 4, so decrement to access the array */
+   441                  prof = &fwrt->sar_profiles[profs[i] - 1];
+   442  
+   443                  /* if the profile is disabled, do nothing */
+   444                  if (!prof->enabled) {
+   445                          IWL_DEBUG_RADIO(fwrt, "SAR profile %d is disabled.\n",
+   446                                          profs[i]);
+   447                          /*
+   448                           * if one of the profiles is disabled, we
+   449                           * ignore all of them and return 1 to
+   450                           * differentiate disabled from other failures.
+   451                           */
+   452                          return 1;
+   453                  }
+   454  
+   455                  IWL_DEBUG_INFO(fwrt,
+   456                                 "SAR EWRD: chain %d profile index %d\n",
+   457                                 i, profs[i]);
+   458                  IWL_DEBUG_RADIO(fwrt, "  Chain[%d]:\n", i);
+   459                  for (j = 0; j < n_subbands; j++) {
+   460                          idx = i * ACPI_SAR_NUM_SUB_BANDS + j;
+   461                          per_chain[i * n_subbands + j] =
+   462                                  cpu_to_le16(prof->table[idx]);
+                                                    ^^^^^^^^^^^^^^^^
+But this table size wasn't increased so potentially we're reading beyond
+the end of the array?
 
-   789          u8 ofdm_min_index = 6, ofdm_min_index_internal_pa = 3, rf;
-   790          u8 indexforchannel =
-   791              rtl92d_get_rightchnlplace_for_iqk(rtlphy->current_channel);
-   792          static const u8 index_mapping[5][INDEX_MAPPING_NUM] = {
-   793                  /* 5G, path A/MAC 0, decrease power  */
-   794                  {0, 1, 3, 6, 8, 9,      11, 13, 14, 16, 17, 18, 18},
-   795                  /* 5G, path A/MAC 0, increase power  */
-
-[ snip ]
-
-   830          rtl92d_phy_ap_calibrate(hw, (thermalvalue -
-   831                                       rtlefuse->eeprom_thermalmeter));
-   832  
-   833          if (!thermalvalue)
-   834                  goto exit;
-   835  
-   836          if (is2t)
-   837                  rf = 2;
-   838          else
-   839                  rf = 1;
-
-"rf" is either 1 or 2 depending on "is2t".
-
-   840  
-   841          if (rtlpriv->dm.thermalvalue && !rtlhal->reloadtxpowerindex)
-   842                  goto old_index_done;
-   843  
-   844          ele_d = rtl_get_bbreg(hw, ROFDM0_XATXIQIMBALANCE,  MASKDWORD) & MASKOFDM_D;
-
-[ snip ]
-
-   983                  rtl_dbg(rtlpriv, COMP_POWER_TRACKING, DBG_LOUD,
-   984                          "temp OFDM_A_index=0x%x,cck_index = 0x%x\n",
-   985                          rtlpriv->dm.ofdm_index[0],
-   986                          rtlpriv->dm.cck_index);
-   987          }
-   988          for (i = 0; i < rf; i++) {
-   989                  if (ofdm_index[i] > OFDM_TABLE_SIZE_92D - 1)
-   990                          ofdm_index[i] = OFDM_TABLE_SIZE_92D - 1;
-   991                  else if (ofdm_index[i] < ofdm_min_index)
-   992                          ofdm_index[i] = ofdm_min_index;
-   993          }
-
-i is equal to "rf" after this loop.
-
-   994          if (rtlhal->current_bandtype == BAND_ON_2_4G) {
-   995                  if (cck_index > CCK_TABLE_SIZE - 1) {
-   996                          cck_index = CCK_TABLE_SIZE - 1;
-   997                  } else if (internal_pa ||
-   998                             rtlhal->current_bandtype == BAND_ON_2_4G) {
-   999                          if (ofdm_index[i] < ofdm_min_index_internal_pa)
-                                    ^^^^^^^^^^^^^
-  1000                                  ofdm_index[i] = ofdm_min_index_internal_pa;
-                                        ^^^^^^^^^^^^^
-
-Using "i" after we exited the loop without hitting a break looks wrong
-to me.  It's potentially correct if we know that "is2t" is false but how
-do we know that?
-
-  1001                  } else if (cck_index < 0) {
-  1002                          cck_index = 0;
-  1003                  }
-  1004          }
-  1005          if (is2t) {
-  1006                  rtl_dbg(rtlpriv, COMP_POWER_TRACKING, DBG_LOUD,
-  1007                          "new OFDM_A_index=0x%x, OFDM_B_index = 0x%x, cck_index=0x%x\n",
-  1008                          ofdm_index[0], ofdm_index[1],
-  1009                          cck_index);
+   463                          IWL_DEBUG_RADIO(fwrt, "    Band[%d] = %d * .125dBm\n",
+   464                                          j, prof->table[idx]);
+                                                   ^^^^^^^^^^^^^^^^
+   465                  }
+   466          }
+   468          return 0;
+   469  }
 
 regards,
 dan carpenter
