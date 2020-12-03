@@ -2,96 +2,84 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E3E82CD4AA
-	for <lists+linux-wireless@lfdr.de>; Thu,  3 Dec 2020 12:35:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 941D32CD58A
+	for <lists+linux-wireless@lfdr.de>; Thu,  3 Dec 2020 13:34:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388226AbgLCLec (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 3 Dec 2020 06:34:32 -0500
-Received: from aserp2120.oracle.com ([141.146.126.78]:58328 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726061AbgLCLec (ORCPT
+        id S2388198AbgLCMd0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 3 Dec 2020 07:33:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50248 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388080AbgLCMd0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 3 Dec 2020 06:34:32 -0500
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0B3BP1rE043123;
-        Thu, 3 Dec 2020 11:33:47 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2020-01-29;
- bh=xdtAb2apWwEWceU3YN9j4QOQVkpNJ3qjdii+mAZ0Md0=;
- b=D919YEG+QI9KU5pEa1nSmrJzg0xfZ2M88Bk44ZfSSnaTHP3xZ/xH8n5eyvyV/y6lbnK7
- VJUPT6tteAV/ll4JRFiFk05gXAvFVaWKpwdQdt3oCM/tQaBEwP8MEvCE5HYq8YyD0+CQ
- NOdkg8ceKou/wx+k+w36JpAYZ60mtl2pHf0uKOrwFOYz1owsoLt6FjUMwCb85XlF0jt2
- ik3J7o3U4n6FHv013Yj4QkD5ovdaFt2eo27OdRDjQWBNi4d32GL/yx6hUfhCq+nmhWub
- dxElwrA8aRL3+wev89T0BdYg6NGJtPpg/hJRXFSAye5kMdtNC9c/kPms293DfcLC3J+j ZA== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by aserp2120.oracle.com with ESMTP id 353egkwabs-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 03 Dec 2020 11:33:46 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0B3BPRBe066855;
-        Thu, 3 Dec 2020 11:33:46 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by userp3030.oracle.com with ESMTP id 3540g1jt4a-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 03 Dec 2020 11:33:46 +0000
-Received: from abhmp0016.oracle.com (abhmp0016.oracle.com [141.146.116.22])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 0B3BXiQI001794;
-        Thu, 3 Dec 2020 11:33:45 GMT
-Received: from kadam (/102.36.221.92)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Thu, 03 Dec 2020 03:33:44 -0800
-Date:   Thu, 3 Dec 2020 14:33:37 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     Yan-Hsuan Chuang <tony0620emma@gmail.com>,
-        Stanislaw Gruszka <sgruszka@redhat.com>,
-        Brian Norris <briannorris@chromium.org>,
-        linux-wireless@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH net] rtw88: debug: Fix uninitialized memory in debugfs
- code
-Message-ID: <20201203113337.GL2789@kadam>
-References: <X8ilOfVz3pf0T5ec@mwanda>
- <87pn3rgsgi.fsf@codeaurora.org>
+        Thu, 3 Dec 2020 07:33:26 -0500
+Received: from mail-wm1-x344.google.com (mail-wm1-x344.google.com [IPv6:2a00:1450:4864:20::344])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4A52C061A4E
+        for <linux-wireless@vger.kernel.org>; Thu,  3 Dec 2020 04:32:45 -0800 (PST)
+Received: by mail-wm1-x344.google.com with SMTP id 3so3705559wmg.4
+        for <linux-wireless@vger.kernel.org>; Thu, 03 Dec 2020 04:32:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:sender:from:date:message-id:subject:to;
+        bh=Bz2G26kxSvg7e1HaT+st0Kc9KUixI1QHgdHelauJXrI=;
+        b=jG6ON5J1GMusPhCI18Dmtt4bYTWuSqxt0WlXBzr52lz/caC0RxGpg4H+t4QvOW3h7X
+         ostJ5YVX25mVWpIP6NjIgsu3LZgHNq1MExcbxvfX0R9CYS9MFP/qC/SokKcUjAXRuIxf
+         IqFsRqR1UvhGF7H9tUBMMCHPG6dR8qVrVzu9SrQswNU43ZFEEJM4fQVTgb7S32Ra7kM6
+         x3qXqjmp2J0AzjEtJnF4H8gYwUQozixGR1OxO0UQDQm1WT1NICicjJFmUtxOLW7UP/4p
+         J8zU7wZ+iY74OqILpI3tJFilHyrhAfvpDGSEdTm5DGkSTT0OCxLBitj7JCmmC2g8tHtT
+         Ud9A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:sender:from:date
+         :message-id:subject:to;
+        bh=Bz2G26kxSvg7e1HaT+st0Kc9KUixI1QHgdHelauJXrI=;
+        b=deFcKHQR8MKFCtuVZEpdtensNHpq4HvkTwl/NHLNWBLA8saaKedsdoBMMn2bsOcVlO
+         RSW/AI5i4A+7fZWJ6I2Tmr0wSt3zHrrR5WQjssFPpBiZL9nD4xxcjoRLyUi2ztnJSU5h
+         nV5z+TRRtZzdc4qINhecuyfktN2lNxhd/gm9Bsmont7TtexZyS3OvnIHdPny+BtagXVF
+         tyvSHI+tBcrVZqvvO7qk/dcm+DTrFLRkoI755SQlew+hWlpghuzlq25KVw5iAZh0fCO3
+         AnP5E1ce0kLwd34zJjmtB+E0XWiGv9iJG7MB3zEi2IACCWFXfk7iEuCoVUHTVyHNdLtq
+         RlDQ==
+X-Gm-Message-State: AOAM533SzNp4on3yQHeY3V86OXdVBSd1HUfgTKGHDBsFVly3k9o3zsVS
+        qrgg0e32fxpuq4iS8JBGlcDjqX8N4CyCit8VKG0=
+X-Google-Smtp-Source: ABdhPJw2vJGIRM8/+bKV/+e0iVbjsBT4HgYqyvDa56UIz7zeZFjYLWvt6xz7sqdRJ7iIFfToX03sOhWLmSQ8V7Bkfgc=
+X-Received: by 2002:a7b:cb58:: with SMTP id v24mr3095378wmj.23.1606998764378;
+ Thu, 03 Dec 2020 04:32:44 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87pn3rgsgi.fsf@codeaurora.org>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9823 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 suspectscore=0
- phishscore=0 mlxlogscore=999 adultscore=0 mlxscore=0 bulkscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2012030070
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9823 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 bulkscore=0 suspectscore=0
- phishscore=0 mlxlogscore=999 lowpriorityscore=0 malwarescore=0
- priorityscore=1501 spamscore=0 impostorscore=0 clxscore=1015 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2012030070
+Reply-To: aishagaddfi19@gmail.com
+Sender: faith.kkoness010@gmail.com
+Received: by 2002:adf:a28d:0:0:0:0:0 with HTTP; Thu, 3 Dec 2020 04:32:43 -0800 (PST)
+From:   Mrs Aisha Gaddafi <mrs.aishagaddafi1050@gmail.com>
+Date:   Thu, 3 Dec 2020 04:32:43 -0800
+X-Google-Sender-Auth: NucnoRtavgb5MvS3C5chDGUK5WY
+Message-ID: <CAOOGmoMMFAHnyOm-FoU-GGRt0stn=dYFMPKX_sj756eCZP+a4w@mail.gmail.com>
+Subject: Please Dear, I need your help to invest in your country,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Dec 03, 2020 at 11:16:29AM +0200, Kalle Valo wrote:
-> Dan Carpenter <dan.carpenter@oracle.com> writes:
-> 
-> > This code does not ensure that the whole buffer is initialized and none
-> > of the callers check for errors so potentially none of the buffer is
-> > initialized.  Add a memset to eliminate this bug.
-> >
-> > Fixes: e3037485c68e ("rtw88: new Realtek 802.11ac driver")
-> > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> > ---
-> >  drivers/net/wireless/realtek/rtw88/debug.c | 2 ++
-> >  1 file changed, 2 insertions(+)
-> 
-> I'll take this to wireless-drivers, this shouldn't go to net.
+Assalamu Alaikum Wa Rahmatullahi Wa Barakatuh,
 
-Ugh...  The worst part about that is that I manually added the "net"
-part without thinking thouroughly.  :/  Anyway, I've modified my QC
-scripts now.
+My Dear Good Friend
 
-regards,
-dan carpenter
+May i use this medium to open a mutual communication with you seeking
+your acceptance towards investing in your country under your
+management as my partner, My name is Aisha  Gaddafi and presently
+living in Oman, i am a Widow and single Mother with three Children,
+the only biological
+Daughter of late Libyan President (Late Colonel Muammar Gaddafi) and
+presently i am under political asylum protection by the Omani
+Government..Please Reply me in my box. ( aishagaddfi19@gmail.com)
 
+I have funds worth "Twenty Seven Million Five Hundred Thousand United
+State Dollars" -$27.500.000.00 US Dollars which i want to entrust on
+you for investment project in your country.If you are willing to
+handle this project on my behalf, kindly reply urgent to enable me
+provide you more
+
+details to start the transfer process.
+I shall appreciate your urgent response through my email address
+below: (aishagaddfi19@gmail.com)
+
+Best Regards
+Mrs Aisha Al-Qaddafi
