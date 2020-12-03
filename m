@@ -2,82 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7194B2CD272
-	for <lists+linux-wireless@lfdr.de>; Thu,  3 Dec 2020 10:23:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 61C912CD3D7
+	for <lists+linux-wireless@lfdr.de>; Thu,  3 Dec 2020 11:38:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728345AbgLCJXL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 3 Dec 2020 04:23:11 -0500
-Received: from so254-31.mailgun.net ([198.61.254.31]:15105 "EHLO
+        id S2388533AbgLCKiY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 3 Dec 2020 05:38:24 -0500
+Received: from so254-31.mailgun.net ([198.61.254.31]:30032 "EHLO
         so254-31.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728033AbgLCJXL (ORCPT
+        with ESMTP id S2387840AbgLCKiY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 3 Dec 2020 04:23:11 -0500
-X-Greylist: delayed 351 seconds by postgrey-1.27 at vger.kernel.org; Thu, 03 Dec 2020 04:23:10 EST
+        Thu, 3 Dec 2020 05:38:24 -0500
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1606987365; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=OVTCNbyf8qxmCUM1RVhWGLCfrDA7Yx1fdOR/OounDA4=; b=laLdgNLkPw5eJyXU2jqYlqyVv378vQ0zc6eAnpv0npqaIGsuGlqGxpm2cF6O/dxehi4nORFl
- ZhiljnNVceFJEUmr3JWTbQQVhr9ZDfPf8iP0JVJOE5CwFNlIg/A6u4FtZvycoTBr1vKzsG9u
- 7J805g8N+zz+B0baUNK4We8lwuI=
+ s=smtp; t=1606991884; h=Message-Id: Date: Subject: Cc: To: From:
+ Sender; bh=phg2/TkrjV0irm6eIUZcG2DimLLflq+SrGdP4e4cIdY=; b=AY4fh6VQfIVZ4kNSu2vYHeWcaEVHxBiTAa/92O2oevNXyU3oUIsSnutUBEYmzMcXELyI1TS4
+ skk/1oRscXVMSPn2/lEw/iXiOOUclx/6t+F/QmNTe2wri9cmkxP1v++UepznXIzg44R7wqjJ
+ Zx1M/jAtzXBHZXYsoVxSpNEasVw=
 X-Mailgun-Sending-Ip: 198.61.254.31
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n06.prod.us-west-2.postgun.com with SMTP id
- 5fc8acf226ae63a2b4197fc7 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 03 Dec 2020 09:16:34
+ smtp-out-n05.prod.us-east-1.postgun.com with SMTP id
+ 5fc8bff20e79641fd5e1f4e3 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 03 Dec 2020 10:37:38
  GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Sender: cjhuang=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 0BDE8C433C6; Thu,  3 Dec 2020 09:16:34 +0000 (UTC)
+        id 9D07CC43461; Thu,  3 Dec 2020 10:37:37 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
 X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
         autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+Received: from cjhuang-Inspiron-7590.qca.qualcomm.com (unknown [180.166.53.21])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id C0033C43460;
-        Thu,  3 Dec 2020 09:16:31 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org C0033C43460
+        (Authenticated sender: cjhuang)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 10D65C433ED;
+        Thu,  3 Dec 2020 10:37:35 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 10D65C433ED
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Yan-Hsuan Chuang <tony0620emma@gmail.com>,
-        Stanislaw Gruszka <sgruszka@redhat.com>,
-        Brian Norris <briannorris@chromium.org>,
-        linux-wireless@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH net] rtw88: debug: Fix uninitialized memory in debugfs code
-References: <X8ilOfVz3pf0T5ec@mwanda>
-Date:   Thu, 03 Dec 2020 11:16:29 +0200
-In-Reply-To: <X8ilOfVz3pf0T5ec@mwanda> (Dan Carpenter's message of "Thu, 3 Dec
-        2020 11:43:37 +0300")
-Message-ID: <87pn3rgsgi.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
-MIME-Version: 1.0
-Content-Type: text/plain
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=cjhuang@codeaurora.org
+From:   Carl Huang <cjhuang@codeaurora.org>
+To:     ath10k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org, briannorris@chromium.org,
+        dianders@chromium.org
+Subject: [PATCH v4 0/3] add common API to configure SAR
+Date:   Thu,  3 Dec 2020 05:37:25 -0500
+Message-Id: <20201203103728.3034-1-cjhuang@codeaurora.org>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Dan Carpenter <dan.carpenter@oracle.com> writes:
+This patchset is to add common API to configure SAR.
+The mechanism is wlan driver registers sar capability
+to wiphy and userspace queries it. Userspace then sets
+power limiation to wlan driver.
 
-> This code does not ensure that the whole buffer is initialized and none
-> of the callers check for errors so potentially none of the buffer is
-> initialized.  Add a memset to eliminate this bug.
->
-> Fixes: e3037485c68e ("rtw88: new Realtek 802.11ac driver")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
->  drivers/net/wireless/realtek/rtw88/debug.c | 2 ++
->  1 file changed, 2 insertions(+)
+v4:
+- add "Reviewed-by:" tag
 
-I'll take this to wireless-drivers, this shouldn't go to net.
+v3:
+- check index duplicates. If index duplicates, returns error
+
+v2:
+- rebased on ToT
+- fix comments by Johannes and Abhishek
+- change sar_power to s32 and range_index to u32
+ 
+Carl Huang (3):
+  nl80211: add common API to configure SAR power limitations.
+  mac80211: add ieee80211_set_sar_specs
+  ath10k: allow dynamic SAR power limits via common API
+
+ drivers/net/wireless/ath/ath10k/core.c |  16 +++
+ drivers/net/wireless/ath/ath10k/core.h |   3 +
+ drivers/net/wireless/ath/ath10k/hw.h   |   2 +
+ drivers/net/wireless/ath/ath10k/mac.c  | 225 ++++++++++++++++++++++++---------
+ include/net/cfg80211.h                 |  51 ++++++++
+ include/net/mac80211.h                 |   2 +
+ include/uapi/linux/nl80211.h           | 102 +++++++++++++++
+ net/mac80211/cfg.c                     |  12 ++
+ net/wireless/nl80211.c                 | 185 +++++++++++++++++++++++++++
+ net/wireless/rdev-ops.h                |  12 ++
+ net/wireless/trace.h                   |  19 +++
+ 11 files changed, 570 insertions(+), 59 deletions(-)
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+2.7.4
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
