@@ -2,109 +2,90 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 97DD92CF1ED
-	for <lists+linux-wireless@lfdr.de>; Fri,  4 Dec 2020 17:30:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 047E62CF25E
+	for <lists+linux-wireless@lfdr.de>; Fri,  4 Dec 2020 17:52:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726427AbgLDQa1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 4 Dec 2020 11:30:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56136 "EHLO
+        id S1730969AbgLDQv7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 4 Dec 2020 11:51:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59532 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725923AbgLDQa1 (ORCPT
+        with ESMTP id S1729906AbgLDQv7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 4 Dec 2020 11:30:27 -0500
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6274C0613D1;
-        Fri,  4 Dec 2020 08:29:46 -0800 (PST)
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.94)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1klDxl-002Wpq-6O; Fri, 04 Dec 2020 17:29:41 +0100
-Message-ID: <03b6e1ab6d4d51f2a3dde7439fbc24c8a9a930c6.camel@sipsolutions.net>
+        Fri, 4 Dec 2020 11:51:59 -0500
+Received: from mail-il1-x142.google.com (mail-il1-x142.google.com [IPv6:2607:f8b0:4864:20::142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BED69C061A4F
+        for <linux-wireless@vger.kernel.org>; Fri,  4 Dec 2020 08:51:18 -0800 (PST)
+Received: by mail-il1-x142.google.com with SMTP id b8so5756444ila.13
+        for <linux-wireless@vger.kernel.org>; Fri, 04 Dec 2020 08:51:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=qWacdQiQJUJcaQsWaUdm9yI/RjddeUUPXCcFKJxryfE=;
+        b=NF02XSYWP0YXa0gNHj4DXgSOCct6TSmhH5WBm9EFjZ7dYFFBbz3auahRXVdoGOqCvM
+         OmHCZmIFgvVYwvuHe5k/yVvalKQpjlJWG7YV6AKeoX3iJPmngwUTT9/ew7cQvm6RRp7f
+         RfLkiQWvtCjhLnoUxNe7vHaBDzYyzBzVjog6gAcGzyBU9OCqJwULFdYSHxD/NSaLLDtl
+         qHRFyRg0WY46judmz+6E/ohX59mw51KfxnYKK74o/NFLk+WbQFXHaG8gEeSp15KFb6g+
+         CKn9vYnr+OomHKSe+2WitudfkU1fg+ir7of7g1R5RdFcQRV2RtmtvQ0ZcKYawyXwGLyN
+         MTLw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=qWacdQiQJUJcaQsWaUdm9yI/RjddeUUPXCcFKJxryfE=;
+        b=Vm3poXXL99Gp3vjiw+uahRY81dqPGy6jo+EKkHUG0baPRzmEyAvHOig1OA5DWhCIUj
+         LmYzAdKp/MKh2ZLZULYEOBTc2kFTaLmpyAxd2SIzHdP4KbiJvO4lU9i+rvezUMoaSCdy
+         XfqV0h/uyO8Yy74zM0qGFV8OjwlRhqZk8fN7ZlTQvYIRZQTpyBWlRAXbXh3Hy9R7qE5b
+         dHGArVg6bTy02ekwXE+AeBUs0xsEFQMRzTHekGDtq2Nj8DLR77QRtHlHkPawqVWD8Lmq
+         VzVP3nUbTGA62tPZihhLe5HlWSEiahFMHzEW4SuCW45Fng5CZOvQE74Vuy/DvaS1MN/r
+         4qeA==
+X-Gm-Message-State: AOAM533h9GWAC5mFXQfxiiTopCE3U1Sz4t4eUeBLvpseSklTjP2xVIKs
+        3EUfEbBgl1meKOZ42TBZyfmeUYYlLOTF1sUBX8jvOw==
+X-Google-Smtp-Source: ABdhPJwB4KQEbvvCTtYRmtqXlhBgIqIGc35cgNB5S/m5ZQQQ5cMZa8AficDeiFdihVyVTpRZc0ogDqdB/jQYa/jyl18=
+X-Received: by 2002:a92:da48:: with SMTP id p8mr7811440ilq.216.1607100677873;
+ Fri, 04 Dec 2020 08:51:17 -0800 (PST)
+MIME-Version: 1.0
+References: <20201204162428.2583119-1-eric.dumazet@gmail.com> <cac552ce70a747f078738a7167f0a75bc52fac7c.camel@sipsolutions.net>
+In-Reply-To: <cac552ce70a747f078738a7167f0a75bc52fac7c.camel@sipsolutions.net>
+From:   Eric Dumazet <edumazet@google.com>
+Date:   Fri, 4 Dec 2020 17:51:06 +0100
+Message-ID: <CANn89iKkKaD+rFfwaoWCMKmYhGd4jE_=nMWyVTaZQ4EXBKRZXQ@mail.gmail.com>
 Subject: Re: [PATCH net] mac80211: mesh: fix mesh_pathtbl_init() error path
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Eric Dumazet <eric.dumazet@gmail.com>,
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     Eric Dumazet <eric.dumazet@gmail.com>,
         "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>
-Cc:     netdev <netdev@vger.kernel.org>,
-        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        netdev <netdev@vger.kernel.org>,
         syzbot <syzkaller@googlegroups.com>,
         linux-wireless@vger.kernel.org
-Date:   Fri, 04 Dec 2020 17:29:39 +0100
-In-Reply-To: <20201204162428.2583119-1-eric.dumazet@gmail.com> (sfid-20201204_172435_837291_23D69393)
-References: <20201204162428.2583119-1-eric.dumazet@gmail.com>
-         (sfid-20201204_172435_837291_23D69393)
 Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.5 (3.36.5-1.fc32) 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-malware-bazaar: not-scanned
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 2020-12-04 at 08:24 -0800, Eric Dumazet wrote:
-> From: Eric Dumazet <edumazet@google.com>
-> 
-> If tbl_mpp can not be allocated, we call mesh_table_free(tbl_path)
-> while tbl_path rhashtable has not yet been initialized, which causes
-> panics.
-> 
-> Simply factorize the rhashtable_init() call into mesh_table_alloc()
-> 
-> WARNING: CPU: 1 PID: 8474 at kernel/workqueue.c:3040 __flush_work kernel/workqueue.c:3040 [inline]
-> WARNING: CPU: 1 PID: 8474 at kernel/workqueue.c:3040 __cancel_work_timer+0x514/0x540 kernel/workqueue.c:3136
-> Modules linked in:
-> CPU: 1 PID: 8474 Comm: syz-executor663 Not tainted 5.10.0-rc6-syzkaller #0
-> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
-> RIP: 0010:__flush_work kernel/workqueue.c:3040 [inline]
-> RIP: 0010:__cancel_work_timer+0x514/0x540 kernel/workqueue.c:3136
-> Code: 5d c3 e8 bf ae 29 00 0f 0b e9 f0 fd ff ff e8 b3 ae 29 00 0f 0b 43 80 3c 3e 00 0f 85 31 ff ff ff e9 34 ff ff ff e8 9c ae 29 00 <0f> 0b e9 dc fe ff ff 89 e9 80 e1 07 80 c1 03 38 c1 0f 8c 7d fd ff
-> RSP: 0018:ffffc9000165f5a0 EFLAGS: 00010293
-> RAX: ffffffff814b7064 RBX: 0000000000000001 RCX: ffff888021c80000
-> RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
-> RBP: ffff888024039ca0 R08: dffffc0000000000 R09: fffffbfff1dd3e64
-> R10: fffffbfff1dd3e64 R11: 0000000000000000 R12: 1ffff920002cbebd
-> R13: ffff888024039c88 R14: 1ffff11004807391 R15: dffffc0000000000
-> FS:  0000000001347880(0000) GS:ffff8880b9d00000(0000) knlGS:0000000000000000
-> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> CR2: 0000000020000140 CR3: 000000002cc0a000 CR4: 00000000001506e0
-> DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-> DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-> Call Trace:
->  rhashtable_free_and_destroy+0x25/0x9c0 lib/rhashtable.c:1137
->  mesh_table_free net/mac80211/mesh_pathtbl.c:69 [inline]
->  mesh_pathtbl_init+0x287/0x2e0 net/mac80211/mesh_pathtbl.c:785
->  ieee80211_mesh_init_sdata+0x2ee/0x530 net/mac80211/mesh.c:1591
->  ieee80211_setup_sdata+0x733/0xc40 net/mac80211/iface.c:1569
->  ieee80211_if_add+0xd5c/0x1cd0 net/mac80211/iface.c:1987
->  ieee80211_add_iface+0x59/0x130 net/mac80211/cfg.c:125
->  rdev_add_virtual_intf net/wireless/rdev-ops.h:45 [inline]
->  nl80211_new_interface+0x563/0xb40 net/wireless/nl80211.c:3855
->  genl_family_rcv_msg_doit net/netlink/genetlink.c:739 [inline]
->  genl_family_rcv_msg net/netlink/genetlink.c:783 [inline]
->  genl_rcv_msg+0xe4e/0x1280 net/netlink/genetlink.c:800
->  netlink_rcv_skb+0x190/0x3a0 net/netlink/af_netlink.c:2494
->  genl_rcv+0x24/0x40 net/netlink/genetlink.c:811
->  netlink_unicast_kernel net/netlink/af_netlink.c:1304 [inline]
->  netlink_unicast+0x780/0x930 net/netlink/af_netlink.c:1330
->  netlink_sendmsg+0x9a8/0xd40 net/netlink/af_netlink.c:1919
->  sock_sendmsg_nosec net/socket.c:651 [inline]
->  sock_sendmsg net/socket.c:671 [inline]
->  ____sys_sendmsg+0x519/0x800 net/socket.c:2353
->  ___sys_sendmsg net/socket.c:2407 [inline]
->  __sys_sendmsg+0x2b1/0x360 net/socket.c:2440
->  do_syscall_64+0x2d/0x70 arch/x86/entry/common.c:46
->  entry_SYSCALL_64_after_hwframe+0x44/0xa9
-> 
-> Fixes: 60854fd94573 ("mac80211: mesh: convert path table to rhashtable")
-> Signed-off-by: Eric Dumazet <edumazet@google.com>
-> Reported-by: syzbot <syzkaller@googlegroups.com>
+On Fri, Dec 4, 2020 at 5:26 PM Johannes Berg <johannes@sipsolutions.net> wrote:
+>
+> On Fri, 2020-12-04 at 08:24 -0800, Eric Dumazet wrote:
+> > From: Eric Dumazet <edumazet@google.com>
+> >
+> > If tbl_mpp can not be allocated, we call mesh_table_free(tbl_path)
+> > while tbl_path rhashtable has not yet been initialized, which causes
+> > panics.
+>
+> Thanks Eric!
+>
+> I was going to ask how you ran into this ...
+>
+> > Reported-by: syzbot <syzkaller@googlegroups.com>
+>
+> Until I saw this - but doesn't syzbot normally want a
+> "syzbot+somehashid@..." as the reported-by?
 
-Reviewed-by: Johannes Berg <johannes@sipsolutions.net>
+Do not worry about this, I will not release the syzbot publicly, no
+need to add more noise to various mailing lists for such a trivial
+patch.
+(This particular syzbot report included yet a buggy bisection, lets
+not get yet another replies from annoyed developers )
 
-Jakub, if you want to take it to the net tree I wouldn't mind at all,
-since I _just_ sent a pull request a little while ago.
-
-Thanks,
-johannes
-
+This is why we add a Reported-by: syzbot <syzkaller@googlegroups.com>,
+only to let the syzbot teams count the number of syzbot bugs fixed.
