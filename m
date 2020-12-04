@@ -2,98 +2,83 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D38792CF3F8
-	for <lists+linux-wireless@lfdr.de>; Fri,  4 Dec 2020 19:23:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D8D02CF434
+	for <lists+linux-wireless@lfdr.de>; Fri,  4 Dec 2020 19:38:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730168AbgLDSXo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 4 Dec 2020 13:23:44 -0500
-Received: from mail.oakviewlaw.com ([184.105.149.4]:36436 "EHLO
-        mail.oakviewlaw.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726276AbgLDSXn (ORCPT
+        id S1730070AbgLDShK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 4 Dec 2020 13:37:10 -0500
+Received: from mailgw02.mediatek.com ([210.61.82.184]:55699 "EHLO
+        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1728475AbgLDShK (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 4 Dec 2020 13:23:43 -0500
-X-Greylist: delayed 560 seconds by postgrey-1.27 at vger.kernel.org; Fri, 04 Dec 2020 13:23:43 EST
-Received: from localhost (localhost [127.0.0.1])
-        by mail.oakviewlaw.com (Postfix) with ESMTP id 22B1B4FB77A;
-        Fri,  4 Dec 2020 18:13:23 +0000 (UTC)
-Received: from mail.oakviewlaw.com ([127.0.0.1])
-        by localhost (mail.oakviewlaw.com [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id QThKpeWE_2As; Fri,  4 Dec 2020 18:13:22 +0000 (UTC)
-Received: from localhost (localhost [127.0.0.1])
-        by mail.oakviewlaw.com (Postfix) with ESMTP id AEF0E4FB6DC;
-        Fri,  4 Dec 2020 18:13:22 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.10.3 mail.oakviewlaw.com AEF0E4FB6DC
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oakviewlaw.com;
-        s=selector; t=1607105602;
-        bh=O4faEs1u5TKKd2DgIzfqFIrp/N/6fhS+j4xcsYavjXw=;
-        h=MIME-Version:To:From:Date:Message-Id;
-        b=fl5pvVBOGiOTXsRtBDjf9EbaLoiqA+o07pK6FWJrrdq6a07Ude4kbyj/xK3qLgnxM
-         BKlYLQ+DD8PQnEJAzruhA/EXFNWgQUrFIf+9UibZ7fFdVywBT1q8eLCY8ohCwKsNWC
-         ChRfpRWbZmc0hW2l1zR3TH0+H3wfCIaAo4F2mKDnX5WPrTJ447zi1aYwZvVNwcPFeJ
-         B3uw9BtQwFgT/OBs3zFb1AOt/0mbSQjTxW73QJywE6UG1/laR/INUatKeqbvDlfSNm
-         IE15N2z0zPkDEEnAZO/WuJumYA+j+aUK7RajUgUFLOTtk7Na545vxYECNdroJbx18l
-         Jklr+oFmHuBTg==
-X-Virus-Scanned: amavisd-new at oakviewlaw.com
-Received: from mail.oakviewlaw.com ([127.0.0.1])
-        by localhost (mail.oakviewlaw.com [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id DkJWENCuXQT4; Fri,  4 Dec 2020 18:13:22 +0000 (UTC)
-Received: from [192.168.1.195] (unknown [91.187.51.3])
-        by mail.oakviewlaw.com (Postfix) with ESMTPSA id E6E4D4FB8AE;
-        Fri,  4 Dec 2020 18:13:11 +0000 (UTC)
-Content-Type: text/plain; charset="iso-8859-1"
+        Fri, 4 Dec 2020 13:37:10 -0500
+X-UUID: 641b57b8978c4f6c9cee36db41693dfd-20201205
+X-UUID: 641b57b8978c4f6c9cee36db41693dfd-20201205
+Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw02.mediatek.com
+        (envelope-from <ryder.lee@mediatek.com>)
+        (Cellopoint E-mail Firewall v4.1.14 Build 0819 with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 608619604; Sat, 05 Dec 2020 02:36:25 +0800
+Received: from mtkcas07.mediatek.inc (172.21.101.84) by
+ mtkmbs06n1.mediatek.inc (172.21.101.129) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Sat, 5 Dec 2020 02:36:20 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas07.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Sat, 5 Dec 2020 02:36:21 +0800
+From:   Ryder Lee <ryder.lee@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+CC:     Shayne Chen <shayne.chen@mediatek.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>,
+        Ryder Lee <ryder.lee@mediatek.com>
+Subject: [PATCH 1/2] mt76: mt7915: add vif check in mt7915_update_vif_beacon()
+Date:   Sat, 5 Dec 2020 02:36:21 +0800
+Message-ID: <6f63bc0fbba35c3005a9d6999104f41174466cb6.1607104742.git.ryder.lee@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: NEDBANK
-To:     Recipients <zimbra@oakviewlaw.com>
-From:   "Mr. Casmir Nkulu" <zimbra@oakviewlaw.com>
-Date:   Fri, 04 Dec 2020 10:13:03 -0800
-Reply-To: serty@webmail.co.za
-Message-Id: <20201204181311.E6E4D4FB8AE@mail.oakviewlaw.com>
+Content-Type: text/plain
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Attention: Esteemed Customer
+This avoids the WARN_ON(1) calltrace in station mode.
 
-Note that the NED-BANK of RSA  have received the authority by United State =
-of  America Federal Reserve  Bank  in conjunction with the International Mo=
-netary Fund (IMF) and the  World Bank to finally release all pending Lotter=
-y winning payments, Contracts payments, Inheritance/ATM funds and Loan paym=
-ents.
+[ 4522.024382]  ieee80211_tx_dequeue+0x1258/0x1298 [mac80211]
+[ 4522.029868]  ieee80211_beacon_get_template+0x10/0x18 [mac80211]
+[ 4522.035780]  mt7915_mcu_add_beacon+0x2c/0x208 [mt7915e]
+[ 4522.040997]  mt7915_mcu_get_rx_rate+0x304/0x878 [mt7915e]
+[ 4522.046394]  ieee80211_delayed_tailroom_dec+0x158/0x180 [mac80211]
+[ 4522.052573]  ieee80211_iterate_interfaces+0x48/0x68 [mac80211]
+[ 4522.058398]  mt7915_mac_reset_work+0x3b4/0x630 [mt7915e]
+[ 4522.063704]  process_one_work+0x1fc/0x390
+[ 4522.067703]  worker_thread+0x48/0x4d0
+[ 4522.071356]  kthread+0x120/0x128
 
-Most importantly, we have received banking antennary as stated below for th=
-e transfer of your funds, as such we urgently request that you reconfirm wi=
-th us if you have given such mandate or not, failure to receive immediate r=
-esponse from you within the next seven workings days we shall believe that =
-such mandate was issued by you, to that effect we shall then commence with =
-the transfer of the fund into the bank details below.
+Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+---
+ drivers/net/wireless/mediatek/mt76/mt7915/mac.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+index a7fa6fffffff..98f80e77ad7b 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+@@ -1407,7 +1407,13 @@ mt7915_update_vif_beacon(void *priv, u8 *mac, struct ieee80211_vif *vif)
+ {
+ 	struct ieee80211_hw *hw = priv;
+ 
+-	mt7915_mcu_add_beacon(hw, vif, vif->bss_conf.enable_beacon);
++	switch (vif->type) {
++	case NL80211_IFTYPE_MESH_POINT:
++	case NL80211_IFTYPE_ADHOC:
++	case NL80211_IFTYPE_AP:
++		mt7915_mcu_add_beacon(hw, vif, vif->bss_conf.enable_beacon);
++		break;
++	}
+ }
+ 
+ static void
+-- 
+2.18.0
 
-Bank Name: HSBC SINGAPORE
-Bank
-Address: Blk 131 Jurong East Street 13,
-
-Account N=B0: 486 4761 10
-
-Account name: Mr. Jurong Koui
-
-Swift Code: HSBCSGS2XXX
-
-Beneficiary: Mr. Jurong Koui
-
-Address: 131 Jurong Gateway Road
-
-Singapore 600131
-
-
-
-Regards,
-
-Mr Casmir Nkulu
-
-Head Foreign payment Department
-
-NED- Bank RSA
-
-#135 Rivonia roads, Sandown, Johannesburg South Africa
