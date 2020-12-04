@@ -2,141 +2,141 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C8D72CF081
-	for <lists+linux-wireless@lfdr.de>; Fri,  4 Dec 2020 16:14:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A4472CF08B
+	for <lists+linux-wireless@lfdr.de>; Fri,  4 Dec 2020 16:16:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728727AbgLDPM1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 4 Dec 2020 10:12:27 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:40670 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728626AbgLDPM0 (ORCPT
+        id S1728803AbgLDPPy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 4 Dec 2020 10:15:54 -0500
+Received: from userp2130.oracle.com ([156.151.31.86]:50880 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728048AbgLDPPx (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 4 Dec 2020 10:12:26 -0500
-Received: from mail-oo1-f71.google.com ([209.85.161.71])
-        by youngberry.canonical.com with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <seth.forshee@canonical.com>)
-        id 1klCkK-0001Bv-41
-        for linux-wireless@vger.kernel.org; Fri, 04 Dec 2020 15:11:44 +0000
-Received: by mail-oo1-f71.google.com with SMTP id w11so2747019ooi.6
-        for <linux-wireless@vger.kernel.org>; Fri, 04 Dec 2020 07:11:44 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=dq4LBV56aBTRyth+Na87XQg04nbLfsTv/j3SjfddMyY=;
-        b=JmLmnt2yf6Cx50OqEiee6vk39UFcI4xEBFsHA+HiLFH8EcWvZH3kZF72hsEDYPQxZp
-         k79kjFUxTU3Zx3XVK+nTsmrRfYNlymp2DahRlwVquInisMAHfBdP4e/jJLzjVLw47Ox2
-         hGtCGpAZ700/PLOiLrX5bDKux6BJnez/MLoVc6xGoV1JOOBpkmA9fbx48gQpDTjqBmS0
-         C032OZTJOIPi1coJ/PXYy8nFsXp4JffaWl0qdnP9St88UN4N+rUXWHUR6Q0KmkKM+T5Y
-         A5jyo1swM+Vi7MxUs/900UaT8+sD1Udf0Sla+ANn0jRedhZlYa2Y3x8TTwrvK/0gTNb7
-         c+Cw==
-X-Gm-Message-State: AOAM530omu23PDLSWwbvmVwWlenk9kVv/5+sRKyXbQelIh2G/Yb5pEQp
-        arxOne5MQfc4S+IRG2qpR93iDYUPxOLBGEj3qAf7K4DBYKN/bZtU+OOXLaF8tUrlyYTHz7NaL9U
-        nrbdyp8VSRCnaEfSbeY0ebINow5a3LhcjyOPNAPE5DJVi
-X-Received: by 2002:aca:cc01:: with SMTP id c1mr3549486oig.18.1607094702769;
-        Fri, 04 Dec 2020 07:11:42 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJxQVF12aDlIdugOVvkOJYFtiQBL2+iheMGDnBi3XGxi36A+q+UaxmDVoDcpoqpBoXx3Ft08Wg==
-X-Received: by 2002:aca:cc01:: with SMTP id c1mr3549462oig.18.1607094702403;
-        Fri, 04 Dec 2020 07:11:42 -0800 (PST)
-Received: from localhost ([2605:a601:ac0f:820:6b8d:b00f:e1e3:321a])
-        by smtp.gmail.com with ESMTPSA id f20sm658754otp.70.2020.12.04.07.11.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 04 Dec 2020 07:11:41 -0800 (PST)
-Date:   Fri, 4 Dec 2020 09:11:41 -0600
-From:   Seth Forshee <seth.forshee@canonical.com>
-To:     bkil <b.K.il.h.u+tigbuh@gmail.com>
-Cc:     wireless-regdb@lists.infradead.org, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH] wireless-regdb: recent FCC report and order allows
- 5850-5895 immediately
-Message-ID: <X8pRrWfZPhLdguu8@ubuntu-x1>
-References: <a79286b90cdfdee3a83397008c0f7b6d67bc7f69.1607035229.git.b.K.il.h.u+tigbuh@gmail.com>
+        Fri, 4 Dec 2020 10:15:53 -0500
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0B4FDvWY112304;
+        Fri, 4 Dec 2020 15:15:08 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
+ bh=sKzUT9iTbAJ26R/YZ/f4H7e9oUPl3feVCxgPWIZg3GA=;
+ b=LCWHHctXlF+Oq6C/3mySl3p2tLM5Bq59xarE9Mak+M460sKr0TxQhUEuJBl8abwbFTdp
+ Gpy/Lw/M+vPZXyoc9XcfYotMFGUFTjdWiSoccxUq1XJmRzWpW16JY6SuvHV7LOTEpEjA
+ cS+XxZT9fW2Kn8+Te92QrtRK5QN/TFpjlpuDCU4yyr6ia0uHGV+tuc86+xpdmF7iL/2y
+ mbd8FJw/KZmZ9oeQpgtP/Br058Ypmnk5PseGg47oWqfp/Ufk3pSamO0L5M9VBOWzCAH8
+ 5qHQPpjxjCTRWcdlo7Z0j4P+tRlv6KXVj4ScpQZoqqQyjflVnImZLxWrGVwSp8TZmQ5i GQ== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by userp2130.oracle.com with ESMTP id 353dyr3ny5-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Fri, 04 Dec 2020 15:15:08 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0B4F6G2j040763;
+        Fri, 4 Dec 2020 15:15:07 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by aserp3020.oracle.com with ESMTP id 3540f3ehnf-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 04 Dec 2020 15:15:07 +0000
+Received: from abhmp0017.oracle.com (abhmp0017.oracle.com [141.146.116.23])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 0B4FF5Ht019679;
+        Fri, 4 Dec 2020 15:15:05 GMT
+Received: from mwanda (/102.36.221.92)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Fri, 04 Dec 2020 07:15:04 -0800
+Date:   Fri, 4 Dec 2020 18:14:59 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     ku920601@realtek.com
+Cc:     linux-wireless@vger.kernel.org
+Subject: [bug report] rtw88: coex: add feature to enhance HID coexistence
+ performance
+Message-ID: <X8pSc4CnDcskUVvE@mwanda>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <a79286b90cdfdee3a83397008c0f7b6d67bc7f69.1607035229.git.b.K.il.h.u+tigbuh@gmail.com>
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9824 signatures=668682
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 malwarescore=0 phishscore=0
+ suspectscore=3 bulkscore=0 spamscore=0 adultscore=0 mlxlogscore=705
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2012040088
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9824 signatures=668682
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 bulkscore=0
+ clxscore=1011 mlxscore=0 spamscore=0 priorityscore=1501 mlxlogscore=719
+ suspectscore=3 lowpriorityscore=0 phishscore=0 adultscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2012040089
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Dec 03, 2020 at 11:40:30PM +0100, bkil wrote:
-> The new band is called U-NII-4.
+Hello Ching-Te Ku,
 
-The report states in paragraph 203 that the order is effective 60 days
-from publication in the Federal Register, and it looks like they haven't
-even been published in the Federal Register yet. We will need to wait
-for the rules to go into effect before applying any updates.
+The patch 5b2e9a35e456: "rtw88: coex: add feature to enhance HID
+coexistence performance" from Nov 26, 2020, leads to the following
+static checker warning:
 
-> The report recommends combining it with 5725-5895 to allow 160 MHz
-> bandwidth, but that's technically not that easy with regdb due to the
-> differing restrictions of the two parts. Marking the line for U-NII-3
-> NO-OUTDOOR and PTMP-ONLY along with extending its range would be a
-> possible workaround, but this needs to be discussed.
+	drivers/net/wireless/realtek/rtw88/coex.c:2099 rtw_coex_action_bt_a2dp_hid()
+	error: uninitialized symbol 'interval'.
 
-I think it should be sufficient to set the bandwidth of both 5730-5850
-and 5850-5895 to 160 MHz with AUTO-BW. The kernel will see the AUTO-BW
-flags and calculate a combined rule where 160 MHz is allowed, and for
-the original rules any bandwidth exceeding the available bandwidth of
-the rule will be disallowed.
+drivers/net/wireless/realtek/rtw88/coex.c
+  2047  static void rtw_coex_action_bt_a2dp_hid(struct rtw_dev *rtwdev)
+  2048  {
+  2049          struct rtw_coex *coex = &rtwdev->coex;
+  2050          struct rtw_coex_stat *coex_stat = &coex->stat;
+  2051          struct rtw_coex_dm *coex_dm = &coex->dm;
+  2052          struct rtw_efuse *efuse = &rtwdev->efuse;
+  2053          struct rtw_chip_info *chip = rtwdev->chip;
+  2054          u8 table_case, tdma_case, interval;
+                                          ^^^^^^^^
+  2055          u32 slot_type = 0;
+  2056          bool is_toggle_table = false;
+  2057  
+  2058          slot_type = TDMA_4SLOT;
+  2059  
+  2060          rtw_dbg(rtwdev, RTW_DBG_COEX, "[BTCoex], %s()\n", __func__);
+  2061          rtw_coex_set_ant_path(rtwdev, false, COEX_SET_ANT_2G);
+  2062          rtw_coex_set_rf_para(rtwdev, chip->wl_rf_para_rx[0]);
+  2063  
+  2064          if (efuse->share_ant) {
+  2065                  /* Shared-Ant */
+  2066                  if (coex_stat->bt_ble_exist) {
+  2067                          table_case = 26; /* for RCU */
+  2068                  } else if (coex_stat->bt_418_hid_exist) {
+  2069                          table_case = 9;
+  2070                          interval = 1;
+                                ^^^^^^^^^^^^
+The "interval" variable is only set here and not on the other paths.
 
-> I don't see a requirement for TPC, hence reducing EIRP by 3dB is not
-> needed. I've marked it 33dBm (minus 6dB for clients) to cope with 20MHz,
-> but the band can support higher power, though the logic is complicated.
+  2071                  } else {
+  2072                          table_case = 9;
+  2073                  }
+  2074  
+  2075                  if (coex_stat->wl_connecting || !coex_stat->wl_gl_busy) {
+  2076                          tdma_case = 14;
+  2077                  } else if (coex_stat->bt_418_hid_exist) {
+  2078                          is_toggle_table = true;
+  2079                          tdma_case = 23;
+  2080                  } else {
+  2081                          tdma_case = 13;
+  2082                  }
+  2083          } else {
+  2084                  /* Non-Shared-Ant */
+  2085                  if (coex_stat->bt_ble_exist)
+  2086                          table_case = 121;
+  2087                  else
+  2088                          table_case = 113;
+  2089  
+  2090                  if (COEX_RSSI_HIGH(coex_dm->wl_rssi_state[1]))
+  2091                          tdma_case = 112;
+  2092                  else
+  2093                          tdma_case = 113;
+  2094          }
+  2095  
+  2096          rtw_coex_table(rtwdev, false, table_case);
+  2097          if (is_toggle_table) {
+  2098                  rtw_btc_wltoggle_table_a(rtwdev, true, table_case);
+  2099                  rtw_btc_wltoggle_table_b(rtwdev, false, interval, COEX_WL_SLOT_TOGLLE);
+                                                                ^^^^^^^^
 
-I believe we have an additional requirement from § 15.407 (a)(3)(v):
+  2100          }
+  2101          rtw_coex_tdma(rtwdev, false, tdma_case | slot_type);
+  2102  }
 
-  In the 5.850-5.895 GHz band, client devices must operate under the
-  control of an indoor access point. In all cases, an exception exists
-  for transmitting brief messages to an access point when attempting to
-  join its network after detecting a signal that confirms that an access
-  point is operating on a particular channel.
-
-This sounds like a requirement for passive scanning, if so the range
-should also have the NO-IR flag.
-
-Thanks,
-Seth
-
-> 
-> The upper subband (5895-5925 MHz) of the new band is reserved for ITS.
-> 
-> "We limit unlicensed use to indoor operations in recognition of the
-> potential that ITS licensees may currently be operating"
-> 
-> "We also proposed that U-NII-4 devices be permitted to operate at the same
-> power levels as U-NII-3 devices."
-> 
-> "For the U-NII-4 band, indoor access point EIRP will be limited to
-> 33 dBm/20 MHz and 36 dBm/40 MHz. When combined with U-NII-3 band spectrum,
-> indoor access point EIRP can scale to 36 dBm for 80 and 160 megahertz
-> channels."
-> 
-> "Client devices would be limited to power levels 6 dB below the power
-> limits for access points."
-> 
-> "the First Report and Order prohibit U-NII-4 client-to-client
-> communications to protect co-channel incumbent ITS"
-> 
-> Signed-off-by: bkil <b.K.il.h.u+tigbuh@gmail.com>
-> ---
->  db.txt | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
-> 
-> diff --git a/db.txt b/db.txt
-> index c71a03a..e6dd063 100644
-> --- a/db.txt
-> +++ b/db.txt
-> @@ -1587,7 +1587,10 @@ country US: DFS-FCC
->  	# requirements, we can extend the range by 5 MHz to make the kernel
->  	# happy and be able to use channel 144.
->  	(5470 - 5730 @ 160), (23), DFS
-> -	(5730 - 5850 @ 80), (30)
-> +	(5730 - 5850 @ 80), (30), AUTO-BW
-> +	# https://www.fcc.gov/document/fcc-modernizes-59-ghz-band-improve-wi-fi-and-automotive-safety-0
-> +	# max. 33 dBm AP @ 20MHz, 36 dBm AP @ 40Mhz+, 6 dB less for clients
-> +	(5850 - 5895 @ 40), (27), NO-OUTDOOR, PTMP-ONLY, AUTO-BW
->  	# 60g band
->  	# reference: section IV-D https://docs.fcc.gov/public/attachments/FCC-16-89A1.pdf
->  	# channels 1-6 EIRP=40dBm(43dBm peak)
+regards,
+dan carpenter
