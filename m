@@ -2,90 +2,80 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 047E62CF25E
-	for <lists+linux-wireless@lfdr.de>; Fri,  4 Dec 2020 17:52:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 965E92CF344
+	for <lists+linux-wireless@lfdr.de>; Fri,  4 Dec 2020 18:43:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730969AbgLDQv7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 4 Dec 2020 11:51:59 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59532 "EHLO
+        id S1728463AbgLDRmG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 4 Dec 2020 12:42:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39110 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729906AbgLDQv7 (ORCPT
+        with ESMTP id S1726405AbgLDRmG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 4 Dec 2020 11:51:59 -0500
-Received: from mail-il1-x142.google.com (mail-il1-x142.google.com [IPv6:2607:f8b0:4864:20::142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BED69C061A4F
-        for <linux-wireless@vger.kernel.org>; Fri,  4 Dec 2020 08:51:18 -0800 (PST)
-Received: by mail-il1-x142.google.com with SMTP id b8so5756444ila.13
-        for <linux-wireless@vger.kernel.org>; Fri, 04 Dec 2020 08:51:18 -0800 (PST)
+        Fri, 4 Dec 2020 12:42:06 -0500
+Received: from mail-oi1-x22a.google.com (mail-oi1-x22a.google.com [IPv6:2607:f8b0:4864:20::22a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7399C0613D1
+        for <linux-wireless@vger.kernel.org>; Fri,  4 Dec 2020 09:41:25 -0800 (PST)
+Received: by mail-oi1-x22a.google.com with SMTP id k26so7058305oiw.0
+        for <linux-wireless@vger.kernel.org>; Fri, 04 Dec 2020 09:41:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
+        d=chromium.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=qWacdQiQJUJcaQsWaUdm9yI/RjddeUUPXCcFKJxryfE=;
-        b=NF02XSYWP0YXa0gNHj4DXgSOCct6TSmhH5WBm9EFjZ7dYFFBbz3auahRXVdoGOqCvM
-         OmHCZmIFgvVYwvuHe5k/yVvalKQpjlJWG7YV6AKeoX3iJPmngwUTT9/ew7cQvm6RRp7f
-         RfLkiQWvtCjhLnoUxNe7vHaBDzYyzBzVjog6gAcGzyBU9OCqJwULFdYSHxD/NSaLLDtl
-         qHRFyRg0WY46judmz+6E/ohX59mw51KfxnYKK74o/NFLk+WbQFXHaG8gEeSp15KFb6g+
-         CKn9vYnr+OomHKSe+2WitudfkU1fg+ir7of7g1R5RdFcQRV2RtmtvQ0ZcKYawyXwGLyN
-         MTLw==
+        bh=tgO+S9e5Bnsz1sxnIpjL+6jprmVcbPbUp42LasvErio=;
+        b=a6bakiRdnwAiaFO36Bn3bRv5hhfxCDcga/QLEeuI0lHq45darLQ94yvaH1jc2FmWJb
+         +D+TbbBesFUd18/Wfwsobb/Ner3YN8ZH1YQUQ94OfwoNNHqfJDiUDRQ8hT3CoZCmJee1
+         1r7AccrRREIRqME1InS2if0eKm2koUpk7SqWs=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=qWacdQiQJUJcaQsWaUdm9yI/RjddeUUPXCcFKJxryfE=;
-        b=Vm3poXXL99Gp3vjiw+uahRY81dqPGy6jo+EKkHUG0baPRzmEyAvHOig1OA5DWhCIUj
-         LmYzAdKp/MKh2ZLZULYEOBTc2kFTaLmpyAxd2SIzHdP4KbiJvO4lU9i+rvezUMoaSCdy
-         XfqV0h/uyO8Yy74zM0qGFV8OjwlRhqZk8fN7ZlTQvYIRZQTpyBWlRAXbXh3Hy9R7qE5b
-         dHGArVg6bTy02ekwXE+AeBUs0xsEFQMRzTHekGDtq2Nj8DLR77QRtHlHkPawqVWD8Lmq
-         VzVP3nUbTGA62tPZihhLe5HlWSEiahFMHzEW4SuCW45Fng5CZOvQE74Vuy/DvaS1MN/r
-         4qeA==
-X-Gm-Message-State: AOAM533h9GWAC5mFXQfxiiTopCE3U1Sz4t4eUeBLvpseSklTjP2xVIKs
-        3EUfEbBgl1meKOZ42TBZyfmeUYYlLOTF1sUBX8jvOw==
-X-Google-Smtp-Source: ABdhPJwB4KQEbvvCTtYRmtqXlhBgIqIGc35cgNB5S/m5ZQQQ5cMZa8AficDeiFdihVyVTpRZc0ogDqdB/jQYa/jyl18=
-X-Received: by 2002:a92:da48:: with SMTP id p8mr7811440ilq.216.1607100677873;
- Fri, 04 Dec 2020 08:51:17 -0800 (PST)
+        bh=tgO+S9e5Bnsz1sxnIpjL+6jprmVcbPbUp42LasvErio=;
+        b=SWH4tkZnKQ63Sjpc+Cyj33Sykij13/Rvc9T17AoZxtFmprSRLd4pARdKnFjHtaOFhb
+         GJYBgNq1fROcZAYal5fs4IFDpVGrggjb8W/yNBnHh3bgg1wYB+NX2jyzJZZ0v0RnIX6K
+         KB3g/bAN0piQRcqZUuC+KkZC/je521Zhf8cOplUTdcS9MgIRs30RhddfrIBraZMZw34n
+         23ZZwi4BuyT8poFNy4GE90sI71xZ+cTsJE8OI8HmFYVec49R1KDZm9boHE8tDRk6C0al
+         LXIXeeAXLQu8Q/Qt1xQw1F9zLwn5ksIvgp0NfEEsqCshcjgbAAFF+gG2zsBc98u3PI3Q
+         YD5A==
+X-Gm-Message-State: AOAM531HqYOunXixByDaxGn2ehBGC9fQ3WFsZ94RrW5C4j3XOfkL/moJ
+        csptD4gJbLNvgrwaZdax3zKoaRHxH7WZgQ==
+X-Google-Smtp-Source: ABdhPJxFETf3knOloBTpjdl+zRDp++NaRfQxKCt9O3FCWU2C6S0zh5QOlSPLMJdRZlJLQmlvDz6vQA==
+X-Received: by 2002:aca:3305:: with SMTP id z5mr3929512oiz.34.1607103685004;
+        Fri, 04 Dec 2020 09:41:25 -0800 (PST)
+Received: from mail-oo1-f47.google.com (mail-oo1-f47.google.com. [209.85.161.47])
+        by smtp.gmail.com with ESMTPSA id u63sm769823oia.50.2020.12.04.09.41.23
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 04 Dec 2020 09:41:24 -0800 (PST)
+Received: by mail-oo1-f47.google.com with SMTP id w9so1556844ooh.13
+        for <linux-wireless@vger.kernel.org>; Fri, 04 Dec 2020 09:41:23 -0800 (PST)
+X-Received: by 2002:a4a:7055:: with SMTP id b21mr4405853oof.66.1607103683340;
+ Fri, 04 Dec 2020 09:41:23 -0800 (PST)
 MIME-Version: 1.0
-References: <20201204162428.2583119-1-eric.dumazet@gmail.com> <cac552ce70a747f078738a7167f0a75bc52fac7c.camel@sipsolutions.net>
-In-Reply-To: <cac552ce70a747f078738a7167f0a75bc52fac7c.camel@sipsolutions.net>
-From:   Eric Dumazet <edumazet@google.com>
-Date:   Fri, 4 Dec 2020 17:51:06 +0100
-Message-ID: <CANn89iKkKaD+rFfwaoWCMKmYhGd4jE_=nMWyVTaZQ4EXBKRZXQ@mail.gmail.com>
-Subject: Re: [PATCH net] mac80211: mesh: fix mesh_pathtbl_init() error path
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     Eric Dumazet <eric.dumazet@gmail.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        netdev <netdev@vger.kernel.org>,
-        syzbot <syzkaller@googlegroups.com>,
-        linux-wireless@vger.kernel.org
+References: <X8pSc4CnDcskUVvE@mwanda>
+In-Reply-To: <X8pSc4CnDcskUVvE@mwanda>
+From:   Brian Norris <briannorris@chromium.org>
+Date:   Fri, 4 Dec 2020 09:41:10 -0800
+X-Gmail-Original-Message-ID: <CA+ASDXOed0i-cT5es4tNTtRAuyWRz1+93p83tDdt4WLndwcr3A@mail.gmail.com>
+Message-ID: <CA+ASDXOed0i-cT5es4tNTtRAuyWRz1+93p83tDdt4WLndwcr3A@mail.gmail.com>
+Subject: Re: [bug report] rtw88: coex: add feature to enhance HID coexistence performance
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     ku920601@realtek.com,
+        linux-wireless <linux-wireless@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Dec 4, 2020 at 5:26 PM Johannes Berg <johannes@sipsolutions.net> wrote:
+On Fri, Dec 4, 2020 at 7:15 AM Dan Carpenter <dan.carpenter@oracle.com> wrote:
+> The patch 5b2e9a35e456: "rtw88: coex: add feature to enhance HID
+> coexistence performance" from Nov 26, 2020, leads to the following
+> static checker warning:
 >
-> On Fri, 2020-12-04 at 08:24 -0800, Eric Dumazet wrote:
-> > From: Eric Dumazet <edumazet@google.com>
-> >
-> > If tbl_mpp can not be allocated, we call mesh_table_free(tbl_path)
-> > while tbl_path rhashtable has not yet been initialized, which causes
-> > panics.
->
-> Thanks Eric!
->
-> I was going to ask how you ran into this ...
->
-> > Reported-by: syzbot <syzkaller@googlegroups.com>
->
-> Until I saw this - but doesn't syzbot normally want a
-> "syzbot+somehashid@..." as the reported-by?
+>         drivers/net/wireless/realtek/rtw88/coex.c:2099 rtw_coex_action_bt_a2dp_hid()
+>         error: uninitialized symbol 'interval'.
 
-Do not worry about this, I will not release the syzbot publicly, no
-need to add more noise to various mailing lists for such a trivial
-patch.
-(This particular syzbot report included yet a buggy bisection, lets
-not get yet another replies from annoyed developers )
+Patch is already proposed:
+https://lore.kernel.org/linux-wireless/20201203175142.1071738-1-colin.king@canonical.com/
+[PATCH][next] rtw88: coex: fix missing unitialization of variable 'interval'
 
-This is why we add a Reported-by: syzbot <syzkaller@googlegroups.com>,
-only to let the syzbot teams count the number of syzbot bugs fixed.
+Brian
