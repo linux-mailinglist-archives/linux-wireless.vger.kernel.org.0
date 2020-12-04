@@ -2,274 +2,179 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E74832CF634
-	for <lists+linux-wireless@lfdr.de>; Fri,  4 Dec 2020 22:30:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 86CF02CF679
+	for <lists+linux-wireless@lfdr.de>; Fri,  4 Dec 2020 23:00:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727774AbgLDVaW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 4 Dec 2020 16:30:22 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46250 "EHLO
+        id S1726534AbgLDV7o (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 4 Dec 2020 16:59:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50804 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726536AbgLDVaV (ORCPT
+        with ESMTP id S1725903AbgLDV7o (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 4 Dec 2020 16:30:21 -0500
-Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7450BC0613D1
-        for <linux-wireless@vger.kernel.org>; Fri,  4 Dec 2020 13:29:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-         s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
-        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=8hURV8cspaWAMkg9KAM4dCe0JTZHwXEs1b/wqyPnLhs=; b=jEN/oZwtT94nnJS2psCD5fIYFJ
-        DdxVqTPSTpnf0X9WEBKs+E/aqyPYImuG3NZX8JLEtvFJp+iFzmiv6guGS4lItQzeFngKkGddzvaGN
-        +wYaVhJSfidJ0kteB76JH2YYHZV57cOBEB0pAKIAV3ktRxbZDvfJkbs3pnDLV/jJwzpI=;
-Received: from p4ff13815.dip0.t-ipconnect.de ([79.241.56.21] helo=nf.local)
-        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.89)
-        (envelope-from <nbd@nbd.name>)
-        id 1klIe3-00052s-LU; Fri, 04 Dec 2020 22:29:39 +0100
-Subject: pull request: mt76 2020-12-04 v2
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>
-References: <7ec7cc33-ccf0-ee68-755a-9d118ced3102@nbd.name>
- <20201202191852.525E8C43461@smtp.codeaurora.org>
- <85027265-15f0-6d8f-1fd5-19a88c9530d8@nbd.name>
- <87y2idfh6s.fsf@codeaurora.org>
-From:   Felix Fietkau <nbd@nbd.name>
-Message-ID: <f42bcdc1-2cd4-9f44-2889-bbb9e10e038a@nbd.name>
-Date:   Fri, 4 Dec 2020 22:29:38 +0100
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:78.0)
- Gecko/20100101 Thunderbird/78.5.0
+        Fri, 4 Dec 2020 16:59:44 -0500
+Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com [IPv6:2607:f8b0:4864:20::541])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59ACCC0613D1;
+        Fri,  4 Dec 2020 13:59:04 -0800 (PST)
+Received: by mail-pg1-x541.google.com with SMTP id n10so4352387pgv.8;
+        Fri, 04 Dec 2020 13:59:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=bOYSy1/W+IvqY8VNMWbqot9NddWFzlzpEDfybh9Rd5c=;
+        b=b2vEQeoXBtlIel+He++NoP+ym6WgZmlCXqhipUZQDrxaUKcn1aRJaKyA13lmTPgdY+
+         NIZbE6Wrla+D4fgayTHMmef2G9qSWr0ku6EbwofDp7w54P2Q7uvGpJDhKrySfjvKdUqa
+         jfWJssdr8Q5Gjw/Qms4ebI/SmIweC5lqiNGblxN+s3Vlu5rxrRPeSFO46TUoVXUBwRTs
+         l8PxheIhtfHZ9ZNK2DZIGYqR9BGVPEdqSWoFTewbRX79j4OvemBZTifRgCROD7BXM75R
+         RjElmoZzHEUvvJV2OxPeA4gw65QlDI1E/g9FzLQhO3PgeV+RVcGOdfQWFEoQSdMf/SXi
+         MfZA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=bOYSy1/W+IvqY8VNMWbqot9NddWFzlzpEDfybh9Rd5c=;
+        b=X//MM4sYHHMf9h8mVVE6PTVbfBjXmcux1X9rb7351ooAyfg0nh53hYf8/DD9Ile821
+         waO3aUWYBww5jQRVsn1yKzN8mAVfe0Rd6J2oYjYdp1altGeb9ar82XK1mO7V5XjGXeCl
+         dFf0dlDJv339KGk4iG7Ql02q+t9X5JZ/z9yKcOu+NeVTCJ3KjNOZpiei5QANWuV1tGo2
+         bRI+GC+VAiiuFBMSpCxFjN921zvC48blHPtkkL232rc3rdm7mPvD8OJduNg3ZBstmK82
+         t5Igt5EBKHfqicR1g9MKqff69RZ6x797qdCkLcKuGoMkjpERY9GwiRkeKnm1/5YuJ1Aw
+         OjMA==
+X-Gm-Message-State: AOAM532uqWC/axmLIjlgl3RItgEIQD/1kC7TO1uXJejj8PAUTLHUYoFC
+        joPP4HnFjk4Sb5EezGDnidK4HbRilQxpT4TX
+X-Google-Smtp-Source: ABdhPJxWZkwKOMw5wsvhYFHPjNU09TJegdW4joQRoUqOVAx1CiDNQolr7Dx7r+0KyjWzdasJM90s+g==
+X-Received: by 2002:a63:4716:: with SMTP id u22mr9281667pga.407.1607119143128;
+        Fri, 04 Dec 2020 13:59:03 -0800 (PST)
+Received: from localhost.localdomain ([49.207.200.112])
+        by smtp.gmail.com with ESMTPSA id s17sm5016246pge.37.2020.12.04.13.58.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 04 Dec 2020 13:59:02 -0800 (PST)
+From:   Anant Thazhemadam <anant.thazhemadam@gmail.com>
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>
+Cc:     Anant Thazhemadam <anant.thazhemadam@gmail.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        syzbot+49d4cab497c2142ee170@syzkaller.appspotmail.com
+Subject: [PATCH] net: wireless: validate key indexes for cfg80211_registered_device
+Date:   Sat,  5 Dec 2020 03:28:25 +0530
+Message-Id: <20201204215825.129879-1-anant.thazhemadam@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-In-Reply-To: <87y2idfh6s.fsf@codeaurora.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Kalle,
+syzbot discovered a bug in which an OOB access was being made because
+an unsuitable key_idx value was wrongly considered to be acceptable
+while deleting a key in nl80211_del_key().
 
-sorry about the last one. Here's the updated PR with the missing 
-S-o-b fixed.
+Since we don't know the cipher at the time of deletion, if
+cfg80211_validate_key_settings() were to be called directly in
+nl80211_del_key(), even valid keys would be wrongly determined invalid,
+and deletion wouldn't occur correctly.
+For this reason, a new function - cfg80211_valid_key_idx(), has been
+created, to determine if the key_idx value provided is valid or not.
+cfg80211_valid_key_idx() is directly called in 2 places -
+nl80211_del_key(), and cfg80211_validate_key_settings().
 
-- Felix
+Reported-by: syzbot+49d4cab497c2142ee170@syzkaller.appspotmail.com
+Tested-by: syzbot+49d4cab497c2142ee170@syzkaller.appspotmail.com
+Suggested-by: Johannes Berg <johannes@sipsolutions.net>
+Signed-off-by: Anant Thazhemadam <anant.thazhemadam@gmail.com>
+---
+For the bug that was getting triggered, pairwise was true, and 
+the NL80211_EXT_FEATURE_BEACON_PROTECTION feature was set too.
+The control logic for cfg80211_validate_key_settings() has been
+designed keeping this also in mind.
 
-The following changes since commit 9eb597c74483ad5c230a884449069adfb68285ea:
+ net/wireless/core.h    |  2 ++
+ net/wireless/nl80211.c |  7 ++++---
+ net/wireless/util.c    | 27 ++++++++++++++++++++-------
+ 3 files changed, 26 insertions(+), 10 deletions(-)
 
-  Merge ath-next from git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git (2020-12-02 21:46:55 +0200)
-
-are available in the Git repository at:
-
-  https://github.com/nbd168/wireless tags/mt76-for-kvalo-2020-12-04
-
-for you to fetch changes up to f12758f6f929dbcd37abdb1d91d245539eca48f8:
-
-  mt76: mt7615: Fix fall-through warnings for Clang (2020-12-04 22:24:54 +0100)
-
-----------------------------------------------------------------
-mt76 patches for 5.11
-
-* mt7915 fixes
-* mt7615 fixes
-* support for more sta interfaces on mt7615/mt7915
-* mt7915 encap offload
-* performance improvements
-* channel noise report on mt7915
-* usb/sdio support improvements
-* mt7915 testmode support
-* mt7915 DBDC support
-* warning fixes
-
-----------------------------------------------------------------
-Allen Pais (1):
-      wireless: mt76: convert tasklets to use new tasklet_setup() API
-
-Chuanhong Guo (1):
-      mt76: mt7615: retry if mt7615_mcu_init returns -EAGAIN
-
-David Bauer (1):
-      mt76: mt7603: add additional EEPROM chip ID
-
-Felix Fietkau (25):
-      mt76: mt7915: add 802.11 encap offload support
-      mt76: mt7915: add encap offload for 4-address mode stations
-      mt76: use ieee80211_rx_list to pass frames to the network stack as a batch
-      mt76: mt7615: add debugfs knob for setting extended local mac addresses
-      mt76: do not set NEEDS_UNIQUE_STA_ADDR for 7615 and 7915
-      mt76: mt7915: support 32 station interfaces
-      mt76: mt7915: fix processing txfree events
-      mt76: mt7915: use napi_consume_skb to bulk-free tx skbs
-      mt76: mt7915: fix DRR sta bss group index
-      mt76: mt7915: disable OFDMA/MU-MIMO UL
-      mt76: rename __mt76_mcu_send_msg to mt76_mcu_send_msg
-      mt76: rename __mt76_mcu_skb_send_msg to mt76_mcu_skb_send_msg
-      mt76: implement .mcu_parse_response in struct mt76_mcu_ops
-      mt76: move mcu timeout handling to .mcu_parse_response
-      mt76: move waiting and locking out of mcu_ops->mcu_skb_send_msg
-      mt76: make mcu_ops->mcu_send_msg optional
-      mt76: mt7603: switch to .mcu_skb_send_msg
-      mt76: implement functions to get the response skb for MCU calls
-      mt76: mt7915: move eeprom parsing out of mt7915_mcu_parse_response
-      mt76: mt7915: query station rx rate from firmware
-      mt76: add back the SUPPORTS_REORDERING_BUFFER flag
-      mt76: mt7915: fix endian issues
-      mt76: improve tx queue stop/wake
-      mt76: mt7915: stop queues when running out of tx tokens
-      mt76: attempt to free up more room when filling the tx queue
-
-Gustavo A. R. Silva (1):
-      mt76: mt7615: Fix fall-through warnings for Clang
-
-Lorenzo Bianconi (37):
-      mt76: mt7663s: move tx/rx processing in the same txrx workqueue
-      mt76: mt7663s: convert txrx_work to mt76_worker
-      mt76: mt7663s: disable interrupt during txrx_worker processing
-      mt76: sdio: convert {status/net}_work to mt76_worker
-      mt76: mt7615: enable beacon filtering by default for offload fw
-      mt76: mt7615: introduce quota debugfs node for mt7663s
-      mt76: mt7663s: get rid of mt7663s_sta_add
-      mt76: mt7663s: fix a possible ple quota underflow
-      mt76: sdio: get rid of sched.lock
-      mt76: dma: fix possible deadlock running mt76_dma_cleanup
-      mt76: fix memory leak if device probing fails
-      mt76: move mt76_mcu_send_firmware in common module
-      mt76: switch to wep sw crypto for mt7615/mt7915
-      mt76: fix tkip configuration for mt7615/7663 devices
-      mt76: mt7615: run key configuration in mt7615_set_key for usb/sdio devices
-      mt76: mt76u: rely on woker APIs for rx work
-      mt76: mt76u: use dedicated thread for status work
-      mt76: mt7915: make mt7915_eeprom_read static
-      mt76: mt7615: refactor usb/sdio rate code
-      mt76: mt7915: rely on eeprom definitions
-      mt76: move mt76_init_tx_queue in common code
-      mt76: sdio: introduce mt76s_alloc_tx_queue
-      mt76: sdio: rely on mt76_queue in mt76s_process_tx_queue signature
-      mt76: mt7663s: rely on mt76_queue in mt7663s_tx_run_queue signature
-      mt76: dma: rely on mt76_queue in mt76_dma_tx_cleanup signature
-      mt76: rely on mt76_queue in tx_queue_skb signature
-      mt76: introduce mt76_init_mcu_queue utility routine
-      mt76: rely on mt76_queue in tx_queue_skb_raw signature
-      mt76: move mcu queues to mt76_dev q_mcu array
-      mt76: move tx hw data queues in mt76_phy
-      mt76: move band capabilities in mt76_phy
-      mt76: rely on mt76_phy in mt76_init_sband_2g and mt76_init_sband_5g
-      mt76: move band allocation in mt76_register_phy
-      mt76: move hw mac_addr in mt76_phy
-      mt76: mt7915: introduce dbdc support
-      mt76: mt7915: get rid of dbdc debugfs knob
-      mt76: mt7615: fix rdd mcu cmd endianness
-
-Ryder Lee (8):
-      mt76: mt7915: measure channel noise and report it via survey
-      mt76: mt7915: fix VHT LDPC capability
-      mt76: mt7915: update ppe threshold
-      mt76: mt7915: rename mt7915_mcu_get_rate_info to mt7915_mcu_get_tx_rate
-      mt76: mt7915: fix sparse warning cast from restricted __le16
-      mt76: mt7915: use BIT_ULL for omac_idx
-      mt76: mt7915: remove unused mt7915_mcu_bss_sync_tlv()
-      mt76: mt7615: support 16 interfaces
-
-Sean Wang (1):
-      mt76: mt7663s: introduce WoW support via GPIO
-
-Shayne Chen (12):
-      mt76: testmode: switch ib and wb rssi to array type for per-antenna report
-      mt76: testmode: add snr attribute in rx statistics
-      mt76: testmode: add tx_rate_stbc parameter
-      mt76: testmode: add support for LTF and GI combinations for HE mode
-      mt76: mt7915: fix tx rate related fields in tx descriptor
-      mt76: testmode: add support for HE rate modes
-      mt76: mt7915: implement testmode tx support
-      mt76: mt7915: implement testmode rx support
-      mt76: mt7915: add support to set txpower in testmode
-      mt76: mt7915: add support to set tx frequency offset in testmode
-      mt76: mt7915: fix memory leak in mt7915_mcu_get_rx_rate()
-      mt76: mt7915: fix ht mcs in mt7915_mcu_get_rx_rate()
-
-Taehee Yoo (2):
-      mt76: mt7915: set fops_sta_stats.owner to THIS_MODULE
-      mt76: set fops_tx_stats.owner to THIS_MODULE
-
- drivers/net/wireless/mediatek/mt76/debugfs.c          |   4 +-
- drivers/net/wireless/mediatek/mt76/dma.c              |  37 +++--
- drivers/net/wireless/mediatek/mt76/eeprom.c           |  12 +-
- drivers/net/wireless/mediatek/mt76/mac80211.c         | 149 +++++++++++---------
- drivers/net/wireless/mediatek/mt76/mcu.c              |  80 +++++++++++
- drivers/net/wireless/mediatek/mt76/mt76.h             | 121 ++++++++++++----
- drivers/net/wireless/mediatek/mt76/mt7603/beacon.c    |  30 ++--
- drivers/net/wireless/mediatek/mt76/mt7603/dma.c       |  61 ++++----
- drivers/net/wireless/mediatek/mt76/mt7603/eeprom.c    |   7 +-
- drivers/net/wireless/mediatek/mt76/mt7603/init.c      |   4 +-
- drivers/net/wireless/mediatek/mt76/mt7603/mac.c       |   9 +-
- drivers/net/wireless/mediatek/mt76/mt7603/main.c      |  12 +-
- drivers/net/wireless/mediatek/mt76/mt7603/mcu.c       | 131 ++++++-----------
- drivers/net/wireless/mediatek/mt76/mt7603/mt7603.h    |   2 +-
- drivers/net/wireless/mediatek/mt76/mt7603/pci.c       |   3 +-
- drivers/net/wireless/mediatek/mt76/mt7615/debugfs.c   | 139 ++++++++++++++++--
- drivers/net/wireless/mediatek/mt76/mt7615/dma.c       |  55 +++-----
- drivers/net/wireless/mediatek/mt76/mt7615/eeprom.c    |  22 +--
- drivers/net/wireless/mediatek/mt76/mt7615/init.c      |  23 +--
- drivers/net/wireless/mediatek/mt76/mt7615/mac.c       | 199 +++++++++++++-------------
- drivers/net/wireless/mediatek/mt76/mt7615/main.c      | 122 +++++++---------
- drivers/net/wireless/mediatek/mt76/mt7615/mcu.c       | 544 +++++++++++++++++++++++++++++++++++++----------------------------------
- drivers/net/wireless/mediatek/mt76/mt7615/mcu.h       |  17 +++
- drivers/net/wireless/mediatek/mt76/mt7615/mmio.c      |   9 +-
- drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h    |  92 ++++--------
- drivers/net/wireless/mediatek/mt76/mt7615/pci_init.c  |   9 +-
- drivers/net/wireless/mediatek/mt76/mt7615/regs.h      |  11 ++
- drivers/net/wireless/mediatek/mt76/mt7615/sdio.c      |  71 +++++-----
- drivers/net/wireless/mediatek/mt76/mt7615/sdio_mcu.c  |  42 ++----
- drivers/net/wireless/mediatek/mt76/mt7615/sdio_txrx.c | 142 +++++++++----------
- drivers/net/wireless/mediatek/mt76/mt7615/testmode.c  |  28 +++-
- drivers/net/wireless/mediatek/mt76/mt7615/usb.c       |   9 +-
- drivers/net/wireless/mediatek/mt76/mt7615/usb_mcu.c   |  16 +--
- drivers/net/wireless/mediatek/mt76/mt7615/usb_sdio.c  |  89 +++---------
- drivers/net/wireless/mediatek/mt76/mt76x0/eeprom.c    |  12 +-
- drivers/net/wireless/mediatek/mt76/mt76x0/init.c      |   4 +-
- drivers/net/wireless/mediatek/mt76/mt76x0/pci.c       |   3 +-
- drivers/net/wireless/mediatek/mt76/mt76x0/pci_mcu.c   |   1 +
- drivers/net/wireless/mediatek/mt76/mt76x0/phy.c       |   4 +-
- drivers/net/wireless/mediatek/mt76/mt76x0/usb.c       |   1 +
- drivers/net/wireless/mediatek/mt76/mt76x02_dfs.c      |  10 +-
- drivers/net/wireless/mediatek/mt76/mt76x02_eeprom.c   |   8 +-
- drivers/net/wireless/mediatek/mt76/mt76x02_mac.c      |  16 +--
- drivers/net/wireless/mediatek/mt76/mt76x02_mcu.c      |  55 ++++----
- drivers/net/wireless/mediatek/mt76/mt76x02_mcu.h      |   2 +
- drivers/net/wireless/mediatek/mt76/mt76x02_mmio.c     |  76 +++++-----
- drivers/net/wireless/mediatek/mt76/mt76x02_usb_core.c |   2 +-
- drivers/net/wireless/mediatek/mt76/mt76x02_usb_mcu.c  |   1 +
- drivers/net/wireless/mediatek/mt76/mt76x02_util.c     |  13 +-
- drivers/net/wireless/mediatek/mt76/mt76x2/eeprom.c    |   6 +-
- drivers/net/wireless/mediatek/mt76/mt76x2/mcu.c       |  18 +--
- drivers/net/wireless/mediatek/mt76/mt76x2/pci.c       |   3 +-
- drivers/net/wireless/mediatek/mt76/mt76x2/pci_init.c  |   2 +-
- drivers/net/wireless/mediatek/mt76/mt76x2/pci_mcu.c   |   1 +
- drivers/net/wireless/mediatek/mt76/mt76x2/usb.c       |   1 +
- drivers/net/wireless/mediatek/mt76/mt7915/Makefile    |   2 +
- drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c   |  47 ++-----
- drivers/net/wireless/mediatek/mt76/mt7915/dma.c       |  76 +++++-----
- drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c    |  64 +++++----
- drivers/net/wireless/mediatek/mt76/mt7915/eeprom.h    |   1 +
- drivers/net/wireless/mediatek/mt76/mt7915/init.c      | 435 +++++++++++++++++++++++++++------------------------------
- drivers/net/wireless/mediatek/mt76/mt7915/mac.c       | 539 ++++++++++++++++++++++++++++++++++++++++++++++++++++++----------------
- drivers/net/wireless/mediatek/mt76/mt7915/mac.h       |  16 ++-
- drivers/net/wireless/mediatek/mt76/mt7915/main.c      | 133 ++++++++++++++----
- drivers/net/wireless/mediatek/mt76/mt7915/mcu.c       | 734 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-----------------------------------
- drivers/net/wireless/mediatek/mt76/mt7915/mcu.h       |  54 +++++--
- drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h    |  64 ++++++---
- drivers/net/wireless/mediatek/mt76/mt7915/pci.c       |  24 +++-
- drivers/net/wireless/mediatek/mt76/mt7915/regs.h      |  52 ++++++-
- drivers/net/wireless/mediatek/mt76/mt7915/testmode.c  | 377 +++++++++++++++++++++++++++++++++++++++++++++++++
- drivers/net/wireless/mediatek/mt76/mt7915/testmode.h  |  40 ++++++
- drivers/net/wireless/mediatek/mt76/sdio.c             | 196 ++++++++++++++------------
- drivers/net/wireless/mediatek/mt76/testmode.c         |  41 ++++--
- drivers/net/wireless/mediatek/mt76/testmode.h         |  18 ++-
- drivers/net/wireless/mediatek/mt76/tx.c               |  63 +++++----
- drivers/net/wireless/mediatek/mt76/usb.c              |  87 ++++++++----
- 76 files changed, 3447 insertions(+), 2156 deletions(-)
- create mode 100644 drivers/net/wireless/mediatek/mt76/mt7915/testmode.c
- create mode 100644 drivers/net/wireless/mediatek/mt76/mt7915/testmode.h
+diff --git a/net/wireless/core.h b/net/wireless/core.h
+index e3e9686859d4..7df91f940212 100644
+--- a/net/wireless/core.h
++++ b/net/wireless/core.h
+@@ -433,6 +433,8 @@ void cfg80211_sme_abandon_assoc(struct wireless_dev *wdev);
+ 
+ /* internal helpers */
+ bool cfg80211_supported_cipher_suite(struct wiphy *wiphy, u32 cipher);
++bool cfg80211_valid_key_idx(struct cfg80211_registered_device *rdev,
++			    int key_idx, bool pairwise);
+ int cfg80211_validate_key_settings(struct cfg80211_registered_device *rdev,
+ 				   struct key_params *params, int key_idx,
+ 				   bool pairwise, const u8 *mac_addr);
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index a77174b99b07..db36158911ae 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -4260,9 +4260,6 @@ static int nl80211_del_key(struct sk_buff *skb, struct genl_info *info)
+ 	if (err)
+ 		return err;
+ 
+-	if (key.idx < 0)
+-		return -EINVAL;
+-
+ 	if (info->attrs[NL80211_ATTR_MAC])
+ 		mac_addr = nla_data(info->attrs[NL80211_ATTR_MAC]);
+ 
+@@ -4278,6 +4275,10 @@ static int nl80211_del_key(struct sk_buff *skb, struct genl_info *info)
+ 	    key.type != NL80211_KEYTYPE_GROUP)
+ 		return -EINVAL;
+ 
++	if (!cfg80211_valid_key_idx(rdev, key.idx,
++				    key.type == NL80211_KEYTYPE_PAIRWISE))
++		return -EINVAL;
++
+ 	if (!rdev->ops->del_key)
+ 		return -EOPNOTSUPP;
+ 
+diff --git a/net/wireless/util.c b/net/wireless/util.c
+index f01746894a4e..07b17feb9b1e 100644
+--- a/net/wireless/util.c
++++ b/net/wireless/util.c
+@@ -272,18 +272,31 @@ bool cfg80211_supported_cipher_suite(struct wiphy *wiphy, u32 cipher)
+ 	return false;
+ }
+ 
+-int cfg80211_validate_key_settings(struct cfg80211_registered_device *rdev,
+-				   struct key_params *params, int key_idx,
+-				   bool pairwise, const u8 *mac_addr)
++bool cfg80211_valid_key_idx(struct cfg80211_registered_device *rdev,
++			    int key_idx, bool pairwise)
+ {
+ 	int max_key_idx = 5;
+ 
+-	if (wiphy_ext_feature_isset(&rdev->wiphy,
+-				    NL80211_EXT_FEATURE_BEACON_PROTECTION) ||
+-	    wiphy_ext_feature_isset(&rdev->wiphy,
+-				    NL80211_EXT_FEATURE_BEACON_PROTECTION_CLIENT))
++	if (pairwise)
++		max_key_idx = 3;
++
++	else if (wiphy_ext_feature_isset(&rdev->wiphy,
++					 NL80211_EXT_FEATURE_BEACON_PROTECTION) ||
++		 wiphy_ext_feature_isset(&rdev->wiphy,
++					 NL80211_EXT_FEATURE_BEACON_PROTECTION_CLIENT))
+ 		max_key_idx = 7;
++
+ 	if (key_idx < 0 || key_idx > max_key_idx)
++		return false;
++
++	return true;
++}
++
++int cfg80211_validate_key_settings(struct cfg80211_registered_device *rdev,
++				   struct key_params *params, int key_idx,
++				   bool pairwise, const u8 *mac_addr)
++{
++	if (!cfg80211_valid_key_idx(rdev, key_idx, pairwise))
+ 		return -EINVAL;
+ 
+ 	if (!pairwise && mac_addr && !(rdev->wiphy.flags & WIPHY_FLAG_IBSS_RSN))
+-- 
+2.25.1
 
