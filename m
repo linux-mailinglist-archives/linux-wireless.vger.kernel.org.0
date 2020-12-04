@@ -2,141 +2,155 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A4472CF08B
-	for <lists+linux-wireless@lfdr.de>; Fri,  4 Dec 2020 16:16:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 49BFC2CF1D0
+	for <lists+linux-wireless@lfdr.de>; Fri,  4 Dec 2020 17:25:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728803AbgLDPPy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 4 Dec 2020 10:15:54 -0500
-Received: from userp2130.oracle.com ([156.151.31.86]:50880 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728048AbgLDPPx (ORCPT
+        id S1727071AbgLDQZO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 4 Dec 2020 11:25:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55342 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725923AbgLDQZO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 4 Dec 2020 10:15:53 -0500
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0B4FDvWY112304;
-        Fri, 4 Dec 2020 15:15:08 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=sKzUT9iTbAJ26R/YZ/f4H7e9oUPl3feVCxgPWIZg3GA=;
- b=LCWHHctXlF+Oq6C/3mySl3p2tLM5Bq59xarE9Mak+M460sKr0TxQhUEuJBl8abwbFTdp
- Gpy/Lw/M+vPZXyoc9XcfYotMFGUFTjdWiSoccxUq1XJmRzWpW16JY6SuvHV7LOTEpEjA
- cS+XxZT9fW2Kn8+Te92QrtRK5QN/TFpjlpuDCU4yyr6ia0uHGV+tuc86+xpdmF7iL/2y
- mbd8FJw/KZmZ9oeQpgtP/Br058Ypmnk5PseGg47oWqfp/Ufk3pSamO0L5M9VBOWzCAH8
- 5qHQPpjxjCTRWcdlo7Z0j4P+tRlv6KXVj4ScpQZoqqQyjflVnImZLxWrGVwSp8TZmQ5i GQ== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by userp2130.oracle.com with ESMTP id 353dyr3ny5-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 04 Dec 2020 15:15:08 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0B4F6G2j040763;
-        Fri, 4 Dec 2020 15:15:07 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by aserp3020.oracle.com with ESMTP id 3540f3ehnf-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 04 Dec 2020 15:15:07 +0000
-Received: from abhmp0017.oracle.com (abhmp0017.oracle.com [141.146.116.23])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 0B4FF5Ht019679;
-        Fri, 4 Dec 2020 15:15:05 GMT
-Received: from mwanda (/102.36.221.92)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 04 Dec 2020 07:15:04 -0800
-Date:   Fri, 4 Dec 2020 18:14:59 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     ku920601@realtek.com
-Cc:     linux-wireless@vger.kernel.org
-Subject: [bug report] rtw88: coex: add feature to enhance HID coexistence
- performance
-Message-ID: <X8pSc4CnDcskUVvE@mwanda>
+        Fri, 4 Dec 2020 11:25:14 -0500
+Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com [IPv6:2607:f8b0:4864:20::443])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F87CC0613D1;
+        Fri,  4 Dec 2020 08:24:34 -0800 (PST)
+Received: by mail-pf1-x443.google.com with SMTP id q22so4030966pfk.12;
+        Fri, 04 Dec 2020 08:24:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=pBrdOURnR648n2XD9NndbhDk737p/6hmnaT9+XJMRWw=;
+        b=GNTCvb18UFsbl4Uzzr3uuCyhNZf63rjVElaIZFKYx2FKaOT98ctqtmQNDacHvNBp+d
+         DBSnog8Mgs5Lay/ItMEXBxgcPk5CUtasRRZDVVv0D8oQEpX87gEvJw3RfjjSW7clcbs3
+         EvpLRSRFnHHPyM9IY9ZL/RQbF43509RRnQfPhhWP1DG1jaASgnbxwcFXUfMN7o5ii33p
+         4eJTX80kKRBHybkkZ6sBgq+bdqEEpZ7bz0plBEBLPtK+U3dkc6eflz9IXQkHVy//Tg1m
+         Mqison8pRbncEQlnqI2myT03UvOueR2i/APUEj/Nyx1l5KKs5Wx5rCAtvXxJBcGAZart
+         J2EQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=pBrdOURnR648n2XD9NndbhDk737p/6hmnaT9+XJMRWw=;
+        b=W0ZviO9aDd+i/IKCJgs5JaueJBheNPVHgIkK7OhaLiD9xAy2PZF1Le7WZwo1RPrNom
+         eYwRPoP52jvuPNVsnbymRX5qApxqoGGEc70KmqVxvYkUqM4fVDA0n80qfTYglAuikz6E
+         tDQ9sbd6FxXjGEiT7wcBaNGM/fyWsMU6n3vNaWw/Q/bDNAaz5evdumIWdX7UIGAr778Z
+         963cOzn9lfVECVFEEMUnQ89QdSSi8g4inVW6FzgFEAHVtQWazE4Iy7q2tY3niQ4nQ1RK
+         kdb82SW+YK/SCUr2KIybCsxlyy8hgUDxs7gI7ivpFQfpkWQKlqiJty/KrmjQRhMvBD1n
+         IH4w==
+X-Gm-Message-State: AOAM532TCvIhDUn7+1kWy9AHC6KdDT9sx5O2414GL3Fjj6oJPNJ2r8lX
+        AwAvlQGhy0cNS2nmafTiiDY=
+X-Google-Smtp-Source: ABdhPJwBCaOAgRC7TtbkQr75r/87dnR331bPU8mpMxPO/H3+n9XNNBGdgfhQnv3mGRzI9LKenebsAA==
+X-Received: by 2002:a63:5550:: with SMTP id f16mr8022458pgm.151.1607099073944;
+        Fri, 04 Dec 2020 08:24:33 -0800 (PST)
+Received: from edumazet1.svl.corp.google.com ([2620:15c:2c4:201:7220:84ff:fe09:1424])
+        by smtp.gmail.com with ESMTPSA id x10sm4806265pfc.133.2020.12.04.08.24.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 04 Dec 2020 08:24:33 -0800 (PST)
+From:   Eric Dumazet <eric.dumazet@gmail.com>
+To:     "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>
+Cc:     netdev <netdev@vger.kernel.org>,
+        Eric Dumazet <edumazet@google.com>,
+        Eric Dumazet <eric.dumazet@gmail.com>,
+        syzbot <syzkaller@googlegroups.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless@vger.kernel.org
+Subject: [PATCH net] mac80211: mesh: fix mesh_pathtbl_init() error path
+Date:   Fri,  4 Dec 2020 08:24:28 -0800
+Message-Id: <20201204162428.2583119-1-eric.dumazet@gmail.com>
+X-Mailer: git-send-email 2.29.2.576.ga3fc446d84-goog
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9824 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 malwarescore=0 phishscore=0
- suspectscore=3 bulkscore=0 spamscore=0 adultscore=0 mlxlogscore=705
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2012040088
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9824 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 bulkscore=0
- clxscore=1011 mlxscore=0 spamscore=0 priorityscore=1501 mlxlogscore=719
- suspectscore=3 lowpriorityscore=0 phishscore=0 adultscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2012040089
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello Ching-Te Ku,
+From: Eric Dumazet <edumazet@google.com>
 
-The patch 5b2e9a35e456: "rtw88: coex: add feature to enhance HID
-coexistence performance" from Nov 26, 2020, leads to the following
-static checker warning:
+If tbl_mpp can not be allocated, we call mesh_table_free(tbl_path)
+while tbl_path rhashtable has not yet been initialized, which causes
+panics.
 
-	drivers/net/wireless/realtek/rtw88/coex.c:2099 rtw_coex_action_bt_a2dp_hid()
-	error: uninitialized symbol 'interval'.
+Simply factorize the rhashtable_init() call into mesh_table_alloc()
 
-drivers/net/wireless/realtek/rtw88/coex.c
-  2047  static void rtw_coex_action_bt_a2dp_hid(struct rtw_dev *rtwdev)
-  2048  {
-  2049          struct rtw_coex *coex = &rtwdev->coex;
-  2050          struct rtw_coex_stat *coex_stat = &coex->stat;
-  2051          struct rtw_coex_dm *coex_dm = &coex->dm;
-  2052          struct rtw_efuse *efuse = &rtwdev->efuse;
-  2053          struct rtw_chip_info *chip = rtwdev->chip;
-  2054          u8 table_case, tdma_case, interval;
-                                          ^^^^^^^^
-  2055          u32 slot_type = 0;
-  2056          bool is_toggle_table = false;
-  2057  
-  2058          slot_type = TDMA_4SLOT;
-  2059  
-  2060          rtw_dbg(rtwdev, RTW_DBG_COEX, "[BTCoex], %s()\n", __func__);
-  2061          rtw_coex_set_ant_path(rtwdev, false, COEX_SET_ANT_2G);
-  2062          rtw_coex_set_rf_para(rtwdev, chip->wl_rf_para_rx[0]);
-  2063  
-  2064          if (efuse->share_ant) {
-  2065                  /* Shared-Ant */
-  2066                  if (coex_stat->bt_ble_exist) {
-  2067                          table_case = 26; /* for RCU */
-  2068                  } else if (coex_stat->bt_418_hid_exist) {
-  2069                          table_case = 9;
-  2070                          interval = 1;
-                                ^^^^^^^^^^^^
-The "interval" variable is only set here and not on the other paths.
+WARNING: CPU: 1 PID: 8474 at kernel/workqueue.c:3040 __flush_work kernel/workqueue.c:3040 [inline]
+WARNING: CPU: 1 PID: 8474 at kernel/workqueue.c:3040 __cancel_work_timer+0x514/0x540 kernel/workqueue.c:3136
+Modules linked in:
+CPU: 1 PID: 8474 Comm: syz-executor663 Not tainted 5.10.0-rc6-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
+RIP: 0010:__flush_work kernel/workqueue.c:3040 [inline]
+RIP: 0010:__cancel_work_timer+0x514/0x540 kernel/workqueue.c:3136
+Code: 5d c3 e8 bf ae 29 00 0f 0b e9 f0 fd ff ff e8 b3 ae 29 00 0f 0b 43 80 3c 3e 00 0f 85 31 ff ff ff e9 34 ff ff ff e8 9c ae 29 00 <0f> 0b e9 dc fe ff ff 89 e9 80 e1 07 80 c1 03 38 c1 0f 8c 7d fd ff
+RSP: 0018:ffffc9000165f5a0 EFLAGS: 00010293
+RAX: ffffffff814b7064 RBX: 0000000000000001 RCX: ffff888021c80000
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
+RBP: ffff888024039ca0 R08: dffffc0000000000 R09: fffffbfff1dd3e64
+R10: fffffbfff1dd3e64 R11: 0000000000000000 R12: 1ffff920002cbebd
+R13: ffff888024039c88 R14: 1ffff11004807391 R15: dffffc0000000000
+FS:  0000000001347880(0000) GS:ffff8880b9d00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000020000140 CR3: 000000002cc0a000 CR4: 00000000001506e0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ rhashtable_free_and_destroy+0x25/0x9c0 lib/rhashtable.c:1137
+ mesh_table_free net/mac80211/mesh_pathtbl.c:69 [inline]
+ mesh_pathtbl_init+0x287/0x2e0 net/mac80211/mesh_pathtbl.c:785
+ ieee80211_mesh_init_sdata+0x2ee/0x530 net/mac80211/mesh.c:1591
+ ieee80211_setup_sdata+0x733/0xc40 net/mac80211/iface.c:1569
+ ieee80211_if_add+0xd5c/0x1cd0 net/mac80211/iface.c:1987
+ ieee80211_add_iface+0x59/0x130 net/mac80211/cfg.c:125
+ rdev_add_virtual_intf net/wireless/rdev-ops.h:45 [inline]
+ nl80211_new_interface+0x563/0xb40 net/wireless/nl80211.c:3855
+ genl_family_rcv_msg_doit net/netlink/genetlink.c:739 [inline]
+ genl_family_rcv_msg net/netlink/genetlink.c:783 [inline]
+ genl_rcv_msg+0xe4e/0x1280 net/netlink/genetlink.c:800
+ netlink_rcv_skb+0x190/0x3a0 net/netlink/af_netlink.c:2494
+ genl_rcv+0x24/0x40 net/netlink/genetlink.c:811
+ netlink_unicast_kernel net/netlink/af_netlink.c:1304 [inline]
+ netlink_unicast+0x780/0x930 net/netlink/af_netlink.c:1330
+ netlink_sendmsg+0x9a8/0xd40 net/netlink/af_netlink.c:1919
+ sock_sendmsg_nosec net/socket.c:651 [inline]
+ sock_sendmsg net/socket.c:671 [inline]
+ ____sys_sendmsg+0x519/0x800 net/socket.c:2353
+ ___sys_sendmsg net/socket.c:2407 [inline]
+ __sys_sendmsg+0x2b1/0x360 net/socket.c:2440
+ do_syscall_64+0x2d/0x70 arch/x86/entry/common.c:46
+ entry_SYSCALL_64_after_hwframe+0x44/0xa9
 
-  2071                  } else {
-  2072                          table_case = 9;
-  2073                  }
-  2074  
-  2075                  if (coex_stat->wl_connecting || !coex_stat->wl_gl_busy) {
-  2076                          tdma_case = 14;
-  2077                  } else if (coex_stat->bt_418_hid_exist) {
-  2078                          is_toggle_table = true;
-  2079                          tdma_case = 23;
-  2080                  } else {
-  2081                          tdma_case = 13;
-  2082                  }
-  2083          } else {
-  2084                  /* Non-Shared-Ant */
-  2085                  if (coex_stat->bt_ble_exist)
-  2086                          table_case = 121;
-  2087                  else
-  2088                          table_case = 113;
-  2089  
-  2090                  if (COEX_RSSI_HIGH(coex_dm->wl_rssi_state[1]))
-  2091                          tdma_case = 112;
-  2092                  else
-  2093                          tdma_case = 113;
-  2094          }
-  2095  
-  2096          rtw_coex_table(rtwdev, false, table_case);
-  2097          if (is_toggle_table) {
-  2098                  rtw_btc_wltoggle_table_a(rtwdev, true, table_case);
-  2099                  rtw_btc_wltoggle_table_b(rtwdev, false, interval, COEX_WL_SLOT_TOGLLE);
-                                                                ^^^^^^^^
+Fixes: 60854fd94573 ("mac80211: mesh: convert path table to rhashtable")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Cc: Johannes Berg <johannes@sipsolutions.net>
+Cc: linux-wireless@vger.kernel.org
+---
+ net/mac80211/mesh_pathtbl.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-  2100          }
-  2101          rtw_coex_tdma(rtwdev, false, tdma_case | slot_type);
-  2102  }
+diff --git a/net/mac80211/mesh_pathtbl.c b/net/mac80211/mesh_pathtbl.c
+index 48f31ac9233c8b33558cf41a9b44412c7b1ad591..620ecf922408b1f870d4da8ab7eef02e4d33ab15 100644
+--- a/net/mac80211/mesh_pathtbl.c
++++ b/net/mac80211/mesh_pathtbl.c
+@@ -60,6 +60,7 @@ static struct mesh_table *mesh_table_alloc(void)
+ 	atomic_set(&newtbl->entries,  0);
+ 	spin_lock_init(&newtbl->gates_lock);
+ 	spin_lock_init(&newtbl->walk_lock);
++	rhashtable_init(&newtbl->rhead, &mesh_rht_params);
+ 
+ 	return newtbl;
+ }
+@@ -773,9 +774,6 @@ int mesh_pathtbl_init(struct ieee80211_sub_if_data *sdata)
+ 		goto free_path;
+ 	}
+ 
+-	rhashtable_init(&tbl_path->rhead, &mesh_rht_params);
+-	rhashtable_init(&tbl_mpp->rhead, &mesh_rht_params);
+-
+ 	sdata->u.mesh.mesh_paths = tbl_path;
+ 	sdata->u.mesh.mpp_paths = tbl_mpp;
+ 
+-- 
+2.29.2.576.ga3fc446d84-goog
 
-regards,
-dan carpenter
