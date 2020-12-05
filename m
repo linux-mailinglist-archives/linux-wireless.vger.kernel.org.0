@@ -2,167 +2,146 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 45F012CFECA
-	for <lists+linux-wireless@lfdr.de>; Sat,  5 Dec 2020 21:25:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E34ED2CFF33
+	for <lists+linux-wireless@lfdr.de>; Sat,  5 Dec 2020 22:26:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726684AbgLEUY6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 5 Dec 2020 15:24:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59834 "EHLO
+        id S1725933AbgLEV0G (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 5 Dec 2020 16:26:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40964 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725867AbgLEUY6 (ORCPT
+        with ESMTP id S1725270AbgLEV0G (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 5 Dec 2020 15:24:58 -0500
-Received: from mail-lf1-x143.google.com (mail-lf1-x143.google.com [IPv6:2a00:1450:4864:20::143])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7238AC0613D1
-        for <linux-wireless@vger.kernel.org>; Sat,  5 Dec 2020 12:24:17 -0800 (PST)
-Received: by mail-lf1-x143.google.com with SMTP id s30so12484955lfc.4
-        for <linux-wireless@vger.kernel.org>; Sat, 05 Dec 2020 12:24:17 -0800 (PST)
+        Sat, 5 Dec 2020 16:26:06 -0500
+Received: from mail-pj1-x1044.google.com (mail-pj1-x1044.google.com [IPv6:2607:f8b0:4864:20::1044])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C56F2C0613CF
+        for <linux-wireless@vger.kernel.org>; Sat,  5 Dec 2020 13:25:25 -0800 (PST)
+Received: by mail-pj1-x1044.google.com with SMTP id p21so5335249pjv.0
+        for <linux-wireless@vger.kernel.org>; Sat, 05 Dec 2020 13:25:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=5R5hbI6biOrhFi72PZ0N9OyJIbErNw6C3yWTUOEjdUE=;
-        b=Ud7WgjmZxAMJgtEW+A4CekkOTT0q/Ftcg4Ut/RQlz4ueYAzarkyZZdnM+fvXGGrdmz
-         CjvS2QQip3HeIOCveRIcxSLr4m2OZLRDg6HZkLh4fOGG2SVOg+peWWeyuwDnMgBxqw2L
-         BywLaaavT+UDcBngxfr8T/zevWoHsRxwZESvXNh/+DDsEsH1VO6B+NI3T+yurY2kp/S7
-         ebiYmhuEBFNmf3dSDFYds0OhfqscsbpkS0lfw7e6LEWzugCgYBypDpmoheJUJF9kItgr
-         wS36YFSFYVZSllY0WGmoDTnLOGBN0PSLo7f8Z9mCoKD4Ct5gDPt3Sq9eFilRBTNX3l9C
-         KdAg==
+        h=reply-to:from:to:subject:message-id:date:user-agent:mime-version
+         :content-language:content-transfer-encoding;
+        bh=3SZBDw5m8t2KONrJh2qkAzkbvzRa7Ic4EhZmiycSNFU=;
+        b=qEkA0Yqito4SIVLYLXO6+S7Ox0BophYbfhlQFrXcShiuK/3xjaOlKUpJ6whWctNxDj
+         11JGk3/71O08H2I0ObAGtMqLwogpPC2rOIFn8E/ZvFOMvdMlwiG1eCI4qWHCzEVrT5sm
+         czk/bJbeIcZRWEVFUsdcf8aHiK3AAZvYLAdP7+jDcN4YXB9qY7X0DViqEJMZuj8Z61d7
+         A/GMD524nOe2U8E+6/sTzOOJC8xggYmNoycnq6JzytHLx89nnq4lDN/dnbF8om3zECfG
+         lhHp1utzkEMw1c607pEg9KEMNHGCFbOc6irLRIsT2zBzz/SbFP5b7+NDN5FNAmSCKd7o
+         II5g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=5R5hbI6biOrhFi72PZ0N9OyJIbErNw6C3yWTUOEjdUE=;
-        b=XiC6mvKqNPZzb9p9SV0HfkmC1BU2IBeU/NgSU43pTDFeyuL8xI3ZIiBb8XdbzYQ5OP
-         VPLGlRB1yMrlIG/aNyBpJ8fUVk9FSjYWVwV2Gj+PElST0Is5lxzhbZHZD/BXDgO7sYzK
-         2fUgnK9iNVaa4s7AwxetE3ajcNi+wizj0eXaBVOQlWb/jbVL1t+nnK9aqUEMgafAt5yB
-         80YmDH0BaOa7avTXP2ukpRmfmIiGClmcs71tp3puq9WqY7G9gBhmk85cCLGvem0+u9Ar
-         ovcN4hETZ59kYkr0NsWv8H8GL1c0JWIDg7CSZUk3u++N680wwrxokhmqESUHvaWfKD8G
-         jTMA==
-X-Gm-Message-State: AOAM530013Ez7datQXnL40yq3Rf4Ic6ZBJn0eLAB/qgjfySu2t71Fq/I
-        JS6/8Ymu4CZO8DRyPZylxmegw6UmzUV5NbwkWY1pp5bep6A=
-X-Google-Smtp-Source: ABdhPJzP8cYTlU7CeSi4q+mWURpnKIY0eKiUJaZ4mn4ZXV12lUXF48rmdU8Sk1KXtTvn/Q2bTHIuhp3p7JJKlRAamqs=
-X-Received: by 2002:a05:6512:202b:: with SMTP id s11mr5352657lfs.27.1607199855965;
- Sat, 05 Dec 2020 12:24:15 -0800 (PST)
+        h=x-gm-message-state:reply-to:from:to:subject:message-id:date
+         :user-agent:mime-version:content-language:content-transfer-encoding;
+        bh=3SZBDw5m8t2KONrJh2qkAzkbvzRa7Ic4EhZmiycSNFU=;
+        b=OkkIZBKAfKgz2DoVffNgKvO6SkOdD4hV7WPEQYUWT+3hDxlHb2vDJ+OAvLVX3EFMoz
+         ibHB1kofSKUje92KHMv4V9nqY80nEo0os0Id/p2CAC0FShgx2V4dXozTtPlazInTxKjK
+         1FuRW1SS4tagnd/Ln8Dtr49ciPK/jLU4Z4CenwCKuRutPopx3FzPdMGaFowfVbnC0cxG
+         uOvzXV32hW+GBk3DOc2fXyxi40DuRqJbpHl7UyOzWbZ5zAvduhoZUear6V5NluzAayJg
+         7+rdtEWOtCOkm9lLZW48PGMj6PFLrtBOwhqnIqdbAUv4LrPy4pzZsPbz9968xbVueMOW
+         +0EQ==
+X-Gm-Message-State: AOAM531z9JaQ2BG158IKf9Ag3Pe+gmHNn+ARkRrwZkMUrdJYIvGUhVV9
+        kn9HVcEs4vX6if6RFYJ+p0dZZqDyO1Q=
+X-Google-Smtp-Source: ABdhPJwhLMI5+vRh+uyTHEG2CveiIZwHXe+Q6sM4YFVDLRtHUJmbnh1torGrlRHrS0+Rl1eR7xbWFg==
+X-Received: by 2002:a17:902:ee53:b029:da:4c68:2795 with SMTP id 19-20020a170902ee53b02900da4c682795mr9225891plo.7.1607203524911;
+        Sat, 05 Dec 2020 13:25:24 -0800 (PST)
+Received: from mua.localhost (99-7-172-215.lightspeed.snmtca.sbcglobal.net. [99.7.172.215])
+        by smtp.gmail.com with ESMTPSA id w5sm2580308pfw.66.2020.12.05.13.25.24
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 05 Dec 2020 13:25:24 -0800 (PST)
+Reply-To: pgnet.dev@gmail.com
+From:   PGNet Dev <pgnet.dev@gmail.com>
+To:     linux-wireless@vger.kernel.org
+Subject: wifi dongle connected to USB/pci card, seen in hardware, but no wl*
+ device created; udev, driver, &/or config?
+Message-ID: <95c76758-485b-aad4-62d2-95ce24f1108c@gmail.com>
+Date:   Sat, 5 Dec 2020 13:25:23 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.5.1
 MIME-Version: 1.0
-References: <a79286b90cdfdee3a83397008c0f7b6d67bc7f69.1607035229.git.b.K.il.h.u+tigbuh@gmail.com>
- <X8pRrWfZPhLdguu8@ubuntu-x1>
-In-Reply-To: <X8pRrWfZPhLdguu8@ubuntu-x1>
-From:   b.K.il.h.u+tigbuh@gmail.com
-Date:   Sat, 5 Dec 2020 21:24:03 +0100
-Message-ID: <CAPuHQ=EUcsn24EoSP+PGH2H6kPROvauyJN_6RtYLXqVYW=sK-g@mail.gmail.com>
-Subject: Re: [PATCH] wireless-regdb: recent FCC report and order allows
- 5850-5895 immediately
-To:     Seth Forshee <seth.forshee@canonical.com>
-Cc:     wireless-regdb <wireless-regdb@lists.infradead.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Thanks for double checking. Honestly, I've only spent a few hours
-skimming through the document and haven't read it through all the way.
+hi,
 
-Agreed that both bandwidths should probably be upped to 160.
 
-Considering  =C2=A7 15.407 (a)(3)(v): shouldn't the flag `PTMP-ONLY`
-already signal this infrastructure-mode only restriction? I think
-sending a probe request frame before connecting may be considered a
-"brief message", and NO-IR would even disallow that. Also, if we added
-NO-IR, wouldn't that close the band for AP's running Linux as well?
+I've got an older desktop running Fedora32 with
 
-Other than deciding the above questions, should we get back to
-finishing this patch after publication sometime next year? There may
-be a chance for it to change until then.
+	uname -rm
+		5.9.11-100.fc32.x86_64 x86_64
 
-On Fri, Dec 4, 2020 at 4:11 PM Seth Forshee <seth.forshee@canonical.com> wr=
-ote:
->
-> On Thu, Dec 03, 2020 at 11:40:30PM +0100, bkil wrote:
-> > The new band is called U-NII-4.
->
-> The report states in paragraph 203 that the order is effective 60 days
-> from publication in the Federal Register, and it looks like they haven't
-> even been published in the Federal Register yet. We will need to wait
-> for the rules to go into effect before applying any updates.
->
-> > The report recommends combining it with 5725-5895 to allow 160 MHz
-> > bandwidth, but that's technically not that easy with regdb due to the
-> > differing restrictions of the two parts. Marking the line for U-NII-3
-> > NO-OUTDOOR and PTMP-ONLY along with extending its range would be a
-> > possible workaround, but this needs to be discussed.
->
-> I think it should be sufficient to set the bandwidth of both 5730-5850
-> and 5850-5895 to 160 MHz with AUTO-BW. The kernel will see the AUTO-BW
-> flags and calculate a combined rule where 160 MHz is allowed, and for
-> the original rules any bandwidth exceeding the available bandwidth of
-> the rule will be disallowed.
->
-> > I don't see a requirement for TPC, hence reducing EIRP by 3dB is not
-> > needed. I've marked it 33dBm (minus 6dB for clients) to cope with 20MHz=
-,
-> > but the band can support higher power, though the logic is complicated.
->
-> I believe we have an additional requirement from =C2=A7 15.407 (a)(3)(v):
->
->   In the 5.850-5.895 GHz band, client devices must operate under the
->   control of an indoor access point. In all cases, an exception exists
->   for transmitting brief messages to an access point when attempting to
->   join its network after detecting a signal that confirms that an access
->   point is operating on a particular channel.
->
-> This sounds like a requirement for passive scanning, if so the range
-> should also have the NO-IR flag.
->
-> Thanks,
-> Seth
->
-> >
-> > The upper subband (5895-5925 MHz) of the new band is reserved for ITS.
-> >
-> > "We limit unlicensed use to indoor operations in recognition of the
-> > potential that ITS licensees may currently be operating"
-> >
-> > "We also proposed that U-NII-4 devices be permitted to operate at the s=
-ame
-> > power levels as U-NII-3 devices."
-> >
-> > "For the U-NII-4 band, indoor access point EIRP will be limited to
-> > 33 dBm/20 MHz and 36 dBm/40 MHz. When combined with U-NII-3 band spectr=
-um,
-> > indoor access point EIRP can scale to 36 dBm for 80 and 160 megahertz
-> > channels."
-> >
-> > "Client devices would be limited to power levels 6 dB below the power
-> > limits for access points."
-> >
-> > "the First Report and Order prohibit U-NII-4 client-to-client
-> > communications to protect co-channel incumbent ITS"
-> >
-> > Signed-off-by: bkil <b.K.il.h.u+tigbuh@gmail.com>
-> > ---
-> >  db.txt | 5 ++++-
-> >  1 file changed, 4 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/db.txt b/db.txt
-> > index c71a03a..e6dd063 100644
-> > --- a/db.txt
-> > +++ b/db.txt
-> > @@ -1587,7 +1587,10 @@ country US: DFS-FCC
-> >       # requirements, we can extend the range by 5 MHz to make the kern=
-el
-> >       # happy and be able to use channel 144.
-> >       (5470 - 5730 @ 160), (23), DFS
-> > -     (5730 - 5850 @ 80), (30)
-> > +     (5730 - 5850 @ 80), (30), AUTO-BW
-> > +     # https://www.fcc.gov/document/fcc-modernizes-59-ghz-band-improve=
--wi-fi-and-automotive-safety-0
-> > +     # max. 33 dBm AP @ 20MHz, 36 dBm AP @ 40Mhz+, 6 dB less for clien=
-ts
-> > +     (5850 - 5895 @ 40), (27), NO-OUTDOOR, PTMP-ONLY, AUTO-BW
-> >       # 60g band
-> >       # reference: section IV-D https://docs.fcc.gov/public/attachments=
-/FCC-16-89A1.pdf
-> >       # channels 1-6 EIRP=3D40dBm(43dBm peak)
+I've plugged a wifi dongle into a multiport USB3 pci card,
+  
+
+	lspci | grep "USB 3"
+		02:00.0 USB controller: Fresco Logic FL1100 USB 3.0 Host Controller (rev 10)
+
+
+On boot, the wifi hardware's seen
+
+	dmesg
+		...
+		[    2.639873] systemd[1]: Starting udev Kernel Device Manager...
+		[    2.643850] usb 8-4: New USB device found, idVendor=0bda, idProduct=b812, bcdDevice= 2.10
+		[    2.643853] usb 8-4: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+		[    2.643854] usb 8-4: Product: 802.11ac NIC
+		[    2.643855] usb 8-4: Manufacturer: Realtek
+		[    2.643856] usb 8-4: SerialNumber: 123456
+		[    2.682834] systemd[1]: Started udev Kernel Device Manager.
+		...
+
+	lsusb | grep 008
+		Bus 008 Device 003: ID 0bda:b812 Realtek Semiconductor Corp. RTL88x2bu [AC1200 Techkey]
+		Bus 008 Device 002: ID 2109:2812 VIA Labs, Inc. VL812 Hub
+		Bus 008 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+
+but hardware check for wlan/wlp* device, returns empty
+
+	iw list
+		(empty)
+
+	hwinfo --wlan
+		(empty)
+
+in more detail,
+
+	hwinfo
+
+the device is 'there', but unclassified
+
+	...
+	72: USB 00.0: 0000 Unclassified device
+	[Created at usb.122]
+	Unique ID: +4pb.2IcWyDScHM3
+	Parent ID: FZIx.tisqRJYDXEC
+	SysFS ID: /devices/pci0000:00/0000:00:04.0/0000:02:00.0/usb8/8-4/8-4:1.0
+	SysFS BusID: 8-4:1.0
+	Hardware Class: unknown
+	Model: "Realtek 802.11ac NIC"
+	Hotplug: USB
+	Vendor: usb 0x0bda "Realtek Semiconductor Corp."
+	Device: usb 0xb812 "802.11ac NIC"
+	Revision: "2.10"
+	Serial ID: "123456"
+	Speed: 480 Mbps
+	Module Alias: "usb:v0BDApB812d0210dc00dsc00dp00icFFiscFFipFFin00"
+	Config Status: cfg=new, avail=yes, need=no, active=unknown
+	Attached to: #71 (Hub)
+	...
+
+
+existing default udev rules aren't creating a wlan device; I'd expected that they would ...
+
+To get the device created -- when attached to the pci card -- is udev the right mechanism?
+
+I'm not clear if the problem here is udev, driver &/or my config.
+
+IF udev, what specific rule would create a USB network device for the dongle, either with a wlp* auto-name, or if need be, "wlan0"?
+
+Or, what else needs be done to init the wl* dev?
+
+
