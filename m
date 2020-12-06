@@ -2,118 +2,87 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A1D982D05D7
-	for <lists+linux-wireless@lfdr.de>; Sun,  6 Dec 2020 17:08:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9AA7A2D0604
+	for <lists+linux-wireless@lfdr.de>; Sun,  6 Dec 2020 17:40:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726410AbgLFQGr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 6 Dec 2020 11:06:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59864 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726186AbgLFQGr (ORCPT
+        id S1726861AbgLFQh5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 6 Dec 2020 11:37:57 -0500
+Received: from mail-il1-f198.google.com ([209.85.166.198]:51932 "EHLO
+        mail-il1-f198.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725730AbgLFQh4 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 6 Dec 2020 11:06:47 -0500
-Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [IPv6:2001:67c:2050::465:102])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39C02C0613D0;
-        Sun,  6 Dec 2020 08:06:07 -0800 (PST)
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [80.241.60.241])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4Cprrh0NCNzQlXZ;
-        Sun,  6 Dec 2020 17:05:40 +0100 (CET)
-X-Virus-Scanned: amavisd-new at heinlein-support.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hauke-m.de; s=MBO0001;
-        t=1607270738;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type;
-        bh=8JzY7suajkVMfhZ42n7nxDHFMguxx5XXAFU43lWh/uk=;
-        b=WJ3f4qPT1GayhhvRDBSMVsG6k9c+R0hm25GGegjQWo5r4Ov2eYehnDEfTw6djgWSReC1IZ
-        nAG0JNmPBH/S+5vjVcFFaeeJ2Wv9cK8Wb4jUMJ33lssj/uqgf9OuhK+Lz+PKCQ3QdgBOXD
-        K10SSaYcxu/5qB9787/ZWly+8Gby7kAPEOaFxMjeuTG7LVQQ9+7oDqv9Y1+tO7sCjeioSC
-        91LR8A7h56C9hOgWECVtpgPHvEpBbBDWSRDoM6vbbpLM+qYYmBz+3i3Wqd9hhcLpe3Rynz
-        g4iofBvux1jGEgzZc3I6sdHAkLjPjpyCaaeRrrpYaSN0sBgA8mT/nr0OHxGmkA==
-Received: from smtp2.mailbox.org ([80.241.60.241])
-        by spamfilter03.heinlein-hosting.de (spamfilter03.heinlein-hosting.de [80.241.56.117]) (amavisd-new, port 10030)
-        with ESMTP id VmRRN7YIUDzM; Sun,  6 Dec 2020 17:05:36 +0100 (CET)
-To:     "backports@vger.kernel.org" <backports@vger.kernel.org>
-Cc:     linux-wireless@vger.kernel.org
-From:   Hauke Mehrtens <hauke@hauke-m.de>
-Subject: wireless backports 4.19.161-1, 5.8.18-1, v5.9.12-1 and 5.10-rc6-1
- released
-Message-ID: <4a0da906-e3b7-1a94-8c26-12bf7cbca5f5@hauke-m.de>
-Date:   Sun, 6 Dec 2020 17:05:31 +0100
+        Sun, 6 Dec 2020 11:37:56 -0500
+Received: by mail-il1-f198.google.com with SMTP id z9so10162141ile.18
+        for <linux-wireless@vger.kernel.org>; Sun, 06 Dec 2020 08:37:35 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:date:in-reply-to:message-id:subject
+         :from:to;
+        bh=zsuPNydmjozr39AAHZE2NJ8iaBaXXZJv+6EgpqpR/Ss=;
+        b=HOG/5LhamG+wkyh8O52EpCBc3+mlrGC5KiWlwZv/GyhgyzC5fcxMVhDq8V9fQJrSVc
+         ltNsRQBR4yDAO9BkiNeQti8OLktCujb1rONhPgue3dxBvbvQ2sdOQxD+G8KRwCu5BrMa
+         WAUzogH/iArsO+o9d2U5nA00qUTMwrlu9DrV4sNw8LSBAdCpmrnmrC9TXOE58oPE8Duf
+         u//OwpoycF/R4+ujSilapHkzo6gv8vgi02GKyHH3+hugWy5iqKI/13WqNg6ELxsLQcfq
+         EK/zt/jf4tFvmq6gqVJ/cTdVBNkrRymTvP2Iy9RIuy0UR9GIfLH7EOsDxsEfvatjs0rf
+         vgcA==
+X-Gm-Message-State: AOAM531acZuReWvh0j1JplCdBhdX8dEsjutVVge72jWWb+geQJbU965F
+        HMQ6k9oUhpraGmIMaAaHjBmIWjRGLr6iedDiBHmZkWXkgVgO
+X-Google-Smtp-Source: ABdhPJw4x0qTJTBP9Ao5DDJQGmdUohkdbhUzfFIIX0Wd9yFEyjhWnvpimS6oha06lxJeO8KzWGTQoaAVjroY7Sz50Il1BY1X5mtV
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="BdxyMquMNx5cmnkVXb4h5Kwo5BsHaN4dO"
-X-MBO-SPAM-Probability: 
-X-Rspamd-Score: -7.09 / 15.00 / 15.00
-X-Rspamd-Queue-Id: CE81D17AA
-X-Rspamd-UID: d24b71
+X-Received: by 2002:a05:6e02:926:: with SMTP id o6mr15660312ilt.65.1607272629912;
+ Sun, 06 Dec 2020 08:37:09 -0800 (PST)
+Date:   Sun, 06 Dec 2020 08:37:09 -0800
+In-Reply-To: <00000000000088b1f405b00bcbb8@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <00000000000029c89c05b5ce5237@google.com>
+Subject: Re: WARNING in __cfg80211_ibss_joined (2)
+From:   syzbot <syzbot+7f064ba1704c2466e36d@syzkaller.appspotmail.com>
+To:     davem@davemloft.net, johannes@sipsolutions.net, kuba@kernel.org,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---BdxyMquMNx5cmnkVXb4h5Kwo5BsHaN4dO
-Content-Type: multipart/mixed; boundary="JDdkwiajmCCrtaMvstEdidH3m3lnk9GeM";
- protected-headers="v1"
-From: Hauke Mehrtens <hauke@hauke-m.de>
-To: "backports@vger.kernel.org" <backports@vger.kernel.org>
-Cc: linux-wireless@vger.kernel.org
-Message-ID: <4a0da906-e3b7-1a94-8c26-12bf7cbca5f5@hauke-m.de>
-Subject: wireless backports 4.19.161-1, 5.8.18-1, v5.9.12-1 and 5.10-rc6-1
- released
+syzbot has found a reproducer for the following issue on:
 
---JDdkwiajmCCrtaMvstEdidH3m3lnk9GeM
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
+HEAD commit:    7059c2c0 Merge branch 'for-linus' of git://git.kernel.org/..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=11a1199b500000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=e49433cfed49b7d9
+dashboard link: https://syzkaller.appspot.com/bug?extid=7f064ba1704c2466e36d
+compiler:       gcc (GCC) 10.1.0-syz 20200507
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=146ff2ef500000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=105d68df500000
 
-Hi
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+7f064ba1704c2466e36d@syzkaller.appspotmail.com
 
-backports-5.10-rc6-1 was released. This is based on Linux 5.10-rc6.
-https://cdn.kernel.org/pub/linux/kernel/projects/backports/stable/v5.10-r=
-c6/backports-5.10-rc6-1.tar.xz
+------------[ cut here ]------------
+WARNING: CPU: 1 PID: 9804 at net/wireless/ibss.c:36 __cfg80211_ibss_joined+0x487/0x520 net/wireless/ibss.c:36
+Modules linked in:
+CPU: 1 PID: 9804 Comm: kworker/u4:6 Not tainted 5.10.0-rc6-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
+Workqueue: cfg80211 cfg80211_event_work
+RIP: 0010:__cfg80211_ibss_joined+0x487/0x520 net/wireless/ibss.c:36
+Code: 0f 0b e9 0c fe ff ff e8 b7 55 7a f9 e9 41 fc ff ff e8 8d 55 7a f9 e9 7d fc ff ff e8 a3 55 7a f9 e9 0d ff ff ff e8 29 d7 38 f9 <0f> 0b e9 7e fc ff ff e8 1d d7 38 f9 0f 0b e8 96 55 7a f9 e9 e4 fb
+RSP: 0018:ffffc9000a85fbd8 EFLAGS: 00010293
+RAX: 0000000000000000 RBX: ffff888014edcc10 RCX: ffffffff8155a937
+RDX: ffff88802295b480 RSI: ffffffff88372d57 RDI: 0000000000000000
+RBP: ffff888014edc000 R08: 0000000000000001 R09: ffffffff8ebaf6bf
+R10: fffffbfff1d75ed7 R11: 0000000000000000 R12: 1ffff9200150bf7d
+R13: ffff88803471e818 R14: 0000000000000000 R15: 0000000000000006
+FS:  0000000000000000(0000) GS:ffff8880b9f00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000020e0a000 CR3: 0000000025d73000 CR4: 0000000000350ee0
+Call Trace:
+ cfg80211_process_wdev_events+0x3de/0x5b0 net/wireless/util.c:942
+ cfg80211_process_rdev_events+0x6e/0x100 net/wireless/util.c:968
+ cfg80211_event_work+0x1a/0x20 net/wireless/core.c:322
+ process_one_work+0x933/0x15a0 kernel/workqueue.c:2272
+ worker_thread+0x64c/0x1120 kernel/workqueue.c:2418
+ kthread+0x3b1/0x4a0 kernel/kthread.c:292
+ ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:296
 
-backports-5.9.12-1 was released. This is based on Linux 5.9.12.
-https://cdn.kernel.org/pub/linux/kernel/projects/backports/stable/v5.9.12=
-/backports-5.9.12-1.tar.xz
-
-backports-5.8.18-1 was released. This is based on Linux 5.8.18.
-https://cdn.kernel.org/pub/linux/kernel/projects/backports/stable/v5.8.18=
-/backports-5.8.18-1.tar.xz
-
-backports-4.19.161-1 was released. This is based on Linux 4.19.161.
-https://cdn.kernel.org/pub/linux/kernel/projects/backports/stable/v4.19.1=
-61/backports-4.19.161-1.tar.xz
-
-There is now a updated wiki page with the releases:
-https://backports.wiki.kernel.org/index.php/Releases
-
-The source code can be found here:
-https://git.kernel.org/cgit/linux/kernel/git/backports/backports.git/
-
-Hauke
-
-
---JDdkwiajmCCrtaMvstEdidH3m3lnk9GeM--
-
---BdxyMquMNx5cmnkVXb4h5Kwo5BsHaN4dO
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCgAdFiEEyz0/uAcd+JwXmwtD8bdnhZyy68cFAl/NAUwACgkQ8bdnhZyy
-68fJAQf/cq9W6NItfYOkZ2C28Jq2FaW45yTWYLmnVYnhWag00wIXwknqmmP7lAUy
-tKN/lUG8UqGbH3378j36spiamo62+nXWQWYA2prwUf5XcUGSRqxCNPMdWDoG5cQm
-bEb9z8bVfKgOKchOYU6KUCCGfj1bYnmcmaqpzXU4IDYCk42ltgtfuXCeooLAsN8p
-LcIzuVmdFEF512f2pSrWbcAUjImgAJHddIc8e38sgeeIxP0Q108J99fNszmLc8tL
-EDti9XlZ7Qsvs+TxQCtBKoRlE8Q+jqLA86LZGP6+XvNtf1cxDLdH18EJeicGyyhf
-fLTW4RF1dAdTJ3evF/RkCj1XowTBZQ==
-=i90S
------END PGP SIGNATURE-----
-
---BdxyMquMNx5cmnkVXb4h5Kwo5BsHaN4dO--
