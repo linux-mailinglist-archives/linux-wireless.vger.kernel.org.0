@@ -2,26 +2,26 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D02922D018E
-	for <lists+linux-wireless@lfdr.de>; Sun,  6 Dec 2020 09:23:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C2EB02D0190
+	for <lists+linux-wireless@lfdr.de>; Sun,  6 Dec 2020 09:23:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725943AbgLFIWt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 6 Dec 2020 03:22:49 -0500
-Received: from paleale.coelho.fi ([176.9.41.70]:34632 "EHLO
+        id S1726156AbgLFIW4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 6 Dec 2020 03:22:56 -0500
+Received: from paleale.coelho.fi ([176.9.41.70]:34638 "EHLO
         farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1725772AbgLFIWt (ORCPT
+        with ESMTP id S1725779AbgLFIWt (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Sun, 6 Dec 2020 03:22:49 -0500
 Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=localhost.localdomain)
         by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
         (Exim 4.93)
         (envelope-from <luca@coelho.fi>)
-        id 1klpIw-003A2r-52; Sun, 06 Dec 2020 10:22:02 +0200
+        id 1klpIx-003A2r-3i; Sun, 06 Dec 2020 10:22:03 +0200
 From:   Luca Coelho <luca@coelho.fi>
 To:     kvalo@codeaurora.org
 Cc:     linux-wireless@vger.kernel.org
-Date:   Sun,  6 Dec 2020 10:21:48 +0200
-Message-Id: <iwlwifi.20201206100942.7a5d0201c6ea.I2b18bccf0d409f1517c3e2841b667014f9dafc24@changeid>
+Date:   Sun,  6 Dec 2020 10:21:49 +0200
+Message-Id: <iwlwifi.20201206100942.5961c7d79648.Ic35b2f28ff08f7ac23143c80f224d52eb97a0454@changeid>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20201206082159.440198-1-luca@coelho.fi>
 References: <20201206082159.440198-1-luca@coelho.fi>
@@ -31,98 +31,47 @@ X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on farmhouse.coelho.fi
 X-Spam-Level: 
 X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
         TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.4
-Subject: [PATCH 01/12] iwlwifi: enable sending/setting debug host event
+Subject: [PATCH 02/12] iwlwifi: avoid endless HW errors at assert time
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Mordechay Goodstein <mordechay.goodstein@intel.com>
 
-This is used for BT node and for any user that wants to
-control what events would be send from FW to the driver.
+Curretly we only mark HW error state "after" trying to collect HW data,
+but if any HW error happens while colleting HW data we go into endless
+loop. avoid this by setting HW error state "before" collecting HW data.
 
 Signed-off-by: Mordechay Goodstein <mordechay.goodstein@intel.com>
 Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 ---
- .../net/wireless/intel/iwlwifi/fw/api/debug.h | 14 +++++++++
- .../net/wireless/intel/iwlwifi/fw/debugfs.c   | 29 +++++++++++++++++++
- 2 files changed, 43 insertions(+)
+ drivers/net/wireless/intel/iwlwifi/mvm/ops.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/debug.h b/drivers/net/wireless/intel/iwlwifi/fw/api/debug.h
-index 94b1a1268476..48d7c8485e3f 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/api/debug.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/api/debug.h
-@@ -78,6 +78,12 @@ enum iwl_debug_cmds {
- 	 * &struct iwl_dbg_mem_access_rsp
- 	 */
- 	UMAC_RD_WR = 0x1,
-+	/**
-+	 * @HOST_EVENT_CFG:
-+	 * updates the enabled event severities
-+	 * &struct iwl_dbg_host_event_cfg_cmd
-+	 */
-+	HOST_EVENT_CFG = 0x3,
- 	/**
- 	 * @DBGC_SUSPEND_RESUME:
- 	 * DBGC suspend/resume commad. Uses a single dword as data:
-@@ -395,4 +401,12 @@ struct iwl_buf_alloc_cmd {
- 	struct iwl_buf_alloc_frag frags[BUF_ALLOC_MAX_NUM_FRAGS];
- } __packed; /* BUFFER_ALLOCATION_CMD_API_S_VER_2 */
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
+index da55133f1a2d..70b3b9797c2d 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
+@@ -1298,6 +1298,12 @@ void iwl_mvm_nic_restart(struct iwl_mvm *mvm, bool fw_error)
+ 	} else if (mvm->fwrt.cur_fw_img == IWL_UCODE_REGULAR &&
+ 		   mvm->hw_registered &&
+ 		   !test_bit(STATUS_TRANS_DEAD, &mvm->trans->status)) {
++		/* This should be first thing before trying to collect any
++		 * data to avoid endless loops if any HW error happens while
++		 * collecting debug data.
++		 */
++		set_bit(IWL_MVM_STATUS_HW_RESTART_REQUESTED, &mvm->status);
++
+ 		if (mvm->fw->ucode_capa.error_log_size) {
+ 			u32 src_size = mvm->fw->ucode_capa.error_log_size;
+ 			u32 src_addr = mvm->fw->ucode_capa.error_log_addr;
+@@ -1316,7 +1322,6 @@ void iwl_mvm_nic_restart(struct iwl_mvm *mvm, bool fw_error)
  
-+/**
-+ * struct iwl_dbg_host_event_cfg_cmd
-+ * @enabled_severities: enabled severities
-+ */
-+struct iwl_dbg_host_event_cfg_cmd {
-+	__le32 enabled_severities;
-+} __packed; /* DEBUG_HOST_EVENT_CFG_CMD_API_S_VER_1 */
-+
- #endif /* __iwl_fw_api_debug_h__ */
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c b/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c
-index 267ad4eddb5c..ce1186068f2d 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c
-@@ -200,6 +200,34 @@ static int iwl_fw_send_timestamp_marker_cmd(struct iwl_fw_runtime *fwrt)
- 	return iwl_trans_send_cmd(fwrt->trans, &hcmd);
- }
- 
-+static int iwl_dbgfs_enabled_severities_write(struct iwl_fw_runtime *fwrt,
-+					      char *buf, size_t count)
-+{
-+	struct iwl_dbg_host_event_cfg_cmd event_cfg;
-+	struct iwl_host_cmd hcmd = {
-+		.id = iwl_cmd_id(HOST_EVENT_CFG, DEBUG_GROUP, 0),
-+		.flags = CMD_ASYNC,
-+		.data[0] = &event_cfg,
-+		.len[0] = sizeof(event_cfg),
-+	};
-+	u32 enabled_severities;
-+	int ret = kstrtou32(buf, 10, &enabled_severities);
-+
-+	if (ret < 0)
-+		return ret;
-+
-+	event_cfg.enabled_severities = cpu_to_le32(enabled_severities);
-+
-+	ret = iwl_trans_send_cmd(fwrt->trans, &hcmd);
-+	IWL_INFO(fwrt,
-+		 "sent host event cfg with enabled_severities: %u, ret: %d\n",
-+		 enabled_severities, ret);
-+
-+	return ret ?: count;
-+}
-+
-+FWRT_DEBUGFS_WRITE_FILE_OPS(enabled_severities, 16);
-+
- static void iwl_fw_timestamp_marker_wk(struct work_struct *work)
- {
- 	int ret;
-@@ -431,5 +459,6 @@ void iwl_fwrt_dbgfs_register(struct iwl_fw_runtime *fwrt,
- 	FWRT_DEBUGFS_ADD_FILE(timestamp_marker, dbgfs_dir, 0200);
- 	FWRT_DEBUGFS_ADD_FILE(fw_info, dbgfs_dir, 0200);
- 	FWRT_DEBUGFS_ADD_FILE(send_hcmd, dbgfs_dir, 0200);
-+	FWRT_DEBUGFS_ADD_FILE(enabled_severities, dbgfs_dir, 0200);
- 	FWRT_DEBUGFS_ADD_FILE(fw_dbg_domain, dbgfs_dir, 0400);
+ 		if (fw_error && mvm->fw_restart > 0)
+ 			mvm->fw_restart--;
+-		set_bit(IWL_MVM_STATUS_HW_RESTART_REQUESTED, &mvm->status);
+ 		ieee80211_restart_hw(mvm->hw);
+ 	}
  }
 -- 
 2.29.2
