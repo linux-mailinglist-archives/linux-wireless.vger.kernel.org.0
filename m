@@ -2,160 +2,108 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B69252CFFD1
-	for <lists+linux-wireless@lfdr.de>; Sun,  6 Dec 2020 00:52:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 61C192D018D
+	for <lists+linux-wireless@lfdr.de>; Sun,  6 Dec 2020 09:23:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727260AbgLEXsg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 5 Dec 2020 18:48:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34526 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725966AbgLEXsg (ORCPT
+        id S1725867AbgLFIWt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 6 Dec 2020 03:22:49 -0500
+Received: from paleale.coelho.fi ([176.9.41.70]:34626 "EHLO
+        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1725767AbgLFIWs (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 5 Dec 2020 18:48:36 -0500
-Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com [IPv6:2607:f8b0:4864:20::102b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E86FAC0613D4
-        for <linux-wireless@vger.kernel.org>; Sat,  5 Dec 2020 15:47:55 -0800 (PST)
-Received: by mail-pj1-x102b.google.com with SMTP id j13so5296201pjz.3
-        for <linux-wireless@vger.kernel.org>; Sat, 05 Dec 2020 15:47:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:from:to:references:message-id:date:user-agent:mime-version
-         :in-reply-to:content-language:content-transfer-encoding;
-        bh=uwC74So0VIQhkorqNpUlWrJVjiiB1IsHz63e4kDdeJM=;
-        b=ES7M2zkWiADyPQbLN5Ce4gTvOAMPLurzzw5iEPX2rvypfDUx+QXwQkyD6bTzKSKWFb
-         rwEwqHotAaXk3Ng9RUn8QKi+1OxiRfrrH2O7xHuZEPelVc+s0hLq2aoAX3pBJ2VWDDZS
-         +/6R2j6bRqU1NtclhUxQ426VoQq9Edq3MVQLYxNc2m3eU/4CB5NFDmoJi+Tu2Z7ZUirL
-         Ud5MYrdtdlS8W5QoJ/mEq+VA+zCwkdbZf3da+p9htqsn1RKQ2GF8k1lOYG0Cv/xgC2sl
-         arMqCBmJ/AG8jrxWFYckAo7n6JA6Suhq+TFOOFDaE97jIDGs647+CqZT5X5AJb/JXrR/
-         Fesw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:from:to:references:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=uwC74So0VIQhkorqNpUlWrJVjiiB1IsHz63e4kDdeJM=;
-        b=MPVVOAH3ZgjbezFmduSiqqo3Us/XnIvPywRy9k115X7yTw11nP2N1tedU8fmOTpZLb
-         55ufLZ/S4DpD13KhTJ94lHdxXnt3LL8wSWyzfX6xnPK1Ndaqpw9G0P2/OhcCCUmu1Vsr
-         rBF2Z1TIeFPo+sCTF86BjeDueXAdRXLjC97vcA57nENrG2xmtGprKj+quvH0Y8iPwJYU
-         5pc/QYidgpqoEmoZm2XRRl5CP1YSLzLwfTObFCYrUsPSWmiaukCtIBDBDUarutO282Od
-         AVP7QenM9Q3EitZHfEvpHUa5MS+FBm5S6yw+m6J7S8sukbZjvGhcVgIo3CPeijTUHTCK
-         0rIg==
-X-Gm-Message-State: AOAM531/eAb4qhOCKLwbkVetV1ebC+F5FKLu1/2QdX8S08OAfNFcALsI
-        F+Drzja0T0tcQTuOltz3gyijj7a2W0c=
-X-Google-Smtp-Source: ABdhPJxubugN/zOu7TLkVSto+OYS1SBP68sAxBiZADhyYtAnYhexVGiSg1g/KC/exNPfXORSi5gJkw==
-X-Received: by 2002:a17:90b:2317:: with SMTP id mt23mr10357805pjb.2.1607212075223;
-        Sat, 05 Dec 2020 15:47:55 -0800 (PST)
-Received: from mua.localhost (99-7-172-215.lightspeed.snmtca.sbcglobal.net. [99.7.172.215])
-        by smtp.gmail.com with ESMTPSA id w2sm6172801pjb.22.2020.12.05.15.47.54
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 05 Dec 2020 15:47:54 -0800 (PST)
-Subject: Re: wifi dongle connected to USB/pci card, seen in hardware, but no
- wl* device created; udev, driver, &/or config?
-From:   PGNet Dev <pgnet.dev@gmail.com>
-To:     samuel@sieb.net, linux-wireless@vger.kernel.org
-References: <95c76758-485b-aad4-62d2-95ce24f1108c@gmail.com>
- <79883ce0-9313-10b4-214a-27be35888bee@sieb.net>
-Message-ID: <27d25649-2f5a-5818-6b2c-ef134cb3394b@gmail.com>
-Date:   Sat, 5 Dec 2020 15:47:53 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.5.1
+        Sun, 6 Dec 2020 03:22:48 -0500
+Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=localhost.localdomain)
+        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.93)
+        (envelope-from <luca@coelho.fi>)
+        id 1klpIv-003A2r-51; Sun, 06 Dec 2020 10:22:01 +0200
+From:   Luca Coelho <luca@coelho.fi>
+To:     kvalo@codeaurora.org
+Cc:     linux-wireless@vger.kernel.org
+Date:   Sun,  6 Dec 2020 10:21:47 +0200
+Message-Id: <20201206082159.440198-1-luca@coelho.fi>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-In-Reply-To: <79883ce0-9313-10b4-214a-27be35888bee@sieb.net>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on farmhouse.coelho.fi
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+        TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.4
+Subject: [PATCH 00/12] iwlwifi: updates intended for v5.11 2020-12-06
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 12/5/20 1:51 PM, Samuel Sieb wrote:
+From: Luca Coelho <luciano.coelho@intel.com>
 
-> On 12/5/20 1:25 PM, PGNet Dev wrote:
+Hi,
 
->>      lsusb | grep 008
+Here's the third set of patches intended for v5.11.  It's the usual
+development, new features, cleanups and bugfixes.
 
->>          Bus 008 Device 003: ID 0bda:b812 Realtek Semiconductor Corp. RTL88x2bu [AC1200 Techkey]
+The changes are:
 
-> 
+* Improve validation of firmware notifications;
+* Debugging improvements and fixes;
+* Replace terminology with inclusive words determined by the guidelines;
+* Some other clean-ups and small fixes.
 
-> There are a couple of available options:
+As usual, I'm pushing this to a pending branch, for kbuild bot, and
+will send a pull-request later.
 
-> https://github.com/cilynx/rtl88x2bu
+Please review.
 
-> https://github.com/RinCat/RTL88x2BU-Linux-Driver
-
-> 
-
->> existing default udev rules aren't creating a wlan device; I'd expected that they would ...
-
-> 
-
-> The device can only be created if there's a driver to create it.
+Cheers,
+Luca.
 
 
+Emmanuel Grumbach (4):
+  iwlwifi: mvm: remove the read_nvm from iwl_run_unified_mvm_ucode
+  iwlwifi: follow the new inclusive terminology
+  iwlwifi: sort out the NVM offsets
+  iwlwifi: remove sw_csum_tx
 
-::facepalm::
+Johannes Berg (4):
+  iwlwifi: validate MPDU length against notification length
+  iwlwifi: pcie: validate RX descriptor length
+  iwlwifi: mvm: clear up iwl_mvm_notify_rx_queue() argument type
+  iwlwifi: mvm: move iwl_mvm_stop_device() out of line
 
-well, it certainly help if I'd not just googled for ac1200 but ALSO paid attention to the fact I'd installed  88x2*a*u!
+Mordechay Goodstein (4):
+  iwlwifi: enable sending/setting debug host event
+  iwlwifi: avoid endless HW errors at assert time
+  iwlwifi: fix typo in comment
+  iwlwifi: mvm: iterate active stations when updating statistics
 
+ drivers/net/wireless/intel/iwlwifi/dvm/rx.c   | 10 ++-
+ drivers/net/wireless/intel/iwlwifi/fw/acpi.c  | 20 ++---
+ drivers/net/wireless/intel/iwlwifi/fw/acpi.h  | 10 +--
+ .../wireless/intel/iwlwifi/fw/api/commands.h  |  2 +-
+ .../net/wireless/intel/iwlwifi/fw/api/debug.h | 14 ++++
+ .../wireless/intel/iwlwifi/fw/api/nvm-reg.h   |  8 +-
+ .../net/wireless/intel/iwlwifi/fw/api/scan.h  | 12 +--
+ .../net/wireless/intel/iwlwifi/fw/api/stats.h |  2 +-
+ .../net/wireless/intel/iwlwifi/fw/debugfs.c   | 29 +++++++
+ drivers/net/wireless/intel/iwlwifi/fw/file.h  |  2 +-
+ .../net/wireless/intel/iwlwifi/iwl-config.h   |  2 +-
+ .../wireless/intel/iwlwifi/iwl-nvm-parse.c    |  4 +-
+ .../net/wireless/intel/iwlwifi/iwl-trans.h    |  2 -
+ .../wireless/intel/iwlwifi/mvm/constants.h    |  1 -
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c   | 16 ++--
+ .../net/wireless/intel/iwlwifi/mvm/mac-ctxt.c | 10 +--
+ .../net/wireless/intel/iwlwifi/mvm/mac80211.c | 22 ++---
+ drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  | 14 +---
+ drivers/net/wireless/intel/iwlwifi/mvm/ops.c  | 23 ++++-
+ drivers/net/wireless/intel/iwlwifi/mvm/rx.c   | 44 +++++-----
+ drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c | 19 +++--
+ drivers/net/wireless/intel/iwlwifi/mvm/scan.c | 24 +++---
+ drivers/net/wireless/intel/iwlwifi/mvm/tx.c   |  7 +-
+ .../wireless/intel/iwlwifi/pcie/internal.h    |  3 -
+ drivers/net/wireless/intel/iwlwifi/pcie/rx.c  |  8 +-
+ .../net/wireless/intel/iwlwifi/pcie/trans.c   |  1 -
+ drivers/net/wireless/intel/iwlwifi/pcie/tx.c  | 83 +------------------
+ 27 files changed, 184 insertions(+), 208 deletions(-)
 
+-- 
+2.29.2
 
-> https://github.com/aircrack-ng/rtl8812au
-
-
-
-with CORRECT driver
-
-
-
-> https://github.com/RinCat/RTL88x2BU-Linux-Driver
-
-
-
-
-
-dkms-installed, on boot
-
-
-
-dmesg | grep wl
-
-    [   22.083177] RTW: rtw_ndev_init(wlan0) if1 mac_addr=44:01:bb:33:c4:1c
-
-    [   22.318059] rtl88x2bu 8-4:1.0 wlp2s0u4: renamed from wlan0
-
-
-
-iw dev
-
-phy#0
-
-         Interface wlp2s0u4
-
-                 ifindex 3
-
-                 wdev 0x1
-
-                 addr 44:01:bb:33:c4:1c
-
-                 type managed
-
-                 txpower 42949572.96 dBm
-
-
-
-hwinfo --wlan | egrep "Device:|Modules:|File:"
-
-   Device: usb 0xb812 "802.11ac NIC"
-
-   Driver Modules: "88x2bu"
-
-   Device File: wlp2s0u4
-
-
-
-pebkac. again.
-
-
-
-thx o/
