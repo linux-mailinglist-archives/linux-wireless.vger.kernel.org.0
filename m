@@ -2,108 +2,128 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 61C192D018D
+	by mail.lfdr.de (Postfix) with ESMTP id D02922D018E
 	for <lists+linux-wireless@lfdr.de>; Sun,  6 Dec 2020 09:23:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725867AbgLFIWt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        id S1725943AbgLFIWt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
         Sun, 6 Dec 2020 03:22:49 -0500
-Received: from paleale.coelho.fi ([176.9.41.70]:34626 "EHLO
+Received: from paleale.coelho.fi ([176.9.41.70]:34632 "EHLO
         farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1725767AbgLFIWs (ORCPT
+        with ESMTP id S1725772AbgLFIWt (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 6 Dec 2020 03:22:48 -0500
+        Sun, 6 Dec 2020 03:22:49 -0500
 Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=localhost.localdomain)
         by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
         (Exim 4.93)
         (envelope-from <luca@coelho.fi>)
-        id 1klpIv-003A2r-51; Sun, 06 Dec 2020 10:22:01 +0200
+        id 1klpIw-003A2r-52; Sun, 06 Dec 2020 10:22:02 +0200
 From:   Luca Coelho <luca@coelho.fi>
 To:     kvalo@codeaurora.org
 Cc:     linux-wireless@vger.kernel.org
-Date:   Sun,  6 Dec 2020 10:21:47 +0200
-Message-Id: <20201206082159.440198-1-luca@coelho.fi>
+Date:   Sun,  6 Dec 2020 10:21:48 +0200
+Message-Id: <iwlwifi.20201206100942.7a5d0201c6ea.I2b18bccf0d409f1517c3e2841b667014f9dafc24@changeid>
 X-Mailer: git-send-email 2.29.2
+In-Reply-To: <20201206082159.440198-1-luca@coelho.fi>
+References: <20201206082159.440198-1-luca@coelho.fi>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on farmhouse.coelho.fi
 X-Spam-Level: 
 X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
         TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.4
-Subject: [PATCH 00/12] iwlwifi: updates intended for v5.11 2020-12-06
+Subject: [PATCH 01/12] iwlwifi: enable sending/setting debug host event
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Luca Coelho <luciano.coelho@intel.com>
+From: Mordechay Goodstein <mordechay.goodstein@intel.com>
 
-Hi,
+This is used for BT node and for any user that wants to
+control what events would be send from FW to the driver.
 
-Here's the third set of patches intended for v5.11.  It's the usual
-development, new features, cleanups and bugfixes.
+Signed-off-by: Mordechay Goodstein <mordechay.goodstein@intel.com>
+Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+---
+ .../net/wireless/intel/iwlwifi/fw/api/debug.h | 14 +++++++++
+ .../net/wireless/intel/iwlwifi/fw/debugfs.c   | 29 +++++++++++++++++++
+ 2 files changed, 43 insertions(+)
 
-The changes are:
-
-* Improve validation of firmware notifications;
-* Debugging improvements and fixes;
-* Replace terminology with inclusive words determined by the guidelines;
-* Some other clean-ups and small fixes.
-
-As usual, I'm pushing this to a pending branch, for kbuild bot, and
-will send a pull-request later.
-
-Please review.
-
-Cheers,
-Luca.
-
-
-Emmanuel Grumbach (4):
-  iwlwifi: mvm: remove the read_nvm from iwl_run_unified_mvm_ucode
-  iwlwifi: follow the new inclusive terminology
-  iwlwifi: sort out the NVM offsets
-  iwlwifi: remove sw_csum_tx
-
-Johannes Berg (4):
-  iwlwifi: validate MPDU length against notification length
-  iwlwifi: pcie: validate RX descriptor length
-  iwlwifi: mvm: clear up iwl_mvm_notify_rx_queue() argument type
-  iwlwifi: mvm: move iwl_mvm_stop_device() out of line
-
-Mordechay Goodstein (4):
-  iwlwifi: enable sending/setting debug host event
-  iwlwifi: avoid endless HW errors at assert time
-  iwlwifi: fix typo in comment
-  iwlwifi: mvm: iterate active stations when updating statistics
-
- drivers/net/wireless/intel/iwlwifi/dvm/rx.c   | 10 ++-
- drivers/net/wireless/intel/iwlwifi/fw/acpi.c  | 20 ++---
- drivers/net/wireless/intel/iwlwifi/fw/acpi.h  | 10 +--
- .../wireless/intel/iwlwifi/fw/api/commands.h  |  2 +-
- .../net/wireless/intel/iwlwifi/fw/api/debug.h | 14 ++++
- .../wireless/intel/iwlwifi/fw/api/nvm-reg.h   |  8 +-
- .../net/wireless/intel/iwlwifi/fw/api/scan.h  | 12 +--
- .../net/wireless/intel/iwlwifi/fw/api/stats.h |  2 +-
- .../net/wireless/intel/iwlwifi/fw/debugfs.c   | 29 +++++++
- drivers/net/wireless/intel/iwlwifi/fw/file.h  |  2 +-
- .../net/wireless/intel/iwlwifi/iwl-config.h   |  2 +-
- .../wireless/intel/iwlwifi/iwl-nvm-parse.c    |  4 +-
- .../net/wireless/intel/iwlwifi/iwl-trans.h    |  2 -
- .../wireless/intel/iwlwifi/mvm/constants.h    |  1 -
- drivers/net/wireless/intel/iwlwifi/mvm/fw.c   | 16 ++--
- .../net/wireless/intel/iwlwifi/mvm/mac-ctxt.c | 10 +--
- .../net/wireless/intel/iwlwifi/mvm/mac80211.c | 22 ++---
- drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  | 14 +---
- drivers/net/wireless/intel/iwlwifi/mvm/ops.c  | 23 ++++-
- drivers/net/wireless/intel/iwlwifi/mvm/rx.c   | 44 +++++-----
- drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c | 19 +++--
- drivers/net/wireless/intel/iwlwifi/mvm/scan.c | 24 +++---
- drivers/net/wireless/intel/iwlwifi/mvm/tx.c   |  7 +-
- .../wireless/intel/iwlwifi/pcie/internal.h    |  3 -
- drivers/net/wireless/intel/iwlwifi/pcie/rx.c  |  8 +-
- .../net/wireless/intel/iwlwifi/pcie/trans.c   |  1 -
- drivers/net/wireless/intel/iwlwifi/pcie/tx.c  | 83 +------------------
- 27 files changed, 184 insertions(+), 208 deletions(-)
-
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/debug.h b/drivers/net/wireless/intel/iwlwifi/fw/api/debug.h
+index 94b1a1268476..48d7c8485e3f 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/api/debug.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/api/debug.h
+@@ -78,6 +78,12 @@ enum iwl_debug_cmds {
+ 	 * &struct iwl_dbg_mem_access_rsp
+ 	 */
+ 	UMAC_RD_WR = 0x1,
++	/**
++	 * @HOST_EVENT_CFG:
++	 * updates the enabled event severities
++	 * &struct iwl_dbg_host_event_cfg_cmd
++	 */
++	HOST_EVENT_CFG = 0x3,
+ 	/**
+ 	 * @DBGC_SUSPEND_RESUME:
+ 	 * DBGC suspend/resume commad. Uses a single dword as data:
+@@ -395,4 +401,12 @@ struct iwl_buf_alloc_cmd {
+ 	struct iwl_buf_alloc_frag frags[BUF_ALLOC_MAX_NUM_FRAGS];
+ } __packed; /* BUFFER_ALLOCATION_CMD_API_S_VER_2 */
+ 
++/**
++ * struct iwl_dbg_host_event_cfg_cmd
++ * @enabled_severities: enabled severities
++ */
++struct iwl_dbg_host_event_cfg_cmd {
++	__le32 enabled_severities;
++} __packed; /* DEBUG_HOST_EVENT_CFG_CMD_API_S_VER_1 */
++
+ #endif /* __iwl_fw_api_debug_h__ */
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c b/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c
+index 267ad4eddb5c..ce1186068f2d 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c
+@@ -200,6 +200,34 @@ static int iwl_fw_send_timestamp_marker_cmd(struct iwl_fw_runtime *fwrt)
+ 	return iwl_trans_send_cmd(fwrt->trans, &hcmd);
+ }
+ 
++static int iwl_dbgfs_enabled_severities_write(struct iwl_fw_runtime *fwrt,
++					      char *buf, size_t count)
++{
++	struct iwl_dbg_host_event_cfg_cmd event_cfg;
++	struct iwl_host_cmd hcmd = {
++		.id = iwl_cmd_id(HOST_EVENT_CFG, DEBUG_GROUP, 0),
++		.flags = CMD_ASYNC,
++		.data[0] = &event_cfg,
++		.len[0] = sizeof(event_cfg),
++	};
++	u32 enabled_severities;
++	int ret = kstrtou32(buf, 10, &enabled_severities);
++
++	if (ret < 0)
++		return ret;
++
++	event_cfg.enabled_severities = cpu_to_le32(enabled_severities);
++
++	ret = iwl_trans_send_cmd(fwrt->trans, &hcmd);
++	IWL_INFO(fwrt,
++		 "sent host event cfg with enabled_severities: %u, ret: %d\n",
++		 enabled_severities, ret);
++
++	return ret ?: count;
++}
++
++FWRT_DEBUGFS_WRITE_FILE_OPS(enabled_severities, 16);
++
+ static void iwl_fw_timestamp_marker_wk(struct work_struct *work)
+ {
+ 	int ret;
+@@ -431,5 +459,6 @@ void iwl_fwrt_dbgfs_register(struct iwl_fw_runtime *fwrt,
+ 	FWRT_DEBUGFS_ADD_FILE(timestamp_marker, dbgfs_dir, 0200);
+ 	FWRT_DEBUGFS_ADD_FILE(fw_info, dbgfs_dir, 0200);
+ 	FWRT_DEBUGFS_ADD_FILE(send_hcmd, dbgfs_dir, 0200);
++	FWRT_DEBUGFS_ADD_FILE(enabled_severities, dbgfs_dir, 0200);
+ 	FWRT_DEBUGFS_ADD_FILE(fw_dbg_domain, dbgfs_dir, 0400);
+ }
 -- 
 2.29.2
 
