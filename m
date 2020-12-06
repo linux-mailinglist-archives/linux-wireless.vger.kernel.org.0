@@ -2,205 +2,137 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E14532D032C
-	for <lists+linux-wireless@lfdr.de>; Sun,  6 Dec 2020 12:08:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 65AC52D032D
+	for <lists+linux-wireless@lfdr.de>; Sun,  6 Dec 2020 12:08:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727517AbgLFLIS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 6 Dec 2020 06:08:18 -0500
-Received: from paleale.coelho.fi ([176.9.41.70]:34762 "EHLO
+        id S1727535AbgLFLIT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 6 Dec 2020 06:08:19 -0500
+Received: from paleale.coelho.fi ([176.9.41.70]:34768 "EHLO
         farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726076AbgLFLIS (ORCPT
+        with ESMTP id S1726604AbgLFLIS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Sun, 6 Dec 2020 06:08:18 -0500
 Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa.ger.corp.intel.com)
         by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
         (Exim 4.93)
         (envelope-from <luca@coelho.fi>)
-        id 1klrt3-003AAN-Uo; Sun, 06 Dec 2020 13:07:30 +0200
+        id 1klrt4-003AAN-S3; Sun, 06 Dec 2020 13:07:31 +0200
 From:   Luca Coelho <luca@coelho.fi>
 To:     kvalo@codeaurora.org
 Cc:     linux-wireless@vger.kernel.org
-Date:   Sun,  6 Dec 2020 13:07:17 +0200
-Message-Id: <20201206110729.488452-1-luca@coelho.fi>
+Date:   Sun,  6 Dec 2020 13:07:18 +0200
+Message-Id: <iwlwifi.20201206130357.5f2b14cb2320.I31184f4be31f7c3feb9a29aef3a111e70d15c64a@changeid>
 X-Mailer: git-send-email 2.29.2
+In-Reply-To: <20201206110729.488452-1-luca@coelho.fi>
+References: <20201206110729.488452-1-luca@coelho.fi>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on farmhouse.coelho.fi
 X-Spam-Level: 
 X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
         TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.4
-Subject: [PATCH 00/12] iwlwifi: updates intended for v5.11 2020-12-06 part 2
+Subject: [PATCH 01/12] iwlwifi: pcie: change 12k A-MSDU config to use 16k buffers
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Luca Coelho <luciano.coelho@intel.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-Hi,
+If 12k A-MSDU size is requested, we will actually allocate 16k
+due to page allocation. Thus, change it to actually mean 16k,
+which is useful for certain sniffer use cases.
 
-Here's the fourth set of patches intended for v5.11.  It's the usual
-development, new features, cleanups and bugfixes.
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+---
+ drivers/net/wireless/intel/iwlwifi/iwl-context-info-gen3.h | 2 ++
+ drivers/net/wireless/intel/iwlwifi/iwl-drv.c               | 2 +-
+ drivers/net/wireless/intel/iwlwifi/iwl-trans.h             | 4 ++--
+ drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info-gen3.c   | 2 +-
+ drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info.c        | 2 +-
+ 5 files changed, 7 insertions(+), 5 deletions(-)
 
-The changes are:
-
-* Convert copyright notices to SPDX tags;
-* Added more validations for firmware notifications;
-* A couple of debugging/recovery fixes;
-* Some other clean-ups and small fixes.
-
-As usual, I'm pushing this to a pending branch, for kbuild bot, and
-will send a pull-request later.
-
-Please review.
-
-Cheers,
-Luca.
-
-
-Johannes Berg (12):
-  iwlwifi: pcie: change 12k A-MSDU config to use 16k buffers
-  iwlwifi: mvm: fix 22000 series driver NMI
-  iwlwifi: mvm: do more useful queue sync accounting
-  iwlwifi: mvm: clean up scan state on failure
-  iwlwifi: pcie: remove MSIX_HW_INT_CAUSES_REG_IML handling
-  iwlwifi: fw: file: fix documentation for SAR flag
-  iwlwifi: pcie: remove unnecessary setting of inta_mask
-  iwlwifi: trans: consider firmware dead after errors
-  iwlwifi: dbg-tlv: fix old length in is_trig_data_contained()
-  iwlwifi: use SPDX tags
-  iwlwifi: pcie: clean up some rx code
-  iwlwifi: mvm: validate firmware sync response size
-
- .../net/wireless/intel/iwlwifi/cfg/22000.c    |  56 +---------
- drivers/net/wireless/intel/iwlwifi/cfg/7000.c |  70 ++----------
- drivers/net/wireless/intel/iwlwifi/cfg/8000.c |  69 ++----------
- drivers/net/wireless/intel/iwlwifi/cfg/9000.c |  58 +---------
- drivers/net/wireless/intel/iwlwifi/dvm/agn.h  |  61 +----------
- .../net/wireless/intel/iwlwifi/dvm/calib.c    |  61 +----------
- .../net/wireless/intel/iwlwifi/dvm/calib.h    |  60 +----------
- .../net/wireless/intel/iwlwifi/dvm/commands.h |  61 +----------
- drivers/net/wireless/intel/iwlwifi/fw/acpi.c  |  65 +----------
- drivers/net/wireless/intel/iwlwifi/fw/acpi.h  |  64 +----------
- .../net/wireless/intel/iwlwifi/fw/api/alive.h |  69 ++----------
- .../wireless/intel/iwlwifi/fw/api/binding.h   |  67 ++----------
- .../wireless/intel/iwlwifi/fw/api/cmdhdr.h    |  67 ++----------
- .../net/wireless/intel/iwlwifi/fw/api/coex.h  |  69 ++----------
- .../wireless/intel/iwlwifi/fw/api/commands.h  |  68 ++----------
- .../wireless/intel/iwlwifi/fw/api/config.h    |  70 ++----------
- .../wireless/intel/iwlwifi/fw/api/context.h   |  68 ++----------
- .../net/wireless/intel/iwlwifi/fw/api/d3.h    |  69 ++----------
- .../wireless/intel/iwlwifi/fw/api/datapath.h  |  70 ++----------
- .../wireless/intel/iwlwifi/fw/api/dbg-tlv.h   |  61 +----------
- .../net/wireless/intel/iwlwifi/fw/api/debug.h |  67 ++----------
- .../wireless/intel/iwlwifi/fw/api/filter.h    |  68 ++----------
- .../net/wireless/intel/iwlwifi/fw/api/led.h   |  62 +----------
- .../wireless/intel/iwlwifi/fw/api/location.h  |  64 +----------
- .../wireless/intel/iwlwifi/fw/api/mac-cfg.h   |  70 ++----------
- .../net/wireless/intel/iwlwifi/fw/api/mac.h   |  64 +----------
- .../wireless/intel/iwlwifi/fw/api/nvm-reg.h   |  70 ++----------
- .../wireless/intel/iwlwifi/fw/api/offload.h   |  68 ++----------
- .../wireless/intel/iwlwifi/fw/api/paging.h    |  67 ++----------
- .../wireless/intel/iwlwifi/fw/api/phy-ctxt.h  |  68 ++----------
- .../net/wireless/intel/iwlwifi/fw/api/phy.h   |  70 ++----------
- .../net/wireless/intel/iwlwifi/fw/api/power.h |  70 ++----------
- .../net/wireless/intel/iwlwifi/fw/api/rs.h    |  66 +-----------
- .../net/wireless/intel/iwlwifi/fw/api/rx.h    |  68 ++----------
- .../net/wireless/intel/iwlwifi/fw/api/scan.h  |  70 ++----------
- .../net/wireless/intel/iwlwifi/fw/api/sf.h    |  68 ++----------
- .../net/wireless/intel/iwlwifi/fw/api/soc.h   |  68 ++----------
- .../net/wireless/intel/iwlwifi/fw/api/sta.h   |  69 ++----------
- .../net/wireless/intel/iwlwifi/fw/api/stats.h |  67 ++----------
- .../net/wireless/intel/iwlwifi/fw/api/tdls.h  |  70 ++----------
- .../intel/iwlwifi/fw/api/time-event.h         |  70 ++----------
- .../net/wireless/intel/iwlwifi/fw/api/tx.h    |  64 +----------
- .../net/wireless/intel/iwlwifi/fw/api/txq.h   |  69 ++----------
- drivers/net/wireless/intel/iwlwifi/fw/dbg.c   |  69 ++----------
- drivers/net/wireless/intel/iwlwifi/fw/dbg.h   |  70 ++----------
- .../net/wireless/intel/iwlwifi/fw/debugfs.c   |  67 ++----------
- .../net/wireless/intel/iwlwifi/fw/debugfs.h   |  68 ++----------
- .../wireless/intel/iwlwifi/fw/error-dump.h    |  69 ++----------
- drivers/net/wireless/intel/iwlwifi/fw/file.h  |  69 ++----------
- drivers/net/wireless/intel/iwlwifi/fw/img.h   |  68 ++----------
- drivers/net/wireless/intel/iwlwifi/fw/init.c  |  64 +----------
- .../wireless/intel/iwlwifi/fw/notif-wait.c    |  64 +----------
- .../wireless/intel/iwlwifi/fw/notif-wait.h    |  63 +----------
- .../net/wireless/intel/iwlwifi/fw/paging.c    |  69 ++----------
- .../net/wireless/intel/iwlwifi/fw/runtime.h   |  62 +----------
- drivers/net/wireless/intel/iwlwifi/fw/smem.c  |  67 ++----------
- .../net/wireless/intel/iwlwifi/iwl-agn-hw.h   |  61 +----------
- .../net/wireless/intel/iwlwifi/iwl-config.h   |  64 +----------
- .../intel/iwlwifi/iwl-context-info-gen3.h     |  56 ++--------
- .../wireless/intel/iwlwifi/iwl-context-info.h |  58 +---------
- drivers/net/wireless/intel/iwlwifi/iwl-csr.h  |  70 ++----------
- .../net/wireless/intel/iwlwifi/iwl-dbg-tlv.c  |  67 +-----------
- .../net/wireless/intel/iwlwifi/iwl-dbg-tlv.h  |  64 +----------
- .../net/wireless/intel/iwlwifi/iwl-debug.c    |  62 +----------
- drivers/net/wireless/intel/iwlwifi/iwl-drv.c  |  69 ++----------
- drivers/net/wireless/intel/iwlwifi/iwl-drv.h  |  64 +----------
- .../wireless/intel/iwlwifi/iwl-eeprom-parse.c |  65 +----------
- .../wireless/intel/iwlwifi/iwl-eeprom-parse.h |  65 +----------
- .../wireless/intel/iwlwifi/iwl-eeprom-read.c  |  62 +----------
- .../wireless/intel/iwlwifi/iwl-eeprom-read.h  |  61 +----------
- drivers/net/wireless/intel/iwlwifi/iwl-fh.h   |  66 +-----------
- drivers/net/wireless/intel/iwlwifi/iwl-io.c   |  68 ++----------
- drivers/net/wireless/intel/iwlwifi/iwl-io.h   |  61 +----------
- .../wireless/intel/iwlwifi/iwl-modparams.h    |  61 +----------
- .../wireless/intel/iwlwifi/iwl-nvm-parse.c    |  68 ++----------
- .../wireless/intel/iwlwifi/iwl-nvm-parse.h    |  65 +----------
- .../net/wireless/intel/iwlwifi/iwl-op-mode.h  |  69 ++----------
- .../net/wireless/intel/iwlwifi/iwl-phy-db.c   |  64 +----------
- .../net/wireless/intel/iwlwifi/iwl-phy-db.h   |  62 +----------
- drivers/net/wireless/intel/iwlwifi/iwl-prph.h |  69 ++----------
- drivers/net/wireless/intel/iwlwifi/iwl-scd.h  |  62 +----------
- .../net/wireless/intel/iwlwifi/iwl-trans.c    |  67 ++----------
- .../net/wireless/intel/iwlwifi/iwl-trans.h    |  77 ++-----------
- .../net/wireless/intel/iwlwifi/mvm/binding.c  |  65 +----------
- drivers/net/wireless/intel/iwlwifi/mvm/coex.c |  65 +----------
- .../wireless/intel/iwlwifi/mvm/constants.h    |  69 ++----------
- drivers/net/wireless/intel/iwlwifi/mvm/d3.c   |  68 ++----------
- .../wireless/intel/iwlwifi/mvm/debugfs-vif.c  |  67 ++----------
- .../net/wireless/intel/iwlwifi/mvm/debugfs.c  |  67 ++----------
- .../net/wireless/intel/iwlwifi/mvm/debugfs.h  |  65 +----------
- .../intel/iwlwifi/mvm/ftm-initiator.c         |  68 +-----------
- .../intel/iwlwifi/mvm/ftm-responder.c         |  64 +----------
- .../net/wireless/intel/iwlwifi/mvm/fw-api.h   |  70 ++----------
- drivers/net/wireless/intel/iwlwifi/mvm/fw.c   |  67 ++----------
- drivers/net/wireless/intel/iwlwifi/mvm/led.c  |  67 +-----------
- .../net/wireless/intel/iwlwifi/mvm/mac-ctxt.c |  68 ++----------
- .../net/wireless/intel/iwlwifi/mvm/mac80211.c |  78 +++-----------
- drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  |  70 ++----------
- drivers/net/wireless/intel/iwlwifi/mvm/nvm.c  |  69 ++----------
- .../wireless/intel/iwlwifi/mvm/offloading.c   |  67 ++----------
- drivers/net/wireless/intel/iwlwifi/mvm/ops.c  |  69 ++----------
- .../net/wireless/intel/iwlwifi/mvm/phy-ctxt.c |  69 ++----------
- .../net/wireless/intel/iwlwifi/mvm/power.c    |  70 ++----------
- .../net/wireless/intel/iwlwifi/mvm/quota.c    |  68 ++----------
- .../net/wireless/intel/iwlwifi/mvm/rs-fw.c    |  64 +----------
- drivers/net/wireless/intel/iwlwifi/mvm/rx.c   |  68 ++----------
- drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c |  97 ++++++-----------
- drivers/net/wireless/intel/iwlwifi/mvm/scan.c | 101 +++++-------------
- drivers/net/wireless/intel/iwlwifi/mvm/sf.c   |  66 +-----------
- drivers/net/wireless/intel/iwlwifi/mvm/sta.c  |  67 ++----------
- drivers/net/wireless/intel/iwlwifi/mvm/sta.h  |  70 ++----------
- drivers/net/wireless/intel/iwlwifi/mvm/tdls.c |  68 ++----------
- .../wireless/intel/iwlwifi/mvm/time-event.c   |  68 ++----------
- .../wireless/intel/iwlwifi/mvm/time-event.h   |  67 +-----------
- drivers/net/wireless/intel/iwlwifi/mvm/tt.c   |  70 ++----------
- drivers/net/wireless/intel/iwlwifi/mvm/tx.c   |  69 ++----------
- .../net/wireless/intel/iwlwifi/mvm/utils.c    |  67 ++----------
- .../intel/iwlwifi/pcie/ctxt-info-gen3.c       |  57 +---------
- .../wireless/intel/iwlwifi/pcie/ctxt-info.c   |  60 ++---------
- drivers/net/wireless/intel/iwlwifi/pcie/drv.c |  68 ++----------
- .../wireless/intel/iwlwifi/pcie/internal.h    |  69 ++----------
- drivers/net/wireless/intel/iwlwifi/pcie/rx.c  |  99 +++--------------
- .../wireless/intel/iwlwifi/pcie/trans-gen2.c  |  57 +---------
- .../net/wireless/intel/iwlwifi/pcie/trans.c   |  69 ++----------
- .../net/wireless/intel/iwlwifi/pcie/tx-gen2.c |  57 +---------
- drivers/net/wireless/intel/iwlwifi/pcie/tx.c  |  69 ++----------
- drivers/net/wireless/intel/iwlwifi/queue/tx.c |  54 +---------
- drivers/net/wireless/intel/iwlwifi/queue/tx.h |  61 +----------
- 128 files changed, 770 insertions(+), 7798 deletions(-)
-
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-context-info-gen3.h b/drivers/net/wireless/intel/iwlwifi/iwl-context-info-gen3.h
+index 5624fe42efd9..d0eb666b2ca1 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-context-info-gen3.h
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-context-info-gen3.h
+@@ -98,6 +98,7 @@ enum iwl_prph_scratch_mtr_format {
+  *	appropriately; use the below values for this.
+  * @IWL_PRPH_SCRATCH_RB_SIZE_EXT_8K: 8kB RB size
+  * @IWL_PRPH_SCRATCH_RB_SIZE_EXT_12K: 12kB RB size
++ * @IWL_PRPH_SCRATCH_RB_SIZE_EXT_16K: 16kB RB size
+  */
+ enum iwl_prph_scratch_flags {
+ 	IWL_PRPH_SCRATCH_EARLY_DEBUG_EN		= BIT(4),
+@@ -111,6 +112,7 @@ enum iwl_prph_scratch_flags {
+ 	IWL_PRPH_SCRATCH_RB_SIZE_EXT_MASK	= 0xf << 20,
+ 	IWL_PRPH_SCRATCH_RB_SIZE_EXT_8K		= 8 << 20,
+ 	IWL_PRPH_SCRATCH_RB_SIZE_EXT_12K	= 9 << 20,
++	IWL_PRPH_SCRATCH_RB_SIZE_EXT_16K	= 10 << 20,
+ };
+ 
+ /*
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
+index 9dcd2e990c9c..12b5031a793f 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
+@@ -1835,7 +1835,7 @@ MODULE_PARM_DESC(11n_disable,
+ module_param_named(amsdu_size, iwlwifi_mod_params.amsdu_size, int, 0444);
+ MODULE_PARM_DESC(amsdu_size,
+ 		 "amsdu size 0: 12K for multi Rx queue devices, 2K for AX210 devices, "
+-		 "4K for other devices 1:4K 2:8K 3:12K 4: 2K (default 0)");
++		 "4K for other devices 1:4K 2:8K 3:12K (16K buffers) 4: 2K (default 0)");
+ module_param_named(fw_restart, iwlwifi_mod_params.fw_restart, bool, 0444);
+ MODULE_PARM_DESC(fw_restart, "restart firmware in case of error (default true)");
+ 
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-trans.h b/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
+index 8f3774181b97..b84921e1556c 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
+@@ -373,7 +373,7 @@ iwl_trans_get_rb_size_order(enum iwl_amsdu_size rb_size)
+ 	case IWL_AMSDU_8K:
+ 		return get_order(8 * 1024);
+ 	case IWL_AMSDU_12K:
+-		return get_order(12 * 1024);
++		return get_order(16 * 1024);
+ 	default:
+ 		WARN_ON(1);
+ 		return -1;
+@@ -391,7 +391,7 @@ iwl_trans_get_rb_size(enum iwl_amsdu_size rb_size)
+ 	case IWL_AMSDU_8K:
+ 		return 8 * 1024;
+ 	case IWL_AMSDU_12K:
+-		return 12 * 1024;
++		return 16 * 1024;
+ 	default:
+ 		WARN_ON(1);
+ 		return 0;
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info-gen3.c b/drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info-gen3.c
+index a0352fa873d9..166bd87c8d7e 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info-gen3.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info-gen3.c
+@@ -148,7 +148,7 @@ int iwl_pcie_ctxt_info_gen3_init(struct iwl_trans *trans,
+ 	case IWL_AMSDU_12K:
+ 		control_flags |= IWL_PRPH_SCRATCH_RB_SIZE_4K;
+ 		/* if firmware supports the ext size, tell it */
+-		control_flags |= IWL_PRPH_SCRATCH_RB_SIZE_EXT_12K;
++		control_flags |= IWL_PRPH_SCRATCH_RB_SIZE_EXT_16K;
+ 		break;
+ 	}
+ 
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info.c b/drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info.c
+index 13fe9c00d7e8..41b439ae6278 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info.c
+@@ -243,7 +243,7 @@ int iwl_pcie_ctxt_info_init(struct iwl_trans *trans,
+ 		rb_size = IWL_CTXT_INFO_RB_SIZE_8K;
+ 		break;
+ 	case IWL_AMSDU_12K:
+-		rb_size = IWL_CTXT_INFO_RB_SIZE_12K;
++		rb_size = IWL_CTXT_INFO_RB_SIZE_16K;
+ 		break;
+ 	default:
+ 		WARN_ON(1);
 -- 
 2.29.2
 
