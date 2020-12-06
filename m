@@ -2,76 +2,56 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C1A42D02B8
-	for <lists+linux-wireless@lfdr.de>; Sun,  6 Dec 2020 11:26:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8500A2D0282
+	for <lists+linux-wireless@lfdr.de>; Sun,  6 Dec 2020 11:19:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726602AbgLFKXv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 6 Dec 2020 05:23:51 -0500
-Received: from mail-m972.mail.163.com ([123.126.97.2]:51136 "EHLO
-        mail-m972.mail.163.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726584AbgLFKXv (ORCPT
+        id S1726394AbgLFKRg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 6 Dec 2020 05:17:36 -0500
+Received: from smail.rz.tu-ilmenau.de ([141.24.186.67]:50195 "EHLO
+        smail.rz.tu-ilmenau.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726243AbgLFKRf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 6 Dec 2020 05:23:51 -0500
-X-Greylist: delayed 5651 seconds by postgrey-1.27 at vger.kernel.org; Sun, 06 Dec 2020 05:23:50 EST
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-        s=s110527; h=From:Subject:Date:Message-Id; bh=WHTCy5l5+fYdUerrjp
-        3tMcqmoP1IK9GclDAiIt73lIc=; b=gWjDUGTW9iFpikukNRiWvcwOFE5mmhmBlA
-        T3lh4vQlvBb4wNJcDNquytTyh7NNZglggAtzQR62O2/C3MtxyZfrFivx9BWwEvgM
-        AI7If9haV8rNEYqiyrBP3qYHMpRLiJ73bOJQpmQmtgnnBwc16PNnRvmtAnGRUCpN
-        w4mFF3LYo=
-Received: from localhost.localdomain (unknown [202.112.113.212])
-        by smtp2 (Coremail) with SMTP id GtxpCgCHA8nMmsxfJf2DEA--.20874S4;
-        Sun, 06 Dec 2020 16:48:13 +0800 (CST)
-From:   Xiaohui Zhang <ruc_zhangxiaohui@163.com>
-To:     Xiaohui Zhang <ruc_zhangxiaohui@163.com>,
-        Amitkumar Karwar <amitkarwar@gmail.com>,
-        Ganapathi Bhat <ganapathi.bhat@nxp.com>,
-        Xinming Hu <huxinming820@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>, davem@davemloft.net,
-        Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH 1/1] mwifiex: Fix possible buffer overflows in mwifiex_cmd_802_11_ad_hoc_start
-Date:   Sun,  6 Dec 2020 16:48:01 +0800
-Message-Id: <20201206084801.26479-1-ruc_zhangxiaohui@163.com>
-X-Mailer: git-send-email 2.17.1
-X-CM-TRANSID: GtxpCgCHA8nMmsxfJf2DEA--.20874S4
-X-Coremail-Antispam: 1Uf129KBjvdXoWrtF4xZF4rAw4fXF4xJry7ZFb_yoWkZFX_W3
-        4Iva15JrZrtw1IyrsYyw42v3sYkr1rXrWxGa17trWrGFW2vFZrtrnY9rs5Xr12kw1qvr9x
-        Wrs8A3y5ta4FvjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-        9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IUjU3vUUUUUU==
-X-Originating-IP: [202.112.113.212]
-X-CM-SenderInfo: puxfs6pkdqw5xldrx3rl6rljoofrz/1tbipQ3yMFUMa-PfKwAAsf
+        Sun, 6 Dec 2020 05:17:35 -0500
+Received: from isengard.fritz.box (unknown [87.147.53.96])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by smail.rz.tu-ilmenau.de (Postfix) with ESMTPSA id 4151F58007E;
+        Sun,  6 Dec 2020 11:16:54 +0100 (CET)
+From:   Markus Theil <markus.theil@tu-ilmenau.de>
+To:     johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org,
+        Markus Theil <markus.theil@tu-ilmenau.de>
+Subject: [PATCH] iw: print ctrl port tx status event
+Date:   Sun,  6 Dec 2020 11:16:42 +0100
+Message-Id: <20201206101642.3606-1-markus.theil@tu-ilmenau.de>
+X-Mailer: git-send-email 2.29.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Zhang Xiaohui <ruc_zhangxiaohui@163.com>
-
-mwifiex_cmd_802_11_ad_hoc_start() calls memcpy() without checking
-the destination size may trigger a buffer overflower,
-which a local user could use to cause denial of service
-or the execution of arbitrary code.
-Fix it by putting the length check before calling memcpy().
-
-Signed-off-by: Zhang Xiaohui <ruc_zhangxiaohui@163.com>
+Signed-off-by: Markus Theil <markus.theil@tu-ilmenau.de>
 ---
- drivers/net/wireless/marvell/mwifiex/join.c | 2 ++
- 1 file changed, 2 insertions(+)
+ event.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/join.c b/drivers/net/wireless/marvell/mwifiex/join.c
-index 5934f7147..173ccf79c 100644
---- a/drivers/net/wireless/marvell/mwifiex/join.c
-+++ b/drivers/net/wireless/marvell/mwifiex/join.c
-@@ -877,6 +877,8 @@ mwifiex_cmd_802_11_ad_hoc_start(struct mwifiex_private *priv,
- 
- 	memset(adhoc_start->ssid, 0, IEEE80211_MAX_SSID_LEN);
- 
-+	if (req_ssid->ssid_len > IEEE80211_MAX_SSID_LEN)
-+		req_ssid->ssid_len = IEEE80211_MAX_SSID_LEN;
- 	memcpy(adhoc_start->ssid, req_ssid->ssid, req_ssid->ssid_len);
- 
- 	mwifiex_dbg(adapter, INFO, "info: ADHOC_S_CMD: SSID = %s\n",
+diff --git a/event.c b/event.c
+index 8dd4345..61395f8 100644
+--- a/event.c
++++ b/event.c
+@@ -1171,6 +1171,11 @@ static int print_event(struct nl_msg *msg, void *arg)
+ 			(unsigned long long)nla_get_u64(tb[NL80211_ATTR_COOKIE]),
+ 			tb[NL80211_ATTR_ACK] ? "acked" : "no ack");
+ 		break;
++	case NL80211_CMD_CONTROL_PORT_FRAME_TX_STATUS:
++		printf("ctrl. port TX status (cookie %llx): %s\n",
++			(unsigned long long)nla_get_u64(tb[NL80211_ATTR_COOKIE]),
++			tb[NL80211_ATTR_ACK] ? "acked" : "no ack");
++		break;
+ 	case NL80211_CMD_PMKSA_CANDIDATE:
+ 		printf("PMKSA candidate found\n");
+ 		break;
 -- 
-2.17.1
+2.29.2
 
