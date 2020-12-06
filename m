@@ -2,26 +2,26 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 142C72D04FC
-	for <lists+linux-wireless@lfdr.de>; Sun,  6 Dec 2020 13:57:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A4E1F2D04F9
+	for <lists+linux-wireless@lfdr.de>; Sun,  6 Dec 2020 13:57:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728025AbgLFMzz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 6 Dec 2020 07:55:55 -0500
-Received: from paleale.coelho.fi ([176.9.41.70]:34902 "EHLO
+        id S1728015AbgLFMzx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 6 Dec 2020 07:55:53 -0500
+Received: from paleale.coelho.fi ([176.9.41.70]:34910 "EHLO
         farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1727953AbgLFMzm (ORCPT
+        with ESMTP id S1727957AbgLFMzn (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 6 Dec 2020 07:55:42 -0500
+        Sun, 6 Dec 2020 07:55:43 -0500
 Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa.ger.corp.intel.com)
         by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
         (Exim 4.93)
         (envelope-from <luca@coelho.fi>)
-        id 1kltYz-003AHZ-Or; Sun, 06 Dec 2020 14:54:54 +0200
+        id 1kltZ0-003AHZ-MA; Sun, 06 Dec 2020 14:54:55 +0200
 From:   Luca Coelho <luca@coelho.fi>
 To:     johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org
-Date:   Sun,  6 Dec 2020 14:54:42 +0200
-Message-Id: <iwlwifi.20201206145305.58d33941fb9d.I0e7168c205c7949529c8e3b86f3c9b12c01a7017@changeid>
+Date:   Sun,  6 Dec 2020 14:54:43 +0200
+Message-Id: <iwlwifi.20201206145305.5c8dab7a22a0.I58459fdf6968b16c90cab9c574f0f04ca22b0c79@changeid>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20201206125450.564941-1-luca@coelho.fi>
 References: <20201206125450.564941-1-luca@coelho.fi>
@@ -31,331 +31,291 @@ X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on farmhouse.coelho.fi
 X-Spam-Level: 
 X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
         TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.4
-Subject: [PATCH 03/11] cfg80211: support immediate reconnect request hint
+Subject: [PATCH 04/11] mac80211: support driver-based disconnect with reconnect hint
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-There are cases where it's necessary to disconnect, but an
-immediate reconnection is desired. Support a hint to userspace
-that this is the case, by including a new attribute in the
-deauth or disassoc event.
+Support the driver indicating that a disconnection needs
+to be performed, and pass through the reconnect hint in
+this case.
 
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 ---
- include/net/cfg80211.h       |  4 +++-
- include/uapi/linux/nl80211.h |  6 ++++++
- net/mac80211/mlme.c          |  5 +++--
- net/wireless/mlme.c          | 26 +++++++++++++++-----------
- net/wireless/nl80211.c       | 23 +++++++++++++++--------
- net/wireless/nl80211.h       |  8 +++++---
- net/wireless/trace.h         | 12 ++++++++----
- 7 files changed, 55 insertions(+), 29 deletions(-)
+ include/net/mac80211.h     | 11 ++++++
+ net/mac80211/ieee80211_i.h |  4 ++-
+ net/mac80211/mlme.c        | 69 ++++++++++++++++++++++++++++----------
+ net/mac80211/trace.h       | 23 ++++++++++++-
+ 4 files changed, 87 insertions(+), 20 deletions(-)
 
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index f6fc4408ba95..2d4ac810108e 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -6404,13 +6404,15 @@ void cfg80211_abandon_assoc(struct net_device *dev, struct cfg80211_bss *bss);
-  * @dev: network device
-  * @buf: 802.11 frame (header + body)
-  * @len: length of the frame data
-+ * @reconnect: immediate reconnect is desired (include the nl80211 attribute)
-  *
-  * This function is called whenever deauthentication has been processed in
-  * station mode. This includes both received deauthentication frames and
-  * locally generated ones. This function may sleep. The caller must hold the
-  * corresponding wdev's mutex.
+diff --git a/include/net/mac80211.h b/include/net/mac80211.h
+index 05c7524bab26..4b9bbcc54674 100644
+--- a/include/net/mac80211.h
++++ b/include/net/mac80211.h
+@@ -5881,6 +5881,17 @@ void ieee80211_beacon_loss(struct ieee80211_vif *vif);
   */
--void cfg80211_tx_mlme_mgmt(struct net_device *dev, const u8 *buf, size_t len);
-+void cfg80211_tx_mlme_mgmt(struct net_device *dev, const u8 *buf, size_t len,
-+			   bool reconnect);
+ void ieee80211_connection_loss(struct ieee80211_vif *vif);
  
- /**
-  * cfg80211_rx_unprot_mlme_mgmt - notification of unprotected mlme mgmt frame
-diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-index 3e0d4a038ab6..241ced71dabb 100644
---- a/include/uapi/linux/nl80211.h
-+++ b/include/uapi/linux/nl80211.h
-@@ -2534,6 +2534,10 @@ enum nl80211_commands {
-  *	This is a u8 attribute that encapsulates one of the values from
-  *	&enum nl80211_sae_pwe_mechanism.
-  *
-+ * @NL80211_ATTR_RECONNECT_REQUESTED: flag attribute, used with deauth and
-+ *	disassoc events to indicate that an immediate reconnect to the AP
-+ *	is desired.
++/**
++ * ieee80211_disconnect - request disconnection
 + *
-  * @NUM_NL80211_ATTR: total number of nl80211_attrs available
-  * @NL80211_ATTR_MAX: highest attribute number currently defined
-  * @__NL80211_ATTR_AFTER_LAST: internal use
-@@ -3025,6 +3029,8 @@ enum nl80211_attrs {
- 
- 	NL80211_ATTR_SAE_PWE,
- 
-+	NL80211_ATTR_RECONNECT_REQUESTED,
++ * @vif: &struct ieee80211_vif pointer from the add_interface callback.
++ * @reconnect: immediate reconnect is desired
++ *
++ * Request disconnection from the current network and, if enabled, send a
++ * hint to the higher layers that immediate reconnect is desired.
++ */
++void ieee80211_disconnect(struct ieee80211_vif *vif, bool reconnect);
 +
- 	/* add attributes here, update the policy in nl80211.c */
+ /**
+  * ieee80211_resume_disconnect - disconnect from AP after resume
+  *
+diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
+index cde2e3f4fbcd..cd8275e4b2cd 100644
+--- a/net/mac80211/ieee80211_i.h
++++ b/net/mac80211/ieee80211_i.h
+@@ -452,7 +452,9 @@ struct ieee80211_if_managed {
+ 	unsigned long probe_timeout;
+ 	int probe_send_count;
+ 	bool nullfunc_failed;
+-	bool connection_loss;
++	u8 connection_loss:1,
++	   driver_disconnect:1,
++	   reconnect:1;
  
- 	__NL80211_ATTR_AFTER_LAST,
+ 	struct cfg80211_bss *associated;
+ 	struct ieee80211_mgd_auth_data *auth_data;
 diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index 6adfcb9c06dc..673a1838691c 100644
+index 673a1838691c..1c9cc65bccba 100644
 --- a/net/mac80211/mlme.c
 +++ b/net/mac80211/mlme.c
+@@ -2720,7 +2720,7 @@ EXPORT_SYMBOL(ieee80211_ap_probereq_get);
+ 
+ static void ieee80211_report_disconnect(struct ieee80211_sub_if_data *sdata,
+ 					const u8 *buf, size_t len, bool tx,
+-					u16 reason)
++					u16 reason, bool reconnect)
+ {
+ 	struct ieee80211_event event = {
+ 		.type = MLME_EVENT,
 @@ -2729,7 +2729,7 @@ static void ieee80211_report_disconnect(struct ieee80211_sub_if_data *sdata,
  	};
  
  	if (tx)
--		cfg80211_tx_mlme_mgmt(sdata->dev, buf, len);
-+		cfg80211_tx_mlme_mgmt(sdata->dev, buf, len, false);
+-		cfg80211_tx_mlme_mgmt(sdata->dev, buf, len, false);
++		cfg80211_tx_mlme_mgmt(sdata->dev, buf, len, reconnect);
  	else
  		cfg80211_rx_mlme_mgmt(sdata->dev, buf, len);
  
-@@ -4716,7 +4716,8 @@ void ieee80211_mgd_quiesce(struct ieee80211_sub_if_data *sdata)
- 		if (ifmgd->auth_data)
- 			ieee80211_destroy_auth_data(sdata, false);
- 		cfg80211_tx_mlme_mgmt(sdata->dev, frame_buf,
--				      IEEE80211_DEAUTH_FRAME_LEN);
-+				      IEEE80211_DEAUTH_FRAME_LEN,
-+				      false);
+@@ -2751,13 +2751,18 @@ static void __ieee80211_disconnect(struct ieee80211_sub_if_data *sdata)
+ 
+ 	tx = !sdata->csa_block_tx;
+ 
+-	/* AP is probably out of range (or not reachable for another reason) so
+-	 * remove the bss struct for that AP.
+-	 */
+-	cfg80211_unlink_bss(local->hw.wiphy, ifmgd->associated);
++	if (!ifmgd->driver_disconnect) {
++		/*
++		 * AP is probably out of range (or not reachable for another
++		 * reason) so remove the bss struct for that AP.
++		 */
++		cfg80211_unlink_bss(local->hw.wiphy, ifmgd->associated);
++	}
+ 
+ 	ieee80211_set_disassoc(sdata, IEEE80211_STYPE_DEAUTH,
+-			       WLAN_REASON_DISASSOC_DUE_TO_INACTIVITY,
++			       ifmgd->driver_disconnect ?
++					WLAN_REASON_DEAUTH_LEAVING :
++					WLAN_REASON_DISASSOC_DUE_TO_INACTIVITY,
+ 			       tx, frame_buf);
+ 	mutex_lock(&local->mtx);
+ 	sdata->vif.csa_active = false;
+@@ -2770,7 +2775,9 @@ static void __ieee80211_disconnect(struct ieee80211_sub_if_data *sdata)
+ 	mutex_unlock(&local->mtx);
+ 
+ 	ieee80211_report_disconnect(sdata, frame_buf, sizeof(frame_buf), tx,
+-				    WLAN_REASON_DISASSOC_DUE_TO_INACTIVITY);
++				    WLAN_REASON_DISASSOC_DUE_TO_INACTIVITY,
++				    ifmgd->reconnect);
++	ifmgd->reconnect = false;
+ 
+ 	sdata_unlock(sdata);
+ }
+@@ -2789,6 +2796,13 @@ static void ieee80211_beacon_connection_loss_work(struct work_struct *work)
+ 		sdata_info(sdata, "Connection to AP %pM lost\n",
+ 			   ifmgd->bssid);
+ 		__ieee80211_disconnect(sdata);
++		ifmgd->connection_loss = false;
++	} else if (ifmgd->driver_disconnect) {
++		sdata_info(sdata,
++			   "Driver requested disconnection from AP %pM\n",
++			   ifmgd->bssid);
++		__ieee80211_disconnect(sdata);
++		ifmgd->driver_disconnect = false;
+ 	} else {
+ 		ieee80211_mgd_probe_ap(sdata, true);
+ 	}
+@@ -2827,6 +2841,21 @@ void ieee80211_connection_loss(struct ieee80211_vif *vif)
+ }
+ EXPORT_SYMBOL(ieee80211_connection_loss);
+ 
++void ieee80211_disconnect(struct ieee80211_vif *vif, bool reconnect)
++{
++	struct ieee80211_sub_if_data *sdata = vif_to_sdata(vif);
++	struct ieee80211_hw *hw = &sdata->local->hw;
++
++	trace_api_disconnect(sdata, reconnect);
++
++	if (WARN_ON(sdata->vif.type != NL80211_IFTYPE_STATION))
++		return;
++
++	sdata->u.mgd.driver_disconnect = true;
++	sdata->u.mgd.reconnect = reconnect;
++	ieee80211_queue_work(hw, &sdata->u.mgd.beacon_connection_loss_work);
++}
++EXPORT_SYMBOL(ieee80211_disconnect);
+ 
+ static void ieee80211_destroy_auth_data(struct ieee80211_sub_if_data *sdata,
+ 					bool assoc)
+@@ -3130,7 +3159,7 @@ static void ieee80211_rx_mgmt_deauth(struct ieee80211_sub_if_data *sdata,
+ 		ieee80211_set_disassoc(sdata, 0, 0, false, NULL);
+ 
+ 		ieee80211_report_disconnect(sdata, (u8 *)mgmt, len, false,
+-					    reason_code);
++					    reason_code, false);
+ 		return;
  	}
  
- 	/* This is a bit of a hack - we should find a better and more generic
-diff --git a/net/wireless/mlme.c b/net/wireless/mlme.c
-index 0ac820780437..e1e90761dc00 100644
---- a/net/wireless/mlme.c
-+++ b/net/wireless/mlme.c
-@@ -4,7 +4,7 @@
-  *
-  * Copyright (c) 2009, Jouni Malinen <j@w1.fi>
-  * Copyright (c) 2015		Intel Deutschland GmbH
-- * Copyright (C) 2019 Intel Corporation
-+ * Copyright (C) 2019-2020 Intel Corporation
-  */
+@@ -3179,7 +3208,8 @@ static void ieee80211_rx_mgmt_disassoc(struct ieee80211_sub_if_data *sdata,
  
- #include <linux/kernel.h>
-@@ -81,7 +81,8 @@ static void cfg80211_process_auth(struct wireless_dev *wdev,
+ 	ieee80211_set_disassoc(sdata, 0, 0, false, NULL);
+ 
+-	ieee80211_report_disconnect(sdata, (u8 *)mgmt, len, false, reason_code);
++	ieee80211_report_disconnect(sdata, (u8 *)mgmt, len, false, reason_code,
++				    false);
  }
  
- static void cfg80211_process_deauth(struct wireless_dev *wdev,
--				    const u8 *buf, size_t len)
-+				    const u8 *buf, size_t len,
-+				    bool reconnect)
- {
- 	struct cfg80211_registered_device *rdev = wiphy_to_rdev(wdev->wiphy);
- 	struct ieee80211_mgmt *mgmt = (struct ieee80211_mgmt *)buf;
-@@ -89,7 +90,7 @@ static void cfg80211_process_deauth(struct wireless_dev *wdev,
- 	u16 reason_code = le16_to_cpu(mgmt->u.deauth.reason_code);
- 	bool from_ap = !ether_addr_equal(mgmt->sa, wdev->netdev->dev_addr);
- 
--	nl80211_send_deauth(rdev, wdev->netdev, buf, len, GFP_KERNEL);
-+	nl80211_send_deauth(rdev, wdev->netdev, buf, len, reconnect, GFP_KERNEL);
- 
- 	if (!wdev->current_bss ||
- 	    !ether_addr_equal(wdev->current_bss->pub.bssid, bssid))
-@@ -100,7 +101,8 @@ static void cfg80211_process_deauth(struct wireless_dev *wdev,
- }
- 
- static void cfg80211_process_disassoc(struct wireless_dev *wdev,
--				      const u8 *buf, size_t len)
-+				      const u8 *buf, size_t len,
-+				      bool reconnect)
- {
- 	struct cfg80211_registered_device *rdev = wiphy_to_rdev(wdev->wiphy);
- 	struct ieee80211_mgmt *mgmt = (struct ieee80211_mgmt *)buf;
-@@ -108,7 +110,8 @@ static void cfg80211_process_disassoc(struct wireless_dev *wdev,
- 	u16 reason_code = le16_to_cpu(mgmt->u.disassoc.reason_code);
- 	bool from_ap = !ether_addr_equal(mgmt->sa, wdev->netdev->dev_addr);
- 
--	nl80211_send_disassoc(rdev, wdev->netdev, buf, len, GFP_KERNEL);
-+	nl80211_send_disassoc(rdev, wdev->netdev, buf, len, reconnect,
-+			      GFP_KERNEL);
- 
- 	if (WARN_ON(!wdev->current_bss ||
- 		    !ether_addr_equal(wdev->current_bss->pub.bssid, bssid)))
-@@ -133,9 +136,9 @@ void cfg80211_rx_mlme_mgmt(struct net_device *dev, const u8 *buf, size_t len)
- 	if (ieee80211_is_auth(mgmt->frame_control))
- 		cfg80211_process_auth(wdev, buf, len);
- 	else if (ieee80211_is_deauth(mgmt->frame_control))
--		cfg80211_process_deauth(wdev, buf, len);
-+		cfg80211_process_deauth(wdev, buf, len, false);
- 	else if (ieee80211_is_disassoc(mgmt->frame_control))
--		cfg80211_process_disassoc(wdev, buf, len);
-+		cfg80211_process_disassoc(wdev, buf, len, false);
- }
- EXPORT_SYMBOL(cfg80211_rx_mlme_mgmt);
- 
-@@ -180,22 +183,23 @@ void cfg80211_abandon_assoc(struct net_device *dev, struct cfg80211_bss *bss)
- }
- EXPORT_SYMBOL(cfg80211_abandon_assoc);
- 
--void cfg80211_tx_mlme_mgmt(struct net_device *dev, const u8 *buf, size_t len)
-+void cfg80211_tx_mlme_mgmt(struct net_device *dev, const u8 *buf, size_t len,
-+			   bool reconnect)
- {
- 	struct wireless_dev *wdev = dev->ieee80211_ptr;
- 	struct ieee80211_mgmt *mgmt = (void *)buf;
- 
- 	ASSERT_WDEV_LOCK(wdev);
- 
--	trace_cfg80211_tx_mlme_mgmt(dev, buf, len);
-+	trace_cfg80211_tx_mlme_mgmt(dev, buf, len, reconnect);
- 
- 	if (WARN_ON(len < 2))
+ static void ieee80211_get_rates(struct ieee80211_supported_band *sband,
+@@ -4199,7 +4229,8 @@ static void ieee80211_rx_mgmt_beacon(struct ieee80211_sub_if_data *sdata,
+ 				       true, deauth_buf);
+ 		ieee80211_report_disconnect(sdata, deauth_buf,
+ 					    sizeof(deauth_buf), true,
+-					    WLAN_REASON_DEAUTH_LEAVING);
++					    WLAN_REASON_DEAUTH_LEAVING,
++					    false);
  		return;
+ 	}
  
- 	if (ieee80211_is_deauth(mgmt->frame_control))
--		cfg80211_process_deauth(wdev, buf, len);
-+		cfg80211_process_deauth(wdev, buf, len, reconnect);
- 	else
--		cfg80211_process_disassoc(wdev, buf, len);
-+		cfg80211_process_disassoc(wdev, buf, len, reconnect);
- }
- EXPORT_SYMBOL(cfg80211_tx_mlme_mgmt);
+@@ -4344,7 +4375,7 @@ static void ieee80211_sta_connection_lost(struct ieee80211_sub_if_data *sdata,
+ 			       tx, frame_buf);
  
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 8811a4b69f21..e71c703f56f5 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -718,6 +718,7 @@ static const struct nla_policy nl80211_policy[NUM_NL80211_ATTR] = {
- 	[NL80211_ATTR_SAE_PWE] =
- 		NLA_POLICY_RANGE(NLA_U8, NL80211_SAE_PWE_HUNT_AND_PECK,
- 				 NL80211_SAE_PWE_BOTH),
-+	[NL80211_ATTR_RECONNECT_REQUESTED] = { .type = NLA_REJECT },
- };
- 
- /* policy for the key attributes */
-@@ -15857,7 +15858,7 @@ static void nl80211_send_mlme_event(struct cfg80211_registered_device *rdev,
- 				    const u8 *buf, size_t len,
- 				    enum nl80211_commands cmd, gfp_t gfp,
- 				    int uapsd_queues, const u8 *req_ies,
--				    size_t req_ies_len)
-+				    size_t req_ies_len, bool reconnect)
- {
- 	struct sk_buff *msg;
- 	void *hdr;
-@@ -15879,6 +15880,9 @@ static void nl80211_send_mlme_event(struct cfg80211_registered_device *rdev,
- 	     nla_put(msg, NL80211_ATTR_REQ_IE, req_ies_len, req_ies)))
- 		goto nla_put_failure;
- 
-+	if (reconnect && nla_put_flag(msg, NL80211_ATTR_RECONNECT_REQUESTED))
-+		goto nla_put_failure;
-+
- 	if (uapsd_queues >= 0) {
- 		struct nlattr *nla_wmm =
- 			nla_nest_start_noflag(msg, NL80211_ATTR_STA_WME);
-@@ -15907,7 +15911,8 @@ void nl80211_send_rx_auth(struct cfg80211_registered_device *rdev,
- 			  size_t len, gfp_t gfp)
- {
- 	nl80211_send_mlme_event(rdev, netdev, buf, len,
--				NL80211_CMD_AUTHENTICATE, gfp, -1, NULL, 0);
-+				NL80211_CMD_AUTHENTICATE, gfp, -1, NULL, 0,
-+				false);
+ 	ieee80211_report_disconnect(sdata, frame_buf, sizeof(frame_buf), true,
+-				    reason);
++				    reason, false);
  }
  
- void nl80211_send_rx_assoc(struct cfg80211_registered_device *rdev,
-@@ -15917,23 +15922,25 @@ void nl80211_send_rx_assoc(struct cfg80211_registered_device *rdev,
- {
- 	nl80211_send_mlme_event(rdev, netdev, buf, len,
- 				NL80211_CMD_ASSOCIATE, gfp, uapsd_queues,
--				req_ies, req_ies_len);
-+				req_ies, req_ies_len, false);
+ static int ieee80211_auth(struct ieee80211_sub_if_data *sdata)
+@@ -5431,7 +5462,8 @@ int ieee80211_mgd_auth(struct ieee80211_sub_if_data *sdata,
+ 
+ 		ieee80211_report_disconnect(sdata, frame_buf,
+ 					    sizeof(frame_buf), true,
+-					    WLAN_REASON_UNSPECIFIED);
++					    WLAN_REASON_UNSPECIFIED,
++					    false);
+ 	}
+ 
+ 	sdata_info(sdata, "authenticate with %pM\n", req->bss->bssid);
+@@ -5503,7 +5535,8 @@ int ieee80211_mgd_assoc(struct ieee80211_sub_if_data *sdata,
+ 
+ 		ieee80211_report_disconnect(sdata, frame_buf,
+ 					    sizeof(frame_buf), true,
+-					    WLAN_REASON_UNSPECIFIED);
++					    WLAN_REASON_UNSPECIFIED,
++					    false);
+ 	}
+ 
+ 	if (ifmgd->auth_data && !ifmgd->auth_data->done) {
+@@ -5802,7 +5835,7 @@ int ieee80211_mgd_deauth(struct ieee80211_sub_if_data *sdata,
+ 		ieee80211_destroy_auth_data(sdata, false);
+ 		ieee80211_report_disconnect(sdata, frame_buf,
+ 					    sizeof(frame_buf), true,
+-					    req->reason_code);
++					    req->reason_code, false);
+ 
+ 		return 0;
+ 	}
+@@ -5822,7 +5855,7 @@ int ieee80211_mgd_deauth(struct ieee80211_sub_if_data *sdata,
+ 		ieee80211_destroy_assoc_data(sdata, false, true);
+ 		ieee80211_report_disconnect(sdata, frame_buf,
+ 					    sizeof(frame_buf), true,
+-					    req->reason_code);
++					    req->reason_code, false);
+ 		return 0;
+ 	}
+ 
+@@ -5837,7 +5870,7 @@ int ieee80211_mgd_deauth(struct ieee80211_sub_if_data *sdata,
+ 				       req->reason_code, tx, frame_buf);
+ 		ieee80211_report_disconnect(sdata, frame_buf,
+ 					    sizeof(frame_buf), true,
+-					    req->reason_code);
++					    req->reason_code, false);
+ 		return 0;
+ 	}
+ 
+@@ -5870,7 +5903,7 @@ int ieee80211_mgd_disassoc(struct ieee80211_sub_if_data *sdata,
+ 			       frame_buf);
+ 
+ 	ieee80211_report_disconnect(sdata, frame_buf, sizeof(frame_buf), true,
+-				    req->reason_code);
++				    req->reason_code, false);
+ 
+ 	return 0;
  }
- 
- void nl80211_send_deauth(struct cfg80211_registered_device *rdev,
- 			 struct net_device *netdev, const u8 *buf,
--			 size_t len, gfp_t gfp)
-+			 size_t len, bool reconnect, gfp_t gfp)
- {
- 	nl80211_send_mlme_event(rdev, netdev, buf, len,
--				NL80211_CMD_DEAUTHENTICATE, gfp, -1, NULL, 0);
-+				NL80211_CMD_DEAUTHENTICATE, gfp, -1, NULL, 0,
-+				reconnect);
- }
- 
- void nl80211_send_disassoc(struct cfg80211_registered_device *rdev,
- 			   struct net_device *netdev, const u8 *buf,
--			   size_t len, gfp_t gfp)
-+			   size_t len, bool reconnect, gfp_t gfp)
- {
- 	nl80211_send_mlme_event(rdev, netdev, buf, len,
--				NL80211_CMD_DISASSOCIATE, gfp, -1, NULL, 0);
-+				NL80211_CMD_DISASSOCIATE, gfp, -1, NULL, 0,
-+				reconnect);
- }
- 
- void cfg80211_rx_unprot_mlme_mgmt(struct net_device *dev, const u8 *buf,
-@@ -15964,7 +15971,7 @@ void cfg80211_rx_unprot_mlme_mgmt(struct net_device *dev, const u8 *buf,
- 
- 	trace_cfg80211_rx_unprot_mlme_mgmt(dev, buf, len);
- 	nl80211_send_mlme_event(rdev, dev, buf, len, cmd, GFP_ATOMIC, -1,
--				NULL, 0);
-+				NULL, 0, false);
- }
- EXPORT_SYMBOL(cfg80211_rx_unprot_mlme_mgmt);
- 
-diff --git a/net/wireless/nl80211.h b/net/wireless/nl80211.h
-index d3e8e426c486..a3f387770f1b 100644
---- a/net/wireless/nl80211.h
-+++ b/net/wireless/nl80211.h
-@@ -1,7 +1,7 @@
- /* SPDX-License-Identifier: GPL-2.0 */
+diff --git a/net/mac80211/trace.h b/net/mac80211/trace.h
+index 89723907a094..601322e16957 100644
+--- a/net/mac80211/trace.h
++++ b/net/mac80211/trace.h
+@@ -2,7 +2,7 @@
  /*
-  * Portions of this file
-- * Copyright (C) 2018 Intel Corporation
-+ * Copyright (C) 2018, 2020 Intel Corporation
-  */
- #ifndef __NET_WIRELESS_NL80211_H
- #define __NET_WIRELESS_NL80211_H
-@@ -69,10 +69,12 @@ void nl80211_send_rx_assoc(struct cfg80211_registered_device *rdev,
- 			   const u8 *req_ies, size_t req_ies_len);
- void nl80211_send_deauth(struct cfg80211_registered_device *rdev,
- 			 struct net_device *netdev,
--			 const u8 *buf, size_t len, gfp_t gfp);
-+			 const u8 *buf, size_t len,
-+			 bool reconnect, gfp_t gfp);
- void nl80211_send_disassoc(struct cfg80211_registered_device *rdev,
- 			   struct net_device *netdev,
--			   const u8 *buf, size_t len, gfp_t gfp);
-+			   const u8 *buf, size_t len,
-+			   bool reconnect, gfp_t gfp);
- void nl80211_send_auth_timeout(struct cfg80211_registered_device *rdev,
- 			       struct net_device *netdev,
- 			       const u8 *addr, gfp_t gfp);
-diff --git a/net/wireless/trace.h b/net/wireless/trace.h
-index 817c6fef13be..d75cd23aea02 100644
---- a/net/wireless/trace.h
-+++ b/net/wireless/trace.h
-@@ -2679,19 +2679,23 @@ DEFINE_EVENT(netdev_frame_event, cfg80211_rx_mlme_mgmt,
+ * Portions of this file
+ * Copyright(c) 2016-2017 Intel Deutschland GmbH
+-* Copyright (C) 2018 - 2019 Intel Corporation
++* Copyright (C) 2018 - 2020 Intel Corporation
+ */
+ 
+ #if !defined(__MAC80211_DRIVER_TRACE) || defined(TRACE_HEADER_MULTI_READ)
+@@ -2086,6 +2086,27 @@ TRACE_EVENT(api_connection_loss,
+ 	)
  );
  
- TRACE_EVENT(cfg80211_tx_mlme_mgmt,
--	TP_PROTO(struct net_device *netdev, const u8 *buf, int len),
--	TP_ARGS(netdev, buf, len),
-+	TP_PROTO(struct net_device *netdev, const u8 *buf, int len,
-+		 bool reconnect),
-+	TP_ARGS(netdev, buf, len, reconnect),
- 	TP_STRUCT__entry(
- 		NETDEV_ENTRY
- 		__dynamic_array(u8, frame, len)
++TRACE_EVENT(api_disconnect,
++	TP_PROTO(struct ieee80211_sub_if_data *sdata, bool reconnect),
++
++	TP_ARGS(sdata, reconnect),
++
++	TP_STRUCT__entry(
++		VIF_ENTRY
 +		__field(int, reconnect)
- 	),
- 	TP_fast_assign(
- 		NETDEV_ASSIGN;
- 		memcpy(__get_dynamic_array(frame), buf, len);
++	),
++
++	TP_fast_assign(
++		VIF_ASSIGN;
 +		__entry->reconnect = reconnect;
- 	),
--	TP_printk(NETDEV_PR_FMT ", ftype:0x%.2x",
-+	TP_printk(NETDEV_PR_FMT ", ftype:0x%.2x reconnect:%d",
- 		  NETDEV_PR_ARG,
--		  le16_to_cpup((__le16 *)__get_dynamic_array(frame)))
-+		  le16_to_cpup((__le16 *)__get_dynamic_array(frame)),
-+		  __entry->reconnect)
- );
- 
- DECLARE_EVENT_CLASS(netdev_mac_evt,
++	),
++
++	TP_printk(
++		VIF_PR_FMT " reconnect:%d",
++		VIF_PR_ARG, __entry->reconnect
++	)
++);
++
+ TRACE_EVENT(api_cqm_rssi_notify,
+ 	TP_PROTO(struct ieee80211_sub_if_data *sdata,
+ 		 enum nl80211_cqm_rssi_threshold_event rssi_event,
 -- 
 2.29.2
 
