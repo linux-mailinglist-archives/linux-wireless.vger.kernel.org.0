@@ -2,34 +2,34 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D6762D1658
-	for <lists+linux-wireless@lfdr.de>; Mon,  7 Dec 2020 17:37:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D23D82D166E
+	for <lists+linux-wireless@lfdr.de>; Mon,  7 Dec 2020 17:37:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727903AbgLGQfJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 7 Dec 2020 11:35:09 -0500
-Received: from so254-31.mailgun.net ([198.61.254.31]:19932 "EHLO
-        so254-31.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727897AbgLGQfH (ORCPT
+        id S1728028AbgLGQf7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 7 Dec 2020 11:35:59 -0500
+Received: from m43-15.mailgun.net ([69.72.43.15]:25470 "EHLO
+        m43-15.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727673AbgLGQf6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 7 Dec 2020 11:35:07 -0500
+        Mon, 7 Dec 2020 11:35:58 -0500
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1607358888; h=Date: Message-Id: Cc: To: References:
+ s=smtp; t=1607358940; h=Date: Message-Id: Cc: To: References:
  In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=T4JwIJtwpgym/9GRFaDH6bd7T5V8bt32YA1xFcZizyY=;
- b=eTYJasrmA8oGNaaaXO0WiDI7+lARgnHS4q+om9LrtyGfXZfhBaaR31dA9D8GTQM9L9KpxQ6H
- tVrVk6a/EnVhbobdE8OhpteKXZeXxOA9D/M3MslEahVyiQ78BZbpwU4e915K+ajU8pvzKvpO
- aFQXvFEzgaw4yndD/faSCzUiobA=
-X-Mailgun-Sending-Ip: 198.61.254.31
+ Content-Type: Sender; bh=IW9DTF4PmF8ZmkQKPvCQah+cT5wir5KBEaelBBw/+SA=;
+ b=Ytcj91VqcDZDJNUaDk0Klo/+KFZGPXpGhmuh4utpKPTtmnG9MibsEyZDN+fSBu3q9QLv+36b
+ PZ2dkq/agEqI2e+5oTXnt2/Xnbh1F4aQl9xm2THGq38aJLM/WUd/JsCAWM0baQnhxn0/vZTr
+ s30yengfvzt/EGA3sqxeLae+IR8=
+X-Mailgun-Sending-Ip: 69.72.43.15
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n07.prod.us-east-1.postgun.com with SMTP id
- 5fce599b4afea888936535fa (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 07 Dec 2020 16:34:35
+ smtp-out-n04.prod.us-west-2.postgun.com with SMTP id
+ 5fce59b6ca03b14965ed328d (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 07 Dec 2020 16:35:02
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 8D3C9C433ED; Mon,  7 Dec 2020 16:34:34 +0000 (UTC)
+        id ABA94C43461; Mon,  7 Dec 2020 16:35:02 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -40,29 +40,30 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 94EF6C43461;
-        Mon,  7 Dec 2020 16:34:31 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 94EF6C43461
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id B5B17C433ED;
+        Mon,  7 Dec 2020 16:34:58 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org B5B17C433ED
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH][next] wilc1000: remove redundant assignment to pointer
- vif
+Subject: Re: [PATCH][next] rtw88: coex: fix missing unitialization of variable
+ 'interval'
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20201203174316.1071446-1-colin.king@canonical.com>
-References: <20201203174316.1071446-1-colin.king@canonical.com>
+In-Reply-To: <20201203175142.1071738-1-colin.king@canonical.com>
+References: <20201203175142.1071738-1-colin.king@canonical.com>
 To:     Colin King <colin.king@canonical.com>
-Cc:     Ajay Singh <ajay.kathat@microchip.com>,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
+Cc:     Yan-Hsuan Chuang <tony0620emma@gmail.com>,
         "David S . Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>,
+        Ping-Ke Shih <pkshih@realtek.com>,
+        Ching-Te Ku <ku920601@realtek.com>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20201207163434.8D3C9C433ED@smtp.codeaurora.org>
-Date:   Mon,  7 Dec 2020 16:34:34 +0000 (UTC)
+Message-Id: <20201207163502.ABA94C43461@smtp.codeaurora.org>
+Date:   Mon,  7 Dec 2020 16:35:02 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -71,19 +72,21 @@ Colin King <colin.king@canonical.com> wrote:
 
 > From: Colin Ian King <colin.king@canonical.com>
 > 
-> The assignment to pointer vif is redundant as the assigned value
-> is never read, hence it can be removed.
+> Currently the variable 'interval' is not initialized and is only set
+> to 1 when oex_stat->bt_418_hid_existi is true.  Fix this by inintializing
+> variable interval to 0 (which I'm assuming is the intended default).
 > 
-> Addresses-Coverity: ("Unused value")
+> Addresses-Coverity: ("Uninitalized scalar variable")
+> Fixes: 5b2e9a35e456 ("rtw88: coex: add feature to enhance HID coexistence performance")
 > Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> Acked-by: Ajay Singh <ajay.kathat@microchip.com>
+> Acked-by: Ping-Ke Shih <pkshih@realtek.com>
 
 Patch applied to wireless-drivers-next.git, thanks.
 
-9b0467ed9a7d wilc1000: remove redundant assignment to pointer vif
+88c15a6fbd94 rtw88: coex: fix missing unitialization of variable 'interval'
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20201203174316.1071446-1-colin.king@canonical.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/20201203175142.1071738-1-colin.king@canonical.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
