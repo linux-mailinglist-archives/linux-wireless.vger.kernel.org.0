@@ -2,144 +2,212 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 658A92D0FA5
-	for <lists+linux-wireless@lfdr.de>; Mon,  7 Dec 2020 12:44:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DE7DE2D12A7
+	for <lists+linux-wireless@lfdr.de>; Mon,  7 Dec 2020 14:56:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726920AbgLGLoB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 7 Dec 2020 06:44:01 -0500
-Received: from mail-il1-f197.google.com ([209.85.166.197]:41899 "EHLO
-        mail-il1-f197.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726795AbgLGLn6 (ORCPT
+        id S1726638AbgLGNzP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 7 Dec 2020 08:55:15 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:35658 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726188AbgLGNzO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 7 Dec 2020 06:43:58 -0500
-Received: by mail-il1-f197.google.com with SMTP id f19so12597015ilk.8
-        for <linux-wireless@vger.kernel.org>; Mon, 07 Dec 2020 03:43:36 -0800 (PST)
+        Mon, 7 Dec 2020 08:55:14 -0500
+Received: from mail-il1-f197.google.com ([209.85.166.197])
+        by youngberry.canonical.com with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <seth.forshee@canonical.com>)
+        id 1kmGyF-0001Cd-W8
+        for linux-wireless@vger.kernel.org; Mon, 07 Dec 2020 13:54:32 +0000
+Received: by mail-il1-f197.google.com with SMTP id w10so12909846ila.22
+        for <linux-wireless@vger.kernel.org>; Mon, 07 Dec 2020 05:54:31 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
-        bh=RnH0gk+Ggl9SU1hd2RqCdO8fPhHvsCanm+XQaqUSaic=;
-        b=OruKbXeGm9KMZ+gHTBysO3Hy6MqG7tBoPWJJIp0jsJoQ/zl1rikbyXZ73FY/WmCgVh
-         22z1qZ+DV6PTWgtvWDky31MzMd013r4vZe4CrMS5XSNuhqb3KV0KSGJFi/RScbS9RESb
-         v6HpBFWNEnFiGTROM05EkcTnGQFfg38ExvHHSAWR9bpdNYLZQQMdc/gdSKuHek27ENgt
-         bOJajvWhbe5/DJd+OV8P5ryu2LeQhh7e2u03CeCT3I5tCw0Ujj5G7pCI1o76BsxGR+P2
-         kC22/Uk0qLBpEwhERLXWakfwD2zZX6NNK8x7RD/bBa98bF/Eoka08NszzSaqAXr5xuMW
-         2nCQ==
-X-Gm-Message-State: AOAM5327LzqXfTp23ppL8ByoEQttE6o9FlJO+yggaSJsmSRkEx4XkHWT
-        Y75nxCU7F1CWOwPsyq/n2AJrP8jzoazM4xjaI1v2wReAw5yK
-X-Google-Smtp-Source: ABdhPJzUlx+oPhmbyQL/NekSIbjRMQ2Ty1OUzOoHKQwibq/ge3Wotf5qeCBXta4kripcWaFaYn5ng/0NsTiUsRzsHsz4MerVK/Nt
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=exIg4im978Af35t0Th41CdUqoCnbHcLk3dCbyFtDoWA=;
+        b=j/+JsrnYpuETLjj1a8/Qs5jj29LGicYE30RlGv0xPkABV89D1TPvnjyD0YiljiqnJO
+         Imu+tS51lUtIMEuupP/Nvs89KzV+PzCz9UZ1j9DhBK4CWWwGnWqLoIskB3sfnmFPTvI9
+         4MmEOSm/CiBeRp6jDeNlDp451H1r9LzgEXEzpWiITis6nKhiWGzGVZkR7pwN46Fitqow
+         NEuz9TtxSoM8escgZ0SzUIBF4j8Ds8wji6Js+RMxPTRIGIRuiIdz0h5TwPZu4BjJBwdX
+         qpDnhHbmJ83yZ4dVbXPLgnJ5N8HiZJJlSYQ+6BakSKJ38wmzWJN9CK/BJcAQQnKdQAGF
+         4Njw==
+X-Gm-Message-State: AOAM531j7hXvF4aXW1lMc2za9kqWmeXWl8JuhoCe9LW3TDLGVznle6kY
+        uuYfl2z84Kp2p3buiKkm0o3Ot5D9Tr3zg6/gnaIvgdrkzv4pL0mlCi/i2oeAZ1SArqXuJo6GSLo
+        arXyEJTG99k0QZc7hKA4v8v6u+po9ZRhscuXu4TJnscIv
+X-Received: by 2002:a92:cc90:: with SMTP id x16mr22203485ilo.153.1607349271020;
+        Mon, 07 Dec 2020 05:54:31 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJx/MAVUkumrlBr2f0SRNg7gyKuAsiLriBta/VfYEqnAGd2dNNmnE3dr1sNSLhmZl+Bf0VcsCg==
+X-Received: by 2002:a92:cc90:: with SMTP id x16mr22203466ilo.153.1607349270770;
+        Mon, 07 Dec 2020 05:54:30 -0800 (PST)
+Received: from localhost ([2605:a601:ac0f:820:2629:2709:f729:78dc])
+        by smtp.gmail.com with ESMTPSA id a3sm7295883ilp.5.2020.12.07.05.54.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 07 Dec 2020 05:54:30 -0800 (PST)
+Date:   Mon, 7 Dec 2020 07:54:29 -0600
+From:   Seth Forshee <seth.forshee@canonical.com>
+To:     b.K.il.h.u+tigbuh@gmail.com
+Cc:     wireless-regdb <wireless-regdb@lists.infradead.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH] wireless-regdb: recent FCC report and order allows
+ 5850-5895 immediately
+Message-ID: <X840FVaelaS2hq/K@ubuntu-x1>
+References: <a79286b90cdfdee3a83397008c0f7b6d67bc7f69.1607035229.git.b.K.il.h.u+tigbuh@gmail.com>
+ <X8pRrWfZPhLdguu8@ubuntu-x1>
+ <CAPuHQ=EUcsn24EoSP+PGH2H6kPROvauyJN_6RtYLXqVYW=sK-g@mail.gmail.com>
+ <X82welCPwyUV8VJw@ubuntu-x1>
+ <CAPuHQ=EXa9zbXuqoU44b=Jv=hL4tK3nRPksgOEN=LVjJvWt8PA@mail.gmail.com>
 MIME-Version: 1.0
-X-Received: by 2002:a92:cd03:: with SMTP id z3mr407488iln.181.1607341390986;
- Mon, 07 Dec 2020 03:43:10 -0800 (PST)
-Date:   Mon, 07 Dec 2020 03:43:10 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <000000000000a4832105b5de5453@google.com>
-Subject: BUG: unable to handle kernel paging request in bpf_lru_populate
-From:   syzbot <syzbot+ec2234240c96fdd26b93@syzkaller.appspotmail.com>
-To:     andrii@kernel.org, andriin@fb.com, ast@kernel.org,
-        bpf@vger.kernel.org, daniel@iogearbox.net, davem@davemloft.net,
-        johannes@sipsolutions.net, john.fastabend@gmail.com, kafai@fb.com,
-        kpsingh@chromium.org, kuba@kernel.org,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, songliubraving@fb.com,
-        syzkaller-bugs@googlegroups.com, yhs@fb.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAPuHQ=EXa9zbXuqoU44b=Jv=hL4tK3nRPksgOEN=LVjJvWt8PA@mail.gmail.com>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
+On Mon, Dec 07, 2020 at 11:10:41AM +0100, b.K.il.h.u+tigbuh@gmail.com wrote:
+> Indeed your logic seems reasonable regarding passive scanning.
+> However, I'm only looking at it from a wireless-regdb perspective:
+> this seems to be the first NO-IR directive in the database other than
+> for the "world" domain, and I thought that NO-IR is more of a thing
+> that would apply for client devices having no clue where they are, but
+> wouldn't adding NO_IR here keep hostapd from enabling an AP on such a
+> channel? Here's some documentation on this:
+> 
+> https://wireless.wiki.kernel.org/en/developers/regulatory/processing_rules#beacon_hints
+> 
+> I see that passive-scan and no-ibss flags had been consolidated in this commit:
+> 
+> https://patchwork.kernel.org/project/linux-wireless/patch/1382376158-25586-2-git-send-email-mcgrof@do-not-panic.com/
+> 
+> This is a use case that might see a benefit in splitting the two
+> again. But isn't that what PTMP-ONLY is for? Although, they mention at
+> one place that PTMP-ONLY isn't quite being used in the code as of now.
 
-syzbot found the following issue on:
+I'm not sure how hostapd treats NO-IR, but even ibss seems likely to be
+off limits given the wording as it is still a point-to-point mode. NO-IR
+is the only thing which restricts active scanning or ibss in the kernel.
+If it also restricts AP mode in hostapd, then we currently have no flag
+to enforce passive scanning without also restricting AP mode.
 
-HEAD commit:    bcd684aa net/nfc/nci: Support NCI 2.x initial sequence
-git tree:       net-next
-console output: https://syzkaller.appspot.com/x/log.txt?x=12001bd3500000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=3cb098ab0334059f
-dashboard link: https://syzkaller.appspot.com/bug?extid=ec2234240c96fdd26b93
-compiler:       gcc (GCC) 10.1.0-syz 20200507
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=11f7f2ef500000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=103833f7500000
+And yes, PTMP-ONLY is essentially unused in the kernel so it likely has
+no real impact.
 
-The issue was bisected to:
+Thanks,
+Seth
 
-commit b93ef089d35c3386dd197e85afb6399bbd54cfb3
-Author: Martin KaFai Lau <kafai@fb.com>
-Date:   Mon Nov 16 20:01:13 2020 +0000
-
-    bpf: Fix the irq and nmi check in bpf_sk_storage for tracing usage
-
-bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=1103b837500000
-final oops:     https://syzkaller.appspot.com/x/report.txt?x=1303b837500000
-console output: https://syzkaller.appspot.com/x/log.txt?x=1503b837500000
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+ec2234240c96fdd26b93@syzkaller.appspotmail.com
-Fixes: b93ef089d35c ("bpf: Fix the irq and nmi check in bpf_sk_storage for tracing usage")
-
-BUG: unable to handle page fault for address: fffff5200471266c
-#PF: supervisor read access in kernel mode
-#PF: error_code(0x0000) - not-present page
-PGD 23fff2067 P4D 23fff2067 PUD 101a4067 PMD 32e3a067 PTE 0
-Oops: 0000 [#1] PREEMPT SMP KASAN
-CPU: 1 PID: 8503 Comm: syz-executor608 Not tainted 5.10.0-rc6-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
-RIP: 0010:bpf_common_lru_populate kernel/bpf/bpf_lru_list.c:569 [inline]
-RIP: 0010:bpf_lru_populate+0xd8/0x5e0 kernel/bpf/bpf_lru_list.c:614
-Code: 03 4d 01 e7 48 01 d8 48 89 4c 24 10 4d 89 fe 48 89 44 24 08 e8 99 23 eb ff 49 8d 7e 12 48 89 f8 48 89 fa 48 c1 e8 03 83 e2 07 <0f> b6 04 18 38 d0 7f 08 84 c0 0f 85 80 04 00 00 49 8d 7e 13 41 c6
-RSP: 0018:ffffc9000126fc20 EFLAGS: 00010202
-RAX: 1ffff9200471266c RBX: dffffc0000000000 RCX: ffffffff8184e3e2
-RDX: 0000000000000002 RSI: ffffffff8184e2e7 RDI: ffffc90023893362
-RBP: 00000000000000bc R08: 000000000000107c R09: 0000000000000000
-R10: 000000000000107c R11: 0000000000000000 R12: 0000000000000001
-R13: 000000000000107c R14: ffffc90023893350 R15: ffffc900234832f0
-FS:  0000000000fe0880(0000) GS:ffff8880b9f00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: fffff5200471266c CR3: 000000001ba62000 CR4: 00000000001506e0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- prealloc_init kernel/bpf/hashtab.c:319 [inline]
- htab_map_alloc+0xf6e/0x1230 kernel/bpf/hashtab.c:507
- find_and_alloc_map kernel/bpf/syscall.c:123 [inline]
- map_create kernel/bpf/syscall.c:829 [inline]
- __do_sys_bpf+0xa81/0x5170 kernel/bpf/syscall.c:4374
- do_syscall_64+0x2d/0x70 arch/x86/entry/common.c:46
- entry_SYSCALL_64_after_hwframe+0x44/0xa9
-RIP: 0033:0x4402e9
-Code: 18 89 d0 c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 0f 83 7b 13 fc ff c3 66 2e 0f 1f 84 00 00 00 00
-RSP: 002b:00007ffe77af23b8 EFLAGS: 00000246 ORIG_RAX: 0000000000000141
-RAX: ffffffffffffffda RBX: 00000000004002c8 RCX: 00000000004402e9
-RDX: 0000000000000040 RSI: 0000000020000000 RDI: 0d00000000000000
-RBP: 00000000006ca018 R08: 0000000000000000 R09: 0000000000000000
-R10: 00000000ffffffff R11: 0000000000000246 R12: 0000000000401af0
-R13: 0000000000401b80 R14: 0000000000000000 R15: 0000000000000000
-Modules linked in:
-CR2: fffff5200471266c
----[ end trace 4f3928bacde7b3ed ]---
-RIP: 0010:bpf_common_lru_populate kernel/bpf/bpf_lru_list.c:569 [inline]
-RIP: 0010:bpf_lru_populate+0xd8/0x5e0 kernel/bpf/bpf_lru_list.c:614
-Code: 03 4d 01 e7 48 01 d8 48 89 4c 24 10 4d 89 fe 48 89 44 24 08 e8 99 23 eb ff 49 8d 7e 12 48 89 f8 48 89 fa 48 c1 e8 03 83 e2 07 <0f> b6 04 18 38 d0 7f 08 84 c0 0f 85 80 04 00 00 49 8d 7e 13 41 c6
-RSP: 0018:ffffc9000126fc20 EFLAGS: 00010202
-RAX: 1ffff9200471266c RBX: dffffc0000000000 RCX: ffffffff8184e3e2
-RDX: 0000000000000002 RSI: ffffffff8184e2e7 RDI: ffffc90023893362
-RBP: 00000000000000bc R08: 000000000000107c R09: 0000000000000000
-R10: 000000000000107c R11: 0000000000000000 R12: 0000000000000001
-R13: 000000000000107c R14: ffffc90023893350 R15: ffffc900234832f0
-FS:  0000000000fe0880(0000) GS:ffff8880b9f00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: fffff5200471266c CR3: 000000001ba62000 CR4: 00000000001506e0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-For information about bisection process see: https://goo.gl/tpsmEJ#bisection
-syzbot can test patches for this issue, for details see:
-https://goo.gl/tpsmEJ#testing-patches
+> 
+> Some more mentions:
+> https://medium.com/@renaudcerrato/how-to-build-your-own-wireless-router-from-scratch-part-3-d54eecce157f
+> https://www.spinics.net/lists/linux-wireless/msg124066.html
+> 
+> On Mon, Dec 7, 2020 at 5:33 AM Seth Forshee <seth.forshee@canonical.com> wrote:
+> >
+> > On Sat, Dec 05, 2020 at 09:24:03PM +0100, b.K.il.h.u+tigbuh@gmail.com wrote:
+> > > Thanks for double checking. Honestly, I've only spent a few hours
+> > > skimming through the document and haven't read it through all the way.
+> > >
+> > > Agreed that both bandwidths should probably be upped to 160.
+> > >
+> > > Considering  § 15.407 (a)(3)(v): shouldn't the flag `PTMP-ONLY`
+> > > already signal this infrastructure-mode only restriction? I think
+> > > sending a probe request frame before connecting may be considered a
+> > > "brief message", and NO-IR would even disallow that. Also, if we added
+> > > NO-IR, wouldn't that close the band for AP's running Linux as well?
+> >
+> > But it's a brief message "after detecting a signal that confirms that an
+> > access point is operating on a particular channel." I think that implies
+> > a passive scan, then sending an association request only after seeing a
+> > beacon from the AP on the channel. I could be wrong though; my memory on
+> > the 802.11 protocol is rusty and out of date.
+> >
+> > Thanks,
+> > Seth
+> >
+> > >
+> > > Other than deciding the above questions, should we get back to
+> > > finishing this patch after publication sometime next year? There may
+> > > be a chance for it to change until then.
+> > >
+> > > On Fri, Dec 4, 2020 at 4:11 PM Seth Forshee <seth.forshee@canonical.com> wrote:
+> > > >
+> > > > On Thu, Dec 03, 2020 at 11:40:30PM +0100, bkil wrote:
+> > > > > The new band is called U-NII-4.
+> > > >
+> > > > The report states in paragraph 203 that the order is effective 60 days
+> > > > from publication in the Federal Register, and it looks like they haven't
+> > > > even been published in the Federal Register yet. We will need to wait
+> > > > for the rules to go into effect before applying any updates.
+> > > >
+> > > > > The report recommends combining it with 5725-5895 to allow 160 MHz
+> > > > > bandwidth, but that's technically not that easy with regdb due to the
+> > > > > differing restrictions of the two parts. Marking the line for U-NII-3
+> > > > > NO-OUTDOOR and PTMP-ONLY along with extending its range would be a
+> > > > > possible workaround, but this needs to be discussed.
+> > > >
+> > > > I think it should be sufficient to set the bandwidth of both 5730-5850
+> > > > and 5850-5895 to 160 MHz with AUTO-BW. The kernel will see the AUTO-BW
+> > > > flags and calculate a combined rule where 160 MHz is allowed, and for
+> > > > the original rules any bandwidth exceeding the available bandwidth of
+> > > > the rule will be disallowed.
+> > > >
+> > > > > I don't see a requirement for TPC, hence reducing EIRP by 3dB is not
+> > > > > needed. I've marked it 33dBm (minus 6dB for clients) to cope with 20MHz,
+> > > > > but the band can support higher power, though the logic is complicated.
+> > > >
+> > > > I believe we have an additional requirement from § 15.407 (a)(3)(v):
+> > > >
+> > > >   In the 5.850-5.895 GHz band, client devices must operate under the
+> > > >   control of an indoor access point. In all cases, an exception exists
+> > > >   for transmitting brief messages to an access point when attempting to
+> > > >   join its network after detecting a signal that confirms that an access
+> > > >   point is operating on a particular channel.
+> > > >
+> > > > This sounds like a requirement for passive scanning, if so the range
+> > > > should also have the NO-IR flag.
+> > > >
+> > > > Thanks,
+> > > > Seth
+> > > >
+> > > > >
+> > > > > The upper subband (5895-5925 MHz) of the new band is reserved for ITS.
+> > > > >
+> > > > > "We limit unlicensed use to indoor operations in recognition of the
+> > > > > potential that ITS licensees may currently be operating"
+> > > > >
+> > > > > "We also proposed that U-NII-4 devices be permitted to operate at the same
+> > > > > power levels as U-NII-3 devices."
+> > > > >
+> > > > > "For the U-NII-4 band, indoor access point EIRP will be limited to
+> > > > > 33 dBm/20 MHz and 36 dBm/40 MHz. When combined with U-NII-3 band spectrum,
+> > > > > indoor access point EIRP can scale to 36 dBm for 80 and 160 megahertz
+> > > > > channels."
+> > > > >
+> > > > > "Client devices would be limited to power levels 6 dB below the power
+> > > > > limits for access points."
+> > > > >
+> > > > > "the First Report and Order prohibit U-NII-4 client-to-client
+> > > > > communications to protect co-channel incumbent ITS"
+> > > > >
+> > > > > Signed-off-by: bkil <b.K.il.h.u+tigbuh@gmail.com>
+> > > > > ---
+> > > > >  db.txt | 5 ++++-
+> > > > >  1 file changed, 4 insertions(+), 1 deletion(-)
+> > > > >
+> > > > > diff --git a/db.txt b/db.txt
+> > > > > index c71a03a..e6dd063 100644
+> > > > > --- a/db.txt
+> > > > > +++ b/db.txt
+> > > > > @@ -1587,7 +1587,10 @@ country US: DFS-FCC
+> > > > >       # requirements, we can extend the range by 5 MHz to make the kernel
+> > > > >       # happy and be able to use channel 144.
+> > > > >       (5470 - 5730 @ 160), (23), DFS
+> > > > > -     (5730 - 5850 @ 80), (30)
+> > > > > +     (5730 - 5850 @ 80), (30), AUTO-BW
+> > > > > +     # https://www.fcc.gov/document/fcc-modernizes-59-ghz-band-improve-wi-fi-and-automotive-safety-0
+> > > > > +     # max. 33 dBm AP @ 20MHz, 36 dBm AP @ 40Mhz+, 6 dB less for clients
+> > > > > +     (5850 - 5895 @ 40), (27), NO-OUTDOOR, PTMP-ONLY, AUTO-BW
+> > > > >       # 60g band
+> > > > >       # reference: section IV-D https://docs.fcc.gov/public/attachments/FCC-16-89A1.pdf
+> > > > >       # channels 1-6 EIRP=40dBm(43dBm peak)
