@@ -2,91 +2,144 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EB4332D0E30
-	for <lists+linux-wireless@lfdr.de>; Mon,  7 Dec 2020 11:41:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 658A92D0FA5
+	for <lists+linux-wireless@lfdr.de>; Mon,  7 Dec 2020 12:44:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726110AbgLGKlN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 7 Dec 2020 05:41:13 -0500
-Received: from so254-31.mailgun.net ([198.61.254.31]:25929 "EHLO
-        so254-31.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725842AbgLGKlN (ORCPT
+        id S1726920AbgLGLoB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 7 Dec 2020 06:44:01 -0500
+Received: from mail-il1-f197.google.com ([209.85.166.197]:41899 "EHLO
+        mail-il1-f197.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726795AbgLGLn6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 7 Dec 2020 05:41:13 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1607337650; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=SJSbCik9Tek06j7dEaYsZTY3s+Lwk19Ci7mR6nO9gjk=; b=uVd47ICIHKN+S21UE6wNBI0XEOtq2mU2/tTG/jF28CuGG+6ViUbEr9oeNku2DjKPAR0VEWBB
- CJNNoD4XF3AI8fZWBR/iavpSlbfIf6xk4XO2j7/aMMla0ZOahyDr+Rd9cjm5sq/iqsx1IanW
- qawbR6laH7dCgGjf0D5xZAN8D0g=
-X-Mailgun-Sending-Ip: 198.61.254.31
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n04.prod.us-east-1.postgun.com with SMTP id
- 5fce0692ae7b105766e29497 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 07 Dec 2020 10:40:18
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 24AF6C433C6; Mon,  7 Dec 2020 10:40:18 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
-        autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id B24E1C433CA;
-        Mon,  7 Dec 2020 10:40:16 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org B24E1C433CA
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Jakub Kicinski <kuba@kernel.org>
-Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org
-Subject: Re: pull-request: wireless-drivers-next-2020-12-03
-References: <20201203185732.9CFA5C433ED@smtp.codeaurora.org>
-        <20201204111715.04d5b198@kicinski-fedora-pc1c0hjn.DHCP.thefacebook.com>
-Date:   Mon, 07 Dec 2020 12:40:14 +0200
-In-Reply-To: <20201204111715.04d5b198@kicinski-fedora-pc1c0hjn.DHCP.thefacebook.com>
-        (Jakub Kicinski's message of "Fri, 4 Dec 2020 11:17:15 -0800")
-Message-ID: <87tusxgar5.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        Mon, 7 Dec 2020 06:43:58 -0500
+Received: by mail-il1-f197.google.com with SMTP id f19so12597015ilk.8
+        for <linux-wireless@vger.kernel.org>; Mon, 07 Dec 2020 03:43:36 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
+        bh=RnH0gk+Ggl9SU1hd2RqCdO8fPhHvsCanm+XQaqUSaic=;
+        b=OruKbXeGm9KMZ+gHTBysO3Hy6MqG7tBoPWJJIp0jsJoQ/zl1rikbyXZ73FY/WmCgVh
+         22z1qZ+DV6PTWgtvWDky31MzMd013r4vZe4CrMS5XSNuhqb3KV0KSGJFi/RScbS9RESb
+         v6HpBFWNEnFiGTROM05EkcTnGQFfg38ExvHHSAWR9bpdNYLZQQMdc/gdSKuHek27ENgt
+         bOJajvWhbe5/DJd+OV8P5ryu2LeQhh7e2u03CeCT3I5tCw0Ujj5G7pCI1o76BsxGR+P2
+         kC22/Uk0qLBpEwhERLXWakfwD2zZX6NNK8x7RD/bBa98bF/Eoka08NszzSaqAXr5xuMW
+         2nCQ==
+X-Gm-Message-State: AOAM5327LzqXfTp23ppL8ByoEQttE6o9FlJO+yggaSJsmSRkEx4XkHWT
+        Y75nxCU7F1CWOwPsyq/n2AJrP8jzoazM4xjaI1v2wReAw5yK
+X-Google-Smtp-Source: ABdhPJzUlx+oPhmbyQL/NekSIbjRMQ2Ty1OUzOoHKQwibq/ge3Wotf5qeCBXta4kripcWaFaYn5ng/0NsTiUsRzsHsz4MerVK/Nt
 MIME-Version: 1.0
-Content-Type: text/plain
+X-Received: by 2002:a92:cd03:: with SMTP id z3mr407488iln.181.1607341390986;
+ Mon, 07 Dec 2020 03:43:10 -0800 (PST)
+Date:   Mon, 07 Dec 2020 03:43:10 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <000000000000a4832105b5de5453@google.com>
+Subject: BUG: unable to handle kernel paging request in bpf_lru_populate
+From:   syzbot <syzbot+ec2234240c96fdd26b93@syzkaller.appspotmail.com>
+To:     andrii@kernel.org, andriin@fb.com, ast@kernel.org,
+        bpf@vger.kernel.org, daniel@iogearbox.net, davem@davemloft.net,
+        johannes@sipsolutions.net, john.fastabend@gmail.com, kafai@fb.com,
+        kpsingh@chromium.org, kuba@kernel.org,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, songliubraving@fb.com,
+        syzkaller-bugs@googlegroups.com, yhs@fb.com
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Jakub Kicinski <kuba@kernel.org> writes:
+Hello,
 
-> On Thu,  3 Dec 2020 18:57:32 +0000 (UTC) Kalle Valo wrote:
->> wireless-drivers-next patches for v5.11
->> 
->> First set of patches for v5.11. rtw88 getting improvements to work
->> better with Bluetooth and other driver also getting some new features.
->> mhi-ath11k-immutable branch was pulled from mhi tree to avoid
->> conflicts with mhi tree.
->
-> Pulled, but there are a lot of fixes in here which look like they
-> should have been part of the other PR, if you ask me.
+syzbot found the following issue on:
 
-Yeah, I'm actually on purpose keeping the bar high for patches going to
-wireless-drivers (ie. the fixes going to -rc releases). This is just to
-keep things simple for me and avoiding the number of conflicts between
-the trees.
+HEAD commit:    bcd684aa net/nfc/nci: Support NCI 2.x initial sequence
+git tree:       net-next
+console output: https://syzkaller.appspot.com/x/log.txt?x=12001bd3500000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=3cb098ab0334059f
+dashboard link: https://syzkaller.appspot.com/bug?extid=ec2234240c96fdd26b93
+compiler:       gcc (GCC) 10.1.0-syz 20200507
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=11f7f2ef500000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=103833f7500000
 
-> There's also a patch which looks like it renames a module parameter.
-> Module parameters are considered uAPI.
+The issue was bisected to:
 
-Ah, I have been actually wondering that if they are part of user space
-API or not, good to know that they are. I'll keep an eye of this in the
-future so that we are not breaking the uAPI with module parameter
-changes.
+commit b93ef089d35c3386dd197e85afb6399bbd54cfb3
+Author: Martin KaFai Lau <kafai@fb.com>
+Date:   Mon Nov 16 20:01:13 2020 +0000
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+    bpf: Fix the irq and nmi check in bpf_sk_storage for tracing usage
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=1103b837500000
+final oops:     https://syzkaller.appspot.com/x/report.txt?x=1303b837500000
+console output: https://syzkaller.appspot.com/x/log.txt?x=1503b837500000
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+ec2234240c96fdd26b93@syzkaller.appspotmail.com
+Fixes: b93ef089d35c ("bpf: Fix the irq and nmi check in bpf_sk_storage for tracing usage")
+
+BUG: unable to handle page fault for address: fffff5200471266c
+#PF: supervisor read access in kernel mode
+#PF: error_code(0x0000) - not-present page
+PGD 23fff2067 P4D 23fff2067 PUD 101a4067 PMD 32e3a067 PTE 0
+Oops: 0000 [#1] PREEMPT SMP KASAN
+CPU: 1 PID: 8503 Comm: syz-executor608 Not tainted 5.10.0-rc6-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
+RIP: 0010:bpf_common_lru_populate kernel/bpf/bpf_lru_list.c:569 [inline]
+RIP: 0010:bpf_lru_populate+0xd8/0x5e0 kernel/bpf/bpf_lru_list.c:614
+Code: 03 4d 01 e7 48 01 d8 48 89 4c 24 10 4d 89 fe 48 89 44 24 08 e8 99 23 eb ff 49 8d 7e 12 48 89 f8 48 89 fa 48 c1 e8 03 83 e2 07 <0f> b6 04 18 38 d0 7f 08 84 c0 0f 85 80 04 00 00 49 8d 7e 13 41 c6
+RSP: 0018:ffffc9000126fc20 EFLAGS: 00010202
+RAX: 1ffff9200471266c RBX: dffffc0000000000 RCX: ffffffff8184e3e2
+RDX: 0000000000000002 RSI: ffffffff8184e2e7 RDI: ffffc90023893362
+RBP: 00000000000000bc R08: 000000000000107c R09: 0000000000000000
+R10: 000000000000107c R11: 0000000000000000 R12: 0000000000000001
+R13: 000000000000107c R14: ffffc90023893350 R15: ffffc900234832f0
+FS:  0000000000fe0880(0000) GS:ffff8880b9f00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: fffff5200471266c CR3: 000000001ba62000 CR4: 00000000001506e0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ prealloc_init kernel/bpf/hashtab.c:319 [inline]
+ htab_map_alloc+0xf6e/0x1230 kernel/bpf/hashtab.c:507
+ find_and_alloc_map kernel/bpf/syscall.c:123 [inline]
+ map_create kernel/bpf/syscall.c:829 [inline]
+ __do_sys_bpf+0xa81/0x5170 kernel/bpf/syscall.c:4374
+ do_syscall_64+0x2d/0x70 arch/x86/entry/common.c:46
+ entry_SYSCALL_64_after_hwframe+0x44/0xa9
+RIP: 0033:0x4402e9
+Code: 18 89 d0 c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 0f 83 7b 13 fc ff c3 66 2e 0f 1f 84 00 00 00 00
+RSP: 002b:00007ffe77af23b8 EFLAGS: 00000246 ORIG_RAX: 0000000000000141
+RAX: ffffffffffffffda RBX: 00000000004002c8 RCX: 00000000004402e9
+RDX: 0000000000000040 RSI: 0000000020000000 RDI: 0d00000000000000
+RBP: 00000000006ca018 R08: 0000000000000000 R09: 0000000000000000
+R10: 00000000ffffffff R11: 0000000000000246 R12: 0000000000401af0
+R13: 0000000000401b80 R14: 0000000000000000 R15: 0000000000000000
+Modules linked in:
+CR2: fffff5200471266c
+---[ end trace 4f3928bacde7b3ed ]---
+RIP: 0010:bpf_common_lru_populate kernel/bpf/bpf_lru_list.c:569 [inline]
+RIP: 0010:bpf_lru_populate+0xd8/0x5e0 kernel/bpf/bpf_lru_list.c:614
+Code: 03 4d 01 e7 48 01 d8 48 89 4c 24 10 4d 89 fe 48 89 44 24 08 e8 99 23 eb ff 49 8d 7e 12 48 89 f8 48 89 fa 48 c1 e8 03 83 e2 07 <0f> b6 04 18 38 d0 7f 08 84 c0 0f 85 80 04 00 00 49 8d 7e 13 41 c6
+RSP: 0018:ffffc9000126fc20 EFLAGS: 00010202
+RAX: 1ffff9200471266c RBX: dffffc0000000000 RCX: ffffffff8184e3e2
+RDX: 0000000000000002 RSI: ffffffff8184e2e7 RDI: ffffc90023893362
+RBP: 00000000000000bc R08: 000000000000107c R09: 0000000000000000
+R10: 000000000000107c R11: 0000000000000000 R12: 0000000000000001
+R13: 000000000000107c R14: ffffc90023893350 R15: ffffc900234832f0
+FS:  0000000000fe0880(0000) GS:ffff8880b9f00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: fffff5200471266c CR3: 000000001ba62000 CR4: 00000000001506e0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+For information about bisection process see: https://goo.gl/tpsmEJ#bisection
+syzbot can test patches for this issue, for details see:
+https://goo.gl/tpsmEJ#testing-patches
