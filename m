@@ -2,137 +2,100 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 468622D16F1
-	for <lists+linux-wireless@lfdr.de>; Mon,  7 Dec 2020 17:58:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A7E32D17F2
+	for <lists+linux-wireless@lfdr.de>; Mon,  7 Dec 2020 18:57:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727623AbgLGQ4a (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 7 Dec 2020 11:56:30 -0500
-Received: from m43-15.mailgun.net ([69.72.43.15]:45689 "EHLO
-        m43-15.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727482AbgLGQ4a (ORCPT
+        id S1726137AbgLGRzm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 7 Dec 2020 12:55:42 -0500
+Received: from userp2130.oracle.com ([156.151.31.86]:38666 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726110AbgLGRzl (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 7 Dec 2020 11:56:30 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1607360165; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=VJAXM+Oeu7491cqbnrZxYWK6ucFYOKCdR/LCWfgCzyU=; b=oauuoSsEbWAMFnxee69016xF1Cr9QmWEo7JumgMm5VwCCO7OlSDPQQ1k+mpa0n2wLf+LVCvV
- cpzmou6nRxEaSrZ02nQ4tnMy6mu9y2ME9c53MSdvGv45btUr4P0sTg0PC8tHLKNekD6szuo3
- cD/s31pM7xU9x7eptc6mRrGP74Y=
-X-Mailgun-Sending-Ip: 69.72.43.15
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n07.prod.us-west-2.postgun.com with SMTP id
- 5fce5e88f06acf11ab3a40d0 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 07 Dec 2020 16:55:36
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 4A824C43462; Mon,  7 Dec 2020 16:55:36 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 36998C433CA;
-        Mon,  7 Dec 2020 16:55:31 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 36998C433CA
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Bjorn Andersson <bjorn.andersson@linaro.org>
-Cc:     Amit Pundir <amit.pundir@linaro.org>,
-        Rob Herring <robh@kernel.org>, dt <devicetree@vger.kernel.org>,
-        lkml <linux-kernel@vger.kernel.org>,
-        Jeffrey Hugo <jeffrey.l.hugo@gmail.com>,
-        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        Konrad Dybcio <konradybcio@gmail.com>,
-        ath10k <ath10k@lists.infradead.org>,
-        David S Miller <davem@davemloft.net>,
-        John Stultz <john.stultz@linaro.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sumit Semwal <sumit.semwal@linaro.org>
-Subject: Re: [PATCH] ath10k: Introduce a devicetree quirk to skip host cap QMI requests
-References: <1601058581-19461-1-git-send-email-amit.pundir@linaro.org>
-        <20200929190817.GA968845@bogus> <20201029134017.GA807@yoga>
-        <CAMi1Hd20UpNhZm6z5t5Kcy8eTABiAj7X_Gm66QnJspZWSio0Ew@mail.gmail.com>
-        <20201124175146.GG185852@builder.lan>
-Date:   Mon, 07 Dec 2020 18:55:29 +0200
-In-Reply-To: <20201124175146.GG185852@builder.lan> (Bjorn Andersson's message
-        of "Tue, 24 Nov 2020 11:51:46 -0600")
-Message-ID: <87sg8heeta.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        Mon, 7 Dec 2020 12:55:41 -0500
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0B7HsLgT168731;
+        Mon, 7 Dec 2020 17:54:53 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
+ bh=OgfeLb1sEogV44Jwb3bnAORDTi/aJ1Q4byLVqo2TbaA=;
+ b=OEbzMuxvFzaycBNb7IlH4w4mkq3rxF8R9KAorRIqGu9xqGFNjvmArZ0jEoi9hY9s3ZrE
+ cHKq6CZq3nRhceZgh8jXuj7uDnBET8G3R8mcVe6uudH0QmBCHFR4tDORcUb+NlhM8VJ1
+ CWVgmZHnIA4uW/WlrXGpSeIKja8ML2gy1biu5PWQ7akHCG4sJaej5L7fAylJL0xcd02m
+ dA2ua272Z8mplrmmG7A3H3XDhdOwTdVBaqYJMZqWKSRBaY2UrR4tRBTeYJV9ae24WalT
+ F0/XT1vkLI6hVOezZiYJkK8CHtuvMEs71RXMTezmzWF5edwoF9UwE1yOCmdbtaGJ85eN Kw== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by userp2130.oracle.com with ESMTP id 3581mqpnmg-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 07 Dec 2020 17:54:53 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0B7Hjf7S067382;
+        Mon, 7 Dec 2020 17:54:53 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by userp3030.oracle.com with ESMTP id 358m4wkkdf-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 07 Dec 2020 17:54:53 +0000
+Received: from abhmp0009.oracle.com (abhmp0009.oracle.com [141.146.116.15])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 0B7HsqO2015906;
+        Mon, 7 Dec 2020 17:54:52 GMT
+Received: from mwanda (/102.36.221.92)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 07 Dec 2020 09:54:50 -0800
+Date:   Mon, 7 Dec 2020 20:54:28 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Kalle Valo <kvalo@codeaurora.org>,
+        Ritesh Singh <ritesi@codeaurora.org>
+Cc:     Maharaja Kennadyrajan <mkenna@codeaurora.org>,
+        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: [PATCH] ath11k: unlock on error path in ath11k_mac_op_add_interface()
+Message-ID: <X85sVGVP/0XvlrEJ@mwanda>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9828 signatures=668682
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 spamscore=0 suspectscore=0
+ bulkscore=0 malwarescore=0 phishscore=0 adultscore=0 mlxlogscore=999
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2012070115
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9828 signatures=668682
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 mlxlogscore=999
+ clxscore=1011 malwarescore=0 priorityscore=1501 adultscore=0
+ lowpriorityscore=0 phishscore=0 spamscore=0 impostorscore=0 mlxscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2012070116
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Bjorn Andersson <bjorn.andersson@linaro.org> writes:
+These error paths need to drop the &ar->conf_mutex before returning.
 
-> On Tue 03 Nov 01:48 CST 2020, Amit Pundir wrote:
->
->> Hi Rob, Bjorn, Kalle,
->> 
->> On Thu, 29 Oct 2020 at 19:10, Bjorn Andersson
->> <bjorn.andersson@linaro.org> wrote:
->> >
->> > On Tue 29 Sep 14:08 CDT 2020, Rob Herring wrote:
->> >
->> > > On Fri, Sep 25, 2020 at 11:59:41PM +0530, Amit Pundir wrote:
->> > > > There are firmware versions which do not support host capability
->> > > > QMI request. We suspect either the host cap is not implemented or
->> > > > there may be firmware specific issues, but apparently there seem
->> > > > to be a generation of firmware that has this particular behavior.
->> > > >
->> > > > For example, firmware build on Xiaomi Poco F1 (sdm845) phone:
->> > > > "QC_IMAGE_VERSION_STRING=WLAN.HL.2.0.c3-00257-QCAHLSWMTPLZ-1"
->> > > >
->> > > > If we do not skip the host cap QMI request on Poco F1, then we
->> > > > get a QMI_ERR_MALFORMED_MSG_V01 error message in the
->> > > > ath10k_qmi_host_cap_send_sync(). But this error message is not
->> > > > fatal to the firmware nor to the ath10k driver and we can still
->> > > > bring up the WiFi services successfully if we just ignore it.
->> > > >
->> > > > Hence introducing this DeviceTree quirk to skip host capability
->> > > > QMI request for the firmware versions which do not support this
->> > > > feature.
->> > >
->> > > So if you change the WiFi firmware, you may force a DT change too. Those
->> > > are pretty independent things otherwise.
->> > >
->> >
->> > Yes and that's not good. But I looked at somehow derive this from
->> > firmware version numbers etc and it's not working out, so I'm out of
->> > ideas for alternatives.
->> >
->> > > Why can't you just always ignore this error? If you can't deal with this
->> > > entirely in the driver, then it should be part of the WiFi firmware so
->> > > it's always in sync.
->> > >
->> >
->> > Unfortunately the firmware versions I've hit this problem on has gone
->> > belly up when receiving this request, that's why I asked Amit to add a
->> > flag to skip it.
->> 
->> So what is next for this DT quirk?
->> 
->
-> Rob, we still have this problem and we've not come up with any way to
-> determine in runtime that we need to skip this part of the
-> initialization.
+Fixes: 690ace20ff79 ("ath11k: peer delete synchronization with firmware")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+ drivers/net/wireless/ath/ath11k/mac.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-This is firmware version specific, right? There's also enum
-ath10k_fw_features which is embedded within firmware-N.bin, we could add
-a new flag there. But that means that a correct firmware-N.bin is needed
-for each firmware version, not sure if that would work out. Just
-throwing out ideas here.
-
+diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
+index ebed24ec7368..12cc16003e30 100644
+--- a/drivers/net/wireless/ath/ath11k/mac.c
++++ b/drivers/net/wireless/ath/ath11k/mac.c
+@@ -4615,13 +4615,13 @@ static int ath11k_mac_op_add_interface(struct ieee80211_hw *hw,
+ 		if (ret) {
+ 			ath11k_warn(ar->ab, "failed to delete peer vdev_id %d addr %pM\n",
+ 				    arvif->vdev_id, vif->addr);
+-			return ret;
++			goto err;
+ 		}
+ 
+ 		ret = ath11k_wait_for_peer_delete_done(ar, arvif->vdev_id,
+ 						       vif->addr);
+ 		if (ret)
+-			return ret;
++			goto err;
+ 
+ 		ar->num_peers--;
+ 	}
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+2.29.2
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
