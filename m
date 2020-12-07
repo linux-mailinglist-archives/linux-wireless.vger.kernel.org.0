@@ -2,103 +2,108 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 925882D15FC
-	for <lists+linux-wireless@lfdr.de>; Mon,  7 Dec 2020 17:32:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CD5FE2D160E
+	for <lists+linux-wireless@lfdr.de>; Mon,  7 Dec 2020 17:36:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726007AbgLGQcJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 7 Dec 2020 11:32:09 -0500
-Received: from m43-15.mailgun.net ([69.72.43.15]:58294 "EHLO
-        m43-15.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725774AbgLGQcJ (ORCPT
+        id S1727135AbgLGQdo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 7 Dec 2020 11:33:44 -0500
+Received: from so254-31.mailgun.net ([198.61.254.31]:46184 "EHLO
+        so254-31.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727050AbgLGQdo (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 7 Dec 2020 11:32:09 -0500
+        Mon, 7 Dec 2020 11:33:44 -0500
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1607358703; h=Date: Message-Id: Cc: To: References:
+ s=smtp; t=1607358799; h=Date: Message-Id: Cc: To: References:
  In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=GxZ4jGB2NWJelasuf1KTtiksg1FVSU+tebAzvNOIINQ=;
- b=JmWhF3BesUjaJ+f8fb2ujWCCHeYXbf3NFRkDa4r0gN8VhjBsOoaagfB+GlPSsB6kb4FQ8E11
- wZvC+K0o8pMuNweRu8yyCtLpv703Jb3gI54w3kr/0OHAsqesAxA5zXf+QiAK+I2ReGPPE65a
- tYAC/RnkO4nbpYvjTccNr6xs8yQ=
-X-Mailgun-Sending-Ip: 69.72.43.15
+ Content-Type: Sender; bh=6WOopDI/unQJHf8aMm74k1dhc1OxvbsE01SWfNkNfBs=;
+ b=cljm9wpBV/Hx9zA1UserY7aGLVr03efQTPy8T5zVVM0iGqsQBmp6m52MaoILI5USN9AmouhF
+ NaFjfDofPygwZ2h6wCoWDWJlk7W8YjWgyQ0QkoHiUDh/W+qClI6eAkVUHZQhsfkcBFAaHQyq
+ j+RUvSC9sFUmAnusxED20OakWNE=
+X-Mailgun-Sending-Ip: 198.61.254.31
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n02.prod.us-west-2.postgun.com with SMTP id
- 5fce58d5ca03b14965e81977 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 07 Dec 2020 16:31:17
+ smtp-out-n04.prod.us-east-1.postgun.com with SMTP id
+ 5fce5933ae7b105766d749a6 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 07 Dec 2020 16:32:51
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 006FFC433C6; Mon,  7 Dec 2020 16:31:16 +0000 (UTC)
+        id 184B6C43463; Mon,  7 Dec 2020 16:32:51 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
 X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        MISSING_DATE,MISSING_MID,SPF_FAIL autolearn=no autolearn_force=no
-        version=3.4.0
+        MISSING_DATE,MISSING_MID,SPF_FAIL,URIBL_BLOCKED autolearn=no
+        autolearn_force=no version=3.4.0
 Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id A71F7C433ED;
-        Mon,  7 Dec 2020 16:31:14 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org A71F7C433ED
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 46670C433CA;
+        Mon,  7 Dec 2020 16:32:48 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 46670C433CA
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2] brmcfmac: fix compile when DEBUG is defined
+Content-Transfer-Encoding: 8bit
+Subject: Re: [17/17] rtw88: pci: Add prototypes for .probe,
+ .remove and .shutdown
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20201124142440.67554-1-hby2003@163.com>
-References: <20201124142440.67554-1-hby2003@163.com>
-To:     hby <hby2003@163.com>
-Cc:     davem@davemloft.net, kuba@kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, hby <hby2003@163.com>
+In-Reply-To: <20201126133152.3211309-18-lee.jones@linaro.org>
+References: <20201126133152.3211309-18-lee.jones@linaro.org>
+To:     Lee Jones <lee.jones@linaro.org>
+Cc:     lee.jones@linaro.org, linux-kernel@vger.kernel.org,
+        Yan-Hsuan Chuang <yhchuang@realtek.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20201207163117.006FFC433C6@smtp.codeaurora.org>
-Date:   Mon,  7 Dec 2020 16:31:16 +0000 (UTC)
+Message-Id: <20201207163251.184B6C43463@smtp.codeaurora.org>
+Date:   Mon,  7 Dec 2020 16:32:51 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-hby <hby2003@163.com> wrote:
+Lee Jones <lee.jones@linaro.org> wrote:
 
-> The steps:
-> 1. add "#define DEBUG" in drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c line 61.
-> 2. make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- O=../Out_Linux bcm2835_defconfig
-> 3. make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- O=../Out_Linux/ zImage modules dtbs -j8
+> Also strip out other duplicates from driver specific headers.
 > 
-> Then, it will fail, the compile log described below:
+> Ensure 'main.h' is explicitly included in 'pci.h' since the latter
+> uses some defines from the former.  It avoids issues like:
 > 
-> Kernel: arch/arm/boot/zImage is ready
-> MODPOST Module.symvers
-> ERROR: modpost: "brcmf_debugfs_add_entry" [drivers/net/wireless/broadcom/brcm80211/brcmfmac/brcmfmac.ko] undefined!
-> ERROR: modpost: "brcmf_debugfs_get_devdir" [drivers/net/wireless/broadcom/brcm80211/brcmfmac/brcmfmac.ko] undefined!
-> ERROR: modpost: "__brcmf_dbg" [drivers/net/wireless/broadcom/brcm80211/brcmfmac/brcmfmac.ko] undefined!
-> scripts/Makefile.modpost:111: recipe for target 'Module.symvers' failed
-> make[2]: *** [Module.symvers] Error 1
-> make[2]: *** Deleting file 'Module.symvers'
-> Makefile:1390: recipe for target 'modules' failed
-> make[1]: *** [modules] Error 2
-> make[1]: Leaving directory '/home/hby/gitee/linux_origin/Out_Linux'
-> Makefile:185: recipe for target '__sub-make' failed
-> make: *** [__sub-make] Error 2
+>  from drivers/net/wireless/realtek/rtw88/rtw8822be.c:5:
+>  drivers/net/wireless/realtek/rtw88/pci.h:209:28: error: ‘RTK_MAX_TX_QUEUE_NUM’ undeclared here (not in a function); did you mean ‘RTK_MAX_RX_DESC_NUM’?
+>  209 | DECLARE_BITMAP(tx_queued, RTK_MAX_TX_QUEUE_NUM);
+>  | ^~~~~~~~~~~~~~~~~~~~
 > 
-> Signed-off-by: hby <hby2003@163.com>
+> Fixes the following W=1 kernel build warning(s):
+> 
+>  drivers/net/wireless/realtek/rtw88/pci.c:1488:5: warning: no previous prototype for ‘rtw_pci_probe’ [-Wmissing-prototypes]
+>  1488 | int rtw_pci_probe(struct pci_dev *pdev,
+>  | ^~~~~~~~~~~~~
+>  drivers/net/wireless/realtek/rtw88/pci.c:1568:6: warning: no previous prototype for ‘rtw_pci_remove’ [-Wmissing-prototypes]
+>  1568 | void rtw_pci_remove(struct pci_dev *pdev)
+>  | ^~~~~~~~~~~~~~
+>  drivers/net/wireless/realtek/rtw88/pci.c:1590:6: warning: no previous prototype for ‘rtw_pci_shutdown’ [-Wmissing-prototypes]
+>  1590 | void rtw_pci_shutdown(struct pci_dev *pdev)
+>  | ^~~~~~~~~~~~~~~~
+> 
+> Cc: Yan-Hsuan Chuang <yhchuang@realtek.com>
+> Cc: Kalle Valo <kvalo@codeaurora.org>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: Jakub Kicinski <kuba@kernel.org>
+> Cc: linux-wireless@vger.kernel.org
+> Cc: netdev@vger.kernel.org
+> Signed-off-by: Lee Jones <lee.jones@linaro.org>
 
-I checked and brcmd80211/Makefile has:
+Patch applied to wireless-drivers-next.git, thanks.
 
-subdir-ccflags-$(CONFIG_BRCMDBG)	+= -DDEBUG
-
-I don't understand why brcm80211 uses DEBUG flag like that, but I guess there's
-a reason. I think that either _all_ DEBUG uses should be removed from the
-driver, or you shouldn't add "#define DEBUG" on your own to any of the files.
-So this patch is not the best solution.
+2e86ef413ab3 rtw88: pci: Add prototypes for .probe, .remove and .shutdown
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20201124142440.67554-1-hby2003@163.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/20201126133152.3211309-18-lee.jones@linaro.org/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
