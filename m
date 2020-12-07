@@ -2,190 +2,117 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DFA1E2D1906
-	for <lists+linux-wireless@lfdr.de>; Mon,  7 Dec 2020 20:08:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E0882D19B2
+	for <lists+linux-wireless@lfdr.de>; Mon,  7 Dec 2020 20:37:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726421AbgLGTDu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 7 Dec 2020 14:03:50 -0500
-Received: from mail-il1-f197.google.com ([209.85.166.197]:50567 "EHLO
-        mail-il1-f197.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725960AbgLGTDu (ORCPT
+        id S1726790AbgLGTgs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 7 Dec 2020 14:36:48 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59916 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726777AbgLGTgr (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 7 Dec 2020 14:03:50 -0500
-Received: by mail-il1-f197.google.com with SMTP id t8so13804928ils.17
-        for <linux-wireless@vger.kernel.org>; Mon, 07 Dec 2020 11:03:34 -0800 (PST)
+        Mon, 7 Dec 2020 14:36:47 -0500
+Received: from mail-oi1-x242.google.com (mail-oi1-x242.google.com [IPv6:2607:f8b0:4864:20::242])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E4D4C061793
+        for <linux-wireless@vger.kernel.org>; Mon,  7 Dec 2020 11:36:07 -0800 (PST)
+Received: by mail-oi1-x242.google.com with SMTP id v85so6134060oia.6
+        for <linux-wireless@vger.kernel.org>; Mon, 07 Dec 2020 11:36:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=5RceGSUFUjLEJW2/scx8HGaoDZct6NVCXjiTK9ixz94=;
+        b=UqQDziRM06nUwkOqk9oocYn+WHozQc9sLlHnMvp+bs9W4+eRhAGuTj0f377FbXtgQ9
+         saT0UGQRIFbZPDSy6ite4iDUkUbydVukCwhEYfzEWOCSgBjrGqvaYlSEbnE7F0DjqqR0
+         q0eWqkt2F9y/LE+l9/PmIghjQstKsX5P9fSyE=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
-        bh=BK3A/4RekMn0zj50Csrds0CNs93CU1NoudzU58/J44M=;
-        b=ppQmws8AGRm/UuJXdPhpetFbo0b5v6vdXD5SglCzQR/s+AUUu2rgDWeSxF5MBkth7G
-         qI4OSuOp9kK4fKjF4SS5gjeFjqwdPFFy6QrV4jzd+7hqjvL8280x+zDmbMU+Lox8XRB4
-         jAI35gIfZX5BScIijW2ARmvsCxHUFgwzerMDhw6AQs+ERRWII+BsWnjCFjur1089e7z8
-         AK/7RQ5ZcnlEGznJAklshGDpIrQSLrYqXDJY2WSgahp3ALfggVWnxYbHXNvcnABme4Xx
-         YH3PgIn4gwkETVaFNS0oqaNKnqSpTEs38AvUwFZ0SAY5NoARm7SR1lB/l7F/aiNaKek7
-         h7Ug==
-X-Gm-Message-State: AOAM5315godxDX0SyrlhMKTXe7y2DgBwYg2Ld1KL1UX8yCUPuZNPN1aI
-        Oj914EaziyYbDZq3CII+JEaTrGusfxOYQRmDg2/hN9HL53UH
-X-Google-Smtp-Source: ABdhPJydnkwEMek2z6foDq2wrDPXziet7vbC+ActUcVowL5wG4GdDPPtaRxZByaZY1DXNSvZGIKijihkJn4os+E+eHrbOnNZ/t0n
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=5RceGSUFUjLEJW2/scx8HGaoDZct6NVCXjiTK9ixz94=;
+        b=IDCjOIwaEogepkwmHWOSy6by+XU1+NgblZtrxlhTuJJh1LcqP3rL3tBo8G7Oexxs4r
+         KUKiT7zBMUDIToc17qsqP+K0nqtNl3j6fvtbiN8r3lq32EcY+QG8wLMO88hpIprzRWZW
+         kwcGmMJ0LKVDsl/fo+iMTN8mrVbnMLpR3K1rUcRvSyLpMi8sJiuaD9ToJbBtgde6kSdO
+         sbIKTMG36/AQWT8QGb1ng90e6ZrymvyPsRxwL70b/93AEzKWkfOlDf526kjY6QnPZ1kx
+         KQHn+HOqxyWGe3XNdCl6X82y6LiNbVm7idaTQXcZxcngmeSHl6fvw84dxRJry+DB8htB
+         rLEw==
+X-Gm-Message-State: AOAM5301Q3jqbOoKdFb0CPt35iPS0VYT/ZPSgdU5OXfkRAzyW/XyYels
+        i/E4IYVeFaftcZgVqGwkItN4TTtJTZOb3g==
+X-Google-Smtp-Source: ABdhPJxZCbW48SZXNcwj/3AV0+KRx63x5AIUZr5lqjbOlfHq5v6r0n/MS4qMEbsDgAOJ3O/CgJhwSA==
+X-Received: by 2002:aca:418b:: with SMTP id o133mr282850oia.67.1607369766247;
+        Mon, 07 Dec 2020 11:36:06 -0800 (PST)
+Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com. [209.85.210.43])
+        by smtp.gmail.com with ESMTPSA id d62sm3118302oia.6.2020.12.07.11.36.05
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 07 Dec 2020 11:36:05 -0800 (PST)
+Received: by mail-ot1-f43.google.com with SMTP id 11so13600904oty.9
+        for <linux-wireless@vger.kernel.org>; Mon, 07 Dec 2020 11:36:05 -0800 (PST)
+X-Received: by 2002:a9d:744a:: with SMTP id p10mr3982059otk.203.1607369764576;
+ Mon, 07 Dec 2020 11:36:04 -0800 (PST)
 MIME-Version: 1.0
-X-Received: by 2002:a6b:700f:: with SMTP id l15mr21473544ioc.22.1607367789173;
- Mon, 07 Dec 2020 11:03:09 -0800 (PST)
-Date:   Mon, 07 Dec 2020 11:03:09 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <00000000000018e57f05b5e47aa4@google.com>
-Subject: KASAN: use-after-free Read in ieee80211_ibss_build_presp
-From:   syzbot <syzbot+cd25350b5fe5b8ed143c@syzkaller.appspotmail.com>
-To:     davem@davemloft.net, johannes@sipsolutions.net, kuba@kernel.org,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
+References: <20201203185732.9CFA5C433ED@smtp.codeaurora.org>
+ <20201204111715.04d5b198@kicinski-fedora-pc1c0hjn.DHCP.thefacebook.com> <87tusxgar5.fsf@codeaurora.org>
+In-Reply-To: <87tusxgar5.fsf@codeaurora.org>
+From:   Brian Norris <briannorris@chromium.org>
+Date:   Mon, 7 Dec 2020 11:35:53 -0800
+X-Gmail-Original-Message-ID: <CA+ASDXNT+uKLLhTV0Nr-wxGkM16_OkedUyoEwx5FgV3ML9SMsQ@mail.gmail.com>
+Message-ID: <CA+ASDXNT+uKLLhTV0Nr-wxGkM16_OkedUyoEwx5FgV3ML9SMsQ@mail.gmail.com>
+Subject: Re: pull-request: wireless-drivers-next-2020-12-03
+To:     Kalle Valo <kvalo@codeaurora.org>, Jakub Kicinski <kuba@kernel.org>
+Cc:     "<netdev@vger.kernel.org>" <netdev@vger.kernel.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
+On Mon, Dec 7, 2020 at 2:42 AM Kalle Valo <kvalo@codeaurora.org> wrote:
+> Jakub Kicinski <kuba@kernel.org> writes:
+> > On Thu,  3 Dec 2020 18:57:32 +0000 (UTC) Kalle Valo wrote:
+> > There's also a patch which looks like it renames a module parameter.
+> > Module parameters are considered uAPI.
+>
+> Ah, I have been actually wondering that if they are part of user space
+> API or not, good to know that they are. I'll keep an eye of this in the
+> future so that we are not breaking the uAPI with module parameter
+> changes.
 
-syzbot found the following issue on:
+Is there some reference for this rule (e.g., dictate from on high; or
+some explanation of reasons)? Or limitations on it? Because as-is,
+this sounds like one could never drop a module parameter, or remove
+obsolete features. It also suggests that debug-related knobs (which
+can benefit from some amount of flexibility over time) should go
+exclusively in debugfs (where ABI guarantees are explicitly not made),
+even at the expense of usability (dropping a line into
+/etc/modprobe.d/ is hard to beat).
 
-HEAD commit:    e87297fa Merge tag 'drm-fixes-2020-12-04' of git://anongit..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=144035d3500000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=e49433cfed49b7d9
-dashboard link: https://syzkaller.appspot.com/bug?extid=cd25350b5fe5b8ed143c
-compiler:       gcc (GCC) 10.1.0-syz 20200507
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=107ebd45500000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=17ef29bb500000
+That's not to say I totally disagree with the original claim, but I'm
+just interested in knowing precisely what it means.
 
-Bisection is inconclusive: the issue happens on the oldest tested release.
+And to put a precise spin on this: what would this rule say about the following?
 
-bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=1410d2ef500000
-final oops:     https://syzkaller.appspot.com/x/report.txt?x=1610d2ef500000
-console output: https://syzkaller.appspot.com/x/log.txt?x=1210d2ef500000
+http://git.kernel.org/linus/f06021a18fcf8d8a1e79c5e0a8ec4eb2b038e153
+iwlwifi: remove lar_disable module parameter
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+cd25350b5fe5b8ed143c@syzkaller.appspotmail.com
+Should that parameter have never been introduced in the first place,
+never be removed, or something else? I think I've seen this sort of
+pattern before, where features get phased in over time, with module
+parameters as either escape hatches or as opt-in mechanisms.
+Eventually, they stabilize, and there's no need (or sometimes, it's
+actively harmful) to keep the knob around.
 
-wlan0: Created IBSS using preconfigured BSSID 50:50:50:50:50:50
-wlan0: Creating new IBSS network, BSSID 50:50:50:50:50:50
-==================================================================
-BUG: KASAN: use-after-free in memcpy include/linux/string.h:399 [inline]
-BUG: KASAN: use-after-free in ieee80211_ibss_build_presp+0x10be/0x15f0 net/mac80211/ibss.c:171
-Read of size 4 at addr ffff888014132cf8 by task kworker/u4:7/1428
+Or the one that might (?) be in question here:
+fc3ac64a3a28 rtw88: decide lps deep mode from firmware feature.
 
-CPU: 1 PID: 1428 Comm: kworker/u4:7 Not tainted 5.10.0-rc6-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
-Workqueue: phy0 ieee80211_iface_work
-Call Trace:
- __dump_stack lib/dump_stack.c:77 [inline]
- dump_stack+0x107/0x163 lib/dump_stack.c:118
- print_address_description.constprop.0.cold+0xae/0x4c8 mm/kasan/report.c:385
- __kasan_report mm/kasan/report.c:545 [inline]
- kasan_report.cold+0x1f/0x37 mm/kasan/report.c:562
- check_memory_region_inline mm/kasan/generic.c:186 [inline]
- check_memory_region+0x13d/0x180 mm/kasan/generic.c:192
- memcpy+0x20/0x60 mm/kasan/common.c:105
- memcpy include/linux/string.h:399 [inline]
- ieee80211_ibss_build_presp+0x10be/0x15f0 net/mac80211/ibss.c:171
- __ieee80211_sta_join_ibss+0x685/0x17f0 net/mac80211/ibss.c:317
- ieee80211_sta_create_ibss.cold+0xc9/0x116 net/mac80211/ibss.c:1354
- ieee80211_sta_find_ibss net/mac80211/ibss.c:1484 [inline]
- ieee80211_ibss_work.cold+0x30e/0x60f net/mac80211/ibss.c:1708
- ieee80211_iface_work+0x82e/0x970 net/mac80211/iface.c:1476
- process_one_work+0x933/0x15a0 kernel/workqueue.c:2272
- worker_thread+0x64c/0x1120 kernel/workqueue.c:2418
- kthread+0x3b1/0x4a0 kernel/kthread.c:292
- ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:296
+The original module parameter was useful for enabling new power-saving
+features, because the driver didn't yet know which chip(s)/firmware(s)
+were stable with which power features. Now, the driver has learned how
+to figure out the optimal power settings, so it's dropping the old
+param and adding an "escape hatch", in case there are problems.
 
-Allocated by task 8545:
- kasan_save_stack+0x1b/0x40 mm/kasan/common.c:48
- kasan_set_track mm/kasan/common.c:56 [inline]
- __kasan_kmalloc.constprop.0+0xc2/0xd0 mm/kasan/common.c:461
- slab_post_alloc_hook mm/slab.h:526 [inline]
- slab_alloc_node mm/slub.c:2891 [inline]
- slab_alloc mm/slub.c:2899 [inline]
- __kmalloc_track_caller+0x1dc/0x3d0 mm/slub.c:4464
- kmemdup+0x23/0x50 mm/util.c:128
- kmemdup include/linux/string.h:472 [inline]
- ieee80211_ibss_join+0x861/0xf30 net/mac80211/ibss.c:1824
- rdev_join_ibss net/wireless/rdev-ops.h:535 [inline]
- __cfg80211_join_ibss+0x78c/0x1170 net/wireless/ibss.c:144
- nl80211_join_ibss+0xcbb/0x12b0 net/wireless/nl80211.c:10151
- genl_family_rcv_msg_doit+0x228/0x320 net/netlink/genetlink.c:739
- genl_family_rcv_msg net/netlink/genetlink.c:783 [inline]
- genl_rcv_msg+0x328/0x580 net/netlink/genetlink.c:800
- netlink_rcv_skb+0x153/0x420 net/netlink/af_netlink.c:2494
- genl_rcv+0x24/0x40 net/netlink/genetlink.c:811
- netlink_unicast_kernel net/netlink/af_netlink.c:1304 [inline]
- netlink_unicast+0x533/0x7d0 net/netlink/af_netlink.c:1330
- netlink_sendmsg+0x856/0xd90 net/netlink/af_netlink.c:1919
- sock_sendmsg_nosec net/socket.c:651 [inline]
- sock_sendmsg+0xcf/0x120 net/socket.c:671
- ____sys_sendmsg+0x6e8/0x810 net/socket.c:2353
- ___sys_sendmsg+0xf3/0x170 net/socket.c:2407
- __sys_sendmsg+0xe5/0x1b0 net/socket.c:2440
- do_syscall_64+0x2d/0x70 arch/x86/entry/common.c:46
- entry_SYSCALL_64_after_hwframe+0x44/0xa9
+I'd say this one is a bit more subtle than the lar_disable example,
+but I'm still not sure that really qualifies as a "user-visible"
+change.
 
-Freed by task 8549:
- kasan_save_stack+0x1b/0x40 mm/kasan/common.c:48
- kasan_set_track+0x1c/0x30 mm/kasan/common.c:56
- kasan_set_free_info+0x1b/0x30 mm/kasan/generic.c:355
- __kasan_slab_free+0x102/0x140 mm/kasan/common.c:422
- slab_free_hook mm/slub.c:1544 [inline]
- slab_free_freelist_hook+0x5d/0x150 mm/slub.c:1577
- slab_free mm/slub.c:3142 [inline]
- kfree+0xdb/0x360 mm/slub.c:4124
- ieee80211_ibss_leave+0x83/0xe0 net/mac80211/ibss.c:1876
- rdev_leave_ibss net/wireless/rdev-ops.h:545 [inline]
- __cfg80211_leave_ibss+0x19a/0x4c0 net/wireless/ibss.c:212
- cfg80211_leave_ibss+0x57/0x80 net/wireless/ibss.c:230
- cfg80211_change_iface+0x855/0xef0 net/wireless/util.c:1012
- nl80211_set_interface+0x65c/0x8d0 net/wireless/nl80211.c:3789
- genl_family_rcv_msg_doit+0x228/0x320 net/netlink/genetlink.c:739
- genl_family_rcv_msg net/netlink/genetlink.c:783 [inline]
- genl_rcv_msg+0x328/0x580 net/netlink/genetlink.c:800
- netlink_rcv_skb+0x153/0x420 net/netlink/af_netlink.c:2494
- genl_rcv+0x24/0x40 net/netlink/genetlink.c:811
- netlink_unicast_kernel net/netlink/af_netlink.c:1304 [inline]
- netlink_unicast+0x533/0x7d0 net/netlink/af_netlink.c:1330
- netlink_sendmsg+0x856/0xd90 net/netlink/af_netlink.c:1919
- sock_sendmsg_nosec net/socket.c:651 [inline]
- sock_sendmsg+0xcf/0x120 net/socket.c:671
- ____sys_sendmsg+0x6e8/0x810 net/socket.c:2353
- ___sys_sendmsg+0xf3/0x170 net/socket.c:2407
- __sys_sendmsg+0xe5/0x1b0 net/socket.c:2440
- do_syscall_64+0x2d/0x70 arch/x86/entry/common.c:46
- entry_SYSCALL_64_after_hwframe+0x44/0xa9
-
-The buggy address belongs to the object at ffff888014132cf8
- which belongs to the cache kmalloc-8 of size 8
-The buggy address is located 0 bytes inside of
- 8-byte region [ffff888014132cf8, ffff888014132d00)
-The buggy address belongs to the page:
-page:0000000078f1b37d refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x14132
-flags: 0xfff00000000200(slab)
-raw: 00fff00000000200 ffffea00004a8280 0000001200000012 ffff888010041c80
-raw: 0000000000000000 0000000080660066 00000001ffffffff 0000000000000000
-page dumped because: kasan: bad access detected
-
-Memory state around the buggy address:
- ffff888014132b80: fc fc fb fc fc fc fc fb fc fc fc fc fb fc fc fc
- ffff888014132c00: fc 00 fc fc fc fc 00 fc fc fc fc fb fc fc fc fc
->ffff888014132c80: fa fc fc fc fc 00 fc fc fc fc 00 fc fc fc fc fa
-                                                                ^
- ffff888014132d00: fc fc fc fc fa fc fc fc fc 00 fc fc fc fc 00 fc
- ffff888014132d80: fc fc fc fb fc fc fc fc fb fc fc fc fc fb fc fc
-==================================================================
-
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-For information about bisection process see: https://goo.gl/tpsmEJ#bisection
-syzbot can test patches for this issue, for details see:
-https://goo.gl/tpsmEJ#testing-patches
+Brian
