@@ -2,97 +2,76 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3996A2D2DC8
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Dec 2020 16:03:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E3312D2DF2
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Dec 2020 16:13:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729960AbgLHPCX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 8 Dec 2020 10:02:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42636 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729899AbgLHPCW (ORCPT
+        id S1729665AbgLHPMV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 8 Dec 2020 10:12:21 -0500
+Received: from mail-m975.mail.163.com ([123.126.97.5]:56492 "EHLO
+        mail-m975.mail.163.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729514AbgLHPMU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 8 Dec 2020 10:02:22 -0500
-Received: from mail-wm1-x332.google.com (mail-wm1-x332.google.com [IPv6:2a00:1450:4864:20::332])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25C8BC061749;
-        Tue,  8 Dec 2020 07:01:42 -0800 (PST)
-Received: by mail-wm1-x332.google.com with SMTP id a6so2318891wmc.2;
-        Tue, 08 Dec 2020 07:01:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=lOJIjTS4kMwJd31tqpSHnz0o1TfB4QgqzCSeT7sm2A0=;
-        b=Gd4Dd6DSLTE+c03ass2Xm8hfDC8TX2uhKMc37AMWWOOLlnvI7vJOMbdPjfxFqCs1w8
-         VI8ujbw1LLm1PYoBMpsgHEv6eojQYEH4k404OQvVCHUfoh8k+vKqc4zC+ed7doH6NRXb
-         Mz8umYQi1ZjAdNEf0cGNWmtjaa0fwnev6Jb/6qth/pgRPyt6reNg7xIfeO7A8XuOt2yZ
-         KAtke5VgEhVRqhL+00m2p3Q57TU07f2yKFDj2PhUseTiFNuJZDJCxO5wvdKvkCAZhbnh
-         ysEkUDOBnZfytjUwNtHtR5o0GnStE/dU+j5veeF7cXqJcTT7Iqg6MqO7i/NkQu9MBRbB
-         C9/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=lOJIjTS4kMwJd31tqpSHnz0o1TfB4QgqzCSeT7sm2A0=;
-        b=X8aaG9ZxeYcJ+KN+OAZFZn7YmX7ojTeZ0ChgWJdOsoIquGUZRkXU8KJYX6gKXjYCQ+
-         +NS6zZHj8M0PiC9dgLeUS2g/nvVA+3b2mQlPpXEr9dqU9udotVE5aYTgxYurrmxrrFGU
-         9oVlNow61x3J2zfNPvIgwRCSbpc0HS2JHsp8/qXSWocb3TOwu3TpN/AtWkgNBiAzycJw
-         Tnn+5V1p2/cTY38nNuJC+1UvRsEwyGHr5QHP/+SwVhyo7eSwadSn38bMTy4r1GOpYXso
-         vcieq+ZrW0gbWP8QDrzj0krcpCd5yKVs/9uLbWKQTs5TgGvRhDX93+9Ijtlu5ObC9THq
-         tJEA==
-X-Gm-Message-State: AOAM533tRusS5IXy3nwwUvjlaNXfI+y8Yy7UNOf/xccghsPlrNm+kfJJ
-        c/Kno5G8p95DsC9OSJzLt4MkdUbjFkgN2g==
-X-Google-Smtp-Source: ABdhPJxTBcW/FhGPZIZRlN2bppi+/UQdzewd1Ocw/u6zQ18JvY7TCiVdKIYbiQvkGJKhQs/vPg2Pfw==
-X-Received: by 2002:a1c:4e0a:: with SMTP id g10mr4231939wmh.51.1607439700643;
-        Tue, 08 Dec 2020 07:01:40 -0800 (PST)
-Received: from [80.5.128.40] (cpc108961-cmbg20-2-0-cust39.5-4.cable.virginm.net. [80.5.128.40])
-        by smtp.gmail.com with ESMTPSA id d9sm20925433wrs.26.2020.12.08.07.01.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 08 Dec 2020 07:01:39 -0800 (PST)
-Subject: Re: pull-request: wireless-drivers-next-2020-12-03
-To:     Jakub Kicinski <kuba@kernel.org>,
-        Brian Norris <briannorris@chromium.org>
-Cc:     Kalle Valo <kvalo@codeaurora.org>, netdev@vger.kernel.org,
-        linux-wireless <linux-wireless@vger.kernel.org>
-References: <20201203185732.9CFA5C433ED@smtp.codeaurora.org>
- <20201204111715.04d5b198@kicinski-fedora-pc1c0hjn.DHCP.thefacebook.com>
- <87tusxgar5.fsf@codeaurora.org>
- <CA+ASDXNT+uKLLhTV0Nr-wxGkM16_OkedUyoEwx5FgV3ML9SMsQ@mail.gmail.com>
- <20201207121029.77d48f2c@kicinski-fedora-pc1c0hjn.DHCP.thefacebook.com>
-From:   Edward Cree <ecree.xilinx@gmail.com>
-Message-ID: <bd5f9ded-e575-705b-a56b-a92f7765235f@gmail.com>
-Date:   Tue, 8 Dec 2020 15:01:39 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.5.0
-MIME-Version: 1.0
-In-Reply-To: <20201207121029.77d48f2c@kicinski-fedora-pc1c0hjn.DHCP.thefacebook.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
+        Tue, 8 Dec 2020 10:12:20 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+        s=s110527; h=From:Subject:Date:Message-Id; bh=SNfMS57SQ/9kcHp3Cs
+        Z830nUpvVEC6Ph3YJtof5sGEk=; b=e1vo6C0dXm3t+EB0GWLJv2AZ/H9PC4ixpk
+        Zz9DJ8fWfKVOzu3ZLM8GvKm1b0hEIl7wOLMKuG95/U1L+xE8ngamF3cNQVfIYjyV
+        SLvhpS5c+8B2tP1ljb69CsT5Ms+xy7q2jhVkX12DGeOyAEGrTLDzeo/SeeEZZRWx
+        uVOqCd9ZI=
+Received: from localhost.localdomain (unknown [202.112.113.212])
+        by smtp5 (Coremail) with SMTP id HdxpCgC30WdDl89fT5mvEA--.5983S4;
+        Tue, 08 Dec 2020 23:09:57 +0800 (CST)
+From:   Xiaohui Zhang <ruc_zhangxiaohui@163.com>
+To:     Xiaohui Zhang <ruc_zhangxiaohui@163.com>,
+        Amitkumar Karwar <amitkarwar@gmail.com>,
+        Ganapathi Bhat <ganapathi.bhat@nxp.com>,
+        Xinming Hu <huxinming820@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH 1/1] mwifiex: Fix possible buffer overflows in mwifiex_config_scan
+Date:   Tue,  8 Dec 2020 23:09:51 +0800
+Message-Id: <20201208150951.35866-1-ruc_zhangxiaohui@163.com>
+X-Mailer: git-send-email 2.17.1
+X-CM-TRANSID: HdxpCgC30WdDl89fT5mvEA--.5983S4
+X-Coremail-Antispam: 1Uf129KBjvdXoWrtr47Ww13AF4xGw43XrW8Zwb_yoWkCwcEgw
+        nYqFs7JrW5J3s2yFs09w4xu34ayr1kJFWfua17tayrGFWxtFZxGFnYvrs5Jry3CwnFvF93
+        XrsxA3y3Jan7ZjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+        9fnUUvcSsGvfC2KfnxnUUI43ZEXa7xRR9YFtUUUUU==
+X-Originating-IP: [202.112.113.212]
+X-CM-SenderInfo: puxfs6pkdqw5xldrx3rl6rljoofrz/1tbiHgX0MFSIrfsp4gAAse
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 07/12/2020 20:10, Jakub Kicinski wrote:
-> On Mon, 7 Dec 2020 11:35:53 -0800 Brian Norris wrote:
->> Is there some reference for this rule (e.g., dictate from on high; or
->> some explanation of reasons)? Or limitations on it?
-> 
-> TBH its one of those "widely accepted truth" in networking which was
-> probably discussed before I started compiling kernels so I don't know
-> the full background.
+From: Zhang Xiaohui <ruc_zhangxiaohui@163.com>
 
-My understanding is that it's because users can have them in their
- modprobe.conf, which causes breakage if an update removes the param.
- I think the module insert fails if there are unrecognised parameters
- there.
+mwifiex_config_scan() calls memcpy() without checking
+the destination size may trigger a buffer overflower,
+which a local user could use to cause denial of service
+or the execution of arbitrary code.
+Fix it by putting the length check before calling memcpy().
 
->> this sounds like one could never drop a module parameter, or remove
->> obsolete features.
-Not far from the truth.  If you stop the network from coming up on
- boot you can really ruin a sysadmin's day :-/
-But usually you can remove the feature, and leave the modparam not
- connected to anything, except maybe a deprecation warning printk if
- it's set to something other than the default.
+Signed-off-by: Zhang Xiaohui <ruc_zhangxiaohui@163.com>
+---
+ drivers/net/wireless/marvell/mwifiex/scan.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
--ed
+diff --git a/drivers/net/wireless/marvell/mwifiex/scan.c b/drivers/net/wireless/marvell/mwifiex/scan.c
+index c2a685f63..34293fd80 100644
+--- a/drivers/net/wireless/marvell/mwifiex/scan.c
++++ b/drivers/net/wireless/marvell/mwifiex/scan.c
+@@ -931,7 +931,7 @@ mwifiex_config_scan(struct mwifiex_private *priv,
+ 				wildcard_ssid_tlv->max_ssid_length = 0xfe;
+ 
+ 			memcpy(wildcard_ssid_tlv->ssid,
+-			       user_scan_in->ssid_list[i].ssid, ssid_len);
++			       user_scan_in->ssid_list[i].ssid, min_t(u32, ssid_len, 1));
+ 
+ 			tlv_pos += (sizeof(wildcard_ssid_tlv->header)
+ 				+ le16_to_cpu(wildcard_ssid_tlv->header.len));
+-- 
+2.17.1
+
