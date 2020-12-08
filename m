@@ -2,94 +2,97 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 055062D2D57
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Dec 2020 15:39:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3996A2D2DC8
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Dec 2020 16:03:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729840AbgLHOiT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 8 Dec 2020 09:38:19 -0500
-Received: from so254-31.mailgun.net ([198.61.254.31]:19468 "EHLO
-        so254-31.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729832AbgLHOiS (ORCPT
+        id S1729960AbgLHPCX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 8 Dec 2020 10:02:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42636 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729899AbgLHPCW (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 8 Dec 2020 09:38:18 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1607438273; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=wiV0QTircYBZpIpZ7N0y4YXP4M00dXIopNRPONBsgZU=; b=P3oBCUqgiVTbioDYFMityKhcJu9TYIu2rXu5pQGyCMl/6fnViMyHtjPfdFLv/ZdfI4kwy/rK
- h6LVSC28/+pgUuQYwxS9oXjw71L4v0vY3C7C0UxpyvoXRVNoMyy92YH5Jm9+YgytZwZtpvA2
- YLSWn9LX/StnDEvsYWw7Kj1ijYI=
-X-Mailgun-Sending-Ip: 198.61.254.31
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n01.prod.us-east-1.postgun.com with SMTP id
- 5fcf8fa68b2b8953181467dd (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 08 Dec 2020 14:37:26
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 46898C433C6; Tue,  8 Dec 2020 14:37:26 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
-        autolearn=no autolearn_force=no version=3.4.0
-Received: from tynnyri.adurom.net (tynnyri.adurom.net [51.15.11.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 7E6E8C433CA;
-        Tue,  8 Dec 2020 14:37:22 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 7E6E8C433CA
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Srinivasan Raju <srini.raju@purelifi.com>
-Cc:     mostafa.afgani@purelifi.com, Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        Rob Herring <robh@kernel.org>,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-        linux-kernel@vger.kernel.org (open list),
-        linux-wireless@vger.kernel.org (open list:NETWORKING DRIVERS (WIRELESS)),
-        netdev@vger.kernel.org (open list:NETWORKING DRIVERS)
-Subject: Re: [PATCH] [v11] wireless: Initial driver submission for pureLiFi STA devices
-References: <20200928102008.32568-1-srini.raju@purelifi.com>
-        <20201208115719.349553-1-srini.raju@purelifi.com>
-Date:   Tue, 08 Dec 2020 16:37:17 +0200
-In-Reply-To: <20201208115719.349553-1-srini.raju@purelifi.com> (Srinivasan
-        Raju's message of "Tue, 8 Dec 2020 17:27:04 +0530")
-Message-ID: <878sa84b4y.fsf@tynnyri.adurom.net>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Tue, 8 Dec 2020 10:02:22 -0500
+Received: from mail-wm1-x332.google.com (mail-wm1-x332.google.com [IPv6:2a00:1450:4864:20::332])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25C8BC061749;
+        Tue,  8 Dec 2020 07:01:42 -0800 (PST)
+Received: by mail-wm1-x332.google.com with SMTP id a6so2318891wmc.2;
+        Tue, 08 Dec 2020 07:01:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=lOJIjTS4kMwJd31tqpSHnz0o1TfB4QgqzCSeT7sm2A0=;
+        b=Gd4Dd6DSLTE+c03ass2Xm8hfDC8TX2uhKMc37AMWWOOLlnvI7vJOMbdPjfxFqCs1w8
+         VI8ujbw1LLm1PYoBMpsgHEv6eojQYEH4k404OQvVCHUfoh8k+vKqc4zC+ed7doH6NRXb
+         Mz8umYQi1ZjAdNEf0cGNWmtjaa0fwnev6Jb/6qth/pgRPyt6reNg7xIfeO7A8XuOt2yZ
+         KAtke5VgEhVRqhL+00m2p3Q57TU07f2yKFDj2PhUseTiFNuJZDJCxO5wvdKvkCAZhbnh
+         ysEkUDOBnZfytjUwNtHtR5o0GnStE/dU+j5veeF7cXqJcTT7Iqg6MqO7i/NkQu9MBRbB
+         C9/w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=lOJIjTS4kMwJd31tqpSHnz0o1TfB4QgqzCSeT7sm2A0=;
+        b=X8aaG9ZxeYcJ+KN+OAZFZn7YmX7ojTeZ0ChgWJdOsoIquGUZRkXU8KJYX6gKXjYCQ+
+         +NS6zZHj8M0PiC9dgLeUS2g/nvVA+3b2mQlPpXEr9dqU9udotVE5aYTgxYurrmxrrFGU
+         9oVlNow61x3J2zfNPvIgwRCSbpc0HS2JHsp8/qXSWocb3TOwu3TpN/AtWkgNBiAzycJw
+         Tnn+5V1p2/cTY38nNuJC+1UvRsEwyGHr5QHP/+SwVhyo7eSwadSn38bMTy4r1GOpYXso
+         vcieq+ZrW0gbWP8QDrzj0krcpCd5yKVs/9uLbWKQTs5TgGvRhDX93+9Ijtlu5ObC9THq
+         tJEA==
+X-Gm-Message-State: AOAM533tRusS5IXy3nwwUvjlaNXfI+y8Yy7UNOf/xccghsPlrNm+kfJJ
+        c/Kno5G8p95DsC9OSJzLt4MkdUbjFkgN2g==
+X-Google-Smtp-Source: ABdhPJxTBcW/FhGPZIZRlN2bppi+/UQdzewd1Ocw/u6zQ18JvY7TCiVdKIYbiQvkGJKhQs/vPg2Pfw==
+X-Received: by 2002:a1c:4e0a:: with SMTP id g10mr4231939wmh.51.1607439700643;
+        Tue, 08 Dec 2020 07:01:40 -0800 (PST)
+Received: from [80.5.128.40] (cpc108961-cmbg20-2-0-cust39.5-4.cable.virginm.net. [80.5.128.40])
+        by smtp.gmail.com with ESMTPSA id d9sm20925433wrs.26.2020.12.08.07.01.39
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 08 Dec 2020 07:01:39 -0800 (PST)
+Subject: Re: pull-request: wireless-drivers-next-2020-12-03
+To:     Jakub Kicinski <kuba@kernel.org>,
+        Brian Norris <briannorris@chromium.org>
+Cc:     Kalle Valo <kvalo@codeaurora.org>, netdev@vger.kernel.org,
+        linux-wireless <linux-wireless@vger.kernel.org>
+References: <20201203185732.9CFA5C433ED@smtp.codeaurora.org>
+ <20201204111715.04d5b198@kicinski-fedora-pc1c0hjn.DHCP.thefacebook.com>
+ <87tusxgar5.fsf@codeaurora.org>
+ <CA+ASDXNT+uKLLhTV0Nr-wxGkM16_OkedUyoEwx5FgV3ML9SMsQ@mail.gmail.com>
+ <20201207121029.77d48f2c@kicinski-fedora-pc1c0hjn.DHCP.thefacebook.com>
+From:   Edward Cree <ecree.xilinx@gmail.com>
+Message-ID: <bd5f9ded-e575-705b-a56b-a92f7765235f@gmail.com>
+Date:   Tue, 8 Dec 2020 15:01:39 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.5.0
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <20201207121029.77d48f2c@kicinski-fedora-pc1c0hjn.DHCP.thefacebook.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Srinivasan Raju <srini.raju@purelifi.com> writes:
+On 07/12/2020 20:10, Jakub Kicinski wrote:
+> On Mon, 7 Dec 2020 11:35:53 -0800 Brian Norris wrote:
+>> Is there some reference for this rule (e.g., dictate from on high; or
+>> some explanation of reasons)? Or limitations on it?
+> 
+> TBH its one of those "widely accepted truth" in networking which was
+> probably discussed before I started compiling kernels so I don't know
+> the full background.
 
-> This introduces the pureLiFi LiFi driver for LiFi-X, LiFi-XC
-> and LiFi-XL USB devices.
->
-> This driver implementation has been based on the zd1211rw driver.
->
-> Driver is based on 802.11 softMAC Architecture and uses
-> native 802.11 for configuration and management.
->
-> The driver is compiled and tested in ARM, x86 architectures and
-> compiled in powerpc architecture.
->
-> Signed-off-by: Srinivasan Raju <srini.raju@purelifi.com>
+My understanding is that it's because users can have them in their
+ modprobe.conf, which causes breakage if an update removes the param.
+ I think the module insert fails if there are unrecognised parameters
+ there.
 
-Please limit how often you send a new version of this driver. It does
-not speed up the review, quite the opposite actually as you just flood
-the patchwork (and my inbox). Especially if there are only cosmetic
-changes there's no point of sending a new version immediately, only send
-a new version when there are major changes.
+>> this sounds like one could never drop a module parameter, or remove
+>> obsolete features.
+Not far from the truth.  If you stop the network from coming up on
+ boot you can really ruin a sysadmin's day :-/
+But usually you can remove the feature, and leave the modparam not
+ connected to anything, except maybe a deprecation warning printk if
+ it's set to something other than the default.
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+-ed
