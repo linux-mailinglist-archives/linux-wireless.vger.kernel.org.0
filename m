@@ -2,148 +2,122 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DDD5E2D2FED
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Dec 2020 17:40:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 92E9E2D3067
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Dec 2020 18:01:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730459AbgLHQjw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 8 Dec 2020 11:39:52 -0500
-Received: from mailgw02.mediatek.com ([210.61.82.184]:51509 "EHLO
-        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1730264AbgLHQjw (ORCPT
+        id S1728602AbgLHRAQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 8 Dec 2020 12:00:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32790 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730261AbgLHRAQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 8 Dec 2020 11:39:52 -0500
-X-UUID: 12cb5184cc0444f7b932f9ac09d1acaf-20201209
-X-UUID: 12cb5184cc0444f7b932f9ac09d1acaf-20201209
-Received: from mtkexhb01.mediatek.inc [(172.21.101.102)] by mailgw02.mediatek.com
-        (envelope-from <ryder.lee@mediatek.com>)
-        (Cellopoint E-mail Firewall v4.1.14 Build 0819 with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 1393703589; Wed, 09 Dec 2020 00:39:08 +0800
-Received: from mtkcas11.mediatek.inc (172.21.101.40) by
- mtkmbs08n2.mediatek.inc (172.21.101.56) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Wed, 9 Dec 2020 00:39:03 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas11.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Wed, 9 Dec 2020 00:39:05 +0800
-From:   Ryder Lee <ryder.lee@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-CC:     Shayne Chen <shayne.chen@mediatek.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>,
-        Ryder Lee <ryder.lee@mediatek.com>
-Subject: [PATCH] mt76: mt7915: fix MT_CIPHER_BIP_CMAC_128 setkey
-Date:   Wed, 9 Dec 2020 00:39:04 +0800
-Message-ID: <fc6abcd810a74bb4e8568b0f46bfc851fdcfd800.1607445161.git.ryder.lee@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+        Tue, 8 Dec 2020 12:00:16 -0500
+Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com [IPv6:2607:f8b0:4864:20::443])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3DC33C06179C
+        for <linux-wireless@vger.kernel.org>; Tue,  8 Dec 2020 08:59:36 -0800 (PST)
+Received: by mail-pf1-x443.google.com with SMTP id t7so14431632pfh.7
+        for <linux-wireless@vger.kernel.org>; Tue, 08 Dec 2020 08:59:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=/TxV5YiOQURGPp9N72E4jbrpfGvnOvNp2x+RiNLZp0o=;
+        b=ee00sPjLZGb4/3Znq+WhjPen+uAH8pMT7MGko1Ak9g/s6NOZbkfgBXpKMT9wHxq9nN
+         cKVtyuqSPlq3QHvTG5SKhEe22LDBKelCGpiSWl1BfdFpCnXIlLQacwzEGGMYufVv86yG
+         /oBXcvlOz1DogTLD+5UssqfrRjQUMi8IxJBcDa/aa/RqDj6XFIXlT4YHm0xujKSEKTwi
+         jzK6WGAA+/F6vkhwTynqYw5+V8wG5WTZOQxDelmM5CLk3MmeXF0DBloK83nNJGai7XlG
+         OMAb4TEAzgheJ2aOrVgFo3AiseO+WmljbZgKSAcXg+z775Vgtt5/zdXdXJXsF0JjKNtM
+         b2KA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=/TxV5YiOQURGPp9N72E4jbrpfGvnOvNp2x+RiNLZp0o=;
+        b=joEYnYbN3uC8taOR8mcwNgC9yc9ofEJvyQGa+RI7UHe/+uGL4NvZzNUOs6GfmPx9rD
+         iNYPIMZfLNi5qKjjrz3TU5Lu6B8wbYz/Gqmw9McH/1JlL/RUIMrTVW9D0+prCjOabkkj
+         m2TmAud3HmeeuLiM9vY8sMng8Q07PSFsTd43H9F/sWEjz3OJtECtTHcuQfGZI90SvoND
+         vLCdqGoW/9DDCAfdnl1/Vg9vj0FmvsdN9foZzKLkVK6jsz2XaKQXK3idU1KRCYO/PiJA
+         h1/l8BhvaquTVKwNeayFC1yesXQFWtYvJxVNmmqnKPNGMU3mHitdW3XbxgxHYPfsr9zL
+         WdWQ==
+X-Gm-Message-State: AOAM5318H1K6Jx87t9FW9GXAklGRVRvKRLqi4haCUiXDcnXNTSdKEtqu
+        AvkMW2ofqBp47buUaBLfnxnp
+X-Google-Smtp-Source: ABdhPJxHzFE61aPBh+3a/ynge8AsyscNyy/LZVdpYJcTnMZTM09u/LLGnqb0xouDGy8q62WU7tjhEQ==
+X-Received: by 2002:a63:d741:: with SMTP id w1mr23187514pgi.131.1607446775584;
+        Tue, 08 Dec 2020 08:59:35 -0800 (PST)
+Received: from work ([103.59.133.81])
+        by smtp.gmail.com with ESMTPSA id k15sm10597940pfh.40.2020.12.08.08.59.31
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Tue, 08 Dec 2020 08:59:34 -0800 (PST)
+Date:   Tue, 8 Dec 2020 22:29:27 +0530
+From:   Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+To:     Leon Romanovsky <leon@kernel.org>
+Cc:     Jeffrey Hugo <jhugo@codeaurora.org>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Hemant Kumar <hemantk@codeaurora.org>,
+        gregkh@linuxfoundation.org, linux-arm-msm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, bbhatt@codeaurora.org,
+        loic.poulain@linaro.org, netdev@vger.kernel.org,
+        linux-wireless@vger.kernel.org, Kalle Valo <kvalo@codeaurora.org>
+Subject: Re: [PATCH v13 0/4] userspace MHI client interface driver
+Message-ID: <20201208165927.GE9925@work>
+References: <1606533966-22821-1-git-send-email-hemantk@codeaurora.org>
+ <20201201112901.7f13e26c@kicinski-fedora-pc1c0hjn.DHCP.thefacebook.com>
+ <c6359962-a378-ed03-0fab-c2f6c8a1b8eb@codeaurora.org>
+ <20201201120302.474d4c9b@kicinski-fedora-pc1c0hjn.DHCP.thefacebook.com>
+ <817a4346-efb7-cfe5-0678-d1b60d06627d@codeaurora.org>
+ <20201201185506.77c4b3df@kicinski-fedora-pc1c0hjn.DHCP.thefacebook.com>
+ <f22eaead-fd25-8b20-7ca1-ae3f535347d4@codeaurora.org>
+ <20201206083302.GA691268@unreal>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-SNTS-SMTP: C0C557279579C781CBF29A7B5D208ABA8F1597C2BB9689007CBEA438C2709D8B2000:8
-X-MTK:  N
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201206083302.GA691268@unreal>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-MCU expects to set WLAN_CIPHER_SUITE_CCMP and WLAN_CIPHER_SUITE_AES_CMAC
-at the same time, so adding an intermediate buffer for batch update.
+On Sun, Dec 06, 2020 at 10:33:02AM +0200, Leon Romanovsky wrote:
+> On Tue, Dec 01, 2020 at 09:59:53PM -0700, Jeffrey Hugo wrote:
+> > On 12/1/2020 7:55 PM, Jakub Kicinski wrote:
+> > > On Tue, 1 Dec 2020 13:48:36 -0700 Jeffrey Hugo wrote:
+> > > > On 12/1/2020 1:03 PM, Jakub Kicinski wrote:
+> > > > > On Tue, 1 Dec 2020 12:40:50 -0700 Jeffrey Hugo wrote:
+> > > > > > On 12/1/2020 12:29 PM, Jakub Kicinski wrote:
+> > > > > > > On Fri, 27 Nov 2020 19:26:02 -0800 Hemant Kumar wrote:
+> > > > > > > > This patch series adds support for UCI driver. UCI driver enables userspace
+> > > > > > > > clients to communicate to external MHI devices like modem and WLAN. UCI driver
+> > > > > > > > probe creates standard character device file nodes for userspace clients to
+> > > > > > > > perform open, read, write, poll and release file operations. These file
+> > > > > > > > operations call MHI core layer APIs to perform data transfer using MHI bus
+> > > > > > > > to communicate with MHI device. Patch is tested using arm64 based platform.
+> > > > > > >
+> > > > > > > Wait, I thought this was for modems.
+> > > > > > >
 
-Tested-by: Sujuan Chen <sujuan.chen@mediatek.com>
-Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
----
- .../net/wireless/mediatek/mt76/mt7915/mcu.c   | 20 +++++++++++++------
- .../wireless/mediatek/mt76/mt7915/mt7915.h    |  7 +++++++
- 2 files changed, 21 insertions(+), 6 deletions(-)
+[...]
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-index 6097653abda4..6f242d55dba3 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-@@ -1016,9 +1016,10 @@ int mt7915_mcu_add_bss_info(struct mt7915_phy *phy,
- 
- /** starec & wtbl **/
- static int
--mt7915_mcu_sta_key_tlv(struct sk_buff *skb, struct ieee80211_key_conf *key,
--		       enum set_key_cmd cmd)
-+mt7915_mcu_sta_key_tlv(struct mt7915_sta *msta, struct sk_buff *skb,
-+		       struct ieee80211_key_conf *key, enum set_key_cmd cmd)
- {
-+	struct mt7915_sta_key_conf *bip = &msta->bip;
- 	struct sta_rec_sec *sec;
- 	struct tlv *tlv;
- 	u32 len = sizeof(*sec);
-@@ -1038,22 +1039,23 @@ mt7915_mcu_sta_key_tlv(struct sk_buff *skb, struct ieee80211_key_conf *key,
- 
- 		sec_key = &sec->key[0];
- 		sec_key->cipher_len = sizeof(*sec_key);
--		sec_key->key_id = key->keyidx;
- 
- 		if (cipher == MT_CIPHER_BIP_CMAC_128) {
- 			sec_key->cipher_id = MT_CIPHER_AES_CCMP;
-+			sec_key->key_id = bip->keyidx;
- 			sec_key->key_len = 16;
--			memcpy(sec_key->key, key->key, 16);
-+			memcpy(sec_key->key, bip->key, 16);
- 
- 			sec_key = &sec->key[1];
- 			sec_key->cipher_id = MT_CIPHER_BIP_CMAC_128;
- 			sec_key->cipher_len = sizeof(*sec_key);
- 			sec_key->key_len = 16;
--			memcpy(sec_key->key, key->key + 16, 16);
-+			memcpy(sec_key->key, key->key, 16);
- 
- 			sec->n_cipher = 2;
- 		} else {
- 			sec_key->cipher_id = cipher;
-+			sec_key->key_id = key->keyidx;
- 			sec_key->key_len = key->keylen;
- 			memcpy(sec_key->key, key->key, key->keylen);
- 
-@@ -1063,6 +1065,12 @@ mt7915_mcu_sta_key_tlv(struct sk_buff *skb, struct ieee80211_key_conf *key,
- 				memcpy(sec_key->key + 24, key->key + 16, 8);
- 			}
- 
-+			/* sotre key_conf for BIP batch update */
-+			if (cipher == MT_CIPHER_AES_CCMP) {
-+				memcpy(bip->key, key->key, key->keylen);
-+				bip->keyidx = key->keyidx;
-+			}
-+
- 			len -= sizeof(*sec_key);
- 			sec->n_cipher = 1;
- 		}
-@@ -1088,7 +1096,7 @@ int mt7915_mcu_add_key(struct mt7915_dev *dev, struct ieee80211_vif *vif,
- 	if (IS_ERR(skb))
- 		return PTR_ERR(skb);
- 
--	ret = mt7915_mcu_sta_key_tlv(skb, key, cmd);
-+	ret = mt7915_mcu_sta_key_tlv(msta, skb, key, cmd);
- 	if (ret)
- 		return ret;
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-index 30e53a0f01fb..5bf76c74373f 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-@@ -71,6 +71,11 @@ struct mt7915_sta_stats {
- 	unsigned long jiffies;
- };
- 
-+struct mt7915_sta_key_conf {
-+	s8 keyidx;
-+	u8 key[16];
-+};
-+
- struct mt7915_sta {
- 	struct mt76_wcid wcid; /* must be first */
- 
-@@ -84,6 +89,8 @@ struct mt7915_sta {
- 	struct mt7915_sta_stats stats;
- 
- 	unsigned long ampdu_state;
-+
-+	struct mt7915_sta_key_conf bip;
- };
- 
- struct mt7915_vif {
--- 
-2.18.0
+> Like it or not, but Jakub is absolutely right with his claim that
+> providing user-visible interfaces without any standardization is proven
+> as wrong.
+> 
 
+Everybody agrees with standardizing things but the problem is, the
+standardization will only happen when more than one person implements the
+same functionality.
+
+The primary discussion is around the usage of chardev nodes for WLAN but
+we made it clear that WLAN doesn't need this chardev node for working at
+all. I agree that the commit message is a bit misleading and I hope that
+Hemant will fix it in next revision.
+
+Thanks,
+Mani
+
+> Thanks
+> 
+> >
+> > --
+> > Jeffrey Hugo
+> > Qualcomm Technologies, Inc. is a member of the
+> > Code Aurora Forum, a Linux Foundation Collaborative Project.
