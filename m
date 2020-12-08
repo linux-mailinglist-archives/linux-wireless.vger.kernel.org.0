@@ -2,88 +2,127 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CD2FA2D3444
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Dec 2020 21:51:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 756192D34C5
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Dec 2020 22:04:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730357AbgLHUe1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 8 Dec 2020 15:34:27 -0500
-Received: from mail.kernel.org ([198.145.29.99]:42922 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730338AbgLHUe0 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 8 Dec 2020 15:34:26 -0500
-Date:   Tue, 8 Dec 2020 21:16:03 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1607454968;
-        bh=4YSWBy4Ze2XZ3O8tBftNKde9EUBuyuIjWyN2ZrpIxvM=;
-        h=From:To:Cc:Subject:References:In-Reply-To:From;
-        b=nVhOppfF7il/vCHcMJCm1p+Lwcwkzojx2RGNhEPtG1Dv+YTRJ9vEAXICqnFy8m/7l
-         LczP4xd8OmolrTxvA4gv1axoL84PJcFJTd+onQ5SPme9rVbXItlpxzqx9I5AS6bBpp
-         o/mwtf7F3RUk4qEJdpqfyF/zgb23zfEHFOArRlYM4g9XygiZ3iVKm0dM+4QiR1tQDY
-         WqnO+lsDOfT4jkJl7dQFu3aqsF0XEUg6K2V8+0BV1L8iN4st3b7HlAa0xmzKjIen+A
-         7NirlgEudHRNsUeIXfl+9ta6Kl5XgiNWnlVBYgFmM01AcncsTQMbWvOuRPDcyERUEx
-         ezwxmXxjQUxCg==
-From:   Leon Romanovsky <leon@kernel.org>
-To:     Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Cc:     Jeffrey Hugo <jhugo@codeaurora.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Hemant Kumar <hemantk@codeaurora.org>,
-        gregkh@linuxfoundation.org, linux-arm-msm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, bbhatt@codeaurora.org,
-        loic.poulain@linaro.org, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org, Kalle Valo <kvalo@codeaurora.org>
-Subject: Re: [PATCH v13 0/4] userspace MHI client interface driver
-Message-ID: <20201208191603.GJ4430@unreal>
-References: <1606533966-22821-1-git-send-email-hemantk@codeaurora.org>
- <20201201112901.7f13e26c@kicinski-fedora-pc1c0hjn.DHCP.thefacebook.com>
- <c6359962-a378-ed03-0fab-c2f6c8a1b8eb@codeaurora.org>
- <20201201120302.474d4c9b@kicinski-fedora-pc1c0hjn.DHCP.thefacebook.com>
- <817a4346-efb7-cfe5-0678-d1b60d06627d@codeaurora.org>
- <20201201185506.77c4b3df@kicinski-fedora-pc1c0hjn.DHCP.thefacebook.com>
- <f22eaead-fd25-8b20-7ca1-ae3f535347d4@codeaurora.org>
- <20201206083302.GA691268@unreal>
- <20201208165927.GE9925@work>
+        id S1729611AbgLHVBJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 8 Dec 2020 16:01:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44182 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729552AbgLHVBJ (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 8 Dec 2020 16:01:09 -0500
+Received: from mail-ot1-x343.google.com (mail-ot1-x343.google.com [IPv6:2607:f8b0:4864:20::343])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D22F6C0613CF
+        for <linux-wireless@vger.kernel.org>; Tue,  8 Dec 2020 13:00:28 -0800 (PST)
+Received: by mail-ot1-x343.google.com with SMTP id o11so99202ote.4
+        for <linux-wireless@vger.kernel.org>; Tue, 08 Dec 2020 13:00:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=JQYt/4VgCiEwd3op5jlCPhHU8pQtIJ/B1ftm9vhFDbM=;
+        b=elBXLPE9EtSolehwqod4JujVxpIlOQ+VeIEW8OSE9jod4LBKN1G7JgblBCuMqt7Z9I
+         J+5q4Ho+3/TnxKhBIQY8EwD0ZAN0G5fghei/Lr9fI40OVHw+jPBMqhdNUcRyokZrO3y0
+         WgzXG3aRwasbIiezVdjhx/D6QCe1aFXa90IBE=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=JQYt/4VgCiEwd3op5jlCPhHU8pQtIJ/B1ftm9vhFDbM=;
+        b=MgGIjkYz0ymZL/tMc2FvspHEtIm07HKPtPzWN4dimV/mcdlm7vwNTBbYXAcwBaggKU
+         khDK+4T+m9pgvg4SdRcgR+gjpstyqsUpPqmnL3uM0RyeGqBJCbPl8e86GSU4mQbI5e7G
+         0L1kXD1t1cZHVjghoDdRIwnTth3I8N+wQWIEz0soOYWfutYahTX0uVnpmwEHFfsrT5Qy
+         vVbcpQ1pYtWGgVFURBdt7g8epdfX+8/8dOsbf6Y87jRxkYm5pwvm9NUz3Rf5mR8Kd21V
+         9ywASZp6JgQecoHm10CQi21A9koP5DjN9U8wYtUFI7XvXiuKTXddGvDvVkwcRV9G4UUF
+         Koog==
+X-Gm-Message-State: AOAM533syR1FYcODBzZkniDHM2UVcgFUnT9JG7D8p4FkcD5yyVksSCVr
+        qjktiH6UvflGh68fjmXtTWKftMssIUIFbw==
+X-Google-Smtp-Source: ABdhPJwRSWQZ57S+m26BQa2bof68nMQxbJHbHUNFCJiwGatXsOcLz+h+ps6rNbOGeLr/ATvATD+Ccg==
+X-Received: by 2002:a4a:b043:: with SMTP id g3mr17519626oon.69.1607453803806;
+        Tue, 08 Dec 2020 10:56:43 -0800 (PST)
+Received: from mail-oi1-f178.google.com (mail-oi1-f178.google.com. [209.85.167.178])
+        by smtp.gmail.com with ESMTPSA id e24sm947305otq.9.2020.12.08.10.56.42
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 08 Dec 2020 10:56:42 -0800 (PST)
+Received: by mail-oi1-f178.google.com with SMTP id p126so20503021oif.7
+        for <linux-wireless@vger.kernel.org>; Tue, 08 Dec 2020 10:56:42 -0800 (PST)
+X-Received: by 2002:aca:c443:: with SMTP id u64mr3807625oif.117.1607453801518;
+ Tue, 08 Dec 2020 10:56:41 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201208165927.GE9925@work>
+References: <20201208154343.6946-1-ruc_zhangxiaohui@163.com>
+In-Reply-To: <20201208154343.6946-1-ruc_zhangxiaohui@163.com>
+From:   Brian Norris <briannorris@chromium.org>
+Date:   Tue, 8 Dec 2020 10:56:29 -0800
+X-Gmail-Original-Message-ID: <CA+ASDXPiY5AQDu2snHSqBDA0BYi79_hmNAjsKmXm1cFrgoxo4Q@mail.gmail.com>
+Message-ID: <CA+ASDXPiY5AQDu2snHSqBDA0BYi79_hmNAjsKmXm1cFrgoxo4Q@mail.gmail.com>
+Subject: Re: [PATCH 1/1] mwifiex: Fix possible buffer overflows in mwifiex_uap_bss_param_prepare
+To:     Xiaohui Zhang <ruc_zhangxiaohui@163.com>
+Cc:     Amitkumar Karwar <amitkarwar@gmail.com>,
+        Ganapathi Bhat <ganapathi.bhat@nxp.com>,
+        Xinming Hu <huxinming820@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        "<netdev@vger.kernel.org>" <netdev@vger.kernel.org>,
+        Linux Kernel <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Dec 08, 2020 at 10:29:27PM +0530, Manivannan Sadhasivam wrote:
-> On Sun, Dec 06, 2020 at 10:33:02AM +0200, Leon Romanovsky wrote:
-> > On Tue, Dec 01, 2020 at 09:59:53PM -0700, Jeffrey Hugo wrote:
-> > > On 12/1/2020 7:55 PM, Jakub Kicinski wrote:
-> > > > On Tue, 1 Dec 2020 13:48:36 -0700 Jeffrey Hugo wrote:
-> > > > > On 12/1/2020 1:03 PM, Jakub Kicinski wrote:
-> > > > > > On Tue, 1 Dec 2020 12:40:50 -0700 Jeffrey Hugo wrote:
-> > > > > > > On 12/1/2020 12:29 PM, Jakub Kicinski wrote:
-> > > > > > > > On Fri, 27 Nov 2020 19:26:02 -0800 Hemant Kumar wrote:
-> > > > > > > > > This patch series adds support for UCI driver. UCI driver enables userspace
-> > > > > > > > > clients to communicate to external MHI devices like modem and WLAN. UCI driver
-> > > > > > > > > probe creates standard character device file nodes for userspace clients to
-> > > > > > > > > perform open, read, write, poll and release file operations. These file
-> > > > > > > > > operations call MHI core layer APIs to perform data transfer using MHI bus
-> > > > > > > > > to communicate with MHI device. Patch is tested using arm64 based platform.
-> > > > > > > >
-> > > > > > > > Wait, I thought this was for modems.
-> > > > > > > >
->
-> [...]
->
-> > Like it or not, but Jakub is absolutely right with his claim that
-> > providing user-visible interfaces without any standardization is proven
-> > as wrong.
-> >
->
-> Everybody agrees with standardizing things but the problem is, the
-> standardization will only happen when more than one person implements the
-> same functionality.
+(FWIW, this author's mail has been routed to my spam mailbox. That's
+partly my fault and/or my "choice" of mail provider, but that's why I
+only see these once Kalle replies to them.)
 
-From my experience in RDMA and netdev, I can't agree with both of your
-statements. There are a lot of people who see standardization as a bad
-thing. Also we are pushing even one person to make user visible interfaces
-right from the beginning without relation to how wide it will be adopted
-later.
+On Tue, Dec 8, 2020 at 8:03 AM Xiaohui Zhang <ruc_zhangxiaohui@163.com> wrote:
+>
+> From: Zhang Xiaohui <ruc_zhangxiaohui@163.com>
+>
+> mwifiex_uap_bss_param_prepare() calls memcpy() without checking
+> the destination size may trigger a buffer overflower,
+> which a local user could use to cause denial of service or the
+> execution of arbitrary code.
+> Fix it by putting the length check before calling memcpy().
+>
+> Signed-off-by: Zhang Xiaohui <ruc_zhangxiaohui@163.com>
+> ---
+>  drivers/net/wireless/marvell/mwifiex/uap_cmd.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/net/wireless/marvell/mwifiex/uap_cmd.c b/drivers/net/wireless/marvell/mwifiex/uap_cmd.c
+> index b48a85d79..937c75e89 100644
+> --- a/drivers/net/wireless/marvell/mwifiex/uap_cmd.c
+> +++ b/drivers/net/wireless/marvell/mwifiex/uap_cmd.c
+> @@ -502,7 +502,8 @@ mwifiex_uap_bss_param_prepare(u8 *tlv, void *cmd_buf, u16 *param_size)
+>                 ssid = (struct host_cmd_tlv_ssid *)tlv;
+>                 ssid->header.type = cpu_to_le16(TLV_TYPE_UAP_SSID);
+>                 ssid->header.len = cpu_to_le16((u16)bss_cfg->ssid.ssid_len);
+> -               memcpy(ssid->ssid, bss_cfg->ssid.ssid, bss_cfg->ssid.ssid_len);
+> +               memcpy(ssid->ssid, bss_cfg->ssid.ssid,
+> +                      min_t(u32, bss_cfg->ssid.ssid_len, strlen(ssid->ssid)));
 
-Thanks
+This strlen() check makes no sense to me. We are *writing* to
+ssid->ssid, so its initial contents are either zero or garbage --
+strlen() will either give a zero or unpredictable value. I'm pretty
+sure that's not what you intend.
+
+On the other hand, it's hard to determine what the proper bound here
+*should* be. This 'ssid' struct is really just a pointer into
+mwifiex_cmd_uap_sys_config()'s uap_sys_config (struct
+host_cmd_ds_sys_config), which doesn't have any defined length -- its
+length is only given by way of its surrounding buffers/structs.
+Altogether, the code is hard to reason about.
+
+Anyway, this patch is wrong, so NAK.
+
+Brian
+
+>                 cmd_size += sizeof(struct mwifiex_ie_types_header) +
+>                             bss_cfg->ssid.ssid_len;
+>                 tlv += sizeof(struct mwifiex_ie_types_header) +
+> --
+> 2.17.1
+>
