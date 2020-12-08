@@ -2,200 +2,167 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 70F2E2D23B1
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Dec 2020 07:37:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D4D8D2D2421
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Dec 2020 08:16:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725777AbgLHGgo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 8 Dec 2020 01:36:44 -0500
-Received: from mga05.intel.com ([192.55.52.43]:39428 "EHLO mga05.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725208AbgLHGgo (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 8 Dec 2020 01:36:44 -0500
-IronPort-SDR: fsd0rbkNb6B286Vzh2aryWlpNXhrBR2s1wVmZmXe/5FVzdrCRa3OhD8r8S+mfUjsfT2WzfVayt
- JJdC3v4PsZTQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9828"; a="258548154"
-X-IronPort-AV: E=Sophos;i="5.78,401,1599548400"; 
-   d="scan'208";a="258548154"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Dec 2020 22:36:03 -0800
-IronPort-SDR: SVLacc2xkbQLkfrRxOSXgTVdbiBmXoyltg3cwYv01NGq8aaDOMMwW+jl5GJUaAMNns3KXgnLBj
- mzbxXPiJ3WdQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.78,401,1599548400"; 
-   d="scan'208";a="370254716"
-Received: from lkp-server01.sh.intel.com (HELO c88bd47c8831) ([10.239.97.150])
-  by fmsmga002.fm.intel.com with ESMTP; 07 Dec 2020 22:36:02 -0800
-Received: from kbuild by c88bd47c8831 with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1kmWbR-00002C-J6; Tue, 08 Dec 2020 06:36:01 +0000
-Date:   Tue, 08 Dec 2020 14:35:53 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     linux-wireless@vger.kernel.org
-Subject: [wireless-drivers-next:master] BUILD REGRESSION
- 871a825c3902247d7fcc06e81eb993194d3bf424
-Message-ID: <5fcf1ec9.uZFQK280c8TViyrM%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S1726840AbgLHHP2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 8 Dec 2020 02:15:28 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55036 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726828AbgLHHP1 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 8 Dec 2020 02:15:27 -0500
+Received: from mail-vs1-xe35.google.com (mail-vs1-xe35.google.com [IPv6:2607:f8b0:4864:20::e35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7AB6C061793;
+        Mon,  7 Dec 2020 23:14:41 -0800 (PST)
+Received: by mail-vs1-xe35.google.com with SMTP id h6so9017022vsr.6;
+        Mon, 07 Dec 2020 23:14:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=yAIRQpWcPYERyUARIHqLewt4T2ldrkluRV0hMLs/Nc4=;
+        b=mu34bA2fFmZad33SuAX47EjeHSxL6w6Lz5RBTKx3M7YqMZGkeSfixtDJRxgzEfhKWB
+         CbSXUGK9malduOFSPM5S8/YeJ51BoF3key1kBiDr4L9XT2pRAyCEffONYVBnVlszoArh
+         4PlXQJOB0B9Ngjz4GnDZSmHimRjj0uQBmWRDWY7ebcenIEmpMW56xHwPdIW36QLgxRWg
+         g9One/SAOCOP56PCCmYEP1+Aiyfh5JhgWeCayPI9kXyi73HPmmLFycUCmyZGQnJ68rmD
+         DCsPkUbf/2naZr0r4IBtqdXkPeMhuLyIiTknlMp5Djqhkn71k86pVTQlZclcZeebIOg0
+         IpKg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=yAIRQpWcPYERyUARIHqLewt4T2ldrkluRV0hMLs/Nc4=;
+        b=cE51ME5DCKtNanYRhbaeQ5qXvnh1kAXbjAGrpYlLihH6Tv1mghi1FwovyIeuDkmHFq
+         hD6OCdrIsPp+hkmKlH+SWKvgrjs/4et25Ejtc8eJwYepyXhNg/uZXEWwrPaxy/IFr/OU
+         luc/eqYl9Z8djSiWeJytskboA5XLJkJcZeN0/7xR4o1p+x42L2sEaO3KWBVw7SlHybJ+
+         XbeKcRs+NNV9KB4Xn6n5r/FnDw63fSuGniyunPgLLOtlt5w5gUkAak/+W8BivDtZQ/qd
+         sCTtia2XODoubOMUKsfTdd+eQBWt759InrEevFbPPONTvULvqb5pXr4b4kJ9O9WDenK/
+         quxQ==
+X-Gm-Message-State: AOAM530iJoP+fFlxOsng/QEoqr/hXPka+AleSoyaQj6P6T7nml/JaHez
+        iEhp5suj2mclLv2Cit2MYEB64WimoRz7YYbIJ1I=
+X-Google-Smtp-Source: ABdhPJxkv7hbAYUg1e03/wOpxrW6RdfTu/STxJobIs/eu4fcILUOeE4BOLOIxWTRF/c3PK/OczJbB1Ujm6SCvvaSzwQ=
+X-Received: by 2002:a67:f519:: with SMTP id u25mr4232725vsn.39.1607411680771;
+ Mon, 07 Dec 2020 23:14:40 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+References: <20201203185732.9CFA5C433ED@smtp.codeaurora.org>
+ <20201204111715.04d5b198@kicinski-fedora-pc1c0hjn.DHCP.thefacebook.com>
+ <87tusxgar5.fsf@codeaurora.org> <CA+ASDXNT+uKLLhTV0Nr-wxGkM16_OkedUyoEwx5FgV3ML9SMsQ@mail.gmail.com>
+ <20201207121029.77d48f2c@kicinski-fedora-pc1c0hjn.DHCP.thefacebook.com>
+In-Reply-To: <20201207121029.77d48f2c@kicinski-fedora-pc1c0hjn.DHCP.thefacebook.com>
+From:   Emmanuel Grumbach <egrumbach@gmail.com>
+Date:   Tue, 8 Dec 2020 09:14:29 +0200
+Message-ID: <CANUX_P2MhdZNCoMsvaQNVO4x7hmuzxdGH_4MwWON4i9abAZRPg@mail.gmail.com>
+Subject: Re: pull-request: wireless-drivers-next-2020-12-03
+To:     Jakub Kicinski <kuba@kernel.org>
+Cc:     Brian Norris <briannorris@chromium.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "<netdev@vger.kernel.org>" <netdev@vger.kernel.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git  master
-branch HEAD: 871a825c3902247d7fcc06e81eb993194d3bf424  brcmfmac: remove redundant assignment to pointer 'entry'
+On Mon, Dec 7, 2020 at 10:14 PM Jakub Kicinski <kuba@kernel.org> wrote:
+>
+> On Mon, 7 Dec 2020 11:35:53 -0800 Brian Norris wrote:
+> > On Mon, Dec 7, 2020 at 2:42 AM Kalle Valo <kvalo@codeaurora.org> wrote:
+> > > Jakub Kicinski <kuba@kernel.org> writes:
+> > > > On Thu,  3 Dec 2020 18:57:32 +0000 (UTC) Kalle Valo wrote:
+> > > > There's also a patch which looks like it renames a module parameter.
+> > > > Module parameters are considered uAPI.
+> > >
+> > > Ah, I have been actually wondering that if they are part of user space
+> > > API or not, good to know that they are. I'll keep an eye of this in the
+> > > future so that we are not breaking the uAPI with module parameter
+> > > changes.
+> >
+> > Is there some reference for this rule (e.g., dictate from on high; or
+> > some explanation of reasons)? Or limitations on it? Because as-is,
+> > this sounds like one could never drop a module parameter, or remove
+> > obsolete features.
+>
+> TBH its one of those "widely accepted truth" in networking which was
+> probably discussed before I started compiling kernels so I don't know
+> the full background. But it seems pretty self-evident even without
+> knowing the casus that made us institute the rule.
+>
+> Module parameters are certainly userspace ABI, since user space can
+> control them either when loading the module or via sysfs.
+>
+> > It also suggests that debug-related knobs (which
+> > can benefit from some amount of flexibility over time) should go
+> > exclusively in debugfs (where ABI guarantees are explicitly not made),
+> > even at the expense of usability (dropping a line into
+> > /etc/modprobe.d/ is hard to beat).
+>
+> Indeed, debugfs seems more appropriate.
 
-Error/Warning reports:
+I don't think that a module parameter and a debugfs knob are
+technically equivalent and the only difference would be whether it is
+considered ABI or not. The usability of a module parameter is hard to
+beat as Brian said, but I think the difference goes beyond usability
+~= ease of use. A debugfs hook can't be available at the very start of
+the module. You first have to register your debugfs knobs to the
+parent dir. And if you want your parent dir to belong to the subsystem
+you register to, then you first need to register to the subsystem
+which means that a fair amount of code has been running already. A
+debugfs hook won't allow you to parametrize this piece of code.
 
-https://lore.kernel.org/linux-wireless/202012080726.z6M9DkUt-lkp@intel.com
+>
+> > That's not to say I totally disagree with the original claim, but I'm
+> > just interested in knowing precisely what it means.
+> >
+> > And to put a precise spin on this: what would this rule say about the following?
+> >
+> > http://git.kernel.org/linus/f06021a18fcf8d8a1e79c5e0a8ec4eb2b038e153
+> > iwlwifi: remove lar_disable module parameter
+> >
+> > Should that parameter have never been introduced in the first place,
+> > never be removed, or something else? I think I've seen this sort of
+> > pattern before, where features get phased in over time, with module
+> > parameters as either escape hatches or as opt-in mechanisms.
+> > Eventually, they stabilize, and there's no need (or sometimes, it's
+> > actively harmful) to keep the knob around.
+> >
+> > Or the one that might (?) be in question here:
+> > fc3ac64a3a28 rtw88: decide lps deep mode from firmware feature.
+> >
+> > The original module parameter was useful for enabling new power-saving
+> > features, because the driver didn't yet know which chip(s)/firmware(s)
+> > were stable with which power features. Now, the driver has learned how
+> > to figure out the optimal power settings, so it's dropping the old
+> > param and adding an "escape hatch", in case there are problems.
+> >
+> > I'd say this one is a bit more subtle than the lar_disable example,
+> > but I'm still not sure that really qualifies as a "user-visible"
+> > change.
+>
+> If I'm reading this right the pattern seems to be that module
+> parameters are used as chicken bits. It's an interesting problem,
+> I'm not sure this use case was discussed. My concern would be that
+> there is no guarantee users will in fact report the new feature
+> fails for them, and therefore grow to depend on the chicken bits.
+>
+> Since updating software is so much easier than re-etching silicon
+> I'd personally not use chicken bits in software, especially with
+> growing adoption of staggered update roll outs. Otherwise I'd think
+> debugfs is indeed a better place for them.
 
-Error/Warning in current branch:
+In this specific case, having put the lar_disable functionality under
+debugfs would have meant that the user would have had to:
+1) Load the driver
+2) write the debugfs hook
+3) take the interface down
+4) take the interface up
 
-mips-linux-ld: drivers/net/wireless/realtek/rtw88/rtw8822ce.o:(.rodata.rtw_pm_ops+0x0): multiple definition of `rtw_pm_ops'; drivers/net/wireless/realtek/rtw88/rtw8822be.o:(.rodata.rtw_pm_ops+0x0): first defined here
-
-Error/Warning ids grouped by kconfigs:
-
-gcc_recent_errors
-`-- mips-allyesconfig
-    `-- multiple-definition-of-rtw_pm_ops-drivers-net-wireless-realtek-rtw88-rtw8822be.o:(.rodata.rtw_pm_ops):first-defined-here
-
-elapsed time: 725m
-
-configs tested: 127
-configs skipped: 2
-
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-powerpc                      walnut_defconfig
-arm                         palmz72_defconfig
-arm                          simpad_defconfig
-powerpc                     tqm8555_defconfig
-arc                          axs103_defconfig
-nds32                               defconfig
-powerpc                  mpc885_ads_defconfig
-mips                           ip28_defconfig
-powerpc                     pq2fads_defconfig
-powerpc                 mpc832x_rdb_defconfig
-c6x                         dsk6455_defconfig
-m68k                        m5272c3_defconfig
-m68k                          hp300_defconfig
-s390                          debug_defconfig
-arm                             ezx_defconfig
-mips                            gpr_defconfig
-microblaze                          defconfig
-microblaze                    nommu_defconfig
-powerpc                   motionpro_defconfig
-arm                       imx_v4_v5_defconfig
-powerpc                 mpc834x_itx_defconfig
-powerpc                         wii_defconfig
-mips                         cobalt_defconfig
-m68k                        stmark2_defconfig
-arm                     eseries_pxa_defconfig
-arm                          pcm027_defconfig
-powerpc                      makalu_defconfig
-sh                          rsk7201_defconfig
-mips                         rt305x_defconfig
-powerpc                   lite5200b_defconfig
-arm                         mv78xx0_defconfig
-powerpc                   currituck_defconfig
-sparc                       sparc32_defconfig
-sh                   rts7751r2dplus_defconfig
-arm                       omap2plus_defconfig
-arm                         lpc18xx_defconfig
-sh                          sdk7780_defconfig
-m68k                       m5275evb_defconfig
-mips                         tb0287_defconfig
-m68k                             alldefconfig
-arm                           omap1_defconfig
-um                            kunit_defconfig
-xtensa                    xip_kc705_defconfig
-m68k                       m5475evb_defconfig
-mips                malta_qemu_32r6_defconfig
-m68k                       m5249evb_defconfig
-powerpc                     kilauea_defconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-c6x                              allyesconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                               tinyconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-i386                 randconfig-a004-20201208
-i386                 randconfig-a005-20201208
-i386                 randconfig-a001-20201208
-i386                 randconfig-a002-20201208
-i386                 randconfig-a006-20201208
-i386                 randconfig-a003-20201208
-i386                 randconfig-a005-20201207
-i386                 randconfig-a004-20201207
-i386                 randconfig-a001-20201207
-i386                 randconfig-a002-20201207
-i386                 randconfig-a006-20201207
-i386                 randconfig-a003-20201207
-x86_64               randconfig-a016-20201207
-x86_64               randconfig-a012-20201207
-x86_64               randconfig-a014-20201207
-x86_64               randconfig-a013-20201207
-x86_64               randconfig-a015-20201207
-x86_64               randconfig-a011-20201207
-i386                 randconfig-a014-20201207
-i386                 randconfig-a013-20201207
-i386                 randconfig-a011-20201207
-i386                 randconfig-a015-20201207
-i386                 randconfig-a012-20201207
-i386                 randconfig-a016-20201207
-riscv                    nommu_k210_defconfig
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-x86_64                                   rhel
-x86_64                           allyesconfig
-x86_64                    rhel-7.6-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                                  kexec
-
-clang tested configs:
-x86_64               randconfig-a004-20201207
-x86_64               randconfig-a006-20201207
-x86_64               randconfig-a002-20201207
-x86_64               randconfig-a001-20201207
-x86_64               randconfig-a005-20201207
-x86_64               randconfig-a003-20201207
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+to make the configuration take effect which is hard because typically
+the user doesn't control the interface directly but it is controlled
+by the wpa_supplicant.
+Don't get me wrong, I'm not saying the choice made for this module
+parameter was right or wrong, I don't even want to get into that
+discussion, I'm just saying that debugfs is not an infra that allows
+you to do what you'd do with a module parameter.
+In a sense, I guess I'm having the same discussion with our System
+guys for whom module parameter = registry key in windows :)
