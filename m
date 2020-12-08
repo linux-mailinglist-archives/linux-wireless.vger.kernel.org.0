@@ -2,87 +2,95 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DC6502D256A
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Dec 2020 09:10:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E870B2D25D3
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Dec 2020 09:27:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727844AbgLHIJQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 8 Dec 2020 03:09:16 -0500
-Received: from m43-15.mailgun.net ([69.72.43.15]:34682 "EHLO
-        m43-15.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727449AbgLHIJQ (ORCPT
+        id S1728214AbgLHI0t (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 8 Dec 2020 03:26:49 -0500
+Received: from so254-31.mailgun.net ([198.61.254.31]:63107 "EHLO
+        so254-31.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728191AbgLHI0t (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 8 Dec 2020 03:09:16 -0500
+        Tue, 8 Dec 2020 03:26:49 -0500
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1607414930; h=Date: Message-Id: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=HVvW8//D2rnwst2clmB9T1kZp2OMdvbxOdz8wy3/iTE=;
- b=Y+ZT2Ph1JB4mwLrdmy1Fg/IK4cfmiGffZkdpTM+6aA8m/BhPFxzmKnlrpQ5WrpXfybhkYk6w
- KqdxVfFXCWKYVH4TbhTQaCb9Aj/uPMeFC/6HiGNkt+CmyK6COlhX/Jn8cAET7WU5WW4jUcUD
- OPTB7SA+02uV1+Z4WMRC2yX737U=
-X-Mailgun-Sending-Ip: 69.72.43.15
+ s=smtp; t=1607415984; h=Content-Transfer-Encoding: MIME-Version:
+ References: In-Reply-To: Message-Id: Date: Subject: Cc: To: From:
+ Sender; bh=xq3oy99zl2gR3nMQordnnBYArUynP/cy+s33+204NZY=; b=h6ClbUnqO7RQxaN1g2sHLi68KcLxTbZh0RvH9W/GclLb5B8RK1b4rhd8SxOOo/ra05B8d4KC
+ 6bxHSC7Df//agKXSlY7+iql0sJUvtXVjNrNCEel6LW6pnjUSh/1QWOcPj8qXVwpsR6ZoNuW9
+ thLntheUSlDhda7uwgyAoLGg0P8=
+X-Mailgun-Sending-Ip: 198.61.254.31
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n09.prod.us-west-2.postgun.com with SMTP id
- 5fcf3478ed9d5dfa896b8aa0 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 08 Dec 2020 08:08:24
+ smtp-out-n06.prod.us-west-2.postgun.com with SMTP id
+ 5fcf389096285165cdaf9a8e (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 08 Dec 2020 08:25:52
  GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Sender: saiprakash.ranjan=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id B35FAC43463; Tue,  8 Dec 2020 08:08:24 +0000 (UTC)
+        id 2A2F1C433CA; Tue,  8 Dec 2020 08:25:52 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        MISSING_DATE,MISSING_MID,SPF_FAIL autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+Received: from blr-ubuntu-253.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.18.19])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
         (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 5CB59C433CA;
-        Tue,  8 Dec 2020 08:08:22 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 5CB59C433CA
+        (Authenticated sender: saiprakash.ranjan)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 7E7D8C433CA;
+        Tue,  8 Dec 2020 08:25:48 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 7E7D8C433CA
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=saiprakash.ranjan@codeaurora.org
+From:   Sai Prakash Ranjan <saiprakash.ranjan@codeaurora.org>
+To:     youghand@codeaurora.org
+Cc:     ath10k@lists.infradead.org, briannorris@chromium.org,
+        dianders@chromium.org, kuabhs@chromium.org,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        pillair@codeaurora.org,
+        Sai Prakash Ranjan <saiprakash.ranjan@codeaurora.org>
+Subject: Re: [PATCH v2] ath10k: skip the wait for completion to recovery in shutdown path
+Date:   Tue,  8 Dec 2020 13:55:24 +0530
+Message-Id: <20201208082524.20451-1-saiprakash.ranjan@codeaurora.org>
+X-Mailer: git-send-email 2.29.0
+In-Reply-To: <20201126171553.2097-1-youghand@codeaurora.org>
+References: <20201126171553.2097-1-youghand@codeaurora.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 065/141] airo: Fix fall-through warnings for Clang
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <b3c0f74f5b6e6bff9f1609b310319b6fdd9ee205.1605896059.git.gustavoars@kernel.org>
-References: <b3c0f74f5b6e6bff9f1609b310319b6fdd9ee205.1605896059.git.gustavoars@kernel.org>
-To:     "Gustavo A. R. Silva" <gustavoars@kernel.org>
-Cc:     "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20201208080824.B35FAC43463@smtp.codeaurora.org>
-Date:   Tue,  8 Dec 2020 08:08:24 +0000 (UTC)
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-"Gustavo A. R. Silva" <gustavoars@kernel.org> wrote:
+On Thu, Nov 26, 2020 at 9:16 AM Youghandhar Chintala
+<youghand@codeaurora.org> wrote:
+> --- a/drivers/net/wireless/ath/ath10k/snoc.c
+> +++ b/drivers/net/wireless/ath/ath10k/snoc.c
+> @@ -1790,9 +1790,6 @@ static int ath10k_snoc_remove(struct platform_device *pdev)
+>
+>         reinit_completion(&ar->driver_recovery);
+>
+> -       if (test_bit(ATH10K_SNOC_FLAG_RECOVERY, &ar_snoc->flags))
+> -               wait_for_completion_timeout(&ar->driver_recovery, 3 * HZ);
 
-> In preparation to enable -Wimplicit-fallthrough for Clang, fix a warning
-> by explicitly adding a break statement instead of letting the code fall
-> through to the next case.
-> 
-> Link: https://github.com/KSPP/linux/issues/115
-> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+You are skipping recovery in ath10k_snoc_remove() which is a remove callback
+and also called in shutdown callback. So that means it is also called when
+you unload the ath10k module and not just when the system reboots/shutdown.
+While it makes sense to not skip recovery in shutdown/reboot sequence because
+the system is going down, it might very well be needed in case of unloading
+the module because we expect the system to be up and stable after unloading
+the ath10k module and we should be able to reload the ath10k module smoothly.
 
-4 patches applied to wireless-drivers-next.git, thanks.
+If you remove that now and try to reload the ath10k module, won't that leave
+the system in possibly an inconsistent state because we skipped recovery in
+module remove and then we are trying to load the ath10k module when the
+recovery is not yet complete? In other words, you need to test ath10k module
+load/unload as well in addition to reboot tests to make sure this works as
+expected or else you will need a separate shutdown callback which skips the
+recovery part.
 
-48264b23fade airo: Fix fall-through warnings for Clang
-f48d7dccb3e4 rt2x00: Fix fall-through warnings for Clang
-0662fbebf4fb rtw88: Fix fall-through warnings for Clang
-18572b0b5493 zd1201: Fix fall-through warnings for Clang
-
+Thanks,
+Sai
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/b3c0f74f5b6e6bff9f1609b310319b6fdd9ee205.1605896059.git.gustavoars@kernel.org/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
+QUALCOMM INDIA, on behalf of Qualcomm Innovation Center, Inc. is a member
+of Code Aurora Forum, hosted by The Linux Foundation
