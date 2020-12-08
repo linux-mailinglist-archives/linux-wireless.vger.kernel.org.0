@@ -2,98 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 67D842D2D3C
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Dec 2020 15:30:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 055062D2D57
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Dec 2020 15:39:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729770AbgLHOa2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 8 Dec 2020 09:30:28 -0500
-Received: from m43-15.mailgun.net ([69.72.43.15]:23565 "EHLO
-        m43-15.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729558AbgLHOa1 (ORCPT
+        id S1729840AbgLHOiT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 8 Dec 2020 09:38:19 -0500
+Received: from so254-31.mailgun.net ([198.61.254.31]:19468 "EHLO
+        so254-31.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729832AbgLHOiS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 8 Dec 2020 09:30:27 -0500
+        Tue, 8 Dec 2020 09:38:18 -0500
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1607437801; h=Content-Type: MIME-Version: Message-ID:
+ s=smtp; t=1607438273; h=Content-Type: MIME-Version: Message-ID:
  In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=MxFBHRVAcl5W/18d8im87Z0ffTJ/GFUH2hG5GnOXJME=; b=JN7UZiVfg9Dj4lv7vb00Yew0NbjZwHl4dzbB0nEFeZnoT9iqcMn1H18jtwHYqjh27OXyZPI+
- 96uUTVFiZr+Rq1juQMlT30n0CZSFsxfJ5KPnsir1L1w09uyrqcXH6m76thI+epD2uiBPJnj5
- 04Qwoj37h54wFbCrrA/hji8SfrE=
-X-Mailgun-Sending-Ip: 69.72.43.15
+ bh=wiV0QTircYBZpIpZ7N0y4YXP4M00dXIopNRPONBsgZU=; b=P3oBCUqgiVTbioDYFMityKhcJu9TYIu2rXu5pQGyCMl/6fnViMyHtjPfdFLv/ZdfI4kwy/rK
+ h6LVSC28/+pgUuQYwxS9oXjw71L4v0vY3C7C0UxpyvoXRVNoMyy92YH5Jm9+YgytZwZtpvA2
+ YLSWn9LX/StnDEvsYWw7Kj1ijYI=
+X-Mailgun-Sending-Ip: 198.61.254.31
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n06.prod.us-west-2.postgun.com with SMTP id
- 5fcf8dce233278a2135a85b9 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 08 Dec 2020 14:29:34
+ smtp-out-n01.prod.us-east-1.postgun.com with SMTP id
+ 5fcf8fa68b2b8953181467dd (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 08 Dec 2020 14:37:26
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 15884C43464; Tue,  8 Dec 2020 14:29:34 +0000 (UTC)
+        id 46898C433C6; Tue,  8 Dec 2020 14:37:26 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
 X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
         autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from tynnyri.adurom.net (tynnyri.adurom.net [51.15.11.48])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 3B095C433CA;
-        Tue,  8 Dec 2020 14:29:30 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 3B095C433CA
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 7E6E8C433CA;
+        Tue,  8 Dec 2020 14:37:22 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 7E6E8C433CA
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
 From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Xiaohui Zhang <ruc_zhangxiaohui@163.com>
-Cc:     Amitkumar Karwar <amitkarwar@gmail.com>,
-        Ganapathi Bhat <ganapathi.bhat@nxp.com>,
-        Xinming Hu <huxinming820@gmail.com>,
+To:     Srinivasan Raju <srini.raju@purelifi.com>
+Cc:     mostafa.afgani@purelifi.com, Kalle Valo <kvalo@codeaurora.org>,
         "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/1] mwifiex: Fix possible buffer overflows in mwifiex_config_scan
-References: <20201208124523.8169-1-ruc_zhangxiaohui@163.com>
-Date:   Tue, 08 Dec 2020 16:29:29 +0200
-In-Reply-To: <20201208124523.8169-1-ruc_zhangxiaohui@163.com> (Xiaohui Zhang's
-        message of "Tue, 8 Dec 2020 20:45:23 +0800")
-Message-ID: <877dpse5h2.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        Rob Herring <robh@kernel.org>,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+        linux-kernel@vger.kernel.org (open list),
+        linux-wireless@vger.kernel.org (open list:NETWORKING DRIVERS (WIRELESS)),
+        netdev@vger.kernel.org (open list:NETWORKING DRIVERS)
+Subject: Re: [PATCH] [v11] wireless: Initial driver submission for pureLiFi STA devices
+References: <20200928102008.32568-1-srini.raju@purelifi.com>
+        <20201208115719.349553-1-srini.raju@purelifi.com>
+Date:   Tue, 08 Dec 2020 16:37:17 +0200
+In-Reply-To: <20201208115719.349553-1-srini.raju@purelifi.com> (Srinivasan
+        Raju's message of "Tue, 8 Dec 2020 17:27:04 +0530")
+Message-ID: <878sa84b4y.fsf@tynnyri.adurom.net>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Xiaohui Zhang <ruc_zhangxiaohui@163.com> writes:
+Srinivasan Raju <srini.raju@purelifi.com> writes:
 
-> From: Zhang Xiaohui <ruc_zhangxiaohui@163.com>
+> This introduces the pureLiFi LiFi driver for LiFi-X, LiFi-XC
+> and LiFi-XL USB devices.
 >
-> mwifiex_config_scan() calls memcpy() without checking
-> the destination size may trigger a buffer overflower,
-> which a local user could use to cause denial of service
-> or the execution of arbitrary code.
-> Fix it by putting the length check before calling memcpy().
+> This driver implementation has been based on the zd1211rw driver.
 >
-> Signed-off-by: Zhang Xiaohui <ruc_zhangxiaohui@163.com>
-> ---
->  drivers/net/wireless/marvell/mwifiex/scan.c | 2 ++
->  1 file changed, 2 insertions(+)
+> Driver is based on 802.11 softMAC Architecture and uses
+> native 802.11 for configuration and management.
 >
-> diff --git a/drivers/net/wireless/marvell/mwifiex/scan.c b/drivers/net/wireless/marvell/mwifiex/scan.c
-> index c2a685f63..b1d90678f 100644
-> --- a/drivers/net/wireless/marvell/mwifiex/scan.c
-> +++ b/drivers/net/wireless/marvell/mwifiex/scan.c
-> @@ -930,6 +930,8 @@ mwifiex_config_scan(struct mwifiex_private *priv,
->  				    "DIRECT-", 7))
->  				wildcard_ssid_tlv->max_ssid_length = 0xfe;
->  
-> +			if (ssid_len > 1)
-> +				ssid_len = 1;
->  			memcpy(wildcard_ssid_tlv->ssid,
->  			       user_scan_in->ssid_list[i].ssid, ssid_len);
+> The driver is compiled and tested in ARM, x86 architectures and
+> compiled in powerpc architecture.
+>
+> Signed-off-by: Srinivasan Raju <srini.raju@purelifi.com>
 
-min_t()?
+Please limit how often you send a new version of this driver. It does
+not speed up the review, quite the opposite actually as you just flood
+the patchwork (and my inbox). Especially if there are only cosmetic
+changes there's no point of sending a new version immediately, only send
+a new version when there are major changes.
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
