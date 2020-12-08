@@ -2,76 +2,108 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BDCBE2D2B9B
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Dec 2020 14:05:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C1652D2D38
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Dec 2020 15:30:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727716AbgLHNDe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 8 Dec 2020 08:03:34 -0500
-Received: from mail-m974.mail.163.com ([123.126.97.4]:54852 "EHLO
-        mail-m974.mail.163.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726104AbgLHNDd (ORCPT
+        id S1729587AbgLHO3u (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 8 Dec 2020 09:29:50 -0500
+Received: from so254-31.mailgun.net ([198.61.254.31]:62205 "EHLO
+        so254-31.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729308AbgLHO3t (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 8 Dec 2020 08:03:33 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-        s=s110527; h=From:Subject:Date:Message-Id; bh=2vcpyoHgJzYZ/txQx7
-        wtmk/iK/UcML704UL35GPC6CE=; b=iIY5MC+lMxcxfNYwc7Fwsw561wUW1jURKP
-        evXq9F7QD2MMtak2M5rkRAFIEbUSyXxhd8YTmpluFMMDP/oRhm4DoLD0Z5p2+jXY
-        cKU+TsxDE3rLwTeMD21bFVtyaTZ1twSRVoj7vPEnlG7ukLc9zMPMNOmNg0/u7khH
-        jsqQpomc0=
-Received: from localhost.localdomain (unknown [202.112.113.212])
-        by smtp4 (Coremail) with SMTP id HNxpCgDn9k9ldc9fB_69bg--.53933S4;
-        Tue, 08 Dec 2020 20:45:33 +0800 (CST)
-From:   Xiaohui Zhang <ruc_zhangxiaohui@163.com>
-To:     Xiaohui Zhang <ruc_zhangxiaohui@163.com>,
-        Amitkumar Karwar <amitkarwar@gmail.com>,
+        Tue, 8 Dec 2020 09:29:49 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1607437771; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=zEvZi81D/4nYKy0YNFoi1kytUzUR27z2/wK1lWEelI0=; b=Aar0c4KymOTJbmYslFOqeORjDjw74x2Y1s28erpW2uyfX1d3V3Gl+hRnl96osTut7PNMTAQr
+ hkbzfQks6HJ511nuuo/WH1AhSB7bYR/Aep/maslUTUOZHT5IMrzrbj/LL65ZBsCHGXhJj3n9
+ 1P1z694PqwKLjjaVcdS1S6ourY8=
+X-Mailgun-Sending-Ip: 198.61.254.31
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n09.prod.us-west-2.postgun.com with SMTP id
+ 5fcf8dab9077141e62bb3aa7 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 08 Dec 2020 14:28:59
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id D17E6C433C6; Tue,  8 Dec 2020 14:28:58 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
+        autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id F123FC433C6;
+        Tue,  8 Dec 2020 14:28:55 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org F123FC433C6
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Xiaohui Zhang <ruc_zhangxiaohui@163.com>
+Cc:     Amitkumar Karwar <amitkarwar@gmail.com>,
         Ganapathi Bhat <ganapathi.bhat@nxp.com>,
         Xinming Hu <huxinming820@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
         "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH 1/1] mwifiex: Fix possible buffer overflows in mwifiex_config_scan
-Date:   Tue,  8 Dec 2020 20:45:23 +0800
-Message-Id: <20201208124523.8169-1-ruc_zhangxiaohui@163.com>
-X-Mailer: git-send-email 2.17.1
-X-CM-TRANSID: HNxpCgDn9k9ldc9fB_69bg--.53933S4
-X-Coremail-Antispam: 1Uf129KBjvdXoWrtr47Ww13AF4xGw43XrW8Zwb_yoWDArgEgw
-        sYqrs7JrZ8J34IkFs09rWxu34Fyr1kJFZ3Ga17trWrGFWIya9xKFnYvFs5JryUCwnFvF93
-        Xrs8Ar4UJa18ZjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-        9fnUUvcSsGvfC2KfnxnUUI43ZEXa7xRR9YFtUUUUU==
-X-Originating-IP: [202.112.113.212]
-X-CM-SenderInfo: puxfs6pkdqw5xldrx3rl6rljoofrz/1tbiTg30MFUDGbq93wAAsQ
+Subject: Re: [PATCH 1/1] mwifiex: Fix possible buffer overflows in mwifiex_uap_bss_param_prepare
+References: <20201208113607.24967-1-ruc_zhangxiaohui@163.com>
+Date:   Tue, 08 Dec 2020 16:28:53 +0200
+In-Reply-To: <20201208113607.24967-1-ruc_zhangxiaohui@163.com> (Xiaohui
+        Zhang's message of "Tue, 8 Dec 2020 19:36:07 +0800")
+Message-ID: <87blf4e5i2.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Zhang Xiaohui <ruc_zhangxiaohui@163.com>
+Xiaohui Zhang <ruc_zhangxiaohui@163.com> writes:
 
-mwifiex_config_scan() calls memcpy() without checking
-the destination size may trigger a buffer overflower,
-which a local user could use to cause denial of service
-or the execution of arbitrary code.
-Fix it by putting the length check before calling memcpy().
+> From: Zhang Xiaohui <ruc_zhangxiaohui@163.com>
+>
+> mwifiex_uap_bss_param_prepare() calls memcpy() without checking
+> the destination size may trigger a buffer overflower,
+> which a local user could use to cause denial of service or the
+> execution of arbitrary code.
+> Fix it by putting the length check before calling memcpy().
+>
+> Signed-off-by: Zhang Xiaohui <ruc_zhangxiaohui@163.com>
+> ---
+>  drivers/net/wireless/marvell/mwifiex/uap_cmd.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/net/wireless/marvell/mwifiex/uap_cmd.c b/drivers/net/wireless/marvell/mwifiex/uap_cmd.c
+> index b48a85d79..fb937c7ee 100644
+> --- a/drivers/net/wireless/marvell/mwifiex/uap_cmd.c
+> +++ b/drivers/net/wireless/marvell/mwifiex/uap_cmd.c
+> @@ -496,13 +496,16 @@ mwifiex_uap_bss_param_prepare(u8 *tlv, void *cmd_buf, u16 *param_size)
+>  	struct mwifiex_ie_types_wmmcap *wmm_cap;
+>  	struct mwifiex_uap_bss_param *bss_cfg = cmd_buf;
+>  	int i;
+> +	int ssid_size;
+>  	u16 cmd_size = *param_size;
+>  
+>  	if (bss_cfg->ssid.ssid_len) {
+>  		ssid = (struct host_cmd_tlv_ssid *)tlv;
+>  		ssid->header.type = cpu_to_le16(TLV_TYPE_UAP_SSID);
+>  		ssid->header.len = cpu_to_le16((u16)bss_cfg->ssid.ssid_len);
+> -		memcpy(ssid->ssid, bss_cfg->ssid.ssid, bss_cfg->ssid.ssid_len);
+> +		ssid_size = bss_cfg->ssid.ssid_len > strlen(ssid->ssid) ?
+> +				strlen(ssid->ssid) : bss_cfg->ssid.ssid_len;
+> +		memcpy(ssid->ssid, bss_cfg->ssid.ssid, ssid_size);
 
-Signed-off-by: Zhang Xiaohui <ruc_zhangxiaohui@163.com>
----
- drivers/net/wireless/marvell/mwifiex/scan.c | 2 ++
- 1 file changed, 2 insertions(+)
+I think using min_t() is cleaner. Then you would not need to add a
+temporary variable.
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/scan.c b/drivers/net/wireless/marvell/mwifiex/scan.c
-index c2a685f63..b1d90678f 100644
---- a/drivers/net/wireless/marvell/mwifiex/scan.c
-+++ b/drivers/net/wireless/marvell/mwifiex/scan.c
-@@ -930,6 +930,8 @@ mwifiex_config_scan(struct mwifiex_private *priv,
- 				    "DIRECT-", 7))
- 				wildcard_ssid_tlv->max_ssid_length = 0xfe;
- 
-+			if (ssid_len > 1)
-+				ssid_len = 1;
- 			memcpy(wildcard_ssid_tlv->ssid,
- 			       user_scan_in->ssid_list[i].ssid, ssid_len);
- 
 -- 
-2.17.1
+https://patchwork.kernel.org/project/linux-wireless/list/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
