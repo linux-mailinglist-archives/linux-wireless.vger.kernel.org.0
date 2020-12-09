@@ -2,127 +2,110 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B36322D4589
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Dec 2020 16:38:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4DE252D45CA
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Dec 2020 16:50:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727008AbgLIPhK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 9 Dec 2020 10:37:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46894 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726354AbgLIPhJ (ORCPT
+        id S1727753AbgLIPtw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 9 Dec 2020 10:49:52 -0500
+Received: from mail-il1-f197.google.com ([209.85.166.197]:44838 "EHLO
+        mail-il1-f197.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726110AbgLIPtw (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 9 Dec 2020 10:37:09 -0500
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 998A6C0613CF
-        for <linux-wireless@vger.kernel.org>; Wed,  9 Dec 2020 07:36:29 -0800 (PST)
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.94)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1kn1Vx-005XuP-Ol; Wed, 09 Dec 2020 16:36:25 +0100
-Message-ID: <9320c4f30cd3ba67ababf8e245963b656e2bf1ad.camel@sipsolutions.net>
-Subject: Re: [RFC] Introduce NL80211_IFTYPE_MLO_LINK_DEVICE for MLO link
- (IEEE 802.11be)
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Sunil Dutt <usdutt@codeaurora.org>
-Cc:     linux-wireless@vger.kernel.org
-Date:   Wed, 09 Dec 2020 16:36:24 +0100
-In-Reply-To: <1607526302-8063-1-git-send-email-usdutt@codeaurora.org>
-References: <1607526302-8063-1-git-send-email-usdutt@codeaurora.org>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.5 (3.36.5-1.fc32) 
+        Wed, 9 Dec 2020 10:49:52 -0500
+Received: by mail-il1-f197.google.com with SMTP id c76so1658489ilf.11
+        for <linux-wireless@vger.kernel.org>; Wed, 09 Dec 2020 07:49:36 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
+        bh=yeGmm0MG4HbaGBkCEsUlCG6OY5l6+vaGEd6w4DBQHNw=;
+        b=XfI9IKbzlS2KOWlPpaFM7JAT3g7EGbPpKFWhbHzATJS/IK86Ek5PL/+R+He4WjAVFI
+         JYRytMQNpa/aERv75nzfL10veWP3te1q1sKFEX64PAzkhgDNJtLWBuGR77XzM6N07hQt
+         1M9UipQrR59oe2RPEIHAALDAwoTf+dE299V1K2cjSFiQa0jdpj6vRLN6zPH4yUON0TFD
+         lov1aPhwQfBFz49cjKAcrPJOePX5pGL1UWLep/ZtSAQO07JwhBeyrEz4S1aFdlPz8xho
+         ri9RjxD1PVJhCQAlEROcCzjkmgfNFDjQDnL3DtJJvEjM8Ow4sSCm15Bv+L6Q9hBBstXb
+         U2sw==
+X-Gm-Message-State: AOAM533Q5xD6nc/lZITOTNKll29XkJBRGEsi4LtW3s+fL5pGRFNUf+nS
+        KW2SSCt31RzyBwvG3YdnX/VDSPHO8GK1LISw6EJoVFtlSKmh
+X-Google-Smtp-Source: ABdhPJwg9I+mcg1YDkCZsYwVQlfQO7HdRJG0Q1KyIJutqIWYltfuwWGQEo+XNuAIl2CuVhN4yacwB2lde2u4YdYVy8OhXA7wJVEp
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-malware-bazaar: not-scanned
+X-Received: by 2002:a92:d11:: with SMTP id 17mr3821470iln.84.1607528951520;
+ Wed, 09 Dec 2020 07:49:11 -0800 (PST)
+Date:   Wed, 09 Dec 2020 07:49:11 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <0000000000001f22d305b60a00a4@google.com>
+Subject: KASAN: use-after-free Write in rtl_fw_do_work (2)
+From:   syzbot <syzbot+65be4277f3c489293939@syzkaller.appspotmail.com>
+To:     andreyknvl@google.com, davem@davemloft.net, kuba@kernel.org,
+        kvalo@codeaurora.org, linux-kernel@vger.kernel.org,
+        linux-usb@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, pkshih@realtek.com,
+        syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+Hello,
 
-> Multi-link support is introduced in 802.11be specification.
-[...]
+syzbot found the following issue on:
 
-I'll definitely have to take a closer look at this and the spec and
-think about it - but a couple of quick comments below.
+HEAD commit:    b175d273 USB: legotower: fix logical error in recent commit
+git tree:       https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb.git usb-testing
+console output: https://syzkaller.appspot.com/x/log.txt?x=12ee7c87500000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=d24ee9ecd7ce968e
+dashboard link: https://syzkaller.appspot.com/bug?extid=65be4277f3c489293939
+compiler:       gcc (GCC) 10.1.0-syz 20200507
 
-> @@ -3131,6 +3139,7 @@ enum nl80211_iftype {
->  	NL80211_IFTYPE_P2P_DEVICE,
->  	NL80211_IFTYPE_OCB,
->  	NL80211_IFTYPE_NAN,
-> +	NL80211_IFTYPE_MLO_LINK_DEVICE,
+Unfortunately, I don't have any reproducer for this issue yet.
 
-You'll probably have to update some mac80211 code in this patch to avoid
-compiler warnings.
- 
-> +void cfg80211_stop_mlo_link_device(struct cfg80211_registered_device *rdev,
-> +				   struct wireless_dev *wdev)
-> +{
-> +	ASSERT_RTNL();
-> +
-> +	if (WARN_ON(wdev->iftype != NL80211_IFTYPE_MLO_LINK_DEVICE))
-> +		return;
-> +
-> +	if (!wdev_running(wdev))
-> +		return;
-> +
-> +	rdev_stop_mlo_link_device(rdev, wdev);
-> +	wdev->is_running = false;
-> +
-> +	rdev->opencount--;
-> +
-> +	if (rdev->scan_req && rdev->scan_req->wdev == wdev) {
-> +		if (WARN_ON(!rdev->scan_req->notified &&
-> +			    (!rdev->int_scan_req ||
-> +			     !rdev->int_scan_req->notified)))
-> +			rdev->scan_req->info.aborted = true;
-> +		___cfg80211_scan_done(rdev, false);
-> +	}
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+65be4277f3c489293939@syzkaller.appspotmail.com
 
-Does it even make sense to allow scanning on this wdev, rather than on
-the normal client interfaces? Perhaps should just not be able to get
-there?
+usb 5-1: Direct firmware load for rtlwifi/rtl8192cufw.bin failed with error -2
+rtlwifi: Loading alternative firmware rtlwifi/rtl8192cufw.bin
+rtlwifi: Selected firmware is not available
+==================================================================
+BUG: KASAN: use-after-free in rtl_fw_do_work.cold+0x68/0x6a drivers/net/wireless/realtek/rtlwifi/core.c:93
+Write of size 4 at addr ffff8881454cff50 by task kworker/0:6/7379
 
-> @@ -718,6 +718,7 @@ static const struct nla_policy nl80211_policy[NUM_NL80211_ATTR] = {
->  	[NL80211_ATTR_SAE_PWE] =
->  		NLA_POLICY_RANGE(NLA_U8, NL80211_SAE_PWE_HUNT_AND_PECK,
->  				 NL80211_SAE_PWE_BOTH),
-> +	[NL80211_ATTR_MLO_LINK_INFO] = { .type = NLA_NESTED },
+CPU: 0 PID: 7379 Comm: kworker/0:6 Not tainted 5.10.0-rc7-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
+Workqueue: events request_firmware_work_func
+Call Trace:
+ __dump_stack lib/dump_stack.c:77 [inline]
+ dump_stack+0x107/0x163 lib/dump_stack.c:118
+ print_address_description.constprop.0.cold+0xae/0x4c8 mm/kasan/report.c:385
+ __kasan_report mm/kasan/report.c:545 [inline]
+ kasan_report.cold+0x1f/0x37 mm/kasan/report.c:562
+ rtl_fw_do_work.cold+0x68/0x6a drivers/net/wireless/realtek/rtlwifi/core.c:93
+ request_firmware_work_func+0x12c/0x230 drivers/base/firmware_loader/main.c:1079
+ process_one_work+0x933/0x1520 kernel/workqueue.c:2272
+ worker_thread+0x64c/0x1120 kernel/workqueue.c:2418
+ kthread+0x38c/0x460 kernel/kthread.c:292
+ ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:296
 
-That should specify what/how it's nested, using
-NLA_POLICY_NESTED_ARRAY() (I think, in this case)
+The buggy address belongs to the page:
+page:00000000f54435b3 refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x1454cf
+flags: 0x200000000000000()
+raw: 0200000000000000 0000000000000000 ffffea00051533c8 0000000000000000
+raw: 0000000000000000 0000000000000000 00000000ffffffff 0000000000000000
+page dumped because: kasan: bad access detected
 
->  	struct sk_buff *msg;
->  	void *hdr;
-> +	struct nlattr *nested, *nested_mlo_links;
-> +	struct cfg80211_mlo_link_device_params *mlo_link;
-> +	int i = 0;
->  
->  	msg = nlmsg_new(100 + cr->req_ie_len + cr->resp_ie_len +
->  			cr->fils.kek_len + cr->fils.pmk_len +
-> -			(cr->fils.pmkid ? WLAN_PMKID_LEN : 0), gfp);
-> +			(cr->fils.pmkid ? WLAN_PMKID_LEN : 0) +
-> +			(cr->n_mlo_links ? cr->n_mlo_links * 32 : 0), gfp);
-
-32 probably should be some NLA_SIZE or something constant?
-
-There's also no point in the ternary operator since 0 * 32 is 0 :)
-
->  /* Consumes bss object one way or another */
-> @@ -833,7 +849,9 @@ void cfg80211_connect_done(struct net_device *dev,
->  	ev = kzalloc(sizeof(*ev) + (params->bssid ? ETH_ALEN : 0) +
->  		     params->req_ie_len + params->resp_ie_len +
->  		     params->fils.kek_len + params->fils.pmk_len +
-> -		     (params->fils.pmkid ? WLAN_PMKID_LEN : 0), gfp);
-> +		     (params->fils.pmkid ? WLAN_PMKID_LEN : 0) +
-> +		     (params->n_mlo_links ? params->n_mlo_links *
-> +		      sizeof(struct cfg80211_mlo_link_device_params) : 0), gfp);
-
-same here, no need for the ternary
+Memory state around the buggy address:
+ ffff8881454cfe00: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+ ffff8881454cfe80: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+>ffff8881454cff00: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+                                                 ^
+ ffff8881454cff80: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+ ffff8881454d0000: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+==================================================================
 
 
-It feels strangely asymmetric to have stop and no start ... but I guess
-that's the part where I need to think about it and look a bit at how it
-all works :)
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-johannes
-
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
