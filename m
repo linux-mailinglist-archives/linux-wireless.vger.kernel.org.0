@@ -2,80 +2,148 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C88E32D4B5F
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Dec 2020 21:16:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0EE4E2D4BD8
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Dec 2020 21:30:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388173AbgLIUP3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 9 Dec 2020 15:15:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33466 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388162AbgLIUPU (ORCPT
+        id S2388543AbgLIU3x (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 9 Dec 2020 15:29:53 -0500
+Received: from mailgw01.mediatek.com ([210.61.82.183]:36619 "EHLO
+        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S2388540AbgLIU3x (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 9 Dec 2020 15:15:20 -0500
-Received: from mail-pf1-x430.google.com (mail-pf1-x430.google.com [IPv6:2607:f8b0:4864:20::430])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45F4CC0613D6;
-        Wed,  9 Dec 2020 12:14:40 -0800 (PST)
-Received: by mail-pf1-x430.google.com with SMTP id t8so1794061pfg.8;
-        Wed, 09 Dec 2020 12:14:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=V/SB75FrytVaR1GPHJwL1aWxWJHgR7n/gB7N5XHVzZs=;
-        b=nFHwZpS17ASDY3IDfmVDOBjTnpDOZVm8vIhqlIMBdw+A3vZP9iyFeW2V7FAoijK+iP
-         LEmnyJzhH6X2DWFEjeFnCFgoAVB3GlwRu66NFkJx6gzSVrZXjJj6uM40de0JjKhAspIf
-         kYZn3M2Y76C/EIaeYTvDsVlIASjN7WLFXhXajD5b+mKOZcWL5WkaEKe04qFKcy03w2Nk
-         1sMdmj5X9hRahBrdjtX8I4N1BGSMDGKAZJk5WHbiu5TkduE+du0BnYLSVZ0rNrrAihi+
-         +n9Ylvi+N/pXrJn4B2coXgnBMTxB+0UZvQNk8OnDGr94cFdpmUZQB2l6swF3wAKEGCcI
-         pIeg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=V/SB75FrytVaR1GPHJwL1aWxWJHgR7n/gB7N5XHVzZs=;
-        b=FeArSS8cK8Tt1VfseQFZvAYC50/5hcrl7MewkXiQZ9DNuQ78VwVpETJiaZHlsoPyYI
-         GbMEPbJo7pI2gtBkSqDwxsEQEabfrsiA6zLF6+UPIC5mVTb735MFJwBqkdpCyMAlOZ26
-         jIxOCeIwWaHVlw7P5y6/SZ1ORQIyMwHtk4rLCw5XUMfumUqLLyPoCQtadIDox67reKEB
-         ezLa0csXU8T5ImLfPrVDytrCD+Cg8c5nOV4LjBQsJLW/YwloSIc1wRXuXvLHJk70tFPJ
-         PXvi5WuRRGeGjjNSAr+w9IGQvdFnWBephoGNv2zFNlEqIJsd62rEgKccPgAAK5Sj4WiS
-         j0zw==
-X-Gm-Message-State: AOAM531GJnBmrEPtm8HT3Hgk3GGFz1G0uc3jPnEhblnc+4KCtsSYpENz
-        jvTH2lakGgnp/jwIQjRQiDS2go4rUndaiq65Bg==
-X-Google-Smtp-Source: ABdhPJzU1Dfwb1zgY1Qu6vWMDkDTCKsLd/N9aSQfQiQFMb9tNPMERYrSIPfZ8PjLrUVbBbu3LZKQqL+mhsiwSar8GGk=
-X-Received: by 2002:aa7:9738:0:b029:19d:dce0:d8e7 with SMTP id
- k24-20020aa797380000b029019ddce0d8e7mr3564485pfg.14.1607544879848; Wed, 09
- Dec 2020 12:14:39 -0800 (PST)
+        Wed, 9 Dec 2020 15:29:53 -0500
+X-UUID: fccb5bba5e8a44008ebba8e078e39880-20201210
+X-UUID: fccb5bba5e8a44008ebba8e078e39880-20201210
+Received: from mtkexhb01.mediatek.inc [(172.21.101.102)] by mailgw01.mediatek.com
+        (envelope-from <ryder.lee@mediatek.com>)
+        (Cellopoint E-mail Firewall v4.1.14 Build 0819 with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 784248791; Thu, 10 Dec 2020 04:29:03 +0800
+Received: from mtkcas07.mediatek.inc (172.21.101.84) by
+ mtkmbs08n2.mediatek.inc (172.21.101.56) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Thu, 10 Dec 2020 04:29:00 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas07.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Thu, 10 Dec 2020 04:29:00 +0800
+From:   Ryder Lee <ryder.lee@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+CC:     Shayne Chen <shayne.chen@mediatek.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>,
+        Ryder Lee <ryder.lee@mediatek.com>
+Subject: [PATCH v2 1/2] mt76: mt7915: reset token when mac_reset happens
+Date:   Thu, 10 Dec 2020 04:28:57 +0800
+Message-ID: <69d62cd40ae52e0ddd5b26ba96bc7480385585a5.1607542812.git.ryder.lee@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-References: <CALjTZvZZZVqnoV4YFTDHogVHv77=dKfcSSBGj1zC83zpUid9+g@mail.gmail.com>
- <4eb99a1da6342999c4dca355533a0847d0e942a5.camel@intel.com>
- <CALjTZvYwccfOVTTGNo1=oLnwXG2b9Vz1nVZuvLKFV94+3fQ6EQ@mail.gmail.com> <20201209091315.2c55e1c6@kicinski-fedora-pc1c0hjn.DHCP.thefacebook.com>
-In-Reply-To: <20201209091315.2c55e1c6@kicinski-fedora-pc1c0hjn.DHCP.thefacebook.com>
-From:   Rui Salvaterra <rsalvaterra@gmail.com>
-Date:   Wed, 9 Dec 2020 20:14:28 +0000
-Message-ID: <CALjTZvYfdMDLGZ8SebXT_W9Asa0fmMVhs47HVLvyDm7ao_Pbjg@mail.gmail.com>
-Subject: Re: [BUG] iwlwifi: card unusable after firmware crash
-To:     Jakub Kicinski <kuba@kernel.org>
-Cc:     "Coelho, Luciano" <luciano.coelho@intel.com>,
-        "Goodstein, Mordechay" <mordechay.goodstein@intel.com>,
-        "Berg, Johannes" <johannes.berg@intel.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
+X-TM-SNTS-SMTP: E1EAA8FC69FA8F5D066B51544A5C0CFD20CEEB1BBDE26E51B64D0F5CCECE27602000:8
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi, guys,
+Reset buffering token in mt7915_mac_reset_work() to avoid possible leakege,
+which leads to Tx stop after mac reset.
 
-On Wed, 9 Dec 2020 at 17:13, Jakub Kicinski <kuba@kernel.org> wrote:
->
-> Any luck figuring this out, Luca? If this is a 5.10 regression we need
-> to let Linus know tomorrow, so the time is ticking :(
+Tested-by: Bo Jiao <bo.jiao@mediatek.com>
+Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+---
+change since v2 - rebase on top of latest codebase
+---
+ .../net/wireless/mediatek/mt76/mt7915/init.c  | 18 +-------------
+ .../net/wireless/mediatek/mt76/mt7915/mac.c   | 24 +++++++++++++++++++
+ .../wireless/mediatek/mt76/mt7915/mt7915.h    |  1 +
+ 3 files changed, 26 insertions(+), 17 deletions(-)
 
-I don't have the possibility to test other kernels at the moment, but
-I will do so in a few days (at least to find a working version to
-bisect). Meanwhile, I don't know if this is relevant or not, but I'm
-using WPA3 PSK.
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+index ed4635bd151a..255ccd7e3d27 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+@@ -672,28 +672,12 @@ int mt7915_register_device(struct mt7915_dev *dev)
+ 
+ void mt7915_unregister_device(struct mt7915_dev *dev)
+ {
+-	struct mt76_txwi_cache *txwi;
+-	int id;
+-
+ 	mt7915_unregister_ext_phy(dev);
+ 	mt76_unregister_device(&dev->mt76);
+ 	mt7915_mcu_exit(dev);
+ 	mt7915_dma_cleanup(dev);
+ 
+-	spin_lock_bh(&dev->token_lock);
+-	idr_for_each_entry(&dev->token, txwi, id) {
+-		mt7915_txp_skb_unmap(&dev->mt76, txwi);
+-		if (txwi->skb) {
+-			struct ieee80211_hw *hw;
+-
+-			hw = mt76_tx_status_get_hw(&dev->mt76, txwi->skb);
+-			ieee80211_free_txskb(hw, txwi->skb);
+-		}
+-		mt76_put_txwi(&dev->mt76, txwi);
+-		dev->token_count--;
+-	}
+-	spin_unlock_bh(&dev->token_lock);
+-	idr_destroy(&dev->token);
++	mt7915_tx_token_put(dev);
+ 
+ 	mt76_free_device(&dev->mt76);
+ }
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+index f504eeb221f9..1b4d65310b88 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+@@ -1485,6 +1485,27 @@ mt7915_dma_reset(struct mt7915_phy *phy)
+ 		 MT_WFDMA1_GLO_CFG_TX_DMA_EN | MT_WFDMA1_GLO_CFG_RX_DMA_EN);
+ }
+ 
++void mt7915_tx_token_put(struct mt7915_dev *dev)
++{
++	struct mt76_txwi_cache *txwi;
++	int id;
++
++	spin_lock_bh(&dev->token_lock);
++	idr_for_each_entry(&dev->token, txwi, id) {
++		mt7915_txp_skb_unmap(&dev->mt76, txwi);
++		if (txwi->skb) {
++			struct ieee80211_hw *hw;
++
++			hw = mt76_tx_status_get_hw(&dev->mt76, txwi->skb);
++			ieee80211_free_txskb(hw, txwi->skb);
++		}
++		mt76_put_txwi(&dev->mt76, txwi);
++		dev->token_count--;
++	}
++	spin_unlock_bh(&dev->token_lock);
++	idr_destroy(&dev->token);
++}
++
+ /* system error recovery */
+ void mt7915_mac_reset_work(struct work_struct *work)
+ {
+@@ -1525,6 +1546,9 @@ void mt7915_mac_reset_work(struct work_struct *work)
+ 
+ 	mt76_wr(dev, MT_MCU_INT_EVENT, MT_MCU_INT_EVENT_DMA_STOPPED);
+ 
++	mt7915_tx_token_put(dev);
++	idr_init(&dev->token);
++
+ 	if (mt7915_wait_reset_state(dev, MT_MCU_CMD_RESET_DONE)) {
+ 		mt7915_dma_reset(&dev->phy);
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
+index 0339abf360d3..94bed8a3a050 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
+@@ -463,6 +463,7 @@ int mt7915_tx_prepare_skb(struct mt76_dev *mdev, void *txwi_ptr,
+ 			  struct ieee80211_sta *sta,
+ 			  struct mt76_tx_info *tx_info);
+ void mt7915_tx_complete_skb(struct mt76_dev *mdev, struct mt76_queue_entry *e);
++void mt7915_tx_token_put(struct mt7915_dev *dev);
+ int mt7915_init_tx_queues(struct mt7915_phy *phy, int idx, int n_desc);
+ void mt7915_queue_rx_skb(struct mt76_dev *mdev, enum mt76_rxq_id q,
+ 			 struct sk_buff *skb);
+-- 
+2.18.0
 
-Thanks,
-Rui
