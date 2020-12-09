@@ -2,211 +2,191 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AEA772D4945
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Dec 2020 19:43:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E2CAA2D4A12
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Dec 2020 20:27:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733310AbgLISmv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 9 Dec 2020 13:42:51 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:57317 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1733155AbgLISmn (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 9 Dec 2020 13:42:43 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1607539277;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=MUuXGmzlvNA0nqHFSPBjY5QQLvxqOwA8Xwb7SFNgqDc=;
-        b=J79RtTD34FE3QYVn9SbZybWajUpRAyNQJUm8sZirbA3rhACtw7HFAoYVC0SgDHAwat0q7r
-        aqk/Ge0cAv2enuDfgV89jGE2zzk/epW9vtHzW2CwWbCiy58C1qvsnTrMg94ChToScvJH02
-        MWp4nAYnybnWM7vjpOMP7YyTvTBlbyE=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-261-5NEchfhQO5yg7QGYOBKb9A-1; Wed, 09 Dec 2020 13:41:15 -0500
-X-MC-Unique: 5NEchfhQO5yg7QGYOBKb9A-1
-Received: by mail-wm1-f70.google.com with SMTP id f12so906231wmf.6
-        for <linux-wireless@vger.kernel.org>; Wed, 09 Dec 2020 10:41:14 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=MUuXGmzlvNA0nqHFSPBjY5QQLvxqOwA8Xwb7SFNgqDc=;
-        b=Jjvg/XbP647+XOvQYozRFkeUa9MjLyVWUdkBflT1rHLONAq8oRznWiz3iFj+PiljxA
-         jkmA2vRC8IMtRSK9oD7S5UDM05XNECaRoTMr7+UIcHc4CyJUqcjY/iuw3y4MaJYKISJ5
-         sImpge77NzkxsVEvlcP3ebrbVfFmXIWRPM6p7eqsawqhV0lMN4B2PdKB8xDeqRycM8o1
-         rk04h1QsB574Xc4c9eXTcmUeN4labWWYD9ZUGZ6qntBpcgu+0d278kOuFa2xK9KnAkwi
-         eqcKbYfVr/4+pNzVnaEQXA483o35+mz/TiZNIAoDo0s8T032VtH0lyGbir8c64WS5Egh
-         ZthQ==
-X-Gm-Message-State: AOAM5314gdEOIJ7iKPyLaVI2z7V12xgofNaYyuInYpchbKAz9BVFujgc
-        8CkUuLjmR/Oqyxp8Fs/SamnyO1OfvHAN4LxAUvTTBjPcvW18txxkx+nWTB/6pr0yMluVP55odQS
-        eqeB+nOLf8/71v2b01NlyfioxJk8=
-X-Received: by 2002:a1c:2ecc:: with SMTP id u195mr4225676wmu.27.1607539273945;
-        Wed, 09 Dec 2020 10:41:13 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJzw0a0hAtstycfl5aKOmDMEIiB4WHqnPE9xMfyLcrctS8QgJaY29lJVZwVTDb248TEDDWzIUg==
-X-Received: by 2002:a1c:2ecc:: with SMTP id u195mr4225657wmu.27.1607539273725;
-        Wed, 09 Dec 2020 10:41:13 -0800 (PST)
-Received: from localhost ([151.66.8.153])
-        by smtp.gmail.com with ESMTPSA id h184sm5557179wmh.23.2020.12.09.10.41.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Dec 2020 10:41:13 -0800 (PST)
-Date:   Wed, 9 Dec 2020 19:41:09 +0100
-From:   Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-To:     Ryder Lee <ryder.lee@mediatek.com>
-Cc:     Felix Fietkau <nbd@nbd.name>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org
-Subject: Re: [PATCH 1/2] mt76: mt7915: reset token when mac_reset happens
-Message-ID: <20201209184109.GB2735@lore-desk>
-References: <96fb46ff1e2e3a9c0646a3b3dce43c3840b7bae0.1607536573.git.ryder.lee@mediatek.com>
+        id S1728147AbgLIT1f (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 9 Dec 2020 14:27:35 -0500
+Received: from mga18.intel.com ([134.134.136.126]:2215 "EHLO mga18.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725968AbgLIT1f (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 9 Dec 2020 14:27:35 -0500
+IronPort-SDR: B2NVWOgoy1sBHiE39oezUCy7TKId9bW2li5U9suzYEuKXBktoL8Eq+NiaQrTZTEZmksKfYKm7g
+ ZgAy4sAwXGsA==
+X-IronPort-AV: E=McAfee;i="6000,8403,9830"; a="161894549"
+X-IronPort-AV: E=Sophos;i="5.78,405,1599548400"; 
+   d="scan'208";a="161894549"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Dec 2020 11:26:37 -0800
+IronPort-SDR: 47QPtUpqs8vRSxVbnKp28E6w4FOWGESX8c3TzyDOMEwZoiZZc9H9FfjJhcbHdRiKDrkk1jfSXU
+ aVr8gfQjLgXQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.78,405,1599548400"; 
+   d="scan'208";a="552749229"
+Received: from lkp-server01.sh.intel.com (HELO 2bbb63443648) ([10.239.97.150])
+  by orsmga005.jf.intel.com with ESMTP; 09 Dec 2020 11:26:36 -0800
+Received: from kbuild by 2bbb63443648 with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1kn56h-0000Py-PE; Wed, 09 Dec 2020 19:26:35 +0000
+Date:   Thu, 10 Dec 2020 03:25:52 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     linux-wireless@vger.kernel.org
+Subject: [wireless-drivers-next:master] BUILD SUCCESS
+ 3f79e541593fecc2a90687eb7162e15a499caa33
+Message-ID: <5fd124c0.V5YZuEy3DHdQoZqg%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="f2QGlHpHGjS2mn6Y"
-Content-Disposition: inline
-In-Reply-To: <96fb46ff1e2e3a9c0646a3b3dce43c3840b7bae0.1607536573.git.ryder.lee@mediatek.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git  master
+branch HEAD: 3f79e541593fecc2a90687eb7162e15a499caa33  rtlwifi: rtl8192de: fix ofdm power compensation
 
---f2QGlHpHGjS2mn6Y
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+elapsed time: 721m
 
-> Reset buffering token in mt7915_mac_reset_work() to avoid possible leakeg=
-e,
-> which leads to Tx stop after mac reset.
->=20
-> Tested-by: Bo Jiao <bo.jiao@mediatek.com>
-> Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
-> ---
->  .../net/wireless/mediatek/mt76/mt7915/init.c  | 17 +-------------
->  .../net/wireless/mediatek/mt76/mt7915/mac.c   | 23 +++++++++++++++++++
->  .../wireless/mediatek/mt76/mt7915/mt7915.h    |  1 +
->  3 files changed, 25 insertions(+), 16 deletions(-)
->=20
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/n=
-et/wireless/mediatek/mt76/mt7915/init.c
-> index ff29a8090739..255ccd7e3d27 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-> @@ -672,27 +672,12 @@ int mt7915_register_device(struct mt7915_dev *dev)
-> =20
->  void mt7915_unregister_device(struct mt7915_dev *dev)
->  {
-> -	struct mt76_txwi_cache *txwi;
-> -	int id;
-> -
->  	mt7915_unregister_ext_phy(dev);
->  	mt76_unregister_device(&dev->mt76);
->  	mt7915_mcu_exit(dev);
->  	mt7915_dma_cleanup(dev);
-> =20
-> -	spin_lock_bh(&dev->token_lock);
-> -	idr_for_each_entry(&dev->token, txwi, id) {
-> -		mt7915_txp_skb_unmap(&dev->mt76, txwi);
-> -		if (txwi->skb) {
-> -			struct ieee80211_hw *hw;
-> -
-> -			hw =3D mt76_tx_status_get_hw(&dev->mt76, txwi->skb);
-> -			ieee80211_free_txskb(hw, txwi->skb);
-> -		}
-> -		mt76_put_txwi(&dev->mt76, txwi);
+configs tested: 129
+configs skipped: 2
 
-it seems to me you are not using latest codebase here. I guess you are miss=
-ing
-the commit below:
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-commit 5342758d5522dbf8081360be9c8545bac84b80f3
-Author: Felix Fietkau <nbd@nbd.name>
-Date:   Sat Nov 21 16:00:14 2020 +0100
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm                              allyesconfig
+arm                              allmodconfig
+arm64                               defconfig
+arm                     davinci_all_defconfig
+powerpc                      mgcoge_defconfig
+powerpc                      ppc64e_defconfig
+sh                            shmin_defconfig
+mips                         tb0226_defconfig
+m68k                        mvme16x_defconfig
+arc                         haps_hs_defconfig
+c6x                         dsk6455_defconfig
+c6x                        evmc6472_defconfig
+mips                       lemote2f_defconfig
+powerpc                   motionpro_defconfig
+mips                           ip28_defconfig
+m68k                        m5407c3_defconfig
+arc                           tb10x_defconfig
+powerpc                      ppc44x_defconfig
+mips                         tb0219_defconfig
+mips                  maltasmvp_eva_defconfig
+mips                     cu1000-neo_defconfig
+powerpc                     rainier_defconfig
+arm                           viper_defconfig
+powerpc                     tqm5200_defconfig
+powerpc                     sequoia_defconfig
+c6x                              alldefconfig
+arm                          ixp4xx_defconfig
+sh                          lboxre2_defconfig
+m68k                         apollo_defconfig
+arm                          pcm027_defconfig
+mips                          ath25_defconfig
+powerpc                 mpc834x_mds_defconfig
+arm                        oxnas_v6_defconfig
+s390                                defconfig
+sh                           se7751_defconfig
+arm                            mmp2_defconfig
+powerpc                       holly_defconfig
+arm                           h5000_defconfig
+sh                            migor_defconfig
+mips                        bcm63xx_defconfig
+powerpc                    socrates_defconfig
+powerpc                    klondike_defconfig
+arm                       imx_v6_v7_defconfig
+arm                           tegra_defconfig
+riscv                             allnoconfig
+m68k                             alldefconfig
+mips                         bigsur_defconfig
+arm                        vexpress_defconfig
+arm                          pxa168_defconfig
+riscv                    nommu_k210_defconfig
+powerpc                 mpc8540_ads_defconfig
+sh                             shx3_defconfig
+powerpc                      pmac32_defconfig
+mips                          ath79_defconfig
+arm                             mxs_defconfig
+powerpc                      ppc40x_defconfig
+powerpc                     mpc83xx_defconfig
+m68k                        m5272c3_defconfig
+sh                  sh7785lcr_32bit_defconfig
+sh                        sh7785lcr_defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+c6x                              allyesconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+parisc                           allyesconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                               tinyconfig
+i386                                defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+i386                 randconfig-a004-20201209
+i386                 randconfig-a005-20201209
+i386                 randconfig-a001-20201209
+i386                 randconfig-a002-20201209
+i386                 randconfig-a006-20201209
+i386                 randconfig-a003-20201209
+x86_64               randconfig-a016-20201209
+x86_64               randconfig-a012-20201209
+x86_64               randconfig-a013-20201209
+x86_64               randconfig-a014-20201209
+x86_64               randconfig-a015-20201209
+x86_64               randconfig-a011-20201209
+i386                 randconfig-a013-20201209
+i386                 randconfig-a014-20201209
+i386                 randconfig-a011-20201209
+i386                 randconfig-a015-20201209
+i386                 randconfig-a012-20201209
+i386                 randconfig-a016-20201209
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+x86_64                                   rhel
+x86_64                           allyesconfig
+x86_64                    rhel-7.6-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                                  kexec
 
-mt76: mt7915: stop queues when running out of tx tokens
+clang tested configs:
+x86_64               randconfig-a004-20201209
+x86_64               randconfig-a006-20201209
+x86_64               randconfig-a005-20201209
+x86_64               randconfig-a001-20201209
+x86_64               randconfig-a002-20201209
+x86_64               randconfig-a003-20201209
 
-Avoids packet drops under load with lots of stations
-
-Regards,
-Lorenzo
-
-> -	}
-> -	spin_unlock_bh(&dev->token_lock);
-> -	idr_destroy(&dev->token);
-> +	mt7915_tx_token_put(dev);
-> =20
->  	mt76_free_device(&dev->mt76);
->  }
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/ne=
-t/wireless/mediatek/mt76/mt7915/mac.c
-> index 7f08c88d3282..25623e450bc5 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-> @@ -1466,6 +1466,26 @@ mt7915_dma_reset(struct mt7915_phy *phy)
->  		 MT_WFDMA1_GLO_CFG_TX_DMA_EN | MT_WFDMA1_GLO_CFG_RX_DMA_EN);
->  }
-> =20
-> +void mt7915_tx_token_put(struct mt7915_dev *dev);
-> +{
-> +	struct mt76_txwi_cache *txwi;
-> +	int id;
-> +
-> +	spin_lock_bh(&dev->token_lock);
-> +	idr_for_each_entry(&dev->token, txwi, id) {
-> +		mt7915_txp_skb_unmap(&dev->mt76, txwi);
-> +		if (txwi->skb) {
-> +			struct ieee80211_hw *hw;
-> +
-> +			hw =3D mt76_tx_status_get_hw(&dev->mt76, txwi->skb);
-> +			ieee80211_free_txskb(hw, txwi->skb);
-> +		}
-> +		mt76_put_txwi(&dev->mt76, txwi);
-> +	}
-> +	spin_unlock_bh(&dev->token_lock);
-> +	idr_destroy(&dev->token);
-> +}
-> +
->  /* system error recovery */
->  void mt7915_mac_reset_work(struct work_struct *work)
->  {
-> @@ -1506,6 +1526,9 @@ void mt7915_mac_reset_work(struct work_struct *work)
-> =20
->  	mt76_wr(dev, MT_MCU_INT_EVENT, MT_MCU_INT_EVENT_DMA_STOPPED);
-> =20
-> +	mt7915_tx_token_put(dev);
-> +	idr_init(&dev->token);
-> +
->  	if (mt7915_wait_reset_state(dev, MT_MCU_CMD_RESET_DONE)) {
->  		mt7915_dma_reset(&dev->phy);
-> =20
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h b/drivers=
-/net/wireless/mediatek/mt76/mt7915/mt7915.h
-> index 5bf76c74373f..3cee1cffc95e 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-> @@ -468,6 +468,7 @@ int mt7915_tx_prepare_skb(struct mt76_dev *mdev, void=
- *txwi_ptr,
->  			  struct ieee80211_sta *sta,
->  			  struct mt76_tx_info *tx_info);
->  void mt7915_tx_complete_skb(struct mt76_dev *mdev, struct mt76_queue_ent=
-ry *e);
-> +void mt7915_tx_token_put(struct mt7915_dev *dev);
->  int mt7915_init_tx_queues(struct mt7915_phy *phy, int idx, int n_desc);
->  void mt7915_queue_rx_skb(struct mt76_dev *mdev, enum mt76_rxq_id q,
->  			 struct sk_buff *skb);
-> --=20
-> 2.18.0
->=20
-
---f2QGlHpHGjS2mn6Y
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCX9EaQwAKCRA6cBh0uS2t
-rNLGAP4+MjR1yUwoTUosuMZYLerMkvGPeeszKH33x5hzyksLcQEAwJwNwd1xwwTR
-NCGjAqxku4H19Sgz5oWAIFiMIT4RTwE=
-=UP9M
------END PGP SIGNATURE-----
-
---f2QGlHpHGjS2mn6Y--
-
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
