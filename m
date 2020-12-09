@@ -2,191 +2,102 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E2CAA2D4A12
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Dec 2020 20:27:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E8DCA2D4A85
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Dec 2020 20:39:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728147AbgLIT1f (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 9 Dec 2020 14:27:35 -0500
-Received: from mga18.intel.com ([134.134.136.126]:2215 "EHLO mga18.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725968AbgLIT1f (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 9 Dec 2020 14:27:35 -0500
-IronPort-SDR: B2NVWOgoy1sBHiE39oezUCy7TKId9bW2li5U9suzYEuKXBktoL8Eq+NiaQrTZTEZmksKfYKm7g
- ZgAy4sAwXGsA==
-X-IronPort-AV: E=McAfee;i="6000,8403,9830"; a="161894549"
-X-IronPort-AV: E=Sophos;i="5.78,405,1599548400"; 
-   d="scan'208";a="161894549"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Dec 2020 11:26:37 -0800
-IronPort-SDR: 47QPtUpqs8vRSxVbnKp28E6w4FOWGESX8c3TzyDOMEwZoiZZc9H9FfjJhcbHdRiKDrkk1jfSXU
- aVr8gfQjLgXQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.78,405,1599548400"; 
-   d="scan'208";a="552749229"
-Received: from lkp-server01.sh.intel.com (HELO 2bbb63443648) ([10.239.97.150])
-  by orsmga005.jf.intel.com with ESMTP; 09 Dec 2020 11:26:36 -0800
-Received: from kbuild by 2bbb63443648 with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1kn56h-0000Py-PE; Wed, 09 Dec 2020 19:26:35 +0000
-Date:   Thu, 10 Dec 2020 03:25:52 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     linux-wireless@vger.kernel.org
-Subject: [wireless-drivers-next:master] BUILD SUCCESS
- 3f79e541593fecc2a90687eb7162e15a499caa33
-Message-ID: <5fd124c0.V5YZuEy3DHdQoZqg%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+        id S2387647AbgLIThn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 9 Dec 2020 14:37:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55846 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729747AbgLIThc (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 9 Dec 2020 14:37:32 -0500
+Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com [IPv6:2607:f8b0:4864:20::642])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4185FC0613D6;
+        Wed,  9 Dec 2020 11:36:52 -0800 (PST)
+Received: by mail-pl1-x642.google.com with SMTP id 4so1494197plk.5;
+        Wed, 09 Dec 2020 11:36:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=CyWgjPy4I+HbjxDbhT+g/PzO0BxXYU1ulWjOU7DYulU=;
+        b=TPJg7bYIXiUHQ6rRirpCUnu5kGZXP8cRVZwlsH7HBXNcp88TOTj5vkuPs0iczU1dve
+         Duw9uO+PmjYt7zP/gqTJMmAonixhykINDhVdskZQzxQ7KB8/8xCFEzW6Q1AGn08kLU5G
+         4KkVKOxacMcwgPnn3MqjHUu4iE2u4FfEDKtNUQH9fqQqdN5fJejMpPm03ERAWQqTDgjF
+         bPUcJsqN1sjlGDyy1XIRMjgKZHRPfCrholGqi+lVhL+tE3f9tAFZry1sWDL02uWlfEaz
+         t7WL5eoMio0ZdlzpVcDG+G35xhGECJ4223Ke3C87s4FbARmG9uDq5ferawYdpjjW0sd/
+         Rnlw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=CyWgjPy4I+HbjxDbhT+g/PzO0BxXYU1ulWjOU7DYulU=;
+        b=pu3m7nh/51JE0eeDibh3UHk1GIfqcOM6r1pwjarRDsWab2eZ0fpBdJBxtRr7m/ktKd
+         S/SCAQ0GaJ+Smfrrq5I37O/ExbIVjx1sdUGC3F2Ph3Zb90zZLfLlm5/0gjUjiKk4Y4Yb
+         gJfpm/tsXFLgSu6ATQheJGC1Y0umqwLGRDOzCkEvv+1/3Ng/UPg3BMQTkss4EVhSQNVp
+         eDACPLW8ztsUChKNSzJ0PKyQRAAg2rWTiGWWVMS7TgEWQGRynvdUjA5qK9tzqUG1GhZ5
+         tf6u6ahmeMPnShwuHGDPcD58ETvkUr4aGruXKp+1ue6q9KVz1/tU6Ex42uoQC7jpsUPW
+         cdHw==
+X-Gm-Message-State: AOAM532lhJopTimFIkQlg+AeFsj5hiaDklYeUj4vxSiy+GuD3W78VGYK
+        PW6XyNfD8gsheEI+/EefOnM=
+X-Google-Smtp-Source: ABdhPJxwT/EueNc5KNGRYj9S8wYQiuJE2KBwKMWVjhaF+uU06n8Ti11ncw8BL0PtBi4etdv40vsqpQ==
+X-Received: by 2002:a17:902:9f8b:b029:da:726d:3f17 with SMTP id g11-20020a1709029f8bb02900da726d3f17mr3358980plq.35.1607542611741;
+        Wed, 09 Dec 2020 11:36:51 -0800 (PST)
+Received: from jordon-HP-15-Notebook-PC.domain.name ([122.179.87.107])
+        by smtp.gmail.com with ESMTPSA id fv22sm3079552pjb.14.2020.12.09.11.36.48
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 09 Dec 2020 11:36:51 -0800 (PST)
+From:   Souptick Joarder <jrdr.linux@gmail.com>
+To:     nbd@nbd.name, lorenzo.bianconi83@gmail.com, ryder.lee@mediatek.com,
+        kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org,
+        matthias.bgg@gmail.com
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Souptick Joarder <jrdr.linux@gmail.com>
+Subject: [PATCH] mt76: Fixed kernel test robot warning
+Date:   Thu, 10 Dec 2020 01:06:57 +0530
+Message-Id: <1607542617-4005-1-git-send-email-jrdr.linux@gmail.com>
+X-Mailer: git-send-email 1.9.1
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git  master
-branch HEAD: 3f79e541593fecc2a90687eb7162e15a499caa33  rtlwifi: rtl8192de: fix ofdm power compensation
+Kernel test robot throws below warning ->
 
-elapsed time: 721m
+   drivers/net/wireless/mediatek/mt76/tx.c: In function
+'mt76_txq_schedule':
+>> drivers/net/wireless/mediatek/mt76/tx.c:499:21: warning: variable 'q'
+>> set but not used [-Wunused-but-set-variable]
+     499 |  struct mt76_queue *q;
+         |                     ^
 
-configs tested: 129
-configs skipped: 2
+This patch will silence this warning.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm                              allyesconfig
-arm                              allmodconfig
-arm64                               defconfig
-arm                     davinci_all_defconfig
-powerpc                      mgcoge_defconfig
-powerpc                      ppc64e_defconfig
-sh                            shmin_defconfig
-mips                         tb0226_defconfig
-m68k                        mvme16x_defconfig
-arc                         haps_hs_defconfig
-c6x                         dsk6455_defconfig
-c6x                        evmc6472_defconfig
-mips                       lemote2f_defconfig
-powerpc                   motionpro_defconfig
-mips                           ip28_defconfig
-m68k                        m5407c3_defconfig
-arc                           tb10x_defconfig
-powerpc                      ppc44x_defconfig
-mips                         tb0219_defconfig
-mips                  maltasmvp_eva_defconfig
-mips                     cu1000-neo_defconfig
-powerpc                     rainier_defconfig
-arm                           viper_defconfig
-powerpc                     tqm5200_defconfig
-powerpc                     sequoia_defconfig
-c6x                              alldefconfig
-arm                          ixp4xx_defconfig
-sh                          lboxre2_defconfig
-m68k                         apollo_defconfig
-arm                          pcm027_defconfig
-mips                          ath25_defconfig
-powerpc                 mpc834x_mds_defconfig
-arm                        oxnas_v6_defconfig
-s390                                defconfig
-sh                           se7751_defconfig
-arm                            mmp2_defconfig
-powerpc                       holly_defconfig
-arm                           h5000_defconfig
-sh                            migor_defconfig
-mips                        bcm63xx_defconfig
-powerpc                    socrates_defconfig
-powerpc                    klondike_defconfig
-arm                       imx_v6_v7_defconfig
-arm                           tegra_defconfig
-riscv                             allnoconfig
-m68k                             alldefconfig
-mips                         bigsur_defconfig
-arm                        vexpress_defconfig
-arm                          pxa168_defconfig
-riscv                    nommu_k210_defconfig
-powerpc                 mpc8540_ads_defconfig
-sh                             shx3_defconfig
-powerpc                      pmac32_defconfig
-mips                          ath79_defconfig
-arm                             mxs_defconfig
-powerpc                      ppc40x_defconfig
-powerpc                     mpc83xx_defconfig
-m68k                        m5272c3_defconfig
-sh                  sh7785lcr_32bit_defconfig
-sh                        sh7785lcr_defconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-c6x                              allyesconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-parisc                           allyesconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                               tinyconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-i386                 randconfig-a004-20201209
-i386                 randconfig-a005-20201209
-i386                 randconfig-a001-20201209
-i386                 randconfig-a002-20201209
-i386                 randconfig-a006-20201209
-i386                 randconfig-a003-20201209
-x86_64               randconfig-a016-20201209
-x86_64               randconfig-a012-20201209
-x86_64               randconfig-a013-20201209
-x86_64               randconfig-a014-20201209
-x86_64               randconfig-a015-20201209
-x86_64               randconfig-a011-20201209
-i386                 randconfig-a013-20201209
-i386                 randconfig-a014-20201209
-i386                 randconfig-a011-20201209
-i386                 randconfig-a015-20201209
-i386                 randconfig-a012-20201209
-i386                 randconfig-a016-20201209
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-x86_64                                   rhel
-x86_64                           allyesconfig
-x86_64                    rhel-7.6-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                                  kexec
-
-clang tested configs:
-x86_64               randconfig-a004-20201209
-x86_64               randconfig-a006-20201209
-x86_64               randconfig-a005-20201209
-x86_64               randconfig-a001-20201209
-x86_64               randconfig-a002-20201209
-x86_64               randconfig-a003-20201209
-
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Souptick Joarder <jrdr.linux@gmail.com>
 ---
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+ drivers/net/wireless/mediatek/mt76/tx.c | 3 ---
+ 1 file changed, 3 deletions(-)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/tx.c b/drivers/net/wireless/mediatek/mt76/tx.c
+index 1e20afb..25627e7 100644
+--- a/drivers/net/wireless/mediatek/mt76/tx.c
++++ b/drivers/net/wireless/mediatek/mt76/tx.c
+@@ -504,14 +504,11 @@ void mt76_tx_complete_skb(struct mt76_dev *dev, u16 wcid_idx, struct sk_buff *sk
+ 
+ void mt76_txq_schedule(struct mt76_phy *phy, enum mt76_txq_id qid)
+ {
+-	struct mt76_queue *q;
+ 	int len;
+ 
+ 	if (qid >= 4)
+ 		return;
+ 
+-	q = phy->q_tx[qid];
+-
+ 	rcu_read_lock();
+ 
+ 	do {
+-- 
+1.9.1
+
