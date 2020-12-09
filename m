@@ -2,61 +2,61 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A48A22D4C18
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Dec 2020 21:42:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D4902D4C19
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Dec 2020 21:42:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726439AbgLIUlC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 9 Dec 2020 15:41:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37460 "EHLO
+        id S1731464AbgLIUlZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 9 Dec 2020 15:41:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37506 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726227AbgLIUlC (ORCPT
+        with ESMTP id S1729913AbgLIUlQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 9 Dec 2020 15:41:02 -0500
-Received: from mail-vs1-xe42.google.com (mail-vs1-xe42.google.com [IPv6:2607:f8b0:4864:20::e42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62370C0613CF;
-        Wed,  9 Dec 2020 12:40:22 -0800 (PST)
-Received: by mail-vs1-xe42.google.com with SMTP id w18so1635630vsk.12;
-        Wed, 09 Dec 2020 12:40:22 -0800 (PST)
+        Wed, 9 Dec 2020 15:41:16 -0500
+Received: from mail-pg1-x530.google.com (mail-pg1-x530.google.com [IPv6:2607:f8b0:4864:20::530])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 972E5C06179C;
+        Wed,  9 Dec 2020 12:40:36 -0800 (PST)
+Received: by mail-pg1-x530.google.com with SMTP id g18so2040182pgk.1;
+        Wed, 09 Dec 2020 12:40:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=qVNbsG951grAa0nngTk546R3mqEcKdjGCQfl3jglux0=;
-        b=tsEHJhG0MkjRSVhOuGlMI9bocHZIgrB7Q4F3SNPCijIGdImGYy9q0X6kIOcVmW7rRU
-         83vq6mTuCwIAaqAHvB4BTx+irBq3DhKLBB/4H7y6TYyL4dy1SU13CdZjMyeV+G8kJ89i
-         zMCkH/O6Ojuzd4Eg9vheu5ibeIamHEOl8VsehZ9sGmc9McbVOnMClj6ZUhFA+fmGLpQS
-         iOONj9fNvlaP6lycp3I7m4DBKOrCjQWl+ufNy2dHnZcB6C58Yi8bCHLacBk/LIvzfvBj
-         Py9UQOiW0sPnwl17sbKkQRlS1AzsBAPWT5OPIIxq5moGxHlrQW3fl4XFgGMC+SGHxqbZ
-         36mQ==
+        bh=QK1hbN/x6fHfoT7P0QBbiUi8YpLa9I+Z4XNUZsBJ5YU=;
+        b=ggB7vPJ1H3MWZw3bysk5lptIXFrm21OF7KXzDs26iGhfqrMEMr+urWGxLHcGQDk+f0
+         lZHJ3+UPUnQ1eWr7Mp9q6qOhSeMeDX47H7T+U5hn58qYa9BIVBRWDaqv4i6+B9vugMRq
+         3KKAIkLNUMcYfhIRGiL4NXI87+NlawShDg/Xm+UOE7ST1tf+f2uIuGFeJyB8n6f4sr2v
+         L1/620TiIrhgQIQzGMvJuzbj+LbQqwEFwEQ+V0hbAQ3lDZBtAG71mroqxY0XUb14AhSF
+         3Kn4nSwy/jWEqtNBePq92EyL8abXCuSL3w1pVNkmHXOyOK5jTDi1lxOl61EJ+My1olqM
+         Dh2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=qVNbsG951grAa0nngTk546R3mqEcKdjGCQfl3jglux0=;
-        b=KMlze6bUkxVid1uN5DqH3cwXH7f1ANL/v7SikpoZbmot1hcYziUUSvyuqFQeVmVX71
-         8Arpoj0s1sUo4lgPWJ7ypS3sSbtX51nvz7bKQ5WMxUoJVCV6m6SrI3plL+BVwOinWHuS
-         gSWXz2jOjaMUreLyGpCw4iQjLUEJET41CQYn10rz//3lX1CK/KjKEV+lXg9yfMo/qQdN
-         IDjGC7JM6MF3TM9bWpfVxy+RqISGyA1ITRmeyCyonKVJtlvEcI8Y1DSs8Zl3h6vuoxvj
-         Rze2ZG70l2+e9tZMDRJZSsQxB5/pvQaiSFFQfmX5mmG/TpxTgX2ogMYde7TWeO4Ka0At
-         LRyA==
-X-Gm-Message-State: AOAM533ulgwkHjEPFfcqSRQ9wx2VzL+vqk5nhNd8BXSbEsCjz5haZB5N
-        6zKFRCtYsgZaj9/axaVi2/d2ViH/0DamHrafErI=
-X-Google-Smtp-Source: ABdhPJyqjMVe8NitGvgS1YWJWfuzp2U4pAPXcbQPYhNjW+c3+yy3hA1aaS6r3ue8GgWP+vsAf0HNZ4DBfYmvfFlKRVI=
-X-Received: by 2002:a67:eb88:: with SMTP id e8mr4214547vso.28.1607546421585;
- Wed, 09 Dec 2020 12:40:21 -0800 (PST)
+        bh=QK1hbN/x6fHfoT7P0QBbiUi8YpLa9I+Z4XNUZsBJ5YU=;
+        b=PpEhSNywuuE3ackJMNDX9KJIjc0Mu3Iye/X1dgC+cFsq6XPsq578tIugMoJP3u0VuS
+         groHJE87ZnOq+4gefFZAd8lq0jlhXtUueAjBPuNyV08PHZ3Q0xx9HHjopwWjpS9VC3O6
+         9TnXx5n0h2mnTcI0J/b8p10O1r/dsHjxvX1H3tehRI0eND4Ev1DC13N8NADgjXm87ecr
+         WyLNvpNNiwn3EqIzycOC5KVToQw9pKqHRzSPCH3o3CpdUNodpQNlVQwYodYXy8VdMQJ+
+         i8yHcMiB+BDwgbvNVsxJ438zkJmPrnS4taMOm2oHSzLjeoJr3oHOh9Mr4M86WynRu80D
+         YNPw==
+X-Gm-Message-State: AOAM5300lu+KxM/F/VA9CP6iEXFV7f6+C7cAXm+63iQIfkPSiEZYaDmc
+        OgUSNQUZFZsrqM269gqxOr5ILvmYeEhM8wx2Jw==
+X-Google-Smtp-Source: ABdhPJwHfJ6LlFkTcKNTLa+XahMLkWlQu5Vejs+a1LK4YRuVLvSfU225+vfvYwZXUCwN3CFdfxB0ktNfcCppcXjRY5c=
+X-Received: by 2002:a17:90b:215:: with SMTP id fy21mr3834803pjb.227.1607546436161;
+ Wed, 09 Dec 2020 12:40:36 -0800 (PST)
 MIME-Version: 1.0
 References: <CALjTZvZZZVqnoV4YFTDHogVHv77=dKfcSSBGj1zC83zpUid9+g@mail.gmail.com>
  <4eb99a1da6342999c4dca355533a0847d0e942a5.camel@intel.com>
  <CALjTZvYwccfOVTTGNo1=oLnwXG2b9Vz1nVZuvLKFV94+3fQ6EQ@mail.gmail.com>
  <20201209091315.2c55e1c6@kicinski-fedora-pc1c0hjn.DHCP.thefacebook.com> <CANUX_P1=yuPkK5BzJ99oniMiCgB0z98yNYUSw4_qk2Vg7ucoRQ@mail.gmail.com>
 In-Reply-To: <CANUX_P1=yuPkK5BzJ99oniMiCgB0z98yNYUSw4_qk2Vg7ucoRQ@mail.gmail.com>
-From:   Emmanuel Grumbach <egrumbach@gmail.com>
-Date:   Wed, 9 Dec 2020 22:40:10 +0200
-Message-ID: <CANUX_P3S-Dt2homERtXgxQuh+q=xCTDvqx2ZwOXvZfjMrBY-9w@mail.gmail.com>
+From:   Rui Salvaterra <rsalvaterra@gmail.com>
+Date:   Wed, 9 Dec 2020 20:40:23 +0000
+Message-ID: <CALjTZvYZEbgfLEzxQdafJT6CFz76prA4+YM2EGA8k5Dgn3gigw@mail.gmail.com>
 Subject: Re: [BUG] iwlwifi: card unusable after firmware crash
-To:     Jakub Kicinski <kuba@kernel.org>
-Cc:     "Coelho, Luciano" <luciano.coelho@intel.com>,
-        Rui Salvaterra <rsalvaterra@gmail.com>,
+To:     Emmanuel Grumbach <egrumbach@gmail.com>
+Cc:     Jakub Kicinski <kuba@kernel.org>,
+        "Coelho, Luciano" <luciano.coelho@intel.com>,
         "Goodstein, Mordechay" <mordechay.goodstein@intel.com>,
         "Berg, Johannes" <johannes.berg@intel.com>,
         "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
@@ -66,39 +66,17 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Dec 9, 2020 at 10:32 PM Emmanuel Grumbach <egrumbach@gmail.com> wrote:
->
-> On Wed, Dec 9, 2020 at 7:19 PM Jakub Kicinski <kuba@kernel.org> wrote:
-> >
-> > On Tue, 8 Dec 2020 23:17:48 +0000 Rui Salvaterra wrote:
-> > > Hi, Luca,
-> > >
-> > > On Tue, 8 Dec 2020 at 16:27, Coelho, Luciano <luciano.coelho@intel.com> wrote:
-> > > > On Tue, 2020-12-08 at 11:27 +0000, Rui Salvaterra wrote:
-> > > > >
-> > > > > [ 3174.003910] iwlwifi 0000:02:00.0: RF_KILL bit toggled to disable radio.
-> > > > > [ 3174.003913] iwlwifi 0000:02:00.0: reporting RF_KILL (radio disabled)
-> > > >
-> > > > It looks like your machine is reporting RF-Kill to the WiFi device.
-> > >
-> > > Yes, that's an artifact of how I tested: I rebooted the router, the
-> > > Wi-Fi interface disassociated and the dmesg was clean. However, after
-> > > the router came up, the laptop didn't reconnect (and the connection
-> > > had completely disappeared from nmtui). Afterwards, I did the rfkill
-> > > cycle you see, and only then I got the register dump.
-> > >
-> > > > There seems to be some sort of race there that is causing us to still
-> > > > try to communicate with the device (and thus you see the transaction
-> > > > failed dump), but that will obviously fail when RF-Kill is enabled.
-> > >
-> > > I'm not sure about that, the card was already dead before the rfkill cycle.
-> >
-> > Any luck figuring this out, Luca? If this is a 5.10 regression we need
-> > to let Linus know tomorrow, so the time is ticking :(
+Hi, Emmanuel,
+
+On Wed, 9 Dec 2020 at 20:32, Emmanuel Grumbach <egrumbach@gmail.com> wrote:
 >
 > Rui, I looked at the register dump and looks like you're using AMT on
 > your system?
 > Can you confirm?
 
-Besides, don't you get a stack dump in the vicinity of this register
-dump? That's be helpful to see.
+AMT? You mean Intel Active Management? Heavens, no, not that I know
+of! This is a personal laptop (Lenovo B51-80). (And I'd personally
+kill the ME with fire, if I could.)
+
+Thanks,
+Rui
