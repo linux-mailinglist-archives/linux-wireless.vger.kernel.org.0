@@ -2,151 +2,95 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C7D02D3E92
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Dec 2020 10:23:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 16B142D3EA4
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Dec 2020 10:28:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729088AbgLIJXU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 9 Dec 2020 04:23:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45510 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729086AbgLIJXJ (ORCPT
+        id S1729021AbgLIJZD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 9 Dec 2020 04:25:03 -0500
+Received: from m43-15.mailgun.net ([69.72.43.15]:12356 "EHLO
+        m43-15.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728890AbgLIJZC (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 9 Dec 2020 04:23:09 -0500
-Received: from mail-wm1-x344.google.com (mail-wm1-x344.google.com [IPv6:2a00:1450:4864:20::344])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61EA4C0613D6
-        for <linux-wireless@vger.kernel.org>; Wed,  9 Dec 2020 01:22:29 -0800 (PST)
-Received: by mail-wm1-x344.google.com with SMTP id q75so876058wme.2
-        for <linux-wireless@vger.kernel.org>; Wed, 09 Dec 2020 01:22:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=Mx+SSux44r2ybzN5uouGLt8Nyz1sei2BYkCtNp5/Q1U=;
-        b=BrjxDVk7vGKmI9PkGvFwQ3GU2hA8fRK99GdYe9yoQ15TohZrTt4oqHD6OJjC7O2Y29
-         Chb5nVLxZZJ763fumMNZyor5i0DCuYNiOyFihpca10BMIb1ohsXsz09u0P1vg/3Y4wru
-         /HosQ+j/nJKg+Kb+VfMQ6iRzO9Ksrxt4boRjpyTNIDUxJxpoaP7HSd/o8wqF6tKHpXWD
-         E9/XDzI1UQLDSZoCAoiupyT5JBoQJV5od2iZrHzUHJs78vFF3R+ebTCCmlvtW6+qeIJY
-         pc8bEy4zn9Rx1qyn/Mz6/xDVOGssQXFa05U5P1JqV/VRBQNo6n94KA9rzgGhjXo1uV4o
-         a5jg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=Mx+SSux44r2ybzN5uouGLt8Nyz1sei2BYkCtNp5/Q1U=;
-        b=CzveE/dE9tX2nggSgLuij+W1pz0sfb0qx1sLv6IGJGWN4uUYlfd3MH3MrqOJjmDU+7
-         BUhCEfyYTAUDjgvwWRQr3k7Qnmlx9u4NEKbPSgKjdoFqQ04H7K68qruKuJZKQHIYNdPY
-         pRa8E+GKGyrS3SCIJ9AEP0odpgwZrPuUmm6fEjbJrFa3euNUKcb2mglQY36z/emCOrJg
-         USvQdHkL4L3/hkkxc1l6sjFrBJ9y9HT7jbSjoqSMS0nyctgXfcwyLs3ZvcnKJOb5l2/2
-         blX36IcoDOkH80ncrU0TnT4KuUCYfrPAuefHNw5U6uWzrgO5049V44Lh/1ifcDNWTrJx
-         E2bw==
-X-Gm-Message-State: AOAM533QiaRsjcgkqLqnnljt3KtGy16PgQuDJoMUW4l+IV7rsa4PpaEp
-        DqGDHsfq1xh0BIATdQmWMAL3CQ==
-X-Google-Smtp-Source: ABdhPJxTlBVIxgjkiki4YjzApRPAYuKQcRCroZoMD5M27K7cz8VwDwS82eqt/XFzqMY5viPlsgQuUQ==
-X-Received: by 2002:a1c:40c:: with SMTP id 12mr1687015wme.40.1607505748074;
-        Wed, 09 Dec 2020 01:22:28 -0800 (PST)
-Received: from dell ([91.110.221.209])
-        by smtp.gmail.com with ESMTPSA id z8sm2247120wmg.17.2020.12.09.01.22.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Dec 2020 01:22:27 -0800 (PST)
-Date:   Wed, 9 Dec 2020 09:22:24 +0000
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Heiner Kallweit <hkallweit1@gmail.com>
-Cc:     Bjorn Helgaas <bhelgaas@google.com>,
-        Jonathan Corbet <corbet@lwn.net>, Jens Axboe <axboe@kernel.dk>,
-        Viresh Kumar <vireshk@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Vinod Koul <vkoul@kernel.org>,
-        David Miller <davem@davemloft.net>,
-        Ion Badulescu <ionut@badula.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Lino Sanfilippo <LinoSanfilippo@gmx.de>,
-        Christian Lamparter <chunkeey@googlemail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Luis Chamberlain <mcgrof@kernel.org>,
-        Adam Radford <aradford@gmail.com>,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        James Smart <james.smart@broadcom.com>,
-        Dick Kennedy <dick.kennedy@broadcom.com>,
-        Nilesh Javali <njavali@marvell.com>,
-        GR-QLogic-Storage-Upstream@marvell.com,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Peter Chen <Peter.Chen@nxp.com>,
-        Felipe Balbi <balbi@kernel.org>,
-        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-        linux-doc@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-ide@vger.kernel.org, dmaengine@vger.kernel.org,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        linux-parisc@vger.kernel.org,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        SCSI development list <linux-scsi@vger.kernel.org>,
-        linux-serial@vger.kernel.org,
-        Linux USB Mailing List <linux-usb@vger.kernel.org>
-Subject: Re: [PATCH] PCI: Remove pci_try_set_mwi
-Message-ID: <20201209092224.GU4801@dell>
-References: <4d535d35-6c8c-2bd8-812b-2b53194ce0ec@gmail.com>
+        Wed, 9 Dec 2020 04:25:02 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1607505878; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=T9Vsn2MPWfR4OqdEnu3EaKEtE2FLT5+vaI23XMtdI7Q=; b=pXdlKSm45e4zB32h/cxz8YQ9uhK9CtHpjVAyv8icwXwLFd2cJN7kgPTjw8ugdDGWjQFrYpO7
+ tc77guD7Ymq3KHlE1bt6bER/qLN82+fTIRVmznXgbCI8Zhcwca05hVxbVx7ms7IyemUF5SWQ
+ /IS2wAsFis/vcJaO7V/35HsL4/I=
+X-Mailgun-Sending-Ip: 69.72.43.15
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n03.prod.us-west-2.postgun.com with SMTP id
+ 5fd097b8d5b4c78a8f2637fe (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 09 Dec 2020 09:24:08
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 1216AC43462; Wed,  9 Dec 2020 09:24:08 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 74354C433C6;
+        Wed,  9 Dec 2020 09:24:06 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 74354C433C6
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Wen Gong <wgong@codeaurora.org>
+Cc:     linux-wireless@vger.kernel.org, ath10k@lists.infradead.org
+Subject: Re: [PATCH v3] ath10k: add flag to protect napi operation to avoid dead loop hang
+References: <1598617348-2325-1-git-send-email-wgong@codeaurora.org>
+        <87d02x1rqb.fsf@codeaurora.org>
+        <010101746bd17881-819242de-7cbb-4df3-93e2-59473d281155-000000@us-west-2.amazonses.com>
+Date:   Wed, 09 Dec 2020 11:24:04 +0200
+In-Reply-To: <010101746bd17881-819242de-7cbb-4df3-93e2-59473d281155-000000@us-west-2.amazonses.com>
+        (Wen Gong's message of "Tue, 8 Sep 2020 03:45:24 +0000")
+Message-ID: <87r1nzbadn.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <4d535d35-6c8c-2bd8-812b-2b53194ce0ec@gmail.com>
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 09 Dec 2020, Heiner Kallweit wrote:
+Wen Gong <wgong@codeaurora.org> writes:
 
-> pci_set_mwi() and pci_try_set_mwi() do exactly the same, just that the
-> former one is declared as __must_check. However also some callers of
-> pci_set_mwi() have a comment that it's an optional feature. I don't
-> think there's much sense in this separation and the use of
-> __must_check. Therefore remove pci_try_set_mwi() and remove the
-> __must_check attribute from pci_set_mwi().
-> I don't expect either function to be used in new code anyway.
-> 
-> Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-> ---
-> patch applies on top of pci/misc for v5.11
-> ---
->  Documentation/PCI/pci.rst                     |  5 +----
->  drivers/ata/pata_cs5530.c                     |  2 +-
->  drivers/ata/sata_mv.c                         |  2 +-
->  drivers/dma/dw/pci.c                          |  2 +-
->  drivers/dma/hsu/pci.c                         |  2 +-
->  drivers/ide/cs5530.c                          |  2 +-
+> On 2020-09-08 00:22, Kalle Valo wrote:
+>
+>> Just like with the recent firmware restart patch, isn't
+>> ar->napi_enabled
+>> racy? Wouldn't test_and_set_bit() and test_and_clear_bit() be safer?
+>>
+>> Or are we holding a lock? But then that should be documented with
+>> lockdep_assert_held().
+>
+> yes, ath10k_hif_start is only called from ath10k_core_start, it has
+> "lockdep_assert_held(&ar->conf_mutex)", and ath10k_hif_stop is only
+> called from ath10k_core_stop, it also has
+> "lockdep_assert_held(&ar->conf_mutex)". then it will not 2 thread both
+> enter ath10k_hif_start/ath10k_hif_stop meanwhile.
 
->  drivers/mfd/intel-lpss-pci.c                  |  2 +-
+Ok, but every function depending on a lock being held should still call
+lockdep_assert_held(), that way we can catch the bug if locking changes
+later. So it's not enough that ath10k_core_stop() has
+lockdep_assert_held(), also these napi functions should have it.
 
-Acked-by: Lee Jones <lee.jones@linaro.org>
+I actually decided to switch using ATH10K_FLAG_NAPI_ENABLED with
+set_bit() & co, simpler locking that way and no lockdep_assert_held()
+needed anymore. Please check my changes in the pending branch, I have
+only compile tested them:
 
->  drivers/net/ethernet/adaptec/starfire.c       |  2 +-
->  drivers/net/ethernet/alacritech/slicoss.c     |  2 +-
->  drivers/net/ethernet/dec/tulip/tulip_core.c   |  5 +----
->  drivers/net/ethernet/sun/cassini.c            |  4 ++--
->  drivers/net/wireless/intersil/p54/p54pci.c    |  2 +-
->  .../intersil/prism54/islpci_hotplug.c         |  3 +--
->  .../wireless/realtek/rtl818x/rtl8180/dev.c    |  2 +-
->  drivers/pci/pci.c                             | 19 -------------------
->  drivers/scsi/3w-9xxx.c                        |  4 ++--
->  drivers/scsi/3w-sas.c                         |  4 ++--
->  drivers/scsi/csiostor/csio_init.c             |  2 +-
->  drivers/scsi/lpfc/lpfc_init.c                 |  2 +-
->  drivers/scsi/qla2xxx/qla_init.c               |  8 ++++----
->  drivers/scsi/qla2xxx/qla_mr.c                 |  2 +-
->  drivers/tty/serial/8250/8250_lpss.c           |  2 +-
->  drivers/usb/chipidea/ci_hdrc_pci.c            |  2 +-
->  drivers/usb/gadget/udc/amd5536udc_pci.c       |  2 +-
->  drivers/usb/gadget/udc/net2280.c              |  2 +-
->  drivers/usb/gadget/udc/pch_udc.c              |  2 +-
->  include/linux/pci.h                           |  5 ++---
->  27 files changed, 33 insertions(+), 60 deletions(-)
+https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=e0a466d296bd862080f7796b41349f9f586272c9
 
 -- 
-Lee Jones [李琼斯]
-Senior Technical Lead - Developer Services
-Linaro.org │ Open source software for Arm SoCs
-Follow Linaro: Facebook | Twitter | Blog
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
