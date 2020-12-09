@@ -2,26 +2,26 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B69A12D4D04
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Dec 2020 22:39:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B10B72D4CFC
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Dec 2020 22:37:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388277AbgLIVjY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 9 Dec 2020 16:39:24 -0500
-Received: from paleale.coelho.fi ([176.9.41.70]:35946 "EHLO
+        id S2388307AbgLIVhC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 9 Dec 2020 16:37:02 -0500
+Received: from paleale.coelho.fi ([176.9.41.70]:35912 "EHLO
         farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S2388151AbgLIVjX (ORCPT
+        with ESMTP id S2388305AbgLIVhC (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 9 Dec 2020 16:39:23 -0500
+        Wed, 9 Dec 2020 16:37:02 -0500
 Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa.ger.corp.intel.com)
         by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
         (Exim 4.93)
         (envelope-from <luca@coelho.fi>)
-        id 1kn6pm-003Drx-Gt; Wed, 09 Dec 2020 23:17:14 +0200
+        id 1kn6pn-003Drx-6w; Wed, 09 Dec 2020 23:17:15 +0200
 From:   Luca Coelho <luca@coelho.fi>
 To:     kvalo@codeaurora.org
 Cc:     linux-wireless@vger.kernel.org
-Date:   Wed,  9 Dec 2020 23:16:31 +0200
-Message-Id: <iwlwifi.20201209231352.0a3fa177cd6b.I7c69ff999419368266279ec27dd618eb450908b3@changeid>
+Date:   Wed,  9 Dec 2020 23:16:32 +0200
+Message-Id: <iwlwifi.20201209231352.970421a2f753.Id62b2da8a0ccccbb114407db82ca485d07749d39@changeid>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20201209211651.968276-1-luca@coelho.fi>
 References: <20201209211651.968276-1-luca@coelho.fi>
@@ -31,111 +31,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on farmhouse.coelho.fi
 X-Spam-Level: 
 X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
         TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.4
-Subject: [PATCH v2 27/47] iwlwifi: mvm: do more useful queue sync accounting
+Subject: [PATCH v2 28/47] iwlwifi: mvm: clean up scan state on failure
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-We're currently doing accounting on the queue sync with an
-atomic variable that counts down the number of remaining
-notifications that we still need.
+We keep the scan status per UID in scan_uid_status field when the
+iwl_mvm_build_scan_cmd() function is called. If we error out after
+this, e.g. due to FW restart being in progress, we're not cleaning
+up properly, and can run into warnings later.
 
-As we've been hitting issues in this area, modify this to
-track a bitmap of queues, not just the number of queues,
-and print out the remaining bitmap in the warning.
+Clean up internal variables when starting fails after calling the
+iwl_mvm_build_scan_cmd() function.
 
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c | 11 ++++++-----
- drivers/net/wireless/intel/iwlwifi/mvm/mvm.h      |  2 +-
- drivers/net/wireless/intel/iwlwifi/mvm/ops.c      |  2 +-
- drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c     | 10 +++++++---
- 4 files changed, 15 insertions(+), 10 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/scan.c | 31 ++++++++++++-------
+ 1 file changed, 20 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-index 766aeeaf1fcf..be3d4515b772 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-@@ -5097,8 +5097,7 @@ void iwl_mvm_sync_rx_queues_internal(struct iwl_mvm *mvm,
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
+index 3ec01a301857..f6d08d606dfe 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
+@@ -2146,8 +2146,10 @@ static int iwl_mvm_scan_umac(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
  
- 	if (notif->sync) {
- 		notif->cookie = mvm->queue_sync_cookie;
--		atomic_set(&mvm->queue_sync_counter,
--			   mvm->trans->num_rx_queues);
-+		mvm->queue_sync_state = (1 << mvm->trans->num_rx_queues) - 1;
- 	}
- 
- 	ret = iwl_mvm_notify_rx_queue(mvm, qmask, notif, size, !notif->sync);
-@@ -5110,14 +5109,16 @@ void iwl_mvm_sync_rx_queues_internal(struct iwl_mvm *mvm,
- 	if (notif->sync) {
- 		lockdep_assert_held(&mvm->mutex);
- 		ret = wait_event_timeout(mvm->rx_sync_waitq,
--					 atomic_read(&mvm->queue_sync_counter) == 0 ||
-+					 READ_ONCE(mvm->queue_sync_state) == 0 ||
- 					 iwl_mvm_is_radio_killed(mvm),
- 					 HZ);
--		WARN_ON_ONCE(!ret && !iwl_mvm_is_radio_killed(mvm));
-+		WARN_ONCE(!ret && !iwl_mvm_is_radio_killed(mvm),
-+			  "queue sync: failed to sync, state is 0x%lx\n",
-+			  mvm->queue_sync_state);
- 	}
- 
- out:
--	atomic_set(&mvm->queue_sync_counter, 0);
-+	mvm->queue_sync_state = 0;
- 	if (notif->sync)
- 		mvm->queue_sync_cookie++;
- }
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-index de43ffff0a5d..afa04952107e 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-@@ -842,7 +842,7 @@ struct iwl_mvm {
- 	unsigned long status;
- 
- 	u32 queue_sync_cookie;
--	atomic_t queue_sync_counter;
-+	unsigned long queue_sync_state;
- 	/*
- 	 * for beacon filtering -
- 	 * currently only one interface can be supported
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-index e54c48af1913..2a497fb77e3a 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-@@ -703,7 +703,7 @@ iwl_op_mode_mvm_start(struct iwl_trans *trans, const struct iwl_cfg *cfg,
- 
- 	init_waitqueue_head(&mvm->rx_sync_waitq);
- 
--	atomic_set(&mvm->queue_sync_counter, 0);
-+	mvm->queue_sync_state = 0;
- 
- 	SET_IEEE80211_DEV(mvm->hw, mvm->trans->dev);
- 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
-index ef5bd58ef742..d4465164457d 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
-@@ -827,9 +827,13 @@ void iwl_mvm_rx_queue_notif(struct iwl_mvm *mvm, struct napi_struct *napi,
- 		WARN_ONCE(1, "Invalid identifier %d", internal_notif->type);
- 	}
- 
--	if (internal_notif->sync &&
--	    !atomic_dec_return(&mvm->queue_sync_counter))
--		wake_up(&mvm->rx_sync_waitq);
-+	if (internal_notif->sync) {
-+		WARN_ONCE(!test_and_clear_bit(queue, &mvm->queue_sync_state),
-+			  "queue sync: queue %d responded a second time!\n",
-+			  queue);
-+		if (READ_ONCE(mvm->queue_sync_state) == 0)
-+			wake_up(&mvm->rx_sync_waitq);
+ 	ret = iwl_mvm_fill_scan_sched_params(params, tail_v2->schedule,
+ 					     &tail_v2->delay);
+-	if (ret)
++	if (ret) {
++		mvm->scan_uid_status[uid] = 0;
+ 		return ret;
 +	}
+ 
+ 	if (iwl_mvm_is_scan_ext_chan_supported(mvm)) {
+ 		tail_v2->preq = params->preq;
+@@ -2458,7 +2460,7 @@ static int iwl_mvm_build_scan_cmd(struct iwl_mvm *mvm,
+ 				  struct iwl_mvm_scan_params *params,
+ 				  int type)
+ {
+-	int uid, i;
++	int uid, i, err;
+ 	u8 scan_ver;
+ 
+ 	lockdep_assert_held(&mvm->mutex);
+@@ -2490,7 +2492,11 @@ static int iwl_mvm_build_scan_cmd(struct iwl_mvm *mvm,
+ 		return ver_handler->handler(mvm, vif, params, type, uid);
+ 	}
+ 
+-	return iwl_mvm_scan_umac(mvm, vif, params, type, uid);
++	err = iwl_mvm_scan_umac(mvm, vif, params, type, uid);
++	if (err)
++		return err;
++
++	return uid;
  }
  
- static void iwl_mvm_oldsn_workaround(struct iwl_mvm *mvm,
+ int iwl_mvm_reg_scan_start(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
+@@ -2503,7 +2509,7 @@ int iwl_mvm_reg_scan_start(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
+ 		.dataflags = { IWL_HCMD_DFL_NOCOPY, },
+ 	};
+ 	struct iwl_mvm_scan_params params = {};
+-	int ret;
++	int ret, uid;
+ 	struct cfg80211_sched_scan_plan scan_plan = { .iterations = 1 };
+ 
+ 	lockdep_assert_held(&mvm->mutex);
+@@ -2550,11 +2556,11 @@ int iwl_mvm_reg_scan_start(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
+ 
+ 	iwl_mvm_build_scan_probe(mvm, vif, ies, &params);
+ 
+-	ret = iwl_mvm_build_scan_cmd(mvm, vif, &hcmd, &params,
++	uid = iwl_mvm_build_scan_cmd(mvm, vif, &hcmd, &params,
+ 				     IWL_MVM_SCAN_REGULAR);
+ 
+-	if (ret)
+-		return ret;
++	if (uid < 0)
++		return uid;
+ 
+ 	iwl_mvm_pause_tcm(mvm, false);
+ 
+@@ -2566,6 +2572,7 @@ int iwl_mvm_reg_scan_start(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
+ 		 */
+ 		IWL_ERR(mvm, "Scan failed! ret %d\n", ret);
+ 		iwl_mvm_resume_tcm(mvm);
++		mvm->scan_uid_status[uid] = 0;
+ 		return ret;
+ 	}
+ 
+@@ -2591,7 +2598,7 @@ int iwl_mvm_sched_scan_start(struct iwl_mvm *mvm,
+ 		.dataflags = { IWL_HCMD_DFL_NOCOPY, },
+ 	};
+ 	struct iwl_mvm_scan_params params = {};
+-	int ret;
++	int ret, uid;
+ 	int i, j;
+ 	bool non_psc_included = false;
+ 
+@@ -2683,12 +2690,12 @@ int iwl_mvm_sched_scan_start(struct iwl_mvm *mvm,
+ 		return -ENOBUFS;
+ 	}
+ 
+-	ret = iwl_mvm_build_scan_cmd(mvm, vif, &hcmd, &params, type);
++	uid = iwl_mvm_build_scan_cmd(mvm, vif, &hcmd, &params, type);
+ 
+ 	if (non_psc_included)
+ 		kfree(params.channels);
+-	if (ret)
+-		return ret;
++	if (uid < 0)
++		return uid;
+ 
+ 	ret = iwl_mvm_send_cmd(mvm, &hcmd);
+ 	if (!ret) {
+@@ -2701,6 +2708,8 @@ int iwl_mvm_sched_scan_start(struct iwl_mvm *mvm,
+ 		 * should try to send the command again with different params.
+ 		 */
+ 		IWL_ERR(mvm, "Sched scan failed! ret %d\n", ret);
++		mvm->scan_uid_status[uid] = 0;
++		mvm->sched_scan_pass_all = SCHED_SCAN_PASS_ALL_DISABLED;
+ 	}
+ 
+ 	return ret;
 -- 
 2.29.2
 
