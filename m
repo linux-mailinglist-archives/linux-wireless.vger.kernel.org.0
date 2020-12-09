@@ -2,26 +2,26 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 800F32D4CE1
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Dec 2020 22:32:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CE55D2D4CF6
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Dec 2020 22:36:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388191AbgLIVbz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 9 Dec 2020 16:31:55 -0500
-Received: from paleale.coelho.fi ([176.9.41.70]:35842 "EHLO
+        id S2388045AbgLIVgF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 9 Dec 2020 16:36:05 -0500
+Received: from paleale.coelho.fi ([176.9.41.70]:35898 "EHLO
         farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726877AbgLIVby (ORCPT
+        with ESMTP id S2387804AbgLIVgF (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 9 Dec 2020 16:31:54 -0500
+        Wed, 9 Dec 2020 16:36:05 -0500
 Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa.ger.corp.intel.com)
         by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
         (Exim 4.93)
         (envelope-from <luca@coelho.fi>)
-        id 1kn6py-003Drx-1l; Wed, 09 Dec 2020 23:17:26 +0200
+        id 1kn6pz-003Drx-Ed; Wed, 09 Dec 2020 23:17:27 +0200
 From:   Luca Coelho <luca@coelho.fi>
 To:     kvalo@codeaurora.org
 Cc:     linux-wireless@vger.kernel.org
-Date:   Wed,  9 Dec 2020 23:16:47 +0200
-Message-Id: <iwlwifi.20201209231352.2d07dcee0d35.I07a61b5d734478db57d9434ff303e4c90bf6c32b@changeid>
+Date:   Wed,  9 Dec 2020 23:16:49 +0200
+Message-Id: <iwlwifi.20201209231352.bc1dfb56ffbd.I99d8085cccc8687805781ccc43e189dbcef0e63b@changeid>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20201209211651.968276-1-luca@coelho.fi>
 References: <20201209211651.968276-1-luca@coelho.fi>
@@ -31,41 +31,36 @@ X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on farmhouse.coelho.fi
 X-Spam-Level: 
 X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
         TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.4
-Subject: [PATCH v2 43/47] iwlwifi: mvm: hook up missing RX handlers
+Subject: [PATCH v2 45/47] iwlwifi: mvm: check that statistics TLV version match struct version
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Mordechay Goodstein <mordechay.goodstein@intel.com>
 
-The RX handlers for probe response data and channel switch weren't
-hooked up properly, fix that.
+FW now puts in the struct version, the TLV version so we also check
+it to make sure it matches.
 
-Fixes: 86e177d80ff7 ("iwlwifi: mvm: add NOA and CSA to a probe response")
-Fixes: d3a108a48dc6 ("iwlwifi: mvm: Support CSA countdown offloading")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Mordechay Goodstein <mordechay.goodstein@intel.com>
 Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/ops.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/wireless/intel/iwlwifi/mvm/rx.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-index fc5e66bc7c58..98f62d78cf9c 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-@@ -260,6 +260,12 @@ static const struct iwl_rx_handlers iwl_mvm_rx_handlers[] = {
- 		       iwl_mvm_mu_mimo_grp_notif, RX_HANDLER_SYNC),
- 	RX_HANDLER_GRP(DATA_PATH_GROUP, STA_PM_NOTIF,
- 		       iwl_mvm_sta_pm_notif, RX_HANDLER_SYNC),
-+	RX_HANDLER_GRP(MAC_CONF_GROUP, PROBE_RESPONSE_DATA_NOTIF,
-+		       iwl_mvm_probe_resp_data_notif,
-+		       RX_HANDLER_ASYNC_LOCKED),
-+	RX_HANDLER_GRP(MAC_CONF_GROUP, CHANNEL_SWITCH_NOA_NOTIF,
-+		       iwl_mvm_channel_switch_noa_notif,
-+		       RX_HANDLER_SYNC),
- };
- #undef RX_HANDLER
- #undef RX_HANDLER_GRP
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rx.c b/drivers/net/wireless/intel/iwlwifi/mvm/rx.c
+index 79d1778e6bc0..b562e07a5f22 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/rx.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/rx.c
+@@ -707,7 +707,8 @@ iwl_mvm_handle_rx_statistics_tlv(struct iwl_mvm *mvm,
+ 	stats = (void *)&pkt->data;
+ 
+ 	if (WARN_ONCE(stats->hdr.type != FW_STATISTICS_OPERATIONAL ||
+-		      stats->hdr.version != 1,
++		      stats->hdr.version !=
++		      iwl_fw_lookup_notif_ver(mvm->fw, LONG_GROUP, STATISTICS_CMD, 0),
+ 		      "received unsupported hdr type %d, version %d\n",
+ 		      stats->hdr.type, stats->hdr.version))
+ 		return;
 -- 
 2.29.2
 
