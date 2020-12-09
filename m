@@ -2,26 +2,26 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1FBBE2D4CC2
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Dec 2020 22:23:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 37B1D2D4CBD
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Dec 2020 22:21:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728003AbgLIVXV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 9 Dec 2020 16:23:21 -0500
-Received: from paleale.coelho.fi ([176.9.41.70]:35778 "EHLO
+        id S2388170AbgLIVUy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 9 Dec 2020 16:20:54 -0500
+Received: from paleale.coelho.fi ([176.9.41.70]:35760 "EHLO
         farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1727208AbgLIVXV (ORCPT
+        with ESMTP id S2388116AbgLIVUy (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 9 Dec 2020 16:23:21 -0500
+        Wed, 9 Dec 2020 16:20:54 -0500
 Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa.ger.corp.intel.com)
         by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
         (Exim 4.93)
         (envelope-from <luca@coelho.fi>)
-        id 1kn6pd-003Drx-NH; Wed, 09 Dec 2020 23:17:06 +0200
+        id 1kn6pg-003Drx-3A; Wed, 09 Dec 2020 23:17:08 +0200
 From:   Luca Coelho <luca@coelho.fi>
 To:     kvalo@codeaurora.org
 Cc:     linux-wireless@vger.kernel.org
-Date:   Wed,  9 Dec 2020 23:16:19 +0200
-Message-Id: <iwlwifi.20201209231352.1b764faecfee.I2da0ada577fc16268125a4a15b5e725c18c643ee@changeid>
+Date:   Wed,  9 Dec 2020 23:16:22 +0200
+Message-Id: <iwlwifi.20201209231352.6fcf16392341.Ie882e66085901357484c9e272a73602248c7e69f@changeid>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20201209211651.968276-1-luca@coelho.fi>
 References: <20201209211651.968276-1-luca@coelho.fi>
@@ -31,72 +31,40 @@ X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on farmhouse.coelho.fi
 X-Spam-Level: 
 X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
         TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.4
-Subject: [PATCH v2 15/47] iwlwifi: mvm: remove the read_nvm from iwl_run_unified_mvm_ucode
+Subject: [PATCH v2 18/47] iwlwifi: sort out the NVM offsets
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 
-Similarly to what I did to iwl_run_init_mvm_ucode, there is no
-need to pass the read_nvm parameter. Either we have an NVM
-and we don't need to read it, or we don't and we need to read it.
+The comments about the NVM offsets were inaccurate. Fix
+the enum so that the right values appear under the right
+comment.
 
 Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/fw.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-index a31a77f828fa..c29e55720179 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-@@ -460,7 +460,7 @@ static int iwl_mvm_load_ucode_wait_alive(struct iwl_mvm *mvm,
- 	return 0;
- }
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
+index 41a79da878ef..1b5d2e4ab613 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
+@@ -107,9 +107,11 @@ enum ext_nvm_offsets {
  
--static int iwl_run_unified_mvm_ucode(struct iwl_mvm *mvm, bool read_nvm)
-+static int iwl_run_unified_mvm_ucode(struct iwl_mvm *mvm)
- {
- 	struct iwl_notification_wait init_wait;
- 	struct iwl_nvm_access_complete_cmd nvm_complete = {};
-@@ -517,7 +517,7 @@ static int iwl_run_unified_mvm_ucode(struct iwl_mvm *mvm, bool read_nvm)
- 		iwl_mvm_load_nvm_to_nic(mvm);
- 	}
+ 	/* NVM SW-Section offset (in words) definitions */
+ 	NVM_VERSION_EXT_NVM = 0,
++	N_HW_ADDRS_FAMILY_8000 = 3,
++
++	/* NVM PHY_SKU-Section offset (in words) definitions */
+ 	RADIO_CFG_FAMILY_EXT_NVM = 0,
+ 	SKU_FAMILY_8000 = 2,
+-	N_HW_ADDRS_FAMILY_8000 = 3,
  
--	if (IWL_MVM_PARSE_NVM && read_nvm) {
-+	if (IWL_MVM_PARSE_NVM && !mvm->nvm_data) {
- 		ret = iwl_nvm_init(mvm);
- 		if (ret) {
- 			IWL_ERR(mvm, "Failed to read NVM: %d\n", ret);
-@@ -542,7 +542,7 @@ static int iwl_run_unified_mvm_ucode(struct iwl_mvm *mvm, bool read_nvm)
- 		return ret;
- 
- 	/* Read the NVM only at driver load time, no need to do this twice */
--	if (!IWL_MVM_PARSE_NVM && read_nvm) {
-+	if (!IWL_MVM_PARSE_NVM && !mvm->nvm_data) {
- 		mvm->nvm_data = iwl_get_nvm(mvm->trans, mvm->fw);
- 		if (IS_ERR(mvm->nvm_data)) {
- 			ret = PTR_ERR(mvm->nvm_data);
-@@ -657,7 +657,7 @@ int iwl_run_init_mvm_ucode(struct iwl_mvm *mvm)
- 	int ret;
- 
- 	if (iwl_mvm_has_unified_ucode(mvm))
--		return iwl_run_unified_mvm_ucode(mvm, true);
-+		return iwl_run_unified_mvm_ucode(mvm);
- 
- 	lockdep_assert_held(&mvm->mutex);
- 
-@@ -1330,7 +1330,7 @@ static int iwl_mvm_load_rt_fw(struct iwl_mvm *mvm)
- 	int ret;
- 
- 	if (iwl_mvm_has_unified_ucode(mvm))
--		return iwl_run_unified_mvm_ucode(mvm, false);
-+		return iwl_run_unified_mvm_ucode(mvm);
- 
- 	WARN_ON(!mvm->nvm_data);
- 	ret = iwl_run_init_mvm_ucode(mvm);
+ 	/* NVM REGULATORY -Section offset (in words) definitions */
+ 	NVM_CHANNELS_EXTENDED = 0,
 -- 
 2.29.2
 
