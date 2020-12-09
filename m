@@ -2,93 +2,113 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6EBC42D38CC
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Dec 2020 03:26:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F9742D38FA
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Dec 2020 03:50:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726636AbgLICYz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 8 Dec 2020 21:24:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37978 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726603AbgLICYw (ORCPT
+        id S1726867AbgLICtN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 8 Dec 2020 21:49:13 -0500
+Received: from so254-31.mailgun.net ([198.61.254.31]:34918 "EHLO
+        so254-31.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725283AbgLICtN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 8 Dec 2020 21:24:52 -0500
-Received: from mail-ot1-x32d.google.com (mail-ot1-x32d.google.com [IPv6:2607:f8b0:4864:20::32d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1D45C061793
-        for <linux-wireless@vger.kernel.org>; Tue,  8 Dec 2020 18:24:12 -0800 (PST)
-Received: by mail-ot1-x32d.google.com with SMTP id f16so748405otl.11
-        for <linux-wireless@vger.kernel.org>; Tue, 08 Dec 2020 18:24:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=IVhVAzVlHgf5EMTYAVFmdMVuP6gKcxWiSjMj/6sCke8=;
-        b=cbl78jlbGfxrmwvvVR4XsCQW2VJ7oTVc/EkwDAfq6YbJLJzep2vJLX6wSDa29R6UI0
-         cj6AEf4dUXmMTjFIkTgzvNihfdaHG0QKyTNW/BFR4ir7kFrH0Uspox+Z8FuiMWMpVWu0
-         gI4TPdsf7TfHSx4hfHM6I6Z26Z7jdWE5lFtL4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=IVhVAzVlHgf5EMTYAVFmdMVuP6gKcxWiSjMj/6sCke8=;
-        b=drGCTQGSKSUNDAxCdlisyUDoij94zGY8IMcL/NDxuvkklHcEiTG2SzxaN17jDKQYnM
-         CLgpONdZUCPLk+79k7cO7lLp9fv1kSUK68PQ41h99s3e/ec1qlSaXSgF+zNkIaOfy+XZ
-         6omLz32y7EYQYAKtw/pgLU4ZZ94osZuzBs1oab7pM/zm2HR+XophCq1AerDzmyz1IdwD
-         8L6u//qkDP/imPEM/kLV59dqznB+cVmJ65DVEJDPaB0l7MiNVS6WUJgZYG67Z7dn84gk
-         T8SK7IEnv0opsE68tj8ACalpQ9SWVXWe4Ppd/V3vRSZrPthRlsqkwu4QnAoWh35+5mvZ
-         6VLA==
-X-Gm-Message-State: AOAM533bPYWeM6P64R5s2SlPA4eI+65mKoVop3bldtFYmH33ESIuBtxb
-        d462g6SKEJPNmGt26xrzmfKlVpzr8W065A==
-X-Google-Smtp-Source: ABdhPJxnkivwrnfaf5wZmYifgtcRpfT4rWocMeSFhA7gjF6+fz1TF3g/e3xz4vrpz4nAesmxccwRzA==
-X-Received: by 2002:a05:6830:1c3d:: with SMTP id f29mr40265ote.47.1607480651646;
-        Tue, 08 Dec 2020 18:24:11 -0800 (PST)
-Received: from mail-oi1-f178.google.com (mail-oi1-f178.google.com. [209.85.167.178])
-        by smtp.gmail.com with ESMTPSA id p3sm85414otf.3.2020.12.08.18.24.09
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 08 Dec 2020 18:24:10 -0800 (PST)
-Received: by mail-oi1-f178.google.com with SMTP id o25so158602oie.5
-        for <linux-wireless@vger.kernel.org>; Tue, 08 Dec 2020 18:24:09 -0800 (PST)
-X-Received: by 2002:aca:6502:: with SMTP id m2mr267037oim.105.1607480649316;
- Tue, 08 Dec 2020 18:24:09 -0800 (PST)
+        Tue, 8 Dec 2020 21:49:13 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1607482128; h=Message-ID: References: In-Reply-To: Subject:
+ Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Sender; bh=46bJUxgq79O6ZYLsq5vRFJDYjMMuddxgHfULx7TR2ZM=;
+ b=LNAS94BMkgiNWrMZjAR6WF0vYcWKC13ykSo8e8fV1idiYd8szrFfSTuJREbvSsr6H10NlxAZ
+ PGT79eD4cPgXdKs4xduaYQrBe1G2UycYMEFMy4QmMaYKfbUpqcDf30uj0pOr6GGDXrBAIi62
+ Q7/wuSUgE6kEC0ZL6QBEdME4MAA=
+X-Mailgun-Sending-Ip: 198.61.254.31
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n05.prod.us-west-2.postgun.com with SMTP id
+ 5fd03af66d5c2f1d206d0e6b (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 09 Dec 2020 02:48:22
+ GMT
+Sender: wgong=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 4042EC43463; Wed,  9 Dec 2020 02:48:22 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: wgong)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 8E8EDC433C6;
+        Wed,  9 Dec 2020 02:48:21 +0000 (UTC)
 MIME-Version: 1.0
-References: <20201203185732.9CFA5C433ED@smtp.codeaurora.org>
- <20201204111715.04d5b198@kicinski-fedora-pc1c0hjn.DHCP.thefacebook.com>
- <87tusxgar5.fsf@codeaurora.org> <CA+ASDXNT+uKLLhTV0Nr-wxGkM16_OkedUyoEwx5FgV3ML9SMsQ@mail.gmail.com>
- <20201207121029.77d48f2c@kicinski-fedora-pc1c0hjn.DHCP.thefacebook.com> <bd5f9ded-e575-705b-a56b-a92f7765235f@gmail.com>
-In-Reply-To: <bd5f9ded-e575-705b-a56b-a92f7765235f@gmail.com>
-From:   Brian Norris <briannorris@chromium.org>
-Date:   Tue, 8 Dec 2020 18:23:57 -0800
-X-Gmail-Original-Message-ID: <CA+ASDXMv1jhJP6PZar7-R5WMBe-h+4tRcZ_M1k7sZT9_XUXQLQ@mail.gmail.com>
-Message-ID: <CA+ASDXMv1jhJP6PZar7-R5WMBe-h+4tRcZ_M1k7sZT9_XUXQLQ@mail.gmail.com>
-Subject: Re: pull-request: wireless-drivers-next-2020-12-03
-To:     Edward Cree <ecree.xilinx@gmail.com>
-Cc:     Jakub Kicinski <kuba@kernel.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "<netdev@vger.kernel.org>" <netdev@vger.kernel.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Wed, 09 Dec 2020 10:48:21 +0800
+From:   Wen Gong <wgong@codeaurora.org>
+To:     Thomas Pedersen <thomas@adapt-ip.com>
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        ath10k@lists.infradead.org, ath11k@lists.infradead.org
+Subject: Re: [PATCH v4 13/17] mac80211: receive and process S1G beacons
+In-Reply-To: <bc3e532c5d21ac5d703de41d4144cf7d@adapt-ip.com>
+References: <20200922022818.15855-1-thomas@adapt-ip.com>
+ <20200922022818.15855-14-thomas@adapt-ip.com>
+ <6064b579538afca27c511edeb5400032@codeaurora.org>
+ <bc3e532c5d21ac5d703de41d4144cf7d@adapt-ip.com>
+Message-ID: <b64d2f6db4464c9ea53a4e29af8332af@codeaurora.org>
+X-Sender: wgong@codeaurora.org
+User-Agent: Roundcube Webmail/1.3.9
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Dec 8, 2020 at 7:01 AM Edward Cree <ecree.xilinx@gmail.com> wrote:
-> My understanding is that it's because users can have them in their
->  modprobe.conf, which causes breakage if an update removes the param.
->  I think the module insert fails if there are unrecognised parameters
->  there.
-
-That's a nice understanding, but I believe it's an incorrect one:
-
-# echo 'options rtw88_pci doesnotexist=helloworld' >> /etc/modprobe.d/rtw.conf
-# modprobe rtw88_pci; echo $?
-0
-
-In fact, while I was already quite aware about the removal Jakub is
-highlighting (in the rtw88 driver), I was a user of the parameter, and
-was quite happy to see it die (because now the driver does the Right
-Thing automatically). I still left the option in my modprobe.conf,
-while I finished staging upgrades of all my systems. I ran into no
-problems, and now that the migration is done, I killed the
-modprobe.conf entry.
-
-Brian
+On 2020-12-09 02:19, Thomas Pedersen wrote:
+> Hi Wen,
+> 
+> On 2020-12-07 23:44, Wen Gong wrote:
+>> On 2020-09-22 10:28, Thomas Pedersen wrote:
+>>> S1G beacons are 802.11 Extension Frames, so the fixed
+>>> header part differs from regular beacons.
+>>> 
+>>> Add a handler to process S1G beacons and abstract out the
+>>> fetching of BSSID and element start locations in the
+>>> beacon body handler.
+>>> 
+>>> Signed-off-by: Thomas Pedersen <thomas@adapt-ip.com>
+>>> ---
+>>>  net/mac80211/ieee80211_i.h |  4 ++
+>>>  net/mac80211/iface.c       |  5 +++
+>>>  net/mac80211/mlme.c        | 84 
+>>> +++++++++++++++++++++++++++++---------
+>>>  net/mac80211/rx.c          | 84 
+>>> ++++++++++++++++----------------------
+>>>  net/mac80211/util.c        | 52 +++++++++++++++++++++++
+>>>  5 files changed, 162 insertions(+), 67 deletions(-)
+>>> 
+>> ...
+>>> @@ -1801,7 +1756,8 @@ ieee80211_rx_h_sta_process(struct 
+>>> ieee80211_rx_data *rx)
+>>>  		}
+>>>  	} else if (rx->sdata->vif.type == NL80211_IFTYPE_OCB) {
+>>>  		sta->rx_stats.last_rx = jiffies;
+>>> -	} else if (!is_multicast_ether_addr(hdr->addr1)) {
+>>> +	} else if (!ieee80211_is_s1g_beacon(hdr->frame_control) &&
+>>> +		   is_multicast_ether_addr(hdr->addr1)) {
+>> is this a typo mistake?
+>> it removed ! for is_multicast_ether_addr(!is_multicast_ether_addr ==>
+>> is_multicast_ether_addr)
+> 
+> Yes that does look like a typo, it should be:
+> 
+> 	} else if (!ieee80211_is_s1g_beacon(hdr->frame_control) &&
+> 		   !is_multicast_ether_addr(hdr->addr1)) {
+> 
+> (because is_multicast_ether_addr() evaluates to true for s1g beacons).
+> 
+> Do you have a patch or would you like me to send a fixup?
+Yes, I have a patch for it.
+I will send it.
+> 
+> Thanks,
