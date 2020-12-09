@@ -2,119 +2,78 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 205502D408D
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Dec 2020 12:02:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D6C02D435B
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Dec 2020 14:37:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730402AbgLILCB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 9 Dec 2020 06:02:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60848 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730267AbgLILBx (ORCPT
+        id S1732471AbgLINgK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 9 Dec 2020 08:36:10 -0500
+Received: from zg8tmja5ljk3lje4mi4ymjia.icoremail.net ([209.97.182.222]:50263
+        "HELO zg8tmja5ljk3lje4mi4ymjia.icoremail.net" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with SMTP id S1732470AbgLINgK (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 9 Dec 2020 06:01:53 -0500
-Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com [IPv6:2607:f8b0:4864:20::543])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF3CAC061793;
-        Wed,  9 Dec 2020 03:01:12 -0800 (PST)
-Received: by mail-pg1-x543.google.com with SMTP id f17so960985pge.6;
-        Wed, 09 Dec 2020 03:01:12 -0800 (PST)
+        Wed, 9 Dec 2020 08:36:10 -0500
+X-Greylist: delayed 472 seconds by postgrey-1.27 at vger.kernel.org; Wed, 09 Dec 2020 08:36:09 EST
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=MKsZH2+iAwgUh8UDFh2dZripOeDuPzMh57usXeoy0CY=;
-        b=PtobN+qkKZTUIm3Z46jtCxqfPZ5qOx/6dvovA1iYTJVDHmFO+a2rhs1758yYTQ+k4H
-         o+5J6j5AcNAMVeVpAp7vrMoSmL9KXngG20Ofzoa8DD8mtK+wyf/NJjewzF9hQAzLYLtI
-         6jblrmw8z2XCD01SDZV2iVGyQGwZjOwtsWcq617+ls42mGL8ToyUg5SD6LFXYUW2U6h3
-         U9LjeXul43ThJ2AMcEjBnViTOaJBQvRRg4jzV9bisZIWbW2Uza4DWd52hGGr6Rd9fNfk
-         jQhCZKyX4NjyrFTdnLHHi2jtUoUgnyNgsrm+7bZIwv6MRpisKQreDrwtfpcx3O+Un+PG
-         /rnQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=MKsZH2+iAwgUh8UDFh2dZripOeDuPzMh57usXeoy0CY=;
-        b=tiShoyIbXXM14gt+VqGDTvbTN0ybOMGh/KnUHQdnkqgapcrDzZNnNCnbx9hbXFg1uz
-         fNw5jSwSQzJNuvcyV4+RZM8nDvkOW8L0LVVVFb8opthLrCcew5upV5HnaoAKyWpQvjhq
-         HHk0AbMMNwUs8WPo5tEMofNwnJy8hKqHPRz8YULKGKsCP+AyT9JB8ZvxLm0PauZMykbI
-         PV/53LJaz3w2WjRtg34ofjxQXSUNRmUKEhix5vk4ddAy1c1iMpFEeVUvXXz3E3jAmMTC
-         +LVmfwnZD3wQ3J+hFjNNsCilX4x3xnHhg1FCQeLIRUFp9udAnkxBIvAIRwUdFpCJ+D9W
-         Aw8A==
-X-Gm-Message-State: AOAM532JbjzXP99PqudCrnGvLYAzjrRNB5R3u7EC23/9KatbdXM/jAo6
-        YjKSXwdNU4D82oO0dYIw62br/Q3XOEsP88KbTNU=
-X-Google-Smtp-Source: ABdhPJwjF1FoXl7fnHNaReES/WUirms9U5/ouIHB3iXXpgcsDfMHSybf0Zo8utSHuKkU9Lhpmt1u/VwzL8L8+w3d1qc=
-X-Received: by 2002:a63:b1e:: with SMTP id 30mr1440855pgl.203.1607511672453;
- Wed, 09 Dec 2020 03:01:12 -0800 (PST)
-MIME-Version: 1.0
-References: <4d535d35-6c8c-2bd8-812b-2b53194ce0ec@gmail.com> <CAHp75VfBtRS=BA83Q4U9hJ14bO4wW_o44CKs=DBOtWnzqTXO3w@mail.gmail.com>
-In-Reply-To: <CAHp75VfBtRS=BA83Q4U9hJ14bO4wW_o44CKs=DBOtWnzqTXO3w@mail.gmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Wed, 9 Dec 2020 13:02:01 +0200
-Message-ID: <CAHp75VezKrQAVf4ceJnHq5R8niwMqCme5N5dW0deyVYP3GjO8A@mail.gmail.com>
-Subject: Re: [PATCH] PCI: Remove pci_try_set_mwi
-To:     Heiner Kallweit <hkallweit1@gmail.com>
-Cc:     Bjorn Helgaas <bhelgaas@google.com>,
-        Jonathan Corbet <corbet@lwn.net>, Jens Axboe <axboe@kernel.dk>,
-        Viresh Kumar <vireshk@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Vinod Koul <vkoul@kernel.org>,
-        David Miller <davem@davemloft.net>,
-        Lee Jones <lee.jones@linaro.org>,
-        Ion Badulescu <ionut@badula.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Lino Sanfilippo <LinoSanfilippo@gmx.de>,
-        Christian Lamparter <chunkeey@googlemail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Luis Chamberlain <mcgrof@kernel.org>,
-        Adam Radford <aradford@gmail.com>,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        James Smart <james.smart@broadcom.com>,
-        Dick Kennedy <dick.kennedy@broadcom.com>,
-        Nilesh Javali <njavali@marvell.com>,
-        GR-QLogic-Storage-Upstream@marvell.com,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Peter Chen <Peter.Chen@nxp.com>,
-        Felipe Balbi <balbi@kernel.org>,
-        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-        Linux Documentation List <linux-doc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-ide@vger.kernel.org, dmaengine <dmaengine@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        linux-parisc@vger.kernel.org,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        SCSI development list <linux-scsi@vger.kernel.org>,
-        "open list:SERIAL DRIVERS" <linux-serial@vger.kernel.org>,
-        Linux USB Mailing List <linux-usb@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        d=mails.tsinghua.edu.cn; s=dkim; h=Received:From:To:Cc:Subject:
+        Date:Message-Id; bh=I9hf/j6DzrCw0kw32sJ1v3wPlXxgUy8KgpgZEitj+Qo=;
+        b=OfVH2OGtxSUole7WDR1tF2JdPjCwzALg6m1QPUOS0AERIk+CT8nkeRFMI/XGhP
+        aaoLFVUbkTJqSM5uoCQxKcASOMlxghcrFnoZdcLg1VODZs1f8jmq9gumjY/zKFQG
+        OgugqOAfjORxKbK65XYbc+mnXiwxX5pxkZU6KjdmGJWes=
+Received: from ubuntu.localdomain (unknown [166.111.83.82])
+        by web5 (Coremail) with SMTP id zAQGZQB360KS0NBfxdgHAA--.26163S4;
+        Wed, 09 Dec 2020 21:26:42 +0800 (CST)
+From:   tangzhenhao <tzh18@mails.tsinghua.edu.cn>
+To:     linux-wireless@vger.kernel.org
+Cc:     amitkarwar@gmail.com, tangzhenhao <tzh18@mails.tsinghua.edu.cn>
+Subject: [PATCH] drivers/net: fix a null-ptr-deref bug in drivers/net/wireless/marvell/mwifiex/uap_txrx.c
+Date:   Wed,  9 Dec 2020 05:26:40 -0800
+Message-Id: <20201209132640.36031-1-tzh18@mails.tsinghua.edu.cn>
+X-Mailer: git-send-email 2.17.1
+X-CM-TRANSID: zAQGZQB360KS0NBfxdgHAA--.26163S4
+X-Coremail-Antispam: 1UD129KBjvdXoWrur4ruw1rWF18Cw43Zr4rGrg_yoWDCrcEk3
+        4xXw4SqrWUGwnrKw1jyr4xA3sYyrZ8XFyfWan7trWxWFWUZrZ8Jr95ZrZ3Gry3CwsFvwnx
+        JrsrJ3yUAw4rXjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+        9fnUUIcSsGvfJTRUUUbskFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+        6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+        A2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr1j
+        6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
+        Cq3wAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC
+        0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAFwI0_Jr0_Gr
+        1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IE
+        rcIFxwCY02Avz4vE14v_Xr4l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr
+        1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE
+        14v26r1Y6r17MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7
+        IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVW3JVWrJr1lIxAIcVC2
+        z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73Uj
+        IFyTuYvjfUnsqWUUUUU
+X-CM-SenderInfo: pw2kimo6pdxz3vow2x5qjk3toohg3hdfq/1tbiAgEFEV7nE6ep1wABsl
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Dec 9, 2020 at 12:59 PM Andy Shevchenko
-<andy.shevchenko@gmail.com> wrote:
-> On Wed, Dec 9, 2020 at 10:35 AM Heiner Kallweit <hkallweit1@gmail.com> wrote:
+At line 257 in drivers/net/wireless/marvell/mwifiex/uap_txrx.c, the ret-val of skb_copy should be checked to avoid null-ptr-deref bug.
 
-...
+Signed-off-by: tangzhenhao <tzh18@mails.tsinghua.edu.cn>
+---
+ drivers/net/wireless/marvell/mwifiex/uap_txrx.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-> > -int pci_try_set_mwi(struct pci_dev *dev)
-> > -{
->
-> > -#ifdef PCI_DISABLE_MWI
-> > -       return 0;
-> > -#else
-> > -       return pci_set_mwi(dev);
-> > -#endif
->
-> This seems still valid case for PowerPC and SH.
-
-I see that pci_set_mwi() also has the ifdeffery (I thought it's only
-here), so it's fine.
-
-> > -}
-> > -EXPORT_SYMBOL(pci_try_set_mwi);
-
+diff --git a/drivers/net/wireless/marvell/mwifiex/uap_txrx.c b/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
+index 9bbdb8dfce62..d89311851594 100644
+--- a/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
++++ b/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
+@@ -255,6 +255,11 @@ int mwifiex_handle_uap_rx_forward(struct mwifiex_private *priv,
+ 
+ 	if (is_multicast_ether_addr(ra)) {
+ 		skb_uap = skb_copy(skb, GFP_ATOMIC);
++		if (!likely(skb_uap)) {
++			mwifiex_dbg(adapter, ERROR, "failed to allocate skb_uap");
++			dev_kfree_skb_any(skb);
++			return 0;
++		}
+ 		mwifiex_uap_queue_bridged_pkt(priv, skb_uap);
+ 	} else {
+ 		if (mwifiex_get_sta_entry(priv, ra)) {
 -- 
-With Best Regards,
-Andy Shevchenko
+2.17.1
+
