@@ -2,30 +2,30 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 329432D3EBD
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Dec 2020 10:31:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3AC952D3EF1
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Dec 2020 10:39:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729086AbgLIJ25 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 9 Dec 2020 04:28:57 -0500
-Received: from szxga05-in.huawei.com ([45.249.212.191]:9565 "EHLO
-        szxga05-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728716AbgLIJ25 (ORCPT
+        id S1729177AbgLIJhz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 9 Dec 2020 04:37:55 -0500
+Received: from szxga04-in.huawei.com ([45.249.212.190]:9141 "EHLO
+        szxga04-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728311AbgLIJhz (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 9 Dec 2020 04:28:57 -0500
-Received: from DGGEMS410-HUB.china.huawei.com (unknown [172.30.72.58])
-        by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4CrWsy08tKzM11B;
-        Wed,  9 Dec 2020 17:27:34 +0800 (CST)
+        Wed, 9 Dec 2020 04:37:55 -0500
+Received: from DGGEMS408-HUB.china.huawei.com (unknown [172.30.72.58])
+        by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4CrX4T0DKYz15Zp1;
+        Wed,  9 Dec 2020 17:36:41 +0800 (CST)
 Received: from ubuntu.network (10.175.138.68) by
- DGGEMS410-HUB.china.huawei.com (10.3.19.210) with Microsoft SMTP Server id
- 14.3.487.0; Wed, 9 Dec 2020 17:28:07 +0800
+ DGGEMS408-HUB.china.huawei.com (10.3.19.208) with Microsoft SMTP Server id
+ 14.3.487.0; Wed, 9 Dec 2020 17:37:06 +0800
 From:   Zheng Yongjun <zhengyongjun3@huawei.com>
 To:     <kvalo@codeaurora.org>, <linux-wireless@vger.kernel.org>,
-        <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+        <netdev@vger.kernel.org>, <linux-kernel@vger.kernel>
 CC:     <davem@davemloft.net>, <kuba@kernel.org>,
         Zheng Yongjun <zhengyongjun3@huawei.com>
-Subject: [PATCH wireless] iwlwifi: fw: simplify the iwl_fw_dbg_collect_trig()
-Date:   Wed, 9 Dec 2020 17:28:35 +0800
-Message-ID: <20201209092835.20630-1-zhengyongjun3@huawei.com>
+Subject: [PATCH v2 wireless] iwlwifi: fw: simplify the iwl_fw_dbg_collect_trig()
+Date:   Wed, 9 Dec 2020 17:37:34 +0800
+Message-ID: <20201209093734.20836-1-zhengyongjun3@huawei.com>
 X-Mailer: git-send-email 2.22.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7BIT
@@ -62,7 +62,7 @@ index ab4a8b942c81..9393fcb62076 100644
  
 -	ret = iwl_fw_dbg_collect(fwrt, le32_to_cpu(trigger->id), buf, len,
 +	return iwl_fw_dbg_collect(fwrt, le32_to_cpu(trigger->id), buf, len,
- 				 trigger);
+ 				  trigger);
 -
 -	if (ret)
 -		return ret;
