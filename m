@@ -2,100 +2,85 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 66DC42D60A3
-	for <lists+linux-wireless@lfdr.de>; Thu, 10 Dec 2020 16:57:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E3C52D61A4
+	for <lists+linux-wireless@lfdr.de>; Thu, 10 Dec 2020 17:23:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391058AbgLJP5E (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 10 Dec 2020 10:57:04 -0500
-Received: from so254-31.mailgun.net ([198.61.254.31]:62131 "EHLO
-        so254-31.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2391140AbgLJOiP (ORCPT
+        id S1732527AbgLJQWH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 10 Dec 2020 11:22:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49866 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728518AbgLJQWG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 10 Dec 2020 09:38:15 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1607611077; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=2UENAvr3UnfyT7Yes7BqMsH/lz30eJAtHLCVlaAJ4LM=; b=ExXaNhU4Fm7GbJB4GFa4KJb8xOAq/c3gzFtA3sGE+5mdyQBMs+UfLiKrhTHMXRVPhX60MWr+
- iZ1OAbBo4NKLWGD3/dLcML0axdDRZlbiJTN2psOIw01Qnl4Hhg6tFogRK0h6DeUzDrkohqQV
- KKU+5bYtxloH1xP8Yv++V+7W3es=
-X-Mailgun-Sending-Ip: 198.61.254.31
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n01.prod.us-east-1.postgun.com with SMTP id
- 5fd232a36752249c543cba33 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 10 Dec 2020 14:37:23
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id D03F6C43466; Thu, 10 Dec 2020 14:37:22 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 7C4A5C433CA;
-        Thu, 10 Dec 2020 14:37:20 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 7C4A5C433CA
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Zheng Yongjun <zhengyongjun3@huawei.com>
-Cc:     <davem@davemloft.net>, <kuba@kernel.org>,
-        <ath10k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH wireless -next] wireless/ath10k: simplify the return expression of ath10k_ahb_chip_reset()
-References: <20201210140204.1774-1-zhengyongjun3@huawei.com>
-Date:   Thu, 10 Dec 2020 16:37:18 +0200
-In-Reply-To: <20201210140204.1774-1-zhengyongjun3@huawei.com> (Zheng Yongjun's
-        message of "Thu, 10 Dec 2020 22:02:04 +0800")
-Message-ID: <87mtyl4ti9.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        Thu, 10 Dec 2020 11:22:06 -0500
+Received: from mail-pg1-x52f.google.com (mail-pg1-x52f.google.com [IPv6:2607:f8b0:4864:20::52f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90928C0613CF;
+        Thu, 10 Dec 2020 08:21:26 -0800 (PST)
+Received: by mail-pg1-x52f.google.com with SMTP id g18so4682547pgk.1;
+        Thu, 10 Dec 2020 08:21:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=Yxk9HNh5qdQCgFQ8rZtWSxHI6tHLmq1Eu2GPGLWvZ5E=;
+        b=cV8z8C4P/M6JHKbpfAkcV0wDHdahPPY8wHp8+9M0T+cX89praIif9OBdDcuWp7RWN2
+         CzrKvuP56h2PyJv6SZlYUATExb7r7LEkgNZC9mAK7s+AktVOEVLsyZk5T/kp40TH/EN6
+         iKDwV9HPkQPnSOp2N2o3rAjlDJaPW+rieBKj7TMzGoYbk4A5DCPM6zqvTurkc7ngMU5R
+         3cJJiirmoJYJZLJCVbAkcgtgfhNIVgkJfErP39awC6IS9kYULnX0aR6B4KF6D9QvwcYx
+         8uKfRuRC5QvhIbMC5MLGTZwdNK6oUpGv+7daQW9BIad5D5hqi6oK5WGPPn5DBj6m8Xj+
+         ZJ6g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Yxk9HNh5qdQCgFQ8rZtWSxHI6tHLmq1Eu2GPGLWvZ5E=;
+        b=I0WA/XCKzS34eE7/hSctaVIn2kC2ADJixlqKLOsWqBHMwNa5jfsnBt8yyBJv3uZ/ti
+         Ivvv8afltdKM6oEkA5B6SSRGx86Q9Ir5z2XUqeLClX58xj7IQZs+83k80ywnwVyevH3e
+         fgin1pTy+Kz+o8vhrqHikTFAle3PVMO08TAtXSJ6E0GO/HoyQnzb6c2AtoJUCgeHsccf
+         7T9BmFJJNys20UaFgRIeqfXAWFX9fwo4T9UkjyEV2/ILqwg+YulRM7tgDxr9zrbhFEFD
+         w2akGIlb7PjqNT7UILBfHHjma2YjK35h7PiqtPxj5pMEmIxky63hNCfpJSaH/k4GRHaF
+         062Q==
+X-Gm-Message-State: AOAM531JSTnSeTwKwT8yZcs8+uuGar/6SK5GTZ6uq6WCXnG6Wg8aCkHb
+        0bqxjIEOg3ESGjHj9FdYOGs7DiPOrcuq96pMtw==
+X-Google-Smtp-Source: ABdhPJxM30sLbsxiVwit0Q3WhUIn4k7KJrgXTbroXpsQ8hoC6mnwQ/TFp1F919TI146UgOVGzkfEQGqO1NwKkzeQ/cs=
+X-Received: by 2002:a17:90a:bf88:: with SMTP id d8mr8570693pjs.124.1607617286155;
+ Thu, 10 Dec 2020 08:21:26 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <CALjTZvZZZVqnoV4YFTDHogVHv77=dKfcSSBGj1zC83zpUid9+g@mail.gmail.com>
+ <4eb99a1da6342999c4dca355533a0847d0e942a5.camel@intel.com>
+ <CALjTZvYwccfOVTTGNo1=oLnwXG2b9Vz1nVZuvLKFV94+3fQ6EQ@mail.gmail.com>
+ <20201209091315.2c55e1c6@kicinski-fedora-pc1c0hjn.DHCP.thefacebook.com>
+ <CANUX_P1=yuPkK5BzJ99oniMiCgB0z98yNYUSw4_qk2Vg7ucoRQ@mail.gmail.com>
+ <CALjTZvYZEbgfLEzxQdafJT6CFz76prA4+YM2EGA8k5Dgn3gigw@mail.gmail.com>
+ <CANUX_P1YWSudJfwyuFVg-qdBHwQvQJiZayZBMY8E4it0qwB5Hw@mail.gmail.com>
+ <CANUX_P0sOAdRjOgg=ogAHmQdTXp5UKyW2XQQRComa4Rv3Y-toQ@mail.gmail.com> <CALjTZvYfJVjxRO4Avc3rV+W+HO-vBABxwF=UUETzDeNv_QBbhg@mail.gmail.com>
+In-Reply-To: <CALjTZvYfJVjxRO4Avc3rV+W+HO-vBABxwF=UUETzDeNv_QBbhg@mail.gmail.com>
+From:   Rui Salvaterra <rsalvaterra@gmail.com>
+Date:   Thu, 10 Dec 2020 16:21:15 +0000
+Message-ID: <CALjTZvZybsB3unK8X0WcA7kLF60=36F2senz6fEoJS6VVx6Hwg@mail.gmail.com>
+Subject: Re: [BUG] iwlwifi: card unusable after firmware crash
+To:     Emmanuel Grumbach <egrumbach@gmail.com>
+Cc:     Jakub Kicinski <kuba@kernel.org>,
+        "Coelho, Luciano" <luciano.coelho@intel.com>,
+        "Goodstein, Mordechay" <mordechay.goodstein@intel.com>,
+        "Berg, Johannes" <johannes.berg@intel.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Zheng Yongjun <zhengyongjun3@huawei.com> writes:
+Hi, again,
 
-> Simplify the return expression.
->
-> Signed-off-by: Zheng Yongjun <zhengyongjun3@huawei.com>
-> ---
->  drivers/net/wireless/ath/ath10k/ahb.c | 8 +-------
->  1 file changed, 1 insertion(+), 7 deletions(-)
->
-> diff --git a/drivers/net/wireless/ath/ath10k/ahb.c b/drivers/net/wireless/ath/ath10k/ahb.c
-> index 05a61975c83f..0ba31c0bbd24 100644
-> --- a/drivers/net/wireless/ath/ath10k/ahb.c
-> +++ b/drivers/net/wireless/ath/ath10k/ahb.c
-> @@ -598,16 +598,10 @@ static int ath10k_ahb_prepare_device(struct ath10k *ar)
->  
->  static int ath10k_ahb_chip_reset(struct ath10k *ar)
->  {
-> -	int ret;
-> -
->  	ath10k_ahb_halt_chip(ar);
->  	ath10k_ahb_clock_disable(ar);
->  
-> -	ret = ath10k_ahb_prepare_device(ar);
-> -	if (ret)
-> -		return ret;
-> -
-> -	return 0;
-> +	return ath10k_ahb_prepare_device(ar);
->  }
->  
->  static int ath10k_ahb_wake_target_cpu(struct ath10k *ar)
+I haven't tested any patch or bisected, but I have another data point.
+I built and tested Linux 5.8.18, with the same firmware, and it is
+working correctly. I reduced the test case to just rfkilling the
+connection, which showed the register dump immediately (before that I
+was using the airplane toggle on the keyboard, which isn't working
+correctly, it disables and immediately reenables the radio, for some
+unfathomable reason).
+So, now I'm inclined to believe this is some sort of race condition
+between rfkill and pending transactions.
 
-I prefer the original style, easier to add new code to the function.
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Thanks,
+Rui
