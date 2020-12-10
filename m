@@ -2,85 +2,100 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E3C52D61A4
-	for <lists+linux-wireless@lfdr.de>; Thu, 10 Dec 2020 17:23:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 209BC2D64A4
+	for <lists+linux-wireless@lfdr.de>; Thu, 10 Dec 2020 19:15:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732527AbgLJQWH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 10 Dec 2020 11:22:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49866 "EHLO
+        id S2403993AbgLJSPH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 10 Dec 2020 13:15:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39410 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728518AbgLJQWG (ORCPT
+        with ESMTP id S2404038AbgLJSOm (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 10 Dec 2020 11:22:06 -0500
-Received: from mail-pg1-x52f.google.com (mail-pg1-x52f.google.com [IPv6:2607:f8b0:4864:20::52f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90928C0613CF;
-        Thu, 10 Dec 2020 08:21:26 -0800 (PST)
-Received: by mail-pg1-x52f.google.com with SMTP id g18so4682547pgk.1;
-        Thu, 10 Dec 2020 08:21:26 -0800 (PST)
+        Thu, 10 Dec 2020 13:14:42 -0500
+Received: from mail-ot1-x344.google.com (mail-ot1-x344.google.com [IPv6:2607:f8b0:4864:20::344])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BBF8C0613D6
+        for <linux-wireless@vger.kernel.org>; Thu, 10 Dec 2020 10:14:02 -0800 (PST)
+Received: by mail-ot1-x344.google.com with SMTP id w3so5751373otp.13
+        for <linux-wireless@vger.kernel.org>; Thu, 10 Dec 2020 10:14:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
+        d=chromium.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=Yxk9HNh5qdQCgFQ8rZtWSxHI6tHLmq1Eu2GPGLWvZ5E=;
-        b=cV8z8C4P/M6JHKbpfAkcV0wDHdahPPY8wHp8+9M0T+cX89praIif9OBdDcuWp7RWN2
-         CzrKvuP56h2PyJv6SZlYUATExb7r7LEkgNZC9mAK7s+AktVOEVLsyZk5T/kp40TH/EN6
-         iKDwV9HPkQPnSOp2N2o3rAjlDJaPW+rieBKj7TMzGoYbk4A5DCPM6zqvTurkc7ngMU5R
-         3cJJiirmoJYJZLJCVbAkcgtgfhNIVgkJfErP39awC6IS9kYULnX0aR6B4KF6D9QvwcYx
-         8uKfRuRC5QvhIbMC5MLGTZwdNK6oUpGv+7daQW9BIad5D5hqi6oK5WGPPn5DBj6m8Xj+
-         ZJ6g==
+        bh=YYa3QwHjcr9KvgYh2cWR2ObRxXNVCxcMJKU5e9f8sD8=;
+        b=numcK5p0fC6i0qHz1HrhREaD7+WeZR49j5Ld8oazdIWYJjGMor8RpCWz6WEkvH0SS+
+         UlJYu/zIOO+mGE3A2M3CsowAbX/TuO3db5uEQkhqW1AIzEQlhcn0NLDHs0f1QYGqjWO6
+         s4pU9wOxBze02RZqscoOgYQ1YRCTvJMyALiqw=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=Yxk9HNh5qdQCgFQ8rZtWSxHI6tHLmq1Eu2GPGLWvZ5E=;
-        b=I0WA/XCKzS34eE7/hSctaVIn2kC2ADJixlqKLOsWqBHMwNa5jfsnBt8yyBJv3uZ/ti
-         Ivvv8afltdKM6oEkA5B6SSRGx86Q9Ir5z2XUqeLClX58xj7IQZs+83k80ywnwVyevH3e
-         fgin1pTy+Kz+o8vhrqHikTFAle3PVMO08TAtXSJ6E0GO/HoyQnzb6c2AtoJUCgeHsccf
-         7T9BmFJJNys20UaFgRIeqfXAWFX9fwo4T9UkjyEV2/ILqwg+YulRM7tgDxr9zrbhFEFD
-         w2akGIlb7PjqNT7UILBfHHjma2YjK35h7PiqtPxj5pMEmIxky63hNCfpJSaH/k4GRHaF
-         062Q==
-X-Gm-Message-State: AOAM531JSTnSeTwKwT8yZcs8+uuGar/6SK5GTZ6uq6WCXnG6Wg8aCkHb
-        0bqxjIEOg3ESGjHj9FdYOGs7DiPOrcuq96pMtw==
-X-Google-Smtp-Source: ABdhPJxM30sLbsxiVwit0Q3WhUIn4k7KJrgXTbroXpsQ8hoC6mnwQ/TFp1F919TI146UgOVGzkfEQGqO1NwKkzeQ/cs=
-X-Received: by 2002:a17:90a:bf88:: with SMTP id d8mr8570693pjs.124.1607617286155;
- Thu, 10 Dec 2020 08:21:26 -0800 (PST)
+        bh=YYa3QwHjcr9KvgYh2cWR2ObRxXNVCxcMJKU5e9f8sD8=;
+        b=re3rfntV84BLnOwE42t0NH2Nl1ybxoZvJqaLb4DZ+VTijww3V79Ah+kTWkd2sVBYjg
+         vdP6Dwn/xOyIbIv9dpXe3mB7M7oKF9KJnqGGx1nlHWrbhub1P3tZu8Z8g3YUBk1tmJtE
+         5u4acJflW3QynmuQ59WKMfq+5R6I+brMQ2wGP27KyO8cANYrIFJfnJ+h05xehf8JhzPG
+         RaG5u8fVuUd+nFmhfqSeoz8nFM+jY3IKRXDKpDhBZyPB4K557TkQPv0cKkYm6Ho+Vq4+
+         5bDxlwbeI7ebRnaV5OYBzwJhFiaFaUZqefKYlJ6dkT1Wt3kyXLUX5ZGhh8osjNShhE1Q
+         ltVA==
+X-Gm-Message-State: AOAM530YxT0eNTutIXGaqjxEQk8dtwAVAY4gwEWsjT5sT0tEfJRwq1I8
+        s9+OQRE+BDx+4rlAcileke8WzRCPzp1KKA==
+X-Google-Smtp-Source: ABdhPJwSpcn8QOX4k4phhQjuCyGIGuuRZkW0pCDbVVrFZwCtTO0pec8tPuCAEbzrjIv7cQHgRH/f4Q==
+X-Received: by 2002:a05:6830:191:: with SMTP id q17mr6426029ota.57.1607624040503;
+        Thu, 10 Dec 2020 10:14:00 -0800 (PST)
+Received: from mail-oi1-f175.google.com (mail-oi1-f175.google.com. [209.85.167.175])
+        by smtp.gmail.com with ESMTPSA id 63sm542538otx.2.2020.12.10.10.13.58
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 10 Dec 2020 10:13:58 -0800 (PST)
+Received: by mail-oi1-f175.google.com with SMTP id w124so3619997oia.6
+        for <linux-wireless@vger.kernel.org>; Thu, 10 Dec 2020 10:13:58 -0800 (PST)
+X-Received: by 2002:aca:6502:: with SMTP id m2mr6058702oim.105.1607624038142;
+ Thu, 10 Dec 2020 10:13:58 -0800 (PST)
 MIME-Version: 1.0
-References: <CALjTZvZZZVqnoV4YFTDHogVHv77=dKfcSSBGj1zC83zpUid9+g@mail.gmail.com>
- <4eb99a1da6342999c4dca355533a0847d0e942a5.camel@intel.com>
- <CALjTZvYwccfOVTTGNo1=oLnwXG2b9Vz1nVZuvLKFV94+3fQ6EQ@mail.gmail.com>
- <20201209091315.2c55e1c6@kicinski-fedora-pc1c0hjn.DHCP.thefacebook.com>
- <CANUX_P1=yuPkK5BzJ99oniMiCgB0z98yNYUSw4_qk2Vg7ucoRQ@mail.gmail.com>
- <CALjTZvYZEbgfLEzxQdafJT6CFz76prA4+YM2EGA8k5Dgn3gigw@mail.gmail.com>
- <CANUX_P1YWSudJfwyuFVg-qdBHwQvQJiZayZBMY8E4it0qwB5Hw@mail.gmail.com>
- <CANUX_P0sOAdRjOgg=ogAHmQdTXp5UKyW2XQQRComa4Rv3Y-toQ@mail.gmail.com> <CALjTZvYfJVjxRO4Avc3rV+W+HO-vBABxwF=UUETzDeNv_QBbhg@mail.gmail.com>
-In-Reply-To: <CALjTZvYfJVjxRO4Avc3rV+W+HO-vBABxwF=UUETzDeNv_QBbhg@mail.gmail.com>
-From:   Rui Salvaterra <rsalvaterra@gmail.com>
-Date:   Thu, 10 Dec 2020 16:21:15 +0000
-Message-ID: <CALjTZvZybsB3unK8X0WcA7kLF60=36F2senz6fEoJS6VVx6Hwg@mail.gmail.com>
-Subject: Re: [BUG] iwlwifi: card unusable after firmware crash
-To:     Emmanuel Grumbach <egrumbach@gmail.com>
-Cc:     Jakub Kicinski <kuba@kernel.org>,
-        "Coelho, Luciano" <luciano.coelho@intel.com>,
-        "Goodstein, Mordechay" <mordechay.goodstein@intel.com>,
-        "Berg, Johannes" <johannes.berg@intel.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <1607612975-5756-1-git-send-email-pillair@codeaurora.org>
+In-Reply-To: <1607612975-5756-1-git-send-email-pillair@codeaurora.org>
+From:   Brian Norris <briannorris@chromium.org>
+Date:   Thu, 10 Dec 2020 10:13:46 -0800
+X-Gmail-Original-Message-ID: <CA+ASDXN4uLsbo7uuO7WPaUBY+mqHQRfdMHJ4R9KBqqmiVQJUcA@mail.gmail.com>
+Message-ID: <CA+ASDXN4uLsbo7uuO7WPaUBY+mqHQRfdMHJ4R9KBqqmiVQJUcA@mail.gmail.com>
+Subject: Re: [PATCH] ath10k: Remove voltage regulator votes during wifi disable
+To:     Rakesh Pillai <pillair@codeaurora.org>
+Cc:     ath10k <ath10k@lists.infradead.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Linux Kernel <linux-kernel@vger.kernel.org>,
+        Doug Anderson <dianders@chromium.org>, kuabhs@chromium.org,
+        Youghandhar Chintala <youghand@codeaurora.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi, again,
+On Thu, Dec 10, 2020 at 7:09 AM Rakesh Pillai <pillair@codeaurora.org> wrote:
+> --- a/drivers/net/wireless/ath/ath10k/snoc.c
+> +++ b/drivers/net/wireless/ath/ath10k/snoc.c
+> @@ -1045,14 +1085,18 @@ static int ath10k_snoc_hif_power_up(struct ath10k *ar,
+>         ret = ath10k_snoc_init_pipes(ar);
+>         if (ret) {
+>                 ath10k_err(ar, "failed to initialize CE: %d\n", ret);
+> -               goto err_wlan_enable;
+> +               goto err_free_rri;
+>         }
+>
+>         return 0;
+>
+> -err_wlan_enable:
+> +err_free_rri:
+> +       ath10k_ce_free_rri(ar);
 
-I haven't tested any patch or bisected, but I have another data point.
-I built and tested Linux 5.8.18, with the same firmware, and it is
-working correctly. I reduced the test case to just rfkilling the
-connection, which showed the register dump immediately (before that I
-was using the airplane toggle on the keyboard, which isn't working
-correctly, it disables and immediately reenables the radio, for some
-unfathomable reason).
-So, now I'm inclined to believe this is some sort of race condition
-between rfkill and pending transactions.
+This change in the error path seems to be an unrelated (but correct)
+fix. It deserves its own patch, I think.
 
-Thanks,
-Rui
+Brian
+
+>         ath10k_snoc_wlan_disable(ar);
+>
+> +err_hw_power_off:
+> +       ath10k_hw_power_off(ar);
+> +
+>         return ret;
+>  }
+>
