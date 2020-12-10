@@ -2,172 +2,82 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A86912D5CBC
-	for <lists+linux-wireless@lfdr.de>; Thu, 10 Dec 2020 15:05:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9992B2D5CFA
+	for <lists+linux-wireless@lfdr.de>; Thu, 10 Dec 2020 15:08:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389831AbgLJOEB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 10 Dec 2020 09:04:01 -0500
-Received: from mail-il1-f200.google.com ([209.85.166.200]:55983 "EHLO
-        mail-il1-f200.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389824AbgLJODw (ORCPT
+        id S2389958AbgLJOGO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 10 Dec 2020 09:06:14 -0500
+Received: from so254-31.mailgun.net ([198.61.254.31]:28639 "EHLO
+        so254-31.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2389956AbgLJOGA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 10 Dec 2020 09:03:52 -0500
-Received: by mail-il1-f200.google.com with SMTP id w10so4459495ila.22
-        for <linux-wireless@vger.kernel.org>; Thu, 10 Dec 2020 06:03:36 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
-        bh=dCHnS+IGmE05QjPXrUbbLAFiydDVaiZOQybW0UvsNF8=;
-        b=TDfC/8rszDg9JNSBe+bFWj6jlqrLn/GmHcNgi2UBCK/frd7AbeauuL3jbHexMFHPKB
-         0VDVQqLRC5zINRTzkwX8l861W6cK2bd8W4M8PbiBm7B64K5+N5sWUDBxFiLCgqX464sm
-         HZQwBtxZlHA58zbfShaQ9pnn/JyoXzYjoTom4B5ncX7FuHMS1rTXgRGEwbAJMHXUbEPf
-         MszcNJ4QCtaOBJZfqYDA5jufe3LVWtbTuA7e1kO0cTP2Iv6PIG7iJXcZYLjEbfjTaxWi
-         kwZRIdxg9KjI1k3JL8+BXUyaz8ro6RC/vqhX/fbD9vF+IJ6+usAOnMStKhuWCvee6hFP
-         vf+w==
-X-Gm-Message-State: AOAM533MHnDpfs6NVogex+BF7EQtHgoploijIP0tW1PCQvABpYFtl1e9
-        Hii7DH3xuhJ50Mcr+NbB//Bd4btrBNbbWm9Pf0Qc+VscHF7o
-X-Google-Smtp-Source: ABdhPJzNhswceQ5PwLWQ9ylc/ytFQpeq987bYUGnEeJ6q1oS7R5eKN3G8ahRRjFS9lFelXt+dL91xjXPU/7vxgtm3PWnXeJNVVeU
-MIME-Version: 1.0
-X-Received: by 2002:a05:6602:2110:: with SMTP id x16mr7176336iox.127.1607608991438;
- Thu, 10 Dec 2020 06:03:11 -0800 (PST)
-Date:   Thu, 10 Dec 2020 06:03:11 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <000000000000df5ecf05b61ca23b@google.com>
-Subject: possible deadlock in zd_chip_disable_rxtx
-From:   syzbot <syzbot+0ec3d1a6cf1fbe79c153@syzkaller.appspotmail.com>
-To:     andreyknvl@google.com, davem@davemloft.net, dsd@gentoo.org,
-        kuba@kernel.org, kune@deine-taler.de, kvalo@codeaurora.org,
-        linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+        Thu, 10 Dec 2020 09:06:00 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1607609137; h=Message-Id: Date: Subject: Cc: To: From:
+ Sender; bh=QiSyXneoo/CIXwCPKWQSgNvC6NPWRqvUJmIt/js5FlY=; b=vpEbbabQgyqFsJYu70/lXNkDDdOY1omcTgV7qqkuetE6DSFdpKZpk4I2L2RnEsfRO8KRukPV
+ zAwYj8EHwM+TFoSOcPE2Vh17R/W5H/NfU/lMfyEqMSdrpHL5QxNq1QQPkKnXH05Xht/W26Tf
+ BbmBEJPtRNimxnSAKpKoFuJqSPM=
+X-Mailgun-Sending-Ip: 198.61.254.31
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n09.prod.us-west-2.postgun.com with SMTP id
+ 5fd22b2953d7c5ba60215e37 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 10 Dec 2020 14:05:29
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 71D86C43462; Thu, 10 Dec 2020 14:05:29 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
+        autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id AB152C433CA;
+        Thu, 10 Dec 2020 14:05:27 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org AB152C433CA
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     ath11k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org
+Subject: [PATCH 0/6] ath11k: QCA6390 stability fixes
+Date:   Thu, 10 Dec 2020 16:05:18 +0200
+Message-Id: <1607609124-17250-1-git-send-email-kvalo@codeaurora.org>
+X-Mailer: git-send-email 2.7.4
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
+Few fixes to improve statibility on QCA6390. Please review.
 
-syzbot found the following issue on:
+Kalle
 
-HEAD commit:    8010622c USB: UAS: introduce a quirk to set no_write_same
-git tree:       https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb.git usb-testing
-console output: https://syzkaller.appspot.com/x/log.txt?x=131e6adf500000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=d24ee9ecd7ce968e
-dashboard link: https://syzkaller.appspot.com/bug?extid=0ec3d1a6cf1fbe79c153
-compiler:       gcc (GCC) 10.1.0-syz 20200507
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=13d7246b500000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=172c240f500000
+Carl Huang (4):
+  ath11k: put hw to DBS using WMI_PDEV_SET_HW_MODE_CMDID
+  ath11k: pci: fix hot reset stability issues
+  ath11k: pci: fix L1ss clock unstable problem
+  ath11k: pci: disable VDD4BLOW
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+0ec3d1a6cf1fbe79c153@syzkaller.appspotmail.com
+Kalle Valo (1):
+  ath11k: mhi: print a warning if firmware crashed
 
-usb 1-1: reset high-speed USB device number 2 using dummy_hcd
-usb 1-1: device descriptor read/64, error -71
-usb 1-1: Using ep0 maxpacket: 32
-usb 1-1: unable to get BOS descriptor or descriptor too short
-zd1211rw 1-1:5.118: phy1
-zd1211rw 1-1:5.114: error ioread32(CR_REG1): -11
-============================================
-WARNING: possible recursive locking detected
-5.10.0-rc7-syzkaller #0 Not tainted
---------------------------------------------
-kworker/1:2/2618 is trying to acquire lock:
-ffff888102cbdd10 (&chip->mutex){+.+.}-{3:3}, at: zd_chip_disable_rxtx+0x1c/0x40 drivers/net/wireless/zydas/zd1211rw/zd_chip.c:1465
+Pradeep Kumar Chitrapu (1):
+  ath11k: Fix incorrect tlvs in scan start command
 
-but task is already holding lock:
-ffff888101d9dd10 (&chip->mutex){+.+.}-{3:3}, at: pre_reset+0x217/0x290 drivers/net/wireless/zydas/zd1211rw/zd_usb.c:1504
+ drivers/net/wireless/ath/ath11k/core.c |  12 ++-
+ drivers/net/wireless/ath/ath11k/hw.h   |   6 --
+ drivers/net/wireless/ath/ath11k/mhi.c  |   9 +++
+ drivers/net/wireless/ath/ath11k/pci.c  | 132 +++++++++++++++++++++++++++++++--
+ drivers/net/wireless/ath/ath11k/pci.h  |  24 ++++++
+ drivers/net/wireless/ath/ath11k/wmi.c  |  69 +++++++++--------
+ drivers/net/wireless/ath/ath11k/wmi.h  |   3 +
+ 7 files changed, 206 insertions(+), 49 deletions(-)
 
-other info that might help us debug this:
- Possible unsafe locking scenario:
+-- 
+2.7.4
 
-       CPU0
-       ----
-  lock(&chip->mutex);
-  lock(&chip->mutex);
-
- *** DEADLOCK ***
-
- May be due to missing lock nesting notation
-
-6 locks held by kworker/1:2/2618:
- #0: ffff888103bff538 ((wq_completion)usb_hub_wq){+.+.}-{0:0}, at: arch_atomic64_set arch/x86/include/asm/atomic64_64.h:34 [inline]
- #0: ffff888103bff538 ((wq_completion)usb_hub_wq){+.+.}-{0:0}, at: atomic64_set include/asm-generic/atomic-instrumented.h:856 [inline]
- #0: ffff888103bff538 ((wq_completion)usb_hub_wq){+.+.}-{0:0}, at: atomic_long_set include/asm-generic/atomic-long.h:41 [inline]
- #0: ffff888103bff538 ((wq_completion)usb_hub_wq){+.+.}-{0:0}, at: set_work_data kernel/workqueue.c:616 [inline]
- #0: ffff888103bff538 ((wq_completion)usb_hub_wq){+.+.}-{0:0}, at: set_work_pool_and_clear_pending kernel/workqueue.c:643 [inline]
- #0: ffff888103bff538 ((wq_completion)usb_hub_wq){+.+.}-{0:0}, at: process_one_work+0x821/0x1520 kernel/workqueue.c:2243
- #1: ffffc900001c7da8 ((work_completion)(&hub->events)){+.+.}-{0:0}, at: process_one_work+0x854/0x1520 kernel/workqueue.c:2247
- #2: ffff88810802a218 (&dev->mutex){....}-{3:3}, at: device_lock include/linux/device.h:731 [inline]
- #2: ffff88810802a218 (&dev->mutex){....}-{3:3}, at: hub_event+0x1c5/0x42d0 drivers/usb/core/hub.c:5537
- #3: ffff8881013cd218 (&dev->mutex){....}-{3:3}, at: device_lock include/linux/device.h:731 [inline]
- #3: ffff8881013cd218 (&dev->mutex){....}-{3:3}, at: __device_attach+0x7a/0x4a0 drivers/base/dd.c:887
- #4: ffff88810ed8c1a8 (&dev->mutex){....}-{3:3}, at: device_lock include/linux/device.h:731 [inline]
- #4: ffff88810ed8c1a8 (&dev->mutex){....}-{3:3}, at: __device_attach+0x7a/0x4a0 drivers/base/dd.c:887
- #5: ffff888101d9dd10 (&chip->mutex){+.+.}-{3:3}, at: pre_reset+0x217/0x290 drivers/net/wireless/zydas/zd1211rw/zd_usb.c:1504
-
-stack backtrace:
-CPU: 1 PID: 2618 Comm: kworker/1:2 Not tainted 5.10.0-rc7-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
-Workqueue: usb_hub_wq hub_event
-Call Trace:
- __dump_stack lib/dump_stack.c:77 [inline]
- dump_stack+0x107/0x163 lib/dump_stack.c:118
- print_deadlock_bug kernel/locking/lockdep.c:2761 [inline]
- check_deadlock kernel/locking/lockdep.c:2804 [inline]
- validate_chain kernel/locking/lockdep.c:3595 [inline]
- __lock_acquire.cold+0x15e/0x3b0 kernel/locking/lockdep.c:4832
- lock_acquire kernel/locking/lockdep.c:5437 [inline]
- lock_acquire+0x288/0x700 kernel/locking/lockdep.c:5402
- __mutex_lock_common kernel/locking/mutex.c:956 [inline]
- __mutex_lock+0x134/0x10a0 kernel/locking/mutex.c:1103
- zd_chip_disable_rxtx+0x1c/0x40 drivers/net/wireless/zydas/zd1211rw/zd_chip.c:1465
- zd_op_stop+0x60/0x190 drivers/net/wireless/zydas/zd1211rw/zd_mac.c:343
- zd_usb_stop drivers/net/wireless/zydas/zd1211rw/zd_usb.c:1479 [inline]
- pre_reset+0x19d/0x290 drivers/net/wireless/zydas/zd1211rw/zd_usb.c:1502
- usb_reset_device+0x379/0x9a0 drivers/usb/core/hub.c:5959
- probe+0x10f/0x590 drivers/net/wireless/zydas/zd1211rw/zd_usb.c:1371
- usb_probe_interface+0x315/0x7f0 drivers/usb/core/driver.c:396
- really_probe+0x291/0xde0 drivers/base/dd.c:554
- driver_probe_device+0x26b/0x3d0 drivers/base/dd.c:738
- __device_attach_driver+0x1d1/0x290 drivers/base/dd.c:844
- bus_for_each_drv+0x15f/0x1e0 drivers/base/bus.c:431
- __device_attach+0x228/0x4a0 drivers/base/dd.c:912
- bus_probe_device+0x1e4/0x290 drivers/base/bus.c:491
- device_add+0xbb2/0x1ce0 drivers/base/core.c:2936
- usb_set_configuration+0x113c/0x1910 drivers/usb/core/message.c:2164
- usb_generic_driver_probe+0xba/0x100 drivers/usb/core/generic.c:238
- usb_probe_device+0xd9/0x2c0 drivers/usb/core/driver.c:293
- really_probe+0x291/0xde0 drivers/base/dd.c:554
- driver_probe_device+0x26b/0x3d0 drivers/base/dd.c:738
- __device_attach_driver+0x1d1/0x290 drivers/base/dd.c:844
- bus_for_each_drv+0x15f/0x1e0 drivers/base/bus.c:431
- __device_attach+0x228/0x4a0 drivers/base/dd.c:912
- bus_probe_device+0x1e4/0x290 drivers/base/bus.c:491
- device_add+0xbb2/0x1ce0 drivers/base/core.c:2936
- usb_new_device.cold+0x71d/0xfe9 drivers/usb/core/hub.c:2555
- hub_port_connect drivers/usb/core/hub.c:5223 [inline]
- hub_port_connect_change drivers/usb/core/hub.c:5363 [inline]
- port_event drivers/usb/core/hub.c:5509 [inline]
- hub_event+0x2348/0x42d0 drivers/usb/core/hub.c:5591
- process_one_work+0x933/0x1520 kernel/workqueue.c:2272
- worker_thread+0x64c/0x1120 kernel/workqueue.c:2418
- kthread+0x38c/0x460 kernel/kthread.c:292
- ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:296
-zd1211rw 1-1:5.118: error ioread32(CR_REG1): -11
-usb 1-1: reset high-speed USB device number 2 using dummy_hcd
-usb 1-1: Using ep0 maxpacket: 32
-usb 1-1: unable to get BOS descriptor or descriptor too short
-ieee80211 phy2: Selected rate control algorithm 'minstrel_ht'
-zd1211rw 1-1:5.57: phy2
-
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-syzbot can test patches for this issue, for details see:
-https://goo.gl/tpsmEJ#testing-patches
