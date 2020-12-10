@@ -2,186 +2,79 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DF2C32D69F7
-	for <lists+linux-wireless@lfdr.de>; Thu, 10 Dec 2020 22:35:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 233FA2D6B4B
+	for <lists+linux-wireless@lfdr.de>; Fri, 11 Dec 2020 00:38:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2394059AbgLJVeG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 10 Dec 2020 16:34:06 -0500
-Received: from smtprelay0113.hostedemail.com ([216.40.44.113]:57970 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S2405007AbgLJVeD (ORCPT
+        id S2389113AbgLJW61 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 10 Dec 2020 17:58:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41848 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727059AbgLJWzN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 10 Dec 2020 16:34:03 -0500
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay08.hostedemail.com (Postfix) with ESMTP id 649B3182CED5B;
-        Thu, 10 Dec 2020 21:33:10 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:2:41:355:379:599:800:960:973:982:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1535:1593:1594:1606:1730:1747:1777:1792:2194:2199:2393:2559:2562:2828:3138:3139:3140:3141:3142:3355:3622:3866:3867:3870:4078:4081:4117:4321:5007:6117:6119:7903:10004:10848:11026:11232:11473:11657:11658:11914:12043:12296:12297:12438:12555:12712:12737:12740:12760:12895:13019:13161:13229:13439:14196:14659:21080:21433:21451:21627:21990:30045:30054:30055:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:2,LUA_SUMMARY:none
-X-HE-Tag: flesh54_1015f55273fb
-X-Filterd-Recvd-Size: 6022
-Received: from XPS-9350.home (unknown [47.151.137.21])
-        (Authenticated sender: joe@perches.com)
-        by omf03.hostedemail.com (Postfix) with ESMTPA;
-        Thu, 10 Dec 2020 21:33:08 +0000 (UTC)
-Message-ID: <f47638bfbf8ee77b9a188c83fbb6f346b1ac111c.camel@perches.com>
-Subject: Re: [PATCH wireless -next] cw1200: txrx: convert comma to semicolon
-From:   Joe Perches <joe@perches.com>
-To:     Kalle Valo <kvalo@codeaurora.org>,
-        Zheng Yongjun <zhengyongjun3@huawei.com>
-Cc:     pizza@shaftnet.org, davem@davemloft.net, kuba@kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Date:   Thu, 10 Dec 2020 13:33:07 -0800
-In-Reply-To: <20201210185002.10F2FC43464@smtp.codeaurora.org>
-References: <20201209135550.2004-1-zhengyongjun3@huawei.com>
-         <20201210185002.10F2FC43464@smtp.codeaurora.org>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.38.1-1 
+        Thu, 10 Dec 2020 17:55:13 -0500
+Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com [IPv6:2607:f8b0:4864:20::442])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C17BC0619D6
+        for <linux-wireless@vger.kernel.org>; Thu, 10 Dec 2020 14:42:32 -0800 (PST)
+Received: by mail-pf1-x442.google.com with SMTP id c79so5560208pfc.2
+        for <linux-wireless@vger.kernel.org>; Thu, 10 Dec 2020 14:42:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=eero.com; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding:content-language;
+        bh=Zj7O+2GPMtNHh1VwpqxRgZhr5C1chINLeB/L32si7wM=;
+        b=TDmRoAL40IcqoZTwQUAALcKuC511BEzpC3bCxxbefXmo5cWc2ec371dO9NHwvrbwS1
+         4u5JBuZ4ZAhNsaP7sGoEiaodrNhQxw3LT/xLB+pDf4GGd2FUWnuybUJyoewOndtOufec
+         0dHnCi2lRzd74SnlmZC7VQVQ+jYPJtPvbOiVI=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding
+         :content-language;
+        bh=Zj7O+2GPMtNHh1VwpqxRgZhr5C1chINLeB/L32si7wM=;
+        b=IvCOOa+sGBGpMec2flxt6tJMEpsB/Bs+NBnToJWKxIwPJPwIXnzkU6zayF+lDo1EjF
+         hfdFYc8ga+gJGEcNpOBdKYbGSCzmHrkt8m/+Yb6gCS2/MRB6/9QtZYUdua7fablS/r/Z
+         93/qe55poR3eDuOnqDaF1XmaHcwuO+7NCdBAsBZgm2D4L5axIb+nC83facnQPP0qDUNX
+         a3TfHozBJ0sfsiZ/hpQ7uAZeWRAIgvMAQtpOcV6suUu/vhM0Z50dmNfj6klwxeObufHe
+         EYXcoIwxg+6olo3Za/Kyh9Eg+1uHbEfbDSXkDBWrzxqQw3PK/pqhqEeF+V/j3x2jI0hB
+         BJUg==
+X-Gm-Message-State: AOAM532t7JqOBOmy3oF5zWyZgHOWJlbP55TBcPmMlNQEmCcbo4EhzjlH
+        dyB1akkFYMlcM/dnqQL0ucwwJkVeL3Y+xQ==
+X-Google-Smtp-Source: ABdhPJwIKjaoulhKhKh1ZHV+ZTsnXT6XA4d878XxHG2jyQRw3dORxlDD/ho6/xvLMmChgr3RPUI8eg==
+X-Received: by 2002:a62:6c2:0:b029:19e:b63a:91e9 with SMTP id 185-20020a6206c20000b029019eb63a91e9mr5375126pfg.79.1607637889089;
+        Thu, 10 Dec 2020 14:04:49 -0800 (PST)
+Received: from [192.168.4.200] (c-76-102-118-9.hsd1.ca.comcast.net. [76.102.118.9])
+        by smtp.gmail.com with ESMTPSA id p6sm7731196pjt.13.2020.12.10.14.04.47
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 10 Dec 2020 14:04:48 -0800 (PST)
+Subject: Re: [PATCH 5/6] ath11k: pci: disable VDD4BLOW
+To:     Kalle Valo <kvalo@codeaurora.org>, ath11k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org
+References: <1607609124-17250-1-git-send-email-kvalo@codeaurora.org>
+ <1607609124-17250-6-git-send-email-kvalo@codeaurora.org>
+From:   Peter Oh <peter.oh@eero.com>
+Message-ID: <d9b860d3-4ccc-f16c-9b0c-e0e7a0646e64@eero.com>
+Date:   Thu, 10 Dec 2020 14:04:43 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
+In-Reply-To: <1607609124-17250-6-git-send-email-kvalo@codeaurora.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, 2020-12-10 at 18:50 +0000, Kalle Valo wrote:
-> Zheng Yongjun <zhengyongjun3@huawei.com> wrote:
-> 
-> > Replace a comma between expression statements by a semicolon.
-> > 
-> > Signed-off-by: Zheng Yongjun <zhengyongjun3@huawei.com>
-> 
-> Patch applied to wireless-drivers-next.git, thanks.
-> 
-> c42d492c672a cw1200: txrx: convert comma to semicolon
-> 
 
-There's are several of these in drivers/net/wireless:
+On 12/10/20 6:05 AM, Kalle Valo wrote:
+> From: Carl Huang <cjhuang@codeaurora.org>
+>
+> It's recommended to disable VDD4BLOW during initialisation.
 
-Using a cocci script posted by Julia:
----
-diff -u -p a/mediatek/mt76/mt7915/mcu.c b/mediatek/mt76/mt7915/mcu.c
---- a/mediatek/mt76/mt7915/mcu.c
-+++ b/mediatek/mt76/mt7915/mcu.c
-@@ -1148,7 +1148,7 @@ mt7915_mcu_sta_ba_tlv(struct sk_buff *sk
- 	tlv = mt7915_mcu_add_tlv(skb, STA_REC_BA, sizeof(*ba));
- 
- 	ba = (struct sta_rec_ba *)tlv;
--	ba->ba_type = tx ? MT_BA_TYPE_ORIGINATOR : MT_BA_TYPE_RECIPIENT,
-+	ba->ba_type = tx ? MT_BA_TYPE_ORIGINATOR : MT_BA_TYPE_RECIPIENT;
- 	ba->winsize = cpu_to_le16(params->buf_size);
- 	ba->ssn = cpu_to_le16(params->ssn);
- 	ba->ba_en = enable << params->tid;
-@@ -1676,7 +1676,7 @@ mt7915_mcu_wtbl_ht_tlv(struct sk_buff *s
- 		tlv = mt7915_mcu_add_nested_tlv(skb, WTBL_VHT, sizeof(*vht),
- 						wtbl_tlv, sta_wtbl);
- 		vht = (struct wtbl_vht *)tlv;
--		vht->ldpc = sta->vht_cap.cap & IEEE80211_VHT_CAP_RXLDPC,
-+		vht->ldpc = sta->vht_cap.cap & IEEE80211_VHT_CAP_RXLDPC;
- 		vht->vht = true;
- 
- 		af = FIELD_GET(IEEE80211_VHT_CAP_MAX_A_MPDU_LENGTH_EXPONENT_MASK,
-@@ -2858,7 +2858,7 @@ int mt7915_mcu_init(struct mt7915_dev *d
- 	};
- 	int ret;
- 
--	dev->mt76.mcu_ops = &mt7915_mcu_ops,
-+	dev->mt76.mcu_ops = &mt7915_mcu_ops;
- 
- 	ret = mt7915_driver_own(dev);
- 	if (ret)
-diff -u -p a/mediatek/mt76/mt7615/usb_mcu.c b/mediatek/mt76/mt7615/usb_mcu.c
---- a/mediatek/mt76/mt7615/usb_mcu.c
-+++ b/mediatek/mt76/mt7615/usb_mcu.c
-@@ -61,7 +61,7 @@ int mt7663u_mcu_init(struct mt7615_dev *
- 	};
- 	int ret;
- 
--	dev->mt76.mcu_ops = &mt7663u_mcu_ops,
-+	dev->mt76.mcu_ops = &mt7663u_mcu_ops;
- 
- 	/* usb does not support runtime-pm */
- 	clear_bit(MT76_STATE_PM, &dev->mphy.state);
-diff -u -p a/mediatek/mt76/mt7615/mcu.c b/mediatek/mt76/mt7615/mcu.c
---- a/mediatek/mt76/mt7615/mcu.c
-+++ b/mediatek/mt76/mt7615/mcu.c
-@@ -982,7 +982,7 @@ mt7615_mcu_sta_ba_tlv(struct sk_buff *sk
- 	tlv = mt7615_mcu_add_tlv(skb, STA_REC_BA, sizeof(*ba));
- 
- 	ba = (struct sta_rec_ba *)tlv;
--	ba->ba_type = tx ? MT_BA_TYPE_ORIGINATOR : MT_BA_TYPE_RECIPIENT,
-+	ba->ba_type = tx ? MT_BA_TYPE_ORIGINATOR : MT_BA_TYPE_RECIPIENT;
- 	ba->winsize = cpu_to_le16(params->buf_size);
- 	ba->ssn = cpu_to_le16(params->ssn);
- 	ba->ba_en = enable << params->tid;
-@@ -2472,7 +2472,7 @@ int mt7615_mcu_init(struct mt7615_dev *d
- 	};
- 	int ret;
- 
--	dev->mt76.mcu_ops = &mt7615_mcu_ops,
-+	dev->mt76.mcu_ops = &mt7615_mcu_ops;
- 
- 	ret = mt7615_mcu_drv_pmctrl(dev);
- 	if (ret)
-diff -u -p a/mediatek/mt76/mt7615/sdio_mcu.c b/mediatek/mt76/mt7615/sdio_mcu.c
---- a/mediatek/mt76/mt7615/sdio_mcu.c
-+++ b/mediatek/mt76/mt7615/sdio_mcu.c
-@@ -139,7 +139,7 @@ int mt7663s_mcu_init(struct mt7615_dev *
- 	if (ret)
- 		return ret;
- 
--	dev->mt76.mcu_ops = &mt7663s_mcu_ops,
-+	dev->mt76.mcu_ops = &mt7663s_mcu_ops;
- 
- 	ret = mt76_get_field(dev, MT_CONN_ON_MISC, MT_TOP_MISC2_FW_N9_RDY);
- 	if (ret) {
-diff -u -p a/st/cw1200/txrx.c b/st/cw1200/txrx.c
---- a/st/cw1200/txrx.c
-+++ b/st/cw1200/txrx.c
-@@ -650,7 +650,7 @@ cw1200_tx_h_rate_policy(struct cw1200_co
- 	wsm->flags |= t->txpriv.rate_id << 4;
- 
- 	t->rate = cw1200_get_tx_rate(priv,
--		&t->tx_info->control.rates[0]),
-+		&t->tx_info->control.rates[0]);
- 	wsm->max_tx_rate = t->rate->hw_value;
- 	if (t->rate->flags & IEEE80211_TX_RC_MCS) {
- 		if (cw1200_ht_greenfield(&priv->ht_info))
-diff -u -p a/intersil/prism54/islpci_dev.c b/intersil/prism54/islpci_dev.c
---- a/intersil/prism54/islpci_dev.c
-+++ b/intersil/prism54/islpci_dev.c
-@@ -121,7 +121,7 @@ isl_upload_firmware(islpci_private *priv
- 			while (_fw_len > 0) {
- 				/* use non-swapping writel() */
- 				__raw_writel(*fw_ptr, dev_fw_ptr);
--				fw_ptr++, dev_fw_ptr++;
-+				fw_ptr++; dev_fw_ptr++;
- 				_fw_len -= 4;
- 			}
- 
-diff -u -p a/intel/iwlwifi/mvm/debugfs.c b/intel/iwlwifi/mvm/debugfs.c
---- a/intel/iwlwifi/mvm/debugfs.c
-+++ b/intel/iwlwifi/mvm/debugfs.c
-@@ -1949,7 +1949,7 @@ static ssize_t iwl_dbgfs_mem_write(struc
- 		return -EFAULT;
- 	}
- 
--	hcmd.flags = CMD_WANT_SKB | CMD_SEND_IN_RFKILL,
-+	hcmd.flags = CMD_WANT_SKB | CMD_SEND_IN_RFKILL;
- 	hcmd.data[0] = (void *)cmd;
- 	hcmd.len[0] = cmd_size;
- 
-diff -u -p a/ralink/rt2x00/rt2800lib.c b/ralink/rt2x00/rt2800lib.c
---- a/ralink/rt2x00/rt2800lib.c
-+++ b/ralink/rt2x00/rt2800lib.c
-@@ -3487,7 +3487,7 @@ static void rt2800_config_channel_rf55xx
- 			rt2800_rfcsr_write(rt2x00dev, 52, 0x0C);
- 			rt2800_rfcsr_write(rt2x00dev, 54, 0xF8);
- 			if (rf->channel <= 50) {
--				rt2800_rfcsr_write(rt2x00dev, 55, 0x06),
-+				rt2800_rfcsr_write(rt2x00dev, 55, 0x06);
- 				rt2800_rfcsr_write(rt2x00dev, 56, 0xD3);
- 			} else if (rf->channel >= 52) {
- 				rt2800_rfcsr_write(rt2x00dev, 55, 0x04);
+Can you explain more about "recommended by whom and why"?
 
 
+Thanks,
+
+Peter
 
