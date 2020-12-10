@@ -2,49 +2,69 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 31AF42D5CA0
-	for <lists+linux-wireless@lfdr.de>; Thu, 10 Dec 2020 15:00:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CC6352D5CB5
+	for <lists+linux-wireless@lfdr.de>; Thu, 10 Dec 2020 15:03:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389793AbgLJOAL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 10 Dec 2020 09:00:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56024 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727310AbgLJOAD (ORCPT
+        id S2389881AbgLJOCl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 10 Dec 2020 09:02:41 -0500
+Received: from szxga07-in.huawei.com ([45.249.212.35]:9865 "EHLO
+        szxga07-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2389750AbgLJOCZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 10 Dec 2020 09:00:03 -0500
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07AB7C0613CF
-        for <linux-wireless@vger.kernel.org>; Thu, 10 Dec 2020 05:59:23 -0800 (PST)
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.94)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1knMTX-0068ij-5i; Thu, 10 Dec 2020 14:59:19 +0100
-Message-ID: <6fe05a79dfbc402ea350bb8e5f8b0b95a9e409fa.camel@sipsolutions.net>
-Subject: Re: [PATCH] mac80211: enable QoS support for nl80211 ctrl port
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Markus Theil <markus.theil@tu-ilmenau.de>
-Cc:     linux-wireless@vger.kernel.org
-Date:   Thu, 10 Dec 2020 14:59:02 +0100
-In-Reply-To: <20201209225214.127548-1-markus.theil@tu-ilmenau.de>
-References: <20201209225214.127548-1-markus.theil@tu-ilmenau.de>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.5 (3.36.5-1.fc32) 
+        Thu, 10 Dec 2020 09:02:25 -0500
+Received: from DGGEMS404-HUB.china.huawei.com (unknown [172.30.72.60])
+        by szxga07-in.huawei.com (SkyGuard) with ESMTP id 4CsFvB2dNNz7C5G;
+        Thu, 10 Dec 2020 22:01:10 +0800 (CST)
+Received: from ubuntu.network (10.175.138.68) by
+ DGGEMS404-HUB.china.huawei.com (10.3.19.204) with Microsoft SMTP Server id
+ 14.3.487.0; Thu, 10 Dec 2020 22:01:36 +0800
+From:   Zheng Yongjun <zhengyongjun3@huawei.com>
+To:     <kvalo@codeaurora.org>, <davem@davemloft.net>, <kuba@kernel.org>,
+        <ath10k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
+CC:     <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        Zheng Yongjun <zhengyongjun3@huawei.com>
+Subject: [PATCH wireless -next] wireless/ath10k: simplify the return expression of ath10k_ahb_chip_reset()
+Date:   Thu, 10 Dec 2020 22:02:04 +0800
+Message-ID: <20201210140204.1774-1-zhengyongjun3@huawei.com>
+X-Mailer: git-send-email 2.22.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-malware-bazaar: not-scanned
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.138.68]
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 2020-12-09 at 23:52 +0100, Markus Theil wrote:
-> 
-> Furthermore, this patch also checks and prevents frame
-> aggregation for control port frames in order to speed up
-> the initial connection setup a little.
-> 
+Simplify the return expression.
 
-That might make sense, but I really think it should be a separate patch.
+Signed-off-by: Zheng Yongjun <zhengyongjun3@huawei.com>
+---
+ drivers/net/wireless/ath/ath10k/ahb.c | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
-Thanks,
-johannes
+diff --git a/drivers/net/wireless/ath/ath10k/ahb.c b/drivers/net/wireless/ath/ath10k/ahb.c
+index 05a61975c83f..0ba31c0bbd24 100644
+--- a/drivers/net/wireless/ath/ath10k/ahb.c
++++ b/drivers/net/wireless/ath/ath10k/ahb.c
+@@ -598,16 +598,10 @@ static int ath10k_ahb_prepare_device(struct ath10k *ar)
+ 
+ static int ath10k_ahb_chip_reset(struct ath10k *ar)
+ {
+-	int ret;
+-
+ 	ath10k_ahb_halt_chip(ar);
+ 	ath10k_ahb_clock_disable(ar);
+ 
+-	ret = ath10k_ahb_prepare_device(ar);
+-	if (ret)
+-		return ret;
+-
+-	return 0;
++	return ath10k_ahb_prepare_device(ar);
+ }
+ 
+ static int ath10k_ahb_wake_target_cpu(struct ath10k *ar)
+-- 
+2.22.0
 
